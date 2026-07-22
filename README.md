@@ -46,7 +46,7 @@ weighted design has a dominating k-subset (`Gtz.GtzWeightedAll k`).
 | `Gtz/TraceIdentity.lean` | trace identity, excess balance, rank-one Schur step, pigeonhole | **proved** (branch (a) complete, all (m,k)) |
 | `Gtz/CapCriterion.lean` | signature-(k−1,1) rank-one completion | statement (sorry; see R-MECH-1) |
 | `Gtz/Naimark.lean` | Theorem N, weighted duality | statement (sorry) |
-| `Gtz/Crystallization.lean` | M(k) bounded support | statement (sorry) |
+| `Gtz/Crystallization.lean` | M(k) = k(k+1)/2 + 1 bounded support (kernel walk) | **proved** (sharp constant; Sym2 count, no Carathéodory) |
 | `Gtz/CornerFiber.lean` | simplex frame identity, forced balance, **Theorem B_k** | **proved** (all (m,k), 1 ≤ k; no spectral theory) |
 | `Gtz/Reductions.lean` | rank 1 + weighted→original bridge **proved**; rank 2, canonical list | statements (sorry) |
 | `Gtz/Audit.lean` | `#print axioms` for every proved theorem | FX discipline |
@@ -89,17 +89,20 @@ lake build
 
 ## Next proof targets (in order)
 
-1. `crystallization` (kernel-walk support reduction; the sharp bound needs
-   dim Sym(k) = k(k+1)/2 — check Mathlib's symmetric-matrix finrank; fallback
-   k² + 1 keeps the list finite).
-2. `weighted_naimark_duality` (co-design completion; R-MECH-2 pattern again).
-3. `cap_criterion` (branch b) — resolve R-MECH-1 first (hand interlacing or the
+1. `weighted_naimark_duality` (co-design completion; R-MECH-2 pattern again).
+2. `cap_criterion` (branch b) — resolve R-MECH-1 first (hand interlacing or the
    signature-free reformulation).
-4. `gtz_rank_two` (de-spectralized Sengupta–Pautov — the largest single item).
+3. `gtz_rank_two` (de-spectralized Sengupta–Pautov — the largest single item).
+4. `gtz_of_canonical_list` / `rank_three_of_the_two_residuals` (assembly of the
+   proven crystallization + Naimark + base ranks).
 
 Landed since: `original_of_weighted` (bridge, all n ≥ 1 — statement hygiene:
 `1 ≤ k` and `k < n` both turned out unnecessary; the n = k square case rides
-along free).
+along free). `crystallization` at the SHARP M(k) = k(k+1)/2 + 1 — no
+Carathéodory and no symmetric-matrix finrank needed: the moment map reads the
+upper triangle (`Sym2.sortEquiv` + `Sym2.card` count k(k+1)/2), the kernel walk
+does the support drop by hand, and domination pulls back because `subsetSum`
+never reads weights; `1 ≤ k` again unnecessary.
 
 Proof-technique note (B_k, landed): the informally-planned "exact spectrum of
 (k+1)I − h_dh_dᵀ" was never needed — the pigeonhole consumes the forced balance

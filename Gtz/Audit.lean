@@ -14,6 +14,7 @@ import Gtz.Sanity
 import Gtz.SchurRankOne
 import Gtz.TraceIdentity
 import Gtz.CornerFiber
+import Gtz.Crystallization
 import Gtz.Reductions
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -52,3 +53,9 @@ import Gtz.Reductions
 #print axioms Gtz.atomMatrix_smul
 #print axioms Gtz.transpose_mul_self_eq_sum_rows
 #print axioms Gtz.original_of_weighted
+#print axioms Gtz.symmetric_eq_zero_of_coords_eq_zero
+#print axioms Gtz.card_orderedPairs
+#print axioms Gtz.exists_null_direction
+#print axioms Gtz.sum_orderIsoOfFin
+#print axioms Gtz.exists_reduced_design
+#print axioms Gtz.crystallization
