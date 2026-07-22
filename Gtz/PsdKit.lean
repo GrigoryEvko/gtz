@@ -203,4 +203,29 @@ theorem posSemidef_transpose_mul_sub_one_comm (M : Matrix (Fin a) (Fin a) ℝ) :
     have := hdir Mᵀ (by rwa [Matrix.transpose_transpose])
     rwa [Matrix.transpose_transpose] at this
 
+open scoped MatrixOrder in
+/-- **Whitening**: every PD real matrix is congruent to the identity,
+RᵀWR = 1 with R invertible. Consumed from the C*-algebra factorization
+0 ≤ W ⟺ W = star L·L; positive-definiteness upgrades L to invertible. -/
+theorem exists_congruence_to_one {k : ℕ} {W : Matrix (Fin k) (Fin k) ℝ}
+    (hW : W.PosDef) :
+    ∃ R : Matrix (Fin k) (Fin k) ℝ, IsUnit R.det ∧ Rᵀ * W * R = 1 := by
+  obtain ⟨L, hL⟩ := CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hW.posSemidef.nonneg
+  have hLT : W = Lᵀ * L := by
+    rw [hL, Matrix.star_eq_conjTranspose]
+    congr 1
+  have hdetL : IsUnit L.det := by
+    have hdetW := hW.det_pos
+    rw [hLT, Matrix.det_mul, Matrix.det_transpose] at hdetW
+    rw [isUnit_iff_ne_zero]
+    intro hzero
+    rw [hzero, mul_zero] at hdetW
+    exact lt_irrefl 0 hdetW
+  have hdetLT : IsUnit Lᵀ.det := by rwa [Matrix.det_transpose]
+  refine ⟨L⁻¹, ?_, ?_⟩
+  · exact L.isUnit_nonsing_inv_det hdetL
+  · rw [hLT, Matrix.transpose_nonsing_inv, ← Matrix.mul_assoc,
+      Matrix.nonsing_inv_mul _ hdetLT, Matrix.one_mul,
+      Matrix.mul_nonsing_inv _ hdetL]
+
 end Gtz

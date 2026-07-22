@@ -103,10 +103,10 @@ theorem exists_null_direction (g : Fin m → (Fin k → ℝ))
 /-- Summing a function over the order enumeration of a finite support is
 summing it over the support. -/
 theorem sum_orderIsoOfFin {M : Type*} [AddCommMonoid M] (S : Finset (Fin m))
-    (f : Fin m → M) :
-    ∑ i : Fin S.card, f (S.orderIsoOfFin rfl i).val = ∑ c ∈ S, f c := by
+    {n : ℕ} (hcard : S.card = n) (f : Fin m → M) :
+    ∑ i : Fin n, f (S.orderIsoOfFin hcard i).val = ∑ c ∈ S, f c := by
   rw [← Finset.sum_coe_sort S f]
-  exact Fintype.sum_equiv (S.orderIsoOfFin rfl).toEquiv _ _ fun i => rfl
+  exact Fintype.sum_equiv (S.orderIsoOfFin hcard).toEquiv _ _ fun i => rfl
 
 /-- **Kernel-walk support reduction**: a design with more than k(k+1)/2 + 1
 atoms admits a strictly smaller design on a sub-family of its own atoms. -/
@@ -196,9 +196,9 @@ theorem exists_reduced_design (D : WeightedDesign m k)
     fun a b hab => (support.orderIsoOfFin rfl).toEquiv.injective
       (Subtype.val_injective hab),
     fun i => rfl⟩
-  · rw [sum_orderIsoOfFin support walked]
+  · rw [sum_orderIsoOfFin support rfl walked]
     exact hsumS
-  · rw [sum_orderIsoOfFin support (fun c => walked c • atomMatrix (D.atom c))]
+  · rw [sum_orderIsoOfFin support rfl (fun c => walked c • atomMatrix (D.atom c))]
     exact hparsS
 
 /-- **Crystallization at the sharp constant.** If weighted GTZ(k) holds for

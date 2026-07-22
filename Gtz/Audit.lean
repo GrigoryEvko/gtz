@@ -15,6 +15,9 @@ import Gtz.SchurRankOne
 import Gtz.TraceIdentity
 import Gtz.CornerFiber
 import Gtz.Crystallization
+import Gtz.PsdKit
+import Gtz.Completion
+import Gtz.Naimark
 import Gtz.Reductions
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -59,3 +62,18 @@ import Gtz.Reductions
 #print axioms Gtz.sum_orderIsoOfFin
 #print axioms Gtz.exists_reduced_design
 #print axioms Gtz.crystallization
+#print axioms Gtz.dotProduct_mulVec_transpose
+#print axioms Gtz.posSemidef_one_sub_iff_contraction
+#print axioms Gtz.contraction_flip
+#print axioms Gtz.posSemidef_one_sub_transpose_comm
+#print axioms Gtz.posSemidef_congr_right
+#print axioms Gtz.posSemidef_transpose_mul_sub_one_comm
+#print axioms Gtz.exists_congruence_to_one
+#print axioms Gtz.inner_columnVec
+#print axioms Gtz.exists_orthonormal_completion
+#print axioms Gtz.vecMulVec_mul
+#print axioms Gtz.transpose_mul_atomMatrix_mul
+#print axioms Gtz.dot_weighted_atoms_mulVec
+#print axioms Gtz.weight_lt_one
+#print axioms Gtz.coParseval_posDef
+#print axioms Gtz.weighted_naimark_duality

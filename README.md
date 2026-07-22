@@ -45,7 +45,9 @@ weighted design has a dominating k-subset (`Gtz.GtzWeightedAll k`).
 | `Gtz/SchurRankOne.lean` | rank-one Schur: N−ggᵀ ⪰ 0 ⟺ gᵀN⁻¹g ≤ 1 (N ≻ 0) | **proved** (polarization, no sqrt/no blocks) |
 | `Gtz/TraceIdentity.lean` | trace identity, excess balance, rank-one Schur step, pigeonhole | **proved** (branch (a) complete, all (m,k)) |
 | `Gtz/CapCriterion.lean` | signature-(k−1,1) rank-one completion | statement (sorry; see R-MECH-1) |
-| `Gtz/Naimark.lean` | Theorem N, weighted duality | statement (sorry) |
+| `Gtz/PsdKit.lean` | CS contraction flip, transpose transfers, invertible congruence, whitening | **proved** (squares only; no sqrt, no spectra) |
+| `Gtz/Completion.lean` | orthonormal completion [A|B] | **proved** (stdOrthonormalBasis + fromCols flip) |
+| `Gtz/Naimark.lean` | **Theorem N**, weighted duality | **proved** (four congruences; co-design completion) |
 | `Gtz/Crystallization.lean` | M(k) = k(k+1)/2 + 1 bounded support (kernel walk) | **proved** (sharp constant; Sym2 count, no Carathéodory) |
 | `Gtz/CornerFiber.lean` | simplex frame identity, forced balance, **Theorem B_k** | **proved** (all (m,k), 1 ≤ k; no spectral theory) |
 | `Gtz/Reductions.lean` | rank 1 + weighted→original bridge **proved**; rank 2, canonical list | statements (sorry) |
@@ -89,12 +91,20 @@ lake build
 
 ## Next proof targets (in order)
 
-1. `weighted_naimark_duality` (co-design completion; R-MECH-2 pattern again).
-2. `cap_criterion` (branch b) — resolve R-MECH-1 first (hand interlacing or the
-   signature-free reformulation).
-3. `gtz_rank_two` (de-spectralized Sengupta–Pautov — the largest single item).
-4. `gtz_of_canonical_list` / `rank_three_of_the_two_residuals` (assembly of the
-   proven crystallization + Naimark + base ranks).
+1. `gtz_of_canonical_list` / `rank_three_of_the_two_residuals` (assembly of the
+   PROVEN crystallization + Naimark + base ranks; needs the duality-descent
+   step m < 2k → rank m−k < k and the m ≤ k+1 base cases).
+2. `gtz_rank_two` (de-spectralized Sengupta–Pautov — the largest single item).
+3. `cap_criterion` (branch b) — resolve R-MECH-1 first (hand interlacing or the
+   signature-free reformulation via `PsdKit`).
+
+Theorem-N mechanization notes (landed): the informal W^{−1/2} matrix square
+root is GONE — any whitening R with RᵀWR = I works (consumed from the
+C*-factorization `CStarAlgebra.nonneg_iff_eq_star_mul_self`, the only
+spectral-backed import); the two "spectra-sharing" steps of the informal proof
+are replaced by the sqrt-free Cauchy–Schwarz flip (`PsdKit`): |Xᵀw|⁴ =
+⟨w, X(Xᵀw)⟩² ≤ |w|²·|X(Xᵀw)|² ≤ |w|²·|Xᵀw|², squares only. `1 ≤ k` IS needed
+here (k = 0 kills the co-design), unlike the bridge and crystallization.
 
 Landed since: `original_of_weighted` (bridge, all n ≥ 1 — statement hygiene:
 `1 ≤ k` and `k < n` both turned out unnecessary; the n = k square case rides
