@@ -52,6 +52,22 @@ theorem PosDef.transpose_eq {N : Matrix (Fin k) (Fin k) ℝ} (hN : N.PosDef) :
   rw [Matrix.conjTranspose_apply] at h
   simpa using h
 
+/-- Over ℝ, symmetry is Hermitian-ness. -/
+theorem isHermitian_of_transpose_eq {M : Matrix (Fin k) (Fin k) ℝ}
+    (h : Mᵀ = M) : M.IsHermitian := by
+  show Mᴴ = M
+  ext i j
+  rw [Matrix.conjTranspose_apply, star_trivial]
+  exact congrFun (congrFun h i) j
+
+/-- Over ℝ, Hermitian-ness is symmetry. -/
+theorem transpose_eq_of_isHermitian {M : Matrix (Fin k) (Fin k) ℝ}
+    (h : M.IsHermitian) : Mᵀ = M := by
+  ext i j
+  have hh := congrFun (congrFun h i) j
+  rw [Matrix.conjTranspose_apply] at hh
+  simpa using hh
+
 /-- **Rank-one Schur.** For N ≻ 0: N − ggᵀ ⪰ 0 ⟺ gᵀN⁻¹g ≤ 1. -/
 theorem posSemidef_sub_vecMulVec_iff (N : Matrix (Fin k) (Fin k) ℝ)
     (hN : N.PosDef) (g : Fin k → ℝ) :

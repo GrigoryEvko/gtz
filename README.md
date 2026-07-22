@@ -47,7 +47,7 @@ weighted design has a dominating k-subset (`Gtz.GtzWeightedAll k`).
 | `Gtz/CapCriterion.lean` | signature-(k−1,1) rank-one completion | statement (sorry; see R-MECH-1) |
 | `Gtz/Naimark.lean` | Theorem N, weighted duality | statement (sorry) |
 | `Gtz/Crystallization.lean` | M(k) bounded support | statement (sorry) |
-| `Gtz/CornerFiber.lean` | forced balance **proved** (audit F1); Theorem B_k | B_k assembly: sorry |
+| `Gtz/CornerFiber.lean` | simplex frame identity, forced balance, **Theorem B_k** | **proved** (all (m,k), 1 ≤ k; no spectral theory) |
 | `Gtz/Reductions.lean` | rank 1 **proved**; rank 2, canonical list, weighted→original | statements (sorry) |
 | `Gtz/Audit.lean` | `#print axioms` for every proved theorem | FX discipline |
 
@@ -89,12 +89,17 @@ lake build
 
 ## Next proof targets (in order)
 
-1. `cap_criterion` (branch b) — resolve R-MECH-1 first (hand interlacing or the
+1. `original_of_weighted` (the weighted→original bridge: rows scaled by √n at
+   weights 1/n; `Finset.orderEmbOfFin` for the row pick; PSD scaling).
+2. `crystallization` (kernel-walk support reduction; the sharp bound needs
+   dim Sym(k) = k(k+1)/2 — check Mathlib's symmetric-matrix finrank; fallback
+   k² + 1 keeps the list finite).
+3. `weighted_naimark_duality` (co-design completion; R-MECH-2 pattern again).
+4. `cap_criterion` (branch b) — resolve R-MECH-1 first (hand interlacing or the
    signature-free reformulation).
-2. `corner_fiber_dominates` (Theorem B_k assembly: forced balance + pigeonhole +
-   the exact spectrum of (k+1)I − h_dh_dᵀ; needs S_{Q₀} = (k+1)I from the corner
-   Gram — a small quadratic-form lemma).
-3. `crystallization` (Mathlib Carathéodory + drop monotonicity; the sharp bound
-   needs dim Sym(k) = k(k+1)/2 — check Mathlib's `Matrix.IsSymm` submodule API).
-4. `weighted_naimark_duality` (co-design completion; R-MECH-2 pattern again).
 5. `gtz_rank_two` (de-spectralized Sengupta–Pautov — the largest single item).
+
+Proof-technique note (B_k, landed): the informally-planned "exact spectrum of
+(k+1)I − h_dh_dᵀ" was never needed — the pigeonhole consumes the forced balance
+directly, and S = (k+1)I comes from Gram algebra alone (S² = (k+1)S, PSD
+remainder of trace zero), keeping the whole file spectral-theory-free.

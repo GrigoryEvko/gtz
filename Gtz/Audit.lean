@@ -35,5 +35,17 @@ import Gtz.Reductions
 #print axioms Gtz.erase_dominates_iff_pivot_le_one
 #print axioms Gtz.pigeonhole
 #print axioms Gtz.trace_atomMatrix
+#print axioms Gtz.isHermitian_of_transpose_eq
+#print axioms Gtz.transpose_eq_of_isHermitian
+#print axioms Gtz.vecMulVec_sum_right
+#print axioms Gtz.atomMatrix_mul_atomMatrix
+#print axioms Gtz.posSemidef_of_sq_eq_smul
+#print axioms Gtz.simplex_sum_eq_zero
+#print axioms Gtz.simplex_frame_operator
+#print axioms Gtz.corner_dot_diag
+#print axioms Gtz.corner_dot_off
+#print axioms Gtz.corner_heavies_sum_zero
+#print axioms Gtz.corner_subsetSum_eq
 #print axioms Gtz.corner_balance_forced
+#print axioms Gtz.corner_fiber_dominates
 #print axioms Gtz.gtz_rank_one
