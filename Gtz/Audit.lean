@@ -76,4 +76,11 @@ import Gtz.Reductions
 #print axioms Gtz.dot_weighted_atoms_mulVec
 #print axioms Gtz.weight_lt_one
 #print axioms Gtz.coParseval_posDef
+#print axioms Gtz.eq_zero_of_forall_atom_dot_eq_zero
 #print axioms Gtz.weighted_naimark_duality
+#print axioms Gtz.rank_le_of_design
+#print axioms Gtz.gtzWeighted_square
+#print axioms Gtz.gtzWeighted_of_dual_rank
+#print axioms Gtz.gtz_rank_two_of_four_two
+#print axioms Gtz.rank_three_of_the_two_residuals
+#print axioms Gtz.gtz_of_canonical_list

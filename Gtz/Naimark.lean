@@ -91,6 +91,21 @@ theorem weight_lt_one (D : WeightedDesign m k) (hm : 2 ≤ m) (c : Fin m) :
         D.weight_pos cother⟩
   linarith
 
+/-- Vectors annihilating every atom are zero — the atoms of a design span
+(Parseval's form is |u|²). -/
+theorem eq_zero_of_forall_atom_dot_eq_zero (D : WeightedDesign m k)
+    {u : Fin k → ℝ} (hdots : ∀ c, D.atom c ⬝ᵥ u = 0) : u = 0 := by
+  have hparse := congrArg (fun M => u ⬝ᵥ (M *ᵥ u)) D.isParseval
+  simp only [Matrix.one_mulVec] at hparse
+  rw [dot_weighted_atoms_mulVec] at hparse
+  have hzero : u ⬝ᵥ u = 0 := by
+    rw [← hparse]
+    exact Finset.sum_eq_zero fun c _ => by rw [hdots c]; ring
+  funext t
+  have hsq := (Finset.sum_eq_zero_iff_of_nonneg
+    (fun s _ => mul_self_nonneg (u s))).mp hzero
+  simpa using mul_self_eq_zero.mp (hsq t (Finset.mem_univ t))
+
 /-- The co-Parseval operator W = Σ (1−t_c)·g_cg_cᵀ is positive definite:
 its form vanishing forces every ⟨g_c, u⟩ to vanish, and then Parseval's form
 says |u|² = 0. -/
@@ -122,17 +137,7 @@ theorem coParseval_posDef (D : WeightedDesign m k) (hm : 2 ≤ m) :
           · exact absurd h this
           · exact h
         exact pow_eq_zero_iff (n := 2) (by omega) |>.mp hsq
-      have hparse := congrArg (fun M => u ⬝ᵥ (M *ᵥ u)) D.isParseval
-      simp only [Matrix.one_mulVec] at hparse
-      rw [dot_weighted_atoms_mulVec] at hparse
-      have hzero : u ⬝ᵥ u = 0 := by
-        rw [← hparse]
-        exact Finset.sum_eq_zero fun c _ => by rw [hdots c]; ring
-      apply hu
-      funext t
-      have hsq := (Finset.sum_eq_zero_iff_of_nonneg
-        (fun s _ => mul_self_nonneg (u s))).mp hzero
-      simpa using mul_self_eq_zero.mp (hsq t (Finset.mem_univ t))
+      exact hu (eq_zero_of_forall_atom_dot_eq_zero D hdots)
 
 /-- **Theorem N (weighted Naimark duality).** Every weighted (m,k) design has a
 dual (m, m−k) design with the same weights, flipping domination of

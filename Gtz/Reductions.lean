@@ -17,6 +17,9 @@ recommended first full end-to-end exercise of the definitions.
 -/
 import Mathlib
 import Gtz.Basic
+import Gtz.Sanity
+import Gtz.Crystallization
+import Gtz.Naimark
 
 namespace Gtz
 
@@ -64,24 +67,122 @@ theorem gtz_rank_one : GtzWeightedAll 1 := by
 
 /-- Rank 2 is the Sengupta–Pautov theorem (weighted form; the de-spectralized
 Case-B pairing of diary §0 is the intended proof skeleton — finite sums and
-squares, no spectral theorem, no Perron–Frobenius). -/
+squares, no spectral theorem, no Perron–Frobenius). By
+`gtz_rank_two_of_four_two` below, ONLY the single case (4,2) is open. -/
 theorem gtz_rank_two : GtzWeightedAll 2 := by
   sorry
 
-/-- The two binding cases close rank 3 (crystallization at k=3: M(3) = 7, and the
-proven m ≤ 5 ledger — trivial m ≤ 3, pigeonhole m = 4, Naimark→rank-2 m = 5). -/
-theorem rank_three_of_the_two_residuals
+/-- A design's atoms span, so its size is at least its rank: the evaluation
+map u ↦ (⟨g_c, u⟩)_c is injective into ℝᵐ. -/
+theorem rank_le_of_design (D : WeightedDesign m k) : k ≤ m := by
+  let evalAtoms : (Fin k → ℝ) →ₗ[ℝ] (Fin m → ℝ) :=
+    { toFun := fun u c => D.atom c ⬝ᵥ u
+      map_add' := fun u v => by
+        funext c
+        simp [dotProduct_add]
+      map_smul' := fun r u => by
+        funext c
+        simp [dotProduct_smul] }
+  have hker : ∀ u, evalAtoms u = 0 → u = 0 := fun u hu =>
+    eq_zero_of_forall_atom_dot_eq_zero D fun c => congrFun hu c
+  have hinj : Function.Injective evalAtoms :=
+    LinearMap.ker_eq_bot.mp (LinearMap.ker_eq_bot'.mpr hker)
+  have hle := LinearMap.finrank_le_finrank_of_injective hinj
+  rwa [Module.finrank_pi, Module.finrank_pi, Fintype.card_fin,
+    Fintype.card_fin] at hle
+
+/-- At m = k the whole design dominates: S − I = Σ (1−t_c)·g_cg_cᵀ ⪰ 0. -/
+theorem gtzWeighted_square (k : ℕ) : GtzWeighted k k := by
+  intro D
+  refine ⟨Finset.univ, by rw [Finset.card_univ, Fintype.card_fin], ?_⟩
+  have hsub : subsetSum D Finset.univ - 1
+      = ∑ c, (1 - D.weight c) • atomMatrix (D.atom c) := by
+    rw [subsetSum, ← D.isParseval, ← Finset.sum_sub_distrib]
+    exact Finset.sum_congr rfl fun c _ => by rw [sub_smul, one_smul]
+  show (subsetSum D Finset.univ - 1).PosSemidef
+  rw [hsub]
+  refine Matrix.posSemidef_sum Finset.univ fun c _ => ?_
+  have hle1 : D.weight c ≤ 1 := by
+    rw [← D.weight_sum_one]
+    exact Finset.single_le_sum (fun c' _ => (D.weight_pos c').le)
+      (Finset.mem_univ c)
+  exact (posSemidef_atomMatrix (D.atom c)).smul (by linarith)
+
+/-- **Duality descent**: weighted GTZ at the complementary rank m − k gives
+weighted GTZ at (m, k) — the dominating co-rank subset complements back. -/
+theorem gtzWeighted_of_dual_rank (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
+    (hdual : GtzWeighted m (m - k)) : GtzWeighted m k := by
+  intro D
+  obtain ⟨Ddual, -, hdualiff⟩ := weighted_naimark_duality hk hkm D
+  obtain ⟨Cdual, hCdualcard, hCdualdom⟩ := hdual Ddual
+  refine ⟨Cdualᶜ, ?_, ?_⟩
+  · rw [Finset.card_compl, Fintype.card_fin, hCdualcard]
+    omega
+  · rw [hdualiff Cdualᶜ
+      (by rw [Finset.card_compl, Fintype.card_fin, hCdualcard]; omega),
+      compl_compl]
+    exact hCdualdom
+
+/-- **Rank 2 collapses to the single weighted case (4,2)**: crystallization
+caps the support at M(2) = 4; below it the ledger is vacuous m ≤ 1, the
+square m = 2, and duality descent to rank 1 at m = 3. -/
+theorem gtz_rank_two_of_four_two (h42 : GtzWeighted 4 2) :
+    GtzWeightedAll 2 := by
+  refine crystallization 2 fun m hm => ?_
+  norm_num at hm
+  interval_cases m
+  · exact fun D => absurd (rank_le_of_design D) (by omega)
+  · exact fun D => absurd (rank_le_of_design D) (by omega)
+  · exact gtzWeighted_square 2
+  · exact gtzWeighted_of_dual_rank (by omega) (by omega) (gtz_rank_one 3)
+  · exact h42
+
+/-- The two binding cases close rank 3, given rank 2 (Sengupta–Pautov):
+crystallization at k = 3 has M(3) = 7, and the ledger below 6 is
+vacuous m ≤ 2, the square m = 3, duality descent to rank 1 at m = 4 and to
+rank 2 at m = 5. -/
+theorem rank_three_of_the_two_residuals (h2 : GtzWeightedAll 2)
     (h63 : GtzWeighted 6 3) (h73 : GtzWeighted 7 3) :
     GtzWeightedAll 3 := by
-  sorry
+  refine crystallization 3 fun m hm => ?_
+  norm_num at hm
+  interval_cases m
+  · exact fun D => absurd (rank_le_of_design D) (by omega)
+  · exact fun D => absurd (rank_le_of_design D) (by omega)
+  · exact fun D => absurd (rank_le_of_design D) (by omega)
+  · exact gtzWeighted_square 3
+  · exact gtzWeighted_of_dual_rank (by omega) (by omega) (gtz_rank_one 4)
+  · exact gtzWeighted_of_dual_rank (by omega) (by omega) (h2 5)
+  · exact h63
+  · exact h73
 
 /-- **Theorem L (the canonical list).** GTZ at every rank and size follows from
-the finite-per-rank canonical list — the master reduction of the program. -/
+the finite-per-rank canonical list — the master reduction of the program.
+Strong induction on the rank: below the rank there are no designs, at the rank
+the square dominates, between k and 2k the duality descends to a smaller rank,
+and the canonical window 2k ≤ m ≤ M(k) is the hypothesis. Rank 2 needs no
+separate theorem: it IS the list entry (4,2). -/
 theorem gtz_of_canonical_list
     (hlist : ∀ s m', 2 ≤ s → 2 * s ≤ m' → m' ≤ s * (s + 1) / 2 + 1 →
       GtzWeighted m' s) :
     ∀ k, 1 ≤ k → GtzWeightedAll k := by
-  sorry
+  intro k
+  induction k using Nat.strong_induction_on with
+  | _ k ih =>
+    intro hk
+    rcases eq_or_lt_of_le hk with hk1 | hk2
+    · rw [← hk1]
+      exact gtz_rank_one
+    · refine crystallization k fun m hm => ?_
+      rcases lt_or_ge m k with hmk | hmk
+      · exact fun D => absurd (rank_le_of_design D) (by omega)
+      · rcases eq_or_lt_of_le hmk with hmk1 | hmk2
+        · rw [← hmk1]
+          exact gtzWeighted_square k
+        · rcases lt_or_ge m (2 * k) with hm2k | hm2k
+          · exact gtzWeighted_of_dual_rank hk (by omega)
+              (ih (m - k) (by omega) (by omega) m)
+          · exact hlist k m hk2 hm2k hm
 
 /-- The row design of an orthonormal-column matrix: rows scaled by √n at
 uniform weights 1/n. Parseval is exactly AᵀA = I through the frame dictionary. -/

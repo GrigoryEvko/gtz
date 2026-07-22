@@ -50,7 +50,7 @@ weighted design has a dominating k-subset (`Gtz.GtzWeightedAll k`).
 | `Gtz/Naimark.lean` | **Theorem N**, weighted duality | **proved** (four congruences; co-design completion) |
 | `Gtz/Crystallization.lean` | M(k) = k(k+1)/2 + 1 bounded support (kernel walk) | **proved** (sharp constant; Sym2 count, no Carathéodory) |
 | `Gtz/CornerFiber.lean` | simplex frame identity, forced balance, **Theorem B_k** | **proved** (all (m,k), 1 ≤ k; no spectral theory) |
-| `Gtz/Reductions.lean` | rank 1 + weighted→original bridge **proved**; rank 2, canonical list | statements (sorry) |
+| `Gtz/Reductions.lean` | rank 1, bridge, **Theorem L**, rank-2→(4,2), rank-3→residuals, duality descent, square, rank bound | **proved** except `gtz_rank_two` (sorry → open case (4,2)) |
 | `Gtz/Audit.lean` | `#print axioms` for every proved theorem | FX discipline |
 
 ## Mechanization residuals (gaps surfaced BY the formalization; kept current)
@@ -89,14 +89,21 @@ lake exe cache get   # once, downloads Mathlib oleans
 lake build
 ```
 
-## Next proof targets (in order)
+## The formal frontier (everything else is kernel-checked)
 
-1. `gtz_of_canonical_list` / `rank_three_of_the_two_residuals` (assembly of the
-   PROVEN crystallization + Naimark + base ranks; needs the duality-descent
-   step m < 2k → rank m−k < k and the m ≤ k+1 base cases).
-2. `gtz_rank_two` (de-spectralized Sengupta–Pautov — the largest single item).
-3. `cap_criterion` (branch b) — resolve R-MECH-1 first (hand interlacing or the
-   signature-free reformulation via `PsdKit`).
+The assembly is COMPLETE: `gtz_of_canonical_list` (Theorem L),
+`rank_three_of_the_two_residuals`, `gtz_rank_two_of_four_two`,
+`gtzWeighted_of_dual_rank`, `gtzWeighted_square`, `rank_le_of_design` are all
+proved. GTZ for every (n,k) now reduces IN LEAN to the finite canonical list;
+the open obligations are exactly:
+
+1. `GtzWeighted 4 2` — weighted Sengupta–Pautov at its single canonical case
+   (the de-spectralized Case-B pairing; next target).
+2. `GtzWeighted 6 3` and `GtzWeighted 7 3` — the campaign's binding open
+   mathematics (statement (1)/(2) residuals; math frontier, currently paused).
+3. The canonical window 2s ≤ m ≤ s(s+1)/2 + 1 for s ≥ 4 — open mathematics.
+4. `cap_criterion` (certificate branch b; R-MECH-1) — infrastructure for
+   closing 1–3, not itself on the critical path of the reduction.
 
 Theorem-N mechanization notes (landed): the informal W^{−1/2} matrix square
 root is GONE — any whitening R with RᵀWR = I works (consumed from the
