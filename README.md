@@ -89,9 +89,12 @@ lake build
 
 ## Next proof targets (in order)
 
-1. `gtz_rank_one` (pigeonhole in ℝ¹ — exercises the design API end-to-end).
-2. `tie_iff_two_valued` (Bhatia–Davis equality classification).
-3. `trace_identity` + `excess_balance` + `pigeonhole` (the certificate's branch a).
-4. `cap_criterion` (branch b).
-5. `crystallization` (Mathlib Carathéodory), then `weighted_naimark_duality`,
-   then Theorem L; `corner_fiber_dominates` closes the exact wall at every rank.
+1. `cap_criterion` (branch b) — resolve R-MECH-1 first (hand interlacing or the
+   signature-free reformulation).
+2. `corner_fiber_dominates` (Theorem B_k assembly: forced balance + pigeonhole +
+   the exact spectrum of (k+1)I − h_dh_dᵀ; needs S_{Q₀} = (k+1)I from the corner
+   Gram — a small quadratic-form lemma).
+3. `crystallization` (Mathlib Carathéodory + drop monotonicity; the sharp bound
+   needs dim Sym(k) = k(k+1)/2 — check Mathlib's `Matrix.IsSymm` submodule API).
+4. `weighted_naimark_duality` (co-design completion; R-MECH-2 pattern again).
+5. `gtz_rank_two` (de-spectralized Sengupta–Pautov — the largest single item).
