@@ -74,4 +74,11 @@ the certificate's per-atom quantity for a base set Q with S_Q ≻ I.
 noncomputable def pivot (D : WeightedDesign m k) (Q : Finset (Fin m)) (c : Fin m) : ℝ :=
   Matrix.trace ((subsetSum D Q - 1)⁻¹ * atomMatrix (D.atom c))
 
+/-- The trace of an atom is its leverage. -/
+theorem trace_atomMatrix (g : Fin k → ℝ) :
+    Matrix.trace (atomMatrix g) = leverageOf g := by
+  rw [atomMatrix, Matrix.trace_vecMulVec]
+  simp only [dotProduct, leverageOf]
+  exact Finset.sum_congr rfl fun i _ => (pow_two (g i)).symm
+
 end Gtz

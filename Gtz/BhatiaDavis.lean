@@ -11,17 +11,15 @@ fundamental-weight axes of A_k. The inequality is one line: every factor of
 Σ_i (M − x_i)(x_i − m) is nonnegative, and the sum telescopes to −n(Mm + 1)
 where n = k+1, M = max x, m = min x.
 
-This file proves the inequality (`exists_pair_mul_le_neg_one`) sorry-free.
-The equality classification (`two-valued ⟺ tie`) is a stated follow-up target.
+This file proves the inequality AND the tie classification, sorry-free.
 -/
 import Mathlib
 import Gtz.Basic
 
 namespace Gtz
 
-/-- The Bhatia–Davis telescope: for any x and any two reals M, m,
-Σ (M − x_i)(x_i − m) = (M + m)·Σx − Σx² − n·M·m. Stated with the design
-normalization Σx = 0, Σx² = n plugged in. -/
+/-- The Bhatia–Davis telescope: with Σx = 0 and Σx² = n,
+Σ (M − x_i)(x_i − m) = −n·(M·m + 1) for ANY two reals M, m. -/
 theorem bhatiaDavis_telescope {n : ℕ} (x : Fin n → ℝ) (bigM smallM : ℝ)
     (hsum : ∑ i, x i = 0) (hsq : ∑ i, x i ^ 2 = n) :
     ∑ i, (bigM - x i) * (x i - smallM) = -(n : ℝ) * (bigM * smallM) - n := by
@@ -35,14 +33,12 @@ theorem bhatiaDavis_telescope {n : ℕ} (x : Fin n → ℝ) (bigM smallM : ℝ)
     _ = -(n : ℝ) * (bigM * smallM) - n := by
         rw [hsum, hsq, Finset.card_univ, Fintype.card_fin]; ring
 
-/-- **Lemma F_k, combinatorial core (Bhatia–Davis at mean zero).**
-On the zero-sum sphere Σx = 0, Σx² = n (n ≥ 2), some pair has product ≤ −1.
-The witness pair is (argmax, argmin); the same argument is natively weighted.
-This is the rank-uniform covering inequality behind the corner caps of the
-weighted GTZ program (diary §52 / `gtz_proof_gtz_allk_lift.md` §2.2). -/
-theorem exists_pair_mul_le_neg_one {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ)
+/-- The shared extremal-pair witness: on the zero-sum sphere there are distinct
+argmax/argmin indices with max·min ≤ −1 and the max/min sandwich. -/
+theorem exists_extremal_pair {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ)
     (hsum : ∑ i, x i = 0) (hsq : ∑ i, x i ^ 2 = n) :
-    ∃ i j : Fin n, i ≠ j ∧ x i * x j ≤ -1 := by
+    ∃ iMax iMin : Fin n, iMax ≠ iMin ∧ (∀ i, x i ≤ x iMax) ∧ (∀ i, x iMin ≤ x i) ∧
+      x iMax * x iMin ≤ -1 := by
   have hnpos : (0 : ℝ) < n := by exact_mod_cast Nat.lt_of_lt_of_le Nat.zero_lt_two hn
   have hzero : (⟨0, by omega⟩ : Fin n) ∈ (Finset.univ : Finset (Fin n)) := Finset.mem_univ _
   obtain ⟨iMax, -, hMax⟩ :=
@@ -51,15 +47,12 @@ theorem exists_pair_mul_le_neg_one {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ)
     Finset.exists_min_image (Finset.univ : Finset (Fin n)) x ⟨_, hzero⟩
   have hMax' : ∀ i, x i ≤ x iMax := fun i => hMax i (Finset.mem_univ i)
   have hMin' : ∀ i, x iMin ≤ x i := fun i => hMin i (Finset.mem_univ i)
-  -- every Bhatia–Davis factor is nonnegative
   have hnonneg : 0 ≤ ∑ i, (x iMax - x i) * (x i - x iMin) :=
     Finset.sum_nonneg fun i _ =>
       mul_nonneg (sub_nonneg.mpr (hMax' i)) (sub_nonneg.mpr (hMin' i))
   have hkey : 0 ≤ -(n : ℝ) * (x iMax * x iMin) - n :=
     (bhatiaDavis_telescope x (x iMax) (x iMin) hsum hsq) ▸ hnonneg
-  -- hence max · min ≤ −1
   have hprod : x iMax * x iMin ≤ -1 := by nlinarith [hkey, hnpos]
-  -- the argmax and argmin are distinct (else x is constant 0, contradicting Σx² = n)
   have hne : iMax ≠ iMin := by
     rintro rfl
     have hconst : ∀ i, x i = x iMax := fun i => le_antisymm (hMax' i) (hMin' i)
@@ -75,15 +68,38 @@ theorem exists_pair_mul_le_neg_one {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ)
       rw [← hsq]
       exact Finset.sum_eq_zero fun i _ => by rw [hconst i, hx0]; ring
     exact absurd this (ne_of_gt hnpos)
+  exact ⟨iMax, iMin, hne, hMax', hMin', hprod⟩
+
+/-- **Lemma F_k, combinatorial core (Bhatia–Davis at mean zero).**
+On the zero-sum sphere Σx = 0, Σx² = n (n ≥ 2), some pair has product ≤ −1.
+This is the rank-uniform covering inequality behind the corner caps of the
+weighted GTZ program (diary §52 / `gtz_proof_gtz_allk_lift.md` §2.2). -/
+theorem exists_pair_mul_le_neg_one {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ)
+    (hsum : ∑ i, x i = 0) (hsq : ∑ i, x i ^ 2 = n) :
+    ∃ i j : Fin n, i ≠ j ∧ x i * x j ≤ -1 := by
+  obtain ⟨iMax, iMin, hne, -, -, hprod⟩ := exists_extremal_pair hn x hsum hsq
   exact ⟨iMax, iMin, hne, hprod⟩
 
-/-- ROADMAP (equality classification, diary §52): the tie min-pair = −1 holds
-iff x is two-valued — p coordinates at q·c and q = n−p at −p·c with c = 1/√(pq) —
-i.e. x lies on one of the 2^(n−1) − 1 fundamental-weight axes of A_(n−1). -/
-theorem tie_iff_two_valued {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ)
+/-- **The tie classification** (equality locus of Lemma F_k): if every pair
+product is ≥ −1 (so together with `exists_pair_mul_le_neg_one` the covering
+ties), then x is two-valued — every coordinate equals the max M or the min m′,
+with M·m′ = −1. With Σx = 0, Σx² = n this forces the (p, q)-pattern
+(p coordinates at √(q/p), q = n−p at −√(p/q)): the fundamental-weight axes of
+A_(n−1), of which there are 2^(n−1) − 1 up to sign. -/
+theorem tie_two_valued {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ)
     (hsum : ∑ i, x i = 0) (hsq : ∑ i, x i ^ 2 = n)
     (htie : ∀ i j : Fin n, i ≠ j → -1 ≤ x i * x j) :
     ∃ M m' : ℝ, M * m' = -1 ∧ ∀ i, x i = M ∨ x i = m' := by
-  sorry
+  obtain ⟨iMax, iMin, hne, hMax', hMin', hle⟩ := exists_extremal_pair hn x hsum hsq
+  have hprod : x iMax * x iMin = -1 := le_antisymm hle (htie iMax iMin hne)
+  have hzero : ∑ i, (x iMax - x i) * (x i - x iMin) = 0 := by
+    rw [bhatiaDavis_telescope x _ _ hsum hsq, hprod]; ring
+  have hterms :=
+    (Finset.sum_eq_zero_iff_of_nonneg fun i _ =>
+      mul_nonneg (sub_nonneg.mpr (hMax' i)) (sub_nonneg.mpr (hMin' i))).mp hzero
+  refine ⟨x iMax, x iMin, hprod, fun i => ?_⟩
+  rcases mul_eq_zero.mp (hterms i (Finset.mem_univ i)) with h | h
+  · exact Or.inl (sub_eq_zero.mp h).symm
+  · exact Or.inr (sub_eq_zero.mp h)
 
 end Gtz

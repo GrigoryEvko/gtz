@@ -11,6 +11,10 @@ Update this file in the same commit that completes a proof.
 -/
 import Gtz.BhatiaDavis
 import Gtz.Sanity
+import Gtz.SchurRankOne
+import Gtz.TraceIdentity
+import Gtz.CornerFiber
+import Gtz.Reductions
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -18,3 +22,18 @@ import Gtz.Sanity
 #print axioms Gtz.Dominates.mono
 #print axioms Gtz.unitDesign
 #print axioms Gtz.gtzWeighted_one_one
+#print axioms Gtz.exists_extremal_pair
+#print axioms Gtz.tie_two_valued
+#print axioms Gtz.vecMulVec_mulVec_eq
+#print axioms Gtz.dot_mulVec_comm
+#print axioms Gtz.PosDef.transpose_eq
+#print axioms Gtz.posSemidef_sub_vecMulVec_iff
+#print axioms Gtz.mul_vecMulVec_eq
+#print axioms Gtz.pivot_eq_dot
+#print axioms Gtz.trace_identity
+#print axioms Gtz.excess_balance
+#print axioms Gtz.erase_dominates_iff_pivot_le_one
+#print axioms Gtz.pigeonhole
+#print axioms Gtz.trace_atomMatrix
+#print axioms Gtz.corner_balance_forced
+#print axioms Gtz.gtz_rank_one

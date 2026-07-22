@@ -22,7 +22,45 @@ namespace Gtz
 
 /-- Rank 1 is the pigeonhole: Σ t_c g_c² = 1 with Σ t_c = 1 forces some g_c² ≥ 1. -/
 theorem gtz_rank_one : GtzWeightedAll 1 := by
-  sorry
+  intro m D
+  rcases Nat.eq_zero_or_pos m with hm | hm
+  · -- no atoms cannot resolve the identity: Parseval is contradictory
+    subst hm
+    have hp := D.isParseval
+    rw [Finset.univ_eq_empty, Finset.sum_empty] at hp
+    have h00 : (0 : ℝ) = 1 := by
+      have h := congrArg (fun M => M 0 0) hp
+      simpa using h
+    norm_num at h00
+  · -- scalar Parseval at the (0,0) entry
+    have hscalar : ∑ c, D.weight c * (D.atom c 0 * D.atom c 0) = 1 := by
+      have h := congrArg (fun M => M 0 0) D.isParseval
+      simpa [Matrix.sum_apply, atomMatrix, Matrix.vecMulVec_apply, Matrix.one_apply,
+        Matrix.smul_apply, smul_eq_mul] using h
+    -- pigeonhole: some atom has squared length ≥ 1
+    have hex : ∃ c, 1 ≤ D.atom c 0 * D.atom c 0 := by
+      by_contra hno
+      push Not at hno
+      have hne : (Finset.univ : Finset (Fin m)).Nonempty :=
+        Finset.univ_nonempty_iff.mpr (Fin.pos_iff_nonempty.mp hm)
+      have hlt : ∑ c, D.weight c * (D.atom c 0 * D.atom c 0) < ∑ c, D.weight c := by
+        refine Finset.sum_lt_sum_of_nonempty hne fun c _ => ?_
+        nlinarith [hno c, D.weight_pos c]
+      rw [hscalar, D.weight_sum_one] at hlt
+      exact lt_irrefl 1 hlt
+    obtain ⟨c, hc⟩ := hex
+    refine ⟨{c}, Finset.card_singleton c, ?_⟩
+    -- the 1×1 block g² − 1 is a nonnegative multiple of the identity
+    have hmat : subsetSum D {c} - 1
+        = (D.atom c 0 * D.atom c 0 - 1) • (1 : Matrix (Fin 1) (Fin 1) ℝ) := by
+      ext i j
+      have hi : i = 0 := Subsingleton.elim i 0
+      have hj : j = 0 := Subsingleton.elim j 0
+      subst hi; subst hj
+      simp [subsetSum, atomMatrix, Matrix.vecMulVec_apply,
+        Matrix.smul_apply, smul_eq_mul]
+    rw [Dominates, hmat]
+    exact Matrix.PosSemidef.one.smul (by linarith)
 
 /-- Rank 2 is the Sengupta–Pautov theorem (weighted form; the de-spectralized
 Case-B pairing of diary §0 is the intended proof skeleton — finite sums and

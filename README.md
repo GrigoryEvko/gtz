@@ -40,15 +40,30 @@ weighted design has a dominating k-subset (`Gtz.GtzWeightedAll k`).
 | module | content | status |
 |---|---|---|
 | `Gtz/Basic.lean` | designs, domination, GtzWeighted/GtzOriginal, pivot | definitions |
-| `Gtz/BhatiaDavis.lean` | Lemma F_k combinatorial core | **proved** (telescope + inequality); tie classification: sorry |
+| `Gtz/BhatiaDavis.lean` | Lemma F_k combinatorial core | **proved incl. tie classification** |
 | `Gtz/Sanity.lean` | definition-pinning instances | **proved** (PSD atoms, monotonicity, (1,1) end-to-end) |
-| `Gtz/TraceIdentity.lean` | trace identity, excess balance, pigeonhole | statements (sorry) |
-| `Gtz/CapCriterion.lean` | signature-(k−1,1) rank-one completion | statement (sorry) |
+| `Gtz/SchurRankOne.lean` | rank-one Schur: N−ggᵀ ⪰ 0 ⟺ gᵀN⁻¹g ≤ 1 (N ≻ 0) | **proved** (polarization, no sqrt/no blocks) |
+| `Gtz/TraceIdentity.lean` | trace identity, excess balance, rank-one Schur step, pigeonhole | **proved** (branch (a) complete, all (m,k)) |
+| `Gtz/CapCriterion.lean` | signature-(k−1,1) rank-one completion | statement (sorry; see R-MECH-1) |
 | `Gtz/Naimark.lean` | Theorem N, weighted duality | statement (sorry) |
 | `Gtz/Crystallization.lean` | M(k) bounded support | statement (sorry) |
-| `Gtz/CornerFiber.lean` | forced balance + Theorem B_k | statements (sorry) |
-| `Gtz/Reductions.lean` | rank 1/2, canonical list, weighted→original | statements (sorry) |
+| `Gtz/CornerFiber.lean` | forced balance **proved** (audit F1); Theorem B_k | B_k assembly: sorry |
+| `Gtz/Reductions.lean` | rank 1 **proved**; rank 2, canonical list, weighted→original | statements (sorry) |
 | `Gtz/Audit.lean` | `#print axioms` for every proved theorem | FX discipline |
+
+## Mechanization residuals (gaps surfaced BY the formalization; kept current)
+
+* **R-MECH-1**: Mathlib v4.32 has no Cauchy eigenvalue interlacing. The cap
+  criterion's "rank-one update keeps k−1 positive eigenvalues" needs either a
+  hand-built interlacing lemma or a signature-free reformulation (candidate: the
+  polarization pattern of `SchurRankOne` run on the negative eigenspace).
+* **R-MECH-2**: Mathlib v4.32 has no PSD Schur-complement block criterion
+  (`SchurComplement.lean` is determinant/inverse only). Worked around in
+  `SchurRankOne.lean` by direct polarization; Theorem N's congruence chain will
+  need the same treatment.
+* Statement hygiene adopted while mechanizing: `pigeonhole` requires `1 ≤ k`
+  (at k = 0 a one-atom design has weight 1 and the strict-weight argument
+  degenerates) — the informal statements never said this.
 
 ## Rigor rules (FX standards)
 

@@ -7,6 +7,7 @@ architecture, and the status ledger.
 import Gtz.Basic
 import Gtz.BhatiaDavis
 import Gtz.Sanity
+import Gtz.SchurRankOne
 import Gtz.TraceIdentity
 import Gtz.CapCriterion
 import Gtz.Naimark
