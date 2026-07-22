@@ -20,6 +20,8 @@ import Gtz.Basic
 
 namespace Gtz
 
+open Matrix
+
 /-- Rank 1 is the pigeonhole: Σ t_c g_c² = 1 with Σ t_c = 1 forces some g_c² ≥ 1. -/
 theorem gtz_rank_one : GtzWeightedAll 1 := by
   intro m D
@@ -28,10 +30,8 @@ theorem gtz_rank_one : GtzWeightedAll 1 := by
     subst hm
     have hp := D.isParseval
     rw [Finset.univ_eq_empty, Finset.sum_empty] at hp
-    have h00 : (0 : ℝ) = 1 := by
-      have h := congrArg (fun M => M 0 0) hp
-      simpa using h
-    norm_num at h00
+    have hentry := congrArg (fun M => M 0 0) hp
+    simp at hentry
   · -- scalar Parseval at the (0,0) entry
     have hscalar : ∑ c, D.weight c * (D.atom c 0 * D.atom c 0) = 1 := by
       have h := congrArg (fun M => M 0 0) D.isParseval
@@ -83,10 +83,62 @@ theorem gtz_of_canonical_list
     ∀ k, 1 ≤ k → GtzWeightedAll k := by
   sorry
 
+/-- The row design of an orthonormal-column matrix: rows scaled by √n at
+uniform weights 1/n. Parseval is exactly AᵀA = I through the frame dictionary. -/
+noncomputable def rowDesign {n k : ℕ} (hn : 0 < n) (A : Matrix (Fin n) (Fin k) ℝ)
+    (hortho : Aᵀ * A = 1) : WeightedDesign n k where
+  atom r := Real.sqrt (n : ℝ) • A r
+  weight _ := (n : ℝ)⁻¹
+  weight_pos _ := inv_pos.mpr (by exact_mod_cast hn)
+  weight_sum_one := by
+    rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+    exact mul_inv_cancel₀ (by exact_mod_cast hn.ne')
+  isParseval := by
+    have hnR : (0 : ℝ) < n := by exact_mod_cast hn
+    calc ∑ r, (n : ℝ)⁻¹ • atomMatrix (Real.sqrt (n : ℝ) • A r)
+        = ∑ r, atomMatrix (A r) := by
+          refine Finset.sum_congr rfl fun r _ => ?_
+          rw [atomMatrix_smul, Real.sq_sqrt hnR.le, smul_smul,
+            inv_mul_cancel₀ (ne_of_gt hnR), one_smul]
+      _ = 1 := by rw [← transpose_mul_self_eq_sum_rows, hortho]
+
 /-- The weighted ⟹ original bridge (t = 1/n specialization plus the standard
-frame dictionary): weighted GTZ at rank k gives the 1997 statement for all n. -/
-theorem original_of_weighted (k : ℕ) (hk : 1 ≤ k) (h : GtzWeightedAll k) :
-    ∀ n, k < n → GtzOriginal n k := by
-  sorry
+frame dictionary): weighted GTZ at rank k gives the 1997 statement for all n.
+The dominating subset C enumerates as the row pick via `Finset.orderEmbOfFin`,
+and BᵀB − (1/n)·I = (1/n)·(S_C − I) transfers PSD by nonnegative scaling. -/
+theorem original_of_weighted (k : ℕ) (h : GtzWeightedAll k) :
+    ∀ n, 0 < n → GtzOriginal n k := by
+  intro n hn A hortho
+  have hnR : (0 : ℝ) < n := by exact_mod_cast hn
+  obtain ⟨C, hcard, hdom⟩ := h n (rowDesign hn A hortho)
+  refine ⟨C.orderEmbOfFin hcard, (C.orderEmbOfFin hcard).injective, ?_⟩
+  -- the picked block is the subset atom sum of the unscaled rows
+  have himage : Finset.univ.image (C.orderEmbOfFin hcard) = C := by
+    apply Finset.coe_injective
+    rw [Finset.coe_image, Finset.coe_univ, Set.image_univ,
+      Finset.range_orderEmbOfFin]
+  have hsubmatrix : (A.submatrix (C.orderEmbOfFin hcard) id)ᵀ
+        * (A.submatrix (C.orderEmbOfFin hcard) id)
+      = ∑ r ∈ C, atomMatrix (A r) := by
+    rw [transpose_mul_self_eq_sum_rows]
+    conv_rhs => rw [← himage]
+    rw [Finset.sum_image fun x _ y _ hxy => (C.orderEmbOfFin hcard).injective hxy]
+    rfl
+  -- the design's subset sum is n times that
+  have hsubset : subsetSum (rowDesign hn A hortho) C
+      = (n : ℝ) • ∑ r ∈ C, atomMatrix (A r) := by
+    rw [subsetSum, Finset.smul_sum]
+    refine Finset.sum_congr rfl fun r _ => ?_
+    show atomMatrix (Real.sqrt (n : ℝ) • A r) = (n : ℝ) • atomMatrix (A r)
+    rw [atomMatrix_smul, Real.sq_sqrt hnR.le]
+  -- BᵀB − (1/n)·I = (1/n)·(S_C − I)
+  have hfinal : (A.submatrix (C.orderEmbOfFin hcard) id)ᵀ
+        * (A.submatrix (C.orderEmbOfFin hcard) id) - (n : ℝ)⁻¹ • 1
+      = (n : ℝ)⁻¹ • (subsetSum (rowDesign hn A hortho) C - 1) := by
+    rw [hsubmatrix, hsubset, smul_sub, smul_smul,
+      inv_mul_cancel₀ (ne_of_gt hnR), one_smul]
+  have hdomPsd : (subsetSum (rowDesign hn A hortho) C - 1).PosSemidef := hdom
+  rw [hfinal]
+  exact hdomPsd.smul (inv_pos.mpr hnR).le
 
 end Gtz

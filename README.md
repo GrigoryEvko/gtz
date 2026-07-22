@@ -48,7 +48,7 @@ weighted design has a dominating k-subset (`Gtz.GtzWeightedAll k`).
 | `Gtz/Naimark.lean` | Theorem N, weighted duality | statement (sorry) |
 | `Gtz/Crystallization.lean` | M(k) bounded support | statement (sorry) |
 | `Gtz/CornerFiber.lean` | simplex frame identity, forced balance, **Theorem B_k** | **proved** (all (m,k), 1 ≤ k; no spectral theory) |
-| `Gtz/Reductions.lean` | rank 1 **proved**; rank 2, canonical list, weighted→original | statements (sorry) |
+| `Gtz/Reductions.lean` | rank 1 + weighted→original bridge **proved**; rank 2, canonical list | statements (sorry) |
 | `Gtz/Audit.lean` | `#print axioms` for every proved theorem | FX discipline |
 
 ## Mechanization residuals (gaps surfaced BY the formalization; kept current)
@@ -89,15 +89,17 @@ lake build
 
 ## Next proof targets (in order)
 
-1. `original_of_weighted` (the weighted→original bridge: rows scaled by √n at
-   weights 1/n; `Finset.orderEmbOfFin` for the row pick; PSD scaling).
-2. `crystallization` (kernel-walk support reduction; the sharp bound needs
+1. `crystallization` (kernel-walk support reduction; the sharp bound needs
    dim Sym(k) = k(k+1)/2 — check Mathlib's symmetric-matrix finrank; fallback
    k² + 1 keeps the list finite).
-3. `weighted_naimark_duality` (co-design completion; R-MECH-2 pattern again).
-4. `cap_criterion` (branch b) — resolve R-MECH-1 first (hand interlacing or the
+2. `weighted_naimark_duality` (co-design completion; R-MECH-2 pattern again).
+3. `cap_criterion` (branch b) — resolve R-MECH-1 first (hand interlacing or the
    signature-free reformulation).
-5. `gtz_rank_two` (de-spectralized Sengupta–Pautov — the largest single item).
+4. `gtz_rank_two` (de-spectralized Sengupta–Pautov — the largest single item).
+
+Landed since: `original_of_weighted` (bridge, all n ≥ 1 — statement hygiene:
+`1 ≤ k` and `k < n` both turned out unnecessary; the n = k square case rides
+along free).
 
 Proof-technique note (B_k, landed): the informally-planned "exact spectrum of
 (k+1)I − h_dh_dᵀ" was never needed — the pigeonhole consumes the forced balance

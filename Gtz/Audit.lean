@@ -49,3 +49,6 @@ import Gtz.Reductions
 #print axioms Gtz.corner_balance_forced
 #print axioms Gtz.corner_fiber_dominates
 #print axioms Gtz.gtz_rank_one
+#print axioms Gtz.atomMatrix_smul
+#print axioms Gtz.transpose_mul_self_eq_sum_rows
+#print axioms Gtz.original_of_weighted

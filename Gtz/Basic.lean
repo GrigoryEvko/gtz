@@ -81,4 +81,17 @@ theorem trace_atomMatrix (g : Fin k → ℝ) :
   simp only [dotProduct, leverageOf]
   exact Finset.sum_congr rfl fun i _ => (pow_two (g i)).symm
 
+/-- Scaling the vector scales the atom quadratically. -/
+theorem atomMatrix_smul (c : ℝ) (v : Fin k → ℝ) :
+    atomMatrix (c • v) = (c ^ 2) • atomMatrix v := by
+  rw [atomMatrix, atomMatrix, Matrix.smul_vecMulVec, Matrix.vecMulVec_smul,
+    smul_smul, pow_two]
+
+/-- The frame-operator dictionary: AᵀA is the sum of the row atoms. -/
+theorem transpose_mul_self_eq_sum_rows (A : Matrix (Fin n) (Fin k) ℝ) :
+    Aᵀ * A = ∑ r, atomMatrix (A r) := by
+  ext i j
+  simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.sum_apply, atomMatrix,
+    Matrix.vecMulVec_apply]
+
 end Gtz
