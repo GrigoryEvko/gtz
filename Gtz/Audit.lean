@@ -39,6 +39,7 @@ import Gtz.StressFrame
 import Gtz.ComplexWitness
 import Gtz.Seam
 import Gtz.ComplexPadding
+import Gtz.PThreeStratum
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -278,3 +279,7 @@ import Gtz.Interface
 #print axioms Gtz.oneSpike_kill
 #print axioms Gtz.allOld_kill
 #print axioms Gtz.complexGtzWeighted_six_three_fails
+#print axioms Gtz.det_fin_four_expand
+#print axioms Gtz.p3_compatibility_factors
+#print axioms Gtz.p3_thirdGap_factors
+#print axioms Gtz.p3_stratum_is_family
