@@ -156,4 +156,54 @@ theorem corner_covering (hk : 1 ≤ k)
   have hpair := hproduct
   nlinarith [hpair]
 
+/-- **Every heavy extra is caught at the corner**: an extra atom of leverage at
+least `k` has cap value at most `−1` against some gate — the fire threshold of
+the cap criterion, met with the exact corner's own geometry. This is the
+per-extra cap fact of Theorem B_k's deformed program, now quantitative. -/
+theorem corner_extra_caught (hk : 1 ≤ k)
+    (simplex : Fin (k + 1) → (Fin k → ℝ))
+    (hdiag : ∀ i, simplex i ⬝ᵥ simplex i = (k : ℝ))
+    (hoff : ∀ i j, i ≠ j → simplex i ⬝ᵥ simplex j = -1)
+    (extra : Fin k → ℝ) (hheavy : (k : ℝ) ≤ extra ⬝ᵥ extra) :
+    ∃ gateFirst gateSecond, gateFirst ≠ gateSecond
+      ∧ extra ⬝ᵥ (((k : ℝ) • 1 - atomMatrix (simplex gateFirst)
+          - atomMatrix (simplex gateSecond))⁻¹ *ᵥ extra)
+        ≤ -1 := by
+  have hkPos : (0 : ℝ) < k := by exact_mod_cast hk
+  have hlevPos : 0 < extra ⬝ᵥ extra := lt_of_lt_of_le hkPos hheavy
+  set lev := extra ⬝ᵥ extra with hlev
+  set scale := Real.sqrt lev with hscale
+  have hscalePos : 0 < scale := Real.sqrt_pos.mpr hlevPos
+  have hscaleSq : scale * scale = lev := Real.mul_self_sqrt hlevPos.le
+  set unit := scale⁻¹ • extra with hunit
+  have hunitNorm : unit ⬝ᵥ unit = 1 := by
+    rw [hunit, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul,
+      ← hlev]
+    field_simp
+    rw [← hscaleSq]
+    ring
+  obtain ⟨gateFirst, gateSecond, hne, hdepth⟩ :=
+    corner_covering hk simplex hdiag hoff unit hunitNorm
+  refine ⟨gateFirst, gateSecond, hne, ?_⟩
+  -- the quadratic form scales by the leverage
+  have hrewrite : extra = scale • unit := by
+    rw [hunit, smul_smul, mul_inv_cancel₀ (ne_of_gt hscalePos), one_smul]
+  have hform : extra ⬝ᵥ (((k : ℝ) • 1 - atomMatrix (simplex gateFirst)
+      - atomMatrix (simplex gateSecond))⁻¹ *ᵥ extra)
+      = lev * (unit ⬝ᵥ (((k : ℝ) • 1 - atomMatrix (simplex gateFirst)
+        - atomMatrix (simplex gateSecond))⁻¹ *ᵥ unit)) := by
+    rw [hrewrite, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul,
+      smul_eq_mul, smul_eq_mul, ← mul_assoc, hscaleSq]
+  rw [hform]
+  -- lev · depth ≤ lev · (−1/k) ≤ −1
+  have hstep : lev * (unit ⬝ᵥ (((k : ℝ) • 1 - atomMatrix (simplex gateFirst)
+      - atomMatrix (simplex gateSecond))⁻¹ *ᵥ unit))
+      ≤ lev * (-(1 / k)) :=
+    mul_le_mul_of_nonneg_left hdepth hlevPos.le
+  have hthreshold : lev * (-(1 / k)) ≤ -1 := by
+    rw [div_eq_inv_mul, mul_one]
+    have hratio : (k : ℝ) * (k : ℝ)⁻¹ = 1 := mul_inv_cancel₀ (ne_of_gt hkPos)
+    nlinarith [hheavy, hkPos, hratio]
+  linarith
+
 end Gtz
