@@ -164,6 +164,14 @@ theorem sylvesterMap_tripotent (probe : Matrix (Fin m) (Fin m) ℝ) :
     sylvesterMap_range_block hidem, sylvesterMap_corange_block hidem,
     ← sub_eq_add_neg, ← sylvesterMap_eq_signed_blocks]
 
+/-- **`T²` is idempotent**: the block-diagonal projector projects — `T⁴ = T²`,
+one rewrite from the tripotent law. -/
+theorem sylvesterMap_sq_idempotent (probe : Matrix (Fin m) (Fin m) ℝ) :
+    sylvesterMap transfer (sylvesterMap transfer
+        (sylvesterMap transfer (sylvesterMap transfer probe)))
+      = sylvesterMap transfer (sylvesterMap transfer probe) := by
+  rw [sylvesterMap_tripotent hidem probe]
+
 /-- **The kernel is exactly the mixed subspace**: `T(X) = 0` iff both the
 range and corange blocks of `X` vanish. -/
 theorem sylvesterMap_eq_zero_iff (probe : Matrix (Fin m) (Fin m) ℝ) :
