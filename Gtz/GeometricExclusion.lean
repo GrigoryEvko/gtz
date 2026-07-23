@@ -230,4 +230,89 @@ theorem no_tight_cycle_five_with_path_stress
   · linear_combination hguardThirdFourth
   · linear_combination hguardThirdFifth
 
+/-- Two planar vectors with equal components are equal. -/
+theorem planar_eq_of_components {firstVec secondVec : Fin 2 → ℝ}
+    (hzero : firstVec 0 = secondVec 0) (hone : firstVec 1 = secondVec 1) :
+    firstVec = secondVec := by
+  funext index
+  fin_cases index
+  · exact hzero
+  · exact hone
+
+/-- **The P4 exclusion in direction-vector form** — the face the design-side
+machinery (`TightGraph`, `StressFrame`) actually speaks. Atoms are
+`Fin 2 → ℝ` unit directions, the moment is a gauge-aligned vector
+(`moment 1 = 0`, the `ξ = (r,0)` gauge as an explicit HYPOTHESIS), tightness
+and criticality are the native dot-product relations. Reduces to the scalar
+form by component expansion. -/
+theorem no_tight_path_four_double_tangency_of_directions
+    {firstDir secondDir thirdDir fourthDir moment : Fin 2 → ℝ}
+    (hgauge : moment 1 = 0)
+    (hfirstUnit : firstDir ⬝ᵥ firstDir = 1)
+    (hsecondUnit : secondDir ⬝ᵥ secondDir = 1)
+    (hthirdUnit : thirdDir ⬝ᵥ thirdDir = 1)
+    (hfourthUnit : fourthDir ⬝ᵥ fourthDir = 1)
+    (htightFirstSecond : (1 + firstDir ⬝ᵥ secondDir) / 2
+      = (1/2 + moment ⬝ᵥ firstDir) * (1/2 + moment ⬝ᵥ secondDir))
+    (htightSecondThird : (1 + secondDir ⬝ᵥ thirdDir) / 2
+      = (1/2 + moment ⬝ᵥ secondDir) * (1/2 + moment ⬝ᵥ thirdDir))
+    (htightThirdFourth : (1 + thirdDir ⬝ᵥ fourthDir) / 2
+      = (1/2 + moment ⬝ᵥ thirdDir) * (1/2 + moment ⬝ᵥ fourthDir))
+    (hfirstCritical : polarNormal moment secondDir
+        (1/2 + moment ⬝ᵥ secondDir) ⬝ᵥ rotateQuarter firstDir = 0)
+    (hfourthCritical : polarNormal moment thirdDir
+        (1/2 + moment ⬝ᵥ thirdDir) ⬝ᵥ rotateQuarter fourthDir = 0)
+    (hfirstThirdFree : firstDir ≠ thirdDir)
+    (hsecondThirdFree : secondDir ≠ thirdDir)
+    (hsecondFourthFree : secondDir ≠ fourthDir) :
+    False := by
+  -- component expansion of every vector-form hypothesis
+  have hdotExpand : ∀ leftVec rightVec : Fin 2 → ℝ,
+      leftVec ⬝ᵥ rightVec
+        = leftVec 0 * rightVec 0 + leftVec 1 * rightVec 1 := by
+    intro leftVec rightVec
+    simp [dotProduct, Fin.sum_univ_two]
+  have hmomentDot : ∀ ownDir : Fin 2 → ℝ,
+      moment ⬝ᵥ ownDir = moment 0 * ownDir 0 := by
+    intro ownDir
+    rw [hdotExpand, hgauge]
+    ring
+  have hcritExpand : ∀ leafDir partnerDir : Fin 2 → ℝ,
+      polarNormal ![moment 0, 0] ![partnerDir 0, partnerDir 1]
+          (1/2 + moment 0 * partnerDir 0) ⬝ᵥ
+          rotateQuarter ![leafDir 0, leafDir 1]
+        = polarNormal moment partnerDir
+          (1/2 + moment ⬝ᵥ partnerDir) ⬝ᵥ rotateQuarter leafDir := by
+    intro leafDir partnerDir
+    simp only [polarNormal, rotateQuarter, dotProduct, Fin.sum_univ_two,
+      Matrix.cons_val_zero, Matrix.cons_val_one]
+    rw [hgauge]
+    ring
+  have hpairFree : ∀ {leftVec rightVec : Fin 2 → ℝ}, leftVec ≠ rightVec →
+      (leftVec 0, leftVec 1) ≠ (rightVec 0, rightVec 1) := by
+    intro leftVec rightVec hvecFree hpairEq
+    exact hvecFree (planar_eq_of_components
+      (congrArg Prod.fst hpairEq) (congrArg Prod.snd hpairEq))
+  refine no_tight_path_four_double_tangency
+    (firstCos := firstDir 0) (firstSin := firstDir 1)
+    (secondCos := secondDir 0) (secondSin := secondDir 1)
+    (thirdCos := thirdDir 0) (thirdSin := thirdDir 1)
+    (fourthCos := fourthDir 0) (fourthSin := fourthDir 1)
+    (moment := moment 0)
+    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
+    (hpairFree hfirstThirdFree) (hpairFree hsecondThirdFree)
+    (hpairFree hsecondFourthFree)
+  · rw [hdotExpand] at hfirstUnit; linear_combination hfirstUnit
+  · rw [hdotExpand] at hsecondUnit; linear_combination hsecondUnit
+  · rw [hdotExpand] at hthirdUnit; linear_combination hthirdUnit
+  · rw [hdotExpand] at hfourthUnit; linear_combination hfourthUnit
+  · rw [hdotExpand, hmomentDot, hmomentDot] at htightFirstSecond
+    linear_combination htightFirstSecond
+  · rw [hdotExpand, hmomentDot, hmomentDot] at htightSecondThird
+    linear_combination htightSecondThird
+  · rw [hdotExpand, hmomentDot, hmomentDot] at htightThirdFourth
+    linear_combination htightThirdFourth
+  · rw [hcritExpand]; exact hfirstCritical
+  · rw [hcritExpand]; exact hfourthCritical
+
 end Gtz
