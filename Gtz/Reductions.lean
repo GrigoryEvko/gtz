@@ -220,11 +220,11 @@ noncomputable def rowDesign {n k : ℕ} (hn : 0 < n) (A : Matrix (Fin n) (Fin k)
 frame dictionary): weighted GTZ at rank k gives the 1997 statement for all n.
 The dominating subset C enumerates as the row pick via `Finset.orderEmbOfFin`,
 and BᵀB − (1/n)·I = (1/n)·(S_C − I) transfers PSD by nonnegative scaling. -/
-theorem original_of_weighted (k : ℕ) (h : GtzWeightedAll k) :
-    ∀ n, 0 < n → GtzOriginal n k := by
-  intro n hn A hortho
+theorem original_of_weighted_single {n k : ℕ} (h : GtzWeighted n k)
+    (hn : 0 < n) : GtzOriginal n k := by
+  intro A hortho
   have hnR : (0 : ℝ) < n := by exact_mod_cast hn
-  obtain ⟨C, hcard, hdom⟩ := h n (rowDesign hn A hortho)
+  obtain ⟨C, hcard, hdom⟩ := h (rowDesign hn A hortho)
   refine ⟨C.orderEmbOfFin hcard, (C.orderEmbOfFin hcard).injective, ?_⟩
   -- the picked block is the subset atom sum of the unscaled rows
   have himage : Finset.univ.image (C.orderEmbOfFin hcard) = C := by
@@ -271,6 +271,11 @@ theorem rank_three_iff_the_two_residuals :
     GtzWeightedAll 3 ↔ GtzWeighted 6 3 ∧ GtzWeighted 7 3 :=
   ⟨fun h => ⟨h 6, h 7⟩, fun ⟨h63, h73⟩ => rank_three_of_the_two_residuals h63 h73⟩
 
+/-- The all-sizes form of the bridge. -/
+theorem original_of_weighted (k : ℕ) (h : GtzWeightedAll k) :
+    ∀ n, 0 < n → GtzOriginal n k := fun n hn =>
+  original_of_weighted_single (h n) hn
+
 /-- **The original 1997 statement at rank 1, all sizes.** -/
 theorem gtz_original_rank_one (n : ℕ) (hn : 0 < n) : GtzOriginal n 1 :=
   original_of_weighted 1 gtz_rank_one n hn
@@ -290,5 +295,38 @@ theorem gtz_original_of_canonical_list
       GtzWeighted m' s) :
     ∀ n k, 1 ≤ k → 0 < n → GtzOriginal n k := fun n k hk hn =>
   original_of_weighted k (gtz_of_canonical_list hlist k hk) n hn
+
+/-- **Co-rank 1 is unconditional at every rank**: duality descent to the
+pigeonhole. -/
+theorem gtzWeighted_corank_one (k : ℕ) (hk : 1 ≤ k) :
+    GtzWeighted (k + 1) k :=
+  gtzWeighted_of_dual_rank hk (by omega)
+    (by simpa using gtz_rank_one (k + 1))
+
+/-- **Co-rank 2 is unconditional at every rank ≥ 2**: descent to the proven
+rank 2 (at k = 2 it IS rank 2). -/
+theorem gtzWeighted_corank_two (k : ℕ) (hk : 2 ≤ k) :
+    GtzWeighted (k + 2) k := by
+  rcases eq_or_lt_of_le hk with hk2 | hk3
+  · rw [← hk2]
+    exact gtz_rank_two 4
+  · refine gtzWeighted_of_dual_rank (by omega) (by omega) ?_
+    have h2 : k + 2 - k = 2 := by omega
+    rw [h2]
+    exact gtz_rank_two (k + 2)
+
+/-- **The original 1997 statement on the whole solved boundary**: squares. -/
+theorem gtz_original_square (n : ℕ) (hn : 0 < n) : GtzOriginal n n :=
+  original_of_weighted_single (gtzWeighted_square n) hn
+
+/-- Original form, co-rank 1: every (k+1)×k orthonormal-column matrix. -/
+theorem gtz_original_corank_one (k : ℕ) (hk : 1 ≤ k) :
+    GtzOriginal (k + 1) k :=
+  original_of_weighted_single (gtzWeighted_corank_one k hk) (by omega)
+
+/-- Original form, co-rank 2: every (k+2)×k orthonormal-column matrix. -/
+theorem gtz_original_corank_two (k : ℕ) (hk : 2 ≤ k) :
+    GtzOriginal (k + 2) k :=
+  original_of_weighted_single (gtzWeighted_corank_two k hk) (by omega)
 
 end Gtz

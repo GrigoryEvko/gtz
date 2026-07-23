@@ -112,3 +112,9 @@ import Gtz.RatCertificate
 #print axioms Gtz.ratInv_cast
 #print axioms Gtz.RatDesign.pivot_cast
 #print axioms Gtz.ratCertificate_dominates
+#print axioms Gtz.original_of_weighted_single
+#print axioms Gtz.gtzWeighted_corank_one
+#print axioms Gtz.gtzWeighted_corank_two
+#print axioms Gtz.gtz_original_square
+#print axioms Gtz.gtz_original_corank_one
+#print axioms Gtz.gtz_original_corank_two
