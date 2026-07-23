@@ -403,6 +403,8 @@ import Gtz.Interface
 #print axioms Gtz.moment_row_annihilated
 #print axioms Gtz.det_two_entrywise_stability
 #print axioms Gtz.wedge_ceiling
+#print axioms Gtz.classical_face_closed_form
+#print axioms Gtz.quotient_constant_quadratic_at_two
 #print axioms Gtz.anchor_is_design
 #print axioms Gtz.anchor_conic
 #print axioms Gtz.anchor_edges_tight

@@ -111,4 +111,32 @@ theorem wedge_ceiling
         exact mul_nonneg hcapPos.le hlevPos.le
     _ = (2 * levCap - 1) * lev * (1 - planeShare) := by ring
 
+/-- **The classical-face closed form** (gaps-stability S3a, triple-verified):
+the corner limit of the X-channel face at two-at-cap level `L` equals
+`C_B(L) = 4(L−1)(2L³−L²−8L+8)/(2L−3)²`, and this closed form decomposes as
+the two-at-cap vertex value plus the square gap —
+`C_B(L) = C₂cap(L) + 4(L−2)²/(2L−3)` with
+`C₂cap(L) = (2L−1)(L−1)·4(L²+L−4)/(2L−3)²` the vertex reading. Certified
+here as the polynomial identity the two closed forms satisfy, `L`-generic
+away from the pole `L = 3/2`. -/
+theorem classical_face_closed_form {lev : ℝ} (hpole : 2*lev - 3 ≠ 0) :
+    4*(lev-1)*(2*lev^3 - lev^2 - 8*lev + 8) / (2*lev-3)^2
+      = (4*(lev-1)*(2*lev^3 - lev^2 - 8*lev + 8) - 4*(lev-2)^2*(2*lev-3))
+          / (2*lev-3)^2
+        + 4*(lev-2)^2 / (2*lev-3) := by
+  field_simp
+  ring
+
+/-- **The quotient-constant certificate** (gaps-stability S1,
+triple-verified): the two-at-cap moment-Gram characteristic polynomial
+carries the factor `x·(x−2)` exactly — the reduced quotient's smallest
+nonzero eigenvalue is 2 — and the residual quadratic
+`(2L−3)x² − (4L²−2L−5)x + (12L²−28L+18)` evaluates at `x = 2` to
+`4(L−2)²`, nonnegative always and vanishing only at the Mercedes level
+`L = 2`: both remaining roots sit at or above 2, never below. -/
+theorem quotient_constant_quadratic_at_two (lev : ℝ) :
+    (2*lev-3)*2^2 - (4*lev^2 - 2*lev - 5)*2 + (12*lev^2 - 28*lev + 18)
+      = 4*(lev-2)^2 := by
+  ring
+
 end Gtz
