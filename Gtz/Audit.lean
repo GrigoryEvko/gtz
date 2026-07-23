@@ -62,8 +62,8 @@ import Gtz.WedgeChain
 import Gtz.CertificateAnchor
 import Gtz.BernsteinPositivity
 import Gtz.SylvesterThree
-import Gtz.PFourCertificate
-import Gtz.CFiveCertificate
+import Gtz.Certs.PFourCertificate
+import Gtz.Certs.CFiveCertificate
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
