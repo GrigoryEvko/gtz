@@ -94,6 +94,9 @@ import Gtz.Reductions
 #print axioms Gtz.gtz_rank_two
 #print axioms Gtz.gtz_original_rank_one
 #print axioms Gtz.gtz_original_rank_two
+#print axioms Gtz.gtz_iff_canonical_list
+#print axioms Gtz.rank_three_iff_the_two_residuals
+#print axioms Gtz.gtz_original_of_canonical_list
 #print axioms Gtz.psd_on_complement_transfer
 #print axioms Gtz.cap_criterion
 #print axioms Gtz.cap_criterion_trace

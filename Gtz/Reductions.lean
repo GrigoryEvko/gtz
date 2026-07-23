@@ -255,6 +255,22 @@ theorem original_of_weighted (k : ℕ) (h : GtzWeightedAll k) :
   rw [hfinal]
   exact hdomPsd.smul (inv_pos.mpr hnR).le
 
+/-- **The full characterization**: weighted GTZ at every rank is EQUIVALENT to
+the finite canonical list — instantiation forward, Theorem L back. -/
+theorem gtz_iff_canonical_list :
+    (∀ k, 1 ≤ k → GtzWeightedAll k) ↔
+      (∀ s m', 2 ≤ s → 2 * s ≤ m' → m' ≤ s * (s + 1) / 2 + 1 →
+        GtzWeighted m' s) := by
+  constructor
+  · intro h s m' hs _ _
+    exact h s (by omega) m'
+  · exact gtz_of_canonical_list
+
+/-- **Rank 3 is EXACTLY the two binding cases** — the frontier, as an iff. -/
+theorem rank_three_iff_the_two_residuals :
+    GtzWeightedAll 3 ↔ GtzWeighted 6 3 ∧ GtzWeighted 7 3 :=
+  ⟨fun h => ⟨h 6, h 7⟩, fun ⟨h63, h73⟩ => rank_three_of_the_two_residuals h63 h73⟩
+
 /-- **The original 1997 statement at rank 1, all sizes.** -/
 theorem gtz_original_rank_one (n : ℕ) (hn : 0 < n) : GtzOriginal n 1 :=
   original_of_weighted 1 gtz_rank_one n hn
@@ -264,5 +280,15 @@ Sengupta–Pautov theorem, fully formalized through its weighted
 generalization. -/
 theorem gtz_original_rank_two (n : ℕ) (hn : 0 < n) : GtzOriginal n 2 :=
   original_of_weighted 2 gtz_rank_two n hn
+
+/-- **The endgame statement**: the finite canonical list closes the ORIGINAL
+1997 problem for every matrix shape — GtzOriginal n k for all n ≥ 1, k ≥ 1,
+unconditionally, given the list. The surviving list entries beyond the proven
+rank ≤ 2 are (6,3), (7,3) and the windows 2s ≤ m ≤ s(s+1)/2 + 1 for s ≥ 4. -/
+theorem gtz_original_of_canonical_list
+    (hlist : ∀ s m', 2 ≤ s → 2 * s ≤ m' → m' ≤ s * (s + 1) / 2 + 1 →
+      GtzWeighted m' s) :
+    ∀ n k, 1 ≤ k → 0 < n → GtzOriginal n k := fun n k hk hn =>
+  original_of_weighted k (gtz_of_canonical_list hlist k hk) n hn
 
 end Gtz
