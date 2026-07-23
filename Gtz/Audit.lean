@@ -35,6 +35,7 @@ import Gtz.FirstOrderLaw
 import Gtz.CollarFloor
 import Gtz.CapSlack
 import Gtz.QuantitativeCorner
+import Gtz.StressFrame
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -250,3 +251,7 @@ import Gtz.Interface
 #print axioms Gtz.complementary_commute
 #print axioms Gtz.kappa_lt_of_insiders_silent
 #print axioms Gtz.zmass_floor_of_wall_silent
+#print axioms Gtz.conic_normalization
+#print axioms Gtz.focal_conic_form
+#print axioms Gtz.edge_pairing_eq_slack
+#print axioms Gtz.uncovered_atom_forces_pole
