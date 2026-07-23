@@ -399,6 +399,7 @@ import Gtz.Interface
 #print axioms Gtz.beta_cleared
 #print axioms Gtz.pair_normalizer_cleared
 #print axioms Gtz.tight_half_angle_biquadratic
+#print axioms Gtz.moment_row_annihilated
 #print axioms Gtz.det_two_entrywise_stability
 #print axioms Gtz.wedge_ceiling
 #print axioms Gtz.anchor_is_design

@@ -98,4 +98,15 @@ theorem pair_normalizer_cleared (moment leafCos partnerCos : ℝ)
   field_simp
   ring
 
+/-- **The conic covector annihilates the atom-moment rows** (gaps-stability
+S1, the "kernel ⊇ span κ" leg): at conic level `ℓ(1/2 − ⟨u,ξ⟩) = 1`, the
+moment row `(1, S, ℓ)` of the Bloch square `S = ℓ·u` pairs to zero against
+`κ = (1, ξ, −1/2)` — the design-tangent degeneracy is exactly the focal
+conic, at every atom, every rank-2 plane. -/
+theorem moment_row_annihilated {lev : ℝ} (unitDir moment : Fin 2 → ℝ)
+    (hconic : lev * (1/2 - unitDir ⬝ᵥ moment) = 1) :
+    1 + (lev • unitDir) ⬝ᵥ moment + lev * (-(1/2)) = 0 := by
+  rw [smul_dotProduct, smul_eq_mul]
+  nlinarith [hconic]
+
 end Gtz
