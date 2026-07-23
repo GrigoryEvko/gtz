@@ -28,6 +28,7 @@ import Gtz.LawCounterexample
 import Gtz.Pushoff
 import Gtz.TightGraph
 import Gtz.CertificateFrame
+import Gtz.MomentCovector
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -200,3 +201,9 @@ import Gtz.Interface
 #print axioms Gtz.gtz_original_of_heavy_window
 #print axioms Gtz.gtz_original_rank_three_of_heavy
 #print axioms Gtz.allHeavy_rank_gt_one
+#print axioms Gtz.coSpreadRelation_eq_coLeverage
+#print axioms Gtz.coSpreadRelation_mul_leverages
+#print axioms Gtz.coSpreadRelation_pos_of_heavy
+#print axioms Gtz.branchProduct_eq_zero
+#print axioms Gtz.spreadRelation_eq_zero_of_tight
+#print axioms Gtz.thirdConic_of_spread
