@@ -58,6 +58,12 @@ dissolved GAP-T, the tight-graph geometry, the corrected first-order law, the
 collar floor, and the interface arithmetic — including a kernel-checked
 **counterexample** settling a disputed numerical law inside the kernel.
 
+**The complex refutations.** Weighted (4,2) — the canonical list's unique
+rank-2 entry — and weighted (6,3) — the binding open object — are both FALSE
+over ℂ, with explicit kernel-checked witnesses (the SIC and its padding). No
+field-blind argument can prove GTZ; every proof must consume realness, and
+that statement itself is now a theorem.
+
 **The consumption pipeline.** A fully rational certificate layer: exact
 ℚ-designs, LDL-congruence gate certificates, and cast lemmas so that a future
 rational (6,3)/(7,3) certificate closes rank 3 by finite exact arithmetic.
@@ -103,6 +109,14 @@ remains is precisely the open mathematics:
 | `LocalLaw` | the LP vertex bound; weight-split invariance |
 | `CollarFloor` | the R1 rescaled floor; Theorem OW's off-window fire |
 | `Interface` | the statement-(2) interface arithmetic, both directions |
+| `StressFrame` | the certificate frame's scalar layer; the Gordan kill, β ≠ 0 branch |
+| `CollinearStratum` | the Gordan kill, β = 0 branch: no equality design is collinear |
+| `QuantitativeCorner` | Lemma F-quant, Lemma T on the κ·I fiber, the z-mass floor |
+| `MomentBound` | the antipode identity; the covector bound \|ξ\| < 1/2 |
+| `PThreeStratum` | the P3 theorem: two tight pairs force the third |
+| `Seam` | both halves of the τ-seam |
+| `ComplexWitness` | weighted (4,2) is false over ℂ — the SIC, kernel-checked |
+| `ComplexPadding` | weighted (6,3) is false over ℂ — the padded SIC |
 | `LawCounterexample` | the kernel-checked cap-10 refutation of the displayed local law |
 | `RatCertificate` | the computable ℚ-certificate consumption layer |
 | `Audit` | `#print axioms` for every proved theorem, on every build |
