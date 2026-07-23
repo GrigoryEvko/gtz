@@ -27,6 +27,16 @@ variable {m k : ℕ}
 theorem leverageOf_eq_dotProduct (g : Fin k → ℝ) : leverageOf g = g ⬝ᵥ g := by
   simp only [leverageOf, dotProduct, pow_two]
 
+/-- **Single-atom Loewner domination**: `t_e · g_e g_eᵀ ⪯ I` — one weighted
+rank-one term of a resolution of the identity is dominated by the whole. The
+erased sum `I − t_e g_e g_eᵀ = Σ_{c≠e} t_c g_c g_cᵀ` is a sum of PSD terms. -/
+theorem single_atom_dominated (D : WeightedDesign m k) (e : Fin m) :
+    ((1 : Matrix (Fin k) (Fin k) ℝ)
+      - D.weight e • atomMatrix (D.atom e)).PosSemidef := by
+  rw [← parseval_erase D e]
+  exact Matrix.posSemidef_sum _ fun c _ =>
+    (posSemidef_atomMatrix (D.atom c)).smul (D.weight_pos c).le
+
 /-- **The per-atom leverage bound**: in any weighted design (tight frame),
 each atom's weighted leverage is at most one — `t_e · ℓ_e ≤ 1`. No single
 atom can carry more than the whole identity's worth of a direction. -/

@@ -465,6 +465,7 @@ import Gtz.Interface
 #print axioms Gtz.deflated_singular_floor
 #print axioms Gtz.deflated_floor_kills_kernel
 #print axioms Gtz.leverageOf_eq_dotProduct
+#print axioms Gtz.single_atom_dominated
 #print axioms Gtz.weighted_leverage_le_one
 #print axioms Gtz.leverage_le_of_weight_floor
 #print axioms Gtz.p4_geometric_certificate_variety_empty
