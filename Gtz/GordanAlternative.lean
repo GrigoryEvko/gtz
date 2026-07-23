@@ -72,4 +72,40 @@ theorem gordan_alternative {n : ℕ} {E : Type*} [NormedAddCommGroup E]
     simp only [ContinuousLinearMap.neg_apply]
     linarith
 
+/-- **The Gordan alternative in the repo's dot-product vocabulary**: for a
+finite family of vectors, either zero is a convex combination, or some probe
+vector has strictly negative overlap with every member — Riesz representation
+of the separating functional through `EuclideanSpace`. -/
+theorem gordan_alternative_dotProduct {n k : ℕ}
+    (family : Fin n → (Fin k → ℝ)) :
+    (∃ coeff : Fin n → ℝ, (∀ i, 0 ≤ coeff i) ∧ ∑ i, coeff i = 1
+        ∧ ∑ i, coeff i • family i = 0)
+      ∨ ∃ probe : Fin k → ℝ, ∀ i, family i ⬝ᵥ probe < 0 := by
+  rcases gordan_alternative
+      (fun i => (WithLp.toLp 2 (family i) : EuclideanSpace ℝ (Fin k))) with
+    ⟨coeff, hnonneg, hsum, hcombination⟩ | ⟨functional, hneg⟩
+  · left
+    refine ⟨coeff, hnonneg, hsum, ?_⟩
+    have hpush := congrArg
+      (WithLp.linearEquiv 2 ℝ (Fin k → ℝ)) hcombination
+    rwa [map_sum, map_zero] at hpush
+  · right
+    set rieszVec :=
+      (InnerProductSpace.toDual ℝ (EuclideanSpace ℝ (Fin k))).symm functional
+      with hrieszVec
+    refine ⟨rieszVec.ofLp, fun i => ?_⟩
+    have hrepresent := InnerProductSpace.toDual_symm_apply
+      (𝕜 := ℝ) (E := EuclideanSpace ℝ (Fin k)) (y := functional)
+      (x := WithLp.toLp 2 (family i))
+    have hdot := EuclideanSpace.inner_eq_star_dotProduct
+      rieszVec (WithLp.toLp 2 (family i) : EuclideanSpace ℝ (Fin k))
+    rw [← hrieszVec] at hrepresent
+    rw [hrepresent] at hdot
+    have hstar : star rieszVec.ofLp = rieszVec.ofLp := by
+      funext index
+      simp
+    rw [WithLp.ofLp_toLp, hstar] at hdot
+    rw [← hdot]
+    exact hneg i
+
 end Gtz

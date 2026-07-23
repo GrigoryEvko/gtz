@@ -414,6 +414,7 @@ import Gtz.Interface
 #print axioms Gtz.bernstein_coeff_ceiling_two
 #print axioms Gtz.posDef_three_of_leading_minors
 #print axioms Gtz.gordan_alternative
+#print axioms Gtz.gordan_alternative_dotProduct
 #print axioms Gtz.p4_geometric_certificate_variety_empty
 #print axioms Gtz.leaf_tangency_corner_certificate
 #print axioms Gtz.c5_p5stress_geometric_certificate_variety_empty
