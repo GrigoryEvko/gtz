@@ -40,6 +40,7 @@ import Gtz.ComplexWitness
 import Gtz.Seam
 import Gtz.ComplexPadding
 import Gtz.PThreeStratum
+import Gtz.CollinearStratum
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -283,3 +284,4 @@ import Gtz.Interface
 #print axioms Gtz.p3_compatibility_factors
 #print axioms Gtz.p3_thirdGap_factors
 #print axioms Gtz.p3_stratum_is_family
+#print axioms Gtz.collinear_stratum_empty
