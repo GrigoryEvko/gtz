@@ -29,6 +29,7 @@ import Gtz.Pushoff
 import Gtz.TightGraph
 import Gtz.CertificateFrame
 import Gtz.MomentCovector
+import Gtz.Compression
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -207,3 +208,10 @@ import Gtz.Interface
 #print axioms Gtz.branchProduct_eq_zero
 #print axioms Gtz.spreadRelation_eq_zero_of_tight
 #print axioms Gtz.thirdConic_of_spread
+#print axioms Gtz.atomMatrix_compress
+#print axioms Gtz.subsetSum_compress
+#print axioms Gtz.compressed_dominates_iff
+#print axioms Gtz.posSemidef_compress
+#print axioms Gtz.exists_subset_dominates_in_view
+#print axioms Gtz.exists_pair_dominates_in_plane
+#print axioms Gtz.exists_pair_nonneg_on_plane
