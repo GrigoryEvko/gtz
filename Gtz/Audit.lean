@@ -57,6 +57,7 @@ import Gtz.CapDictionary
 import Gtz.MarginTransfer
 import Gtz.AggregatePushoff
 import Gtz.CornerPerturbation
+import Gtz.FrameEncoding
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -382,3 +383,8 @@ import Gtz.Interface
 #print axioms Gtz.correctedPair_passes_gate
 #print axioms Gtz.correctedFormula_rounds_down
 #print axioms Gtz.corrected_c2_assembly
+#print axioms Gtz.tight_cleared_eq
+#print axioms Gtz.leaf_cleared_eq_criticality
+#print axioms Gtz.leverage_cleared
+#print axioms Gtz.beta_cleared
+#print axioms Gtz.pair_normalizer_cleared
