@@ -363,7 +363,6 @@ import Gtz.Interface
 #print axioms Gtz.designTransfer_mul_gram
 #print axioms Gtz.designTransfer_idempotent
 #print axioms Gtz.design_weighted_leverage_sum
-#print axioms Gtz.exists_leverage_ge_rank
 #print axioms Gtz.exists_leverage_le_rank
 #print axioms Gtz.designTransfer_trace
 #print axioms Gtz.basis_expansion

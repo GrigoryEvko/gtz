@@ -284,26 +284,8 @@ theorem design_weighted_leverage_sum (D : WeightedDesign m k) :
   simp only [Matrix.trace_smul, trace_atomMatrix, smul_eq_mul] at htrace
   simpa using htrace
 
-/-- **C0, the heavy witness**: some atom carries leverage at least the rank —
-the weighted leverage average IS the rank, so the maximum clears it. -/
-theorem exists_leverage_ge_rank (D : WeightedDesign m k) :
-    ∃ c, (k : ℝ) ≤ leverageOf (D.atom c) := by
-  by_contra hall
-  push_neg at hall
-  have hnonempty : (Finset.univ : Finset (Fin m)).Nonempty := by
-    by_contra hempty
-    have hzero := D.weight_sum_one
-    rw [Finset.not_nonempty_iff_eq_empty.mp hempty, Finset.sum_empty] at hzero
-    exact one_ne_zero hzero.symm
-  have hstrict : ∑ c, D.weight c * leverageOf (D.atom c)
-      < ∑ c, D.weight c * (k : ℝ) := by
-    refine Finset.sum_lt_sum_of_nonempty hnonempty fun c _ => ?_
-    exact mul_lt_mul_of_pos_left (hall c) (D.weight_pos c)
-  rw [← Finset.sum_mul, D.weight_sum_one, one_mul,
-    design_weighted_leverage_sum D] at hstrict
-  exact lt_irrefl _ hstrict
-
-/-- **C0, the light witness**: some atom carries leverage at most the rank. -/
+/-- **C0, the light witness**: some atom carries leverage at most the rank —
+the dual of `Reductions.exists_leverage_ge_rank`, hypothesis-free. -/
 theorem exists_leverage_le_rank (D : WeightedDesign m k) :
     ∃ c, leverageOf (D.atom c) ≤ (k : ℝ) := by
   by_contra hall
