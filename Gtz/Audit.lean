@@ -58,6 +58,7 @@ import Gtz.MarginTransfer
 import Gtz.AggregatePushoff
 import Gtz.CornerPerturbation
 import Gtz.FrameEncoding
+import Gtz.WedgeChain
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -388,3 +389,6 @@ import Gtz.Interface
 #print axioms Gtz.leverage_cleared
 #print axioms Gtz.beta_cleared
 #print axioms Gtz.pair_normalizer_cleared
+#print axioms Gtz.tight_half_angle_biquadratic
+#print axioms Gtz.det_two_entrywise_stability
+#print axioms Gtz.wedge_ceiling

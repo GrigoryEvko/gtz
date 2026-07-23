@@ -62,6 +62,30 @@ theorem beta_cleared (moment ownCos : ℝ)
       = (1 + 2*moment*ownCos) / (1 - 2*moment*ownCos) := by
   field_simp
 
+/-- **The Euler–Chasles biquadratic** (the deep-cycle wall's structural
+frame): in half-angle coordinates `x = tan(θ/2)` the cleared tightness is the
+symmetric (2,2)-correspondence
+`a(1+b)x_i²x_j² − ab(x_i²+x_j²) + 2x_ix_j + b(1+a)` with `a = 1/2+ρ`,
+`b = 1/2−ρ` — clone-free walks along the conic are QRT iterates and deep
+cycles close on Cayley-torsion loci of `ρ`. Audit-verified upstream; here a
+kernel identity. -/
+theorem tight_half_angle_biquadratic (leafTan partnerTan moment : ℝ) :
+    1 + 2*((1-leafTan^2)/(1+leafTan^2))*((1-partnerTan^2)/(1+partnerTan^2))
+        + 2*(2*leafTan/(1+leafTan^2))*(2*partnerTan/(1+partnerTan^2))
+        - 2*moment*((1-leafTan^2)/(1+leafTan^2)
+          + (1-partnerTan^2)/(1+partnerTan^2))
+        - 4*moment^2*((1-leafTan^2)/(1+leafTan^2))
+          *((1-partnerTan^2)/(1+partnerTan^2))
+      = 4 * ((1/2+moment)*(1+(1/2-moment))*leafTan^2*partnerTan^2
+          - (1/2+moment)*(1/2-moment)*(leafTan^2+partnerTan^2)
+          + 2*leafTan*partnerTan
+          + (1/2-moment)*(1+(1/2+moment)))
+        / ((1+leafTan^2)*(1+partnerTan^2)) := by
+  have hleafDenom : (1:ℝ)+leafTan^2 ≠ 0 := by positivity
+  have hpartnerDenom : (1:ℝ)+partnerTan^2 ≠ 0 := by positivity
+  field_simp
+  ring
+
 /-- **The pair normalizer**: `β_i + β_j = 2P/(D_i·D_j)` at
 `P = 1−4r²c_ic_j` — the two cross terms cancel. -/
 theorem pair_normalizer_cleared (moment leafCos partnerCos : ℝ)
