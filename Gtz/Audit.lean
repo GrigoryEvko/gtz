@@ -45,6 +45,7 @@ import Gtz.MomentBound
 import Gtz.CornerResolvent
 import Gtz.SilenceDictionary
 import Gtz.BallPerturbation
+import Gtz.EulerPairing
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -309,3 +310,5 @@ import Gtz.Interface
 #print axioms Gtz.pair_dominates_iff_halfAngle
 #print axioms Gtz.abs_dotProduct_le
 #print axioms Gtz.gram_perturbation
+#print axioms Gtz.euler_pairing_global
+#print axioms Gtz.stress_mass_pinned
