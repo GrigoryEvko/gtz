@@ -33,6 +33,7 @@ import Gtz.Compression
 import Gtz.DescentLadder
 import Gtz.FirstOrderLaw
 import Gtz.CollarFloor
+import Gtz.CapSlack
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -236,3 +237,8 @@ import Gtz.Interface
 #print axioms Gtz.offWindowGate_identity
 #print axioms Gtz.offWindow_cap_fires
 #print axioms Gtz.offWindowGate_lt_fifty_at_working_radius
+#print axioms Gtz.det_sub_atomMatrix
+#print axioms Gtz.det_add_atomMatrix
+#print axioms Gtz.det_erase_eq_det_mul_pivot_gap
+#print axioms Gtz.erase_dominates_iff_det_nonneg
+#print axioms Gtz.cap_fires_iff_det_nonneg
