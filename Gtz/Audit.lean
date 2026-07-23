@@ -67,6 +67,8 @@ import Gtz.TiedQuadruple
 import Gtz.CoveringMargin
 import Gtz.DowndateInterlacing
 import Gtz.CyclicStress
+import Gtz.LawEquivalence
+import Gtz.WhiteningDistortion
 import Gtz.Certs.PFourCertificate
 import Gtz.Certs.CFiveCertificate
 import Gtz.Interface
@@ -439,6 +441,13 @@ import Gtz.Interface
 #print axioms Gtz.cyclic_stress_telescope
 #print axioms Gtz.cyclic_stress_closure
 #print axioms Gtz.cyclic_stress_vanishes_of_open
+#print axioms Gtz.law_implies_floor
+#print axioms Gtz.law_confines_zero_set
+#print axioms Gtz.two_piece_law_assembly
+#print axioms Gtz.tube_law_from_rate_curvature
+#print axioms Gtz.whitening_form_lower
+#print axioms Gtz.whitening_form_upper
+#print axioms Gtz.whitening_gram_exact
 #print axioms Gtz.p4_geometric_certificate_variety_empty
 #print axioms Gtz.leaf_tangency_corner_certificate
 #print axioms Gtz.c5_p5stress_geometric_certificate_variety_empty
