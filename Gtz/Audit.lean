@@ -506,3 +506,6 @@ import Gtz.Interface
 #print axioms Gtz.liftingLemma_of_gtzWeighted
 #print axioms Gtz.liftingLemma_iff_gtzWeighted_succ
 #print axioms Gtz.gtzWeighted_six_three_of_liftingLemma_two
+#print axioms Gtz.liftingLemma_zero
+#print axioms Gtz.liftingLemma_one
+#print axioms Gtz.liftingLemma_two_iff_the_two_residuals

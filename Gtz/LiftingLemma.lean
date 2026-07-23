@@ -610,4 +610,26 @@ theorem gtzWeighted_six_three_of_liftingLemma_two
     (hlifting : LiftingLemma 2) : GtzWeighted 6 3 :=
   gtzWeighted_succ_of_liftingLemma hlifting 6
 
+/-- **Adversarial calibration, rank 0**: the wall Prop is INHABITED where
+GTZ is known — dimension-1 GTZ (pigeonhole) proves `LiftingLemma 0`
+through the converse. Had the discriminant packaging been accidentally
+too strong, this instance would be unprovable; it is a theorem. -/
+theorem liftingLemma_zero : LiftingLemma 0 :=
+  liftingLemma_of_gtzWeighted gtz_rank_one
+
+/-- **Adversarial calibration, rank 1**: dimension-2 GTZ (the weighted
+Sengupta–Pautov engine) proves `LiftingLemma 1` — the second unconditional
+instance of the wall Prop, at the last fully-closed rank. -/
+theorem liftingLemma_one : LiftingLemma 1 :=
+  liftingLemma_of_gtzWeighted gtz_rank_two
+
+/-- **The wall meets the binding objects**: at its lowest OPEN rank, the
+Lifting Lemma is EXACTLY the conjunction of the campaign's two residual
+designs — `LiftingLemma 2 ↔ GtzWeighted 6 3 ∧ GtzWeighted 7 3`. The two
+frontiers of the problem (the analytic (6,3) wall and the all-k selection
+wall) are two faces of the same open content, kernel-checked. -/
+theorem liftingLemma_two_iff_the_two_residuals :
+    LiftingLemma 2 ↔ (GtzWeighted 6 3 ∧ GtzWeighted 7 3) :=
+  liftingLemma_iff_gtzWeighted_succ.trans rank_three_iff_the_two_residuals
+
 end Gtz
