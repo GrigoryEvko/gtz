@@ -52,6 +52,7 @@ import Gtz.LocalLaw
 import Gtz.Completeness
 import Gtz.ResolventPerturbation
 import Gtz.IdempotentSplitting
+import Gtz.LeafTangency
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -350,3 +351,7 @@ import Gtz.Interface
 #print axioms Gtz.designTransfer_idempotent
 #print axioms Gtz.design_weighted_leverage_sum
 #print axioms Gtz.designTransfer_trace
+#print axioms Gtz.basis_expansion
+#print axioms Gtz.eq_of_unit_dot_eq_one
+#print axioms Gtz.affine_double_zero_unique
+#print axioms Gtz.leaf_tangency
