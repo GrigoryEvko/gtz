@@ -87,4 +87,71 @@ theorem leverage_le_of_weight_floor (D : WeightedDesign m k)
   rw [le_div_iff₀ hfloor, mul_comm]
   linarith [hshare, hfloorShare]
 
+/-- **The pivot prices leverage over the margin** (resolvent monotonicity,
+solution form — no inverse): if the Gram is coercive at `margin` and
+`gram · x = atom`, then the pivot form `⟨atom, x⟩` is at most
+`|atom|²/margin`. This is the cap dictionary the collar-rate architecture
+consumes: at working margin `m`, no atom's pivot exceeds its leverage
+divided by `m`. Proof: coercivity floors `⟨atom,x⟩ = ⟨x, gram·x⟩` by
+`m·|x|²`, Cauchy–Schwarz caps `⟨atom,x⟩² ≤ |atom|²·|x|²`, and the two
+squeeze out `|x|²`. -/
+theorem pivot_form_le_leverage_div_margin {k : ℕ}
+    {gram : Matrix (Fin k) (Fin k) ℝ} {margin : ℝ}
+    (hmarginPos : 0 < margin)
+    (hcoercive : ∀ probe : Fin k → ℝ,
+      margin * (probe ⬝ᵥ probe) ≤ probe ⬝ᵥ (gram *ᵥ probe))
+    {atom solutionVec : Fin k → ℝ}
+    (hsolves : gram *ᵥ solutionVec = atom) :
+    atom ⬝ᵥ solutionVec ≤ (atom ⬝ᵥ atom) / margin := by
+  have hpairs : atom ⬝ᵥ solutionVec
+      = solutionVec ⬝ᵥ (gram *ᵥ solutionVec) := by
+    rw [hsolves]
+    exact dotProduct_comm atom solutionVec
+  have hlower : margin * (solutionVec ⬝ᵥ solutionVec)
+      ≤ atom ⬝ᵥ solutionVec := by
+    rw [hpairs]
+    exact hcoercive solutionVec
+  have hsolutionNonneg : 0 ≤ solutionVec ⬝ᵥ solutionVec := by
+    simp only [dotProduct]
+    exact Finset.sum_nonneg fun index _ => mul_self_nonneg _
+  have hleverageNonneg : 0 ≤ atom ⬝ᵥ atom := by
+    simp only [dotProduct]
+    exact Finset.sum_nonneg fun index _ => mul_self_nonneg _
+  have hpivotNonneg : 0 ≤ atom ⬝ᵥ solutionVec :=
+    le_trans (mul_nonneg hmarginPos.le hsolutionNonneg) hlower
+  have hcauchySchwarz : (atom ⬝ᵥ solutionVec) ^ 2
+      ≤ (atom ⬝ᵥ atom) * (solutionVec ⬝ᵥ solutionVec) := by
+    have hraw := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ atom solutionVec
+    simp only [dotProduct]
+    calc (∑ index, atom index * solutionVec index) ^ 2
+        ≤ (∑ index, atom index ^ 2) * (∑ index, solutionVec index ^ 2) :=
+          hraw
+      _ = (∑ index, atom index * atom index)
+            * (∑ index, solutionVec index * solutionVec index) := by
+          congr 1
+          · exact Finset.sum_congr rfl fun index _ => pow_two (atom index)
+          · exact Finset.sum_congr rfl fun index _ =>
+              pow_two (solutionVec index)
+  rcases eq_or_lt_of_le hsolutionNonneg with hsolutionZero | hsolutionPos
+  · have hsolutionVecZero : solutionVec = 0 :=
+      dotProduct_self_eq_zero.mp hsolutionZero.symm
+    rw [hsolutionVecZero, dotProduct_zero]
+    exact div_nonneg hleverageNonneg hmarginPos.le
+  · rw [le_div_iff₀ hmarginPos]
+    nlinarith [hcauchySchwarz, hpivotNonneg, hsolutionPos,
+      mul_le_mul_of_nonneg_left hlower hpivotNonneg]
+
+/-- Unit-margin reading: over a dominated Gram (`E ⪰ 1`), every pivot form
+is bounded by its own leverage — the seam-side cap at working margin one. -/
+theorem pivot_form_le_leverage_of_dominated {k : ℕ}
+    {gram : Matrix (Fin k) (Fin k) ℝ}
+    (hcoercive : ∀ probe : Fin k → ℝ,
+      probe ⬝ᵥ probe ≤ probe ⬝ᵥ (gram *ᵥ probe))
+    {atom solutionVec : Fin k → ℝ}
+    (hsolves : gram *ᵥ solutionVec = atom) :
+    atom ⬝ᵥ solutionVec ≤ atom ⬝ᵥ atom := by
+  have hbound := pivot_form_le_leverage_div_margin one_pos
+    (fun probe => by rw [one_mul]; exact hcoercive probe) hsolves
+  rwa [div_one] at hbound
+
 end Gtz
