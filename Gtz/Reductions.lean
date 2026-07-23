@@ -20,6 +20,8 @@ import Gtz.Basic
 import Gtz.Sanity
 import Gtz.Crystallization
 import Gtz.Naimark
+import Gtz.Deflation
+import Gtz.RankTwo
 
 namespace Gtz
 
@@ -64,13 +66,6 @@ theorem gtz_rank_one : GtzWeightedAll 1 := by
         Matrix.smul_apply, smul_eq_mul]
     rw [Dominates, hmat]
     exact Matrix.PosSemidef.one.smul (by linarith)
-
-/-- Rank 2 is the Sengupta–Pautov theorem (weighted form; the de-spectralized
-Case-B pairing of diary §0 is the intended proof skeleton — finite sums and
-squares, no spectral theorem, no Perron–Frobenius). By
-`gtz_rank_two_of_four_two` below, ONLY the single case (4,2) is open. -/
-theorem gtz_rank_two : GtzWeightedAll 2 := by
-  sorry
 
 /-- A design's atoms span, so its size is at least its rank: the evaluation
 map u ↦ (⟨g_c, u⟩)_c is injective into ℝᵐ. -/
@@ -123,6 +118,24 @@ theorem gtzWeighted_of_dual_rank (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
       compl_compl]
     exact hCdualdom
 
+/-- **Rank 2 is proven**: the weighted Sengupta–Pautov theorem, by strong
+induction on the size. A light atom (leverage ≤ 1) deflates one size down
+(`dominating_of_light_atom`); an all-heavy design contains a dominating pair
+outright (`exists_dominating_pair_of_heavy`, the de-spectralized Case-B
+pairing — finite sums and squares, no spectral theorem, no Perron–Frobenius). -/
+theorem gtz_rank_two : GtzWeightedAll 2 := by
+  intro m
+  induction m using Nat.strong_induction_on with
+  | _ m ih =>
+    intro D
+    have hm2 : 2 ≤ m := rank_le_of_design D
+    by_cases hlight : ∃ d, leverageOf (D.atom d) ≤ 1
+    · obtain ⟨d, hd⟩ := hlight
+      obtain ⟨mpred, rfl⟩ : ∃ mpred, m = mpred + 1 := ⟨m - 1, by omega⟩
+      exact dominating_of_light_atom D (by omega) (ih mpred (by omega)) d hd
+    · push Not at hlight
+      exact exists_dominating_pair_of_heavy D hlight
+
 /-- **Rank 2 collapses to the single weighted case (4,2)**: crystallization
 caps the support at M(2) = 4; below it the ledger is vacuous m ≤ 1, the
 square m = 2, and duality descent to rank 1 at m = 3. -/
@@ -137,11 +150,11 @@ theorem gtz_rank_two_of_four_two (h42 : GtzWeighted 4 2) :
   · exact gtzWeighted_of_dual_rank (by omega) (by omega) (gtz_rank_one 3)
   · exact h42
 
-/-- The two binding cases close rank 3, given rank 2 (Sengupta–Pautov):
+/-- **The two binding cases close rank 3** (rank 2 is now a theorem):
 crystallization at k = 3 has M(3) = 7, and the ledger below 6 is
 vacuous m ≤ 2, the square m = 3, duality descent to rank 1 at m = 4 and to
-rank 2 at m = 5. -/
-theorem rank_three_of_the_two_residuals (h2 : GtzWeightedAll 2)
+the PROVEN rank 2 at m = 5. -/
+theorem rank_three_of_the_two_residuals
     (h63 : GtzWeighted 6 3) (h73 : GtzWeighted 7 3) :
     GtzWeightedAll 3 := by
   refine crystallization 3 fun m hm => ?_
@@ -152,7 +165,7 @@ theorem rank_three_of_the_two_residuals (h2 : GtzWeightedAll 2)
   · exact fun D => absurd (rank_le_of_design D) (by omega)
   · exact gtzWeighted_square 3
   · exact gtzWeighted_of_dual_rank (by omega) (by omega) (gtz_rank_one 4)
-  · exact gtzWeighted_of_dual_rank (by omega) (by omega) (h2 5)
+  · exact gtzWeighted_of_dual_rank (by omega) (by omega) (gtz_rank_two 5)
   · exact h63
   · exact h73
 
@@ -241,5 +254,15 @@ theorem original_of_weighted (k : ℕ) (h : GtzWeightedAll k) :
   have hdomPsd : (subsetSum (rowDesign hn A hortho) C - 1).PosSemidef := hdom
   rw [hfinal]
   exact hdomPsd.smul (inv_pos.mpr hnR).le
+
+/-- **The original 1997 statement at rank 1, all sizes.** -/
+theorem gtz_original_rank_one (n : ℕ) (hn : 0 < n) : GtzOriginal n 1 :=
+  original_of_weighted 1 gtz_rank_one n hn
+
+/-- **The original 1997 statement at rank 2, all sizes** — the
+Sengupta–Pautov theorem, fully formalized through its weighted
+generalization. -/
+theorem gtz_original_rank_two (n : ℕ) (hn : 0 < n) : GtzOriginal n 2 :=
+  original_of_weighted 2 gtz_rank_two n hn
 
 end Gtz

@@ -84,3 +84,12 @@ import Gtz.Reductions
 #print axioms Gtz.gtz_rank_two_of_four_two
 #print axioms Gtz.rank_three_of_the_two_residuals
 #print axioms Gtz.gtz_of_canonical_list
+#print axioms Gtz.dot_mulVec_two
+#print axioms Gtz.posSemidef_two_iff
+#print axioms Gtz.posSemidef_two_iff_of_trace_pos
+#print axioms Gtz.subsetSum_transpose
+#print axioms Gtz.dominating_of_light_atom
+#print axioms Gtz.exists_dominating_pair_of_heavy
+#print axioms Gtz.gtz_rank_two
+#print axioms Gtz.gtz_original_rank_one
+#print axioms Gtz.gtz_original_rank_two

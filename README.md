@@ -50,7 +50,10 @@ weighted design has a dominating k-subset (`Gtz.GtzWeightedAll k`).
 | `Gtz/Naimark.lean` | **Theorem N**, weighted duality | **proved** (four congruences; co-design completion) |
 | `Gtz/Crystallization.lean` | M(k) = k(k+1)/2 + 1 bounded support (kernel walk) | **proved** (sharp constant; Sym2 count, no Carathéodory) |
 | `Gtz/CornerFiber.lean` | simplex frame identity, forced balance, **Theorem B_k** | **proved** (all (m,k), 1 ≤ k; no spectral theory) |
-| `Gtz/Reductions.lean` | rank 1, bridge, **Theorem L**, rank-2→(4,2), rank-3→residuals, duality descent, square, rank bound | **proved** except `gtz_rank_two` (sorry → open case (4,2)) |
+| `Gtz/TwoByTwo.lean` | 2×2 PSD entry criterion (discriminant + SOS certificate) | **proved** |
+| `Gtz/Deflation.lean` | k-general light-atom deflation (m+1,k) → (m,k) | **proved** |
+| `Gtz/RankTwo.lean` | de-spectralized weighted Sengupta–Pautov Case B | **proved** (scalar sums and squares only) |
+| `Gtz/Reductions.lean` | rank 1, **RANK 2**, bridge, **Theorem L**, rank-3→residuals, duality descent, square, rank bound, `GtzOriginal n 1/2` | **proved** (no sorries) |
 | `Gtz/Audit.lean` | `#print axioms` for every proved theorem | FX discipline |
 
 ## Mechanization residuals (gaps surfaced BY the formalization; kept current)
@@ -91,19 +94,19 @@ lake build
 
 ## The formal frontier (everything else is kernel-checked)
 
-The assembly is COMPLETE: `gtz_of_canonical_list` (Theorem L),
-`rank_three_of_the_two_residuals`, `gtz_rank_two_of_four_two`,
-`gtzWeighted_of_dual_rank`, `gtzWeighted_square`, `rank_le_of_design` are all
-proved. GTZ for every (n,k) now reduces IN LEAN to the finite canonical list;
-the open obligations are exactly:
+RANK ≤ 2 IS FULLY CLOSED IN LEAN: `gtz_rank_two : GtzWeightedAll 2` (strong
+induction on size; light-atom deflation + the de-spectralized Case-B pairing),
+hence `gtz_original_rank_one/two : GtzOriginal n k` for k ∈ {1,2} and ALL n —
+the Sengupta–Pautov theorem formalized, in its weighted generalization. The
+assembly (Theorem L, rank-3 reduction, duality descent, square, rank bound)
+is complete. The open obligations of GTZ-for-all-(n,k) are exactly:
 
-1. `GtzWeighted 4 2` — weighted Sengupta–Pautov at its single canonical case
-   (the de-spectralized Case-B pairing; next target).
-2. `GtzWeighted 6 3` and `GtzWeighted 7 3` — the campaign's binding open
+1. `GtzWeighted 6 3` and `GtzWeighted 7 3` — the campaign's binding open
    mathematics (statement (1)/(2) residuals; math frontier, currently paused).
-3. The canonical window 2s ≤ m ≤ s(s+1)/2 + 1 for s ≥ 4 — open mathematics.
-4. `cap_criterion` (certificate branch b; R-MECH-1) — infrastructure for
-   closing 1–3, not itself on the critical path of the reduction.
+2. The canonical window 2s ≤ m ≤ s(s+1)/2 + 1 for s ≥ 4 — open mathematics.
+3. `cap_criterion` (certificate branch b; R-MECH-1) — the ONLY sorry left in
+   the repository; infrastructure for closing 1–2, not itself on the critical
+   path of the reduction.
 
 Theorem-N mechanization notes (landed): the informal W^{−1/2} matrix square
 root is GONE — any whitening R with RᵀWR = I works (consumed from the

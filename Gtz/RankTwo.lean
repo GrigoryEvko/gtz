@@ -228,9 +228,7 @@ private theorem core_strict (hK : ∀ c d, c ≠ d → 0 < obstruction D c d)
       = ∑ c, D.weight c * (u c * ∑ d, D.weight d
           * (u d * obstruction D c d)) := by
     refine Finset.sum_congr rfl fun c _ => ?_
-    rw [Finset.mul_sum]
-    congr 1
-    rw [Finset.mul_sum]
+    rw [Finset.mul_sum, Finset.mul_sum]
     exact Finset.sum_congr rfl fun d _ => by ring
   have hrhs : ∑ c, ∑ d, D.weight c * (D.weight d
         * ((u c ^ 2 + u d ^ 2) / 2 * obstruction D c d))
@@ -395,7 +393,6 @@ by the cleared Schur bound, while all-pairs failure forces it negative
 through the strict core at the witness u = ⟨w, r⟩. -/
 private theorem pd_contradiction
     (hK : ∀ c d, c ≠ d → 0 < obstruction D c d)
-    (hheavy : ∀ c, 1 < leverageOf (D.atom c))
     (hnocol : ∀ r0 r1 : ℝ, 0 < r0 ^ 2 + r1 ^ 2 →
       ∃ c, wxv D c * r0 + wyv D c * r1 ≠ 0) : False := by
   -- the six moment scalars
@@ -672,7 +669,7 @@ theorem exists_dominating_pair_of_heavy
   · obtain ⟨r0, r1, hr, hperp⟩ := hcol
     exact collinear_contradiction D hK hheavy hm1 r0 r1 hr hperp
   · push Not at hcol
-    exact pd_contradiction D hK hheavy hcol
+    exact pd_contradiction D hK hcol
 
 end CaseB
 
