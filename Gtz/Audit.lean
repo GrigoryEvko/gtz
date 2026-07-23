@@ -62,6 +62,7 @@ import Gtz.WedgeChain
 import Gtz.CertificateAnchor
 import Gtz.BernsteinPositivity
 import Gtz.SylvesterThree
+import Gtz.GordanAlternative
 import Gtz.Certs.PFourCertificate
 import Gtz.Certs.CFiveCertificate
 import Gtz.Interface
@@ -409,6 +410,7 @@ import Gtz.Interface
 #print axioms Gtz.bernstein_coeff_ceiling
 #print axioms Gtz.bernstein_coeff_pos
 #print axioms Gtz.posDef_three_of_leading_minors
+#print axioms Gtz.gordan_alternative
 #print axioms Gtz.p4_geometric_certificate_variety_empty
 #print axioms Gtz.leaf_tangency_corner_certificate
 #print axioms Gtz.c5_p5stress_geometric_certificate_variety_empty
