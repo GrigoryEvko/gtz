@@ -28,6 +28,7 @@ import Gtz.LawCounterexample
 import Gtz.Pushoff
 import Gtz.TightGraph
 import Gtz.CertificateFrame
+import Gtz.LocalLaw
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -188,3 +189,6 @@ import Gtz.Interface
 #print axioms Gtz.fourCycle_normals_parallel
 #print axioms Gtz.dust_never_tight
 #print axioms Gtz.dust_pair_never_tight
+#print axioms Gtz.budget_le_vertex_bound
+#print axioms Gtz.weightSplit_design_invariant
+#print axioms Gtz.weightSplit_defect_invariant

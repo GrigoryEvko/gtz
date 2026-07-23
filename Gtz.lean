@@ -20,6 +20,7 @@ import Gtz.LawCounterexample
 import Gtz.Pushoff
 import Gtz.TightGraph
 import Gtz.CertificateFrame
+import Gtz.LocalLaw
 import Gtz.Interface
 import Gtz.Reductions
 import Gtz.Audit
