@@ -139,6 +139,25 @@ theorem qrt_step_deterministic {leading crossTan constant
     linear_combination (-1) * hfirst + firstPartner * hsum
   linarith
 
+/-- **Walk continuation is unique**: two clone-free continuations of the
+same step coincide — with a nonzero leading coefficient, Vieta pins them to
+the same value. The tight walk around a cycle is a deterministic orbit. -/
+theorem walk_continuation_unique {leading crossTan constant
+    previous firstNext secondNext : ℝ}
+    (hleading : leading ≠ 0)
+    (hprev : leading*previous^2 + 2*crossTan*previous + constant = 0)
+    (hfirst : leading*firstNext^2 + 2*crossTan*firstNext + constant = 0)
+    (hsecond : leading*secondNext^2 + 2*crossTan*secondNext + constant = 0)
+    (hfirstFree : firstNext ≠ previous) (hsecondFree : secondNext ≠ previous) :
+    firstNext = secondNext := by
+  have hfirstSum := (qrt_step_deterministic hprev hfirst
+    (fun h => hfirstFree h.symm)).1
+  have hsecondSum := (qrt_step_deterministic hprev hsecond
+    (fun h => hsecondFree h.symm)).1
+  have hcancel : leading * firstNext = leading * secondNext := by
+    linarith [hfirstSum, hsecondSum]
+  exact mul_left_cancel₀ hleading hcancel
+
 /-- **The pair normalizer**: `β_i + β_j = 2P/(D_i·D_j)` at
 `P = 1−4r²c_ic_j` — the two cross terms cancel. -/
 theorem pair_normalizer_cleared (moment leafCos partnerCos : ℝ)

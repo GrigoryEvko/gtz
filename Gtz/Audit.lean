@@ -69,6 +69,7 @@ import Gtz.DowndateInterlacing
 import Gtz.CyclicStress
 import Gtz.LawEquivalence
 import Gtz.WhiteningDistortion
+import Gtz.ClosureObtuse
 import Gtz.Certs.PFourCertificate
 import Gtz.Certs.CFiveCertificate
 import Gtz.Interface
@@ -409,6 +410,7 @@ import Gtz.Interface
 #print axioms Gtz.biquadratic_leading_constant
 #print axioms Gtz.tight_partners_vieta_factor
 #print axioms Gtz.qrt_step_deterministic
+#print axioms Gtz.walk_continuation_unique
 #print axioms Gtz.det_two_entrywise_stability
 #print axioms Gtz.wedge_ceiling
 #print axioms Gtz.classical_face_closed_form
@@ -448,6 +450,7 @@ import Gtz.Interface
 #print axioms Gtz.whitening_form_lower
 #print axioms Gtz.whitening_form_upper
 #print axioms Gtz.whitening_gram_exact
+#print axioms Gtz.closure_forces_obtuse_pair
 #print axioms Gtz.p4_geometric_certificate_variety_empty
 #print axioms Gtz.leaf_tangency_corner_certificate
 #print axioms Gtz.c5_p5stress_geometric_certificate_variety_empty
