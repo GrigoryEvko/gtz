@@ -64,6 +64,7 @@ import Gtz.BernsteinPositivity
 import Gtz.SylvesterThree
 import Gtz.GordanAlternative
 import Gtz.TiedQuadruple
+import Gtz.CoveringMargin
 import Gtz.Certs.PFourCertificate
 import Gtz.Certs.CFiveCertificate
 import Gtz.Interface
@@ -424,6 +425,9 @@ import Gtz.Interface
 #print axioms Gtz.det_atomMatrix_eq_zero
 #print axioms Gtz.tied_erase_det_eq_zero
 #print axioms Gtz.tied_subset_erase_boundary
+#print axioms Gtz.covering_margin_pos
+#print axioms Gtz.covering_margin_le
+#print axioms Gtz.uncovered_multiplier_bound
 #print axioms Gtz.p4_geometric_certificate_variety_empty
 #print axioms Gtz.leaf_tangency_corner_certificate
 #print axioms Gtz.c5_p5stress_geometric_certificate_variety_empty
