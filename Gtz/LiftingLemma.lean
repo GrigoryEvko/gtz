@@ -157,4 +157,33 @@ theorem exists_pivot_deflation {m k : ℕ} (D : WeightedDesign m (k + 1))
   · exact absurd hscaleZero (inv_ne_zero (ne_of_gt hsqrtPos))
   · exact hvecZero
 
+/-- The rank-one square acts as projection onto the pivot line:
+`(u uᵀ)·v = ⟨u,v⟩·u`. -/
+theorem atomMatrix_mulVec_eq_dot_smul {k : ℕ} (pivotDir anyVec : Fin k → ℝ) :
+    atomMatrix pivotDir *ᵥ anyVec = (pivotDir ⬝ᵥ anyVec) • pivotDir := by
+  funext index
+  simp only [atomMatrix, Matrix.mulVec, Matrix.vecMulVec_apply, dotProduct,
+    Pi.smul_apply, smul_eq_mul]
+  simp only [mul_assoc]
+  rw [← Finset.mul_sum]
+  exact mul_comm _ _
+
+/-- **Orthogonal decomposition along a deflation**: the completeness split
+`Bᵀ·B + u·uᵀ = 1` decomposes EVERY vector into its orthocomplement part
+(pulled back through the deflator) plus its pivot component — the
+coordinate engine behind the cross-vector `r` and the projected Gram `G′`
+of the Schur lift condition. -/
+theorem decompose_along_deflation {k : ℕ} {pivotDir : Fin (k + 1) → ℝ}
+    {deflator : Matrix (Fin k) (Fin (k + 1)) ℝ}
+    (hsplit : deflatorᵀ * deflator + atomMatrix pivotDir = 1)
+    (anyVec : Fin (k + 1) → ℝ) :
+    deflatorᵀ *ᵥ (deflator *ᵥ anyVec)
+      + (pivotDir ⬝ᵥ anyVec) • pivotDir = anyVec := by
+  have happlied : (deflatorᵀ * deflator) *ᵥ anyVec
+      + atomMatrix pivotDir *ᵥ anyVec = anyVec := by
+    have happly := congrArg (fun matrixValue => matrixValue *ᵥ anyVec) hsplit
+    simpa [Matrix.add_mulVec] using happly
+  rw [← Matrix.mulVec_mulVec, atomMatrix_mulVec_eq_dot_smul] at happlied
+  exact happlied
+
 end Gtz
