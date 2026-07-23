@@ -54,6 +54,7 @@ weighted design has a dominating k-subset (`Gtz.GtzWeightedAll k`).
 | `Gtz/Deflation.lean` | k-general light-atom deflation (m+1,k) → (m,k) | **proved** |
 | `Gtz/RankTwo.lean` | de-spectralized weighted Sengupta–Pautov Case B | **proved** (scalar sums and squares only) |
 | `Gtz/PlanarPlatform.lean` | GAP-S platform: **Theorem R′** (E-restricted master identity, free shifted leverages), trace form, abstract **Corollary R″**, dust expansion (Prop-D.3 repair), pinch quadratic | **proved** (audited informally §68, then kernel-checked) |
+| `Gtz/BlochDictionary.lean` | g-space dictionary: Bloch squares, the M-form identity, silence ⟹ pair entry ≥ 0, **Corollary R″ concrete and end-to-end** | **proved** |
 | `Gtz/Reductions.lean` | rank 1, **RANK 2**, bridge, **Theorem L**, rank-3→residuals, duality descent, square, rank bound, `GtzOriginal n 1/2` | **proved** (no sorries) |
 | `Gtz/Audit.lean` | `#print axioms` for every proved theorem | FX discipline |
 

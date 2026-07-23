@@ -14,5 +14,6 @@ import Gtz.Naimark
 import Gtz.Crystallization
 import Gtz.CornerFiber
 import Gtz.PlanarPlatform
+import Gtz.BlochDictionary
 import Gtz.Reductions
 import Gtz.Audit

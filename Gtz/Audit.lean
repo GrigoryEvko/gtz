@@ -22,6 +22,7 @@ import Gtz.Naimark
 import Gtz.Reductions
 import Gtz.RatCertificate
 import Gtz.PlanarPlatform
+import Gtz.BlochDictionary
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -129,3 +130,8 @@ import Gtz.PlanarPlatform
 #print axioms Gtz.sum_sub_normSq_expansion
 #print axioms Gtz.sum_sub_normSq_levWeighted
 #print axioms Gtz.pinch_quadratic
+#print axioms Gtz.blochSquare_dotProduct
+#print axioms Gtz.blochSquare_normSq
+#print axioms Gtz.pairEntry_bloch
+#print axioms Gtz.pairEntry_bloch_nonneg_of_silent
+#print axioms Gtz.posSemidef_planarMaster_bloch_of_silent
