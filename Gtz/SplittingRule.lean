@@ -225,4 +225,56 @@ theorem harmonic_rule
   rw [hexpand, htrace, hweightSum]
   norm_num
 
+/-! ### The rotational rule -/
+
+/-- The quarter-turn of a planar vector. -/
+def rotateQuarter (planarVec : Fin 2 → ℝ) : Fin 2 → ℝ :=
+  ![-planarVec 1, planarVec 0]
+
+/-- A vector is orthogonal to its own quarter-turn. -/
+theorem dot_rotateQuarter_self (planarVec : Fin 2 → ℝ) :
+    planarVec ⬝ᵥ rotateQuarter planarVec = 0 := by
+  simp only [rotateQuarter, dotProduct, Fin.sum_univ_two, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons]
+  ring
+
+/-- **The rotational rule**: pairing an atom's stress equation with the
+quarter-turn of its own square kills the radial terms outright — no
+tightness needed — leaving the torque balance
+`Σ_d λ_cd·⟨S_d, JS_c⟩/n_cd = 2·t_c·⟨ξ, JS_c⟩`. The third and last scalar
+reduction of the stress system. -/
+theorem rotational_rule
+    (weight : Fin m → ℝ) (square : Fin m → Fin 2 → ℝ)
+    (lambda : Fin m → Fin m → ℝ) (moment : Fin 2 → ℝ) (c : Fin m)
+    (hstress : ∑ d, lambda c d
+        • ((planarNorm (square c))⁻¹ • square c
+          - (planarNorm (square c + square d))⁻¹ • (square c + square d))
+      = weight c • ((planarNorm (square c))⁻¹ • square c
+          - (2 : ℝ) • moment)) :
+    ∑ d, lambda c d
+        * ((square d ⬝ᵥ rotateQuarter (square c))
+          / planarNorm (square c + square d))
+      = 2 * weight c * (moment ⬝ᵥ rotateQuarter (square c)) := by
+  have hpaired := congrArg
+    (fun planarVec => planarVec ⬝ᵥ rotateQuarter (square c)) hstress
+  simp only [sum_dotProduct, smul_dotProduct, dotProduct_smul, smul_eq_mul,
+    sub_dotProduct, add_dotProduct] at hpaired
+  have hkill : square c ⬝ᵥ rotateQuarter (square c) = 0 :=
+    dot_rotateQuarter_self (square c)
+  rw [hkill] at hpaired
+  calc ∑ d, lambda c d
+      * ((square d ⬝ᵥ rotateQuarter (square c))
+        / planarNorm (square c + square d))
+      = -∑ d, lambda c d
+        * ((planarNorm (square c))⁻¹ * 0
+          - (planarNorm (square c + square d))⁻¹
+            * (0 + square d ⬝ᵥ rotateQuarter (square c))) := by
+        rw [← Finset.sum_neg_distrib]
+        refine Finset.sum_congr rfl fun d _ => ?_
+        rw [div_eq_inv_mul]
+        ring
+    _ = -(weight c * ((planarNorm (square c))⁻¹ * 0
+        - 2 * (moment ⬝ᵥ rotateQuarter (square c)))) := by rw [hpaired]
+    _ = 2 * weight c * (moment ⬝ᵥ rotateQuarter (square c)) := by ring
+
 end Gtz

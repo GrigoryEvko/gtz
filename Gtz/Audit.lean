@@ -316,3 +316,5 @@ import Gtz.Interface
 #print axioms Gtz.chord_projection_tight
 #print axioms Gtz.splitting_rule
 #print axioms Gtz.harmonic_rule
+#print axioms Gtz.dot_rotateQuarter_self
+#print axioms Gtz.rotational_rule
