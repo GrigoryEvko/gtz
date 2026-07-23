@@ -34,6 +34,7 @@ import Gtz.DescentLadder
 import Gtz.FirstOrderLaw
 import Gtz.CollarFloor
 import Gtz.CapSlack
+import Gtz.QuantitativeCorner
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -242,3 +243,10 @@ import Gtz.Interface
 #print axioms Gtz.det_erase_eq_det_mul_pivot_gap
 #print axioms Gtz.erase_dominates_iff_det_nonneg
 #print axioms Gtz.cap_fires_iff_det_nonneg
+#print axioms Gtz.fquant_term_le
+#print axioms Gtz.fquant_dist_mul_gap_le
+#print axioms Gtz.posDef_excess_of_kappa
+#print axioms Gtz.pivot_eq_leverage_div_of_kappa
+#print axioms Gtz.complementary_commute
+#print axioms Gtz.kappa_lt_of_insiders_silent
+#print axioms Gtz.zmass_floor_of_wall_silent
