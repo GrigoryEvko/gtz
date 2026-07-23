@@ -61,6 +61,7 @@ import Gtz.FrameEncoding
 import Gtz.WedgeChain
 import Gtz.CertificateAnchor
 import Gtz.BernsteinPositivity
+import Gtz.SylvesterThree
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -405,3 +406,4 @@ import Gtz.Interface
 #print axioms Gtz.bernstein_coeff_floor
 #print axioms Gtz.bernstein_coeff_ceiling
 #print axioms Gtz.bernstein_coeff_pos
+#print axioms Gtz.posDef_three_of_leading_minors
