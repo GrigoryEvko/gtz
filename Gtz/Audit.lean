@@ -24,6 +24,7 @@ import Gtz.RatCertificate
 import Gtz.PlanarPlatform
 import Gtz.BlochDictionary
 import Gtz.DustControl
+import Gtz.LawCounterexample
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -142,3 +143,9 @@ import Gtz.DustControl
 #print axioms Gtz.pairSum_nonneg_of_silent
 #print axioms Gtz.blochSquare_sub_normSq_ge
 #print axioms Gtz.cross_rebate_bloch
+#print axioms Gtz.cexDesign_valid
+#print axioms Gtz.cexBudget_eq_trace
+#print axioms Gtz.cexBudget_quadratic
+#print axioms Gtz.cexMaxSlack_ge
+#print axioms Gtz.cexMaxSlack_le
+#print axioms Gtz.bForm_law_fails_at_cap_ten

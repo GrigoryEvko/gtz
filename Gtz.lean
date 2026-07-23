@@ -16,5 +16,6 @@ import Gtz.CornerFiber
 import Gtz.PlanarPlatform
 import Gtz.BlochDictionary
 import Gtz.DustControl
+import Gtz.LawCounterexample
 import Gtz.Reductions
 import Gtz.Audit
