@@ -20,6 +20,7 @@ import Gtz.PsdKit
 import Gtz.Completion
 import Gtz.Naimark
 import Gtz.Reductions
+import Gtz.RatCertificate
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -100,3 +101,6 @@ import Gtz.Reductions
 #print axioms Gtz.psd_on_complement_transfer
 #print axioms Gtz.cap_criterion
 #print axioms Gtz.cap_criterion_trace
+#print axioms Gtz.RatDesign.subsetSum_apply
+#print axioms Gtz.RatDesign.leverage_cast
+#print axioms Gtz.RatDesign.dominates_iff_cast
