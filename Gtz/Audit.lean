@@ -75,6 +75,7 @@ import Gtz.DeflationCertificate
 import Gtz.LeverageBound
 import Gtz.Certs.PFourCertificate
 import Gtz.Certs.CFiveCertificate
+import Gtz.GeometricExclusion
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -471,3 +472,9 @@ import Gtz.Interface
 #print axioms Gtz.p4_geometric_certificate_variety_empty
 #print axioms Gtz.leaf_tangency_corner_certificate
 #print axioms Gtz.c5_p5stress_geometric_certificate_variety_empty
+#print axioms Gtz.planar_gap_pos_of_ne
+#print axioms Gtz.clone_guard_of_ne
+#print axioms Gtz.pole_guard_of_gate
+#print axioms Gtz.no_tight_path_four_double_tangency
+#print axioms Gtz.no_tight_path_three_leaf_tangency_off_pole
+#print axioms Gtz.no_tight_cycle_five_with_path_stress
