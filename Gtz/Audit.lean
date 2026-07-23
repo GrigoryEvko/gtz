@@ -378,3 +378,7 @@ import Gtz.Interface
 #print axioms Gtz.corner_cap_expansion
 #print axioms Gtz.corner_cap_form_le
 #print axioms Gtz.corner_resolvent_perturbation
+#print axioms Gtz.correctedInterfacePair_nonempty
+#print axioms Gtz.correctedPair_passes_gate
+#print axioms Gtz.correctedFormula_rounds_down
+#print axioms Gtz.corrected_c2_assembly

@@ -135,4 +135,49 @@ theorem acidTest_margin_pos (slackDefect : ℝ) (hslack : slackDefect < 3) :
   rw [min_eq_right (by norm_num)]
   norm_num
 
+/-! ### The subgapv-completion corrected pair (certified continuum inputs)
+
+The completion round replaced the at-points covector floors by certified
+continuum brackets, shifting the interface constants slightly DOWN
+(`2.76·10⁻⁶ → 2.69·10⁻⁶`, `ε₀′* = 1.95·10⁻¹² → 1.90·10⁻¹²`,
+`ĉ₁ ≥ 2.7·10⁻³ → 2.6·10⁻³`, `C₂ ≤ 4.7·10⁵ → 4.9·10⁵`) — the tag upgrades,
+the decimals barely move, and the pair still clears the nonvacuity gate. -/
+
+/-- **The corrected pair is nonvacuous**: `(τ₀, ε₀′) = (10⁻¹², 1.90·10⁻¹²)`
+meets — witness `τ = 1.5·10⁻¹²`. -/
+theorem correctedInterfacePair_nonempty :
+    ∃ tieWeight : ℝ, (1 : ℝ)/10^12 ≤ tieWeight
+      ∧ cornerDistanceRate * tieWeight ≤ (190 : ℝ)/10^14 := by
+  refine ⟨(15 : ℝ)/10^13, by norm_num, ?_⟩
+  have hrate := cornerDistanceRate_upper
+  nlinarith [hrate, cornerDistanceRate_lower]
+
+/-- **The corrected pair passes the nonvacuity gate** in the gate's own
+shape: the ball radius clears the tube's distance floor at `τ₀ = 10⁻¹²`. -/
+theorem correctedPair_passes_gate :
+    cornerDistanceRate * ((1 : ℝ)/10^12) ≤ (190 : ℝ)/10^14 := by
+  have hrate := cornerDistanceRate_upper
+  nlinarith [hrate, cornerDistanceRate_lower]
+
+/-- **The corrected constant rounds DOWN**: the certified formula
+`2.69·10⁻⁶·√(τ₀·min(σ,1−σ))` at `τ₀ = 10⁻¹²`, `σ = 1/2` exceeds the quoted
+`1.90·10⁻¹²`, so the quoted ball is conservative. -/
+theorem correctedFormula_rounds_down :
+    (190 : ℝ)/10^14
+      ≤ (269 : ℝ)/10^8 * Real.sqrt ((1 : ℝ)/10^12 * (1/2)) := by
+  have hsqrtLower : (7071 : ℝ)/10^10 < Real.sqrt ((1 : ℝ)/10^12 * (1/2)) := by
+    rw [show ((7071 : ℝ)/10^10)
+      = Real.sqrt (((7071 : ℝ)/10^10) ^ 2) from (Real.sqrt_sq (by norm_num)).symm]
+    exact Real.sqrt_lt_sqrt (by positivity) (by norm_num)
+  nlinarith [hsqrtLower]
+
+/-- **The corrected C₂ assembly**: `C₂ = H_max/(2·ĉ₁)` with the certified
+`ĉ₁ ≥ 2.6·10⁻³` gives `C₂ ≤ 4.9·10⁵`. -/
+theorem corrected_c2_assembly (curvatureBound fireRate : ℝ)
+    (hcurvature : curvatureBound ≤ 25 * 10^2)
+    (hfireRate : (26 : ℝ)/10^4 ≤ fireRate) (hfirePos : 0 < fireRate) :
+    curvatureBound / (2 * fireRate) ≤ (49 : ℝ) * 10^4 := by
+  rw [div_le_iff₀ (by linarith)]
+  nlinarith [hcurvature, hfireRate, hfirePos]
+
 end Gtz
