@@ -14,6 +14,7 @@ import Gtz.Sanity
 import Gtz.SchurRankOne
 import Gtz.TraceIdentity
 import Gtz.CornerFiber
+import Gtz.CapCriterion
 import Gtz.Crystallization
 import Gtz.PsdKit
 import Gtz.Completion
@@ -93,3 +94,6 @@ import Gtz.Reductions
 #print axioms Gtz.gtz_rank_two
 #print axioms Gtz.gtz_original_rank_one
 #print axioms Gtz.gtz_original_rank_two
+#print axioms Gtz.psd_on_complement_transfer
+#print axioms Gtz.cap_criterion
+#print axioms Gtz.cap_criterion_trace

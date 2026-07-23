@@ -44,7 +44,7 @@ weighted design has a dominating k-subset (`Gtz.GtzWeightedAll k`).
 | `Gtz/Sanity.lean` | definition-pinning instances | **proved** (PSD atoms, monotonicity, (1,1) end-to-end) |
 | `Gtz/SchurRankOne.lean` | rank-one Schur: N−ggᵀ ⪰ 0 ⟺ gᵀN⁻¹g ≤ 1 (N ≻ 0) | **proved** (polarization, no sqrt/no blocks) |
 | `Gtz/TraceIdentity.lean` | trace identity, excess balance, rank-one Schur step, pigeonhole | **proved** (branch (a) complete, all (m,k)) |
-| `Gtz/CapCriterion.lean` | signature-(k−1,1) rank-one completion | statement (sorry; see R-MECH-1) |
+| `Gtz/CapCriterion.lean` | cap criterion, de-spectralized (signature witness pair) | **proved** (R-MECH-1 resolved by reformulation) |
 | `Gtz/PsdKit.lean` | CS contraction flip, transpose transfers, invertible congruence, whitening | **proved** (squares only; no sqrt, no spectra) |
 | `Gtz/Completion.lean` | orthonormal completion [A|B] | **proved** (stdOrthonormalBasis + fromCols flip) |
 | `Gtz/Naimark.lean` | **Theorem N**, weighted duality | **proved** (four congruences; co-design completion) |
@@ -104,9 +104,11 @@ is complete. The open obligations of GTZ-for-all-(n,k) are exactly:
 1. `GtzWeighted 6 3` and `GtzWeighted 7 3` — the campaign's binding open
    mathematics (statement (1)/(2) residuals; math frontier, currently paused).
 2. The canonical window 2s ≤ m ≤ s(s+1)/2 + 1 for s ≥ 4 — open mathematics.
-3. `cap_criterion` (certificate branch b; R-MECH-1) — the ONLY sorry left in
-   the repository; infrastructure for closing 1–2, not itself on the critical
-   path of the reduction.
+(The certificate infrastructure is complete: `cap_criterion` landed
+de-spectralized — the signature-(k−1,1) hypothesis became a witness pair, a
+negative direction plus PSD-ness on its N-orthogonal complement, resolving
+R-MECH-1 by reformulation. THE REPOSITORY IS 100% SORRY-FREE: every formal
+obligation of the campaign's proven ledger is kernel-checked.)
 
 Theorem-N mechanization notes (landed): the informal W^{−1/2} matrix square
 root is GONE — any whitening R with RᵀWR = I works (consumed from the
