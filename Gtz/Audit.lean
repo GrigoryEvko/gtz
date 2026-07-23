@@ -47,6 +47,7 @@ import Gtz.SilenceDictionary
 import Gtz.BallPerturbation
 import Gtz.EulerPairing
 import Gtz.SplittingRule
+import Gtz.ChordTheorem
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -319,3 +320,6 @@ import Gtz.Interface
 #print axioms Gtz.dot_rotateQuarter_self
 #print axioms Gtz.rotational_rule
 #print axioms Gtz.zeroAtom_pushoff_clean
+#print axioms Gtz.chordFn_vanishes
+#print axioms Gtz.chordFn_at_vertex
+#print axioms Gtz.inscribed_triangle_vertex
