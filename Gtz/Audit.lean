@@ -54,6 +54,7 @@ import Gtz.ResolventPerturbation
 import Gtz.IdempotentSplitting
 import Gtz.LeafTangency
 import Gtz.CapDictionary
+import Gtz.MarginTransfer
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -360,3 +361,10 @@ import Gtz.Interface
 #print axioms Gtz.cap_det_dictionary
 #print axioms Gtz.cap_tie_iff_zmass
 #print axioms Gtz.boundary_pivot_eq_one
+#print axioms Gtz.atomMatrix_conjugate
+#print axioms Gtz.atom_form_eq_sq
+#print axioms Gtz.atom_form_le_leverage
+#print axioms Gtz.parseval_erase
+#print axioms Gtz.whitened_parseval
+#print axioms Gtz.margin_transfer
+#print axioms Gtz.margin_transfer_priced
