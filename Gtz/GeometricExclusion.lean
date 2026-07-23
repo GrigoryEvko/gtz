@@ -372,4 +372,90 @@ theorem no_tight_path_three_leaf_tangency_off_pole_of_directions
       (congrArg Prod.fst hpairEq) (congrArg Prod.snd hpairEq))
   · rw [hmomentDot, ← mul_assoc] at hsecondGate; exact hsecondGate
 
+/-- **The C5+P5-stress kill in direction-vector form** — completes the
+vector-face triple: five unit directions, five tight cycle edges, the two
+P5-stress leaf criticalities, five distinctness facts, gauge-aligned
+moment. -/
+theorem no_tight_cycle_five_with_path_stress_of_directions
+    {firstDir secondDir thirdDir fourthDir fifthDir moment : Fin 2 → ℝ}
+    (hgauge : moment 1 = 0)
+    (hfirstUnit : firstDir ⬝ᵥ firstDir = 1)
+    (hsecondUnit : secondDir ⬝ᵥ secondDir = 1)
+    (hthirdUnit : thirdDir ⬝ᵥ thirdDir = 1)
+    (hfourthUnit : fourthDir ⬝ᵥ fourthDir = 1)
+    (hfifthUnit : fifthDir ⬝ᵥ fifthDir = 1)
+    (htightFirstSecond : (1 + firstDir ⬝ᵥ secondDir) / 2
+      = (1/2 + moment ⬝ᵥ firstDir) * (1/2 + moment ⬝ᵥ secondDir))
+    (htightSecondThird : (1 + secondDir ⬝ᵥ thirdDir) / 2
+      = (1/2 + moment ⬝ᵥ secondDir) * (1/2 + moment ⬝ᵥ thirdDir))
+    (htightThirdFourth : (1 + thirdDir ⬝ᵥ fourthDir) / 2
+      = (1/2 + moment ⬝ᵥ thirdDir) * (1/2 + moment ⬝ᵥ fourthDir))
+    (htightFourthFifth : (1 + fourthDir ⬝ᵥ fifthDir) / 2
+      = (1/2 + moment ⬝ᵥ fourthDir) * (1/2 + moment ⬝ᵥ fifthDir))
+    (htightFirstFifth : (1 + firstDir ⬝ᵥ fifthDir) / 2
+      = (1/2 + moment ⬝ᵥ firstDir) * (1/2 + moment ⬝ᵥ fifthDir))
+    (hfirstCritical : polarNormal moment secondDir
+        (1/2 + moment ⬝ᵥ secondDir) ⬝ᵥ rotateQuarter firstDir = 0)
+    (hfifthCritical : polarNormal moment fourthDir
+        (1/2 + moment ⬝ᵥ fourthDir) ⬝ᵥ rotateQuarter fifthDir = 0)
+    (hfirstThirdFree : firstDir ≠ thirdDir)
+    (hsecondFourthFree : secondDir ≠ fourthDir)
+    (hsecondFifthFree : secondDir ≠ fifthDir)
+    (hthirdFourthFree : thirdDir ≠ fourthDir)
+    (hthirdFifthFree : thirdDir ≠ fifthDir) :
+    False := by
+  have hdotExpand : ∀ leftVec rightVec : Fin 2 → ℝ,
+      leftVec ⬝ᵥ rightVec
+        = leftVec 0 * rightVec 0 + leftVec 1 * rightVec 1 := by
+    intro leftVec rightVec
+    simp [dotProduct, Fin.sum_univ_two]
+  have hmomentDot : ∀ ownDir : Fin 2 → ℝ,
+      moment ⬝ᵥ ownDir = moment 0 * ownDir 0 := by
+    intro ownDir
+    rw [hdotExpand, hgauge]
+    ring
+  have hcritExpand : ∀ leafDir partnerDir : Fin 2 → ℝ,
+      polarNormal ![moment 0, 0] ![partnerDir 0, partnerDir 1]
+          (1/2 + moment 0 * partnerDir 0) ⬝ᵥ
+          rotateQuarter ![leafDir 0, leafDir 1]
+        = polarNormal moment partnerDir
+          (1/2 + moment ⬝ᵥ partnerDir) ⬝ᵥ rotateQuarter leafDir := by
+    intro leafDir partnerDir
+    simp only [polarNormal, rotateQuarter, dotProduct, Fin.sum_univ_two,
+      Matrix.cons_val_zero, Matrix.cons_val_one]
+    rw [hgauge]
+    ring
+  have hpairFree : ∀ {leftVec rightVec : Fin 2 → ℝ}, leftVec ≠ rightVec →
+      (leftVec 0, leftVec 1) ≠ (rightVec 0, rightVec 1) := by
+    intro leftVec rightVec hvecFree hpairEq
+    exact hvecFree (planar_eq_of_components
+      (congrArg Prod.fst hpairEq) (congrArg Prod.snd hpairEq))
+  refine no_tight_cycle_five_with_path_stress
+    (firstCos := firstDir 0) (firstSin := firstDir 1)
+    (secondCos := secondDir 0) (secondSin := secondDir 1)
+    (thirdCos := thirdDir 0) (thirdSin := thirdDir 1)
+    (fourthCos := fourthDir 0) (fourthSin := fourthDir 1)
+    (fifthCos := fifthDir 0) (fifthSin := fifthDir 1)
+    (moment := moment 0) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
+    (hpairFree hfirstThirdFree) (hpairFree hsecondFourthFree)
+    (hpairFree hsecondFifthFree) (hpairFree hthirdFourthFree)
+    (hpairFree hthirdFifthFree)
+  · rw [hdotExpand] at hfirstUnit; linear_combination hfirstUnit
+  · rw [hdotExpand] at hsecondUnit; linear_combination hsecondUnit
+  · rw [hdotExpand] at hthirdUnit; linear_combination hthirdUnit
+  · rw [hdotExpand] at hfourthUnit; linear_combination hfourthUnit
+  · rw [hdotExpand] at hfifthUnit; linear_combination hfifthUnit
+  · rw [hdotExpand, hmomentDot, hmomentDot] at htightFirstSecond
+    linear_combination htightFirstSecond
+  · rw [hdotExpand, hmomentDot, hmomentDot] at htightSecondThird
+    linear_combination htightSecondThird
+  · rw [hdotExpand, hmomentDot, hmomentDot] at htightThirdFourth
+    linear_combination htightThirdFourth
+  · rw [hdotExpand, hmomentDot, hmomentDot] at htightFourthFifth
+    linear_combination htightFourthFifth
+  · rw [hdotExpand, hmomentDot, hmomentDot] at htightFirstFifth
+    linear_combination htightFirstFifth
+  · rw [hcritExpand]; exact hfirstCritical
+  · rw [hcritExpand]; exact hfifthCritical
+
 end Gtz
