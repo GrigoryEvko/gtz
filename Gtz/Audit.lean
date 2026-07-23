@@ -140,3 +140,5 @@ import Gtz.DustControl
 #print axioms Gtz.pairEntry_bloch_ge_of_dust
 #print axioms Gtz.dust_deficit_bloch
 #print axioms Gtz.pairSum_nonneg_of_silent
+#print axioms Gtz.blochSquare_sub_normSq_ge
+#print axioms Gtz.cross_rebate_bloch

@@ -132,4 +132,88 @@ theorem dust_deficit_bloch (dustSet : Finset (Fin m))
           * (∑ c ∈ dustSet, weight c * (a - atoms c ⬝ᵥ atoms c)
               * (atoms c ⬝ᵥ atoms c) ^ 2) := by linarith
 
+/-- Cauchy–Schwarz for planar pairings, Lagrange form: `p² ≤ ℓ_c ℓ_d`. -/
+private theorem pairing_sq_le_leverage_mul (leftAtom rightAtom : Fin 2 → ℝ) :
+    (leftAtom ⬝ᵥ rightAtom) ^ 2
+      ≤ (leftAtom ⬝ᵥ leftAtom) * (rightAtom ⬝ᵥ rightAtom) := by
+  simp only [dotProduct, Fin.sum_univ_two]
+  nlinarith [sq_nonneg (leftAtom 0 * rightAtom 1 - leftAtom 1 * rightAtom 0)]
+
+/-- The Bloch squared difference dominates the squared leverage gap:
+`|S_c − S_d|² ≥ (ℓ_c − ℓ_d)²` (reverse triangle, in squares). -/
+theorem blochSquare_sub_normSq_ge (leftAtom rightAtom : Fin 2 → ℝ) :
+    (leftAtom ⬝ᵥ leftAtom - rightAtom ⬝ᵥ rightAtom) ^ 2
+      ≤ (blochSquare leftAtom - blochSquare rightAtom) ⬝ᵥ
+        (blochSquare leftAtom - blochSquare rightAtom) := by
+  have hexpand : (blochSquare leftAtom - blochSquare rightAtom) ⬝ᵥ
+      (blochSquare leftAtom - blochSquare rightAtom)
+        = (leftAtom ⬝ᵥ leftAtom) ^ 2 + (rightAtom ⬝ᵥ rightAtom) ^ 2
+          - 2 * (2 * (leftAtom ⬝ᵥ rightAtom) ^ 2
+            - (leftAtom ⬝ᵥ leftAtom) * (rightAtom ⬝ᵥ rightAtom)) := by
+    rw [sub_dotProduct, dotProduct_sub, dotProduct_sub,
+      blochSquare_normSq, blochSquare_normSq, blochSquare_dotProduct,
+      dotProduct_comm (blochSquare rightAtom) (blochSquare leftAtom),
+      blochSquare_dotProduct]
+    ring
+  rw [hexpand]
+  nlinarith [pairing_sq_le_leverage_mul leftAtom rightAtom]
+
+/-- **Proposition D.2 (cross rebate)**: the ordered heavy×dust mixed pair-sum
+is bounded below by `2κ₃δ₀`, `κ₃ = Σ_E t_c(ℓ_c−a)³`, `δ₀ = Σ_D t_c(a−ℓ_c)` —
+each mixed entry is at least `2(ℓ_c−a)(a−ℓ_d)` and each squared difference at
+least `(ℓ_c−a)²`. -/
+theorem cross_rebate_bloch (heavySet dustSet : Finset (Fin m))
+    (atoms : Fin m → Fin 2 → ℝ) (weight : Fin m → ℝ) (a : ℝ)
+    (hweight : ∀ c, 0 ≤ weight c)
+    (hheavy : ∀ c ∈ heavySet, a ≤ atoms c ⬝ᵥ atoms c)
+    (hdust : ∀ c ∈ dustSet, atoms c ⬝ᵥ atoms c ≤ a) :
+    2 * (∑ c ∈ heavySet, weight c * (atoms c ⬝ᵥ atoms c - a) ^ 3)
+        * (∑ c ∈ dustSet, weight c * (a - atoms c ⬝ᵥ atoms c))
+      ≤ ∑ c ∈ heavySet, ∑ d ∈ dustSet,
+          pairEntry (fun e => blochSquare (atoms e))
+              (fun e => atoms e ⬝ᵥ atoms e - 2 * a) a c d
+            * weight c * weight d
+            * ((blochSquare (atoms c) - blochSquare (atoms d)) ⬝ᵥ
+               (blochSquare (atoms c) - blochSquare (atoms d))) := by
+  have hproduct : 2 * (∑ c ∈ heavySet, weight c * (atoms c ⬝ᵥ atoms c - a) ^ 3)
+      * (∑ c ∈ dustSet, weight c * (a - atoms c ⬝ᵥ atoms c))
+        = ∑ c ∈ heavySet, ∑ d ∈ dustSet,
+            2 * (weight c * (atoms c ⬝ᵥ atoms c - a) ^ 3)
+              * (weight d * (a - atoms d ⬝ᵥ atoms d)) := by
+    rw [mul_assoc, Finset.sum_mul_sum, Finset.mul_sum]
+    exact Finset.sum_congr rfl fun c _ => by
+      rw [Finset.mul_sum]
+      exact Finset.sum_congr rfl fun d _ => by ring
+  rw [hproduct]
+  refine Finset.sum_le_sum fun c hc => Finset.sum_le_sum fun d hd => ?_
+  have hlevC := hheavy c hc
+  have hlevD := hdust d hd
+  have hwc := hweight c
+  have hwd := hweight d
+  -- Entry floor: `pairEntry ≥ 2(ℓ_c−a)(a−ℓ_d) ≥ 0` on mixed pairs.
+  have hentryFloor : 2 * ((atoms c ⬝ᵥ atoms c - a) * (a - atoms d ⬝ᵥ atoms d))
+      ≤ pairEntry (fun e => blochSquare (atoms e))
+          (fun e => atoms e ⬝ᵥ atoms e - 2 * a) a c d := by
+    rw [pairEntry_bloch]
+    nlinarith [sq_nonneg (atoms c ⬝ᵥ atoms d)]
+  have hentryNonneg := pairEntry_bloch_nonneg_of_mixed atoms a c d hlevC hlevD
+  -- Difference floor: `|S_c−S_d|² ≥ (ℓ_c−ℓ_d)² ≥ (ℓ_c−a)²`.
+  have hgap : (atoms c ⬝ᵥ atoms c - a) ^ 2
+      ≤ (blochSquare (atoms c) - blochSquare (atoms d)) ⬝ᵥ
+        (blochSquare (atoms c) - blochSquare (atoms d)) := by
+    refine le_trans ?_ (blochSquare_sub_normSq_ge (atoms c) (atoms d))
+    nlinarith [hlevC, hlevD]
+  have hnormNonneg := dotProduct_self_nonneg
+    (blochSquare (atoms c) - blochSquare (atoms d))
+  nlinarith [mul_nonneg hwc hwd,
+    mul_nonneg (mul_nonneg hwc hwd) hnormNonneg,
+    mul_nonneg (mul_nonneg (sub_nonneg.mpr hlevC) (sub_nonneg.mpr hlevD))
+      (mul_nonneg hwc hwd),
+    mul_le_mul_of_nonneg_left hgap
+      (mul_nonneg (mul_nonneg (mul_nonneg (by norm_num : (0:ℝ) ≤ 2)
+        (sub_nonneg.mpr hlevC)) (sub_nonneg.mpr hlevD))
+        (mul_nonneg hwc hwd)),
+    mul_le_mul_of_nonneg_right hentryFloor
+      (mul_nonneg (mul_nonneg hwc hwd) hnormNonneg)]
+
 end Gtz
