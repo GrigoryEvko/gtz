@@ -30,6 +30,9 @@ import Gtz.TightGraph
 import Gtz.CertificateFrame
 import Gtz.MomentCovector
 import Gtz.Compression
+import Gtz.DescentLadder
+import Gtz.FirstOrderLaw
+import Gtz.CollarFloor
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -215,3 +218,21 @@ import Gtz.Interface
 #print axioms Gtz.exists_subset_dominates_in_view
 #print axioms Gtz.exists_pair_dominates_in_plane
 #print axioms Gtz.exists_pair_nonneg_on_plane
+#print axioms Gtz.fullExcess_eq_coParseval
+#print axioms Gtz.posDef_fullExcess
+#print axioms Gtz.descent_identity
+#print axioms Gtz.sum_one_sub_weight
+#print axioms Gtz.pivot_nonneg
+#print axioms Gtz.exists_pivot_le_average
+#print axioms Gtz.card_pivot_le_one_ge
+#print axioms Gtz.budget_le_max_of_leash
+#print axioms Gtz.channelFace_attained
+#print axioms Gtz.clusterFace_attained
+#print axioms Gtz.exists_value_nonpos_of_positive_covector
+#print axioms Gtz.exists_fire_of_positive_covector
+#print axioms Gtz.collarFloorRate_ge_third
+#print axioms Gtz.collarFloorRate_zero
+#print axioms Gtz.collarFloorRate_lt_of_lt
+#print axioms Gtz.offWindowGate_identity
+#print axioms Gtz.offWindow_cap_fires
+#print axioms Gtz.offWindowGate_lt_fifty_at_working_radius
