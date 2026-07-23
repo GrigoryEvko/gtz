@@ -148,4 +148,25 @@ theorem posSemidef_planarMaster_bloch_of_silent (E : Finset (Fin m))
     fun c hc d hd hne => pairEntry_bloch_nonneg_of_silent atoms a c d
       (hheavy c hc) (hheavy d hd) (hsilent c hc d hd hne)
 
+/-- **The headline scalar consequence**: on any silent heavy subfamily, the
+pair-sum budget `B_E` is nonnegative — `0 ≤ B_E = tr R_E`, the inequality the
+whole GAP-S budget law is built on. -/
+theorem pairSum_nonneg_of_silent (E : Finset (Fin m))
+    (atoms : Fin m → Fin 2 → ℝ) (weight : Fin m → ℝ) (a : ℝ)
+    (hweight : ∀ c ∈ E, 0 ≤ weight c)
+    (hheavy : ∀ c ∈ E, a ≤ atoms c ⬝ᵥ atoms c)
+    (hsilent : ∀ c ∈ E, ∀ d ∈ E, c ≠ d →
+      ¬ (Matrix.vecMulVec (atoms c) (atoms c)
+          + Matrix.vecMulVec (atoms d) (atoms d)
+          - a • (1 : Matrix (Fin 2) (Fin 2) ℝ)).PosSemidef) :
+    0 ≤ (1 / 2) * ∑ c ∈ E, ∑ d ∈ E,
+        pairEntry (fun e => blochSquare (atoms e))
+            (fun e => atoms e ⬝ᵥ atoms e - 2 * a) a c d
+          * weight c * weight d
+          * ((blochSquare (atoms c) - blochSquare (atoms d)) ⬝ᵥ
+             (blochSquare (atoms c) - blochSquare (atoms d))) := by
+  rw [← planarMaster_trace]
+  exact (posSemidef_planarMaster_bloch_of_silent E atoms weight a
+    hweight hheavy hsilent).trace_nonneg
+
 end Gtz
