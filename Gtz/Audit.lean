@@ -36,6 +36,7 @@ import Gtz.CollarFloor
 import Gtz.CapSlack
 import Gtz.QuantitativeCorner
 import Gtz.StressFrame
+import Gtz.ComplexWitness
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -255,3 +256,12 @@ import Gtz.Interface
 #print axioms Gtz.focal_conic_form
 #print axioms Gtz.edge_pairing_eq_slack
 #print axioms Gtz.uncovered_atom_forces_pole
+#print axioms Gtz.det_pair_excess
+#print axioms Gtz.pair_not_posSemidef
+#print axioms Gtz.omegaRoot_cube
+#print axioms Gtz.omegaRoot_sum
+#print axioms Gtz.omega_overlap_product
+#print axioms Gtz.sicNorm
+#print axioms Gtz.sicOverlap
+#print axioms Gtz.sicParseval
+#print axioms Gtz.complexGtzWeighted_four_fails
