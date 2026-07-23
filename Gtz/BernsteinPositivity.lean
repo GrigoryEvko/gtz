@@ -71,6 +71,63 @@ theorem bernstein_coeff_ceiling (n : ℕ) (coeff : ℕ → ℝ) {ceiling : ℝ}
           (bernstein_eval_nonneg n k hzero hone)
     _ = ceiling := by rw [← Finset.mul_sum, bernstein_sum_eval, mul_one]
 
+/-- **The tensor step, floor**: a two-variable Bernstein coefficient slab
+bounded below is a function bound on `[0,1]²` — the univariate floor applied
+once per variable. Iterating this step consumes any number of variables. -/
+theorem bernstein_coeff_floor_two (degFirst degSecond : ℕ)
+    (coeff : ℕ → ℕ → ℝ) {floor : ℝ}
+    (hfloor : ∀ j ∈ Finset.range (degFirst + 1),
+      ∀ k ∈ Finset.range (degSecond + 1), floor ≤ coeff j k)
+    {x y : ℝ} (hxZero : 0 ≤ x) (hxOne : x ≤ 1)
+    (hyZero : 0 ≤ y) (hyOne : y ≤ 1) :
+    floor ≤ ∑ j ∈ Finset.range (degFirst + 1),
+      ∑ k ∈ Finset.range (degSecond + 1),
+        coeff j k * ((bernsteinPolynomial ℝ degFirst j).eval x
+          * (bernsteinPolynomial ℝ degSecond k).eval y) := by
+  have hswap : ∑ j ∈ Finset.range (degFirst + 1),
+      ∑ k ∈ Finset.range (degSecond + 1),
+        coeff j k * ((bernsteinPolynomial ℝ degFirst j).eval x
+          * (bernsteinPolynomial ℝ degSecond k).eval y)
+      = ∑ j ∈ Finset.range (degFirst + 1),
+          (∑ k ∈ Finset.range (degSecond + 1),
+            coeff j k * (bernsteinPolynomial ℝ degSecond k).eval y)
+          * (bernsteinPolynomial ℝ degFirst j).eval x := by
+    refine Finset.sum_congr rfl fun j _ => ?_
+    rw [Finset.sum_mul]
+    exact Finset.sum_congr rfl fun k _ => by ring
+  rw [hswap]
+  exact bernstein_coeff_floor degFirst _
+    (fun j hj => bernstein_coeff_floor degSecond (coeff j)
+      (hfloor j hj) hyZero hyOne) hxZero hxOne
+
+/-- **The tensor step, ceiling** — the two-sided bracket's other half on
+`[0,1]²`. -/
+theorem bernstein_coeff_ceiling_two (degFirst degSecond : ℕ)
+    (coeff : ℕ → ℕ → ℝ) {ceiling : ℝ}
+    (hceiling : ∀ j ∈ Finset.range (degFirst + 1),
+      ∀ k ∈ Finset.range (degSecond + 1), coeff j k ≤ ceiling)
+    {x y : ℝ} (hxZero : 0 ≤ x) (hxOne : x ≤ 1)
+    (hyZero : 0 ≤ y) (hyOne : y ≤ 1) :
+    ∑ j ∈ Finset.range (degFirst + 1),
+      ∑ k ∈ Finset.range (degSecond + 1),
+        coeff j k * ((bernsteinPolynomial ℝ degFirst j).eval x
+          * (bernsteinPolynomial ℝ degSecond k).eval y) ≤ ceiling := by
+  have hswap : ∑ j ∈ Finset.range (degFirst + 1),
+      ∑ k ∈ Finset.range (degSecond + 1),
+        coeff j k * ((bernsteinPolynomial ℝ degFirst j).eval x
+          * (bernsteinPolynomial ℝ degSecond k).eval y)
+      = ∑ j ∈ Finset.range (degFirst + 1),
+          (∑ k ∈ Finset.range (degSecond + 1),
+            coeff j k * (bernsteinPolynomial ℝ degSecond k).eval y)
+          * (bernsteinPolynomial ℝ degFirst j).eval x := by
+    refine Finset.sum_congr rfl fun j _ => ?_
+    rw [Finset.sum_mul]
+    exact Finset.sum_congr rfl fun k _ => by ring
+  rw [hswap]
+  exact bernstein_coeff_ceiling degFirst _
+    (fun j hj => bernstein_coeff_ceiling degSecond (coeff j)
+      (hceiling j hj) hyZero hyOne) hxZero hxOne
+
 /-- **Uniform-sign certificates prove strict positivity**: strictly positive
 coefficients give a strictly positive polynomial on `[0,1]` — via the floor
 at the minimum over the (nonempty) coefficient list. -/

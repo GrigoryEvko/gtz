@@ -409,6 +409,8 @@ import Gtz.Interface
 #print axioms Gtz.bernstein_coeff_floor
 #print axioms Gtz.bernstein_coeff_ceiling
 #print axioms Gtz.bernstein_coeff_pos
+#print axioms Gtz.bernstein_coeff_floor_two
+#print axioms Gtz.bernstein_coeff_ceiling_two
 #print axioms Gtz.posDef_three_of_leading_minors
 #print axioms Gtz.gordan_alternative
 #print axioms Gtz.p4_geometric_certificate_variety_empty
