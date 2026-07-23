@@ -70,6 +70,7 @@ import Gtz.CyclicStress
 import Gtz.LawEquivalence
 import Gtz.WhiteningDistortion
 import Gtz.ClosureObtuse
+import Gtz.SymmetryReduction
 import Gtz.Certs.PFourCertificate
 import Gtz.Certs.CFiveCertificate
 import Gtz.Interface
@@ -453,6 +454,10 @@ import Gtz.Interface
 #print axioms Gtz.whitening_form_upper
 #print axioms Gtz.whitening_gram_exact
 #print axioms Gtz.closure_forces_obtuse_pair
+#print axioms Gtz.nonneg_of_cell_cover
+#print axioms Gtz.nonneg_of_symmetry_transfer
+#print axioms Gtz.nonneg_of_fundamental_domain
+#print axioms Gtz.nonneg_on_window_of_symmetric_cells
 #print axioms Gtz.p4_geometric_certificate_variety_empty
 #print axioms Gtz.leaf_tangency_corner_certificate
 #print axioms Gtz.c5_p5stress_geometric_certificate_variety_empty
