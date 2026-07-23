@@ -194,6 +194,48 @@ theorem sylvesterMap_eq_zero_iff (probe : Matrix (Fin m) (Fin m) ℝ) :
   · rintro ⟨hrange, hcorange⟩
     rw [sylvesterMap_eq_signed_blocks, hrange, hcorange, sub_zero]
 
+/-- **The range is exactly the block-diagonal subspace**: `Y` is a value of
+`T` iff both mixed blocks of `Y` vanish. With `sylvesterMap_eq_zero_iff`
+(kernel = the mixed subspace) this is Theorem RC's rank statement in
+coordinate-free form: `T` is a bijection block-diagonal → block-diagonal and
+zero on the mixed complement. -/
+theorem sylvesterMap_mem_range_iff (target : Matrix (Fin m) (Fin m) ℝ) :
+    (∃ probe, sylvesterMap transfer probe = target)
+      ↔ transfer * target * (1 - transferᵀ) = 0
+        ∧ (1 - transfer) * target * transferᵀ = 0 := by
+  constructor
+  · rintro ⟨probe, rfl⟩
+    constructor
+    · calc transfer * sylvesterMap transfer probe * (1 - transferᵀ)
+          = (transfer * transfer) * probe * (transferᵀ * (1 - transferᵀ))
+            - (transfer * (1 - transfer)) * probe
+              * ((1 - transferᵀ) * (1 - transferᵀ)) := by
+            rw [sylvesterMap]; noncomm_ring
+        _ = 0 := by
+            rw [idem_mul_compl hidem, Matrix.zero_mul, Matrix.zero_mul,
+              sub_zero, hidem]
+            have hTcompl : transferᵀ * (1 - transferᵀ) = 0 := by
+              rw [Matrix.mul_sub, Matrix.mul_one,
+                transpose_idempotent hidem, sub_self]
+            rw [hTcompl, Matrix.mul_zero]
+    · calc (1 - transfer) * sylvesterMap transfer probe * transferᵀ
+          = ((1 - transfer) * transfer) * probe * (transferᵀ * transferᵀ)
+            - ((1 - transfer) * (1 - transfer)) * probe
+              * ((1 - transferᵀ) * transferᵀ) := by
+            rw [sylvesterMap]; noncomm_ring
+        _ = 0 := by
+            rw [compl_mul_idem hidem, Matrix.zero_mul, Matrix.zero_mul,
+              complT_mul_idemT hidem, Matrix.mul_zero, sub_zero]
+  · rintro ⟨hupperMixed, hlowerMixed⟩
+    refine ⟨transfer * target * transferᵀ
+      - (1 - transfer) * target * (1 - transferᵀ), ?_⟩
+    rw [sylvesterMap_sub, sylvesterMap_range_block hidem,
+      sylvesterMap_corange_block hidem, sub_neg_eq_add]
+    have hdecompose := blocks_decompose transfer target
+    rw [hupperMixed, hlowerMixed] at hdecompose
+    rw [add_zero, add_zero] at hdecompose
+    exact hdecompose.symm
+
 end Idempotent
 
 /-! ### The design side: `E = G·D_t` is idempotent with `E·G = G`, `tr E = k` -/

@@ -359,6 +359,7 @@ import Gtz.Interface
 #print axioms Gtz.sylvesterMap_sq
 #print axioms Gtz.sylvesterMap_tripotent
 #print axioms Gtz.sylvesterMap_eq_zero_iff
+#print axioms Gtz.sylvesterMap_mem_range_iff
 #print axioms Gtz.designTransfer_mul_gram
 #print axioms Gtz.designTransfer_idempotent
 #print axioms Gtz.design_weighted_leverage_sum
