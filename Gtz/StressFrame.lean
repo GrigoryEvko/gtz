@@ -148,4 +148,27 @@ theorem uncovered_atom_forces_pole {weight : ℝ} {unit rescaled : Fin 2 → ℝ
   rw [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul] at hlen
   linarith
 
+/-- **The pole contradicts the conic**: an atom sitting at the covector's pole
+has conic value `1/2 + 2|ξ̃|² = 1`, i.e. infinite leverage — impossible. -/
+theorem pole_contradicts_conic {lev : ℝ} {rescaled unit : Fin 2 → ℝ}
+    (hconic : 1 - 1 / lev = 1 / 2 + rescaled ⬝ᵥ unit)
+    (hpole : unit = (2 : ℝ) • rescaled)
+    (hquarter : rescaled ⬝ᵥ rescaled = 1 / 4) (hlev : 0 < lev) : False := by
+  rw [hpole, dotProduct_smul, smul_eq_mul, hquarter] at hconic
+  have hzero : 1 / lev = 0 := by linarith
+  have hpos : 0 < 1 / lev := by positivity
+  linarith
+
+/-- **The Gordan covering kill, β ≠ 0 branch**: an atom of positive weight and
+finite positive leverage on the focal conic CANNOT be uncovered — its empty
+stress equation would pin it to the pole, and the pole forces infinite
+leverage. Every atom of an equality design lies in a tight pair. -/
+theorem covered_of_conic {weight lev : ℝ} {unit rescaled : Fin 2 → ℝ}
+    (hweight : 0 < weight) (hlev : 0 < lev)
+    (hconic : 1 - 1 / lev = 1 / 2 + rescaled ⬝ᵥ unit)
+    (hunit : unit ⬝ᵥ unit = 1)
+    (hstress : weight • (unit - (2 : ℝ) • rescaled) = 0) : False := by
+  obtain ⟨hpole, hquarter⟩ := uncovered_atom_forces_pole hweight hstress hunit
+  exact pole_contradicts_conic hconic hpole hquarter hlev
+
 end Gtz

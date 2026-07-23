@@ -37,6 +37,7 @@ import Gtz.CapSlack
 import Gtz.QuantitativeCorner
 import Gtz.StressFrame
 import Gtz.ComplexWitness
+import Gtz.Seam
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -265,3 +266,7 @@ import Gtz.Interface
 #print axioms Gtz.sicOverlap
 #print axioms Gtz.sicParseval
 #print axioms Gtz.complexGtzWeighted_four_fails
+#print axioms Gtz.pole_contradicts_conic
+#print axioms Gtz.covered_of_conic
+#print axioms Gtz.seam_trivial_scale
+#print axioms Gtz.seam_subsumption
