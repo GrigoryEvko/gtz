@@ -62,6 +62,8 @@ import Gtz.WedgeChain
 import Gtz.CertificateAnchor
 import Gtz.BernsteinPositivity
 import Gtz.SylvesterThree
+import Gtz.PFourCertificate
+import Gtz.CFiveCertificate
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -407,3 +409,6 @@ import Gtz.Interface
 #print axioms Gtz.bernstein_coeff_ceiling
 #print axioms Gtz.bernstein_coeff_pos
 #print axioms Gtz.posDef_three_of_leading_minors
+#print axioms Gtz.p4_geometric_certificate_variety_empty
+#print axioms Gtz.leaf_tangency_corner_certificate
+#print axioms Gtz.c5_p5stress_geometric_certificate_variety_empty
