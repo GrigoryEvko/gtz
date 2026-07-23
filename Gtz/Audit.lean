@@ -488,3 +488,4 @@ import Gtz.Interface
 #print axioms Gtz.coisometryPushforward_weight
 #print axioms Gtz.coisometryPushforward_atom
 #print axioms Gtz.exists_deflation_coisometry
+#print axioms Gtz.exists_pivot_deflation

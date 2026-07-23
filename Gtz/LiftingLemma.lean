@@ -118,4 +118,43 @@ theorem exists_deflation_coisometry {k : ℕ} {pivotDir : Fin (k + 1) → ℝ}
     rw [← hcomplete]
     exact add_comm (completion * completionᵀ) (atomMatrix pivotDir)
 
+/-- **Pivot deflation, end-to-end**: every NONZERO atom of a weighted design
+in dimension `k+1` yields a positive normalizing scale and a deflation
+coisometry — rows orthonormal, annihilating the atom itself, with the
+completeness split at the normalized direction. Feeding `deflator` to
+`coisometryPushforward` gives the projected design of the SS15 induction
+step; no unit-norm hypothesis survives, only `atom ≠ 0`. -/
+theorem exists_pivot_deflation {m k : ℕ} (D : WeightedDesign m (k + 1))
+    (pivot : Fin m) (hpivotNonzero : D.atom pivot ≠ 0) :
+    ∃ (scale : ℝ) (deflator : Matrix (Fin k) (Fin (k + 1)) ℝ),
+      0 < scale
+        ∧ deflator * deflatorᵀ = 1
+        ∧ deflator *ᵥ D.atom pivot = 0
+        ∧ deflatorᵀ * deflator + atomMatrix (scale • D.atom pivot) = 1 := by
+  set lev := D.atom pivot ⬝ᵥ D.atom pivot with hlev
+  have hlevNonneg : 0 ≤ lev := by
+    rw [hlev]
+    simp only [dotProduct]
+    exact Finset.sum_nonneg fun index _ => mul_self_nonneg _
+  have hlevPos : 0 < lev := by
+    rcases eq_or_lt_of_le hlevNonneg with hzero | hpos
+    · exact absurd (dotProduct_self_eq_zero.mp hzero.symm) hpivotNonzero
+    · exact hpos
+  have hsqrtPos : 0 < Real.sqrt lev := Real.sqrt_pos.mpr hlevPos
+  have hunit : ((Real.sqrt lev)⁻¹ • D.atom pivot)
+      ⬝ᵥ ((Real.sqrt lev)⁻¹ • D.atom pivot) = 1 := by
+    rw [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul,
+      ← mul_assoc, ← mul_inv, Real.mul_self_sqrt hlevPos.le]
+    exact inv_mul_cancel₀ (ne_of_gt hlevPos)
+  obtain ⟨deflator, hcoisometry, hkillScaled, hsplit⟩ :=
+    exists_deflation_coisometry hunit
+  refine ⟨(Real.sqrt lev)⁻¹, deflator, inv_pos.mpr hsqrtPos, hcoisometry,
+    ?_, hsplit⟩
+  have hkillSmul : (Real.sqrt lev)⁻¹ • (deflator *ᵥ D.atom pivot) = 0 := by
+    rw [← Matrix.mulVec_smul]
+    exact hkillScaled
+  rcases smul_eq_zero.mp hkillSmul with hscaleZero | hvecZero
+  · exact absurd hscaleZero (inv_ne_zero (ne_of_gt hsqrtPos))
+  · exact hvecZero
+
 end Gtz
