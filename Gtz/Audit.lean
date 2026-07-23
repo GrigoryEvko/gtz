@@ -304,3 +304,5 @@ import Gtz.Interface
 #print axioms Gtz.pair_dominates_iff_coherence_le
 #print axioms Gtz.pair_silent_iff_coherence_gt
 #print axioms Gtz.pair_dominates_iff_conic
+#print axioms Gtz.bloch_halfAngle
+#print axioms Gtz.pair_dominates_iff_halfAngle

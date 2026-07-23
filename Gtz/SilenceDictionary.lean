@@ -18,6 +18,7 @@ equivalence.
 import Mathlib
 import Gtz.Basic
 import Gtz.TwoByTwo
+import Gtz.BlochDictionary
 
 namespace Gtz
 
@@ -113,5 +114,65 @@ theorem pair_dominates_iff_conic (g h : Fin 2 → ℝ)
           * ((g ⬝ᵥ g) * (h ⬝ᵥ h)) := hside
       _ = (g ⬝ᵥ g - 1) * (h ⬝ᵥ h - 1) := by
         field_simp
+
+/-! ### The Bloch half-angle bridge -/
+
+/-- **The half-angle law**: for unit directions, the squared g-space overlap
+is the Bloch half-angle expression `(1 + ⟨S(u), S(v)⟩)/2`. The doubled-angle
+geometry of the Bloch layer and the raw coherence are one number. -/
+theorem bloch_halfAngle {leftUnit rightUnit : Fin 2 → ℝ}
+    (hleft : leftUnit ⬝ᵥ leftUnit = 1) (hright : rightUnit ⬝ᵥ rightUnit = 1) :
+    (1 + blochSquare leftUnit ⬝ᵥ blochSquare rightUnit) / 2
+      = (leftUnit ⬝ᵥ rightUnit) ^ 2 := by
+  rw [blochSquare_dotProduct, hleft, hright]
+  ring
+
+/-- **The dictionary in tight-graph coordinates**: a heavy pair given by unit
+directions and leverages dominates exactly when the Bloch half-angle value is
+at most the conic product `ν_g·ν_h` — the predicate whose EQUALITY case is the
+tightness the tight-graph layer walks on. This grounds `tight_iff_polar`'s
+hypothesis in the actual domination test. -/
+theorem pair_dominates_iff_halfAngle {levLeft levRight : ℝ}
+    {leftUnit rightUnit : Fin 2 → ℝ}
+    (hleft : leftUnit ⬝ᵥ leftUnit = 1) (hright : rightUnit ⬝ᵥ rightUnit = 1)
+    (hlevLeft : 1 < levLeft) (hlevRight : 1 < levRight) :
+    (atomMatrix (Real.sqrt levLeft • leftUnit)
+        + atomMatrix (Real.sqrt levRight • rightUnit) - 1).PosSemidef
+      ↔ (1 + blochSquare leftUnit ⬝ᵥ blochSquare rightUnit) / 2
+        ≤ (1 - 1 / levLeft) * (1 - 1 / levRight) := by
+  have hlevLeftPos : (0 : ℝ) < levLeft := by linarith
+  have hlevRightPos : (0 : ℝ) < levRight := by linarith
+  have hsqLeft : Real.sqrt levLeft * Real.sqrt levLeft = levLeft :=
+    Real.mul_self_sqrt hlevLeftPos.le
+  have hsqRight : Real.sqrt levRight * Real.sqrt levRight = levRight :=
+    Real.mul_self_sqrt hlevRightPos.le
+  -- the scaled atoms' Gram data
+  have hgg : (Real.sqrt levLeft • leftUnit) ⬝ᵥ (Real.sqrt levLeft • leftUnit)
+      = levLeft := by
+    rw [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, hleft]
+    rw [mul_one, hsqLeft]
+  have hhh : (Real.sqrt levRight • rightUnit)
+      ⬝ᵥ (Real.sqrt levRight • rightUnit) = levRight := by
+    rw [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, hright]
+    rw [mul_one, hsqRight]
+  have hgh : ((Real.sqrt levLeft • leftUnit)
+      ⬝ᵥ (Real.sqrt levRight • rightUnit)) ^ 2
+      = levLeft * levRight * (leftUnit ⬝ᵥ rightUnit) ^ 2 := by
+    rw [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul]
+    linear_combination
+      (Real.sqrt levRight * Real.sqrt levRight
+        * (leftUnit ⬝ᵥ rightUnit) ^ 2) * hsqLeft
+      + (levLeft * (leftUnit ⬝ᵥ rightUnit) ^ 2) * hsqRight
+  rw [pair_dominates_iff_conic _ _ (by rw [hgg]; exact hlevLeft)
+    (by rw [hhh]; exact hlevRight), hgg, hhh, hgh,
+    bloch_halfAngle hleft hright]
+  have hproduct : (0 : ℝ) < levLeft * levRight :=
+    mul_pos hlevLeftPos hlevRightPos
+  rw [mul_comm levLeft levRight, mul_div_assoc]
+  have hcancel : levRight * levLeft
+      * ((leftUnit ⬝ᵥ rightUnit) ^ 2 / (levRight * levLeft))
+      = (leftUnit ⬝ᵥ rightUnit) ^ 2 := by
+    field_simp
+  rw [hcancel]
 
 end Gtz
