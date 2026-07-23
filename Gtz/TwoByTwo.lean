@@ -81,4 +81,33 @@ theorem posSemidef_two_iff_of_trace_pos {X : Matrix (Fin 2) (Fin 2) ℝ}
   · intro hdet
     refine ⟨?_, ?_, hdet⟩ <;> nlinarith [sq_nonneg (X 0 1)]
 
+
+/-- **The rank-one determinant lemma**, planar case: subtracting a rank-one
+term from a 2×2 matrix drops its determinant by the adjugate form of the
+subtracted vector. Division-free. -/
+theorem det_sub_vecMulVec_two (base : Matrix (Fin 2) (Fin 2) ℝ)
+    (direction : Fin 2 → ℝ) :
+    (base - Matrix.vecMulVec direction direction).det
+      = base.det - direction ⬝ᵥ (base.adjugate *ᵥ direction) := by
+  simp only [Matrix.det_fin_two, Matrix.adjugate_fin_two, Matrix.sub_apply,
+    Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_two,
+    Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.head_fin_const, Matrix.cons_val_fin_one]
+  ring
+
+/-- **The one-surface identity** (the §75 audit's F1 correction, exactly): for
+an invertible 2×2 matrix the relative depth of a rank-one downdate equals one
+minus the quadratic form of the inverse. Hence the "wall tie" `depth = 0` and
+the "z-mass tie" `dᵀN⁻¹d = 1` are the SAME equation — the measured frontier is
+one codimension-one surface per plane, not the intersection of two. -/
+theorem depth_eq_one_sub_zmass (base : Matrix (Fin 2) (Fin 2) ℝ)
+    (direction : Fin 2 → ℝ) (hdet : base.det ≠ 0) :
+    (base - Matrix.vecMulVec direction direction).det / base.det
+      = 1 - direction ⬝ᵥ (base⁻¹ *ᵥ direction) := by
+  have hinv : base⁻¹ = (base.det)⁻¹ • base.adjugate := by
+    rw [Matrix.inv_def, Ring.inverse_eq_inv']
+  rw [det_sub_vecMulVec_two, hinv]
+  simp only [Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]
+  field_simp
+
 end Gtz

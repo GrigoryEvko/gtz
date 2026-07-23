@@ -159,3 +159,7 @@ import Gtz.Pushoff
 #print axioms Gtz.cornerDesign_valid
 #print axioms Gtz.cornerNearest_defect_zero
 #print axioms Gtz.cornerPushoff_saturates
+#print axioms Gtz.pairEntry_eq_level_gap
+#print axioms Gtz.dustOnly_completion_forces_saturation
+#print axioms Gtz.det_sub_vecMulVec_two
+#print axioms Gtz.depth_eq_one_sub_zmass

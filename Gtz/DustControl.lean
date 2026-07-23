@@ -216,4 +216,33 @@ theorem cross_rebate_bloch (heavySet dustSet : Finset (Fin m))
     mul_le_mul_of_nonneg_right hentryFloor
       (mul_nonneg (mul_nonneg hwc hwd) hnormNonneg)]
 
+
+/-- **Dust-only completions are infeasible** (the moment squeeze delivered by
+the §72 audit): if a tight pair's mass parameters satisfy the closure bound
+`αβ ≤ (1−a)(1−b)` and the trace/weight bound `α + β ≥ 1`, with `α ≤ a < 1` and
+`β ≤ b < 1`, then the squeeze
+`αβ ≤ (1−a)(1−b) ≤ (1−α)(1−β) = 1 − α − β + αβ ≤ αβ`
+collapses, forcing `α = a` and `β = b` — i.e. `ν_A = ν_B = 1`, which no finite
+leverage attains. So a tight pair cannot be completed by dust alone. -/
+theorem dustOnly_completion_forces_saturation {leftMass rightMass
+    leftMoment rightMoment : ℝ}
+    (hleft : leftMoment ≤ leftMass) (hleftLt : leftMass < 1)
+    (hright : rightMoment ≤ rightMass) (hrightLt : rightMass < 1)
+    (hclosure : leftMoment * rightMoment
+      ≤ (1 - leftMass) * (1 - rightMass))
+    (htrace : 1 ≤ leftMoment + rightMoment) :
+    leftMoment = leftMass ∧ rightMoment = rightMass := by
+  have hleftPos : 0 < 1 - leftMass := by linarith
+  have hrightPos : 0 < 1 - rightMass := by linarith
+  have hmid : (1 - leftMass) * (1 - rightMass)
+      ≤ (1 - leftMoment) * (1 - rightMoment) := by
+    nlinarith [hleft, hright, hleftPos, hrightPos]
+  have hupper : (1 - leftMoment) * (1 - rightMoment)
+      ≤ leftMoment * rightMoment := by nlinarith [htrace]
+  have hsandwich : (1 - leftMass) * (1 - rightMass)
+      = (1 - leftMoment) * (1 - rightMoment) := by linarith
+  constructor
+  · nlinarith [hsandwich, hright, hrightPos, hleft]
+  · nlinarith [hsandwich, hleft, hleftPos, hright]
+
 end Gtz

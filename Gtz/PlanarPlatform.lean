@@ -44,6 +44,30 @@ def pairEntry (squares : Fin m → Fin n → ℝ) (shiftedLev : Fin m → ℝ)
     (level : ℝ) (c d : Fin m) : ℝ :=
   squares c ⬝ᵥ squares d - shiftedLev c * shiftedLev d + 2 * level ^ 2
 
+/-- **The per-pair level law** (diary §70, audited): the pair entry at level
+`1 + shift` factors as the product of the *level gap* `shift − slack` and a
+bounded positive factor, where `slack` is the pair's own critical shift
+(the level at which the pair Gram becomes singular). Stated in squared form —
+the hypotheses are `|S_c|² = ℓ_c²`, `|S_d|² = ℓ_d²`, and the definition of the
+slack through `|S_c + S_d| = ℓ_c + ℓ_d − 2 − 2·slack`, all sqrt-free. -/
+theorem pairEntry_eq_level_gap (leftSquare rightSquare : Fin 2 → ℝ)
+    (leftLev rightLev slack shift : ℝ)
+    (hleftNorm : leftSquare ⬝ᵥ leftSquare = leftLev ^ 2)
+    (hrightNorm : rightSquare ⬝ᵥ rightSquare = rightLev ^ 2)
+    (hslack : (leftSquare + rightSquare) ⬝ᵥ (leftSquare + rightSquare)
+      = (leftLev + rightLev - 2 - 2 * slack) ^ 2) :
+    leftSquare ⬝ᵥ rightSquare
+        - (leftLev - 2 * (1 + shift)) * (rightLev - 2 * (1 + shift))
+        + 2 * (1 + shift) ^ 2
+      = 2 * (shift - slack) * (leftLev + rightLev - 2 - shift - slack) := by
+  have hexpand : (leftSquare + rightSquare) ⬝ᵥ (leftSquare + rightSquare)
+      = leftSquare ⬝ᵥ leftSquare + 2 * (leftSquare ⬝ᵥ rightSquare)
+        + rightSquare ⬝ᵥ rightSquare := by
+    simp only [dotProduct, Fin.sum_univ_two, Pi.add_apply]
+    ring
+  rw [hexpand, hleftNorm, hrightNorm] at hslack
+  linarith [hslack, sq_nonneg (leftLev + rightLev - 2 - 2 * slack)]
+
 /-- The corrected E-restricted master matrix `R_E` of Theorem R′:
 `2a²τ_E Φ − s Φ_z + Ψ(r) − Φ² + Λ_z Λ_zᵀ − 2a² r rᵀ`, with every E-moment
 written out (`r` closure residual, `τ_E` weight, `s` shifted-leverage mass,
