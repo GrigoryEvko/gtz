@@ -1,144 +1,156 @@
-# GTZ — Lean 4 formalization of the Goreinov–Tyrtyshnikov–Zamarashkin problem
+# GTZ
 
-**Conjecture (GTZ 1997).** Every real n×k matrix with orthonormal columns has a
-k×k row submatrix with σ_min ≥ 1/√n. Known: k ≤ 2 proven (Sengupta–Pautov,
-arXiv:2604.05944); false over ℂ (sharp constant α = 2 − 2/√3, SIC extremal).
-First open case: weighted (6,3).
+**A Lean 4 formalization of the Goreinov–Tyrtyshnikov–Zamarashkin submatrix problem.**
 
-**This repository is the final proof artifact of the campaign** recorded in
-`~/Downloads/gtz.md` (§§0–53): the eventual paper is the LaTeX rendition of
-exactly the definitions, lemmas, and theorems in these modules, in the same
-structure — the Lean development is the ground truth, the paper mirrors it.
-(The C+OpenMP engine remains the discovery/refutation instrument; nothing enters
-here before surviving its adversarial audits, and nothing is cited in the paper
-that is not kernel-checked here.) Toolchain: Lean `v4.32.0` + Mathlib `v4.32.0`
-(per-project; independent of the FX pin).
+> **Conjecture (GTZ, 1997).** Every real n×k matrix with orthonormal columns has
+> a k×k row submatrix B with σ_min(B) ≥ 1/√n.
 
-## Working form
+Known before this project: true for k ≤ 2 (Sengupta–Pautov); false over ℂ with
+sharp constant α = 2 − 2/√3 (the SIC configuration is extremal). The first open
+case is k = 3, and after the reductions formalized here it is exactly the
+weighted (6,3) and (7,3) instances.
 
-Weighted design: g₁..g_m ∈ ℝᵏ, t_c > 0, Σt_c = 1, Σ t_c g_c g_cᵀ = I_k.
-A k-subset C **dominates** iff Σ_{c∈C} g_c g_cᵀ ⪰ I_k. GTZ(k) for all n ⟺ every
-weighted design has a dominating k-subset (`Gtz.GtzWeightedAll k`).
+This repository is the campaign's **final proof artifact**: nothing enters
+until it has survived adversarial audit or been re-derived during
+mechanization, and the eventual paper will be a LaTeX rendition of exactly the
+definitions and theorems in these modules. The repository is **sorry-free**;
+every proved theorem's axiom set is printed on every build and must be exactly
+`propext, Classical.choice, Quot.sound`.
 
-## The proven architecture being formalized (informal status: audited + verified)
+---
 
-1. **Canonical list** (Theorem L): via crystallization M(s) = s(s+1)/2 + 1 and
-   weighted Naimark duality, GTZ(all k, all n) ⟺ the finite-per-rank list
-   {weighted (m,s) : 2s ≤ m ≤ s(s+1)/2 + 1}. Closing (6,3) + (7,3) closes rank 3
-   and co-rank ≤ 3 for every k.
-2. **The certificate class** (rational Schur-pigeonhole): trace identity +
-   excess-balance pigeonhole (branch a) and signature-(k−1,1) caps (branch b);
-   regular at the zero-margin (k+1)-cycle; provably silent over ℂ.
-3. **Lemma F_k** = Bhatia–Davis at mean zero: the corner covering at every rank,
-   equality exactly at the 2ᵏ−1 fundamental-weight axes of A_k.
-4. **Theorem B_k**: the exact (k+1)-cycle corner fiber closes at every rank.
-5. Remaining open mathematics (not formalizable yet — still unproven): the
-   Gate–Cap covering (GAP-S + GAP-T) and the corner tied tube at rank 3.
+## The working form
 
-## Module map / status
+A **weighted design** is a family g₁, …, g_m ∈ ℝᵏ with weights t_c > 0,
+Σ t_c = 1, and Σ t_c g_c g_cᵀ = I_k. A k-subset C **dominates** when
+Σ_{c∈C} g_c g_cᵀ ⪰ I_k. The original statement for all n at rank k is
+equivalent to: *every weighted design of every size has a dominating k-subset*
+(`GtzWeightedAll k`). All structural work happens in this weighted form; the
+bridge back to the 1997 statement is itself a theorem here.
 
-| module | content | status |
-|---|---|---|
-| `Gtz/Basic.lean` | designs, domination, GtzWeighted/GtzOriginal, pivot | definitions |
-| `Gtz/BhatiaDavis.lean` | Lemma F_k combinatorial core | **proved incl. tie classification** |
-| `Gtz/Sanity.lean` | definition-pinning instances | **proved** (PSD atoms, monotonicity, (1,1) end-to-end) |
-| `Gtz/SchurRankOne.lean` | rank-one Schur: N−ggᵀ ⪰ 0 ⟺ gᵀN⁻¹g ≤ 1 (N ≻ 0) | **proved** (polarization, no sqrt/no blocks) |
-| `Gtz/TraceIdentity.lean` | trace identity, excess balance, rank-one Schur step, pigeonhole | **proved** (branch (a) complete, all (m,k)) |
-| `Gtz/CapCriterion.lean` | cap criterion, de-spectralized (signature witness pair) | **proved** (R-MECH-1 resolved by reformulation) |
-| `Gtz/PsdKit.lean` | CS contraction flip, transpose transfers, invertible congruence, whitening | **proved** (squares only; no sqrt, no spectra) |
-| `Gtz/Completion.lean` | orthonormal completion [A|B] | **proved** (stdOrthonormalBasis + fromCols flip) |
-| `Gtz/Naimark.lean` | **Theorem N**, weighted duality | **proved** (four congruences; co-design completion) |
-| `Gtz/Crystallization.lean` | M(k) = k(k+1)/2 + 1 bounded support (kernel walk) | **proved** (sharp constant; Sym2 count, no Carathéodory) |
-| `Gtz/CornerFiber.lean` | simplex frame identity, forced balance, **Theorem B_k** | **proved** (all (m,k), 1 ≤ k; no spectral theory) |
-| `Gtz/TwoByTwo.lean` | 2×2 PSD entry criterion (discriminant + SOS certificate); rank-one determinant lemma + **the one-surface identity** (wall tie ≡ z-mass tie) | **proved** |
-| `Gtz/Deflation.lean` | k-general light-atom deflation (m+1,k) → (m,k) | **proved** |
-| `Gtz/RankTwo.lean` | de-spectralized weighted Sengupta–Pautov Case B | **proved** (scalar sums and squares only) |
-| `Gtz/PlanarPlatform.lean` | GAP-S platform: **Theorem R′** (E-restricted master identity, free shifted leverages), trace form, abstract **Corollary R″**, dust expansion (Prop-D.3 repair), pinch quadratic | **proved** (audited informally §68, then kernel-checked) |
-| `Gtz/BlochDictionary.lean` | g-space dictionary: Bloch squares, the M-form identity, silence ⟹ pair entry ≥ 0, **Corollary R″ concrete and end-to-end** | **proved** |
-| `Gtz/DustControl.lean` | **Proposition D complete**: mixed positivity, dust-pair floor, dust deficit ≥ −2δ₀δ₂ (tight), cross rebate ≥ 2κ₃δ₀; dust-only completions infeasible (moment squeeze) | **proved** (dust hypothesis unnecessary in D.3 — hygiene find) |
-| `Gtz/Pushoff.lean` | **Zero-Atom Pushoff Theorem** — planar-norm kit (Cauchy–Schwarz, triangle from scratch), the pairing identity `Σ t_c d_c = 0`, Lipschitz defect, `t_e ≤ (\|ξ\|+½)·Σ t_c\|S_c−X_c\|` unconditionally, + the corner saturation witness (equality at ¼) | **proved** (dissolves GAP-T's δ_T = 0 case) |
-| `Gtz/TightGraph.lean` | **max-degree theorem**: tightness is affine in the partner direction (polar chord), the chord's normal is nonzero when `ν\|ξ\| < ½`, a line meets the circle twice ⟹ ≤ 2 tight partners, **`K₁,₃` dead** | **proved** (pre-audit claim, mechanization surfaced its dust-exclusion dependency) |
-| `Gtz/CertificateFrame.lean` | certificate-frame geometry: planar determinant kit, **the stress-leaf step** (two independent rays meet only at their vertex), the parabola pole characterization and its cloning consequence | **proved** (pre-audit claims) |
-| `Gtz/LocalLaw.lean` | the **LP vertex bound** behind the first-order constant (weighted max, not average) and the **weight-split invariance** (structural root of σ-independence) | **proved** (pre-audit claims) |
-| `Gtz/Interface.lean` | statement-(2) interface arithmetic: **the recorded pair is vacuous**, the ball's τ-ceiling, **the repaired pair is nonvacuous** (explicit witness), the formula rounds down, and the one-line nonvacuity test | **proved** |
-| `Gtz/LawCounterexample.lean` | **kernel-checked refutation**: exact rational cap-10 design with `C_B(10)·σ* < B(σ*)` — the displayed local law `B_E(σ*) ≤ C_B(ℓ̄)σ*` is false for ℓ̄ ≥ 7 (`C_B` is the σ*→0 limit only) | **proved** (settles the build-vs-audit numerical dispute in the kernel) |
-| `Gtz/Reductions.lean` (all-heavy) | **the all-heavy reduction**: light atoms deflate, so GTZ at rank k needs only ALL-HEAVY designs of size ≤ M(k); C0 leverage floor (`Σ t ℓ = k`, some `ℓ ≥ k`); frontier sharpened to all-heavy (6,3)+(7,3) | **proved** |
-| `Gtz/Reductions.lean` | rank 1, **RANK 2**, bridge, **Theorem L**, rank-3→residuals, duality descent, square, rank bound, `GtzOriginal n 1/2` | **proved** (no sorries) |
-| `Gtz/Audit.lean` | `#print axioms` for every proved theorem | FX discipline |
+## What is proven, end to end
 
-## Mechanization residuals (gaps surfaced BY the formalization; kept current)
+**The solved boundary, unconditionally.** `GtzOriginal n k` holds for
+k ∈ {1, 2, n−2, n−1, n} — every case humanity had ever solved — and for every
+matrix with at most five rows. Rank two is the complete Sengupta–Pautov
+theorem in its weighted generalization, formalized without spectral theory.
 
-* **R-MECH-1**: Mathlib v4.32 has no Cauchy eigenvalue interlacing. The cap
-  criterion's "rank-one update keeps k−1 positive eigenvalues" needs either a
-  hand-built interlacing lemma or a signature-free reformulation (candidate: the
-  polarization pattern of `SchurRankOne` run on the negative eigenspace).
-* **R-MECH-2**: Mathlib v4.32 has no PSD Schur-complement block criterion
-  (`SchurComplement.lean` is determinant/inverse only). Worked around in
-  `SchurRankOne.lean` by direct polarization; Theorem N's congruence chain will
-  need the same treatment.
-* Statement hygiene adopted while mechanizing: `pigeonhole` requires `1 ≤ k`
-  (at k = 0 a one-atom design has weight 1 and the strict-weight argument
-  degenerates) — the informal statements never said this.
+**The master reduction, as an equivalence.** Via sharp crystallization
+(M(k) = k(k+1)/2 + 1), weighted Naimark duality, and the descent assembly:
 
-## Rigor rules (FX standards)
+```
+GTZ for all (n, k)   ⟺   weighted (m, s) for  s ≥ 2,  2s ≤ m ≤ s(s+1)/2 + 1
+GtzWeightedAll 3     ⟺   GtzWeighted 6 3  ∧  GtzWeighted 7 3
+```
 
-- Nothing is called proven while it contains `sorry`; `Gtz/Audit.lean` prints the
-  axiom set of every proved theorem on every build (expected: propext,
-  Classical.choice, Quot.sound — nothing else, ever).
-- Definitions stay minimal and Mathlib-anchored (`Matrix.PosSemidef`, no bespoke
-  orders). Junk-value footguns are documented at the definition site and fenced
-  by hypotheses at every use (`Matrix.inv` of a singular matrix is 0 — all
-  `pivot` theorems carry `PosDef`).
-- `Gtz/Sanity.lean` must stay sorry-free; if a refactor breaks it, the
-  definitions drifted from the mathematics.
-- Long game: a computable ℚ-certificate layer (`Decidable` checkers for the
-  pigeonhole/cap certificates proven correct against the Prop layer) so that
-  per-design closures are executable artifacts, not just proofs.
+**The certificate machinery, at every rank.** The trace identity and
+excess-balance pigeonhole (branch a), the de-spectralized cap criterion
+(branch b), the determinant form that decides both branches by one sign, the
+descent ladder, light-atom deflation, the corner fiber theorem B_k, and
+Lemma F_k (Bhatia–Davis at mean zero) with its tie classification.
+
+**The planar platform for (6,3).** The audited GAP-S layer: the master
+identity R′ and its corollary R″, the Bloch dictionary, dust control, the
+pinch quadratic, the per-pair level law, the compression bridge (Lemma G) that
+puts this planar layer underneath a rank-3 design unconditionally, Theorem V
+with its branch selection made algebraic, the Zero-Atom Pushoff theorem that
+dissolved GAP-T, the tight-graph geometry, the corrected first-order law, the
+collar floor, and the interface arithmetic — including a kernel-checked
+**counterexample** settling a disputed numerical law inside the kernel.
+
+**The consumption pipeline.** A fully rational certificate layer: exact
+ℚ-designs, LDL-congruence gate certificates, and cast lemmas so that a future
+rational (6,3)/(7,3) certificate closes rank 3 by finite exact arithmetic.
+
+## The formal frontier
+
+Everything else about GTZ-for-all-(n,k) is a kernel-checked theorem. What
+remains is precisely the open mathematics:
+
+1. `GtzWeighted 6 3` and `GtzWeighted 7 3` — the binding open cases;
+2. the canonical window 2s ≤ m ≤ s(s+1)/2 + 1 for ranks s ≥ 4.
+
+## Module map
+
+| Module | Content |
+|---|---|
+| `Basic` | designs, domination, `GtzWeighted` / `GtzOriginal`, pivots |
+| `Sanity` | definition-pinning instances (must stay sorry-free forever) |
+| `BhatiaDavis` | Lemma F_k: min-pair ≤ −1 on the zero-sum sphere, tie classification |
+| `SchurRankOne` | rank-one Schur complement by polarization |
+| `TraceIdentity` | trace identity, excess balance, the pigeonhole (branch a) |
+| `CapCriterion` | the cap criterion, de-spectralized (branch b) |
+| `CapSlack` | Theorem D: both branches as one determinant sign |
+| `PsdKit` | Cauchy–Schwarz contraction flips, congruence, whitening |
+| `Completion` | orthonormal completion |
+| `Naimark` | Theorem N: weighted Naimark duality |
+| `Crystallization` | sharp bounded support M(k) = k(k+1)/2 + 1 |
+| `CornerFiber` | Theorem B_k: the exact (k+1)-cycle fiber closes at every rank |
+| `TwoByTwo` | 2×2 PSD criterion; the one-surface identity |
+| `Deflation` | light-atom deflation (m+1,k) → (m,k) |
+| `RankTwo` | weighted Sengupta–Pautov, Case B, fully scalar |
+| `Reductions` | rank ≤ 2, the bridge, Theorem L, duality descent, the all-heavy reduction |
+| `DescentLadder` | Theorem Q: the full-base trace identity and its two ladder consequences |
+| `Compression` | Lemma G: orthonormal compressions of designs are designs; the planar gate |
+| `PlanarPlatform` | Theorem R′, trace form, abstract R″, the pinch quadratic |
+| `BlochDictionary` | Bloch squares, the M-form identity, R″ end-to-end |
+| `DustControl` | Proposition D: mixed positivity, dust deficit, cross rebate |
+| `MomentCovector` | Theorem V: the tight-triangle covector, branch selected algebraically |
+| `Pushoff` | the Zero-Atom Pushoff theorem and its corner saturation |
+| `TightGraph` | the max-degree theorem: K₁,₃ is dead |
+| `CertificateFrame` | stress-leaf, parabola poles, four-cycle collapse, dust exclusions |
+| `FirstOrderLaw` | the corrected two-face first-order constant; the fire rate |
+| `LocalLaw` | the LP vertex bound; weight-split invariance |
+| `CollarFloor` | the R1 rescaled floor; Theorem OW's off-window fire |
+| `Interface` | the statement-(2) interface arithmetic, both directions |
+| `LawCounterexample` | the kernel-checked cap-10 refutation of the displayed local law |
+| `RatCertificate` | the computable ℚ-certificate consumption layer |
+| `Audit` | `#print axioms` for every proved theorem, on every build |
+
+## Rigor rules
+
+- Nothing is called proven while it contains `sorry`. `Audit.lean` prints the
+  axiom set of every proved theorem on every build; the expected set is
+  `propext, Classical.choice, Quot.sound` — nothing else, ever.
+- Definitions stay minimal and Mathlib-anchored (`Matrix.PosSemidef`, no
+  bespoke orders). Junk-value footguns are fenced at every use: `Matrix.inv`
+  of a singular matrix is 0, so every pivot theorem carries `PosDef`.
+- `Sanity.lean` is the definition-drift alarm: if a refactor breaks it, the
+  definitions have drifted from the mathematics.
+- Mechanization is treated as audit: statement-hygiene findings (unnecessary
+  hypotheses, hidden dependencies, silently consumed theorems) are recorded in
+  the module docstrings where they were found.
 
 ## Build
 
+```sh
+lake exe cache get   # once — downloads Mathlib oleans
+lake build           # builds everything and prints the axiom audit
 ```
-lake exe cache get   # once, downloads Mathlib oleans
-lake build
-```
 
-## The formal frontier (everything else is kernel-checked)
+Toolchain: Lean 4 with Mathlib, pinned in `lean-toolchain` / `lakefile`.
 
-RANK ≤ 2 IS FULLY CLOSED IN LEAN: `gtz_rank_two : GtzWeightedAll 2` (strong
-induction on size; light-atom deflation + the de-spectralized Case-B pairing),
-hence `gtz_original_rank_one/two : GtzOriginal n k` for k ∈ {1,2} and ALL n —
-the Sengupta–Pautov theorem formalized, in its weighted generalization. The
-assembly (Theorem L, rank-3 reduction, duality descent, square, rank bound)
-is complete. The open obligations of GTZ-for-all-(n,k) are exactly:
+## Selected mechanization findings
 
-1. `GtzWeighted 6 3` and `GtzWeighted 7 3` — the campaign's binding open
-   mathematics (statement (1)/(2) residuals; math frontier LIVE — the audited
-   GAP-S platform layer is kernel-checked in `PlanarPlatform.lean`; the open
-   residue is the σ-free Łojasiewicz core + GAP-T + statement-(2) residuals).
-2. The canonical window 2s ≤ m ≤ s(s+1)/2 + 1 for s ≥ 4 — open mathematics.
-(The certificate infrastructure is complete: `cap_criterion` landed
-de-spectralized — the signature-(k−1,1) hypothesis became a witness pair, a
-negative direction plus PSD-ness on its N-orthogonal complement, resolving
-R-MECH-1 by reformulation. THE REPOSITORY IS 100% SORRY-FREE: every formal
-obligation of the campaign's proven ledger is kernel-checked.)
+Discoveries made *by* the formalization, not merely recorded in it:
 
-Theorem-N mechanization notes (landed): the informal W^{−1/2} matrix square
-root is GONE — any whitening R with RᵀWR = I works (consumed from the
-C*-factorization `CStarAlgebra.nonneg_iff_eq_star_mul_self`, the only
-spectral-backed import); the two "spectra-sharing" steps of the informal proof
-are replaced by the sqrt-free Cauchy–Schwarz flip (`PsdKit`): |Xᵀw|⁴ =
-⟨w, X(Xᵀw)⟩² ≤ |w|²·|X(Xᵀw)|² ≤ |w|²·|Xᵀw|², squares only. `1 ≤ k` IS needed
-here (k = 0 kills the co-design), unlike the bridge and crystallization.
-
-Landed since: `original_of_weighted` (bridge, all n ≥ 1 — statement hygiene:
-`1 ≤ k` and `k < n` both turned out unnecessary; the n = k square case rides
-along free). `crystallization` at the SHARP M(k) = k(k+1)/2 + 1 — no
-Carathéodory and no symmetric-matrix finrank needed: the moment map reads the
-upper triangle (`Sym2.sortEquiv` + `Sym2.card` count k(k+1)/2), the kernel walk
-does the support drop by hand, and domination pulls back because `subsetSum`
-never reads weights; `1 ≤ k` again unnecessary.
-
-Proof-technique note (B_k, landed): the informally-planned "exact spectrum of
-(k+1)I − h_dh_dᵀ" was never needed — the pigeonhole consumes the forced balance
-directly, and S = (k+1)I comes from Gram algebra alone (S² = (k+1)S, PSD
-remainder of trace zero), keeping the whole file spectral-theory-free.
+- **Theorem V's hidden hypothesis.** The informal proof works in an angle
+  parameterization that silently assumes the cyclic branch. The elimination
+  actually factors as spread × co-spread, and the co-spread factor scaled by
+  the leverage product equals ℓ_A + ℓ_B + ℓ_C − 2 > 0 — so the branch is
+  *selected* by an inequality, not assumed.
+- **The max-degree theorem consumes dust exclusion.** Its polar normal is
+  nonzero only when ν|ξ| < ½, which needs ν ≥ 0 — quietly downstream of the
+  Gordan covering theorem. The informal one-line proof states neither side
+  condition.
+- **The interface pair that composed to the empty set** is now a theorem in
+  both directions: the recorded pair is vacuous, the repaired √τ₀ pair is
+  nonvacuous, and the one-line nonvacuity test that would have caught it is
+  kernel-checked.
+- **Statement hygiene.** The bridge and crystallization need neither `1 ≤ k`
+  nor `k < n`; Naimark duality genuinely needs `1 ≤ k`; the pigeonhole needs
+  `1 ≤ k`; dust-ness is unnecessary for the dust-deficit bound.
+- **No spectra anywhere.** Every informally-spectral step (Naimark's W^{−1/2},
+  B_k's eigenvalue computation, the cap criterion's signature count) was
+  replaced by polarization, Gram algebra, or a witness pair — the whole
+  development is free of eigenvalue theory except one C*-factorization import.
