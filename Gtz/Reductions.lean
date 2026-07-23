@@ -369,4 +369,16 @@ theorem gtzWeighted_of_le_five (m k : ℕ) (hk : 1 ≤ k) (hm : m ≤ 5) :
     · subst h
       exact gtzWeighted_corank_two k (by omega) D
 
+/-- **The duality involution, as an iff**: weighted GTZ transfers both ways
+across complementary ranks — sharpening the open frontier to dual pairs
+(e.g. (7,3) ⟺ (7,4)). -/
+theorem gtzWeighted_dual_iff (m k : ℕ) (hk : 1 ≤ k) (hkm : k + 1 ≤ m) :
+    GtzWeighted m k ↔ GtzWeighted m (m - k) := by
+  constructor
+  · intro h
+    refine gtzWeighted_of_dual_rank (by omega) (by omega) ?_
+    rw [show m - (m - k) = k from by omega]
+    exact h
+  · exact gtzWeighted_of_dual_rank hk hkm
+
 end Gtz
