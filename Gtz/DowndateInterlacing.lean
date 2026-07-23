@@ -108,4 +108,29 @@ theorem pivot_prices_overlap {E : Matrix (Fin k) (Fin k) ℝ}
   rw [discrim] at hdisc
   nlinarith [hdisc]
 
+/-- **Lemma P1, matrix form** — the packaged seam bound: a positive definite
+symmetric excess `E`, a unit probe with `⟨v,Ev⟩ ≤ cap`, and an atom whose
+pivot gap `⟨g,E⁻¹g⟩` is at most `pivotGap` keep the erased form above
+`1 − pivotGap·cap`. `pivot_prices_overlap` discharges the pricing,
+`erased_form_reading` reads the form; the rest is ordered-field arithmetic.
+At `qspread ρ` this is exactly "every insider erase keeps
+`λ_min ≥ 1 − ρ·cap`" — Lemma P1's conclusion with zero unproven inputs. -/
+theorem erased_floor_of_pivot_gap {E : Matrix (Fin k) (Fin k) ℝ}
+    (hE : E.PosDef) (hET : Eᵀ = E) (atom probe : Fin k → ℝ)
+    (hunit : probe ⬝ᵥ probe = 1) {pivotGap cap : ℝ}
+    (hgapNonneg : 0 ≤ pivotGap)
+    (hpivot : atom ⬝ᵥ (E⁻¹ *ᵥ atom) ≤ pivotGap)
+    (hcap : probe ⬝ᵥ (E *ᵥ probe) ≤ cap) :
+    1 - pivotGap * cap
+      ≤ probe ⬝ᵥ (((1 + E) - atomMatrix atom) *ᵥ probe) := by
+  rw [erased_form_reading E atom probe hunit]
+  have hpriced := pivot_prices_overlap hE hET atom probe
+  have hformNonneg : 0 ≤ probe ⬝ᵥ (E *ᵥ probe) := by
+    have hform := (Matrix.posSemidef_iff_dotProduct_mulVec.mp
+      hE.posSemidef).2 probe
+    rwa [star_trivial] at hform
+  linarith [hpriced,
+    mul_le_mul_of_nonneg_right hpivot hformNonneg,
+    mul_le_mul_of_nonneg_left hcap hgapNonneg]
+
 end Gtz
