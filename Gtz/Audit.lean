@@ -295,3 +295,4 @@ import Gtz.Interface
 #print axioms Gtz.corner_normal_form
 #print axioms Gtz.corner_covering
 #print axioms Gtz.corner_extra_caught
+#print axioms Gtz.corner_cap_negative_direction

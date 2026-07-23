@@ -206,4 +206,23 @@ theorem corner_extra_caught (hk : 1 ≤ k)
     nlinarith [hheavy, hkPos, hratio]
   linarith
 
+/-- **The cap base's negative direction**: the difference of the two omitted
+simplex vectors is an exact `−1`-eigenvector of the gate cap base, with form
+value `−(2k+2)`. This is the witness the de-spectralized cap criterion's
+signature pair consumes — produced by Gram algebra, not by a spectrum. -/
+theorem corner_cap_negative_direction {gateFirst gateSecond : Fin k → ℝ}
+    (hfirst : gateFirst ⬝ᵥ gateFirst = (k : ℝ))
+    (hsecond : gateSecond ⬝ᵥ gateSecond = (k : ℝ))
+    (hcross : gateFirst ⬝ᵥ gateSecond = -1) :
+    (gateFirst - gateSecond) ⬝ᵥ
+        (((k : ℝ) • 1 - atomMatrix gateFirst - atomMatrix gateSecond)
+          *ᵥ (gateFirst - gateSecond))
+      = -(2 * k + 2) := by
+  have hcross' : gateSecond ⬝ᵥ gateFirst = -1 := by
+    rw [dotProduct_comm]; exact hcross
+  simp only [Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec,
+    atomMatrix, vecMulVec_mulVec_general, dotProduct_sub, sub_dotProduct,
+    dotProduct_smul, smul_eq_mul, hfirst, hsecond, hcross, hcross']
+  ring
+
 end Gtz
