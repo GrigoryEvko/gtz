@@ -511,3 +511,5 @@ import Gtz.Interface
 #print axioms Gtz.liftingLemma_two_iff_the_two_residuals
 #print axioms Gtz.pivot_form_le_leverage_div_margin
 #print axioms Gtz.pivot_form_le_leverage_of_dominated
+#print axioms Gtz.liftingLemma_all_iff_gtzWeightedAll
+#print axioms Gtz.liftingLemma_all_of_canonical_windows

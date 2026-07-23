@@ -632,4 +632,24 @@ theorem liftingLemma_two_iff_the_two_residuals :
     LiftingLemma 2 ↔ (GtzWeighted 6 3 ∧ GtzWeighted 7 3) :=
   liftingLemma_iff_gtzWeighted_succ.trans rank_three_iff_the_two_residuals
 
+/-- **The ladder is the problem, at the family level**: every Lifting
+Lemma holds iff weighted GTZ holds at every rank. -/
+theorem liftingLemma_all_iff_gtzWeightedAll :
+    (∀ k, LiftingLemma k) ↔ ∀ k, GtzWeightedAll k :=
+  ⟨gtzWeightedAll_of_liftingLemma,
+    fun hgtz k => liftingLemma_of_gtzWeighted (hgtz (k + 1))⟩
+
+/-- **The canonical windows generate the whole ladder** (the s ≥ 4 window
+frontier wired to the all-k frontier): the FINITE window family
+`2s ≤ m ≤ s(s+1)/2 + 1` per rank yields EVERY Lifting Lemma — the
+strong-induction master reduction feeds the converse collapse rank by
+rank. Crystallization makes each rank's obligation finite; the ladder
+turns the finite obligations into the full problem. -/
+theorem liftingLemma_all_of_canonical_windows
+    (hwindows : ∀ s m', 2 ≤ s → 2 * s ≤ m' → m' ≤ s * (s + 1) / 2 + 1 →
+      GtzWeighted m' s) :
+    ∀ k, LiftingLemma k := fun k =>
+  liftingLemma_of_gtzWeighted
+    (gtz_of_canonical_list hwindows (k + 1) (Nat.le_add_left 1 k))
+
 end Gtz
