@@ -72,6 +72,7 @@ import Gtz.WhiteningDistortion
 import Gtz.ClosureObtuse
 import Gtz.SymmetryReduction
 import Gtz.DeflationCertificate
+import Gtz.LeverageBound
 import Gtz.Certs.PFourCertificate
 import Gtz.Certs.CFiveCertificate
 import Gtz.Interface
@@ -463,6 +464,9 @@ import Gtz.Interface
 #print axioms Gtz.congruence_psd_transfer
 #print axioms Gtz.deflated_singular_floor
 #print axioms Gtz.deflated_floor_kills_kernel
+#print axioms Gtz.leverageOf_eq_dotProduct
+#print axioms Gtz.weighted_leverage_le_one
+#print axioms Gtz.leverage_le_of_weight_floor
 #print axioms Gtz.p4_geometric_certificate_variety_empty
 #print axioms Gtz.leaf_tangency_corner_certificate
 #print axioms Gtz.c5_p5stress_geometric_certificate_variety_empty
