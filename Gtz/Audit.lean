@@ -56,6 +56,7 @@ import Gtz.LeafTangency
 import Gtz.CapDictionary
 import Gtz.MarginTransfer
 import Gtz.AggregatePushoff
+import Gtz.CornerPerturbation
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -371,3 +372,9 @@ import Gtz.Interface
 #print axioms Gtz.margin_transfer_priced
 #print axioms Gtz.aggregate_pushoff
 #print axioms Gtz.aggregate_pushoff_pigeonhole
+#print axioms Gtz.corner_cap_mulVec
+#print axioms Gtz.corner_cap_transpose
+#print axioms Gtz.corner_cap_form_sq
+#print axioms Gtz.corner_cap_expansion
+#print axioms Gtz.corner_cap_form_le
+#print axioms Gtz.corner_resolvent_perturbation
