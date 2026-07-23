@@ -1,26 +1,80 @@
 /-
 # GTZ — the Goreinov–Tyrtyshnikov–Zamarashkin problem, formalized
 
-Root module: imports the whole development. See README.md for the problem, the
-architecture, and the status ledger.
+Root module: imports the whole development — every module, including the
+certificate/geometric layers and the audit ledger. See README.md for the
+problem, the architecture, and the status ledger.
 -/
+import Gtz.AggregatePushoff
+import Gtz.BallPerturbation
 import Gtz.Basic
+import Gtz.BernsteinPositivity
 import Gtz.BhatiaDavis
+import Gtz.BlochDictionary
+import Gtz.CapCriterion
+import Gtz.CapDictionary
+import Gtz.CapSlack
+import Gtz.CertificateAnchor
+import Gtz.CertificateFrame
+import Gtz.Certs.CFiveCertificate
+import Gtz.Certs.PFourCertificate
+import Gtz.ChordTheorem
+import Gtz.ClosureObtuse
+import Gtz.CollarFloor
+import Gtz.CollinearStratum
+import Gtz.Completeness
+import Gtz.Completion
+import Gtz.ComplexPadding
+import Gtz.ComplexWitness
+import Gtz.Compression
+import Gtz.CornerFiber
+import Gtz.CornerPerturbation
+import Gtz.CornerResolvent
+import Gtz.CoveringMargin
+import Gtz.Crystallization
+import Gtz.CyclicStress
+import Gtz.Deflation
+import Gtz.DeflationCertificate
+import Gtz.DescentLadder
+import Gtz.DowndateInterlacing
+import Gtz.DustControl
+import Gtz.EulerPairing
+import Gtz.FirstOrderLaw
+import Gtz.FrameEncoding
+import Gtz.GeometricExclusion
+import Gtz.GordanAlternative
+import Gtz.IdempotentSplitting
+import Gtz.Interface
+import Gtz.LawCounterexample
+import Gtz.LawEquivalence
+import Gtz.LeafTangency
+import Gtz.LeverageBound
+import Gtz.LocalLaw
+import Gtz.MarginTransfer
+import Gtz.MomentBound
+import Gtz.MomentCovector
+import Gtz.Naimark
+import Gtz.PThreeStratum
+import Gtz.PlanarPlatform
+import Gtz.PsdKit
+import Gtz.Pushoff
+import Gtz.QuantitativeCorner
+import Gtz.RankTwo
+import Gtz.RatCertificate
+import Gtz.Reductions
+import Gtz.ResolventPerturbation
 import Gtz.Sanity
 import Gtz.SchurRankOne
-import Gtz.TraceIdentity
-import Gtz.CapCriterion
-import Gtz.Naimark
-import Gtz.Crystallization
-import Gtz.CornerFiber
-import Gtz.PlanarPlatform
-import Gtz.BlochDictionary
-import Gtz.DustControl
-import Gtz.LawCounterexample
-import Gtz.Pushoff
+import Gtz.Seam
+import Gtz.SilenceDictionary
+import Gtz.SplittingRule
+import Gtz.StressFrame
+import Gtz.SylvesterThree
+import Gtz.SymmetryReduction
+import Gtz.TiedQuadruple
 import Gtz.TightGraph
-import Gtz.CertificateFrame
-import Gtz.LocalLaw
-import Gtz.Interface
-import Gtz.Reductions
+import Gtz.TraceIdentity
+import Gtz.TwoByTwo
+import Gtz.WedgeChain
+import Gtz.WhiteningDistortion
 import Gtz.Audit
