@@ -296,3 +296,6 @@ import Gtz.Interface
 #print axioms Gtz.corner_covering
 #print axioms Gtz.corner_extra_caught
 #print axioms Gtz.corner_cap_negative_direction
+#print axioms Gtz.corner_cap_mulVec_diff
+#print axioms Gtz.corner_cap_psd_on_complement
+#print axioms Gtz.corner_gate_cap_iff

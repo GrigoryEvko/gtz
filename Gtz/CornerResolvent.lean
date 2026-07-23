@@ -20,6 +20,9 @@ import Mathlib
 import Gtz.Basic
 import Gtz.BhatiaDavis
 import Gtz.CornerFiber
+import Gtz.CapCriterion
+import Gtz.Sanity
+import Gtz.SchurRankOne
 
 namespace Gtz
 
@@ -224,5 +227,133 @@ theorem corner_cap_negative_direction {gateFirst gateSecond : Fin k → ℝ}
     atomMatrix, vecMulVec_mulVec_general, dotProduct_sub, sub_dotProduct,
     dotProduct_smul, smul_eq_mul, hfirst, hsecond, hcross, hcross']
   ring
+
+/-- The cap base sends the difference vector to its negative — the exact
+`−1`-eigenvector equation. -/
+theorem corner_cap_mulVec_diff {gateFirst gateSecond : Fin k → ℝ}
+    (hfirst : gateFirst ⬝ᵥ gateFirst = (k : ℝ))
+    (hsecond : gateSecond ⬝ᵥ gateSecond = (k : ℝ))
+    (hcross : gateFirst ⬝ᵥ gateSecond = -1) :
+    ((k : ℝ) • 1 - atomMatrix gateFirst - atomMatrix gateSecond)
+        *ᵥ (gateFirst - gateSecond)
+      = -(gateFirst - gateSecond) := by
+  have hcross' : gateSecond ⬝ᵥ gateFirst = -1 := by
+    rw [dotProduct_comm]; exact hcross
+  simp only [Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec,
+    atomMatrix, vecMulVec_mulVec_general, Matrix.mulVec_sub, dotProduct_sub,
+    hfirst, hsecond, hcross, hcross']
+  ext coord
+  simp only [Pi.sub_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul]
+  ring
+
+/-- **The cap base is positive on the difference's orthogonal complement**:
+`vᵀBv = k|v|² − x² − y²` with `x = ⟨u,v⟩`, `y = ⟨w,v⟩`, and the constraint
+`vᵀB(u−w) = 0` forces `x = y`; Cauchy–Schwarz against `u+w` (whose squared
+length is `2k−2`) then gives `2x² ≤ (k−1)|v|²`, leaving `vᵀBv ≥ |v|² ≥ 0`.
+The de-spectralized half of the signature-(k−1,1) witness pair. -/
+theorem corner_cap_psd_on_complement {gateFirst gateSecond : Fin k → ℝ}
+    (hfirst : gateFirst ⬝ᵥ gateFirst = (k : ℝ))
+    (hsecond : gateSecond ⬝ᵥ gateSecond = (k : ℝ))
+    (hcross : gateFirst ⬝ᵥ gateSecond = -1) (probe : Fin k → ℝ)
+    (hperp : probe ⬝ᵥ
+      (((k : ℝ) • 1 - atomMatrix gateFirst - atomMatrix gateSecond)
+        *ᵥ (gateFirst - gateSecond)) = 0) :
+    0 ≤ probe ⬝ᵥ
+      (((k : ℝ) • 1 - atomMatrix gateFirst - atomMatrix gateSecond)
+        *ᵥ probe) := by
+  set firstCoord := gateFirst ⬝ᵥ probe with hfirstCoord
+  set secondCoord := gateSecond ⬝ᵥ probe with hsecondCoord
+  -- the constraint collapses to equality of the two frame coordinates
+  have hequal : firstCoord = secondCoord := by
+    rw [corner_cap_mulVec_diff hfirst hsecond hcross, dotProduct_neg,
+      dotProduct_sub, neg_eq_zero, sub_eq_zero] at hperp
+    rw [hfirstCoord, hsecondCoord, dotProduct_comm gateFirst probe,
+      dotProduct_comm gateSecond probe]
+    exact hperp
+  -- the quadratic form in frame coordinates
+  have hform : probe ⬝ᵥ
+      (((k : ℝ) • 1 - atomMatrix gateFirst - atomMatrix gateSecond) *ᵥ probe)
+      = (k : ℝ) * (probe ⬝ᵥ probe) - firstCoord ^ 2 - secondCoord ^ 2 := by
+    simp only [Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec,
+      atomMatrix, vecMulVec_mulVec_general, dotProduct_sub, dotProduct_smul,
+      smul_eq_mul, dotProduct_comm probe gateFirst,
+      dotProduct_comm probe gateSecond]
+    rw [← hfirstCoord, ← hsecondCoord]
+    ring
+  -- Cauchy–Schwarz against the sum vector, whose squared length is 2k − 2
+  have hsumSq : (gateFirst + gateSecond) ⬝ᵥ (gateFirst + gateSecond)
+      = 2 * k - 2 := by
+    have hcross' : gateSecond ⬝ᵥ gateFirst = -1 := by
+      rw [dotProduct_comm]; exact hcross
+    rw [dotProduct_add, add_dotProduct, add_dotProduct, hfirst, hsecond,
+      hcross, hcross']
+    ring
+  have hcs : ((gateFirst + gateSecond) ⬝ᵥ probe) ^ 2
+      ≤ ((gateFirst + gateSecond) ⬝ᵥ (gateFirst + gateSecond))
+        * (probe ⬝ᵥ probe) := by
+    simp only [dotProduct, pow_two]
+    have := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ
+      (fun i => (gateFirst + gateSecond) i) (fun i => probe i)
+    calc (∑ i, (gateFirst + gateSecond) i * probe i)
+          * (∑ i, (gateFirst + gateSecond) i * probe i)
+        ≤ (∑ i, (gateFirst + gateSecond) i ^ 2) * (∑ i, probe i ^ 2) := by
+          nlinarith [this]
+      _ = (∑ i, (gateFirst + gateSecond) i * (gateFirst + gateSecond) i)
+          * (∑ i, probe i * probe i) := by
+          congr 1 <;> exact Finset.sum_congr rfl fun i _ => (pow_two _)
+  have hsumCoord : (gateFirst + gateSecond) ⬝ᵥ probe
+      = firstCoord + secondCoord := by
+    rw [add_dotProduct, hfirstCoord, hsecondCoord]
+  rw [hform]
+  rw [hsumCoord, hsumSq] at hcs
+  have hprobeSq : 0 ≤ probe ⬝ᵥ probe := by
+    simp only [dotProduct]
+    exact Finset.sum_nonneg fun i _ => mul_self_nonneg (probe i)
+  nlinarith [hcs, hequal, hprobeSq]
+
+/-- **The corner gate is a genuine cap**: all four hypotheses of the
+de-spectralized cap criterion hold at the corner, so for EVERY extra atom the
+cap test is exactly the depth threshold: `(B + ggᵀ) ⪰ 0 ⟺ gᵀB⁻¹g ≤ −1`.
+Branch (b) of the certificate fires at the corner as a theorem, with the
+signature witness produced by Gram algebra alone. -/
+theorem corner_gate_cap_iff (hk : 1 ≤ k) {gateFirst gateSecond : Fin k → ℝ}
+    (hfirst : gateFirst ⬝ᵥ gateFirst = (k : ℝ))
+    (hsecond : gateSecond ⬝ᵥ gateSecond = (k : ℝ))
+    (hcross : gateFirst ⬝ᵥ gateSecond = -1) (extra : Fin k → ℝ) :
+    (((k : ℝ) • 1 - atomMatrix gateFirst - atomMatrix gateSecond)
+        + Matrix.vecMulVec extra extra).PosSemidef
+      ↔ extra ⬝ᵥ (((k : ℝ) • 1 - atomMatrix gateFirst
+          - atomMatrix gateSecond)⁻¹ *ᵥ extra) ≤ -1 := by
+  have hkPos : (0 : ℝ) < k := by exact_mod_cast hk
+  set capBase := (k : ℝ) • 1 - atomMatrix gateFirst - atomMatrix gateSecond
+    with hcapBase
+  -- symmetry
+  have hsym : capBaseᵀ = capBase := by
+    rw [hcapBase, Matrix.transpose_sub, Matrix.transpose_sub,
+      Matrix.transpose_smul, Matrix.transpose_one,
+      transpose_eq_of_isHermitian (posSemidef_atomMatrix gateFirst).1,
+      transpose_eq_of_isHermitian (posSemidef_atomMatrix gateSecond).1]
+  -- invertibility from the resolvent product
+  have hdet : IsUnit capBase.det := by
+    have hproduct := corner_cap_mul hfirst hsecond hcross
+    have hdetEq := congrArg Matrix.det hproduct
+    rw [Matrix.det_mul, Matrix.det_smul, Matrix.det_one, mul_one] at hdetEq
+    refine isUnit_iff_ne_zero.mpr fun hzero => ?_
+    rw [hcapBase] at hzero
+    rw [hzero, zero_mul] at hdetEq
+    have hpow : ((k : ℝ)) ^ (Fintype.card (Fin k)) ≠ 0 :=
+      pow_ne_zero _ (ne_of_gt hkPos)
+    exact hpow hdetEq.symm
+  -- the negative direction
+  have hneg : (gateFirst - gateSecond) ⬝ᵥ
+      (capBase *ᵥ (gateFirst - gateSecond)) < 0 := by
+    rw [hcapBase, corner_cap_negative_direction hfirst hsecond hcross]
+    have : (0 : ℝ) < 2 * k + 2 := by linarith
+    linarith
+  -- PSD on the complement
+  have hpsd : ∀ probe, probe ⬝ᵥ (capBase *ᵥ (gateFirst - gateSecond)) = 0
+      → 0 ≤ probe ⬝ᵥ (capBase *ᵥ probe) := fun probe hperp =>
+    corner_cap_psd_on_complement hfirst hsecond hcross probe hperp
+  exact cap_criterion hsym hdet hneg hpsd extra
 
 end Gtz
