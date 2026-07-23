@@ -26,6 +26,8 @@ import Gtz.BlochDictionary
 import Gtz.DustControl
 import Gtz.LawCounterexample
 import Gtz.Pushoff
+import Gtz.TightGraph
+import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -163,3 +165,13 @@ import Gtz.Pushoff
 #print axioms Gtz.dustOnly_completion_forces_saturation
 #print axioms Gtz.det_sub_vecMulVec_two
 #print axioms Gtz.depth_eq_one_sub_zmass
+#print axioms Gtz.unitCircle_line_le_two
+#print axioms Gtz.tight_iff_polar
+#print axioms Gtz.polarNormal_ne_zero
+#print axioms Gtz.tight_partners_le_two
+#print axioms Gtz.star_three_impossible
+#print axioms Gtz.oldInterfacePair_vacuous
+#print axioms Gtz.ballTauCeiling
+#print axioms Gtz.newInterfacePair_nonempty
+#print axioms Gtz.interfaceFormula_rounds_down
+#print axioms Gtz.interfacePair_nonvacuous_iff
