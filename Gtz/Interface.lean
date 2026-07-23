@@ -58,9 +58,14 @@ theorem ballTauCeiling (tieWeight : ℝ) (hnonneg : 0 ≤ tieWeight)
   have hrate := cornerDistanceRate_lower
   nlinarith [hrate, hinBall, hnonneg]
 
-/-- **The repaired pair is nonvacuous**: with `τ₀* = 10⁻¹²` and
-`ε₀′* = 1.95·10⁻¹²` from the `√τ₀` law, there are tied points satisfying BOTH
-constraints — an explicit witness at `τ = 1.59·10⁻¹²`. -/
+/-- **The repaired pair is nonvacuous** (SUPERSEDED — historical record):
+with `τ₀* = 10⁻¹²` and `ε₀′* = 1.95·10⁻¹²` from the `√τ₀` law, there are
+tied points satisfying BOTH constraints — an explicit witness at
+`τ = 1.59·10⁻¹²`. The subgapv-completion audit showed the `2.76·10⁻⁶`
+coefficient behind this radius is NO LONGER DERIVABLE from the certified
+continuum constants (`C₂·(2.76·10⁻⁶)² = 3.66·10⁻⁶ > r* = 3.4855·10⁻⁶`);
+consumers must use `correctedInterfacePair_nonempty` below. The theorem
+itself remains true as stated (a larger ball is nonvacuous a fortiori). -/
 theorem newInterfacePair_nonempty :
     ∃ tieWeight : ℝ, (1 : ℝ)/10^12 ≤ tieWeight
       ∧ cornerDistanceRate * tieWeight ≤ (195 : ℝ)/10^14 := by
