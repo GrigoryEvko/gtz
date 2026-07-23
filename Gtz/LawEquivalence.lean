@@ -86,4 +86,28 @@ theorem tube_law_from_rate_curvature {phi dist rate curv : ℝ}
     nlinarith [hstep]
   linarith [hexpansion, hcurvTerm]
 
+/-- **The first-order-model tube expansion**: the reverse-triangle bridge
+that PRODUCES `tube_law_from_rate_curvature`'s hypothesis from a Jacobian
+singular floor. In any normed space, if the value splits as
+`value = linearPart + remainder` with the linear part floored by the
+singular value (`rate·dist ≤ ‖linearPart‖`) and the remainder bounded by
+the curvature (`‖remainder‖ ≤ curv·dist²`), then the value's norm obeys the
+first-order expansion `rate·dist − curv·dist² ≤ ‖value‖`. This is exactly
+how `σ₉(F_tan) ≥ 1/5` (the certified singular floor) feeds the tube law:
+the margin `‖F(x)‖` inherits the linear rate up to the second-order
+remainder. -/
+theorem linear_model_tube_expansion {normedSpace : Type*}
+    [NormedAddCommGroup normedSpace] {value linearPart remainder : normedSpace}
+    {rate curv dist : ℝ}
+    (hsplit : value = linearPart + remainder)
+    (hlinearFloor : rate * dist ≤ ‖linearPart‖)
+    (hremainderBound : ‖remainder‖ ≤ curv * dist ^ 2) :
+    rate * dist - curv * dist ^ 2 ≤ ‖value‖ := by
+  have hreverse : ‖linearPart‖ - ‖remainder‖ ≤ ‖value‖ := by
+    rw [hsplit]
+    have htri := norm_sub_norm_le linearPart (-remainder)
+    rw [sub_neg_eq_add, norm_neg] at htri
+    exact htri
+  linarith [hreverse, hlinearFloor, hremainderBound]
+
 end Gtz

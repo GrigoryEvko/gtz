@@ -451,6 +451,7 @@ import Gtz.Interface
 #print axioms Gtz.law_confines_zero_set
 #print axioms Gtz.two_piece_law_assembly
 #print axioms Gtz.tube_law_from_rate_curvature
+#print axioms Gtz.linear_model_tube_expansion
 #print axioms Gtz.whitening_form_lower
 #print axioms Gtz.whitening_form_upper
 #print axioms Gtz.whitening_gram_exact
