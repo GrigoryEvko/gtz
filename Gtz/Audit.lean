@@ -192,3 +192,11 @@ import Gtz.Interface
 #print axioms Gtz.budget_le_vertex_bound
 #print axioms Gtz.weightSplit_design_invariant
 #print axioms Gtz.weightSplit_defect_invariant
+#print axioms Gtz.sum_weighted_leverage
+#print axioms Gtz.exists_leverage_ge_rank
+#print axioms Gtz.gtzWeightedAll_of_heavy
+#print axioms Gtz.gtzWeightedAll_of_heavy_bounded
+#print axioms Gtz.rank_three_of_heavy_residuals
+#print axioms Gtz.gtz_original_of_heavy_window
+#print axioms Gtz.gtz_original_rank_three_of_heavy
+#print axioms Gtz.allHeavy_rank_gt_one

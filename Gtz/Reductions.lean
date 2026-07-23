@@ -381,4 +381,151 @@ theorem gtzWeighted_dual_iff (m k : ℕ) (hk : 1 ≤ k) (hkm : k + 1 ≤ m) :
     exact h
   · exact gtzWeighted_of_dual_rank hk hkm
 
+
+/-! ### The leverage floor (C0) -/
+
+/-- **The weighted leverage identity**: Parseval's trace gives `Σ t_c ℓ_c = k`
+— the total weighted leverage of any design is its rank. -/
+theorem sum_weighted_leverage (D : WeightedDesign m k) :
+    (∑ c, D.weight c * leverageOf (D.atom c)) = k := by
+  have htrace := congrArg Matrix.trace D.isParseval
+  rw [Matrix.trace_sum, Matrix.trace_one, Fintype.card_fin] at htrace
+  rw [← htrace]
+  exact Finset.sum_congr rfl fun c _ => by
+    rw [Matrix.trace_smul, trace_atomMatrix, smul_eq_mul]
+
+/-- **C0, the leverage floor**: some atom carries leverage at least the rank.
+The weighted average of the leverages IS the rank, so the maximum cannot fall
+below it. (At rank 3 this is the campaign's `ℓ_max ≥ 3`, the entry point of
+the gate-cap descent.) -/
+theorem exists_leverage_ge_rank (D : WeightedDesign m k) (hk : 1 ≤ k) :
+    ∃ c, (k : ℝ) ≤ leverageOf (D.atom c) := by
+  have hm : 0 < m := lt_of_lt_of_le hk (rank_le_of_design D)
+  by_contra hnone
+  push Not at hnone
+  have hstrict : (∑ c, D.weight c * leverageOf (D.atom c))
+      < ∑ c, D.weight c * (k : ℝ) := by
+    refine Finset.sum_lt_sum_of_nonempty ?_ fun c _ => ?_
+    · rw [Finset.univ_nonempty_iff]
+      exact Fin.pos_iff_nonempty.mp hm
+    · exact mul_lt_mul_of_pos_left (hnone c) (D.weight_pos c)
+  rw [← Finset.sum_mul, D.weight_sum_one, one_mul, sum_weighted_leverage] at hstrict
+  exact lt_irrefl _ hstrict
+
+/-! ### The all-heavy reduction -/
+
+/-- A design is **all-heavy** when every atom has leverage above one. The
+gate-cap machinery of the campaign only ever analyses such designs; the light
+case is discharged by deflation, which is already a theorem here. -/
+def AllHeavy (D : WeightedDesign m k) : Prop :=
+  ∀ c, 1 < leverageOf (D.atom c)
+
+/-- Weighted GTZ restricted to all-heavy designs at a given size. -/
+def GtzWeightedHeavy (m k : ℕ) : Prop :=
+  ∀ D : WeightedDesign m k, AllHeavy D →
+    ∃ C : Finset (Fin m), C.card = k ∧ Dominates D C
+
+/-- **The all-heavy reduction**: if every ALL-HEAVY design of every size
+dominates, then every design does. Light atoms deflate (`dominating_of_light_atom`),
+and deflation strictly decreases the size, so a strong induction closes — with
+the square case `m = k` handled directly, since deflation needs a surviving
+atom. This is the reduction the whole gate-cap analysis silently assumes. -/
+theorem gtzWeightedAll_of_heavy {k : ℕ} (hk : 1 ≤ k)
+    (hheavy : ∀ m, GtzWeightedHeavy m k) : GtzWeightedAll k := by
+  intro m
+  induction m using Nat.strong_induction_on with
+  | _ m ih =>
+    intro D
+    have hkm : k ≤ m := rank_le_of_design D
+    rcases eq_or_lt_of_le hkm with hsquare | hstrict
+    · subst hsquare
+      exact gtzWeighted_square k D
+    · by_cases hlight : ∃ d, leverageOf (D.atom d) ≤ 1
+      · obtain ⟨d, hd⟩ := hlight
+        obtain ⟨mpred, rfl⟩ : ∃ mpred, m = mpred + 1 := ⟨m - 1, by omega⟩
+        exact dominating_of_light_atom D (by omega) (ih mpred (by omega)) d hd
+      · push Not at hlight
+        exact hheavy m D hlight
+
+/-- **The sharpened canonical statement**: GTZ at rank `k` needs only the
+ALL-HEAVY designs of size at most `M(k) = k(k+1)/2 + 1`. Crystallization caps
+the support, deflation removes light atoms, and the square case closes the
+bottom — so the entire conjecture at rank `k` sits on a finite family of
+all-heavy designs. -/
+theorem gtzWeightedAll_of_heavy_bounded {k : ℕ} (hk : 1 ≤ k)
+    (hheavy : ∀ m, m ≤ k * (k + 1) / 2 + 1 → GtzWeightedHeavy m k) :
+    GtzWeightedAll k := by
+  -- Crystallization reduces to sizes below the moment bound; inside that
+  -- range the deflation induction runs, never leaving it.
+  refine crystallization k fun m hm => ?_
+  induction m using Nat.strong_induction_on with
+  | _ m ih =>
+    intro D
+    have hkm : k ≤ m := rank_le_of_design D
+    rcases eq_or_lt_of_le hkm with hsquare | hstrict
+    · subst hsquare
+      exact gtzWeighted_square k D
+    · by_cases hlight : ∃ d, leverageOf (D.atom d) ≤ 1
+      · obtain ⟨d, hd⟩ := hlight
+        obtain ⟨mpred, rfl⟩ : ∃ mpred, m = mpred + 1 := ⟨m - 1, by omega⟩
+        exact dominating_of_light_atom D (by omega)
+          (ih mpred (by omega) (by omega)) d hd
+      · push Not at hlight
+        exact hheavy m hm D hlight
+
+/-- **The frontier, sharpened**: rank 3 closes as soon as the ALL-HEAVY
+designs of sizes 6 and 7 dominate. Everything else at rank 3 — every size, and
+every design with a light atom — is already a theorem. -/
+theorem rank_three_of_heavy_residuals
+    (h63 : GtzWeightedHeavy 6 3) (h73 : GtzWeightedHeavy 7 3) :
+    GtzWeightedAll 3 := by
+  refine gtzWeightedAll_of_heavy_bounded (by omega) fun m hm => ?_
+  norm_num at hm
+  interval_cases m
+  · exact fun D _ => absurd (rank_le_of_design D) (by omega)
+  · exact fun D _ => absurd (rank_le_of_design D) (by omega)
+  · exact fun D _ => absurd (rank_le_of_design D) (by omega)
+  · exact fun D _ => gtzWeighted_square 3 D
+  · exact fun D _ => gtzWeighted_of_dual_rank (by omega) (by omega)
+      (gtz_rank_one 4) D
+  · exact fun D _ => gtzWeighted_of_dual_rank (by omega) (by omega)
+      (gtz_rank_two 5) D
+  · exact h63
+  · exact h73
+
+
+/-- **The sharpened original statement**: the 1997 conjecture for every `(n,k)`
+follows from the ALL-HEAVY designs of the canonical window alone. Chaining the
+all-heavy reduction with the bridge, this is the tightest formal statement of
+what remains: every design with a light atom, every size outside the window,
+and every rank below three are theorems. -/
+theorem gtz_original_of_heavy_window {k : ℕ} (hk : 1 ≤ k)
+    (hheavy : ∀ m, m ≤ k * (k + 1) / 2 + 1 → GtzWeightedHeavy m k) :
+    ∀ n, 0 < n → GtzOriginal n k :=
+  original_of_weighted k (gtzWeightedAll_of_heavy_bounded hk hheavy)
+
+/-- Rank three, original form, from the two all-heavy residuals. -/
+theorem gtz_original_rank_three_of_heavy
+    (h63 : GtzWeightedHeavy 6 3) (h73 : GtzWeightedHeavy 7 3) :
+    ∀ n, 0 < n → GtzOriginal n 3 :=
+  original_of_weighted 3 (rank_three_of_heavy_residuals h63 h73)
+
+/-- **The all-heavy frontier is genuinely narrower**: an all-heavy design has
+every leverage above one, so its weighted leverage identity forces the rank to
+exceed one — rank-one designs are never all-heavy, and the reduction's content
+sits entirely at rank ≥ 2. -/
+theorem allHeavy_rank_gt_one {D : WeightedDesign m k} (hheavy : AllHeavy D)
+    (hk : 1 ≤ k) : 1 < k := by
+  have hsum := sum_weighted_leverage D
+  have hm : 0 < m := lt_of_lt_of_le hk (rank_le_of_design D)
+  have hne : (Finset.univ : Finset (Fin m)).Nonempty := by
+    rw [Finset.univ_nonempty_iff]
+    exact Fin.pos_iff_nonempty.mp hm
+  have hstrict : (∑ c, D.weight c * (1 : ℝ))
+      < ∑ c, D.weight c * leverageOf (D.atom c) := by
+    refine Finset.sum_lt_sum_of_nonempty hne fun c _ => ?_
+    exact mul_lt_mul_of_pos_left (hheavy c) (D.weight_pos c)
+  rw [← Finset.sum_mul, D.weight_sum_one, one_mul, hsum] at hstrict
+  exact_mod_cast hstrict
+
 end Gtz

@@ -62,6 +62,7 @@ weighted design has a dominating k-subset (`Gtz.GtzWeightedAll k`).
 | `Gtz/LocalLaw.lean` | the **LP vertex bound** behind the first-order constant (weighted max, not average) and the **weight-split invariance** (structural root of σ-independence) | **proved** (pre-audit claims) |
 | `Gtz/Interface.lean` | statement-(2) interface arithmetic: **the recorded pair is vacuous**, the ball's τ-ceiling, **the repaired pair is nonvacuous** (explicit witness), the formula rounds down, and the one-line nonvacuity test | **proved** |
 | `Gtz/LawCounterexample.lean` | **kernel-checked refutation**: exact rational cap-10 design with `C_B(10)·σ* < B(σ*)` — the displayed local law `B_E(σ*) ≤ C_B(ℓ̄)σ*` is false for ℓ̄ ≥ 7 (`C_B` is the σ*→0 limit only) | **proved** (settles the build-vs-audit numerical dispute in the kernel) |
+| `Gtz/Reductions.lean` (all-heavy) | **the all-heavy reduction**: light atoms deflate, so GTZ at rank k needs only ALL-HEAVY designs of size ≤ M(k); C0 leverage floor (`Σ t ℓ = k`, some `ℓ ≥ k`); frontier sharpened to all-heavy (6,3)+(7,3) | **proved** |
 | `Gtz/Reductions.lean` | rank 1, **RANK 2**, bridge, **Theorem L**, rank-3→residuals, duality descent, square, rank bound, `GtzOriginal n 1/2` | **proved** (no sorries) |
 | `Gtz/Audit.lean` | `#print axioms` for every proved theorem | FX discipline |
 
