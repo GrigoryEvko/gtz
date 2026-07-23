@@ -50,6 +50,7 @@ import Gtz.SplittingRule
 import Gtz.ChordTheorem
 import Gtz.LocalLaw
 import Gtz.Completeness
+import Gtz.ResolventPerturbation
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -329,3 +330,9 @@ import Gtz.Interface
 #print axioms Gtz.planarDefect_scaled
 #print axioms Gtz.conic_curve_pos
 #print axioms Gtz.equality_manifold_complete
+#print axioms Gtz.coercive_isUnit_det
+#print axioms Gtz.resolvent_difference
+#print axioms Gtz.inverse_contraction_of_coercive
+#print axioms Gtz.noise_mulVec_sq_le
+#print axioms Gtz.perturbed_expansion
+#print axioms Gtz.resolvent_perturbation_bound
