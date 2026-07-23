@@ -56,6 +56,7 @@ weighted design has a dominating k-subset (`Gtz.GtzWeightedAll k`).
 | `Gtz/PlanarPlatform.lean` | GAP-S platform: **Theorem R′** (E-restricted master identity, free shifted leverages), trace form, abstract **Corollary R″**, dust expansion (Prop-D.3 repair), pinch quadratic | **proved** (audited informally §68, then kernel-checked) |
 | `Gtz/BlochDictionary.lean` | g-space dictionary: Bloch squares, the M-form identity, silence ⟹ pair entry ≥ 0, **Corollary R″ concrete and end-to-end** | **proved** |
 | `Gtz/DustControl.lean` | **Proposition D complete**: mixed positivity, dust-pair floor, dust deficit ≥ −2δ₀δ₂ (tight), cross rebate ≥ 2κ₃δ₀ | **proved** (dust hypothesis unnecessary in D.3 — hygiene find) |
+| `Gtz/Pushoff.lean` | **Zero-Atom Pushoff Theorem** — planar-norm kit (Cauchy–Schwarz, triangle from scratch), the pairing identity `Σ t_c d_c = 0`, Lipschitz defect, `t_e ≤ (\|ξ\|+½)·Σ t_c\|S_c−X_c\|` unconditionally, + the corner saturation witness (equality at ¼) | **proved** (dissolves GAP-T's δ_T = 0 case) |
 | `Gtz/LawCounterexample.lean` | **kernel-checked refutation**: exact rational cap-10 design with `C_B(10)·σ* < B(σ*)` — the displayed local law `B_E(σ*) ≤ C_B(ℓ̄)σ*` is false for ℓ̄ ≥ 7 (`C_B` is the σ*→0 limit only) | **proved** (settles the build-vs-audit numerical dispute in the kernel) |
 | `Gtz/Reductions.lean` | rank 1, **RANK 2**, bridge, **Theorem L**, rank-3→residuals, duality descent, square, rank bound, `GtzOriginal n 1/2` | **proved** (no sorries) |
 | `Gtz/Audit.lean` | `#print axioms` for every proved theorem | FX discipline |

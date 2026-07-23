@@ -25,6 +25,7 @@ import Gtz.PlanarPlatform
 import Gtz.BlochDictionary
 import Gtz.DustControl
 import Gtz.LawCounterexample
+import Gtz.Pushoff
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -149,3 +150,12 @@ import Gtz.LawCounterexample
 #print axioms Gtz.cexMaxSlack_ge
 #print axioms Gtz.cexMaxSlack_le
 #print axioms Gtz.bForm_law_fails_at_cap_ten
+#print axioms Gtz.dotProduct_le_planarNorm_mul
+#print axioms Gtz.planarNorm_add_le
+#print axioms Gtz.abs_planarNorm_sub_le
+#print axioms Gtz.abs_planarDefect_sub_le
+#print axioms Gtz.sum_weighted_defect_eq_zero
+#print axioms Gtz.zeroAtom_pushoff
+#print axioms Gtz.cornerDesign_valid
+#print axioms Gtz.cornerNearest_defect_zero
+#print axioms Gtz.cornerPushoff_saturates
