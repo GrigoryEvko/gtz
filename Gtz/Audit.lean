@@ -104,3 +104,5 @@ import Gtz.RatCertificate
 #print axioms Gtz.RatDesign.subsetSum_apply
 #print axioms Gtz.RatDesign.leverage_cast
 #print axioms Gtz.RatDesign.dominates_iff_cast
+#print axioms Gtz.posDef_congr_right
+#print axioms Gtz.certificate_dominates

@@ -203,6 +203,50 @@ theorem posSemidef_transpose_mul_sub_one_comm (M : Matrix (Fin a) (Fin a) ℝ) :
     have := hdir Mᵀ (by rwa [Matrix.transpose_transpose])
     rwa [Matrix.transpose_transpose] at this
 
+/-- **Invertible congruence, definite version**: X ≻ 0 ⟺ PᵀXP ≻ 0 for
+invertible P. -/
+theorem posDef_congr_right {X P : Matrix (Fin a) (Fin a) ℝ}
+    (hXT : Xᵀ = X) (hP : IsUnit P.det) :
+    X.PosDef ↔ (Pᵀ * X * P).PosDef := by
+  have hquad : ∀ u : Fin a → ℝ,
+      u ⬝ᵥ ((Pᵀ * X * P) *ᵥ u) = (P *ᵥ u) ⬝ᵥ (X *ᵥ (P *ᵥ u)) := by
+    intro u
+    rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec,
+      dotProduct_comm u (Pᵀ *ᵥ (X *ᵥ (P *ᵥ u))), dotProduct_mulVec_transpose,
+      dotProduct_comm]
+  have hPPT : (Pᵀ * X * P)ᵀ = Pᵀ * X * P := by
+    rw [Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose,
+      hXT, Matrix.mul_assoc]
+  have hPker : ∀ u : Fin a → ℝ, P *ᵥ u = 0 → u = 0 := by
+    intro u hu
+    have h := congrArg (fun z => P⁻¹ *ᵥ z) hu
+    simpa [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul P hP,
+      Matrix.one_mulVec] using h
+  constructor
+  · intro hpd
+    refine Matrix.posDef_iff_dotProduct_mulVec.mpr
+      ⟨isHermitian_of_transpose_eq hPPT, fun u hu => ?_⟩
+    have hPu : P *ᵥ u ≠ 0 := fun h0 => hu (hPker u h0)
+    have h := (Matrix.posDef_iff_dotProduct_mulVec.mp hpd).2 hPu
+    rw [star_trivial] at h
+    rw [star_trivial, hquad u]
+    exact h
+  · intro hpd
+    refine Matrix.posDef_iff_dotProduct_mulVec.mpr
+      ⟨isHermitian_of_transpose_eq hXT, fun v hv => ?_⟩
+    have hv' : P⁻¹ *ᵥ v ≠ 0 := by
+      intro h0
+      apply hv
+      have hrec : P *ᵥ (P⁻¹ *ᵥ v) = v := by
+        rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv P hP,
+          Matrix.one_mulVec]
+      rw [← hrec, h0, Matrix.mulVec_zero]
+    have h := (Matrix.posDef_iff_dotProduct_mulVec.mp hpd).2 hv'
+    rw [star_trivial, hquad (P⁻¹ *ᵥ v), Matrix.mulVec_mulVec,
+      Matrix.mul_nonsing_inv P hP, Matrix.one_mulVec] at h
+    rw [star_trivial]
+    exact h
+
 open scoped MatrixOrder in
 /-- **Whitening**: every PD real matrix is congruent to the identity,
 RᵀWR = 1 with R invertible. Consumed from the C*-algebra factorization

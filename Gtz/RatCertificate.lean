@@ -17,6 +17,9 @@ gate, rational pivots via the adjugate, soundness against `pigeonhole`.
 -/
 import Mathlib
 import Gtz.Basic
+import Gtz.PsdKit
+import Gtz.TraceIdentity
+import Gtz.Deflation
 
 namespace Gtz
 
@@ -84,5 +87,33 @@ theorem RatDesign.dominates_iff_cast (R : RatDesign m k) (C : Finset (Fin m)) :
     rw [Matrix.one_apply]
     split_ifs <;> norm_num
   rw [Dominates, hentry]
+
+/-- **The branch-(a) certificate consumer** (stage C2): an LDL congruence
+certificate for the gate — L invertible and a positive diagonal d with
+Lᵀ(S_Q − 1)L = diagonal d — plus outsider pivots ≤ 1, produce a dominating
+k-subset through the proven `pigeonhole`. This is the exact shape in which a
+rational (6,3)/(7,3) closure will arrive: every hypothesis is a finite
+identity or comparison of rationals after casting. (Sylvester's criterion is
+NOT in Mathlib — R-MECH-3 — so the gate is certified by explicit congruence,
+which is also the stronger, prover-friendly artifact.) -/
+theorem certificate_dominates (D : WeightedDesign m k) (hk : 1 ≤ k)
+    (Q : Finset (Fin m)) (hcard : Q.card = k + 1)
+    (L : Matrix (Fin k) (Fin k) ℝ) (d : Fin k → ℝ)
+    (hLdet : IsUnit L.det) (hdpos : ∀ i, 0 < d i)
+    (hLDL : Lᵀ * (subsetSum D Q - 1) * L = Matrix.diagonal d)
+    (hpivots : ∀ e ∈ Qᶜ, pivot D Q e ≤ 1) :
+    ∃ C : Finset (Fin m), C.card = k ∧ Dominates D C := by
+  have hXT : (subsetSum D Q - 1)ᵀ = subsetSum D Q - 1 := by
+    rw [Matrix.transpose_sub, subsetSum_transpose, Matrix.transpose_one]
+  have hgate : (subsetSum D Q - 1).PosDef := by
+    rw [posDef_congr_right hXT hLdet, hLDL]
+    exact Matrix.PosDef.diagonal hdpos
+  have houtside : ∑ e ∈ Qᶜ, D.weight e * (pivot D Q e - 1) ≤ 0 :=
+    Finset.sum_nonpos fun e he => by
+      nlinarith [D.weight_pos e, hpivots e he]
+  obtain ⟨dd, hdd, hdom⟩ := pigeonhole D hk Q hgate hcard houtside
+  refine ⟨Q.erase dd, ?_, hdom⟩
+  rw [Finset.card_erase_of_mem hdd, hcard]
+  omega
 
 end Gtz
