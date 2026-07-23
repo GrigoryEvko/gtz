@@ -53,6 +53,7 @@ import Gtz.Completeness
 import Gtz.ResolventPerturbation
 import Gtz.IdempotentSplitting
 import Gtz.LeafTangency
+import Gtz.CapDictionary
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -355,3 +356,7 @@ import Gtz.Interface
 #print axioms Gtz.eq_of_unit_dot_eq_one
 #print axioms Gtz.affine_double_zero_unique
 #print axioms Gtz.leaf_tangency
+#print axioms Gtz.det_pair_matrix_eq_neg_pairGram
+#print axioms Gtz.cap_det_dictionary
+#print axioms Gtz.cap_tie_iff_zmass
+#print axioms Gtz.boundary_pivot_eq_one
