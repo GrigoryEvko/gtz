@@ -41,6 +41,7 @@ import Gtz.Seam
 import Gtz.ComplexPadding
 import Gtz.PThreeStratum
 import Gtz.CollinearStratum
+import Gtz.MomentBound
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -285,3 +286,5 @@ import Gtz.Interface
 #print axioms Gtz.p3_thirdGap_factors
 #print axioms Gtz.p3_stratum_is_family
 #print axioms Gtz.collinear_stratum_empty
+#print axioms Gtz.focal_conic_antipode
+#print axioms Gtz.moment_short_of_conic_pos
