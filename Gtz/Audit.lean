@@ -76,6 +76,7 @@ import Gtz.LeverageBound
 import Gtz.Certs.PFourCertificate
 import Gtz.Certs.CFiveCertificate
 import Gtz.GeometricExclusion
+import Gtz.LiftingLemma
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -482,3 +483,7 @@ import Gtz.Interface
 #print axioms Gtz.no_tight_path_four_double_tangency_of_directions
 #print axioms Gtz.no_tight_path_three_leaf_tangency_off_pole_of_directions
 #print axioms Gtz.no_tight_cycle_five_with_path_stress_of_directions
+#print axioms Gtz.atomMatrix_mulVec_conj
+#print axioms Gtz.coisometryPushforward
+#print axioms Gtz.coisometryPushforward_weight
+#print axioms Gtz.coisometryPushforward_atom

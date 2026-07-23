@@ -49,6 +49,7 @@ import Gtz.LawCounterexample
 import Gtz.LawEquivalence
 import Gtz.LeafTangency
 import Gtz.LeverageBound
+import Gtz.LiftingLemma
 import Gtz.LocalLaw
 import Gtz.MarginTransfer
 import Gtz.MomentBound
