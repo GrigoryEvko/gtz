@@ -134,7 +134,8 @@ theorem exists_pivot_deflation {m k : ℕ} (D : WeightedDesign m (k + 1))
       0 < scale
         ∧ deflator * deflatorᵀ = 1
         ∧ deflator *ᵥ D.atom pivot = 0
-        ∧ deflatorᵀ * deflator + atomMatrix (scale • D.atom pivot) = 1 := by
+        ∧ deflatorᵀ * deflator + atomMatrix (scale • D.atom pivot) = 1
+        ∧ (scale • D.atom pivot) ⬝ᵥ (scale • D.atom pivot) = 1 := by
   set lev := D.atom pivot ⬝ᵥ D.atom pivot with hlev
   have hlevNonneg : 0 ≤ lev := by
     rw [hlev]
@@ -153,7 +154,7 @@ theorem exists_pivot_deflation {m k : ℕ} (D : WeightedDesign m (k + 1))
   obtain ⟨deflator, hcoisometry, hkillScaled, hsplit⟩ :=
     exists_deflation_coisometry hunit
   refine ⟨(Real.sqrt lev)⁻¹, deflator, inv_pos.mpr hsqrtPos, hcoisometry,
-    ?_, hsplit⟩
+    ?_, hsplit, hunit⟩
   have hkillSmul : (Real.sqrt lev)⁻¹ • (deflator *ᵥ D.atom pivot) = 0 := by
     rw [← Matrix.mulVec_smul]
     exact hkillScaled
@@ -227,6 +228,62 @@ theorem quadratic_nonneg_of_discriminant {leading crossTerm constantTerm : ℝ}
   · nlinarith [sq_nonneg (leading * coordinate + crossTerm), hdiscriminant,
       hleadingPos]
 
+/-- **The bordered form, exactly**: at any test vector, the domination
+form of the bordered subset `{pivot} ∪ C′` IS the scalar quadratic
+`A·a² + 2a·SQ(v) + C(v)` in the adapted coordinates `a = ⟨u,w⟩`,
+`v = B·w` — the identity BOTH Schur directions read off. -/
+theorem bordered_form_eq {m k : ℕ} (D : WeightedDesign m (k + 1))
+    (pivot : Fin m) {pivotUnit : Fin (k + 1) → ℝ}
+    {deflator : Matrix (Fin k) (Fin (k + 1)) ℝ}
+    (hsplit : deflatorᵀ * deflator + atomMatrix pivotUnit = 1)
+    (hkill : deflator *ᵥ D.atom pivot = 0)
+    (subset : Finset (Fin m)) (hnotMem : pivot ∉ subset)
+    (anyW : Fin (k + 1) → ℝ) :
+    anyW ⬝ᵥ (subsetSum D (insert pivot subset) *ᵥ anyW) - anyW ⬝ᵥ anyW
+      = ((pivotUnit ⬝ᵥ D.atom pivot) ^ 2
+            + (∑ c ∈ subset, (pivotUnit ⬝ᵥ D.atom c) ^ 2) - 1)
+          * (pivotUnit ⬝ᵥ anyW) ^ 2
+        + 2 * (pivotUnit ⬝ᵥ anyW)
+          * (∑ c ∈ subset, (pivotUnit ⬝ᵥ D.atom c)
+              * ((deflator *ᵥ D.atom c) ⬝ᵥ (deflator *ᵥ anyW)))
+        + ((∑ c ∈ subset,
+            ((deflator *ᵥ D.atom c) ⬝ᵥ (deflator *ᵥ anyW)) ^ 2)
+          - (deflator *ᵥ anyW) ⬝ᵥ (deflator *ᵥ anyW)) := by
+  have hformExpand : anyW ⬝ᵥ (subsetSum D (insert pivot subset) *ᵥ anyW)
+      = ∑ c ∈ insert pivot subset, (D.atom c ⬝ᵥ anyW) ^ 2 := by
+    rw [subsetSum, Matrix.sum_mulVec, dotProduct_sum]
+    exact Finset.sum_congr rfl fun c _ => atom_form_eq_sq (D.atom c) anyW
+  have hpivotDot : D.atom pivot ⬝ᵥ anyW
+      = (pivotUnit ⬝ᵥ D.atom pivot) * (pivotUnit ⬝ᵥ anyW) := by
+    rw [dotProduct_split_along_deflation hsplit (D.atom pivot) anyW, hkill,
+      zero_dotProduct, zero_add]
+  have hmemberDot : ∀ c ∈ subset, (D.atom c ⬝ᵥ anyW) ^ 2
+      = ((deflator *ᵥ D.atom c) ⬝ᵥ (deflator *ᵥ anyW)
+          + (pivotUnit ⬝ᵥ D.atom c) * (pivotUnit ⬝ᵥ anyW)) ^ 2 :=
+    fun c _ => by
+      rw [dotProduct_split_along_deflation hsplit (D.atom c) anyW]
+  have hnormSplit : anyW ⬝ᵥ anyW
+      = (deflator *ᵥ anyW) ⬝ᵥ (deflator *ᵥ anyW)
+        + (pivotUnit ⬝ᵥ anyW) * (pivotUnit ⬝ᵥ anyW) :=
+    dotProduct_split_along_deflation hsplit anyW anyW
+  rw [hformExpand, Finset.sum_insert hnotMem, hpivotDot,
+    Finset.sum_congr rfl hmemberDot, hnormSplit]
+  have hsumExpand : ∑ c ∈ subset,
+      ((deflator *ᵥ D.atom c) ⬝ᵥ (deflator *ᵥ anyW)
+        + (pivotUnit ⬝ᵥ D.atom c) * (pivotUnit ⬝ᵥ anyW)) ^ 2
+      = (∑ c ∈ subset,
+          ((deflator *ᵥ D.atom c) ⬝ᵥ (deflator *ᵥ anyW)) ^ 2)
+        + 2 * (pivotUnit ⬝ᵥ anyW)
+          * (∑ c ∈ subset, (pivotUnit ⬝ᵥ D.atom c)
+              * ((deflator *ᵥ D.atom c) ⬝ᵥ (deflator *ᵥ anyW)))
+        + (pivotUnit ⬝ᵥ anyW) ^ 2
+          * (∑ c ∈ subset, (pivotUnit ⬝ᵥ D.atom c) ^ 2) := by
+    rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib,
+      ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun c _ => by ring
+  rw [hsumExpand]
+  ring
+
 /-- **The Schur lift condition, sufficiency half, inverse-free** (SS15
 gtz.md:631-634 without the `(G′−I)⁻¹`): if the projected subset dominates
 in the orthocomplement and the leverage/cross data satisfy the
@@ -270,39 +327,8 @@ theorem dominates_insert_of_projection_certificates {m k : ℕ}
         mul_comm]
     exact isHermitian_of_transpose_eq htranspose
   · rw [star_trivial, Matrix.sub_mulVec, dotProduct_sub, Matrix.one_mulVec]
-    have hformExpand : anyW ⬝ᵥ (subsetSum D (insert pivot subset) *ᵥ anyW)
-        = ∑ c ∈ insert pivot subset, (D.atom c ⬝ᵥ anyW) ^ 2 := by
-      rw [subsetSum, Matrix.sum_mulVec, dotProduct_sum]
-      exact Finset.sum_congr rfl fun c _ => atom_form_eq_sq (D.atom c) anyW
-    rw [hformExpand, Finset.sum_insert hnotMem]
-    have hpivotDot : D.atom pivot ⬝ᵥ anyW
-        = (pivotUnit ⬝ᵥ D.atom pivot) * (pivotUnit ⬝ᵥ anyW) := by
-      rw [dotProduct_split_along_deflation hsplit (D.atom pivot) anyW, hkill,
-        zero_dotProduct, zero_add]
-    have hmemberDot : ∀ c ∈ subset, (D.atom c ⬝ᵥ anyW) ^ 2
-        = ((deflator *ᵥ D.atom c) ⬝ᵥ (deflator *ᵥ anyW)
-            + (pivotUnit ⬝ᵥ D.atom c) * (pivotUnit ⬝ᵥ anyW)) ^ 2 :=
-      fun c _ => by
-        rw [dotProduct_split_along_deflation hsplit (D.atom c) anyW]
-    have hnormSplit : anyW ⬝ᵥ anyW
-        = (deflator *ᵥ anyW) ⬝ᵥ (deflator *ᵥ anyW)
-          + (pivotUnit ⬝ᵥ anyW) * (pivotUnit ⬝ᵥ anyW) :=
-      dotProduct_split_along_deflation hsplit anyW anyW
-    rw [hpivotDot, Finset.sum_congr rfl hmemberDot, hnormSplit]
-    have hsumExpand : ∑ c ∈ subset,
-        ((deflator *ᵥ D.atom c) ⬝ᵥ (deflator *ᵥ anyW)
-          + (pivotUnit ⬝ᵥ D.atom c) * (pivotUnit ⬝ᵥ anyW)) ^ 2
-        = (∑ c ∈ subset,
-            ((deflator *ᵥ D.atom c) ⬝ᵥ (deflator *ᵥ anyW)) ^ 2)
-          + 2 * (pivotUnit ⬝ᵥ anyW)
-            * (∑ c ∈ subset, (pivotUnit ⬝ᵥ D.atom c)
-                * ((deflator *ᵥ D.atom c) ⬝ᵥ (deflator *ᵥ anyW)))
-          + (pivotUnit ⬝ᵥ anyW) ^ 2
-            * (∑ c ∈ subset, (pivotUnit ⬝ᵥ D.atom c) ^ 2) := by
-      rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib,
-        ← Finset.sum_add_distrib]
-      exact Finset.sum_congr rfl fun c _ => by ring
-    rw [hsumExpand]
+    have hexpansion := bordered_form_eq D pivot hsplit hkill subset
+      hnotMem anyW
     have hconstantNonneg :
         0 ≤ (∑ c ∈ subset,
             ((deflator *ᵥ D.atom c) ⬝ᵥ (deflator *ᵥ anyW)) ^ 2)
@@ -310,7 +336,7 @@ theorem dominates_insert_of_projection_certificates {m k : ℕ}
       sub_nonneg.mpr (hprojectedDominates (deflator *ᵥ anyW))
     have hquadratic := quadratic_nonneg_of_discriminant hleverageFloor
       hconstantNonneg (hdiscriminant (deflator *ᵥ anyW)) (pivotUnit ⬝ᵥ anyW)
-    nlinarith [hquadratic]
+    linarith [hexpansion, hquadratic]
 
 /-- **THE LIFTING LEMMA** (SS15/SS39: the 18th wall, the single named open
 Prop the whole problem now reduces to). For every weighted design in
@@ -393,5 +419,195 @@ theorem gtz_original_all_of_liftingLemma
     (hlifting : ∀ k, LiftingLemma k) :
     ∀ n k, 0 < n → GtzOriginal n k := fun n k hn =>
   original_of_weighted k (gtzWeightedAll_of_liftingLemma hlifting k) n hn
+
+/-- The domination form is the sum of squared atom pairings. -/
+theorem subsetSum_form_eq_sum_sq {m dim : ℕ} (D : WeightedDesign m dim)
+    (C : Finset (Fin m)) (anyW : Fin dim → ℝ) :
+    anyW ⬝ᵥ (subsetSum D C *ᵥ anyW)
+      = ∑ c ∈ C, (D.atom c ⬝ᵥ anyW) ^ 2 := by
+  rw [subsetSum, Matrix.sum_mulVec, dotProduct_sum]
+  exact Finset.sum_congr rfl fun c _ => atom_form_eq_sq (D.atom c) anyW
+
+/-- Domination read as a coercive inequality: the selected atoms majorize
+the identity form. -/
+theorem sum_sq_ge_of_dominates {m dim : ℕ} {D : WeightedDesign m dim}
+    {C : Finset (Fin m)} (hdominates : Dominates D C)
+    (anyW : Fin dim → ℝ) :
+    anyW ⬝ᵥ anyW ≤ ∑ c ∈ C, (D.atom c ⬝ᵥ anyW) ^ 2 := by
+  have hform := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdominates).2 anyW
+  rw [star_trivial, Matrix.sub_mulVec, dotProduct_sub, Matrix.one_mulVec,
+    subsetSum_form_eq_sum_sq] at hform
+  linarith
+
+/-- **Converse of the discriminant reading**: a globally nonnegative
+quadratic with nonnegative leading coefficient has dominated
+discriminant. Together with `quadratic_nonneg_of_discriminant` this makes
+the inverse-free lift condition EXACT, not merely sufficient. -/
+theorem discriminant_le_of_quadratic_nonneg
+    {leading crossTerm constantTerm : ℝ} (hleading : 0 ≤ leading)
+    (hquadratic : ∀ coordinate : ℝ,
+      0 ≤ leading * coordinate ^ 2 + 2 * coordinate * crossTerm
+        + constantTerm) :
+    crossTerm ^ 2 ≤ leading * constantTerm := by
+  rcases eq_or_lt_of_le hleading with hleadingZero | hleadingPos
+  · rcases eq_or_ne crossTerm 0 with hcrossZero | hcrossNe
+    · have hconstant := hquadratic 0
+      rw [hcrossZero]
+      nlinarith [hconstant]
+    · exfalso
+      have hbad := hquadratic (-(constantTerm + 1) / (2 * crossTerm))
+      rw [← hleadingZero, zero_mul, zero_add] at hbad
+      have hcancel : 2 * (-(constantTerm + 1) / (2 * crossTerm)) * crossTerm
+          = -(constantTerm + 1) := by
+        field_simp
+      rw [hcancel] at hbad
+      linarith
+  · have hkey := hquadratic (-(crossTerm / leading))
+    have hexpand : leading * (-(crossTerm / leading)) ^ 2
+        + 2 * (-(crossTerm / leading)) * crossTerm + constantTerm
+        = constantTerm - crossTerm ^ 2 / leading := by
+      field_simp
+      ring
+    rw [hexpand] at hkey
+    have hdivided : crossTerm ^ 2 / leading ≤ constantTerm := by linarith
+    have hmultiplied := (div_le_iff₀ hleadingPos).mp hdivided
+    linarith [hmultiplied]
+
+/-- **THE CONVERSE COLLAPSE** — the Lifting Lemma is not a strengthening:
+weighted GTZ in dimension `k+1` yields, for EVERY design, a pivot and a
+subset with all of the lemma's certificates. Every certificate is
+EXTRACTED from a dominating `(k+1)`-subset by testing the bordered form
+at the adapted family `Bᵀv + a·u` — the coisometry makes that
+parametrization onto, so nothing is lost. Mechanizes SS16's informal
+"Lifting Lemma = GTZ exactly, an identity". -/
+theorem liftingLemma_of_gtzWeighted {k : ℕ}
+    (hgtz : ∀ m : ℕ, GtzWeighted m (k + 1)) : LiftingLemma k := by
+  intro m D
+  obtain ⟨C, hcard, hdominates⟩ := hgtz m D
+  -- some selected atom is nonzero, else the form at a unit vector fails
+  have hbasisUnit : (Pi.single (0 : Fin (k + 1)) (1 : ℝ))
+      ⬝ᵥ Pi.single 0 1 = 1 := by
+    rw [dotProduct, Finset.sum_eq_single (0 : Fin (k + 1))]
+    · simp
+    · intro other _ hother
+      simp [hother]
+    · intro habsent
+      exact absurd (Finset.mem_univ _) habsent
+  have hexistsNonzero : ∃ pivot ∈ C, D.atom pivot ≠ 0 := by
+    by_contra hallZero
+    push Not at hallZero
+    have hsumZero : ∑ c ∈ C, (D.atom c ⬝ᵥ Pi.single 0 1) ^ 2 = 0 :=
+      Finset.sum_eq_zero fun c hc => by
+        rw [hallZero c hc, zero_dotProduct]
+        ring
+    have hcoercive := sum_sq_ge_of_dominates hdominates (Pi.single 0 1)
+    rw [hsumZero, hbasisUnit] at hcoercive
+    linarith
+  obtain ⟨pivot, hpivotMem, hpivotNonzero⟩ := hexistsNonzero
+  obtain ⟨scale, deflator, hscalePos, hcoisometry, hkill, hsplit, hunit⟩ :=
+    exists_pivot_deflation D pivot hpivotNonzero
+  set pivotUnit := scale • D.atom pivot with hpivotUnitDef
+  have hkillUnit : deflator *ᵥ pivotUnit = 0 := by
+    rw [hpivotUnitDef, Matrix.mulVec_smul, hkill, smul_zero]
+  -- the bordered form is globally nonnegative in adapted coordinates
+  have hformNonneg : ∀ anyW : Fin (k + 1) → ℝ,
+      0 ≤ ((pivotUnit ⬝ᵥ D.atom pivot) ^ 2
+            + (∑ c ∈ C.erase pivot, (pivotUnit ⬝ᵥ D.atom c) ^ 2) - 1)
+          * (pivotUnit ⬝ᵥ anyW) ^ 2
+        + 2 * (pivotUnit ⬝ᵥ anyW)
+          * (∑ c ∈ C.erase pivot, (pivotUnit ⬝ᵥ D.atom c)
+              * ((deflator *ᵥ D.atom c) ⬝ᵥ (deflator *ᵥ anyW)))
+        + ((∑ c ∈ C.erase pivot,
+            ((deflator *ᵥ D.atom c) ⬝ᵥ (deflator *ᵥ anyW)) ^ 2)
+          - (deflator *ᵥ anyW) ⬝ᵥ (deflator *ᵥ anyW)) := by
+    intro anyW
+    have hexpansion := bordered_form_eq D pivot hsplit hkill (C.erase pivot)
+      (Finset.notMem_erase pivot C) anyW
+    rw [Finset.insert_erase hpivotMem] at hexpansion
+    have hcoercive := sum_sq_ge_of_dominates hdominates anyW
+    rw [← subsetSum_form_eq_sum_sq] at hcoercive
+    linarith [hexpansion, hcoercive]
+  -- adapted-coordinate surjectivity: recover (a, v) from Bᵀv + a·u
+  have hpivotOrthToLift : ∀ testVec : Fin k → ℝ,
+      pivotUnit ⬝ᵥ (deflatorᵀ *ᵥ testVec) = 0 := by
+    intro testVec
+    rw [dotProduct_comm, dotProduct_mulVec_transpose, hkillUnit,
+      dotProduct_zero]
+  have hcoordRecover : ∀ (coordinate : ℝ) (testVec : Fin k → ℝ),
+      pivotUnit ⬝ᵥ (deflatorᵀ *ᵥ testVec + coordinate • pivotUnit)
+        = coordinate := by
+    intro coordinate testVec
+    rw [dotProduct_add, hpivotOrthToLift, dotProduct_smul, smul_eq_mul,
+      hunit, mul_one, zero_add]
+  have hprojRecover : ∀ (coordinate : ℝ) (testVec : Fin k → ℝ),
+      deflator *ᵥ (deflatorᵀ *ᵥ testVec + coordinate • pivotUnit)
+        = testVec := by
+    intro coordinate testVec
+    rw [Matrix.mulVec_add, Matrix.mulVec_mulVec, hcoisometry,
+      Matrix.one_mulVec, Matrix.mulVec_smul, hkillUnit, smul_zero, add_zero]
+  -- the scalar quadratic is globally nonnegative at EVERY (a, v)
+  have hquadraticAll : ∀ (testVec : Fin k → ℝ) (coordinate : ℝ),
+      0 ≤ ((pivotUnit ⬝ᵥ D.atom pivot) ^ 2
+            + (∑ c ∈ C.erase pivot, (pivotUnit ⬝ᵥ D.atom c) ^ 2) - 1)
+          * coordinate ^ 2
+        + 2 * coordinate
+          * (∑ c ∈ C.erase pivot, (pivotUnit ⬝ᵥ D.atom c)
+              * ((deflator *ᵥ D.atom c) ⬝ᵥ testVec))
+        + ((∑ c ∈ C.erase pivot,
+            ((deflator *ᵥ D.atom c) ⬝ᵥ testVec) ^ 2)
+          - testVec ⬝ᵥ testVec) := by
+    intro testVec coordinate
+    have hlifted := hformNonneg
+      (deflatorᵀ *ᵥ testVec + coordinate • pivotUnit)
+    rw [hcoordRecover coordinate testVec, hprojRecover coordinate testVec]
+      at hlifted
+    exact hlifted
+  -- certificate 1: projected domination (test at coordinate 0)
+  have hprojected : ∀ testVec : Fin k → ℝ, testVec ⬝ᵥ testVec
+      ≤ ∑ c ∈ C.erase pivot,
+          ((deflator *ᵥ D.atom c) ⬝ᵥ testVec) ^ 2 := by
+    intro testVec
+    have hatZero := hquadraticAll testVec 0
+    nlinarith [hatZero]
+  -- certificate 2: the leverage floor (test at the zero vector, coord 1)
+  have hfloor : 0 ≤ (pivotUnit ⬝ᵥ D.atom pivot) ^ 2
+      + (∑ c ∈ C.erase pivot, (pivotUnit ⬝ᵥ D.atom c) ^ 2) - 1 := by
+    have hatOne := hquadraticAll 0 1
+    simp only [dotProduct_zero, mul_zero, Finset.sum_const_zero, ne_eq,
+      OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, mul_one, one_pow,
+      add_zero, sub_zero] at hatOne
+    nlinarith [hatOne]
+  -- certificate 3: the discriminant (converse of the quadratic reading)
+  have hdiscriminant : ∀ testVec : Fin k → ℝ,
+      (∑ c ∈ C.erase pivot, (pivotUnit ⬝ᵥ D.atom c)
+          * ((deflator *ᵥ D.atom c) ⬝ᵥ testVec)) ^ 2
+        ≤ ((pivotUnit ⬝ᵥ D.atom pivot) ^ 2
+              + (∑ c ∈ C.erase pivot, (pivotUnit ⬝ᵥ D.atom c) ^ 2) - 1)
+            * ((∑ c ∈ C.erase pivot,
+                ((deflator *ᵥ D.atom c) ⬝ᵥ testVec) ^ 2)
+              - testVec ⬝ᵥ testVec) :=
+    fun testVec => discriminant_le_of_quadratic_nonneg hfloor
+      (hquadraticAll testVec)
+  exact ⟨pivot, pivotUnit, deflator, C.erase pivot, hsplit, hkill,
+    Finset.notMem_erase pivot C,
+    by rw [Finset.card_erase_of_mem hpivotMem, hcard]; omega, hprojected,
+    hfloor, hdiscriminant⟩
+
+/-- **THE EQUIVALENCE — the collapse is lossless**: the Lifting Lemma at
+rank `k` is EXACTLY weighted GTZ in dimension `k+1`, kernel-checked in
+both directions. The inverse-free discriminant packaging neither weakens
+nor strengthens the problem; the single named Prop IS the problem. -/
+theorem liftingLemma_iff_gtzWeighted_succ {k : ℕ} :
+    LiftingLemma k ↔ ∀ m, GtzWeighted m (k + 1) :=
+  ⟨fun hlifting m => gtzWeighted_succ_of_liftingLemma hlifting m,
+    liftingLemma_of_gtzWeighted⟩
+
+/-- **The second named route to the binding object**: the rank-2→3 lift
+closes weighted (6,3) — THE open case of the whole campaign — outright.
+Rank-2 GTZ is proven (`gtz_rank_two`); what `LiftingLemma 2` adds is
+exactly the global pivot/subset selection. -/
+theorem gtzWeighted_six_three_of_liftingLemma_two
+    (hlifting : LiftingLemma 2) : GtzWeighted 6 3 :=
+  gtzWeighted_succ_of_liftingLemma hlifting 6
 
 end Gtz

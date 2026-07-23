@@ -499,3 +499,10 @@ import Gtz.Interface
 #print axioms Gtz.gtzWeighted_dim_zero
 #print axioms Gtz.gtzWeightedAll_of_liftingLemma
 #print axioms Gtz.gtz_original_all_of_liftingLemma
+#print axioms Gtz.bordered_form_eq
+#print axioms Gtz.subsetSum_form_eq_sum_sq
+#print axioms Gtz.sum_sq_ge_of_dominates
+#print axioms Gtz.discriminant_le_of_quadratic_nonneg
+#print axioms Gtz.liftingLemma_of_gtzWeighted
+#print axioms Gtz.liftingLemma_iff_gtzWeighted_succ
+#print axioms Gtz.gtzWeighted_six_three_of_liftingLemma_two
