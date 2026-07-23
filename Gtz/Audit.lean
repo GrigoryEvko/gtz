@@ -49,6 +49,7 @@ import Gtz.EulerPairing
 import Gtz.SplittingRule
 import Gtz.ChordTheorem
 import Gtz.LocalLaw
+import Gtz.Completeness
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -325,3 +326,6 @@ import Gtz.Interface
 #print axioms Gtz.inscribed_triangle_vertex
 #print axioms Gtz.affine_vanishes_of_three
 #print axioms Gtz.chord_silence_envelope
+#print axioms Gtz.planarDefect_scaled
+#print axioms Gtz.conic_curve_pos
+#print axioms Gtz.equality_manifold_complete
