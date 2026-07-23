@@ -51,6 +51,7 @@ import Gtz.ChordTheorem
 import Gtz.LocalLaw
 import Gtz.Completeness
 import Gtz.ResolventPerturbation
+import Gtz.IdempotentSplitting
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -336,3 +337,16 @@ import Gtz.Interface
 #print axioms Gtz.noise_mulVec_sq_le
 #print axioms Gtz.perturbed_expansion
 #print axioms Gtz.resolvent_perturbation_bound
+#print axioms Gtz.sylvesterMap_eq_signed_blocks
+#print axioms Gtz.blocks_decompose
+#print axioms Gtz.sylvesterMap_range_block
+#print axioms Gtz.sylvesterMap_corange_block
+#print axioms Gtz.sylvesterMap_upper_mixed
+#print axioms Gtz.sylvesterMap_lower_mixed
+#print axioms Gtz.sylvesterMap_sq
+#print axioms Gtz.sylvesterMap_tripotent
+#print axioms Gtz.sylvesterMap_eq_zero_iff
+#print axioms Gtz.designTransfer_mul_gram
+#print axioms Gtz.designTransfer_idempotent
+#print axioms Gtz.design_weighted_leverage_sum
+#print axioms Gtz.designTransfer_trace
