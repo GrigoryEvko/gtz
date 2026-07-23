@@ -269,6 +269,59 @@ theorem zeroAtom_pushoff (atoms : Finset (Fin m)) (zeroAtom : Fin m)
             weight c * planarNorm (planarSquare c - nearestZero c) := by
         rw [Finset.mul_sum]
 
+/-- **The pairing leash** (the X-channel identity of the gaps-closure build,
+mechanized): in ANY planar design, ANY atom's weight-times-defect is bounded
+by the Lipschitz constant times the weighted distance of the OTHER atoms to
+any defect-zero targets. With a vanishing atom `X` this is exactly the leash
+`y·d_X ≤ …` that makes the vanishing-atom channel finite — the same estimate
+as the Pushoff bound, which is the build's structural claim that quantitative
+stability and the corrected first-order constant are ONE estimate. -/
+theorem weighted_defect_leash (atoms : Finset (Fin m)) (special : Fin m)
+    (hmem : special ∈ atoms)
+    (weight : Fin m → ℝ) (planarSquare : Fin m → Fin 2 → ℝ)
+    (moment : Fin 2 → ℝ) (nearestZero : Fin m → Fin 2 → ℝ)
+    (hweightSum : ∑ c ∈ atoms, weight c = 1)
+    (hclosure : (∑ c ∈ atoms, weight c • planarSquare c) = 0)
+    (htrace : ∑ c ∈ atoms, weight c * planarNorm (planarSquare c) = 2)
+    (hweightNonneg : ∀ c ∈ atoms, 0 ≤ weight c)
+    (hnearestZero : ∀ c ∈ atoms.erase special,
+      planarDefect moment (nearestZero c) = 0) :
+    |weight special * planarDefect moment (planarSquare special)|
+      ≤ (planarNorm moment + 1/2) *
+        ∑ c ∈ atoms.erase special,
+          weight c * planarNorm (planarSquare c - nearestZero c) := by
+  have hpairing := sum_weighted_defect_eq_zero atoms weight planarSquare moment
+    hweightSum hclosure htrace
+  have hpeel : weight special * planarDefect moment (planarSquare special)
+      + ∑ c ∈ atoms.erase special,
+          weight c * planarDefect moment (planarSquare c)
+      = ∑ c ∈ atoms, weight c * planarDefect moment (planarSquare c) :=
+    Finset.add_sum_erase atoms
+      (fun c => weight c * planarDefect moment (planarSquare c)) hmem
+  rw [hpairing] at hpeel
+  have hflip : weight special * planarDefect moment (planarSquare special)
+      = -∑ c ∈ atoms.erase special,
+          weight c * planarDefect moment (planarSquare c) := by linarith
+  rw [hflip, abs_neg]
+  calc |∑ c ∈ atoms.erase special,
+        weight c * planarDefect moment (planarSquare c)|
+      ≤ ∑ c ∈ atoms.erase special,
+          |weight c * planarDefect moment (planarSquare c)| :=
+        Finset.abs_sum_le_sum_abs _ _
+    _ ≤ ∑ c ∈ atoms.erase special, (planarNorm moment + 1/2) *
+          (weight c * planarNorm (planarSquare c - nearestZero c)) := by
+        refine Finset.sum_le_sum fun c hc => ?_
+        have hwc : 0 ≤ weight c := hweightNonneg c (Finset.mem_of_mem_erase hc)
+        have hlip := abs_planarDefect_sub_le moment (planarSquare c)
+          (nearestZero c)
+        rw [hnearestZero c hc, sub_zero] at hlip
+        rw [abs_mul, abs_of_nonneg hwc]
+        nlinarith [hwc, hlip, abs_nonneg (planarDefect moment (planarSquare c))]
+    _ = (planarNorm moment + 1/2) *
+          ∑ c ∈ atoms.erase special,
+            weight c * planarNorm (planarSquare c - nearestZero c) := by
+        rw [Finset.mul_sum]
+
 /-! ### Sharpness: the embedded tetrahedron corner saturates the bound -/
 
 /-- The corner projection's four planar squares: the zero atom (the projecting

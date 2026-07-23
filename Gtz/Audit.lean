@@ -27,6 +27,7 @@ import Gtz.DustControl
 import Gtz.LawCounterexample
 import Gtz.Pushoff
 import Gtz.TightGraph
+import Gtz.CertificateFrame
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -175,3 +176,11 @@ import Gtz.Interface
 #print axioms Gtz.newInterfacePair_nonempty
 #print axioms Gtz.interfaceFormula_rounds_down
 #print axioms Gtz.interfacePair_nonvacuous_iff
+#print axioms Gtz.weighted_defect_leash
+#print axioms Gtz.smul_eq_smul_of_independent
+#print axioms Gtz.eq_of_two_independent_rays
+#print axioms Gtz.parabola_conic_zero_iff
+#print axioms Gtz.parabola_poles_are_clones
+#print axioms Gtz.c2_assembly
+#print axioms Gtz.offWindow_margin_pos
+#print axioms Gtz.acidTest_margin_pos

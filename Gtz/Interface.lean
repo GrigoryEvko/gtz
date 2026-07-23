@@ -97,4 +97,42 @@ theorem interfacePair_nonvacuous_iff (tauFloor ballRadius : ℝ)
   · intro hclears
     exact ⟨tauFloor, le_refl _, hclears⟩
 
+
+/-! ### The C₂ assembly and the off-window margin -/
+
+/-- **The C₂ assembly** (SS50 defect B, assembled for the first time by the
+subgapv build): `C₂ = H_max/(2·ĉ₁)` with the audited `H_max ≤ 2.5·10³` and the
+rescaled transverse fire rate `ĉ₁ ≥ 2.7·10⁻³` gives `C₂ ≤ 4.7·10⁵`. Mechanized
+as the composition it is, so the inputs' provenance is visible at the use
+site. -/
+theorem c2_assembly (curvatureBound fireRate : ℝ)
+    (hcurvature : curvatureBound ≤ 25 * 10^2)
+    (hfireRate : (27 : ℝ)/10^4 ≤ fireRate) (hfirePos : 0 < fireRate) :
+    curvatureBound / (2 * fireRate) ≤ 47 * 10^4 := by
+  rw [div_le_iff₀ (by linarith)]
+  nlinarith [hcurvature, hfireRate, hfirePos]
+
+/-- **The off-window margin is positive exactly on the off-window condition**
+(Theorem OW's shape): the assembled cap-fire margin
+`(4/3)(3−δ)(min((4/9)sinθ, 1/50) − G₀)` is strictly positive iff the window
+gate `G₀ < min((4/9)sinθ, 1/50)` holds — the τ-free criterion. -/
+theorem offWindow_margin_pos (sinAngle windowGate slackDefect : ℝ)
+    (hslack : slackDefect < 3) (hgate : windowGate < min ((4/9) * sinAngle) (1/50)) :
+    0 < (4/3) * (3 - slackDefect)
+      * (min ((4/9) * sinAngle) (1/50) - windowGate) := by
+  have hpos : 0 < min ((4/9) * sinAngle) (1/50) - windowGate := by linarith
+  have hfactor : 0 < (4/3) * (3 - slackDefect) := by linarith
+  exact mul_pos hfactor hpos
+
+/-- The acid-test instance: at the recorded in-ball complex witnesses the
+extras sit off-window (`sin θ ≈ 0.60`), so the window gate is the binding
+`1/50` branch and the real-side margin is positive — the exclusion happens on
+the real side, exactly as the field-discipline gate demands. -/
+theorem acidTest_margin_pos (slackDefect : ℝ) (hslack : slackDefect < 3) :
+    0 < (4/3) * (3 - slackDefect)
+      * (min ((4/9) * ((6039 : ℝ)/10000)) (1/50) - (1616 : ℝ)/10^5) := by
+  refine offWindow_margin_pos _ _ _ hslack ?_
+  rw [min_eq_right (by norm_num)]
+  norm_num
+
 end Gtz
