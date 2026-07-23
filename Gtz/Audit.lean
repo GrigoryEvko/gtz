@@ -461,6 +461,7 @@ import Gtz.Interface
 #print axioms Gtz.nonneg_on_window_of_symmetric_cells
 #print axioms Gtz.congruence_psd_transfer
 #print axioms Gtz.deflated_singular_floor
+#print axioms Gtz.deflated_floor_kills_kernel
 #print axioms Gtz.p4_geometric_certificate_variety_empty
 #print axioms Gtz.leaf_tangency_corner_certificate
 #print axioms Gtz.c5_p5stress_geometric_certificate_variety_empty

@@ -15,6 +15,7 @@ interval elimination). The two generic consumption facts:
 -/
 import Mathlib
 import Gtz.PsdKit
+import Gtz.ResolventPerturbation
 
 namespace Gtz
 
@@ -68,5 +69,27 @@ theorem deflated_singular_floor (jacobian : Matrix (Fin m) (Fin k) ℝ)
         smul_eq_mul]
   rw [hgram] at htransfer
   linarith
+
+/-- **The kernel-triviality reading** (the rank statement): with a strictly
+positive rate, the certificate makes the Jacobian INJECTIVE on the deflated
+subspace — `jac·(Tw) = 0` forces `Tw = 0`. This is the certificate's
+"`ker(dF) ∩ range(T) = 0`, hence rank `K = 22`" consequence. -/
+theorem deflated_floor_kills_kernel (jacobian : Matrix (Fin m) (Fin k) ℝ)
+    (nullBasis : Matrix (Fin k) (Fin n) ℝ) {rate : ℝ} (hrate : 0 < rate)
+    (hPSD : (nullBasisᵀ
+        * (jacobianᵀ * jacobian - rate ^ 2 • (1 : Matrix (Fin k) (Fin k) ℝ))
+        * nullBasis).PosSemidef)
+    (coeff : Fin n → ℝ)
+    (hkernel : jacobian *ᵥ (nullBasis *ᵥ coeff) = 0) :
+    nullBasis *ᵥ coeff = 0 := by
+  have hfloor := deflated_singular_floor jacobian nullBasis rate hPSD coeff
+  rw [hkernel, dotProduct_zero] at hfloor
+  have hselfNonneg : 0 ≤ (nullBasis *ᵥ coeff) ⬝ᵥ (nullBasis *ᵥ coeff) :=
+    dotProduct_self_nonneg _
+  have hratePos : 0 < rate ^ 2 := pow_pos hrate 2
+  have hselfNonpos : (nullBasis *ᵥ coeff) ⬝ᵥ (nullBasis *ᵥ coeff) ≤ 0 := by
+    nlinarith [hfloor, hratePos]
+  exact eq_zero_of_dotProduct_self_eq_zero
+    (le_antisymm hselfNonpos hselfNonneg)
 
 end Gtz
