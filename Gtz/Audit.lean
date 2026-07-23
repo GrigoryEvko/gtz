@@ -21,6 +21,7 @@ import Gtz.Completion
 import Gtz.Naimark
 import Gtz.Reductions
 import Gtz.RatCertificate
+import Gtz.PlanarPlatform
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -121,3 +122,10 @@ import Gtz.RatCertificate
 #print axioms Gtz.gtz_original_of_le_five
 #print axioms Gtz.gtzWeighted_of_le_five
 #print axioms Gtz.gtzWeighted_dual_iff
+#print axioms Gtz.planarMaster_quadraticForm
+#print axioms Gtz.planarMaster_trace
+#print axioms Gtz.planarMaster_transpose
+#print axioms Gtz.posSemidef_planarMaster_of_pairEntry_nonneg
+#print axioms Gtz.sum_sub_normSq_expansion
+#print axioms Gtz.sum_sub_normSq_levWeighted
+#print axioms Gtz.pinch_quadratic
