@@ -403,6 +403,9 @@ import Gtz.Interface
 #print axioms Gtz.pair_normalizer_cleared
 #print axioms Gtz.tight_half_angle_biquadratic
 #print axioms Gtz.moment_row_annihilated
+#print axioms Gtz.biquadratic_leading_constant
+#print axioms Gtz.tight_partners_vieta_factor
+#print axioms Gtz.qrt_step_deterministic
 #print axioms Gtz.det_two_entrywise_stability
 #print axioms Gtz.wedge_ceiling
 #print axioms Gtz.classical_face_closed_form

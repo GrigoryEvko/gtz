@@ -86,6 +86,59 @@ theorem tight_half_angle_biquadratic (leafTan partnerTan moment : ℝ) :
   field_simp
   ring
 
+/-- **The biquadratic is a quadratic in the partner** — the QRT reading:
+`B(x,y) = L(x)·y² + 2xy + C(x)` with leading `L = a(1+b)x² − ab` and
+constant `C = b(1+a) − abx²`. Pure ring; the whole walk dynamics follows. -/
+theorem biquadratic_leading_constant (moment leafTan partnerTan : ℝ) :
+    (1/2+moment)*(1+(1/2-moment))*leafTan^2*partnerTan^2
+        - (1/2+moment)*(1/2-moment)*(leafTan^2+partnerTan^2)
+        + 2*leafTan*partnerTan
+        + (1/2-moment)*(1+(1/2+moment))
+      = ((1/2+moment)*(1+(1/2-moment))*leafTan^2
+          - (1/2+moment)*(1/2-moment)) * partnerTan^2
+        + 2*leafTan*partnerTan
+        + ((1/2-moment)*(1+(1/2+moment))
+          - (1/2+moment)*(1/2-moment)*leafTan^2) := by
+  ring
+
+/-- **Vieta for tight partners**: two partners of the same conic atom
+satisfy `(y₁−y₂)·(L·(y₁+y₂) + 2x) = 0` — subtracting the two quadratics
+factors the difference. Pure ring, coefficient-generic. -/
+theorem tight_partners_vieta_factor {leading crossTan constant
+    firstPartner secondPartner : ℝ}
+    (hfirst : leading*firstPartner^2 + 2*crossTan*firstPartner
+      + constant = 0)
+    (hsecond : leading*secondPartner^2 + 2*crossTan*secondPartner
+      + constant = 0) :
+    (firstPartner - secondPartner)
+      * (leading*(firstPartner + secondPartner) + 2*crossTan) = 0 := by
+  linear_combination hfirst - hsecond
+
+/-- **The walk is deterministic** (the QRT step): a clone-free second
+partner is UNIQUELY determined by the first — `L·y₂ = −2x − L·y₁` — and
+symmetrically the product reads the constant: `L·y₁·y₂ = C`. This is
+"clone-free walks along the conic are deterministic QRT iterates", the
+dynamical germ of the Poncelet-torsion wall, division-free. -/
+theorem qrt_step_deterministic {leading crossTan constant
+    firstPartner secondPartner : ℝ}
+    (hfirst : leading*firstPartner^2 + 2*crossTan*firstPartner
+      + constant = 0)
+    (hsecond : leading*secondPartner^2 + 2*crossTan*secondPartner
+      + constant = 0)
+    (hcloneFree : firstPartner ≠ secondPartner) :
+    leading*(firstPartner + secondPartner) = -(2*crossTan)
+      ∧ leading*(firstPartner*secondPartner) = constant := by
+  have hfactor := tight_partners_vieta_factor hfirst hsecond
+  have hsum : leading*(firstPartner + secondPartner) + 2*crossTan = 0 := by
+    rcases mul_eq_zero.mp hfactor with hbad | hgood
+    · exact absurd (sub_eq_zero.mp hbad) hcloneFree
+    · exact hgood
+  refine ⟨by linarith, ?_⟩
+  -- plug the sum relation back into the first quadratic
+  have hproduct : leading*(firstPartner*secondPartner) - constant = 0 := by
+    linear_combination (-1) * hfirst + firstPartner * hsum
+  linarith
+
 /-- **The pair normalizer**: `β_i + β_j = 2P/(D_i·D_j)` at
 `P = 1−4r²c_ic_j` — the two cross terms cancel. -/
 theorem pair_normalizer_cleared (moment leafCos partnerCos : ℝ)
