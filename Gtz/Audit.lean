@@ -491,3 +491,11 @@ import Gtz.Interface
 #print axioms Gtz.exists_pivot_deflation
 #print axioms Gtz.atomMatrix_mulVec_eq_dot_smul
 #print axioms Gtz.decompose_along_deflation
+#print axioms Gtz.dotProduct_split_along_deflation
+#print axioms Gtz.quadratic_nonneg_of_discriminant
+#print axioms Gtz.dominates_insert_of_projection_certificates
+#print axioms Gtz.LiftingLemma
+#print axioms Gtz.gtzWeighted_succ_of_liftingLemma
+#print axioms Gtz.gtzWeighted_dim_zero
+#print axioms Gtz.gtzWeightedAll_of_liftingLemma
+#print axioms Gtz.gtz_original_all_of_liftingLemma
