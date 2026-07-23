@@ -42,6 +42,7 @@ import Gtz.ComplexPadding
 import Gtz.PThreeStratum
 import Gtz.CollinearStratum
 import Gtz.MomentBound
+import Gtz.CornerResolvent
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -288,3 +289,8 @@ import Gtz.Interface
 #print axioms Gtz.collinear_stratum_empty
 #print axioms Gtz.focal_conic_antipode
 #print axioms Gtz.moment_short_of_conic_pos
+#print axioms Gtz.vecMulVec_mul_vecMulVec
+#print axioms Gtz.corner_cap_mul
+#print axioms Gtz.corner_cap_inv
+#print axioms Gtz.corner_normal_form
+#print axioms Gtz.corner_covering
