@@ -118,3 +118,5 @@ import Gtz.RatCertificate
 #print axioms Gtz.gtz_original_square
 #print axioms Gtz.gtz_original_corank_one
 #print axioms Gtz.gtz_original_corank_two
+#print axioms Gtz.gtz_original_of_le_five
+#print axioms Gtz.gtzWeighted_of_le_five

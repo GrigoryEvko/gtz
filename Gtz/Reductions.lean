@@ -329,4 +329,44 @@ theorem gtz_original_corank_two (k : ℕ) (hk : 2 ≤ k) :
     GtzOriginal (k + 2) k :=
   original_of_weighted_single (gtzWeighted_corank_two k hk) (by omega)
 
+/-- **GTZ 1997 holds completely up to five rows**: for every n ≤ 5 and every
+feasible rank, the original statement is a theorem — because k ≤ 5 forces
+k ∈ {1, 2} or k ≥ n − 2, all on the proven boundary. The first open case is
+exactly (n, k) = (6, 3). -/
+theorem gtz_original_of_le_five (n k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n)
+    (hn : n ≤ 5) : GtzOriginal n k := by
+  have hn0 : 0 < n := by omega
+  rcases le_or_gt k 2 with hk2 | hk3
+  · interval_cases k
+    · exact gtz_original_rank_one n hn0
+    · exact gtz_original_rank_two n hn0
+  · -- k ≥ 3 and n ≤ 5 put us on the co-rank ≤ 2 boundary
+    have hcorank : n = k ∨ n = k + 1 ∨ n = k + 2 := by omega
+    rcases hcorank with h | h | h
+    · subst h
+      exact gtz_original_square n hn0
+    · subst h
+      exact gtz_original_corank_one k (by omega)
+    · subst h
+      exact gtz_original_corank_two k (by omega)
+
+/-- The weighted analogue: every design with at most five atoms dominates,
+at every rank. -/
+theorem gtzWeighted_of_le_five (m k : ℕ) (hk : 1 ≤ k) (hm : m ≤ 5) :
+    GtzWeighted m k := by
+  intro D
+  have hkm : k ≤ m := rank_le_of_design D
+  rcases le_or_gt k 2 with hk2 | hk3
+  · interval_cases k
+    · exact gtz_rank_one m D
+    · exact gtz_rank_two m D
+  · have hcorank : m = k ∨ m = k + 1 ∨ m = k + 2 := by omega
+    rcases hcorank with h | h | h
+    · subst h
+      exact gtzWeighted_square m D
+    · subst h
+      exact gtzWeighted_corank_one k (by omega) D
+    · subst h
+      exact gtzWeighted_corank_two k (by omega) D
+
 end Gtz
