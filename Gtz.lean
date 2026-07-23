@@ -15,5 +15,6 @@ import Gtz.Crystallization
 import Gtz.CornerFiber
 import Gtz.PlanarPlatform
 import Gtz.BlochDictionary
+import Gtz.DustControl
 import Gtz.Reductions
 import Gtz.Audit

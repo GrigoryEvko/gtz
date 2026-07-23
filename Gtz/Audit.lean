@@ -23,6 +23,7 @@ import Gtz.Reductions
 import Gtz.RatCertificate
 import Gtz.PlanarPlatform
 import Gtz.BlochDictionary
+import Gtz.DustControl
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -135,3 +136,6 @@ import Gtz.BlochDictionary
 #print axioms Gtz.pairEntry_bloch
 #print axioms Gtz.pairEntry_bloch_nonneg_of_silent
 #print axioms Gtz.posSemidef_planarMaster_bloch_of_silent
+#print axioms Gtz.pairEntry_bloch_nonneg_of_mixed
+#print axioms Gtz.pairEntry_bloch_ge_of_dust
+#print axioms Gtz.dust_deficit_bloch
