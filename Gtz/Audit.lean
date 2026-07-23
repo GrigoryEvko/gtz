@@ -315,3 +315,4 @@ import Gtz.Interface
 #print axioms Gtz.stress_mass_pinned
 #print axioms Gtz.chord_projection_tight
 #print axioms Gtz.splitting_rule
+#print axioms Gtz.harmonic_rule

@@ -170,4 +170,59 @@ theorem splitting_rule
     _ = weight c := by
         field_simp
 
+/-! ### The harmonic rule -/
+
+/-- **The harmonic rule**: multiplying each atom's splitting rule by its
+excess `β_c` and summing against the design trace pins the harmonic stress
+mass, `Σ_{c,d} λ_cd·β_cβ_d/(β_c+β_d) = 1` — the certificate's second scalar
+invariant, forced by weight one and trace two alone. -/
+theorem harmonic_rule
+    (weight : Fin m → ℝ) (square : Fin m → Fin 2 → ℝ)
+    (lambda : Fin m → Fin m → ℝ) (moment : Fin 2 → ℝ)
+    (hlevPos : ∀ e, planarNorm (square e) ≠ 0)
+    (hchordPos : ∀ c d, lambda c d ≠ 0
+      → planarNorm (square c + square d) ≠ 0)
+    (htightSupport : ∀ c d, lambda c d ≠ 0
+      → planarNorm (square c + square d)
+        = planarNorm (square c) + planarNorm (square d) - 2)
+    (hconic : ∀ c, moment ⬝ᵥ ((planarNorm (square c))⁻¹ • square c)
+      = 1 / 2 - 1 / planarNorm (square c))
+    (hstress : ∀ c, ∑ d, lambda c d
+        • ((planarNorm (square c))⁻¹ • square c
+          - (planarNorm (square c + square d))⁻¹ • (square c + square d))
+      = weight c • ((planarNorm (square c))⁻¹ • square c
+          - (2 : ℝ) • moment))
+    (hweightSum : ∑ c, weight c = 1)
+    (htrace : ∑ c, weight c * planarNorm (square c) = 2) :
+    ∑ c, ∑ d, lambda c d
+        * ((planarNorm (square c) - 1) * (planarNorm (square d) - 1)
+          / (planarNorm (square c) + planarNorm (square d) - 2))
+      = 1 := by
+  -- each atom's splitting rule, scaled by its excess
+  have hscaled : ∀ c, ∑ d, lambda c d
+      * ((planarNorm (square c) - 1) * (planarNorm (square d) - 1)
+        / (planarNorm (square c) + planarNorm (square d) - 2))
+      = (planarNorm (square c) - 1) * weight c := by
+    intro c
+    have hsplit := splitting_rule weight square lambda moment c hlevPos
+      (fun d => hchordPos c d) (fun d => htightSupport c d) (hconic c)
+      (hstress c)
+    calc ∑ d, lambda c d
+        * ((planarNorm (square c) - 1) * (planarNorm (square d) - 1)
+          / (planarNorm (square c) + planarNorm (square d) - 2))
+        = (planarNorm (square c) - 1) * ∑ d, lambda c d
+          * ((planarNorm (square d) - 1)
+            / (planarNorm (square c) + planarNorm (square d) - 2)) := by
+          rw [Finset.mul_sum]
+          exact Finset.sum_congr rfl fun d _ => by ring
+      _ = (planarNorm (square c) - 1) * weight c := by rw [hsplit]
+  rw [Finset.sum_congr rfl fun c _ => hscaled c]
+  -- the excess-weighted mass is trace minus weight
+  have hexpand : ∑ c, (planarNorm (square c) - 1) * weight c
+      = (∑ c, weight c * planarNorm (square c)) - ∑ c, weight c := by
+    rw [← Finset.sum_sub_distrib]
+    exact Finset.sum_congr rfl fun c _ => by ring
+  rw [hexpand, htrace, hweightSum]
+  norm_num
+
 end Gtz
