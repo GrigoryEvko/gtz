@@ -141,4 +141,79 @@ theorem parabola_poles_are_clones {moment firstDirection secondDirection :
   rw [(parabola_conic_zero_iff hmomentHalf hfirstUnit).mp hfirstPole,
     (parabola_conic_zero_iff hmomentHalf hsecondUnit).mp hsecondPole]
 
+
+/-! ### Common orthogonality and the four-cycle -/
+
+/-- In the plane, two vectors orthogonal to a common nonzero vector are
+parallel. -/
+theorem planarDet_eq_zero_of_common_orthogonal {leftVec rightVec common :
+    Fin 2 → ℝ}
+    (hcommon : common ⬝ᵥ common ≠ 0)
+    (hleft : leftVec ⬝ᵥ common = 0) (hright : rightVec ⬝ᵥ common = 0) :
+    planarDet leftVec rightVec = 0 := by
+  have hcc : common 0 * common 0 + common 1 * common 1 ≠ 0 := by
+    simpa only [dotProduct, Fin.sum_univ_two] using hcommon
+  simp only [dotProduct, Fin.sum_univ_two] at hleft hright
+  have hprod : planarDet leftVec rightVec
+      * (common 0 * common 0 + common 1 * common 1) = 0 := by
+    simp only [planarDet]
+    linear_combination (rightVec 1 * common 0 - rightVec 0 * common 1) * hleft
+      + (leftVec 0 * common 1 - leftVec 1 * common 0) * hright
+  rcases mul_eq_zero.mp hprod with h | h
+  · exact h
+  · exact absurd h hcc
+
+/-- **The four-cycle step**: in a tight 4-cycle `1–2–3–4–1`, atoms `1` and `3`
+are common tight partners of both `2` and `4`, so — unless `1` and `3` are
+clones — the polar normals of `2` and `4` are parallel. This is the collapse
+that drives the 4-cycle stratum onto the parabola (and thence to clones). -/
+theorem fourCycle_normals_parallel {firstDir thirdDir secondNormal fourthNormal :
+    Fin 2 → ℝ} {secondOffset fourthOffset : ℝ}
+    (hdistinct : firstDir ≠ thirdDir)
+    (hsecondFirst : secondNormal ⬝ᵥ firstDir = secondOffset)
+    (hsecondThird : secondNormal ⬝ᵥ thirdDir = secondOffset)
+    (hfourthFirst : fourthNormal ⬝ᵥ firstDir = fourthOffset)
+    (hfourthThird : fourthNormal ⬝ᵥ thirdDir = fourthOffset) :
+    planarDet secondNormal fourthNormal = 0 := by
+  have hgapNonzero : (firstDir - thirdDir) ⬝ᵥ (firstDir - thirdDir) ≠ 0 := by
+    intro hzero
+    refine hdistinct ?_
+    have hcomp : ∀ i : Fin 2, firstDir i - thirdDir i = 0 := by
+      intro i
+      simp only [dotProduct, Fin.sum_univ_two, Pi.sub_apply] at hzero
+      fin_cases i
+      · show firstDir 0 - thirdDir 0 = 0
+        nlinarith [hzero, sq_nonneg (firstDir 0 - thirdDir 0),
+          sq_nonneg (firstDir 1 - thirdDir 1)]
+      · show firstDir 1 - thirdDir 1 = 0
+        nlinarith [hzero, sq_nonneg (firstDir 0 - thirdDir 0),
+          sq_nonneg (firstDir 1 - thirdDir 1)]
+    ext i
+    linarith [hcomp i]
+  refine planarDet_eq_zero_of_common_orthogonal hgapNonzero ?_ ?_
+  · simp only [dotProduct, Fin.sum_univ_two, Pi.sub_apply] at *
+    linarith [hsecondFirst, hsecondThird]
+  · simp only [dotProduct, Fin.sum_univ_two, Pi.sub_apply] at *
+    linarith [hfourthFirst, hfourthThird]
+
+/-! ### Dust is never tight -/
+
+/-- **Strict dust is never in a tight pair**: tightness forces
+`p² = (ℓ_c − 1)(ℓ_d − 1)`, and a dust atom (`ℓ < 1`) paired with a heavy atom
+(`ℓ > 1`) makes the right side negative. Combined with the covering theorem
+(every atom of an equality design lies in a tight pair), this is the audit's
+"no strict dust in ANY equality design". -/
+theorem dust_never_tight {dustLev heavyLev pairing : ℝ}
+    (hdust : dustLev < 1) (hheavy : 1 < heavyLev)
+    (htight : pairing ^ 2 = (dustLev - 1) * (heavyLev - 1)) : False := by
+  nlinarith [sq_nonneg pairing, htight, hdust, hheavy]
+
+/-- Two dust atoms cannot be tight either: the pairing square would have to
+exceed the product bound while both leverages sit below one. Tightness plus
+the trace floor `ℓ_c + ℓ_d ≥ 2` excludes the pair. -/
+theorem dust_pair_never_tight {firstLev secondLev pairing : ℝ}
+    (hfirst : firstLev < 1) (hsecond : secondLev < 1)
+    (htrace : 2 ≤ firstLev + secondLev) : False := by
+  linarith
+
 end Gtz

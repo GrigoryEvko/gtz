@@ -184,3 +184,7 @@ import Gtz.Interface
 #print axioms Gtz.c2_assembly
 #print axioms Gtz.offWindow_margin_pos
 #print axioms Gtz.acidTest_margin_pos
+#print axioms Gtz.planarDet_eq_zero_of_common_orthogonal
+#print axioms Gtz.fourCycle_normals_parallel
+#print axioms Gtz.dust_never_tight
+#print axioms Gtz.dust_pair_never_tight
