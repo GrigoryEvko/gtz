@@ -55,6 +55,7 @@ import Gtz.IdempotentSplitting
 import Gtz.LeafTangency
 import Gtz.CapDictionary
 import Gtz.MarginTransfer
+import Gtz.AggregatePushoff
 import Gtz.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
@@ -368,3 +369,5 @@ import Gtz.Interface
 #print axioms Gtz.whitened_parseval
 #print axioms Gtz.margin_transfer
 #print axioms Gtz.margin_transfer_priced
+#print axioms Gtz.aggregate_pushoff
+#print axioms Gtz.aggregate_pushoff_pigeonhole
