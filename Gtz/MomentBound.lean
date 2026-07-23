@@ -73,4 +73,33 @@ theorem moment_short_of_conic_pos {moment : Fin 2 → ℝ}
     rw [hdot]
     nlinarith [hnormPos, hlen]
 
+/-- **The clean pushoff**: with the moment bound `|ξ| < 1/2` the Lipschitz
+constant of the Zero-Atom Pushoff drops below one — the zero atom's weight is
+outright dominated by the others' weighted distance to the tight manifold:
+`t_e ≤ Σ t_c·|S_c − X_c|`. The mechanism of the τ₀-collar, in one line. -/
+theorem zeroAtom_pushoff_clean {m : ℕ} (atoms : Finset (Fin m))
+    (zeroAtom : Fin m) (hmem : zeroAtom ∈ atoms)
+    (weight : Fin m → ℝ) (planarSquare : Fin m → Fin 2 → ℝ)
+    (moment : Fin 2 → ℝ) (nearestZero : Fin m → Fin 2 → ℝ)
+    (hweightSum : ∑ c ∈ atoms, weight c = 1)
+    (hclosure : (∑ c ∈ atoms, weight c • planarSquare c) = 0)
+    (htrace : ∑ c ∈ atoms, weight c * planarNorm (planarSquare c) = 2)
+    (hzeroSquare : planarSquare zeroAtom = 0)
+    (hweightNonneg : ∀ c ∈ atoms, 0 ≤ weight c)
+    (hnearestZero : ∀ c ∈ atoms.erase zeroAtom,
+      planarDefect moment (nearestZero c) = 0)
+    (hmomentShort : planarNorm moment ≤ 1 / 2) :
+    weight zeroAtom
+      ≤ ∑ c ∈ atoms.erase zeroAtom,
+          weight c * planarNorm (planarSquare c - nearestZero c) := by
+  have hpushoff := zeroAtom_pushoff atoms zeroAtom hmem weight planarSquare
+    moment nearestZero hweightSum hclosure htrace hzeroSquare hweightNonneg
+    hnearestZero
+  have hdistNonneg : 0 ≤ ∑ c ∈ atoms.erase zeroAtom,
+      weight c * planarNorm (planarSquare c - nearestZero c) :=
+    Finset.sum_nonneg fun c hc =>
+      mul_nonneg (hweightNonneg c (Finset.mem_of_mem_erase hc))
+        (planarNorm_nonneg _)
+  nlinarith [hpushoff, hdistNonneg, hmomentShort]
+
 end Gtz

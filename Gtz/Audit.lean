@@ -318,3 +318,4 @@ import Gtz.Interface
 #print axioms Gtz.harmonic_rule
 #print axioms Gtz.dot_rotateQuarter_self
 #print axioms Gtz.rotational_rule
+#print axioms Gtz.zeroAtom_pushoff_clean
