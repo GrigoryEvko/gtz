@@ -323,3 +323,5 @@ import Gtz.Interface
 #print axioms Gtz.chordFn_vanishes
 #print axioms Gtz.chordFn_at_vertex
 #print axioms Gtz.inscribed_triangle_vertex
+#print axioms Gtz.affine_vanishes_of_three
+#print axioms Gtz.chord_silence_envelope
