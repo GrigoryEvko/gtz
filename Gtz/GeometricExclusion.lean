@@ -315,4 +315,61 @@ theorem no_tight_path_four_double_tangency_of_directions
   · rw [hcritExpand]; exact hfirstCritical
   · rw [hcritExpand]; exact hfourthCritical
 
+/-- **The leaf-corner kill in direction-vector form** — mirrors
+`no_tight_path_four_double_tangency_of_directions` for the P3 corner
+certificate: gauge-aligned moment, native dot-product tightness and
+criticality, distinctness, and the leverage gate at the middle atom. -/
+theorem no_tight_path_three_leaf_tangency_off_pole_of_directions
+    {firstDir secondDir thirdDir moment : Fin 2 → ℝ}
+    (hgauge : moment 1 = 0)
+    (hfirstUnit : firstDir ⬝ᵥ firstDir = 1)
+    (hsecondUnit : secondDir ⬝ᵥ secondDir = 1)
+    (hthirdUnit : thirdDir ⬝ᵥ thirdDir = 1)
+    (htightFirstSecond : (1 + firstDir ⬝ᵥ secondDir) / 2
+      = (1/2 + moment ⬝ᵥ firstDir) * (1/2 + moment ⬝ᵥ secondDir))
+    (htightSecondThird : (1 + secondDir ⬝ᵥ thirdDir) / 2
+      = (1/2 + moment ⬝ᵥ secondDir) * (1/2 + moment ⬝ᵥ thirdDir))
+    (hfirstCritical : polarNormal moment secondDir
+        (1/2 + moment ⬝ᵥ secondDir) ⬝ᵥ rotateQuarter firstDir = 0)
+    (hfirstThirdFree : firstDir ≠ thirdDir)
+    (hsecondGate : 1 - 2 * (moment ⬝ᵥ secondDir) ≠ 0) :
+    False := by
+  have hdotExpand : ∀ leftVec rightVec : Fin 2 → ℝ,
+      leftVec ⬝ᵥ rightVec
+        = leftVec 0 * rightVec 0 + leftVec 1 * rightVec 1 := by
+    intro leftVec rightVec
+    simp [dotProduct, Fin.sum_univ_two]
+  have hmomentDot : ∀ ownDir : Fin 2 → ℝ,
+      moment ⬝ᵥ ownDir = moment 0 * ownDir 0 := by
+    intro ownDir
+    rw [hdotExpand, hgauge]
+    ring
+  have hcritExpand :
+      polarNormal ![moment 0, 0] ![secondDir 0, secondDir 1]
+          (1/2 + moment 0 * secondDir 0) ⬝ᵥ
+          rotateQuarter ![firstDir 0, firstDir 1]
+        = polarNormal moment secondDir
+          (1/2 + moment ⬝ᵥ secondDir) ⬝ᵥ rotateQuarter firstDir := by
+    simp only [polarNormal, rotateQuarter, dotProduct, Fin.sum_univ_two,
+      Matrix.cons_val_zero, Matrix.cons_val_one]
+    rw [hgauge]
+    ring
+  refine no_tight_path_three_leaf_tangency_off_pole
+    (firstCos := firstDir 0) (firstSin := firstDir 1)
+    (secondCos := secondDir 0) (secondSin := secondDir 1)
+    (thirdCos := thirdDir 0) (thirdSin := thirdDir 1)
+    (moment := moment 0) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
+  · rw [hdotExpand] at hfirstUnit; linear_combination hfirstUnit
+  · rw [hdotExpand] at hsecondUnit; linear_combination hsecondUnit
+  · rw [hdotExpand] at hthirdUnit; linear_combination hthirdUnit
+  · rw [hdotExpand, hmomentDot, hmomentDot] at htightFirstSecond
+    linear_combination htightFirstSecond
+  · rw [hdotExpand, hmomentDot, hmomentDot] at htightSecondThird
+    linear_combination htightSecondThird
+  · rw [hcritExpand]; exact hfirstCritical
+  · intro hpairEq
+    exact hfirstThirdFree (planar_eq_of_components
+      (congrArg Prod.fst hpairEq) (congrArg Prod.snd hpairEq))
+  · rw [hmomentDot, ← mul_assoc] at hsecondGate; exact hsecondGate
+
 end Gtz

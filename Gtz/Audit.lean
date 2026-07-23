@@ -480,3 +480,4 @@ import Gtz.Interface
 #print axioms Gtz.no_tight_cycle_five_with_path_stress
 #print axioms Gtz.planar_eq_of_components
 #print axioms Gtz.no_tight_path_four_double_tangency_of_directions
+#print axioms Gtz.no_tight_path_three_leaf_tangency_off_pole_of_directions
