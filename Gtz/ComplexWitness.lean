@@ -32,26 +32,27 @@ open scoped ComplexOrder
 /-! ### Complex designs -/
 
 /-- The complex rank-one atom `g g*`. -/
-def complexAtom (g : Fin 2 → ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
+def complexAtom {k : ℕ} (g : Fin k → ℂ) : Matrix (Fin k) (Fin k) ℂ :=
   Matrix.vecMulVec g (star g)
 
 /-- A weighted design over ℂ: the same axioms as the real `WeightedDesign`,
 with Hermitian atoms resolving the identity. -/
-structure ComplexWeightedDesign (m : ℕ) where
-  atom : Fin m → (Fin 2 → ℂ)
+structure ComplexWeightedDesign (m k : ℕ) where
+  atom : Fin m → (Fin k → ℂ)
   weight : Fin m → ℝ
   weight_pos : ∀ c, 0 < weight c
   weight_sum_one : ∑ c, weight c = 1
   isParseval : ∑ c, ((weight c : ℂ)) • complexAtom (atom c) = 1
 
 /-- Complex domination of a subset: the excess is positive semidefinite. -/
-def ComplexDominates (D : ComplexWeightedDesign m) (C : Finset (Fin m)) : Prop :=
+def ComplexDominates {m k : ℕ} (D : ComplexWeightedDesign m k)
+    (C : Finset (Fin m)) : Prop :=
   ((∑ c ∈ C, complexAtom (D.atom c)) - 1).PosSemidef
 
-/-- The complex analogue of weighted GTZ at size (m, 2). -/
-def ComplexGtzWeighted (m : ℕ) : Prop :=
-  ∀ D : ComplexWeightedDesign m, ∃ C : Finset (Fin m),
-    C.card = 2 ∧ ComplexDominates D C
+/-- The complex analogue of weighted GTZ at size (m, k). -/
+def ComplexGtzWeighted (m k : ℕ) : Prop :=
+  ∀ D : ComplexWeightedDesign m k, ∃ C : Finset (Fin m),
+    C.card = k ∧ ComplexDominates D C
 
 /-! ### The 2×2 pair determinant -/
 
@@ -371,7 +372,7 @@ theorem sicParseval :
       + (waveAmpC * waveAmpC * (omegaRoot ^ 3 - 1) / 4) * hcube
 
 /-- The SIC weighted design over ℂ. -/
-noncomputable def sicDesign : ComplexWeightedDesign 4 where
+noncomputable def sicDesign : ComplexWeightedDesign 4 2 where
   atom := sicAtom
   weight := fun _ => 1 / 4
   weight_pos := fun _ => by norm_num
@@ -387,7 +388,7 @@ every pair's excess determinant is `−1/3 < 0`. Since weighted (4,2) is the
 canonical list's unique rank-2 entry and a theorem over ℝ (`gtz_rank_two`),
 no field-blind argument can prove the canonical list — every proof of GTZ
 must consume realness. -/
-theorem complexGtzWeighted_four_fails : ¬ ComplexGtzWeighted 4 := by
+theorem complexGtzWeighted_four_fails : ¬ ComplexGtzWeighted 4 2 := by
   intro hcontra
   obtain ⟨C, hcard, hdom⟩ := hcontra sicDesign
   obtain ⟨firstIdx, secondIdx, hne, hpair⟩ := Finset.card_eq_two.mp hcard

@@ -38,6 +38,7 @@ import Gtz.QuantitativeCorner
 import Gtz.StressFrame
 import Gtz.ComplexWitness
 import Gtz.Seam
+import Gtz.ComplexPadding
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -270,3 +271,10 @@ import Gtz.Interface
 #print axioms Gtz.covered_of_conic
 #print axioms Gtz.seam_trivial_scale
 #print axioms Gtz.seam_subsumption
+#print axioms Gtz.posSemidef_topLeftBlock
+#print axioms Gtz.not_posSemidef_of_det_re_neg
+#print axioms Gtz.scaledPair_not_posSemidef
+#print axioms Gtz.paddedParseval
+#print axioms Gtz.oneSpike_kill
+#print axioms Gtz.allOld_kill
+#print axioms Gtz.complexGtzWeighted_six_three_fails
