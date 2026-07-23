@@ -62,4 +62,50 @@ theorem erased_form_reading (excess : Matrix (Fin k) (Fin k) ℝ)
   rw [Matrix.sub_mulVec, dotProduct_sub, Matrix.add_mulVec, dotProduct_add,
     Matrix.one_mulVec, hunit, atom_form_eq_sq]
 
+/-- **The pivot prices the overlap, discharged**: for a positive definite
+excess `E`, the generalized Cauchy–Schwarz
+`⟨g,v⟩² ≤ (gᵀE⁻¹g)·(vᵀEv)` holds — the quadratic
+`t ↦ ⟨(g − tEv), E⁻¹(g − tEv)⟩ ≥ 0` has nonpositive discriminant. This is
+exactly the pricing hypothesis of `seam_floor`, now a theorem: at pivot gap
+`q − 1 ≤ ρ` the overlap obeys `⟨g,v⟩² ≤ ρ·⟨v,Ev⟩`-scaled bounds with no
+further input. Sqrt-free via `discrim_le_zero`. -/
+theorem pivot_prices_overlap {E : Matrix (Fin k) (Fin k) ℝ}
+    (hE : E.PosDef) (hET : Eᵀ = E) (atom probe : Fin k → ℝ) :
+    (atom ⬝ᵥ probe) ^ 2
+      ≤ (atom ⬝ᵥ (E⁻¹ *ᵥ atom)) * (probe ⬝ᵥ (E *ᵥ probe)) := by
+  have hdet : IsUnit E.det := isUnit_iff_ne_zero.mpr (ne_of_gt hE.det_pos)
+  have hinvPD : E⁻¹.PosDef := hE.inv
+  -- the nonnegative quadratic in t
+  have hquad : ∀ t : ℝ, 0 ≤ (probe ⬝ᵥ (E *ᵥ probe)) * (t * t)
+      + (-(2 * (atom ⬝ᵥ probe))) * t + (atom ⬝ᵥ (E⁻¹ *ᵥ atom)) := by
+    intro t
+    have hform := (Matrix.posSemidef_iff_dotProduct_mulVec.mp
+      hinvPD.posSemidef).2 (atom - t • (E *ᵥ probe))
+    rw [star_trivial] at hform
+    have hexpand : (atom - t • (E *ᵥ probe))
+        ⬝ᵥ (E⁻¹ *ᵥ (atom - t • (E *ᵥ probe)))
+        = (atom ⬝ᵥ (E⁻¹ *ᵥ atom)) - 2 * t * (atom ⬝ᵥ probe)
+          + t^2 * (probe ⬝ᵥ (E *ᵥ probe)) := by
+      have hcollapse : E⁻¹ *ᵥ (E *ᵥ probe) = probe := by
+        rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul E hdet,
+          Matrix.one_mulVec]
+      have hsymCross : (E *ᵥ probe) ⬝ᵥ (E⁻¹ *ᵥ atom) = probe ⬝ᵥ atom := by
+        have hadj := dotProduct_mulVec_transpose Eᵀ probe (E⁻¹ *ᵥ atom)
+        rw [Matrix.transpose_transpose] at hadj
+        rw [hadj, hET, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv E hdet,
+          Matrix.one_mulVec]
+      have hcross2 : (E *ᵥ probe) ⬝ᵥ probe = probe ⬝ᵥ (E *ᵥ probe) :=
+        dotProduct_comm _ _
+      rw [Matrix.mulVec_sub, Matrix.mulVec_smul, dotProduct_sub,
+        sub_dotProduct, sub_dotProduct, dotProduct_smul, smul_dotProduct,
+        smul_dotProduct, dotProduct_smul, hcollapse, hsymCross]
+      simp only [smul_eq_mul]
+      rw [hcross2, dotProduct_comm probe atom]
+      ring
+    rw [hexpand] at hform
+    nlinarith [hform]
+  have hdisc := discrim_le_zero hquad
+  rw [discrim] at hdisc
+  nlinarith [hdisc]
+
 end Gtz

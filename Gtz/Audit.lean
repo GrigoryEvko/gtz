@@ -440,6 +440,7 @@ import Gtz.Interface
 #print axioms Gtz.downdate_form_floor
 #print axioms Gtz.seam_floor
 #print axioms Gtz.erased_form_reading
+#print axioms Gtz.pivot_prices_overlap
 #print axioms Gtz.cyclic_stress_telescope
 #print axioms Gtz.cyclic_stress_closure
 #print axioms Gtz.cyclic_stress_vanishes_of_open
