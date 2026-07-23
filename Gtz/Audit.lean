@@ -65,6 +65,7 @@ import Gtz.SylvesterThree
 import Gtz.GordanAlternative
 import Gtz.TiedQuadruple
 import Gtz.CoveringMargin
+import Gtz.DowndateInterlacing
 import Gtz.Certs.PFourCertificate
 import Gtz.Certs.CFiveCertificate
 import Gtz.Interface
@@ -428,6 +429,9 @@ import Gtz.Interface
 #print axioms Gtz.covering_margin_pos
 #print axioms Gtz.covering_margin_le
 #print axioms Gtz.uncovered_multiplier_bound
+#print axioms Gtz.downdate_form_floor
+#print axioms Gtz.seam_floor
+#print axioms Gtz.erased_form_reading
 #print axioms Gtz.p4_geometric_certificate_variety_empty
 #print axioms Gtz.leaf_tangency_corner_certificate
 #print axioms Gtz.c5_p5stress_geometric_certificate_variety_empty
