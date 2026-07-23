@@ -43,6 +43,7 @@ import Gtz.PThreeStratum
 import Gtz.CollinearStratum
 import Gtz.MomentBound
 import Gtz.CornerResolvent
+import Gtz.SilenceDictionary
 import Gtz.LocalLaw
 import Gtz.Interface
 
@@ -299,3 +300,7 @@ import Gtz.Interface
 #print axioms Gtz.corner_cap_mulVec_diff
 #print axioms Gtz.corner_cap_psd_on_complement
 #print axioms Gtz.corner_gate_cap_iff
+#print axioms Gtz.det_pair_excess_planar
+#print axioms Gtz.pair_dominates_iff_coherence_le
+#print axioms Gtz.pair_silent_iff_coherence_gt
+#print axioms Gtz.pair_dominates_iff_conic
