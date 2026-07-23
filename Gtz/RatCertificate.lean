@@ -116,4 +116,89 @@ theorem certificate_dominates (D : WeightedDesign m k) (hk : 1 ≤ k)
   rw [Finset.card_erase_of_mem hdd, hcard]
   omega
 
+/-- The rational Gram shift of a subset: the ℚ-side of S_Q − 1. -/
+def ratGram (R : RatDesign m k) (Q : Finset (Fin m)) :
+    Matrix (Fin k) (Fin k) ℚ :=
+  Matrix.of fun i j =>
+    (∑ c ∈ Q, R.atom c i * R.atom c j) - if i = j then 1 else 0
+
+/-- Entrywise cast commutes with matrix products. -/
+theorem map_mul_cast (M N : Matrix (Fin k) (Fin k) ℚ) :
+    (M * N).map (fun q : ℚ => (q : ℝ))
+      = M.map (fun q : ℚ => (q : ℝ)) * N.map (fun q : ℚ => (q : ℝ)) := by
+  ext i j
+  simp only [Matrix.map_apply, Matrix.mul_apply]
+  push_cast
+  rfl
+
+/-- Entrywise cast commutes with determinants. -/
+theorem det_cast (M : Matrix (Fin k) (Fin k) ℚ) :
+    (M.map (fun q : ℚ => (q : ℝ))).det = ((M.det : ℚ) : ℝ) := by
+  simpa using (RingHom.map_det (Rat.castHom ℝ) M).symm
+
+/-- The Gram shift casts entrywise. -/
+theorem RatDesign.gram_cast (R : RatDesign m k) (Q : Finset (Fin m)) :
+    subsetSum R.toReal Q - 1
+      = (ratGram R Q).map (fun q : ℚ => (q : ℝ)) := by
+  ext i j
+  rw [Matrix.sub_apply, R.subsetSum_apply Q i j, Matrix.map_apply, ratGram,
+    Matrix.of_apply]
+  push_cast
+  rw [Matrix.one_apply]
+  split_ifs <;> norm_num
+
+/-- Matrix inverses cast along the field embedding ℚ → ℝ. -/
+theorem ratInv_cast {M : Matrix (Fin k) (Fin k) ℚ} (hdet : M.det ≠ 0) :
+    (M.map (fun q : ℚ => (q : ℝ)))⁻¹ = M⁻¹.map (fun q : ℚ => (q : ℝ)) := by
+  apply Matrix.inv_eq_left_inv
+  rw [← map_mul_cast, Matrix.nonsing_inv_mul M (isUnit_iff_ne_zero.mpr hdet),
+    Matrix.map_one _ (by norm_num) (by norm_num)]
+
+/-- **The pivot casts**: over an invertible rational Gram shift, the real
+pivot is the cast of the rational pivot. -/
+theorem RatDesign.pivot_cast (R : RatDesign m k) (Q : Finset (Fin m))
+    (e : Fin m) (hdet : (ratGram R Q).det ≠ 0) :
+    pivot R.toReal Q e
+      = ((R.atom e ⬝ᵥ ((ratGram R Q)⁻¹ *ᵥ R.atom e) : ℚ) : ℝ) := by
+  rw [pivot_eq_dot, R.gram_cast Q, ratInv_cast hdet]
+  push_cast
+  simp only [dotProduct, Matrix.mulVec, Matrix.map_apply]
+  push_cast
+  rfl
+
+/-- **The fully rational branch-(a) certificate** (stage C3): every hypothesis
+is a finite ℚ-identity or ℚ-comparison on the certificate data — checkable by
+exact rational arithmetic on concrete instances — and the conclusion is real
+domination. This is the consumption theorem for the open cases. -/
+theorem ratCertificate_dominates (R : RatDesign m k) (hk : 1 ≤ k)
+    (Q : Finset (Fin m)) (hcard : Q.card = k + 1)
+    (Lq : Matrix (Fin k) (Fin k) ℚ) (dq : Fin k → ℚ)
+    (hLdet : Lq.det ≠ 0) (hdpos : ∀ i, 0 < dq i)
+    (hLDL : Lqᵀ * ratGram R Q * Lq = Matrix.diagonal dq)
+    (hpiv : ∀ e ∈ Qᶜ, R.atom e ⬝ᵥ ((ratGram R Q)⁻¹ *ᵥ R.atom e) ≤ 1) :
+    ∃ C : Finset (Fin m), C.card = k ∧ Dominates R.toReal C := by
+  have hgramdet : (ratGram R Q).det ≠ 0 := by
+    intro h0
+    have hd := congrArg Matrix.det hLDL
+    rw [Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0,
+      Matrix.det_diagonal] at hd
+    have hpos : 0 < ∏ i, dq i := Finset.prod_pos fun i _ => hdpos i
+    rw [← hd] at hpos
+    simp at hpos
+  refine certificate_dominates R.toReal hk Q hcard
+    (Lq.map (fun q : ℚ => (q : ℝ))) (fun i => (dq i : ℝ)) ?_ ?_ ?_ ?_
+  · rw [det_cast]
+    exact isUnit_iff_ne_zero.mpr (by exact_mod_cast hLdet)
+  · intro i
+    exact_mod_cast hdpos i
+  · rw [R.gram_cast Q, ← Matrix.transpose_map, ← map_mul_cast, ← map_mul_cast,
+      hLDL]
+    ext i j
+    rcases eq_or_ne i j with rfl | hij
+    · simp [Matrix.map_apply, Matrix.diagonal_apply]
+    · simp [Matrix.map_apply, Matrix.diagonal_apply, hij]
+  · intro e he
+    rw [R.pivot_cast Q e hgramdet]
+    exact_mod_cast hpiv e he
+
 end Gtz

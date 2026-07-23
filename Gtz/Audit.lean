@@ -106,3 +106,9 @@ import Gtz.RatCertificate
 #print axioms Gtz.RatDesign.dominates_iff_cast
 #print axioms Gtz.posDef_congr_right
 #print axioms Gtz.certificate_dominates
+#print axioms Gtz.map_mul_cast
+#print axioms Gtz.det_cast
+#print axioms Gtz.RatDesign.gram_cast
+#print axioms Gtz.ratInv_cast
+#print axioms Gtz.RatDesign.pivot_cast
+#print axioms Gtz.ratCertificate_dominates
