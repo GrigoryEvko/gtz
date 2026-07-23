@@ -15,6 +15,7 @@ content of the Lifting Lemma itself.
 -/
 import Mathlib
 import Gtz.Basic
+import Gtz.Completion
 
 namespace Gtz
 
@@ -73,5 +74,48 @@ theorem coisometryPushforward_atom (D : WeightedDesign m k)
     (hcoisometry : rectangular * rectangularᵀ = 1) (index : Fin m) :
     (coisometryPushforward D rectangular hcoisometry).atom index
       = rectangular *ᵥ D.atom index := rfl
+
+/-- **The deflation coisometry exists**: every unit pivot direction in
+`ℝ^(k+1)` admits a coisometry `B : ℝ^(k+1) → ℝᵏ` whose rows are orthonormal
+and orthogonal to the pivot, with the completeness split
+`Bᵀ·B + u·uᵀ = 1` — the orthonormal basis of `u^⊥` packaged as the matrix
+the pushforward consumes. Instantiates `exists_orthonormal_completion` at
+one column and transposes. -/
+theorem exists_deflation_coisometry {k : ℕ} {pivotDir : Fin (k + 1) → ℝ}
+    (hpivotUnit : pivotDir ⬝ᵥ pivotDir = 1) :
+    ∃ deflator : Matrix (Fin k) (Fin (k + 1)) ℝ,
+      deflator * deflatorᵀ = 1
+        ∧ deflator *ᵥ pivotDir = 0
+        ∧ deflatorᵀ * deflator + atomMatrix pivotDir = 1 := by
+  set pivotColumn : Matrix (Fin (k + 1)) (Fin 1) ℝ :=
+    fun rowIndex _ => pivotDir rowIndex with hpivotColumn
+  have hcolumnOrtho : pivotColumnᵀ * pivotColumn = 1 := by
+    ext firstIndex secondIndex
+    fin_cases firstIndex
+    fin_cases secondIndex
+    simpa [hpivotColumn, Matrix.mul_apply, Matrix.transpose_apply,
+      Matrix.one_apply, dotProduct] using hpivotUnit
+  obtain ⟨completion, hcompletionOrtho, hcrossZero, hcomplete⟩ :=
+    exists_orthonormal_completion pivotColumn hcolumnOrtho
+  refine ⟨completionᵀ, ?_, ?_, ?_⟩
+  · rw [Matrix.transpose_transpose]
+    exact hcompletionOrtho
+  · funext rowIndex
+    have hcrossEntry := congrFun (congrFun hcrossZero 0) rowIndex
+    simp only [Matrix.mul_apply, Matrix.transpose_apply,
+      hpivotColumn] at hcrossEntry
+    simp only [Matrix.mulVec, dotProduct, Matrix.transpose_apply,
+      Pi.zero_apply]
+    rw [Finset.sum_congr rfl fun index _ =>
+      mul_comm (completion index rowIndex) (pivotDir index)]
+    exact hcrossEntry
+  · have hpivotSquare : pivotColumn * pivotColumnᵀ = atomMatrix pivotDir := by
+      ext firstIndex secondIndex
+      simp [hpivotColumn, Matrix.mul_apply, Matrix.transpose_apply,
+        atomMatrix, Matrix.vecMulVec_apply]
+    rw [Matrix.transpose_transpose]
+    rw [hpivotSquare] at hcomplete
+    rw [← hcomplete]
+    exact add_comm (completion * completionᵀ) (atomMatrix pivotDir)
 
 end Gtz
