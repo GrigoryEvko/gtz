@@ -20,6 +20,7 @@ import Gtz.MarginContinuity
 import Gtz.StressCertificate
 import Gtz.StrictDomination
 import Gtz.DominationWithoutCertificate
+import Gtz.SplitTetrahedronTie
 import Gtz.OneObjectNarrowing
 import Gtz.GapStabilityFacts
 import Gtz.FrameBridge
@@ -650,3 +651,11 @@ import Gtz.Interface
 #print axioms Gtz.witnessSlope_form
 #print axioms Gtz.witnessSlope_weightPairing
 #print axioms Gtz.witnessDesign_noStressCertificate
+#print axioms Gtz.noStressCertificate_of_duplicate_atoms
+#print axioms Gtz.splitTetraDesign
+#print axioms Gtz.splitTetra_gapForm_zero_of_unusedDir
+#print axioms Gtz.splitTetraDesign_dominates
+#print axioms Gtz.splitTetraDesign_no_strictDominator
+#print axioms Gtz.splitTetraDesign_isTie
+#print axioms Gtz.splitTetraDesign_noStressCertificate
+#print axioms Gtz.exists_isTie_and_noStressCertificate
