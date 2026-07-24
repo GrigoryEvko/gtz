@@ -15,6 +15,7 @@ import Gtz.SchurRankOne
 import Gtz.TraceIdentity
 import Gtz.TriangleClosure
 import Gtz.ResidueDissolution
+import Gtz.CollaredCompact
 import Gtz.CornerFiber
 import Gtz.CapCriterion
 import Gtz.Crystallization
@@ -536,3 +537,9 @@ import Gtz.Interface
 #print axioms Gtz.p3_closure_numerator_factors
 #print axioms Gtz.focal_conic_p3_closes
 #print axioms Gtz.no_chordless_tight_four_cycle
+#print axioms Gtz.collaredSet
+#print axioms Gtz.design_mem_collaredSet
+#print axioms Gtz.weighted_leverage_le_one_of_parseval
+#print axioms Gtz.leverage_le_inv_floor_of_parseval
+#print axioms Gtz.isClosed_collaredSet
+#print axioms Gtz.isCompact_collaredSet
