@@ -513,3 +513,5 @@ import Gtz.Interface
 #print axioms Gtz.pivot_form_le_leverage_of_dominated
 #print axioms Gtz.liftingLemma_all_iff_gtzWeightedAll
 #print axioms Gtz.liftingLemma_all_of_canonical_windows
+#print axioms Gtz.exists_good_in_projection
+#print axioms Gtz.exists_good_in_projection_rank_three

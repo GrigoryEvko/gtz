@@ -652,4 +652,47 @@ theorem liftingLemma_all_of_canonical_windows
   liftingLemma_of_gtzWeighted
     (gtz_of_canonical_list hwindows (k + 1) (Nat.le_add_left 1 k))
 
+/-- **The wall, narrowed to the coupling**: with rank-`k` GTZ in hand,
+EVERY nonzero atom of EVERY `(k+1)`-design admits a deflation whose
+projected design has a dominating `k`-subset — good-in-projection
+subsets exist for every pivot choice. So of the Lifting Lemma's three
+certificates, the first two are ALWAYS jointly satisfiable per pivot;
+the open content is exactly the leverage/discriminant COUPLING between
+the pivot and its projected selection. -/
+theorem exists_good_in_projection {k : ℕ} (hgtz : GtzWeightedAll k)
+    {m : ℕ} (D : WeightedDesign m (k + 1)) (pivot : Fin m)
+    (hpivotNonzero : D.atom pivot ≠ 0) :
+    ∃ (scale : ℝ) (deflator : Matrix (Fin k) (Fin (k + 1)) ℝ)
+      (hcoisometry : deflator * deflatorᵀ = 1) (subset : Finset (Fin m)),
+      0 < scale
+        ∧ deflator *ᵥ D.atom pivot = 0
+        ∧ deflatorᵀ * deflator + atomMatrix (scale • D.atom pivot) = 1
+        ∧ subset.card = k
+        ∧ Dominates (coisometryPushforward D deflator hcoisometry) subset := by
+  obtain ⟨scale, deflator, hscalePos, hcoisometry, hkill, hsplit, hunit⟩ :=
+    exists_pivot_deflation D pivot hpivotNonzero
+  obtain ⟨subset, hcard, hdominates⟩ :=
+    hgtz m (coisometryPushforward D deflator hcoisometry)
+  exact ⟨scale, deflator, hcoisometry, subset, hscalePos, hkill, hsplit,
+    hcard, hdominates⟩
+
+/-- **The rank-3 instance — the hardest object, cornered**: every nonzero
+atom of every `(m,3)` design (the (6,3)/(7,3) frontier included) has
+good-in-projection PAIRS, unconditionally, because rank-2 GTZ is proven.
+What separates this from `LiftingLemma 2` — hence from (6,3)∧(7,3),
+hence from all of rank 3 — is only the coupling: choosing the pivot so
+that SOME dominating pair also carries the leverage floor and the
+discriminant bound. -/
+theorem exists_good_in_projection_rank_three {m : ℕ}
+    (D : WeightedDesign m 3) (pivot : Fin m)
+    (hpivotNonzero : D.atom pivot ≠ 0) :
+    ∃ (scale : ℝ) (deflator : Matrix (Fin 2) (Fin 3) ℝ)
+      (hcoisometry : deflator * deflatorᵀ = 1) (subset : Finset (Fin m)),
+      0 < scale
+        ∧ deflator *ᵥ D.atom pivot = 0
+        ∧ deflatorᵀ * deflator + atomMatrix (scale • D.atom pivot) = 1
+        ∧ subset.card = 2
+        ∧ Dominates (coisometryPushforward D deflator hcoisometry) subset :=
+  exists_good_in_projection gtz_rank_two D pivot hpivotNonzero
+
 end Gtz
