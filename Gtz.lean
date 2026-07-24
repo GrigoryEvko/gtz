@@ -57,6 +57,7 @@ import Gtz.LeafTangency
 import Gtz.LeverageBound
 import Gtz.LiftingLemma
 import Gtz.LocalLaw
+import Gtz.MarginContinuity
 import Gtz.MarginTransfer
 import Gtz.MomentBound
 import Gtz.MomentCovector

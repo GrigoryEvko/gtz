@@ -16,6 +16,7 @@ import Gtz.TraceIdentity
 import Gtz.TriangleClosure
 import Gtz.ResidueDissolution
 import Gtz.CollaredCompact
+import Gtz.MarginContinuity
 import Gtz.OneObjectNarrowing
 import Gtz.GapStabilityFacts
 import Gtz.FrameBridge
@@ -614,3 +615,20 @@ import Gtz.Interface
 #print axioms Gtz.tetraGapMatrix_quadForm
 #print axioms Gtz.tetraGapMatrix_quadForm_nonneg
 #print axioms Gtz.tetraGapMatrix_quadForm_at_null
+#print axioms Gtz.rayleigh_bddBelow
+#print axioms Gtz.lambdaMinCLM_sub_le
+#print axioms Gtz.abs_lambdaMinCLM_sub_le
+#print axioms Gtz.lipschitzWith_lambdaMinCLM
+#print axioms Gtz.continuous_lambdaMinCLM
+#print axioms Gtz.continuous_toEuclideanCLM
+#print axioms Gtz.continuous_lambdaMinMat
+#print axioms Gtz.rayleigh_toEuclideanCLM_eq
+#print axioms Gtz.euclid_norm_sq_eq_dotProduct
+#print axioms Gtz.one_le_lambdaMinMat_iff_forall
+#print axioms Gtz.one_le_lambdaMinMat_iff_posSemidef
+#print axioms Gtz.isHermitian_subsetSumRaw
+#print axioms Gtz.dominates_iff_one_le_lambdaMinMat
+#print axioms Gtz.continuous_subsetSumRaw
+#print axioms Gtz.continuous_dominationMargin
+#print axioms Gtz.continuousOn_dominationMargin
+#print axioms Gtz.offTubeGap_of_margin_pos
