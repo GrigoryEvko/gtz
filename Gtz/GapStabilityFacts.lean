@@ -118,4 +118,28 @@ theorem quotient_floor_uniform (lev : ℝ) :
       + (12 * lev ^ 2 - 28 * lev + 18) = 4 * (lev - 2) ^ 2 := by ring
   rw [h]; positivity
 
+/-- **The complex slack, pinned to a tight rational window** (adversarial numerical
+sharpening of `complex_sic_slack_neg`). The complex SIC / Bloch-tetrahedron slack
+`1 − 2/√3 ≈ −0.1547` lies strictly in `(−1/6, −1/10)`. This kernel-checks that the
+ℂ-side envelope violation is ROBUST — bounded away from zero by `1/10` in magnitude,
+not a marginal/rounding effect — which is exactly where realness concentrates
+(residual 12) and why the boxed law is refuted over ℂ (residual 8 H1a). The lower
+bound rides the tight rational certificate `(12/7)² = 144/49 < 3` (margin `147 − 144
+= 3`), the upper bound `3 < 400/121 = (20/11)²`; no external engine. -/
+theorem complex_sic_slack_window :
+    -1 / 6 < (1 : ℝ) - 2 / Real.sqrt 3 ∧ (1 : ℝ) - 2 / Real.sqrt 3 < -1 / 10 := by
+  have hpos : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
+  have hne : Real.sqrt 3 ≠ 0 := ne_of_gt hpos
+  have hcancel : 2 / Real.sqrt 3 * Real.sqrt 3 = 2 := by field_simp
+  have htpos : (0 : ℝ) < 2 / Real.sqrt 3 := div_pos (by norm_num) hpos
+  have hub : Real.sqrt 3 < 20 / 11 := by
+    rw [show (20 : ℝ) / 11 = Real.sqrt ((20 / 11) ^ 2) from (Real.sqrt_sq (by norm_num)).symm]
+    exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+  have hlb : (12 : ℝ) / 7 < Real.sqrt 3 := by
+    rw [show (12 : ℝ) / 7 = Real.sqrt ((12 / 7) ^ 2) from (Real.sqrt_sq (by norm_num)).symm]
+    exact Real.sqrt_lt_sqrt (by positivity) (by norm_num)
+  refine ⟨?_, ?_⟩
+  · nlinarith [hcancel, hlb, htpos, hpos]
+  · nlinarith [hcancel, hub, htpos, hpos]
+
 end Gtz

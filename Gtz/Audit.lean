@@ -595,5 +595,6 @@ import Gtz.Interface
 #print axioms Gtz.pair_budget_le_firstOrder
 #print axioms Gtz.envelope_forces_slack_pos
 #print axioms Gtz.complex_sic_slack_neg
+#print axioms Gtz.complex_sic_slack_window
 #print axioms Gtz.transverse_dist_le_of_coercive
 #print axioms Gtz.quotient_floor_uniform
