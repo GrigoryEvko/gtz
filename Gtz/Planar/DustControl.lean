@@ -1,0 +1,248 @@
+/-
+# Proposition D: unconditional dust control on the planar platform
+
+The two per-pair inequalities of the audited Proposition D (diary §68) and
+the summed dust-deficit bound with the repaired tight constant:
+
+* `pairEntry_bloch_nonneg_of_mixed` — D.1, mixed positivity: a heavy/dust
+  pair has nonnegative entry unconditionally (no silence needed);
+* `pairEntry_bloch_ge_of_dust` — the dust-pair floor
+  `M_cd ≥ −2(a−ℓ_c)(a−ℓ_d)`;
+* `dust_deficit_bloch` — D.3 with the AUDIT-REPAIRED constant: the dust-dust
+  half pair-sum is `≥ −2δ₀δ₂`, via the expansion identity
+  `Σ f_c f_d |S_c−S_d|² = 2δ₀δ₂ − 2|Σ f S|² ≤ 2δ₀δ₂` (the printed route of
+  the informal artifact only reached `−4δ₀δ₂`; the repair is §68's G1).
+-/
+import Mathlib
+import Gtz.Planar.PlanarPlatform
+import Gtz.Planar.BlochDictionary
+import Gtz.LinAlg.PsdKit
+
+namespace Gtz
+
+open Matrix
+
+variable {m : ℕ}
+
+/-- **Proposition D.1 (mixed positivity)**: a pair with `ℓ_c ≥ a ≥ ℓ_d` has
+nonnegative entry — unconditionally, no silence hypothesis. -/
+theorem pairEntry_bloch_nonneg_of_mixed (atoms : Fin m → Fin 2 → ℝ)
+    (a : ℝ) (c d : Fin m)
+    (hheavyC : a ≤ atoms c ⬝ᵥ atoms c) (hdustD : atoms d ⬝ᵥ atoms d ≤ a) :
+    0 ≤ pairEntry (fun e => blochSquare (atoms e))
+        (fun e => atoms e ⬝ᵥ atoms e - 2 * a) a c d := by
+  rw [pairEntry_bloch]
+  nlinarith [sq_nonneg (atoms c ⬝ᵥ atoms d),
+    mul_nonneg (sub_nonneg.mpr hheavyC) (sub_nonneg.mpr hdustD)]
+
+/-- The dust-pair floor: `M_cd ≥ −2(a−ℓ_c)(a−ℓ_d)` for any pair (the product
+term is all that can go negative; the pairing square only helps). -/
+theorem pairEntry_bloch_ge_of_dust (atoms : Fin m → Fin 2 → ℝ)
+    (a : ℝ) (c d : Fin m) :
+    -(2 * ((a - atoms c ⬝ᵥ atoms c) * (a - atoms d ⬝ᵥ atoms d)))
+      ≤ pairEntry (fun e => blochSquare (atoms e))
+          (fun e => atoms e ⬝ᵥ atoms e - 2 * a) a c d := by
+  rw [pairEntry_bloch]
+  nlinarith [sq_nonneg (atoms c ⬝ᵥ atoms d)]
+
+/-- **Proposition D.3 (dust deficit, tight constant)**: the half pair-sum
+over any subfamily with nonnegative weights is bounded below by `−2δ₀δ₂`
+with `δ_j = Σ_D t_c (a−ℓ_c) ℓ_c^j` — the audit-repaired constant, through
+the expansion identity, not the crude norm bound. Statement hygiene: the
+informal statement assumed every leverage `≤ a` (dust), but the chain never
+uses it — dust-ness only makes `δ₀, δ₂` nonnegative, i.e. makes the bound
+worth having. -/
+theorem dust_deficit_bloch (dustSet : Finset (Fin m))
+    (atoms : Fin m → Fin 2 → ℝ) (weight : Fin m → ℝ) (a : ℝ)
+    (hweight : ∀ c ∈ dustSet, 0 ≤ weight c) :
+    -(2 * (∑ c ∈ dustSet, weight c * (a - atoms c ⬝ᵥ atoms c))
+        * (∑ c ∈ dustSet, weight c * (a - atoms c ⬝ᵥ atoms c)
+            * (atoms c ⬝ᵥ atoms c) ^ 2))
+      ≤ (1 / 2) * ∑ c ∈ dustSet, ∑ d ∈ dustSet,
+          pairEntry (fun e => blochSquare (atoms e))
+              (fun e => atoms e ⬝ᵥ atoms e - 2 * a) a c d
+            * weight c * weight d
+            * ((blochSquare (atoms c) - blochSquare (atoms d)) ⬝ᵥ
+               (blochSquare (atoms c) - blochSquare (atoms d))) := by
+  -- Per-term floor: entry ≥ −2(a−ℓ_c)(a−ℓ_d), and the squared difference is
+  -- nonnegative, so each term is ≥ −(deficit coefficient)·|ΔS|².
+  have hterm : ∀ c ∈ dustSet, ∀ d ∈ dustSet,
+      -((weight c * (a - atoms c ⬝ᵥ atoms c))
+          * (weight d * (a - atoms d ⬝ᵥ atoms d))
+          * ((blochSquare (atoms c) - blochSquare (atoms d)) ⬝ᵥ
+             (blochSquare (atoms c) - blochSquare (atoms d))))
+        ≤ (1 / 2) * (pairEntry (fun e => blochSquare (atoms e))
+              (fun e => atoms e ⬝ᵥ atoms e - 2 * a) a c d
+            * weight c * weight d
+            * ((blochSquare (atoms c) - blochSquare (atoms d)) ⬝ᵥ
+               (blochSquare (atoms c) - blochSquare (atoms d)))) := by
+    intro c hc d hd
+    have hfloor := pairEntry_bloch_ge_of_dust atoms a c d
+    have hnormSq := dotProduct_self_nonneg
+      (blochSquare (atoms c) - blochSquare (atoms d))
+    have hwc := hweight c hc
+    have hwd := hweight d hd
+    nlinarith [mul_nonneg hwc hwd,
+      mul_nonneg (mul_nonneg hwc hwd) hnormSq]
+  -- Sum the floors, then close with the expansion identity and `|Σ f S|² ≥ 0`.
+  have hsum :
+      -(∑ c ∈ dustSet, ∑ d ∈ dustSet,
+          (weight c * (a - atoms c ⬝ᵥ atoms c))
+            * (weight d * (a - atoms d ⬝ᵥ atoms d))
+            * ((blochSquare (atoms c) - blochSquare (atoms d)) ⬝ᵥ
+               (blochSquare (atoms c) - blochSquare (atoms d))))
+        ≤ (1 / 2) * ∑ c ∈ dustSet, ∑ d ∈ dustSet,
+            pairEntry (fun e => blochSquare (atoms e))
+                (fun e => atoms e ⬝ᵥ atoms e - 2 * a) a c d
+              * weight c * weight d
+              * ((blochSquare (atoms c) - blochSquare (atoms d)) ⬝ᵥ
+                 (blochSquare (atoms c) - blochSquare (atoms d))) := by
+    rw [Finset.mul_sum, ← Finset.sum_neg_distrib]
+    refine Finset.sum_le_sum fun c hc => ?_
+    rw [Finset.mul_sum, ← Finset.sum_neg_distrib]
+    exact Finset.sum_le_sum fun d hd => hterm c hc d hd
+  refine le_trans ?_ hsum
+  -- The expansion identity with `f_c = t_c(a−ℓ_c)` and `|S_c|² = ℓ_c²`.
+  have hexpansion := sum_sub_normSq_expansion dustSet
+    (fun c => weight c * (a - atoms c ⬝ᵥ atoms c))
+    (fun c => blochSquare (atoms c))
+  have hnormSqAll : (∑ c ∈ dustSet, (weight c * (a - atoms c ⬝ᵥ atoms c))
+      * (blochSquare (atoms c) ⬝ᵥ blochSquare (atoms c)))
+        = ∑ c ∈ dustSet, weight c * (a - atoms c ⬝ᵥ atoms c)
+            * (atoms c ⬝ᵥ atoms c) ^ 2 :=
+    Finset.sum_congr rfl fun c _ => by rw [blochSquare_normSq]
+  rw [hnormSqAll] at hexpansion
+  have hcenter := dotProduct_self_nonneg
+    (∑ c ∈ dustSet, (weight c * (a - atoms c ⬝ᵥ atoms c)) •
+      blochSquare (atoms c))
+  rw [neg_le_neg_iff]
+  calc (∑ c ∈ dustSet, ∑ d ∈ dustSet,
+        (weight c * (a - atoms c ⬝ᵥ atoms c))
+          * (weight d * (a - atoms d ⬝ᵥ atoms d))
+          * ((blochSquare (atoms c) - blochSquare (atoms d)) ⬝ᵥ
+             (blochSquare (atoms c) - blochSquare (atoms d))))
+      = 2 * (∑ c ∈ dustSet, weight c * (a - atoms c ⬝ᵥ atoms c))
+          * (∑ c ∈ dustSet, weight c * (a - atoms c ⬝ᵥ atoms c)
+              * (atoms c ⬝ᵥ atoms c) ^ 2)
+        - 2 * ((∑ c ∈ dustSet, (weight c * (a - atoms c ⬝ᵥ atoms c)) •
+              blochSquare (atoms c)) ⬝ᵥ
+            (∑ c ∈ dustSet, (weight c * (a - atoms c ⬝ᵥ atoms c)) •
+              blochSquare (atoms c))) := hexpansion
+    _ ≤ 2 * (∑ c ∈ dustSet, weight c * (a - atoms c ⬝ᵥ atoms c))
+          * (∑ c ∈ dustSet, weight c * (a - atoms c ⬝ᵥ atoms c)
+              * (atoms c ⬝ᵥ atoms c) ^ 2) := by linarith
+
+/-- Cauchy–Schwarz for planar pairings, Lagrange form: `p² ≤ ℓ_c ℓ_d`. -/
+private theorem pairing_sq_le_leverage_mul (leftAtom rightAtom : Fin 2 → ℝ) :
+    (leftAtom ⬝ᵥ rightAtom) ^ 2
+      ≤ (leftAtom ⬝ᵥ leftAtom) * (rightAtom ⬝ᵥ rightAtom) := by
+  simp only [dotProduct, Fin.sum_univ_two]
+  nlinarith [sq_nonneg (leftAtom 0 * rightAtom 1 - leftAtom 1 * rightAtom 0)]
+
+/-- The Bloch squared difference dominates the squared leverage gap:
+`|S_c − S_d|² ≥ (ℓ_c − ℓ_d)²` (reverse triangle, in squares). -/
+theorem blochSquare_sub_normSq_ge (leftAtom rightAtom : Fin 2 → ℝ) :
+    (leftAtom ⬝ᵥ leftAtom - rightAtom ⬝ᵥ rightAtom) ^ 2
+      ≤ (blochSquare leftAtom - blochSquare rightAtom) ⬝ᵥ
+        (blochSquare leftAtom - blochSquare rightAtom) := by
+  have hexpand : (blochSquare leftAtom - blochSquare rightAtom) ⬝ᵥ
+      (blochSquare leftAtom - blochSquare rightAtom)
+        = (leftAtom ⬝ᵥ leftAtom) ^ 2 + (rightAtom ⬝ᵥ rightAtom) ^ 2
+          - 2 * (2 * (leftAtom ⬝ᵥ rightAtom) ^ 2
+            - (leftAtom ⬝ᵥ leftAtom) * (rightAtom ⬝ᵥ rightAtom)) := by
+    rw [sub_dotProduct, dotProduct_sub, dotProduct_sub,
+      blochSquare_normSq, blochSquare_normSq, blochSquare_dotProduct,
+      dotProduct_comm (blochSquare rightAtom) (blochSquare leftAtom),
+      blochSquare_dotProduct]
+    ring
+  rw [hexpand]
+  nlinarith [pairing_sq_le_leverage_mul leftAtom rightAtom]
+
+/-- **Proposition D.2 (cross rebate)**: the ordered heavy×dust mixed pair-sum
+is bounded below by `2κ₃δ₀`, `κ₃ = Σ_E t_c(ℓ_c−a)³`, `δ₀ = Σ_D t_c(a−ℓ_c)` —
+each mixed entry is at least `2(ℓ_c−a)(a−ℓ_d)` and each squared difference at
+least `(ℓ_c−a)²`. -/
+theorem cross_rebate_bloch (heavySet dustSet : Finset (Fin m))
+    (atoms : Fin m → Fin 2 → ℝ) (weight : Fin m → ℝ) (a : ℝ)
+    (hweight : ∀ c, 0 ≤ weight c)
+    (hheavy : ∀ c ∈ heavySet, a ≤ atoms c ⬝ᵥ atoms c)
+    (hdust : ∀ c ∈ dustSet, atoms c ⬝ᵥ atoms c ≤ a) :
+    2 * (∑ c ∈ heavySet, weight c * (atoms c ⬝ᵥ atoms c - a) ^ 3)
+        * (∑ c ∈ dustSet, weight c * (a - atoms c ⬝ᵥ atoms c))
+      ≤ ∑ c ∈ heavySet, ∑ d ∈ dustSet,
+          pairEntry (fun e => blochSquare (atoms e))
+              (fun e => atoms e ⬝ᵥ atoms e - 2 * a) a c d
+            * weight c * weight d
+            * ((blochSquare (atoms c) - blochSquare (atoms d)) ⬝ᵥ
+               (blochSquare (atoms c) - blochSquare (atoms d))) := by
+  have hproduct : 2 * (∑ c ∈ heavySet, weight c * (atoms c ⬝ᵥ atoms c - a) ^ 3)
+      * (∑ c ∈ dustSet, weight c * (a - atoms c ⬝ᵥ atoms c))
+        = ∑ c ∈ heavySet, ∑ d ∈ dustSet,
+            2 * (weight c * (atoms c ⬝ᵥ atoms c - a) ^ 3)
+              * (weight d * (a - atoms d ⬝ᵥ atoms d)) := by
+    rw [mul_assoc, Finset.sum_mul_sum, Finset.mul_sum]
+    exact Finset.sum_congr rfl fun c _ => by
+      rw [Finset.mul_sum]
+      exact Finset.sum_congr rfl fun d _ => by ring
+  rw [hproduct]
+  refine Finset.sum_le_sum fun c hc => Finset.sum_le_sum fun d hd => ?_
+  have hlevC := hheavy c hc
+  have hlevD := hdust d hd
+  have hwc := hweight c
+  have hwd := hweight d
+  -- Entry floor: `pairEntry ≥ 2(ℓ_c−a)(a−ℓ_d) ≥ 0` on mixed pairs.
+  have hentryFloor : 2 * ((atoms c ⬝ᵥ atoms c - a) * (a - atoms d ⬝ᵥ atoms d))
+      ≤ pairEntry (fun e => blochSquare (atoms e))
+          (fun e => atoms e ⬝ᵥ atoms e - 2 * a) a c d := by
+    rw [pairEntry_bloch]
+    nlinarith [sq_nonneg (atoms c ⬝ᵥ atoms d)]
+  have hentryNonneg := pairEntry_bloch_nonneg_of_mixed atoms a c d hlevC hlevD
+  -- Difference floor: `|S_c−S_d|² ≥ (ℓ_c−ℓ_d)² ≥ (ℓ_c−a)²`.
+  have hgap : (atoms c ⬝ᵥ atoms c - a) ^ 2
+      ≤ (blochSquare (atoms c) - blochSquare (atoms d)) ⬝ᵥ
+        (blochSquare (atoms c) - blochSquare (atoms d)) := by
+    refine le_trans ?_ (blochSquare_sub_normSq_ge (atoms c) (atoms d))
+    nlinarith [hlevC, hlevD]
+  have hnormNonneg := dotProduct_self_nonneg
+    (blochSquare (atoms c) - blochSquare (atoms d))
+  nlinarith [mul_nonneg hwc hwd,
+    mul_nonneg (mul_nonneg hwc hwd) hnormNonneg,
+    mul_nonneg (mul_nonneg (sub_nonneg.mpr hlevC) (sub_nonneg.mpr hlevD))
+      (mul_nonneg hwc hwd),
+    mul_le_mul_of_nonneg_left hgap
+      (mul_nonneg (mul_nonneg (mul_nonneg (by norm_num : (0:ℝ) ≤ 2)
+        (sub_nonneg.mpr hlevC)) (sub_nonneg.mpr hlevD))
+        (mul_nonneg hwc hwd)),
+    mul_le_mul_of_nonneg_right hentryFloor
+      (mul_nonneg (mul_nonneg hwc hwd) hnormNonneg)]
+
+
+/-- **Dust-only completions are infeasible** (the moment squeeze delivered by
+the §72 audit): if a tight pair's mass parameters satisfy the closure bound
+`αβ ≤ (1−a)(1−b)` and the trace/weight bound `α + β ≥ 1`, with `α ≤ a < 1` and
+`β ≤ b < 1`, then the squeeze
+`αβ ≤ (1−a)(1−b) ≤ (1−α)(1−β) = 1 − α − β + αβ ≤ αβ`
+collapses, forcing `α = a` and `β = b` — i.e. `ν_A = ν_B = 1`, which no finite
+leverage attains. So a tight pair cannot be completed by dust alone. -/
+theorem dustOnly_completion_forces_saturation {leftMass rightMass
+    leftMoment rightMoment : ℝ}
+    (hleft : leftMoment ≤ leftMass) (hleftLt : leftMass < 1)
+    (hright : rightMoment ≤ rightMass) (hrightLt : rightMass < 1)
+    (hclosure : leftMoment * rightMoment
+      ≤ (1 - leftMass) * (1 - rightMass))
+    (htrace : 1 ≤ leftMoment + rightMoment) :
+    leftMoment = leftMass ∧ rightMoment = rightMass := by
+  have hleftPos : 0 < 1 - leftMass := by linarith
+  have hrightPos : 0 < 1 - rightMass := by linarith
+  have hmid : (1 - leftMass) * (1 - rightMass)
+      ≤ (1 - leftMoment) * (1 - rightMoment) := by
+    nlinarith [hleft, hright, hleftPos, hrightPos]
+  have hupper : (1 - leftMoment) * (1 - rightMoment)
+      ≤ leftMoment * rightMoment := by nlinarith [htrace]
+  have hsandwich : (1 - leftMass) * (1 - rightMass)
+      = (1 - leftMoment) * (1 - rightMoment) := by linarith
+  constructor
+  · nlinarith [hsandwich, hright, hrightPos, hleft]
+  · nlinarith [hsandwich, hleft, hleftPos, hright]
+
+end Gtz

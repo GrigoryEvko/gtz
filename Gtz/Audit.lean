@@ -9,98 +9,98 @@ promise; roadmap statements carrying `sorry` are deliberately NOT listed.
 
 Update this file in the same commit that completes a proof.
 -/
-import Gtz.BhatiaDavis
-import Gtz.Sanity
-import Gtz.SchurRankOne
-import Gtz.TraceIdentity
-import Gtz.TriangleClosure
-import Gtz.ResidueDissolution
-import Gtz.CollaredCompact
-import Gtz.MarginContinuity
-import Gtz.StressCertificate
-import Gtz.StrictDomination
-import Gtz.DominationWithoutCertificate
-import Gtz.SplitTetrahedronTie
-import Gtz.SplitTetraLocalBalance
-import Gtz.TetrahedronCertifiedTie
-import Gtz.RepeatedAtomExclusion
-import Gtz.NonTetrahedralTie
-import Gtz.CorankOneTieCriterion
-import Gtz.CorankOneTieExistence
-import Gtz.OneObjectNarrowing
-import Gtz.GapStabilityFacts
-import Gtz.FrameBridge
-import Gtz.CollarRate
-import Gtz.RayleighCertificate
-import Gtz.ChargeSelection
-import Gtz.CapBoundaryConstant
-import Gtz.CornerFiber
-import Gtz.CapCriterion
-import Gtz.Crystallization
-import Gtz.PsdKit
-import Gtz.Completion
-import Gtz.Naimark
-import Gtz.Reductions
-import Gtz.RatCertificate
-import Gtz.PlanarPlatform
-import Gtz.BlochDictionary
-import Gtz.DustControl
-import Gtz.LawCounterexample
-import Gtz.Pushoff
-import Gtz.TightGraph
-import Gtz.CertificateFrame
-import Gtz.MomentCovector
-import Gtz.Compression
-import Gtz.DescentLadder
-import Gtz.FirstOrderLaw
-import Gtz.CollarFloor
-import Gtz.CapSlack
-import Gtz.QuantitativeCorner
-import Gtz.StressFrame
-import Gtz.ComplexWitness
-import Gtz.Seam
-import Gtz.ComplexPadding
-import Gtz.PThreeStratum
-import Gtz.CollinearStratum
-import Gtz.MomentBound
-import Gtz.CornerResolvent
-import Gtz.SilenceDictionary
-import Gtz.BallPerturbation
-import Gtz.EulerPairing
-import Gtz.SplittingRule
-import Gtz.ChordTheorem
-import Gtz.LocalLaw
-import Gtz.Completeness
-import Gtz.ResolventPerturbation
-import Gtz.IdempotentSplitting
-import Gtz.LeafTangency
-import Gtz.CapDictionary
-import Gtz.MarginTransfer
-import Gtz.AggregatePushoff
-import Gtz.CornerPerturbation
-import Gtz.FrameEncoding
-import Gtz.WedgeChain
-import Gtz.CertificateAnchor
-import Gtz.BernsteinPositivity
-import Gtz.SylvesterThree
-import Gtz.GordanAlternative
-import Gtz.TetrahedronTie
-import Gtz.TieEigenvector
-import Gtz.TiedQuadruple
-import Gtz.CoveringMargin
-import Gtz.DowndateInterlacing
-import Gtz.CyclicStress
-import Gtz.LawEquivalence
-import Gtz.WhiteningDistortion
-import Gtz.ClosureObtuse
-import Gtz.SymmetryReduction
-import Gtz.DeflationCertificate
-import Gtz.LeverageBound
-import Gtz.Certs.PFourCertificate
-import Gtz.Certs.CFiveCertificate
-import Gtz.GeometricExclusion
-import Gtz.LiftingLemma
-import Gtz.Interface
+import Gtz.Design.BhatiaDavis
+import Gtz.Core.Sanity
+import Gtz.LinAlg.SchurRankOne
+import Gtz.Design.TraceIdentity
+import Gtz.Certificates.TriangleClosure
+import Gtz.Certificates.ResidueDissolution
+import Gtz.Design.CollaredCompact
+import Gtz.Quantitative.MarginContinuity
+import Gtz.Design.StressCertificate
+import Gtz.Quantitative.StrictDomination
+import Gtz.Ties.DominationWithoutCertificate
+import Gtz.Ties.SplitTetrahedronTie
+import Gtz.Ties.SplitTetraLocalBalance
+import Gtz.Ties.TetrahedronCertifiedTie
+import Gtz.Ties.RepeatedAtomExclusion
+import Gtz.Ties.NonTetrahedralTie
+import Gtz.Ties.CorankOneTieCriterion
+import Gtz.Ties.CorankOneTieExistence
+import Gtz.Quantitative.OneObjectNarrowing
+import Gtz.Quantitative.GapStabilityFacts
+import Gtz.Certificates.FrameBridge
+import Gtz.Quantitative.CollarRate
+import Gtz.Reduction.RayleighCertificate
+import Gtz.Reduction.ChargeSelection
+import Gtz.Quantitative.CapBoundaryConstant
+import Gtz.Corner.CornerFiber
+import Gtz.Corner.CapCriterion
+import Gtz.Reduction.Crystallization
+import Gtz.LinAlg.PsdKit
+import Gtz.LinAlg.Completion
+import Gtz.Reduction.Naimark
+import Gtz.Reduction.Reductions
+import Gtz.Reduction.RatCertificate
+import Gtz.Planar.PlanarPlatform
+import Gtz.Planar.BlochDictionary
+import Gtz.Planar.DustControl
+import Gtz.Planar.LawCounterexample
+import Gtz.Planar.Pushoff
+import Gtz.Planar.TightGraph
+import Gtz.Planar.CertificateFrame
+import Gtz.Planar.MomentCovector
+import Gtz.Reduction.Compression
+import Gtz.Reduction.DescentLadder
+import Gtz.Quantitative.FirstOrderLaw
+import Gtz.Quantitative.CollarFloor
+import Gtz.Design.CapSlack
+import Gtz.Corner.QuantitativeCorner
+import Gtz.Planar.StressFrame
+import Gtz.Complex.ComplexWitness
+import Gtz.Planar.Seam
+import Gtz.Complex.ComplexPadding
+import Gtz.Planar.PThreeStratum
+import Gtz.Planar.CollinearStratum
+import Gtz.Planar.MomentBound
+import Gtz.Corner.CornerResolvent
+import Gtz.Planar.SilenceDictionary
+import Gtz.Planar.BallPerturbation
+import Gtz.Planar.EulerPairing
+import Gtz.Planar.SplittingRule
+import Gtz.Planar.ChordTheorem
+import Gtz.Planar.LocalLaw
+import Gtz.Planar.Completeness
+import Gtz.LinAlg.ResolventPerturbation
+import Gtz.Corner.IdempotentSplitting
+import Gtz.Planar.LeafTangency
+import Gtz.Corner.CapDictionary
+import Gtz.Design.MarginTransfer
+import Gtz.Corner.AggregatePushoff
+import Gtz.Corner.CornerPerturbation
+import Gtz.Certificates.FrameEncoding
+import Gtz.Planar.WedgeChain
+import Gtz.Certificates.CertificateAnchor
+import Gtz.LinAlg.BernsteinPositivity
+import Gtz.LinAlg.SylvesterThree
+import Gtz.LinAlg.GordanAlternative
+import Gtz.Ties.TetrahedronTie
+import Gtz.Ties.TieEigenvector
+import Gtz.Corner.TiedQuadruple
+import Gtz.Corner.CoveringMargin
+import Gtz.Design.DowndateInterlacing
+import Gtz.Certificates.CyclicStress
+import Gtz.Certificates.LawEquivalence
+import Gtz.Design.WhiteningDistortion
+import Gtz.Design.ClosureObtuse
+import Gtz.Design.SymmetryReduction
+import Gtz.Design.DeflationCertificate
+import Gtz.Design.LeverageBound
+import Gtz.Certificates.PFourCertificate
+import Gtz.Certificates.CFiveCertificate
+import Gtz.Certificates.GeometricExclusion
+import Gtz.Reduction.LiftingLemma
+import Gtz.Quantitative.Interface
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -277,7 +277,7 @@ import Gtz.Interface
 #print axioms Gtz.branchProduct_eq_zero
 #print axioms Gtz.spreadRelation_eq_zero_of_tight
 #print axioms Gtz.thirdConic_of_spread
-#print axioms Gtz.atomMatrix_compress
+#print axioms Gtz.atomMatrix_conj
 #print axioms Gtz.subsetSum_compress
 #print axioms Gtz.compressed_dominates_iff
 #print axioms Gtz.posSemidef_compress
@@ -398,7 +398,6 @@ import Gtz.Interface
 #print axioms Gtz.sylvesterMap_sq_idempotent
 #print axioms Gtz.designTransfer_mul_gram
 #print axioms Gtz.designTransfer_idempotent
-#print axioms Gtz.design_weighted_leverage_sum
 #print axioms Gtz.exists_leverage_le_rank
 #print axioms Gtz.designTransfer_trace
 #print axioms Gtz.basis_expansion
@@ -409,7 +408,6 @@ import Gtz.Interface
 #print axioms Gtz.cap_det_dictionary
 #print axioms Gtz.cap_tie_iff_zmass
 #print axioms Gtz.boundary_pivot_eq_one
-#print axioms Gtz.atomMatrix_conjugate
 #print axioms Gtz.atom_form_eq_sq
 #print axioms Gtz.atom_form_le_leverage
 #print axioms Gtz.parseval_erase
@@ -506,7 +504,6 @@ import Gtz.Interface
 #print axioms Gtz.no_tight_path_four_double_tangency_of_directions
 #print axioms Gtz.no_tight_path_three_leaf_tangency_off_pole_of_directions
 #print axioms Gtz.no_tight_cycle_five_with_path_stress_of_directions
-#print axioms Gtz.atomMatrix_mulVec_conj
 #print axioms Gtz.coisometryPushforward
 #print axioms Gtz.coisometryPushforward_weight
 #print axioms Gtz.coisometryPushforward_atom
