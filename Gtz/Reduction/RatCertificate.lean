@@ -12,8 +12,8 @@ arithmetic, consumed by the proven ℝ-theory. This file is the foundation:
 * the transfer lemmas: subset sums, leverages, and domination goals cast
   entrywise, so a rational computation certifies the real statement.
 
-Stage C2 (next): the branch-(a) checker — Sylvester positivity of the 3×3
-gate, rational pivots via the adjugate, soundness against `pigeonhole`.
+Stage C2 (shipped, below): the branch-(a) checker — the gate certified by an
+explicit LDL congruence, rational pivots, soundness against `pigeonhole`.
 -/
 import Mathlib
 import Gtz.Core.Basic
@@ -93,9 +93,9 @@ certificate for the gate — L invertible and a positive diagonal d with
 Lᵀ(S_Q − 1)L = diagonal d — plus outsider pivots ≤ 1, produce a dominating
 k-subset through the proven `pigeonhole`. This is the exact shape in which a
 rational (6,3)/(7,3) closure will arrive: every hypothesis is a finite
-identity or comparison of rationals after casting. (Sylvester's criterion is
-NOT in Mathlib — R-MECH-3 — so the gate is certified by explicit congruence,
-which is also the stronger, prover-friendly artifact.) -/
+identity or comparison of rationals after casting. (The gate is certified by
+an explicit congruence rather than by leading minors: the congruence carries
+its own witness `(L, d)`, so nothing has to be re-derived at the use site.) -/
 theorem certificate_dominates (D : WeightedDesign m k) (hk : 1 ≤ k)
     (Q : Finset (Fin m)) (hcard : Q.card = k + 1)
     (L : Matrix (Fin k) (Fin k) ℝ) (d : Fin k → ℝ)

@@ -28,8 +28,6 @@ open Matrix
 
 @[simp] theorem tetraDesign_atom : tetraDesign.atom = tetraAtom := rfl
 
-@[simp] theorem tetraDesign_weight : tetraDesign.weight = fun _ => (1 : ℝ) / 4 := rfl
-
 /-- Three vertices never exhaust the four. -/
 theorem exists_unusedVertex (vertOne vertTwo vertThree : Fin 4) :
     ∃ d : Fin 4, vertOne ≠ d ∧ vertTwo ≠ d ∧ vertThree ≠ d := by

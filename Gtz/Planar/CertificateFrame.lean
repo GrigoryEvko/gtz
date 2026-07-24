@@ -34,11 +34,6 @@ theorem planarDet_smul_left (scale : ℝ) (leftVec rightVec : Fin 2 → ℝ) :
   simp only [planarDet, Pi.smul_apply, smul_eq_mul]
   ring
 
-theorem planarDet_smul_right (scale : ℝ) (leftVec rightVec : Fin 2 → ℝ) :
-    planarDet leftVec (scale • rightVec) = scale * planarDet leftVec rightVec := by
-  simp only [planarDet, Pi.smul_apply, smul_eq_mul]
-  ring
-
 /-- Independent directions: proportional combinations must have zero
 coefficients. -/
 theorem smul_eq_smul_of_independent {leftDir rightDir : Fin 2 → ℝ}

@@ -82,7 +82,6 @@ import Gtz.Certificates.FrameEncoding
 import Gtz.Planar.WedgeChain
 import Gtz.Certificates.CertificateAnchor
 import Gtz.LinAlg.BernsteinPositivity
-import Gtz.LinAlg.SylvesterThree
 import Gtz.LinAlg.GordanAlternative
 import Gtz.Ties.TetrahedronTie
 import Gtz.Ties.TieEigenvector
@@ -245,15 +244,12 @@ import Gtz.Quantitative.Interface
 #print axioms Gtz.star_three_impossible
 #print axioms Gtz.oldInterfacePair_vacuous
 #print axioms Gtz.ballTauCeiling
-#print axioms Gtz.newInterfacePair_nonempty
-#print axioms Gtz.interfaceFormula_rounds_down
 #print axioms Gtz.interfacePair_nonvacuous_iff
 #print axioms Gtz.weighted_defect_leash
 #print axioms Gtz.smul_eq_smul_of_independent
 #print axioms Gtz.eq_of_two_independent_rays
 #print axioms Gtz.parabola_conic_zero_iff
 #print axioms Gtz.parabola_poles_are_clones
-#print axioms Gtz.c2_assembly
 #print axioms Gtz.offWindow_margin_pos
 #print axioms Gtz.acidTest_margin_pos
 #print axioms Gtz.planarDet_eq_zero_of_common_orthogonal
@@ -454,7 +450,6 @@ import Gtz.Quantitative.Interface
 #print axioms Gtz.bernstein_coeff_pos
 #print axioms Gtz.bernstein_coeff_floor_two
 #print axioms Gtz.bernstein_coeff_ceiling_two
-#print axioms Gtz.posDef_three_of_leading_minors
 #print axioms Gtz.gordan_alternative
 #print axioms Gtz.gordan_alternative_dotProduct
 #print axioms Gtz.det_atomMatrix_eq_zero

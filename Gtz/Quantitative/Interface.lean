@@ -7,19 +7,25 @@ to the EMPTY set (diary §73, GAP V-1), because a tied point with extra-weight
 `τ` sits at corner distance `√(3/2)·τ`, so demanding `τ ≥ τ₀` and
 `distance ≤ ε₀′` is contradictory unless `ε₀′ ≥ √(3/2)·τ₀`.
 
-Both facts are mechanized here, so the trap cannot recur silently:
+The defect and its repair are both mechanized here, so the trap cannot recur
+silently:
 
 * `oldInterfacePair_vacuous` — for the recorded `(τ₀, ε₀) = (10⁻², 1/400)`
   the tube and the ball do not meet: EVERY tied point with `τ ≥ 10⁻²` lies
   strictly outside the ball. (The composed `ε₀′ ≤ 1.4·10⁻⁵` is smaller still,
   so it is vacuous a fortiori.)
 * `ballTauCeiling` — the exact ceiling: only `τ ≲ 2.05·10⁻³` can be in-ball.
-* `newInterfacePair_nonempty` — the repaired pair `(10⁻¹², 1.95·10⁻¹²)` from
-  the `√τ₀` law DOES meet: an explicit witness `τ = 1.59·10⁻¹²` satisfies both
-  constraints.
-* `interfaceFormula_rounds_down` — the quoted `ε₀′* = 1.95·10⁻¹²` is a
-  round-DOWN of the formula value `2.76·10⁻⁶·√(τ₀·min(σ,1−σ))`, i.e. the
-  conservative direction (a round-UP would have been unsound).
+* `interfacePair_nonvacuous_iff` — the one-line pairing test whose omission
+  produced the defect: a pair is nonvacuous exactly when the ball radius
+  clears the tube's own distance floor.
+
+The repaired pair carries the certified continuum constants throughout —
+`correctedInterfacePair_nonempty`, `correctedPair_passes_gate`,
+`correctedFormula_rounds_down`, `corrected_c2_assembly`. The first repair's
+intermediate constants (`ε₀′* = 1.95·10⁻¹²` from a `2.76·10⁻⁶` coefficient,
+`C₂ ≤ 4.7·10⁵` from `ĉ₁ ≥ 2.7·10⁻³`) were superseded by the subgapv
+completion — the coefficient was no longer derivable from the certified
+brackets — and are gone. Only the certified pair remains.
 
 `cornerDistanceRate` is the `√(3/2)` per-atom constant of the R1 distance law.
 -/
@@ -58,34 +64,6 @@ theorem ballTauCeiling (tieWeight : ℝ) (hnonneg : 0 ≤ tieWeight)
   have hrate := cornerDistanceRate_lower
   nlinarith [hrate, hinBall, hnonneg]
 
-/-- **The repaired pair is nonvacuous** (SUPERSEDED — historical record):
-with `τ₀* = 10⁻¹²` and `ε₀′* = 1.95·10⁻¹²` from the `√τ₀` law, there are
-tied points satisfying BOTH constraints — an explicit witness at
-`τ = 1.59·10⁻¹²`. The subgapv-completion audit showed the `2.76·10⁻⁶`
-coefficient behind this radius is NO LONGER DERIVABLE from the certified
-continuum constants (`C₂·(2.76·10⁻⁶)² = 3.66·10⁻⁶ > r* = 3.4855·10⁻⁶`);
-consumers must use `correctedInterfacePair_nonempty` below. The theorem
-itself remains true as stated (a larger ball is nonvacuous a fortiori). -/
-theorem newInterfacePair_nonempty :
-    ∃ tieWeight : ℝ, (1 : ℝ)/10^12 ≤ tieWeight
-      ∧ cornerDistanceRate * tieWeight ≤ (195 : ℝ)/10^14 := by
-  refine ⟨(159 : ℝ)/10^14, by norm_num, ?_⟩
-  have hrate := cornerDistanceRate_upper
-  nlinarith [hrate, cornerDistanceRate_lower]
-
-/-- **The quoted interface constant rounds DOWN** (the conservative
-direction): the `√τ₀` formula `2.76·10⁻⁶·√(τ₀·min(σ,1−σ))` evaluated at
-`τ₀ = 10⁻¹²`, `σ = 1/2` exceeds the quoted `1.95·10⁻¹²`, so using the quoted
-value shrinks the ball and keeps the pairing sound. -/
-theorem interfaceFormula_rounds_down :
-    (195 : ℝ)/10^14
-      ≤ (276 : ℝ)/10^8 * Real.sqrt ((1 : ℝ)/10^12 * (1/2)) := by
-  have hsqrtLower : (7071 : ℝ)/10^10 < Real.sqrt ((1 : ℝ)/10^12 * (1/2)) := by
-    rw [show ((7071 : ℝ)/10^10)
-      = Real.sqrt (((7071 : ℝ)/10^10) ^ 2) from (Real.sqrt_sq (by norm_num)).symm]
-    exact Real.sqrt_lt_sqrt (by positivity) (by norm_num)
-  nlinarith [hsqrtLower]
-
 /-- The pairing law itself: a pair `(τ₀, ε₀′)` is nonvacuous exactly when the
 ball radius clears the tube's own distance floor. This is the one-line test
 whose omission produced the §73 defect. -/
@@ -104,18 +82,6 @@ theorem interfacePair_nonvacuous_iff (tauFloor ballRadius : ℝ)
 
 
 /-! ### The C₂ assembly and the off-window margin -/
-
-/-- **The C₂ assembly** (SS50 defect B, assembled for the first time by the
-subgapv build): `C₂ = H_max/(2·ĉ₁)` with the audited `H_max ≤ 2.5·10³` and the
-rescaled transverse fire rate `ĉ₁ ≥ 2.7·10⁻³` gives `C₂ ≤ 4.7·10⁵`. Mechanized
-as the composition it is, so the inputs' provenance is visible at the use
-site. -/
-theorem c2_assembly (curvatureBound fireRate : ℝ)
-    (hcurvature : curvatureBound ≤ 25 * 10^2)
-    (hfireRate : (27 : ℝ)/10^4 ≤ fireRate) (hfirePos : 0 < fireRate) :
-    curvatureBound / (2 * fireRate) ≤ 47 * 10^4 := by
-  rw [div_le_iff₀ (by linarith)]
-  nlinarith [hcurvature, hfireRate, hfirePos]
 
 /-- **The off-window margin is positive exactly on the off-window condition**
 (Theorem OW's shape): the assembled cap-fire margin

@@ -18,7 +18,6 @@ import Gtz.LinAlg.GordanAlternative
 import Gtz.LinAlg.PsdKit
 import Gtz.LinAlg.ResolventPerturbation
 import Gtz.LinAlg.SchurRankOne
-import Gtz.LinAlg.SylvesterThree
 import Gtz.LinAlg.TwoByTwo
 
 -- Design: WeightedDesign facts: trace identity, leverage, margins, compactness

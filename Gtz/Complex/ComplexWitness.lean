@@ -127,9 +127,6 @@ theorem omegaRoot_sum : 1 + omegaRoot + omegaRoot ^ 2 = 0 := by
     ring
   · simp [omegaRoot, Complex.add_im, Complex.conj_im]
 
-theorem omegaRoot_conj_sq : (starRingEnd ℂ) (omegaRoot ^ 2) = omegaRoot := by
-  rw [omegaRoot_sq, RingHomInvPair.comp_apply_eq]
-
 /-- The overlap-product engine: `(2/3 + 4/3·ω)(2/3 + 4/3·ω²) = 4/3`. -/
 theorem omega_overlap_product :
     (2 / 3 + 4 / 3 * omegaRoot) * (2 / 3 + 4 / 3 * omegaRoot ^ 2) = 4 / 3 := by

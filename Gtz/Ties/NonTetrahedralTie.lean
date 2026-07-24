@@ -63,9 +63,6 @@ noncomputable def sharpDesign : WeightedDesign 4 3 where
 
 @[simp] theorem sharpDesign_atom : sharpDesign.atom = sharpAtom := rfl
 
-@[simp] theorem sharpDesign_weight :
-    sharpDesign.weight = ![2/3, 1/9, 1/9, 1/9] := rfl
-
 /-- The atoms carry the dependency `3g₀ + 2g₁ + 2g₂ + 2g₃ = 0` — the unique linear
 relation among four vectors spanning `ℝ³`. -/
 theorem sharpDesign_dependency :
