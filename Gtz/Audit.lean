@@ -18,6 +18,7 @@ import Gtz.ResidueDissolution
 import Gtz.CollaredCompact
 import Gtz.MarginContinuity
 import Gtz.StressCertificate
+import Gtz.StrictDomination
 import Gtz.OneObjectNarrowing
 import Gtz.GapStabilityFacts
 import Gtz.FrameBridge
@@ -638,3 +639,8 @@ import Gtz.Interface
 #print axioms Gtz.no_separatingSlope_exists_of_stressCertificate
 #print axioms Gtz.tetraDesign
 #print axioms Gtz.tetra_no_separating_slope
+#print axioms Gtz.exists_isMinOn_rayleighQuotient
+#print axioms Gtz.exists_lambdaMinMat_eq_rayleigh
+#print axioms Gtz.one_lt_lambdaMinMat_iff_posDef
+#print axioms Gtz.strictDominates_iff_one_lt_lambdaMinMat
+#print axioms Gtz.margin_pos_iff_exists_strictDominates

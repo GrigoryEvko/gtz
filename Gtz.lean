@@ -81,6 +81,7 @@ import Gtz.SilenceDictionary
 import Gtz.SplittingRule
 import Gtz.StressCertificate
 import Gtz.StressFrame
+import Gtz.StrictDomination
 import Gtz.SylvesterThree
 import Gtz.SymmetryReduction
 import Gtz.TetrahedronTie
