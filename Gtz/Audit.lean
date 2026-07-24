@@ -17,6 +17,7 @@ import Gtz.TriangleClosure
 import Gtz.ResidueDissolution
 import Gtz.CollaredCompact
 import Gtz.OneObjectNarrowing
+import Gtz.GapStabilityFacts
 import Gtz.CornerFiber
 import Gtz.CapCriterion
 import Gtz.Crystallization
@@ -546,3 +547,10 @@ import Gtz.Interface
 #print axioms Gtz.isCompact_collaredSet
 #print axioms Gtz.twoByTwoForm_nonneg_iff_trace_det_nonneg
 #print axioms Gtz.rank3Discriminant_iff_trace_det_nonneg
+#print axioms Gtz.pair_budget_decompose
+#print axioms Gtz.tight_pair_second_order_nonpos
+#print axioms Gtz.pair_budget_le_firstOrder
+#print axioms Gtz.envelope_forces_slack_pos
+#print axioms Gtz.complex_sic_slack_neg
+#print axioms Gtz.transverse_dist_le_of_coercive
+#print axioms Gtz.quotient_floor_uniform
