@@ -25,6 +25,7 @@ import Gtz.SplitTetraLocalBalance
 import Gtz.TetrahedronCertifiedTie
 import Gtz.RepeatedAtomExclusion
 import Gtz.NonTetrahedralTie
+import Gtz.CorankOneTieCriterion
 import Gtz.OneObjectNarrowing
 import Gtz.GapStabilityFacts
 import Gtz.FrameBridge
@@ -683,3 +684,24 @@ import Gtz.Interface
 #print axioms Gtz.leverageOf_orthogonal_image
 #print axioms Gtz.sharpDesign_not_rotated_tetrahedron
 #print axioms Gtz.exists_isTie_leverages_unequal
+#print axioms Gtz.posDef_sub_vecMulVec_iff
+#print axioms Gtz.erase_strictDominates_iff_pivot_lt_one
+#print axioms Gtz.corank_one_dominating_erasure
+#print axioms Gtz.isTie_iff_forall_pivot_eq_one
+#print axioms Gtz.not_isTie_of_pivot_lt_one
+#print axioms Gtz.finrank_ker_atomCombination
+#print axioms Gtz.dependency_cross
+#print axioms Gtz.row_cross_identity
+#print axioms Gtz.leverage_identity_of_forall_pivot_eq_one
+#print axioms Gtz.forall_pivot_eq_one_of_leverage_identity
+#print axioms Gtz.isTie_iff_leverage_identity
+#print axioms Gtz.tetraDesign_leverage_identity
+#print axioms Gtz.sharpDesign_leverage_identity
+#print axioms Gtz.leverage_identity_forces_corank_one
+#print axioms Gtz.no_leverage_identity_at_six_three
+#print axioms Gtz.no_leverage_identity_at_corank_two
+#print axioms Gtz.exists_isTie_leverage_identity_fails
+#print axioms Gtz.unevenPairDesign_leverage_identity_fails
+#print axioms Gtz.unevenPairDesign_not_isTie
+#print axioms Gtz.unevenPairDesign_strictDominator
+#print axioms Gtz.exists_leverage_identity_not_isTie_rank_zero

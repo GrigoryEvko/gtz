@@ -31,6 +31,7 @@ import Gtz.Completion
 import Gtz.ComplexPadding
 import Gtz.ComplexWitness
 import Gtz.Compression
+import Gtz.CorankOneTieCriterion
 import Gtz.CornerFiber
 import Gtz.CornerPerturbation
 import Gtz.CornerResolvent

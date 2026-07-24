@@ -6,6 +6,10 @@ base set dominates iff its pivot value is ≤ 1. Informally one line by congruen
 with N^{1/2}; here proven by POLARIZATION over dotProduct — no matrix square
 roots and no Schur-block API.
 
+The strict twin `posDef_sub_vecMulVec_iff` (N − ggᵀ ≻ 0 ⟺ gᵀN⁻¹g < 1) rides on the
+weak form: forward, q = 1 would kill the gap form at N⁻¹g; backward, the weak form
+at g/√s with s = (1+q)/2 ∈ (q, 1) leaves the margin (1−s)·yᵀNy off zero.
+
 MECHANIZATION RESIDUALS discovered here (recorded, worked around):
 * R-MECH-1: Mathlib v4.32 has NO Cauchy eigenvalue interlacing (needed later by
   the cap criterion's signature bookkeeping).
@@ -137,5 +141,97 @@ theorem posSemidef_sub_vecMulVec_iff (N : Matrix (Fin k) (Fin k) ℝ)
     · exact hN.1.sub (posSemidef_atomMatrix g).1
     · rw [hquad y]
       nlinarith [hCS y, hNquad y, hq0]
+
+/-- **Strict rank-one Schur.** For N ≻ 0: N − ggᵀ ≻ 0 ⟺ gᵀN⁻¹g < 1 — the strict twin
+of `posSemidef_sub_vecMulVec_iff`, separating "dropping an atom dominates" from
+"dominates strictly". Both directions ride on the weak form:
+
+* forward: the weak form gives q ≤ 1; were q = 1, the gap form at the solution
+  vector N⁻¹g would be q − q² = 0, contradicting definiteness;
+* backward: the weak form at the RESCALED vector g/√s with s = (1+q)/2 ∈ (q, 1)
+  gives (g ⬝ᵥ y)² ≤ s·⟨y, Ny⟩ for every y, so the gap form keeps the margin
+  (1−s)·⟨y, Ny⟩ > 0 off zero. No new polarization argument. -/
+theorem posDef_sub_vecMulVec_iff (N : Matrix (Fin k) (Fin k) ℝ)
+    (hN : N.PosDef) (g : Fin k → ℝ) :
+    (N - Matrix.vecMulVec g g).PosDef ↔ g ⬝ᵥ (N⁻¹ *ᵥ g) < 1 := by
+  have hdet : IsUnit N.det := isUnit_iff_ne_zero.mpr (ne_of_gt hN.det_pos)
+  have hquadNonneg : ∀ y : Fin k → ℝ, 0 ≤ y ⬝ᵥ (N *ᵥ y) := by
+    intro y
+    have h := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hN.posSemidef).2 y
+    rwa [star_trivial] at h
+  have hquadPos : ∀ y : Fin k → ℝ, y ≠ 0 → 0 < y ⬝ᵥ (N *ᵥ y) := by
+    intro y hy
+    have h := (Matrix.posDef_iff_dotProduct_mulVec.mp hN).2 hy
+    rwa [star_trivial] at h
+  have hform : ∀ v y : Fin k → ℝ,
+      y ⬝ᵥ ((N - Matrix.vecMulVec v v) *ᵥ y) = y ⬝ᵥ (N *ᵥ y) - (v ⬝ᵥ y) ^ 2 := by
+    intro v y
+    rw [Matrix.sub_mulVec, dotProduct_sub, vecMulVec_mulVec_eq, dotProduct_smul,
+      smul_eq_mul, dotProduct_comm y v]
+    ring
+  have hherm : (N - Matrix.vecMulVec g g).IsHermitian :=
+    hN.1.sub (posSemidef_atomMatrix g).1
+  have hpivotNonneg : 0 ≤ g ⬝ᵥ (N⁻¹ *ᵥ g) := by
+    have h := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hN.inv.posSemidef).2 g
+    rwa [star_trivial] at h
+  constructor
+  · intro hpd
+    have hweak : g ⬝ᵥ (N⁻¹ *ᵥ g) ≤ 1 :=
+      (posSemidef_sub_vecMulVec_iff N hN g).mp hpd.posSemidef
+    rcases lt_or_eq_of_le hweak with hlt | heq
+    · exact hlt
+    · exfalso
+      have hsolves : N *ᵥ (N⁻¹ *ᵥ g) = g := by
+        rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv N hdet, Matrix.one_mulVec]
+      have hsolQuad : (N⁻¹ *ᵥ g) ⬝ᵥ (N *ᵥ (N⁻¹ *ᵥ g)) = g ⬝ᵥ (N⁻¹ *ᵥ g) := by
+        rw [hsolves, dotProduct_comm]
+      have hsolNe : (N⁻¹ *ᵥ g) ≠ 0 := by
+        intro hzero
+        have hg : g = 0 := by rw [← hsolves, hzero, Matrix.mulVec_zero]
+        rw [hg, zero_dotProduct] at heq
+        norm_num at heq
+      have hpos := (Matrix.posDef_iff_dotProduct_mulVec.mp hpd).2 hsolNe
+      rw [star_trivial, hform g, hsolQuad, dotProduct_comm g (N⁻¹ *ᵥ g),
+        dotProduct_comm (N⁻¹ *ᵥ g) g, heq] at hpos
+      norm_num at hpos
+  · intro hlt
+    have hscalePos : (0 : ℝ) < (1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2 := by linarith
+    have hscaleLt : (1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2 < 1 := by linarith
+    have hpivotLe : g ⬝ᵥ (N⁻¹ *ᵥ g) ≤ (1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2 := by linarith
+    have hfactorSq : ((Real.sqrt ((1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2))⁻¹) ^ 2
+        = ((1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2)⁻¹ := by
+      rw [inv_pow, Real.sq_sqrt hscalePos.le]
+    have hrescaled : (N - Matrix.vecMulVec
+        ((Real.sqrt ((1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2))⁻¹ • g)
+        ((Real.sqrt ((1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2))⁻¹ • g)).PosSemidef := by
+      refine (posSemidef_sub_vecMulVec_iff N hN _).mpr ?_
+      have hval : ((Real.sqrt ((1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2))⁻¹ • g)
+            ⬝ᵥ (N⁻¹ *ᵥ ((Real.sqrt ((1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2))⁻¹ • g))
+          = ((Real.sqrt ((1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2))⁻¹) ^ 2 * (g ⬝ᵥ (N⁻¹ *ᵥ g)) := by
+        rw [Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul,
+          smul_eq_mul]
+        ring
+      rw [hval, hfactorSq, inv_mul_eq_div, div_le_one hscalePos]
+      exact hpivotLe
+    have hbound : ∀ y : Fin k → ℝ,
+        (g ⬝ᵥ y) ^ 2 ≤ ((1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2) * (y ⬝ᵥ (N *ᵥ y)) := by
+      intro y
+      have h := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hrescaled).2 y
+      rw [star_trivial,
+        hform ((Real.sqrt ((1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2))⁻¹ • g) y,
+        smul_dotProduct, smul_eq_mul, mul_pow, hfactorSq] at h
+      rw [← sub_nonneg]
+      have hscaleNe : ((1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2) ≠ 0 := ne_of_gt hscalePos
+      have hexpand : ((1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2) * (y ⬝ᵥ (N *ᵥ y)) - (g ⬝ᵥ y) ^ 2
+          = ((1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2)
+            * ((y ⬝ᵥ (N *ᵥ y)) - ((1 + g ⬝ᵥ (N⁻¹ *ᵥ g)) / 2)⁻¹ * (g ⬝ᵥ y) ^ 2) := by
+        field_simp
+      rw [hexpand]
+      exact mul_nonneg hscalePos.le (by linarith [h])
+    refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨hherm, fun y hy => ?_⟩
+    rw [star_trivial, hform g]
+    have h1 := hbound y
+    have h2 := hquadPos y hy
+    nlinarith [h1, h2, hscaleLt]
 
 end Gtz
