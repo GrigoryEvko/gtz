@@ -72,6 +72,7 @@ import Gtz.CertificateAnchor
 import Gtz.BernsteinPositivity
 import Gtz.SylvesterThree
 import Gtz.GordanAlternative
+import Gtz.TetrahedronTie
 import Gtz.TieEigenvector
 import Gtz.TiedQuadruple
 import Gtz.CoveringMargin
@@ -604,3 +605,6 @@ import Gtz.Interface
 #print axioms Gtz.complex_witness_violates_envelope
 #print axioms Gtz.transverse_dist_le_of_coercive
 #print axioms Gtz.quotient_floor_uniform
+#print axioms Gtz.tetra_domination_form_sos
+#print axioms Gtz.tetra_domination_form_nonneg
+#print axioms Gtz.tetra_tie_direction_vanishes
