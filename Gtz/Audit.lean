@@ -608,3 +608,6 @@ import Gtz.Interface
 #print axioms Gtz.tetra_domination_form_sos
 #print axioms Gtz.tetra_domination_form_nonneg
 #print axioms Gtz.tetra_tie_direction_vanishes
+#print axioms Gtz.tetraGapMatrix_quadForm
+#print axioms Gtz.tetraGapMatrix_quadForm_nonneg
+#print axioms Gtz.tetraGapMatrix_quadForm_at_null
