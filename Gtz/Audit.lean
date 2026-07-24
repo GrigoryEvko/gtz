@@ -72,6 +72,7 @@ import Gtz.CertificateAnchor
 import Gtz.BernsteinPositivity
 import Gtz.SylvesterThree
 import Gtz.GordanAlternative
+import Gtz.TieEigenvector
 import Gtz.TiedQuadruple
 import Gtz.CoveringMargin
 import Gtz.DowndateInterlacing
@@ -579,6 +580,7 @@ import Gtz.Interface
 #print axioms Gtz.tightDirection_gapAnnihilatesMultiplier
 #print axioms Gtz.gapAnnihilates_multiplierCandidate
 #print axioms Gtz.isTie_yields_tightDirection
+#print axioms Gtz.isTie_yields_unitEigenvector
 #print axioms Gtz.capBoundaryConstant_at_five
 #print axioms Gtz.capBoundaryConstant_derivNumerator_nonneg
 #print axioms Gtz.capBoundaryConstant_hasDerivAt

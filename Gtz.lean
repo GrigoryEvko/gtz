@@ -80,6 +80,7 @@ import Gtz.SplittingRule
 import Gtz.StressFrame
 import Gtz.SylvesterThree
 import Gtz.SymmetryReduction
+import Gtz.TieEigenvector
 import Gtz.TiedQuadruple
 import Gtz.TightGraph
 import Gtz.TraceIdentity
