@@ -13,6 +13,7 @@ import Gtz.BhatiaDavis
 import Gtz.Sanity
 import Gtz.SchurRankOne
 import Gtz.TraceIdentity
+import Gtz.TriangleClosure
 import Gtz.CornerFiber
 import Gtz.CapCriterion
 import Gtz.Crystallization
@@ -520,3 +521,4 @@ import Gtz.Interface
 #print axioms Gtz.exists_good_in_projection_rank_three
 #print axioms Gtz.exists_all_certificates_but_discriminant
 #print axioms Gtz.exists_all_certificates_but_discriminant_rank_three
+#print axioms Gtz.triangle_closure_biquadratic

@@ -75,6 +75,7 @@ import Gtz.SymmetryReduction
 import Gtz.TiedQuadruple
 import Gtz.TightGraph
 import Gtz.TraceIdentity
+import Gtz.TriangleClosure
 import Gtz.TwoByTwo
 import Gtz.WedgeChain
 import Gtz.WhiteningDistortion
