@@ -239,6 +239,51 @@ theorem planar_eq_of_components {firstVec secondVec : Fin 2 → ℝ}
   · exact hzero
   · exact hone
 
+/-! ### The gauge-alignment dictionary
+
+Each `_of_directions` theorem below reduces its vector statement to the scalar
+one by the same four rewrites: expand every dot product into components, kill
+the moment's second component against the gauge, transport the criticality
+form across the same substitution, and turn vector distinctness into component
+distinctness.  Stated once here so the three reductions read as instances of
+one translation rather than three copies of it. -/
+
+/-- A planar dot product in components. -/
+private theorem dotProduct_eq_planar_components (leftVec rightVec : Fin 2 → ℝ) :
+    leftVec ⬝ᵥ rightVec = leftVec 0 * rightVec 0 + leftVec 1 * rightVec 1 := by
+  simp [dotProduct, Fin.sum_univ_two]
+
+/-- Under the gauge `moment 1 = 0` the moment pairing sees only first
+components. -/
+private theorem momentDot_eq_of_gauge {moment : Fin 2 → ℝ}
+    (hgauge : moment 1 = 0) (ownDir : Fin 2 → ℝ) :
+    moment ⬝ᵥ ownDir = moment 0 * ownDir 0 := by
+  rw [dotProduct_eq_planar_components, hgauge]
+  ring
+
+/-- The criticality pairing is gauge-invariant: replacing the moment by its
+scalar `![moment 0, 0]` and each direction by its component pair leaves the
+polar-normal criticality value unchanged. -/
+private theorem polarCriticality_eq_of_gauge {moment : Fin 2 → ℝ}
+    (hgauge : moment 1 = 0) (leafDir partnerDir : Fin 2 → ℝ) :
+    polarNormal ![moment 0, 0] ![partnerDir 0, partnerDir 1]
+        (1/2 + moment 0 * partnerDir 0) ⬝ᵥ
+        rotateQuarter ![leafDir 0, leafDir 1]
+      = polarNormal moment partnerDir
+        (1/2 + moment ⬝ᵥ partnerDir) ⬝ᵥ rotateQuarter leafDir := by
+  simp only [polarNormal, rotateQuarter, dotProduct, Fin.sum_univ_two,
+    Matrix.cons_val_zero, Matrix.cons_val_one]
+  rw [hgauge]
+  ring
+
+/-- Distinct planar vectors have distinct component pairs — the clone-freeness
+hypotheses cross the vector/scalar boundary. -/
+private theorem componentPair_ne_of_ne {leftVec rightVec : Fin 2 → ℝ}
+    (hvecFree : leftVec ≠ rightVec) :
+    (leftVec 0, leftVec 1) ≠ (rightVec 0, rightVec 1) := fun hpairEq =>
+  hvecFree (planar_eq_of_components
+    (congrArg Prod.fst hpairEq) (congrArg Prod.snd hpairEq))
+
 /-- **The P4 exclusion in direction-vector form** — the face the design-side
 machinery (`TightGraph`, `StressFrame`) actually speaks. Atoms are
 `Fin 2 → ℝ` unit directions, the moment is a gauge-aligned vector
@@ -267,32 +312,10 @@ theorem no_tight_path_four_double_tangency_of_directions
     (hsecondFourthFree : secondDir ≠ fourthDir) :
     False := by
   -- component expansion of every vector-form hypothesis
-  have hdotExpand : ∀ leftVec rightVec : Fin 2 → ℝ,
-      leftVec ⬝ᵥ rightVec
-        = leftVec 0 * rightVec 0 + leftVec 1 * rightVec 1 := by
-    intro leftVec rightVec
-    simp [dotProduct, Fin.sum_univ_two]
-  have hmomentDot : ∀ ownDir : Fin 2 → ℝ,
-      moment ⬝ᵥ ownDir = moment 0 * ownDir 0 := by
-    intro ownDir
-    rw [hdotExpand, hgauge]
-    ring
-  have hcritExpand : ∀ leafDir partnerDir : Fin 2 → ℝ,
-      polarNormal ![moment 0, 0] ![partnerDir 0, partnerDir 1]
-          (1/2 + moment 0 * partnerDir 0) ⬝ᵥ
-          rotateQuarter ![leafDir 0, leafDir 1]
-        = polarNormal moment partnerDir
-          (1/2 + moment ⬝ᵥ partnerDir) ⬝ᵥ rotateQuarter leafDir := by
-    intro leafDir partnerDir
-    simp only [polarNormal, rotateQuarter, dotProduct, Fin.sum_univ_two,
-      Matrix.cons_val_zero, Matrix.cons_val_one]
-    rw [hgauge]
-    ring
-  have hpairFree : ∀ {leftVec rightVec : Fin 2 → ℝ}, leftVec ≠ rightVec →
-      (leftVec 0, leftVec 1) ≠ (rightVec 0, rightVec 1) := by
-    intro leftVec rightVec hvecFree hpairEq
-    exact hvecFree (planar_eq_of_components
-      (congrArg Prod.fst hpairEq) (congrArg Prod.snd hpairEq))
+  have hdotExpand := dotProduct_eq_planar_components
+  have hmomentDot := momentDot_eq_of_gauge hgauge
+  have hcritExpand := polarCriticality_eq_of_gauge hgauge
+  have hpairFree := @componentPair_ne_of_ne
   refine no_tight_path_four_double_tangency
     (firstCos := firstDir 0) (firstSin := firstDir 1)
     (secondCos := secondDir 0) (secondSin := secondDir 1)
@@ -334,26 +357,9 @@ theorem no_tight_path_three_leaf_tangency_off_pole_of_directions
     (hfirstThirdFree : firstDir ≠ thirdDir)
     (hsecondGate : 1 - 2 * (moment ⬝ᵥ secondDir) ≠ 0) :
     False := by
-  have hdotExpand : ∀ leftVec rightVec : Fin 2 → ℝ,
-      leftVec ⬝ᵥ rightVec
-        = leftVec 0 * rightVec 0 + leftVec 1 * rightVec 1 := by
-    intro leftVec rightVec
-    simp [dotProduct, Fin.sum_univ_two]
-  have hmomentDot : ∀ ownDir : Fin 2 → ℝ,
-      moment ⬝ᵥ ownDir = moment 0 * ownDir 0 := by
-    intro ownDir
-    rw [hdotExpand, hgauge]
-    ring
-  have hcritExpand :
-      polarNormal ![moment 0, 0] ![secondDir 0, secondDir 1]
-          (1/2 + moment 0 * secondDir 0) ⬝ᵥ
-          rotateQuarter ![firstDir 0, firstDir 1]
-        = polarNormal moment secondDir
-          (1/2 + moment ⬝ᵥ secondDir) ⬝ᵥ rotateQuarter firstDir := by
-    simp only [polarNormal, rotateQuarter, dotProduct, Fin.sum_univ_two,
-      Matrix.cons_val_zero, Matrix.cons_val_one]
-    rw [hgauge]
-    ring
+  have hdotExpand := dotProduct_eq_planar_components
+  have hmomentDot := momentDot_eq_of_gauge hgauge
+  have hcritExpand := polarCriticality_eq_of_gauge hgauge firstDir secondDir
   refine no_tight_path_three_leaf_tangency_off_pole
     (firstCos := firstDir 0) (firstSin := firstDir 1)
     (secondCos := secondDir 0) (secondSin := secondDir 1)
@@ -404,32 +410,10 @@ theorem no_tight_cycle_five_with_path_stress_of_directions
     (hthirdFourthFree : thirdDir ≠ fourthDir)
     (hthirdFifthFree : thirdDir ≠ fifthDir) :
     False := by
-  have hdotExpand : ∀ leftVec rightVec : Fin 2 → ℝ,
-      leftVec ⬝ᵥ rightVec
-        = leftVec 0 * rightVec 0 + leftVec 1 * rightVec 1 := by
-    intro leftVec rightVec
-    simp [dotProduct, Fin.sum_univ_two]
-  have hmomentDot : ∀ ownDir : Fin 2 → ℝ,
-      moment ⬝ᵥ ownDir = moment 0 * ownDir 0 := by
-    intro ownDir
-    rw [hdotExpand, hgauge]
-    ring
-  have hcritExpand : ∀ leafDir partnerDir : Fin 2 → ℝ,
-      polarNormal ![moment 0, 0] ![partnerDir 0, partnerDir 1]
-          (1/2 + moment 0 * partnerDir 0) ⬝ᵥ
-          rotateQuarter ![leafDir 0, leafDir 1]
-        = polarNormal moment partnerDir
-          (1/2 + moment ⬝ᵥ partnerDir) ⬝ᵥ rotateQuarter leafDir := by
-    intro leafDir partnerDir
-    simp only [polarNormal, rotateQuarter, dotProduct, Fin.sum_univ_two,
-      Matrix.cons_val_zero, Matrix.cons_val_one]
-    rw [hgauge]
-    ring
-  have hpairFree : ∀ {leftVec rightVec : Fin 2 → ℝ}, leftVec ≠ rightVec →
-      (leftVec 0, leftVec 1) ≠ (rightVec 0, rightVec 1) := by
-    intro leftVec rightVec hvecFree hpairEq
-    exact hvecFree (planar_eq_of_components
-      (congrArg Prod.fst hpairEq) (congrArg Prod.snd hpairEq))
+  have hdotExpand := dotProduct_eq_planar_components
+  have hmomentDot := momentDot_eq_of_gauge hgauge
+  have hcritExpand := polarCriticality_eq_of_gauge hgauge
+  have hpairFree := @componentPair_ne_of_ne
   refine no_tight_cycle_five_with_path_stress
     (firstCos := firstDir 0) (firstSin := firstDir 1)
     (secondCos := secondDir 0) (secondSin := secondDir 1)

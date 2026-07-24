@@ -105,13 +105,7 @@ private theorem balance_wy :
   ring
 
 private theorem trace_two : ∑ c, D.weight c * leverageOf (D.atom c) = 2 := by
-  have hxx := parseval_xx D
-  have hyy := parseval_yy D
-  simp only [show ∀ c, D.weight c * leverageOf (D.atom c)
-      = D.weight c * D.atom c 0 ^ 2 + D.weight c * D.atom c 1 ^ 2 from
-    fun c => by rw [lev_expand]; ring]
-  rw [Finset.sum_add_distrib, hxx, hyy]
-  norm_num
+  simpa using sum_weighted_leverage D
 
 private theorem balance_z : ∑ c, D.weight c * zval D c = 0 := by
   simp only [show ∀ c, D.weight c * zval D c
