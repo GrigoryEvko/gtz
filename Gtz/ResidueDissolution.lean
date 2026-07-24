@@ -38,6 +38,31 @@ def IsTie (D : WeightedDesign m k) : Prop :=
   (∃ C : Finset (Fin m), C.card = k ∧ Dominates D C) ∧
   (∀ C : Finset (Fin m), C.card = k → ¬ (subsetSum D C - 1).PosDef)
 
+/-- **A tie yields a tight direction** — the Rayleigh/KKT certificate's non-vacuity.
+The dominating subset of a tie has a gap matrix `S_C − I` that is PSD (`Dominates`)
+yet NOT positive-definite (no `k`-subset dominates strictly), hence singular: it
+admits a NONZERO null vector `w` with `w ⬝ᵥ ((S_C − I) *ᵥ w) = 0`. That is exactly
+the tight-direction hypothesis the whole `Gtz.RayleighCertificate` chain consumes —
+so every ACTUAL tie feeds the per-direction KKT machinery (eigenvector, Frobenius
+coupling, complementary slackness, gap-operator annihilation); the certificate is
+not vacuous. Extracted from `¬ PosDef` by `posDef_iff_dotProduct_mulVec` +
+`push_neg` (a nonzero direction with nonpositive Rayleigh value), pinned to zero
+against the PSD lower bound. -/
+theorem isTie_yields_tightDirection {D : WeightedDesign m k} (htie : IsTie D) :
+    ∃ (C : Finset (Fin m)) (tightDir : Fin k → ℝ),
+      C.card = k ∧ Dominates D C ∧ tightDir ≠ 0 ∧
+      tightDir ⬝ᵥ ((subsetSum D C - 1) *ᵥ tightDir) = 0 := by
+  obtain ⟨⟨C, hcard, hdom⟩, hnostrict⟩ := htie
+  have hnot : ¬ (subsetSum D C - 1).PosDef := hnostrict C hcard
+  rw [Matrix.posDef_iff_dotProduct_mulVec] at hnot
+  push_neg at hnot
+  obtain ⟨tightDir, hne, hle⟩ := hnot hdom.1
+  rw [star_trivial] at hle
+  have hge : 0 ≤ tightDir ⬝ᵥ ((subsetSum D C - 1) *ᵥ tightDir) := by
+    have hpsd := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdom).2 tightDir
+    rwa [star_trivial] at hpsd
+  exact ⟨C, tightDir, hcard, hdom, hne, le_antisymm hle hge⟩
+
 /-- **Zero-set confinement on the collared class** (the A10 target): every
 tied design in the class lies on the closure of the tie variety —
 `distToTieVariety D = 0`, with the distance kernel-abstract. -/
