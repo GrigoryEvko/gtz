@@ -23,6 +23,7 @@ import Gtz.DominationWithoutCertificate
 import Gtz.SplitTetrahedronTie
 import Gtz.SplitTetraLocalBalance
 import Gtz.TetrahedronCertifiedTie
+import Gtz.RepeatedAtomExclusion
 import Gtz.OneObjectNarrowing
 import Gtz.GapStabilityFacts
 import Gtz.FrameBridge
@@ -670,3 +671,6 @@ import Gtz.Interface
 #print axioms Gtz.tetraDesign_isTie
 #print axioms Gtz.tetraDesign_stressCertificate
 #print axioms Gtz.exists_isTie_and_stressCertificate
+#print axioms Gtz.exists_ne_zero_dotProduct_pair_eq_zero
+#print axioms Gtz.not_dominates_of_repeated_atom
+#print axioms Gtz.not_strictDominator_of_repeated_atom

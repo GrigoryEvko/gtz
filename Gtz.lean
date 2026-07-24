@@ -73,6 +73,7 @@ import Gtz.RankTwo
 import Gtz.RatCertificate
 import Gtz.RayleighCertificate
 import Gtz.Reductions
+import Gtz.RepeatedAtomExclusion
 import Gtz.ResidueDissolution
 import Gtz.ResolventPerturbation
 import Gtz.Sanity
