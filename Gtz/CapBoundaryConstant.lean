@@ -106,4 +106,62 @@ theorem capBoundaryConstant_monotone : MonotoneOn capBoundaryConstant (Ici 2) :=
   · have : (0 : ℝ) < 2 * leverage - 3 := by linarith
     positivity
 
+/-- **The cap-boundary STRICT monotonicity** (residual 8 H1b, the exact argmax form):
+`C_B` is STRICTLY increasing on `[2, ∞)`. This is what the H1b argmax actually needs —
+"the higher-leverage cap STRICTLY dominates", not merely `≤`. The derivative
+`4(L−2)(8L³ − 14L² − L + 8)/(2L−3)³` is STRICTLY positive on the interior `(2, ∞)`:
+`L − 2 > 0`, the cubic `> 0` (its `8L²(L−2) + (2L²−L+8)` split is a sum of a positive
+and an always-positive term), the denominator `> 0`. Via `strictMonoOn_of_deriv_pos`. -/
+theorem capBoundaryConstant_strictMono : StrictMonoOn capBoundaryConstant (Ici 2) := by
+  have hcont : ContinuousOn capBoundaryConstant (Ici 2) := fun leverage hlev =>
+    (capBoundaryConstant_hasDerivAt
+      (by simp only [mem_Ici] at hlev; nlinarith [hlev])).continuousAt.continuousWithinAt
+  refine strictMonoOn_of_deriv_pos (convex_Ici 2) hcont ?_
+  intro leverage hlev
+  rw [interior_Ici, mem_Ioi] at hlev
+  have hne : (2 * leverage - 3) ≠ 0 := by nlinarith [hlev]
+  rw [(capBoundaryConstant_hasDerivAt hne).deriv]
+  have hfac : (0 : ℝ) < leverage - 2 := by linarith
+  have hlevPos : (0 : ℝ) < leverage := by linarith
+  have hcubic : (0 : ℝ) < 8 * leverage ^ 3 - 14 * leverage ^ 2 - leverage + 8 := by
+    nlinarith [mul_pos (mul_pos hfac hlevPos) hlevPos, sq_nonneg (2 * leverage - 1), hlev]
+  apply div_pos
+  · exact mul_pos (mul_pos (by norm_num) hfac) hcubic
+  · have : (0 : ℝ) < 2 * leverage - 3 := by linarith
+    positivity
+
+/-! ### Adversarial exact-rational probes of the cap-boundary constant
+
+Kernel-checked evaluations at the discrete cap leverages relevant to weighted `(6,3)`
+(`L = 2, 3, 4, 5`). Each would FAIL under a mis-transcription of the closed form; the
+strict chain would FAIL under any non-monotonicity — an adversarial numerical test of
+`capBoundaryConstant_strictMono` at the actual sample points, no external engine. -/
+
+/-- `C_B(2) = 16` (exact). -/
+theorem capBoundaryConstant_at_two : capBoundaryConstant 2 = 16 := by
+  unfold capBoundaryConstant
+  norm_num
+
+/-- `C_B(3) = 232/9` (exact). -/
+theorem capBoundaryConstant_at_three : capBoundaryConstant 3 = 232 / 9 := by
+  unfold capBoundaryConstant
+  norm_num
+
+/-- `C_B(4) = 1056/25` (exact). -/
+theorem capBoundaryConstant_at_four : capBoundaryConstant 4 = 1056 / 25 := by
+  unfold capBoundaryConstant
+  norm_num
+
+/-- **The adversarial strict chain**: `C_B(2) < C_B(3) < C_B(4) < C_B(5)`, i.e.
+`16 < 232/9 < 1056/25 < 3088/49`. A discrete kernel-checked witness of
+`capBoundaryConstant_strictMono` at the (6,3) cap leverages — falsifies any
+non-monotonicity or transcription error in the closed form. -/
+theorem capBoundaryConstant_strict_chain :
+    capBoundaryConstant 2 < capBoundaryConstant 3 ∧
+      capBoundaryConstant 3 < capBoundaryConstant 4 ∧
+      capBoundaryConstant 4 < capBoundaryConstant 5 := by
+  rw [capBoundaryConstant_at_two, capBoundaryConstant_at_three,
+    capBoundaryConstant_at_four, capBoundaryConstant_at_five]
+  norm_num
+
 end Gtz

@@ -585,6 +585,11 @@ import Gtz.Interface
 #print axioms Gtz.capBoundaryConstant_derivNumerator_nonneg
 #print axioms Gtz.capBoundaryConstant_hasDerivAt
 #print axioms Gtz.capBoundaryConstant_monotone
+#print axioms Gtz.capBoundaryConstant_strictMono
+#print axioms Gtz.capBoundaryConstant_at_two
+#print axioms Gtz.capBoundaryConstant_at_three
+#print axioms Gtz.capBoundaryConstant_at_four
+#print axioms Gtz.capBoundaryConstant_strict_chain
 #print axioms Gtz.pair_budget_decompose
 #print axioms Gtz.tight_pair_second_order_nonpos
 #print axioms Gtz.pair_budget_le_firstOrder
