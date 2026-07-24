@@ -19,6 +19,7 @@ import Gtz.CollaredCompact
 import Gtz.MarginContinuity
 import Gtz.StressCertificate
 import Gtz.StrictDomination
+import Gtz.DominationWithoutCertificate
 import Gtz.OneObjectNarrowing
 import Gtz.GapStabilityFacts
 import Gtz.FrameBridge
@@ -644,3 +645,8 @@ import Gtz.Interface
 #print axioms Gtz.one_lt_lambdaMinMat_iff_posDef
 #print axioms Gtz.strictDominates_iff_one_lt_lambdaMinMat
 #print axioms Gtz.margin_pos_iff_exists_strictDominates
+#print axioms Gtz.witnessDesign
+#print axioms Gtz.witnessDesign_dominates
+#print axioms Gtz.witnessSlope_form
+#print axioms Gtz.witnessSlope_weightPairing
+#print axioms Gtz.witnessDesign_noStressCertificate

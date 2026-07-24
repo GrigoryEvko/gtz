@@ -40,6 +40,7 @@ import Gtz.CyclicStress
 import Gtz.Deflation
 import Gtz.DeflationCertificate
 import Gtz.DescentLadder
+import Gtz.DominationWithoutCertificate
 import Gtz.DowndateInterlacing
 import Gtz.DustControl
 import Gtz.EulerPairing
