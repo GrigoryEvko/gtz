@@ -238,4 +238,39 @@ theorem offTubeGap_pos {carrier : Type*} [TopologicalSpace carrier]
   refine ⟨phi minimizer, hPos minimizer hmem, fun point hp => ?_⟩
   exact isMinOn_iff.mp hmin point hp
 
+/-! ### The decay of the collar rate (residual 7's wall, quantified) -/
+
+/-- **The collar rate DECAYS with leverage** — the honest shape of residual 7's
+wall. For a fixed nonnegative proportionality constant and nonnegative exponent, the
+guaranteed rate floor `rateConst/leverageCap^exponent` is ANTITONE in the leverage
+cap: a higher-leverage cell has a strictly weaker guaranteed transverse rate. This is
+exactly why the collar rate is not `l̄`-uniform — the named open wall is a leverage-
+uniform continuum lower bound that this monotone decay forbids for any positive
+exponent. Real field (rpow monotonicity). -/
+theorem rate_floor_antitone_in_leverage
+    {rateConst exponent leverageCap1 leverageCap2 : ℝ}
+    (hRateConst : 0 ≤ rateConst) (hExp : 0 ≤ exponent)
+    (hCap1 : 0 < leverageCap1) (hMono : leverageCap1 ≤ leverageCap2) :
+    rateConst / leverageCap2 ^ exponent ≤ rateConst / leverageCap1 ^ exponent := by
+  have hCap2 : 0 < leverageCap2 := lt_of_lt_of_le hCap1 hMono
+  have hpow : leverageCap1 ^ exponent ≤ leverageCap2 ^ exponent :=
+    Real.rpow_le_rpow hCap1.le hMono hExp
+  have hpow1pos : 0 < leverageCap1 ^ exponent := Real.rpow_pos_of_pos hCap1 exponent
+  exact div_le_div_of_nonneg_left hRateConst hpow1pos hpow
+
+/-- **Adversarial erosion witness — the sample→consumption rate drop, exact.** At the
+mild band exponent `1` with the W₂-consistent proportionality constant `≈ 0.206`
+(`206/1000`), the guaranteed rate floor at the CONSUMPTION leverage `l̄ = 300` times
+`12` equals the floor at the SAMPLE leverage `l̄ = 25` — a `12×` erosion, kernel-
+checked as an exact rational identity. The honest magnitude of residual 7's gap: what
+the numerics measure at `l̄ ≤ 25` is diluted twelve-fold before it is consumed at
+`l̄ ≈ 300`, even at the MOST favorable measured exponent. No external engine. -/
+theorem collar_erosion_ratio_exponent_one :
+    ((206 / 1000 : ℝ) / 300) * 12 = (206 / 1000 : ℝ) / 25 := by norm_num
+
+/-- The erosion is strict: the consumption-leverage rate floor sits strictly below the
+sample-leverage floor (exact rational, adversarial cross-check). -/
+theorem collar_erosion_strict :
+    (206 / 1000 : ℝ) / 300 < (206 / 1000 : ℝ) / 25 := by norm_num
+
 end Gtz

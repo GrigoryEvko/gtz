@@ -567,6 +567,9 @@ import Gtz.Interface
 #print axioms Gtz.collar_rate_positive
 #print axioms Gtz.collared_two_piece_law
 #print axioms Gtz.offTubeGap_pos
+#print axioms Gtz.rate_floor_antitone_in_leverage
+#print axioms Gtz.collar_erosion_ratio_exponent_one
+#print axioms Gtz.collar_erosion_strict
 #print axioms Gtz.dominationGap_form
 #print axioms Gtz.tightDirection_rayleigh_identity
 #print axioms Gtz.tightDirection_minimizes_gap
