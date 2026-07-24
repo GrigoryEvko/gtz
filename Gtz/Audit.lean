@@ -14,6 +14,7 @@ import Gtz.Sanity
 import Gtz.SchurRankOne
 import Gtz.TraceIdentity
 import Gtz.TriangleClosure
+import Gtz.ResidueDissolution
 import Gtz.CornerFiber
 import Gtz.CapCriterion
 import Gtz.Crystallization
@@ -522,3 +523,16 @@ import Gtz.Interface
 #print axioms Gtz.exists_all_certificates_but_discriminant
 #print axioms Gtz.exists_all_certificates_but_discriminant_rank_three
 #print axioms Gtz.triangle_closure_biquadratic
+#print axioms Gtz.IsTie
+#print axioms Gtz.ZeroSetConfinement
+#print axioms Gtz.ClassificationLeEleven
+#print axioms Gtz.TieDichotomy
+#print axioms Gtz.ResidueConfinement
+#print axioms Gtz.zeroSetConfinement_of_classification_and_residue
+#print axioms Gtz.dichotomy_collapses_of_no_residue
+#print axioms Gtz.deepCycle_forces_closure
+#print axioms Gtz.no_deepCycle_off_torsionLocus
+#print axioms Gtz.zeroSetConfinement_of_funnelingLaw
+#print axioms Gtz.p3_closure_numerator_factors
+#print axioms Gtz.focal_conic_p3_closes
+#print axioms Gtz.no_chordless_tight_four_cycle
