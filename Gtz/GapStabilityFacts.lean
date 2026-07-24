@@ -142,4 +142,20 @@ theorem complex_sic_slack_window :
   · nlinarith [hcancel, hlb, htpos, hpos]
   · nlinarith [hcancel, hub, htpos, hpos]
 
+/-- **The realness gate, assembled** (residual 12: "realness concentrates here"). The
+complex SIC / Bloch-tetrahedron witness — slack `1 − 2/√3 < 0` — CANNOT satisfy the
+real feasibility envelope `budget ≤ cFirst · slack` for any positive budget and
+positive first-order constant. Composing the two sides: the envelope FORCES positive
+slack over ℝ (`envelope_forces_slack_pos`, the single real-field consumption of the
+GAP-S argument), but the complex witness has negative slack
+(`complex_sic_slack_neg`) — contradiction. This is exactly why the argument is
+real-field-specific: the same silent design that ℂ admits, ℝ excludes through the
+envelope. The `(6,3)` realness lever, kernel-checked as one implication. -/
+theorem complex_witness_violates_envelope {budget cFirst : ℝ}
+    (hbudgetPos : 0 < budget) (hcFirstPos : 0 < cFirst) :
+    ¬ (budget ≤ cFirst * (1 - 2 / Real.sqrt 3)) := by
+  intro henvelope
+  exact absurd (envelope_forces_slack_pos hbudgetPos hcFirstPos henvelope)
+    (not_lt.mpr complex_sic_slack_neg.le)
+
 end Gtz
