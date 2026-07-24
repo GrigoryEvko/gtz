@@ -145,4 +145,35 @@ theorem atomMatrix_frobenius_eq_sq (w g : Fin k → ℝ) :
     smul_eq_mul]
   ring
 
+/-- **The general trace pairing with a rank-one multiplier**: the Frobenius inner
+product of the rank-one projector `Λ = w·wᵀ` with an arbitrary matrix `M` is the
+quadratic form `wᵀ M w`. This is the KKT bridge — pairing the eigenprojector
+multiplier of a tight direction with any matrix reads off that matrix's quadratic
+form at `w`. The Frobenius coupling `atomMatrix_frobenius_eq_sq` is the special
+case `M = g·gᵀ` (`wᵀ(g gᵀ)w = (w·g)²`). -/
+theorem atomMatrix_trace_pairing (M : Matrix (Fin k) (Fin k) ℝ) (w : Fin k → ℝ) :
+    Matrix.trace (atomMatrix w * M) = w ⬝ᵥ (M *ᵥ w) := by
+  unfold atomMatrix
+  rw [Matrix.trace_mul_comm, Matrix.mul_vecMulVec, Matrix.trace_vecMulVec,
+    dotProduct_comm]
+
+/-- **Complementary slackness for the rank-one eigenprojector multiplier**
+(residual 10's KKT structure). At a tie, the eigenprojector multiplier
+`Λ = w·wᵀ` of a tight direction `w` of a dominating subset `C` pairs to ZERO with
+the gap matrix `S_C − I`:
+
+    ⟨Λ, S_C − I⟩ = trace((w wᵀ)(S_C − I)) = wᵀ(S_C − I)w = 0.
+
+Both `Λ ⪰ 0` and `S_C − I ⪰ 0` (domination), so this is genuine complementary
+slackness: the rank-one multiplier is Frobenius-orthogonal to the gap matrix, i.e.
+supported exactly on the active (tight) constraint. This is the KKT slackness datum
+the eigenvalue-subdifferential multiplier assembly is built from; the assembly
+across the family of active directions (Gordan) is the standing wall. -/
+theorem tightDirection_complementarySlackness (D : WeightedDesign m k)
+    (C : Finset (Fin m)) {w : Fin k → ℝ}
+    (htight : w ⬝ᵥ ((subsetSum D C - 1) *ᵥ w) = 0) :
+    Matrix.trace (atomMatrix w * (subsetSum D C - 1)) = 0 := by
+  rw [atomMatrix_trace_pairing]
+  exact htight
+
 end Gtz
