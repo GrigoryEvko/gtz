@@ -11,6 +11,7 @@ import Gtz.Basic
 import Gtz.BernsteinPositivity
 import Gtz.BhatiaDavis
 import Gtz.BlochDictionary
+import Gtz.CapBoundaryConstant
 import Gtz.CapCriterion
 import Gtz.CapDictionary
 import Gtz.CapSlack
