@@ -17,6 +17,7 @@ import Gtz.TriangleClosure
 import Gtz.ResidueDissolution
 import Gtz.CollaredCompact
 import Gtz.MarginContinuity
+import Gtz.StressCertificate
 import Gtz.OneObjectNarrowing
 import Gtz.GapStabilityFacts
 import Gtz.FrameBridge
@@ -632,3 +633,7 @@ import Gtz.Interface
 #print axioms Gtz.continuous_dominationMargin
 #print axioms Gtz.continuousOn_dominationMargin
 #print axioms Gtz.offTubeGap_of_margin_pos
+#print axioms Gtz.no_separating_slope_of_stressCertificate
+#print axioms Gtz.no_separatingSlope_exists_of_stressCertificate
+#print axioms Gtz.tetraDesign
+#print axioms Gtz.tetra_no_separating_slope

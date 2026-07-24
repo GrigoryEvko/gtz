@@ -79,6 +79,7 @@ import Gtz.SchurRankOne
 import Gtz.Seam
 import Gtz.SilenceDictionary
 import Gtz.SplittingRule
+import Gtz.StressCertificate
 import Gtz.StressFrame
 import Gtz.SylvesterThree
 import Gtz.SymmetryReduction
