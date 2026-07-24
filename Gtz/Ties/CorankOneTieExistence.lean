@@ -36,8 +36,6 @@ import Gtz.Design.LeverageBound
 import Gtz.Certificates.ResidueDissolution
 import Gtz.Ties.CorankOneTieCriterion
 
-set_option autoImplicit false
-set_option relaxedAutoImplicit false
 set_option maxHeartbeats 1000000
 
 namespace Gtz

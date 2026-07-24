@@ -20,9 +20,6 @@ import Gtz.Core.Basic
 import Gtz.Design.CollaredCompact
 import Gtz.Quantitative.CollarRate
 import Gtz.Core.Sanity
-set_option autoImplicit false
-set_option relaxedAutoImplicit false
-
 open scoped RealInnerProductSpace
 open ContinuousLinearMap Matrix
 

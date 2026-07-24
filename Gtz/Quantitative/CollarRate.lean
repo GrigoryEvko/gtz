@@ -38,9 +38,6 @@ so the lemmas commit to neither number.
 -/
 import Mathlib
 import Gtz.Certificates.LawEquivalence
-set_option autoImplicit false
-set_option relaxedAutoImplicit false
-
 namespace Gtz
 
 open Finset

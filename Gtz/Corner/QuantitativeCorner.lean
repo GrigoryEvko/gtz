@@ -97,19 +97,7 @@ theorem posDef_excess_of_kappa (D : WeightedDesign m k) (Q : Finset (Fin m))
   · refine isHermitian_of_transpose_eq ?_
     rw [Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_one]
   · rw [star_trivial, hform]
-    have hnorm : 0 < u ⬝ᵥ u := by
-      rcases lt_or_eq_of_le (dotProduct_self_nonneg u) with hpos | hzero
-      · exact hpos
-      · exfalso
-        refine hu (funext fun i => ?_)
-        have hsq : ∑ j, u j ^ 2 = 0 := by
-          rw [← dotProduct_self_eq_sum_sq, ← hzero]
-      -- each square vanishes inside a zero sum of squares
-        have hall := (Finset.sum_eq_zero_iff_of_nonneg
-          (fun j _ => sq_nonneg (u j))).mp hsq
-        have := hall i (Finset.mem_univ i)
-        exact pow_eq_zero_iff (n := 2) (by omega) |>.mp this
-    exact mul_pos (by linarith) hnorm
+    exact mul_pos (by linarith) (dotProduct_self_pos hu)
 
 /-- **Every pivot on the κ·I fiber is `ℓ_d/(κ−1)`** — the excess inverse is the
 scalar `(κ−1)⁻¹`, so the pivot reads the leverage directly. -/

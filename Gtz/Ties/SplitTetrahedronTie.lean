@@ -33,9 +33,6 @@ import Gtz.Reduction.RayleighCertificate
 import Gtz.Certificates.ResidueDissolution
 import Gtz.Design.StressCertificate
 
-set_option autoImplicit false
-set_option relaxedAutoImplicit false
-
 namespace Gtz
 
 open Matrix
@@ -106,24 +103,13 @@ variable (hAPos : 0 < splitA) (hALt : splitA < 1/4) (hBPos : 0 < splitB)
 
 /-! ### The tetrahedron pairing facts -/
 
-/-- Every tetrahedron direction has squared norm `3`. -/
-theorem tetraAtom_dot_self (d : Fin 4) : tetraAtom d ⬝ᵥ tetraAtom d = 3 := by
-  fin_cases d <;>
-    norm_num [tetraAtom, dotProduct, Fin.sum_univ_three, Matrix.cons_val_two,
-      Matrix.head_cons, Matrix.tail_cons]
-
-theorem tetraAtom_ne_zero (d : Fin 4) : tetraAtom d ≠ 0 := by
-  fin_cases d <;>
-    exact Function.ne_iff.mpr ⟨0, by norm_num [tetraAtom, Pi.zero_apply]⟩
-
 /-- An atom pairs to `±1` — squared, to `1` — with every tetrahedron direction it does
-not carry. -/
+not carry: the atom IS a tetrahedron direction, so this is `tetraAtom_dot_sq_of_ne`
+read along `splitTetraDirIndex`. -/
 theorem splitTetraAtom_dot_sq_of_ne {c : Fin 6} {d : Fin 4}
     (hne : splitTetraDirIndex c ≠ d) :
-    (splitTetraAtom c ⬝ᵥ tetraAtom d) ^ 2 = 1 := by
-  fin_cases c <;> fin_cases d <;>
-    simp_all [splitTetraDirIndex, splitTetraAtom, tetraAtom, dotProduct,
-      Fin.sum_univ_three]
+    (splitTetraAtom c ⬝ᵥ tetraAtom d) ^ 2 = 1 :=
+  tetraAtom_dot_sq_of_ne hne
 
 /-- Three atoms cover at most three of the four tetrahedron directions. -/
 theorem exists_unusedDir (atomOne atomTwo atomThree : Fin 6) :

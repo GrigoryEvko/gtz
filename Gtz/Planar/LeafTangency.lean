@@ -22,7 +22,7 @@ The kernel decomposition, sqrt-free, riding TightGraph's polar-chord kit
 import Mathlib
 import Gtz.Planar.TightGraph
 import Gtz.Planar.SplittingRule
-import Gtz.LinAlg.ResolventPerturbation
+import Gtz.LinAlg.PsdKit
 
 namespace Gtz
 

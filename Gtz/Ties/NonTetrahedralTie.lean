@@ -30,9 +30,6 @@ import Gtz.Certificates.ResidueDissolution
 import Gtz.Core.Sanity
 import Gtz.Ties.SplitTetrahedronTie
 
-set_option autoImplicit false
-set_option relaxedAutoImplicit false
-
 namespace Gtz
 
 open Matrix

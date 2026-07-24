@@ -132,13 +132,6 @@ theorem dust_deficit_bloch (dustSet : Finset (Fin m))
           * (∑ c ∈ dustSet, weight c * (a - atoms c ⬝ᵥ atoms c)
               * (atoms c ⬝ᵥ atoms c) ^ 2) := by linarith
 
-/-- Cauchy–Schwarz for planar pairings, Lagrange form: `p² ≤ ℓ_c ℓ_d`. -/
-private theorem pairing_sq_le_leverage_mul (leftAtom rightAtom : Fin 2 → ℝ) :
-    (leftAtom ⬝ᵥ rightAtom) ^ 2
-      ≤ (leftAtom ⬝ᵥ leftAtom) * (rightAtom ⬝ᵥ rightAtom) := by
-  simp only [dotProduct, Fin.sum_univ_two]
-  nlinarith [sq_nonneg (leftAtom 0 * rightAtom 1 - leftAtom 1 * rightAtom 0)]
-
 /-- The Bloch squared difference dominates the squared leverage gap:
 `|S_c − S_d|² ≥ (ℓ_c − ℓ_d)²` (reverse triangle, in squares). -/
 theorem blochSquare_sub_normSq_ge (leftAtom rightAtom : Fin 2 → ℝ) :
@@ -156,7 +149,7 @@ theorem blochSquare_sub_normSq_ge (leftAtom rightAtom : Fin 2 → ℝ) :
       blochSquare_dotProduct]
     ring
   rw [hexpand]
-  nlinarith [pairing_sq_le_leverage_mul leftAtom rightAtom]
+  nlinarith [dotProduct_sq_le_mul leftAtom rightAtom]
 
 /-- **Proposition D.2 (cross rebate)**: the ordered heavy×dust mixed pair-sum
 is bounded below by `2κ₃δ₀`, `κ₃ = Σ_E t_c(ℓ_c−a)³`, `δ₀ = Σ_D t_c(a−ℓ_c)` —

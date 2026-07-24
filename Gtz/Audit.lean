@@ -114,7 +114,7 @@ import Gtz.Quantitative.Interface
 #print axioms Gtz.dot_mulVec_comm
 #print axioms Gtz.PosDef.transpose_eq
 #print axioms Gtz.posSemidef_sub_vecMulVec_iff
-#print axioms Gtz.mul_vecMulVec_eq
+#print axioms Gtz.dotProduct_self_pos
 #print axioms Gtz.pivot_eq_dot
 #print axioms Gtz.trace_identity
 #print axioms Gtz.excess_balance

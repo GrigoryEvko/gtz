@@ -23,6 +23,7 @@ audit #2 GAP_FOUND on the framing only — the numbers and these facts verified
 airtight).
 -/
 import Mathlib
+import Gtz.Planar.WedgeChain
 
 namespace Gtz
 
@@ -114,9 +115,8 @@ symmetric (Mercedes) design, so the transverse conditioning never degrades below
 theorem quotient_floor_uniform (lev : ℝ) :
     0 ≤ (2 * lev - 3) * 2 ^ 2 - (4 * lev ^ 2 - 2 * lev - 5) * 2
         + (12 * lev ^ 2 - 28 * lev + 18) := by
-  have h : (2 * lev - 3) * 2 ^ 2 - (4 * lev ^ 2 - 2 * lev - 5) * 2
-      + (12 * lev ^ 2 - 28 * lev + 18) = 4 * (lev - 2) ^ 2 := by ring
-  rw [h]; positivity
+  rw [quotient_constant_quadratic_at_two]
+  positivity
 
 /-- **The complex slack, pinned to a tight rational window** (adversarial numerical
 sharpening of `complex_sic_slack_neg`). The complex SIC / Bloch-tetrahedron slack

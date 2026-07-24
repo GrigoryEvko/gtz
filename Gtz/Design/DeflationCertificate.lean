@@ -15,7 +15,6 @@ interval elimination). The two generic consumption facts:
 -/
 import Mathlib
 import Gtz.LinAlg.PsdKit
-import Gtz.LinAlg.ResolventPerturbation
 
 namespace Gtz
 

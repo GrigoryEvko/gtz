@@ -10,7 +10,7 @@ spectra-free. (At rank 2 this is "some pair has gap ≥ π/2", which kills
 near-collinearity of the design's squares and floors the Jacobian.)
 -/
 import Mathlib
-import Gtz.LinAlg.ResolventPerturbation
+import Gtz.LinAlg.PsdKit
 
 namespace Gtz
 

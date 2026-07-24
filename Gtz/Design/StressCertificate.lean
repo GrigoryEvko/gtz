@@ -17,9 +17,6 @@ alternative there unconditionally with the explicit certificate `coeff ≡ 1/48`
 import Mathlib
 import Gtz.Core.Basic
 
-set_option autoImplicit false
-set_option relaxedAutoImplicit false
-
 namespace Gtz
 open Matrix
 variable {m k : ℕ}
@@ -84,6 +81,24 @@ frame) in which every 3-subset ties at `λ_min = 1`. Its stress multiplier is
 /-- The four tetrahedron atoms. -/
 def tetraAtom : Fin 4 → Fin 3 → ℝ :=
   ![![1, 1, 1], ![1, -1, -1], ![-1, 1, -1], ![-1, -1, 1]]
+
+/-- Every tetrahedron direction has squared norm `3`. -/
+theorem tetraAtom_dot_self (d : Fin 4) : tetraAtom d ⬝ᵥ tetraAtom d = 3 := by
+  fin_cases d <;>
+    norm_num [tetraAtom, dotProduct, Fin.sum_univ_three, Matrix.cons_val_two,
+      Matrix.head_cons, Matrix.tail_cons]
+
+/-- No tetrahedron direction is the zero vector. -/
+theorem tetraAtom_ne_zero (d : Fin 4) : tetraAtom d ≠ 0 := by
+  fin_cases d <;>
+    exact Function.ne_iff.mpr ⟨0, by norm_num [tetraAtom, Pi.zero_apply]⟩
+
+/-- Distinct tetrahedron vertices pair to `±1` — squared, to `1`. The single
+source of the off-diagonal Gram data every tetrahedron argument reads. -/
+theorem tetraAtom_dot_sq_of_ne {c d : Fin 4} (hne : c ≠ d) :
+    (tetraAtom c ⬝ᵥ tetraAtom d) ^ 2 = 1 := by
+  fin_cases c <;> fin_cases d <;>
+    simp_all [tetraAtom, dotProduct, Fin.sum_univ_three]
 
 /-- The regular tetrahedron as a weighted `(4,3)` design (a tight frame). -/
 noncomputable def tetraDesign : WeightedDesign 4 3 where

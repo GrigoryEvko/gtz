@@ -17,9 +17,6 @@ import Mathlib
 import Gtz.Core.Basic
 import Gtz.Reduction.RayleighCertificate
 
-set_option autoImplicit false
-set_option relaxedAutoImplicit false
-
 namespace Gtz
 
 open Matrix
@@ -47,12 +44,7 @@ theorem not_dominates_of_repeated_atom {m : ℕ} (D : WeightedDesign m 3)
   obtain ⟨x, hxne, hxOne, hxThree⟩ :=
     exists_ne_zero_dotProduct_pair_eq_zero (D.atom cOne) (D.atom cThree)
   have hxTwo : D.atom cTwo ⬝ᵥ x = 0 := by rw [← hatom]; exact hxOne
-  have hxpos : 0 < x ⬝ᵥ x := by
-    obtain ⟨coord, hcoord⟩ := Function.ne_iff.mp hxne
-    have hsum : x ⬝ᵥ x = ∑ j, x j * x j := rfl
-    rw [hsum]
-    exact Finset.sum_pos' (fun j _ => mul_self_nonneg (x j))
-      ⟨coord, Finset.mem_univ coord, mul_self_pos.mpr (by simpa using hcoord)⟩
+  have hxpos : 0 < x ⬝ᵥ x := dotProduct_self_pos hxne
   have hnn := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdom).2 x
   rw [star_trivial, dominationGap_form,
     Finset.sum_insert (by simp [hOneTwo, hOneThree]),

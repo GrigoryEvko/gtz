@@ -29,14 +29,6 @@ open Matrix
 
 variable {n : ℕ}
 
-/-- A vector whose dot square vanishes is zero. -/
-theorem eq_zero_of_dotProduct_self_eq_zero {probe : Fin n → ℝ}
-    (hself : probe ⬝ᵥ probe = 0) : probe = 0 := by
-  funext index
-  have hsq := (Finset.sum_eq_zero_iff_of_nonneg
-    (fun s _ => mul_self_nonneg (probe s))).mp hself
-  simpa using mul_self_eq_zero.mp (hsq index (Finset.mem_univ index))
-
 /-- From `u² ≤ K²` with `K ≥ 0`, the lower square root: `−K ≤ u`. -/
 theorem neg_le_of_sq_le_sq {value cap : ℝ}
     (hsq : value ^ 2 ≤ cap ^ 2) (hcapNonneg : 0 ≤ cap) : -cap ≤ value := by

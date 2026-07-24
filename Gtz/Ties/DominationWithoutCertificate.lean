@@ -17,8 +17,6 @@ import Gtz.Core.Basic
 import Gtz.Design.StressCertificate
 import Gtz.Reduction.RayleighCertificate
 
-set_option autoImplicit false
-set_option relaxedAutoImplicit false
 set_option maxHeartbeats 4000000
 
 namespace Gtz

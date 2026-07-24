@@ -104,15 +104,7 @@ theorem dominating_of_light_atom (D : WeightedDesign (m + 1) k)
       have h := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (D.atom d) u
       rw [dotProduct, dotProduct_self_eq_sum_sq, leverageOf]
       nlinarith [h]
-    have hupos : 0 < u ⬝ᵥ u := by
-      have hne : ∃ s, u s ≠ 0 := by
-        by_contra hall
-        push Not at hall
-        exact hu (funext hall)
-      obtain ⟨s, hsu⟩ := hne
-      rw [dotProduct]
-      exact Finset.sum_pos' (fun i _ => mul_self_nonneg _)
-        ⟨s, Finset.mem_univ s, mul_self_pos.mpr hsu⟩
+    have hupos : 0 < u ⬝ᵥ u := dotProduct_self_pos hu
     nlinarith [mul_le_mul_of_nonneg_left hCS htdpos.le,
       mul_le_mul_of_nonneg_right (mul_le_of_le_one_right htdpos.le hlight)
         hupos.le,

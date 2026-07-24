@@ -22,9 +22,6 @@ import Mathlib
 import Gtz.Core.Basic
 import Gtz.Ties.SplitTetrahedronTie
 
-set_option autoImplicit false
-set_option relaxedAutoImplicit false
-
 namespace Gtz
 
 open Matrix

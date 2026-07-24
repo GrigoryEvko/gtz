@@ -23,6 +23,8 @@ Weak-but-not-strict domination is a genuine tie, so a design on which `IsTie` ho
 exists. Pure `ring` / `positivity` / `norm_num`.
 -/
 import Mathlib
+import Gtz.Design.StressCertificate
+import Gtz.Reduction.RayleighCertificate
 
 namespace Gtz
 
@@ -61,38 +63,29 @@ theorem tetra_tie_direction_vanishes :
 
 /-! ### The same tie at the concrete gap-matrix level
 
-The scalar facts above are `vᵀ(S_C − I)v` for the best 3-subset, spelled out over the
-actual rank-one atom matrices `g gᵀ`: the gap matrix is `∑ vecMulVec g_c g_c − I`, and its
-quadratic form is the SOS. -/
+The scalar facts above are `vᵀ(S_C − I)v` for the best 3-subset spelled out in
+coordinates. Here the same content is stated over the DESIGN's own gap matrix —
+`subsetSum tetraDesign {0,1,2} − 1`, the object `Gtz.Dominates` is about — so the
+null-space theorem below applies directly to `tetraDesign_no_strictDominator`'s
+subject rather than to a look-alike. -/
 
-/-- Tetrahedron atom `gA = (1, 1, 1)` of the best 3-subset. -/
-def tetraAtomA : Fin 3 → ℝ := ![1, 1, 1]
-
-/-- Tetrahedron atom `gB = (1, −1, −1)`. -/
-def tetraAtomB : Fin 3 → ℝ := ![1, -1, -1]
-
-/-- Tetrahedron atom `gC = (−1, 1, −1)`. -/
-def tetraAtomC : Fin 3 → ℝ := ![-1, 1, -1]
-
-/-- The subset moment `S_C = gA gAᵀ + gB gBᵀ + gC gCᵀ` — the sum of the three rank-one
-atom matrices, the GTZ moment object for this subset. -/
-noncomputable def tetraSubsetMoment : Matrix (Fin 3) (Fin 3) ℝ :=
-  vecMulVec tetraAtomA tetraAtomA + vecMulVec tetraAtomB tetraAtomB
-    + vecMulVec tetraAtomC tetraAtomC
-
-/-- The domination gap `S_C − I`. -/
-noncomputable def tetraGapMatrix : Matrix (Fin 3) (Fin 3) ℝ := tetraSubsetMoment - 1
+/-- The domination gap `S_C − I` of the tetrahedron's best 3-subset. -/
+noncomputable def tetraGapMatrix : Matrix (Fin 3) (Fin 3) ℝ :=
+  subsetSum tetraDesign {0, 1, 2} - 1
 
 /-- **The gap matrix's quadratic form is the SOS.** `vᵀ(S_C − I)v = (v0−v1)² +
-(v0+v2)² + (v1+v2)²`, the same three-square decomposition as `tetra_domination_form_sos`
-but over the ACTUAL atom-built gap matrix — so `S_C − I` really is this PSD form. -/
+(v0+v2)² + (v1+v2)²`, the same three-square decomposition as
+`tetra_domination_form_sos` but over the design's actual gap matrix. -/
 theorem tetraGapMatrix_quadForm (v0 v1 v2 : ℝ) :
     (![v0, v1, v2] : Fin 3 → ℝ) ⬝ᵥ tetraGapMatrix.mulVec ![v0, v1, v2]
       = (v0 - v1) ^ 2 + (v0 + v2) ^ 2 + (v1 + v2) ^ 2 := by
-  simp [tetraGapMatrix, tetraSubsetMoment, tetraAtomA, tetraAtomB, tetraAtomC,
-    Matrix.vecMulVec, Matrix.mulVec, Matrix.sub_apply, Matrix.add_apply, dotProduct,
-    Fin.sum_univ_three, Matrix.one_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons]
+  rw [tetraGapMatrix, dominationGap_form,
+    show ({0, 1, 2} : Finset (Fin 4)) = insert 0 (insert 1 {2}) from rfl,
+    Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton]
+  simp only [tetraDesign, tetraAtom, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons, dotProduct,
+    Fin.sum_univ_three]
   ring
 
 /-- **The gap matrix is positive semidefinite** on its quadratic form (`S_C − I ⪰ 0`,

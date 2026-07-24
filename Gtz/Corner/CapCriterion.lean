@@ -294,7 +294,7 @@ theorem cap_criterion_trace {N : Matrix (Fin k) (Fin k) ℝ}
     (g : Fin k → ℝ) :
     (N + Matrix.vecMulVec g g).PosSemidef ↔
       Matrix.trace (N⁻¹ * Matrix.vecMulVec g g) ≤ -1 := by
-  rw [cap_criterion hNT hdet hw hWpsd g, mul_vecMulVec_eq,
+  rw [cap_criterion hNT hdet hw hWpsd g, Matrix.mul_vecMulVec,
     Matrix.trace_vecMulVec, dotProduct_comm]
 
 end Gtz

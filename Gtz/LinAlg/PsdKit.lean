@@ -38,6 +38,21 @@ theorem dotProduct_self_nonneg (v : Fin a → ℝ) : 0 ≤ v ⬝ᵥ v :=
 theorem dotProduct_self_eq_sum_sq (v : Fin a → ℝ) : v ⬝ᵥ v = ∑ i, v i ^ 2 :=
   Finset.sum_congr rfl fun i _ => (pow_two (v i)).symm
 
+/-- **The dot square detects the zero vector**: a nonzero vector has strictly
+positive dot square — one coordinate is nonzero, and its square is a strictly
+positive term in a sum of nonnegative ones. -/
+theorem dotProduct_self_pos {v : Fin a → ℝ} (hne : v ≠ 0) : 0 < v ⬝ᵥ v := by
+  obtain ⟨coord, hcoord⟩ := Function.ne_iff.mp hne
+  simp only [Pi.zero_apply] at hcoord
+  exact Finset.sum_pos' (fun i _ => mul_self_nonneg (v i))
+    ⟨coord, Finset.mem_univ coord, mul_self_pos.mpr hcoord⟩
+
+/-- The converse reading: a vanishing dot square forces the zero vector. -/
+theorem eq_zero_of_dotProduct_self_eq_zero {v : Fin a → ℝ}
+    (hself : v ⬝ᵥ v = 0) : v = 0 := by
+  by_contra hne
+  exact absurd hself (ne_of_gt (dotProduct_self_pos hne))
+
 /-- Cauchy–Schwarz for the raw dot product, squared form. -/
 theorem dotProduct_sq_le_mul (leftVec rightVec : Fin a → ℝ) :
     (leftVec ⬝ᵥ rightVec) ^ 2

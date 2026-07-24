@@ -22,9 +22,6 @@ import Gtz.Certificates.ResidueDissolution
 import Gtz.Design.StressCertificate
 import Gtz.Ties.SplitTetrahedronTie
 
-set_option autoImplicit false
-set_option relaxedAutoImplicit false
-
 namespace Gtz
 
 open Matrix
@@ -32,12 +29,6 @@ open Matrix
 @[simp] theorem tetraDesign_atom : tetraDesign.atom = tetraAtom := rfl
 
 @[simp] theorem tetraDesign_weight : tetraDesign.weight = fun _ => (1 : ℝ) / 4 := rfl
-
-/-- Distinct tetrahedron vertices pair to `±1` — squared, to `1`. -/
-theorem tetraAtom_dot_sq_of_ne {c d : Fin 4} (hne : c ≠ d) :
-    (tetraAtom c ⬝ᵥ tetraAtom d) ^ 2 = 1 := by
-  fin_cases c <;> fin_cases d <;>
-    simp_all [tetraAtom, dotProduct, Fin.sum_univ_three]
 
 /-- Three vertices never exhaust the four. -/
 theorem exists_unusedVertex (vertOne vertTwo vertThree : Fin 4) :

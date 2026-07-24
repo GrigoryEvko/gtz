@@ -18,9 +18,6 @@ import Gtz.Core.Basic
 import Gtz.Quantitative.MarginContinuity
 import Gtz.Core.Sanity
 
-set_option autoImplicit false
-set_option relaxedAutoImplicit false
-
 open scoped RealInnerProductSpace
 open ContinuousLinearMap Matrix
 
@@ -102,13 +99,7 @@ theorem one_lt_lambdaMinMat_iff_posDef (M : Matrix (Fin k) (Fin k) ℝ)
     refine Matrix.posDef_iff_dotProduct_mulVec.mpr
       ⟨hherm.sub Matrix.isHermitian_one, fun x hx => ?_⟩
     rw [star_trivial, Matrix.sub_mulVec, Matrix.one_mulVec, dotProduct_sub]
-    have hxpos : 0 < x ⬝ᵥ x := by
-      obtain ⟨i, hi⟩ := Function.ne_iff.mp hx
-      simp only [Pi.zero_apply] at hi
-      have hsum : x ⬝ᵥ x = ∑ j, x j * x j := rfl
-      rw [hsum]
-      exact Finset.sum_pos' (fun j _ => mul_self_nonneg (x j))
-        ⟨i, Finset.mem_univ i, mul_self_pos.mpr hi⟩
+    have hxpos : 0 < x ⬝ᵥ x := dotProduct_self_pos hx
     have hxne : (WithLp.toLp 2 x : EuclideanSpace ℝ (Fin k)) ≠ 0 := by
       rw [← norm_ne_zero_iff]
       intro hz

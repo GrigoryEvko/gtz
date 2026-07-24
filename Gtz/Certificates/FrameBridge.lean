@@ -42,9 +42,6 @@ namespace Gtz.FrameBridge
 
 open Gtz
 
-set_option autoImplicit false
-set_option relaxedAutoImplicit false
-
 variable {m k : ℕ}
 
 /-! ### The GTZ biquadratic and its tight relation -/

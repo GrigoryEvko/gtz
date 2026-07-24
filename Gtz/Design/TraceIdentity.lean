@@ -25,18 +25,11 @@ open Matrix
 
 variable {m k : ℕ}
 
-/-- M · (a bᵀ) = (M a) bᵀ. -/
-theorem mul_vecMulVec_eq (M : Matrix (Fin k) (Fin k) ℝ) (a b : Fin k → ℝ) :
-    M * Matrix.vecMulVec a b = Matrix.vecMulVec (M *ᵥ a) b := by
-  ext i j
-  simp only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct,
-    Finset.sum_mul]
-  exact Finset.sum_congr rfl fun l _ => by ring
-
 /-- The pivot in inner-product form: tr((S_Q−1)⁻¹ g gᵀ) = g ⬝ᵥ (S_Q−1)⁻¹ g. -/
 theorem pivot_eq_dot (D : WeightedDesign m k) (Q : Finset (Fin m)) (c : Fin m) :
     pivot D Q c = (D.atom c) ⬝ᵥ ((subsetSum D Q - 1)⁻¹ *ᵥ (D.atom c)) := by
-  rw [pivot, atomMatrix, mul_vecMulVec_eq, Matrix.trace_vecMulVec, dotProduct_comm]
+  rw [pivot, atomMatrix, Matrix.mul_vecMulVec, Matrix.trace_vecMulVec,
+    dotProduct_comm]
 
 /-- **The trace identity** (general (m,k), any base set): multiply Parseval's
 S_Q − 1 = Σ_{d∈Q}(1−t_d)A_d − Σ_{e∉Q}t_e A_e by (S_Q−1)⁻¹ and take traces. -/

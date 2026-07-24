@@ -25,6 +25,7 @@ import Mathlib
 import Gtz.Core.Basic
 import Gtz.Core.Sanity
 import Gtz.LinAlg.SchurRankOne
+import Gtz.LinAlg.PsdKit
 import Gtz.Design.TraceIdentity
 
 namespace Gtz
@@ -43,7 +44,7 @@ theorem vecMulVec_sum_right {ι : Type*} (a : Fin k → ℝ) (s : Finset ι)
 /-- Product of two atoms: (a aᵀ)(b bᵀ) = ⟨a,b⟩ · (a bᵀ). -/
 theorem atomMatrix_mul_atomMatrix (a b : Fin k → ℝ) :
     atomMatrix a * atomMatrix b = (a ⬝ᵥ b) • Matrix.vecMulVec a b := by
-  rw [atomMatrix, atomMatrix, mul_vecMulVec_eq, vecMulVec_mulVec_eq,
+  rw [atomMatrix, atomMatrix, Matrix.mul_vecMulVec, vecMulVec_mulVec_eq,
     Matrix.smul_vecMulVec]
 
 /-- A symmetric real matrix whose square is a positive multiple of itself is
@@ -282,16 +283,7 @@ theorem corner_fiber_dominates (hk : 1 ≤ k) (hc : HasExactCorner D emb) :
         (by rw [Matrix.transpose_smul, Matrix.transpose_one])
     · rw [star_trivial, Matrix.smul_mulVec, Matrix.one_mulVec, dotProduct_smul,
         smul_eq_mul]
-      have hxne : ∃ t, x t ≠ 0 := by
-        by_contra hall
-        push Not at hall
-        exact hx (funext hall)
-      obtain ⟨t, ht⟩ := hxne
-      have hxx : 0 < x ⬝ᵥ x := by
-        simp only [dotProduct]
-        exact Finset.sum_pos' (fun s _ => mul_self_nonneg _)
-          ⟨t, Finset.mem_univ t, mul_self_pos.mpr ht⟩
-      exact mul_pos hkpos hxx
+      exact mul_pos hkpos (dotProduct_self_pos hx)
   -- the inverse is k⁻¹·I, so every pivot is leverage/k
   have hNinv : (subsetSum D (Finset.univ.image emb) - 1)⁻¹
       = (k : ℝ)⁻¹ • (1 : Matrix (Fin k) (Fin k) ℝ) := by
