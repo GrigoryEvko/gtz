@@ -26,6 +26,7 @@ import Gtz.TetrahedronCertifiedTie
 import Gtz.RepeatedAtomExclusion
 import Gtz.NonTetrahedralTie
 import Gtz.CorankOneTieCriterion
+import Gtz.CorankOneTieExistence
 import Gtz.OneObjectNarrowing
 import Gtz.GapStabilityFacts
 import Gtz.FrameBridge
@@ -705,3 +706,26 @@ import Gtz.Interface
 #print axioms Gtz.unevenPairDesign_not_isTie
 #print axioms Gtz.unevenPairDesign_strictDominator
 #print axioms Gtz.exists_leverage_identity_not_isTie_rank_zero
+#print axioms Gtz.reflection_mul_self
+#print axioms Gtz.weight_mul_div_sqrt_pair
+#print axioms Gtz.weight_lt_one_of_simplex
+#print axioms Gtz.tieDefect_sq
+#print axioms Gtz.tieDefect_pos
+#print axioms Gtz.sum_tieDefect_sq
+#print axioms Gtz.tieDefect_head_lt_one
+#print axioms Gtz.tieReflector_head
+#print axioms Gtz.tieReflector_normSq
+#print axioms Gtz.tieHouseholder_apply
+#print axioms Gtz.tieHouseholder_symm
+#print axioms Gtz.tieHouseholder_mul_self
+#print axioms Gtz.tieHouseholder_head
+#print axioms Gtz.tieHouseholder_column_pairing
+#print axioms Gtz.tieHouseholder_tail_pairing
+#print axioms Gtz.simplexTieDesign_weight
+#print axioms Gtz.weight_mul_leverage_simplexTieAtom
+#print axioms Gtz.simplexTieDesign_leverage_identity
+#print axioms Gtz.simplexTieDesign_isTie
+#print axioms Gtz.exists_isTie_of_weights
+#print axioms Gtz.leverage_of_isTie
+#print axioms Gtz.corank_one_tie_stratum
+#print axioms Gtz.exists_isTie_uniform

@@ -32,16 +32,6 @@ variable {k : ℕ}
 
 /-! ### The operator algebra -/
 
-/-- The product of two rank-one operators contracts through the middle. -/
-theorem vecMulVec_mul_vecMulVec (leftVec innerLeft innerRight rightVec :
-    Fin k → ℝ) :
-    Matrix.vecMulVec leftVec innerLeft * Matrix.vecMulVec innerRight rightVec
-      = (innerLeft ⬝ᵥ innerRight) • Matrix.vecMulVec leftVec rightVec := by
-  ext rowIndex colIndex
-  simp only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.smul_apply,
-    smul_eq_mul, dotProduct, Finset.sum_mul]
-  exact Finset.sum_congr rfl fun l _ => by ring
-
 /-- Rank-one action on a vector. -/
 theorem vecMulVec_mulVec_general (leftVec rightVec probe : Fin k → ℝ) :
     Matrix.vecMulVec leftVec rightVec *ᵥ probe

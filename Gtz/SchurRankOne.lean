@@ -27,6 +27,15 @@ open Matrix
 
 variable {k : ℕ}
 
+/-- The product of two rank-one operators contracts through the middle. -/
+theorem vecMulVec_mul_vecMulVec (leftVec innerLeft innerRight rightVec : Fin k → ℝ) :
+    Matrix.vecMulVec leftVec innerLeft * Matrix.vecMulVec innerRight rightVec
+      = (innerLeft ⬝ᵥ innerRight) • Matrix.vecMulVec leftVec rightVec := by
+  ext rowIndex colIndex
+  simp only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.smul_apply,
+    smul_eq_mul, dotProduct, Finset.sum_mul]
+  exact Finset.sum_congr rfl fun index _ => by ring
+
 /-- (vecMulVec a b) *ᵥ y = (b ⬝ᵥ y) • a. -/
 theorem vecMulVec_mulVec_eq (a b y : Fin k → ℝ) :
     (Matrix.vecMulVec a b) *ᵥ y = (b ⬝ᵥ y) • a := by
