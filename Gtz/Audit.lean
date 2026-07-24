@@ -22,6 +22,7 @@ import Gtz.StrictDomination
 import Gtz.DominationWithoutCertificate
 import Gtz.SplitTetrahedronTie
 import Gtz.SplitTetraLocalBalance
+import Gtz.TetrahedronCertifiedTie
 import Gtz.OneObjectNarrowing
 import Gtz.GapStabilityFacts
 import Gtz.FrameBridge
@@ -664,3 +665,8 @@ import Gtz.Interface
 #print axioms Gtz.balanceSubset_dominates
 #print axioms Gtz.balanceSubset_tight
 #print axioms Gtz.splitTetraDesign_localBalance
+#print axioms Gtz.tetraDesign_dominates
+#print axioms Gtz.tetraDesign_no_strictDominator
+#print axioms Gtz.tetraDesign_isTie
+#print axioms Gtz.tetraDesign_stressCertificate
+#print axioms Gtz.exists_isTie_and_stressCertificate

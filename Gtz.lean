@@ -87,6 +87,7 @@ import Gtz.StressFrame
 import Gtz.StrictDomination
 import Gtz.SylvesterThree
 import Gtz.SymmetryReduction
+import Gtz.TetrahedronCertifiedTie
 import Gtz.TetrahedronTie
 import Gtz.TieEigenvector
 import Gtz.TiedQuadruple
