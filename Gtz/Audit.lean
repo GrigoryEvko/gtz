@@ -21,6 +21,7 @@ import Gtz.GapStabilityFacts
 import Gtz.FrameBridge
 import Gtz.CollarRate
 import Gtz.RayleighCertificate
+import Gtz.ChargeSelection
 import Gtz.CapBoundaryConstant
 import Gtz.CornerFiber
 import Gtz.CapCriterion
@@ -579,6 +580,8 @@ import Gtz.Interface
 #print axioms Gtz.tightDirection_isNullVector
 #print axioms Gtz.tightDirection_isEigenvector
 #print axioms Gtz.parseval_weighted_sum_sq
+#print axioms Gtz.exists_charge_ge
+#print axioms Gtz.exists_nonneg_margin_of_weighted_average
 #print axioms Gtz.tightDirection_subset_eq_weighted
 #print axioms Gtz.atomMatrix_frobenius_eq_sq
 #print axioms Gtz.atomMatrix_trace_pairing

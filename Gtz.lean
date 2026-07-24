@@ -19,6 +19,7 @@ import Gtz.CertificateAnchor
 import Gtz.CertificateFrame
 import Gtz.Certs.CFiveCertificate
 import Gtz.Certs.PFourCertificate
+import Gtz.ChargeSelection
 import Gtz.ChordTheorem
 import Gtz.ClosureObtuse
 import Gtz.CollarFloor
