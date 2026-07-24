@@ -568,6 +568,8 @@ import Gtz.Interface
 #print axioms Gtz.dominationGap_form
 #print axioms Gtz.tightDirection_rayleigh_identity
 #print axioms Gtz.tightDirection_minimizes_gap
+#print axioms Gtz.tightDirection_isNullVector
+#print axioms Gtz.tightDirection_isEigenvector
 #print axioms Gtz.parseval_weighted_sum_sq
 #print axioms Gtz.tightDirection_subset_eq_weighted
 #print axioms Gtz.pair_budget_decompose

@@ -79,6 +79,28 @@ theorem tightDirection_minimizes_gap (D : WeightedDesign m k)
   have hcoercive := sum_sq_ge_of_dominates hdom v
   linarith
 
+/-- **The tight direction is a null vector of the gap matrix**: a PSD matrix
+whose quadratic form vanishes at `w` annihilates `w`. So a tight direction of a
+dominating subset satisfies `(S_C − I)·w = 0` exactly — the upgrade from "Rayleigh
+value 1" to a genuine kernel vector. -/
+theorem tightDirection_isNullVector (D : WeightedDesign m k)
+    {C : Finset (Fin m)} (hdom : Dominates D C) {w : Fin k → ℝ}
+    (htight : w ⬝ᵥ ((subsetSum D C - 1) *ᵥ w) = 0) :
+    (subsetSum D C - 1) *ᵥ w = 0 :=
+  (Matrix.PosSemidef.dotProduct_mulVec_zero_iff hdom w).mp htight
+
+/-- **The tight direction is a unit eigenvector**: `S_C·w = w`. The active
+min-eigenvector of the dominating subset is pinned exactly (eigenvalue 1) — the
+precise datum the eigenprojector multiplier of the eigenvalue subdifferential is
+built from. -/
+theorem tightDirection_isEigenvector (D : WeightedDesign m k)
+    {C : Finset (Fin m)} (hdom : Dominates D C) {w : Fin k → ℝ}
+    (htight : w ⬝ᵥ ((subsetSum D C - 1) *ᵥ w) = 0) :
+    subsetSum D C *ᵥ w = w := by
+  have hnull := tightDirection_isNullVector D hdom htight
+  rw [Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero] at hnull
+  exact hnull
+
 /-- **The full weighted Rayleigh identity from Parseval**: since the weighted atoms
 resolve the identity (`Σ_c t_c g_c g_cᵀ = I`), every direction `w` satisfies
 `Σ_c t_c (g_c·w)² = |w|²`. The weight-side companion of the unweighted
