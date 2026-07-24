@@ -513,5 +513,8 @@ import Gtz.Interface
 #print axioms Gtz.pivot_form_le_leverage_of_dominated
 #print axioms Gtz.liftingLemma_all_iff_gtzWeightedAll
 #print axioms Gtz.liftingLemma_all_of_canonical_windows
+#print axioms Gtz.subsetPairingMap
+#print axioms Gtz.exists_common_annihilator
+#print axioms Gtz.notMem_of_dominates_of_atom_eq_zero
 #print axioms Gtz.exists_good_in_projection
 #print axioms Gtz.exists_good_in_projection_rank_three

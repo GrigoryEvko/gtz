@@ -652,13 +652,81 @@ theorem liftingLemma_all_of_canonical_windows
   liftingLemma_of_gtzWeighted
     (gtz_of_canonical_list hwindows (k + 1) (Nat.le_add_left 1 k))
 
+/-- The pairing map of a vector family restricted to a subset:
+`probe ↦ (⟨vecs c, probe⟩)_{c ∈ C}` — the linear map whose kernel holds
+the common annihilators of the selected vectors. -/
+def subsetPairingMap {m dim : ℕ} (vecs : Fin m → (Fin dim → ℝ))
+    (C : Finset (Fin m)) : (Fin dim → ℝ) →ₗ[ℝ] (C → ℝ) where
+  toFun probe := fun c => vecs c.1 ⬝ᵥ probe
+  map_add' left right := by
+    funext index
+    simp [dotProduct_add]
+  map_smul' scalar vector := by
+    funext index
+    simp [dotProduct_smul]
+
+/-- **Few vectors leave a free direction**: any family selected by a
+subset of size strictly below the ambient dimension admits a nonzero
+common annihilator — the pairing map lands in dimension `C.card < dim`,
+so its kernel is nontrivial. -/
+theorem exists_common_annihilator {m dim : ℕ}
+    (vecs : Fin m → (Fin dim → ℝ)) {C : Finset (Fin m)}
+    (hfewVectors : C.card < dim) :
+    ∃ probe : Fin dim → ℝ, probe ≠ 0 ∧ ∀ c ∈ C, vecs c ⬝ᵥ probe = 0 := by
+  classical
+  have hnotInjective : ¬ Function.Injective (subsetPairingMap vecs C) := by
+    intro hinjective
+    have hrankLe := LinearMap.finrank_le_finrank_of_injective hinjective
+    rw [Module.finrank_pi, Module.finrank_pi, Fintype.card_fin,
+      Fintype.card_coe] at hrankLe
+    exact absurd hfewVectors (not_lt.mpr hrankLe)
+  rw [← LinearMap.ker_eq_bot] at hnotInjective
+  obtain ⟨probe, hkernelMem, hprobeNe⟩ :=
+    (Submodule.ne_bot_iff _).mp hnotInjective
+  refine ⟨probe, hprobeNe, fun c hc => ?_⟩
+  have hvalue := congrFun (LinearMap.mem_ker.mp hkernelMem) (⟨c, hc⟩ : C)
+  simpa [subsetPairingMap] using hvalue
+
+/-- **A dominating subset never touches a dead atom**: if an atom is
+zero, no dominating subset of size at most the dimension contains it —
+erasing the dead atom would leave fewer than `dim` live vectors, and
+their common annihilator defeats domination. In the deflation picture:
+the killed pivot is AUTOMATICALLY excluded from every dominating subset
+downstairs. -/
+theorem notMem_of_dominates_of_atom_eq_zero {m dim : ℕ}
+    (D : WeightedDesign m dim) {subset : Finset (Fin m)} {pivot : Fin m}
+    (hatomZero : D.atom pivot = 0) (hcardLe : subset.card ≤ dim)
+    (hdominates : Dominates D subset) : pivot ∉ subset := by
+  intro hmem
+  have hcardPos : 0 < subset.card := Finset.card_pos.mpr ⟨pivot, hmem⟩
+  have herasedFew : (subset.erase pivot).card < dim := by
+    rw [Finset.card_erase_of_mem hmem]
+    omega
+  obtain ⟨probe, hprobeNe, hannihilates⟩ :=
+    exists_common_annihilator D.atom herasedFew
+  have hsumZero : ∑ c ∈ subset, (D.atom c ⬝ᵥ probe) ^ 2 = 0 := by
+    refine Finset.sum_eq_zero fun c hc => ?_
+    rcases eq_or_ne c pivot with hisPivot | hisLive
+    · rw [hisPivot, hatomZero, zero_dotProduct]
+      exact zero_pow two_ne_zero
+    · rw [hannihilates c (Finset.mem_erase.mpr ⟨hisLive, hc⟩)]
+      exact zero_pow two_ne_zero
+  have hcoercive := sum_sq_ge_of_dominates hdominates probe
+  rw [hsumZero] at hcoercive
+  have hprobeSelfNonneg : 0 ≤ probe ⬝ᵥ probe := by
+    simp only [dotProduct]
+    exact Finset.sum_nonneg fun index _ => mul_self_nonneg _
+  exact hprobeNe
+    (dotProduct_self_eq_zero.mp (le_antisymm hcoercive hprobeSelfNonneg))
+
 /-- **The wall, narrowed to the coupling**: with rank-`k` GTZ in hand,
 EVERY nonzero atom of EVERY `(k+1)`-design admits a deflation whose
-projected design has a dominating `k`-subset — good-in-projection
-subsets exist for every pivot choice. So of the Lifting Lemma's three
-certificates, the first two are ALWAYS jointly satisfiable per pivot;
-the open content is exactly the leverage/discriminant COUPLING between
-the pivot and its projected selection. -/
+projected design has a dominating `k`-subset — and the killed pivot is
+AUTOMATICALLY outside it. So FIVE of the Lifting Lemma's seven
+certificates (split, kill, exclusion, cardinality, projected domination)
+are always jointly satisfiable per pivot; the open content is exactly
+the leverage-floor/discriminant COUPLING between the pivot and its
+projected selection. -/
 theorem exists_good_in_projection {k : ℕ} (hgtz : GtzWeightedAll k)
     {m : ℕ} (D : WeightedDesign m (k + 1)) (pivot : Fin m)
     (hpivotNonzero : D.atom pivot ≠ 0) :
@@ -668,21 +736,27 @@ theorem exists_good_in_projection {k : ℕ} (hgtz : GtzWeightedAll k)
         ∧ deflator *ᵥ D.atom pivot = 0
         ∧ deflatorᵀ * deflator + atomMatrix (scale • D.atom pivot) = 1
         ∧ subset.card = k
+        ∧ pivot ∉ subset
         ∧ Dominates (coisometryPushforward D deflator hcoisometry) subset := by
   obtain ⟨scale, deflator, hscalePos, hcoisometry, hkill, hsplit, hunit⟩ :=
     exists_pivot_deflation D pivot hpivotNonzero
   obtain ⟨subset, hcard, hdominates⟩ :=
     hgtz m (coisometryPushforward D deflator hcoisometry)
+  have hdeadAtom :
+      (coisometryPushforward D deflator hcoisometry).atom pivot = 0 := by
+    rw [coisometryPushforward_atom, hkill]
+  have hpivotExcluded : pivot ∉ subset :=
+    notMem_of_dominates_of_atom_eq_zero _ hdeadAtom hcard.le hdominates
   exact ⟨scale, deflator, hcoisometry, subset, hscalePos, hkill, hsplit,
-    hcard, hdominates⟩
+    hcard, hpivotExcluded, hdominates⟩
 
 /-- **The rank-3 instance — the hardest object, cornered**: every nonzero
 atom of every `(m,3)` design (the (6,3)/(7,3) frontier included) has
-good-in-projection PAIRS, unconditionally, because rank-2 GTZ is proven.
-What separates this from `LiftingLemma 2` — hence from (6,3)∧(7,3),
-hence from all of rank 3 — is only the coupling: choosing the pivot so
-that SOME dominating pair also carries the leverage floor and the
-discriminant bound. -/
+good-in-projection PAIRS excluding the pivot, unconditionally, because
+rank-2 GTZ is proven. What separates this from `LiftingLemma 2` — hence
+from (6,3)∧(7,3), hence from all of rank 3 — is only the coupling:
+choosing the pivot so that SOME dominating pair also carries the
+leverage floor and the discriminant bound. -/
 theorem exists_good_in_projection_rank_three {m : ℕ}
     (D : WeightedDesign m 3) (pivot : Fin m)
     (hpivotNonzero : D.atom pivot ≠ 0) :
@@ -692,6 +766,7 @@ theorem exists_good_in_projection_rank_three {m : ℕ}
         ∧ deflator *ᵥ D.atom pivot = 0
         ∧ deflatorᵀ * deflator + atomMatrix (scale • D.atom pivot) = 1
         ∧ subset.card = 2
+        ∧ pivot ∉ subset
         ∧ Dominates (coisometryPushforward D deflator hcoisometry) subset :=
   exists_good_in_projection gtz_rank_two D pivot hpivotNonzero
 
