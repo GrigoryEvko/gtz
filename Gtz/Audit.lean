@@ -518,3 +518,5 @@ import Gtz.Interface
 #print axioms Gtz.notMem_of_dominates_of_atom_eq_zero
 #print axioms Gtz.exists_good_in_projection
 #print axioms Gtz.exists_good_in_projection_rank_three
+#print axioms Gtz.exists_all_certificates_but_discriminant
+#print axioms Gtz.exists_all_certificates_but_discriminant_rank_three

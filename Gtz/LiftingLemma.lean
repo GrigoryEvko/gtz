@@ -20,6 +20,7 @@ import Gtz.PsdKit
 import Gtz.MarginTransfer
 import Gtz.TraceIdentity
 import Gtz.Reductions
+import Gtz.LeverageBound
 
 namespace Gtz
 
@@ -769,5 +770,93 @@ theorem exists_good_in_projection_rank_three {m : ℕ}
         ∧ pivot ∉ subset
         ∧ Dominates (coisometryPushforward D deflator hcoisometry) subset :=
   exists_good_in_projection gtz_rank_two D pivot hpivotNonzero
+
+/-- **Six of seven, jointly**: with rank-`k` GTZ in hand, a HEAVY pivot
+(leverage at least the rank — the trace pigeonhole always provides one)
+carries ALL of the Lifting Lemma's certificates except the discriminant,
+at a single common (pivot, pivotUnit, deflator, subset): the split, the
+kill, the exclusion, the cardinality, the projected domination, AND the
+leverage floor. The floor is subset-independent at a heavy pivot — the
+squared overlap of the unit direction with its own atom IS the leverage.
+The 1997 problem, in its entirety, is the one remaining inequality. -/
+theorem exists_all_certificates_but_discriminant {k : ℕ}
+    (hgtz : GtzWeightedAll k) {m : ℕ} (D : WeightedDesign m (k + 1)) :
+    ∃ (pivot : Fin m) (pivotUnit : Fin (k + 1) → ℝ)
+      (deflator : Matrix (Fin k) (Fin (k + 1)) ℝ)
+      (subset : Finset (Fin m)),
+      deflatorᵀ * deflator + atomMatrix pivotUnit = 1
+      ∧ deflator *ᵥ D.atom pivot = 0
+      ∧ pivot ∉ subset
+      ∧ subset.card = k
+      ∧ (∀ testVec : Fin k → ℝ, testVec ⬝ᵥ testVec
+          ≤ ∑ c ∈ subset, ((deflator *ᵥ D.atom c) ⬝ᵥ testVec) ^ 2)
+      ∧ 0 ≤ (pivotUnit ⬝ᵥ D.atom pivot) ^ 2
+          + (∑ c ∈ subset, (pivotUnit ⬝ᵥ D.atom c) ^ 2) - 1 := by
+  obtain ⟨pivot, hheavy⟩ :=
+    exists_leverage_ge_rank D (Nat.succ_le_succ (Nat.zero_le k))
+  have hrankFloor : (1 : ℝ) ≤ ((k + 1 : ℕ) : ℝ) :=
+    Nat.one_le_cast.mpr (Nat.succ_le_succ (Nat.zero_le k))
+  have hpivotNonzero : D.atom pivot ≠ 0 := by
+    intro hatomZero
+    have hzeroLev : leverageOf (0 : Fin (k + 1) → ℝ) = 0 := by
+      simp [leverageOf]
+    rw [hatomZero, hzeroLev] at hheavy
+    linarith
+  obtain ⟨scale, deflator, hscalePos, hcoisometry, hkill, hsplit, hunit⟩ :=
+    exists_pivot_deflation D pivot hpivotNonzero
+  obtain ⟨subset, hcard, hdominates⟩ :=
+    hgtz m (coisometryPushforward D deflator hcoisometry)
+  have hdeadAtom :
+      (coisometryPushforward D deflator hcoisometry).atom pivot = 0 := by
+    rw [coisometryPushforward_atom, hkill]
+  have hpivotExcluded : pivot ∉ subset :=
+    notMem_of_dominates_of_atom_eq_zero _ hdeadAtom hcard.le hdominates
+  have hprojected : ∀ testVec : Fin k → ℝ, testVec ⬝ᵥ testVec
+      ≤ ∑ c ∈ subset, ((deflator *ᵥ D.atom c) ⬝ᵥ testVec) ^ 2 :=
+    fun testVec => sum_sq_ge_of_dominates hdominates testVec
+  -- the heavy pivot discharges the floor against ANY subset: the unit
+  -- direction's squared overlap with its own atom is the leverage
+  have hselfDot : D.atom pivot ⬝ᵥ D.atom pivot = leverageOf (D.atom pivot) :=
+    (leverageOf_eq_dotProduct (D.atom pivot)).symm
+  have hunitProduct :
+      scale * (scale * (D.atom pivot ⬝ᵥ D.atom pivot)) = 1 := by
+    have hread := hunit
+    rwa [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul] at hread
+  have hoverlapSq : ((scale • D.atom pivot) ⬝ᵥ D.atom pivot) ^ 2
+      = D.atom pivot ⬝ᵥ D.atom pivot := by
+    rw [smul_dotProduct, smul_eq_mul]
+    calc (scale * (D.atom pivot ⬝ᵥ D.atom pivot)) ^ 2
+        = (scale * (scale * (D.atom pivot ⬝ᵥ D.atom pivot)))
+            * (D.atom pivot ⬝ᵥ D.atom pivot) := by ring
+      _ = 1 * (D.atom pivot ⬝ᵥ D.atom pivot) := by rw [hunitProduct]
+      _ = D.atom pivot ⬝ᵥ D.atom pivot := one_mul _
+  have hfloor : 0 ≤ ((scale • D.atom pivot) ⬝ᵥ D.atom pivot) ^ 2
+      + (∑ c ∈ subset, ((scale • D.atom pivot) ⬝ᵥ D.atom c) ^ 2) - 1 := by
+    have hsumNonneg :
+        0 ≤ ∑ c ∈ subset, ((scale • D.atom pivot) ⬝ᵥ D.atom c) ^ 2 :=
+      Finset.sum_nonneg fun c _ => sq_nonneg _
+    rw [hoverlapSq, hselfDot]
+    linarith
+  exact ⟨pivot, scale • D.atom pivot, deflator, subset, hsplit, hkill,
+    hpivotExcluded, hcard, hprojected, hfloor⟩
+
+/-- The rank-3 reading of six-of-seven: for every `(m,3)` design some
+(pivot, unit, deflator, pair) carries every certificate except the
+discriminant — the full (6,3)/(7,3) frontier IS the discriminant
+inequality alone. -/
+theorem exists_all_certificates_but_discriminant_rank_three {m : ℕ}
+    (D : WeightedDesign m 3) :
+    ∃ (pivot : Fin m) (pivotUnit : Fin 3 → ℝ)
+      (deflator : Matrix (Fin 2) (Fin 3) ℝ)
+      (subset : Finset (Fin m)),
+      deflatorᵀ * deflator + atomMatrix pivotUnit = 1
+      ∧ deflator *ᵥ D.atom pivot = 0
+      ∧ pivot ∉ subset
+      ∧ subset.card = 2
+      ∧ (∀ testVec : Fin 2 → ℝ, testVec ⬝ᵥ testVec
+          ≤ ∑ c ∈ subset, ((deflator *ᵥ D.atom c) ⬝ᵥ testVec) ^ 2)
+      ∧ 0 ≤ (pivotUnit ⬝ᵥ D.atom pivot) ^ 2
+          + (∑ c ∈ subset, (pivotUnit ⬝ᵥ D.atom c) ^ 2) - 1 :=
+  exists_all_certificates_but_discriminant gtz_rank_two D
 
 end Gtz
