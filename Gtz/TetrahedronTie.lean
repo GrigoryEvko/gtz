@@ -1,31 +1,26 @@
 /-
-# The twice-split tetrahedron tie is a concrete object (residuals 2/5, tie non-vacuity)
+# A concrete tie: the twice-split tetrahedron
 
-The whole off-tube / in-tube architecture of the A9 seam (residual 2) and the
-tie-residue analysis (`Gtz.ResidueDissolution`, `Gtz.TieEigenvector`) rest on the
-domination margin `phi = Phi - 1` actually REACHING `0` somewhere — the tie must be
-a real, inhabited locus, not merely the abstract hypothesis `IsTie D -> margin D = 0`
-that `ResidueDissolution` consumes.
+The tie-residue analysis (`Gtz.ResidueDissolution`, `Gtz.TieEigenvector`) rests on the
+domination margin `phi = Phi - 1` actually reaching `0` somewhere — the tie must be a
+real, inhabited locus, not merely the abstract hypothesis `IsTie D -> margin D = 0` that
+`ResidueDissolution` consumes. This file supplies the explicit witness for weighted `(6,3)`.
 
-This file supplies the explicit witness for weighted `(6,3)`. The twice-split
-tetrahedron's best 3-subset uses the three scaled tetrahedron vectors
+The twice-split tetrahedron's best 3-subset uses the three scaled tetrahedron vectors
 
   gA = (1, 1, 1),  gB = (1, -1, -1),  gC = (-1, 1, -1),
 
 whose subset moment `S_C = gA gAᵀ + gB gBᵀ + gC gCᵀ` gives the domination form
-`vᵀ(S_C - I)v = ⟨gA,v⟩² + ⟨gB,v⟩² + ⟨gC,v⟩² - |v|²`. Two elementary, field-blind
-kernel facts pin the tie:
+`vᵀ(S_C - I)v = ⟨gA,v⟩² + ⟨gB,v⟩² + ⟨gC,v⟩² - |v|²`. Two elementary facts pin the tie:
 
-  * `tetra_domination_form_sos` / `tetra_domination_form_nonneg`: the form is an
-    explicit sum of three squares, so `S_C - I` is PSD — WEAK domination `Phi >= 1`;
-  * `tetra_tie_direction_vanishes`: the same form VANISHES at the nonzero direction
-    `(1, 1, -1)` (the dropped fourth tetrahedron vertex) — so domination is NOT
-    strict; `Phi = 1`, `phi = 0` is attained. A genuine TIE.
+  * `tetra_domination_form_sos` / `tetra_domination_form_nonneg`: the form is an explicit
+    sum of three squares, so `S_C - I` is PSD — weak domination `Phi >= 1`;
+  * `tetra_tie_direction_vanishes`: the same form vanishes at the nonzero direction
+    `(1, 1, -1)` (the dropped fourth tetrahedron vertex) — domination is not strict;
+    `Phi = 1`, `phi = 0` is attained.
 
-Together they witness the `{0, 3, 3}` excess spectrum in coordinate-free form (a
-one-dimensional zero locus of a PSD form) and make the abstract tie machinery
-non-vacuous: a design on which `IsTie` holds exists. Pure `ring` / `positivity` /
-`norm_num`; nothing about the hard cap mathematics is used or claimed here.
+Weak-but-not-strict domination is a genuine tie, so a design on which `IsTie` holds
+exists. Pure `ring` / `positivity` / `norm_num`.
 -/
 import Mathlib
 
@@ -66,11 +61,9 @@ theorem tetra_tie_direction_vanishes :
 
 /-! ### The same tie at the concrete gap-matrix level
 
-The scalar facts above are exactly `vᵀ(S_C − I)v` for the twice-split tetrahedron's
-best 3-subset, spelled out over the actual rank-one atom matrices `g gᵀ`. Here that
-correspondence is a theorem, not a docstring: the gap matrix is built from the three
-atoms as `∑ vecMulVec g_c g_c − I`, and its quadratic form is the SOS — so these lemmas
-genuinely reference the GTZ moment object, not an abstract polynomial. -/
+The scalar facts above are `vᵀ(S_C − I)v` for the best 3-subset, spelled out over the
+actual rank-one atom matrices `g gᵀ`: the gap matrix is `∑ vecMulVec g_c g_c − I`, and its
+quadratic form is the SOS. -/
 
 /-- Tetrahedron atom `gA = (1, 1, 1)` of the best 3-subset. -/
 def tetraAtomA : Fin 3 → ℝ := ![1, 1, 1]

@@ -1,22 +1,17 @@
 /-
-# Charge-budget pivot selection (all-k Lifting Lemma, charged-GTZ selection)
+# Charge-budget pivot selection
 
 The directional Parseval identity `parseval_weighted_sum_sq` (`Gtz.RayleighCertificate`,
-`∑ t_c ⟨g_c,u⟩² = ⟨u,u⟩`) says the `t`-weighted average of the squared atom-charges
-along any direction `u` equals `|u|²`. Two selection consequences — the honest kernel of
-"pick a pivot by averaging over Parseval," the shape the all-`k` Lifting-Lemma selection
-needs:
+`∑ t_c ⟨g_c,u⟩² = ⟨u,u⟩`) says the `t`-weighted average of the squared atom-charges along
+any direction `u` equals `|u|²`. Two selection consequences:
 
   * `exists_charge_ge` — a directional pigeonhole: some atom carries squared charge
     `≥ |u|²` along `u` (the directional analogue of the trace bound
     `exists_leverage_ge_rank`);
   * `exists_nonneg_margin_of_weighted_average` — the averaging-selection principle: any
     per-atom margin whose `t`-weighted (Parseval) average is `≥ 0` is `≥ 0` on some atom.
-    Numerically the Parseval weight is the UNIQUE averaging weight keeping the clear-margin
-    average `≥ 0` (the uniform / leverage / `t·lev` / `t·lev²` weights all go strictly
-    negative), so this is exactly where the pivot lives. The open content of the charged
-    reduction is entirely in SUPPLYING such an average bound — these lemmas are the
-    selection half, not that bound.
+    This is the selection step for a pivot chosen by averaging over Parseval; supplying the
+    average bound itself is separate.
 -/
 import Gtz.RayleighCertificate
 
@@ -47,13 +42,11 @@ theorem exists_charge_ge (D : WeightedDesign m k) (u : Fin k → ℝ) :
   rw [parseval_weighted_sum_sq, ← Finset.sum_mul, D.weight_sum_one, one_mul] at hstrict
   exact lt_irrefl _ hstrict
 
-/-- **The Parseval averaging-selection principle.** For ANY per-atom margin, if its
-`t`-weighted (Parseval) average is nonnegative then some atom has nonnegative margin. This
-is the honest kernel of "select a pivot by averaging over Parseval": the weighted mean
-never exceeds the max because the weights are positive and sum to one. Instantiating
-`margin c` with the pivot's best structured lift-slack turns any averaging bound
-`∑ t_c·margin_c ≥ 0` into an existence-of-good-pivot — the exact shape the Lifting-Lemma
-selection needs. The open content is entirely in supplying such a bound. -/
+/-- **The Parseval averaging-selection principle.** For any per-atom margin, if its
+`t`-weighted (Parseval) average is nonnegative then some atom has nonnegative margin — the
+weighted mean never exceeds the max when the weights are positive and sum to one.
+Instantiating `margin c` with the pivot's structured lift-slack turns any averaging bound
+`∑ t_c·margin_c ≥ 0` into an existence-of-good-pivot; supplying such a bound is separate. -/
 theorem exists_nonneg_margin_of_weighted_average
     (D : WeightedDesign m k) (margin : Fin m → ℝ)
     (havg : 0 ≤ ∑ c, D.weight c * margin c) :
