@@ -198,4 +198,32 @@ theorem tightDirection_gapAnnihilatesMultiplier (D : WeightedDesign m k)
   ext i j
   simp [Matrix.vecMulVec_apply]
 
+/-- **The gap operator annihilates the whole multiplier candidate family**
+(residual 10: the wall isolated). Given a dominating subset `C` and a finite family
+of tight directions `wᵢ` (each a null direction of `S_C − I`), ANY linear combination
+of their rank-one eigenprojectors
+
+    Λ = ∑ᵢ coeffᵢ · (wᵢ · wᵢᵀ)
+
+is annihilated by the gap matrix: `(S_C − I) · Λ = 0`. The stress multiplier the
+eigenvalue-subdifferential produces is exactly such a combination with `coeffᵢ ≥ 0`
+(a PSD element of the active eigenspace's cone), so operator complementary slackness
+`(S_C − I)·Λ = 0` holds AUTOMATICALLY for every candidate — by linearity from the
+per-direction `tightDirection_gapAnnihilatesMultiplier`, no spectral theory. This
+pins down precisely what stays walled: NOT the annihilation (free, here) but the
+EXISTENCE of coefficients making `⟨Λ, g_c·g_cᵀ⟩` match the focal-conic values across
+the active atoms — Gordan's alternative over the eigenvalue subdifferential. -/
+theorem gapAnnihilates_multiplierCandidate (D : WeightedDesign m k)
+    {C : Finset (Fin m)} (hdom : Dominates D C)
+    {index : Type*} (family : Finset index) (tightDir : index → Fin k → ℝ)
+    (coeff : index → ℝ)
+    (htight : ∀ i ∈ family,
+      tightDir i ⬝ᵥ ((subsetSum D C - 1) *ᵥ tightDir i) = 0) :
+    (subsetSum D C - 1) * (∑ i ∈ family, coeff i • atomMatrix (tightDir i)) = 0 := by
+  rw [Finset.mul_sum]
+  apply Finset.sum_eq_zero
+  intro i hi
+  rw [mul_smul_comm, tightDirection_gapAnnihilatesMultiplier D hdom (htight i hi),
+    smul_zero]
+
 end Gtz
