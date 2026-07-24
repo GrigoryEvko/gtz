@@ -21,6 +21,7 @@ import Gtz.Certs.PFourCertificate
 import Gtz.ChordTheorem
 import Gtz.ClosureObtuse
 import Gtz.CollarFloor
+import Gtz.CollarRate
 import Gtz.CollaredCompact
 import Gtz.CollinearStratum
 import Gtz.Completeness

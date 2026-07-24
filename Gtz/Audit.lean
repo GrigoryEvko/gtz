@@ -19,6 +19,7 @@ import Gtz.CollaredCompact
 import Gtz.OneObjectNarrowing
 import Gtz.GapStabilityFacts
 import Gtz.FrameBridge
+import Gtz.CollarRate
 import Gtz.CornerFiber
 import Gtz.CapCriterion
 import Gtz.Crystallization
@@ -555,6 +556,14 @@ import Gtz.Interface
 #print axioms Gtz.FrameBridge.no_carriesOpenTriple
 #print axioms Gtz.FrameBridge.tie_le_eleven_of_frameForm
 #print axioms Gtz.FrameBridge.tie_le_eleven_of_frameForm_explicit
+#print axioms Gtz.covector_forces_firing
+#print axioms Gtz.firing_margin_ge_of_covector_and_floor
+#print axioms Gtz.minWeight_ge_inv_leverageCap
+#print axioms Gtz.rate_floor_of_weight_floor
+#print axioms Gtz.rate_floor_of_weight_floor_rpow
+#print axioms Gtz.collar_rate_positive
+#print axioms Gtz.collared_two_piece_law
+#print axioms Gtz.offTubeGap_pos
 #print axioms Gtz.pair_budget_decompose
 #print axioms Gtz.tight_pair_second_order_nonpos
 #print axioms Gtz.pair_budget_le_firstOrder
