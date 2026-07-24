@@ -24,6 +24,7 @@ import Gtz.SplitTetrahedronTie
 import Gtz.SplitTetraLocalBalance
 import Gtz.TetrahedronCertifiedTie
 import Gtz.RepeatedAtomExclusion
+import Gtz.NonTetrahedralTie
 import Gtz.OneObjectNarrowing
 import Gtz.GapStabilityFacts
 import Gtz.FrameBridge
@@ -674,3 +675,11 @@ import Gtz.Interface
 #print axioms Gtz.exists_ne_zero_dotProduct_pair_eq_zero
 #print axioms Gtz.not_dominates_of_repeated_atom
 #print axioms Gtz.not_strictDominator_of_repeated_atom
+#print axioms Gtz.sharpDesign
+#print axioms Gtz.sharpDesign_dependency
+#print axioms Gtz.sharpDesign_dominates
+#print axioms Gtz.sharpDesign_no_strictDominator
+#print axioms Gtz.sharpDesign_isTie
+#print axioms Gtz.leverageOf_orthogonal_image
+#print axioms Gtz.sharpDesign_not_rotated_tetrahedron
+#print axioms Gtz.exists_isTie_leverages_unequal
