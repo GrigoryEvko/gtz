@@ -56,6 +56,7 @@ import Gtz.MarginTransfer
 import Gtz.MomentBound
 import Gtz.MomentCovector
 import Gtz.Naimark
+import Gtz.OneObjectNarrowing
 import Gtz.PThreeStratum
 import Gtz.PlanarPlatform
 import Gtz.PsdKit

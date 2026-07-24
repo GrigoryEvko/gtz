@@ -16,6 +16,7 @@ import Gtz.TraceIdentity
 import Gtz.TriangleClosure
 import Gtz.ResidueDissolution
 import Gtz.CollaredCompact
+import Gtz.OneObjectNarrowing
 import Gtz.CornerFiber
 import Gtz.CapCriterion
 import Gtz.Crystallization
@@ -543,3 +544,5 @@ import Gtz.Interface
 #print axioms Gtz.leverage_le_inv_floor_of_parseval
 #print axioms Gtz.isClosed_collaredSet
 #print axioms Gtz.isCompact_collaredSet
+#print axioms Gtz.twoByTwoForm_nonneg_iff_trace_det_nonneg
+#print axioms Gtz.rank3Discriminant_iff_trace_det_nonneg
