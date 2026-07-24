@@ -45,7 +45,7 @@ theorem leaf_cleared_eq_criticality
           (1/2 + moment*partnerCos)
         ⬝ᵥ rotateQuarter ![leafCos, leafSin]) := by
   simp only [polarNormal, rotateQuarter, dotProduct, Fin.sum_univ_two,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    Matrix.cons_val_zero, Matrix.cons_val_one]
   ring
 
 /-- **The leverage dictionary**: `ℓ = 1/(1−ν) = 2/D` at `D = 1−2rc`. -/
