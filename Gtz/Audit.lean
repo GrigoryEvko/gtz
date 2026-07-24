@@ -219,10 +219,13 @@ import Gtz.Quantitative.Interface
 #print axioms Gtz.blochSquare_sub_normSq_ge
 #print axioms Gtz.cross_rebate_bloch
 #print axioms Gtz.cexDesign_valid
+#print axioms Gtz.cexDesign_capped_essential
 #print axioms Gtz.cexBudget_eq_trace
 #print axioms Gtz.cexBudget_quadratic
 #print axioms Gtz.cexMaxSlack_ge
 #print axioms Gtz.cexMaxSlack_le
+#print axioms Gtz.cexMaxSlack_pos
+#print axioms Gtz.lawConstant_cap_ten
 #print axioms Gtz.bForm_law_fails_at_cap_ten
 #print axioms Gtz.dotProduct_le_planarNorm_mul
 #print axioms Gtz.planarNorm_add_le
@@ -680,6 +683,7 @@ import Gtz.Quantitative.Interface
 #print axioms Gtz.posDef_sub_vecMulVec_iff
 #print axioms Gtz.erase_strictDominates_iff_pivot_lt_one
 #print axioms Gtz.corank_one_dominating_erasure
+#print axioms Gtz.forall_dominates_erase_of_isTie
 #print axioms Gtz.isTie_iff_forall_pivot_eq_one
 #print axioms Gtz.not_isTie_of_pivot_lt_one
 #print axioms Gtz.finrank_ker_atomCombination
