@@ -576,6 +576,7 @@ import Gtz.Interface
 #print axioms Gtz.atomMatrix_frobenius_eq_sq
 #print axioms Gtz.atomMatrix_trace_pairing
 #print axioms Gtz.tightDirection_complementarySlackness
+#print axioms Gtz.tightDirection_gapAnnihilatesMultiplier
 #print axioms Gtz.capBoundaryConstant_at_five
 #print axioms Gtz.capBoundaryConstant_derivNumerator_nonneg
 #print axioms Gtz.capBoundaryConstant_hasDerivAt

@@ -176,4 +176,26 @@ theorem tightDirection_complementarySlackness (D : WeightedDesign m k)
   rw [atomMatrix_trace_pairing]
   exact htight
 
+/-- **The gap operator annihilates the rank-one multiplier** (residual 10's KKT
+stationarity, operator form). At a tie, the gap matrix `S_C − I` times the
+eigenprojector multiplier `Λ = w·wᵀ` of a tight direction is the zero matrix:
+
+    (S_C − I) · Λ = 0.
+
+This is sharper than the scalar complementary slackness `⟨Λ, S_C − I⟩ = 0`: the
+FULL operator product vanishes, so `Λ`'s column space lies in the kernel of the gap
+matrix (the active min-eigenspace at eigenvalue 1). It follows directly from
+`(S_C − I)·w = 0` through `Matrix.mul_vecMulVec` (`M · vecMulVec w w =
+vecMulVec (M·w) w`), needing no symmetry. This is the exact stationarity operator
+identity the eigenvalue-subdifferential multiplier assembly consumes. -/
+theorem tightDirection_gapAnnihilatesMultiplier (D : WeightedDesign m k)
+    {C : Finset (Fin m)} (hdom : Dominates D C) {w : Fin k → ℝ}
+    (htight : w ⬝ᵥ ((subsetSum D C - 1) *ᵥ w) = 0) :
+    (subsetSum D C - 1) * atomMatrix w = 0 := by
+  have hnull : (subsetSum D C - 1) *ᵥ w = 0 := tightDirection_isNullVector D hdom htight
+  unfold atomMatrix
+  rw [Matrix.mul_vecMulVec, hnull]
+  ext i j
+  simp [Matrix.vecMulVec_apply]
+
 end Gtz
