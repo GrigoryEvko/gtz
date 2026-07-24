@@ -573,6 +573,7 @@ import Gtz.Interface
 #print axioms Gtz.tightDirection_isEigenvector
 #print axioms Gtz.parseval_weighted_sum_sq
 #print axioms Gtz.tightDirection_subset_eq_weighted
+#print axioms Gtz.atomMatrix_frobenius_eq_sq
 #print axioms Gtz.capBoundaryConstant_at_five
 #print axioms Gtz.capBoundaryConstant_derivNumerator_nonneg
 #print axioms Gtz.capBoundaryConstant_hasDerivAt

@@ -131,4 +131,18 @@ theorem tightDirection_subset_eq_weighted (D : WeightedDesign m k)
     ∑ c ∈ C, (D.atom c ⬝ᵥ w) ^ 2 = ∑ c, D.weight c * (D.atom c ⬝ᵥ w) ^ 2 := by
   rw [tightDirection_rayleigh_identity D C htight, ← parseval_weighted_sum_sq D w]
 
+/-- **The rank-one Frobenius coupling** (the focal-conic building block): the
+Frobenius inner product of two rank-one projectors `w·wᵀ` and `g·gᵀ` is the squared
+overlap `(w·g)²`. So the eigenprojector multiplier `Λ = w·wᵀ` of a single tight
+direction couples with each atom `g_c·g_cᵀ` exactly as `(w·g_c)²` — the term the
+focal-conic stationarity `⟨Λ, g_c·g_cᵀ⟩ = −β` is written in. At a rank-one
+multiplier the focal conic is thus the statement that the atoms' `w`-projections lie
+on a level set of `(w·g_c)²`. -/
+theorem atomMatrix_frobenius_eq_sq (w g : Fin k → ℝ) :
+    Matrix.trace (atomMatrix w * atomMatrix g) = (w ⬝ᵥ g) ^ 2 := by
+  unfold atomMatrix
+  rw [Matrix.vecMulVec_mul_vecMulVec, Matrix.trace_vecMulVec, dotProduct_smul,
+    smul_eq_mul]
+  ring
+
 end Gtz
