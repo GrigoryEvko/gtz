@@ -273,4 +273,28 @@ sample-leverage floor (exact rational, adversarial cross-check). -/
 theorem collar_erosion_strict :
     (206 / 1000 : ℝ) / 300 < (206 / 1000 : ℝ) / 25 := by norm_num
 
+/-- **The assembled funneling constant is non-degenerate** (the two-piece assembly's
+non-vacuity). Whenever both channels are positive — the collar rate
+`rateConst/leverageCap` and the off-tube ratio `offGap/domainCap` — the two-piece
+law's constant `min(rateConst/leverageCap, offGap/domainCap)` (delivered by
+`collared_two_piece_law`) is STRICTLY positive. So the assembled funneling law
+`Φ − 1 ≥ const · dist` is never vacuous once the (open) rate law and the
+compactness-supplied off-tube gap (`offTubeGap_pos`) are both positive: the remaining
+walls are the two positive inputs, NOT the assembly. -/
+theorem collared_law_constant_pos {rateConst leverageCap offGap domainCap : ℝ}
+    (hRateConst : 0 < rateConst) (hCap : 0 < leverageCap)
+    (hoffGap : 0 < offGap) (hdomainCap : 0 < domainCap) :
+    0 < min (rateConst / leverageCap) (offGap / domainCap) :=
+  lt_min (by positivity) (by positivity)
+
+/-- **Adversarial witness of the assembled constant** at the sample-leverage cell:
+with `rateConst = 0.206`, `leverageCap = 25`, `offGap = 1/10`, `domainCap = 1`, the
+funneling constant is exactly `206/25000` — the COLLAR channel binds (it is below the
+off-tube ratio `1/10`). Kernel-checked exact rational; would falsify any assembly slip
+in which the off-tube channel wrongly dominated at the sample leverage. -/
+theorem collared_law_constant_at_sample :
+    min ((206 / 1000 : ℝ) / 25) ((1 / 10 : ℝ) / 1) = 206 / 25000 := by
+  rw [min_eq_left (by norm_num)]
+  norm_num
+
 end Gtz
