@@ -41,6 +41,7 @@ import Gtz.DowndateInterlacing
 import Gtz.DustControl
 import Gtz.EulerPairing
 import Gtz.FirstOrderLaw
+import Gtz.FrameBridge
 import Gtz.FrameEncoding
 import Gtz.GapStabilityFacts
 import Gtz.GeometricExclusion

@@ -18,6 +18,7 @@ import Gtz.ResidueDissolution
 import Gtz.CollaredCompact
 import Gtz.OneObjectNarrowing
 import Gtz.GapStabilityFacts
+import Gtz.FrameBridge
 import Gtz.CornerFiber
 import Gtz.CapCriterion
 import Gtz.Crystallization
@@ -549,6 +550,11 @@ import Gtz.Interface
 #print axioms Gtz.rank3Discriminant_iff_trace_det_nonneg
 #print axioms Gtz.discriminantDet_eq_resolventTie
 #print axioms Gtz.rank3Discriminant_iff_trace_and_tie
+#print axioms Gtz.FrameBridge.biquad_p3_closes
+#print axioms Gtz.FrameBridge.frameForm_p3_closure
+#print axioms Gtz.FrameBridge.no_carriesOpenTriple
+#print axioms Gtz.FrameBridge.tie_le_eleven_of_frameForm
+#print axioms Gtz.FrameBridge.tie_le_eleven_of_frameForm_explicit
 #print axioms Gtz.pair_budget_decompose
 #print axioms Gtz.tight_pair_second_order_nonpos
 #print axioms Gtz.pair_budget_le_firstOrder
