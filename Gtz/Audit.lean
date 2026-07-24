@@ -20,6 +20,7 @@ import Gtz.OneObjectNarrowing
 import Gtz.GapStabilityFacts
 import Gtz.FrameBridge
 import Gtz.CollarRate
+import Gtz.RayleighCertificate
 import Gtz.CornerFiber
 import Gtz.CapCriterion
 import Gtz.Crystallization
@@ -564,6 +565,11 @@ import Gtz.Interface
 #print axioms Gtz.collar_rate_positive
 #print axioms Gtz.collared_two_piece_law
 #print axioms Gtz.offTubeGap_pos
+#print axioms Gtz.dominationGap_form
+#print axioms Gtz.tightDirection_rayleigh_identity
+#print axioms Gtz.tightDirection_minimizes_gap
+#print axioms Gtz.parseval_weighted_sum_sq
+#print axioms Gtz.tightDirection_subset_eq_weighted
 #print axioms Gtz.pair_budget_decompose
 #print axioms Gtz.tight_pair_second_order_nonpos
 #print axioms Gtz.pair_budget_le_firstOrder
