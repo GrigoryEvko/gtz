@@ -547,6 +547,8 @@ import Gtz.Interface
 #print axioms Gtz.isCompact_collaredSet
 #print axioms Gtz.twoByTwoForm_nonneg_iff_trace_det_nonneg
 #print axioms Gtz.rank3Discriminant_iff_trace_det_nonneg
+#print axioms Gtz.discriminantDet_eq_resolventTie
+#print axioms Gtz.rank3Discriminant_iff_trace_and_tie
 #print axioms Gtz.pair_budget_decompose
 #print axioms Gtz.tight_pair_second_order_nonpos
 #print axioms Gtz.pair_budget_le_firstOrder

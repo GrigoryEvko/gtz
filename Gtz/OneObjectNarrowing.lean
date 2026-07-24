@@ -96,4 +96,41 @@ theorem rank3Discriminant_iff_trace_det_nonneg
     exact (hrewrite x y).mp
       ((twoByTwoForm_nonneg_iff_trace_det_nonneg _ _ _).mpr hsys x y)
 
+/-- **The discriminant determinant factors through the resolvent tie** (the
+matrix-determinant lemma at `2×2`, over ℝ, division-free): the determinant of the
+discriminant matrix `A·(G' - I) - m·mᵀ` equals `A` times the single quartic
+
+    `F_tie = A·det(G' - I) - mᵀ·adj(G' - I)·m`
+           = `A·((g00-1)(g11-1) - g01²) - ((g11-1)m0² - 2·g01·m0·m1 + (g00-1)m1²)`.
+
+Pure `ring` identity. The classical `det(A·M - m·mᵀ) = A²·det M - A·mᵀ·adj(M)·m`,
+specialized to the `2×2` projected pair; the resolvent tie `F_tie` is the numerator
+of `A - mᵀ(G'-I)⁻¹m`, whose vanishing is the compact-collar tie boundary. -/
+theorem discriminantDet_eq_resolventTie (bigA g00 g01 g11 m0 m1 : ℝ) :
+    (bigA * (g00 - 1) - m0 ^ 2) * (bigA * (g11 - 1) - m1 ^ 2)
+        - (bigA * g01 - m0 * m1) ^ 2
+      = bigA * (bigA * ((g00 - 1) * (g11 - 1) - g01 ^ 2)
+          - ((g11 - 1) * m0 ^ 2 - 2 * g01 * m0 * m1 + (g00 - 1) * m1 ^ 2)) := by
+  ring
+
+/-- **The determinant leg collapses to a single quartic at a heavy pivot**: when the
+pivot is genuinely heavy (`A > 0`, forced by `exists_leverage_ge_rank`), the seventh
+Lifting-Lemma conjunct at rank 3 holds iff the trace is nonnegative AND the single
+resolvent tie `F_tie ≥ 0`. So the one object's open content, per (pivot, pair), is
+ONE linear inequality plus ONE quartic — sharpening `rank3Discriminant_iff_trace_det_nonneg`
+(two quadratics-in-the-entries) by factoring the determinant condition through the tie.
+The tie boundary `F_tie = 0` is exactly the compact-collar minimizer variety (the
+twice-split tetrahedron), where the object stays open (floor 0, false over ℂ). -/
+theorem rank3Discriminant_iff_trace_and_tie
+    (bigA g00 g01 g11 m0 m1 : ℝ) (hA : 0 < bigA) :
+    (∀ x y : ℝ,
+        (m0 * x + m1 * y) ^ 2
+          ≤ bigA * ((g00 * x ^ 2 + 2 * g01 * x * y + g11 * y ^ 2)
+              - (x ^ 2 + y ^ 2)))
+      ↔ (0 ≤ (bigA * (g00 - 1) - m0 ^ 2) + (bigA * (g11 - 1) - m1 ^ 2)
+          ∧ 0 ≤ bigA * ((g00 - 1) * (g11 - 1) - g01 ^ 2)
+              - ((g11 - 1) * m0 ^ 2 - 2 * g01 * m0 * m1 + (g00 - 1) * m1 ^ 2)) := by
+  rw [rank3Discriminant_iff_trace_det_nonneg, discriminantDet_eq_resolventTie,
+    mul_nonneg_iff_of_pos_left hA]
+
 end Gtz
