@@ -108,4 +108,29 @@ theorem tetraGapMatrix_quadForm_at_null :
     (![1, 1, -1] : Fin 3 → ℝ) ⬝ᵥ tetraGapMatrix.mulVec ![1, 1, -1] = 0 := by
   rw [tetraGapMatrix_quadForm]; norm_num
 
+/-- **The null space is exactly the line `span{(1, 1, −1)}`.** The gap's quadratic form
+vanishes at `(v0, v1, v2)` iff `v1 = v0` and `v2 = −v0`, i.e. iff the direction is a
+scalar multiple of `(1, 1, −1)`. The three squares `(v0−v1)² + (v0+v2)² + (v1+v2)²` are
+built from three linear forms with one relation (`(v0−v1) − (v0+v2) + (v1+v2) = 0`), so
+their gradients span a `2`-plane: the form has rank `2` and the tie direction is unique up
+to scale. Strengthens `tetraGapMatrix_quadForm_at_null` from "vanishes at `(1, 1, −1)`" to
+"vanishes only on `span{(1, 1, −1)}`" — the gap kernel is one-dimensional. -/
+theorem tetraGapMatrix_quadForm_null_iff (v0 v1 v2 : ℝ) :
+    (![v0, v1, v2] : Fin 3 → ℝ) ⬝ᵥ tetraGapMatrix.mulVec ![v0, v1, v2] = 0
+      ↔ (v1 = v0 ∧ v2 = -v0) := by
+  rw [tetraGapMatrix_quadForm]
+  constructor
+  · intro hzero
+    have hsqOne : (v0 - v1) ^ 2 = 0 :=
+      le_antisymm (by nlinarith [sq_nonneg (v0 + v2), sq_nonneg (v1 + v2)]) (sq_nonneg _)
+    have hsqTwo : (v0 + v2) ^ 2 = 0 :=
+      le_antisymm (by nlinarith [sq_nonneg (v0 - v1), sq_nonneg (v1 + v2)]) (sq_nonneg _)
+    have hlinOne : v0 - v1 = 0 := by
+      by_contra hne; exact (pow_ne_zero 2 hne) hsqOne
+    have hlinTwo : v0 + v2 = 0 := by
+      by_contra hne; exact (pow_ne_zero 2 hne) hsqTwo
+    exact ⟨by linarith, by linarith⟩
+  · rintro ⟨hv1, hv2⟩
+    subst hv1; subst hv2; ring
+
 end Gtz

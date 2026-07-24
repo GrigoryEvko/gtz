@@ -616,6 +616,7 @@ import Gtz.Interface
 #print axioms Gtz.tetraGapMatrix_quadForm
 #print axioms Gtz.tetraGapMatrix_quadForm_nonneg
 #print axioms Gtz.tetraGapMatrix_quadForm_at_null
+#print axioms Gtz.tetraGapMatrix_quadForm_null_iff
 #print axioms Gtz.rayleigh_bddBelow
 #print axioms Gtz.lambdaMinCLM_sub_le
 #print axioms Gtz.abs_lambdaMinCLM_sub_le
