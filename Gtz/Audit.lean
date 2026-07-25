@@ -93,6 +93,7 @@ import Gtz.Certificates.CertificateAnchor
 import Gtz.LinAlg.BernsteinPositivity
 import Gtz.LinAlg.GordanAlternative
 import Gtz.LinAlg.ProjectionForm
+import Gtz.Reduction.MaximalVolume
 import Gtz.Ties.TetrahedronTie
 import Gtz.Ties.TieEigenvector
 import Gtz.Corner.TiedQuadruple
@@ -1823,3 +1824,25 @@ import Gtz.Reduction.StrengthenedInductionHypothesis
 #print axioms Gtz.sum_det_projectionMinors
 #print axioms Gtz.sum_det_projectionMinors_rank
 #print axioms Gtz.det_one_add_smul_shifted_real
+
+-- maximal volume: the classical benchmark and the exact deficit to GTZ
+#print axioms Gtz.sq_le_mul_diag_of_posSemidef
+#print axioms Gtz.twice_crossTerm_le_of_posSemidef
+#print axioms Gtz.quadForm_le_trace_mul_dotProduct
+#print axioms Gtz.quadForm_le_trace_sub_of_one_le
+#print axioms Gtz.classicalDenominator_eq_gtzDenominator_add_deficit
+#print axioms Gtz.gtzDenominator_add_deficit_eq_classical
+#print axioms Gtz.selectedFrameRows
+#print axioms Gtz.projectionBlock_eq_selectedFrameRows_mul_transpose
+#print axioms Gtz.det_projectionBlock_eq_sq_volume
+#print axioms Gtz.sum_det_frameMinors_rank
+#print axioms Gtz.exists_injective_pick_det_ne_zero
+#print axioms Gtz.exists_maximalVolume_pick
+#print axioms Gtz.solveMatrix
+#print axioms Gtz.solveMatrix_mul_selectedFrameRows
+#print axioms Gtz.frameRow_eq_solveCombination
+#print axioms Gtz.updateRow_selectedFrameRows
+#print axioms Gtz.det_selectedFrameRows_update
+#print axioms Gtz.injective_update_of_forall_ne
+#print axioms Gtz.abs_solveMatrix_le_one_of_maximalVolume
+#print axioms Gtz.solveMatrix_submatrix_pick
