@@ -2902,3 +2902,41 @@ import Gtz.Complex.AtomSplitting
 #print axioms Gtz.complexRankConstantAtMostAtSize_nine_hesse
 #print axioms Gtz.complexRankConstantAtMostAtSize_three_hesse
 #print axioms Gtz.not_complexGtzWeighted_three_of_nine_le
+
+-- Gtz.Quantitative.PositivstellensatzRankThree: the pivot-free covering chart,
+-- the tetrahedral block family, and the Stengle multiplier-support floor
+#print axioms Gtz.discriminantTie_rotate
+#print axioms Gtz.discriminantMinorSum_swapFirstTwo
+#print axioms Gtz.discriminantMinorSum_rotate
+#print axioms Gtz.discriminantTrace_pivotSum
+#print axioms Gtz.dominates_triple_iff_symmetricLegs
+#print axioms Gtz.symmetricCovering_iff_discriminantCovering
+#print axioms Gtz.symmetricCoveringSeven_iff_rank_three
+#print axioms Gtz.notDominates_symmetricSignature
+#print axioms Gtz.blockFibre_card_pos
+#print axioms Gtz.blockLabelWeight_pos
+#print axioms Gtz.blockFibre_card_mul_labelWeight
+#print axioms Gtz.tetraBlockDesign
+#print axioms Gtz.tetraBlockDesign_atom
+#print axioms Gtz.tetraBlockDesign_leverage
+#print axioms Gtz.tetraBlockDesign_allHeavy
+#print axioms Gtz.tetraBlockDesign_heavyExcess
+#print axioms Gtz.tetraBlockDesign_atomPairing_of_sameBlock
+#print axioms Gtz.tetraBlockDesign_atomPairing_of_differentBlock
+#print axioms Gtz.tetraBlockDesign_discriminantTie_eq
+#print axioms Gtz.tetraBlockDesign_discriminantMinorSum_eq
+#print axioms Gtz.tetraBlockDesign_discriminantTie_of_rainbow
+#print axioms Gtz.tetraBlockDesign_discriminantMinorSum_of_rainbow
+#print axioms Gtz.isThinBlockMap_of_bool
+#print axioms Gtz.tetraBlockDesign_discriminantTie_of_repeated
+#print axioms Gtz.tetraBlockDesign_discriminantMinorSum_of_repeated
+#print axioms Gtz.tetraBlockDesign_discriminantTie_nonpos
+#print axioms Gtz.tetraBlockDesign_symmetricSignature
+#print axioms Gtz.blockMapsSeven_thin
+#print axioms Gtz.sharesBlock_of_sharesBlockBool
+#print axioms Gtz.blockSearchSucceeds_true
+#print axioms Gtz.exists_blockMap_sharing
+#print axioms Gtz.mem_triplesSevenList_of_mem_increasing
+#print axioms Gtz.isStengleTieSupportSeven_increasing_iff
+#print axioms Gtz.not_isStengleTieSupportSeven_of_card_le_three
+#print axioms Gtz.four_le_card_of_isStengleTieSupportSeven

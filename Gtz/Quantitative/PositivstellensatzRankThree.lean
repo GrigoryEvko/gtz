@@ -738,6 +738,11 @@ At any point of the CLOSED system the identity `S + P + Z = 0` forces `S ≥ 0`,
 vanish. That is the whole content of `IsStengleTieSupportSeven` below, and it is
 a statement about the SUPPORT only — multiplicities are irrelevant to vanishing.
 
+Supports are indexed by `increasingTriplesSeven`, one ordered representative per
+3-subset: legitimate because `discriminantTie` is `S_3`-invariant, by
+`discriminantTie_swap` together with `discriminantTie_rotate` of Part I, so the
+`35` subsets carry `35` distinct strict generators and not `210` ordered ones.
+
 The floor is then combinatorial. Every member of the tetrahedral block family of
 Part II is a point of the closed system whose tie leg vanishes EXACTLY on the
 triples carrying three distinct directions, so a support must meet the rainbow
