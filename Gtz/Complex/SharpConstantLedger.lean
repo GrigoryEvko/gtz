@@ -1169,15 +1169,22 @@ comparison with the trine (`hesseMargin_lt_trineMargin`). What remains EXACT
 ELSEWHERE is only ATTAINMENT — that the `72` non-degenerate triples all sit
 exactly at that value. Only the polynomial facts below are kernel-checked HERE.
 
-Note also: at rank three `d = 3` SICs form a one-parameter family and only the
-Hesse member is extremal — its value is the family's strict minimum, attained at
-the three Hesse members and nowhere else. The rest of the family sweeps
-continuously up to `3/2`, so there is no single "generic" value: sampled members
-measure anywhere from about `0.84` (BELOW `α₂`) to `1.5`, and the figures
-`0.9083` and `0.9687` recorded earlier were two particular samples, not typical
-ones. For `k ≥ 4` SICs stop refuting at all (the `d = 4` SIC measures `2.2111`,
-the `d = 5` SIC `1.4901` — both DOMINATE). So "the SIC is extremal at every
-rank" is false, and "the SIC at rank 3" is ambiguous. -/
+Note also: at rank three `d = 3` SICs form a one-parameter family, the
+Weyl–Heisenberg orbits of `(0, 1, −e^{it})/√2`, and only the Hesse member
+`t = 0` is extremal — its value is the family's strict minimum, attained at the
+three Hesse members and nowhere else. The value rises monotonically across the
+fundamental domain `t ∈ [0, π/9]` and reaches exactly `3/2` at the far end.
+
+MOST OF THE FAMILY DOES NOT REFUTE. The value crosses `1` at
+`t ≈ 8.18968510422°`, so refutation holds only on `t < 8.19°` — about `41 %` of
+the fundamental domain — and the majority of `d = 3` SICs DOMINATE. There is
+likewise no single "generic" value: sampled members measure anywhere from about
+`0.84` (BELOW `α₂`) to `1.5`, and the figures `0.9083` and `0.9687` recorded
+earlier were two particular samples, not typical ones. For `k ≥ 4` SICs stop
+refuting at all (the `d = 4` SIC measures `2.2111`, the `d = 5` SIC `1.4901` —
+both DOMINATE). So "the SIC is extremal at every rank" is false, "the SIC at
+rank 3" is ambiguous, and "SICs refute complex GTZ" is true only of a minority
+of them — the Hesse point is load-bearing, not representative. -/
 
 theorem hesseCubic_neg_at_seven_tenths :
     8 * (7 / 10 : ℝ) ^ 3 - 72 * (7 / 10) ^ 2 + 162 * (7 / 10) - 81 < 0 := by
