@@ -15,8 +15,9 @@ at UNIFORM weight `1/6` with every leverage exactly `3` — a unit-norm tight
 frame, cap `κ = 1`, no spike and no limit argument. All twenty triples fail:
 the two coplanar ones miss an axis, and the eighteen spanning ones all have the
 same characteristic polynomial `(3 − z)(z² − 6z + 4)`, hence integer excess
-determinant `−2` and binding root `3 − √5 ≈ 0.763932` (least-ness audited, not
-mechanized — see the scope note at the end). That beats the repo's
+determinant `−2` and binding root `3 − √5 ≈ 0.763932` (least-ness and
+best-subset are now MECHANIZED, in `Gtz/Complex/PerRankConstantLedger.lean`;
+the scope note at the end records what is still outside the kernel). That beats the repo's
 padded-SIC witness (`20/9 − 20√3/27 ≈ 0.939222`) at the same size `m = 6`, and
 it beats the rank-2 sharp constant `α₂ = 2 − 2/√3 ≈ 0.845299` — so
 `2 − 2/√3` is a statement about `k = 2` only, not "the sharp complex constant".
@@ -538,8 +539,10 @@ theorem trineCharpoly_factored (shift : ℂ) :
 `3 ± √5`.** The block `S_C = Σ_{c ∈ C} g_c g_c*` is positive semidefinite, so the
 `3 − √5 ≈ 0.7639` is a ROOT of that polynomial, and informally the least
 eigenvalue, hence the design's value; that it is the LEAST root, and that the two
-coplanar triples contribute `λ_min = 0`, are audited in exact algebra but NOT
-mechanized here. (That the value equals
+coplanar triples contribute `λ_min = 0`, are not established in THIS file — they
+are proved in `Gtz/Complex/PerRankConstantLedger.lean`
+(`trineMargin_isGreatest`, `trineBinding_leastEigenvalue`,
+`trinePureLeft_dominatedShifts_isGreatest_zero`). (That the value equals
 `σ_min(G_C)²` for the `k × k` Gram block is the standard `AA*` / `A*A` spectral
 identity, used nowhere below and NOT mechanized here — both determinants are
 computed separately instead, and both are `−2`.) -/
@@ -1114,8 +1117,7 @@ Certified in exact arithmetic outside the kernel;
 not mechanized here (Mathlib has no `det_fin_four`). -/
 def exactValueRankFourAtSix : ℚ := 6 / 7
 
-/-- **The ledger ordering.** The four exact `(m,k)` values the campaign owns,
-in order:
+/-- **The ledger ordering of the values THIS FILE owns**, in order:
 
   `3 − √5  <  2 − 2/√3  <  6/7  <  20/9 − 20√3/27`
   `0.7639     0.8453       0.8571   0.9392`
@@ -1123,7 +1125,12 @@ in order:
 trine `(6,3)` (PROVEN here) beats the rank-2 sharp constant `α₂` (PROVEN
 elsewhere, sharp for `k = 2`), which beats the exact `(6,4)` value (EXACT
 ELSEWHERE), which beats the repo's shipped padded `(6,3)` witness (PROVEN here).
-Certificates: `√5 > 20/9`, `(12/7)² < 3 < (7/4)²`. -/
+Certificates: `√5 > 20/9`, `(12/7)² < 3 < (7/4)²`.
+
+NOT the whole rank-3 story: the Hesse SIC's `3(1 − cos 2π/9) ≈ 0.701867` is
+strictly BELOW every entry of this chain, so the rank-3 record is the Hesse SIC,
+not the trine. See `rankThree_recordOrdering` in
+`Gtz/Complex/PerRankConstantLedger.lean`, which opens at the record. -/
 theorem ledger_ordering :
     trineMarginRankThree < alphaRankTwo
       ∧ alphaRankTwo < (exactValueRankFourAtSix : ℝ)
@@ -1152,16 +1159,25 @@ theorem ledger_ordering :
 at `|<u,v>|² = 1/4` — has value `3(1 − cos 2π/9) ≈ 0.701867`, the smallest known
 rank-3 complex value. All eighty-four triples split into `72` with charpoly
 `8x³ − 72x² + 162x − 81` and `12` rank-deficient ones (charpoly `x(2x−9)²`);
-both excess determinants are negative rationals, `−17/8` and `−49/4`. Certified
-in exact Eisenstein-integer arithmetic outside the kernel, not mechanized here.
-Only the polynomial facts below are kernel-checked; that the bracketed root IS
-the Hesse SIC's margin is the part carried outside.
+both excess determinants are negative rationals, `−17/8` and `−49/4`.
+
+MECHANIZED SINCE, in `Gtz/Complex/PerRankConstantLedger.lean`: the design itself
+(`hesseDesign`), the upper bound `α₃ ≤ 3(1 − cos 2π/9)`
+(`complexRankConstantAtMost_three_hesse`), the identification of the bracketed
+root with the closed form (`hesseCubicRoot_eq_hesseMargin`), and the strict
+comparison with the trine (`hesseMargin_lt_trineMargin`). What remains EXACT
+ELSEWHERE is only ATTAINMENT — that the `72` non-degenerate triples all sit
+exactly at that value. Only the polynomial facts below are kernel-checked HERE.
 
 Note also: at rank three `d = 3` SICs form a one-parameter family and only the
-Hesse member is extremal (the generic Weyl–Heisenberg member measures `0.9083`,
-a third member `0.9687`), and for `k ≥ 4` SICs stop refuting at all (the `d = 4`
-SIC measures `2.2111`, the `d = 5` SIC `1.4901` — both DOMINATE). So "the SIC is
-extremal at every rank" is false, and "the SIC at rank 3" is ambiguous. -/
+Hesse member is extremal — its value is the family's strict minimum, attained at
+the three Hesse members and nowhere else. The rest of the family sweeps
+continuously up to `3/2`, so there is no single "generic" value: sampled members
+measure anywhere from about `0.84` (BELOW `α₂`) to `1.5`, and the figures
+`0.9083` and `0.9687` recorded earlier were two particular samples, not typical
+ones. For `k ≥ 4` SICs stop refuting at all (the `d = 4` SIC measures `2.2111`,
+the `d = 5` SIC `1.4901` — both DOMINATE). So "the SIC is extremal at every
+rank" is false, and "the SIC at rank 3" is ambiguous. -/
 
 theorem hesseCubic_neg_at_seven_tenths :
     8 * (7 / 10 : ℝ) ^ 3 - 72 * (7 / 10) ^ 2 + 162 * (7 / 10) - 81 < 0 := by
@@ -1268,10 +1284,18 @@ closed form found (PSLQ over radical and cosine bases up to tolerance `1e-12`
 returned nothing), so this is a decimal, not an identity. -/
 noncomputable def measuredRankFourCapOne : ℝ := 0.713730091356
 
-/-- **MEASURED, rank 4, uncapped leverage**: `0.701866670643` — the Hesse value,
-reached in rank 4 at `m = 10` with `κ ≈ 2.69`. 12 digits claimed, 80-digit
-verified. Consistent with the padding law `α_{k+1} ≤ α_k`, and beating the naive
-padding bound. -/
+/-- **MEASURED, rank 4, uncapped leverage**: `0.701866670643` — recorded as the
+Hesse value reached in rank 4 at `m = 10` with `κ ≈ 2.69`.
+
+**DISPUTED — do not build on this number.** Two independent re-derivations flag
+it. (i) It equals the RANK-THREE constant `3(1 − cos 2π/9)` to all twelve
+recorded digits (`|diff| = 6.6e-14`), which is the signature of a copied decimal.
+(ii) The only mechanism that would make a rank-4 value equal the rank-3 constant
+is one-spike padding of the Hesse design, whose value is
+`min(0.7018667/(1 − w), 1/w)`; that expression is strictly ABOVE `0.7018667` for
+every `w > 0`, and reaching it needs `κ → ∞`, not `κ ≈ 2.69` (at which the
+padded value is `0.7738`). Neither re-derivation reproduced `0.701866670643` at
+rank 4 by search. Re-derive the design or withdraw the number. -/
 noncomputable def measuredRankFourUncapped : ℝ := 0.701866670643
 
 /-- **MEASURED, rank 5, cap `κ = 1`**: `0.674033844339` at `m = 10`, uniform
@@ -1313,8 +1337,13 @@ rank, with nothing measured smuggled in:
   (`realness_separation_mechanism`).
 
 Ranks 4 and 5 are EXACT ELSEWHERE / MEASURED only; no rank-4 or rank-5 design is
-mechanized in this file, and no lower bound on any `α_k` for `k ≥ 3` exists here
-or in the literature. -/
+mechanized in this file.
+
+CORRECTION to an earlier reading of this note: a LOWER bound on `α_k` does exist,
+at every rank including `k ≥ 3`. `Gtz/Complex/PerRankConstantLedger.lean` proves
+`α_k ≥ 1/k` over ℂ by maximal volume, hence `α₃ ≥ 1/3`; the mechanism is
+classical (Goreinov–Tyrtyshnikov pseudoskeleton theory) and field-blind. It is
+simply not in THIS file. -/
 theorem complexLedger_provenPart :
     (∃ firstIdx secondIdx : Fin 4, firstIdx ≠ secondIdx
         ∧ (complexAtom (sicAtom firstIdx) + complexAtom (sicAtom secondIdx)
@@ -1335,14 +1364,21 @@ computed by `ring`/`decide` plus a non-PSD certificate (a negative diagonal entr
 a negative determinant). That is enough to prove no subset dominates, which is what
 the refutations need.
 
-What is NOT mechanized, and is therefore stated as informal reading rather than as a
-theorem: that a named root of a characteristic polynomial is the LEAST eigenvalue;
-that `sigma_min(G_C) ^ 2 = lambda_min(S_C)`; and that a given subset is the BEST one.
-Those three were verified independently in exact algebra and at 80 digits during
-audit — the trine's twenty 3-subsets fall into exactly two spectral classes,
-`{3 - sqrt 5, 3, 3 + sqrt 5}` on eighteen and `{0, 3, 6}` on two, so the maximum over
-subsets of the least eigenvalue is `3 - sqrt 5` — but the kernel does not carry them.
-Read the numeric VALUES in this file as audited measurements attached to mechanized
-non-domination facts. -/
+Three things were once stated here as informal reading rather than as theorems: that a
+named root of a characteristic polynomial is the LEAST eigenvalue; that a given subset
+is the BEST one; and that `sigma_min(G_C) ^ 2 = lambda_min(S_C)`.
+
+The FIRST TWO are now mechanized, in `Gtz/Complex/PerRankConstantLedger.lean`:
+`trineMargin_isGreatest` pins the whole set of achievable shifts at
+`(-inf, 3 - sqrt 5]` for EVERY 3-subset (the Loewner form),
+`trineBinding_leastEigenvalue` proves `3 - sqrt 5` is the least eigenvalue of the
+binding triple in the ordinary sense with an explicit eigenvector, and
+`trine_psd_at_margin_iff` characterises the best subsets as exactly the eighteen mixed
+triples.
+
+The THIRD is still outside the kernel and is used by nothing: every statement in both
+files is in Loewner form, which is what `ComplexDominates` needs. Read the numeric
+VALUES in this file as audited measurements attached to mechanized non-domination
+facts. -/
 
 end Gtz

@@ -4,8 +4,17 @@
 **Conjecture (GTZ 1997).** For every real n×k matrix A with orthonormal columns
 (AᵀA = I, 1 ≤ k < n) there is a k×k row submatrix A_I with σ_min(A_I) ≥ 1/√n.
 
-Known: k ≤ 2 proven (Sengupta–Pautov, arXiv:2604.05944); FALSE over ℂ (sharp complex
-constant α = 2 − 2/√3, SIC extremal).
+Status per rank. Over ℝ: k ≤ 2 is a theorem (CITED — Sengupta–Pautov,
+arXiv:2604.05944, in the orthonormal-columns form), k ≥ 3 OPEN. Over ℂ it is FALSE
+from k = 2 on, so the object there is a per-rank constant α_k := inf over designs of
+max over k-subsets of λ_min, bounded two-sidedly in
+`Gtz/Complex/PerRankConstantLedger.lean`: α_1 = 1 (PROVED, both ends);
+1/2 ≤ α_2 ≤ 2 − 2/√3 (PROVED; the upper end CITED as exact — Nesterenko,
+arXiv:2604.24087 — attained by the ℂ² SIC); 1/3 ≤ α_3 ≤ 3(1 − cos 2π/9) ≈ 0.70187
+(PROVED, upper end witnessed by the ℂ³ Hesse SIC); α_k ≥ 1/k (PROVED) and nothing
+else for k ≥ 4. So 2 − 2/√3 is a k = 2 statement, not a global one — the known
+values fall with the rank — while SIC-extremality does survive at k = 3, with a
+different SIC.
 
 **The weighted-design form** (the campaign's working form; the weight absorbs n):
 vectors g_1..g_m ∈ ℝᵏ and weights t_c > 0 with Σ t_c = 1 and Σ t_c g_c g_cᵀ = I_k;
