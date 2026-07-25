@@ -5,11 +5,20 @@
 > **Conjecture (GTZ, 1997).** Every real n×k matrix with orthonormal columns has
 > a k×k row submatrix B with σ_min(B) ≥ 1/√n.
 
-Known before this project: true for k ≤ 2 (Sengupta–Pautov); false over ℂ with
-sharp constant α = 2 − 2/√3 (the SIC configuration is extremal). The first open
-case is k = 3, and after the reductions formalized here it is exactly ONE
-object — the weighted (7,3) instance — equivalently one polynomial covering
+Known before this project: true for k ≤ 2 (Sengupta–Pautov); false over ℂ. The
+first open case is k = 3, and after the reductions formalized here it is exactly
+ONE object — the weighted (7,3) instance — equivalently one polynomial covering
 sentence over its all-heavy parameter space.
+
+A correction to the constant this project long carried: **α = 2 − 2/√3 is the
+sharp complex constant at rank 2 only**, and should be written α₂. Nesterenko
+(arXiv:2604.24087) proves it for ℂ^{n×2}, with the equality case the regular
+tetrahedron in the Hopf/Bloch image — the d = 2 SIC. It is *not* the sharp
+complex constant in general: this repo's `trineDesign` is an exactly-normalised
+complex (6,3) design, every leverage exactly 3, whose value `3 − √5 ≈ 0.7639`
+is strictly below α₂ ≈ 0.8453 (`trineMargin_lt_alphaRankTwo`, kernel-checked).
+Nor is the SIC extremal beyond rank 2 — SICs at d = 4, 5, 6 all dominate
+comfortably.
 
 This repository is the campaign's **final proof artifact**: nothing enters
 until it has survived adversarial audit or been re-derived during
