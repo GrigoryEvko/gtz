@@ -15,6 +15,7 @@ import Gtz.Core.Sanity
 import Gtz.LinAlg.BernsteinPositivity
 import Gtz.LinAlg.Completion
 import Gtz.LinAlg.CongruenceRobustness
+import Gtz.LinAlg.EigenvalueSubdifferential
 import Gtz.LinAlg.GordanAlternative
 import Gtz.LinAlg.PsdKit
 import Gtz.LinAlg.ResolventPerturbation

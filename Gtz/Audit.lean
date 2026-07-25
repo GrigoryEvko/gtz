@@ -80,6 +80,7 @@ import Gtz.Planar.LocalLaw
 import Gtz.Planar.Completeness
 import Gtz.LinAlg.ResolventPerturbation
 import Gtz.LinAlg.CongruenceRobustness
+import Gtz.LinAlg.EigenvalueSubdifferential
 import Gtz.Corner.IdempotentSplitting
 import Gtz.Planar.LeafTangency
 import Gtz.Corner.CapDictionary
@@ -977,3 +978,29 @@ import Gtz.Quantitative.Interface
 #print axioms Gtz.doubledTetrahedron_atom_invariant
 #print axioms Gtz.doubledTetrahedron_weight_invariant
 #print axioms Gtz.exists_symmetry_with_no_fixed_dominatingSubset
+
+-- moment directions: the frame form without a subdifferential (R-MECH-3 routed around)
+#print axioms Gtz.IsMomentDirection
+#print axioms Gtz.IsMomentDirection.smul
+#print axioms Gtz.reweighted_isParseval
+#print axioms Gtz.congruentReweightedDesign
+#print axioms Gtz.subsetSum_congruentReweightedDesign
+#print axioms Gtz.transpose_subsetSum_self
+#print axioms Gtz.exists_shiftedDominator_of_momentDirection
+#print axioms Gtz.exists_strictDominator_of_momentDirection
+#print axioms Gtz.deflatedCongruentDesign
+#print axioms Gtz.subsetSum_deflatedCongruentDesign
+#print axioms Gtz.exists_strictDominator_of_boundaryMomentDirection
+#print axioms Gtz.unevenLeveragePair
+#print axioms Gtz.exists_design_with_posDefMomentDirection
+#print axioms Gtz.totalReweight
+#print axioms Gtz.reweightMoment
+#print axioms Gtz.designMomentMap
+#print axioms Gtz.momentDirection_iff_mem_designMomentRange
+#print axioms Gtz.linearFunctional_eq_matrixPairing
+#print axioms Gtz.matrixPairing_atomMatrix
+#print axioms Gtz.matrixPairing_one
+#print axioms Gtz.dotProduct_mulVec_transpose_self
+#print axioms Gtz.exists_conicMultiplier_of_identity_notMoment
+#print axioms Gtz.exists_symmetricConicMultiplier_of_identity_notMoment
+#print axioms Gtz.exists_conicMultiplier_of_noStrictDominator
