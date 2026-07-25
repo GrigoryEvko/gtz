@@ -3,8 +3,9 @@
 
 The campaign's theorem-grade skeleton (diary §§42–52):
 
-* rank 1 = pigeonhole; rank 2 = Sengupta–Pautov (arXiv:2604.05944), weighted form
-  via atom replication + density;
+* rank 1 = pigeonhole; rank 2 = Sengupta–Pautov (arXiv:2604.05944), who prove it
+  in the original orthonormal-columns coordinates — the weighted form below is
+  this development's own strengthening, via atom replication + density;
 * Theorem L (canonical list, `gtz_proof_gtz_allk_lift.md` §3.4): via crystallization
   M(s) = s(s+1)/2 + 1 and Naimark duality, GTZ for ALL n and ALL k is equivalent to
   the finite-per-rank list { weighted (m,s) : s ≥ 2, 2s ≤ m ≤ s(s+1)/2 + 1 };
@@ -120,8 +121,11 @@ theorem gtzWeighted_of_dual_rank (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
       compl_compl]
     exact hCdualdom
 
-/-- **Rank 2 is proven**: the weighted Sengupta–Pautov theorem, by strong
-induction on the size. A light atom (leverage ≤ 1) deflates one size down
+/-- **Rank 2 is proven**, in the weighted form.  Sengupta–Pautov
+(arXiv:2604.05944) prove rank 2 in the original orthonormal-columns coordinates;
+the weighted statement here is strictly more general and is this development's
+own, by strong induction on the size.  `gtz_original_rank_two` specializes it
+back to their statement.  A light atom (leverage ≤ 1) deflates one size down
 (`dominating_of_light_atom`); an all-heavy design contains a dominating pair
 outright (`exists_dominating_pair_of_heavy`, the de-spectralized Case-B
 pairing — finite sums and squares, no spectral theorem, no Perron–Frobenius). -/
