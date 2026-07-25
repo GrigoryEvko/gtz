@@ -20,6 +20,7 @@ import Gtz.Quantitative.MarginContinuity
 import Gtz.Design.StressCertificate
 import Gtz.Quantitative.StrictDomination
 import Gtz.Ties.DominationWithoutCertificate
+import Gtz.Ties.SplitClassTieFamily
 import Gtz.Ties.SplitTetrahedronTie
 import Gtz.Ties.SplitTetraLocalBalance
 import Gtz.Ties.TetrahedronCertifiedTie
@@ -32,6 +33,8 @@ import Gtz.Quantitative.OneObjectNarrowing
 import Gtz.Quantitative.DiscriminantSystem
 import Gtz.Quantitative.GapStabilityFacts
 import Gtz.Quantitative.RealnessEngine
+import Gtz.Quantitative.PhaseFreeNoGo
+import Gtz.Ties.SplitClassTieFamily
 import Gtz.Certificates.FrameBridge
 import Gtz.Quantitative.CollarRate
 import Gtz.Reduction.RayleighCertificate
@@ -2319,3 +2322,49 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.selectiveAxisDesign_criterion_blindOnLightTriple
 #print axioms Gtz.isEmpty_weightedDesign_of_sizeZero
 #print axioms Gtz.nonempty_weightedDesign_square_of_rank_pos
+
+-- Gtz.Ties.SplitClassTieFamily: the tie stratum over the whole weight simplex
+#print axioms Gtz.classTotalWeight
+#print axioms Gtz.classTotalWeight_pos
+#print axioms Gtz.classTotalWeight_eq
+#print axioms Gtz.classTotalWeight_sum
+#print axioms Gtz.splitClassAtom
+#print axioms Gtz.splitClassAtom_eq_of_sameClass
+#print axioms Gtz.sum_weight_smul_splitClassAtomMatrix
+#print axioms Gtz.splitClassDesign
+#print axioms Gtz.splitClassDesign_weight
+#print axioms Gtz.splitClassDesign_atom
+#print axioms Gtz.subsetSum_splitClassDesign_of_injOn
+#print axioms Gtz.splitClassDesign_isTie
+#print axioms Gtz.exists_isTie_of_weights_of_classes
+#print axioms Gtz.sixIntoFourBalanced
+#print axioms Gtz.sixIntoFourHeavy
+#print axioms Gtz.sevenIntoFourBalanced
+#print axioms Gtz.sixIntoFourBalanced_surjective
+#print axioms Gtz.sixIntoFourHeavy_surjective
+#print axioms Gtz.sevenIntoFourBalanced_surjective
+#print axioms Gtz.exists_isTie_six_three
+#print axioms Gtz.exists_isTie_seven_three
+
+-- Gtz.Quantitative.PhaseFreeNoGo: no phase-free certificate exists, at any degree
+#print axioms Gtz.dotProduct_eq_sum_weight_mul_pair
+#print axioms Gtz.phaseFreeOfDesign
+#print axioms Gtz.discriminantTrace_eq_traceLeg
+#print axioms Gtz.discriminantTie_eq_determinantLeg
+#print axioms Gtz.isPhaseFreeAdmissible_of_design
+#print axioms Gtz.discriminantCovering_of_phaseFreeCovering
+#print axioms Gtz.sum_eq_sum_directionMass
+#print axioms Gtz.trineOverlap_uniform_sum
+#print axioms Gtz.trineTriangleTable_uniform_sum
+#print axioms Gtz.trineTriangleTable_cap
+#print axioms Gtz.trineTriangleTable_determinant_neg
+#print axioms Gtz.trinePoint_generic
+#print axioms Gtz.trinePoint_determinantLeg_neg
+#print axioms Gtz.trineSixData_isPhaseFreeAdmissible
+#print axioms Gtz.trineSixData_determinantLeg_neg
+#print axioms Gtz.trineSevenDirection_collision
+#print axioms Gtz.trineSevenData_isPhaseFreeAdmissible
+#print axioms Gtz.trineSevenData_determinantLeg_neg
+#print axioms Gtz.not_phaseFreeCovering_six
+#print axioms Gtz.not_phaseFreeCovering_seven
+#print axioms Gtz.phaseFree_certificates_cannot_prove_rank_three

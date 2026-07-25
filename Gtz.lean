@@ -119,6 +119,7 @@ import Gtz.Quantitative.GapStabilityFacts
 import Gtz.Quantitative.Interface
 import Gtz.Quantitative.MarginContinuity
 import Gtz.Quantitative.OneObjectNarrowing
+import Gtz.Quantitative.PhaseFreeNoGo
 import Gtz.Quantitative.RealnessEngine
 import Gtz.Quantitative.StrictDomination
 
@@ -134,6 +135,7 @@ import Gtz.Ties.NonTetrahedralTie
 import Gtz.Ties.RepeatedAtomExclusion
 import Gtz.Ties.SelectionObstruction
 import Gtz.Ties.SplitTetraLocalBalance
+import Gtz.Ties.SplitClassTieFamily
 import Gtz.Ties.SplitTetrahedronTie
 import Gtz.Ties.TetrahedronCertifiedTie
 import Gtz.Ties.TetrahedronTie
