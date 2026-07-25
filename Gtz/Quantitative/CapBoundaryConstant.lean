@@ -6,9 +6,18 @@ cap-boundary constant
 
     C_B(L) = 4(L−1)(2L³ − L² − 8L + 8)/(2L−3)²,
 
-the corner-limit value of the X-channel face (direction-independent). Its
-cap-boundary monotonicity — that among two-at-cap designs the higher-leverage cap
-dominates — is ONE named sub-piece of the H1b argmax wall, here PROVEN in full.
+the corner-limit value of the X-channel face (direction-independent: it is the `H/d`
+limit at the LIGHT atom, where every admissible approach direction agrees — at the cap
+atom the limit is direction-DEPENDENT and lands below `C_B`). Its cap-boundary
+monotonicity — that among two-at-cap designs the higher-leverage cap dominates — is ONE
+named sub-piece of the H1b argmax wall, here PROVEN in full.
+
+What `C_B` governs is now sharply bounded. `Gtz/Quantitative/CapArgmax.lean` proves the
+channel-level argmax TRUE for `2 < L ≤ 4 + 2√2` and FALSE for every `L` above that
+threshold, so `C_B` is the correct corner rate exactly on the low-leverage range.
+Above it there are silent probes that beat the corner. The argmax over FAMILY points
+(as opposed to probe atoms at a fixed family point) is a different statement and is
+untouched by that file.
 
 `capBoundaryConstant_hasDerivAt` gives the explicit derivative
 `C_B'(L) = 4(L−2)(8L³ − 14L² − L + 8)/(2L−3)³`; `capBoundaryConstant_monotone`

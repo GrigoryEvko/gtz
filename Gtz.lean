@@ -100,6 +100,7 @@ import Gtz.Certificates.ResidueDissolution
 import Gtz.Certificates.TriangleClosure
 
 -- Quantitative: the analytic layer -- collar rates, gates, constants (partly open)
+import Gtz.Quantitative.CapArgmax
 import Gtz.Quantitative.CapBoundaryConstant
 import Gtz.Quantitative.CollarFloor
 import Gtz.Quantitative.CollarRate

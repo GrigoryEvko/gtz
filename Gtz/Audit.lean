@@ -33,6 +33,7 @@ import Gtz.Certificates.FrameBridge
 import Gtz.Quantitative.CollarRate
 import Gtz.Reduction.RayleighCertificate
 import Gtz.Reduction.ChargeSelection
+import Gtz.Quantitative.CapArgmax
 import Gtz.Quantitative.CapBoundaryConstant
 import Gtz.Corner.CornerFiber
 import Gtz.Corner.CapCriterion
@@ -675,6 +676,46 @@ import Gtz.Quantitative.Interface
 #print axioms Gtz.gapAnnihilates_multiplierCandidate
 #print axioms Gtz.isTie_yields_tightDirection
 #print axioms Gtz.isTie_yields_unitEigenvector
+-- GAP-S H1b, restated past the cap-10 refutation: one Positivstellensatz identity
+-- with constant multipliers, true below 4 + 2*sqrt 2 and FALSE above it
+#print axioms Gtz.capChannelDefect
+#print axioms Gtz.capSilenceSum
+#print axioms Gtz.capSilenceProduct
+#print axioms Gtz.capChannelNumerator
+#print axioms Gtz.capChannelNumerator_eq_div
+#print axioms Gtz.capArgmaxGap
+#print axioms Gtz.capArgmaxGap_certificate
+#print axioms Gtz.capArgmax_corner_dominates
+#print axioms Gtz.capArgmax_threshold_iff
+#print axioms Gtz.capArgmax_corner_dominates_below_threshold
+#print axioms Gtz.capArgmaxGap_at_lightAtom
+#print axioms Gtz.capArgmaxGap_at_capAtom
+#print axioms Gtz.capArgmax_face_refutation
+#print axioms Gtz.capRefuterAbscissa
+#print axioms Gtz.capRefuterRadius
+#print axioms Gtz.capRefuter_onFace
+#print axioms Gtz.capRefuter_silenceSum
+#print axioms Gtz.capRefuter_defect
+#print axioms Gtz.capRefuter_radiusLower
+#print axioms Gtz.capRefuter_radiusUpper
+#print axioms Gtz.capRefuter_heightSq
+#print axioms Gtz.capRefuter_admissible
+#print axioms Gtz.capArgmax_fails_above_threshold
+#print axioms Gtz.capThirteen_probe_silenceSum
+#print axioms Gtz.capThirteen_probe_silenceProduct
+#print axioms Gtz.capThirteen_probe_defect
+#print axioms Gtz.capThirteen_beats_corner
+#print axioms Gtz.capThirteen_corner_exceeded
+#print axioms Gtz.twoAtCapSquares
+#print axioms Gtz.twoAtCapLeverages
+#print axioms Gtz.twoAtCapEntry
+#print axioms Gtz.twoAtCapDistanceSq
+#print axioms Gtz.twoAtCap_design_valid
+#print axioms Gtz.capSilence_sum_and_product
+#print axioms Gtz.twoAtCap_capPairContribution
+#print axioms Gtz.twoAtCap_lightContribution
+#print axioms Gtz.capChannelNumerator_eq_pairEntrySum
+
 #print axioms Gtz.capBoundaryConstant_at_five
 #print axioms Gtz.capBoundaryConstant_derivNumerator_nonneg
 #print axioms Gtz.capBoundaryConstant_hasDerivAt

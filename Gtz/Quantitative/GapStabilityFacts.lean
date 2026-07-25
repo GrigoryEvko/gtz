@@ -9,7 +9,12 @@ analytic wall:
   * H1a — a uniform second-order coefficient K₁(ℓ̄) as a theorem (Bonnans–Shapiro
     second-order tangent-set analysis over the family; the channel is bounded by
     the kernel `whitening_gram_exact`, which is the WALL, not consumed here);
-  * H1b — the full symbolic monotonicity of `C_B(L)` along the cap boundary;
+  * H1b — the family-level argmax. The two sub-pieces once named as the wall are both
+    settled and neither was it: cap-boundary monotonicity of `C_B(L)` is proven
+    (`capBoundaryConstant_strictMono`), and the CHANNEL-level argmax is proven for
+    `2 < L ≤ 4 + 2√2` and REFUTED above it (`Gtz/Quantitative/CapArgmax.lean`, one
+    Positivstellensatz identity with constant multipliers). What remains open is the
+    argmax over family points, and a family-uniform replacement constant;
   * H3b — the transverse coercivity modulus `s₂ > 0` derived from the kernel
     `closure_forces_obtuse_pair` (Lyusternik–Graves; currently assumed, the WALL).
 
