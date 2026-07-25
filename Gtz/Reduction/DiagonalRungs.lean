@@ -15,9 +15,11 @@ theorems in this repository, and this file adds none of them:
 * `gtzWeightedFloor_inv_rank` (`Gtz/Reduction/RealVolumeFloor.lean`) — the
   `1/k` Loewner floor at every `(m, k)`, from maximal volume.
 
-So the ledger before this file already reads: `k ≤ 2` (all `m`, CITED to the
-repo's `gtz_rank_two`), `m = k`, `m = k + 1`, `m = k + 2` for `k ≥ 2`
-(`gtzWeighted_corank_two`), and the `1/k` floor everywhere.
+The ledger before this file therefore reads: `k ≤ 2` at every `m` — the repo's
+own `gtz_rank_two`, a complete in-repo PROOF and not a citation — together with
+`m = k`, `m = k + 1`, `m = k + 2` for `k ≥ 2` (`gtzWeighted_corank_two`), and the
+`1/k` floor everywhere.  Rank three is open at exactly two sizes, `(6,3)` and
+`(7,3)` (`rank_three_iff_the_two_residuals`).
 
 ## What is new here
 
@@ -39,9 +41,23 @@ quadratic form is dominated by its own diagonal through the `2 × 2` minors
 plus Cauchy–Schwarz — `posSemidef_diagonal_sub_of_sum_diag_div_le_one`, which
 is pure linear algebra and knows nothing about designs.
 
+## What the criterion IS
+
+Congruence by `diag(1 − t_C)^{-1/2}` carries the domination gap to `I − N_C`
+with `N_C = diag(1 − t_C)^{-1/2} Q_C diag(1 − t_C)^{-1/2} ⪰ 0`.  Domination is
+then exactly `λ_max(N_C) ≤ 1`, and the criterion is `trace(N_C) ≤ 1`: it is the
+TRACE RELAXATION of the sharp spectral test, and nothing more.  That one
+sentence predicts every phenomenon below.  `trace ≥ λ_max` with equality iff the
+rank is at most one, and `rank Q_C ≤ min(k, m − k)`, so the relaxation is tight
+at corank one and loses up to a rank factor elsewhere; on a balanced design the
+trace is constant across subsets, which is the ceiling.  The proof below goes
+through `2 × 2` minors and Cauchy–Schwarz instead, deliberately, to keep a
+spectral theorem out of the dependency graph — so the identification in this
+paragraph is a hand derivation and is NOT mechanized here.
+
 ## Where it reaches — and the theorem that it reaches no further
 
-At `m = k + 1` the criterion is SHARP and fires by an argmax with no case
+At `m = k + 1` the criterion fires by an argmax with no case
 split.  The whole content is two identities: `Σ_c (1 − t_c) s_c = m − k`, so at
 corank one `Σ_c s_c − Σ_c t_c s_c = 1`; and `Σ_c t_c s_c` is a convex
 combination of the `s_c`, hence at most `max_c s_c`.  Dropping the argmax
@@ -63,39 +79,82 @@ design every `k`-subset carries the same mass `k(m − k)/(m − 1)`, and
 the vanishing of the committed classical deficit `(k−1)(m−k−1)` of
 `gtzDenominator_add_deficit_eq_classical`.  So this lever's reach on balanced
 designs coincides EXACTLY with the locus where maximal volume already meets
-GTZ, and it cannot be pushed to `(6,3)`, `(7,3)`, or any other rung of positive
-deficit by sharpening the selector: on a balanced design every subset scores
-the same, so there is nothing to select.  That is a stop sign, and it is the
-honest deliverable.
+GTZ, and no sharpening of the SELECTOR extends it: on a balanced design every
+subset scores the same, so there is nothing to select.  That is a stop sign, and
+it is the honest deliverable.
 
-The stop sign is not about an empty class.  `balancedPairDesign` is an explicit
-balanced `(4, 2)` design — four atoms `(1,1), (1,-1), (1,1), (1,-1)` at uniform
-weight `1/4` — and `balancedPairDesign_dominated_and_criterion_blind` proves
-both halves at once: it HAS a dominating pair (via `gtz_rank_two`) and the
-criterion fires on NO pair, the uniform mass being `4/3`.  `(4, 2)` is the
-smallest positive deficit, so the criterion is demonstrably incomplete from the
-first rung off the diagonal.
+Read the stop sign for exactly what it says.  It bounds this lever, not the
+problem.  Balanced designs are not hard instances and the ceiling claims nothing
+of the kind — on the `(6,3)` witness below every triple is invisible to the
+criterion and an explicit triple dominates anyway.
+
+## Two witnesses at `(6,3)`, an OPEN rung
+
+`balancedOctahedronDesign`, the six vectors `±√3 · e_i` at uniform weight `1/6`,
+is balanced (`isCoLeverageBalanced_balancedOctahedronDesign`), so the criterion
+fires on NO triple, each carrying mass `9/5`; and `{0, 2, 4}` dominates outright
+with `S_C = 3·I`.  `balancedOctahedronDesign_dominated_and_criterion_blind`
+proves both halves at once.  So the ceiling is not a statement about a class
+that is empty where the problem is still open, and the criterion is provably
+incomplete at a size that is still open.  `balancedPairDesign` — four atoms
+`(1,1), (1,-1), (1,1), (1,-1)` at uniform weight `1/4`, mass `4/3` — is the same
+phenomenon at `(4, 2)`, the smallest positive deficit, where GTZ is already
+`gtz_rank_two`.
+
+`selectiveAxisDesign`, the three coordinate axes at length `1` and at length `2`
+with weights `1/9` and `2/9`, has ratios `1` and `1/7`.  The criterion FIRES on
+the heavy triple `{3, 4, 5}` (mass `3/7`,
+`dominates_selectiveAxisDesign_heavyTriple`) and is blind on the light triple
+`{0, 1, 2}` (mass `3`, `selectiveAxisDesign_criterion_blindOnLightTriple`).  Off
+the balanced class the criterion therefore discriminates genuinely, and it does
+so at corank three — well past the corank-one rung where it is tight.
 
 ## Honest scope
 
-* The criterion is SUFFICIENT only.  It is exact at `m = k + 1`, where `Q` has
-  rank one and the `|Q_cd| ≤ √(Q_cc Q_dd)` step is an equality; above that it
-  is lossy, and the ceiling above measures how lossy.
+* The criterion is SUFFICIENT only.  The converse `Dominates ⟹ mass ≤ 1` is
+  false above corank one, and the two balanced witnesses refute it outright at
+  `(6,3)` and at `(4,2)`.  At `m = k + 1` the converse IS true, because `Q` has
+  rank one there and the `|Q_cd| ≤ √(Q_cc Q_dd)` step is an equality — but that
+  iff is NOT proved in this file, and proving it needs `rank (I − P) = 1`, which
+  nothing in the repository currently supplies.
 * Nothing here decides any open rung, and nothing here is a new GTZ theorem.
   The `GtzWeighted (k+1) k` corollary duplicates two landed proofs.
-* The criterion is Gershgorin/diagonal-dominance flavoured.  It was NOT checked
-  against the numerical-linear-algebra literature; "new" here means "not in
-  this repository", not "not in print".
-* The reach measurement outside the balanced class is empirical only (an
-  experiment fired it on 101/600 random `(7,3)` designs) and is NOT mechanized.
-  Only the balanced ceiling is a theorem.
-* The blindness is exhibited at `(4, 2)` and only there.  Balanced designs at
-  `(6,3)`, `(7,3)` and beyond are classical (equal-norm Parseval frames exist at
-  every `k ≤ m`) but this file constructs none, so "cannot reach `(7,3)`" is the
-  ceiling theorem read at that shape, not an instantiated statement.
+* The criterion is Gershgorin/diagonal-dominance flavoured, and read as a trace
+  relaxation it is the elementary bound `R ⪯ trace(D^{-1/2} R D^{-1/2}) · D`.  It
+  was NOT checked against the numerical-linear-algebra literature; "new" here
+  means "not in this repository", not "not in print", and the trace reading
+  makes prior art likelier rather than less.
+* Outside the balanced class the reach is exhibited by exactly one mechanized
+  witness, `selectiveAxisDesign`, and otherwise measured only empirically (an
+  experiment fired the criterion on 101/600 random `(7,3)` designs).  No general
+  statement about that regime is proved.
+* Blindness is exhibited at `(4,2)` and at `(6,3)`.  `(7,3)`, the other open
+  residual, has no balanced witness here.  It admits one — balance is a positive
+  linear condition on the weights and is solvable at that shape — but building it
+  needs a rank-3 projection with a prescribed diagonal, and this file constructs
+  none.
+* Both balanced witnesses repeat rank-one atoms — `balancedPairDesign`
+  duplicates two vectors outright, `balancedOctahedronDesign` uses antipodal
+  pairs, and `g gᵀ` cannot tell a sign.  `WeightedDesign` imposes no distinctness
+  and no statement here is affected, but a distinct-atom balanced design would be
+  the drop-in should the conventions of `Gtz/Ties/RepeatedAtomExclusion.lean`
+  ever matter downstream.
 * The `1/k` floor cited above is a floor, not the rank constant: at `k = 2` the
-  real truth is `α_2(ℝ) = 1` (the repo's `gtz_rank_two`) where the floor gives
-  `1/2`.
+  repository proves `α_2(ℝ) ≥ 1` (`gtz_rank_two`) where the floor gives `1/2`.
+  The matching upper bound `α_2(ℝ) ≤ 1` appears nowhere in the repository, so
+  `α_2(ℝ) = 1` is NOT a repo fact.
+* Two of the cited statements have degenerate corners.  `WeightedDesign 0 k` is
+  uninhabited (`isEmpty_weightedDesign_of_sizeZero`), so the `k = 0` instance of
+  `gtzWeighted_square` is vacuous; from `k = 1` on the family is inhabited
+  (`nonempty_weightedDesign_square_of_rank_pos`).  And `gtzWeightedFloor_inv_rank`
+  at `k = 0` asserts a level-`0` bound on `0 × 0` matrices, since Lean reads
+  `((0 : ℕ) : ℝ)⁻¹` as `0`; its "every size, every rank, no hypothesis" reading
+  holds from `k = 1` on.
+* This file is NOT in the build.  `lakefile.toml` declares
+  `defaultTargets = ["Gtz"]` and `Gtz.lean` does not import it, so `lake build`
+  never compiles it and no `#print axioms` line in `Gtz/Audit.lean` covers it.
+  Wiring is the orchestrator's; until it happens nothing here is CI-protected
+  and a Mathlib bump can break this file silently.
 -/
 import Mathlib
 import Gtz.Core.Basic
@@ -173,7 +232,15 @@ one:
 
 Cauchy–Schwarz with the weights `√(R_ii)/√(d_i)` and `√(d_i)|x_i|` turns the
 diagonal profile of `quadForm_le_sq_sum_sqrt_diag` into exactly that mass times
-`Σ_i d_i x_i²`.  Sharp when `R` has rank one. -/
+`Σ_i d_i x_i²`.
+
+Named honestly: after congruence by `diag(d)^{-1/2}` the hypothesis is
+`trace(D^{-1/2} R D^{-1/2}) ≤ 1` and the conclusion is
+`λ_max(D^{-1/2} R D^{-1/2}) ≤ 1`, so this is the elementary trace bound
+`λ_max ≤ trace` for a positive semidefinite matrix, dressed for a diagonal
+comparison.  It is proved here from minors and Cauchy–Schwarz rather than from
+the spectral theorem, which is why no eigenvalue appears; the equality case is
+rank one, so the constant `1` cannot be raised. -/
 theorem posSemidef_diagonal_sub_of_sum_diag_div_le_one
     {residual : Matrix (Fin size) (Fin size) ℝ} (hpsd : residual.PosSemidef)
     {positiveDiagonal : Fin size → ℝ} (hpos : ∀ i, 0 < positiveDiagonal i)
@@ -341,10 +408,13 @@ whose co-leverage ratios have total mass at most one dominates:
 
     Σ_{c ∈ C} u_c/(1 − t_c) ≤ 1   ⟹   S_C ⪰ I.
 
-No rank hypothesis, no corank hypothesis, no eigenvalue.  Sufficient only, and
-sharp exactly at `m = k + 1` (where `I − P` has rank one, so the
-`|Q_cd| ≤ √(Q_cc Q_dd)` step inside
-`posSemidef_diagonal_sub_of_sum_diag_div_le_one` is an equality). -/
+No rank hypothesis, no corank hypothesis, no eigenvalue.  SUFFICIENT ONLY: the
+converse fails from `(4,2)` up, refuted concretely by `balancedPairDesign` and
+`balancedOctahedronDesign`.  At `m = k + 1` the converse does hold, since
+`I − P` has rank one there and the `|Q_cd| ≤ √(Q_cc Q_dd)` step inside
+`posSemidef_diagonal_sub_of_sum_diag_div_le_one` becomes an equality — that iff
+is NOT proved here, and it would need `rank (I − P) = 1`, which the repository
+does not supply. -/
 theorem dominates_of_sum_coLeverageRatio_le_one (D : WeightedDesign m k) (hm : 2 ≤ m)
     (selected : Finset (Fin m)) (hcard : selected.card = k)
     (hmass : ∑ atomIndex ∈ selected, coLeverageRatio D atomIndex ≤ 1) :
@@ -504,7 +574,12 @@ So this lever provably cannot reach `(6,3)`, `(7,3)`, or any other rung with a
 positive classical deficit `(k−1)(m−k−1)`, no matter how the selector is
 sharpened — on balanced designs every `k`-subset carries the same mass, so
 there is nothing to select.  The reach coincides with the locus where maximal
-volume already meets GTZ. -/
+volume already meets GTZ.
+
+This bounds the LEVER, not the problem.  Balanced designs need not be hard:
+`balancedOctahedronDesign_dominated_and_criterion_blind` exhibits one at the
+open rung `(6,3)` where the criterion sees nothing and a dominating triple
+exists anyway. -/
 theorem sum_coLeverageRatio_le_one_iff_of_isCoLeverageBalanced (D : WeightedDesign m k)
     (hk : 1 ≤ k) (hkm : k + 1 ≤ m) (hbalanced : IsCoLeverageBalanced D)
     (selected : Finset (Fin m)) (hcard : selected.card = k) :
@@ -571,5 +646,172 @@ theorem balancedPairDesign_dominated_and_criterion_blind :
     with hrank | hsize
   · omega
   · omega
+
+/-! ## The ceiling has content at an OPEN rung -/
+
+/-- The balanced `(6, 3)` witness: the six vectors `±√3 · e_i` at uniform weight
+`1/6`.  Parseval holds because each coordinate direction occurs twice and
+`2 · (1/6) · 3 = 1`, and every leverage is `3`, so the design is balanced.  Its
+classical deficit `(k−1)(m−k−1) = 2 · 2` is positive, and `(6, 3)` is one of the
+exactly two sizes at which rank three is still open
+(`rank_three_iff_the_two_residuals`) — so the ceiling below is not a statement
+about a class that is empty where the problem is open. -/
+noncomputable def balancedOctahedronDesign : WeightedDesign 6 3 where
+  atom := ![![Real.sqrt 3, 0, 0], ![-Real.sqrt 3, 0, 0], ![0, Real.sqrt 3, 0],
+            ![0, -Real.sqrt 3, 0], ![0, 0, Real.sqrt 3], ![0, 0, -Real.sqrt 3]]
+  weight := fun _ => (6 : ℝ)⁻¹
+  weight_pos := fun _ => by norm_num
+  weight_sum_one := by
+    rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+    norm_num
+  isParseval := by
+    have hroot : Real.sqrt 3 * Real.sqrt 3 = 3 := Real.mul_self_sqrt (by norm_num)
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [atomMatrix, Matrix.vecMulVec, Fin.sum_univ_six, hroot] <;>
+      linarith [hroot]
+
+/-- Every atom of the octahedron witness has leverage `3` — the equal-norm half
+of balance. -/
+theorem leverageOf_balancedOctahedronDesign (atomIndex : Fin 6) :
+    leverageOf (balancedOctahedronDesign.atom atomIndex) = 3 := by
+  fin_cases atomIndex <;>
+    simp [balancedOctahedronDesign, leverageOf, Fin.sum_univ_three]
+
+/-- The octahedron witness is co-leverage balanced: uniform weights, equal
+leverages. -/
+theorem isCoLeverageBalanced_balancedOctahedronDesign :
+    IsCoLeverageBalanced balancedOctahedronDesign := by
+  refine isCoLeverageBalanced_of_uniformWeight_of_equalLeverage balancedOctahedronDesign
+    (fun atomIndex => by norm_num [balancedOctahedronDesign]) (fun firstIndex secondIndex => ?_)
+  rw [leverageOf_balancedOctahedronDesign, leverageOf_balancedOctahedronDesign]
+
+/-- Every triple carries the same mass `k(m − k)/(m − 1) = 9/5`, which is not
+close to the threshold — the criterion misses by a factor near two. -/
+theorem sum_coLeverageRatio_balancedOctahedronDesign (selected : Finset (Fin 6))
+    (hcard : selected.card = 3) :
+    ∑ atomIndex ∈ selected, coLeverageRatio balancedOctahedronDesign atomIndex = 9 / 5 := by
+  rw [sum_coLeverageRatio_of_isCoLeverageBalanced balancedOctahedronDesign (by norm_num)
+    isCoLeverageBalanced_balancedOctahedronDesign selected hcard]
+  norm_num
+
+/-- **The witness is not a hard instance.**  Taking one atom from each antipodal
+pair gives `S_C = 3 · I`, so `{0, 2, 4}` dominates with room to spare.  The
+design is invisible to the criterion, not difficult for GTZ — which is exactly
+what the ceiling asserts and all that it asserts. -/
+theorem dominates_balancedOctahedronDesign_coordinateTriple :
+    Dominates balancedOctahedronDesign ({0, 2, 4} : Finset (Fin 6)) := by
+  have hroot : Real.sqrt 3 * Real.sqrt 3 = 3 := Real.mul_self_sqrt (by norm_num)
+  have hgap : subsetSum balancedOctahedronDesign ({0, 2, 4} : Finset (Fin 6)) - 1
+      = Matrix.diagonal (fun _ => (2 : ℝ)) := by
+    rw [subsetSum, Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [balancedOctahedronDesign, atomMatrix, Matrix.vecMulVec, hroot] <;> linarith [hroot]
+  show (subsetSum balancedOctahedronDesign ({0, 2, 4} : Finset (Fin 6)) - 1).PosSemidef
+  rw [hgap]
+  exact Matrix.posSemidef_diagonal_iff.mpr fun _ => by norm_num
+
+/-- The criterion fires on NO triple of the octahedron witness — the ceiling,
+instantiated at an open rung. -/
+theorem balancedOctahedronDesign_criterion_blind (selected : Finset (Fin 6))
+    (hcard : selected.card = 3) :
+    ¬ (∑ atomIndex ∈ selected, coLeverageRatio balancedOctahedronDesign atomIndex ≤ 1) := by
+  intro hmass
+  rcases (sum_coLeverageRatio_le_one_iff_of_isCoLeverageBalanced balancedOctahedronDesign
+      (by norm_num) (by norm_num) isCoLeverageBalanced_balancedOctahedronDesign selected
+      hcard).mp hmass with hrank | hsize
+  · omega
+  · omega
+
+/-- **THE CRITERION IS STRICTLY WEAKER THAN THE TRUTH AT AN OPEN RUNG.**  On
+`balancedOctahedronDesign` a dominating triple exists and the criterion fires on
+none of the twenty.  `(6, 3)` is open, so this is not the `(4, 2)` situation
+where GTZ was already a theorem: the incompleteness is exhibited exactly where
+the campaign still needs an answer. -/
+theorem balancedOctahedronDesign_dominated_and_criterion_blind :
+    (∃ selected : Finset (Fin 6),
+        selected.card = 3 ∧ Dominates balancedOctahedronDesign selected)
+      ∧ ∀ selected : Finset (Fin 6), selected.card = 3 →
+          ¬ (∑ atomIndex ∈ selected,
+              coLeverageRatio balancedOctahedronDesign atomIndex ≤ 1) :=
+  ⟨⟨{0, 2, 4}, by decide, dominates_balancedOctahedronDesign_coordinateTriple⟩,
+    balancedOctahedronDesign_criterion_blind⟩
+
+/-! ## Off the balanced class the criterion discriminates -/
+
+/-- A `(6, 3)` design on which the criterion is SELECTIVE: the three coordinate
+axes at length `1` and again at length `2`, weights `1/9` on the short atoms and
+`2/9` on the long ones.  Parseval is `(1/9)·1 + (2/9)·4 = 1` per direction.  The
+ratios split — `1` on the short atoms, `1/7` on the long ones — so the criterion
+separates triples on a design of positive deficit, at `m = k + 3`. -/
+noncomputable def selectiveAxisDesign : WeightedDesign 6 3 where
+  atom := ![![1, 0, 0], ![0, 1, 0], ![0, 0, 1], ![2, 0, 0], ![0, 2, 0], ![0, 0, 2]]
+  weight := ![(9 : ℝ)⁻¹, (9 : ℝ)⁻¹, (9 : ℝ)⁻¹, 2 / 9, 2 / 9, 2 / 9]
+  weight_pos := by
+    intro atomIndex
+    fin_cases atomIndex <;> norm_num
+  weight_sum_one := by
+    simp [Fin.sum_univ_six]
+    norm_num
+  isParseval := by
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [atomMatrix, Matrix.vecMulVec, Fin.sum_univ_six, Matrix.vecHead,
+        Matrix.vecTail] <;> norm_num
+
+/-- The ratios of the selective witness: `1` on the three short atoms, `1/7` on
+the three long ones. -/
+theorem coLeverageRatio_selectiveAxisDesign (atomIndex : Fin 6) :
+    coLeverageRatio selectiveAxisDesign atomIndex
+      = if (atomIndex : ℕ) < 3 then 1 else 1 / 7 := by
+  fin_cases atomIndex <;>
+    simp [coLeverageRatio, coLeverageScore, selectiveAxisDesign, leverageOf,
+      Fin.sum_univ_three] <;> norm_num
+
+/-- The heavy triple carries mass `3/7`, comfortably under the threshold. -/
+theorem sum_coLeverageRatio_selectiveAxisDesign_heavyTriple :
+    ∑ atomIndex ∈ ({3, 4, 5} : Finset (Fin 6)),
+        coLeverageRatio selectiveAxisDesign atomIndex ≤ 1 := by
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton,
+    coLeverageRatio_selectiveAxisDesign, coLeverageRatio_selectiveAxisDesign,
+    coLeverageRatio_selectiveAxisDesign]
+  norm_num
+
+/-- **The criterion decides an instance at `m = k + 3`.**  Firing outside corank
+one is therefore not an empirical observation but a mechanized one. -/
+theorem dominates_selectiveAxisDesign_heavyTriple :
+    Dominates selectiveAxisDesign ({3, 4, 5} : Finset (Fin 6)) :=
+  dominates_of_sum_coLeverageRatio_le_one selectiveAxisDesign (by norm_num) _
+    (by decide) sum_coLeverageRatio_selectiveAxisDesign_heavyTriple
+
+/-- …and the firing is genuinely selective rather than universal: the light
+triple of the same design carries mass `3`, so the criterion rejects it. -/
+theorem selectiveAxisDesign_criterion_blindOnLightTriple :
+    ¬ (∑ atomIndex ∈ ({0, 1, 2} : Finset (Fin 6)),
+        coLeverageRatio selectiveAxisDesign atomIndex ≤ 1) := by
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton,
+    coLeverageRatio_selectiveAxisDesign, coLeverageRatio_selectiveAxisDesign,
+    coLeverageRatio_selectiveAxisDesign]
+  norm_num
+
+/-! ## The empty corner of the diagonal -/
+
+/-- There is no design of size zero: the weights would have to sum to `1` over
+an empty index type.  In particular `WeightedDesign 0 0` is uninhabited, so the
+`k = 0` instance of `gtzWeighted_square` is vacuous. -/
+theorem isEmpty_weightedDesign_of_sizeZero (k : ℕ) : IsEmpty (WeightedDesign 0 k) := by
+  refine ⟨fun D => ?_⟩
+  have hsum := D.weight_sum_one
+  simp only [Finset.univ_eq_empty, Finset.sum_empty] at hsum
+  exact absurd hsum (by norm_num)
+
+/-- Past that corner the diagonal family has content: `WeightedDesign k k` is
+inhabited for every `k ≥ 1`, by the repository's own `rowDesign` on the identity
+matrix.  So only the `k = 0` instance of `gtzWeighted_square` is empty. -/
+theorem nonempty_weightedDesign_square_of_rank_pos (k : ℕ) (hk : 1 ≤ k) :
+    Nonempty (WeightedDesign k k) :=
+  ⟨rowDesign hk (1 : Matrix (Fin k) (Fin k) ℝ) (by rw [Matrix.transpose_one, Matrix.one_mul])⟩
 
 end Gtz
