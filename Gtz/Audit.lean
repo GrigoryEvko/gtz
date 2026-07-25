@@ -128,6 +128,7 @@ import Gtz.Quantitative.CollarExponent
 import Gtz.Reduction.RankInductionStep
 import Gtz.Design.LeverageCapDecision
 import Gtz.Quantitative.DecisionAtlasSevenThree
+import Gtz.Certificates.PositivstellensatzObstruction
 import Gtz.Ties.SevenThreeTieLocus
 import Gtz.Complex.SharpConstantLedger
 import Gtz.Reduction.ExchangeRepair
@@ -1398,6 +1399,14 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.discriminantCovering_of_atlas
 #print axioms Gtz.gtzWeightedAll_three_of_atlasSeven
 #print axioms Gtz.gtzOriginal_rank_three_of_atlasSeven
+
+-- Gtz.Certificates.PositivstellensatzObstruction
+#print axioms Gtz.HasUniformTieAggregateSeven
+#print axioms Gtz.splitSevenDesign_weightedTieAggregate_nonpos
+#print axioms Gtz.not_hasUniformTieAggregateSeven
+#print axioms Gtz.closedTieFailure_inhabited_seven
+#print axioms Gtz.closedCoveringFailure_inhabited_seven
+#print axioms Gtz.discriminantCovering_seven_iff_strictFailure_empty
 #print axioms Gtz.tautologicalCell
 #print axioms Gtz.isInCell_tautologicalCell_iff
 #print axioms Gtz.tautologicalCell_discharges

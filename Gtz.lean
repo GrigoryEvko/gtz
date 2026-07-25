@@ -105,6 +105,7 @@ import Gtz.Certificates.FrameEncoding
 import Gtz.Certificates.GeometricExclusion
 import Gtz.Certificates.LawEquivalence
 import Gtz.Certificates.PFourCertificate
+import Gtz.Certificates.PositivstellensatzObstruction
 import Gtz.Certificates.ResidueDissolution
 import Gtz.Certificates.TriangleClosure
 
