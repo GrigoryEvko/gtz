@@ -208,7 +208,7 @@ theorem equality_manifold_complete
         -- some chord is strictly negative: the curve strictly exceeds ν_c
         have hcurveGt : 1 - 1 / lev c < 1 / 2 + moment ⬝ᵥ unitDir c := by
           by_contra hcontra
-          push_neg at hcontra
+          push Not at hcontra
           refine hviolated ⟨?_, ?_, ?_⟩
           · rw [chordFn, dotProduct_comm vertexA (unitDir c)]
             linarith [mul_le_mul_of_nonneg_left hcontra hposA.le, hsilentA c]

@@ -207,7 +207,7 @@ theorem posSemidef_laplacianOn (graph : MultigraphOnGround edgeCount vertexRank)
 
 /-- Two vertices are adjacent through an edge subset when some edge of the
 subset joins them (in either orientation). -/
-def EdgeAdjacent (graph : MultigraphOnGround edgeCount vertexRank)
+def IsEdgeAdjacent (graph : MultigraphOnGround edgeCount vertexRank)
     (edgeSet : Finset (Fin edgeCount))
     (leftVertex rightVertex : Fin (vertexRank + 1)) : Prop :=
   ∃ edge ∈ edgeSet,
@@ -216,33 +216,33 @@ def EdgeAdjacent (graph : MultigraphOnGround edgeCount vertexRank)
 
 /-- Reachability through an edge subset: the reflexive–transitive closure of
 adjacency. -/
-def EdgeReachable (graph : MultigraphOnGround edgeCount vertexRank)
+def IsEdgeReachable (graph : MultigraphOnGround edgeCount vertexRank)
     (edgeSet : Finset (Fin edgeCount)) :
     Fin (vertexRank + 1) → Fin (vertexRank + 1) → Prop :=
-  Relation.ReflTransGen (EdgeAdjacent graph edgeSet)
+  Relation.ReflTransGen (IsEdgeAdjacent graph edgeSet)
 
 /-- Adjacency is symmetric by construction. -/
-theorem edgeAdjacent_symm {graph : MultigraphOnGround edgeCount vertexRank}
+theorem isEdgeAdjacent_symm {graph : MultigraphOnGround edgeCount vertexRank}
     {edgeSet : Finset (Fin edgeCount)} {leftVertex rightVertex : Fin (vertexRank + 1)}
-    (hadj : EdgeAdjacent graph edgeSet leftVertex rightVertex) :
-    EdgeAdjacent graph edgeSet rightVertex leftVertex := by
+    (hadj : IsEdgeAdjacent graph edgeSet leftVertex rightVertex) :
+    IsEdgeAdjacent graph edgeSet rightVertex leftVertex := by
   obtain ⟨edge, hmem, hcase⟩ := hadj
   exact ⟨edge, hmem, hcase.symm⟩
 
 /-- Reachability is symmetric: walk the adjacency chain backwards. -/
-theorem edgeReachable_symm {graph : MultigraphOnGround edgeCount vertexRank}
+theorem isEdgeReachable_symm {graph : MultigraphOnGround edgeCount vertexRank}
     {edgeSet : Finset (Fin edgeCount)} {source target : Fin (vertexRank + 1)}
-    (hreach : EdgeReachable graph edgeSet source target) :
-    EdgeReachable graph edgeSet target source := by
+    (hreach : IsEdgeReachable graph edgeSet source target) :
+    IsEdgeReachable graph edgeSet target source := by
   induction hreach with
   | refl => exact Relation.ReflTransGen.refl
   | tail _ hstep ihead =>
-      exact Relation.ReflTransGen.head (edgeAdjacent_symm hstep) ihead
+      exact Relation.ReflTransGen.head (isEdgeAdjacent_symm hstep) ihead
 
 /-- An edge of the subset joins its endpoints. -/
-theorem edgeReachable_endpoints (graph : MultigraphOnGround edgeCount vertexRank)
+theorem isEdgeReachable_endpoints (graph : MultigraphOnGround edgeCount vertexRank)
     {edgeSet : Finset (Fin edgeCount)} {edge : Fin edgeCount} (hmem : edge ∈ edgeSet) :
-    EdgeReachable graph edgeSet (graph.edgeTail edge) (graph.edgeHead edge) :=
+    IsEdgeReachable graph edgeSet (graph.edgeTail edge) (graph.edgeHead edge) :=
   Relation.ReflTransGen.single ⟨edge, hmem, Or.inl ⟨rfl, rfl⟩⟩
 
 /-- An edge subset **spans** when every vertex is reachable from the ground
@@ -250,7 +250,7 @@ vertex.  For a subset of cardinality `vertexRank` this is exactly spanning
 connectivity of the corresponding subgraph. -/
 def IsGroundConnected (graph : MultigraphOnGround edgeCount vertexRank)
     (edgeSet : Finset (Fin edgeCount)) : Prop :=
-  ∀ vertex, EdgeReachable graph edgeSet (Fin.last vertexRank) vertex
+  ∀ vertex, IsEdgeReachable graph edgeSet (Fin.last vertexRank) vertex
 
 /-- A **spanning tree** of the multigraph, in the connected-plus-count form:
 `vertexRank` edges connecting every vertex to the ground.  (Equivalence with
@@ -269,7 +269,7 @@ theorem groundedPotential_eq_of_reachable
       groundedPotential reducedPotential (graph.edgeTail edge)
         = groundedPotential reducedPotential (graph.edgeHead edge))
     {source target : Fin (vertexRank + 1)}
-    (hreach : EdgeReachable graph edgeSet source target) :
+    (hreach : IsEdgeReachable graph edgeSet source target) :
     groundedPotential reducedPotential source = groundedPotential reducedPotential target := by
   induction hreach with
   | refl => rfl
@@ -322,13 +322,13 @@ kills positive definiteness. -/
 noncomputable def componentIndicator (graph : MultigraphOnGround edgeCount vertexRank)
     (edgeSet : Finset (Fin edgeCount)) (baseVertex : Fin (vertexRank + 1)) :
     Fin (vertexRank + 1) → ℝ :=
-  fun vertex => if EdgeReachable graph edgeSet baseVertex vertex then 1 else 0
+  fun vertex => if IsEdgeReachable graph edgeSet baseVertex vertex then 1 else 0
 
 /-- The component indicator is `1` inside the component. -/
 theorem componentIndicator_of_reachable
     {graph : MultigraphOnGround edgeCount vertexRank}
     {edgeSet : Finset (Fin edgeCount)} {baseVertex vertex : Fin (vertexRank + 1)}
-    (hreach : EdgeReachable graph edgeSet baseVertex vertex) :
+    (hreach : IsEdgeReachable graph edgeSet baseVertex vertex) :
     componentIndicator graph edgeSet baseVertex vertex = 1 := by
   classical
   rw [componentIndicator, if_pos hreach]
@@ -337,7 +337,7 @@ theorem componentIndicator_of_reachable
 theorem componentIndicator_of_not_reachable
     {graph : MultigraphOnGround edgeCount vertexRank}
     {edgeSet : Finset (Fin edgeCount)} {baseVertex vertex : Fin (vertexRank + 1)}
-    (hreach : ¬ EdgeReachable graph edgeSet baseVertex vertex) :
+    (hreach : ¬ IsEdgeReachable graph edgeSet baseVertex vertex) :
     componentIndicator graph edgeSet baseVertex vertex = 0 := by
   classical
   rw [componentIndicator, if_neg hreach]
@@ -352,8 +352,8 @@ theorem isGroundConnected_of_posDef_laplacianOn
     IsGroundConnected graph edgeSet := by
   by_contra hnot
   obtain ⟨badVertex, hbad⟩ := not_forall.mp hnot
-  have hgroundOut : ¬ EdgeReachable graph edgeSet badVertex (Fin.last vertexRank) :=
-    fun hreach => hbad (edgeReachable_symm hreach)
+  have hgroundOut : ¬ IsEdgeReachable graph edgeSet badVertex (Fin.last vertexRank) :=
+    fun hreach => hbad (isEdgeReachable_symm hreach)
   set reducedIndicator : Fin vertexRank → ℝ :=
     fun coord => componentIndicator graph edgeSet badVertex coord.castSucc
     with hreducedIndicator
@@ -371,16 +371,16 @@ theorem isGroundConnected_of_posDef_laplacianOn
         = groundedPotential reducedIndicator (graph.edgeHead edge) := by
     intro edge hmem
     rw [hgrounded, hgrounded]
-    by_cases htail : EdgeReachable graph edgeSet badVertex (graph.edgeTail edge)
+    by_cases htail : IsEdgeReachable graph edgeSet badVertex (graph.edgeTail edge)
     · rw [componentIndicator_of_reachable htail,
-        componentIndicator_of_reachable (htail.trans (edgeReachable_endpoints graph hmem))]
+        componentIndicator_of_reachable (htail.trans (isEdgeReachable_endpoints graph hmem))]
     · rw [componentIndicator_of_not_reachable htail,
         componentIndicator_of_not_reachable
           (fun hhead => htail
-            (hhead.trans (edgeReachable_symm (edgeReachable_endpoints graph hmem))))]
+            (hhead.trans (isEdgeReachable_symm (isEdgeReachable_endpoints graph hmem))))]
   have hne : reducedIndicator ≠ 0 := by
     intro hzero
-    have hnone : ∀ vertex, ¬ EdgeReachable graph edgeSet badVertex vertex := by
+    have hnone : ∀ vertex, ¬ IsEdgeReachable graph edgeSet badVertex vertex := by
       intro vertex
       induction vertex using Fin.lastCases with
       | last => exact hgroundOut
@@ -703,16 +703,16 @@ theorem cycleGraph_edgeHead_cycleVertex (vertexRank idx : ℕ) :
 
 /-- Every vertex of the cycle is reachable from vertex zero. -/
 theorem cycleGraph_reachable_from_zero (vertexRank : ℕ) (vertex : Fin (vertexRank + 1)) :
-    EdgeReachable (cycleGraph vertexRank) Finset.univ 0 vertex := by
+    IsEdgeReachable (cycleGraph vertexRank) Finset.univ 0 vertex := by
   have hstep : ∀ steps : ℕ,
-      EdgeReachable (cycleGraph vertexRank) Finset.univ 0 (cycleVertex vertexRank steps) := by
+      IsEdgeReachable (cycleGraph vertexRank) Finset.univ 0 (cycleVertex vertexRank steps) := by
     intro steps
     induction steps with
     | zero =>
         rw [cycleVertex_zero]
         exact Relation.ReflTransGen.refl
     | succ previousStep ihead =>
-        have hadj : EdgeAdjacent (cycleGraph vertexRank) Finset.univ
+        have hadj : IsEdgeAdjacent (cycleGraph vertexRank) Finset.univ
             (cycleVertex vertexRank previousStep)
             (cycleVertex vertexRank (previousStep + 1)) :=
           ⟨cycleVertex vertexRank previousStep, Finset.mem_univ _,
@@ -725,7 +725,7 @@ theorem cycleGraph_reachable_from_zero (vertexRank : ℕ) (vertex : Fin (vertexR
 /-- The cycle is connected. -/
 theorem cycleGraph_isGroundConnected (vertexRank : ℕ) :
     IsGroundConnected (cycleGraph vertexRank) Finset.univ := fun vertex =>
-  (edgeReachable_symm
+  (isEdgeReachable_symm
       (cycleGraph_reachable_from_zero vertexRank (Fin.last vertexRank))).trans
     (cycleGraph_reachable_from_zero vertexRank vertex)
 

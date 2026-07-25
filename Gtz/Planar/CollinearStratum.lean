@@ -150,7 +150,7 @@ theorem collinear_stratum_empty {m : ℕ} (weight signedPos : Fin m → ℝ)
       nlinarith [(hweightPos c).le, hcap']
     linarith [hposMassOne, hbound, hsideWeights, hnegWeightPos]
   · -- otherwise the whole negative side is capped
-    push_neg at hdeep
+    push Not at hdeep
     have hbound : negMass ≤ ∑ c ∈ negSide, weight c := by
       rw [hnegMass]
       refine Finset.sum_le_sum fun c hc => ?_

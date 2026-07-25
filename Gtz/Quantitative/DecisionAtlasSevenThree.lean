@@ -461,7 +461,7 @@ def IsInCell {m : ℕ} (cell : DecisionCell m) (D : WeightedDesign m 3) : Prop :
 /-- A cell DISCHARGES its obligation when its assigned triple satisfies both
 discriminant legs at every all-heavy design lying in the cell. This is the one
 thing a certificate has to supply per cell; everything else is bookkeeping. -/
-def CellDischarges {m : ℕ} (cell : DecisionCell m) : Prop :=
+def DoesCellDischarge {m : ℕ} (cell : DecisionCell m) : Prop :=
   ∀ D : WeightedDesign m 3, AllHeavy D → IsInCell cell D →
     0 ≤ discriminantTrace D cell.pivot cell.pairFirst cell.pairSecond
       ∧ 0 ≤ discriminantTie D cell.pivot cell.pairFirst cell.pairSecond
@@ -474,13 +474,13 @@ structure DecisionAtlas (m : ℕ) where
 
 /-- The atlas COVERS when every all-heavy design lies in some cell. This is the
 combinatorial half of the work, and the half the numerics say is hard. -/
-def AtlasCovers {m : ℕ} (atlas : DecisionAtlas m) : Prop :=
+def DoesAtlasCover {m : ℕ} (atlas : DecisionAtlas m) : Prop :=
   ∀ D : WeightedDesign m 3, AllHeavy D → ∃ cell ∈ atlas.cells, IsInCell cell D
 
 /-- The atlas DISCHARGES when every one of its cells does. This is the
 certificate half. -/
-def AtlasDischarges {m : ℕ} (atlas : DecisionAtlas m) : Prop :=
-  ∀ cell ∈ atlas.cells, CellDischarges cell
+def DoesAtlasDischarge {m : ℕ} (atlas : DecisionAtlas m) : Prop :=
+  ∀ cell ∈ atlas.cells, DoesCellDischarge cell
 
 /-- **ATLAS SOUNDNESS**, unconditionally.
 
@@ -501,7 +501,7 @@ The statement: a covering, discharging atlas at size
 new mathematics, no finiteness of the cell list, no property of the
 sign-condition language. -/
 theorem discriminantCovering_of_atlas {m : ℕ} (atlas : DecisionAtlas m)
-    (hcovers : AtlasCovers atlas) (hdischarges : AtlasDischarges atlas) :
+    (hcovers : DoesAtlasCover atlas) (hdischarges : DoesAtlasDischarge atlas) :
     DiscriminantCovering m := by
   intro D hheavy
   obtain ⟨cell, hcellMem, hinCell⟩ := hcovers D hheavy
@@ -513,7 +513,7 @@ theorem discriminantCovering_of_atlas {m : ℕ} (atlas : DecisionAtlas m)
 proves weighted GTZ at rank three for every size, through
 `discriminantCovering_seven_iff_rank_three`. -/
 theorem gtzWeightedAll_three_of_atlasSeven (atlas : DecisionAtlas 7)
-    (hcovers : AtlasCovers atlas) (hdischarges : AtlasDischarges atlas) :
+    (hcovers : DoesAtlasCover atlas) (hdischarges : DoesAtlasDischarge atlas) :
     GtzWeightedAll 3 :=
   discriminantCovering_seven_iff_rank_three.mp
     (discriminantCovering_of_atlas atlas hcovers hdischarges)
@@ -522,7 +522,7 @@ theorem gtzWeightedAll_three_of_atlasSeven (atlas : DecisionAtlas 7)
 `(7,3)` proves `GtzOriginal n 3` for every `n`, through
 `gtz_original_rank_three_of_discriminantCovering_seven`. -/
 theorem gtzOriginal_rank_three_of_atlasSeven (atlas : DecisionAtlas 7)
-    (hcovers : AtlasCovers atlas) (hdischarges : AtlasDischarges atlas) :
+    (hcovers : DoesAtlasCover atlas) (hdischarges : DoesAtlasDischarge atlas) :
     ∀ n, 0 < n → GtzOriginal n 3 :=
   gtz_original_rank_three_of_discriminantCovering_seven
     (discriminantCovering_of_atlas atlas hcovers hdischarges)
@@ -575,7 +575,7 @@ obligation. -/
 theorem tautologicalCell_discharges {m : ℕ} {pivot pairFirst pairSecond : Fin m}
     (hpivotFirst : pivot ≠ pairFirst) (hpivotSecond : pivot ≠ pairSecond)
     (hpairDistinct : pairFirst ≠ pairSecond) :
-    CellDischarges (tautologicalCell hpivotFirst hpivotSecond hpairDistinct) :=
+    DoesCellDischarge (tautologicalCell hpivotFirst hpivotSecond hpairDistinct) :=
   fun D _ hinCell =>
     (isInCell_tautologicalCell_iff D hpivotFirst hpivotSecond hpairDistinct).mp hinCell
 
@@ -588,7 +588,7 @@ noncomputable def tautologicalAtlas (m : ℕ) : DecisionAtlas m where
       tautologicalCell triple.property.1 triple.property.2.1 triple.property.2.2
 
 theorem tautologicalAtlas_discharges (m : ℕ) :
-    AtlasDischarges (tautologicalAtlas m) := by
+    DoesAtlasDischarge (tautologicalAtlas m) := by
   intro cell hcellMem
   simp only [tautologicalAtlas, List.mem_map] at hcellMem
   obtain ⟨triple, -, hcellEq⟩ := hcellMem
@@ -598,7 +598,7 @@ theorem tautologicalAtlas_discharges (m : ℕ) :
 
 /-- The tautological atlas covers exactly when the covering holds. -/
 theorem tautologicalAtlas_covers_iff (m : ℕ) :
-    AtlasCovers (tautologicalAtlas m) ↔ DiscriminantCovering m := by
+    DoesAtlasCover (tautologicalAtlas m) ↔ DiscriminantCovering m := by
   constructor
   · intro hcovers
     exact discriminantCovering_of_atlas (tautologicalAtlas m) hcovers
@@ -617,7 +617,7 @@ theorem tautologicalAtlas_covers_iff (m : ℕ) :
 covering, discharging decision atlas at size `m` is equivalent to
 `DiscriminantCovering m`. -/
 theorem exists_atlas_iff_discriminantCovering (m : ℕ) :
-    (∃ atlas : DecisionAtlas m, AtlasCovers atlas ∧ AtlasDischarges atlas)
+    (∃ atlas : DecisionAtlas m, DoesAtlasCover atlas ∧ DoesAtlasDischarge atlas)
       ↔ DiscriminantCovering m := by
   constructor
   · rintro ⟨atlas, hcovers, hdischarges⟩
@@ -630,7 +630,7 @@ theorem exists_atlas_iff_discriminantCovering (m : ℕ) :
 three for every `n` IS the existence of one finite covering, discharging decision
 atlas at `(7,3)`. -/
 theorem exists_atlas_seven_iff_rank_three :
-    (∃ atlas : DecisionAtlas 7, AtlasCovers atlas ∧ AtlasDischarges atlas)
+    (∃ atlas : DecisionAtlas 7, DoesAtlasCover atlas ∧ DoesAtlasDischarge atlas)
       ↔ GtzWeightedAll 3 :=
   (exists_atlas_iff_discriminantCovering 7).trans
     discriminantCovering_seven_iff_rank_three

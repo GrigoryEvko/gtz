@@ -82,7 +82,7 @@ def IsEquiangularAt {m k : ℕ} (vec : Fin m → (Fin k → ℝ)) (cosSqValue : 
       = cosSqValue * ((vec first ⬝ᵥ vec first) * (vec second ⬝ᵥ vec second))
 
 /-- Two real vectors span the same line: Cauchy–Schwarz holds with equality. -/
-def SpansSameLine {k : ℕ} (leftVec rightVec : Fin k → ℝ) : Prop :=
+def DoesSpanSameLine {k : ℕ} (leftVec rightVec : Fin k → ℝ) : Prop :=
   (leftVec ⬝ᵥ rightVec) ^ 2 = (leftVec ⬝ᵥ leftVec) * (rightVec ⬝ᵥ rightVec)
 
 /-- A complex family is equiangular at squared cosine `cosSqValue`. -/
@@ -94,7 +94,7 @@ def ComplexIsEquiangularAt {m k : ℕ} (vec : Fin m → (Fin k → ℂ)) (cosSqV
         * ((star (vec first) ⬝ᵥ vec first) * (star (vec second) ⬝ᵥ vec second))
 
 /-- Two complex vectors span the same line. -/
-def ComplexSpansSameLine {k : ℕ} (leftVec rightVec : Fin k → ℂ) : Prop :=
+def DoesComplexSpanSameLine {k : ℕ} (leftVec rightVec : Fin k → ℂ) : Prop :=
   (star leftVec ⬝ᵥ rightVec) * (star rightVec ⬝ᵥ leftVec)
     = (star leftVec ⬝ᵥ leftVec) * (star rightVec ⬝ᵥ rightVec)
 
@@ -112,8 +112,8 @@ theorem tetraAtom_isEquiangular : IsEquiangularAt tetraAtom (1 / 9) := by
 
 /-- The four tetrahedron directions span four DISTINCT lines. -/
 theorem tetraAtom_distinct_lines {first second : Fin 4} (hne : first ≠ second) :
-    ¬ SpansSameLine (tetraAtom first) (tetraAtom second) := by
-  rw [SpansSameLine, tetraAtom_dot_sq_of_ne hne, tetraAtom_dot_self,
+    ¬ DoesSpanSameLine (tetraAtom first) (tetraAtom second) := by
+  rw [DoesSpanSameLine, tetraAtom_dot_sq_of_ne hne, tetraAtom_dot_self,
     tetraAtom_dot_self]
   norm_num
 
@@ -142,7 +142,7 @@ theorem splitTetraAtom_not_equiangular :
 /-- The six atoms of the `(6,3)` tie fall into exactly the four tetrahedron
 directions: two spans agree iff their direction indices agree. -/
 theorem splitTetraAtom_sameLine_iff (first second : Fin 6) :
-    SpansSameLine (splitTetraAtom first) (splitTetraAtom second)
+    DoesSpanSameLine (splitTetraAtom first) (splitTetraAtom second)
       ↔ splitTetraDirIndex first = splitTetraDirIndex second := by
   constructor
   · intro hsame
@@ -153,7 +153,7 @@ theorem splitTetraAtom_sameLine_iff (first second : Fin 6) :
       simp only [splitTetraAtom, heq]
     have hlev : splitTetraAtom second ⬝ᵥ splitTetraAtom second = 3 :=
       tetraAtom_dot_self _
-    rw [SpansSameLine, hatomEq, hlev]
+    rw [DoesSpanSameLine, hatomEq, hlev]
     norm_num
 
 /-- **The `(6,3)` tie carries exactly FOUR distinct lines, not six.** The real
@@ -270,8 +270,8 @@ theorem icosaAtom_isEquiangular : IsEquiangularAt icosaAtom (1 / 5) := by
 
 /-- **The six diagonals span six DISTINCT lines**: squared cosine `1/5`, not `1`. -/
 theorem icosaAtom_distinct_lines {first second : Fin 6} (hne : first ≠ second) :
-    ¬ SpansSameLine (icosaAtom first) (icosaAtom second) := by
-  rw [SpansSameLine, icosaAtom_dot_sq_of_ne hne, icosaAtom_leverage,
+    ¬ DoesSpanSameLine (icosaAtom first) (icosaAtom second) := by
+  rw [DoesSpanSameLine, icosaAtom_dot_sq_of_ne hne, icosaAtom_leverage,
     icosaAtom_leverage]
   norm_num
 
@@ -392,7 +392,7 @@ theorem exists_maximal_equiangular_design_strictly_dominating :
     ∃ D : WeightedDesign 6 3,
       IsEquiangularAt D.atom (1 / 5)
       ∧ (∀ first second : Fin 6, first ≠ second →
-          ¬ SpansSameLine (D.atom first) (D.atom second))
+          ¬ DoesSpanSameLine (D.atom first) (D.atom second))
       ∧ ∃ C : Finset (Fin 6), C.card = 3 ∧ (subsetSum D C - 1).PosDef :=
   ⟨icosaDesign, icosaAtom_isEquiangular,
     fun _ _ hne => icosaAtom_distinct_lines hne,
@@ -407,8 +407,8 @@ so three different squared cosines occur and the family is not equiangular. -/
 
 /-- The two spikes of the padded SIC span the SAME line: `√10·e₂` and `−√10·e₂`. -/
 theorem paddedAtom_spikes_share_a_line :
-    ComplexSpansSameLine (paddedAtom 4) (paddedAtom 5) := by
-  rw [ComplexSpansSameLine, paddedAtom_spike_four, paddedAtom_spike_five]
+    DoesComplexSpanSameLine (paddedAtom 4) (paddedAtom 5) := by
+  rw [DoesComplexSpanSameLine, paddedAtom_spike_four, paddedAtom_spike_five]
   simp only [dotProduct, Fin.sum_univ_three, Pi.star_apply, RCLike.star_def,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
     Matrix.cons_val_two, Matrix.tail_cons, map_zero, map_neg, spikeAmpC_conj]

@@ -119,7 +119,7 @@ theorem exists_value_nonpos_of_positive_covector
     (hannihilate : ∑ i, mult i * value i = 0) :
     ∃ i, value i ≤ 0 := by
   by_contra hcontra
-  push_neg at hcontra
+  push Not at hcontra
   have hpos : 0 < ∑ i, mult i * value i :=
     Finset.sum_pos (fun i _ => mul_pos (hmultPos i) (hcontra i))
       ⟨witness, Finset.mem_univ witness⟩

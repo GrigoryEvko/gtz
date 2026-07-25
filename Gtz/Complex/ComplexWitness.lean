@@ -23,6 +23,7 @@ consume realness somewhere. The campaign's field-discipline gate is this
 theorem.
 -/
 import Mathlib
+import Gtz.LinAlg.PsdKit
 
 namespace Gtz
 
@@ -91,8 +92,6 @@ theorem pair_not_posSemidef {g h : Fin 2 → ℂ}
   linarith
 
 /-! ### The cube root of unity -/
-
-theorem sqrt_three_sq : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
 
 /-- `ω = e^{2πi/3}`, written with explicit real and imaginary parts. -/
 noncomputable def omegaRoot : ℂ := ⟨-(1 / 2 : ℝ), Real.sqrt 3 / 2⟩

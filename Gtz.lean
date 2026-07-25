@@ -146,7 +146,6 @@ import Gtz.Ties.TetrahedronTie
 import Gtz.Ties.TieEigenvector
 
 -- the axiom ledger for everything above
-import Gtz.Audit
 import Gtz.Design.GraphicInstance
 import Gtz.Quantitative.CollarExponent
 import Gtz.Reduction.RankInductionStep
@@ -160,3 +159,10 @@ import Gtz.Reduction.StrengthenedInductionHypothesis
 import Gtz.Complex.PerRankConstantLedger
 import Gtz.Reduction.RealVolumeFloor
 import Gtz.Reduction.DiagonalRungs
+import Gtz.Quantitative.GlobalMinimumRankThree
+import Gtz.Design.EqualityLocus
+import Gtz.Complex.AtomSplitting
+
+-- the axiom ledger for everything above
+import Gtz.Audit
+import Gtz.Quantitative.PositivstellensatzRankThree

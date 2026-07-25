@@ -88,7 +88,7 @@ co-weights. At `(6,3)` this is `3/5`, attained exactly at the octahedron. -/
 theorem exists_pivot_le_average (D : WeightedDesign m k) (hm : 2 ≤ m) :
     ∃ c, pivot D Finset.univ c ≤ (k : ℝ) / ((m : ℝ) - 1) := by
   by_contra hcontra
-  push_neg at hcontra
+  push Not at hcontra
   have hcoweightPos : ∀ c ∈ Finset.univ, (0 : ℝ) < 1 - D.weight c := fun c _ =>
     (one_sub_weight_mem D hm c).1
   have hstrict : ∑ c, (1 - D.weight c) * ((k : ℝ) / ((m : ℝ) - 1))
@@ -130,7 +130,7 @@ theorem card_pivot_le_one_ge (D : WeightedDesign m k) (hm : 2 ≤ m) :
     refine Finset.sum_nonneg fun c hc => ?_
     have hgt : 1 < pivot D Finset.univ c := by
       by_contra hle
-      push_neg at hle
+      push Not at hle
       have hmem : c ∈ lightSet := by
         rw [hlightSet]
         exact Finset.mem_filter.mpr ⟨Finset.mem_univ c, hle⟩
@@ -157,7 +157,7 @@ theorem card_pivot_le_one_ge (D : WeightedDesign m k) (hm : 2 ≤ m) :
     have hallHeavy : ∀ c, 1 < pivot D Finset.univ c := by
       intro c
       by_contra hle
-      push_neg at hle
+      push Not at hle
       have hmem : c ∈ lightSet := by
         rw [hlightSet]
         exact Finset.mem_filter.mpr ⟨Finset.mem_univ c, hle⟩

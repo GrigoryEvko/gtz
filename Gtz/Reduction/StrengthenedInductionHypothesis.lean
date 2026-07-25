@@ -25,7 +25,7 @@ budget) — turning it into a rank-one Loewner condition, and then:
   `(pivot, subset)` pair IS domination of `insert pivot subset`, an equivalence.
 * `BorderedSlackLifting` — the candidate `Q`, in generalized-Schur form, with
   `gtzWeighted_succ_of_borderedSlackLifting` for (a).
-* `PropagatesBorderedSlack` — (b), stated as a `Prop`, never as a theorem, with the
+* `DoesPropagateBorderedSlack` — (b), stated as a `Prop`, never as a theorem, with the
   missing ingredient named.
 * Three REFUTATIONS of the candidates the experiments killed:
   `not_posSemidef_gramShift_of_overfull` (the literal "bordered-PSD at every remaining
@@ -112,7 +112,7 @@ unmeetable: `BorderedSlackLifting 0` and `BorderedSlackLifting 1` both HOLD, fro
 `GtzWeighted size 3` is an off-by-one, it gives `GtzWeighted size 2`. And (a) holds
 outright. **Only (b) is open, and (b) is verbatim the original induction step.** The
 wall therefore stands exactly where it did; what is refuted is the REASON given for it.
-That is why `PropagatesBorderedSlack` is a `Prop` below and not a theorem.
+That is why `DoesPropagateBorderedSlack` is a `Prop` below and not a theorem.
 
 **Selection rules, all refuted.** Downstairs rules at `(11,4)`, exact best-case rates:
 `minTraceInverse` (the Batson–Spielman–Srivastava lower barrier at 0) 595/624,
@@ -824,7 +824,7 @@ weaker sufficient condition. Requirement (c) is met, not unmeetable:
 
 Nothing below derives this. It is recorded so that a future consumer states its
 dependence rather than assuming it. -/
-def PropagatesBorderedSlack (rank : ℕ) : Prop :=
+def DoesPropagateBorderedSlack (rank : ℕ) : Prop :=
   BorderedSlackLifting rank → BorderedSlackLifting (rank + 1)
 
 /-- **The propagation Prop is exactly as strong as the ladder it would climb.** Given a
@@ -832,7 +832,7 @@ base case and propagation at every rank, GTZ falls at every rank — the shape t
 was after, with the two unproved inputs isolated as hypotheses. This is a conditional,
 not a closure. -/
 theorem gtzWeightedAll_of_base_of_propagates (hbase : BorderedSlackLifting 0)
-    (hpropagates : ∀ rank, PropagatesBorderedSlack rank) :
+    (hpropagates : ∀ rank, DoesPropagateBorderedSlack rank) :
     ∀ rank, GtzWeightedAll rank := by
   have hall : ∀ rank, BorderedSlackLifting rank := by
     intro rank
@@ -895,7 +895,7 @@ theorem not_hasUniformDominationSlack_four_three : ¬ HasUniformDominationSlack 
 
 /-! ### The route's named residual, refuted
 
-`Gtz.Reduction.RankInductionStep.HeavyPivotInDominator` is what the wall file records as
+`Gtz.Reduction.RankInductionStep.HasHeavyPivotInDominator` is what the wall file records as
 surviving: some dominating `(rank+1)`-subset contains an atom of leverage at least
 `rank + 1`. As CODED that is false, and the witness below is an explicit all-heavy
 `(4,3)` design — smaller than the unmechanized `m = 11`, `dim = 4` witness the wall file
@@ -1154,7 +1154,7 @@ theorem lightTopAtom_heavy_iff_pivot (index : Fin 4)
   rw [lightTopAtom_leverage_simplex index hnotPivot] at hheavy
   norm_num at hheavy
 
-/-- **THE ROUTE'S NAMED RESIDUAL IS FALSE AS CODED.** `HeavyPivotInDominator 4 2` demands
+/-- **THE ROUTE'S NAMED RESIDUAL IS FALSE AS CODED.** `HasHeavyPivotInDominator 4 2` demands
 a dominating triple containing an atom of leverage at least `3`. In `lightTopDesign` the
 only such atom is the pivot, the pivot lies in no dominating triple, and the unique
 dominating triple carries leverage `23/8 = 2.875` throughout.
@@ -1162,7 +1162,7 @@ dominating triple carries leverage `23/8 = 2.875` throughout.
 The design is all-heavy and satisfies GTZ (`lightTopDesign_dominates_simplexTriple`), so
 this refutes the residual without touching the 1997 statement — which is exactly the
 wall file's own reading of the residual as "formally stronger than GTZ". -/
-theorem not_heavyPivotInDominator_four_two : ¬ HeavyPivotInDominator 4 2 := by
+theorem not_heavyPivotInDominator_four_two : ¬ HasHeavyPivotInDominator 4 2 := by
   intro hresidual
   obtain ⟨dominator, pivot, hcard, hpivotMem, hheavy, hdominates⟩ :=
     hresidual lightTopDesign

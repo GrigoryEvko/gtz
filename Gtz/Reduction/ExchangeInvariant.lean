@@ -1,7 +1,7 @@
 /-
 # Bounded-radius exchange: the honest ledger for three candidate scores
 
-`Gtz.Reduction.ExchangeRepair` reduces weighted GTZ to `ExchangeImproves m k score`:
+`Gtz.Reduction.ExchangeRepair` reduces weighted GTZ to `DoesExchangeImprove m k score`:
 any real-valued score on `k`-subsets that strictly increases at every non-dominating
 `k`-subset closes the conjecture at that size, because a finite argmax cannot be
 improved.  Its repair lemmas show that a subset failing in a direction `w` always admits
@@ -19,11 +19,11 @@ Every design exhibited here SATISFIES GTZ; what fails is the local-search rule.
 **Score 1 — the least eigenvalue** `λ_min(S_C)`, the score `Dominates` literally is
 (`dominates_iff_one_le_leastEigenvalue`).
 
-  * unrestricted `ExchangeImproves`: **TAUTOLOGICAL.**
-    `exchangeImproves_leastEigenvalue_iff_gtzWeighted` and, for every score meeting the
-    specification, `exchangeImproves_iff_gtzWeighted_ofSpec`: the hypothesis is
+  * unrestricted `DoesExchangeImprove`: **TAUTOLOGICAL.**
+    `doesExchangeImprove_leastEigenvalue_iff_gtzWeighted` and, for every score meeting the
+    specification, `doesExchangeImprove_iff_gtzWeighted_ofSpec`: the hypothesis is
     LOGICALLY EQUIVALENT to `GtzWeighted m k`.  Proving it IS proving GTZ.  Both are
-    instances of one lemma, `exchangeImproves_iff_gtzWeighted_ofThreshold` — any score
+    instances of one lemma, `doesExchangeImprove_iff_gtzWeighted_ofThreshold` — any score
     with a domination threshold is tautological, which is exactly why the shadow
     determinant (Score 3, threshold-free) is the only one whose UNBOUNDED refutation
     carries information.
@@ -38,13 +38,13 @@ Every design exhibited here SATISFIES GTZ; what fails is the local-search rule.
     inhabited (`isLeastEigenvalueScore_leastEigenvalue`) and categorical
     (`eq_of_isLeastEigenvalueScore`).
   * radius `≥ 3` at rank three: **CONTENT-FREE, NOT REFUTED.**
-    `exchangeImprovesWithinRadius_iff_unbounded_of_rank_le` collapses it to the
+    `doesExchangeImproveWithinRadius_iff_unbounded_of_rank_le` collapses it to the
     unrestricted hypothesis, which is GTZ, which is OPEN.  "No radius survives with
     content" is the accurate statement; "every radius is refuted" would be false.
 
 **Score 2 — the clipped trace** `Σ_i min(λ_i(S_C), 1)`, the total domination mass.
 
-  * unrestricted: **TAUTOLOGICAL** (`exchangeImproves_clippedTrace_iff_gtzWeighted`),
+  * unrestricted: **TAUTOLOGICAL** (`doesExchangeImprove_clippedTrace_iff_gtzWeighted`),
     by the same threshold lemma at threshold `k`
     (`dominates_iff_clippedTrace_eq_rank`).
   * radius `1` and radius `2` at `(7,3)`: **REFUTED**, unrestricted
@@ -74,7 +74,7 @@ objective on the design's projection form (`Gtz.LinAlg.ProjectionForm`).
 ## Residual — what is NOT decided here
 
 `GtzWeighted 6 3`, `GtzWeighted 7 3`, `GtzWeightedHeavy 6 3`, `GtzWeightedHeavy 7 3` and
-`GtzWeightedAll 3` are untouched; so is `ExchangeImproves m k score` at any
+`GtzWeightedAll 3` are untouched; so is `DoesExchangeImprove m k score` at any
 threshold-shaped score, which is those conjectures verbatim.  Nothing here bears on rank
 `≥ 4`, and nothing bears on sizes other than the two witnessed ones: the witnesses are
 `(6,3)` and `(7,3)`, and no padding lemma is mechanized.
@@ -83,14 +83,14 @@ The smallest remaining obstruction, stated precisely.  `Gtz.rank_three_of_heavy_
 consumes exactly `GtzWeightedHeavy 6 3` and `GtzWeightedHeavy 7 3`, so a bounded-radius
 local search closes rank three iff it supplies BOTH.  What is left open is therefore
 
-    ExchangeImprovesWithinRadiusHeavy 6 3 2 score  ∧  ExchangeImprovesWithinRadiusHeavy 7 3 2 score
+    DoesExchangeImproveWithinRadiusHeavy 6 3 2 score  ∧  DoesExchangeImproveWithinRadiusHeavy 7 3 2 score
 
 for a score that is NEITHER threshold-shaped NOR the shadow determinant.  For the least
 eigenvalue BOTH conjuncts are refuted below; for the clipped trace the size-seven
 conjunct is refuted, which already breaks the conjunction — its size-six conjunct is NOT
 decided here.  A threshold-shaped score cannot help even if its bounded form survived at
 some other size, because its unbounded form is already GTZ
-(`exchangeImproves_iff_gtzWeighted_ofThreshold`); the shadow determinant cannot help at
+(`doesExchangeImprove_iff_gtzWeighted_ofThreshold`); the shadow determinant cannot help at
 size seven at all.  No score outside those two families is exhibited anywhere in this
 campaign; this file does not rule one out, and does not claim to.
 
@@ -368,13 +368,13 @@ theorem le_lambdaMinMat_iff_forall_dotProduct {dim : ℕ} [Nonempty (Fin dim)]
 
 /-! ## Bounded-radius exchange
 
-`Gtz.ExchangeImproves` carries no radius bound. The route's actual content was the
+`Gtz.DoesExchangeImprove` carries no radius bound. The route's actual content was the
 bounded version, so it needs its own name. -/
 
 /-- **The bounded-radius exchange hypothesis**: every non-dominating `k`-subset admits a
 strictly better `k`-subset WITHIN exchange distance `radius`. This — not the unbounded
-`Gtz.ExchangeImproves` — is what a local-search proof of GTZ would have to supply. -/
-def ExchangeImprovesWithinRadius (m k radius : ℕ)
+`Gtz.DoesExchangeImprove` — is what a local-search proof of GTZ would have to supply. -/
+def DoesExchangeImproveWithinRadius (m k radius : ℕ)
     (score : WeightedDesign m k → Finset (Fin m) → ℝ) : Prop :=
   ∀ (D : WeightedDesign m k) (C : Finset (Fin m)), C.card = k → ¬ Dominates D C →
     ∃ improved : Finset (Fin m), improved.card = k ∧
@@ -383,9 +383,9 @@ def ExchangeImprovesWithinRadius (m k radius : ℕ)
 /-- **The bounded-radius hypothesis restricted to ALL-HEAVY designs.**  This is the form
 the campaign actually needs: `Gtz.gtzWeightedAll_of_heavy` reduces GTZ to all-heavy
 designs, so a local-search proof only ever had to handle those.  It is a WEAKER
-hypothesis than `ExchangeImprovesWithinRadius` (fewer designs to serve), hence refuting
+hypothesis than `DoesExchangeImproveWithinRadius` (fewer designs to serve), hence refuting
 it is the STRONGER statement. -/
-def ExchangeImprovesWithinRadiusHeavy (m k radius : ℕ)
+def DoesExchangeImproveWithinRadiusHeavy (m k radius : ℕ)
     (score : WeightedDesign m k → Finset (Fin m) → ℝ) : Prop :=
   ∀ (D : WeightedDesign m k), AllHeavy D → ∀ C : Finset (Fin m), C.card = k →
     ¬ Dominates D C →
@@ -401,19 +401,19 @@ def IsExchangeStuck (radius : ℕ) (score : WeightedDesign m k → Finset (Fin m
     exchangeDistance C candidate ≤ radius → ¬ (score D C < score D candidate)
 
 /-- Forgetting the radius bound lands in the unbounded hypothesis. -/
-theorem exchangeImproves_of_withinRadius {radius : ℕ}
+theorem doesExchangeImprove_of_withinRadius {radius : ℕ}
     (score : WeightedDesign m k → Finset (Fin m) → ℝ)
-    (himproves : ExchangeImprovesWithinRadius m k radius score) :
-    ExchangeImproves m k score := fun D C hcard hnotDominates => by
+    (himproves : DoesExchangeImproveWithinRadius m k radius score) :
+    DoesExchangeImprove m k score := fun D C hcard hnotDominates => by
   obtain ⟨improved, himprovedCard, _, hstrict⟩ := himproves D C hcard hnotDominates
   exact ⟨improved, himprovedCard, hstrict⟩
 
 /-- Widening the radius weakens the hypothesis, so a refutation at radius `wider`
 refutes every narrower radius. -/
-theorem exchangeImprovesWithinRadius_mono {radius wider : ℕ} (hle : radius ≤ wider)
+theorem doesExchangeImproveWithinRadius_mono {radius wider : ℕ} (hle : radius ≤ wider)
     (score : WeightedDesign m k → Finset (Fin m) → ℝ)
-    (himproves : ExchangeImprovesWithinRadius m k radius score) :
-    ExchangeImprovesWithinRadius m k wider score := fun D C hcard hnotDominates => by
+    (himproves : DoesExchangeImproveWithinRadius m k radius score) :
+    DoesExchangeImproveWithinRadius m k wider score := fun D C hcard hnotDominates => by
   obtain ⟨improved, himprovedCard, hdistance, hstrict⟩ := himproves D C hcard hnotDominates
   exact ⟨improved, himprovedCard, le_trans hdistance hle, hstrict⟩
 
@@ -423,19 +423,19 @@ was aiming at; the counterexample below shows its hypothesis is false at every r
 below the rank. -/
 theorem gtzWeighted_of_exchangeImprovesWithinRadius {radius : ℕ} (hsizeLe : k ≤ m)
     (score : WeightedDesign m k → Finset (Fin m) → ℝ)
-    (himproves : ExchangeImprovesWithinRadius m k radius score) : GtzWeighted m k :=
+    (himproves : DoesExchangeImproveWithinRadius m k radius score) : GtzWeighted m k :=
   gtzWeighted_of_exchangeImproves hsizeLe score
-    (exchangeImproves_of_withinRadius score himproves)
+    (doesExchangeImprove_of_withinRadius score himproves)
 
 /-- **Radius `k` is vacuous.** A `k`-subset is within exchange distance `k` of every
 `k`-subset, so radius-`k` local search is global search and the bounded hypothesis
 collapses to the unbounded one. Hence `k - 1` is the last radius that says anything, and
 that is precisely the radius the counterexample below refutes at `k = 3`. -/
-theorem exchangeImprovesWithinRadius_iff_unbounded_of_rank_le {radius : ℕ}
+theorem doesExchangeImproveWithinRadius_iff_unbounded_of_rank_le {radius : ℕ}
     (hrankLe : k ≤ radius) (score : WeightedDesign m k → Finset (Fin m) → ℝ) :
-    ExchangeImprovesWithinRadius m k radius score ↔ ExchangeImproves m k score := by
+    DoesExchangeImproveWithinRadius m k radius score ↔ DoesExchangeImprove m k score := by
   constructor
-  · exact exchangeImproves_of_withinRadius score
+  · exact doesExchangeImprove_of_withinRadius score
   · intro himproves D C hcard hnotDominates
     obtain ⟨improved, himprovedCard, hstrict⟩ := himproves D C hcard hnotDominates
     refine ⟨improved, himprovedCard, ?_, hstrict⟩
@@ -454,16 +454,16 @@ sits in the radius bound. The shadow determinant is NOT threshold-shaped, which 
 exactly why its unbounded refutation below carries information. -/
 
 /-- **A threshold score cannot be a lever.** If some level separates dominating from
-failing subsets then `ExchangeImproves` at that score is LOGICALLY EQUIVALENT to
+failing subsets then `DoesExchangeImprove` at that score is LOGICALLY EQUIVALENT to
 `GtzWeighted`: forward is the shipped reduction, backward hands back the dominating
 subset, which scores at the threshold while the failing one scores below it. -/
-theorem exchangeImproves_iff_gtzWeighted_ofThreshold (hsizeLe : k ≤ m)
+theorem doesExchangeImprove_iff_gtzWeighted_ofThreshold (hsizeLe : k ≤ m)
     (score : WeightedDesign m k → Finset (Fin m) → ℝ) (threshold : ℝ)
     (hdominating : ∀ (D : WeightedDesign m k) (C : Finset (Fin m)),
       Dominates D C → threshold ≤ score D C)
     (hfailing : ∀ (D : WeightedDesign m k) (C : Finset (Fin m)),
       ¬ Dominates D C → score D C < threshold) :
-    ExchangeImproves m k score ↔ GtzWeighted m k := by
+    DoesExchangeImprove m k score ↔ GtzWeighted m k := by
   refine ⟨gtzWeighted_of_exchangeImproves hsizeLe score, fun hgtz D C _hcard hfails => ?_⟩
   obtain ⟨dominator, hdominatorCard, hdominates⟩ := hgtz D
   exact ⟨dominator, hdominatorCard,
@@ -471,13 +471,13 @@ theorem exchangeImproves_iff_gtzWeighted_ofThreshold (hsizeLe : k ≤ m)
 
 /-- **The unbounded hypothesis at `λ_min` is a restatement of GTZ, not a step toward it.**
 Domination IS `1 ≤ λ_min(S_C)`, so the least eigenvalue is threshold-shaped at level one
-and `exchangeImproves_iff_gtzWeighted_ofThreshold` applies verbatim. The whole content of
+and `doesExchangeImprove_iff_gtzWeighted_ofThreshold` applies verbatim. The whole content of
 the route therefore had to come from the radius bound — which the counterexamples below
 remove. -/
-theorem exchangeImproves_leastEigenvalue_iff_gtzWeighted [Nonempty (Fin k)]
+theorem doesExchangeImprove_leastEigenvalue_iff_gtzWeighted [Nonempty (Fin k)]
     (hsizeLe : k ≤ m) :
-    ExchangeImproves m k (leastEigenvalue (m := m) (k := k)) ↔ GtzWeighted m k :=
-  exchangeImproves_iff_gtzWeighted_ofThreshold hsizeLe _ 1
+    DoesExchangeImprove m k (leastEigenvalue (m := m) (k := k)) ↔ GtzWeighted m k :=
+  doesExchangeImprove_iff_gtzWeighted_ofThreshold hsizeLe _ 1
     (fun D C hdominates => (dominates_iff_one_le_leastEigenvalue D C).mp hdominates)
     (fun D C hfails => lt_of_not_ge fun hge =>
       hfails ((dominates_iff_one_le_leastEigenvalue D C).mpr hge))
@@ -486,21 +486,21 @@ theorem exchangeImproves_leastEigenvalue_iff_gtzWeighted [Nonempty (Fin k)]
 
 The campaign's frontier is `GtzWeightedHeavy` (`rank_three_of_heavy_residuals`),
 so the honest target for a local-search score is the hypothesis restricted to
-all-heavy designs.  It is strictly weaker than `ExchangeImproves`, hence
+all-heavy designs.  It is strictly weaker than `DoesExchangeImprove`, hence
 refuting it is strictly stronger. -/
 
 /-- **The exchange hypothesis, restricted to all-heavy designs.**  Weaker than
-`ExchangeImproves`, and still enough to close the campaign's frontier. -/
-def ExchangeImprovesHeavy (m k : ℕ)
+`DoesExchangeImprove`, and still enough to close the campaign's frontier. -/
+def DoesExchangeImproveHeavy (m k : ℕ)
     (score : WeightedDesign m k → Finset (Fin m) → ℝ) : Prop :=
   ∀ (D : WeightedDesign m k), AllHeavy D → ∀ C : Finset (Fin m), C.card = k →
     ¬ Dominates D C →
       ∃ improved : Finset (Fin m), improved.card = k ∧ score D C < score D improved
 
 /-- The unrestricted hypothesis implies the all-heavy one. -/
-theorem exchangeImprovesHeavy_of_exchangeImproves
+theorem doesExchangeImproveHeavy_of_doesExchangeImprove
     (score : WeightedDesign m k → Finset (Fin m) → ℝ)
-    (himproves : ExchangeImproves m k score) : ExchangeImprovesHeavy m k score :=
+    (himproves : DoesExchangeImprove m k score) : DoesExchangeImproveHeavy m k score :=
   fun D _ C hcard hfails => himproves D C hcard hfails
 
 /-- **Local search closes the all-heavy frontier.**  Same finite-argmax argument
@@ -509,7 +509,7 @@ maximizing subset is taken for the given heavy design, and a strict improvement
 at it contradicts maximality. -/
 theorem gtzWeightedHeavy_of_exchangeImprovesHeavy (hsizeLe : k ≤ m)
     (score : WeightedDesign m k → Finset (Fin m) → ℝ)
-    (himproves : ExchangeImprovesHeavy m k score) : GtzWeightedHeavy m k := by
+    (himproves : DoesExchangeImproveHeavy m k score) : GtzWeightedHeavy m k := by
   intro D hheavy
   have hfamilyNonempty :
       (Finset.univ.powersetCard k : Finset (Finset (Fin m))).Nonempty :=
@@ -528,10 +528,10 @@ theorem gtzWeightedHeavy_of_exchangeImprovesHeavy (hsizeLe : k ≤ m)
 
 /-- The bounded all-heavy hypothesis forgets its radius into the unbounded all-heavy
 one. -/
-theorem exchangeImprovesHeavy_of_withinRadiusHeavy {radius : ℕ}
+theorem doesExchangeImproveHeavy_of_withinRadiusHeavy {radius : ℕ}
     (score : WeightedDesign m k → Finset (Fin m) → ℝ)
-    (himproves : ExchangeImprovesWithinRadiusHeavy m k radius score) :
-    ExchangeImprovesHeavy m k score := fun D hheavy C hcard hfails => by
+    (himproves : DoesExchangeImproveWithinRadiusHeavy m k radius score) :
+    DoesExchangeImproveHeavy m k score := fun D hheavy C hcard hfails => by
   obtain ⟨improved, himprovedCard, _, hstrict⟩ := himproves D hheavy C hcard hfails
   exact ⟨improved, himprovedCard, hstrict⟩
 
@@ -541,17 +541,17 @@ the forgetful step with `gtzWeightedHeavy_of_exchangeImprovesHeavy` — and
 all-heavy sizes. This is the reduction the refutations below block. -/
 theorem gtzWeightedHeavy_of_exchangeImprovesWithinRadiusHeavy (hsizeLe : k ≤ m)
     {radius : ℕ} (score : WeightedDesign m k → Finset (Fin m) → ℝ)
-    (himproves : ExchangeImprovesWithinRadiusHeavy m k radius score) :
+    (himproves : DoesExchangeImproveWithinRadiusHeavy m k radius score) :
     GtzWeightedHeavy m k :=
   gtzWeightedHeavy_of_exchangeImprovesHeavy hsizeLe score
-    (exchangeImprovesHeavy_of_withinRadiusHeavy score himproves)
+    (doesExchangeImproveHeavy_of_withinRadiusHeavy score himproves)
 
 /-- The unrestricted bounded hypothesis implies the all-heavy bounded one, so an
 all-heavy refutation is the stronger statement. -/
-theorem exchangeImprovesWithinRadiusHeavy_of_withinRadius {radius : ℕ}
+theorem doesExchangeImproveWithinRadiusHeavy_of_withinRadius {radius : ℕ}
     (score : WeightedDesign m k → Finset (Fin m) → ℝ)
-    (himproves : ExchangeImprovesWithinRadius m k radius score) :
-    ExchangeImprovesWithinRadiusHeavy m k radius score :=
+    (himproves : DoesExchangeImproveWithinRadius m k radius score) :
+    DoesExchangeImproveWithinRadiusHeavy m k radius score :=
   fun D _ C hcard hfails => himproves D C hcard hfails
 
 /-! ## The trace obstruction, the one place all-heaviness enters
@@ -605,7 +605,7 @@ theorem sum_over_triple {carrier : Type*} [AddCommMonoid carrier] {size : ℕ}
 
 /-- `lambda_min (S_C) >= level`, stated as a Loewner inequality so that no spectral
 theory is needed anywhere below. -/
-def LeastEigenvalueAtLeast (D : WeightedDesign m k) (C : Finset (Fin m)) (level : ℝ) : Prop :=
+def HasLeastEigenvalueAtLeast (D : WeightedDesign m k) (C : Finset (Fin m)) (level : ℝ) : Prop :=
   (subsetSum D C - level • (1 : Matrix (Fin k) (Fin k) ℝ)).PosSemidef
 
 /-- The selected atom sum is positive semidefinite: it is a sum of atoms. -/
@@ -634,12 +634,12 @@ theorem shiftedGap_form (D : WeightedDesign m k) (C : Finset (Fin m)) (level : �
 /-- **The level test, as a Rayleigh inequality.**  `lambda_min(S_C) >= level` says
 exactly that the selected atoms cover `level` times the squared length of every
 direction. -/
-theorem leastEigenvalueAtLeast_iff (D : WeightedDesign m k) (C : Finset (Fin m))
+theorem hasLeastEigenvalueAtLeast_iff (D : WeightedDesign m k) (C : Finset (Fin m))
     (level : ℝ) :
-    LeastEigenvalueAtLeast D C level
+    HasLeastEigenvalueAtLeast D C level
       ↔ ∀ direction : Fin k → ℝ,
           level * (direction ⬝ᵥ direction) ≤ ∑ c ∈ C, (D.atom c ⬝ᵥ direction) ^ 2 := by
-  rw [LeastEigenvalueAtLeast, Matrix.posSemidef_iff_dotProduct_mulVec]
+  rw [HasLeastEigenvalueAtLeast, Matrix.posSemidef_iff_dotProduct_mulVec]
   constructor
   · intro hpsd direction
     have hform := hpsd.2 direction
@@ -651,10 +651,10 @@ theorem leastEigenvalueAtLeast_iff (D : WeightedDesign m k) (C : Finset (Fin m))
     linarith [hcovers direction]
 
 /-- Lowering the level is free. -/
-theorem leastEigenvalueAtLeast_mono (D : WeightedDesign m k) (C : Finset (Fin m))
-    {lower upper : ℝ} (hle : lower ≤ upper) (hupper : LeastEigenvalueAtLeast D C upper) :
-    LeastEigenvalueAtLeast D C lower := by
-  rw [leastEigenvalueAtLeast_iff] at hupper ⊢
+theorem hasLeastEigenvalueAtLeast_mono (D : WeightedDesign m k) (C : Finset (Fin m))
+    {lower upper : ℝ} (hle : lower ≤ upper) (hupper : HasLeastEigenvalueAtLeast D C upper) :
+    HasLeastEigenvalueAtLeast D C lower := by
+  rw [hasLeastEigenvalueAtLeast_iff] at hupper ⊢
   intro direction
   have hscaled : lower * (direction ⬝ᵥ direction) ≤ upper * (direction ⬝ᵥ direction) :=
     mul_le_mul_of_nonneg_right hle (dotProduct_self_nonneg direction)
@@ -662,16 +662,16 @@ theorem leastEigenvalueAtLeast_mono (D : WeightedDesign m k) (C : Finset (Fin m)
 
 /-- Domination is the level test at one. -/
 theorem dominates_iff_leastEigenvalueAtLeast_one (D : WeightedDesign m k)
-    (C : Finset (Fin m)) : Dominates D C ↔ LeastEigenvalueAtLeast D C 1 := by
-  rw [Dominates, LeastEigenvalueAtLeast, one_smul]
+    (C : Finset (Fin m)) : Dominates D C ↔ HasLeastEigenvalueAtLeast D C 1 := by
+  rw [Dominates, HasLeastEigenvalueAtLeast, one_smul]
 
 /-- **The refuting certificate**: one direction where the selected atoms fall short of
 `level` times its squared length. -/
 theorem not_leastEigenvalueAtLeast_of_witness (D : WeightedDesign m k) (C : Finset (Fin m))
     (level : ℝ) (direction : Fin k → ℝ)
     (hshort : (∑ c ∈ C, (D.atom c ⬝ᵥ direction) ^ 2) < level * (direction ⬝ᵥ direction)) :
-    ¬ LeastEigenvalueAtLeast D C level := by
-  rw [leastEigenvalueAtLeast_iff]
+    ¬ HasLeastEigenvalueAtLeast D C level := by
+  rw [hasLeastEigenvalueAtLeast_iff]
   exact fun hcovers => absurd (hcovers direction) (not_le.mpr hshort)
 
 /-- **The refuting certificate, uniform over an ambient set**: if a single direction is
@@ -683,7 +683,7 @@ theorem not_leastEigenvalueAtLeast_of_subsetBound (D : WeightedDesign m k)
     (hsubset : selected ⊆ ambient) (hcard : selected.card = 3)
     (hbound : ∀ c ∈ ambient, (D.atom c ⬝ᵥ direction) ^ 2 ≤ bound)
     (hstrict : 3 * bound < level * (direction ⬝ᵥ direction)) :
-    ¬ LeastEigenvalueAtLeast D selected level := by
+    ¬ HasLeastEigenvalueAtLeast D selected level := by
   refine not_leastEigenvalueAtLeast_of_witness D selected level direction ?_
   have htotal : ∑ c ∈ selected, (D.atom c ⬝ᵥ direction) ^ 2 ≤ 3 * bound := by
     calc ∑ c ∈ selected, (D.atom c ⬝ᵥ direction) ^ 2 ≤ ∑ _c ∈ selected, bound :=
@@ -695,7 +695,7 @@ theorem not_leastEigenvalueAtLeast_of_subsetBound (D : WeightedDesign m k)
 
 /-- The levels a subset's Gram dominates. -/
 def dominatedLevels (D : WeightedDesign m k) (C : Finset (Fin m)) : Set ℝ :=
-  {level : ℝ | LeastEigenvalueAtLeast D C level}
+  {level : ℝ | HasLeastEigenvalueAtLeast D C level}
 
 /-- **The specification of a least-eigenvalue score.**  A real-valued score IS the least
 eigenvalue exactly when it is the greatest dominated level, and this determines it
@@ -703,7 +703,7 @@ uniquely.  Stating the refutation against the specification rather than against 
 encoding makes it apply to every implementation. -/
 def IsLeastEigenvalueScore (score : WeightedDesign m k → Finset (Fin m) → ℝ) : Prop :=
   ∀ (D : WeightedDesign m k) (C : Finset (Fin m)) (level : ℝ),
-    level ≤ score D C ↔ LeastEigenvalueAtLeast D C level
+    level ≤ score D C ↔ HasLeastEigenvalueAtLeast D C level
 
 /-- The canonical least-eigenvalue score. -/
 noncomputable def leastEigenvalueScore (D : WeightedDesign m k) (C : Finset (Fin m)) : ℝ :=
@@ -712,8 +712,8 @@ noncomputable def leastEigenvalueScore (D : WeightedDesign m k) (C : Finset (Fin
 /-- Level zero is always dominated: the selected atom sum is positive semidefinite. -/
 theorem zero_mem_dominatedLevels (D : WeightedDesign m k) (C : Finset (Fin m)) :
     (0 : ℝ) ∈ dominatedLevels D C := by
-  show LeastEigenvalueAtLeast D C 0
-  rw [LeastEigenvalueAtLeast, zero_smul, sub_zero]
+  show HasLeastEigenvalueAtLeast D C 0
+  rw [HasLeastEigenvalueAtLeast, zero_smul, sub_zero]
   exact posSemidef_subsetSum D C
 
 /-- The dominated levels are bounded above once the rank is positive: the all-ones
@@ -725,15 +725,15 @@ theorem bddAbove_dominatedLevels (D : WeightedDesign m k) (C : Finset (Fin m))
     simp [dotProduct]
   refine ⟨(∑ c ∈ C, (D.atom c ⬝ᵥ fun _ : Fin k => (1 : ℝ)) ^ 2) / (k : ℝ),
     fun level hlevel => ?_⟩
-  have hcovers := (leastEigenvalueAtLeast_iff D C level).mp hlevel (fun _ => (1 : ℝ))
+  have hcovers := (hasLeastEigenvalueAtLeast_iff D C level).mp hlevel (fun _ => (1 : ℝ))
   rw [hnorm] at hcovers
   exact (le_div_iff₀ hrankReal).mpr hcovers
 
 /-- The supremum of the dominated levels is itself dominated: at each fixed direction the
 Rayleigh inequality is a bound on the level, and the supremum inherits it. -/
-theorem leastEigenvalueAtLeast_sSup (D : WeightedDesign m k) (C : Finset (Fin m)) :
-    LeastEigenvalueAtLeast D C (leastEigenvalueScore D C) := by
-  rw [leastEigenvalueScore, leastEigenvalueAtLeast_iff]
+theorem hasLeastEigenvalueAtLeast_sSup (D : WeightedDesign m k) (C : Finset (Fin m)) :
+    HasLeastEigenvalueAtLeast D C (leastEigenvalueScore D C) := by
+  rw [leastEigenvalueScore, hasLeastEigenvalueAtLeast_iff]
   intro direction
   rcases eq_or_lt_of_le (dotProduct_self_nonneg direction) with hzero | hpos
   · have hvanishes : direction = 0 := eq_zero_of_dotProduct_self_eq_zero hzero.symm
@@ -742,7 +742,7 @@ theorem leastEigenvalueAtLeast_sSup (D : WeightedDesign m k) (C : Finset (Fin m)
   · have hcap : sSup (dominatedLevels D C)
         ≤ (∑ c ∈ C, (D.atom c ⬝ᵥ direction) ^ 2) / (direction ⬝ᵥ direction) := by
       refine csSup_le ⟨0, zero_mem_dominatedLevels D C⟩ fun level hlevel => ?_
-      exact (le_div_iff₀ hpos).mpr ((leastEigenvalueAtLeast_iff D C level).mp hlevel direction)
+      exact (le_div_iff₀ hpos).mpr ((hasLeastEigenvalueAtLeast_iff D C level).mp hlevel direction)
     calc sSup (dominatedLevels D C) * (direction ⬝ᵥ direction)
         ≤ ((∑ c ∈ C, (D.atom c ⬝ᵥ direction) ^ 2) / (direction ⬝ᵥ direction))
             * (direction ⬝ᵥ direction) := mul_le_mul_of_nonneg_right hcap hpos.le
@@ -753,7 +753,7 @@ not a statement about an empty class of scores. -/
 theorem isLeastEigenvalueScore_leastEigenvalueScore (hrank : 0 < k) :
     IsLeastEigenvalueScore (leastEigenvalueScore (m := m) (k := k)) := by
   refine fun D C level => ⟨fun hle => ?_, fun hlevel => ?_⟩
-  · exact leastEigenvalueAtLeast_mono D C hle (leastEigenvalueAtLeast_sSup D C)
+  · exact hasLeastEigenvalueAtLeast_mono D C hle (hasLeastEigenvalueAtLeast_sSup D C)
   · exact le_csSup (bddAbove_dominatedLevels D C hrank) hlevel
 
 
@@ -778,17 +778,17 @@ the rest of the campaign computes with. -/
 theorem isLeastEigenvalueScore_leastEigenvalue [Nonempty (Fin k)] :
     IsLeastEigenvalueScore (leastEigenvalue (m := m) (k := k)) := by
   intro D C level
-  rw [leastEigenvalue, le_lambdaMinMat_iff_forall_dotProduct, leastEigenvalueAtLeast_iff]
+  rw [leastEigenvalue, le_lambdaMinMat_iff_forall_dotProduct, hasLeastEigenvalueAtLeast_iff]
   refine forall_congr' fun direction => ?_
   rw [subsetSum_form_eq_sum_sq]
 
 /-- **The unbounded hypothesis at any least-eigenvalue score is GTZ itself**, by the
 threshold lemma at level one. -/
-theorem exchangeImproves_iff_gtzWeighted_ofSpec (hsizeLe : k ≤ m)
+theorem doesExchangeImprove_iff_gtzWeighted_ofSpec (hsizeLe : k ≤ m)
     (score : WeightedDesign m k → Finset (Fin m) → ℝ)
     (hscore : IsLeastEigenvalueScore score) :
-    ExchangeImproves m k score ↔ GtzWeighted m k :=
-  exchangeImproves_iff_gtzWeighted_ofThreshold hsizeLe score 1
+    DoesExchangeImprove m k score ↔ GtzWeighted m k :=
+  doesExchangeImprove_iff_gtzWeighted_ofThreshold hsizeLe score 1
     (fun D C hdominates => (hscore D C 1).mpr
       ((dominates_iff_leastEigenvalueAtLeast_one D C).mp hdominates))
     (fun D C hfails => lt_of_not_ge fun hge => hfails
@@ -947,9 +947,9 @@ theorem clippedTrace_lt_rank_of_not_dominates (design : WeightedDesign m k)
 hypothesis is LOGICALLY EQUIVALENT to weighted GTZ at that size. Proving it IS proving
 the conjecture; every version of the hypothesis with content bounds the exchange
 radius, and that version is refuted below. -/
-theorem exchangeImproves_clippedTrace_iff_gtzWeighted (hSizeLe : k ≤ m) :
-    ExchangeImproves m k clippedTrace ↔ GtzWeighted m k :=
-  exchangeImproves_iff_gtzWeighted_ofThreshold hSizeLe clippedTrace (k : ℝ)
+theorem doesExchangeImprove_clippedTrace_iff_gtzWeighted (hSizeLe : k ≤ m) :
+    DoesExchangeImprove m k clippedTrace ↔ GtzWeighted m k :=
+  doesExchangeImprove_iff_gtzWeighted_ofThreshold hSizeLe clippedTrace (k : ℝ)
     (fun design selected hDominates =>
       le_of_eq (clippedTrace_eq_rank_of_dominates design selected hDominates).symm)
     (fun design selected hFails => clippedTrace_lt_rank_of_not_dominates design selected hFails)
@@ -1450,12 +1450,12 @@ exchange distance at most `2` scores strictly higher on the least eigenvalue
 (`radiusTwoStuckSubset_isExchangeStuck`). Since domination IS `1 ≤ λ_min`, this is the
 score the route needed and no other.
 
-Radius `3 = k` is vacuous (`exchangeImprovesWithinRadius_iff_unbounded_of_rank_le`), so
+Radius `3 = k` is vacuous (`doesExchangeImproveWithinRadius_iff_unbounded_of_rank_le`), so
 this closes every non-trivial radius at the campaign's frontier rank. GTZ itself is
 untouched: `radiusTwoStuckDesign_dominates_axisTriple` exhibits a dominating subset — at
 exchange distance `3`. -/
 theorem not_exchangeImprovesWithinRadius_two_rankThree :
-    ¬ ExchangeImprovesWithinRadius 6 3 2 leastEigenvalue := by
+    ¬ DoesExchangeImproveWithinRadius 6 3 2 leastEigenvalue := by
   intro himproves
   obtain ⟨improved, himprovedCard, hdistance, hstrict⟩ :=
     himproves radiusTwoStuckDesign radiusTwoStuckSubset radiusTwoStuckSubset_card
@@ -1467,9 +1467,9 @@ theorem not_exchangeImprovesWithinRadius_two_rankThree :
 radius: radius `1` and radius `2` are both refuted, and radius `3 = k` is global search.
 There is no bounded radius at which local search on `λ_min` proves GTZ at rank three. -/
 theorem not_exchangeImprovesWithinRadius_of_le_two_rankThree {radius : ℕ}
-    (hradius : radius ≤ 2) : ¬ ExchangeImprovesWithinRadius 6 3 radius leastEigenvalue :=
+    (hradius : radius ≤ 2) : ¬ DoesExchangeImproveWithinRadius 6 3 radius leastEigenvalue :=
   fun himproves => not_exchangeImprovesWithinRadius_two_rankThree
-    (exchangeImprovesWithinRadius_mono hradius leastEigenvalue himproves)
+    (doesExchangeImproveWithinRadius_mono hradius leastEigenvalue himproves)
 
 /-- **THE REFUTATION IN THE FORM THE CAMPAIGN NEEDS.**  The witness design is all-heavy
 (`radiusTwoStuckDesign_allHeavy`), so the very same stuck subset refutes the ALL-HEAVY
@@ -1478,7 +1478,7 @@ bounded-radius hypothesis — the weaker hypothesis, hence the stronger refutati
 that closes the route: no radius-`2` local search on `λ_min` proves GTZ at rank three,
 not even after the all-heavy reduction. -/
 theorem not_exchangeImprovesWithinRadiusHeavy_two_rankThree :
-    ¬ ExchangeImprovesWithinRadiusHeavy 6 3 2 leastEigenvalue := by
+    ¬ DoesExchangeImproveWithinRadiusHeavy 6 3 2 leastEigenvalue := by
   intro himproves
   obtain ⟨improved, himprovedCard, hdistance, hstrict⟩ :=
     himproves radiusTwoStuckDesign radiusTwoStuckDesign_allHeavy radiusTwoStuckSubset
@@ -1490,7 +1490,7 @@ theorem not_exchangeImprovesWithinRadiusHeavy_two_rankThree :
 the unrestricted one does. -/
 theorem not_exchangeImprovesWithinRadiusHeavy_of_le_two_rankThree {radius : ℕ}
     (hle : radius ≤ 2) :
-    ¬ ExchangeImprovesWithinRadiusHeavy 6 3 radius leastEigenvalue := by
+    ¬ DoesExchangeImproveWithinRadiusHeavy 6 3 radius leastEigenvalue := by
   intro himproves
   refine not_exchangeImprovesWithinRadiusHeavy_two_rankThree ?_
   intro D hheavy C hcard hnotDominates
@@ -1588,9 +1588,9 @@ theorem not_dominates_sevenThreeStallTriple : ¬ Dominates sevenThreeStallDesign
       = 47(25x₀ + 9x₁ + 9x₂)² + 2(47x₁ + 72x₂)² + 15200·x₂².
 
 `4/5` is the rational separator every certificate below undercuts. -/
-theorem leastEigenvalueAtLeast_sevenThreeStallTriple :
-    LeastEigenvalueAtLeast sevenThreeStallDesign sevenThreeStallTriple (4/5) := by
-  rw [leastEigenvalueAtLeast_iff]
+theorem hasLeastEigenvalueAtLeast_sevenThreeStallTriple :
+    HasLeastEigenvalueAtLeast sevenThreeStallDesign sevenThreeStallTriple (4/5) := by
+  rw [hasLeastEigenvalueAtLeast_iff]
   intro direction
   simp only [sevenThreeStallTriple, sevenThreeStallDesign_atom]
   rw [sum_over_triple _ (by decide) (by decide) (by decide)]
@@ -1640,7 +1640,7 @@ theorem bound_sevenThreeFamilyFour :
 
 theorem not_leastEigenvalueAtLeast_sevenThreeFamilyOne {selected : Finset (Fin 7)}
     (hsubset : selected ⊆ ({0, 1, 3, 4, 6} : Finset (Fin 7))) (hcard : selected.card = 3) :
-    ¬ LeastEigenvalueAtLeast sevenThreeStallDesign selected (4/5) := by
+    ¬ HasLeastEigenvalueAtLeast sevenThreeStallDesign selected (4/5) := by
   refine not_leastEigenvalueAtLeast_of_subsetBound sevenThreeStallDesign (4/5) (9/25) ![0, 1, -1]
     hsubset hcard bound_sevenThreeFamilyOne ?_
   norm_num [dotProduct, Fin.sum_univ_three, Matrix.cons_val_two, Matrix.tail_cons,
@@ -1648,7 +1648,7 @@ theorem not_leastEigenvalueAtLeast_sevenThreeFamilyOne {selected : Finset (Fin 7
 
 theorem not_leastEigenvalueAtLeast_sevenThreeFamilyTwo {selected : Finset (Fin 7)}
     (hsubset : selected ⊆ ({2, 3, 4, 5, 6} : Finset (Fin 7))) (hcard : selected.card = 3) :
-    ¬ LeastEigenvalueAtLeast sevenThreeStallDesign selected (4/5) := by
+    ¬ HasLeastEigenvalueAtLeast sevenThreeStallDesign selected (4/5) := by
   refine not_leastEigenvalueAtLeast_of_subsetBound sevenThreeStallDesign (4/5) (144/25) ![3, -3, -2]
     hsubset hcard bound_sevenThreeFamilyTwo ?_
   norm_num [dotProduct, Fin.sum_univ_three, Matrix.cons_val_two, Matrix.tail_cons,
@@ -1656,7 +1656,7 @@ theorem not_leastEigenvalueAtLeast_sevenThreeFamilyTwo {selected : Finset (Fin 7
 
 theorem not_leastEigenvalueAtLeast_sevenThreeFamilyThree {selected : Finset (Fin 7)}
     (hsubset : selected ⊆ ({0, 1, 4, 5, 6} : Finset (Fin 7))) (hcard : selected.card = 3) :
-    ¬ LeastEigenvalueAtLeast sevenThreeStallDesign selected (4/5) := by
+    ¬ HasLeastEigenvalueAtLeast sevenThreeStallDesign selected (4/5) := by
   refine not_leastEigenvalueAtLeast_of_subsetBound sevenThreeStallDesign (4/5) (144/25) ![2, 3, -3]
     hsubset hcard bound_sevenThreeFamilyThree ?_
   norm_num [dotProduct, Fin.sum_univ_three, Matrix.cons_val_two, Matrix.tail_cons,
@@ -1664,14 +1664,14 @@ theorem not_leastEigenvalueAtLeast_sevenThreeFamilyThree {selected : Finset (Fin
 
 theorem not_leastEigenvalueAtLeast_sevenThreeFamilyFour {selected : Finset (Fin 7)}
     (hsubset : selected ⊆ ({0, 2, 3, 4, 6} : Finset (Fin 7))) (hcard : selected.card = 3) :
-    ¬ LeastEigenvalueAtLeast sevenThreeStallDesign selected (4/5) := by
+    ¬ HasLeastEigenvalueAtLeast sevenThreeStallDesign selected (4/5) := by
   refine not_leastEigenvalueAtLeast_of_subsetBound sevenThreeStallDesign (4/5) (9/25) ![1, -1, 0]
     hsubset hcard bound_sevenThreeFamilyFour ?_
   norm_num [dotProduct, Fin.sum_univ_three, Matrix.cons_val_two, Matrix.tail_cons,
     Matrix.head_cons]
 
 theorem not_leastEigenvalueAtLeast_sevenThreeOneTwoFive :
-    ¬ LeastEigenvalueAtLeast sevenThreeStallDesign {1, 2, 5} (4/5) := by
+    ¬ HasLeastEigenvalueAtLeast sevenThreeStallDesign {1, 2, 5} (4/5) := by
   refine not_leastEigenvalueAtLeast_of_witness sevenThreeStallDesign _ _ ![1, 1, 1] ?_
   simp only [sevenThreeStallDesign_atom]
   rw [sum_over_triple _ (by decide) (by decide) (by decide)]
@@ -1679,7 +1679,7 @@ theorem not_leastEigenvalueAtLeast_sevenThreeOneTwoFive :
     Matrix.head_cons]
 
 theorem not_leastEigenvalueAtLeast_sevenThreeZeroOneTwo :
-    ¬ LeastEigenvalueAtLeast sevenThreeStallDesign {0, 1, 2} (4/5) := by
+    ¬ HasLeastEigenvalueAtLeast sevenThreeStallDesign {0, 1, 2} (4/5) := by
   refine not_leastEigenvalueAtLeast_of_witness sevenThreeStallDesign _ _ ![3, 1, 2] ?_
   simp only [sevenThreeStallDesign_atom]
   rw [sum_over_triple _ (by decide) (by decide) (by decide)]
@@ -1687,7 +1687,7 @@ theorem not_leastEigenvalueAtLeast_sevenThreeZeroOneTwo :
     Matrix.head_cons]
 
 theorem not_leastEigenvalueAtLeast_sevenThreeZeroTwoFive :
-    ¬ LeastEigenvalueAtLeast sevenThreeStallDesign {0, 2, 5} (4/5) := by
+    ¬ HasLeastEigenvalueAtLeast sevenThreeStallDesign {0, 2, 5} (4/5) := by
   refine not_leastEigenvalueAtLeast_of_witness sevenThreeStallDesign _ _ ![1, 0, 0] ?_
   simp only [sevenThreeStallDesign_atom]
   rw [sum_over_triple _ (by decide) (by decide) (by decide)]
@@ -1695,7 +1695,7 @@ theorem not_leastEigenvalueAtLeast_sevenThreeZeroTwoFive :
     Matrix.head_cons]
 
 theorem not_leastEigenvalueAtLeast_sevenThreeOneTwoThree :
-    ¬ LeastEigenvalueAtLeast sevenThreeStallDesign {1, 2, 3} (4/5) := by
+    ¬ HasLeastEigenvalueAtLeast sevenThreeStallDesign {1, 2, 3} (4/5) := by
   refine not_leastEigenvalueAtLeast_of_witness sevenThreeStallDesign _ _ ![2, 1, 3] ?_
   simp only [sevenThreeStallDesign_atom]
   rw [sum_over_triple _ (by decide) (by decide) (by decide)]
@@ -1703,7 +1703,7 @@ theorem not_leastEigenvalueAtLeast_sevenThreeOneTwoThree :
     Matrix.head_cons]
 
 theorem not_leastEigenvalueAtLeast_sevenThreeOneThreeFive :
-    ¬ LeastEigenvalueAtLeast sevenThreeStallDesign {1, 3, 5} (4/5) := by
+    ¬ HasLeastEigenvalueAtLeast sevenThreeStallDesign {1, 3, 5} (4/5) := by
   refine not_leastEigenvalueAtLeast_of_witness sevenThreeStallDesign _ _ ![0, 0, 1] ?_
   simp only [sevenThreeStallDesign_atom]
   rw [sum_over_triple _ (by decide) (by decide) (by decide)]
@@ -1718,7 +1718,7 @@ one of five named triples. -/
 theorem not_leastEigenvalueAtLeast_of_meetsSevenThreeStall (selected : Finset (Fin 7))
     (hcard : selected.card = 3) (hmeets : 1 ≤ (sevenThreeStallTriple ∩ selected).card)
     (hdistinct : selected ≠ sevenThreeStallTriple) :
-    ¬ LeastEigenvalueAtLeast sevenThreeStallDesign selected (4/5) := by
+    ¬ HasLeastEigenvalueAtLeast sevenThreeStallDesign selected (4/5) := by
   have hcover : selected ⊆ ({0, 1, 3, 4, 6} : Finset (Fin 7))
       ∨ selected ⊆ ({2, 3, 4, 5, 6} : Finset (Fin 7))
       ∨ selected ⊆ ({0, 1, 4, 5, 6} : Finset (Fin 7))
@@ -1746,7 +1746,7 @@ common squared length `81/25`, so the triple's Gram is exactly `(81/25)·I` and 
 mechanism: a dominator sits at level one, strictly above a failing subset, so a stall of
 radius `r` forces every dominator past exchange distance `r`. -/
 theorem dominates_sevenThreeDominatingTriple : Dominates sevenThreeStallDesign {1, 2, 4} := by
-  rw [dominates_iff_leastEigenvalueAtLeast_one, leastEigenvalueAtLeast_iff]
+  rw [dominates_iff_leastEigenvalueAtLeast_one, hasLeastEigenvalueAtLeast_iff]
   intro direction
   simp only [sevenThreeStallDesign_atom]
   rw [sum_over_triple _ (by decide) (by decide) (by decide)]
@@ -1759,7 +1759,7 @@ theorem dominates_sevenThreeDominatingTriple : Dominates sevenThreeStallDesign {
 sum of squares `1081(28x₀+9x₁)² + (1081x₁+252x₂)² + 784000x₂²` over `25·15134`.  It too is
 disjoint from the stalled triple. -/
 theorem dominates_sevenThreeSecondDominatingTriple : Dominates sevenThreeStallDesign {1, 2, 6} := by
-  rw [dominates_iff_leastEigenvalueAtLeast_one, leastEigenvalueAtLeast_iff]
+  rw [dominates_iff_leastEigenvalueAtLeast_one, hasLeastEigenvalueAtLeast_iff]
   intro direction
   simp only [sevenThreeStallDesign_atom]
   rw [sum_over_triple _ (by decide) (by decide) (by decide)]
@@ -1792,7 +1792,7 @@ theorem sevenThreeStallTriple_isExchangeStuck
       rw [hcard, card_sevenThreeStallTriple]
     have hstallLevel : (4/5 : ℝ) ≤ score sevenThreeStallDesign sevenThreeStallTriple :=
       (hscore sevenThreeStallDesign sevenThreeStallTriple (4/5)).mpr
-        leastEigenvalueAtLeast_sevenThreeStallTriple
+        hasLeastEigenvalueAtLeast_sevenThreeStallTriple
     have hoverlap := (exchangeDistance_le_iff_le_card_inter_add
       (size := 3) (radius := 2) hcandidateCard).mp hdistance
     have hmeets : 1 ≤ (sevenThreeStallTriple ∩ candidate).card := by omega
@@ -1817,7 +1817,7 @@ every dominator beyond exchange distance `r`. -/
 theorem not_exchangeImprovesWithinRadius_two_sevenThree
     (score : WeightedDesign 7 3 → Finset (Fin 7) → ℝ)
     (hscore : IsLeastEigenvalueScore score) :
-    ¬ ExchangeImprovesWithinRadius 7 3 2 score := by
+    ¬ DoesExchangeImproveWithinRadius 7 3 2 score := by
   intro himproves
   obtain ⟨improved, hcardImproved, hdistance, hstrict⟩ :=
     himproves sevenThreeStallDesign sevenThreeStallTriple card_sevenThreeStallTriple
@@ -1830,7 +1830,7 @@ would have consumed. -/
 theorem not_exchangeImprovesWithinRadiusHeavy_two_sevenThree
     (score : WeightedDesign 7 3 → Finset (Fin 7) → ℝ)
     (hscore : IsLeastEigenvalueScore score) :
-    ¬ ExchangeImprovesWithinRadiusHeavy 7 3 2 score := by
+    ¬ DoesExchangeImproveWithinRadiusHeavy 7 3 2 score := by
   intro himproves
   obtain ⟨improved, hcardImproved, hdistance, hstrict⟩ :=
     himproves sevenThreeStallDesign allHeavy_sevenThreeStallDesign sevenThreeStallTriple
@@ -1842,14 +1842,14 @@ theorem not_exchangeImprovesWithinRadiusHeavy_two_sevenThree
 theorem not_exchangeImprovesWithinRadius_of_le_two_sevenThree {radius : ℕ}
     (hradius : radius ≤ 2) (score : WeightedDesign 7 3 → Finset (Fin 7) → ℝ)
     (hscore : IsLeastEigenvalueScore score) :
-    ¬ ExchangeImprovesWithinRadius 7 3 radius score := fun htight =>
+    ¬ DoesExchangeImproveWithinRadius 7 3 radius score := fun htight =>
   not_exchangeImprovesWithinRadius_two_sevenThree score hscore
-    (exchangeImprovesWithinRadius_mono hradius score htight)
+    (doesExchangeImproveWithinRadius_mono hradius score htight)
 
 /-- **The canonical `sSup` score is refuted**, so the statement is not about an empty
 class of scores. -/
 theorem not_exchangeImprovesWithinRadius_two_leastEigenvalueScore :
-    ¬ ExchangeImprovesWithinRadius 7 3 2 (leastEigenvalueScore (m := 7) (k := 3)) :=
+    ¬ DoesExchangeImproveWithinRadius 7 3 2 (leastEigenvalueScore (m := 7) (k := 3)) :=
   not_exchangeImprovesWithinRadius_two_sevenThree _
     (isLeastEigenvalueScore_leastEigenvalueScore (by omega))
 
@@ -1858,12 +1858,12 @@ subset atom sum, the score every other module of this campaign computes with —
 specification (`isLeastEigenvalueScore_leastEigenvalue`), so the stall applies to it
 literally, not merely to an abstract description. -/
 theorem not_exchangeImprovesWithinRadius_two_leastEigenvalue :
-    ¬ ExchangeImprovesWithinRadius 7 3 2 (leastEigenvalue (m := 7) (k := 3)) :=
+    ¬ DoesExchangeImproveWithinRadius 7 3 2 (leastEigenvalue (m := 7) (k := 3)) :=
   not_exchangeImprovesWithinRadius_two_sevenThree _ isLeastEigenvalueScore_leastEigenvalue
 
 /-- The shipped score, all-heavy form. -/
 theorem not_exchangeImprovesWithinRadiusHeavy_two_leastEigenvalue :
-    ¬ ExchangeImprovesWithinRadiusHeavy 7 3 2 (leastEigenvalue (m := 7) (k := 3)) :=
+    ¬ DoesExchangeImproveWithinRadiusHeavy 7 3 2 (leastEigenvalue (m := 7) (k := 3)) :=
   not_exchangeImprovesWithinRadiusHeavy_two_sevenThree _ isLeastEigenvalueScore_leastEigenvalue
 
 /-- **The stall in one statement**: a strictly all-heavy `(7,3)`-design, a failing triple
@@ -1871,14 +1871,14 @@ that separates from its entire radius-two neighbourhood at the rational level `4
 dominating triple to certify that GTZ itself is untouched. -/
 theorem exists_allHeavy_sevenThreeRadiusTwoStall :
     ∃ (D : WeightedDesign 7 3) (C : Finset (Fin 7)),
-      AllHeavy D ∧ C.card = 3 ∧ ¬ Dominates D C ∧ LeastEigenvalueAtLeast D C (4/5) ∧
+      AllHeavy D ∧ C.card = 3 ∧ ¬ Dominates D C ∧ HasLeastEigenvalueAtLeast D C (4/5) ∧
         (∀ selected : Finset (Fin 7), selected.card = 3 → 1 ≤ (C ∩ selected).card →
-          selected ≠ C → ¬ LeastEigenvalueAtLeast D selected (4/5)) ∧
+          selected ≠ C → ¬ HasLeastEigenvalueAtLeast D selected (4/5)) ∧
         (∃ dominator : Finset (Fin 7), dominator.card = 3 ∧ Dominates D dominator ∧
           Disjoint C dominator) :=
   ⟨sevenThreeStallDesign, sevenThreeStallTriple, allHeavy_sevenThreeStallDesign,
     card_sevenThreeStallTriple, not_dominates_sevenThreeStallTriple,
-    leastEigenvalueAtLeast_sevenThreeStallTriple,
+    hasLeastEigenvalueAtLeast_sevenThreeStallTriple,
     not_leastEigenvalueAtLeast_of_meetsSevenThreeStall,
     ⟨{1, 2, 4}, by decide, dominates_sevenThreeDominatingTriple,
       disjoint_sevenThreeStallTriple_dominators.1⟩⟩
@@ -2382,7 +2382,7 @@ the clipped trace at `(7,3)`. Applied to `clippedTraceStallDesign` and `C = {3,4
 hypothesis would produce a `3`-subset within exchange distance two scoring strictly more;
 `C` scores at least `11/4` and every such subset scores strictly less. -/
 theorem not_exchangeImprovesWithinRadius_clippedTrace_two :
-    ¬ ExchangeImprovesWithinRadius 7 3 2 clippedTrace := by
+    ¬ DoesExchangeImproveWithinRadius 7 3 2 clippedTrace := by
   intro hHypothesis
   obtain ⟨improved, hImprovedCard, hDistance, hStrict⟩ :=
     hHypothesis clippedTraceStallDesign clippedTraceStallSubset clippedTraceStallSubset_card
@@ -2395,7 +2395,7 @@ theorem not_exchangeImprovesWithinRadius_clippedTrace_two :
 hypothesis — the weaker hypothesis, hence the stronger refutation, and the one
 `gtzWeightedAll_of_heavy_bounded` would have consumed. -/
 theorem not_exchangeImprovesWithinRadiusHeavy_clippedTrace_two :
-    ¬ ExchangeImprovesWithinRadiusHeavy 7 3 2 clippedTrace := by
+    ¬ DoesExchangeImproveWithinRadiusHeavy 7 3 2 clippedTrace := by
   intro hHypothesis
   obtain ⟨improved, hImprovedCard, hDistance, hStrict⟩ :=
     hHypothesis clippedTraceStallDesign clippedTraceStallDesign_isAllHeavy
@@ -2407,13 +2407,13 @@ theorem not_exchangeImprovesWithinRadiusHeavy_clippedTrace_two :
 /-- **Radius one falls with radius two**, by monotonicity of the hypothesis in the
 radius. -/
 theorem not_exchangeImprovesWithinRadius_clippedTrace_of_le_two {radius : ℕ}
-    (hRadius : radius ≤ 2) : ¬ ExchangeImprovesWithinRadius 7 3 radius clippedTrace :=
+    (hRadius : radius ≤ 2) : ¬ DoesExchangeImproveWithinRadius 7 3 radius clippedTrace :=
   fun hNarrow => not_exchangeImprovesWithinRadius_clippedTrace_two
-    (exchangeImprovesWithinRadius_mono hRadius clippedTrace hNarrow)
+    (doesExchangeImproveWithinRadius_mono hRadius clippedTrace hNarrow)
 
 /-- The all-heavy refutation propagates down the radius the same way. -/
 theorem not_exchangeImprovesWithinRadiusHeavy_clippedTrace_of_le_two {radius : ℕ}
-    (hRadius : radius ≤ 2) : ¬ ExchangeImprovesWithinRadiusHeavy 7 3 radius clippedTrace := by
+    (hRadius : radius ≤ 2) : ¬ DoesExchangeImproveWithinRadiusHeavy 7 3 radius clippedTrace := by
   intro hNarrow
   refine not_exchangeImprovesWithinRadiusHeavy_clippedTrace_two ?_
   intro design hHeavy selected hCard hFails
@@ -2634,7 +2634,7 @@ exchange-improving score even on the all-heavy stratum — the campaign's actual
 frontier.  The witness `shadowArgmaxDesign` is strictly all-heavy, its subset
 `{1, 5, 6}` fails to dominate, and no `3`-subset scores higher. -/
 theorem not_exchangeImprovesHeavy_shadowDeterminant :
-    ¬ ExchangeImprovesHeavy 7 3 (shadowDeterminant (m := 7) (k := 3)) := by
+    ¬ DoesExchangeImproveHeavy 7 3 (shadowDeterminant (m := 7) (k := 3)) := by
   intro himproves
   obtain ⟨improved, himprovedCard, hstrict⟩ :=
     himproves shadowArgmaxDesign shadowArgmaxDesign_allHeavy shadowArgmaxSubset shadowArgmaxSubset_card
@@ -2643,16 +2643,16 @@ theorem not_exchangeImprovesHeavy_shadowDeterminant :
 
 /-- **The refutation, unrestricted form.** -/
 theorem not_exchangeImproves_shadowDeterminant :
-    ¬ ExchangeImproves 7 3 (shadowDeterminant (m := 7) (k := 3)) := fun himproves =>
+    ¬ DoesExchangeImprove 7 3 (shadowDeterminant (m := 7) (k := 3)) := fun himproves =>
   not_exchangeImprovesHeavy_shadowDeterminant
-    (exchangeImprovesHeavy_of_exchangeImproves _ himproves)
+    (doesExchangeImproveHeavy_of_doesExchangeImprove _ himproves)
 
 /-- **The rank-generic route is closed too.**  `gtzWeightedAll_of_exchangeImproves`
 consumes a family of scores indexed by the size; the shadow-determinant family
 fails already at size `7`, so it cannot feed that reduction at rank `3`. -/
 theorem not_exchangeImproves_shadowDeterminant_family :
     ¬ ∀ size : ℕ, 3 ≤ size →
-        ExchangeImproves size 3
+        DoesExchangeImprove size 3
           (fun (D : WeightedDesign size 3) (selected : Finset (Fin size)) =>
             shadowDeterminant D selected) := by
   intro hfamily
@@ -2699,26 +2699,26 @@ a reader cannot mistake "content-free" for "refuted". -/
 the shadow determinant falls harder, its global argmax failing outright, so in particular
 no radius bound saves it. -/
 theorem boundedRadiusExchange_refuted_sevenThree {radius : ℕ} (hradius : radius ≤ 2) :
-    ¬ ExchangeImprovesWithinRadius 7 3 radius (leastEigenvalue (m := 7) (k := 3)) ∧
-      ¬ ExchangeImprovesWithinRadius 7 3 radius clippedTrace ∧
-      ¬ ExchangeImprovesWithinRadius 7 3 radius (shadowDeterminant (m := 7) (k := 3)) :=
+    ¬ DoesExchangeImproveWithinRadius 7 3 radius (leastEigenvalue (m := 7) (k := 3)) ∧
+      ¬ DoesExchangeImproveWithinRadius 7 3 radius clippedTrace ∧
+      ¬ DoesExchangeImproveWithinRadius 7 3 radius (shadowDeterminant (m := 7) (k := 3)) :=
   ⟨fun himproves => not_exchangeImprovesWithinRadius_two_leastEigenvalue
-      (exchangeImprovesWithinRadius_mono hradius _ himproves),
+      (doesExchangeImproveWithinRadius_mono hradius _ himproves),
    not_exchangeImprovesWithinRadius_clippedTrace_of_le_two hradius,
    fun himproves => not_exchangeImproves_shadowDeterminant
-      (exchangeImproves_of_withinRadius _ himproves)⟩
+      (doesExchangeImprove_of_withinRadius _ himproves)⟩
 
 /-- **REFUTED on the all-heavy stratum too**, which is the stratum
 `Gtz.gtzWeightedAll_of_heavy_bounded` reduces the conjecture to — so the refutation blocks
 the route where the route actually runs. -/
 theorem boundedRadiusExchangeHeavy_refuted_sevenThree {radius : ℕ} (hradius : radius ≤ 2) :
-    ¬ ExchangeImprovesWithinRadiusHeavy 7 3 radius (leastEigenvalue (m := 7) (k := 3)) ∧
-      ¬ ExchangeImprovesWithinRadiusHeavy 7 3 radius clippedTrace ∧
-      ¬ ExchangeImprovesWithinRadiusHeavy 7 3 radius (shadowDeterminant (m := 7) (k := 3)) := by
+    ¬ DoesExchangeImproveWithinRadiusHeavy 7 3 radius (leastEigenvalue (m := 7) (k := 3)) ∧
+      ¬ DoesExchangeImproveWithinRadiusHeavy 7 3 radius clippedTrace ∧
+      ¬ DoesExchangeImproveWithinRadiusHeavy 7 3 radius (shadowDeterminant (m := 7) (k := 3)) := by
   refine ⟨fun himproves => not_exchangeImprovesWithinRadiusHeavy_two_leastEigenvalue ?_,
     not_exchangeImprovesWithinRadiusHeavy_clippedTrace_of_le_two hradius,
     fun himproves => not_exchangeImprovesHeavy_shadowDeterminant
-      (exchangeImprovesHeavy_of_withinRadiusHeavy _ himproves)⟩
+      (doesExchangeImproveHeavy_of_withinRadiusHeavy _ himproves)⟩
   intro design hHeavy selected hCard hFails
   obtain ⟨improved, hImprovedCard, hDistance, hStrict⟩ :=
     himproves design hHeavy selected hCard hFails
@@ -2729,12 +2729,12 @@ exchange distance `3` of every other, so the radius-three hypothesis IS the unre
 one; at a least-eigenvalue score that is `GtzWeighted 7 3` verbatim, which is OPEN. The
 honest summary of this file is "no radius survives with content", never "every radius is
 refuted". -/
-theorem exchangeImprovesWithinRadius_three_sevenThree_iff_gtzWeighted
+theorem doesExchangeImproveWithinRadius_three_sevenThree_iff_gtzWeighted
     (score : WeightedDesign 7 3 → Finset (Fin 7) → ℝ)
     (hscore : IsLeastEigenvalueScore score) :
-    ExchangeImprovesWithinRadius 7 3 3 score ↔ GtzWeighted 7 3 :=
-  Iff.trans (exchangeImprovesWithinRadius_iff_unbounded_of_rank_le (by omega) score)
-    (exchangeImproves_iff_gtzWeighted_ofSpec (by omega) score hscore)
+    DoesExchangeImproveWithinRadius 7 3 3 score ↔ GtzWeighted 7 3 :=
+  Iff.trans (doesExchangeImproveWithinRadius_iff_unbounded_of_rank_le (by omega) score)
+    (doesExchangeImprove_iff_gtzWeighted_ofSpec (by omega) score hscore)
 
 /-- **The reduction the refutations block**, kept in the file so the direction of
 implication is never in doubt: a bounded-radius improving score at ANY radius would close
@@ -2742,7 +2742,7 @@ weighted GTZ at `(7,3)`. Refuting the hypothesis says nothing about the conjectu
 every witness above satisfies it. -/
 theorem gtzWeighted_sevenThree_of_exchangeImprovesWithinRadius {radius : ℕ}
     (score : WeightedDesign 7 3 → Finset (Fin 7) → ℝ)
-    (hBounded : ExchangeImprovesWithinRadius 7 3 radius score) : GtzWeighted 7 3 :=
+    (hBounded : DoesExchangeImproveWithinRadius 7 3 radius score) : GtzWeighted 7 3 :=
   gtzWeighted_of_exchangeImprovesWithinRadius (by omega) score hBounded
 
 end Gtz

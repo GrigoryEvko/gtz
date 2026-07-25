@@ -78,7 +78,7 @@ free — take the subset maximising `lambdaMin`, which maximises precisely the
 quantity that controls the failure — is itself refuted at 80 digits.
 
 What survives, and is not derived from anything here, is the existential
-`HeavyPivotInDominator`: some dominating `(k+1)`-subset contains an atom of
+`HasHeavyPivotInDominator`: some dominating `(k+1)`-subset contains an atom of
 leverage at least the rank. Its projected certificate is FREE at every pivot
 of every dominating subset, with NO induction hypothesis at all
 (`dominates_pushforward_of_dominates_insert`) — which is where the route's
@@ -1157,7 +1157,7 @@ its atoms, the remaining `k` projections dominate the compression. So the
 rank-`k` hypothesis is not what supplies the projected subset; it merely
 supplies SOME projected subset at an ARBITRARY pivot, and the walls above show
 that is not enough. What is left is the purely existential
-`HeavyPivotInDominator` — a selection statement, formally stronger than GTZ
+`HasHeavyPivotInDominator` — a selection statement, formally stronger than GTZ
 and not derived from anything here. -/
 
 /-- A coercive family of atoms dominates: the converse of
@@ -1217,7 +1217,7 @@ whole problem. Measured: over 21000 random rank-4 designs plus hill-climbing,
 the minimum margin of this existential equals the design's own GTZ margin
 exactly, and only 3 heavy pivots in 68756 sat outside every dominator — but
 "GTZ implies this" is unproven, so it is a Prop here, not a theorem. -/
-def HeavyPivotInDominator (m rank : ℕ) : Prop :=
+def HasHeavyPivotInDominator (m rank : ℕ) : Prop :=
   ∀ D : WeightedDesign m (rank + 1),
     ∃ (dominator : Finset (Fin m)) (pivot : Fin m),
       dominator.card = rank + 1 ∧ pivot ∈ dominator
@@ -1226,7 +1226,7 @@ def HeavyPivotInDominator (m rank : ℕ) : Prop :=
 
 /-- The residual implies weighted GTZ one rank up. -/
 theorem gtzWeighted_succ_of_heavyPivotInDominator {rank : ℕ}
-    (hresidual : HeavyPivotInDominator m rank) : GtzWeighted m (rank + 1) := by
+    (hresidual : HasHeavyPivotInDominator m rank) : GtzWeighted m (rank + 1) := by
   intro D
   obtain ⟨dominator, pivot, hcard, hpivotMem, hheavy, hdominates⟩ := hresidual D
   exact ⟨dominator, hcard, hdominates⟩
@@ -1241,7 +1241,7 @@ SCOPE: the conclusion is exactly the four projected certificates listed. It
 does NOT contain the seventh conjunct, and this proof discards the `scale`,
 `hsplit` and `hunitNorm` components of `exists_pivot_deflation` that
 `discriminant_of_dominates_insert` would need to produce it. The name says
-"of a dominating pivot", not "of `HeavyPivotInDominator`", because the
+"of a dominating pivot", not "of `HasHeavyPivotInDominator`", because the
 statement takes the pieces rather than that `Prop`. -/
 theorem exists_projected_dominator_of_dominating_pivot {rank : ℕ}
     (D : WeightedDesign m (rank + 1)) (dominator : Finset (Fin m)) (pivot : Fin m)

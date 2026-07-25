@@ -79,7 +79,7 @@ theorem cyclic_stress_vanishes_of_open {k : ℕ} [NeZero k]
     (hopen : (∏ i, leafG i) ≠ (-1)^k * (∏ i, leafH i)) :
     ∃ i, stress i = 0 := by
   by_contra hall
-  push_neg at hall
+  push Not at hall
   exact hopen (cyclic_stress_closure stress leafG leafH hties hall)
 
 end Gtz

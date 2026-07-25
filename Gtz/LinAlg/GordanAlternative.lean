@@ -69,7 +69,7 @@ theorem gordan_alternative {n : ℕ} {E : Type*} [NormedAddCommGroup E]
     have hmemberHull : family i ∈ convexHull ℝ (Set.range family) :=
       subset_convexHull ℝ _ (Set.mem_range_self i)
     have hpositive := honHull (family i) hmemberHull
-    simp only [ContinuousLinearMap.neg_apply]
+    simp only [neg_apply]
     linarith
 
 /-- **The Gordan alternative in the repo's dot-product vocabulary**: for a

@@ -54,7 +54,7 @@ theorem closure_forces_obtuse_pair (weight : Fin m → ℝ)
     exact mul_pos (mul_pos (hweightPos witness) (hweightPos witness)) hselfPos
   -- so some off-diagonal weighted term is negative
   by_contra hall
-  push_neg at hall
+  push Not at hall
   have htermNonneg : ∀ c ∈ (Finset.univ : Finset (Fin m)), ∀ d ∈ Finset.univ,
       c ≠ d → 0 ≤ (weight c * weight d) * (atom c ⬝ᵥ atom d) := by
     intro c _ d _ hne

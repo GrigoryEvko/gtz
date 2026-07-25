@@ -30,6 +30,12 @@ open Matrix
 
 variable {a b : ℕ}
 
+/-- `√3` squares back to `3`.  Shared by the planar corner geometry and the complex
+cube root of unity; it lived privately in `Gtz.Planar.Pushoff` AND publicly in
+`Gtz.Complex.ComplexWitness`, two declarations at the same full name `Gtz.sqrt_three_sq`
+kept apart only by the `private` marker. -/
+theorem sqrt_three_sq : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+
 /-- The dot square is nonnegative. -/
 theorem dotProduct_self_nonneg (v : Fin a → ℝ) : 0 ≤ v ⬝ᵥ v :=
   Finset.sum_nonneg fun _ _ => mul_self_nonneg _

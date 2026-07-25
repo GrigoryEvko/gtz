@@ -58,7 +58,7 @@ theorem uncovered_multiplier_bound {multiplier weight certError levCap tau : ℝ
       mul_le_mul_of_nonneg_right hpriced htau.le
     have herrNonneg : 0 ≤ certError := by
       by_contra hneg
-      push_neg at hneg
+      push Not at hneg
       nlinarith [hpriced, abs_nonneg multiplier, hweightPos, hlevCap]
     have habsorb : levCap * tau ≤ weight * levCap ^ 2 := by
       nlinarith [hfloor, hlevCap]

@@ -1,11 +1,23 @@
 /-
 # Audit: axiom hygiene for everything claimed proven (FX discipline)
 
-Every theorem this project calls PROVEN is listed here with `#print axioms`, so
-each build displays exactly what it rests on. Expected axiom set for
-Mathlib-backed proofs: `propext`, `Classical.choice`, `Quot.sound` — and NOTHING
-else. In particular `sorryAx` appearing for any theorem listed here is a broken
-promise; roadmap statements carrying `sorry` are deliberately NOT listed.
+Every non-private theorem in every `Gtz.*` module is listed here with
+`#print axioms`, so each build displays exactly what it rests on. Expected axiom
+set for Mathlib-backed proofs: `propext`, `Classical.choice`, `Quot.sound` — and
+NOTHING else. In particular `sorryAx` appearing for any theorem listed here is a
+broken promise; roadmap statements carrying `sorry` are deliberately NOT listed.
+
+Coverage is a maintained invariant, not an aspiration: an adversarial audit
+found 162 proved public theorems silently absent from this ledger — all of them
+axiom-clean, so the defect was documentary, but the docstring had promised total
+coverage it did not deliver. The gap was closed by enumerating every
+`theorem`/`lemma` in `Gtz/` and appending what was absent. If you add a theorem,
+add its line; the list is checked by re-running that enumeration, and the
+honest long-term fix is a meta-level probe that enumerates `Gtz.*` constants and
+asserts the axiom set, which cannot drift.
+
+Definitions are listed selectively — the ones whose junk-value or `noncomputable`
+behaviour is load-bearing — not exhaustively.
 
 Update this file in the same commit that completes a proof.
 -/
@@ -37,7 +49,6 @@ import Gtz.Quantitative.PhaseFreeNoGo
 import Gtz.Quantitative.TwoMomentCertificate
 import Gtz.Ties.StratumFirstOrder
 import Gtz.Reduction.MixedCharPolynomial
-import Gtz.Ties.SplitClassTieFamily
 import Gtz.Certificates.FrameBridge
 import Gtz.Quantitative.CollarRate
 import Gtz.Reduction.RayleighCertificate
@@ -137,6 +148,10 @@ import Gtz.Reduction.StrengthenedInductionHypothesis
 import Gtz.Complex.PerRankConstantLedger
 import Gtz.Reduction.RealVolumeFloor
 import Gtz.Reduction.DiagonalRungs
+import Gtz.Quantitative.PositivstellensatzRankThree
+import Gtz.Quantitative.GlobalMinimumRankThree
+import Gtz.Design.EqualityLocus
+import Gtz.Complex.AtomSplitting
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -917,9 +932,9 @@ import Gtz.Reduction.DiagonalRungs
 
 -- realness: the maximal real equiangular design (icosahedron) and the Bargmann sign
 #print axioms Gtz.IsEquiangularAt
-#print axioms Gtz.SpansSameLine
+#print axioms Gtz.DoesSpanSameLine
 #print axioms Gtz.ComplexIsEquiangularAt
-#print axioms Gtz.ComplexSpansSameLine
+#print axioms Gtz.DoesComplexSpanSameLine
 #print axioms Gtz.tetraAtom_isEquiangular
 #print axioms Gtz.tetraAtom_distinct_lines
 #print axioms Gtz.splitTetraAtom_not_equiangular
@@ -1135,11 +1150,11 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.laplacianOn_transpose
 #print axioms Gtz.laplacianOn_form
 #print axioms Gtz.posSemidef_laplacianOn
-#print axioms Gtz.EdgeAdjacent
-#print axioms Gtz.EdgeReachable
-#print axioms Gtz.edgeAdjacent_symm
-#print axioms Gtz.edgeReachable_symm
-#print axioms Gtz.edgeReachable_endpoints
+#print axioms Gtz.IsEdgeAdjacent
+#print axioms Gtz.IsEdgeReachable
+#print axioms Gtz.isEdgeAdjacent_symm
+#print axioms Gtz.isEdgeReachable_symm
+#print axioms Gtz.isEdgeReachable_endpoints
 #print axioms Gtz.IsGroundConnected
 #print axioms Gtz.IsSpanningTree
 #print axioms Gtz.groundedPotential_eq_of_reachable
@@ -1297,7 +1312,7 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.exists_borderedData_failing_discriminant_at_every_floor
 #print axioms Gtz.dominates_of_coercive
 #print axioms Gtz.dominates_pushforward_of_dominates_insert
-#print axioms Gtz.HeavyPivotInDominator
+#print axioms Gtz.HasHeavyPivotInDominator
 #print axioms Gtz.gtzWeighted_succ_of_heavyPivotInDominator
 #print axioms Gtz.exists_projected_dominator_of_dominating_pivot
 
@@ -1393,9 +1408,9 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.splitSevenDesign_dominates_zeroOneTwo
 #print axioms Gtz.splitSevenDesign_tieMean_negative_but_tieMax_zero
 #print axioms Gtz.IsInCell
-#print axioms Gtz.CellDischarges
-#print axioms Gtz.AtlasCovers
-#print axioms Gtz.AtlasDischarges
+#print axioms Gtz.DoesCellDischarge
+#print axioms Gtz.DoesAtlasCover
+#print axioms Gtz.DoesAtlasDischarge
 #print axioms Gtz.discriminantCovering_of_atlas
 #print axioms Gtz.gtzWeightedAll_three_of_atlasSeven
 #print axioms Gtz.gtzOriginal_rank_three_of_atlasSeven
@@ -1617,7 +1632,7 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.swap_gapForm_nonneg
 #print axioms Gtz.card_swap_eq_card
 #print axioms Gtz.exists_swap_repairing_worstDirection
-#print axioms Gtz.ExchangeImproves
+#print axioms Gtz.DoesExchangeImprove
 #print axioms Gtz.gtzWeighted_of_exchangeImproves
 #print axioms Gtz.gtzWeightedAll_of_exchangeImproves
 
@@ -1762,7 +1777,7 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.liftingLemma_of_borderedSlackLifting
 #print axioms Gtz.gtzWeighted_succ_of_borderedSlackLifting
 #print axioms Gtz.gtzWeightedAll_of_borderedSlackLifting
-#print axioms Gtz.PropagatesBorderedSlack
+#print axioms Gtz.DoesPropagateBorderedSlack
 #print axioms Gtz.gtzWeightedAll_of_base_of_propagates
 #print axioms Gtz.HasUniformDominationSlack
 #print axioms Gtz.posDef_of_uniformSlack
@@ -1878,14 +1893,14 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.leastEigenvalue
 #print axioms Gtz.leastEigenvalue_le_diagonal
 #print axioms Gtz.dominates_iff_one_le_leastEigenvalue
-#print axioms Gtz.ExchangeImprovesWithinRadius
-#print axioms Gtz.ExchangeImprovesWithinRadiusHeavy
+#print axioms Gtz.DoesExchangeImproveWithinRadius
+#print axioms Gtz.DoesExchangeImproveWithinRadiusHeavy
 #print axioms Gtz.IsExchangeStuck
-#print axioms Gtz.exchangeImproves_of_withinRadius
-#print axioms Gtz.exchangeImprovesWithinRadius_mono
+#print axioms Gtz.doesExchangeImprove_of_withinRadius
+#print axioms Gtz.doesExchangeImproveWithinRadius_mono
 #print axioms Gtz.gtzWeighted_of_exchangeImprovesWithinRadius
-#print axioms Gtz.exchangeImprovesWithinRadius_iff_unbounded_of_rank_le
-#print axioms Gtz.exchangeImproves_leastEigenvalue_iff_gtzWeighted
+#print axioms Gtz.doesExchangeImproveWithinRadius_iff_unbounded_of_rank_le
+#print axioms Gtz.doesExchangeImprove_leastEigenvalue_iff_gtzWeighted
 #print axioms Gtz.rank_lt_trace_subsetSum_of_allHeavy
 #print axioms Gtz.subsetSum_diagonal
 #print axioms Gtz.sum_over_triple
@@ -1912,19 +1927,19 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.exchangeDistance_le_iff_le_card_inter_add
 #print axioms Gtz.lambdaMinMat_mul_dotProduct_self_le
 #print axioms Gtz.le_lambdaMinMat_iff_forall_dotProduct
-#print axioms Gtz.exchangeImproves_iff_gtzWeighted_ofThreshold
-#print axioms Gtz.ExchangeImprovesHeavy
-#print axioms Gtz.exchangeImprovesHeavy_of_exchangeImproves
+#print axioms Gtz.doesExchangeImprove_iff_gtzWeighted_ofThreshold
+#print axioms Gtz.DoesExchangeImproveHeavy
+#print axioms Gtz.doesExchangeImproveHeavy_of_doesExchangeImprove
 #print axioms Gtz.gtzWeightedHeavy_of_exchangeImprovesHeavy
-#print axioms Gtz.exchangeImprovesHeavy_of_withinRadiusHeavy
+#print axioms Gtz.doesExchangeImproveHeavy_of_withinRadiusHeavy
 #print axioms Gtz.gtzWeightedHeavy_of_exchangeImprovesWithinRadiusHeavy
-#print axioms Gtz.exchangeImprovesWithinRadiusHeavy_of_withinRadius
-#print axioms Gtz.LeastEigenvalueAtLeast
+#print axioms Gtz.doesExchangeImproveWithinRadiusHeavy_of_withinRadius
+#print axioms Gtz.HasLeastEigenvalueAtLeast
 #print axioms Gtz.posSemidef_subsetSum
 #print axioms Gtz.transpose_subsetSum_sub_smul
 #print axioms Gtz.shiftedGap_form
-#print axioms Gtz.leastEigenvalueAtLeast_iff
-#print axioms Gtz.leastEigenvalueAtLeast_mono
+#print axioms Gtz.hasLeastEigenvalueAtLeast_iff
+#print axioms Gtz.hasLeastEigenvalueAtLeast_mono
 #print axioms Gtz.dominates_iff_leastEigenvalueAtLeast_one
 #print axioms Gtz.not_leastEigenvalueAtLeast_of_witness
 #print axioms Gtz.not_leastEigenvalueAtLeast_of_subsetBound
@@ -1933,11 +1948,11 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.leastEigenvalueScore
 #print axioms Gtz.zero_mem_dominatedLevels
 #print axioms Gtz.bddAbove_dominatedLevels
-#print axioms Gtz.leastEigenvalueAtLeast_sSup
+#print axioms Gtz.hasLeastEigenvalueAtLeast_sSup
 #print axioms Gtz.isLeastEigenvalueScore_leastEigenvalueScore
 #print axioms Gtz.eq_of_isLeastEigenvalueScore
 #print axioms Gtz.isLeastEigenvalueScore_leastEigenvalue
-#print axioms Gtz.exchangeImproves_iff_gtzWeighted_ofSpec
+#print axioms Gtz.doesExchangeImprove_iff_gtzWeighted_ofSpec
 #print axioms Gtz.isHermitian_sub_smul_one
 #print axioms Gtz.eigenvalue_ge_of_posSemidef_sub_smul_one
 #print axioms Gtz.posSemidef_sub_smul_one_of_eigenvalue_ge
@@ -1950,7 +1965,7 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.dominates_of_clippedTrace_eq_rank
 #print axioms Gtz.dominates_iff_clippedTrace_eq_rank
 #print axioms Gtz.clippedTrace_lt_rank_of_not_dominates
-#print axioms Gtz.exchangeImproves_clippedTrace_iff_gtzWeighted
+#print axioms Gtz.doesExchangeImprove_clippedTrace_iff_gtzWeighted
 #print axioms Gtz.two_add_level_le_clipped_sum
 #print axioms Gtz.clippedTrace_ge_of_certificates
 #print axioms Gtz.clippedTrace_lt_of_det_pos
@@ -1990,7 +2005,7 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.sevenThreeStallTriple
 #print axioms Gtz.card_sevenThreeStallTriple
 #print axioms Gtz.not_dominates_sevenThreeStallTriple
-#print axioms Gtz.leastEigenvalueAtLeast_sevenThreeStallTriple
+#print axioms Gtz.hasLeastEigenvalueAtLeast_sevenThreeStallTriple
 #print axioms Gtz.bound_sevenThreeFamilyOne
 #print axioms Gtz.bound_sevenThreeFamilyTwo
 #print axioms Gtz.bound_sevenThreeFamilyThree
@@ -2103,7 +2118,7 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.shadowArgmaxDesign_hasDominatingSubset
 #print axioms Gtz.boundedRadiusExchange_refuted_sevenThree
 #print axioms Gtz.boundedRadiusExchangeHeavy_refuted_sevenThree
-#print axioms Gtz.exchangeImprovesWithinRadius_three_sevenThree_iff_gtzWeighted
+#print axioms Gtz.doesExchangeImproveWithinRadius_three_sevenThree_iff_gtzWeighted
 #print axioms Gtz.gtzWeighted_sevenThree_of_exchangeImprovesWithinRadius
 
 #print axioms Gtz.starDot_swap
@@ -2495,10 +2510,10 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.mixedCharPoly_splitSevenDesign
 #print axioms Gtz.mixedCharPoly_splitSevenDesign_eval_lt_zero
 #print axioms Gtz.mixedCharPoly_splitSevenDesign_isRoot_one
-#print axioms Gtz.MixtureInterlacesAt
-#print axioms Gtz.MixedRootAtLeastOne
+#print axioms Gtz.DoesMixtureInterlaceAt
+#print axioms Gtz.HasMixedRootAtLeastOne
 #print axioms Gtz.gtzWeightedHeavy_of_mixtureInterlacesAt
-#print axioms Gtz.mixtureInterlacesAtOne_of_gtzWeighted
+#print axioms Gtz.doesMixtureInterlaceAtOne_of_gtzWeighted
 #print axioms Gtz.detThreeInt
 #print axioms Gtz.rootKillVector
 #print axioms Gtz.rootKillVector_parseval
@@ -2560,3 +2575,330 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.not_mixedRootAtLeastOne_rankThreeResiduals
 #print axioms Gtz.not_mixedRootAtLeastOne_rankThreeConjunction
 #print axioms Gtz.exists_leastEigenvalue_ge_of_mixtureInterlacesAt
+
+-- Gtz.Quantitative.GlobalMinimumRankThree: the exact rank-three ceiling,
+-- the spike-stratum excision, and the corank-three correction
+#print axioms Gtz.posDef_sub_one_of_posSemidef_sub_smul_one
+#print axioms Gtz.not_exists_card_posSemidef_sub_smul_one_of_isTie
+#print axioms Gtz.not_gtzWeightedFloor_of_isTie
+#print axioms Gtz.gtzWeightedFloor_level_le_one_of_isTie
+#print axioms Gtz.paddedTetraCorner
+#print axioms Gtz.paddedTetraVertex
+#print axioms Gtz.paddedTetraWeight
+#print axioms Gtz.paddedTetraVertex_corner
+#print axioms Gtz.paddedTetraVertex_copy
+#print axioms Gtz.paddedTetraWeight_corner
+#print axioms Gtz.paddedTetraWeight_copy
+#print axioms Gtz.paddedTetraWeight_sum_one
+#print axioms Gtz.tetraAtom_parseval
+#print axioms Gtz.paddedTetraDesign
+#print axioms Gtz.paddedTetraDesign_atom
+#print axioms Gtz.exists_unusedPaddedVertex
+#print axioms Gtz.paddedTetraDesign_no_strictDominator
+#print axioms Gtz.paddedTetraCornerTriple
+#print axioms Gtz.card_paddedTetraCornerTriple
+#print axioms Gtz.subsetSum_paddedTetraCornerTriple
+#print axioms Gtz.paddedTetraDesign_dominates
+#print axioms Gtz.paddedTetraDesign_isTie
+#print axioms Gtz.not_gtzWeightedFloor_rankThree_of_one_lt
+#print axioms Gtz.gtzWeightedFloor_rankThree_level_le_one
+#print axioms Gtz.gtzWeightedFloor_rankThree_bracket
+#print axioms Gtz.not_gtzWeightedFloor_sevenThree_of_one_lt
+#print axioms Gtz.exists_isTie_sevenThree
+#print axioms Gtz.exists_atom_dotProduct_sq_ge_self
+#print axioms Gtz.dominationGap_form_of_annihilated
+#print axioms Gtz.dotProduct_sq_ge_self_of_dominates
+#print axioms Gtz.posDef_subsetSum_univ_sub_one
+#print axioms Gtz.subsetSum_univ_sub_one_eq_zero_of_single
+#print axioms Gtz.gtzWeighted_corank_one_and_two
+#print axioms Gtz.gtzWeightedAll_three_of_corank_three
+
+-- Audit-coverage completion: declarations that were proved but never listed here.
+-- Gtz.Certificates.FrameBridge
+#print axioms Gtz.FrameBridge.biquadTight_symm
+-- Gtz.Complex.ComplexPadding
+#print axioms Gtz.topLeftBlock_add
+#print axioms Gtz.topLeftBlock_sub
+#print axioms Gtz.extendFlat_zero
+#print axioms Gtz.extendFlat_one
+#print axioms Gtz.extendFlat_two
+#print axioms Gtz.topLeftBlock_one
+#print axioms Gtz.quadForm_extendFlat
+#print axioms Gtz.scaleAmpC_conj
+#print axioms Gtz.scaleAmpC_sq
+#print axioms Gtz.scaledSic_norm
+#print axioms Gtz.scaledSic_overlap
+#print axioms Gtz.scaledSingle_not_posSemidef
+#print axioms Gtz.spikeAmpC_conj
+#print axioms Gtz.spikeAmpC_sq
+#print axioms Gtz.paddedAtom_spike_four
+#print axioms Gtz.paddedAtom_spike_five
+#print axioms Gtz.oldIndexOf_ne
+#print axioms Gtz.paddedAtom_old
+#print axioms Gtz.extendFlat_castSucc
+#print axioms Gtz.topLeft_atom_extend
+#print axioms Gtz.topLeft_atom_spike
+#print axioms Gtz.complexAtom_zero_plane
+#print axioms Gtz.topLeft_spike_four
+#print axioms Gtz.topLeft_spike_five
+#print axioms Gtz.scaledSingle_excess_not_psd
+#print axioms Gtz.quadForm_basisTwo
+-- Gtz.Complex.ComplexWitness
+#print axioms Gtz.det_pair_excess_value
+#print axioms Gtz.omegaRoot_star_mul
+#print axioms Gtz.omegaRoot_sq
+#print axioms Gtz.topAmpC_conj
+#print axioms Gtz.sideAmpC_conj
+#print axioms Gtz.waveAmpC_conj
+#print axioms Gtz.topAmpC_sq
+#print axioms Gtz.sideAmpC_sq
+#print axioms Gtz.waveAmpC_sq
+#print axioms Gtz.omegaRoot_conj_sum
+#print axioms Gtz.omegaRoot_conj_eq
+#print axioms Gtz.starDot_pair
+#print axioms Gtz.sicAtom_zero
+#print axioms Gtz.sicAtom_one
+#print axioms Gtz.sicAtom_two
+#print axioms Gtz.sicAtom_three
+#print axioms Gtz.sicOverlap_zero_side
+#print axioms Gtz.sicOv_one_two
+#print axioms Gtz.sicOv_two_one
+#print axioms Gtz.sicOv_one_three
+#print axioms Gtz.sicOv_three_one
+#print axioms Gtz.sicOv_two_three
+#print axioms Gtz.sicOv_three_two
+#print axioms Gtz.sicOverlap_side_zero
+#print axioms Gtz.sicProd_one_two
+#print axioms Gtz.sicProd_two_one
+#print axioms Gtz.sicProd_one_three
+#print axioms Gtz.sicProd_three_one
+#print axioms Gtz.sicProd_two_three
+#print axioms Gtz.sicProd_three_two
+-- Gtz.Core.Sanity
+#print axioms Gtz.Dominates
+-- Gtz.Corner.IdempotentSplitting
+#print axioms Gtz.sylvesterMap_add
+#print axioms Gtz.sylvesterMap_sub
+#print axioms Gtz.transpose_idempotent
+#print axioms Gtz.idem_mul_compl
+#print axioms Gtz.compl_mul_idem
+#print axioms Gtz.complT_mul_idemT
+-- Gtz.Design.CapSlack
+#print axioms Gtz.sub_atomMatrix_eq_add_replicate
+#print axioms Gtz.add_atomMatrix_eq_add_replicate
+#print axioms Gtz.det_one_add_row_inv_col
+-- Gtz.Design.CollaredCompact
+#print axioms Gtz.atom_entry_sq_le_leverage
+#print axioms Gtz.weight_le_one_of_sum_one
+-- Gtz.Design.EqualityLocus
+#print axioms Gtz.laplacianOn_bilinear
+#print axioms Gtz.graphicDesign_posDef_iff
+#print axioms Gtz.whitener_gram_mul_fullLaplacian
+#print axioms Gtz.leverageOf_graphicAtom_of_solves
+#print axioms Gtz.cycleDropAt
+#print axioms Gtz.groundedPotential_zero
+#print axioms Gtz.cycleDropAt_zero
+#print axioms Gtz.ne_zero_of_cycleDropAt_ne_zero
+#print axioms Gtz.sum_cycleDropAt_eq_zero
+#print axioms Gtz.dropPrefix
+#print axioms Gtz.cycleVertex_val_self
+#print axioms Gtz.dropPrefix_zero
+#print axioms Gtz.dropPrefix_succ
+#print axioms Gtz.dropPrefix_full
+#print axioms Gtz.dropPrefix_last
+#print axioms Gtz.potentialOfDrops
+#print axioms Gtz.groundedPotential_potentialOfDrops
+#print axioms Gtz.cycleDropAt_potentialOfDrops
+#print axioms Gtz.bundleSize
+#print axioms Gtz.sum_of_bundleValue
+#print axioms Gtz.sum_bundleSize_cast
+#print axioms Gtz.CycleBundling.bundleSize_pos
+#print axioms Gtz.CycleBundling.bundleSize_lt
+#print axioms Gtz.CycleBundling.edgeCount_pos
+#print axioms Gtz.CycleBundling.graphInducedWeight
+#print axioms Gtz.CycleBundling.coBundleSize_pos
+#print axioms Gtz.CycleBundling.bundleSize_pos_cast
+#print axioms Gtz.CycleBundling.graphInducedWeight_pos
+#print axioms Gtz.bundledCycleGraph
+#print axioms Gtz.edgeVector_congr
+#print axioms Gtz.bundledCycleGraph_edgeVector_congr
+#print axioms Gtz.bundledCycleGraph_edgeVector_dotProduct
+#print axioms Gtz.bundledCycle_reachable_from_zero
+#print axioms Gtz.bundledCycle_isGroundConnected
+#print axioms Gtz.bundledCycleData
+#print axioms Gtz.bundledCycleDesign
+#print axioms Gtz.bundledCycleDesign_weight
+#print axioms Gtz.graphicDesign_atom
+#print axioms Gtz.bundledCycle_atom_eq_of_sameBundle
+#print axioms Gtz.bundledCycleData_selected_conductance
+#print axioms Gtz.bundledCycle_selectedLaplacian_form
+#print axioms Gtz.sum_of_bundleValue_univ
+#print axioms Gtz.bundledCycle_fullLaplacian_bilinear
+#print axioms Gtz.bundledCycle_fullLaplacian_form
+#print axioms Gtz.bundledCycle_gap_eq_engelDeficiency
+#print axioms Gtz.bundledCycle_gap_nonneg
+#print axioms Gtz.bundledCycle_dominates
+#print axioms Gtz.bundleSection
+#print axioms Gtz.bundleSection_spec
+#print axioms Gtz.bundleSection_injective
+#print axioms Gtz.bundledCycleTree
+#print axioms Gtz.bundledCycleTree_card
+#print axioms Gtz.bundledCycleTree_injOn
+#print axioms Gtz.bundledCycleTree_image
+#print axioms Gtz.bundledCycleTree_dominates
+#print axioms Gtz.bundledCycleTree_isSpanningTree
+#print axioms Gtz.bundleTightDrops
+#print axioms Gtz.sum_bundleTightDrops
+#print axioms Gtz.erase_nonempty_of_rank
+#print axioms Gtz.bundleTightPotential_ne_zero
+#print axioms Gtz.bundledCycle_gap_eq_zero_at_tight
+#print axioms Gtz.bundleSeparatingDrops
+#print axioms Gtz.sum_bundleSeparatingDrops
+#print axioms Gtz.bundleSeparatingDrops_eq_zero
+#print axioms Gtz.bundledCycle_not_posDef_of_missesTwo
+#print axioms Gtz.bundledCycle_not_posDef
+#print axioms Gtz.bundledCycle_isTie
+#print axioms Gtz.bundleCurrentScale
+#print axioms Gtz.bundleCurrentDrops
+#print axioms Gtz.sum_coBundleSize
+#print axioms Gtz.sum_bundleCurrentDrops
+#print axioms Gtz.bundleCurrent_solves
+#print axioms Gtz.bundledCycle_leverage
+#print axioms Gtz.bundledCycle_leverage_identity_at_arcTotal
+#print axioms Gtz.bundledCycle_projection_diagonal
+#print axioms Gtz.bundledCycle_rankTwo_clusterMagnitude
+#print axioms Gtz.engelDeficiency_two
+#print axioms Gtz.bundledCycle_gap_eq_squareQuotient
+#print axioms Gtz.exists_arcPair_rankTwo
+#print axioms Gtz.bundlingSixThreeHeavy
+#print axioms Gtz.bundlingSixThreePaired
+#print axioms Gtz.bundlingSevenThreeHeavy
+#print axioms Gtz.bundlingSevenThreeMixed
+#print axioms Gtz.bundlingSevenThreePaired
+#print axioms Gtz.bundlingSixThreeHeavy_isTie
+#print axioms Gtz.bundlingSixThreePaired_isTie
+#print axioms Gtz.bundlingSevenThreeHeavy_isTie
+#print axioms Gtz.bundlingSevenThreeMixed_isTie
+#print axioms Gtz.bundlingSevenThreePaired_isTie
+#print axioms Gtz.bundlingSixThreeHeavy_leverage_tripleArc
+#print axioms Gtz.bundlingSixThreeHeavy_leverage_singleArc
+#print axioms Gtz.bundlingSixThreePaired_leverage_doubleArc
+#print axioms Gtz.bundlingSevenThreeHeavy_leverage_quadArc
+#print axioms Gtz.bundlingSevenThreeHeavy_leverage_singleArc
+#print axioms Gtz.bundlingSevenThreeMixed_leverage_tripleArc
+#print axioms Gtz.bundlingSevenThreeMixed_leverage_doubleArc
+#print axioms Gtz.bundlingSevenThreePaired_leverage_doubleArc
+#print axioms Gtz.bundlingSevenThreePaired_leverage_singleArc
+-- Gtz.Design.StressCertificate
+#print axioms Gtz.tetraAtom_dot_self
+#print axioms Gtz.tetraAtom_ne_zero
+#print axioms Gtz.tetraAtom_dot_sq_of_ne
+-- Gtz.LinAlg.PsdKit
+#print axioms Gtz.sqrt_three_sq
+#print axioms Gtz.dotProduct_self_nonneg
+#print axioms Gtz.dotProduct_self_eq_sum_sq
+#print axioms Gtz.eq_zero_of_dotProduct_self_eq_zero
+#print axioms Gtz.dotProduct_sq_le_mul
+-- Gtz.LinAlg.ResolventPerturbation
+#print axioms Gtz.neg_le_of_sq_le_sq
+-- Gtz.LinAlg.SchurRankOne
+#print axioms Gtz.PosDef.transpose_eq
+-- Gtz.Planar.CertificateFrame
+#print axioms Gtz.planarDet_smul_left
+-- Gtz.Planar.LawCounterexample
+#print axioms Gtz.cexBudget_exceeds_law
+-- Gtz.Planar.Pushoff
+#print axioms Gtz.planarNorm_nonneg
+#print axioms Gtz.planarNorm_sq
+#print axioms Gtz.planarNorm_zero
+#print axioms Gtz.abs_dotProduct_le_planarNorm_mul
+#print axioms Gtz.planarDefect_zero
+#print axioms Gtz.planarNorm_eq_of_sq
+-- Gtz.Planar.SilenceDictionary
+#print axioms Gtz.pair_excess_transpose
+#print axioms Gtz.pair_excess_trace
+-- Gtz.Planar.TightGraph
+#print axioms Gtz.perpCoord_sq_of_unit
+#print axioms Gtz.eq_of_coords_eq
+-- Gtz.Quantitative.CollarFloor
+#print axioms Gtz.collarDenominator_pos
+#print axioms Gtz.sqrt_three_lt
+-- Gtz.Quantitative.Interface
+#print axioms Gtz.cornerDistanceRate_lower
+#print axioms Gtz.cornerDistanceRate_upper
+-- Gtz.Quantitative.PhaseFreeNoGo
+#print axioms Gtz.phaseFreeOfDesign_excess_add_one
+#print axioms Gtz.trineOverlap_symm
+#print axioms Gtz.trineOverlap_self
+#print axioms Gtz.trineOverlap_nonneg
+#print axioms Gtz.trineOverlap_le_nine
+#print axioms Gtz.trineTriangleTable_swap
+#print axioms Gtz.trineTriangleTable_rotate
+-- Gtz.Reduction.DescentLadder
+#print axioms Gtz.one_sub_weight_mem
+-- Gtz.Reduction.RatCertificateInstance
+#print axioms Gtz.WeightedDesign
+-- Gtz.Ties.CorankOneTieCriterion
+#print axioms Gtz.exists_erase_eq_of_card_eq
+#print axioms Gtz.card_erase_univ
+#print axioms Gtz.forall_pivot_eq_one_of_one_le
+#print axioms Gtz.parseval_reproduces
+#print axioms Gtz.coParseval_reproduces
+#print axioms Gtz.atomCombination_apply
+#print axioms Gtz.atomCombination_surjective
+#print axioms Gtz.parsevalRow_isDependency
+#print axioms Gtz.resolventRow_isDependency
+#print axioms Gtz.parsevalRow_symm
+#print axioms Gtz.resolventRow_symm
+#print axioms Gtz.resolventRow_diag_of_pivot_eq_one
+#print axioms Gtz.parsevalRow_diag
+-- Gtz.Ties.NonTetrahedralTie
+#print axioms Gtz.sharpDesign_leverage_zero
+#print axioms Gtz.sharpDesign_leverage_one
+-- Gtz.Ties.SelectionObstruction
+#print axioms Gtz.heavyPivotDesign_not_dominates_ZeroOneTwo
+#print axioms Gtz.heavyPivotDesign_not_dominates_ZeroOneThree
+#print axioms Gtz.heavyPivotDesign_not_dominates_ZeroOneFour
+#print axioms Gtz.heavyPivotDesign_not_dominates_ZeroOneFive
+#print axioms Gtz.heavyPivotDesign_not_dominates_ZeroTwoThree
+#print axioms Gtz.heavyPivotDesign_not_dominates_ZeroTwoFour
+#print axioms Gtz.heavyPivotDesign_not_dominates_ZeroTwoFive
+#print axioms Gtz.heavyPivotDesign_not_dominates_ZeroThreeFour
+#print axioms Gtz.heavyPivotDesign_not_dominates_ZeroThreeFive
+#print axioms Gtz.heavyPivotDesign_not_dominates_ZeroFourFive
+#print axioms Gtz.heavyPivotDesign_not_dominates_OneTwoThree
+#print axioms Gtz.heavyPivotDesign_not_dominates_OneTwoFour
+#print axioms Gtz.heavyPivotDesign_not_dominates_OneTwoFive
+#print axioms Gtz.heavyPivotDesign_not_dominates_OneThreeFour
+#print axioms Gtz.heavyPivotDesign_not_dominates_OneThreeFive
+#print axioms Gtz.heavyPivotDesign_not_dominates_OneFourFive
+#print axioms Gtz.heavyPivotDesign_not_dominates_TwoThreeFour
+#print axioms Gtz.heavyPivotDesign_not_dominates_TwoThreeFive
+#print axioms Gtz.heavyPivotDesign_not_dominates_TwoFourFive
+#print axioms Gtz.doubleTransposition_zero
+#print axioms Gtz.doubleTransposition_one
+#print axioms Gtz.doubleTransposition_two
+#print axioms Gtz.doubleTransposition_three
+#print axioms Gtz.doubleTransposition_four
+#print axioms Gtz.doubleTransposition_five
+-- Gtz.Ties.SplitTetrahedronTie
+#print axioms Gtz.splitTetraAtom_dot_sq_of_ne
+#print axioms Gtz.exists_unusedDir
+-- Gtz.Ties.TetrahedronCertifiedTie
+#print axioms Gtz.exists_unusedVertex
+#print axioms Gtz.tetraDesign_gapForm_zero_of_unusedVertex
+-- Gtz.Complex.AtomSplitting
+#print axioms Gtz.conjugatedSubsetRows_mulVec
+#print axioms Gtz.not_posSemidef_atomSum_sub_of_repeatedAtom
+#print axioms Gtz.splitAtomWeight
+#print axioms Gtz.splitAtomWeight_atom_castSucc
+#print axioms Gtz.splitAtomWeight_atom_last
+#print axioms Gtz.exists_preimage_of_last_notMem
+#print axioms Gtz.atomSum_map_castSucc
+#print axioms Gtz.splitAtomWeight_valueAtMost
+#print axioms Gtz.complexRankConstantAtMost_of_atSize
+#print axioms Gtz.complexRankConstantAtMostAtSize_succ
+#print axioms Gtz.complexRankConstantAtMostAtSize_of_le
+#print axioms Gtz.complexRankConstantAtMostAtSize_nine_hesse
+#print axioms Gtz.complexRankConstantAtMostAtSize_three_hesse
+#print axioms Gtz.not_complexGtzWeighted_three_of_nine_le

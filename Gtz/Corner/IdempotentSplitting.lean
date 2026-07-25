@@ -288,7 +288,7 @@ the dual of `Reductions.exists_leverage_ge_rank`, hypothesis-free. -/
 theorem exists_leverage_le_rank (D : WeightedDesign m k) :
     ∃ c, leverageOf (D.atom c) ≤ (k : ℝ) := by
   by_contra hall
-  push_neg at hall
+  push Not at hall
   have hnonempty : (Finset.univ : Finset (Fin m)).Nonempty := by
     by_contra hempty
     have hzero := D.weight_sum_one

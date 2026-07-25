@@ -55,7 +55,7 @@ theorem isTie_yields_tightDirection {D : WeightedDesign m k} (htie : IsTie D) :
   obtain ⟨⟨C, hcard, hdom⟩, hnostrict⟩ := htie
   have hnot : ¬ (subsetSum D C - 1).PosDef := hnostrict C hcard
   rw [Matrix.posDef_iff_dotProduct_mulVec] at hnot
-  push_neg at hnot
+  push Not at hnot
   obtain ⟨tightDir, hne, hle⟩ := hnot hdom.1
   rw [star_trivial] at hle
   have hge : 0 ≤ tightDir ⬝ᵥ ((subsetSum D C - 1) *ᵥ tightDir) := by

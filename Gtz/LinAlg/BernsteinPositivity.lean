@@ -35,7 +35,7 @@ theorem bernstein_eval_nonneg (n k : ℕ) {x : ℝ} (hzero : 0 ≤ x)
 theorem bernstein_sum_eval (n : ℕ) (x : ℝ) :
     ∑ k ∈ Finset.range (n + 1), (bernsteinPolynomial ℝ n k).eval x = 1 := by
   have hsum := congrArg (Polynomial.eval x) (bernsteinPolynomial.sum ℝ n)
-  rwa [eval_finset_sum, eval_one] at hsum
+  rwa [eval_finsetSum, eval_one] at hsum
 
 /-- **Coefficient floors are function floors**: if every Bernstein
 coefficient is at least `floor`, the polynomial is at least `floor` on

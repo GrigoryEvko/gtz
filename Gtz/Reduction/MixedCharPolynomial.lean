@@ -96,13 +96,13 @@ tetrahedron direction and carry shadow mass zero; the other twenty have atom sum
     refuted is the BOUND, not the conjecture.
 
 **CONDITIONAL on named `Prop`s.**  `gtzWeightedHeavy_of_mixtureInterlacesAt` is
-the route assembled: `MixtureInterlacesAt m k 1` (steps (i)+(ii), stated
+the route assembled: `DoesMixtureInterlaceAt m k 1` (steps (i)+(ii), stated
 root-free so no existence-of-a-real-root claim is smuggled in) plus
-`MixedRootAtLeastOne m k` (step (iii)) give `GtzWeightedHeavy m k`.  Both
+`HasMixedRootAtLeastOne m k` (step (iii)) give `GtzWeightedHeavy m k`.  Both
 hypotheses are consumed explicitly and nothing else is used.  Since the second is
 false at both residual sizes, the implication is sound but unusable at rank three.
 
-**CITED — and what the citations actually say.**  `MixtureInterlacesAt` is not
+**CITED — and what the citations actually say.**  `DoesMixtureInterlaceAt` is not
 mechanized here, but it is NOT an open question either; calling it "neither proved
 nor refuted" would undersell it.  Both halves are published:
 
@@ -142,8 +142,8 @@ nor refuted" would undersell it.  Both halves are published:
   not quoted, and nothing in this file depends on it.
 
   Independently: at level one the hypothesis is a CONSEQUENCE of the conjecture
-  (`mixtureInterlacesAtOne_of_gtzWeighted`), because `MixtureInterlacesAt m k 1`'s
-  conclusion is literally GTZ's.  So `MixtureInterlacesAt m k 1` cannot be refuted
+  (`doesMixtureInterlaceAtOne_of_gtzWeighted`), because `DoesMixtureInterlaceAt m k 1`'s
+  conclusion is literally GTZ's.  So `DoesMixtureInterlaceAt m k 1` cannot be refuted
   without refuting GTZ, and only levels strictly below one carry independent
   content.  The salvage interface
   (`exists_leastEigenvalue_ge_of_mixtureInterlacesAt`) is level-parametric for
@@ -563,8 +563,8 @@ polynomials of the sampled atom sums form an INTERLACING FAMILY; (ii) an
 interlacing family has a leaf whose smallest root is at least the mixture's
 smallest root; (iii) the mixture's smallest root is at least one on every
 all-heavy design, so that leaf dominates.  Steps (i) and (ii) are exactly what
-`MixtureInterlacesAt` packages — root-free, so that no separate existence-of-a-
-real-root lemma is smuggled in — and step (iii) is `MixedRootAtLeastOne`.  The
+`DoesMixtureInterlaceAt` packages — root-free, so that no separate existence-of-a-
+real-root lemma is smuggled in — and step (iii) is `HasMixedRootAtLeastOne`.  The
 implication below is the whole of the route, and it is honest: it consumes both
 named hypotheses and nothing else.
 
@@ -578,7 +578,7 @@ This is the composite of the two literature steps — Anari–Oveis Gharan's
 interlacing family for a homogeneous strongly Rayleigh measure and the
 Marcus–Spielman–Srivastava leaf bound at the smallest root — stated without
 reference to roots so that it carries no hidden existence claim. -/
-def MixtureInterlacesAt (m k : ℕ) [Nonempty (Fin k)] (level : ℝ) : Prop :=
+def DoesMixtureInterlaceAt (m k : ℕ) [Nonempty (Fin k)] (level : ℝ) : Prop :=
   ∀ D : WeightedDesign m k,
     (∀ below : ℝ, below < level → (mixedCharPoly D).eval below ≠ 0) →
       ∃ selected : Finset (Fin m), selected.card = k ∧
@@ -590,7 +590,7 @@ with equality — the smallest root is exactly `1`
 (`mixedCharPoly_splitSevenDesign`) — which is what made the conjecture look
 plausible.  It is FALSE at both residual sizes:
 `not_mixedRootAtLeastOne_sixThree`, `not_mixedRootAtLeastOne_sevenThree`. -/
-def MixedRootAtLeastOne (m k : ℕ) : Prop :=
+def HasMixedRootAtLeastOne (m k : ℕ) : Prop :=
   ∀ D : WeightedDesign m k, AllHeavy D →
     ∀ level : ℝ, level < 1 → (mixedCharPoly D).eval level ≠ 0
 
@@ -599,23 +599,23 @@ root bound gives weighted GTZ on the all-heavy stratum — which is the stratum
 `Gtz.rank_three_of_heavy_residuals` consumes.  Both hypotheses are named
 `Prop`s; nothing else is used. -/
 theorem gtzWeightedHeavy_of_mixtureInterlacesAt [Nonempty (Fin k)]
-    (hinterlace : MixtureInterlacesAt m k 1)
-    (hroot : MixedRootAtLeastOne m k) : GtzWeightedHeavy m k := by
+    (hinterlace : DoesMixtureInterlaceAt m k 1)
+    (hroot : HasMixedRootAtLeastOne m k) : GtzWeightedHeavy m k := by
   intro D hheavy
   obtain ⟨selected, hcard, hlevel⟩ := hinterlace D (hroot D hheavy)
   exact ⟨selected, hcard, (dominates_iff_one_le_lambdaMinMat D selected).mpr hlevel⟩
 
 /-- **At level one the interlacing half is a CONSEQUENCE of the conjecture**, so
-it cannot be refuted without refuting GTZ itself: `MixtureInterlacesAt m k 1`
+it cannot be refuted without refuting GTZ itself: `DoesMixtureInterlaceAt m k 1`
 asks for a `k`-subset with `1 ≤ λ_min(S_T)`, which
 `dominates_iff_one_le_lambdaMinMat` says is exactly domination — and the
 hypothesis about roots is simply discarded.  Consequence for the ledger: all the
-independent content of `MixtureInterlacesAt` sits at levels strictly below one,
+independent content of `DoesMixtureInterlaceAt` sits at levels strictly below one,
 which is why the salvage interface below is level-parametric.  It also means the
 refutations in this file could not have gone the other way: only the analytic
 half was ever refutable at level one. -/
-theorem mixtureInterlacesAtOne_of_gtzWeighted [Nonempty (Fin k)] (hgtz : GtzWeighted m k) :
-    MixtureInterlacesAt m k 1 := by
+theorem doesMixtureInterlaceAtOne_of_gtzWeighted [Nonempty (Fin k)] (hgtz : GtzWeighted m k) :
+    DoesMixtureInterlaceAt m k 1 := by
   intro D _
   obtain ⟨selected, hcard, hdominates⟩ := hgtz D
   exact ⟨selected, hcard, (dominates_iff_one_le_lambdaMinMat D selected).mp hdominates⟩
@@ -646,7 +646,7 @@ mixture is
     X³ − 9X² + (351/16)X − 27/2,
 
 whose value at `1` is `+7/16 > 0` while at `0` it is negative for structural
-reasons: a root in `(0,1)`, so `MixedRootAtLeastOne 6 3` is FALSE.  GTZ is
+reasons: a root in `(0,1)`, so `HasMixedRootAtLeastOne 6 3` is FALSE.  GTZ is
 untouched — four of the twenty triples dominate and `{0,2,4}` is exhibited below
 with an explicit positive-semidefinite decomposition.
 
@@ -864,7 +864,7 @@ theorem exists_root_rootKillDesign_lt_one :
 
 /-- **STEP (iii) IS FALSE at `(6,3)`.**  The witness is all-heavy and its mixture
 has a root strictly between zero and one. -/
-theorem not_mixedRootAtLeastOne_sixThree : ¬ MixedRootAtLeastOne 6 3 := by
+theorem not_mixedRootAtLeastOne_sixThree : ¬ HasMixedRootAtLeastOne 6 3 := by
   intro hroot
   obtain ⟨level, -, hlevelLt, hlevelRoot⟩ := exists_root_rootKillDesign_lt_one
   exact hroot rootKillDesign rootKillDesign_allHeavy level hlevelLt hlevelRoot
@@ -1146,7 +1146,7 @@ theorem exists_root_axisKillDesign_lt_one :
 /-- **STEP (iii) IS FALSE at `(7,3)` TOO**, and not by padding the `(6,3)`
 witness: `axisKillDesign` has two distinct leverages and so lies off the
 constant-leverage slice. -/
-theorem not_mixedRootAtLeastOne_sevenThree : ¬ MixedRootAtLeastOne 7 3 := by
+theorem not_mixedRootAtLeastOne_sevenThree : ¬ HasMixedRootAtLeastOne 7 3 := by
   intro hroot
   obtain ⟨level, -, hlevelLt, hlevelRoot⟩ := exists_root_axisKillDesign_lt_one
   exact hroot axisKillDesign axisKillDesign_allHeavy level hlevelLt hlevelRoot
@@ -1191,26 +1191,26 @@ false at `(7,3)`.  Nothing here bears on the conjecture: both witnesses satisfy
 GTZ (`rootKillDesign_hasDominatingSubset`,
 `axisKillDesign_hasDominatingSubset`). -/
 theorem not_mixedRootAtLeastOne_rankThreeResiduals :
-    ¬ MixedRootAtLeastOne 6 3 ∧ ¬ MixedRootAtLeastOne 7 3 :=
+    ¬ HasMixedRootAtLeastOne 6 3 ∧ ¬ HasMixedRootAtLeastOne 7 3 :=
   ⟨not_mixedRootAtLeastOne_sixThree, not_mixedRootAtLeastOne_sevenThree⟩
 
 /-- The conjunction the rank-three reduction would need is therefore
 unavailable. -/
 theorem not_mixedRootAtLeastOne_rankThreeConjunction :
-    ¬ (MixedRootAtLeastOne 6 3 ∧ MixedRootAtLeastOne 7 3) :=
+    ¬ (HasMixedRootAtLeastOne 6 3 ∧ HasMixedRootAtLeastOne 7 3) :=
   fun hboth => not_mixedRootAtLeastOne_sixThree hboth.1
 
 /-- **What the refutations do NOT touch, and the salvage interface.**  The route
 runs at EVERY level, not just at one: interlacing at `level` plus "no root below
 `level`" delivers a `k`-subset whose least eigenvalue is at least `level`.  Only
 `level = 1` is strong enough for domination, and only `level = 1` is refuted.
-`MixtureInterlacesAt` itself is neither proved nor refuted anywhere here — its
+`DoesMixtureInterlaceAt` itself is neither proved nor refuted anywhere here — its
 literature backing is in the file header, and at level one it is anyway implied by
-GTZ (`mixtureInterlacesAtOne_of_gtzWeighted`).  A future attempt would replace the
+GTZ (`doesMixtureInterlaceAtOne_of_gtzWeighted`).  A future attempt would replace the
 refuted half by a bound at some level below one and would get a genuine — merely
 insufficient — theorem about `max_T λ_min`. -/
 theorem exists_leastEigenvalue_ge_of_mixtureInterlacesAt [Nonempty (Fin k)] {level : ℝ}
-    (hinterlace : MixtureInterlacesAt m k level)
+    (hinterlace : DoesMixtureInterlaceAt m k level)
     (hbound : ∀ D : WeightedDesign m k, AllHeavy D →
       ∀ below : ℝ, below < level → (mixedCharPoly D).eval below ≠ 0)
     (D : WeightedDesign m k) (hheavy : AllHeavy D) :

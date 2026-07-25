@@ -105,7 +105,7 @@ theorem one_le_of_twoMoment {first second third : ℝ} (hfirst : 0 ≤ first)
     (hmoment : (first + second + third - 1) ^ 2 ≤ 4 * (first * second * third)) :
     1 ≤ first := by
   by_contra hcontra
-  push_neg at hcontra
+  push Not at hcontra
   have hamgm : 4 * (second * third) ≤ (second + third) ^ 2 := by
     nlinarith [sq_nonneg (second - third)]
   have hbound :

@@ -344,9 +344,6 @@ noncomputable def cornerNearest : Fin 4 → Fin 2 → ℝ :=
     ![-1, Real.sqrt 3],
     ![-1, -Real.sqrt 3]]
 
-private theorem sqrt_three_sq : (Real.sqrt 3) ^ 2 = 3 :=
-  Real.sq_sqrt (by norm_num)
-
 /-- Read off a planar norm from a squared value. -/
 theorem planarNorm_eq_of_sq {planarVec : Fin 2 → ℝ} {target : ℝ}
     (htarget : 0 ≤ target) (hsq : planarVec ⬝ᵥ planarVec = target ^ 2) :

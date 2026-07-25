@@ -29,7 +29,7 @@ bound). Rides the existing `parseval_weighted_sum_sq`. -/
 theorem exists_charge_ge (D : WeightedDesign m k) (u : Fin k → ℝ) :
     ∃ c, u ⬝ᵥ u ≤ (D.atom c ⬝ᵥ u) ^ 2 := by
   by_contra hall
-  push_neg at hall
+  push Not at hall
   have hnonempty : (Finset.univ : Finset (Fin m)).Nonempty := by
     by_contra hempty
     have hzero := D.weight_sum_one
@@ -52,7 +52,7 @@ theorem exists_nonneg_margin_of_weighted_average
     (havg : 0 ≤ ∑ c, D.weight c * margin c) :
     ∃ c, 0 ≤ margin c := by
   by_contra hall
-  push_neg at hall
+  push Not at hall
   have hnonempty : (Finset.univ : Finset (Fin m)).Nonempty := by
     by_contra hempty
     have hzero := D.weight_sum_one

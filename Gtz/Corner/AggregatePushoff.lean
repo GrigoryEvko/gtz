@@ -49,7 +49,7 @@ theorem aggregate_pushoff_pigeonhole (weight planeDist lipschitz : Fin m → ℝ
   have htotal := aggregate_pushoff weight planeDist lipschitz hweightSum
     hdistNonneg hperPlane hlipschitzCap
   by_contra hcontra
-  push_neg at hcontra
+  push Not at hcontra
   have hcardPos : 0 < m := by
     rcases Nat.eq_zero_or_pos m with hzero | hpos
     · exfalso

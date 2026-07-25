@@ -39,7 +39,7 @@ All of this holds for ANY Parseval design — all-heaviness is never used.
 ## What is proved here, and what is not
 
 The residual difficulty is stated exactly: repairing one direction can open another.
-`ExchangeImproves` names the hypothesis that some bounded-radius exchange strictly
+`DoesExchangeImprove` names the hypothesis that some bounded-radius exchange strictly
 raises a real-valued score, and `gtzWeighted_of_exchangeImproves` discharges the
 reduction — a strictly improving move at a finite argmax is a contradiction, so
 GTZ follows. The reduction is a THEOREM; the improvement hypothesis is a DEFINITION,
@@ -181,7 +181,7 @@ blocked by the attained-zero obstruction differ from this one: the hypothesis is
 STRICT failure, so there is strict slack to consume, and the conclusion is reached
 with no certificate and no epsilon. What is NOT claimed is that the repaired subset
 is globally better — repairing `w` may open a different direction. That gap is the
-open content of `ExchangeImproves`. -/
+open content of `DoesExchangeImprove`. -/
 theorem exists_swap_repairing_worstDirection (D : WeightedDesign m k)
     (C : Finset (Fin m)) {w : Fin k → ℝ}
     (hfails : w ⬝ᵥ ((subsetSum D C - 1) *ᵥ w) < 0) :
@@ -205,7 +205,7 @@ needs neither: any real-valued score and any witness will do.
 
 This is a DEFINITION naming an open hypothesis, not a theorem. See the file header
 for its measured status. -/
-def ExchangeImproves (m k : ℕ)
+def DoesExchangeImprove (m k : ℕ)
     (score : WeightedDesign m k → Finset (Fin m) → ℝ) : Prop :=
   ∀ (D : WeightedDesign m k) (C : Finset (Fin m)), C.card = k → ¬ Dominates D C →
     ∃ improved : Finset (Fin m), improved.card = k ∧ score D C < score D improved
@@ -216,11 +216,11 @@ take a k-subset maximizing the score — one exists because the k-subsets are a
 nonempty finite family whenever `k ≤ m` — and a strict improvement at it would
 contradict maximality.
 
-The whole burden is therefore transferred to `ExchangeImproves`; no analysis,
+The whole burden is therefore transferred to `DoesExchangeImprove`; no analysis,
 no certificate, and no spectral theory enters here. -/
 theorem gtzWeighted_of_exchangeImproves (hsizeLe : k ≤ m)
     (score : WeightedDesign m k → Finset (Fin m) → ℝ)
-    (himproves : ExchangeImproves m k score) : GtzWeighted m k := by
+    (himproves : DoesExchangeImprove m k score) : GtzWeighted m k := by
   intro D
   have hfamilyNonempty :
       (Finset.univ.powersetCard k : Finset (Finset (Fin m))).Nonempty := by
@@ -242,7 +242,7 @@ weighted GTZ at that rank, hence (through the shipped size and window reductions
 the original problem at that rank. -/
 theorem gtzWeightedAll_of_exchangeImproves
     (score : ∀ size : ℕ, WeightedDesign size k → Finset (Fin size) → ℝ)
-    (himproves : ∀ size : ℕ, k ≤ size → ExchangeImproves size k (score size)) :
+    (himproves : ∀ size : ℕ, k ≤ size → DoesExchangeImprove size k (score size)) :
     GtzWeightedAll k := by
   intro size
   rcases le_or_gt k size with hle | hlt
