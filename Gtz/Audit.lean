@@ -24,12 +24,14 @@ import Gtz.Ties.SplitTetrahedronTie
 import Gtz.Ties.SplitTetraLocalBalance
 import Gtz.Ties.TetrahedronCertifiedTie
 import Gtz.Ties.RepeatedAtomExclusion
+import Gtz.Ties.SelectionObstruction
 import Gtz.Ties.NonTetrahedralTie
 import Gtz.Ties.CorankOneTieCriterion
 import Gtz.Ties.CorankOneTieExistence
 import Gtz.Quantitative.OneObjectNarrowing
 import Gtz.Quantitative.DiscriminantSystem
 import Gtz.Quantitative.GapStabilityFacts
+import Gtz.Quantitative.RealnessEngine
 import Gtz.Certificates.FrameBridge
 import Gtz.Quantitative.CollarRate
 import Gtz.Reduction.RayleighCertificate
@@ -883,3 +885,95 @@ import Gtz.Quantitative.Interface
 #print axioms Gtz.leverage_of_isTie
 #print axioms Gtz.corank_one_tie_stratum
 #print axioms Gtz.exists_isTie_uniform
+
+-- realness: the maximal real equiangular design (icosahedron) and the Bargmann sign
+#print axioms Gtz.IsEquiangularAt
+#print axioms Gtz.SpansSameLine
+#print axioms Gtz.ComplexIsEquiangularAt
+#print axioms Gtz.ComplexSpansSameLine
+#print axioms Gtz.tetraAtom_isEquiangular
+#print axioms Gtz.tetraAtom_distinct_lines
+#print axioms Gtz.splitTetraAtom_not_equiangular
+#print axioms Gtz.splitTetraAtom_sameLine_iff
+#print axioms Gtz.splitTetraAtom_lineCount_four
+#print axioms Gtz.sharpAtom_not_equiangular
+#print axioms Gtz.icosaRadius
+#print axioms Gtz.icosaRadius_sq
+#print axioms Gtz.icosaRadius_pos
+#print axioms Gtz.icosaRadius_lower
+#print axioms Gtz.icosaRadius_upper
+#print axioms Gtz.icosaShort
+#print axioms Gtz.icosaLong
+#print axioms Gtz.icosaShort_sq
+#print axioms Gtz.icosaLong_sq
+#print axioms Gtz.icosaShort_mul_icosaLong
+#print axioms Gtz.icosaAtom
+#print axioms Gtz.icosaAtom_leverage
+#print axioms Gtz.icosaAtom_dot_sq_of_ne
+#print axioms Gtz.icosaAtom_isEquiangular
+#print axioms Gtz.icosaAtom_distinct_lines
+#print axioms Gtz.icosaDesign
+#print axioms Gtz.icosaDesign_excess_form
+#print axioms Gtz.icosaDesign_dominates
+#print axioms Gtz.icosaDesign_strictly_dominates
+#print axioms Gtz.icosaDesign_rayleigh_floor
+#print axioms Gtz.icosaDesign_rayleigh_attained
+#print axioms Gtz.icosa_margin_window
+#print axioms Gtz.exists_maximal_equiangular_design_strictly_dominating
+#print axioms Gtz.paddedAtom_spikes_share_a_line
+#print axioms Gtz.paddedAtom_spike_cross
+#print axioms Gtz.paddedAtom_spike_four_leverage
+#print axioms Gtz.paddedAtom_spike_five_leverage
+#print axioms Gtz.paddedAtom_flat_spike_orthogonal
+#print axioms Gtz.paddedAtom_spike_flat_orthogonal
+#print axioms Gtz.paddedAtom_not_equiangular
+#print axioms Gtz.complexify
+#print axioms Gtz.starDot_complexify
+#print axioms Gtz.triangleBargmann
+#print axioms Gtz.HasRealTriangleBargmann
+#print axioms Gtz.realTriangle_bargmann_extremal
+#print axioms Gtz.realFamily_hasRealTriangleBargmann
+#print axioms Gtz.omegaRoot_re
+#print axioms Gtz.omegaRoot_im
+#print axioms Gtz.sicCube_value
+#print axioms Gtz.sicCube_re
+#print axioms Gtz.sicCube_im
+#print axioms Gtz.sicBargmann_value
+#print axioms Gtz.sicBargmann_re
+#print axioms Gtz.sicBargmann_im
+#print axioms Gtz.sicAtom_not_hasRealTriangleBargmann
+#print axioms Gtz.starDot_extendFlat
+#print axioms Gtz.starDot_scaledSic
+#print axioms Gtz.paddedBargmann_value
+#print axioms Gtz.paddedBargmann_im
+#print axioms Gtz.paddedAtom_not_hasRealTriangleBargmann
+#print axioms Gtz.realness_gate_separates
+
+-- selection is global: no continuous and no label-free dominating-subset rule exists
+#print axioms Gtz.not_dominates_of_negativeDirection
+#print axioms Gtz.not_dominates_triple_of_negativeDirection
+#print axioms Gtz.finset_card_three_cases
+#print axioms Gtz.liftingCertificates_of_dominates_atPivot
+#print axioms Gtz.heavyPivotDesign
+#print axioms Gtz.heavyPivotDesign_dominates_lastThree
+#print axioms Gtz.heavyPivotDesign_dominates_iff
+#print axioms Gtz.heavyPivotDesign_leverage_one
+#print axioms Gtz.heavyPivotDesign_leverage_lt_one
+#print axioms Gtz.rotatedHeavyPivotDesign_dominates_firstThree
+#print axioms Gtz.rotatedHeavyPivotDesign_not_dominates_lastThree
+#print axioms Gtz.no_universal_dominating_subset
+#print axioms Gtz.no_universal_goodPair
+#print axioms Gtz.exists_designs_with_disjoint_dominationSets
+#print axioms Gtz.heaviest_atom_can_lie_outside_every_dominatingSubset
+#print axioms Gtz.relabelDesign
+#print axioms Gtz.subsetSum_relabelDesign
+#print axioms Gtz.dominates_relabelDesign_iff
+#print axioms Gtz.doubledTetrahedronDesign
+#print axioms Gtz.doubledTetrahedron_dominates_zeroTwoThree
+#print axioms Gtz.doubledTetrahedron_zeroOnePair_not_dominates
+#print axioms Gtz.doubledTetrahedron_threeFourPair_not_dominates
+#print axioms Gtz.doubledTetrahedron_invariantSubset_not_dominates
+#print axioms Gtz.doubleTransposition_ne_one
+#print axioms Gtz.doubledTetrahedron_atom_invariant
+#print axioms Gtz.doubledTetrahedron_weight_invariant
+#print axioms Gtz.exists_symmetry_with_no_fixed_dominatingSubset

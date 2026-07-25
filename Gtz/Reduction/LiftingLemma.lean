@@ -334,7 +334,12 @@ cross-sum to vanish there instead of dividing by zero). Adversarially
 tight over ℝ (the `(k+1)`-cycle attains equality) and FALSE over ℂ (the
 SIC `(4,2)` minimizer breaks it) — the realness of the entire problem is
 concentrated in this Prop. The pivot/subset SELECTION is the open
-content: every deterministic rule is refuted; selection is global. -/
+content, and it is global in a precise sense: no CONTINUOUS rule can work
+(`no_universal_goodPair`) and no LABEL-FREE one can either
+(`exists_symmetry_with_no_fixed_dominatingSubset`), while the one rule that
+does always work — take the subset maximising `lambdaMin` — presupposes the
+existence it is supposed to produce. Not "every deterministic rule is
+refuted": that is false, and the E-optimal rule is the counterexample. -/
 def LiftingLemma (k : ℕ) : Prop :=
   ∀ (m : ℕ) (D : WeightedDesign m (k + 1)),
     ∃ (pivot : Fin m) (pivotUnit : Fin (k + 1) → ℝ)

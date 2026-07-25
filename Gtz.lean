@@ -110,6 +110,7 @@ import Gtz.Quantitative.GapStabilityFacts
 import Gtz.Quantitative.Interface
 import Gtz.Quantitative.MarginContinuity
 import Gtz.Quantitative.OneObjectNarrowing
+import Gtz.Quantitative.RealnessEngine
 import Gtz.Quantitative.StrictDomination
 
 -- Complex: the complex refutations: weighted (4,2) and (6,3) are false over C
@@ -122,6 +123,7 @@ import Gtz.Ties.CorankOneTieExistence
 import Gtz.Ties.DominationWithoutCertificate
 import Gtz.Ties.NonTetrahedralTie
 import Gtz.Ties.RepeatedAtomExclusion
+import Gtz.Ties.SelectionObstruction
 import Gtz.Ties.SplitTetraLocalBalance
 import Gtz.Ties.SplitTetrahedronTie
 import Gtz.Ties.TetrahedronCertifiedTie
