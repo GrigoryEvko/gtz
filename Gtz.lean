@@ -104,6 +104,7 @@ import Gtz.Quantitative.CapArgmax
 import Gtz.Quantitative.CapBoundaryConstant
 import Gtz.Quantitative.CollarFloor
 import Gtz.Quantitative.CollarRate
+import Gtz.Quantitative.DiscriminantSystem
 import Gtz.Quantitative.FirstOrderLaw
 import Gtz.Quantitative.GapStabilityFacts
 import Gtz.Quantitative.Interface

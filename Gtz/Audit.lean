@@ -28,6 +28,7 @@ import Gtz.Ties.NonTetrahedralTie
 import Gtz.Ties.CorankOneTieCriterion
 import Gtz.Ties.CorankOneTieExistence
 import Gtz.Quantitative.OneObjectNarrowing
+import Gtz.Quantitative.DiscriminantSystem
 import Gtz.Quantitative.GapStabilityFacts
 import Gtz.Certificates.FrameBridge
 import Gtz.Quantitative.CollarRate
@@ -642,6 +643,40 @@ import Gtz.Quantitative.Interface
 #print axioms Gtz.rank3Discriminant_iff_trace_det_nonneg
 #print axioms Gtz.discriminantDet_eq_resolventTie
 #print axioms Gtz.rank3Discriminant_iff_trace_and_tie
+
+-- the rank-3 discriminant system: domination of a triple as trace + tie polynomials,
+-- and the proved dominant-pairing stratum
+#print axioms Gtz.cornerCompleteSquare
+#print axioms Gtz.quadThree_nonneg_iff_schur_nonneg
+#print axioms Gtz.posSemidef_iff_quadForm_nonneg
+#print axioms Gtz.quadForm_three_eq
+#print axioms Gtz.tripleMatrix_mul_transpose
+#print axioms Gtz.tripleMatrix_transpose_mul_apply
+#print axioms Gtz.tripleGap_transpose
+#print axioms Gtz.atomPairing_comm
+#print axioms Gtz.atomPairing_self
+#print axioms Gtz.dominates_triple_iff_discriminantSystem
+#print axioms Gtz.gtzWeightedHeavy_three_iff_discriminantCovering
+#print axioms Gtz.discriminantSystem_pivot_independent
+#print axioms Gtz.discriminantTie_swap
+#print axioms Gtz.rank_three_of_discriminantCovering
+#print axioms Gtz.discriminantCovering_iff_rank_three
+#print axioms Gtz.gtz_original_rank_three_of_discriminantCovering
+#print axioms Gtz.discriminantMinorSum_eq
+#print axioms Gtz.allHeavy_heavyExcess_pos
+#print axioms Gtz.tetraDesign_leverage
+#print axioms Gtz.tetraDesign_heavyExcess
+#print axioms Gtz.tetraDesign_atomPairing_zeroOne
+#print axioms Gtz.tetraDesign_atomPairing_zeroTwo
+#print axioms Gtz.tetraDesign_atomPairing_oneTwo
+#print axioms Gtz.tetraDesign_discriminantTrace
+#print axioms Gtz.tetraDesign_discriminantTie
+#print axioms Gtz.tetraDesign_dominates_of_discriminantSystem
+#print axioms Gtz.tetraDesign_allHeavy
+#print axioms Gtz.dominates_of_dominantPairings
+#print axioms Gtz.dominates_of_orthogonalTriple
+#print axioms Gtz.discriminantCovering_of_dominantPairingTriple
+#print axioms Gtz.tetraDesign_pairing_boundary
 #print axioms Gtz.FrameBridge.biquad_p3_closes
 #print axioms Gtz.FrameBridge.frameForm_p3_closure
 #print axioms Gtz.FrameBridge.no_carriesOpenTriple
