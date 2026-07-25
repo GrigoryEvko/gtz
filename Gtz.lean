@@ -49,6 +49,11 @@ import Gtz.Reduction.RankTwo
 import Gtz.Reduction.RatCertificate
 import Gtz.Reduction.CertificateBall
 import Gtz.Reduction.RatCertificateInstance
+import Gtz.Reduction.BranchTwoRational
+import Gtz.Reduction.BranchTwoMinimal
+import Gtz.Reduction.BranchTwoCompleteness
+import Gtz.Reduction.PsdCongruenceConsumer
+import Gtz.Reduction.PrincipalMinorsThree
 import Gtz.Reduction.RayleighCertificate
 import Gtz.Reduction.Reductions
 

@@ -109,6 +109,11 @@ import Gtz.Certificates.CFiveCertificate
 import Gtz.Certificates.GeometricExclusion
 import Gtz.Reduction.LiftingLemma
 import Gtz.Quantitative.Interface
+import Gtz.Reduction.BranchTwoRational
+import Gtz.Reduction.BranchTwoMinimal
+import Gtz.Reduction.BranchTwoCompleteness
+import Gtz.Reduction.PsdCongruenceConsumer
+import Gtz.Reduction.PrincipalMinorsThree
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -1004,3 +1009,91 @@ import Gtz.Quantitative.Interface
 #print axioms Gtz.exists_conicMultiplier_of_identity_notMoment
 #print axioms Gtz.exists_symmetricConicMultiplier_of_identity_notMoment
 #print axioms Gtz.exists_conicMultiplier_of_noStrictDominator
+
+-- Branch (b) rational congruence route: the seven-three artifacts
+
+-- BranchTwoRational
+#print axioms Gtz.dotProduct_congruence_bilinear
+#print axioms Gtz.dotProduct_diagonal_single
+#print axioms Gtz.dotProduct_diagonal_self
+#print axioms Gtz.negativeDirection
+#print axioms Gtz.negativeDirection_quadForm
+#print axioms Gtz.signatureWitness_of_oneNegativePivot
+#print axioms Gtz.det_neg_of_oneNegativePivot
+#print axioms Gtz.gramShift_insert
+#print axioms Gtz.gramShift_erase
+#print axioms Gtz.dominates_of_capWitness
+#print axioms Gtz.dominates_of_capCongruence
+#print axioms Gtz.ratDominates_of_capCongruence
+#print axioms Gtz.ratCapCertificate_exists_dominating
+#print axioms Gtz.det_interface_identity
+#print axioms Gtz.branchTests_agree
+#print axioms Gtz.capWitness_of_dominates
+#print axioms Gtz.capCombinations
+#print axioms Gtz.capCombinations_card_seven_three
+#print axioms Gtz.capCombinations_card_six_three
+#print axioms Gtz.gateNormal
+#print axioms Gtz.pairGramShift
+#print axioms Gtz.gateNormal_selfDot
+#print axioms Gtz.cramer_expansion
+#print axioms Gtz.pairGramShift_mulVec_gateNormal
+#print axioms Gtz.pairGramShift_det
+#print axioms Gtz.pairGramShift_firstForm
+#print axioms Gtz.pairGramShift_secondForm
+#print axioms Gtz.pairGramShift_crossForm
+#print axioms Gtz.pairGramShift_crossFormFlipped
+#print axioms Gtz.pairGate_signatureWitness
+#print axioms Gtz.dominates_of_pairGate
+#print axioms Gtz.RatDesign
+#print axioms Gtz.ratDominates_of_pairGate
+#print axioms Gtz.exists_dominatingTriple_withoutStrictGate
+#print axioms Gtz.splitTetraCapGate
+#print axioms Gtz.splitTetraCap_gateGram
+#print axioms Gtz.splitTetraCap_congruence
+#print axioms Gtz.splitTetraCap_capDet
+#print axioms Gtz.splitTetraRatDesign_capCertified_dominates
+#print axioms Gtz.splitTetraRatDesign_pairGateCertified_dominates
+
+-- BranchTwoMinimal
+#print axioms Gtz.isUnit_basisDet_of_oneNegativePivot
+#print axioms Gtz.signatureWitness_of_oneNegativePivot_noUnit
+#print axioms Gtz.det_neg_of_oneNegativePivot_noUnit
+#print axioms Gtz.notMem_of_capDet
+#print axioms Gtz.dominates_of_capWitness_noFresh
+#print axioms Gtz.dominates_of_capCongruence_minimal
+#print axioms Gtz.distinct_of_pairGateScalars
+#print axioms Gtz.dominates_of_pairGate_minimal
+#print axioms Gtz.ratIsUnit_basisDet_of_oneNegativePivot
+#print axioms Gtz.ratDominates_of_capCongruence_minimal
+#print axioms Gtz.ratDominates_of_pairGate_minimal
+
+-- BranchTwoCompleteness
+#print axioms Gtz.tripleRows
+#print axioms Gtz.tripleRows_transpose_mul
+#print axioms Gtz.gramShift_posSemidef_of_dominatingTriple
+#print axioms Gtz.pairSlack_nonneg_of_dominatingTriple
+#print axioms Gtz.pairGramShift_det_nonpos_of_dominatingTriple
+#print axioms Gtz.symmetricDet_eq_zero_of_degenerateMinor
+#print axioms Gtz.excessDet_eq_gramDet
+#print axioms Gtz.shiftedLeverage_nonneg_of_dominatingTriple
+#print axioms Gtz.excessDet_eq_zero_of_degenerateGate
+#print axioms Gtz.pairSlack_pos_of_strictDominatingTriple
+#print axioms Gtz.pairGramShift_det_neg_of_strictDominatingTriple
+
+-- PsdCongruenceConsumer
+#print axioms Gtz.dominates_of_psdCongruence
+#print axioms Gtz.ratDominates_of_psdCongruence
+#print axioms Gtz.ratPsdCertificate_exists_dominating
+#print axioms Gtz.degenerateWitnessBasis
+#print axioms Gtz.degenerateWitness_gramShift
+#print axioms Gtz.degenerateWitness_congruence
+#print axioms Gtz.degenerateWitnessBasis_det
+#print axioms Gtz.degenerateWitness_isPosSemidef_byCongruence
+#print axioms Gtz.splitTetraTriple_psdCongruence
+#print axioms Gtz.splitTetraTriple_dominates_byPsdCongruence
+#print axioms Gtz.branchTests_agree_isNonvacuous
+
+-- PrincipalMinorsThree
+#print axioms Gtz.posSemidef_three_of_principalMinors
+#print axioms Gtz.ratDominates_of_principalMinors
+#print axioms Gtz.degenerateWitness_byPrincipalMinors
