@@ -17,6 +17,7 @@ import Gtz.LinAlg.Completion
 import Gtz.LinAlg.CongruenceRobustness
 import Gtz.LinAlg.EigenvalueSubdifferential
 import Gtz.LinAlg.GordanAlternative
+import Gtz.LinAlg.ProjectionForm
 import Gtz.LinAlg.PsdKit
 import Gtz.LinAlg.ResolventPerturbation
 import Gtz.LinAlg.SchurRankOne

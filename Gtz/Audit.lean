@@ -92,6 +92,7 @@ import Gtz.Planar.WedgeChain
 import Gtz.Certificates.CertificateAnchor
 import Gtz.LinAlg.BernsteinPositivity
 import Gtz.LinAlg.GordanAlternative
+import Gtz.LinAlg.ProjectionForm
 import Gtz.Ties.TetrahedronTie
 import Gtz.Ties.TieEigenvector
 import Gtz.Corner.TiedQuadruple
@@ -1781,3 +1782,44 @@ import Gtz.Reduction.StrengthenedInductionHypothesis
 #print axioms Gtz.lightTopAtom_heavy_iff_pivot
 #print axioms Gtz.not_heavyPivotInDominator_four_two
 #print axioms Gtz.lightTopDesign_allHeavy
+
+-- projection coordinates: P = VᵀV, the shadow/Pythagoras form of a design
+#print axioms Gtz.scaledAtomRows
+#print axioms Gtz.scaledAtomRows_row
+#print axioms Gtz.transpose_mul_scaledAtomRows
+#print axioms Gtz.projectionOfDesign
+#print axioms Gtz.projectionOfDesign_apply
+#print axioms Gtz.projectionOfDesign_transpose
+#print axioms Gtz.projectionOfDesign_mul_self
+#print axioms Gtz.projectionOfDesign_diagonal
+#print axioms Gtz.trace_projectionOfDesign
+#print axioms Gtz.sum_weight_mul_leverage
+#print axioms Gtz.selectedAtomRows
+#print axioms Gtz.sqrtWeightDiagonal
+#print axioms Gtz.isUnit_det_sqrtWeightDiagonal
+#print axioms Gtz.selectedGramGap_transpose
+#print axioms Gtz.projectionBlock_sub_weightDiagonal
+#print axioms Gtz.posSemidef_projectionBlock_iff
+#print axioms Gtz.det_projectionBlock_sub_weightDiagonal
+#print axioms Gtz.transpose_mul_selectedAtomRows
+#print axioms Gtz.dominates_iff_posSemidef_projectionBlock
+#print axioms Gtz.dominates_iff_posSemidef_projectionBlock_finset
+#print axioms Gtz.posSemidef_smul_iff
+#print axioms Gtz.posSemidef_transpose_mul_sub_smul_one_comm
+#print axioms Gtz.ProjectionCovering
+#print axioms Gtz.FrameProjectionCovering
+#print axioms Gtz.submatrix_mul_transpose_eq
+#print axioms Gtz.mul_transpose_transpose
+#print axioms Gtz.mul_transpose_mul_self
+#print axioms Gtz.trace_mul_transpose
+#print axioms Gtz.gtzOriginal_iff_frameProjectionCovering
+#print axioms Gtz.gtzOriginal_of_projectionCovering
+#print axioms Gtz.projectionOfDesign_rowDesign
+#print axioms Gtz.frameProjectionCovering_of_gtzWeighted
+#print axioms Gtz.det_one_add_smul_mul_transpose
+#print axioms Gtz.transpose_mul_scaledAtomRows_map
+#print axioms Gtz.projectionOfDesign_map
+#print axioms Gtz.det_one_add_X_smul_projectionOfDesign
+#print axioms Gtz.sum_det_projectionMinors
+#print axioms Gtz.sum_det_projectionMinors_rank
+#print axioms Gtz.det_one_add_smul_shifted_real
