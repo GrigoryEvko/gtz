@@ -36,6 +36,7 @@ import Gtz.Quantitative.RealnessEngine
 import Gtz.Quantitative.PhaseFreeNoGo
 import Gtz.Quantitative.TwoMomentCertificate
 import Gtz.Ties.StratumFirstOrder
+import Gtz.Reduction.MixedCharPolynomial
 import Gtz.Ties.SplitClassTieFamily
 import Gtz.Certificates.FrameBridge
 import Gtz.Quantitative.CollarRate
@@ -2461,3 +2462,92 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.rainbowSevenMultiplier_eq_det_projectionBlock
 #print axioms Gtz.SplitSevenNeighbourhoodCovering
 #print axioms Gtz.splitSevenNeighbourhoodCovering_of_gtzWeighted
+
+-- Gtz.Reduction.MixedCharPolynomial: the MSS volume-sampling route refuted at both residuals
+#print axioms Gtz.mixedCharPoly
+#print axioms Gtz.mixedCharPoly_coeff_rank
+#print axioms Gtz.mixedCharPoly_natDegree_le
+#print axioms Gtz.mixedCharPoly_monic
+#print axioms Gtz.mixedCharPoly_natDegree
+#print axioms Gtz.mixedCharPoly_ne_zero
+#print axioms Gtz.mixedCharPoly_eval
+#print axioms Gtz.shadowDeterminant_eq_weightProduct_mul_detSubsetSum
+#print axioms Gtz.shadowDeterminant_eq_zero_of_atom_eq
+#print axioms Gtz.mixedCharPoly_eval_zero
+#print axioms Gtz.sum_weightProduct_mul_detSubsetSum_sq_nonneg
+#print axioms Gtz.mixedCharPoly_eval_zero_nonpos_of_odd
+#print axioms Gtz.mixedCharPoly_eval_zero_neg_of_odd
+#print axioms Gtz.mixedCharPoly_eq_of_classes
+#print axioms Gtz.charpoly_fin_three_expand
+#print axioms Gtz.sum_tetraAtomMatrix_eq_fourSmulOne
+#print axioms Gtz.charpoly_eq_oneFourFour_of_coefficients
+#print axioms Gtz.charpoly_four_smul_sub_tetraAtom
+#print axioms Gtz.subsetSum_splitSevenDesign_of_distinctDirections
+#print axioms Gtz.mixedCharPoly_splitSevenDesign
+#print axioms Gtz.mixedCharPoly_splitSevenDesign_eval_lt_zero
+#print axioms Gtz.mixedCharPoly_splitSevenDesign_isRoot_one
+#print axioms Gtz.MixtureInterlacesAt
+#print axioms Gtz.MixedRootAtLeastOne
+#print axioms Gtz.gtzWeightedHeavy_of_mixtureInterlacesAt
+#print axioms Gtz.mixtureInterlacesAtOne_of_gtzWeighted
+#print axioms Gtz.detThreeInt
+#print axioms Gtz.rootKillVector
+#print axioms Gtz.rootKillVector_parseval
+#print axioms Gtz.rootKillVector_lengthSq
+#print axioms Gtz.rootKillScale
+#print axioms Gtz.rootKillScale_mul_self
+#print axioms Gtz.rootKillAtom
+#print axioms Gtz.rootKillDesign
+#print axioms Gtz.rootKillDesign_atom
+#print axioms Gtz.rootKillDesign_weight
+#print axioms Gtz.leverageOf_rootKillAtom
+#print axioms Gtz.rootKillDesign_allHeavy
+#print axioms Gtz.rootKillGram
+#print axioms Gtz.rootKillShadowNumerator
+#print axioms Gtz.rootKillGapNumerator
+#print axioms Gtz.rootKillNumeratorSum_one
+#print axioms Gtz.subsetSum_rootKillDesign_apply
+#print axioms Gtz.det_subsetSum_rootKillDesign
+#print axioms Gtz.shadowDeterminant_rootKillDesign
+#print axioms Gtz.det_scalarOne_sub_subsetSum_rootKillDesign
+#print axioms Gtz.mixedCharPoly_rootKillDesign_eval_one
+#print axioms Gtz.rootKillShadowNumerator_zeroTwoFour
+#print axioms Gtz.det_subsetSum_rootKillDesign_zeroTwoFour_ne_zero
+#print axioms Gtz.mixedCharPoly_rootKillDesign_eval_zero_neg
+#print axioms Gtz.exists_root_rootKillDesign_lt_one
+#print axioms Gtz.not_mixedRootAtLeastOne_sixThree
+#print axioms Gtz.rootKillWitnessVector
+#print axioms Gtz.rootKillWitnessAtom
+#print axioms Gtz.rootKillGram_zeroTwoFour
+#print axioms Gtz.rootKillDesign_hasDominatingSubset
+#print axioms Gtz.axisKillVector
+#print axioms Gtz.axisKillVector_parseval
+#print axioms Gtz.axisKillVector_lengthSq_ge
+#print axioms Gtz.axisKillScale
+#print axioms Gtz.axisKillScale_mul_self
+#print axioms Gtz.axisKillAtom
+#print axioms Gtz.axisKillDesign
+#print axioms Gtz.axisKillDesign_atom
+#print axioms Gtz.axisKillDesign_weight
+#print axioms Gtz.leverageOf_axisKillAtom
+#print axioms Gtz.axisKillDesign_allHeavy
+#print axioms Gtz.axisKillGram
+#print axioms Gtz.axisKillShadowNumerator
+#print axioms Gtz.axisKillGapNumerator
+#print axioms Gtz.axisKillNumeratorSum_one
+#print axioms Gtz.subsetSum_axisKillDesign_apply
+#print axioms Gtz.det_subsetSum_axisKillDesign
+#print axioms Gtz.shadowDeterminant_axisKillDesign
+#print axioms Gtz.det_scalarOne_sub_subsetSum_axisKillDesign
+#print axioms Gtz.mixedCharPoly_axisKillDesign_eval_one
+#print axioms Gtz.axisKillGram_fourFiveSix
+#print axioms Gtz.axisKillShadowNumerator_fourFiveSix
+#print axioms Gtz.det_subsetSum_axisKillDesign_fourFiveSix_ne_zero
+#print axioms Gtz.mixedCharPoly_axisKillDesign_eval_zero_neg
+#print axioms Gtz.exists_root_axisKillDesign_lt_one
+#print axioms Gtz.not_mixedRootAtLeastOne_sevenThree
+#print axioms Gtz.axisKillDesign_hasDominatingSubset
+#print axioms Gtz.mixedCharPoly_splitSevenDesign_noRoot_below_one
+#print axioms Gtz.not_mixedRootAtLeastOne_rankThreeResiduals
+#print axioms Gtz.not_mixedRootAtLeastOne_rankThreeConjunction
+#print axioms Gtz.exists_leastEigenvalue_ge_of_mixtureInterlacesAt

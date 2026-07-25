@@ -124,6 +124,7 @@ import Gtz.Quantitative.RealnessEngine
 import Gtz.Quantitative.StrictDomination
 import Gtz.Quantitative.TwoMomentCertificate
 import Gtz.Ties.StratumFirstOrder
+import Gtz.Reduction.MixedCharPolynomial
 
 -- Complex: the complex refutations: weighted (4,2) and (6,3) are false over C
 import Gtz.Complex.ComplexPadding
