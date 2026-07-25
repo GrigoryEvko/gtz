@@ -239,8 +239,9 @@ Named honestly: after congruence by `diag(d)^{-1/2}` the hypothesis is
 `λ_max(D^{-1/2} R D^{-1/2}) ≤ 1`, so this is the elementary trace bound
 `λ_max ≤ trace` for a positive semidefinite matrix, dressed for a diagonal
 comparison.  It is proved here from minors and Cauchy–Schwarz rather than from
-the spectral theorem, which is why no eigenvalue appears; the equality case is
-rank one, so the constant `1` cannot be raised. -/
+the spectral theorem, which is why no eigenvalue appears.  The constant `1`
+cannot be raised — `exists_residual_notPosSemidef_of_mass_gt_one` refutes every
+larger threshold. -/
 theorem posSemidef_diagonal_sub_of_sum_diag_div_le_one
     {residual : Matrix (Fin size) (Fin size) ℝ} (hpsd : residual.PosSemidef)
     {positiveDiagonal : Fin size → ℝ} (hpos : ∀ i, 0 < positiveDiagonal i)
@@ -283,6 +284,48 @@ theorem posSemidef_diagonal_sub_of_sum_diag_div_le_one
     have hquadForm := quadForm_le_sq_sum_sqrt_diag hpsd vec
     rw [hdiagonalForm]
     nlinarith [hquadForm, hcauchySchwarz, hmass, hweightedNonneg, hmassNonneg]
+
+/-- **The constant `1` cannot be raised.**  For every `c > 1` there is a
+positive semidefinite residual and a positive diagonal whose criterion mass is
+exactly `c` and whose gap is NOT positive semidefinite: take the all-ones rank
+one residual against the constant diagonal `2/c`, and test the gap on the
+all-ones vector, where it evaluates to `4/c − 4 < 0`.  So
+`posSemidef_diagonal_sub_of_sum_diag_div_le_one` is sharp as stated, and the
+equality case is rank one exactly as the trace reading predicts. -/
+theorem exists_residual_notPosSemidef_of_mass_gt_one (level : ℝ) (hlevel : 1 < level) :
+    ∃ (residual : Matrix (Fin 2) (Fin 2) ℝ) (positiveDiagonal : Fin 2 → ℝ),
+      residual.PosSemidef ∧ (∀ i, 0 < positiveDiagonal i) ∧
+        (∑ i, residual i i / positiveDiagonal i) = level ∧
+        ¬ (Matrix.diagonal positiveDiagonal - residual).PosSemidef := by
+  have hlevelPos : (0 : ℝ) < level := by linarith
+  refine ⟨Matrix.vecMulVec ![1, 1] ![1, 1], fun _ => 2 / level, ?_,
+    fun i => by positivity, ?_, ?_⟩
+  · have hfactor : Matrix.vecMulVec (![1, 1] : Fin 2 → ℝ) ![1, 1]
+        = (Matrix.of (fun (_ : Fin 1) (_ : Fin 2) => (1 : ℝ)))ᴴ
+          * Matrix.of (fun (_ : Fin 1) (_ : Fin 2) => (1 : ℝ)) := by
+      ext leftIndex rightIndex
+      fin_cases leftIndex <;> fin_cases rightIndex <;>
+        simp [Matrix.vecMulVec, Matrix.mul_apply]
+    rw [hfactor]
+    exact Matrix.posSemidef_conjTranspose_mul_self _
+  · simp only [Fin.sum_univ_two, Matrix.vecMulVec_apply]
+    norm_num
+  · intro hpsd
+    rw [Matrix.posSemidef_iff_dotProduct_mulVec] at hpsd
+    have hform := hpsd.2 (![1, 1] : Fin 2 → ℝ)
+    rw [star_trivial] at hform
+    have hvalue : (![1, 1] : Fin 2 → ℝ)
+        ⬝ᵥ ((Matrix.diagonal (fun _ : Fin 2 => 2 / level)
+              - Matrix.vecMulVec ![1, 1] ![1, 1]) *ᵥ ![1, 1]) = 4 / level - 4 := by
+      simp only [dotProduct, Matrix.mulVec, Matrix.sub_apply, Matrix.diagonal_apply,
+        Matrix.vecMulVec_apply, Fin.sum_univ_two]
+      norm_num
+      ring
+    rw [hvalue] at hform
+    have hstrict : (4 : ℝ) / level < 4 := by
+      rw [div_lt_iff₀ hlevelPos]
+      nlinarith
+    linarith
 
 /-! ## The complementary projection and the co-leverage scores -/
 
