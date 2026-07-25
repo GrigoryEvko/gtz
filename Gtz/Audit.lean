@@ -43,6 +43,7 @@ import Gtz.Reduction.Naimark
 import Gtz.Reduction.Reductions
 import Gtz.Reduction.RatCertificate
 import Gtz.Reduction.RatCertificateInstance
+import Gtz.Reduction.RankFourWindow
 import Gtz.Reduction.CertificateBall
 import Gtz.Planar.PlanarPlatform
 import Gtz.Planar.BlochDictionary
@@ -221,6 +222,53 @@ import Gtz.Quantitative.Interface
 #print axioms Gtz.splitTetraRatDesign_certified_dominates
 #print axioms Gtz.splitTetraRatDesign_certified_dominates_pointwise
 
+
+-- the rank-4 canonical window: size monotonicity, spike padding,
+-- and the chain that makes (M(s), s) the single object per rank
+#print axioms Gtz.not_dominates_of_repeated_atom_general
+#print axioms Gtz.sum_eq_add_diff_of_agree_off
+#print axioms Gtz.replicatedAtoms
+#print axioms Gtz.replicatedWeights
+#print axioms Gtz.replicatedDesign
+#print axioms Gtz.replicatedAtoms_castSucc
+#print axioms Gtz.replicatedAtoms_last
+#print axioms Gtz.replicatedDesign_atom_castSucc
+#print axioms Gtz.replicatedDesign_atom_last
+#print axioms Gtz.replicationMerge
+#print axioms Gtz.replicationMerge_castSucc
+#print axioms Gtz.replicationMerge_last
+#print axioms Gtz.atom_replicationMerge
+#print axioms Gtz.gtzWeighted_of_succ
+#print axioms Gtz.gtzWeighted_of_add
+#print axioms Gtz.gtzWeighted_of_le
+#print axioms Gtz.gtzWeightedAll_of_top
+#print axioms Gtz.gtz_iff_top_of_each_rank
+#print axioms Gtz.gtzWeighted_window_of_top
+#print axioms Gtz.rank_four_window_eq
+#print axioms Gtz.gtzWeighted_window_four_of_eleven
+#print axioms Gtz.gtzWeightedAll_four_of_eleven
+#print axioms Gtz.gtzWeighted_six_three_of_seven_three
+#print axioms Gtz.gtzWeightedAll_three_of_seven_three
+#print axioms Gtz.exists_gap_witness
+#print axioms Gtz.exists_uniform_gap
+#print axioms Gtz.spikeAtoms
+#print axioms Gtz.spikeWeights
+#print axioms Gtz.spikeAtoms_old_cast
+#print axioms Gtz.spikeAtoms_old_last
+#print axioms Gtz.spikeAtoms_spike_cast
+#print axioms Gtz.spikeAtoms_spike_last
+#print axioms Gtz.spikeWeights_old
+#print axioms Gtz.spikeWeights_spike
+#print axioms Gtz.spikeDesign
+#print axioms Gtz.dotProduct_snoc_zero
+#print axioms Gtz.dotProduct_lastBasis
+#print axioms Gtz.gtzWeighted_of_spike
+#print axioms Gtz.gtzWeighted_ten_three_of_eleven_four
+#print axioms Gtz.gtzWeightedAll_three_of_eleven_four
+#print axioms Gtz.gtzWeighted_six_three_of_eight_four
+#print axioms Gtz.gtzWeightedAll_three_of_eight_four
+#print axioms Gtz.gtzWeighted_seven_four_of_seven_three
+#print axioms Gtz.gtzWeighted_sub_window_four_of_rank_three
 
 #print axioms Gtz.original_of_weighted_single
 #print axioms Gtz.gtzWeighted_corank_one

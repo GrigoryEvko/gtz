@@ -43,6 +43,7 @@ import Gtz.Reduction.Deflation
 import Gtz.Reduction.DescentLadder
 import Gtz.Reduction.LiftingLemma
 import Gtz.Reduction.Naimark
+import Gtz.Reduction.RankFourWindow
 import Gtz.Reduction.RankTwo
 import Gtz.Reduction.RatCertificate
 import Gtz.Reduction.CertificateBall
