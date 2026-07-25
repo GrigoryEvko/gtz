@@ -47,7 +47,9 @@ not merely small.
 * `bundledCycle_leverage` — the closed form `|g_e|² = ((k−1)n + p)/(k p)` for an
   edge in an arc of size `p`, proved by exhibiting the transfer current as an
   explicit potential and checking `L y = b_e` against the polarized Dirichlet form.
-  No matrix is inverted anywhere.
+  **The Laplacian is never inverted**; the solving potential is exhibited and
+  checked.  (The whitener's inverse does appear, inside the shipped congruence
+  kit `whitener_gram_mul_fullLaplacian` rests on.)
 * `bundledCycle_leverage_identity_at_arcTotal` — that closed form satisfies the
   affine relation `k T ℓ = (k−1) + T` at the arc total `T = p/n`, i.e. the
   corank-one tie criterion of `Gtz.isTie_iff_leverage_identity`.  Two independent
@@ -59,20 +61,32 @@ not merely small.
   *equal*, not merely parallel.  So a rank-2 bundled cycle is exactly a
   three-cluster design with cluster sizes `(p, q, r)`, `p + q + r = n`, of the
   magnitudes the real `k = 2` equality criterion prescribes.
-* `engelDeficiency_two` and `bundledCycle_gap_eq_squareQuotient` — at rank 2 the
+* `engelDeficiency_two`, `bundledCycle_gap_eq_squareQuotient` and its
+  hypothesis-free form `bundledCycle_rankTwo_gap_squareQuotient` — at rank 2 the
   gap is the **exact rational square** `(d₁ p₂ − d₂ p₁)² / (p₁ p₂ (p₁ + p₂))`, so
   the slack off the tight ray is an explicit rational function of the drops, not
-  merely a positive quantity.
+  merely a positive quantity.  The slack is quantified in the DROPS; no claim is
+  made or implied about a slack constant uniform in the design's weights.
+* `cycleBundlingWitness` — the plain `(k+1)`-cycle, an inhabitant of
+  `CycleBundling (k+1) k` at every rank, so the universally quantified results
+  above have a witness at every rank and not only at the sizes instantiated
+  below.  `cycleBundlingWitness_isTie` and `cycleBundlingWitness_leverage` (the
+  corner leverage is `k`) are the instantiations.
 * Exact instances at the campaign's binding rank-3 sizes: `(6,3)` with arc sizes
   `(3,1,1,1)` and `(2,2,1,1)`, `(7,3)` with `(4,1,1,1)`, `(3,2,1,1)`, `(2,2,2,1)`,
-  each an `IsTie`, with their leverages evaluated in the kernel.
+  each an `IsTie`, with their leverages evaluated in the kernel.  Two rank-2
+  instances at `(9,2)`, arc sizes `(7,1,1)` and `(4,3,2)`, with their cluster
+  magnitudes `{8/63, 5/9}` and `{13/72, 2/9, 11/36}` evaluated in the kernel.
 
 Reusable kit landed along the way, none of it specific to the cycle:
-`laplacianOn_bilinear` (the polarized Dirichlet form, of which the shipped
-`laplacianOn_form` is the diagonal), `graphicDesign_posDef_iff` (strict domination
-through the whitener — the `≻` companion of the shipped
-`graphicDesign_dominates_iff`), `whitener_gram_mul_fullLaplacian`,
-`graphicDesign_atom`, `edgeVector_congr`, and `leverageOf_graphicAtom_of_solves`.
+`graphicDesign_posDef_iff` (strict domination through the whitener — the `≻`
+companion of the shipped `graphicDesign_dominates_iff`),
+`whitener_gram_mul_fullLaplacian`, `graphicDesign_atom` /
+`graphicAtom_eq_whitenedRow`, `edgeVector_congr`, and
+`leverageOf_graphicAtom_of_solves`.  The polarized Dirichlet form
+`laplacianOn_bilinear` was first proved here and now lives upstream in
+`Gtz.Design.GraphicInstance`, where the shipped `laplacianOn_form` is derived
+from it as its diagonal.
 
 ## Relation to what was already in the repo
 
@@ -101,7 +115,11 @@ whitening absorbs) is NOT proved here — it is a remark, not a lemma.
   **characterizes** the real equality locus (arXiv:2604.14050 Prop 1; the `k ≤ 2`
   theorem itself is Sengupta–Pautov, arXiv:2604.05944).  This file proves the
   designs built here *satisfy* that condition.  That nothing else does is cited,
-  and is the half that does the work.
+  and is the half that does the work.  **Scope of that citation**: it is stated
+  for `n × 2` matrices with orthonormal columns, i.e. for designs of UNIFORM
+  weight `1/n`.  Every design in this file has uniform weight `1/n`, so the match
+  is inside the cited scope — but nothing here, and nothing cited here, says
+  anything about tight rank-2 designs of non-uniform weight.
 
 ## MEASURED, not proved here
 
@@ -129,7 +147,9 @@ proof of GTZ must be exactly tight on the whole family.
 The bundle map is *data*, not a quotient: two bundlings differing by a relabelling
 of edges give the same design up to permutation, and that identification is not
 made.  `CycleBundling` therefore counts labelled bundlings, never symmetry classes,
-and no counting statement is made or implied.
+and no counting statement is made or implied.  `CycleBundling edgeCount vertexRank`
+is EMPTY when `edgeCount < vertexRank + 1`; `cycleBundlingWitness` inhabits it at
+the smallest size for each rank.
 
 This file sits in `Design/` but imports `Gtz.Certificates.ResidueDissolution` for
 `IsTie`, so its import edge points one layer up.  That is deliberate — the tie is
@@ -154,24 +174,7 @@ open Matrix
 
 variable {edgeCount vertexRank : ℕ}
 
-/-! ## Kit: the polarized Dirichlet form, and strict domination through the whitener -/
-
-/-- **The bilinear Dirichlet form.**  `laplacianOn_form` is the diagonal of this;
-the off-diagonal is what identifies a potential as the solution of a current
-injection, without ever inverting the Laplacian. -/
-theorem laplacianOn_bilinear (graph : MultigraphOnGround edgeCount vertexRank)
-    (conductance : Fin edgeCount → ℝ) (edgeSet : Finset (Fin edgeCount))
-    (leftPotential rightPotential : Fin vertexRank → ℝ) :
-    leftPotential ⬝ᵥ (laplacianOn graph conductance edgeSet *ᵥ rightPotential)
-      = ∑ edge ∈ edgeSet, conductance edge
-          * (graph.edgeVector edge ⬝ᵥ leftPotential)
-          * (graph.edgeVector edge ⬝ᵥ rightPotential) := by
-  rw [laplacianOn, Matrix.sum_mulVec, dotProduct_sum]
-  refine Finset.sum_congr rfl fun edge _ => ?_
-  rw [Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, atomMatrix,
-    vecMulVec_mulVec_eq, dotProduct_smul, smul_eq_mul,
-    dotProduct_comm leftPotential (graph.edgeVector edge)]
-  ring
+/-! ## Kit: strict domination through the whitener, and leverage without an inverse -/
 
 /-- **Strict domination through the whitener.**  The `≻` companion of the shipped
 `graphicDesign_dominates_iff`: a `k`-subset dominates *strictly* exactly when its
@@ -208,11 +211,27 @@ theorem whitener_gram_mul_fullLaplacian (data : GraphDesignData edgeCount vertex
         simp only [Matrix.mul_assoc]
     _ = 1 := hcancel
 
-/-- **Leverage without a matrix inverse.**  If `potential` solves `L y = b_e` —
-the potential of a unit current injected across edge `e` — then the design atom's
-leverage is the conductance-to-weight ratio times the drop of that potential
-across `e`.  Every leverage computed in this file goes through this lemma; the
-solving potential is always exhibited, never inverted for. -/
+/-- The design's atom at an edge is the graph data's atom, on the nose. -/
+theorem graphicDesign_atom (data : GraphDesignData edgeCount vertexRank) (edge : Fin edgeCount) :
+    (graphicDesign data).atom edge = data.graphicAtom edge := rfl
+
+/-- The graph atom in coordinates: the whitened incidence row scaled by the square
+root of the conductance-to-weight ratio.  Stated once; `graphicDesign_atom` names
+the abstraction, this one names its unfolding. -/
+theorem graphicAtom_eq_whitenedRow (data : GraphDesignData edgeCount vertexRank)
+    (edge : Fin edgeCount) :
+    data.graphicAtom edge
+      = Real.sqrt (data.conductance edge / data.weight edge)
+        • ((data.whitener)ᵀ *ᵥ data.graph.edgeVector edge) := rfl
+
+/-- **Leverage without inverting the Laplacian.**  If `potential` solves
+`L y = b_e` — the potential of a unit current injected across edge `e` — then the
+design atom's leverage is the conductance-to-weight ratio times the drop of that
+potential across `e`.  Every leverage computed in this file goes through this
+lemma; the solving potential is always exhibited, never solved for.  (The
+whitener's inverse does appear, inside the shipped congruence kit that
+`whitener_gram_mul_fullLaplacian` rests on; what is never inverted is the
+Laplacian.) -/
 theorem leverageOf_graphicAtom_of_solves (data : GraphDesignData edgeCount vertexRank)
     (edge : Fin edgeCount) (potential : Fin vertexRank → ℝ)
     (hsolve : data.fullLaplacian *ᵥ potential = data.graph.edgeVector edge) :
@@ -228,11 +247,9 @@ theorem leverageOf_graphicAtom_of_solves (data : GraphDesignData edgeCount verte
       = data.graph.edgeVector edge ⬝ᵥ potential := by
     rw [Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, Matrix.mulVec_mulVec, hkey,
       dotProduct_comm]
-  have hatom : (graphicDesign data).atom edge
-      = Real.sqrt (data.conductance edge / data.weight edge)
-        • ((data.whitener)ᵀ *ᵥ data.graph.edgeVector edge) := rfl
-  rw [leverageOf, ← dotProduct_self_eq_sum_sq, hatom, smul_dotProduct, dotProduct_smul,
-    smul_eq_mul, smul_eq_mul, ← mul_assoc, Real.mul_self_sqrt hratio, hquad]
+  rw [leverageOf, ← dotProduct_self_eq_sum_sq, graphicDesign_atom, graphicAtom_eq_whitenedRow,
+    smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc,
+    Real.mul_self_sqrt hratio, hquad]
 
 /-! ## The cyclic drop calculus
 
@@ -407,10 +424,11 @@ theorem bundleSize_lt (bundling : CycleBundling edgeCount vertexRank)
     rw [Fintype.card_fin]; omega
   obtain ⟨other, hother⟩ := Fintype.exists_ne_of_one_lt_card hcard position
   obtain ⟨edge, hedge⟩ := bundling.hasEdgeInEveryBundle other
-  have hnotmem : edge ∉ Finset.univ.filter (fun e => bundling.bundleOf e = position) := by
+  have hnotmem :
+      edge ∉ Finset.univ.filter (fun candidate => bundling.bundleOf candidate = position) := by
     intro hmem
     exact hother (hedge.symm.trans (Finset.mem_filter.mp hmem).2)
-  have hss : (Finset.univ.filter (fun e => bundling.bundleOf e = position))
+  have hss : (Finset.univ.filter (fun candidate => bundling.bundleOf candidate = position))
       ⊂ (Finset.univ : Finset (Fin edgeCount)) :=
     Finset.ssubset_univ_iff.mpr fun heq => hnotmem (by rw [heq]; exact Finset.mem_univ edge)
   have hlt := Finset.card_lt_card hss
@@ -450,6 +468,20 @@ theorem graphInducedWeight_pos (bundling : CycleBundling edgeCount vertexRank)
     (bundling.coBundleSize_pos hrank position))
 
 end CycleBundling
+
+/-- **The plain `(k+1)`-cycle bundling**: one edge per arc, at every rank.  This
+is the inhabitant that makes the universally quantified statements below
+non-vacuous — `CycleBundling edgeCount vertexRank` is empty whenever
+`edgeCount < vertexRank + 1`, since `hasEdgeInEveryBundle` needs an injection of
+the arcs into the edges. -/
+def cycleBundlingWitness (vertexRank : ℕ) : CycleBundling (vertexRank + 1) vertexRank where
+  bundleOf := id
+  hasEdgeInEveryBundle := fun position => ⟨position, rfl⟩
+
+/-- Every arc of the plain cycle carries exactly one edge. -/
+theorem cycleBundlingWitness_bundleSize (vertexRank : ℕ) (position : Fin (vertexRank + 1)) :
+    bundleSize (cycleBundlingWitness vertexRank).bundleOf position = 1 := by
+  simp [bundleSize, cycleBundlingWitness, Finset.filter_eq']
 
 /-- The bundled `(k+1)`-cycle: arc `j` runs from vertex `j` to vertex `j+1`, and
 every edge of bundle `j` runs along arc `j`. -/
@@ -537,13 +569,6 @@ theorem bundledCycleDesign_weight (bundling : CycleBundling edgeCount vertexRank
     (hrank : 1 ≤ vertexRank) (edge : Fin edgeCount) :
     (bundledCycleDesign bundling hrank).weight edge = ((edgeCount : ℝ))⁻¹ := rfl
 
-/-- The design atom in closed form: the whitened incidence row scaled by the
-square root of the conductance-to-weight ratio. -/
-theorem graphicDesign_atom (data : GraphDesignData edgeCount vertexRank) (edge : Fin edgeCount) :
-    (graphicDesign data).atom edge
-      = Real.sqrt (data.conductance edge / data.weight edge)
-        • ((data.whitener)ᵀ *ᵥ data.graph.edgeVector edge) := rfl
-
 /-- **Atoms inside a bundle are equal.**  Not merely parallel: the design's atom
 depends on the edge only through its arc, so the atoms cluster into exactly
 `k + 1` groups of identical vectors. -/
@@ -560,7 +585,8 @@ theorem bundledCycle_atom_eq_of_sameBundle (bundling : CycleBundling edgeCount v
   have hvec : (bundledCycleData bundling hrank).graph.edgeVector leftEdge
       = (bundledCycleData bundling hrank).graph.edgeVector rightEdge :=
     bundledCycleGraph_edgeVector_congr bundling.bundleOf hsame
-  rw [bundledCycleDesign, graphicDesign_atom, graphicDesign_atom, hcond, hvec,
+  rw [bundledCycleDesign, graphicDesign_atom, graphicDesign_atom, graphicAtom_eq_whitenedRow,
+    graphicAtom_eq_whitenedRow, hcond, hvec,
     show (bundledCycleData bundling hrank).weight leftEdge
       = (bundledCycleData bundling hrank).weight rightEdge from rfl]
 
@@ -1170,6 +1196,38 @@ theorem bundledCycle_rankTwo_clusterMagnitude (bundling : CycleBundling edgeCoun
   field_simp
   ring
 
+/-! ## The plain cycle, at every rank
+
+Everything above is universally quantified over `CycleBundling`.  These three
+instantiate it at `cycleBundlingWitness`, so the "at every rank" claims have a
+kernel witness at every rank rather than only at the rank-3 sizes below. -/
+
+/-- **A tie at every rank, witnessed.**  The plain `(k+1)`-cycle with uniform
+weights is an exact tie for every `k ≥ 1`. -/
+theorem cycleBundlingWitness_isTie (vertexRank : ℕ) (hrank : 1 ≤ vertexRank) :
+    IsTie (bundledCycleDesign (cycleBundlingWitness vertexRank) hrank) :=
+  bundledCycle_isTie _ hrank
+
+/-- **The `(k+1)`-cycle's corner leverage is `k`** — the closed form at `p ≡ 1`,
+`n = k + 1`. -/
+theorem cycleBundlingWitness_leverage (vertexRank : ℕ) (hrank : 1 ≤ vertexRank)
+    (edge : Fin (vertexRank + 1)) :
+    leverageOf ((bundledCycleDesign (cycleBundlingWitness vertexRank) hrank).atom edge)
+      = (vertexRank : ℝ) := by
+  have hrankPos : (0 : ℝ) < (vertexRank : ℝ) := by exact_mod_cast hrank
+  rw [bundledCycle_leverage, cycleBundlingWitness_bundleSize]
+  push_cast
+  field_simp
+  ring
+
+/-- The rank-2 cluster magnitude, on a concrete rank-2 bundling: the triangle
+with three singleton arcs has `P_ee = 1/6 + 1/2`. -/
+theorem cycleBundlingWitness_rankTwo_clusterMagnitude (edge : Fin 3) :
+    projectionOfDesign (bundledCycleDesign (cycleBundlingWitness 2) (by norm_num)) edge edge
+      = 1 / 6 + 1 / 2 := by
+  rw [bundledCycle_rankTwo_clusterMagnitude, cycleBundlingWitness_bundleSize]
+  norm_num
+
 /-! ## Exact slack at rank 2 -/
 
 /-- **The two-term Engel deficiency is an exact rational square.**  The
@@ -1220,6 +1278,31 @@ theorem exists_arcPair_rankTwo (dropped : Fin 3) :
     rw [Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]
   obtain ⟨firstArc, secondArc, hdistinct, harcs⟩ := Finset.card_eq_two.mp hcard
   exact ⟨firstArc, secondArc, hdistinct, harcs⟩
+
+/-- **The rank-2 slack, unconditionally.**  At rank 2 a transversal always spans
+exactly two arcs, so the two-arc hypothesis of `bundledCycle_gap_eq_squareQuotient`
+is never a hypothesis in substance: for every rank-2 bundling and every
+transversal the margin IS the explicit rational square.  This is the statement
+the file's rank-2 slack claim actually needs. -/
+theorem bundledCycle_rankTwo_gap_squareQuotient {edgeCount : ℕ}
+    (bundling : CycleBundling edgeCount 2) {edgeSet : Finset (Fin edgeCount)}
+    {dropped : Fin 3} (hinj : Set.InjOn bundling.bundleOf ↑edgeSet)
+    (himage : edgeSet.image bundling.bundleOf = Finset.univ.erase dropped)
+    (potential : Fin 2 → ℝ) :
+    ∃ firstArc secondArc : Fin 3, firstArc ≠ secondArc ∧
+      potential ⬝ᵥ (((bundledCycleData bundling (by norm_num)).selectedLaplacian edgeSet
+          - (bundledCycleData bundling (by norm_num)).fullLaplacian) *ᵥ potential)
+        = (cycleDropAt potential firstArc * (bundleSize bundling.bundleOf secondArc : ℝ)
+            - cycleDropAt potential secondArc * (bundleSize bundling.bundleOf firstArc : ℝ)) ^ 2
+          / ((bundleSize bundling.bundleOf firstArc : ℝ)
+              * (bundleSize bundling.bundleOf secondArc : ℝ)
+              * ((bundleSize bundling.bundleOf firstArc : ℝ)
+                + (bundleSize bundling.bundleOf secondArc : ℝ))) := by
+  obtain ⟨firstArc, secondArc, hdistinct, hpair⟩ := exists_arcPair_rankTwo dropped
+  exact ⟨firstArc, secondArc, hdistinct,
+    bundledCycle_gap_eq_squareQuotient bundling (by norm_num) hinj himage hdistinct hpair
+      potential⟩
+
 /-! ## Exact instances at the campaign's binding rank-3 sizes
 
 `(6,3)` and `(7,3)` are the sizes at which rank-3 GTZ binds.  The bundled cycles
@@ -1257,99 +1340,171 @@ def bundlingSevenThreePaired : CycleBundling 7 3 where
   hasEdgeInEveryBundle := by decide
 
 /-- The `(6,3)` design with arc sizes `(3,1,1,1)` is an exact tie. -/
-theorem bundlingSixThreeHeavy_isTie (hrank : 1 ≤ 3) :
-    IsTie (bundledCycleDesign bundlingSixThreeHeavy hrank) :=
-  bundledCycle_isTie bundlingSixThreeHeavy hrank
+theorem bundlingSixThreeHeavy_isTie :
+    IsTie (bundledCycleDesign bundlingSixThreeHeavy (by norm_num)) :=
+  bundledCycle_isTie bundlingSixThreeHeavy _
 
 /-- The `(6,3)` design with arc sizes `(2,2,1,1)` is an exact tie. -/
-theorem bundlingSixThreePaired_isTie (hrank : 1 ≤ 3) :
-    IsTie (bundledCycleDesign bundlingSixThreePaired hrank) :=
-  bundledCycle_isTie bundlingSixThreePaired hrank
+theorem bundlingSixThreePaired_isTie :
+    IsTie (bundledCycleDesign bundlingSixThreePaired (by norm_num)) :=
+  bundledCycle_isTie bundlingSixThreePaired _
 
 /-- The `(7,3)` design with arc sizes `(4,1,1,1)` is an exact tie. -/
-theorem bundlingSevenThreeHeavy_isTie (hrank : 1 ≤ 3) :
-    IsTie (bundledCycleDesign bundlingSevenThreeHeavy hrank) :=
-  bundledCycle_isTie bundlingSevenThreeHeavy hrank
+theorem bundlingSevenThreeHeavy_isTie :
+    IsTie (bundledCycleDesign bundlingSevenThreeHeavy (by norm_num)) :=
+  bundledCycle_isTie bundlingSevenThreeHeavy _
 
 /-- The `(7,3)` design with arc sizes `(3,2,1,1)` is an exact tie. -/
-theorem bundlingSevenThreeMixed_isTie (hrank : 1 ≤ 3) :
-    IsTie (bundledCycleDesign bundlingSevenThreeMixed hrank) :=
-  bundledCycle_isTie bundlingSevenThreeMixed hrank
+theorem bundlingSevenThreeMixed_isTie :
+    IsTie (bundledCycleDesign bundlingSevenThreeMixed (by norm_num)) :=
+  bundledCycle_isTie bundlingSevenThreeMixed _
 
 /-- The `(7,3)` design with arc sizes `(2,2,2,1)` is an exact tie. -/
-theorem bundlingSevenThreePaired_isTie (hrank : 1 ≤ 3) :
-    IsTie (bundledCycleDesign bundlingSevenThreePaired hrank) :=
-  bundledCycle_isTie bundlingSevenThreePaired hrank
+theorem bundlingSevenThreePaired_isTie :
+    IsTie (bundledCycleDesign bundlingSevenThreePaired (by norm_num)) :=
+  bundledCycle_isTie bundlingSevenThreePaired _
 
 /-- `(6,3)`, `(3,1,1,1)`: the triple arc has leverage `5/3`. -/
-theorem bundlingSixThreeHeavy_leverage_tripleArc (hrank : 1 ≤ 3) :
-    leverageOf ((bundledCycleDesign bundlingSixThreeHeavy hrank).atom 0) = 5 / 3 := by
+theorem bundlingSixThreeHeavy_leverage_tripleArc :
+    leverageOf ((bundledCycleDesign bundlingSixThreeHeavy (by norm_num)).atom 0) = 5 / 3 := by
   rw [bundledCycle_leverage,
     show bundleSize bundlingSixThreeHeavy.bundleOf (bundlingSixThreeHeavy.bundleOf 0) = 3 from
       by decide]
   norm_num
 
 /-- `(6,3)`, `(3,1,1,1)`: a single arc has leverage `13/3`. -/
-theorem bundlingSixThreeHeavy_leverage_singleArc (hrank : 1 ≤ 3) :
-    leverageOf ((bundledCycleDesign bundlingSixThreeHeavy hrank).atom 3) = 13 / 3 := by
+theorem bundlingSixThreeHeavy_leverage_singleArc :
+    leverageOf ((bundledCycleDesign bundlingSixThreeHeavy (by norm_num)).atom 3) = 13 / 3 := by
   rw [bundledCycle_leverage,
     show bundleSize bundlingSixThreeHeavy.bundleOf (bundlingSixThreeHeavy.bundleOf 3) = 1 from
       by decide]
   norm_num
 
 /-- `(6,3)`, `(2,2,1,1)`: a double arc has leverage `7/3`. -/
-theorem bundlingSixThreePaired_leverage_doubleArc (hrank : 1 ≤ 3) :
-    leverageOf ((bundledCycleDesign bundlingSixThreePaired hrank).atom 0) = 7 / 3 := by
+theorem bundlingSixThreePaired_leverage_doubleArc :
+    leverageOf ((bundledCycleDesign bundlingSixThreePaired (by norm_num)).atom 0) = 7 / 3 := by
   rw [bundledCycle_leverage,
     show bundleSize bundlingSixThreePaired.bundleOf (bundlingSixThreePaired.bundleOf 0) = 2 from
       by decide]
   norm_num
 
 /-- `(7,3)`, `(4,1,1,1)`: the quadruple arc has leverage `3/2`. -/
-theorem bundlingSevenThreeHeavy_leverage_quadArc (hrank : 1 ≤ 3) :
-    leverageOf ((bundledCycleDesign bundlingSevenThreeHeavy hrank).atom 0) = 3 / 2 := by
+theorem bundlingSevenThreeHeavy_leverage_quadArc :
+    leverageOf ((bundledCycleDesign bundlingSevenThreeHeavy (by norm_num)).atom 0) = 3 / 2 := by
   rw [bundledCycle_leverage,
     show bundleSize bundlingSevenThreeHeavy.bundleOf (bundlingSevenThreeHeavy.bundleOf 0) = 4 from
       by decide]
   norm_num
 
 /-- `(7,3)`, `(4,1,1,1)`: a single arc has leverage `5`. -/
-theorem bundlingSevenThreeHeavy_leverage_singleArc (hrank : 1 ≤ 3) :
-    leverageOf ((bundledCycleDesign bundlingSevenThreeHeavy hrank).atom 4) = 5 := by
+theorem bundlingSevenThreeHeavy_leverage_singleArc :
+    leverageOf ((bundledCycleDesign bundlingSevenThreeHeavy (by norm_num)).atom 4) = 5 := by
   rw [bundledCycle_leverage,
     show bundleSize bundlingSevenThreeHeavy.bundleOf (bundlingSevenThreeHeavy.bundleOf 4) = 1 from
       by decide]
   norm_num
 
 /-- `(7,3)`, `(3,2,1,1)`: the triple arc has leverage `17/9`. -/
-theorem bundlingSevenThreeMixed_leverage_tripleArc (hrank : 1 ≤ 3) :
-    leverageOf ((bundledCycleDesign bundlingSevenThreeMixed hrank).atom 0) = 17 / 9 := by
+theorem bundlingSevenThreeMixed_leverage_tripleArc :
+    leverageOf ((bundledCycleDesign bundlingSevenThreeMixed (by norm_num)).atom 0) = 17 / 9 := by
   rw [bundledCycle_leverage,
     show bundleSize bundlingSevenThreeMixed.bundleOf (bundlingSevenThreeMixed.bundleOf 0) = 3 from
       by decide]
   norm_num
 
 /-- `(7,3)`, `(3,2,1,1)`: the double arc has leverage `8/3`. -/
-theorem bundlingSevenThreeMixed_leverage_doubleArc (hrank : 1 ≤ 3) :
-    leverageOf ((bundledCycleDesign bundlingSevenThreeMixed hrank).atom 3) = 8 / 3 := by
+theorem bundlingSevenThreeMixed_leverage_doubleArc :
+    leverageOf ((bundledCycleDesign bundlingSevenThreeMixed (by norm_num)).atom 3) = 8 / 3 := by
   rw [bundledCycle_leverage,
     show bundleSize bundlingSevenThreeMixed.bundleOf (bundlingSevenThreeMixed.bundleOf 3) = 2 from
       by decide]
   norm_num
 
 /-- `(7,3)`, `(2,2,2,1)`: a double arc has leverage `8/3`. -/
-theorem bundlingSevenThreePaired_leverage_doubleArc (hrank : 1 ≤ 3) :
-    leverageOf ((bundledCycleDesign bundlingSevenThreePaired hrank).atom 0) = 8 / 3 := by
+theorem bundlingSevenThreePaired_leverage_doubleArc :
+    leverageOf ((bundledCycleDesign bundlingSevenThreePaired (by norm_num)).atom 0) = 8 / 3 := by
   rw [bundledCycle_leverage,
     show bundleSize bundlingSevenThreePaired.bundleOf (bundlingSevenThreePaired.bundleOf 0) = 2 from
       by decide]
   norm_num
 
 /-- `(7,3)`, `(2,2,2,1)`: the single arc has leverage `5`. -/
-theorem bundlingSevenThreePaired_leverage_singleArc (hrank : 1 ≤ 3) :
-    leverageOf ((bundledCycleDesign bundlingSevenThreePaired hrank).atom 6) = 5 := by
+theorem bundlingSevenThreePaired_leverage_singleArc :
+    leverageOf ((bundledCycleDesign bundlingSevenThreePaired (by norm_num)).atom 6) = 5 := by
   rw [bundledCycle_leverage,
     show bundleSize bundlingSevenThreePaired.bundleOf (bundlingSevenThreePaired.bundleOf 6) = 1 from
+      by decide]
+  norm_num
+
+/-! ## Two rank-2 instances at `(9,2)`
+
+A rank-2 bundled cycle is the triangle with parallel bundles `(p,q,r)`,
+`p + q + r = n`, so at `n = 9` there is one per partition of `9` into three
+positive parts — seven of them.  The two below are the classes whose cluster
+magnitudes were recomputed independently (exact rational, two separate routes)
+during the audit of Nesterenko's Table 1, whose `(9,2)` entry reads `6`.  Each is
+an exact tie, and each atom's projection diagonal is `1/(2n) + 1/(2p)` — the real
+`k = 2` equality criterion's cluster magnitude.  That these seven are pairwise
+inequivalent, and hence that `6` undercounts, is MEASURED, not proved here: this
+file exhibits designs, it does not count classes. -/
+
+/-- `(9,2)`, arc sizes `(7,1,1)`. -/
+def bundlingNineTwoHeavy : CycleBundling 9 2 where
+  bundleOf := ![0, 0, 0, 0, 0, 0, 0, 1, 2]
+  hasEdgeInEveryBundle := by decide
+
+/-- `(9,2)`, arc sizes `(4,3,2)`. -/
+def bundlingNineTwoSpread : CycleBundling 9 2 where
+  bundleOf := ![0, 0, 0, 0, 1, 1, 1, 2, 2]
+  hasEdgeInEveryBundle := by decide
+
+/-- The `(9,2)` design with arc sizes `(7,1,1)` is an exact tie. -/
+theorem bundlingNineTwoHeavy_isTie :
+    IsTie (bundledCycleDesign bundlingNineTwoHeavy (by norm_num)) :=
+  bundledCycle_isTie bundlingNineTwoHeavy _
+
+/-- The `(9,2)` design with arc sizes `(4,3,2)` is an exact tie. -/
+theorem bundlingNineTwoSpread_isTie :
+    IsTie (bundledCycleDesign bundlingNineTwoSpread (by norm_num)) :=
+  bundledCycle_isTie bundlingNineTwoSpread _
+
+/-- `(9,2)`, `(7,1,1)`: the seven-fold arc has cluster magnitude `8/63`. -/
+theorem bundlingNineTwoHeavy_cluster_sevenArc :
+    projectionOfDesign (bundledCycleDesign bundlingNineTwoHeavy (by norm_num)) 0 0 = 8 / 63 := by
+  rw [bundledCycle_rankTwo_clusterMagnitude,
+    show bundleSize bundlingNineTwoHeavy.bundleOf (bundlingNineTwoHeavy.bundleOf 0) = 7 from
+      by decide]
+  norm_num
+
+/-- `(9,2)`, `(7,1,1)`: a singleton arc has cluster magnitude `5/9`. -/
+theorem bundlingNineTwoHeavy_cluster_singleArc :
+    projectionOfDesign (bundledCycleDesign bundlingNineTwoHeavy (by norm_num)) 7 7 = 5 / 9 := by
+  rw [bundledCycle_rankTwo_clusterMagnitude,
+    show bundleSize bundlingNineTwoHeavy.bundleOf (bundlingNineTwoHeavy.bundleOf 7) = 1 from
+      by decide]
+  norm_num
+
+/-- `(9,2)`, `(4,3,2)`: the four-fold arc has cluster magnitude `13/72`. -/
+theorem bundlingNineTwoSpread_cluster_quadArc :
+    projectionOfDesign (bundledCycleDesign bundlingNineTwoSpread (by norm_num)) 0 0 = 13 / 72 := by
+  rw [bundledCycle_rankTwo_clusterMagnitude,
+    show bundleSize bundlingNineTwoSpread.bundleOf (bundlingNineTwoSpread.bundleOf 0) = 4 from
+      by decide]
+  norm_num
+
+/-- `(9,2)`, `(4,3,2)`: the triple arc has cluster magnitude `2/9`. -/
+theorem bundlingNineTwoSpread_cluster_tripleArc :
+    projectionOfDesign (bundledCycleDesign bundlingNineTwoSpread (by norm_num)) 4 4 = 2 / 9 := by
+  rw [bundledCycle_rankTwo_clusterMagnitude,
+    show bundleSize bundlingNineTwoSpread.bundleOf (bundlingNineTwoSpread.bundleOf 4) = 3 from
+      by decide]
+  norm_num
+
+/-- `(9,2)`, `(4,3,2)`: the double arc has cluster magnitude `11/36`. -/
+theorem bundlingNineTwoSpread_cluster_doubleArc :
+    projectionOfDesign (bundledCycleDesign bundlingNineTwoSpread (by norm_num)) 7 7 = 11 / 36 := by
+  rw [bundledCycle_rankTwo_clusterMagnitude,
+    show bundleSize bundlingNineTwoSpread.bundleOf (bundlingNineTwoSpread.bundleOf 7) = 2 from
       by decide]
   norm_num
 

@@ -182,8 +182,26 @@ theorem laplacianOn_transpose (graph : MultigraphOnGround edgeCount vertexRank)
   rw [Matrix.transpose_smul,
     transpose_eq_of_isHermitian (posSemidef_atomMatrix (graph.edgeVector edge)).1]
 
+/-- **The polarized Dirichlet form.**  The Laplacian's bilinear form is the
+conductance-weighted sum of products of potential drops.  `laplacianOn_form` is
+its diagonal; the off-diagonal is what identifies a potential as the solution of
+a current injection, without ever inverting the Laplacian. -/
+theorem laplacianOn_bilinear (graph : MultigraphOnGround edgeCount vertexRank)
+    (conductance : Fin edgeCount → ℝ) (edgeSet : Finset (Fin edgeCount))
+    (leftPotential rightPotential : Fin vertexRank → ℝ) :
+    leftPotential ⬝ᵥ (laplacianOn graph conductance edgeSet *ᵥ rightPotential)
+      = ∑ edge ∈ edgeSet, conductance edge
+          * (graph.edgeVector edge ⬝ᵥ leftPotential)
+          * (graph.edgeVector edge ⬝ᵥ rightPotential) := by
+  rw [laplacianOn, Matrix.sum_mulVec, dotProduct_sum]
+  refine Finset.sum_congr rfl fun edge _ => ?_
+  rw [Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, atomMatrix,
+    vecMulVec_mulVec_eq, dotProduct_smul, smul_eq_mul,
+    dotProduct_comm leftPotential (graph.edgeVector edge)]
+  ring
+
 /-- **The Dirichlet form.**  The Laplacian's quadratic form is the conductance-
-weighted sum of squared potential drops. -/
+weighted sum of squared potential drops — the diagonal of `laplacianOn_bilinear`. -/
 theorem laplacianOn_form (graph : MultigraphOnGround edgeCount vertexRank)
     (conductance : Fin edgeCount → ℝ) (edgeSet : Finset (Fin edgeCount))
     (reducedPotential : Fin vertexRank → ℝ) :
@@ -191,9 +209,8 @@ theorem laplacianOn_form (graph : MultigraphOnGround edgeCount vertexRank)
       = ∑ edge ∈ edgeSet, conductance edge *
           (groundedPotential reducedPotential (graph.edgeTail edge)
             - groundedPotential reducedPotential (graph.edgeHead edge)) ^ 2 := by
-  rw [laplacianOn, Matrix.sum_mulVec, dotProduct_sum]
-  refine Finset.sum_congr rfl fun edge _ => ?_
-  rw [atomMatrix_smul_form, edgeVector_dotProduct]
+  rw [laplacianOn_bilinear]
+  exact Finset.sum_congr rfl fun edge _ => by rw [edgeVector_dotProduct]; ring
 
 /-- Laplacians are positive semidefinite whenever the conductances are. -/
 theorem posSemidef_laplacianOn (graph : MultigraphOnGround edgeCount vertexRank)

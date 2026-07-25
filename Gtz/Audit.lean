@@ -1148,6 +1148,7 @@ import Gtz.Complex.AtomSplitting
 #print axioms Gtz.laplacianOn
 #print axioms Gtz.atomMatrix_smul_form
 #print axioms Gtz.laplacianOn_transpose
+#print axioms Gtz.laplacianOn_bilinear
 #print axioms Gtz.laplacianOn_form
 #print axioms Gtz.posSemidef_laplacianOn
 #print axioms Gtz.IsEdgeAdjacent
@@ -2691,9 +2692,10 @@ import Gtz.Complex.AtomSplitting
 #print axioms Gtz.atom_entry_sq_le_leverage
 #print axioms Gtz.weight_le_one_of_sum_one
 -- Gtz.Design.EqualityLocus
-#print axioms Gtz.laplacianOn_bilinear
 #print axioms Gtz.graphicDesign_posDef_iff
 #print axioms Gtz.whitener_gram_mul_fullLaplacian
+#print axioms Gtz.graphicDesign_atom
+#print axioms Gtz.graphicAtom_eq_whitenedRow
 #print axioms Gtz.leverageOf_graphicAtom_of_solves
 #print axioms Gtz.cycleDropAt
 #print axioms Gtz.groundedPotential_zero
@@ -2712,6 +2714,7 @@ import Gtz.Complex.AtomSplitting
 #print axioms Gtz.bundleSize
 #print axioms Gtz.sum_of_bundleValue
 #print axioms Gtz.sum_bundleSize_cast
+#print axioms Gtz.CycleBundling
 #print axioms Gtz.CycleBundling.bundleSize_pos
 #print axioms Gtz.CycleBundling.bundleSize_lt
 #print axioms Gtz.CycleBundling.edgeCount_pos
@@ -2719,6 +2722,8 @@ import Gtz.Complex.AtomSplitting
 #print axioms Gtz.CycleBundling.coBundleSize_pos
 #print axioms Gtz.CycleBundling.bundleSize_pos_cast
 #print axioms Gtz.CycleBundling.graphInducedWeight_pos
+#print axioms Gtz.cycleBundlingWitness
+#print axioms Gtz.cycleBundlingWitness_bundleSize
 #print axioms Gtz.bundledCycleGraph
 #print axioms Gtz.edgeVector_congr
 #print axioms Gtz.bundledCycleGraph_edgeVector_congr
@@ -2728,7 +2733,6 @@ import Gtz.Complex.AtomSplitting
 #print axioms Gtz.bundledCycleData
 #print axioms Gtz.bundledCycleDesign
 #print axioms Gtz.bundledCycleDesign_weight
-#print axioms Gtz.graphicDesign_atom
 #print axioms Gtz.bundledCycle_atom_eq_of_sameBundle
 #print axioms Gtz.bundledCycleData_selected_conductance
 #print axioms Gtz.bundledCycle_selectedLaplacian_form
@@ -2767,9 +2771,13 @@ import Gtz.Complex.AtomSplitting
 #print axioms Gtz.bundledCycle_leverage_identity_at_arcTotal
 #print axioms Gtz.bundledCycle_projection_diagonal
 #print axioms Gtz.bundledCycle_rankTwo_clusterMagnitude
+#print axioms Gtz.cycleBundlingWitness_isTie
+#print axioms Gtz.cycleBundlingWitness_leverage
+#print axioms Gtz.cycleBundlingWitness_rankTwo_clusterMagnitude
 #print axioms Gtz.engelDeficiency_two
 #print axioms Gtz.bundledCycle_gap_eq_squareQuotient
 #print axioms Gtz.exists_arcPair_rankTwo
+#print axioms Gtz.bundledCycle_rankTwo_gap_squareQuotient
 #print axioms Gtz.bundlingSixThreeHeavy
 #print axioms Gtz.bundlingSixThreePaired
 #print axioms Gtz.bundlingSevenThreeHeavy
@@ -2789,6 +2797,15 @@ import Gtz.Complex.AtomSplitting
 #print axioms Gtz.bundlingSevenThreeMixed_leverage_doubleArc
 #print axioms Gtz.bundlingSevenThreePaired_leverage_doubleArc
 #print axioms Gtz.bundlingSevenThreePaired_leverage_singleArc
+#print axioms Gtz.bundlingNineTwoHeavy
+#print axioms Gtz.bundlingNineTwoSpread
+#print axioms Gtz.bundlingNineTwoHeavy_isTie
+#print axioms Gtz.bundlingNineTwoSpread_isTie
+#print axioms Gtz.bundlingNineTwoHeavy_cluster_sevenArc
+#print axioms Gtz.bundlingNineTwoHeavy_cluster_singleArc
+#print axioms Gtz.bundlingNineTwoSpread_cluster_quadArc
+#print axioms Gtz.bundlingNineTwoSpread_cluster_tripleArc
+#print axioms Gtz.bundlingNineTwoSpread_cluster_doubleArc
 -- Gtz.Design.StressCertificate
 #print axioms Gtz.tetraAtom_dot_self
 #print axioms Gtz.tetraAtom_ne_zero
