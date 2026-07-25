@@ -34,6 +34,8 @@ import Gtz.Quantitative.DiscriminantSystem
 import Gtz.Quantitative.GapStabilityFacts
 import Gtz.Quantitative.RealnessEngine
 import Gtz.Quantitative.PhaseFreeNoGo
+import Gtz.Quantitative.TwoMomentCertificate
+import Gtz.Ties.StratumFirstOrder
 import Gtz.Ties.SplitClassTieFamily
 import Gtz.Certificates.FrameBridge
 import Gtz.Quantitative.CollarRate
@@ -2368,3 +2370,94 @@ import Gtz.Reduction.DiagonalRungs
 #print axioms Gtz.not_phaseFreeCovering_six
 #print axioms Gtz.not_phaseFreeCovering_seven
 #print axioms Gtz.phaseFree_certificates_cannot_prove_rank_three
+
+-- Gtz.Quantitative.TwoMomentCertificate: the two-moment certificate + the icosahedron cap
+#print axioms Gtz.twoMoment_factorisation
+#print axioms Gtz.twoMoment_multiplier_pos
+#print axioms Gtz.one_le_of_twoMoment
+#print axioms Gtz.eigenvector_congruence
+#print axioms Gtz.posSemidef_sub_one_of_eigenvalues_ge_one
+#print axioms Gtz.posSemidef_sub_one_of_twoMoment
+#print axioms Gtz.twoMomentGap
+#print axioms Gtz.twoMomentGap_eq_det_trace
+#print axioms Gtz.dominates_of_twoMomentGap_nonneg
+#print axioms Gtz.icosa_twoMomentGap_eq
+#print axioms Gtz.icosa_twoMomentGap_neg
+#print axioms Gtz.icosa_no_twoMoment_certificate
+#print axioms Gtz.tetra_twoMomentGap_eq_zero
+
+-- Gtz.Ties.StratumFirstOrder: first-order Farkas stuckness at the (7,3) tie stratum
+#print axioms Gtz.sum_atomMatrix_tetraAtom_eq_four_smul_one
+#print axioms Gtz.sum_three_atomMatrix_tetraAtom
+#print axioms Gtz.splitSevenDesign_weight_apply
+#print axioms Gtz.rainbowSevenFirst
+#print axioms Gtz.rainbowSevenSecond
+#print axioms Gtz.rainbowSevenThird
+#print axioms Gtz.rainbowSevenTriple
+#print axioms Gtz.rainbowSevenMissedDirection
+#print axioms Gtz.rainbowSevenMultiplier
+#print axioms Gtz.rainbowSevenIndices_distinct
+#print axioms Gtz.rainbowSevenDirections_distinct
+#print axioms Gtz.rainbowSevenDirections_ne_missed
+#print axioms Gtz.rainbowSevenDirections_cover
+#print axioms Gtz.sum_rainbowSevenTriple
+#print axioms Gtz.rainbowSevenTriple_card
+#print axioms Gtz.rainbowSevenTriple_injective
+#print axioms Gtz.rainbowSevenTriple_eq_rainbowFamily
+#print axioms Gtz.mem_rainbowSevenTriple_iff
+#print axioms Gtz.rainbowSevenTriple_direction_ne_missed
+#print axioms Gtz.rainbowSevenMultiplier_pos
+#print axioms Gtz.rainbowSevenMultiplier_sum_one
+#print axioms Gtz.splitSevenDesign_subsetSum_rainbow
+#print axioms Gtz.splitSevenDesign_rainbowGap
+#print axioms Gtz.splitSevenDesign_rainbowGap_form
+#print axioms Gtz.rainbowSevenTriple_dominates
+#print axioms Gtz.rainbowSevenTriple_gapForm_missedDirection
+#print axioms Gtz.rainbowSevenTriple_tightEigenvector
+#print axioms Gtz.rainbowSevenTriple_gap_mulVec_of_orthogonal
+#print axioms Gtz.rainbowSevenTriple_not_posDef
+#print axioms Gtz.rainbowSevenTriple_lambdaMinMat_eq_one
+#print axioms Gtz.tetraNormalDirection
+#print axioms Gtz.tetraNormalDirection_dot_left
+#print axioms Gtz.tetraNormalDirection_dot_right
+#print axioms Gtz.tetraNormalDirection_dot_self
+#print axioms Gtz.exists_twoDirectionCover_of_repeated
+#print axioms Gtz.splitSevenDesign_twoDirection_gapForm_negative
+#print axioms Gtz.splitSevenDesign_repeatedDirection_fails_at_pairNormal
+#print axioms Gtz.gapFormVelocity
+#print axioms Gtz.gapForm_ray_expansion
+#print axioms Gtz.rayAtomSum
+#print axioms Gtz.rayAtomSum_gap_form
+#print axioms Gtz.leverageOf_ray
+#print axioms Gtz.parsevalTraceVelocity
+#print axioms Gtz.traceIdentity_ray_expansion
+#print axioms Gtz.tetraAtom_dotProduct_zero
+#print axioms Gtz.tetraAtom_dotProduct_one
+#print axioms Gtz.tetraAtom_dotProduct_two
+#print axioms Gtz.tetraAtom_dotProduct_three
+#print axioms Gtz.rainbowSevenMultiplier_marginal
+#print axioms Gtz.splitSevenDesign_farkasIdentity
+#print axioms Gtz.splitSevenDesign_velocityPairing_zero
+#print axioms Gtz.splitSevenDesign_farkasIdentity_zero
+#print axioms Gtz.rainbowSeven_exists_nonnegative_velocity
+#print axioms Gtz.rainbowSeven_exists_positive_velocity
+#print axioms Gtz.rainbowSevenTriple_rayGapForm_missedDirection
+#print axioms Gtz.rainbowSevenTriple_ray_not_posSemidef_of_velocity_neg
+#print axioms Gtz.stratumCriticalAtomVelocity
+#print axioms Gtz.stratumCriticalWeightVelocity
+#print axioms Gtz.stratumCriticalVelocity_mass_zero
+#print axioms Gtz.stratumCriticalVelocity_parsevalTrace_zero
+#print axioms Gtz.stratumCriticalVelocity_gapFormVelocity_zero
+#print axioms Gtz.stratumCriticalVelocity_frozenQuadratic_eq_two
+#print axioms Gtz.stratumCriticalRay_gap_eq
+#print axioms Gtz.stratumCriticalRay_gap_det
+#print axioms Gtz.stratumCriticalRay_not_posSemidef
+#print axioms Gtz.projectionBlock_eq_congruence
+#print axioms Gtz.det_projectionBlock_of_design
+#print axioms Gtz.det_four_smul_one_sub_atomMatrix_tetraAtom
+#print axioms Gtz.rainbowSevenPick
+#print axioms Gtz.transpose_mul_selectedAtomRows_rainbow
+#print axioms Gtz.splitSevenDesign_rainbowGram_det
+#print axioms Gtz.rainbowSevenMultiplier_eq_det_projectionBlock
+#print axioms Gtz.SplitSevenNeighbourhoodCovering
+#print axioms Gtz.splitSevenNeighbourhoodCovering_of_gtzWeighted

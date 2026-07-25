@@ -66,6 +66,7 @@ import Gtz.Core.Basic
 import Gtz.LinAlg.PsdKit
 import Gtz.Quantitative.DiscriminantSystem
 import Gtz.Quantitative.RealnessEngine
+import Gtz.Quantitative.DecisionAtlasSevenThree
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -357,12 +358,13 @@ theorem icosa_no_twoMoment_certificate :
 
 /-- On the `(4,3)` tetrahedron every triple has leverage sum `9` and Gram
 determinant `16`, so the two-moment gap is exactly `0`: the certificate is TIGHT
-on the tie stratum it was designed to reach, and reaches it with no slack. -/
-theorem tetraAtom_dot_of_ne {atomLeft atomRight : Fin 4} (hne : atomLeft ≠ atomRight) :
-    tetraAtom atomLeft ⬝ᵥ tetraAtom atomRight = -1 := by
-  fin_cases atomLeft <;> fin_cases atomRight <;>
-    simp_all [tetraAtom, dotProduct, Fin.sum_univ_three]
+on the tie stratum it was designed to reach, and reaches it with no slack.
 
+The distinct-atom dot product `tetraAtom_dot_of_ne` used below is NOT restated
+here — it is imported from `Gtz/Quantitative/DecisionAtlasSevenThree.lean`,
+which declared it first.  An identical copy did live here; Lean 4.32 accepts two
+files declaring one global name without complaint and silently lets the last
+import win, so the duplicate was a latent hazard rather than a build error. -/
 theorem tetra_twoMomentGap_eq_zero {atomFirst atomSecond atomThird : Fin 4}
     (hone : atomFirst ≠ atomSecond) (htwo : atomFirst ≠ atomThird)
     (hthree : atomSecond ≠ atomThird) :
