@@ -20,10 +20,12 @@ spare. On it `discriminantTie` takes exactly two values — `0` on the `20` trip
 carrying three distinct tetrahedron directions, `-8` on the remaining `15` — so
 its SUM over the `35` triples is `-120` while its MAXIMUM is exactly `0`
 (`splitSevenDesign_tieMean_negative_but_tieMax_zero`). The mean is strictly
-negative where the max is exactly zero, so NO averaging or counting argument over
-the `35` triples can establish `DiscriminantCovering 7`; in particular the
-invariant aggregate `e_3(N) = e_3(lambda) − 5 e_2(lambda) + 15 tr(S) − 35` is
-refuted as a route. Only a selection argument, which names a triple, can close it.
+negative where the max is exactly zero, so no AVERAGING argument over the `35`
+triples can establish `DiscriminantCovering 7`; in particular the invariant
+aggregate `e_3(N) = e_3(lambda) − 5 e_2(lambda) + 15 tr(S) − 35` is refuted as a
+route. COUNTING is NOT refuted — at this very design `20` of the `35` triples have
+`discriminantTie ≥ 0`, and "at least one tie is nonnegative" is the covering
+itself.
 
 **Brick 2 — the atlas interface.** What remains is a certified finite case split:
 finitely many cells cut out by explicit sign conditions, one triple assigned per
@@ -389,12 +391,19 @@ theorem splitSevenDesign_dominates_zeroOneTwo :
 At the split-tetrahedron `(7,3)` design — exactly rational, exactly Parseval,
 every leverage exactly `3`, hence all-heavy with room to spare — the MEAN of
 `discriminantTie` over the `35` triples is `-120/35 < 0`, while its MAXIMUM is
-exactly `0`, attained at each of the `20` rainbow triples. So every functional
-that is monotone in the multiset of the `35` tie values and vanishes on the
-constant-zero multiset — the sum `e_3(N)`, any weighted average, any count of
-sign patterns — is STRICTLY NEGATIVE at a design where the covering nonetheless
-holds. Only a selection argument, which names a triple, can close the covering;
-the aggregate `e_3(N) = e_3(λ) − 5 e_2(λ) + 15 tr(S) − 35` is refuted as a route.
+exactly `0`, attained at each of the `20` rainbow triples. So every SIGNED
+AGGREGATE of the `35` tie values that is monotone in the multiset and vanishes on
+the constant-zero multiset — the sum `e_3(N)`, any weighted average — is STRICTLY
+NEGATIVE at a design where the covering nonetheless holds. The aggregate
+`e_3(N) = e_3(λ) − 5 e_2(λ) + 15 tr(S) − 35` is refuted as a route.
+
+SCOPE, corrected after audit: this does NOT refute counting arguments. A count of
+sign patterns is a nonnegative integer and cannot be strictly negative; at this
+design `#{T : discriminantTie T ≥ 0} = 20`, and the statement "at least one tie is
+nonnegative" is the covering itself, not a refuted route. Nor does it establish
+that only a triple-naming argument can close the covering — a non-constructive
+existence statement (for instance "the box-good graph of every all-heavy design
+contains a triangle") would close it without naming one.
 
 `AllHeavy` supplies `e_1(Gram_T − I) > 0` for free at every triple
 (`allHeavy_heavyExcess_pos`), and here `e_2 = 9 > 0` at every rainbow triple, so
@@ -473,7 +482,21 @@ certificate half. -/
 def AtlasDischarges {m : ℕ} (atlas : DecisionAtlas m) : Prop :=
   ∀ cell ∈ atlas.cells, CellDischarges cell
 
-/-- **ATLAS SOUNDNESS**, unconditionally: a covering, discharging atlas at size
+/-- **ATLAS SOUNDNESS**, unconditionally.
+
+SCOPE, stated here because two independent audits flagged it as the sharpest
+caveat in this file: `signConditions` is a `List` of ARBITRARY functions
+`WeightedDesign m 3 → ℝ`, not polynomial data. Three consequences, all real.
+`IsInCell` is undecidable as typed, so no atlas in this interface can be
+discharged by `decide`. `exists_atlas_iff_discriminantCovering` below is proved by
+cells whose sign conditions ARE the two legs — it exploits exactly the freedom the
+intended language lacks — so it is near-tautological. And losslessness therefore
+carries NO information about the polynomial atlas problem (finitely many cells cut
+out by bounded-degree polynomials in the Gram entries), which is the actual open
+problem a Positivstellensatz or CAD attack faces. This interface is correct
+bookkeeping that localizes the difficulty; it does not reduce it.
+
+The statement: a covering, discharging atlas at size
 `m` proves `DiscriminantCovering m`. Pure logic over the shipped narrowing — no
 new mathematics, no finiteness of the cell list, no property of the
 sign-condition language. -/

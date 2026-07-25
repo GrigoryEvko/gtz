@@ -142,3 +142,5 @@ import Gtz.Design.GraphicInstance
 import Gtz.Quantitative.CollarExponent
 import Gtz.Reduction.RankInductionStep
 import Gtz.Design.LeverageCapDecision
+import Gtz.Quantitative.DecisionAtlasSevenThree
+import Gtz.Ties.SevenThreeTieLocus

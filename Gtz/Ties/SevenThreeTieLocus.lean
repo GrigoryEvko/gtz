@@ -714,8 +714,8 @@ dominate; and no triple dominates strictly.
 
 Read as a refutation: every functional monotone in the multiset of the `35` tie
 values and vanishing on the constant-zero multiset — the sum `e_3(N)`, any
-weighted average, any count of sign patterns — is strictly negative at a design
-where the covering nonetheless holds, so no averaging or counting argument over
+weighted average — is strictly negative at a design
+where the covering nonetheless holds, so no averaging argument over
 triples can prove `DiscriminantCovering 7`. Only a selection argument, which
 names a triple, can close it.
 

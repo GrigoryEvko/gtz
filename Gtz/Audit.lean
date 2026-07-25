@@ -118,6 +118,8 @@ import Gtz.Design.GraphicInstance
 import Gtz.Quantitative.CollarExponent
 import Gtz.Reduction.RankInductionStep
 import Gtz.Design.LeverageCapDecision
+import Gtz.Quantitative.DecisionAtlasSevenThree
+import Gtz.Ties.SevenThreeTieLocus
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -1341,3 +1343,117 @@ import Gtz.Design.LeverageCapDecision
 #print axioms Gtz.liftedMercedesDesign_dominates_directionTriple
 #print axioms Gtz.exists_allHeavy_seven_design_with_unusable_heavy_atom
 #print axioms Gtz.not_heavyPivotCovering
+
+-- the (7,3) frontier: decision atlas + tie locus
+
+-- Gtz.Quantitative.DecisionAtlasSevenThree
+#print axioms Gtz.splitSevenDirection
+#print axioms Gtz.splitSevenAtom
+#print axioms Gtz.splitSevenDesign
+#print axioms Gtz.splitSevenDesign_leverage
+#print axioms Gtz.splitSevenDesign_allHeavy
+#print axioms Gtz.splitSevenDesign_heavyExcess
+#print axioms Gtz.tetraAtom_dot_of_ne
+#print axioms Gtz.splitSevenDesign_atomPairing_of_sameDirection
+#print axioms Gtz.splitSevenDesign_atomPairing_of_differentDirection
+#print axioms Gtz.splitSevenDirection_no_tripleRepeat
+#print axioms Gtz.splitSevenDesign_discriminantTie_eq
+#print axioms Gtz.splitSevenDesign_discriminantTie_of_rainbowDirections
+#print axioms Gtz.splitSevenDesign_discriminantTie_of_repeatedDirection
+#print axioms Gtz.splitSevenDesign_discriminantTie_nonpos
+#print axioms Gtz.increasingTriplesSeven
+#print axioms Gtz.increasingTriplesSeven_card
+#print axioms Gtz.increasingTriplesSeven_distinct
+#print axioms Gtz.HasRainbowDirections
+#print axioms Gtz.rainbowTriplesSeven_card
+#print axioms Gtz.repeatedTriplesSeven_card
+#print axioms Gtz.splitSevenDesign_discriminantTie_of_notRainbow
+#print axioms Gtz.splitSevenDesign_discriminantTie_sum
+#print axioms Gtz.splitSevenDesign_discriminantTrace_of_rainbowDirections
+#print axioms Gtz.splitSevenDesign_dominates_of_rainbowDirections
+#print axioms Gtz.splitSevenDesign_discriminantTrace_zeroOneTwo
+#print axioms Gtz.splitSevenDesign_discriminantTie_zeroOneTwo
+#print axioms Gtz.splitSevenDesign_dominates_zeroOneTwo
+#print axioms Gtz.splitSevenDesign_tieMean_negative_but_tieMax_zero
+#print axioms Gtz.IsInCell
+#print axioms Gtz.CellDischarges
+#print axioms Gtz.AtlasCovers
+#print axioms Gtz.AtlasDischarges
+#print axioms Gtz.discriminantCovering_of_atlas
+#print axioms Gtz.gtzWeightedAll_three_of_atlasSeven
+#print axioms Gtz.gtzOriginal_rank_three_of_atlasSeven
+#print axioms Gtz.tautologicalCell
+#print axioms Gtz.isInCell_tautologicalCell_iff
+#print axioms Gtz.tautologicalCell_discharges
+#print axioms Gtz.tautologicalAtlas
+#print axioms Gtz.tautologicalAtlas_discharges
+#print axioms Gtz.tautologicalAtlas_covers_iff
+#print axioms Gtz.exists_atlas_iff_discriminantCovering
+#print axioms Gtz.exists_atlas_seven_iff_rank_three
+#print axioms Gtz.discriminantTie_eq_gramMinorForm
+#print axioms Gtz.dominates_of_radiusBox
+#print axioms Gtz.symmetricHalfRadius_admissible
+#print axioms Gtz.dominates_of_symmetricHalfBox
+#print axioms Gtz.dominates_of_coherentPairings
+#print axioms Gtz.dominates_of_leverageFloor_and_pairingCap
+#print axioms Gtz.tripleGramDet
+#print axioms Gtz.tripleGramDet_eq_symmetricFunctionSum
+#print axioms Gtz.minLegArgmax_succeeds_iff
+#print axioms Gtz.splitSevenDesign_leverage_constant
+#print axioms Gtz.splitSevenDesign_tripleGramDet_of_rainbowDirections
+#print axioms Gtz.splitSevenDesign_tripleGramDet_of_repeatedDirection
+#print axioms Gtz.splitSevenDesign_gramDetArgmax_dominates
+#print axioms Gtz.dominates_image_replicationMerge
+#print axioms Gtz.subsetSum_replicatedDesign_image_castSucc
+#print axioms Gtz.heavyPivotDesign_allHeavy
+#print axioms Gtz.heavyPivotSplitSeven
+#print axioms Gtz.heavyPivotSplitSeven_atom_castSucc
+#print axioms Gtz.heavyPivotSplitSeven_atom_last
+#print axioms Gtz.heavyPivotSplitSeven_allHeavy
+#print axioms Gtz.heavyPivotSplitSeven_leverage_lt
+#print axioms Gtz.heavyPivotSplitSeven_dominates_liftedLastThree
+#print axioms Gtz.heavyPivotSplitSeven_heaviest_notIn_dominatingTriple
+#print axioms Gtz.heaviestAtomRule_refuted_at_seven
+
+-- Gtz.Ties.SevenThreeTieLocus
+#print axioms Gtz.subsetSum_congr_atom
+#print axioms Gtz.dominates_congr_atom
+#print axioms Gtz.allHeavy_congr_atom
+#print axioms Gtz.isTie_congr_atom
+#print axioms Gtz.heavyExcess_congr_atom
+#print axioms Gtz.atomPairing_congr_atom
+#print axioms Gtz.discriminantTrace_congr_atom
+#print axioms Gtz.discriminantTie_congr_atom
+#print axioms Gtz.tripleSplitTetraDesign
+#print axioms Gtz.tripleSplitTetraDesign_atom
+#print axioms Gtz.tripleSplitTetraDesign_weight
+#print axioms Gtz.tripleSplitTetraDesign_eq_splitSevenDesign
+#print axioms Gtz.tripleSplitTetraDesign_allHeavy
+#print axioms Gtz.exists_unusedDirection_seven
+#print axioms Gtz.splitSevenDesign_gapForm_zero_of_unusedDirection
+#print axioms Gtz.splitSevenDesign_no_strictDominator
+#print axioms Gtz.splitSevenDesign_isTie
+#print axioms Gtz.splitSevenDesign_rainbowTriple_isTie
+#print axioms Gtz.splitSevenDesign_not_dominates_of_repeatedDirection
+#print axioms Gtz.splitSevenDesign_dominates_iff_rainbowDirections
+#print axioms Gtz.splitSevenDesign_dominates_iff_hasRainbowDirections
+#print axioms Gtz.splitSevenDesign_excessSum
+#print axioms Gtz.splitSevenDesign_discriminantMinorSum_of_rainbowDirections
+#print axioms Gtz.splitSevenDesign_gapCharPoly_of_rainbowDirections
+#print axioms Gtz.splitSevenDesign_pairingBoundary_of_differentDirection
+#print axioms Gtz.splitSevenDesign_normalizedPairing_of_differentDirection
+#print axioms Gtz.splitSevenDesign_pairingBoundary_fails_of_sameDirection
+#print axioms Gtz.no_leverage_identity_at_seven_three
+#print axioms Gtz.splitSevenDesign_leverage_identity_fails
+#print axioms Gtz.exists_allHeavy_isTie_and_leverage_identity_fails_at_seven
+#print axioms Gtz.splitSevenReweighted
+#print axioms Gtz.splitSevenReweighted_atom
+#print axioms Gtz.splitSevenReweighted_allHeavy
+#print axioms Gtz.splitSevenReweighted_discriminantTie
+#print axioms Gtz.splitSevenReweighted_discriminantTrace
+#print axioms Gtz.splitSevenReweighted_discriminantTie_sum
+#print axioms Gtz.splitSevenReweighted_isTie
+#print axioms Gtz.splitSevenReweighted_dominates_iff_rainbowDirections
+#print axioms Gtz.splitSevenReweighted_noStressCertificate
+#print axioms Gtz.exists_isTie_seven_without_stressCertificate
+#print axioms Gtz.splitSevenDesign_tieBoundary_reading
