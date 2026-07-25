@@ -128,6 +128,7 @@ import Gtz.Reduction.ExchangeRepair
 import Gtz.Quantitative.GoodTripleGraph
 import Gtz.Reduction.StrengthenedInductionHypothesis
 import Gtz.Complex.PerRankConstantLedger
+import Gtz.Reduction.RealVolumeFloor
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -2249,3 +2250,25 @@ import Gtz.Complex.PerRankConstantLedger
 #print axioms Gtz.complexRankTwo_provedWindow
 #print axioms Gtz.complexRankThree_provedWindow
 #print axioms Gtz.complexPerRankLedger
+
+#print axioms Gtz.atomRowMatrix
+#print axioms Gtz.atomRowMatrix_row
+#print axioms Gtz.selectedFrameRows_atomRowMatrix
+#print axioms Gtz.selectedFrameRows_scaledAtomRows
+#print axioms Gtz.exists_injective_pick_det_atomRowMatrix_ne_zero
+#print axioms Gtz.exists_maximalVolumePick_of_witness
+#print axioms Gtz.abs_solveMatrix_le_one_of_maximalVolume_row
+#print axioms Gtz.dotProduct_atomMatrix_mulVec
+#print axioms Gtz.dotProduct_self_eq_sum_weight_mul_sq
+#print axioms Gtz.dotProduct_subsetSum_mulVec
+#print axioms Gtz.sum_sq_selected_nonneg
+#print axioms Gtz.sq_dotProduct_le_rank_mul_selected
+#print axioms Gtz.dotProduct_self_le_rank_mul_selected
+#print axioms Gtz.sq_dotProduct_le_selected_of_mem
+#print axioms Gtz.dotProduct_self_le_selectedWeight_mul_selected
+#print axioms Gtz.GtzWeightedFloor
+#print axioms Gtz.posSemidef_sub_smul_one_of_level_le
+#print axioms Gtz.sum_weight_subset_le_one
+#print axioms Gtz.exists_selection_posSemidef_sub_selectedWeight_level
+#print axioms Gtz.gtzWeightedFloor_inv_rank
+#print axioms Gtz.exists_rowPick_posSemidef_sub_inv_size_mul_rank
