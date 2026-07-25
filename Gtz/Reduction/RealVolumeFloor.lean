@@ -1,16 +1,37 @@
 /-
 # The rank floor `α_k(ℝ) ≥ 1/k` — a lower bound with no dependence on the size
 
-GTZ asks for a `k`-subset with `S_C ⪰ I`.  Nothing in the repo lower-bounds the
-best achievable level at all: the classical maximal-volume theory gives
-`σ_min² ≥ 1/(k(m−k)+1)`, which DECAYS with the number of atoms and therefore says
-nothing uniform in `m`.  This file proves the first size-free floor:
+GTZ asks for a `k`-subset with `S_C ⪰ I`, and until this file the real side had
+no lower bound on the level at all: read on a design, the classical maximal-volume
+theory gives level `1/(t_max·(k(m−k)+1))`, which decays with the number of atoms
+AND collapses as the weights concentrate, so it is not uniform in `(m, t)`.  Here:
 
     every weighted `(m, k)`-design has a `k`-subset `C` with `S_C ⪰ (1/k)·I`,
 
-for every `m` and every `k`, with no hypothesis whatsoever.  Together with the
-trivial ceiling (`Dominates` means level `1`) this brackets the sharp real
-constant: `1/k ≤ α_k(ℝ) ≤ 1`.
+for every `m` and every `k`, with no hypothesis whatsoever.  Writing `α_k(ℝ)` for
+the largest level attainable on EVERY design at rank `k`, this is `α_k(ℝ) ≥ 1/k`;
+GTZ is the assertion `α_k(ℝ) ≥ 1`, and `α_3(ℝ) ≤ 1` already holds in the repo
+because the regular tetrahedron admits no strictly dominating triple
+(`tetraDesign_no_strictDominator`).  So the bracket at rank three is
+`1/3 ≤ α_3(ℝ) ≤ 1`.
+
+## Relation to the complex ledger — the mechanism is shared
+
+`Gtz/Complex/PerRankConstantLedger.lean` proves the SAME constant over ℂ
+(`complexRankConstantAtLeast_rankInverse`) by the same three steps: maximal
+volume, `[−1,1]` solve coefficients, Parseval averaging.  Neither file derives
+the other.  The two run over different structures — `WeightedDesign` here,
+`ComplexWeightedDesign` there — and the repo mechanizes no embedding of the first
+into the second, so the statement every real-side theorem is phrased against
+(`GtzWeighted`, `gtz_rank_two`, `rank_three_of_the_two_residuals`, the whole
+canonical-list reduction) is available only from here.  Mathematically the
+complex bound does subsume the real one; formally nothing connects them, and this
+file does not pretend the mechanism is new.
+
+One statement is genuinely only here: the weight-aware level
+`1/(k − (k−1)·t(C))`.  The complex proof derives exactly that expression
+internally and then discards it into `1/k`; below it is the theorem, and `1/k` is
+its corollary.
 
 ## Where the size-independence comes from
 
@@ -30,9 +51,12 @@ row count to a single factor of `k`:
           ≤  Σ_c t_c · ‖B_c‖² · (xᵀ S_C x)   (Cauchy–Schwarz on `g_c = Σ_j B_cj g_{c_j}`)
           ≤  k · (xᵀ S_C x).
 
-Both `m` and the individual weights are gone.  The measured content of the middle
-line is the exact identity `Σ_c t_c ‖B_c‖² = tr(S_C⁻¹)`, verified numerically to
-80 digits; the mechanized chain only needs the inequality.
+Both `m` and the individual weights are gone.  Behind the middle line sits the
+exact identity `Σ_c t_c ‖B_c‖² = tr(S_C⁻¹)` — Parseval again, now inside the
+Frobenius count — checked exactly on a rational design (both sides `9/16` at
+`m = 5`, `k = 2`, atoms `(2,−1), (1,−2), (−2,0), (1,1), (0,−1)`, weights
+`5/36, 1/90, 1/30, 3/10, 31/60`) and to fifteen significant digits at 80-digit
+precision elsewhere.  The mechanized chain only needs the inequality.
 
 ## The pick must be maximal-volume for the UNSCALED atoms
 
@@ -57,14 +81,21 @@ as a hypothesis.
 `k·λ_min` at the maximal-volume pick down to `1.004` at `(5,2)` and `1.075` at
 `(7,3)`, the extremal configurations being the ones where the selected set
 carries vanishing weight.  That is exactly what the free sharpening
-`gtzWeightedFloor_selected_weight` says — the floor improves to
-`1/(k − (k−1)·t(C))`, and degrades to `1/k` precisely as `t(C) → 0`.
+`exists_selection_posSemidef_sub_selectedWeight_level` says — the floor is really
+`1/(k − (k−1)·t(C))` with `t(C)` the selected set's weight, which degrades to
+`1/k` precisely as `t(C) → 0`.  The headline is that statement weakened along
+`posSemidef_sub_smul_one_of_level_le`.
 
-`1/k` is NOT the sharp constant `α_k(ℝ)` of the problem: at `k = 2` this file
-gives `1/2` where `gtz_rank_two` gives the truth `1`.  The gap is a defect of the
-maximal-volume SELECTION RULE, not of the estimate — on the same extremal designs
-the best subset achieves level `1.00003`.  What the floor buys is that it holds
-at every rank, unconditionally, where GTZ itself is open from `k = 3` on.
+`1/k` is NOT the sharp constant `α_k(ℝ)`: at `k = 2` this file gives `1/2` where
+`gtz_rank_two` gives the truth `1`.  The gap is a defect of the maximal-volume
+SELECTION RULE, not of the estimate — on the same extremal designs the best
+subset achieves level `1.00003`.  What the floor buys is that it holds at every
+rank, unconditionally, where GTZ itself is open from `k = 3` on.
+
+Read back in the original 1997 normalization the floor is `σ_min² ≥ 1/(nk)`,
+which is WEAKER than the classical constant for every `k ≥ 2`; see
+`exists_rowPick_posSemidef_sub_inv_size_mul_rank`, whose docstring carries the
+comparison.  The content is in the weights, not in the size.
 -/
 import Mathlib
 import Gtz.Core.Basic
@@ -179,7 +210,7 @@ theorem abs_solveMatrix_le_one_of_maximalVolume_row {frameSize selectionRank : �
     · rw [hdiag, Matrix.one_apply_eq, abs_one]
     · rw [Matrix.one_apply_ne hoff, abs_zero]
       norm_num
-  · push_neg at hselected
+  · push Not at hselected
     exact abs_solveMatrix_le_one_of_maximalVolume frame pick hinj hunit hmax rowIndex
       hselected colIndex
 
@@ -216,14 +247,7 @@ theorem dotProduct_subsetSum_mulVec (D : WeightedDesign m k) (pick : Fin k → F
 /-- The selection's quadratic form is nonnegative — it is a sum of squares. -/
 theorem sum_sq_selected_nonneg (D : WeightedDesign m k) (pick : Fin k → Fin m) (x : Fin k → ℝ) :
     0 ≤ ∑ selectedIndex, (D.atom (pick selectedIndex) ⬝ᵥ x) ^ 2 :=
-  Finset.sum_nonneg fun selectedIndex _ => sq_nonneg _
-
-/-- The atom sum of any subset is symmetric. -/
-theorem transpose_subsetSum (D : WeightedDesign m k) (selected : Finset (Fin m)) :
-    (subsetSum D selected)ᵀ = subsetSum D selected := by
-  rw [subsetSum, Matrix.transpose_sum]
-  exact Finset.sum_congr rfl fun atomIndex _ => by
-    rw [atomMatrix, Matrix.transpose_vecMulVec]
+  Finset.sum_nonneg fun _selectedIndex _ => sq_nonneg _
 
 /-! ## The row estimate and the floor -/
 
@@ -240,7 +264,7 @@ theorem sq_dotProduct_le_rank_mul_selected (D : WeightedDesign m k) (pick : Fin 
     (atomIndex : Fin m) (x : Fin k → ℝ) :
     (D.atom atomIndex ⬝ᵥ x) ^ 2
       ≤ (k : ℝ) * ∑ selectedIndex, (D.atom (pick selectedIndex) ⬝ᵥ x) ^ 2 := by
-  set solveCoefficients := solveMatrix (atomRowMatrix D) pick with hsolveDef
+  set solveCoefficients := solveMatrix (atomRowMatrix D) pick
   have hexpansion : D.atom atomIndex
       = ∑ selectedIndex, solveCoefficients atomIndex selectedIndex • D.atom (pick selectedIndex) :=
     frameRow_eq_solveCombination (atomRowMatrix D) pick hunit atomIndex
@@ -295,20 +319,102 @@ theorem dotProduct_self_le_rank_mul_selected (D : WeightedDesign m k) (pick : Fi
     _ = (k : ℝ) * ∑ selectedIndex, (D.atom (pick selectedIndex) ⬝ᵥ x) ^ 2 := by
         rw [← Finset.sum_mul, D.weight_sum_one, one_mul]
 
+/-- A selected atom's squared projection is one term of the selection's quadratic
+form, hence at most all of it. -/
+theorem sq_dotProduct_le_selected_of_mem (D : WeightedDesign m k) (pick : Fin k → Fin m)
+    {atomIndex : Fin m} (hmem : atomIndex ∈ Finset.image pick Finset.univ) (x : Fin k → ℝ) :
+    (D.atom atomIndex ⬝ᵥ x) ^ 2
+      ≤ ∑ selectedIndex, (D.atom (pick selectedIndex) ⬝ᵥ x) ^ 2 := by
+  classical
+  obtain ⟨selectedIndex, -, hselectedEq⟩ := Finset.mem_image.mp hmem
+  rw [← hselectedEq]
+  exact Finset.single_le_sum
+    (f := fun otherIndex : Fin k => (D.atom (pick otherIndex) ⬝ᵥ x) ^ 2)
+    (fun _otherIndex _ => sq_nonneg _) (Finset.mem_univ selectedIndex)
+
+/-- **The weight-aware master estimate.**  Splitting Parseval's average at the
+selected set, the selected rows contribute their own weight instead of `k` times
+it, so the constant improves from `k` to `k − (k−1)·t(C)`.  It degrades back to
+`k` exactly as the selected set's total weight vanishes — which is what the
+adversarial search finds at the extremal designs. -/
+theorem dotProduct_self_le_selectedWeight_mul_selected (D : WeightedDesign m k)
+    (pick : Fin k → Fin m) (hinj : Function.Injective pick)
+    (hunit : IsUnit (selectedFrameRows (atomRowMatrix D) pick).det)
+    (hmax : ∀ other : Fin k → Fin m, Function.Injective other →
+      |(selectedFrameRows (atomRowMatrix D) other).det|
+        ≤ |(selectedFrameRows (atomRowMatrix D) pick).det|)
+    (x : Fin k → ℝ) :
+    x ⬝ᵥ x
+      ≤ ((k : ℝ) - ((k : ℝ) - 1) * ∑ c ∈ Finset.image pick Finset.univ, D.weight c)
+        * ∑ selectedIndex, (D.atom (pick selectedIndex) ⬝ᵥ x) ^ 2 := by
+  classical
+  set selectedSet := Finset.image pick Finset.univ
+  set selectedForm := ∑ selectedIndex, (D.atom (pick selectedIndex) ⬝ᵥ x) ^ 2
+  set selectedWeight := ∑ c ∈ selectedSet, D.weight c
+  have hcomplementWeight : ∑ c ∈ selectedSetᶜ, D.weight c = 1 - selectedWeight := by
+    have hsplit := Finset.sum_add_sum_compl selectedSet D.weight
+    rw [D.weight_sum_one] at hsplit
+    linarith [hsplit]
+  have hinside : ∑ c ∈ selectedSet, D.weight c * (D.atom c ⬝ᵥ x) ^ 2
+      ≤ selectedWeight * selectedForm := by
+    calc ∑ c ∈ selectedSet, D.weight c * (D.atom c ⬝ᵥ x) ^ 2
+        ≤ ∑ c ∈ selectedSet, D.weight c * selectedForm :=
+          Finset.sum_le_sum fun c hc =>
+            mul_le_mul_of_nonneg_left (sq_dotProduct_le_selected_of_mem D pick hc x)
+              (D.weight_pos c).le
+      _ = selectedWeight * selectedForm := by rw [← Finset.sum_mul]
+  have houtside : ∑ c ∈ selectedSetᶜ, D.weight c * (D.atom c ⬝ᵥ x) ^ 2
+      ≤ (1 - selectedWeight) * ((k : ℝ) * selectedForm) := by
+    calc ∑ c ∈ selectedSetᶜ, D.weight c * (D.atom c ⬝ᵥ x) ^ 2
+        ≤ ∑ c ∈ selectedSetᶜ, D.weight c * ((k : ℝ) * selectedForm) :=
+          Finset.sum_le_sum fun c _ =>
+            mul_le_mul_of_nonneg_left
+              (sq_dotProduct_le_rank_mul_selected D pick hinj hunit hmax c x)
+              (D.weight_pos c).le
+      _ = (1 - selectedWeight) * ((k : ℝ) * selectedForm) := by
+          rw [← Finset.sum_mul, hcomplementWeight]
+  have hsplit := Finset.sum_add_sum_compl selectedSet
+    fun c => D.weight c * (D.atom c ⬝ᵥ x) ^ 2
+  rw [dotProduct_self_eq_sum_weight_mul_sq D x, ← hsplit]
+  nlinarith [hinside, houtside]
+
 /-- The floor statement at a general level: every design has a `k`-subset whose
 atom sum dominates `level · I`.  `GtzWeighted` is the case `level = 1`. -/
 def GtzWeightedFloor (m k : ℕ) (level : ℝ) : Prop :=
   ∀ D : WeightedDesign m k, ∃ C : Finset (Fin m), C.card = k ∧
     (subsetSum D C - level • 1).PosSemidef
 
-/-- **THE RANK FLOOR.**  Every weighted `(m, k)`-design has a `k`-subset whose
-atom sum dominates `(1/k)·I` — for every size, every rank, no hypothesis.  The
-selection is the maximal-volume pick of the UNSCALED atoms; the level is
-size-free because Parseval averages the rows against weights totalling one
-instead of counting them. -/
-theorem gtzWeightedFloor_inv_rank (m k : ℕ) : GtzWeightedFloor m k ((k : ℝ))⁻¹ := by
+/-- Lowering the level preserves domination: the difference is a nonnegative
+multiple of the identity. -/
+theorem posSemidef_sub_smul_one_of_level_le {size : ℕ} {form : Matrix (Fin size) (Fin size) ℝ}
+    {lowerLevel upperLevel : ℝ} (hlevel : lowerLevel ≤ upperLevel)
+    (hpsd : (form - upperLevel • 1).PosSemidef) : (form - lowerLevel • 1).PosSemidef := by
+  have hsplit : form - lowerLevel • 1
+      = (form - upperLevel • 1) + (upperLevel - lowerLevel) • 1 := by
+    rw [sub_smul]
+    abel
+  rw [hsplit]
+  exact hpsd.add (Matrix.PosSemidef.one.smul (by linarith))
+
+/-- A subset's total weight is at most the design's total weight, namely one. -/
+theorem sum_weight_subset_le_one (D : WeightedDesign m k) (selected : Finset (Fin m)) :
+    ∑ c ∈ selected, D.weight c ≤ 1 := by
+  rw [← D.weight_sum_one]
+  exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ selected)
+    fun c _ _ => (D.weight_pos c).le
+
+/-- **THE RANK FLOOR, weight-aware.**  Every weighted `(m, k)`-design has a
+`k`-subset `C` whose atom sum dominates `1/(k − (k−1)·t(C))` times the identity,
+where `t(C)` is the selected set's total weight.  Since `0 ≤ t(C) ≤ 1` the
+denominator lies in `[1, k]`, so the level is at most `1` — never contradicting
+GTZ — and strictly above `1/k` whenever `k ≥ 2`, degrading to `1/k` exactly as
+the selected set's weight vanishes, which is the configuration the adversarial
+search converges to. -/
+theorem exists_selection_posSemidef_sub_selectedWeight_level (D : WeightedDesign m k) :
+    ∃ C : Finset (Fin m), C.card = k ∧
+      (subsetSum D C
+        - ((k : ℝ) - ((k : ℝ) - 1) * ∑ c ∈ C, D.weight c)⁻¹ • 1).PosSemidef := by
   classical
-  intro D
   obtain ⟨witnessPick, hwitnessInj, hwitnessDet⟩ :=
     exists_injective_pick_det_atomRowMatrix_ne_zero D
   obtain ⟨pick, hinj, hdet, hmax⟩ :=
@@ -318,30 +424,70 @@ theorem gtzWeightedFloor_inv_rank (m k : ℕ) : GtzWeightedFloor m k ((k : ℝ))
   · rw [Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fin]
   · refine Matrix.posSemidef_iff_dotProduct_mulVec.mpr
       ⟨isHermitian_of_transpose_eq ?_, fun x => ?_⟩
-    · rw [Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_one, transpose_subsetSum]
+    · rw [Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_one, subsetSum_transpose]
     · rw [star_trivial, Matrix.sub_mulVec, dotProduct_sub, Matrix.smul_mulVec, Matrix.one_mulVec,
-        dotProduct_smul, smul_eq_mul, dotProduct_subsetSum_mulVec D pick hinj]
+        dotProduct_smul, smul_eq_mul, dotProduct_subsetSum_mulVec D pick hinj, sub_nonneg]
       have hselectedNonneg := sum_sq_selected_nonneg D pick x
+      have hmaster := dotProduct_self_le_selectedWeight_mul_selected D pick hinj hunit hmax x
       rcases Nat.eq_zero_or_pos k with hrankZero | hrankPos
-      · subst hrankZero
-        simp only [Nat.cast_zero, inv_zero, zero_mul, sub_zero]
+      · have hemptyDirection : x ⬝ᵥ x = 0 := by
+          subst hrankZero
+          simp [dotProduct]
+        rw [hemptyDirection, mul_zero]
         exact hselectedNonneg
-      · have hrankReal : (0 : ℝ) < (k : ℝ) := by exact_mod_cast hrankPos
-        have hmaster := dotProduct_self_le_rank_mul_selected D pick hinj hunit hmax x
-        rw [sub_nonneg, inv_mul_le_iff₀ hrankReal] at *
-        nlinarith [hmaster, hrankReal]
+      · have hrankOneLe : (1 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hrankPos
+        have hweightLe := sum_weight_subset_le_one D (Finset.image pick Finset.univ)
+        have hweightNonneg : 0 ≤ ∑ c ∈ Finset.image pick Finset.univ, D.weight c :=
+          Finset.sum_nonneg fun c _ => (D.weight_pos c).le
+        have hlevelPos : 0 < (k : ℝ)
+            - ((k : ℝ) - 1) * ∑ c ∈ Finset.image pick Finset.univ, D.weight c := by
+          nlinarith [hrankOneLe, hweightLe, hweightNonneg]
+        rw [inv_mul_le_iff₀ hlevelPos]
+        exact hmaster
 
-/-- **The floor in the original 1997 coordinates**: every `n × k` matrix with
-orthonormal columns has a `k`-row submatrix `B` with `BᵀB ⪰ (1/k)·I`, i.e.
-`σ_min(B) ≥ 1/√k`.  The classical maximal-volume bound is `1/√(k(n−k)+1)`, which
-is worse as soon as `n > k + 1`; GTZ conjectures `1/√n`, which is better as soon
-as `n > k`.  So this floor and the conjecture are incomparable in general and the
-floor is the stronger statement exactly when `n > k`… in the regime `n ≤ k`,
-vacuous.  Its content is that SOME size-free level exists at all. -/
-theorem exists_rowPick_posSemidef_sub_inv_rank {n : ℕ} (hn : 0 < n)
+/-- **THE RANK FLOOR.**  Every weighted `(m, k)`-design has a `k`-subset whose
+atom sum dominates `(1/k)·I` — for every size, every rank, no hypothesis.  The
+selection is the maximal-volume pick of the UNSCALED atoms; the level is
+size-free because Parseval averages the rows against weights totalling one
+instead of counting them.  Weakening of the weight-aware form above. -/
+theorem gtzWeightedFloor_inv_rank (m k : ℕ) : GtzWeightedFloor m k ((k : ℝ))⁻¹ := by
+  classical
+  intro D
+  obtain ⟨C, hcard, hpsd⟩ := exists_selection_posSemidef_sub_selectedWeight_level D
+  refine ⟨C, hcard, posSemidef_sub_smul_one_of_level_le ?_ hpsd⟩
+  rcases Nat.eq_zero_or_pos k with hrankZero | hrankPos
+  · subst hrankZero
+    rw [Finset.card_eq_zero.mp hcard]
+    norm_num
+  · have hrankOneLe : (1 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hrankPos
+    have hweightLe := sum_weight_subset_le_one D C
+    have hweightNonneg : 0 ≤ ∑ c ∈ C, D.weight c :=
+      Finset.sum_nonneg fun c _ => (D.weight_pos c).le
+    have hlevelPos : 0 < (k : ℝ) - ((k : ℝ) - 1) * ∑ c ∈ C, D.weight c := by
+      nlinarith [hrankOneLe, hweightLe, hweightNonneg]
+    have hlevelLe : (k : ℝ) - ((k : ℝ) - 1) * ∑ c ∈ C, D.weight c ≤ (k : ℝ) := by
+      nlinarith [hrankOneLe, hweightNonneg]
+    exact inv_anti₀ hlevelPos hlevelLe
+
+/-- **The floor read in the original 1997 coordinates — and why the content is
+NOT there.**  The weighted form absorbs the size into the atoms: level `λ` on a
+design is level `λ/n` on an orthonormal-column matrix, since `rowDesign` scales
+rows by `√n`.  So the floor translates to `BᵀB ⪰ (1/(n·k))·I`, i.e.
+`σ_min(B) ≥ 1/√(nk)`.
+
+That is WEAKER than the classical maximal-volume constant `1/√(k(n−k)+1)` for
+every `k ≥ 2` (`nk − (k(n−k)+1) = k² − 1`), and equal to it at `k = 1`.  It is
+recorded because it is the repo's first MECHANIZED quantitative row-selection
+bound — `MaximalVolume` supplies the mechanism but states explicitly that the
+classical assembly is not mechanized — and because the comparison locates the
+new content precisely: not in the size, but in the WEIGHTS.  Translating the
+classical bound the other way gives level `1/(t_max·(k(m−k)+1))` on a design,
+which collapses to `0` as the weights concentrate, whereas `1/k` does not move. -/
+theorem exists_rowPick_posSemidef_sub_inv_size_mul_rank {n : ℕ} (hn : 0 < n)
     (A : Matrix (Fin n) (Fin k) ℝ) (hortho : Aᵀ * A = 1) :
     ∃ rowPick : Fin k → Fin n, Function.Injective rowPick ∧
-      ((A.submatrix rowPick id)ᵀ * (A.submatrix rowPick id) - ((k : ℝ))⁻¹ • 1).PosSemidef := by
+      ((A.submatrix rowPick id)ᵀ * (A.submatrix rowPick id)
+        - ((n : ℝ) * (k : ℝ))⁻¹ • 1).PosSemidef := by
   classical
   obtain ⟨C, hcard, hpsd⟩ := gtzWeightedFloor_inv_rank n k (rowDesign hn A hortho)
   have hnReal : (0 : ℝ) < n := by exact_mod_cast hn
@@ -363,12 +509,10 @@ theorem exists_rowPick_posSemidef_sub_inv_rank {n : ℕ} (hn : 0 < n)
     show atomMatrix (Real.sqrt (n : ℝ) • A atomIndex) = (n : ℝ) • atomMatrix (A atomIndex)
     rw [atomMatrix_smul, Real.sq_sqrt hnReal.le]
   have hrescale : (A.submatrix (C.orderEmbOfFin hcard) id)ᵀ
-        * (A.submatrix (C.orderEmbOfFin hcard) id) - ((k : ℝ))⁻¹ • 1
+        * (A.submatrix (C.orderEmbOfFin hcard) id) - ((n : ℝ) * (k : ℝ))⁻¹ • 1
       = (n : ℝ)⁻¹ • (subsetSum (rowDesign hn A hortho) C - ((k : ℝ))⁻¹ • 1) := by
     rw [hsubmatrix, hsubset, smul_sub, smul_smul, inv_mul_cancel₀ hnReal.ne', one_smul, smul_smul,
-      smul_smul]
-    congr 2
-    ring
+      mul_inv]
   rw [hrescale]
   exact hpsd.smul (inv_pos.mpr hnReal).le
 
