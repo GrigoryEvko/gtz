@@ -129,6 +129,7 @@ import Gtz.Quantitative.GoodTripleGraph
 import Gtz.Reduction.StrengthenedInductionHypothesis
 import Gtz.Complex.PerRankConstantLedger
 import Gtz.Reduction.RealVolumeFloor
+import Gtz.Reduction.DiagonalRungs
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -2272,3 +2273,49 @@ import Gtz.Reduction.RealVolumeFloor
 #print axioms Gtz.exists_selection_posSemidef_sub_selectedWeight_level
 #print axioms Gtz.gtzWeightedFloor_inv_rank
 #print axioms Gtz.exists_rowPick_posSemidef_sub_inv_size_mul_rank
+
+#print axioms Gtz.abs_le_sqrt_mul_sqrt_diag_of_posSemidef
+#print axioms Gtz.quadForm_le_sq_sum_sqrt_diag
+#print axioms Gtz.posSemidef_diagonal_sub_of_sum_diag_div_le_one
+#print axioms Gtz.exists_residual_notPosSemidef_of_mass_gt_one
+#print axioms Gtz.complementProjection
+#print axioms Gtz.complementProjection_transpose
+#print axioms Gtz.complementProjection_mul_self
+#print axioms Gtz.complementProjection_posSemidef
+#print axioms Gtz.coLeverageScore
+#print axioms Gtz.complementProjection_diagonal
+#print axioms Gtz.coLeverageScore_nonneg
+#print axioms Gtz.sum_coLeverageScore
+#print axioms Gtz.coLeverageRatio
+#print axioms Gtz.coLeverageRatio_nonneg
+#print axioms Gtz.one_sub_weight_mul_coLeverageRatio
+#print axioms Gtz.sum_one_sub_weight_mul_coLeverageRatio
+#print axioms Gtz.sum_orderEmbOfFin_eq_sum
+#print axioms Gtz.projectionBlock_sub_weightDiagonal_eq_coWeight_sub_complementBlock
+#print axioms Gtz.dominates_of_sum_coLeverageRatio_le_one
+#print axioms Gtz.sum_weight_mul_le_max
+#print axioms Gtz.exists_erase_sum_coLeverageRatio_le_one
+#print axioms Gtz.exists_erase_dominates_of_corank_one
+#print axioms Gtz.IsCoLeverageBalanced
+#print axioms Gtz.isCoLeverageBalanced_of_uniformWeight_of_equalLeverage
+#print axioms Gtz.coLeverageRatio_of_isCoLeverageBalanced
+#print axioms Gtz.sum_coLeverageRatio_of_isCoLeverageBalanced
+#print axioms Gtz.classicalDenominator_le_frameSize_iff_diagonalRung
+#print axioms Gtz.sum_coLeverageRatio_le_one_iff_of_isCoLeverageBalanced
+#print axioms Gtz.balancedPairDesign
+#print axioms Gtz.isCoLeverageBalanced_balancedPairDesign
+#print axioms Gtz.balancedPairDesign_dominated_and_criterion_blind
+#print axioms Gtz.balancedOctahedronDesign
+#print axioms Gtz.leverageOf_balancedOctahedronDesign
+#print axioms Gtz.isCoLeverageBalanced_balancedOctahedronDesign
+#print axioms Gtz.sum_coLeverageRatio_balancedOctahedronDesign
+#print axioms Gtz.dominates_balancedOctahedronDesign_coordinateTriple
+#print axioms Gtz.balancedOctahedronDesign_criterion_blind
+#print axioms Gtz.balancedOctahedronDesign_dominated_and_criterion_blind
+#print axioms Gtz.selectiveAxisDesign
+#print axioms Gtz.coLeverageRatio_selectiveAxisDesign
+#print axioms Gtz.sum_coLeverageRatio_selectiveAxisDesign_heavyTriple
+#print axioms Gtz.dominates_selectiveAxisDesign_heavyTriple
+#print axioms Gtz.selectiveAxisDesign_criterion_blindOnLightTriple
+#print axioms Gtz.isEmpty_weightedDesign_of_sizeZero
+#print axioms Gtz.nonempty_weightedDesign_square_of_rank_pos
