@@ -117,6 +117,7 @@ import Gtz.Reduction.PrincipalMinorsThree
 import Gtz.Design.GraphicInstance
 import Gtz.Quantitative.CollarExponent
 import Gtz.Reduction.RankInductionStep
+import Gtz.Design.LeverageCapDecision
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -1280,3 +1281,63 @@ import Gtz.Reduction.RankInductionStep
 #print axioms Gtz.HeavyPivotInDominator
 #print axioms Gtz.gtzWeighted_succ_of_heavyPivotInDominator
 #print axioms Gtz.exists_projected_dominator_of_dominating_pivot
+
+-- the heavy-pivot decision + the refuted leverage threshold
+#print axioms Gtz.pairMinorOffPivot
+#print axioms Gtz.pivotTiltForm
+#print axioms Gtz.deflatedPairMinorAtLeverage
+#print axioms Gtz.discriminantTie_eq_heavyExcess_mul_pairMinorOffPivot_sub_tilt
+#print axioms Gtz.discriminantTie_eq_deflatedPairMinorAtLeverage_sub_pairMinorOffPivot
+#print axioms Gtz.pairMinorOffPivot_mul_discriminantTrace
+#print axioms Gtz.discriminantTrace_nonneg_of_pairMinorOffPivot_pos
+#print axioms Gtz.dominates_of_heavyExcess_mul_pairMinorOffPivot_ge
+#print axioms Gtz.dominates_iff_heavyExcess_mul_pairMinorOffPivot_ge
+#print axioms Gtz.dominates_of_deflatedPairMinorAtLeverage_ge
+#print axioms Gtz.tetraDesign_pairMinorOffPivot
+#print axioms Gtz.tetraDesign_pivotTiltForm
+#print axioms Gtz.tetraDesign_deflatedPairMinorAtLeverage
+#print axioms Gtz.tetraDesign_threshold_tight
+#print axioms Gtz.CappedDiscriminantCovering
+#print axioms Gtz.HeavyAtomCovering
+#print axioms Gtz.HeavyPivotCovering
+#print axioms Gtz.heavyAtomCovering_of_heavyPivotCovering
+#print axioms Gtz.discriminantCovering_of_heavyAtomCovering_of_capped
+#print axioms Gtz.rank_three_of_heavyAtomCovering_of_capped
+#print axioms Gtz.rank_three_of_heavyPivotCovering_of_capped
+#print axioms Gtz.crossBracketValue
+#print axioms Gtz.repeatBracketValue
+#print axioms Gtz.planeHalfSq_pos
+#print axioms Gtz.twoPlaneHalfSq_gt_one
+#print axioms Gtz.spikeHeightSq_gt_one
+#print axioms Gtz.discriminantTie_eq_crossValue_of_spikeGramData
+#print axioms Gtz.discriminantTie_scaled_eq_repeatValue_of_spikeGramData
+#print axioms Gtz.discriminantTie_neg_of_spikeGramData
+#print axioms Gtz.deflation_pos_and_below_threshold_of_spikeGramData
+#print axioms Gtz.discriminantTie_eq_crossTripleValue
+#print axioms Gtz.discriminantTrace_eq_crossTripleValue
+#print axioms Gtz.dominates_of_crossDirectionGramData
+#print axioms Gtz.liftedMercedesAtom
+#print axioms Gtz.liftedMercedesWeight
+#print axioms Gtz.liftedMercedesAtom_spike
+#print axioms Gtz.liftedMercedesAtom_firstDirection
+#print axioms Gtz.liftedMercedesAtom_secondDirection
+#print axioms Gtz.liftedMercedesAtom_thirdDirection
+#print axioms Gtz.liftedMercedesAtom_direction
+#print axioms Gtz.liftedMercedesDesign
+#print axioms Gtz.liftedMercedesDesign_atom
+#print axioms Gtz.liftedMercedesDesign_weight
+#print axioms Gtz.liftedMercedesDesign_spike_leverage
+#print axioms Gtz.liftedMercedesDesign_offSpike_leverage
+#print axioms Gtz.liftedMercedesDesign_spike_heavyExcess
+#print axioms Gtz.liftedMercedesDesign_offSpike_heavyExcess
+#print axioms Gtz.liftedMercedesDesign_spike_pairing
+#print axioms Gtz.liftedMercedesDesign_offSpike_pairing
+#print axioms Gtz.liftedMercedesDesign_pairing_firstSecond
+#print axioms Gtz.liftedMercedesDesign_pairing_firstThird
+#print axioms Gtz.liftedMercedesDesign_pairing_secondThird
+#print axioms Gtz.liftedMercedesDesign_allHeavy
+#print axioms Gtz.liftedMercedesDesign_spike_leverageScore
+#print axioms Gtz.liftedMercedesDesign_not_dominates_spike_triple
+#print axioms Gtz.liftedMercedesDesign_dominates_directionTriple
+#print axioms Gtz.exists_allHeavy_seven_design_with_unusable_heavy_atom
+#print axioms Gtz.not_heavyPivotCovering

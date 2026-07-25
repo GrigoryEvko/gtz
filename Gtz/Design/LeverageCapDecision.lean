@@ -1,5 +1,5 @@
 /-
-# The leverage cap: an exact heavy-pivot decision, and why no leverage threshold exists
+# The leverage cap: an exact heavy-pivot decision, and why no heavy-PIVOT threshold exists
 
 `Gtz.Quantitative.DiscriminantSystem` reduced rank-three GTZ to `DiscriminantCovering 7`:
 every all-heavy weighted `(7,3)` design owns a triple with `discriminantTrace ≥ 0` and
@@ -44,15 +44,21 @@ Mercedes plane directions, each doubled — in which
   factor `3·lift² − 1` with the opposite sign. A two-sided dichotomy, tight at
   `3·lift² = 1`;
 * and the deflation is NOT degenerate — the deflated pair minor at the pivot leverage is
-  `(6·planeHalf² − 1)(2·planeHalf² − lift²) > 0`, as the proven `gtz_rank_two` forces, yet
+  `(6·planeHalf² − 1)(2·planeHalf² − lift²) > 0`, positive by the exact identity
+  `2·planeHalf² − lift² = (2·planeHalf² − 1)·spikeHeight²` together with
+  `spikeHeight² > 1` (NOT by `gtz_rank_two`, which gives domination for SOME pair of a
+  rank-two design and says nothing about this pair), yet
   it stays strictly below the ambient pair minor at every leverage
   (`deflation_pos_and_below_threshold_of_spikeGramData`). The sharp threshold of the
   decision theorem is finite here and simply never met, because it grows with the leverage
   it is compared against.
 
 Hence `¬ HeavyPivotCovering cap 7` for EVERY `cap` (`not_heavyPivotCovering`): the
-requested brick is false, not merely unproven, and GTZ survives on the family through a
-triple that avoids the heavy atom. The compactification corollary is therefore stated
+PIVOT form of the requested brick is false, not merely unproven, and GTZ survives on the
+family through a triple that avoids the heavy atom. Scope, stated precisely because the
+title used to overreach: the pivot-FREE form `HeavyAtomCovering` — "some leverage ≥ cap
+implies SOME triple has both legs nonnegative" — is NOT refuted here, and the witness
+family satisfies it at every `cap` through its spike-free triple. The compactification corollary is therefore stated
 against the pivot-free hypothesis `HeavyAtomCovering`, where it is unconditional
 (`discriminantCovering_of_heavyAtomCovering_of_capped`,
 `rank_three_of_heavyAtomCovering_of_capped`), and that hypothesis is the honest target:
@@ -264,9 +270,26 @@ theorem tetraDesign_threshold_tight :
 /-! ### The three covering hypotheses a leverage cap can be built on -/
 
 /-- **The capped covering**: the discriminant covering restricted to designs all of whose
-leverages are below `cap`. This is the statement on a COMPACT parameter set — with every
-leverage bounded, the all-heavy `(size,3)` parameter space is a compact semialgebraic set,
-so Positivstellensatz, quantifier elimination and interval methods all apply. -/
+leverages are below `cap`. This is the statement on a BOUNDED parameter set, which is what
+Positivstellensatz, quantifier elimination and interval methods want.
+
+Two caveats, both established during audit and both load-bearing for anyone using this:
+
+* the set is bounded but NOT closed — `leverageOf < cap` is strict and `weight_pos` forces
+  strictly positive weights, so this is an open slice of the simplex. Compactness needs the
+  closure (zero weights, `leverageOf ≤ cap`), where the statement has to be re-read on the
+  lower-size faces;
+* even on the closure there is a ZERO-MARGIN STRATUM AT EVERY LEVERAGE SCALE, so no
+  strictly-positive sum-of-squares certificate can exist at any `cap` and a NON-STRICT
+  Positivstellensatz is forced. The construction is explicit: for weights `t` summing to
+  one put `n_c = sqrt((1 − t_c)/3)` (a unit vector in `R^4`, since `sum n_c^2 = 3/3 = 1`),
+  `P = I_4 − n n^T`, take any `3 x 4` matrix `V` with `V^T V = P`, and set
+  `g_c = V e_c / sqrt(t_c)`. Then `leverageOf g_c = (2 + t_c)/(3 t_c)`, every triple's gap
+  is `diagonal d − u u^T` with `d_c = (1 − t_c)/t_c` and `u_c = n_c / sqrt(t_c)`, and
+  `u_c^2 / d_c = 1/3` EXACTLY — so `sum over the triple of u_c^2/d_c = 1`, the equality
+  case of the rank-one downdate criterion, giving `det(Gram − I) = 0` for EVERY triple.
+  Setting `t_heavy = 2/(3L − 1)` places the maximum leverage at exactly `L`. So the margin
+  floor is `0` at every `L`, and ATTAINED — an identity, not an infimum approached. -/
 def CappedDiscriminantCovering (cap : ℝ) (size : ℕ) : Prop :=
   ∀ D : WeightedDesign size 3, AllHeavy D →
     (∀ atomIndex : Fin size, leverageOf (D.atom atomIndex) < cap) →
@@ -313,9 +336,16 @@ theorem heavyAtomCovering_of_heavyPivotCovering {cap : ℝ} {size : ℕ}
 /-! ### The compactification corollary -/
 
 /-- **THE COMPACTIFICATION COROLLARY.** A heavy-atom decision at `cap` reduces the whole
-covering to its restriction to the leverage-capped — hence compact — parameter set. The
-case split is on whether some atom reaches `cap`, so the implication is unconditional
-given the two hypotheses. -/
+covering to its restriction to the leverage-capped parameter set. The case split is on
+whether some atom reaches `cap`, so the implication is unconditional given the two
+hypotheses — it does not assume the covering it reduces.
+
+SCOPE: the split itself carries no mathematical content, and all of it sits in the two
+hypotheses. Useful range is `1 < cap`. At `cap ≤ 1` the corollary degenerates to a
+tautology: an all-heavy design can never have every leverage below `cap ≤ 1`, so
+`CappedDiscriminantCovering cap 7` is vacuously true and `HeavyAtomCovering cap 7` is
+literally `DiscriminantCovering 7`, whence this is `rank_three_of_discriminantCovering_seven`
+with extra steps. Verified by kernel probe during audit. -/
 theorem discriminantCovering_of_heavyAtomCovering_of_capped {cap : ℝ}
     (hheavyCovering : HeavyAtomCovering cap 7) (hcapped : CappedDiscriminantCovering cap 7) :
     DiscriminantCovering 7 := by
@@ -510,8 +540,10 @@ theorem discriminantTie_neg_of_spikeGramData {D : WeightedDesign m 3}
 /-- **THE FAILURE IS A THRESHOLD FAILURE, NOT A DEGENERACY.** On a cross-direction spike
 triple the deflated pair minor at the pivot leverage is `(6·planeHalf² − 1)(2·planeHalf² −
 lift²)`, which is STRICTLY POSITIVE — so the sharp criterion
-`dominates_of_deflatedPairMinorAtLeverage_ge` has a finite threshold here, as the proven
-rank-two theorem `gtz_rank_two` forces it to. It is simply never met: the deflated minor
+`dominates_of_deflatedPairMinorAtLeverage_ge` has a finite threshold here. Positivity is
+the exact identity `2·planeHalf² − lift² = (2·planeHalf² − 1)·spikeHeight²` with
+`spikeHeight² > 1`, which is also why the `hliftHigh` hypothesis is load-bearing rather
+than bloat — at `spikeHeight = 0` the deflated minor vanishes. It is simply never met: the deflated minor
 stays strictly below the ambient one at every spike leverage. That is the exact sense in
 which the heavy-pivot route fails — not by the deflation collapsing, but by a finite
 threshold that the leverage never overtakes, because the ratio grows with it. -/
