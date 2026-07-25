@@ -122,6 +122,7 @@ import Gtz.Quantitative.OneObjectNarrowing
 import Gtz.Quantitative.PhaseFreeNoGo
 import Gtz.Quantitative.RealnessEngine
 import Gtz.Quantitative.StrictDomination
+import Gtz.Quantitative.TwoMomentCertificate
 
 -- Complex: the complex refutations: weighted (4,2) and (6,3) are false over C
 import Gtz.Complex.ComplexPadding
