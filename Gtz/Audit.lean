@@ -114,6 +114,8 @@ import Gtz.Reduction.BranchTwoMinimal
 import Gtz.Reduction.BranchTwoCompleteness
 import Gtz.Reduction.PsdCongruenceConsumer
 import Gtz.Reduction.PrincipalMinorsThree
+import Gtz.Design.GraphicInstance
+import Gtz.Quantitative.CollarExponent
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -1097,3 +1099,109 @@ import Gtz.Reduction.PrincipalMinorsThree
 #print axioms Gtz.posSemidef_three_of_principalMinors
 #print axioms Gtz.ratDominates_of_principalMinors
 #print axioms Gtz.degenerateWitness_byPrincipalMinors
+
+-- Graphic instance + collar exponent (earlier rounds, previously unwired)
+
+-- Gtz.Design.GraphicInstance
+#print axioms Gtz.MultigraphOnGround.edgeVector
+#print axioms Gtz.groundedPotential
+#print axioms Gtz.groundedPotential_castSucc
+#print axioms Gtz.groundedPotential_last
+#print axioms Gtz.sum_indicator_castSucc_mul
+#print axioms Gtz.edgeVector_dotProduct
+#print axioms Gtz.laplacianOn
+#print axioms Gtz.atomMatrix_smul_form
+#print axioms Gtz.laplacianOn_transpose
+#print axioms Gtz.laplacianOn_form
+#print axioms Gtz.posSemidef_laplacianOn
+#print axioms Gtz.EdgeAdjacent
+#print axioms Gtz.EdgeReachable
+#print axioms Gtz.edgeAdjacent_symm
+#print axioms Gtz.edgeReachable_symm
+#print axioms Gtz.edgeReachable_endpoints
+#print axioms Gtz.IsGroundConnected
+#print axioms Gtz.IsSpanningTree
+#print axioms Gtz.groundedPotential_eq_of_reachable
+#print axioms Gtz.posDef_laplacianOn_of_isGroundConnected
+#print axioms Gtz.componentIndicator
+#print axioms Gtz.componentIndicator_of_reachable
+#print axioms Gtz.componentIndicator_of_not_reachable
+#print axioms Gtz.isGroundConnected_of_posDef_laplacianOn
+#print axioms Gtz.posDef_laplacianOn_iff_isGroundConnected
+#print axioms Gtz.GraphDesignData.fullLaplacian
+#print axioms Gtz.GraphDesignData.selectedLaplacian
+#print axioms Gtz.GraphDesignData.posDef_fullLaplacian
+#print axioms Gtz.GraphDesignData.fullLaplacian_transpose
+#print axioms Gtz.GraphDesignData.selectedLaplacian_transpose
+#print axioms Gtz.GraphDesignData.whitener
+#print axioms Gtz.GraphDesignData.whitener_isUnit
+#print axioms Gtz.GraphDesignData.whitener_spec
+#print axioms Gtz.GraphDesignData.graphicAtom
+#print axioms Gtz.GraphDesignData.atomMatrix_graphicAtom
+#print axioms Gtz.GraphDesignData.whitener_congr_laplacianOn
+#print axioms Gtz.GraphDesignData.toWeightedDesign
+#print axioms Gtz.graphicDesign
+#print axioms Gtz.graphicDesign_weight
+#print axioms Gtz.graphicDesign_subsetSum
+#print axioms Gtz.graphicDesign_dominates_iff
+#print axioms Gtz.posDef_selectedLaplacian_of_dominates
+#print axioms Gtz.isGroundConnected_of_dominates
+#print axioms Gtz.isSpanningTree_of_dominates
+#print axioms Gtz.not_dominates_of_not_isGroundConnected
+#print axioms Gtz.eq_zero_of_orthogonal_to_dominating
+#print axioms Gtz.GraphicGtz
+#print axioms Gtz.graphicGtz_of_gtzWeighted
+#print axioms Gtz.cycleVertex
+#print axioms Gtz.cycleGraph
+#print axioms Gtz.cycleVertex_val_of_le
+#print axioms Gtz.cycleVertex_castSucc
+#print axioms Gtz.cycleVertex_top
+#print axioms Gtz.cycleVertex_zero
+#print axioms Gtz.cycleGraph_edgeHead_cycleVertex
+#print axioms Gtz.cycleGraph_reachable_from_zero
+#print axioms Gtz.cycleGraph_isGroundConnected
+#print axioms Gtz.cycleGraphData
+#print axioms Gtz.cycleNode
+#print axioms Gtz.cycleNode_top
+#print axioms Gtz.cycleDrop_castSucc
+#print axioms Gtz.cycleDrop_last
+#print axioms Gtz.sum_erase_last_eq
+#print axioms Gtz.cycleGap_form
+#print axioms Gtz.cycleGraphData_dominates
+#print axioms Gtz.cycleGraphData_path_card
+#print axioms Gtz.cycleGraphData_not_posDef
+#print axioms Gtz.cycleGraphData_isSpanningTree
+#print axioms Gtz.laplacianOn_erase
+#print axioms Gtz.dominates_of_deleted_dominates
+#print axioms Gtz.laplacianOn_form_erase_of_orthogonal
+#print axioms Gtz.completeFourGraph
+#print axioms Gtz.completeFourStar
+#print axioms Gtz.completeFourGraph_isGroundConnected
+#print axioms Gtz.completeFourData
+#print axioms Gtz.groundedPotential_four_zero
+#print axioms Gtz.groundedPotential_four_one
+#print axioms Gtz.groundedPotential_four_two
+#print axioms Gtz.groundedPotential_four_three
+#print axioms Gtz.completeFourGap_form
+#print axioms Gtz.completeFourData_dominates_strictly
+#print axioms Gtz.completeFourData_dominates
+#print axioms Gtz.completeFourStar_card
+#print axioms Gtz.completeFourData_isSpanningTree
+
+-- Gtz.Quantitative.CollarExponent
+#print axioms Gtz.collarRate_tendsto_zero
+#print axioms Gtz.linearLaw_scaleInvariant_at_exponent_one
+#print axioms Gtz.linearLaw_collapses_of_exponent_gt_one
+#print axioms Gtz.linearLaw_diverges_of_exponent_lt_one
+#print axioms Gtz.erosionExponents_incomparable
+#print axioms Gtz.tubeRadius_mono_in_rate
+#print axioms Gtz.tubeRadius_antitone_in_leverage
+#print axioms Gtz.consumedModulus
+#print axioms Gtz.margin_le_lipschitz_mul_dist
+#print axioms Gtz.consumedModulus_le_lipschitzConstant
+#print axioms Gtz.tieLocus
+#print axioms Gtz.margin_nonpos_iff_no_gate_strictDominates
+#print axioms Gtz.mem_tieLocus_iff
+#print axioms Gtz.effectiveLojasiewiczUpperBound_exceeds_ten_pow_ninety
+#print axioms Gtz.effectiveLojasiewiczLowerBound_exceeds_ten_pow_fifteen
+#print axioms Gtz.effectiveLojasiewiczBounds_worsen_at_rank_six

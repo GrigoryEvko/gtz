@@ -138,3 +138,5 @@ import Gtz.Ties.TieEigenvector
 
 -- the axiom ledger for everything above
 import Gtz.Audit
+import Gtz.Design.GraphicInstance
+import Gtz.Quantitative.CollarExponent
