@@ -287,6 +287,109 @@ theorem gtzWeighted_of_le {size larger : ℕ} (hle : size ≤ larger)
   rw [hgap] at hgtz
   exact gtzWeighted_of_add size gap hgtz
 
+/-! ### Size monotonicity survives the all-heavy restriction
+
+Atom splitting duplicates the atom VECTOR and halves only its weight, so the
+leverage multiset is unchanged and `replicatedDesign` of an all-heavy design is
+all-heavy. The whole monotonicity ladder therefore runs inside the all-heavy
+statement, and the all-heavy residual is ALSO one object per rank. That is what
+turns the discriminant covering at `(7,3)` alone into the whole of rank three
+(`Gtz.Quantitative.DiscriminantSystem`) — the polynomial frontier is a single
+sentence, not a pair. -/
+
+/-- Atom splitting preserves all-heaviness: every atom of the split design
+carries a vector of the original family, so no leverage changes. -/
+theorem replicatedDesign_allHeavy (D : WeightedDesign m k) (which : Fin m)
+    (hheavy : AllHeavy D) : AllHeavy (replicatedDesign D which) := by
+  intro c
+  refine Fin.lastCases ?_ ?_ c
+  · rw [replicatedDesign_atom_last]
+    exact hheavy which
+  · intro index
+    rw [replicatedDesign_atom_castSucc]
+    exact hheavy index
+
+/-- **All-heavy size monotonicity, one step.** The `gtzWeighted_of_succ` argument
+transports verbatim to the all-heavy statement, because the design it feeds to
+the larger size is a split of the given one and splitting preserves heaviness. -/
+theorem gtzWeightedHeavy_of_succ (hgtz : GtzWeightedHeavy (m + 1) k) :
+    GtzWeightedHeavy m k := by
+  classical
+  rcases Nat.eq_zero_or_pos k with hrankZero | hrankPos
+  · rw [hrankZero]
+    exact fun D _ => gtzWeighted_dim_zero m D
+  intro D hheavy
+  have hrankLe : k ≤ m := rank_le_of_design D
+  have hsizePos : 0 < m := lt_of_lt_of_le hrankPos hrankLe
+  let which : Fin m := ⟨0, hsizePos⟩
+  obtain ⟨selected, hcard, hdominates⟩ :=
+    hgtz (replicatedDesign D which) (replicatedDesign_allHeavy D which hheavy)
+  have hnotBoth : ¬ (Fin.last m ∈ selected ∧ (which : Fin m).castSucc ∈ selected) := by
+    rintro ⟨hlastMem, hcopyMem⟩
+    refine not_dominates_of_repeated_atom_general (replicatedDesign D which)
+      (Fin.castSucc_lt_last which).ne' hlastMem hcopyMem
+      (le_of_eq hcard) ?_ hdominates
+    rw [replicatedDesign_atom_last, replicatedDesign_atom_castSucc]
+  have hfiber : ∀ c : Fin (m + 1),
+      c = Fin.last m ∨ c = (replicationMerge which c).castSucc := by
+    intro c
+    refine Fin.lastCases ?_ ?_ c
+    · exact Or.inl rfl
+    · intro index
+      exact Or.inr (by rw [replicationMerge_castSucc])
+  have hinjective : Set.InjOn (replicationMerge which) selected := by
+    intro left hleft right hright hmerge
+    simp only [Finset.mem_coe] at hleft hright
+    rcases hfiber left with hleftLast | hleftCast
+    · rcases hfiber right with hrightLast | hrightCast
+      · rw [hleftLast, hrightLast]
+      · refine absurd ⟨hleftLast ▸ hleft, ?_⟩ hnotBoth
+        have hmergeRight : replicationMerge which right = which := by
+          rw [← hmerge, hleftLast, replicationMerge_last]
+        rw [← hmergeRight, ← hrightCast]
+        exact hright
+    · rcases hfiber right with hrightLast | hrightCast
+      · refine absurd ⟨hrightLast ▸ hright, ?_⟩ hnotBoth
+        have hmergeLeft : replicationMerge which left = which := by
+          rw [hmerge, hrightLast, replicationMerge_last]
+        rw [← hmergeLeft, ← hleftCast]
+        exact hleft
+      · rw [hleftCast, hrightCast, hmerge]
+  refine ⟨selected.image (replicationMerge which), ?_, ?_⟩
+  · rw [Finset.card_image_of_injOn hinjective, hcard]
+  · have hsumEq : subsetSum D (selected.image (replicationMerge which))
+        = subsetSum (replicatedDesign D which) selected := by
+      rw [subsetSum, subsetSum, Finset.sum_image
+        (fun left hleft right hright hmerge => hinjective hleft hright hmerge)]
+      exact Finset.sum_congr rfl fun c _ => by rw [atom_replicationMerge]
+    rw [Dominates, hsumEq]
+    exact hdominates
+
+/-- All-heavy size monotonicity, iterated. -/
+theorem gtzWeightedHeavy_of_add (size gap : ℕ) :
+    GtzWeightedHeavy (size + gap) k → GtzWeightedHeavy size k := by
+  induction gap with
+  | zero => intro hgtz; simpa using hgtz
+  | succ previous ih =>
+      intro hgtz
+      refine ih ?_
+      have hreassociate : size + (previous + 1) = (size + previous) + 1 := by omega
+      rw [hreassociate] at hgtz
+      exact gtzWeightedHeavy_of_succ hgtz
+
+/-- **The all-heavy residual is monotone in the number of atoms too.** -/
+theorem gtzWeightedHeavy_of_le {size larger : ℕ} (hle : size ≤ larger)
+    (hgtz : GtzWeightedHeavy larger k) : GtzWeightedHeavy size k := by
+  obtain ⟨gap, hgap⟩ := Nat.exists_eq_add_of_le hle
+  rw [hgap] at hgtz
+  exact gtzWeightedHeavy_of_add size gap hgtz
+
+/-- **Rank three from the all-heavy top object alone.** `rank_three_of_heavy_residuals`
+asks for the all-heavy statement at both `6` and `7`; the smaller one is a
+consequence of the larger, so a single all-heavy object carries the rank. -/
+theorem rank_three_of_heavy_top (h73 : GtzWeightedHeavy 7 3) : GtzWeightedAll 3 :=
+  rank_three_of_heavy_residuals (gtzWeightedHeavy_of_le (by norm_num) h73) h73
+
 /-! ### The canonical window collapses to its top object -/
 
 /-- **One object per rank.** Crystallization caps the sizes that must be checked at

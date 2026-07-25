@@ -1205,3 +1205,14 @@ import Gtz.Quantitative.CollarExponent
 #print axioms Gtz.effectiveLojasiewiczUpperBound_exceeds_ten_pow_ninety
 #print axioms Gtz.effectiveLojasiewiczLowerBound_exceeds_ten_pow_fifteen
 #print axioms Gtz.effectiveLojasiewiczBounds_worsen_at_rank_six
+
+-- the one-sentence rank-three frontier (all-heavy size monotonicity)
+#print axioms Gtz.replicatedDesign_allHeavy
+#print axioms Gtz.gtzWeightedHeavy_of_succ
+#print axioms Gtz.gtzWeightedHeavy_of_add
+#print axioms Gtz.gtzWeightedHeavy_of_le
+#print axioms Gtz.rank_three_of_heavy_top
+#print axioms Gtz.discriminantCovering_of_le
+#print axioms Gtz.rank_three_of_discriminantCovering_seven
+#print axioms Gtz.discriminantCovering_seven_iff_rank_three
+#print axioms Gtz.gtz_original_rank_three_of_discriminantCovering_seven

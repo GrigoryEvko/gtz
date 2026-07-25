@@ -47,6 +47,7 @@ import Gtz.LinAlg.SchurRankOne
 import Gtz.Design.StressCertificate
 import Gtz.Quantitative.OneObjectNarrowing
 import Gtz.Reduction.Reductions
+import Gtz.Reduction.RankFourWindow
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -463,6 +464,49 @@ what is open is exactly the two covering sentences, which contain no analysis. -
 theorem gtz_original_rank_three_of_discriminantCovering (hsix : DiscriminantCovering 6)
     (hseven : DiscriminantCovering 7) : ∀ n, 0 < n → GtzOriginal n 3 :=
   original_of_weighted 3 (rank_three_of_discriminantCovering hsix hseven)
+
+/-! ### The covering is one sentence, not a pair
+
+`replicatedDesign` splits an atom's WEIGHT while duplicating its VECTOR, so it
+preserves all-heaviness (`replicatedDesign_allHeavy`); hence size monotonicity
+runs inside the all-heavy statement (`gtzWeightedHeavy_of_le`) and the covering
+at the crystallization cap `M(3) = 7` implies the covering at every smaller
+size. The pair `(6,3) ∧ (7,3)` above is therefore redundant on its first
+component, matching the collapse `gtzWeighted_six_three_of_seven_three` already
+proved for the unrestricted statement. -/
+
+/-- Coverings are monotone in the number of atoms, through the all-heavy
+statement they are equivalent to. -/
+theorem discriminantCovering_of_le {size larger : ℕ} (hle : size ≤ larger)
+    (hcover : DiscriminantCovering larger) : DiscriminantCovering size :=
+  (gtzWeightedHeavy_three_iff_discriminantCovering size).mp
+    (gtzWeightedHeavy_of_le hle
+      ((gtzWeightedHeavy_three_iff_discriminantCovering larger).mpr hcover))
+
+/-- **Rank three from the `(7,3)` covering alone.** -/
+theorem rank_three_of_discriminantCovering_seven (hseven : DiscriminantCovering 7) :
+    GtzWeightedAll 3 :=
+  rank_three_of_heavy_top
+    ((gtzWeightedHeavy_three_iff_discriminantCovering 7).mpr hseven)
+
+/-- **The polynomial frontier of rank three, as a single equivalence.** GTZ at
+rank three for every `n` IS the one covering sentence at `(7,3)`: every all-heavy
+weighted `(7,3)` design has one of its `35` triples at which `discriminantTrace`
+and `discriminantTie` are both nonnegative. Two polynomial inequalities of
+degrees `2` and `3` in the six Gram entries of a triple (`4` and `6` in the `21`
+atom coordinates), quantified over a real semialgebraic parameter space, with no
+matrices, no test vectors and no analysis anywhere in the statement. -/
+theorem discriminantCovering_seven_iff_rank_three :
+    DiscriminantCovering 7 ↔ GtzWeightedAll 3 := by
+  constructor
+  · exact rank_three_of_discriminantCovering_seven
+  · intro hrank
+    exact (gtzWeightedHeavy_three_iff_discriminantCovering 7).mp (fun D _ => hrank 7 D)
+
+/-- **The 1997 statement at rank three from the single covering sentence.** -/
+theorem gtz_original_rank_three_of_discriminantCovering_seven
+    (hseven : DiscriminantCovering 7) : ∀ n, 0 < n → GtzOriginal n 3 :=
+  original_of_weighted 3 (rank_three_of_discriminantCovering_seven hseven)
 
 /-! ### Calibration: the system is not vacuous -/
 
