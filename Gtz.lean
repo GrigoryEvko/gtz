@@ -38,6 +38,7 @@ import Gtz.Design.TraceIdentity
 import Gtz.Design.WhiteningDistortion
 
 -- Reduction: the ladder: crystallization, Naimark duality, deflation, the lifting lemma
+import Gtz.Reduction.ExchangeInvariant
 import Gtz.Reduction.MaximalVolume
 import Gtz.Reduction.ChargeSelection
 import Gtz.Reduction.Compression

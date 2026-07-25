@@ -94,6 +94,7 @@ import Gtz.LinAlg.BernsteinPositivity
 import Gtz.LinAlg.GordanAlternative
 import Gtz.LinAlg.ProjectionForm
 import Gtz.Reduction.MaximalVolume
+import Gtz.Reduction.ExchangeInvariant
 import Gtz.Ties.TetrahedronTie
 import Gtz.Ties.TieEigenvector
 import Gtz.Corner.TiedQuadruple
@@ -1846,3 +1847,45 @@ import Gtz.Reduction.StrengthenedInductionHypothesis
 #print axioms Gtz.injective_update_of_forall_ne
 #print axioms Gtz.abs_solveMatrix_le_one_of_maximalVolume
 #print axioms Gtz.solveMatrix_submatrix_pick
+
+-- the radius-2 exchange conjecture, REFUTED at rank three
+#print axioms Gtz.exchangeDistance
+#print axioms Gtz.exchangeDistance_self
+#print axioms Gtz.exchangeDistance_le_card
+#print axioms Gtz.exchangeDistance_comm_of_card_eq
+#print axioms Gtz.exchangeDistance_eq_zero_iff_of_card_eq
+#print axioms Gtz.exchangeDistance_swap_eq_one
+#print axioms Gtz.le_lambdaMinMat_of_forall
+#print axioms Gtz.lambdaMinMat_le_diagonal
+#print axioms Gtz.leastEigenvalue
+#print axioms Gtz.leastEigenvalue_le_diagonal
+#print axioms Gtz.dominates_iff_one_le_leastEigenvalue
+#print axioms Gtz.ExchangeImprovesWithinRadius
+#print axioms Gtz.ExchangeImprovesWithinRadiusHeavy
+#print axioms Gtz.IsExchangeStuck
+#print axioms Gtz.exchangeImproves_of_withinRadius
+#print axioms Gtz.exchangeImprovesWithinRadius_mono
+#print axioms Gtz.gtzWeighted_of_exchangeImprovesWithinRadius
+#print axioms Gtz.exchangeImprovesWithinRadius_iff_unbounded_of_rank_le
+#print axioms Gtz.exchangeImproves_leastEigenvalue_iff_gtzWeighted
+#print axioms Gtz.rank_lt_trace_subsetSum_of_allHeavy
+#print axioms Gtz.subsetSum_diagonal
+#print axioms Gtz.sum_over_triple
+#print axioms Gtz.radiusTwoStuckAtom
+#print axioms Gtz.radiusTwoStuckDesign
+#print axioms Gtz.radiusTwoStuckSubset
+#print axioms Gtz.radiusTwoStuckSubset_card
+#print axioms Gtz.fin_six_index_cases
+#print axioms Gtz.radiusTwoStuckDesign_allHeavy
+#print axioms Gtz.radiusTwoStuckSubset_form
+#print axioms Gtz.radiusTwoStuckDesign_not_dominates
+#print axioms Gtz.radiusTwoStuckDesign_dominates_axisTriple
+#print axioms Gtz.stuckSubset_le_leastEigenvalue
+#print axioms Gtz.radiusTwoStuckDesign_diagonal_triple
+#print axioms Gtz.radiusTwoStuckDesign_diagonal_le
+#print axioms Gtz.radiusTwoNeighbour_leastEigenvalue_le
+#print axioms Gtz.radiusTwoStuckSubset_isExchangeStuck
+#print axioms Gtz.not_exchangeImprovesWithinRadius_two_rankThree
+#print axioms Gtz.not_exchangeImprovesWithinRadius_of_le_two_rankThree
+#print axioms Gtz.not_exchangeImprovesWithinRadiusHeavy_two_rankThree
+#print axioms Gtz.not_exchangeImprovesWithinRadiusHeavy_of_le_two_rankThree
