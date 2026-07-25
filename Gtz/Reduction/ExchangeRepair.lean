@@ -53,8 +53,14 @@ of a proof):
     (5,3) (6,3) (7,3) (6,2) (7,2) (8,4) (9,4); the stuck subsets sit at least
     eigenvalue 0.94–0.997 and are never at exchange distance 1 from the best subset;
   * radius 2 (swap two atoms) had ZERO failures over ~53000 random failing subsets in
-    seven shapes, plus ~30000 more on regular-tetrahedron perturbations at noise
-    1e-1 … 1e-5 where the best subset's least eigenvalue descends to 1.000017;
+    seven shapes, plus ~30000 more on regular-tetrahedron perturbations — **and that
+    sampling record is now KNOWN TO BE MISLEADING**: the radius-2 improvement
+    hypothesis is REFUTED BY KERNEL PROOF at ranks three and at sizes 6 and 7, for
+    the least eigenvalue and for the clipped trace, by exact rational stuck designs
+    (`Gtz/Reduction/ExchangeInvariant.lean`, `radiusTwoStuckDesign`,
+    `sevenThreeStallDesign`, `clippedTraceStallDesign`; stuck-rate ~4e-7 per failing
+    subset, so 53000 samples expected 0.02 hits). Treat every sampling claim in this
+    header as a record of how the false conjecture was formed, not as evidence;
   * the drop rule "discard the atom of `C` with the LARGEST projection on `w`" is
     explicit and fails only 1–2%, while "smallest projection" fails ~40% — the
     incoming atom subsumes the largest-projection atom's role at `w`, whereas the
