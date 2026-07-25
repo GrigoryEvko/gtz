@@ -7,8 +7,9 @@
 
 Known before this project: true for k ≤ 2 (Sengupta–Pautov); false over ℂ with
 sharp constant α = 2 − 2/√3 (the SIC configuration is extremal). The first open
-case is k = 3, and after the reductions formalized here it is exactly the
-weighted (6,3) and (7,3) instances.
+case is k = 3, and after the reductions formalized here it is exactly ONE
+object — the weighted (7,3) instance — equivalently one polynomial covering
+sentence over its all-heavy parameter space.
 
 This repository is the campaign's **final proof artifact**: nothing enters
 until it has survived adversarial audit or been re-derived during
@@ -90,6 +91,38 @@ duality at `m = 7` sends rank 3 to rank 4 at the same size, so `(7,3)` hands
 over `(7,4)` (`gtzWeighted_seven_four_of_seven_three`). What no known
 implication carries upward is a window TOP.
 
+### Rank three, with the linear algebra removed
+
+At rank three the single remaining object has a purely polynomial form, and it
+is an equivalence:
+
+> `DiscriminantCovering 7  ⟺  GtzWeightedAll 3`
+> (`discriminantCovering_seven_iff_rank_three`)
+
+Unfolded: *every all-heavy weighted `(7,3)` design has one of its 35 triples at
+which `discriminantTrace ≥ 0` and `discriminantTie ≥ 0`.* Two polynomial
+inequalities per triple — degrees 2 and 3 in the six Gram entries of the triple,
+4 and 6 in the 21 atom coordinates — over a real semialgebraic parameter space
+cut out by seven quadratic design equations and seven strict leverage
+inequalities. No matrices, no test vectors, no deflation coisometry, no
+analysis anywhere in the statement.
+
+Three collapses stack to get there. Domination of a triple is `O(3)`-invariant
+in the six inner products, so the (pivot, pair) bookkeeping is 35 triples read
+three ways, not 105 combinations (`discriminantSystem_pivot_independent`). A
+symmetric 3×3 form with a strictly positive corner — which `AllHeavy` supplies
+at every atom — reduces division-free to its 2×2 Schur form, and a 2×2 form is
+nonnegative iff its trace and determinant are; `discriminantTie` IS
+`det(Gram − I)`. And atom splitting duplicates the atom vector while halving
+only its weight, so it preserves all-heaviness: size monotonicity runs inside
+the all-heavy statement (`gtzWeightedHeavy_of_le`) and the covering at the
+crystallization cap carries every smaller size.
+
+Being an equivalence, this is also the honest ceiling: the sentence is
+first-order over a real closed field, hence decidable in principle by
+Tarski–Seidenberg, and every wall the campaign has hit is a feasibility wall,
+never an undecidability one.
+
 ## Module map
 
 | Module | Content |
@@ -133,6 +166,20 @@ implication carries upward is a window TOP.
 | `ComplexPadding` | weighted (6,3) is false over ℂ — the padded SIC |
 | `LawCounterexample` | the kernel-checked cap-10 refutation of the displayed local law |
 | `RatCertificate` | the computable ℚ-certificate consumption layer |
+| `RankFourWindow` | atom splitting, spike padding, one-object-per-rank, all-heavy monotonicity |
+| `OneObjectNarrowing` | the test-vector quantifier eliminated; the 2×2 trace/det criterion |
+| `DiscriminantSystem` | the rank-3 frontier as one polynomial covering sentence |
+| `CapArgmax` | H1b both sides of the threshold L = 4 + 2√2, by one Positivstellensatz identity |
+| `RealnessEngine` | the icosahedron design; where realness is consumed |
+| `SelectionObstruction` | no universal good pair; no symmetry-fixed dominating subset |
+| `EigenvalueSubdifferential` | moment directions; the equal-leverage vacuity fence |
+| `BranchTwoRational` | the one-negative-pivot congruence signature witness, every rank |
+| `BranchTwoCompleteness` | branch (b) certifies every STRICT dominating triple |
+| `BranchTwoMinimal` | the same, with the three redundant hypotheses deleted |
+| `PsdCongruenceConsumer` | the PSD-boundary repair at every rank |
+| `PrincipalMinorsThree` | the all-principal-minors repair at rank three, matrix-free |
+| `GraphicInstance` | the edge/spanning-tree dictionary; the tie stratum is INSIDE it |
+| `CollarExponent` | why the a-priori Łojasiewicz lever is dead (10⁹⁰ vs 10¹⁵) |
 | `Audit` | `#print axioms` for every proved theorem, on every build |
 
 ## Rigor rules
