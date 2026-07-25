@@ -116,6 +116,7 @@ import Gtz.Reduction.PsdCongruenceConsumer
 import Gtz.Reduction.PrincipalMinorsThree
 import Gtz.Design.GraphicInstance
 import Gtz.Quantitative.CollarExponent
+import Gtz.Reduction.RankInductionStep
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -1216,3 +1217,66 @@ import Gtz.Quantitative.CollarExponent
 #print axioms Gtz.rank_three_of_discriminantCovering_seven
 #print axioms Gtz.discriminantCovering_seven_iff_rank_three
 #print axioms Gtz.gtz_original_rank_three_of_discriminantCovering_seven
+
+-- the rank-four minor system + the named induction-step wall
+
+#print axioms Gtz.gapDiagonal
+#print axioms Gtz.gapPairing
+#print axioms Gtz.gapPairing_comm
+#print axioms Gtz.gapPairing_self
+#print axioms Gtz.gapDiagonal_pos_of_heavy
+#print axioms Gtz.gapPairMinor
+#print axioms Gtz.gapTripleMinor
+#print axioms Gtz.gapQuadMinor
+#print axioms Gtz.schurCross
+#print axioms Gtz.gapDiagonal_eq_heavyExcess
+#print axioms Gtz.gapPairing_eq_atomPairing
+#print axioms Gtz.gapTripleMinor_eq_discriminantTie
+#print axioms Gtz.gapPairMinor_add_eq_discriminantTrace
+#print axioms Gtz.quadAtom
+#print axioms Gtz.quadAtom_pivot
+#print axioms Gtz.quadAtom_first
+#print axioms Gtz.quadAtom_second
+#print axioms Gtz.quadAtom_third
+#print axioms Gtz.quadMatrix
+#print axioms Gtz.quadMatrix_mul_transpose
+#print axioms Gtz.quadMatrix_transpose_mul_apply
+#print axioms Gtz.gramGap_transpose
+#print axioms Gtz.quadForm_four_eq
+#print axioms Gtz.cornerCompleteSquareFour
+#print axioms Gtz.quadFour_nonneg_iff_schur_nonneg
+#print axioms Gtz.schurBlockFour
+#print axioms Gtz.schurBlockFour_transpose
+#print axioms Gtz.schurBlockFour_pairMinor_eq
+#print axioms Gtz.schurBlockFour_det
+#print axioms Gtz.dominates_quad_iff_pivotMinorSystem
+#print axioms Gtz.PivotMinorCoveringFour
+#print axioms Gtz.gtzWeightedHeavy_four_iff_pivotMinorCoveringFour
+#print axioms Gtz.pivotMinorSystem_pivot_independent
+#print axioms Gtz.gtzWeightedAll_of_heavyTop
+#print axioms Gtz.rank_four_of_heavy_top
+#print axioms Gtz.rank_five_of_heavy_top
+#print axioms Gtz.pivotMinorCoveringFour_of_le
+#print axioms Gtz.pivotMinorCoveringFour_eleven_iff_rank_four
+#print axioms Gtz.gtz_original_rank_four_of_pivotMinorCoveringFour
+#print axioms Gtz.quadTraceLeg
+#print axioms Gtz.quadMinorLeg
+#print axioms Gtz.quadTieLeg
+#print axioms Gtz.schurBlockFour_trace_eq_quadTraceLeg
+#print axioms Gtz.schurBlockFour_minorSum_eq_quadMinorLeg
+#print axioms Gtz.schurBlockFour_det_eq_quadTieLeg
+#print axioms Gtz.quadLegs_nonneg_of_dominates
+#print axioms Gtz.exists_negative_form_with_pivotMinors_zero
+#print axioms Gtz.tetraDesign_gapTripleMinor
+#print axioms Gtz.tetraDesign_gapPairMinor_sum
+#print axioms Gtz.deflator_kills_pivotUnit
+#print axioms Gtz.borderedQuadratic_nonneg_of_dominates_insert
+#print axioms Gtz.discriminant_of_dominates_insert
+#print axioms Gtz.crossSum_eq_zero_of_dominates_insert_of_tight
+#print axioms Gtz.not_dominates_insert_of_tight_direction
+#print axioms Gtz.exists_borderedData_failing_discriminant_at_every_floor
+#print axioms Gtz.dominates_of_coercive
+#print axioms Gtz.dominates_pushforward_of_dominates_insert
+#print axioms Gtz.HeavyPivotInDominator
+#print axioms Gtz.gtzWeighted_succ_of_heavyPivotInDominator
+#print axioms Gtz.exists_projected_dominator_of_dominating_pivot
