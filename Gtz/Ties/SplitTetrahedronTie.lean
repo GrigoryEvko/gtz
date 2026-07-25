@@ -30,6 +30,7 @@ tetrahedron `tetraDesign`, whose multiplier is `Λ = I/12`
 import Mathlib
 import Gtz.Core.Basic
 import Gtz.Reduction.RayleighCertificate
+import Gtz.Reduction.RatCertificateInstance
 import Gtz.Certificates.ResidueDissolution
 import Gtz.Design.StressCertificate
 
@@ -217,5 +218,63 @@ theorem exists_isTie_and_noStressCertificate :
   intro index family dir coeff _ hcert
   exact splitTetraDesign_noStressCertificate _ _ _ _ _ _ (by norm_num)
     family dir coeff hcert
+
+/-! ### The rational avatar, and a certificate firing ON the tie
+
+`Gtz.Reduction.RatCertificateInstance` builds the same design over ℚ and runs an exact
+rational LDL certificate through `ratCertificate_dominates_of_excess`. Identifying the
+two designs turns that computation into a statement about the TIE LOCUS. -/
+
+/-- The rational split-tetrahedron design casts to the real one at the asymmetric
+split `(1/6, 1/8)`. -/
+theorem splitTetraRatDesign_toReal_eq :
+    splitTetraRatDesign.toReal
+      = splitTetraDesign (1/6) (1/8) (by norm_num) (by norm_num) (by norm_num)
+          (by norm_num) := by
+  refine WeightedDesign.ext ?_ ?_
+  · funext c i
+    fin_cases c <;> fin_cases i <;>
+      norm_num [RatDesign.toReal, splitTetraRatDesign, splitTetraRatAtom,
+        splitTetraAtom, splitTetraDirIndex, tetraAtom, Matrix.cons_val_zero,
+        Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
+        Matrix.head_cons, Matrix.tail_cons]
+  · funext c
+    fin_cases c <;>
+      norm_num [RatDesign.toReal, splitTetraRatDesign, splitTetraRatWeight]
+
+/-- **The exact rational design is an exact tie.** -/
+theorem splitTetraRatDesign_isTie : IsTie splitTetraRatDesign.toReal := by
+  rw [splitTetraRatDesign_toReal_eq]
+  exact splitTetraDesign_isTie _ _ _ _ _ _
+
+/-- **A rational certificate is not obstructed by the tie locus.** There is a `(6,3)`
+design with rational data which is an exact tie — margin exactly `0`, no strict
+dominator anywhere — and which nevertheless CARRIES a complete branch-(a) certificate:
+a base set of size `k+1`, an invertible rational factor, strictly positive rational
+pivots, the LDL congruence on the nose, and the weighted outsider excess at EXACT
+ZERO.
+
+Every conjunct is exhibited, so nothing here is implied by anything else — in
+particular the certificate data is part of the statement and not merely part of a
+proof. Feeding it to `ratCertificate_dominates_of_excess` is
+`splitTetraRatDesign_certified_dominates`.
+
+The reading matters for the certificate route: what the tie locus destroys is not the
+existence of a certificate but its SLACK — the excess is `0`, not negative — and with
+the slack goes the neighbourhood on which that one fixed certificate stays valid. -/
+theorem exists_isTie_with_ratCertificate :
+    ∃ (R : RatDesign 6 3) (base : Finset (Fin 6))
+      (factor : Matrix (Fin 3) (Fin 3) ℚ) (pivots : Fin 3 → ℚ),
+      IsTie R.toReal
+        ∧ base.card = 3 + 1
+        ∧ factor.det ≠ 0
+        ∧ (∀ i, 0 < pivots i)
+        ∧ factorᵀ * ratGram R base * factor = Matrix.diagonal pivots
+        ∧ ∑ e ∈ baseᶜ, R.weight e
+            * (R.atom e ⬝ᵥ ((ratGram R base)⁻¹ *ᵥ R.atom e) - 1) = 0 :=
+  ⟨splitTetraRatDesign, splitTetraRatBase, 1, ![3, 3, 3],
+    splitTetraRatDesign_isTie, splitTetraRatBase_card, by simp,
+    (by intro i; fin_cases i <;> norm_num), splitTetraRat_congruence,
+    splitTetraRat_excess_eq_zero⟩
 
 end Gtz

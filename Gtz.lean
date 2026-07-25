@@ -14,6 +14,7 @@ import Gtz.Core.Sanity
 -- LinAlg: design-free matrix kit: rank-one Schur, PSD transfer, 2x2, completion
 import Gtz.LinAlg.BernsteinPositivity
 import Gtz.LinAlg.Completion
+import Gtz.LinAlg.CongruenceRobustness
 import Gtz.LinAlg.GordanAlternative
 import Gtz.LinAlg.PsdKit
 import Gtz.LinAlg.ResolventPerturbation
@@ -44,6 +45,8 @@ import Gtz.Reduction.LiftingLemma
 import Gtz.Reduction.Naimark
 import Gtz.Reduction.RankTwo
 import Gtz.Reduction.RatCertificate
+import Gtz.Reduction.CertificateBall
+import Gtz.Reduction.RatCertificateInstance
 import Gtz.Reduction.RayleighCertificate
 import Gtz.Reduction.Reductions
 

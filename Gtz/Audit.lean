@@ -42,6 +42,8 @@ import Gtz.LinAlg.Completion
 import Gtz.Reduction.Naimark
 import Gtz.Reduction.Reductions
 import Gtz.Reduction.RatCertificate
+import Gtz.Reduction.RatCertificateInstance
+import Gtz.Reduction.CertificateBall
 import Gtz.Planar.PlanarPlatform
 import Gtz.Planar.BlochDictionary
 import Gtz.Planar.DustControl
@@ -72,6 +74,7 @@ import Gtz.Planar.ChordTheorem
 import Gtz.Planar.LocalLaw
 import Gtz.Planar.Completeness
 import Gtz.LinAlg.ResolventPerturbation
+import Gtz.LinAlg.CongruenceRobustness
 import Gtz.Corner.IdempotentSplitting
 import Gtz.Planar.LeafTangency
 import Gtz.Corner.CapDictionary
@@ -185,12 +188,40 @@ import Gtz.Quantitative.Interface
 #print axioms Gtz.RatDesign.dominates_iff_cast
 #print axioms Gtz.posDef_congr_right
 #print axioms Gtz.certificate_dominates
+#print axioms Gtz.certificate_dominates_of_excess
 #print axioms Gtz.map_mul_cast
 #print axioms Gtz.det_cast
 #print axioms Gtz.RatDesign.gram_cast
 #print axioms Gtz.ratInv_cast
 #print axioms Gtz.RatDesign.pivot_cast
 #print axioms Gtz.ratCertificate_dominates
+#print axioms Gtz.ratGram_det_ne_zero
+#print axioms Gtz.ratCertificate_dominates_of_excess
+
+-- the certificate's reach: which half of an LDL certificate survives perturbation
+#print axioms Gtz.dotProduct_congruence
+#print axioms Gtz.diagonal_quadForm_floor
+#print axioms Gtz.posDef_of_congruence_perturbed
+#print axioms Gtz.abs_congruence_quadForm_le
+#print axioms Gtz.posDef_of_congruence_entryBound
+#print axioms Gtz.subsetSum_sub_one_transpose
+#print axioms Gtz.gate_posDef_of_nearby_design
+#print axioms Gtz.certificate_ball_dominates
+
+-- an exact rational (6,3) certificate, end to end
+#print axioms Gtz.WeightedDesign.ext
+#print axioms Gtz.splitTetraRatDesign
+#print axioms Gtz.splitTetraRatBase_card
+#print axioms Gtz.splitTetraRatBase_compl
+#print axioms Gtz.splitTetraRat_gram
+#print axioms Gtz.splitTetraRat_gramInv
+#print axioms Gtz.splitTetraRat_congruence
+#print axioms Gtz.splitTetraRat_pivot_eq_one
+#print axioms Gtz.splitTetraRat_excess_eq_zero
+#print axioms Gtz.splitTetraRatDesign_certified_dominates
+#print axioms Gtz.splitTetraRatDesign_certified_dominates_pointwise
+
+
 #print axioms Gtz.original_of_weighted_single
 #print axioms Gtz.gtzWeighted_corank_one
 #print axioms Gtz.gtzWeighted_corank_two
@@ -660,6 +691,9 @@ import Gtz.Quantitative.Interface
 #print axioms Gtz.splitTetraDesign_isTie
 #print axioms Gtz.splitTetraDesign_noStressCertificate
 #print axioms Gtz.exists_isTie_and_noStressCertificate
+#print axioms Gtz.splitTetraRatDesign_toReal_eq
+#print axioms Gtz.splitTetraRatDesign_isTie
+#print axioms Gtz.exists_isTie_with_ratCertificate
 #print axioms Gtz.balanceCoefficient_nonneg
 #print axioms Gtz.balanceSubset_dominates
 #print axioms Gtz.balanceSubset_tight
