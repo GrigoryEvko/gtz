@@ -41,8 +41,11 @@ theorem in its weighted generalization, formalized without spectral theory.
 
 ```
 GTZ for all (n, k)   ⟺   weighted (m, s) for  s ≥ 2,  2s ≤ m ≤ s(s+1)/2 + 1
-GtzWeightedAll 3     ⟺   GtzWeighted 6 3  ∧  GtzWeighted 7 3
+GtzWeightedAll 3     ⟸   GtzWeighted 7 3          (the window and the pair both collapse)
 ```
+
+The second line was long recorded as a conjunction with `(6,3)`; that reading is
+superseded — see the frontier section, where `(6,3)` is derived from `(7,3)`.
 
 **The certificate machinery, at every rank.** The trace identity and
 excess-balance pigeonhole (branch a), the de-spectralized cap criterion
