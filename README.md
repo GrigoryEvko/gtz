@@ -71,10 +71,24 @@ rational (6,3)/(7,3) certificate closes rank 3 by finite exact arithmetic.
 ## The formal frontier
 
 Everything else about GTZ-for-all-(n,k) is a kernel-checked theorem. What
-remains is precisely the open mathematics:
+remains is a single strictly-ordered chain, one statement per rank:
 
-1. `GtzWeighted 6 3` and `GtzWeighted 7 3` — the binding open cases;
-2. the canonical window 2s ≤ m ≤ s(s+1)/2 + 1 for ranks s ≥ 4.
+> `GtzWeighted (M(s)) s` for every `s ≥ 3`, where `M(s) = s(s+1)/2 + 1`.
+
+That is `gtz_iff_top_of_each_rank`, and it replaces the older "binding pair
+plus a window" reading on both counts. The pair collapses: `(6,3)` follows
+from `(7,3)` by splitting one atom (`gtzWeighted_six_three_of_seven_three`),
+so the rank-3 frontier is the single object `(7,3)` and machinery specialized
+to `m = 6` is redundant. And the window collapses: spike padding plus size
+monotonicity reduce every object of the rank-`s` window to its top, so there
+is nothing to sweep between `2s` and `M(s)`.
+
+The chain descends — `(11,4)` implies all of rank 3
+(`gtzWeightedAll_three_of_eleven_four`), and `(8,4)` already does — so the
+lowest rung is the right thing to attack. It is not one-way, though: Naimark
+duality at `m = 7` sends rank 3 to rank 4 at the same size, so `(7,3)` hands
+over `(7,4)` (`gtzWeighted_seven_four_of_seven_three`). What no known
+implication carries upward is a window TOP.
 
 ## Module map
 
