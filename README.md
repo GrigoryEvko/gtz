@@ -123,6 +123,33 @@ first-order over a real closed field, hence decidable in principle by
 Tarski–Seidenberg, and every wall the campaign has hit is a feasibility wall,
 never an undecidability one.
 
+### Rank four does the same thing
+
+The collapse is not special to rank three. At a heavy pivot, domination of a
+4-subset is exactly the nonnegativity of the **seven principal minors of
+`Gram − I` containing the pivot** (degrees 2,2,2,3,3,3,4 in the ten Gram
+entries), by the same division-free corner reduction. Hence
+
+> `PivotMinorCoveringFour 11  ⟺  GtzWeightedAll 4`
+> (`pivotMinorCoveringFour_eleven_iff_rank_four`)
+
+330 quadruples × 7 inequalities. The gap scalars are defined rank-generically
+and rank three is recovered from them by `rfl`, so there is one substrate at
+both ranks rather than two parallel developments.
+
+### The induction step is walled, and the wall is named
+
+`GtzWeightedAll k → GtzWeighted (M(k+1)) (k+1)` would collapse the whole chain
+to rank three. It does not close. `exists_all_certificates_but_discriminant`
+transports six of the Lifting Lemma's seven certificates; the seventh is
+`r rᵀ ⪯ A · (G′ − I)` in the Loewner order — a *quantitative* demand that the
+projected domination have slack along the cross vector, where the rank-`k`
+hypothesis supplies only the qualitative `G′ − I ⪰ 0`. Wherever the projected
+domination is tight, the cross sum is forced to vanish and no amount of pivot
+leverage substitutes. What survives is a pure *selection* problem: the
+projected certificate is free at every pivot of a dominating subset with no
+induction hypothesis at all (`dominates_pushforward_of_dominates_insert`).
+
 ## Module map
 
 | Module | Content |
@@ -167,6 +194,7 @@ never an undecidability one.
 | `LawCounterexample` | the kernel-checked cap-10 refutation of the displayed local law |
 | `RatCertificate` | the computable ℚ-certificate consumption layer |
 | `RankFourWindow` | atom splitting, spike padding, one-object-per-rank, all-heavy monotonicity |
+| `RankInductionStep` | the rank-4 seven-minor system; the named induction-step wall |
 | `OneObjectNarrowing` | the test-vector quantifier eliminated; the 2×2 trace/det criterion |
 | `DiscriminantSystem` | the rank-3 frontier as one polynomial covering sentence |
 | `CapArgmax` | H1b both sides of the threshold L = 4 + 2√2, by one Positivstellensatz identity |
