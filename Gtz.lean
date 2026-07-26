@@ -175,6 +175,10 @@ import Gtz.Ties.CriticalTieMultiplier
 import Gtz.Design.NearPencilStrictDomination
 import Gtz.Design.NearPencilTransport
 import Gtz.Design.StratumEmptinessLedger
+import Gtz.Field.WeightedDesign
+import Gtz.Design.ProjectionChart
+import Gtz.Field.CorankOne
+import Gtz.Complex.SizeAxis
 
 -- the axiom ledger for everything above
 import Gtz.Audit
