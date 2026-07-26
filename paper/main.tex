@@ -38,12 +38,23 @@
 % --- vertical rhythm ------------------------------------------------------
 % Leading opened by 8% against the amsart default; the measure is narrowed to
 % match.  Displays get a little more air than amsart gives them; the longer
-% computations need it.
+% computations need it.  The short skips fire whenever the line before a
+% display is short, which in a theorem statement is often a one-word lead-in
+% like "and"; kept below the full skips, but not so far below that a radical
+% or a summation sign in the display closes on the text.
 \linespread{1.08}\selectfont
 \setlength{\abovedisplayskip}{9pt plus 3pt minus 2pt}
 \setlength{\belowdisplayskip}{9pt plus 3pt minus 2pt}
-\setlength{\abovedisplayshortskip}{5pt plus 2pt}
-\setlength{\belowdisplayshortskip}{6pt plus 2pt minus 1pt}
+\setlength{\abovedisplayshortskip}{7.5pt plus 3pt minus 1pt}
+\setlength{\belowdisplayshortskip}{7.5pt plus 3pt minus 1pt}
+% \linespread scales \baselineskip but not \lineskip, and \lineskip is what
+% TeX falls back on when a line carries tall inline material -- a \tfrac, a
+% radical, a summation sign.  Left at the 1pt default those line pairs
+% collapse to a third of the clearance ordinary prose gets, which is the
+% cramping visible around inline ratios.  Raised to sit just under the
+% 3.4-4.8pt that plain text shows.
+\setlength{\lineskiplimit}{2.5pt}
+\setlength{\lineskip}{3pt}
 \setlength{\parskip}{0pt plus 1pt}
 
 % --- draft layer (remove before submission) -------------------------------
