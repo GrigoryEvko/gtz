@@ -1,9 +1,13 @@
 \section{Elementary cases}\label{sec:first}
 
-This section fixes the objects, derives the counting identities that later
-arguments use, and settles the cases those identities decide on their
-own.  A lemma and a counterexample then locate the point at which
-counting stops working, which is where the rest of the paper begins.
+The condition \eqref{eq:parseval} yields three elementary consequences on
+its own: a trace identity, an upper bound on each leverage score, and a
+comparison of the unweighted sum of the
+$g_c^{\vphantom{\mathsf{H}}}g_c\adj$ with the identity.  Between them they
+settle the cells $m=k$ and $k=1$, and no others.  \S\ref{sec:stops} says
+why they stop there, and Example~\ref{ex:tetra} exhibits what the rest of
+the paper works against: a design at which every $k$-subset sits on the
+threshold.
 
 \subsection{The objects}
 
@@ -17,22 +21,21 @@ $\Gtz(m,k)$ is that every design of size $m$ and rank $k$ over $\R$ admits
 a dominating $k$-subset, and $\GtzC(m,k)$ is the same assertion over $\C$.
 \end{definition}
 
-The vectors need not be distinct or nonzero, so repeated vectors and the
-zero vector are admitted.  Excluding them would change the problem without
-simplifying it: a $k$-subset containing two parallel vectors is
-rank-deficient and cannot dominate, and that mechanism, seen first in
-Example~\ref{ex:octa}, makes selection combinatorial rather than metric.
-The weights are real even over $\C$, and they do not enter $\SC$ at all,
-appearing only through \eqref{eq:parseval}; domination therefore survives
-any operation that keeps the vectors and moves the weights.
+Repeated vectors and the zero vector are admitted, and excluding them
+would simplify nothing: a $k$-subset containing two parallel vectors is
+rank-deficient and cannot dominate, which is the mechanism of
+Example~\ref{ex:octa}.  The weights are real even over $\C$, and they
+enter nowhere but \eqref{eq:parseval}; the matrix $\SC$ does not involve
+them, so any operation that keeps the vectors and moves the weights
+preserves domination.
 
-Since $g_c^{\vphantom{\mathsf{H}}}g_c\adj\psd0$ for every $c$, adding indices to
-$C$ can only increase $\SC$ in the Loewner order, so a superset of a
-dominating set dominates.  The cardinality restriction $\lvert C\rvert=k$
-therefore carries the problem, and it is sharp on both sides: fewer than
-$k$ vectors span a proper subspace and leave $\SC$ singular, while at
-$\lvert C\rvert=m$ domination is automatic
-(Lemma~\ref{lem:coparseval}).
+Since $g_c^{\vphantom{\mathsf{H}}}g_c\adj\psd0$ for every $c$, enlarging
+$C$ can only increase $\SC$ in the Loewner order, so any superset of a
+dominating set dominates.  Fewer than $k$ vectors span a proper subspace
+and leave $\SC$ singular, while the full index set dominates in every
+design (Lemma~\ref{lem:coparseval}).  Cardinality $k$ is therefore the
+smallest at which domination is possible, and by that monotonicity the
+hardest.
 
 \begin{lemma}[Lean]\label{lem:span}
 The vectors of a design span $\FF^k$.  In particular $k\le m$, and there
@@ -53,8 +56,7 @@ spanning family in $\FF^k$ has at least $k$ members.
 
 \subsection{Three counting identities}
 
-Taking the trace of \eqref{eq:parseval} gives the identity on which every
-counting argument in the subject rests.
+The first identity is the trace of \eqref{eq:parseval}.
 
 \begin{lemma}[Lean]\label{lem:trace}
 $\sum_c s_c=\sum_c t_c\ell_c=k$.  Hence $\max_c \ell_c\ge k$.
@@ -67,7 +69,7 @@ weights are positive and sum to $1$, so $k=\sum_c t_c\ell_c$ is a
 weighted mean of the $\ell_c$ and does not exceed their maximum.
 \end{proof}
 
-The leverage scores are also bounded above, individually.
+Each leverage score is also bounded above.
 
 \begin{lemma}[Lean]\label{lem:share}
 $0\le s_c\le1$ for every $c$.  With Lemma~\ref{lem:trace} the leverage
@@ -117,8 +119,9 @@ $\sum_c(1-t_c)g_c^{\vphantom{\mathsf{H}}}g_c\adj\psd\sigma I_k\pd0$.
 \end{proof}
 
 The operator on the right of \eqref{eq:coparseval} returns in
-\S\ref{sec:chart}: its inverse defines the pivot of a vector, and its
-positive definiteness supplies the whitening that makes duality possible.
+\S\ref{sec:chart}, where its inverse defines the pivot of a vector and
+its positive definiteness supplies the whitener behind
+Theorem~\ref{thm:duality}.
 
 \subsection{The cases that close by counting}
 
@@ -144,16 +147,14 @@ maximum, so $\lvert g_{c_0}\rvert^2\ge1$ for some $c_0$, and the
 singleton $\{c_0\}$, which has cardinality $k=1$, dominates.
 \end{proof}
 
-The two propositions dispose of the cells $m=k$ and $k=1$, and they
-exhaust what the counting identities give directly.  The range
-\eqref{eq:elementary} covered by the maximal-volume principle is larger by
-one column, $m=k+1$.  That column does reduce to the scalar mechanism of
-Proposition~\ref{prop:rankone}, but only after a change of variables
-trading the vectors for the kernel of the associated projection; it is
-Theorem~\ref{thm:corankone}, and the elementary methods end there.
+That exhausts the counting identities.  One further column lies inside
+the maximal-volume range \eqref{eq:elementary}, namely $m=k+1$; it too
+reduces to the scalar mechanism of Proposition~\ref{prop:rankone}, but
+only after the vectors are traded for the kernel of the associated
+projection.  That change of variables is Theorem~\ref{thm:corankone},
+where the elementary methods stop.
 
-The classical statement is the uniform-weight instance, in the following
-precise sense.
+Uniform weights recover the classical statement.
 
 \begin{proposition}[Lean]\label{prop:classical}
 Let $n\ge1$ and let $A\in\FF^{n\times k}$ satisfy $A\adj A=I_k$.  If
@@ -179,13 +180,14 @@ $(A_\iota)\adj A_\iota^{\vphantom{\mathsf{H}}}=\sum_{r\in C}A_r^{\vphantom{\math
 \]
 \end{proof}
 
-At a fixed size the implication runs only this way, making the weighted
-statement the stronger of the two; over all sizes they agree, for the
-reason given in \S\ref{sec:intro}.
+At a fixed $(m,k)$ the implication runs only this way, so the weighted
+statement is the stronger of the two.  Recovering it from the classical
+one costs a change of size, since a design with rational weights is a
+uniform design of larger size with repeated vectors (\S\ref{sec:intro}).
 
 \subsection{Where counting stops}\label{sec:stops}
 
-Domination admits a formulation with no matrices in it.  A $k$-subset $C$
+Domination can be stated without matrices.  A $k$-subset $C$
 dominates if and only if
 \begin{equation}\label{eq:pointwise}
   \sum_{c\in C}\lvert\langle x,g_c\rangle\rvert^2\;\ge\;\lVert x\rVert^2
@@ -195,9 +197,8 @@ since the left-hand side is the quadratic form of $\SC$ at $x$.  In the
 same language \eqref{eq:parseval} says that
 $\sum_c t_c\lvert\langle x,g_c\rangle\rvert^2=\lVert x\rVert^2$ for every
 $x$: the squared projections of a fixed direction on the vectors of a
-design average to the squared length of that direction.  The averaging
-mechanism of Proposition~\ref{prop:rankone} therefore survives in full
-generality, one direction at a time.
+design average to the squared length of that direction.  The proof of
+Proposition~\ref{prop:rankone} now applies one direction at a time.
 
 \begin{lemma}[Lean]\label{lem:direction}
 For every design and every $x\in\FF^k$ there is an index $c$ with
@@ -215,23 +216,20 @@ At $k=1$ this is the theorem: there is one direction up to scalars, and
 the witnessing index may be chosen once and for all.  At $k\ge2$ the
 witness of Lemma~\ref{lem:direction} depends on $x$, while
 \eqref{eq:pointwise} demands $k$ indices that work simultaneously for
-every $x$ on a sphere of dimension $k-1$.  No averaging identity produces
-such a set.  The quantity to be dominated in \eqref{eq:dominate} is a
-matrix; \eqref{eq:parseval} controls every scalar linear functional of the
-family, and the least eigenvalue is not one of them.
+every $x$ on a sphere of dimension $k-1$.  Domination is a matrix
+inequality, and \eqref{eq:parseval} determines only the linear
+functionals of the family; the least eigenvalue is not one of them.
 
-The scalar relaxation of \eqref{eq:pointwise} shows how far that failure
-goes.  If $C$ dominates then all $k$ eigenvalues of $\SC$ are at least
-$1$, so
+The trace is one of them.  If $C$ dominates then all $k$ eigenvalues of
+$\SC$ are at least $1$, so
 \begin{equation}\label{eq:tracetest}
   \tr\SC\;=\;\sum_{c\in C}\ell_c\;\ge\;k .
 \end{equation}
-A subset meeting this necessary condition costs no work to find: by
+A subset satisfying \eqref{eq:tracetest} costs nothing to find: by
 Lemma~\ref{lem:trace} some $\ell_{c_0}\ge k$, and any $k$-subset
-containing $c_0$ already satisfies \eqref{eq:tracetest}.  The trace test
-is thus satisfiable in every design, and it separates no dominating
-subset from a non-dominating one.  The design below, a first illustration
-of the cell $(6,3)$ as well, shows how far apart the two can be.
+containing $c_0$ will do.  The trace test therefore holds somewhere in
+every design and distinguishes nothing.  In the design below it passes at
+all twenty triples, and twelve of them do not dominate.
 
 \begin{example}\label{ex:octa}
 Let $k=3$, let the six vectors be $\pm\sqrt3\,e_1$, $\pm\sqrt3\,e_2$,
@@ -242,29 +240,27 @@ $\pm\sqrt3\,e_3$ and let every weight be $\tfrac16$.  Then
 \]
 so this is a design at $(6,3)$, with $\ell_c=3$ and $s_c=\tfrac12$ for
 every $c$, in accordance with Lemmas~\ref{lem:trace} and~\ref{lem:share}.
-Every triple satisfies $\tr\SC=9\ge3$.  The triple
-$\{\sqrt3e_1,-\sqrt3e_1,\sqrt3e_2\}$ nevertheless has
-$\SC=6\,e_1^{\vphantom{\mathsf{T}}}e_1\tp+3\,e_2^{\vphantom{\mathsf{T}}}e_2\tp$, which is
-singular in the direction $e_3$ and does not dominate; the triple
-$\{\sqrt3e_1,\sqrt3e_2,\sqrt3e_3\}$ has $\SC=3I_3\pd I_3$ and dominates
-strictly.  What separates them is which subspaces the chosen vectors
-miss, and the trace is blind to that.
+Every one of the twenty triples satisfies $\tr\SC=9\ge3$.  Eight of them
+take one vector from each axis pair and have $\SC=3I_3\pd I_3$; the
+remaining twelve repeat an axis, as $\{\sqrt3e_1,-\sqrt3e_1,\sqrt3e_2\}$
+does with
+$\SC=6\,e_1^{\vphantom{\mathsf{T}}}e_1\tp+3\,e_2^{\vphantom{\mathsf{T}}}e_2\tp$,
+and are singular in the direction they omit.  The trace is blind to which
+direction that is.
 \end{example}
 
 Selection is therefore a combinatorial problem about the directions a
 $k$-subset leaves uncovered, constrained by the metric identity
-\eqref{eq:parseval}.  Two instruments address it, and the remaining
-sections develop them: a change of coordinates turning
-\eqref{eq:dominate} into a statement about principal blocks of a
-projection (\S\ref{sec:chart}), and, where that does not decide the cell,
-a variational analysis of the worst design (\S\ref{sec:compactness} and
-\S\ref{sec:interior}).
+\eqref{eq:parseval}.  The remaining sections develop two instruments for
+it: a change of coordinates turning \eqref{eq:dominate} into a statement
+about principal blocks of a projection (\S\ref{sec:chart}), and, where
+that does not decide the cell, a variational analysis of the worst design
+(\S\ref{sec:compactness} and \S\ref{sec:interior}).
 
 \subsection{The tetrahedron}
 
-In Example~\ref{ex:octa} one triple dominates strictly.  The next design
-admits no strict domination at all, and holds \eqref{eq:dominate} with
-equality at every triple.
+In Example~\ref{ex:octa} eight triples dominate strictly.  In the next
+design every triple dominates and none dominates strictly.
 
 \begin{example}[Lean]\label{ex:tetra}
 Let $k=3$ and take the four vectors
@@ -281,8 +277,8 @@ $1-1-1+1=0$, so
 \end{equation}
 a design at $(4,3)$.  Here $\ell_c=3$ and $s_c=\tfrac34$ for every $c$, so
 Lemma~\ref{lem:trace} holds with equal terms, $4\cdot\tfrac34=3=k$, and
-$\langle g_i,g_j\rangle=-1$ for $i\ne j$.  The four vectors are the unit
-vectors to the vertices of a regular tetrahedron, scaled by $\sqrt3$.
+$\langle g_i,g_j\rangle=-1$ for $i\ne j$.  The four vectors point to the
+vertices of a regular tetrahedron and each has length $\sqrt3$.
 
 Let $C=\{0,1,2,3\}\setminus\{c_0\}$ be one of the four triples.
 Subtracting the omitted term from \eqref{eq:tetraparseval},
@@ -295,8 +291,7 @@ complement, so
 \begin{equation}\label{eq:tetraspec}
   \operatorname{spec}\SC=\{1,4,4\},\qquad \lmin(\SC)=1 .
 \end{equation}
-Every triple dominates, and every triple dominates with least eigenvalue
-exactly $1$.  For $c_0=0$ the certificate is a sum of squares: writing
+For $c_0=0$ the certificate is a sum of squares: writing
 $x=(x_1,x_2,x_3)$,
 \[
   x\tp\bigl(\SC-I_3\bigr)x
@@ -307,17 +302,18 @@ $x=(x_1,x_2,x_3)$,
 which vanishes exactly on $\R g_0$, the direction omitted from $C$.
 \end{example}
 
-This is the smallest design at rank three holding \eqref{eq:dominate}
-with equality, and it is the equality case of the corank-one
-classification: the tie law \eqref{eq:tielaw} of \S\ref{sec:chart} reads
-$3\cdot\tfrac14\cdot3=\tfrac94=3-1+\tfrac14$ here.  Splitting its
-vectors produces extremal designs at every
-size $m\ge4$ and rank $3$, by which route the no-margin principle of
-\S\ref{sec:ties} reaches the open cells.  Its volume-sampling mixture,
-computed in \S\ref{sec:ties}, is $(x-1)(x-4)^2$, whose least root sits at
-the threshold.  It is also the calibration point of the first-order system
-of \S\ref{sec:interior}, where the multiplier is $\Lambda=\tfrac13I_3$
-with $\cv=1$ and each of the four triples carries multiplier $\tfrac14$.
+The tetrahedron is the smallest design at rank three with
+$\lmin(\SC)=1$ at every triple, and it recurs throughout what follows.  It
+is the equality case of the corank-one classification: the tie law
+\eqref{eq:tielaw} of \S\ref{sec:chart} reads
+$3\cdot\tfrac14\cdot3=\tfrac94=3-1+\tfrac14$ here.  Splitting its vectors
+produces extremal designs at every size $m\ge4$ and rank $3$, and that is
+the route by which the no-margin principle of \S\ref{sec:ties} reaches
+the open cells.  Its volume-sampling mixture is $(x-1)(x-4)^2$
+(\S\ref{sec:ties}), whose least root sits at the threshold.  It also
+calibrates the first-order system of \S\ref{sec:interior}, where
+$\Lambda=\tfrac13I_3$ and $\cv=1$ with each of the four triples carrying
+multiplier $\tfrac14$.
 
 \begin{figure}[ht]
   \centering
@@ -325,7 +321,7 @@ with $\cv=1$ and each of the four triples carries multiplier $\tfrac14$.
   \caption{The design of Example~\ref{ex:tetra}: four vectors to the
   vertices of a regular tetrahedron, drawn inside the cube whose even-sign
   vertices they are.  Every triple omits one vector and has spectrum
-  $\{1,4,4\}$ by \eqref{eq:tetraspec}, so the least eigenvalue sits
-  exactly on the threshold.}
+  $\{1,4,4\}$ by \eqref{eq:tetraspec}, so it dominates with nothing to
+  spare.}
   \label{fig:tetrahedron}
 \end{figure}

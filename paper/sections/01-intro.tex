@@ -6,13 +6,13 @@ $t_1,\dots,t_m>0$ with $\sum_c t_c=1$ subject to the Parseval condition
 \begin{equation}\label{eq:parseval}
   \sum_{c=1}^{m} t_c\, g_c^{\vphantom{\mathsf{H}}} g_c\adj \;=\; I_k .
 \end{equation}
-The condition says that the vectors resolve the identity on average.  The
-selection problem asks whether $k$ of them resolve it outright: whether
-there exists $C\subseteq\{1,\dots,m\}$ with $\lvert C\rvert=k$ and
+The condition says that the vectors resolve the identity on average.  Do
+$k$ of them resolve it on their own?  The selection problem asks for a
+$C\subseteq\{1,\dots,m\}$ with $\lvert C\rvert=k$ and
 \begin{equation}\label{eq:dominate}
   \SC \;:=\; \sum_{c\in C} g_c^{\vphantom{\mathsf{H}}} g_c\adj \;\psd\; I_k .
 \end{equation}
-Such a $C$ is said to \emph{dominate}.  We write $\Gtz(m,k)$ for the
+Such a $C$ \emph{dominates}.  We write $\Gtz(m,k)$ for the
 assertion that every design of size $m$ and rank $k$ over $\R$ admits a
 dominating $k$-subset, and $\GtzC(m,k)$ for its complex analogue.
 
@@ -28,13 +28,13 @@ $U_C$ the $k\times k$ submatrix on the rows $C$ the requirement
   \qquad\text{that is}\qquad
   \lVert U_C^{-1}\rVert_2\;\le\;\sqrt m .
 \]
-That some $k\times k$ submatrix of a matrix with orthonormal columns has
-inverse of spectral norm at most $\sqrt m$ is the conjecture of Goreinov,
-Tyrtyshnikov and Zamarashkin \cite{GTZ1997}, raised there in the course of
+Some $k\times k$ submatrix of a matrix with orthonormal columns has
+inverse of spectral norm at most $\sqrt m$: this is the conjecture of
+Goreinov, Tyrtyshnikov and Zamarashkin \cite{GTZ1997}, who raised it while
 bounding the error of pseudoskeleton approximation.  It is the analytic
 content of the maximal-volume principle, and it remains open.
 
-The principle does prove the following \cite{GZT1997,GT2001}.
+The principle does prove a weaker bound \cite{GZT1997,GT2001}.
 Among the finitely many $k$-subsets choose one of maximal volume, that is
 one maximizing $\lvert\det U_C\rvert$.  It is nonsingular: by the
 Cauchy--Binet formula
@@ -58,8 +58,8 @@ $(U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\psd I_k$; a Hermitian $k\times k$ ma
 dominating the identity has all its eigenvalues at least $1$ and so has
 largest eigenvalue at most its trace diminished by $k-1$.  Therefore
 $\lVert U_C^{-1}\rVert_2^2\le k(m-k)+1$ and
-$\SC\psd\frac{m}{k(m-k)+1}I_k$.  The bound and the conjecture are related
-by the identity
+$\SC\psd\frac{m}{k(m-k)+1}I_k$.  The bound and the conjecture differ by a
+single term:
 \begin{equation}\label{eq:deficit}
   k(m-k)+1\;=\;m\;+\;(k-1)(m-k-1),
 \end{equation}
@@ -69,20 +69,18 @@ otherwise; at $(m,k)=(7,3)$ it equals $6$, and the principle delivers
 $\sigma_{\min}^2\ge1/13$ where $1/7$ is asked.  The classical argument
 therefore suffices exactly on the range
 \begin{equation}\label{eq:elementary}
-  k\le1\quad\text{or}\quad m\le k+1 ,
+  k\le1\quad\text{or}\quad m\le k+1 .
 \end{equation}
-and every case outside it needs something the volume count does not
-supply.
 
 Beyond \eqref{eq:elementary} the known cases are few.  Nesterenko
 \cite{Nesterenko2023} settled $(m,k)=(4,2)$ over $\R$ by an argument in
 Pl\"ucker coordinates, and reformulated the rank-two problem as an
 isoperimetric question for closed polygons \cite{Nesterenko2024}; Sengupta
 and Pautov \cite{SenguptaPautov2026} then settled rank two over $\R$ for
-every $m$.  The equality locus at rank two over $\R$ was described by
-Nesterenko \cite{Nesterenko2026real}, and configurations attaining the
-bound $1$ at every pair $(m,k)$ were constructed by him from the star
-spaces of series-parallel graphs \cite{Nesterenko2025}.  Over $\C$ the
+every $m$.  Nesterenko also described the equality locus at rank two over
+$\R$ \cite{Nesterenko2026real}, and built configurations attaining the
+bound $1$ at every pair $(m,k)$ from the star spaces of series-parallel
+graphs \cite{Nesterenko2025}.  Over $\C$ the
 conjecture is false at rank two: at uniform weights some pair always
 satisfies $\SC\psd\alpha I_2$ with $\alpha=2-2/\sqrt3<1$, and $\alpha$
 cannot be raised, being attained when $4\mid m$ and approached otherwise
@@ -98,10 +96,11 @@ settles for the polynomial factors of \cite{GuEisenstat1996}.
 
 \medskip
 
-This paper studies the problem with general weights, which turns the
-weights into a coordinate: vectors and weights vary independently subject
-to \eqref{eq:parseval}, and the extremal configurations become sections
-over the weight simplex instead of isolated matrices.  Under the
+We study the problem with general weights.  The weights then
+become a coordinate of the problem rather than a fixed normalization:
+vectors and weights vary independently subject to \eqref{eq:parseval},
+and the extremal configurations appear as sections over the weight
+simplex instead of isolated matrices.  Under the
 substitution $v_c:=\sqrt{t_c}\,g_c$ the condition \eqref{eq:parseval} says
 that the matrix $V$ with rows $v_c\adj$ is an isometry, and
 \eqref{eq:dominate} compares a principal block of the projection
@@ -149,13 +148,12 @@ simplex, and by \eqref{eq:parseval} a vector diverges as its weight tends
 to zero.  In the coordinates $(P,t)$ that space becomes the interior of a
 compact one, on which the objective
 $\max_{\lvert C\rvert=k}\lmin(W[C])$, $W=P-\diag(t)$, extends
-continuously.  The smaller cells discharge the added boundary points:
-granting the same statement at $(m-1,k)$ and at $(m-1,k-1)$, every point
+continuously.  The smaller cells discharge the added boundary points.
+Grant the same statement at $(m-1,k)$ and at $(m-1,k-1)$: then every point
 with a vanishing weight carries a dominating $k$-subset
-(Theorem~\ref{thm:boundary}).  Under those two hypotheses a failure of
-$\Gtz(m,k)$ forces the objective to attain its minimum at an interior
-point, that is at a genuine weighted design
-(Theorem~\ref{thm:variational}).  At $(6,3)$ both hypotheses are theorems
+(Theorem~\ref{thm:boundary}), and if $\Gtz(m,k)$ fails the objective
+attains its minimum at an interior point, that is at a genuine weighted
+design (Theorem~\ref{thm:variational}).  At $(6,3)$ both hypotheses are theorems
 of \S\ref{sec:real}; at $(7,3)$ one of them is the cell $(6,3)$.
 
 Rank three then reduces to excluding critical points below the threshold
@@ -165,9 +163,9 @@ $g_c\adj\Lambda g_c=\cv$ at every $c$, a coverage law, and three
 exclusions that cut down the possible configurations of active subsets.
 A congruence relates the objective minimized in \S\ref{sec:compactness}
 to the one differentiated in \S\ref{sec:interior}, and the two need not
-share their minimizers; Definition~\ref{def:extremalcex} isolates the
-passage between them as a hypothesis, carried by
-Theorem~\ref{thm:rankthree} alone.
+share their minimizers.  Definition~\ref{def:extremalcex} therefore makes
+the step from one to the other a hypothesis, and
+Theorem~\ref{thm:rankthree} is the only statement that carries it.
 
 \medskip
 
@@ -202,21 +200,21 @@ A statement whose head carries the tag \emph{Lean} is machine-verified;
 \emph{conditional} rests on a conjecture, stated at that point and not
 proved here; a hypothesis discharged inside the paper is carried in the
 statement and does not earn the tag.  Untagged statements are proved in
-the ordinary way.  Every numerical assertion below is exact rational or
-exact algebraic arithmetic.
+the ordinary way.  Every numerical assertion below rests on exact
+rational or exact algebraic arithmetic.
 
 \subsection*{Notation}
 
 For $x,y\in\FF^k$ we write $\langle x,y\rangle:=x\adj y$, conjugate-linear
 in the first argument and linear in the second, and
-$\lVert x\rVert^2=\langle x,x\rangle$.  A Hermitian $A$ satisfies $A\psd0$
-when it is positive semidefinite and $A\pd0$ when positive definite;
+$\lVert x\rVert^2=\langle x,x\rangle$.  We write $A\psd0$ for a positive
+semidefinite Hermitian $A$ and $A\pd0$ for a positive definite one;
 $A[C]$ is the principal submatrix on the index set $C$, and
 $\operatorname{spec}A$ the spectrum.  A \emph{$k$-subset} always means a
 subset of $\{1,\dots,m\}$ of cardinality $k$.  The \emph{corank} of a cell
 $(m,k)$ is $m-k$.  A pair $(m,k)$ with $m<k$ carries no design
 (Lemma~\ref{lem:span}), so every statement quantifying over such a pair is
-empty.
+vacuous.
 
 Each symbol in the following table has one meaning throughout, and is
 never rebound, not even inside a proof.  Symbols outside the table, such

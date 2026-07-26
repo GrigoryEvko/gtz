@@ -7,13 +7,13 @@
 \contentsline {subsection}{\tocsubsection {}{2.3}{The cases that close by counting}}{7}{subsection.2.3}%
 \contentsline {subsection}{\tocsubsection {}{2.4}{Where counting stops}}{8}{subsection.2.4}%
 \contentsline {subsection}{\tocsubsection {}{2.5}{The tetrahedron}}{9}{subsection.2.5}%
-\contentsline {section}{\tocsection {}{3}{The projection chart}}{10}{section.3}%
+\contentsline {section}{\tocsection {}{3}{The projection chart}}{9}{section.3}%
 \contentsline {subsection}{\tocsubsection {}{3.1}{Construction}}{10}{subsection.3.1}%
 \contentsline {subsection}{\tocsubsection {}{3.2}{The criterion}}{11}{subsection.3.2}%
-\contentsline {subsection}{\tocsubsection {}{3.3}{Inertia, and what it does not decide}}{13}{subsection.3.3}%
+\contentsline {subsection}{\tocsubsection {}{3.3}{Inertia, and what it does not decide}}{12}{subsection.3.3}%
 \contentsline {subsection}{\tocsubsection {}{3.4}{Duality}}{13}{subsection.3.4}%
 \contentsline {subsection}{\tocsubsection {}{3.5}{Corank one}}{15}{subsection.3.5}%
-\contentsline {section}{\tocsection {}{4}{The complex problem}}{18}{section.4}%
+\contentsline {section}{\tocsection {}{4}{The complex problem}}{17}{section.4}%
 \contentsline {subsection}{\tocsubsection {}{4.1}{The value of a design}}{18}{subsection.4.1}%
 \contentsline {subsection}{\tocsubsection {}{4.2}{The positive half}}{19}{subsection.4.2}%
 \contentsline {subsection}{\tocsubsection {}{4.3}{The seed}}{19}{subsection.4.3}%

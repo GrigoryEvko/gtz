@@ -37,8 +37,8 @@
 
 % --- vertical rhythm ------------------------------------------------------
 % Leading opened by 8% against the amsart default; the measure is narrowed to
-% match.  Displays get a little more air than amsart gives them, which is
-% what makes the longer computations readable.
+% match.  Displays get a little more air than amsart gives them; the longer
+% computations need it.
 \linespread{1.08}\selectfont
 \setlength{\abovedisplayskip}{9pt plus 3pt minus 2pt}
 \setlength{\belowdisplayskip}{9pt plus 3pt minus 2pt}
@@ -116,20 +116,21 @@ Goreinov--Tyrtyshnikov--Zamarashkin selection problem}
 A weighted design of size $m$ and rank $k$ over $\FF\in\{\R,\C\}$ consists
 of vectors $g_1,\dots,g_m\in\FF^{k}$ and positive weights $t_c$ summing to
 one with $\sum_c t_c\,g_c^{\vphantom{\mathsf{H}}} g_c\adj=I_k$.  The selection
-problem asks whether $k$ of the vectors dominate the identity outright,
-$\sum_{c\in C} g_c^{\vphantom{\mathsf{H}}} g_c\adj\psd I_k$.  We solve the problem
-over $\C$: for $k\ge2$ such a subset exists in every design precisely when
-$m\le k+1$, and at $m=k+1$ the bound $1$ is attained at every weight
-vector.  Over $\R$ we settle rank at most two and corank at most two,
-reduce each rank to finitely many cells, and prove a variational
-principle: granting the statement at the two cells one size below, if
-selection fails at a cell then it fails at a global minimizer of the
+problem asks for $k$ of the vectors that dominate the identity on their
+own, $\sum_{c\in C} g_c^{\vphantom{\mathsf{H}}} g_c\adj\psd I_k$.  We solve the
+problem over $\C$: for $k\ge2$ such a subset exists in every design
+precisely when $m\le k+1$, and at $m=k+1$ the bound $1$ is attained at
+every weight vector.  Over $\R$ we settle rank at most two and corank at
+most two, and reduce each rank to finitely many cells.  We then prove a
+variational principle.  Grant the statement at the two cells one size
+below; if it fails at a cell, it fails at a global minimizer of the
 selection objective over a compactification of the design space, and that
-minimizer has strictly positive weights.  Rank three over $\R$ thereby reduces to the cells $(6,3)$ and
-$(7,3)$, and at each cell to the exclusion of interior critical points
-below the threshold.  The threshold is attained at every size, so no
-argument for the conjecture can carry a uniform margin.  Statements whose head
-carries the tag \emph{Lean} are verified in the Lean~4 proof assistant.
+minimizer has strictly positive weights.  Rank three over $\R$ thereby
+reduces to two cells, $(6,3)$ and $(7,3)$, and at each of them to ruling
+out interior critical points below the threshold.  The threshold is
+attained at every size, so no argument for the conjecture can carry a
+uniform margin.  Statements whose head carries the tag \emph{Lean} are
+verified in the Lean~4 proof assistant.
 \end{abstract}
 
 \maketitle
