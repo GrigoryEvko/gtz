@@ -317,6 +317,23 @@ theorem icosaAtom_leverageOf (atomIndex : Fin 6) : leverageOf (icosaAtom atomInd
   rw [leverageOf, ← dotProduct_self_eq_sum_sq]
   exact icosaAtom_leverage atomIndex
 
+/-- SHADOWED DUPLICATE — DO NOT CHANGE THE STATEMENT OF THIS OR THE NEXT THEOREM
+WITHOUT READING THIS.  `Gtz.icosaDesign_leverage` and `Gtz.icosaDesign_allHeavy`
+are ALSO declared, at the same fully-qualified names and with identical
+statements but different proofs, in `Gtz/Quantitative/GoodTripleGraph.lean`.
+Both modules are in `Gtz.lean`'s import closure, and Lean 4.32 does NOT reject
+that: it silently keeps ONE constant.  Asking the environment
+(`getModuleIdxFor?`) shows the surviving pair is
+`Gtz.Quantitative.GoodTripleGraph`'s, so THE TWO PROOFS BELOW ARE DEAD CODE in
+any module that imports both — they are elaborated when this file is checked in
+isolation and then dropped.  Nothing is unsound today, precisely because the
+statements agree; if they ever diverge, the divergence will be silent and the
+`GoodTripleGraph` version will win.  Do not conclude from a green build that no
+duplicate exists — a duplicate global with an identical type produces no
+diagnostic whatsoever.  The clean repair is to delete both proofs here and
+import `Gtz.Quantitative.GoodTripleGraph` (no cycle: it does not import this
+file), but note `icosaDesign_isFlooredSpreadDesign` below consumes
+`icosaDesign_allHeavy`, so the import is mandatory, not optional. -/
 theorem icosaDesign_leverage (atomIndex : Fin 6) :
     leverageOf (icosaDesign.atom atomIndex) = 3 := by
   rw [icosaDesign_atom]
