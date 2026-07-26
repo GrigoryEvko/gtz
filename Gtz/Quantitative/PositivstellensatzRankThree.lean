@@ -8,44 +8,51 @@ real-algebraic sentence, `DiscriminantCovering 7`, and
 Putinar/Schmuedgen half of the Positivstellensatz is unavailable for it at every
 degree, because the CLOSED tie-failure system is inhabited. This file does the
 two things that follow from that, and only those: it puts the covering in the
-coordinates a symmetry-reduced certificate needs, and it proves the first
-QUANTITATIVE lower bound on what the surviving strict-Stengle form must contain.
+coordinates a symmetry-reduced certificate needs, and it proves a combinatorial
+lower bound on the multiplier support of the surviving strict-Stengle form for
+one explicitly named sub-system.
 
 There is no certificate here. Rank three is not proved, and nothing below
 claims it is.
 
-## PROVED here (all `[propext, Classical.choice, Quot.sound]`, no `sorry`,
-## no `axiom`, no `native_decide`)
+## PROVED here (every declaration at or below
+## `[propext, Classical.choice, Quot.sound]` — 44 at it, 6 at
+## `[propext, Quot.sound]`, 3 axiom-free; no `sorry`, no `axiom`, no
+## `native_decide`)
 
 **Part I — the covering has no pivot in it.** The pivoted trace leg
-`discriminantTrace D pivot pairFirst pairSecond` is the sum of the two `2×2`
-minors of `Gram_T − I` THROUGH the pivot, so it breaks the `S_3` symmetry of the
+`discriminantTrace D pivot pairFirst pairSecond` is the sum of the two `2x2`
+minors of `Gram_T - I` THROUGH the pivot, so it breaks the `S_3` symmetry of the
 triple. Its three pivot readings sum to twice `discriminantMinorSum`, which is
-the fully symmetric `e_2(Gram_T − I)` (`discriminantTrace_pivotSum`), and one
+the fully symmetric `e_2(Gram_T - I)` (`discriminantTrace_pivotSum`), and one
 pigeonhole step upgrades that identity to an equivalence:
 
-  `Dominates D {a,b,c} ↔ 0 ≤ e_2(Gram_T − I) ∧ 0 ≤ e_3(Gram_T − I)`
+  `Dominates D {a,b,c} <-> 0 <= e_2(Gram_T - I) and 0 <= e_3(Gram_T - I)`
   (`dominates_triple_iff_symmetricLegs`, for distinct heavy atoms),
 
-hence `SymmetricCovering 7 ↔ GtzWeightedAll 3`
-(`symmetricCoveringSeven_iff_rank_three`). Both legs are now invariant under
-relabelling the triple, so the disjunction is over `C(m,3)` SUBSETS and both
-`S_m` (on atoms) and `S_3` (inside a triple) are manifest symmetries of the
-polynomials. Degrees are unchanged: `2` and `3` in the six Gram entries of the
-triple, `4` and `6` in the atom coordinates.
+hence `SymmetricCovering 7 <-> GtzWeightedAll 3`
+(`symmetricCoveringSeven_iff_rank_three`). Both legs are invariant under
+relabelling the triple (`exists_increasing_symmetricLegs`), and the existential
+over ordered triples therefore factors through the `35` increasing
+representatives: `symmetricCoveringSeven_iff_increasingTriples` states the
+covering literally over `increasingTriplesSeven`, so "the disjunction is over
+`C(7,3)` SUBSETS" is a theorem here and not a reading. Both `S_7` (on atoms) and
+`S_3` (inside a triple) are manifest symmetries of the two polynomials. Degrees
+are unchanged: `2` and `3` in the six Gram entries of the triple, `4` and `6` in
+the atom coordinates.
 
-Worth being precise about the cost: the textbook route to "a symmetric `3×3`
-matrix is positive semidefinite iff `e_1, e_2, e_3 ≥ 0`" goes through the
+Worth being precise about the cost: the textbook route to "a symmetric `3x3`
+matrix is positive semidefinite iff `e_1, e_2, e_3 >= 0`" goes through the
 spectral theorem and Descartes' rule of signs, which `Gtz.LinAlg.PsdKit`
 deliberately does not carry. That route is NOT used. The proof here is the three
 pivot readings plus `linarith`, and the `e_1` leg never appears because
-`AllHeavy` makes `e_1 = ∑ heavyExcess > 0` free (`allHeavy_heavyExcess_pos`).
-`notDominates_symmetricSignature` records the consequence: a failing all-heavy
-triple has `e_2 < 0` or `e_3 < 0` — two inequalities per triple, not three.
+`AllHeavy` makes `e_1 = sum of heavyExcess > 0` free. `notDominates_symmetricSignature`
+records the consequence: a failing all-heavy triple has `e_2 < 0` or `e_3 < 0` —
+two inequalities per triple, not three.
 
 **Part II — the tetrahedral block family.** The split tetrahedron of
 `Gtz.Quantitative.DecisionAtlasSevenThree` is one point of a whole orbit of exact
-ties. For ANY surjection `blocks : Fin 7 → Fin 4`, put tetrahedron direction
+ties. For ANY surjection `blocks : Fin 7 -> Fin 4`, put tetrahedron direction
 `blocks c` on atom `c` and split each direction's weight `1/4` equally inside its
 fibre; Parseval collapses fibrewise onto `tetraDesign`'s own Parseval identity
 (`tetraBlockDesign`). Every leverage is exactly `3`, so the design is all-heavy
@@ -55,27 +62,23 @@ distinct atoms
 
   `e_3 = 0` on the rainbow triples and `e_3 = -8` on the rest
   (`..._discriminantTie_of_rainbow`, `..._of_repeated`), so all `35` legs are
-  `≤ 0` (`tetraBlockDesign_discriminantTie_nonpos`);
-  `e_2 = 9` on the rainbow triples and `e_2 = 1` on the rest, so `e_2 ≥ 1 > 0`
-  EVERYWHERE (`tetraBlockDesign_symmetricSignature`).
-
-That last line is the mechanised form of a statement the campaign had only
-measured: on the whole split-tetrahedron tie orbit the covering is cut out by the
-DETERMINANT leg alone. Any facial reduction driven by these ties therefore acts
-on the `e_3` multiplier blocks only; the `e_2` multiplier block stays strictly
-feasible and rounds by ordinary Peyrl-Parrilo.
+  `<= 0` (`tetraBlockDesign_discriminantTie_nonpos`);
+  `e_2 = 9` on the rainbow triples and `e_2 = 1` on the rest, so `e_2 >= 1 > 0`
+  everywhere ON THIS FAMILY (`tetraBlockDesign_symmetricSignature`).
 
 `splitSevenDesign` is the member carried by
-`splitSevenDirection = ![0,1,2,3,0,1,2]` — same atoms, and the same weights
-`1/8,1/8,1/8,1/4,1/8,1/8,1/8`, since `blockLabelWeight` divides each direction's
-`1/4` by its fibre size. The two are NOT identified formally here; the family is
-used only through its own lemmas.
+`splitSevenDirection = ![0,1,2,3,0,1,2]`, and the identification is now formal:
+`splitSevenDesign_eq_tetraBlockDesign` proves the two designs EQUAL, since
+`blockLabelWeight` divides each direction's `1/4` by its fibre size and returns
+exactly `1/8, 1/8, 1/8, 1/4, 1/8, 1/8, 1/8`. Every bespoke `splitSevenDesign_*`
+lemma of `DecisionAtlasSevenThree` is therefore the `blocks = splitSevenDirection`
+instance of a Part II lemma.
 
 **Part III — the multiplier-support floor.** A strict Stengle certificate for the
 emptiness of the tie-failure system is an identity `S + P + Z = 0` with `S` in
 the multiplicative monoid generated by the strict generators, `P` in the positive
 cone, `Z` in the ideal. At any point of the CLOSED system all generators are
-`≥ 0` and the ideal vanishes, so `S ≥ 0`, `P ≥ 0` and `S + P = 0`, forcing
+`>= 0` and the ideal vanishes, so `S >= 0`, `P >= 0` and `S + P = 0`, forcing
 `S = 0`. The region's own strict generators `t_c` and `heavyExcess c` are
 strictly positive at every member of the block family, so it is the TIE factors
 that must vanish — and a product of reals vanishes exactly when one factor does.
@@ -92,43 +95,107 @@ The floor is then combinatorial, and is checked by kernel evaluation:
   `not_isStengleTieSupportSeven_of_card_le_three` — no set of at most three
   triples is a Stengle tie-support, because for every three of the `35` triples
   one of the `105` block systems makes all three share a block
-  (`blockSearchSucceeds_true`, `35^3` cases, decided in the kernel);
+  (`hasSharedBlockForEveryTrio_true`, `35^3` cases, decided in the kernel);
 
   `four_le_card_of_isStengleTieSupportSeven` — every Stengle tie-support has at
   least FOUR triples.
 
-Since `discriminantTie` has degree `3` in the `28` Gram entries and `6` in the
-`21` atom coordinates, the monoid part of any strict Stengle certificate for
-`DiscriminantCovering 7` has degree at least `12` in the Gram entries and at
-least `24` in the atom coordinates. That is the first mechanised degree bound of
-the campaign; the sibling obstruction file had it recorded as computed only.
+## INFERRED, NOT MECHANISED — the degree reading, and the two caveats that
+## must travel with it
 
-## CITED (proved elsewhere in this repo, used here)
+What Part III mechanises is a CARDINALITY floor, `4 <= support.card`. Reading a
+degree off it is an inference on top, and it is sound only with both of the
+following attached.
+
+(i) SCOPE. `IsStengleTieSupportSeven` quantifies over designs at which EVERY tie
+leg is `<= 0`. The floor therefore bounds a certificate for the emptiness of the
+ALL-TIE strict system `{-discriminantTie_T > 0 : T in the 35 triples}`, NOT for
+`DiscriminantCovering 7`. The two differ, and the gap is mechanised here:
+`exists_tieNonneg_notDominates_seven` exhibits a member of the block family at a
+NON-thin surjection (`crowdedBlockMap = ![0,0,0,1,2,3,3]`, three atoms on one
+direction) whose triple `(0,1,2)` has `e_3 = 8 > 0` and `e_2 = -15 < 0`, hence
+does not dominate. So "some tie leg is nonnegative" is strictly weaker than "some
+triple dominates"; emptiness of the tie system is necessary for the covering and
+never sufficient, and a certificate for it would not close rank three. In
+particular the floor constrains NEITHER the atlas route
+(`exists_atlas_iff_discriminantCovering`, which the repo flags as the live one)
+NOR any certificate whose monoid part uses an `e_2` generator: at the block
+family `e_2 >= 1 > 0`, so such a factor is strictly positive there and the
+vanishing argument does not run.
+
+(ii) PRESENTATION. Degrees are read off the `35` strict generators
+`-discriminantTie_T`, each of degree `3` in the `28` Gram entries and `6` in the
+`21` atom coordinates, giving `4 * 3 = 12` and `4 * 6 = 24`. That reading is
+specific to this presentation. An equivalent basic system obtained by lifting —
+one auxiliary variable `u_T` per triple, ideal generator
+`(e_2(T) - u_T) * (e_3(T) - u_T) = 0`, cone generators `e_2(T) - u_T >= 0` and
+`e_3(T) - u_T >= 0`, strict generator `-u_T > 0` — is empty exactly when
+`DiscriminantCovering 7` holds, and its strict generators have degree `1`
+overall and degree `0` in the Gram entries. The support argument still yields
+four, but `4 * 0 = 0`. The cardinality floor is presentation-independent; the
+degree floor is not.
+
+## CITED (proved elsewhere in this repo, used in the proofs below)
 
 `dominates_triple_iff_discriminantSystem`, `discriminantTie_swap`,
-`discriminantMinorSum`, `DiscriminantCovering`,
-`discriminantCovering_seven_iff_rank_three`, `allHeavy_heavyExcess_pos`
+`discriminantMinorSum`, `discriminantTie`, `discriminantTrace`, `heavyExcess`,
+`atomPairing`, `atomPairing_comm`, `DiscriminantCovering`,
+`discriminantCovering_seven_iff_rank_three`
 (`Gtz.Quantitative.DiscriminantSystem`); `tetraAtom`, `tetraAtom_dot_self`,
 `tetraDesign` (`Gtz.Design.StressCertificate`); `tetraAtom_dot_of_ne`,
-`increasingTriplesSeven`, `increasingTriplesSeven_card`,
-`increasingTriplesSeven_distinct`, `splitSevenDirection`
-(`Gtz.Quantitative.DecisionAtlasSevenThree`);
+`splitSevenDirection`, `splitSevenDesign`, `increasingTriplesSeven`,
+`increasingTriplesSeven_card`, `increasingTriplesSeven_distinct`
+(`Gtz.Quantitative.DecisionAtlasSevenThree`); `WeightedDesign.ext`
+(`Gtz.Reduction.RatCertificateInstance`).
+
+## REFERENCED IN PROSE ONLY (not imported, not used in any proof here)
+
 `not_hasUniformTieAggregateSeven`, `closedTieFailure_inhabited_seven`
-(`Gtz.Certificates.PositivstellensatzObstruction`) for the Putinar half this
-file starts from.
+(`Gtz.Certificates.PositivstellensatzObstruction`) for the Putinar half this file
+starts from; `exists_atlas_iff_discriminantCovering`
+(`Gtz.Quantitative.DecisionAtlasSevenThree`); `allHeavy_heavyExcess_pos`
+(`Gtz.Quantitative.DiscriminantSystem`) for the vacuity of the `e_1` leg;
+`splitClassDesign_isTie` (`Gtz.Ties.SplitClassTieFamily`), `sharpDesign_isTie`
+and `sharpDesign_not_rotated_tetrahedron` (`Gtz.Ties.NonTetrahedralTie`) for the
+tie families beyond this one; `discriminantTie_swapPair`
+(`Gtz.Quantitative.GoodTripleGraph`), the sibling transposition of
+`discriminantTie_rotate`.
 
 ## MEASURED (computed outside Lean, NOT proved here, stated as such)
 
-* FOUR IS SHARP. `{012, 013, 024, 034}` does meet the rainbow family of every one
-  of the `105` block systems, and exactly `5355` of the `52360` four-element
-  supports do. Only the lower bound is mechanised; the upper bound is an
-  exhaustive search in rational/integer arithmetic outside Lean. So the degree
-  floor `12` cannot be raised by this orbit alone — raising it needs tie orbits
-  beyond the split tetrahedron.
-* The `(7,3)` tie locus is reported to carry eight orbits, one per rank-three
-  series-parallel matroid on seven elements; only the split-tetrahedron orbit is
-  mechanised anywhere in this repo, and the classification is a blind numerical
-  search. Every additional orbit can only raise the floor.
+* FOUR IS SHARP FOR THE BLOCK FAMILY. `{012, 013, 024, 034}` does meet the
+  rainbow family of every one of the `105` block systems, and exactly `5355` of
+  the `52360` four-element subsets of the `35` triples do. Only the lower bound
+  is mechanised; the upper bound is an exhaustive search in integer arithmetic
+  outside Lean. This is sharpness for the block-family HITTING condition, not for
+  `IsStengleTieSupportSeven` itself, which quantifies over every all-heavy
+  tie-failure design and whose true minimum may exceed four. So the block family
+  alone cannot raise the floor above four.
+* THE `e_2` LEG IS NOT UNIFORMLY POSITIVE ON THE TIE STRATUM.
+  `tetraBlockDesign_symmetricSignature` gives `e_2 >= 1` on the block family and
+  ONLY there; the statement does not extend to ties at large. Counter-witness
+  inside this repo's own already-mechanised `Gtz.Ties.SplitClassTieFamily`:
+  `splitClassDesign` at class map `![0,1,2,3,0,1,2]` with class totals
+  `(p, q, q, q)`, `q = (19 - sqrt 217)/18 = 0.2371711...`, `p = 1 - 3q =
+  0.2884867...`, is all-heavy, has all `35` tie legs `<= 0`, and has `e_2 = 0` at
+  exactly the four triples `(0,1,5), (0,2,6), (1,4,5), (2,4,6)`; pushing to
+  `p = 0.55, q = 0.15` gives `min e_2 = -5.4646...`. Consequently the claim that
+  facial reduction driven by ties touches only the determinant-leg multipliers,
+  leaving the `e_2` block strictly feasible, is FALSE outside the uniform
+  class-total members. Uniform class totals `1/4` reproduce the block family
+  exactly (`heavyExcess = 2`, pairings `3` and `-1`), which is why the two
+  pictures agree there and only there.
+* OTHER TIE ORBITS ARE ALREADY MECHANISED HERE, and they are not special cases of
+  the block family: `splitClassDesign_isTie` is an exact tie for EVERY surjection
+  onto the classes and EVERY weight vector, at every size, and `sharpDesign_isTie`
+  together with `sharpDesign_not_rotated_tetrahedron` is a tie PROVED not to be a
+  rotated regular tetrahedron. Neither raises the floor: the `e_3`-vanishing set
+  of a `splitClassDesign` is fixed by the class map and not by the weights, so it
+  is the same rainbow set the block family already pins. What remains measured
+  and unproved is the reported count of eight `(7,3)` tie orbits, one per
+  rank-three series-parallel matroid on seven elements; that classification is a
+  blind numerical search, and any orbit outside the class-map picture could raise
+  the floor.
 * Calibration for how far out of reach a certificate at this degree is: no
   machine-checked Positivstellensatz certificate above roughly six variables and
   degree eight exists in any proof assistant, and a sum-of-squares Gram basis at
@@ -139,15 +206,15 @@ file starts from.
 
 The rule is that a certificate for the REAL statement must FAIL over `C`, since
 `Gtz.Complex.SharpConstantLedger` mechanises a complex `(6,3)` counterexample:
-the shared-axis trine `g_j = (√2, 0, ω^j)`, `g_{3+j} = (0, √2, ω^j)` at uniform
-weight `1/6`, exactly Parseval, every leverage exactly `3` (all-heavy), with
-NONE of its twenty triples dominating.
+the shared-axis trine `g_j = (sqrt 2, 0, w^j)`, `g_{3+j} = (0, sqrt 2, w^j)` at
+uniform weight `1/6`, exactly Parseval, every leverage exactly `3` (all-heavy),
+with NONE of its twenty triples dominating.
 
 Applied to Part I. The symmetric reformulation is FIELD-BLIND: `e_1, e_2, e_3` of
-a Hermitian `3×3` Gram are real, the pivot-sum identity is a `ring` fact over any
-commutative ring, and the pigeonhole step uses only the order on `ℝ`. So the
-reformulation cannot by itself decide anything, which is exactly right for an
-equivalence with a statement that is TRUE over `R` and FALSE over `C`. Its
+a Hermitian `3x3` Gram are real, the pivot-sum identity is a `ring` fact over any
+commutative ring, and the pigeonhole step uses only the order on the reals. So
+the reformulation cannot by itself decide anything, which is exactly right for an
+equivalence with a statement that is TRUE over the reals and FALSE over `C`. Its
 ACHIEVABILITY is what is field-sensitive, and the numbers say so: at the trine
 every one of the twenty triples has
 
@@ -155,29 +222,30 @@ every one of the twenty triples has
 
 so `e_2 > 0` everywhere and the symmetric covering fails over `C` through the
 DETERMINANT leg alone. Put beside `tetraBlockDesign_symmetricSignature`, where
-the real block family has `e_2 ∈ {1, 9} > 0` and `e_3 ∈ {-8, 0} ≤ 0` with `0`
+the real block family has `e_2 in {1, 9} > 0` and `e_3 in {-8, 0} <= 0` with `0`
 ATTAINED, the two pictures have the same shape and differ in exactly one place:
-whether `e_3` can reach `0`. Every gram-visible quantity except the triangle
-monomial `⟨g_a,g_b⟩⟨g_b,g_c⟩⟨g_c,g_a⟩` agrees; over `R` its square equals the
-product of the three squared pairings and over `C` it is only `≤`. So a
-certificate must give the generator `τ_T^2 − ρ_ab ρ_bc ρ_ca` a multiplier of
-INDEFINITE sign — the direction unavailable over `C`, and the content of
+whether `e_3` can reach `0`. Every Gram-visible quantity except the triangle
+monomial `<g_a,g_b> <g_b,g_c> <g_c,g_a>` agrees; over the reals its square equals
+the product of the three squared pairings and over `C` it is only `<=`. So a
+certificate must give the generator `tau_T^2 - rho_ab rho_bc rho_ca` a multiplier
+of INDEFINITE sign — the direction unavailable over `C`, and the content of
 `Gtz.Quantitative.PhaseFreeNoGo`. The trine figures are MEASURED (60-digit
 recomputation of the mechanised witness), not proved here.
 
 Applied to Part III. The deliverable is a NEGATIVE result about certificate
-shape, so it cannot prove the false complex statement and the test does not
-apply to it as a falsifier. It does constrain the objects, and the constraint is
-met: the whole argument runs on the VANISHING SET of the tie leg, which the real
-block family has (`e_3 = 0` on the rainbow triples) and the complex trine does
-not (`e_3 ∈ {-2, -10}`, strictly negative at every one of its twenty triples).
-The support floor is therefore a statement about real tie geometry with no
-complex counterpart to leak into.
+shape, so it cannot prove the false complex statement and the test does not apply
+to it as a falsifier. It does constrain the objects, and the constraint is met:
+the whole argument runs on the VANISHING SET of the tie leg, which the real block
+family has (`e_3 = 0` on the rainbow triples) and the complex trine does not
+(`e_3 in {-2, -10}`, strictly negative at every one of its twenty triples). The
+support floor is therefore a statement about real tie geometry with no complex
+counterpart to leak into.
 -/
 import Mathlib
 import Gtz.Core.Basic
 import Gtz.Quantitative.DiscriminantSystem
 import Gtz.Quantitative.DecisionAtlasSevenThree
+import Gtz.Reduction.RatCertificateInstance
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -193,17 +261,17 @@ variable {m : ℕ}
 
 `dominates_triple_iff_discriminantSystem` reads a triple through a chosen PIVOT:
 the trace leg `discriminantTrace D pivot pairFirst pairSecond` is the sum of the
-two `2×2` minors of `Gram − I` THROUGH that pivot, so it is not a symmetric
+two `2x2` minors of `Gram - I` THROUGH that pivot, so it is not a symmetric
 function of the triple. `discriminantSystem_pivot_independent` says the truth
 value does not depend on the choice, but the polynomial does, and a
 symmetry-reduced certificate cannot afford a chart that breaks `S_3`.
 
 This part removes the pivot from the polynomials themselves. The three pivot
 readings of the trace leg sum to twice `discriminantMinorSum`, which IS the
-second elementary symmetric function `e_2(Gram_T − I)` and is fully symmetric;
+second elementary symmetric function `e_2(Gram_T - I)` and is fully symmetric;
 one pigeonhole step turns the sum identity into an equivalence. No spectral
-theorem is used anywhere: the standard route to "a symmetric `3×3` matrix is
-positive semidefinite iff `e_1, e_2, e_3 ≥ 0`" goes through eigenvalues and
+theorem is used anywhere: the standard route to "a symmetric `3x3` matrix is
+positive semidefinite iff `e_1, e_2, e_3 >= 0`" goes through eigenvalues and
 Descartes' rule, and that route is not needed here. -/
 
 /-- Reordering the three atoms of a triple does not change the underlying subset.
@@ -219,8 +287,11 @@ private theorem tripleSubset_rotate (first second third : Fin m) :
   tauto
 
 /-- **The tie leg is a cyclic invariant of the triple.** `discriminantTie` is
-`det(Gram_T − I)` and determinants do not see the labelling; combined with
-`discriminantTie_swap` this gives the full `S_3` invariance. -/
+`det(Gram_T - I)` and determinants do not see the labelling; combined with
+`discriminantTie_swap` this gives the full `S_3` invariance.
+`Gtz.Quantitative.GoodTripleGraph.discriminantTie_swapPair` is the sibling
+transposition, and either of the two together with `discriminantTie_swap`
+generates the same group. -/
 theorem discriminantTie_rotate (D : WeightedDesign m 3) (first second third : Fin m) :
     discriminantTie D first second third = discriminantTie D third first second := by
   simp only [discriminantTie, atomPairing_comm D third first, atomPairing_comm D third second]
@@ -243,7 +314,7 @@ theorem discriminantMinorSum_rotate (D : WeightedDesign m 3) (first second third
 
 /-- **The pivot sum**: the three pivot readings of the trace leg add up to twice
 the minor sum. Each unordered pair of the triple lies on exactly two of the three
-readings, so the sum double counts `e_2(Gram_T − I)`. Pure `ring`, after
+readings, so the sum double counts `e_2(Gram_T - I)`. Pure `ring`, after
 symmetrising the pairings. -/
 theorem discriminantTrace_pivotSum (D : WeightedDesign m 3) (first second third : Fin m) :
     discriminantTrace D first second third + discriminantTrace D second first third
@@ -255,7 +326,7 @@ theorem discriminantTrace_pivotSum (D : WeightedDesign m 3) (first second third 
 
 /-- **THE PIVOT-FREE NARROWING.** For a triple of distinct HEAVY atoms,
 domination is exactly the pair of `S_3`-invariant polynomial inequalities
-`discriminantMinorSum ≥ 0` and `discriminantTie ≥ 0`.
+`discriminantMinorSum >= 0` and `discriminantTie >= 0`.
 
 Forward: domination gives the trace leg at all three pivots, and their sum is
 twice the minor sum. Backward: the minor sum being nonnegative makes the sum of
@@ -302,8 +373,9 @@ theorem dominates_triple_iff_symmetricLegs (D : WeightedDesign m 3)
 design has a triple of distinct atoms at which the two `S_3`-INVARIANT legs are
 both nonnegative. Degrees `2` and `3` in the six Gram entries of the triple, as
 before; what is new is that both legs are now invariant under relabelling the
-triple, so the disjunction is over `C(m,3)` SUBSETS rather than ordered
-readings. -/
+triple, so the ordered existential factors through the `C(m,3)` subsets —
+`symmetricCoveringSeven_iff_increasingTriples` states that factoring literally at
+`m = 7`. -/
 def SymmetricCovering (m : ℕ) : Prop :=
   ∀ D : WeightedDesign m 3, AllHeavy D →
     ∃ first second third : Fin m,
@@ -335,8 +407,8 @@ theorem symmetricCovering_iff_discriminantCovering (size : ℕ) :
 
 /-- **The polynomial frontier of rank three, in `S_3`-invariant coordinates.**
 GTZ at rank three for every `n` IS the single sentence: every all-heavy weighted
-`(7,3)` design has one of its `35` triples at which `e_2(Gram_T − I) ≥ 0` and
-`e_3(Gram_T − I) ≥ 0`. This is the shape a symmetry-reduced semidefinite
+`(7,3)` design has one of its `35` triples at which `e_2(Gram_T - I) >= 0` and
+`e_3(Gram_T - I) >= 0`. This is the shape a symmetry-reduced semidefinite
 relaxation wants: the `S_7` action on atoms and the `S_3` action inside a triple
 are both manifest symmetries of the two legs. -/
 theorem symmetricCoveringSeven_iff_rank_three :
@@ -345,8 +417,9 @@ theorem symmetricCoveringSeven_iff_rank_three :
 
 /-- **The failure signature of a triple, pivot-free.** An all-heavy triple that
 does NOT dominate has a negative `e_2` or a negative `e_3` — never a "negative
-trace", since `e_1(Gram_T − I) = ∑ heavyExcess > 0` is free under `AllHeavy`
-(`allHeavy_heavyExcess_pos`). Two inequalities per triple, not three. -/
+trace", since `e_1(Gram_T - I)` is the sum of the three heavy excesses and
+`AllHeavy` makes it positive for free (`allHeavy_heavyExcess_pos`). Two
+inequalities per triple, not three. -/
 theorem notDominates_symmetricSignature (D : WeightedDesign m 3)
     {first second third : Fin m} (hfirstSecond : first ≠ second)
     (hfirstThird : first ≠ third) (hsecondThird : second ≠ third)
@@ -361,6 +434,123 @@ theorem notDominates_symmetricSignature (D : WeightedDesign m 3)
   exact hfails ((dominates_triple_iff_symmetricLegs D hfirstSecond hfirstThird
     hsecondThird hfirstHeavy hsecondHeavy hthirdHeavy).mpr hneither)
 
+/-! ### The leg pair depends only on the SUBSET
+
+`discriminantTie_swap` with `discriminantTie_rotate`, and
+`discriminantMinorSum_swapFirstTwo` with `discriminantMinorSum_rotate`, give both
+legs invariance under a transposition and under a three-cycle — together, under
+all of `S_3`. Spelling the remaining three permutations out lets the ordered
+existential of `SymmetricCovering` be replaced by one over the increasing
+representatives, which is what makes "the disjunction is over `C(m,3)` subsets"
+a theorem rather than a reading. -/
+
+private theorem symmetricLegs_swapFirstTwo (D : WeightedDesign m 3)
+    (first second third : Fin m) :
+    discriminantMinorSum D first second third = discriminantMinorSum D second first third
+      ∧ discriminantTie D first second third = discriminantTie D second first third :=
+  ⟨discriminantMinorSum_swapFirstTwo D first second third,
+    discriminantTie_swap D first second third⟩
+
+private theorem symmetricLegs_rotate (D : WeightedDesign m 3) (first second third : Fin m) :
+    discriminantMinorSum D first second third = discriminantMinorSum D third first second
+      ∧ discriminantTie D first second third = discriminantTie D third first second :=
+  ⟨discriminantMinorSum_rotate D first second third,
+    discriminantTie_rotate D first second third⟩
+
+private theorem symmetricLegs_swapLastTwo (D : WeightedDesign m 3)
+    (first second third : Fin m) :
+    discriminantMinorSum D first second third = discriminantMinorSum D first third second
+      ∧ discriminantTie D first second third = discriminantTie D first third second := by
+  refine ⟨?_, ?_⟩
+  · rw [(symmetricLegs_rotate D first second third).1,
+      (symmetricLegs_swapFirstTwo D third first second).1]
+  · rw [(symmetricLegs_rotate D first second third).2,
+      (symmetricLegs_swapFirstTwo D third first second).2]
+
+private theorem symmetricLegs_rotateTwice (D : WeightedDesign m 3)
+    (first second third : Fin m) :
+    discriminantMinorSum D first second third = discriminantMinorSum D second third first
+      ∧ discriminantTie D first second third = discriminantTie D second third first := by
+  refine ⟨?_, ?_⟩
+  · rw [(symmetricLegs_rotate D first second third).1,
+      (symmetricLegs_rotate D third first second).1]
+  · rw [(symmetricLegs_rotate D first second third).2,
+      (symmetricLegs_rotate D third first second).2]
+
+private theorem symmetricLegs_reverse (D : WeightedDesign m 3)
+    (first second third : Fin m) :
+    discriminantMinorSum D first second third = discriminantMinorSum D third second first
+      ∧ discriminantTie D first second third = discriminantTie D third second first := by
+  refine ⟨?_, ?_⟩
+  · rw [(symmetricLegs_swapFirstTwo D first second third).1,
+      (symmetricLegs_rotate D second first third).1]
+  · rw [(symmetricLegs_swapFirstTwo D first second third).2,
+      (symmetricLegs_rotate D second first third).2]
+
+/-- **Both legs are functions of the SUBSET.** Any triple of distinct atoms has
+the same minor sum and the same tie leg as its increasing representative. Six
+orderings, each discharged by one of the five permutation identities above. -/
+theorem exists_increasing_symmetricLegs (D : WeightedDesign m 3)
+    {first second third : Fin m} (hfirstSecond : first ≠ second)
+    (hfirstThird : first ≠ third) (hsecondThird : second ≠ third) :
+    ∃ least middle greatest : Fin m, least < middle ∧ middle < greatest
+      ∧ discriminantMinorSum D first second third
+          = discriminantMinorSum D least middle greatest
+      ∧ discriminantTie D first second third = discriminantTie D least middle greatest := by
+  rcases lt_trichotomy first second with hfirstLtSecond | hfirstEqSecond | hsecondLtFirst
+  · rcases lt_trichotomy second third with hsecondLtThird | hsecondEqThird | hthirdLtSecond
+    · exact ⟨first, second, third, hfirstLtSecond, hsecondLtThird, rfl, rfl⟩
+    · exact absurd hsecondEqThird hsecondThird
+    · rcases lt_trichotomy first third with hfirstLtThird | hfirstEqThird | hthirdLtFirst
+      · exact ⟨first, third, second, hfirstLtThird, hthirdLtSecond,
+          (symmetricLegs_swapLastTwo D first second third).1,
+          (symmetricLegs_swapLastTwo D first second third).2⟩
+      · exact absurd hfirstEqThird hfirstThird
+      · exact ⟨third, first, second, hthirdLtFirst, hfirstLtSecond,
+          (symmetricLegs_rotate D first second third).1,
+          (symmetricLegs_rotate D first second third).2⟩
+  · exact absurd hfirstEqSecond hfirstSecond
+  · rcases lt_trichotomy first third with hfirstLtThird | hfirstEqThird | hthirdLtFirst
+    · exact ⟨second, first, third, hsecondLtFirst, hfirstLtThird,
+        (symmetricLegs_swapFirstTwo D first second third).1,
+        (symmetricLegs_swapFirstTwo D first second third).2⟩
+    · exact absurd hfirstEqThird hfirstThird
+    · rcases lt_trichotomy second third with hsecondLtThird | hsecondEqThird | hthirdLtSecond
+      · exact ⟨second, third, first, hsecondLtThird, hthirdLtFirst,
+          (symmetricLegs_rotateTwice D first second third).1,
+          (symmetricLegs_rotateTwice D first second third).2⟩
+      · exact absurd hsecondEqThird hsecondThird
+      · exact ⟨third, second, first, hthirdLtSecond, hsecondLtFirst,
+          (symmetricLegs_reverse D first second third).1,
+          (symmetricLegs_reverse D first second third).2⟩
+
+/-- **The covering, indexed by the `35` SUBSETS.** `SymmetricCovering 7` says
+exactly that every all-heavy weighted `(7,3)` design has one of the `35`
+increasing triples at which both `S_3`-invariant legs are nonnegative. The
+ordered existential of the definition and this subset-indexed one are the same
+sentence, so the disjunction really is over `C(7,3)` subsets and not over the
+`210` ordered readings. -/
+theorem symmetricCoveringSeven_iff_increasingTriples :
+    SymmetricCovering 7 ↔
+      ∀ design : WeightedDesign 7 3, AllHeavy design →
+        ∃ triple ∈ increasingTriplesSeven,
+          0 ≤ discriminantMinorSum design triple.1 triple.2.1 triple.2.2
+            ∧ 0 ≤ discriminantTie design triple.1 triple.2.1 triple.2.2 := by
+  constructor
+  · intro hcover design hheavy
+    obtain ⟨first, second, third, hfirstSecond, hfirstThird, hsecondThird, hminor, htie⟩ :=
+      hcover design hheavy
+    obtain ⟨least, middle, greatest, hleastLt, hmiddleLt, hminorEq, htieEq⟩ :=
+      exists_increasing_symmetricLegs design hfirstSecond hfirstThird hsecondThird
+    exact ⟨(least, middle, greatest),
+      Finset.mem_filter.mpr ⟨Finset.mem_univ _, hleastLt, hmiddleLt⟩,
+      hminorEq ▸ hminor, htieEq ▸ htie⟩
+  · intro hcover design hheavy
+    obtain ⟨triple, hmem, hminor, htie⟩ := hcover design hheavy
+    obtain ⟨hfirstSecond, hfirstThird, hsecondThird⟩ := increasingTriplesSeven_distinct hmem
+    exact ⟨triple.1, triple.2.1, triple.2.2, hfirstSecond, hfirstThird, hsecondThird,
+      hminor, htie⟩
+
 /-! ## Part II. The tetrahedral block family
 
 The split tetrahedron of `Gtz.Quantitative.DecisionAtlasSevenThree` is ONE point
@@ -368,11 +558,12 @@ of a whole orbit of exact ties: put the four regular-tetrahedron directions on
 the seven atoms according to any partition into blocks of size at most two, and
 split each direction's weight `1/4` equally among the atoms carrying it. The
 resulting design is again exactly Parseval, again all-heavy with every leverage
-`3`, and again has all `35` tie legs `≤ 0`, vanishing exactly on the triples that
+`3`, and again has all `35` tie legs `<= 0`, vanishing exactly on the triples that
 carry three distinct directions.
 
-`splitSevenDesign` is the member with blocks `![0,1,2,3,0,1,2]`. The whole orbit
-is needed for Part III: a single member pins only one rainbow family. -/
+`splitSevenDesign` is the member with blocks `![0,1,2,3,0,1,2]`, and
+`splitSevenDesign_eq_tetraBlockDesign` identifies the two on the nose. The whole
+orbit is needed for Part III: a single member pins only one rainbow family. -/
 
 /-- The atoms carrying a given block label. -/
 def blockFibre (blocks : Fin 7 → Fin 4) (label : Fin 4) : Finset (Fin 7) :=
@@ -426,7 +617,7 @@ private theorem blockFibre_sum_smul {blocks : Fin 7 → Fin 4}
   exact blockFibre_card_mul_labelWeight hsurjective label
 
 /-- **The tetrahedral block design.** Atom `c` carries tetrahedron direction
-`blocks c` and weight `1/(4 · |fibre|)`. Parseval collapses fibrewise onto
+`blocks c` and weight `1/(4 * |fibre|)`. Parseval collapses fibrewise onto
 `tetraDesign`'s own Parseval identity — the only hypothesis needed is that every
 direction is used. -/
 noncomputable def tetraBlockDesign (blocks : Fin 7 → Fin 4)
@@ -523,7 +714,7 @@ private theorem tetraBlockDesign_squaredPairings_of_rainbow {blocks : Fin 7 → 
     tetraBlockDesign_atomPairing_of_differentBlock hsurjective hpivotFirst,
     tetraBlockDesign_atomPairing_of_differentBlock hsurjective hpivotSecond⟩
 
-/-- **A rainbow triple TIES**: `discriminantTie = 8 − 6 − 2 = 0` exactly. -/
+/-- **A rainbow triple TIES**: `discriminantTie = 8 - 6 - 2 = 0` exactly. -/
 theorem tetraBlockDesign_discriminantTie_of_rainbow {blocks : Fin 7 → Fin 4}
     (hsurjective : Function.Surjective blocks) {pivot pairFirst pairSecond : Fin 7}
     (hpivotFirst : blocks pivot ≠ blocks pairFirst)
@@ -536,7 +727,7 @@ theorem tetraBlockDesign_discriminantTie_of_rainbow {blocks : Fin 7 → Fin 4}
   rw [tetraBlockDesign_discriminantTie_eq, hpair, hfirst, hsecond]
   norm_num
 
-/-- **A rainbow triple has minor sum `9`**: `12 − 3`. -/
+/-- **A rainbow triple has minor sum `9`**: `12 - 3`. -/
 theorem tetraBlockDesign_discriminantMinorSum_of_rainbow {blocks : Fin 7 → Fin 4}
     (hsurjective : Function.Surjective blocks) {pivot pairFirst pairSecond : Fin 7}
     (hpivotFirst : blocks pivot ≠ blocks pairFirst)
@@ -638,7 +829,7 @@ private theorem tetraBlockDesign_squaredPairingSum_of_repeated {blocks : Fin 7 �
       tetraBlockDesign_atomPairing_of_differentBlock hthin.1 hpivotSecondDifferent]
     norm_num
 
-/-- **A triple repeating a direction FAILS by exactly `-8`**: `8 − 22 + 6`. -/
+/-- **A triple repeating a direction FAILS by exactly `-8`**: `8 - 22 + 6`. -/
 theorem tetraBlockDesign_discriminantTie_of_repeated {blocks : Fin 7 → Fin 4}
     (hthin : IsThinBlockMap blocks) {pivot pairFirst pairSecond : Fin 7}
     (hpivotFirst : pivot ≠ pairFirst) (hpivotSecond : pivot ≠ pairSecond)
@@ -658,8 +849,8 @@ theorem tetraBlockDesign_discriminantTie_of_repeated {blocks : Fin 7 → Fin 4}
     hsquares, hproduct]
   norm_num
 
-/-- **A triple repeating a direction has minor sum `1`**: `12 − 11`. Strictly
-positive — the `e_2` leg never binds on this orbit. -/
+/-- **A triple repeating a direction has minor sum `1`**: `12 - 11`. Strictly
+positive — the `e_2` leg never binds ON THIS FAMILY. -/
 theorem tetraBlockDesign_discriminantMinorSum_of_repeated {blocks : Fin 7 → Fin 4}
     (hthin : IsThinBlockMap blocks) {pivot pairFirst pairSecond : Fin 7}
     (hpivotFirst : pivot ≠ pairFirst) (hpivotSecond : pivot ≠ pairSecond)
@@ -672,8 +863,8 @@ theorem tetraBlockDesign_discriminantMinorSum_of_repeated {blocks : Fin 7 → Fi
   rw [tetraBlockDesign_discriminantMinorSum_eq, hsquares]
   norm_num
 
-/-- **Every block design is a point of the CLOSED tie-failure system**: all `35`
-tie legs are `≤ 0`. -/
+/-- **Every THIN block design is a point of the CLOSED tie-failure system**: all
+`35` tie legs are `<= 0`. -/
 theorem tetraBlockDesign_discriminantTie_nonpos {blocks : Fin 7 → Fin 4}
     (hthin : IsThinBlockMap blocks) {pivot pairFirst pairSecond : Fin 7}
     (hpivotFirst : pivot ≠ pairFirst) (hpivotSecond : pivot ≠ pairSecond)
@@ -694,13 +885,18 @@ theorem tetraBlockDesign_discriminantTie_nonpos {blocks : Fin 7 → Fin 4}
   · rw [tetraBlockDesign_discriminantTie_of_rainbow hthin.1 hpivotFirstSame
       hpivotSecondSame hpairSame]
 
-/-- **The tie orbit is cut out by the DETERMINANT leg alone.** At every member of
-the tetrahedral block family and at every one of its `35` triples, the symmetric
-`e_2` leg is at least `1` while the `e_3` leg is at most `0`, vanishing exactly
-on the rainbow triples. So on this stratum the covering has no slack in `e_3` and
-a uniform positive floor in `e_2`: any facial reduction driven by these ties acts
-on the determinant-leg multipliers only, and the `e_2` multiplier block stays
-strictly feasible. -/
+/-- **The block family's ties are cut out by the DETERMINANT leg alone.** At every
+member of the tetrahedral block family with a THIN map, and at every one of its
+`35` triples, the symmetric `e_2` leg is at least `1` while the `e_3` leg is at
+most `0`, vanishing exactly on the rainbow triples.
+
+SCOPE, and it matters for anyone reading this as facial-reduction data: the
+statement is about THIS family and does not extend to the tie stratum at large.
+The header records the measured counter-witness — inside
+`Gtz.Ties.SplitClassTieFamily`, a `splitClassDesign` at non-uniform class totals
+is all-heavy, has all `35` tie legs `<= 0`, and has `e_2 = 0` at four triples, so
+"the `e_2` multiplier block stays strictly feasible on the tie stratum" is false
+outside the uniform class-total members. -/
 theorem tetraBlockDesign_symmetricSignature {blocks : Fin 7 → Fin 4}
     (hthin : IsThinBlockMap blocks) {pivot pairFirst pairSecond : Fin 7}
     (hpivotFirst : pivot ≠ pairFirst) (hpivotSecond : pivot ≠ pairSecond)
@@ -722,6 +918,40 @@ theorem tetraBlockDesign_symmetricSignature {blocks : Fin 7 → Fin 4}
       hpivotSecondSame hpairSame]
     norm_num
 
+/-! ### The split tetrahedron is the member at `![0,1,2,3,0,1,2]`
+
+`DecisionAtlasSevenThree` builds `splitSevenDesign` by hand, with the weight
+vector written out. It is exactly `tetraBlockDesign splitSevenDirection`, since
+`blockLabelWeight` divides each direction's `1/4` by its fibre size and the three
+duplicated directions have fibre size two. Identifying them turns every bespoke
+`splitSevenDesign_*` lemma there into an instance of a Part II lemma. -/
+
+theorem splitSevenDirection_surjective : Function.Surjective splitSevenDirection := by decide
+
+/-- The three duplicated directions carry weight `1/8` per atom, the singleton
+direction `1/4`. -/
+theorem blockLabelWeight_splitSeven (label : Fin 4) :
+    blockLabelWeight splitSevenDirection label = if label = 3 then 1/4 else 1/8 := by
+  have hcard : (blockFibre splitSevenDirection label).card = if label = 3 then 1 else 2 := by
+    revert label; decide
+  rw [blockLabelWeight, hcard]
+  by_cases hsingleton : label = 3
+  · rw [if_pos hsingleton, if_pos hsingleton]; norm_num
+  · rw [if_neg hsingleton, if_neg hsingleton]; norm_num
+
+/-- **The split tetrahedron IS a block design.** Same atoms by definition, same
+weights by `blockLabelWeight_splitSeven`, and the remaining fields are
+propositions. -/
+theorem splitSevenDesign_eq_tetraBlockDesign :
+    splitSevenDesign
+      = tetraBlockDesign splitSevenDirection splitSevenDirection_surjective := by
+  refine WeightedDesign.ext rfl ?_
+  funext atomIndex
+  show (![1/8, 1/8, 1/8, 1/4, 1/8, 1/8, 1/8] : Fin 7 → ℝ) atomIndex
+      = blockLabelWeight splitSevenDirection (splitSevenDirection atomIndex)
+  rw [blockLabelWeight_splitSeven]
+  fin_cases atomIndex <;> norm_num [splitSevenDirection] <;> decide
+
 /-! ## Part III. The multiplier-support floor of a Stengle certificate
 
 `Gtz.Certificates.PositivstellensatzObstruction` rules out the whole
@@ -732,32 +962,87 @@ Stengle form, whose multiplicative-monoid part is a genuine product
 
   `S = (product over a support of the strict tie generators) * (region factors)`.
 
-At any point of the CLOSED system the identity `S + P + Z = 0` forces `S ≥ 0`,
-`P ≥ 0`, `Z = 0` and hence `S = 0`; the region factors `t_c` and
+At any point of the CLOSED system the identity `S + P + Z = 0` forces `S >= 0`,
+`P >= 0`, `Z = 0` and hence `S = 0`; the region factors `t_c` and
 `heavyExcess c` are strictly positive there, so it is the TIE factors that must
 vanish. That is the whole content of `IsStengleTieSupportSeven` below, and it is
 a statement about the SUPPORT only — multiplicities are irrelevant to vanishing.
 
+WHAT THIS BOUNDS, EXACTLY. `IsStengleTieSupportSeven` quantifies over designs at
+which every tie leg is `<= 0`, so the floor is about the ALL-TIE strict system,
+not about `DiscriminantCovering 7`. The two are different sentences and
+`exists_tieNonneg_notDominates_seven` proves it here: a block design at a NON-thin
+surjection has a triple with `e_3 = 8 > 0` and `e_2 = -15 < 0`, so a nonnegative
+tie leg does not imply domination. Emptiness of the tie system is necessary for
+the covering and never sufficient. The floor therefore says nothing about the
+atlas route, and nothing about a certificate whose monoid part uses an `e_2`
+generator — `tetraBlockDesign_symmetricSignature` gives `e_2 >= 1 > 0` on the
+block family, so such a factor does not vanish there and the argument below does
+not apply to it.
+
 Supports are indexed by `increasingTriplesSeven`, one ordered representative per
-3-subset: legitimate because `discriminantTie` is `S_3`-invariant, by
-`discriminantTie_swap` together with `discriminantTie_rotate` of Part I, so the
-`35` subsets carry `35` distinct strict generators and not `210` ordered ones.
+3-subset: legitimate because `discriminantTie` is `S_3`-invariant
+(`exists_increasing_symmetricLegs` of Part I), so the `35` subsets carry `35`
+distinct strict generators and not `210` ordered ones.
 
 The floor is then combinatorial. Every member of the tetrahedral block family of
 Part II is a point of the closed system whose tie leg vanishes EXACTLY on the
 triples carrying three distinct directions, so a support must meet the rainbow
 family of every block system. The `105` block systems of `Fin 7` are enumerated
-below, and `blockSearchSucceeds_true` checks by kernel evaluation that no THREE
-triples meet all of them. Hence every support has at least FOUR triples, and
-since `discriminantTie` has degree `3` in the Gram entries and `6` in the atom
-coordinates,
+below, and `hasSharedBlockForEveryTrio_true` checks by kernel evaluation that no
+THREE triples meet all of them. Hence every support has at least FOUR triples.
 
-  every Stengle certificate for `DiscriminantCovering 7` carries a monoid factor
-  of degree at least `12` in the `28` Gram entries and at least `24` in the `21`
-  atom coordinates.
+Four is sharp FOR THE BLOCK-FAMILY HITTING CONDITION —
+`{012, 013, 024, 034}` does meet every rainbow family — but that is MEASURED, not
+mechanised here, and it is not sharpness for `IsStengleTieSupportSeven` itself,
+whose quantifier ranges over every all-heavy tie-failure design. The degree
+reading `4 * 3 = 12` in the Gram entries and `4 * 6 = 24` in the atom coordinates
+is INFERRED from the cardinality floor and is presentation-dependent; see the
+header. -/
 
-Four is SHARP: `{012, 013, 024, 034}` does meet every rainbow family (MEASURED,
-not mechanised here — only the lower bound is). -/
+/-- A block map with a CROWDED fibre: three atoms on direction `0`. It is
+surjective, hence a legal member of the tetrahedral block family, and it is not
+thin. -/
+def crowdedBlockMap : Fin 7 → Fin 4 := ![0, 0, 0, 1, 2, 3, 3]
+
+theorem crowdedBlockMap_surjective : Function.Surjective crowdedBlockMap := by decide
+
+/-- **THE SCOPE OF THE FLOOR: the tie leg alone is not the covering.** The three
+atoms `0, 1, 2` of the crowded block design all carry the same tetrahedron
+direction, so all three of their pairings are `3` and the triple has
+`e_3 = 8 - 2 * 27 + 2 * 27 = 8 >= 0` while `e_2 = 12 - 27 = -15 < 0`. It
+therefore does NOT dominate. So "some triple has a nonnegative tie leg" is
+strictly weaker than "some triple dominates", and a Stengle certificate for the
+emptiness of the tie system would not close rank three. (The design is not a
+counterexample to anything: seventeen of its other triples do dominate.) -/
+theorem exists_tieNonneg_notDominates_seven :
+    ∃ design : WeightedDesign 7 3, AllHeavy design ∧
+      ∃ first second third : Fin 7, first ≠ second ∧ first ≠ third ∧ second ≠ third
+        ∧ 0 ≤ discriminantTie design first second third
+        ∧ ¬ Dominates design {first, second, third} := by
+  refine ⟨tetraBlockDesign crowdedBlockMap crowdedBlockMap_surjective,
+    tetraBlockDesign_allHeavy crowdedBlockMap crowdedBlockMap_surjective,
+    0, 1, 2, by decide, by decide, by decide, ?_, ?_⟩
+  · rw [tetraBlockDesign_discriminantTie_eq,
+      tetraBlockDesign_atomPairing_of_sameBlock crowdedBlockMap_surjective
+        (by decide : crowdedBlockMap 1 = crowdedBlockMap 2),
+      tetraBlockDesign_atomPairing_of_sameBlock crowdedBlockMap_surjective
+        (by decide : crowdedBlockMap 0 = crowdedBlockMap 1),
+      tetraBlockDesign_atomPairing_of_sameBlock crowdedBlockMap_surjective
+        (by decide : crowdedBlockMap 0 = crowdedBlockMap 2)]
+    norm_num
+  · rw [dominates_triple_iff_symmetricLegs _ (by decide) (by decide) (by decide)
+      (tetraBlockDesign_allHeavy crowdedBlockMap crowdedBlockMap_surjective 0)
+      (tetraBlockDesign_allHeavy crowdedBlockMap crowdedBlockMap_surjective 1)
+      (tetraBlockDesign_allHeavy crowdedBlockMap crowdedBlockMap_surjective 2)]
+    rw [tetraBlockDesign_discriminantMinorSum_eq,
+      tetraBlockDesign_atomPairing_of_sameBlock crowdedBlockMap_surjective
+        (by decide : crowdedBlockMap 1 = crowdedBlockMap 2),
+      tetraBlockDesign_atomPairing_of_sameBlock crowdedBlockMap_surjective
+        (by decide : crowdedBlockMap 0 = crowdedBlockMap 1),
+      tetraBlockDesign_atomPairing_of_sameBlock crowdedBlockMap_surjective
+        (by decide : crowdedBlockMap 0 = crowdedBlockMap 2)]
+    norm_num
 
 /-- The `35` increasing index triples of `Fin 7`, as a list, so the kernel search
 below runs over `35^3` cases rather than over `343^3`. -/
@@ -817,41 +1102,43 @@ theorem blockMapsSeven_thin : ∀ blocks ∈ blockMapsSeven, IsThinBlockMap bloc
   rw [List.all_eq_true] at hbool
   exact fun blocks hmem => isThinBlockMap_of_bool (hbool blocks hmem)
 
-/-- A triple SHARES a block when two of its three atoms carry the same direction
-— equivalently, when it is not rainbow, and then its tie leg is `-8`. -/
-def sharesBlockBool (blocks : Fin 7 → Fin 4) (triple : Fin 7 × Fin 7 × Fin 7) : Bool :=
+/-- Does a triple share a block? True when two of its three atoms carry the same
+direction — equivalently, when it is not rainbow, and then its tie leg is `-8`. -/
+def isBlockSharedInTriple (blocks : Fin 7 → Fin 4) (triple : Fin 7 × Fin 7 × Fin 7) : Bool :=
   (blocks triple.1 == blocks triple.2.1)
     || ((blocks triple.1 == blocks triple.2.2) || (blocks triple.2.1 == blocks triple.2.2))
 
-theorem sharesBlock_of_sharesBlockBool {blocks : Fin 7 → Fin 4}
-    {triple : Fin 7 × Fin 7 × Fin 7} (hshares : sharesBlockBool blocks triple = true) :
+theorem blocksAgreeSomewhere_of_isBlockSharedInTriple {blocks : Fin 7 → Fin 4}
+    {triple : Fin 7 × Fin 7 × Fin 7}
+    (hshares : isBlockSharedInTriple blocks triple = true) :
     blocks triple.1 = blocks triple.2.1 ∨ blocks triple.1 = blocks triple.2.2
       ∨ blocks triple.2.1 = blocks triple.2.2 := by
-  simpa only [sharesBlockBool, Bool.or_eq_true, beq_iff_eq] using hshares
+  simpa only [isBlockSharedInTriple, Bool.or_eq_true, beq_iff_eq] using hshares
 
-/-- The kernel search: for every ordered choice of three of the `35` triples,
-some one of the `105` block systems makes all three share a block. -/
-def blockSearchSucceeds : Bool :=
+/-- The kernel search: does every ordered choice of three of the `35` triples have
+some one of the `105` block systems making all three share a block? -/
+def hasSharedBlockForEveryTrio : Bool :=
   triplesSevenList.all fun first => triplesSevenList.all fun second =>
     triplesSevenList.all fun third =>
       blockMapsSeven.any fun blocks =>
-        sharesBlockBool blocks first && sharesBlockBool blocks second
-          && sharesBlockBool blocks third
+        isBlockSharedInTriple blocks first && isBlockSharedInTriple blocks second
+          && isBlockSharedInTriple blocks third
 
 set_option maxRecDepth 20000 in
 set_option maxHeartbeats 4000000 in
 /-- **THE COMBINATORIAL FLOOR**, by kernel evaluation of `35^3` cases: no three
 triples of `Fin 7` meet the rainbow family of every block system. -/
-theorem blockSearchSucceeds_true : blockSearchSucceeds = true := by decide
+theorem hasSharedBlockForEveryTrio_true : hasSharedBlockForEveryTrio = true := by decide
 
 /-- The extracted form of the search. -/
 theorem exists_blockMap_sharing {first second third : Fin 7 × Fin 7 × Fin 7}
     (hfirst : first ∈ triplesSevenList) (hsecond : second ∈ triplesSevenList)
     (hthird : third ∈ triplesSevenList) :
-    ∃ blocks ∈ blockMapsSeven, sharesBlockBool blocks first = true
-      ∧ sharesBlockBool blocks second = true ∧ sharesBlockBool blocks third = true := by
-  have houter := blockSearchSucceeds_true
-  rw [blockSearchSucceeds, List.all_eq_true] at houter
+    ∃ blocks ∈ blockMapsSeven, isBlockSharedInTriple blocks first = true
+      ∧ isBlockSharedInTriple blocks second = true
+      ∧ isBlockSharedInTriple blocks third = true := by
+  have houter := hasSharedBlockForEveryTrio_true
+  rw [hasSharedBlockForEveryTrio, List.all_eq_true] at houter
   have hmiddle := houter first hfirst
   rw [List.all_eq_true] at hmiddle
   have hinner := hmiddle second hsecond
@@ -874,18 +1161,19 @@ theorem mem_triplesSevenList_of_mem_increasing {triple : Fin 7 × Fin 7 × Fin 7
   exact triplesSevenList_complete triple.1 triple.2.1 triple.2.2 hmem.2.1 hmem.2.2
 
 /-- At a thin block design, a triple that shares a block fails by exactly `-8`. -/
-private theorem tetraBlockDesign_tie_of_sharesBlock {blocks : Fin 7 → Fin 4}
+private theorem tetraBlockDesign_tie_of_isBlockSharedInTriple {blocks : Fin 7 → Fin 4}
     (hthin : IsThinBlockMap blocks) {triple : Fin 7 × Fin 7 × Fin 7}
-    (hmem : triple ∈ increasingTriplesSeven) (hshares : sharesBlockBool blocks triple = true) :
+    (hmem : triple ∈ increasingTriplesSeven)
+    (hshares : isBlockSharedInTriple blocks triple = true) :
     discriminantTie (tetraBlockDesign blocks hthin.1) triple.1 triple.2.1 triple.2.2 = -8 := by
   obtain ⟨hfirstSecond, hfirstThird, hsecondThird⟩ := increasingTriplesSeven_distinct hmem
   exact tetraBlockDesign_discriminantTie_of_repeated hthin hfirstSecond hfirstThird
-    hsecondThird (sharesBlock_of_sharesBlockBool hshares)
+    hsecondThird (blocksAgreeSomewhere_of_isBlockSharedInTriple hshares)
 
 /-- **The tie-generator support of a Stengle monoid multiplier.** A strict
 Stengle certificate for the emptiness of the tie-failure system carries a factor
-`∏_{T ∈ support} (- discriminantTie · T)^{e_T}` with every `e_T ≥ 1`, and at
-every point of the CLOSED system that factor must vanish while the region
+`prod over the support of (- discriminantTie T)^(e_T)` with every `e_T >= 1`, and
+at every point of the CLOSED system that factor must vanish while the region
 factors do not. Since a product of reals vanishes exactly when one factor does,
 the certificate's support has to contain, at every such point, a triple whose tie
 leg is exactly `0`. That — and nothing about degrees, multiplicities, or
@@ -921,7 +1209,7 @@ theorem isStengleTieSupportSeven_increasing_iff :
 /-- **THE SUPPORT FLOOR.** No set of at most three triples is the tie-generator
 support of a Stengle certificate at `(7,3)`. The witness is a member of the
 tetrahedral block family: it is all-heavy, every one of its `35` tie legs is
-`≤ 0`, and the three chosen triples all fail by exactly `-8`, so none of them
+`<= 0`, and the three chosen triples all fail by exactly `-8`, so none of them
 vanishes. -/
 theorem not_isStengleTieSupportSeven_of_card_le_three
     {support : Finset (Fin 7 × Fin 7 × Fin 7)} (hsubset : support ⊆ increasingTriplesSeven)
@@ -947,18 +1235,23 @@ theorem not_isStengleTieSupportSeven_of_card_le_three
     rw [← hEnlarged]; exact hsupportSub hmem
   rw [Finset.mem_insert, Finset.mem_insert, Finset.mem_singleton] at hinEnlarged
   rcases hinEnlarged with hchoice | hchoice | hchoice
-  · rw [hchoice, tetraBlockDesign_tie_of_sharesBlock hthin hfirstMem hfirstShares] at hzero
+  · rw [hchoice, tetraBlockDesign_tie_of_isBlockSharedInTriple hthin hfirstMem
+      hfirstShares] at hzero
     norm_num at hzero
-  · rw [hchoice, tetraBlockDesign_tie_of_sharesBlock hthin hsecondMem hsecondShares] at hzero
+  · rw [hchoice, tetraBlockDesign_tie_of_isBlockSharedInTriple hthin hsecondMem
+      hsecondShares] at hzero
     norm_num at hzero
-  · rw [hchoice, tetraBlockDesign_tie_of_sharesBlock hthin hthirdMem hthirdShares] at hzero
+  · rw [hchoice, tetraBlockDesign_tie_of_isBlockSharedInTriple hthin hthirdMem
+      hthirdShares] at hzero
     norm_num at hzero
 
-/-- **The degree floor, as a cardinality statement.** Every Stengle tie-generator
-support at `(7,3)` has at least four triples; since `discriminantTie` has degree
-`3` in the Gram entries and `6` in the atom coordinates, the monoid part of any
-strict Stengle certificate for `DiscriminantCovering 7` has degree at least `12`
-in the Gram entries and at least `24` in the atom coordinates. -/
+/-- **The floor, as a cardinality statement.** Every Stengle tie-generator support
+at `(7,3)` has at least four triples. The degree reading that follows —
+`4 * 3 = 12` in the `28` Gram entries, `4 * 6 = 24` in the `21` atom coordinates —
+is INFERRED, not mechanised, and holds only for the presentation whose strict
+generators are the `35` tie legs, and only for the ALL-TIE system, which
+`exists_tieNonneg_notDominates_seven` shows is strictly weaker than
+`DiscriminantCovering 7`. -/
 theorem four_le_card_of_isStengleTieSupportSeven
     {support : Finset (Fin 7 × Fin 7 × Fin 7)} (hsubset : support ⊆ increasingTriplesSeven)
     (hstengle : IsStengleTieSupportSeven support) : 4 ≤ support.card := by

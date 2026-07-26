@@ -2921,16 +2921,26 @@ import Gtz.Complex.AtomSplitting
 #print axioms Gtz.not_complexGtzWeighted_three_of_nine_le
 
 -- Gtz.Quantitative.PositivstellensatzRankThree: the pivot-free covering chart,
--- the tetrahedral block family, and the Stengle multiplier-support floor
+-- the tetrahedral block family, and the Stengle multiplier-support floor.
+-- All 53 public declarations of that file are probed here, definitions
+-- included: 44 at [propext, Classical.choice, Quot.sound], 6 at
+-- [propext, Quot.sound], and 3 axiom-free. That hasSharedBlockForEveryTrio_true
+-- carries no Classical.choice is what makes the 35^3 search a genuine kernel
+-- evaluation rather than a classical decidability instance.
 #print axioms Gtz.discriminantTie_rotate
 #print axioms Gtz.discriminantMinorSum_swapFirstTwo
 #print axioms Gtz.discriminantMinorSum_rotate
 #print axioms Gtz.discriminantTrace_pivotSum
 #print axioms Gtz.dominates_triple_iff_symmetricLegs
+#print axioms Gtz.SymmetricCovering
 #print axioms Gtz.symmetricCovering_iff_discriminantCovering
 #print axioms Gtz.symmetricCoveringSeven_iff_rank_three
 #print axioms Gtz.notDominates_symmetricSignature
+#print axioms Gtz.exists_increasing_symmetricLegs
+#print axioms Gtz.symmetricCoveringSeven_iff_increasingTriples
+#print axioms Gtz.blockFibre
 #print axioms Gtz.blockFibre_card_pos
+#print axioms Gtz.blockLabelWeight
 #print axioms Gtz.blockLabelWeight_pos
 #print axioms Gtz.blockFibre_card_mul_labelWeight
 #print axioms Gtz.tetraBlockDesign
@@ -2944,16 +2954,29 @@ import Gtz.Complex.AtomSplitting
 #print axioms Gtz.tetraBlockDesign_discriminantMinorSum_eq
 #print axioms Gtz.tetraBlockDesign_discriminantTie_of_rainbow
 #print axioms Gtz.tetraBlockDesign_discriminantMinorSum_of_rainbow
+#print axioms Gtz.IsThinBlockMap
+#print axioms Gtz.isThinBlockMapBool
 #print axioms Gtz.isThinBlockMap_of_bool
 #print axioms Gtz.tetraBlockDesign_discriminantTie_of_repeated
 #print axioms Gtz.tetraBlockDesign_discriminantMinorSum_of_repeated
 #print axioms Gtz.tetraBlockDesign_discriminantTie_nonpos
 #print axioms Gtz.tetraBlockDesign_symmetricSignature
+#print axioms Gtz.splitSevenDirection_surjective
+#print axioms Gtz.blockLabelWeight_splitSeven
+#print axioms Gtz.splitSevenDesign_eq_tetraBlockDesign
+#print axioms Gtz.crowdedBlockMap
+#print axioms Gtz.crowdedBlockMap_surjective
+#print axioms Gtz.exists_tieNonneg_notDominates_seven
+#print axioms Gtz.triplesSevenList
+#print axioms Gtz.blockMapsSeven
 #print axioms Gtz.blockMapsSeven_thin
-#print axioms Gtz.sharesBlock_of_sharesBlockBool
-#print axioms Gtz.blockSearchSucceeds_true
+#print axioms Gtz.isBlockSharedInTriple
+#print axioms Gtz.blocksAgreeSomewhere_of_isBlockSharedInTriple
+#print axioms Gtz.hasSharedBlockForEveryTrio
+#print axioms Gtz.hasSharedBlockForEveryTrio_true
 #print axioms Gtz.exists_blockMap_sharing
 #print axioms Gtz.mem_triplesSevenList_of_mem_increasing
+#print axioms Gtz.IsStengleTieSupportSeven
 #print axioms Gtz.isStengleTieSupportSeven_increasing_iff
 #print axioms Gtz.not_isStengleTieSupportSeven_of_card_le_three
 #print axioms Gtz.four_le_card_of_isStengleTieSupportSeven
