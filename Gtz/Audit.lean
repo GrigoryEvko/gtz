@@ -155,6 +155,9 @@ import Gtz.Design.EqualityLocus
 import Gtz.Complex.AtomSplitting
 import Gtz.Reduction.SplitTransfer
 import Gtz.Ties.StratumLocalCovering
+import Gtz.Complex.HesseMarginAttained
+import Gtz.Complex.AttainmentRankThree
+import Gtz.Complex.SpikePaddingLadder
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -3169,3 +3172,96 @@ import Gtz.Ties.StratumLocalCovering
 #print axioms Gtz.SplitSevenTubeDeterminantWitness
 #print axioms Gtz.splitSevenNeighbourhoodCovering_of_determinantWitness
 #print axioms Gtz.rainbowSeven_displacement_frozenForm
+
+-- Gtz.Complex.HesseMarginAttained
+#print axioms Gtz.complexAtom_smul_selfConj
+#print axioms Gtz.hesseTriple_unitAtomSum
+#print axioms Gtz.hesseTriple_scaledDecomposition
+#print axioms Gtz.hesseBindingTriple_atomSum
+#print axioms Gtz.hesseMarginC_isRoot
+#print axioms Gtz.hesseMargin_firstPivot_pos
+#print axioms Gtz.hesseMargin_secondPivot_pos
+#print axioms Gtz.hesseBindingTriple_excess_posSemidef
+#print axioms Gtz.hesseBindingTriple_card
+#print axioms Gtz.hesse_bindingTriple_dominatesAtLevel
+#print axioms Gtz.hesseDominatedShifts
+#print axioms Gtz.hesseDominatedShifts_eq_Iic
+#print axioms Gtz.hesseMargin_isGreatest
+#print axioms Gtz.hesseMargin_isAttainedAndLeast
+#print axioms Gtz.flattenedAtom
+#print axioms Gtz.spikeAtom
+#print axioms Gtz.spikePaddedAtom
+#print axioms Gtz.spikePaddedWeight
+#print axioms Gtz.spikePaddedWeight_pos
+#print axioms Gtz.spikePaddedWeight_sum_one
+#print axioms Gtz.spikePaddedDesign_parseval
+#print axioms Gtz.spikePaddedDesign
+
+-- Gtz.Complex.AttainmentRankThree
+#print axioms Gtz.solveRowNormSq
+#print axioms Gtz.solveRowNormSq_nonneg
+#print axioms Gtz.solveRowNormSq_le_rank
+#print axioms Gtz.normSq_solveCombination_le_rowNormSq
+#print axioms Gtz.solveTraceWeight
+#print axioms Gtz.solveTraceWeight_nonneg
+#print axioms Gtz.solveTraceWeight_le_rank
+#print axioms Gtz.exists_maximalVolume_solveTrace_covering
+#print axioms Gtz.exists_subset_atomSum_sub_solveLevel_posSemidef
+#print axioms Gtz.exchangeSelection
+#print axioms Gtz.exchangeSelection_card
+#print axioms Gtz.coveringAtom_notMem_of_undominated
+#print axioms Gtz.exists_subset_atomSum_sub_capInverse_posSemidef
+#print axioms Gtz.exchangeFloorRankThree
+#print axioms Gtz.sqrt34_sq
+#print axioms Gtz.sqrt34_nonneg
+#print axioms Gtz.exchangeFloor_isRoot
+#print axioms Gtz.sqrt34_window
+#print axioms Gtz.exchangeFloor_window
+#print axioms Gtz.exchangeFloor_lt_otherRoot
+#print axioms Gtz.exchangeFloor_lt_hesseMargin
+#print axioms Gtz.complexRankConstantAtLeast_three_third
+
+-- Gtz.Complex.SpikePaddingLadder
+#print axioms Gtz.flattenedAtom_castSucc
+#print axioms Gtz.flattenedAtom_last
+#print axioms Gtz.spikeAtom_castSucc
+#print axioms Gtz.spikePaddedAtom_castSucc
+#print axioms Gtz.spikePaddedAtom_last
+#print axioms Gtz.spikePaddedDesign_atom
+#print axioms Gtz.sumNormSq_snocZero
+#print axioms Gtz.starDot_spikeAtom_snocZero
+#print axioms Gtz.starDot_flattenedAtom_snocZero
+#print axioms Gtz.normSq_starDot_flattenedAtom_snocZero
+#print axioms Gtz.covering_of_posSemidef_atomSum_sub_smul_one
+#print axioms Gtz.not_posSemidef_paddedAtomSum_sub_of_last_notMem
+#print axioms Gtz.spikePaddedDesign_valueAtMost
+#print axioms Gtz.complexRankConstantAtMostAtSize_padded
+#print axioms Gtz.paddedBound_gt_of_pos
+#print axioms Gtz.complexRankConstantAtMostAtSize_succ_of_gt
+#print axioms Gtz.complexRankConstantAtMostAtSize_rank_add
+#print axioms Gtz.paddedMargin_eq_scaledAlphaRankTwo
+#print axioms Gtz.alphaRankTwo_nonneg
+#print axioms Gtz.paddedMargin_nonneg
+#print axioms Gtz.paddedMargin_lt_one
+#print axioms Gtz.complexRankConstantAtMostAtSize_four_two
+#print axioms Gtz.complexRankConstantAtMostAtSize_five_three
+#print axioms Gtz.complexRankConstantAtMost_three_padded
+#print axioms Gtz.complexRankConstantAtMostAtSize_three_padded
+#print axioms Gtz.not_complexGtzWeighted_three_of_five_le
+#print axioms Gtz.alphaRankTwo_lt_847_1000
+#print axioms Gtz.complexRankConstantAtMostAtSize_six_four
+#print axioms Gtz.not_complexGtzWeighted_four_of_six_le
+#print axioms Gtz.complexRankConstantAtMostAtSize_ten_four_of_gt
+#print axioms Gtz.complexRankConstantAtMostAtSize_three_le_rank
+#print axioms Gtz.complexRankConstantAtMost_three_le_rank
+#print axioms Gtz.not_complexGtzWeighted_of_two_le_rank
+#print axioms Gtz.alphaRankTwo_pos
+#print axioms Gtz.complexRankConstantAtMostAtSize_two_le_rank
+#print axioms Gtz.complexRankConstantAtMostAtSize_five_three_of_gt
+#print axioms Gtz.complexRankConstantAtMostAtSize_six_four_of_gt
+#print axioms Gtz.alphaRankTwo_lt_seventeen_twentieths
+#print axioms Gtz.ladderUndercuts_exactValueRankFourAtSix
+#print axioms Gtz.ladderUndercuts_paddedMarginRankThree
+#print axioms Gtz.not_complexGtzWeighted_of_rank_add_two_le_size
+#print axioms Gtz.complexPaddingLadder
+#print axioms Gtz.complexPaddingLadderAtMinimalSize

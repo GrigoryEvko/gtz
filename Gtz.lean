@@ -165,6 +165,9 @@ import Gtz.Design.EqualityLocus
 import Gtz.Complex.AtomSplitting
 import Gtz.Reduction.SplitTransfer
 import Gtz.Ties.StratumLocalCovering
+import Gtz.Complex.HesseMarginAttained
+import Gtz.Complex.AttainmentRankThree
+import Gtz.Complex.SpikePaddingLadder
 
 -- the axiom ledger for everything above
 import Gtz.Audit
