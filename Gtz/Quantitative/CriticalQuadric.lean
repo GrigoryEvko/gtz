@@ -40,36 +40,91 @@ point of value `v`:
 * `posSemidef_multiplierMatrix_of_isQuadricStationaryData`,
   `trace_multiplierMatrix_of_isQuadricStationaryData` — hence `Lambda ⪰ 0` and
   `tr Lambda = v`, both corollaries of the determination, not extra input.
+* `coverageLaw_of_isQuadricStationaryData` — **the coverage law**,
+  `sum_{C ∋ c} lambda_C <u_C, g_c>^2 = t_c * v`, the RESTRICTED sum.  This is the
+  obligation `Gtz.Ties.CriticalTieMultiplier` records in its header as prose; here
+  it is `contractedStationarity` followed by `quadricLaw`.  Its two immediate
+  consequences at `v ≠ 0` are
+  `exists_mem_activeSubset_of_isQuadricStationaryData` (the active subsets cover
+  every atom) and `size_le_rank_mul_card_activeSet_of_isQuadricStationaryData`
+  (`m ≤ k * |A|`).
 * `tightOverlap_sum_eq_one_of_isQuadricStationaryData` — **(C1)**
-  `sum_C lambda_C <u_C, g_c>^2 = 1` at every atom (the quadric law divided by
-  `v`).
+  `sum_C lambda_C <u_C, g_c>^2 = 1` at every atom, the UNRESTRICTED sum (the
+  quadric law divided by `v`).
 * `exists_rayleighProbe_ge_rank_of_isQuadricStationaryData` — **(C2)**, and in a
   form STRONGER than the source note: EVERY `k`-subset, active or not, carries a
   unit probe whose Rayleigh quotient is at least `k`.  Summing (C1) over the `k`
   atoms of any `C` gives `sum_C' lambda_C' u_C'^T S_C u_C' = k`, a convex
   combination, so one active tight direction attains at least `k`.  Stated as an
-  explicit probe rather than as `lambda_max`, because the repo's PSD kit
-  (`Gtz.LinAlg.PsdKit`) is deliberately spectra-free and sqrt-free.
+  explicit probe rather than as `lambda_max` because the repo has NO `lambdaMax`
+  at all: `Gtz.lambdaMinMat` (`Gtz.Quantitative.MarginContinuity`) is the only
+  eigenvalue function in the repository, and `Gtz.LinAlg.PsdKit` is deliberately
+  spectra-free and sqrt-free.
 * `value_eq_rank_of_singleActive` — **(C3)** with ONE active subset the value is
-  forced: `v = k`.
-* `not_isQuadricStationaryData_of_singleActive_of_value_lt_one` — hence, for
-  `1 ≤ k`, **no such stationarity data exists with `v < 1` on a single active
-  subset**.  This is the campaign's first kernel-checked interior-exclusion
-  statement.  Its hypotheses are exactly three: one active subset, `v ≠ 0`, and
-  `v < 1`.
+  forced: `v = k`.  `value_eq_rank_of_constant_activeSubset` is the sharp form:
+  what matters is a single active SUBSET, not a single active INDEX, so a tight
+  eigenvalue of multiplicity above one — packaged as several indices carrying the
+  same `k`-subset — is covered too.
+* `not_isQuadricStationaryData_of_singleActive_of_rank_lt_size` — **the sharp
+  interior exclusion**: at `k < m` there is NO stationarity datum with `v ≠ 0` on a
+  single active subset, whatever the value.  Coverage forces `m = k`
+  (`size_eq_rank_of_singleActive`), and at `m = k` the only `k`-subset is
+  everything.
+* `not_isQuadricStationaryData_of_singleActive_of_value_lt_one` — the `v < 1`
+  reading of the same fact, with TWO hypotheses (`v ≠ 0`, `v < 1`).
 * `isotropicQuadric_iff_leverage_eq_rank` — the isotropic case, honestly:
   `(v/k) I` satisfies the quadric at every atom IFF every leverage equals `k`.
 
-## The `v ≠ 0` hypothesis is LOAD-BEARING, and that is proved
+## HOW FAR THE EXCLUSION REACHES — the correction that matters most
 
-(C1), (C2), (C3) and the exclusion all carry `value ≠ 0`.  That is not
-bookkeeping: `degenerateQuadricStationaryDesign_isQuadricStationaryData` exhibits
-a genuine `(3,2)` design — all atoms nonzero, all weights positive, exactly
-rational — carrying stationarity data with `Lambda = 0`, ONE active subset, and
-`v = 0 ≠ 2 = k`.  So (C3) and the exclusion are FALSE without `v ≠ 0`, and
-`exists_isQuadricStationaryData_singleActive_value_ne_rank` says so as a theorem.
-The degeneracy is the eigenvalue-zero direction of a dependent `k`-subset, which
-`Gtz.not_dominates_of_parallel` already tells us designs may contain.
+The single-active branch is EMPTY whenever `k < m`, by
+`not_isQuadricStationaryData_of_singleActive_of_rank_lt_size`.  The campaign's open
+sizes are `(6,3)` and `(7,3)`, both with `k < m`.  So the `v < 1` exclusion rules
+out nothing there that coverage does not already rule out for a stronger reason,
+and it must NOT be advertised as ruling out "the configuration a descent argument
+would have to produce".
+
+What a descent argument would have to produce is a LARGE active set.  The
+unconditional filters this file supplies — coverage, and `|A| ≥ 3` from (C3) plus
+the rank-one and independence arguments — leave a residue whose size is stated
+plainly and is not small: at `(6,3)` there are 2101 active-set support patterns up
+to relabelling that survive them, and at `(7,3)` there are 7011184
+[EXACT combinatorics, outside Lean, not mechanized].  Deciding any one of them
+carries the INEQUALITY `v < 1`, which no ideal-emptiness engine can see.  That is
+the honest position of the interior route.
+
+## The `v ≠ 0` hypothesis is LOAD-BEARING, and BOTH halves are proved
+
+(C1), (C2), (C3) and the exclusions all carry `value ≠ 0`.
+
+* it cannot be dropped: `degenerateQuadricStationaryDesign_isQuadricStationaryData`
+  exhibits a genuine `(3,2)` design — all atoms nonzero, all weights positive,
+  exactly rational — carrying stationarity data with `Lambda = 0`, ONE active
+  subset, and `v = 0 ≠ 2 = k`.  So (C3) and the exclusion are FALSE without it, and
+  `exists_isQuadricStationaryData_singleActive_value_ne_rank` says so as a theorem.
+  The degeneracy is the eigenvalue-zero direction of a dependent `k`-subset, which
+  `Gtz.not_dominates_of_parallel` already tells us designs may contain.
+* it is INHABITED: `splitSevenDesign_isQuadricStationaryData` gives the split
+  tetrahedron rank-three data at `v = 1` with TWENTY active subsets and
+  `Lambda = I/3`, assembled entirely from `Gtz.Ties.StratumFirstOrder`
+  (`rainbowSevenMultiplier` positive and summing to one,
+  `rainbowSevenTriple_tightEigenvector`, and `rainbowSevenMultiplier_marginal`,
+  which IS atom stationarity).  Without it every substantive theorem here would be
+  a statement about a possibly-empty class.
+  `exists_isQuadricStationaryData_value_ne_zero` is the packaged form.
+
+## What the bundle does NOT pin, said out loud
+
+`IsQuadricStationaryData` requires `value` to be an eigenvalue of `S_{C_i}` at a
+unit vector.  It does NOT require `value = lambda_min(S_{C_i})`, and it does NOT
+require `value = F(D)`.  The degenerate witness exercises that slack fully: its
+"active" subset `{0,1}` does not dominate at all
+(`not_dominates_degenerateQuadricStationaryActiveSubset`) while `{0,2}` dominates
+STRICTLY (`posDef_gap_degenerateQuadricStationaryDesign`), so `F(D) = 25/16 > 1`
+and the design satisfies `GtzWeighted 3 2` with margin.  For the NON-existence
+theorems this weakening is sound — a weaker predicate makes the negation stronger,
+and that is the only direction used — but the reading "the data package a
+maximiser" is therefore not asserted anywhere.
 
 ## THE CIRCULARITY FIREWALL — read before instantiating anything here
 
@@ -116,12 +171,20 @@ duplicated.
   needs no chart, so `Gtz.Quantitative.ProjectionChartLegs` is neither imported
   nor re-derived, and no chart or inertia lemma is duplicated.
 * No stratum emptiness certificate.  The external Groebner stage produced its
-  `M(K4)` and `F7-minus` verdicts through `msolve` WITHOUT a cofactor
-  certificate; the Macaulay system for the Nullstellensatz identity is roughly
-  `12376 x 5824` over `Q` at cofactor degree three, so there is nothing of a size
-  a `ring` call could check.  Those verdicts are therefore
+  `M(K4)` (`q6m8`) and `F7-minus` (`q7m21`) verdicts through `msolve` WITHOUT a
+  cofactor certificate; the minimal saturation is the FULL product of atom scales,
+  which puts the Nullstellensatz degree at six or more and the Macaulay system
+  around `12376 x 5824` over `Q` at cofactor degree three, so there is nothing of a
+  size a `ring` call could check.  Those verdicts are therefore
   EXACT-VIA-EXTERNAL-TOOL, not PROVED, and they are absent from this file rather
   than asserted in it.
+* No transport of them into tie-freeness.  What the external stage decided is that
+  those two strata carry no TOTAL tie (every basis tangent).  A tie is weaker
+  (SOME basis PSD-singular, NO basis positive definite), and "every tie is a total
+  tie" is proved only at corank one; `Gtz.Ties.TotalTieCorankOne` records that a
+  proof through criticality of the maximum would be circular.  Reading the two
+  verdicts as `StratumIsTieFree` is therefore CONDITIONAL on an open hypothesis,
+  and no statement in this file performs that reading.
 -/
 import Mathlib
 import Gtz.Core.Basic
@@ -129,8 +192,11 @@ import Gtz.Core.Sanity
 import Gtz.LinAlg.PsdKit
 import Gtz.LinAlg.SchurRankOne
 import Gtz.LinAlg.EigenvalueSubdifferential
-import Gtz.Reduction.RayleighCertificate
+import Gtz.Design.StressCertificate
+import Gtz.Reduction.LiftingLemma
+import Gtz.Quantitative.DecisionAtlasSevenThree
 import Gtz.Ties.CriticalTieMultiplier
+import Gtz.Ties.StratumFirstOrder
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -170,6 +236,15 @@ theorem subsetSum_bilinearForm_eq_sum_mul (D : WeightedDesign m k) (C : Finset (
   refine Finset.sum_congr rfl fun c _ => ?_
   rw [atomMatrix, vecMulVec_mulVec_eq, dotProduct_smul, smul_eq_mul,
     dotProduct_comm leftProbe (D.atom c), mul_comm]
+
+/-- A vector is determined by its pairings.  The vector-level sibling of
+`eq_of_forall_mulVec_eq`, used once, to upgrade the per-probe marginal identity of
+the split tetrahedron to a vector identity. -/
+theorem eq_of_forall_dotProduct_eq {rank : ℕ} {leftVector rightVector : Fin rank → ℝ}
+    (hagree : ∀ probe : Fin rank → ℝ, leftVector ⬝ᵥ probe = rightVector ⬝ᵥ probe) :
+    leftVector = rightVector := by
+  funext coordIndex
+  simpa using hagree (Pi.single coordIndex 1)
 
 /-- **A tight direction reads its eigenvalue off the whole bilinear form**: if
 `S_C u = v u` then `u^T S_C w = v <u, w>` for every probe `w`, because `S_C` is
@@ -341,6 +416,74 @@ theorem quadricLaw_of_isQuadricStationaryData
           (contractedStationarity_of_isQuadricStationaryData hdata c).symm
     _ = value := hactiveSide
 
+/-- **THE COVERAGE LAW.**  The contracted atom identity read through the quadric
+law: the multiplier mass of the active subsets CONTAINING `c`, weighted by the
+squared overlaps, is exactly `t_c * value`:
+
+    `sum_{C ∋ c} lambda_C <u_C, g_c>^2 = t_c * value`   for EVERY atom `c`.
+
+This is the obligation `Gtz.Ties.CriticalTieMultiplier` records in its header as
+prose rather than as a theorem; here it is two lines, `contractedStationarity`
+followed by `quadricLaw`.  Contrast (C1)
+`tightOverlap_sum_eq_one_of_isQuadricStationaryData`, whose sum is
+UNRESTRICTED and equals `1`; the difference of the two,
+`sum_{C ∌ c} lambda_C <u_C, g_c>^2 = 1 - t_c * value`, is a separate fact and is
+not used below. -/
+theorem coverageLaw_of_isQuadricStationaryData
+    (hdata : IsQuadricStationaryData D value multiplierMatrix activeSet activeSubset
+      activeWeight tightDir) (atomLabel : Fin m) :
+    ∑ i ∈ activeSet,
+        (if atomLabel ∈ activeSubset i
+          then activeWeight i * (tightDir i ⬝ᵥ D.atom atomLabel) ^ 2 else 0)
+      = D.weight atomLabel * value := by
+  rw [contractedStationarity_of_isQuadricStationaryData hdata atomLabel,
+    quadricLaw_of_isQuadricStationaryData hdata atomLabel]
+
+/-- **The active subsets COVER every atom** once the value is nonzero.  An atom
+in no active subset makes the coverage law read `0 = t_c * value` with `t_c > 0`,
+forcing `value = 0`.  This is the pigeonhole behind the size bound below, and it
+is the reason the single-active branch is so narrow. -/
+theorem exists_mem_activeSubset_of_isQuadricStationaryData
+    (hdata : IsQuadricStationaryData D value multiplierMatrix activeSet activeSubset
+      activeWeight tightDir) (hvalueNe : value ≠ 0) (atomLabel : Fin m) :
+    ∃ i ∈ activeSet, atomLabel ∈ activeSubset i := by
+  by_contra hnone
+  simp only [not_exists, not_and] at hnone
+  have hvanish : ∑ i ∈ activeSet,
+      (if atomLabel ∈ activeSubset i
+        then activeWeight i * (tightDir i ⬝ᵥ D.atom atomLabel) ^ 2 else 0) = 0 :=
+    Finset.sum_eq_zero fun activeLabel hmem => if_neg (hnone activeLabel hmem)
+  rw [coverageLaw_of_isQuadricStationaryData hdata atomLabel] at hvanish
+  exact hvalueNe ((mul_eq_zero.mp hvanish).resolve_left (ne_of_gt (D.weight_pos atomLabel)))
+
+/-- **The size is bounded by rank times the number of active indices.**  Coverage
+puts every atom in some active subset, and each has `k` atoms, so
+`m ≤ k * |activeSet|`.  Consequence stated below: with ONE active index the design
+must have `m = k`, so at every size `k < m` — the campaign's `(6,3)` and `(7,3)`
+included — the single-active branch is EMPTY and the `value < 1` exclusion has
+nothing left to rule out. -/
+theorem size_le_rank_mul_card_activeSet_of_isQuadricStationaryData
+    (hdata : IsQuadricStationaryData D value multiplierMatrix activeSet activeSubset
+      activeWeight tightDir) (hvalueNe : value ≠ 0) :
+    m ≤ k * activeSet.card := by
+  classical
+  have hcovered : (Finset.univ : Finset (Fin m)) ⊆ activeSet.biUnion activeSubset := by
+    intro atomLabel _
+    obtain ⟨activeLabel, hmem, hin⟩ :=
+      exists_mem_activeSubset_of_isQuadricStationaryData hdata hvalueNe atomLabel
+    exact Finset.mem_biUnion.mpr ⟨activeLabel, hmem, hin⟩
+  have hcardUniv : (Finset.univ : Finset (Fin m)).card ≤ (activeSet.biUnion activeSubset).card :=
+    Finset.card_le_card hcovered
+  have hcardBound : (activeSet.biUnion activeSubset).card ≤ ∑ i ∈ activeSet, (activeSubset i).card :=
+    Finset.card_biUnion_le
+  have hcardConst : ∑ i ∈ activeSet, (activeSubset i).card = activeSet.card * k := by
+    rw [Finset.sum_congr rfl hdata.activeSubset_card, Finset.sum_const, smul_eq_mul]
+  rw [Finset.card_univ, Fintype.card_fin] at hcardUniv
+  calc m ≤ (activeSet.biUnion activeSubset).card := hcardUniv
+    _ ≤ ∑ i ∈ activeSet, (activeSubset i).card := hcardBound
+    _ = activeSet.card * k := hcardConst
+    _ = k * activeSet.card := Nat.mul_comm _ _
+
 /-! ## The multiplier is determined -/
 
 /-- **The multiplier is the tight-direction barycentre.**
@@ -503,8 +646,13 @@ theorem exists_active_rayleighForm_ge_rank_of_isQuadricStationaryData
 
 /-- **(C2)**: every `k`-subset carries a nonzero probe whose Rayleigh quotient
 against `S_C` is at least `k` — the spectra-free reading of
-`lambda_max(S_C) ≥ k`.  Stated with an explicit probe because
-`Gtz.LinAlg.PsdKit` has no spectral theorem by design. -/
+`lambda_max(S_C) ≥ k`.
+
+Stated with an explicit probe for a concrete reason: the repository has NO
+largest-eigenvalue function.  `Gtz.lambdaMinMat`
+(`Gtz.Quantitative.MarginContinuity`) is its only eigenvalue definition, there is
+no `lambdaMax` anywhere, and `Gtz.LinAlg.PsdKit` is deliberately spectra-free and
+sqrt-free.  A probe is therefore the statement, not a weakening of one. -/
 theorem exists_rayleighProbe_ge_rank_of_isQuadricStationaryData
     (hdata : IsQuadricStationaryData D value multiplierMatrix activeSet activeSubset
       activeWeight tightDir) (hvalueNe : value ≠ 0) (C : Finset (Fin m)) (hcard : C.card = k) :
@@ -553,6 +701,90 @@ theorem value_eq_rank_of_singleActive {singleActive : activeIndex}
     hdata.tightDir_unit singleActive hmem, mul_one] at hrayleigh
   exact hrayleigh
 
+/-- **(C3) is really about a single active SUBSET, not a single active index.**
+The bundle lets several indices carry the SAME `k`-subset — that is how a tight
+eigenvalue of multiplicity above one is packaged, with one index per basis vector
+of the tight eigenspace — and in that case (C3) still applies.
+
+Proof: (C1) summed over the `k` atoms of the common subset `C` gives
+`sum_i lambda_i (u_i^T S_C u_i) = k`; every `u_i` is a UNIT eigenvector of the same
+`S_C` at `value`, so each Rayleigh quotient is `value`, and the multipliers sum to
+one.  Strictly generalises `value_eq_rank_of_singleActive`, which is the
+one-index case. -/
+theorem value_eq_rank_of_constant_activeSubset {commonSubset : Finset (Fin m)}
+    (hdata : IsQuadricStationaryData D value multiplierMatrix activeSet activeSubset
+      activeWeight tightDir) (hvalueNe : value ≠ 0)
+    (hconstant : ∀ activeLabel ∈ activeSet, activeSubset activeLabel = commonSubset) :
+    value = (k : ℝ) := by
+  obtain ⟨someActive, hsomeMem⟩ := activeSet_nonempty_of_isQuadricStationaryData hdata
+  have hcard : commonSubset.card = k := by
+    rw [← hconstant someActive hsomeMem]; exact hdata.activeSubset_card someActive hsomeMem
+  have hmass : ∑ activeLabel ∈ activeSet, activeWeight activeLabel
+      * (tightDir activeLabel ⬝ᵥ (subsetSum D commonSubset *ᵥ tightDir activeLabel))
+      = (k : ℝ) := by
+    have hoverAtoms : ∑ atomLabel ∈ commonSubset, ∑ activeLabel ∈ activeSet,
+        activeWeight activeLabel * (tightDir activeLabel ⬝ᵥ D.atom atomLabel) ^ 2 = (k : ℝ) := by
+      rw [Finset.sum_congr rfl fun atomLabel _ =>
+        tightOverlap_sum_eq_one_of_isQuadricStationaryData hdata hvalueNe atomLabel,
+        Finset.sum_const, hcard, nsmul_eq_mul, mul_one]
+    rw [Finset.sum_comm] at hoverAtoms
+    rw [← hoverAtoms]
+    refine Finset.sum_congr rfl fun activeLabel _ => ?_
+    rw [← Finset.mul_sum]
+    congr 1
+    rw [subsetSum_form_eq_sum_sq]
+    exact Finset.sum_congr rfl fun atomLabel _ => by rw [dotProduct_comm]
+  have hperActive : ∀ activeLabel ∈ activeSet,
+      activeWeight activeLabel
+          * (tightDir activeLabel ⬝ᵥ (subsetSum D commonSubset *ᵥ tightDir activeLabel))
+        = activeWeight activeLabel * value := by
+    intro activeLabel hmem
+    rw [← hconstant activeLabel hmem, hdata.tightDir_isEigenvector activeLabel hmem,
+      dotProduct_smul, smul_eq_mul, hdata.tightDir_unit activeLabel hmem, mul_one]
+  rw [Finset.sum_congr rfl hperActive, ← Finset.sum_mul, hdata.activeWeight_sum_one,
+    one_mul] at hmass
+  exact hmass
+
+/-- **The single-active branch forces `m = k`.**  Coverage
+(`size_le_rank_mul_card_activeSet_of_isQuadricStationaryData` at
+`|activeSet| = 1`) gives `m ≤ k`, and the active subset lives inside `Fin m` so
+`k ≤ m`.
+
+This is the sharp reading of the single-active hypothesis, and it is what makes
+the `value < 1` exclusion below vacuous at every size the campaign is open at:
+`(6,3)` and `(7,3)` both have `k < m`. -/
+theorem size_eq_rank_of_singleActive {singleActive : activeIndex}
+    (hdata : IsQuadricStationaryData D value multiplierMatrix activeSet activeSubset
+      activeWeight tightDir) (hsingle : activeSet = {singleActive}) (hvalueNe : value ≠ 0) :
+    m = k := by
+  have hmem : singleActive ∈ activeSet := by
+    rw [hsingle]; exact Finset.mem_singleton_self _
+  have hsizeLe : m ≤ k := by
+    have hbound := size_le_rank_mul_card_activeSet_of_isQuadricStationaryData hdata hvalueNe
+    rwa [hsingle, Finset.card_singleton, Nat.mul_one] at hbound
+  have hrankLe : k ≤ m := by
+    have hcard := hdata.activeSubset_card singleActive hmem
+    calc k = (activeSubset singleActive).card := hcard.symm
+      _ ≤ (Finset.univ : Finset (Fin m)).card := Finset.card_le_card (Finset.subset_univ _)
+      _ = m := by rw [Finset.card_univ, Fintype.card_fin]
+  exact le_antisymm hsizeLe hrankLe
+
+/-- **THE SHARP INTERIOR EXCLUSION.**  Whenever the rank is strictly below the
+size there is NO stationarity datum with a nonzero value on a single active
+subset — no matter what the value is.
+
+This subsumes and explains `not_isQuadricStationaryData_of_singleActive_of_value_lt_one`:
+at `(6,3)` and `(7,3)` the single-active class is empty for this reason, so the
+`value < 1` hypothesis of that theorem does no work there.  What both statements
+share is the reading: a hypothetical interior critical point whose maximum is
+attained on ONE `k`-subset would have to be a design with `m = k`, where
+`GtzWeighted` is trivial. -/
+theorem not_isQuadricStationaryData_of_singleActive_of_rank_lt_size (hrankLt : k < m)
+    {singleActive : activeIndex} (hsingle : activeSet = {singleActive}) (hvalueNe : value ≠ 0) :
+    ¬ IsQuadricStationaryData D value multiplierMatrix activeSet activeSubset
+      activeWeight tightDir :=
+  fun hdata => absurd (size_eq_rank_of_singleActive hdata hsingle hvalueNe) hrankLt.ne'
+
 /-- **The interior exclusion, general form.**  No stationarity data exist on a
 single active subset with a nonzero value different from the rank. -/
 theorem not_isQuadricStationaryData_of_singleActive_of_value_ne_rank
@@ -562,31 +794,43 @@ theorem not_isQuadricStationaryData_of_singleActive_of_value_ne_rank
       activeWeight tightDir :=
   fun hdata => hmismatch (value_eq_rank_of_singleActive hdata hsingle hvalueNe)
 
-/-- **THE FIRST KERNEL-CHECKED INTERIOR EXCLUSION.**  For `1 ≤ k` there is no
-stationarity datum whose value is nonzero, strictly below one, and attained on a
-single active subset.
+/-- **THE BELOW-ONE INTERIOR EXCLUSION.**  There is no stationarity datum whose
+value is nonzero, strictly below one, and attained on a single active subset.
 
 Read this in the sound direction, and only in it.  It is a NON-EXISTENCE
 statement about the data bundle, so it is unconditional: it assumes nothing about
 any actual design, and in particular it does not assert that any design is a
-critical point.  What it rules out is a hypothetical interior critical point with
-`F < 1` whose maximum is attained once — the configuration a descent argument
-would have to produce.  See the firewall section of the file header.
+critical point.  See the firewall section of the file header.
 
-The three hypotheses are all necessary.  `1 ≤ k` because at `k = 0` the
-conclusion `value = 0` is consistent with `value < 1`; `value ≠ 0` because
+TWO hypotheses, not three, and the reach is narrow — both corrections against the
+first draft of this file.
+
+* `1 ≤ k` is DERIVABLE and has been removed.  (C3) returns `value = k`, and
+  `value ≠ 0` forces `k ≠ 0`; the discarded justification ("at `k = 0` the
+  conclusion `value = 0` is consistent with `value < 1`") was wrong, because
+  `value = 0` contradicts `value ≠ 0`.
+* the ruled-out class is EMPTY whenever `k < m`, by
+  `not_isQuadricStationaryData_of_singleActive_of_rank_lt_size`.  So at the
+  campaign's open sizes `(6,3)` and `(7,3)` this theorem excludes nothing that the
+  sharp exclusion does not already exclude for a stronger reason, and it must not
+  be advertised as ruling out "the configuration a descent argument would have to
+  produce".  The configurations a descent argument has to produce have LARGE
+  active sets — see the residue note in the file header.
+
+`value ≠ 0` genuinely cannot be dropped:
 `exists_isQuadricStationaryData_singleActive_value_ne_rank` exhibits a design
-where it fails; and `activeSet = {singleActive}` because (C3) is exactly a
-single-active statement — nothing below excludes larger active sets. -/
-theorem not_isQuadricStationaryData_of_singleActive_of_value_lt_one (hrank : 1 ≤ k)
+where it fails. -/
+theorem not_isQuadricStationaryData_of_singleActive_of_value_lt_one
     {singleActive : activeIndex} (hsingle : activeSet = {singleActive}) (hvalueNe : value ≠ 0)
     (hbelowOne : value < 1) :
     ¬ IsQuadricStationaryData D value multiplierMatrix activeSet activeSubset
       activeWeight tightDir := by
   refine not_isQuadricStationaryData_of_singleActive_of_value_ne_rank hsingle hvalueNe ?_
-  have hcast : (1 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hrank
   intro hequal
-  rw [hequal] at hbelowOne
+  rw [hequal] at hbelowOne hvalueNe
+  have hrankNe : k ≠ 0 := fun hzero => hvalueNe (by rw [hzero]; norm_num)
+  have hcast : (1 : ℝ) ≤ (k : ℝ) := by
+    exact_mod_cast Nat.one_le_iff_ne_zero.mpr hrankNe
   exact absurd hbelowOne (not_lt.mpr hcast)
 
 /-! ## The isotropic case -/
@@ -772,5 +1016,215 @@ theorem exists_isQuadricStationaryData_singleActive_value_ne_rank :
   ⟨degenerateQuadricStationaryDesign, 0, 0, fun _ => ({0, 1} : Finset (Fin 3)), fun _ => 1,
     fun _ => degenerateQuadricStationaryTightDir,
     degenerateQuadricStationaryDesign_isQuadricStationaryData, by norm_num, by norm_num⟩
+
+/-- **The degenerate witness's "active" subset is a MINIMISER, not a maximiser** —
+the disclosure that keeps the reading of `IsQuadricStationaryData` honest.
+
+The bundle constrains `value` to be an eigenvalue of `S_{C_i}` at a unit vector.
+It does NOT require `value = lambda_min(S_{C_i})`, and it does not require
+`value = F(D) = max_C lambda_min(S_C)`.  At the degenerate witness this slack is
+exercised at full stretch: the datum's subset `{0, 1}` does not even dominate,
+while `{0, 2}` dominates STRICTLY, so `F(D) = 25/16 > 1` and the design satisfies
+`GtzWeighted 3 2` with margin.
+
+For a NON-existence theorem this weakening is sound — a weaker predicate makes the
+negation stronger — and that is the only direction the file uses.  What it costs
+is the reading "the data package a maximiser", which is therefore not asserted
+anywhere. -/
+theorem not_dominates_degenerateQuadricStationaryActiveSubset :
+    ¬ Dominates degenerateQuadricStationaryDesign ({0, 1} : Finset (Fin 3)) := by
+  intro hdominates
+  have hform := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdominates).2
+    degenerateQuadricStationaryTightDir
+  rw [star_trivial, Matrix.sub_mulVec, dotProduct_sub, Matrix.one_mulVec,
+    subsetSum] at hform
+  have hnegative : degenerateQuadricStationaryTightDir ⬝ᵥ
+      ((∑ c ∈ ({0, 1} : Finset (Fin 3)), atomMatrix (degenerateQuadricStationaryDesign.atom c))
+        *ᵥ degenerateQuadricStationaryTightDir)
+      - degenerateQuadricStationaryTightDir ⬝ᵥ degenerateQuadricStationaryTightDir = -1 := by
+    rw [show ({0, 1} : Finset (Fin 3)) = {(0 : Fin 3), (1 : Fin 3)} from rfl]
+    simp [degenerateQuadricStationaryDesign, degenerateQuadricStationaryAtom,
+      degenerateQuadricStationaryTightDir, atomMatrix, Matrix.mulVec, dotProduct,
+      Fin.sum_univ_two, Matrix.sum_apply, Matrix.vecMulVec_apply]
+  rw [hnegative] at hform
+  exact absurd hform (by norm_num)
+
+/-- **The degenerate witness dominates STRICTLY on a different subset**, so it
+satisfies `GtzWeighted 3 2` with margin `25/16 - 1 = 9/16` in the worse coordinate.
+This is the second half of the disclosure above: the witness is a perfectly good
+design; only its stationarity DATA are degenerate. -/
+theorem posDef_gap_degenerateQuadricStationaryDesign :
+    (subsetSum degenerateQuadricStationaryDesign ({0, 2} : Finset (Fin 3)) - 1).PosDef := by
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun probe hprobeNe => ?_⟩
+  · rw [subsetSum]
+    exact ((Matrix.posSemidef_sum ({0, 2} : Finset (Fin 3)) fun atomIndex _ =>
+      posSemidef_atomMatrix (degenerateQuadricStationaryDesign.atom atomIndex)).1).sub
+        Matrix.isHermitian_one
+  · have hclosed : probe ⬝ᵥ
+        ((subsetSum degenerateQuadricStationaryDesign ({0, 2} : Finset (Fin 3)) - 1) *ᵥ probe)
+        = (9 / 16 : ℝ) * probe 0 ^ 2 + (16 / 9 : ℝ) * probe 1 ^ 2 := by
+      rw [subsetSum, Matrix.sub_mulVec, dotProduct_sub, Matrix.one_mulVec,
+        show ({0, 2} : Finset (Fin 3)) = {(0 : Fin 3), (2 : Fin 3)} from rfl]
+      simp [degenerateQuadricStationaryDesign, degenerateQuadricStationaryAtom, atomMatrix,
+        Matrix.mulVec, dotProduct, Fin.sum_univ_two, Matrix.sum_apply, Matrix.vecMulVec_apply]
+      ring
+    rw [star_trivial, hclosed]
+    obtain ⟨coordIndex, hcoordNe⟩ := Function.ne_iff.mp hprobeNe
+    have hcoordNeZero : probe coordIndex ≠ 0 := by simpa using hcoordNe
+    have hcoordSqPos : 0 < probe coordIndex ^ 2 := by
+      rcases lt_or_gt_of_ne hcoordNeZero with hnegative | hpositive
+      · nlinarith
+      · nlinarith
+    have hcoordLeSum : probe coordIndex ^ 2 ≤ ∑ index : Fin 2, probe index ^ 2 :=
+      Finset.single_le_sum (fun index _ => sq_nonneg (probe index)) (Finset.mem_univ coordIndex)
+    rw [Fin.sum_univ_two] at hcoordLeSum
+    nlinarith [sq_nonneg (probe 0), sq_nonneg (probe 1)]
+
+/-! ## `value ≠ 0` is INHABITED, not merely consistent — the split tetrahedron
+
+The degenerate witness above shows `value ≠ 0` cannot be dropped.  It does not
+show that anything satisfies it, and every substantive theorem in this file —
+(C1), (C2), (C3), both exclusions, `leverage_eq_rank_of_isotropicMultiplier` —
+carries it.  So without the datum below the file's real content would be
+hypothetically empty.
+
+The split tetrahedron `Gtz.splitSevenDesign` supplies it, with nothing new proved
+about the design: `Gtz.Ties.StratumFirstOrder` already ships every ingredient.
+The twenty rainbow triples are the active set, `Gtz.rainbowSevenMultiplier` the
+Clarke multipliers (positive, summing to one), the missed tetrahedron direction —
+normalised, since `|v_d|^2 = 3` — the tight direction at eigenvalue `1`
+(`Gtz.rainbowSevenTriple_tightEigenvector`), and
+`Gtz.rainbowSevenMultiplier_marginal` IS atom stationarity against
+`Lambda = I / 3`.
+
+So: rank three, `value = 1`, TWENTY active subsets, multiplier `I/3`.  Note what
+this does NOT say — it does not say the split tetrahedron is a critical point of
+`F`.  It says the equations of `IsQuadricStationaryData` are satisfiable at a
+nonzero value, which is what the hypothesis set of this file needs.  The firewall
+stands: producing the data from criticality is the analysis that lives outside.
+-/
+
+/-- `1/sqrt 3` squared is `1/3` — the one arithmetic fact the unit normalisation
+of the tetrahedron directions needs. -/
+theorem inv_sqrt_three_mul_self_eq_third :
+    (Real.sqrt 3)⁻¹ * (Real.sqrt 3)⁻¹ = (3 : ℝ)⁻¹ := by
+  rw [← mul_inv, Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 3)]
+
+/-- The UNIT tight direction of the `i`-th rainbow triple: the missed tetrahedron
+direction scaled to norm one.  `Gtz.rainbowSevenTriple_tightEigenvector` gives the
+eigenvector unnormalised, and `IsQuadricStationaryData` wants unit vectors. -/
+noncomputable def rainbowSevenUnitTightDir (tripleIndex : Fin 20) : Fin 3 → ℝ :=
+  (Real.sqrt 3)⁻¹ • tetraAtom (rainbowSevenMissedDirection tripleIndex)
+
+/-- **The marginal identity in VECTOR form.**  `Gtz.rainbowSevenMultiplier_marginal`
+states it against an arbitrary probe; atom stationarity needs the vectors
+themselves. -/
+theorem rainbowSevenMultiplier_marginal_vector (atomIndex : Fin 7) :
+    ∑ tripleIndex : Fin 20,
+        (if atomIndex ∈ rainbowSevenTriple tripleIndex then rainbowSevenMultiplier tripleIndex
+          else 0) • tetraAtom (rainbowSevenMissedDirection tripleIndex)
+      = (-(splitSevenDesign.weight atomIndex)) • splitSevenDesign.atom atomIndex := by
+  refine eq_of_forall_dotProduct_eq fun probe => ?_
+  rw [sum_dotProduct, smul_dotProduct, smul_eq_mul]
+  have hperTriple : ∀ tripleIndex : Fin 20,
+      ((if atomIndex ∈ rainbowSevenTriple tripleIndex then rainbowSevenMultiplier tripleIndex
+        else 0) • tetraAtom (rainbowSevenMissedDirection tripleIndex)) ⬝ᵥ probe
+        = (if atomIndex ∈ rainbowSevenTriple tripleIndex then
+            rainbowSevenMultiplier tripleIndex
+              * (tetraAtom (rainbowSevenMissedDirection tripleIndex) ⬝ᵥ probe)
+          else 0) := by
+    intro tripleIndex
+    rw [smul_dotProduct, smul_eq_mul]
+    by_cases hmem : atomIndex ∈ rainbowSevenTriple tripleIndex
+    · simp only [hmem, if_true]
+    · simp only [hmem, if_false, zero_mul]
+  rw [Finset.sum_congr rfl fun tripleIndex _ => hperTriple tripleIndex,
+    rainbowSevenMultiplier_marginal atomIndex probe]
+  ring
+
+/-- **THE NON-VACUITY WITNESS AT A NONZERO VALUE.**  The split tetrahedron carries
+stationarity data with rank three, `value = 1`, twenty active subsets and
+`Lambda = I / 3` — so (C1), (C2), (C3) and both exclusions are not hypothetically
+empty statements.
+
+Every field is discharged from `Gtz.Ties.StratumFirstOrder`; nothing new is proved
+about the design here, and in particular nothing here says the design is a
+critical point of `F`. -/
+theorem splitSevenDesign_isQuadricStationaryData :
+    IsQuadricStationaryData splitSevenDesign 1 ((3 : ℝ)⁻¹ • (1 : Matrix (Fin 3) (Fin 3) ℝ))
+      (Finset.univ : Finset (Fin 20)) rainbowSevenTriple rainbowSevenMultiplier
+      rainbowSevenUnitTightDir where
+  activeWeight_nonneg := fun tripleIndex _ => (rainbowSevenMultiplier_pos tripleIndex).le
+  activeWeight_sum_one := rainbowSevenMultiplier_sum_one
+  activeSubset_card := fun tripleIndex _ => rainbowSevenTriple_card tripleIndex
+  tightDir_unit := by
+    intro tripleIndex _
+    rw [rainbowSevenUnitTightDir, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul,
+      tetraAtom_dot_self, ← mul_assoc, inv_sqrt_three_mul_self_eq_third]
+    norm_num
+  tightDir_isEigenvector := by
+    intro tripleIndex _
+    rw [rainbowSevenUnitTightDir, Matrix.mulVec_smul,
+      rainbowSevenTriple_tightEigenvector tripleIndex, one_smul]
+  atomStationarity := by
+    intro atomLabel
+    have hperTriple : ∀ tripleIndex : Fin 20,
+        (if atomLabel ∈ rainbowSevenTriple tripleIndex then
+          rainbowSevenMultiplier tripleIndex
+            * (rainbowSevenUnitTightDir tripleIndex ⬝ᵥ splitSevenDesign.atom atomLabel)
+        else 0) • rainbowSevenUnitTightDir tripleIndex
+          = (-(3 : ℝ)⁻¹) • ((if atomLabel ∈ rainbowSevenTriple tripleIndex then
+              rainbowSevenMultiplier tripleIndex else 0)
+                • tetraAtom (rainbowSevenMissedDirection tripleIndex)) := by
+      intro tripleIndex
+      by_cases hmem : atomLabel ∈ rainbowSevenTriple tripleIndex
+      · have hpairing : rainbowSevenUnitTightDir tripleIndex
+            ⬝ᵥ splitSevenDesign.atom atomLabel = (Real.sqrt 3)⁻¹ * (-1) := by
+          rw [rainbowSevenUnitTightDir, smul_dotProduct, smul_eq_mul, splitSevenDesign_atom,
+            tetraAtom_dot_of_ne (rainbowSevenTriple_direction_ne_missed hmem).symm]
+        simp only [hmem, if_true]
+        rw [hpairing, rainbowSevenUnitTightDir, smul_smul, smul_smul]
+        congr 1
+        calc rainbowSevenMultiplier tripleIndex * ((Real.sqrt 3)⁻¹ * (-1)) * (Real.sqrt 3)⁻¹
+            = -(rainbowSevenMultiplier tripleIndex * ((Real.sqrt 3)⁻¹ * (Real.sqrt 3)⁻¹)) := by
+              ring
+          _ = -(3 : ℝ)⁻¹ * rainbowSevenMultiplier tripleIndex := by
+              rw [inv_sqrt_three_mul_self_eq_third]; ring
+      · simp only [hmem, if_false, zero_smul, smul_zero]
+    rw [Finset.sum_congr rfl fun tripleIndex _ => hperTriple tripleIndex, ← Finset.smul_sum,
+      rainbowSevenMultiplier_marginal_vector atomLabel, Matrix.smul_mulVec, Matrix.one_mulVec,
+      smul_smul, smul_smul]
+    congr 1
+    ring
+  weightStationarity := by
+    intro atomFirst atomSecond
+    have hquadric : ∀ atomLabel : Fin 7, splitSevenDesign.atom atomLabel
+        ⬝ᵥ (((3 : ℝ)⁻¹ • (1 : Matrix (Fin 3) (Fin 3) ℝ)) *ᵥ splitSevenDesign.atom atomLabel)
+          = 1 := by
+      intro atomLabel
+      rw [Matrix.smul_mulVec, Matrix.one_mulVec, dotProduct_smul, smul_eq_mul,
+        splitSevenDesign_atom, tetraAtom_dot_self]
+      norm_num
+    rw [hquadric atomFirst, hquadric atomSecond]
+
+/-- **The hypothesis set of this file is inhabited.**  There are stationarity data
+with a NONZERO value — so `tightOverlap_sum_eq_one_of_isQuadricStationaryData`,
+`exists_rayleighProbe_ge_rank_of_isQuadricStationaryData`,
+`value_eq_rank_of_singleActive` and both exclusions are statements about a
+non-empty class.
+
+The witness has twenty active subsets, which is also the honest picture of where
+the residue lives: by `not_isQuadricStationaryData_of_singleActive_of_rank_lt_size`
+the SMALL active sets are the excluded ones, and the large ones are what a descent
+argument would actually have to produce. -/
+theorem exists_isQuadricStationaryData_value_ne_zero :
+    ∃ (D : WeightedDesign 7 3) (value : ℝ) (multiplier : Matrix (Fin 3) (Fin 3) ℝ)
+      (activeSubset : Fin 20 → Finset (Fin 7)) (activeWeight : Fin 20 → ℝ)
+      (tightDir : Fin 20 → (Fin 3 → ℝ)),
+      IsQuadricStationaryData D value multiplier (Finset.univ : Finset (Fin 20)) activeSubset
+        activeWeight tightDir ∧ value ≠ 0 :=
+  ⟨splitSevenDesign, 1, (3 : ℝ)⁻¹ • (1 : Matrix (Fin 3) (Fin 3) ℝ), rainbowSevenTriple,
+    rainbowSevenMultiplier, rainbowSevenUnitTightDir,
+    splitSevenDesign_isQuadricStationaryData, one_ne_zero⟩
 
 end Gtz
