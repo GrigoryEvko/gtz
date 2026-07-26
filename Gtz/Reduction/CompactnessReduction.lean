@@ -1,25 +1,53 @@
 /-
-# The compactness reduction: the boundary dichotomy PROVED, the sequential form REFUTED
+# The compactness reduction: the boundary dichotomy PROVED, the sequential form
+# REFUTED, and the shipped assembly's hypothesis shown TOO STRONG
 
 The campaign proposed reducing `Gtz.GtzWeighted m k` to (a) the two rungs one size
 down plus (b) the absence of an interior critical point below the threshold, by
 compactifying the weight simplex and analysing the boundary.  Its Case B -- keep
 the escaping atom, compress the survivors onto the orthogonal complement of its
-direction -- was flagged as the weak point.  This file settles that step.
+direction -- was flagged as the weak point.  This file settles that step, and then
+measures honestly what settling it buys.
 
-## LEAD 1 -- THE SEQUENTIAL FORM IS REFUTED, WITH AN EXACT WITNESS
+## LEAD 1 -- SCOPE: THE INTERIOR HYPOTHESIS ALREADY IMPLIES THE GOAL
+
+Read this before reading anything else in the file.  `Gtz.ChartGtzInterior` -- the
+residue every assembly below is stated against -- implies `Gtz.GtzWeighted` at the
+same size in four lines and with NO ladder, NO smaller rung and NO factorisation
+leaf (`Gtz.gtzWeighted_of_chartGtzInterior`): a weighted design's chart point has
+all weights positive, so the interior hypothesis applies to it directly.  It also
+implies the full CLOSED statement `Gtz.ChartGtz` at the same size, again with no
+smaller rungs, by mixing the weights toward uniform and letting the mixing tend to
+zero (`Gtz.chartGtz_of_chartGtzInterior`; the finitely many candidate selections
+let one mixing parameter serve them all).
+
+Consequence, stated flatly: `Gtz.chartGtz_of_smaller_of_interior` and
+`Gtz.chartGtz_of_interior` are SUBSUMED -- strictly more hypotheses for the same
+conclusion -- and the boundary machinery is NOT load bearing for them.  What the
+boundary machinery is load bearing for is `Gtz.weight_pos_of_forall_not_chartDominates`
+(LEAD 3), and the difference is exactly the difference between the brief's
+hypothesis (b) and `Gtz.ChartGtzInterior`.
+
+## LEAD 2 -- THE SEQUENTIAL FORM IS REFUTED AT EVERY POSITIVE WEIGHT
 
 `Gtz.CompressionLiftClaim` states Case B at an ARBITRARY weight at the escaping
 label, i.e. as it would have to hold ALONG a minimizing sequence rather than only
-at its limit.  `Gtz.not_compressionLiftClaim` REFUTES it.  The witness is exact and
-rational: `Gtz.liftFailureChart` on four indices, rank two, every diagonal entry
-positive, carried with the UNIFORM weight `1/4`.  At the label `1` the pivot is
-`1/3` against a weight of `1/4`, so the atom is HEAVY (leverage `4/3 > 1`,
-`Gtz.liftFailure_isAllHeavy` -- so the refutation is NOT hiding in the light-atom
-branch `Gtz.dominating_of_light_atom` discharges for free); the compressed point's
-gap at the survivor is EXACTLY zero (`Gtz.liftFailure_compressedGap_eq_zero`, a
-tie, hence no margin); and the lifted two-element selection fails, at the probe
-`(1, -4, 0, 0)`, with value `-11/12` (`Gtz.not_chartDominates_liftFailure`).
+at its limit.  `Gtz.not_compressionLiftClaim` REFUTES it, and
+`Gtz.not_eventualCompressionLiftClaim` refutes the weaker reading that asks only
+for SOME positive weight threshold below which Case B holds.  The witness is exact
+and rational, and is a one-parameter family: `Gtz.liftFailureChart` on four
+indices, rank two, every diagonal entry positive, carried with the weight
+`pivotWeight` at the label `1` and `(1 - pivotWeight)/3` at the other three
+(`Gtz.liftFailurePointAt`; the uniform-weight point `Gtz.liftFailurePoint` is its
+`1/4` member).  At the label `1` the pivot is `1/3`, so at weight `1/4` the atom is
+HEAVY (leverage `4/3 > 1`, `Gtz.liftFailure_isAllHeavy` -- the refutation is NOT
+hiding in the light-atom branch `Gtz.dominating_of_light_atom` discharges for
+free); the compressed point's gap at the survivor is EXACTLY zero at EVERY weight
+(`Gtz.liftFailurePointAt_compressedGap_eq_zero`, a FROZEN tie, hence no margin at
+any parameter value); and the lifted two-element selection fails at every positive
+weight, at the probe `(-1, 1 + pivotWeight, 0, 0)`, with value
+`-(1/3)(1 + t)t(2 + 3t)` (`Gtz.not_chartDominates_liftFailurePointAt`).  At `1/4`
+the probe `(1, -4, 0, 0)` gives `-11/12` (`Gtz.not_chartDominates_liftFailure`).
 
 The failure is LOCALISED.  `Gtz.chartDominates_image_of_chartPointDelete` shows the
 deletion half of the lift is unconditional in the weight -- the renormalisation
@@ -28,12 +56,20 @@ weight zero the upstairs pivot is `P_zz` and the deflation subtracts
 `(P e_z)(P e_z)ᵀ / P_zz`, so the debt is paid on the nose; at weight `t_z > 0` the
 upstairs pivot degrades to `P_zz - t_z` while the deflation still subtracts
 `... / P_zz`, and the shortfall is first order in `t_z` against a downstairs margin
-that the witness freezes at zero.  CONSEQUENCE: no "for small enough `t_z`"
-phrasing of Case B can be repaired, and Case B must be stated at the LIMIT POINT.
-This is the same shape as the recorded no-margin no-go: ties exist, so nothing
-first order can be paid for.
+that the family freezes at zero.  So Case B must be stated at the LIMIT POINT; this
+is the same shape as the recorded no-margin no-go -- ties exist, so nothing first
+order can be paid for.
 
-## LEAD 2 -- AT THE LIMIT POINT THE BOUNDARY IS FREE, AND PROVED
+The frozen tie is NECESSARY, not incidental.  [EXACT, not mechanized] Perturbing
+the family so the downstairs gap is `d > 0` instead of `0` gives upstairs
+determinant `(d - t - 4 d t + 3 d t^2)/3`, which is `-t/3` at `d = 0` (negative at
+every `t > 0`, which is the theorem above) but tends to `d/3 > 0` as `t -> 0` for
+every `d > 0`.  A positive downstairs margin therefore DOES absorb the first-order
+deficit once `t` is below roughly `d`.  Any claim that the sequential form fails
+even with a positive downstairs margin is true only for weights bounded away from
+zero and must not be read as strengthening the refutation.
+
+## LEAD 3 -- AT THE LIMIT POINT THE BOUNDARY IS FREE, AND PROVED
 
 `Gtz.exists_chartDominates_of_weight_eq_zero` is unconditional given the two
 smaller rungs.  Its two cases are exhaustive by `|P e_z|² = P_zz`
@@ -50,12 +86,24 @@ smaller rungs.  Its two cases are exhaustive by `|P e_z|² = P_zz`
   lifts by one completion of the square (`Gtz.chartDominates_insert_of_deflate`).
   Consumes `(size, rank)`.
 
-Both branches drop the SIZE by one, so the ladder is well founded on the size
-ALONE (`Gtz.chartGtz_of_interior`); the rank window is a consequence of the
-induction, not an extra hypothesis.  Nothing is transported: no margin, no rate,
-no subsequence, no further extraction.  In particular the reduction is immune to
-the recorded drop-transfer no-go for a structural reason -- there is nothing to
-transfer.
+Both branches drop the SIZE by one, so any induction on this dichotomy is well
+founded on the size ALONE; the rank window is a consequence, not an extra
+hypothesis.  Nothing is transported: no margin, no rate, no subsequence, no further
+extraction.  In particular the reduction is immune to the recorded drop-transfer
+no-go for a structural reason -- there is nothing to transfer.
+
+WHERE THIS IS NOT SUBSUMED, precisely.  Package the dichotomy as
+`Gtz.weight_pos_of_forall_not_chartDominates`: given the two smaller rungs, EVERY
+counterexample point is interior.  That is a statement about the GIVEN point, and
+LEAD 1's density argument cannot replace it: density only moves SOME counterexample
+into the interior, destroying whatever distinguished the original one.  A
+compactness argument minimises a continuous objective over the CLOSED domain, where
+the infimum is attained; to conclude that the minimiser carries first-order
+(Clarke) data one needs that very minimiser to be interior, which is what this
+packaging supplies and what density does not.  The interior is not compact, so
+minimising there instead is not an option.  This is the whole reason the brief's
+hypothesis (b) -- about interior CRITICAL points -- is weaker than
+`Gtz.ChartGtzInterior`, and the only reason the boundary work is worth having.
 
 ## WHY THE CHART AND NOT THE DESIGN
 
@@ -86,35 +134,47 @@ only):
   the closed chart domain and its gap; the pivot identity; deflation preserves
   symmetry, idempotency and drops the trace by one; deletion of a dead index;
   the unconditional deletion lift; the Schur step at vanishing weight; the boundary
-  dichotomy; the singleton criterion; the ambient/submatrix Rayleigh dictionary in
-  BOTH directions; `Gtz.dominates_iff_chartDominates`;
-  `Gtz.gtzWeighted_of_chartGtz`; the per-rung reduction; the size-induction ladder;
-  both base rungs.
+  dichotomy and its counterexample-is-interior packaging; the singleton criterion;
+  the ambient/submatrix Rayleigh dictionary in BOTH directions;
+  `Gtz.dominates_iff_chartDominates`; `Gtz.gtzWeighted_of_chartGtz`; the weight
+  relaxation and its gap identity; the density theorem
+  `Gtz.chartGtz_of_chartGtzInterior` and its weighted corollary
+  `Gtz.gtzWeighted_of_chartGtzInterior`; the (subsumed) per-rung reduction and
+  size-induction ladder; both base rungs.
 
-REFUTED AND RECORDED: `Gtz.CompressionLiftClaim` at positive weight.
+REFUTED AND RECORDED: `Gtz.CompressionLiftClaim` at positive weight, and
+`Gtz.EventualCompressionLiftClaim` -- Case B below ANY positive weight threshold.
 
 STATED WITH HYPOTHESIS: `Gtz.chartGtz_of_smaller_of_interior`,
 `Gtz.chartGtz_of_interior`, `Gtz.gtzWeighted_of_interior` take
-`Gtz.ChartGtzInterior` as a hypothesis; `Gtz.chartGtzInterior_of_gtzWeighted`
-takes `Gtz.ChartPointHasDesign`.
+`Gtz.ChartGtzInterior` as a hypothesis (and are subsumed -- LEAD 1);
+`Gtz.weight_pos_of_forall_not_chartDominates` takes the two smaller rungs;
+`Gtz.chartGtzInterior_of_gtzWeighted` takes `Gtz.ChartPointHasDesign`.
 
 UNPROVED LEAVES, all of them, named:
   1. `Gtz.ChartGtzInterior` -- domination at chart points with all weights
-     strictly positive.  This is the residue.  It is NOT the brief's hypothesis (b):
-     obtaining it from "no interior critical point below the threshold" needs
-     compactness of the closed chart domain plus ATTAINMENT of the infimum of a
-     max-of-eigenvalue objective, and a Clarke subdifferential calculus.  Mathlib
-     has `isCompact_stdSimplex` and `Gtz.lambdaMinMat` with
-     `Gtz.continuous_lambdaMinMat`, but NO nonsmooth-analysis layer at all, so that
-     decomposition is not available and is not attempted here.
+     strictly positive.  By LEAD 1 this is not a residue at all: it IMPLIES the
+     weighted goal at that size outright.  It is NOT the brief's hypothesis (b),
+     which is genuinely weaker: obtaining `Gtz.ChartGtzInterior` from "no interior
+     critical point below the threshold" needs compactness of the closed chart
+     domain plus ATTAINMENT of the infimum of a max-of-eigenvalue objective, plus a
+     Clarke subdifferential calculus, plus LEAD 3's packaging to place the
+     minimiser in the interior.  Mathlib has `isCompact_stdSimplex` and
+     `Gtz.lambdaMinMat` with `Gtz.continuous_lambdaMinMat`, and this repository has
+     `Gtz.isCompact_collaredSet` / `Gtz.isClosed_collaredSet` for the DESIGN
+     configuration class (which compactifies away from the boundary, i.e.
+     complementary to what is needed here), but there is NO nonsmooth-analysis
+     layer anywhere, so that decomposition is not available and is not attempted.
   2. `Gtz.ChartPointHasDesign` -- the factorisation `P = V Vᵀ`, needing an
      orthonormal basis of the range of `P`.  Only the design-to-chart direction is
      shipped (`Gtz.chartPointOfDesign`).  This is the SOLE obstruction to feeding
      the already kernel-checked small rungs (`Gtz.gtzWeighted_of_le_five`,
-     `Gtz.gtz_rank_two`, `Gtz.gtzWeighted_corank_two`) into the ladder.  CORRECTING
-     an optimistic reading from the campaign notes: those theorems discharge the
-     smaller rungs in the DESIGN form, and the reduction consumes the CHART form;
-     the two are connected only through this leaf.
+     `Gtz.gtz_rank_two`, `Gtz.gtzWeighted_corank_two`) into any chart-side
+     assembly.  CORRECTING an optimistic reading from the campaign notes: those
+     theorems discharge the smaller rungs in the DESIGN form, and the chart-side
+     statements consume the CHART form; the two are connected only through this
+     leaf.  The leaf is TRUE (spectral theorem) and not vacuous, merely
+     unmechanized.
 
 ## THE OBJECTIVE MISMATCH -- a defect in the brief's hypothesis (b)
 
@@ -133,17 +193,18 @@ stated.  Recorded, not repaired: this file states no stationarity hypothesis at 
 
 `Gtz.ChartGtzInterior` is a hypothesis in every statement that uses it, never
 something derived, so the conditionality is in the types and not only in this
-prose.  It is deliberately the WEAKEST hypothesis under which the boundary work is
-stated, and it is not claimed to be weaker than the target: with the factorisation
-leaf it is exactly `Gtz.GtzWeighted` at that size
-(`Gtz.chartGtzInterior_of_gtzWeighted`).  So the NET content of this file is: the
-boundary of the compactification is free, and the crux that was supposed to be hard
-there is an identity.  Whether the compactness reduction BUYS anything therefore
-turns entirely on whether the interior obligation is easier than the original
-problem -- which is Step 1, untouched here.  Do not read the boundary result as
-progress on Step 1.
+prose.  It is NOT weaker than the target and is not claimed to be: it implies
+`Gtz.GtzWeighted` at that size with no leaf at all
+(`Gtz.gtzWeighted_of_chartGtzInterior`), and with the factorisation leaf the
+implication reverses (`Gtz.chartGtzInterior_of_gtzWeighted`), so the two are
+equivalent.  The NET content of this file is therefore: the boundary of the
+compactification is free, the crux that was supposed to be hard there is an
+identity, and the sequential reading of that crux is false.  Whether the
+compactness reduction BUYS anything turns entirely on Step 1 -- deriving the
+interior obligation from a critical-point hypothesis -- which is untouched here.
+Do not read the boundary result as progress on Step 1.
 
-## PROVENANCE
+## PROVENANCE AND WIRING
 
 The chart is `Gtz.LinAlg.ProjectionForm`'s (`Gtz.projectionOfDesign`,
 `Gtz.projectionOfDesign_transpose`, `Gtz.projectionOfDesign_mul_self`,
@@ -155,6 +216,11 @@ specialisations that file's header enumerates.  Nothing here duplicates
 `Gtz.Reduction.Compression` (which compresses a DESIGN onto a subspace, at
 positive weight) or `Gtz.Reduction.Deflation` (which DROPS a light atom); the
 object below keeps the escaper and works at the boundary, which neither does.
+
+This module is currently an ORPHAN: nothing imports it, so it is outside `Gtz.lean`'s
+closure, outside the default `lake build` target and outside `Gtz/Audit.lean`'s
+ledger, and nothing regression-protects it.  The only other genuinely orphaned
+module in the repository is `Gtz.Ties.DiamondTie`.
 -/
 import Mathlib
 import Gtz.Core.Basic
@@ -751,6 +817,27 @@ theorem exists_chartDominates_of_weight_eq_zero (hsameRank : ChartGtz size (rank
       exact chartDominates_image_of_chartPointDelete (deflatePoint point deadIndex hescapes)
         deadIndex hweight hcolumn selectedDown hdown
 
+/-- **EVERY COUNTEREXAMPLE IS INTERIOR** -- the packaging in which the boundary
+theorem is genuinely load bearing, and the one a compactness argument consumes.
+
+The density theorem `chartGtz_of_chartGtzInterior` subsumes the assemblies below,
+but it does NOT subsume this: density only relocates SOME counterexample into the
+interior, whereas this keeps the GIVEN point and merely reports where it must live.
+A compactness argument minimises a continuous objective over the CLOSED domain --
+the only place the infimum is attained, the interior being non-compact -- and then
+needs THAT minimiser to be interior before any first-order (Clarke) data can be
+read off it.  That is exactly what this supplies. -/
+theorem weight_pos_of_forall_not_chartDominates (hsameRank : ChartGtz size (rank + 1))
+    (hdropRank : ChartGtz size rank) (point : ChartPoint (size + 1) (rank + 1))
+    (hfails : ∀ selected : Finset (Fin (size + 1)), selected.card = rank + 1 →
+      ¬ ChartDominates point selected) (atomIndex : Fin (size + 1)) :
+    0 < point.weight atomIndex := by
+  rcases eq_or_lt_of_le (point.weight_nonneg atomIndex) with hzero | hpositive
+  · obtain ⟨selected, hcard, hdominates⟩ :=
+      exists_chartDominates_of_weight_eq_zero hsameRank hdropRank point atomIndex hzero.symm
+    exact absurd hdominates (hfails selected hcard)
+  · exact hpositive
+
 /-! ## The compression-lift claim: PROVED at the boundary, REFUTED off it -/
 
 /-- **The compressed point**: deflate at the escaping label, then delete it and
@@ -795,8 +882,9 @@ theorem compressionLiftClaim_of_weight_eq_zero (point : ChartPoint (size + 1) (r
 /-! ### The refuting witness
 
 `liftFailureChart` is a rational symmetric idempotent of trace two on four
-indices with EVERY diagonal entry positive, carried with the UNIFORM weight
-`1/4`.  At the label `1`:
+indices with EVERY diagonal entry positive.  It is carried with a ONE-PARAMETER
+weight (`liftFailurePointAt`), of which the UNIFORM weight `1/4` is the member
+`liftFailurePoint` described below.  At the label `1`:
 
 * the pivot is `P_11 = 1/3` and the weight is `1/4`, so `P_zz - t_z = 1/12 > 0`
   and the leverage is `P_zz / t_z = 4/3 > 1`.  Every leverage of this point
@@ -833,29 +921,92 @@ theorem trace_liftFailureChart : Matrix.trace liftFailureChart = (2 : ℝ) := by
   simp [Matrix.trace, Fin.sum_univ_four, liftFailureChart]
   norm_num
 
-/-- The refuting chart point: `liftFailureChart` with the uniform weight `1/4`. -/
-noncomputable def liftFailurePoint : ChartPoint 4 2 where
+/-- **The refuting FAMILY**: `liftFailureChart` carried with the weight
+`pivotWeight` at the escaping label `1` and `(1 - pivotWeight)/3` at the other
+three.  One parameter, exact and rational at every value, and the downstairs tie is
+FROZEN along the whole family -- which is what makes the refutation survive the
+limit `pivotWeight -> 0`. -/
+noncomputable def liftFailurePointAt (pivotWeight : ℝ) (hlow : 0 ≤ pivotWeight)
+    (hhigh : pivotWeight ≤ 1) : ChartPoint 4 2 where
   chart := liftFailureChart
-  weight := fun _ => 1 / 4
+  weight := fun atomIndex => if atomIndex = 1 then pivotWeight else (1 - pivotWeight) / 3
   isSymmetric := liftFailureChart_transpose
   isIdempotent := liftFailureChart_mul_self
   hasTraceRank := by rw [trace_liftFailureChart]; norm_num
-  weight_nonneg := fun _ => by norm_num
-  weight_sum_one := by norm_num [Fin.sum_univ_four]
+  weight_nonneg := fun atomIndex => by
+    rcases eq_or_ne atomIndex 1 with rfl | hne
+    · simpa using hlow
+    · rw [if_neg hne]; linarith
+  weight_sum_one := by
+    have hzeroIndex : (0 : Fin 4) ≠ 1 := by decide
+    have htwoIndex : (2 : Fin 4) ≠ 1 := by decide
+    have hthreeIndex : (3 : Fin 4) ≠ 1 := by decide
+    rw [Fin.sum_univ_four, if_neg hzeroIndex, if_pos rfl, if_neg htwoIndex, if_neg hthreeIndex]
+    ring
+
+theorem liftFailurePointAt_weight_pivot (pivotWeight : ℝ) (hlow : 0 ≤ pivotWeight)
+    (hhigh : pivotWeight ≤ 1) :
+    (liftFailurePointAt pivotWeight hlow hhigh).weight 1 = pivotWeight := by
+  simp [liftFailurePointAt]
+
+theorem liftFailurePointAt_pivot_pos (pivotWeight : ℝ) (hlow : 0 ≤ pivotWeight)
+    (hhigh : pivotWeight ≤ 1) : 0 < (liftFailurePointAt pivotWeight hlow hhigh).chart 1 1 := by
+  norm_num [liftFailurePointAt, liftFailureChart]
+
+theorem liftFailure_succAbove : (1 : Fin 4).succAbove (0 : Fin 3) = 0 := by decide
+
+/-- **The tie is FROZEN**: the compressed gap at the survivor is exactly zero at
+EVERY weight, so the downstairs margin never grows to pay the first-order pivot
+deficit, no matter how small the weight at the escaping label is made. -/
+theorem liftFailurePointAt_compressedGap_eq_zero (pivotWeight : ℝ) (hlow : 0 ≤ pivotWeight)
+    (hhigh : pivotWeight ≤ 1) (hlt : pivotWeight < 1) :
+    chartPointGap (compressPoint (liftFailurePointAt pivotWeight hlow hhigh) 1
+      (liftFailurePointAt_pivot_pos pivotWeight hlow hhigh)
+      (by rw [liftFailurePointAt_weight_pivot]; exact hlt)) 0 0 = 0 := by
+  have hne : (1 : ℝ) - pivotWeight ≠ 0 := by linarith
+  simp only [chartPointGap, compressPoint, chartPointDelete, deflatePoint, deflatedChartMatrix,
+    chartPointColumn, liftFailurePointAt, Matrix.submatrix_apply, Matrix.sub_apply,
+    Matrix.smul_apply, Matrix.vecMulVec_apply, Matrix.diagonal_apply_eq, smul_eq_mul,
+    liftFailure_succAbove]
+  norm_num [liftFailureChart]
+  field_simp
+  norm_num
+
+/-- **The lift fails at EVERY positive weight**, at the probe
+`(-1, 1 + t, 0, 0)`, with value `-(1/3)(1 + t)t(2 + 3t)`. -/
+theorem not_chartDominates_liftFailurePointAt (pivotWeight : ℝ) (hlow : 0 ≤ pivotWeight)
+    (hhigh : pivotWeight ≤ 1) (hpos : 0 < pivotWeight) :
+    ¬ ChartDominates (liftFailurePointAt pivotWeight hlow hhigh) (insert 1 {0}) := by
+  intro hdominates
+  have hsupport : ∀ atomIndex : Fin 4, atomIndex ∉ (insert 1 {0} : Finset (Fin 4)) →
+      (![-1, 1 + pivotWeight, 0, 0] : Fin 4 → ℝ) atomIndex = 0 := by
+    intro atomIndex _
+    fin_cases atomIndex
+    · exact absurd (by decide : (0 : Fin 4) ∈ (insert 1 {0} : Finset (Fin 4))) (by assumption)
+    · exact absurd (by decide : (1 : Fin 4) ∈ (insert 1 {0} : Finset (Fin 4))) (by assumption)
+    · rfl
+    · rfl
+  have hvalue := hdominates (![-1, 1 + pivotWeight, 0, 0] : Fin 4 → ℝ) hsupport
+  simp [chartPointGap, liftFailurePointAt, liftFailureChart, dotProduct, Matrix.mulVec,
+    Matrix.diagonal_apply, Fin.sum_univ_four] at hvalue
+  nlinarith [hvalue, hpos, sq_nonneg pivotWeight]
+
+/-- The uniform-weight witness: the `1/4` member of the family, at which all four
+weights are `1/4`. -/
+noncomputable def liftFailurePoint : ChartPoint 4 2 :=
+  liftFailurePointAt (1 / 4) (by norm_num) (by norm_num)
 
 theorem liftFailure_pivot_pos : 0 < liftFailurePoint.chart 1 1 := by
-  norm_num [liftFailurePoint, liftFailureChart]
+  norm_num [liftFailurePoint, liftFailurePointAt, liftFailureChart]
 
 theorem liftFailure_weight_lt_one : liftFailurePoint.weight 1 < 1 := by
-  norm_num [liftFailurePoint]
+  norm_num [liftFailurePoint, liftFailurePointAt]
 
 /-- **The witness is ALL HEAVY**: every leverage `P_cc / t_c` exceeds one, so the
 refutation is not hiding in the light-atom branch. -/
 theorem liftFailure_isAllHeavy (atomIndex : Fin 4) :
     liftFailurePoint.weight atomIndex < liftFailurePoint.chart atomIndex atomIndex := by
-  fin_cases atomIndex <;> norm_num [liftFailurePoint, liftFailureChart]
-
-theorem liftFailure_succAbove : (1 : Fin 4).succAbove (0 : Fin 3) = 0 := by decide
+  fin_cases atomIndex <;> norm_num [liftFailurePoint, liftFailurePointAt, liftFailureChart]
 
 /-- Downstairs the compressed gap at the survivor is EXACTLY zero: a tie, with no
 margin available to pay the finite-weight pivot mismatch. -/
@@ -863,9 +1014,9 @@ theorem liftFailure_compressedGap_eq_zero :
     chartPointGap (compressPoint liftFailurePoint 1 liftFailure_pivot_pos
       liftFailure_weight_lt_one) 0 0 = 0 := by
   simp only [chartPointGap, compressPoint, chartPointDelete, deflatePoint, deflatedChartMatrix,
-    chartPointColumn, liftFailurePoint, Matrix.submatrix_apply, Matrix.sub_apply,
-    Matrix.smul_apply, Matrix.vecMulVec_apply, Matrix.diagonal_apply_eq, smul_eq_mul,
-    liftFailure_succAbove]
+    chartPointColumn, liftFailurePoint, liftFailurePointAt, Matrix.submatrix_apply,
+    Matrix.sub_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, Matrix.diagonal_apply_eq,
+    smul_eq_mul, liftFailure_succAbove]
   norm_num [liftFailureChart]
 
 /-- Upstairs the two-element selection FAILS to dominate: the probe `(1, -4, 0, 0)`
@@ -882,8 +1033,8 @@ theorem not_chartDominates_liftFailure :
     · rfl
     · rfl
   have hvalue := hdominates (![1, -4, 0, 0] : Fin 4 → ℝ) hsupport
-  simp [chartPointGap, liftFailurePoint, liftFailureChart, dotProduct, Matrix.mulVec,
-    Matrix.diagonal_apply, Fin.sum_univ_four] at hvalue
+  simp [chartPointGap, liftFailurePoint, liftFailurePointAt, liftFailureChart, dotProduct,
+    Matrix.mulVec, Matrix.diagonal_apply, Fin.sum_univ_four] at hvalue
   norm_num at hvalue
 
 /-- **THE REFUTATION.**  The compression lift is FALSE at positive weight: an exact
@@ -897,16 +1048,58 @@ is paid exactly; at weight `t_z > 0` the upstairs pivot degrades to `P_zz - t_z`
 while the deflation still subtracts `.../ P_zz`, and the shortfall is unpaid.
 
 CONSEQUENCE FOR THE REDUCTION.  Case B of the compactness reduction may only be
-stated at the LIMIT POINT, never along the minimizing sequence.  Every "for small
-enough `t_z`" phrasing is dead on arrival: the witness freezes the downstairs
-object at an exact tie, so the downstairs margin is zero and no first-order
-smallness argument can close the gap. -/
+stated at the LIMIT POINT, never along the minimizing sequence.  The "for small
+enough `t_z`" phrasing is dead too, and that is not an extrapolation from this
+single point but the separate theorem `not_eventualCompressionLiftClaim` below. -/
 theorem not_compressionLiftClaim : ¬ CompressionLiftClaim 3 1 := by
   intro hclaim
   have hlifted := hclaim liftFailurePoint 1 liftFailure_pivot_pos liftFailure_weight_lt_one {0}
     (chartDominates_singleton _ 0 (le_of_eq liftFailure_compressedGap_eq_zero.symm))
   rw [show ({0} : Finset (Fin 3)).image (1 : Fin 4).succAbove = {0} from by decide] at hlifted
   exact not_chartDominates_liftFailure hlifted
+
+/-- **Case B below SOME positive weight threshold** -- the weakest sequential
+reading of the campaign brief's Case B, and the one a minimizing-sequence argument
+would actually try to use, since along such a sequence the weight at the escaping
+label tends to zero. -/
+def EventualCompressionLiftClaim (size rank : ℕ) : Prop :=
+  ∃ threshold : ℝ, 0 < threshold ∧
+    ∀ (point : ChartPoint (size + 1) (rank + 1)) (pivotIndex : Fin (size + 1))
+      (hpivot : 0 < point.chart pivotIndex pivotIndex) (hweight : point.weight pivotIndex < 1),
+      point.weight pivotIndex < threshold →
+      ∀ selectedDown : Finset (Fin size),
+        ChartDominates (compressPoint point pivotIndex hpivot hweight) selectedDown →
+        ChartDominates point (insert pivotIndex (selectedDown.image pivotIndex.succAbove))
+
+/-- **NO WEIGHT THRESHOLD SAVES CASE B.**  Whatever threshold is proposed, the
+family supplies a counterexample below it: the tie downstairs is frozen at zero
+while the pivot deficit is first order in the weight, so shrinking the weight
+shrinks the deficit and the margin at the same rate and never overtakes it.
+
+This is the theorem the campaign brief's Case B needs and does not have.  What it
+does NOT say -- and the distinction matters, because the opposite reading has been
+asserted -- is that a POSITIVE downstairs margin also fails to save the lift.  It
+does save it: perturbing this family so the downstairs gap is `d > 0` makes the
+upstairs determinant `(d - t - 4 d t + 3 d t^2)/3`, which tends to `d/3 > 0` as the
+weight `t` tends to zero.  The frozen tie is essential, not incidental. -/
+theorem not_eventualCompressionLiftClaim : ¬ EventualCompressionLiftClaim 3 1 := by
+  rintro ⟨threshold, hthreshold, hclaim⟩
+  set pivotWeight : ℝ := min (threshold / 2) (1 / 2) with hpivotWeight
+  have hpos : 0 < pivotWeight := lt_min (by linarith) (by norm_num)
+  have hhalf : pivotWeight ≤ 1 / 2 := min_le_right _ _
+  have hlow : 0 ≤ pivotWeight := hpos.le
+  have hhigh : pivotWeight ≤ 1 := by linarith
+  have hlt : pivotWeight < 1 := by linarith
+  have hsmall : pivotWeight < threshold := lt_of_le_of_lt (min_le_left _ _) (by linarith)
+  have hweight : (liftFailurePointAt pivotWeight hlow hhigh).weight 1 < 1 := by
+    rw [liftFailurePointAt_weight_pivot]; exact hlt
+  have hlifted := hclaim (liftFailurePointAt pivotWeight hlow hhigh) 1
+    (liftFailurePointAt_pivot_pos pivotWeight hlow hhigh) hweight
+    (by rw [liftFailurePointAt_weight_pivot]; exact hsmall) {0}
+    (chartDominates_singleton _ 0
+      (le_of_eq (liftFailurePointAt_compressedGap_eq_zero pivotWeight hlow hhigh hlt).symm))
+  rw [show ({0} : Finset (Fin 3)).image (1 : Fin 4).succAbove = {0} from by decide] at hlifted
+  exact not_chartDominates_liftFailurePointAt pivotWeight hlow hhigh hpos hlifted
 
 /-! ## The bridge to `Gtz.GtzWeighted` -/
 
@@ -1097,10 +1290,15 @@ def ChartGtzInterior (size rank : ℕ) : Prop :=
   ∀ point : ChartPoint size rank, (∀ atomIndex, 0 < point.weight atomIndex) →
     ∃ selected : Finset (Fin size), selected.card = rank ∧ ChartDominates point selected
 
-/-- **THE REDUCTION, one rung.**  The closed statement at `(size + 1, rank + 1)`
-follows from the interior obligation at that size together with the two smaller
-rungs.  The boundary half is PROVED (`exists_chartDominates_of_weight_eq_zero`);
-the interior half is the stated hypothesis. -/
+/-- **The one-rung assembly -- SUBSUMED, kept for the record.**  The closed
+statement at `(size + 1, rank + 1)` follows from the interior obligation at that
+size together with the two smaller rungs.
+
+Do NOT read this as "the reduction".  `chartGtz_of_chartGtzInterior` proves the
+same conclusion from `hinterior` ALONE, so the two smaller-rung hypotheses are
+dead weight here and the boundary theorem is not load bearing for this statement.
+The boundary theorem's live packaging is
+`weight_pos_of_forall_not_chartDominates`. -/
 theorem chartGtz_of_smaller_of_interior (hsameRank : ChartGtz size (rank + 1))
     (hdropRank : ChartGtz size rank) (hinterior : ChartGtzInterior (size + 1) (rank + 1)) :
     ChartGtz (size + 1) (rank + 1) := by
@@ -1126,10 +1324,13 @@ theorem chartGtz_rank_zero (atoms : ℕ) : ChartGtz atoms 0 := by
   rw [hzero]
   simp
 
-/-- **THE LADDER.**  Induction on the SIZE alone: every rung consumes only the two
-rungs one size below, so the whole closed statement follows from the interior
-obligation at every rung.  The rank window is a consequence of the induction, not
-an extra hypothesis. -/
+/-- **The size ladder -- SUBSUMED, kept for the record.**  Induction on the SIZE
+alone: every rung consumes only the two rungs one size below, so the whole closed
+statement follows from the interior obligation at every rung, and the rank window
+is a consequence of the induction rather than an extra hypothesis.
+
+Subsumed by `chartGtz_of_chartGtzInterior`, which needs the interior obligation at
+ONE size to conclude at that same size, where this needs it at every size. -/
 theorem chartGtz_of_interior (hinterior : ∀ atoms rankValue, ChartGtzInterior atoms rankValue)
     (atoms : ℕ) : ∀ rankValue, ChartGtz atoms rankValue := by
   induction atoms with
@@ -1147,6 +1348,172 @@ theorem gtzWeighted_of_interior
     (hinterior : ∀ atoms rankValue, ChartGtzInterior atoms rankValue) (atoms rankValue : ℕ) :
     GtzWeighted atoms rankValue :=
   gtzWeighted_of_chartGtz (chartGtz_of_interior hinterior atoms rankValue)
+
+/-! ## The interior obligation already implies both conclusions
+
+This section measures the two assemblies above.  It shows the interior obligation
+alone -- no smaller rung, no ladder, no factorisation leaf -- yields the weighted
+goal at the same size, and also the full CLOSED chart statement at the same size.
+Both assemblies above are therefore subsumed, and the boundary machinery is load
+bearing only in the `weight_pos_of_forall_not_chartDominates` packaging, which
+keeps the given point rather than relocating a counterexample. -/
+
+/-- There is no chart point on an empty index set, so any chart point witnesses a
+positive size. -/
+theorem size_pos_of_chartPoint (point : ChartPoint size rank) : 0 < size := by
+  rcases Nat.eq_zero_or_pos size with hzero | hpositive
+  · subst hzero
+    exact absurd point.weight_sum_one (by simp)
+  · exact hpositive
+
+/-- **Mix the weights toward uniform**, leaving the chart alone.  At any positive
+mixing every weight is strictly positive, so the mixed point is INTERIOR; at
+mixing zero it is the original point.  The chart is untouched, so no idempotency
+or trace obligation is re-incurred. -/
+noncomputable def relaxedChartPoint (point : ChartPoint size rank) (mixing : ℝ)
+    (hlow : 0 ≤ mixing) (hhigh : mixing ≤ 1) : ChartPoint size rank where
+  chart := point.chart
+  weight := fun atomIndex => (1 - mixing) * point.weight atomIndex + mixing / (size : ℝ)
+  isSymmetric := point.isSymmetric
+  isIdempotent := point.isIdempotent
+  hasTraceRank := point.hasTraceRank
+  weight_nonneg := fun atomIndex => by
+    have hcast : (0 : ℝ) < (size : ℝ) := by exact_mod_cast size_pos_of_chartPoint point
+    have hweight := point.weight_nonneg atomIndex
+    have hcomplement : 0 ≤ 1 - mixing := by linarith
+    positivity
+  weight_sum_one := by
+    have hcast : (0 : ℝ) < (size : ℝ) := by exact_mod_cast size_pos_of_chartPoint point
+    rw [Finset.sum_add_distrib, ← Finset.mul_sum, point.weight_sum_one, Finset.sum_const,
+      Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+    field_simp
+    ring
+
+/-- The mixed gap form differs from the original by a term LINEAR in the mixing --
+which is what lets one mixing parameter serve all finitely many selections at
+once. -/
+theorem dotProduct_gap_relaxedChartPoint (point : ChartPoint size rank) (mixing : ℝ)
+    (hlow : 0 ≤ mixing) (hhigh : mixing ≤ 1) (probe : Fin size → ℝ) :
+    probe ⬝ᵥ (chartPointGap (relaxedChartPoint point mixing hlow hhigh) *ᵥ probe)
+      = probe ⬝ᵥ (chartPointGap point *ᵥ probe)
+        - mixing * ∑ atomIndex, ((size : ℝ)⁻¹ - point.weight atomIndex)
+            * probe atomIndex ^ 2 := by
+  have hdiagonalForm : ∀ weights : Fin size → ℝ,
+      probe ⬝ᵥ (Matrix.diagonal weights *ᵥ probe)
+        = ∑ atomIndex, weights atomIndex * probe atomIndex ^ 2 := by
+    intro weights
+    simp only [dotProduct, Matrix.mulVec_diagonal]
+    exact Finset.sum_congr rfl fun _ _ => by ring
+  simp only [chartPointGap, relaxedChartPoint, Matrix.sub_mulVec, dotProduct_sub,
+    hdiagonalForm]
+  rw [sub_sub, Finset.mul_sum, ← Finset.sum_add_distrib]
+  congr 1
+  exact Finset.sum_congr rfl fun _ _ => by ring
+
+/-- **THE DENSITY THEOREM.**  The interior obligation implies the CLOSED statement
+at the SAME size, with no smaller rungs anywhere.
+
+Suppose no selection dominates at a boundary point.  Each of the finitely many
+candidate selections then carries a failing probe, normalised to gap value `-1`.
+Mixing the weights toward uniform changes each of those values by a term linear in
+the mixing, so a single mixing small enough to keep all of them negative exists --
+take the reciprocal of one plus the sum of the linear coefficients' magnitudes.
+That mixed point is interior and has no dominating selection, contradicting the
+hypothesis.
+
+This is what makes `chartGtz_of_smaller_of_interior` and `chartGtz_of_interior`
+subsumed.  It does NOT replace `weight_pos_of_forall_not_chartDominates`: the
+counterexample it produces is a DIFFERENT point, so nothing distinguishing the
+original point -- in particular being a minimiser -- survives. -/
+theorem chartGtz_of_chartGtzInterior (hinterior : ChartGtzInterior size rank) :
+    ChartGtz size rank := by
+  classical
+  intro point
+  by_contra hnoSelection
+  push Not at hnoSelection
+  have hsize : 0 < size := size_pos_of_chartPoint point
+  have hcast : (0 : ℝ) < (size : ℝ) := by exact_mod_cast hsize
+  have hnormalisedProbe : ∀ selected : Finset (Fin size), ∃ probe : Fin size → ℝ,
+      selected.card = rank →
+        (∀ atomIndex, atomIndex ∉ selected → probe atomIndex = 0) ∧
+          probe ⬝ᵥ (chartPointGap point *ᵥ probe) = -1 := by
+    intro selected
+    by_cases hcard : selected.card = rank
+    · have hfails := hnoSelection selected hcard
+      rw [ChartDominates] at hfails
+      push Not at hfails
+      obtain ⟨rawProbe, hsupport, hvalue⟩ := hfails
+      have hnegative : (0 : ℝ) < -(rawProbe ⬝ᵥ (chartPointGap point *ᵥ rawProbe)) := by linarith
+      have hroot := Real.mul_self_sqrt hnegative.le
+      have hrootNonzero :
+          Real.sqrt (-(rawProbe ⬝ᵥ (chartPointGap point *ᵥ rawProbe))) ≠ 0 := by
+        intro hzero
+        rw [hzero] at hroot
+        simp at hroot
+        linarith
+      refine ⟨(Real.sqrt (-(rawProbe ⬝ᵥ (chartPointGap point *ᵥ rawProbe))))⁻¹ • rawProbe,
+        fun _ => ⟨fun atomIndex hnot => by simp [hsupport atomIndex hnot], ?_⟩⟩
+      rw [Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul]
+      field_simp
+      linarith [hroot]
+    · exact ⟨0, fun hbad => absurd hbad hcard⟩
+  choose failProbe hfailProbe using hnormalisedProbe
+  set linearCoefficient : Finset (Fin size) → ℝ := fun selected =>
+    ∑ atomIndex, ((size : ℝ)⁻¹ - point.weight atomIndex) * failProbe selected atomIndex ^ 2
+    with hlinearCoefficient
+  set candidates : Finset (Finset (Fin size)) :=
+    Finset.univ.filter (fun selected => selected.card = rank) with hcandidates
+  set coefficientBudget : ℝ := ∑ selected ∈ candidates, |linearCoefficient selected|
+    with hcoefficientBudget
+  have hbudgetNonneg : 0 ≤ coefficientBudget := Finset.sum_nonneg fun _ _ => abs_nonneg _
+  set mixing : ℝ := (1 + coefficientBudget)⁻¹ with hmixing
+  have hmixingPos : 0 < mixing := by rw [hmixing]; positivity
+  have hmixingLeOne : mixing ≤ 1 := by
+    rw [hmixing]
+    exact inv_le_one_of_one_le₀ (by linarith)
+  have hmixingScale : mixing * (1 + coefficientBudget) = 1 := by rw [hmixing]; field_simp
+  have hmixedPositive : ∀ atomIndex,
+      0 < (relaxedChartPoint point mixing hmixingPos.le hmixingLeOne).weight atomIndex := by
+    intro atomIndex
+    have hshifted : 0 ≤ (1 - mixing) * point.weight atomIndex :=
+      mul_nonneg (by linarith) (point.weight_nonneg atomIndex)
+    have huniform : 0 < mixing / (size : ℝ) := div_pos hmixingPos hcast
+    simp only [relaxedChartPoint]
+    linarith
+  obtain ⟨selected, hcard, hdominates⟩ :=
+    hinterior (relaxedChartPoint point mixing hmixingPos.le hmixingLeOne) hmixedPositive
+  obtain ⟨hsupport, hvalue⟩ := hfailProbe selected hcard
+  have hchosen := hdominates (failProbe selected) hsupport
+  rw [dotProduct_gap_relaxedChartPoint, hvalue] at hchosen
+  have hmember : selected ∈ candidates := by
+    rw [hcandidates]; exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hcard⟩
+  have hbounded : |linearCoefficient selected| ≤ coefficientBudget :=
+    Finset.single_le_sum (f := fun other => |linearCoefficient other|)
+      (fun _ _ => abs_nonneg _) hmember
+  have hlowerBound : -coefficientBudget ≤ linearCoefficient selected := by
+    have := neg_abs_le (linearCoefficient selected)
+    linarith
+  have hscaled : mixing * (-coefficientBudget) ≤ mixing * linearCoefficient selected :=
+    mul_le_mul_of_nonneg_left hlowerBound hmixingPos.le
+  have hfold : linearCoefficient selected
+      = ∑ atomIndex, ((size : ℝ)⁻¹ - point.weight atomIndex)
+          * failProbe selected atomIndex ^ 2 := rfl
+  rw [← hfold] at hchosen
+  nlinarith [hchosen, hscaled, hmixingScale, hmixingPos]
+
+/-- **The interior obligation implies the weighted goal outright**, in four lines
+and with no leaf: a weighted design's chart point has all weights positive, so the
+interior obligation applies to it directly.
+
+This is the sharpest statement of what `ChartGtzInterior` costs as a hypothesis,
+and the reason the file's assemblies must not be advertised as buying anything on
+their own. -/
+theorem gtzWeighted_of_chartGtzInterior {atoms rankValue : ℕ}
+    (hinterior : ChartGtzInterior atoms rankValue) : GtzWeighted atoms rankValue := by
+  intro design
+  obtain ⟨selected, hcard, hdominates⟩ :=
+    hinterior (chartPointOfDesign design) (fun atomIndex => design.weight_pos atomIndex)
+  exact ⟨selected, hcard, (dominates_iff_chartDominates design selected hcard).mpr hdominates⟩
 
 /-- **The missing link in the OTHER direction**, named so the gap is citable: every
 chart point with strictly positive weights comes from a weighted design.
