@@ -8,26 +8,25 @@
 
 By Theorem~\ref{thm:variational}, whose hypotheses at this cell are the two
 instances $\Gtz^{\mathrm{ch}}(5,3)$ and $\Gtz^{\mathrm{ch}}(5,2)$ of
-Corollary~\ref{cor:corank}, this closes $\Gtz(6,3)$.  The question is finite.
-The active family $\mathcal{A}^{+}$ covers the six indices by
+Corollary~\ref{cor:corank}, this closes $\Gtz(6,3)$.  The question is finite: the active family $\mathcal{A}^{+}$ covers the six indices by
 \eqref{eq:coverage}, has at least three members by
 Corollary~\ref{cor:e3}, and may be taken of cardinality at most $15$ by
 Carathéodory's theorem \cite{Caratheodory1911}; there are $2101$ such families
 up to relabelling, of which $2068$ lie within the Carathéodory bound
-(\S\ref{app:census}).  Finiteness is not smallness: the exclusions of
-\S\ref{sec:exclusions} settle $57$ of the $2136$ classes, and the remainder is
+(\S\ref{app:census}).  The exclusions of \S\ref{sec:exclusions},
+however, settle only $57$ of the $2136$ classes, and the remainder is
 concentrated where they are silent.  For each, what must be shown is that the ideal generated
 by \eqref{eq:statg}, \eqref{eq:statt} and the equations
 $\lmin(\SC)=\cv$ on the active family has no real point with $t\pd0$,
 $\lambda\psd0$ and $0<\cv<1$.
 
-Two features of the system must be carried through any such elimination and
-are easy to lose.  Multiplicity: if $\SC$ has $\cv$ as a multiple eigenvalue at
-an active $C$ then $u_C$ ranges over an eigenspace and the multiplier attached
+Any elimination must respect the system's multiplicities and its
+redundancy.  If $\SC$ has $\cv$ as a multiple eigenvalue at an active
+$C$, then $u_C$ ranges over an eigenspace and the multiplier attached
 to $C$ is a positive semidefinite matrix on it, so the system is larger than
-its generic shape.  And redundancy: \eqref{eq:coverage} is \eqref{eq:statg}
-contracted, and $\mu=\cv$ follows from it, so the constraints must not be
-counted as independent.
+its generic shape.  And \eqref{eq:coverage} is \eqref{eq:statg}
+contracted, with $\mu=\cv$ following from it, so the constraints must
+not be counted as independent.
 
 \item\label{prob:seventhree}
 \emph{Prove Conjecture~\ref{conj:seventhree}: the same at $(7,3)$.}
@@ -35,10 +34,10 @@ counted as independent.
 With Problem~\ref{prob:sixthree} this decides the real problem at rank three,
 by Theorem~\ref{thm:rankthree}.  Enumeration is not available: the census has
 $7\,011\,184$ classes, of which $5\,249\,381$ lie within the Carath\'eodory bound
-$19$ (\S\ref{app:census}).  What is wanted is an argument uniform in the active
-family --- one that uses only the laws \eqref{eq:statt} and
-\eqref{eq:coverage}, the positivity of the weights, and the combinatorics of a
-covering family, and not the family's identity.  The known extremal designs at
+$19$ (\S\ref{app:census}).  An argument uniform in the active family is wanted, one using only the
+laws \eqref{eq:statt} and \eqref{eq:coverage}, the positivity of the
+weights, and the combinatorics of a covering family, never the family's
+identity.  The known extremal designs at
 this cell, the split tetrahedra of \S\ref{app:split}, have active family of
 cardinality $20$ and value $\cv=1$; a uniform argument must therefore exclude
 $\cv<1$ without excluding those.
@@ -87,9 +86,8 @@ vector there is one, given in \S\ref{app:corankone}, and \eqref{eq:tielaw} is a
 complete description.  Beyond corank one the constructed families are the
 split-class designs of \S\ref{app:split}, which have at most $k+1$ distinct
 directions, and the splittings of the diamond of \S\ref{app:diamond}, which
-has $k+2$.  Three questions are open.  Is that list complete at $(6,3)$ and
-$(7,3)$?  Is the list finite, as a list of families?  And does every extremal
-design have every basis active, that is $\lmin(\SC)=1$ for every independent
+has $k+2$.  Is that list complete at $(6,3)$ and $(7,3)$?  Is it finite, as a list
+of families?  Does every extremal design have every basis active, that is $\lmin(\SC)=1$ for every independent
 $k$-subset $C$?  Every known extremal design does: at the tetrahedron all four
 triples are bases and all are active, and at the diamond the eight spanning
 trees are bases and all eight have positive semidefinite singular gaps, the two
@@ -132,9 +130,9 @@ so the principle reproduces Theorem~\ref{thm:corankone} and nothing beyond it.
 Computing a maximal-volume subset is itself out of reach: the problem
 is NP-hard and NP-hard to approximate within a constant factor
 \cite{CivrilMagdonIsmail2009}, and the rank-revealing factorizations that
-approximate it \cite{GuEisenstat1996} inherit the weaker guarantee.  Two
-questions therefore stand apart from the conjecture itself.  Does a subset of
-maximal volume dominate?  And, granting $\Gtz(m,k)$, is there an algorithm
-polynomial in $m$ and $k$ that exhibits a dominating subset?
+approximate it \cite{GuEisenstat1996} inherit the weaker guarantee.  Two questions therefore stand apart from the conjecture itself: does a
+subset of maximal volume dominate, and, granting $\Gtz(m,k)$, is there
+an algorithm polynomial in $m$ and $k$ that exhibits a dominating
+subset?
 
 \end{enumerate}

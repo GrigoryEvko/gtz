@@ -1,22 +1,20 @@
 \section{The complex problem}\label{sec:complex}
 
-Over $\C$ the problem has a complete answer, and the answer is that
-selection succeeds exactly in the range where the elementary mechanisms of
-\S\ref{sec:first}--\S\ref{sec:chart} already reach: $\GtzC(m,k)$ holds for
-$k\ge2$ if and only if $m\le k+1$.  The positive half is assembled in
+Over $\C$ the problem is solved, and the solution coincides with the
+reach of the elementary mechanisms of
+\S\ref{sec:first}--\S\ref{sec:chart}: $\GtzC(m,k)$ holds for $k\ge2$ if
+and only if $m\le k+1$.  The positive half is assembled in
 \S\ref{sec:cpositive} from statements already proved, all of which are
 insensitive to the field.  The negative half is produced from a single
-design of size four and rank two by two operations on designs, each of
-which raises the size or the rank by one and each of which controls the
-quantity that must be controlled.  That quantity is fixed in
-\S\ref{sec:cvalue}, the seed is \S\ref{sec:cseed}, the operations are
-\S\ref{sec:cpadding}, and the assembly is \S\ref{sec:cladder}.
+design of size four and rank two by two operations on designs, each raising the size or the rank by one
+while preserving a bound on the value.  \S\ref{sec:cvalue} fixes that
+value, \S\ref{sec:cseed} gives the seed, \S\ref{sec:cpadding} the
+operations, and \S\ref{sec:cladder} the assembly.
 
 \subsection{The value of a design}\label{sec:cvalue}
 
-Once the Boolean question has answer \emph{no}, the object of study is a
-number, and that number is what the operations of \S\ref{sec:cpadding}
-propagate.  Fix a design $\dsn$ at $(m,k)$ over $\FF$.  For every $k$-subset
+Once the Boolean question has answer \emph{no}, the object of study is a number, which the operations of
+\S\ref{sec:cpadding} propagate.  Fix a design $\dsn$ at $(m,k)$ over $\FF$.  For every $k$-subset
 $C$ and every $x\in\FF^k$,
 \begin{equation}\label{eq:cover}
   x\adj\SC x\;=\;\sum_{c\in C}\lvert\langle g_c,x\rangle\rvert^{2},
@@ -47,8 +45,8 @@ Theorem~\ref{thm:corankone}(iii)--(iv) produces designs of value exactly
 $1$ at every rank, the conjecture over $\R$ is the assertion
 $\alpha_k(\R)=1$ for every $k$.
 
-One bound holds at every rank, over either field, and bounds the damage
-the complex counterexamples can do.
+At every rank and over either field the value is bounded below, which
+limits what the complex counterexamples can achieve.
 
 \begin{proposition}[Lean]\label{prop:rankfloor}
 Every weighted design of size $m$ and rank $k$ over $\FF$ admits a
@@ -150,7 +148,7 @@ and letting $\max_c t_c\to1$ drives the value to $1$ from above.
 
 \subsection{The seed}\label{sec:cseed}
 
-Everything negative over $\C$ descends from one design.  Let
+Let
 $\omega:=e^{2\pi i/3}$, so that $1+\omega+\omega^{2}=0$ and
 $\omega+\bar\omega=-1$.
 
@@ -212,12 +210,12 @@ The inequality $\alpha_{\mathrm{SIC}}<\tfrac9{10}$ is $\tfrac{11}{10}<\tfrac2{\s
 that is $11\sqrt3<20$, that is $363<400$.
 \end{proof}
 
-The contrast with $\R$ is exactly here.  Over $\R$ rank two holds at every
-size (Theorem~\ref{thm:ranktwo}), so $\alpha_2(\R)=1$; over $\C$ the same
-cell has value below $1$ already at size four.  No proof of $\Gtz$ can
-therefore be field-agnostic.  The constant $\alpha_{\mathrm{SIC}}$ is
-sharp.  By \cite{Nesterenko2026complex} no uniform-weight design of rank
-two has value below $2-2/\sqrt3$, the bound being attained exactly when
+Here the two fields part: over $\R$ rank two holds at every size
+(Theorem~\ref{thm:ranktwo}), so $\alpha_2(\R)=1$, while over $\C$ the
+same cell has value below $1$ already at size four.  No proof of $\Gtz$
+can therefore be field-agnostic.  The constant $\alpha_{\mathrm{SIC}}$
+is moreover sharp: by \cite{Nesterenko2026complex} no uniform-weight
+design of rank two has value below $2-2/\sqrt3$, the bound being attained exactly when
 $4\mid m$, at a repeated copy of \eqref{eq:sic}.  The bound passes to
 arbitrary weights in two steps.  A design with rational weights is
 obtained from a uniform design of larger size by merging equal vectors, so
@@ -292,8 +290,8 @@ $(1-w)s>b$, contradicting the hypothesis on $\dsn$.
 \end{proof}
 
 The spike is invisible in the flat directions and is the only atom
-visible in the new one; that is the whole content of the two cases.  The
-factor $1/(1-w)$ is the price, and it is a genuine loss: for $b>0$ one has
+visible in the new one.  The factor $1/(1-w)$ is a genuine loss: for
+$b>0$ one has
 $b<b/(1-w)$ for every admissible $w$, so no member of the family attains
 the level $b$, though the levels descend to it as $w\to0$.
 
@@ -402,8 +400,8 @@ Theorem~\ref{thm:ladder},
 \]
 and at rank two both ends are known: $\alpha_2(\C)=2-2/\sqrt3$, the upper
 bound by Lemma~\ref{lem:sicvalue} and the lower by
-\cite{Nesterenko2026complex}.  At rank three the two ends are far apart,
-and the upper one is not the padded seed.  Two designs improve it.
+\cite{Nesterenko2026complex}.  At rank three the two ends are far apart, and two designs push the
+upper end below the padded seed.
 
 \begin{example}[Lean]\label{ex:trine}
 Two coplanar trines of lines in $\C^{3}$ sharing an axis: for $j=0,1,2$,
@@ -515,7 +513,7 @@ is one of the three cube roots of $-(27/8)^3$, namely $-\tfrac{27}8$ and
 $\tfrac{27}{16}(1\pm i\sqrt3)$.  Hence
 \begin{equation}\label{eq:hessedet}
   \det(\SC-sI_3)\;=\;(3-s)^{3}-\tfrac{27}4(3-s)+2\operatorname{Re}\beta_{abc},
-  \qquad \operatorname{Re}T\in\Bigl\{-\tfrac{27}8,\ \tfrac{27}{16}\Bigr\},
+  \qquad \operatorname{Re}\beta_{abc}\in\Bigl\{-\tfrac{27}8,\ \tfrac{27}{16}\Bigr\},
 \end{equation}
 the first alternative occurring exactly when $\det\SC=\tfrac{27}4+2\operatorname{Re}\beta_{abc}$
 vanishes, i.e.\ for the twelve triples lying on a line of the Hesse
@@ -620,12 +618,13 @@ smallest roots.  As $3-\sqrt5<2$ and $h(3-\sqrt5)>0$, the number
 $3-\sqrt5$ lies in the same interval, hence above $h_3$.
 
 \begin{remark}\label{rem:phase}
-Identity \eqref{eq:tripledet} isolates what distinguishes the two fields.
+Identity \eqref{eq:tripledet} shows where the two fields differ.
 Over $\R$ the entries $\beta_{ij}$ are real, so $\beta_{abc}$ is real and
-$\operatorname{Re}\beta_{abc}=\pm\lvert T\rvert$ is forced to an extreme of its
-range; over $\C$ it may sit anywhere in $[-\lvert T\rvert,\lvert
-T\rvert]$, and the separating quantity is the phase defect
-$\lvert T\rvert^{2}-(\operatorname{Re}\beta_{abc})^{2}=(\operatorname{Im}\beta_{abc})^{2}$,
+$\operatorname{Re}\beta_{abc}=\pm\lvert\beta_{abc}\rvert$ is forced to an extreme of its
+range; over $\C$ it may sit anywhere in
+$[-\lvert\beta_{abc}\rvert,\lvert\beta_{abc}\rvert]$, and the separating
+quantity is the phase defect
+$\lvert\beta_{abc}\rvert^{2}-(\operatorname{Re}\beta_{abc})^{2}=(\operatorname{Im}\beta_{abc})^{2}$,
 which vanishes identically for every real configuration.  The trine of
 Example~\ref{ex:trine} illustrates the mechanism in its purest form: its
 modulus budget $5$ would permit $2\operatorname{Re}\beta_{abc}=2\sqrt3$ and hence a

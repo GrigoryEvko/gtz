@@ -105,8 +105,7 @@ so $\Phi'[\dot g,\dot t]=Y$ and $\sigma'[\dot t]=a$.  The dimension count
 and the description of $\tang$ are the submersion theorem.
 \end{proof}
 
-One family of tangent directions will be needed twice.  For an
-antisymmetric $X$ the infinitesimal rotation
+For an antisymmetric $X$ the infinitesimal rotation
 \begin{equation}\label{eq:orbit}
   \dot g_c\;=\;Xg_c\quad(1\le c\le m),\qquad \dot t=0
 \end{equation}
@@ -129,8 +128,8 @@ equal to --- the convex hull of the subdifferentials of the active pieces
 \cite[Prop.~2.3.12]{Clarke1990}.  The inclusion runs in the direction a
 necessary condition needs.
 
-Two facts are classical.  First, $\lmin$ is concave on $\mathbb{S}^k$
-and its superdifferential at $A$ is the \emph{spectraplex}
+The function $\lmin$ is concave on $\mathbb{S}^k$, and its
+superdifferential at $A$ is the \emph{spectraplex}
 \begin{equation}\label{eq:spectraplex}
 \begin{aligned}
   \partial\lmin(A)\;&:=\;\bigl\{\,\Theta\psd0:\ \tr\Theta=1,\
@@ -140,9 +139,8 @@ and its superdifferential at $A$ is the \emph{spectraplex}
 \end{aligned}
 \end{equation}
 \cite[\S2]{Overton1988},
-\cite[Vol.~I, Ch.~VI]{HiriartUrrutyLemarechal1993}.  Second, the Clarke
-subdifferential of a locally Lipschitz function composed with a smooth
-map is contained in the image of the subdifferential under the adjoint of
+\cite[Vol.~I, Ch.~VI]{HiriartUrrutyLemarechal1993}.  The Clarke subdifferential of a locally Lipschitz function composed
+with a smooth map is, in turn, contained in the image of the subdifferential under the adjoint of
 the derivative \cite[Thm.~2.3.10]{Clarke1990}.  Applied to
 $\lmin\circ\SC$, and using that $\Theta$ is symmetric so that
 $\langle\Theta,\dot g_c^{\vphantom{\mathsf{T}}}g_c\tp
@@ -163,7 +161,7 @@ designs.  Put $\cv:=F(g,t)$ and
 $\mathcal{A}:=\{C:\lvert C\rvert=k,\ \lmin(\SC)=\cv\}$.  Then there are a
 finite index set $A$, subsets $C_i\in\mathcal{A}$, reals $\lambda_i\ge0$
 with $\sum_{i\in A}\lambda_i=1$, unit vectors $u_i$ with
-$S_{C_i}u_i=vu_i$, a symmetric matrix $\Lambda$ and a scalar $\mu$ such
+$S_{C_i}u_i=\cv u_i$, a symmetric matrix $\Lambda$ and a scalar $\mu$ such
 that
 \begin{align}
   \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle\,u_i
@@ -226,16 +224,14 @@ $\dot g_c$ gives \eqref{eq:statg} after division by $2$, and the
 coefficient of $\dot t_c$ gives \eqref{eq:statt}.
 \end{proof}
 
-Two features of the derivation are used later.  The maximum rule in
-\eqref{eq:zeta} is an inclusion and not an equality, because the pieces
+The maximum rule in \eqref{eq:zeta} is only an inclusion, because the pieces
 are concave and therefore not Clarke regular; the sharper first-order
 statement available at such a point is the directional one, namely
 $\max_{C\in\mathcal{A}}\lmin\bigl(Q_C\tp\dot S_CQ_C\bigr)\ge0$ for every
 $(\dot g,\dot t)\in \tang$, where $Q_C$ is an orthonormal basis of the
 $\lmin$-eigenspace of $\SC$ and $\dot S_C$ is the derivative of $\SC$
-\cite{HiriartUrrutyYe1995,Danskin1967}.  Nothing below uses more than the
-multiplier form.  Second, the infinitesimal rotations \eqref{eq:orbit}
-impose no condition: for $\Theta\in\partial\lmin(\SC)$ one has
+\cite{HiriartUrrutyYe1995,Danskin1967}.  Nothing below uses more than the multiplier form.  The infinitesimal
+rotations \eqref{eq:orbit}, for their part, impose no condition: for $\Theta\in\partial\lmin(\SC)$ one has
 $\Theta\SC=\cv\Theta=\SC\Theta$, so
 \begin{equation}\label{eq:rotationkill}
   \phi_{C,\Theta}\bigl[(Xg_c)_c,0\bigr]
@@ -253,7 +249,7 @@ object, and it is convenient to detach it from its provenance.
 A \emph{stationarity datum} for a design $(g,t)$ at $(m,k)$, with value
 $\cv\in\R$, consists of a finite index set $A$, $k$-subsets $C_i$
 ($i\in A$), reals $\lambda_i\ge0$ with $\sum_i\lambda_i=1$, vectors $u_i$
-with $\lVert u_i\rVert=1$ and $S_{C_i}u_i=vu_i$, and a symmetric matrix
+with $\lVert u_i\rVert=1$ and $S_{C_i}u_i=\cv u_i$, and a symmetric matrix
 $\Lambda$, satisfying \eqref{eq:statg} and \eqref{eq:statt}.  Write
 $A^{+}:=\{C_i:\lambda_i>0\}$ for the \emph{active family}, a set of
 $k$-subsets.  The datum is \emph{admissible} if in addition
@@ -285,7 +281,7 @@ Pairing \eqref{eq:statg} with $g_c$ gives, for every $c$,
   \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle^2
   \;=\;t_c\,\bigl(g_c\tp\Lambda g_c\bigr) .
 \end{equation}
-This single contraction carries both laws.  Throughout we use the
+Both laws of the next proposition come from this contraction.  Throughout we use the
 polarized form of the subset sum,
 \begin{equation}\label{eq:polarized}
   y\tp\SC x\;=\;\sum_{c\in C}\langle g_c,y\rangle\langle g_c,x\rangle ,
@@ -314,7 +310,7 @@ Sum \eqref{eq:contract} over $c$.  On the right, \eqref{eq:statt} makes
 $g_c\tp\Lambda g_c$ independent of $c$, so the right side is
 $\mu\sum_ct_c=\mu$.  On the left, exchange the two summations; for fixed
 $i$ the inner sum runs over the $k$ vectors of $C_i$ and equals, by
-\eqref{eq:polarized} and $S_{C_i}u_i=vu_i$,
+\eqref{eq:polarized} and $S_{C_i}u_i=\cv u_i$,
 \[
   \sum_{c\in C_i}\langle u_i,g_c\rangle^2
   \;=\;u_i\tp S_{C_i}u_i\;=\;\cv\lVert u_i\rVert^2\;=\;\cv .
@@ -339,7 +335,7 @@ For \eqref{eq:multiplier}, fix $x\in\R^k$ and resolve it through
   &=\cv\sum_{i\in A}\lambda_i\langle u_i,x\rangle\,u_i ,
 \end{align*}
 the last step by symmetry of $S_{C_i}$ together with
-$S_{C_i}u_i=vu_i$.  A matrix is determined by its action, which is
+$S_{C_i}u_i=\cv u_i$.  A matrix is determined by its action, which is
 \eqref{eq:multiplier}.  Finally
 $\cv=u_i\tp S_{C_i}u_i=\sum_{c\in C_i}\langle g_c,u_i\rangle^2\ge0$ for any
 $i$, and \eqref{eq:multiplier} then exhibits $\Lambda$ as a nonnegative
@@ -366,7 +362,7 @@ Let a stationarity datum with $\cv\ne0$ be given.  Then
 and consequently
 \begin{enumerate}
 \item[\rm(i)] $\ell_c\ge1$ for every $c$;
-\item[\rm(ii)] $t_cv\le1$ for every $c$, and hence $\cv\le m$;
+\item[\rm(ii)] $t_c\cv\le1$ for every $c$, and hence $\cv\le m$;
 \item[\rm(iii)] for every $k$-subset $C$, active or not, there is an
   index $i\in A$ with $u_i\tp\SC u_i\ge k$;
 \item[\rm(iv)] for each $c$ there is $i$ with $\lambda_i>0$, $c\in C_i$
@@ -386,20 +382,19 @@ $\langle u_i,g_c\rangle^2\le\ell_c$; substituting in
 \eqref{eq:overlapone} and using $\sum_i\lambda_i=1$ gives $1\le\ell_c$.
 
 (ii) The sum in \eqref{eq:coverage} is a subsum of the sum in
-\eqref{eq:overlapone} with nonnegative terms, so $t_cv\le1$.  Summing
+\eqref{eq:overlapone} with nonnegative terms, so $t_c\cv\le1$.  Summing
 over $c$ against $\sum_ct_c=1$ gives $\cv\le m$.
 
 (iii) Sum \eqref{eq:overlapone} over the $k$ vectors of $C$ and use
 \eqref{eq:polarized}: $\sum_i\lambda_i\,u_i\tp\SC u_i=k$.  A convex
 combination does not exceed its largest term.
 
-(iv) By \eqref{eq:coverage} the sum at $c$ equals $t_cv\ne0$, so one of
+(iv) By \eqref{eq:coverage} the sum at $c$ equals $t_c\cv\ne0$, so one of
 its terms is nonzero, and that forces $\lambda_i>0$, $c\in C_i$ and
 $\langle u_i,g_c\rangle\ne0$ for the corresponding $i$.
 \end{proof}
 
-Part (iii) names a unit vector, and that is what the system delivers; it
-implies $\lmax(\SC)\ge k$ for every $k$-subset, but the vector is the
+Part (iii) names a unit vector; it implies $\lmax(\SC)\ge k$ for every $k$-subset, but the vector is the
 useful half.  Part (i) says every vector of a stationary design is heavy
 in the weak sense; the strict inequality $\ell_c>1$ would require
 excluding equality in Cauchy--Schwarz at every positively weighted index
@@ -442,7 +437,7 @@ $i\ne c$, and for those
 $\langle u_i,g_c\rangle=\langle g_i,g_c\rangle/\sqrt3=-1/\sqrt3$, so
 \[
   \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle^2
-  \;=\;3\cdot\tfrac14\cdot\tfrac13\;=\;\tfrac14\;=\;t_cv .
+  \;=\;3\cdot\tfrac14\cdot\tfrac13\;=\;\tfrac14\;=\;t_c\cv .
 \]
 Identity \eqref{eq:overlapone} restores the missing index $i=c$, for
 which $\langle u_c,g_c\rangle^2=3$, and indeed
@@ -459,7 +454,7 @@ $\sum_ig_i=0$,
 \]
 The datum is admissible: every triple has $\lmin=1$, so $F=1=\cv$.  The
 bounds of Lemma~\ref{lem:overlap} read $\ell_c=3\ge1$,
-$t_cv=\tfrac14\le1$ and $\cv=1\le4=m$.  Part (iii) of that lemma is not
+$t_c\cv=\tfrac14\le1$ and $\cv=1\le4=m$.  Part (iii) of that lemma is not
 realized at the tight index of the subset itself, since
 $u_i\tp S_{C_i}u_i=\cv=1<3$; it is realized at any other index, for which
 \[
@@ -471,8 +466,8 @@ $u_i\tp S_{C_i}u_i=\cv=1<3$; it is realized at any other index, for which
 
 \subsection{Exclusions}\label{sec:exclusions}
 
-Three structural configurations are excluded outright.  Each exclusion is
-a statement about the datum alone; admissibility is nowhere used.
+Each exclusion below is a statement about the datum alone;
+admissibility is nowhere used.
 
 \begin{proposition}\label{prop:e1}
 Let a stationarity datum with $\cv\ne0$ have $\Lambda=a\,ww\tp$ for
@@ -527,7 +522,7 @@ zero-multiplier indices cost nothing.
 
 \begin{proposition}\label{prop:e2}
 Let a stationarity datum with $\cv\ne0$ have independent tight support.
-Then $t_cv=1$ for every $c$; hence $\cv=m$ and $t_c=1/m$ for every $c$.
+Then $t_c\cv=1$ for every $c$; hence $\cv=m$ and $t_c=1/m$ for every $c$.
 In particular no stationarity datum with $0<\cv<1$ has independent tight
 support: below the threshold the tight directions carried by positive
 multipliers are always dependent.
@@ -538,32 +533,32 @@ Substituting \eqref{eq:multiplier} into the right side of
 \eqref{eq:statg} turns it into a combination of the $u_i$,
 \[
   t_c\Lambda g_c
-  \;=\;t_cv\sum_{i\in A}\lambda_i\langle u_i,g_c\rangle\,u_i ,
+  \;=\;t_c\cv\sum_{i\in A}\lambda_i\langle u_i,g_c\rangle\,u_i ,
 \]
 so subtraction gives the relation
 \begin{equation}\label{eq:vanishing}
   \sum_{i\in A}\lambda_i\,\langle u_i,g_c\rangle\,
-    \bigl(\,[\,c\in C_i\,]-t_cv\,\bigr)\,u_i\;=\;0 ,
+    \bigl(\,[\,c\in C_i\,]-t_c\cv\,\bigr)\,u_i\;=\;0 ,
 \end{equation}
 where $[\,\cdot\,]$ is $1$ when the condition holds and $0$ otherwise.
 Independence kills every coefficient:
 \[
   \lambda_i\,\langle u_i,g_c\rangle\,
-  \bigl(\,[\,c\in C_i\,]-t_cv\,\bigr)\;=\;0\qquad(i\in A).
+  \bigl(\,[\,c\in C_i\,]-t_c\cv\,\bigr)\;=\;0\qquad(i\in A).
 \]
 Fix $c$.  By Lemma~\ref{lem:overlap}(iv) there is $i$ with
 $\lambda_i>0$, $c\in C_i$ and $\langle u_i,g_c\rangle\ne0$; for that $i$
-the last factor is $1-t_cv$, so $t_cv=1$.  Summing over $c$ against
+the last factor is $1-t_c\cv$, so $t_c\cv=1$.  Summing over $c$ against
 $\sum_ct_c=1$ gives $\cv=m$, and then $t_c=1/m$.  A design has at least one
 vector, so $\cv=m\ge1$.
 \end{proof}
 
-The conclusion is an identification and not a contradiction.  One might
-expect independence to force $\langle u_i,g_c\rangle=0$, contradicting
-coverage; the coefficient in \eqref{eq:vanishing} can vanish through its
-last factor instead, and it does.
+The conclusion identifies the datum rather than contradicting it: one
+might expect independence to force $\langle u_i,g_c\rangle=0$, against
+coverage, but the coefficient in \eqref{eq:vanishing} vanishes through
+its last factor instead.
 
-The third exclusion is counting.  By Lemma~\ref{lem:overlap}(iv) the
+Counting gives a third exclusion: by Lemma~\ref{lem:overlap}(iv) the
 active family covers $\{1,\dots,m\}$, and each of its members has $k$
 elements.
 
@@ -625,15 +620,15 @@ vector meets all of them.
 
 \begin{proposition}[Lean]\label{prop:saturated}
 Let a stationarity datum with $\cv\ne0$ be given, and suppose some index
-$c$ lies in $C_i$ for every $i\in A$.  Then $t_cv=1$, and hence
+$c$ lies in $C_i$ for every $i\in A$.  Then $t_c\cv=1$, and hence
 $\cv\ge1$.
 \end{proposition}
 
 \begin{proof}
 The sum in \eqref{eq:coverage} runs over $\{i:c\in C_i\}$ and the sum in
 \eqref{eq:overlapone} over all of $A$.  Under the hypothesis the two
-index sets coincide, so the inequality $t_cv\le1$ of
-Lemma~\ref{lem:overlap}(ii) is an equality: $t_cv=1$.  Since
+index sets coincide, so the inequality $t_c\cv\le1$ of
+Lemma~\ref{lem:overlap}(ii) is an equality: $t_c\cv=1$.  Since
 $t_c\le1$ this gives $\cv=1/t_c\ge1$.
 \end{proof}
 
@@ -669,7 +664,7 @@ Call a triple \emph{rainbow} if its three vectors point in three distinct
 directions.  There are $2^3=8$ rainbow triples on the directions
 $h_0,h_1,h_2$, one for each choice of vector in each direction; and a
 rainbow triple containing the unsplit vector $g_3$ uses two of the three
-split directions, which gives $3\cdot2\cdot2=12$ more.  Twenty in all.
+split directions, which gives $3\cdot2\cdot2=12$ more, twenty in all.
 For a rainbow triple $C$ missing the direction $h_d$ one has
 $\SC=4I_3-h_d^{\vphantom{\mathsf{T}}}h_d\tp$, exactly as in
 Example~\ref{ex:tetrakkt}, so $u_C:=h_d/\sqrt3$ is a unit eigenvector at
@@ -699,13 +694,13 @@ multiplier $\tfrac1{16}$, giving
 The datum is admissible, and $\lvert A^{+}\rvert=20$.
 \end{example}
 
-Example~\ref{ex:splitseven} puts twenty triples in the active family at
-the cell which carries the whole of rank three.  It does not conflict
+Example~\ref{ex:splitseven} puts twenty triples in the active family at the cell to which rank
+three reduces.  It does not conflict
 with Proposition~\ref{prop:carath} below, which asserts only that the
 multipliers \emph{may be taken} supported on at most nineteen indices.
 
-The next statement is limitative, and it fixes the form the conjectures
-of \S\ref{sec:census} must take.
+The next statement is the reason the conjectures of \S\ref{sec:census}
+carry an admissibility hypothesis.
 
 \begin{theorem}\label{thm:reach}
 There is a design at $(4,2)$ carrying a stationarity datum with
@@ -749,7 +744,7 @@ at $\cv$ are the normalizations $u_i:=r_i/\lVert r_i\rVert$ of
 with $\lVert r_0\rVert^2=\lVert r_1\rVert^2=4+2\sqrt2$ and
 $\lVert r_2\rVert^2=\lVert r_3\rVert^2=4-2\sqrt2$; for instance
 \[
-  \bigl(S_{C_0}-vI\bigr)r_0
+  \bigl(S_{C_0}-\cv I\bigr)r_0
   =\begin{pmatrix}1+\sqrt2&-1\\-1&\sqrt2-1\end{pmatrix}
    \begin{pmatrix}1\\1+\sqrt2\end{pmatrix}
   =\begin{pmatrix}(1+\sqrt2)-(1+\sqrt2)\\
@@ -782,20 +777,19 @@ $S_{\{0,3\}}-I=I\pd0$.
 \end{proof}
 
 The datum of Theorem~\ref{thm:reach} is stationary for the maximum taken
-over the four chosen pairs, which are the \emph{minimizers} of
-$\lmin(\SC)$, and not for $F$.  What it violates is \eqref{eq:argmax}, a
-disjunctive semialgebraic condition rather than an equation, and
-therefore not available to the algebra of \S\ref{sec:laws}.  It violates
-the hypothesis of each exclusion as well, and in the expected way: its
-multiplier is isotropic rather than of rank one; its four tight
-directions lie in $\R^2$ and are dependent; and its active family
-consists of four distinct pairs, neither a singleton nor a partition.
+over the four chosen pairs, which minimize $\lmin(\SC)$, and not for $F$.  It violates
+\eqref{eq:argmax}, a disjunctive semialgebraic condition rather than an
+equation and therefore beyond the algebra of \S\ref{sec:laws}.  It also
+violates the hypothesis of every exclusion: its multiplier is isotropic
+rather than of rank one, its four tight directions lie in $\R^2$ and
+are dependent, and its active family is four distinct pairs, neither a
+singleton nor a partition.
 
 \subsection{The residue}\label{sec:census}
 
-Two finite bounds delimit what is left.  The lower one is
-\eqref{eq:count}.  The upper one is Carath\'eodory's theorem applied to
-the convex combination \eqref{eq:zeta}.
+The residue is bounded below by \eqref{eq:count} and above by
+Carath\'eodory's theorem applied to the convex combination
+\eqref{eq:zeta}.
 
 \begin{proposition}\label{prop:carath}
 A stationarity datum produced by Theorem~\ref{thm:firstorder} may be
@@ -856,8 +850,7 @@ $7\,011\,184$; every one has at least three members, and $5\,249\,381$
 have at most nineteen.
 \end{proposition}
 
-The count that matters is not the size of the census but the part of it
-the exclusions reach.  Of the $2136$ classes of families of $3$-subsets
+The exclusions reach only a corner of this census.  Of the $2136$ classes of families of $3$-subsets
 of $\{1,\dots,6\}$, Lemma~\ref{lem:overlap}(iv) removes the $34$ that do
 not cover; Proposition~\ref{prop:saturated} removes $23$ of the
 remainder, namely those in which some index lies in every member; and
@@ -937,10 +930,10 @@ each of the classes counted in Proposition~\ref{prop:census}.  For a
 fixed active family the unknowns are the $mk$ coordinates, the $m$
 weights, the multipliers, the tight directions, the entries of $\Lambda$
 and the value $\cv$; the conditions are \eqref{eq:statg},
-\eqref{eq:statt}, $\lVert u_i\rVert=1$, $S_{C_i}u_i=vu_i$,
+\eqref{eq:statt}, $\lVert u_i\rVert=1$, $S_{C_i}u_i=\cv u_i$,
 $\lambda_i\ge0$, $\sum_i\lambda_i=1$, \eqref{eq:parseval}, $t\pd0$,
 $\sum_ct_c=1$, $0<\cv<1$, and \eqref{eq:argmax} --- the last a disjunction
-of sign conditions on the leading principal minors of $\SC-vI$, one
+of sign conditions on the leading principal minors of $\SC-\cv I$, one
 disjunction for each $k$-subset $C$.
 
 \begin{theorem}[conditional]\label{thm:rankthree}
@@ -961,14 +954,13 @@ Conjecture~\ref{conj:sixthree}.  The same argument at $(7,3)$ with
 Conjecture~\ref{conj:seventhree} gives $\Gtz(7,3)$.
 \end{proof}
 
-The extremality hypothesis is the only thing this section takes from
-\S\ref{sec:compactness}, and it is what Theorem~\ref{thm:variational}
-supplies for the chart objective.
+The extremality hypothesis is all this section takes from
+\S\ref{sec:compactness}; Theorem~\ref{thm:variational} supplies it for
+the chart objective.
 
 At $(6,3)$ the conjecture is an enumeration; at $(7,3)$ it is not, and an
-argument uniform in the active family is required.  What the exclusions
-of \S\ref{sec:exclusions} remove are the small and the transversal
-configurations, and Example~\ref{ex:splitseven} shows where the residue
+argument uniform in the active family is required.  The exclusions of \S\ref{sec:exclusions} remove the small and the
+transversal configurations, and Example~\ref{ex:splitseven} shows where the residue
 lives: at the frontier size the system is realized, at the threshold, by
 an active family of twenty triples.
 

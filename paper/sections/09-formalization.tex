@@ -27,7 +27,7 @@ Proposition~\ref{prop:sizerank} are proved at that generality and used at both.
 Where a statement is genuinely field-dependent --- Theorem~\ref{thm:complex}
 and Theorem~\ref{thm:ranktwo} --- it is proved at the field where it holds.
 
-Three further conventions matter for reading Table~\ref{tab:lean}.  The chart of
+The chart of
 \S\ref{sec:chart} is formalized as the projection $P=VV\adj$ of
 \eqref{eq:chart} together with the equivalence of Lemma~\ref{lem:chart}, and
 the compactification of \S\ref{sec:compactness} as the predicate of
@@ -122,13 +122,12 @@ nothing outside it occurs.  In particular no declaration depends on
 is discharged by kernel evaluation of decidable propositions, which introduces
 no axiom; no proof is closed by compiled evaluation.
 
-Two qualifications belong here.  First, the ledger is a list, and its coverage
+The ledger is a list, and its coverage
 is exactly what it lists: one declaration, the entry marked $a$ in
 Table~\ref{tab:lean}, is absent from it, and is proved in a module duplicating
 one that the ledger does cover.  Its proof is checked when that module is
-elaborated, but its axiom use is not certified by the ledger.  Second, the
-development uses classical logic freely.  Nothing here is a constructive
-claim.
+elaborated, but its axiom use is not certified by the ledger.  The development also uses classical logic freely; nothing in it is a
+constructive claim.
 
 No numerical assertion in the paper rests on floating-point evaluation.  The
 witnesses of \S\ref{sec:sharp} and Appendix~\ref{app:graveyard} are exact
@@ -141,19 +140,19 @@ decorative.
 
 \subsection{Where the formalization stops}\label{sec:boundaries}
 
-Two steps of the argument are not formal, and both lie in
-\S\ref{sec:compactness}--\S\ref{sec:interior}.  They are of different kinds and
-should not be conflated.
+Two steps of the argument are not formal, both in
+\S\ref{sec:compactness}--\S\ref{sec:interior}, and they are of
+different kinds.
 
 The first is the attainment in Theorem~\ref{thm:variational}: a continuous
 function on a compact space attains its minimum.  The space of chart points is
 compact --- a product of a Grassmannian and a closed simplex --- and the
 objective $G$ of Definition~\ref{def:chartpoint} is continuous, being a maximum
 of finitely many least-eigenvalue functions of continuous matrix-valued maps.
-The statement is standard and is used as such.  Its two nontrivial inputs, the
-boundary theorem~\ref{thm:boundary} and its
-corollary~\ref{cor:interiorcex} --- which are what makes the minimizer a design
-rather than a boundary point --- are formal.
+We use this standard fact without formalizing it.  Its two nontrivial
+inputs, Theorem~\ref{thm:boundary} and Corollary~\ref{cor:interiorcex},
+which place the minimizer at a design rather than at a boundary point,
+are formal.
 
 The second is the passage from a local minimum to the system
 \eqref{eq:statg}--\eqref{eq:statt}.  The objective is a maximum of finitely
@@ -166,11 +165,10 @@ superdifferential of $\lmin$, is what produces the multipliers $\lambda_C$ and
 the matrix $\Lambda$.  Each ingredient is classical
 \cite{Danskin1967,Overton1988,HiriartUrrutyYe1995}, and the framework, with the
 warning that for a maximum of concave functions the subdifferential rule is an
-inclusion rather than an equality, is \cite{Clarke1990}.  The ambient library
-provides none of it.  Accordingly \S\ref{sec:interior} takes the system as its
-hypothesis and formalizes its consequences --- Proposition~\ref{prop:quadric},
-Proposition~\ref{prop:e1} and the exclusions --- rather than deriving the
-system formally from minimality.
+inclusion rather than an equality, is \cite{Clarke1990}.  None of it is in the ambient library, so \S\ref{sec:interior} takes the
+system as its hypothesis and formalizes its consequences
+(Proposition~\ref{prop:quadric}, Proposition~\ref{prop:e1} and the
+exclusions) rather than deriving the system from minimality.
 
 The distinction has a consequence for how Theorem~\ref{thm:rankthree} should be
 read.  Its two conjectural inputs are statements about the system, not about

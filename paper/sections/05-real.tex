@@ -2,21 +2,18 @@
 
 Over $\R$ the mechanisms of \S\ref{sec:first} decide rank one and the
 square $m=k$, and duality (Theorem~\ref{thm:duality}) converts corank one
-and corank two into rank one and rank two.  Two things are missing: rank
-two itself, and any control on the size.  This section supplies both, and
-the two supplies are instances of one device --- an operation producing
-from a design a smaller design whose dominating subsets transport back.
+and corank two into rank one and rank two.  Missing are rank two itself and any control on the size.  This section
+supplies both by the same device: an operation producing from a design
+a smaller design whose dominating subsets transport back.
 
-Two such operations exist, and they differ in exactly one respect.
 Deleting a vector of length at most one (\S\ref{sec:light}) lowers the
 size by one but moves the remaining vectors, by a congruence; the
 transport back is then an identity between quadratic forms, and it is
 available only because the deleted vector was short.  Carathéodory
 reduction (\S\ref{sec:crystal}) lowers the size to at most $k(k+1)/2+1$
 and leaves the vectors where they are; the transport back is immediate,
-because $\SC$ in \eqref{eq:dominate} does not involve the weights.  The
-first operation stalls exactly when every vector is long, and rank two is
-the rank at which the stalled case can be settled outright
+because $\SC$ in \eqref{eq:dominate} does not involve the weights.  The first operation stalls when every vector is long, and rank two is
+where the stalled case can be settled outright
 (\S\ref{sec:ranktwo}).
 
 \subsection{Deleting a light vector}\label{sec:light}
@@ -104,9 +101,8 @@ previous display, its second by \eqref{eq:schurone} and $\ell_d\le1$, and
 the scalar is positive.  Hence $C$ dominates in $\dsn$.
 \end{proof}
 
-Lightness is used exactly once, in the second summand of
-\eqref{eq:reassemble}.  Everything else is bookkeeping around a
-congruence.  Iterating the theorem removes light vectors one at a time:
+Lightness enters only in the second summand of \eqref{eq:reassemble};
+the rest is the congruence and its bookkeeping.  Iterating the theorem removes light vectors one at a time:
 
 \begin{corollary}[Lean]\label{cor:heavy}
 Let $k\ge1$.  If every all-heavy design of rank $k$, of whatever size,
@@ -186,12 +182,13 @@ where $e$ is the third index.  Every pair dominates, and every pair
 dominates with least eigenvalue exactly $1$.  We call this design the rank-two trine.
 \end{example}
 
-The whole of rank two rests on one scalar quantity attached to a pair.
+The remaining argument turns on one scalar invariant of a pair of
+indices.
 
 \begin{definition}\label{def:obstruction}
 For indices $c,d$ of a design at $(m,2)$ put
 \begin{equation}\label{eq:obstruction}
-  K_{cd}\;:=\;\langle \eta_c,\eta_d\rangle-\hat\ell_c\nu_d+2 .
+  K_{cd}\;:=\;\langle \eta_c,\eta_d\rangle-\hat\ell_c\hat\ell_d+2 .
 \end{equation}
 \end{definition}
 
@@ -259,7 +256,7 @@ identities \eqref{eq:balance2},
 \[
   \sum_d t_dK_{cd}
   =\Bigl\langle \eta_c,\sum_d t_d\eta_d\Bigr\rangle
-   -\hat\ell_c\sum_d t_d\nu_d+2\sum_d t_d
+   -\hat\ell_c\sum_d t_d\hat\ell_d+2\sum_d t_d
   =0-0+2 .
 \]
 Symmetry of $K$ is symmetry of the inner product.  For \eqref{eq:core},
@@ -276,8 +273,8 @@ u_d$, and \eqref{eq:allfail} makes the corresponding summand strictly
 positive.
 \end{proof}
 
-Identity \eqref{eq:core} is where the balance identities
-\eqref{eq:balance2} are spent, and it is sharp: the correction term
+Identity \eqref{eq:core} is the only use of the balance identities
+\eqref{eq:balance2}, and it is sharp: the correction term
 vanishes identically when $K\equiv0$, as at the rank-two trine.  It remains to
 produce a nonconstant $u$ for which the left side of \eqref{eq:core} is at
 least $2\sum_ct_cu_c^2$.  The test vectors are the linear functionals of
@@ -374,7 +371,7 @@ Lemma~\ref{lem:rowsum} applies to $u$.  Compute both sides.  First
 \[
   \sum_d t_du_dK_{cd}
   =\Bigl\langle \eta_c,\sum_d t_d\langle \eta_d,r\rangle \eta_d\Bigr\rangle
-   -\hat\ell_c\sum_d t_d\nu_d\langle \eta_d,r\rangle
+   -\hat\ell_c\sum_d t_d\hat\ell_d\langle \eta_d,r\rangle
    +2\sum_d t_d\langle \eta_d,r\rangle
   =\langle \eta_c,\Omega r\rangle-\hat\ell_c\langle\zeta,r\rangle ,
 \]
@@ -402,12 +399,11 @@ through the origin or span $\R^2$; Lemma~\ref{lem:collinear} and
 Lemma~\ref{lem:spanning} produce a dominating pair in the two cases.
 \end{proof}
 
-No eigenvalue is computed and no spectral
-theorem is used: Lemma~\ref{lem:pairobs} replaces the least eigenvalue of
-a $2\times2$ matrix by a determinant, and everything after that is
-quadratic algebra in the moments of the squared picture.  The argument is
-uniform in $m$ and in the weights, which is what the induction of
-Corollary~\ref{cor:heavy} requires.  It is exactly sharp at the rank-two
+The proof computes no eigenvalue: Lemma~\ref{lem:pairobs} replaces the
+least eigenvalue of a $2\times2$ matrix by a determinant, and the rest
+is quadratic algebra in the moments of the squared picture.  The
+argument is uniform in $m$ and in the weights, as the induction of
+Corollary~\ref{cor:heavy} requires, and it is sharp at the rank-two
 trine of Example~\ref{ex:trine2}: there $\Omega=2I_2$, $\zeta=0$ and
 $\sigma=0$, so $\Psi=\Omega^2-2\Omega=0$, every direction is admissible
 in Lemma~\ref{lem:spanning}, and the strict inequality of
@@ -458,15 +454,15 @@ the proof of Theorem~\ref{thm:duality} that $k$-subset dominates in
 $\dsn$ if and only if
 \begin{equation}\label{eq:pairdom}
   w_a^{\vphantom{\mathsf{T}}}w_a\tp+w_b^{\vphantom{\mathsf{T}}}w_b\tp
-  \;\psd\;T\;=\;\sum_c t_c\,w_c^{\vphantom{\mathsf{T}}}w_c\tp .
+  \;\psd\;\Sdual\;=\;\sum_c t_c\,w_c^{\vphantom{\mathsf{T}}}w_c\tp .
 \end{equation}
-With $R\tp TR=I_2$ and $h_c:=R\tp w_c$, condition \eqref{eq:pairdom} is
+With $R\tp\Sdual R=I_2$ and $h_c:=R\tp w_c$, condition \eqref{eq:pairdom} is
 $h_a^{\vphantom{\mathsf{T}}}h_a\tp+h_b^{\vphantom{\mathsf{T}}}h_b\tp\psd I_2$, that is
 domination of the pair $\{a,b\}$ in the design $(h_c,t_c)$ at $(k+2,2)$.
 So a dominating pair at rank two produces a dominating $k$-subset at
 corank two.
 
-The normalization in \eqref{eq:pairdom} is the whole content of the step.
+The substance of the step is the normalization in \eqref{eq:pairdom}.
 The coefficients in \eqref{eq:kernelframe} are the co-weights $1-t_c$,
 which sum to $k+1$, whereas the rank-two input requires weights summing to
 one.  Rescaling the kernel rows by $t_c$ rather than by $1-t_c$, or
@@ -580,14 +576,12 @@ support-reduction step of that theorem, carried out by hand for one
 reason: what is needed is not some representation of $I_k$ by few
 matrices, but a representation by a \emph{subfamily of the given
 vectors}, since only then is the dominating subset produced downstairs a
-subset of the original index set.  This is the point at which the
-weight-freeness of \eqref{eq:dominate} does the work, and it is what
-distinguishes this reduction from that of Theorem~\ref{thm:light}, where
-the vectors move and \eqref{eq:reassemble} is needed to move the
-conclusion back.
+subset of the original index set.  This step uses the weight-freeness of \eqref{eq:dominate}, and it
+separates the reduction from that of Theorem~\ref{thm:light}, where the
+vectors move and \eqref{eq:reassemble} must carry the conclusion back.
 
-Nothing about domination enters Lemma~\ref{lem:null}, so nothing suggests
-that $\win(k)$ is the true threshold; see Problem~\ref{prob:higher}.
+Domination never enters Lemma~\ref{lem:null}, so there is no reason to
+expect $\win(k)$ to be the true threshold; see Problem~\ref{prob:higher}.
 
 \subsection{Monotonicity in the size}\label{sec:monotone}
 
@@ -626,8 +620,8 @@ $g_1,\dots,g_m$ and appending $g_{m+1}:=g_1$, with weights
 $t^{+}_1=t^{+}_{m+1}=t_1/2$ and $t^{+}_c=t_c$ for $2\le c\le m$.  Both
 $\sum_ct^{+}_c$ and $\sum_ct^{+}_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp$ are
 unchanged, so $\dsn^{+}$ is a design.  By hypothesis some $C^{+}$ with
-$\lvert C^{+}\rvert=k$ dominates in $\dsn^{+}$.  By Lemma~\ref{lem:repeat}, $\Sdual$
-does not contain both
+$\lvert C^{+}\rvert=k$ dominates in $\dsn^{+}$.  By Lemma~\ref{lem:repeat},
+$C^{+}$ does not contain both
 $1$ and $m+1$, so the map fixing $1,\dots,m$ and sending $m+1$ to $1$ is
 injective on $C^{+}$; its image $C$ has $k$ elements and the same subset sum,
 hence dominates in $\dsn$.

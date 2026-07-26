@@ -49,7 +49,7 @@ Accordingly
 is a matrix on the \emph{index} space $\FF^m$.  Write
 $D:=\diag(t_1,\dots,t_m)$ and
 \begin{equation}\label{eq:chartgap}
-  W\;:=\;P-\dsn .
+  W\;:=\;P-D .
 \end{equation}
 The pair $(P,t)$ is the \emph{chart} of the design and $W$ its
 \emph{gap}.
@@ -76,7 +76,7 @@ $s_c-t_c=t_c(\ell_c-1)$, and $\sum_c(s_c-t_c)=k-1$ by
 Lemma~\ref{lem:trace}.
 \end{proof}
 
-The construction loses nothing.
+
 
 \begin{lemma}\label{lem:realize}
 Fix $m$, $k$ and a weight vector $t$ with $t_c>0$ and $\sum_ct_c=1$.  The
@@ -200,26 +200,25 @@ Lemma~\ref{lem:congruence} the latter is $W[C]\psd0$.
 
 The problem therefore reads: \emph{some $k\times k$ principal block of a
 rank-$k$ orthogonal projection dominates the corresponding block of a
-positive diagonal matrix of trace one}.  Two features of this formulation
-are used repeatedly.  The weights enter only through $D$, so the
-projection and the weights may be varied independently, which is what
-makes the compactification of \S\ref{sec:compactness} possible; and
-$W[C]\psd0$ is a closed condition in both arguments.
+positive diagonal matrix of trace one}.  The weights enter only through $D$, so the projection and the weights
+may be varied independently, on which the compactification of
+\S\ref{sec:compactness} depends; and $W[C]\psd0$ is a closed condition
+in both arguments.
 
 \begin{figure}[ht]
   \centering
   \input{figures/chart}
   \caption{The chart, at $m=6$, $k=3$ and $C=\{1,3,4\}$.  The design data
   pass through the isometry $V$ of \eqref{eq:isometry} to the projection
-  $P=VV\adj$ of \eqref{eq:chart} and the gap $W=P-\dsn$ of
+  $P=VV\adj$ of \eqref{eq:chart} and the gap $W=P-D$ of
   \eqref{eq:chartgap}.  Selecting $C$ is taking a principal block, and
   Lemma~\ref{lem:chart} identifies its semidefiniteness with domination.}
   \label{fig:chart}
 \end{figure}
 
 \begin{remark}\label{rem:size}
-The hypothesis $\lvert C\rvert=k$ in Lemma~\ref{lem:chart} is not
-cosmetic.  Domination is the $k\times k$ statement
+The equivalence of Lemma~\ref{lem:chart} depends on the hypothesis
+$\lvert C\rvert=k$.  Domination is the $k\times k$ statement
 $M_C\adj M_C\psd I_k$, while the block condition is the
 $r\times r$ statement $M_C^{\vphantom{\mathsf{H}}}M_C\adj\psd I_r$ with
 $r=\lvert C\rvert$.  For $r<k$ the left-hand matrix has rank at most
@@ -248,9 +247,8 @@ genericity assumption.
 
 \subsection{Inertia, and what it does not decide}\label{sec:inertia}
 
-The gap $W$ has a fixed signature.  The signature by itself decides
-nothing.  What follows locates the feature of the chart that carries the
-theorem.
+The gap $W$ has a fixed signature, and the signature by itself decides
+nothing.
 
 \begin{lemma}[Lean]\label{lem:rayleigh}
 Let $m\ge2$.  If $Px=x$ then
@@ -318,9 +316,7 @@ $W$ alone.
 
 Neither matrix is a chart gap, and the obstruction is the diagonal.  By
 Proposition~\ref{prop:chartid} the diagonal entries of a chart gap are
-$W_{cc}=t_c(\ell_c-1)\ge-t_c>-1$, and they sum to $k-1\ge0$, so at least
-one of them is nonnegative.  The projection structure, not the signature,
-is what carries the theorem.
+$W_{cc}=t_c(\ell_c-1)\ge-t_c>-1$, and they sum to $k-1\ge0$, so at least one of them is nonnegative.
 \end{remark}
 
 \subsection{Duality}\label{sec:duality}
@@ -355,28 +351,28 @@ which is legitimate because $t_c<1$.  The first display becomes
 This is not a Parseval condition, since the coefficients $1-t_c$ sum to
 $m-1$ rather than to $1$.  The correct rescaling is by the operator
 \begin{equation}\label{eq:dualgram}
-  T\;:=\;\sum_c t_c\,w_c^{\vphantom{\mathsf{H}}}w_c\adj .
+  \Sdual\;:=\;\sum_c t_c\,w_c^{\vphantom{\mathsf{H}}}w_c\adj .
 \end{equation}
 
 \begin{lemma}\label{lem:dualgram}
-$T\pd0$.
+$\Sdual\pd0$.
 \end{lemma}
 
 \begin{proof}
-$T\psd0$ as a nonnegative combination of rank-one positive semidefinite
-matrices.  If $Tu=0$ then $\langle u,Tu\rangle=\sum_ct_c\lvert\langle
+$\Sdual\psd0$ as a nonnegative combination of rank-one positive semidefinite
+matrices.  If $\Sdual u=0$ then $\langle u,\Sdual u\rangle=\sum_ct_c\lvert\langle
 w_c,u\rangle\rvert^2=0$, so $\langle w_c,u\rangle=0$ for every $c$
 because every $t_c>0$; then \eqref{eq:kernelframe} applied to $u$ gives
 $u=\sum_c(1-t_c)\langle w_c,u\rangle\,w_c=0$.
 \end{proof}
 
 \begin{lemma}[Lean]\label{lem:whiten}
-Every $T\pd0$ admits an invertible $R$ with $R\adj TR=I$.
+Every $A\pd0$ admits an invertible $R$ with $R\adj AR=I$.
 \end{lemma}
 
 \begin{proof}
-Write $\Sdual=LL\adj$ with $L$ invertible, by Cholesky factorization, and put
-$R:=(L\adj)^{-1}$.  Then $R\adj TR=L^{-1}LL\adj(L\adj)^{-1}=I$.
+Write $A=LL\adj$ with $L$ invertible, by Cholesky factorization, and put
+$R:=(L\adj)^{-1}$.  Then $R\adj AR=L^{-1}LL\adj(L\adj)^{-1}=I$.
 \end{proof}
 
 \begin{theorem}[Lean]\label{thm:duality}
@@ -400,7 +396,7 @@ The weights are unchanged, so they are positive and sum to one, and
 \[
   \sum_c t_c\,h_c^{\vphantom{\mathsf{H}}}h_c\adj
   \;=\;R\adj\Bigl(\sum_ct_c\,w_c^{\vphantom{\mathsf{H}}}w_c\adj\Bigr)R
-  \;=\;R\adj TR\;=\;I_{m-k}
+  \;=\;R\adj\Sdual R\;=\;I_{m-k}
 \]
 by \eqref{eq:dualgram} and Lemma~\ref{lem:whiten}; here the conjugation
 identity $R\adj(ww\adj)R=(R\adj w)(R\adj w)\adj$ is used termwise.  So
@@ -443,7 +439,7 @@ into
   \;\psd\;\sum_{c}t_c\,w_c^{\vphantom{\mathsf{H}}}w_c\adj\;=\;\Sdual,
 \]
 and conjugating by the invertible $R$ turns it into
-$\sum_{c\in E}h_c^{\vphantom{\mathsf{H}}}h_c\adj\psd R\adj TR=I_{m-k}$, which is
+$\sum_{c\in E}h_c^{\vphantom{\mathsf{H}}}h_c\adj\psd R\adj\Sdual R=I_{m-k}$, which is
 domination of $E$ in $\dsn^{\perp}$.  Every step is an
 equivalence, and $\lvert E\rvert=m-k$ is the rank of $\dsn^{\perp}$,
 so Lemma~\ref{lem:chart} applies at both ends.
@@ -462,8 +458,7 @@ construction is symmetric in the two cells.
 
 The dual design is not canonical: $Z$ is determined up to a unitary of
 $\FF^{r}$ and $R$ up to a unitary factor, and both ambiguities act on the
-$h_c$ by a common unitary, which changes no domination.  What is not
-free is the normalization.
+$h_c$ by a common unitary, which changes no domination.  The normalization, by contrast, is forced.
 
 \begin{remark}\label{rem:naive}
 Rescaling the kernel rows by the weights rather than the co-weights ---
@@ -628,9 +623,9 @@ vector $t$ and chart $P=I-zz\adj$, whose diagonal gives
 $t_c\ell_c=1-(1-t_c)/k$, that is \eqref{eq:tielaw}.
 \end{proof}
 
-Two features of this proof matter later.  The argument is insensitive to
-the field, which is why the complex collapse of \S\ref{sec:complex}
-occurs one size higher and not here.  And part (iv) produces a family of
+The argument is insensitive to the field, which is why the complex
+collapse of \S\ref{sec:complex} occurs one size higher and not here.
+Part (iv) produces a family of
 designs attaining the threshold with no slack, one over each point of the
 open weight simplex; \S\ref{sec:ties} draws the consequence.
 

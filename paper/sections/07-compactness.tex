@@ -7,7 +7,7 @@ no minimizer.  This section replaces the design space by a compact one
 carrying a continuous objective, proves that every added point admits a
 dominating subset, and concludes that a counterexample, if one exists,
 may be taken to be a global minimizer --- hence to satisfy first-order
-conditions.  The last subsection locates the exact limit of the method:
+conditions.  The last subsection locates the limit of the method:
 the identity which discharges the added points holds at vanishing weight
 and fails at every positive weight, and the failure sits on the extremal
 locus of \S\ref{sec:ties}.
@@ -79,7 +79,7 @@ Since a maximum over a finite set is attained,
 No condition ties $P$ to $t$: the relation \eqref{eq:pivotlev} is the
 definition of $s_c$, not a constraint, and on the compactification the
 vector lengths are recovered only where $t_c>0$, by $\ell_c=P_{cc}/t_c$.
-That formula is the whole of the boundary singularity, and it does not
+That formula is the boundary's only singularity, and it does not
 appear in Definition~\ref{def:chartpoint}.
 
 \begin{proposition}\label{prop:chartdesign}
@@ -214,7 +214,7 @@ gives $\lmin(\SC)-1$, and
 \]
 against $G=\max_C\min_{\lVert x\rVert=1}x\tp W[C]x$.
 The two agree in sign, by \eqref{eq:threshold} and
-Lemma~\ref{lem:chart}, and that is all: they are related by a congruence
+Lemma~\ref{lem:chart}.  Beyond the sign they are related by a congruence
 which is not a scalar unless the selected weights are equal, so they do
 not share their minimizers.  The generalized form degenerates exactly
 where $D[C]$ becomes singular, that is, exactly on the points the
@@ -223,10 +223,8 @@ compactification adds; the absolute form does not.
 
 \subsection{The boundary}\label{sec:boundary}
 
-Let $(P,t)$ be a chart point with $t_z=0$ for some index $z$.  Two exact
-identities dispose of it.  Which one applies is decided by the diagonal
-entry $P_{zz}$, and the dichotomy is exhaustive for the following
-reason.
+Let $(P,t)$ be a chart point with $t_z=0$ for some index $z$.  Two identities dispose of it; the diagonal entry $P_{zz}$ decides which
+applies, and the dichotomy is exhaustive by the following lemma.
 
 \begin{lemma}\label{lem:pivot}
 For every chart point and every index $z$,
@@ -284,10 +282,9 @@ which is \eqref{eq:reweight} after subtraction.  The right-hand side is
 nonnegative because $t_z\ge0$ and $t_z<1$.
 \end{proof}
 
-The reweighting is thus favourable at every admissible $t_z$, not only at
-$t_z=0$.  The hypothesis $t_z=0$ is needed at exactly one place, the
-pivot of the next case, which is where \S\ref{sec:sharp} locates the
-failure.
+The reweighting is favourable at every admissible $t_z$, not only at
+$t_z=0$; the hypothesis $t_z=0$ is needed only at the pivot of the next
+case, where \S\ref{sec:sharp} locates the failure.
 
 \subsubsection*{Case B: the direction escapes}
 
@@ -320,18 +317,17 @@ $P'e_z=r-r\,P_{zz}/P_{zz}=0$.
 
 Deflation is the compression of the surviving vectors onto the orthogonal
 complement of the escaping direction, carried out in the chart: $P'$ is
-the Schur complement of the pivot $P_{zz}$ in $P$.  No basis of that
-complement is chosen and no square root occurs; there is one division, by
-the pivot.  Since $P=P'+rr\tp/P_{zz}$ with $r=Pe_z$, one has for every
+the Schur complement of the pivot $P_{zz}$ in $P$.  The computation chooses no basis of that complement and takes no square
+root; it performs one division, by the pivot.  Since $P=P'+rr\tp/P_{zz}$ with $r=Pe_z$, one has for every
 $x\in\R^m$
 \begin{equation}\label{eq:transverse}
   x\tp Wx\;=\;x\tp(P'-D)x+\frac{\langle Pe_z,x\rangle^{2}}{P_{zz}} .
 \end{equation}
-The upstairs gap form exceeds the deflated one by exactly the rank-one
-pivot term.  That excess is what the lift must spend; it is not slack.
+The upstairs gap form exceeds the deflated one by the rank-one pivot
+term; the lift below consumes that excess in full, so it is not slack.
 Splitting the probe along the escaping coordinate turns
-\eqref{eq:transverse} into the identity on which everything in this
-section rests.
+\eqref{eq:transverse} into the identity that the rest of the section
+uses.
 
 \begin{lemma}\label{lem:schur}
 Let $(P,t)$ be a chart point with $P_{zz}>0$ and let $P'$ be as in
@@ -347,14 +343,14 @@ Let $(P,t)$ be a chart point with $P_{zz}>0$ and let $P'$ be as in
 Expand $x\tp Px$ against the coordinate spike.  With
 $a:=\langle Pe_z,y\rangle$ and $e_z\tp Pe_z=P_{zz}$,
 \[
-  x\tp Px\;=\;y\tp Py+2x_zs+x_z^{2}P_{zz},
+  x\tp Px\;=\;y\tp Py+2x_za+x_z^{2}P_{zz},
 \]
 and \eqref{eq:transverse} applied to $y$ gives
 $y\tp Py=y\tp P'y+a^{2}/P_{zz}$.  Since $y_z=0$,
 $x\tp Dx=y\tp Dy+t_zx_z^{2}$.  Subtracting,
 \[
   x\tp Wx\;=\;y\tp(P'-D)y
-    +\frac{s^{2}}{P_{zz}}+2x_zs+x_z^{2}P_{zz}-t_zx_z^{2},
+    +\frac{a^{2}}{P_{zz}}+2x_za+x_z^{2}P_{zz}-t_zx_z^{2},
 \]
 and the three middle terms are $(a+x_zP_{zz})^{2}/P_{zz}$, since
 $P_{zz}\ne0$.
@@ -379,9 +375,9 @@ then $y$ is supported on $C$, so $y\tp(P'-D)y\ge0$ by hypothesis.  In
 term is nonnegative because $P_{zz}>0$.  Hence $x\tp Wx\ge0$.
 \end{proof}
 
-The pivot matches on the nose precisely because the weight at the pivot
-is zero: the deflation \eqref{eq:deflate} subtracts $P_{zz}$ worth of
-diagonal at $z$, and \eqref{eq:schur} restores exactly that much.
+The pivot matches because the weight there is zero: the deflation
+\eqref{eq:deflate} subtracts $P_{zz}$ from the diagonal at $z$, and
+\eqref{eq:schur} restores the same amount.
 
 \begin{example}\label{ex:escapeb}
 Return to Example~\ref{ex:escape}.  At its limit point, $z=2$,
@@ -421,12 +417,10 @@ cardinality $k$, dominates at $(P,t)$.
 \end{proof}
 
 Both branches reduce the size by one, so an induction on the dichotomy is
-well founded on the size alone; the rank window is a consequence and not
-an extra hypothesis.  At $k=1$ the second hypothesis is
+well founded on the size alone; the rank window is a consequence rather than an extra hypothesis.  At $k=1$ the second hypothesis is
 $\Gtz^{\mathrm{ch}}(m-1,0)$, which holds because the empty selection
-dominates.  Nothing is transported across the reduction: no margin, no
-rate, no subsequence.  This is what makes the step compatible with
-Corollary~\ref{cor:nomargin}, which forbids transporting a margin.
+dominates.  The reduction transports neither margin nor rate nor subsequence, which
+keeps it compatible with Corollary~\ref{cor:nomargin}.
 
 \begin{corollary}[Lean]\label{cor:interiorcex}
 Under the hypotheses of Theorem~\ref{thm:boundary}, every chart point of
@@ -544,19 +538,17 @@ The two open cells of Corollary~\ref{cor:twocells} are therefore treated
 in order: $(6,3)$ first, and its resolution supplies the hypothesis
 needed at $(7,3)$.
 
-The content of Theorem~\ref{thm:variational} is not a weakening of the
-problem.  By Corollary~\ref{cor:equivalent} the statement about chart
-points with positive weights is the problem itself, so nothing has been
-given up and nothing has been assumed; what has been produced is an
-\emph{extremal} counterexample.  Two devices might be thought to produce
-one more cheaply, and neither does.  The mixing of
-Lemma~\ref{lem:relax} relocates some counterexample into the interior,
-but it destroys whatever distinguished the original point, so it cannot
-be applied to a minimizer.  Minimizing over the design space directly is
-not available: that space is not compact, and by Example~\ref{ex:escape}
-a minimizing sequence of designs need not converge to a design.  The
-minimum exists only on the compactification, and
-Corollary~\ref{cor:interiorcex} is what places it back inside.
+Theorem~\ref{thm:variational} does not weaken the problem: by
+Corollary~\ref{cor:equivalent} the statement about chart points with
+positive weights is the problem itself.  It adds the extremality of the
+counterexample, which no cheaper device produces.  The mixing of Lemma~\ref{lem:relax} relocates a counterexample into the
+interior but destroys whatever distinguished the original point, so it
+cannot be applied to a minimizer; and minimizing over the design space
+directly fails, since that space is not compact and a minimizing
+sequence of designs need not converge to a design
+(Example~\ref{ex:escape}).  The minimum exists only on the
+compactification, and Corollary~\ref{cor:interiorcex} places it back
+inside.
 
 \begin{wip}
 Transport stationarity across the congruence $D[C]^{1/2}$ of
@@ -568,14 +560,12 @@ Definition~\ref{def:extremalcex} from Theorem~\ref{thm:rankthree}.
 \subsection{Sharpness of the boundary step}\label{sec:sharp}
 
 Theorem~\ref{thm:schurstep} requires $t_z=0$ exactly.  The composite of
-Lemma~\ref{lem:delete} and Theorem~\ref{thm:schurstep} --- deflate at
-$z$, delete $z$, renormalize, and lift a dominating subset back --- is
-meaningful at any $t_z<1$, and it is this composite, not the boundary
-statement, that a minimizing-sequence argument would need: along such a
+Lemma~\ref{lem:delete} and Theorem~\ref{thm:schurstep} , which deflates at $z$, deletes $z$, renormalizes, and lifts a
+dominating subset back, is meaningful at any $t_z<1$, and a minimizing-sequence argument would need this composite rather
+than the boundary statement: along such a
 sequence the weight at the escaping label is positive and merely tends to
-zero.  We show that the composite fails at every positive weight, and
-that no threshold repairs it.  The mechanism is visible in a single
-determinant.
+zero.  The composite fails at every positive weight, no threshold repairs it,
+and a single determinant shows why.
 
 \begin{lemma}\label{lem:pairdet}
 Let $(P,t)$ be a chart point, let $z$ satisfy $P_{zz}>0$ and $t_z<1$, and
@@ -601,23 +591,22 @@ Since $W[\{c,z\}]=
   &=(P_{cc}-t_c)(P_{zz}-t_z)
      -P_{zz}\Bigl(P_{cc}-\frac{t_c}{1-t_z}-\varepsilon\Bigr)\\
   &=P_{cc}P_{zz}-t_zP_{cc}-t_cP_{zz}+t_zt_c
-     -P_{zz}P_{cc}+\frac{t_cP_{zz}}{1-t_z}+dP_{zz}\\
+     -P_{zz}P_{cc}+\frac{t_cP_{zz}}{1-t_z}+\varepsilon P_{zz}\\
   &=\varepsilon\,P_{zz}-t_z\Bigl(P_{cc}-t_c-\frac{t_cP_{zz}}{1-t_z}\Bigr),
 \end{align*}
 using $t_cP_{zz}/(1-t_z)-t_cP_{zz}=t_z\,t_cP_{zz}/(1-t_z)$ in the last
 step.
 \end{proof}
 
-Identity \eqref{eq:family} separates the two contributions completely.
+Identity \eqref{eq:family} separates the two contributions.
 The compressed slack $\varepsilon$ enters undamped, with coefficient $P_{zz}>0$;
 the weight at the pivot enters linearly, with a coefficient tending to
 $P_{cc}-t_c$ as $t_z\to0$.  Hold the chart and the survivor fixed.  If
 $\varepsilon>0$ then the determinant tends to $\varepsilon\,P_{zz}>0$, and the lift survives
 for all small $t_z$.  If $\varepsilon=0$ then the determinant is $-t_z(P_{cc}-t_c
 -t_cP_{zz}/(1-t_z))$, negative for every $t_z>0$ at which the bracket is
-positive, however small $t_z$ is.  The lift therefore fails at zero
-compressed slack and nowhere near it.  It remains to exhibit a family on
-which $\varepsilon$ is frozen at zero.
+positive, however small $t_z$ is.  The lift therefore fails wherever the compressed slack is zero, no
+matter how small $t_z$; it remains to exhibit a family on which $\varepsilon$ is frozen at zero.
 
 \begin{example}\label{ex:liftfailure}
 On the index set $\{0,1,2,3\}$ let
@@ -709,8 +698,7 @@ $\{0,1\}$ does not dominate upstairs, the probe $(-1,1+\tau,0,0)$ giving
 $-(1+\tau)\tau(2+3\tau)/3<0$.
 \end{proof}
 
-The obstruction is thus located exactly, and it lies on the equality
-locus of \S\ref{sec:ties}.  Shrinking $t_z$ shrinks the deficit, but
+The obstruction lies on the equality locus of \S\ref{sec:ties}.  Shrinking $t_z$ shrinks the deficit, but
 along this family it shrinks nothing else: the compressed slack is frozen
 at zero, so the deficit is never overtaken.  A positive compressed slack
 would overtake it, by \eqref{eq:family}; but no positive lower bound on
@@ -719,9 +707,8 @@ size and rank, so by Proposition~\ref{prop:chartdesign} it is the chart
 point of a design whenever its weights are positive, and by
 Theorem~\ref{thm:tieseverywhere} designs whose dominating subsets all
 have $\lmin(\SC)=1$ --- that is, chart slack exactly zero --- exist at
-corank one for every rank, and at rank three for every size.  The shape
-of the refutation is thus the shape of Corollary~\ref{cor:nomargin}.
-This is why the boundary is discharged at $t_z=0$ by the exact identity
+corank one for every rank, and at rank three for every size.  The refutation follows the pattern of Corollary~\ref{cor:nomargin},
+which is why the boundary is discharged at $t_z=0$ by the identity
 \eqref{eq:schur} rather than at small $t_z$ by an estimate, and why
 Theorem~\ref{thm:variational} is stated at the limit point rather than
 along a minimizing sequence.

@@ -1,11 +1,10 @@
 \section{Exact data}\label{app:data}
 
 Every design recorded here is given by data from which \eqref{eq:parseval} can
-be verified by finite arithmetic, and every constant quoted is exact.  Radicals
-occur in three places --- the icosahedral design of \S\ref{app:icosa}, the
-whitener of a graphic design (\S\ref{app:diamond}), and the normalization of
-the tetrahedron --- and in each the algebraic relation that eliminates them is
-displayed.  No entry rests on a floating-point evaluation.
+be verified by finite arithmetic, and every constant quoted is exact.  Radicals occur in three places, the icosahedral design of
+\S\ref{app:icosa}, the whitener of a graphic design
+(\S\ref{app:diamond}), and the normalization of the tetrahedron, and in
+each case the algebraic relation eliminating them is displayed.  No entry rests on a floating-point evaluation.
 
 \subsection{The tetrahedron at \texorpdfstring{$(4,3)$}{(4,3)}}\label{app:tetra}
 
@@ -66,15 +65,15 @@ attaining the bound $k^2$ of Proposition~\ref{prop:qone}.
 \emph{Stationarity data.}  Take $\lambda_C=\tfrac14$ on each of the four
 triples and $u_C=g_{c_0}/\sqrt3$ for $C$ the complement of $\{c_0\}$.  Then
 \[
-  \Lambda=v\sum_C\lambda_C\,u_C^{\vphantom{\mathsf{T}}}u_C\tp
+  \Lambda=\cv\sum_C\lambda_C\,u_C^{\vphantom{\mathsf{T}}}u_C\tp
    =1\cdot\sum_{c_0}\tfrac14\cdot\tfrac13\,g_{c_0}^{\vphantom{\mathsf{T}}}g_{c_0}\tp
    =\tfrac1{12}\cdot4I_3=\tfrac13 I_3,
-  \qquad \tr\Lambda=1=v .
+  \qquad \tr\Lambda=1=\cv .
 \]
 The quadric law \eqref{eq:statt} reads $g_c\tp\Lambda g_c=\ell_c/3=1=\cv$, and
 the coverage law \eqref{eq:coverage} reads, for each $c$, a sum over the three
 triples containing $c$ of $\tfrac14\bigl(-\tfrac1{\sqrt3}\bigr)^2=\tfrac1{12}$,
-that is $\tfrac14=t_cv$.
+that is $\tfrac14=t_c\cv$.
 
 \emph{Two moments.}  The Gram matrix of a triple is $4I_3-J_3$, of trace $9$
 and determinant $16$, so the quantity $\gamma$ of \eqref{eq:twomoment} is
@@ -156,11 +155,10 @@ The leverages $P_{cc}/t_c$ at $\tau=\tfrac14$ are
 $\tfrac83,\tfrac43,\tfrac83,\tfrac43$, all exceeding $1$, so the point is not
 disposed of by deletion of a light atom; and the deflation \eqref{eq:deflate}
 at $z=1$, where $P_{11}=\tfrac13>0$, is a symmetric idempotent of trace $1$
-whose gap at the surviving index $0$ is exactly $0$, at every $\tau$.  That
-frozen downstairs equality is what Theorem~\ref{thm:sharp} exploits: the
-Schur term of \eqref{eq:schur} is paid in full at $t_z=0$ and short by a
-quantity of first order in $t_z$ thereafter, with nothing downstairs to pay it
-from.
+whose gap at the surviving index $0$ is exactly $0$, at every $\tau$.  Theorem~\ref{thm:sharp} exploits that frozen equality: the Schur term
+of \eqref{eq:schur} is matched in full at $t_z=0$ and falls short by a
+quantity of first order in $t_z$ thereafter, with no downstairs slack
+to close the gap.
 
 \begin{wip}
 Exhibit a one-parameter deformation of \eqref{eq:liftchart} with compressed
@@ -258,7 +256,7 @@ proportionality of two atoms forces proportionality of the corresponding rows;
 so no two atoms of the diamond are parallel.  This is
 Example~\ref{ex:diamond}.
 
-The conductances are forced.  Keep the rim conductance at
+The conductances are forced: keep the rim conductance at
 $c_{\mathrm{rim}}=3$, let the spine carry $c_{ab}=p>0$, and ask that the star
 at $a$ dominate.  With $L$ recomputed at those conductances,
 \eqref{eq:graphicdominate} for $E'=\{ab,ac,ad\}$ reads $Q\psd0$ for a
