@@ -145,6 +145,7 @@ import Mathlib
 import Gtz.Ties.StratumSharpMaximum
 import Gtz.Ties.SplitClassTieFamily
 import Gtz.Design.EqualityLocus
+import Gtz.Reduction.CertificateBall
 import Gtz.Reduction.PrincipalMinorsThree
 
 set_option autoImplicit false
@@ -941,18 +942,13 @@ carrying it, evaluated at the CLASS TOTALS, so the class through the split tetra
 a section over the whole open weight simplex.  All of it ties, and all of it has a
 dominating triple. -/
 
-/-- Every tetrahedron direction carries an atom of the split tetrahedron. -/
-theorem splitSevenDirection_surjective : Function.Surjective splitSevenDirection := by
-  decide
-
 /-- **The tie class through the split tetrahedron**, at an arbitrary weight vector: the
 `(2,2,2,1)` branch of `Gtz.splitClassDesign` on the atom-to-direction map of
 `splitSevenDesign` itself. -/
 noncomputable def splitSevenClassDesign (weight : Fin 7 → ℝ)
     (hpos : ∀ atomIndex, 0 < weight atomIndex)
     (hsum : ∑ atomIndex, weight atomIndex = 1) : WeightedDesign 7 3 :=
-  splitClassDesign splitSevenDirection weight (by norm_num) splitSevenDirection_surjective
-    hpos hsum
+  splitClassDesign splitSevenDirection weight (by norm_num) (by decide) hpos hsum
 
 @[simp] theorem splitSevenClassDesign_weight (weight : Fin 7 → ℝ)
     (hpos : ∀ atomIndex, 0 < weight atomIndex) (hsum : ∑ atomIndex, weight atomIndex = 1) :
@@ -962,8 +958,7 @@ noncomputable def splitSevenClassDesign (weight : Fin 7 → ℝ)
 theorem splitSevenClassDesign_isTie (weight : Fin 7 → ℝ)
     (hpos : ∀ atomIndex, 0 < weight atomIndex) (hsum : ∑ atomIndex, weight atomIndex = 1) :
     IsTie (splitSevenClassDesign weight hpos hsum) :=
-  splitClassDesign_isTie splitSevenDirection weight (by norm_num)
-    splitSevenDirection_surjective hpos hsum
+  splitClassDesign_isTie splitSevenDirection weight (by norm_num) (by decide) hpos hsum
 
 /-- **THE CLASS IS COVERED.**  Every design on the tie class through the split
 tetrahedron — a six-parameter section over the open weight simplex, not one point — has a
@@ -1135,14 +1130,6 @@ theorem rainbowSeven_gapEntry_dist_le (design : WeightedDesign 7 3) (tripleIndex
   have hsecond := hperAtom (rainbowSevenSecond tripleIndex)
   have hthird := hperAtom (rainbowSevenThird tripleIndex)
   linarith
-
-/-- The gap of any subset is symmetric. -/
-theorem subsetSum_sub_one_transpose (design : WeightedDesign m k) (selected : Finset (Fin m)) :
-    (subsetSum design selected - 1)ᵀ = subsetSum design selected - 1 := by
-  rw [Matrix.transpose_sub, Matrix.transpose_one, subsetSum, Matrix.transpose_sum]
-  refine congrArg (· - 1) (Finset.sum_congr rfl fun atomIndex _ => ?_)
-  ext rowIndex colIndex
-  simp [atomMatrix, Matrix.transpose_apply, Matrix.vecMulVec_apply, mul_comm]
 
 /-- Two diagonal entries near `2` beat one off-diagonal entry near `1`: the two-by-two
 principal minor is nonnegative whenever the entrywise deviation stays below `1/2`. -/
