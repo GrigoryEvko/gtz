@@ -20,16 +20,16 @@ each pair of distinct coordinates the four products $(g_c)_a(g_c)_b$ are
 $1,-1,-1,1$; hence
 \[
   \ell_c=3,\qquad \langle g_i,g_j\rangle=-1 \ (i\ne j),
-  \qquad \sum_c g_c^{\vphantom{T}}g_c^{T}=4I_3 ,
+  \qquad \sum_c g_c^{\vphantom{\mathsf{T}}}g_c\tp=4I_3 ,
 \]
-so $\sum_c t_c g_c^{\vphantom{T}}g_c^{T}=I_3$ and this is a design.  It is the
+so $\sum_c t_c g_c^{\vphantom{\mathsf{T}}}g_c\tp=I_3$ and this is a design.  It is the
 design of Example~\ref{ex:tetra} after the rescaling $g_c=\sqrt3\,u_c$ made
 there.  Lemma~\ref{lem:trace} holds termwise: $t_c\ell_c=\tfrac34$ and
 $\sum_c t_c\ell_c=3=k$.
 
 For $C=\{0,1,2,3\}\setminus\{j\}$,
 \[
-  \SC=4I_3-g_j^{\vphantom{T}}g_j^{T},
+  \SC=4I_3-g_j^{\vphantom{\mathsf{T}}}g_j\tp,
   \qquad
   \operatorname{spec}\SC=\{1,4,4\},
   \qquad
@@ -38,7 +38,7 @@ For $C=\{0,1,2,3\}\setminus\{j\}$,
 the eigenvalue $1$ occurring along $g_j$.  For $j=3$ the gap is the singular
 positive form
 \[
-  x^{T}(S_{\{0,1,2\}}-I)x=(x_0-x_1)^2+(x_0+x_2)^2+(x_1+x_2)^2 ,
+  x\tp(S_{\{0,1,2\}}-I)x=(x_0-x_1)^2+(x_0+x_2)^2+(x_1+x_2)^2 ,
 \]
 with null line $\R\,(1,1,-1)$.  Every triple dominates and none dominates
 strictly: the tetrahedron is extremal in the sense of
@@ -66,12 +66,12 @@ attaining the bound $k^2$ of Proposition~\ref{prop:qone}.
 \emph{Stationarity data.}  Take $\lambda_C=\tfrac14$ on each of the four
 triples and $u_C=g_{c_0}/\sqrt3$ for $C$ the complement of $\{c_0\}$.  Then
 \[
-  \Lambda=v\sum_C\lambda_C\,u_C^{\vphantom{T}}u_C^{T}
-   =1\cdot\sum_{c_0}\tfrac14\cdot\tfrac13\,g_{c_0}^{\vphantom{T}}g_{c_0}^{T}
+  \Lambda=v\sum_C\lambda_C\,u_C^{\vphantom{\mathsf{T}}}u_C\tp
+   =1\cdot\sum_{c_0}\tfrac14\cdot\tfrac13\,g_{c_0}^{\vphantom{\mathsf{T}}}g_{c_0}\tp
    =\tfrac1{12}\cdot4I_3=\tfrac13 I_3,
   \qquad \tr\Lambda=1=v .
 \]
-The quadric law \eqref{eq:statt} reads $g_c^{T}\Lambda g_c=\ell_c/3=1=v$, and
+The quadric law \eqref{eq:statt} reads $g_c\tp\Lambda g_c=\ell_c/3=1=v$, and
 the coverage law \eqref{eq:coverage} reads, for each $c$, a sum over the three
 triples containing $c$ of $\tfrac14\bigl(-\tfrac1{\sqrt3}\bigr)^2=\tfrac1{12}$,
 that is $\tfrac14=t_cv$.
@@ -142,7 +142,7 @@ $W=P-\diag(t^{(\tau)})$,
 The determinant is strictly negative for every $\tau\in(0,1)$ and vanishes to
 first order as $\tau\to0$.  An explicit witness is $(-1,\,1+\tau)$:
 \[
-  (-1,1+\tau)\,W[\{0,1\}]\,(-1,1+\tau)^{T}
+  (-1,1+\tau)\,W[\{0,1\}]\,(-1,1+\tau)\tp
   =\frac{1+\tau}{3}\bigl[1-2+(1+\tau)(1-3\tau)\bigr]
   =-\tfrac13(1+\tau)\,\tau\,(2+3\tau).
 \]
@@ -150,7 +150,7 @@ At $\tau=\tfrac14$ the block, its determinant and the probe $(1,-4)$ are
 \[
   W[\{0,1\}]=\begin{pmatrix}5/12&1/3\\ 1/3&1/12\end{pmatrix},
   \qquad \det=-\tfrac{11}{144},
-  \qquad (1,-4)\,W[\{0,1\}]\,(1,-4)^{T}=-\tfrac{11}{12}.
+  \qquad (1,-4)\,W[\{0,1\}]\,(1,-4)\tp=-\tfrac{11}{12}.
 \]
 The leverages $P_{cc}/t_c$ at $\tau=\tfrac14$ are
 $\tfrac83,\tfrac43,\tfrac83,\tfrac43$, all exceeding $1$, so the point is not
@@ -164,33 +164,33 @@ from.
 
 \begin{wip}
 Exhibit a one-parameter deformation of \eqref{eq:liftchart} with compressed
-slack $d>0$, and display the resulting determinant $(3d-2\tau-3\tau^{2})/9$ of
-\eqref{eq:family} changing sign at $\tau\asymp d$.
+slack $\varepsilon>0$, and display the resulting determinant $(3\varepsilon-2\tau-3\tau^{2})/9$ of
+\eqref{eq:family} changing sign at $\tau\asymp \varepsilon$.
 \end{wip}
 
 \subsection{Graphic designs, and the diamond at
 \texorpdfstring{$(5,3)$}{(5,3)}}\label{app:diamond}
 
 The diamond is the second extremal design at rank three, and it is presented
-through a construction used again in \S\ref{app:split}.  Let $G$ be a
+through a construction used again in \S\ref{app:split}.  Let $\gph$ be a
 connected multigraph on a vertex set $V$ with a distinguished vertex, the
 \emph{ground}; let $b_e\in\R^{V\setminus\{\mathrm{ground}\}}$ be the reduced
 incidence vector of the edge $e$ ($+1$ at its tail, $-1$ at its head, the
 ground coordinate deleted); let $c_e>0$ be conductances and $t_e>0$ weights
 summing to one.  Put
 \[
-  L:=\sum_e c_e\,b_e^{\vphantom{T}}b_e^{T},
+  L:=\sum_e c_e\,b_e^{\vphantom{\mathsf{T}}}b_e\tp,
 \]
-the weighted reduced Laplacian, positive definite because $G$ is connected.
-Choose $R$ with $R^{T}LR=I$ and set
+the weighted reduced Laplacian, positive definite because $\gph$ is connected.
+Choose $R$ with $R\tp LR=I$ and set
 \begin{equation}\label{eq:graphicatom}
-  g_e:=\sqrt{c_e/t_e}\;R^{T}b_e .
+  g_e:=\sqrt{c_e/t_e}\;R\tp b_e .
 \end{equation}
-Then $\sum_e t_e g_e^{\vphantom{T}}g_e^{T}=R^{T}LR=I$, so this is a design of
-size $\lvert E\rvert$ and rank $\lvert V\rvert-1$.  From $R^{T}LR=I$ one reads
-$RR^{T}=L^{-1}$, whence
+Then $\sum_e t_e g_e^{\vphantom{\mathsf{T}}}g_e\tp=R\tp LR=I$, so this is a design of
+size $\lvert E\rvert$ and rank $\lvert V\rvert-1$.  From $R\tp LR=I$ one reads
+$RR\tp=L^{-1}$, whence
 \begin{equation}\label{eq:graphicleverage}
-  s_e=t_e\ell_e=c_e\,b_e^{T}L^{-1}b_e=c_e\,R_{\mathrm{eff}}(e) :
+  s_e=t_e\ell_e=c_e\,b_e\tp L^{-1}b_e=c_e\,R_{\mathrm{eff}}(e) :
 \end{equation}
 the leverage score of an edge is its conductance times its effective
 resistance, and Lemma~\ref{lem:trace} becomes
@@ -198,13 +198,13 @@ $\sum_e c_eR_{\mathrm{eff}}(e)=\lvert V\rvert-1$.  Congruence by the invertible
 $R$ removes the whitener from \eqref{eq:dominate}: an edge set $E'$ with
 $\lvert E'\rvert=\lvert V\rvert-1$ dominates if and only if
 \begin{equation}\label{eq:graphicdominate}
-  \sum_{e\in E'}\frac{c_e}{t_e}\,b_e^{\vphantom{T}}b_e^{T}\;\psd\;L .
+  \sum_{e\in E'}\frac{c_e}{t_e}\,b_e^{\vphantom{\mathsf{T}}}b_e\tp\;\psd\;L .
 \end{equation}
 The atoms themselves are irrational and determined only up to the orthogonal
 group; the graph, the conductances, $L$, the effective resistances and the
 leverages are rational.
 
-Take $G=K_4-e$ on vertices $a,b,c,d$ with $d$ the ground and $cd$ the missing
+Take $\gph=K_4-e$ on vertices $a,b,c,d$ with $d$ the ground and $cd$ the missing
 edge.  The five edges and their reduced incidence rows in the coordinates
 $(y_a,y_b,y_c)$ are
 \[
@@ -232,7 +232,7 @@ edges $ac,ad,bc,bd$.  By \eqref{eq:graphicleverage},
 \]
 Every leverage exceeds $1$.  The star at $a$, that is $E'=\{ab,ac,ad\}$,
 dominates: the left side of \eqref{eq:graphicdominate} is
-$5\bigl(2b_0b_0^{T}+3b_1b_1^{T}+3b_2b_2^{T}\bigr)$, and subtracting $L$ gives
+$5\bigl(2b_0b_0\tp+3b_1b_1\tp+3b_2b_2\tp\bigr)$, and subtracting $L$ gives
 the form $Q$ with
 \[
   2\,Q(y)\;=\;(-8y_a+2y_b+3y_c)^2+9y_c^2 ,
@@ -241,7 +241,7 @@ positive semidefinite and singular, with null line $\R\,(1,4,0)$.  No
 three-subset dominates strictly.  The eight spanning trees each carry a null
 vector of their gap; the two circuits do worse.  At $E'=\{ab,ac,bc\}$ the
 potential $y=(1,1,1)$ annihilates all three selected drops while
-$y^{T}Ly=3+3=6$, so the gap form equals $-6$; likewise at $E'=\{ab,ad,bd\}$
+$y\tp Ly=3+3=6$, so the gap form equals $-6$; likewise at $E'=\{ab,ad,bd\}$
 with $y=(0,0,1)$.  The certificates for all ten subsets are
 \[
   \begin{array}{llll}
@@ -302,7 +302,7 @@ $(\tfrac18,\tfrac18,\tfrac18,\tfrac14,\tfrac18,\tfrac18,\tfrac18)$; again each
 direction carries $\tfrac14$, every leverage is exactly $3$, and
 \eqref{eq:parseval} is exact.  Of the $35$ triples, the $20$ carrying three
 distinct directions dominate, each with gap
-$3I_3-g_d^{\vphantom{T}}g_d^{T}$ of spectrum $\{0,3,3\}$ where $d$ is the
+$3I_3-g_d^{\vphantom{\mathsf{T}}}g_d\tp$ of spectrum $\{0,3,3\}$ where $d$ is the
 missed direction; the remaining $15$ do not.  None of the $20$ has any slack.
 
 More generally, fix a surjection $\mathrm{cl}$ from $\{1,\dots,m\}$ onto
@@ -326,9 +326,9 @@ $t=(\tfrac14,\tfrac14,\tfrac16,\tfrac1{12},\tfrac18,\tfrac18)$ and the atoms
 are the rational vectors of \S\ref{app:tetra}.  A triple carrying three
 distinct directions and missing the direction $d$ has, by \S\ref{app:tetra},
 \[
-  \SC-I_3\;=\;3I_3-g_d^{\vphantom{T}}g_d^{T},
+  \SC-I_3\;=\;3I_3-g_d^{\vphantom{\mathsf{T}}}g_d\tp,
   \qquad
-  x^{T}\bigl(\SC-I_3\bigr)x\;=\;\sum_{i<j}(x_i-x_j)^{2}
+  x\tp\bigl(\SC-I_3\bigr)x\;=\;\sum_{i<j}(x_i-x_j)^{2}
 \]
 after the relabelling that puts $g_d=(1,1,1)$: a sum of squares, singular on
 the line $\R g_d$.  Every entry of the certificate is an integer, and its
@@ -357,7 +357,7 @@ icosahedron, in the scaling that makes $\ell_c=3$:
 \]
 Each coordinate receives $2(\sigma^2+\mu^2)=6$ from the six outer products and
 each off-diagonal entry cancels in pairs, so
-$\sum_c t_c g_c^{\vphantom{T}}g_c^{T}=I_3$.  Every distinct pairing is
+$\sum_c t_c g_c^{\vphantom{\mathsf{T}}}g_c\tp=I_3$.  Every distinct pairing is
 $\pm\sigma\mu$, hence
 \begin{equation}\label{eq:icosapair}
   \ell_c=3,\qquad \langle g_c,g_d\rangle^2=\tfrac95 \quad(c\ne d).
@@ -387,8 +387,9 @@ least two members and at most twenty:
 \text{classes} & 249&161&94&43&21&7&3&1&1&
 \end{array}
 \]
-The total is $2102$; discarding the single class of cardinality two, which is
-the partition branch of Corollary~\ref{cor:e3}, leaves $2101$.  By
+The total is $2102$.  Setting aside the single class of cardinality two ---
+the partition branch that Corollary~\ref{cor:e3} leaves undecided, and does
+not exclude --- leaves $2101$.  By
 Carath\'eo\-dory's theorem \cite{Caratheodory1911} the support of the
 multiplier vector may be taken of size one more than the dimension of the
 design manifold modulo the orthogonal group.  That dimension is

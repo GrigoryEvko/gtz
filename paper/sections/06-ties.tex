@@ -36,7 +36,7 @@ $\lmin(\SC)\ge1$, and the maximum being $1$ forces equality.
 It is convenient to name the quantity Lemma~\ref{lem:tiemax} pins.  For
 $m\ge k$ put
 \begin{equation}\label{eq:alpha}
-  \alpha(m,k)\;:=\;\inf_{D}\ \max_{\lvert C\rvert=k}\lmin(\SC),
+  \alpha(m,k)\;:=\;\inf_{\dsn}\ \max_{\lvert C\rvert=k}\lmin(\SC),
 \end{equation}
 the infimum over real designs of size $m$ and rank $k$; this is the real
 counterpart of the constant of Remark~\ref{rem:sharpc}, refined by the
@@ -72,7 +72,7 @@ every $k$-subset $C$ and every $x\in\FF^k$,
 
 \begin{lemma}\label{lem:parallel}
 Let $C$ be a $k$-subset containing two distinct indices $c,c'$ with
-$g_{c'}=\rho\,g_c$ for some scalar $\rho$.  Then $\SC$ is singular and $C$
+$g_{c'}=a\,g_c$ for some scalar $a$.  Then $\SC$ is singular and $C$
 does not dominate.
 \end{lemma}
 
@@ -83,7 +83,7 @@ them.  Then $\SC x=0$, and by \eqref{eq:gapform},
 $x^{*}(\SC-I_k)x=-1<0$.
 \end{proof}
 
-Now let $D$ be a design at $(m,k)$, let $e$ be an index and let
+Now let $\dsn$ be a design at $(m,k)$, let $e$ be an index and let
 $0<a<t_e$.  Replace the pair $(g_e,t_e)$ by the two pairs $(g_e,a)$ and
 $(g_e,t_e-a)$, leaving everything else alone.  The weights remain positive
 and still sum to one, and
@@ -101,7 +101,7 @@ design whose $m$ vectors take at most $k+1$ distinct values and whose
 weights are arbitrary subject to prescribed class totals.  We construct
 these directly, which is shorter and displays the reweighting.
 
-\begin{theorem}[\LV]\label{thm:tieseverywhere}
+\begin{theorem}[Lean]\label{thm:tieseverywhere}
 Let $k\ge1$ and $m\ge k+1$, let $t$ be a weight vector on $m$ atoms, and
 let $\varphi:\{1,\dots,m\}\to\{1,\dots,k+1\}$ be a surjection.  Put
 \[
@@ -147,7 +147,7 @@ so the design carries a pair of equal vectors; \S\ref{sec:diamond} shows
 that this feature is not forced.
 
 \begin{proposition}\label{prop:section}
-For fixed $\varphi$ the assignment $t\mapsto D(t,\varphi)$ of
+For fixed $\varphi$ the assignment $t\mapsto \dsn(t,\varphi)$ of
 Theorem~\ref{thm:tieseverywhere} is a section of the weight map over the
 whole open simplex: every weight vector carries an extremal design.  At
 $m=k+1$ it is onto, in the following sense: two extremal designs of size
@@ -188,7 +188,7 @@ The corank-one classification is not the beginning of a pattern.  The
 equations \eqref{eq:tielaw} which cut it out have no solutions above
 corank one at all.
 
-\begin{proposition}[\LV]\label{prop:tielawcorank}
+\begin{proposition}[Lean]\label{prop:tielawcorank}
 Let $k\ge2$.  If a design of size $m$ satisfies $k\,t_c\ell_c=k-1+t_c$ at
 every atom, then $m=k+1$.
 \end{proposition}
@@ -205,7 +205,7 @@ system, and indeed the designs of Theorem~\ref{thm:tieseverywhere} violate
 \eqref{eq:tielaw} at most of their atoms.  The following instances are
 used again in \S\ref{sec:interior} and in Appendix~\ref{app:data}.
 
-\begin{example}[\LV]\label{ex:split}
+\begin{example}[Lean]\label{ex:split}
 Take for $(h_j)$ the regular tetrahedron of Example~\ref{ex:tetra}, so
 that $k=3$, $T_j=\tfrac14$, $\ell(h_j)=3$ and
 $\langle h_i,h_j\rangle=-1$ for $i\ne j$.
@@ -225,9 +225,9 @@ every leverage is $3$.  Of its $35$ triples, the $20$ carrying three
 distinct classes dominate: for such a triple $T$, missing the class $j$,
 the computation of Example~\ref{ex:tetra} gives
 \[
-  S_T\;=\;4I_3-h_j^{\vphantom{T}}h_j^{T},
+  S_T\;=\;4I_3-h_j^{\vphantom{\mathsf{T}}}h_j\tp,
   \qquad
-  x^{T}(S_T-I_3)x\;=\;3\lVert x\rVert^{2}-\langle h_j,x\rangle^{2},
+  x\tp(S_T-I_3)x\;=\;3\lVert x\rVert^{2}-\langle h_j,x\rangle^{2},
 \]
 so that the gap has spectrum $\{0,3,3\}$ and $\lmin(S_T)=1$.  The
 remaining $15$ triples repeat a class and do not dominate, by
@@ -236,7 +236,7 @@ Lemma~\ref{lem:parallel}.
 
 \subsection{No margin}\label{sec:nomargin}
 
-\begin{corollary}[\LV]\label{cor:nomargin}
+\begin{corollary}[Lean]\label{cor:nomargin}
 Let $k\ge1$, $m\ge k+1$ and $\varepsilon>0$.  For every weight vector $t$
 there is a design at $(m,k)$ with weights $t$ admitting no $k$-subset with
 $\SC\psd(1+\varepsilon)I_k$.  Consequently $\alpha(m,k)\le1$, and if
@@ -245,7 +245,7 @@ $\Gtz(m,k)$ holds then $\alpha(m,k)=1$ and the infimum in
 \end{corollary}
 
 \begin{proof}
-Let $D$ be the extremal design of Theorem~\ref{thm:tieseverywhere} with
+Let $\dsn$ be the extremal design of Theorem~\ref{thm:tieseverywhere} with
 weights $t$.  If some $k$-subset had $\SC\psd(1+\varepsilon)I_k$ then
 $\SC-I_k\psd\varepsilon I_k\pd0$, so that $C$ would dominate strictly.
 The remaining assertions are Lemma~\ref{lem:tiemax}.
@@ -291,7 +291,7 @@ Neither feature is forced.  We exhibit an extremal design at $(5,3)$ whose
 five vectors are pairwise non-parallel.  It is described by a graph, and
 its data are exactly rational even though its vectors are not.
 
-Let $\Gamma$ be the complete graph on the vertices $1,2,3,4$ with the edge
+Let $\gph$ be the complete graph on the vertices $1,2,3,4$ with the edge
 $34$ deleted, grounded at the vertex $4$, and list its five edges as
 \[
   e_0=12,\qquad e_1=13,\qquad e_2=14,\qquad e_3=23,\qquad e_4=24 .
@@ -314,36 +314,36 @@ Give the edges the conductances and weights
 \]
 and form the weighted Laplacian
 \begin{equation}\label{eq:laplacian}
-  L\;:=\;\sum_{e=0}^{4}c_e\,b_e^{\vphantom{T}}b_e^{T}
+  L\;:=\;\sum_{e=0}^{4}c_e\,b_e^{\vphantom{\mathsf{T}}}b_e\tp
   \;=\;\begin{pmatrix} 8&-2&-3\\ -2&8&-3\\ -3&-3&6\end{pmatrix},
   \qquad
-  y^{T}Ly\;=\;\sum_{e}c_e\,d_e(y)^{2}.
+  y\tp Ly\;=\;\sum_{e}c_e\,d_e(y)^{2}.
 \end{equation}
 Its leading principal minors are $8$, $60$ and $\det L=180$, so $L\pd0$.
-Choose any $R$ with $R^{T}LR=I_3$ --- for instance $R=L^{-1/2}$ --- and
+Choose any $R$ with $R\tp LR=I_3$ --- for instance $R=L^{-1/2}$ --- and
 put
 \begin{equation}\label{eq:diamondatoms}
-  g_e\;:=\;\sqrt{5c_e}\;R^{T}b_e \qquad (0\le e\le 4).
+  g_e\;:=\;\sqrt{5c_e}\;R\tp b_e \qquad (0\le e\le 4).
 \end{equation}
 Then
 \[
-  \sum_{e}t_e\,g_e^{\vphantom{T}}g_e^{T}
-  \;=\;\sum_e \tfrac15\cdot 5c_e\,R^{T}b_e^{\vphantom{T}}b_e^{T}R
-  \;=\;R^{T}LR\;=\;I_3,
+  \sum_{e}t_e\,g_e^{\vphantom{\mathsf{T}}}g_e\tp
+  \;=\;\sum_e \tfrac15\cdot 5c_e\,R\tp b_e^{\vphantom{\mathsf{T}}}b_e\tp R
+  \;=\;R\tp LR\;=\;I_3,
 \]
-so $(g_e,t_e)$ is a design at $(5,3)$; call it $D_\Diamond$.  It is
+so $(g_e,t_e)$ is a design at $(5,3)$; call it $\dsn_{\Diamond}$.  It is
 determined by the graph data up to the ambiguity $R\mapsto RU$ with $U$
-orthogonal, which replaces every $g_e$ by $U^{T}g_e$ and changes no $\SC$.
+orthogonal, which replaces every $g_e$ by $U\tp g_e$ and changes no $\SC$.
 
-Two computations describe it.  Since $RR^{T}=L^{-1}$,
+Two computations describe it.  Since $RR\tp=L^{-1}$,
 \begin{equation}\label{eq:diamondlev}
-  \ell_e\;=\;5c_e\,b_e^{T}L^{-1}b_e ,
+  \ell_e\;=\;5c_e\,b_e\tp L^{-1}b_e ,
   \qquad
   L^{-1}\;=\;\frac1{180}
   \begin{pmatrix}39&21&30\\ 21&39&30\\ 30&30&60\end{pmatrix},
 \end{equation}
-whence $b_0^{T}L^{-1}b_0=\tfrac{36}{180}=\tfrac15$ and
-$b_e^{T}L^{-1}b_e=\tfrac{39}{180}=\tfrac{13}{60}$ for $e\ge1$, so that
+whence $b_0\tp L^{-1}b_0=\tfrac{36}{180}=\tfrac15$ and
+$b_e\tp L^{-1}b_e=\tfrac{39}{180}=\tfrac{13}{60}$ for $e\ge1$, so that
 \[
   \ell_0=2,\qquad \ell_1=\ell_2=\ell_3=\ell_4=\tfrac{13}4 .
 \]
@@ -351,13 +351,13 @@ As a check, $\sum_et_e\ell_e=\tfrac15\bigl(2+4\cdot\tfrac{13}4\bigr)=3=k$,
 as Lemma~\ref{lem:trace} requires.  Second, the substitution $y=Rx$, a
 bijection of $\R^3$, gives for every $3$-subset $C$
 \[
-  x^{T}\SC x=\sum_{e\in C}5c_e\,d_e(y)^{2},
+  x\tp\SC x=\sum_{e\in C}5c_e\,d_e(y)^{2},
   \qquad
-  x^{T}x=x^{T}R^{T}LRx=\sum_{e}c_e\,d_e(y)^{2},
+  x\tp x=x\tp R\tp LRx=\sum_{e}c_e\,d_e(y)^{2},
 \]
 so that domination becomes a statement about potentials alone:
 \begin{equation}\label{eq:diamondgap}
-  x^{T}\bigl(\SC-I_3\bigr)x\;=\;Q_C(y),
+  x\tp\bigl(\SC-I_3\bigr)x\;=\;Q_C(y),
   \qquad
   Q_C(y):=\sum_{e=0}^{4}\bigl(5\cdot[e\in C]-1\bigr)c_e\,d_e(y)^{2},
 \end{equation}
@@ -365,8 +365,8 @@ where $[\,\cdot\,]$ is $1$ when the enclosed statement holds and $0$
 otherwise; and $C$ dominates if and only if $Q_C\ge0$ on $\R^3$.  The whitening $R$
 has disappeared.
 
-\begin{example}[\LV]\label{ex:diamond}
-The design $D_\Diamond$ is extremal at $(5,3)$; its five vectors are
+\begin{example}[Lean]\label{ex:diamond}
+The design $\dsn_{\Diamond}$ is extremal at $(5,3)$; its five vectors are
 pairwise non-parallel; and it is not one of the designs of
 Theorem~\ref{thm:tieseverywhere}.
 \end{example}
@@ -385,7 +385,7 @@ and therefore
 So $C$ dominates.  The form \eqref{eq:diamondstar} vanishes at
 $y=(1,4,0)$, so it is singular and $C$ does not dominate strictly.
 
-There are ten $3$-subsets: eight spanning trees of $\Gamma$, and its two
+There are ten $3$-subsets: eight spanning trees of $\gph$, and its two
 triangles $\{e_0,e_1,e_3\}$ on the vertices $1,2,3$ and
 $\{e_0,e_2,e_4\}$ on $1,2,4$.  For each, the potential listed below gives
 the stated value of $Q_C$:
@@ -413,18 +413,18 @@ For each triangle the potential is constant on the triangle's vertex set,
 so its three drops vanish and $Q_C$ reduces to minus the Dirichlet
 contribution of the two edges leaving that set, namely $-6$.  Hence no
 $3$-subset has $Q_C>0$ off the origin, that is none dominates strictly,
-while by the first paragraph one dominates: $D_\Diamond$ is extremal.
+while by the first paragraph one dominates: $\dsn_{\Diamond}$ is extremal.
 
 Proportionality of $g_e$ and $g_f$ is proportionality of $b_e$ and $b_f$,
-since $R^{T}$ is invertible and the factors $\sqrt{5c_e}$ do not
+since $R\tp$ is invertible and the factors $\sqrt{5c_e}$ do not
 vanish.  Proportional nonzero vectors have equal support, and the five
 supports $\{1,2\},\{1,3\},\{1\},\{2,3\},\{2\}$ are distinct.  So no two
-vectors are parallel; in particular $D_\Diamond$ carries five distinct
+vectors are parallel; in particular $\dsn_{\Diamond}$ carries five distinct
 directions, whereas a design of Theorem~\ref{thm:tieseverywhere} carries
 at most $k+1=4$.
 \end{proof}
 
-\begin{corollary}[\LV]\label{cor:noparallel}
+\begin{corollary}[Lean]\label{cor:noparallel}
 The assertion ``every extremal design contains two parallel vectors'' is
 true for every design of Theorem~\ref{thm:tieseverywhere} of size
 $m\ge k+2$, and false at $(5,3)$.
@@ -436,7 +436,7 @@ vectors.  Example~\ref{ex:diamond} is the counterexample.
 \end{proof}
 
 An argument branching on the presence of a parallel pair therefore
-requires a separate treatment of $D_\Diamond$, and of every extremal
+requires a separate treatment of $\dsn_{\Diamond}$, and of every extremal
 design not obtained by splitting a smaller one.  Whether the tetrahedron
 and the diamond generate the whole rank-three extremal locus is
 Problem~\ref{prob:structure}.
@@ -444,7 +444,7 @@ Problem~\ref{prob:structure}.
 \begin{figure}[ht]
   \centering
   \input{figures/diamond}
-  \caption{The diamond $D_\Diamond$.  Left: the graph $K_4$ with the edge
+  \caption{The diamond $\dsn_{\Diamond}$.  Left: the graph $K_4$ with the edge
   $34$ deleted and the vertex $4$ grounded, its edges carrying the
   conductances $c=(2,3,3,3,3)$ and the uniform weights $t_e=\tfrac15$;
   line weight is proportional to conductance.  Right: the five reduced
@@ -539,7 +539,7 @@ $\sigma$ gives the claim.
 Summing Lemma~\ref{lem:marginal} over $c$ returns $\sum_cs_c=k$
 (Lemma~\ref{lem:trace}), the expected cardinality of $C$, as it must.
 
-\begin{theorem}[\LV]\label{thm:leverageaverage}
+\begin{theorem}[Lean]\label{thm:leverageaverage}
 For every design over either field,
 \[
   \sum_{c}s_c\,g_c^{\vphantom{*}}g_c^{*}\;\psd\;I_k .
@@ -556,8 +556,12 @@ $\lvert\langle g_c,x\rangle\rvert^{2}\le\ell_c\lVert x\rVert^{2}$, whence
   \;\ge\;\sum_c t_c\lvert\langle g_c,x\rangle\rvert^{4} .
 \]
 Cauchy--Schwarz for the probability weights $t$ bounds the right side
-below by $\bigl(\sum_ct_c\lvert\langle g_c,x\rangle\rvert^{2}\bigr)^{2}$,
-which is $\lVert x\rVert^{4}$ by \eqref{eq:parseval}.  Dividing by
+below by
+\[
+  \Bigl(\sum_ct_c\lvert\langle g_c,x\rangle\rvert^{2}\Bigr)^{2}
+  \;=\;\lVert x\rVert^{4}
+\]
+by \eqref{eq:parseval}.  Dividing by
 $\lVert x\rVert^{2}>0$ gives
 $x^{*}\bigl(\sum_cs_cg_c^{\vphantom{*}}g_c^{*}\bigr)x\ge\lVert x\rVert^2$.
 Every step is homogeneous in $x$, so no normalization is used.
@@ -590,7 +594,7 @@ Theorem~\ref{thm:average}: the $\pi$-average of $\SC$ dominates, and one
 asks for a single $C$.  The average dominates with room, and the room
 grows with the rank.
 
-\begin{proposition}[\LV]\label{prop:jensen}
+\begin{proposition}[Lean]\label{prop:jensen}
 $\sum_c t_c\ell_c^{2}\ge k^{2}$, with equality if and only if $\ell_c=k$
 for every $c$.
 \end{proposition}
@@ -649,7 +653,7 @@ and the bound is Proposition~\ref{prop:jensen}.  The last assertion is
 Proposition~\ref{prop:qonezero}.
 \end{proof}
 
-\begin{proposition}[\LV]\label{prop:qonezero}
+\begin{proposition}[Lean]\label{prop:qonezero}
 $q(1)=0$ at every totally tight design.
 \end{proposition}
 
@@ -680,7 +684,7 @@ $-9=-\sum_ct_c\ell_c^{2}=-4\cdot\tfrac14\cdot9$, so the bound of
 Proposition~\ref{prop:jensen} is attained here; $q(1)=0$, as
 Proposition~\ref{prop:qone} requires; and the least root of $q$ sits
 exactly at the threshold.  Meanwhile
-$\E_\pi[\SC]=\tfrac34\sum_cg_c^{\vphantom{T}}g_c^{T}=3I_3$ while
+$\E_\pi[\SC]=\tfrac34\sum_cg_c^{\vphantom{\mathsf{T}}}g_c\tp=3I_3$ while
 $\max_C\lmin(\SC)=1$: the average clears the threshold by a factor of
 three, and no triple clears it at all.
 

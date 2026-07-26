@@ -9,17 +9,17 @@ any device that produces a strictly positive quantity produces something that
 is false there.
 
 Two scalar functions of a triple organize the appendix.  For a $k$-subset $C$
-of a design write $\Gamma_C$ for the Gram matrix $(\langle
+of a design write $\Gram_C$ for the Gram matrix $(\langle
 g_c,g_d\rangle)_{c,d\in C}$.  By \eqref{eq:twoproducts},
-$\Gamma_C=M_C^{\vphantom{*}}M_C^{*}$ and $\SC=M_C^{*}M_C^{\vphantom{*}}$ with
+$\Gram_C=M_C^{\vphantom{*}}M_C^{*}$ and $\SC=M_C^{*}M_C^{\vphantom{*}}$ with
 $M_C$ square, so the two have the same spectrum and
 \begin{equation}\label{eq:tieleg}
-  \delta(C)\;:=\;\det\bigl(\Gamma_C-I_k\bigr)\;=\;\det\bigl(\SC-I_k\bigr) .
+  \delta(C)\;:=\;\det\bigl(\Gram_C-I_k\bigr)\;=\;\det\bigl(\SC-I_k\bigr) .
 \end{equation}
 Domination of $C$ implies $\delta(C)\ge0$; we call $\delta$ the
 \emph{determinant leg}.  At rank three we also use
 \begin{equation}\label{eq:twomoment}
-  \gamma(C)\;:=\;4\det\Gamma_C-\bigl(\tr\Gamma_C-1\bigr)^2 ,
+  \gamma(C)\;:=\;4\det\Gram_C-\bigl(\tr\Gram_C-1\bigr)^2 ,
 \end{equation}
 a function of the first two moments of the spectrum of $\SC$ alone.
 
@@ -31,30 +31,30 @@ cannot be done, and the obstruction does not depend on a degree, on
 polynomiality, or on equivariance: the coefficients are allowed to be arbitrary
 nonnegative functions of the design.
 
-\begin{proposition}[\LV]\label{prop:noaggregate}
-There is no $\theta>0$ with the following property: for every design $D$ at
-$(7,3)$ with $\ell_c>1$ for all $c$ there are numbers $w_C(D)\ge0$, indexed by
+\begin{proposition}[Lean]\label{prop:noaggregate}
+There is no $\theta>0$ with the following property: for every design $\dsn$ at
+$(7,3)$ with $\ell_c>1$ for all $c$ there are numbers $w_C(\dsn)\ge0$, indexed by
 the $35$ triples, with
 \[
-  \sum_{\lvert C\rvert=3} w_C(D)\,\delta(C)\;\ge\;\theta .
+  \sum_{\lvert C\rvert=3} w_C(\dsn)\,\delta(C)\;\ge\;\theta .
 \]
 \end{proposition}
 
 \begin{proof}
-Let $D^{*}$ be the split tetrahedron at $(7,3)$ of \S\ref{app:split}: seven
+Let $\dsn_{\triangle}$ be the split tetrahedron at $(7,3)$ of \S\ref{app:split}: seven
 atoms carrying the four tetrahedron directions with multiplicities $2,2,2,1$
 and weights $(\tfrac18,\tfrac18,\tfrac18,\tfrac14,\tfrac18,\tfrac18,\tfrac18)$.
-Every leverage equals $3$, so $D^{*}$ lies in the stated class.  A triple of
-$D^{*}$ carries either three distinct directions or two equal ones.  In the
-first case $\Gamma_C$ has diagonal $3$ and off-diagonal $-1$, so
-$\Gamma_C-I_3=3I_3-J_3$, of eigenvalues $0,3,3$ and determinant $0$.  In the
+Every leverage equals $3$, so $\dsn_{\triangle}$ lies in the stated class.  A triple of
+$\dsn_{\triangle}$ carries either three distinct directions or two equal ones.  In the
+first case $\Gram_C$ has diagonal $3$ and off-diagonal $-1$, so
+$\Gram_C-I_3=3I_3-J_3$, of eigenvalues $0,3,3$ and determinant $0$.  In the
 second, after ordering so that the first two atoms agree,
 \[
-  \Gamma_C-I_3=\begin{pmatrix}2&3&-1\\ 3&2&-1\\ -1&-1&2\end{pmatrix},
+  \Gram_C-I_3=\begin{pmatrix}2&3&-1\\ 3&2&-1\\ -1&-1&2\end{pmatrix},
   \qquad \det=2(4-1)-3(6-1)+(-1)(-3+2)=-8 .
 \]
 Hence $\delta(C)\le0$ for all $35$ triples, and every nonnegative combination
-of the legs at $D^{*}$ is at most $0$.
+of the legs at $\dsn_{\triangle}$ is at most $0$.
 \end{proof}
 
 Any Positivstellensatz certificate in Putinar or Schmüdgen form yields, on
@@ -70,7 +70,7 @@ degree.
 \end{corollary}
 
 \begin{proof}
-Evaluate at $D^{*}$: the left side is at most $0$ and the right side at least
+Evaluate at $\dsn_{\triangle}$: the left side is at most $0$ and the right side at least
 $1$.
 \end{proof}
 
@@ -82,7 +82,7 @@ all-heavy locus,
   \text{(closed)}\quad \delta(C)\le0 \ \ \text{for all } C .
 \]
 Failure of $\Gtz(7,3)$ would give a point of the strict system; the design
-$D^{*}$ is a point of the closed one.  So the closed system is inhabited and
+$\dsn_{\triangle}$ is a point of the closed one.  So the closed system is inhabited and
 carries no certificate of emptiness of any kind, while what has to be certified
 empty is the strict system.  The entire content of the problem lies in the gap
 between the two, and that gap is the equality locus.
@@ -114,27 +114,27 @@ $\binom{34}{6}=1\,344\,904$ elements.
 Induction on the size deletes an atom, applies $\Gtz(m-1,k)$, and lifts.  The
 lift is exact, and its price can be computed once and for all.
 
-Let $D$ be a design at $(m,k)$ and $e$ an index with $s_e<1$, equivalently
-$I-t_e\,g_e^{\vphantom{T}}g_e^{T}\pd0$.  Choose $R$ with
-$R^{T}\bigl(I-t_e g_e^{\vphantom{T}}g_e^{T}\bigr)R=I$ and set
+Let $\dsn$ be a design at $(m,k)$ and $e$ an index with $s_e<1$, equivalently
+$I-t_e\,g_e^{\vphantom{\mathsf{T}}}g_e\tp\pd0$.  Choose $R$ with
+$R\tp\bigl(I-t_e g_e^{\vphantom{\mathsf{T}}}g_e\tp\bigr)R=I$ and set
 \[
-  g'_c:=\sqrt{1-t_e}\;R^{T}g_c,
+  g'_c:=\sqrt{1-t_e}\;R\tp g_c,
   \qquad
   t'_c:=\frac{t_c}{1-t_e}
   \qquad (c\ne e).
 \]
 The weights are positive and sum to one, and
 \[
-  \sum_{c\ne e}t'_c\,g'^{\vphantom{T}}_c{g'_c}^{T}
-  =R^{T}\Bigl(\sum_{c\ne e}t_c\,g_c^{\vphantom{T}}g_c^{T}\Bigr)R
-  =R^{T}\bigl(I-t_e g_e^{\vphantom{T}}g_e^{T}\bigr)R=I,
+  \sum_{c\ne e}t'_c\,g'^{\vphantom{\mathsf{T}}}_c{g'_c}\tp
+  =R\tp\Bigl(\sum_{c\ne e}t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp\Bigr)R
+  =R\tp\bigl(I-t_e g_e^{\vphantom{\mathsf{T}}}g_e\tp\bigr)R=I,
 \]
-so $D'$ is a design at $(m-1,k)$.
+so $\dsn'$ is a design at $(m-1,k)$.
 
 \begin{proposition}\label{prop:deletionprice}
 Let $C\subseteq\{c:c\ne e\}$ have $\lvert C\rvert=k$ and satisfy
-$S'_C\psd(1+\varepsilon)I$ in $D'$, with $\varepsilon\ge0$.  Then $C$
-dominates in $D$ provided
+$S'_C\psd(1+\varepsilon)I$ in $\dsn'$, with $\varepsilon\ge0$.  Then $C$
+dominates in $\dsn$ provided
 \begin{equation}\label{eq:kappa}
   1+\varepsilon\;\ge\;\kappa_e^{-1},
   \qquad\text{where}\qquad
@@ -145,19 +145,19 @@ most $0$ if and only if $\ell_e\le1$.
 \end{proposition}
 
 \begin{proof}
-From $R^{T}\bigl(I-t_eg_e^{\vphantom{T}}g_e^{T}\bigr)R=I$ one reads
-$RR^{T}=\bigl(I-t_eg_e^{\vphantom{T}}g_e^{T}\bigr)^{-1}$, hence for
-$v:=R^{-1}w$,
+From $R\tp\bigl(I-t_eg_e^{\vphantom{\mathsf{T}}}g_e\tp\bigr)R=I$ one reads
+$RR\tp=\bigl(I-t_eg_e^{\vphantom{\mathsf{T}}}g_e\tp\bigr)^{-1}$, hence for
+$y:=R^{-1}w$,
 \[
-  v^{T}S'_Cv=(1-t_e)\,w^{T}S_Cw,
+  y\tp S'_Cv=(1-t_e)\,w\tp S_Cw,
   \qquad
-  v^{T}v=w^{T}\bigl(I-t_eg_e^{\vphantom{T}}g_e^{T}\bigr)w
+  y\tp y=w\tp\bigl(I-t_eg_e^{\vphantom{\mathsf{T}}}g_e\tp\bigr)w
         =\lVert w\rVert^2-t_e\langle g_e,w\rangle^2 ,
 \]
-the first because $S'_C=(1-t_e)R^{T}S_CR$.  Applying the hypothesis at $v$ and
+the first because $S'_C=(1-t_e)R\tp S_CR$.  Applying the hypothesis at $y$ and
 taking $\lVert w\rVert=1$,
 \[
-  w^{T}S_Cw\;\ge\;\frac{(1+\varepsilon)\bigl(1-t_e\langle g_e,w\rangle^2\bigr)}
+  w\tp S_Cw\;\ge\;\frac{(1+\varepsilon)\bigl(1-t_e\langle g_e,w\rangle^2\bigr)}
                        {1-t_e}
    \;\ge\;\frac{(1+\varepsilon)(1-s_e)}{1-t_e}
    \;=\;(1+\varepsilon)\,\kappa_e ,
@@ -267,53 +267,53 @@ spectrum, it is sharp among such criteria, and it does not decide the open
 cells.  Three statements follow: the criterion, its sharpness among two-moment
 criteria, and a design at $(6,3)$ on which it is silent.
 
-\begin{proposition}[\LV]\label{prop:twomoment}
+\begin{proposition}[Lean]\label{prop:twomoment}
 Let $C$ be a $3$-subset of a design at rank three with
-$L:=\tr\Gamma_C>3$.  If $\gamma(C)\ge0$ then $C$ dominates.
+$\ell_C:=\tr\Gram_C>3$.  If $\gamma(C)\ge0$ then $C$ dominates.
 \end{proposition}
 
 \begin{proof}
 Let $x\le y\le z$ be the eigenvalues of $\SC$, all nonnegative, with
-$x+y+z=L$ and $xyz=\det\Gamma_C$.  By the arithmetic--geometric mean
+$x+y+z=\ell_C$ and $xyz=\det\Gram_C$.  By the arithmetic--geometric mean
 inequality applied to $y,z$,
 \[
-  4\det\Gamma_C=4xyz\le 4x\Bigl(\frac{y+z}{2}\Bigr)^2=x(L-x)^2 .
+  4\det\Gram_C=4xyz\le 4x\Bigl(\frac{y+z}{2}\Bigr)^2=x(\ell_C-x)^2 .
 \]
-The hypothesis $\gamma(C)\ge0$ reads $4\det\Gamma_C\ge(L-1)^2$, so
-$x(L-x)^2-(L-1)^2\ge0$.  Expanding both sides,
+The hypothesis $\gamma(C)\ge0$ reads $4\det\Gram_C\ge(\ell_C-1)^2$, so
+$x(\ell_C-x)^2-(\ell_C-1)^2\ge0$.  Expanding both sides,
 \[
-  x(L-x)^2-(L-1)^2=(x-1)\bigl(x^2+(1-2L)x+(L-1)^2\bigr),
+  x(\ell_C-x)^2-(\ell_C-1)^2=(x-1)\bigl(x^2+(1-2\ell_C)x+(\ell_C-1)^2\bigr),
 \]
-an identity in $x$ and $L$.  Write $Q(x)$ for the quadratic factor.  Its vertex
-is at $x=L-\tfrac12>1$, so $Q$ decreases on $[0,1]$, and
-$Q(1)=2-2L+(L-1)^2=(L-1)(L-3)>0$; hence $Q>0$ on $[0,1]$.  If $x<1$ then
+an identity in $x$ and $\ell_C$.  Write $Q(x)$ for the quadratic factor.  Its vertex
+is at $x=\ell_C-\tfrac12>1$, so $Q$ decreases on $[0,1]$, and
+$Q(1)=2-2\ell_C+(\ell_C-1)^2=(\ell_C-1)(\ell_C-3)>0$; hence $Q>0$ on $[0,1]$.  If $x<1$ then
 $(x-1)Q(x)<0$, contradicting the displayed inequality.  So $x\ge1$, that is
 $\SC\psd I$.
 \end{proof}
 
 The quadratic factor $Q$ is the multiplier of the certificate; no semidefinite
 programme and no hierarchy is involved.  At the tetrahedron
-(\S\ref{app:tetra}) one has $L=9$, $\det\Gamma_C=16$ and $\gamma(C)=0$: the
+(\S\ref{app:tetra}) one has $\ell_C=9$, $\det\Gram_C=16$ and $\gamma(C)=0$: the
 criterion is exactly tight on the equality locus it was built to reach, the
 arithmetic--geometric step being an equality precisely when the two upper
 eigenvalues coincide, as they do at $\{1,4,4\}$.
 
 \begin{proposition}\label{prop:momentsharp}
-Let $L>3$ and $0\le d$ satisfy $4d<(L-1)^2$.  There is a positive semidefinite
-$3\times3$ matrix of trace $L$ and determinant $d$ whose least eigenvalue is
-smaller than $1$.  Hence no criterion depending on $(\tr\Gamma_C,\det\Gamma_C)$
+Let $\ell_C>3$ and $0\le \varepsilon$ satisfy $4\varepsilon<(\ell_C-1)^2$.  There is a positive semidefinite
+$3\times3$ matrix of trace $\ell_C$ and determinant $\varepsilon$ whose least eigenvalue is
+smaller than $1$.  Hence no criterion depending on $(\tr\Gram_C,\det\Gram_C)$
 alone is stronger than Proposition~\ref{prop:twomoment}.
 \end{proposition}
 
 \begin{proof}
-On $[0,1]$ the function $x\mapsto x(L-x)^2$ has derivative $(L-x)(L-3x)>0$, so
-it increases from $0$ to $(L-1)^2$; let $x\in[0,1)$ be the unique point with
-$x(L-x)^2=4d$.  The matrix $\diag\bigl(x,\tfrac{L-x}{2},\tfrac{L-x}{2}\bigr)$
-is positive semidefinite because $L>x$, has trace $L$ and determinant
-$x(L-x)^2/4=d$, and its least eigenvalue is $x<1$ since $3x<3<L$.
+On $[0,1]$ the function $x\mapsto x(\ell_C-x)^2$ has derivative $(\ell_C-x)(\ell_C-3x)>0$, so
+it increases from $0$ to $(\ell_C-1)^2$; let $x\in[0,1)$ be the unique point with
+$x(\ell_C-x)^2=4\varepsilon$.  The matrix $\diag\bigl(x,\tfrac{L-x}{2},\tfrac{L-x}{2}\bigr)$
+is positive semidefinite because $\ell_C>x$, has trace $\ell_C$ and determinant
+$x(\ell_C-x)^2/4=\varepsilon$, and its least eigenvalue is $x<1$ since $3x<3<\ell_C$.
 \end{proof}
 
-\begin{proposition}[\LV]\label{prop:icosa}
+\begin{proposition}[Lean]\label{prop:icosa}
 At the icosahedral design of \S\ref{app:icosa} every triple $C$ satisfies
 $\gamma(C)<0$, while the triple $\{0,2,4\}$ dominates strictly.
 \end{proposition}
@@ -323,9 +323,9 @@ By \eqref{eq:icosapair} every leverage is $3$ and every distinct pairing has
 square $\tfrac95$.  For a triple with pairings $p_{ab},p_{ac},p_{bc}$ and
 product $\tau:=p_{ab}p_{ac}p_{bc}$,
 \[
-  \tr\Gamma_C=9,
+  \tr\Gram_C=9,
   \qquad
-  \det\Gamma_C=27+2\tau-3\bigl(p_{ab}^2+p_{ac}^2+p_{bc}^2\bigr)
+  \det\Gram_C=27+2\tau-3\bigl(p_{ab}^2+p_{ac}^2+p_{bc}^2\bigr)
              =27+2\tau-\tfrac{81}5=\tfrac{54}5+2\tau ,
 \]
 so by \eqref{eq:twomoment}
@@ -342,9 +342,9 @@ domination of $\{0,2,4\}$, with $\lmin=3-3/\sqrt5>1$, is computed in
 The two-moment criterion is therefore silent at $(6,3)$, and by
 Proposition~\ref{prop:momentsharp} so is every criterion in those two moments.
 What the criterion discards is exactly the middle elementary symmetric function
-of $\Gamma_C$: at the icosahedron the moduli of the pairings are all equal, and
+of $\Gram_C$: at the icosahedron the moduli of the pairings are all equal, and
 the verdict depends only on the sign of their product.  Any certificate for
-$\Gtz(6,3)$ must consume $e_2(\Gamma_C)$, or equivalently must be sensitive to
+$\Gtz(6,3)$ must consume $e_2(\Gram_C)$, or equivalently must be sensitive to
 that sign.
 
 \subsection{Structure inherited from smaller sizes}\label{app:structure}
@@ -353,7 +353,7 @@ Two further devices are excluded by facts already recorded.
 
 \begin{remark}\label{rem:signature}
 The signature of $W$ carries no information.  By Lemma~\ref{lem:inertia} the
-matrix $W=P-D$ has inertia $(k,m-k,0)$; and by Remark~\ref{rem:nogo} there is a
+matrix $W=P-\dsn$ has inertia $(k,m-k,0)$; and by Remark~\ref{rem:nogo} there is a
 Hermitian matrix of inertia $(1,1)$ with no positive semidefinite
 $1\times1$ principal block.  So no statement of the form ``a Hermitian matrix of
 inertia $(k,m-k)$ has a positive semidefinite $k\times k$ principal block'' is

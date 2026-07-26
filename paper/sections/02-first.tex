@@ -38,7 +38,7 @@ sharp on both sides: fewer than $k$ vectors span a proper subspace and
 leave $\SC$ singular, while at $\lvert C\rvert=m$ domination is automatic
 (Lemma~\ref{lem:coparseval}).
 
-\begin{lemma}[\LV]\label{lem:span}
+\begin{lemma}[Lean]\label{lem:span}
 The vectors of a design span $\FF^k$.  In particular $k\le m$, and there
 is no design with $m<k$.
 \end{lemma}
@@ -60,7 +60,7 @@ spanning family in $\FF^k$ has at least $k$ members.
 Taking the trace of \eqref{eq:parseval} gives the identity on which every
 counting argument in the subject rests.
 
-\begin{lemma}[\LV]\label{lem:trace}
+\begin{lemma}[Lean]\label{lem:trace}
 $\sum_c s_c=\sum_c t_c\ell_c=k$.  Hence $\max_c \ell_c\ge k$.
 \end{lemma}
 
@@ -73,7 +73,7 @@ weighted mean of the $\ell_c$ and does not exceed their maximum.
 
 The leverage scores are also bounded above, individually.
 
-\begin{lemma}[\LV]\label{lem:share}
+\begin{lemma}[Lean]\label{lem:share}
 $0\le s_c\le1$ for every $c$.  With Lemma~\ref{lem:trace} the leverage
 scores therefore lie in $[0,1]$ and sum to $k$, which gives $m\ge k$ a
 second time, with equality only if $s_c=1$ throughout.
@@ -93,7 +93,7 @@ divide by $\ell_e>0$.
 The third identity compares the unweighted sum over all indices with the
 weighted one.
 
-\begin{lemma}[\LV]\label{lem:coparseval}
+\begin{lemma}[Lean]\label{lem:coparseval}
 For every design,
 \begin{equation}\label{eq:coparseval}
   S_{\{1,\dots,m\}}-I_k\;=\;\sum_{c}(1-t_c)\,g_c^{\vphantom{*}}g_c^{*} .
@@ -127,7 +127,7 @@ possible.  Nothing else in the present section needs it.
 
 \subsection{The cases that close by counting}
 
-\begin{proposition}[\LV]\label{prop:sizerank}
+\begin{proposition}[Lean]\label{prop:sizerank}
 $\Gtz(k,k)$ and $\GtzC(k,k)$ hold.
 \end{proposition}
 
@@ -137,7 +137,7 @@ $m=k$ leaves exactly one $k$-subset, namely $\{1,\dots,m\}$, and it
 dominates by Lemma~\ref{lem:coparseval}.
 \end{proof}
 
-\begin{proposition}[\LV]\label{prop:rankone}
+\begin{proposition}[Lean]\label{prop:rankone}
 $\Gtz(m,1)$ and $\GtzC(m,1)$ hold for every $m$.
 \end{proposition}
 
@@ -161,13 +161,13 @@ the elementary methods end.
 The classical statement is the uniform-weight instance, in the following
 precise sense.
 
-\begin{proposition}[\LV]\label{prop:classical}
+\begin{proposition}[Lean]\label{prop:classical}
 Let $n\ge1$ and let $A\in\FF^{n\times k}$ satisfy $A^{*}A=I_k$.  If
 $\Gtz(n,k)$ holds, respectively $\GtzC(n,k)$, then there is an injection
-$\rho:\{1,\dots,k\}\to\{1,\dots,n\}$ with
+$\iota:\{1,\dots,k\}\to\{1,\dots,n\}$ with
 \[
-  (A_\rho)^{*}A_\rho^{\vphantom{*}}\;\psd\;\tfrac1n I_k,
-  \qquad A_\rho:=\bigl(A_{\rho(1)},\dots,A_{\rho(k)}\bigr)^{*}\!,
+  (A_\iota)^{*}A_\iota^{\vphantom{*}}\;\psd\;\tfrac1n I_k,
+  \qquad A_\iota:=\bigl(A_{\iota(1)},\dots,A_{\iota(k)}\bigr)^{*}\!,
 \]
 where $A_r^{*}$ denotes the $r$-th row of $A$.
 \end{proposition}
@@ -176,11 +176,11 @@ where $A_r^{*}$ denotes the $r$-th row of $A$.
 Put $g_r:=\sqrt n\,A_r$ and $t_r:=1/n$.  Then
 $\sum_r t_r g_r^{\vphantom{*}}g_r^{*}=\sum_r A_r^{\vphantom{*}}A_r^{*}
 =A^{*}A=I_k$, so this is a design of size $n$ and rank $k$.  Let $C$
-dominate and let $\rho$ enumerate $C$ in increasing order.  Then
-$(A_\rho)^{*}A_\rho^{\vphantom{*}}=\sum_{r\in C}A_r^{\vphantom{*}}A_r^{*}
+dominate and let $\iota$ enumerate $C$ in increasing order.  Then
+$(A_\iota)^{*}A_\iota^{\vphantom{*}}=\sum_{r\in C}A_r^{\vphantom{*}}A_r^{*}
 =\frac1n\SC$, so
 \[
-  (A_\rho)^{*}A_\rho^{\vphantom{*}}-\tfrac1n I_k
+  (A_\iota)^{*}A_\iota^{\vphantom{*}}-\tfrac1n I_k
   \;=\;\tfrac1n\bigl(\SC-I_k\bigr)\;\psd\;0 . \qedhere
 \]
 \end{proof}
@@ -205,7 +205,7 @@ design average to the squared length of that direction.  The averaging
 mechanism of Proposition~\ref{prop:rankone} therefore survives in full
 generality, one direction at a time.
 
-\begin{lemma}[\LV]\label{lem:direction}
+\begin{lemma}[Lean]\label{lem:direction}
 For every design and every $x\in\FF^k$ there is an index $c$ with
 $\lvert\langle x,g_c\rangle\rvert^2\ge\lVert x\rVert^2$.
 \end{lemma}
@@ -244,14 +244,14 @@ cell $(6,3)$, shows how far apart the two can be.
 Let $k=3$, let the six vectors be $\pm\sqrt3\,e_1$, $\pm\sqrt3\,e_2$,
 $\pm\sqrt3\,e_3$ and let every weight be $\tfrac16$.  Then
 \[
-  \sum_c t_c\,g_c^{\vphantom{T}}g_c^{T}
-  \;=\;\tfrac16\cdot3\cdot2\sum_{i=1}^{3}e_i^{\vphantom{T}}e_i^{T}\;=\;I_3 ,
+  \sum_c t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp
+  \;=\;\tfrac16\cdot3\cdot2\sum_{i=1}^{3}e_i^{\vphantom{\mathsf{T}}}e_i\tp\;=\;I_3 ,
 \]
 so this is a design at $(6,3)$, with $\ell_c=3$ and $s_c=\tfrac12$ for
 every $c$, in accordance with Lemmas~\ref{lem:trace} and~\ref{lem:share}.
 Every triple satisfies $\tr\SC=9\ge3$.  The triple
 $\{\sqrt3e_1,-\sqrt3e_1,\sqrt3e_2\}$ nevertheless has
-$\SC=6\,e_1^{\vphantom{T}}e_1^{T}+3\,e_2^{\vphantom{T}}e_2^{T}$, which is
+$\SC=6\,e_1^{\vphantom{\mathsf{T}}}e_1\tp+3\,e_2^{\vphantom{\mathsf{T}}}e_2\tp$, which is
 singular in the direction $e_3$ and does not dominate; the triple
 $\{\sqrt3e_1,\sqrt3e_2,\sqrt3e_3\}$ has $\SC=3I_3\pd I_3$ and dominates
 strictly.  The trace is blind to the difference, and the difference is
@@ -273,18 +273,18 @@ In Example~\ref{ex:octa} one triple dominates strictly.  The next design
 admits no strict domination at all, and its equality is exact at every
 triple.
 
-\begin{example}[\LV]\label{ex:tetra}
+\begin{example}[Lean]\label{ex:tetra}
 Let $k=3$ and take the four vectors
 \[
   g_0=(1,1,1),\quad g_1=(1,-1,-1),\quad g_2=(-1,1,-1),\quad g_3=(-1,-1,1)
 \]
 with equal weights $t_c=\tfrac14$.  Each diagonal entry of
-$\sum_c g_c^{\vphantom{T}}g_c^{T}$ is $4$, and each off-diagonal entry is
+$\sum_c g_c^{\vphantom{\mathsf{T}}}g_c\tp$ is $4$, and each off-diagonal entry is
 $1-1-1+1=0$, so
 \begin{equation}\label{eq:tetraparseval}
-  \sum_{c=0}^{3} g_c^{\vphantom{T}}g_c^{T}\;=\;4I_3,
+  \sum_{c=0}^{3} g_c^{\vphantom{\mathsf{T}}}g_c\tp\;=\;4I_3,
   \qquad\text{hence}\qquad
-  \sum_{c=0}^{3}\tfrac14\,g_c^{\vphantom{T}}g_c^{T}\;=\;I_3 :
+  \sum_{c=0}^{3}\tfrac14\,g_c^{\vphantom{\mathsf{T}}}g_c\tp\;=\;I_3 :
 \end{equation}
 a design at $(4,3)$.  Here $\ell_c=3$ and $s_c=\tfrac34$ for every $c$, so
 Lemma~\ref{lem:trace} holds with equal terms, $4\cdot\tfrac34=3=k$, and
@@ -294,9 +294,9 @@ vectors to the vertices of a regular tetrahedron, scaled by $\sqrt3$.
 Let $C=\{0,1,2,3\}\setminus\{c_0\}$ be one of the four triples.
 Subtracting the omitted term from \eqref{eq:tetraparseval},
 \[
-  \SC\;=\;4I_3-g_{c_0}^{\vphantom{T}}g_{c_0}^{T} .
+  \SC\;=\;4I_3-g_{c_0}^{\vphantom{\mathsf{T}}}g_{c_0}\tp .
 \]
-The matrix $g_{c_0}^{\vphantom{T}}g_{c_0}^{T}$ has eigenvalue
+The matrix $g_{c_0}^{\vphantom{\mathsf{T}}}g_{c_0}\tp$ has eigenvalue
 $\ell_{c_0}=3$ on the line $\R g_{c_0}$ and $0$ on its orthogonal
 complement, so
 \begin{equation}\label{eq:tetraspec}
@@ -306,7 +306,7 @@ Every triple dominates, and every triple dominates with least eigenvalue
 exactly $1$.  For $c_0=0$ the certificate is a sum of squares: writing
 $x=(x_1,x_2,x_3)$,
 \[
-  x^{T}\bigl(\SC-I_3\bigr)x
+  x\tp\bigl(\SC-I_3\bigr)x
   \;=\;3\lVert x\rVert^2-\langle x,g_0\rangle^2
   \;=\;3\sum_i x_i^2-\Bigl(\sum_i x_i\Bigr)^{\!2}
   \;=\;\sum_{i<j}(x_i-x_j)^2 ,

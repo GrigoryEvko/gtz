@@ -1,7 +1,7 @@
 \begin{tikzpicture}[
   font=\small,
   bx/.style={draw, rounded corners=1pt, inner sep=3pt, minimum height=5mm,
-             minimum width=17mm, align=center, font=\small},
+             minimum width=15mm, align=center, font=\small},
   ar/.style={-{Latex[length=1.7mm]}, line width=0.5pt},
   ttl/.style={font=\scriptsize\itshape, align=center},
   txt/.style={font=\scriptsize, align=center, inner sep=1.5pt}]
@@ -41,35 +41,35 @@
 % =====================================================================
 % (b)  the two boundary mechanisms at a vanishing weight
 % =====================================================================
-\begin{scope}[xshift=5.9cm]
-\node[txt, anchor=north west, text width=79mm, align=left] at (0,5.05)
+\begin{scope}[xshift=5.55cm]
+\node[txt, anchor=north west, text width=74mm, align=left] at (0,5.05)
   {A chart point at $(m,k)$ with $t_z=0$. The pivot identity
    $\lvert Pe_z\rvert^{2}=P_{zz}$ splits two cases.};
 
 % ---- case A : the atom vanishes -------------------------------------
 \node[ttl] at (1.95,4.05) {atom deletion};
 \node[bx] (a1) at (1.95,3.62) {$P_{zz}=0$};
-\node[txt, text width=38mm, align=center] (a2) at (1.95,2.52)
+\node[txt, text width=35mm, align=center] (a2) at (1.95,2.52)
   {the column $Pe_z$ vanishes;\\ delete $z$, rescale $t\mapsto t/(1-t_z)$};
 \node[bx] (a3) at (1.95,1.40) {$(m-1,k)$};
-\node[txt, text width=38mm, align=center] (a4) at (1.95,0.78) {$C$ lifts verbatim};
+\node[txt, text width=35mm, align=center] (a4) at (1.95,0.78) {$C$ lifts verbatim};
 \node[bx] (a5) at (1.95,0.15) {$|C|=k$};
 \draw[ar] (a1) -- (a2); \draw[ar] (a2) -- (a3);
 \draw[ar] (a3) -- (a4); \draw[ar] (a4) -- (a5);
 
 % ---- case B : deflation at the pivot --------------------------------
-\node[ttl] at (6.05,4.05) {Schur deflation};
-\node[bx] (b1) at (6.05,3.62) {$P_{zz}>0$};
-\node[txt, text width=38mm, align=center] (b2) at (6.05,2.52)
+\node[ttl] at (5.75,4.05) {Schur deflation};
+\node[bx] (b1) at (5.75,3.62) {$P_{zz}>0$};
+\node[txt, text width=35mm, align=center] (b2) at (5.75,2.52)
   {$P'=P-(Pe_z)(Pe_z)^{T}/P_{zz}$,\\ $\tr P'=k-1$, $P'e_z=0$; delete $z$};
-\node[bx] (b3) at (6.05,1.40) {$(m-1,k-1)$};
-\node[txt, text width=38mm, align=center] (b4) at (6.05,0.78) {$C\mapsto C\cup\{z\}$};
-\node[bx] (b5) at (6.05,0.15) {$|C\cup\{z\}|=k$};
+\node[bx] (b3) at (5.75,1.40) {$(m-1,k-1)$};
+\node[txt, text width=35mm, align=center] (b4) at (5.75,0.78) {$C\mapsto C\cup\{z\}$};
+\node[bx] (b5) at (5.75,0.15) {$|C\cup\{z\}|=k$};
 \draw[ar] (b1) -- (b2); \draw[ar] (b2) -- (b3);
 \draw[ar] (b3) -- (b4); \draw[ar] (b4) -- (b5);
 
 % ---- the identity that pays for the second case ---------------------
-\node[txt, anchor=north] at (4.0,-0.45)
+\node[txt, anchor=north] at (3.85,-0.45)
   {$x^{T}Wx=x^{T}(P'-\diag t)\,x+\dfrac{(Pe_z\cdot x)^{2}}{P_{zz}}$,\\[3pt]
    and at $t_z=0$ the three terms complete a square};
 \end{scope}

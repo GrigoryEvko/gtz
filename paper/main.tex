@@ -4,30 +4,50 @@
 % ==========================================================================
 \documentclass[11pt]{amsart}
 
-\usepackage[margin=1.15in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1.35in]{geometry}
 \usepackage{amsmath,amssymb,mathtools,booktabs,array}
+\usepackage{microtype}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,calc,patterns}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usepackage[most]{tcolorbox}
-\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
+\definecolor{linkblue}{RGB}{0,102,187}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,
+            urlcolor=linkblue]{hyperref}
 
-% --- status markers -------------------------------------------------------
-% [\LV] after a theorem number: the statement is verified in Lean 4; Table 1
-% gives the declaration.  [\CD]: the statement is conditional on a hypothesis
-% not established in this paper.  No marker: proved here.
-\newcommand{\LV}{\ensuremath{\dagger}}
-\newcommand{\CD}{\ensuremath{\ast}}
+% --- page furniture -------------------------------------------------------
+% No running heads.  Folio centred at the foot.
+\pagestyle{plain}
+
+% --- vertical rhythm ------------------------------------------------------
+% Leading opened by 8% against the amsart default; the measure is narrowed to
+% match.  Displays get a little more air than amsart gives them, which is
+% what makes the longer computations readable.
+\linespread{1.08}\selectfont
+\setlength{\abovedisplayskip}{9pt plus 3pt minus 2pt}
+\setlength{\belowdisplayskip}{9pt plus 3pt minus 2pt}
+\setlength{\abovedisplayshortskip}{5pt plus 2pt}
+\setlength{\belowdisplayshortskip}{6pt plus 2pt minus 1pt}
+\setlength{\parskip}{0pt plus 1pt}
 
 % --- draft layer (remove before submission) -------------------------------
 \newtcolorbox{wip}{%
-  colback=black!4, colframe=black!45, boxrule=0.6pt, arc=1pt,
-  left=6pt, right=6pt, top=3pt, bottom=3pt,
+  enhanced, breakable, colback=white, colframe=black!55,
+  boxrule=0pt, leftrule=1.2pt, arc=0pt, outer arc=0pt,
+  left=8pt, right=2pt, top=3pt, bottom=3pt,
   fontupper=\small}
 
-% --- notation -------------------------------------------------------------
+% ==========================================================================
+% RESERVED NOTATION.  Every symbol below has exactly one meaning in this
+% paper and is never rebound, not even inside a proof.  Symbols outside this
+% list ($x$, $y$, $u$, $A$, $B$, $H$, $Q$, ...) are proof-local bound
+% variables, free to be reused across disjoint scopes; none of them shadows
+% a reserved symbol.  Section 1 states the same table for the reader.
+% ==========================================================================
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\FF}{\mathbb{F}}
@@ -43,6 +63,20 @@
 \newcommand{\Gtz}{\mathrm{GTZ}}
 \newcommand{\GtzC}{\mathrm{GTZ}_{\C}}
 \newcommand{\Gram}{\operatorname{Gram}}
+% transpose, set upright so that it cannot be read as the variable $T$
+\newcommand{\tp}{^{\mathsf{T}}}
+% a design (calligraphic, as for every other structure in the paper)
+\newcommand{\dsn}{\mathcal{D}}
+% the frame operator of the dual family (Section 3)
+\newcommand{\Sdual}{S^{\perp}}
+% the tangent space to the design manifold (Section 8)
+\newcommand{\tang}{\mathcal{T}}
+% the critical value of the selection objective (Section 8)
+\newcommand{\cv}{\nu}
+% the Caratheodory window bound k(k+1)/2 + 1 (Section 5)
+\newcommand{\win}{N}
+% the graph carrying a graphic design (Section 6, Appendix B)
+\newcommand{\gph}{\mathcal{G}}
 
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
@@ -81,11 +115,12 @@ minimizer has strictly positive weights.  The real problem at rank three
 is thereby reduced to the two cells $(6,3)$ and $(7,3)$ and, at each, to
 the exclusion of interior critical points below the threshold.  We show
 further that the threshold is attained at every size, so that no argument
-for the conjecture can carry a uniform margin.  Results marked $\dagger$
-are verified in the Lean~4 proof assistant.
+for the conjecture can carry a uniform margin.  Statements whose head
+carries the tag \emph{Lean} are verified in the Lean~4 proof assistant.
 \end{abstract}
 
 \maketitle
+\thispagestyle{plain}
 \tableofcontents
 
 \input{sections/01-intro}

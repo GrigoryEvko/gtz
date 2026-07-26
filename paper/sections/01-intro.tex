@@ -201,33 +201,62 @@ sharp constant over $\C$ at rank three is bracketed but not determined
 (Remark~\ref{rem:sharpc}).  The problems left open, and the shape a
 solution must have, are collected in \S\ref{sec:open}.
 
-\subsection*{Markers}
+\subsection*{Tags}
 
-A theorem number carrying $\dagger$ is machine-verified;
-\S\ref{sec:formalization} gives the correspondence.  A number carrying
-$\ast$ rests on a conjecture, stated at that point and not proved here; a
-hypothesis discharged inside the paper is carried in the statement and
-does not trigger the marker.  Unmarked statements are proved in the
-ordinary way.  Every numerical assertion below is exact rational or exact
-algebraic arithmetic.
+A statement whose head carries the tag \emph{Lean} is machine-verified;
+\S\ref{sec:formalization} gives the correspondence.  One carrying
+\emph{conditional} rests on a conjecture, stated at that point and not
+proved here; a hypothesis discharged inside the paper is carried in the
+statement and does not earn the tag.  Untagged statements are proved in
+the ordinary way.  Every numerical assertion below is exact rational or
+exact algebraic arithmetic.
 
 \subsection*{Notation}
 
 For $x,y\in\FF^k$ we write $\langle x,y\rangle:=x^{*}y$, conjugate-linear
 in the first argument and linear in the second, and
-$\lVert x\rVert^2=\langle x,x\rangle$.  Throughout,
-\[
-  \ell_c:=\lVert g_c\rVert^2,\qquad s_c:=t_c\ell_c ;
-\]
-$\ell_c$ is the squared length of the $c$-th vector and $s_c$ its
-\emph{leverage score}.  For a Hermitian matrix $A$ we write $A\psd0$ for
-positive semidefiniteness and $A\pd0$ for positive definiteness, $A[C]$
-for the principal submatrix on the index set $C$, $\lmin$ and $\lmax$ for
-the extreme eigenvalues, and $\operatorname{spec}A$ for the spectrum.  A
-\emph{$k$-subset} always means a subset of $\{1,\dots,m\}$ of cardinality
-$k$.  The \emph{corank} of a cell $(m,k)$ is $m-k$.  A pair $(m,k)$ with
-$m<k$ carries no design (Lemma~\ref{lem:span}), so every statement below
-that quantifies over such a pair is empty.
+$\lVert x\rVert^2=\langle x,x\rangle$.  A Hermitian $A$ satisfies $A\psd0$
+when it is positive semidefinite and $A\pd0$ when positive definite;
+$A[C]$ is the principal submatrix on the index set $C$, and
+$\operatorname{spec}A$ the spectrum.  A \emph{$k$-subset} always means a
+subset of $\{1,\dots,m\}$ of cardinality $k$.  The \emph{corank} of a cell
+$(m,k)$ is $m-k$.  A pair $(m,k)$ with $m<k$ carries no design
+(Lemma~\ref{lem:span}), so every statement quantifying over such a pair is
+empty.
+
+Each symbol in the following table has one meaning throughout, and is
+never rebound, not even inside a proof.  Symbols outside the table ---
+$x$, $y$, $u$, $A$, $B$, $H$, $Q$, and the like --- are proof-local bound
+variables; they are reused across disjoint proofs and none of them shadows
+a symbol of the table.
+
+\medskip
+\noindent
+\begin{tabular}{@{}ll@{\qquad}ll@{}}
+\toprule
+$m,k$ & size and rank & $P$ & the chart projection $VV^{*}$\\
+$c,d$ & indices of atoms & $D$ & the diagonal $\diag(t)$\\
+$C$ & a $k$-subset & $W$ & the gap $P-D$\\
+$\dsn$ & a design & $\Gram_C$ & the Gram matrix of $C$\\
+$g_c$ & the $c$-th atom & $M_C$ & the matrix of rows $g_c^{*}$, $c\in C$\\
+$t_c$ & its weight & $\SC$ & the subset sum $\sum_{c\in C}g_cg_c^{*}$\\
+$\ell_c$ & its leverage $\lVert g_c\rVert^2$ & $F,G$ & the design and chart objectives\\
+$s_c$ & its leverage score $t_c\ell_c$ & $\cv$ & the critical value of $F$\\
+$v_c$ & the chart atom $\sqrt{t_c}\,g_c$ & $\Lambda$ & the stationarity multiplier\\
+$V$ & the isometry of rows $v_c^{*}$ & $\lambda_i$ & its scalar multipliers\\
+$\Sdual$ & the dual frame operator & $\pi_C$ & volume sampling, $\det P[C]$\\
+$\win(k)$ & the window $k(k+1)/2+1$ & $\alpha$ & the extremal constants\\
+$\tang$ & the tangent space & $\gph$ & a graph\\
+\bottomrule
+\end{tabular}
+
+\medskip
+\noindent
+The superscript $\mathsf{T}$ is transpose and $^{*}$ is the adjoint, upright
+and starred respectively so that neither can be read as a variable; over
+$\R$ they agree, and the paper writes $\mathsf{T}$ in the sections that are
+real throughout and $^{*}$ where the field is $\FF$.  The star has no other
+use.
 
 \begin{figure}[ht]
   \centering

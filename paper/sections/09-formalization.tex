@@ -1,9 +1,9 @@
 \section{Formalization}\label{sec:formalization}
 
-The development is carried out in Lean~4 over Mathlib.  A theorem number
-marked $\dagger$ is verified there.  Table~\ref{tab:lean} names the declaration
+The development is carried out in Lean~4 over Mathlib.  A statement whose head
+carries the tag \emph{Lean} is verified there.  Table~\ref{tab:lean} names the declaration
 for the statements it lists, and where a listed statement is assembled from
-several formal statements, all of them are named; a marked statement absent
+several formal statements, all of them are named; a tagged statement absent
 from the table is an elementary step of the same development, verified but not
 tabulated separately.  The formal statements are the originals and the
 statements in the text are their transcriptions.  This section says what was
@@ -42,7 +42,8 @@ system of \S\ref{sec:interior} is a structure bundling
 the results of that section are implications from it.
 
 \begin{table}[htbp]
-\small
+\footnotesize
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}ll@{}}
 \toprule
 Statement & Declaration \\

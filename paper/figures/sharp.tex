@@ -15,7 +15,7 @@
                     /pgf/number format/precision=2},
   yticklabel style={font=\scriptsize, /pgf/number format/fixed,
                     /pgf/number format/precision=2},
-  xlabel={$t_z$}, ylabel={$d$},
+  xlabel={$t_z$}, ylabel={$\varepsilon$},
   xlabel style={font=\small}, ylabel style={font=\small, rotate=-90},
   samples=200, domain=0:0.3,
   clip=true]
@@ -51,9 +51,9 @@
 \node[font=\scriptsize, anchor=west, fill=white, inner sep=1pt]
   at (axis cs:0.185,0.152) {zero level};
 \node[font=\scriptsize, rotate=25, fill=white, inner sep=1pt]
-  at (axis cs:0.262,0.176) {$d=\tfrac23 t_z$};
+  at (axis cs:0.262,0.176) {$\varepsilon=\tfrac23 t_z$};
 \node[font=\scriptsize, anchor=south west, fill=white, inner sep=1pt]
-  at (axis cs:0.040,0.003) {$d=0$: the value is $-t_z(2+3t_z)/9<0$};
+  at (axis cs:0.040,0.003) {$\varepsilon=0$: the value is $-t_z(2+3t_z)/9<0$};
 \end{axis}
 
 % ---- the reading of the picture, below the frame ---------------------
@@ -61,8 +61,8 @@
   at ($(sharpaxis.south)+(0,-0.95cm)$)
   {On the chart of Example~\ref{ex:liftfailure} identity
    \eqref{eq:family} reads
-   $\det W[\{c,z\}]=\bigl(3d-2t_z-3t_z^{2}\bigr)/9$,\\
-   with zero level $d=\tfrac23t_z+t_z^{2}$.
+   $\det W[\{c,z\}]=\bigl(3\varepsilon-2t_z-3t_z^{2}\bigr)/9$,\\
+   with zero level $\varepsilon=\tfrac23t_z+t_z^{2}$.
    Dotted: the levels $-\tfrac1{50},-\tfrac1{75},-\tfrac1{150}$.
    Dashed: their positives.};
 \end{tikzpicture}

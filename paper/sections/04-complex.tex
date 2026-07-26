@@ -16,7 +16,7 @@ quantity that must be controlled.  That quantity is fixed in
 
 Once the Boolean question has answer \emph{no}, the object of study is a
 number, and that number is what the operations of \S\ref{sec:cpadding}
-propagate.  Fix a design $D$ at $(m,k)$ over $\FF$.  For every $k$-subset
+propagate.  Fix a design $\dsn$ at $(m,k)$ over $\FF$.  For every $k$-subset
 $C$ and every $x\in\FF^k$,
 \begin{equation}\label{eq:cover}
   x^{*}\SC x\;=\;\sum_{c\in C}\lvert\langle g_c,x\rangle\rvert^{2},
@@ -29,16 +29,16 @@ $C$ and every $x\in\FF^k$,
 Both readings are used below: the left one to recognize a design, the
 right one to transport a bound along a map of index sets.  Put
 \begin{equation}\label{eq:value}
-  \operatorname{val}(D)\;:=\;\max_{\lvert C\rvert=k}\lmin(\SC),
+  \operatorname{val}(\dsn)\;:=\;\max_{\lvert C\rvert=k}\lmin(\SC),
 \end{equation}
 a maximum over a finite set.  Since $\SC\psd sI_k$ is equivalent to
-$\lmin(\SC)\ge s$, the design $D$ admits a dominating $k$-subset if and
-only if $\operatorname{val}(D)\ge1$.
-We say $D$ \emph{has value at most} $b$ when $\SC-sI_k$ fails to be
+$\lmin(\SC)\ge s$, the design $\dsn$ admits a dominating $k$-subset if and
+only if $\operatorname{val}(\dsn)\ge1$.
+We say $\dsn$ \emph{has value at most} $b$ when $\SC-sI_k$ fails to be
 positive semidefinite for every $k$-subset $C$ and every $s>b$; this is
-$\operatorname{val}(D)\le b$.  Finally set
+$\operatorname{val}(\dsn)\le b$.  Finally set
 \[
-  \alpha_k(\FF)\;:=\;\inf_{m}\ \inf_{D}\ \operatorname{val}(D),
+  \alpha_k(\FF)\;:=\;\inf_{m}\ \inf_{\dsn}\ \operatorname{val}(\dsn),
 \]
 the infimum over all sizes and all designs of size $m$ and rank $k$ over
 $\FF$.  Thus $\Gtz(m,k)$ holds for every $m$ precisely when
@@ -50,7 +50,7 @@ $\alpha_k(\R)=1$ for every $k$.
 One bound holds at every rank, over either field, and bounds the damage
 the complex counterexamples can do.
 
-\begin{proposition}[\LV]\label{prop:rankfloor}
+\begin{proposition}[Lean]\label{prop:rankfloor}
 Every weighted design of size $m$ and rank $k$ over $\FF$ admits a
 $k$-subset $C$ with $\SC\psd\frac1k I_k$.  Hence $\alpha_k(\FF)\ge1/k$.
 \end{proposition}
@@ -93,7 +93,7 @@ which is \eqref{eq:cover} at $s=1/k$.
 
 \subsection{The positive half}\label{sec:cpositive}
 
-\begin{proposition}[\LV]\label{prop:cpositive}
+\begin{proposition}[Lean]\label{prop:cpositive}
 Let $k\ge1$ and $m\le k+1$.  Then $\GtzC(m,k)$ holds, as does
 $\Gtz(m,k)$.
 \end{proposition}
@@ -122,7 +122,7 @@ confused.  At $m=k$ the value is bounded away from $1$ at every design and
 approaches $1$ only in a degenerate limit.
 
 \begin{proposition}\label{prop:square}
-Let $D$ be a design at $(k,k)$ over $\FF$.  Then $\ell_c=1/t_c$ for every
+Let $\dsn$ be a design at $(k,k)$ over $\FF$.  Then $\ell_c=1/t_c$ for every
 $c$, the unique $k$-subset satisfies
 \[
   \lmin\bigl(S_{\{1,\dots,k\}}\bigr)\;=\;\frac{1}{\max_c t_c},
@@ -154,7 +154,7 @@ Everything negative over $\C$ descends from one design.  Let
 $\omega:=e^{2\pi i/3}$, so that $1+\omega+\omega^{2}=0$ and
 $\omega+\bar\omega=-1$.
 
-\begin{example}[\LV]\label{ex:sic}
+\begin{example}[Lean]\label{ex:sic}
 Put
 \begin{equation}\label{eq:sic}
   g_0:=\bigl(\sqrt2,\,0\bigr),
@@ -187,7 +187,7 @@ $1\le a<b\le3$ it is
 using $\omega^{r}+\overline{\omega^{r}}=-1$.
 \end{example}
 
-\begin{lemma}[\LV]\label{lem:sicvalue}
+\begin{lemma}[Lean]\label{lem:sicvalue}
 The design \eqref{eq:sic} has value exactly
 \[
   \alpha_{\mathrm{SIC}}\;:=\;2-\frac{2}{\sqrt3}\;=\;0.8452994616\ldots,
@@ -239,9 +239,9 @@ atom twice, raising the size alone.  Each preserves \eqref{eq:parseval}
 by a one-line computation, and each preserves a value bound; the
 inequality preserved is displayed in the statement.
 
-\begin{lemma}[\LV]\label{lem:spike}
-Let $D$ be a complex weighted design at $(m,k)$ and let $0<w<1$.  Define
-$\widehat D$ at $(m+1,k+1)$ by
+\begin{lemma}[Lean]\label{lem:spike}
+Let $\dsn$ be a complex weighted design at $(m,k)$ and let $0<w<1$.  Define
+$\widehat{\dsn}$ at $(m+1,k+1)$ by
 \begin{equation}\label{eq:spike}
   \widehat g_c:=\Bigl(\frac{g_c}{\sqrt{1-w}},\,0\Bigr)\ \ (c\le m),
   \qquad
@@ -249,8 +249,8 @@ $\widehat D$ at $(m+1,k+1)$ by
   \qquad
   \widehat t_c:=(1-w)t_c,\quad \widehat t_{m+1}:=w .
 \end{equation}
-Then $\widehat D$ is a design, and if $D$ has value at most $b\ge0$ then
-$\widehat D$ has value at most $b/(1-w)$.
+Then $\widehat{\dsn}$ is a design, and if $\dsn$ has value at most $b\ge0$ then
+$\widehat{\dsn}$ has value at most $b/(1-w)$.
 \end{lemma}
 
 \begin{proof}
@@ -288,7 +288,7 @@ applied to $\widehat x$,
   \qquad\text{for every }x\in\C^{k},
 \]
 that is $S_{C'}\psd (1-w)s\,I_k$ in the original design.  But
-$(1-w)s>b$, contradicting the hypothesis on $D$.
+$(1-w)s>b$, contradicting the hypothesis on $\dsn$.
 \end{proof}
 
 The spike is invisible in the flat directions and is the only atom
@@ -297,9 +297,9 @@ factor $1/(1-w)$ is the price, and it is a genuine loss: for $b>0$ one has
 $b<b/(1-w)$ for every admissible $w$, so no member of the family attains
 the level $b$, though the levels descend to it as $w\to0$.
 
-\begin{lemma}[\LV]\label{lem:split}
-Let $D$ be a complex weighted design at $(m,k)$, let $c_0\le m$ and let
-$0<f<1$.  Define $\widetilde D$ at $(m+1,k)$ by listing the vector
+\begin{lemma}[Lean]\label{lem:split}
+Let $\dsn$ be a complex weighted design at $(m,k)$, let $c_0\le m$ and let
+$0<f<1$.  Define $\widetilde{\dsn}$ at $(m+1,k)$ by listing the vector
 $g_{c_0}$ twice,
 \begin{equation}\label{eq:split}
   \widetilde g_c:=g_c\ (c\le m),
@@ -309,8 +309,8 @@ $g_{c_0}$ twice,
   \quad \widetilde t_{m+1}:=(1-f)t_{c_0},
   \quad \widetilde t_c:=t_c\ \text{otherwise.}
 \end{equation}
-Then $\widetilde D$ is a design, and if $D$ has value at most $b\ge0$ then
-so does $\widetilde D$.
+Then $\widetilde{\dsn}$ is a design, and if $\dsn$ has value at most $b\ge0$ then
+so does $\widetilde{\dsn}$.
 \end{lemma}
 
 \begin{proof}
@@ -324,7 +324,7 @@ Let $C$ be a $k$-subset of $\{1,\dots,m+1\}$ and $s>b\ge0$.  If $C$ fails
 to contain both labels $c_0$ and $m+1$, then replacing $m+1$ by $c_0$ where
 necessary carries $C$ to a $k$-subset $C'$ of $\{1,\dots,m\}$ with the
 same family of vectors, so $S_C=S_{C'}$ and $S_C-sI_k$ is not positive
-semidefinite by the hypothesis on $D$.  If $C$ contains both labels, its
+semidefinite by the hypothesis on $\dsn$.  If $C$ contains both labels, its
 $k$ vectors include two equal ones, hence span a subspace of dimension at
 most $k-1$; choosing $x\ne0$ orthogonal to that subspace gives
 $x^{*}S_Cx=0$ by \eqref{eq:cover}, while
@@ -333,7 +333,7 @@ $x^{*}(sI_k)x=s\lVert x\rVert^{2}>0$.
 
 \subsection{The ladder}\label{sec:cladder}
 
-\begin{theorem}[\LV]\label{thm:ladder}
+\begin{theorem}[Lean]\label{thm:ladder}
 Let $k\ge2$ and $m\ge k+2$.  There is a complex weighted design of size
 $m$ and rank $k$ whose value is at most
 \[
@@ -372,7 +372,7 @@ Proposition~\ref{prop:cpositive} covers $m\le4$.  The bound is not the
 best available at larger sizes: \S\ref{sec:csharp} exhibits designs of
 rank three with value $0.7639\ldots$ and $0.7018\ldots$.
 
-\begin{theorem}[\LV]\label{thm:complex}
+\begin{theorem}[Lean]\label{thm:complex}
 Let $k\ge2$.  Then
 \[
   \GtzC(m,k)\quad\Longleftrightarrow\quad m\le k+1 .
@@ -405,7 +405,7 @@ bound by Lemma~\ref{lem:sicvalue} and the lower by
 \cite{Nesterenko2026complex}.  At rank three the two ends are far apart,
 and the upper one is not the padded seed.  Two designs improve it.
 
-\begin{example}[\LV]\label{ex:trine}
+\begin{example}[Lean]\label{ex:trine}
 Two coplanar trines of lines in $\C^{3}$ sharing an axis: for $j=0,1,2$,
 \[
   g_j:=\bigl(\sqrt2,\,0,\,\omega^{\,j}\bigr),
@@ -433,12 +433,12 @@ $\Gram_C-sI_3$ gives, with $d:=3-s$ when all three leverages equal $3$,
   \;=\;d^{3}
       -d\bigl(\lvert\beta_{ab}\rvert^{2}+\lvert\beta_{bc}\rvert^{2}
               +\lvert\beta_{ca}\rvert^{2}\bigr)
-      +2\operatorname{Re}T,
+      +2\operatorname{Re}\beta_{abc},
   \qquad
-  T:=\beta_{ab}\beta_{bc}\beta_{ca}.
+  \beta_{abc}:=\beta_{ab}\beta_{bc}\beta_{ca}.
 \end{equation}
 The three moduli form a phase-free budget; the entire dependence on the
-phases is the single real number $\operatorname{Re}T$, entering affinely.
+phases is the single real number $\operatorname{Re}\beta_{abc}$, entering affinely.
 
 For the trine, the two coplanar triples $\{g_0,g_1,g_2\}$ and
 $\{g_3,g_4,g_5\}$ have atom sums $\diag(6,0,3)$ and $\diag(0,6,3)$, of
@@ -453,8 +453,8 @@ side and one from the other, say $g_i,g_j,g_{3+l}$ with $i\ne j$; then
 \]
 so the budget is $\lvert2+\omega^{\,j-i}\rvert^{2}+1+1=3+2=5$ and
 \[
-  T=(2+\omega^{\,j-i})\,\omega^{\,i-j}=2\omega^{\,i-j}+1,
-  \qquad \operatorname{Re}T=1+2\cdot(-\tfrac12)=0 .
+  \beta_{abc}=(2+\omega^{\,j-i})\,\omega^{\,i-j}=2\omega^{\,i-j}+1,
+  \qquad \operatorname{Re}\beta_{abc}=1+2\cdot(-\tfrac12)=0 .
 \]
 By \eqref{eq:tripledet}, $\det(\SC-sI_3)=d^{3}-5d=d(d^{2}-5)$, so the
 spectrum of $\SC$ is $\{3,\,3-\sqrt5,\,3+\sqrt5\}$ and
@@ -463,7 +463,7 @@ The value of the design is the maximum over the twenty triples, namely
 $3-\sqrt5$.  In particular $\GtzC(6,3)$ fails, at a level well below the
 one Theorem~\ref{thm:ladder} provides.
 
-\begin{example}[\LV]\label{ex:hesse}
+\begin{example}[Lean]\label{ex:hesse}
 The Hesse configuration.  Index nine directions of $\C^{3}$ by a slot
 $p\in\{0,1,2\}$ and a phase $q\in\{0,1,2\}$: the direction $u_{3p+q}$
 carries $0$ in slot $p$, $\omega^{q}$ in slot $p+1$ and $-\omega^{2q}$ in
@@ -510,26 +510,26 @@ Since $\lvert\beta_{ab}\rvert^{2}$ is a nonnegative real whose cube is
 $\lvert\beta_{ab}^{3}\rvert^{2}=(27/8)^{2}$, it equals $9/4$; the
 configuration is equiangular, and the budget in \eqref{eq:tripledet} is
 $3\cdot\tfrac94=\tfrac{27}4$ for every triple.  The triangle invariant
-satisfies $T^{3}=(\beta_{ab}\beta_{bc}\beta_{ca})^{3}=-(27/8)^{3}$, so $T$
+satisfies $\beta_{abc}^{3}=(\beta_{ab}\beta_{bc}\beta_{ca})^{3}=-(27/8)^{3}$, so $\beta_{abc}$
 is one of the three cube roots of $-(27/8)^3$, namely $-\tfrac{27}8$ and
 $\tfrac{27}{16}(1\pm i\sqrt3)$.  Hence
 \begin{equation}\label{eq:hessedet}
-  \det(\SC-sI_3)\;=\;(3-s)^{3}-\tfrac{27}4(3-s)+2\operatorname{Re}T,
+  \det(\SC-sI_3)\;=\;(3-s)^{3}-\tfrac{27}4(3-s)+2\operatorname{Re}\beta_{abc},
   \qquad \operatorname{Re}T\in\Bigl\{-\tfrac{27}8,\ \tfrac{27}{16}\Bigr\},
 \end{equation}
-the first alternative occurring exactly when $\det\SC=\tfrac{27}4+2\operatorname{Re}T$
+the first alternative occurring exactly when $\det\SC=\tfrac{27}4+2\operatorname{Re}\beta_{abc}$
 vanishes, i.e.\ for the twelve triples lying on a line of the Hesse
 configuration, and the second for the remaining seventy-two.  With
-$\operatorname{Re}T=\tfrac{27}{16}$ the right-hand side of
+$\operatorname{Re}\beta_{abc}=\tfrac{27}{16}$ the right-hand side of
 \eqref{eq:hessedet} expands to
 \begin{equation}\label{eq:hessecubic}
   \det(\SC-sI_3)\;=\;-\tfrac18\,h(s),
   \qquad
   h(s):=8s^{3}-72s^{2}+162s-81 ,
 \end{equation}
-and with $\operatorname{Re}T=-\tfrac{27}8$ it is $-s(s-\tfrac92)^{2}$.
+and with $\operatorname{Re}\beta_{abc}=-\tfrac{27}8$ it is $-s(s-\tfrac92)^{2}$.
 
-\begin{proposition}[\LV]\label{prop:hesse}
+\begin{proposition}[Lean]\label{prop:hesse}
 The roots of $h$ are $3(1-\cos\tfrac{2\pi}9)$,
 $3(1-\cos\tfrac{4\pi}9)$ and $3(1-\cos\tfrac{8\pi}9)$.  The design of
 Example~\ref{ex:hesse} has value exactly
@@ -621,16 +621,16 @@ $3-\sqrt5$ lies in the same interval, hence above $h_3$.
 
 \begin{remark}\label{rem:phase}
 Identity \eqref{eq:tripledet} isolates what distinguishes the two fields.
-Over $\R$ the entries $\beta_{ij}$ are real, so $T$ is real and
-$\operatorname{Re}T=\pm\lvert T\rvert$ is forced to an extreme of its
+Over $\R$ the entries $\beta_{ij}$ are real, so $\beta_{abc}$ is real and
+$\operatorname{Re}\beta_{abc}=\pm\lvert T\rvert$ is forced to an extreme of its
 range; over $\C$ it may sit anywhere in $[-\lvert T\rvert,\lvert
 T\rvert]$, and the separating quantity is the phase defect
-$\lvert T\rvert^{2}-(\operatorname{Re}T)^{2}=(\operatorname{Im}T)^{2}$,
+$\lvert T\rvert^{2}-(\operatorname{Re}\beta_{abc})^{2}=(\operatorname{Im}\beta_{abc})^{2}$,
 which vanishes identically for every real configuration.  The trine of
 Example~\ref{ex:trine} illustrates the mechanism in its purest form: its
-modulus budget $5$ would permit $2\operatorname{Re}T=2\sqrt3$ and hence a
+modulus budget $5$ would permit $2\operatorname{Re}\beta_{abc}=2\sqrt3$ and hence a
 positive determinant at $s=1$, but its phase defect is $3$ and its
-$\operatorname{Re}T$ is exactly $0$, leaving $\det(\SC-I_3)=-2$.  No
+$\operatorname{Re}\beta_{abc}$ is exactly $0$, leaving $\det(\SC-I_3)=-2$.  No
 argument that sees only the moduli $\lvert\beta_{ij}\rvert$ can decide
 either problem; the corresponding no-go statement is recorded in
 Appendix~\ref{app:graveyard}.
