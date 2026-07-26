@@ -53,14 +53,35 @@ are legal `k`-subsets and that the covering atom is genuinely outside the pick.
   The closed-form constant proved reachable by the derivation is the smaller
   `(7 - sqrt 34)/3 ≈ 0.3896827`; the gap is looseness of the analytic chain, not
   of the method.
-* The maximal-volume subset ALONE is capped at exactly `1/k`: the family with
-  solve data `e_1, e_2, e_3` at weight `eps/3` and `(1-delta)(1,1,1)` at weight
-  `1 - eps` has a STRICTLY maximal-volume triple whose least eigenvalue tends to
-  `1/3` while the design's value tends to `1`.  So no sharpening of a
-  single-subset maximal-volume argument can ever exceed `1/k`, and the ledger's
-  `1/3` is the exact ceiling of that method rather than a weak write-up.  This is
-  why the file below adds the exchange, and it is why `solveTraceWeight` alone
-  gives only a conditional improvement.
+* The maximal-volume subset ALONE is capped at exactly `1/k`, and the witness is
+  EXACT, not floating point.  Take the `(4,3)` design
+    `g_0 = (487/36, -233/36, -233/36)`, `g_1, g_2` its cyclic shifts, at weight
+    `1/400` each, and `g_3 = c·(1,1,1)` at weight `397/400`, `c² = 57551/171504`.
+  Parseval is an exact rational identity (checked to 60 digits: residual 1.6e-61).
+  Its selected triple `{g_0,g_1,g_2}` satisfies `g_0 + g_1 + g_2 = (7/12)·ones`,
+  so the outside atom is `(12c/7)` times that sum — a coefficient of modulus
+  `sqrt(57551/58359) < 1`, i.e. exactly the maximal-volume input — and applying
+  the triple's atom sum to `ones` returns `(7/12)² · ones = (49/144)·ones`.  So
+  that triple's least eigenvalue is at most `49/144 = 0.34027...`, while the four
+  row volumes are `700/3` against `400c = 231.712...`, making it the STRICT
+  maximal-volume pick.  Hence no argument using only the entrywise solve bound
+  can certify a rank-three level above `49/144`, which is below `(7-sqrt 34)/3`.
+  This member sits in the general family `g_j = s e_j + q·ones` (weight `w`),
+  `g_4 = c·ones` (weight `1-3w`), `s² = 1/w`, `q = (v-s)/3`,
+  `c² = (1 - w v²)/(3(1-3w))`, whose selected triple has least eigenvalue exactly
+  `v²` and is strictly maximal-volume iff `v² > 1/(3-8w)`; as `w → 0` that floor
+  tends to `1/3`.  Mechanizing this witness is a clean next step — the arithmetic
+  is rational throughout, only the single amplitude `c` is a square root — and it
+  was written and typechecked up to `simp`-normal-form friction on the
+  conjugation of real-cast numerals, then withdrawn rather than shipped broken.
+
+* Where the exchange derivation loses.  The trace criterion of step 5 is very
+  nearly free: at `alpha = 0.4213` the supremum of `tr(Y⁻¹)` over the whole
+  relaxed feasible set is `2.893 < 3`, so steps 1-5 alone already reach the
+  measured exchange floor.  Essentially the entire gap `0.3897 -> 0.4213` is the
+  Loewner relaxation of step 6, which spends `lambda_2 + lambda_3 ≤ sigma` as
+  `lambda_2, lambda_3 ≤ sigma` separately.  Keeping the two residual eigenvalues
+  apart is where a sharper constant lives.
 
 ## The exchange derivation, in full, for the mechanizer
 
