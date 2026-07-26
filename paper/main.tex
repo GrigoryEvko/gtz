@@ -1,0 +1,109 @@
+% ==========================================================================
+% The weighted Goreinov--Tyrtyshnikov--Zamarashkin selection problem
+% Build: make          (latexmk -> build/main.pdf)
+% ==========================================================================
+\documentclass[11pt]{amsart}
+
+\usepackage[margin=1.15in]{geometry}
+\usepackage{amsmath,amssymb,mathtools,booktabs,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,patterns}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage[most]{tcolorbox}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
+
+% --- status markers -------------------------------------------------------
+% [\LV] after a theorem number: the statement is verified in Lean 4; Table 1
+% gives the declaration.  [\CD]: the statement is conditional on a hypothesis
+% not established in this paper.  No marker: proved here.
+\newcommand{\LV}{\ensuremath{\dagger}}
+\newcommand{\CD}{\ensuremath{\ast}}
+
+% --- draft layer (remove before submission) -------------------------------
+\newtcolorbox{wip}{%
+  colback=black!4, colframe=black!45, boxrule=0.6pt, arc=1pt,
+  left=6pt, right=6pt, top=3pt, bottom=3pt,
+  fontupper=\small}
+
+% --- notation -------------------------------------------------------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\lmin}{\lambda_{\min}}
+\newcommand{\lmax}{\lambda_{\max}}
+\newcommand{\psd}{\succeq}
+\newcommand{\pd}{\succ}
+\newcommand{\SC}{S_{C}}
+\newcommand{\Gtz}{\mathrm{GTZ}}
+\newcommand{\GtzC}{\mathrm{GTZ}_{\C}}
+\newcommand{\Gram}{\operatorname{Gram}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\begin{document}
+
+\title[The weighted GTZ selection problem]{The weighted
+Goreinov--Tyrtyshnikov--Zamarashkin selection problem}
+
+\author{Grigory Evko}
+\email{evko.grigory@gmail.com}
+
+\begin{abstract}
+A weighted design of size $m$ and rank $k$ over $\FF\in\{\R,\C\}$ consists
+of vectors $g_1,\dots,g_m\in\FF^{k}$ and positive weights $t_c$ summing to
+one with $\sum_c t_c\,g_c^{\vphantom{*}} g_c^{*}=I_k$.  The selection
+problem asks whether $k$ of the vectors dominate the identity outright,
+$\sum_{c\in C} g_c^{\vphantom{*}} g_c^{*}\psd I_k$.  We solve the problem
+over $\C$: for $k\ge2$ such a subset exists in every design precisely when
+$m\le k+1$, and at $m=k+1$ the bound $1$ is attained at every weight
+vector.  Over $\R$ we settle rank at most two and corank at most two,
+reduce each rank to finitely many cells, and prove a variational
+principle: granting the statement at the two cells one size below, if
+selection fails at a cell then it fails at a global minimizer of the
+selection objective over a compactification of the design space, and that
+minimizer has strictly positive weights.  The real problem at rank three
+is thereby reduced to the two cells $(6,3)$ and $(7,3)$ and, at each, to
+the exclusion of interior critical points below the threshold.  We show
+further that the threshold is attained at every size, so that no argument
+for the conjecture can carry a uniform margin.  Results marked $\dagger$
+are verified in the Lean~4 proof assistant.
+\end{abstract}
+
+\maketitle
+\tableofcontents
+
+\input{sections/01-intro}
+\input{sections/02-first}
+\input{sections/03-chart}
+\input{sections/04-complex}
+\input{sections/05-real}
+\input{sections/06-ties}
+\input{sections/07-compactness}
+\input{sections/08-interior}
+\input{sections/09-formalization}
+\input{sections/10-open}
+
+\appendix
+\input{sections/appendix-a}
+\input{sections/appendix-b}
+
+\bibliographystyle{amsplain}
+\bibliography{refs}
+
+\end{document}

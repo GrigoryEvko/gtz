@@ -1,0 +1,62 @@
+% The regular tetrahedron design at (4,3), and the spectrum of one of its
+% triples.  Orthographic projection of R^3 with azimuth 15 and elevation 70
+% degrees, scaled by 1.35cm:
+%   X = 1.35(-0.2588 x_1 + 0.9659 x_2)
+%   Y = 1.35(-0.9077 x_1 - 0.2432 x_2 + 0.3420 x_3)
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  vec/.style={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt},
+  cube/.style={densely dotted, line width=0.3pt, black!35},
+  edge/.style={line width=0.45pt, black!65},
+  hidden/.style={line width=0.45pt, black!45, dashed, dash pattern=on 1.4pt off 1.2pt},
+  every node/.style={font=\small}]
+
+% ---- the eight vertices of [-1,1]^3 -------------------------------------
+\coordinate (ppp) at ( 0.9546,-1.0920);   % g_0 = ( 1, 1, 1)
+\coordinate (ppm) at ( 0.9546,-2.0154);   %       ( 1, 1,-1)
+\coordinate (pmp) at (-1.6534,-0.4354);   %       ( 1,-1, 1)
+\coordinate (pmm) at (-1.6534,-1.3588);   % g_1 = ( 1,-1,-1)
+\coordinate (mpp) at ( 1.6534, 1.3588);   %       (-1, 1, 1)
+\coordinate (mpm) at ( 1.6534, 0.4354);   % g_2 = (-1, 1,-1)
+\coordinate (mmp) at (-0.9546, 2.0154);   % g_3 = (-1,-1, 1)
+\coordinate (mmm) at (-0.9546, 1.0920);   %       (-1,-1,-1)
+\coordinate (O)   at ( 0,0);
+
+% ---- the cube, as a frame of reference ----------------------------------
+\draw[cube] (ppp)--(ppm) (ppp)--(pmp) (ppp)--(mpp)
+            (ppm)--(pmm) (ppm)--(mpm) (pmp)--(pmm) (pmp)--(mmp)
+            (mpp)--(mpm) (mpp)--(mmp) (pmm)--(mmm) (mpm)--(mmm) (mmp)--(mmm);
+
+% ---- the tetrahedron on the four even-sign vertices ----------------------
+\draw[hidden] (pmm)--(mpm);
+\draw[edge]   (ppp)--(pmm) (ppp)--(mpm) (mpm)--(mmp) (mmp)--(pmm) (ppp)--(mmp);
+
+% ---- the four vectors of the design -------------------------------------
+\draw[vec] (O)--(ppp) node[below right=-1pt] {$g_0$};
+\draw[vec] (O)--(pmm) node[below left=-1pt]  {$g_1$};
+\draw[vec] (O)--(mpm) node[right=1pt]        {$g_2$};
+\draw[vec] (O)--(mmp) node[above left=-1pt]  {$g_3$};
+\fill (O) circle (1.1pt);
+
+% ---- the spectrum of a triple -------------------------------------------
+% the eigenvalue lambda is drawn at height  -1.6 + 0.64 lambda
+\begin{scope}[shift={(4.55,0)}]
+  \draw[line width=0.5pt] (0,-1.66)--(0,1.72);
+  \foreach \l/\lab in {0/0,1/1,2/2,3/3,4/4,5/5}{
+    \pgfmathsetmacro{\hh}{-1.6+0.64*\l}
+    \draw[line width=0.5pt] (-0.07,\hh)--(0.07,\hh);
+    \node[anchor=east, font=\footnotesize] at (-0.11,\hh) {\lab};
+  }
+  % the threshold: the eigenvalue of I_3
+  \draw[dashed, dash pattern=on 1.7pt off 1.5pt, line width=0.5pt]
+        (0.06,-0.96)--(1.05,-0.96);
+  \node[anchor=west, font=\footnotesize] at (1.08,-0.96) {$\lmin(\SC)=1$};
+  % the three eigenvalues 1, 4, 4
+  \fill (0.30,-0.96) circle (1.7pt);
+  \fill (0.30, 0.96) circle (1.7pt);
+  \fill (0.62, 0.96) circle (1.7pt);
+  \node[anchor=west, font=\footnotesize] at (0.78,0.96) {twice};
+  \node[anchor=south] at (0.45,1.80) {$\operatorname{spec}\SC$};
+\end{scope}
+
+\end{tikzpicture}

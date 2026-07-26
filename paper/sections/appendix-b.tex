@@ -1,0 +1,416 @@
+\section{Exact data}\label{app:data}
+
+Every design recorded here is given by data from which \eqref{eq:parseval} can
+be verified by finite arithmetic, and every constant quoted is exact.  Radicals
+occur in three places --- the icosahedral design of \S\ref{app:icosa}, the
+whitener of a graphic design (\S\ref{app:diamond}), and the normalization of
+the tetrahedron --- and in each the algebraic relation that eliminates them is
+displayed.  No entry rests on a floating-point evaluation.
+
+\subsection{The tetrahedron at \texorpdfstring{$(4,3)$}{(4,3)}}\label{app:tetra}
+
+Atoms and weights:
+\[
+  g_0=(1,1,1),\quad g_1=(1,-1,-1),\quad g_2=(-1,1,-1),\quad g_3=(-1,-1,1),
+  \qquad t_c=\tfrac14 .
+\]
+These are the four sign vectors with an even number of minus signs.  For
+$i\ne j$ the coordinatewise products of $g_i$ and $g_j$ sum to $-1$, and for
+each pair of distinct coordinates the four products $(g_c)_a(g_c)_b$ are
+$1,-1,-1,1$; hence
+\[
+  \ell_c=3,\qquad \langle g_i,g_j\rangle=-1 \ (i\ne j),
+  \qquad \sum_c g_c^{\vphantom{T}}g_c^{T}=4I_3 ,
+\]
+so $\sum_c t_c g_c^{\vphantom{T}}g_c^{T}=I_3$ and this is a design.  It is the
+design of Example~\ref{ex:tetra} after the rescaling $g_c=\sqrt3\,u_c$ made
+there.  Lemma~\ref{lem:trace} holds termwise: $t_c\ell_c=\tfrac34$ and
+$\sum_c t_c\ell_c=3=k$.
+
+For $C=\{0,1,2,3\}\setminus\{j\}$,
+\[
+  \SC=4I_3-g_j^{\vphantom{T}}g_j^{T},
+  \qquad
+  \operatorname{spec}\SC=\{1,4,4\},
+  \qquad
+  \operatorname{spec}(\SC-I)=\{0,3,3\},
+\]
+the eigenvalue $1$ occurring along $g_j$.  For $j=3$ the gap is the singular
+positive form
+\[
+  x^{T}(S_{\{0,1,2\}}-I)x=(x_0-x_1)^2+(x_0+x_2)^2+(x_1+x_2)^2 ,
+\]
+with null line $\R\,(1,1,-1)$.  Every triple dominates and none dominates
+strictly: the tetrahedron is extremal in the sense of
+Definition~\ref{def:tie}.
+
+\emph{Chart and volume sampling.}  Here $v_c=\tfrac12 g_c$, so
+$P_{cd}=\tfrac14\langle g_c,g_d\rangle$, that is $P=\tfrac14(4I_4-J_4)$ with
+$J_n$ the all-ones $n\times n$ matrix.  For a triple $C$,
+$P[C]=\tfrac14(4I_3-J_3)$, whose eigenvalues are $\tfrac14\{1,4,4\}$, so by
+\eqref{eq:dpp}
+\[
+  \pi_C=\det P[C]=\tfrac{16}{64}=\tfrac14 \qquad\text{for each of the four triples,}
+\]
+confirming $\sum_C\pi_C=1$.  All four characteristic polynomials coincide,
+whence
+\[
+  q(x)=\E_\pi[\chi_{\SC}(x)]=(x-1)(x-4)^2=x^3-9x^2+24x-16 ,
+\]
+\[
+  q(1)=0,\qquad q'(1)=9,\qquad q''(1)=-12 .
+\]
+The subleading coefficient is $9=\sum_c t_c\ell_c^2=4\cdot\tfrac14\cdot9$,
+attaining the bound $k^2$ of Proposition~\ref{prop:qone}.
+
+\emph{Stationarity data.}  Take $\lambda_C=\tfrac14$ on each of the four
+triples and $u_C=g_{c_0}/\sqrt3$ for $C$ the complement of $\{c_0\}$.  Then
+\[
+  \Lambda=v\sum_C\lambda_C\,u_C^{\vphantom{T}}u_C^{T}
+   =1\cdot\sum_{c_0}\tfrac14\cdot\tfrac13\,g_{c_0}^{\vphantom{T}}g_{c_0}^{T}
+   =\tfrac1{12}\cdot4I_3=\tfrac13 I_3,
+  \qquad \tr\Lambda=1=v .
+\]
+The quadric law \eqref{eq:statt} reads $g_c^{T}\Lambda g_c=\ell_c/3=1=v$, and
+the coverage law \eqref{eq:coverage} reads, for each $c$, a sum over the three
+triples containing $c$ of $\tfrac14\bigl(-\tfrac1{\sqrt3}\bigr)^2=\tfrac1{12}$,
+that is $\tfrac14=t_cv$.
+
+\emph{Two moments.}  The Gram matrix of a triple is $4I_3-J_3$, of trace $9$
+and determinant $16$, so the quantity $\gamma$ of \eqref{eq:twomoment} is
+$4\cdot16-(9-1)^2=0$: the two-moment criterion of
+Proposition~\ref{prop:twomoment} is exactly tight here.
+
+\subsection{The corank-one extremal family}\label{app:corankone}
+
+Let $m=k+1$ and let $t$ be any point of the open simplex.  By
+Theorem~\ref{thm:corankone} the extremal designs at $(k+1,k)$ with weights $t$
+are exactly those whose chart is $P=I-zz^{*}$ with
+\[
+  \lvert z_c\rvert^2=\frac{1-t_c}{k},
+  \qquad\text{equivalently}\qquad
+  s_c=P_{cc}=\frac{k-1+t_c}{k},
+  \qquad
+  \ell_c=\frac{k-1+t_c}{k\,t_c} .
+\]
+The normalization is automatic: $\sum_c(1-t_c)=m-1=k$.  Over $\R$ the vector
+$z$ is determined up to signs and an orthogonal change of the ambient frame;
+over $\C$, up to phases.  At $k=3$, $t\equiv\tfrac14$ one gets
+$\lvert z_c\rvert^2=\tfrac14$, $s_c=\tfrac34$, $\ell_c=3$ --- the tetrahedron of
+\S\ref{app:tetra}.  At $k=3$, $t=(\tfrac23,\tfrac19,\tfrac19,\tfrac19)$ one
+gets a member which is not a rotation of the tetrahedron:
+\[
+  g_0=\tfrac13(2,2,2),\quad
+  g_1=\tfrac13(2,2,-7),\quad
+  g_2=\tfrac13(-7,2,2),\quad
+  g_3=\tfrac13(2,-7,2),
+\]
+with $\ell=(\tfrac43,\tfrac{19}3,\tfrac{19}3,\tfrac{19}3)$, the single
+dependency $3g_0+2g_1+2g_2+2g_3=0$, and dominating triple $\{1,2,3\}$ whose
+gap is $\tfrac83\bigl[(x_0-x_1)^2+(x_0-x_2)^2+(x_1-x_2)^2\bigr]$.  The
+equality locus is therefore not a single orbit even at corank one.
+
+\subsection{The chart point of
+\texorpdfstring{\S\ref{sec:sharp}}{the sharpness section}}\label{app:liftfail}
+
+Fix the symmetric matrix
+\begin{equation}\label{eq:liftchart}
+  P=\frac13\begin{pmatrix}
+    2&1&0&1\\ 1&1&1&0\\ 0&1&2&-1\\ 1&0&-1&1\end{pmatrix},
+  \qquad M:=3P .
+\end{equation}
+Then $M^2=3M$ entrywise, hence $P^2=P$, and $\tr P=\tfrac{2+1+2+1}{3}=2$.  So
+$P$ is a symmetric idempotent of rank two and $(P,t)$ is a chart point of size
+four and rank two in the sense of Definition~\ref{def:chartpoint} for every $t$
+in the closed simplex.  Take the escaping index $z=1$ and the one-parameter
+family of weights
+\begin{equation}\label{eq:liftweights}
+  t^{(\tau)}=\Bigl(\tfrac{1-\tau}{3},\ \tau,\ \tfrac{1-\tau}{3},\
+  \tfrac{1-\tau}{3}\Bigr),\qquad 0<\tau<1 ,
+\end{equation}
+whose member at $\tau=\tfrac14$ is the uniform vector.  With
+$W=P-\diag(t^{(\tau)})$,
+\[
+  W[\{0,1\}]=
+  \begin{pmatrix}\dfrac{1+\tau}{3} & \dfrac13\\[6pt]
+                 \dfrac13 & \dfrac13-\tau\end{pmatrix},
+  \qquad
+  \det W[\{0,1\}]
+   =\frac{(1+\tau)(1-3\tau)-1}{9}
+   =-\frac{\tau(2+3\tau)}{9} .
+\]
+The determinant is strictly negative for every $\tau\in(0,1)$ and vanishes to
+first order as $\tau\to0$.  An explicit witness is $(-1,\,1+\tau)$:
+\[
+  (-1,1+\tau)\,W[\{0,1\}]\,(-1,1+\tau)^{T}
+  =\frac{1+\tau}{3}\bigl[1-2+(1+\tau)(1-3\tau)\bigr]
+  =-\tfrac13(1+\tau)\,\tau\,(2+3\tau).
+\]
+At $\tau=\tfrac14$ the block, its determinant and the probe $(1,-4)$ are
+\[
+  W[\{0,1\}]=\begin{pmatrix}5/12&1/3\\ 1/3&1/12\end{pmatrix},
+  \qquad \det=-\tfrac{11}{144},
+  \qquad (1,-4)\,W[\{0,1\}]\,(1,-4)^{T}=-\tfrac{11}{12}.
+\]
+The leverages $P_{cc}/t_c$ at $\tau=\tfrac14$ are
+$\tfrac83,\tfrac43,\tfrac83,\tfrac43$, all exceeding $1$, so the point is not
+disposed of by deletion of a light atom; and the deflation \eqref{eq:deflate}
+at $z=1$, where $P_{11}=\tfrac13>0$, is a symmetric idempotent of trace $1$
+whose gap at the surviving index $0$ is exactly $0$, at every $\tau$.  That
+frozen downstairs equality is what Theorem~\ref{thm:sharp} exploits: the
+Schur term of \eqref{eq:schur} is paid in full at $t_z=0$ and short by a
+quantity of first order in $t_z$ thereafter, with nothing downstairs to pay it
+from.
+
+\begin{wip}
+Exhibit a one-parameter deformation of \eqref{eq:liftchart} with compressed
+slack $d>0$, and display the resulting determinant $(3d-2\tau-3\tau^{2})/9$ of
+\eqref{eq:family} changing sign at $\tau\asymp d$.
+\end{wip}
+
+\subsection{Graphic designs, and the diamond at
+\texorpdfstring{$(5,3)$}{(5,3)}}\label{app:diamond}
+
+The diamond is the second extremal design at rank three, and it is presented
+through a construction used again in \S\ref{app:split}.  Let $G$ be a
+connected multigraph on a vertex set $V$ with a distinguished vertex, the
+\emph{ground}; let $b_e\in\R^{V\setminus\{\mathrm{ground}\}}$ be the reduced
+incidence vector of the edge $e$ ($+1$ at its tail, $-1$ at its head, the
+ground coordinate deleted); let $c_e>0$ be conductances and $t_e>0$ weights
+summing to one.  Put
+\[
+  L:=\sum_e c_e\,b_e^{\vphantom{T}}b_e^{T},
+\]
+the weighted reduced Laplacian, positive definite because $G$ is connected.
+Choose $R$ with $R^{T}LR=I$ and set
+\begin{equation}\label{eq:graphicatom}
+  g_e:=\sqrt{c_e/t_e}\;R^{T}b_e .
+\end{equation}
+Then $\sum_e t_e g_e^{\vphantom{T}}g_e^{T}=R^{T}LR=I$, so this is a design of
+size $\lvert E\rvert$ and rank $\lvert V\rvert-1$.  From $R^{T}LR=I$ one reads
+$RR^{T}=L^{-1}$, whence
+\begin{equation}\label{eq:graphicleverage}
+  s_e=t_e\ell_e=c_e\,b_e^{T}L^{-1}b_e=c_e\,R_{\mathrm{eff}}(e) :
+\end{equation}
+the leverage score of an edge is its conductance times its effective
+resistance, and Lemma~\ref{lem:trace} becomes
+$\sum_e c_eR_{\mathrm{eff}}(e)=\lvert V\rvert-1$.  Congruence by the invertible
+$R$ removes the whitener from \eqref{eq:dominate}: an edge set $E'$ with
+$\lvert E'\rvert=\lvert V\rvert-1$ dominates if and only if
+\begin{equation}\label{eq:graphicdominate}
+  \sum_{e\in E'}\frac{c_e}{t_e}\,b_e^{\vphantom{T}}b_e^{T}\;\psd\;L .
+\end{equation}
+The atoms themselves are irrational and determined only up to the orthogonal
+group; the graph, the conductances, $L$, the effective resistances and the
+leverages are rational.
+
+Take $G=K_4-e$ on vertices $a,b,c,d$ with $d$ the ground and $cd$ the missing
+edge.  The five edges and their reduced incidence rows in the coordinates
+$(y_a,y_b,y_c)$ are
+\[
+  \begin{array}{llllll}
+    e_0=ab: & (1,-1,0), &\quad e_1=ac: & (1,0,-1), &\quad e_2=ad: & (1,0,0),\\
+    e_3=bc: & (0,1,-1), &\quad e_4=bd: & (0,1,0). &&
+  \end{array}
+\]
+Conductances $c=(2,3,3,3,3)$ and uniform weights $t_e=\tfrac15$.  Then
+\[
+  L=\begin{pmatrix}8&-2&-3\\ -2&8&-3\\ -3&-3&6\end{pmatrix},
+  \qquad \det L=180,
+  \qquad L^{-1}=\frac1{180}\begin{pmatrix}39&21&30\\ 21&39&30\\ 30&30&60
+  \end{pmatrix},
+\]
+so $R_{\mathrm{eff}}(ab)=\tfrac1{180}(39-21-21+39)=\tfrac15$ and
+$R_{\mathrm{eff}}(e)=\tfrac{39}{180}=\tfrac{13}{60}$ for each of the four rim
+edges $ac,ad,bc,bd$.  By \eqref{eq:graphicleverage},
+\[
+  s_{ab}=\tfrac25,\quad s_{\mathrm{rim}}=\tfrac{13}{20},
+  \qquad
+  \ell_{ab}=2,\quad \ell_{\mathrm{rim}}=\tfrac{13}{4},
+  \qquad
+  \tfrac25+4\cdot\tfrac{13}{20}=3=k .
+\]
+Every leverage exceeds $1$.  The star at $a$, that is $E'=\{ab,ac,ad\}$,
+dominates: the left side of \eqref{eq:graphicdominate} is
+$5\bigl(2b_0b_0^{T}+3b_1b_1^{T}+3b_2b_2^{T}\bigr)$, and subtracting $L$ gives
+the form $Q$ with
+\[
+  2\,Q(y)\;=\;(-8y_a+2y_b+3y_c)^2+9y_c^2 ,
+\]
+positive semidefinite and singular, with null line $\R\,(1,4,0)$.  No
+three-subset dominates strictly.  The eight spanning trees each carry a null
+vector of their gap; the two circuits do worse.  At $E'=\{ab,ac,bc\}$ the
+potential $y=(1,1,1)$ annihilates all three selected drops while
+$y^{T}Ly=3+3=6$, so the gap form equals $-6$; likewise at $E'=\{ab,ad,bd\}$
+with $y=(0,0,1)$.  The certificates for all ten subsets are
+\[
+  \begin{array}{llll}
+   \{0,1,2\}:(1,4,0) & \{0,1,3\}:(1,1,1) & \{0,1,4\}:(4,1,5) &
+   \{0,2,3\}:(1,4,5)\\
+   \{0,2,4\}:(0,0,1) & \{0,3,4\}:(4,1,0) & \{1,2,3\}:(2,8,5) &
+   \{1,2,4\}:(3,-3,5)\\
+   \{1,3,4\}:(8,2,5) & \{2,3,4\}:(-3,3,5). &&
+  \end{array}
+\]
+The diamond is therefore an extremal design at $(5,3)$.  Its five incidence
+rows are pairwise non-proportional, and by \eqref{eq:graphicatom}
+proportionality of two atoms forces proportionality of the corresponding rows;
+so no two atoms of the diamond are parallel.  This is
+Example~\ref{ex:diamond}.
+
+The conductances are forced.  Keep the rim conductance at
+$c_{\mathrm{rim}}=3$, let the spine carry $c_{ab}=p>0$, and ask that the star
+at $a$ dominate.  With $L$ recomputed at those conductances,
+\eqref{eq:graphicdominate} for $E'=\{ab,ac,ad\}$ reads $Q\psd0$ for a
+symmetric $3\times3$ form whose determinant is $324p-648$: negative for $p<2$,
+zero at $p=2$, positive for $p>2$.  So $p=2$ is the unique conductance at which
+the star dominates without dominating strictly, which is extremality; and then
+the three $a$-to-$b$ paths in $K_4-e$ --- the edge $ab$ of conductance $2$ and
+two two-edge paths of conductance $\tfrac32$ each --- give
+$R_{\mathrm{eff}}(ab)=1/(2+3)=\tfrac15$ and $s_{ab}=\tfrac25$, as computed
+above.
+
+\subsection{Split families at
+\texorpdfstring{$(6,3)$ and $(7,3)$}{(6,3) and (7,3)}}\label{app:split}
+
+Splitting an atom into parallel copies preserves \eqref{eq:parseval}, because
+the copies carry the same rank-one moment; and it preserves the value of the
+objective, because a $k$-subset repeating a direction is singular while a
+$k$-subset meeting $k$ distinct directions has the gap of the original.
+Applied to the tetrahedron of \S\ref{app:tetra} this gives the two families
+used throughout \S\ref{sec:ties} and Appendix~\ref{app:graveyard}.
+
+\emph{At $(6,3)$.}  Directions $(0,1,2,2,3,3)$ on the four tetrahedron
+vertices, weights
+\[
+  \bigl(\tfrac14,\ \tfrac14,\ a,\ \tfrac14-a,\ b,\ \tfrac14-b\bigr),
+  \qquad 0<a,b<\tfrac14 ,
+\]
+so that every direction carries total weight $\tfrac14$.  Every member is
+extremal.  The active family --- the triples attaining the value --- is the
+twelve triples carrying three distinct directions,
+\[
+  \begin{array}{cccccc}
+   \{0,1,2\}&\{0,1,3\}&\{0,1,4\}&\{0,1,5\}&\{0,2,4\}&\{0,2,5\}\\
+   \{0,3,4\}&\{0,3,5\}&\{1,2,4\}&\{1,2,5\}&\{1,3,4\}&\{1,3,5\}
+  \end{array}
+\]
+missing the directions $3,3,2,2,1,1$ and $1,1,0,0,0,0$ respectively.
+
+\emph{At $(7,3)$.}  Directions $(0,1,2,3,0,1,2)$, weights
+$(\tfrac18,\tfrac18,\tfrac18,\tfrac14,\tfrac18,\tfrac18,\tfrac18)$; again each
+direction carries $\tfrac14$, every leverage is exactly $3$, and
+\eqref{eq:parseval} is exact.  Of the $35$ triples, the $20$ carrying three
+distinct directions dominate, each with gap
+$3I_3-g_d^{\vphantom{T}}g_d^{T}$ of spectrum $\{0,3,3\}$ where $d$ is the
+missed direction; the remaining $15$ do not.  None of the $20$ has any slack.
+
+More generally, fix a surjection $\mathrm{cl}$ from $\{1,\dots,m\}$ onto
+$\{1,\dots,k+1\}$ and a weight vector $t$; give the index $c$ the corank-one
+extremal atom of \S\ref{app:corankone} attached to the class
+$\mathrm{cl}(c)$, evaluated at the class totals
+$T_j:=\sum_{\mathrm{cl}(c)=j}t_c$.  Atoms in one class are equal, so the
+fibrewise sums collapse and \eqref{eq:parseval} is inherited from the
+corank-one design at $T$.  A $k$-subset repeating a class is singular; a
+$k$-subset meeting $k$ classes has the gap of that corank-one design, which is
+positive semidefinite and singular.  Hence \emph{at every size $m\ge k+1$, over
+every weight vector, and for every partition of the indices into $k+1$
+nonempty classes there is an extremal design.}  At $k=3$, $m=6$ the class
+profiles $(2,2,1,1)$ and $(3,1,1,1)$ occur, and at $m=7$ the profile
+$(2,2,2,1)$.  Since a member of this family has at most $k+1$ distinct
+directions and the diamond has $k+2=5$, the diamond is not one of them.
+
+\emph{A rational extremal design with an exact certificate.}  Take the $(6,3)$
+split at $(a,b)=(\tfrac16,\tfrac18)$, so
+$t=(\tfrac14,\tfrac14,\tfrac16,\tfrac1{12},\tfrac18,\tfrac18)$ and the atoms
+are the rational vectors of \S\ref{app:tetra}.  A triple carrying three
+distinct directions and missing the direction $d$ has, by \S\ref{app:tetra},
+\[
+  \SC-I_3\;=\;3I_3-g_d^{\vphantom{T}}g_d^{T},
+  \qquad
+  x^{T}\bigl(\SC-I_3\bigr)x\;=\;\sum_{i<j}(x_i-x_j)^{2}
+\]
+after the relabelling that puts $g_d=(1,1,1)$: a sum of squares, singular on
+the line $\R g_d$.  Every entry of the certificate is an integer, and its
+kernel is one-dimensional at every one of the twelve such triples.  The
+equality locus therefore does not destroy the existence of a certificate; it
+destroys its slack.
+
+\subsection{The icosahedral design at
+\texorpdfstring{$(6,3)$}{(6,3)}}\label{app:icosa}
+
+Put
+\begin{equation}\label{eq:icosaconst}
+  \rho:=\frac{3}{\sqrt5},\qquad
+  \sigma:=\sqrt{\frac{3-\rho}{2}},\qquad
+  \mu:=\sqrt{\frac{3+\rho}{2}},
+\end{equation}
+so that $\sigma^2+\mu^2=3$ and
+$\sigma^2\mu^2=\tfrac{9-\rho^2}{4}=\tfrac{9-9/5}{4}=\tfrac95=\rho^2$, whence
+$\sigma\mu=\rho$.  The six atoms are the six diagonals of a regular
+icosahedron, in the scaling that makes $\ell_c=3$:
+\[
+  (\sigma,\mu,0),\ (-\sigma,\mu,0),\
+  (0,\sigma,\mu),\ (0,-\sigma,\mu),\
+  (\mu,0,\sigma),\ (\mu,0,-\sigma),
+  \qquad t_c=\tfrac16 .
+\]
+Each coordinate receives $2(\sigma^2+\mu^2)=6$ from the six outer products and
+each off-diagonal entry cancels in pairs, so
+$\sum_c t_c g_c^{\vphantom{T}}g_c^{T}=I_3$.  Every distinct pairing is
+$\pm\sigma\mu$, hence
+\begin{equation}\label{eq:icosapair}
+  \ell_c=3,\qquad \langle g_c,g_d\rangle^2=\tfrac95 \quad(c\ne d).
+\end{equation}
+For $C=\{0,2,4\}$ all three pairings equal $+\rho$, so
+$\SC=(3-\rho)I_3+\rho J_3$, with spectrum $\{3-\rho,3-\rho,3+2\rho\}$ and
+\[
+  \lmin(S_{\{0,2,4\}})=3-\frac{3}{\sqrt5}=1.6584\ldots>1 :
+\]
+the icosahedral design dominates, and dominates strictly.  Exactly ten of its
+twenty triples dominate.  It is used in Appendix~\ref{app:graveyard} as the
+design on which the two-moment criterion is blind.
+
+\subsection{Active-family census at
+\texorpdfstring{$(6,3)$ and $(7,3)$}{(6,3) and (7,3)}}\label{app:census}
+
+By \eqref{eq:coverage} the family $\mathcal{A}^{+}$ of active $k$-subsets
+carrying a positive multiplier covers the index set.  The following are the
+numbers of covering families of $3$-subsets, counted up to the symmetric group
+of the index set and listed by cardinality.  At $m=6$ a covering family has at
+least two members and at most twenty:
+\[
+\begin{array}{c|cccccccccc}
+\lvert\mathcal{A}^{+}\rvert & 2&3&4&5&6&7&8&9&10&11\\ \hline
+\text{classes} & 1&3&15&37&88&157&247&311&351&312\\[4pt]
+\lvert\mathcal{A}^{+}\rvert & 12&13&14&15&16&17&18&19&20&\\ \hline
+\text{classes} & 249&161&94&43&21&7&3&1&1&
+\end{array}
+\]
+The total is $2102$; discarding the single class of cardinality two, which is
+the partition branch of Corollary~\ref{cor:e3}, leaves $2101$.  By
+Carath\'eo\-dory's theorem \cite{Caratheodory1911} the support of the
+multiplier vector may be taken of size one more than the dimension of the
+design manifold modulo the orthogonal group.  That dimension is
+$18+6-6-1-3=14$ at $(6,3)$, so only the columns up to $15$ bear on
+Conjecture~\ref{conj:sixthree}; they account for $2069$ of the $2102$ classes,
+and for $2068$ of the $2101$ with at least three members.
+
+At $m=7$ a covering family has at least three members, and the counts are
+\[
+\begin{array}{c|cccccccc}
+\lvert\mathcal{A}^{+}\rvert & 3&4&5&6&7&8&9&10\\ \hline
+\text{classes} & 3&17&94&415&1599&5308&15397&39081\\[4pt]
+\lvert\mathcal{A}^{+}\rvert & 11&12&13&14&15&16&17&18\\ \hline
+\text{classes} & 87347&172684&303116&473733&660907&824389&920439&920443\\[4pt]
+\lvert\mathcal{A}^{+}\rvert & 19&20&21&22&23&24&25&26\\ \hline
+\text{classes} & 824409&660949&473827&303277&172933&87659&39433&15709\\[4pt]
+\lvert\mathcal{A}^{+}\rvert & 27&28&29&30&31&32&33&34\\ \hline
+\text{classes} & 5557&1760&509&137&38&10&3&1
+\end{array}
+\]
+together with a single class of cardinality $35$,
+with total $7\,011\,184$.  The dimension count at $(7,3)$ is $21+7-6-1-3=18$,
+so the Carath\'eodory bound is $19$, and the classes of cardinality at most
+$19$ already number $5\,249\,381$.  Enumeration at this size is not a route;
+this is the content of Problem~\ref{prob:seventhree}.

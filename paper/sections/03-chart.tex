@@ -1,0 +1,685 @@
+\section{The projection chart}\label{sec:chart}
+
+Absorbing the weights into the vectors replaces a design by a projection
+on the index space, and replaces the domination condition
+\eqref{eq:dominate} by a comparison between a principal block of that
+projection and a diagonal matrix.  Every argument in the sequel is
+carried out in these coordinates.  This section constructs the chart,
+proves the criterion, determines what the criterion does and does not
+follow from, and settles the two coranks that the criterion reaches:
+corank one over both fields, corank two over $\R$.
+
+Throughout, $k\ge1$ and $m\ge k$; the second inequality is
+Lemma~\ref{lem:span}.  For an index set $C$ of size $r$,
+listed in increasing order, $M_C$ denotes the $r\times k$ matrix whose
+rows are $g_c^{*}$, $c\in C$, and
+\[
+  \Gram_C\;:=\;M_C^{\vphantom{*}}M_C^{*}
+  \;=\;\bigl(\langle g_c,g_d\rangle\bigr)_{c,d\in C}
+\]
+their Gram matrix.  The two products of $M_C$ carry different
+information:
+\begin{equation}\label{eq:twoproducts}
+  M_C^{*}M_C^{\vphantom{*}}\;=\;\sum_{c\in C}g_c^{\vphantom{*}}g_c^{*}
+  \;=\;\SC \quad (k\times k),
+  \qquad
+  M_C^{\vphantom{*}}M_C^{*}\;=\;\Gram_C \quad (r\times r).
+\end{equation}
+Both identities are the definition of matrix multiplication read in the
+two possible orders.
+
+\subsection{Construction}\label{sec:chartconstruction}
+
+Put
+\[
+  v_c\;:=\;\sqrt{t_c}\,g_c\in\FF^{k},
+\]
+and let $V$ be the $m\times k$ matrix whose $c$-th row is $v_c^{*}$; thus
+$V=\diag(\sqrt{t_1},\dots,\sqrt{t_m})\,M_{\{1,\dots,m\}}$.  The Parseval
+condition \eqref{eq:parseval} is exactly the orthonormality of the
+columns of $V$:
+\begin{equation}\label{eq:isometry}
+  V^{*}V\;=\;\sum_{c}v_c^{\vphantom{*}}v_c^{*}
+  \;=\;\sum_c t_c\,g_c^{\vphantom{*}}g_c^{*}\;=\;I_k .
+\end{equation}
+Accordingly
+\begin{equation}\label{eq:chart}
+  P\;:=\;VV^{*}
+\end{equation}
+is a matrix on the \emph{index} space $\FF^m$.  Write
+$D:=\diag(t_1,\dots,t_m)$ and
+\begin{equation}\label{eq:chartgap}
+  W\;:=\;P-D .
+\end{equation}
+The pair $(P,t)$ is the \emph{chart} of the design and $W$ its
+\emph{gap}.
+
+\begin{proposition}[\LV]\label{prop:chartid}
+$P$ is the orthogonal projection onto the column space of $V$, of rank
+$k$, and
+\[
+  P_{cd}=\sqrt{t_ct_d}\,\langle g_c,g_d\rangle,
+  \qquad P_{cc}=s_c,\qquad \tr P=k .
+\]
+Consequently $W_{cc}=t_c(\ell_c-1)$ and $\sum_c W_{cc}=k-1$.
+\end{proposition}
+
+\begin{proof}
+$P^{*}=(VV^{*})^{*}=VV^{*}=P$, and, using \eqref{eq:isometry} once,
+$P^2=V(V^{*}V)V^{*}=VIV^{*}=P$.  A Hermitian idempotent is the orthogonal
+projection onto its range, which is the column space of $V$ because
+$V^{*}V=I_k$ forces $V$ to have rank $k$.  The entries are
+$P_{cd}=\langle v_c,v_d\rangle=\sqrt{t_ct_d}\langle g_c,g_d\rangle$; at
+$c=d$ this is $t_c\ell_c=s_c$.  Finally
+$\tr P=\tr(VV^{*})=\tr(V^{*}V)=\tr I_k=k$.  The diagonal of $W$ is
+$s_c-t_c=t_c(\ell_c-1)$, and $\sum_c(s_c-t_c)=k-1$ by
+Lemma~\ref{lem:trace}.
+\end{proof}
+
+The construction loses nothing.
+
+\begin{lemma}\label{lem:realize}
+Fix $m$, $k$ and a weight vector $t$ with $t_c>0$ and $\sum_ct_c=1$.  The
+map sending a design with weight vector $t$ to its chart $P$ is a
+bijection from the set of such designs modulo the action
+$g_c\mapsto Ug_c$ of the unitary group of $\FF^k$ onto the set of
+orthogonal projections of rank $k$ on $\FF^m$.
+\end{lemma}
+
+\begin{proof}
+Let $P$ be an orthogonal projection of rank $k$ and let $V$ be the
+$m\times k$ matrix whose columns are an orthonormal basis of the range of
+$P$; then $V^{*}V=I_k$ and $VV^{*}=P$.  Writing $v_c^{*}$ for the $c$-th
+row of $V$ and setting $g_c:=t_c^{-1/2}v_c$ produces a family with
+$\sum_ct_cg_c^{\vphantom{*}}g_c^{*}=\sum_cv_c^{\vphantom{*}}v_c^{*}
+=V^{*}V=I_k$, a design with weight vector $t$ and chart $P$.  If two
+designs with weight vector $t$ have the same chart, their matrices $V$
+and $V'$ have the same column space and orthonormal columns, so $V'=VU$
+for a unitary $U$ of $\FF^k$, whence $g'_c=U^{*}g_c$; conversely
+replacing $g_c$ by $Ug_c$ replaces $V$ by $VU^{*}$ and leaves
+$P=VV^{*}$ unchanged.
+\end{proof}
+
+\begin{remark}\label{rem:frames}
+In frame language \eqref{eq:isometry} says that $(v_c)_{c\le m}$ is a
+Parseval frame for $\FF^k$ and $P$ is the associated projection of the
+ambient $\FF^m$ onto it \cite{CasazzaKutyniok2013}.  The classical
+problem is the uniform slice: for $t_c\equiv1/n$ and $g_c:=\sqrt n\,a_c$,
+where $a_c^{*}$ is the $c$-th row of a matrix $A$ with $A^{*}A=I_k$, the
+factor $\sqrt n$ in the vectors cancels the factor $1/n$ in the weights
+and $P=AA^{*}$; domination of $C$ reads
+$\sum_{c\in C}a_c^{\vphantom{*}}a_c^{*}\psd n^{-1}I_k$, which is the
+row-selection problem of \cite{GTZ1997}.  In
+that slice $D=n^{-1}I$ and the chart criterion below is the condition
+$\lmin(P[C])\ge1/n$ used in \cite{Nesterenko2023,Nesterenko2025}.  What
+is new here is the general weight vector, for which $D$ is a genuine
+diagonal and the comparison is a Loewner comparison rather than a scalar
+one.
+\end{remark}
+
+\subsection{The criterion}\label{sec:criterion}
+
+The passage from $\SC$ to the block $W[C]$ is a congruence by a positive
+diagonal followed by an exchange of the two products in
+\eqref{eq:twoproducts}.  Both steps are recorded separately, because the
+first holds at every selection size and the second does not.
+
+\begin{lemma}[\LV]\label{lem:congruence}
+For every index set $C$ of size $r$,
+\begin{equation}\label{eq:congruence}
+  W[C]\;=\;\diag(\sqrt{t_c})_{c\in C}\;
+  \bigl(\Gram_C-I_r\bigr)\;\diag(\sqrt{t_c})_{c\in C},
+\end{equation}
+and therefore $W[C]\psd0$ if and only if $\Gram_C\psd I_r$.
+\end{lemma}
+
+\begin{proof}
+Entrywise, for $c,d\in C$,
+\[
+  W[C]_{cd}
+  \;=\;P_{cd}-t_c\delta_{cd}
+  \;=\;\sqrt{t_ct_d}\,\langle g_c,g_d\rangle-\sqrt{t_ct_d}\,\delta_{cd}
+  \;=\;\sqrt{t_ct_d}\,\bigl(\Gram_C-I_r\bigr)_{cd},
+\]
+where the middle step uses $\sqrt{t_ct_d}\,\delta_{cd}=t_c\delta_{cd}$.
+This is \eqref{eq:congruence}.  The matrix $B:=\diag(\sqrt{t_c})_{c\in C}$
+is invertible because every $t_c>0$, and for invertible $B$ one has
+$X\psd0$ if and only if $B^{*}XB\psd0$: the substitutions $x\mapsto Bx$
+and $x\mapsto B^{-1}x$ carry each quadratic form to the other.
+\end{proof}
+
+\begin{lemma}[\LV]\label{lem:flip}
+Let $X$ be a matrix over $\FF$, of any shape.  Then
+\[
+  I-X^{*}X\psd0
+  \quad\Longleftrightarrow\quad
+  I-XX^{*}\psd0 .
+\]
+If $M$ is square, then $M^{*}M\psd I$ if and only if $MM^{*}\psd I$.
+\end{lemma}
+
+\begin{proof}
+The first statement is symmetric in $X$ and $X^{*}$, so one implication
+suffices.  Assume $\lVert Xu\rVert\le\lVert u\rVert$ for every $u$, which
+is $I-X^{*}X\psd0$.  For any $w$, by Cauchy--Schwarz and then the
+hypothesis at $u=X^{*}w$,
+\[
+  \lVert X^{*}w\rVert^4
+  \;=\;\langle w,XX^{*}w\rangle^2
+  \;\le\;\lVert w\rVert^2\,\lVert X(X^{*}w)\rVert^2
+  \;\le\;\lVert w\rVert^2\,\lVert X^{*}w\rVert^2 .
+\]
+If $X^{*}w\ne0$ divide by $\lVert X^{*}w\rVert^2$; in either case
+$\lVert X^{*}w\rVert\le\lVert w\rVert$, which is $I-XX^{*}\psd0$.
+
+For the second statement let $M$ be $n\times n$ with $M^{*}M\psd I$, that
+is $\lVert Mu\rVert\ge\lVert u\rVert$ for every $u$.  Then $Mu=0$ forces
+$u=0$, so $M$ is invertible.  Put $X:=M^{-1}$ and substitute $u=Xw$:
+$\lVert w\rVert\ge\lVert Xw\rVert$, so $I-X^{*}X\psd0$.  By the first
+statement $I-XX^{*}\psd0$, that is
+$\lVert (M^{*})^{-1}w\rVert\le\lVert w\rVert$ for every $w$; substituting
+$w=M^{*}u$ gives $\lVert u\rVert\le\lVert M^{*}u\rVert$, which is
+$MM^{*}\psd I$.  The converse is the same argument with $M$ and $M^{*}$
+exchanged.
+\end{proof}
+
+\begin{lemma}[\LV]\label{lem:chart}
+For every $k$-subset $C$,
+\[
+  \SC\psd I_k \quad\Longleftrightarrow\quad W[C]\psd 0 .
+\]
+\end{lemma}
+
+\begin{proof}
+For $\lvert C\rvert=k$ the matrix $M_C$ is square, so
+Lemma~\ref{lem:flip} applies to \eqref{eq:twoproducts} and gives
+$\SC=M_C^{*}M_C^{\vphantom{*}}\psd I_k$ if and only if
+$\Gram_C=M_C^{\vphantom{*}}M_C^{*}\psd I_k$.  By
+Lemma~\ref{lem:congruence} the latter is $W[C]\psd0$.
+\end{proof}
+
+The problem therefore reads: \emph{some $k\times k$ principal block of a
+rank-$k$ orthogonal projection dominates the corresponding block of a
+positive diagonal matrix of trace one}.  Two features of this formulation
+are used repeatedly.  The weights enter only through $D$, so the
+projection and the weights may be varied independently, which is what
+makes the compactification of \S\ref{sec:compactness} possible; and
+$W[C]\psd0$ is a closed condition in both arguments.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/chart}
+  \caption{The chart, at $m=6$, $k=3$ and $C=\{1,3,4\}$.  The design data
+  pass through the isometry $V$ of \eqref{eq:isometry} to the projection
+  $P=VV^{*}$ of \eqref{eq:chart} and the gap $W=P-D$ of
+  \eqref{eq:chartgap}.  Selecting $C$ is taking a principal block, and
+  Lemma~\ref{lem:chart} identifies its semidefiniteness with domination.}
+  \label{fig:chart}
+\end{figure}
+
+\begin{remark}\label{rem:size}
+The hypothesis $\lvert C\rvert=k$ in Lemma~\ref{lem:chart} is not
+cosmetic.  Domination is the $k\times k$ statement
+$M_C^{*}M_C\psd I_k$, while the block condition is the
+$r\times r$ statement $M_C^{\vphantom{*}}M_C^{*}\psd I_r$ with
+$r=\lvert C\rvert$.  For $r<k$ the left-hand matrix has rank at most
+$r<k$ and can never dominate $I_k$, while the block condition is
+unconstrained; for $r>k$ the block matrix has rank at most $k<r$ and
+never dominates $I_r$, while $\SC$ may.  Both failures are rank effects,
+and $r=k$ is the only size at which the equivalence has content in both
+directions.
+\end{remark}
+
+Taking determinants in \eqref{eq:congruence} converts the criterion into
+an exact scalar test, one principal minor at a time.
+
+\begin{corollary}[\LV]\label{cor:minor}
+For every index set $C$,
+\[
+  \det W[C]\;=\;\Bigl(\prod_{c\in C}t_c\Bigr)\,\det(\Gram_C-I).
+\]
+\end{corollary}
+
+The factor is strictly positive, so the two matrices $W[C]$ and
+$\Gram_C-I$ have the same principal minors up to positive factors and are
+semidefinite together, minor by minor.  Over the rationals this is an
+exact decision procedure, requiring no eigenvalue computation and no
+genericity assumption.
+
+\subsection{Inertia, and what it does not decide}\label{sec:inertia}
+
+The gap $W$ has a fixed signature.  The signature by itself decides
+nothing.  What follows locates the feature of the chart that carries the
+theorem.
+
+\begin{lemma}[\LV]\label{lem:rayleigh}
+Let $m\ge2$.  If $Px=x$ then
+$\langle x,Wx\rangle=\sum_c(1-t_c)\lvert x_c\rvert^2$, which is positive
+for $x\ne0$.  If $Px=0$ then
+$\langle x,Wx\rangle=-\sum_ct_c\lvert x_c\rvert^2$, which is negative for
+$x\ne0$.
+\end{lemma}
+
+\begin{proof}
+$\langle x,Dx\rangle=\sum_ct_c\lvert x_c\rvert^2$ in both cases.  If
+$Px=x$ then $\langle x,Px\rangle=\lVert x\rVert^2=\sum_c\lvert
+x_c\rvert^2$, and subtracting gives the first identity; each coefficient
+$1-t_c$ is strictly positive because $m\ge2$ forces $t_c<1$.  If $Px=0$
+then $\langle x,Px\rangle=0$ and the second identity follows; each $t_c$
+is strictly positive.
+\end{proof}
+
+\begin{lemma}\label{lem:inertia}
+For $m\ge2$ the matrix $W$ has inertia $(k,\,m-k,\,0)$.
+\end{lemma}
+
+\begin{proof}
+The subspaces $\operatorname{ran}P$ and $\ker P$ are complementary of
+dimensions $k$ and $m-k$, and by Lemma~\ref{lem:rayleigh} the form
+$\langle x,Wx\rangle$ is positive definite on the first and negative
+definite on the second.  Sylvester's law of inertia
+\cite[\S4.5]{HornJohnson2013} gives the count.
+\end{proof}
+
+The hypothesis $m\ge2$ is necessary: at $m=k=1$ the only design has
+$t_1=1$ and $\ell_1=1$, so $P=D=1$ and $W=0$, of inertia $(0,0,1)$.
+
+\begin{remark}[\LV]\label{rem:nogo}
+A positive semidefinite matrix has a nonnegative diagonal.  Hence a
+Hermitian matrix whose diagonal entries are all negative has no positive
+semidefinite principal submatrix of any nonempty size.  Both signatures
+occurring in Lemma~\ref{lem:inertia} at the smallest interesting cells are
+realized by such matrices.  At $(m,k)=(2,1)$ take
+\[
+  B_2=\begin{pmatrix}-1&3\\3&-1\end{pmatrix},
+  \qquad \det B_2=1-9=-8 .
+\]
+Its form is $\langle x,B_2x\rangle=-x_1^2-x_2^2+6x_1x_2$, which takes the
+value $4$ at $(1,1)$ and $-8$ at $(1,-1)$: the inertia is $(1,1,0)$,
+which is the inertia of a chart gap at $(2,1)$.  At $(m,k)=(3,2)$ take
+\[
+  B_3=\begin{pmatrix}-1&2&2\\2&-1&-2\\2&-2&-1\end{pmatrix},
+  \qquad \det B_3=-5 .
+\]
+On the plane spanned by $(1,1,0)$ and $(1,0,1)$, parameterized as
+$x=(a+b,a,b)$,
+\[
+  \langle x,B_3x\rangle
+  \;=\;-(a+b)^2-a^2-b^2+4a(a+b)+4b(a+b)-4ab
+  \;=\;2a^2+2ab+2b^2,
+\]
+positive definite there; so $B_3$ has at least two positive eigenvalues,
+and $\det B_3<0$ excludes three, leaving inertia $(2,1,0)$, the inertia
+of a chart gap at $(3,2)$.  Every diagonal entry of $B_2$ and of $B_3$ is
+$-1$.  Hence no statement of the form ``a Hermitian matrix of inertia
+$(k,m-k,0)$ possesses a positive semidefinite $k\times k$ principal
+block'' is available, and no proof of $\Gtz$ can run on the signature of
+$W$ alone.
+
+Neither matrix is a chart gap, and the obstruction is the diagonal.  By
+Proposition~\ref{prop:chartid} the diagonal entries of a chart gap are
+$W_{cc}=t_c(\ell_c-1)\ge-t_c>-1$, and they sum to $k-1\ge0$, so at least
+one of them is nonnegative.  The projection structure, not the signature,
+is what carries the theorem.
+\end{remark}
+
+\subsection{Duality}\label{sec:duality}
+
+Since $I-P$ is the orthogonal projection onto $\ker P$, selecting a block
+of $P$ and deleting the complementary block of $I-P$ are the same
+operation.  Executed with the correct normalization, this turns a design
+of rank $k$ into a design of rank $m-k$ and exchanges domination with
+domination at the complement.
+
+Fix a design at $(m,k)$ with $k\ge1$ and $m\ge k+1$, and put $r:=m-k\ge1$;
+then $m\ge2$ and every $t_c<1$.  Choose an $m\times r$ matrix $Z$ whose
+columns are an orthonormal basis of $\ker P$, so that
+\[
+  Z^{*}Z=I_r,\qquad ZZ^{*}=I_m-P ,
+\]
+and write $z_c^{*}$ for the $c$-th row of $Z$.  As in
+\eqref{eq:isometry} and Proposition~\ref{prop:chartid},
+\[
+  \sum_c z_c^{\vphantom{*}}z_c^{*}=Z^{*}Z=I_r,
+  \qquad
+  \lVert z_c\rVert^2=(ZZ^{*})_{cc}=1-P_{cc}=1-s_c .
+\]
+Rescale by the co-weights: put
+\[
+  w_c\;:=\;\frac{z_c}{\sqrt{1-t_c}}\in\FF^{r},
+\]
+which is legitimate because $t_c<1$.  The first display becomes
+\begin{equation}\label{eq:kernelframe}
+  \sum_c(1-t_c)\,w_c^{\vphantom{*}}w_c^{*}\;=\;I_r .
+\end{equation}
+This is not a Parseval condition, since the coefficients $1-t_c$ sum to
+$m-1$ rather than to $1$.  The correct rescaling is by the operator
+\begin{equation}\label{eq:dualgram}
+  T\;:=\;\sum_c t_c\,w_c^{\vphantom{*}}w_c^{*} .
+\end{equation}
+
+\begin{lemma}\label{lem:dualgram}
+$T\pd0$.
+\end{lemma}
+
+\begin{proof}
+$T\psd0$ as a nonnegative combination of rank-one positive semidefinite
+matrices.  If $Tu=0$ then $\langle u,Tu\rangle=\sum_ct_c\lvert\langle
+w_c,u\rangle\rvert^2=0$, so $\langle w_c,u\rangle=0$ for every $c$
+because every $t_c>0$; then \eqref{eq:kernelframe} applied to $u$ gives
+$u=\sum_c(1-t_c)\langle w_c,u\rangle\,w_c=0$.
+\end{proof}
+
+\begin{lemma}[\LV]\label{lem:whiten}
+Every $T\pd0$ admits an invertible $R$ with $R^{*}TR=I$.
+\end{lemma}
+
+\begin{proof}
+Write $T=LL^{*}$ with $L$ invertible, by Cholesky factorization, and put
+$R:=(L^{*})^{-1}$.  Then $R^{*}TR=L^{-1}LL^{*}(L^{*})^{-1}=I$.
+\end{proof}
+
+\begin{theorem}[\LV]\label{thm:duality}
+Let $k\ge1$ and $m\ge k+1$, and let $\mathcal D$ be a design at $(m,k)$
+over $\FF$ with weight vector $t$.  With $w_c$, $T$ and $R$ as above, the
+vectors
+\[
+  h_c\;:=\;R^{*}w_c\in\FF^{m-k}
+\]
+with the \emph{same} weights $t_c$ form a design $\mathcal D^{\perp}$ at
+$(m,m-k)$, and for every $k$-subset $C$,
+\[
+  C\ \text{dominates in}\ \mathcal D
+  \quad\Longleftrightarrow\quad
+  C^{\complement}\ \text{dominates in}\ \mathcal D^{\perp} .
+\]
+\end{theorem}
+
+\begin{proof}
+The weights are unchanged, so they are positive and sum to one, and
+\[
+  \sum_c t_c\,h_c^{\vphantom{*}}h_c^{*}
+  \;=\;R^{*}\Bigl(\sum_ct_c\,w_c^{\vphantom{*}}w_c^{*}\Bigr)R
+  \;=\;R^{*}TR\;=\;I_{m-k}
+\]
+by \eqref{eq:dualgram} and Lemma~\ref{lem:whiten}; here the conjugation
+identity $R^{*}(ww^{*})R=(R^{*}w)(R^{*}w)^{*}$ is used termwise.  So
+$\mathcal D^{\perp}$ is a design at $(m,m-k)$.
+
+Fix $C$ with $\lvert C\rvert=k$ and put $E:=C^{\complement}$, of size
+$r=m-k$.  Let $N$ be the $k\times r$ matrix whose rows are $w_c^{*}$,
+$c\in C$; equivalently
+$N=\diag\bigl((1-t_c)^{-1/2}\bigr)_{c\in C}\,Z_C$, where $Z_C$ is the
+submatrix of $Z$ on the rows $C$.  Then, as in \eqref{eq:twoproducts},
+\[
+  N^{\vphantom{*}}N^{*}=\bigl(\langle w_c,w_d\rangle\bigr)_{c,d\in C},
+  \qquad
+  N^{*}N^{\vphantom{*}}=\sum_{c\in C}w_c^{\vphantom{*}}w_c^{*} .
+\]
+Now run the equivalences.  Since $P=I-ZZ^{*}$,
+\[
+  W[C]\;=\;\diag(1-t_c)_{c\in C}-(ZZ^{*})[C],
+\]
+and $(ZZ^{*})[C]=Z_C^{\vphantom{*}}Z_C^{*}$.  Conjugating by the
+invertible diagonal $\diag\bigl((1-t_c)^{-1/2}\bigr)_{c\in C}$ as in the
+proof of Lemma~\ref{lem:congruence},
+\[
+  W[C]\psd0
+  \quad\Longleftrightarrow\quad
+  I_k-N^{\vphantom{*}}N^{*}\psd0
+  \quad\Longleftrightarrow\quad
+  I_r-N^{*}N^{\vphantom{*}}\psd0 ,
+\]
+the second step by Lemma~\ref{lem:flip} applied to $X:=N^{*}$.  By
+\eqref{eq:kernelframe} the right-hand condition reads
+\[
+  \sum_{c\in C}w_c^{\vphantom{*}}w_c^{*}
+  \;\preceq\;\sum_{c}(1-t_c)\,w_c^{\vphantom{*}}w_c^{*} .
+\]
+Subtracting both sides from $\sum_c w_c^{\vphantom{*}}w_c^{*}$ turns this
+into
+\[
+  \sum_{c\in E}w_c^{\vphantom{*}}w_c^{*}
+  \;\psd\;\sum_{c}t_c\,w_c^{\vphantom{*}}w_c^{*}\;=\;T,
+\]
+and conjugating by the invertible $R$ turns it into
+$\sum_{c\in E}h_c^{\vphantom{*}}h_c^{*}\psd R^{*}TR=I_{m-k}$, which is
+domination of $E$ in $\mathcal D^{\perp}$.  Every step is an
+equivalence, and $\lvert E\rvert=m-k$ is the rank of $\mathcal D^{\perp}$,
+so Lemma~\ref{lem:chart} applies at both ends.
+\end{proof}
+
+\begin{corollary}[\LV]\label{cor:dualcell}
+For $k\ge1$ and $m\ge k+1$,
+$\Gtz(m,k)\Leftrightarrow\Gtz(m,m-k)$, and likewise over $\C$.
+\end{corollary}
+
+\begin{proof}
+If every design at $(m,m-k)$ has a dominating $(m-k)$-subset, apply this
+to $\mathcal D^{\perp}$ and complement the resulting subset.  The
+construction is symmetric in the two cells.
+\end{proof}
+
+The dual design is not canonical: $Z$ is determined up to a unitary of
+$\FF^{r}$ and $R$ up to a unitary factor, and both ambiguities act on the
+$h_c$ by a common unitary, which changes no domination.  What is not
+free is the normalization.
+
+\begin{remark}\label{rem:naive}
+Rescaling the kernel rows by the weights rather than the co-weights ---
+that is, taking the dual vectors to be $u_c:=z_c/\sqrt{t_c}$ --- also
+produces a design at $(m,m-k)$, since $\sum_ct_cu_c^{\vphantom{*}}u_c^{*}
+=\sum_cz_c^{\vphantom{*}}z_c^{*}=I_{m-k}$, and it is the construction one
+writes down first.  It does not satisfy the conclusion of
+Theorem~\ref{thm:duality}.  At uniform weights the two agree: for
+$t_c\equiv1/m$ one has $T=\frac{1}{m-1}I$ by \eqref{eq:kernelframe},
+hence $R=\sqrt{m-1}\,I$ and
+$h_c=\sqrt{m-1}\,w_c=\sqrt{m}\,z_c=u_c$.  At non-uniform weights they do
+not.
+\end{remark}
+
+\begin{example}\label{ex:uneven}
+Take $m=2$, $k=1$, $t=(\tfrac15,\tfrac45)$ and $g=(2,\tfrac12)$; the
+Parseval condition holds, $\tfrac15\cdot4+\tfrac45\cdot\tfrac14=1$.  Here
+$v=\bigl(2/\sqrt5,\;1/\sqrt5\bigr)$, of norm one, so
+$\ker P$ is spanned by the unit vector $z=(-1/\sqrt5,\,2/\sqrt5)$, giving
+$\lvert z_1\rvert^2=\tfrac15$ and $\lvert z_2\rvert^2=\tfrac45$.  The
+singleton $\{1\}$ dominates, $g_1^2=4\ge1$, and $\{2\}$ does not,
+$g_2^2=\tfrac14<1$.
+
+The correct dual: $w_1^2=\tfrac{1/5}{4/5}=\tfrac14$,
+$w_2^2=\tfrac{4/5}{1/5}=4$, so
+$T=\tfrac15\cdot\tfrac14+\tfrac45\cdot4=\tfrac{13}{4}$ and
+$h_c^2=w_c^2/T$, that is $h_1^2=\tfrac1{13}$ and $h_2^2=\tfrac{16}{13}$.
+Parseval holds, $\tfrac15\cdot\tfrac1{13}+\tfrac45\cdot\tfrac{16}{13}=1$,
+and the correspondence is exact: $\{2\}$ dominates in $\mathcal
+D^{\perp}$ because $\tfrac{16}{13}\ge1$, matching $\{1\}$ upstairs, and
+$\{1\}$ fails downstairs because $\tfrac1{13}<1$, matching $\{2\}$
+upstairs.
+
+The naive dual of Remark~\ref{rem:naive}: $u_1^2=\tfrac{1/5}{1/5}=1$ and
+$u_2^2=\tfrac{4/5}{4/5}=1$.  Both singletons dominate, so the
+correspondence fails at $C=\{2\}$, which does not dominate upstairs while
+its complement does downstairs.
+\end{example}
+
+\subsection{Corank one}\label{sec:corankone}
+
+Let $m=k+1$ with $k\ge1$.  Then $\ker P$ is a line, spanned by a unit
+vector $z\in\FF^{m}$, and $P=I-zz^{*}$.  Set
+\begin{equation}\label{eq:pvars}
+  p_c\;:=\;\frac{\lvert z_c\rvert^2}{1-t_c}
+  \;=\;\frac{1-t_c\ell_c}{1-t_c},
+\end{equation}
+the second expression by $\lvert z_c\rvert^2=1-P_{cc}=1-s_c$
+(Proposition~\ref{prop:chartid}).  Since $z$ is a unit vector,
+\begin{equation}\label{eq:pnorm}
+  \sum_c p_c\,(1-t_c)\;=\;\sum_c\lvert z_c\rvert^2\;=\;1,
+  \qquad\text{while}\qquad
+  \sum_c (1-t_c)\;=\;m-1\;=\;k .
+\end{equation}
+Thus the $p_c$ have co-weighted mean exactly $1/k$.  Domination is a
+rank-one perturbation of a positive diagonal, and the following criterion
+converts it into a scalar inequality.
+
+\begin{lemma}[\LV]\label{lem:rankone}
+Let $A\pd0$ and let $b$ be a vector, and put $q:=b^{*}A^{-1}b$.  Then
+\[
+  A-bb^{*}\psd0\iff q\le1,
+  \qquad
+  A-bb^{*}\pd0\iff q<1 .
+\]
+\end{lemma}
+
+\begin{proof}
+Put $y:=A^{-1}b$, so that $Ay=b$ and $q=\langle y,Ay\rangle\ge0$.  The
+form of the perturbed matrix is
+$\langle x,(A-bb^{*})x\rangle=\langle x,Ax\rangle-\lvert\langle
+b,x\rangle\rvert^2$.
+
+Suppose $q\le1$.  The form $\langle\cdot,A\cdot\rangle$ is an inner
+product, and $\langle b,x\rangle=\langle Ay,x\rangle=\langle y,Ax\rangle$
+is the $A$-inner product of $y$ and $x$; Cauchy--Schwarz in it gives
+$\lvert\langle b,x\rangle\rvert^2\le q\,\langle x,Ax\rangle$.  Hence
+$\langle x,(A-bb^{*})x\rangle\ge(1-q)\langle x,Ax\rangle$, which is
+nonnegative, and strictly positive for $x\ne0$ when $q<1$.
+
+Conversely, evaluate at $x=y$: the form equals $q-q^2=q(1-q)$.  If
+$A-bb^{*}\psd0$ this is nonnegative, which forces $q\le1$ since $q\ge0$.
+If moreover $q=1$ then $y\ne0$, because $\langle y,Ay\rangle=1$, and the
+form vanishes at $y$, so $A-bb^{*}$ is not positive definite.
+\end{proof}
+
+\begin{theorem}[\LV]\label{thm:corankone}
+Let $m=k+1$, $k\ge1$, over either field.
+\begin{enumerate}
+\item[(i)] The complement of $\{c_0\}$ dominates if and only if
+\begin{equation}\label{eq:corankone}
+  p_{c_0}\;\ge\;\sum_{c} t_c\,p_c ,
+\end{equation}
+and it dominates strictly if and only if the inequality is strict.
+\item[(ii)] $\Gtz(k+1,k)$ and $\GtzC(k+1,k)$ hold.
+\item[(iii)] Equality holds in \eqref{eq:corankone} for every $c_0$ if
+and only if $p_c\equiv1/k$, if and only if
+\begin{equation}\label{eq:tielaw}
+  k\,t_c\,\ell_c \;=\; k-1+t_c \qquad (1\le c\le m),
+\end{equation}
+and in that case every $k$-subset dominates and none dominates strictly.
+\item[(iv)] For every weight vector $t$ on $k+1$ atoms there is a design
+with weights exactly $t$ satisfying \eqref{eq:tielaw}.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) Put $C:=\{1,\dots,m\}\setminus\{c_0\}$, of size $k$.  By
+Lemma~\ref{lem:chart} the subset $C$ dominates precisely when
+$W[C]=(I-zz^{*}-D)[C]\psd0$, that is when $A-bb^{*}\psd0$ with
+$A:=\diag(1-t_c)_{c\in C}$ and $b:=(z_c)_{c\in C}$.  Every $t_c<1$, so
+$A\pd0$ and $A^{-1}=\diag\bigl((1-t_c)^{-1}\bigr)_{c\in C}$, whence
+\[
+  q\;=\;b^{*}A^{-1}b\;=\;\sum_{c\ne c_0}\frac{\lvert
+  z_c\rvert^2}{1-t_c}\;=\;\sum_{c\ne c_0}p_c\;=\;\sum_c p_c-p_{c_0}.
+\]
+Lemma~\ref{lem:rankone} turns domination into $\sum_cp_c-p_{c_0}\le1$,
+and strict domination into the strict inequality.  Expanding
+\eqref{eq:pnorm} as $\sum_cp_c-\sum_ct_cp_c=1$ and substituting yields
+\eqref{eq:corankone}.
+
+(ii) The numbers $t_c$ are nonnegative and sum to one, so the weighted
+mean $\sum_ct_cp_c$ does not exceed $\max_cp_c$.  Any index $c_0$
+attaining the maximum satisfies \eqref{eq:corankone}, and its complement
+is a dominating $k$-subset.  No step used the field.
+
+(iii) Equality at every $c_0$ says that every $p_{c_0}$ equals the fixed
+number $\sum_ct_cp_c$, so $p$ is constant, say $p_c\equiv\bar p$; then
+\eqref{eq:pnorm} gives $\bar pk=1$.  Conversely a constant $p$ makes both
+sides of \eqref{eq:corankone} equal.  For the second equivalence, by
+\eqref{eq:pvars},
+\[
+  p_c=\frac1k
+  \iff k\,(1-t_c\ell_c)=1-t_c
+  \iff k\,t_c\ell_c=k-1+t_c ,
+\]
+which is \eqref{eq:tielaw}; equivalently
+$\ell_c=(k-1+t_c)/(k\,t_c)$.  At corank one every $k$-subset is the
+complement of a singleton, so by (i) equality everywhere means that every
+$k$-subset dominates and none does so strictly.
+
+(iv) Given $t$, the system \eqref{eq:tielaw} prescribes
+$\lvert z_c\rvert^2=(1-t_c)/k$, and these numbers sum to $k/k=1$ by
+\eqref{eq:pnorm}; so put
+\[
+  z_c\;:=\;\sqrt{\frac{1-t_c}{k}}\;>\;0 .
+\]
+It remains to realize $P=I-zz^{*}$ by a design with weight vector $t$,
+which is Lemma~\ref{lem:realize}; explicitly, let $e_1$ be the first
+standard basis vector and $u:=z-e_1$, nonzero because
+$z_1^2=(1-t_1)/k<1$, and put
+\[
+  H\;:=\;I-\frac{2\,uu^{*}}{\lVert u\rVert^2},
+  \qquad \lVert u\rVert^2=2(1-z_1),
+\]
+the Householder reflection.  It is Hermitian and involutive, hence
+unitary, and $He_1=e_1+u=z$ because $u^{*}e_1=z_1-1$.  Its remaining $k$
+columns are therefore an orthonormal basis of $z^{\perp}$; let $V$ be the
+$m\times k$ matrix formed by them and $g_c:=t_c^{-1/2}v_c$ as in
+Lemma~\ref{lem:realize}.  Then $V^{*}V=I_k$ and
+$VV^{*}=HH^{*}-zz^{*}=I-zz^{*}$, so the design so obtained has weight
+vector $t$ and chart $P=I-zz^{*}$, whose diagonal gives
+$t_c\ell_c=1-(1-t_c)/k$, that is \eqref{eq:tielaw}.
+\end{proof}
+
+Two features of this proof matter later.  The argument is insensitive to
+the field, which is why the complex collapse of \S\ref{sec:complex}
+occurs one size higher and not here.  And part (iv) produces a family of
+designs attaining the threshold with no slack, one over each point of the
+open weight simplex; \S\ref{sec:ties} draws the consequence.
+
+\begin{example}\label{ex:tetrachart}
+The tetrahedron of Example~\ref{ex:tetra} is the uniform member at $k=3$.
+There $t_c=\tfrac14$ and \eqref{eq:tielaw} reads
+$3\cdot\tfrac14\cdot\ell_c=3-1+\tfrac14=\tfrac94$, so $\ell_c=3$, as
+computed there.  The kernel vector is
+$z=\bigl(\tfrac12,\tfrac12,\tfrac12,\tfrac12\bigr)$, since
+$\lvert z_c\rvert^2=(1-\tfrac14)/3=\tfrac14$, and the chart is
+\[
+  P\;=\;I_4-\tfrac14J_4,
+  \qquad
+  P_{cc}=\tfrac34=s_c,
+  \qquad
+  P_{cd}=-\tfrac14=\tfrac14\langle g_c,g_d\rangle\ (c\ne d),
+\]
+where $J_4$ is the all-ones matrix; $P^2=I-\tfrac12J+\tfrac1{16}J^2
+=I-\tfrac12J+\tfrac14J=P$ and $\tr P=3$.  Every $p_c$ equals
+$\tfrac{1/4}{3/4}=\tfrac13=1/k$, so \eqref{eq:corankone} holds with
+equality at every $c_0$; by part (iii) every triple dominates and none
+dominates strictly, which is the spectrum $\{1,4,4\}$ recorded in
+Example~\ref{ex:tetra}.
+\end{example}
+
+\begin{remark}\label{rem:ktwo}
+At $k=2$ the law \eqref{eq:tielaw} reads
+$\ell_c=\tfrac12+\tfrac1{2t_c}$.  Its uniform-weight shadow is classical:
+for $t_c=p/n$ the right-hand side is $\tfrac12+\tfrac{n}{2p}$, and these
+are the magnitudes appearing in the equality description of
+\cite[Proposition~1]{Nesterenko2026real}, whose three clusters of sizes
+$p+q+r=n$ correspond to the three vectors of a corank-one design with
+weights $p/n$, $q/n$, $r/n$.
+\end{remark}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/jensen}
+  \caption{Theorem~\ref{thm:corankone} at $(4,3)$.  The pivots $p_c$ of
+  \eqref{eq:pvars} have $t$-weighted mean $1/k$ by \eqref{eq:pnorm}.  Left:
+  when $p$ is not constant the largest pivot exceeds that mean, and by
+  \eqref{eq:corankone} its complement dominates.  Right: when $p$ is
+  constant the tie law \eqref{eq:tielaw} holds, every $k$-subset dominates
+  and none dominates strictly.}
+  \label{fig:jensen}
+\end{figure}
+
+Corank two is reached from here by one further step.
+Corollary~\ref{cor:dualcell} converts it into rank two, and rank two is
+Theorem~\ref{thm:ranktwo}; the conversion is carried out in
+\S\ref{sec:corank}, after its input has been proved.

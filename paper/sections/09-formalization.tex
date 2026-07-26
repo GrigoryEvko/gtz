@@ -1,0 +1,178 @@
+\section{Formalization}\label{sec:formalization}
+
+The development is carried out in Lean~4 over Mathlib.  A theorem number
+marked $\dagger$ is verified there.  Table~\ref{tab:lean} names the declaration
+for the statements it lists, and where a listed statement is assembled from
+several formal statements, all of them are named; a marked statement absent
+from the table is an elementary step of the same development, verified but not
+tabulated separately.  The formal statements are the originals and the
+statements in the text are their transcriptions.  This section says what was
+formalized, under what axiom discipline, and where the formalization stops.
+
+\subsection{What is formalized}\label{sec:whatformal}
+
+The formal definitions are those of \S\ref{sec:first} verbatim.  A design is a
+structure carrying the vectors, the weights, positivity of the weights, their
+normalization, and \eqref{eq:parseval}; domination of a subset is positive
+semidefiniteness of $\SC-I$; and $\Gtz(m,k)$ is the assertion that every
+design of size $m$ and rank $k$ admits a dominating subset of cardinality $k$.
+No nondegeneracy is assumed: repeated atoms and zero atoms are admitted, and
+the results of \S\ref{sec:ties} depend on that.
+
+There is no separate real and complex development.  The structure and the
+elementary theory are written once for scalars in an \texttt{RCLike} field
+with real weights, and $\R$ and $\C$ are instantiations, definitionally so
+over $\R$; Theorems~\ref{thm:corankone} and~\ref{thm:duality} and
+Proposition~\ref{prop:sizerank} are proved at that generality and used at both.
+Where a statement is genuinely field-dependent --- Theorem~\ref{thm:complex}
+and Theorem~\ref{thm:ranktwo} --- it is proved at the field where it holds.
+
+Three further conventions matter for reading Table~\ref{tab:lean}.  The chart of
+\S\ref{sec:chart} is formalized as the projection $P=VV^{*}$ of
+\eqref{eq:chart} together with the equivalence of Lemma~\ref{lem:chart}, and
+the compactification of \S\ref{sec:compactness} as the predicate of
+Definition~\ref{def:chartpoint} on pairs $(P,t)$ with $P$ a symmetric
+idempotent of trace $k$ and $t$ in the closed simplex.  Graphic designs, used
+for the diamond of Example~\ref{ex:diamond}, are formalized through
+\eqref{eq:graphicatom}, so the whitener is an existential and the atoms are
+determined only up to the orthogonal group; what is rational, and what the
+formal statements quantify over, is the graph data.  Finally the stationarity
+system of \S\ref{sec:interior} is a structure bundling
+\eqref{eq:statg}--\eqref{eq:statt} with the active family and the multipliers;
+the results of that section are implications from it.
+
+\begin{table}[htbp]
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Statement & Declaration \\
+\midrule
+Lemma~\ref{lem:trace}          & \texttt{Gtz.trace\_identity} \\
+Lemma~\ref{lem:coparseval}     & \texttt{Gtz.coParsevalOperator\_posDef} \\
+Proposition~\ref{prop:sizerank}& \texttt{Gtz.gtzWeighted\_square} \\
+Proposition~\ref{prop:rankone} & \texttt{Gtz.gtz\_rank\_one} \\
+Lemma~\ref{lem:direction}      & \texttt{Gtz.exists\_atom\_covering\_direction} \\
+Example~\ref{ex:tetra}         & \texttt{Gtz.tetraDesign\_isTie} \\
+Lemma~\ref{lem:chart}          & \texttt{Gtz.fieldDominates\_iff\_posSemidef\_chartBlock\_finset} \\
+Remark~\ref{rem:nogo}          & \texttt{Gtz.inertiaNoGoMatrix\_positive\_direction} and companions \\
+Theorem~\ref{thm:duality}      & \texttt{Gtz.weighted\_naimark\_duality} \\
+Theorem~\ref{thm:corankone}    & \texttt{Gtz.corank\_one\_dominating\_erasure}, \\
+                               & \texttt{Gtz.fieldGtzWeighted\_corank\_one},
+                                 \texttt{Gtz.isTie\_iff\_forall\_pivot\_eq\_one}, \\
+                               & \texttt{Gtz.exists\_realDesign\_exactlyTied},
+                                 \texttt{Gtz.exists\_complexDesign\_exactlyTied} \\
+Theorem~\ref{thm:complex}      & \texttt{Gtz.complexGtzWeighted\_iff\_size\_le\_rank\_add\_one} \\
+\quad (negative half)          & \texttt{Gtz.not\_complexGtzWeighted\_of\_rank\_add\_two\_le\_size} \\
+Theorem~\ref{thm:light}        & \texttt{Gtz.dominating\_of\_light\_atom} \\
+Theorem~\ref{thm:ranktwo}      & \texttt{Gtz.gtz\_rank\_two} \\
+Theorem~\ref{thm:coranktwo}    & \texttt{Gtz.gtzWeighted\_corank\_two} \\
+Corollary~\ref{cor:corank}     & \texttt{Gtz.gtzWeighted\_of\_le\_five} \\
+Theorem~\ref{thm:window}       & \texttt{Gtz.crystallization} \\
+Theorem~\ref{thm:tieseverywhere}& \texttt{Gtz.exists\_isTie\_of\_weights\_of\_classes}, \\
+                               & \texttt{Gtz.splitClassDesign\_isTie},
+                                 \texttt{Gtz.splitTetraDesign\_isTie}, \\
+                               & \texttt{Gtz.splitSevenDesign\_isTie} \\
+Corollary~\ref{cor:nomargin}   & \texttt{Gtz.not\_exists\_card\_posSemidef\_sub\_smul\_one\_of\_isTie}, \\
+                               & \texttt{Gtz.not\_gtzWeightedFloor\_rankThree\_of\_one\_lt} \\
+Example~\ref{ex:diamond}       & \texttt{Gtz.diamondDesign\_isTie}$^{a}$, \\
+                               & \texttt{Gtz.not\_hasParallelPair\_diamondDesign} \\
+Corollary~\ref{cor:noparallel} & \texttt{Gtz.not\_hingeHoldsAtSize\_five\_three},
+                                 \texttt{Gtz.diamondEdgeVector\_eq} \\
+Theorem~\ref{thm:leverageaverage}
+                               & \texttt{Gtz.posSemidef\_leverageWeightedAtomSum\_sub\_one} \\
+Proposition~\ref{prop:jensen}  & \texttt{Gtz.sq\_rank\_le\_expectedElementary\_one} \\
+Proposition~\ref{prop:qonezero}& \texttt{Gtz.mixedCharPoly\_eval\_one\_eq\_zero\_of\_totalTieSupported} \\
+Theorem~\ref{thm:boundary}     & \texttt{Gtz.exists\_chartDominates\_of\_weight\_eq\_zero} \\
+Corollary~\ref{cor:interiorcex}& \texttt{Gtz.weight\_pos\_of\_forall\_not\_chartDominates} \\
+Theorem~\ref{thm:sharp}        & \texttt{Gtz.not\_eventualCompressionLiftClaim} \\
+Proposition~\ref{prop:quadric} & \texttt{Gtz.quadricLaw\_of\_isQuadricStationaryData}, \\
+                               & \texttt{Gtz.coverageLaw\_of\_isQuadricStationaryData}, \\
+                               & \texttt{Gtz.multiplierMatrix\_eq\_of\_isQuadricStationaryData} \\
+Corollary~\ref{cor:singleactive}
+                               & \texttt{Gtz.value\_eq\_rank\_of\_singleActive}, \\
+                               & \texttt{Gtz.not\_isQuadricStationaryData\_of\_singleActive\_of\_value\_lt\_one} \\
+Proposition~\ref{prop:noaggregate}
+                               & \texttt{Gtz.not\_hasUniformTieAggregateSeven}, \\
+                               & \texttt{Gtz.splitSevenDesign\_weightedTieAggregate\_nonpos}, \\
+                               & \texttt{Gtz.closedTieFailure\_inhabited\_seven} \\
+Proposition~\ref{prop:twomoment}& \texttt{Gtz.dominates\_of\_twoMomentGap\_nonneg} \\
+Proposition~\ref{prop:saturated}& \texttt{Gtz.weight\_mul\_value\_eq\_one\_of\_saturatedAtom}, \\
+                               & \texttt{Gtz.one\_le\_value\_of\_saturatedAtom} \\
+Proposition~\ref{prop:icosa}   & \texttt{Gtz.icosa\_twoMomentGap\_eq},
+                                 \texttt{Gtz.icosa\_no\_twoMoment\_certificate}, \\
+                               & \texttt{Gtz.icosaDesign\_strictly\_dominates} \\
+\bottomrule
+\end{tabular}
+\medskip
+\caption{Correspondence between the numbered statements and the formal
+development.  The declaration marked $a$ is proved but does not appear in the
+axiom ledger described in \S\ref{sec:axioms}.}
+\label{tab:lean}
+\end{table}
+
+\subsection{Axiom discipline}\label{sec:axioms}
+
+A ledger module lists, for the declarations of the development, the axioms on
+which each depends, printed by the kernel rather than asserted by the author.
+The permitted set is Mathlib's
+$\{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}$, and
+nothing outside it occurs.  In particular no declaration depends on
+\texttt{sorryAx}: the development contains no incomplete proof.  It contains no
+\texttt{axiom} declaration.  Closed arithmetic over concrete finite index sets
+is discharged by kernel evaluation of decidable propositions, which introduces
+no axiom; no proof is closed by compiled evaluation.
+
+Two qualifications belong here.  First, the ledger is a list, and its coverage
+is exactly what it lists: one declaration, the entry marked $a$ in
+Table~\ref{tab:lean}, is absent from it, and is proved in a module duplicating
+one that the ledger does cover.  Its proof is checked when that module is
+elaborated, but its axiom use is not certified by the ledger.  Second, the
+development uses classical logic freely.  Nothing here is a constructive
+claim.
+
+No numerical assertion in the paper rests on floating-point evaluation.  The
+witnesses of \S\ref{sec:sharp} and Appendix~\ref{app:graveyard} are exact
+rationals in the formal statements and are checked as such; the icosahedral and
+graphic designs of Appendix~\ref{app:data} carry radicals, and the algebraic
+relations \eqref{eq:icosaconst} and \eqref{eq:graphicleverage} that eliminate
+them are what the formal statements use.  Remark~\ref{rem:hygiene} records the
+conditioning phenomenon that makes this discipline necessary rather than
+decorative.
+
+\subsection{Where the formalization stops}\label{sec:boundaries}
+
+Two steps of the argument are not formal, and both lie in
+\S\ref{sec:compactness}--\S\ref{sec:interior}.  They are of different kinds and
+should not be conflated.
+
+The first is the attainment in Theorem~\ref{thm:variational}: a continuous
+function on a compact space attains its minimum.  The space of chart points is
+compact --- a product of a Grassmannian and a closed simplex --- and the
+objective $G$ of Definition~\ref{def:chartpoint} is continuous, being a maximum
+of finitely many least-eigenvalue functions of continuous matrix-valued maps.
+The statement is standard and is used as such.  Its two nontrivial inputs, the
+boundary theorem~\ref{thm:boundary} and its
+corollary~\ref{cor:interiorcex} --- which are what makes the minimizer a design
+rather than a boundary point --- are formal.
+
+The second is the passage from a local minimum to the system
+\eqref{eq:statg}--\eqref{eq:statt}.  The objective is a maximum of finitely
+many functions each of which is concave in $\SC$, so its directional derivative
+is the maximum over the active family of the directional derivatives of its
+members, and each of those is the least eigenvalue of the derivative
+compressed to the corresponding eigenspace.  Nonnegativity of that quantity in
+every admissible direction, together with the spectraplex description of the
+superdifferential of $\lmin$, is what produces the multipliers $\lambda_C$ and
+the matrix $\Lambda$.  Each ingredient is classical
+\cite{Danskin1967,Overton1988,HiriartUrrutyYe1995}, and the framework, with the
+warning that for a maximum of concave functions the subdifferential rule is an
+inclusion rather than an equality, is \cite{Clarke1990}.  The ambient library
+provides none of it.  Accordingly \S\ref{sec:interior} takes the system as its
+hypothesis and formalizes its consequences --- Proposition~\ref{prop:quadric},
+Proposition~\ref{prop:e1} and the exclusions --- rather than deriving the
+system formally from minimality.
+
+The distinction has a consequence for how Theorem~\ref{thm:rankthree} should be
+read.  Its two conjectural inputs are statements about the system, not about
+minimality; a proof of either closes the corresponding cell only in combination
+with the two steps above.

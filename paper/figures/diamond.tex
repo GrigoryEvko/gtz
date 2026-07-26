@@ -1,0 +1,66 @@
+% Left: the graph Gamma = K_4 minus the edge 34, grounded at the vertex 4;
+% the line weight of an edge is proportional to its conductance.
+% Right: the five reduced incidence vectors, drawn in R^3 by the orthographic
+% projection with azimuth 20 and elevation -28 degrees, scaled by 1.5cm:
+%   X = 1.5(-0.3420 y_1 + 0.9397 y_2)
+%   Y = 1.5( 0.4411 y_1 + 0.1606 y_2 + 0.8830 y_3)
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  ver/.style={circle, draw, line width=0.5pt, fill=white, inner sep=0pt,
+              minimum size=4.6mm, font=\small},
+  spine/.style={line width=0.45pt},
+  rim/.style={line width=0.9pt},
+  vec/.style={-{Latex[length=1.9mm,width=1.4mm]}, line width=0.7pt},
+  every node/.style={font=\small}]
+
+% ================= the graph =============================================
+\begin{scope}
+  \coordinate (v1) at (-1.05, 0);
+  \coordinate (v2) at ( 1.05, 0);
+  \coordinate (v3) at ( 0, 1.15);
+  \coordinate (v4) at ( 0,-1.15);
+
+  \draw[rim]   (v1)--(v3) node[midway, above left=-2pt]  {$e_1$};
+  \draw[rim]   (v2)--(v3) node[midway, above right=-2pt] {$e_3$};
+  \draw[rim]   (v1)--(v4) node[midway, below left=-2pt]  {$e_2$};
+  \draw[rim]   (v2)--(v4) node[midway, below right=-2pt] {$e_4$};
+  \draw[spine] (v1)--(v2) node[midway, above] {$e_0$};
+
+  \node[ver] at (v1) {$1$};
+  \node[ver] at (v2) {$2$};
+  \node[ver] at (v3) {$3$};
+  \node[ver] at (v4) {$4$};
+
+  % the ground
+  \draw[line width=0.5pt] (0,-1.40)--(0,-1.58);
+  \draw[line width=0.7pt] (-0.24,-1.58)--(0.24,-1.58);
+  \draw[line width=0.5pt] (-0.14,-1.69)--(0.14,-1.69);
+  \draw[line width=0.5pt] (-0.06,-1.78)--(0.06,-1.78);
+  \node[anchor=west, font=\footnotesize] at (0.31,-1.64) {$y_4=0$};
+
+  \node[font=\footnotesize] at (0,-2.24)
+       {$c=(2,3,3,3,3)$,\quad $t_e=\tfrac15$};
+\end{scope}
+
+% ================= the five incidence vectors =============================
+\begin{scope}[shift={(5.70,0.10)}]
+  \coordinate (O)  at ( 0,0);
+  \coordinate (b1) at (-1.9226, 0.4209);   % (1,-1, 0)
+  \coordinate (b2) at (-0.5130,-0.6627);   % (1, 0,-1)
+  \coordinate (b3) at (-0.5130, 0.6617);   % (1, 0, 0)
+  \coordinate (b4) at ( 1.4096,-1.0836);   % (0, 1,-1)
+  \coordinate (b5) at ( 1.4096, 0.2408);   % (0, 1, 0)
+
+  \draw[vec] (O)--(b1) node[left=1pt]         {$b_0$};
+  \draw[vec] (O)--(b2) node[below left=-2pt]  {$b_1$};
+  \draw[vec] (O)--(b3) node[above left=-2pt]  {$b_2$};
+  \draw[vec] (O)--(b4) node[below right=-2pt] {$b_3$};
+  \draw[vec] (O)--(b5) node[right=1pt]        {$b_4$};
+  \fill (O) circle (1.1pt);
+
+  \node[font=\footnotesize, align=center] at (0,-2.34)
+    {$b_0=(1,-1,0)$,\quad $b_1=(1,0,-1)$,\quad $b_2=(1,0,0)$,\\[1.5pt]
+     $b_3=(0,1,-1)$,\quad $b_4=(0,1,0)$};
+\end{scope}
+
+\end{tikzpicture}

@@ -1,0 +1,241 @@
+\section{Introduction}\label{sec:intro}
+
+Let $\FF$ denote $\R$ or $\C$.  A \emph{weighted design} of size $m$ and
+rank $k$ consists of vectors $g_1,\dots,g_m\in\FF^k$ and weights
+$t_1,\dots,t_m>0$ with $\sum_c t_c=1$ subject to the Parseval condition
+\begin{equation}\label{eq:parseval}
+  \sum_{c=1}^{m} t_c\, g_c^{\vphantom{*}} g_c^{*} \;=\; I_k .
+\end{equation}
+The condition says that the vectors resolve the identity on average.  The
+selection problem asks whether $k$ of them resolve it outright: whether
+there exists $C\subseteq\{1,\dots,m\}$ with $\lvert C\rvert=k$ and
+\begin{equation}\label{eq:dominate}
+  \SC \;:=\; \sum_{c\in C} g_c^{\vphantom{*}} g_c^{*} \;\psd\; I_k .
+\end{equation}
+Such a $C$ is said to \emph{dominate}.  We write $\Gtz(m,k)$ for the
+assertion that every design of size $m$ and rank $k$ over $\R$ admits a
+dominating $k$-subset, and $\GtzC(m,k)$ for its complex analogue.
+
+At uniform weights the problem is classical.  Let $U\in\FF^{m\times k}$
+satisfy $U^{*}U=I_k$, let $u_c^{*}$ be its $c$-th row, and put
+$g_c:=\sqrt m\,u_c$, $t_c:=1/m$; then \eqref{eq:parseval} holds, and for
+$U_C$ the $k\times k$ submatrix on the rows $C$ the requirement
+\eqref{eq:dominate} reads
+\[
+  U_C^{*}U_C^{\vphantom{*}}\;\psd\;\tfrac1m I_k,
+  \qquad\text{that is}\qquad
+  \sigma_{\min}(U_C)\;\ge\;m^{-1/2},
+  \qquad\text{that is}\qquad
+  \lVert U_C^{-1}\rVert_2\;\le\;\sqrt m .
+\]
+That some $k\times k$ submatrix of a matrix with orthonormal columns has
+inverse of spectral norm at most $\sqrt m$ is the conjecture of Goreinov,
+Tyrtyshnikov and Zamarashkin \cite{GTZ1997}, raised there in the course of
+bounding the error of pseudoskeleton approximation.  It is the exact
+analytic content of the maximal-volume principle, and it remains open.
+
+What is provable by that principle is the following \cite{GZT1997,GT2001}.
+Among the finitely many $k$-subsets choose one of maximal volume, that is
+one maximizing $\lvert\det U_C\rvert$.  It is nonsingular: by the
+Cauchy--Binet formula
+$\sum_{\lvert C\rvert=k}\lvert\det U_C\rvert^2=\det(U^{*}U)=1$, so the
+volumes do not all vanish.  Put $B:=UU_C^{-1}$.  Replacing the
+$j$-th row of $U_C$ by the $r$-th row of $U$ replaces that row by its
+expansion $\sum_i B_{ri}(U_C)_i$ in the selected rows, and multilinearity
+leaves one surviving term, so the new determinant is $B_{rj}\det U_C$.  An
+entry of $B$ of modulus greater than $1$ would therefore name a $k$-subset
+of strictly larger volume, and maximality gives $\lvert B_{rj}\rvert\le1$
+throughout.  The rows of $B$ indexed by $C$ form $I_k$, whence
+\[
+  \tr\bigl((U_C^{*}U_C^{\vphantom{*}})^{-1}\bigr)
+  \;=\;\lVert U_C^{-1}\rVert_F^2
+  \;=\;\lVert B\rVert_F^2
+  \;\le\;k+k(m-k),
+\]
+using $\lVert UX\rVert_F=\lVert X\rVert_F$ in the middle step.  Moreover
+$U_C^{*}U_C^{\vphantom{*}}\preceq U^{*}U=I_k$, so
+$(U_C^{*}U_C^{\vphantom{*}})^{-1}\psd I_k$; a Hermitian $k\times k$ matrix
+dominating the identity has all its eigenvalues at least $1$ and so has
+largest eigenvalue at most its trace diminished by $k-1$.  Therefore
+$\lVert U_C^{-1}\rVert_2^2\le k(m-k)+1$ and
+$\SC\psd\frac{m}{k(m-k)+1}I_k$.  The bound and the conjecture are related
+by the identity
+\begin{equation}\label{eq:deficit}
+  k(m-k)+1\;=\;m\;+\;(k-1)(m-k-1),
+\end{equation}
+a ring identity in the substitution $k=a+1$, $m-k=b+1$.  The deficit
+$(k-1)(m-k-1)$ vanishes precisely when $k=1$ or $m=k+1$, and is positive
+otherwise; at $(m,k)=(7,3)$ it equals $6$, so that the maximal-volume
+principle delivers $\sigma_{\min}^2\ge1/13$ where $1/7$ is asked.  Thus
+the range in which the classical argument already suffices is exactly
+\begin{equation}\label{eq:elementary}
+  k\le1\quad\text{or}\quad m\le k+1 ,
+\end{equation}
+and every remaining case of the conjecture demands something the volume
+count does not supply.
+
+Beyond \eqref{eq:elementary} the known cases are few.  Nesterenko
+\cite{Nesterenko2023} settled $(m,k)=(4,2)$ over $\R$ by an argument in
+Pl\"ucker coordinates, and reformulated the rank-two problem as an
+isoperimetric question for closed polygons \cite{Nesterenko2024}; Sengupta
+and Pautov \cite{SenguptaPautov2026} then settled rank two over $\R$ for
+every $m$.  The equality locus at rank two over $\R$ was described by
+Nesterenko \cite{Nesterenko2026real}, and configurations attaining the
+bound $1$ at every pair $(m,k)$ were constructed by him from the star
+spaces of series-parallel graphs \cite{Nesterenko2025}.  Over $\C$ the
+conjecture is false at rank two: at uniform weights some pair always
+satisfies $\SC\psd\alpha I_2$ with $\alpha=2-2/\sqrt3<1$, and $\alpha$
+cannot be raised, being attained when $4\mid m$ and approached otherwise
+\cite{Nesterenko2026complex}.  The restricted-invertibility theorems
+\cite{BourgainTzafriri1987,SpielmanSrivastava2012,MSS2022} select subsets
+of size strictly below the rank with a least eigenvalue controlled by a
+stable-rank ratio; the control degenerates as the size of the subset
+approaches the rank, which is the whole of the present range.  Finally,
+maximizing the volume is NP-hard and NP-hard to approximate
+\cite{CivrilMagdonIsmail2009}, so the selection principle is an existence
+statement and not an algorithm; on the algorithmic side one settles for
+the polynomial factors of \cite{GuEisenstat1996}.
+
+\medskip
+
+This paper studies the problem with general weights.  Two things are
+gained.  First, the weights become a coordinate: the vectors and the
+weights may be varied independently, subject to \eqref{eq:parseval},
+and the extremal configurations then appear not as isolated matrices but
+as sections over the weight simplex.  Second, the substitution
+$v_c:=\sqrt{t_c}\,g_c$ turns \eqref{eq:parseval} into the statement that
+the matrix $V$ with rows $v_c^{*}$ is an isometry, and \eqref{eq:dominate}
+into a comparison between a principal block of the projection $P=VV^{*}$
+and the corresponding block of $\diag(t)$.  In those coordinates the
+problem is a question about a compact set, which is what makes a
+variational treatment possible.  For each fixed pair $(m,k)$ the weighted
+statement is formally stronger than the classical one; over all sizes the
+two are equivalent, since a design with rational weights is a uniform
+design of larger size with repeated vectors, and arbitrary weights follow
+by a limiting argument.
+
+\medskip
+
+We prove four things.
+
+The first is a complete answer over $\C$.  For $k\ge2$ selection succeeds
+in every complex design exactly when $m\le k+1$, and for $k\le1$ it
+succeeds always (Theorem~\ref{thm:complex}).  Comparison with
+\eqref{eq:elementary} is exact: over $\C$ the conjecture is true precisely
+where the maximal-volume count already proves it, and false everywhere
+else.  The complex problem is thereby closed, and with it the possibility
+of a field-independent proof of the real conjecture.
+
+The second is the accessible part of the real problem.  Rank two holds at
+every size (Theorem~\ref{thm:ranktwo}), corank one and corank two hold at
+every rank (Theorems~\ref{thm:corankone} and~\ref{thm:coranktwo}), and at
+each fixed rank the problem is finite: if $\Gtz(m,k)$ holds for all
+$m\le k(k+1)/2+1$ then it holds for all $m$ (Theorem~\ref{thm:window}).
+The bound is one more than the dimension of the space of real symmetric
+$k\times k$ matrices, and it is where a support-reduction argument applied
+to \eqref{eq:parseval} begins to bite.  At rank three the surviving cells
+are $(6,3)$ and $(7,3)$, and no symmetry of the problem reduces the pair
+further: $(6,3)$ is self-dual and $(7,3)$ is carried by duality to
+$(7,4)$, of corank three (Corollary~\ref{cor:twocells}).
+
+The third is the structure of the equality locus.  The threshold in
+\eqref{eq:dominate} is attained: at every size $m\ge k+1$ there are
+designs in which some $k$-subset dominates and none dominates strictly
+(Theorem~\ref{thm:tieseverywhere}).  At corank one the designs attaining
+it are classified, and they form a section over the whole open weight
+simplex, hence a set of dimension $m-1$ (Theorem~\ref{thm:corankone}).
+The regular tetrahedron of Example~\ref{ex:tetra} is one of them, and at
+$(5,3)$ there is another whose vectors are pairwise non-parallel
+(Example~\ref{ex:diamond}), so the locus is not exhausted by the designs
+obtained from smaller ones by splitting a vector.
+
+The fourth is a variational principle for the real problem.  The space of
+designs is not compact --- the weights range over an open simplex, and by
+\eqref{eq:parseval} a vector diverges as its weight tends to zero --- but
+in the coordinates $(P,t)$ it is the interior of a compact space on which
+the objective $\max_{\lvert C\rvert=k}\lmin(W[C])$, $W=P-\diag(t)$,
+extends continuously.  We show that the boundary of that compactification
+is free: granting the same statement at $(m-1,k)$ and at $(m-1,k-1)$,
+every point with a vanishing weight carries a dominating $k$-subset
+(Theorem~\ref{thm:boundary}).  Under those two hypotheses, if $\Gtz(m,k)$
+fails then the objective attains its minimum at an interior point, that
+is at a genuine weighted design (Theorem~\ref{thm:variational}); at
+$(6,3)$ both hypotheses are theorems of \S\ref{sec:real}, and at $(7,3)$
+one of them is the cell $(6,3)$.  What remains of rank three is the
+exclusion of critical points below the threshold at the two surviving
+cells, and \S\ref{sec:interior} derives the system such a point satisfies:
+a multiplier $\Lambda$ obeying a quadric law $g_c^{*}\Lambda g_c=v$ at
+every $c$ together with a coverage law, and three exclusions cutting down
+the possible configurations of active subsets.  The objective minimized in
+\S\ref{sec:compactness} and the one differentiated in \S\ref{sec:interior}
+are related by a congruence and need not share their minimizers; the
+passage between them is isolated as a hypothesis
+(Definition~\ref{def:extremalcex}) and carried by
+Theorem~\ref{thm:rankthree} alone.
+
+\medskip
+
+One fact organizes everything.  Because the threshold is attained, and
+attained on a set of full dimension in the weights, no proof of $\Gtz$ can
+carry a uniform margin: for every $\varepsilon>0$ there are designs
+admitting no $k$-subset with $\SC\psd(1+\varepsilon)I_k$
+(Corollary~\ref{cor:nomargin}).  This is a constraint on the form of any
+solution.  An induction
+on the size or on the rank cannot transport a quantitative slack across a
+step, because there is none to transport at the source.  A certificate for
+\eqref{eq:dominate} --- a sum-of-squares identity, a dual multiplier, a
+determinantal or interlacing bound --- must be exact on the extremal
+locus, so that any strategy proving a strict inequality is refuted before
+it is attempted.  A minimizing sequence cannot be handled term by term,
+since the identity available at a degenerate limit fails at every positive
+weight, however small (Theorem~\ref{thm:sharp}); this is why the
+compactification, and not a density argument, is what the variational
+principle needs.  The strategies excluded for this reason, and the exact
+rational witnesses refuting them, are collected in
+Appendix~\ref{app:graveyard}.
+
+What is not proved is stated as such.  The two cells $(6,3)$ and $(7,3)$
+remain open (Conjectures~\ref{conj:sixthree} and~\ref{conj:seventhree}),
+and with them the whole of the real problem at rank three and above; the
+sharp constant over $\C$ at rank three is bracketed but not determined
+(Remark~\ref{rem:sharpc}).  The problems left open, and the shape a
+solution must have, are collected in \S\ref{sec:open}.
+
+\subsection*{Markers}
+
+A theorem number carrying $\dagger$ is machine-verified;
+\S\ref{sec:formalization} gives the correspondence.  A number carrying
+$\ast$ rests on a conjecture, stated at that point and not proved here; a
+hypothesis discharged inside the paper is carried in the statement and
+does not trigger the marker.  Unmarked statements are proved in the
+ordinary way.  Every numerical assertion below is exact rational or exact
+algebraic arithmetic.
+
+\subsection*{Notation}
+
+For $x,y\in\FF^k$ we write $\langle x,y\rangle:=x^{*}y$, conjugate-linear
+in the first argument and linear in the second, and
+$\lVert x\rVert^2=\langle x,x\rangle$.  Throughout,
+\[
+  \ell_c:=\lVert g_c\rVert^2,\qquad s_c:=t_c\ell_c ;
+\]
+$\ell_c$ is the squared length of the $c$-th vector and $s_c$ its
+\emph{leverage score}.  For a Hermitian matrix $A$ we write $A\psd0$ for
+positive semidefiniteness and $A\pd0$ for positive definiteness, $A[C]$
+for the principal submatrix on the index set $C$, $\lmin$ and $\lmax$ for
+the extreme eigenvalues, and $\operatorname{spec}A$ for the spectrum.  A
+\emph{$k$-subset} always means a subset of $\{1,\dots,m\}$ of cardinality
+$k$.  The \emph{corank} of a cell $(m,k)$ is $m-k$.  A pair $(m,k)$ with
+$m<k$ carries no design (Lemma~\ref{lem:span}), so every statement below
+that quantifies over such a pair is empty.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/board}
+  \caption{The decision board.  Rows are the rank $k$, columns the size
+  $m$; cells with $m<k$ carry no design.  Over $\R$ the two open cells at
+  rank three are $(6,3)$ and $(7,3)$; the hatched region reduces to them
+  by Theorem~\ref{thm:window}.  Over $\C$ the answer is $m\le k+1$ for
+  every $k\ge2$.}
+  \label{fig:board}
+\end{figure}

@@ -1,0 +1,728 @@
+\section{The real problem: decided cells}\label{sec:real}
+
+Over $\R$ the mechanisms of \S\ref{sec:first} decide rank one and the
+square $m=k$, and duality (Theorem~\ref{thm:duality}) converts corank one
+and corank two into rank one and rank two.  Two things are missing: rank
+two itself, and any control on the size.  This section supplies both, and
+the two supplies are instances of one device --- an operation producing
+from a design a smaller design whose dominating subsets transport back.
+
+Two such operations exist, and they differ in exactly one respect.
+Deleting a vector of length at most one (\S\ref{sec:light}) lowers the
+size by one but moves the remaining vectors, by a congruence; the
+transport back is then an identity between quadratic forms, and it is
+available only because the deleted vector was short.  Carathéodory
+reduction (\S\ref{sec:crystal}) lowers the size to at most $k(k+1)/2+1$
+and leaves the vectors where they are; the transport back is immediate,
+because $\SC$ in \eqref{eq:dominate} does not involve the weights.  The
+first operation stalls exactly when every vector is long, and rank two is
+the rank at which the stalled case can be settled outright
+(\S\ref{sec:ranktwo}).
+
+\subsection{Deleting a light vector}\label{sec:light}
+
+\begin{definition}\label{def:light}
+A vector of a design is \emph{light} if $\ell_c\le1$ and \emph{heavy} if
+$\ell_c>1$.  The design is \emph{all-heavy} if every one of its vectors is
+heavy.
+\end{definition}
+
+By Lemma~\ref{lem:trace} the $t$-weighted mean of the $\ell_c$ equals $k$,
+so at rank $k\ge2$ a design always has a heavy vector; whether it has a
+light one is the dichotomy exploited here.  The elementary fact behind the
+deletion is the rank-one criterion
+\begin{equation}\label{eq:schurone}
+  I_k-g^{\vphantom{T}}g^{T}\psd0
+  \quad\Longleftrightarrow\quad
+  \lVert g\rVert^2\le1 ,
+\end{equation}
+whose forward direction is the value of the form at $g$, namely
+$\lVert g\rVert^2(1-\lVert g\rVert^2)$, and whose converse is
+Cauchy--Schwarz: $\langle g,u\rangle^2\le\lVert g\rVert^2\lVert
+u\rVert^2\le\lVert u\rVert^2$.
+
+\begin{theorem}[\LV]\label{thm:light}
+Let $m\ge2$ and let $D$ be a design at $(m,k)$ possessing a light vector.
+If $\Gtz(m-1,k)$ holds, then $D$ admits a dominating $k$-subset.
+\end{theorem}
+
+\begin{proof}
+Let $\ell_d\le1$.  Since $m\ge2$ and all weights are positive with
+$\sum_ct_c=1$, we have $t_d<1$.
+
+\emph{Step 1: the residual Parseval mass is positive definite.}  Put
+$P:=I_k-t_d\,g_d^{\vphantom{T}}g_d^{T}$, which by \eqref{eq:parseval} is
+$\sum_{c\ne d}t_c\,g_c^{\vphantom{T}}g_c^{T}$.  For $u\ne0$,
+\[
+  u^{T}Pu=\lVert u\rVert^2-t_d\langle g_d,u\rangle^2
+  \;\ge\;(1-t_d\ell_d)\lVert u\rVert^2\;>\;0 ,
+\]
+using Cauchy--Schwarz and $t_d\ell_d\le t_d<1$.  Write $P=LL^{T}$ with $L$
+invertible and set $R:=L^{-T}$, so that
+\begin{equation}\label{eq:whiten}
+  R^{T}PR=I_k ,\qquad \det R\ne0 .
+\end{equation}
+
+\emph{Step 2: the deflated design.}  On the index set
+$E:=\{1,\dots,m\}\setminus\{d\}$ put
+\[
+  g'_c:=\sqrt{1-t_d}\;R^{T}g_c ,
+  \qquad
+  t'_c:=\frac{t_c}{1-t_d}
+  \qquad (c\in E).
+\]
+The weights are positive and sum to one, because
+$\sum_{c\in E}t_c=1-t_d$.  For the Parseval condition the factor
+$1-t_d$ cancels against the reweighting, and the congruence identity
+$(R^{T}g)(R^{T}g)^{T}=R^{T}(g^{\vphantom{T}}g^{T})R$ gives
+\[
+  \sum_{c\in E}t'_c\,g'^{\vphantom{T}}_cg'^{T}_c
+  \;=\;\sum_{c\in E}t_c\,R^{T}g_c^{\vphantom{T}}g_c^{T}R
+  \;=\;R^{T}PR\;=\;I_k
+\]
+by \eqref{eq:whiten}.  So $\bigl((g'_c),(t'_c)\bigr)$ is a design at
+$(m-1,k)$.
+
+\emph{Step 3: transport.}  By hypothesis some $C\subseteq E$ with
+$\lvert C\rvert=k$ dominates in the deflated design.  Its subset sum is
+$\sum_{c\in C}g'^{\vphantom{T}}_cg'^{T}_c=(1-t_d)R^{T}\SC R$, so
+domination reads
+\[
+  R^{T}\bigl((1-t_d)\SC-P\bigr)R\;\psd\;0 ,
+\]
+and congruence by the invertible $R$ gives $(1-t_d)\SC-P\psd0$.  The
+identity
+\begin{equation}\label{eq:reassemble}
+  \SC-I_k
+  \;=\;\frac{1}{1-t_d}\Bigl[\bigl((1-t_d)\SC-P\bigr)
+        \;+\;t_d\bigl(I_k-g_d^{\vphantom{T}}g_d^{T}\bigr)\Bigr]
+\end{equation}
+is verified by expanding $P$: the two occurrences of
+$t_d\,g_d^{\vphantom{T}}g_d^{T}$ cancel and the bracket equals
+$(1-t_d)(\SC-I_k)$.  Its first summand is positive semidefinite by the
+previous display, its second by \eqref{eq:schurone} and $\ell_d\le1$, and
+the scalar is positive.  Hence $C$ dominates in $D$.
+\end{proof}
+
+Lightness is used exactly once, in the second summand of
+\eqref{eq:reassemble}.  Everything else is bookkeeping around a
+congruence.  Iterating the theorem removes light vectors one at a time:
+
+\begin{corollary}[\LV]\label{cor:heavy}
+Let $k\ge1$.  If every all-heavy design of rank $k$, of whatever size,
+admits a dominating $k$-subset, then $\Gtz(m,k)$ holds for every $m$.
+\end{corollary}
+
+\begin{proof}
+Strong induction on $m$.  A design at $(m,k)$ has $m\ge k$.  If $m=k$,
+apply Proposition~\ref{prop:sizerank}.  If $m>k$ and some vector is light,
+then $m-1\ge k\ge1$ and $m\ge2$, so Theorem~\ref{thm:light} applies with
+the induction hypothesis $\Gtz(m-1,k)$.  Otherwise the design is
+all-heavy and the assumption applies.
+\end{proof}
+
+The tetrahedron of Example~\ref{ex:tetra} has $\ell_c=3$ for every $c$ and
+is therefore all-heavy: the deletion is unavailable precisely at the
+design where, by Example~\ref{ex:tetra}, every dominating triple has
+$\lmin(\SC)=1$.  This is the first appearance of a pattern which recurs
+throughout: the reductions consume the interior of the problem and leave
+the extremal locus of \S\ref{sec:ties} standing.
+
+\subsection{Rank two}\label{sec:ranktwo}
+
+Fix a design at $(m,2)$ and write $g_c=(x_c,y_c)$.  Identify $\R^2$ with
+$\C$ by $(x,y)\mapsto x+iy$ --- a device for the computation below, with
+no relation to the complex problem of \S\ref{sec:complex} --- and let
+$\eta_c\in\R^2$ correspond to the square of the complex number attached to
+$g_c$:
+\begin{equation}\label{eq:doubleangle}
+  \eta_c\;:=\;\bigl(x_c^2-y_c^2,\;2x_cy_c\bigr),
+  \qquad
+  \nu_c\;:=\;\ell_c-2 .
+\end{equation}
+Squaring doubles arguments and squares moduli, so $\lVert
+\eta_c\rVert=\ell_c$; and since the complex number attached to $g_c$ times
+the conjugate of the one attached to $g_d$ has real part
+$a_{cd}:=\langle g_c,g_d\rangle$ and imaginary part $\pm b_{cd}$, where
+\[
+  b_{cd}\;:=\;x_cy_d-x_dy_c ,
+\]
+taking real parts of the square of that product gives
+\begin{equation}\label{eq:wdot}
+  \langle \eta_c,\eta_d\rangle\;=\;a_{cd}^2-b_{cd}^2 ,
+  \qquad
+  a_{cd}^2+b_{cd}^2\;=\;\ell_c\ell_d ,
+\end{equation}
+the second identity being Lagrange's.  The three scalar components of
+\eqref{eq:parseval} at $k=2$ read $\sum_ct_cx_c^2=\sum_ct_cy_c^2=1$ and
+$\sum_ct_cx_cy_c=0$, so that
+\begin{equation}\label{eq:balance2}
+  \sum_c t_c\,\eta_c\;=\;0,
+  \qquad
+  \sum_c t_c\,\ell_c\;=\;2,
+  \qquad
+  \sum_c t_c\,\nu_c\;=\;0 .
+\end{equation}
+The design is thus centred in the squared picture, and its centred lengths
+are centred as well.  These three identities are the only use made of
+\eqref{eq:parseval} in this subsection.
+
+\begin{example}\label{ex:trine2}
+Let $u_0,u_1,u_2\in\R^2$ be unit vectors at mutual angles $2\pi/3$ and put
+$g_c=\sqrt2\,u_c$, $t_c=\tfrac13$.  From $\sum_cu_c^{\vphantom{T}}u_c^{T}
+=\tfrac32I_2$ one gets $\sum_ct_c\,g_c^{\vphantom{T}}g_c^{T}=I_2$, so this
+is a design at $(3,2)$, with $\ell_c=2$ and $\nu_c=0$.  It is the member at
+$k=2$, $t_c=\tfrac13$ of the extremal family of
+Theorem~\ref{thm:corankone}: \eqref{eq:tielaw} reads
+$2\cdot\tfrac13\cdot2=\tfrac43=2-1+\tfrac13$.  Each $\eta_c$ has length $2$,
+and the three of them again make angles $2\pi/3$; every pair
+$C=\{c,d\}$ has
+\[
+  \SC\;=\;3I_2-2\,u_e^{\vphantom{T}}u_e^{T},
+  \qquad
+  \operatorname{spec}\SC=\{1,3\},
+\]
+where $e$ is the third index.  Every pair dominates, and every pair
+dominates with least eigenvalue exactly $1$.  We call this design the rank-two trine.
+\end{example}
+
+The whole of rank two rests on one scalar quantity attached to a pair.
+
+\begin{definition}\label{def:obstruction}
+For indices $c,d$ of a design at $(m,2)$ put
+\begin{equation}\label{eq:obstruction}
+  K_{cd}\;:=\;\langle \eta_c,\eta_d\rangle-\nu_c\nu_d+2 .
+\end{equation}
+\end{definition}
+
+\begin{lemma}\label{lem:pairobs}
+Let $c\ne d$ with $\ell_c+\ell_d>2$.  Then $\{c,d\}$ dominates if and only
+if $K_{cd}\le0$.
+\end{lemma}
+
+\begin{proof}
+Let $M$ be the $2\times2$ matrix with columns $g_c,g_d$, so that
+$X:=S_{\{c,d\}}-I_2=MM^{T}-I_2$.  For a $2\times2$ matrix $A$ one has
+$\det(A-I)=\det A-\tr A+1$; with $A=MM^{T}$, $\det A=(\det M)^2=b_{cd}^2$
+and $\tr A=\ell_c+\ell_d$, so
+\begin{equation}\label{eq:pairdet}
+  \det X\;=\;b_{cd}^2-\ell_c-\ell_d+1 .
+\end{equation}
+On the other hand, eliminating $a_{cd}^2$ from \eqref{eq:wdot} in
+\eqref{eq:obstruction} and using $\nu=\ell-2$,
+\[
+  K_{cd}
+  =\ell_c\ell_d-2b_{cd}^2-(\ell_c-2)(\ell_d-2)+2
+  =-2\bigl(b_{cd}^2-\ell_c-\ell_d+1\bigr)
+  =-2\det X .
+\]
+Now $\tr X=\ell_c+\ell_d-2>0$.  A symmetric $2\times2$ matrix of positive
+trace is positive semidefinite exactly when its determinant is
+nonnegative: if $\det X\ge0$ then $X_{00}X_{11}\ge X_{01}^2\ge0$, so
+$X_{00}$ and $X_{11}$ have the same sign and the positive trace makes both
+nonnegative, whereupon either $X_{00}=0$ --- forcing $X_{01}=0$ and
+leaving the diagonal matrix $\diag(0,X_{11})$ --- or
+$X_{00}\,x^{T}Xx=(X_{00}x_0+X_{01}x_1)^2+(\det X)x_1^2\ge0$; the converse
+is the $2\times2$ minor.  Hence $X\psd0$ if and only if $K_{cd}\le0$.
+\end{proof}
+
+At the rank-two trine of Example~\ref{ex:trine2} one has $\nu_c=0$ and $\langle
+\eta_c,\eta_d\rangle=4\cos(4\pi/3)=-2$ for $c\ne d$, so $K_{cd}=0$ for every
+pair: consistent with Lemma~\ref{lem:pairobs} and with
+$\det(\SC-I)=0\cdot2=0$.  The inequality $K_{cd}\le0$ is therefore an
+equality on a design, and no argument below may improve it to a strict
+inequality.
+
+In an all-heavy design every pair has $\ell_c+\ell_d>2$, so if no pair
+dominates then Lemma~\ref{lem:pairobs} gives
+\begin{equation}\label{eq:allfail}
+  K_{cd}>0\qquad\text{for all }c\ne d .
+\end{equation}
+The contradiction is produced in two steps: a linear identity satisfied
+by $K$, and a choice of test vector.
+
+\begin{lemma}\label{lem:rowsum}
+For every $c$ one has $\sum_d t_dK_{cd}=2$, and $K_{cd}=K_{dc}$.
+Consequently, for every $u\colon\{1,\dots,m\}\to\R$,
+\begin{equation}\label{eq:core}
+  \sum_{c,d}t_ct_dK_{cd}u_cu_d
+  \;=\;2\sum_c t_cu_c^2
+      \;-\;\tfrac12\sum_{c,d}t_ct_dK_{cd}(u_c-u_d)^2 .
+\end{equation}
+If \eqref{eq:allfail} holds and $u$ is not constant, the left side of
+\eqref{eq:core} is strictly smaller than $2\sum_ct_cu_c^2$.
+\end{lemma}
+
+\begin{proof}
+Summing \eqref{eq:obstruction} against $t_d$ and using the three balance
+identities \eqref{eq:balance2},
+\[
+  \sum_d t_dK_{cd}
+  =\Bigl\langle \eta_c,\sum_d t_d\eta_d\Bigr\rangle
+   -\nu_c\sum_d t_d\nu_d+2\sum_d t_d
+  =0-0+2 .
+\]
+Symmetry of $K$ is symmetry of the inner product.  For \eqref{eq:core},
+expand $(u_c-u_d)^2$ and use the row sum twice:
+\[
+  \sum_{c,d}t_ct_dK_{cd}u_c^2
+  =\sum_c t_cu_c^2\sum_d t_dK_{cd}
+  =2\sum_c t_cu_c^2 ,
+\]
+and likewise for $u_d^2$ by symmetry, so the correction term equals
+$4\sum_ct_cu_c^2$ minus twice the left side.  The diagonal terms of the
+correction vanish; if $u$ is nonconstant there are $c\ne d$ with $u_c\ne
+u_d$, and \eqref{eq:allfail} makes the corresponding summand strictly
+positive.
+\end{proof}
+
+Identity \eqref{eq:core} is where the balance identities
+\eqref{eq:balance2} are spent, and it is sharp: the correction term
+vanishes identically when $K\equiv0$, as at the rank-two trine.  It remains to
+produce a nonconstant $u$ for which the left side of \eqref{eq:core} is at
+least $2\sum_ct_cu_c^2$.  The test vectors are the linear functionals of
+the squared picture, $u_c=\langle \eta_c,r\rangle$, and the two lemmas below
+treat the two possible positions of the family $(\eta_c)$ in the plane.
+
+\begin{lemma}\label{lem:collinear}
+Let a design at $(m,2)$ be all-heavy and suppose the vectors $\eta_c$ all lie
+on one line through the origin.  Then some pair dominates.
+\end{lemma}
+
+\begin{proof}
+Let $r\ne0$ be orthogonal to that line and let $r^{\perp}$ be $r$ rotated
+by $\pi/2$, so every $\eta_c$ is a multiple of $r^{\perp}$.  Put
+$\mu_c:=\langle \eta_c,r^{\perp}\rangle$; then $\lvert\mu_c\rvert=\lVert
+\eta_c\rVert\lVert r\rVert=\ell_c\lVert r\rVert\ne0$.  By
+\eqref{eq:balance2} $\sum_ct_c\mu_c=0$, and the weights are positive, so
+the $\mu_c$ take both signs; choose $\mu_p>0>\mu_q$.  Since
+$\eta_p=(\mu_p/\lVert r\rVert^2)\,r^{\perp}$ and likewise for $q$,
+\[
+  \langle \eta_p,\eta_q\rangle=\frac{\mu_p\mu_q}{\lVert r\rVert^2}<0,
+  \qquad
+  \lvert\langle \eta_p,\eta_q\rangle\rvert=\lVert \eta_p\rVert\lVert \eta_q\rVert
+  =\ell_p\ell_q ,
+\]
+whence $\langle \eta_p,\eta_q\rangle=-\ell_p\ell_q$ and
+\[
+  K_{pq}=-\ell_p\ell_q-(\ell_p-2)(\ell_q-2)+2
+        =-2(\ell_p-1)(\ell_q-1)<0
+\]
+because both vectors are heavy.  By Lemma~\ref{lem:pairobs} the pair
+$\{p,q\}$ dominates.
+\end{proof}
+
+\begin{lemma}\label{lem:spanning}
+Let a design at $(m,2)$ be all-heavy and suppose the vectors $\eta_c$ span
+$\R^2$.  Then some pair dominates.
+\end{lemma}
+
+\begin{proof}
+Introduce the second moments of the squared picture,
+\[
+  \Omega:=\sum_c t_c\,\eta_c^{\vphantom{T}}\eta_c^{T},
+  \qquad
+  \zeta:=\sum_c t_c\,\nu_c\eta_c,
+  \qquad
+  \sigma:=\sum_c t_c\,\nu_c^2 ,
+\]
+so that $\Omega$ is a symmetric $2\times2$ matrix with $r^{T}\Omega
+r=\sum_ct_c\langle \eta_c,r\rangle^2$.  This vanishes only if every $\langle
+\eta_c,r\rangle$ does, so the spanning hypothesis gives $\Omega\pd0$.  Since
+$\lVert \eta_c\rVert=\ell_c$, the second and third identities of
+\eqref{eq:balance2} give
+\begin{equation}\label{eq:tromega}
+  \sigma=\sum_c t_c(\ell_c-2)^2=\sum_c t_c\ell_c^2-4\sum_ct_c\ell_c+4
+        =\tr\Omega-4 .
+\end{equation}
+Put
+\[
+  \Psi\;:=\;\Omega^2-\zeta\zeta^{T}-2\Omega .
+\]
+
+\emph{Some direction is nonnegative for $\Psi$.}  Let $\xi:=\Omega^{-1}
+\zeta$.  Expanding the square and using
+$\sum_ct_c\langle \eta_c,\xi\rangle^2=\xi^{T}\Omega\xi=\zeta^{T}
+\Omega^{-1}\zeta$ and $\sum_ct_c\nu_c\langle \eta_c,\xi\rangle=\langle
+\zeta,\xi\rangle=\zeta^{T}\Omega^{-1}\zeta$,
+\begin{equation}\label{eq:residual}
+  \sum_c t_c\bigl(\langle \eta_c,\xi\rangle-\nu_c\bigr)^2
+  \;=\;\sigma-\zeta^{T}\Omega^{-1}\zeta ,
+\end{equation}
+so $\zeta^{T}\Omega^{-1}\zeta\le\sigma$: the residual of the least-squares
+fit of $\nu$ by a linear functional of $\eta$ is nonnegative.  Choose $R$
+invertible with $R^{T}\Omega R=I_2$, that is $RR^{T}=\Omega^{-1}$, and let
+$r_1,r_2$ be its columns.  Then $\tr(R^{T}\Omega^2R)
+=\tr(\Omega^2RR^{T})=\tr\Omega$ and $\tr(R^{T}\zeta\zeta^{T}R)
+=\zeta^{T}\Omega^{-1}\zeta$, so by \eqref{eq:tromega} and
+\eqref{eq:residual}
+\[
+  r_1^{T}\Psi r_1+r_2^{T}\Psi r_2
+  =\tr(R^{T}\Psi R)
+  =\tr\Omega-\zeta^{T}\Omega^{-1}\zeta-4
+  =\sigma-\zeta^{T}\Omega^{-1}\zeta
+  \;\ge\;0 .
+\]
+Hence $r^{T}\Psi r\ge0$ for $r:=r_1$ or $r:=r_2$, and $r\ne0$ because $R$
+is invertible.
+
+\emph{The test vector.}  Suppose no pair dominates, so
+\eqref{eq:allfail} holds, and put $u_c:=\langle \eta_c,r\rangle$.  By
+\eqref{eq:balance2}, $\sum_ct_cu_c=0$; were $u$ constant it would be
+identically zero, contradicting the spanning hypothesis.  So
+Lemma~\ref{lem:rowsum} applies to $u$.  Compute both sides.  First
+\[
+  \sum_d t_du_dK_{cd}
+  =\Bigl\langle \eta_c,\sum_d t_d\langle \eta_d,r\rangle \eta_d\Bigr\rangle
+   -\nu_c\sum_d t_d\nu_d\langle \eta_d,r\rangle
+   +2\sum_d t_d\langle \eta_d,r\rangle
+  =\langle \eta_c,\Omega r\rangle-\nu_c\langle\zeta,r\rangle ,
+\]
+the last term vanishing by \eqref{eq:balance2}; multiplying by $t_cu_c$
+and summing,
+\[
+  \sum_{c,d}t_ct_dK_{cd}u_cu_d
+  =\langle\Omega r,\Omega r\rangle-\langle\zeta,r\rangle^2
+  =r^{T}\bigl(\Omega^2-\zeta\zeta^{T}\bigr)r ,
+  \qquad
+  \sum_c t_cu_c^2=r^{T}\Omega r .
+\]
+Lemma~\ref{lem:rowsum} now reads $r^{T}(\Omega^2-\zeta\zeta^{T})r<2\,
+r^{T}\Omega r$, that is $r^{T}\Psi r<0$, contradicting the choice of $r$.
+\end{proof}
+
+\begin{theorem}[\LV]\label{thm:ranktwo}
+$\Gtz(m,2)$ holds for every $m$.
+\end{theorem}
+
+\begin{proof}
+By Corollary~\ref{cor:heavy} it suffices to treat all-heavy designs.  Such
+a design has $m\ge2$, and its squared vectors $\eta_c$ either lie on a line
+through the origin or span $\R^2$; Lemma~\ref{lem:collinear} and
+Lemma~\ref{lem:spanning} produce a dominating pair in the two cases.
+\end{proof}
+
+No eigenvalue is computed and no spectral
+theorem is used: Lemma~\ref{lem:pairobs} replaces the least eigenvalue of
+a $2\times2$ matrix by a determinant, and everything after that is
+quadratic algebra in the moments of the squared picture.  The argument is
+uniform in $m$ and in the weights, which is what the induction of
+Corollary~\ref{cor:heavy} requires.  It is exactly sharp at the rank-two
+trine of Example~\ref{ex:trine2}: there $\Omega=2I_2$, $\zeta=0$ and
+$\sigma=0$, so $\Psi=\Omega^2-2\Omega=0$, every direction is admissible
+in Lemma~\ref{lem:spanning}, and the strict inequality of
+Lemma~\ref{lem:rowsum} fails --- as it must, since the trine has
+$K\equiv0$.
+
+For uniform weights $t_c=1/m$, Theorem~\ref{thm:ranktwo} is the theorem of
+Sengupta and Pautov \cite{SenguptaPautov2026}, whose base case $m=4$ is
+due to Nesterenko \cite{Nesterenko2023}; the substitution
+\eqref{eq:doubleangle} and the light/heavy split are theirs.  What is
+added is the passage to arbitrary weights, which costs the reweighting of
+Theorem~\ref{thm:light} in the light branch, and the replacement of the
+Perron--Frobenius step of \cite{SenguptaPautov2026} by
+Lemma~\ref{lem:rowsum} and the trace computation of
+Lemma~\ref{lem:spanning} in the heavy branch.  The designs with $K\equiv0$
+at uniform weights are classified in \cite{Nesterenko2026real}: the
+squared vectors fall into three clusters of equal vectors, of sizes
+$p,q,r$ with $p+q+r=m$, the cluster of size $p$ having length
+$\tfrac1{2m}+\tfrac1{2p}$ and similarly for the other two.  The rank-two
+trine is the case $p=q=r=1$ at $m=3$: there the common length is
+$\tfrac16+\tfrac12=\tfrac23$, which is $\lVert \eta_c\rVert/m=2/3$ for the
+vectors of Example~\ref{ex:trine2}, the factor $m^{-1}$ being the passage
+from a design at uniform weights to a matrix with orthonormal columns.
+
+\subsection{Corank at most two}\label{sec:corank}
+
+Duality now carries rank two to corank two.
+
+\begin{theorem}[\LV]\label{thm:coranktwo}
+$\Gtz(k+2,k)$ holds for every $k\ge2$.
+\end{theorem}
+
+\begin{proof}
+By Corollary~\ref{cor:dualcell} the statement is equivalent to
+$\Gtz(k+2,2)$, which is a case of Theorem~\ref{thm:ranktwo}.
+\end{proof}
+
+Unwinding the duality at $r=m-k=2$ makes the reduction explicit.  Let
+$\mathcal D$ be a design at $(k+2,k)$, and put $m:=k+2$.  Its kernel plane
+carries an orthonormal basis, arranged as the columns of an $m\times2$
+matrix $Z$ with rows $z_c^{*}$, and the co-weight rescaling
+$w_c=z_c/\sqrt{1-t_c}\in\R^2$ satisfies
+\[
+  \sum_c(1-t_c)\,w_c^{\vphantom{T}}w_c^{T}\;=\;I_2 .
+\]
+A $k$-subset is the complement of a pair $\{a,b\}$, and by the chain in
+the proof of Theorem~\ref{thm:duality} that $k$-subset dominates in
+$\mathcal D$ if and only if
+\begin{equation}\label{eq:pairdom}
+  w_a^{\vphantom{T}}w_a^{T}+w_b^{\vphantom{T}}w_b^{T}
+  \;\psd\;T\;=\;\sum_c t_c\,w_c^{\vphantom{T}}w_c^{T} .
+\end{equation}
+With $R^{T}TR=I_2$ and $h_c:=R^{T}w_c$, condition \eqref{eq:pairdom} is
+$h_a^{\vphantom{T}}h_a^{T}+h_b^{\vphantom{T}}h_b^{T}\psd I_2$, that is
+domination of the pair $\{a,b\}$ in the design $(h_c,t_c)$ at $(k+2,2)$.
+So a dominating pair at rank two produces a dominating $k$-subset at
+corank two.
+
+The normalization in \eqref{eq:pairdom} is the whole content of the step.
+The coefficients in \eqref{eq:kernelframe} are the co-weights $1-t_c$,
+which sum to $k+1$, whereas the rank-two input requires weights summing to
+one.  Rescaling the kernel rows by $t_c$ rather than by $1-t_c$, or
+comparing against $I_2$ instead of against $T$ in \eqref{eq:pairdom},
+yields a false statement; Example~\ref{ex:uneven} exhibits the first of
+these failures at corank one.
+
+The reduction is field-independent, but its input is not: over $\C$ rank
+two fails at size four (Theorem~\ref{thm:complex}), and accordingly
+$\GtzC(k+2,k)$ is false for every $k\ge2$ --- the two statements are the
+same statement, read through Corollary~\ref{cor:dualcell}.
+
+\begin{corollary}[\LV]\label{cor:corank}
+$\Gtz(m,k)$ holds whenever $m-k\le2$, and in particular whenever $m\le5$.
+\end{corollary}
+
+\begin{proof}
+Corank zero, one and two are Proposition~\ref{prop:sizerank},
+Theorem~\ref{thm:corankone} and Theorem~\ref{thm:coranktwo}; the last
+requires $k\ge2$, and for $k=1$ every size is covered by
+Proposition~\ref{prop:rankone}.  If $m\le5$ then either $k\le2$, whence
+Proposition~\ref{prop:rankone} or Theorem~\ref{thm:ranktwo} applies, or
+$k\ge3$ and $m\le5\le k+2$ gives $m-k\le2$.
+\end{proof}
+
+The two arms of the decided region --- small rank and small corank ---
+therefore meet in rank two.  Corank two is also where the description of
+the designs attaining the threshold ceases to be a single law.  At corank
+one \eqref{eq:tielaw} determines the leverages from the weights; at
+$(5,3)$ there are extremal designs whose vectors are pairwise
+non-parallel and which satisfy no such relation
+(Example~\ref{ex:diamond}).  The corank arm stops here: $(7,4)$ has corank
+three and is carried by Corollary~\ref{cor:dualcell} to $(7,3)$, which is
+open.
+
+\subsection{Crystallization}\label{sec:crystal}
+
+Write
+\[
+  M(k)\;:=\;\frac{k(k+1)}{2}+1 ,
+\]
+one more than the dimension of the space $\mathrm{Sym}_k$ of real
+symmetric $k\times k$ matrices.  Above that size a design carries a
+smaller design on a subfamily of its own vectors.
+
+\begin{lemma}[\LV]\label{lem:null}
+Let $(g_c)_{c\le m}$ be vectors in $\R^k$ with $m>M(k)$.  There is
+$\delta\in\R^m$, $\delta\ne0$, with
+\begin{equation}\label{eq:moment}
+  \sum_c \delta_c\,g_c^{\vphantom{T}}g_c^{T}=0
+  \qquad\text{and}\qquad
+  \sum_c \delta_c=0 .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The map $\R^m\to\mathrm{Sym}_k\oplus\R$ sending $\delta$ to
+$\bigl(\sum_c\delta_c\,g_c^{\vphantom{T}}g_c^{T},\sum_c\delta_c\bigr)$ is
+linear, and its target has dimension $k(k+1)/2+1=M(k)<m$.  A linear map
+between real vector spaces of dimensions $m$ and $M(k)<m$ has nonzero
+kernel.
+\end{proof}
+
+\begin{theorem}[\LV]\label{thm:reduce}
+Let $D$ be a design at $(m,k)$ with $m>M(k)$.  There is a proper subset
+$S$ of its index set and a design $D'$ at $(\lvert S\rvert,k)$ whose
+vectors are $(g_c)_{c\in S}$, indexed in increasing order.
+\end{theorem}
+
+\begin{proof}
+Take $\delta$ as in Lemma~\ref{lem:null}.  Since $\sum_c\delta_c=0$ and
+$\delta\ne0$, the set $\{c:\delta_c>0\}$ is nonempty; let
+\[
+  s\;:=\;\min\Bigl\{\frac{t_c}{\delta_c}\;:\;\delta_c>0\Bigr\}\;>\;0 ,
+\]
+attained at $c^{*}$, and put $t'_c:=t_c-s\,\delta_c$.  These numbers are
+nonnegative: if $\delta_c\le0$ then $t'_c\ge t_c>0$, and if $\delta_c>0$
+then $s\le t_c/\delta_c$ gives $s\delta_c\le t_c$.  They sum to $1$ and
+satisfy $\sum_ct'_c\,g_c^{\vphantom{T}}g_c^{T}=I_k$, by the two identities
+\eqref{eq:moment}.  Finally $t'_{c^{*}}=0$.
+
+Let $S:=\{c:t'_c>0\}$, so $c^{*}\notin S$ and $S$ is proper.
+Restricting the two sums to $S$ omits only vanishing terms, so the
+vectors $(g_c)_{c\in S}$ with the weights $(t'_c)_{c\in S}$, re-indexed by
+the increasing enumeration of $S$, form a design at $(\lvert S\rvert,k)$.
+\end{proof}
+
+\begin{theorem}[\LV]\label{thm:window}
+Fix $k$.  If $\Gtz(m,k)$ holds for every $m\le k(k+1)/2+1$, then
+$\Gtz(m,k)$ holds for every $m$.
+\end{theorem}
+
+\begin{proof}
+Strong induction on $m$; the case $m\le M(k)$ is the hypothesis.  Let
+$m>M(k)$ and let $D$ be a design at $(m,k)$.  Take $S$ and $D'$ as in
+Theorem~\ref{thm:reduce} and put $m':=\lvert S\rvert<m$.  By the induction
+hypothesis some $C\subseteq S$ with $\lvert C\rvert=k$ dominates in $D'$.
+The subset sum
+$\SC$ of \eqref{eq:dominate} does not involve the weights and the vectors
+of $D'$ are those of $D$, so the subset sum of $C$ in $D$ is the subset
+sum of $C$ in $D'$, and $C$ dominates in $D$.
+\end{proof}
+
+The bound is Carathéodory's \cite{Caratheodory1911}: condition
+\eqref{eq:parseval} exhibits $I_k$ as a convex combination of the points
+$g_c^{\vphantom{T}}g_c^{T}$ of the $k(k+1)/2$-dimensional space
+$\mathrm{Sym}_k$, and a point of a convex hull in dimension $N$ is a
+convex combination of at most $N+1$ of the points (\cite{Rockafellar1970},
+\S17).  The proof of Theorem~\ref{thm:reduce} is the standard
+support-reduction step of that theorem, carried out by hand for one
+reason: what is needed is not some representation of $I_k$ by few
+matrices, but a representation by a \emph{subfamily of the given
+vectors}, since only then is the dominating subset produced downstairs a
+subset of the original index set.  This is the point at which the
+weight-freeness of \eqref{eq:dominate} does the work, and it is what
+distinguishes this reduction from that of Theorem~\ref{thm:light}, where
+the vectors move and \eqref{eq:reassemble} is needed to move the
+conclusion back.
+
+Nothing about domination enters Lemma~\ref{lem:null}, so nothing suggests
+that $M(k)$ is the true threshold; see Problem~\ref{prob:higher}.
+
+\subsection{Monotonicity in the size}\label{sec:monotone}
+
+The finitely many cells left by Theorem~\ref{thm:window} are not
+independent: the statement at a size implies the statement at all smaller
+sizes.  The mechanism is that a design can be padded by splitting one of
+its vectors into two equal copies of half the weight, and that a
+$k$-subset containing both copies never dominates.
+
+\begin{lemma}[\LV]\label{lem:repeat}
+Let $C$ be a subset of the index set of a design at $(m,k)$ with
+$\lvert C\rvert\le k$ containing two distinct indices carrying the same
+vector.  Then $C$ does not dominate.
+\end{lemma}
+
+\begin{proof}
+Delete one of the two indices from $C$, obtaining $C_0$ with $\lvert
+C_0\rvert\le k-1$.  The linear map $\R^k\to\R^{C_0}$, $p\mapsto(\langle
+g_c,p\rangle)_{c\in C_0}$, has nonzero kernel; take $p\ne0$ in it.  Then
+$\langle g_c,p\rangle=0$ for every $c\in C$, the deleted index included,
+since its vector is one of the retained ones.  Hence
+\[
+  p^{T}(\SC-I_k)p=\sum_{c\in C}\langle g_c,p\rangle^2-\lVert p\rVert^2
+  =-\lVert p\rVert^2<0 . \qedhere
+\]
+\end{proof}
+
+\begin{proposition}[\LV]\label{prop:splitting}
+$\Gtz(m+1,k)\Rightarrow\Gtz(m,k)$.
+\end{proposition}
+
+\begin{proof}
+For $k=0$ there is nothing to prove.  Let $D$ be a design at $(m,k)$, so
+$m\ge k$.  Define a design $D^{+}$ at $(m+1,k)$ by keeping the vectors
+$g_1,\dots,g_m$ and appending $g_{m+1}:=g_1$, with weights
+$t^{+}_1=t^{+}_{m+1}=t_1/2$ and $t^{+}_c=t_c$ for $2\le c\le m$.  Both
+$\sum_ct^{+}_c$ and $\sum_ct^{+}_c\,g_c^{\vphantom{T}}g_c^{T}$ are
+unchanged, so $D^{+}$ is a design.  By hypothesis some $T$ with
+$\lvert T\rvert=k$ dominates in $D^{+}$.  By Lemma~\ref{lem:repeat}, $T$
+does not contain both
+$1$ and $m+1$, so the map fixing $1,\dots,m$ and sending $m+1$ to $1$ is
+injective on $T$; its image $C$ has $k$ elements and the same subset sum,
+hence dominates in $D$.
+\end{proof}
+
+\begin{theorem}[\LV]\label{thm:topcell}
+$\Gtz\bigl(M(k),k\bigr)\Rightarrow\Gtz(m,k)$ for every $m$.  Hence the
+conjecture at rank $k$ is a single statement, at the single size
+$k(k+1)/2+1$.
+\end{theorem}
+
+\begin{proof}
+Proposition~\ref{prop:splitting}, iterated, gives $\Gtz(m,k)$ for every
+$m\le M(k)$; Theorem~\ref{thm:window} then gives every $m$.
+\end{proof}
+
+\subsection{Rank three}\label{sec:rankthree}
+
+At $k=3$ the bound of Theorem~\ref{thm:window} is $M(3)=7$ and
+Corollary~\ref{cor:corank} disposes of every size up to five.
+
+\begin{corollary}\label{cor:twocells}
+$\Gtz(m,3)$ for all $m$ is equivalent to the conjunction of $\Gtz(6,3)$
+and $\Gtz(7,3)$, and also to $\Gtz(7,3)$ alone.
+\end{corollary}
+
+\begin{proof}
+The first equivalence is Theorem~\ref{thm:window} together with
+Corollary~\ref{cor:corank}; the second is Theorem~\ref{thm:topcell} at
+$k=3$, or equally Proposition~\ref{prop:splitting} applied once to obtain
+$\Gtz(6,3)$ from $\Gtz(7,3)$.
+\end{proof}
+
+Both cells are carried through the rest of the paper even though the
+second implies the first, because the variational argument of
+\S\ref{sec:compactness} at a cell consumes the two cells one size below:
+at $(7,3)$ it consumes $(6,3)$ and $(6,2)$.  The logical reduction to one
+cell and the analytic route to that cell run in opposite directions.
+
+Neither cell is reducible by the symmetries at hand.  The cell $(6,3)$ is
+self-dual, having rank and corank both equal to $3$; and
+Theorem~\ref{thm:duality} carries $(7,3)$ to $(7,4)$, again of corank
+three.  Since the corank arm stops at two
+(Theorem~\ref{thm:coranktwo}), duality cannot shorten the list.
+
+The same pair of cells is reached from above.  Padding a design at $(m,k)$
+with one vector along a new coordinate axis produces a design at
+$(m+1,k+1)$, and the padding reverses:
+
+\begin{proposition}[\LV]\label{prop:spike}
+Let $1\le k\le m$.  Then $\Gtz(m+1,k+1)\Rightarrow\Gtz(m,k)$.
+\end{proposition}
+
+\begin{proof}
+Let $D$ be a design at $(m,k)$ in which no $k$-subset dominates.  For each
+of the finitely many $k$-subsets $C$ there is, by \eqref{eq:dominate}, a
+vector $p_C\ne0$ with $\sum_{c\in C}\langle g_c,p_C\rangle^2<\lVert
+p_C\rVert^2$; let $\sigma\in(0,1)$ be the average of $1$ and the largest
+of the finitely many ratios $\sum_{c\in C}\langle
+g_c,p_C\rangle^2/\lVert p_C\rVert^2$, so that
+\begin{equation}\label{eq:unifgap}
+  \sum_{c\in C}\langle g_c,p_C\rangle^2<\sigma\lVert p_C\rVert^2
+  \qquad\text{for every $k$-subset }C .
+\end{equation}
+Build a design at $(m+1,k+1)$: the vectors
+$\hat g_c:=(\sigma^{-1/2}g_c,0)$ with weights $\sigma t_c$ for $c\le m$,
+together with $\hat g_{m+1}:=(0,\dots,0,(1-\sigma)^{-1/2})$ of weight
+$1-\sigma$.  The weights are positive and sum to one, and
+\eqref{eq:parseval} holds blockwise, the two scalings cancelling in each
+block.  By hypothesis some $T$ with $\lvert T\rvert=k+1$ dominates there.
+If $m+1\notin T$,
+every selected vector has last coordinate zero and the last standard basis
+vector gives $1\le0$.  So $m+1\in T$ and $C:=T\setminus\{m+1\}$ has $k$
+elements; testing domination against $(p_C,0)$ gives
+\[
+  \lVert p_C\rVert^2\;\le\;\sigma^{-1}\sum_{c\in C}\langle
+  g_c,p_C\rangle^2\;<\;\lVert p_C\rVert^2
+\]
+by \eqref{eq:unifgap}, a contradiction.  Hence some $k$-subset of $D$
+dominates after all.
+\end{proof}
+
+Combining Proposition~\ref{prop:spike} with Corollary~\ref{cor:twocells},
+$\Gtz(8,4)$ implies all of rank three.  The family of statements
+$\Gtz(m,k)$ is therefore monotone in both parameters, and no implication
+in this section can be shown to be strict: were the conjecture true, all
+of them would be equivalences, so a strictness proof would refute it.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/ladder}
+  \caption{Rank three.  Solid arrows are the reductions of
+  Corollary~\ref{cor:corank} and Theorem~\ref{thm:window}; the boundary
+  analysis of \S\ref{sec:compactness} at a cell consumes the two cells one
+  size below.  Dashed arrows carry the two unproved inputs of
+  \S\ref{sec:interior}.}
+  \label{fig:ladder}
+\end{figure}

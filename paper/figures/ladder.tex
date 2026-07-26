@@ -1,0 +1,51 @@
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  every node/.style={font=\small, inner sep=3pt},
+  proved/.style={draw=black!55, line width=0.4pt, fill=black!10,
+                 rounded corners=1pt, align=center},
+  openq/.style ={draw=black, line width=0.9pt, fill=white,
+                 rounded corners=1pt, align=center},
+  hyp/.style   ={font=\scriptsize, align=center, inner sep=1pt},
+  tag/.style   ={font=\scriptsize, inner sep=1.5pt},
+  imp/.style   ={-{Latex[length=2.1mm,width=1.5mm]}, line width=0.5pt},
+  bnd/.style   ={-{Triangle[open,length=2.2mm,width=1.9mm]}, line width=0.5pt},
+  cnj/.style   ={-{Latex[length=2.1mm,width=1.5mm]}, line width=0.5pt,
+                 dash pattern=on 1.4pt off 1.2pt}]
+
+\node[proved] (two) at (2.7,2.05) {rank two: $\Gtz(m,2)$ for every $m$};
+\node[proved] (low) at (0.9,0)    {corank ${\le}\,2$\\[1pt] $(3,3)\ \ (4,3)\ \ (5,3)$};
+\node[openq]  (six) at (5.0,0)    {$(6,3)$};
+\node[openq]  (sev) at (8.3,0)    {$(7,3)$};
+\node[openq]  (all) at (11.4,0)   {$\Gtz(m,3)$\\[1pt] for every $m$};
+
+\node[hyp] (h6) at (5.0,-1.75) {interior\\ exclusion};
+\node[hyp] (h7) at (8.3,-1.75) {interior\\ exclusion};
+
+% the boundary analysis at a cell consumes the two cells one size below
+\draw[bnd] (low.east) -- node[tag, above] {$(5,3)$} (six.west);
+\draw[bnd] (two.south) to[out=-90,in=120]
+     node[tag, pos=0.30, left=2pt] {$(5,2)$} (six.north);
+\draw[bnd] (two.east) to[out=0,in=105]
+     node[tag, pos=0.55, above right=-1pt] {$(6,2)$} (sev.north);
+\draw[bnd] ([yshift=2.5pt]six.east) --
+     node[tag, above] {boundary} ([yshift=2.5pt]sev.west);
+
+% the logical reductions
+\draw[imp] ([yshift=-2.5pt]sev.west) --
+     node[tag, below] {splitting} ([yshift=-2.5pt]six.east);
+\draw[imp] (sev.east) -- node[tag, above] {$M(3)=7$} (all.west);
+
+\draw[cnj] (h6) -- (six);
+\draw[cnj] (h7) -- (sev);
+
+% ---------------------------- legend --------------------------------
+\begin{scope}[shift={(0,-3.05)}]
+  \draw[imp] (0,0) -- (0.9,0);
+  \node[tag, anchor=west] at (1.05,0) {implies};
+  \draw[bnd] (3.1,0) -- (4.0,0);
+  \node[tag, anchor=west] at (4.15,0) {supplies the boundary case};
+  \draw[cnj] (8.5,0) -- (9.4,0);
+  \node[tag, anchor=west] at (9.55,0) {conjectural input};
+\end{scope}
+
+\end{tikzpicture}

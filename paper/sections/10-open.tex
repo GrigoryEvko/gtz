@@ -1,0 +1,140 @@
+\section{Problems}\label{sec:open}
+
+\begin{enumerate}
+
+\item\label{prob:sixthree}
+\emph{Prove Conjecture~\ref{conj:sixthree}: the stationarity system
+\eqref{eq:statg}--\eqref{eq:statt} has no solution at $(6,3)$ with $0<v<1$.}
+
+By Theorem~\ref{thm:variational}, whose hypotheses at this cell are the two
+instances $\Gtz^{\mathrm{ch}}(5,3)$ and $\Gtz^{\mathrm{ch}}(5,2)$ of
+Corollary~\ref{cor:corank}, this closes $\Gtz(6,3)$.  The question is finite.
+The active family $\mathcal{A}^{+}$ covers the six indices by
+\eqref{eq:coverage}, has at least three members by
+Corollary~\ref{cor:e3}, and may be taken of cardinality at most $15$ by
+Carathéodory's theorem \cite{Caratheodory1911}; there are $2101$ such families
+up to relabelling, of which $2068$ lie within the Carathéodory bound
+(\S\ref{app:census}).  Finiteness is not smallness: the exclusions of
+\S\ref{sec:exclusions} settle $57$ of the $2136$ classes, and the remainder is
+concentrated where they are silent.  For each, what must be shown is that the ideal generated
+by \eqref{eq:statg}, \eqref{eq:statt} and the equations
+$\lmin(\SC)=v$ on the active family has no real point with $t\pd0$,
+$\lambda\psd0$ and $0<v<1$.
+
+Two features of the system must be carried through any such elimination and
+are easy to lose.  Multiplicity: if $\SC$ has $v$ as a multiple eigenvalue at
+an active $C$ then $u_C$ ranges over an eigenspace and the multiplier attached
+to $C$ is a positive semidefinite matrix on it, so the system is larger than
+its generic shape.  And redundancy: \eqref{eq:coverage} is \eqref{eq:statg}
+contracted, and $\mu=v$ follows from it, so the constraints must not be
+counted as independent.
+
+\item\label{prob:seventhree}
+\emph{Prove Conjecture~\ref{conj:seventhree}: the same at $(7,3)$.}
+
+With Problem~\ref{prob:sixthree} this decides the real problem at rank three,
+by Theorem~\ref{thm:rankthree}.  Enumeration is not available: the census has
+$7\,011\,184$ classes, of which $5\,249\,381$ lie within the Carath\'eodory bound
+$19$ (\S\ref{app:census}).  What is wanted is an argument uniform in the active
+family --- one that uses only the laws \eqref{eq:statt} and
+\eqref{eq:coverage}, the positivity of the weights, and the combinatorics of a
+covering family, and not the family's identity.  The known extremal designs at
+this cell, the split tetrahedra of \S\ref{app:split}, have active family of
+cardinality $20$ and value $v=1$; a uniform argument must therefore exclude
+$v<1$ without excluding those.
+
+\item\label{prob:sharpc}
+\emph{Determine $\alpha_3(\C)$.}
+
+Remark~\ref{rem:sharpc} gives
+$\tfrac13\le\alpha_3(\C)\le3\bigl(1-\cos\tfrac{2\pi}{9}\bigr)=0.7019\ldots$,
+the upper bound realized by a binding triple of the Hesse configuration of nine
+equiangular lines in $\C^3$.  We conjecture that the upper bound is the truth.
+More generally the sequence $\alpha_k(\C)$ is unknown for every $k\ge2$ beyond
+the bound $\alpha_k(\C)\ge1/k$; over $\R$ the same question is empty below rank
+three and, if Problems~\ref{prob:sixthree} and~\ref{prob:seventhree} go as
+conjectured, empty at rank three, so it first has content at $\alpha_4(\R)$.
+
+\item\label{prob:interlace}
+\emph{Derandomize Theorem~\ref{thm:average}.}
+
+Volume sampling assigns $\pi_C=\det P[C]$ to a $k$-subset by \eqref{eq:dpp};
+the measure is a determinantal measure on the bases of the design
+\cite{DRVW2006}, and it is strongly Rayleigh
+\cite{BorceaBrandenLiggett2009}, so the mixture $q=\E_\pi[\chi_{\SC}]$ is
+real-rooted \cite{AnariOveisGharan2015}.  Two statements would together prove
+$\Gtz(m,k)$ at every rank at once:
+\begin{enumerate}
+\item[(a)] some $k$-subset $C$ has $\lmin(\SC)$ at least the least root of $q$;
+\item[(b)] that least root is at least $1$.
+\end{enumerate}
+Neither is available.  Statement (a) does not follow from real-rootedness of
+$q$ alone --- Proposition~\ref{prop:rootedness} --- and the hypothesis the
+interlacing method of \cite{MSS2015} requires is that the whole convex family
+be real-rooted, which is a property of volume sampling that has not been
+verified.  Statement (b) must be exact on the equality locus, by
+Proposition~\ref{prop:qone}: at a design where every basis has $1$ in the
+spectrum of $\SC$ one has $q(1)=0$, with no margin, and at the tetrahedron
+$q=(x-1)(x-4)^2$ (\S\ref{app:tetra}).  A route through this problem would be
+the first argument in the subject that does not proceed cell by cell; no
+argument in this paper does that.
+
+\item\label{prob:structure}
+\emph{Classify the extremal designs.}
+
+Theorem~\ref{thm:corankone} classifies them at corank one: over each weight
+vector there is one, given in \S\ref{app:corankone}, and \eqref{eq:tielaw} is a
+complete description.  Beyond corank one the constructed families are the
+split-class designs of \S\ref{app:split}, which have at most $k+1$ distinct
+directions, and the splittings of the diamond of \S\ref{app:diamond}, which
+has $k+2$.  Three questions are open.  Is that list complete at $(6,3)$ and
+$(7,3)$?  Is the list finite, as a list of families?  And does every extremal
+design have every basis active, that is $\lmin(\SC)=1$ for every independent
+$k$-subset $C$?  Every known extremal design does: at the tetrahedron all four
+triples are bases and all are active, and at the diamond the eight spanning
+trees are bases and all eight have positive semidefinite singular gaps, the two
+circuits being dependent and carrying no volume-sampling mass.  An affirmative
+answer is exactly the hypothesis under which Proposition~\ref{prop:qone} gives
+$q(1)=0$, and hence exactly what Problem~\ref{prob:interlace} would have to
+face at the equality locus.
+
+\item\label{prob:higher}
+\emph{Determine the true window in Theorem~\ref{thm:window}.}
+
+The bound $k(k+1)/2+1$ is one more than the dimension of the space of symmetric
+$k\times k$ matrices and comes from Carath\'eodory's theorem applied to the
+representation \eqref{eq:parseval} of $I_k$ as a convex combination of the
+$g_c^{\vphantom{T}}g_c^{T}$.  Nothing in the proof of Lemma~\ref{lem:null}
+refers to domination, so no lower bound on the window follows from it.  At
+$k=2$ the
+problem is decided at every size by Theorem~\ref{thm:ranktwo}, so the window is
+vacuous there; at $k=3$ the bound is $7$ and the two cells $(6,3)$ and $(7,3)$
+survive.  Is the window ever larger than $k+3$?  Equivalently: is there a rank
+$k$ and a size $m>k+3$ at which $\Gtz(m,k)$ is strictly harder than at every
+smaller size?  Corollary~\ref{cor:corank} settles corank at most two, so the
+question is first posed at corank three.
+
+\item\label{prob:effective}
+\emph{Find the subset.}
+
+The selection principle is an existence statement, and the two known routes to
+a subset do not produce one.  Volume sampling produces a dominating subset only
+on average (Theorem~\ref{thm:average}), and the maximal-volume principle
+\cite{GT2001}, which does produce a subset, gives too little.  At uniform
+weights that principle bounds a locally maximal-volume choice by
+$\lVert A_C^{-1}\rVert^2\le1+k(m-k)$ for the matrix $A$ of rows $u_c=g_c/\sqrt m$,
+which in the normalization of \eqref{eq:dominate} reads
+\[
+  \lmin(\SC)\;\ge\;\frac{m}{1+k(m-k)} .
+\]
+The right side equals $1$ at $m=k+1$ and is strictly smaller for every $m>k+1$,
+so the principle reproduces Theorem~\ref{thm:corankone} and nothing beyond it.
+Computing a maximal-volume subset is itself out of reach: the problem
+is NP-hard and NP-hard to approximate within a constant factor
+\cite{CivrilMagdonIsmail2009}, and the rank-revealing factorizations that
+approximate it \cite{GuEisenstat1996} inherit the weaker guarantee.  Two
+questions therefore stand apart from the conjecture itself.  Does a subset of
+maximal volume dominate?  And, granting $\Gtz(m,k)$, is there an algorithm
+polynomial in $m$ and $k$ that exhibits a dominating subset?
+
+\end{enumerate}

@@ -1,0 +1,977 @@
+\section{Interior critical points}\label{sec:interior}
+
+Section \ref{sec:compactness} converts a failure of $\Gtz(m,k)$ into an
+extremal failure: one at a design minimizing the objective, rather than
+at an arbitrary design.  This section extracts what such a design
+satisfies.  The constraint set is a smooth manifold, and its tangent
+space is computed first.  The objective is a maximum of least-eigenvalue
+functions, and its first-order behaviour is that of a nonsmooth maximum.
+The two combine into a finite system of algebraic identities, and
+everything drawn from that system afterwards is algebra.
+
+A design at $(m,k)$ over $\R$ is written as a pair $(g,t)$ with
+$g=(g_1,\dots,g_m)\in(\R^k)^m$ and $t=(t_1,\dots,t_m)$.  Put
+\begin{equation}\label{eq:designobjective}
+  F(g,t)\;:=\;\max_{\lvert C\rvert=k}\lmin\bigl(\SC\bigr),
+  \qquad \SC=\sum_{c\in C}g_c^{\vphantom{T}}g_c^{T}.
+\end{equation}
+By Definition~\ref{def:design} and the eigenvalue reading recorded in
+Lemma~\ref{lem:tiemax}, a $k$-subset dominates exactly when
+$\lmin(\SC)\ge1$, so $\Gtz(m,k)$ asserts $F\ge1$ on every design, and a
+failure of $\Gtz(m,k)$ is a design with $F<1$.  The value of $F$ is never
+zero.
+
+\begin{lemma}\label{lem:fpos}
+$F(g,t)>0$ for every design.
+\end{lemma}
+
+\begin{proof}
+By \eqref{eq:parseval} the vectors span $\R^k$, so some $k$-subset $C$ is
+a basis; equivalently, $\sum_{\lvert C\rvert=k}\pi_C=1$ in
+\eqref{eq:dpp} while $\pi_C>0$ only for bases.  For a basis and $x\ne0$,
+$x^{T}\SC x=\sum_{c\in C}\langle g_c,x\rangle^2>0$, so $\lmin(\SC)>0$.
+\end{proof}
+
+The first-order theory below is applied at a design where $F$ is
+minimal, and one statement is needed to place such a design where the
+variational principle put its own.
+
+\begin{definition}\label{def:extremalcex}
+The cell $(m,k)$ \emph{has an extremal counterexample} if $F$ attains a
+local minimum, over the designs of size $m$ and rank $k$, at a design
+whose value is below $1$.
+\end{definition}
+
+Suppose $\Gtz(m,k)$ fails.  The designs with $F<1$ then form a nonempty
+set, open in the design manifold, and a local minimum of $F$ on that set
+is a local minimum over all designs, since $F\ge1$ off it.  By
+Lemma~\ref{lem:chart} those designs are exactly the designs whose chart
+points carry no dominating $k$-subset, and, granting $\Gtz(m-1,k)$ and
+$\Gtz(m-1,k-1)$, Corollary~\ref{cor:interiorcex} places the whole of that
+locus in the compactification of \S\ref{sec:compactness} strictly inside
+the open weight simplex.  What is not automatic is that the infimum of $F$ over the
+locus is attained rather than approached at the boundary of the
+compactification, where by Theorem~\ref{thm:boundary} some subset
+dominates.  Theorem~\ref{thm:variational} settles precisely that question
+for the chart objective $G$; and by Remark~\ref{rem:objectives} $G$ and
+$F$ agree in sign but are related by a congruence which is not a scalar,
+so a minimizer of one need not minimize the other.
+Definition~\ref{def:extremalcex} names what the passage requires, and it
+is carried as a hypothesis in Theorem~\ref{thm:rankthree} and nowhere
+else.
+
+\subsection{The design manifold}\label{sec:manifold}
+
+Fix $m$ and $k$, write $\mathcal{S}^k$ for the space of real symmetric
+$k\times k$ matrices, and let
+\begin{equation}\label{eq:constraints}
+  \Phi(g,t)\;:=\;\sum_{c}t_c\,g_c^{\vphantom{T}}g_c^{T}-I_k
+  \;\in\;\mathcal{S}^{k},
+  \qquad
+  \sigma(t)\;:=\;\sum_c t_c-1\;\in\;\R .
+\end{equation}
+The designs are the points of $\{\Phi=0\}\cap\{\sigma=0\}$ satisfying the
+open condition $t\pd0$.  Both maps are polynomial, with differentials
+\begin{equation}\label{eq:conGrad}
+  \Phi'(g,t)[\dot g,\dot t]
+  =\sum_c\Bigl(\dot t_c\,g_c^{\vphantom{T}}g_c^{T}
+      +t_c\bigl(\dot g_c^{\vphantom{T}}g_c^{T}
+                +g_c^{\vphantom{T}}\dot g_c^{T}\bigr)\Bigr),
+  \qquad
+  \sigma'(t)[\dot t]=\sum_c\dot t_c .
+\end{equation}
+
+\begin{lemma}\label{lem:tangent}
+At every design the pair $(\Phi',\sigma')$ is surjective onto
+$\mathcal{S}^k\times\R$.  Hence the designs form a smooth manifold of
+dimension $mk+m-\tfrac12k(k+1)-1$, whose tangent space $T$ at $(g,t)$
+consists of the pairs $(\dot g,\dot t)$ annihilated by
+\eqref{eq:conGrad}.
+\end{lemma}
+
+\begin{proof}
+Let $(H,s)\in\mathcal{S}^k\times\R$ be given.  Choose $\dot t$ with
+$\sum_c\dot t_c=s$, put
+$H':=H-\sum_c\dot t_c\,g_c^{\vphantom{T}}g_c^{T}$, and take
+$\dot g_c:=\tfrac12H'g_c$.  Then by \eqref{eq:parseval}
+\[
+  \sum_c t_c\bigl(\dot g_c^{\vphantom{T}}g_c^{T}
+                 +g_c^{\vphantom{T}}\dot g_c^{T}\bigr)
+  =\tfrac12H'\sum_c t_c\,g_c^{\vphantom{T}}g_c^{T}
+   +\tfrac12\Bigl(\sum_c t_c\,g_c^{\vphantom{T}}g_c^{T}\Bigr)H'
+  =H' ,
+\]
+so $\Phi'[\dot g,\dot t]=H$ and $\sigma'[\dot t]=s$.  The dimension count
+and the description of $T$ are the submersion theorem.
+\end{proof}
+
+One family of tangent directions will be needed twice.  For an
+antisymmetric $X$ the infinitesimal rotation
+\begin{equation}\label{eq:orbit}
+  \dot g_c\;=\;Xg_c\quad(1\le c\le m),\qquad \dot t=0
+\end{equation}
+lies in $T$, since
+$\sum_c t_c\bigl(Xg_c^{\vphantom{T}}g_c^{T}
++g_c^{\vphantom{T}}g_c^{T}X^{T}\bigr)=X-X=0$ by \eqref{eq:parseval}; and
+$X\mapsto(Xg_c)_c$ is injective, because the $g_c$ span $\R^k$ and a
+matrix killing a spanning set is zero.  Write $\mathcal{O}\subseteq T$
+for the resulting subspace, of dimension $\tfrac12k(k-1)$.  The
+objective \eqref{eq:designobjective} is constant along $\mathcal{O}$.
+
+\subsection{The first-order system}\label{sec:kkt}
+
+The objective is a maximum of finitely many least-eigenvalue functions of
+matrices depending polynomially on $g$.  It is locally Lipschitz, not
+differentiable, and not Clarke regular: each $\lmin(\SC)$ is a
+\emph{concave} function of $\SC$, and for a maximum of functions that are
+not regular the subdifferential is contained in --- and in general not
+equal to --- the convex hull of the subdifferentials of the active pieces
+\cite[Prop.~2.3.12]{Clarke1990}.  The inclusion runs in the direction a
+necessary condition needs.
+
+Two facts are classical.  First, $\lmin$ is concave on $\mathcal{S}^k$
+and its superdifferential at $A$ is the \emph{spectraplex}
+\begin{equation}\label{eq:spectraplex}
+\begin{aligned}
+  \Delta(A)\;&:=\;\bigl\{\,\Omega\psd0:\ \tr\Omega=1,\
+    \operatorname{ran}\Omega\subseteq\ker\bigl(A-\lmin(A)I\bigr)\,\bigr\}\\
+  &\;=\;\operatorname{conv}\bigl\{uu^{T}:\ Au=\lmin(A)u,\
+    \lVert u\rVert=1\bigr\}
+\end{aligned}
+\end{equation}
+\cite[\S2]{Overton1988},
+\cite[Vol.~I, Ch.~VI]{HiriartUrrutyLemarechal1993}.  Second, the Clarke
+subdifferential of a locally Lipschitz function composed with a smooth
+map is contained in the image of the subdifferential under the adjoint of
+the derivative \cite[Thm.~2.3.10]{Clarke1990}.  Applied to
+$\lmin\circ\SC$, and using that $\Omega$ is symmetric so that
+$\langle\Omega,\dot g_c^{\vphantom{T}}g_c^{T}
++g_c^{\vphantom{T}}\dot g_c^{T}\rangle
+=2\langle\Omega g_c,\dot g_c\rangle$, these give
+\begin{equation}\label{eq:pieceSub}
+  \partial\bigl(\lmin\circ \SC\bigr)(g,t)
+  \;\subseteq\;
+  \Bigl\{\,\phi_{C,\Omega}:(\dot g,\dot t)\mapsto
+    2\sum_{c\in C}\langle\Omega g_c,\dot g_c\rangle
+    \ :\ \Omega\in\Delta(\SC)\,\Bigr\}.
+\end{equation}
+The functionals $\phi_{C,\Omega}$ do not involve $\dot t$.
+
+\begin{theorem}\label{thm:firstorder}
+Let $(g,t)$ be a design at which $F$ attains a local minimum over the
+designs.  Put $v:=F(g,t)$ and
+$\mathcal{A}:=\{C:\lvert C\rvert=k,\ \lmin(\SC)=v\}$.  Then there are a
+finite index set $A$, subsets $C_i\in\mathcal{A}$, reals $\lambda_i\ge0$
+with $\sum_{i\in A}\lambda_i=1$, unit vectors $u_i$ with
+$S_{C_i}u_i=vu_i$, a symmetric matrix $\Lambda$ and a scalar $\mu$ such
+that
+\begin{align}
+  \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle\,u_i
+    &\;=\;t_c\,\Lambda g_c &&(1\le c\le m), \label{eq:statg}\\
+  g_c^{T}\Lambda\,g_c &\;=\;\mu &&(1\le c\le m). \label{eq:statt}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Compose $F$ with a smooth local parametrization of the manifold of
+Lemma~\ref{lem:tangent}.  The composition has an unconstrained local
+minimum, so zero lies in its Clarke subdifferential
+\cite[Prop.~2.3.2]{Clarke1990}; by the chain rule
+\cite[Thm.~2.3.10]{Clarke1990} there is $\zeta\in\partial F(g,t)$
+vanishing on $T$.  Inactive subsets remain inactive near $(g,t)$, so the
+maximum rule \cite[Prop.~2.3.12]{Clarke1990} together with
+\eqref{eq:pieceSub} exhibits $\zeta$ as a convex combination
+\begin{equation}\label{eq:zeta}
+  \zeta\;=\;\sum_{C\in\mathcal{A}}\lambda_C\,\phi_{C,\Omega_C},
+  \qquad \lambda_C\ge0,\quad\sum_C\lambda_C=1,\quad
+  \Omega_C\in\Delta(\SC).
+\end{equation}
+Decompose each $\Omega_C$ spectrally,
+$\Omega_C=\sum_jw_{C,j}u_{C,j}^{\vphantom{T}}u_{C,j}^{T}$ with
+$w_{C,j}\ge0$, $\sum_jw_{C,j}=1$ and each $u_{C,j}$ a unit eigenvector of
+$\SC$ at $v$; this is possible by \eqref{eq:spectraplex}.  Index by the
+pairs $i=(C,j)$, setting $C_i:=C$, $u_i:=u_{C,j}$ and
+$\lambda_i:=\lambda_Cw_{C,j}$.  The new multipliers are nonnegative and
+sum to one, and \eqref{eq:zeta} becomes
+\begin{equation}\label{eq:zetarankone}
+  \zeta(\dot g,\dot t)
+  \;=\;2\sum_c\Bigl\langle
+        \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle\,u_i,\
+        \dot g_c\Bigr\rangle .
+\end{equation}
+By Lemma~\ref{lem:tangent} the map $(\Phi',\sigma')$ is surjective with
+kernel $T$, and $\zeta$ vanishes on $T$; hence $\zeta$ factors through
+$(\Phi',\sigma')$.  That is, there are $\Lambda\in\mathcal{S}^k$ and
+$\mu\in\R$ with
+\begin{equation}\label{eq:lagrange}
+  \zeta(\dot g,\dot t)
+  \;=\;\bigl\langle\Lambda,\ \Phi'(g,t)[\dot g,\dot t]\bigr\rangle
+      \;-\;\mu\,\sigma'(t)[\dot t] ,
+\end{equation}
+the sign of $\mu$ being a normalization.  Expanding the right side by
+\eqref{eq:conGrad}, and using
+$\langle\Lambda,\dot g_c^{\vphantom{T}}g_c^{T}
++g_c^{\vphantom{T}}\dot g_c^{T}\rangle=2\langle\Lambda g_c,\dot g_c\rangle$
+as before,
+\[
+  \bigl\langle\Lambda,\Phi'[\dot g,\dot t]\bigr\rangle
+   -\mu\sum_c\dot t_c
+  \;=\;
+  2\sum_c t_c\langle\Lambda g_c,\dot g_c\rangle
+  \;+\;\sum_c\dot t_c\bigl(g_c^{T}\Lambda g_c-\mu\bigr).
+\]
+The coordinates $\dot g$ and $\dot t$ are independent, so comparison with
+\eqref{eq:zetarankone} may be made term by term.  The coefficient of
+$\dot g_c$ gives \eqref{eq:statg} after division by $2$, and the
+coefficient of $\dot t_c$ gives \eqref{eq:statt}.
+\end{proof}
+
+Two features of the derivation are used later.  The maximum rule in
+\eqref{eq:zeta} is an inclusion and not an equality, because the pieces
+are concave and therefore not Clarke regular; the sharper first-order
+statement available at such a point is the directional one, namely
+$\max_{C\in\mathcal{A}}\lmin\bigl(Q_C^{T}\dot S_CQ_C\bigr)\ge0$ for every
+$(\dot g,\dot t)\in T$, where $Q_C$ is an orthonormal basis of the
+$\lmin$-eigenspace of $\SC$ and $\dot S_C$ is the derivative of $\SC$
+\cite{HiriartUrrutyYe1995,Danskin1967}.  Nothing below uses more than the
+multiplier form.  Second, the infinitesimal rotations \eqref{eq:orbit}
+impose no condition: for $\Omega\in\Delta(\SC)$ one has
+$\Omega\SC=v\Omega=\SC\Omega$, so
+\begin{equation}\label{eq:rotationkill}
+  \phi_{C,\Omega}\bigl[(Xg_c)_c,0\bigr]
+  =2\sum_{c\in C}\langle\Omega g_c,Xg_c\rangle
+  =2\tr\bigl(\Omega X\SC\bigr)=2v\,\tr(\Omega X)=0,
+\end{equation}
+because $\Omega$ is symmetric and $X$ antisymmetric.
+
+\subsection{Stationarity data}\label{sec:data}
+
+The conclusion of Theorem~\ref{thm:firstorder} is a finite algebraic
+object, and it is convenient to detach it from its provenance.
+
+\begin{definition}\label{def:datum}
+A \emph{stationarity datum} for a design $(g,t)$ at $(m,k)$, with value
+$v\in\R$, consists of a finite index set $A$, $k$-subsets $C_i$
+($i\in A$), reals $\lambda_i\ge0$ with $\sum_i\lambda_i=1$, vectors $u_i$
+with $\lVert u_i\rVert=1$ and $S_{C_i}u_i=vu_i$, and a symmetric matrix
+$\Lambda$, satisfying \eqref{eq:statg} and \eqref{eq:statt}.  Write
+$A^{+}:=\{C_i:\lambda_i>0\}$ for the \emph{active family}, a set of
+$k$-subsets.  The datum is \emph{admissible} if in addition
+\begin{equation}\label{eq:argmax}
+  v\;\ge\;\lmin(\SC)\qquad\text{for every }k\text{-subset }C ,
+\end{equation}
+equivalently if $v=F(g,t)$.
+\end{definition}
+
+The subsets $C_i$ need not be distinct: a tight eigenvalue of
+multiplicity $r$ contributes $r$ indices carrying one subset, which is
+what the spectral decomposition in the proof of
+Theorem~\ref{thm:firstorder} produces.  Nothing below assumes that
+$i\mapsto C_i$ is injective, and this is why the active family is defined
+as a set of subsets rather than as a set of indices.
+
+Definition~\ref{def:datum} asks only that $v$ be \emph{an} eigenvalue of
+each $S_{C_i}$.  It does not ask that $v=\lmin(S_{C_i})$, and it does not
+ask for \eqref{eq:argmax}.  Theorem~\ref{thm:firstorder} supplies both;
+the algebra of the next two subsections supplies neither, and
+\S\ref{sec:reach} shows that the difference is not a formality.
+
+\subsection{The quadric law and the coverage law}\label{sec:laws}
+
+Pairing \eqref{eq:statg} with $g_c$ gives, for every $c$,
+\begin{equation}\label{eq:contract}
+  \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle^2
+  \;=\;t_c\,\bigl(g_c^{T}\Lambda g_c\bigr) .
+\end{equation}
+This single contraction carries both laws.  Throughout we use the
+polarized form of the subset sum,
+\begin{equation}\label{eq:polarized}
+  y^{T}\SC x\;=\;\sum_{c\in C}\langle g_c,y\rangle\langle g_c,x\rangle ,
+\end{equation}
+immediate from \eqref{eq:dominate}.
+
+\begin{proposition}[\LV]\label{prop:quadric}
+Let a stationarity datum be given.  Then $\mu=v$, so that every vector
+lies on one central quadric of the multiplier,
+\begin{equation}\label{eq:quadric}
+  g_c^{T}\Lambda\,g_c\;=\;v\qquad(1\le c\le m);
+\end{equation}
+for every $c$ the coverage law
+\begin{equation}\label{eq:coverage}
+  \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle^2\;=\;t_c\,v
+\end{equation}
+holds; the multiplier is determined by the remaining data,
+\begin{equation}\label{eq:multiplier}
+  \Lambda\;=\;v\sum_{i\in A}\lambda_i\,u_i^{\vphantom{T}}u_i^{T};
+\end{equation}
+and consequently $v\ge0$, $\Lambda\psd0$ and $\tr\Lambda=v$.
+\end{proposition}
+
+\begin{proof}
+Sum \eqref{eq:contract} over $c$.  On the right, \eqref{eq:statt} makes
+$g_c^{T}\Lambda g_c$ independent of $c$, so the right side is
+$\mu\sum_ct_c=\mu$.  On the left, exchange the two summations; for fixed
+$i$ the inner sum runs over the $k$ vectors of $C_i$ and equals, by
+\eqref{eq:polarized} and $S_{C_i}u_i=vu_i$,
+\[
+  \sum_{c\in C_i}\langle u_i,g_c\rangle^2
+  \;=\;u_i^{T}S_{C_i}u_i\;=\;v\lVert u_i\rVert^2\;=\;v .
+\]
+Hence the left side is $v\sum_i\lambda_i=v$, so $\mu=v$.  Substituting
+$\mu=v$ into \eqref{eq:statt} gives \eqref{eq:quadric}, and into
+\eqref{eq:contract} gives \eqref{eq:coverage}.
+
+For \eqref{eq:multiplier}, fix $x\in\R^k$ and resolve it through
+\eqref{eq:parseval}: $x=\sum_ct_c\langle g_c,x\rangle g_c$.  Then
+\begin{align*}
+  \Lambda x
+  &=\sum_c\langle g_c,x\rangle\,\bigl(t_c\Lambda g_c\bigr)
+   =\sum_c\langle g_c,x\rangle
+      \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle\,u_i
+  &&\text{by \eqref{eq:statg}}\\
+  &=\sum_{i\in A}\lambda_i
+      \Bigl(\sum_{c\in C_i}\langle g_c,u_i\rangle
+        \langle g_c,x\rangle\Bigr)u_i
+   =\sum_{i\in A}\lambda_i\bigl(u_i^{T}S_{C_i}x\bigr)u_i
+  &&\text{by \eqref{eq:polarized}}\\
+  &=v\sum_{i\in A}\lambda_i\langle u_i,x\rangle\,u_i ,
+\end{align*}
+the last step by symmetry of $S_{C_i}$ together with
+$S_{C_i}u_i=vu_i$.  A matrix is determined by its action, which is
+\eqref{eq:multiplier}.  Finally
+$v=u_i^{T}S_{C_i}u_i=\sum_{c\in C_i}\langle g_c,u_i\rangle^2\ge0$ for any
+$i$, and \eqref{eq:multiplier} then exhibits $\Lambda$ as a nonnegative
+multiple of a convex combination of rank-one projectors, so
+$\Lambda\psd0$ and $\tr\Lambda=v\sum_i\lambda_i=v$.
+\end{proof}
+
+The coverage law \eqref{eq:coverage} is the contraction
+\eqref{eq:contract} rewritten by the quadric law, and the quadric law is
+that same contraction summed over $c$.  The two are therefore not
+independent constraints, and no count of the equations of the system may
+treat them as such: the content of a stationarity datum is exactly
+\eqref{eq:statg} and \eqref{eq:statt}.
+
+Reading the quadric law through \eqref{eq:multiplier} removes the
+restriction $c\in C_i$ from the sum.
+
+\begin{lemma}[\LV]\label{lem:overlap}
+Let a stationarity datum with $v\ne0$ be given.  Then
+\begin{equation}\label{eq:overlapone}
+  \sum_{i\in A}\lambda_i\langle u_i,g_c\rangle^2\;=\;1
+  \qquad(1\le c\le m),
+\end{equation}
+and consequently
+\begin{enumerate}
+\item[\rm(i)] $\ell_c\ge1$ for every $c$;
+\item[\rm(ii)] $t_cv\le1$ for every $c$, and hence $v\le m$;
+\item[\rm(iii)] for every $k$-subset $C$, active or not, there is an
+  index $i\in A$ with $u_i^{T}\SC u_i\ge k$;
+\item[\rm(iv)] for each $c$ there is $i$ with $\lambda_i>0$, $c\in C_i$
+  and $\langle u_i,g_c\rangle\ne0$; in particular $A^{+}$ covers
+  $\{1,\dots,m\}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+By \eqref{eq:multiplier},
+$g_c^{T}\Lambda g_c=v\sum_i\lambda_i\langle u_i,g_c\rangle^2$; comparison
+with \eqref{eq:quadric} and cancellation of $v\ne0$ give
+\eqref{eq:overlapone}.
+
+(i) Cauchy--Schwarz and $\lVert u_i\rVert=1$ give
+$\langle u_i,g_c\rangle^2\le\ell_c$; substituting in
+\eqref{eq:overlapone} and using $\sum_i\lambda_i=1$ gives $1\le\ell_c$.
+
+(ii) The sum in \eqref{eq:coverage} is a subsum of the sum in
+\eqref{eq:overlapone} with nonnegative terms, so $t_cv\le1$.  Summing
+over $c$ against $\sum_ct_c=1$ gives $v\le m$.
+
+(iii) Sum \eqref{eq:overlapone} over the $k$ vectors of $C$ and use
+\eqref{eq:polarized}: $\sum_i\lambda_i\,u_i^{T}\SC u_i=k$.  A convex
+combination does not exceed its largest term.
+
+(iv) By \eqref{eq:coverage} the sum at $c$ equals $t_cv\ne0$, so one of
+its terms is nonzero, and that forces $\lambda_i>0$, $c\in C_i$ and
+$\langle u_i,g_c\rangle\ne0$ for the corresponding $i$.
+\end{proof}
+
+Part (iii) names a unit vector, and that is what the system delivers; it
+implies $\lmax(\SC)\ge k$ for every $k$-subset, but the vector is the
+useful half.  Part (i) says every vector of a stationary design is heavy
+in the weak sense; the strict inequality $\ell_c>1$ would require
+excluding equality in Cauchy--Schwarz at every positively weighted index
+simultaneously, and is not available.
+
+\subsection{The tetrahedron}\label{sec:tetracalib}
+
+Before drawing exclusions we verify the entire system on the design of
+Example~\ref{ex:tetra}, where every constant in it can be displayed.
+
+\begin{example}\label{ex:tetrakkt}
+Take the tetrahedron: $g_c=\sqrt3\,u_c$ with $u_c$ the four unit vertex
+vectors, $t_c=\tfrac14$, so that $\ell_c=3$ and
+$\langle g_i,g_j\rangle=-1$ for $i\ne j$.  There are four triples, each
+the complement of one index; for $C=\{0,1,2,3\}\setminus\{c_0\}$ one has
+$\SC=4I_3-g_{c_0}^{\vphantom{T}}g_{c_0}^{T}$, with spectrum $\{1,4,4\}$.
+Take
+\[
+  A=\{0,1,2,3\},\qquad C_i=\{0,1,2,3\}\setminus\{i\},\qquad
+  \lambda_i=\tfrac14,\qquad
+  u_i=\tfrac{1}{\sqrt3}\,g_i,\qquad v=1 .
+\]
+Each $u_i$ is a unit vector, and it is the tight eigenvector:
+$\langle g_i,u_i\rangle=3/\sqrt3=\sqrt3$, so
+$S_{C_i}u_i=4u_i-\sqrt3\,g_i=4u_i-3u_i=u_i$, the eigenvalue being
+$v=1$.  The multiplier predicted by \eqref{eq:multiplier} is
+\[
+  \Lambda\;=\;1\cdot\sum_{i}\tfrac14\cdot\tfrac13\,
+    g_i^{\vphantom{T}}g_i^{T}
+  \;=\;\tfrac1{12}\sum_ig_i^{\vphantom{T}}g_i^{T}
+  \;=\;\tfrac1{12}\cdot4I_3\;=\;\tfrac13I_3 ,
+\]
+using $\sum_ig_i^{\vphantom{T}}g_i^{T}=4I_3$, which is
+\eqref{eq:parseval} at $t_i=\tfrac14$.  Then $\tr\Lambda=1=v$, as
+Proposition~\ref{prop:quadric} requires, and the quadric law
+\eqref{eq:quadric} reads $g_c^{T}\Lambda g_c=\ell_c/3=1=v$.
+
+For the coverage law, the triples containing $c$ are the three with
+$i\ne c$, and for those
+$\langle u_i,g_c\rangle=\langle g_i,g_c\rangle/\sqrt3=-1/\sqrt3$, so
+\[
+  \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle^2
+  \;=\;3\cdot\tfrac14\cdot\tfrac13\;=\;\tfrac14\;=\;t_cv .
+\]
+Identity \eqref{eq:overlapone} restores the missing index $i=c$, for
+which $\langle u_c,g_c\rangle^2=3$, and indeed
+$\tfrac14+\tfrac14\cdot3=1$.  For \eqref{eq:statg} itself, using
+$\sum_ig_i=0$,
+\[
+  \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle u_i
+  \;=\;\sum_{i\ne c}\tfrac14\Bigl(-\tfrac1{\sqrt3}\Bigr)
+       \tfrac{g_i}{\sqrt3}
+  \;=\;-\tfrac1{12}\sum_{i\ne c}g_i
+  \;=\;\tfrac{g_c}{12}
+  \;=\;\tfrac14\cdot\tfrac13\,g_c
+  \;=\;t_c\Lambda g_c .
+\]
+The datum is admissible: every triple has $\lmin=1$, so $F=1=v$.  The
+bounds of Lemma~\ref{lem:overlap} read $\ell_c=3\ge1$,
+$t_cv=\tfrac14\le1$ and $v=1\le4=m$.  Part (iii) of that lemma is not
+realized at the tight index of the subset itself, since
+$u_i^{T}S_{C_i}u_i=v=1<3$; it is realized at any other index, for which
+\[
+  u_j^{T}S_{C_i}u_j=4-\langle g_i,u_j\rangle^2
+   =4-\tfrac{\langle g_i,g_j\rangle^2}{3}=4-\tfrac13=\tfrac{11}3\;\ge\;3
+   \qquad(j\ne i).
+\]
+\end{example}
+
+\subsection{Exclusions}\label{sec:exclusions}
+
+Three structural configurations are excluded outright.  Each exclusion is
+a statement about the datum alone; admissibility is nowhere used.
+
+\begin{proposition}\label{prop:e1}
+Let a stationarity datum with $v\ne0$ have $\Lambda=\rho\,ww^{T}$ for
+some unit vector $w$ and some $\rho\in\R$.  Then $v=k$.  Since
+$\Lambda\psd0$, this covers every datum with $\rk\Lambda\le1$.
+\end{proposition}
+
+\begin{proof}
+Taking traces in \eqref{eq:multiplier} gives $\rho=\tr\Lambda=v$.
+Evaluating \eqref{eq:multiplier} as a quadratic form at an arbitrary $x$
+gives $v\langle w,x\rangle^2=v\sum_i\lambda_i\langle u_i,x\rangle^2$, so
+after cancelling $v\ne0$,
+\begin{equation}\label{eq:rankonecollapse}
+  \sum_{i\in A}\lambda_i\langle u_i,x\rangle^2
+  \;=\;\langle w,x\rangle^2\qquad\text{for every }x .
+\end{equation}
+Put $x=w$.  Then $\sum_i\lambda_i\langle u_i,w\rangle^2=1
+=\sum_i\lambda_i$, so
+$\sum_i\lambda_i\bigl(1-\langle u_i,w\rangle^2\bigr)=0$; every summand is
+nonnegative, because $\lVert u_i\rVert=\lVert w\rVert=1$ forces
+$\langle u_i,w\rangle^2\le1$.  Hence every summand vanishes.  Fix $i$
+with $\lambda_i>0$.  Then $\langle u_i,w\rangle^2=1$ and
+\[
+  \bigl\lVert u_i-\langle u_i,w\rangle w\bigr\rVert^2
+  \;=\;1-2\langle u_i,w\rangle^2+\langle u_i,w\rangle^2\;=\;0 ,
+\]
+so $u_i=\pm w$.  Now read \eqref{eq:quadric} through $\Lambda=v\,ww^{T}$:
+it says $v\langle w,g_c\rangle^2=v$, so $\langle w,g_c\rangle^2=1$ for
+every $c$.  Therefore, by \eqref{eq:polarized},
+\[
+  v\;=\;u_i^{T}S_{C_i}u_i\;=\;w^{T}S_{C_i}w
+    \;=\;\sum_{c\in C_i}\langle w,g_c\rangle^2
+    \;=\;\lvert C_i\rvert\;=\;k. \qedhere
+\]
+\end{proof}
+
+\begin{corollary}\label{cor:e1}
+No stationarity datum with $0<v<1$ has a multiplier of rank at most one.
+\end{corollary}
+
+\begin{proof}
+Otherwise $v=k$ by Proposition~\ref{prop:e1}, and $v\ne0$ forces
+$k\ge1$, whence $v\ge1$.
+\end{proof}
+
+The second exclusion concerns the tight directions.  Say that a datum has
+\emph{independent tight support} if the only relation
+$\sum_{i\in A}\lambda_i\gamma_i\,u_i=0$ with $\gamma:A\to\R$ has
+$\lambda_i\gamma_i=0$ for every $i$; linear independence of the family
+$(u_i)_{\lambda_i>0}$ implies this, and the stated form makes the
+zero-multiplier indices cost nothing.
+
+\begin{proposition}\label{prop:e2}
+Let a stationarity datum with $v\ne0$ have independent tight support.
+Then $t_cv=1$ for every $c$; hence $v=m$ and $t_c=1/m$ for every $c$.
+In particular no stationarity datum with $0<v<1$ has independent tight
+support: below the threshold the tight directions carried by positive
+multipliers are always dependent.
+\end{proposition}
+
+\begin{proof}
+Substituting \eqref{eq:multiplier} into the right side of
+\eqref{eq:statg} turns it into a combination of the $u_i$,
+\[
+  t_c\Lambda g_c
+  \;=\;t_cv\sum_{i\in A}\lambda_i\langle u_i,g_c\rangle\,u_i ,
+\]
+so subtraction gives the relation
+\begin{equation}\label{eq:vanishing}
+  \sum_{i\in A}\lambda_i\,\langle u_i,g_c\rangle\,
+    \bigl(\,[\,c\in C_i\,]-t_cv\,\bigr)\,u_i\;=\;0 ,
+\end{equation}
+where $[\,\cdot\,]$ is $1$ when the condition holds and $0$ otherwise.
+Independence kills every coefficient:
+\[
+  \lambda_i\,\langle u_i,g_c\rangle\,
+  \bigl(\,[\,c\in C_i\,]-t_cv\,\bigr)\;=\;0\qquad(i\in A).
+\]
+Fix $c$.  By Lemma~\ref{lem:overlap}(iv) there is $i$ with
+$\lambda_i>0$, $c\in C_i$ and $\langle u_i,g_c\rangle\ne0$; for that $i$
+the last factor is $1-t_cv$, so $t_cv=1$.  Summing over $c$ against
+$\sum_ct_c=1$ gives $v=m$, and then $t_c=1/m$.  A design has at least one
+vector, so $v=m\ge1$.
+\end{proof}
+
+The conclusion is an identification and not a contradiction.  One might
+expect independence to force $\langle u_i,g_c\rangle=0$, contradicting
+coverage; the coefficient in \eqref{eq:vanishing} can vanish through its
+last factor instead, and it does.
+
+The third exclusion is counting.  By Lemma~\ref{lem:overlap}(iv) the
+active family covers $\{1,\dots,m\}$, and each of its members has $k$
+elements.
+
+\begin{proposition}\label{prop:count}
+For a stationarity datum with $v\ne0$,
+\begin{equation}\label{eq:count}
+  m\;\le\;k\,\lvert A^{+}\rvert .
+\end{equation}
+If $k<m$ then $\lvert A^{+}\rvert\ge2$.  If $\lvert A^{+}\rvert=1$ then
+$m=k$ and $v=k$.  If $m=2k$ and $\lvert A^{+}\rvert=2$, the two members
+of $A^{+}$ are disjoint and partition $\{1,\dots,m\}$.
+\end{proposition}
+
+\begin{proof}
+The union of the members of $A^{+}$ is all of $\{1,\dots,m\}$ and has at
+most $k\lvert A^{+}\rvert$ elements, which is \eqref{eq:count}; the
+second assertion is \eqref{eq:count} read backwards.  If $A^{+}=\{C\}$
+then $m\le k$, while $m\ge k$ always, so $m=k$; moreover every index with
+$\lambda_i>0$ carries the same subset $C$, so summing
+\eqref{eq:overlapone} over $c\in C$ gives, as in
+Lemma~\ref{lem:overlap}(iii), $\sum_i\lambda_iu_i^{T}\SC u_i=k$, while
+each such $u_i$ is a unit eigenvector of $\SC$ at $v$, whence $v=k$.  If
+$m=2k$ and $A^{+}=\{C,C'\}$ then $C\cup C'$ has $2k$ elements and
+$\lvert C\rvert+\lvert C'\rvert=2k$, so $C\cap C'=\emptyset$.
+\end{proof}
+
+\begin{corollary}[\LV]\label{cor:singleactive}
+A stationarity datum with $v\ne0$ whose index set $A$ is a singleton has
+$v=k$.  In particular no such datum has $0<v<1$.
+\end{corollary}
+
+\begin{proof}
+A singleton $A=\{i_0\}$ has $\lambda_{i_0}=1>0$, so $A^{+}=\{C_{i_0}\}$
+and Proposition~\ref{prop:count} gives $v=k$; and $v\ne0$ forces $k\ge1$,
+whence $v\ge1$.
+\end{proof}
+
+\begin{corollary}\label{cor:e3}
+Let a stationarity datum at $(6,3)$ have $0<v<1$.  Then either
+$\lvert A^{+}\rvert\ge3$, or $A^{+}$ consists of two disjoint triples
+partitioning $\{1,\dots,6\}$ and the tight directions carried by positive
+multipliers are linearly dependent.  At $(7,3)$ one has
+$\lvert A^{+}\rvert\ge3$ unconditionally.
+\end{corollary}
+
+\begin{proof}
+At $(6,3)$, Proposition~\ref{prop:count} gives
+$\lvert A^{+}\rvert\ge2$; if it is exactly $2$ then $m=2k$ forces the
+partition, and Proposition~\ref{prop:e2} forbids independent tight
+support at $v<1$.  At $(7,3)$, \eqref{eq:count} reads
+$7\le3\lvert A^{+}\rvert$.
+\end{proof}
+
+Whether the partition branch at $(6,3)$ is inhabited is open.
+
+A fourth exclusion follows from the same subsum comparison, and it acts
+on the opposite end of the range: on families so large that a single
+vector meets all of them.
+
+\begin{proposition}[\LV]\label{prop:saturated}
+Let a stationarity datum with $v\ne0$ be given, and suppose some index
+$c$ lies in $C_i$ for every $i\in A$.  Then $t_cv=1$, and hence
+$v\ge1$.
+\end{proposition}
+
+\begin{proof}
+The sum in \eqref{eq:coverage} runs over $\{i:c\in C_i\}$ and the sum in
+\eqref{eq:overlapone} over all of $A$.  Under the hypothesis the two
+index sets coincide, so the inequality $t_cv\le1$ of
+Lemma~\ref{lem:overlap}(ii) is an equality: $t_cv=1$.  Since
+$t_c\le1$ this gives $v=1/t_c\ge1$.
+\end{proof}
+
+\begin{corollary}\label{cor:saturated}
+At a datum with $0<v<1$, no index lies in every member of $A$; in
+particular, for each index some active subset omits it.
+\end{corollary}
+
+Propositions~\ref{prop:e1}, \ref{prop:e2}, \ref{prop:count} and
+\ref{prop:saturated} are the exclusions available at $0<v<1$.  Their
+combined reach is measured in \S\ref{sec:census}.
+
+\subsection{The reach of the system}\label{sec:reach}
+
+The exclusions bite on small active families.  At the frontier size the
+system is satisfiable at the threshold itself, with a large active
+family.
+
+\begin{example}\label{ex:splitseven}
+Split the tetrahedron of Example~\ref{ex:tetra} at three of its four
+vertices.  Let $h_0,\dots,h_3$ be the sign vectors $(1,1,1)$,
+$(1,-1,-1)$, $(-1,1,-1)$, $(-1,-1,1)$, so that
+$\sum_dh_d^{\vphantom{T}}h_d^{T}=4I_3$ and $\langle h_d,h_e\rangle=-1$
+for $d\ne e$; these are the vectors of Example~\ref{ex:tetra} in
+coordinates.  Give the seven vectors $g_0,\dots,g_6$ the directions
+$h_0,h_1,h_2,h_3,h_0,h_1,h_2$ and the weights
+$\tfrac18,\tfrac18,\tfrac18,\tfrac14,\tfrac18,\tfrac18,\tfrac18$.  Each
+direction carries total weight $\tfrac14$, so \eqref{eq:parseval} holds.
+This is one of the extremal designs of
+Theorem~\ref{thm:tieseverywhere} at $(7,3)$, and $F=1$.
+
+Call a triple \emph{rainbow} if its three vectors point in three distinct
+directions.  There are $2^3=8$ rainbow triples on the directions
+$h_0,h_1,h_2$, one for each choice of vector in each direction; and a
+rainbow triple containing the unsplit vector $g_3$ uses two of the three
+split directions, which gives $3\cdot2\cdot2=12$ more.  Twenty in all.
+For a rainbow triple $C$ missing the direction $h_d$ one has
+$\SC=4I_3-h_d^{\vphantom{T}}h_d^{T}$, exactly as in
+Example~\ref{ex:tetrakkt}, so $u_C:=h_d/\sqrt3$ is a unit eigenvector at
+$v=1$.  Give multiplier $\tfrac1{32}$ to the eight triples omitting $h_3$
+and $\tfrac1{16}$ to the twelve containing $g_3$; these are positive and
+$8\cdot\tfrac1{32}+12\cdot\tfrac1{16}=\tfrac14+\tfrac34=1$.  Each of the
+four directions is the missed one for total multiplier mass $\tfrac14$,
+so \eqref{eq:multiplier} gives
+\[
+  \Lambda\;=\;1\cdot\sum_{d}\tfrac14\cdot\tfrac13\,
+    h_d^{\vphantom{T}}h_d^{T}\;=\;\tfrac1{12}\cdot4I_3
+    \;=\;\tfrac13I_3 ,
+\]
+whence $\tr\Lambda=1=v$ and $g_c^{T}\Lambda g_c=3/3=1=v$, which is
+\eqref{eq:quadric}.  A triple containing $g_c$ misses a direction other
+than that of $g_c$, so $\langle u_C,g_c\rangle^2=\tfrac13$ there, and the
+coverage law reduces to $\tfrac13\sum_{C\ni c}\lambda_C=t_c$.  For $c=3$
+the twelve triples of multiplier $\tfrac1{16}$ all contain $g_3$, giving
+$\tfrac13\cdot\tfrac{12}{16}=\tfrac14=t_3$.  For $c=0$ the triples
+containing $g_0$ are four on the directions $h_0,h_1,h_2$, of multiplier
+$\tfrac1{32}$, and two each on $h_0,h_1,h_3$ and on $h_0,h_2,h_3$, of
+multiplier $\tfrac1{16}$, giving
+\[
+  \tfrac13\Bigl(\tfrac4{32}+\tfrac2{16}+\tfrac2{16}\Bigr)
+  =\tfrac13\cdot\tfrac38=\tfrac18=t_0 .
+\]
+The datum is admissible, and $\lvert A^{+}\rvert=20$.
+\end{example}
+
+Example~\ref{ex:splitseven} puts twenty triples in the active family at
+the cell which carries the whole of rank three.  It does not conflict
+with Proposition~\ref{prop:carath} below, which asserts only that the
+multipliers \emph{may be taken} supported on at most nineteen indices.
+
+The next statement is limitative, and it fixes the form the conjectures
+of \S\ref{sec:census} must take.
+
+\begin{theorem}\label{thm:reach}
+There is a design at $(4,2)$ carrying a stationarity datum with
+$v=2-\sqrt2<1$.  That design satisfies $\Gtz(4,2)$ with margin: some
+$2$-subset $C$ has $\SC-I=I\pd0$, so $F=2$.  Consequently the
+implication ``a stationarity datum with $v\ne0$ has $v\ge1$'' is false,
+and no strengthening of the identities \eqref{eq:statg} and
+\eqref{eq:statt} can make it true.
+\end{theorem}
+
+\begin{proof}
+Take
+\[
+  g_0=(\sqrt2,0),\quad g_1=(-1,1),\quad g_2=(1,1),\quad g_3=(0,\sqrt2),
+  \qquad t_c=\tfrac14 .
+\]
+Then $\ell_c=2$ for every $c$ and
+\[
+  \sum_ct_c\,g_c^{\vphantom{T}}g_c^{T}
+  =\tfrac14\left[
+    \begin{pmatrix}2&0\\0&0\end{pmatrix}
+   +\begin{pmatrix}1&-1\\-1&1\end{pmatrix}
+   +\begin{pmatrix}1&1\\1&1\end{pmatrix}
+   +\begin{pmatrix}0&0\\0&2\end{pmatrix}\right]
+  =\tfrac14\begin{pmatrix}4&0\\0&4\end{pmatrix}=I_2 ,
+\]
+so this is a design.  Take the four pairs $C_0=\{0,1\}$, $C_1=\{0,2\}$,
+$C_2=\{1,3\}$, $C_3=\{2,3\}$, each with multiplier $\tfrac14$, and
+$\Lambda:=\tfrac{2-\sqrt2}{2}I_2$.  Now
+\[
+  S_{C_0}=\begin{pmatrix}3&-1\\-1&1\end{pmatrix},
+  \qquad \tr S_{C_0}=4,\qquad\det S_{C_0}=2,
+\]
+so the eigenvalues of $S_{C_0}$ are $2\pm\sqrt2$, and the same holds for
+$C_1$, $C_2$, $C_3$ by symmetry.  Put $v:=2-\sqrt2$.  Unit eigenvectors
+at $v$ are the normalizations $u_i:=r_i/\lVert r_i\rVert$ of
+\[
+  r_0=(1,1+\sqrt2),\quad r_1=(1,-(1+\sqrt2)),\quad
+  r_2=(1,\sqrt2-1),\quad r_3=(1,1-\sqrt2),
+\]
+with $\lVert r_0\rVert^2=\lVert r_1\rVert^2=4+2\sqrt2$ and
+$\lVert r_2\rVert^2=\lVert r_3\rVert^2=4-2\sqrt2$; for instance
+\[
+  \bigl(S_{C_0}-vI\bigr)r_0
+  =\begin{pmatrix}1+\sqrt2&-1\\-1&\sqrt2-1\end{pmatrix}
+   \begin{pmatrix}1\\1+\sqrt2\end{pmatrix}
+  =\begin{pmatrix}(1+\sqrt2)-(1+\sqrt2)\\
+                  -1+(\sqrt2-1)(1+\sqrt2)\end{pmatrix}=0 .
+\]
+Condition \eqref{eq:statt} holds because $\Lambda$ is a multiple of the
+identity and all leverages are equal:
+$g_c^{T}\Lambda g_c=\tfrac{2-\sqrt2}{2}\cdot2=2-\sqrt2=v$, which is
+already \eqref{eq:quadric}.  For \eqref{eq:statg} take $c=0$.  The pairs
+containing $0$ are $C_0$ and $C_1$, and
+$\langle r_0,g_0\rangle=\langle r_1,g_0\rangle=\sqrt2$, so, since
+normalizing $r_i$ twice contributes $\lVert r_i\rVert^{-2}$,
+\[
+  \sum_{i\,:\,0\in C_i}\lambda_i\langle u_i,g_0\rangle u_i
+  =\tfrac14\cdot\frac{\sqrt2}{4+2\sqrt2}\,\bigl(r_0+r_1\bigr)
+  =\tfrac14\cdot\frac{\sqrt2}{4+2\sqrt2}\,(2,0)
+  =\frac{\sqrt2-1}{4}\,(1,0),
+\]
+because
+$\dfrac{\sqrt2}{4+2\sqrt2}=\dfrac{\sqrt2\,(4-2\sqrt2)}{8}
+=\dfrac{4\sqrt2-4}{8}=\dfrac{\sqrt2-1}{2}$, while
+\[
+  t_0\Lambda g_0=\tfrac14\cdot\tfrac{2-\sqrt2}{2}\,(\sqrt2,0)
+  =\frac{2\sqrt2-2}{8}\,(1,0)=\frac{\sqrt2-1}{4}\,(1,0).
+\]
+The three remaining vectors are handled in the same way.  Finally, the
+two pairs omitted from the active family are orthogonal:
+$S_{\{0,3\}}=S_{\{1,2\}}=2I_2$, so $\lmin=2$ there, $F=2$, and
+$S_{\{0,3\}}-I=I\pd0$.
+\end{proof}
+
+The datum of Theorem~\ref{thm:reach} is stationary for the maximum taken
+over the four chosen pairs, which are the \emph{minimizers} of
+$\lmin(\SC)$, and not for $F$.  What it violates is \eqref{eq:argmax}, a
+disjunctive semialgebraic condition rather than an equation, and
+therefore not available to the algebra of \S\ref{sec:laws}.  It violates
+the hypothesis of each exclusion as well, and in the expected way: its
+multiplier is isotropic rather than of rank one; its four tight
+directions lie in $\R^2$ and are dependent; and its active family
+consists of four distinct pairs, neither a singleton nor a partition.
+
+\subsection{The residue}\label{sec:census}
+
+Two finite bounds delimit what is left.  The lower one is
+\eqref{eq:count}.  The upper one is Carath\'eodory's theorem applied to
+the convex combination \eqref{eq:zeta}.
+
+\begin{proposition}\label{prop:carath}
+A stationarity datum produced by Theorem~\ref{thm:firstorder} may be
+chosen with
+\begin{equation}\label{eq:carath}
+  \lvert A\rvert\;\le\;m(k+1)-k^{2} .
+\end{equation}
+At $(6,3)$ this is $15$, and at $(7,3)$ it is $19$.
+\end{proposition}
+
+\begin{proof}
+After the spectral decomposition carried out in the proof of
+Theorem~\ref{thm:firstorder}, identity \eqref{eq:zetarankone} reads
+$\zeta=\sum_{i\in A}\lambda_i\,\phi_{C_i,u_iu_i^{T}}$, a convex
+combination of the rank-one functionals of \eqref{eq:pieceSub}; and
+$\zeta$ vanishes on $T$.  So the origin lies in the convex hull of the
+restrictions to $T$ of those functionals.  By \eqref{eq:rotationkill}
+each restriction annihilates the subspace $\mathcal{O}$ of infinitesimal
+rotations, which by \eqref{eq:orbit} lies in $T$ and has dimension
+$\tfrac12k(k-1)$.  The combination therefore takes place in the
+annihilator of $\mathcal{O}$ inside the dual of $T$, a space of dimension
+\[
+  \dim T-\dim\mathcal{O}
+  =\Bigl(mk+m-\tfrac12k(k+1)-1\Bigr)-\tfrac12k(k-1)
+  =mk+m-k^{2}-1 ,
+\]
+by Lemma~\ref{lem:tangent}.  Carath\'eodory's theorem
+\cite{Caratheodory1911}, \cite[\S17]{Rockafellar1970} writes a point of a
+convex hull in a space of dimension $d$ as a combination of at most $d+1$
+of the points; here $d+1=mk+m-k^{2}=m(k+1)-k^2$.  Keep those indices,
+discard the rest, and read the last two steps of the proof of
+Theorem~\ref{thm:firstorder} again from the reduced combination: the
+value, the subsets and the tight directions are unchanged, the
+multipliers are the new ones, and $\Lambda$ is recomputed by
+\eqref{eq:multiplier}.
+\end{proof}
+
+The dimension in that proof is the dimension of the design manifold
+modulo the orthogonal group: $mk$ coordinates for the vectors and $m$ for
+the weights, less the $\tfrac12k(k+1)+1$ constraints, less the
+$\tfrac12k(k-1)$ rotations.  At $(6,3)$ it is $18+6-6-1-3=14$, and at
+$(7,3)$ it is $21+7-6-1-3=18$.
+
+Combining, at $(6,3)$ the active family covers $\{1,\dots,6\}$ and has
+between $2$ and $15$ members, the value $2$ occurring only in the
+partition branch of Corollary~\ref{cor:e3}; at $(7,3)$ it covers
+$\{1,\dots,7\}$ and has between $3$ and $19$ members.  The number of
+possibilities is finite, and at $(6,3)$ small enough to be listed.
+
+\begin{proposition}\label{prop:census}
+Up to relabelling, the families of $3$-subsets of $\{1,\dots,6\}$ whose
+union is $\{1,\dots,6\}$ number $2102$, distributed by cardinality as in
+Table~\ref{tab:census}.  Exactly one of them has two members, namely a
+partition into two triples; so $2101$ have at least three members, and
+$2069$ have at most fifteen.  Up to relabelling, the families of
+$3$-subsets of $\{1,\dots,7\}$ whose union is $\{1,\dots,7\}$ number
+$7\,011\,184$; every one has at least three members, and $5\,249\,381$
+have at most nineteen.
+\end{proposition}
+
+The count that matters is not the size of the census but the part of it
+the exclusions reach.  Of the $2136$ classes of families of $3$-subsets
+of $\{1,\dots,6\}$, Lemma~\ref{lem:overlap}(iv) removes the $34$ that do
+not cover; Proposition~\ref{prop:saturated} removes $23$ of the
+remainder, namely those in which some index lies in every member; and
+Corollary~\ref{cor:e3} leaves the single partition class undecided.  So
+$57$ classes are excluded and $2079$ are not.  The exclusions act at the
+two ends of the range and are silent in the middle, where the census is
+concentrated: they remove classes of cardinality at most three and
+classes large enough to be saturated, while the distribution of
+Table~\ref{tab:census} peaks at cardinality ten.  Conjecture~\ref{conj:sixthree}
+is therefore not a finite verification away from the exclusions proved
+here.
+
+\begin{proof}
+Orbit enumeration under the symmetric group.  For $n=6$ the $2^{20}$
+families of triples were partitioned into orbits directly.  Independently,
+for $n=6$ and $n=7$ the number of orbits of covering families of
+cardinality $j$ was computed from Burnside's lemma as
+\[
+  \frac1{n!}\sum_{\pi\in S_n}\ \sum_{R}(-1)^{r-\lvert R\rvert}
+    \bigl[x^{j}\bigr]\!\!\prod_{\gamma\,\subseteq\, T_R}
+      \bigl(1+x^{\lvert\gamma\rvert}\bigr),
+\]
+where $\pi$ has $r$ cycles on $\{1,\dots,n\}$, the index $R$ runs over
+sets of those cycles, $T_R$ is their union, and $\gamma$ runs over the
+cycles of the permutation induced by $\pi$ on the $3$-subsets contained
+in $T_R$.  A family fixed by $\pi$ is a union of such cycles, and its
+union of points is $\pi$-invariant, so the alternating sum is
+inclusion--exclusion over the sets a fixed family can avoid.  The two
+computations agree at $n=6$.
+\end{proof}
+
+\begin{table}[ht]
+\small
+\centering
+\begin{tabular}{@{}l*{10}{r}@{}}
+\toprule
+$j$   & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11\\
+$N_j$ & 1 & 3 & 15 & 37 & 88 & 157 & 247 & 311 & 351 & 312\\
+\midrule
+$j$   & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 20 & \\
+$N_j$ & 249 & 161 & 94 & 43 & 21 & 7 & 3 & 1 & 1 & \\
+\bottomrule
+\end{tabular}
+\medskip
+\caption{The number $N_j$ of families of $j$ triples covering
+$\{1,\dots,6\}$, up to relabelling.  The total is $2102$; the
+Carath\'eodory bound \eqref{eq:carath} discards the last five columns,
+leaving $2069$.}
+\label{tab:census}
+\end{table}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/census}
+  \caption{The census of Proposition~\ref{prop:census} at $(6,3)$.  The
+  active family covers $\{1,\dots,6\}$, so it has at least two members;
+  Corollary~\ref{cor:e3} removes the single class of cardinality two
+  except in its partition branch, and \eqref{eq:carath} removes the
+  classes above fifteen.}
+  \label{fig:census}
+\end{figure}
+
+\begin{conjecture}\label{conj:sixthree}
+No design at $(6,3)$ carries an admissible stationarity datum with
+$0<v<1$.
+\end{conjecture}
+
+\begin{conjecture}\label{conj:seventhree}
+No design at $(7,3)$ carries an admissible stationarity datum with
+$0<v<1$.
+\end{conjecture}
+
+Admissibility may not be dropped: Theorem~\ref{thm:reach} refutes the
+corresponding statement at $(4,2)$ without it.  With it, each conjecture
+is a finite conjunction of semialgebraic emptiness questions, one for
+each of the classes counted in Proposition~\ref{prop:census}.  For a
+fixed active family the unknowns are the $mk$ coordinates, the $m$
+weights, the multipliers, the tight directions, the entries of $\Lambda$
+and the value $v$; the conditions are \eqref{eq:statg},
+\eqref{eq:statt}, $\lVert u_i\rVert=1$, $S_{C_i}u_i=vu_i$,
+$\lambda_i\ge0$, $\sum_i\lambda_i=1$, \eqref{eq:parseval}, $t\pd0$,
+$\sum_ct_c=1$, $0<v<1$, and \eqref{eq:argmax} --- the last a disjunction
+of sign conditions on the leading principal minors of $\SC-vI$, one
+disjunction for each $k$-subset $C$.
+
+\begin{theorem}[\CD]\label{thm:rankthree}
+Assume Conjectures~\ref{conj:sixthree} and~\ref{conj:seventhree}, and
+assume that a failure of $\Gtz(6,3)$, respectively of $\Gtz(7,3)$,
+produces an extremal counterexample at that cell in the sense of
+Definition~\ref{def:extremalcex}.  Then $\Gtz(m,3)$ holds for every $m$.
+\end{theorem}
+
+\begin{proof}
+By Corollary~\ref{cor:twocells} it suffices to prove $\Gtz(6,3)$ and
+$\Gtz(7,3)$.  Suppose $\Gtz(6,3)$ fails.  By hypothesis $F$ attains a
+local minimum over the designs at $(6,3)$ at a design of value $v<1$,
+and $v>0$ by Lemma~\ref{lem:fpos}.  Theorem~\ref{thm:firstorder}
+produces at that design a stationarity datum with value $v$, and it is
+admissible because $v=F$ there.  This contradicts
+Conjecture~\ref{conj:sixthree}.  The same argument at $(7,3)$ with
+Conjecture~\ref{conj:seventhree} gives $\Gtz(7,3)$.
+\end{proof}
+
+The extremality hypothesis is the only thing this section takes from
+\S\ref{sec:compactness}, and it is what Theorem~\ref{thm:variational}
+supplies for the chart objective.
+
+At $(6,3)$ the conjecture is an enumeration; at $(7,3)$ it is not, and an
+argument uniform in the active family is required.  What the exclusions
+of \S\ref{sec:exclusions} remove are the small and the transversal
+configurations, and Example~\ref{ex:splitseven} shows where the residue
+lives: at the frontier size the system is realized, at the threshold, by
+an active family of twenty triples.
+
+\begin{wip}
+Decide the partition branch of Corollary~\ref{cor:e3}: either exclude a
+datum whose active family is a two-block partition of $\{1,\dots,6\}$
+with $0<v<1$, or exhibit one.
+\end{wip}

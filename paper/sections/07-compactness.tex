@@ -1,0 +1,734 @@
+\section{A variational principle}\label{sec:compactness}
+
+A counterexample to $\Gtz(m,k)$ is a design at which the selection
+objective falls below its threshold.  The designs of a given size and
+rank form a space which is not compact, and on which that objective has
+no minimizer.  This section replaces the design space by a compact one
+carrying a continuous objective, proves that every added point admits a
+dominating subset, and concludes that a counterexample, if one exists,
+may be taken to be a global minimizer --- hence to satisfy first-order
+conditions.  The last subsection locates the exact limit of the method:
+the identity which discharges the added points holds at vanishing weight
+and fails at every positive weight, and the failure sits on the extremal
+locus of \S\ref{sec:ties}.
+
+\subsection{The compactification}\label{sec:compactchart}
+
+Fix $m$ and $k$.  In a design the weights are confined to the open
+simplex and the vectors are not confined at all.  What Parseval controls
+is the product: by Lemma~\ref{lem:trace},
+\begin{equation}\label{eq:levbound}
+  \sum_c s_c\;=\;\sum_c t_c\ell_c\;=\;k,
+  \qquad\text{so}\qquad \ell_c\;\le\;\frac{k}{t_c} .
+\end{equation}
+As a weight tends to zero the corresponding vector may therefore grow
+without bound, and it may do so while keeping its leverage score
+$s_c=t_c\ell_c$ fixed.
+
+\begin{example}\label{ex:escape}
+Let $k=1$, $m=2$ and, for $0<u\le\tfrac12$,
+\[
+  t_1=1-u,\quad t_2=u,\qquad
+  g_1=\frac1{\sqrt{2(1-u)}},\quad g_2=\frac1{\sqrt{2u}} .
+\]
+Then $t_1g_1^2+t_2g_2^2=\tfrac12+\tfrac12=1$, so this is a design at
+$(2,1)$ for every such $u$.  Its leverages are
+$\ell_1=1/2(1-u)$ and $\ell_2=1/2u$, and $\ell_2\to\infty$ as $u\to0$.
+No subsequence converges in the design space.  Its leverage scores are
+$s_1=s_2=\tfrac12$, constant in $u$.
+\end{example}
+
+The chart of \S\ref{sec:chart} is exactly the change of variables which
+retains the leverage scores and discards the divergence.  With
+$v_c=\sqrt{t_c}\,g_c$ and $P=VV^{*}$ as in \eqref{eq:chart},
+\begin{equation}\label{eq:pivotlev}
+  P_{cc}\;=\;\lVert v_c\rVert^2\;=\;t_c\ell_c\;=\;s_c ,
+\end{equation}
+so \eqref{eq:levbound} bounds the diagonal of $P$, and $P$ with it.  The
+domination criterion, by Lemma~\ref{lem:chart}, is a statement about
+$(P,t)$ alone.  In Example~\ref{ex:escape} the chart is constant:
+$v_1=v_2=1/\sqrt2$, so
+\[
+  P=\begin{pmatrix}\tfrac12&\tfrac12\\[2pt]\tfrac12&\tfrac12\end{pmatrix},
+  \qquad t=(1-u,\,u)\;\longrightarrow\;(1,0)\quad(u\to0),
+\]
+and the family converges, in these coordinates, to a pair $(P,t)$ whose
+second weight vanishes while the corresponding diagonal entry of $P$ does
+not.  Such pairs are the points to be added.
+
+\begin{definition}\label{def:chartpoint}
+A \emph{chart point} of size $m$ and rank $k$ is a pair $(P,t)$ in which
+$P$ is a real symmetric idempotent $m\times m$ matrix with $\tr P=k$ and
+$t$ lies in the closed simplex
+$\Delta^{m-1}=\{t\in\R^m:t_c\ge0,\ \sum_ct_c=1\}$.  Put $D:=\diag(t)$,
+$W:=P-D$, and
+\begin{equation}\label{eq:objective}
+  G(P,t)\;:=\;\max_{\lvert C\rvert=k}\;\lmin\bigl(W[C]\bigr) .
+\end{equation}
+A $k$-subset $C$ \emph{dominates} at $(P,t)$ if $W[C]\psd0$.  Write
+$\Gtz^{\mathrm{ch}}(m,k)$ for the assertion that every chart point of
+size $m$ and rank $k$ admits a dominating $k$-subset.
+\end{definition}
+
+Since a maximum over a finite set is attained,
+\begin{equation}\label{eq:threshold}
+  G(P,t)\ge0
+  \quad\Longleftrightarrow\quad
+  \text{some $k$-subset dominates at $(P,t)$.}
+\end{equation}
+No condition ties $P$ to $t$: the relation \eqref{eq:pivotlev} is the
+definition of $s_c$, not a constraint, and on the compactification the
+vector lengths are recovered only where $t_c>0$, by $\ell_c=P_{cc}/t_c$.
+That formula is the whole of the boundary singularity, and it does not
+appear in Definition~\ref{def:chartpoint}.
+
+\begin{proposition}\label{prop:chartdesign}
+The chart points of size $m$ and rank $k$ with $t_c>0$ for every $c$ are
+exactly the chart points of designs of size $m$ and rank $k$ over $\R$,
+and the design is determined by the chart point up to a rotation of
+$\R^k$.  Under this correspondence a $k$-subset dominates in the design
+if and only if it dominates at the chart point.
+\end{proposition}
+
+\begin{proof}
+A design produces $(VV^{T},t)$, which satisfies
+Definition~\ref{def:chartpoint}: $VV^{T}$ is symmetric, idempotent
+because $V^{T}V=I_k$, and of trace $\tr(V^{T}V)=k$; and $t$ lies in the
+open simplex.  Conversely let $(P,t)$ be a chart point with all weights
+positive.  A symmetric idempotent is the orthogonal projection onto its
+range, so $\rk P=\tr P=k$; let the columns of the $m\times k$ matrix $V$
+be an orthonormal basis of that range, so that $P=VV^{T}$ and
+$V^{T}V=I_k$.  Write $v_c^{T}$ for the $c$-th row of $V$ and put
+$g_c:=v_c/\sqrt{t_c}$.  Then
+\[
+  \sum_c t_c\,g_c^{\vphantom{T}}g_c^{T}
+  \;=\;\sum_c v_c^{\vphantom{T}}v_c^{T}\;=\;V^{T}V\;=\;I_k ,
+\]
+which is \eqref{eq:parseval}; the weights are positive and sum to one; so
+this is a design, and its chart point is $(P,t)$.  Two orthonormal bases
+of the range differ by an element of the orthogonal group, which acts on
+the $g_c$ by a rotation and leaves \eqref{eq:dominate} invariant.  The
+last assertion is Lemma~\ref{lem:chart}.
+\end{proof}
+
+\begin{lemma}\label{lem:compact}
+The set of chart points of size $m$ and rank $k$ is compact, and
+nonempty when $k\le m$.
+\end{lemma}
+
+\begin{proof}
+It is the product of $\Delta^{m-1}$, which is compact, with the set
+$\Pi_k$ of symmetric idempotents of trace $k$.  The three conditions
+defining $\Pi_k$ are polynomial equations in the entries, so $\Pi_k$ is
+closed; and for $P\in\Pi_k$,
+\[
+  \lVert P\rVert_{F}^{2}\;=\;\tr(P^{T}P)\;=\;\tr(P^{2})\;=\;\tr P\;=\;k ,
+\]
+so $\Pi_k$ lies on a sphere of the Frobenius norm and is bounded.  It is
+the Grassmannian of $k$-planes in $\R^m$, nonempty for $k\le m$.
+\end{proof}
+
+\begin{lemma}\label{lem:continuity}
+$G$ is continuous.  Indeed, for chart points $(P,t)$ and $(Q,t')$ of the
+same size and rank,
+\[
+  \bigl\lvert G(P,t)-G(Q,t')\bigr\rvert
+  \;\le\;\lVert P-Q\rVert_{2}+\max_c\lvert t_c-t'_c\rvert ,
+\]
+where $\lVert\cdot\rVert_{2}$ is the operator norm.
+\end{lemma}
+
+\begin{proof}
+For symmetric $A$ one has
+$\lmin(A)=\min_{\lVert x\rVert=1}x^{T}Ax$, an infimum of functions of $A$
+each of which satisfies
+$\lvert x^{T}Ax-x^{T}Bx\rvert\le\lVert A-B\rVert_{2}$ for
+$\lVert x\rVert=1$; hence
+$\lvert\lmin(A)-\lmin(B)\rvert\le\lVert A-B\rVert_{2}$.  Restriction to a
+principal block does not increase the operator norm, and the difference
+of the two gap matrices is $(P-Q)-\diag(t-t')$, whose operator norm is at
+most $\lVert P-Q\rVert_{2}+\max_c\lvert t_c-t'_c\rvert$; so each of the
+finitely many functions
+$(P,t)\mapsto\lmin(W[C])$ obeys the stated bound; a maximum of finitely
+many such functions obeys it as well.
+\end{proof}
+
+The interior of the compactification is dense in it, by a mixing of the
+weights which will be used twice more.
+
+\begin{lemma}\label{lem:relax}
+Let $(P,t)$ be a chart point of size $m$ and rank $k$, let
+$\bar t:=(1/m,\dots,1/m)$ and, for $0\le\theta\le1$, put
+$t^{\theta}:=(1-\theta)t+\theta\bar t$.  Then $(P,t^{\theta})$ is a chart
+point, its weights are strictly positive for $\theta>0$, and for every
+$x\in\R^m$
+\begin{equation}\label{eq:relax}
+  x^{T}W^{\theta}x\;=\;x^{T}Wx-\theta\sum_c
+    \Bigl(\frac1m-t_c\Bigr)x_c^{2},
+  \qquad W^{\theta}:=P-\diag(t^{\theta}) .
+\end{equation}
+Consequently the chart points with strictly positive weights are dense,
+and
+\[
+  \min G\;=\;\inf\{\,G(P,t):\text{$(P,t)$ the chart point of a design}\,\}.
+\]
+\end{lemma}
+
+\begin{proof}
+The simplex is convex, so $t^{\theta}\in\Delta^{m-1}$, and
+$t^{\theta}_c\ge\theta/m>0$ for $\theta>0$; $P$ is untouched.  Identity
+\eqref{eq:relax} is
+$\diag(t^{\theta})=\diag(t)+\theta\diag(\bar t-t)$ evaluated against $x$.
+Letting $\theta\to0$ gives $t^{\theta}\to t$, which is the density
+statement; the displayed equality of extrema then follows from
+Lemma~\ref{lem:continuity} together with
+Proposition~\ref{prop:chartdesign}, which identifies the points with
+positive weights as the chart points of designs, and from
+Lemma~\ref{lem:compact}, which supplies the minimum.
+\end{proof}
+
+The design space itself admits no such statement.  It is the locus
+$t_c>0$, which is open in the compactification and, by
+Example~\ref{ex:escape}, not closed in it; a minimizing sequence of
+designs need not converge to a design.  This is the reason the added
+points must be treated, and the reason no argument confined to designs
+produces a minimizer.
+
+\begin{remark}\label{rem:objectives}
+The objective \eqref{eq:objective} is not the design objective
+$F(D)=\max_C\lmin(\SC)$ of \S\ref{sec:interior}.  With
+$T_C=\diag(t_c)_{c\in C}$ the proof of Lemma~\ref{lem:chart} gives
+$W[C]=T_C^{1/2}(\SC-I_k)T_C^{1/2}$; substituting $x=T_C^{-1/2}y$,
+\[
+  \frac{x^{T}W[C]x}{x^{T}D[C]x}
+  \;=\;\frac{y^{T}(\SC-I_k)y}{\lVert y\rVert^{2}},
+  \qquad\text{so}\qquad
+  F(D)-1\;=\;\max_{\lvert C\rvert=k}\;\min_{x\ne0}
+    \frac{x^{T}W[C]x}{x^{T}D[C]x},
+\]
+against $G=\max_C\min_{\lVert x\rVert=1}x^{T}W[C]x$.
+The two agree in sign, by \eqref{eq:threshold} and
+Lemma~\ref{lem:chart}, and that is all: they are related by a congruence
+which is not a scalar unless the selected weights are equal, so they do
+not share their minimizers.  The generalized form degenerates exactly
+where $D[C]$ becomes singular, that is, exactly on the points the
+compactification adds; the absolute form does not.
+\end{remark}
+
+\subsection{The boundary}\label{sec:boundary}
+
+Let $(P,t)$ be a chart point with $t_z=0$ for some index $z$.  Two exact
+identities dispose of it.  Which one applies is decided by the diagonal
+entry $P_{zz}$, and the dichotomy is exhaustive for the following
+reason.
+
+\begin{lemma}\label{lem:pivot}
+For every chart point and every index $z$,
+\begin{equation}\label{eq:pivot}
+  \lVert Pe_z\rVert^{2}\;=\;e_z^{T}P^{T}Pe_z\;=\;e_z^{T}P^{2}e_z
+  \;=\;e_z^{T}Pe_z\;=\;P_{zz} .
+\end{equation}
+Hence $P_{zz}\ge0$; and $P_{zz}=0$ forces $Pe_z=0$, that is, the $z$-th
+column and, by symmetry, the $z$-th row of $P$ vanish identically.
+\end{lemma}
+
+\begin{proof}
+The chain \eqref{eq:pivot} uses symmetry and idempotency in that order.
+A vanishing sum of squares $\sum_cP_{cz}^{2}=P_{zz}=0$ has all terms
+zero.
+\end{proof}
+
+By \eqref{eq:pivotlev} the quantity $P_{zz}$ is the limit of the leverage
+score $s_z$.  The dichotomy is therefore the distinction between the two
+ways an atom can leave a design: its Parseval mass vanishes, or its mass
+survives while its weight vanishes and its vector escapes to infinity.
+Example~\ref{ex:escape} is of the second kind, with $P_{zz}=\tfrac12$.
+
+\subsubsection*{Case A: the atom vanishes}
+
+\begin{lemma}\label{lem:delete}
+Let $(P,t)$ be a chart point of size $m$ and rank $k$ and let $z$ satisfy
+$t_z<1$ and $Pe_z=0$.  Delete the index $z$: let $\widehat P$ be the
+principal submatrix of $P$ on the remaining indices and
+$\widehat t_c:=t_c/(1-t_z)$.  Then $(\widehat P,\widehat t)$ is a chart
+point of size $m-1$ and rank $k$, and for every $y\in\R^m$ with $y_z=0$,
+writing $\widehat y$ for its restriction,
+\begin{equation}\label{eq:reweight}
+  y^{T}Wy\;=\;\widehat y^{T}\widehat W\widehat y
+    +\frac{t_z}{1-t_z}\sum_{c\ne z}t_cy_c^{2}
+  \;\ge\;\widehat y^{T}\widehat W\widehat y .
+\end{equation}
+Consequently a subset dominating at $(\widehat P,\widehat t)$ dominates,
+under the inclusion of index sets, at $(P,t)$.
+\end{lemma}
+
+\begin{proof}
+Symmetry is inherited.  Since the $z$-th row and column of $P$ vanish,
+the deleted index contributes nothing to any product, so
+$\widehat P\widehat P$ is the corresponding submatrix of $P^{2}=P$, and
+$\tr\widehat P=\tr P-P_{zz}=k$.  The weights $\widehat t_c$ are
+nonnegative and sum to $(1-t_z)/(1-t_z)=1$.  For the identity, $y_z=0$
+gives $y^{T}Py=\widehat y^{T}\widehat P\widehat y$, while
+\[
+  \widehat y^{T}\diag(\widehat t)\widehat y-y^{T}Dy
+  \;=\;\sum_{c\ne z}\Bigl(\frac{t_c}{1-t_z}-t_c\Bigr)y_c^{2}
+  \;=\;\frac{t_z}{1-t_z}\sum_{c\ne z}t_cy_c^{2},
+\]
+which is \eqref{eq:reweight} after subtraction.  The right-hand side is
+nonnegative because $t_z\ge0$ and $t_z<1$.
+\end{proof}
+
+The reweighting is thus favourable at every admissible $t_z$, not only at
+$t_z=0$.  The hypothesis $t_z=0$ is needed at exactly one place, the
+pivot of the next case, which is where \S\ref{sec:sharp} locates the
+failure.
+
+\subsubsection*{Case B: the direction escapes}
+
+\begin{lemma}\label{lem:deflate}
+Let $(P,t)$ be a chart point of size $m$ and rank $k\ge1$ and let
+$P_{zz}>0$.  Then
+\begin{equation}\label{eq:deflate}
+  P'\;:=\;P-\frac{(Pe_z)(Pe_z)^{T}}{P_{zz}}
+\end{equation}
+is symmetric and idempotent with $\tr P'=k-1$ and $P'e_z=0$.  Hence
+$(P',t)$ is a chart point of size $m$ and rank $k-1$ whose $z$-th row and
+column vanish.
+\end{lemma}
+
+\begin{proof}
+Write $r:=Pe_z$ and $R:=rr^{T}$, so that $P'=P-R/P_{zz}$; symmetry is
+clear.  Idempotency of $P$ gives $Pr=P^{2}e_z=Pe_z=r$, hence $PR=R$ and,
+transposing, $RP=R$.  Lemma~\ref{lem:pivot} gives
+$RR=r(r^{T}r)r^{T}=P_{zz}R$.  Therefore
+\[
+  \Bigl(P-\frac{R}{P_{zz}}\Bigr)^{2}
+  \;=\;P^{2}-\frac{PR+RP}{P_{zz}}+\frac{RR}{P_{zz}^{2}}
+  \;=\;P-\frac{2R}{P_{zz}}+\frac{R}{P_{zz}}
+  \;=\;P-\frac{R}{P_{zz}} .
+\]
+The trace drops by $\tr R/P_{zz}=\lVert r\rVert^{2}/P_{zz}=1$, again by
+\eqref{eq:pivot}.  Finally $r^{T}e_z=P_{zz}$, so
+$P'e_z=r-r\,P_{zz}/P_{zz}=0$.
+\end{proof}
+
+Deflation is the compression of the surviving vectors onto the orthogonal
+complement of the escaping direction, carried out in the chart: $P'$ is
+the Schur complement of the pivot $P_{zz}$ in $P$.  No basis of that
+complement is chosen and no square root occurs; there is one division, by
+the pivot.  Since $P=P'+rr^{T}/P_{zz}$ with $r=Pe_z$, one has for every
+$x\in\R^m$
+\begin{equation}\label{eq:transverse}
+  x^{T}Wx\;=\;x^{T}(P'-D)x+\frac{\langle Pe_z,x\rangle^{2}}{P_{zz}} .
+\end{equation}
+The upstairs gap form exceeds the deflated one by exactly the rank-one
+pivot term.  That excess is what the lift must spend; it is not slack.
+Splitting the probe along the escaping coordinate turns
+\eqref{eq:transverse} into the identity on which everything in this
+section rests.
+
+\begin{lemma}\label{lem:schur}
+Let $(P,t)$ be a chart point with $P_{zz}>0$ and let $P'$ be as in
+\eqref{eq:deflate}.  Write $x=y+x_ze_z$ with $y_z=0$.  Then
+\begin{equation}\label{eq:schur}
+  x^{T}Wx\;=\;y^{T}(P'-D)\,y
+    \;+\;\frac{\bigl(\langle Pe_z,y\rangle+x_zP_{zz}\bigr)^{2}}{P_{zz}}
+    \;-\;t_z\,x_z^{2} .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Expand $x^{T}Px$ against the coordinate spike.  With
+$s:=\langle Pe_z,y\rangle$ and $e_z^{T}Pe_z=P_{zz}$,
+\[
+  x^{T}Px\;=\;y^{T}Py+2x_zs+x_z^{2}P_{zz},
+\]
+and \eqref{eq:transverse} applied to $y$ gives
+$y^{T}Py=y^{T}P'y+s^{2}/P_{zz}$.  Since $y_z=0$,
+$x^{T}Dx=y^{T}Dy+t_zx_z^{2}$.  Subtracting,
+\[
+  x^{T}Wx\;=\;y^{T}(P'-D)y
+    +\frac{s^{2}}{P_{zz}}+2x_zs+x_z^{2}P_{zz}-t_zx_z^{2},
+\]
+and the three middle terms are $(s+x_zP_{zz})^{2}/P_{zz}$, since
+$P_{zz}\ne0$.
+\end{proof}
+
+Identity \eqref{eq:schur} is exact at every weight.  Its three terms are,
+in order: the deflated gap, a square, and a deficit proportional to the
+weight at the pivot.  At $t_z=0$ the deficit is absent and the lift
+follows.
+
+\begin{theorem}\label{thm:schurstep}
+Let $(P,t)$ be a chart point of size $m$ and rank $k\ge1$, let $z$
+satisfy $P_{zz}>0$ and $t_z=0$, and let $C$ be a subset of the remaining
+indices dominating at the chart point $(P',t)$ of rank $k-1$.  Then
+$C\cup\{z\}$ dominates at $(P,t)$.
+\end{theorem}
+
+\begin{proof}
+Let $x$ be supported on $C\cup\{z\}$ and split $x=y+x_ze_z$ with $y_z=0$;
+then $y$ is supported on $C$, so $y^{T}(P'-D)y\ge0$ by hypothesis.  In
+\eqref{eq:schur} the last term vanishes because $t_z=0$, and the middle
+term is nonnegative because $P_{zz}>0$.  Hence $x^{T}Wx\ge0$.
+\end{proof}
+
+The pivot matches on the nose precisely because the weight at the pivot
+is zero: the deflation \eqref{eq:deflate} subtracts $P_{zz}$ worth of
+diagonal at $z$, and \eqref{eq:schur} restores exactly that much.
+
+\begin{example}\label{ex:escapeb}
+Return to Example~\ref{ex:escape}.  At its limit point, $z=2$,
+$P_{zz}=\tfrac12$
+and $t_z=0$.  Here $Pe_2=(\tfrac12,\tfrac12)^{T}$ with
+$\lVert Pe_2\rVert^{2}=\tfrac12=P_{22}$, as \eqref{eq:pivot} requires,
+and \eqref{eq:deflate} gives $P'=P-2\cdot\tfrac14
+\left(\begin{smallmatrix}1&1\\1&1\end{smallmatrix}\right)=0$, of trace
+$0=k-1$.  Deleting $z$ leaves the chart point of size $1$ and rank $0$,
+at which the empty selection dominates; Theorem~\ref{thm:schurstep}
+returns $\{2\}$, and indeed $W_{22}=P_{22}-t_2=\tfrac12\ge0$.
+\end{example}
+
+\subsubsection*{The dichotomy}
+
+\begin{theorem}[\LV]\label{thm:boundary}
+Let $m\ge2$ and $k\ge1$, and assume $\Gtz^{\mathrm{ch}}(m-1,k)$ and
+$\Gtz^{\mathrm{ch}}(m-1,k-1)$.  Then every chart point of size $m$ and
+rank $k$ with $t_z=0$ for some $z$ admits a dominating $k$-subset.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:pivot} either $P_{zz}=0$ or $P_{zz}>0$.
+
+If $P_{zz}=0$ then $Pe_z=0$, and $t_z=0<1$, so Lemma~\ref{lem:delete}
+produces a chart point of size $m-1$ and rank $k$.  By
+$\Gtz^{\mathrm{ch}}(m-1,k)$ some $k$-subset dominates there, and by
+\eqref{eq:reweight} its image dominates at $(P,t)$.
+
+If $P_{zz}>0$, deflate: by Lemma~\ref{lem:deflate}, $(P',t)$ is a chart
+point of rank $k-1$ whose $z$-th column vanishes, so
+Lemma~\ref{lem:delete} applies to it and produces a chart point of size
+$m-1$ and rank $k-1$.  By $\Gtz^{\mathrm{ch}}(m-1,k-1)$ some
+$(k-1)$-subset $C$ dominates there; by \eqref{eq:reweight} it dominates
+at $(P',t)$; and by Theorem~\ref{thm:schurstep}, $C\cup\{z\}$, of
+cardinality $k$, dominates at $(P,t)$.
+\end{proof}
+
+Both branches reduce the size by one, so an induction on the dichotomy is
+well founded on the size alone; the rank window is a consequence and not
+an extra hypothesis.  At $k=1$ the second hypothesis is
+$\Gtz^{\mathrm{ch}}(m-1,0)$, which holds because the empty selection
+dominates.  Nothing is transported across the reduction: no margin, no
+rate, no subsequence.  This is what makes the step compatible with
+Corollary~\ref{cor:nomargin}, which forbids transporting a margin.
+
+\begin{corollary}[\LV]\label{cor:interiorcex}
+Under the hypotheses of Theorem~\ref{thm:boundary}, every chart point of
+size $m$ and rank $k$ admitting \emph{no} dominating $k$-subset has
+$t_c>0$ for every $c$.
+\end{corollary}
+
+\begin{proof}
+Contrapositive of Theorem~\ref{thm:boundary}.
+\end{proof}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/boundary}
+  \caption{The compactification and the boundary dichotomy.  Left: the
+  objective $G$ of \eqref{eq:objective} is continuous on a compact space,
+  so it attains its minimum; Theorem~\ref{thm:boundary} empties the
+  faces $t_z=0$ of counterexamples, which places the minimum in the
+  interior.  Right: the two mechanisms, separated by the pivot identity
+  \eqref{eq:pivot}.  At $P_{zz}=0$ the atom is deleted and the weights
+  rescaled; at $P_{zz}>0$ the point is deflated by \eqref{eq:deflate} and
+  the selected subset regains $z$, the deficit in \eqref{eq:schur} being
+  absent exactly because $t_z=0$.}
+  \label{fig:boundary}
+\end{figure}
+
+\subsection{The principle}\label{sec:variational}
+
+Corollary~\ref{cor:interiorcex} speaks about a given chart point.  Before
+using it, we record that the closed statement and the statement about
+designs are the same statement, so that the hypotheses of
+Theorem~\ref{thm:boundary} are ordinary smaller instances of the problem.
+
+\begin{proposition}\label{prop:density}
+Write $\Gtz^{\mathrm{ch}}_{\circ}(m,k)$ for the assertion that every
+chart point of size $m$ and rank $k$ with strictly positive weights
+admits a dominating $k$-subset.  Then
+$\Gtz^{\mathrm{ch}}_{\circ}(m,k)$ implies $\Gtz^{\mathrm{ch}}(m,k)$, at
+the same size and rank.
+\end{proposition}
+
+\begin{proof}
+Let $(P,t)$ be a chart point at which no $k$-subset dominates.  For each
+of the finitely many $k$-subsets $C$ choose $x^{C}$ supported on $C$ with
+$(x^{C})^{T}Wx^{C}<0$, scaled so that $(x^{C})^{T}Wx^{C}=-1$.  Put
+$\mu_C:=\sum_c(1/m-t_c)(x^{C}_c)^{2}$ and
+$\theta:=\bigl(1+\sum_C\lvert\mu_C\rvert\bigr)^{-1}\in(0,1]$.  By
+\eqref{eq:relax},
+\[
+  (x^{C})^{T}W^{\theta}x^{C}\;=\;-1-\theta\mu_C\;<\;0
+  \qquad\text{for every }C,
+\]
+since $\theta\lvert\mu_C\rvert<1$.  So no $k$-subset dominates at
+$(P,t^{\theta})$, whose weights are strictly positive by
+Lemma~\ref{lem:relax}, contradicting
+$\Gtz^{\mathrm{ch}}_{\circ}(m,k)$.
+\end{proof}
+
+\begin{corollary}\label{cor:equivalent}
+For every $m$ and $k$ the three statements $\Gtz(m,k)$,
+$\Gtz^{\mathrm{ch}}_{\circ}(m,k)$ and $\Gtz^{\mathrm{ch}}(m,k)$ are
+equivalent.
+\end{corollary}
+
+\begin{proof}
+By Proposition~\ref{prop:chartdesign} the designs of size $m$ and rank
+$k$ correspond to the chart points with positive weights, and domination
+corresponds to domination; so $\Gtz(m,k)$ and
+$\Gtz^{\mathrm{ch}}_{\circ}(m,k)$ are the same assertion.
+Proposition~\ref{prop:density} gives
+$\Gtz^{\mathrm{ch}}_{\circ}(m,k)\Rightarrow\Gtz^{\mathrm{ch}}(m,k)$, and
+the converse is trivial, a chart point with positive weights being a
+chart point.
+\end{proof}
+
+\begin{theorem}\label{thm:variational}
+Let $m>k\ge1$ and assume $\Gtz(m-1,k)$ and $\Gtz(m-1,k-1)$.  If
+$\Gtz(m,k)$ fails, then $G$ attains its minimum over the compact space of
+chart points of size $m$ and rank $k$ at a point $(P^{\ast},t^{\ast})$
+with
+\[
+  G(P^{\ast},t^{\ast})<0
+  \qquad\text{and}\qquad
+  t^{\ast}_c>0\ \text{ for every }c .
+\]
+In particular $(P^{\ast},t^{\ast})$ is the chart point of a design
+$D^{\ast}$ of size $m$ and rank $k$; no $k$-subset dominates in
+$D^{\ast}$; and $D^{\ast}$ minimizes $G$ over all designs of size $m$ and
+rank $k$.
+\end{theorem}
+
+\begin{proof}
+By Corollary~\ref{cor:equivalent} the hypotheses are
+$\Gtz^{\mathrm{ch}}(m-1,k)$ and $\Gtz^{\mathrm{ch}}(m-1,k-1)$, so
+Theorem~\ref{thm:boundary} and Corollary~\ref{cor:interiorcex} are
+available at size $m$ and rank $k$.
+
+A counterexample to $\Gtz(m,k)$ is a design in which no $k$-subset
+dominates; by Proposition~\ref{prop:chartdesign} its chart point admits
+no dominating $k$-subset, so $G<0$ there by \eqref{eq:threshold}, and the
+minimum of $G$ is negative.  By Lemmas~\ref{lem:compact}
+and~\ref{lem:continuity} that minimum is attained, at $(P^{\ast},
+t^{\ast})$ say.  Then $G(P^{\ast},t^{\ast})<0$, so no $k$-subset
+dominates at $(P^{\ast},t^{\ast})$, so $t^{\ast}_c>0$ for every $c$ by
+Corollary~\ref{cor:interiorcex}, and $(P^{\ast},t^{\ast})$ is the chart
+point of a design $D^{\ast}$ by Proposition~\ref{prop:chartdesign}.
+Finally $\min G$ equals the infimum of $G$ over designs, by
+Lemma~\ref{lem:relax}, so $D^{\ast}$ attains that infimum.
+\end{proof}
+
+At $(6,3)$ the hypotheses are $\Gtz(5,3)$ and $\Gtz(5,2)$, both
+instances of Corollary~\ref{cor:corank}.  At $(7,3)$ they are
+$\Gtz(6,3)$ and $\Gtz(6,2)$; the second is again
+Corollary~\ref{cor:corank}, and the first is the cell $(6,3)$ itself.
+The two open cells of Corollary~\ref{cor:twocells} are therefore treated
+in order: $(6,3)$ first, and its resolution supplies the hypothesis
+needed at $(7,3)$.
+
+The content of Theorem~\ref{thm:variational} is not a weakening of the
+problem.  By Corollary~\ref{cor:equivalent} the statement about chart
+points with positive weights is the problem itself, so nothing has been
+given up and nothing has been assumed; what has been produced is an
+\emph{extremal} counterexample.  Two devices might be thought to produce
+one more cheaply, and neither does.  The mixing of
+Lemma~\ref{lem:relax} relocates some counterexample into the interior,
+but it destroys whatever distinguished the original point, so it cannot
+be applied to a minimizer.  Minimizing over the design space directly is
+not available: that space is not compact, and by Example~\ref{ex:escape}
+a minimizing sequence of designs need not converge to a design.  The
+minimum exists only on the compactification, and
+Corollary~\ref{cor:interiorcex} is what places it back inside.
+
+\begin{wip}
+Transport stationarity across the congruence $T_C^{1/2}$ of
+Remark~\ref{rem:objectives}, or restate the system of
+\S\ref{sec:interior} for $G$; either removes the hypothesis of
+Definition~\ref{def:extremalcex} from Theorem~\ref{thm:rankthree}.
+\end{wip}
+
+\subsection{Sharpness of the boundary step}\label{sec:sharp}
+
+Theorem~\ref{thm:schurstep} requires $t_z=0$ exactly.  The composite of
+Lemma~\ref{lem:delete} and Theorem~\ref{thm:schurstep} --- deflate at
+$z$, delete $z$, renormalize, and lift a dominating subset back --- is
+meaningful at any $t_z<1$, and it is this composite, not the boundary
+statement, that a minimizing-sequence argument would need: along such a
+sequence the weight at the escaping label is positive and merely tends to
+zero.  We show that the composite fails at every positive weight, and
+that no threshold repairs it.  The mechanism is visible in a single
+determinant.
+
+\begin{lemma}\label{lem:pairdet}
+Let $(P,t)$ be a chart point, let $z$ satisfy $P_{zz}>0$ and $t_z<1$, and
+let $c\ne z$.  Let $P'$ be the deflation \eqref{eq:deflate} and let
+$d:=P'_{cc}-t_c/(1-t_z)$ be the gap of the compressed point at $c$.
+Then
+\begin{equation}\label{eq:family}
+  \det W[\{c,z\}]
+  \;=\;d\,P_{zz}\;-\;t_z\Bigl(P_{cc}-t_c-\frac{t_cP_{zz}}{1-t_z}\Bigr) .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By \eqref{eq:deflate}, $P'_{cc}=P_{cc}-P_{cz}^{2}/P_{zz}$, so
+\[
+  P_{cz}^{2}\;=\;P_{zz}\bigl(P_{cc}-P'_{cc}\bigr)
+  \;=\;P_{zz}\Bigl(P_{cc}-\frac{t_c}{1-t_z}-d\Bigr).
+\]
+Since $W[\{c,z\}]=
+\left(\begin{smallmatrix}P_{cc}-t_c&P_{cz}\\P_{cz}&P_{zz}-t_z\end{smallmatrix}\right)$,
+\begin{align*}
+  \det W[\{c,z\}]
+  &=(P_{cc}-t_c)(P_{zz}-t_z)
+     -P_{zz}\Bigl(P_{cc}-\frac{t_c}{1-t_z}-d\Bigr)\\
+  &=P_{cc}P_{zz}-t_zP_{cc}-t_cP_{zz}+t_zt_c
+     -P_{zz}P_{cc}+\frac{t_cP_{zz}}{1-t_z}+dP_{zz}\\
+  &=d\,P_{zz}-t_z\Bigl(P_{cc}-t_c-\frac{t_cP_{zz}}{1-t_z}\Bigr),
+\end{align*}
+using $t_cP_{zz}/(1-t_z)-t_cP_{zz}=t_z\,t_cP_{zz}/(1-t_z)$ in the last
+step.
+\end{proof}
+
+Identity \eqref{eq:family} separates the two contributions completely.
+The compressed slack $d$ enters undamped, with coefficient $P_{zz}>0$;
+the weight at the pivot enters linearly, with a coefficient tending to
+$P_{cc}-t_c$ as $t_z\to0$.  Hold the chart and the survivor fixed.  If
+$d>0$ then the determinant tends to $d\,P_{zz}>0$, and the lift survives
+for all small $t_z$.  If $d=0$ then the determinant is $-t_z(P_{cc}-t_c
+-t_cP_{zz}/(1-t_z))$, negative for every $t_z>0$ at which the bracket is
+positive, however small $t_z$ is.  The lift therefore fails at zero
+compressed slack and nowhere near it.  It remains to exhibit a family on
+which $d$ is frozen at zero.
+
+\begin{example}\label{ex:liftfailure}
+On the index set $\{0,1,2,3\}$ let
+\[
+  P\;=\;\frac13\begin{pmatrix}
+    2&1&0&1\\ 1&1&1&0\\ 0&1&2&-1\\ 1&0&-1&1\end{pmatrix},
+  \qquad
+  t_1=\tau,\quad t_0=t_2=t_3=\frac{1-\tau}{3}
+  \qquad(0\le\tau\le1),
+\]
+and let $z=1$ be the pivot and $c=0$ the survivor.  Write $M:=3P$.  The
+ten inner products of the rows $m_0,\dots,m_3$ of $M$ are
+\[
+  \begin{array}{c|cccc}
+   \langle m_i,m_j\rangle & j=0&1&2&3\\ \hline
+   i=0 & 6&3&0&3\\
+   1 & 3&3&3&0\\
+   2 & 0&3&6&-3\\
+   3 & 3&0&-3&3
+  \end{array}
+\]
+that is, $M^{2}=3M$; hence $P^{2}=P$, and $P$ is symmetric with
+$\tr P=(2+1+2+1)/3=2$.  So $(P,t)$ is a chart point of size $4$ and rank
+$2$ for every $\tau$.  Its leverages are
+$\ell_c=P_{cc}/t_c=\tfrac83,\tfrac43,\tfrac83,\tfrac43$ at $\tau=\tfrac14$,
+all exceeding $1$; the point is not one that the deletion of a light atom
+disposes of, as in the first branch of the proof of
+Theorem~\ref{thm:ranktwo}.
+
+At the pivot, $P_{11}=\tfrac13$ and
+$Pe_1=(\tfrac13,\tfrac13,\tfrac13,0)^{T}$, so
+$\lVert Pe_1\rVert^{2}=\tfrac13=P_{11}$, in accordance with
+\eqref{eq:pivot}.  Deflation \eqref{eq:deflate} subtracts $\tfrac13$ from
+every entry indexed in $\{0,1,2\}$:
+\[
+  P'\;=\;\frac13\begin{pmatrix}
+    1&0&-1&1\\ 0&0&0&0\\ -1&0&1&-1\\ 1&0&-1&1\end{pmatrix},
+  \qquad \tr P'=1 .
+\]
+Deleting the index $1$ leaves the three survivors with weights
+$\bigl((1-\tau)/3\bigr)/(1-\tau)=\tfrac13$ each, independently of $\tau$.
+The compressed gap at the survivor $0$ is therefore
+\[
+  d\;=\;P'_{00}-\tfrac13\;=\;\tfrac13-\tfrac13\;=\;0
+  \qquad\text{at every }\tau ,
+\]
+so $\{0\}$ dominates the compressed point --- with slack exactly zero, at
+every parameter value.  Upstairs, by \eqref{eq:family} with $d=0$,
+$P_{zz}=\tfrac13$, $P_{cc}=\tfrac23$, $t_c=(1-\tau)/3$ and $t_z=\tau$,
+\[
+  \det W[\{0,1\}]
+  \;=\;-\tau\Bigl(\frac23-\frac{1-\tau}{3}
+      -\frac{1-\tau}{3}\cdot\frac{1/3}{1-\tau}\Bigr)
+  \;=\;-\tau\cdot\frac{6-3(1-\tau)-1}{9}
+  \;=\;-\frac{\tau(2+3\tau)}{9},
+\]
+negative for every $\tau>0$.  Explicitly
+$W[\{0,1\}]=\left(\begin{smallmatrix}(1+\tau)/3&1/3\\
+1/3&(1-3\tau)/3\end{smallmatrix}\right)$, and the probe
+$x=(-1,1+\tau,0,0)$ gives
+\begin{align*}
+  x^{T}Wx
+  &\;=\;\frac{1+\tau}{3}-\frac{2(1+\tau)}{3}
+      +\frac{(1-3\tau)(1+\tau)^{2}}{3}\\
+  &\;=\;\frac{1+\tau}{3}\bigl(-1+(1-3\tau)(1+\tau)\bigr)
+  \;=\;-\frac{(1+\tau)\tau(2+3\tau)}{3}.
+\end{align*}
+At $\tau=\tfrac14$, where all four weights equal $\tfrac14$, this reads
+$W[\{0,1\}]=
+\left(\begin{smallmatrix}5/12&1/3\\1/3&1/12\end{smallmatrix}\right)$ with
+determinant $\tfrac5{144}-\tfrac1{9}=-\tfrac{11}{144}$, and the integral
+probe $(1,-4)$ gives
+$\tfrac5{12}-\tfrac83+\tfrac{16}{12}=-\tfrac{11}{12}$.
+\end{example}
+
+\begin{theorem}[\LV]\label{thm:sharp}
+There is no $\tau_0>0$ such that the compression lift holds at every
+chart point with $t_z<\tau_0$.  Explicitly: for every $\tau_0>0$ there
+are a chart point of size $4$ and rank $2$, a pivot $z$ with $P_{zz}>0$
+and $0<t_z<\tau_0$, and a subset dominating the compressed point of size
+$3$ and rank $1$, whose image together with $z$ does not dominate.
+\end{theorem}
+
+\begin{proof}
+Take the family of Example~\ref{ex:liftfailure} at
+$\tau=\min\{\tau_0,1\}/2$.  Then $0<\tau<\tau_0$ and $\tau<1$; the
+compressed point is dominated by $\{0\}$, since its gap there is $0$; and
+$\{0,1\}$ does not dominate upstairs, the probe $(-1,1+\tau,0,0)$ giving
+$-(1+\tau)\tau(2+3\tau)/3<0$.
+\end{proof}
+
+The obstruction is thus located exactly, and it lies on the equality
+locus of \S\ref{sec:ties}.  Shrinking $t_z$ shrinks the deficit, but
+along this family it shrinks nothing else: the compressed slack is frozen
+at zero, so the deficit is never overtaken.  A positive compressed slack
+would overtake it, by \eqref{eq:family}; but no positive lower bound on
+$d$ is available.  The compressed point is a chart point of one lower
+size and rank, so by Proposition~\ref{prop:chartdesign} it is the chart
+point of a design whenever its weights are positive, and by
+Theorem~\ref{thm:tieseverywhere} designs whose dominating subsets all
+have $\lmin(\SC)=1$ --- that is, chart slack exactly zero --- exist at
+corank one for every rank, and at rank three for every size.  The shape
+of the refutation is thus the shape of Corollary~\ref{cor:nomargin}.
+This is why the boundary is discharged at $t_z=0$ by the exact identity
+\eqref{eq:schur} rather than at small $t_z$ by an estimate, and why
+Theorem~\ref{thm:variational} is stated at the limit point rather than
+along a minimizing sequence.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/sharp}
+  \caption{Sharpness of the compression lift.  The compressed slack $d$
+  enters \eqref{eq:family} undamped, the pivot weight $t_z$ linearly.  The
+  family of Example~\ref{ex:liftfailure} is frozen on the axis $d=0$.  The
+  zero level leaves the origin with slope $\tfrac23$, so that axis lies
+  strictly inside the failure region for every $t_z>0$, and no threshold
+  in $t_z$ repairs the lift.}
+  \label{fig:sharp}
+\end{figure}

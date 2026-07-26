@@ -1,0 +1,68 @@
+% Identity (eq:family) evaluated on the chart of section app:liftfail:
+%   P_zz = 1/3, P_cc = 2/3, t_c = (1-t)/3, t_z = t,
+%   det W[{c,z}] = d/3 - t(2+3t)/9 = (3d - 2t - 3t^2)/9 .
+% Level v is the parabola  d = 3v + 2t/3 + t^2 ; the zero level is
+%   d = 2t/3 + t^2 , tangent at the origin to the line d = 2t/3.
+\begin{tikzpicture}
+\begin{axis}[
+  name=sharpaxis,
+  width=8.4cm, height=6.6cm,
+  scale only axis,
+  xmin=0, xmax=0.3, ymin=0, ymax=0.3,
+  xtick={0,0.05,0.1,0.15,0.2,0.25,0.3},
+  ytick={0,0.05,0.1,0.15,0.2,0.25,0.3},
+  xticklabel style={font=\scriptsize, /pgf/number format/fixed,
+                    /pgf/number format/precision=2},
+  yticklabel style={font=\scriptsize, /pgf/number format/fixed,
+                    /pgf/number format/precision=2},
+  xlabel={$t_z$}, ylabel={$d$},
+  xlabel style={font=\small}, ylabel style={font=\small, rotate=-90},
+  samples=200, domain=0:0.3,
+  clip=true]
+
+% ---- the region where the lift survives -----------------------------
+\fill[black!12] (axis cs:0,0) rectangle (axis cs:0.3,0.3);
+\addplot[draw=none, fill=white] {2*x/3 + x^2} \closedcycle;
+
+% ---- level curves  (3d - 2t - 3t^2)/9 = v ---------------------------
+\addplot[black!55, line width=0.35pt, densely dotted] {2*x/3 + x^2 - 0.18};
+\addplot[black!55, line width=0.35pt, densely dotted] {2*x/3 + x^2 - 0.12};
+\addplot[black!55, line width=0.35pt, densely dotted] {2*x/3 + x^2 - 0.06};
+\addplot[black!55, line width=0.35pt, dashed] {2*x/3 + x^2 + 0.06};
+\addplot[black!55, line width=0.35pt, dashed] {2*x/3 + x^2 + 0.12};
+\addplot[black!55, line width=0.35pt, dashed] {2*x/3 + x^2 + 0.18};
+
+% ---- the tangent line d = 2t/3 at the origin ------------------------
+\addplot[black!70, line width=0.35pt, dash pattern=on 1pt off 1.2pt]
+  {2*x/3};
+
+% ---- the zero level --------------------------------------------------
+\addplot[black, line width=1.1pt] {2*x/3 + x^2};
+
+% ---- the extremal axis d = 0 ----------------------------------------
+\draw[line width=1.4pt] (axis cs:0,0) -- (axis cs:0.3,0);
+
+% ---- labels inside the frame ----------------------------------------
+\node[font=\scriptsize, anchor=north west] at (axis cs:0.006,0.294)
+  {lift survives};
+\node[font=\scriptsize, anchor=south east] at (axis cs:0.294,0.014)
+  {lift fails};
+\draw[line width=0.3pt] (axis cs:0.150,0.1225) -- (axis cs:0.183,0.150);
+\node[font=\scriptsize, anchor=west, fill=white, inner sep=1pt]
+  at (axis cs:0.185,0.152) {zero level};
+\node[font=\scriptsize, rotate=25, fill=white, inner sep=1pt]
+  at (axis cs:0.262,0.176) {$d=\tfrac23 t_z$};
+\node[font=\scriptsize, anchor=south west, fill=white, inner sep=1pt]
+  at (axis cs:0.040,0.003) {$d=0$: the value is $-t_z(2+3t_z)/9<0$};
+\end{axis}
+
+% ---- the reading of the picture, below the frame ---------------------
+\node[font=\scriptsize, anchor=north, align=center]
+  at ($(sharpaxis.south)+(0,-0.95cm)$)
+  {On the chart of Example~\ref{ex:liftfailure} identity
+   \eqref{eq:family} reads
+   $\det W[\{c,z\}]=\bigl(3d-2t_z-3t_z^{2}\bigr)/9$,\\
+   with zero level $d=\tfrac23t_z+t_z^{2}$.
+   Dotted: the levels $-\tfrac1{50},-\tfrac1{75},-\tfrac1{150}$.
+   Dashed: their positives.};
+\end{tikzpicture}

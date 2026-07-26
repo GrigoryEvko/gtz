@@ -1,0 +1,64 @@
+\begin{tikzpicture}[
+  x=4.1mm, y=4.1mm,
+  every node/.style={inner sep=1.5pt},
+  cellline/.style={draw=black!45, line width=0.25pt},
+  border/.style  ={draw=black!85, line width=0.5pt},
+  ar/.style      ={-{Latex[length=2mm,width=1.5mm]}, line width=0.5pt}]
+
+% a grid of #3 columns and #4 rows with lower left corner (#1,#2)
+\newcommand{\gridframe}[4]{%
+  \foreach \gi in {0,...,#3}{\draw[cellline] (#1+\gi,#2) -- (#1+\gi,#2+#4);}
+  \foreach \gj in {0,...,#4}{\draw[cellline] (#1,#2+\gj) -- (#1+#3,#2+\gj);}
+  \draw[border] (#1,#2) rectangle (#1+#3,#2+#4);}
+% cell in row #2 from the top and column #3 of the six by six matrix whose
+% lower left corner is (#1,-3), filled with #4
+\newcommand{\wfill}[4]{\path[fill=#4] (#1+#3-1,3-#2) rectangle ++(1,1);}
+
+% -------------------------- the design -------------------------------
+\node[align=left, font=\small] at (3.2,0)
+  {$g_1,\dots,g_m\in\FF^{k}$\\[3pt]
+   $t_c>0,\quad\textstyle\sum_c t_c=1$\\[3pt]
+   $\textstyle\sum_c t_c\,g_c^{\vphantom{*}}g_c^{*}=I_k$};
+
+\draw[ar] (7.0,0) -- node[above, font=\scriptsize] {$v_c=\sqrt{t_c}\,g_c$} (10.3,0);
+
+% ----------------------------- V -------------------------------------
+\gridframe{10.5}{-3}{3}{6}
+\node[font=\scriptsize, anchor=south] at (12.0,3.4) {$V^{*}V=I_k$};
+\node[font=\scriptsize, align=center, anchor=north] at (12.0,-3.4)
+  {$V$, rows $v_c^{*}$\\ $m\times k$};
+
+\draw[ar] (13.9,0) -- node[above, font=\scriptsize] {$P=VV^{*}$} (17.0,0);
+
+% ----------------------------- P -------------------------------------
+\gridframe{17.2}{-3}{6}{6}
+\node[font=\scriptsize, anchor=south] at (20.2,3.4) {$P^{*}=P=P^{2}$, \ $\rk P=k$};
+\node[font=\scriptsize, anchor=north] at (20.2,-3.4)
+  {$P_{cd}=\sqrt{t_ct_d}\,\langle g_c,g_d\rangle$};
+
+\draw[ar] (23.5,0) -- (28.7,0);
+\node[font=\scriptsize] at (26.1,1.05) {$-\,D$};
+\node[font=\scriptsize] at (26.1,-1.05) {$D=\diag(t)$};
+
+% ----------------------------- W -------------------------------------
+% the selected rows and columns are C = {1,3,4}
+\foreach \r in {1,3,4}{\foreach \c in {1,...,6}{\wfill{28.9}{\r}{\c}{black!12}}}
+\foreach \c in {1,3,4}{\foreach \r in {1,...,6}{\wfill{28.9}{\r}{\c}{black!12}}}
+\foreach \r in {1,3,4}{\foreach \c in {1,3,4}{\wfill{28.9}{\r}{\c}{black!38}}}
+\gridframe{28.9}{-3}{6}{6}
+\foreach \c in {1,...,6}{\node[font=\tiny] at (28.4+\c,3.45) {\c};}
+\foreach \r in {1,...,6}{\node[font=\tiny] at (28.55,3.5-\r) {\r};}
+\node[font=\scriptsize, align=center, anchor=south] at (31.9,4.05)
+  {$W=P-D$\\ $W_{cc}=t_c(\ell_c-1)$};
+
+% -------------------- the selection window extracted ------------------
+\draw[ar] (31.9,-3.3) -- (31.9,-4.1);
+\foreach \r in {1,2,3}{\foreach \c in {1,2,3}{%
+  \path[fill=black!38] (30.4+\c-1,-7.2+3-\r) rectangle ++(1,1);}}
+\gridframe{30.4}{-7.2}{3}{3}
+\node[font=\scriptsize, anchor=east] at (30.1,-5.7) {$W[C]$};
+
+\node[font=\small] at (18.0,-5.7) {$W[C]\psd0\iff\SC\psd I_k$};
+\node[font=\scriptsize] at (5.8,-5.7) {$m=6$, \ $k=3$, \ $C=\{1,3,4\}$};
+
+\end{tikzpicture}

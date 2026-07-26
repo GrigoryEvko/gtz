@@ -1,0 +1,152 @@
+\providecommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\thinspace}
+\providecommand{\MR}{\relax\ifhmode\unskip\space\fi MR }
+% \MRhref is called by the amsart/book/proc definition of \MR.
+\providecommand{\MRhref}[2]{%
+  \href{http://www.ams.org/mathscinet-getitem?mr=#1}{#2}
+}
+\providecommand{\href}[2]{#2}
+\begin{thebibliography}{10}
+
+\bibitem{AnariOveisGharan2015}
+Nima Anari and Shayan Oveis~Gharan, \emph{The {K}adison--{S}inger problem for
+  strongly {R}ayleigh measures and applications to asymmetric {TSP}}, 2015, v1
+  3 December 2014; v2 22 July 2015; no journal version located.
+
+\bibitem{BorceaBrandenLiggett2009}
+Julius Borcea, Petter Br\"and\'en, and Thomas~M. Liggett, \emph{Negative
+  dependence and the geometry of polynomials}, Journal of the American
+  Mathematical Society \textbf{22} (2009), no.~2, 521--567, arXiv:0707.2340.
+
+\bibitem{BourgainTzafriri1987}
+Jean Bourgain and Lior Tzafriri, \emph{Invertibility of ``large'' submatrices
+  with applications to the geometry of {B}anach spaces and harmonic analysis},
+  Israel Journal of Mathematics \textbf{57} (1987), no.~2, 137--224.
+
+\bibitem{Caratheodory1911}
+Constantin Carath\'eodory, \emph{\"uber den {V}ariabilit\"atsbereich der
+  {F}ourier'schen {K}onstanten von positiven harmonischen {F}unktionen},
+  Rendiconti del Circolo Matematico di Palermo \textbf{32} (1911), 193--217.
+
+\bibitem{CasazzaKutyniok2013}
+Peter~G. Casazza and Gitta Kutyniok (eds.), \emph{Finite frames: Theory and
+  applications}, Applied and Numerical Harmonic Analysis, Birkh\"auser, Boston,
+  2013.
+
+\bibitem{CivrilMagdonIsmail2009}
+Ali \c{C}ivril and Malik Magdon-Ismail, \emph{On selecting a maximum volume
+  sub-matrix of a matrix and related problems}, Theoretical Computer Science
+  \textbf{410} (2009), no.~47--49, 4801--4811.
+
+\bibitem{Clarke1990}
+Frank~H. Clarke, \emph{Optimization and nonsmooth analysis}, Classics in
+  Applied Mathematics, vol.~5, Society for Industrial and Applied Mathematics,
+  Philadelphia, 1990, Reprint of the 1983 Wiley--Interscience edition.
+
+\bibitem{Danskin1967}
+John~M. Danskin, \emph{The theory of max-min and its application to weapons
+  allocation problems}, \"Okonometrie und Unternehmensforschung / Econometrics
+  and Operations Research, vol.~5, Springer, Berlin, 1967.
+
+\bibitem{DRVW2006}
+Amit Deshpande, Luis Rademacher, Santosh~S. Vempala, and Grant Wang,
+  \emph{Matrix approximation and projective clustering via volume sampling},
+  Theory of Computing \textbf{2} (2006), no.~12, 225--247, Conference version:
+  Proc.\ 17th ACM--SIAM Symposium on Discrete Algorithms (SODA 2006),
+  1117--1126.
+
+\bibitem{GT2001}
+S.~A. Goreinov and E.~E. Tyrtyshnikov, \emph{The maximal-volume concept in
+  approximation by low-rank matrices}, Structured Matrices in Mathematics,
+  Computer Science, and Engineering, I (Boulder, CO, 1999), Contemporary
+  Mathematics, vol. 280, American Mathematical Society, Providence, RI, 2001,
+  pp.~47--51.
+
+\bibitem{GTZ1997}
+S.~A. Goreinov, E.~E. Tyrtyshnikov, and N.~L. Zamarashkin, \emph{A theory of
+  pseudoskeleton approximations}, Linear Algebra and its Applications
+  \textbf{261} (1997), no.~1--3, 1--21.
+
+\bibitem{GZT1997}
+S.~A. Goreinov, N.~L. Zamarashkin, and E.~E. Tyrtyshnikov,
+  \emph{Pseudo-skeleton approximations by matrices of maximal volume},
+  Mathematical Notes \textbf{62} (1997), no.~4, 515--519.
+
+\bibitem{GuEisenstat1996}
+Ming Gu and Stanley~C. Eisenstat, \emph{Efficient algorithms for computing a
+  strong rank-revealing {QR} factorization}, SIAM Journal on Scientific
+  Computing \textbf{17} (1996), no.~4, 848--869.
+
+\bibitem{HiriartUrrutyLemarechal1993}
+Jean-Baptiste Hiriart-Urruty and Claude Lemar\'echal, \emph{Convex analysis and
+  minimization algorithms {I}: Fundamentals}, Grundlehren der mathematischen
+  Wissenschaften, vol. 305, Springer, Berlin, 1993, Largest eigenvalue of a
+  symmetric matrix, Chapter VI.
+
+\bibitem{HiriartUrrutyYe1995}
+Jean-Baptiste Hiriart-Urruty and Dong Ye, \emph{Sensitivity analysis of all
+  eigenvalues of a symmetric matrix}, Numerische Mathematik \textbf{70} (1995),
+  no.~1, 45--72.
+
+\bibitem{HornJohnson2013}
+Roger~A. Horn and Charles~R. Johnson, \emph{Matrix analysis}, 2 ed., Cambridge
+  University Press, Cambridge, 2013, Cauchy--Binet formula, Section 0.8.7.
+
+\bibitem{Lyons2003}
+Russell Lyons, \emph{Determinantal probability measures}, Publications
+  Math\'ematiques de l'IH\'ES \textbf{98} (2003), 167--212.
+
+\bibitem{MSS2015}
+Adam~W. Marcus, Daniel~A. Spielman, and Nikhil Srivastava, \emph{Interlacing
+  families {II}: mixed characteristic polynomials and the {K}adison--{S}inger
+  problem}, Annals of Mathematics \textbf{182} (2015), no.~1, 327--350,
+  arXiv:1306.3969.
+
+\bibitem{MSS2022}
+\bysame, \emph{Interlacing families {III}: sharper restricted invertibility
+  estimates}, Israel Journal of Mathematics \textbf{247} (2022), 519--546,
+  arXiv:1712.07766.
+
+\bibitem{Nesterenko2023}
+Yuri Nesterenko, \emph{Submatrices with the best-bounded inverses: revisiting
+  the hypothesis}, 2023, v1 13 March 2023; v3 26 August 2024. Proves the case
+  $n = 4$, $k = 2$.
+
+\bibitem{Nesterenko2024}
+\bysame, \emph{Submatrices with the best-bounded inverses: Studying
+  $\mathbb{R}^{n\times 2}$ and $\mathbb{C}^{n\times 2}$}, 2024, v1 29 August
+  2024.
+
+\bibitem{Nesterenko2025}
+\bysame, \emph{About subspaces the most deviating from the coordinate ones},
+  2025, v1 4 November 2025; v2 11 May 2026.
+
+\bibitem{Nesterenko2026complex}
+\bysame, \emph{Submatrices with the best-bounded inverses: an asymptotically
+  tight upper bound for $\mathbb{C}^{n\times 2}$}, 2026, v1 27 April 2026.
+
+\bibitem{Nesterenko2026real}
+\bysame, \emph{Submatrices with the best-bounded inverses: the equality
+  criterion for $\mathbb{R}^{n\times 2}$}, 2026, v1 15 April 2026; v2 2 May
+  2026.
+
+\bibitem{Overton1988}
+Michael~L. Overton, \emph{On minimizing the maximum eigenvalue of a symmetric
+  matrix}, SIAM Journal on Matrix Analysis and Applications \textbf{9} (1988),
+  no.~2, 256--268.
+
+\bibitem{Rockafellar1970}
+R.~Tyrrell Rockafellar, \emph{Convex analysis}, Princeton Mathematical Series,
+  vol.~28, Princeton University Press, Princeton, 1970, Carath\'eodory's
+  theorem and its conic corollary, Section 17.
+
+\bibitem{SenguptaPautov2026}
+Richik Sengupta and Mikhail Pautov, \emph{On the submatrices with the
+  best-bounded inverses}, 2026, v1 7 April 2026; v5 16 April 2026. Proves $k =
+  2$ for every $n$.
+
+\bibitem{SpielmanSrivastava2012}
+Daniel~A. Spielman and Nikhil Srivastava, \emph{An elementary proof of the
+  restricted invertibility theorem}, Israel Journal of Mathematics \textbf{190}
+  (2012), 83--91, arXiv:0911.1114.
+
+\end{thebibliography}

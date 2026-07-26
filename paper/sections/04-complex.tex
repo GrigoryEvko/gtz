@@ -1,0 +1,651 @@
+\section{The complex problem}\label{sec:complex}
+
+Over $\C$ the problem has a complete answer, and the answer is that
+selection succeeds exactly in the range where the elementary mechanisms of
+\S\ref{sec:first}--\S\ref{sec:chart} already reach: $\GtzC(m,k)$ holds for
+$k\ge2$ if and only if $m\le k+1$.  The positive half is assembled in
+\S\ref{sec:cpositive} from statements already proved, all of which are
+insensitive to the field.  The negative half is produced from a single
+design of size four and rank two by two operations on designs, each of
+which raises the size or the rank by one and each of which controls the
+quantity that must be controlled.  That quantity is fixed in
+\S\ref{sec:cvalue}, the seed is \S\ref{sec:cseed}, the operations are
+\S\ref{sec:cpadding}, and the assembly is \S\ref{sec:cladder}.
+
+\subsection{The value of a design}\label{sec:cvalue}
+
+Once the Boolean question has answer \emph{no}, the object of study is a
+number, and that number is what the operations of \S\ref{sec:cpadding}
+propagate.  Fix a design $D$ at $(m,k)$ over $\FF$.  For every $k$-subset
+$C$ and every $x\in\FF^k$,
+\begin{equation}\label{eq:cover}
+  x^{*}\SC x\;=\;\sum_{c\in C}\lvert\langle g_c,x\rangle\rvert^{2},
+  \qquad\text{so}\qquad
+  \SC\psd s\,I_k
+  \iff
+  s\lVert x\rVert^{2}\le\sum_{c\in C}\lvert\langle g_c,x\rangle\rvert^{2}
+  \ \ \text{for all }x .
+\end{equation}
+Both readings are used below: the left one to recognize a design, the
+right one to transport a bound along a map of index sets.  Put
+\begin{equation}\label{eq:value}
+  \operatorname{val}(D)\;:=\;\max_{\lvert C\rvert=k}\lmin(\SC),
+\end{equation}
+a maximum over a finite set.  Since $\SC\psd sI_k$ is equivalent to
+$\lmin(\SC)\ge s$, the design $D$ admits a dominating $k$-subset if and
+only if $\operatorname{val}(D)\ge1$.
+We say $D$ \emph{has value at most} $b$ when $\SC-sI_k$ fails to be
+positive semidefinite for every $k$-subset $C$ and every $s>b$; this is
+$\operatorname{val}(D)\le b$.  Finally set
+\[
+  \alpha_k(\FF)\;:=\;\inf_{m}\ \inf_{D}\ \operatorname{val}(D),
+\]
+the infimum over all sizes and all designs of size $m$ and rank $k$ over
+$\FF$.  Thus $\Gtz(m,k)$ holds for every $m$ precisely when
+$\alpha_k(\R)\ge1$, and likewise over $\C$; and since
+Theorem~\ref{thm:corankone}(iii)--(iv) produces designs of value exactly
+$1$ at every rank, the conjecture over $\R$ is the assertion
+$\alpha_k(\R)=1$ for every $k$.
+
+One bound holds at every rank, over either field, and bounds the damage
+the complex counterexamples can do.
+
+\begin{proposition}[\LV]\label{prop:rankfloor}
+Every weighted design of size $m$ and rank $k$ over $\FF$ admits a
+$k$-subset $C$ with $\SC\psd\frac1k I_k$.  Hence $\alpha_k(\FF)\ge1/k$.
+\end{proposition}
+
+\begin{proof}
+Let $A$ be the $m\times k$ matrix whose $c$-th row is $g_c^{*}$, so that
+$(Ax)_c=\langle g_c,x\rangle$, and let $D=\diag(t_1,\dots,t_m)$.
+Condition \eqref{eq:parseval} reads $A^{*}DA=I_k$; in particular $A$ has
+rank $k$, so some $k$-subset indexes an invertible $k\times k$ submatrix.
+Choose $C$ maximizing $\lvert\det A_C\rvert$ among all $k$-subsets, put
+$M:=A_C$ and $B:=AM^{-1}$.  Then $A=BM$, so the $c$-th row of $B$ holds
+the coefficients expressing $g_c^{*}$ in the rows of $M$, and the rows of
+$B$ indexed by $C$ form $I_k$.  By Cramer's rule, $B_{ci}\det M$ is the
+determinant of the matrix obtained from $M$ by substituting $g_c^{*}$ for
+its $i$-th row; that matrix is, up to a permutation of rows, $A_{C'}$ with
+$C':=(C\setminus\{c_i\})\cup\{c\}$, where $c_i$ is the $i$-th element of
+$C$, and it is singular if $c\in C\setminus\{c_i\}$.  Hence
+\[
+  \lvert B_{ci}\rvert\;=\;\frac{\lvert\det A_{C'}\rvert}{\lvert\det A_C\rvert}
+  \;\le\;1
+\]
+for every $c$ and $i$, by maximality of the volume \cite{GT2001}.  By
+Cauchy--Schwarz, for every $u\in\FF^k$,
+\[
+  \lvert (Bu)_c\rvert^{2}
+  \;\le\;\Bigl(\sum_{i\le k}\lvert B_{ci}\rvert^{2}\Bigr)\lVert u\rVert^{2}
+  \;\le\;k\lVert u\rVert^{2} .
+\]
+Fix $x\in\FF^k$ and take $u:=Mx$, so that $Ax=Bu$ and
+$\lVert u\rVert^2=\sum_{c\in C}\lvert\langle g_c,x\rangle\rvert^2$.  Then
+\[
+  \lVert x\rVert^{2}
+  \;=\;x^{*}A^{*}DAx
+  \;=\;\sum_c t_c\lvert (Bu)_c\rvert^{2}
+  \;\le\;k\lVert u\rVert^{2}\sum_c t_c
+  \;=\;k\sum_{c\in C}\lvert\langle g_c,x\rangle\rvert^{2},
+\]
+which is \eqref{eq:cover} at $s=1/k$.
+\end{proof}
+
+\subsection{The positive half}\label{sec:cpositive}
+
+\begin{proposition}[\LV]\label{prop:cpositive}
+Let $k\ge1$ and $m\le k+1$.  Then $\GtzC(m,k)$ holds, as does
+$\Gtz(m,k)$.
+\end{proposition}
+
+\begin{proof}
+The vectors of a design span, so $m\ge k$ and there is nothing to prove
+when $m<k$: no design exists.  If $m=k$ the assertion is
+Proposition~\ref{prop:sizerank}, and if $m=k+1$ it is
+Theorem~\ref{thm:corankone}.  Neither argument uses the field: the first
+is the inequality $t_c\le1$ applied to \eqref{eq:parseval}, the second is
+the rank-one Schur criterion together with the fact that a weighted mean
+does not exceed its maximum.
+\end{proof}
+
+The bound $1$ is attained at the last size at which it holds, and
+attained on a set of full dimension in the weights: by
+Theorem~\ref{thm:corankone}(iii)--(iv), for every $k\ge1$, every weight
+vector $t$ on $k+1$ atoms and over either field there is a design at
+$(k+1,k)$ with weights exactly $t$ in which every $k$-subset dominates and
+none dominates strictly.  Its chart is $P=I_{k+1}-zz^{*}$ with
+$\lvert z_c\rvert^{2}=(1-t_c)/k$, and its leverages obey the tie law
+\eqref{eq:tielaw}.
+
+One size lower the behaviour is different, and the two cells are easily
+confused.  At $m=k$ the value is bounded away from $1$ at every design and
+approaches $1$ only in a degenerate limit.
+
+\begin{proposition}\label{prop:square}
+Let $D$ be a design at $(k,k)$ over $\FF$.  Then $\ell_c=1/t_c$ for every
+$c$, the unique $k$-subset satisfies
+\[
+  \lmin\bigl(S_{\{1,\dots,k\}}\bigr)\;=\;\frac{1}{\max_c t_c},
+\]
+and this quantity lies in $(1,k]$ for $k\ge2$.  Every weight vector is
+realized, so for $k\ge2$ the infimum of $\operatorname{val}$ over designs
+at $(k,k)$ equals $1$ and is not attained.
+\end{proposition}
+
+\begin{proof}
+In the chart of \S\ref{sec:chart} the matrix $V$ is square with
+$V^{*}V=I_k$, hence unitary, so its rows are orthonormal:
+$\langle v_c,v_d\rangle=\delta_{cd}$ with $v_c=\sqrt{t_c}\,g_c$.  Thus
+$\ell_c=\lVert v_c\rVert^2/t_c=1/t_c$ and
+\[
+  S_{\{1,\dots,k\}}\;=\;\sum_c g_c^{\vphantom{*}}g_c^{*}
+  \;=\;\sum_c \frac{1}{t_c}\,v_c^{\vphantom{*}}v_c^{*},
+\]
+which is diagonal in the orthonormal basis $(v_c)$ with eigenvalues
+$1/t_c$.  Its least eigenvalue is $1/\max_c t_c$.  Since $\sum_c t_c=1$
+over $k\ge2$ terms, $1/k\le\max_c t_c<1$, whence the stated range.
+Conversely $g_c:=t_c^{-1/2}e_c$ is a design at $(k,k)$ with weights $t$,
+and letting $\max_c t_c\to1$ drives the value to $1$ from above.
+\end{proof}
+
+\subsection{The seed}\label{sec:cseed}
+
+Everything negative over $\C$ descends from one design.  Let
+$\omega:=e^{2\pi i/3}$, so that $1+\omega+\omega^{2}=0$ and
+$\omega+\bar\omega=-1$.
+
+\begin{example}[\LV]\label{ex:sic}
+Put
+\begin{equation}\label{eq:sic}
+  g_0:=\bigl(\sqrt2,\,0\bigr),
+  \qquad
+  g_j:=\Bigl(\sqrt{\tfrac23},\ \sqrt{\tfrac43}\,\omega^{\,j-1}\Bigr)
+  \quad(j=1,2,3),
+  \qquad t_c:=\tfrac14 .
+\end{equation}
+Each vector has $\ell_c=2$: for $j\ge1$, $\tfrac23+\tfrac43=2$.  The atom
+sum is
+\[
+  \sum_{j=1}^{3} g_j^{\vphantom{*}}g_j^{*}
+  \;=\;\begin{pmatrix}2&\sqrt{8/9}\,\sum_j\overline{\omega^{\,j-1}}\\[2pt]
+        \sqrt{8/9}\,\sum_j\omega^{\,j-1}&4\end{pmatrix}
+  \;=\;\begin{pmatrix}2&0\\0&4\end{pmatrix},
+\]
+by $1+\omega+\omega^{2}=0$, so
+$\sum_c g_c^{\vphantom{*}}g_c^{*}=4I_2$ and \eqref{eq:parseval} holds at
+the uniform weight $\tfrac14$.  This is the $\C^2$ symmetric
+informationally complete configuration: four equiangular lines, and indeed
+$\lvert\langle g_a,g_b\rangle\rvert^{2}=\tfrac43$ for every $a\ne b$.  For
+$b=0$ this is $(\sqrt2\cdot\sqrt{2/3})^2=4/3$; for
+$1\le a<b\le3$ it is
+\[
+  \bigl(\tfrac23+\tfrac43\omega^{\,r}\bigr)
+  \bigl(\tfrac23+\tfrac43\overline{\omega^{\,r}}\bigr)
+  \;=\;\tfrac49-\tfrac89+\tfrac{16}9\;=\;\tfrac43,
+  \qquad r=b-a\not\equiv0,
+\]
+using $\omega^{r}+\overline{\omega^{r}}=-1$.
+\end{example}
+
+\begin{lemma}[\LV]\label{lem:sicvalue}
+The design \eqref{eq:sic} has value exactly
+\[
+  \alpha_{\mathrm{SIC}}\;:=\;2-\frac{2}{\sqrt3}\;=\;0.8452994616\ldots,
+\]
+the least root of $z^{2}-4z+\tfrac83$.  In particular $\GtzC(4,2)$ is
+false, and $\alpha_2(\C)\le\alpha_{\mathrm{SIC}}<\tfrac9{10}$.
+\end{lemma}
+
+\begin{proof}
+Let $C=\{a,b\}$ be a pair and let $A$ be the $2\times2$ matrix with rows
+$g_a^{*},g_b^{*}$, so that $\SC=A^{*}A$ and
+\[
+  \det\SC=\lvert\det A\rvert^{2}=\det AA^{*}
+  =\ell_a\ell_b-\lvert\langle g_a,g_b\rangle\rvert^{2}
+  =4-\tfrac43=\tfrac83 ,
+  \qquad \tr\SC=\ell_a+\ell_b=4 .
+\]
+Hence $\det(\SC-zI_2)=z^{2}-4z+\tfrac83$ for every one of the six pairs,
+with roots $2\pm2/\sqrt3$, and $\lmin(\SC)=\alpha_{\mathrm{SIC}}$.  The value is the
+maximum of these six equal numbers.  Since $\alpha_{\mathrm{SIC}}<1$ no pair dominates.
+The inequality $\alpha_{\mathrm{SIC}}<\tfrac9{10}$ is $\tfrac{11}{10}<\tfrac2{\sqrt3}$,
+that is $11\sqrt3<20$, that is $363<400$.
+\end{proof}
+
+The contrast with $\R$ is exactly here.  Over $\R$ rank two holds at every
+size (Theorem~\ref{thm:ranktwo}), so $\alpha_2(\R)=1$; over $\C$ the same
+cell has value below $1$ already at size four.  No proof of $\Gtz$ can
+therefore be field-agnostic.  The constant $\alpha_{\mathrm{SIC}}$ is
+sharp.  By \cite{Nesterenko2026complex} no uniform-weight design of rank
+two has value below $2-2/\sqrt3$, the bound being attained exactly when
+$4\mid m$, at a repeated copy of \eqref{eq:sic}.  The bound passes to
+arbitrary weights in two steps.  A design with rational weights is
+obtained from a uniform design of larger size by merging equal vectors, so
+by Lemma~\ref{lem:split}, read backwards, it has the same value and the
+bound holds there.  For arbitrary weights, hold the chart $P$ fixed: by
+Lemma~\ref{lem:realize} every weight vector $t'$ with positive entries
+carries a design with that chart, namely $g'_c=\sqrt{t_c/t'_c}\,g_c$, and
+$\operatorname{val}$ is a continuous function of $t'$ there, being a
+maximum of finitely many least eigenvalues of matrices depending
+continuously on $t'$.  Rational weight vectors are dense in the open
+simplex, so the bound persists in the limit.  Hence
+$\alpha_2(\C)=2-2/\sqrt3$.
+
+\subsection{Two padding operations}\label{sec:cpadding}
+
+The first operation adjoins one coordinate together with one atom along
+it, raising the size and the rank by one.  The second lists an existing
+atom twice, raising the size alone.  Each preserves \eqref{eq:parseval}
+by a one-line computation, and each preserves a value bound; the
+inequality preserved is displayed in the statement.
+
+\begin{lemma}[\LV]\label{lem:spike}
+Let $D$ be a complex weighted design at $(m,k)$ and let $0<w<1$.  Define
+$\widehat D$ at $(m+1,k+1)$ by
+\begin{equation}\label{eq:spike}
+  \widehat g_c:=\Bigl(\frac{g_c}{\sqrt{1-w}},\,0\Bigr)\ \ (c\le m),
+  \qquad
+  \widehat g_{m+1}:=\frac{1}{\sqrt w}\,e_{k+1},
+  \qquad
+  \widehat t_c:=(1-w)t_c,\quad \widehat t_{m+1}:=w .
+\end{equation}
+Then $\widehat D$ is a design, and if $D$ has value at most $b\ge0$ then
+$\widehat D$ has value at most $b/(1-w)$.
+\end{lemma}
+
+\begin{proof}
+The weights are positive and sum to $(1-w)+w=1$.  For the Parseval
+condition, the first $m$ terms contribute
+\[
+  \sum_{c\le m}(1-w)t_c\,
+  \frac{1}{1-w}\begin{pmatrix}g_c^{\vphantom{*}}g_c^{*}&0\\0&0\end{pmatrix}
+  \;=\;\begin{pmatrix}I_k&0\\0&0\end{pmatrix},
+\]
+and the last contributes $w\cdot w^{-1}e_{k+1}^{\vphantom{*}}e_{k+1}^{*}$;
+the sum is $I_{k+1}$.
+
+Now let $C$ be a $(k+1)$-subset and $s>b/(1-w)$; we show $S_C-sI_{k+1}$ is
+not positive semidefinite.  Suppose first $m+1\notin C$.  Every
+$\widehat g_c$ with $c\le m$ vanishes in the last coordinate, so the
+$(k+1,k+1)$ entry of $S_C-sI_{k+1}$ is $-s<0$, and a positive semidefinite
+matrix has nonnegative diagonal.  Suppose instead $m+1\in C$ and put
+$C':=C\setminus\{m+1\}$, a $k$-subset of $\{1,\dots,m\}$.  Test on the
+flat directions $\widehat x:=(x,0)$ with $x\in\C^k$.  There
+\[
+  \langle\widehat g_{m+1},\widehat x\rangle=0,
+  \qquad
+  \langle\widehat g_c,\widehat x\rangle
+  =\frac{\langle g_c,x\rangle}{\sqrt{1-w}}\quad(c\le m),
+  \qquad
+  \lVert\widehat x\rVert=\lVert x\rVert .
+\]
+If $S_C\psd sI_{k+1}$ then, by the right-hand form of \eqref{eq:cover}
+applied to $\widehat x$,
+\[
+  s\lVert x\rVert^{2}
+  \;\le\;\sum_{c\in C}\lvert\langle\widehat g_c,\widehat x\rangle\rvert^{2}
+  \;=\;\frac{1}{1-w}\sum_{c\in C'}\lvert\langle g_c,x\rangle\rvert^{2}
+  \qquad\text{for every }x\in\C^{k},
+\]
+that is $S_{C'}\psd (1-w)s\,I_k$ in the original design.  But
+$(1-w)s>b$, contradicting the hypothesis on $D$.
+\end{proof}
+
+The spike is invisible in the flat directions and is the only atom
+visible in the new one; that is the whole content of the two cases.  The
+factor $1/(1-w)$ is the price, and it is a genuine loss: for $b>0$ one has
+$b<b/(1-w)$ for every admissible $w$, so no member of the family attains
+the level $b$, though the levels descend to it as $w\to0$.
+
+\begin{lemma}[\LV]\label{lem:split}
+Let $D$ be a complex weighted design at $(m,k)$, let $c_0\le m$ and let
+$0<f<1$.  Define $\widetilde D$ at $(m+1,k)$ by listing the vector
+$g_{c_0}$ twice,
+\begin{equation}\label{eq:split}
+  \widetilde g_c:=g_c\ (c\le m),
+  \quad \widetilde g_{m+1}:=g_{c_0},
+  \qquad
+  \widetilde t_{c_0}:=f\,t_{c_0},
+  \quad \widetilde t_{m+1}:=(1-f)t_{c_0},
+  \quad \widetilde t_c:=t_c\ \text{otherwise.}
+\end{equation}
+Then $\widetilde D$ is a design, and if $D$ has value at most $b\ge0$ then
+so does $\widetilde D$.
+\end{lemma}
+
+\begin{proof}
+The weights are positive and still sum to one, and in
+\eqref{eq:parseval} the term $t_{c_0}g_{c_0}^{\vphantom{*}}g_{c_0}^{*}$ is
+replaced by
+$f t_{c_0}g_{c_0}^{\vphantom{*}}g_{c_0}^{*}+(1-f)t_{c_0}
+g_{c_0}^{\vphantom{*}}g_{c_0}^{*}$, which is the same matrix.
+
+Let $C$ be a $k$-subset of $\{1,\dots,m+1\}$ and $s>b\ge0$.  If $C$ fails
+to contain both labels $c_0$ and $m+1$, then replacing $m+1$ by $c_0$ where
+necessary carries $C$ to a $k$-subset $C'$ of $\{1,\dots,m\}$ with the
+same family of vectors, so $S_C=S_{C'}$ and $S_C-sI_k$ is not positive
+semidefinite by the hypothesis on $D$.  If $C$ contains both labels, its
+$k$ vectors include two equal ones, hence span a subspace of dimension at
+most $k-1$; choosing $x\ne0$ orthogonal to that subspace gives
+$x^{*}S_Cx=0$ by \eqref{eq:cover}, while
+$x^{*}(sI_k)x=s\lVert x\rVert^{2}>0$.
+\end{proof}
+
+\subsection{The ladder}\label{sec:cladder}
+
+\begin{theorem}[\LV]\label{thm:ladder}
+Let $k\ge2$ and $m\ge k+2$.  There is a complex weighted design of size
+$m$ and rank $k$ whose value is at most
+\[
+  \tfrac{10}9\,\alpha_{\mathrm{SIC}}\;=\;\frac{20}{9}-\frac{20\sqrt3}{27}
+  \;=\;0.9392216240\ldots\;<\;1 .
+\]
+In particular $\GtzC(m,k)$ is false.
+\end{theorem}
+
+\begin{proof}
+Set $e:=k-2\ge0$.  If $e=0$ start with the design \eqref{eq:sic} itself,
+of size $4=k+2$ and value $\alpha_{\mathrm{SIC}}$ by Lemma~\ref{lem:sicvalue}.  If
+$e\ge1$, apply Lemma~\ref{lem:spike} $e$ times to \eqref{eq:sic} with the
+common spike weight
+\[
+  w\;:=\;1-\Bigl(\tfrac9{10}\Bigr)^{1/e},
+  \qquad\text{so that}\qquad (1-w)^{e}=\tfrac9{10}.
+\]
+Each application raises the size and the rank by one, so after $e$ steps
+the size is $4+e=k+2$ and the rank is $2+e=k$; and each application
+divides the value bound by $1-w$, so the resulting bound is
+\[
+  \frac{\alpha_{\mathrm{SIC}}}{(1-w)^{e}}\;=\;\frac{10}{9}\,\alpha_{\mathrm{SIC}} .
+\]
+This is the asserted bound, and it is below $1$ because
+$\alpha_{\mathrm{SIC}}<\tfrac9{10}$ (Lemma~\ref{lem:sicvalue}).  Finally apply
+Lemma~\ref{lem:split} $m-k-2$ times, which raises the size to $m$ without
+raising the rank and without raising the value bound.  A design of value
+below $1$ has no dominating $k$-subset.
+\end{proof}
+
+At $k=3$ the theorem is the one-spike padded configuration of size five,
+whose value is exactly $\tfrac{10}9\alpha_{\mathrm{SIC}}$; that cell, $(5,3)$, is the
+smallest at which rank three fails over $\C$, since
+Proposition~\ref{prop:cpositive} covers $m\le4$.  The bound is not the
+best available at larger sizes: \S\ref{sec:csharp} exhibits designs of
+rank three with value $0.7639\ldots$ and $0.7018\ldots$.
+
+\begin{theorem}[\LV]\label{thm:complex}
+Let $k\ge2$.  Then
+\[
+  \GtzC(m,k)\quad\Longleftrightarrow\quad m\le k+1 .
+\]
+For $k\le1$, $\GtzC(m,k)$ holds for every $m$.
+\end{theorem}
+
+\begin{proof}
+For $m\le k+1$ this is Proposition~\ref{prop:cpositive}; for $m\ge k+2$ it
+is Theorem~\ref{thm:ladder}.  At $k=1$ the statement is
+Proposition~\ref{prop:rankone}, and at $k=0$ the empty subset dominates
+the $0\times0$ identity.
+\end{proof}
+
+For $k\ge2$ the equivalence is vacuous below $m=k$: there Parseval admits
+no design at all, and the assertion holds because there is nothing to
+quantify over, not because selection succeeds.
+
+\subsection{The sharp constants}\label{sec:csharp}
+
+Theorem~\ref{thm:complex} settles the decision problem over $\C$ and
+leaves the quantitative one.  By Proposition~\ref{prop:rankfloor} and
+Theorem~\ref{thm:ladder},
+\[
+  \frac1k\;\le\;\alpha_k(\C)\;\le\;\frac{10}{9}\alpha_{\mathrm{SIC}}\;<\;1
+  \qquad(k\ge2),
+\]
+and at rank two both ends are known: $\alpha_2(\C)=2-2/\sqrt3$, the upper
+bound by Lemma~\ref{lem:sicvalue} and the lower by
+\cite{Nesterenko2026complex}.  At rank three the two ends are far apart,
+and the upper one is not the padded seed.  Two designs improve it.
+
+\begin{example}[\LV]\label{ex:trine}
+Two coplanar trines of lines in $\C^{3}$ sharing an axis: for $j=0,1,2$,
+\[
+  g_j:=\bigl(\sqrt2,\,0,\,\omega^{\,j}\bigr),
+  \qquad
+  g_{3+j}:=\bigl(0,\,\sqrt2,\,\omega^{\,j}\bigr),
+  \qquad t_c:=\tfrac16 .
+\]
+Every leverage is $2+1=3$, and
+$\sum_{j}g_j^{\vphantom{*}}g_j^{*}=\diag(6,0,3)$,
+$\sum_{j}g_{3+j}^{\vphantom{*}}g_{3+j}^{*}=\diag(0,6,3)$, the off-diagonal
+entries cancelling by $1+\omega+\omega^{2}=0$; the total is $6I_3$, so
+\eqref{eq:parseval} holds.  This design has value exactly $3-\sqrt5$.
+\end{example}
+
+To see the last assertion, and to prepare the rank-three record, we record
+the determinant of a triple once.  Let $C=\{a,b,c\}$ and let $A$ be the
+$3\times3$ matrix with rows $g_a^{*},g_b^{*},g_c^{*}$.  Then $\SC=A^{*}A$
+while the Gram matrix is $\Gram_C=AA^{*}$, with entries
+$\langle g_i,g_j\rangle$; for square $A$ the two have the same
+characteristic polynomial.  Writing $\beta_{ij}:=\langle g_i,g_j\rangle$
+and expanding the $3\times3$ determinant of
+$\Gram_C-sI_3$ gives, with $d:=3-s$ when all three leverages equal $3$,
+\begin{equation}\label{eq:tripledet}
+  \det(\SC-sI_3)
+  \;=\;d^{3}
+      -d\bigl(\lvert\beta_{ab}\rvert^{2}+\lvert\beta_{bc}\rvert^{2}
+              +\lvert\beta_{ca}\rvert^{2}\bigr)
+      +2\operatorname{Re}T,
+  \qquad
+  T:=\beta_{ab}\beta_{bc}\beta_{ca}.
+\end{equation}
+The three moduli form a phase-free budget; the entire dependence on the
+phases is the single real number $\operatorname{Re}T$, entering affinely.
+
+For the trine, the two coplanar triples $\{g_0,g_1,g_2\}$ and
+$\{g_3,g_4,g_5\}$ have atom sums $\diag(6,0,3)$ and $\diag(0,6,3)$, of
+least eigenvalue $0$.  Every other triple consists of two vectors from one
+side and one from the other, say $g_i,g_j,g_{3+l}$ with $i\ne j$; then
+\[
+  \beta_{ij}=2+\omega^{\,j-i},
+  \qquad
+  \beta_{j,3+l}=\omega^{\,l-j},
+  \qquad
+  \beta_{3+l,i}=\omega^{\,i-l},
+\]
+so the budget is $\lvert2+\omega^{\,j-i}\rvert^{2}+1+1=3+2=5$ and
+\[
+  T=(2+\omega^{\,j-i})\,\omega^{\,i-j}=2\omega^{\,i-j}+1,
+  \qquad \operatorname{Re}T=1+2\cdot(-\tfrac12)=0 .
+\]
+By \eqref{eq:tripledet}, $\det(\SC-sI_3)=d^{3}-5d=d(d^{2}-5)$, so the
+spectrum of $\SC$ is $\{3,\,3-\sqrt5,\,3+\sqrt5\}$ and
+$\lmin(\SC)=3-\sqrt5=0.7639320225\ldots$ for all eighteen such triples.
+The value of the design is the maximum over the twenty triples, namely
+$3-\sqrt5$.  In particular $\GtzC(6,3)$ fails, at a level well below the
+one Theorem~\ref{thm:ladder} provides.
+
+\begin{example}[\LV]\label{ex:hesse}
+The Hesse configuration.  Index nine directions of $\C^{3}$ by a slot
+$p\in\{0,1,2\}$ and a phase $q\in\{0,1,2\}$: the direction $u_{3p+q}$
+carries $0$ in slot $p$, $\omega^{q}$ in slot $p+1$ and $-\omega^{2q}$ in
+slot $p+2$, indices modulo three.  Explicitly, with $\omega$ written $w$,
+\[
+  \begin{array}{lll}
+    u_0=(0,1,-1), & u_3=(-1,0,1), & u_6=(1,-1,0),\\
+    u_1=(0,w,-w^{2}), & u_4=(-w^{2},0,w), & u_7=(w,-w^{2},0),\\
+    u_2=(0,w^{2},-w), & u_5=(-w,0,w^{2}), & u_8=(w^{2},-w,0).
+  \end{array}
+\]
+Each $u_c$ has $\lVert u_c\rVert^{2}=2$, and
+$\sum_c u_c^{\vphantom{*}}u_c^{*}=6I_3$: the family $p$ contributes $1$ to
+each of the diagonal slots $p+1$ and $p+2$ for each of its three phases,
+so every slot receives $6$ from the two families that do not vanish there,
+while its one off-diagonal entry,
+$\omega^{q}\overline{(-\omega^{2q})}=-\omega^{-q}$ in position
+$(p+1,p+2)$, sums to $-\sum_q\omega^{-q}=0$ over the family.  Put
+\[
+  g_c:=\sqrt{\tfrac32}\,u_c,\qquad t_c:=\tfrac19 .
+\]
+Then \eqref{eq:parseval} holds, $\ell_c=3$ for every $c$, and for $a\ne b$
+\[
+  \langle u_a,u_b\rangle^{3}=-1,
+  \qquad\text{hence}\qquad
+  \beta_{ab}^{3}=\langle g_a,g_b\rangle^{3}=-\tfrac{27}8 .
+\]
+The overlap identity is two computations.  Within the family $p$, with
+$r:=q'-q\not\equiv0$,
+\[
+  \langle u_{3p+q},u_{3p+q'}\rangle=\omega^{r}+\omega^{2r}=-1 ;
+\]
+and between the families $p$ and $p+1$ the only slot on which both are
+nonzero is $p+2$, so
+\[
+  \langle u_{3p+q},u_{3(p+1)+q'}\rangle
+  =\overline{(-\omega^{2q})}\,\omega^{q'}=-\omega^{\,q+q'} .
+\]
+Each value is $-1$ times a cube root of unity, hence a cube root of $-1$;
+the remaining pairs are the conjugates of these.
+\end{example}
+
+Since $\lvert\beta_{ab}\rvert^{2}$ is a nonnegative real whose cube is
+$\lvert\beta_{ab}^{3}\rvert^{2}=(27/8)^{2}$, it equals $9/4$; the
+configuration is equiangular, and the budget in \eqref{eq:tripledet} is
+$3\cdot\tfrac94=\tfrac{27}4$ for every triple.  The triangle invariant
+satisfies $T^{3}=(\beta_{ab}\beta_{bc}\beta_{ca})^{3}=-(27/8)^{3}$, so $T$
+is one of the three cube roots of $-(27/8)^3$, namely $-\tfrac{27}8$ and
+$\tfrac{27}{16}(1\pm i\sqrt3)$.  Hence
+\begin{equation}\label{eq:hessedet}
+  \det(\SC-sI_3)\;=\;(3-s)^{3}-\tfrac{27}4(3-s)+2\operatorname{Re}T,
+  \qquad \operatorname{Re}T\in\Bigl\{-\tfrac{27}8,\ \tfrac{27}{16}\Bigr\},
+\end{equation}
+the first alternative occurring exactly when $\det\SC=\tfrac{27}4+2\operatorname{Re}T$
+vanishes, i.e.\ for the twelve triples lying on a line of the Hesse
+configuration, and the second for the remaining seventy-two.  With
+$\operatorname{Re}T=\tfrac{27}{16}$ the right-hand side of
+\eqref{eq:hessedet} expands to
+\begin{equation}\label{eq:hessecubic}
+  \det(\SC-sI_3)\;=\;-\tfrac18\,h(s),
+  \qquad
+  h(s):=8s^{3}-72s^{2}+162s-81 ,
+\end{equation}
+and with $\operatorname{Re}T=-\tfrac{27}8$ it is $-s(s-\tfrac92)^{2}$.
+
+\begin{proposition}[\LV]\label{prop:hesse}
+The roots of $h$ are $3(1-\cos\tfrac{2\pi}9)$,
+$3(1-\cos\tfrac{4\pi}9)$ and $3(1-\cos\tfrac{8\pi}9)$.  The design of
+Example~\ref{ex:hesse} has value exactly
+\[
+  h_3\;:=\;3\Bigl(1-\cos\tfrac{2\pi}9\Bigr)\;=\;0.7018666706\ldots
+\]
+Consequently $\alpha_3(\C)\le h_3$, and $\GtzC(m,3)$ fails for every
+$m\ge5$.
+\end{proposition}
+
+\begin{proof}
+Substituting $s=3(1-\gamma)$ in \eqref{eq:hessecubic} gives
+\[
+  h\bigl(3(1-\gamma)\bigr)\;=\;-27\bigl(8\gamma^{3}-6\gamma+1\bigr),
+\]
+and for $\gamma=\cos\theta$ the identity $4\cos^{3}\theta-3\cos\theta
+=\cos3\theta$ turns $8\gamma^{3}-6\gamma+1=0$ into
+$\cos3\theta=-\tfrac12$.  On $[0,\pi]$ the solutions are
+$\theta=\tfrac{2\pi}9,\tfrac{4\pi}9,\tfrac{8\pi}9$, which gives the three
+roots; they are distinct, and $s=3(1-\cos\theta)$ increases with $\theta$,
+so $h_3$ is the least.  Exact evaluation isolates it: $h$ is negative at
+$\tfrac7{10}$, where its value is $-\tfrac{136}{1000}$, and positive at
+$\tfrac{71}{100}$, where its value is $\tfrac{588088}{10^{6}}$, so
+\begin{equation}\label{eq:hessewindow}
+  \tfrac7{10}\;<\;h_3\;<\;\tfrac{71}{100}.
+\end{equation}
+
+By \eqref{eq:hessecubic} the seventy-two nondegenerate triples all have
+characteristic polynomial $-\tfrac18h$, hence
+$\lmin(\SC)=h_3$ for each; the twelve degenerate triples have
+$\lmin(\SC)=0$.  The value is the maximum, $h_3$.  By
+\eqref{eq:hessewindow}, $h_3<1$, so no triple
+dominates, so $\GtzC(9,3)$ fails; Lemma~\ref{lem:split} propagates the
+failure to every $m\ge9$, and Theorem~\ref{thm:ladder} covers
+$5\le m\le8$.
+\end{proof}
+
+The eigenvalue computation may be replaced by an explicit certificate,
+which is what shows positive semidefiniteness at the threshold without
+reference to the spectral theorem.  Take the triple $\{u_0,u_1,u_3\}$.
+From $1+\omega+\omega^{2}=0$,
+\[
+  u_0^{\vphantom{*}}u_0^{*}+u_1^{\vphantom{*}}u_1^{*}
+  +u_3^{\vphantom{*}}u_3^{*}
+  \;=\;\begin{pmatrix}1&0&-1\\0&2&\omega\\-1&\omega^{2}&3\end{pmatrix},
+\]
+so that $\SC$ is $\tfrac32$ times this matrix.  Writing
+$p:=\tfrac32-s$ and $q:=3-s$ and $\operatorname{atom}(v):=vv^{*}$, a
+direct expansion of both sides gives the polynomial identity
+\begin{equation}\label{eq:hesseldl}
+  pq\,\bigl(\SC-sI_3\bigr)
+  \;=\;q\cdot\operatorname{atom}\bigl(p,0,-\tfrac32\bigr)
+      +p\cdot\operatorname{atom}\bigl(0,q,\tfrac32\omega^{2}\bigr)
+      -\tfrac18h(s)\,E_{33},
+\end{equation}
+$E_{33}$ being the matrix unit in the last diagonal slot: the entries
+other than $(3,3)$ agree as polynomials in $s$, and the residue at $(3,3)$
+is
+\[
+  pq\bigl(\tfrac92-s\bigr)-\tfrac94(p+q)
+  \;=\;\Bigl(-s^{3}+9s^{2}-\tfrac{99}4s+\tfrac{81}4\Bigr)
+        -\Bigl(\tfrac{81}8-\tfrac92 s\Bigr)
+  \;=\;-\tfrac18h(s).
+\]
+At $s=h_3$ the cubic vanishes and both $p$ and $q$ are positive, since
+$h_3<\tfrac{71}{100}<\tfrac32$; dividing \eqref{eq:hesseldl} by the
+positive scalar $pq$ exhibits $\SC-h_3I_3$ as a nonnegative combination of
+two rank-one positive semidefinite matrices.  The threshold $h_3$ is
+therefore attained by this triple.
+
+The three complex records at rank three are ordered
+\[
+  h_3=0.7018666706\ldots
+  \;<\;3-\sqrt5=0.7639320225\ldots
+  \;<\;\tfrac{10}9\alpha_{\mathrm{SIC}}=0.9392216240\ldots ,
+\]
+both inequalities being exact.  For the second, $12<7\sqrt3$ gives
+$\alpha_{\mathrm{SIC}}>\tfrac56$ and hence $\tfrac{10}9\alpha_{\mathrm{SIC}}>\tfrac{25}{27}$, while
+$5>\bigl(\tfrac{223}{100}\bigr)^{2}$ gives $3-\sqrt5<\tfrac{77}{100}$, and
+$2500>2079$.  For the first,
+\[
+  h\bigl(3-\sqrt5\bigr)\;=\;\bigl(576-1008+486-81\bigr)
+   +\bigl(-256+432-162\bigr)\sqrt5\;=\;14\sqrt5-27\;>\;0,
+\]
+since $980>729$.  The three roots of $h$ sum to $9$, so they cannot all
+lie below $2$; with $h(2)=19>0$ this places $2$ strictly between the two
+smallest roots.  As $3-\sqrt5<2$ and $h(3-\sqrt5)>0$, the number
+$3-\sqrt5$ lies in the same interval, hence above $h_3$.
+
+\begin{remark}\label{rem:phase}
+Identity \eqref{eq:tripledet} isolates what distinguishes the two fields.
+Over $\R$ the entries $\beta_{ij}$ are real, so $T$ is real and
+$\operatorname{Re}T=\pm\lvert T\rvert$ is forced to an extreme of its
+range; over $\C$ it may sit anywhere in $[-\lvert T\rvert,\lvert
+T\rvert]$, and the separating quantity is the phase defect
+$\lvert T\rvert^{2}-(\operatorname{Re}T)^{2}=(\operatorname{Im}T)^{2}$,
+which vanishes identically for every real configuration.  The trine of
+Example~\ref{ex:trine} illustrates the mechanism in its purest form: its
+modulus budget $5$ would permit $2\operatorname{Re}T=2\sqrt3$ and hence a
+positive determinant at $s=1$, but its phase defect is $3$ and its
+$\operatorname{Re}T$ is exactly $0$, leaving $\det(\SC-I_3)=-2$.  No
+argument that sees only the moduli $\lvert\beta_{ij}\rvert$ can decide
+either problem; the corresponding no-go statement is recorded in
+Appendix~\ref{app:graveyard}.
+\end{remark}
+
+\begin{remark}\label{rem:sharpc}
+Collecting the two ends,
+\[
+  \tfrac13\;\le\;\alpha_3(\C)\;\le\;3\bigl(1-\cos\tfrac{2\pi}{9}\bigr)
+  \;=\;0.7018\ldots,
+\]
+the lower bound from Proposition~\ref{prop:rankfloor} and the upper from
+Proposition~\ref{prop:hesse}.  Nothing here closes the gap: every
+rank-three statement above is an upper bound, and upper bounds move the
+record down without pinning it.  Determining $\alpha_3(\C)$ is
+Problem~\ref{prob:sharpc}.  The rank-inverse bound $1/k$ is sharp only at
+$k=1$, where the one-atom design at $(1,1)$ has value $1$.
+\end{remark}

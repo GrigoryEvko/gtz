@@ -1,0 +1,706 @@
+\section{The equality locus}\label{sec:ties}
+
+The inequality \eqref{eq:dominate} is an equality on a large set.  This
+section constructs that set at every size, recalls its classification at
+corank one, computes its dimension, and draws the consequence which
+governs the rest of the paper.  It then examines the one probability
+measure on $k$-subsets adapted to \eqref{eq:parseval}, under which the
+selection inequality holds on average with room to spare, and states
+precisely what that does and does not give.
+
+\subsection{Extremal designs}\label{sec:extremal}
+
+\begin{definition}\label{def:tie}
+A design is \emph{extremal} if some $k$-subset dominates and no $k$-subset
+dominates strictly: there is $C$ with $\SC\psd I_k$, and there is no $C$
+with $\SC\pd I_k$.
+\end{definition}
+
+For a Hermitian matrix $A$ one has $A\psd I_k$ exactly when
+$\lmin(A)\ge1$, and $A\pd I_k$ exactly when $\lmin(A)>1$.  The definition
+therefore reads as follows.
+
+\begin{lemma}\label{lem:tiemax}
+A design is extremal if and only if
+$\max_{\lvert C\rvert=k}\lmin(\SC)=1$.  At an extremal design every
+dominating $k$-subset has $\lmin(\SC)=1$ exactly, so that $\SC-I_k$ is
+positive semidefinite and singular.
+\end{lemma}
+
+\begin{proof}
+The maximum is at least $1$ precisely when some $C$ dominates, and exceeds
+$1$ precisely when some $C$ dominates strictly.  A dominating $C$ has
+$\lmin(\SC)\ge1$, and the maximum being $1$ forces equality.
+\end{proof}
+
+It is convenient to name the quantity Lemma~\ref{lem:tiemax} pins.  For
+$m\ge k$ put
+\begin{equation}\label{eq:alpha}
+  \alpha(m,k)\;:=\;\inf_{D}\ \max_{\lvert C\rvert=k}\lmin(\SC),
+\end{equation}
+the infimum over real designs of size $m$ and rank $k$; this is the real
+counterpart of the constant of Remark~\ref{rem:sharpc}, refined by the
+size.  By construction $\alpha_k(\FF)=\inf_{m\ge k}\alpha(m,k)$, so the
+assertion $\alpha_k(\R)\ge1$ of \S\ref{sec:cvalue} is $\Gtz(m,k)$ for
+every $m$.  Since a maximum is at least the infimum of maxima,
+$\Gtz(m,k)$ holds if and only if $\alpha(m,k)\ge1$, and a design is
+extremal exactly when it realizes the value $1$.
+
+At corank zero there is nothing to construct.  If $m=k$ and $k\ge2$ then
+the unique $k$-subset satisfies
+\[
+  \SC-I_k\;=\;\sum_{c}(1-t_c)\,g_c^{\vphantom{*}}g_c^{*}\;\pd\;0 ,
+\]
+because the $g_c$ are then a basis of $\FF^k$ and $m\ge2$ forces $t_c<1$
+for every $c$.  So no design at $m=k$, $k\ge2$, is extremal.  Extremal
+designs first occur at corank one, where by Theorem~\ref{thm:corankone}(iii)--(iv) they
+occur at every weight vector; the content of the next subsection is that
+they then occur at every larger size as well.
+
+\subsection{Splitting, and existence at every size}\label{sec:split}
+
+Two elementary facts drive the construction.  The first is that $\SC$ does
+not see the weights: by \eqref{eq:dominate} it is the sum of the rank-one
+matrices attached to the selected vectors, and nothing else.  The second
+is the identity behind Lemma~\ref{lem:parallel}, the \emph{gap form}: for
+every $k$-subset $C$ and every $x\in\FF^k$,
+\begin{equation}\label{eq:gapform}
+  x^{*}\bigl(\SC-I_k\bigr)x
+  \;=\;\sum_{c\in C}\lvert\langle g_c,x\rangle\rvert^{2}
+       \;-\;\lVert x\rVert^{2}.
+\end{equation}
+
+\begin{lemma}\label{lem:parallel}
+Let $C$ be a $k$-subset containing two distinct indices $c,c'$ with
+$g_{c'}=\rho\,g_c$ for some scalar $\rho$.  Then $\SC$ is singular and $C$
+does not dominate.
+\end{lemma}
+
+\begin{proof}
+The family $(g_c)_{c\in C}$ has $k$ members and spans a subspace of
+dimension at most $k-1$, so some unit vector $x$ is orthogonal to all of
+them.  Then $\SC x=0$, and by \eqref{eq:gapform},
+$x^{*}(\SC-I_k)x=-1<0$.
+\end{proof}
+
+Now let $D$ be a design at $(m,k)$, let $e$ be an index and let
+$0<a<t_e$.  Replace the pair $(g_e,t_e)$ by the two pairs $(g_e,a)$ and
+$(g_e,t_e-a)$, leaving everything else alone.  The weights remain positive
+and still sum to one, and
+\[
+  a\,g_e^{\vphantom{*}}g_e^{*}+(t_e-a)\,g_e^{\vphantom{*}}g_e^{*}
+  \;=\;t_e\,g_e^{\vphantom{*}}g_e^{*},
+\]
+so \eqref{eq:parseval} is unchanged and the result is a design at
+$(m+1,k)$.  The vector is not rescaled: \eqref{eq:parseval} is affected
+only through the total weight carried by a direction.  This is the
+\emph{split} at $e$ with ratio $a$.
+
+Iterating splits from a design at $(k+1,k)$ produces, at size $m$, a
+design whose $m$ vectors take at most $k+1$ distinct values and whose
+weights are arbitrary subject to prescribed class totals.  We construct
+these directly, which is shorter and displays the reweighting.
+
+\begin{theorem}[\LV]\label{thm:tieseverywhere}
+Let $k\ge1$ and $m\ge k+1$, let $t$ be a weight vector on $m$ atoms, and
+let $\varphi:\{1,\dots,m\}\to\{1,\dots,k+1\}$ be a surjection.  Put
+\[
+  T_j\;:=\;\sum_{\varphi(c)=j}t_c \qquad (1\le j\le k+1),
+\]
+let $(h_j,T_j)_{j\le k+1}$ be a design at $(k+1,k)$ with weights $T$ in
+which every $k$-subset dominates and none dominates strictly, and set
+$g_c:=h_{\varphi(c)}$.  Then $(g_c,t_c)_{c\le m}$ is an extremal design at
+$(m,k)$ with weights exactly $t$.  In particular extremal designs exist at
+$(m,k)$ for every $m\ge k+1$, over either field, and at every weight
+vector.
+\end{theorem}
+
+\begin{proof}
+The $T_j$ are positive and sum to one, so Theorem~\ref{thm:corankone}(iii)--(iv)
+supplies the design $(h_j,T_j)$ demanded.  Grouping the sum
+\eqref{eq:parseval} by classes,
+\[
+  \sum_{c=1}^{m}t_c\,g_c^{\vphantom{*}}g_c^{*}
+  \;=\;\sum_{j=1}^{k+1}\Bigl(\sum_{\varphi(c)=j}t_c\Bigr)
+        h_j^{\vphantom{*}}h_j^{*}
+  \;=\;\sum_{j=1}^{k+1}T_j\,h_j^{\vphantom{*}}h_j^{*}\;=\;I_k,
+\]
+so $(g,t)$ is a design at $(m,k)$, with weights $t$ by construction.
+
+Let $C$ be a $k$-subset.  If $\varphi$ is not injective on $C$ then $C$
+carries two equal vectors and does not dominate, by
+Lemma~\ref{lem:parallel}.  If $\varphi$ is injective on $C$ then
+$\varphi(C)$ is a $k$-subset of $\{1,\dots,k+1\}$ and
+\[
+  \SC\;=\;\sum_{c\in C}h_{\varphi(c)}^{\vphantom{*}}h_{\varphi(c)}^{*}
+      \;=\;S_{\varphi(C)},
+\]
+which dominates and does not dominate strictly.  Since $\varphi$ is
+surjective there is at least one $C$ of the second kind: choose $k$ of the
+$k+1$ classes and one index from each.  Hence some $k$-subset dominates
+and none dominates strictly.
+\end{proof}
+
+At $m=k+1$ the surjection is a bijection and the theorem returns
+Theorem~\ref{thm:corankone}(iii)--(iv).  At $m\ge k+2$ some class contains two indices,
+so the design carries a pair of equal vectors; \S\ref{sec:diamond} shows
+that this feature is not forced.
+
+\begin{proposition}\label{prop:section}
+For fixed $\varphi$ the assignment $t\mapsto D(t,\varphi)$ of
+Theorem~\ref{thm:tieseverywhere} is a section of the weight map over the
+whole open simplex: every weight vector carries an extremal design.  At
+$m=k+1$ it is onto, in the following sense: two extremal designs of size
+$k+1$ with the same weights differ by
+\[
+  g_c\;\longmapsto\;\varepsilon_c\,Ug_c,
+  \qquad U\in O(k)\ \text{resp.}\ U(k),\qquad
+  \lvert\varepsilon_c\rvert=1 ,
+\]
+a transformation under which no $\SC$ changes.  Consequently the extremal
+locus at corank one has dimension exactly $m-1=k$ modulo that group, and
+at every $m\ge k+1$ the extremal locus contains, for each partition of
+$\{1,\dots,m\}$ into $k+1$ nonempty blocks, a family of dimension $m-1$.
+\end{proposition}
+
+\begin{proof}
+Only the corank-one assertion needs an argument.  Let $m=k+1$.  By
+Theorem~\ref{thm:corankone} a design of that size with weights $t$ is
+extremal if and only if its chart projection is $P=I-zz^{*}$ with
+$\lvert z_c\rvert^{2}=(1-t_c)/k$ for every $c$.  One direction is part
+(iii) of that theorem.  For the other, extremality forbids strict
+domination, so by part (i) no $p_{c_0}$ exceeds the $t$-mean
+$\sum_ct_cp_c$; a family none of whose members exceeds its own weighted
+mean is constant, and by \eqref{eq:pnorm} the constant is $1/k$, which is
+the stated condition on $z$.  These moduli determine
+$z$ up to the individual phases $\varepsilon_c$, and $P$ determines $V$ up
+to $V\mapsto VU$, since two isometries with the same range differ by the
+unitary $U=V^{*}V'$.  Replacing $z$ by $\diag(\varepsilon)z$ replaces $P$
+by $\diag(\varepsilon)P\diag(\varepsilon)^{*}$, hence $V$ by
+$\diag(\varepsilon)V$, hence $g_c=v_c/\sqrt{t_c}$ by
+$\varepsilon_cg_c$; and $g_c^{\vphantom{*}}g_c^{*}$ is invariant under
+that.  So the fibre of the weight map over each $t$ is a single orbit, the
+quotient is mapped bijectively onto the open simplex, and the dimension is
+$m-1=k$.
+\end{proof}
+
+The corank-one classification is not the beginning of a pattern.  The
+equations \eqref{eq:tielaw} which cut it out have no solutions above
+corank one at all.
+
+\begin{proposition}[\LV]\label{prop:tielawcorank}
+Let $k\ge2$.  If a design of size $m$ satisfies $k\,t_c\ell_c=k-1+t_c$ at
+every atom, then $m=k+1$.
+\end{proposition}
+
+\begin{proof}
+Sum \eqref{eq:tielaw} over $c$.  The left side is
+$k\sum_ct_c\ell_c=k^{2}$ by Lemma~\ref{lem:trace}; the right side is
+$m(k-1)+\sum_ct_c=m(k-1)+1$.  Hence $(k-1)(k+1)=m(k-1)$, and $k\ge2$
+permits the cancellation.
+\end{proof}
+
+So above corank one the extremal designs are cut out by no such closed
+system, and indeed the designs of Theorem~\ref{thm:tieseverywhere} violate
+\eqref{eq:tielaw} at most of their atoms.  The following instances are
+used again in \S\ref{sec:interior} and in Appendix~\ref{app:data}.
+
+\begin{example}[\LV]\label{ex:split}
+Take for $(h_j)$ the regular tetrahedron of Example~\ref{ex:tetra}, so
+that $k=3$, $T_j=\tfrac14$, $\ell(h_j)=3$ and
+$\langle h_i,h_j\rangle=-1$ for $i\ne j$.
+
+At $m=6$, with $\varphi=(1,2,3,3,4,4)$ and weights
+$\bigl(\tfrac14,\tfrac14,a,\tfrac14-a,b,\tfrac14-b\bigr)$ for any
+$0<a,b<\tfrac14$, Theorem~\ref{thm:tieseverywhere} produces a
+two-parameter family of extremal designs at $(6,3)$.  Every leverage is
+$3$, while \eqref{eq:tielaw} at $k=3$ reads $9t_c=2+t_c$, that is
+$t_c=\tfrac14$: the law fails at each of the four split atoms, in
+accordance with Proposition~\ref{prop:tielawcorank}.
+
+At $m=7$, with $\varphi=(1,2,3,4,1,2,3)$ and weights
+$\bigl(\tfrac18,\tfrac18,\tfrac18,\tfrac14,\tfrac18,\tfrac18,
+\tfrac18\bigr)$, one obtains an extremal design at $(7,3)$ in which again
+every leverage is $3$.  Of its $35$ triples, the $20$ carrying three
+distinct classes dominate: for such a triple $T$, missing the class $j$,
+the computation of Example~\ref{ex:tetra} gives
+\[
+  S_T\;=\;4I_3-h_j^{\vphantom{T}}h_j^{T},
+  \qquad
+  x^{T}(S_T-I_3)x\;=\;3\lVert x\rVert^{2}-\langle h_j,x\rangle^{2},
+\]
+so that the gap has spectrum $\{0,3,3\}$ and $\lmin(S_T)=1$.  The
+remaining $15$ triples repeat a class and do not dominate, by
+Lemma~\ref{lem:parallel}.
+\end{example}
+
+\subsection{No margin}\label{sec:nomargin}
+
+\begin{corollary}[\LV]\label{cor:nomargin}
+Let $k\ge1$, $m\ge k+1$ and $\varepsilon>0$.  For every weight vector $t$
+there is a design at $(m,k)$ with weights $t$ admitting no $k$-subset with
+$\SC\psd(1+\varepsilon)I_k$.  Consequently $\alpha(m,k)\le1$, and if
+$\Gtz(m,k)$ holds then $\alpha(m,k)=1$ and the infimum in
+\eqref{eq:alpha} is attained.
+\end{corollary}
+
+\begin{proof}
+Let $D$ be the extremal design of Theorem~\ref{thm:tieseverywhere} with
+weights $t$.  If some $k$-subset had $\SC\psd(1+\varepsilon)I_k$ then
+$\SC-I_k\psd\varepsilon I_k\pd0$, so that $C$ would dominate strictly.
+The remaining assertions are Lemma~\ref{lem:tiemax}.
+\end{proof}
+
+Corollary~\ref{cor:nomargin} constrains the form of any solution, in three
+ways.
+
+There is no uniform margin.  For every $\varepsilon>0$ the assertion
+``every design admits a $k$-subset with $\SC\psd(1+\varepsilon)I_k$'' is
+false, at every cell with $m\ge k+1$.  An argument whose output is a
+strict inequality --- a positivity certificate carrying a strictly
+positive multiplier, or a bound $\lmin(\SC)\ge1+f$ with $f$ a positive
+function of the design data --- is therefore refuted at the outset,
+whatever its degree or complexity.
+
+There is no slack to transport.  Suppose $\Gtz(m,k)$ is derived from a
+smaller cell $(m',k')$ with $m'\ge k'+1$.  The slack
+$\max_C\lmin(\SC)-1$ available at the smaller cell is zero at the designs
+of Theorem~\ref{thm:tieseverywhere}, so no step may consume a positive
+amount of it: the reduction must be an identity and not an estimate.  The
+compression lift of \S\ref{sec:boundary} is such an identity at vanishing
+weight, and Theorem~\ref{thm:sharp} exhibits its failure at every positive
+weight, the failure being located exactly on the extremal locus.
+
+And the exactness occupies a set of full dimension.  By
+Proposition~\ref{prop:section} the extremal locus meets every point of the
+open weight simplex, at every size $m\ge k+1$, and has dimension $m-1$,
+which is the dimension of the weights.  No restriction on the weights
+avoids it, and no compactness argument on a subregion of the design space
+yields a positive infimum for the slack unless the closure of that
+subregion misses the locus.  The analysis at the extremal points must
+therefore be first-order; this is what \S\ref{sec:compactness} and
+\S\ref{sec:interior} supply.  The strategies which fail for these reasons,
+and for no other, are collected with their refuting witnesses in
+Appendix~\ref{app:graveyard}.
+
+\subsection{The diamond}\label{sec:diamond}
+
+Every design of Theorem~\ref{thm:tieseverywhere} of size $m\ge k+2$
+carries a pair of equal vectors, and takes at most $k+1$ distinct values.
+Neither feature is forced.  We exhibit an extremal design at $(5,3)$ whose
+five vectors are pairwise non-parallel.  It is described by a graph, and
+its data are exactly rational even though its vectors are not.
+
+Let $\Gamma$ be the complete graph on the vertices $1,2,3,4$ with the edge
+$34$ deleted, grounded at the vertex $4$, and list its five edges as
+\[
+  e_0=12,\qquad e_1=13,\qquad e_2=14,\qquad e_3=23,\qquad e_4=24 .
+\]
+A potential is a vector $y=(y_1,y_2,y_3)\in\R^3$, the ground carrying
+$y_4=0$, and the \emph{drop} across an edge is the difference of the
+potentials at its endpoints:
+\begin{equation}\label{eq:drops}
+  d(y)\;=\;\bigl(y_1-y_2,\ y_1-y_3,\ y_1,\ y_2-y_3,\ y_2\bigr)
+  \;=\;\bigl(\langle b_e,y\rangle\bigr)_{0\le e\le4},
+\end{equation}
+the reduced incidence vectors being
+\[
+  b_0=(1,-1,0),\quad b_1=(1,0,-1),\quad b_2=(1,0,0),\quad
+  b_3=(0,1,-1),\quad b_4=(0,1,0).
+\]
+Give the edges the conductances and weights
+\[
+  c\;=\;(2,3,3,3,3), \qquad t_e\;=\;\tfrac15\quad(0\le e\le4),
+\]
+and form the weighted Laplacian
+\begin{equation}\label{eq:laplacian}
+  L\;:=\;\sum_{e=0}^{4}c_e\,b_e^{\vphantom{T}}b_e^{T}
+  \;=\;\begin{pmatrix} 8&-2&-3\\ -2&8&-3\\ -3&-3&6\end{pmatrix},
+  \qquad
+  y^{T}Ly\;=\;\sum_{e}c_e\,d_e(y)^{2}.
+\end{equation}
+Its leading principal minors are $8$, $60$ and $\det L=180$, so $L\pd0$.
+Choose any $R$ with $R^{T}LR=I_3$ --- for instance $R=L^{-1/2}$ --- and
+put
+\begin{equation}\label{eq:diamondatoms}
+  g_e\;:=\;\sqrt{5c_e}\;R^{T}b_e \qquad (0\le e\le 4).
+\end{equation}
+Then
+\[
+  \sum_{e}t_e\,g_e^{\vphantom{T}}g_e^{T}
+  \;=\;\sum_e \tfrac15\cdot 5c_e\,R^{T}b_e^{\vphantom{T}}b_e^{T}R
+  \;=\;R^{T}LR\;=\;I_3,
+\]
+so $(g_e,t_e)$ is a design at $(5,3)$; call it $D_\Diamond$.  It is
+determined by the graph data up to the ambiguity $R\mapsto RU$ with $U$
+orthogonal, which replaces every $g_e$ by $U^{T}g_e$ and changes no $\SC$.
+
+Two computations describe it.  Since $RR^{T}=L^{-1}$,
+\begin{equation}\label{eq:diamondlev}
+  \ell_e\;=\;5c_e\,b_e^{T}L^{-1}b_e ,
+  \qquad
+  L^{-1}\;=\;\frac1{180}
+  \begin{pmatrix}39&21&30\\ 21&39&30\\ 30&30&60\end{pmatrix},
+\end{equation}
+whence $b_0^{T}L^{-1}b_0=\tfrac{36}{180}=\tfrac15$ and
+$b_e^{T}L^{-1}b_e=\tfrac{39}{180}=\tfrac{13}{60}$ for $e\ge1$, so that
+\[
+  \ell_0=2,\qquad \ell_1=\ell_2=\ell_3=\ell_4=\tfrac{13}4 .
+\]
+As a check, $\sum_et_e\ell_e=\tfrac15\bigl(2+4\cdot\tfrac{13}4\bigr)=3=k$,
+as Lemma~\ref{lem:trace} requires.  Second, the substitution $y=Rx$, a
+bijection of $\R^3$, gives for every $3$-subset $C$
+\[
+  x^{T}\SC x=\sum_{e\in C}5c_e\,d_e(y)^{2},
+  \qquad
+  x^{T}x=x^{T}R^{T}LRx=\sum_{e}c_e\,d_e(y)^{2},
+\]
+so that domination becomes a statement about potentials alone:
+\begin{equation}\label{eq:diamondgap}
+  x^{T}\bigl(\SC-I_3\bigr)x\;=\;Q_C(y),
+  \qquad
+  Q_C(y):=\sum_{e=0}^{4}\bigl(5\cdot[e\in C]-1\bigr)c_e\,d_e(y)^{2},
+\end{equation}
+where $[\,\cdot\,]$ is $1$ when the enclosed statement holds and $0$
+otherwise; and $C$ dominates if and only if $Q_C\ge0$ on $\R^3$.  The whitening $R$
+has disappeared.
+
+\begin{example}[\LV]\label{ex:diamond}
+The design $D_\Diamond$ is extremal at $(5,3)$; its five vectors are
+pairwise non-parallel; and it is not one of the designs of
+Theorem~\ref{thm:tieseverywhere}.
+\end{example}
+
+\begin{proof}
+For the star at the vertex $1$, that is $C=\{e_0,e_1,e_2\}$, expanding
+\eqref{eq:diamondgap} by means of \eqref{eq:drops} gives
+\begin{align*}
+  Q_C(y)&=8(y_1-y_2)^2+12(y_1-y_3)^2+12y_1^2-3(y_2-y_3)^2-3y_2^2\\
+        &=32y_1^2+2y_2^2+9y_3^2-16y_1y_2-24y_1y_3+6y_2y_3 ,
+\end{align*}
+and therefore
+\begin{equation}\label{eq:diamondstar}
+  2\,Q_C(y)\;=\;\bigl(-8y_1+2y_2+3y_3\bigr)^{2}+9\,y_3^{2} .
+\end{equation}
+So $C$ dominates.  The form \eqref{eq:diamondstar} vanishes at
+$y=(1,4,0)$, so it is singular and $C$ does not dominate strictly.
+
+There are ten $3$-subsets: eight spanning trees of $\Gamma$, and its two
+triangles $\{e_0,e_1,e_3\}$ on the vertices $1,2,3$ and
+$\{e_0,e_2,e_4\}$ on $1,2,4$.  For each, the potential listed below gives
+the stated value of $Q_C$:
+\[
+\begin{array}{llr@{\qquad}llr}
+\{e_0,e_1,e_2\} & (1,4,0)  & 0 &
+\{e_0,e_1,e_3\} & (1,1,1)  & -6\\
+\{e_0,e_1,e_4\} & (4,1,5)  & 0 &
+\{e_0,e_2,e_3\} & (1,4,5)  & 0\\
+\{e_0,e_2,e_4\} & (0,0,1)  & -6 &
+\{e_0,e_3,e_4\} & (4,1,0)  & 0\\
+\{e_1,e_2,e_3\} & (2,8,5)  & 0 &
+\{e_1,e_2,e_4\} & (3,-3,5) & 0\\
+\{e_1,e_3,e_4\} & (8,2,5)  & 0 &
+\{e_2,e_3,e_4\} & (-3,3,5) & 0
+\end{array}
+\]
+Each entry is one evaluation of \eqref{eq:diamondgap}.  At
+$\{e_1,e_2,e_4\}$ and $y=(3,-3,5)$, for instance, the drops
+\eqref{eq:drops} are $(6,-2,3,-8,-3)$ and
+\[
+  Q_C(y)=-2\cdot36+12\cdot4+12\cdot9-3\cdot64+12\cdot9=0 .
+\]
+For each triangle the potential is constant on the triangle's vertex set,
+so its three drops vanish and $Q_C$ reduces to minus the Dirichlet
+contribution of the two edges leaving that set, namely $-6$.  Hence no
+$3$-subset has $Q_C>0$ off the origin, that is none dominates strictly,
+while by the first paragraph one dominates: $D_\Diamond$ is extremal.
+
+Proportionality of $g_e$ and $g_f$ is proportionality of $b_e$ and $b_f$,
+since $R^{T}$ is invertible and the factors $\sqrt{5c_e}$ do not
+vanish.  Proportional nonzero vectors have equal support, and the five
+supports $\{1,2\},\{1,3\},\{1\},\{2,3\},\{2\}$ are distinct.  So no two
+vectors are parallel; in particular $D_\Diamond$ carries five distinct
+directions, whereas a design of Theorem~\ref{thm:tieseverywhere} carries
+at most $k+1=4$.
+\end{proof}
+
+\begin{corollary}[\LV]\label{cor:noparallel}
+The assertion ``every extremal design contains two parallel vectors'' is
+true for every design of Theorem~\ref{thm:tieseverywhere} of size
+$m\ge k+2$, and false at $(5,3)$.
+\end{corollary}
+
+\begin{proof}
+If $m\ge k+2$ then $\varphi$ is not injective, so two indices carry equal
+vectors.  Example~\ref{ex:diamond} is the counterexample.
+\end{proof}
+
+An argument branching on the presence of a parallel pair therefore
+requires a separate treatment of $D_\Diamond$, and of every extremal
+design not obtained by splitting a smaller one.  Whether the tetrahedron
+and the diamond generate the whole rank-three extremal locus is
+Problem~\ref{prob:structure}.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/diamond}
+  \caption{The diamond $D_\Diamond$.  Left: the graph $K_4$ with the edge
+  $34$ deleted and the vertex $4$ grounded, its edges carrying the
+  conductances $c=(2,3,3,3,3)$ and the uniform weights $t_e=\tfrac15$;
+  line weight is proportional to conductance.  Right: the five reduced
+  incidence vectors of \eqref{eq:drops}, pairwise non-proportional, whence
+  the five atoms \eqref{eq:diamondatoms} are pairwise non-parallel.}
+  \label{fig:diamond}
+\end{figure}
+
+\subsection{Volume sampling}\label{sec:averaging}
+
+One probability measure on $k$-subsets is adapted to \eqref{eq:parseval}
+exactly, and under it the selection inequality holds on average.  We work
+in the chart of \S\ref{sec:chart}: $v_c=\sqrt{t_c}\,g_c$, the matrix $V$
+has rows $v_c^{*}$ and satisfies $V^{*}V=I_k$, and $P=VV^{*}$ by
+\eqref{eq:chart}.  For a $k$-subset $C$ write $V_C$ for the $k\times k$
+submatrix of $V$ on the rows $C$, so that $P[C]=V_C^{\vphantom{*}}V_C^{*}$.
+
+\begin{lemma}\label{lem:cauchybinet}
+Let $X$ be $k\times m$ and $Y$ be $m\times k$.  Then
+\[
+  \det(XY)\;=\;\sum_{\lvert C\rvert=k}
+  \det\bigl(X^{C}\bigr)\det\bigl(Y_C\bigr),
+\]
+where $X^{C}$ is the submatrix of $X$ on the columns $C$ and $Y_C$ the
+submatrix of $Y$ on the rows $C$.
+\end{lemma}
+
+\begin{proof}
+Write $x_1,\dots,x_m$ for the columns of $X$.  The $j$-th column of $XY$
+is $\sum_{c}Y_{cj}x_c$, so multilinearity of the determinant in its
+columns gives
+\[
+  \det(XY)\;=\;\sum_{f}\Bigl(\prod_{j=1}^{k}Y_{f(j)j}\Bigr)
+  \det\bigl(x_{f(1)},\dots,x_{f(k)}\bigr),
+\]
+the sum being over all maps $f:\{1,\dots,k\}\to\{1,\dots,m\}$.  A
+non-injective $f$ repeats a column and contributes zero.  An injective $f$
+has an image $C$ of size $k$; writing $f=\iota_C\circ\sigma$ with
+$\iota_C$ the increasing enumeration of $C$ and $\sigma$ a permutation,
+the determinant equals $\operatorname{sgn}(\sigma)\det(X^{C})$, and
+summing $\operatorname{sgn}(\sigma)\prod_jY_{\iota_C(\sigma(j))j}$ over
+$\sigma$ gives $\det(Y_C)$.
+\end{proof}
+
+Apply the lemma with $X=V^{*}$ and $Y=V$.  Each term is
+$\det\bigl((V^{*})^{C}\bigr)\det(V_C)=\lvert\det V_C\rvert^{2}
+=\det\bigl(V_C^{\vphantom{*}}V_C^{*}\bigr)=\det P[C]$, while the left side
+is $\det(V^{*}V)=1$.  Setting
+\begin{equation}\label{eq:dpp}
+  \pi_C\;:=\;\det P[C]
+  \;=\;\lvert\det V_C\rvert^{2}
+  \;=\;\Bigl(\prod_{c\in C}t_c\Bigr)
+       \det\Gram\bigl((g_c)_{c\in C}\bigr)
+\end{equation}
+--- the last equality because $V_C=\diag(\sqrt{t_c})_{c\in C}M_C$ with
+$M_C$ the matrix of the selected vectors --- we conclude that $\pi$ is a
+probability measure on $k$-subsets, and that $\pi_C>0$ exactly when
+$(g_c)_{c\in C}$ is a basis of $\FF^k$.  Call such a $C$ a \emph{basis} of
+the design.  The measure $\pi$ is volume sampling \cite{DRVW2006}; it is
+the determinantal measure carried by the bases of the underlying matroid
+\cite{Lyons2003}.
+
+\begin{lemma}\label{lem:marginal}
+For every atom $c$,
+\[
+  \Pr\nolimits_{\pi}\bigl[c\in C\bigr]\;=\;\sum_{C\ni c}\pi_C
+  \;=\;P_{cc}\;=\;s_c .
+\]
+\end{lemma}
+
+\begin{proof}
+Fix $c$ and let $D_\sigma:=\diag(1,\dots,\sigma,\dots,1)$ carry $\sigma$
+in the position $c$.  On one hand
+$V^{*}D_\sigma V=V^{*}V+(\sigma-1)v_c^{\vphantom{*}}v_c^{*}$ is a
+rank-one perturbation of the identity, with
+\[
+  \det\bigl(V^{*}D_\sigma V\bigr)\;=\;1+(\sigma-1)\lVert v_c\rVert^{2}
+  \;=\;1+(\sigma-1)s_c .
+\]
+On the other hand Lemma~\ref{lem:cauchybinet} applied to
+$X=V^{*}D_\sigma$ and $Y=V$ gives, since scaling the column $e$ of
+$V^{*}$ multiplies every minor containing it by that factor,
+\[
+  \det\bigl(V^{*}D_\sigma V\bigr)
+  \;=\;\sum_{\lvert C\rvert=k}\sigma^{[c\in C]}\,\pi_C
+  \;=\;\sum_{C\not\ni c}\pi_C\;+\;\sigma\sum_{C\ni c}\pi_C .
+\]
+Both expressions are affine in $\sigma$; comparing the coefficients of
+$\sigma$ gives the claim.
+\end{proof}
+
+Summing Lemma~\ref{lem:marginal} over $c$ returns $\sum_cs_c=k$
+(Lemma~\ref{lem:trace}), the expected cardinality of $C$, as it must.
+
+\begin{theorem}[\LV]\label{thm:leverageaverage}
+For every design over either field,
+\[
+  \sum_{c}s_c\,g_c^{\vphantom{*}}g_c^{*}\;\psd\;I_k .
+\]
+\end{theorem}
+
+\begin{proof}
+Let $x\in\FF^k$ be arbitrary.  Cauchy--Schwarz at each atom gives
+$\lvert\langle g_c,x\rangle\rvert^{2}\le\ell_c\lVert x\rVert^{2}$, whence
+\[
+  \lVert x\rVert^{2}\sum_c s_c\lvert\langle g_c,x\rangle\rvert^{2}
+  \;=\;\sum_c t_c\,\ell_c\lVert x\rVert^{2}\,
+        \lvert\langle g_c,x\rangle\rvert^{2}
+  \;\ge\;\sum_c t_c\lvert\langle g_c,x\rangle\rvert^{4} .
+\]
+Cauchy--Schwarz for the probability weights $t$ bounds the right side
+below by $\bigl(\sum_ct_c\lvert\langle g_c,x\rangle\rvert^{2}\bigr)^{2}$,
+which is $\lVert x\rVert^{4}$ by \eqref{eq:parseval}.  Dividing by
+$\lVert x\rVert^{2}>0$ gives
+$x^{*}\bigl(\sum_cs_cg_c^{\vphantom{*}}g_c^{*}\bigr)x\ge\lVert x\rVert^2$.
+Every step is homogeneous in $x$, so no normalization is used.
+\end{proof}
+
+The leverage-weighted sum is the $\pi$-average of the subset sum.
+
+\begin{theorem}\label{thm:average}
+For every design over either field,
+\[
+  \E_{\pi}\bigl[\SC\bigr]
+  \;=\;\sum_{c}s_c\,g_c^{\vphantom{*}}g_c^{*}
+  \;\psd\;I_k .
+\]
+\end{theorem}
+
+\begin{proof}
+Exchanging the two summations and applying Lemma~\ref{lem:marginal},
+\[
+  \E_\pi[\SC]\;=\;\sum_{\lvert C\rvert=k}\pi_C\sum_{c\in C}
+  g_c^{\vphantom{*}}g_c^{*}
+  \;=\;\sum_{c}\Bigl(\sum_{C\ni c}\pi_C\Bigr)g_c^{\vphantom{*}}g_c^{*}
+  \;=\;\sum_c s_c\,g_c^{\vphantom{*}}g_c^{*} ,
+\]
+and the inequality is Theorem~\ref{thm:leverageaverage}.
+\end{proof}
+
+The selection problem is thus the derandomization of
+Theorem~\ref{thm:average}: the $\pi$-average of $\SC$ dominates, and one
+asks for a single $C$.  The average dominates with room, and the room
+grows with the rank.
+
+\begin{proposition}[\LV]\label{prop:jensen}
+$\sum_c t_c\ell_c^{2}\ge k^{2}$, with equality if and only if $\ell_c=k$
+for every $c$.
+\end{proposition}
+
+\begin{proof}
+Cauchy--Schwarz for the weights $t$ gives
+$\bigl(\sum_ct_c\ell_c\bigr)^{2}\le\sum_ct_c\ell_c^{2}$, and the left side
+is $k^{2}$ by Lemma~\ref{lem:trace}.  Equality holds exactly when $\ell$
+is constant, and its $t$-mean is $k$.
+\end{proof}
+
+Since $\tr\E_\pi[\SC]=\sum_cs_c\ell_c=\sum_ct_c\ell_c^{2}\ge k^{2}$ while
+$\tr I_k=k$, the average clears the threshold by a factor at least $k$ in
+trace.  No single subset need clear it at all: that is
+Corollary~\ref{cor:nomargin}.
+
+The measure sees the extremal locus through the mixture of characteristic
+polynomials
+\begin{equation}\label{eq:mixture}
+  q(x)\;:=\;\E_\pi\bigl[\chi_{\SC}(x)\bigr]
+  \;=\;\sum_{\lvert C\rvert=k}\pi_C\,\det\bigl(xI_k-\SC\bigr).
+\end{equation}
+Call a basis $C$ \emph{tight} if $1\in\operatorname{spec}\SC$, and a
+design \emph{totally tight} if every basis of it is tight.
+
+\begin{proposition}\label{prop:totaltight}
+Every design of Theorem~\ref{thm:tieseverywhere} is totally tight.
+\end{proposition}
+
+\begin{proof}
+Let $C$ be a $k$-subset.  If $\varphi$ is not injective on $C$ then $\SC$
+is singular by Lemma~\ref{lem:parallel}, so $\pi_C=0$ by \eqref{eq:dpp}
+and $C$ is not a basis.  Otherwise $\SC=S_{\varphi(C)}$ dominates and does
+not dominate strictly, so $\lmin(\SC)=1$ by Lemma~\ref{lem:tiemax}.
+\end{proof}
+
+\begin{proposition}\label{prop:qone}
+The mixture \eqref{eq:mixture} is monic of degree $k$; its subleading
+coefficient is
+\[
+  [x^{k-1}]\,q\;=\;-\,\E_\pi\bigl[\tr\SC\bigr]
+  \;=\;-\sum_c t_c\ell_c^{2}\;\le\;-k^{2};
+\]
+and $q(1)=0$ at every totally tight design.
+\end{proposition}
+
+\begin{proof}
+Each $\chi_{\SC}$ is monic of degree $k$ and $\sum_C\pi_C=1$, so $q$ is
+monic of degree $k$; and $[x^{k-1}]\chi_{\SC}=-\tr\SC$, which gives the
+first equality.  The second is Lemma~\ref{lem:marginal} again:
+\[
+  \E_\pi[\tr\SC]=\sum_C\pi_C\sum_{c\in C}\ell_c
+  =\sum_c\ell_c\sum_{C\ni c}\pi_C=\sum_cs_c\ell_c=\sum_ct_c\ell_c^{2},
+\]
+and the bound is Proposition~\ref{prop:jensen}.  The last assertion is
+Proposition~\ref{prop:qonezero}.
+\end{proof}
+
+\begin{proposition}[\LV]\label{prop:qonezero}
+$q(1)=0$ at every totally tight design.
+\end{proposition}
+
+\begin{proof}
+$q(1)=\sum_C\pi_C\det(I_k-\SC)$, and every summand with $\pi_C>0$ has $C$
+a basis, hence tight, hence $\det(I_k-\SC)=0$.
+\end{proof}
+
+We compute the mixture at the tetrahedron of Example~\ref{ex:tetra},
+which by Theorem~\ref{thm:corankone}(iii)--(iv) is the corank-one extremal design at
+$k=3$ and uniform weights, and is therefore totally tight by
+Proposition~\ref{prop:totaltight}.  Each of its four triples has Gram
+matrix $4I_3-J$, with $J$ the all-ones matrix, of determinant $16$; so by
+\eqref{eq:dpp}
+\[
+  \pi_C\;=\;\bigl(\tfrac14\bigr)^{3}\cdot16\;=\;\tfrac14
+\]
+for each of the four, confirming $\sum_C\pi_C=1$ and giving
+$\Pr_\pi[c\in C]=3\cdot\tfrac14=\tfrac34=s_c$ as
+Lemma~\ref{lem:marginal} requires.  Every triple has spectrum $\{1,4,4\}$,
+so every $\chi_{\SC}(x)=(x-1)(x-4)^{2}$ and the mixture is that same
+polynomial:
+\begin{equation}\label{eq:qtetra}
+  q(x)\;=\;(x-1)(x-4)^{2}\;=\;x^{3}-9x^{2}+24x-16 .
+\end{equation}
+Its subleading coefficient is
+$-9=-\sum_ct_c\ell_c^{2}=-4\cdot\tfrac14\cdot9$, so the bound of
+Proposition~\ref{prop:jensen} is attained here; $q(1)=0$, as
+Proposition~\ref{prop:qone} requires; and the least root of $q$ sits
+exactly at the threshold.  Meanwhile
+$\E_\pi[\SC]=\tfrac34\sum_cg_c^{\vphantom{T}}g_c^{T}=3I_3$ while
+$\max_C\lmin(\SC)=1$: the average clears the threshold by a factor of
+three, and no triple clears it at all.
+
+\begin{remark}\label{rem:interlace}
+Only the identities above are used, and three statements which do not
+follow from them should be separated off.  First, $q$ is not asserted to
+be real-rooted; for a projection determinantal measure that is available
+through the strong Rayleigh property
+\cite{BorceaBrandenLiggett2009,AnariOveisGharan2015}, and nothing here
+needs it.  Second, real-rootedness of $q$ would not imply that some $C$
+has $\lmin(\SC)$ at least the least root of $q$: the least root of an
+average of real-rooted polynomials may exceed the least root of every
+member, and an exact two-polynomial witness is recorded in
+Appendix~\ref{app:graveyard}.  Third, the hypothesis under which the
+conclusion does follow is a common interlacing of the family
+$\{\chi_{\SC}:\pi_C>0\}$, equivalently real-rootedness of every convex
+combination of it \cite{MSS2015}; that is a property of the family, to be
+verified and not inferred, and it fails for the witness just cited.
+Establishing it here, and with it the derandomization of
+Theorem~\ref{thm:average}, is Problem~\ref{prob:interlace}; by
+Proposition~\ref{prop:qone} any such argument is exact at the extremal
+designs, where the least root of $q$ is $1$.
+\end{remark}
