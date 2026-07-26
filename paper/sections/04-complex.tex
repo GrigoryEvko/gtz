@@ -11,15 +11,12 @@ The other half needs one counterexample and a way to move it.  A single
 design of size four and rank two fails, and two operations propagate the
 failure across the board: one raises the size and the rank together, the
 other raises the size alone, and each keeps a bound on the least
-eigenvalue that any $k$-subset can achieve.  That bound is the quantity
-to track, so \S\ref{sec:cvalue} defines it before \S\ref{sec:cseed}
-exhibits the seed, \S\ref{sec:cpadding} the operations and
-\S\ref{sec:cladder} the assembly.
+eigenvalue that any $k$-subset can achieve.
 
 \subsection{The value of a design}\label{sec:cvalue}
 
-Once the Boolean question is answered \emph{no}, what remains to study is
-a number, and the operations of \S\ref{sec:cpadding} propagate it.  Fix a
+Once the answer is \emph{no}, a number remains, and the operations of
+\S\ref{sec:cpadding} propagate it.  Fix a
 design $\dsn$ at $(m,k)$ over $\FF$.  For every $k$-subset $C$ and every
 $x\in\FF^k$,
 \begin{equation}\label{eq:cover}
@@ -112,18 +109,18 @@ the rank-one Schur criterion together with the fact that a weighted mean
 does not exceed its maximum.
 \end{proof}
 
-The bound $1$ is attained at the last size at which it holds, and
-attained on a set of full dimension in the weights: by
-Theorem~\ref{thm:corankone}(iii)--(iv), for every $k\ge1$, every weight
-vector $t$ on $k+1$ atoms and over either field there is a design at
-$(k+1,k)$ with weights exactly $t$ in which every $k$-subset dominates and
-none dominates strictly.  Its chart is $P=I_{k+1}-zz\adj$ with
+By Theorem~\ref{thm:corankone}(iii)--(iv) the bound $1$ is attained at
+the last size at which it holds, and attained on a set of full dimension
+in the weights: over either field and for every $k\ge1$, every weight
+vector $t$ on $k+1$ atoms carries a design at $(k+1,k)$ in which every
+$k$-subset dominates and none dominates strictly.  Its chart is
+$P=I_{k+1}-zz\adj$ with
 $\lvert z_c\rvert^{2}=(1-t_c)/k$, and its leverages obey the tie law
 \eqref{eq:tielaw}.
 
-One size lower the behaviour differs, and the two cells are easily
-confused: at $m=k$ every design has value bounded away from $1$, and $1$
-is approached only in a degenerate limit.
+One size lower the value overshoots: for $k\ge2$ every design at $(k,k)$
+has value strictly above $1$, and $1$ is approached only as
+$\max_c t_c\to1$.
 
 \begin{proposition}\label{prop:square}
 Let $\dsn$ be a design at $(k,k)$ over $\FF$.  Then $\ell_c=1/t_c$ for every
@@ -223,10 +220,10 @@ can therefore be field-agnostic.  The constant $\alpha_{\mathrm{SIC}}$
 is moreover sharp: by \cite{Nesterenko2026complex} no uniform-weight
 design of rank two has value below $2-2/\sqrt3$, the bound being attained exactly when
 $4\mid m$, at a repeated copy of \eqref{eq:sic}.  The bound passes to
-arbitrary weights in two steps.  A design with rational weights is
-obtained from a uniform design of larger size by merging equal vectors, so
-by Lemma~\ref{lem:split}, read backwards, it has the same value and the
-bound holds there.  For arbitrary weights, hold the chart $P$ fixed: by
+arbitrary weights in two steps.  Merging equal vectors turns a uniform
+design of larger size into one with rational weights, so by
+Lemma~\ref{lem:split} read backwards it has the same value and the bound
+holds there.  For arbitrary weights, hold the chart $P$ fixed: by
 Lemma~\ref{lem:realize} every weight vector $t'$ with positive entries
 carries a design with that chart, namely $g'_c=\sqrt{t_c/t'_c}\,g_c$, and
 $\operatorname{val}$ is a continuous function of $t'$ there, being a
@@ -240,8 +237,7 @@ $\alpha_2(\C)=2-2/\sqrt3$.
 The first operation adjoins one coordinate together with one atom along
 it, raising the size and the rank by one.  The second lists an existing
 atom twice, raising the size alone.  Each preserves \eqref{eq:parseval}
-by a one-line computation, and each preserves a value bound; the
-inequality preserved is displayed in the statement.
+by a one-line computation, and each preserves a value bound.
 
 \begin{lemma}[Lean]\label{lem:spike}
 Let $\dsn$ be a complex weighted design at $(m,k)$ and let $0<w<1$.  Define
@@ -391,7 +387,7 @@ the $0\times0$ identity.
 \end{proof}
 
 For $k\ge2$ the equivalence is vacuous below $m=k$, where Parseval admits
-no design at all: the assertion holds there for want of anything to
+no design: the assertion holds there for want of anything to
 quantify over, not because selection succeeds.
 
 \subsection{The sharp constants}\label{sec:csharp}
@@ -423,8 +419,8 @@ entries cancelling by $1+\omega+\omega^{2}=0$; the total is $6I_3$, so
 \eqref{eq:parseval} holds.  This design has value exactly $3-\sqrt5$.
 \end{example}
 
-To see the last assertion, and to prepare the rank-three record, we record
-the determinant of a triple once.  Let $C=\{a,b,c\}$ and let $A$ be the
+To prove the last assertion, and to prepare the rank-three record, we
+compute the determinant of a triple once and for all.  Let $C=\{a,b,c\}$ and let $A$ be the
 $3\times3$ matrix with rows $g_a\adj,g_b\adj,g_c\adj$.  Then $\SC=A\adj A$
 while the Gram matrix is $\Gram_C=AA\adj$, with entries
 $\langle g_i,g_j\rangle$; for square $A$ the two have the same
@@ -634,7 +630,7 @@ which vanishes identically for every real configuration.  The trine of
 Example~\ref{ex:trine} isolates the mechanism: its
 modulus budget $5$ would permit $2\operatorname{Re}\beta_{abc}=2\sqrt3$ and hence a
 positive determinant at $s=1$, but its phase defect is $3$ and its
-$\operatorname{Re}\beta_{abc}$ is exactly $0$, leaving $\det(\SC-I_3)=-2$.  No
+$\operatorname{Re}\beta_{abc}$ is $0$, leaving $\det(\SC-I_3)=-2$.  No
 argument that sees only the moduli $\lvert\beta_{ij}\rvert$ can decide
 either problem; the corresponding no-go statement is recorded in
 Appendix~\ref{app:graveyard}.
