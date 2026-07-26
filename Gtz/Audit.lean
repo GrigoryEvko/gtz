@@ -154,6 +154,7 @@ import Gtz.Quantitative.GlobalMinimumRankThree
 import Gtz.Design.EqualityLocus
 import Gtz.Complex.AtomSplitting
 import Gtz.Reduction.SplitTransfer
+import Gtz.Ties.StratumLocalCovering
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -3096,3 +3097,75 @@ import Gtz.Reduction.SplitTransfer
 #print axioms Gtz.gtzWeightedSix_of_compactBranches
 #print axioms Gtz.gtzWeightedSeven_of_compactBranches
 #print axioms Gtz.gtzWeightedAll_three_of_compactBranches
+
+-- Gtz.Ties.StratumLocalCovering: the flat space at the split tetrahedron is
+-- exactly nine-dimensional (stacked Jacobian rank 19), and the first-order dichotomy
+#print axioms Gtz.parsevalMatrixVelocity
+#print axioms Gtz.parsevalMatrixVelocity_apply
+#print axioms Gtz.parsevalTraceVelocity_eq_trace
+#print axioms Gtz.parsevalMatrix_ray_expansion
+#print axioms Gtz.IsSplitSevenTraceTangent
+#print axioms Gtz.IsSplitSevenTangent
+#print axioms Gtz.IsSplitSevenFlat
+#print axioms Gtz.IsSplitSevenTangent.parsevalTraceVelocity_eq_zero
+#print axioms Gtz.IsSplitSevenTangent.isTraceTangent
+#print axioms Gtz.rainbowSevenVelocityFamily_eq
+#print axioms Gtz.rainbowSeven_multiplierSum_velocity_eq_zero
+#print axioms Gtz.rainbowSeven_velocity_eq_zero_of_all_nonpos
+#print axioms Gtz.rainbowSeven_supVelocity_nonneg
+#print axioms Gtz.rainbowSeven_supVelocity_eq_zero_iff
+#print axioms Gtz.rainbowSeven_supVelocity_eq_zero_iff_flat
+#print axioms Gtz.rainbowSeven_exists_strictly_positive_velocity_of_not_stationary
+#print axioms Gtz.rainbowSeven_exists_strictly_positive_velocity_of_not_flat
+#print axioms Gtz.weightSplitWeightVelocity
+#print axioms Gtz.bundleTotalAtomVelocity
+#print axioms Gtz.bundleTotalWeightVelocity
+#print axioms Gtz.gaugeRotationAtomVelocity
+#print axioms Gtz.stratumFlatDirectionAtom
+#print axioms Gtz.stratumFlatDirectionWeight
+#print axioms Gtz.stratumFlatDirection_mass_zero
+#print axioms Gtz.stratumFlatDirection_parsevalMatrixVelocity_zero
+#print axioms Gtz.stratumFlatDirection_velocity_zero
+#print axioms Gtz.stratumFlatDirection_isFlat
+#print axioms Gtz.stratumFlatDirection_independent
+#print axioms Gtz.rainbowSeven_bundleRigid_of_velocity_zero
+#print axioms Gtz.stratumFlatCoefficient
+#print axioms Gtz.stratumFlat_eq_combination
+#print axioms Gtz.stratumFlat_coefficient_unique
+#print axioms Gtz.parsevalMatrixVelocity_add
+#print axioms Gtz.parsevalMatrixVelocity_smul
+#print axioms Gtz.rainbowSevenVelocityFamily_add
+#print axioms Gtz.rainbowSevenVelocityFamily_smul
+#print axioms Gtz.stratumStackedJacobian
+#print axioms Gtz.stratumStackedJacobian_apply
+#print axioms Gtz.mem_ker_stratumStackedJacobian_iff
+#print axioms Gtz.stratumFlatDirectionPair
+#print axioms Gtz.stratumFlatDirectionPair_mem_ker
+#print axioms Gtz.stratumFlatKernelFamily
+#print axioms Gtz.stratumFlatKernelFamily_linearIndependent
+#print axioms Gtz.stratumFlatKernelFamily_span
+#print axioms Gtz.stratumFlatKernelBasis
+#print axioms Gtz.stratumStackedJacobian_finrank_ker
+#print axioms Gtz.stratumDirectionSpace_finrank
+#print axioms Gtz.stratumStackedJacobian_finrank_range
+#print axioms Gtz.splitSevenClassDesign
+#print axioms Gtz.splitSevenClassDesign_weight
+#print axioms Gtz.splitSevenClassDesign_isTie
+#print axioms Gtz.splitSevenClassDesign_exists_dominatingTriple
+#print axioms Gtz.splitSevenClassTotalWeight_eq_quarter
+#print axioms Gtz.tieDefect_uniformQuarter
+#print axioms Gtz.tieReflector_uniformQuarter
+#print axioms Gtz.simplexTieAtom_uniformQuarter_eq_tetraAtom
+#print axioms Gtz.splitSevenClassDesign_eq_splitSevenDesign
+#print axioms Gtz.bundledCycle_exists_dominatingSubset
+#print axioms Gtz.tetraAtom_abs_eq_one
+#print axioms Gtz.tetraAtom_mul_self_eq_one
+#print axioms Gtz.splitSevenDesign_atom_abs_eq_one
+#print axioms Gtz.rainbowSevenTriple_gapEntry
+#print axioms Gtz.rainbowSevenTriple_gapEntry_diagonal
+#print axioms Gtz.rainbowSevenTriple_gapEntry_abs_offDiagonal
+#print axioms Gtz.rainbowSeven_gapEntry_dist_le
+#print axioms Gtz.rainbowSeven_dominates_of_tube_of_determinant
+#print axioms Gtz.SplitSevenTubeDeterminantWitness
+#print axioms Gtz.splitSevenNeighbourhoodCovering_of_determinantWitness
+#print axioms Gtz.rainbowSeven_displacement_frozenForm

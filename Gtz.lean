@@ -164,6 +164,7 @@ import Gtz.Quantitative.GlobalMinimumRankThree
 import Gtz.Design.EqualityLocus
 import Gtz.Complex.AtomSplitting
 import Gtz.Reduction.SplitTransfer
+import Gtz.Ties.StratumLocalCovering
 
 -- the axiom ledger for everything above
 import Gtz.Audit
