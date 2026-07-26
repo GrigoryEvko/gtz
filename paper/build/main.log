@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.31)  27 JUL 2026 01:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.31)  27 JUL 2026 01:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1199,7 +1199,7 @@ pdfTeX warning (font expansion): font should be expanded before its first use
 [35] [36] [37] [38] (./figures/diamond.tex) [39] [40] [41])
 (./sections/07-compactness.tex [42] [43] [44] [45] [46] (./figures/boundary.tex
 ) [47]
-Overfull \hbox (5.0978pt too wide) in paragraph at lines 487--490
+Overfull \hbox (5.0978pt too wide) in paragraph at lines 490--493
 [][]\T1/lmr/bx/n/10.95 (-20) Corollary 7.17. []\T1/lmr/m/it/10.95 (-20) For ev-
 ery $\OML/lmm/m/it/10.95 m$ \T1/lmr/m/it/10.95 (-20) and $\OML/lmm/m/it/10.95 k
 $ \T1/lmr/m/it/10.95 (-20) the three state-ments $[]\OT1/lmr/m/n/10.95 (-20) (\
@@ -1222,8 +1222,8 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- [63])
-(./sections/10-open.tex [64] [65]
+ [63] [64])
+(./sections/10-open.tex [65]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [66])
@@ -1237,11 +1237,11 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D7215D3227CD35CF4908D561DE43AB07;13714.
  ) 
 Here is how much of TeX's memory you used:
- 44011 strings out of 467363
- 1008850 string characters out of 5419001
- 1828982 words of memory out of 6000000
+ 44013 strings out of 467363
+ 1008872 string characters out of 5419001
+ 1826712 words of memory out of 6000000
  71277 multiletter control sequences out of 15000+600000
- 750941 words of font info for 348 fonts, out of 8000000 for 9000
+ 751035 words of font info for 349 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
  102i,12n,107p,1001b,2303s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/share/t
@@ -1268,10 +1268,10 @@ ic/lm/lmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmsy9.pfb>
 live/texmf-dist/fonts/type1/public/lm/lmtt9.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-dist/f
 onts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on build/main.pdf (78 pages, 1039348 bytes).
+Output written on build/main.pdf (78 pages, 1039077 bytes).
 PDF statistics:
- 2247 PDF objects out of 2487 (max. 8388607)
- 2045 compressed objects within 21 object streams
+ 2249 PDF objects out of 2487 (max. 8388607)
+ 2047 compressed objects within 21 object streams
  442 named destinations out of 1000 (max. 500000)
  62689 words of extra memory for PDF output out of 74296 (max. 10000000)
 

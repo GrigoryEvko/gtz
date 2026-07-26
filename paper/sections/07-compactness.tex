@@ -1,26 +1,26 @@
 \section{A variational principle}\label{sec:compactness}
 
 A counterexample to $\Gtz(m,k)$ is a design whose selection objective
-falls below the threshold.  One would like to take the worst such design
-and read off what minimality forces; but the designs of a given size and
-rank form a space that is not compact, and on it the objective attains no
-minimum.  This section supplies a compact space containing that one.  The
-objective extends to it continuously, every point added at the boundary
-turns out to carry a dominating subset, and a counterexample may
-therefore be taken to minimize globally, hence to satisfy first-order
-conditions.
+falls below the threshold.  We would like the worst one, and to read off
+what minimality forces.  No design is worst: the space of designs at a
+given size and rank is not compact, and along a minimizing sequence a
+vector escapes to infinity (Example~\ref{ex:escape}).
 
-The method has a sharp limit, which \S\ref{sec:sharp} locates.  The
-identity that discharges the added points is available at vanishing
-weight and at no positive weight whatever, and its failure occurs on the
-extremal locus of \S\ref{sec:ties}.  That is why the argument is run at
-the limit point rather than along a minimizing sequence.
+Grant the conjecture at the two cells one size below.  Then a
+counterexample at $(m,k)$ may be taken to minimize globally over a
+compact space, and so to satisfy first-order conditions
+(Theorem~\ref{thm:variational}).
+
+The identity that discharges the boundary holds at vanishing weight and
+fails at every positive weight, however small (Theorem~\ref{thm:sharp}).
+It fails on the extremal locus of \S\ref{sec:ties}.  So the argument runs
+at the limit point.
 
 \subsection{The compactification}\label{sec:compactchart}
 
 Fix $m$ and $k$.  In a design the weights are confined to the open
-simplex and the vectors are not confined at all.  Parseval controls
-only the product: by Lemma~\ref{lem:trace},
+simplex and the vectors are not confined.  Parseval controls only the
+product: by Lemma~\ref{lem:trace},
 \begin{equation}\label{eq:levbound}
   \sum_c s_c\;=\;\sum_c t_c\ell_c\;=\;k,
   \qquad\text{so}\qquad \ell_c\;\le\;\frac{k}{t_c} .
@@ -37,7 +37,8 @@ Let $k=1$, $m=2$ and, for $0<u\le\tfrac12$,
 \]
 Then $t_1g_1^2+t_2g_2^2=\tfrac12+\tfrac12=1$, so this is a design at
 $(2,1)$ for every such $u$.  Its leverages are
-$\ell_1=1/2(1-u)$ and $\ell_2=1/2u$, and $\ell_2\to\infty$ as $u\to0$.
+$\ell_1=\tfrac1{2(1-u)}$ and $\ell_2=\tfrac1{2u}$, and
+$\ell_2\to\infty$ as $u\to0$.
 No subsequence converges in the design space.  Its leverage scores are
 $s_1=s_2=\tfrac12$, constant in $u$.
 \end{example}
@@ -48,10 +49,11 @@ $v_c=\sqrt{t_c}\,g_c$ and $P=VV\adj$ as in \eqref{eq:chart},
 \begin{equation}\label{eq:pivotlev}
   P_{cc}\;=\;\lVert v_c\rVert^2\;=\;t_c\ell_c\;=\;s_c ,
 \end{equation}
-so \eqref{eq:levbound} bounds the diagonal of $P$, and $P$ with it.  The
-domination criterion, by Lemma~\ref{lem:chart}, is a statement about
-$(P,t)$ alone.  In Example~\ref{ex:escape} the chart is constant:
-$v_1=v_2=1/\sqrt2$, so
+so the divergence in \eqref{eq:levbound} sits entirely in the factor
+$1/t_c$: what the chart records is the leverage score, and that stays in
+$[0,1]$ by Lemma~\ref{lem:share}.  The domination criterion, by
+Lemma~\ref{lem:chart}, is a statement about $(P,t)$ alone.  In
+Example~\ref{ex:escape} the chart is constant: $v_1=v_2=1/\sqrt2$, so
 \[
   P=\begin{pmatrix}\tfrac12&\tfrac12\\[2pt]\tfrac12&\tfrac12\end{pmatrix},
   \qquad t=(1-u,\,u)\;\longrightarrow\;(1,0)\quad(u\to0),
@@ -149,16 +151,15 @@ each of which satisfies
 $\lvert x\tp Ax-x\tp Bx\rvert\le\lVert A-B\rVert_{2}$ for
 $\lVert x\rVert=1$; hence
 $\lvert\lmin(A)-\lmin(B)\rvert\le\lVert A-B\rVert_{2}$.  Restriction to a
-principal block does not increase the operator norm, and the difference
-of the two gap matrices is $(P-Q)-\diag(t-t')$, whose operator norm is at
-most $\lVert P-Q\rVert_{2}+\max_c\lvert t_c-t'_c\rvert$; so each of the
-finitely many functions
-$(P,t)\mapsto\lmin(W[C])$ obeys the stated bound; a maximum of finitely
-many such functions obeys it as well.
+principal block does not increase the operator norm.  The two gap
+matrices differ by $(P-Q)-\diag(t-t')$, of operator norm at most
+$\lVert P-Q\rVert_{2}+\max_c\lvert t_c-t'_c\rvert$.  So each of the
+finitely many functions $(P,t)\mapsto\lmin(W[C])$ obeys the stated bound,
+and so does their maximum.
 \end{proof}
 
-The interior of the compactification is dense in it, by a mixing of the
-weights which will be used twice more.
+Chart points with positive weights are dense, by a mixing of the weights
+that recurs twice below.
 
 \begin{lemma}\label{lem:relax}
 Let $(P,t)$ be a chart point of size $m$ and rank $k$, let
@@ -220,15 +221,16 @@ against $G=\max_C\min_{\lVert x\rVert=1}x\tp W[C]x$.
 The two agree in sign, by \eqref{eq:threshold} and
 Lemma~\ref{lem:chart}.  Beyond the sign they are related by a congruence
 which is not a scalar unless the selected weights are equal, so they do
-not share their minimizers.  The generalized form degenerates exactly
-where $D[C]$ becomes singular, that is, exactly on the points the
-compactification adds; the absolute form does not.
+not share their minimizers.  The generalized form degenerates where
+$D[C]$ becomes singular, that is on the points the compactification adds.
+The absolute form does not.
 \end{remark}
 
 \subsection{The boundary}\label{sec:boundary}
 
-Let $(P,t)$ be a chart point with $t_z=0$ for some index $z$.  Two identities dispose of it; the diagonal entry $P_{zz}$ decides which
-applies, and the dichotomy is exhaustive by the following lemma.
+Let $(P,t)$ be a chart point with $t_z=0$ for some index $z$.  The
+diagonal entry $P_{zz}$ decides which of two identities disposes of it,
+and that entry is a squared length.
 
 \begin{lemma}\label{lem:pivot}
 For every chart point and every index $z$,
@@ -319,19 +321,18 @@ The trace drops by $\tr R/P_{zz}=\lVert r\rVert^{2}/P_{zz}=1$, again by
 $P'e_z=r-r\,P_{zz}/P_{zz}=0$.
 \end{proof}
 
-Deflation is the compression of the surviving vectors onto the orthogonal
-complement of the escaping direction, carried out in the chart: $P'$ is
-the Schur complement of the pivot $P_{zz}$ in $P$.  The computation chooses no basis of that complement and takes no square
-root; it performs one division, by the pivot.  Since $P=P'+rr\tp/P_{zz}$ with $r=Pe_z$, one has for every
-$x\in\R^m$
+Deflation compresses the surviving vectors onto the orthogonal complement
+of the escaping direction, carried out in the chart: on the surviving
+indices $P'$ is the Schur complement of the pivot $P_{zz}$ in $P$.  The
+computation chooses no basis of that complement and takes no square root.
+It performs one division, by the pivot.  Since $P=P'+rr\tp/P_{zz}$ with
+$r=Pe_z$, for every $x\in\R^m$
 \begin{equation}\label{eq:transverse}
-  x\tp Wx\;=\;x\tp(P'-D)x+\frac{\langle Pe_z,x\rangle^{2}}{P_{zz}} .
+  x\tp Wx\;=\;x\tp(P'-D)x+\frac{\langle Pe_z,x\rangle^{2}}{P_{zz}} ,
 \end{equation}
-The upstairs gap form exceeds the deflated one by the rank-one pivot
-term; the lift below consumes that excess in full, so it is not slack.
-Splitting the probe along the escaping coordinate turns
-\eqref{eq:transverse} into the identity that the rest of the section
-uses.
+so the gap form upstairs exceeds the deflated one by the rank-one pivot
+term.  Splitting the probe along the escaping coordinate isolates that
+term.
 
 \begin{lemma}\label{lem:schur}
 Let $(P,t)$ be a chart point with $P_{zz}>0$ and let $P'$ be as in
@@ -349,7 +350,7 @@ $a:=\langle Pe_z,y\rangle$ and $e_z\tp Pe_z=P_{zz}$,
 \[
   x\tp Px\;=\;y\tp Py+2x_za+x_z^{2}P_{zz},
 \]
-and \eqref{eq:transverse} applied to $y$ gives
+and $P=P'+rr\tp/P_{zz}$ gives
 $y\tp Py=y\tp P'y+a^{2}/P_{zz}$.  Since $y_z=0$,
 $x\tp Dx=y\tp Dy+t_zx_z^{2}$.  Subtracting,
 \[
@@ -381,7 +382,8 @@ term is nonnegative because $P_{zz}>0$.  Hence $x\tp Wx\ge0$.
 
 The pivot matches because the weight there is zero: the deflation
 \eqref{eq:deflate} subtracts $P_{zz}$ from the diagonal at $z$, and
-\eqref{eq:schur} restores the same amount.
+\eqref{eq:schur} restores the same amount.  The lift consumes the
+rank-one excess of \eqref{eq:transverse} in full, so none of it is slack.
 
 \begin{example}\label{ex:escapeb}
 Return to Example~\ref{ex:escape}.  At its limit point, $z=2$,
@@ -421,10 +423,11 @@ cardinality $k$, dominates at $(P,t)$.
 \end{proof}
 
 Both branches reduce the size by one, so an induction on the dichotomy is
-well founded on the size alone; the rank window is a consequence rather than an extra hypothesis.  At $k=1$ the second hypothesis is
+well founded on the size alone, and the rank window comes out of it
+rather than being assumed.  At $k=1$ the second hypothesis is
 $\Gtz^{\mathrm{ch}}(m-1,0)$, which holds because the empty selection
-dominates.  The reduction transports neither margin nor rate nor subsequence, which
-keeps it compatible with Corollary~\ref{cor:nomargin}.
+dominates.  Every step of the reduction is an identity, so it consumes no
+slack and stays compatible with Corollary~\ref{cor:nomargin}.
 
 \begin{corollary}[Lean]\label{cor:interiorcex}
 Under the hypotheses of Theorem~\ref{thm:boundary}, every chart point of
@@ -453,10 +456,10 @@ Contrapositive of Theorem~\ref{thm:boundary}.
 
 \subsection{The principle}\label{sec:variational}
 
-Corollary~\ref{cor:interiorcex} speaks about a given chart point.  Before
-using it, we record that the closed statement and the statement about
-designs are the same statement, so the hypotheses of
-Theorem~\ref{thm:boundary} are ordinary smaller instances of the problem.
+Corollary~\ref{cor:interiorcex} speaks about a given chart point.  The
+closed statement and the statement about designs are the same statement,
+so the hypotheses of Theorem~\ref{thm:boundary} are ordinary smaller
+instances of the problem.
 
 \begin{proposition}\label{prop:density}
 Write $\Gtz^{\mathrm{ch}}_{\circ}(m,k)$ for the assertion that every
@@ -542,16 +545,16 @@ The two open cells of Corollary~\ref{cor:twocells} are therefore treated
 in order: $(6,3)$ first, and its resolution supplies the hypothesis
 needed at $(7,3)$.
 
-Nothing has been weakened along the way: by
-Corollary~\ref{cor:equivalent} the statement about chart points with
-positive weights is the original problem.  What the theorem adds is the
-extremality of the counterexample, and no cheaper device produces it.
+By Corollary~\ref{cor:equivalent} the statement about chart points with
+positive weights is the original problem, so nothing has been weakened
+along the way.  The theorem adds the extremality of the counterexample.
 The mixing of Lemma~\ref{lem:relax} does move a counterexample into the
-interior, but it destroys whatever distinguished the original point, so
-it cannot be applied to a minimizer.  Minimizing over the design space
-directly fails as well: that space is not compact, and a minimizing
-sequence of designs need not converge to a design
-(Example~\ref{ex:escape}).  The minimum exists only on the
+interior, but
+it destroys whatever distinguished the original point, so it cannot be
+applied to a minimizer.  Minimizing over the design space directly fails
+as well: that space is not compact, and a minimizing sequence of designs
+need not converge to a design (Example~\ref{ex:escape}).  The minimum
+exists only on the
 compactification, and Corollary~\ref{cor:interiorcex} puts it back
 inside.
 
@@ -565,13 +568,12 @@ Definition~\ref{def:extremalcex} from Theorem~\ref{thm:rankthree}.
 \subsection{Sharpness of the boundary step}\label{sec:sharp}
 
 Theorem~\ref{thm:schurstep} requires $t_z=0$ exactly.  The composite of
-Lemma~\ref{lem:delete} and Theorem~\ref{thm:schurstep}, which deflates
-at $z$, deletes $z$, renormalizes, and lifts a dominating subset back,
-is meaningful at any $t_z<1$; a minimizing-sequence argument would need
-this composite rather than the boundary statement, since along such a
-sequence the weight at the escaping label is positive and merely tends
-to zero.  The composite fails at every positive weight, no threshold repairs it,
-and a single determinant shows why.
+Lemma~\ref{lem:delete} and Theorem~\ref{thm:schurstep} --- deflate at $z$,
+delete $z$, renormalize, lift a dominating subset back --- is meaningful
+at any $t_z<1$.  A minimizing-sequence argument would need that composite
+and not the boundary statement, since along such a sequence the weight at
+the escaping label is positive and merely tends to zero.  The composite
+fails at every positive weight, and no threshold in $t_z$ repairs it.
 
 \begin{lemma}\label{lem:pairdet}
 Let $(P,t)$ be a chart point, let $z$ satisfy $P_{zz}>0$ and $t_z<1$, and
@@ -611,8 +613,8 @@ $P_{cc}-t_c$ as $t_z\to0$.  Hold the chart and the survivor fixed.  If
 $\varepsilon>0$ then the determinant tends to $\varepsilon\,P_{zz}>0$, and the lift survives
 for all small $t_z$.  If $\varepsilon=0$ then the determinant is $-t_z(P_{cc}-t_c
 -t_cP_{zz}/(1-t_z))$, negative for every $t_z>0$ at which the bracket is
-positive, however small $t_z$ is.  The lift therefore fails wherever the compressed slack is zero, no
-matter how small $t_z$; it remains to exhibit a family on which $\varepsilon$ is frozen at zero.
+positive, however small $t_z$ is.  The lift therefore fails wherever the
+compressed slack is zero, no matter how small $t_z$.
 
 \begin{example}\label{ex:liftfailure}
 On the index set $\{0,1,2,3\}$ let
