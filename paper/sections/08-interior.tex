@@ -7,8 +7,8 @@ set is a smooth manifold, which gives the question a tangent space to be
 answered in.  The objective is a maximum of least-eigenvalue functions,
 locally Lipschitz but in general nowhere differentiable, so the answer
 comes from nonsmooth first-order theory rather than from a gradient.  The
-two together yield a finite system of algebraic identities, and from
-there on everything is algebra.
+two together yield one vector identity and one scalar identity at each
+index.
 
 A design at $(m,k)$ over $\R$ is written as a pair $(g,t)$ with
 $g=(g_1,\dots,g_m)\in(\R^k)^m$ and $t=(t_1,\dots,t_m)$.  Put
@@ -18,7 +18,8 @@ $g=(g_1,\dots,g_m)\in(\R^k)^m$ and $t=(t_1,\dots,t_m)$.  Put
 \end{equation}
 By Definition~\ref{def:design} and the eigenvalue reading recorded in
 Lemma~\ref{lem:tiemax}, a $k$-subset dominates exactly when
-$\lmin(\SC)\ge1$, so $\Gtz(m,k)$ asserts $F\ge1$ on every design, and a failure of $\Gtz(m,k)$ is a design with $F<1$.
+$\lmin(\SC)\ge1$, so $\Gtz(m,k)$ asserts $F\ge1$ at every design and a
+failure of it is a design with $F<1$.
 
 \begin{lemma}\label{lem:fpos}
 $F(g,t)>0$ for every design.
@@ -30,10 +31,6 @@ a basis; equivalently, $\sum_{\lvert C\rvert=k}\pi_C=1$ in
 \eqref{eq:dpp} while $\pi_C>0$ only for bases.  For a basis and $x\ne0$,
 $x\tp\SC x=\sum_{c\in C}\langle g_c,x\rangle^2>0$, so $\lmin(\SC)>0$.
 \end{proof}
-
-The first-order theory below is applied at a design where $F$ is
-minimal, and one statement is needed to place such a design where the
-variational principle put its own.
 
 \begin{definition}\label{def:extremalcex}
 The cell $(m,k)$ \emph{has an extremal counterexample} if $F$ attains a
@@ -48,16 +45,17 @@ Lemma~\ref{lem:chart} those designs are exactly the designs whose chart
 points carry no dominating $k$-subset, and, granting $\Gtz(m-1,k)$ and
 $\Gtz(m-1,k-1)$, Corollary~\ref{cor:interiorcex} places all of that
 locus, within the compactification of \S\ref{sec:compactness}, strictly
-inside the open weight simplex.  It is not automatic that the infimum of $F$ over the
-locus is attained rather than approached at the boundary of the
-compactification, where by Theorem~\ref{thm:boundary} some subset
-dominates.  Theorem~\ref{thm:variational} settles that question
-for the chart objective $G$; and by Remark~\ref{rem:objectives} $G$ and
-$F$ agree in sign but are related by a congruence which is not a scalar,
-so a minimizer of one need not minimize the other.
-Definition~\ref{def:extremalcex} names what the passage requires, and it
-is carried as a hypothesis in Theorem~\ref{thm:rankthree} and nowhere
-else.
+inside the open weight simplex.
+
+Whether the infimum of $F$ over that locus is attained, rather than
+approached at the boundary of the compactification where by
+Theorem~\ref{thm:boundary} some subset dominates, is not automatic.
+Theorem~\ref{thm:variational} settles it for the chart objective $G$, and
+by Remark~\ref{rem:objectives} $G$ and $F$ agree in sign but are related
+by a congruence which is not a scalar, so a minimizer of one need not
+minimize the other.  Definition~\ref{def:extremalcex} names what the
+passage requires, and Theorem~\ref{thm:rankthree} carries it as a
+hypothesis; nothing else in the paper does.
 
 \subsection{The design manifold}\label{sec:manifold}
 
@@ -189,7 +187,8 @@ $w_{C,j}\ge0$, $\sum_jw_{C,j}=1$ and each $u_{C,j}$ a unit eigenvector of
 $\SC$ at $\cv$; this is possible by \eqref{eq:spectraplex}.  Index by the
 pairs $i=(C,j)$, setting $C_i:=C$, $u_i:=u_{C,j}$ and
 $\lambda_i:=\lambda_Cw_{C,j}$.  The new multipliers are nonnegative and
-sum to one, and \eqref{eq:zeta} becomes
+sum to one, and \eqref{eq:zeta}, with the two summations exchanged so that
+the outer one runs over the indices $c$, becomes
 \begin{equation}\label{eq:zetarankone}
   \psi(\dot g,\dot t)
   \;=\;2\sum_c\Bigl\langle
@@ -229,8 +228,9 @@ statement available at such a point is the directional one, namely
 $\max_{C\in\mathcal{A}}\lmin\bigl(Q_C\tp\dot S_CQ_C\bigr)\ge0$ for every
 $(\dot g,\dot t)\in \tang$, where $Q_C$ is an orthonormal basis of the
 $\lmin$-eigenspace of $\SC$ and $\dot S_C$ is the derivative of $\SC$
-\cite{HiriartUrrutyYe1995,Danskin1967}.  Nothing below uses more than the multiplier form.  The infinitesimal
-rotations \eqref{eq:orbit}, for their part, impose no condition: for $\Theta\in\partial\lmin(\SC)$ one has
+\cite{HiriartUrrutyYe1995,Danskin1967}.  Nothing below uses more than the
+multiplier form.  The infinitesimal rotations \eqref{eq:orbit} impose no
+condition: for $\Theta\in\partial\lmin(\SC)$ one has
 $\Theta\SC=\cv\Theta=\SC\Theta$, so
 \begin{equation}\label{eq:rotationkill}
   \phi_{C,\Theta}\bigl[(Xg_c)_c,0\bigr]
@@ -242,7 +242,7 @@ because $\Theta$ is symmetric and $X$ antisymmetric.
 \subsection{Stationarity data}\label{sec:data}
 
 The conclusion of Theorem~\ref{thm:firstorder} is a finite algebraic
-object, and it is convenient to detach it from its provenance.
+object.
 
 \begin{definition}\label{def:datum}
 A \emph{stationarity datum} for a design $(g,t)$ at $(m,k)$, with value
@@ -255,9 +255,7 @@ $k$-subsets.  The datum is \emph{admissible} if in addition
 \begin{equation}\label{eq:argmax}
   \cv\;\ge\;\lmin(\SC)\qquad\text{for every }k\text{-subset }C ,
 \end{equation}
-which says $\cv\ge F(g,t)$.  It says $\cv=F(g,t)$ exactly when in addition
-$\cv=\lmin(S_{C_i})$ for some $i$, which the definition does not require;
-Theorem~\ref{thm:firstorder} produces data for which it holds.
+which says $\cv\ge F(g,t)$.
 \end{definition}
 
 The subsets $C_i$ need not be distinct: a tight eigenvalue of
@@ -280,8 +278,7 @@ Pairing \eqref{eq:statg} with $g_c$ gives, for every $c$,
   \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle^2
   \;=\;t_c\,\bigl(g_c\tp\Lambda g_c\bigr) .
 \end{equation}
-Both laws of the next proposition come from this contraction.  Throughout we use the
-polarized form of the subset sum,
+Throughout we use the polarized form of the subset sum,
 \begin{equation}\label{eq:polarized}
   y\tp\SC x\;=\;\sum_{c\in C}\langle g_c,y\rangle\langle g_c,x\rangle ,
 \end{equation}
@@ -401,8 +398,8 @@ simultaneously, and is not available.
 
 \subsection{The tetrahedron}\label{sec:tetracalib}
 
-Before drawing exclusions we verify the entire system on the design of
-Example~\ref{ex:tetra}, where every constant in it can be displayed.
+Every constant in the system can be displayed at the tetrahedron of
+Example~\ref{ex:tetra}.
 
 \begin{example}\label{ex:tetrakkt}
 Take the tetrahedron: $g_c=\sqrt3\,u_c$ with $u_c$ the four unit vertex
@@ -698,9 +695,6 @@ three reduces.  It does not conflict
 with Proposition~\ref{prop:carath} below, which asserts only that the
 multipliers \emph{may be taken} supported on at most nineteen indices.
 
-The next statement is the reason the conjectures of \S\ref{sec:census}
-carry an admissibility hypothesis.
-
 \begin{theorem}\label{thm:reach}
 There is a design at $(4,2)$ carrying a stationarity datum with
 $\cv=2-\sqrt2<1$.  That design satisfies $\Gtz(4,2)$ with margin: some
@@ -959,8 +953,8 @@ the chart objective.
 At $(6,3)$ the conjecture is an enumeration.  At $(7,3)$ it is not, and
 an argument uniform in the active family is required.  The exclusions of
 \S\ref{sec:exclusions} clear away the small and the transversal
-configurations; what is left is where Example~\ref{ex:splitseven} lives,
-a system realized at the frontier size, at the threshold, by an active
+configurations, and Example~\ref{ex:splitseven} lives in what remains: a
+system realized at the frontier size, at the threshold, by an active
 family of twenty triples.
 
 \begin{wip}
