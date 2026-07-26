@@ -47,10 +47,13 @@ brick's own induction hands over for free: an upper bound at EVERY rank at once.
   original.  The intermediate levels are bisected, so no geometric bookkeeping
   appears.
 * `complexRankConstantAtMost_three_le_rank` — **an upper bound at EVERY rank.**
-  For every `rank >= 3` and every `bound > 3(1 - cos 2 pi / 9)`,
-  `alpha_rank <= bound`.  `Gtz/Complex/PerRankConstantLedger.lean` records
-  "ranks `>= 4` — PROVED-LOWER `1/k` and NOTHING ELSE HERE"; that line is now
-  superseded.
+  The mechanized statement is `forall rank >= 3, forall bound, hesseMargin <
+  bound -> ComplexRankConstantAtMost rank bound` — a witness at every level above
+  the record, never at the record itself.  That `alpha_rank <= hesseMargin`
+  FOLLOWS is a remark about infima, not a theorem in this repository, which
+  deliberately never writes `sInf`; quote the epsilon form when citing this.
+  `Gtz/Complex/PerRankConstantLedger.lean` records "ranks `>= 4` — PROVED-LOWER
+  `1/k` and NOTHING ELSE HERE"; that line is now superseded.
 * `not_complexGtzWeighted_of_two_le_rank` — **complex weighted GTZ is FALSE at
   every rank at least two**, with an explicit size at each rank: rank two on the
   `ℂ²` SIC at `m = 4`, rank `3 + e` on the `e`-fold padded Hesse SIC at
@@ -66,11 +69,42 @@ brick's own induction hands over for free: an upper bound at EVERY rank at once.
   atom; merging them into one spike of weight `1/10` costs nothing and saves an
   atom.
 * `complexRankConstantAtMostAtSize_six_four` — **weighted `(6,4)` is FALSE over
-  ℂ, mechanized**, at the level `6/7 = exactValueRankFourAtSix`.  That rational
-  is recorded in `Gtz/Complex/SharpConstantLedger.lean` as EXACT ELSEWHERE with
-  the note "not mechanized here (Mathlib has no `det_fin_four`)".  The witness
-  here is a DIFFERENT design — the `ℂ²` SIC padded twice at `spikeWeight = 1/200`
-  — and no `4 x 4` determinant is taken: the ladder never sees one.
+  ℂ**, the first kernel-checked rank-four refutation in this repository, from the
+  `ℂ²` SIC padded twice at `spikeWeight = 1/200`.  No `4 x 4` determinant is
+  taken: the ladder never sees one.
+
+  **What this is NOT.**  It does not mechanize the value
+  `6/7 = exactValueRankFourAtSix` that `Gtz/Complex/SharpConstantLedger.lean`
+  records as EXACT ELSEWHERE.  What is unmechanized there is that the recorded
+  NAIMARK-DUAL design has value exactly `6/7`, and that remains unmechanized;
+  Mathlib still has no `det_fin_four`.  What is proved here is a bound at the
+  rational `6/7` for a DIFFERENT design, whose own value is
+  `alphaRankTwo * (200/199)^2 = 0.8538162790...`, strictly below.  The rational
+  is used as a CAGE, not as an attained value.  Part F sharpens the same rung to
+  every level above `alphaRankTwo` and cashes the difference as
+  `ladderUndercuts_exactValueRankFourAtSix`.
+* `complexRankConstantAtMostAtSize_two_le_rank` — **the same ladder at its SHARP
+  level and its SMALLEST size.**  Part E's two small landings quote concrete
+  constants because those are the ones the repository owned; neither is what the
+  ladder delivers.  Feeding the rank-two witness to
+  `complexRankConstantAtMostAtSize_rank_add` gives, for every `extra` at once, a
+  `(4 + extra, 2 + extra)`-design at EVERY level strictly above `alphaRankTwo` —
+  an `11%` improvement on the quoted `(5,3)` constant and a `1.4%` one on
+  `(6,4)`.  Size `rank + 2` is the smallest available: the ledger records that at
+  equal weights `m = k + 1` is exactly tight at `1`.
+* `not_complexGtzWeighted_of_rank_add_two_le_size` — **complex weighted GTZ is
+  FALSE at every rank at least two and every size at least `rank + 2`.**  This
+  supersedes the size bounds of the two bullets below it: the Hesse-seeded ladder
+  gives size `rank + 6`, and the rank-three and rank-four statements give `5` and
+  `6` one rank at a time.
+* `ladderUndercuts_exactValueRankFourAtSix` — **`6/7` is not the `(6,4)`
+  infimum**, and `ladderUndercuts_paddedMarginRankThree` — `20/9 - 20 sqrt 3/27`
+  is not the `(5,3)` infimum.  Each recorded constant is the value of one
+  particular design; `ComplexRankConstantAtMostAtSize` quantifies over all of
+  them, and the ladder exhibits strictly better ones at both sizes.  The
+  ledger's own minimality hedge for `6/7` is EQUAL-WEIGHT ONLY and survives; the
+  opening phrase "the exact `(6,4)` value over ℂ" does not, under the
+  design-independent reading.
 * `complexRankConstantAtMostAtSize_ten_four_of_gt`, and the size ladder from
   `Gtz/Complex/AtomSplitting.lean` instantiated at every rung, so each refutation
   above holds at its own size and at every larger one.  This theorem is the one
@@ -90,6 +124,18 @@ brick's own induction hands over for free: an upper bound at EVERY rank at once.
 * Sengupta-Pautov, arXiv:2604.05944: the real rank-two case; both papers state
   the problem OPEN for all `1 < k < n - 1` except `(n,k) = (4,2)`.  So the
   rank-three complex question this workflow owns is open in the literature too.
+* CITATION DISAMBIGUATION, because the two are easy to swap and one workflow
+  brief already did.  This repository cites TWO Nesterenko papers, and they are
+  different results.  **arXiv:2604.24087** is the COMPLEX rank-two sharp constant
+  `2 - 2/sqrt 3` — the one this file's ladder rides, cited the same way in
+  `Gtz/Core/Basic.lean`, `Gtz/Complex/AtomSplitting.lean`,
+  `Gtz/Complex/SharpConstantLedger.lean`, `Gtz/Complex/PerRankConstantLedger.lean`,
+  `Gtz/Complex/HesseMarginAttained.lean`, `Gtz/Complex/AttainmentRankThree.lean`
+  and `Gtz/Reduction/ExchangeInvariant.lean`.  **arXiv:2604.14050** is the REAL
+  rank-two EQUALITY CRITERION (Proposition 1, `l_c = 1/2 + 1/(2 t_c)`, the
+  three-cluster characterisation), cited in `Gtz/Design/EqualityLocus.lean` and
+  `Gtz/Ties/CorankOneTieCriterion.lean`.  Do NOT "correct" `24087` to `14050`
+  here: the complex sharp constant is `24087`.
 
 **MEASURED (floating point, re-verified at 90 digits, NEVER a hypothesis below).**
 
@@ -117,18 +163,27 @@ every design used, and none exceeds `5e-91`.
   computed), matching `20/9 - 20 sqrt 3/27` to `1.2e-91` and annihilating both
   `243 x^2 - 1080 x + 800` and `x^2 - (40/9) x + 800/243` exactly.  Parseval
   residual `1.5e-92`.  Slack below one: `0.0607783760`.
-* THE `(6,4)` VALUE.  Double padding at `spikeWeight = 1/200` measures
+* THE `(6,4)` VALUE, AND WHAT IT SAYS ABOUT `6/7`.  Double padding at
+  `spikeWeight = 1/200` measures
   `0.853816279003811490600441846414`, matching `alphaRankTwo * (200/199)^2` to
-  `3.7e-91`, below `6/7` with slack `0.0033265781`.  At `spikeWeight = 1/100` the
+  `3.7e-91`, below `6/7` with slack `0.0033265781`.  That witness is a genuine
+  `ComplexWeightedDesign 6 4` — six atoms, weights `(199/200)^2/4` four times,
+  `(199/200)/200`, and `1/200`, all positive and summing to one, at Parseval
+  residual `4.9e-91` — so `6/7` is NOT the infimum over weighted
+  `(6,4)`-designs.  That consequence is now PROVED, not merely measured:
+  `ladderUndercuts_exactValueRankFourAtSix`.  At `spikeWeight = 1/100` the
   same construction measures `0.862462464667634` and is ABOVE `6/7` — so `1/200`
   is not a free choice, and the arithmetic certificate in
   `complexRankConstantAtMostAtSize_six_four` is what pins it.
 * THE LADDER NEVER ATTAINS ITS INFIMUM.  Padding the Hesse SIC at
   `spikeWeight = 1e-1 .. 1e-8` measures values exceeding
-  `3(1 - cos 2 pi / 9)` by `7.80e-2, 7.02e-3, 7.03e-4, 7.02e-5, 7.02e-6,
+  `3(1 - cos 2 pi / 9)` by `7.80e-2, 7.09e-3, 7.03e-4, 7.02e-5, 7.02e-6,
   7.02e-7, 7.02e-8, 7.02e-9` — a clean `~ spikeWeight * hesse` descent with no
   member at the limit.  `paddedBound_gt_of_pos` is the proved form of that
-  observation.
+  observation.  The excess is `V * w/(1 - w)` for `V = 3(1 - cos 2 pi / 9)`, and
+  the second entry carries the `1/(1 - w)` correction like all the others: at
+  `w = 1e-2` it is `0.00708956232973`, confirmed both by the closed form and by a
+  direct maximum over all `4`-subsets of the padded ten-atom design.
 
 **THE PER-SIZE INFIMUM IS NOT ALWAYS ATTAINED — a correction.**  It is tempting
 to say "the per-`m` infimum is attained by compactness of the chart".  It is not:
@@ -157,13 +212,34 @@ the chart that this repository does not have.
   atom already reaches that level.*
 * It does not show `3(1 - cos 2 pi / 9)` IS `alpha_3`.  Every statement here is an
   UPPER bound, and upper bounds move the record down, never pin it.
-* It does not prove RIGIDITY.  That at `m = 9` the record is realised by a single
-  gauge orbit is MEASURED (perturb-and-reconverge with a gauge-invariant
-  fingerprint, positive control at `m = 12` where atom splitting predicts several
-  orbits and several are found).  Nothing about uniqueness is in the kernel.
+* It does not prove RIGIDITY, and the measured evidence for it is WEAKER than an
+  earlier draft of this header claimed.  What two independent implementations of
+  perturb-and-reconverge agree on is that every run returning to the record value
+  returns to the Hesse GEOMETRY — uniform weights `~ 1/9`, leverages `~ 3`, pair
+  overlap moduli `~ 9/4`.  That the returning runs form a SINGLE GAUGE ORBIT is
+  not established: the classifier is a rounded fingerprint, and at the optimizer's
+  convergence floor (`~ 1e-5`) an independent reimplementation could not
+  discriminate orbits at all — its `m = 12` positive control, where atom splitting
+  predicts several orbits at one value, returned a single degenerate point and so
+  FAILED.  Read the rigidity line as "returns to the Hesse geometry", with orbit
+  uniqueness neither confirmed nor refuted.  Nothing about it is in the kernel.
 * It does not touch `alpha_2`.  The rank-two constant enters only as the SOURCE
   of the `(5,3)` and `(6,4)` witnesses, and only through its proved window.
--/
+
+**WIRING — AN OPEN BLOCKER, NOT A FOOTNOTE.**  At the time of writing this module
+is NOT reachable from the umbrella and NOT covered by the axiom ledger, and
+neither are the two Complex modules beneath it.  `Gtz.lean` imports the Complex
+directory only as far as `Gtz.Complex.AtomSplitting`; `Gtz.Complex.HesseMarginAttained`,
+`Gtz.Complex.AttainmentRankThree` and this file are absent from it, and
+`Gtz/Audit.lean` contains no `#print axioms` line for any declaration in any of
+the three.  `lakefile.toml` sets `defaultTargets = ["Gtz"]`, so a bare
+`lake build` compiles none of them and the repository's own zero-axiom gate does
+not see this work.  Each file has been checked in isolation with
+`lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false` and audited by an
+independent `#print axioms` probe, but that is a per-stage check, not the
+repository gate.  Three consecutive stages have now landed outside both; whoever
+owns `Gtz.lean` and `Gtz/Audit.lean` should close this before the ledger absorbs
+any of it. -/
 import Mathlib
 import Gtz.Complex.HesseMarginAttained
 
@@ -185,32 +261,32 @@ section PaddedReadings
 
 variable {size rank : ℕ}
 
-@[simp] theorem flattenedAtom_castSucc (spikeWeight : ℝ) (vector : Fin rank → ℂ)
+theorem flattenedAtom_castSucc (spikeWeight : ℝ) (vector : Fin rank → ℂ)
     (slot : Fin rank) :
     flattenedAtom spikeWeight vector slot.castSucc
       = vector slot / ((Real.sqrt (1 - spikeWeight) : ℝ) : ℂ) := by
   simp only [flattenedAtom, Fin.snoc_castSucc]
 
-@[simp] theorem flattenedAtom_last (spikeWeight : ℝ) (vector : Fin rank → ℂ) :
+theorem flattenedAtom_last (spikeWeight : ℝ) (vector : Fin rank → ℂ) :
     flattenedAtom spikeWeight vector (Fin.last rank) = 0 := by
   simp only [flattenedAtom, Fin.snoc_last]
 
-@[simp] theorem spikeAtom_castSucc (spikeWeight : ℝ) (slot : Fin rank) :
+theorem spikeAtom_castSucc (spikeWeight : ℝ) (slot : Fin rank) :
     (spikeAtom spikeWeight : Fin (rank + 1) → ℂ) slot.castSucc = 0 := by
   simp only [spikeAtom, Fin.snoc_castSucc]
 
-@[simp] theorem spikePaddedAtom_castSucc (design : ComplexWeightedDesign size rank)
+theorem spikePaddedAtom_castSucc (design : ComplexWeightedDesign size rank)
     (spikeWeight : ℝ) (oldLabel : Fin size) :
     spikePaddedAtom design spikeWeight oldLabel.castSucc
       = flattenedAtom spikeWeight (design.atom oldLabel) := by
   simp only [spikePaddedAtom, Fin.snoc_castSucc]
 
-@[simp] theorem spikePaddedAtom_last (design : ComplexWeightedDesign size rank)
+theorem spikePaddedAtom_last (design : ComplexWeightedDesign size rank)
     (spikeWeight : ℝ) :
     spikePaddedAtom design spikeWeight (Fin.last size) = spikeAtom spikeWeight := by
   simp only [spikePaddedAtom, Fin.snoc_last]
 
-@[simp] theorem spikePaddedDesign_atom (design : ComplexWeightedDesign size rank)
+theorem spikePaddedDesign_atom (design : ComplexWeightedDesign size rank)
     {spikeWeight : ℝ} (hlow : 0 < spikeWeight) (hhigh : spikeWeight < 1) :
     (spikePaddedDesign design hlow hhigh).atom = spikePaddedAtom design spikeWeight := rfl
 
@@ -262,6 +338,16 @@ theorem normSq_starDot_flattenedAtom_snocZero {spikeWeight : ℝ} (hgap : 0 < 1 
   rwa [Complex.normSq_mul, Complex.normSq_ofReal, Real.mul_self_sqrt hgap.le] at hstep
 
 end PaddedReadings
+
+/- The six unfolding lemmas above are convenient inside this file and nowhere
+else: `flattenedAtom_castSucc` puts a division into simp-normal form and
+`spikePaddedDesign_atom` rewrites a structure projection of a term carrying proof
+arguments, neither of which any importer asked for.  Every use below names them
+explicitly in a `rw` or a `simp only`, so the attribute changes no proof here; it
+is `local` purely so that wiring this module into the umbrella does not silently
+enlarge the global simp set. -/
+attribute [local simp] flattenedAtom_castSucc flattenedAtom_last spikeAtom_castSucc
+  spikePaddedAtom_castSucc spikePaddedAtom_last spikePaddedDesign_atom
 
 /-! # Part B. Positive semidefiniteness read back as a covering inequality
 
@@ -681,7 +767,115 @@ theorem not_complexGtzWeighted_of_two_le_rank (rank : ℕ) (hrank : 2 ≤ rank) 
 
 end Landings
 
-/-! # Part F. The ladder, assembled
+/-! # Part F. The sharp forms, and the smallest refutable size
+
+Part E quotes CONCRETE constants at `(5,3)` and `(6,4)` because those are the two
+the repository already owned.  Neither is what the ladder delivers.  Feeding the
+rank-two witness straight to `complexRankConstantAtMostAtSize_rank_add` gives, at
+EVERY rank at once and at the smallest size any equal-weight argument permits,
+every level strictly above `alphaRankTwo` — an 11% improvement on the quoted
+`(5,3)` constant and a 1.4% one on `(6,4)`.
+
+The strictness is forced, not slack.  MEASURED at 90 digits: the per-size infimum
+at both `(5,3)` and `(6,4)` is `alphaRankTwo` itself, reached only as a spike
+limit, so `ComplexRankConstantAtMostAtSize 5 3 alphaRankTwo` is expected to be
+FALSE while every level above it holds.  `paddedBound_gt_of_pos` is the proved
+half of that picture. -/
+
+section MinimalSize
+
+theorem alphaRankTwo_pos : 0 < alphaRankTwo := by
+  linarith [alphaRankTwo_window.1]
+
+/-- **THE RANK-TWO LADDER, AT EVERY RANK AND THE SMALLEST SIZE.**  For every
+`extra` and every level strictly above `alphaRankTwo = 2 - 2/sqrt 3`, there is a
+complex weighted `(4 + extra, 2 + extra)`-design no `(2 + extra)`-subset of which
+survives above it: the `ℂ²` SIC padded `extra` times.
+
+Size is `rank + 2` at every rank, which is the smallest size that can possibly
+work: `Gtz/Complex/SharpConstantLedger.lean` records that at EQUAL weights
+`m = k + 1` is exactly tight at `1` (Naimark dual `(k+1,1)` plus
+max-at-least-mean), so `m = k + 2` is the first refutable equal-weight size.  The
+weighted `m = k + 1` case is open; MEASURED, its infimum is `1`, again a spike
+limit. -/
+theorem complexRankConstantAtMostAtSize_two_le_rank (extra : ℕ) {bound : ℝ}
+    (habove : alphaRankTwo < bound) :
+    ComplexRankConstantAtMostAtSize (4 + extra) (2 + extra) bound :=
+  complexRankConstantAtMostAtSize_rank_add alphaRankTwo_pos
+    complexRankConstantAtMostAtSize_four_two extra habove
+
+/-- The `(5,3)` rung in its sharp form: not the single constant
+`paddedMarginRankThree`, but every level above `alphaRankTwo`, which is `11%`
+lower. -/
+theorem complexRankConstantAtMostAtSize_five_three_of_gt {bound : ℝ}
+    (habove : alphaRankTwo < bound) :
+    ComplexRankConstantAtMostAtSize 5 3 bound :=
+  complexRankConstantAtMostAtSize_two_le_rank 1 habove
+
+/-- The `(6,4)` rung in its sharp form: every level above `alphaRankTwo`, which is
+below the recorded `6/7` and therefore strictly stronger than
+`complexRankConstantAtMostAtSize_six_four`. -/
+theorem complexRankConstantAtMostAtSize_six_four_of_gt {bound : ℝ}
+    (habove : alphaRankTwo < bound) :
+    ComplexRankConstantAtMostAtSize 6 4 bound :=
+  complexRankConstantAtMostAtSize_two_le_rank 2 habove
+
+/-- A rational level strictly between `alphaRankTwo` and `6/7`, which is what
+turns the sharp `(6,4)` form into a strict-undercut statement. -/
+theorem alphaRankTwo_lt_seventeen_twentieths : alphaRankTwo < 17 / 20 := by
+  linarith [alphaRankTwo_lt_847_1000]
+
+/-- **`6/7` IS NOT THE `(6,4)` INFIMUM.**  `Gtz/Complex/SharpConstantLedger.lean`
+opens its `exactValueRankFourAtSix` docstring with "the exact `(6,4)` value over
+ℂ", and its minimality hedge is EQUAL-WEIGHT ONLY.  Under the design-independent
+reading the opening phrase does not survive: the ladder exhibits a genuine
+`(6,4)`-design strictly below `6/7`.  So `6/7` is the exact value OF THE RECORDED
+NAIMARK-DUAL DESIGN, not the infimum over weighted `(6,4)`-designs — which is what
+`ComplexRankConstantAtMostAtSize` quantifies.
+
+MEASURED at 90 digits, the ladder's own witness at spike weight `1/200` sits at
+`0.85381627900381149060044184641407`, below `6/7 = 0.857142857...` by
+`0.0033265781`; the level certified here is the rational `17/20`, comfortably
+between the two. -/
+theorem ladderUndercuts_exactValueRankFourAtSix :
+    ∃ bound : ℝ, bound < ((exactValueRankFourAtSix : ℚ) : ℝ)
+      ∧ ComplexRankConstantAtMostAtSize 6 4 bound := by
+  have hcast : ((exactValueRankFourAtSix : ℚ) : ℝ) = 6 / 7 := by
+    rw [exactValueRankFourAtSix]
+    norm_num
+  refine ⟨17 / 20, ?_, complexRankConstantAtMostAtSize_six_four_of_gt
+    alphaRankTwo_lt_seventeen_twentieths⟩
+  rw [hcast]
+  norm_num
+
+/-- The same undercut at `(5,3)`: `paddedMarginRankThree` is the value of ONE
+five-atom design, not the `(5,3)` infimum. -/
+theorem ladderUndercuts_paddedMarginRankThree :
+    ∃ bound : ℝ, bound < paddedMarginRankThree
+      ∧ ComplexRankConstantAtMostAtSize 5 3 bound :=
+  ⟨17 / 20, by linarith [paddedMargin_window.1],
+    complexRankConstantAtMostAtSize_five_three_of_gt alphaRankTwo_lt_seventeen_twentieths⟩
+
+/-- **COMPLEX WEIGHTED GTZ IS FALSE AT EVERY RANK AT LEAST TWO AND EVERY SIZE AT
+LEAST `rank + 2`.**  This supersedes both of the size bounds this file's Part E
+lands: `not_complexGtzWeighted_of_two_le_rank` produces size `rank + 6` (the
+Hesse-seeded ladder), and the rank-three and rank-four statements produce `5` and
+`6` one rank at a time.  Here every rank gets `rank + 2` at once, and `rank + 2`
+is the smallest size an equal-weight argument leaves available. -/
+theorem not_complexGtzWeighted_of_rank_add_two_le_size (size rank : ℕ) (hrank : 2 ≤ rank)
+    (hsize : rank + 2 ≤ size) : ¬ ComplexGtzWeighted size rank := by
+  obtain ⟨extra, rfl⟩ := Nat.exists_eq_add_of_le hrank
+  have hbase : ComplexRankConstantAtMostAtSize (4 + extra) (2 + extra) (9 / 10) :=
+    complexRankConstantAtMostAtSize_two_le_rank extra
+      (by linarith [alphaRankTwo_window.2])
+  have hgrown : ComplexRankConstantAtMostAtSize size (2 + extra) (9 / 10) :=
+    complexRankConstantAtMostAtSize_of_le (by omega) (by norm_num) (by omega) hbase
+  obtain ⟨design, hvalue⟩ := hgrown
+  exact not_complexGtzWeighted_of_designValueAtMost (by norm_num) hvalue
+
+end MinimalSize
+
+/-! # Part G. The ladder, assembled
 
 One statement carrying everything this file proves, with nothing measured or cited
 smuggled in. -/
@@ -695,8 +889,10 @@ smuggled in. -/
   the padded bound is strictly above its source at every admissible spike weight;
 * `(5,3)` is FALSE over ℂ at `20/9 - 20 sqrt 3/27`, one atom below the shipped
   `(6,3)` refutations;
-* `(6,4)` is FALSE over ℂ at `6/7`, mechanizing the value recorded as EXACT
-  ELSEWHERE, from a design that never needs a `4 x 4` determinant;
+* `(6,4)` is FALSE over ℂ, the first kernel-checked rank-four refutation in this
+  repository, from a design that never needs a `4 x 4` determinant.  The level
+  quoted is the recorded rational `6/7`, used here as a CAGE and not as an
+  attained value — the witness sits strictly below it (see Part F);
 * every rank `>= 3` has an upper bound arbitrarily close to the rank-three record
   `3(1 - cos 2 pi / 9)`;
 * complex weighted GTZ is FALSE at every rank `>= 2`.
@@ -725,15 +921,53 @@ theorem complexPaddingLadder :
     fun rank hrank _ habove => complexRankConstantAtMost_three_le_rank rank hrank habove,
     not_complexGtzWeighted_of_two_le_rank⟩
 
+/-- **THE LADDER AT ITS SHARP LEVEL AND SMALLEST SIZE.**  What Part F adds to the
+statement above, and what the two quoted constants of Part E were hiding:
+
+* every rank `>= 2` is refuted at size exactly `rank + 2` — the smallest size the
+  equal-weight tightness of `m = k + 1` leaves available — and at every larger
+  size;
+* the level is every real strictly above `alphaRankTwo = 2 - 2/sqrt 3`, at
+  `(5,3)` and `(6,4)` alike, so the concrete constants `20/9 - 20 sqrt 3/27` and
+  `6/7` of Part E overshoot by `11%` and `1.4%`;
+* consequently `6/7` is NOT the infimum over weighted `(6,4)`-designs, and
+  `20/9 - 20 sqrt 3/27` is not the infimum over weighted `(5,3)`-designs.  Each is
+  the value of one particular design.
+
+MEASURED at 90 digits, the strictness is forced rather than slack: the per-size
+infimum at `(5,3)` and at `(6,4)` is `alphaRankTwo` itself, reached only as a
+spike limit. -/
+theorem complexPaddingLadderAtMinimalSize :
+    (∀ (extra : ℕ) (bound : ℝ), alphaRankTwo < bound →
+        ComplexRankConstantAtMostAtSize (4 + extra) (2 + extra) bound)
+      ∧ (∀ (size rank : ℕ), 2 ≤ rank → rank + 2 ≤ size → ¬ ComplexGtzWeighted size rank)
+      ∧ (∃ bound : ℝ, bound < ((exactValueRankFourAtSix : ℚ) : ℝ)
+          ∧ ComplexRankConstantAtMostAtSize 6 4 bound)
+      ∧ (∃ bound : ℝ, bound < paddedMarginRankThree
+          ∧ ComplexRankConstantAtMostAtSize 5 3 bound) :=
+  ⟨fun extra _ habove => complexRankConstantAtMostAtSize_two_le_rank extra habove,
+    not_complexGtzWeighted_of_rank_add_two_le_size,
+    ladderUndercuts_exactValueRankFourAtSix,
+    ladderUndercuts_paddedMarginRankThree⟩
+
 /-! ## SCOPE NOTE: the three open questions, answered by tag
 
 **Q1 — ATTAINMENT AND SHARPNESS of `alpha_3 = 3(1 - cos 2 pi / 9)`.**
 PROVED: the Hesse SIC ATTAINS its margin (`hesseMargin_isGreatest`, in
 `Gtz/Complex/HesseMarginAttained.lean`), and the record is realised at every size
 `>= 9` (`complexRankConstantAtMostAtSize_three_hesse`).  PROVED HERE: complex
-weighted `(m,3)` is false from `m = 5` on, so the interesting range for the
-size profile is `m <= 4`.  MEASURED: no design below the Hesse value at any size
-in `3 .. 15`, over forty thousand cold descents; the profile is `1` at `m = 3,4`,
+weighted `(m,3)` is false from `m = 5` on — and more generally `(m,k)` is false
+for every `k >= 2` from `m = k + 2` on
+(`not_complexGtzWeighted_of_rank_add_two_le_size`) — so the interesting range for
+the size profile is `m <= 4`, and at rank `k` it is `m <= k + 1`, which the
+ledger's equal-weight tightness argument already closes at equal weights.
+MEASURED, and the qualifier matters: no design below
+the Hesse value was found at any size in `3 .. 16`, at rank three, four or five,
+across two independently seeded multi-start searches.  A RESTART COUNT IS NOT A
+COVERAGE MEASURE — the Hesse basin has small measure, and one of the two seed
+sets failed to enter it at all at `m = 9,10`, reporting the trine level
+`3 - sqrt 5` instead.  What both searches agree on is the NEGATIVE (nothing
+below), not the per-size minimum.  The profile is `1` at `m = 3,4`,
 `2 - 2/sqrt 3` at `m = 5`, `3 - sqrt 5` at `m = 6,7,8`, and the Hesse value from
 `m = 9`.  OPEN: whether the Hesse value is the INFIMUM.  Nothing in this file or
 any other in this repository bears on that; every rank-three statement here is an
@@ -741,15 +975,24 @@ upper bound.  CORRECTED: the per-size infimum is NOT always attained — `m = 3`
 and `m = 5` are spike limits, and `paddedBound_gt_of_pos` is the proved form of
 why the family that produces them never reaches its own limit.
 
-**Q2 — RIGIDITY at the optimal size.**  OPEN, and untouched here.  MEASURED: at
-`m = 9` every perturb-and-reconverge run returning to the record value returned to
-a SINGLE gauge orbit, classified by a gauge-invariant fingerprint (sorted weights,
-atom norms, pair overlap moduli, Bargmann triangle invariants, subset spectrum);
-the classifier has a positive control at `m = 12`, where atom splitting predicts
-several orbits at the same value and several are found.  The measured Hesse
-geometry: seventy-two active triples and twelve singular ones (the twelve lines of
-the Hesse configuration), one weight, one overlap modulus `9/4`, two Bargmann real
-parts `-27/8` and `+27/16` — the second being exactly the cap
+**Q2 — RIGIDITY at the optimal size.**  OPEN, untouched here, and the evidence
+grade is LOWER than an earlier draft of this note recorded.  What survives two
+independent implementations of perturb-and-reconverge is the GEOMETRY, not the
+orbit count: every run returning to the record value returns to uniform weights
+`~ 1/9`, leverages `~ 3`, pair overlap moduli `~ 9/4`.  The stronger reading —
+that those runs form a SINGLE gauge orbit — is NOT established.  The classifier is
+a fingerprint rounded at a fixed number of digits, and near the optimizer's
+convergence floor (`~ 1e-5`) an independent reimplementation could not
+discriminate orbits at all: its `m = 12` positive control, where atom splitting
+predicts several orbits at one value, returned a single degenerate point, so the
+control FAILED and the classifier is unvalidated at that tolerance.  Rigidity is
+therefore NEITHER CONFIRMED NOR REFUTED; a reproducible claim needs the
+convergence and rounding tolerances stated and a positive control that passes.
+
+The measured Hesse geometry itself is solid and reproduces across
+implementations: seventy-two active triples and twelve singular ones (the twelve
+lines of the Hesse configuration), one weight, one overlap modulus `9/4`, two
+Bargmann real parts `-27/8` and `+27/16` — the second being exactly the cap
 `hesseTriple_bargmann_re_le` proves.  CITED: at rank two rigidity is a theorem
 (Nesterenko, arXiv:2604.24087, Proposition 1: equality iff `4 | m` and the Hopf
 images form a regular tetrahedron).  No rank-three analogue exists in the
