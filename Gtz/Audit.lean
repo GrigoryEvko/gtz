@@ -160,6 +160,7 @@ import Gtz.Complex.AttainmentRankThree
 import Gtz.Complex.SpikePaddingLadder
 import Gtz.Ties.TotalTieCorankOne
 import Gtz.Design.PrimitiveTightClassification
+import Gtz.Quantitative.SpreadCertificateSixThree
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -3350,3 +3351,53 @@ import Gtz.Design.PrimitiveTightClassification
 #print axioms Gtz.parallelPairLinePattern
 #print axioms Gtz.parallelPairDesign_hasLinePattern
 #print axioms Gtz.parallelPairStratum_isNonempty_and_tieFree
+
+-- Gtz.Quantitative.SpreadCertificateSixThree: the floored-spread hypothesis,
+-- its chart-matrix bridge, and the boundaries where it is vacuous
+#print axioms Gtz.HasLegMarginAtLeast
+#print axioms Gtz.hasLegMarginAtLeast_weaken
+#print axioms Gtz.SpreadFloorCertificateSixThree
+#print axioms Gtz.spreadFloorCertificateSixThree_zero_iff_flooredSpreadCovering
+#print axioms Gtz.flooredSpreadCovering_of_spreadFloorCertificateSixThree
+#print axioms Gtz.spreadFloorCertificateSixThree_weakenMargin
+#print axioms Gtz.spreadFloorCertificateSixThree_shrinkRegion
+#print axioms Gtz.spreadFloorCertificateSixThree_of_symmetricCovering
+#print axioms Gtz.leverageOf_le_of_hasWeightFloor
+#print axioms Gtz.heavyExcess_le_of_hasWeightFloor
+#print axioms Gtz.atomPairing_sq_le_leverage_product
+#print axioms Gtz.atomPairing_sq_le_of_hasWeightFloor
+#print axioms Gtz.weightTripleSum_le_one
+#print axioms Gtz.weightProduct_le_cube_div_twentySeven
+#print axioms Gtz.weightProduct_le_inv_twentySeven
+#print axioms Gtz.weightTripleSum_le_of_hasWeightFloor
+#print axioms Gtz.weightProduct_le_of_hasWeightFloor
+#print axioms Gtz.floorCube_le_weightProduct
+#print axioms Gtz.HasChartLegMarginAtLeast
+#print axioms Gtz.hasLegMarginAtLeast_of_hasChartLegMarginAtLeast
+#print axioms Gtz.hasLegMarginAtLeast_of_hasChartLegMarginAtLeast_floored
+#print axioms Gtz.hasChartLegMarginAtLeast_of_hasLegMarginAtLeast
+#print axioms Gtz.ChartSpreadFloorCertificateSixThree
+#print axioms Gtz.spreadFloorCertificateSixThree_of_chartCertificate
+#print axioms Gtz.chartCertificate_of_spreadFloorCertificateSixThree
+#print axioms Gtz.chartFrame
+#print axioms Gtz.chartMatrix
+#print axioms Gtz.weightedAtomProduct_sum
+#print axioms Gtz.chartFrame_transpose_mul_self
+#print axioms Gtz.chartMatrix_eq_frame_mul_transpose
+#print axioms Gtz.chartMatrix_isIdempotent
+#print axioms Gtz.chartMatrix_isSymm
+#print axioms Gtz.chartMatrix_trace
+#print axioms Gtz.chartGapDiagonalOf
+#print axioms Gtz.chartGapDeterminantOf
+#print axioms Gtz.chartGapWeightedMinorSumOf
+#print axioms Gtz.chartGapDeterminantOf_eq
+#print axioms Gtz.chartGapWeightedMinorSumOf_eq
+#print axioms Gtz.chartMatrix_diagonal_gt_weight_of_allHeavy
+#print axioms Gtz.FreeChartCertificateSixThree
+#print axioms Gtz.chartCertificateSixThree_of_freeChartCertificate
+#print axioms Gtz.spreadFloorCertificateSixThree_of_freeChartCertificate
+#print axioms Gtz.spreadFloorCertificateSixThree_of_sixth_lt_floor
+#print axioms Gtz.spreadFloorCertificateSixThree_of_one_lt_spread
+#print axioms Gtz.icosaDesign_discriminantMinorSum_eq
+#print axioms Gtz.icosaDesign_discriminantTie_le
+#print axioms Gtz.margin_le_of_spreadFloorCertificateSixThree
