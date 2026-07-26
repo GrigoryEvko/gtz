@@ -136,9 +136,9 @@ superdifferential at $A$ is the \emph{spectraplex}
 \end{aligned}
 \end{equation}
 \cite[\S2]{Overton1988},
-\cite[Vol.~I, Ch.~VI]{HiriartUrrutyLemarechal1993}.  The Clarke subdifferential of a locally Lipschitz function composed
-with a smooth map is, in turn, contained in the image of the subdifferential under the adjoint of
-the derivative \cite[Thm.~2.3.10]{Clarke1990}.  Applied to
+\cite[Vol.~I, Ch.~VI]{HiriartUrrutyLemarechal1993}.  Composing with a
+smooth map contracts the subdifferential into the image of the adjoint
+derivative \cite[Thm.~2.3.10]{Clarke1990}.  Applied to
 $\lmin\circ\SC$, and using that $\Theta$ is symmetric so that
 $\langle\Theta,\dot g_c^{\vphantom{\mathsf{T}}}g_c\tp
 +g_c^{\vphantom{\mathsf{T}}}\dot g_c\tp\rangle
@@ -396,6 +396,39 @@ in the weak sense; the strict inequality $\ell_c>1$ would require
 excluding equality in Cauchy--Schwarz at every positively weighted index
 simultaneously, and is not available.
 
+Subtracting the two sums leaves the quantity on which the exclusions of
+\S\ref{sec:exclusions} act.
+
+\begin{lemma}[Lean]\label{lem:defect}
+Let a stationarity datum with $\cv\ne0$ be given.  For every $c$,
+\begin{equation}\label{eq:defect}
+  \sum_{i\,:\,c\notin C_i}\lambda_i\langle u_i,g_c\rangle^2
+  \;=\;1-t_c\,\cv .
+\end{equation}
+Call the left side the \emph{defect} at $c$.  It vanishes if and only if
+$t_c\cv=1$, and then $\langle u_i,g_c\rangle=0$ for every $i$ with
+$\lambda_i>0$ and $c\notin C_i$.
+\end{lemma}
+
+\begin{proof}
+The sum in \eqref{eq:overlapone} runs over all of $A$ and the sum in
+\eqref{eq:coverage} over $\{i:c\in C_i\}$, so their difference is the sum
+over the complementary indices.  Every term is nonnegative, so the sum
+vanishes exactly when each term does.
+\end{proof}
+
+Part (ii) of Lemma~\ref{lem:overlap} is the nonnegativity of the defect.
+A vanishing defect says $t_c\cv=1$, and $t_c\le1$ then forces $\cv\ge1$:
+the defect is what keeps a datum below the threshold, and every exclusion
+that reaches such a datum reaches it by driving the defect to zero
+somewhere.  Summing \eqref{eq:defect} over $c$ against $\sum_ct_c=1$
+sharpens the bound $\cv\le m$ of that same part into an identity, the
+total defect being
+\begin{equation}\label{eq:totaldefect}
+  \sum_c\ \sum_{i\,:\,c\notin C_i}\lambda_i\langle u_i,g_c\rangle^2
+  \;=\;m-\cv .
+\end{equation}
+
 \subsection{The tetrahedron}\label{sec:tetracalib}
 
 Every constant in the system can be displayed at the tetrahedron of
@@ -462,8 +495,11 @@ $u_i\tp S_{C_i}u_i=\cv=1<3$; it is realized at any other index, for which
 
 \subsection{Exclusions}\label{sec:exclusions}
 
-Each exclusion below is a statement about the datum alone;
-admissibility is nowhere used.
+Two of the four exclusions below drive the defect \eqref{eq:defect} to
+zero, one at a single index and one at every index; the other two run on
+the multiplier \eqref{eq:multiplier} and on a count of the active family.
+Each is a statement about the datum alone, and admissibility is nowhere
+used.
 
 \begin{proposition}\label{prop:e1}
 Let a stationarity datum with $\cv\ne0$ have $\Lambda=a\,ww\tp$ for
@@ -549,10 +585,13 @@ $\sum_ct_c=1$ gives $\cv=m$, and then $t_c=1/m$.  A design has at least one
 vector, so $\cv=m\ge1$.
 \end{proof}
 
-The conclusion identifies the datum rather than contradicting it: one
+The conclusion identifies the datum rather than contradicting it.  One
 might expect independence to force $\langle u_i,g_c\rangle=0$, against
-coverage, but the coefficient in \eqref{eq:vanishing} vanishes through
-its last factor instead.
+coverage; it does, but only outside the subsets.  Since $t_c\cv=1$ at
+every index, every defect vanishes, and Lemma~\ref{lem:defect} then gives
+$\langle u_i,g_c\rangle=0$ whenever $\lambda_i>0$ and $c\notin C_i$: each
+positively weighted tight direction is orthogonal to every vector its own
+subset omits.
 
 Counting gives a third exclusion: by Lemma~\ref{lem:overlap}(iv) the
 active family covers $\{1,\dots,m\}$, and each of its members has $k$
@@ -621,11 +660,9 @@ $\cv\ge1$.
 \end{proposition}
 
 \begin{proof}
-The sum in \eqref{eq:coverage} runs over $\{i:c\in C_i\}$ and the sum in
-\eqref{eq:overlapone} over all of $A$.  Under the hypothesis the two
-index sets coincide, so the inequality $t_c\cv\le1$ of
-Lemma~\ref{lem:overlap}(ii) is an equality: $t_c\cv=1$.  Since
-$t_c\le1$ this gives $\cv=1/t_c\ge1$.
+The hypothesis empties the index set of \eqref{eq:defect}, so the defect
+at $c$ vanishes and $t_c\cv=1$.  Since $t_c\le1$ this gives
+$\cv=1/t_c\ge1$.
 \end{proof}
 
 \begin{corollary}\label{cor:saturated}
