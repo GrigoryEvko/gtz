@@ -26,7 +26,7 @@
 
 \node[txt] at (2.3,2.25) {interior\\ $t_c>0$};
 \fill (2.3,1.42) circle (1.7pt);
-\node[txt, anchor=north] at (2.3,1.26) {$(P^{\star},t^{\star})$};
+\node[txt, anchor=north] at (2.3,1.26) {$(P_{\min},t_{\min})$};
 \node[txt, anchor=north] at (2.3,-0.06) {$t_z=0$};
 
 \node[txt, anchor=north] at (2.3,-0.52)
@@ -61,7 +61,7 @@
 \node[ttl] at (6.05,4.05) {Schur deflation};
 \node[bx] (b1) at (6.05,3.62) {$P_{zz}>0$};
 \node[txt, text width=38mm, align=center] (b2) at (6.05,2.52)
-  {$P'=P-(Pe_z)(Pe_z)^{T}/P_{zz}$,\\ $\tr P'=k-1$, $P'e_z=0$; delete $z$};
+  {$P'=P-(Pe_z)(Pe_z)\tp/P_{zz}$,\\ $\tr P'=k-1$, $P'e_z=0$; delete $z$};
 \node[bx] (b3) at (6.05,1.40) {$(m-1,k-1)$};
 \node[txt, text width=38mm, align=center] (b4) at (6.05,0.78) {$C\mapsto C\cup\{z\}$};
 \node[bx] (b5) at (6.05,0.15) {$|C\cup\{z\}|=k$};
@@ -70,7 +70,7 @@
 
 % ---- the identity that pays for the second case ---------------------
 \node[txt, anchor=north] at (4.0,-0.45)
-  {$x^{T}Wx=x^{T}(P'-\diag t)\,x+\dfrac{(Pe_z\cdot x)^{2}}{P_{zz}}$,\\[3pt]
+  {$x\tp Wx=x\tp(P'-\diag t)\,x+\dfrac{(Pe_z\cdot x)^{2}}{P_{zz}}$,\\[3pt]
    and at $t_z=0$ the three terms complete a square};
 \end{scope}
 

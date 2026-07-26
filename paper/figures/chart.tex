@@ -18,21 +18,21 @@
 \node[align=left, font=\small] at (3.2,0)
   {$g_1,\dots,g_m\in\FF^{k}$\\[3pt]
    $t_c>0,\quad\textstyle\sum_c t_c=1$\\[3pt]
-   $\textstyle\sum_c t_c\,g_c^{\vphantom{*}}g_c^{*}=I_k$};
+   $\textstyle\sum_c t_c\,g_c^{\vphantom{\mathsf{H}}}g_c\adj=I_k$};
 
 \draw[ar] (7.0,0) -- node[above, font=\scriptsize] {$v_c=\sqrt{t_c}\,g_c$} (10.3,0);
 
 % ----------------------------- V -------------------------------------
 \gridframe{10.5}{-3}{3}{6}
-\node[font=\scriptsize, anchor=south] at (12.0,3.4) {$V^{*}V=I_k$};
+\node[font=\scriptsize, anchor=south] at (12.0,3.4) {$V\adj V=I_k$};
 \node[font=\scriptsize, align=center, anchor=north] at (12.0,-3.4)
-  {$V$, rows $v_c^{*}$\\ $m\times k$};
+  {$V$, rows $v_c\adj$\\ $m\times k$};
 
-\draw[ar] (13.9,0) -- node[above, font=\scriptsize] {$P=VV^{*}$} (17.0,0);
+\draw[ar] (13.9,0) -- node[above, font=\scriptsize] {$P=VV\adj$} (17.0,0);
 
 % ----------------------------- P -------------------------------------
 \gridframe{17.2}{-3}{6}{6}
-\node[font=\scriptsize, anchor=south] at (20.2,3.4) {$P^{*}=P=P^{2}$, \ $\rk P=k$};
+\node[font=\scriptsize, anchor=south] at (20.2,3.4) {$P\adj=P=P^{2}$, \ $\rk P=k$};
 \node[font=\scriptsize, anchor=north] at (20.2,-3.4)
   {$P_{cd}=\sqrt{t_ct_d}\,\langle g_c,g_d\rangle$};
 
