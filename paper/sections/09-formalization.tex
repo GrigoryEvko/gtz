@@ -3,12 +3,12 @@
 The development is carried out in Lean~4 over Mathlib, and a statement
 whose head carries the tag \emph{Lean} is verified there.
 Table~\ref{tab:lean} names the declaration behind each statement it
-lists, naming all of them where a statement is assembled from several;
-a tagged statement absent from the table is an elementary step of the
-same development, verified but not tabulated on its own.  The formal
-statements are the originals, and the statements in the text are their
-transcriptions.  What follows says what was formalized, under what axiom
-discipline, and where the formalization stops.
+lists, and all of them where a statement is assembled from several.  A
+tagged statement absent from the table is an elementary step of the same
+development, verified but not tabulated on its own.
+
+The formal statements are the originals, and the statements in the text
+are their transcriptions.
 
 \subsection{What is formalized}\label{sec:whatformal}
 
@@ -34,14 +34,16 @@ The chart of
 \eqref{eq:chart} together with the equivalence of Lemma~\ref{lem:chart}, and
 the compactification of \S\ref{sec:compactness} as the predicate of
 Definition~\ref{def:chartpoint} on pairs $(P,t)$ with $P$ a symmetric
-idempotent of trace $k$ and $t$ in the closed simplex.  Graphic designs, used
-for the diamond of Example~\ref{ex:diamond}, are formalized through
-\eqref{eq:graphicatom}, so the whitener is an existential and the atoms are
-determined only up to the orthogonal group; what is rational, and what the
-formal statements quantify over, is the graph data.  Finally the stationarity
+idempotent of trace $k$ and $t$ in the closed simplex.  The stationarity
 system of \S\ref{sec:interior} is a structure bundling
-\eqref{eq:statg}--\eqref{eq:statt} with the active family and the multipliers;
-the results of that section are implications from it.
+\eqref{eq:statg}--\eqref{eq:statt} with the active family and the
+multipliers, and the results of that section are implications from it.
+
+Graphic designs, used for the diamond of Example~\ref{ex:diamond}, are
+formalized through \eqref{eq:graphicatom}.  The whitener is then an
+existential and the atoms are determined only up to the orthogonal group,
+so what is rational, and what the formal statements quantify over, is the
+graph data.
 
 \begin{table}[htbp]
 \small
@@ -118,18 +120,20 @@ A ledger module lists, for the declarations of the development, the axioms on
 which each depends, printed by the kernel rather than asserted by the author.
 The permitted set is Mathlib's
 $\{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}$, and
-nothing outside it occurs.  In particular no declaration depends on
-\texttt{sorryAx}: the development contains no incomplete proof.  It contains no
-\texttt{axiom} declaration.  Closed arithmetic over concrete finite index sets
-is discharged by kernel evaluation of decidable propositions, which introduces
-no axiom; no proof is closed by compiled evaluation.
+nothing outside it occurs.  Classical logic is used freely, and nothing in
+the development is a constructive claim.
+
+In particular no declaration depends on \texttt{sorryAx}: the development
+contains no incomplete proof.  It contains no \texttt{axiom} declaration.
+Closed arithmetic over concrete finite index sets is discharged by kernel
+evaluation of decidable propositions, which introduces no axiom.  No proof
+is closed by compiled evaluation.
 
 The ledger covers exactly what it lists: one
 declaration, the entry marked $a$ in Table~\ref{tab:lean}, is absent
 from it, and is proved in a module duplicating
 one that the ledger does cover.  Its proof is checked when that module is
-elaborated, but its axiom use is not certified by the ledger.  The development also uses classical logic freely; nothing in it is a
-constructive claim.
+elaborated, but its axiom use is not certified by the ledger.
 
 No numerical assertion in the paper rests on floating-point evaluation.  The
 witnesses of \S\ref{sec:sharp} and Appendix~\ref{app:graveyard} are exact
@@ -143,8 +147,7 @@ decorative.
 \subsection{Where the formalization stops}\label{sec:boundaries}
 
 Two steps of the argument are not formal.  Both lie in
-\S\ref{sec:compactness}--\S\ref{sec:interior}, and they are missing for
-different reasons.
+\S\ref{sec:compactness}--\S\ref{sec:interior}.
 
 The first is the attainment in Theorem~\ref{thm:variational}: a continuous
 function on a compact space attains its minimum.  The space of chart points is
@@ -157,22 +160,15 @@ which place the minimizer at a design rather than at a boundary point,
 are formal.
 
 The second is the passage from a local minimum to the system
-\eqref{eq:statg}--\eqref{eq:statt}.  The objective is a maximum of finitely
-many functions each of which is concave in $\SC$, so its directional derivative
-is the maximum over the active family of the directional derivatives of its
-members, and each of those is the least eigenvalue of the derivative
-compressed to the corresponding eigenspace.  Nonnegativity of that quantity in
-every admissible direction, together with the spectraplex description of the
-superdifferential of $\lmin$, is what produces the multipliers $\lambda_C$ and
-the matrix $\Lambda$.  Each ingredient is classical
-\cite{Danskin1967,Overton1988,HiriartUrrutyYe1995}, and the framework, with the
-warning that for a maximum of concave functions the subdifferential rule is an
-inclusion rather than an equality, is \cite{Clarke1990}.  None of it is in the ambient library, so \S\ref{sec:interior} takes the
-system as its hypothesis and formalizes its consequences
+\eqref{eq:statg}--\eqref{eq:statt}.  Its ingredients are the spectraplex,
+the composition rule and the maximum rule, assembled in \S\ref{sec:kkt};
+each is classical
+\cite{Danskin1967,Overton1988,HiriartUrrutyYe1995,Clarke1990} and none is
+in the ambient library.  So \S\ref{sec:interior} takes the system as its
+hypothesis and formalizes its consequences
 (Proposition~\ref{prop:quadric}, Proposition~\ref{prop:e1} and the
 exclusions) rather than deriving the system from minimality.
 
-Theorem~\ref{thm:rankthree} should be read with that distinction in mind.
-Its two conjectural inputs speak about the system, not about minimality,
-so a proof of either closes the corresponding cell only together with the
-two steps above.
+The two conjectural inputs of Theorem~\ref{thm:rankthree} speak about the
+system, not about minimality, so a proof of either closes the corresponding
+cell only together with the two steps above.
