@@ -1,8 +1,10 @@
 /-
-# Split transfer: duplicating an atom, merging a parallel pair, and the branch shell
+# Split transfer: duplicating an atom, merging a parallel pair, and the branch shells
 
-The Covered+ induction on the atom count `m` needs three pieces of exchange
-machinery, and this file mechanizes them in one place.
+The Covered+ induction on the atom count `m` needs several pieces of exchange
+machinery, and this file mechanizes them in one place, together with two
+induction shells — a qualitative one that is exhaustive but sits on an open
+region, and a compact one built on the repo's own floored-spread predicates.
 
 1. **Splitting.**  Duplicate atom `splitLabel` into two copies carrying weights
    `share` and `t − share`.  The frame operator does not move, so the result is
@@ -28,36 +30,71 @@ machinery, and this file mechanizes them in one place.
    needs, because `IsTie` is a conjunction of a PSD claim and the NEGATION of a
    PosDef claim: the PSD flip alone transports neither direction.
 
-3. **Whitening.**  A family whose frame operator is only pinched between
-   `(1 − eta)·I` and `(1 + eta)·I` whitens to an exact design
-   (`whitenedFamilyDesign`, Parseval on the nose), and the Rayleigh floor
-   transfers both ways with the factors `1 − eta` (down to up) and `1/(1 + eta)`
-   (up to down).  The downward half is `Gtz.whitenedPullback_form_ge` at
-   `defect = 1 − frameOperator`; what is added is the design constructor, the
-   pinch predicate, and the upward half.
+3. **Whitening.**  `whitenedFamilyDesign` turns any positively weighted family
+   with weights summing to one into an exact design — Parseval on the nose, not
+   approximately — given a whitener for its frame operator.  It takes that
+   whitener as an argument; it does NOT take a pinch.  The pinch route is the
+   composite `exists_whitenedDesign_of_framePinched`, and there the side
+   condition `etaBound < 1` is load-bearing: at `etaBound >= 1` the lower pinch
+   is vacuous, the frame operator need not be invertible, and no whitener need
+   exist.  The Rayleigh floor then crosses both ways with the factors `1 − eta`
+   (down to up) and `1/(1 + eta)` (up to down), each direction consuming only the
+   ONE side of the pinch it needs.  The downward half is
+   `Gtz.whitenedPullback_form_ge` at `defect = 1 − frameOperator` and re-proves
+   nothing; what is added is the design constructor, the pinch predicate, the
+   upward half, and `whitenedDesign_subsetSum_eq`, which joins the constructor to
+   the two transfers — those are stated for a FREE `frameOperator`, so without it
+   a consumer has to re-derive the link.
 
 4. **The merge.**  Two EXACTLY parallel atoms `g_drop = ratio · g_kept` merge to
    one (`mergedParallelDesign`), and a dominating subset downstairs pulls back
    upstairs with **no margin at all** (`dominating_of_parallel_pair`): the merged
    atom's squared scale is a convex combination of `1` and `ratio^2`, hence at
    most the larger of the two, so replacing the merged atom by whichever original
-   is longer only ADDS a positive semidefinite rank one.  This is the one branch
-   of the induction that is margin-free, and that is not an accident — see the
-   ceiling warning below.
+   is longer only ADDS a positive semidefinite rank one.  This is one of the two
+   branches of the induction that are margin-free, and that is not an accident —
+   see the ceiling warning below.  CALIBRATION, so the branch is not oversold:
+   exact parallelism is a codimension `rank − 1` condition on the atom family, so
+   this branch discharges a Lebesgue-null part of design space.  Its worth is not
+   measure-theoretic.  It is that the near-parallel corner is where the ties
+   live, and this is the only known way to pay any part of that corner at all.
 
-5. **The shell.**  `gtzWeighted_of_branches` assembles the three branches with
-   branch (i) discharged by 4 and branches (ii)/(iii) as explicitly named
-   hypotheses; `gtzWeightedSix_of_branches` and `gtzWeightedSeven_of_branches`
-   are the rank-three instances, based on the unconditional
-   `Gtz.gtzWeighted_corank_two`.
+5. **Two shells.**  `gtzWeighted_of_branches` is the qualitative one: branch (i)
+   discharged by the merge, `DustDropCertificate` and `SpreadFloorCertificate`
+   named.  It is exhaustive by construction because `IsSpreadAndFloored` is
+   DEFINED as the negation of the other two triggers — which is exactly what it
+   pays: the region so defined is open, not compact, and no positive margin is
+   available on it (NO-GO 1 below).
+   `gtzWeightedRankThree_of_compactBranches` is the honest one.  It reuses the
+   region predicates of `Gtz.Quantitative.FlooredSpreadRegion`
+   (`Gtz.HasSpreadAtLeast`, `Gtz.HasWeightFloor`, `Gtz.IsFlooredSpreadDesign`)
+   rather than re-inventing them, discharges TWO branches margin-free — a light
+   atom by `Gtz.dominating_of_light_atom`, an exactly parallel pair by the merge
+   — and leaves THREE named residues: `NearParallelCertificate` (the corner
+   between exact parallelism and the angular floor), `DustDropCertificate`, and
+   `FlooredSpreadDominationCertificate` on a region that is closed in the atoms.
+   At size six the last residue follows from the repo's own
+   `Gtz.FlooredSpreadCovering`
+   (`flooredSpreadDominationCertificate_six_of_flooredSpreadCovering`), so the
+   two files state ONE hypothesis between them, not two.
 
 ## PROVED here (kernel-checked)
 
 `DominatesAtLevel` and its dictionary against `Gtz.GtzWeightedFloor`;
-`splitDesign` and the full split correspondence; the strict congruence kit and
-`LoewnerEquiv`; `exists_naimarkDual_loewnerEquiv` and `isTie_naimarkDual`;
-`whitenedFamilyDesign` with both transfer directions;
-`mergedParallelDesign` with the exact-parallel pullback; the branch shell.
+`splitDesign` and the full split correspondence — including the fact that the
+SHARE is invisible to every Loewner verdict, since `isTie_splitDesign_iff`,
+`exists_dominating_splitDesign_iff` and the level-wise transfer all hold at an
+ARBITRARY share; the strict congruence kit and `LoewnerEquiv`;
+`exists_naimarkDual_loewnerEquiv` and `isTie_naimarkDual`;
+`whitenedFamilyDesign` with both transfer directions, the pinch composite and the
+join `whitenedDesign_subsetSum_eq`; `mergedParallelDesign` with the exact-parallel
+pullback; both shells; the diamond's non-parallelism and the falsity of the
+hinge at `(5,3)`;
+and the three fences that keep the shells off dead routes —
+`dustBudget_forces_leverage_le_one`,
+`dustDropCertificate_of_floor_collapses_to_lightAtom`, the weight-floor dichotomy
+`hasDustAtom_of_sizeInv_lt_floor`, and the weight-independence of the graphic
+share `atomShare_graphicDesign_of_solves`.
 
 ## CITED, not verified here
 
@@ -77,33 +114,117 @@ machinery, and this file mechanizes them in one place.
   four-congruence route, and `exists_naimarkDual_loewnerEquiv` below delivers the
   definite half by the same route.
 
+## PROVENANCE of the two long proofs
+
+`exists_naimarkDual_loewnerEquiv` is NOT an independent construction.  Its body —
+the whitener `R`, the isometry `Amat`, the co-design, the orthonormal completion
+`B`, the embedding, the two diagonal congruences — is the body of
+`Gtz.weighted_naimark_duality` (`Gtz.Reduction.Naimark`), copied essentially
+verbatim; 222 of its 240 lines are byte-identical to that proof (measured, not
+asserted).  What is new is
+the last dozen lines: the chain is walked ONCE in `LoewnerEquiv` instead of twice
+in `PosSemidef`, which is what buys the definite verdict.  The consequence is
+that the old theorem is now a corollary of the new one —
+`weighted_naimark_duality_of_loewnerEquiv` below proves exactly that in two lines
+— so the ~280-line proof in `Gtz.Reduction.Naimark` is redundant and should be
+replaced by that corollary rather than maintained in parallel.  This file cannot
+do the deletion; it can only leave the retirement path compiled and ready.
+
+The atom family of `splitDesign` is `Gtz.replicatedAtoms` on the nose
+(`splitAtoms_eq_replicatedAtoms` is `rfl`); the fold is `Gtz.replicationMerge`.
+Only the weight family is new.
+
 ## MEASURED elsewhere, claimed by nothing here
 
-The split share is irrelevant to every Loewner verdict (exact-rational check over
-shares `1/2, 1/3, 9/10, 1/1000` at `(6,3)` and `(7,3)`); the merge and drop cost
-constants; the `4·tau^2` law on the `(6,3)` critical stratum; the tie-class
-census.  None of that is asserted below.  What is asserted is exactly what is
-proved.
+The merge and drop cost constants; the `4·tau^2` law on the `(6,3)` critical
+stratum; the tie-class census.  None of that is asserted below.  What is asserted
+is exactly what is proved.  (Share-irrelevance USED to be listed here on the
+strength of exact-rational spot checks; it has since been proved in general and
+now sits under PROVED.)
 
-## The honest hypothesis list of the shell
+## The honest hypothesis list of the shells
 
-`gtzWeighted_of_branches` leaves TWO hypotheses, both named, neither buried:
-`hdust` (the drop branch) and `hspread` (the spread-and-floored branch).  Branch
-(i) is discharged.  The drop branch is supplied here in the conditional forms
-`exists_dominating_of_dust_atom` and `dustDropCertificate_of_floor`, which make
-visible the fact that it needs a strictly positive level one size down and an
-explicit share budget.  Branch (iii) is supplied as
-`StratumNeighborhoodCovering`, and `HingeAtSize` records the open structural
-lemma that makes the branch-(iii) region tie-free.
+`gtzWeighted_of_branches` leaves THREE hypotheses, all named, none buried:
+`hrecursive` (weighted GTZ one size down — at the `(7,3)` instance that is the
+open problem one size down, and it is what branch (i) consumes), `hdust` (the
+drop branch) and `hspread` (the spread-and-floored branch).  Branch (i) is
+discharged.  The drop branch is supplied in the conditional forms
+`exists_dominating_of_dust_atom`, `dustDropCertificate_of_floor` and
+`dustDropCertificate_of_floorOnRegion`, which make visible the fact that it needs
+a strictly positive level one size down and an explicit share budget.
+
+`gtzWeightedRankThree_of_compactBranches` leaves FOUR: `hrecursive`, plus the
+three residues `hnearParallel`, `hdust`, `hregion`.
+
+`HingeHoldsAtSize` records the campaign's open structural lemma.  It is proved
+FALSE at `(5,3)` here (`not_hingeHoldsAtSize_five_three`), and it is inert: it is
+consumed only by `not_isTie_of_hinge_of_spread`, which nothing else consumes.
+That is deliberate and worth stating plainly — tie-freeness is NOT a margin.  A
+region can be tie-free and still have infimal margin zero, because the tie can
+sit in its closure; that is precisely how NO-GO 1 kills the qualitative region.
 
 **CEILING WARNING (proved elsewhere in the repo, must not be forgotten).**
 `Gtz.paddedTetraDesign` is an exact tie at every size `>= 4`
 (`Gtz.paddedTetraDesign_isTie`), so `GtzWeightedFloor m 3 level` is FALSE for
-every `level > 1` and every `m >= 4`.  Consequently no branch of any induction on
-rank three may consume a globally positive margin one size down.  The merge
-branch here is margin-free precisely for that reason; the drop branch is not, and
-its margin hypothesis can only ever be satisfied RELATIVE to a region, never
-globally.
+every `level > 1` and every `m >= 4` (`Gtz.not_gtzWeightedFloor_rankThree_of_one_lt`,
+contrapositive `Gtz.gtzWeightedFloor_rankThree_level_le_one`).  Consequently no
+branch of any induction on rank three may consume a globally positive margin one
+size down.  The merge and light-atom branches are margin-free precisely for that
+reason; the drop branch is not, and its margin hypothesis can only ever be
+satisfied RELATIVE to a region, never globally.
+
+## NO-GO ledger for this file's own routes
+
+1. **A margin on the QUALITATIVE spread region does not exist.**
+   `IsSpreadAndFloored` asks for `¬ HasParallelPair` — an OPEN condition — so the
+   region is not compact, its closure meets the tie locus, and the infimum of the
+   margin over it is `0`.  Exact witnesses (adversarial audit, certified in
+   rationals, not floats): the bundled cycle on four arcs at `(6,3)` with bundle
+   sizes `(2,2,1,1)`, conductances `(1/8,1/8,1/5,1/5)` and UNIFORM weights `1/6`
+   is an exact tie; pulling its two parallel pairs apart by `delta = 10^-12`
+   leaves a design with no parallel pair, weights still exactly `1/6` — the
+   LARGEST floor six weights admit — that dominates at level `1` and at no level
+   `1 + 10^-10`.  Same pattern at `(7,3)` with bundle sizes `(2,2,2,1)`,
+   conductances `(1/10,1/10,1/10,1/6)`, weights `1/7`.  An earlier draft shipped
+   `StratumNeighborhoodCovering` as "the one genuinely analytic input of the
+   plan", justified by a compactness claim citing `Gtz.collaredSet` — which is
+   the wrong set on two counts (it carries an all-heavy LEVERAGE floor the
+   region does not, and no spread condition at all).  Both the definition and its
+   constructor are RETRACTED.  The compact replacement is
+   `Gtz.IsFlooredSpreadDesign`, whose spread condition `Gtz.HasSpreadAtLeast` is
+   a closed polynomial inequality.
+2. **The globally floored dust branch is inert at rank three.**  With `rank = 3`
+   and size `>= 4` the ceiling forces `level <= 1`, and then the budget
+   `1 − t_d <= level·(1 − s_d)` forces `s_d <= t_d`, i.e. leverage `<= 1` — the
+   hypothesis of `Gtz.dominating_of_light_atom`, which is already a theorem.  So
+   `dustDropCertificate_of_floor` never reaches past the repo's light-atom lemma
+   at rank three.  This is PROVED here, not asserted:
+   `dustBudget_forces_leverage_le_one` and
+   `dustDropCertificate_of_floor_collapses_to_lightAtom`.  Worse for the naive
+   reading, `Gtz.atomShare` on a graphic design is weight-INDEPENDENT —
+   `atomShare_graphicDesign_of_solves` proves `t_e·leverage_e = c_e·(b_e ⬝ᵥ y)`
+   for any `y` solving `L y = b_e`, a quantity with no weight in it — so making
+   an atom light does not make it cheap to drop; it only inflates the leverage.
+   The live form is
+   `dustDropCertificate_of_floorOnRegion`, whose floor is asked only of the
+   designs the deflation actually produces.
+3. **No weight floor makes both residues non-trivial at once.**  Every design of
+   size `n` has an atom of weight at most `1/n`.  For `weightFloor > 1/n` every
+   design carries dust, so the spread residue is VACUOUS and the dust residue is
+   literally the goal (`dustDropCertificate_iff_gtzWeighted_of_sizeInv_lt_floor`);
+   for `weightFloor <= 1/n`, NO-GO 1 applies to the qualitative region.  Both
+   halves are mechanized below.  Read the shells as specifications of what is
+   owed, never as progress.
+4. **The two region shapes cannot both be had.**  With the qualitative predicate
+   the trichotomy is exhaustive but region (iii) is open; with the quantitative
+   predicate region (iii) is compact but a fourth residue appears — the corner
+   `0 < spread < spreadThreshold` of near-but-not-exactly-parallel pairs — which
+   the merge cannot pay, since merging at angular defect `eps` leaves a frame
+   defect of size `Theta(eps)` (`Gtz.mergeFrameDefect_eq`) and pulling that back
+   needs a positive margin one size down, which the ceiling forbids.  The compact
+   shell below names that corner `NearParallelCertificate` instead of absorbing
+   it.  Closing it, or proving it cannot be closed, is the sharpest open question
+   this file exposes.
 -/
 import Mathlib
 import Gtz.Core.Basic
@@ -112,6 +233,9 @@ import Gtz.LinAlg.PsdKit
 import Gtz.LinAlg.SchurRankOne
 import Gtz.LinAlg.Completion
 import Gtz.Design.MarginTransfer
+import Gtz.Design.DiamondPrimitive
+import Gtz.Quantitative.FlooredSpreadRegion
+import Gtz.Quantitative.GlobalMinimumRankThree
 import Gtz.Certificates.ResidueDissolution
 import Gtz.Reduction.Naimark
 import Gtz.Reduction.Deflation
@@ -377,15 +501,6 @@ of the split atom, or exactly one, or both.  The first two classes descend along
 `Gtz.replicationMerge` with the atom sum UNCHANGED; the third never dominates.
 -/
 
-/-- Folding the fresh copy back is atom-preserving. -/
-theorem atom_replicationMerge_eq_replicatedAtoms (D : WeightedDesign m k) (splitLabel : Fin m)
-    (c : Fin (m + 1)) :
-    D.atom (replicationMerge splitLabel c) = replicatedAtoms D splitLabel c := by
-  refine Fin.lastCases ?_ ?_ c
-  · rw [replicationMerge_last, replicatedAtoms_last]
-  · intro index
-    rw [replicationMerge_castSucc, replicatedAtoms_castSucc]
-
 /-- Folding back is injective on any subset that does not hold both copies. -/
 theorem injOn_replicationMerge_of_not_both (splitLabel : Fin m) {C : Finset (Fin (m + 1))}
     (hnotBoth : Fin.last m ∈ C → splitLabel.castSucc ∉ C) :
@@ -426,7 +541,7 @@ theorem subsetSum_image_replicationMerge (D : WeightedDesign m k) (splitLabel : 
   rw [subsetSum, subsetSum, Finset.sum_image
     (fun left hleft right hright hmerge => hinjective hleft hright hmerge)]
   exact Finset.sum_congr rfl fun c _ => by
-    rw [atom_replicationMerge_eq_replicatedAtoms]
+    rw [atom_replicationMerge]
     rfl
 
 /-- **The atom sum lifts unchanged** along the plain embedding. -/
@@ -441,7 +556,7 @@ theorem subsetSum_splitDesign_image_castSucc (D : WeightedDesign m k) (splitLabe
   exact Finset.sum_congr rfl fun index _ => by
     rw [splitDesign_atom_castSucc]
 
-theorem card_image_castSucc (baseSubset : Finset (Fin m)) :
+theorem card_image_castSucc_eq (baseSubset : Finset (Fin m)) :
     (baseSubset.image (Fin.castSucc : Fin m → Fin (m + 1))).card = baseSubset.card :=
   Finset.card_image_of_injective _ (Fin.castSucc_injective m)
 
@@ -525,7 +640,7 @@ theorem exists_dominating_splitDesign_iff (D : WeightedDesign m k) (splitLabel :
       rw [← hsum]
       exact hdominates
   · rintro ⟨baseSubset, hbaseCard, hdominates⟩
-    exact ⟨baseSubset.image Fin.castSucc, by rw [card_image_castSucc, hbaseCard],
+    exact ⟨baseSubset.image Fin.castSucc, by rw [card_image_castSucc_eq, hbaseCard],
       (dominates_splitDesign_image_castSucc_iff D splitLabel hshareLow hshareHigh
         baseSubset).mpr hdominates⟩
 
@@ -541,7 +656,7 @@ theorem isTie_splitDesign_iff (D : WeightedDesign m k) (splitLabel : Fin m) {sha
     refine ⟨(exists_dominating_splitDesign_iff D splitLabel hshareLow hshareHigh).mp hexists,
       fun baseSubset hbaseCard => ?_⟩
     rw [← posDef_splitDesign_image_castSucc_iff D splitLabel hshareLow hshareHigh baseSubset]
-    exact hnostrict _ (by rw [card_image_castSucc, hbaseCard])
+    exact hnostrict _ (by rw [card_image_castSucc_eq, hbaseCard])
   · rintro ⟨hexists, hnostrict⟩
     refine ⟨(exists_dominating_splitDesign_iff D splitLabel hshareLow hshareHigh).mpr hexists,
       fun C hcard => ?_⟩
@@ -771,9 +886,23 @@ That is what `IsTie` needs, and the PSD statement alone does not give it: `IsTie
 asserts that some subset dominates AND that none dominates strictly, and the
 second conjunct is a negated definite claim.
 
-The construction below is the one in `Gtz.Reduction.Naimark` — same whitener,
-same co-design, same orthonormal completion.  What is new is the assembly: the
-chain is walked ONCE, in `LoewnerEquiv`, instead of twice in `PosSemidef`.
+PROVENANCE, stated precisely rather than gestured at: the construction below is
+COPIED from `Gtz.weighted_naimark_duality` — same whitener, same co-design, same
+orthonormal completion, 222 of 240 lines byte-identical, `-- STEP N` markers
+included so the two read alike.  What is new is the last dozen lines, where the
+chain is walked ONCE in `LoewnerEquiv` instead of twice in `PosSemidef`.  Since
+`Dominates D C` unfolds to `(subsetSum D C − 1).PosSemidef`, the old theorem is
+the first projection of the new one; `weighted_naimark_duality_of_loewnerEquiv`
+proves that in two lines and is the retirement path for the older proof.
+
+TRAP for anyone reusing this.  The dual here is NOT the textbook Naimark
+complement.  The natural choice — rows `√t_c · g_c`, which are orthonormal by
+Parseval — makes the flip FALSE; an adversarial audit measured one to two
+PSD/PosDef mismatches per random `(5,3)` design with it.  The correct isometry is
+the one below, rows `√(1 − t_c) · (Rᵀ g_c)` where `R` whitens the CO-Parseval
+operator `Σ_c (1 − t_c) A_c`.  The reason is that `Dominates` is weight-free
+while Parseval is not, so the complement that has to be orthonormal is the one
+built from `1 − t_c`.
 -/
 
 /-- **Naimark duality as a two-sided Loewner equivalence.**  For every weighted
@@ -836,6 +965,7 @@ theorem exists_naimarkDual_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
     set Z : Matrix (Fin (m - k)) (Fin (m - k)) ℝ :=
       Matrix.of (fun i j => (Real.sqrt (D.weight (embed i)))⁻¹ * B (embed i) j)
       with hZ
+    -- STEP 0: the complement dictionary S_C − 1 = W − S_{Cᶜ}
     have hL1 : subsetSum D C - 1
         = (∑ c, (1 - D.weight c) • atomMatrix (D.atom c)) - subsetSum D Cᶜ := by
       have hp := D.isParseval
@@ -854,6 +984,7 @@ theorem exists_naimarkDual_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
         exact Finset.sum_congr rfl fun c _ => by rw [sub_smul, one_smul]
       rw [subsetSum, subsetSum, hsplitW, hsub C, hsub Cᶜ, ← hp]
       abel
+    -- STEP 1: congruence by the whitening R
     have hWS_symm : ((∑ c, (1 - D.weight c) • atomMatrix (D.atom c))
         - subsetSum D Cᶜ)ᵀ
         = (∑ c, (1 - D.weight c) • atomMatrix (D.atom c)) - subsetSum D Cᶜ := by
@@ -878,6 +1009,7 @@ theorem exists_naimarkDual_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
         rw [subsetSum, Matrix.mul_sum, Matrix.sum_mul]
         exact Finset.sum_congr rfl fun e _ => transpose_mul_atomMatrix_mul R _
       rw [Matrix.mul_sub, Matrix.sub_mul, hRWR, hRS, hYY]
+    -- STEP 2 matrices: the A-row and B-row Gram formulas
     have hArow : ∀ c e, (Amat * Amatᵀ) c e
         = Real.sqrt (1 - D.weight c) * Real.sqrt (1 - D.weight e)
           * ((Rᵀ *ᵥ D.atom c) ⬝ᵥ (Rᵀ *ᵥ D.atom e)) := by
@@ -900,6 +1032,7 @@ theorem exists_naimarkDual_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
       exact Finset.sum_congr rfl fun j _ => by ring
     have hembinj : Function.Injective embed := fun i i' hii' =>
       (Cᶜ.orderIsoOfFin hCc).toEquiv.injective (Subtype.val_injective hii')
+    -- STEP 2: diagonal congruence by √s carries 1 − YYᵀ to D_s − (AAᵀ)|_{Cᶜ}
     have hdiagS : (Matrix.diagonal
           (fun i => Real.sqrt (1 - D.weight (embed i))))ᵀ
           * (1 - Y * Yᵀ)
@@ -918,6 +1051,7 @@ theorem exists_naimarkDual_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
         linear_combination hss
       · rw [if_neg hne, if_neg hne]
         ring
+    -- STEP 3: completeness swaps the A-block for the B-block
     have hcompl_entry : ∀ i i',
         (Amat * Amatᵀ) (embed i) (embed i') + (B * Bᵀ) (embed i) (embed i')
           = if i = i' then 1 else 0 := by
@@ -939,6 +1073,7 @@ theorem exists_naimarkDual_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
       · rw [if_neg hne] at hce
         rw [if_neg hne, if_neg hne]
         linarith
+    -- STEP 4: diagonal congruence by 1/√t carries it to ZZᵀ − 1
     have hdiagT : (Matrix.diagonal
           (fun i => (Real.sqrt (D.weight (embed i)))⁻¹))ᵀ
           * (Matrix.of (fun i i' => (B * Bᵀ) (embed i) (embed i'))
@@ -968,6 +1103,7 @@ theorem exists_naimarkDual_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
         linear_combination (-1 : ℝ) * hinv1
       · rw [if_neg hne, if_neg hne]
         ring
+    -- STEP 5: the dual dictionary ZᵀZ = S′_{Cᶜ}
     have hZZdual : Zᵀ * Z = ∑ e ∈ Cᶜ,
         atomMatrix ((Real.sqrt (D.weight e))⁻¹ • (fun j => B e j)) := by
       rw [transpose_mul_self_eq_sum_rows, ← sum_orderIsoOfFin Cᶜ hCc
@@ -1012,6 +1148,19 @@ theorem exists_naimarkDual_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
     refine LoewnerEquiv.trans (loewnerEquiv_congr_right hXsymm2 hdetT) ?_
     rw [hdiagT, ← hZZdual]
     exact LoewnerEquiv.symm (loewnerEquiv_transpose_mul_sub_one_comm Z)
+
+/-- **The shipped PSD flip is a corollary.**  `Gtz.weighted_naimark_duality` is
+the first projection of `exists_naimarkDual_loewnerEquiv`, because `Dominates D C`
+IS `(subsetSum D C − 1).PosSemidef`.  Shipped so that the ~280-line proof in
+`Gtz.Reduction.Naimark` can be replaced by these two lines instead of maintained
+beside a copy of itself; this file may not edit that module. -/
+theorem weighted_naimark_duality_of_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
+    (D : WeightedDesign m k) :
+    ∃ dualDesign : WeightedDesign m (m - k),
+      (∀ c, dualDesign.weight c = D.weight c) ∧
+      ∀ C : Finset (Fin m), C.card = k → (Dominates D C ↔ Dominates dualDesign Cᶜ) := by
+  obtain ⟨dualDesign, hweights, hequiv⟩ := exists_naimarkDual_loewnerEquiv hk hkm D
+  exact ⟨dualDesign, hweights, fun C hC => (hequiv C hC).1⟩
 
 /-- **The tie predicate crosses Naimark duality.**  A design is an exact tie iff
 its dual is: the dominating subset maps to its complement, and the absence of a
@@ -1084,18 +1233,23 @@ def FrameOperatorIsPinched (frameOperator : Matrix (Fin k) (Fin k) ℝ) (etaBoun
   (frameOperator - (1 - etaBound) • (1 : Matrix (Fin k) (Fin k) ℝ)).PosSemidef ∧
   ((1 + etaBound) • (1 : Matrix (Fin k) (Fin k) ℝ) - frameOperator).PosSemidef
 
+/-- The LOWER pinch alone gives the Rayleigh floor; the upper half is not used,
+so it is not demanded. -/
 theorem framePinched_form_lower {frameOperator : Matrix (Fin k) (Fin k) ℝ} {etaBound : ℝ}
-    (hpinch : FrameOperatorIsPinched frameOperator etaBound) (probe : Fin k → ℝ) :
+    (hlowerPinch : (frameOperator - (1 - etaBound) • (1 : Matrix (Fin k) (Fin k) ℝ)).PosSemidef)
+    (probe : Fin k → ℝ) :
     (1 - etaBound) * (probe ⬝ᵥ probe) ≤ probe ⬝ᵥ (frameOperator *ᵥ probe) := by
-  have hstep := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpinch.1).2 probe
+  have hstep := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hlowerPinch).2 probe
   rw [star_trivial, Matrix.sub_mulVec, dotProduct_sub, Matrix.smul_mulVec,
     Matrix.one_mulVec, dotProduct_smul, smul_eq_mul] at hstep
   linarith
 
+/-- The UPPER pinch alone gives the Rayleigh cap. -/
 theorem framePinched_form_upper {frameOperator : Matrix (Fin k) (Fin k) ℝ} {etaBound : ℝ}
-    (hpinch : FrameOperatorIsPinched frameOperator etaBound) (probe : Fin k → ℝ) :
+    (hupperPinch : ((1 + etaBound) • (1 : Matrix (Fin k) (Fin k) ℝ) - frameOperator).PosSemidef)
+    (probe : Fin k → ℝ) :
     probe ⬝ᵥ (frameOperator *ᵥ probe) ≤ (1 + etaBound) * (probe ⬝ᵥ probe) := by
-  have hstep := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpinch.2).2 probe
+  have hstep := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hupperPinch).2 probe
   rw [star_trivial, Matrix.sub_mulVec, dotProduct_sub, Matrix.smul_mulVec,
     Matrix.one_mulVec, dotProduct_smul, smul_eq_mul] at hstep
   linarith
@@ -1111,7 +1265,7 @@ theorem posDef_of_framePinched {frameOperator : Matrix (Fin k) (Fin k) ℝ} {eta
   refine Matrix.posDef_iff_dotProduct_mulVec.mpr
     ⟨isHermitian_of_transpose_eq hsymmetric, fun probe hprobe => ?_⟩
   rw [star_trivial]
-  have hlower := framePinched_form_lower hpinch probe
+  have hlower := framePinched_form_lower hpinch.1 probe
   have hlengthPos := dotProduct_self_pos hprobe
   nlinarith [hlower, hlengthPos]
 
@@ -1122,6 +1276,39 @@ theorem exists_whitener_of_framePinched {frameOperator : Matrix (Fin k) (Fin k) 
       IsUnit whitener.det ∧ whitenerᵀ * frameOperator * whitener = 1 :=
   exists_congruence_to_one (posDef_of_framePinched hetaBelowOne hpinch)
 
+/-- **A pinched family whitens to a design** — the composite the header advertises
+and the only route that turns a pinch into a `WeightedDesign`.  The side condition
+`etaBound < 1` is not decoration: at `etaBound >= 1` the lower pinch is vacuous
+and the frame operator need not be invertible.  Everything a transfer needs is
+returned: the whitener, its unit determinant, the whitening identity, and the
+atom and weight formulas. -/
+theorem exists_whitenedDesign_of_framePinched (atomFamily : Fin m → (Fin k → ℝ))
+    (weightFamily : Fin m → ℝ) (hweightPos : ∀ c, 0 < weightFamily c)
+    (hweightSumOne : ∑ c, weightFamily c = 1) {etaBound : ℝ} (hetaBelowOne : etaBound < 1)
+    (hpinch : FrameOperatorIsPinched
+      (∑ c, weightFamily c • atomMatrix (atomFamily c)) etaBound) :
+    ∃ (whitener : Matrix (Fin k) (Fin k) ℝ) (whitenedDesign : WeightedDesign m k),
+      IsUnit whitener.det
+      ∧ whitenerᵀ * (∑ c, weightFamily c • atomMatrix (atomFamily c)) * whitener = 1
+      ∧ (∀ c, whitenedDesign.atom c = whitenerᵀ *ᵥ atomFamily c)
+      ∧ (∀ c, whitenedDesign.weight c = weightFamily c) := by
+  obtain ⟨whitener, hwhitenerUnit, hwhiten⟩ := exists_whitener_of_framePinched hetaBelowOne hpinch
+  exact ⟨whitener,
+    whitenedFamilyDesign atomFamily weightFamily hweightPos hweightSumOne whitener hwhiten,
+    hwhitenerUnit, hwhiten, fun _ => rfl, fun _ => rfl⟩
+
+/-- **The join.**  The two Rayleigh transfers below are stated for a FREE
+`frameOperator` and a raw sum of atom matrices; this identifies that sum with the
+whitened design's `subsetSum`, so a consumer never has to re-derive the link. -/
+theorem whitenedDesign_subsetSum_eq (atomFamily : Fin m → (Fin k → ℝ))
+    (weightFamily : Fin m → ℝ) (hweightPos : ∀ c, 0 < weightFamily c)
+    (hweightSumOne : ∑ c, weightFamily c = 1) (whitener : Matrix (Fin k) (Fin k) ℝ)
+    (hwhiten : whitenerᵀ * (∑ c, weightFamily c • atomMatrix (atomFamily c)) * whitener = 1)
+    (selected : Finset (Fin m)) :
+    subsetSum (whitenedFamilyDesign atomFamily weightFamily hweightPos hweightSumOne
+        whitener hwhiten) selected
+      = ∑ c ∈ selected, atomMatrix (whitenerᵀ *ᵥ atomFamily c) := rfl
+
 /-- **Whitened to raw**: a Rayleigh floor on the whitened family transfers to the
 raw family at the cost of the LOWER pinch.  This is
 `Gtz.whitenedPullback_form_ge` at `defect = 1 − frameOperator`. -/
@@ -1129,7 +1316,7 @@ theorem rawForm_ge_of_whitenedForm_ge (atomFamily : Fin m → (Fin k → ℝ))
     (selected : Finset (Fin m)) {frameOperator whitener : Matrix (Fin k) (Fin k) ℝ}
     {etaBound level : ℝ} (hwhitenerUnit : IsUnit whitener.det)
     (hwhiten : whitenerᵀ * frameOperator * whitener = 1)
-    (hpinch : FrameOperatorIsPinched frameOperator etaBound)
+    (hlowerPinch : (frameOperator - (1 - etaBound) • (1 : Matrix (Fin k) (Fin k) ℝ)).PosSemidef)
     (hlevelNonneg : 0 ≤ level)
     (hwhitenedFloor : ∀ preimage : Fin k → ℝ, level * (preimage ⬝ᵥ preimage)
       ≤ preimage ⬝ᵥ ((∑ c ∈ selected, atomMatrix (whitenerᵀ *ᵥ atomFamily c)) *ᵥ preimage))
@@ -1141,7 +1328,7 @@ theorem rawForm_ge_of_whitenedForm_ge (atomFamily : Fin m → (Fin k → ℝ))
   · rw [sub_sub_cancel]
     exact hwhiten
   · intro probeInner
-    have hlower := framePinched_form_lower hpinch probeInner
+    have hlower := framePinched_form_lower hlowerPinch probeInner
     rw [Matrix.sub_mulVec, dotProduct_sub, Matrix.one_mulVec]
     linarith
 
@@ -1152,7 +1339,7 @@ theorem whitenedForm_ge_of_rawForm_ge (atomFamily : Fin m → (Fin k → ℝ))
     (selected : Finset (Fin m)) {frameOperator whitener : Matrix (Fin k) (Fin k) ℝ}
     {etaBound level : ℝ} (hwhitenerUnit : IsUnit whitener.det)
     (hwhiten : whitenerᵀ * frameOperator * whitener = 1)
-    (hpinch : FrameOperatorIsPinched frameOperator etaBound)
+    (hupperPinch : ((1 + etaBound) • (1 : Matrix (Fin k) (Fin k) ℝ) - frameOperator).PosSemidef)
     (hlevelNonneg : 0 ≤ level) (hetaNonneg : 0 ≤ etaBound)
     (hrawFloor : ∀ probe : Fin k → ℝ, level * (probe ⬝ᵥ probe)
       ≤ probe ⬝ᵥ ((∑ c ∈ selected, atomMatrix (atomFamily c)) *ᵥ probe))
@@ -1174,7 +1361,7 @@ theorem whitenedForm_ge_of_rawForm_ge (atomFamily : Fin m → (Fin k → ℝ))
   have hlengthCap : preimage ⬝ᵥ preimage
       ≤ (1 + etaBound) * ((whitener *ᵥ preimage) ⬝ᵥ (whitener *ᵥ preimage)) := by
     rw [hlengthEq, sub_sub_cancel]
-    exact framePinched_form_upper hpinch (whitener *ᵥ preimage)
+    exact framePinched_form_upper hupperPinch (whitener *ᵥ preimage)
   have hrawStep := hrawFloor (whitener *ᵥ preimage)
   rw [hformEq]
   nlinarith [hlengthCap, hrawStep, hlevelNonneg, hetaNonneg]
@@ -1534,7 +1721,97 @@ theorem exists_dominating_of_dust_atom (D : WeightedDesign (m + 1) k)
   · exact dominates_image_of_deflated_dominatesAtLevel D dropLabel hwhitenerUnit hgap hwhiten
       hlevelNonneg hdown hbudget
 
-/-! ## The three-branch induction shell
+/-- **The dust-drop branch from a level that need only hold where the deflation
+lands.**  Identical to `exists_dominating_of_dust_atom` except that the level is
+supplied for the deflated design itself rather than by a global
+`Gtz.GtzWeightedFloor` one size down.  This is the form the rank-three ceiling
+leaves alive: `dustBudget_forces_leverage_le_one` shows the global form collapses
+to `Gtz.dominating_of_light_atom`, and the reason is that the ceiling caps the
+GLOBAL level at one.  A level on a proper region is not capped by that argument. -/
+theorem exists_dominating_of_dust_atom_of_deflatedLevel (D : WeightedDesign (m + 1) k)
+    (dropLabel : Fin (m + 1)) (hgap : 0 < 1 - D.weight dropLabel) {level : ℝ}
+    (hlevelNonneg : 0 ≤ level) (hshareBelowOne : atomShare D dropLabel < 1)
+    (hdeflatedLevel : ∀ (whitener : Matrix (Fin k) (Fin k) ℝ)
+      (hwhiten : whitenerᵀ * (1 - D.weight dropLabel • atomMatrix (D.atom dropLabel))
+        * whitener = 1),
+      ∃ deflatedSubset : Finset (Fin m), deflatedSubset.card = k
+        ∧ DominatesAtLevel (deflatedDesign D dropLabel whitener hgap hwhiten)
+            deflatedSubset level)
+    (hbudget : 1 - D.weight dropLabel ≤ level * (1 - atomShare D dropLabel)) :
+    ∃ C : Finset (Fin (m + 1)), C.card = k ∧ Dominates D C := by
+  have hdeflationPd : ((1 : Matrix (Fin k) (Fin k) ℝ)
+      - D.weight dropLabel • atomMatrix (D.atom dropLabel)).PosDef :=
+    posDef_one_sub_smul_atomMatrix_of_share_lt_one (D.weight_pos dropLabel) hshareBelowOne
+  obtain ⟨whitener, hwhitenerUnit, hwhiten⟩ := exists_congruence_to_one hdeflationPd
+  obtain ⟨deflatedSubset, hcard, hdown⟩ := hdeflatedLevel whitener hwhiten
+  refine ⟨deflatedSubset.image dropLabel.succAbove, ?_, ?_⟩
+  · rw [Finset.card_image_of_injective _ Fin.succAbove_right_injective, hcard]
+  · exact dominates_image_of_deflated_dominatesAtLevel D dropLabel hwhitenerUnit hgap hwhiten
+      hlevelNonneg hdown hbudget
+
+/-! ### Why the globally floored form of this branch is inert at rank three
+
+The ceiling caps every rank-three global floor at level one
+(`Gtz.gtzWeightedFloor_rankThree_level_le_one`).  At `level <= 1` the budget
+`1 − t_d <= level·(1 − s_d)` forces `s_d <= t_d`, i.e. leverage at most one — the
+hypothesis of `Gtz.dominating_of_light_atom`, which is already a theorem.  So the
+globally floored constructor cannot reach a design the repo could not already
+handle.  This is proved, not asserted, and it is the reason
+`exists_dominating_of_dust_atom_of_deflatedLevel` exists. -/
+
+/-- **The budget forces a light atom.**  At rank three, any level that satisfies a
+global floor at some size `>= 4` is at most one, and then the drop budget says the
+dropped atom has leverage at most one. -/
+theorem dustBudget_forces_leverage_le_one {floorSize ambientSize : ℕ}
+    (hfloorSizeFour : 4 ≤ floorSize) {level : ℝ}
+    (hfloor : GtzWeightedFloor floorSize 3 level) (D : WeightedDesign ambientSize 3)
+    (dustLabel : Fin ambientSize) (hshareBelowOne : atomShare D dustLabel < 1)
+    (hbudget : 1 - D.weight dustLabel ≤ level * (1 - atomShare D dustLabel)) :
+    leverageOf (D.atom dustLabel) ≤ 1 := by
+  have hlevelCap : level ≤ 1 := gtzWeightedFloor_rankThree_level_le_one hfloorSizeFour hfloor
+  have hshareGapPos : 0 < 1 - atomShare D dustLabel := by linarith
+  have hweightPos := D.weight_pos dustLabel
+  have hshareLeWeight : atomShare D dustLabel ≤ D.weight dustLabel := by
+    nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ 1 - level) hshareGapPos.le]
+  rw [atomShare] at hshareLeWeight
+  exact le_of_mul_le_mul_left (by rw [mul_one]; exact hshareLeWeight) hweightPos
+
+/-- **The globally floored dust constructor is inert at rank three**: every design
+its share budget applies to already carries a light atom, which
+`Gtz.dominating_of_light_atom` drops with no budget at all. -/
+theorem dustDropCertificate_of_floor_collapses_to_lightAtom {floorSize ambientSize : ℕ}
+    (hfloorSizeFour : 4 ≤ floorSize) {weightFloor level : ℝ}
+    (hfloor : GtzWeightedFloor floorSize 3 level)
+    (hshareBudget : ∀ D : WeightedDesign ambientSize 3, ∀ dustLabel : Fin ambientSize,
+      D.weight dustLabel < weightFloor →
+        atomShare D dustLabel < 1
+        ∧ 1 - D.weight dustLabel ≤ level * (1 - atomShare D dustLabel)) :
+    ∀ D : WeightedDesign ambientSize 3, ∀ dustLabel : Fin ambientSize,
+      D.weight dustLabel < weightFloor → leverageOf (D.atom dustLabel) ≤ 1 := by
+  intro D dustLabel hdustWeight
+  obtain ⟨hshareBelowOne, hbudget⟩ := hshareBudget D dustLabel hdustWeight
+  exact dustBudget_forces_leverage_le_one hfloorSizeFour hfloor D dustLabel
+    hshareBelowOne hbudget
+
+/-- **A graphic design's share does not see the weights.**  If `potential` solves
+`L y = b_e` then the share at `e` is `c_e · (b_e ⬝ᵥ y)` — the weight has cancelled,
+and the right-hand side depends only on the graph and its conductances.  So
+making a graphic atom LIGHT does not make it cheap to drop: its share is fixed and
+only its leverage inflates.  That is the structural reason the drop budget of
+`dustDropCertificate_of_floor` cannot be met by shrinking a weight, and it is why
+the dust branch needs a region-relative level rather than a global one. -/
+theorem atomShare_graphicDesign_of_solves {edgeCount vertexRank : ℕ}
+    (data : GraphDesignData edgeCount vertexRank) (edge : Fin edgeCount)
+    (potential : Fin vertexRank → ℝ)
+    (hsolve : data.fullLaplacian *ᵥ potential = data.graph.edgeVector edge) :
+    atomShare (graphicDesign data) edge
+      = data.conductance edge * (data.graph.edgeVector edge ⬝ᵥ potential) := by
+  have hweightNonzero : data.weight edge ≠ 0 := (data.weight_pos edge).ne'
+  rw [atomShare, leverageOf_graphicAtom_of_solves data edge potential hsolve,
+    graphicDesign_weight]
+  field_simp
+
+/-! ## The qualitative three-branch shell
 
 Every hypothesis of the assembly is a named `Prop` and appears in the statement.
 Branch (i) is DISCHARGED by `dominating_of_parallel_pair`.  Branches (ii) and
@@ -1543,8 +1820,12 @@ Branch (i) is DISCHARGED by `dominating_of_parallel_pair`.  Branches (ii) and
 Read the shell as a specification of what is still owed, not as a proof of
 anything about `GtzWeighted 6 3` or `GtzWeighted 7 3`: instantiating it requires
 producing `DustDropCertificate` and `SpreadFloorCertificate` at a COMMON weight
-floor, and the ceiling warning in the file header says the dust branch's level
-cannot come from a global floor above one.
+floor, and NO weight floor makes both non-trivial —
+`dustDropCertificate_iff_gtzWeighted_of_sizeInv_lt_floor` proves that above
+`1/size` the dust residue IS the goal, and NO-GO 1 of the file header refutes a
+margin below it.  The honest shell is the compact one at the end of this file;
+this one is kept because it is exhaustive, which the compact one buys only by
+naming a fourth residue.
 -/
 
 /-- Two distinct atoms of the design are parallel — one is a scalar multiple of
@@ -1553,15 +1834,86 @@ def HasParallelPair (D : WeightedDesign m k) : Prop :=
   ∃ (keptLabel dropLabel : Fin m) (ratio : ℝ),
     keptLabel ≠ dropLabel ∧ D.atom dropLabel = ratio • D.atom keptLabel
 
-/-- **The hinge** (OPEN, stated only): at size `size` and rank `rank`, every
-exact tie carries a parallel pair.  Exhaustive supporting evidence exists at
-`(6,3)` and the campaign's classification of the equality locus is consistent
-with it, but no proof is claimed here and nothing below assumes it — it is
-consumed only by `not_isTie_of_hinge_of_spread`, which is an implication.
-At `(5,3)` it is FALSE: the diamond `M(K4 − e)` is an unsplit tie with simple
-direction matroid (`Gtz.diamondDesign_isTie`). -/
-def HingeAtSize (size rank : ℕ) : Prop :=
+/-- **Parallel design atoms come from parallel edge vectors.**  A graphic design's
+atom is a POSITIVE multiple of the whitened incidence row, and the whitener is
+invertible, so proportionality of two atoms descends to proportionality of the
+two reduced incidence rows — where it is a statement about small integer vectors.
+This is the tool that makes non-parallelism of a named graphic design checkable. -/
+theorem exists_edgeVector_parallel_of_graphicAtom_parallel {edgeCount vertexRank : ℕ}
+    (data : GraphDesignData edgeCount vertexRank) (keptEdge dropEdge : Fin edgeCount)
+    {ratio : ℝ}
+    (hparallel :
+      (graphicDesign data).atom dropEdge = ratio • (graphicDesign data).atom keptEdge) :
+    ∃ scale : ℝ,
+      data.graph.edgeVector dropEdge = scale • data.graph.edgeVector keptEdge := by
+  have hwhitenerTransposeUnit : IsUnit (data.whitener)ᵀ.det := by
+    rw [Matrix.det_transpose]
+    exact data.whitener_isUnit
+  have hinjective : ∀ leftVector rightVector : Fin vertexRank → ℝ,
+      (data.whitener)ᵀ *ᵥ leftVector = (data.whitener)ᵀ *ᵥ rightVector →
+        leftVector = rightVector := by
+    intro leftVector rightVector himage
+    have hpull : ((data.whitener)ᵀ)⁻¹ *ᵥ ((data.whitener)ᵀ *ᵥ leftVector)
+        = ((data.whitener)ᵀ)⁻¹ *ᵥ ((data.whitener)ᵀ *ᵥ rightVector) := by rw [himage]
+    rwa [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hwhitenerTransposeUnit,
+      Matrix.one_mulVec, Matrix.mulVec_mulVec,
+      Matrix.nonsing_inv_mul _ hwhitenerTransposeUnit, Matrix.one_mulVec] at hpull
+  have hdropScalePos : 0 < Real.sqrt (data.conductance dropEdge / data.weight dropEdge) :=
+    Real.sqrt_pos.mpr (div_pos (data.conductance_pos dropEdge) (data.weight_pos dropEdge))
+  rw [graphicDesign_atom, graphicDesign_atom, graphicAtom_eq_whitenedRow,
+    graphicAtom_eq_whitenedRow, smul_smul] at hparallel
+  refine ⟨ratio * Real.sqrt (data.conductance keptEdge / data.weight keptEdge)
+      / Real.sqrt (data.conductance dropEdge / data.weight dropEdge), hinjective _ _ ?_⟩
+  rw [Matrix.mulVec_smul, div_eq_inv_mul, ← smul_smul, ← hparallel, smul_smul,
+    inv_mul_cancel₀ hdropScalePos.ne', one_smul]
+
+/-- The five reduced incidence rows of the diamond `K4 − e`, grounded at the last
+vertex: the spine, the two edges to the ground, and the two remaining chords. -/
+theorem diamondEdgeVector_eq (edge : Fin 5) :
+    diamondData.graph.edgeVector edge
+      = ![![1, -1, 0], ![1, 0, -1], ![1, 0, 0], ![0, 1, -1], ![0, 1, 0]] edge := by
+  funext coord
+  fin_cases edge <;> fin_cases coord <;>
+    simp [diamondData, diamondGraph, MultigraphOnGround.edgeVector]
+
+/-- **The diamond has no parallel pair.**  Its five incidence rows are pairwise
+non-proportional — every pair is separated by a single vanishing coordinate, or
+by two of them — and proportionality of atoms would force proportionality of
+rows. -/
+theorem not_hasParallelPair_diamondDesign : ¬ HasParallelPair diamondDesign := by
+  rintro ⟨keptLabel, dropLabel, ratio, hdistinct, hparallel⟩
+  obtain ⟨scale, hvec⟩ :=
+    exists_edgeVector_parallel_of_graphicAtom_parallel diamondData keptLabel dropLabel hparallel
+  rw [diamondEdgeVector_eq, diamondEdgeVector_eq] at hvec
+  have hfirstCoord := congrFun hvec 0
+  have hsecondCoord := congrFun hvec 1
+  have hthirdCoord := congrFun hvec 2
+  clear hvec hparallel
+  fin_cases keptLabel <;> fin_cases dropLabel
+  all_goals (try exact absurd rfl hdistinct)
+  all_goals (try norm_num [Pi.smul_apply, smul_eq_mul, Matrix.cons_val_two, Matrix.tail_cons,
+    Matrix.head_cons] at hfirstCoord)
+  all_goals (try norm_num [Pi.smul_apply, smul_eq_mul, Matrix.cons_val_two, Matrix.tail_cons,
+    Matrix.head_cons] at hsecondCoord)
+  all_goals (try norm_num [Pi.smul_apply, smul_eq_mul, Matrix.cons_val_two, Matrix.tail_cons,
+    Matrix.head_cons] at hthirdCoord)
+  all_goals linarith
+
+/-- **The hinge** (OPEN at sizes six and seven, stated only): at size `size` and
+rank `rank`, every exact tie carries a parallel pair.  Exhaustive supporting
+evidence exists at `(6,3)`, and the campaign's classification of the equality
+locus is consistent with it, but no proof is claimed here and nothing below
+assumes it — it is consumed only by `not_isTie_of_hinge_of_spread`, which is an
+implication.  It is a size-six/seven statement and not a general one:
+`not_hingeHoldsAtSize_five_three` proves it FALSE at `(5,3)`. -/
+def HingeHoldsAtSize (size rank : ℕ) : Prop :=
   ∀ D : WeightedDesign size rank, IsTie D → HasParallelPair D
+
+/-- **The hinge is FALSE at `(5,3)`.**  The diamond `M(K4 − e)` is an exact tie
+(`Gtz.diamondDesign_isTie`) with no parallel pair — an unsplit tie with a simple
+direction matroid.  Both halves are kernel-checked; neither is a citation. -/
+theorem not_hingeHoldsAtSize_five_three : ¬ HingeHoldsAtSize 5 3 :=
+  fun hhinge => not_hasParallelPair_diamondDesign (hhinge diamondDesign diamondDesign_isTie)
 
 /-- The design carries an atom below the weight floor. -/
 def HasDustAtom (D : WeightedDesign m k) (weightFloor : ℝ) : Prop :=
@@ -1581,35 +1933,90 @@ def SpreadFloorCertificate (size rank : ℕ) (weightFloor : ℝ) : Prop :=
   ∀ D : WeightedDesign size rank, IsSpreadAndFloored D weightFloor →
     ∃ C : Finset (Fin size), C.card = rank ∧ Dominates D C
 
-/-- **The stratum-neighbourhood covering hypothesis** — branch (iii) with a
-quantitative margin.  This is the one genuinely analytic input of the plan: on
-the compact spread-and-floored region (`Gtz.collaredSet` supplies the
-compactness) the domination margin is bounded below by `marginLevel > 0`.
-Stated, never used as if proved. -/
-def StratumNeighborhoodCovering (size rank : ℕ) (weightFloor marginLevel : ℝ) : Prop :=
-  ∀ D : WeightedDesign size rank, IsSpreadAndFloored D weightFloor →
-    ∃ C : Finset (Fin size), C.card = rank ∧ DominatesAtLevel D C (1 + marginLevel)
+/-! ### The weight-floor dichotomy
 
-theorem spreadFloorCertificate_of_stratumNeighborhoodCovering {size rank : ℕ}
-    {weightFloor marginLevel : ℝ} (hmarginNonneg : 0 ≤ marginLevel)
-    (hcovering : StratumNeighborhoodCovering size rank weightFloor marginLevel) :
-    SpreadFloorCertificate size rank weightFloor := by
-  intro D hspread
-  obtain ⟨C, hcard, hdominates⟩ := hcovering D hspread
-  exact ⟨C, hcard, (dominatesAtLevel_one_iff_dominates D C).mp
-    (dominatesAtLevel_mono (by linarith) hdominates)⟩
+RETRACTED at this point, and recorded so it is not re-attempted: an earlier
+draft shipped a `StratumNeighborhoodCovering` hypothesis — a strictly positive
+margin on the spread-and-floored region — advertised as "the one genuinely
+analytic input of the plan" and justified by a compactness claim citing
+`Gtz.collaredSet`.  Both halves fail.  `Gtz.collaredSet` is the wrong set (it
+carries an all-heavy leverage floor this region does not, and no spread
+condition at all), and the region is NOT compact, because `¬ HasParallelPair` is
+an open condition; its closure meets the tie locus, so the infimum of the margin
+over it is zero and the hypothesis is FALSE at rank three for every positive
+margin and every weight floor.  See NO-GO 1 in the file header for the exact
+witnesses.  The compact replacement is `Gtz.IsFlooredSpreadDesign` and the shell
+at the end of this file.
 
-/-- **What the hinge buys**: the spread-and-floored region is tie-free.  That is
-the whole reason branch (iii) can hope for a strictly positive margin, and the
-reason the hinge is the campaign's one open structural lemma. -/
+What survives is the dichotomy below, which is proved here: above `1/size` the
+dust residue is not a weakening of the goal but the goal itself, and the spread
+residue is vacuous. -/
+
+/-- Some atom of any design weighs at most `1/size` — the weights are positive and
+sum to one, so they cannot all exceed their average. -/
+theorem exists_weight_le_sizeInv (D : WeightedDesign m k) (hsizePos : 0 < m) :
+    ∃ lightLabel : Fin m, D.weight lightLabel ≤ (m : ℝ)⁻¹ := by
+  by_contra hnone
+  simp only [not_exists, not_le] at hnone
+  have hnonempty : (Finset.univ : Finset (Fin m)).Nonempty :=
+    Finset.univ_nonempty_iff.mpr (Fin.pos_iff_nonempty.mp hsizePos)
+  have hstrict : ∑ _c : Fin m, (m : ℝ)⁻¹ < ∑ c, D.weight c :=
+    Finset.sum_lt_sum_of_nonempty hnonempty fun c _ => hnone c
+  rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul,
+    mul_inv_cancel₀ (Nat.cast_ne_zero.mpr hsizePos.ne'), D.weight_sum_one] at hstrict
+  exact lt_irrefl 1 hstrict
+
+/-- **Above `1/size` every design carries dust.**  A weight floor larger than the
+average is unsatisfiable. -/
+theorem hasDustAtom_of_sizeInv_lt_floor (D : WeightedDesign m k) (hsizePos : 0 < m)
+    {weightFloor : ℝ} (hfloorAboveAverage : (m : ℝ)⁻¹ < weightFloor) :
+    HasDustAtom D weightFloor := by
+  obtain ⟨lightLabel, hlight⟩ := exists_weight_le_sizeInv D hsizePos
+  exact ⟨lightLabel, lt_of_le_of_lt hlight hfloorAboveAverage⟩
+
+/-- Above `1/size` the spread-and-floored region is EMPTY. -/
+theorem not_isSpreadAndFloored_of_sizeInv_lt_floor (D : WeightedDesign m k) (hsizePos : 0 < m)
+    {weightFloor : ℝ} (hfloorAboveAverage : (m : ℝ)⁻¹ < weightFloor) :
+    ¬ IsSpreadAndFloored D weightFloor :=
+  fun hspread => hspread.2 (hasDustAtom_of_sizeInv_lt_floor D hsizePos hfloorAboveAverage)
+
+/-- ...so branch (iii) is vacuously discharged there, which is worth exactly
+nothing: branch (ii) has absorbed the whole problem. -/
+theorem spreadFloorCertificate_of_sizeInv_lt_floor {size rank : ℕ} (hsizePos : 0 < size)
+    {weightFloor : ℝ} (hfloorAboveAverage : (size : ℝ)⁻¹ < weightFloor) :
+    SpreadFloorCertificate size rank weightFloor :=
+  fun D hspread =>
+    absurd hspread (not_isSpreadAndFloored_of_sizeInv_lt_floor D hsizePos hfloorAboveAverage)
+
+/-- **The other horn.**  Above `1/size` the dust certificate is not a weakening of
+weighted GTZ — it IS weighted GTZ.  Together with NO-GO 1 (which refutes a margin
+below `1/size`) this says no weight floor makes both residues non-trivial. -/
+theorem dustDropCertificate_iff_gtzWeighted_of_sizeInv_lt_floor {size rank : ℕ}
+    (hsizePos : 0 < size) {weightFloor : ℝ}
+    (hfloorAboveAverage : (size : ℝ)⁻¹ < weightFloor) :
+    DustDropCertificate size rank weightFloor ↔ GtzWeighted size rank :=
+  ⟨fun hdust D => hdust D (hasDustAtom_of_sizeInv_lt_floor D hsizePos hfloorAboveAverage),
+    fun hgtz D _ => hgtz D⟩
+
+/-- **What the hinge buys, and what it does not.**  The spread-and-floored region
+is tie-free.  That is strictly weaker than a margin: a region can be tie-free and
+still have infimal margin zero, because the tie can sit in its CLOSURE, and NO-GO
+1 says that is exactly what happens here.  Nothing in this file consumes this
+lemma; it is the honest statement of the hinge's payload. -/
 theorem not_isTie_of_hinge_of_spread {size rank : ℕ} {weightFloor : ℝ}
-    (hhinge : HingeAtSize size rank) {D : WeightedDesign size rank}
+    (hhinge : HingeHoldsAtSize size rank) {D : WeightedDesign size rank}
     (hspread : IsSpreadAndFloored D weightFloor) : ¬ IsTie D :=
   fun htie => hspread.1 (hhinge D htie)
 
-/-- **The dust branch from a level one size down.**  Everything the branch costs
-is in `hshareBudget`: the dropped atom's share must be below one and the level
-must pay `1 − t_d ≤ level·(1 − s_d)`. -/
+/-- **The dust branch from a GLOBAL level one size down.**  Everything the branch
+costs is in `hshareBudget`: the dropped atom's share must be below one and the
+level must pay `1 − t_d ≤ level·(1 − s_d)`.
+
+INERT AT RANK THREE, and shipped only because the collapse is worth recording.
+`dustDropCertificate_of_floor_collapses_to_lightAtom` proves that at `rank = 3`
+these hypotheses force the dropped atom's leverage below one, which is the
+hypothesis of `Gtz.dominating_of_light_atom` — a theorem already.  Use
+`dustDropCertificate_of_floorOnRegion` instead. -/
 theorem dustDropCertificate_of_floor {rank : ℕ} {weightFloor level : ℝ}
     (hsizeTwo : 2 ≤ m + 1) (hlevelNonneg : 0 ≤ level)
     (hfloor : GtzWeightedFloor m rank level)
@@ -1622,6 +2029,36 @@ theorem dustDropCertificate_of_floor {rank : ℕ} {weightFloor level : ℝ}
   obtain ⟨dustLabel, hdustWeight⟩ := hdust
   obtain ⟨hshare, hbudget⟩ := hshareBudget D dustLabel hdustWeight
   exact exists_dominating_of_dust_atom D dustLabel hsizeTwo hlevelNonneg hshare hfloor hbudget
+
+/-- **The dust branch from a level asked only where the deflation lands.**  The
+same budget, but the level is demanded of the deflated designs themselves rather
+than of every design one size down.  This is the form the rank-three ceiling
+leaves alive, because the ceiling caps GLOBAL floors, not floors on proper
+regions.  The price is visible in `hdeflatedLevel`, which quantifies over the
+whitener the deflation produces. -/
+theorem dustDropCertificate_of_floorOnRegion {rank : ℕ} {weightFloor level : ℝ}
+    (hsizeTwo : 2 ≤ m + 1) (hlevelNonneg : 0 ≤ level)
+    (hshareBudget : ∀ D : WeightedDesign (m + 1) rank, ∀ dustLabel : Fin (m + 1),
+      D.weight dustLabel < weightFloor →
+        atomShare D dustLabel < 1
+        ∧ 1 - D.weight dustLabel ≤ level * (1 - atomShare D dustLabel))
+    (hdeflatedLevel : ∀ (D : WeightedDesign (m + 1) rank) (dustLabel : Fin (m + 1)),
+      D.weight dustLabel < weightFloor →
+      ∀ (whitener : Matrix (Fin rank) (Fin rank) ℝ) (hgap : 0 < 1 - D.weight dustLabel)
+        (hwhiten : whitenerᵀ * (1 - D.weight dustLabel • atomMatrix (D.atom dustLabel))
+          * whitener = 1),
+        ∃ deflatedSubset : Finset (Fin m), deflatedSubset.card = rank
+          ∧ DominatesAtLevel (deflatedDesign D dustLabel whitener hgap hwhiten)
+              deflatedSubset level) :
+    DustDropCertificate (m + 1) rank weightFloor := by
+  intro D hdust
+  obtain ⟨dustLabel, hdustWeight⟩ := hdust
+  obtain ⟨hshareBelowOne, hbudget⟩ := hshareBudget D dustLabel hdustWeight
+  have hgap : 0 < 1 - D.weight dustLabel := by
+    linarith [weight_lt_one D hsizeTwo dustLabel]
+  exact exists_dominating_of_dust_atom_of_deflatedLevel D dustLabel hgap hlevelNonneg
+    hshareBelowOne (fun whitener hwhiten =>
+      hdeflatedLevel D dustLabel hdustWeight whitener hgap hwhiten) hbudget
 
 /-- **The three-branch induction step.**  Branch (i) — an exactly parallel pair —
 is discharged by the merge; branches (ii) and (iii) are the named hypotheses.
@@ -1670,5 +2107,146 @@ theorem gtzWeightedAll_three_of_branches {weightFloorSix weightFloorSeven : ℝ}
   gtzWeightedAll_three_of_seven_three
     (gtzWeightedSeven_of_branches (gtzWeightedSix_of_branches hdustSix hspreadSix)
       hdustSeven hspreadSeven)
+
+/-! ## The compact four-branch shell at rank three
+
+The shell above is exhaustive because its third region is DEFINED as the
+complement of the other two, and it pays for that with an open region on which no
+margin exists (NO-GO 1).  This one pays differently.  It takes the region
+predicates from `Gtz.Quantitative.FlooredSpreadRegion` — `Gtz.HasSpreadAtLeast`
+(squared cosine at most `1 − spread`, a CLOSED polynomial inequality, no
+division), `Gtz.HasWeightFloor`, and their conjunction with all-heaviness
+`Gtz.IsFlooredSpreadDesign` — instead of re-inventing them, and it discharges two
+branches instead of one:
+
+* a LIGHT atom (leverage at most one) by `Gtz.dominating_of_light_atom`, which is
+  where `Gtz.AllHeavy` failing sends us — margin-free;
+* an EXACTLY parallel pair by the merge of this file — margin-free.
+
+What it does not get for free is the corner between them.  `¬ HasSpreadAtLeast D
+spread` says some pair is nearly parallel; the merge pays only for pairs that are
+EXACTLY parallel; and the ceiling forbids buying the difference with a global
+margin one size down.  That corner is `NearParallelCertificate`, named rather
+than absorbed.  It is the sharpest thing this file exposes: the qualitative shell
+hides it inside an open region, the compact shell shows it as a residue, and no
+route in the repo currently pays it.
+
+`Gtz.FlooredSpreadCovering` — the repo's own already-named hypothesis for the
+same region at size six — implies the third residue at size six, so the two files
+state ONE hypothesis between them.
+-/
+
+/-- **The near-parallel corner as an obligation.**  A design with a pair below the
+angular floor but NO exactly parallel pair; the merge cannot reach it and the
+ceiling forbids paying for it with a global margin. -/
+def NearParallelCertificate (size : ℕ) (spread : ℝ) : Prop :=
+  ∀ D : WeightedDesign size 3, ¬ HasSpreadAtLeast D spread → ¬ HasParallelPair D →
+    ∃ C : Finset (Fin size), C.card = 3 ∧ Dominates D C
+
+/-- **The compact region as an obligation**: domination on
+`Gtz.IsFlooredSpreadDesign`, which is closed in the atoms and bounded in the
+weights. -/
+def FlooredSpreadDominationCertificate (size : ℕ) (spread weightFloor : ℝ) : Prop :=
+  ∀ D : WeightedDesign size 3, IsFlooredSpreadDesign D spread weightFloor →
+    ∃ C : Finset (Fin size), C.card = 3 ∧ Dominates D C
+
+/-- Carrying dust IS failing the repo's weight floor — the two predicates are the
+same statement, so the qualitative and compact shells share branch (ii). -/
+theorem hasDustAtom_iff_not_hasWeightFloor (D : WeightedDesign m 3) (weightFloor : ℝ) :
+    HasDustAtom D weightFloor ↔ ¬ HasWeightFloor D weightFloor := by
+  simp only [HasDustAtom, HasWeightFloor, not_forall, not_le]
+
+/-- The dichotomy of NO-GO 3, on the compact region: above `1/size` it is empty. -/
+theorem not_isFlooredSpreadDesign_of_sizeInv_lt_floor (D : WeightedDesign m 3)
+    (hsizePos : 0 < m) {spread weightFloor : ℝ}
+    (hfloorAboveAverage : (m : ℝ)⁻¹ < weightFloor) :
+    ¬ IsFlooredSpreadDesign D spread weightFloor := by
+  intro hregion
+  exact ((hasDustAtom_iff_not_hasWeightFloor D weightFloor).mp
+    (hasDustAtom_of_sizeInv_lt_floor D hsizePos hfloorAboveAverage)) hregion.2.2
+
+theorem flooredSpreadDominationCertificate_of_sizeInv_lt_floor {size : ℕ} (hsizePos : 0 < size)
+    {spread weightFloor : ℝ} (hfloorAboveAverage : (size : ℝ)⁻¹ < weightFloor) :
+    FlooredSpreadDominationCertificate size spread weightFloor :=
+  fun D hregion =>
+    absurd hregion (not_isFlooredSpreadDesign_of_sizeInv_lt_floor D hsizePos hfloorAboveAverage)
+
+/-- **The compact induction step at rank three.**  Four branches, exhaustive by
+construction: light atom (DISCHARGED), exactly parallel pair (DISCHARGED),
+near-parallel corner, dust, compact region.  The two discharged branches consume
+`hrecursive` and nothing else — no margin, anywhere. -/
+theorem gtzWeightedRankThree_of_compactBranches {baseSize : ℕ} {spread weightFloor : ℝ}
+    (hbaseSizePos : 1 ≤ baseSize) (hrecursive : GtzWeighted baseSize 3)
+    (hnearParallel : NearParallelCertificate (baseSize + 1) spread)
+    (hdust : DustDropCertificate (baseSize + 1) 3 weightFloor)
+    (hregion : FlooredSpreadDominationCertificate (baseSize + 1) spread weightFloor) :
+    GtzWeighted (baseSize + 1) 3 := by
+  classical
+  intro D
+  by_cases hallHeavy : AllHeavy D
+  · by_cases hspreadAtLeast : HasSpreadAtLeast D spread
+    · by_cases hweightFloor : HasWeightFloor D weightFloor
+      · exact hregion D ⟨hallHeavy, hspreadAtLeast, hweightFloor⟩
+      · exact hdust D ((hasDustAtom_iff_not_hasWeightFloor D weightFloor).mpr hweightFloor)
+    · by_cases hparallelPair : HasParallelPair D
+      · obtain ⟨keptLabel, dropLabel, ratio, hdistinct, hparallel⟩ := hparallelPair
+        exact dominating_of_parallel_pair D hrecursive hdistinct hparallel
+      · exact hnearParallel D hspreadAtLeast hparallelPair
+  · obtain ⟨lightLabel, hlightLabel⟩ := not_forall.mp hallHeavy
+    exact dominating_of_light_atom D hbaseSizePos hrecursive lightLabel (not_lt.mp hlightLabel)
+
+/-- **The repo's own region hypothesis discharges the compact branch at size six.**
+`Gtz.FlooredSpreadCovering` delivers the two `S_3`-invariant legs on the same
+region, and `Gtz.dominates_triple_iff_symmetricLegs` reads them back as
+domination — the heaviness the bridge needs is the region's own first
+conjunct. -/
+theorem flooredSpreadDominationCertificate_six_of_flooredSpreadCovering
+    {spread weightFloor : ℝ} (hcovering : FlooredSpreadCovering spread weightFloor) :
+    FlooredSpreadDominationCertificate 6 spread weightFloor := by
+  intro D hregion
+  obtain ⟨first, second, third, hfirstSecond, hfirstThird, hsecondThird, hminor, htie⟩ :=
+    hcovering D hregion
+  refine ⟨{first, second, third}, ?_, ?_⟩
+  · rw [Finset.card_insert_of_notMem (by simp [hfirstSecond, hfirstThird]),
+      Finset.card_insert_of_notMem (by simp [hsecondThird]), Finset.card_singleton]
+  · exact (dominates_triple_iff_symmetricLegs D hfirstSecond hfirstThird hsecondThird
+      (hregion.1 first) (hregion.1 second) (hregion.1 third)).mpr ⟨hminor, htie⟩
+
+/-- **The compact step `5 → 6`**, with the third residue supplied by the repo's
+`Gtz.FlooredSpreadCovering`.  The base is unconditional. -/
+theorem gtzWeightedSix_of_compactBranches {spread weightFloor : ℝ}
+    (hnearParallel : NearParallelCertificate 6 spread)
+    (hdust : DustDropCertificate 6 3 weightFloor)
+    (hcovering : FlooredSpreadCovering spread weightFloor) :
+    GtzWeighted 6 3 :=
+  gtzWeightedRankThree_of_compactBranches (by norm_num)
+    (gtzWeighted_corank_two 3 (by norm_num)) hnearParallel hdust
+    (flooredSpreadDominationCertificate_six_of_flooredSpreadCovering hcovering)
+
+/-- **The compact step `6 → 7`.** -/
+theorem gtzWeightedSeven_of_compactBranches {spread weightFloor : ℝ} (hsix : GtzWeighted 6 3)
+    (hnearParallel : NearParallelCertificate 7 spread)
+    (hdust : DustDropCertificate 7 3 weightFloor)
+    (hregion : FlooredSpreadDominationCertificate 7 spread weightFloor) :
+    GtzWeighted 7 3 :=
+  gtzWeightedRankThree_of_compactBranches (by norm_num) hsix hnearParallel hdust hregion
+
+/-- **Rank three in full from the compact branches.**  Six residues in total, none
+of them a global margin, and the size-six region residue is the repo's own
+`Gtz.FlooredSpreadCovering`.  As with the qualitative assembly, this asserts
+nothing about the truth of `GtzWeighted 7 3`; it says precisely what is owed. -/
+theorem gtzWeightedAll_three_of_compactBranches {spreadSix weightFloorSix : ℝ}
+    {spreadSeven weightFloorSeven : ℝ}
+    (hnearParallelSix : NearParallelCertificate 6 spreadSix)
+    (hdustSix : DustDropCertificate 6 3 weightFloorSix)
+    (hcoveringSix : FlooredSpreadCovering spreadSix weightFloorSix)
+    (hnearParallelSeven : NearParallelCertificate 7 spreadSeven)
+    (hdustSeven : DustDropCertificate 7 3 weightFloorSeven)
+    (hregionSeven : FlooredSpreadDominationCertificate 7 spreadSeven weightFloorSeven) :
+    GtzWeightedAll 3 :=
+  gtzWeightedAll_three_of_seven_three
+    (gtzWeightedSeven_of_compactBranches
+      (gtzWeightedSix_of_compactBranches hnearParallelSix hdustSix hcoveringSix)
+      hnearParallelSeven hdustSeven hregionSeven)
 
 end Gtz
