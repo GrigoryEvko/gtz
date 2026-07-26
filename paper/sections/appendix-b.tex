@@ -5,8 +5,7 @@ Every design recorded here is given by data from which
 constant quoted is exact.  Radicals occur in three places: the
 icosahedral design of \S\ref{app:icosa}, the whitener of a graphic design
 in \S\ref{app:diamond}, and the normalization of the tetrahedron.  Each
-time, the algebraic relation that eliminates them is displayed.  No entry
-rests on a floating-point evaluation.
+time, the algebraic relation that eliminates them is displayed.
 
 \subsection{The tetrahedron at \texorpdfstring{$(4,3)$}{(4,3)}}\label{app:tetra}
 
@@ -120,7 +119,8 @@ Fix the symmetric matrix
     2&1&0&1\\ 1&1&1&0\\ 0&1&2&-1\\ 1&0&-1&1\end{pmatrix},
   \qquad M:=3P .
 \end{equation}
-Then $M^2=3M$ entrywise, hence $P^2=P$, and $\tr P=\tfrac{2+1+2+1}{3}=2$.  So
+Then $M^2=3M$, as one checks entry by entry, hence $P^2=P$, and
+$\tr P=\tfrac{2+1+2+1}{3}=2$.  So
 $P$ is a symmetric idempotent of rank two and $(P,t)$ is a chart point of size
 four and rank two in the sense of Definition~\ref{def:chartpoint} for every $t$
 in the closed simplex.  Take the escaping index $z=1$ and the one-parameter
@@ -157,15 +157,18 @@ The leverages $P_{cc}/t_c$ at $\tau=\tfrac14$ are
 $\tfrac83,\tfrac43,\tfrac83,\tfrac43$, all exceeding $1$, so the point is not
 disposed of by deletion of a light atom; and the deflation \eqref{eq:deflate}
 at $z=1$, where $P_{11}=\tfrac13>0$, is a symmetric idempotent of trace $1$
-whose gap at the surviving index $0$ is exactly $0$, at every $\tau$.  Theorem~\ref{thm:sharp} exploits that frozen equality: the Schur term
-of \eqref{eq:schur} is matched in full at $t_z=0$ and falls short by a
-quantity of first order in $t_z$ thereafter, with no downstairs slack
-to close the gap.
+whose gap at the surviving index $0$ is exactly $0$, at every $\tau$.
+
+Theorem~\ref{thm:sharp} exploits that frozen equality: the Schur term of
+\eqref{eq:schur} is matched in full at $t_z=0$ and falls short by a quantity
+of first order in $t_z$ thereafter, with no downstairs slack to close the
+gap.
 
 \begin{wip}
 Exhibit a one-parameter deformation of \eqref{eq:liftchart} with compressed
-slack $\varepsilon>0$, and display the resulting determinant $(3\varepsilon-2\tau-3\tau^{2})/9$ of
-\eqref{eq:family} changing sign at $\tau\asymp \varepsilon$.
+slack $\varepsilon>0$, and display the resulting determinant
+$(3\varepsilon-2\tau-3\tau^{2})/9$ of \eqref{eq:family} changing sign at
+$\tau\asymp \varepsilon$.
 \end{wip}
 
 \subsection{Graphic designs, and the diamond at
@@ -241,8 +244,8 @@ positive semidefinite and singular, with null line $\R\,(1,4,0)$.  No
 three-subset dominates strictly.  The eight spanning trees each carry a null
 vector of their gap; the two circuits do worse.  At $E'=\{ab,ac,bc\}$ the
 potential $y=(1,1,1)$ annihilates all three selected drops while
-$y\tp Ly=3+3=6$, so the gap form equals $-6$; likewise at $E'=\{ab,ad,bd\}$
-with $y=(0,0,1)$.  The certificates for all ten subsets are
+$y\tp Ly=3+3=6$, the two ground edges $ad$ and $bd$ contributing, so the gap
+form equals $-6$; likewise at $E'=\{ab,ad,bd\}$ with $y=(0,0,1)$.  The certificates for all ten subsets are
 \[
   \begin{array}{llll}
    \{0,1,2\}:(1,4,0) & \{0,1,3\}:(1,1,1) & \{0,1,4\}:(4,1,5) &
@@ -315,9 +318,11 @@ corank-one design at $T$.  A $k$-subset repeating a class is singular; a
 $k$-subset meeting $k$ classes has the gap of that corank-one design, which is
 positive semidefinite and singular.  Hence \emph{at every size $m\ge k+1$, over
 every weight vector, and for every partition of the indices into $k+1$
-nonempty classes there is an extremal design.}  At $k=3$, $m=6$ the class
-profiles $(2,2,1,1)$ and $(3,1,1,1)$ occur, and at $m=7$ the profile
-$(2,2,2,1)$.  Since a member of this family has at most $k+1$ distinct
+nonempty classes there is an extremal design.}  At $k=3$ and $m=6$ the class
+profiles are $(3,1,1,1)$ and $(2,2,1,1)$; at $m=7$ they are $(4,1,1,1)$,
+$(3,2,1,1)$ and $(2,2,2,1)$.  The two families displayed above are the
+profiles $(2,2,1,1)$ and $(2,2,2,1)$.  Since a member of this family has at
+most $k+1$ distinct
 directions and the diamond has $k+2=5$, the diamond is not one of them.
 
 \emph{A rational extremal design with an exact certificate.}  Take the $(6,3)$
@@ -369,7 +374,7 @@ $\SC=(3-\rho)I_3+\rho J_3$, with spectrum $\{3-\rho,3-\rho,3+2\rho\}$ and
 \]
 the icosahedral design dominates, and dominates strictly.  Exactly ten of its
 twenty triples dominate.  It is used in Appendix~\ref{app:graveyard} as the
-design on which the two-moment criterion is blind.
+design on which the two-moment criterion is silent.
 
 \subsection{Active-family census at
 \texorpdfstring{$(6,3)$ and $(7,3)$}{(6,3) and (7,3)}}\label{app:census}

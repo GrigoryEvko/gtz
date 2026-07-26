@@ -1,17 +1,15 @@
 \section{Strategies excluded, with witnesses}\label{app:graveyard}
 
-Every approach collected here fails, and each failure is recorded as an
-impossibility statement with an explicit certificate, not as an absence of
-proof.  One cause accounts for nearly all of them.  By
-Corollary~\ref{cor:nomargin} the selection inequality \eqref{eq:dominate}
-is an equality on a set of full dimension in the weights; a device whose
-output is a strictly positive quantity is therefore asserting something
-false at every point of that set.
+By Corollary~\ref{cor:nomargin} the selection inequality
+\eqref{eq:dominate} is an equality on a set of full dimension in the
+weights.  A device whose output is a strictly positive quantity therefore
+asserts something false at every point of that set.  Four of the seven
+strategies below fail for that reason alone.
 
-For a $k$-subset $C$
-of a design write $\Gram_C$ for the Gram matrix $(\langle
-g_c,g_d\rangle)_{c,d\in C}$.  By \eqref{eq:twoproducts},
-$\Gram_C=M_C^{\vphantom{\mathsf{H}}}M_C\adj$ and $\SC=M_C\adj M_C^{\vphantom{\mathsf{H}}}$ with
+For a $k$-subset $C$ of a design write $\Gram_C$ for the Gram matrix
+$(\langle g_c,g_d\rangle)_{c,d\in C}$.  By \eqref{eq:twoproducts},
+$\Gram_C=M_C^{\vphantom{\mathsf{H}}}M_C\adj$ and
+$\SC=M_C\adj M_C^{\vphantom{\mathsf{H}}}$ with
 $M_C$ square, so the two have the same spectrum and
 \begin{equation}\label{eq:tieleg}
   \delta(C)\;:=\;\det\bigl(\Gram_C-I_k\bigr)\;=\;\det\bigl(\SC-I_k\bigr) .
@@ -81,10 +79,10 @@ Consider the two systems on the all-heavy locus,
   \text{(closed)}\quad \delta(C)\le0 \ \ \text{for all } C .
 \]
 Failure of $\Gtz(7,3)$ would give a point of the strict system; the design
-$\dsn_{\triangle}$ is a point of the closed one.  So the closed system is inhabited and
-carries no certificate of emptiness of any kind, while the strict system
-is the one that must be certified empty.  The problem lives in the gap between the two, which is the equality
-locus.
+$\dsn_{\triangle}$ is a point of the closed one.  So the closed system is
+inhabited and carries no certificate of emptiness of any kind, while the
+strict system is the one that must be certified empty.  The two systems
+differ on the equality locus, and nowhere else.
 
 \begin{remark}\label{rem:stengle}
 Stengle's form, in which the multiplicative monoid part is nonempty,
@@ -111,8 +109,7 @@ $\binom{34}{6}=1\,344\,904$ elements.
 \subsection{Margin transfer across a deletion}\label{app:transfer}
 
 Induction on the size deletes an atom, applies $\Gtz(m-1,k)$, and lifts.
-The lift is exact, and one computation settles what it costs, once and
-for all.
+The lift is exact, and one computation settles what it costs.
 
 Let $\dsn$ be a design at $(m,k)$ and $e$ an index with $s_e<1$, equivalently
 $I-t_e\,g_e^{\vphantom{\mathsf{T}}}g_e\tp\pd0$.  Choose $R$ with
@@ -149,7 +146,7 @@ From $R\tp\bigl(I-t_eg_e^{\vphantom{\mathsf{T}}}g_e\tp\bigr)R=I$ one reads
 $RR\tp=\bigl(I-t_eg_e^{\vphantom{\mathsf{T}}}g_e\tp\bigr)^{-1}$, hence for
 $y:=R^{-1}w$,
 \[
-  y\tp S'_Cv=(1-t_e)\,w\tp S_Cw,
+  y\tp S'_Cy=(1-t_e)\,w\tp S_Cw,
   \qquad
   y\tp y=w\tp\bigl(I-t_eg_e^{\vphantom{\mathsf{T}}}g_e\tp\bigr)w
         =\lVert w\rVert^2-t_e\langle g_e,w\rangle^2 ,
@@ -162,14 +159,15 @@ taking $\lVert w\rVert=1$,
    \;\ge\;\frac{(1+\varepsilon)(1-s_e)}{1-t_e}
    \;=\;(1+\varepsilon)\,\kappa_e ,
 \]
-by Cauchy--Schwarz, $\langle g_e,w\rangle^2\le\ell_e$.  This is at least $1$
+by Cauchy--Schwarz, which gives $\langle g_e,w\rangle^2\le\ell_e$ and hence
+$t_e\langle g_e,w\rangle^2\le t_e\ell_e=s_e$.  This is at least $1$
 exactly under \eqref{eq:kappa}.  Finally
 $\kappa_e^{-1}-1=(s_e-t_e)/(1-s_e)=t_e(\ell_e-1)/(1-s_e)$, whose sign is that
 of $\ell_e-1$.
 \end{proof}
 
-The proposition is an identity rather than an estimate, and it splits
-the induction into the two branches already in use.  At $\ell_e\le1$
+Proposition~\ref{prop:deletionprice} is an identity, and it splits the
+induction into the two branches already in use.  At $\ell_e\le1$
 the threshold is nonpositive and the deletion needs nothing downstairs;
 this is the light-atom step that reduces $\Gtz(m,k)$ to all-heavy
 designs.  At $\ell_e>1$ the threshold is strictly positive.
@@ -181,7 +179,9 @@ every $m\ge5$ and every $\varepsilon>0$ there is a design at $(m-1,3)$ with no
 $k$-subset satisfying $\SC\psd(1+\varepsilon)I$.
 \end{corollary}
 
-No choice of the deleted atom repairs this, because the threshold depends on $e$ only through $\ell_e$ and by Lemma~\ref{lem:trace} some atom has $\ell_e\ge k$.
+No choice of the deleted atom repairs this, because the threshold depends on
+$e$ only through $\ell_e$ and by Lemma~\ref{lem:trace} some atom has
+$\ell_e\ge k$.
 
 \subsection{Restricting the region}\label{app:region}
 
@@ -199,26 +199,25 @@ excludes the equality locus, and the infimum of the selection objective over
 any such region is at most $1$.
 
 The second cut fails for a different reason.  Every design produced by
-splitting has two parallel atoms, so a region defined by excluding parallel
-pairs might be hoped to miss the equality locus.  It does not: the diamond of
-Example~\ref{ex:diamond}, whose data is in \S\ref{app:diamond}, is an extremal
-design at $(5,3)$ whose five atoms are pairwise non-parallel.  Its splittings
-give extremal designs with a parallel pair at $(6,3)$ and $(7,3)$, and
-perturbing a split pair apart moves the design off the parallel locus while
+splitting has two parallel atoms, so excluding parallel pairs removes the
+constructed part of the equality locus.  It does not remove all of it: the
+diamond of Example~\ref{ex:diamond}, whose data is in \S\ref{app:diamond}, is
+an extremal design at $(5,3)$ whose five atoms are pairwise non-parallel.  Its
+splittings give extremal designs with a parallel pair at $(6,3)$ and $(7,3)$,
+and perturbing a split pair apart moves the design off the parallel locus while
 moving the value by an arbitrarily small amount, since the value is continuous.
 
 \subsection{The compression lift at positive weight}\label{app:lift}
 
-Theorem~\ref{thm:sharp}.  The lift \eqref{eq:schur} used in
-Theorem~\ref{thm:boundary} holds at $t_z=0$ by an exact identity and fails at
-every positive $t_z$, however small; the witness is the chart point and
-one-parameter weight family of \S\ref{app:liftfail}, whose relevant
-$2\times2$ block has determinant $-\tau(2+3\tau)/9$ at pivot weight $\tau$.
-The failure is not a matter of size: the deficit is of first order in $\tau$
-against a downstairs slack which the family freezes at $0$.  This is again
-Corollary~\ref{cor:nomargin}, in its sharpest local form; hence the
-boundary analysis of \S\ref{sec:boundary} is carried out at the limit
-point and not along a minimizing sequence.
+The lift \eqref{eq:schur} used in Theorem~\ref{thm:boundary} holds at $t_z=0$
+by an exact identity and fails at every positive $t_z$, however small
+(Theorem~\ref{thm:sharp}).  The witness is the chart point and one-parameter
+weight family of \S\ref{app:liftfail}, whose relevant $2\times2$ block has
+determinant $-\tau(2+3\tau)/9$ at pivot weight $\tau$.  The failure is not a
+matter of size: the deficit is of first order in $\tau$ against a downstairs
+slack which the family freezes at $0$.  This is again
+Corollary~\ref{cor:nomargin}, so the boundary analysis of
+\S\ref{sec:boundary} runs at the limit point.
 
 \subsection{Real-rootedness of the mixture}\label{app:rooted}
 
@@ -262,10 +261,9 @@ Problem~\ref{prob:interlace}.
 
 \subsection{Two moments}\label{app:moments}
 
-At rank three there is a genuine criterion in the first two moments of
-the spectrum; it is sharp among such criteria, and it does not decide
-the open cells.  Three statements follow: the criterion, its sharpness among two-moment
-criteria, and a design at $(6,3)$ on which it is silent.
+At rank three there is a genuine criterion in the first two moments of the
+spectrum.  It is sharp among such criteria, and it does not decide the open
+cells.
 
 \begin{proposition}[Lean]\label{prop:twomoment}
 Let $C$ be a $3$-subset of a design at rank three with
@@ -294,15 +292,16 @@ $\SC\psd I$.
 The quadratic factor $Q$ is the multiplier of the certificate; no
 semidefinite programming enters anywhere.  At the tetrahedron
 (\S\ref{app:tetra}) one has $\ell_C=9$, $\det\Gram_C=16$ and
-$\gamma(C)=0$, so the criterion is tight on the very locus it was built
+$\gamma(C)=0$, so the criterion is tight on the locus it was built
 to reach: the arithmetic--geometric step is an equality exactly when the
 two upper eigenvalues coincide, as they do at $\{1,4,4\}$.
 
 \begin{proposition}\label{prop:momentsharp}
-Let $\ell_C>3$ and $0\le \varepsilon$ satisfy $4\varepsilon<(\ell_C-1)^2$.  There is a positive semidefinite
-$3\times3$ matrix of trace $\ell_C$ and determinant $\varepsilon$ whose least eigenvalue is
-smaller than $1$.  Hence no criterion depending on $(\tr\Gram_C,\det\Gram_C)$
-alone is stronger than Proposition~\ref{prop:twomoment}.
+Let $\ell_C>3$ and $\varepsilon\ge0$ satisfy $4\varepsilon<(\ell_C-1)^2$.
+There is a positive semidefinite $3\times3$ matrix of trace $\ell_C$ and
+determinant $\varepsilon$ whose least eigenvalue is smaller than $1$.  Hence
+no criterion depending on $(\tr\Gram_C,\det\Gram_C)$ alone is stronger than
+Proposition~\ref{prop:twomoment}.
 \end{proposition}
 
 \begin{proof}
