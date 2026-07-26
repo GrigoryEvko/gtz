@@ -19,7 +19,14 @@ The proof is two elementary steps and no measure theory:
   * Cauchy–Schwarz per atom, `Gtz.atom_form_le_leverage`:  `⟨g_c,x⟩² ≤ ℓ_c ⟨x,x⟩`;
   * Jensen for the probability weights `t`, `sq_weightedMean_le_weightedMean_sq`:
     `(∑ t_c a_c)² ≤ ∑ t_c a_c²`, applied to `a_c = ⟨g_c,x⟩²` whose `t`-mean is
-    `⟨x,x⟩` by Parseval (`sum_weight_mul_atomOverlap_sq`).
+    `⟨x,x⟩` by Parseval (`sum_weight_mul_atomOverlap_sq`).  That Jensen step is
+    NOT new: it is Mathlib's discrete Cauchy–Schwarz
+    `Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul` specialised to probability
+    weights, and the wrapper below is four lines over it.  An earlier revision of
+    this file re-proved it from a hand-rolled weighted-variance identity on the
+    false premise that Mathlib had no such lemma under a findable name; the
+    duplicate is gone.  See also `Finset.sum_mul_sq_le_sq_mul_sq` (the squared
+    form) and `Finset.sq_sum_div_le_sum_sq_div` (Sedrakyan).
 
 Chaining them gives `⟨x,x⟩ · ∑_c t_c ℓ_c ⟨g_c,x⟩² ≥ ∑_c t_c ⟨g_c,x⟩⁴ ≥ ⟨x,x⟩²`,
 which is the Rayleigh form of the headline once `⟨x,x⟩ > 0` is cancelled.  Every
@@ -66,11 +73,10 @@ re-proved here.  Consumers should go to the shipped declarations:
     with `Gtz.isTie_iff_leverage_identity`).  `GtzWeighted (rank+1) rank` is
     therefore a SHIPPED result; nothing here reproves it.
 
-So the genuinely new mathematics in this file is B1 together with its two bricks
-(the weighted-variance identity and the Parseval probe identity) and the rank-one
-closure.  The weighted-Jensen brick is exported because
-`Gtz/Quantitative/ExpectedCharPolynomial.lean` consumes it a second time, for the
-expected-characteristic-polynomial coefficient bound `c₁ ≥ rank²`.
+So the genuinely new mathematics in this file is B1 together with the Parseval
+probe identity and the rank-one closure.  The weighted-Jensen wrapper is exported
+because `Gtz/Quantitative/ExpectedCharPolynomial.lean` consumes it a second time,
+for the expected-characteristic-polynomial coefficient bound `c₁ ≥ rank²`.
 
 ## What is NOT claimed here
 
@@ -107,45 +113,33 @@ open Matrix
 
 variable {m k : ℕ}
 
-/-! ## The weighted-variance brick
+/-! ## The weighted-Jensen wrapper
 
-Jensen for a probability weighting, in the only form the campaign needs, proved
-from the variance identity so that nothing but `ring` and `Finset.sum` algebra is
-used.  Exported: `Gtz/Quantitative/ExpectedCharPolynomial.lean` uses it again for
-`c₁ ≥ rank²`. -/
-
-/-- **The weighted-variance identity.**  For weights summing to one and any
-centre, `∑ t_c (a_c − centre)² = ∑ t_c a_c² − 2·centre·∑ t_c a_c + centre²`.  Pure
-`Finset` algebra; positivity of the weights is not used. -/
-theorem weightedDeviation_sq_expand {size : ℕ} (weight value : Fin size → ℝ)
-    (hmass : ∑ index, weight index = 1) (centre : ℝ) :
-    ∑ index, weight index * (value index - centre) ^ 2
-      = (∑ index, weight index * value index ^ 2)
-        - 2 * centre * (∑ index, weight index * value index) + centre ^ 2 := by
-  have hpointwise : ∀ index : Fin size, weight index * (value index - centre) ^ 2
-      = weight index * value index ^ 2
-        + (-(2 * centre)) * (weight index * value index)
-        + centre ^ 2 * weight index := fun index => by ring
-  rw [Finset.sum_congr rfl fun index (_ : index ∈ Finset.univ) => hpointwise index,
-    Finset.sum_add_distrib, Finset.sum_add_distrib,
-    ← Finset.mul_sum Finset.univ (fun index => weight index * value index) (-(2 * centre)),
-    ← Finset.mul_sum Finset.univ weight (centre ^ 2), hmass, mul_one]
-  ring
+Jensen for a probability weighting, in the only form the campaign needs.  This is
+Mathlib's discrete Cauchy–Schwarz, not new mathematics: instantiate
+`Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul` at `r_c = t_c a_c`, `f_c = t_c`,
+`g_c = t_c a_c²` — where the hypothesis `r_c² ≤ f_c g_c` holds with EQUALITY — and
+the `∑ f = 1` side collapses by the design axiom.  Exported under a name that
+says what it means to this campaign, because
+`Gtz/Quantitative/ExpectedCharPolynomial.lean` uses it again for `c₁ ≥ rank²`. -/
 
 /-- **Weighted Jensen / discrete Cauchy–Schwarz.**  For nonnegative weights
 summing to one, the square of the weighted mean is at most the weighted mean of
-the squares.  Immediate from `weightedDeviation_sq_expand` at the mean itself: the
-deviation sum is `∑ t a² − (∑ t a)²` and is a sum of nonnegative terms. -/
+the squares.  A four-line specialisation of Mathlib's
+`Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul` (the file it lives in is titled for
+the Cauchy–Schwarz inequality); do not re-derive it. -/
 theorem sq_weightedMean_le_weightedMean_sq {size : ℕ} (weight value : Fin size → ℝ)
     (hnonneg : ∀ index, 0 ≤ weight index) (hmass : ∑ index, weight index = 1) :
     (∑ index, weight index * value index) ^ 2
       ≤ ∑ index, weight index * value index ^ 2 := by
-  have hvariance := weightedDeviation_sq_expand weight value hmass
-    (∑ index, weight index * value index)
-  have hdeviationNonneg : 0 ≤ ∑ index, weight index
-      * (value index - ∑ other, weight other * value other) ^ 2 :=
-    Finset.sum_nonneg fun index _ => mul_nonneg (hnonneg index) (sq_nonneg _)
-  nlinarith [hvariance, hdeviationNonneg]
+  have hcauchy := Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul (R := ℝ) Finset.univ
+    (r := fun index => weight index * value index) (f := weight)
+    (g := fun index => weight index * value index ^ 2)
+    (fun index _ => hnonneg index)
+    (fun index _ => mul_nonneg (hnonneg index) (sq_nonneg _))
+    (fun index _ => by ring_nf; exact le_refl _)
+  rw [hmass, one_mul] at hcauchy
+  exact hcauchy
 
 /-- Weighted Jensen for a design's own weights, which are positive and sum to
 one by definition. -/
@@ -300,10 +294,12 @@ theorem posSemidef_leverageWeightedAtomSum_sub_one (D : WeightedDesign m k) :
 
 /-- **The trace consequence, and why B1 is weaker than the polynomial bound.**
 B1 gives `trace M ≥ rank`, i.e. `∑_c t_c ℓ_c² ≥ rank`.  Jensen on the same shares
-gives the strictly stronger `∑_c t_c ℓ_c² ≥ rank²`
-(`Gtz.sq_rank_le_expectedElementary_one`, `Gtz/Quantitative/ExpectedCharPolynomial.lean`)
-— so B1's trace shadow is NOT the sharpest thing the shares know, and the matrix
-statement is what B1 is for. -/
+gives `∑_c t_c ℓ_c² ≥ rank²`
+(`Gtz.sq_rank_le_expectedElementary_one`, `Gtz/Quantitative/ExpectedCharPolynomial.lean`),
+which is STRICTLY stronger exactly when `2 ≤ rank` — at rank zero and rank one the
+two bounds coincide, since `rank² = rank` there.  So for every rank the campaign
+cares about, B1's trace shadow is NOT the sharpest thing the shares know, and the
+matrix statement is what B1 is for. -/
 theorem rank_le_sum_weight_mul_leverage_sq (D : WeightedDesign m k) :
     (k : ℝ) ≤ ∑ atomIndex, D.weight atomIndex * leverageOf (D.atom atomIndex) ^ 2 := by
   have htrace : Matrix.trace (leverageWeightedAtomSum D - 1)
@@ -533,16 +529,34 @@ theorem dominates_singleton_iff_one_le_leverage (D : WeightedDesign m 1) (atomIn
       rw [hform]
       exact mul_nonneg (by linarith) (sq_nonneg _)
 
+/-- A weighted design over an empty atom index does not exist: its weights would
+have to sum to one over an empty sum.  So every size hypothesis of the form
+`0 < m` is discardable once a design is in hand, and the rank-one theorem below
+needs no such side condition. -/
+theorem pos_of_weightedDesign (D : WeightedDesign m k) : 0 < m := by
+  rcases Nat.eq_zero_or_pos m with hzero | hpos
+  · exfalso
+    have hsum := D.weight_sum_one
+    subst hzero
+    rw [Finset.univ_eq_empty, Finset.sum_empty] at hsum
+    exact absurd hsum (by norm_num)
+  · exact hpos
+
 /-- **RANK ONE IS A THEOREM.**  Every weighted `(m, 1)`-design has a dominating
 singleton: the weighted leverages sum to the rank, which at rank one is the total
 weight, so the maximum leverage is at least one
 (`Gtz.exists_one_le_fieldLeverage`) and
 `dominates_singleton_iff_one_le_leverage` converts that into domination.  This is
 the rank-one entry of the size axis, and the positive fact A3's inertia no-go is
-contrasted against. -/
-theorem gtzWeighted_rank_one (hsize : 0 < m) : GtzWeighted m 1 := by
+contrasted against.
+
+Unconditional: `exists_one_le_fieldLeverage` wants `0 < m`, but `pos_of_weightedDesign`
+supplies it from the design itself, so no size hypothesis is carried.  (At `m = 0`
+the statement is vacuously true because `WeightedDesign 0 1` is uninhabited.) -/
+theorem gtzWeighted_rank_one : GtzWeighted m 1 := by
   intro D
-  obtain ⟨atomIndex, hleverage⟩ := exists_one_le_fieldLeverage (ofRealDesign D) hsize
+  obtain ⟨atomIndex, hleverage⟩ :=
+    exists_one_le_fieldLeverage (ofRealDesign D) (pos_of_weightedDesign D)
   rw [fieldLeverageOf_eq_leverageOf] at hleverage
   exact ⟨{atomIndex}, Finset.card_singleton atomIndex,
     (dominates_singleton_iff_one_le_leverage D atomIndex).mpr hleverage⟩
