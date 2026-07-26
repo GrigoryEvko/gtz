@@ -42,12 +42,24 @@ already records that it "is field-blind by construction".
 
 The projection chart, A1, A2 and the inertia no-go live in
 `Gtz/Design/ProjectionChart.lean`; the Jensen reading of corank one and the
-complex size-axis headline live in `Gtz/Complex/CorankOneComplex.lean`.
+total-tie criterion live in `Gtz/Field/CorankOne.lean`; the complex size-axis
+headline lives in `Gtz/Complex/SizeAxis.lean`.
 
-**Edge case, stated not hidden.**  `fieldGtzWeighted_square` is unconditional,
-including the degenerate `size = rank = 0` (empty subset, `0 × 0` excess) and
-`size = rank = 1`.  `fieldGtzWeighted_corank_one` needs `1 ≤ rank`: at rank zero
-there is no corank-one cell, which is exactly the hypothesis the shipped real
+**Edge cases, stated not hidden.**  `fieldGtzWeighted_square` is unconditional in
+the rank, but the two degenerate cells are unconditional for OPPOSITE reasons and
+must not be conflated:
+
+  * `size = 0` (hence `size = rank = 0`) carries NO content — there is no design
+    at all, because `weight_sum_one` reads `0 = 1` over an empty index set.  That
+    is shipped as `fieldWeightedDesign_zero_size_isEmpty` rather than described,
+    so the cell cannot be advertised as a witness.
+  * `size = rank = 1` IS inhabited — `Gtz.degenerateSingletonDesign` in
+    `Gtz/Design/ProjectionChart.lean` is the unique such design — and there the
+    theorem has content.  That same design is the counterexample pinning the
+    `2 ≤ size` hypothesis on A2 and on the Jensen criterion.
+
+`fieldGtzWeighted_corank_one` needs `1 ≤ rank`: at rank zero there is no
+corank-one cell, which is exactly the hypothesis the shipped real
 `Gtz.gtzWeighted_corank_one` carries.
 -/
 import Mathlib
@@ -464,7 +476,20 @@ theorem fieldGtzWeighted_square (rank : ℕ) : FieldGtzWeighted Scalar rank rank
   rw [← coParsevalOperator_eq_universalGap]
   exact coParsevalOperator_posSemidef design
 
-/-! ## The vacuity boundary: below the rank there is no design -/
+/-! ## The vacuity boundary: below the rank, and at size zero, there is no design -/
+
+/-- **At size zero there is no design, at any rank.**  The weights would have to
+sum to one over an empty index set, i.e. `0 = 1`.  Shipped as a theorem rather
+than described in prose, because the `size = rank = 0` cell of
+`fieldGtzWeighted_square` is otherwise easy to mistake for a witness: the theorem
+holds there, but VACUOUSLY, and the `0 × 0` excess it would exhibit belongs to no
+design. -/
+theorem fieldWeightedDesign_zero_size_isEmpty (rank : ℕ) :
+    IsEmpty (FieldWeightedDesign Scalar 0 rank) := by
+  refine ⟨fun design => ?_⟩
+  have hsum := design.weight_sum_one
+  rw [Finset.univ_eq_empty, Finset.sum_empty] at hsum
+  exact absurd hsum zero_ne_one
 
 /-- **Parseval forces `rank ≤ size`.**  The map sending a coefficient vector to
 its list of atom pairings is injective — a vector killed by every atom is killed

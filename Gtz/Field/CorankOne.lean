@@ -21,11 +21,21 @@ Schur criterion then says the erasure of that atom dominates, and the erasure ha
 size exactly `rank`.
 
 No kernel vector, no projection chart, no Naimark duality, no whitening, no
-matrix square root.  Over ℝ this is `Gtz.descent_identity` +
-`Gtz.erase_dominates_iff_pivot_le_one` (`Gtz/Reduction/DescentLadder.lean`,
-`Gtz/Ties/CorankOneTieCriterion.lean`), whose own header already records that the
-identity "is field-blind by construction".  What is new here is the ℂ instance,
-which nothing in `Gtz/Complex/` had.
+matrix square root.  Over ℝ this is `Gtz.descent_identity`
+(`Gtz/Reduction/DescentLadder.lean`), whose own header already records that the
+identity "is field-blind by construction", plus
+`Gtz.erase_dominates_iff_pivot_le_one` (`Gtz/Design/TraceIdentity.lean` — the
+`Ties` layer only CONSUMES it).  What is new here is the ℂ instance, which
+nothing in `Gtz/Complex/` had.
+
+**THE TOTAL TIE, and why it needs no strict Schur criterion.**  A fourth section
+below proves that at corank one the value is EXACTLY one whenever it is at most
+one: if every erasure dominates then the budget forces every pivot to equal one,
+and pivot one hands over an EXPLICIT null vector `coParsevalOperator⁻¹ g_c` of the
+erasure gap, so the gap is positive semidefinite but not positive definite.  That
+matters because Mathlib v4.32's Schur-complement criteria
+(`Matrix.PosDef.fromBlocks₁₁/₂₂`) conclude PosSemidef only — there is no strict
+twin to invoke, and none is needed.
 
 **A4 (the Jensen chart), and exactly what it costs.**  A4 works with
 `p_c = |z_c|²/(1 - t_c)` where `z` spans `ker Vᴴ`, using `P = 1 - z zᴴ`.  Only
@@ -57,12 +67,26 @@ vector `z` with `1 - projectionChart = z zᴴ` — i.e. uniqueness of rank-one
 Hermitian idempotents, which Mathlib v4.32 does not package (over ℝ the
 repository runs it by hand via Householder in `Gtz/Ties/CorankOneTieExistence.lean`,
 at a cost of some 380 lines).  It is therefore NOT PROVED here.  It is instead
-NAMED — `JensenErasureCriterion` is the exact statement, left as an open
-proposition — and the reduction to it is shipped: given any `z` realising the
-projector identity, `jensenSum_eq_kernel_schur_quantity` rewrites the Jensen sum
+NAMED — `JensenErasureCriterion` is the statement, left as an open proposition —
+and the reduction to it is shipped: given any `z` realising the projector
+identity, `jensenSum_eq_kernel_schur_quantity` rewrites the Jensen sum
 `Σ_{c ≠ c₀} p_c` as the rank-one Schur quantity `Σ_{c ≠ c₀} |z_c|²/(1 - t_c)` that
 `Gtz.posSemidef_sub_fieldAtom_iff` consumes.  Nothing below assumes the projector
 exists, and `fieldGtzWeighted_corank_one` does not depend on any of it.
+
+**AND THE CRITERION IS INDEXED BY THE CORANK-ONE SHAPE, NOT BY AN ARBITRARY
+SIZE — because size-generically it is FALSE.**  A4(ii)'s derivation needs
+`projectionChart = 1 - z zᴴ`, which is a corank-one fact; at other sizes the
+correction has higher rank and the single-index sum is simply the wrong
+expression.  The failure is concrete and shipped, not merely warned about: at
+`size = rank = 1` the erasure is the empty subset, so the right-hand side is an
+empty sum satisfying `0 ≤ 1` while the left-hand side asks the `1 × 1` matrix
+`-1` to be positive semidefinite.  That is
+`not_jensenErasureCriterion_at_singleton`, built from the same
+`Gtz.degenerateSingletonDesign` that refutes an unconditional A2.  So
+`JensenErasureCriterion` takes the RANK as its only numeric parameter and
+quantifies over `FieldWeightedDesign Scalar (rank + 1) rank`; a future lane
+aiming at it is aiming at a true target.
 -/
 import Mathlib
 import Gtz.Field.WeightedDesign
@@ -246,6 +270,124 @@ theorem fieldGtzWeighted_corank_one (rank : ℕ) (hrank : 1 ≤ rank) :
     omega
   · exact (fieldDominates_erase_iff_coParsevalPivot_le_one design hsize dropped).mpr hdropped
 
+/-! ## The total tie: at corank one the value is EXACTLY one, over every field
+
+`fieldGtzWeighted_corank_one` says the value is at MOST one.  This section says
+that whenever every erasure dominates, the value is exactly one — the excess is
+positive semidefinite but never positive definite — and it says so over any
+`RCLike` field with no strict Schur criterion, because Mathlib v4.32 has none.
+Two steps.  First the budget: co-weighted pivots summing to the rank with every
+pivot at most one and every co-weight strictly positive forces every pivot to
+equal one.  Second an EXPLICIT null vector: pivot one makes
+`coParsevalOperator⁻¹ g_c` a nonzero kernel vector of the erasure gap.
+
+This is what settles, in the kernel rather than by citation, whether the corank-one
+value one is attained.  The real-side existence of such designs is
+`Gtz.exists_isTie_of_weights` and the complex-side transport is
+`Gtz/Complex/SizeAxis.lean`. -/
+
+/-- An atom acts on a vector by projecting onto its own direction:
+`g gᴴ u = ⟨g, u⟩ · g`. -/
+theorem fieldAtom_mulVec {rank : ℕ} (vector target : Fin rank → Scalar) :
+    fieldAtom vector *ᵥ target = (star vector ⬝ᵥ target) • vector := by
+  funext coordinate
+  simp only [fieldAtom, Matrix.mulVec, Matrix.vecMulVec_apply, dotProduct, Pi.smul_apply,
+    smul_eq_mul, Pi.star_apply]
+  rw [Finset.sum_mul]
+  exact Finset.sum_congr rfl fun _ _ => by ring
+
+/-- A positive definite matrix kills only the zero vector, so an exhibited nonzero
+kernel vector refutes positive definiteness.  This is the strict-criterion
+substitute: Mathlib v4.32's `Matrix.PosDef.fromBlocks₁₁/₂₂` conclude PosSemidef
+only, and no strict Schur twin is needed. -/
+theorem not_posDef_of_mulVec_eq_zero {rank : ℕ} {form : Matrix (Fin rank) (Fin rank) Scalar}
+    {witness : Fin rank → Scalar} (hkill : form *ᵥ witness = 0) (hnonzero : witness ≠ 0) :
+    ¬ form.PosDef := by
+  intro hposDef
+  refine hnonzero (Matrix.mulVec_injective_of_isUnit hposDef.isUnit ?_)
+  rw [hkill, Matrix.mulVec_zero]
+
+/-- **Pivot one means the erasure sits at `λ_min = 1` exactly.**  The witness is
+`coParsevalOperator⁻¹ g_c`: the gap sends it to `g_c - pivot · g_c = 0`, and it is
+nonzero because pairing it against `g_c` returns the pivot, which is one. -/
+theorem not_posDef_erasureGap_of_coParsevalPivot_eq_one {size rank : ℕ}
+    (design : FieldWeightedDesign Scalar size rank) (hsize : 2 ≤ size) (dropped : Fin size)
+    (hpivot : coParsevalPivotValue design dropped = 1) :
+    ¬ (fieldSubsetSum design (Finset.univ.erase dropped) - 1).PosDef := by
+  have hposDef := coParsevalOperator_posDef design hsize
+  have hdet : IsUnit (coParsevalOperator design).det :=
+    Matrix.isUnit_iff_isUnit_det _ |>.mp hposDef.isUnit
+  set witness : Fin rank → Scalar :=
+    (coParsevalOperator design)⁻¹ *ᵥ design.atom dropped with hwitness
+  have hscalar : star (design.atom dropped) ⬝ᵥ witness = 1 := by
+    rw [hwitness, show star (design.atom dropped)
+        ⬝ᵥ ((coParsevalOperator design)⁻¹ *ᵥ design.atom dropped)
+      = coParsevalPivotScalar design dropped from rfl,
+      coParsevalPivotScalar_eq_ofReal design hsize dropped, hpivot, RCLike.ofReal_one]
+  have hkill : (coParsevalOperator design - fieldAtom (design.atom dropped)) *ᵥ witness = 0 := by
+    rw [Matrix.sub_mulVec, fieldAtom_mulVec, hscalar, one_smul, hwitness, Matrix.mulVec_mulVec,
+      Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec, sub_self]
+  have hnonzero : witness ≠ 0 := by
+    intro hzero
+    rw [hzero, dotProduct_zero] at hscalar
+    exact absurd hscalar.symm one_ne_zero
+  rw [erasureGap_eq]
+  exact not_posDef_of_mulVec_eq_zero hkill hnonzero
+
+/-- **The budget forces equality.**  At corank one the co-weighted pivots sum to
+the rank and the co-weights themselves sum to the rank, so if no pivot exceeds one
+then none falls below it either.
+
+`1 ≤ rank` is load-bearing, not decoration: at rank zero the co-Parseval operator
+is the `0 × 0` matrix, every pivot is `0`, and the hypothesis holds vacuously while
+the conclusion fails. -/
+theorem forall_coParsevalPivotValue_eq_one_of_forall_fieldDominates {rank : ℕ}
+    (hrank : 1 ≤ rank) (design : FieldWeightedDesign Scalar (rank + 1) rank)
+    (hall : ∀ dropped : Fin (rank + 1), FieldDominates design (Finset.univ.erase dropped))
+    (dropped : Fin (rank + 1)) : coParsevalPivotValue design dropped = 1 := by
+  have hsize : 2 ≤ rank + 1 := by omega
+  have hle : ∀ index : Fin (rank + 1), coParsevalPivotValue design index ≤ 1 :=
+    fun index => (fieldDominates_erase_iff_coParsevalPivot_le_one design hsize index).mp (hall index)
+  have hbudget := sum_coWeight_mul_coParsevalPivotValue design hsize
+  have hmass := sum_coWeight (Scalar := Scalar) design
+  have hcast : ((rank + 1 : ℕ) : ℝ) - 1 = (rank : ℝ) := by push_cast; ring
+  rw [hcast] at hmass
+  have hdeficit : ∑ index, (1 - design.weight index)
+      * (1 - coParsevalPivotValue design index) = 0 := by
+    have hsplit : ∀ index : Fin (rank + 1),
+        (1 - design.weight index) * (1 - coParsevalPivotValue design index)
+          = (1 - design.weight index)
+            - (1 - design.weight index) * coParsevalPivotValue design index :=
+      fun index => by ring
+    simp only [hsplit]
+    rw [Finset.sum_sub_distrib, hbudget, hmass, sub_self]
+  have hterms : ∀ index ∈ Finset.univ, (0 : ℝ) ≤ (1 - design.weight index)
+      * (1 - coParsevalPivotValue design index) := by
+    intro index _
+    have hcoweight : 0 < 1 - design.weight index := by
+      linarith [fieldWeight_lt_one design hsize index]
+    exact mul_nonneg hcoweight.le (by linarith [hle index])
+  have hvanish := (Finset.sum_eq_zero_iff_of_nonneg hterms).mp hdeficit dropped (Finset.mem_univ _)
+  have hcoweight : 0 < 1 - design.weight dropped := by
+    linarith [fieldWeight_lt_one design hsize dropped]
+  rcases mul_eq_zero.mp hvanish with hzero | hzero
+  · exact absurd hzero (ne_of_gt hcoweight)
+  · linarith
+
+/-- **THE TOTAL TIE, field-generically.**  At corank one, if every erasure
+dominates then every erasure sits at `λ_min = 1` EXACTLY: it dominates and it does
+not dominate strictly.  This is the field-generic counterpart of the real
+`Gtz.corankOne_isTie_exactlyTied` (`Gtz/Ties/TotalTieCorankOne.lean`), reached
+without the leverage law and without a kernel vector. -/
+theorem forall_erasure_exactlyTied_of_forall_fieldDominates {rank : ℕ} (hrank : 1 ≤ rank)
+    (design : FieldWeightedDesign Scalar (rank + 1) rank)
+    (hall : ∀ dropped : Fin (rank + 1), FieldDominates design (Finset.univ.erase dropped))
+    (dropped : Fin (rank + 1)) :
+    FieldDominates design (Finset.univ.erase dropped)
+      ∧ ¬ (fieldSubsetSum design (Finset.univ.erase dropped) - 1).PosDef :=
+  ⟨hall dropped, not_posDef_erasureGap_of_coParsevalPivot_eq_one design (by omega) dropped
+    (forall_coParsevalPivotValue_eq_one_of_forall_fieldDominates hrank design hall dropped)⟩
+
 /-! ## A4 in the Jensen chart
 
 The brief's `p_c = |z_c|²/(1 - t_c)` needs only the DIAGONAL of `P = 1 - z zᴴ`,
@@ -417,11 +559,60 @@ The statement below therefore takes the identity as an argument.  The corank-one
 theorem `fieldGtzWeighted_corank_one` does NOT depend on it. -/
 
 /-- The Jensen-chart erasure criterion, as a named proposition so the gap is
-visible rather than buried: `Dominates (univ.erase c₀) ↔ Σ_{c ≠ c₀} p_c ≤ 1`. -/
-def JensenErasureCriterion (Scalar : Type*) [RCLike Scalar] (size rank : ℕ) : Prop :=
-  ∀ (design : FieldWeightedDesign Scalar size rank) (dropped : Fin size),
+visible rather than buried: `Dominates (univ.erase c₀) ↔ Σ_{c ≠ c₀} p_c ≤ 1`.
+
+Indexed by the RANK alone, so the designs it quantifies over are exactly the
+corank-one ones.  That restriction is not cosmetic: stated over an arbitrary size
+the proposition is refutable, and the refutation is
+`not_jensenErasureCriterion_at_singleton` below. -/
+def JensenErasureCriterion (Scalar : Type*) [RCLike Scalar] (rank : ℕ) : Prop :=
+  ∀ (design : FieldWeightedDesign Scalar (rank + 1) rank) (dropped : Fin (rank + 1)),
     FieldDominates design (Finset.univ.erase dropped)
       ↔ ∑ atomIndex ∈ Finset.univ.erase dropped, jensenRatio design atomIndex ≤ 1
+
+/-- At `size = rank = 1` the erasure of the single atom is the EMPTY subset, whose
+atom sum is zero, so the erasure gap is the `1 × 1` matrix `-1`. -/
+theorem fieldSubsetSum_erase_degenerateSingleton :
+    fieldSubsetSum (degenerateSingletonDesign (Scalar := Scalar)) (Finset.univ.erase 0) - 1
+      = -1 := by
+  classical
+  have hempty : Finset.univ.erase (0 : Fin 1) = (∅ : Finset (Fin 1)) := by
+    apply Finset.eq_empty_of_forall_notMem
+    intro candidate hcandidate
+    exact (Finset.mem_erase.mp hcandidate).1 (Subsingleton.elim candidate 0)
+  rw [fieldSubsetSum, hempty, Finset.sum_empty, zero_sub]
+
+/-- The Jensen sum over that empty erasure is zero, so the criterion's right-hand
+side holds. -/
+theorem sum_erase_jensenRatio_degenerateSingleton :
+    ∑ atomIndex ∈ Finset.univ.erase (0 : Fin 1),
+      jensenRatio (degenerateSingletonDesign (Scalar := Scalar)) atomIndex = 0 := by
+  classical
+  have hempty : Finset.univ.erase (0 : Fin 1) = (∅ : Finset (Fin 1)) := by
+    apply Finset.eq_empty_of_forall_notMem
+    intro candidate hcandidate
+    exact (Finset.mem_erase.mp hcandidate).1 (Subsingleton.elim candidate 0)
+  rw [hempty, Finset.sum_empty]
+
+/-- **THE SHAPE OF `JensenErasureCriterion` IS LOAD-BEARING.**  Stated at an
+arbitrary size the criterion is FALSE, and `size = rank = 1` is the witness: the
+Jensen side is an empty sum below one while the domination side asks `-1` to be
+positive semidefinite.  Shipped as a theorem so nobody can widen the indexing back
+out by accident. -/
+theorem not_jensenErasureCriterion_at_singleton :
+    ¬ ∀ (design : FieldWeightedDesign Scalar 1 1) (dropped : Fin 1),
+        FieldDominates design (Finset.univ.erase dropped)
+          ↔ ∑ atomIndex ∈ Finset.univ.erase dropped, jensenRatio design atomIndex ≤ 1 := by
+  intro hcriterion
+  have hdominates : FieldDominates (degenerateSingletonDesign (Scalar := Scalar))
+      (Finset.univ.erase 0) :=
+    (hcriterion degenerateSingletonDesign 0).mpr
+      (by rw [sum_erase_jensenRatio_degenerateSingleton]; norm_num)
+  rw [FieldDominates, fieldSubsetSum_erase_degenerateSingleton] at hdominates
+  have hdiagonal : (0 : Scalar) ≤ (-1 : Matrix (Fin 1) (Fin 1) Scalar) 0 0 :=
+    hdominates.diag_nonneg (i := 0)
+  rw [Matrix.neg_apply, Matrix.one_apply_eq] at hdiagonal
+  exact absurd hdiagonal (by norm_num)
 
 /-- **What A4(ii) is missing, stated exactly.**  Given a unit kernel vector
 realising the corank-one projector identity, A4's `p_c` is `|z_c|²/(1 - t_c)` and
@@ -504,13 +695,19 @@ theorem pairErasureGap_eq {size rank : ℕ} (design : FieldWeightedDesign Scalar
   rw [coParsevalOperator_eq_universalGap, ← hsplit]
   abel
 
-/-- **A6, NAMED not proved.**  The corank-two reduction: rank-two weighted GTZ at
-every size implies corank-two weighted GTZ at every rank at least two.  Left as an
-open proposition here for the three reasons in the section header — moot over ℂ
-(size `rank + 2` is refuted), already shipped over ℝ
-(`Gtz.gtzWeighted_corank_two`), and its bridge requires the `T^{-1/2}` whitening
-recorded above, which is the one step where an incorrect rescaling would produce a
-false lemma. -/
+/-- **A6, NAMED — and open only in the generic `Scalar`.**  The corank-two
+reduction: rank-two weighted GTZ at every size implies corank-two weighted GTZ at
+every rank at least two.
+
+The honest label: BOTH instantiations that this campaign cares about are
+DISCHARGED, in `Gtz/Complex/SizeAxis.lean`, and neither needs the `T^{-1/2}`
+whitening — `fieldCorankTwoReducesToRankTwo_real` reads the conclusion off the
+shipped `Gtz.gtzWeighted_corank_two` through the transport, and
+`fieldCorankTwoReducesToRankTwo_complex` is vacuous because its hypothesis fails
+(rank two is refuted over ℂ at size four).  What remains genuinely open is only the
+uniform statement over an arbitrary `RCLike` field, and that is the statement whose
+proof would need the whitening recorded above — the one step where an incorrect
+rescaling produces a false lemma. -/
 def FieldCorankTwoReducesToRankTwo (Scalar : Type*) [RCLike Scalar] : Prop :=
   (∀ size : ℕ, FieldGtzWeighted Scalar size 2) →
     ∀ rank : ℕ, 2 ≤ rank → FieldGtzWeighted Scalar (rank + 2) rank

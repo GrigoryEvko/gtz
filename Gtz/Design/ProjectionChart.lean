@@ -34,12 +34,26 @@ because nothing complex existed: `Gtz/Complex/` has no chart.  (Its
 — NOT Hermitian, used for minors and volumes; it is not the chart and must not
 be mistaken for one.)
 
-A separate note on duplication INSIDE the real layer, reported not repaired:
-`Gtz/Quantitative/SpreadCertificateSixThree.lean` carries `chartFrame`,
-`chartMatrix`, `chartFrame_transpose_mul_self`, `chartMatrix_isIdempotent`,
-`chartMatrix_isSymm` and `chartMatrix_trace`, which are the rank-three
-specialisation of the rank-generic `ProjectionForm` layer.  Consumers of chart
-facts should import `Gtz.LinAlg.ProjectionForm`, never that file.
+A separate note on duplication INSIDE the real layer, reported not repaired.
+There are THREE rank-three specialisations of the rank-generic `ProjectionForm`
+layer, and a consumer of chart facts should import `Gtz.LinAlg.ProjectionForm`
+rather than any of them:
+
+  * `Gtz/Quantitative/SpreadCertificateSixThree.lean` — `chartFrame`,
+    `chartMatrix`, `chartFrame_transpose_mul_self`, `chartMatrix_isIdempotent`,
+    `chartMatrix_isSymm`, `chartMatrix_trace`;
+  * `Gtz/Quantitative/ProjectionChartLegs.lean` — `chartBasis`, `chartEntry`,
+    `chartEntry_self` (the diagonal law `P_cc = t_c |g_c|²`), and a chart-GAP
+    layer of its own: `chartGapDiagonal`, `chartGapDiagonal_eq`,
+    `chartGapMatrix_eq`, `chartGapDeterminant`, `chartGapWeightedMinorSum`.
+    This is the copy nearest to the material below and the one most likely to be
+    re-derived by accident;
+  * `Gtz/Complex/PerRankConstantLedger.lean` — `conjugateAtomRows`,
+    `weightDiagonal`, `indexShadow`.  `indexShadow` is `A · (Aᴴ · diag t)`, which
+    is NOT Hermitian; it is a minor/volume device, not the chart.
+
+None of those names collides with anything below; the defect they constitute is
+duplication, not ambiguity.
 
 **THE A2 CORRECTION.**  A2 is stated in the campaign brief unconditionally.  It
 is FALSE unconditionally, at exactly one shape: at `size = rank = 1` the only
