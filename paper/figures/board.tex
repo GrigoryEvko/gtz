@@ -1,5 +1,5 @@
 \begin{tikzpicture}[
-  x=5.35mm, y=5.35mm,
+  x=6.1mm, y=6.1mm,
   every node/.style={font=\scriptsize, inner sep=1pt},
   holds/.style   ={fill=black!12, draw=black!45, line width=0.3pt},
   fails/.style   ={fill=black!58, draw=black!45, line width=0.3pt},
@@ -46,7 +46,7 @@
 \end{scope}
 
 % ======================  the complex board  ==========================
-\begin{scope}[shift={(11.2,0)}]
+\begin{scope}[shift={(11.6,0)}]
   \foreach \m in {1,...,9}{\bcell{\m}{1}{holds}}
 
   \bcell{1}{2}{nodesign}
@@ -88,11 +88,11 @@
   \path[reduces]  (0,0) rectangle ++(0.85,0.6);
   \node[anchor=west] at (1.05,0.30) {implied by the two open cells};
 
-  \path[fails]    (8.6,0) rectangle ++(0.85,0.6);
-  \node[anchor=west] at (9.65,0.30) {fails};
+  \path[fails]    (9.4,0) rectangle ++(0.85,0.6);
+  \node[anchor=west] at (10.45,0.30) {fails};
 
-  \path[nodesign] (11.8,0) rectangle ++(0.85,0.6);
-  \node[anchor=west] at (12.85,0.30) {no design};
+  \path[nodesign] (13.0,0) rectangle ++(0.85,0.6);
+  \node[anchor=west] at (14.05,0.30) {no design};
 \end{scope}
 
 \end{tikzpicture}

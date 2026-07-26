@@ -413,7 +413,7 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmcsc10.tfm
 INPUT build/main.toc
 INPUT build/main.toc
 INPUT build/main.toc
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmr8.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmr12.tfm
 INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/share/texlive/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
 INPUT /usr/share/texlive/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc
@@ -443,6 +443,7 @@ INPUT ./sections/01-intro.tex
 INPUT ./sections/01-intro.tex
 INPUT sections/01-intro.tex
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmri10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmr8.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmr6.tfm
 INPUT /usr/share/texlive/texmf-dist/tex/latex/lm/ot1lmss.fd
 INPUT /usr/share/texlive/texmf-dist/tex/latex/lm/ot1lmss.fd
@@ -557,7 +558,7 @@ INPUT /usr/share/texlive/texmf-dist/tex/latex/lm/t1lmtt.fd
 INPUT /usr/share/texlive/texmf-dist/tex/latex/lm/t1lmtt.fd
 INPUT /usr/share/texlive/texmf-dist/tex/latex/lm/t1lmtt.fd
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmtt10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmtt9.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmtt10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmtt8.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmtt8.tfm
 INPUT ./sections/10-open.tex
@@ -579,6 +580,7 @@ INPUT build/main.bbl
 INPUT build/main.bbl
 INPUT build/main.bbl
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmbx9.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmtt9.tfm
 INPUT build/main.aux
 INPUT build/main.out
 INPUT build/main.out
@@ -592,6 +594,7 @@ INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmmi7.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmmi8.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmmi9.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmr10.pfb
+INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmr12.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmr5.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmr6.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmr7.pfb

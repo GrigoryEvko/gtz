@@ -6,7 +6,10 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage[margin=1.35in]{geometry}
+% A4.  The text block covers ~65% of the sheet, which is where the AMS
+% journals sit; the folio clears the block by 14mm and the page edge by 11mm.
+\usepackage[a4paper, left=24mm, right=24mm, top=22mm, bottom=25mm,
+            footskip=14mm]{geometry}
 \usepackage{amsmath,amssymb,mathtools,booktabs,array}
 \usepackage{microtype}
 \usepackage[dvipsnames]{xcolor}
@@ -20,7 +23,16 @@
             urlcolor=linkblue]{hyperref}
 
 % --- page furniture -------------------------------------------------------
-% No running heads.  Folio centred at the foot.
+% No running heads.  Folio centred at the foot, set one step larger than the
+% body and dropped clear of the text block by the footskip above.
+\makeatletter
+\renewcommand{\ps@plain}{%
+  \let\@mkboth\@gobbletwo
+  \let\@oddhead\@empty
+  \let\@evenhead\@empty
+  \def\@oddfoot{\hfil\normalfont\large\thepage\hfil}%
+  \let\@evenfoot\@oddfoot}
+\makeatother
 \pagestyle{plain}
 
 % --- vertical rhythm ------------------------------------------------------
