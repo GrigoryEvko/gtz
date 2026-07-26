@@ -12,7 +12,7 @@ nowhere, that the rank-three equality locus has a second primitive: the diamond
   omitted, ground vertex `d`) as a `GraphDesignData 5 3`, with uniform design
   weight `1/5` and conductance `2` on the `ab` diagonal, `3` on each of the four
   rim edges `ac, ad, bc, bd`.
-* `diamondGapForm` / `diamondTie_gapValue` -- the Loewner gap of a selected edge
+* `diamondTieGapForm` / `diamondTie_gapValue` -- the Loewner gap of a selected edge
   set, as one polynomial identity in the three reduced potentials.
 * `diamondTieDesign_dominates` -- the star `{ab, ac, ad}` at `a` dominates,
   through the exact sum-of-squares
@@ -85,17 +85,17 @@ open Matrix
 
 /-- The diamond `K4 - e`: vertices `a = 0`, `b = 1`, `c = 2` and the ground
 vertex `d = 3`; edges `ab, ac, ad, bc, bd` in that order, the edge `cd` omitted. -/
-def diamondGraph : MultigraphOnGround 5 3 where
+def diamondTieGraph : MultigraphOnGround 5 3 where
   edgeTail := ![0, 0, 0, 1, 1]
   edgeHead := ![1, 2, 3, 2, 3]
 
-theorem diamondGraph_isGroundConnected :
-    IsGroundConnected diamondGraph Finset.univ := by
-  have hgroundToFirst : IsEdgeAdjacent diamondGraph Finset.univ (Fin.last 3) 0 :=
+theorem diamondTieGraph_isGroundConnected :
+    IsGroundConnected diamondTieGraph Finset.univ := by
+  have hgroundToFirst : IsEdgeAdjacent diamondTieGraph Finset.univ (Fin.last 3) 0 :=
     ⟨2, Finset.mem_univ _, Or.inr ⟨by decide, by decide⟩⟩
-  have hfirstToSecond : IsEdgeAdjacent diamondGraph Finset.univ 0 1 :=
+  have hfirstToSecond : IsEdgeAdjacent diamondTieGraph Finset.univ 0 1 :=
     ⟨0, Finset.mem_univ _, Or.inl ⟨by decide, by decide⟩⟩
-  have hfirstToThird : IsEdgeAdjacent diamondGraph Finset.univ 0 2 :=
+  have hfirstToThird : IsEdgeAdjacent diamondTieGraph Finset.univ 0 2 :=
     ⟨1, Finset.mem_univ _, Or.inl ⟨by decide, by decide⟩⟩
   intro vertex
   fin_cases vertex
@@ -108,19 +108,19 @@ theorem diamondGraph_isGroundConnected :
 
 /-- The tie conductance of the diamond: `2` on the `ab` diagonal, `3` on each of
 the four rim edges.  The cycle rule `1/(p(n-p))` does NOT produce a tie here. -/
-def diamondConductance : Fin 5 → ℝ := ![2, 3, 3, 3, 3]
+def diamondTieConductance : Fin 5 → ℝ := ![2, 3, 3, 3, 3]
 
 /-- The diamond design data: uniform design weight `1/5` on all five edges. -/
 noncomputable def diamondTieData : GraphDesignData 5 3 where
-  graph := diamondGraph
-  conductance := diamondConductance
+  graph := diamondTieGraph
+  conductance := diamondTieConductance
   conductance_pos := by
     intro edge
-    fin_cases edge <;> norm_num [diamondConductance]
+    fin_cases edge <;> norm_num [diamondTieConductance]
   weight := fun _ => (1 : ℝ) / 5
   weight_pos := fun _ => by norm_num
   weight_sum_one := by rw [Fin.sum_univ_five]; norm_num
-  isGroundConnected := diamondGraph_isGroundConnected
+  isGroundConnected := diamondTieGraph_isGroundConnected
 
 /-- **The diamond tie design** at `(5,3)`. -/
 noncomputable def diamondTieDesign : WeightedDesign 5 3 := graphicDesign diamondTieData
@@ -129,34 +129,34 @@ noncomputable def diamondTieDesign : WeightedDesign 5 3 := graphicDesign diamond
 
 /-- The potential drop across each of the five edges, in the three reduced
 coordinates (the ground vertex `d` carries potential zero). -/
-def diamondDrop (potential : Fin 3 → ℝ) : Fin 5 → ℝ :=
+def diamondTieDrop (potential : Fin 3 → ℝ) : Fin 5 → ℝ :=
   ![potential 0 - potential 1, potential 0 - potential 2, potential 0,
     potential 1 - potential 2, potential 1]
 
-theorem groundedPotential_diamond_zero (potential : Fin 3 → ℝ) :
+theorem groundedPotential_diamondTie_zero (potential : Fin 3 → ℝ) :
     groundedPotential potential 0 = potential 0 :=
   groundedPotential_castSucc potential 0
 
-theorem groundedPotential_diamond_one (potential : Fin 3 → ℝ) :
+theorem groundedPotential_diamondTie_one (potential : Fin 3 → ℝ) :
     groundedPotential potential 1 = potential 1 :=
   groundedPotential_castSucc potential 1
 
-theorem groundedPotential_diamond_two (potential : Fin 3 → ℝ) :
+theorem groundedPotential_diamondTie_two (potential : Fin 3 → ℝ) :
     groundedPotential potential 2 = potential 2 :=
   groundedPotential_castSucc potential 2
 
-theorem groundedPotential_diamond_three (potential : Fin 3 → ℝ) :
+theorem groundedPotential_diamondTie_three (potential : Fin 3 → ℝ) :
     groundedPotential potential 3 = 0 :=
   groundedPotential_last potential
 
-theorem diamondDrop_spec (potential : Fin 3 → ℝ) (edge : Fin 5) :
-    groundedPotential potential (diamondGraph.edgeTail edge)
-        - groundedPotential potential (diamondGraph.edgeHead edge)
-      = diamondDrop potential edge := by
-  have hzero := groundedPotential_diamond_zero potential
-  have hone := groundedPotential_diamond_one potential
-  have htwo := groundedPotential_diamond_two potential
-  have hthree := groundedPotential_diamond_three potential
+theorem diamondTieDrop_spec (potential : Fin 3 → ℝ) (edge : Fin 5) :
+    groundedPotential potential (diamondTieGraph.edgeTail edge)
+        - groundedPotential potential (diamondTieGraph.edgeHead edge)
+      = diamondTieDrop potential edge := by
+  have hzero := groundedPotential_diamondTie_zero potential
+  have hone := groundedPotential_diamondTie_one potential
+  have htwo := groundedPotential_diamondTie_two potential
+  have hthree := groundedPotential_diamondTie_three potential
   fin_cases edge
   · show groundedPotential potential 0 - groundedPotential potential 1
         = potential 0 - potential 1
@@ -174,36 +174,36 @@ theorem diamondDrop_spec (potential : Fin 3 → ℝ) (edge : Fin 5) :
 
 /-- Uniform weight `1/5` turns the selected conductance into `5` times the
 conductance. -/
-theorem diamondSelected_ratio (edge : Fin 5) :
+theorem diamondTieSelected_ratio (edge : Fin 5) :
     diamondTieData.conductance edge / diamondTieData.weight edge
-      = 5 * diamondConductance edge := by
-  show diamondConductance edge / ((1 : ℝ) / 5) = 5 * diamondConductance edge
+      = 5 * diamondTieConductance edge := by
+  show diamondTieConductance edge / ((1 : ℝ) / 5) = 5 * diamondTieConductance edge
   field_simp
 
 /-- **The gap form of the diamond tie.**  Every domination question about this
 design is this one identity, read at a different edge set. -/
-theorem diamondGapForm (edgeSet : Finset (Fin 5)) (potential : Fin 3 → ℝ) :
+theorem diamondTieGapForm (edgeSet : Finset (Fin 5)) (potential : Fin 3 → ℝ) :
     potential ⬝ᵥ ((diamondTieData.selectedLaplacian edgeSet
         - diamondTieData.fullLaplacian) *ᵥ potential)
-      = (∑ edge ∈ edgeSet, 5 * diamondConductance edge * diamondDrop potential edge ^ 2)
-        - ∑ edge, diamondConductance edge * diamondDrop potential edge ^ 2 := by
+      = (∑ edge ∈ edgeSet, 5 * diamondTieConductance edge * diamondTieDrop potential edge ^ 2)
+        - ∑ edge, diamondTieConductance edge * diamondTieDrop potential edge ^ 2 := by
   rw [Matrix.sub_mulVec, dotProduct_sub, GraphDesignData.selectedLaplacian,
     GraphDesignData.fullLaplacian, laplacianOn_form, laplacianOn_form]
   congr 1
   · refine Finset.sum_congr rfl fun edge _ => ?_
-    rw [show (diamondTieData.graph) = diamondGraph from rfl, diamondDrop_spec,
-      diamondSelected_ratio]
+    rw [show (diamondTieData.graph) = diamondTieGraph from rfl, diamondTieDrop_spec,
+      diamondTieSelected_ratio]
   · refine Finset.sum_congr rfl fun edge _ => ?_
-    rw [show (diamondTieData.graph) = diamondGraph from rfl, diamondDrop_spec]
+    rw [show (diamondTieData.graph) = diamondTieGraph from rfl, diamondTieDrop_spec]
     rfl
 
 /-- The full Dirichlet form, expanded in the reduced potentials. -/
-theorem diamondFullForm (potential : Fin 3 → ℝ) :
-    (∑ edge, diamondConductance edge * diamondDrop potential edge ^ 2)
+theorem diamondTieFullForm (potential : Fin 3 → ℝ) :
+    (∑ edge, diamondTieConductance edge * diamondTieDrop potential edge ^ 2)
       = 2 * (potential 0 - potential 1) ^ 2 + 3 * (potential 0 - potential 2) ^ 2
         + 3 * potential 0 ^ 2 + 3 * (potential 1 - potential 2) ^ 2 + 3 * potential 1 ^ 2 := by
   rw [Fin.sum_univ_five]
-  simp only [diamondConductance, diamondDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
+  simp only [diamondTieConductance, diamondTieDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four,
     Matrix.tail_cons]
 
@@ -213,13 +213,13 @@ theorem diamondTie_gapValue (first second third : Fin 5)
     (potential : Fin 3 → ℝ) :
     potential ⬝ᵥ ((diamondTieData.selectedLaplacian {first, second, third}
         - diamondTieData.fullLaplacian) *ᵥ potential)
-      = 5 * diamondConductance first * diamondDrop potential first ^ 2
-        + 5 * diamondConductance second * diamondDrop potential second ^ 2
-        + 5 * diamondConductance third * diamondDrop potential third ^ 2
+      = 5 * diamondTieConductance first * diamondTieDrop potential first ^ 2
+        + 5 * diamondTieConductance second * diamondTieDrop potential second ^ 2
+        + 5 * diamondTieConductance third * diamondTieDrop potential third ^ 2
         - (2 * (potential 0 - potential 1) ^ 2 + 3 * (potential 0 - potential 2) ^ 2
           + 3 * potential 0 ^ 2 + 3 * (potential 1 - potential 2) ^ 2
           + 3 * potential 1 ^ 2) := by
-  rw [diamondGapForm, sum_over_triple _ hfs hft hst, diamondFullForm]
+  rw [diamondTieGapForm, sum_over_triple _ hfs hft hst, diamondTieFullForm]
 
 /-! ## The dominating half -/
 
@@ -233,7 +233,7 @@ theorem diamondTieDesign_dominates : Dominates diamondTieDesign {0, 1, 2} := by
   · rw [Matrix.transpose_sub, diamondTieData.selectedLaplacian_transpose,
       diamondTieData.fullLaplacian_transpose]
   · rw [star_trivial, diamondTie_gapValue 0 1 2 (by decide) (by decide) (by decide)]
-    simp only [diamondConductance, diamondDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
+    simp only [diamondTieConductance, diamondTieDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
       Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
     nlinarith [sq_nonneg (2 * potential 1 - 8 * potential 0 + 3 * potential 2),
       sq_nonneg (potential 2)]
@@ -253,7 +253,7 @@ theorem diamondTie_notPosDef_of_nonpositive {edgeSet : Finset (Fin 5)}
   rw [star_trivial] at hpos
   linarith
 
-theorem notPosDef_congr {left right : Finset (Fin 5)} (heq : left = right)
+theorem diamondTie_notPosDef_congr {left right : Finset (Fin 5)} (heq : left = right)
     (hnot : ¬ (subsetSum diamondTieDesign right - 1).PosDef) :
     ¬ (subsetSum diamondTieDesign left - 1).PosDef := heq ▸ hnot
 
@@ -265,7 +265,7 @@ theorem diamondTie_notPosDef_012 :
     have hentry := congrFun hzero 0
     norm_num at hentry
   · rw [diamondTie_gapValue 0 1 2 (by decide) (by decide) (by decide)]
-    norm_num [diamondConductance, diamondDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
+    norm_num [diamondTieConductance, diamondTieDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
       Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four,
       Matrix.tail_cons]
 
@@ -277,7 +277,7 @@ theorem diamondTie_notPosDef_013 :
     have hentry := congrFun hzero 0
     norm_num at hentry
   · rw [diamondTie_gapValue 0 1 3 (by decide) (by decide) (by decide)]
-    norm_num [diamondConductance, diamondDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
+    norm_num [diamondTieConductance, diamondTieDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
       Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four,
       Matrix.tail_cons]
 
@@ -289,7 +289,7 @@ theorem diamondTie_notPosDef_014 :
     have hentry := congrFun hzero 0
     norm_num at hentry
   · rw [diamondTie_gapValue 0 1 4 (by decide) (by decide) (by decide)]
-    norm_num [diamondConductance, diamondDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
+    norm_num [diamondTieConductance, diamondTieDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
       Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four,
       Matrix.tail_cons]
 
@@ -301,7 +301,7 @@ theorem diamondTie_notPosDef_023 :
     have hentry := congrFun hzero 0
     norm_num at hentry
   · rw [diamondTie_gapValue 0 2 3 (by decide) (by decide) (by decide)]
-    norm_num [diamondConductance, diamondDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
+    norm_num [diamondTieConductance, diamondTieDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
       Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four,
       Matrix.tail_cons]
 
@@ -313,7 +313,7 @@ theorem diamondTie_notPosDef_024 :
     have hentry := congrFun hzero 2
     norm_num [Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons] at hentry
   · rw [diamondTie_gapValue 0 2 4 (by decide) (by decide) (by decide)]
-    norm_num [diamondConductance, diamondDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
+    norm_num [diamondTieConductance, diamondTieDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
       Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four,
       Matrix.tail_cons]
 
@@ -325,7 +325,7 @@ theorem diamondTie_notPosDef_034 :
     have hentry := congrFun hzero 0
     norm_num at hentry
   · rw [diamondTie_gapValue 0 3 4 (by decide) (by decide) (by decide)]
-    norm_num [diamondConductance, diamondDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
+    norm_num [diamondTieConductance, diamondTieDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
       Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four,
       Matrix.tail_cons]
 
@@ -337,7 +337,7 @@ theorem diamondTie_notPosDef_123 :
     have hentry := congrFun hzero 0
     norm_num at hentry
   · rw [diamondTie_gapValue 1 2 3 (by decide) (by decide) (by decide)]
-    norm_num [diamondConductance, diamondDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
+    norm_num [diamondTieConductance, diamondTieDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
       Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four,
       Matrix.tail_cons]
 
@@ -349,7 +349,7 @@ theorem diamondTie_notPosDef_124 :
     have hentry := congrFun hzero 0
     norm_num at hentry
   · rw [diamondTie_gapValue 1 2 4 (by decide) (by decide) (by decide)]
-    norm_num [diamondConductance, diamondDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
+    norm_num [diamondTieConductance, diamondTieDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
       Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four,
       Matrix.tail_cons]
 
@@ -361,7 +361,7 @@ theorem diamondTie_notPosDef_134 :
     have hentry := congrFun hzero 0
     norm_num at hentry
   · rw [diamondTie_gapValue 1 3 4 (by decide) (by decide) (by decide)]
-    norm_num [diamondConductance, diamondDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
+    norm_num [diamondTieConductance, diamondTieDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
       Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four,
       Matrix.tail_cons]
 
@@ -373,7 +373,7 @@ theorem diamondTie_notPosDef_234 :
     have hentry := congrFun hzero 0
     norm_num at hentry
   · rw [diamondTie_gapValue 2 3 4 (by decide) (by decide) (by decide)]
-    norm_num [diamondConductance, diamondDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
+    norm_num [diamondTieConductance, diamondTieDrop, Matrix.cons_val_zero, Matrix.cons_val_one,
       Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four,
       Matrix.tail_cons]
 
@@ -388,16 +388,16 @@ theorem diamondTieDesign_no_strictDominator {edgeSet : Finset (Fin 5)}
       | (exact absurd rfl hfirstSecond)
       | (exact absurd rfl hfirstThird)
       | (exact absurd rfl hsecondThird)
-      | (exact notPosDef_congr (by decide) diamondTie_notPosDef_012)
-      | (exact notPosDef_congr (by decide) diamondTie_notPosDef_013)
-      | (exact notPosDef_congr (by decide) diamondTie_notPosDef_014)
-      | (exact notPosDef_congr (by decide) diamondTie_notPosDef_023)
-      | (exact notPosDef_congr (by decide) diamondTie_notPosDef_024)
-      | (exact notPosDef_congr (by decide) diamondTie_notPosDef_034)
-      | (exact notPosDef_congr (by decide) diamondTie_notPosDef_123)
-      | (exact notPosDef_congr (by decide) diamondTie_notPosDef_124)
-      | (exact notPosDef_congr (by decide) diamondTie_notPosDef_134)
-      | (exact notPosDef_congr (by decide) diamondTie_notPosDef_234)
+      | (exact diamondTie_notPosDef_congr (by decide) diamondTie_notPosDef_012)
+      | (exact diamondTie_notPosDef_congr (by decide) diamondTie_notPosDef_013)
+      | (exact diamondTie_notPosDef_congr (by decide) diamondTie_notPosDef_014)
+      | (exact diamondTie_notPosDef_congr (by decide) diamondTie_notPosDef_023)
+      | (exact diamondTie_notPosDef_congr (by decide) diamondTie_notPosDef_024)
+      | (exact diamondTie_notPosDef_congr (by decide) diamondTie_notPosDef_034)
+      | (exact diamondTie_notPosDef_congr (by decide) diamondTie_notPosDef_123)
+      | (exact diamondTie_notPosDef_congr (by decide) diamondTie_notPosDef_124)
+      | (exact diamondTie_notPosDef_congr (by decide) diamondTie_notPosDef_134)
+      | (exact diamondTie_notPosDef_congr (by decide) diamondTie_notPosDef_234)
 
 /-- **The diamond is an exact tie**: the star at `a` dominates, nothing
 dominates strictly, so the value is exactly `1`. -/
