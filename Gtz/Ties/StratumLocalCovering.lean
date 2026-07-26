@@ -719,15 +719,19 @@ private theorem sum_over_seven (summand : Fin 7 → ℝ) :
 The nine directions are independent, so the flat space has dimension at least nine.  This
 section closes the other half by exhibiting the inverse readout: nine explicit linear
 functionals of a flat direction that reproduce it as a combination of the nine.  Together
-with `stratumFlatDirection_independent` this pins `dim = 9`, hence — the ambient space
-being `21 + 7 = 28`-dimensional — the stacked Jacobian's rank as exactly `19`.
+with `stratumFlatDirection_independent` this pins `dim = 9`; the rank statement that
+follows from it is the next section.
 
 The elimination runs on a REDUCED system, and that it suffices is itself part of the
 content.  `rainbowSeven_bundleRigid_of_velocity_zero` supplies nine rows; four rainbow
 triples supply one row per missed tetrahedron direction (`T_0, T_8, T_12, T_16`, which
 between them use only the atoms `0,1,2,3`); the six Parseval entries and the mass supply
-seven more.  Twenty rows of rank nineteen — the remaining sixteen tie rows are consequences
-and are never used. -/
+seven more.  Twenty rows of rank nineteen.
+
+Counted at the level of the proofs rather than of the summary: the rigidity theorem
+instantiates the tie hypothesis at the thirteen indices `0,1,2,4,8,9,10,12,13,14,16,17,18`
+and the four spanning rows are among those thirteen, so THIRTEEN tie rows are used and
+SEVEN — `T_3, T_5, T_6, T_7, T_11, T_15, T_19` — are never touched. -/
 
 /-- **THE INVERSE READOUT.**  Nine explicit linear functionals of a direction, which on a
 FLAT direction are its coordinates in the nine.  The formulas are the inverse of the
