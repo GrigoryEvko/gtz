@@ -42,8 +42,15 @@ the six-atom split tetrahedron of `Gtz.Ties.SplitTetrahedronTie` — an exact ti
 for EVERY admissible split, at every weight — fails `HasSpreadAtLeast` for every
 `spread > 0`, because it carries duplicated atoms and a duplicated pair has
 squared cosine exactly `1`. This is the whole point of the spread parameter: the
-obstruction of `PositivstellensatzObstruction` is a tie, ties carry parallel
-pairs, and any positive spread removes them. `splitTetraDesign_hasWeightFloor`
+obstruction of `PositivstellensatzObstruction` is a tie carrying a parallel pair,
+and any positive spread removes THAT tie.
+
+DO NOT STRENGTHEN THIS TO "ties carry parallel pairs". That sentence is
+`Gtz.HingeHoldsAtSize`, which is OPEN at sizes six and seven — `0/9` and `1/23`
+isomorphism classes discharged in `Gtz.Design.PrimitiveTightClassification` —
+and PROVED FALSE at `(5,3)` by `Gtz.not_hingeHoldsAtSize_five_three`, the
+diamond being an unsplit tie with pairwise non-parallel atoms.  What is shipped
+here is the single witness, not the universal claim.  `splitTetraDesign_hasWeightFloor`
 records the complementary fact that the floor alone does NOT remove it — at the
 balanced split every weight is `1/8`, so the tie survives every floor up to
 `1/8` and the spread parameter is doing work no floor can do.
