@@ -168,6 +168,8 @@ import Gtz.Ties.StratumLocalCovering
 import Gtz.Complex.HesseMarginAttained
 import Gtz.Complex.AttainmentRankThree
 import Gtz.Complex.SpikePaddingLadder
+import Gtz.Ties.TotalTieCorankOne
+import Gtz.Design.PrimitiveTightClassification
 
 -- the axiom ledger for everything above
 import Gtz.Audit

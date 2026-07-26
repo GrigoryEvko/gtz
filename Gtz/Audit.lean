@@ -158,6 +158,8 @@ import Gtz.Ties.StratumLocalCovering
 import Gtz.Complex.HesseMarginAttained
 import Gtz.Complex.AttainmentRankThree
 import Gtz.Complex.SpikePaddingLadder
+import Gtz.Ties.TotalTieCorankOne
+import Gtz.Design.PrimitiveTightClassification
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -3265,3 +3267,86 @@ import Gtz.Complex.SpikePaddingLadder
 #print axioms Gtz.not_complexGtzWeighted_of_rank_add_two_le_size
 #print axioms Gtz.complexPaddingLadder
 #print axioms Gtz.complexPaddingLadderAtMinimalSize
+
+-- Gtz.Ties.TotalTieCorankOne
+#print axioms Gtz.HasCommonOrthogonal
+#print axioms Gtz.dotProduct_subsetSum_mulVec_of_finset
+#print axioms Gtz.subsetSum_mulVec_eq_zero_of_commonOrthogonal
+#print axioms Gtz.not_dominates_of_commonOrthogonal
+#print axioms Gtz.subsetPick
+#print axioms Gtz.subsetPick_mem
+#print axioms Gtz.subsetPick_injective
+#print axioms Gtz.subsetPick_surjOn
+#print axioms Gtz.subsetRowMatrix
+#print axioms Gtz.subsetRowMatrix_row
+#print axioms Gtz.hasCommonOrthogonal_of_det_eq_zero
+#print axioms Gtz.dominates_det_ne_zero
+#print axioms Gtz.hasCommonOrthogonal_of_parallel
+#print axioms Gtz.not_dominates_of_parallel
+#print axioms Gtz.corankOne_isTie_dominates
+#print axioms Gtz.corankOne_isTie_exactlyTied
+#print axioms Gtz.corankOne_isTie_not_commonOrthogonal
+#print axioms Gtz.corankOne_isTie_det_ne_zero
+#print axioms Gtz.exists_erase_mem_pair
+#print axioms Gtz.corankOne_isTie_not_parallel
+#print axioms Gtz.tieAtFourThree_isTotal
+#print axioms Gtz.tieAtFourThree_isUniformMatroid
+#print axioms Gtz.tieAtFourThree_isPrimitive
+#print axioms Gtz.tieAtFourThree_witness
+
+-- Gtz.Design.PrimitiveTightClassification
+#print axioms Gtz.tripleBracket
+#print axioms Gtz.tripleBracket_eq
+#print axioms Gtz.tripleBracket_swapLeft
+#print axioms Gtz.tripleBracket_swapRight
+#print axioms Gtz.tripleBracket_eq_zero_of_parallel
+#print axioms Gtz.atomBracket
+#print axioms Gtz.IsPrimitiveDesign
+#print axioms Gtz.bracketNormal
+#print axioms Gtz.tripleBracket_eq_bracketNormal_dotProduct
+#print axioms Gtz.smul_dotProduct_self_eq_of_bracketNormal_eq_zero
+#print axioms Gtz.eq_smul_of_bracketNormal_eq_zero
+#print axioms Gtz.bracketNormal_ne_zero_of_not_parallel
+#print axioms Gtz.atom_ne_zero_of_isPrimitiveDesign
+#print axioms Gtz.bracketNormal_atom_ne_zero_of_isPrimitiveDesign
+#print axioms Gtz.hasCommonOrthogonal_of_atomBracket_eq_zero
+#print axioms Gtz.not_dominates_of_atomBracket_eq_zero
+#print axioms Gtz.atomBracket_ne_zero_of_dominates
+#print axioms Gtz.exists_basisTriple_of_isTie
+#print axioms Gtz.trace_probe_mul_atomMatrix
+#print axioms Gtz.not_parseval_of_traceNegativeProbe
+#print axioms Gtz.no_design_of_traceNegativeProbe
+#print axioms Gtz.smul_atomMatrix_mulVec
+#print axioms Gtz.soleOffPlane_normal_eq_smul_pole
+#print axioms Gtz.soleOffPlane_share_eq_one
+#print axioms Gtz.soleOffPlane_leverage_one_lt
+#print axioms Gtz.not_dominates_of_missing_pole
+#print axioms Gtz.exists_sharedNormal_of_isPrimitiveDesign
+#print axioms Gtz.fanoCoordinates_impossible
+#print axioms Gtz.fanoBrackets_impossible
+#print axioms Gtz.LinePattern
+#print axioms Gtz.HasLinePattern
+#print axioms Gtz.StratumIsTieFree
+#print axioms Gtz.PatternListIsComplete
+#print axioms Gtz.hingeHoldsAtSize_of_stratumLedger
+#print axioms Gtz.atomBracket_relabelDesign
+#print axioms Gtz.card_map_relabelEmbedding
+#print axioms Gtz.map_relabelSymm_then_relabel
+#print axioms Gtz.isTie_relabelDesign_iff
+#print axioms Gtz.hasLinePattern_relabelDesign_symm
+#print axioms Gtz.stratumIsTieFree_comp_relabel
+#print axioms Gtz.PatternListIsCompleteUpToRelabel
+#print axioms Gtz.hingeHoldsAtSize_of_relabelLedger
+#print axioms Gtz.fanoLinePattern
+#print axioms Gtz.not_hasLinePattern_fano
+#print axioms Gtz.stratumIsTieFree_fano
+#print axioms Gtz.tieAtFourThree_atomBracket_ne_zero
+#print axioms Gtz.stratumIsTieFree_fourThree_of_line
+#print axioms Gtz.tetraDesign_atomBracket_ne_zero
+#print axioms Gtz.tetraDesign_hasUniformLinePattern
+#print axioms Gtz.not_stratumIsTieFree_fourThree_uniform
+#print axioms Gtz.parallelPairAtom
+#print axioms Gtz.parallelPairDesign
+#print axioms Gtz.parallelPairLinePattern
+#print axioms Gtz.parallelPairDesign_hasLinePattern
+#print axioms Gtz.parallelPairStratum_isNonempty_and_tieFree
