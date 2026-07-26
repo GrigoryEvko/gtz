@@ -1,22 +1,26 @@
 \section{A variational principle}\label{sec:compactness}
 
-A counterexample to $\Gtz(m,k)$ is a design at which the selection
-objective falls below its threshold.  The designs of a given size and
-rank form a space which is not compact, and on which that objective has
-no minimizer.  This section replaces the design space by a compact one
-carrying a continuous objective, proves that every added point admits a
-dominating subset, and concludes that a counterexample, if one exists,
-may be taken to be a global minimizer --- hence to satisfy first-order
-conditions.  The last subsection locates the limit of the method:
-the identity which discharges the added points holds at vanishing weight
-and fails at every positive weight, and the failure sits on the extremal
-locus of \S\ref{sec:ties}.
+A counterexample to $\Gtz(m,k)$ is a design whose selection objective
+falls below the threshold.  One would like to take the worst such design
+and read off what minimality forces; but the designs of a given size and
+rank form a space that is not compact, and on it the objective attains no
+minimum.  This section supplies a compact space containing that one.  The
+objective extends to it continuously, every point added at the boundary
+turns out to carry a dominating subset, and a counterexample may
+therefore be taken to minimize globally, hence to satisfy first-order
+conditions.
+
+The method has a sharp limit, which \S\ref{sec:sharp} locates.  The
+identity that discharges the added points is available at vanishing
+weight and at no positive weight whatever, and its failure occurs on the
+extremal locus of \S\ref{sec:ties}.  That is why the argument is run at
+the limit point rather than along a minimizing sequence.
 
 \subsection{The compactification}\label{sec:compactchart}
 
 Fix $m$ and $k$.  In a design the weights are confined to the open
-simplex and the vectors are not confined at all.  What Parseval controls
-is the product: by Lemma~\ref{lem:trace},
+simplex and the vectors are not confined at all.  Parseval controls
+only the product: by Lemma~\ref{lem:trace},
 \begin{equation}\label{eq:levbound}
   \sum_c s_c\;=\;\sum_c t_c\ell_c\;=\;k,
   \qquad\text{so}\qquad \ell_c\;\le\;\frac{k}{t_c} .
@@ -38,7 +42,7 @@ No subsequence converges in the design space.  Its leverage scores are
 $s_1=s_2=\tfrac12$, constant in $u$.
 \end{example}
 
-The chart of \S\ref{sec:chart} is exactly the change of variables which
+The chart of \S\ref{sec:chart} is the change of variables that
 retains the leverage scores and discards the divergence.  With
 $v_c=\sqrt{t_c}\,g_c$ and $P=VV\adj$ as in \eqref{eq:chart},
 \begin{equation}\label{eq:pivotlev}
@@ -190,8 +194,8 @@ Lemma~\ref{lem:compact}, which supplies the minimum.
 The design space itself admits no such statement.  It is the locus
 $t_c>0$, which is open in the compactification and, by
 Example~\ref{ex:escape}, not closed in it; a minimizing sequence of
-designs need not converge to a design.  This is the reason the added
-points must be treated, and the reason no argument confined to designs
+designs need not converge to a design.  Hence the added
+points must be treated, and no argument confined to designs
 produces a minimizer.
 
 \begin{remark}\label{rem:objectives}
@@ -451,7 +455,7 @@ Contrapositive of Theorem~\ref{thm:boundary}.
 
 Corollary~\ref{cor:interiorcex} speaks about a given chart point.  Before
 using it, we record that the closed statement and the statement about
-designs are the same statement, so that the hypotheses of
+designs are the same statement, so the hypotheses of
 Theorem~\ref{thm:boundary} are ordinary smaller instances of the problem.
 
 \begin{proposition}\label{prop:density}
@@ -538,16 +542,17 @@ The two open cells of Corollary~\ref{cor:twocells} are therefore treated
 in order: $(6,3)$ first, and its resolution supplies the hypothesis
 needed at $(7,3)$.
 
-Theorem~\ref{thm:variational} does not weaken the problem: by
+Nothing has been weakened along the way: by
 Corollary~\ref{cor:equivalent} the statement about chart points with
-positive weights is the problem itself.  It adds the extremality of the
-counterexample, which no cheaper device produces.  The mixing of Lemma~\ref{lem:relax} relocates a counterexample into the
-interior but destroys whatever distinguished the original point, so it
-cannot be applied to a minimizer; and minimizing over the design space
-directly fails, since that space is not compact and a minimizing
+positive weights is the original problem.  What the theorem adds is the
+extremality of the counterexample, and no cheaper device produces it.
+The mixing of Lemma~\ref{lem:relax} does move a counterexample into the
+interior, but it destroys whatever distinguished the original point, so
+it cannot be applied to a minimizer.  Minimizing over the design space
+directly fails as well: that space is not compact, and a minimizing
 sequence of designs need not converge to a design
 (Example~\ref{ex:escape}).  The minimum exists only on the
-compactification, and Corollary~\ref{cor:interiorcex} places it back
+compactification, and Corollary~\ref{cor:interiorcex} puts it back
 inside.
 
 \begin{wip}
@@ -560,11 +565,12 @@ Definition~\ref{def:extremalcex} from Theorem~\ref{thm:rankthree}.
 \subsection{Sharpness of the boundary step}\label{sec:sharp}
 
 Theorem~\ref{thm:schurstep} requires $t_z=0$ exactly.  The composite of
-Lemma~\ref{lem:delete} and Theorem~\ref{thm:schurstep} , which deflates at $z$, deletes $z$, renormalizes, and lifts a
-dominating subset back, is meaningful at any $t_z<1$, and a minimizing-sequence argument would need this composite rather
-than the boundary statement: along such a
-sequence the weight at the escaping label is positive and merely tends to
-zero.  The composite fails at every positive weight, no threshold repairs it,
+Lemma~\ref{lem:delete} and Theorem~\ref{thm:schurstep}, which deflates
+at $z$, deletes $z$, renormalizes, and lifts a dominating subset back,
+is meaningful at any $t_z<1$; a minimizing-sequence argument would need
+this composite rather than the boundary statement, since along such a
+sequence the weight at the escaping label is positive and merely tends
+to zero.  The composite fails at every positive weight, no threshold repairs it,
 and a single determinant shows why.
 
 \begin{lemma}\label{lem:pairdet}
@@ -698,20 +704,22 @@ $\{0,1\}$ does not dominate upstairs, the probe $(-1,1+\tau,0,0)$ giving
 $-(1+\tau)\tau(2+3\tau)/3<0$.
 \end{proof}
 
-The obstruction lies on the equality locus of \S\ref{sec:ties}.  Shrinking $t_z$ shrinks the deficit, but
-along this family it shrinks nothing else: the compressed slack is frozen
-at zero, so the deficit is never overtaken.  A positive compressed slack
-would overtake it, by \eqref{eq:family}; but no positive lower bound on
-$\varepsilon$ is available.  The compressed point is a chart point of one lower
-size and rank, so by Proposition~\ref{prop:chartdesign} it is the chart
-point of a design whenever its weights are positive, and by
+The obstruction sits on the equality locus of \S\ref{sec:ties}.
+Shrinking $t_z$ does shrink the deficit, but along this family it shrinks
+nothing else: the compressed slack is frozen at zero, so the deficit is
+never overtaken.  By \eqref{eq:family} a positive compressed slack would
+overtake it, and no positive lower bound on $\varepsilon$ is to be had.
+The compressed point is a chart point one size and one rank lower, hence
+by Proposition~\ref{prop:chartdesign} the chart point of a design
+wherever its weights are positive; and by
 Theorem~\ref{thm:tieseverywhere} designs whose dominating subsets all
-have $\lmin(\SC)=1$ --- that is, chart slack exactly zero --- exist at
-corank one for every rank, and at rank three for every size.  The refutation follows the pattern of Corollary~\ref{cor:nomargin},
-which is why the boundary is discharged at $t_z=0$ by the identity
-\eqref{eq:schur} rather than at small $t_z$ by an estimate, and why
-Theorem~\ref{thm:variational} is stated at the limit point rather than
-along a minimizing sequence.
+have $\lmin(\SC)=1$, that is with chart slack zero, exist at corank one
+for every rank and at rank three for every size.  This is
+Corollary~\ref{cor:nomargin} again, in local form.  It is why the
+boundary is discharged at $t_z=0$ by the identity \eqref{eq:schur}
+instead of at small $t_z$ by an estimate, and why
+Theorem~\ref{thm:variational} speaks of the limit point rather than of a
+minimizing sequence.
 
 \begin{figure}[ht]
   \centering

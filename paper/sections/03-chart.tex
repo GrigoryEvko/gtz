@@ -5,9 +5,9 @@ on the index space, and replaces the domination condition
 \eqref{eq:dominate} by a comparison between a principal block of that
 projection and a diagonal matrix.  Every argument in the sequel is
 carried out in these coordinates.  This section constructs the chart,
-proves the criterion, determines what the criterion does and does not
-follow from, and settles the two coranks that the criterion reaches:
-corank one over both fields, corank two over $\R$.
+proves the criterion, shows that the signature of the gap decides
+nothing by itself, settles corank one over both fields, and builds the
+duality through which corank two will follow.
 
 Throughout, $k\ge1$ and $m\ge k$; the second inequality is
 Lemma~\ref{lem:span}.  For an index set $C$ of size $r$,
@@ -111,8 +111,7 @@ and $P=AA\adj$; domination of $C$ reads
 $\sum_{c\in C}a_c^{\vphantom{\mathsf{H}}}a_c\adj\psd n^{-1}I_k$, which is the
 row-selection problem of \cite{GTZ1997}.  In
 that slice $D=n^{-1}I$ and the chart criterion below is the condition
-$\lmin(P[C])\ge1/n$ used in \cite{Nesterenko2023,Nesterenko2025}.  What
-is new here is the general weight vector, for which $D$ is a genuine
+$\lmin(P[C])\ge1/n$ used in \cite{Nesterenko2023,Nesterenko2025}.  New here is the general weight vector, for which $D$ is a genuine
 diagonal and the comparison is a Loewner comparison rather than a scalar
 one.
 \end{remark}
@@ -201,9 +200,9 @@ Lemma~\ref{lem:congruence} the latter is $W[C]\psd0$.
 The problem therefore reads: \emph{some $k\times k$ principal block of a
 rank-$k$ orthogonal projection dominates the corresponding block of a
 positive diagonal matrix of trace one}.  The weights enter only through $D$, so the projection and the weights
-may be varied independently, on which the compactification of
-\S\ref{sec:compactness} depends; and $W[C]\psd0$ is a closed condition
-in both arguments.
+may be varied independently, and $W[C]\psd0$ is a closed condition in
+both arguments.  The compactification of \S\ref{sec:compactness} rests
+on both facts.
 
 \begin{figure}[ht]
   \centering
@@ -239,16 +238,14 @@ For every index set $C$,
 \]
 \end{corollary}
 
-The factor is strictly positive, so the two matrices $W[C]$ and
-$\Gram_C-I$ have the same principal minors up to positive factors and are
-semidefinite together, minor by minor.  Over the rationals this is an
-exact decision procedure, requiring no eigenvalue computation and no
-genericity assumption.
+The factor is strictly positive, so $W[C]$ and $\Gram_C-I$ have the same
+principal minors up to positive factors and are semidefinite together,
+minor by minor.  Over the rationals the minors decide the question
+outright, with no eigenvalue computation and no genericity assumption.
 
 \subsection{Inertia, and what it does not decide}\label{sec:inertia}
 
-The gap $W$ has a fixed signature, and the signature by itself decides
-nothing.
+The gap $W$ has a fixed signature, which by itself decides nothing.
 
 \begin{lemma}[Lean]\label{lem:rayleigh}
 Let $m\ge2$.  If $Px=x$ then
@@ -309,23 +306,25 @@ $x=(a+b,a,b)$,
 positive definite there; so $B_3$ has at least two positive eigenvalues,
 and $\det B_3<0$ excludes three, leaving inertia $(2,1,0)$, the inertia
 of a chart gap at $(3,2)$.  Every diagonal entry of $B_2$ and of $B_3$ is
-$-1$.  Hence no statement of the form ``a Hermitian matrix of inertia
-$(k,m-k,0)$ possesses a positive semidefinite $k\times k$ principal
-block'' is available, and no proof of $\Gtz$ can run on the signature of
-$W$ alone.
+$-1$, so neither matrix has a positive semidefinite principal block of
+the required size.  No statement of the form ``a Hermitian matrix of
+inertia $(k,m-k,0)$ possesses a positive semidefinite $k\times k$
+principal block'' is therefore available, and no proof of $\Gtz$ can run
+on the signature of $W$ alone.
 
-Neither matrix is a chart gap, and the obstruction is the diagonal.  By
-Proposition~\ref{prop:chartid} the diagonal entries of a chart gap are
-$W_{cc}=t_c(\ell_c-1)\ge-t_c>-1$, and they sum to $k-1\ge0$, so at least one of them is nonnegative.
+What separates these matrices from a chart gap is the diagonal.  By
+Proposition~\ref{prop:chartid} a chart gap has
+$W_{cc}=t_c(\ell_c-1)\ge-t_c>-1$ at every index, with $\sum_cW_{cc}=k-1\ge0$,
+so at least one diagonal entry is nonnegative.
 \end{remark}
 
 \subsection{Duality}\label{sec:duality}
 
 Since $I-P$ is the orthogonal projection onto $\ker P$, selecting a block
 of $P$ and deleting the complementary block of $I-P$ are the same
-operation.  Executed with the correct normalization, this turns a design
-of rank $k$ into a design of rank $m-k$ and exchanges domination with
-domination at the complement.
+operation.  With the correct normalization it turns a design of rank $k$
+into a design of rank $m-k$, exchanging domination for domination at the
+complement.
 
 Fix a design at $(m,k)$ with $k\ge1$ and $m\ge k+1$, and put $r:=m-k\ge1$;
 then $m\ge2$ and every $t_c<1$.  Choose an $m\times r$ matrix $Z$ whose
@@ -458,11 +457,12 @@ construction is symmetric in the two cells.
 
 The dual design is not canonical: $Z$ is determined up to a unitary of
 $\FF^{r}$ and $R$ up to a unitary factor, and both ambiguities act on the
-$h_c$ by a common unitary, which changes no domination.  The normalization, by contrast, is forced.
+$h_c$ by a common unitary, which changes no domination.  The
+normalization, by contrast, is forced.
 
 \begin{remark}\label{rem:naive}
-Rescaling the kernel rows by the weights rather than the co-weights ---
-that is, taking the dual vectors to be $u_c:=z_c/\sqrt{t_c}$ --- also
+Rescaling the kernel rows by the weights rather than the co-weights, so
+that the dual vectors are $u_c:=z_c/\sqrt{t_c}$, also
 produces a design at $(m,m-k)$, since $\sum_ct_cu_c^{\vphantom{\mathsf{H}}}u_c\adj
 =\sum_cz_c^{\vphantom{\mathsf{H}}}z_c\adj=I_{m-k}$, and it is the construction one
 writes down first.  It does not satisfy the conclusion of
@@ -512,9 +512,9 @@ the second expression by $\lvert z_c\rvert^2=1-P_{cc}=1-s_c$
   \qquad\text{while}\qquad
   \sum_c (1-t_c)\;=\;m-1\;=\;k .
 \end{equation}
-Thus the $p_c$ have co-weighted mean exactly $1/k$.  Domination is a
-rank-one perturbation of a positive diagonal, and the following criterion
-converts it into a scalar inequality.
+The $p_c$ therefore have co-weighted mean $1/k$.  Domination compares a
+positive diagonal with a rank-one perturbation of it, and the following
+criterion turns that comparison into a scalar inequality.
 
 \begin{lemma}[Lean]\label{lem:rankone}
 Let $A\pd0$ and let $b$ be a vector, and put $q:=b\adj A^{-1}b$.  Then
@@ -623,11 +623,10 @@ vector $t$ and chart $P=I-zz\adj$, whose diagonal gives
 $t_c\ell_c=1-(1-t_c)/k$, that is \eqref{eq:tielaw}.
 \end{proof}
 
-The argument is insensitive to the field, which is why the complex
-collapse of \S\ref{sec:complex} occurs one size higher and not here.
-Part (iv) produces a family of
-designs attaining the threshold with no slack, one over each point of the
-open weight simplex; \S\ref{sec:ties} draws the consequence.
+No step of the argument sees the field, so the complex collapse of
+\S\ref{sec:complex} must wait one size longer.  Part (iv) produces a
+family of designs attaining the threshold with no slack, one over each
+point of the open weight simplex; \S\ref{sec:ties} draws the consequence.
 
 \begin{example}\label{ex:tetrachart}
 The tetrahedron of Example~\ref{ex:tetra} is the uniform member at $k=3$.
@@ -673,7 +672,7 @@ weights $p/n$, $q/n$, $r/n$.
   \label{fig:jensen}
 \end{figure}
 
-Corank two is reached from here by one further step.
-Corollary~\ref{cor:dualcell} converts it into rank two, and rank two is
-Theorem~\ref{thm:ranktwo}; the conversion is carried out in
-\S\ref{sec:corank}, after its input has been proved.
+One further step reaches corank two.  Corollary~\ref{cor:dualcell}
+converts it into rank two, which is Theorem~\ref{thm:ranktwo};
+\S\ref{sec:corank} carries out the conversion, once that input is
+proved.

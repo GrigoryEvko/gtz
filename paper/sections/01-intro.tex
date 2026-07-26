@@ -31,10 +31,10 @@ $U_C$ the $k\times k$ submatrix on the rows $C$ the requirement
 That some $k\times k$ submatrix of a matrix with orthonormal columns has
 inverse of spectral norm at most $\sqrt m$ is the conjecture of Goreinov,
 Tyrtyshnikov and Zamarashkin \cite{GTZ1997}, raised there in the course of
-bounding the error of pseudoskeleton approximation.  It is the exact
-analytic content of the maximal-volume principle, and it remains open.
+bounding the error of pseudoskeleton approximation.  It is the analytic
+content of the maximal-volume principle, and it remains open.
 
-What is provable by that principle is the following \cite{GZT1997,GT2001}.
+The principle does prove the following \cite{GZT1997,GT2001}.
 Among the finitely many $k$-subsets choose one of maximal volume, that is
 one maximizing $\lvert\det U_C\rvert$.  It is nonsingular: by the
 Cauchy--Binet formula
@@ -65,14 +65,14 @@ by the identity
 \end{equation}
 a ring identity in the substitution $k=a+1$, $m-k=b+1$.  The deficit
 $(k-1)(m-k-1)$ vanishes precisely when $k=1$ or $m=k+1$, and is positive
-otherwise; at $(m,k)=(7,3)$ it equals $6$, so that the maximal-volume
-principle delivers $\sigma_{\min}^2\ge1/13$ where $1/7$ is asked.  Thus
-the range in which the classical argument already suffices is exactly
+otherwise; at $(m,k)=(7,3)$ it equals $6$, and the principle delivers
+$\sigma_{\min}^2\ge1/13$ where $1/7$ is asked.  The classical argument
+therefore suffices exactly on the range
 \begin{equation}\label{eq:elementary}
   k\le1\quad\text{or}\quad m\le k+1 ,
 \end{equation}
-and every remaining case of the conjecture demands something the volume
-count does not supply.
+and every case outside it needs something the volume count does not
+supply.
 
 Beyond \eqref{eq:elementary} the known cases are few.  Nesterenko
 \cite{Nesterenko2023} settled $(m,k)=(4,2)$ over $\R$ by an argument in
@@ -88,40 +88,39 @@ satisfies $\SC\psd\alpha I_2$ with $\alpha=2-2/\sqrt3<1$, and $\alpha$
 cannot be raised, being attained when $4\mid m$ and approached otherwise
 \cite{Nesterenko2026complex}.  The restricted-invertibility theorems
 \cite{BourgainTzafriri1987,SpielmanSrivastava2012,MSS2022} select subsets
-of size strictly below the rank with a least eigenvalue controlled by a
-stable-rank ratio.  That control degenerates as the size of the subset
-approaches the rank, and it is at the rank that the present question is
-posed.  Maximizing the volume is itself NP-hard, and NP-hard to
-approximate \cite{CivrilMagdonIsmail2009}, so the selection principle is
-an existence statement rather than an algorithm; on the algorithmic side
-one settles for the polynomial factors of \cite{GuEisenstat1996}.
+of size strictly below the rank, with a least eigenvalue controlled by a
+stable-rank ratio; that control degenerates as the subset size approaches
+the rank, which is where the present question sits.  Maximizing the
+volume is itself NP-hard, and NP-hard to approximate
+\cite{CivrilMagdonIsmail2009}, so the selection principle asserts
+existence without exhibiting a subset, and the algorithmic literature
+settles for the polynomial factors of \cite{GuEisenstat1996}.
 
 \medskip
 
-This paper studies the problem with general weights.  The weights then
-become a coordinate: vectors and weights may be varied independently
-subject to \eqref{eq:parseval}, and the extremal configurations appear as
-sections over the weight simplex rather than as isolated matrices.  The
-substitution $v_c:=\sqrt{t_c}\,g_c$ turns \eqref{eq:parseval} into the
-statement that the matrix $V$ with rows $v_c\adj$ is an isometry, and
-\eqref{eq:dominate} into a comparison between a principal block of the
-projection $P=VV\adj$ and the corresponding block of $\diag(t)$.  In those
-coordinates the problem concerns a compact set, and a variational
-treatment becomes available.  At a fixed pair $(m,k)$ the weighted
-statement is formally stronger than the classical one.  Over all sizes the
-two are equivalent, since a design with rational weights is a uniform
-design of larger size with repeated vectors, and arbitrary weights follow
-by a limiting argument.
+This paper studies the problem with general weights, which turns the
+weights into a coordinate: vectors and weights vary independently subject
+to \eqref{eq:parseval}, and the extremal configurations become sections
+over the weight simplex instead of isolated matrices.  Under the
+substitution $v_c:=\sqrt{t_c}\,g_c$ the condition \eqref{eq:parseval} says
+that the matrix $V$ with rows $v_c\adj$ is an isometry, and
+\eqref{eq:dominate} compares a principal block of the projection
+$P=VV\adj$ with the corresponding block of $\diag(t)$.  These coordinates
+put the problem on a compact set and open it to variational methods.  At
+a fixed pair $(m,k)$ the weighted statement is formally stronger than the
+classical one; over all sizes the two agree, since a design with rational
+weights is a uniform design of larger size with repeated vectors, and
+arbitrary weights follow by a limit.
 
 \medskip
 
 Over $\C$ the problem is settled.  For $k\ge2$ selection succeeds in every
 complex design when $m\le k+1$ and fails whenever $m\ge k+2$
-(Theorem~\ref{thm:complex}); for $k\le1$ it always succeeds.  Set against
-\eqref{eq:elementary}, this says that over $\C$ the conjecture holds just
-where the maximal-volume count already proves it and fails everywhere
-else.  The complex problem is thereby closed, and with it the possibility
-of a field-independent proof of the real conjecture.
+(Theorem~\ref{thm:complex}); for $k\le1$ it always succeeds.  Against
+\eqref{eq:elementary} this reads: over $\C$ the conjecture holds just
+where the maximal-volume count already proves it, and fails everywhere
+else.  Nothing remains open over $\C$, and no field-independent argument
+can settle the real conjecture.
 
 Over $\R$, rank two holds at
 every size (Theorem~\ref{thm:ranktwo}), corank one and corank two hold at
@@ -129,72 +128,72 @@ every rank (Theorems~\ref{thm:corankone} and~\ref{thm:coranktwo}), and at
 each fixed rank the problem is finite: if $\Gtz(m,k)$ holds for all
 $m\le k(k+1)/2+1$ then it holds for all $m$ (Theorem~\ref{thm:window}).
 That bound is one more than the dimension of the space of real symmetric
-$k\times k$ matrices, which is where a support-reduction argument applied
-to \eqref{eq:parseval} begins to bite.  Rank three leaves the two cells
-$(6,3)$ and $(7,3)$.  No symmetry of the problem reduces the pair further,
-since $(6,3)$ is self-dual and duality carries $(7,3)$ to $(7,4)$, again
-of corank three (Corollary~\ref{cor:twocells}).
+$k\times k$ matrices, the size at which a support-reduction argument
+applied to \eqref{eq:parseval} starts to bite.  Rank three leaves the
+cells $(6,3)$ and $(7,3)$, and no symmetry reduces the pair further:
+$(6,3)$ is self-dual, and duality carries $(7,3)$ to $(7,4)$, again of
+corank three (Corollary~\ref{cor:twocells}).
 
-The threshold in \eqref{eq:dominate} is attained.  At every size
-$m\ge k+1$ there are
-designs in which some $k$-subset dominates and none dominates strictly
-(Theorem~\ref{thm:tieseverywhere}).  At corank one the designs attaining
-it are classified, and they form a section over the whole open weight
-simplex, hence a set of dimension $m-1$ (Theorem~\ref{thm:corankone}).
-The regular tetrahedron of Example~\ref{ex:tetra} is one of them, and at
-$(5,3)$ there is another whose vectors are pairwise non-parallel
-(Example~\ref{ex:diamond}), so the locus is not exhausted by the designs
-obtained from smaller ones by splitting a vector.
+The threshold in \eqref{eq:dominate} is attained at every size
+$m\ge k+1$: there are designs in which some $k$-subset dominates and none
+dominates strictly (Theorem~\ref{thm:tieseverywhere}).  At corank one
+these designs are classified, and they form a section over the whole open
+weight simplex, a set of dimension $m-1$ (Theorem~\ref{thm:corankone}).
+The regular tetrahedron of Example~\ref{ex:tetra} is one of them; another,
+at $(5,3)$, has pairwise non-parallel vectors
+(Example~\ref{ex:diamond}), so splitting a vector of a smaller design
+does not produce the whole locus.
 
-The space of designs is not compact.  Its weights range over an open
+The space of designs is not compact: its weights range over an open
 simplex, and by \eqref{eq:parseval} a vector diverges as its weight tends
-to zero.  In the coordinates $(P,t)$, however, that space is the interior
-of a compact one, on which the objective
+to zero.  In the coordinates $(P,t)$ that space becomes the interior of a
+compact one, on which the objective
 $\max_{\lvert C\rvert=k}\lmin(W[C])$, $W=P-\diag(t)$, extends
-continuously.  The boundary of the compactification is free:
+continuously.  The smaller cells discharge the added boundary points:
 granting the same statement at $(m-1,k)$ and at $(m-1,k-1)$, every point
 with a vanishing weight carries a dominating $k$-subset
 (Theorem~\ref{thm:boundary}).  Under those two hypotheses a failure of
 $\Gtz(m,k)$ forces the objective to attain its minimum at an interior
-point, which is to say at a genuine weighted design
-(Theorem~\ref{thm:variational}).  Both hypotheses are theorems of
-\S\ref{sec:real} at $(6,3)$, and at $(7,3)$ one of them is the cell
-$(6,3)$.  Rank three then reduces to excluding critical points below the
-threshold at the two surviving cells, and \S\ref{sec:interior} derives the
-system such a point satisfies: a multiplier $\Lambda$ obeying a quadric
-law $g_c\adj\Lambda g_c=\cv$ at every $c$ together with a coverage law,
-and three exclusions cutting down the possible configurations of active
-subsets.  The objective minimized in \S\ref{sec:compactness} and the one
-differentiated in \S\ref{sec:interior} are related by a congruence and
-need not share their minimizers.  Definition~\ref{def:extremalcex}
-isolates the passage between them as a hypothesis, which
-Theorem~\ref{thm:rankthree} alone carries.
+point, that is at a genuine weighted design
+(Theorem~\ref{thm:variational}).  At $(6,3)$ both hypotheses are theorems
+of \S\ref{sec:real}; at $(7,3)$ one of them is the cell $(6,3)$.
+
+Rank three then reduces to excluding critical points below the threshold
+at the two surviving cells.  \S\ref{sec:interior} derives the system such
+a point satisfies: a multiplier $\Lambda$ obeying a quadric law
+$g_c\adj\Lambda g_c=\cv$ at every $c$, a coverage law, and three
+exclusions that cut down the possible configurations of active subsets.
+A congruence relates the objective minimized in \S\ref{sec:compactness}
+to the one differentiated in \S\ref{sec:interior}, and the two need not
+share their minimizers; Definition~\ref{def:extremalcex} isolates the
+passage between them as a hypothesis, carried by
+Theorem~\ref{thm:rankthree} alone.
 
 \medskip
 
 Because the threshold is attained, and attained on a set of full dimension
 in the weights, no proof of $\Gtz$ can carry a uniform margin: for every
 $\varepsilon>0$ there are designs admitting no $k$-subset with
-$\SC\psd(1+\varepsilon)I_k$ (Corollary~\ref{cor:nomargin}).  Several
-familiar strategies become unavailable in consequence.  An induction on
-the size or on the rank cannot transport a quantitative slack across a
-step, because there is none to transport at the source.  A certificate for
-\eqref{eq:dominate}, whether a sum-of-squares identity, a dual multiplier,
-or a determinantal or interlacing bound, must be exact on the extremal
-locus, so a strategy whose output is a strict inequality fails before it
-begins.  A minimizing sequence cannot be handled term by term, since the
-identity available at a degenerate limit fails at every positive weight,
-however small (Theorem~\ref{thm:sharp}).  That last failure is why the
-variational principle runs through a compactification rather than through
-a density argument.  Appendix~\ref{app:graveyard} collects these
-strategies together with the exact rational witnesses that refute them.
+$\SC\psd(1+\varepsilon)I_k$ (Corollary~\ref{cor:nomargin}).  That costs
+several familiar strategies.  An induction on the size or on the rank
+cannot transport a quantitative slack across a step, there being none to
+transport at the source.  A certificate for \eqref{eq:dominate}, whether a
+sum-of-squares identity, a dual multiplier, or a determinantal or
+interlacing bound, must be exact on the extremal locus, so any strategy
+whose output is a strict inequality fails at the outset.  A minimizing
+sequence cannot be handled term by term, since the identity available at a
+degenerate limit fails at every positive weight, however small
+(Theorem~\ref{thm:sharp}); hence the variational principle runs through a
+compactification rather than through a density argument.
+Appendix~\ref{app:graveyard} collects these strategies with the exact
+rational witnesses that refute them.
 
-The two cells $(6,3)$ and $(7,3)$ remain open
+The cells $(6,3)$ and $(7,3)$ remain open
 (Conjectures~\ref{conj:sixthree} and~\ref{conj:seventhree}), and with them
-the real problem at rank three and above.  The sharp constant over $\C$ at
+the real problem at rank three and above; over $\C$ the sharp constant at
 rank three is bracketed but not determined (Remark~\ref{rem:sharpc}).
-\S\ref{sec:open} collects what is left open, together with what the
-constraints above require of any solution.
+\S\ref{sec:open} lists these questions together with what the constraints
+above require of any solution.
 
 \subsection*{Tags}
 
@@ -220,10 +219,10 @@ $(m,k)$ is $m-k$.  A pair $(m,k)$ with $m<k$ carries no design
 empty.
 
 Each symbol in the following table has one meaning throughout, and is
-never rebound, not even inside a proof.  Symbols outside the table ---
-$x$, $y$, $u$, $A$, $B$, $Y$, $Z$, and the like --- are proof-local bound
-variables; they are reused across disjoint proofs and none of them shadows
-a symbol of the table.
+never rebound, not even inside a proof.  Symbols outside the table, such
+as $x$, $y$, $u$, $A$, $B$, $Y$ and $Z$, are proof-local bound variables;
+they are reused across disjoint proofs, and none of them shadows a symbol
+of the table.
 
 \medskip
 \noindent
@@ -251,8 +250,7 @@ Transpose and adjoint are written $A^{\mathsf{T}}$ and $A^{\mathsf{H}}$,
 as in numerical linear algebra, and are set upright so that neither can be
 mistaken for a variable.  Over $\R$ the two agree; the paper writes
 $\mathsf{T}$ in the sections that are real throughout and $\mathsf{H}$
-where the field is $\FF$, and it uses no other decoration for either
-operation.
+where the field is $\FF$, with no other decoration for either operation.
 
 \begin{figure}[ht]
   \centering

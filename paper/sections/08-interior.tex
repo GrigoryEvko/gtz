@@ -1,13 +1,14 @@
 \section{Interior critical points}\label{sec:interior}
 
-Section \ref{sec:compactness} converts a failure of $\Gtz(m,k)$ into an
-extremal failure: one at a design minimizing the objective, rather than
-at an arbitrary design.  This section extracts what such a design
-satisfies.  The constraint set is a smooth manifold, and its tangent
-space is computed first.  The objective is a maximum of least-eigenvalue
-functions, and its first-order behaviour is that of a nonsmooth maximum.
-The two combine into a finite system of algebraic identities, and
-everything drawn from that system afterwards is algebra.
+\S\ref{sec:compactness} upgrades a failure of $\Gtz(m,k)$ to an extremal
+failure: not merely some design below the threshold, but one minimizing
+the objective.  What does minimality cost such a design?  The constraint
+set is a smooth manifold, which gives the question a tangent space to be
+answered in.  The objective is a maximum of least-eigenvalue functions,
+locally Lipschitz but in general nowhere differentiable, so the answer
+comes from nonsmooth first-order theory rather than from a gradient.  The
+two together yield a finite system of algebraic identities, and from
+there on everything is algebra.
 
 A design at $(m,k)$ over $\R$ is written as a pair $(g,t)$ with
 $g=(g_1,\dots,g_m)\in(\R^k)^m$ and $t=(t_1,\dots,t_m)$.  Put
@@ -17,9 +18,7 @@ $g=(g_1,\dots,g_m)\in(\R^k)^m$ and $t=(t_1,\dots,t_m)$.  Put
 \end{equation}
 By Definition~\ref{def:design} and the eigenvalue reading recorded in
 Lemma~\ref{lem:tiemax}, a $k$-subset dominates exactly when
-$\lmin(\SC)\ge1$, so $\Gtz(m,k)$ asserts $F\ge1$ on every design, and a
-failure of $\Gtz(m,k)$ is a design with $F<1$.  The value of $F$ is never
-zero.
+$\lmin(\SC)\ge1$, so $\Gtz(m,k)$ asserts $F\ge1$ on every design, and a failure of $\Gtz(m,k)$ is a design with $F<1$.
 
 \begin{lemma}\label{lem:fpos}
 $F(g,t)>0$ for every design.
@@ -47,12 +46,12 @@ set, open in the design manifold, and a local minimum of $F$ on that set
 is a local minimum over all designs, since $F\ge1$ off it.  By
 Lemma~\ref{lem:chart} those designs are exactly the designs whose chart
 points carry no dominating $k$-subset, and, granting $\Gtz(m-1,k)$ and
-$\Gtz(m-1,k-1)$, Corollary~\ref{cor:interiorcex} places the whole of that
-locus in the compactification of \S\ref{sec:compactness} strictly inside
-the open weight simplex.  What is not automatic is that the infimum of $F$ over the
+$\Gtz(m-1,k-1)$, Corollary~\ref{cor:interiorcex} places all of that
+locus, within the compactification of \S\ref{sec:compactness}, strictly
+inside the open weight simplex.  It is not automatic that the infimum of $F$ over the
 locus is attained rather than approached at the boundary of the
 compactification, where by Theorem~\ref{thm:boundary} some subset
-dominates.  Theorem~\ref{thm:variational} settles precisely that question
+dominates.  Theorem~\ref{thm:variational} settles that question
 for the chart objective $G$; and by Remark~\ref{rem:objectives} $G$ and
 $F$ agree in sign but are related by a congruence which is not a scalar,
 so a minimizer of one need not minimize the other.
@@ -123,8 +122,8 @@ The objective is a maximum of finitely many least-eigenvalue functions of
 matrices depending polynomially on $g$.  It is locally Lipschitz, not
 differentiable, and not Clarke regular: each $\lmin(\SC)$ is a
 \emph{concave} function of $\SC$, and for a maximum of functions that are
-not regular the subdifferential is contained in --- and in general not
-equal to --- the convex hull of the subdifferentials of the active pieces
+not regular the subdifferential is contained in, and in general not
+equal to, the convex hull of the subdifferentials of the active pieces
 \cite[Prop.~2.3.12]{Clarke1990}.  The inclusion runs in the direction a
 necessary condition needs.
 
@@ -262,9 +261,9 @@ Theorem~\ref{thm:firstorder} produces data for which it holds.
 \end{definition}
 
 The subsets $C_i$ need not be distinct: a tight eigenvalue of
-multiplicity $r$ contributes $r$ indices carrying one subset, which is
-what the spectral decomposition in the proof of
-Theorem~\ref{thm:firstorder} produces.  Nothing below assumes that
+multiplicity $r$ contributes $r$ indices carrying one subset, the form
+the spectral decomposition in the proof of Theorem~\ref{thm:firstorder}
+delivers.  Nothing below assumes that
 $i\mapsto C_i$ is injective, and this is why the active family is defined
 as a set of subsets rather than as a set of indices.
 
@@ -850,18 +849,17 @@ $7\,011\,184$; every one has at least three members, and $5\,249\,381$
 have at most nineteen.
 \end{proposition}
 
-The exclusions reach only a corner of this census.  Of the $2136$ classes of families of $3$-subsets
-of $\{1,\dots,6\}$, Lemma~\ref{lem:overlap}(iv) removes the $34$ that do
-not cover; Proposition~\ref{prop:saturated} removes $23$ of the
-remainder, namely those in which some index lies in every member; and
-Corollary~\ref{cor:e3} leaves the single partition class undecided.  So
-$57$ classes are excluded and $2079$ are not.  The exclusions act at the
-two ends of the range and are silent in the middle, where the census is
-concentrated: they remove classes of cardinality at most three and
-classes large enough to be saturated, while the distribution of
-Table~\ref{tab:census} peaks at cardinality ten.  Conjecture~\ref{conj:sixthree}
-is therefore not a finite verification away from the exclusions proved
-here.
+Against this census the exclusions reach only a corner.  Of the $2136$
+classes of families of $3$-subsets of $\{1,\dots,6\}$,
+Lemma~\ref{lem:overlap}(iv) removes the $34$ that fail to cover;
+Proposition~\ref{prop:saturated} removes $23$ more, those in which some
+index lies in every member; and Corollary~\ref{cor:e3} leaves the single
+partition class undecided.  Fifty-seven classes are excluded, $2079$ are
+not.  The reason is visible in Table~\ref{tab:census}: the exclusions
+bite at the two ends of the range, on families too small to cover and on
+families large enough to be saturated, while the distribution peaks at
+cardinality ten, where they say nothing.  Conjecture~\ref{conj:sixthree}
+is not a finite verification away from what is proved here.
 
 \begin{proof}
 Orbit enumeration under the symmetric group.  For $n=6$ the $2^{20}$
@@ -958,11 +956,12 @@ The extremality hypothesis is all this section takes from
 \S\ref{sec:compactness}; Theorem~\ref{thm:variational} supplies it for
 the chart objective.
 
-At $(6,3)$ the conjecture is an enumeration; at $(7,3)$ it is not, and an
-argument uniform in the active family is required.  The exclusions of \S\ref{sec:exclusions} remove the small and the
-transversal configurations, and Example~\ref{ex:splitseven} shows where the residue
-lives: at the frontier size the system is realized, at the threshold, by
-an active family of twenty triples.
+At $(6,3)$ the conjecture is an enumeration.  At $(7,3)$ it is not, and
+an argument uniform in the active family is required.  The exclusions of
+\S\ref{sec:exclusions} clear away the small and the transversal
+configurations; what is left is where Example~\ref{ex:splitseven} lives,
+a system realized at the frontier size, at the threshold, by an active
+family of twenty triples.
 
 \begin{wip}
 Decide the partition branch of Corollary~\ref{cor:e3}: either exclude a

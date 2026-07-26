@@ -1,13 +1,14 @@
 \section{Formalization}\label{sec:formalization}
 
-The development is carried out in Lean~4 over Mathlib.  A statement whose head
-carries the tag \emph{Lean} is verified there.  Table~\ref{tab:lean} names the declaration
-for the statements it lists, and where a listed statement is assembled from
-several formal statements, all of them are named; a tagged statement absent
-from the table is an elementary step of the same development, verified but not
-tabulated separately.  The formal statements are the originals and the
-statements in the text are their transcriptions.  This section says what was
-formalized, under what axiom discipline, and where the formalization stops.
+The development is carried out in Lean~4 over Mathlib, and a statement
+whose head carries the tag \emph{Lean} is verified there.
+Table~\ref{tab:lean} names the declaration behind each statement it
+lists, naming all of them where a statement is assembled from several;
+a tagged statement absent from the table is an elementary step of the
+same development, verified but not tabulated on its own.  The formal
+statements are the originals, and the statements in the text are their
+transcriptions.  What follows says what was formalized, under what axiom
+discipline, and where the formalization stops.
 
 \subsection{What is formalized}\label{sec:whatformal}
 
@@ -24,8 +25,9 @@ elementary theory are written once for scalars in an \texttt{RCLike} field
 with real weights, and $\R$ and $\C$ are instantiations, definitionally so
 over $\R$; Theorems~\ref{thm:corankone} and~\ref{thm:duality} and
 Proposition~\ref{prop:sizerank} are proved at that generality and used at both.
-Where a statement is genuinely field-dependent --- Theorem~\ref{thm:complex}
-and Theorem~\ref{thm:ranktwo} --- it is proved at the field where it holds.
+Where a statement is genuinely field-dependent, as
+Theorem~\ref{thm:complex} and Theorem~\ref{thm:ranktwo} are, it is
+proved at the field where it holds.
 
 The chart of
 \S\ref{sec:chart} is formalized as the projection $P=VV\adj$ of
@@ -122,9 +124,9 @@ nothing outside it occurs.  In particular no declaration depends on
 is discharged by kernel evaluation of decidable propositions, which introduces
 no axiom; no proof is closed by compiled evaluation.
 
-The ledger is a list, and its coverage
-is exactly what it lists: one declaration, the entry marked $a$ in
-Table~\ref{tab:lean}, is absent from it, and is proved in a module duplicating
+The ledger covers exactly what it lists: one
+declaration, the entry marked $a$ in Table~\ref{tab:lean}, is absent
+from it, and is proved in a module duplicating
 one that the ledger does cover.  Its proof is checked when that module is
 elaborated, but its axiom use is not certified by the ledger.  The development also uses classical logic freely; nothing in it is a
 constructive claim.
@@ -132,17 +134,17 @@ constructive claim.
 No numerical assertion in the paper rests on floating-point evaluation.  The
 witnesses of \S\ref{sec:sharp} and Appendix~\ref{app:graveyard} are exact
 rationals in the formal statements and are checked as such; the icosahedral and
-graphic designs of Appendix~\ref{app:data} carry radicals, and the algebraic
-relations \eqref{eq:icosaconst} and \eqref{eq:graphicleverage} that eliminate
-them are what the formal statements use.  Remark~\ref{rem:hygiene} records the
+graphic designs of Appendix~\ref{app:data} carry radicals, and the
+formal statements use the algebraic relations \eqref{eq:icosaconst} and
+\eqref{eq:graphicleverage} that eliminate them.  Remark~\ref{rem:hygiene} records the
 conditioning phenomenon that makes this discipline necessary rather than
 decorative.
 
 \subsection{Where the formalization stops}\label{sec:boundaries}
 
-Two steps of the argument are not formal, both in
-\S\ref{sec:compactness}--\S\ref{sec:interior}, and they are of
-different kinds.
+Two steps of the argument are not formal.  Both lie in
+\S\ref{sec:compactness}--\S\ref{sec:interior}, and they are missing for
+different reasons.
 
 The first is the attainment in Theorem~\ref{thm:variational}: a continuous
 function on a compact space attains its minimum.  The space of chart points is
@@ -170,7 +172,7 @@ system as its hypothesis and formalizes its consequences
 (Proposition~\ref{prop:quadric}, Proposition~\ref{prop:e1} and the
 exclusions) rather than deriving the system from minimality.
 
-The distinction has a consequence for how Theorem~\ref{thm:rankthree} should be
-read.  Its two conjectural inputs are statements about the system, not about
-minimality; a proof of either closes the corresponding cell only in combination
-with the two steps above.
+Theorem~\ref{thm:rankthree} should be read with that distinction in mind.
+Its two conjectural inputs speak about the system, not about minimality,
+so a proof of either closes the corresponding cell only together with the
+two steps above.

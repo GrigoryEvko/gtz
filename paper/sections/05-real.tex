@@ -1,20 +1,22 @@
 \section{The real problem: decided cells}\label{sec:real}
 
-Over $\R$ the mechanisms of \S\ref{sec:first} decide rank one and the
-square $m=k$, and duality (Theorem~\ref{thm:duality}) converts corank one
-and corank two into rank one and rank two.  Missing are rank two itself and any control on the size.  This section
-supplies both by the same device: an operation producing from a design
-a smaller design whose dominating subsets transport back.
+The counting of \S\ref{sec:first} decides rank one and the square $m=k$,
+and duality converts corank one and corank two into rank one and rank two
+(Theorem~\ref{thm:duality}).  Rank two itself is thus the last small case
+outstanding, and nothing so far bounds the size at all.  One device
+supplies both: an operation that produces from a design a smaller design
+whose dominating subsets transport back.
 
-Deleting a vector of length at most one (\S\ref{sec:light}) lowers the
-size by one but moves the remaining vectors, by a congruence; the
-transport back is then an identity between quadratic forms, and it is
-available only because the deleted vector was short.  Carathéodory
-reduction (\S\ref{sec:crystal}) lowers the size to at most $k(k+1)/2+1$
-and leaves the vectors where they are; the transport back is immediate,
-because $\SC$ in \eqref{eq:dominate} does not involve the weights.  The first operation stalls when every vector is long, and rank two is
-where the stalled case can be settled outright
-(\S\ref{sec:ranktwo}).
+There are two such operations, and they pay for the reduction in
+different currencies.  Deleting a vector of length at most one
+(\S\ref{sec:light}) costs one from the size but moves every surviving
+vector by a congruence; the transport back is an identity between
+quadratic forms, and it works only because the deleted vector was short.
+Carathéodory reduction (\S\ref{sec:crystal}) leaves the vectors where
+they are and cuts the size to $k(k+1)/2+1$, and there the transport back
+is immediate, since $\SC$ in \eqref{eq:dominate} never sees the weights.
+Deletion stalls when every vector is long; at rank two the stalled case
+can be settled outright (\S\ref{sec:ranktwo}).
 
 \subsection{Deleting a light vector}\label{sec:light}
 
@@ -120,15 +122,15 @@ all-heavy and the assumption applies.
 The tetrahedron of Example~\ref{ex:tetra} has $\ell_c=3$ for every $c$ and
 is therefore all-heavy: the deletion is unavailable precisely at the
 design where, by Example~\ref{ex:tetra}, every dominating triple has
-$\lmin(\SC)=1$.  This is the first appearance of a pattern which recurs
-throughout: the reductions consume the interior of the problem and leave
-the extremal locus of \S\ref{sec:ties} standing.
+$\lmin(\SC)=1$.  Here a pattern begins that runs through the paper: the reductions
+consume the interior of the problem and leave the extremal locus of
+\S\ref{sec:ties} standing.
 
 \subsection{Rank two}\label{sec:ranktwo}
 
 Fix a design at $(m,2)$ and write $g_c=(x_c,y_c)$.  Identify $\R^2$ with
-$\C$ by $(x,y)\mapsto x+iy$ --- a device for the computation below, with
-no relation to the complex problem of \S\ref{sec:complex} --- and let
+$\C$ by $(x,y)\mapsto x+iy$ (a device for the computation below,
+unrelated to the complex problem of \S\ref{sec:complex}), and let
 $\eta_c\in\R^2$ correspond to the square of the complex number attached to
 $g_c$:
 \begin{equation}\label{eq:doubleangle}
@@ -217,8 +219,8 @@ Now $\tr X=\ell_c+\ell_d-2>0$.  A symmetric $2\times2$ matrix of positive
 trace is positive semidefinite exactly when its determinant is
 nonnegative: if $\det X\ge0$ then $X_{00}X_{11}\ge X_{01}^2\ge0$, so
 $X_{00}$ and $X_{11}$ have the same sign and the positive trace makes both
-nonnegative, whereupon either $X_{00}=0$ --- forcing $X_{01}=0$ and
-leaving the diagonal matrix $\diag(0,X_{11})$ --- or
+nonnegative, whereupon either $X_{00}=0$, forcing $X_{01}=0$ and
+leaving the diagonal matrix $\diag(0,X_{11})$, or
 $X_{00}\,x\tp Xx=(X_{00}x_0+X_{01}x_1)^2+(\det X)x_1^2\ge0$; the converse
 is the $2\times2$ minor.  Hence $X\psd0$ if and only if $K_{cd}\le0$.
 \end{proof}
@@ -399,23 +401,22 @@ through the origin or span $\R^2$; Lemma~\ref{lem:collinear} and
 Lemma~\ref{lem:spanning} produce a dominating pair in the two cases.
 \end{proof}
 
-The proof computes no eigenvalue: Lemma~\ref{lem:pairobs} replaces the
-least eigenvalue of a $2\times2$ matrix by a determinant, and the rest
-is quadratic algebra in the moments of the squared picture.  The
-argument is uniform in $m$ and in the weights, as the induction of
-Corollary~\ref{cor:heavy} requires, and it is sharp at the rank-two
-trine of Example~\ref{ex:trine2}: there $\Omega=2I_2$, $\zeta=0$ and
-$\sigma=0$, so $\Psi=\Omega^2-2\Omega=0$, every direction is admissible
-in Lemma~\ref{lem:spanning}, and the strict inequality of
-Lemma~\ref{lem:rowsum} fails --- as it must, since the trine has
+No eigenvalue is computed anywhere in the proof.  Lemma~\ref{lem:pairobs}
+trades the least eigenvalue of a $2\times2$ matrix for a determinant,
+and what follows is quadratic algebra in the moments of the squared
+picture, uniform in $m$ and in the weights as the induction of
+Corollary~\ref{cor:heavy} demands.  The rank-two trine of
+Example~\ref{ex:trine2} shows the argument has nothing to spare: there
+$\Omega=2I_2$, $\zeta=0$ and $\sigma=0$, so $\Psi=\Omega^2-2\Omega=0$,
+every direction is admissible in Lemma~\ref{lem:spanning}, and the strict
+inequality of Lemma~\ref{lem:rowsum} fails, as it must at a design with
 $K\equiv0$.
 
 For uniform weights $t_c=1/m$, Theorem~\ref{thm:ranktwo} is the theorem of
 Sengupta and Pautov \cite{SenguptaPautov2026}, whose base case $m=4$ is
 due to Nesterenko \cite{Nesterenko2023}; the substitution
-\eqref{eq:doubleangle} and the light/heavy split are theirs.  What is
-added is the passage to arbitrary weights, which costs the reweighting of
-Theorem~\ref{thm:light} in the light branch, and the replacement of the
+\eqref{eq:doubleangle} and the light/heavy split are theirs.  The passage to arbitrary weights is new; it costs the reweighting of
+Theorem~\ref{thm:light} in the light branch, and it replaces the
 Perron--Frobenius step of \cite{SenguptaPautov2026} by
 Lemma~\ref{lem:rowsum} and the trace computation of
 Lemma~\ref{lem:spanning} in the heavy branch.  The designs with $K\equiv0$
@@ -472,8 +473,8 @@ these failures at corank one.
 
 The reduction is field-independent, but its input is not: over $\C$ rank
 two fails at size four (Theorem~\ref{thm:complex}), and accordingly
-$\GtzC(k+2,k)$ is false for every $k\ge2$ --- the two statements are the
-same statement, read through Corollary~\ref{cor:dualcell}.
+$\GtzC(k+2,k)$ is false for every $k\ge2$; the two are the same
+statement, read through Corollary~\ref{cor:dualcell}.
 
 \begin{corollary}[Lean]\label{cor:corank}
 $\Gtz(m,k)$ holds whenever $m-k\le2$, and in particular whenever $m\le5$.
@@ -488,7 +489,7 @@ Proposition~\ref{prop:rankone} or Theorem~\ref{thm:ranktwo} applies, or
 $k\ge3$ and $m\le5\le k+2$ gives $m-k\le2$.
 \end{proof}
 
-The two arms of the decided region --- small rank and small corank ---
+The two arms of the decided region, small rank and small corank,
 therefore meet in rank two.  Corank two is also where the description of
 the designs attaining the threshold ceases to be a single law.  At corank
 one \eqref{eq:tielaw} determines the leverages from the weights; at
@@ -572,11 +573,10 @@ $g_c^{\vphantom{\mathsf{T}}}g_c\tp$ of the $k(k+1)/2$-dimensional space
 $\mathrm{Sym}_k$, and a point of a convex hull in dimension $N$ is a
 convex combination of at most $N+1$ of the points (\cite{Rockafellar1970},
 \S17).  The proof of Theorem~\ref{thm:reduce} is the standard
-support-reduction step of that theorem, carried out by hand for one
-reason: what is needed is not some representation of $I_k$ by few
-matrices, but a representation by a \emph{subfamily of the given
-vectors}, since only then is the dominating subset produced downstairs a
-subset of the original index set.  This step uses the weight-freeness of \eqref{eq:dominate}, and it
+support-reduction step of that theorem, carried out by hand because the
+representation must use a \emph{subfamily of the given vectors} rather
+than merely few matrices: only then is the dominating subset produced
+downstairs a subset of the original index set.  This step uses the weight-freeness of \eqref{eq:dominate}, and it
 separates the reduction from that of Theorem~\ref{thm:light}, where the
 vectors move and \eqref{eq:reassemble} must carry the conclusion back.
 

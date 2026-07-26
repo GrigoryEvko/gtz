@@ -1,21 +1,27 @@
 \section{The complex problem}\label{sec:complex}
 
-Over $\C$ the problem is solved, and the solution coincides with the
-reach of the elementary mechanisms of
-\S\ref{sec:first}--\S\ref{sec:chart}: $\GtzC(m,k)$ holds for $k\ge2$ if
-and only if $m\le k+1$.  The positive half is assembled in
-\S\ref{sec:cpositive} from statements already proved, all of which are
-insensitive to the field.  The negative half is produced from a single
-design of size four and rank two by two operations on designs, each raising the size or the rank by one
-while preserving a bound on the value.  \S\ref{sec:cvalue} fixes that
-value, \S\ref{sec:cseed} gives the seed, \S\ref{sec:cpadding} the
-operations, and \S\ref{sec:cladder} the assembly.
+Over $\C$ the problem is solved, and the answer stops exactly where the
+elementary methods of \S\ref{sec:first}--\S\ref{sec:chart} stop:
+$\GtzC(m,k)$ holds for $k\ge2$ if and only if $m\le k+1$.  Half of that
+is already proved.  Nothing in \S\ref{sec:first} or \S\ref{sec:chart}
+consulted the field, so their positive results stand over $\C$
+unchanged, and they cover $m\le k+1$ (\S\ref{sec:cpositive}).
+
+The other half needs one counterexample and a way to move it.  A single
+design of size four and rank two fails, and two operations propagate the
+failure across the board: one raises the size and the rank together, the
+other raises the size alone, and each keeps a bound on the least
+eigenvalue that any $k$-subset can achieve.  That bound is the quantity
+to track, so \S\ref{sec:cvalue} defines it before \S\ref{sec:cseed}
+exhibits the seed, \S\ref{sec:cpadding} the operations and
+\S\ref{sec:cladder} the assembly.
 
 \subsection{The value of a design}\label{sec:cvalue}
 
-Once the Boolean question has answer \emph{no}, the object of study is a number, which the operations of
-\S\ref{sec:cpadding} propagate.  Fix a design $\dsn$ at $(m,k)$ over $\FF$.  For every $k$-subset
-$C$ and every $x\in\FF^k$,
+Once the Boolean question is answered \emph{no}, what remains to study is
+a number, and the operations of \S\ref{sec:cpadding} propagate it.  Fix a
+design $\dsn$ at $(m,k)$ over $\FF$.  For every $k$-subset $C$ and every
+$x\in\FF^k$,
 \begin{equation}\label{eq:cover}
   x\adj\SC x\;=\;\sum_{c\in C}\lvert\langle g_c,x\rangle\rvert^{2},
   \qquad\text{so}\qquad
@@ -45,8 +51,8 @@ Theorem~\ref{thm:corankone}(iii)--(iv) produces designs of value exactly
 $1$ at every rank, the conjecture over $\R$ is the assertion
 $\alpha_k(\R)=1$ for every $k$.
 
-At every rank and over either field the value is bounded below, which
-limits what the complex counterexamples can achieve.
+At every rank and over either field the value has a floor, which limits
+how far the complex counterexamples can push it.
 
 \begin{proposition}[Lean]\label{prop:rankfloor}
 Every weighted design of size $m$ and rank $k$ over $\FF$ admits a
@@ -115,9 +121,9 @@ none dominates strictly.  Its chart is $P=I_{k+1}-zz\adj$ with
 $\lvert z_c\rvert^{2}=(1-t_c)/k$, and its leverages obey the tie law
 \eqref{eq:tielaw}.
 
-One size lower the behaviour is different, and the two cells are easily
-confused.  At $m=k$ the value is bounded away from $1$ at every design and
-approaches $1$ only in a degenerate limit.
+One size lower the behaviour differs, and the two cells are easily
+confused: at $m=k$ every design has value bounded away from $1$, and $1$
+is approached only in a degenerate limit.
 
 \begin{proposition}\label{prop:square}
 Let $\dsn$ be a design at $(k,k)$ over $\FF$.  Then $\ell_c=1/t_c$ for every
@@ -290,10 +296,9 @@ $(1-w)s>b$, contradicting the hypothesis on $\dsn$.
 \end{proof}
 
 The spike is invisible in the flat directions and is the only atom
-visible in the new one.  The factor $1/(1-w)$ is a genuine loss: for
-$b>0$ one has
-$b<b/(1-w)$ for every admissible $w$, so no member of the family attains
-the level $b$, though the levels descend to it as $w\to0$.
+visible in the new one.  The factor $1/(1-w)$ costs something real: for
+$b>0$ every admissible $w$ has $b<b/(1-w)$, so no member of the family
+attains the level $b$, though the levels descend to it as $w\to0$.
 
 \begin{lemma}[Lean]\label{lem:split}
 Let $\dsn$ be a complex weighted design at $(m,k)$, let $c_0\le m$ and let
@@ -385,8 +390,8 @@ Proposition~\ref{prop:rankone}, and at $k=0$ the empty subset dominates
 the $0\times0$ identity.
 \end{proof}
 
-For $k\ge2$ the equivalence is vacuous below $m=k$: there Parseval admits
-no design at all, and the assertion holds because there is nothing to
+For $k\ge2$ the equivalence is vacuous below $m=k$, where Parseval admits
+no design at all: the assertion holds there for want of anything to
 quantify over, not because selection succeeds.
 
 \subsection{The sharp constants}\label{sec:csharp}
@@ -435,8 +440,8 @@ $\Gram_C-sI_3$ gives, with $d:=3-s$ when all three leverages equal $3$,
   \qquad
   \beta_{abc}:=\beta_{ab}\beta_{bc}\beta_{ca}.
 \end{equation}
-The three moduli form a phase-free budget; the entire dependence on the
-phases is the single real number $\operatorname{Re}\beta_{abc}$, entering affinely.
+The three moduli form a phase-free budget, and the phases enter through
+the single real number $\operatorname{Re}\beta_{abc}$, affinely.
 
 For the trine, the two coplanar triples $\{g_0,g_1,g_2\}$ and
 $\{g_3,g_4,g_5\}$ have atom sums $\diag(6,0,3)$ and $\diag(0,6,3)$, of
@@ -565,9 +570,9 @@ failure to every $m\ge9$, and Theorem~\ref{thm:ladder} covers
 $5\le m\le8$.
 \end{proof}
 
-The eigenvalue computation may be replaced by an explicit certificate,
-which is what shows positive semidefiniteness at the threshold without
-reference to the spectral theorem.  Take the triple $\{u_0,u_1,u_3\}$.
+An explicit certificate can replace the eigenvalue computation,
+exhibiting positive semidefiniteness at the threshold without reference
+to the spectral theorem.  Take the triple $\{u_0,u_1,u_3\}$.
 From $1+\omega+\omega^{2}=0$,
 \[
   u_0^{\vphantom{\mathsf{H}}}u_0\adj+u_1^{\vphantom{\mathsf{H}}}u_1\adj
@@ -626,7 +631,7 @@ $[-\lvert\beta_{abc}\rvert,\lvert\beta_{abc}\rvert]$, and the separating
 quantity is the phase defect
 $\lvert\beta_{abc}\rvert^{2}-(\operatorname{Re}\beta_{abc})^{2}=(\operatorname{Im}\beta_{abc})^{2}$,
 which vanishes identically for every real configuration.  The trine of
-Example~\ref{ex:trine} illustrates the mechanism in its purest form: its
+Example~\ref{ex:trine} isolates the mechanism: its
 modulus budget $5$ would permit $2\operatorname{Re}\beta_{abc}=2\sqrt3$ and hence a
 positive determinant at $s=1$, but its phase defect is $3$ and its
 $\operatorname{Re}\beta_{abc}$ is exactly $0$, leaving $\det(\SC-I_3)=-2$.  No
@@ -642,9 +647,9 @@ Collecting the two ends,
   \;=\;0.7018\ldots,
 \]
 the lower bound from Proposition~\ref{prop:rankfloor} and the upper from
-Proposition~\ref{prop:hesse}.  Nothing here closes the gap: every
-rank-three statement above is an upper bound, and upper bounds move the
-record down without pinning it.  Determining $\alpha_3(\C)$ is
+Proposition~\ref{prop:hesse}.  The gap stays open: every rank-three
+statement above bounds $\alpha_3(\C)$ from above, and such bounds move
+the record down without pinning it.  Determining $\alpha_3(\C)$ is
 Problem~\ref{prob:sharpc}.  The rank-inverse bound $1/k$ is sharp only at
 $k=1$, where the one-atom design at $(1,1)$ has value $1$.
 \end{remark}

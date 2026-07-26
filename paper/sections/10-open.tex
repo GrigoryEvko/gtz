@@ -15,7 +15,7 @@ Carathéodory's theorem \cite{Caratheodory1911}; there are $2101$ such families
 up to relabelling, of which $2068$ lie within the Carathéodory bound
 (\S\ref{app:census}).  The exclusions of \S\ref{sec:exclusions},
 however, settle only $57$ of the $2136$ classes, and the remainder is
-concentrated where they are silent.  For each, what must be shown is that the ideal generated
+concentrated where they are silent.  For each, the task is to show that the ideal generated
 by \eqref{eq:statg}, \eqref{eq:statt} and the equations
 $\lmin(\SC)=\cv$ on the active family has no real point with $t\pd0$,
 $\lambda\psd0$ and $0<\cv<1$.
@@ -68,15 +68,14 @@ $\Gtz(m,k)$ at every rank at once:
 \item[(b)] that least root is at least $1$.
 \end{enumerate}
 Neither is available.  Statement (a) does not follow from real-rootedness of
-$q$ alone --- Proposition~\ref{prop:rootedness} --- and the hypothesis the
-interlacing method of \cite{MSS2015} requires is that the whole convex family
-be real-rooted, which is a property of volume sampling that has not been
-verified.  Statement (b) must be exact on the equality locus, by
+$q$ alone (Proposition~\ref{prop:rootedness}), and the interlacing
+method of \cite{MSS2015} requires the whole convex family to be
+real-rooted, a property of volume sampling that has not been verified.  Statement (b) must be exact on the equality locus, by
 Proposition~\ref{prop:qone}: at a design where every basis has $1$ in the
 spectrum of $\SC$ one has $q(1)=0$, with no margin, and at the tetrahedron
-$q=(x-1)(x-4)^2$ (\S\ref{app:tetra}).  A route through this problem would be
-the first argument in the subject that does not proceed cell by cell; no
-argument in this paper does that.
+$q=(x-1)(x-4)^2$ (\S\ref{app:tetra}).  A route through this problem would be the first
+argument in the subject that does not proceed cell by cell.  Nothing in
+this paper manages that.
 
 \item\label{prob:structure}
 \emph{Classify the extremal designs.}
@@ -115,10 +114,11 @@ question is first posed at corank three.
 \item\label{prob:effective}
 \emph{Find the subset.}
 
-The selection principle is an existence statement, and the two known routes to
-a subset do not produce one.  Volume sampling produces a dominating subset only
-on average (Theorem~\ref{thm:average}), and the maximal-volume principle
-\cite{GT2001}, which does produce a subset, gives too little.  At uniform
+The selection principle asserts that a subset exists; neither known route
+exhibits one.  Volume sampling dominates only on average
+(Theorem~\ref{thm:average}).  The maximal-volume principle
+\cite{GT2001} does name a subset, and the guarantee it comes with is too
+weak.  At uniform
 weights that principle bounds a locally maximal-volume choice by
 $\lVert A_C^{-1}\rVert^2\le1+k(m-k)$ for the matrix $A$ of rows $u_c=g_c/\sqrt m$,
 which in the normalization of \eqref{eq:dominate} reads

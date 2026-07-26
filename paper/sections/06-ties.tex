@@ -1,12 +1,18 @@
 \section{The equality locus}\label{sec:ties}
 
-The inequality \eqref{eq:dominate} is an equality on a large set.  This
-section constructs that set at every size, recalls its classification at
-corank one, computes its dimension, and draws the no-margin consequence used
-throughout the sequel.  It then examines the probability measure on
-$k$-subsets adapted to \eqref{eq:parseval}, under which the selection
-inequality holds on average, and states what that average does and does
-not give.
+The inequality \eqref{eq:dominate} is an equality on a large set, and how
+large that set is governs what a proof of the conjecture may look like.
+This section constructs the set at every size, recalls its classification
+at corank one, and computes its dimension: it meets every point of the
+open weight simplex.  The consequence, used throughout the rest of the
+paper, is that no argument for $\Gtz$ can carry a margin.
+
+A second theme runs alongside.  Volume sampling is the probability
+measure on $k$-subsets adapted to \eqref{eq:parseval}, and under it the
+selection inequality holds on average, by a factor growing with the rank.
+Turning that average into a single subset is the derandomization the
+problem asks for; \S\ref{sec:averaging} says exactly how much of it the
+identities give and where the gap begins.
 
 \subsection{Extremal designs}\label{sec:extremal}
 
@@ -53,8 +59,8 @@ the unique $k$-subset satisfies
 because the $g_c$ are then a basis of $\FF^k$ and $m\ge2$ forces $t_c<1$
 for every $c$.  So no design at $m=k$, $k\ge2$, is extremal.  Extremal
 designs first occur at corank one, where by Theorem~\ref{thm:corankone}(iii)--(iv) they
-occur at every weight vector; the content of the next subsection is that
-they then occur at every larger size as well.
+occur at every weight vector; the next subsection extends them to
+every larger size.
 
 \subsection{Splitting, and existence at every size}\label{sec:split}
 
@@ -257,8 +263,8 @@ There is no uniform margin.  For every $\varepsilon>0$ the assertion
 false, at every cell with $m\ge k+1$.  An argument whose output is a
 strict inequality --- a positivity certificate carrying a strictly
 positive multiplier, or a bound $\lmin(\SC)\ge1+f$ with $f$ a positive
-function of the design data --- is therefore refuted at the outset,
-whatever its degree or complexity.
+function of the design data --- therefore fails at the extremal designs
+themselves, whatever its degree or complexity.
 
 There is no slack to transport.  Suppose $\Gtz(m,k)$ is derived from a
 smaller cell $(m',k')$ with $m'\ge k'+1$.  The slack
@@ -267,7 +273,7 @@ of Theorem~\ref{thm:tieseverywhere}, so no step may consume a positive
 amount of it: the reduction must be an identity and not an estimate.  The
 compression lift of \S\ref{sec:boundary} is such an identity at vanishing
 weight, and Theorem~\ref{thm:sharp} exhibits its failure at every positive
-weight, the failure being located exactly on the extremal locus.
+weight, on the extremal locus itself.
 
 The exactness, finally, occupies a set of full dimension.  By
 Proposition~\ref{prop:section} the extremal locus meets every point of the
@@ -276,8 +282,8 @@ which is the dimension of the weights.  No restriction on the weights
 avoids it, and no compactness argument on a subregion of the design space
 yields a positive infimum for the slack unless the closure of that
 subregion misses the locus.  The analysis at the extremal points must
-therefore be first-order; this is what \S\ref{sec:compactness} and
-\S\ref{sec:interior} supply.  Appendix~\ref{app:graveyard} collects the strategies that fail for
+therefore be first-order, and \S\ref{sec:compactness} and
+\S\ref{sec:interior} supply it.  Appendix~\ref{app:graveyard} collects the strategies that fail for
 these reasons, together with their refuting witnesses.
 
 \subsection{The diamond}\label{sec:diamond}
@@ -679,7 +685,7 @@ Its subleading coefficient is
 $-9=-\sum_ct_c\ell_c^{2}=-4\cdot\tfrac14\cdot9$, so the bound of
 Proposition~\ref{prop:jensen} is attained here; $q(1)=0$, as
 Proposition~\ref{prop:qone} requires; and the least root of $q$ sits
-exactly at the threshold.  Meanwhile
+at the threshold.  Meanwhile
 $\E_\pi[\SC]=\tfrac34\sum_cg_c^{\vphantom{\mathsf{T}}}g_c\tp=3I_3$ while
 $\max_C\lmin(\SC)=1$: the average clears the threshold by a factor of
 three, and no triple clears it at all.
