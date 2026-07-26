@@ -10,7 +10,14 @@ circular) is untouched, and nothing here supplies stationarity data at a design
 except the explicit `(4,2)` witness at the end, which is a construction, not a
 criticality claim.
 
-## THE HEADLINE, and it is a limitative one
+## THE HEADLINE — the BUNDLE-ONLY FORMALIZATION is refuted; GTZ is untouched
+
+Read the scope of this precisely, because the overstatement is easy and costly.
+What is refuted is one candidate FORMALIZATION of the interior residual
+obligation, namely `IsQuadricStationaryData -> value != 0 -> 1 <= value`.  The
+obligation itself — "no interior Clarke-critical point of `F` with value below
+one" — is NOT refuted, NOT weakened, and NOT decided anywhere in this file, and
+neither is `GtzWeighted` at any size.
 
 `exists_isQuadricStationaryData_value_lt_one` exhibits a COMPLETE
 `IsQuadricStationaryData` at `(m,k) = (4,2)` with
@@ -19,29 +26,45 @@ criticality claim.
 
 atoms `(sqrt 2, 0)`, `(-1, 1)`, `(1, 1)`, `(0, sqrt 2)`, weights all `1/4`, active
 family `{0,1}`, `{0,2}`, `{1,3}`, `{2,3}` with multipliers all `1/4`, and
-`Lambda = ((2 - sqrt 2)/2) I`.  All eight fields are discharged; all thirty
-residuals vanish exactly.
+`Lambda = ((2 - sqrt 2)/2) I`.  All eight fields are discharged in Lean.
+[The count "thirty residuals" quoted in earlier prose is EXACT arithmetic done
+outside Lean — four Parseval entries, one weight sum, one multiplier sum, four
+unit norms, eight eigenvector coordinates, eight atom-stationarity coordinates,
+four quadric values — and it is the eight FIELDS, not the thirty residuals, that
+the kernel checks.]
 
-Hence `not_forall_one_le_value_of_isQuadricStationaryData`: **the implication
-"stationarity data with a nonzero value force `1 <= value`" is FALSE.**  The
-residual obligation of the compactness reduction — "no interior Clarke-critical
-point of `F` with value below one" — is therefore NOT expressible as
-`IsQuadricStationaryData -> 1 <= value`, and no strengthening of the algebra in
-this file could make it so.  Every exclusion below must, and does, carry a
-structural hypothesis that the witness violates.
+Hence `not_forall_one_le_value_of_isQuadricStationaryData`: the implication
+"stationarity data with a nonzero value force `1 <= value`" is FALSE, so no
+theorem of that shape can ever be proved, here or anywhere.  Every exclusion below
+must, and does, carry a structural hypothesis that the witness violates.
 
 The witness is NOT a GTZ counterexample, and the reason is exactly the field the
 bundle omits.  `IsQuadricStationaryData` asks that `value` be AN eigenvalue of
 each `S_{C_i}`; it does not ask that `value = lambda_min(S_{C_i})`, and it does not
 ask that `value = F(D) = max_{|C| = k} lambda_min(S_C)`.  At the witness the two
-INACTIVE pairs `{0,3}` and `{1,2}` both have `S_C = 2 I`, so `F(D) = 2` and
+INACTIVE pairs `{0,3}` and `{1,2}` both have `S_C = 2 I`, so
 `dominates_belowOneDesign_orthogonalPair` shows the design satisfies
 `GtzWeighted 4 2` with margin — `S_{03} - 1 = 1`, positive definite on the nose.
-The datum is stationary for the max over the four CHOSEN subsets, which are the
-MINIMISERS.  The missing constraint, named once so it is not lost: `value` must be
-at least `lambda_min(S_C)` for EVERY `k`-subset, not only the active ones.  That is a
-disjunctive real condition, not an equation, so it does not join the algebra for
-free.  `Gtz.Quantitative.CriticalQuadric` already discloses this slack in prose and
+[`F(D) = 2` exactly, and the four ACTIVE pairs are precisely the MINIMISERS: each
+has eigenvalues `2 +- sqrt 2`.  That is EXACT arithmetic over `Q(sqrt 2)` done
+outside Lean; what is MECHANIZED is the lower half, `F(D) >= 2`, via
+`exists_dominating_belowOneDesign`.]  So the datum is stationary for the max over
+the four CHOSEN subsets, which are the ARGMIN family — as far from a critical
+point of `F` as a subset family can be.
+
+The missing constraint is named, defined and exploited at the end of this file
+rather than left in prose: `IsArgmaxDominated`, `value >= lambda_min(S_C)` for
+EVERY `k`-subset.  It IS statable in the repo's existing vocabulary (a unit probe
+with small enough Rayleigh quotient — no eigenvalue function, no spectral theory);
+what it is not is an EQUATION, which is why no linear-algebra derivation below can
+consume it and why it does not enter this lane's Groebner systems.  And
+`one_le_value_of_isArgmaxDominated` computes what attaching it is worth: granted
+`GtzWeighted m k` it forces `1 <= value`, and contrapositively
+`not_gtzWeighted_of_isArgmaxDominated_of_value_lt_one` says a datum satisfying it
+below one REFUTES `GtzWeighted m k`.  In other words the argmax-complete interior
+obligation is EXACTLY the interior case of GTZ at that size, with the KKT
+equations available for free — a genuine convenience, but not a smaller problem.
+`Gtz.Quantitative.CriticalQuadric` already discloses the slack in prose and
 exercises it at its degenerate `value = 0` witness; the theorem here is that the
 slack is fatal to the below-one reading too, at a NONZERO value.
 
@@ -56,6 +79,13 @@ slack is fatal to the below-one reading too, at a NONZERO value.
 * `weight_mul_value_le_one_of_isQuadricStationaryData` — `t_c * value <= 1` at every
   atom, the restricted coverage sum being at most the unrestricted (C1) sum; hence
   `value_le_size_of_isQuadricStationaryData`, `value <= m`.
+  DISCLOSURE, so these two are not mistaken for below-one exclusions: BOTH are
+  VACUOUS in the regime this file is about.  Below one, `t_c * value <= 1` follows
+  from `t_c <= 1` and `value < 1` with no stationarity data at all, and `value <= m`
+  follows from `value < 1 <= m`.  Their content is entirely at `value >= 1`, where
+  the share bound reads `t_c <= 1/value` and is sharp — attained exactly when the
+  tight directions are independent (E2 below).  Neither is used downstream, and
+  `one_le_leverage` is the only one of the three carrying below-one content.
 * **E1**, `value_eq_rank_of_rankOneMultiplier` — a RANK-ONE multiplier forces
   `value = k`, at every rank and every size.  The route is not the informal one:
   `Lambda = scale * u u^T` gives `<u, g_c>^2 = 1` at every atom, but `u` is not a
@@ -92,6 +122,23 @@ slack is fatal to the below-one reading too, at a NONZERO value.
   — at `value != 0` and `value < 1` the active family either has at least THREE
   distinct triples, or is a two-block PARTITION of the six atoms whose tight
   directions are linearly dependent.
+* **The saturated-atom exclusion**, `one_le_value_of_saturatedAtom` — if some atom
+  lies in EVERY active subset then its coverage sum IS the unrestricted (C1) sum,
+  so `t_c * value = 1` and `value = 1/t_c >= 1`.  Contrapositive
+  `exists_activeSubset_not_mem_of_value_lt_one`.  Unlike E1 and E2 the hypothesis is
+  purely COMBINATORIAL — it is read off the active family — so it filters patterns
+  one by one.  At `(6,3)` this is the step that takes the covering `p >= 3` orbit
+  count from 2101 to 2078 (counts computed outside Lean, twice, by canonical forms
+  and by Burnside; not asserted here).
+* **The block-mass identity**, `activeWeight_blockMass_eq_weight_blockMass` — if
+  every active subset either EQUALS a chosen nonempty block or is disjoint from it,
+  the Clarke multiplier mass on the block equals the block's Parseval weight mass.
+  A necessary condition on the PARTITION branch below; NOT a proof of it.
+* **The argmax field and its price**, `IsArgmaxDominated`,
+  `one_le_value_of_isArgmaxDominated`,
+  `not_gtzWeighted_of_isArgmaxDominated_of_value_lt_one`,
+  `not_isArgmaxDominated_belowOneDesign` — see the headline.  The obligation with
+  the argmax attached is the interior case of GTZ itself, not a lemma in front of it.
 
 ## Corrections to the three hand-derived exclusions this file was asked to mechanize
 
@@ -129,6 +176,12 @@ g_c g_c^T`, `theta_c = t_c * value` — not `M P_0`, which would additionally ne
 not established, and it is not used.  [The corrected two-block identity is EXACT
 arithmetic done outside Lean and is NOT mechanized either; it is recorded only to
 say why the reported route was not taken.]
+
+What IS proved about the branch, and is the only progress on it here, is
+`activeWeight_blockMass_eq_weight_blockMass`: each block carries Clarke multiplier
+mass exactly equal to its Parseval weight mass.  Summing that over the blocks of a
+partition just returns `1 = 1`, so it does not close the leaf on its own; it is a
+constraint the next attempt starts from rather than re-derives.
 
 ## Multiplicity — the simple-eigenvalue question, answered
 
@@ -679,6 +732,131 @@ theorem disjoint_union_of_card_activeSubsetImage_eq_two
     Finset.card_eq_zero.mp (by omega)
   exact ⟨Finset.disjoint_iff_inter_eq_empty.mpr hinterEmpty, hunion⟩
 
+/-! ## The saturated-atom exclusion — the pattern-level filter -/
+
+/-- **A SATURATED atom pins its share.**  If the atom lies in EVERY active subset
+then the coverage sum, which is the (C1) sum restricted to the subsets containing
+the atom, IS the unrestricted (C1) sum; the latter is one, so `t_c * value = 1`.
+
+Unlike E1 and E2 the hypothesis here is COMBINATORIAL — it reads off the active
+family alone, with no condition on the tight directions or the multiplier — so it
+is checkable pattern by pattern, and it is the exclusion that the `(6,3)` orbit
+census applies after the `p >= 3` cut. -/
+theorem weight_mul_value_eq_one_of_saturatedAtom
+    (hdata : IsQuadricStationaryData D value multiplierMatrix activeSet activeSubset
+      activeWeight tightDir) (hvalueNe : value ≠ 0) {atomLabel : Fin m}
+    (hsaturated : ∀ activeLabel ∈ activeSet, atomLabel ∈ activeSubset activeLabel) :
+    D.weight atomLabel * value = 1 := by
+  have hcoverage := coverageLaw_of_isQuadricStationaryData hdata atomLabel
+  have hone := tightOverlap_sum_eq_one_of_isQuadricStationaryData hdata hvalueNe atomLabel
+  have hrestrictedEqFull : ∑ activeLabel ∈ activeSet,
+        (if atomLabel ∈ activeSubset activeLabel
+          then activeWeight activeLabel * (tightDir activeLabel ⬝ᵥ D.atom atomLabel) ^ 2 else 0)
+      = ∑ activeLabel ∈ activeSet,
+        activeWeight activeLabel * (tightDir activeLabel ⬝ᵥ D.atom atomLabel) ^ 2 :=
+    Finset.sum_congr rfl fun activeLabel hactive => if_pos (hsaturated activeLabel hactive)
+  rw [hrestrictedEqFull, hone] at hcoverage
+  exact hcoverage.symm
+
+/-- **The value is at least one whenever some atom is saturated.**  Its share is
+one and its weight is at most one, so the value is the reciprocal of a number in
+`(0, 1]`.  Contrapositive: below one NO atom lies in every active subset — a
+purely combinatorial exclusion on the active family. -/
+theorem one_le_value_of_saturatedAtom
+    (hdata : IsQuadricStationaryData D value multiplierMatrix activeSet activeSubset
+      activeWeight tightDir) (hvalueNe : value ≠ 0) {atomLabel : Fin m}
+    (hsaturated : ∀ activeLabel ∈ activeSet, atomLabel ∈ activeSubset activeLabel) :
+    1 ≤ value := by
+  have hshare := weight_mul_value_eq_one_of_saturatedAtom hdata hvalueNe hsaturated
+  have hweightPos := D.weight_pos atomLabel
+  have hweightLe : D.weight atomLabel ≤ 1 := by
+    rw [← D.weight_sum_one]
+    exact Finset.single_le_sum (fun otherAtom _ => (D.weight_pos otherAtom).le)
+      (Finset.mem_univ atomLabel)
+  have hvaluePos : 0 < value := by
+    rcases lt_trichotomy value 0 with hnegative | hzero | hpositive
+    · nlinarith
+    · rw [hzero, mul_zero] at hshare; norm_num at hshare
+    · exact hpositive
+  nlinarith [mul_nonneg (sub_nonneg.mpr hweightLe) hvaluePos.le]
+
+/-- **No atom of a below-one datum is saturated.**  The contrapositive reading,
+in the shape the `(6,3)` orbit census consumes: every surviving active family
+leaves at least one atom out of at least one of its subsets. -/
+theorem exists_activeSubset_not_mem_of_value_lt_one
+    (hdata : IsQuadricStationaryData D value multiplierMatrix activeSet activeSubset
+      activeWeight tightDir) (hvalueNe : value ≠ 0) (hbelowOne : value < 1)
+    (atomLabel : Fin m) :
+    ∃ activeLabel ∈ activeSet, atomLabel ∉ activeSubset activeLabel := by
+  by_contra hall
+  simp only [not_exists, not_and, not_not] at hall
+  exact absurd hbelowOne (not_lt.mpr (one_le_value_of_saturatedAtom hdata hvalueNe hall))
+
+/-! ## The block-mass identity — a proved constraint on the PARTITION branch -/
+
+/-- **A split block carries its own weight.**  Suppose a subset `block` of the
+atoms is such that every active subset either EQUALS it or is disjoint from it —
+exactly the situation of the partition branch of the `(6,3)` dichotomy below.
+Then the Clarke multiplier mass sitting on `block` equals `block`'s Parseval
+weight mass:
+
+    `sum_{i : C_i = block} lambda_i  =  sum_{c in block} t_c` .
+
+Summing the coverage law over the atoms of `block` and swapping the two sums, an
+active index whose subset is `block` contributes `lambda_i` times the Rayleigh
+quotient `u_i^T S_block u_i = value`, and a disjoint one contributes nothing.
+
+This is NOT a proof of the open leaf named in the header; it is a necessary
+condition that any partition-pattern datum must satisfy, recorded so the leaf is
+attacked with the constraint in hand rather than from scratch. -/
+theorem activeWeight_blockMass_eq_weight_blockMass
+    (hdata : IsQuadricStationaryData D value multiplierMatrix activeSet activeSubset
+      activeWeight tightDir) (hvalueNe : value ≠ 0) {block : Finset (Fin m)}
+    (hblockNonempty : block.Nonempty)
+    (hsplit : ∀ activeLabel ∈ activeSet,
+      activeSubset activeLabel = block ∨ Disjoint (activeSubset activeLabel) block) :
+    ∑ activeLabel ∈ activeSet,
+        (if activeSubset activeLabel = block then activeWeight activeLabel else 0)
+      = ∑ atomLabel ∈ block, D.weight atomLabel := by
+  classical
+  have hcoverageSum : ∑ atomLabel ∈ block, ∑ activeLabel ∈ activeSet,
+        (if atomLabel ∈ activeSubset activeLabel
+          then activeWeight activeLabel * (tightDir activeLabel ⬝ᵥ D.atom atomLabel) ^ 2 else 0)
+      = (∑ atomLabel ∈ block, D.weight atomLabel) * value := by
+    rw [Finset.sum_congr rfl fun atomLabel _ =>
+      coverageLaw_of_isQuadricStationaryData hdata atomLabel, ← Finset.sum_mul]
+  rw [Finset.sum_comm] at hcoverageSum
+  have hperIndex : ∀ activeLabel ∈ activeSet,
+      ∑ atomLabel ∈ block,
+          (if atomLabel ∈ activeSubset activeLabel
+            then activeWeight activeLabel * (tightDir activeLabel ⬝ᵥ D.atom atomLabel) ^ 2 else 0)
+        = (if activeSubset activeLabel = block then activeWeight activeLabel else 0) * value := by
+    intro activeLabel hactive
+    rcases hsplit activeLabel hactive with hequal | hdisjoint
+    · have hrayleigh : ∑ atomLabel ∈ block,
+          (tightDir activeLabel ⬝ᵥ D.atom atomLabel) ^ 2 = value := by
+        have hform :=
+          subsetSum_form_eq_sum_sq D (activeSubset activeLabel) (tightDir activeLabel)
+        rw [hdata.tightDir_isEigenvector activeLabel hactive, dotProduct_smul, smul_eq_mul,
+          hdata.tightDir_unit activeLabel hactive, mul_one, hequal] at hform
+        rw [hform]
+        exact Finset.sum_congr rfl fun atomLabel _ => congrArg (· ^ 2) (dotProduct_comm _ _)
+      rw [if_pos hequal,
+        Finset.sum_congr rfl (fun atomLabel hatom => if_pos (hequal ▸ hatom :
+          atomLabel ∈ activeSubset activeLabel)),
+        ← Finset.mul_sum, hrayleigh]
+    · have houtside : ∀ atomLabel ∈ block, atomLabel ∉ activeSubset activeLabel :=
+        fun atomLabel hatom => Finset.disjoint_right.mp hdisjoint hatom
+      have hnotEqual : activeSubset activeLabel ≠ block := by
+        intro hequal
+        obtain ⟨someAtom, hsomeAtom⟩ := hblockNonempty
+        exact houtside someAtom hsomeAtom (hequal ▸ hsomeAtom)
+      rw [if_neg hnotEqual, zero_mul,
+        Finset.sum_congr rfl (fun atomLabel hatom => if_neg (houtside atomLabel hatom)),
+        Finset.sum_const_zero]
+  rw [Finset.sum_congr rfl hperIndex, ← Finset.sum_mul] at hcoverageSum
+  exact mul_right_cancel₀ hvalueNe hcoverageSum
+
 end StationarityConsequences
 
 /-! ## E3 at the campaign size `(6,3)` -/
@@ -1010,5 +1188,86 @@ theorem not_forall_one_le_value_of_isQuadricStationaryData :
     belowOneMultiplier belowOneTightDir belowOneDesign_isQuadricStationaryData
     (ne_of_gt belowOneValue_pos)
   exact absurd belowOneValue_lt_one (not_lt.mpr hbound)
+
+/-! ## The ARGMAX field, and what attaching it costs
+
+The witness above says the bundle is too weak.  This section says exactly HOW
+weak, by naming the missing field, showing the witness fails it, and computing
+what a datum satisfying it would be worth.
+
+`IsQuadricStationaryData` asks that `value` be AN eigenvalue of each ACTIVE
+`S_C`.  A genuine Clarke-critical point of `F = max_{|C| = k} lambda_min(S_C)`
+satisfies more: no `k`-subset — active or not — has a smaller eigenvalue exceeding
+`value`.  That surplus is a real condition, and contrary to what a first reading
+of the header might suggest it IS expressible in the repo's existing vocabulary:
+`lambda_min(S_C) <= value` says a unit probe achieves Rayleigh quotient at most
+`value`, so no eigenvalue function and no spectral theory are needed.  What it is
+NOT is a polynomial EQUATION — it is an existential over probes, disjunctive once
+expanded — which is why it does not enter the Groebner systems of this lane and
+why none of the linear-algebra derivations above can consume it.
+
+The two theorems below are the point.  Attaching the argmax field does not make
+the residual obligation a weaker lemma standing in front of GTZ; it makes the
+obligation EXACTLY the interior case of GTZ at that size.  A datum satisfying it
+below one REFUTES `GtzWeighted m k` outright.  So the interior lane buys the KKT
+equations for free, and buys nothing else. -/
+
+/-- **The argmax field the bundle omits.**  No `k`-subset beats `value`:
+every `k`-subset admits a unit probe whose Rayleigh quotient against `S_C` is at
+most `value`, i.e. `lambda_min(S_C) <= value` at EVERY `k`-subset and not only at
+the active ones.  Written with a witnessing probe so that the statement uses only
+`subsetSum` and the dot product. -/
+def IsArgmaxDominated {m k : ℕ} (D : WeightedDesign m k) (value : ℝ) : Prop :=
+  ∀ chosenSubset : Finset (Fin m), chosenSubset.card = k →
+    ∃ probe : Fin k → ℝ, probe ⬝ᵥ probe = 1 ∧
+      probe ⬝ᵥ (subsetSum D chosenSubset *ᵥ probe) ≤ value
+
+/-- **With the argmax field attached, the obligation IS the interior case of GTZ.**
+Granted `GtzWeighted m k`, an argmax-dominated value is at least one: the
+dominating subset has `S_C - I` positive semidefinite, so every unit probe has
+Rayleigh quotient at least one there, while the argmax field supplies a unit probe
+with quotient at most `value`.
+
+This is what the below-one witness costs.  The bundle alone cannot force
+`1 <= value` (`not_forall_one_le_value_of_isQuadricStationaryData`); the bundle
+PLUS the argmax field forces it, but only because GTZ at that size already does. -/
+theorem one_le_value_of_isArgmaxDominated {m k : ℕ} {D : WeightedDesign m k} {value : ℝ}
+    (hgtz : GtzWeighted m k) (hargmax : IsArgmaxDominated D value) :
+    1 ≤ value := by
+  obtain ⟨dominatingSubset, hcard, hdominates⟩ := hgtz D
+  obtain ⟨probe, hunitProbe, hquotientLe⟩ := hargmax dominatingSubset hcard
+  have hnonneg := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdominates).2 probe
+  rw [star_trivial] at hnonneg
+  have hexpand : probe ⬝ᵥ ((subsetSum D dominatingSubset - 1) *ᵥ probe)
+      = probe ⬝ᵥ (subsetSum D dominatingSubset *ᵥ probe) - 1 := by
+    rw [Matrix.sub_mulVec, dotProduct_sub, Matrix.one_mulVec, hunitProbe]
+  rw [hexpand] at hnonneg
+  linarith
+
+/-- **An argmax-dominated value below one IS a counterexample.**  The
+contrapositive, and the sentence the compactness reduction actually needs: what
+the interior obligation forbids is not a technical artefact of the algebra but a
+refutation of `GtzWeighted` at that size.  Naming it this way removes the
+temptation to treat the interior residual as a smaller problem than GTZ. -/
+theorem not_gtzWeighted_of_isArgmaxDominated_of_value_lt_one {m k : ℕ}
+    {D : WeightedDesign m k} {value : ℝ}
+    (hargmax : IsArgmaxDominated D value) (hbelowOne : value < 1) :
+    ¬ GtzWeighted m k := fun hgtz =>
+  absurd hbelowOne (not_lt.mpr (one_le_value_of_isArgmaxDominated hgtz hargmax))
+
+/-- **The below-one witness fails the argmax field, at the orthogonal pair.**  Its
+subset sum there is twice the identity, so EVERY unit probe has Rayleigh quotient
+exactly two, and two is not at most `2 - sqrt 2`.  So the witness is not a
+counterexample to the previous theorem — it is the demonstration that the argmax
+field is precisely the missing one. -/
+theorem not_isArgmaxDominated_belowOneDesign :
+    ¬ IsArgmaxDominated belowOneDesign belowOneValue := by
+  intro hargmax
+  obtain ⟨probe, hunitProbe, hquotientLe⟩ := hargmax ({0, 3} : Finset (Fin 4)) (by decide)
+  have hsubsetSum : subsetSum belowOneDesign ({0, 3} : Finset (Fin 4)) = 1 + 1 :=
+    sub_eq_iff_eq_add.mp subsetSum_belowOneDesign_orthogonalPair
+  rw [hsubsetSum, Matrix.add_mulVec, dotProduct_add, Matrix.one_mulVec, hunitProbe,
+    belowOneValue] at hquotientLe
+  linarith [rootTwo_pos]
 
 end Gtz
