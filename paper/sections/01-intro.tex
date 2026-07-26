@@ -18,9 +18,9 @@ dominating $k$-subset, and $\GtzC(m,k)$ for its complex analogue.
 
 At uniform weights the problem is classical.  Let $U\in\FF^{m\times k}$
 satisfy $U\adj U=I_k$, let $u_c\adj$ be its $c$-th row, and put
-$g_c:=\sqrt m\,u_c$, $t_c:=1/m$; then \eqref{eq:parseval} holds, and for
-$U_C$ the $k\times k$ submatrix on the rows $C$ the requirement
-\eqref{eq:dominate} reads
+$g_c:=\sqrt m\,u_c$ and $t_c:=1/m$.  Then \eqref{eq:parseval} holds.
+Writing $U_C$ for the $k\times k$ submatrix on the rows $C$, the
+requirement \eqref{eq:dominate} reads
 \[
   U_C\adj U_C^{\vphantom{\mathsf{H}}}\;\psd\;\tfrac1m I_k,
   \qquad\text{that is}\qquad
@@ -118,8 +118,10 @@ complex design when $m\le k+1$ and fails whenever $m\ge k+2$
 (Theorem~\ref{thm:complex}); for $k\le1$ it always succeeds.  Against
 \eqref{eq:elementary} this reads: over $\C$ the conjecture holds just
 where the maximal-volume count already proves it, and fails everywhere
-else.  Nothing remains open over $\C$, and no field-independent argument
-can settle the real conjecture.
+else.
+
+Nothing remains open over $\C$, and no field-independent argument can
+settle the real conjecture.
 
 Over $\R$, rank two holds at
 every size (Theorem~\ref{thm:ranktwo}), corank one and corank two hold at
@@ -223,7 +225,7 @@ they are reused across disjoint proofs, and none of them shadows a symbol
 of the table.
 
 \medskip
-\noindent
+\centerline{%
 \begin{tabular}{@{}ll@{\qquad}ll@{}}
 \toprule
 $m,k$ & size and rank & $P$ & the chart projection $VV\adj$\\
@@ -240,7 +242,7 @@ $\Sdual$ & the dual frame operator & $\pi_C$ & volume sampling, $\det P[C]$\\
 $\win(k)$ & the window $k(k+1)/2+1$ & $\alpha$ & the extremal constants\\
 $\tang$ & the tangent space & $\gph$ & a graph\\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 
 \medskip
 \noindent
