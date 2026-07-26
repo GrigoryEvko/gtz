@@ -48,6 +48,7 @@ import Gtz.Quantitative.RealnessEngine
 import Gtz.Quantitative.PhaseFreeNoGo
 import Gtz.Quantitative.TwoMomentCertificate
 import Gtz.Ties.StratumFirstOrder
+import Gtz.Ties.StratumSharpMaximum
 import Gtz.Reduction.MixedCharPolynomial
 import Gtz.Certificates.FrameBridge
 import Gtz.Quantitative.CollarRate
@@ -2487,6 +2488,12 @@ import Gtz.Complex.AtomSplitting
 #print axioms Gtz.rainbowSevenMultiplier_eq_det_projectionBlock
 #print axioms Gtz.SplitSevenNeighbourhoodCovering
 #print axioms Gtz.splitSevenNeighbourhoodCovering_of_gtzWeighted
+
+-- Gtz.Ties.StratumSharpMaximum: the first-order certificate with a constant attached
+#print axioms Gtz.rainbowSevenVelocityFamily
+#print axioms Gtz.rainbowSevenMultiplier_floor
+#print axioms Gtz.rainbowSeven_firingMargin_ge_multiplier_mul_descent
+#print axioms Gtz.rainbowSeven_firingMargin_ge_floor_mul_bound
 
 -- Gtz.Reduction.MixedCharPolynomial: the MSS volume-sampling route refuted at both residuals
 #print axioms Gtz.mixedCharPoly
