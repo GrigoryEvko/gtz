@@ -163,6 +163,7 @@ import Gtz.Reduction.DiagonalRungs
 import Gtz.Quantitative.GlobalMinimumRankThree
 import Gtz.Design.EqualityLocus
 import Gtz.Complex.AtomSplitting
+import Gtz.Reduction.SplitTransfer
 
 -- the axiom ledger for everything above
 import Gtz.Audit
