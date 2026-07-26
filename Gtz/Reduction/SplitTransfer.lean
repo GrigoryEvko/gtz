@@ -1153,7 +1153,18 @@ theorem exists_naimarkDual_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
 the first projection of `exists_naimarkDual_loewnerEquiv`, because `Dominates D C`
 IS `(subsetSum D C − 1).PosSemidef`.  Shipped so that the ~280-line proof in
 `Gtz.Reduction.Naimark` can be replaced by these two lines instead of maintained
-beside a copy of itself; this file may not edit that module. -/
+beside a copy of itself; this file may not edit that module.
+
+RETIREMENT IS NOT A BODY SWAP — READ BEFORE ATTEMPTING IT.  This file IMPORTS
+`Gtz.Reduction.Naimark`, so `Gtz.weighted_naimark_duality` cannot cite anything
+declared here: substituting `exact weighted_naimark_duality_of_loewnerEquiv hk
+hkm D` for its body creates an import cycle and does not compile.  The
+retirement therefore requires RELOCATING the `LoewnerEquiv` kit and
+`exists_naimarkDual_loewnerEquiv` into `Gtz.Reduction.Naimark` itself (or into a
+new module below it), after which BOTH statements are corollaries of the single
+chain.  That is a ~300-line move through a module in the import path of most of
+the tree, not a two-line edit, and earlier campaign notes that described it as
+"compiled and ready" were wrong about the direction of the dependency. -/
 theorem weighted_naimark_duality_of_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
     (D : WeightedDesign m k) :
     ∃ dualDesign : WeightedDesign m (m - k),
