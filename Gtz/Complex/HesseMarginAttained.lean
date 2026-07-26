@@ -129,8 +129,12 @@ equals the rank-three constant to all twelve digits and that no rank-4 search
 reproduced it.  The decimal is CORRECT as an upper bound and the mechanism is the
 padding ladder below: `alpha_4 ≤ alpha_3`, approached as `cap kappa -> infinity`,
 never attained.  What was wrong is the recorded attribution — a rank-4 design at
-`m = 10` with `kappa = 2.69`.  Read the number as
-`complexRankConstantAtMost_four_of_pos`, which is proved here.
+`m = 10` with `kappa = 2.69`.  Read the number through
+`Gtz.complexRankConstantAtMostAtSize_ten_four_of_gt`, proved in
+`Gtz/Complex/SpikePaddingLadder.lean`.  The name this header used to cite,
+`complexRankConstantAtMost_four_of_pos`, is declared in NO module of this
+repository and is not proved here either; the correction is recorded at
+`Gtz/Complex/SpikePaddingLadder.lean` in the CITED section.
 -/
 import Mathlib
 import Gtz.Complex.AtomSplitting

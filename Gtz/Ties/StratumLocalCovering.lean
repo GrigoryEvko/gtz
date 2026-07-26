@@ -230,8 +230,8 @@ Everything is about ONE point of ONE tie stratum at `(7,3)`, except the class-co
 section, which is about the whole class through it, and the tube reduction, which is
 about a `1/16` neighbourhood of it.  Nothing here closes
 `SplitSevenNeighbourhoodCovering`, and nothing here bears on the other tie classes at
-`(7,3)`, on the diamond `M(K4 − e)` primitive (`Gtz.Ties.DiamondTie`,
-`Gtz.Design.DiamondPrimitive`), on rank `≥ 4`, or on `GtzWeighted 7 3`.  The closed form
+`(7,3)`, on the diamond `M(K4 − e)` primitive (`Gtz.Design.DiamondPrimitive`,
+the surviving copy), on rank `≥ 4`, or on `GtzWeighted 7 3`.  The closed form
 behind `bundleTotalAtomVelocity` was derived outside Lean; only its output is used, and
 what is mechanized is that the resulting numbers are flat.
 -/
