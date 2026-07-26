@@ -186,3 +186,5 @@ import Gtz.Quantitative.ExpectedCharPolynomial
 -- the axiom ledger for everything above
 import Gtz.Audit
 import Gtz.Quantitative.PositivstellensatzRankThree
+import Gtz.Reduction.CompactnessReduction
+import Gtz.Quantitative.InteriorExclusion
