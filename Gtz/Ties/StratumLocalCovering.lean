@@ -4,9 +4,10 @@
 `Gtz.Ties.StratumFirstOrder` proves the Farkas identity at `splitSevenDesign` and names
 the residual it does not close, `SplitSevenNeighbourhoodCovering`.
 `Gtz.Ties.StratumSharpMaximum` attaches a constant to the certificate.  This file does
-three further things: it pins the FLAT SPACE of the certificate exactly, it upgrades the
-sign statement to an exact dichotomy, and it reduces the residual to one scalar
-polynomial inequality per design.
+three further things: it computes the FLAT SPACE of the certificate exactly — nine named
+directions, proved flat, proved independent, proved to span, so the stacked Jacobian has
+rank exactly `19` — it upgrades the sign statement to an exact dichotomy, and it reduces
+the residual to one scalar polynomial inequality per design.
 
 ## PROVED here (kernel-checked, zero `sorry`, zero new axiom)
 
@@ -50,32 +51,41 @@ polynomial inequality per design.
     `−⟨v_miss, Omega v_miss⟩ = 0`.
   `stratumFlatDirection_independent` reads six atom coordinates and three weight
   coordinates off them through an invertible `9 × 9` rational block, so the nine are
-  linearly independent and the flat space has dimension AT LEAST nine.
+  linearly independent.
 * **BUNDLE RIGIDITY**, `rainbowSeven_bundleRigid_of_velocity_zero` — the structural half
   of the matching upper bound, and it needs no admissibility at all.  A direction killing
   all twenty tie forms moves the two copies of a split direction TOGETHER: differencing
   two rainbow triples that agree except on which copy they take makes `dg_0 − dg_4`
   orthogonal to `v_1, v_2, v_3`, a basis, hence zero.  That kills nine of the twenty-one
-  atom coordinates outright — so of the rank `19` claimed below, nine rows are mechanized
-  here as an exact consequence, not measured.
+  atom coordinates outright.
+* **THE NINE SPAN**, `stratumFlat_eq_combination` — the matching upper bound, with the
+  inverse readout `stratumFlatCoefficient` exhibited in closed form: nine explicit linear
+  functionals of a flat direction that reproduce it.  `stratumFlat_coefficient_unique`
+  says those coefficients are the only ones.  So the flat space has dimension EXACTLY
+  nine, the nine directions are a BASIS of it, and — the ambient space of
+  `(atom velocity, weight velocity)` pairs being `21 + 7 = 28`-dimensional — **the
+  stacked Jacobian of the twenty tie gradients and the seven constraint gradients has
+  rank exactly `19`**.
 
-## MEASURED, not proved here — the rest of the matching upper bound
+## Why the elimination is small, and which rows do the work
 
-The exact rational Jacobian at `splitSevenDesign` — twenty tie gradients and seven
-constraint gradients (six Parseval entries and the mass) as a `27 × 28` matrix over `ℚ`
-— has rank exactly `19`, so the flat space has dimension exactly `9` and the nine
-directions above are a BASIS.  The three ranks are `13` for the tie block, `7` for the
-constraint block, and `19` for the stack: the single relation between the twenty-seven
-rows is the Farkas identity itself, which reads
-`∑_T lambda_T · grad tie_T = (trace Parseval gradient) − 3 · (mass gradient)` — and that
-one relation IS mechanized, as `splitSevenDesign_farkasIdentity` together with
-`splitSevenDesign_leverage`.  The tie block's rank `13 = 4 + 3 + 3 + 3` is forced by a
-block decomposition in the coordinates `y_{c,d} = ⟨v_d, dg_c⟩`, in which the tie Jacobian
-is `−2` times the incidence matrix of "triple `T` contains atom `c` and misses direction
-`d`"; that matrix is block diagonal over the missed direction, and the nine equalities of
-`rainbowSeven_bundleRigid_of_velocity_zero` are exactly the differencing rows of that
-decomposition.  What is NOT mechanized is the remaining ten rows of the elimination, so
-`dim ≤ 9` — equivalently that the nine directions SPAN — stays measured.
+The `27 × 28` stacked Jacobian has rank `19`, and the single relation among its rows is
+the Farkas identity itself, which reads
+`∑_T lambda_T · grad tie_T = (trace Parseval gradient) − 3 · (mass gradient)`;  that one
+relation is `splitSevenDesign_farkasIdentity` together with `splitSevenDesign_leverage`.
+The tie block alone has rank `13 = 4 + 3 + 3 + 3`, forced by a block decomposition in the
+coordinates `y_{c,d} = ⟨v_d, dg_c⟩`, in which the tie Jacobian is `−2` times the incidence
+matrix of "triple `T` contains atom `c` and misses direction `d`" — block diagonal over
+the missed direction.  `rainbowSeven_bundleRigid_of_velocity_zero` is exactly the
+differencing rows of that decomposition.
+
+The spanning proof therefore never touches twenty-seven rows.  It runs on TWENTY: the
+nine rigidity rows, four rainbow triples supplying one row per missed direction
+(`T_0, T_8, T_12, T_16`, which between them use only atoms `0,1,2,3`), the six Parseval
+entries, and the mass.  That reduced system already has rank `19`; the other sixteen tie
+rows are consequences and are never used.  [That the reduced system suffices is not a
+separate assumption — it is what the proof demonstrates, since the reconstruction is
+derived from those twenty rows alone.]
 
 ## PROVED here — covering on the whole tie class through the split tetrahedron
 
@@ -126,10 +136,10 @@ section, which is about the whole class through it, and the tube reduction, whic
 about a `1/16` neighbourhood of it.  Nothing here closes
 `SplitSevenNeighbourhoodCovering`, and nothing here bears on the other tie classes at
 `(7,3)`, on the diamond `M(K4 − e)` primitive (`Gtz.Ties.DiamondTie`,
-`Gtz.Design.DiamondPrimitive`), on rank `≥ 4`, or on `GtzWeighted 7 3`.  The nine flat
-directions are proved flat and proved independent; that they EXHAUST the flat space is
-measured, not proved, and every statement below is phrased so that it does not depend on
-the exhaustion.
+`Gtz.Design.DiamondPrimitive`), on rank `≥ 4`, or on `GtzWeighted 7 3`.  The closed form
+behind `bundleTotalAtomVelocity` was derived outside Lean; only its output is used, and
+what is mechanized is that the resulting numbers are flat.  Nothing else here is
+measured.
 -/
 import Mathlib
 import Gtz.Ties.StratumSharpMaximum
@@ -564,6 +574,364 @@ theorem rainbowSeven_bundleRigid_of_velocity_zero {atomVelocity : Fin 7 → Fin 
   have hthirdTwo : atomVelocity 2 2 = atomVelocity 6 2 := by linarith
   refine ⟨funext fun coord => ?_, funext fun coord => ?_, funext fun coord => ?_⟩ <;>
     fin_cases coord <;> assumption
+
+/-- Seven-term expansion, so the mass constraint reads on numeral indices. -/
+private theorem sum_over_seven (summand : Fin 7 → ℝ) :
+    ∑ index, summand index
+      = summand 0 + summand 1 + summand 2 + summand 3 + summand 4 + summand 5
+        + summand 6 := by
+  simp [Fin.sum_univ_succ]
+  ring
+
+
+/-! ## The matching upper bound: the nine directions SPAN
+
+The nine directions are independent, so the flat space has dimension at least nine.  This
+section closes the other half by exhibiting the inverse readout: nine explicit linear
+functionals of a flat direction that reproduce it as a combination of the nine.  Together
+with `stratumFlatDirection_independent` this pins `dim = 9`, hence — the ambient space
+being `21 + 7 = 28`-dimensional — the stacked Jacobian's rank as exactly `19`.
+
+The elimination runs on a REDUCED system, and that it suffices is itself part of the
+content.  `rainbowSeven_bundleRigid_of_velocity_zero` supplies nine rows; four rainbow
+triples supply one row per missed tetrahedron direction (`T_0, T_8, T_12, T_16`, which
+between them use only the atoms `0,1,2,3`); the six Parseval entries and the mass supply
+seven more.  Twenty rows of rank nineteen — the remaining sixteen tie rows are consequences
+and are never used. -/
+
+/-- **THE INVERSE READOUT.**  Nine explicit linear functionals of a direction, which on a
+FLAT direction are its coordinates in the nine.  The formulas are the inverse of the
+`9 × 9` readout block of `stratumFlatDirection_independent`, so they are forced. -/
+noncomputable def stratumFlatCoefficient (atomVelocity : Fin 7 → Fin 3 → ℝ)
+    (weightVelocity : Fin 7 → ℝ) : Fin 9 → ℝ :=
+  ![3/32 * atomVelocity 0 0 + 3/32 * atomVelocity 0 1 + 3/32 * atomVelocity 0 2
+      + weightVelocity 0,
+    9/32 * atomVelocity 0 0 - 3/32 * atomVelocity 0 1 - 3/32 * atomVelocity 0 2
+      + 3/8 * atomVelocity 1 0 + weightVelocity 1,
+    -(3/8) * atomVelocity 0 0 + 3/16 * atomVelocity 0 2 - 3/8 * atomVelocity 1 0
+      - 3/16 * atomVelocity 1 1 - 3/16 * atomVelocity 2 0 + weightVelocity 2,
+    -(1/32) * atomVelocity 0 0 - 1/32 * atomVelocity 0 1 - 1/32 * atomVelocity 0 2,
+    -(3/32) * atomVelocity 0 0 + 1/32 * atomVelocity 0 1 + 1/32 * atomVelocity 0 2
+      - 1/8 * atomVelocity 1 0,
+    1/8 * atomVelocity 0 0 - 1/16 * atomVelocity 0 2 + 1/8 * atomVelocity 1 0
+      + 1/16 * atomVelocity 1 1 + 1/16 * atomVelocity 2 0,
+    3/4 * atomVelocity 0 0 - 1/2 * atomVelocity 0 1 + 3/4 * atomVelocity 1 0
+      + 1/2 * atomVelocity 1 1,
+    17/16 * atomVelocity 0 0 - 3/16 * atomVelocity 0 1 - 9/16 * atomVelocity 0 2
+      + 3/4 * atomVelocity 1 0 + 3/8 * atomVelocity 1 1 - 1/8 * atomVelocity 2 0,
+    3/16 * atomVelocity 0 0 + 3/16 * atomVelocity 0 1 - 3/16 * atomVelocity 0 2
+      + 1/2 * atomVelocity 1 0 + 3/8 * atomVelocity 1 1 - 1/8 * atomVelocity 2 0]
+
+/-- **THE NINE DIRECTIONS SPAN THE FLAT SPACE.**  Every admissible direction on which all
+twenty rainbow tie forms are stationary is the combination of the nine with coefficients
+`stratumFlatCoefficient`. -/
+theorem stratumFlat_eq_combination {atomVelocity : Fin 7 → Fin 3 → ℝ}
+    {weightVelocity : Fin 7 → ℝ} (hflat : IsSplitSevenFlat atomVelocity weightVelocity) :
+    (∀ (atomIndex : Fin 7) (coord : Fin 3), atomVelocity atomIndex coord
+        = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+            * stratumFlatDirectionAtom directionIndex atomIndex coord)
+      ∧ (∀ atomIndex : Fin 7, weightVelocity atomIndex
+        = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+            * stratumFlatDirectionWeight directionIndex atomIndex) := by
+  obtain ⟨⟨hmass, hparsevalMatrix⟩, hstationary⟩ := hflat
+  obtain ⟨hfirstPair, hsecondPair, hthirdPair⟩ :=
+    rainbowSeven_bundleRigid_of_velocity_zero hstationary
+  have hpairing : ∀ tripleIndex : Fin 20,
+      atomVelocity (rainbowSevenFirst tripleIndex)
+          ⬝ᵥ tetraAtom (rainbowSevenMissedDirection tripleIndex)
+        + atomVelocity (rainbowSevenSecond tripleIndex)
+          ⬝ᵥ tetraAtom (rainbowSevenMissedDirection tripleIndex)
+        + atomVelocity (rainbowSevenThird tripleIndex)
+          ⬝ᵥ tetraAtom (rainbowSevenMissedDirection tripleIndex) = 0 := by
+    intro tripleIndex
+    have hvanishes := hstationary tripleIndex
+    rw [rainbowSevenVelocityFamily_eq] at hvanishes
+    linarith
+  have hparseval : ∀ rowIndex colIndex : Fin 3,
+      ∑ atomIndex, (weightVelocity atomIndex
+            * (splitSevenDesign.atom atomIndex rowIndex
+              * splitSevenDesign.atom atomIndex colIndex)
+          + splitSevenDesign.weight atomIndex
+            * (atomVelocity atomIndex rowIndex * splitSevenDesign.atom atomIndex colIndex
+              + splitSevenDesign.atom atomIndex rowIndex
+                * atomVelocity atomIndex colIndex)) = 0 := by
+    intro rowIndex colIndex
+    rw [← parsevalMatrixVelocity_apply, hparsevalMatrix]
+    rfl
+  have htieThree := hpairing 0
+  have htieZero := hpairing 8
+  have htieOne := hpairing 12
+  have htieTwo := hpairing 16
+  simp [rainbowSevenFirst, rainbowSevenSecond, rainbowSevenThird,
+    rainbowSevenMissedDirection, dotProduct, Fin.sum_univ_three,
+    tetraAtom] at htieThree htieZero htieOne htieTwo
+  have hparsevalZeroZero := hparseval 0 0
+  have hparsevalZeroOne := hparseval 0 1
+  have hparsevalZeroTwo := hparseval 0 2
+  have hparsevalOneOne := hparseval 1 1
+  have hparsevalOneTwo := hparseval 1 2
+  have hparsevalTwoTwo := hparseval 2 2
+  simp [Fin.sum_univ_succ, splitSevenDesign, splitSevenAtom, splitSevenDirection,
+    tetraAtom] at hparsevalZeroZero hparsevalZeroOne hparsevalZeroTwo
+  simp [Fin.sum_univ_succ, splitSevenDesign, splitSevenAtom, splitSevenDirection,
+    tetraAtom] at hparsevalOneOne hparsevalOneTwo hparsevalTwoTwo
+  rw [sum_over_seven] at hmass
+  have hrigidZeroZero := congrFun hfirstPair 0
+  have hrigidZeroOne := congrFun hfirstPair 1
+  have hrigidZeroTwo := congrFun hfirstPair 2
+  have hrigidOneZero := congrFun hsecondPair 0
+  have hrigidOneOne := congrFun hsecondPair 1
+  have hrigidOneTwo := congrFun hsecondPair 2
+  have hrigidTwoZero := congrFun hthirdPair 0
+  have hrigidTwoOne := congrFun hthirdPair 1
+  have hrigidTwoTwo := congrFun hthirdPair 2
+  have hatomZeroZero : atomVelocity 0 0
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 0 0 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomZeroOne : atomVelocity 0 1
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 0 1 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomZeroTwo : atomVelocity 0 2
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 0 2 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomOneZero : atomVelocity 1 0
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 1 0 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomOneOne : atomVelocity 1 1
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 1 1 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomOneTwo : atomVelocity 1 2
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 1 2 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomTwoZero : atomVelocity 2 0
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 2 0 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomTwoOne : atomVelocity 2 1
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 2 1 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomTwoTwo : atomVelocity 2 2
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 2 2 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomThreeZero : atomVelocity 3 0
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 3 0 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomThreeOne : atomVelocity 3 1
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 3 1 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomThreeTwo : atomVelocity 3 2
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 3 2 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomFourZero : atomVelocity 4 0
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 4 0 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomFourOne : atomVelocity 4 1
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 4 1 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomFourTwo : atomVelocity 4 2
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 4 2 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomFiveZero : atomVelocity 5 0
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 5 0 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomFiveOne : atomVelocity 5 1
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 5 1 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomFiveTwo : atomVelocity 5 2
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 5 2 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomSixZero : atomVelocity 6 0
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 6 0 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomSixOne : atomVelocity 6 1
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 6 1 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hatomSixTwo : atomVelocity 6 2
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionAtom directionIndex 6 2 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionAtom, bundleTotalAtomVelocity,
+      gaugeRotationAtomVelocity]
+    linarith
+  have hweightZero : weightVelocity 0
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionWeight directionIndex 0 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionWeight, weightSplitWeightVelocity,
+      bundleTotalWeightVelocity]
+    linarith
+  have hweightOne : weightVelocity 1
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionWeight directionIndex 1 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionWeight, weightSplitWeightVelocity,
+      bundleTotalWeightVelocity]
+    linarith
+  have hweightTwo : weightVelocity 2
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionWeight directionIndex 2 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionWeight, weightSplitWeightVelocity,
+      bundleTotalWeightVelocity]
+    linarith
+  have hweightThree : weightVelocity 3
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionWeight directionIndex 3 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionWeight, weightSplitWeightVelocity,
+      bundleTotalWeightVelocity]
+    linarith
+  have hweightFour : weightVelocity 4
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionWeight directionIndex 4 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionWeight, weightSplitWeightVelocity,
+      bundleTotalWeightVelocity]
+    linarith
+  have hweightFive : weightVelocity 5
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionWeight directionIndex 5 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionWeight, weightSplitWeightVelocity,
+      bundleTotalWeightVelocity]
+    linarith
+  have hweightSix : weightVelocity 6
+      = ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity directionIndex
+          * stratumFlatDirectionWeight directionIndex 6 := by
+    rw [sum_over_nine]
+    simp [stratumFlatCoefficient, stratumFlatDirectionWeight, weightSplitWeightVelocity,
+      bundleTotalWeightVelocity]
+    linarith
+  refine ⟨fun atomIndex coord => ?_, fun atomIndex => ?_⟩
+  · fin_cases atomIndex <;> fin_cases coord <;> assumption
+  · fin_cases atomIndex <;> assumption
+
+/-- **DIMENSION EXACTLY NINE, HENCE RANK EXACTLY NINETEEN.**  Put beside
+`stratumFlatDirection_isFlat` and `stratumFlatDirection_independent`, the spanning theorem
+above pins the flat space: nine flat directions, linearly independent, and every flat
+direction a combination of them.  The ambient space of `(atom velocity, weight velocity)`
+pairs has dimension `21 + 7 = 28`, so the stacked Jacobian of the twenty tie forms and the
+seven constraints has rank exactly `19` — the number the campaign measured, now a
+theorem.  Nothing below re-states it; it is the conjunction of the three. -/
+theorem stratumFlat_coefficient_unique {atomVelocity : Fin 7 → Fin 3 → ℝ}
+    {weightVelocity : Fin 7 → ℝ} (hflat : IsSplitSevenFlat atomVelocity weightVelocity)
+    (coefficient : Fin 9 → ℝ)
+    (hatom : ∀ (atomIndex : Fin 7) (coord : Fin 3), atomVelocity atomIndex coord
+        = ∑ directionIndex, coefficient directionIndex
+            * stratumFlatDirectionAtom directionIndex atomIndex coord)
+    (hweight : ∀ atomIndex : Fin 7, weightVelocity atomIndex
+        = ∑ directionIndex, coefficient directionIndex
+            * stratumFlatDirectionWeight directionIndex atomIndex) :
+    coefficient = stratumFlatCoefficient atomVelocity weightVelocity := by
+  obtain ⟨hcanonicalAtom, hcanonicalWeight⟩ := stratumFlat_eq_combination hflat
+  have hdifference : ∀ directionIndex : Fin 9,
+      coefficient directionIndex - stratumFlatCoefficient atomVelocity weightVelocity
+        directionIndex = 0 := by
+    refine stratumFlatDirection_independent _ (fun atomIndex coord => ?_)
+      (fun atomIndex => ?_)
+    · have hexpand : (∑ directionIndex, (coefficient directionIndex
+              - stratumFlatCoefficient atomVelocity weightVelocity directionIndex)
+              * stratumFlatDirectionAtom directionIndex atomIndex coord)
+            + ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity
+                directionIndex * stratumFlatDirectionAtom directionIndex atomIndex coord
+            = ∑ directionIndex, coefficient directionIndex
+                * stratumFlatDirectionAtom directionIndex atomIndex coord := by
+        rw [← Finset.sum_add_distrib]
+        exact Finset.sum_congr rfl fun directionIndex _ => by ring
+      rw [← hcanonicalAtom atomIndex coord, ← hatom atomIndex coord] at hexpand
+      linarith
+    · have hexpand : (∑ directionIndex, (coefficient directionIndex
+              - stratumFlatCoefficient atomVelocity weightVelocity directionIndex)
+              * stratumFlatDirectionWeight directionIndex atomIndex)
+            + ∑ directionIndex, stratumFlatCoefficient atomVelocity weightVelocity
+                directionIndex * stratumFlatDirectionWeight directionIndex atomIndex
+            = ∑ directionIndex, coefficient directionIndex
+                * stratumFlatDirectionWeight directionIndex atomIndex := by
+        rw [← Finset.sum_add_distrib]
+        exact Finset.sum_congr rfl fun directionIndex _ => by ring
+      rw [← hcanonicalWeight atomIndex, ← hweight atomIndex] at hexpand
+      linarith
+  funext directionIndex
+  linarith [hdifference directionIndex]
 
 /-! ## Covering on the whole tie class through the split tetrahedron
 
