@@ -796,8 +796,14 @@ Size is `rank + 2` at every rank, which is the smallest size that can possibly
 work: `Gtz/Complex/SharpConstantLedger.lean` records that at EQUAL weights
 `m = k + 1` is exactly tight at `1` (Naimark dual `(k+1,1)` plus
 max-at-least-mean), so `m = k + 2` is the first refutable equal-weight size.  The
-weighted `m = k + 1` case is open; MEASURED, its infimum is `1`, again a spike
-limit. -/
+weighted `m = k + 1` case is no longer open and no longer a spike limit: it is
+PROVED by `Gtz.complexGtzWeighted_corank_one` (`Gtz/Complex/SizeAxis.lean`), and
+the value `1` there IS ATTAINED, at every admissible weight vector
+(`Gtz.exists_complexDesign_exactlyTied`).  The spike limit sits one cell lower,
+at `m = k`, where the frame is unitary and `lambda_min(S_univ) = 1 / max_c t_c`.
+Both halves of the sentence this paragraph replaces were false; the older
+MEASURED entry "the infimum at size = rank + 1 is 1 and never attained" is
+refuted over BOTH fields. -/
 theorem complexRankConstantAtMostAtSize_two_le_rank (extra : ℕ) {bound : ℝ}
     (habove : alphaRankTwo < bound) :
     ComplexRankConstantAtMostAtSize (4 + extra) (2 + extra) bound :=

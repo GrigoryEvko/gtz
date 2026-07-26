@@ -13,9 +13,18 @@ at g/√s with s = (1+q)/2 ∈ (q, 1) leaves the margin (1−s)·yᵀNy off zero
 MECHANIZATION RESIDUALS discovered here (recorded, worked around):
 * R-MECH-1: Mathlib v4.32 has NO Cauchy eigenvalue interlacing (needed later by
   the cap criterion's signature bookkeeping).
-* R-MECH-2: Mathlib v4.32 has NO PSD Schur-complement block criterion
-  (`SchurComplement.lean` carries only determinant/inverse material) — hence the
-  hand polarization below.
+* R-MECH-2 was WRONG and is RETRACTED.  It claimed Mathlib v4.32 has no PSD
+  Schur-complement block criterion.  `Matrix.PosDef.fromBlocks₁₁` and
+  `Matrix.PosDef.fromBlocks₂₂` are at
+  `Mathlib/LinearAlgebra/Matrix/PosDef.lean:563,582`, and they are
+  field-generic under `[StarOrderedRing R']`; `SchurComplement.lean` carries the
+  determinant/inverse material, which is where the search went wrong.  The hand
+  polarization below is therefore superseded by roughly twenty-five generic lines
+  (see `Gtz.posSemidef_sub_fieldAtom_iff` in `Gtz/Field/WeightedDesign.lean`) and
+  is kept only because downstream consumers cite it.  CALIBRATION, so the next
+  reader does not overreach: those block criteria conclude PosSemidef ONLY -- this
+  pin has no strict twin -- which is exactly why the strict half still needs an
+  explicit null vector.
 -/
 import Mathlib
 import Gtz.Core.Basic
