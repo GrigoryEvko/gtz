@@ -13,7 +13,7 @@ here.
 A \emph{weighted design} of size $m$ and rank $k$ over $\FF$ is a pair
 $\bigl((g_c)_{c\le m},(t_c)_{c\le m}\bigr)$ with $g_c\in\FF^k$, $t_c>0$
 and $\sum_c t_c=1$, satisfying \eqref{eq:parseval}.  For
-$C\subseteq\{1,\dots,m\}$ put $\SC:=\sum_{c\in C}g_c^{\vphantom{*}}g_c^{*}$;
+$C\subseteq\{1,\dots,m\}$ put $\SC:=\sum_{c\in C}g_c^{\vphantom{\mathsf{H}}}g_c\adj$;
 the subset $C$ \emph{dominates} if $\SC-I_k\psd0$.  The assertion
 $\Gtz(m,k)$ is that every design of size $m$ and rank $k$ over $\R$ admits
 a dominating $k$-subset, and $\GtzC(m,k)$ is the same assertion over $\C$.
@@ -30,7 +30,7 @@ And $\SC$ carries no weights: they enter only through
 \eqref{eq:parseval}, which is why domination is preserved by any
 operation that keeps the vectors and moves the weights.
 
-Since $g_c^{\vphantom{*}}g_c^{*}\psd0$ for every $c$, adding indices to
+Since $g_c^{\vphantom{\mathsf{H}}}g_c\adj\psd0$ for every $c$, adding indices to
 $C$ can only increase $\SC$ in the Loewner order; a superset of a
 dominating set dominates.  The cardinality restriction
 $\lvert C\rvert=k$ is therefore the whole of the problem, and it is
@@ -47,8 +47,8 @@ is no design with $m<k$.
 Let $u\in\FF^k$ satisfy $\langle u,g_c\rangle=0$ for every $c$.  Pairing
 \eqref{eq:parseval} with $u$ gives
 \[
-  \lVert u\rVert^2\;=\;u^{*}I_ku
-  \;=\;\sum_c t_c\,u^{*}g_c^{\vphantom{*}}g_c^{*}u
+  \lVert u\rVert^2\;=\;u\adj I_ku
+  \;=\;\sum_c t_c\,u\adj g_c^{\vphantom{\mathsf{H}}}g_c\adj u
   \;=\;\sum_c t_c\,\lvert\langle u,g_c\rangle\rvert^2\;=\;0 ,
 \]
 so $u=0$.  The orthogonal complement of the span is trivial, and a
@@ -65,7 +65,7 @@ $\sum_c s_c=\sum_c t_c\ell_c=k$.  Hence $\max_c \ell_c\ge k$.
 \end{lemma}
 
 \begin{proof}
-$\tr\bigl(g_c^{\vphantom{*}}g_c^{*}\bigr)=\lVert g_c\rVert^2=\ell_c$, and
+$\tr\bigl(g_c^{\vphantom{\mathsf{H}}}g_c\adj\bigr)=\lVert g_c\rVert^2=\ell_c$, and
 $\tr I_k=k$; take traces in \eqref{eq:parseval} term by term.  The
 weights are positive and sum to $1$, so $k=\sum_c t_c\ell_c$ is a
 weighted mean of the $\ell_c$ and does not exceed their maximum.
@@ -82,8 +82,8 @@ second time, with equality only if $s_c=1$ throughout.
 \begin{proof}
 Fix $e$ and separate the $e$-th term of \eqref{eq:parseval}:
 \begin{equation}\label{eq:erased}
-  I_k-t_e\,g_e^{\vphantom{*}}g_e^{*}
-  \;=\;\sum_{c\ne e}t_c\,g_c^{\vphantom{*}}g_c^{*}\;\psd\;0 .
+  I_k-t_e\,g_e^{\vphantom{\mathsf{H}}}g_e\adj
+  \;=\;\sum_{c\ne e}t_c\,g_c^{\vphantom{\mathsf{H}}}g_c\adj\;\psd\;0 .
 \end{equation}
 Evaluating the quadratic form of \eqref{eq:erased} at $g_e$ gives
 $0\le\ell_e-t_e\ell_e^2$.  If $\ell_e=0$ then $s_e=0\le1$; otherwise
@@ -96,28 +96,28 @@ weighted one.
 \begin{lemma}[Lean]\label{lem:coparseval}
 For every design,
 \begin{equation}\label{eq:coparseval}
-  S_{\{1,\dots,m\}}-I_k\;=\;\sum_{c}(1-t_c)\,g_c^{\vphantom{*}}g_c^{*} .
+  S_{\{1,\dots,m\}}-I_k\;=\;\sum_{c}(1-t_c)\,g_c^{\vphantom{\mathsf{H}}}g_c\adj .
 \end{equation}
 The right-hand side is positive semidefinite, and positive definite as
 soon as $m\ge2$.
 \end{lemma}
 
 \begin{proof}
-Subtract \eqref{eq:parseval} from $\sum_c g_c^{\vphantom{*}}g_c^{*}$.
+Subtract \eqref{eq:parseval} from $\sum_c g_c^{\vphantom{\mathsf{H}}}g_c\adj$.
 Each $t_c$ is one summand of a sum of positive numbers equal to $1$, so
 $t_c\le1$ and the coefficients $1-t_c$ are nonnegative; a nonnegative
 combination of the positive semidefinite matrices
-$g_c^{\vphantom{*}}g_c^{*}$ is positive semidefinite.  If $m\ge2$ then
+$g_c^{\vphantom{\mathsf{H}}}g_c\adj$ is positive semidefinite.  If $m\ge2$ then
 $t_c<1$ for every $c$, since $t_c+t_{c'}\le1$ with $t_{c'}>0$ for any
 second index $c'$.  Put $\sigma:=\min_c(1-t_c)/t_c>0$.  Every coefficient
 of
 \[
-  \sum_c\bigl((1-t_c)-\sigma t_c\bigr)\,g_c^{\vphantom{*}}g_c^{*}
-  \;=\;\sum_c(1-t_c)\,g_c^{\vphantom{*}}g_c^{*}\;-\;\sigma I_k
+  \sum_c\bigl((1-t_c)-\sigma t_c\bigr)\,g_c^{\vphantom{\mathsf{H}}}g_c\adj
+  \;=\;\sum_c(1-t_c)\,g_c^{\vphantom{\mathsf{H}}}g_c\adj\;-\;\sigma I_k
 \]
 is nonnegative by the choice of $\sigma$, the displayed equality being
 \eqref{eq:parseval} scaled by $\sigma$.  Hence
-$\sum_c(1-t_c)g_c^{\vphantom{*}}g_c^{*}\psd\sigma I_k\pd0$.
+$\sum_c(1-t_c)g_c^{\vphantom{\mathsf{H}}}g_c\adj\psd\sigma I_k\pd0$.
 \end{proof}
 
 The operator on the right of \eqref{eq:coparseval} is used again in
@@ -162,25 +162,25 @@ The classical statement is the uniform-weight instance, in the following
 precise sense.
 
 \begin{proposition}[Lean]\label{prop:classical}
-Let $n\ge1$ and let $A\in\FF^{n\times k}$ satisfy $A^{*}A=I_k$.  If
+Let $n\ge1$ and let $A\in\FF^{n\times k}$ satisfy $A\adj A=I_k$.  If
 $\Gtz(n,k)$ holds, respectively $\GtzC(n,k)$, then there is an injection
 $\iota:\{1,\dots,k\}\to\{1,\dots,n\}$ with
 \[
-  (A_\iota)^{*}A_\iota^{\vphantom{*}}\;\psd\;\tfrac1n I_k,
-  \qquad A_\iota:=\bigl(A_{\iota(1)},\dots,A_{\iota(k)}\bigr)^{*}\!,
+  (A_\iota)\adj A_\iota^{\vphantom{\mathsf{H}}}\;\psd\;\tfrac1n I_k,
+  \qquad A_\iota:=\bigl(A_{\iota(1)},\dots,A_{\iota(k)}\bigr)\adj\!,
 \]
-where $A_r^{*}$ denotes the $r$-th row of $A$.
+where $A_r\adj$ denotes the $r$-th row of $A$.
 \end{proposition}
 
 \begin{proof}
 Put $g_r:=\sqrt n\,A_r$ and $t_r:=1/n$.  Then
-$\sum_r t_r g_r^{\vphantom{*}}g_r^{*}=\sum_r A_r^{\vphantom{*}}A_r^{*}
-=A^{*}A=I_k$, so this is a design of size $n$ and rank $k$.  Let $C$
+$\sum_r t_r g_r^{\vphantom{\mathsf{H}}}g_r\adj=\sum_r A_r^{\vphantom{\mathsf{H}}}A_r\adj
+=A\adj A=I_k$, so this is a design of size $n$ and rank $k$.  Let $C$
 dominate and let $\iota$ enumerate $C$ in increasing order.  Then
-$(A_\iota)^{*}A_\iota^{\vphantom{*}}=\sum_{r\in C}A_r^{\vphantom{*}}A_r^{*}
+$(A_\iota)\adj A_\iota^{\vphantom{\mathsf{H}}}=\sum_{r\in C}A_r^{\vphantom{\mathsf{H}}}A_r\adj
 =\frac1n\SC$, so
 \[
-  (A_\iota)^{*}A_\iota^{\vphantom{*}}-\tfrac1n I_k
+  (A_\iota)\adj A_\iota^{\vphantom{\mathsf{H}}}-\tfrac1n I_k
   \;=\;\tfrac1n\bigl(\SC-I_k\bigr)\;\psd\;0 . \qedhere
 \]
 \end{proof}

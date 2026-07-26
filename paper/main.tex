@@ -56,7 +56,7 @@
 % ==========================================================================
 % RESERVED NOTATION.  Every symbol below has exactly one meaning in this
 % paper and is never rebound, not even inside a proof.  Symbols outside this
-% list ($x$, $y$, $u$, $A$, $B$, $H$, $Q$, ...) are proof-local bound
+% list ($x$, $y$, $u$, $A$, $B$, $Y$, $Z$, ...) are proof-local bound
 % variables, free to be reused across disjoint scopes; none of them shadows
 % a reserved symbol.  Section 1 states the same table for the reader.
 % ==========================================================================
@@ -75,8 +75,10 @@
 \newcommand{\Gtz}{\mathrm{GTZ}}
 \newcommand{\GtzC}{\mathrm{GTZ}_{\C}}
 \newcommand{\Gram}{\operatorname{Gram}}
-% transpose, set upright so that it cannot be read as the variable $T$
+% transpose and adjoint, both set upright so that neither can be read as a
+% variable.  Over R they agree; the paper writes whichever the field warrants.
 \newcommand{\tp}{^{\mathsf{T}}}
+\newcommand{\adj}{^{\mathsf{H}}}
 % a design (calligraphic, as for every other structure in the paper)
 \newcommand{\dsn}{\mathcal{D}}
 % the frame operator of the dual family (Section 3)
@@ -113,9 +115,9 @@ Goreinov--Tyrtyshnikov--Zamarashkin selection problem}
 \begin{abstract}
 A weighted design of size $m$ and rank $k$ over $\FF\in\{\R,\C\}$ consists
 of vectors $g_1,\dots,g_m\in\FF^{k}$ and positive weights $t_c$ summing to
-one with $\sum_c t_c\,g_c^{\vphantom{*}} g_c^{*}=I_k$.  The selection
+one with $\sum_c t_c\,g_c^{\vphantom{\mathsf{H}}} g_c\adj=I_k$.  The selection
 problem asks whether $k$ of the vectors dominate the identity outright,
-$\sum_{c\in C} g_c^{\vphantom{*}} g_c^{*}\psd I_k$.  We solve the problem
+$\sum_{c\in C} g_c^{\vphantom{\mathsf{H}}} g_c\adj\psd I_k$.  We solve the problem
 over $\C$: for $k\ge2$ such a subset exists in every design precisely when
 $m\le k+1$, and at $m=k+1$ the bound $1$ is attained at every weight
 vector.  Over $\R$ we settle rank at most two and corank at most two,

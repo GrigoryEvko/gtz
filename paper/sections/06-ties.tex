@@ -49,7 +49,7 @@ extremal exactly when it realizes the value $1$.
 At corank zero there is nothing to construct.  If $m=k$ and $k\ge2$ then
 the unique $k$-subset satisfies
 \[
-  \SC-I_k\;=\;\sum_{c}(1-t_c)\,g_c^{\vphantom{*}}g_c^{*}\;\pd\;0 ,
+  \SC-I_k\;=\;\sum_{c}(1-t_c)\,g_c^{\vphantom{\mathsf{H}}}g_c\adj\;\pd\;0 ,
 \]
 because the $g_c$ are then a basis of $\FF^k$ and $m\ge2$ forces $t_c<1$
 for every $c$.  So no design at $m=k$, $k\ge2$, is extremal.  Extremal
@@ -65,7 +65,7 @@ matrices attached to the selected vectors, and nothing else.  The second
 is the identity behind Lemma~\ref{lem:parallel}, the \emph{gap form}: for
 every $k$-subset $C$ and every $x\in\FF^k$,
 \begin{equation}\label{eq:gapform}
-  x^{*}\bigl(\SC-I_k\bigr)x
+  x\adj\bigl(\SC-I_k\bigr)x
   \;=\;\sum_{c\in C}\lvert\langle g_c,x\rangle\rvert^{2}
        \;-\;\lVert x\rVert^{2}.
 \end{equation}
@@ -80,7 +80,7 @@ does not dominate.
 The family $(g_c)_{c\in C}$ has $k$ members and spans a subspace of
 dimension at most $k-1$, so some unit vector $x$ is orthogonal to all of
 them.  Then $\SC x=0$, and by \eqref{eq:gapform},
-$x^{*}(\SC-I_k)x=-1<0$.
+$x\adj(\SC-I_k)x=-1<0$.
 \end{proof}
 
 Now let $\dsn$ be a design at $(m,k)$, let $e$ be an index and let
@@ -88,8 +88,8 @@ $0<a<t_e$.  Replace the pair $(g_e,t_e)$ by the two pairs $(g_e,a)$ and
 $(g_e,t_e-a)$, leaving everything else alone.  The weights remain positive
 and still sum to one, and
 \[
-  a\,g_e^{\vphantom{*}}g_e^{*}+(t_e-a)\,g_e^{\vphantom{*}}g_e^{*}
-  \;=\;t_e\,g_e^{\vphantom{*}}g_e^{*},
+  a\,g_e^{\vphantom{\mathsf{H}}}g_e\adj+(t_e-a)\,g_e^{\vphantom{\mathsf{H}}}g_e\adj
+  \;=\;t_e\,g_e^{\vphantom{\mathsf{H}}}g_e\adj,
 \]
 so \eqref{eq:parseval} is unchanged and the result is a design at
 $(m+1,k)$.  The vector is not rescaled: \eqref{eq:parseval} is affected
@@ -120,10 +120,10 @@ The $T_j$ are positive and sum to one, so Theorem~\ref{thm:corankone}(iii)--(iv)
 supplies the design $(h_j,T_j)$ demanded.  Grouping the sum
 \eqref{eq:parseval} by classes,
 \[
-  \sum_{c=1}^{m}t_c\,g_c^{\vphantom{*}}g_c^{*}
+  \sum_{c=1}^{m}t_c\,g_c^{\vphantom{\mathsf{H}}}g_c\adj
   \;=\;\sum_{j=1}^{k+1}\Bigl(\sum_{\varphi(c)=j}t_c\Bigr)
-        h_j^{\vphantom{*}}h_j^{*}
-  \;=\;\sum_{j=1}^{k+1}T_j\,h_j^{\vphantom{*}}h_j^{*}\;=\;I_k,
+        h_j^{\vphantom{\mathsf{H}}}h_j\adj
+  \;=\;\sum_{j=1}^{k+1}T_j\,h_j^{\vphantom{\mathsf{H}}}h_j\adj\;=\;I_k,
 \]
 so $(g,t)$ is a design at $(m,k)$, with weights $t$ by construction.
 
@@ -132,7 +132,7 @@ carries two equal vectors and does not dominate, by
 Lemma~\ref{lem:parallel}.  If $\varphi$ is injective on $C$ then
 $\varphi(C)$ is a $k$-subset of $\{1,\dots,k+1\}$ and
 \[
-  \SC\;=\;\sum_{c\in C}h_{\varphi(c)}^{\vphantom{*}}h_{\varphi(c)}^{*}
+  \SC\;=\;\sum_{c\in C}h_{\varphi(c)}^{\vphantom{\mathsf{H}}}h_{\varphi(c)}\adj
       \;=\;S_{\varphi(C)},
 \]
 which dominates and does not dominate strictly.  Since $\varphi$ is
@@ -166,7 +166,7 @@ $\{1,\dots,m\}$ into $k+1$ nonempty blocks, a family of dimension $m-1$.
 \begin{proof}
 Only the corank-one assertion needs an argument.  Let $m=k+1$.  By
 Theorem~\ref{thm:corankone} a design of that size with weights $t$ is
-extremal if and only if its chart projection is $P=I-zz^{*}$ with
+extremal if and only if its chart projection is $P=I-zz\adj$ with
 $\lvert z_c\rvert^{2}=(1-t_c)/k$ for every $c$.  One direction is part
 (iii) of that theorem.  For the other, extremality forbids strict
 domination, so by part (i) no $p_{c_0}$ exceeds the $t$-mean
@@ -175,10 +175,10 @@ mean is constant, and by \eqref{eq:pnorm} the constant is $1/k$, which is
 the stated condition on $z$.  These moduli determine
 $z$ up to the individual phases $\varepsilon_c$, and $P$ determines $V$ up
 to $V\mapsto VU$, since two isometries with the same range differ by the
-unitary $U=V^{*}V'$.  Replacing $z$ by $\diag(\varepsilon)z$ replaces $P$
-by $\diag(\varepsilon)P\diag(\varepsilon)^{*}$, hence $V$ by
+unitary $U=V\adj V'$.  Replacing $z$ by $\diag(\varepsilon)z$ replaces $P$
+by $\diag(\varepsilon)P\diag(\varepsilon)\adj$, hence $V$ by
 $\diag(\varepsilon)V$, hence $g_c=v_c/\sqrt{t_c}$ by
-$\varepsilon_cg_c$; and $g_c^{\vphantom{*}}g_c^{*}$ is invariant under
+$\varepsilon_cg_c$; and $g_c^{\vphantom{\mathsf{H}}}g_c\adj$ is invariant under
 that.  So the fibre of the weight map over each $t$ is a single orbit, the
 quotient is mapped bijectively onto the open simplex, and the dimension is
 $m-1=k$.
@@ -458,9 +458,9 @@ Problem~\ref{prob:structure}.
 One probability measure on $k$-subsets is adapted to \eqref{eq:parseval}
 exactly, and under it the selection inequality holds on average.  We work
 in the chart of \S\ref{sec:chart}: $v_c=\sqrt{t_c}\,g_c$, the matrix $V$
-has rows $v_c^{*}$ and satisfies $V^{*}V=I_k$, and $P=VV^{*}$ by
+has rows $v_c\adj$ and satisfies $V\adj V=I_k$, and $P=VV\adj$ by
 \eqref{eq:chart}.  For a $k$-subset $C$ write $V_C$ for the $k\times k$
-submatrix of $V$ on the rows $C$, so that $P[C]=V_C^{\vphantom{*}}V_C^{*}$.
+submatrix of $V$ on the rows $C$, so that $P[C]=V_C^{\vphantom{\mathsf{H}}}V_C\adj$.
 
 \begin{lemma}\label{lem:cauchybinet}
 Let $X$ be $k\times m$ and $Y$ be $m\times k$.  Then
@@ -489,10 +489,10 @@ summing $\operatorname{sgn}(\sigma)\prod_jY_{\iota_C(\sigma(j))j}$ over
 $\sigma$ gives $\det(Y_C)$.
 \end{proof}
 
-Apply the lemma with $X=V^{*}$ and $Y=V$.  Each term is
-$\det\bigl((V^{*})^{C}\bigr)\det(V_C)=\lvert\det V_C\rvert^{2}
-=\det\bigl(V_C^{\vphantom{*}}V_C^{*}\bigr)=\det P[C]$, while the left side
-is $\det(V^{*}V)=1$.  Setting
+Apply the lemma with $X=V\adj$ and $Y=V$.  Each term is
+$\det\bigl((V\adj)^{C}\bigr)\det(V_C)=\lvert\det V_C\rvert^{2}
+=\det\bigl(V_C^{\vphantom{\mathsf{H}}}V_C\adj\bigr)=\det P[C]$, while the left side
+is $\det(V\adj V)=1$.  Setting
 \begin{equation}\label{eq:dpp}
   \pi_C\;:=\;\det P[C]
   \;=\;\lvert\det V_C\rvert^{2}
@@ -518,17 +518,17 @@ For every atom $c$,
 \begin{proof}
 Fix $c$ and let $D_\sigma:=\diag(1,\dots,\sigma,\dots,1)$ carry $\sigma$
 in the position $c$.  On one hand
-$V^{*}D_\sigma V=V^{*}V+(\sigma-1)v_c^{\vphantom{*}}v_c^{*}$ is a
+$V\adj D_\sigma V=V\adj V+(\sigma-1)v_c^{\vphantom{\mathsf{H}}}v_c\adj$ is a
 rank-one perturbation of the identity, with
 \[
-  \det\bigl(V^{*}D_\sigma V\bigr)\;=\;1+(\sigma-1)\lVert v_c\rVert^{2}
+  \det\bigl(V\adj D_\sigma V\bigr)\;=\;1+(\sigma-1)\lVert v_c\rVert^{2}
   \;=\;1+(\sigma-1)s_c .
 \]
 On the other hand Lemma~\ref{lem:cauchybinet} applied to
-$X=V^{*}D_\sigma$ and $Y=V$ gives, since scaling the column $e$ of
-$V^{*}$ multiplies every minor containing it by that factor,
+$X=V\adj D_\sigma$ and $Y=V$ gives, since scaling the column $e$ of
+$V\adj$ multiplies every minor containing it by that factor,
 \[
-  \det\bigl(V^{*}D_\sigma V\bigr)
+  \det\bigl(V\adj D_\sigma V\bigr)
   \;=\;\sum_{\lvert C\rvert=k}\sigma^{[c\in C]}\,\pi_C
   \;=\;\sum_{C\not\ni c}\pi_C\;+\;\sigma\sum_{C\ni c}\pi_C .
 \]
@@ -542,7 +542,7 @@ Summing Lemma~\ref{lem:marginal} over $c$ returns $\sum_cs_c=k$
 \begin{theorem}[Lean]\label{thm:leverageaverage}
 For every design over either field,
 \[
-  \sum_{c}s_c\,g_c^{\vphantom{*}}g_c^{*}\;\psd\;I_k .
+  \sum_{c}s_c\,g_c^{\vphantom{\mathsf{H}}}g_c\adj\;\psd\;I_k .
 \]
 \end{theorem}
 
@@ -563,7 +563,7 @@ below by
 \]
 by \eqref{eq:parseval}.  Dividing by
 $\lVert x\rVert^{2}>0$ gives
-$x^{*}\bigl(\sum_cs_cg_c^{\vphantom{*}}g_c^{*}\bigr)x\ge\lVert x\rVert^2$.
+$x\adj\bigl(\sum_cs_cg_c^{\vphantom{\mathsf{H}}}g_c\adj\bigr)x\ge\lVert x\rVert^2$.
 Every step is homogeneous in $x$, so no normalization is used.
 \end{proof}
 
@@ -573,7 +573,7 @@ The leverage-weighted sum is the $\pi$-average of the subset sum.
 For every design over either field,
 \[
   \E_{\pi}\bigl[\SC\bigr]
-  \;=\;\sum_{c}s_c\,g_c^{\vphantom{*}}g_c^{*}
+  \;=\;\sum_{c}s_c\,g_c^{\vphantom{\mathsf{H}}}g_c\adj
   \;\psd\;I_k .
 \]
 \end{theorem}
@@ -582,9 +582,9 @@ For every design over either field,
 Exchanging the two summations and applying Lemma~\ref{lem:marginal},
 \[
   \E_\pi[\SC]\;=\;\sum_{\lvert C\rvert=k}\pi_C\sum_{c\in C}
-  g_c^{\vphantom{*}}g_c^{*}
-  \;=\;\sum_{c}\Bigl(\sum_{C\ni c}\pi_C\Bigr)g_c^{\vphantom{*}}g_c^{*}
-  \;=\;\sum_c s_c\,g_c^{\vphantom{*}}g_c^{*} ,
+  g_c^{\vphantom{\mathsf{H}}}g_c\adj
+  \;=\;\sum_{c}\Bigl(\sum_{C\ni c}\pi_C\Bigr)g_c^{\vphantom{\mathsf{H}}}g_c\adj
+  \;=\;\sum_c s_c\,g_c^{\vphantom{\mathsf{H}}}g_c\adj ,
 \]
 and the inequality is Theorem~\ref{thm:leverageaverage}.
 \end{proof}

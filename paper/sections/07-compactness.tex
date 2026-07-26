@@ -40,7 +40,7 @@ $s_1=s_2=\tfrac12$, constant in $u$.
 
 The chart of \S\ref{sec:chart} is exactly the change of variables which
 retains the leverage scores and discards the divergence.  With
-$v_c=\sqrt{t_c}\,g_c$ and $P=VV^{*}$ as in \eqref{eq:chart},
+$v_c=\sqrt{t_c}\,g_c$ and $P=VV\adj$ as in \eqref{eq:chart},
 \begin{equation}\label{eq:pivotlev}
   P_{cc}\;=\;\lVert v_c\rVert^2\;=\;t_c\ell_c\;=\;s_c ,
 \end{equation}
@@ -204,8 +204,8 @@ not the subset sum --- so that, substituting $x=D[C]^{-1/2}y$,
   \frac{x\tp W[C]x}{x\tp D[C]x}
   \;=\;\frac{y\tp(\Gram_C-I_k)y}{\lVert y\rVert^{2}} .
 \]
-For $\lvert C\rvert=k$ the matrix $M_C$ is square, so $\Gram_C=M_CM_C^{*}$
-and $\SC=M_C^{*}M_C$ have the same characteristic polynomial and hence the
+For $\lvert C\rvert=k$ the matrix $M_C$ is square, so $\Gram_C=M_CM_C\adj$
+and $\SC=M_C\adj M_C$ have the same characteristic polynomial and hence the
 same least eigenvalue; minimizing the last display over $y\ne0$ therefore
 gives $\lmin(\SC)-1$, and
 \[

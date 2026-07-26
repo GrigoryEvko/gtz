@@ -62,11 +62,11 @@ else.
 
 \subsection{The design manifold}\label{sec:manifold}
 
-Fix $m$ and $k$, write $\mathcal{S}^k$ for the space of real symmetric
+Fix $m$ and $k$, write $\mathbb{S}^k$ for the space of real symmetric
 $k\times k$ matrices, and let
 \begin{equation}\label{eq:constraints}
   \Phi(g,t)\;:=\;\sum_{c}t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp-I_k
-  \;\in\;\mathcal{S}^{k},
+  \;\in\;\mathbb{S}^{k},
   \qquad
   \sigma(t)\;:=\;\sum_c t_c-1\;\in\;\R .
 \end{equation}
@@ -83,25 +83,25 @@ open condition $t\pd0$.  Both maps are polynomial, with differentials
 
 \begin{lemma}\label{lem:tangent}
 At every design the pair $(\Phi',\sigma')$ is surjective onto
-$\mathcal{S}^k\times\R$.  Hence the designs form a smooth manifold of
+$\mathbb{S}^k\times\R$.  Hence the designs form a smooth manifold of
 dimension $mk+m-\tfrac12k(k+1)-1$, whose tangent space $\tang$ at $(g,t)$
 consists of the pairs $(\dot g,\dot t)$ annihilated by
 \eqref{eq:conGrad}.
 \end{lemma}
 
 \begin{proof}
-Let $(H,a)\in\mathcal{S}^k\times\R$ be given.  Choose $\dot t$ with
+Let $(Y,a)\in\mathbb{S}^k\times\R$ be given.  Choose $\dot t$ with
 $\sum_c\dot t_c=a$, put
-$H':=H-\sum_c\dot t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp$, and take
-$\dot g_c:=\tfrac12H'g_c$.  Then by \eqref{eq:parseval}
+$Y':=Y-\sum_c\dot t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp$, and take
+$\dot g_c:=\tfrac12Y'g_c$.  Then by \eqref{eq:parseval}
 \[
   \sum_c t_c\bigl(\dot g_c^{\vphantom{\mathsf{T}}}g_c\tp
                  +g_c^{\vphantom{\mathsf{T}}}\dot g_c\tp\bigr)
-  =\tfrac12H'\sum_c t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp
-   +\tfrac12\Bigl(\sum_c t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp\Bigr)H'
-  =H' ,
+  =\tfrac12Y'\sum_c t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp
+   +\tfrac12\Bigl(\sum_c t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp\Bigr)Y'
+  =Y' ,
 \]
-so $\Phi'[\dot g,\dot t]=H$ and $\sigma'[\dot t]=a$.  The dimension count
+so $\Phi'[\dot g,\dot t]=Y$ and $\sigma'[\dot t]=a$.  The dimension count
 and the description of $\tang$ are the submersion theorem.
 \end{proof}
 
@@ -129,7 +129,7 @@ equal to --- the convex hull of the subdifferentials of the active pieces
 \cite[Prop.~2.3.12]{Clarke1990}.  The inclusion runs in the direction a
 necessary condition needs.
 
-Two facts are classical.  First, $\lmin$ is concave on $\mathcal{S}^k$
+Two facts are classical.  First, $\lmin$ is concave on $\mathbb{S}^k$
 and its superdifferential at $A$ is the \emph{spectraplex}
 \begin{equation}\label{eq:spectraplex}
 \begin{aligned}
@@ -201,7 +201,7 @@ sum to one, and \eqref{eq:zeta} becomes
 \end{equation}
 By Lemma~\ref{lem:tangent} the map $(\Phi',\sigma')$ is surjective with
 kernel $\tang$, and $\psi$ vanishes on $\tang$; hence $\psi$ factors through
-$(\Phi',\sigma')$.  That is, there are $\Lambda\in\mathcal{S}^k$ and
+$(\Phi',\sigma')$.  That is, there are $\Lambda\in\mathbb{S}^k$ and
 $\mu\in\R$ with
 \begin{equation}\label{eq:lagrange}
   \psi(\dot g,\dot t)
