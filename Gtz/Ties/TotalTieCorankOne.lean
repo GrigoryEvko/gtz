@@ -25,6 +25,12 @@ Unconditional, at every size and rank:
   common orthogonal direction is produced from a vanishing determinant, so no
   rank theory is invoked: `Matrix.exists_mulVec_eq_zero_iff` on the selected-rows
   matrix, whose determinant dies because one row is a multiple of another.
+  This GENERALISES the landed `Gtz.not_dominates_of_repeated_atom`
+  (`Gtz.Ties.RepeatedAtomExclusion`) on three counts, and the generalisation is
+  what the hinge needs: parallel rather than EQUAL atoms (a tie's parallel atoms
+  are only known to have equal norms conditionally on GTZ at smaller sizes, so
+  the equal-atom form cannot be applied to a hypothetical tie), every rank rather
+  than rank three, and an arbitrary `k`-subset rather than a literal triple.
 * `dominates_det_ne_zero` — the converse packaging: a dominating `k`-subset has
   invertible selected-rows matrix, i.e. IS a basis of the direction matroid.
 
