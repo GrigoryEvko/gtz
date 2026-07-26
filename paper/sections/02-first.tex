@@ -84,8 +84,9 @@ Fix $e$ and separate the $e$-th term of \eqref{eq:parseval}:
   \;=\;\sum_{c\ne e}t_c\,g_c^{\vphantom{\mathsf{H}}}g_c\adj\;\psd\;0 .
 \end{equation}
 Evaluating the quadratic form of \eqref{eq:erased} at $g_e$ gives
-$0\le\ell_e-t_e\ell_e^2$.  If $\ell_e=0$ then $s_e=0\le1$; otherwise
-divide by $\ell_e>0$.
+$0\le\ell_e-t_e\ell_e^2$, the second term because
+$\lvert\langle g_e,g_e\rangle\rvert^2=\ell_e^2$.  If $\ell_e=0$ then
+$s_e=0\le1$; otherwise divide by $\ell_e>0$.
 \end{proof}
 
 The third identity compares the unweighted sum over all indices with the
@@ -107,14 +108,16 @@ $t_c\le1$ and the coefficients $1-t_c$ are nonnegative; a nonnegative
 combination of the positive semidefinite matrices
 $g_c^{\vphantom{\mathsf{H}}}g_c\adj$ is positive semidefinite.  If $m\ge2$ then
 $t_c<1$ for every $c$, since $t_c+t_{c'}\le1$ with $t_{c'}>0$ for any
-second index $c'$.  Put $\sigma:=\min_c(1-t_c)/t_c>0$.  Every coefficient
-of
+second index $c'$.  Put $\sigma:=\min_c(1-t_c)/t_c>0$, so that
+$\sigma t_c\le1-t_c$ at every index.  Then every coefficient of
 \[
   \sum_c\bigl((1-t_c)-\sigma t_c\bigr)\,g_c^{\vphantom{\mathsf{H}}}g_c\adj
   \;=\;\sum_c(1-t_c)\,g_c^{\vphantom{\mathsf{H}}}g_c\adj\;-\;\sigma I_k
 \]
-is nonnegative by the choice of $\sigma$, the displayed equality being
-\eqref{eq:parseval} scaled by $\sigma$.  Hence
+is nonnegative, the displayed equality being \eqref{eq:parseval} scaled by
+$\sigma$ and subtracted.  A nonnegative combination of positive
+semidefinite matrices is positive semidefinite, so the left side is
+$\psd0$, that is
 $\sum_c(1-t_c)g_c^{\vphantom{\mathsf{H}}}g_c\adj\psd\sigma I_k\pd0$.
 \end{proof}
 

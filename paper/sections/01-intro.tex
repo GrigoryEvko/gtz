@@ -41,11 +41,12 @@ Cauchy--Binet formula
 $\sum_{\lvert C\rvert=k}\lvert\det U_C\rvert^2=\det(U\adj U)=1$, so the
 volumes do not all vanish.  Put $B:=UU_C^{-1}$.  Replacing the
 $j$-th row of $U_C$ by the $r$-th row of $U$ replaces that row by its
-expansion $\sum_i B_{ri}(U_C)_i$ in the selected rows, and multilinearity
-leaves one surviving term, so the new determinant is $B_{rj}\det U_C$.  An
+expansion $\sum_i B_{ri}(U_C)_i$ in the selected rows; expanding the
+determinant linearly in that row leaves only the term $i=j$, every other
+having a repeated row, so the new determinant is $B_{rj}\det U_C$.  An
 entry of $B$ of modulus greater than $1$ would therefore name a $k$-subset
 of strictly larger volume, and maximality gives $\lvert B_{rj}\rvert\le1$
-throughout.  The rows of $B$ indexed by $C$ form $I_k$, whence
+throughout.  The rows of $B$ indexed by $C$ are $U_CU_C^{-1}=I_k$, whence
 \[
   \tr\bigl((U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\bigr)
   \;=\;\lVert U_C^{-1}\rVert_F^2
