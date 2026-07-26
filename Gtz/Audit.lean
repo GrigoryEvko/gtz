@@ -162,6 +162,9 @@ import Gtz.Ties.TotalTieCorankOne
 import Gtz.Design.PrimitiveTightClassification
 import Gtz.Quantitative.SpreadCertificateSixThree
 import Gtz.Ties.CriticalTieMultiplier
+import Gtz.Design.NearPencilStrictDomination
+import Gtz.Design.NearPencilTransport
+import Gtz.Design.StratumEmptinessLedger
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -3409,3 +3412,120 @@ import Gtz.Ties.CriticalTieMultiplier
 #print axioms Gtz.trace_mul_gap_of_quadricLaw
 #print axioms Gtz.not_isCriticalMultiplierAt
 #print axioms Gtz.not_isCriticalMultiplierAt_rankThree
+
+-- Gtz/Design/NearPencilStrictDomination.lean -- the near-pencil pole deflation and strict domination
+#print axioms Gtz.exists_planeFrame_of_ne_zero
+#print axioms Gtz.poleDeflation
+#print axioms Gtz.poleDeflation_pos
+#print axioms Gtz.poleDeflation_lt_one
+#print axioms Gtz.poleDeflation_mul_half
+#print axioms Gtz.nearPencilPlaneDesign
+#print axioms Gtz.not_posSemidef_atomMatrix_sub_one
+#print axioms Gtz.notMem_of_dominates_nearPencilPlane
+#print axioms Gtz.posDef_estimate_of_nearPencilBlocks
+#print axioms Gtz.exists_posDef_of_soleOffPlane
+#print axioms Gtz.dominates_of_soleOffPlane
+#print axioms Gtz.not_isTie_of_soleOffPlane
+#print axioms Gtz.nearPencilLinePattern
+#print axioms Gtz.bracketNormal_ne_zero_of_hasNearPencilLinePattern
+#print axioms Gtz.sharedNormal_of_hasNearPencilLinePattern
+#print axioms Gtz.stratumIsTieFree_nearPencil
+#print axioms Gtz.stratumIsTieFree_nearPencil_sixThree
+#print axioms Gtz.stratumIsTieFree_nearPencil_sevenThree
+#print axioms Gtz.stratumIsTieFree_nearPencil_relabelled_sixThree
+#print axioms Gtz.stratumIsTieFree_nearPencil_relabelled_sevenThree
+
+-- Gtz/Design/NearPencilTransport.lean -- the rank-two transport closing q6m3 and q7m4
+#print axioms Gtz.leverageOf_eq_dotProduct_self
+#print axioms Gtz.atomMatrix_eq_zero
+#print axioms Gtz.atomMatrix_mulVec_eq_smul
+#print axioms Gtz.exists_orthonormalPlane_of_ne_zero
+#print axioms Gtz.exists_ne_zero_orthogonal_planar
+#print axioms Gtz.not_dominates_of_zero_atom_planar
+#print axioms Gtz.rescaledPlanarDesign
+#print axioms Gtz.exists_planar_pair_strictFloor
+#print axioms Gtz.dotProduct_pole_eq_zero_of_solePole
+#print axioms Gtz.exists_posDef_triple_of_solePole
+#print axioms Gtz.not_isTie_of_solePole
+#print axioms Gtz.tripleBracket_eq_zero_of_repeatMid
+#print axioms Gtz.tripleBracket_eq_zero_of_repeatRight
+#print axioms Gtz.stratumIsTieFree_of_solePoleOffLine
+#print axioms Gtz.solePoleLinePattern
+#print axioms Gtz.stratumIsTieFree_solePoleLinePattern
+#print axioms Gtz.nearPencilSixAtom
+#print axioms Gtz.nearPencilSixDesign
+#print axioms Gtz.nearPencilSevenAtom
+#print axioms Gtz.nearPencilSevenDesign
+#print axioms Gtz.nearPencilSixDesign_hasLinePattern
+#print axioms Gtz.nearPencilSevenDesign_hasLinePattern
+#print axioms Gtz.nearPencilSixStratum_isNonempty_and_tieFree
+#print axioms Gtz.nearPencilSevenStratum_isNonempty_and_tieFree
+
+-- Gtz/Design/StratumEmptinessLedger.lean -- the per-stratum tie-emptiness ledger and the leverage floor
+#print axioms Gtz.posDef_one_sub_atomMatrix_of_leverage_lt_one
+#print axioms Gtz.exists_deflatedGapBound
+#print axioms Gtz.posDef_on_orthogonal_of_deflatedGapBound
+#print axioms Gtz.exists_posDef_of_lightAtom
+#print axioms Gtz.not_isTie_of_lightAtom
+#print axioms Gtz.leverage_one_le_of_isTie
+#print axioms Gtz.leverage_one_le_of_isTie_sixThree
+#print axioms Gtz.leverage_one_le_of_isTie_sevenThree
+#print axioms Gtz.leverage_one_le_of_isTie_fourThree
+#print axioms Gtz.leverage_one_le_of_isTie_fiveThree
+#print axioms Gtz.allHeavy_or_exists_leverage_eq_one_of_isTie
+#print axioms Gtz.allHeavy_or_exists_leverage_eq_one_of_isTie_sixThree
+#print axioms Gtz.allHeavy_or_exists_leverage_eq_one_of_isTie_sevenThree
+#print axioms Gtz.share_bracket_of_isTie
+#print axioms Gtz.sum_weighted_leverage_excess_of_isTie
+#print axioms Gtz.design_mem_collaredSet_of_isTie_sixThree
+#print axioms Gtz.StratumIsTieFreeAmongHeavy
+#print axioms Gtz.stratumIsTieFreeAmongHeavy_of_stratumIsTieFree
+#print axioms Gtz.stratumIsTieFree_of_amongHeavy
+#print axioms Gtz.stratumIsTieFree_of_amongHeavy_sixThree
+#print axioms Gtz.stratumIsTieFree_of_amongHeavy_sevenThree
+#print axioms Gtz.StratumIsTieFreeAmongAllHeavy
+#print axioms Gtz.StratumIsTieFreeAtUnitLeverage
+#print axioms Gtz.stratumIsTieFreeAmongHeavy_of_allHeavy_and_unitLeverage
+#print axioms Gtz.stratumIsTieFree_of_allHeavy_and_unitLeverage_sixThree
+#print axioms Gtz.stratumIsTieFree_of_allHeavy_and_unitLeverage_sevenThree
+#print axioms Gtz.AgreesOnDistinctTriples
+#print axioms Gtz.agreesOnDistinctTriples_refl
+#print axioms Gtz.hasLinePattern_of_agreesOnDistinctTriples
+#print axioms Gtz.stratumIsTieFree_of_agreesOnDistinctTriples
+#print axioms Gtz.IsRelabelOf
+#print axioms Gtz.isRelabelOf_refl
+#print axioms Gtz.stratumIsTieFree_of_isRelabelOf
+#print axioms Gtz.IsRelabelOfOnDistinctTriples
+#print axioms Gtz.isRelabelOfOnDistinctTriples_of_isRelabelOf
+#print axioms Gtz.stratumIsTieFree_of_isRelabelOfOnDistinctTriples
+#print axioms Gtz.IsNearPencilClass
+#print axioms Gtz.IsFanoClass
+#print axioms Gtz.nearPencilLinePattern_comp_relabel
+#print axioms Gtz.isNearPencilClass_iff_exists_pole
+#print axioms Gtz.stratumIsTieFree_of_isNearPencilClass
+#print axioms Gtz.stratumIsTieFree_of_isFanoClass
+#print axioms Gtz.nearPencilLinePattern_self_of_ne
+#print axioms Gtz.not_fanoLinePattern_diagonal
+#print axioms Gtz.nearPencilStrictPattern
+#print axioms Gtz.agreesOnDistinctTriples_nearPencilStrictPattern
+#print axioms Gtz.isNearPencilClass_nearPencilStrictPattern
+#print axioms Gtz.not_isRelabelOf_nearPencilStrictPattern
+#print axioms Gtz.isPrimitiveDesign_iff_not_hasParallelPair
+#print axioms Gtz.hingeHoldsAtSize_of_residualLedger
+#print axioms Gtz.hingeHoldsAtSize_of_residualLedger_sevenThree
+#print axioms Gtz.hingeHoldsAtSize_of_heavyResidualLedger_sixThree
+#print axioms Gtz.hingeHoldsAtSize_of_heavyResidualLedger_sevenThree
+#print axioms Gtz.hingeHoldsAtSize_of_allHeavyResidualLedger_sixThree
+#print axioms Gtz.hingeHoldsAtSize_of_allHeavyResidualLedger_sevenThree
+#print axioms Gtz.not_isNearPencilClass_lineFree
+#print axioms Gtz.tetraDesign_forall_leverage_one_le
+#print axioms Gtz.diamondDesign_forall_leverage_one_le
+#print axioms Gtz.splitTetraDesign_forall_leverage_one_le
+#print axioms Gtz.splitTetraDesign_allHeavy
+#print axioms Gtz.splitTetraDesign_hasParallelPair
+#print axioms Gtz.not_stratumIsTieFreeAmongHeavy_fourThree_lineFree
+#print axioms Gtz.nearPencilLinePattern_eq_solePoleLinePattern
+#print axioms Gtz.nearPencilSixDesign_hasNearPencilLinePattern
+#print axioms Gtz.nearPencilSevenDesign_hasNearPencilLinePattern
+#print axioms Gtz.nearPencilSixDesign_allHeavy
+#print axioms Gtz.nearPencilSixEntry_isInhabitedHeavyAndTieFree

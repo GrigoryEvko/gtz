@@ -172,6 +172,9 @@ import Gtz.Ties.TotalTieCorankOne
 import Gtz.Design.PrimitiveTightClassification
 import Gtz.Quantitative.SpreadCertificateSixThree
 import Gtz.Ties.CriticalTieMultiplier
+import Gtz.Design.NearPencilStrictDomination
+import Gtz.Design.NearPencilTransport
+import Gtz.Design.StratumEmptinessLedger
 
 -- the axiom ledger for everything above
 import Gtz.Audit
