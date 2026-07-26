@@ -5,9 +5,9 @@
 the residual it does not close, `SplitSevenNeighbourhoodCovering`.
 `Gtz.Ties.StratumSharpMaximum` attaches a constant to the certificate.  This file does
 three further things: it computes the FLAT SPACE of the certificate exactly — nine named
-directions, proved flat, proved independent, proved to span, so the stacked Jacobian has
-rank exactly `19` — it upgrades the sign statement to an exact dichotomy, and it reduces
-the residual to one scalar polynomial inequality per design.
+directions, proved flat, proved independent, proved to span — it upgrades the sign
+statement to an exact dichotomy, and it reduces the residual to one scalar polynomial
+inequality per design.
 
 ## PROVED here (kernel-checked, zero `sorry`, zero new axiom)
 
@@ -18,12 +18,16 @@ the residual to one scalar polynomial inequality per design.
   SUBSET of the ones `Gtz.Ties.StratumFirstOrder` works with: every theorem there
   applies here unchanged, and the flat space computed here is the true tangent-and-tie
   kernel, not a trace-only relaxation.
-* `IsSplitSevenTangent`, `IsSplitSevenFlat` — the admissible directions (mass-preserving
-  and Parseval-preserving to first order) and the flat ones (admissible with all twenty
-  rainbow tie forms stationary).
+* `IsSplitSevenTraceTangent`, `IsSplitSevenTangent`, `IsSplitSevenFlat` — the two
+  admissibility notions (mass-preserving with the TRACE of Parseval stationary; the
+  stronger one with the full MATRIX stationary) and the flat directions (matrix-tangent
+  with all twenty rainbow tie forms stationary).
 * **THE RELATIVE-INTERIOR DICHOTOMY**, `rainbowSeven_supVelocity_eq_zero_iff`: along
-  every admissible direction the largest of the twenty tie-form velocities is `≥ 0`
-  (`rainbowSeven_supVelocity_nonneg`), with equality EXACTLY on the flat directions.
+  every TRACE-tangent direction the largest of the twenty tie-form velocities is `≥ 0`
+  (`rainbowSeven_supVelocity_nonneg`), with equality EXACTLY when all twenty vanish.
+  The hypothesis is deliberately the weak one — mass plus the trace, which is all the
+  Farkas certificate consumes — and `rainbowSeven_supVelocity_eq_zero_iff_flat` is the
+  matrix-tangent corollary phrased in `IsSplitSevenFlat`.
   The mechanism is the finite positive-combination argument and nothing else: twenty
   strictly positive multipliers summing a quantity to zero cannot have one summand
   negative unless another is positive, so `∀ T, v_T ≤ 0` forces `∀ T, v_T = 0`
@@ -62,30 +66,43 @@ the residual to one scalar polynomial inequality per design.
   inverse readout `stratumFlatCoefficient` exhibited in closed form: nine explicit linear
   functionals of a flat direction that reproduce it.  `stratumFlat_coefficient_unique`
   says those coefficients are the only ones.  So the flat space has dimension EXACTLY
-  nine, the nine directions are a BASIS of it, and — the ambient space of
-  `(atom velocity, weight velocity)` pairs being `21 + 7 = 28`-dimensional — **the
-  stacked Jacobian of the twenty tie gradients and the seven constraint gradients has
-  rank exactly `19`**.
+  nine and the nine directions are a BASIS of it — three theorems whose conjunction is
+  the dimension count.  What that conjunction is NOT is stated under DERIVED below.
+
+## DERIVED here (a corollary of the three, NOT itself mechanized)
+
+The ambient space of `(atom velocity, weight velocity)` pairs is `21 + 7 = 28`-dimensional
+and the flat space is its stacked Jacobian's kernel, so rank–nullity gives **rank exactly
+`19`** for the stacked Jacobian of the twenty tie gradients and the seven constraint
+gradients.  Rank–nullity is applied NOWHERE in this file: no declaration states a rank,
+and `Module.finrank` never appears.  The number is MEASURED independently (exact rational
+elimination, three separate runs) and it follows from the three theorems by an argument a
+reader supplies, not by one the kernel checked.
 
 ## Why the elimination is small, and which rows do the work
 
-The `27 × 28` stacked Jacobian has rank `19`, and the single relation among its rows is
-the Farkas identity itself, which reads
-`∑_T lambda_T · grad tie_T = (trace Parseval gradient) − 3 · (mass gradient)`;  that one
-relation is `splitSevenDesign_farkasIdentity` together with `splitSevenDesign_leverage`.
+The `27 × 28` stacked Jacobian has rank `19`, so its rows span an `8`-dimensional space
+of linear relations.  The constraint rows are independent among themselves
+(`rank = 7` on `7` rows), so every one of those eight relations involves tie rows.  The
+Farkas identity is the distinguished element of that eight-dimensional space, and reads
+`∑_T lambda_T · grad tie_T = (trace Parseval gradient) − 3 · (mass gradient)`;  it is
+`splitSevenDesign_farkasIdentity` together with `splitSevenDesign_leverage`.
 The tie block alone has rank `13 = 4 + 3 + 3 + 3`, forced by a block decomposition in the
 coordinates `y_{c,d} = ⟨v_d, dg_c⟩`, in which the tie Jacobian is `−2` times the incidence
 matrix of "triple `T` contains atom `c` and misses direction `d`" — block diagonal over
 the missed direction.  `rainbowSeven_bundleRigid_of_velocity_zero` is exactly the
 differencing rows of that decomposition.
 
-The spanning proof therefore never touches twenty-seven rows.  It runs on TWENTY: the
-nine rigidity rows, four rainbow triples supplying one row per missed direction
-(`T_0, T_8, T_12, T_16`, which between them use only atoms `0,1,2,3`), the six Parseval
-entries, and the mass.  That reduced system already has rank `19`; the other sixteen tie
-rows are consequences and are never used.  [That the reduced system suffices is not a
-separate assumption — it is what the proof demonstrates, since the reconstruction is
-derived from those twenty rows alone.]
+The spanning proof therefore never touches all twenty-seven rows.  Counting honestly at
+the level of the PROOFS and not of the summary: `rainbowSeven_bundleRigid_of_velocity_zero`
+instantiates the tie hypothesis at the thirteen indices
+`0,1,2,4,8,9,10,12,13,14,16,17,18` to produce the nine rigidity equations, and
+`stratumFlat_eq_combination` re-uses four of those same thirteen (`T_0, T_8, T_12, T_16`,
+one per missed direction, which between them touch only the atoms `0,1,2,3`) alongside the
+six Parseval entries and the mass.  So THIRTEEN tie rows are used and SEVEN —
+`T_3, T_5, T_6, T_7, T_11, T_15, T_19` — are never touched at all.  The elimination that
+actually reconstructs the direction is the twenty-row system (nine rigidity, four tie, six
+Parseval, mass); the thirteen tie instantiations are what buys the nine rigidity rows.
 
 ## PROVED here — covering on the whole tie class through the split tetrahedron
 
@@ -93,12 +110,22 @@ derived from those twenty rows alone.]
 atoms carrying it, at the class totals, for an ARBITRARY weight vector in the open
 simplex.  `splitSevenClassDesign_isTie` and `splitSevenClassDesign_exists_dominatingTriple`
 say the whole class — an `m − 1 = 6`-parameter section over the open weight simplex, not
-one point — is covered.  `bundledCycle_exists_dominatingSubset` is the same statement for
-the graphic realization at every rank, and
-`bundlingSevenThreePaired_exists_dominatingSubset` and its `(6,3)` companions are the
-instances at the sizes that carry the frontier.  These are packagings of
-`Gtz.splitClassDesign_isTie` and `Gtz.bundledCycleTree_dominates`; the work was done
-upstream and is cited, not re-proved.
+one point — is covered.  The word THROUGH is a theorem and not a naming convention:
+`splitSevenClassDesign_eq_splitSevenDesign` says the section evaluated at
+`splitSevenDesign.weight` IS `splitSevenDesign`, because at the class totals
+`(1/4, 1/4, 1/4, 1/4)` the Householder reflector has unit length and
+`simplexTieAtom` reproduces `tetraAtom` on the nose
+(`simplexTieAtom_uniformQuarter_eq_tetraAtom`).
+`bundledCycle_exists_dominatingSubset` is the same statement for the graphic realization
+at every rank, with the spanning tree named as the witness — which the upstream tie
+theorem does not give.  The tie half is a packaging of `Gtz.splitClassDesign_isTie`; the
+work was done upstream and is cited, not re-proved.
+
+SCOPE OF THAT SECTION, precisely: `Gtz.splitClassDesign` is indexed by a map
+`Fin m → Fin (k + 1)`, so it carries at most `k + 1 = 4` distinct atom directions.  The
+diamond primitive `M(K4 − e)` has FIVE.  So no diamond class is a `splitClassDesign`, and
+this section covers exactly the bundled-cycle half of the `(7,3)` equality locus and none
+of the diamond half.
 
 ## PROVED here — the tube reduction, and the ONE named hypothesis
 
@@ -114,20 +141,86 @@ strictness anywhere, which is what a boundary problem needs.
 So `SplitSevenNeighbourhoodCovering` follows from ONE named hypothesis,
 `SplitSevenTubeDeterminantWitness`: *every design in the tube has a rainbow triple whose
 gap determinant is nonnegative* (`splitSevenNeighbourhoodCovering_of_determinantWitness`).
-That is a single scalar polynomial sign per design, and it is sharp in the sense that a
-negative determinant in odd dimension three already refutes domination.
+That is a single scalar polynomial sign per design, and it is the right shape because a
+negative determinant already refutes THAT TRIPLE's domination — in every dimension, not
+only in odd ones.  Only the direction `witness ⟹ covering` is proved.  The converse is
+MEASURED, not proved: inside the tube the fifteen direction-repeating triples have
+`lambda_min ≈ −0.99` throughout, so no non-rainbow triple can dominate there and the
+witness is in fact equivalent to covering — but "no non-rainbow triple dominates in the
+tube" is not a theorem here.  The reduction therefore changes the obligation's SHAPE
+(three principal minors, per triple, become one polynomial sign) rather than its content.
 
-The remainder-shaped statement that pairs with it is
+The tube's WEIGHT condition is load-bearing and is not decoration.  The weights of
+`splitSevenDesign` are `1/8` and `1/4`, so a weight radius of at most `1/16` pins
+`t_min > 1/16` throughout the tube.  That matters because the slack constant of the tie
+locus degenerates like `Theta(t_min)` as the weight simplex's boundary is approached
+(MEASURED; constants in the ledger below), so a tube with no weight floor would have no
+uniform constant to work with.
+
+The remainder-shaped statement that pairs with the reduction is
 `rainbowSeven_displacement_frozenForm`, and it is an IDENTITY, not an estimate: the tie
-form of a rainbow triple at a nearby design equals the tie-form VELOCITY of the
-displacement plus an exact sum of squares.  There is no remainder to bound — the
-quadratic term is present with the right sign.  This replaces the sum-of-absolute-
-coefficients Taylor bound the plan called for: a bound would have been weaker than the
-identity and would still not have closed the gap, because the missing ingredient is not
-the size of the remainder but a Hoffman/error-bound constant converting
-`max_T ⟨grad tie_T, u⟩` into `dist(u, flat space)`, which Mathlib has no machinery for
-and which at this size is a facet enumeration of a `12`-dimensional hull in a
-`21`-dimensional tangent.
+form of a rainbow triple at a nearby design, probed at its own missed direction, equals
+the tie-form VELOCITY of the displacement plus an exact sum of squares.  There is no
+remainder to bound — the quadratic term is present with the right sign.
+
+What that identity does NOT say — and an earlier draft of this header said it, wrongly —
+is that the sign of the linear term decides covering.  The frozen form is ONE probe,
+`v_miss`; domination is an ALL-probe property.  A genuine Parseval design inside the tube
+can have a rainbow triple whose linear term and whose frozen form are both POSITIVE while
+its gap determinant is NEGATIVE, so that the triple does not dominate: MEASURED at
+sup-norm distance `0.0481` from the split tetrahedron, with linear term `+2.1e-3`, frozen
+form `+3.9e-3` and gap determinant `−3.2e-3` (re-verified at 80 digits, Parseval residual
+`1.1e-81`).  This is why the reduction above is stated in the DETERMINANT and not in the
+form.
+
+The genuinely missing ingredient is a Hoffman/error-bound constant converting
+`max_T ⟨grad tie_T, u⟩` into `dist(u, flat space)`, which Mathlib has no machinery for and
+which at this size is a facet enumeration of a `12`-dimensional hull in a `21`-dimensional
+tangent.  It is also not sufficient by itself: when the class-tangent excursion is left
+free inside the tube and only the transverse distance is held fixed, the realized ratio
+falls well below the pure-transverse one (MEASURED, ledger below), so a proof of the shape
+"error bound plus remainder" needs a uniform bound on the bilinear class-tangent by
+transverse cross term as well.
+
+## MEASURED (numerics and exact-rational elimination; NOT kernel-checked here)
+
+Every number below was produced by exact rational linear algebra unless marked otherwise,
+and every threshold-crossing or refuting finding was re-verified at 80 digits.
+
+* Ranks at `splitSevenDesign`, exact over the rationals: constraint block `7`, tie block
+  `13`, stacked `19`, kernel `9`.  The reduced twenty-row system has the same rank and the
+  same kernel as the full twenty-seven.  The nine shipped directions are a rational basis
+  of that kernel.
+* The dimension count is not special to this point: `dim(flat space) = m + 2` was
+  reproduced at `(2,2,2,1)` with uneven splits and skewed class totals, at `(3,2,1,1)`,
+  and at `(4,1,1,1)` — nine in each `(7,3)` case, eight at `(6,3)` — and a strictly
+  positive Farkas certificate over the ACTIVE triples exists at every point tested.
+* THREE DIFFERENT `7`s AND `8`s, which prose has repeatedly conflated.  The left kernel of
+  the `20 × 28` tie Jacobian, `{lambda : ∑_T lambda_T · grad tie_T = 0}`, has dimension
+  `7`.  The certificate space
+  `{lambda : ∑_T lambda_T · grad tie_T ∈ rowspan(constraint Jacobian)}` — the linear space
+  a Farkas certificate can actually live in — has dimension `8`.  Its mass-one affine
+  slice has dimension `7`.  The shipped `Gtz.rainbowSevenMultiplier` lies in the SECOND
+  and not in the first, which is exactly why the Farkas identity has a nonzero right-hand
+  side.  All three are exact.
+* The inradius of the tangent-restricted tie-gradient hull is `c = 0.469383091992` (polar
+  vertex enumeration over all `C(20,12) = 125970` candidate facets).  Since
+  `adj(3I − v vᵀ) = 3 v vᵀ`, a pure-transverse curve must realize determinant slope
+  `3c = 1.40815`; measured `1.40848 / 1.41147 / 1.41475` at steps `1e-3 / 1e-2 / 2e-2`.
+  With the class-tangent excursion left free and only the transverse distance fixed, the
+  realized ratio drops to `0.563 / 0.623 / 0.610` at distance `1e-2 / 3e-2 / 1e-1` — a
+  factor of about `2.3`, the cross term named in the tube section above.
+* Slack degeneration toward the weight-simplex boundary: `c = Theta(t_min)`, with
+  `c / t_min → 1.14` for intra-class dust and `1.06` for class-total dust, stable across
+  `t_min = 1e-2 … 1e-5`; `c / sqrt(t_min) → 0`.  This is what the tube's weight radius
+  buys.
+* `SplitSevenTubeDeterminantWitness` at radius `1/16` survived roughly `2.6e5` targeted
+  probes (epigraph minimax over the Parseval manifold at several radii, boundary-hugging
+  draws, random tangent rays, mixed class-tangent curves, and second order along the nine
+  flat directions).  Every float-negative was roundoff and turned positive at 80 digits.
+  It is NOT strictly feasible: equality holds at `splitSevenDesign` itself, which any
+  future proof must handle.  Its two-by-two arithmetic closes up to radius `0.080123`, so
+  `1/16` carries about `1.28x` of headroom.
 
 ## HONEST SCOPE
 
@@ -138,8 +231,7 @@ about a `1/16` neighbourhood of it.  Nothing here closes
 `(7,3)`, on the diamond `M(K4 − e)` primitive (`Gtz.Ties.DiamondTie`,
 `Gtz.Design.DiamondPrimitive`), on rank `≥ 4`, or on `GtzWeighted 7 3`.  The closed form
 behind `bundleTotalAtomVelocity` was derived outside Lean; only its output is used, and
-what is mechanized is that the resulting numbers are flat.  Nothing else here is
-measured.
+what is mechanized is that the resulting numbers are flat.
 -/
 import Mathlib
 import Gtz.Ties.StratumSharpMaximum
@@ -232,9 +324,17 @@ theorem parsevalMatrix_ray_expansion (design : WeightedDesign m k)
 
 /-! ## Admissible and flat directions at the split tetrahedron -/
 
+/-- **A trace-admissible direction**: mass-preserving, with the TRACE of the Parseval
+constraint stationary.  This is the weakest hypothesis the Farkas certificate consumes,
+and every dichotomy statement below is stated on it. -/
+def IsSplitSevenTraceTangent (atomVelocity : Fin 7 → Fin 3 → ℝ)
+    (weightVelocity : Fin 7 → ℝ) : Prop :=
+  (∑ atomIndex, weightVelocity atomIndex = 0)
+    ∧ parsevalTraceVelocity splitSevenDesign atomVelocity weightVelocity = 0
+
 /-- **An admissible tangent direction**: mass-preserving and Parseval-preserving to
-first order.  Every curve of designs through `splitSevenDesign` has its velocity
-here. -/
+first order, the FULL matrix and not only its trace.  Every curve of designs through
+`splitSevenDesign` has its velocity here. -/
 def IsSplitSevenTangent (atomVelocity : Fin 7 → Fin 3 → ℝ)
     (weightVelocity : Fin 7 → ℝ) : Prop :=
   (∑ atomIndex, weightVelocity atomIndex = 0)
@@ -252,6 +352,14 @@ theorem IsSplitSevenTangent.parsevalTraceVelocity_eq_zero
     (htangent : IsSplitSevenTangent atomVelocity weightVelocity) :
     parsevalTraceVelocity splitSevenDesign atomVelocity weightVelocity = 0 := by
   rw [parsevalTraceVelocity_eq_trace, htangent.2, Matrix.trace_zero]
+
+/-- Matrix-tangency is strictly stronger than trace-tangency, so every statement proved
+on the weak hypothesis specialises. -/
+theorem IsSplitSevenTangent.isTraceTangent
+    {atomVelocity : Fin 7 → Fin 3 → ℝ} {weightVelocity : Fin 7 → ℝ}
+    (htangent : IsSplitSevenTangent atomVelocity weightVelocity) :
+    IsSplitSevenTraceTangent atomVelocity weightVelocity :=
+  ⟨htangent.1, htangent.parsevalTraceVelocity_eq_zero⟩
 
 /-- The tie-form velocity of a rainbow triple, in atom coordinates: each of the three
 atoms pairs to `−1` with the missed direction, so the whole form collapses. -/
@@ -280,18 +388,17 @@ theorem rainbowSevenVelocityFamily_eq (atomVelocity : Fin 7 → Fin 3 → ℝ)
 
 /-! ## The relative-interior dichotomy -/
 
-/-- The certificate fires on every admissible direction. -/
+/-- The certificate fires on every trace-admissible direction. -/
 theorem rainbowSeven_multiplierSum_velocity_eq_zero
     {atomVelocity : Fin 7 → Fin 3 → ℝ} {weightVelocity : Fin 7 → ℝ}
-    (htangent : IsSplitSevenTangent atomVelocity weightVelocity) :
+    (htangent : IsSplitSevenTraceTangent atomVelocity weightVelocity) :
     ∑ tripleIndex : Fin 20,
         rainbowSevenMultiplier tripleIndex * rainbowSevenVelocityFamily atomVelocity tripleIndex
       = 0 :=
-  splitSevenDesign_farkasIdentity_zero atomVelocity weightVelocity htangent.1
-    htangent.parsevalTraceVelocity_eq_zero
+  splitSevenDesign_farkasIdentity_zero atomVelocity weightVelocity htangent.1 htangent.2
 
-/-- **THE RELATIVE-INTERIOR LEMMA.**  Along an admissible direction, if no rainbow tie
-form rises then none moves at all.
+/-- **THE RELATIVE-INTERIOR LEMMA.**  Along a trace-admissible direction, if no rainbow
+tie form rises then none moves at all.
 
 Twenty STRICTLY POSITIVE multipliers sum the twenty tie-form velocities to zero.  A sum
 of nonnegative terms that vanishes has every term zero, and no multiplier is zero, so
@@ -300,7 +407,7 @@ relative interior of the tangent-restricted tie-gradient hull: the hull's suppor
 function vanishes exactly on the hull's annihilator and nowhere else. -/
 theorem rainbowSeven_velocity_eq_zero_of_all_nonpos
     {atomVelocity : Fin 7 → Fin 3 → ℝ} {weightVelocity : Fin 7 → ℝ}
-    (htangent : IsSplitSevenTangent atomVelocity weightVelocity)
+    (htangent : IsSplitSevenTraceTangent atomVelocity weightVelocity)
     (hnonpos : ∀ tripleIndex : Fin 20, rainbowSevenVelocityFamily atomVelocity tripleIndex ≤ 0) :
     ∀ tripleIndex : Fin 20, rainbowSevenVelocityFamily atomVelocity tripleIndex = 0 := by
   have hnonneg : ∀ tripleIndex ∈ (Finset.univ : Finset (Fin 20)),
@@ -323,47 +430,67 @@ theorem rainbowSeven_velocity_eq_zero_of_all_nonpos
   · exact absurd hmul (ne_of_gt (rainbowSevenMultiplier_pos tripleIndex))
   · linarith [neg_eq_zero.mp hvel]
 
-/-- The largest of the twenty tie-form velocities is nonnegative along every admissible
-direction. -/
+/-- The largest of the twenty tie-form velocities is nonnegative along every
+trace-admissible direction. -/
 theorem rainbowSeven_supVelocity_nonneg
     {atomVelocity : Fin 7 → Fin 3 → ℝ} {weightVelocity : Fin 7 → ℝ}
-    (htangent : IsSplitSevenTangent atomVelocity weightVelocity) :
+    (htangent : IsSplitSevenTraceTangent atomVelocity weightVelocity) :
     0 ≤ (Finset.univ : Finset (Fin 20)).sup' ⟨0, Finset.mem_univ 0⟩
       (rainbowSevenVelocityFamily atomVelocity) := by
   obtain ⟨tripleIndex, hnonneg⟩ := rainbowSeven_exists_nonnegative_velocity atomVelocity
-    weightVelocity htangent.1 htangent.parsevalTraceVelocity_eq_zero
+    weightVelocity htangent.1 htangent.2
   exact hnonneg.trans (Finset.le_sup' (rainbowSevenVelocityFamily atomVelocity)
     (Finset.mem_univ tripleIndex))
 
-/-- **THE DICHOTOMY.**  Along every admissible direction the largest tie-form velocity is
-nonnegative, and it is zero EXACTLY on the flat directions.  Off the flat space some
-rainbow tie form strictly rises; on it every one of the twenty is stationary. -/
+/-- **THE DICHOTOMY.**  Along every trace-admissible direction the largest tie-form
+velocity is nonnegative, and it is zero EXACTLY when all twenty are stationary.  Off that
+cone some rainbow tie form strictly rises. -/
 theorem rainbowSeven_supVelocity_eq_zero_iff
+    {atomVelocity : Fin 7 → Fin 3 → ℝ} {weightVelocity : Fin 7 → ℝ}
+    (htangent : IsSplitSevenTraceTangent atomVelocity weightVelocity) :
+    (Finset.univ : Finset (Fin 20)).sup' ⟨0, Finset.mem_univ 0⟩
+        (rainbowSevenVelocityFamily atomVelocity) = 0
+      ↔ ∀ tripleIndex : Fin 20, rainbowSevenVelocityFamily atomVelocity tripleIndex = 0 := by
+  constructor
+  · intro hsup
+    refine rainbowSeven_velocity_eq_zero_of_all_nonpos htangent fun tripleIndex => ?_
+    rw [← hsup]
+    exact Finset.le_sup' (rainbowSevenVelocityFamily atomVelocity) (Finset.mem_univ tripleIndex)
+  · intro hstationary
+    refine le_antisymm (Finset.sup'_le _ _ fun tripleIndex _ => (hstationary tripleIndex).le)
+      (rainbowSeven_supVelocity_nonneg htangent)
+
+/-- **THE DICHOTOMY, IN THE FLAT-SPACE VOCABULARY.**  For a matrix-tangent direction the
+vanishing of the largest tie-form velocity is exactly flatness. -/
+theorem rainbowSeven_supVelocity_eq_zero_iff_flat
     {atomVelocity : Fin 7 → Fin 3 → ℝ} {weightVelocity : Fin 7 → ℝ}
     (htangent : IsSplitSevenTangent atomVelocity weightVelocity) :
     (Finset.univ : Finset (Fin 20)).sup' ⟨0, Finset.mem_univ 0⟩
         (rainbowSevenVelocityFamily atomVelocity) = 0
       ↔ IsSplitSevenFlat atomVelocity weightVelocity := by
-  constructor
-  · intro hsup
-    refine ⟨htangent, rainbowSeven_velocity_eq_zero_of_all_nonpos htangent fun tripleIndex => ?_⟩
-    rw [← hsup]
-    exact Finset.le_sup' (rainbowSevenVelocityFamily atomVelocity) (Finset.mem_univ tripleIndex)
-  · intro hflat
-    refine le_antisymm (Finset.sup'_le _ _ fun tripleIndex _ => (hflat.2 tripleIndex).le)
-      (rainbowSeven_supVelocity_nonneg htangent)
+  rw [rainbowSeven_supVelocity_eq_zero_iff htangent.isTraceTangent]
+  exact ⟨fun hstationary => ⟨htangent, hstationary⟩, fun hflat => hflat.2⟩
 
-/-- **THE STRICT DICHOTOMY.**  Off the flat space some rainbow tie form rises
+/-- **THE STRICT DICHOTOMY.**  Off the stationary cone some rainbow tie form rises
 strictly. -/
+theorem rainbowSeven_exists_strictly_positive_velocity_of_not_stationary
+    {atomVelocity : Fin 7 → Fin 3 → ℝ} {weightVelocity : Fin 7 → ℝ}
+    (htangent : IsSplitSevenTraceTangent atomVelocity weightVelocity)
+    (hmoves : ¬ ∀ tripleIndex : Fin 20,
+      rainbowSevenVelocityFamily atomVelocity tripleIndex = 0) :
+    ∃ tripleIndex : Fin 20, 0 < rainbowSevenVelocityFamily atomVelocity tripleIndex := by
+  by_contra hnone
+  push Not at hnone
+  exact hmoves (rainbowSeven_velocity_eq_zero_of_all_nonpos htangent hnone)
+
+/-- The strict dichotomy in the flat-space vocabulary. -/
 theorem rainbowSeven_exists_strictly_positive_velocity_of_not_flat
     {atomVelocity : Fin 7 → Fin 3 → ℝ} {weightVelocity : Fin 7 → ℝ}
     (htangent : IsSplitSevenTangent atomVelocity weightVelocity)
     (hnotflat : ¬ IsSplitSevenFlat atomVelocity weightVelocity) :
-    ∃ tripleIndex : Fin 20, 0 < rainbowSevenVelocityFamily atomVelocity tripleIndex := by
-  by_contra hnone
-  push Not at hnone
-  exact hnotflat ⟨htangent,
-    rainbowSeven_velocity_eq_zero_of_all_nonpos htangent hnone⟩
+    ∃ tripleIndex : Fin 20, 0 < rainbowSevenVelocityFamily atomVelocity tripleIndex :=
+  rainbowSeven_exists_strictly_positive_velocity_of_not_stationary htangent.isTraceTangent
+    fun hstationary => hnotflat ⟨htangent, hstationary⟩
 
 /-! ## The flat space: nine explicit directions
 
@@ -478,8 +605,8 @@ theorem stratumFlatDirection_isFlat (directionIndex : Fin 9) :
 
 /-- **THE NINE ARE LINEARLY INDEPENDENT.**  Six atom coordinates and three weight
 coordinates read them off through an invertible `9 x 9` rational block, so the flat space
-has dimension at least nine.  [That it has dimension exactly nine is MEASURED: the
-stacked `27 x 28` Jacobian has rank `19`.  See the module header.] -/
+has dimension at least nine.  [The matching upper bound is `stratumFlat_eq_combination`
+below, so the dimension is exactly nine.] -/
 theorem stratumFlatDirection_independent (coefficient : Fin 9 → ℝ)
     (hatom : ∀ (atomIndex : Fin 7) (coord : Fin 3),
         ∑ directionIndex, coefficient directionIndex
@@ -886,13 +1013,16 @@ theorem stratumFlat_eq_combination {atomVelocity : Fin 7 → Fin 3 → ℝ}
   · fin_cases atomIndex <;> fin_cases coord <;> assumption
   · fin_cases atomIndex <;> assumption
 
-/-- **DIMENSION EXACTLY NINE, HENCE RANK EXACTLY NINETEEN.**  Put beside
-`stratumFlatDirection_isFlat` and `stratumFlatDirection_independent`, the spanning theorem
-above pins the flat space: nine flat directions, linearly independent, and every flat
-direction a combination of them.  The ambient space of `(atom velocity, weight velocity)`
-pairs has dimension `21 + 7 = 28`, so the stacked Jacobian of the twenty tie forms and the
-seven constraints has rank exactly `19` — the number the campaign measured, now a
-theorem.  Nothing below re-states it; it is the conjunction of the three. -/
+/-- **DIMENSION EXACTLY NINE.**  Put beside `stratumFlatDirection_isFlat` and
+`stratumFlatDirection_independent`, the spanning theorem above pins the flat space: nine
+flat directions, linearly independent, and every flat direction a combination of them.
+No declaration in this file re-states the dimension; it is the conjunction of the three.
+
+[The rank of the stacked Jacobian is a DERIVED consequence, not a theorem here.  The
+ambient space of `(atom velocity, weight velocity)` pairs has dimension `21 + 7 = 28` and
+the flat space is that Jacobian's kernel, so rank–nullity gives rank exactly `19` — but
+rank–nullity is applied nowhere in this file and `Module.finrank` never appears.  See the
+module header's DERIVED section.] -/
 theorem stratumFlat_coefficient_unique {atomVelocity : Fin 7 → Fin 3 → ℝ}
     {weightVelocity : Fin 7 → ℝ} (hflat : IsSplitSevenFlat atomVelocity weightVelocity)
     (coefficient : Fin 9 → ℝ)
@@ -970,57 +1100,89 @@ theorem splitSevenClassDesign_exists_dominatingTriple (weight : Fin 7 → ℝ)
       ∧ Dominates (splitSevenClassDesign weight hpos hsum) selected :=
   (splitSevenClassDesign_isTie weight hpos hsum).1
 
-/-- **THE GRAPHIC REALIZATION IS COVERED, AT EVERY RANK.**  The bundled cycle with
-graph-induced conductance has a dominating subset — an explicit spanning tree, one edge
-out of each arc but one. -/
+/-! ### The class really does pass through the split tetrahedron
+
+The section above is named "the class through the split tetrahedron", and the name is a
+theorem: evaluated at `splitSevenDesign.weight` the section returns `splitSevenDesign`
+itself.  That is not formal — the class atoms come from the Householder construction
+`Gtz.simplexTieAtom` at the class totals, not from `Gtz.tetraAtom` — so it is proved
+here, through the exact value of the reflector at uniform class weight `1/4`. -/
+
+/-- The four class totals of the split tetrahedron are all `1/4`: direction `3` carries
+the single weight-`1/4` atom, and each other direction carries two weight-`1/8` copies. -/
+theorem splitSevenClassTotalWeight_eq_quarter (label : Fin 4) :
+    classTotalWeight splitSevenDirection splitSevenDesign.weight label = 1/4 := by
+  rw [classTotalWeight, Finset.sum_filter]
+  fin_cases label <;>
+    simp [Fin.sum_univ_seven, splitSevenDirection, splitSevenDesign_weight_apply] <;>
+    norm_num
+
+/-- At uniform weight the tie defect is `1/2`: `sqrt((1 − 1/4)/3) = sqrt(1/4)`. -/
+theorem tieDefect_uniformQuarter (label : Fin 4) :
+    tieDefect (k := 3) (fun _ => (1/4 : ℝ)) label = 1/2 := by
+  have hvalue : ((1 : ℝ) - (fun _ : Fin 4 => (1/4 : ℝ)) label) / ((3 : ℕ) : ℝ)
+      = (1/2 : ℝ) ^ 2 := by norm_num
+  rw [tieDefect, hvalue, Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 1/2)]
+
+/-- Hence the reflector is `(−1/2, 1/2, 1/2, 1/2)`, of unit length. -/
+theorem tieReflector_uniformQuarter (label : Fin 4) :
+    tieReflector (k := 3) (fun _ => (1/4 : ℝ)) label
+      = 1/2 - (if label = 0 then (1 : ℝ) else 0) := by
+  rw [tieReflector, tieDefect_uniformQuarter]
+
+/-- **THE SPLIT TETRAHEDRON IS THE CLASS SECTION'S VALUE AT ITS OWN WEIGHT.**  At uniform
+class weight `1/4` the corank-one Householder atom is exactly the tetrahedron direction,
+coordinate by coordinate. -/
+theorem simplexTieAtom_uniformQuarter_eq_tetraAtom (direction : Fin 4) (coord : Fin 3) :
+    simplexTieAtom (k := 3) (fun _ => (1/4 : ℝ)) direction coord = tetraAtom direction coord := by
+  have hsqrt : Real.sqrt ((fun _ : Fin 4 => (1/4 : ℝ)) direction) = 1/2 := by
+    have hvalue : (fun _ : Fin 4 => (1/4 : ℝ)) direction = (1/2 : ℝ) ^ 2 := by norm_num
+    rw [hvalue, Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 1/2)]
+  rw [simplexTieAtom, hsqrt, tieHouseholder_apply, tieReflector_uniformQuarter,
+    tieReflector_uniformQuarter, tieDefect_uniformQuarter]
+  fin_cases direction <;> fin_cases coord <;>
+    norm_num +decide [tetraAtom, Fin.succ, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.tail_cons]
+
+/-- **THE CLASS PASSES THROUGH THE SPLIT TETRAHEDRON.**  The six-parameter section
+evaluated at the split tetrahedron's own weight vector IS the split tetrahedron, so every
+theorem of the class section applies at the point the rest of this file studies. -/
+theorem splitSevenClassDesign_eq_splitSevenDesign :
+    splitSevenClassDesign splitSevenDesign.weight splitSevenDesign.weight_pos
+        splitSevenDesign.weight_sum_one = splitSevenDesign := by
+  refine WeightedDesign.ext (funext fun atomIndex => funext fun coord => ?_) rfl
+  have hatom : (splitSevenClassDesign splitSevenDesign.weight splitSevenDesign.weight_pos
+        splitSevenDesign.weight_sum_one).atom atomIndex coord
+      = simplexTieAtom (classTotalWeight splitSevenDirection splitSevenDesign.weight)
+          (splitSevenDirection atomIndex) coord := rfl
+  rw [hatom, funext splitSevenClassTotalWeight_eq_quarter,
+    simplexTieAtom_uniformQuarter_eq_tetraAtom, splitSevenDesign_atom]
+
+/-- **THE GRAPHIC REALIZATION IS COVERED, AT EVERY RANK, WITH A NAMED WITNESS.**  The
+bundled cycle with graph-induced conductance is dominated by an explicit spanning tree —
+one edge out of each arc but one.  `Gtz.bundledCycle_isTie` gives the same subset
+existentially; this states which subset it is, which is what a covering argument needs.
+
+[The five `(6,3)` and `(7,3)` instances an earlier draft of this file also shipped were
+literally the first components of `Gtz.bundlingSixThreeHeavy_isTie` and its four
+companions, which already ship and are already audited upstream.  They are gone; use the
+upstream tie theorems, or this one with the bundling of interest.] -/
 theorem bundledCycle_exists_dominatingSubset {edgeCount vertexRank : ℕ}
     (bundling : CycleBundling edgeCount vertexRank) (hrank : 1 ≤ vertexRank) :
-    ∃ selected : Finset (Fin edgeCount), selected.card = vertexRank
-      ∧ Dominates (bundledCycleDesign bundling hrank) selected :=
-  ⟨bundledCycleTree bundling 0, bundledCycleTree_card bundling 0,
-    bundledCycleTree_dominates bundling hrank 0⟩
-
-/-- The `(7,3)` bundled cycle with arc sizes `(2,2,2,1)` — the graphic point of the class
-through the split tetrahedron — is covered. -/
-theorem bundlingSevenThreePaired_exists_dominatingSubset :
-    ∃ selected : Finset (Fin 7), selected.card = 3
-      ∧ Dominates (bundledCycleDesign bundlingSevenThreePaired (by norm_num)) selected :=
-  bundledCycle_exists_dominatingSubset bundlingSevenThreePaired (by norm_num)
-
-/-- The `(7,3)` bundled cycle with arc sizes `(3,2,1,1)` is covered. -/
-theorem bundlingSevenThreeMixed_exists_dominatingSubset :
-    ∃ selected : Finset (Fin 7), selected.card = 3
-      ∧ Dominates (bundledCycleDesign bundlingSevenThreeMixed (by norm_num)) selected :=
-  bundledCycle_exists_dominatingSubset bundlingSevenThreeMixed (by norm_num)
-
-/-- The `(7,3)` bundled cycle with arc sizes `(4,1,1,1)` is covered. -/
-theorem bundlingSevenThreeHeavy_exists_dominatingSubset :
-    ∃ selected : Finset (Fin 7), selected.card = 3
-      ∧ Dominates (bundledCycleDesign bundlingSevenThreeHeavy (by norm_num)) selected :=
-  bundledCycle_exists_dominatingSubset bundlingSevenThreeHeavy (by norm_num)
-
-/-- The `(6,3)` bundled cycle with arc sizes `(2,2,1,1)` is covered. -/
-theorem bundlingSixThreePaired_exists_dominatingSubset :
-    ∃ selected : Finset (Fin 6), selected.card = 3
-      ∧ Dominates (bundledCycleDesign bundlingSixThreePaired (by norm_num)) selected :=
-  bundledCycle_exists_dominatingSubset bundlingSixThreePaired (by norm_num)
-
-/-- The `(6,3)` bundled cycle with arc sizes `(3,1,1,1)` is covered. -/
-theorem bundlingSixThreeHeavy_exists_dominatingSubset :
-    ∃ selected : Finset (Fin 6), selected.card = 3
-      ∧ Dominates (bundledCycleDesign bundlingSixThreeHeavy (by norm_num)) selected :=
-  bundledCycle_exists_dominatingSubset bundlingSixThreeHeavy (by norm_num)
+    Dominates (bundledCycleDesign bundling hrank) (bundledCycleTree bundling 0)
+      ∧ (bundledCycleTree bundling 0).card = vertexRank :=
+  ⟨bundledCycleTree_dominates bundling hrank 0, bundledCycleTree_card bundling 0⟩
 
 /-! ## The tube: covering reduced to one determinant sign -/
 
 /-- Every coordinate of every tetrahedron direction is `±1`. -/
-theorem tetraAtom_abs_eq_one (dir : Fin 4) (coord : Fin 3) :
-    |tetraAtom dir coord| = 1 := by
-  fin_cases dir <;> fin_cases coord <;> simp [tetraAtom]
+theorem tetraAtom_abs_eq_one (direction : Fin 4) (coord : Fin 3) :
+    |tetraAtom direction coord| = 1 := by
+  fin_cases direction <;> fin_cases coord <;> simp [tetraAtom]
 
 /-- Hence every coordinate squares to one. -/
-theorem tetraAtom_mul_self_eq_one (dir : Fin 4) (coord : Fin 3) :
-    tetraAtom dir coord * tetraAtom dir coord = 1 := by
+theorem tetraAtom_mul_self_eq_one (direction : Fin 4) (coord : Fin 3) :
+    tetraAtom direction coord * tetraAtom direction coord = 1 := by
   rw [← abs_mul_abs_self, tetraAtom_abs_eq_one, one_mul]
 
 /-- Every coordinate of every atom of the split tetrahedron is `±1`. -/
@@ -1132,9 +1294,10 @@ theorem rainbowSeven_gapEntry_dist_le (design : WeightedDesign 7 3) (tripleIndex
   linarith
 
 /-- Two diagonal entries near `2` beat one off-diagonal entry near `1`: the two-by-two
-principal minor is nonnegative whenever the entrywise deviation stays below `1/2`. -/
+principal minor is nonnegative whenever the entrywise deviation stays at or below `1/2`,
+which is exactly where `(2 − deviation)^2 ≥ (1 + deviation)^2` still holds. -/
 private theorem minor_nonneg_of_entryBounds {diagLeft diagRight offDiag deviation : ℝ}
-    (hdeviationSmall : deviation ≤ 99 / 256)
+    (hdeviationSmall : deviation ≤ 1 / 2)
     (hleft : 2 - deviation ≤ diagLeft) (hright : 2 - deviation ≤ diagRight)
     (hoff : |offDiag| ≤ 1 + deviation) :
     0 ≤ diagLeft * diagRight - offDiag ^ 2 := by
@@ -1186,16 +1349,22 @@ theorem rainbowSeven_dominates_of_tube_of_determinant (design : WeightedDesign 7
   refine posSemidef_three_of_principalMinors (subsetSum_sub_one_transpose design _)
     (by linarith [hdiagonal 0]) (by linarith [hdiagonal 1]) (by linarith [hdiagonal 2])
     ?_ ?_ ?_ hdeterminant
-  · exact minor_nonneg_of_entryBounds le_rfl (hdiagonal 0) (hdiagonal 1)
+  · exact minor_nonneg_of_entryBounds (by norm_num) (hdiagonal 0) (hdiagonal 1)
       (hoffDiagonal 0 1 (by decide))
-  · exact minor_nonneg_of_entryBounds le_rfl (hdiagonal 0) (hdiagonal 2)
+  · exact minor_nonneg_of_entryBounds (by norm_num) (hdiagonal 0) (hdiagonal 2)
       (hoffDiagonal 0 2 (by decide))
-  · exact minor_nonneg_of_entryBounds le_rfl (hdiagonal 1) (hdiagonal 2)
+  · exact minor_nonneg_of_entryBounds (by norm_num) (hdiagonal 1) (hdiagonal 2)
       (hoffDiagonal 1 2 (by decide))
 
 /-- **THE ONE NAMED HYPOTHESIS.**  Every design in the tube has a rainbow triple whose gap
-determinant is nonnegative.  This is a single scalar polynomial sign per design; it is
-what the neighbourhood residual reduces to, and nothing else is left open. -/
+determinant is nonnegative.  This is a single scalar polynomial sign per design, and the
+neighbourhood residual FOLLOWS FROM it.
+
+[Only that direction is proved.  The converse — that covering in the tube forces this
+witness — needs "no direction-repeating triple dominates in the tube", which is MEASURED
+(their `lambda_min` stays near `−0.99` throughout) and is not a theorem here.  The tube's
+weight condition is load-bearing: with radius at most `1/16` it pins `t_min > 1/16`, and
+the tie locus's slack constant degenerates like `Theta(t_min)`.] -/
 def SplitSevenTubeDeterminantWitness (radius : ℝ) : Prop :=
   ∀ design : WeightedDesign 7 3,
     (∀ (atomIndex : Fin 7) (coord : Fin 3), |design.atom atomIndex coord
@@ -1220,10 +1389,15 @@ theorem splitSevenNeighbourhoodCovering_of_determinantWitness (radius : ℝ)
 /-- **THE REMAINDER IS AN IDENTITY, NOT AN ESTIMATE.**  At a nearby design the tie form of
 a rainbow triple at its own frozen probe equals the tie-form VELOCITY of the displacement
 plus an exact sum of squares.  There is nothing to bound: the quadratic term is present
-with the right sign, and the expansion terminates.
+with the right sign, and the expansion terminates.  The identity holds at an arbitrary
+design; no tube is needed.
 
-So the only thing standing between the certificate and covering is the sign of the linear
-term at a displacement that is not exactly tangent — not the size of a remainder. -/
+[What it does NOT give is a covering criterion.  This is ONE probe, `v_miss`, while
+domination is an all-probe property, so a positive frozen form does not imply a
+nonnegative determinant.  MEASURED counterexample inside the shipped tube: at sup-norm
+distance `0.0481` a rainbow triple carries linear term `+2.1e-3` and frozen form `+3.9e-3`
+with gap determinant `−3.2e-3`, and does not dominate.  The sign of the linear term is
+therefore not what stands between the certificate and covering; see the module header.] -/
 theorem rainbowSeven_displacement_frozenForm (design : WeightedDesign 7 3)
     (tripleIndex : Fin 20) :
     tetraAtom (rainbowSevenMissedDirection tripleIndex)
