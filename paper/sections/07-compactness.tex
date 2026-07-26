@@ -88,6 +88,22 @@ vector lengths are recovered only where $t_c>0$, by $\ell_c=P_{cc}/t_c$.
 That formula is the boundary's only singularity, and it does not
 appear in Definition~\ref{def:chartpoint}.
 
+\begin{example}\label{ex:tetragap}
+The tetrahedron of Example~\ref{ex:tetra} has $P=I_4-\tfrac14J_4$ and
+$t_c=\tfrac14$ by Example~\ref{ex:tetrachart}, so
+\[
+  W\;=\;\tfrac34I_4-\tfrac14J_4,
+  \qquad
+  W[C]\;=\;\tfrac14\bigl(3I_3-J_3\bigr)
+\]
+at each of the four triples.  Since $J_3$ has eigenvalues $3,0,0$, the
+spectrum of $W[C]$ is $\{0,\tfrac34,\tfrac34\}$, and $G(P,t)=0$: every
+triple sits on the threshold and none crosses it, which is
+\eqref{eq:threshold} read at a design whose triples are known to dominate
+without slack.  The gap $\SC-I_3$ has spectrum $\{0,3,3\}$ by
+\eqref{eq:tetraspec}, four times this one.
+\end{example}
+
 \begin{proposition}\label{prop:chartdesign}
 The chart points of size $m$ and rank $k$ with $t_c>0$ for every $c$ are
 exactly the chart points of designs of size $m$ and rank $k$ over $\R$,
@@ -567,13 +583,14 @@ Definition~\ref{def:extremalcex} from Theorem~\ref{thm:rankthree}.
 
 \subsection{Sharpness of the boundary step}\label{sec:sharp}
 
-Theorem~\ref{thm:schurstep} requires $t_z=0$ exactly.  The composite of
-Lemma~\ref{lem:delete} and Theorem~\ref{thm:schurstep} --- deflate at $z$,
-delete $z$, renormalize, lift a dominating subset back --- is meaningful
-at any $t_z<1$.  A minimizing-sequence argument would need that composite
-and not the boundary statement, since along such a sequence the weight at
-the escaping label is positive and merely tends to zero.  The composite
-fails at every positive weight, and no threshold in $t_z$ repairs it.
+Theorem~\ref{thm:schurstep} requires $t_z=0$ exactly.  Call the
+\emph{compression lift} the composite of Lemma~\ref{lem:delete} and
+Theorem~\ref{thm:schurstep}: deflate at $z$, delete $z$, renormalize,
+lift a dominating subset back.  It is meaningful at any $t_z<1$.  A
+minimizing-sequence argument would need the compression lift and not the
+boundary statement, since along such a sequence the weight at the escaping
+label is positive and merely tends to zero.  The lift fails at every
+positive weight, and no threshold in $t_z$ repairs it.
 
 \begin{lemma}\label{lem:pairdet}
 Let $(P,t)$ be a chart point, let $z$ satisfy $P_{zz}>0$ and $t_z<1$, and
