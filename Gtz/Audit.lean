@@ -169,6 +169,7 @@ import Gtz.Field.WeightedDesign
 import Gtz.Design.ProjectionChart
 import Gtz.Field.CorankOne
 import Gtz.Complex.SizeAxis
+import Gtz.Quantitative.CriticalQuadric
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -3696,3 +3697,54 @@ import Gtz.Complex.SizeAxis
 #print axioms Gtz.exists_complexDesign_exactlyTied
 #print axioms Gtz.fieldCorankTwoReducesToRankTwo_real
 #print axioms Gtz.fieldCorankTwoReducesToRankTwo_complex
+
+-- Gtz/Quantitative/CriticalQuadric.lean -- A2 from stationarity data: the quadric law,
+-- the coverage law, the sharp interior exclusion, and the non-vacuity witnesses
+#print axioms Gtz.eq_of_forall_mulVec_eq
+#print axioms Gtz.subsetSum_bilinearForm_eq_sum_mul
+#print axioms Gtz.eq_of_forall_dotProduct_eq
+#print axioms Gtz.tightDirection_bilinearForm_eq_smul
+#print axioms Gtz.IsQuadricStationaryData
+#print axioms Gtz.IsQuadricStationaryData.activeWeight_nonneg
+#print axioms Gtz.IsQuadricStationaryData.activeWeight_sum_one
+#print axioms Gtz.IsQuadricStationaryData.activeSubset_card
+#print axioms Gtz.IsQuadricStationaryData.tightDir_unit
+#print axioms Gtz.IsQuadricStationaryData.tightDir_isEigenvector
+#print axioms Gtz.IsQuadricStationaryData.atomStationarity
+#print axioms Gtz.IsQuadricStationaryData.weightStationarity
+#print axioms Gtz.activeSet_nonempty_of_isQuadricStationaryData
+#print axioms Gtz.exists_pos_activeWeight_of_isQuadricStationaryData
+#print axioms Gtz.value_nonneg_of_isQuadricStationaryData
+#print axioms Gtz.contractedStationarity_of_isQuadricStationaryData
+#print axioms Gtz.quadricLaw_of_isQuadricStationaryData
+#print axioms Gtz.coverageLaw_of_isQuadricStationaryData
+#print axioms Gtz.exists_mem_activeSubset_of_isQuadricStationaryData
+#print axioms Gtz.size_le_rank_mul_card_activeSet_of_isQuadricStationaryData
+#print axioms Gtz.multiplierMatrix_eq_of_isQuadricStationaryData
+#print axioms Gtz.posSemidef_multiplierMatrix_of_isQuadricStationaryData
+#print axioms Gtz.trace_multiplierMatrix_of_isQuadricStationaryData
+#print axioms Gtz.tightOverlap_sum_eq_one_of_isQuadricStationaryData
+#print axioms Gtz.exists_active_rayleighForm_ge_rank_of_isQuadricStationaryData
+#print axioms Gtz.exists_rayleighProbe_ge_rank_of_isQuadricStationaryData
+#print axioms Gtz.value_eq_rank_of_singleActive
+#print axioms Gtz.value_eq_rank_of_constant_activeSubset
+#print axioms Gtz.size_eq_rank_of_singleActive
+#print axioms Gtz.not_isQuadricStationaryData_of_singleActive_of_rank_lt_size
+#print axioms Gtz.not_isQuadricStationaryData_of_singleActive_of_value_ne_rank
+#print axioms Gtz.not_isQuadricStationaryData_of_singleActive_of_value_lt_one
+#print axioms Gtz.isotropicQuadric_iff_leverage_eq_rank
+#print axioms Gtz.leverage_eq_rank_of_isotropicMultiplier
+#print axioms Gtz.isCriticalMultiplierAt_of_singleActive_of_value_one
+#print axioms Gtz.degenerateQuadricStationaryAtom
+#print axioms Gtz.degenerateQuadricStationaryWeight
+#print axioms Gtz.degenerateQuadricStationaryDesign
+#print axioms Gtz.degenerateQuadricStationaryTightDir
+#print axioms Gtz.degenerateQuadricStationaryDesign_isQuadricStationaryData
+#print axioms Gtz.exists_isQuadricStationaryData_singleActive_value_ne_rank
+#print axioms Gtz.not_dominates_degenerateQuadricStationaryActiveSubset
+#print axioms Gtz.posDef_gap_degenerateQuadricStationaryDesign
+#print axioms Gtz.inv_sqrt_three_mul_self_eq_third
+#print axioms Gtz.rainbowSevenUnitTightDir
+#print axioms Gtz.rainbowSevenMultiplier_marginal_vector
+#print axioms Gtz.splitSevenDesign_isQuadricStationaryData
+#print axioms Gtz.exists_isQuadricStationaryData_value_ne_zero
