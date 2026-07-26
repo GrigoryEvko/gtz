@@ -89,57 +89,55 @@ cannot be raised, being attained when $4\mid m$ and approached otherwise
 \cite{Nesterenko2026complex}.  The restricted-invertibility theorems
 \cite{BourgainTzafriri1987,SpielmanSrivastava2012,MSS2022} select subsets
 of size strictly below the rank with a least eigenvalue controlled by a
-stable-rank ratio; the control degenerates as the size of the subset
-approaches the rank, which is the whole of the present range.  Finally,
-maximizing the volume is NP-hard and NP-hard to approximate
-\cite{CivrilMagdonIsmail2009}, so the selection principle is an existence
-statement and not an algorithm; on the algorithmic side one settles for
-the polynomial factors of \cite{GuEisenstat1996}.
+stable-rank ratio.  That control degenerates as the size of the subset
+approaches the rank, and it is at the rank that the present question is
+posed.  Maximizing the volume is itself NP-hard, and NP-hard to
+approximate \cite{CivrilMagdonIsmail2009}, so the selection principle is
+an existence statement rather than an algorithm; on the algorithmic side
+one settles for the polynomial factors of \cite{GuEisenstat1996}.
 
 \medskip
 
-This paper studies the problem with general weights.  Two things are
-gained.  First, the weights become a coordinate: the vectors and the
-weights may be varied independently, subject to \eqref{eq:parseval},
-and the extremal configurations then appear not as isolated matrices but
-as sections over the weight simplex.  Second, the substitution
-$v_c:=\sqrt{t_c}\,g_c$ turns \eqref{eq:parseval} into the statement that
-the matrix $V$ with rows $v_c\adj$ is an isometry, and \eqref{eq:dominate}
-into a comparison between a principal block of the projection $P=VV\adj$
-and the corresponding block of $\diag(t)$.  In those coordinates the
-problem is a question about a compact set, which is what makes a
-variational treatment possible.  For each fixed pair $(m,k)$ the weighted
-statement is formally stronger than the classical one; over all sizes the
+This paper studies the problem with general weights.  The weights then
+become a coordinate: vectors and weights may be varied independently
+subject to \eqref{eq:parseval}, and the extremal configurations appear as
+sections over the weight simplex rather than as isolated matrices.  The
+substitution $v_c:=\sqrt{t_c}\,g_c$ turns \eqref{eq:parseval} into the
+statement that the matrix $V$ with rows $v_c\adj$ is an isometry, and
+\eqref{eq:dominate} into a comparison between a principal block of the
+projection $P=VV\adj$ and the corresponding block of $\diag(t)$.  In those
+coordinates the problem concerns a compact set, and a variational
+treatment becomes available.  At a fixed pair $(m,k)$ the weighted
+statement is formally stronger than the classical one.  Over all sizes the
 two are equivalent, since a design with rational weights is a uniform
 design of larger size with repeated vectors, and arbitrary weights follow
 by a limiting argument.
 
 \medskip
 
-We prove four things.
-
-The first is a complete answer over $\C$.  For $k\ge2$ selection succeeds
-in every complex design exactly when $m\le k+1$, and for $k\le1$ it
-succeeds always (Theorem~\ref{thm:complex}).  Comparison with
-\eqref{eq:elementary} is exact: over $\C$ the conjecture is true precisely
-where the maximal-volume count already proves it, and false everywhere
+Over $\C$ the problem is settled.  For $k\ge2$ selection succeeds in every
+complex design when $m\le k+1$ and fails whenever $m\ge k+2$
+(Theorem~\ref{thm:complex}); for $k\le1$ it always succeeds.  Set against
+\eqref{eq:elementary}, this says that over $\C$ the conjecture holds just
+where the maximal-volume count already proves it and fails everywhere
 else.  The complex problem is thereby closed, and with it the possibility
 of a field-independent proof of the real conjecture.
 
-The second is the accessible part of the real problem.  Rank two holds at
+Over $\R$ the accessible range reaches further than one might expect.
+Rank two holds at
 every size (Theorem~\ref{thm:ranktwo}), corank one and corank two hold at
 every rank (Theorems~\ref{thm:corankone} and~\ref{thm:coranktwo}), and at
 each fixed rank the problem is finite: if $\Gtz(m,k)$ holds for all
 $m\le k(k+1)/2+1$ then it holds for all $m$ (Theorem~\ref{thm:window}).
-The bound is one more than the dimension of the space of real symmetric
-$k\times k$ matrices, and it is where a support-reduction argument applied
-to \eqref{eq:parseval} begins to bite.  At rank three the surviving cells
-are $(6,3)$ and $(7,3)$, and no symmetry of the problem reduces the pair
-further: $(6,3)$ is self-dual and $(7,3)$ is carried by duality to
-$(7,4)$, of corank three (Corollary~\ref{cor:twocells}).
+That bound is one more than the dimension of the space of real symmetric
+$k\times k$ matrices, which is where a support-reduction argument applied
+to \eqref{eq:parseval} begins to bite.  Rank three leaves the two cells
+$(6,3)$ and $(7,3)$.  No symmetry of the problem reduces the pair further,
+since $(6,3)$ is self-dual and duality carries $(7,3)$ to $(7,4)$, again
+of corank three (Corollary~\ref{cor:twocells}).
 
-The third is the structure of the equality locus.  The threshold in
-\eqref{eq:dominate} is attained: at every size $m\ge k+1$ there are
+The threshold in \eqref{eq:dominate} is attained.  At every size
+$m\ge k+1$ there are
 designs in which some $k$-subset dominates and none dominates strictly
 (Theorem~\ref{thm:tieseverywhere}).  At corank one the designs attaining
 it are classified, and they form a section over the whole open weight
@@ -149,57 +147,55 @@ $(5,3)$ there is another whose vectors are pairwise non-parallel
 (Example~\ref{ex:diamond}), so the locus is not exhausted by the designs
 obtained from smaller ones by splitting a vector.
 
-The fourth is a variational principle for the real problem.  The space of
-designs is not compact --- the weights range over an open simplex, and by
-\eqref{eq:parseval} a vector diverges as its weight tends to zero --- but
-in the coordinates $(P,t)$ it is the interior of a compact space on which
-the objective $\max_{\lvert C\rvert=k}\lmin(W[C])$, $W=P-\diag(t)$,
-extends continuously.  We show that the boundary of that compactification
-is free: granting the same statement at $(m-1,k)$ and at $(m-1,k-1)$,
-every point with a vanishing weight carries a dominating $k$-subset
-(Theorem~\ref{thm:boundary}).  Under those two hypotheses, if $\Gtz(m,k)$
-fails then the objective attains its minimum at an interior point, that
-is at a genuine weighted design (Theorem~\ref{thm:variational}); at
-$(6,3)$ both hypotheses are theorems of \S\ref{sec:real}, and at $(7,3)$
-one of them is the cell $(6,3)$.  What remains of rank three is the
-exclusion of critical points below the threshold at the two surviving
-cells, and \S\ref{sec:interior} derives the system such a point satisfies:
-a multiplier $\Lambda$ obeying a quadric law $g_c\adj\Lambda g_c=v$ at
-every $c$ together with a coverage law, and three exclusions cutting down
-the possible configurations of active subsets.  The objective minimized in
-\S\ref{sec:compactness} and the one differentiated in \S\ref{sec:interior}
-are related by a congruence and need not share their minimizers; the
-passage between them is isolated as a hypothesis
-(Definition~\ref{def:extremalcex}) and carried by
-Theorem~\ref{thm:rankthree} alone.
+The space of designs is not compact.  Its weights range over an open
+simplex, and by \eqref{eq:parseval} a vector diverges as its weight tends
+to zero.  In the coordinates $(P,t)$, however, that space is the interior
+of a compact one, on which the objective
+$\max_{\lvert C\rvert=k}\lmin(W[C])$, $W=P-\diag(t)$, extends
+continuously.  The boundary of the compactification turns out to be free:
+granting the same statement at $(m-1,k)$ and at $(m-1,k-1)$, every point
+with a vanishing weight carries a dominating $k$-subset
+(Theorem~\ref{thm:boundary}).  Under those two hypotheses a failure of
+$\Gtz(m,k)$ forces the objective to attain its minimum at an interior
+point, which is to say at a genuine weighted design
+(Theorem~\ref{thm:variational}).  Both hypotheses are theorems of
+\S\ref{sec:real} at $(6,3)$, and at $(7,3)$ one of them is the cell
+$(6,3)$.  Rank three then reduces to excluding critical points below the
+threshold at the two surviving cells, and \S\ref{sec:interior} derives the
+system such a point satisfies: a multiplier $\Lambda$ obeying a quadric
+law $g_c\adj\Lambda g_c=\cv$ at every $c$ together with a coverage law,
+and three exclusions cutting down the possible configurations of active
+subsets.  The objective minimized in \S\ref{sec:compactness} and the one
+differentiated in \S\ref{sec:interior} are related by a congruence and
+need not share their minimizers.  Definition~\ref{def:extremalcex}
+isolates the passage between them as a hypothesis, which
+Theorem~\ref{thm:rankthree} alone carries.
 
 \medskip
 
-One fact organizes everything.  Because the threshold is attained, and
-attained on a set of full dimension in the weights, no proof of $\Gtz$ can
-carry a uniform margin: for every $\varepsilon>0$ there are designs
-admitting no $k$-subset with $\SC\psd(1+\varepsilon)I_k$
-(Corollary~\ref{cor:nomargin}).  This is a constraint on the form of any
-solution.  An induction
-on the size or on the rank cannot transport a quantitative slack across a
+Because the threshold is attained, and attained on a set of full dimension
+in the weights, no proof of $\Gtz$ can carry a uniform margin: for every
+$\varepsilon>0$ there are designs admitting no $k$-subset with
+$\SC\psd(1+\varepsilon)I_k$ (Corollary~\ref{cor:nomargin}).  Several
+familiar strategies become unavailable in consequence.  An induction on
+the size or on the rank cannot transport a quantitative slack across a
 step, because there is none to transport at the source.  A certificate for
-\eqref{eq:dominate} --- a sum-of-squares identity, a dual multiplier, a
-determinantal or interlacing bound --- must be exact on the extremal
-locus, so that any strategy proving a strict inequality is refuted before
-it is attempted.  A minimizing sequence cannot be handled term by term,
-since the identity available at a degenerate limit fails at every positive
-weight, however small (Theorem~\ref{thm:sharp}); this is why the
-compactification, and not a density argument, is what the variational
-principle needs.  The strategies excluded for this reason, and the exact
-rational witnesses refuting them, are collected in
-Appendix~\ref{app:graveyard}.
+\eqref{eq:dominate}, whether a sum-of-squares identity, a dual multiplier,
+or a determinantal or interlacing bound, must be exact on the extremal
+locus, so a strategy whose output is a strict inequality fails before it
+begins.  A minimizing sequence cannot be handled term by term, since the
+identity available at a degenerate limit fails at every positive weight,
+however small (Theorem~\ref{thm:sharp}).  That last failure is why the
+variational principle runs through a compactification rather than through
+a density argument.  Appendix~\ref{app:graveyard} collects these
+strategies together with the exact rational witnesses that refute them.
 
-What is not proved is stated as such.  The two cells $(6,3)$ and $(7,3)$
-remain open (Conjectures~\ref{conj:sixthree} and~\ref{conj:seventhree}),
-and with them the whole of the real problem at rank three and above; the
-sharp constant over $\C$ at rank three is bracketed but not determined
-(Remark~\ref{rem:sharpc}).  The problems left open, and the shape a
-solution must have, are collected in \S\ref{sec:open}.
+The two cells $(6,3)$ and $(7,3)$ remain open
+(Conjectures~\ref{conj:sixthree} and~\ref{conj:seventhree}), and with them
+the real problem at rank three and above.  The sharp constant over $\C$ at
+rank three is bracketed but not determined (Remark~\ref{rem:sharpc}).
+\S\ref{sec:open} collects what is left open, together with what the
+constraints above require of any solution.
 
 \subsection*{Tags}
 

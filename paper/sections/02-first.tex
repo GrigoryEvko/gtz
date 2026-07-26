@@ -1,11 +1,9 @@
 \section{Elementary cases}\label{sec:first}
 
-This section fixes the objects, derives the three counting identities that
-every later argument uses, and settles the cases these identities settle
-by themselves.  It then isolates, in the form of a lemma and a
-counterexample, the exact point at which counting stops working; that
-point is what the rest of the paper is about.  Two examples are introduced
-here.
+This section fixes the objects, derives the counting identities that later
+arguments use, and settles the cases those identities settle by
+themselves.  A lemma and a counterexample then locate the point at which
+counting stops working, which is where the rest of the paper begins.
 
 \subsection{The objects}
 
@@ -19,21 +17,19 @@ $\Gtz(m,k)$ is that every design of size $m$ and rank $k$ over $\R$ admits
 a dominating $k$-subset, and $\GtzC(m,k)$ is the same assertion over $\C$.
 \end{definition}
 
-Three features of the definition are deliberate.  The vectors are not
-required to be distinct or nonzero, so repeated vectors and the zero
-vector are admitted.  Excluding them would change the problem and would
-not simplify it: a $k$-subset containing two parallel vectors is
-rank-deficient and cannot dominate, and it is exactly this mechanism, seen
-first in Example~\ref{ex:octa}, that makes selection combinatorial rather
-than metric.  The weights are real even over $\C$.
-And $\SC$ carries no weights: they enter only through
-\eqref{eq:parseval}, which is why domination is preserved by any
-operation that keeps the vectors and moves the weights.
+The vectors are not required to be distinct or nonzero, so repeated
+vectors and the zero vector are admitted.  Excluding them would change the
+problem without simplifying it: a $k$-subset containing two parallel
+vectors is rank-deficient and cannot dominate, and that mechanism, seen
+first in Example~\ref{ex:octa}, is what makes selection combinatorial
+rather than metric.  The weights are real even over $\C$.  They also do
+not enter $\SC$, appearing only through \eqref{eq:parseval}, so domination
+survives any operation that keeps the vectors and moves the weights.
 
 Since $g_c^{\vphantom{\mathsf{H}}}g_c\adj\psd0$ for every $c$, adding indices to
-$C$ can only increase $\SC$ in the Loewner order; a superset of a
+$C$ can only increase $\SC$ in the Loewner order, and a superset of a
 dominating set dominates.  The cardinality restriction
-$\lvert C\rvert=k$ is therefore the whole of the problem, and it is
+$\lvert C\rvert=k$ therefore carries the problem, and it is
 sharp on both sides: fewer than $k$ vectors span a proper subspace and
 leave $\SC$ singular, while at $\lvert C\rvert=m$ domination is automatic
 (Lemma~\ref{lem:coparseval}).
@@ -120,10 +116,9 @@ is nonnegative by the choice of $\sigma$, the displayed equality being
 $\sum_c(1-t_c)g_c^{\vphantom{\mathsf{H}}}g_c\adj\psd\sigma I_k\pd0$.
 \end{proof}
 
-The operator on the right of \eqref{eq:coparseval} is used again in
-\S\ref{sec:chart}, where its inverse defines the pivot of a vector and
-its positive definiteness supplies the whitening that makes duality
-possible.  Nothing else in the present section needs it.
+The operator on the right of \eqref{eq:coparseval} returns in
+\S\ref{sec:chart}, where its inverse defines the pivot of a vector and its
+positive definiteness supplies the whitening that makes duality possible.
 
 \subsection{The cases that close by counting}
 
@@ -227,18 +222,19 @@ averaging identity produces such a set: the quantity to be dominated in
 every scalar linear functional of the family, the least eigenvalue is not
 one of them.
 
-The natural scalar relaxation makes the failure quantitative.  If $C$
-dominates then all $k$ eigenvalues of $\SC$ are at least $1$, so
+The scalar relaxation of \eqref{eq:pointwise} shows how far that failure
+goes.  If $C$ dominates then all $k$ eigenvalues of $\SC$ are at least
+$1$, so
 \begin{equation}\label{eq:tracetest}
   \tr\SC\;=\;\sum_{c\in C}\ell_c\;\ge\;k .
 \end{equation}
-This necessary condition is satisfied in every design by a subset that is
-found without any work: by Lemma~\ref{lem:trace} some $\ell_{c_0}\ge k$,
-and any $k$-subset containing $c_0$ satisfies \eqref{eq:tracetest}
-already.  The trace test thus never fails to be satisfiable and never
-distinguishes a dominating subset from a non-dominating one.  The
-following design, which will also serve as a first illustration of the
-cell $(6,3)$, shows how far apart the two can be.
+Every design satisfies this necessary condition by a subset found without
+any work: by Lemma~\ref{lem:trace} some $\ell_{c_0}\ge k$, and any
+$k$-subset containing $c_0$ already satisfies \eqref{eq:tracetest}.  So
+the trace test is satisfiable in every design, and it separates no
+dominating subset from a non-dominating one.  The design below, which
+serves also as a first illustration of the cell $(6,3)$, shows how far
+apart the two can be.
 
 \begin{example}\label{ex:octa}
 Let $k=3$, let the six vectors be $\pm\sqrt3\,e_1$, $\pm\sqrt3\,e_2$,
@@ -314,18 +310,17 @@ $x=(x_1,x_2,x_3)$,
 which vanishes exactly on $\R g_0$, the direction omitted from $C$.
 \end{example}
 
-The tetrahedron is the smallest design at rank three in which
-\eqref{eq:dominate} holds with equality.  It is the equality case
-of the corank-one classification: the tie law \eqref{eq:tielaw} of
-\S\ref{sec:chart} reads $3\cdot\tfrac14\cdot3=\tfrac94=3-1+\tfrac14$
-here.  Splitting its vectors produces extremal designs at every size
-$m\ge4$ and rank $3$, which is how the no-margin principle of
-\S\ref{sec:ties} reaches the open cells.  Its volume-sampling mixture is
-computed in \S\ref{sec:ties} and equals $(x-1)(x-4)^2$, with least root
-exactly at the threshold.  And it is the calibration point of the
-first-order system of \S\ref{sec:interior}, where the multiplier is
-$\Lambda=\tfrac13I_3$ with $v=1$ and each of the four triples carries
-multiplier $\tfrac14$.
+This is the smallest design at rank three in which \eqref{eq:dominate}
+holds with equality, and it is the equality case of the corank-one
+classification: the tie law \eqref{eq:tielaw} of \S\ref{sec:chart} reads
+$3\cdot\tfrac14\cdot3=\tfrac94=3-1+\tfrac14$ here.  It recurs throughout
+what follows.  Splitting its vectors produces extremal designs at every
+size $m\ge4$ and rank $3$, by which route the no-margin principle of
+\S\ref{sec:ties} reaches the open cells.  Its volume-sampling mixture,
+computed in \S\ref{sec:ties}, is $(x-1)(x-4)^2$, whose least root sits at
+the threshold.  It is also the calibration point of the first-order system
+of \S\ref{sec:interior}, where the multiplier is $\Lambda=\tfrac13I_3$
+with $\cv=1$ and each of the four triples carries multiplier $\tfrac14$.
 
 \begin{figure}[ht]
   \centering
