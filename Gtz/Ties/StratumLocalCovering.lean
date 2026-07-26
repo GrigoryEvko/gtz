@@ -66,18 +66,20 @@ inequality per design.
   inverse readout `stratumFlatCoefficient` exhibited in closed form: nine explicit linear
   functionals of a flat direction that reproduce it.  `stratumFlat_coefficient_unique`
   says those coefficients are the only ones.  So the flat space has dimension EXACTLY
-  nine and the nine directions are a BASIS of it — three theorems whose conjunction is
-  the dimension count.  What that conjunction is NOT is stated under DERIVED below.
-
-## DERIVED here (a corollary of the three, NOT itself mechanized)
-
-The ambient space of `(atom velocity, weight velocity)` pairs is `21 + 7 = 28`-dimensional
-and the flat space is its stacked Jacobian's kernel, so rank–nullity gives **rank exactly
-`19`** for the stacked Jacobian of the twenty tie gradients and the seven constraint
-gradients.  Rank–nullity is applied NOWHERE in this file: no declaration states a rank,
-and `Module.finrank` never appears.  The number is MEASURED independently (exact rational
-elimination, three separate runs) and it follows from the three theorems by an argument a
-reader supplies, not by one the kernel checked.
+  nine and the nine directions are a BASIS of it.
+* **RANK EXACTLY NINETEEN**, `stratumStackedJacobian_finrank_range` — the number the
+  campaign measured, as a theorem rather than a reader's corollary.
+  `stratumStackedJacobian` is the stacked Jacobian as an honest linear map (twenty tie
+  velocities, the matrix Parseval velocity, the mass velocity), built on the linearity
+  lemmas `parsevalMatrixVelocity_add` / `_smul` and `rainbowSevenVelocityFamily_add` /
+  `_smul`.  `mem_ker_stratumStackedJacobian_iff` identifies its kernel with the flat
+  space, `stratumFlatKernelBasis` turns the nine directions into a basis of that kernel
+  (`stratumStackedJacobian_finrank_ker = 9`), the direction space is `28`-dimensional
+  (`stratumDirectionSpace_finrank`), and rank–nullity finishes.
+  The codomain is deliberately unreduced — the Parseval component is the whole `3 x 3`
+  matrix, not its six independent entries, and nothing here says which `27` coordinates
+  are independent.  That is free: rank is `dim(domain) − dim(ker)`, so padding the
+  codomain cannot change it.
 
 ## Why the elimination is small, and which rows do the work
 
@@ -1016,13 +1018,10 @@ theorem stratumFlat_eq_combination {atomVelocity : Fin 7 → Fin 3 → ℝ}
 /-- **DIMENSION EXACTLY NINE.**  Put beside `stratumFlatDirection_isFlat` and
 `stratumFlatDirection_independent`, the spanning theorem above pins the flat space: nine
 flat directions, linearly independent, and every flat direction a combination of them.
-No declaration in this file re-states the dimension; it is the conjunction of the three.
 
-[The rank of the stacked Jacobian is a DERIVED consequence, not a theorem here.  The
-ambient space of `(atom velocity, weight velocity)` pairs has dimension `21 + 7 = 28` and
-the flat space is that Jacobian's kernel, so rank–nullity gives rank exactly `19` — but
-rank–nullity is applied nowhere in this file and `Module.finrank` never appears.  See the
-module header's DERIVED section.] -/
+[The `Module.finrank` form of the same statement is `stratumStackedJacobian_finrank_ker`
+below, and the rank of the stacked Jacobian follows from it by rank–nullity in
+`stratumStackedJacobian_finrank_range`.] -/
 theorem stratumFlat_coefficient_unique {atomVelocity : Fin 7 → Fin 3 → ℝ}
     {weightVelocity : Fin 7 → ℝ} (hflat : IsSplitSevenFlat atomVelocity weightVelocity)
     (coefficient : Fin 9 → ℝ)
@@ -1063,6 +1062,199 @@ theorem stratumFlat_coefficient_unique {atomVelocity : Fin 7 → Fin 3 → ℝ}
       linarith
   funext directionIndex
   linarith [hdifference directionIndex]
+
+/-! ## The rank of the stacked Jacobian
+
+The three theorems above pin the flat space to dimension nine.  This section turns that
+into the RANK statement: the stacked Jacobian is exhibited as an honest linear map, its
+kernel is shown to be exactly the flat space, the nine directions are assembled into a
+basis of that kernel, and rank–nullity finishes.
+
+The codomain is deliberately UNREDUCED — the Parseval component is the whole `3 x 3`
+matrix rather than its six independent entries, and no attempt is made to say that only
+`27` of the coordinates are independent.  That costs nothing: the rank of a linear map is
+`dim(domain) − dim(ker)`, so padding the codomain cannot change it, and the domain and the
+kernel are exactly what the previous section computed. -/
+
+/-- The Parseval velocity is additive in the direction. -/
+theorem parsevalMatrixVelocity_add (design : WeightedDesign m k)
+    (firstAtomVelocity secondAtomVelocity : Fin m → Fin k → ℝ)
+    (firstWeightVelocity secondWeightVelocity : Fin m → ℝ) :
+    parsevalMatrixVelocity design (firstAtomVelocity + secondAtomVelocity)
+        (firstWeightVelocity + secondWeightVelocity)
+      = parsevalMatrixVelocity design firstAtomVelocity firstWeightVelocity
+        + parsevalMatrixVelocity design secondAtomVelocity secondWeightVelocity := by
+  ext rowIndex colIndex
+  simp only [parsevalMatrixVelocity_apply, Matrix.add_apply, Pi.add_apply]
+  rw [← Finset.sum_add_distrib]
+  exact Finset.sum_congr rfl fun atomIndex _ => by ring
+
+/-- The Parseval velocity is homogeneous in the direction. -/
+theorem parsevalMatrixVelocity_smul (design : WeightedDesign m k) (scalar : ℝ)
+    (atomVelocity : Fin m → Fin k → ℝ) (weightVelocity : Fin m → ℝ) :
+    parsevalMatrixVelocity design (scalar • atomVelocity) (scalar • weightVelocity)
+      = scalar • parsevalMatrixVelocity design atomVelocity weightVelocity := by
+  ext rowIndex colIndex
+  simp only [parsevalMatrixVelocity_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul,
+    Finset.mul_sum]
+  exact Finset.sum_congr rfl fun atomIndex _ => by ring
+
+/-- Every tie-form velocity is additive in the atom direction. -/
+theorem rainbowSevenVelocityFamily_add
+    (firstAtomVelocity secondAtomVelocity : Fin 7 → Fin 3 → ℝ) (tripleIndex : Fin 20) :
+    rainbowSevenVelocityFamily (firstAtomVelocity + secondAtomVelocity) tripleIndex
+      = rainbowSevenVelocityFamily firstAtomVelocity tripleIndex
+        + rainbowSevenVelocityFamily secondAtomVelocity tripleIndex := by
+  rw [rainbowSevenVelocityFamily_eq, rainbowSevenVelocityFamily_eq,
+    rainbowSevenVelocityFamily_eq]
+  simp only [Pi.add_apply, add_dotProduct]
+  ring
+
+/-- Every tie-form velocity is homogeneous in the atom direction. -/
+theorem rainbowSevenVelocityFamily_smul (scalar : ℝ) (atomVelocity : Fin 7 → Fin 3 → ℝ)
+    (tripleIndex : Fin 20) :
+    rainbowSevenVelocityFamily (scalar • atomVelocity) tripleIndex
+      = scalar * rainbowSevenVelocityFamily atomVelocity tripleIndex := by
+  rw [rainbowSevenVelocityFamily_eq, rainbowSevenVelocityFamily_eq]
+  simp only [Pi.smul_apply, smul_dotProduct, smul_eq_mul]
+  ring
+
+/-- **THE STACKED JACOBIAN, AS A LINEAR MAP.**  Twenty rainbow tie-form velocities, the
+matrix Parseval velocity, and the mass velocity, on the `21 + 7 = 28`-dimensional space of
+`(atom velocity, weight velocity)` pairs. -/
+noncomputable def stratumStackedJacobian :
+    ((Fin 7 → Fin 3 → ℝ) × (Fin 7 → ℝ)) →ₗ[ℝ]
+      ((Fin 20 → ℝ) × Matrix (Fin 3) (Fin 3) ℝ × ℝ) where
+  toFun direction :=
+    (fun tripleIndex => rainbowSevenVelocityFamily direction.1 tripleIndex,
+      parsevalMatrixVelocity splitSevenDesign direction.1 direction.2,
+      ∑ atomIndex, direction.2 atomIndex)
+  map_add' firstDirection secondDirection := by
+    refine Prod.ext (funext fun tripleIndex => ?_) (Prod.ext ?_ ?_)
+    · simpa using rainbowSevenVelocityFamily_add firstDirection.1 secondDirection.1 tripleIndex
+    · simpa using parsevalMatrixVelocity_add splitSevenDesign firstDirection.1 secondDirection.1
+        firstDirection.2 secondDirection.2
+    · simpa using Finset.sum_add_distrib (f := firstDirection.2) (g := secondDirection.2)
+  map_smul' scalar direction := by
+    refine Prod.ext (funext fun tripleIndex => ?_) (Prod.ext ?_ ?_)
+    · simpa using rainbowSevenVelocityFamily_smul scalar direction.1 tripleIndex
+    · simpa using parsevalMatrixVelocity_smul splitSevenDesign scalar direction.1 direction.2
+    · simpa using (Finset.mul_sum Finset.univ direction.2 scalar).symm
+
+@[simp] theorem stratumStackedJacobian_apply
+    (direction : (Fin 7 → Fin 3 → ℝ) × (Fin 7 → ℝ)) :
+    stratumStackedJacobian direction
+      = (fun tripleIndex => rainbowSevenVelocityFamily direction.1 tripleIndex,
+          parsevalMatrixVelocity splitSevenDesign direction.1 direction.2,
+          ∑ atomIndex, direction.2 atomIndex) := rfl
+
+/-- **THE KERNEL IS THE FLAT SPACE.**  By construction, but stated so that the dimension
+theorems above become dimension theorems about this map's kernel. -/
+theorem mem_ker_stratumStackedJacobian_iff
+    (direction : (Fin 7 → Fin 3 → ℝ) × (Fin 7 → ℝ)) :
+    direction ∈ LinearMap.ker stratumStackedJacobian
+      ↔ IsSplitSevenFlat direction.1 direction.2 := by
+  rw [LinearMap.mem_ker]
+  constructor
+  · intro hzero
+    refine ⟨⟨?_, ?_⟩, fun tripleIndex => ?_⟩
+    · simpa using congrArg (fun value => value.2.2) hzero
+    · simpa using congrArg (fun value => value.2.1) hzero
+    · simpa using congrArg (fun value => value.1 tripleIndex) hzero
+  · rintro ⟨⟨hmass, hparseval⟩, hties⟩
+    refine Prod.ext (funext fun tripleIndex => ?_) (Prod.ext ?_ ?_)
+    · simpa using hties tripleIndex
+    · simpa using hparseval
+    · simpa using hmass
+
+/-- The nine flat directions as points of the direction space. -/
+noncomputable def stratumFlatDirectionPair : Fin 9 → ((Fin 7 → Fin 3 → ℝ) × (Fin 7 → ℝ)) :=
+  fun directionIndex =>
+    (stratumFlatDirectionAtom directionIndex, stratumFlatDirectionWeight directionIndex)
+
+theorem stratumFlatDirectionPair_mem_ker (directionIndex : Fin 9) :
+    stratumFlatDirectionPair directionIndex ∈ LinearMap.ker stratumStackedJacobian :=
+  (mem_ker_stratumStackedJacobian_iff _).mpr (stratumFlatDirection_isFlat directionIndex)
+
+/-- The nine flat directions, as a family inside the kernel. -/
+noncomputable def stratumFlatKernelFamily :
+    Fin 9 → (LinearMap.ker stratumStackedJacobian) :=
+  fun directionIndex =>
+    ⟨stratumFlatDirectionPair directionIndex, stratumFlatDirectionPair_mem_ker directionIndex⟩
+
+/-- Coordinate readout of a combination of the nine, on the atom side. -/
+private theorem sum_smul_stratumFlatDirectionPair_atom (coefficient : Fin 9 → ℝ)
+    (atomIndex : Fin 7) (coord : Fin 3) :
+    (∑ directionIndex, coefficient directionIndex • stratumFlatDirectionPair directionIndex).1
+        atomIndex coord
+      = ∑ directionIndex, coefficient directionIndex
+          * stratumFlatDirectionAtom directionIndex atomIndex coord := by
+  simp [stratumFlatDirectionPair, Prod.fst_sum, Finset.sum_apply]
+
+/-- Coordinate readout of a combination of the nine, on the weight side. -/
+private theorem sum_smul_stratumFlatDirectionPair_weight (coefficient : Fin 9 → ℝ)
+    (atomIndex : Fin 7) :
+    (∑ directionIndex, coefficient directionIndex • stratumFlatDirectionPair directionIndex).2
+        atomIndex
+      = ∑ directionIndex, coefficient directionIndex
+          * stratumFlatDirectionWeight directionIndex atomIndex := by
+  simp [stratumFlatDirectionPair, Prod.snd_sum, Finset.sum_apply]
+
+theorem stratumFlatKernelFamily_linearIndependent :
+    LinearIndependent ℝ stratumFlatKernelFamily := by
+  rw [Fintype.linearIndependent_iff]
+  intro coefficient hsum
+  have hambient : (∑ directionIndex,
+      coefficient directionIndex • stratumFlatDirectionPair directionIndex) = 0 := by
+    have hcoe := congrArg Subtype.val hsum
+    simpa [stratumFlatKernelFamily, Submodule.coe_sum] using hcoe
+  refine stratumFlatDirection_independent coefficient (fun atomIndex coord => ?_)
+    (fun atomIndex => ?_)
+  · rw [← sum_smul_stratumFlatDirectionPair_atom, hambient]; rfl
+  · rw [← sum_smul_stratumFlatDirectionPair_weight, hambient]; rfl
+
+theorem stratumFlatKernelFamily_span :
+    ⊤ ≤ Submodule.span ℝ (Set.range stratumFlatKernelFamily) := by
+  rintro ⟨direction, hmem⟩ -
+  rw [Submodule.mem_span_range_iff_exists_fun]
+  obtain ⟨hatom, hweight⟩ :=
+    stratumFlat_eq_combination ((mem_ker_stratumStackedJacobian_iff direction).mp hmem)
+  refine ⟨stratumFlatCoefficient direction.1 direction.2, Subtype.ext ?_⟩
+  have hcoe : ((∑ directionIndex, stratumFlatCoefficient direction.1 direction.2 directionIndex
+        • stratumFlatKernelFamily directionIndex : LinearMap.ker stratumStackedJacobian) :
+          (Fin 7 → Fin 3 → ℝ) × (Fin 7 → ℝ))
+      = ∑ directionIndex, stratumFlatCoefficient direction.1 direction.2 directionIndex
+          • stratumFlatDirectionPair directionIndex := by
+    simp [stratumFlatKernelFamily]
+  rw [hcoe]
+  refine Prod.ext (funext fun atomIndex => funext fun coord => ?_) (funext fun atomIndex => ?_)
+  · rw [sum_smul_stratumFlatDirectionPair_atom]; exact (hatom atomIndex coord).symm
+  · rw [sum_smul_stratumFlatDirectionPair_weight]; exact (hweight atomIndex).symm
+
+/-- **THE NINE ARE A BASIS OF THE KERNEL.** -/
+noncomputable def stratumFlatKernelBasis :
+    Module.Basis (Fin 9) ℝ (LinearMap.ker stratumStackedJacobian) :=
+  Module.Basis.mk stratumFlatKernelFamily_linearIndependent stratumFlatKernelFamily_span
+
+/-- **THE FLAT SPACE HAS DIMENSION EXACTLY NINE**, now as a `finrank`. -/
+theorem stratumStackedJacobian_finrank_ker :
+    Module.finrank ℝ (LinearMap.ker stratumStackedJacobian) = 9 := by
+  rw [Module.finrank_eq_card_basis stratumFlatKernelBasis, Fintype.card_fin]
+
+/-- The direction space is `21 + 7 = 28`-dimensional. -/
+theorem stratumDirectionSpace_finrank :
+    Module.finrank ℝ ((Fin 7 → Fin 3 → ℝ) × (Fin 7 → ℝ)) = 28 := by
+  simp [Module.finrank_prod, Module.finrank_pi_fintype]
+
+/-- **THE STACKED JACOBIAN HAS RANK EXACTLY NINETEEN.**  Rank–nullity on
+`stratumStackedJacobian`: the domain is `28`-dimensional, the kernel is the flat space and
+is `9`-dimensional, so the range is `19`-dimensional.  This is the number the campaign
+measured by exact rational elimination; it is now a theorem. -/
+theorem stratumStackedJacobian_finrank_range :
+    Module.finrank ℝ (LinearMap.range stratumStackedJacobian) = 19 := by
+  have hrankNullity := LinearMap.finrank_range_add_finrank_ker stratumStackedJacobian
+  rw [stratumStackedJacobian_finrank_ker, stratumDirectionSpace_finrank] at hrankNullity
+  omega
 
 /-! ## Covering on the whole tie class through the split tetrahedron
 
