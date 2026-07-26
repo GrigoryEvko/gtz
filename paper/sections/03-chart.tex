@@ -4,10 +4,7 @@ Absorbing the weights into the vectors replaces a design by a projection
 on the index space, and replaces the domination condition
 \eqref{eq:dominate} by a comparison between a principal block of that
 projection and a diagonal matrix.  Every argument in the sequel is
-carried out in these coordinates.  This section constructs the chart,
-proves the criterion, shows that the signature of the gap decides
-nothing by itself, settles corank one over both fields, and builds the
-duality through which corank two will follow.
+carried out in these coordinates.
 
 Throughout, $k\ge1$ and $m\ge k$; the second inequality is
 Lemma~\ref{lem:span}.  For an index set $C$ of size $r$,
@@ -111,17 +108,17 @@ and $P=AA\adj$; domination of $C$ reads
 $\sum_{c\in C}a_c^{\vphantom{\mathsf{H}}}a_c\adj\psd n^{-1}I_k$, which is the
 row-selection problem of \cite{GTZ1997}.  In
 that slice $D=n^{-1}I$ and the chart criterion below is the condition
-$\lmin(P[C])\ge1/n$ used in \cite{Nesterenko2023,Nesterenko2025}.  New here is the general weight vector, for which $D$ is a genuine
-diagonal and the comparison is a Loewner comparison rather than a scalar
-one.
+$\lmin(P[C])\ge1/n$ used in \cite{Nesterenko2023,Nesterenko2025}.  The
+general weight vector is new: $D$ is then a genuine diagonal, and the
+comparison is Loewner rather than scalar.
 \end{remark}
 
 \subsection{The criterion}\label{sec:criterion}
 
 The passage from $\SC$ to the block $W[C]$ is a congruence by a positive
 diagonal followed by an exchange of the two products in
-\eqref{eq:twoproducts}.  Both steps are recorded separately, because the
-first holds at every selection size and the second does not.
+\eqref{eq:twoproducts}.  We record the two steps separately: the first
+holds at every selection size, the second only at $\lvert C\rvert=k$.
 
 \begin{lemma}[Lean]\label{lem:congruence}
 For every index set $C$ of size $r$,
@@ -240,8 +237,9 @@ For every index set $C$,
 
 The factor is strictly positive, so $W[C]$ and $\Gram_C-I$ have the same
 principal minors up to positive factors and are semidefinite together,
-minor by minor.  Over the rationals the minors decide the question
-outright, with no eigenvalue computation and no genericity assumption.
+minor by minor.  Over the rationals the minors decide the question by
+exact arithmetic, with no eigenvalue computation and no genericity
+assumption.
 
 \subsection{Inertia, and what it does not decide}\label{sec:inertia}
 
@@ -282,9 +280,9 @@ $t_1=1$ and $\ell_1=1$, so $P=D=1$ and $W=0$, of inertia $(0,0,1)$.
 \begin{remark}[Lean]\label{rem:nogo}
 A positive semidefinite matrix has a nonnegative diagonal.  Hence a
 Hermitian matrix whose diagonal entries are all negative has no positive
-semidefinite principal submatrix of any nonempty size.  Both signatures
-occurring in Lemma~\ref{lem:inertia} at the smallest interesting cells are
-realized by such matrices.  At $(m,k)=(2,1)$ take
+semidefinite principal submatrix of any nonempty size.  Such matrices
+realize the inertia of Lemma~\ref{lem:inertia} at the two smallest cells.
+At $(m,k)=(2,1)$ take
 \[
   B_2=\begin{pmatrix}-1&3\\3&-1\end{pmatrix},
   \qquad \det B_2=1-9=-8 .
@@ -312,19 +310,19 @@ inertia $(k,m-k,0)$ possesses a positive semidefinite $k\times k$
 principal block'' is therefore available, and no proof of $\Gtz$ can run
 on the signature of $W$ alone.
 
-What separates these matrices from a chart gap is the diagonal.  By
-Proposition~\ref{prop:chartid} a chart gap has
-$W_{cc}=t_c(\ell_c-1)\ge-t_c>-1$ at every index, with $\sum_cW_{cc}=k-1\ge0$,
-so at least one diagonal entry is nonnegative.
+A chart gap differs from $B_2$ and $B_3$ in its diagonal: by
+Proposition~\ref{prop:chartid} it has $W_{cc}=t_c(\ell_c-1)\ge-t_c>-1$ at
+every index and $\sum_cW_{cc}=k-1\ge0$, so at least one diagonal entry is
+nonnegative.
 \end{remark}
 
 \subsection{Duality}\label{sec:duality}
 
 Since $I-P$ is the orthogonal projection onto $\ker P$, selecting a block
 of $P$ and deleting the complementary block of $I-P$ are the same
-operation.  With the correct normalization it turns a design of rank $k$
-into a design of rank $m-k$, exchanging domination for domination at the
-complement.
+operation.  With the correct normalization that operation turns a design
+of rank $k$ into a design of rank $m-k$, exchanging domination for
+domination at the complement.
 
 Fix a design at $(m,k)$ with $k\ge1$ and $m\ge k+1$, and put $r:=m-k\ge1$;
 then $m\ge2$ and every $t_c<1$.  Choose an $m\times r$ matrix $Z$ whose
@@ -513,8 +511,8 @@ the second expression by $\lvert z_c\rvert^2=1-P_{cc}=1-s_c$
   \sum_c (1-t_c)\;=\;m-1\;=\;k .
 \end{equation}
 The $p_c$ therefore have co-weighted mean $1/k$.  Domination compares a
-positive diagonal with a rank-one perturbation of it, and the following
-criterion turns that comparison into a scalar inequality.
+positive diagonal with a rank-one perturbation of it, and one scalar
+decides such a comparison.
 
 \begin{lemma}[Lean]\label{lem:rankone}
 Let $A\pd0$ and let $b$ be a vector, and put $q:=b\adj A^{-1}b$.  Then
@@ -672,7 +670,6 @@ weights $p/n$, $q/n$, $r/n$.
   \label{fig:jensen}
 \end{figure}
 
-One further step reaches corank two.  Corollary~\ref{cor:dualcell}
-converts it into rank two, which is Theorem~\ref{thm:ranktwo};
-\S\ref{sec:corank} carries out the conversion, once that input is
-proved.
+Corank two is one further step: Corollary~\ref{cor:dualcell} converts it
+into rank two, which is Theorem~\ref{thm:ranktwo}, and \S\ref{sec:corank}
+carries out the conversion once that input is proved.
