@@ -30,16 +30,23 @@ what the campaign's expected-polynomial instrument needs and can actually prove.
   * **B6, the sign criterion**, standalone real algebra with no reference to GTZ:
     `nonneg_of_elementarySymmetric_nonneg` (three reals whose three elementary
     symmetric functions are nonnegative are themselves nonnegative) and its
-    polynomial wrapper `forall_root_one_le_of_taylorSigns` — for a monic cubic
-    that splits over ℝ, all roots are `≥ 1` iff `q(1) ≤ 0`, `q'(1) ≥ 0`,
-    `q''(1) ≤ 0`.  Reusable, and used below.
+    polynomial wrappers.  For a monic cubic that splits over ℝ, all roots are
+    `≥ 1` IFF `q(1) ≤ 0`, `q'(1) ≥ 0`, `q''(1) ≤ 0` — both directions proved:
+    `forall_root_one_le_of_taylorSigns` and `taylorSigns_of_forall_root_one_le`,
+    packaged as `forall_root_one_le_iff_taylorSigns`.  Reusable, and used below.
   * **B3, total ties.**  `mixedCharPoly_eval_one_eq_zero_of_totalTieSupported` :
     if every positively-weighted `rank`-subset has `det(1 − S_C) = 0` then
     `q(1) = 0`.  The mechanism is measure-independent — it holds for ANY weighting
-    of the bases, which is why the tie boundary is free for the whole instrument
-    and is NOT where the difficulty lives.  Companion:
-    `not_posDef_gap_of_shadowDeterminant_eq_zero`, so a weightless subset can never
-    dominate strictly either.
+    of the bases, so the TOTAL-tie boundary is free for the whole instrument.
+    Read the scope exactly: this is freeness at a total tie, NOT at every tie.
+    `Gtz.IsTie` permits positively-weighted subsets that do not dominate, and at
+    odd rank each such subset contributes to `q(1)` with the sign of its
+    below-one eigenvalue count — POSITIVE when that count is odd.  So a tie that
+    is not total could have `q(1) > 0` strictly, with the instrument failing at a
+    zero-margin point.  The sign law is set out at
+    `det_scalarOne_sub_subsetSum_neg_of_posDef`; whether a non-total tie exists is
+    OPEN.  Companions: `not_posDef_gap_of_shadowDeterminant_eq_zero`, so a
+    weightless subset can never dominate strictly either.
   * **B5, the tetrahedron, exactly.**  `mixedCharPoly_tetraDesign = (X − 1)(X − 4)²`
     with `mixedCharPoly_tetraDesign_expanded = X³ − 9X² + 24X − 16`, so
     `(c₁, c₂, c₃) = (9, 24, 16)`; `expectedElementary_one_tetraDesign = 9`, which is
@@ -50,10 +57,12 @@ what the campaign's expected-polynomial instrument needs and can actually prove.
     tie where the expected polynomial is rooted exactly at one — zero margin.
   * **The tilt family, named and reparametrised honestly.**  `tiltedMixture` is
     the unnormalised tilted mixture, `tiltedMixture_one = mixedCharPoly` pins the
-    uniform tilt, and `EcpStar` states the conjecture.  One theorem of content:
-    `exists_root_tiltedMixture_one_rootKillDesign_lt_one` — the UNIFORM tilt fails
-    at `(6,3)`, so if `EcpStar` holds at all it needs a genuinely non-constant
-    tilt.
+    uniform tilt, and `EcpStar` names the TILTED ANALOGUE OF STEP (iii) — not the
+    brief's full conjecture, since real-rootedness is deliberately not part of it;
+    the next section says exactly what the difference costs.  One theorem of
+    content: `exists_root_tiltedMixture_one_rootKillDesign_lt_one` — the UNIFORM
+    tilt fails at `(6,3)`, so if `EcpStar` holds at all it needs a genuinely
+    non-constant tilt.
 
 ## Reparametrisation of the tilt, recorded so the statement is not misread
 
@@ -63,7 +72,21 @@ The brief's tilt is `μ^y(C) ∝ (∏_{c ∈ C} y_c) · det Γ_C` against the AT
 rank), that measure is `(∏_{c ∈ C} y_c/t_c) · det P_C`.  So `tiltedMixture D tilt`
 below is the brief's family with `tilt = y/t`, and `tilt ≡ 1` is the brief's
 `y = t`, i.e. `π` itself.  The tilt ranges over all positive vectors either way, so
-`EcpStar` is the brief's statement; only the coordinate changed.
+the FAMILY is the brief's family; only the coordinate changed.
+
+The `EcpStar` PREDICATE, however, is deliberately weaker than the brief's
+conjecture and must not be read as equal to it.  The brief asks for a tilt whose
+mixture is REAL-ROOTED with all roots `≥ 1`; `EcpStar` asks only that no root lie
+strictly below one, dropping real-rootedness.  That is on purpose: it is the
+repository's own convention for this slot
+(`Gtz.HasMixedRootAtLeastOne`, `Gtz/Reduction/MixedCharPolynomial.lean`), where
+real-rootedness is carried not by step (iii) but by the interlacing companion
+`Gtz.DoesMixtureInterlaceAt`, which is what converts "no root below the level"
+into "some subset dominates at the level".  Consequently `EcpStar` alone yields
+NOTHING about GTZ — exactly as `HasMixedRootAtLeastOne` alone yields nothing —
+and a tilted analogue of `DoesMixtureInterlaceAt` would have to be supplied
+alongside it.  Do not weaken that companion to "the mixture is real-rooted": see
+the guard recorded below.
 
 ## What is NOT proved, and why each is named rather than buried
 
@@ -96,14 +119,75 @@ below is the brief's family with `tilt = y/t`, and `tilt ≡ 1` is the brief's
     the bare existential `∃ tilt` is GtzWeighted restated and cannot prove it
     [EXACT-BY-HAND, not mechanized].  The only mechanized fragment is the uniform
     tilt's failure at `(6,3)`, below.
-  * **The pocket has a fat margin.**  REFUTED, exactly, off-Lean: a `(6,3)` design
-    with `q(1) > 0` and `max_C λ_min(Gram_C)` certified in
-    `[17638/15625, 1128833/1000000)`, and the K4 graphic design at conductances
-    `(1, s, s, s, s, 1)`, `s = (√17 − 3)/2`, with `q(1) > 0` and
-    `max_C λ_min = 3(7 − √17)/8 = 1.078835…`.  So "inside the pocket GTZ has
-    slack ≥ 1.4" is FALSE; the available slack is at most `(13 − 3√17)/8 ≈ 0.0788`.
-    Not mechanized here — both are rational-frame witnesses and so mechanizable
-    without radicals, which is the recommended next step.
+  * **The pocket has a fat margin.**  REFUTED, exactly, off-Lean, and by a wide
+    margin.  Three independent witnesses, each with every residual (weight sum,
+    Parseval, trace, symmetry, DPP normalisation) EXACTLY zero, all checked in
+    rational arithmetic with every sign decided by exact elementary-symmetric
+    signs and every root count by exact Sturm — no float decided anything:
+
+      - the **K4 graphic design** at conductances `(1, s, s, s, s, 1)` with the
+        heavy pair DISJOINT and uniform design weight `1/6`.  Closed form
+        `q(1)(s) = −(25s⁴ − 80s³ + 96s² − 80s + 25) / (2(s+1)⁴)`, so the pocket is
+        the open interval between the reciprocal pair `0.5179903895…` and
+        `1.9305377479…` (roots of that palindromic quartic).  At
+        `s = (√17 − 3)/2`: `q(1) = (6615√17 − 27217)/512 > 0` and
+        `max_C λ_min = 3(7 − √17)/8 = 1.0788353903933772938…`, attained exactly by
+        eight of the twenty triples.  At `s = 1` this same chart reproduces the
+        repository's own kernel-proved `mixedCharPoly_rootKillDesign_eval_one =
+        7/16` and `max_C λ_min = 3/2`, which is how the chart was validated.
+      - a `(6,3)` design with `q(1) = 4221241483926633310293304131789154600473 /
+        149114400752981764947616659355136465951641` and `max_C λ_min` certified in
+        `[17638/15625, 1128833/1000000)`, i.e. slack `≈ 0.1288`.
+      - **the strongest and tamest**, and the one to mechanize: the ALL-HEAVY
+        rational `(6,3)` frame with atoms
+        `(−539/512, 11/32, −1827/512)`, `(−955/256, 411/256, −137/128)`,
+        `(−359/512, −397/256, −655/512)`, `(−127/512, 11/4, −37/16)`,
+        `(−2921/512, −95/256, −217/64)`, `(1899/512, 151/256, −257/256)`
+        read in the congruence-normalised chart (design atoms `M^{-1/2} v_c` for
+        `M = ∑_c t_c v_c v_cᵀ`, so Parseval is an identity, never solved) at
+        weights `2351/65536, 2915/131072, 229559/262144, 1087/32768, 2831/131072,
+        2993/262144`.  It has `q(1) ≈ +1.0490569030 > 0`, exactly ONE real root of
+        `q` below one (`minroot ≈ 0.9957193895`), leverages in `[1.075, 24.64]`
+        and minimum weight `2993/262144 ≈ 1/88` — so it is not a degeneracy
+        artifact — and `max_C λ_min = 1.010150605603282292…`, i.e. slack
+        `≈ 0.01015`, with eight of twenty triples dominating.
+
+    So "inside the pocket GTZ has slack ≥ 1.4" is FALSE by a factor of about 40:
+    the available slack is at most `≈ 0.01015`, and directed exact search drives
+    it lower still, so the infimum may well be `1` (CONJECTURED, not proved).  The
+    earlier claim in this file that the bound was `(13 − 3√17)/8 ≈ 0.0788` was
+    correct only about the K4 family and is superseded.  None of this is mechanized
+    here; all three witnesses are rational-frame, so all three are mechanizable
+    without radicals, and the third is the recommended next step.
+  * **Why the interlacing companion may NOT be weakened to real-rootedness.**
+    MSS-III Theorem 2.7 needs a common interlacing (equivalently: ALL convex
+    combinations real-rooted), not merely that the mixture is real-rooted.  Guard
+    witness, exact: `f₁ = X² − X` (roots `0, 1`) and `f₂ = X² − 23X + 60` (roots
+    `3, 20`) have average `X² − 12X + 30`, discriminant `24 > 0`, hence real-rooted,
+    yet its smallest root `6 − √6 = 3.5505…` EXCEEDS `max(0, 3) = 3`, so the leaf
+    bound fails.  Consistent with MSS: the convex family's discriminant is
+    `484λ² − 772λ + 289`, negative at `λ = 4/5`, so Definition 2.5(b) fails.  This
+    is strictly stronger than the "average of real-rooted need not be real-rooted"
+    remark recorded further down, and it is the one that matters: a mechanization
+    of `Gtz.DoesMixtureInterlaceAt` must carry the strong-Rayleigh / common-
+    interlacing hypothesis, never just real-rootedness, or it is UNSOUND.
+  * **The total-tie boundary is second-order safe** [EXACT, off-Lean].  Perturbing
+    a total tie, `q(1)` vanishes to first order in EVERY direction tested (677
+    admissible directions across nine tie families, five scales down to `10⁻⁵`,
+    zero exceptions) and is strictly negative — the SAFE sign — to second order in
+    every transverse direction, `q(1) = Θ(ε²)`; the directions where it stays
+    identically zero are exactly the tangent directions to the tie locus
+    (intra-class weight redistribution).  The first-order vanishing is structural,
+    not luck: at a total tie every `S_C − 1` is singular, so the first-order term
+    is a single kernel pairing which annihilates the design manifold's tangent
+    space.  Interlacing alone does not force this, so it is extra information in
+    the instrument's favour.
+  * **Padding a tie cannot manufacture the pocket** [EXACT, off-Lean].  Adding one
+    or two generic atoms to the tetrahedron at weight `ε ∈ [10⁻⁴, 1/4]` leaves
+    `q(1) < 0` in all 60 exact designs tested across 12 directions, while
+    `max_C λ_min − 1` jumps to `0.07…1.5`.  The pocket is far from the standard tie
+    families in design space even while it comes arbitrarily close in
+    `max_C λ_min`.
 -/
 import Mathlib
 import Gtz.Core.Basic
@@ -370,6 +454,59 @@ theorem eval_one_secondDerivative_of_splitCubic (firstRoot secondRoot thirdRoot 
     Polynomial.eval_C, Polynomial.eval_one, zero_mul, mul_zero, add_zero, zero_add, sub_zero]
   ring
 
+/-- Each exhibited factor root of a split monic cubic really is a root. -/
+theorem isRoot_of_splitCubic_first (firstRoot secondRoot thirdRoot : ℝ) :
+    ((Polynomial.X - Polynomial.C firstRoot) * (Polynomial.X - Polynomial.C secondRoot)
+      * (Polynomial.X - Polynomial.C thirdRoot)).IsRoot firstRoot := by
+  rw [Polynomial.IsRoot]
+  simp only [Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
+  ring
+
+/-- **B6, THE CONVERSE.**  For a monic cubic that splits over the reals, if every
+root is at least one then the three Taylor signs hold.  Shifting by one turns
+"every root `≥ 1`" into "every shifted root `≥ 0`", and the three signs are then
+the three elementary symmetric functions of nonnegative reals.  Together with
+`forall_root_one_le_of_taylorSigns` this makes the criterion an honest `iff`
+(`forall_root_one_le_iff_taylorSigns`). -/
+theorem taylorSigns_of_forall_root_one_le {target : Polynomial ℝ}
+    (hsplit : IsRealRootedCubic target)
+    (hroots : ∀ root : ℝ, target.IsRoot root → 1 ≤ root) :
+    target.eval 1 ≤ 0
+      ∧ 0 ≤ (Polynomial.derivative target).eval 1
+      ∧ (Polynomial.derivative (Polynomial.derivative target)).eval 1 ≤ 0 := by
+  obtain ⟨firstRoot, secondRoot, thirdRoot, hfactor⟩ := hsplit
+  have hfirstGe : 1 ≤ firstRoot := by
+    refine hroots firstRoot ?_
+    rw [hfactor]; exact isRoot_of_splitCubic_first firstRoot secondRoot thirdRoot
+  have hsecondGe : 1 ≤ secondRoot := by
+    refine hroots secondRoot ?_
+    rw [hfactor, Polynomial.IsRoot]
+    simp only [Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
+    ring
+  have hthirdGe : 1 ≤ thirdRoot := by
+    refine hroots thirdRoot ?_
+    rw [hfactor, Polynomial.IsRoot]
+    simp only [Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
+    ring
+  subst hfactor
+  rw [eval_one_of_splitCubic, eval_one_derivative_of_splitCubic,
+    eval_one_secondDerivative_of_splitCubic]
+  have hfirstShift : 0 ≤ firstRoot - 1 := by linarith
+  have hsecondShift : 0 ≤ secondRoot - 1 := by linarith
+  have hthirdShift : 0 ≤ thirdRoot - 1 := by linarith
+  refine ⟨?_, ?_, ?_⟩
+  · have hproduct : 0 ≤ (firstRoot - 1) * (secondRoot - 1) * (thirdRoot - 1) :=
+      mul_nonneg (mul_nonneg hfirstShift hsecondShift) hthirdShift
+    linarith
+  · have hfirstSecond : 0 ≤ (firstRoot - 1) * (secondRoot - 1) :=
+      mul_nonneg hfirstShift hsecondShift
+    have hfirstThird : 0 ≤ (firstRoot - 1) * (thirdRoot - 1) :=
+      mul_nonneg hfirstShift hthirdShift
+    have hsecondThird : 0 ≤ (secondRoot - 1) * (thirdRoot - 1) :=
+      mul_nonneg hsecondShift hthirdShift
+    linarith
+  · linarith
+
 /-- **B6 — THE SIGN CRITERION.**  For a monic cubic that splits over the reals, if
 `q(1) ≤ 0`, `q'(1) ≥ 0` and `q''(1) ≤ 0` then EVERY root is at least one.  Purely
 about polynomials: no design, no measure, no GTZ.  This is the analogue at rank
@@ -402,6 +539,19 @@ theorem forall_root_one_le_of_taylorSigns {target : Polynomial ℝ}
   · have : root = thirdRoot := by linarith [sub_eq_zero.mp hthird]
     rw [this]; linarith
 
+/-- **B6 AS AN IFF.**  For a monic cubic that splits over the reals, every root is
+at least one exactly when the three Taylor signs at one hold.  Both directions are
+proved here; the module header's statement of the criterion is this. -/
+theorem forall_root_one_le_iff_taylorSigns {target : Polynomial ℝ}
+    (hsplit : IsRealRootedCubic target) :
+    (∀ root : ℝ, target.IsRoot root → 1 ≤ root)
+      ↔ (target.eval 1 ≤ 0
+          ∧ 0 ≤ (Polynomial.derivative target).eval 1
+          ∧ (Polynomial.derivative (Polynomial.derivative target)).eval 1 ≤ 0) :=
+  ⟨taylorSigns_of_forall_root_one_le hsplit,
+    fun ⟨hvalue, hderivative, hsecondDerivative⟩ =>
+      forall_root_one_le_of_taylorSigns hsplit hvalue hderivative hsecondDerivative⟩
+
 /-! ## B3: at a total tie the expected polynomial is rooted exactly at one
 
 The mechanism is measure-independent: if every subset carrying positive mass has
@@ -413,12 +563,28 @@ the difficulty lives elsewhere (`Gtz.not_mixedRootAtLeastOne_sixThree`). -/
 carries no volume-sampling mass or has determinant zero at level one, i.e. has `1`
 in the spectrum of its Gram.
 
-This is STRICTLY STRONGER than `Gtz.IsTie`, and deliberately so: `IsTie` asks only
-that SOME subset dominate and none dominate strictly, which permits positively
-weighted subsets that do not dominate at all — as happens at the icosahedron,
-where ten of the twenty triples fail to dominate.  Conversely a total tie has no
-strict dominator (`not_posDef_gap_of_totalTieSupported`) but need not have a weak
-one without a separate GTZ input. -/
+This predicate and `Gtz.IsTie` are INCOMPARABLE — neither implies the other, and
+it is worth being precise about which half is missing in each direction.
+
+  * A total tie has no STRICT dominator (`not_posDef_gap_of_totalTieSupported`),
+    which is `IsTie`'s second conjunct for free.  It does NOT supply the first
+    conjunct (existence of a weak dominator); that is exactly a GTZ input at that
+    design, and is not implied.
+  * Conversely `IsTie` does not give totality: it permits positively weighted
+    subsets that do not dominate at all, and such a subset need not have `1` in its
+    spectrum, so its `det(1 − S_C)` need not vanish.  Whether some tie is
+    genuinely non-total is OPEN — every tie the campaign has found is total — and
+    it is load-bearing, because at odd rank a non-dominating subset with an ODD
+    below-one eigenvalue count contributes POSITIVELY to `q(1)`
+    (see `det_scalarOne_sub_subsetSum_neg_of_posDef` and the discussion above it).
+
+Cautionary note on a nearby design, since it is easy to misread: the icosahedron
+does have ten of its twenty triples failing to dominate, but it is NOT a tie — its
+other ten triples dominate STRICTLY, with `λ_min = 3 − 3/√5 = 1.6584…`, which is
+what `Gtz.icosaDesign_strictly_dominates` records.  It illustrates the
+positively-weighted-non-dominator phenomenon, not `IsTie`.  Its `q(1) = 16/25 > 0`
+therefore also shows that having strict dominators is not enough: they contribute
+negatively, and the ten non-dominators outvote them. -/
 def IsTotalTieSupported (D : WeightedDesign m k) : Prop :=
   ∀ selected : Finset (Fin m), selected.card = k →
     shadowDeterminant D selected = 0
@@ -458,6 +624,45 @@ theorem not_posDef_gap_of_shadowDeterminant_eq_zero (D : WeightedDesign m k)
     exact (hposDef.add_posSemidef Matrix.PosSemidef.one).det_pos
   rw [hgram] at hpos
   exact absurd hpos (lt_irrefl 0)
+
+/-! ### The sign law: which subsets push `q(1)` down, and which push it up
+
+`q(1) = ∑_C det P_C · det(1 − S_C)` and `det(1 − S_C) = (−1)^rank ∏_i (λ_i − 1)`.
+So at ODD rank the sign of a subset's contribution is decided by how many of its
+eigenvalues lie below one:
+
+  * `1 ∈ spec(S_C)` — contribution exactly `0` (this is B3's mechanism);
+  * an EVEN number below one, in particular a strict dominator — contribution
+    NEGATIVE, i.e. it pushes `q(1)` down, toward the good side;
+  * an ODD number below one — contribution POSITIVE, pushing `q(1)` up.
+
+The strict-dominator half is mechanized below.  The consequence matters for how
+B3 is read: at a TOTAL tie every positively-weighted subset contributes zero and
+`q(1) = 0` exactly.  At a tie that is NOT total, the dominators contribute zero
+(a tie has no strict dominator, and its weak dominators have `1` in the spectrum)
+while the non-dominating positively-weighted subsets contribute with the sign of
+their below-one count — nothing cancels them from the dominating side.  So a tie
+whose non-dominating bases all have an ODD below-one count would have `q(1) > 0`
+STRICTLY, and the instrument would fail AT A TIE, with zero margin by
+construction.  Whether such a tie exists is OPEN; every tie the campaign has
+found is total (`Gtz.IsTotalTieSupported`), but totality is not forced. -/
+
+/-- **A strict dominator contributes NEGATIVELY to `q(1)` at odd rank.**  If the
+gap `S_C − 1` is positive definite then `det(S_C − 1) > 0`, and negating an odd
+number of rows flips the sign, so `det(1·I − S_C) < 0`.  This is the precise sense
+in which strict domination pushes the expected polynomial's value at one toward
+the good side — and, read contrapositively, the reason `q(1) > 0` at a design with
+strict dominators (the icosahedron, `q(1) = 16/25`) means the NON-dominating
+subsets are outvoting them. -/
+theorem det_scalarOne_sub_subsetSum_neg_of_posDef (D : WeightedDesign m k) (hodd : Odd k)
+    {selected : Finset (Fin m)} (hposDef : (subsetSum D selected - 1).PosDef) :
+    (Matrix.scalar (Fin k) (1 : ℝ) - subsetSum D selected).det < 0 := by
+  have hscalarOne : Matrix.scalar (Fin k) (1 : ℝ) = 1 := map_one _
+  have hnegate : Matrix.scalar (Fin k) (1 : ℝ) - subsetSum D selected
+      = -(subsetSum D selected - 1) := by rw [hscalarOne, neg_sub]
+  rw [hnegate, Matrix.det_neg, Fintype.card_fin, hodd.neg_one_pow]
+  have hgapPos := hposDef.det_pos
+  linarith
 
 /-- **A total tie has no strict dominator.**  Half of `Gtz.IsTie` for free; the
 other half (existence of a weak dominator) is exactly a GTZ input at that design
@@ -617,16 +822,24 @@ theorem tiltedMixture_one (D : WeightedDesign m k) :
   rw [tiltedMixture, mixedCharPoly]
   exact Finset.sum_congr rfl fun selected _ => by rw [Finset.prod_const_one, one_mul]
 
-/-- **ECP-STAR, NAMED not proved.**  For every weighted design there is a positive
-tilt whose tilted mixture has no root strictly below one.  Stated root-free, in
-the repository's convention (`Gtz.HasMixedRootAtLeastOne`), so that no
-existence-of-a-real-root claim is smuggled in.
+/-- **The tilted step (iii), NAMED not proved.**  For every weighted design there
+is a positive tilt whose tilted mixture has no root strictly below one.  Stated
+root-free, in the repository's convention (`Gtz.HasMixedRootAtLeastOne`), so that
+no existence-of-a-real-root claim is smuggled in.
+
+SCOPE — read this before citing the name.  This is the tilted analogue of step
+(iii) of the route in `Gtz/Reduction/MixedCharPolynomial.lean`, NOT the brief's
+full ECP-STAR: the brief also demands that the tilted mixture be REAL-ROOTED, and
+that clause is deliberately absent here (see the module header).  On its own the
+predicate implies nothing about GTZ; it would have to be paired with a tilted
+`Gtz.DoesMixtureInterlaceAt` to yield a dominating subset.
 
 Status: OPEN as a mechanized statement, and the module header records the exact
-off-Lean evidence — the icosahedron kills every equivariant tilt formula, and the
-bare existential is `GtzWeighted` restated because
-`sup over tilts of minroot = max_C λ_min`.  The one mechanized fragment is that
-the UNIFORM tilt does not witness it at `(6,3)`
+off-Lean evidence — the icosahedron's order-60 automorphism group acts
+transitively on its six atoms, so every isomorphism-equivariant tilt formula
+returns the uniform tilt there and fails; and the bare existential is
+`GtzWeighted` restated because `sup over tilts of minroot = max_C λ_min`.  The one
+mechanized fragment is that the UNIFORM tilt does not witness it at `(6,3)`
 (`exists_root_tiltedMixture_one_rootKillDesign_lt_one`), so any witness must be a
 genuinely non-constant tilt. -/
 def EcpStar (m k : ℕ) : Prop :=
