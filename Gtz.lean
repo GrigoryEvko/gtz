@@ -171,6 +171,7 @@ import Gtz.Complex.SpikePaddingLadder
 import Gtz.Ties.TotalTieCorankOne
 import Gtz.Design.PrimitiveTightClassification
 import Gtz.Quantitative.SpreadCertificateSixThree
+import Gtz.Ties.CriticalTieMultiplier
 
 -- the axiom ledger for everything above
 import Gtz.Audit

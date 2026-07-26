@@ -161,6 +161,7 @@ import Gtz.Complex.SpikePaddingLadder
 import Gtz.Ties.TotalTieCorankOne
 import Gtz.Design.PrimitiveTightClassification
 import Gtz.Quantitative.SpreadCertificateSixThree
+import Gtz.Ties.CriticalTieMultiplier
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -3401,3 +3402,10 @@ import Gtz.Quantitative.SpreadCertificateSixThree
 #print axioms Gtz.icosaDesign_discriminantMinorSum_eq
 #print axioms Gtz.icosaDesign_discriminantTie_le
 #print axioms Gtz.margin_le_of_spreadFloorCertificateSixThree
+
+-- Gtz/Ties/CriticalTieMultiplier.lean -- the critical-multiplier quadric obstruction
+#print axioms Gtz.IsCriticalMultiplierAt
+#print axioms Gtz.trace_mul_subsetSum
+#print axioms Gtz.trace_mul_gap_of_quadricLaw
+#print axioms Gtz.not_isCriticalMultiplierAt
+#print axioms Gtz.not_isCriticalMultiplierAt_rankThree
