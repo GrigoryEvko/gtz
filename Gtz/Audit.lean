@@ -170,6 +170,8 @@ import Gtz.Design.ProjectionChart
 import Gtz.Field.CorankOne
 import Gtz.Complex.SizeAxis
 import Gtz.Quantitative.CriticalQuadric
+import Gtz.Design.VolumeSamplingAverage
+import Gtz.Quantitative.ExpectedCharPolynomial
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -3748,3 +3750,69 @@ import Gtz.Quantitative.CriticalQuadric
 #print axioms Gtz.rainbowSevenMultiplier_marginal_vector
 #print axioms Gtz.splitSevenDesign_isQuadricStationaryData
 #print axioms Gtz.exists_isQuadricStationaryData_value_ne_zero
+
+-- Gtz/Design/VolumeSamplingAverage.lean + Gtz/Quantitative/ExpectedCharPolynomial.lean
+-- the volume-sampling average dominates, and the expected characteristic polynomial
+#print axioms Gtz.sq_weightedMean_le_weightedMean_sq
+#print axioms Gtz.sq_weightedMean_le_weightedMean_sq_design
+#print axioms Gtz.sum_weight_mul_atomOverlap_sq
+#print axioms Gtz.atomOverlap_sq_le_leverage_mul_normSq
+#print axioms Gtz.leverageWeightedAtomSum
+#print axioms Gtz.leverageWeightedAtomSum_transpose
+#print axioms Gtz.leverageWeightedAtomSum_isHermitian
+#print axioms Gtz.leverageWeightedAtomSum_form
+#print axioms Gtz.trace_leverageWeightedAtomSum
+#print axioms Gtz.normSq_mul_leverageWeightedAtomSum_form_ge
+#print axioms Gtz.normSq_le_leverageWeightedAtomSum_form
+#print axioms Gtz.posSemidef_leverageWeightedAtomSum_sub_one
+#print axioms Gtz.rank_le_sum_weight_mul_leverage_sq
+#print axioms Gtz.lt_leverageWeightedAtomSum_form_of_transverseAtom
+#print axioms Gtz.expectedSubsetSum
+#print axioms Gtz.IsProjectionOnePointMarginal
+#print axioms Gtz.expectedSubsetSum_eq_leverageWeightedAtomSum
+#print axioms Gtz.sqrtWeightDiagonal_mul_self
+#print axioms Gtz.sqrtWeightCongruence_gap_eq_sub_weightDiagonal
+#print axioms Gtz.subsetSum_singleton_apply
+#print axioms Gtz.dominates_singleton_iff_one_le_leverage
+#print axioms Gtz.pos_of_weightedDesign
+#print axioms Gtz.gtzWeighted_rank_one
+#print axioms Gtz.expectedElementary
+#print axioms Gtz.shadowDeterminant_empty
+#print axioms Gtz.expectedElementary_zero
+#print axioms Gtz.shadowDeterminant_singleton
+#print axioms Gtz.expectedElementary_one
+#print axioms Gtz.sq_rank_le_expectedElementary_one
+#print axioms Gtz.sq_rank_le_sum_weight_mul_leverage_sq
+#print axioms Gtz.trace_subsetSum
+#print axioms Gtz.expectedSubsetTrace
+#print axioms Gtz.coeff_mixedCharPoly_pred_rank
+#print axioms Gtz.expectedSubsetTrace_eq_expectedElementary_one_of_marginal
+#print axioms Gtz.coeff_mixedCharPoly_pred_rank_of_marginal
+#print axioms Gtz.coeff_mixedCharPoly_two_le_neg_nine_of_marginal
+#print axioms Gtz.nonneg_of_elementarySymmetric_nonneg
+#print axioms Gtz.IsRealRootedCubic
+#print axioms Gtz.eval_one_of_splitCubic
+#print axioms Gtz.eval_one_derivative_of_splitCubic
+#print axioms Gtz.eval_one_secondDerivative_of_splitCubic
+#print axioms Gtz.isRoot_of_splitCubic_first
+#print axioms Gtz.taylorSigns_of_forall_root_one_le
+#print axioms Gtz.forall_root_one_le_of_taylorSigns
+#print axioms Gtz.forall_root_one_le_iff_taylorSigns
+#print axioms Gtz.IsTotalTieSupported
+#print axioms Gtz.mixedCharPoly_eval_one_eq_zero_of_totalTieSupported
+#print axioms Gtz.not_posDef_gap_of_shadowDeterminant_eq_zero
+#print axioms Gtz.det_scalarOne_sub_subsetSum_neg_of_posDef
+#print axioms Gtz.not_posDef_gap_of_totalTieSupported
+#print axioms Gtz.subsetSum_tetraDesign_of_card_three
+#print axioms Gtz.mixedCharPoly_tetraDesign
+#print axioms Gtz.mixedCharPoly_tetraDesign_expanded
+#print axioms Gtz.expectedElementary_one_tetraDesign
+#print axioms Gtz.isRealRootedCubic_mixedCharPoly_tetraDesign
+#print axioms Gtz.mixedCharPoly_tetraDesign_taylorAtOne
+#print axioms Gtz.forall_root_tetraDesign_one_le
+#print axioms Gtz.isTotalTieSupported_tetraDesign
+#print axioms Gtz.tiltedMixture
+#print axioms Gtz.tiltedMixture_one
+#print axioms Gtz.EcpStar
+#print axioms Gtz.exists_root_tiltedMixture_one_rootKillDesign_lt_one
+#print axioms Gtz.not_uniformTilt_witnesses_ecpStar_sixThree

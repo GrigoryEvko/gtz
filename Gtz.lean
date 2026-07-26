@@ -180,6 +180,8 @@ import Gtz.Design.ProjectionChart
 import Gtz.Field.CorankOne
 import Gtz.Complex.SizeAxis
 import Gtz.Quantitative.CriticalQuadric
+import Gtz.Design.VolumeSamplingAverage
+import Gtz.Quantitative.ExpectedCharPolynomial
 
 -- the axiom ledger for everything above
 import Gtz.Audit
