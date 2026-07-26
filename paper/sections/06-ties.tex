@@ -1,18 +1,19 @@
 \section{The equality locus}\label{sec:ties}
 
-The inequality \eqref{eq:dominate} is an equality on a large set, and how
-large that set is governs what a proof of the conjecture may look like.
-This section constructs the set at every size, recalls its classification
-at corank one, and computes its dimension: it meets every point of the
-open weight simplex.  The consequence, used throughout the rest of the
-paper, is that no argument for $\Gtz$ can carry a margin.
+The inequality \eqref{eq:dominate} is an equality on a set of full
+dimension.  At every size $m\ge k+1$ and every weight vector there is a
+design whose best $k$-subset has $\lmin(\SC)=1$, and these designs form
+families of dimension $m-1$, the dimension of the weights themselves.  No
+argument for $\Gtz$ can therefore carry a margin, and none of the
+reductions of \S\ref{sec:real} may consume one.
 
-A second theme runs alongside.  Volume sampling is the probability
-measure on $k$-subsets adapted to \eqref{eq:parseval}, and under it the
-selection inequality holds on average, by a factor growing with the rank.
-Turning that average into a single subset is the derandomization the
-problem asks for; \S\ref{sec:averaging} says exactly how much of it the
-identities give and where the gap begins.
+Volume sampling is the probability measure on $k$-subsets adapted to
+\eqref{eq:parseval}, and under it the subset sum dominates on average,
+clearing the threshold by a factor of at least $k$ in trace.  Turning
+that average into a single subset is the derandomization the problem asks
+for.  What the identities do not supply is a common interlacing of the
+characteristic polynomials, and without one the least root of the average
+bounds the least root of no member (\S\ref{sec:averaging}).
 
 \subsection{Extremal designs}\label{sec:extremal}
 
@@ -22,24 +23,23 @@ dominates strictly: there is $C$ with $\SC\psd I_k$, and there is no $C$
 with $\SC\pd I_k$.
 \end{definition}
 
-For a Hermitian matrix $A$ one has $A\psd I_k$ exactly when
-$\lmin(A)\ge1$, and $A\pd I_k$ exactly when $\lmin(A)>1$.  The definition
-therefore reads as follows.
+For a Hermitian matrix $A$, the relation $A\psd I_k$ says
+$\lmin(A)\ge1$ and $A\pd I_k$ says $\lmin(A)>1$.
 
 \begin{lemma}\label{lem:tiemax}
 A design is extremal if and only if
 $\max_{\lvert C\rvert=k}\lmin(\SC)=1$.  At an extremal design every
-dominating $k$-subset has $\lmin(\SC)=1$ exactly, so that $\SC-I_k$ is
+dominating $k$-subset has $\lmin(\SC)=1$, so that $\SC-I_k$ is
 positive semidefinite and singular.
 \end{lemma}
 
 \begin{proof}
-The maximum is at least $1$ precisely when some $C$ dominates, and exceeds
-$1$ precisely when some $C$ dominates strictly.  A dominating $C$ has
+The maximum is at least $1$ if and only if some $C$ dominates, and exceeds
+$1$ if and only if some $C$ dominates strictly.  A dominating $C$ has
 $\lmin(\SC)\ge1$, and the maximum being $1$ forces equality.
 \end{proof}
 
-The quantity in Lemma~\ref{lem:tiemax} will recur; for $m\ge k$ put
+For $m\ge k$ put
 \begin{equation}\label{eq:alpha}
   \alpha(m,k)\;:=\;\inf_{\dsn}\ \max_{\lvert C\rvert=k}\lmin(\SC),
 \end{equation}
@@ -59,21 +59,18 @@ the unique $k$-subset satisfies
 because the $g_c$ are then a basis of $\FF^k$ and $m\ge2$ forces $t_c<1$
 for every $c$.  So no design at $m=k$, $k\ge2$, is extremal.  Extremal
 designs first occur at corank one, where by Theorem~\ref{thm:corankone}(iii)--(iv) they
-occur at every weight vector; the next subsection extends them to
-every larger size.
+occur at every weight vector.
 
 \subsection{Splitting, and existence at every size}\label{sec:split}
 
-The construction uses that $\SC$ does not see the weights, being by
-\eqref{eq:dominate} the sum of the rank-one matrices attached to the
-selected vectors, and it uses the \emph{gap form} behind
-Lemma~\ref{lem:parallel}: for
+Evaluating \eqref{eq:dominate} at a vector gives the \emph{gap form}: for
 every $k$-subset $C$ and every $x\in\FF^k$,
 \begin{equation}\label{eq:gapform}
   x\adj\bigl(\SC-I_k\bigr)x
   \;=\;\sum_{c\in C}\lvert\langle g_c,x\rangle\rvert^{2}
        \;-\;\lVert x\rVert^{2}.
 \end{equation}
+Neither side involves the weights.
 
 \begin{lemma}\label{lem:parallel}
 Let $C$ be a $k$-subset containing two distinct indices $c,c'$ with
@@ -163,7 +160,7 @@ $k+1$ with the same weights differ by
   \lvert\varepsilon_c\rvert=1 ,
 \]
 a transformation under which no $\SC$ changes.  Consequently the extremal
-locus at corank one has dimension exactly $m-1=k$ modulo that group, and
+locus at corank one has dimension $m-1=k$ modulo that group, and
 at every $m\ge k+1$ the extremal locus contains, for each partition of
 $\{1,\dots,m\}$ into $k+1$ nonempty blocks, a family of dimension $m-1$.
 \end{proposition}
@@ -180,11 +177,12 @@ mean is constant, and by \eqref{eq:pnorm} the constant is $1/k$, which is
 the stated condition on $z$.  These moduli determine
 $z$ up to the individual phases $\varepsilon_c$, and $P$ determines $V$ up
 to $V\mapsto VU$, since two isometries with the same range differ by the
-unitary $U=V\adj V'$.  Replacing $z$ by $\diag(\varepsilon)z$ replaces $P$
-by $\diag(\varepsilon)P\diag(\varepsilon)\adj$, hence $V$ by
-$\diag(\varepsilon)V$, hence $g_c=v_c/\sqrt{t_c}$ by
-$\varepsilon_cg_c$; and $g_c^{\vphantom{\mathsf{H}}}g_c\adj$ is invariant under
-that.  So the fibre of the weight map over each $t$ is a single orbit, the
+unitary $U=V\adj V'$.  Replacing $z$ by $\diag(\varepsilon)z$ replaces $P$ by
+$\diag(\varepsilon)P\diag(\varepsilon)\adj$, the identity term surviving
+that conjugation because $\lvert\varepsilon_c\rvert=1$; so $V$ becomes
+$\diag(\varepsilon)V$ and $g_c=v_c/\sqrt{t_c}$ becomes $\varepsilon_cg_c$,
+under which $g_c^{\vphantom{\mathsf{H}}}g_c\adj$ is unchanged.  The fibre of
+the weight map over each $t$ is therefore a single orbit, the
 quotient is mapped bijectively onto the open simplex, and the dimension is
 $m-1=k$.
 \end{proof}
@@ -255,9 +253,6 @@ $\SC-I_k\psd\varepsilon I_k\pd0$, so that $C$ would dominate strictly.
 The remaining assertions are Lemma~\ref{lem:tiemax}.
 \end{proof}
 
-Corollary~\ref{cor:nomargin} constrains what a proof of the conjecture
-can look like.
-
 There is no uniform margin.  For every $\varepsilon>0$ the assertion
 ``every design admits a $k$-subset with $\SC\psd(1+\varepsilon)I_k$'' is
 false, at every cell with $m\ge k+1$.  An argument whose output is a
@@ -275,7 +270,7 @@ compression lift of \S\ref{sec:boundary} is such an identity at vanishing
 weight, and Theorem~\ref{thm:sharp} exhibits its failure at every positive
 weight, on the extremal locus itself.
 
-The exactness, finally, occupies a set of full dimension.  By
+The locus has full dimension.  By
 Proposition~\ref{prop:section} the extremal locus meets every point of the
 open weight simplex, at every size $m\ge k+1$, and has dimension $m-1$,
 which is the dimension of the weights.  No restriction on the weights
@@ -380,12 +375,12 @@ For the star at the vertex $1$, that is $C=\{e_0,e_1,e_2\}$, expanding
   Q_C(y)&=8(y_1-y_2)^2+12(y_1-y_3)^2+12y_1^2-3(y_2-y_3)^2-3y_2^2\\
         &=32y_1^2+2y_2^2+9y_3^2-16y_1y_2-24y_1y_3+6y_2y_3 ,
 \end{align*}
-and therefore
+Doubling and completing the square in $y_1$ leaves $9y_3^{2}$:
 \begin{equation}\label{eq:diamondstar}
-  2\,Q_C(y)\;=\;\bigl(-8y_1+2y_2+3y_3\bigr)^{2}+9\,y_3^{2} .
+  2\,Q_C(y)\;=\;\bigl(8y_1-2y_2-3y_3\bigr)^{2}+9\,y_3^{2} .
 \end{equation}
-So $C$ dominates.  The form \eqref{eq:diamondstar} vanishes at
-$y=(1,4,0)$, so it is singular and $C$ does not dominate strictly.
+So $C$ dominates.  The right side vanishes at the nonzero $y=(1,4,0)$, so
+$Q_C$ is singular and $C$ does not dominate strictly.
 
 There are ten $3$-subsets: eight spanning trees of $\gph$, and its two
 triangles $\{e_0,e_1,e_3\}$ on the vertices $1,2,3$ and
@@ -457,9 +452,7 @@ Problem~\ref{prob:structure}.
 
 \subsection{Volume sampling}\label{sec:averaging}
 
-Volume sampling is the probability measure on $k$-subsets adapted to
-\eqref{eq:parseval}, and under it the selection inequality holds on
-average.  We work
+We work
 in the chart of \S\ref{sec:chart}: $v_c=\sqrt{t_c}\,g_c$, the matrix $V$
 has rows $v_c\adj$ and satisfies $V\adj V=I_k$, and $P=VV\adj$ by
 \eqref{eq:chart}.  For a $k$-subset $C$ write $V_C$ for the $k\times k$
@@ -489,11 +482,13 @@ has an image $C$ of size $k$; writing $f=\iota_C\circ\sigma$ with
 $\iota_C$ the increasing enumeration of $C$ and $\sigma$ a permutation,
 the determinant equals $\operatorname{sgn}(\sigma)\det(X^{C})$, and
 summing $\operatorname{sgn}(\sigma)\prod_jY_{\iota_C(\sigma(j))j}$ over
-$\sigma$ gives $\det(Y_C)$.
+$\sigma$ is the Leibniz formula for $\det(Y_C)$.
 \end{proof}
 
-Apply the lemma with $X=V\adj$ and $Y=V$.  Each term is
-$\det\bigl((V\adj)^{C}\bigr)\det(V_C)=\lvert\det V_C\rvert^{2}
+Apply the lemma with $X=V\adj$ and $Y=V$.  The columns of $V\adj$ on $C$
+are the conjugated rows of $V$ on $C$, so $(V\adj)^{C}=(V_C)\adj$ and each
+term is
+$\det\bigl((V_C)\adj\bigr)\det(V_C)=\lvert\det V_C\rvert^{2}
 =\det\bigl(V_C^{\vphantom{\mathsf{H}}}V_C\adj\bigr)=\det P[C]$, while the left side
 is $\det(V\adj V)=1$.  Setting
 \begin{equation}\label{eq:dpp}
@@ -522,13 +517,14 @@ For every atom $c$,
 Fix $c$ and let $D_\sigma:=\diag(1,\dots,\sigma,\dots,1)$ carry $\sigma$
 in the position $c$.  On one hand
 $V\adj D_\sigma V=V\adj V+(\sigma-1)v_c^{\vphantom{\mathsf{H}}}v_c\adj$ is a
-rank-one perturbation of the identity, with
+rank-one perturbation of the identity, and
+$\det(I_k+\lambda uu\adj)=1+\lambda\lVert u\rVert^{2}$, so
 \[
   \det\bigl(V\adj D_\sigma V\bigr)\;=\;1+(\sigma-1)\lVert v_c\rVert^{2}
   \;=\;1+(\sigma-1)s_c .
 \]
 On the other hand Lemma~\ref{lem:cauchybinet} applied to
-$X=V\adj D_\sigma$ and $Y=V$ gives, since scaling the column $e$ of
+$X=V\adj D_\sigma$ and $Y=V$ gives, since scaling the column $c$ of
 $V\adj$ multiplies every minor containing it by that factor,
 \[
   \det\bigl(V\adj D_\sigma V\bigr)
@@ -550,7 +546,7 @@ For every design over either field,
 \end{theorem}
 
 \begin{proof}
-Let $x\in\FF^k$ be arbitrary.  Cauchy--Schwarz at each atom gives
+Let $x\ne0$; at $x=0$ both sides vanish.  Cauchy--Schwarz at each atom gives
 $\lvert\langle g_c,x\rangle\rvert^{2}\le\ell_c\lVert x\rVert^{2}$, whence
 \[
   \lVert x\rVert^{2}\sum_c s_c\lvert\langle g_c,x\rangle\rvert^{2}
@@ -567,7 +563,6 @@ below by
 by \eqref{eq:parseval}.  Dividing by
 $\lVert x\rVert^{2}>0$ gives
 $x\adj\bigl(\sum_cs_cg_c^{\vphantom{\mathsf{H}}}g_c\adj\bigr)x\ge\lVert x\rVert^2$.
-Every step is homogeneous in $x$, so no normalization is used.
 \end{proof}
 
 The leverage-weighted sum is the $\pi$-average of the subset sum.
@@ -594,7 +589,7 @@ and the inequality is Theorem~\ref{thm:leverageaverage}.
 
 The selection problem is thus the derandomization of
 Theorem~\ref{thm:average}: the $\pi$-average of $\SC$ dominates, and one
-asks for a single $C$.  The average dominates with a margin that grows with the rank.
+asks for a single $C$.
 
 \begin{proposition}[Lean]\label{prop:jensen}
 $\sum_c t_c\ell_c^{2}\ge k^{2}$, with equality if and only if $\ell_c=k$
@@ -610,11 +605,11 @@ is constant, and its $t$-mean is $k$.
 
 Since $\tr\E_\pi[\SC]=\sum_cs_c\ell_c=\sum_ct_c\ell_c^{2}\ge k^{2}$ while
 $\tr I_k=k$, the average clears the threshold by a factor at least $k$ in
-trace.  No single subset need clear it at all: that is
+trace.  No single subset need exceed it: that is
 Corollary~\ref{cor:nomargin}.
 
-The measure sees the extremal locus through the mixture of characteristic
-polynomials
+Averaging characteristic polynomials rather than matrices gives the
+mixture
 \begin{equation}\label{eq:mixture}
   q(x)\;:=\;\E_\pi\bigl[\chi_{\SC}(x)\bigr]
   \;=\;\sum_{\lvert C\rvert=k}\pi_C\,\det\bigl(xI_k-\SC\bigr).
@@ -631,6 +626,15 @@ Let $C$ be a $k$-subset.  If $\varphi$ is not injective on $C$ then $\SC$
 is singular by Lemma~\ref{lem:parallel}, so $\pi_C=0$ by \eqref{eq:dpp}
 and $C$ is not a basis.  Otherwise $\SC=S_{\varphi(C)}$ dominates and does
 not dominate strictly, so $\lmin(\SC)=1$ by Lemma~\ref{lem:tiemax}.
+\end{proof}
+
+\begin{proposition}[Lean]\label{prop:qonezero}
+$q(1)=0$ at every totally tight design.
+\end{proposition}
+
+\begin{proof}
+$q(1)=\sum_C\pi_C\det(I_k-\SC)$, and every summand with $\pi_C>0$ has $C$
+a basis, hence tight, hence $\det(I_k-\SC)=0$.
 \end{proof}
 
 \begin{proposition}\label{prop:qone}
@@ -653,15 +657,6 @@ first equality.  The second is Lemma~\ref{lem:marginal} again:
 \]
 and the bound is Proposition~\ref{prop:jensen}.  The last assertion is
 Proposition~\ref{prop:qonezero}.
-\end{proof}
-
-\begin{proposition}[Lean]\label{prop:qonezero}
-$q(1)=0$ at every totally tight design.
-\end{proposition}
-
-\begin{proof}
-$q(1)=\sum_C\pi_C\det(I_k-\SC)$, and every summand with $\pi_C>0$ has $C$
-a basis, hence tight, hence $\det(I_k-\SC)=0$.
 \end{proof}
 
 We compute the mixture at the tetrahedron of Example~\ref{ex:tetra},
@@ -688,7 +683,7 @@ Proposition~\ref{prop:qone} requires; and the least root of $q$ sits
 at the threshold.  Meanwhile
 $\E_\pi[\SC]=\tfrac34\sum_cg_c^{\vphantom{\mathsf{T}}}g_c\tp=3I_3$ while
 $\max_C\lmin(\SC)=1$: the average clears the threshold by a factor of
-three, and no triple clears it at all.
+three, and no triple exceeds it.
 
 \begin{remark}\label{rem:interlace}
 Only the identities above have been used; three nearby statements do

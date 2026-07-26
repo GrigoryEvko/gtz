@@ -3,9 +3,9 @@
 The counting of \S\ref{sec:first} decides rank one and the square $m=k$,
 and duality converts corank one and corank two into rank one and rank two
 (Theorem~\ref{thm:duality}).  Rank two itself is thus the last small case
-outstanding, and nothing so far bounds the size at all.  One device
-supplies both: an operation that produces from a design a smaller design
-whose dominating subsets transport back.
+outstanding, and nothing so far bounds the size.  One kind of
+device supplies both: an operation that produces from a design a smaller
+design whose dominating subsets transport back.
 
 There are two such operations, and they pay for the reduction in
 different currencies.  Deleting a vector of length at most one
@@ -16,7 +16,7 @@ Carathéodory reduction (\S\ref{sec:crystal}) leaves the vectors where
 they are and cuts the size to $k(k+1)/2+1$, and there the transport back
 is immediate, since $\SC$ in \eqref{eq:dominate} never sees the weights.
 Deletion stalls when every vector is long; at rank two the stalled case
-can be settled outright (\S\ref{sec:ranktwo}).
+can be handled directly (\S\ref{sec:ranktwo}).
 
 \subsection{Deleting a light vector}\label{sec:light}
 
@@ -84,8 +84,8 @@ $(m-1,k)$.
 
 \emph{Step 3: transport.}  By hypothesis some $C\subseteq E$ with
 $\lvert C\rvert=k$ dominates in the deflated design.  Its subset sum is
-$\sum_{c\in C}(g'_c)(g'_c)\tp=(1-t_d)R\tp\SC R$, so
-domination reads
+$\sum_{c\in C}(g'_c)(g'_c)\tp=(1-t_d)R\tp\SC R$, and $I_k=R\tp\Sigma_dR$ by
+\eqref{eq:whiten}, so domination reads
 \[
   R\tp\bigl((1-t_d)\SC-\Sigma_d\bigr)R\;\psd\;0 ,
 \]
@@ -103,8 +103,8 @@ previous display, its second by \eqref{eq:schurone} and $\ell_d\le1$, and
 the scalar is positive.  Hence $C$ dominates in $\dsn$.
 \end{proof}
 
-Lightness enters only in the second summand of \eqref{eq:reassemble};
-the rest is the congruence and its bookkeeping.  Iterating the theorem removes light vectors one at a time:
+Lightness enters \eqref{eq:reassemble} at one place only, the second
+summand.  Iterating the theorem removes light vectors one at a time:
 
 \begin{corollary}[Lean]\label{cor:heavy}
 Let $k\ge1$.  If every all-heavy design of rank $k$, of whatever size,
@@ -122,9 +122,9 @@ all-heavy and the assumption applies.
 The tetrahedron of Example~\ref{ex:tetra} has $\ell_c=3$ for every $c$ and
 is therefore all-heavy: the deletion is unavailable precisely at the
 design where, by Example~\ref{ex:tetra}, every dominating triple has
-$\lmin(\SC)=1$.  Here a pattern begins that runs through the paper: the reductions
-consume the interior of the problem and leave the extremal locus of
-\S\ref{sec:ties} standing.
+$\lmin(\SC)=1$.  The reductions consume the interior of the problem and
+leave the extremal locus of \S\ref{sec:ties} standing, and they do so
+again at every later stage.
 
 \subsection{Rank two}\label{sec:ranktwo}
 
@@ -180,8 +180,8 @@ $C=\{c,d\}$ has
   \qquad
   \operatorname{spec}\SC=\{1,3\},
 \]
-where $e$ is the third index.  Every pair dominates, and every pair
-dominates with least eigenvalue exactly $1$.  We call this design the rank-two trine.
+where $e$ is the third index.  Every pair therefore dominates, and none
+strictly.  We call this design the rank-two trine.
 \end{example}
 
 The remaining argument turns on one scalar invariant of a pair of
@@ -215,21 +215,26 @@ On the other hand, eliminating $a_{cd}^2$ from \eqref{eq:wdot} in
   =-2\bigl(b_{cd}^2-\ell_c-\ell_d+1\bigr)
   =-2\det X .
 \]
-Now $\tr X=\ell_c+\ell_d-2>0$.  A symmetric $2\times2$ matrix of positive
-trace is positive semidefinite exactly when its determinant is
-nonnegative: if $\det X\ge0$ then $X_{00}X_{11}\ge X_{01}^2\ge0$, so
-$X_{00}$ and $X_{11}$ have the same sign and the positive trace makes both
-nonnegative, whereupon either $X_{00}=0$, forcing $X_{01}=0$ and
-leaving the diagonal matrix $\diag(0,X_{11})$, or
-$X_{00}\,x\tp Xx=(X_{00}x_0+X_{01}x_1)^2+(\det X)x_1^2\ge0$; the converse
-is the $2\times2$ minor.  Hence $X\psd0$ if and only if $K_{cd}\le0$.
+Now $\tr X=\ell_c+\ell_d-2>0$, and a symmetric $2\times2$ matrix of
+positive trace is positive semidefinite exactly when its determinant is
+nonnegative.  In one direction, $\det X\ge0$ gives
+$X_{00}X_{11}\ge X_{01}^2\ge0$, so the two diagonal entries have the same
+sign and the positive trace makes both nonnegative.  If $X_{00}=0$ then
+$X_{01}=0$ as well and $X=\diag(0,X_{11})\psd0$.  If $X_{00}>0$, complete
+the square:
+\[
+  X_{00}\,x\tp Xx\;=\;(X_{00}x_0+X_{01}x_1)^2+(\det X)\,x_1^2\;\ge\;0 ,
+\]
+and divide by $X_{00}$.  Conversely a positive semidefinite matrix has
+nonnegative principal minors, and $\det X$ is one of them.  Hence
+$X\psd0$ if and only if $K_{cd}\le0$.
 \end{proof}
 
 At the rank-two trine of Example~\ref{ex:trine2} one has $\hat\ell_c=0$ and $\langle
 \eta_c,\eta_d\rangle=4\cos(4\pi/3)=-2$ for $c\ne d$, so $K_{cd}=0$ for every
 pair: consistent with Lemma~\ref{lem:pairobs} and with
-$\det(\SC-I)=0\cdot2=0$.  The inequality $K_{cd}\le0$ is therefore an
-equality on a design, and no argument below may improve it to a strict
+$\det(\SC-I)=0\cdot2=0$.  The inequality $K_{cd}\le0$ is therefore tight
+at a genuine design, and no argument below may improve it to a strict
 inequality.
 
 In an all-heavy design every pair has $\ell_c+\ell_d>2$, so if no pair
@@ -350,10 +355,11 @@ $\sum_ct_c\langle \eta_c,\xi\rangle^2=\xi\tp\Omega\xi=\zeta\tp
 \end{equation}
 so $\zeta\tp\Omega^{-1}\zeta\le\sigma$: the residual of the least-squares
 fit of $\hat\ell$ by a linear functional of $\eta$ is nonnegative.  Choose $R$
-invertible with $R\tp\Omega R=I_2$, that is $RR\tp=\Omega^{-1}$, and let
-$r_1,r_2$ be its columns.  Then $\tr(R\tp\Omega^2R)
+invertible with $R\tp\Omega R=I_2$; inverting both sides gives
+$RR\tp=\Omega^{-1}$.  Let $r_1,r_2$ be its columns.  Then $\tr(R\tp\Omega^2R)
 =\tr(\Omega^2RR\tp)=\tr\Omega$ and $\tr(R\tp\zeta\zeta\tp R)
-=\zeta\tp\Omega^{-1}\zeta$, so by \eqref{eq:tromega} and
+=\zeta\tp\Omega^{-1}\zeta$, while the third term of $\Psi$ contributes
+$-2\tr(R\tp\Omega R)=-2\tr I_2=-4$.  So by \eqref{eq:tromega} and
 \eqref{eq:residual}
 \[
   r_1\tp\Psi r_1+r_2\tp\Psi r_2
@@ -367,8 +373,9 @@ is invertible.
 
 \emph{The test vector.}  Suppose no pair dominates, so
 \eqref{eq:allfail} holds, and put $u_c:=\langle \eta_c,r\rangle$.  By
-\eqref{eq:balance2}, $\sum_ct_cu_c=0$; were $u$ constant it would be
-identically zero, contradicting the spanning hypothesis.  So
+\eqref{eq:balance2}, $\sum_ct_cu_c=0$, so a constant $u$ would be
+identically zero; then $r$ would be orthogonal to every $\eta_c$, hence
+zero by the spanning hypothesis, which it is not.  So
 Lemma~\ref{lem:rowsum} applies to $u$.  Compute both sides.  First
 \[
   \sum_d t_du_dK_{cd}
@@ -448,8 +455,10 @@ carries an orthonormal basis, arranged as the columns of an $m\times2$
 matrix $Z$ with rows $z_c\adj$, and the co-weight rescaling
 $w_c=z_c/\sqrt{1-t_c}\in\R^2$ satisfies
 \[
-  \sum_c(1-t_c)\,w_c^{\vphantom{\mathsf{T}}}w_c\tp\;=\;I_2 .
+  \sum_c(1-t_c)\,w_c^{\vphantom{\mathsf{T}}}w_c\tp
+  \;=\;\sum_cz_c^{\vphantom{\mathsf{T}}}z_c\tp\;=\;Z\tp Z\;=\;I_2 ,
 \]
+the rescaling cancelling the co-weight at each index.
 A $k$-subset is the complement of a pair $\{a,b\}$, and by the chain in
 the proof of Theorem~\ref{thm:duality} that $k$-subset dominates in
 $\dsn$ if and only if
@@ -459,7 +468,9 @@ $\dsn$ if and only if
 \end{equation}
 With $R\tp\Sdual R=I_2$ and $h_c:=R\tp w_c$, condition \eqref{eq:pairdom} is
 $h_a^{\vphantom{\mathsf{T}}}h_a\tp+h_b^{\vphantom{\mathsf{T}}}h_b\tp\psd I_2$, that is
-domination of the pair $\{a,b\}$ in the design $(h_c,t_c)$ at $(k+2,2)$.
+domination of the pair $\{a,b\}$ in $(h_c,t_c)$, which is itself a design
+at $(k+2,2)$ because $\sum_ct_ch_c^{\vphantom{\mathsf{T}}}h_c\tp
+=R\tp\Sdual R=I_2$.
 So a dominating pair at rank two produces a dominating $k$-subset at
 corank two.
 
@@ -587,9 +598,9 @@ expect $\win(k)$ to be the true threshold; see Problem~\ref{prob:higher}.
 
 The finitely many cells left by Theorem~\ref{thm:window} are not
 independent: the statement at a size implies the statement at all smaller
-sizes.  The mechanism is that a design can be padded by splitting one of
-its vectors into two equal copies of half the weight, and that a
-$k$-subset containing both copies never dominates.
+sizes.  Splitting one vector of a design into two equal copies of half the
+weight pads it to the next size up, and a $k$-subset containing both
+copies never dominates.
 
 \begin{lemma}[Lean]\label{lem:repeat}
 Let $C$ be a subset of the index set of a design at $(m,k)$ with
@@ -679,9 +690,10 @@ Let $1\le k\le m$.  Then $\Gtz(m+1,k+1)\Rightarrow\Gtz(m,k)$.
 Let $\dsn$ be a design at $(m,k)$ in which no $k$-subset dominates.  For each
 of the finitely many $k$-subsets $C$ there is, by \eqref{eq:dominate}, a
 vector $p_C\ne0$ with $\sum_{c\in C}\langle g_c,p_C\rangle^2<\lVert
-p_C\rVert^2$; let $\sigma\in(0,1)$ be the average of $1$ and the largest
-of the finitely many ratios $\sum_{c\in C}\langle
-g_c,p_C\rangle^2/\lVert p_C\rVert^2$, so that
+p_C\rVert^2$; let $\sigma$ be the average of $1$ and the largest of the
+finitely many ratios $\sum_{c\in C}\langle g_c,p_C\rangle^2/\lVert
+p_C\rVert^2$.  Every ratio is below $1$, hence so is their maximum, and
+$\sigma$ lies strictly between the two; in particular $\sigma\in(0,1)$ and
 \begin{equation}\label{eq:unifgap}
   \sum_{c\in C}\langle g_c,p_C\rangle^2<\sigma\lVert p_C\rVert^2
   \qquad\text{for every $k$-subset }C .

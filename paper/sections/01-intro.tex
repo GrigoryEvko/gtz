@@ -18,9 +18,12 @@ dominating $k$-subset, and $\GtzC(m,k)$ for its complex analogue.
 
 At uniform weights the problem is classical.  Let $U\in\FF^{m\times k}$
 satisfy $U\adj U=I_k$, let $u_c\adj$ be its $c$-th row, and put
-$g_c:=\sqrt m\,u_c$ and $t_c:=1/m$.  Then \eqref{eq:parseval} holds.
-Writing $U_C$ for the $k\times k$ submatrix on the rows $C$, the
-requirement \eqref{eq:dominate} reads
+$g_c:=\sqrt m\,u_c$ and $t_c:=1/m$.  Then \eqref{eq:parseval} holds,
+the two factors of $m$ cancelling and leaving
+$\sum_cu_c^{\vphantom{\mathsf{H}}}u_c\adj=U\adj U=I_k$.  Writing $U_C$ for the
+$k\times k$ submatrix on the rows $C$, the same cancellation gives
+$\SC=m\,U_C\adj U_C^{\vphantom{\mathsf{H}}}$, so the requirement
+\eqref{eq:dominate} reads
 \[
   U_C\adj U_C^{\vphantom{\mathsf{H}}}\;\psd\;\tfrac1m I_k,
   \qquad\text{that is}\qquad
@@ -43,10 +46,12 @@ volumes do not all vanish.  Put $B:=UU_C^{-1}$.  Replacing the
 $j$-th row of $U_C$ by the $r$-th row of $U$ replaces that row by its
 expansion $\sum_i B_{ri}(U_C)_i$ in the selected rows; expanding the
 determinant linearly in that row leaves only the term $i=j$, every other
-having a repeated row, so the new determinant is $B_{rj}\det U_C$.  An
-entry of $B$ of modulus greater than $1$ would therefore name a $k$-subset
-of strictly larger volume, and maximality gives $\lvert B_{rj}\rvert\le1$
-throughout.  The rows of $B$ indexed by $C$ are $U_CU_C^{-1}=I_k$, whence
+having a repeated row, so the new determinant is $B_{rj}\det U_C$.  For
+$r\notin C$ that determinant belongs to a genuine $k$-subset, and an entry
+of modulus greater than $1$ would name one of strictly larger volume; so
+maximality bounds those entries by $1$.  The rows of $B$ indexed by $C$ are
+$U_CU_C^{-1}=I_k$, so every entry of $B$ has modulus at most $1$ and the
+$k$ rows on $C$ contribute exactly $k$ to the Frobenius norm, whence
 \[
   \tr\bigl((U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\bigr)
   \;=\;\lVert U_C^{-1}\rVert_F^2
