@@ -155,28 +155,35 @@ If $M$ is square, then $M\adj M\psd I$ if and only if $MM\adj\psd I$.
 \end{lemma}
 
 \begin{proof}
-The first statement is symmetric in $X$ and $X\adj$, so one implication
-suffices.  Assume $\lVert Xu\rVert\le\lVert u\rVert$ for every $u$, which
-is $I-X\adj X\psd0$.  For any $w$, by Cauchy--Schwarz and then the
-hypothesis at $u=X\adj w$,
+Both conditions say that a map does not increase length: $I-X\adj X\psd0$
+says $\lVert Xu\rVert\le\lVert u\rVert$ for every $u$, and $I-XX\adj\psd0$
+says $\lVert X\adj w\rVert\le\lVert w\rVert$ for every $w$.  The first
+statement therefore asserts that $X$ is a contraction if and only if
+$X\adj$ is, and being symmetric in the two it needs only one implication.
+
+Let $X$ be a contraction and fix $w$.  Then
+$\lVert X\adj w\rVert^{2}=\langle w,XX\adj w\rangle$; applying
+Cauchy--Schwarz to that inner product and then the hypothesis at
+$u=X\adj w$,
 \[
   \lVert X\adj w\rVert^4
-  \;=\;\langle w,XX\adj w\rangle^2
+  \;=\;\langle w,X(X\adj w)\rangle^2
   \;\le\;\lVert w\rVert^2\,\lVert X(X\adj w)\rVert^2
   \;\le\;\lVert w\rVert^2\,\lVert X\adj w\rVert^2 .
 \]
-If $X\adj w\ne0$ divide by $\lVert X\adj w\rVert^2$; in either case
-$\lVert X\adj w\rVert\le\lVert w\rVert$, which is $I-XX\adj\psd0$.
+If $X\adj w=0$ the bound $\lVert X\adj w\rVert\le\lVert w\rVert$ is
+immediate; otherwise divide by $\lVert X\adj w\rVert^{2}$.
 
-For the second statement let $M$ be $n\times n$ with $M\adj M\psd I$, that
-is $\lVert Mu\rVert\ge\lVert u\rVert$ for every $u$.  Then $Mu=0$ forces
-$u=0$, so $M$ is invertible.  Put $X:=M^{-1}$ and substitute $u=Xw$:
-$\lVert w\rVert\ge\lVert Xw\rVert$, so $I-X\adj X\psd0$.  By the first
-statement $I-XX\adj\psd0$, that is
-$\lVert (M\adj)^{-1}w\rVert\le\lVert w\rVert$ for every $w$; substituting
-$w=M\adj u$ gives $\lVert u\rVert\le\lVert M\adj u\rVert$, which is
-$MM\adj\psd I$.  The converse is the same argument with $M$ and $M\adj$
-exchanged.
+The second statement carries the opposite inequality: $M\adj M\psd I$ says
+$\lVert Mu\rVert\ge\lVert u\rVert$, so $M$ expands rather than contracts.
+Inverting reduces it to the case just proved.  An expansion is injective,
+so the square matrix $M$ is invertible, and substituting $u=M^{-1}w$ gives
+$\lVert w\rVert\ge\lVert M^{-1}w\rVert$: the inverse is a contraction.  By
+the first statement $(M\adj)^{-1}$ is a contraction as well, and
+substituting $w=M\adj u$ in
+$\lVert (M\adj)^{-1}w\rVert\le\lVert w\rVert$ returns
+$\lVert u\rVert\le\lVert M\adj u\rVert$, which is $MM\adj\psd I$.  The
+converse exchanges $M$ and $M\adj$.
 \end{proof}
 
 \begin{lemma}[Lean]\label{lem:chart}
@@ -301,8 +308,9 @@ $x=(a+b,a,b)$,
   \;=\;-(a+b)^2-a^2-b^2+4a(a+b)+4b(a+b)-4ab
   \;=\;2a^2+2ab+2b^2,
 \]
-positive definite there; so $B_3$ has at least two positive eigenvalues,
-and $\det B_3<0$ excludes three, leaving inertia $(2,1,0)$, the inertia
+which is positive definite, its discriminant $4-16$ being negative; so
+$B_3$ has at least two positive eigenvalues, and $\det B_3<0$ excludes
+three, leaving inertia $(2,1,0)$, the inertia
 of a chart gap at $(3,2)$.  Every diagonal entry of $B_2$ and of $B_3$ is
 $-1$, so neither matrix has a positive semidefinite principal block of
 the required size.  No statement of the form ``a Hermitian matrix of
@@ -429,11 +437,13 @@ the second step by Lemma~\ref{lem:flip} applied to $X:=N\adj$.  By
   \sum_{c\in C}w_c^{\vphantom{\mathsf{H}}}w_c\adj
   \;\preceq\;\sum_{c}(1-t_c)\,w_c^{\vphantom{\mathsf{H}}}w_c\adj .
 \]
-Subtracting both sides from $\sum_c w_c^{\vphantom{\mathsf{H}}}w_c\adj$ turns this
-into
+Write $T:=\sum_c w_c^{\vphantom{\mathsf{H}}}w_c\adj$ for the total over all
+indices.  Two identities turn that display inside out: the left side is
+$T$ less the sum over $E$, since $C$ and $E$ partition the indices, and
+the right side is $T-\Sdual$ by \eqref{eq:dualgram}.  Subtracting both
+sides from $T$ therefore reverses the inequality into
 \[
-  \sum_{c\in E}w_c^{\vphantom{\mathsf{H}}}w_c\adj
-  \;\psd\;\sum_{c}t_c\,w_c^{\vphantom{\mathsf{H}}}w_c\adj\;=\;\Sdual,
+  \sum_{c\in E}w_c^{\vphantom{\mathsf{H}}}w_c\adj\;\psd\;\Sdual ,
 \]
 and conjugating by the invertible $R$ turns it into
 $\sum_{c\in E}h_c^{\vphantom{\mathsf{H}}}h_c\adj\psd R\adj\Sdual R=I_{m-k}$, which is
@@ -524,8 +534,10 @@ Let $A\pd0$ and let $b$ be a vector, and put $q:=b\adj A^{-1}b$.  Then
 \end{lemma}
 
 \begin{proof}
-Put $y:=A^{-1}b$, so that $Ay=b$ and $q=\langle y,Ay\rangle\ge0$.  The
-form of the perturbed matrix is
+Put $y:=A^{-1}b$, so that $Ay=b$ and
+$q=\langle y,b\rangle=\langle y,Ay\rangle$: the number $q$ is the squared
+length of $y$ in the inner product $\langle\cdot,A\cdot\rangle$, and in
+particular $q\ge0$.  The form of the perturbed matrix is
 $\langle x,(A-bb\adj)x\rangle=\langle x,Ax\rangle-\lvert\langle
 b,x\rangle\rvert^2$.
 
@@ -612,12 +624,13 @@ $z_1^2=(1-t_1)/k<1$, and put
   \qquad \lVert u\rVert^2=2(1-z_1),
 \]
 the Householder reflection.  It is Hermitian and involutive, hence
-unitary, and $He_1=e_1+u=z$ because $u\adj e_1=z_1-1$.  Its remaining $k$
-columns are therefore an orthonormal basis of $z^{\perp}$; let $V$ be the
-$m\times k$ matrix formed by them and $g_c:=t_c^{-1/2}v_c$ as in
-Lemma~\ref{lem:realize}.  Then $V\adj V=I_k$ and
-$VV\adj=HH\adj-zz\adj=I-zz\adj$, so the design so obtained has weight
-vector $t$ and chart $P=I-zz\adj$, whose diagonal gives
+unitary, and $Qe_1=e_1+u=z$ because $u\adj e_1=z_1-1$.  Its first column
+is thus $z$, so its remaining $k$ columns are an orthonormal basis of
+$z^{\perp}$; let $V$ be the $m\times k$ matrix formed by them and
+$g_c:=t_c^{-1/2}v_c$ as in Lemma~\ref{lem:realize}.  Then $V\adj V=I_k$,
+and expanding $I=QQ\adj$ as the sum of the outer products of the columns
+of $Q$ gives $zz\adj+VV\adj=I$.  So the design so obtained has weight
+vector $t$ and chart $P=VV\adj=I-zz\adj$, whose diagonal gives
 $t_c\ell_c=1-(1-t_c)/k$, that is \eqref{eq:tielaw}.
 \end{proof}
 

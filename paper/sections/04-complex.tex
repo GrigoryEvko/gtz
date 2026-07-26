@@ -68,7 +68,8 @@ $B$ indexed by $C$ form $I_k$.  By Cramer's rule, $B_{ci}\det M$ is the
 determinant of the matrix obtained from $M$ by substituting $g_c\adj$ for
 its $i$-th row; that matrix is, up to a permutation of rows, $A_{C'}$ with
 $C':=(C\setminus\{c_i\})\cup\{c\}$, where $c_i$ is the $i$-th element of
-$C$, and it is singular if $c\in C\setminus\{c_i\}$.  Hence
+$C$; if $c$ already lies in $C\setminus\{c_i\}$ then that matrix has two
+equal rows and its determinant vanishes.  Hence
 \[
   \lvert B_{ci}\rvert\;=\;\frac{\lvert\det A_{C'}\rvert}{\lvert\det A_C\rvert}
   \;\le\;1
@@ -546,9 +547,12 @@ Substituting $s=3(1-\gamma)$ in \eqref{eq:hessecubic} gives
 \]
 and for $\gamma=\cos\theta$ the identity $4\cos^{3}\theta-3\cos\theta
 =\cos3\theta$ turns $8\gamma^{3}-6\gamma+1=0$ into
-$\cos3\theta=-\tfrac12$.  On $[0,\pi]$ the solutions are
+$\cos3\theta=-\tfrac12$.  As $\theta$ runs over $[0,\pi]$ the angle
+$3\theta$ runs over $[0,3\pi]$, where the cosine takes the value
+$-\tfrac12$ at $\tfrac{2\pi}3$, $\tfrac{4\pi}3$ and $\tfrac{8\pi}3$; the
+solutions are therefore
 $\theta=\tfrac{2\pi}9,\tfrac{4\pi}9,\tfrac{8\pi}9$, which gives the three
-roots; they are distinct, and $s=3(1-\cos\theta)$ increases with $\theta$,
+roots.  They are distinct, and $s=3(1-\cos\theta)$ increases with $\theta$,
 so $h_3$ is the least.  Exact evaluation isolates it: $h$ is negative at
 $\tfrac7{10}$, where its value is $-\tfrac{136}{1000}$, and positive at
 $\tfrac{71}{100}$, where its value is $\tfrac{588088}{10^{6}}$, so
@@ -584,9 +588,14 @@ direct expansion of both sides gives the polynomial identity
       +p\cdot\operatorname{atom}\bigl(0,q,\tfrac32\omega^{2}\bigr)
       -\tfrac18h(s)\,E_{33},
 \end{equation}
-$E_{33}$ being the matrix unit in the last diagonal slot: the entries
-other than $(3,3)$ agree as polynomials in $s$, and the residue at $(3,3)$
-is
+$E_{33}$ being the matrix unit in the last diagonal slot.  The identity is
+the $LDL\adj$ factorization of $\SC-sI_3$ cleared of denominators: the
+leading $2\times2$ block of $\SC-sI_3$ is the diagonal $\diag(p,q)$, the
+two rank-one terms are the pivot contributions of that factorization
+multiplied by $pq$, and the coefficient of $E_{33}$ is $pq$ times the
+Schur complement of the block, which is where $h$ enters.  Checking the
+identity is a computation: the entries other than $(3,3)$ agree as
+polynomials in $s$, and the residue at $(3,3)$ is
 \[
   pq\bigl(\tfrac92-s\bigr)-\tfrac94(p+q)
   \;=\;\Bigl(-s^{3}+9s^{2}-\tfrac{99}4s+\tfrac{81}4\Bigr)
