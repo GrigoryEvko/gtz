@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex build/main"] 1785110029.67634 "build/main.aux" "build/main.bbl" "build/main" 1785110631.47555 0
+["bibtex build/main"] 1785112158.50852 "build/main.aux" "build/main.bbl" "build/main" 1785112202.73331 0
   "./refs.bib" 1785090408.34521 11064 37d96a8054dbc51ec60fc289cfdec380 ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/amscls/amsplain.bst" 1513722769 25798 9b3546f2f237ee0ce4724eed95f954f4 ""
-  "build/main.aux" 1785110631.24802 41773 af82cd10700eb0394a4ebe01da28dbc6 "pdflatex"
+  "build/main.aux" 1785112202.51266 42361 f12203e52dc6a7eab36123883096bb1a "pdflatex"
   (generated)
   "build/main.bbl"
   "build/main.blg"
   (rewritten before read)
-["pdflatex"] 1785110629.11866 "main.tex" "build/main.pdf" "main" 1785110631.47574 0
+["pdflatex"] 1785112200.24866 "main.tex" "build/main.pdf" "main" 1785112202.73351 0
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -303,10 +303,10 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1777593600 43785 66587115382950aca692b5f6e3c2fb74 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1780179714 5572510 7dd3ae02b70ced0e931c03f1b6376052 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1780179449 3520296 1faac5c9d7c1f507240de6582c1134f2 ""
-  "build/main.aux" 1785110631.24802 41773 af82cd10700eb0394a4ebe01da28dbc6 "pdflatex"
-  "build/main.bbl" 1785110029.7556 6634 e8541e1e8c694c52c723b4468155ff6a "bibtex build/main"
-  "build/main.out" 1785110631.25002 13714 d7215d3227cd35cf4908d561de43ab07 "pdflatex"
-  "build/main.toc" 1785110631.25002 6923 478768fd88d0b47a1183e5179121a440 "pdflatex"
+  "build/main.aux" 1785112202.51266 42361 f12203e52dc6a7eab36123883096bb1a "pdflatex"
+  "build/main.bbl" 1785112158.56411 6634 e8541e1e8c694c52c723b4468155ff6a "bibtex build/main"
+  "build/main.out" 1785112202.51366 13714 d7215d3227cd35cf4908d561de43ab07 "pdflatex"
+  "build/main.toc" 1785112202.51466 6923 cb944d277443cf9e68e80ade4ab77597 "pdflatex"
   "figures/board.tex" 1785094501.13354 3622 a2d54d57c80f8f89e2c1a3ebfe2ef390 ""
   "figures/boundary.tex" 1785094501.13378 3555 17de73b4d171be0dd8a3471a8977cbee ""
   "figures/census.tex" 1785094501.13384 2156 3c39463572841cbe8d7d5facd94577da ""
@@ -316,7 +316,7 @@
   "figures/ladder.tex" 1785110613.10937 2239 6830cb1cc18bdcb44b673420353fb04a ""
   "figures/sharp.tex" 1785094501.13388 3205 b778c7b8a1b0825ddc06fd018e01b484 ""
   "figures/tetrahedron.tex" 1785094501.13394 2928 84122b98ad560c205dfe85e897b23a9f ""
-  "main.tex" 1785103431.26162 7097 ed1ac4bf2743c1f9778761c25a6ab519 ""
+  "main.tex" 1785110639.56786 7097 ed1ac4bf2743c1f9778761c25a6ab519 ""
   "sections/01-intro.tex" 1785107222.09469 14363 20f81cecbdc57b9f34426c9ca5749248 ""
   "sections/02-first.tex" 1785107227.63559 14341 a9218fdd52e931060743359b4bf8acdb ""
   "sections/03-chart.tex" 1785103726.22793 28590 c6473c32fdf4874819db80756a1ab91d ""
@@ -325,7 +325,7 @@
   "sections/06-ties.tex" 1785107320.5088 30164 5dec34a90100f179e2c8afa0b35c103d ""
   "sections/07-compactness.tex" 1785108042.4159 32204 29f41df3f2acab3aa7efd8baf7836335 ""
   "sections/08-interior.tex" 1785108844.62144 44254 5feb2d91c178584f40d6873a378ab3f6 ""
-  "sections/09-formalization.tex" 1785109455.81466 10379 e9bde1bf329a558c2cb00d15653a9bf6 ""
+  "sections/09-formalization.tex" 1785112193.97683 16197 c574b88dc35cc041529ca9578a226542 ""
   "sections/10-open.tex" 1785110610.25242 7643 c4d9aa90966fed08c8a32f08d16ae1ef ""
   "sections/appendix-a.tex" 1785109782.04037 17974 05ab7f1709880fa57d0e0ae5b33f0e3a ""
   "sections/appendix-b.tex" 1785110018.12882 19090 b82fafcd34a348b791a512d1a836da8a ""
