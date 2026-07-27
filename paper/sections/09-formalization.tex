@@ -5,9 +5,10 @@ Tables~\ref{tab:lean} and~\ref{tab:leantwo} name the declaration behind
 every tagged statement, and all of them where a statement is assembled from
 several.  Twenty-one tags are not discharged in full, and
 \S\ref{sec:boundaries} records which.  Declarations named in running text
-rather than in the tables --- in \S\ref{sec:boundaries} itself and in
-\S\ref{sec:open} --- back prose that carries no tag; they are covered by
-the ledger of \S\ref{sec:axioms} on the same terms as the tabulated ones.
+rather than in the tables --- in \S\ref{sec:boundaries} itself, in
+\S\ref{sec:open} and in both appendices --- back prose that carries no
+tag; they are covered by the ledger of \S\ref{sec:axioms} on the same
+terms as the tabulated ones.
 
 The formal statements are the originals, and the statements in the text
 are their transcriptions.
@@ -249,7 +250,11 @@ Proposition~\ref{prop:noaggregate}
 Proposition~\ref{prop:twomoment}& \texttt{Gtz.dominates\_of\_twoMomentGap\_nonneg} \\
 Proposition~\ref{prop:icosa}   & \texttt{Gtz.icosa\_twoMomentGap\_eq},
                                  \texttt{Gtz.icosa\_no\_twoMoment\_certificate}, \\
-                               & \texttt{Gtz.icosaDesign\_strictly\_dominates}
+                               & \texttt{Gtz.icosaDesign\_strictly\_dominates} \\
+Proposition~\ref{prop:volumefails}
+                               & \texttt{Gtz.shadowDeterminant\_le\_shadowArgmaxSubset}, \\
+                               & \texttt{Gtz.shadowArgmaxSubset\_not\_dominates}, \\
+                               & \texttt{Gtz.shadowArgmaxDesign\_hasDominatingSubset}
 \end{longtable}}
 
 \subsection{Axiom discipline}\label{sec:axioms}
@@ -329,8 +334,8 @@ Twenty-one tags are narrower than the statement they head, in two families.
 Twelve are one mechanism: the statement is printed over $\FF$, or over both
 fields, and the formal statement is over $\R$.  The field-generic layer is
 the design structure, the trace identity, the chart of \S\ref{sec:chart}
-with its congruence and its two Rayleigh halves, the weak form of
-Lemma~\ref{lem:rankone}, the co-Parseval operator,
+with its congruence, its criterion and its two Rayleigh halves, the weak
+form of Lemma~\ref{lem:rankone}, the co-Parseval operator,
 Proposition~\ref{prop:sizerank} and Theorem~\ref{thm:corankone} apart from
 its part~(i).  The twelve
 lie outside it: the spanning assertion of Lemma~\ref{lem:span}; the
@@ -356,11 +361,15 @@ $\sum_c(1-t_c)g_c^{\vphantom{\mathsf{H}}}g_c\adj$ and draws the dual atoms
 from an orthonormal completion.  What is mechanized is that some dual design
 with the same weights flips domination, not that this one does.
 
-Proposition~\ref{prop:rankfloor} is not among the twelve.  It is mechanized
-at $\R$ and at $\C$ separately, by the same three steps, as\\
+Proposition~\ref{prop:rankfloor} and Lemma~\ref{lem:direction} are not among
+the twelve.  Each is printed over $\FF$ and mechanized at $\R$ and at $\C$
+separately, the first as\\
 \texttt{Gtz.gtzWeightedFloor\_inv\_rank} and\\
-\texttt{Gtz.complexRankConstantAtLeast\_rankInverse};\\
-what is missing is only the form at a generic \texttt{RCLike} scalar.
+\texttt{Gtz.complexRankConstantAtLeast\_rankInverse},\\
+the second as \texttt{Gtz.exists\_atom\_covering\_direction} and\\
+\texttt{Gtz.exists\_atom\_covering\_direction\_complex}.\\
+What is missing in each case is only the form at a generic \texttt{RCLike}
+scalar.
 
 Nine are gaps inside one field: a clause of the printed statement has no
 formal counterpart at either.
