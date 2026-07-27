@@ -1,0 +1,133 @@
+% The equality locus of section sec:ties as a section of the weight map, at
+% (m,k) = (6,3).  Orthographic projection of R^3 with azimuth 20 and elevation
+% 15 degrees, scaled by 1.35cm:
+%   X = 1.35(-0.3420 x_1 + 0.9397 x_2)
+%   Y = 1.35(-0.2432 x_1 - 0.0885 x_2 + 0.9659 x_3)
+% so one unit of height x_3 lifts a point by 1.35*0.9659 = 1.3040cm.
+%
+% FLOOR.  The base drawn is the two-dimensional slice t_4=t_5=t_6=1/6 of the
+% open weight simplex at m=6; on it t_1+t_2+t_3=1/2, and the barycentric
+% coordinate u=2(t_1,t_2,t_3) carries the slice to the equilateral triangle of
+% circumradius 2.8 in the plane x_3=0,
+%   V1 = ( 2.8, 0.0000, 0),  V2 = (-1.4, 2.4249, 0),  V3 = (-1.4,-2.4249, 0),
+% the uniform weight vector t_c=1/6 landing on the centroid u=(1/3,1/3,1/3).
+% Every coordinate below is u_1 V1 + u_2 V2 + u_3 V3 projected and then raised
+% by 1.3040 z, with u and z in the trailing comment.
+%
+% SHEETS.  The fibre of the weight map is drawn as one vertical dimension and
+% the three heights carry no numerical meaning.  Sheet j is the graph of
+%   z = z0 + a q(u),   q(u) = u_1u_2 + u_2u_3 + u_3u_1,
+%   (z0,a) = (1.60, 0.30), (3.05,-0.28), (4.50, 0.32),
+% and q is 0 at the corners, 1/4 at the edge midpoints, 1/3 at the centroid.
+% Each boundary edge is the quadratic Bezier through the corner, edge-midpoint
+% and corner heights, written as the equal cubic: its two control points sit at
+% the thirds of the chord, raised by 4d/3, where d = 1.3040 a/4 is the height of
+% the edge midpoint above the chord midpoint,
+%   d    = 0.0978, -0.0913, 0.1043,
+%   4d/3 = 0.1304, -0.1217, 0.1391.
+%
+% A dashed boundary marks exclusion.  The simplex is open, and so is each sheet
+% over it.  The subregion is the parallelogram of barycentric half-widths 0.05
+% about u = (.36,.16,.48), drawn on the floor and on each of the three sheets.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  vec/.style={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt},
+  open/.style={draw=black!70, line width=0.45pt, dashed,
+               dash pattern=on 2.2pt off 1.5pt},
+  frame/.style={draw=black!35, line width=0.3pt, densely dotted},
+  every node/.style={font=\small}]
+
+% ---- the floor: the slice of the open weight simplex --------------------
+\filldraw[fill=black!12, open]
+  (-1.2928,-0.9193) --                              % u = (1,0,0)
+  ( 3.7226, 0.1699) --                              % u = (0,1,0)
+  (-2.4297, 0.7494) -- cycle;                       % u = (0,0,1)
+\path[fill=black!35]
+  (-0.8421, 0.1938) --                              % u = (.26,.21,.53)
+  (-0.7284, 0.0270) --                              % u = (.36,.21,.43)
+  (-1.2300,-0.0819) --                              % u = (.46,.11,.43)
+  (-1.3437, 0.0849) -- cycle;                       % u = (.36,.11,.53)
+
+% ---- sheet 1: the classes 1 | 2 | 35 | 46 -------------------------------
+\filldraw[fill=black!12, open]
+  (-1.2928,1.1671)                                  % u = (1,0,0), z = 1.60
+    .. controls ( 0.3790,1.6606) and ( 2.0508,2.0236) ..
+  ( 3.7226,2.2563)                                  % u = (0,1,0), z = 1.60
+    .. controls ( 1.6718,2.5799) and (-0.3789,2.7730) ..
+  (-2.4297,2.8358)                                  % u = (0,0,1), z = 1.60
+    .. controls (-2.0507,2.4100) and (-1.6718,1.8537) .. cycle;
+\path[fill=black!35]
+  (-0.8421,2.3990) --                               % z = 1.6911
+  (-0.7284,2.2389) --                               % z = 1.6962
+  (-1.2300,2.1202) --                               % z = 1.6887
+  (-1.3437,2.2842) -- cycle;                        % z = 1.6866
+
+% ---- sheet 2: the classes 12 | 34 | 5 | 6 -------------------------------
+\filldraw[fill=black!12, open]
+  (-1.2928,3.0579)                                  % u = (1,0,0), z = 3.05
+    .. controls ( 0.3790,3.2993) and ( 2.0508,3.6623) ..
+  ( 3.7226,4.1471)                                  % u = (0,1,0), z = 3.05
+    .. controls ( 1.6718,4.2186) and (-0.3789,4.4117) ..
+  (-2.4297,4.7266)                                  % u = (0,0,1), z = 3.05
+    .. controls (-2.0507,4.0487) and (-1.6718,3.4924) .. cycle;
+\path[fill=black!35]
+  (-0.8421,4.0601) --                               % z = 2.9650
+  (-0.7284,3.8871) --                               % z = 2.9602
+  (-1.2300,3.7873) --                               % z = 2.9672
+  (-1.3437,3.9567) -- cycle;                        % z = 2.9692
+
+% ---- sheet 3: the classes 156 | 2 | 3 | 4 -------------------------------
+\filldraw[fill=black!12, open]
+  (-1.2928,4.9487)                                  % u = (1,0,0), z = 4.50
+    .. controls ( 0.3790,5.4509) and ( 2.0508,5.8139) ..
+  ( 3.7226,6.0379)                                  % u = (0,1,0), z = 4.50
+    .. controls ( 1.6718,6.3702) and (-0.3789,6.5633) ..
+  (-2.4297,6.6174)                                  % u = (0,0,1), z = 4.50
+    .. controls (-2.0507,6.2003) and (-1.6718,5.6440) .. cycle;
+\path[fill=black!35]
+  (-0.8421,6.1885) --                               % z = 4.5972
+  (-0.7284,6.0288) --                               % z = 4.6026
+  (-1.2300,5.9095) --                               % z = 4.5946
+  (-1.3437,6.0734) -- cycle;                        % z = 4.5924
+
+% ---- the fibre direction: three corner walls and two whole fibres -------
+\draw[frame] (-1.2928,-0.9193) -- (-1.2928,5.05);
+\draw[frame] ( 3.7226, 0.1699) -- ( 3.7226,6.14);
+\draw[frame] (-2.4297, 0.7494) -- (-2.4297,6.72);
+\draw[frame] ( 0.0000, 0.0000) -- ( 0.0000,6.70);   % u = (1/3,1/3,1/3)
+\draw[frame] ( 1.9130, 0.1217) -- ( 1.9130,6.50);   % u = (.14,.68,.18)
+
+% ---- the design each fibre meets on each sheet --------------------------
+\fill ( 0.0000,0.0000) circle (1.6pt);
+\fill ( 0.0000,2.2168) circle (1.6pt);              % z = 1.7000
+\fill ( 0.0000,3.8555) circle (1.6pt);              % z = 2.9567
+\fill ( 0.0000,6.0071) circle (1.6pt);              % z = 4.6067
+\fill ( 1.9130,0.1217) circle (1.6pt);
+\fill ( 1.9130,2.3031) circle (1.6pt);              % z = 1.6728
+\fill ( 1.9130,4.0102) circle (1.6pt);              % z = 2.9820
+\fill ( 1.9130,6.0910) circle (1.6pt);              % z = 4.5777
+
+% ---- the section over the subregion -------------------------------------
+\draw[vec] (-1.0361,0.0560) -- (-1.0361,2.1661);    % u = (.36,.16,.48)
+\draw[line width=0.3pt] (-1.0361,1.02) -- (0.25,1.02);
+\node[anchor=west, font=\scriptsize, align=left, fill=white, inner sep=1.5pt]
+  at (0.29,1.02) {$t\mapsto\dsn(t,\varphi)$\\ at every $t\in\mathcal{U}$};
+\node[anchor=north, font=\footnotesize] at (-1.05,-0.09) {$\mathcal{U}$};
+
+% ---- the base, labelled -------------------------------------------------
+\node[anchor=north east, font=\footnotesize] at (-1.36,-0.98) {$t_1=\tfrac12$};
+\node[anchor=west,       font=\footnotesize] at ( 3.83,0.1699) {$t_2=\tfrac12$};
+\node[anchor=east,       font=\footnotesize] at (-2.53,0.7494) {$t_3=\tfrac12$};
+\node[anchor=west,  font=\scriptsize] at (0.12,-0.05) {$t_c=\tfrac16$};
+\node[anchor=north, font=\scriptsize] at (0.90,-1.34)
+  {$t_4=t_5=t_6=\tfrac16$, \quad $t_1+t_2+t_3=\tfrac12$};
+
+% ---- the fibre axis and the classes -------------------------------------
+\draw[vec, black!55] (-3.75,0.10) -- (-3.75,6.55);
+\node[rotate=90, font=\scriptsize] at (-3.98,3.30) {fibre of the weight map};
+\node[anchor=west, font=\scriptsize]   at (3.85,6.42) {classes of $\varphi$:};
+\node[anchor=west, font=\footnotesize] at (3.85,6.0379) {$156\,|\,2\,|\,3\,|\,4$};
+\node[anchor=west, font=\footnotesize] at (3.85,4.1471) {$12\,|\,34\,|\,5\,|\,6$};
+\node[anchor=west, font=\footnotesize] at (3.85,2.2563) {$1\,|\,2\,|\,35\,|\,46$};
+
+\end{tikzpicture}

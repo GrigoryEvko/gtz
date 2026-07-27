@@ -1,0 +1,120 @@
+% Duality at (m,k) = (3,1).  The chart is the orthogonal projection onto a line
+% of the index space R^3 and I-P is the projection onto the complementary plane,
+% so selecting the coordinate 3 upstairs and deleting the complementary pair
+% downstairs are one operation.  The design drawn is
+%   t = (9,36,4)/49,   g = (2,-1/3,3/2),   v_c = sqrt(t_c) g_c = (6,-2,3)/7,
+% whence P = v v^H, s_c = v_c^2 = (36,4,9)/49, and the singleton {3} dominates
+% because s_3 - t_3 = 5/49 > 0.  The two rescalings of the kernel row z_3 are
+%   correct  w_3 = z_3/sqrt(1-t_3),  ||w_3||^2 = (40/49)/(45/49) = 8/9 <= 1,
+%   naive    u_3 = z_3/sqrt(t_3),    chart (Z Z^H, t) = (I-P, t),
+% and the naive dual refuses the pair {1,2}: (I-P-D)[{1,2}] = [4,12;12,9]/49 has
+% determinant (36-144)/49^2 < 0.
+%
+% Orthographic projection of R^3 with azimuth 45 and elevation 30 degrees,
+% scaled by 1.85cm:
+%   X = 1.85(-0.707107 x_1 + 0.707107 x_2)
+%   Y = 1.85(-0.353553 x_1 - 0.353553 x_2 + 0.866025 x_3)
+% Every coordinate below is the parenthesised value, with its source triple in a
+% trailing comment; the 1.85cm is carried by the x and y unit vectors.  The
+% kernel plane is drawn as the rectangle spanned by the orthonormal pair
+%   d1 =  cos25 b1 + sin25 b2 = ( 0.114774,  0.917074, 0.381818),
+%   d2 = -sin25 b1 + cos25 b2 = (-0.502129, -0.278094, 0.818855),
+% where b1 = (1,3,0)/sqrt10 and b2 = (-9,3,20)/sqrt490 span v^perp, at half
+% widths 2.00 along d1 and 1.05 along d2.  The plane shadow (I-P)e_3 has
+% coordinates (0.381823, 0.818857) in that frame, so it lies inside the patch.
+\begin{tikzpicture}[
+  x=1.85cm, y=1.85cm,
+  vec/.style   ={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt},
+  proj/.style  ={line width=1.05pt, black!85},
+  edge/.style  ={line width=0.45pt, black!65},
+  hidden/.style={line width=0.45pt, black!45, dashed, dash pattern=on 1.4pt off 1.2pt},
+  frame/.style ={densely dotted, line width=0.3pt, black!35},
+  constr/.style={densely dotted, line width=0.45pt, black!55},
+  hair/.style  ={line width=0.4pt, black!45},
+  every node/.style={inner sep=1.5pt, font=\small}]
+
+% ---- the kernel plane, as a rectangle through the origin -----------------
+\coordinate (Cpp) at ( 1.3009, 0.9659);   %  2.00 d1 + 1.05 d2
+\coordinate (Cpm) at ( 0.9683,-1.1025);   %  2.00 d1 - 1.05 d2
+\coordinate (Cmm) at (-1.3009,-0.9659);   % -2.00 d1 - 1.05 d2
+\coordinate (Cmp) at (-0.9683, 1.1025);   % -2.00 d1 + 1.05 d2
+\path[fill=black!12] (Cpp)--(Cmp)--(Cmm)--(Cpm)--cycle;
+\draw[edge]          (Cpp)--(Cmp)--(Cmm)--(Cpm)--cycle;
+
+% ---- the three coordinate axes, as a frame of reference ------------------
+\coordinate (O)  at (0,0);
+\coordinate (A1) at (-0.7425,-0.3712);    % 1.05 e_1
+\coordinate (A2) at ( 0.7425,-0.3712);    % 1.05 e_2
+\coordinate (A3) at ( 0,      1.3423);    % 1.55 e_3
+\draw[frame] (O)--(A1);
+\draw[frame] (O)--(A2);
+\draw[frame] (O)--(A3);
+\node[anchor=north,      font=\footnotesize] at (A1) {$e_1$};
+\node[anchor=north,      font=\footnotesize] at (A2) {$e_2$};
+\node[anchor=south west, font=\footnotesize] at (A3) {$e_3$};
+
+% ---- the range of the chart: the line R v --------------------------------
+\coordinate (V)    at (-0.8081, 0.1691);  % v      = ( 6,-2, 3)/7
+\coordinate (Vfar) at (-1.1718, 0.2452);  % 1.45 v
+\coordinate (Vneg) at ( 0.3637,-0.0761);  % -0.45 v, behind the plane
+\draw[hidden] (O)--(Vneg);
+\draw[edge]   (V)--(Vfar);
+% the line meets the plane at a right angle: the square on -0.17v and -0.17d2
+\draw[edge, line width=0.4pt]
+      ( 0.1374,-0.0288)--( 0.1105,-0.1962)--(-0.0269,-0.1674);
+
+% ---- the two shadows of e_3, and the parallelogram they close ------------
+\coordinate (Pe) at (-0.3463, 0.0725);    % P e_3    = ( 18,-6, 9)/49
+\coordinate (Qe) at ( 0.3463, 0.7935);    % (I-P)e_3 = (-18, 6,40)/49
+\coordinate (E3) at ( 0,      0.8660);    % e_3
+\draw[constr] (Pe)--(E3) (Qe)--(E3);
+\draw[proj]   (O)--(Pe);
+\draw[proj]   (O)--(Qe);
+\fill (Pe) circle (1.3pt);
+\fill (Qe) circle (1.3pt);
+
+% ---- the unit vector on the line, and the selected basis vector ----------
+\draw[vec] (O)--(V);
+\draw[vec] (O)--(E3);
+\fill (O) circle (1.1pt);
+
+\node[anchor=east,       font=\footnotesize] at (-1.20, 0.26) {$\operatorname{ran}P$};
+\node[anchor=south,      font=\footnotesize] at (-0.68, 0.19) {$v$};
+\node[anchor=east,       font=\scriptsize]   at (-0.50,-0.10) {$Pe_3$};
+\node[anchor=north west, font=\scriptsize]   at ( 0.36, 0.60) {$(I-P)e_3$};
+\node[font=\footnotesize] at (-0.30,-0.62) {$\ker P$};
+
+% ======================= the forced normalization =========================
+% Nine rows 0.32 apart, the two columns starting at 1.55 and 3.98.
+\begin{scope}[every node/.style={anchor=west, inner sep=1.5pt,
+                                 font=\footnotesize}]
+\node[font=\scriptsize] at (1.55, 1.63)
+  {$m=3$, \ $k=1$, \ $t=\tfrac1{49}(9,36,4)$, \ $g=(2,-\tfrac13,\tfrac32)$,
+   \ $v=\tfrac17(6,-2,3)$};
+\node[font=\scriptsize] at (1.55, 1.31)
+  {$\lVert Pe_3\rVert^2=s_3=\tfrac9{49}$, \
+   $\lVert (I-P)e_3\rVert^2=\lVert z_3\rVert^2=\tfrac{40}{49}$};
+\node[font=\scriptsize] at (1.55, 0.99)
+  {$C=\{3\}$, \ $E:=C^{\complement}=\{1,2\}$, \
+   $W_{33}=s_3-t_3=\tfrac5{49}>0$: \ $C$ dominates};
+
+\draw[hair] (1.55, 0.80)--(6.48, 0.80);
+\draw[hair] (3.81, 0.77)--(3.81,-1.13);
+
+\node at (1.55, 0.61) {co-weights (Theorem~\ref{thm:duality})};
+\node at (3.98, 0.61) {weights (Remark~\ref{rem:naive})};
+\node at (1.55, 0.29) {$w_c:=z_c/\sqrt{1-t_c}$};
+\node at (3.98, 0.29) {$u_c:=z_c/\sqrt{t_c}$};
+\node at (1.55,-0.03) {$h_c:=R\adj w_c$, \ $R\adj\Sdual R=I_2$};
+\node at (3.98,-0.03) {chart $(ZZ\adj,t)=(I-P,t)$};
+\node at (1.55,-0.35)
+  {$\textstyle\sum_{c\in C}w_c^{\vphantom{\mathsf{H}}}w_c\adj\preceq I_2$};
+\node at (3.98,-0.35)
+  {$(I-P-D)[E]=\tfrac1{49}\begin{psmallmatrix}4&12\\12&9\end{psmallmatrix}$};
+\node at (1.55,-0.67) {$\lVert w_3\rVert^2=\tfrac{1-s_3}{1-t_3}=\tfrac{40}{45}\le1$};
+\node at (3.98,-0.67) {$\det=\tfrac{36-144}{49^2}<0$};
+\node at (1.55,-1.03) {$E$ dominates, matching $C$};
+\node at (3.98,-1.03) {$E$ fails, though $C$ dominates};
+\end{scope}
+
+\end{tikzpicture}

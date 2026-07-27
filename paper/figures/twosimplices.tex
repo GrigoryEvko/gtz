@@ -1,0 +1,85 @@
+% The two simplices at (4,3): the weights, and the leverage scores through the
+% substitution s_c -> 1 - s_c.  Both are 3-simplices inside R^4, drawn through
+% the affine identification of the standard simplex with R^3 that carries the
+% vertex e_c to the c-th vertex of the regular tetrahedron of
+% figures/tetrahedron.tex,
+%   x_1 = p_1 + p_2 - p_3 - p_4
+%   x_2 = p_1 - p_2 + p_3 - p_4
+%   x_3 = p_1 - p_2 - p_3 + p_4        (barycentre -> origin),
+% followed by the orthographic projection of R^3 with azimuth 15 and elevation
+% 70 degrees, scaled by 1.35cm -- the camera and the scale of
+% figures/tetrahedron.tex, so the tetrahedron there and these two are the same
+% drawing:
+%   X = 1.35(-0.2588 x_1 + 0.9659 x_2)
+%   Y = 1.35(-0.9077 x_1 - 0.2432 x_2 + 0.3420 x_3)
+% The right panel repeats the left, shifted 7.7cm in X.  The leverage-score
+% polytope is a simplex because the corank m - k is one; at corank two and above
+% it is a hypersimplex, and this drawing does not apply.
+%
+% The path drawn is t = (1-3u, u, u, u) for 0 < u <= 1/4, carried at the chart
+% P = I_4 - J_4/4 of the tetrahedron design: s_c = P_cc = 3/4 at every u, and
+% l_c = s_c/t_c is 3/(4(1-3u)) at c = 1 and 3/(4u) at c = 2, 3, 4, all equal to
+% 3 at u = 1/4.  In the identification above the path is the segment from the
+% origin to the vertex e_1, since (1-3u)g_1 + u(g_2 + g_3 + g_4) = (1-4u)g_1.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  vec/.style={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt},
+  frame/.style={densely dotted, line width=0.3pt, black!35},
+  lead/.style={line width=0.3pt, black!55},
+  edge/.style={line width=0.45pt, black!65},
+  hidden/.style={line width=0.45pt, black!45, dashed, dash pattern=on 1.4pt off 1.2pt},
+  every node/.style={font=\small}]
+
+% ---- one simplex, vertices e_1..e_4, barycentre at the origin -----------
+% projected vertices:  e_1 -> ( 1, 1, 1) -> ( 0.9546,-1.0920)
+%                      e_2 -> ( 1,-1,-1) -> (-1.6534,-1.3588)
+%                      e_3 -> (-1, 1,-1) -> ( 1.6534, 0.4354)
+%                      e_4 -> (-1,-1, 1) -> (-0.9546, 2.0154)
+% e_2--e_3 is the far diagonal of the silhouette quadrilateral, hence hidden;
+% the four dotted medians locate the barycentre against the vertices.
+\newcommand{\simplexframe}{%
+  \draw[hidden] (-1.6534,-1.3588)--( 1.6534, 0.4354);
+  \draw[edge]   ( 0.9546,-1.0920)--(-1.6534,-1.3588)
+                ( 0.9546,-1.0920)--( 1.6534, 0.4354)
+                ( 0.9546,-1.0920)--(-0.9546, 2.0154)
+                (-1.6534,-1.3588)--(-0.9546, 2.0154)
+                ( 1.6534, 0.4354)--(-0.9546, 2.0154);
+  \draw[frame]  (0,0)--( 0.9546,-1.0920) (0,0)--(-1.6534,-1.3588)
+                (0,0)--( 1.6534, 0.4354) (0,0)--(-0.9546, 2.0154);
+  \fill (0,0) circle (1.6pt);}
+
+% ======================= left: the weights ==============================
+\simplexframe
+\node[anchor=south] at (0,2.24) {the weights};
+\draw[lead] (-0.13,0)--(-1.38,0);
+\node[anchor=east, align=right, font=\footnotesize] at (-1.42,0)
+  {$t_c=\tfrac14$\\[1pt] {\scriptsize at $u=\tfrac14$}};
+% the escape path t = (1-3u, u, u, u) is the median from the barycentre to e_1
+\draw[vec] (0,0)--( 0.9546,-1.0920);
+\node[anchor=north, font=\footnotesize] at (0.9546,-1.30) {$t=(1,0,0,0)$};
+\node[anchor=north, align=center, font=\footnotesize] at (0,-1.90)
+  {$t_c\ge0$, \ $\sum_c t_c=1$\\ $t\in\Delta^{3}$};
+
+% ======================= middle: what each coordinate does ==============
+\node[align=center, font=\footnotesize] at (3.85,0.34)
+  {the chart $P$ held fixed\\[1pt]
+   $t=(1-3u,u,u,u)$, \ $u\to0$\\[5pt]
+   $s_c=P_{cc}$\\[5pt]
+   $\ell_c=s_c/t_c$\\[1pt]
+   {\scriptsize singular only at $t_c=0$}\\[5pt]
+   $\ell_1\to\tfrac34$\\[1pt]
+   $\ell_2=\ell_3=\ell_4=\tfrac{3}{4u}\to\infty$};
+
+% ======================= right: the leverage scores =====================
+\begin{scope}[shift={(7.7,0)}]
+  \simplexframe
+  \node[anchor=south] at (0,2.24) {the leverage scores};
+  \draw[lead] (0.13,0)--(1.66,0);
+  \node[anchor=west, align=left, font=\footnotesize] at (1.70,0)
+    {$s_c=\tfrac34$\\[1pt] {\scriptsize at every $u$}};
+  \node[anchor=north, font=\footnotesize] at (0.9546,-1.30) {$s=(0,1,1,1)$};
+  \node[anchor=north, align=center, font=\footnotesize] at (0,-1.90)
+    {$0\le s_c\le1$, \ $\sum_c s_c=3$\\ $1-s_c\in\Delta^{3}$};
+\end{scope}
+
+\end{tikzpicture}

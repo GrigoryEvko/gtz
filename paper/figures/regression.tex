@@ -1,0 +1,136 @@
+% Lemma lem:spanning drawn as what it is: a t-weighted least-squares fit of
+% the centred leverage by a linear functional of the squared picture.  Left,
+% a design at (5,2); right, the rank-two trine of ex:trine2, where the fit is
+% exact and Psi vanishes with the residual.
+%
+% The design on the left, exact and closed in the rationals.  Writing
+% p_c = t_c ell_c, a rank-two design is a closed polygon: sum p_c = 2 and
+% sum p_c eta_c / ell_c = 0.  The five directions here are (4,3)/5, (-3,4)/5,
+% (-1,0), (0,-1) and (3,-4)/5, carrying p = (2,3,1,2,2)/5.
+%   c        1            2           3        4          5
+%   t_c      3/10         1/5         1/10     1/4        3/20
+%   eta_c    (16/15,4/5)  (-9/5,12/5) (-2,0)   (0,-8/5)   (8/5,-32/15)
+%   ell_c    4/3          3           2        8/5        8/3
+%   lhat_c   -2/3         1           0        -2/5       2/3
+% sum t_c = 1, sum t_c eta_c = 0, sum t_c ell_c = 2, every ell_c > 1, and the
+% eta_c span R^2, so lem:spanning applies.  The moments are
+%   Omega = [[133/75, -28/25], [-28/25, 8/3]],  zeta = (-31/75, 4/15),
+%   sigma = 11/25 = tr Omega - 4                                (eq:tromega),
+%   xi = Omega^{-1} zeta = (-565/2443, 1/349),
+%   zeta^T Omega^{-1} zeta = 1177/12215,
+%   sigma - zeta^T Omega^{-1} zeta = 20988/61075 = 0.34364       (eq:residual)
+%     = tr(Omega^{-1} Psi),  Psi = Omega^2 - zeta zeta^T - 2 Omega
+%     = [[426/625, -14752/5625], [-14752/5625, 5552/1875]], det Psi < 0.
+% The five residuals <eta_c,xi> - lhat_c are, in order,
+%   0.422268, -0.576832, 0.462546, 0.395415, -1.042816.
+%
+% Orthographic projection of R^3 with azimuth 20 and elevation 26 degrees.
+% The two squared-picture coordinates are scaled by 0.92cm and the leverage
+% axis by 1.75cm, a vertical exaggeration of 1.9022:
+%   X = 0.92(-0.3420 x_1 + 0.9397 x_2)
+%   Y = 0.92(-0.4119 x_1 - 0.1499 x_2) + 1.75(0.8988 x_3)
+% The third coordinate enters Y alone, so a segment vertical in space is
+% vertical on the page, at 1.5729cm per unit of centred leverage; and the
+% circle ||eta|| = 2 at height 0 projects to the axis-aligned ellipse with
+% semi-axes 1.8400cm and 1.8400 sin 26 = 0.8066cm.
+%
+% Dot radius is 6.4 sqrt(t_c) pt, so disc AREA is proportional to the weight.
+% An atom above the fitted plane is black and its residual segment solid; one
+% below is black!55 and its segment dashed, the plane lying between it and
+% the viewer.  The open marker at the far end of each segment is the atom's
+% foot on the plane.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  spoke/.style ={line width=0.45pt, black!65},
+  arrow/.style ={-{Latex[length=2mm,width=1.5mm]}, line width=0.45pt, black!65},
+  sheet/.style ={fill=black!12, draw=black!58, line width=0.45pt},
+  ref/.style   ={densely dotted, line width=0.3pt, black!35},
+  onward/.style={line width=0.55pt, black!70},
+  behind/.style={line width=0.45pt, black!45, dashed,
+                 dash pattern=on 1.4pt off 1.2pt},
+  foot/.style  ={fill=white, draw=black!55, line width=0.4pt},
+  every node/.style={font=\small}]
+
+% ======================= the design at (5,2) ==============================
+% The fitted plane over the base rectangle [-2.45,2.45] x [-2.85,2.85], each
+% corner lifted to x_3 = <x,xi>.
+\draw[sheet] ( 1.6930,-2.1999)   % ( 2.45, 2.85,-0.558453)
+          -- (-3.2348,-1.4395)   % ( 2.45,-2.85,-0.574785)
+          -- (-1.6930, 2.1999)   % (-2.45,-2.85, 0.558453)
+          -- ( 3.2348, 1.4395)   % (-2.45, 2.85, 0.574785)
+          -- cycle;
+
+% ||eta_c|| = ell_c puts every atom on the cone lhat = ||eta|| - 2; this is
+% its level lhat = 0.
+\draw[ref] (0,0) ellipse [x radius=1.84cm, y radius=0.8066cm];
+
+% ---- the frame, and the origin, which by eq:balance2 is the barycentre ----
+\draw[arrow] (0,0) -- (-0.4877,-0.5874);       % (1.55, 0, 0)
+\draw[arrow] (0,0) -- ( 1.5994,-0.2551);       % (0, 1.85, 0)
+\draw[arrow] (0,0) -- ( 0.0000, 1.8088);       % (0, 0, 1.15)
+\fill (0,0) circle (1.0pt);
+\node[anchor=north east, font=\footnotesize] at (-0.55,-0.78) {$x^2-y^2$};
+\node[anchor=west,       font=\footnotesize] at ( 1.66,-0.29) {$2xy$};
+\node[anchor=east,       font=\footnotesize] at (-0.09, 1.82) {$\hat\ell$};
+
+% ---- the residuals, their feet on the plane, then the atoms ---------------
+\draw[behind] ( 0.3560,-1.5631) -- ( 0.3560,-0.8990);  % c=1, foot -0.244399
+\draw[onward] ( 2.6412, 1.9240) -- ( 2.6412, 1.0167);  % c=2, foot  0.423168
+\draw[behind] ( 0.6293, 0.7579) -- ( 0.6293, 1.4854);  % c=3, foot  0.462546
+\draw[behind] (-1.3832,-0.4085) -- (-1.3832, 0.2134);  % c=4, foot -0.004585
+\draw[onward] (-2.3477, 0.7365) -- (-2.3477,-0.9038);  % c=5, foot -0.376150
+
+\draw[foot] ( 0.3560,-0.8990) circle (1.1pt);
+\draw[foot] ( 2.6412, 1.0167) circle (1.1pt);
+\draw[foot] ( 0.6293, 1.4854) circle (1.1pt);
+\draw[foot] (-1.3832, 0.2134) circle (1.1pt);
+\draw[foot] (-2.3477,-0.9038) circle (1.1pt);
+
+\fill[black!55] ( 0.3560,-1.5631) circle (3.51pt);     % (16/15, 4/5, -2/3)
+\fill           ( 2.6412, 1.9240) circle (2.86pt);     % (-9/5, 12/5, 1)
+\fill[black!55] ( 0.6293, 0.7579) circle (2.02pt);     % (-2, 0, 0)
+\fill[black!55] (-1.3832,-0.4085) circle (3.20pt);     % (0, -8/5, -2/5)
+\fill           (-2.3477, 0.7365) circle (2.48pt);     % (8/5, -32/15, 2/3)
+
+\node[anchor=west,       font=\scriptsize] at ( 0.53,-1.56) {$t=\tfrac3{10}$};
+\node[anchor=west,       font=\scriptsize] at ( 0.78, 0.88) {$t=\tfrac1{10}$};
+\node[anchor=west,       font=\scriptsize] at ( 2.75, 1.72)
+      {$\langle\eta_c,\xi\rangle-\hat\ell_c$};
+\node[anchor=west,       font=\footnotesize] at (-1.95, 1.10)
+      {$\hat\ell=\langle\eta,\xi\rangle$};
+
+\node[anchor=south] at (0,2.60) {a design at $(5,2)$};
+\node[anchor=north, font=\footnotesize] at (0,-2.45)
+      {$\sigma-\zeta\tp\Omega^{-1}\zeta=\tr(\Omega^{-1}\Psi)=0.3436$};
+
+% ============================ the trine ===================================
+\begin{scope}[shift={(8.00,0)}]
+  % here xi = 0 and the fitted plane is lhat = 0 itself, over the base
+  % rectangle [-2.25,2.25] x [-2.5,2.5].
+  \draw[sheet] ( 1.4534,-1.1974)   % ( 2.25, 2.50, 0)
+            -- (-2.8693,-0.5079)   % ( 2.25,-2.50, 0)
+            -- (-1.4534, 1.1974)   % (-2.25,-2.50, 0)
+            -- ( 2.8693, 0.5079)   % (-2.25, 2.50, 0)
+            -- cycle;
+  \draw[ref] (0,0) ellipse [x radius=1.84cm, y radius=0.8066cm];
+
+  \draw[arrow] (0,0) -- (0,1.8088);              % (0, 0, 1.15)
+  \node[anchor=east, font=\footnotesize] at (-0.09,1.82) {$\hat\ell$};
+
+  % the three squared pictures, each of length 2, at mutual angle 2 pi / 3
+  \draw[spoke] (0,0) -- (-0.6293,-0.7579);       % ( 2, 0, 0)
+  \draw[spoke] (0,0) -- (-1.1828, 0.6178);       % (-1, -sqrt3, 0)
+  \draw[spoke] (0,0) -- ( 1.8120, 0.1401);       % (-1,  sqrt3, 0)
+  \fill (-0.6293,-0.7579) circle (3.70pt);
+  \fill (-1.1828, 0.6178) circle (3.70pt);
+  \fill ( 1.8120, 0.1401) circle (3.70pt);
+  \fill (0,0) circle (1.0pt);
+  \node[anchor=south, font=\scriptsize] at (0.80,0.12) {$\lVert\eta_c\rVert=2$};
+
+  \node[anchor=south west, font=\footnotesize] at (-1.35,1.24) {$\hat\ell=0$};
+  \node[anchor=south] at (0,2.60) {the trine};
+  \node[anchor=north, font=\footnotesize] at (0,-2.45)
+        {$\zeta=0$, \ $\sigma=0$, \ $\Psi=0$};
+\end{scope}
+
+\end{tikzpicture}

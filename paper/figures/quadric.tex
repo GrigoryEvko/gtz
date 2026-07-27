@@ -1,0 +1,129 @@
+% The quadric law: at a stationarity datum every vector of the design lies on
+% one central quadric of the multiplier.  Orthographic projection of R^3 with
+% azimuth 20 and elevation 25 degrees, scaled by 1.40cm in the main panel and
+% by 0.92cm in the inset:
+%   X = s(-0.3420 x_1 + 0.9397 x_2)
+%   Y = s(-0.3971 x_1 - 0.1445 x_2 + 0.9063 x_3)
+% The viewing normal is n = (0.8517, 0.3100, 0.4226); a point of the surface is
+% drawn solid when <n,x> > 0 and dashed when <n,x> < 0.  Each principal section
+% is two 180-degree arcs of one ellipse, split where <n,x> = 0; the arc angles
+% are PARAMETRIC, the point at angle p being (x radius cos p, y radius sin p) in
+% the frame the rotate key sets.
+%
+% MAIN PANEL, (m,k) = (6,3).  Multiplier Lambda = diag(1/2, 1/3, 1/6), value
+% nu = 1, so tr Lambda = nu and Lambda is positive definite.  The quadric
+% g^T Lambda g = nu is 3x_1^2 + 2x_2^2 + x_3^2 = 6, an ellipsoid with semi-axes
+% sqrt(nu/lambda_i) = sqrt2, sqrt3, sqrt6 along e_1, e_2, e_3.  The six vectors
+%   g_1 = (0, 1, -2)         t_1 = 1/12    leverage 5
+%   g_2 = (1/3, -5/3, 1/3)   t_2 = 1/8     leverage 3
+%   g_3 = (1, -1, -1)        t_3 = 1/6     leverage 3
+%   g_4 = (-1, 1, -1)        t_4 = 1/8     leverage 3
+%   g_5 = (1, 1, 1)          t_5 = 1/4     leverage 3
+%   g_6 = (4/3, 1/3, -2/3)   t_6 = 1/4     leverage 7/3
+% are an exact weighted design: the weights are positive and sum to one, and
+% sum_c t_c g_c g_c^T = I_3 over the rationals.  Each satisfies
+% 3x_1^2 + 2x_2^2 + x_3^2 = 6 exactly, so all six lie on the drawn surface.
+% The tight directions are taken to be u_i = e_i with multipliers
+% lambda = (1/2, 1/3, 1/6), which reproduces Lambda = nu sum_i lambda_i u_i u_i^T
+% and makes the u_i the principal axes; for non-orthogonal tight directions the
+% axes are the eigenvectors of that barycentre instead.  DISCLOSED: the panel
+% draws the CONCLUSION of the quadric law, not a verified stationarity datum --
+% no k-subsets and no eigenvector equations S_{C_i} u_i = nu u_i are asserted
+% for this design, and none hold at u_i = e_i.
+%
+% INSET, the tetrahedron at (4,3).  Vectors g_0 = (1,1,1), g_1 = (1,-1,-1),
+% g_2 = (-1,1,-1), g_3 = (-1,-1,1), weights 1/4, multiplier Lambda = I_3/3 and
+% nu = 1.  Here the datum is the verified one: the four triples, each the
+% complement of one index, lambda_i = 1/4, u_i = g_i/sqrt3.  Leverage 3 gives
+% g_c^T Lambda g_c = 3/3 = 1 = nu, so the quadric is the sphere of squared
+% radius 3 -- the isotropic multiplier is where the ellipsoid becomes a sphere.
+%
+% Vector endpoints below are s(X,Y) of the triple in the trailing comment; the
+% ellipse parameters are the semi-axes and rotation of the projected image.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  vec/.style={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt},
+  edge/.style={line width=0.45pt, black!65},
+  hidden/.style={line width=0.45pt, black!45, dashed, dash pattern=on 1.4pt off 1.2pt},
+  sil/.style={line width=0.5pt, black!70},
+  tight/.style={line width=0.5pt, black!58, dashed, dash pattern=on 2.2pt off 1.5pt},
+  every node/.style={font=\small}]
+
+% ======================= main panel: the ellipsoid ========================
+\coordinate (O) at (0,0);
+
+% ---- the three principal sections, hidden halves -------------------------
+\draw[hidden, rotate=176.905]
+  (-2.3535,-0.1272) arc[start angle=188.584, end angle=368.584,
+                        x radius=2.3802, y radius=0.8525];   % x_3 = 0
+\draw[hidden, rotate=86.905]
+  ( 2.8892,-0.2858) arc[start angle=-25.849, end angle=-205.849,
+                        x radius=3.2104, y radius=0.6556];   % x_2 = 0
+\draw[hidden, rotate=99.593]
+  ( 2.0548, 1.7042) arc[start angle=409.271, end angle=589.271,
+                        x radius=3.1492, y radius=2.2488];   % x_1 = 0
+
+% ---- the three principal sections, visible halves ------------------------
+\draw[edge, rotate=176.905]
+  ( 2.3535, 0.1272) arc[start angle=8.584, end angle=188.584,
+                        x radius=2.3802, y radius=0.8525];
+\draw[edge, rotate=86.905]
+  (-2.8892, 0.2858) arc[start angle=154.151, end angle=-25.849,
+                        x radius=3.2104, y radius=0.6556];
+\draw[edge, rotate=99.593]
+  (-2.0548,-1.7042) arc[start angle=229.271, end angle=409.271,
+                        x radius=3.1492, y radius=2.2488];
+
+% ---- the silhouette ------------------------------------------------------
+\draw[sil, rotate=93.198] (0,0) ellipse (3.2273 and 2.3740);
+
+% ---- the tight directions, ending on the surface at sqrt(nu/lambda_i) ----
+\draw[tight] (O)--(-0.6772,-0.7863);   % sqrt2 e_1
+\draw[tight] (O)--( 2.2786,-0.3505);   % sqrt3 e_2
+\draw[tight] (O)--( 0.0000, 3.1080);   % sqrt6 e_3
+\foreach \px/\py in {-0.6772/-0.7863, 2.2786/-0.3505, 0.0000/3.1080}
+  {\draw[line width=0.4pt, black!58, fill=white] (\px,\py) circle (1.3pt);}
+\node[anchor=north west, font=\footnotesize] at (-0.6200,-0.8000) {$u_1$};
+\node[anchor=south west, font=\footnotesize] at ( 2.3086,-0.3205) {$u_2$};
+\node[anchor=east,       font=\footnotesize] at (-0.1200, 1.1500) {$u_3$};
+
+% ---- the six vectors of the design --------------------------------------
+\draw[vec] (O)--( 1.3156,-2.7400) node[below right=-2pt] {$g_1$};  % (0,1,-2)
+\draw[vec] (O)--(-2.3522, 0.5749) node[above left=-3pt]  {$g_2$};  % (1/3,-5/3,1/3)
+\draw[vec] (O)--(-1.7944,-1.6225) node[below left=-2pt]  {$g_3$};  % (1,-1,-1)
+\draw[vec] (O)--( 1.7944,-0.9152) node[below left=-1pt]  {$g_4$};  % (-1,1,-1)
+\draw[vec] (O)--( 0.8367, 0.5105) node[above right=-3pt] {$g_5$};  % (1,1,1)
+\draw[vec] (O)--(-0.1999,-1.6547) node[below=1pt]        {$g_6$};  % (4/3,1/3,-2/3)
+\fill (O) circle (1.1pt);
+
+% ---- the law, and the data it is drawn at -------------------------------
+\node[anchor=west] at (-3.45,2.95) {$g_c\tp\Lambda\,g_c=\cv$};
+\node[anchor=north, align=center, font=\footnotesize] at (0,-3.52)
+  {$m=6$, \ $k=3$, \ $\cv=1$\\[2pt]
+   $\Lambda=\cv\sum_i\lambda_i\,u_i^{\vphantom{\mathsf{T}}}u_i\tp
+      =\diag\bigl(\tfrac12,\tfrac13,\tfrac16\bigr)$\\[2pt]
+   semi-axis along $u_i$: $\sqrt{\cv/\lambda_i}=\sqrt2,\ \sqrt3,\ \sqrt6$};
+
+% ============================ inset: the sphere ==========================
+\begin{scope}[shift={(6.55,0.55)}]
+  \node[anchor=south] at (0,2.02) {the tetrahedron};
+
+  \draw[hidden] ( 1.5935,0) arc[start angle=360, end angle=540,
+                                x radius=1.5935, y radius=0.6734];
+  \draw[edge]   (-1.5935,0) arc[start angle=180, end angle=360,
+                                x radius=1.5935, y radius=0.6734];
+  \draw[sil] (0,0) circle (1.5935);
+
+  \draw[vec] (0,0)--( 0.5499, 0.3355) node[above right=-3pt] {$g_0$}; % (1,1,1)
+  \draw[vec] (0,0)--(-1.1792,-1.0662) node[below left=-2pt]  {$g_1$}; % (1,-1,-1)
+  \draw[vec] (0,0)--( 1.1792,-0.6014) node[below left=-2pt]  {$g_2$}; % (-1,1,-1)
+  \draw[vec] (0,0)--(-0.5499, 1.3321) node[above left=6pt]   {$g_3$}; % (-1,-1,1)
+  \fill (0,0) circle (1.1pt);
+
+  \node[anchor=north, align=center, font=\footnotesize] at (0,-1.86)
+    {$\Lambda=\tfrac13I_3$, \quad $\cv=1$\\[2pt]
+     $g_c\tp\Lambda\,g_c=\ell_c/3=1$\\[2pt]
+     the sphere $\lVert x\rVert^2=3$};
+\end{scope}
+
+\end{tikzpicture}

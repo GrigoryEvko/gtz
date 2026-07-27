@@ -1,0 +1,142 @@
+% The positive semidefinite cone in Sym_2(R), and its horizontal shadow.
+%
+% COORDINATES.  For A symmetric with entries A_00, A_01 = A_10, A_11 put
+%   x_1 = (A_00 - A_11)/2,   x_2 = A_01,   x_3 = tau = tr(A)/2 .
+% Then det A = x_3^2 - x_1^2 - x_2^2 and the two eigenvalues are
+% x_3 +- sqrt(x_1^2 + x_2^2), so {A psd 0} is the CIRCULAR cone
+% x_3 >= sqrt(x_1^2 + x_2^2) of half-angle 45 degrees about the x_3-axis, and
+% its boundary is the rank-one locus.  A rank-one atom g g^T with
+% g = r(cos th, sin th) has
+%   x_1 = (r^2/2) cos 2th,   x_2 = (r^2/2) sin 2th,   x_3 = r^2/2 ,
+% hence sits ON the boundary, at height half the leverage, at DOUBLE the
+% argument; g and -g give the same point.  I_2 is the axis point (0,0,1).
+% The chart is conformal: |A|_F^2 = 2(x_1^2 + x_2^2 + x_3^2), so coordinates to
+% matrices is sqrt2 times a Euclidean isometry, the three coordinate directions
+% I, diag(1,-1) and [[0,1],[1,0]] being Frobenius-orthogonal of norm sqrt2
+% apiece.  The 45-degree half-angle is therefore the Frobenius one.
+%
+% PANEL (a): orthographic projection of R^3 with azimuth 75 and elevation 26
+% degrees, scaled by 2.6cm:
+%   X = 2.6(-0.965926 x_1 + 0.258819 x_2)
+%   Y = 2.6(-0.113459 x_1 - 0.423434 x_2 + 0.898794 x_3)
+% The circle of radius R at height tau projects to the ellipse centred at
+% (0, 2.6*0.898794*tau) with semi-axes 2.6*R and 2.6*0.438371*R; at
+% R = tau = 1 that is centre (0,2.3369), semi-axes 2.6 and 1.1398.  Its lower
+% half is the near half and is drawn solid, its upper half hidden.  The
+% silhouette rulings touch it where cos(phi - 75) = tan(26), i.e. at
+% phi - 75 = +-60.8083 degrees, screen points (+-2.2698, 1.7810); they are
+% carried on to tau = 1.14 so that the cone visibly continues past the slice.
+%
+% PANEL (b) is the plane of the atoms, face-on and unprojected, at 1.35cm per
+% unit, with the first coordinate to the right.  g_c is dashed at length
+% sqrt2, its square eta_c solid at length 2, and the dot at the midpoint of
+% eta_c is the shadow of g_c g_c^T, at radius ell_c/2 = 1 on the dotted circle
+% that is the shadow of the rim.
+%
+% THE DESIGN is the rank-two trine, at theta_c = 45, 165, 285 degrees:
+%   g_0 = (1, 1),   g_1 = (-(1+sqrt3)/2, (sqrt3-1)/2),
+%   g_2 = ((sqrt3-1)/2, -(1+sqrt3)/2),
+% all of leverage 2, all of weight 1/3, with sum_c g_c g_c^T = 3 I_2.  Its
+% squares are eta_0 = (0,2), eta_1 = (sqrt3,-1), eta_2 = (-sqrt3,-1), summing
+% to 0, and its three atoms sit on the circle at height 1 at the plane angles
+% phi_c = 2 theta_c = 90, 330, 210 degrees, that is at psi_c = phi_c - 75 =
+% 15, 255, 135 from the view direction, so only the first is on the near half.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  vec/.style={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt},
+  gvec/.style={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt, black!55,
+               dashed, dash pattern=on 1.6pt off 1.4pt},
+  edge/.style={line width=0.45pt, black!65},
+  hidden/.style={line width=0.45pt, black!45, dashed,
+                 dash pattern=on 1.4pt off 1.2pt},
+  frame/.style={densely dotted, line width=0.3pt, black!35},
+  chord/.style={line width=0.45pt, black!58},
+  note/.style={font=\scriptsize, align=center, inner sep=1.5pt},
+  every node/.style={font=\small}]
+
+% =====================================================================
+% (a)  the cone, its rim at tau = 1, and the trine on that rim
+% =====================================================================
+
+% ---- the coordinate frame ------------------------------------------
+\draw[frame] (0,-0.45) -- (0,3.95);
+\node[note, anchor=west]  at ( 0.10, 3.95) {$\tau=\tfrac12\tr A$};
+\draw[frame] (0,0) -- (-1.8836,-0.2212);      % x_1 = (A_00 - A_11)/2, 0.75
+\node[note, anchor=north] at (-1.8836,-0.30) {$\tfrac12(A_{00}-A_{11})$};
+\draw[frame] (0,0) -- ( 0.5047,-0.8257);      % x_2 = A_01, 0.75
+\node[note, anchor=north] at ( 0.5047,-0.90) {$A_{01}$};
+
+% ---- the cone: two silhouette rulings and the rim at tau = 1 --------
+\draw[edge] (2.5876,2.0303) -- (0,0) -- (-2.5876,2.0303);
+\draw[edge] ( 2.6,2.3369)
+  arc[start angle=0,   end angle=-180, x radius=2.6, y radius=1.1398];
+\draw[hidden] (-2.6,2.3369)
+  arc[start angle=180, end angle=0,    x radius=2.6, y radius=1.1398];
+\node[note, anchor=east] at (-1.30,0.85) {$\rk A=1$};
+
+% ---- the rank-one rays carrying the two rear atoms, drawn as rulings
+% on the far wall; the near wall is described by the silhouette instead.
+\draw[frame] (0,0) -- (-2.5114,2.6319);
+\draw[frame] (0,0) -- ( 1.8385,3.1428);
+
+% ---- Parseval: the axis point is the centroid of the three ----------
+\draw[chord] ( 0.6729,1.2359) -- (0,2.3369) -- (-2.5114,2.6319);
+\draw[chord] (0,2.3369) -- (1.8385,3.1428);
+
+\fill (0,0) circle (1.1pt);
+\fill ( 0.6729,1.2359) circle (1.7pt);        % g_0, psi =  15, front
+\fill (-2.5114,2.6319) circle (1.7pt);        % g_1, psi = 255, behind
+\fill ( 1.8385,3.1428) circle (1.7pt);        % g_2, psi = 135, behind
+\fill (0,2.3369) circle (1.7pt);              % I_2
+\node[anchor=north]      at ( 0.55, 1.10) {$g_0^{\vphantom{\mathsf{T}}}g_0\tp$};
+\node[anchor=south east] at (-2.56, 2.72) {$g_1^{\vphantom{\mathsf{T}}}g_1\tp$};
+\node[anchor=south west] at ( 1.90, 3.21) {$g_2^{\vphantom{\mathsf{T}}}g_2\tp$};
+\node[anchor=south west] at ( 0.12, 2.42) {$I_2$};
+
+\node[note, anchor=north] at (0,-1.55)
+  {$\sum_c t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp=I_2$,\quad
+   $t_c=\tfrac13$,\quad $\ell_c=2$\\[2pt]
+   $\dim\mathrm{Sym}_2=3$,\quad $\win(2)=4$};
+
+% =====================================================================
+% (b)  the shadow: the atoms, their squares, and the doubled argument
+% =====================================================================
+\begin{scope}[xshift=6.95cm, yshift=0.85cm]
+
+\draw[frame] (-2.95,0) -- (2.95,0);
+\draw[frame] (0,0) circle (1.35);             % the shadow of the rim
+\draw[frame] (1.35,-0.09) -- (1.35,0.09);
+\draw[frame] ( 2.7,-0.09) -- ( 2.7,0.09);
+\node[note, anchor=north] at (1.35,-0.11) {$1$};
+\node[note, anchor=north] at ( 2.7,-0.11) {$2$};
+
+% ---- theta_0 = 45 degrees, and then theta_0 again --------------------
+\draw[chord] (1.48,0) arc[start angle=0, end angle=90, radius=1.48];
+\node[note] at (1.6076,0.6658) {$\theta_0$};
+\node[note] at (0.6658,1.6076) {$\theta_0$};
+
+% ---- the three atoms, at length sqrt2 --------------------------------
+\draw[gvec] (0,0) -- ( 1.3500, 1.3500);
+\draw[gvec] (0,0) -- (-1.8441, 0.4941);
+\draw[gvec] (0,0) -- ( 0.4941,-1.8441);
+\node[note, anchor=south west] at ( 1.40, 1.40) {$g_0$};
+\node[note, anchor=south east] at (-1.89, 0.54) {$g_1$};
+\node[note, anchor=north west] at ( 0.55,-1.89) {$g_2$};
+
+% ---- their squares, at length 2, the shadow at the midpoint ----------
+\draw[vec] (0,0) -- ( 0.0000, 2.7000);
+\draw[vec] (0,0) -- ( 2.3383,-1.3500);
+\draw[vec] (0,0) -- (-2.3383,-1.3500);
+\fill ( 0.0000, 1.3500) circle (1.7pt);
+\fill ( 1.1691,-0.6750) circle (1.7pt);
+\fill (-1.1691,-0.6750) circle (1.7pt);
+\fill (0,0) circle (1.1pt);
+\node[anchor=south] at ( 0.00, 2.76) {$\eta_0$};
+\node[anchor=west]  at ( 2.41,-1.38) {$\eta_1$};
+\node[anchor=east]  at (-2.41,-1.38) {$\eta_2$};
+
+\node[note, anchor=north] at (0,-2.40)
+  {$\lVert\eta_c\rVert=\ell_c=2$,\quad $\sum_c t_c\,\eta_c=0$};
+
+\end{scope}
+\end{tikzpicture}

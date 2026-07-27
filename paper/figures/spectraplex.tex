@@ -1,0 +1,83 @@
+% The spectraplex at k = 2, as a face of the trace-one slice of the positive
+% semidefinite cone.  A symmetric 2x2 matrix Theta is carried to the triple
+% (x_1, x_2, x_3) = (x, y, tau), where tau is half the trace, x half the
+% difference of the diagonal entries and y the off-diagonal entry; the
+% eigenvalues are tau +- sqrt(x^2 + y^2), so the positive semidefinite
+% matrices fill the circular cone of half-angle 45 degrees about the tau
+% axis, and the projector uu^T at u = (cos t, sin t) is the point
+% (cos 2t, sin 2t, 1)/2.  Orthographic projection of R^3 with azimuth 20 and
+% elevation 20 degrees, scaled by 4.6cm:
+%   X = 4.6(-0.3420 x_1 + 0.9397 x_2)
+%   Y = 4.6(-0.3214 x_1 - 0.1170 x_2 + 0.9397 x_3)
+% The circle of radius r at height tau projects to the ellipse of centre
+% (0, 4.3226 tau) and semi-axes (4.6 r, 1.5733 r); the silhouette of the cone
+% is the pair of lines of slope +- sqrt(cos 40 deg) = +- 0.8752 through the
+% origin, which meet the slice tau = 1/2 at its two tangencies, the circle
+% points of azimuth 88.656 and -48.656 degrees.  The cone is drawn only up to
+% that slice, so the silhouettes end on the boundary of the disc.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  frame/.style={densely dotted, line width=0.3pt, black!35},
+  axis/.style ={frame, -{Latex[length=1.6mm,width=1.2mm]}},
+  cone/.style ={line width=0.45pt, black!45},
+  edge/.style ={line width=0.45pt, black!65},
+  rim/.style  ={line width=0.5pt, black!85},
+  lead/.style ={-{Latex[length=1.7mm,width=1.3mm]}, line width=0.4pt, black!55},
+  every node/.style={font=\small}]
+
+% ---- the outer surface of the cone below the slice -----------------------
+% the apex, then the front arc of the slice between the two tangencies
+\path[fill=black!12] (2.1422,1.8749)
+  arc[start angle=-21.35, end angle=-158.65, x radius=2.3, y radius=0.7866]
+  -- (0,0) -- cycle;
+
+% ---- the coordinate frame ------------------------------------------------
+\draw[axis]  (0,0) -- (-0.6608,-0.6209);   % (0.42, 0, 0)
+\draw[axis]  (0,0) -- ( 1.8155,-0.2260);   % (0, 0.42, 0)
+\draw[frame] (0,0) -- ( 0, 1.2968);        % (0, 0, 0.30), up to the slice
+\draw[axis]  (0,3.0258) -- (0,3.7174);     % (0, 0, 0.70) to (0, 0, 0.86)
+\node[anchor=north east, font=\footnotesize, inner sep=1.5pt] at (-0.64,-0.60) {$x$};
+\node[anchor=north west, font=\footnotesize, inner sep=1.5pt] at ( 1.80,-0.21) {$y$};
+\node[anchor=south, font=\footnotesize] at (0,3.73) {$\tau$};
+\fill (0,0) circle (1.1pt);
+
+% ---- the cone, and one of its extreme rays -------------------------------
+\draw[cone] (0,0) -- ( 2.1422,1.8749);     % ( 0.01173,  0.49986, 1/2)
+\draw[cone] (0,0) -- (-2.1422,1.8749);     % ( 0.33029, -0.37538, 1/2)
+\draw[edge] (0,0) -- ( 0.7866,1.4221);     % ( 0.38302,  0.32139, 1/2)
+
+% ---- the slice tau = 1/2 -------------------------------------------------
+\path[pattern=north east lines, pattern color=black!38]
+  (0,2.1613) ellipse [x radius=2.3, y radius=0.7866];
+\draw[rim] (0,2.1613) ellipse [x radius=2.3, y radius=0.7866];
+\fill (0,2.1613) circle (1.3pt);           % (0, 0, 1/2)
+\fill (0.7866,1.4221) circle (1.7pt);      % uu^T at u = (cos 20, sin 20)
+\node[anchor=south east, font=\footnotesize, fill=white, inner sep=0.5pt]
+  at (-0.06,2.19) {$\tfrac12I$};
+
+% ---- what the picture says -----------------------------------------------
+\draw[lead] (-1.75,0.60) -- (-0.4048,0.9530);   % to (0.33871, 0.02963, 0.34)
+\node[anchor=east, font=\footnotesize] at (-1.80,0.58) {$\Theta\psd0$};
+
+\draw[lead] (-3.00,1.30) -- (-1.4505,1.8563);   % to (0.29, -0.23, 1/2)
+\node[anchor=east, font=\footnotesize] at (-3.05,1.28) {$\tr\Theta=1$};
+
+\draw[lead] (-2.50,2.80) -- (-0.7936,2.4275);  % to (-0.10, -0.22, 1/2)
+\node[anchor=east, align=right, font=\footnotesize] at (-2.55,2.80)
+  {$\lmin(A)$ double:\\ $\partial\lmin(A)$ is the whole disc,\\ dimension $2$};
+
+\draw[lead, shorten >=3pt] (2.55,2.92) -- (1.4784,2.7639);
+                                                % to (-0.46985, 0.17101, 1/2)
+\node[anchor=west, align=left, font=\footnotesize] at (2.60,2.95)
+  {$\rk\Theta=1$: the\\ projectors $uu\tp$};
+
+\draw[lead, shorten >=4pt] (2.55,1.33) -- (0.7866,1.4221);
+\node[anchor=west, align=left, font=\footnotesize] at (2.60,1.30)
+  {$\lmin(A)$ simple:\\ $\partial\lmin(A)=\{uu\tp\}$,\\ dimension $0$};
+
+\node[anchor=north, font=\footnotesize] at (0,-1.02)
+  {$\Theta=\begin{pmatrix}\tau+x & y\\ y & \tau-x\end{pmatrix}$,\quad
+   $\tr\Theta=2\tau$,\quad
+   $\Theta\psd0\iff\tau\ge\sqrt{x^{2}+y^{2}}$};
+
+\end{tikzpicture}

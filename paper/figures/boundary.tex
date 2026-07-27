@@ -30,7 +30,7 @@
 \node[txt, anchor=north] at (2.3,-0.06) {$t_z=0$};
 
 \node[txt, anchor=north] at (2.3,-0.52)
-  {closed simplex $\Delta_{m-1}$: $t_c\ge0$, $\sum_c t_c=1$;\\[1pt]
+  {closed simplex $\Delta^{m-1}$: $t_c\ge0$, $\sum_c t_c=1$;\\[1pt]
    the hatched faces $t_c=0$ carry no counterexample,\\[1pt]
    so a minimiser of $G$ lies in the interior};
 \node[txt, anchor=north] at (2.3,-1.72)
@@ -44,7 +44,7 @@
 \begin{scope}[xshift=5.9cm]
 \node[txt, anchor=north west, text width=79mm, align=left] at (0,5.05)
   {A chart point at $(m,k)$ with $t_z=0$. The pivot identity
-   $\lvert Pe_z\rvert^{2}=P_{zz}$ splits two cases.};
+   $\lVert Pe_z\rVert^{2}=P_{zz}$ splits two cases.};
 
 % ---- case A : the atom vanishes -------------------------------------
 \node[ttl] at (1.95,4.05) {atom deletion};
@@ -70,7 +70,8 @@
 
 % ---- the identity that pays for the second case ---------------------
 \node[txt, anchor=north] at (4.0,-0.45)
-  {$x\tp Wx=x\tp(P'-\diag t)\,x+\dfrac{(Pe_z\cdot x)^{2}}{P_{zz}}$,\\[3pt]
+  {$x\tp Wx=x\tp(P'-\diag t)\,x
+    +\dfrac{\langle Pe_z,x\rangle^{2}}{P_{zz}}$,\\[3pt]
    and at $t_z=0$ the three terms complete a square};
 \end{scope}
 

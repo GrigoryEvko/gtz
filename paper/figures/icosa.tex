@@ -1,0 +1,115 @@
+% The icosahedral design at (6,3), and the spectra of two of its twenty
+% triples.  Orthographic projection of R^3 with azimuth 30.5 and elevation 45
+% degrees, scaled by 1.3cm:
+%   X = 1.3(-0.5075 x_1 + 0.8616 x_2)
+%   Y = 1.3(-0.6093 x_1 - 0.3589 x_2 + 0.7071 x_3)
+% The twelve vertices are the cyclic permutations of (0, +-1, +-phi) with
+% phi = 1.6180340, listed below in six antipodal pairs; the atom g_c is
+% sigma = 0.9105930 times the vertex it points at, so every arrowhead stops
+% short of its vertex dot.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  vec/.style={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt, black!55},
+  heavy/.style={-{Latex[length=2mm,width=1.5mm]}, line width=1.1pt},
+  edge/.style={line width=0.45pt, black!65},
+  hidden/.style={line width=0.45pt, black!45, dashed,
+                 dash pattern=on 1.4pt off 1.2pt},
+  chord/.style={line width=0.55pt, black!55, dash pattern=on 3.6pt off 1.8pt},
+  tag/.style={font=\footnotesize, fill=white, inner sep=0.6pt},
+  every node/.style={font=\small}]
+
+% ---- the twelve vertices, in six antipodal pairs -----------------------
+\coordinate (v5)  at ( 1.1526,-1.5469);   % ( 1, phi,  0)
+\coordinate (v8)  at (-1.1526, 1.5469);   % (-1,-phi,  0)
+\coordinate (v6)  at ( 2.4722, 0.0372);   % (-1, phi,  0)
+\coordinate (v7)  at (-2.4722,-0.0372);   % ( 1,-phi,  0)
+\coordinate (v1)  at ( 1.1201, 1.0208);   % ( 0,  1, phi)
+\coordinate (v4)  at (-1.1201,-1.0208);   % ( 0, -1,-phi)
+\coordinate (v2)  at (-1.1201, 1.9539);   % ( 0, -1, phi)
+\coordinate (v3)  at ( 1.1201,-1.9539);   % ( 0,  1,-phi)
+\coordinate (v9)  at (-1.0676,-0.3623);   % ( phi,  0,  1)
+\coordinate (v12) at ( 1.0676, 0.3623);   % (-phi,  0, -1)
+\coordinate (v11) at (-1.0676,-2.2008);   % ( phi,  0, -1)
+\coordinate (v10) at ( 1.0676, 2.2008);   % (-phi,  0,  1)
+\coordinate (O)  at ( 0,0);
+
+% ---- the six atoms, each sigma times the vertex it points at -----------
+\coordinate (g0)  at ( 1.0495,-1.4086);   % g_0 = sigma * ( 1, phi,  0)
+\coordinate (g1)  at ( 2.2512, 0.0338);   % g_1 = sigma * (-1, phi,  0)
+\coordinate (g2)  at ( 1.0200, 0.9295);   % g_2 = sigma * ( 0,  1, phi)
+\coordinate (g3)  at (-1.0200, 1.7792);   % g_3 = sigma * ( 0, -1, phi)
+\coordinate (g4)  at (-0.9721,-0.3299);   % g_4 = sigma * ( phi,  0,  1)
+\coordinate (g5)  at (-0.9721,-2.0040);   % g_5 = sigma * ( phi,  0, -1)
+
+% ---- 12 hidden edges, the face carrying g_0, g_2, g_4, then the 18
+% visible edges ---------------------------------------------------------
+\draw[hidden]
+  (v2)--(v8) (v3)--(v4) (v3)--(v12) (v4)--(v7) (v4)--(v8)
+  (v4)--(v11) (v4)--(v12) (v6)--(v12) (v7)--(v8) (v8)--(v10)
+  (v8)--(v12) (v10)--(v12);
+\path[fill=black!14] (v5)--(v1)--(v9)--cycle;
+\draw[edge]
+  (v1)--(v2) (v1)--(v5) (v1)--(v6) (v1)--(v9) (v1)--(v10)
+  (v2)--(v7) (v2)--(v9) (v2)--(v10) (v3)--(v5) (v3)--(v6)
+  (v3)--(v11) (v5)--(v6) (v5)--(v9) (v5)--(v11) (v6)--(v10)
+  (v7)--(v9) (v7)--(v11) (v9)--(v11);
+
+% ---- the three chords joining the tips of g_1, g_3, g_5, which bound no
+% face --------------------------------------------------------------------
+\draw[chord] (v6)--(v2) (v6)--(v11) (v2)--(v11);
+
+% ---- the six atoms as arrows from the centre ---------------------------
+\draw[heavy] (O)--(g0) (O)--(g2) (O)--(g4);
+\draw[vec]   (O)--(g1) (O)--(g3) (O)--(g5);
+\fill (O) circle (1.1pt);
+\fill[black!70]
+  (v1) circle (1.0pt) (v2) circle (1.0pt) (v3) circle (1.0pt)
+  (v5) circle (1.0pt) (v6) circle (1.0pt) (v7) circle (1.0pt)
+  (v9) circle (1.0pt) (v10) circle (1.0pt) (v11) circle (1.0pt);
+\fill[black!35]
+  (v4) circle (1.0pt) (v8) circle (1.0pt) (v12) circle (1.0pt);
+\node[tag, anchor=north west] at ( 1.2721,-1.7073) {$g_0$};
+\node[tag, anchor=west] at ( 2.6722, 0.0402) {$g_1$};
+\node[tag, anchor=south west] at ( 1.2679, 1.1555) {$g_2$};
+\node[tag, anchor=south east] at (-1.2196, 2.1274) {$g_3$};
+\node[tag, anchor=east] at (-1.2570,-0.4266) {$g_4$};
+\node[tag, anchor=north east] at (-1.1549,-2.3807) {$g_5$};
+
+% ---- the two spectra, on one eigenvalue axis; the eigenvalue lambda is
+% drawn at abscissa 0.6 lambda -------------------------------------------
+\begin{scope}[shift={(5.55,-0.95)}]
+  \draw[line width=0.5pt, black!70] (-0.06,0)--(3.7600,0);
+  \foreach \lev in {0,1,2,3,4,5,6}{
+    \pgfmathsetmacro{\xx}{0.6*\lev}
+    \draw[line width=0.5pt] (\xx,0)--(\xx,-0.07);
+    \node[anchor=north, font=\footnotesize, inner sep=2pt]
+      at (\xx,-0.07) {\lev};}
+  \draw[dashed, dash pattern=on 1.7pt off 1.5pt, line width=0.5pt]
+        (0.6000,0)--(0.6000,2.7200);
+  \node[anchor=south, font=\footnotesize] at (0.6000,2.7000) {$1$};
+  \node[anchor=south, font=\small]
+    at (1.8000,3.1200) {$\operatorname{spec}\SC$};
+  % C = {0,2,4}: spectrum 1.6584, 1.6584, 5.6833
+  \fill[black] (0.9950,2.3000) circle (1.7pt);
+  \fill[black] (0.9950,2.4600) circle (1.7pt);
+  \fill[black] (3.4100,2.3000) circle (1.7pt);
+  \node[anchor=east, align=right, font=\footnotesize, inner sep=0pt]
+    at (-0.26,2.3000)
+    {$C=\{0,2,4\}$\\[3pt] $\tau=+\rho^{3}$\\[3pt] $\lmin=3-3/\sqrt5$};
+  % C = {1,3,5}: spectrum 0.3167, 4.3416, 4.3416
+  \fill[black!55] (0.1900,0.6200) circle (1.7pt);
+  \fill[black!55] (2.6050,0.6200) circle (1.7pt);
+  \fill[black!55] (2.6050,0.4600) circle (1.7pt);
+  \node[anchor=east, align=right, font=\footnotesize, inner sep=0pt]
+    at (-0.26,0.6200)
+    {$C=\{1,3,5\}$\\[3pt] $\tau=-\rho^{3}$\\[3pt] $\lmin=3-6/\sqrt5$};
+  % what the two rows share
+  \node[anchor=north west, align=left, font=\footnotesize, inner sep=0pt]
+    at (-2.16,-0.52)
+    {$\rho=3/\sqrt5$, \quad $\tau=\langle g_a,g_b\rangle
+     \langle g_a,g_c\rangle\langle g_b,g_c\rangle$\\[3.5pt]
+     $\tr\Gram_C=9$ and $\langle g_c,g_d\rangle^{2}=\tfrac95$ at
+     all twenty triples\\[3.5pt]
+     $\gamma(C)=8\tau-\tfrac{104}{5}<0$ at all twenty triples};
+\end{scope}
+\end{tikzpicture}

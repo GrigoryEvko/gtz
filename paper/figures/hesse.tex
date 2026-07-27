@@ -1,0 +1,115 @@
+% The twelve lines of the Hesse configuration, on the nine directions of
+% Example ex:hesse.  There is no three-dimensional projection here and none is
+% available: every one of the thirty-six pairs of directions lies on a line
+% carrying a third, so a drawing by straight lines in the real plane would have
+% no ordinary line, which Sylvester--Gallai forbids.  Two exact planar maps,
+% both at 1.95cm per residue:
+%   array   X =  1.95 p,   Y = -1.95 q       (p = slot, q = phase, each 0,1,2)
+%   wrap    a step of the dashed class is (X,Y) -> (X + 1.95, Y - 1.95), of the
+%           dotted class (X,Y) -> (X + 1.95, Y + 1.95); a step that leaves the
+%           array is returned by Y -> Y + 5.85 resp. Y -> Y - 5.85, with
+%           5.85 = 3 * 1.95, and is drawn as two stubs of 0.56 in X and in Y.
+% Every coordinate below is 1.95 times its residue pair, written out with that
+% pair in a trailing comment.  The dotted class is set at 0.75pt so that its
+% round dots carry the weight of a 0.45pt stroke; the other three are 0.45pt.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  gnode/.style ={circle, draw=black!70, fill=white, line width=0.5pt,
+                 inner sep=0pt, minimum size=5.4mm, font=\footnotesize},
+  plainline/.style={line width=0.45pt, black!65},
+  dashline/.style ={line width=0.45pt, black!65,
+                    dash pattern=on 1.4pt off 1.2pt},
+  dotline/.style  ={line width=0.75pt, black!65, line cap=round,
+                    dash pattern=on 0.1pt off 1.25pt},
+  stub/.style  ={-{Latex[length=2mm,width=1.5mm]}},
+  ring/.style  ={line width=0.5pt, black!55},
+  tag/.style   ={fill=white, inner sep=1pt, font=\scriptsize},
+  every node/.style={font=\small}]
+
+% ---- the triple {u_0, u_1, u_3}, which lies on no line -------------------
+\path[fill=black!12] ( 0.00, 0.00)         % u_0 = (p,q) = (0,0)
+                  -- ( 0.00,-1.95)         % u_1 = (0,1)
+                  -- ( 1.95, 0.00)         % u_3 = (1,0)
+                  -- cycle;
+
+% ---- the nine directions, column p and row q as in the ex:hesse display ---
+\node[gnode] (u0) at ( 0.00, 0.00) {$u_0$};   % (p,q) = (0,0)
+\node[gnode] (u1) at ( 0.00,-1.95) {$u_1$};   %         (0,1)
+\node[gnode] (u2) at ( 0.00,-3.90) {$u_2$};   %         (0,2)
+\node[gnode] (u3) at ( 1.95, 0.00) {$u_3$};   %         (1,0)
+\node[gnode] (u4) at ( 1.95,-1.95) {$u_4$};   %         (1,1)
+\node[gnode] (u5) at ( 1.95,-3.90) {$u_5$};   %         (1,2)
+\node[gnode] (u6) at ( 3.90, 0.00) {$u_6$};   %         (2,0)
+\node[gnode] (u7) at ( 3.90,-1.95) {$u_7$};   %         (2,1)
+\node[gnode] (u8) at ( 3.90,-3.90) {$u_8$};   %         (2,2)
+
+% ---- q constant: the three rows ------------------------------------------
+\draw[plainline] (u0)--(u3) (u3)--(u6) (u1)--(u4) (u4)--(u7) (u2)--(u5) (u5)--(u8);
+% ---- p constant: the three columns ---------------------------------------
+\draw[plainline] (u0)--(u1) (u1)--(u2) (u3)--(u4) (u4)--(u5) (u6)--(u7) (u7)--(u8);
+
+% ---- q - p constant: u_0u_4u_8, u_1u_5u_6, u_2u_3u_7 ---------------------
+\draw[dashline] (u0)--(u4) (u4)--(u8) (u1)--(u5) (u3)--(u7);
+\draw[dashline, stub] (u5)--( 2.51,-4.46);    % u_5 leaves, resumes at u_6
+\draw[dashline, stub] ( 3.34, 0.56)--(u6);
+\draw[dashline, stub] (u2)--( 0.56,-4.46);    % u_2 leaves, resumes at u_3
+\draw[dashline, stub] ( 1.39, 0.56)--(u3);
+
+% ---- q + p constant: u_2u_4u_6, u_0u_5u_7, u_1u_3u_8 ---------------------
+\draw[dotline] (u2)--(u4) (u4)--(u6) (u5)--(u7) (u1)--(u3);
+\draw[dotline, stub] (u0)--( 0.56, 0.56);     % u_0 leaves, resumes at u_5
+\draw[dotline, stub] ( 1.39,-4.46)--(u5);
+\draw[dotline, stub] (u3)--( 2.51, 0.56);     % u_3 leaves, resumes at u_8
+\draw[dotline, stub] ( 3.34,-4.46)--(u8);
+
+% ---- where each stub resumes ---------------------------------------------
+\node[anchor=south, font=\scriptsize] at ( 0.56, 0.70) {$u_5$};
+\node[anchor=south, font=\scriptsize] at ( 1.39, 0.70) {$u_2$};
+\node[anchor=south, font=\scriptsize] at ( 2.51, 0.70) {$u_8$};
+\node[anchor=south, font=\scriptsize] at ( 3.34, 0.70) {$u_5$};
+\node[anchor=north, font=\scriptsize] at ( 0.56,-4.60) {$u_3$};
+\node[anchor=north, font=\scriptsize] at ( 1.39,-4.60) {$u_0$};
+\node[anchor=north, font=\scriptsize] at ( 2.51,-4.60) {$u_6$};
+\node[anchor=north, font=\scriptsize] at ( 3.34,-4.60) {$u_3$};
+
+% ---- the least eigenvalue, on one line of each of the four classes --------
+\node[tag] at ( 0.98,-1.95) {$0$};            % on u_1u_4, q constant
+\node[tag] at ( 3.90,-0.98) {$0$};            % on u_6u_7, p constant
+\node[tag] at ( 2.50,-2.50) {$0$};            % on u_4u_8, q - p constant
+\node[tag] at ( 0.49,-3.41) {$0$};            % on u_2u_4, q + p constant
+
+% ---- the ringed triple ---------------------------------------------------
+\draw[ring] (u0) circle (0.42);
+\draw[ring] (u1) circle (0.42);
+\draw[ring] (u3) circle (0.42);
+
+% ---- the two residues ----------------------------------------------------
+\node[anchor=south, font=\footnotesize] at ( 0.00, 1.14) {$p=0$};
+\node[anchor=south, font=\footnotesize] at ( 1.95, 1.14) {$p=1$};
+\node[anchor=south, font=\footnotesize] at ( 3.90, 1.14) {$p=2$};
+\node[anchor=east, font=\footnotesize]  at (-0.72, 0.00) {$q=0$};
+\node[anchor=east, font=\footnotesize]  at (-0.72,-1.95) {$q=1$};
+\node[anchor=east, font=\footnotesize]  at (-0.72,-3.90) {$q=2$};
+
+% ---- the four parallel classes -------------------------------------------
+\draw[plainline] ( 4.70, 1.02)--( 5.20, 1.02);
+\draw[plainline] ( 4.95, 0.64)--( 4.95, 0.24);
+\draw[dashline]  ( 4.75, 0.06)--( 5.15,-0.34);
+\draw[dotline]   ( 4.75,-0.92)--( 5.15,-0.52);
+\node[anchor=west, font=\footnotesize] at ( 5.38, 1.02) {$q$ constant};
+\node[anchor=west, font=\footnotesize] at ( 5.38, 0.44) {$p$ constant};
+\node[anchor=west, font=\footnotesize] at ( 5.38,-0.14) {$q-p$ constant};
+\node[anchor=west, font=\footnotesize] at ( 5.38,-0.72) {$q+p$ constant};
+
+\node[anchor=north west, align=left, font=\scriptsize] at ( 4.70,-1.15)
+  {$p$ slot, $q$ phase, modulo three\\[2pt]
+   $3+3+3+3=12$ lines, four per point\\[2pt]
+   $\binom{9}{3}=84=12+72$\\[5pt]
+   the twelve, tagged $0$:\\[2pt]
+   $\beta_{abc}=-\tfrac{27}{8}$, \ $\lmin(\SC)=0$\\[5pt]
+   the seventy-two, $\{u_0,u_1,u_3\}$ ringed:\\[2pt]
+   $\beta_{abc}=\tfrac{27}{16}(1\pm i\sqrt3)$,\\[2pt]
+   $\lmin(\SC)=3\bigl(1-\cos\tfrac{2\pi}{9}\bigr)$\\[5pt]
+   a stub marked $u_d$ resumes at $u_d$};
+
+\end{tikzpicture}

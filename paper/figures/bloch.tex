@@ -1,0 +1,109 @@
+% The design of Example ex:sic on the Bloch sphere.  The four lines of C^2 have
+% |<g_a,g_b>|^2 = 4/3 at leverage 2, hence pairwise Bloch inner product -1/3:
+% a regular tetrahedron.  Orthographic projection of R^3 with azimuth 20 and
+% elevation 22 degrees, scaled by 2.1cm:
+%   X = 2.1(-0.34202 x_1 + 0.93969 x_2)
+%   Y = 2.1(-0.35201 x_1 - 0.12812 x_2 + 0.92718 x_3)
+% The sphere has radius 1 and the view direction is
+% (cos22 cos20, cos22 sin20, sin22) = (0.87127, 0.31712, 0.37461).  A great
+% circle of unit normal n projects to an ellipse of semi-axes 1 and |n . view|:
+% the silhouette (n = view) is the circle of radius 1, the equator (n = e_3)
+% has semi-axes 1 and 0.37461, and the meridian carrying g_0 and g_1
+% (n = e_2) has semi-axes 1 and 0.31712 with its major axis 82.236 degrees
+% from the screen horizontal.
+\begin{tikzpicture}[
+  x=2.1cm, y=2.1cm,
+  vec/.style={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt},
+  frame/.style={densely dotted, line width=0.3pt, black!35},
+  rim/.style={line width=0.45pt, black!55},
+  edge/.style={line width=0.45pt, black!65},
+  hidden/.style={line width=0.45pt, black!45, dashed, dash pattern=on 1.4pt off 1.2pt},
+  geo/.style={line width=0.4pt, black!58},
+  lead/.style={line width=0.3pt, black!55},
+  every node/.style={font=\small}]
+
+% ---- the sphere, its equator, and the meridian carrying g_0 and g_1 -------
+\draw[rim]   (0,0) circle [radius=1];
+\draw[frame] (0,0) ellipse [x radius=1, y radius=0.37461];
+\draw[frame, rotate=82.236] (0,0) ellipse [x radius=1, y radius=0.31712];
+
+% ---- the four Bloch vectors, all pairwise inner products -1/3 -------------
+\coordinate (b0) at ( 0.00000, 0.92718);   % n_0 = ( 0,        0,        1     )
+\coordinate (b1) at (-0.32246,-0.64094);   % n_1 = ( 0.94281,  0,       -0.33333)
+\coordinate (b2) at ( 0.92849,-0.24773);   % n_2 = (-0.47140,  0.81650, -0.33333)
+\coordinate (b3) at (-0.60603,-0.03851);   % n_3 = (-0.47140, -0.81650, -0.33333)
+\coordinate (O)  at ( 0,0);
+% the centre of the face on n_0, n_1, n_2, which is the antipode -n_3
+\coordinate (fc) at ( 0.60603, 0.03851);   %       ( 0.47140,  0.81650,  0.33333)
+
+% ---- the geodesic face on n_0, n_1, n_2 ----------------------------------
+% Each side is  p cos t + w sin t  for t from 0 to arccos(-1/3) = 109.4712
+% degrees, with w the unit tangent at p:
+%   w_01 = ( 1,       0,        0      ) -> (-0.34202, -0.35201)
+%   w_12 = (-0.16667, 0.86603, -0.47140) -> ( 0.87080, -0.48937)
+%   w_20 = (-0.16667, 0.28868,  0.94281) -> ( 0.32827,  0.89584)
+\path[pattern=north east lines, pattern color=black!35, draw=black!58,
+      line width=0.4pt]
+     plot[domain=0:109.4712, samples=41]
+       ({-0.34202*sin(\x)},{ 0.92718*cos(\x)-0.35201*sin(\x)})
+  -- plot[domain=0:109.4712, samples=41]
+       ({-0.32246*cos(\x)+0.87080*sin(\x)},{-0.64094*cos(\x)-0.48937*sin(\x)})
+  -- plot[domain=0:109.4712, samples=41]
+       ({ 0.92849*cos(\x)+0.32827*sin(\x)},{-0.24773*cos(\x)+0.89584*sin(\x)})
+  -- cycle;
+
+% ---- the tetrahedron; n_2 n_3 is the far diagonal of the outline ----------
+\draw[hidden] (b2)--(b3);
+\draw[edge]   (b0)--(b1) (b0)--(b2) (b0)--(b3) (b1)--(b2) (b1)--(b3);
+
+% ---- the four atoms ------------------------------------------------------
+\draw[vec] (O)--(b0);
+\draw[vec] (O)--(b1);
+\draw[vec] (O)--(b2);
+\draw[vec] (O)--(b3);
+\fill (O) circle (1.1pt);
+\node[above=2pt]           at (b0) {$g_0$};
+\node[below left=-1pt]     at (b1) {$g_1$};
+\node[right=2pt]           at (b2) {$g_2$};
+\node[left=2pt]            at (b3) {$g_3$};
+
+% ---- the area that carries the phase, and the pairwise angle -------------
+\draw[lead] (fc)--(1.02,0.42);
+\node[anchor=west, align=left, font=\footnotesize] at (1.05,0.44)
+  {$\tfrac14$ of the sphere:\\ area $\pi$};
+% the leader leaves the side n_1 n_2 at t = 32 degrees; the length of that
+% side in radians is the angle its endpoints subtend
+\draw[lead] (0.18799,-0.80285)--(0.95,-1.05);
+\node[anchor=west, align=left, font=\footnotesize] at (0.98,-1.05)
+  {$\arccos(-\tfrac13)$\\ $=109.47^{\circ}$};
+
+% ---- the dictionary ------------------------------------------------------
+\node[anchor=north, align=center, font=\footnotesize] at (0,-1.30)
+  {$\lvert\langle g_a,g_b\rangle\rvert^{2}=2\bigl(1+n_a\cdot n_b\bigr)$\\[2pt]
+   $\tfrac43$ at all six pairs $\Longleftrightarrow$ $n_a\cdot n_b=-\tfrac13$};
+
+% ---- the spectrum shared by all six pairs --------------------------------
+% within the shifted frame the eigenvalue lambda is drawn at the local
+% height  -1.30 + 0.75 lambda
+\begin{scope}[shift={(2.65,0.05)}]
+  \draw[line width=0.5pt] (0,-1.38)--(0,1.18);
+  \foreach \lev/\lab in {0/0,1/1,2/2,3/3}{
+    \pgfmathsetmacro{\hh}{-1.30+0.75*\lev}
+    \draw[line width=0.5pt] (-0.07,\hh)--(0.07,\hh);
+    \node[anchor=east, font=\footnotesize] at (-0.11,\hh) {\lab};
+  }
+  % the threshold: the eigenvalue of I_2
+  \draw[dashed, dash pattern=on 1.7pt off 1.5pt, line width=0.5pt]
+        (0.06,-0.55)--(1.05,-0.55);
+  \node[anchor=west, font=\scriptsize] at (1.09,-0.55) {threshold};
+  % the two roots of z^2 - 4z + 8/3, at 3.15470 and 0.84530
+  \fill (0.30, 1.06603) circle (1.7pt);
+  \fill (0.30,-0.66603) circle (1.7pt);
+  \node[anchor=west, font=\footnotesize] at (0.44,1.06603) {$2+\tfrac{2}{\sqrt3}$};
+  \node[anchor=north west, font=\footnotesize] at (0.38,-0.73)
+        {$2-\tfrac{2}{\sqrt3}=0.8453$};
+  \node[anchor=south] at (0.45,1.26) {$\operatorname{spec}\SC$};
+  \node[anchor=north, font=\footnotesize] at (0.45,-1.50) {$z^{2}-4z+\tfrac83$};
+\end{scope}
+
+\end{tikzpicture}
