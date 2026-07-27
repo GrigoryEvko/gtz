@@ -1,13 +1,8 @@
 \section{Elementary cases}\label{sec:first}
 
 The condition \eqref{eq:parseval} yields three elementary consequences on
-its own: a trace identity, an upper bound on each leverage score, and a
-comparison of the unweighted sum of the
-$g_c^{\vphantom{\mathsf{H}}}g_c\adj$ with the identity.  Between them they
-settle the cells $m=k$ and $k=1$, and no others.  \S\ref{sec:stops} says
-why they stop there, and Example~\ref{ex:tetra} exhibits what the rest of
-the paper works against: a design at which every $k$-subset sits on the
-threshold.
+its own, and between them they settle the cells $m=k$ and $k=1$, and no
+others.
 
 \subsection{The objects}
 
@@ -69,12 +64,10 @@ weights are positive and sum to $1$, so $k=\sum_c t_c\ell_c$ is a
 weighted mean of the $\ell_c$ and does not exceed their maximum.
 \end{proof}
 
-Each leverage score is also bounded above.
-
 \begin{lemma}[Lean]\label{lem:share}
 $0\le s_c\le1$ for every $c$.  With Lemma~\ref{lem:trace} the leverage
-scores therefore lie in $[0,1]$ and sum to $k$, which gives $m\ge k$ a
-second time, with equality only if $s_c=1$ throughout.
+scores therefore sum to $k$, which gives $m\ge k$ a second time, with
+equality only if $s_c=1$ throughout.
 \end{lemma}
 
 \begin{proof}
@@ -88,9 +81,6 @@ $0\le\ell_e-t_e\ell_e^2$, the second term because
 $\lvert\langle g_e,g_e\rangle\rvert^2=\ell_e^2$.  If $\ell_e=0$ then
 $s_e=0\le1$; otherwise divide by $\ell_e>0$.
 \end{proof}
-
-The third identity compares the unweighted sum over all indices with the
-weighted one.
 
 \begin{lemma}[Lean]\label{lem:coparseval}
 For every design,
@@ -106,25 +96,20 @@ Subtract \eqref{eq:parseval} from $\sum_c g_c^{\vphantom{\mathsf{H}}}g_c\adj$.
 Each $t_c$ is one summand of a sum of positive numbers equal to $1$, so
 $t_c\le1$ and the coefficients $1-t_c$ are nonnegative; a nonnegative
 combination of the positive semidefinite matrices
-$g_c^{\vphantom{\mathsf{H}}}g_c\adj$ is positive semidefinite.  If $m\ge2$ then
-$t_c<1$ for every $c$, since $t_c+t_{c'}\le1$ with $t_{c'}>0$ for any
-second index $c'$.  Put $\sigma:=\min_c(1-t_c)/t_c>0$, so that
-$\sigma t_c\le1-t_c$ at every index.  Then every coefficient of
+$g_c^{\vphantom{\mathsf{H}}}g_c\adj$ is positive semidefinite.  Positive
+definiteness follows once the sum is bounded below by a positive multiple
+of $I_k$.  If $m\ge2$ then $t_c<1$ for every $c$, since
+$t_c+t_{c'}\le1$ with $t_{c'}>0$ for any second index $c'$.  Put
+$\sigma:=\min_c(1-t_c)/t_c>0$, so that $\sigma t_c\le1-t_c$ at every
+index.  Then every coefficient of
 \[
   \sum_c\bigl((1-t_c)-\sigma t_c\bigr)\,g_c^{\vphantom{\mathsf{H}}}g_c\adj
   \;=\;\sum_c(1-t_c)\,g_c^{\vphantom{\mathsf{H}}}g_c\adj\;-\;\sigma I_k
 \]
 is nonnegative, the displayed equality being \eqref{eq:parseval} scaled by
-$\sigma$ and subtracted.  A nonnegative combination of positive
-semidefinite matrices is positive semidefinite, so the left side is
-$\psd0$, that is
+$\sigma$ and subtracted, so the left side is $\psd0$, that is
 $\sum_c(1-t_c)g_c^{\vphantom{\mathsf{H}}}g_c\adj\psd\sigma I_k\pd0$.
 \end{proof}
-
-The operator on the right of \eqref{eq:coparseval} returns in
-\S\ref{sec:chart}, where its inverse defines the pivot of a vector and
-its positive definiteness supplies the whitener behind
-Theorem~\ref{thm:duality}.
 
 \subsection{The cases that close by counting}
 
@@ -134,8 +119,8 @@ $\Gtz(k,k)$ and $\GtzC(k,k)$ hold.
 
 \begin{proof}
 By Lemma~\ref{lem:span} a design of rank $k$ has $m\ge k$ vectors, so
-$m=k$ leaves exactly one $k$-subset, namely $\{1,\dots,m\}$, and it
-dominates by Lemma~\ref{lem:coparseval}.
+$(k,k)$ is the smallest cell; at $m=k$ the set $\{1,\dots,m\}$ is the
+only $k$-subset, and it dominates by Lemma~\ref{lem:coparseval}.
 \end{proof}
 
 \begin{proposition}[Lean]\label{prop:rankone}
@@ -150,12 +135,12 @@ maximum, so $\lvert g_{c_0}\rvert^2\ge1$ for some $c_0$, and the
 singleton $\{c_0\}$, which has cardinality $k=1$, dominates.
 \end{proof}
 
-That exhausts the counting identities.  One further column lies inside
-the maximal-volume range \eqref{eq:elementary}, namely $m=k+1$; it too
-reduces to the scalar mechanism of Proposition~\ref{prop:rankone}, but
-only after the vectors are traded for the kernel of the associated
-projection.  That change of variables is Theorem~\ref{thm:corankone},
-where the elementary methods stop.
+One further column lies inside the maximal-volume range
+\eqref{eq:elementary}, namely $m=k+1$; it too reduces to the scalar
+mechanism of Proposition~\ref{prop:rankone}, but only after the vectors
+are traded for the kernel of the associated projection.  That change of
+variables is Theorem~\ref{thm:corankone}, where the elementary methods
+stop.
 
 Uniform weights recover the classical statement.
 
@@ -219,7 +204,7 @@ At $k=1$ this is the theorem: there is one direction up to scalars, and
 the witnessing index may be chosen once and for all.  At $k\ge2$ the
 witness of Lemma~\ref{lem:direction} depends on $x$, while
 \eqref{eq:pointwise} demands $k$ indices that work simultaneously for
-every $x$ on a sphere of dimension $k-1$.  Domination is a matrix
+every $x$ on the unit sphere of $\FF^k$.  Domination is a matrix
 inequality, and \eqref{eq:parseval} determines only the linear
 functionals of the family; the least eigenvalue is not one of them.
 
@@ -231,8 +216,8 @@ $\SC$ are at least $1$, so
 A subset satisfying \eqref{eq:tracetest} costs nothing to find: by
 Lemma~\ref{lem:trace} some $\ell_{c_0}\ge k$, and any $k$-subset
 containing $c_0$ will do.  The trace test therefore holds somewhere in
-every design and distinguishes nothing.  In the design below it passes at
-all twenty triples, and twelve of them do not dominate.
+every design.  In the design below it passes at all twenty triples, and
+twelve of them do not dominate.
 
 \begin{example}\label{ex:octa}
 Let $k=3$, let the six vectors be $\pm\sqrt3\,e_1$, $\pm\sqrt3\,e_2$,
@@ -279,9 +264,9 @@ $1-1-1+1=0$, so
   \sum_{c=0}^{3}\tfrac14\,g_c^{\vphantom{\mathsf{T}}}g_c\tp\;=\;I_3 :
 \end{equation}
 a design at $(4,3)$.  Here $\ell_c=3$ and $s_c=\tfrac34$ for every $c$, so
-Lemma~\ref{lem:trace} holds with equal terms, $4\cdot\tfrac34=3=k$, and
-$\langle g_i,g_j\rangle=-1$ for $i\ne j$.  The four vectors point to the
-vertices of a regular tetrahedron and each has length $\sqrt3$.
+Lemma~\ref{lem:trace} holds with equal terms, $4\cdot\tfrac34=3=k$.
+Distinct vectors have $\langle g_i,g_j\rangle=-1$.  The four vectors point
+to the vertices of a regular tetrahedron and each has length $\sqrt3$.
 
 Let $C=\{0,1,2,3\}\setminus\{c_0\}$ be one of the four triples.
 Subtracting the omitted term from \eqref{eq:tetraparseval},
@@ -305,18 +290,11 @@ $x=(x_1,x_2,x_3)$,
 which vanishes exactly on $\R g_0$, the direction omitted from $C$.
 \end{example}
 
-The tetrahedron is the smallest design at rank three with
-$\lmin(\SC)=1$ at every triple, and it recurs throughout what follows.  It
-is the equality case of the corank-one classification: the tie law
-\eqref{eq:tielaw} of \S\ref{sec:chart} reads
-$3\cdot\tfrac14\cdot3=\tfrac94=3-1+\tfrac14$ here.  Splitting its vectors
-produces extremal designs at every size $m\ge4$ and rank $3$, and that is
-the route by which the no-margin principle of \S\ref{sec:ties} reaches
-the open cells.  Its volume-sampling mixture is $(x-1)(x-4)^2$
-(\S\ref{sec:ties}), whose least root sits at the threshold.  It also
-calibrates the first-order system of \S\ref{sec:interior}, where
-$\Lambda=\tfrac13I_3$ and $\cv=1$ with each of the four triples carrying
-multiplier $\tfrac14$.
+At uniform weights the tetrahedron is the smallest design at rank three
+with $\lmin(\SC)=1$ at every triple; Figure~\ref{fig:tetrahedron} draws
+it.  Splitting its vectors produces designs with that property at every
+size $m\ge4$ and rank $3$.  Figure~\ref{fig:tetragap} draws the gap at
+one triple.
 
 \begin{figure}[ht]
   \centering
@@ -327,4 +305,19 @@ multiplier $\tfrac14$.
   $\{1,4,4\}$ by \eqref{eq:tetraspec}, so it dominates with nothing to
   spare.}
   \label{fig:tetrahedron}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/tetragap}
+  \caption{The gap $\SC-I_3$ at the triple $C=\{0,1,2\}$ of
+  Example~\ref{ex:tetra}.  Left: the level set $x\tp(\SC-I_3)x=1$, in the
+  cube and the projection of Figure~\ref{fig:tetrahedron}; the omitted atom
+  $g_3$ carries an open head and spans the null line.  Right: the same set
+  seen along that line.  Both nonzero eigenvalues of the gap equal $3$
+  (\S\ref{app:tetra}), so the level set is a circular cylinder of radius
+  $1/\sqrt3$ rather than a general elliptic one.  Dominating with nothing to
+  spare is a form singular along one line, and that line is spanned by the
+  atom the triple omits (\S\ref{sec:ties}).}
+  \label{fig:tetragap}
 \end{figure}

@@ -30,16 +30,16 @@ $x\in\FF^k$,
 Both readings are used below: the left one to recognize a design, the
 right one to transport a bound along a map of index sets.  Put
 \begin{equation}\label{eq:value}
-  \operatorname{val}(\dsn)\;:=\;\max_{\lvert C\rvert=k}\lmin(\SC),
+  F(\dsn)\;:=\;\max_{\lvert C\rvert=k}\lmin(\SC),
 \end{equation}
-a maximum over a finite set.  Since $\SC\psd sI_k$ is equivalent to
-$\lmin(\SC)\ge s$, the design $\dsn$ admits a dominating $k$-subset if and
-only if $\operatorname{val}(\dsn)\ge1$.
+a maximum over a finite set: the \emph{design objective}.  Since
+$\SC\psd sI_k$ is equivalent to $\lmin(\SC)\ge s$, the design $\dsn$
+admits a dominating $k$-subset if and only if $F(\dsn)\ge1$.
 We say $\dsn$ \emph{has value at most} $b$ when $\SC-sI_k$ fails to be
 positive semidefinite for every $k$-subset $C$ and every $s>b$; this is
-$\operatorname{val}(\dsn)\le b$.  Finally set
+$F(\dsn)\le b$.  Finally set
 \[
-  \alpha_k(\FF)\;:=\;\inf_{m}\ \inf_{\dsn}\ \operatorname{val}(\dsn),
+  \alpha_k(\FF)\;:=\;\inf_{m}\ \inf_{\dsn}\ F(\dsn),
 \]
 the infimum over all sizes and all designs of size $m$ and rank $k$ over
 $\FF$.  Thus $\Gtz(m,k)$ holds for every $m$ precisely when
@@ -48,8 +48,7 @@ Theorem~\ref{thm:corankone}(iii)--(iv) produces designs of value exactly
 $1$ at every rank, the conjecture over $\R$ is the assertion
 $\alpha_k(\R)=1$ for every $k$.
 
-At every rank and over either field the value has a floor, which limits
-how far the complex counterexamples can push it.
+At every rank and over either field the value has a floor.
 
 \begin{proposition}[Lean]\label{prop:rankfloor}
 Every weighted design of size $m$ and rank $k$ over $\FF$ admits a
@@ -130,7 +129,7 @@ $c$, the unique $k$-subset satisfies
   \lmin\bigl(S_{\{1,\dots,k\}}\bigr)\;=\;\frac{1}{\max_c t_c},
 \]
 and this quantity lies in $(1,k]$ for $k\ge2$.  Every weight vector is
-realized, so for $k\ge2$ the infimum of $\operatorname{val}$ over designs
+realized, so for $k\ge2$ the infimum of $F$ over designs
 at $(k,k)$ equals $1$ and is not attained.
 \end{proposition}
 
@@ -218,22 +217,27 @@ that is $11\sqrt3<20$, that is $363<400$.
 Here the two fields part: over $\R$ rank two holds at every size
 (Theorem~\ref{thm:ranktwo}), so $\alpha_2(\R)=1$, while over $\C$ the
 same cell has value below $1$ already at size four.  No proof of $\Gtz$
-can therefore be field-agnostic.  The constant $\alpha_{\mathrm{SIC}}$
-is moreover sharp: by \cite{Nesterenko2026complex} no uniform-weight
-design of rank two has value below $2-2/\sqrt3$, the bound being attained exactly when
-$4\mid m$, at a repeated copy of \eqref{eq:sic}.  The bound passes to
-arbitrary weights in two steps.  Split each atom of a rational-weight
-design into equally weighted copies: the result is a uniform design of
-larger size, and its value is at most the original's by
-Lemma~\ref{lem:split}, so the uniform bound is inherited upstairs.  For
-arbitrary weights, hold the chart $P$ fixed: by
-Lemma~\ref{lem:realize} every weight vector $t'$ with positive entries
-carries a design with that chart, namely $g'_c=\sqrt{t_c/t'_c}\,g_c$, and
-$\operatorname{val}$ is a continuous function of $t'$ there, being a
-maximum of finitely many least eigenvalues of matrices depending
-continuously on $t'$.  Rational weight vectors are dense in the open
-simplex, so the bound persists in the limit.  Hence
-$\alpha_2(\C)=2-2/\sqrt3$.
+can therefore be field-agnostic.  Figure~\ref{fig:bloch} draws the design
+on the Bloch sphere.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/bloch}
+  \caption{The design \eqref{eq:sic} on the Bloch sphere.  A line in $\C^{2}$
+  is a point of $S^{2}$, and unit vectors obey
+  $\lvert\langle u,v\rangle\rvert^{2}=\tfrac12\bigl(1+n_u\cdot n_v\bigr)$.  At
+  leverage $2$ the value $\tfrac43$ of Example~\ref{ex:sic} therefore reads
+  $n_a\cdot n_b=-\tfrac13$, and the four Bloch vectors are the vertices of a
+  regular tetrahedron: all six pairs are congruent, so all six share the
+  characteristic polynomial of Lemma~\ref{lem:sicvalue}.  At $k=2$ the argument
+  of $\langle g_a,g_b\rangle\langle g_b,g_c\rangle\langle g_c,g_a\rangle$ is
+  half the oriented area of the geodesic triangle $n_a n_b n_c$; the hatched
+  face has area $\pi$, so that product is purely imaginary.  Over $\R$ the
+  Bloch map is the angle-doubling map \eqref{eq:doubleangle} normalized, and
+  its image is a great circle.  Three points of a circle bound no area, which
+  is the phase defect of Remark~\ref{rem:phase} vanishing over $\R$.}
+  \label{fig:bloch}
+\end{figure}
 
 \subsection{Two padding operations}\label{sec:cpadding}
 
@@ -270,8 +274,9 @@ the sum is $I_{k+1}$.
 Now let $C$ be a $(k+1)$-subset and $s>b/(1-w)$; we show $S_C-sI_{k+1}$ is
 not positive semidefinite.  Suppose first $m+1\notin C$.  Every
 $\widehat g_c$ with $c\le m$ vanishes in the last coordinate, so the
-$(k+1,k+1)$ entry of $S_C-sI_{k+1}$ is $-s<0$, and a positive semidefinite
-matrix has nonnegative diagonal.  Suppose instead $m+1\in C$ and put
+$(k+1,k+1)$ entry of $S_C-sI_{k+1}$ is $-s$, negative because
+$s>b/(1-w)\ge0$, and a positive semidefinite matrix has nonnegative
+diagonal.  Suppose instead $m+1\in C$ and put
 $C':=C\setminus\{m+1\}$, a $k$-subset of $\{1,\dots,m\}$.  Test on the
 flat directions $\widehat x:=(x,0)$ with $x\in\C^k$.  There
 \[
@@ -332,6 +337,25 @@ most $k-1$; choosing $x\ne0$ orthogonal to that subspace gives
 $x\adj S_Cx=0$ by \eqref{eq:cover}, while
 $x\adj(sI_k)x=s\lVert x\rVert^{2}>0$.
 \end{proof}
+
+The constant $\alpha_{\mathrm{SIC}}$ of Lemma~\ref{lem:sicvalue} is
+sharp: by \cite{Nesterenko2026complex} no uniform-weight design of rank
+two has value below $2-2/\sqrt3$, the bound being attained exactly when
+$4\mid m$, at a repeated copy of \eqref{eq:sic}.  The bound passes to
+arbitrary weights in two steps.  Split each atom of a rational-weight
+design into equally weighted copies: the result is a uniform design of
+larger size, and its value is at most the original's by
+Lemma~\ref{lem:split}, so the uniform bound passes back to the
+rational-weight design.  For arbitrary weights, hold the chart $P$
+fixed: by Lemma~\ref{lem:realize} every weight vector $t'$ with positive
+entries carries a design with that chart, namely
+$g'_c=\sqrt{t_c/t'_c}\,g_c$, and $F$ is a continuous
+function of $t'$ there, being a maximum of finitely many least
+eigenvalues of matrices depending continuously on $t'$.  Rational weight
+vectors are dense in the open simplex, so the bound persists in the
+limit.
+
+Hence $\alpha_2(\C)=2-2/\sqrt3$.
 
 \subsection{The ladder}\label{sec:cladder}
 
@@ -403,9 +427,10 @@ Theorem~\ref{thm:ladder},
   \qquad(k\ge2),
 \]
 and at rank two both ends are known: $\alpha_2(\C)=2-2/\sqrt3$, the upper
-bound by Lemma~\ref{lem:sicvalue} and the lower by
-\cite{Nesterenko2026complex}.  At rank three the two ends are far apart, and two designs push the
-upper end below the padded seed.
+bound by Lemma~\ref{lem:sicvalue}, the lower by
+\cite{Nesterenko2026complex} extended to arbitrary weights in
+\S\ref{sec:cpadding}.  At rank three the two ends are far apart, and two
+designs push the upper end below the padded seed.
 
 \begin{example}[Lean]\label{ex:trine}
 Two coplanar trines of lines in $\C^{3}$ sharing an axis: for $j=0,1,2$,
@@ -423,17 +448,18 @@ entries cancelling by $1+\omega+\omega^{2}=0$; the total is $6I_3$, so
 \end{example}
 
 To prove the last assertion, and to prepare the rank-three record, we
-compute the determinant of a triple once and for all.  Let $C=\{a,b,c\}$ and let $A$ be the
-$3\times3$ matrix with rows $g_a\adj,g_b\adj,g_c\adj$.  Then $\SC=A\adj A$
+compute the determinant of a triple once and for all.  Let $C=\{a,b,c\}$
+and let $A$ be the $3\times3$ matrix with rows
+$g_a\adj,g_b\adj,g_c\adj$.  Then $\SC=A\adj A$
 while the Gram matrix is $\Gram_C=AA\adj$, with entries
 $\langle g_i,g_j\rangle$; for square $A$ the two have the same
 characteristic polynomial.  Writing $\beta_{ij}:=\langle g_i,g_j\rangle$
 and expanding the $3\times3$ determinant of
-$\Gram_C-sI_3$ gives, with $d:=3-s$ when all three leverages equal $3$,
+$\Gram_C-sI_3$ gives, when all three leverages equal $3$,
 \begin{equation}\label{eq:tripledet}
   \det(\SC-sI_3)
-  \;=\;d^{3}
-      -d\bigl(\lvert\beta_{ab}\rvert^{2}+\lvert\beta_{bc}\rvert^{2}
+  \;=\;(3-s)^{3}
+      -(3-s)\bigl(\lvert\beta_{ab}\rvert^{2}+\lvert\beta_{bc}\rvert^{2}
               +\lvert\beta_{ca}\rvert^{2}\bigr)
       +2\operatorname{Re}\beta_{abc},
   \qquad
@@ -445,7 +471,9 @@ the single real number $\operatorname{Re}\beta_{abc}$, affinely.
 For the trine, the two coplanar triples $\{g_0,g_1,g_2\}$ and
 $\{g_3,g_4,g_5\}$ have atom sums $\diag(6,0,3)$ and $\diag(0,6,3)$, of
 least eigenvalue $0$.  Every other triple consists of two vectors from one
-side and one from the other, say $g_i,g_j,g_{3+l}$ with $i\ne j$; then
+side and one from the other.  The coordinate swap $e_0\leftrightarrow e_1$
+exchanges the two sides, so take the pair on the first axis, say
+$g_i,g_j,g_{3+l}$ with $i\ne j$; then
 \[
   \beta_{ij}=2+\omega^{\,j-i},
   \qquad
@@ -458,7 +486,8 @@ so the budget is $\lvert2+\omega^{\,j-i}\rvert^{2}+1+1=3+2=5$ and
   \beta_{abc}=(2+\omega^{\,j-i})\,\omega^{\,i-j}=2\omega^{\,i-j}+1,
   \qquad \operatorname{Re}\beta_{abc}=1+2\cdot(-\tfrac12)=0 .
 \]
-By \eqref{eq:tripledet}, $\det(\SC-sI_3)=d^{3}-5d=d(d^{2}-5)$, so the
+By \eqref{eq:tripledet},
+$\det(\SC-sI_3)=(3-s)^{3}-5(3-s)=(3-s)\bigl((3-s)^{2}-5\bigr)$, so the
 spectrum of $\SC$ is $\{3,\,3-\sqrt5,\,3+\sqrt5\}$ and
 $\lmin(\SC)=3-\sqrt5=0.7639320225\ldots$ for all eighteen such triples.
 The value of the design is the maximum over the twenty triples, namely
@@ -530,6 +559,23 @@ $\operatorname{Re}\beta_{abc}=\tfrac{27}{16}$ the right-hand side of
   h(s):=8s^{3}-72s^{2}+162s-81 ,
 \end{equation}
 and with $\operatorname{Re}\beta_{abc}=-\tfrac{27}8$ it is $-s(s-\tfrac92)^{2}$.
+Figure~\ref{fig:hesse} draws the twelve lines.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/hesse}
+  \caption{The nine directions of Example~\ref{ex:hesse}, slot $p$ across and
+  phase $q$ down as in the display, and the twelve triples that
+  \eqref{eq:hessedet} puts at $\operatorname{Re}\beta_{abc}=-\tfrac{27}{8}$.
+  They are the twelve lines of the affine plane of order three on the residues
+  $(p,q)$: rows, columns and two diagonal classes closing through the opposite
+  edge, with every one of the thirty-six pairs on one of them.  A drawing by
+  straight lines in the real plane would then have no ordinary line, which
+  Sylvester--Gallai forbids.  The remaining seventy-two sit at
+  $\tfrac{27}{16}$, among them the ringed $\{u_0,u_1,u_3\}$ that carries the
+  certificate \eqref{eq:hesseldl}.}
+  \label{fig:hesse}
+\end{figure}
 
 \begin{proposition}[Lean]\label{prop:hesse}
 The roots of $h$ are $3(1-\cos\tfrac{2\pi}9)$,
@@ -555,7 +601,9 @@ $-\tfrac12$ at $\tfrac{2\pi}3$, $\tfrac{4\pi}3$ and $\tfrac{8\pi}3$; the
 solutions are therefore
 $\theta=\tfrac{2\pi}9,\tfrac{4\pi}9,\tfrac{8\pi}9$, which gives the three
 roots.  They are distinct, and $s=3(1-\cos\theta)$ increases with $\theta$,
-so $h_3$ is the least.  Exact evaluation isolates it: $h$ is negative at
+so $h_3$ is the least.  The leading coefficient of $h$ is positive, so $h$
+is negative below $h_3$ and positive between $h_3$ and the next root.
+Exact evaluation now isolates $h_3$: $h$ is negative at
 $\tfrac7{10}$, where its value is $-\tfrac{136}{1000}$, and positive at
 $\tfrac{71}{100}$, where its value is $\tfrac{588088}{10^{6}}$, so
 \begin{equation}\label{eq:hessewindow}
@@ -583,7 +631,8 @@ From $1+\omega+\omega^{2}=0$,
 \]
 so that $\SC$ is $\tfrac32$ times this matrix.  Writing
 $p:=\tfrac32-s$ and $q:=3-s$ and $\operatorname{atom}(v):=vv\adj$, a
-direct expansion of both sides gives the polynomial identity
+direct expansion of both sides gives, for every real $s$, the polynomial
+identity
 \begin{equation}\label{eq:hesseldl}
   pq\,\bigl(\SC-sI_3\bigr)
   \;=\;q\cdot\operatorname{atom}\bigl(p,0,-\tfrac32\bigr)
@@ -625,9 +674,10 @@ $2500>2079$.  For the first,
    +\bigl(-256+432-162\bigr)\sqrt5\;=\;14\sqrt5-27\;>\;0,
 \]
 since $980>729$.  The three roots of $h$ sum to $9$, so they cannot all
-lie below $2$; with $h(2)=19>0$ this places $2$ strictly between the two
-smallest roots.  As $3-\sqrt5<2$ and $h(3-\sqrt5)>0$, the number
-$3-\sqrt5$ lies in the same interval, hence above $h_3$.
+lie below $2$, and $h(2)=19>0$ makes the number of roots above $2$ even;
+exactly one root is therefore below $2$, which places $2$ strictly
+between the two smallest.  As $3-\sqrt5<2$ and $h(3-\sqrt5)>0$, the
+number $3-\sqrt5$ lies in the same interval, hence above $h_3$.
 
 \begin{remark}\label{rem:phase}
 Identity \eqref{eq:tripledet} shows where the two fields differ.
@@ -638,13 +688,14 @@ $[-\lvert\beta_{abc}\rvert,\lvert\beta_{abc}\rvert]$, and the separating
 quantity is the phase defect
 $\lvert\beta_{abc}\rvert^{2}-(\operatorname{Re}\beta_{abc})^{2}=(\operatorname{Im}\beta_{abc})^{2}$,
 which vanishes identically for every real configuration.  The trine of
-Example~\ref{ex:trine} isolates the mechanism: its
-modulus budget $5$ would permit $2\operatorname{Re}\beta_{abc}=2\sqrt3$ and hence a
+Example~\ref{ex:trine} isolates the mechanism.  Its three squared moduli
+are $3,1,1$, so $\lvert\beta_{abc}\rvert^{2}=3$ and its modulus budget
+$5$ would permit $2\operatorname{Re}\beta_{abc}=2\sqrt3$ and hence a
 positive determinant at $s=1$, but its phase defect is $3$ and its
 $\operatorname{Re}\beta_{abc}$ is $0$, leaving $\det(\SC-I_3)=-2$.  No
 argument that sees only the moduli $\lvert\beta_{ij}\rvert$ can decide
-either problem; the corresponding no-go statement is recorded in
-Appendix~\ref{app:graveyard}.
+either problem: at the icosahedral design of \S\ref{app:icosa} all twenty
+triples have the same moduli and exactly ten dominate.
 \end{remark}
 
 \begin{remark}\label{rem:sharpc}

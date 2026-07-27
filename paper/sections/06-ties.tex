@@ -7,20 +7,12 @@ families of dimension $m-1$, the dimension of the weights themselves.  No
 argument for $\Gtz$ can therefore carry a margin, and none of the
 reductions of \S\ref{sec:real} may consume one.
 
-Volume sampling is the probability measure on $k$-subsets adapted to
-\eqref{eq:parseval}, and under it the subset sum dominates on average,
-clearing the threshold by a factor of at least $k$ in trace.  Turning
-that average into a single subset is the derandomization the problem asks
-for.  What the identities do not supply is a common interlacing of the
-characteristic polynomials, and without one the least root of the average
-bounds the least root of no member (\S\ref{sec:averaging}).
-
 \subsection{Extremal designs}\label{sec:extremal}
 
 \begin{definition}\label{def:tie}
 A design is \emph{extremal} if some $k$-subset dominates and no $k$-subset
-dominates strictly: there is $C$ with $\SC\psd I_k$, and there is no $C$
-with $\SC\pd I_k$.
+dominates strictly: there is a $k$-subset with $\SC\psd I_k$, and no
+$k$-subset has $\SC\pd I_k$.
 \end{definition}
 
 For a Hermitian matrix $A$, the relation $A\psd I_k$ says
@@ -45,21 +37,22 @@ For $m\ge k$ put
 \end{equation}
 the infimum over real designs of size $m$ and rank $k$; this is the real
 counterpart of the constant of Remark~\ref{rem:sharpc}, refined by the
-size.  By construction $\alpha_k(\FF)=\inf_{m\ge k}\alpha(m,k)$, so the
+size.  By construction $\alpha_k(\R)=\inf_{m\ge k}\alpha(m,k)$, so the
 assertion $\alpha_k(\R)\ge1$ of \S\ref{sec:cvalue} is $\Gtz(m,k)$ for
 every $m$.  Since a maximum is at least the infimum of maxima,
 $\Gtz(m,k)$ holds if and only if $\alpha(m,k)\ge1$, and a design is
 extremal exactly when it realizes the value $1$.
 
 At corank zero there is nothing to construct.  If $m=k$ and $k\ge2$ then
-the unique $k$-subset satisfies
+the unique $k$-subset is $\{1,\dots,m\}$, and \eqref{eq:coparseval} gives
 \[
   \SC-I_k\;=\;\sum_{c}(1-t_c)\,g_c^{\vphantom{\mathsf{H}}}g_c\adj\;\pd\;0 ,
 \]
 because the $g_c$ are then a basis of $\FF^k$ and $m\ge2$ forces $t_c<1$
-for every $c$.  So no design at $m=k$, $k\ge2$, is extremal.  Extremal
-designs first occur at corank one, where by Theorem~\ref{thm:corankone}(iii)--(iv) they
-occur at every weight vector.
+for every $c$.  So no design at $m=k$, $k\ge2$, is extremal;
+Proposition~\ref{prop:square} computes its value, $1/\max_ct_c$.  Extremal
+designs first occur at corank one, where by
+Theorem~\ref{thm:corankone}(iii)--(iv) they occur at every weight vector.
 
 \subsection{Splitting, and existence at every size}\label{sec:split}
 
@@ -101,7 +94,7 @@ only through the total weight carried by a direction.  This is the
 Iterating splits from a design at $(k+1,k)$ produces, at size $m$, a
 design whose $m$ vectors take at most $k+1$ distinct values and whose
 weights are arbitrary subject to prescribed class totals.  We construct
-these directly, which is shorter and displays the reweighting.
+these directly.
 
 \begin{theorem}[Lean]\label{thm:tieseverywhere}
 Let $k\ge1$ and $m\ge k+1$, let $t$ be a weight vector on $m$ atoms, and
@@ -159,7 +152,9 @@ $k+1$ with the same weights differ by
   \qquad U\in O(k)\ \text{resp.}\ U(k),\qquad
   \lvert\varepsilon_c\rvert=1 ,
 \]
-a transformation under which no $\SC$ changes.  Consequently the extremal
+a transformation under which every $\SC$ becomes $U\SC U\adj$, so that no
+$\lmin(\SC)$ changes and neither domination nor extremality is
+affected.  Consequently the extremal
 locus at corank one has dimension $m-1=k$ modulo that group, and
 at every $m\ge k+1$ the extremal locus contains, for each partition of
 $\{1,\dots,m\}$ into $k+1$ nonempty blocks, a family of dimension $m-1$.
@@ -172,12 +167,13 @@ extremal if and only if its chart projection is $P=I-zz\adj$ with
 $\lvert z_c\rvert^{2}=(1-t_c)/k$ for every $c$.  One direction is part
 (iii) of that theorem.  For the other, extremality forbids strict
 domination, so by part (i) no $p_{c_0}$ exceeds the $t$-mean
-$\sum_ct_cp_c$; a family none of whose members exceeds its own weighted
-mean is constant, and by \eqref{eq:pnorm} the constant is $1/k$, which is
-the stated condition on $z$.  These moduli determine
-$z$ up to the individual phases $\varepsilon_c$, and $P$ determines $V$ up
-to $V\mapsto VU$, since two isometries with the same range differ by the
-unitary $U=V\adj V'$.  Replacing $z$ by $\diag(\varepsilon)z$ replaces $P$ by
+$\sum_ct_cp_c$; the weights being positive, a family none of whose members
+exceeds its own weighted mean is constant, and by \eqref{eq:pnorm} the
+constant is $1/k$, which is the stated condition on $z$.  These moduli
+determine $z$ up to the individual phases $\varepsilon_c$, and $P$
+determines $V$ up to $V\mapsto VU$, since two isometries with the same
+range differ by the unitary $U=V\adj V'$.  Replacing $z$ by
+$\diag(\varepsilon)z$ replaces $P$ by
 $\diag(\varepsilon)P\diag(\varepsilon)\adj$, the identity term surviving
 that conjugation because $\lvert\varepsilon_c\rvert=1$; so $V$ becomes
 $\diag(\varepsilon)V$ and $g_c=v_c/\sqrt{t_c}$ becomes $\varepsilon_cg_c$,
@@ -203,9 +199,16 @@ permits the cancellation.
 \end{proof}
 
 So above corank one the extremal designs are cut out by no such closed
-system, and indeed the designs of Theorem~\ref{thm:tieseverywhere} violate
-\eqref{eq:tielaw} at most of their atoms.  The following instances are
-used again in \S\ref{sec:interior} and in Appendix~\ref{app:data}.
+system.  The designs of Theorem~\ref{thm:tieseverywhere} satisfy
+\eqref{eq:tielaw} at an atom $c$ precisely when $c$ is alone in its class:
+substituting $\ell_c=(k-1+T_{\varphi(c)})/(kT_{\varphi(c)})$, which is
+Theorem~\ref{thm:corankone}(iii) read at the class totals, into
+\eqref{eq:tielaw} cancels the products and leaves
+$t_c(k-1)=T_{\varphi(c)}(k-1)$, that is $t_c=T_{\varphi(c)}$.  The law
+therefore fails at exactly the atoms of the classes that carry more than
+one, and at $m=k+2$ it fails at two atoms out of $k+2$.  The following
+instances are used again in \S\ref{sec:interior} and in
+Appendix~\ref{app:data}.
 
 \begin{example}[Lean]\label{ex:split}
 Take for $(h_j)$ the regular tetrahedron of Example~\ref{ex:tetra}, so
@@ -278,8 +281,27 @@ avoids it, and no compactness argument on a subregion of the design space
 yields a positive infimum for the slack unless the closure of that
 subregion misses the locus.  The analysis at the extremal points must
 therefore be first-order, and \S\ref{sec:compactness} and
-\S\ref{sec:interior} supply it.  Appendix~\ref{app:graveyard} collects the strategies that fail for
-these reasons, together with their refuting witnesses.
+\S\ref{sec:interior} supply it.  Appendix~\ref{app:graveyard} collects
+the strategies that fail for these reasons, together with their refuting
+witnesses.  Figure~\ref{fig:section} draws the locus at $(6,3)$.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/section}
+  \caption{The equality locus as a section, at $(6,3)$.  Floor: the slice
+  $t_4=t_5=t_6=\tfrac16$ of the open weight simplex, its excluded boundary
+  dashed and the uniform point marked.  Vertical: the fibre of the weight
+  map, drawn as a single dimension.  Each sheet is a section
+  $t\mapsto\dsn(t,\varphi)$ of Proposition~\ref{prop:section} restricted to
+  that slice; the section is defined at every weight vector and its image has
+  dimension $m-1=5$, the dimension of the weights.  One sheet occurs for each
+  partition of $\{1,\dots,6\}$ into four classes, $65$ in all, of which three
+  are drawn.  However small, the shaded $\mathcal{U}$ meets every one of them,
+  so no restriction of the weights isolates a region on which the slack has a
+  positive infimum; four of the seven strategies of
+  Appendix~\ref{app:graveyard} fail on that account.}
+  \label{fig:section}
+\end{figure}
 
 \subsection{The diamond}\label{sec:diamond}
 
@@ -331,7 +353,8 @@ Then
 \]
 so $(g_e,t_e)$ is a design at $(5,3)$; call it $\dsn_{\Diamond}$.  It is
 determined by the graph data up to the ambiguity $R\mapsto RU$ with $U$
-orthogonal, which replaces every $g_e$ by $U\tp g_e$ and changes no $\SC$.
+orthogonal, which replaces every $g_e$ by $U\tp g_e$ and every $\SC$ by
+$U\tp\SC U$, changing no $\lmin(\SC)$.
 
 Since $RR\tp=L^{-1}$,
 \begin{equation}\label{eq:diamondlev}
@@ -346,7 +369,8 @@ $b_e\tp L^{-1}b_e=\tfrac{39}{180}=\tfrac{13}{60}$ for $e\ge1$, so that
   \ell_0=2,\qquad \ell_1=\ell_2=\ell_3=\ell_4=\tfrac{13}4 .
 \]
 As a check, $\sum_et_e\ell_e=\tfrac15\bigl(2+4\cdot\tfrac{13}4\bigr)=3=k$,
-as Lemma~\ref{lem:trace} requires.  The substitution $y=Rx$, a bijection of $\R^3$, gives for every $3$-subset $C$
+as Lemma~\ref{lem:trace} requires.  The substitution $y=Rx$, a bijection
+of $\R^3$, gives for every $3$-subset $C$
 \[
   x\tp\SC x=\sum_{e\in C}5c_e\,d_e(y)^{2},
   \qquad
@@ -360,7 +384,8 @@ the whitening $R$:
   Q_C(y):=\sum_{e=0}^{4}\bigl(5\cdot[e\in C]-1\bigr)c_e\,d_e(y)^{2},
 \end{equation}
 where $[\,\cdot\,]$ is $1$ when the enclosed statement holds and $0$
-otherwise; and $C$ dominates if and only if $Q_C\ge0$ on $\R^3$.
+otherwise; and $C$ dominates if and only if $Q_C\ge0$ on $\R^3$, and
+dominates strictly if and only if $Q_C>0$ off the origin.
 
 \begin{example}[Lean]\label{ex:diamond}
 The design $\dsn_{\Diamond}$ is extremal at $(5,3)$; its five vectors are
@@ -373,7 +398,7 @@ For the star at the vertex $1$, that is $C=\{e_0,e_1,e_2\}$, expanding
 \eqref{eq:diamondgap} by means of \eqref{eq:drops} gives
 \begin{align*}
   Q_C(y)&=8(y_1-y_2)^2+12(y_1-y_3)^2+12y_1^2-3(y_2-y_3)^2-3y_2^2\\
-        &=32y_1^2+2y_2^2+9y_3^2-16y_1y_2-24y_1y_3+6y_2y_3 ,
+        &=32y_1^2+2y_2^2+9y_3^2-16y_1y_2-24y_1y_3+6y_2y_3 .
 \end{align*}
 Doubling and completing the square in $y_1$ leaves $9y_3^{2}$:
 \begin{equation}\label{eq:diamondstar}
@@ -408,7 +433,8 @@ $\{e_1,e_2,e_4\}$ and $y=(3,-3,5)$, for instance, the drops
 \]
 For each triangle the potential is constant on the triangle's vertex set,
 so its three drops vanish and $Q_C$ reduces to minus the Dirichlet
-contribution of the two edges leaving that set, namely $-6$.  Hence no
+contribution of the two edges leaving that set.  Each of those two carries
+conductance $3$ and a drop of modulus $1$, so $Q_C=-6$.  Hence no
 $3$-subset has $Q_C>0$ off the origin, that is none dominates strictly,
 while by the first paragraph one dominates: $\dsn_{\Diamond}$ is extremal.
 
@@ -436,7 +462,8 @@ An argument branching on the presence of a parallel pair therefore
 requires a separate treatment of $\dsn_{\Diamond}$, and of every extremal
 design not obtained by splitting a smaller one.  Whether the tetrahedron
 and the diamond generate the whole rank-three extremal locus is
-Problem~\ref{prob:structure}.
+Problem~\ref{prob:structure}.  Figure~\ref{fig:diamond} shows the graph
+and its incidence vectors.
 
 \begin{figure}[ht]
   \centering
@@ -451,6 +478,12 @@ Problem~\ref{prob:structure}.
 \end{figure}
 
 \subsection{Volume sampling}\label{sec:averaging}
+
+Volume sampling is the probability measure on $k$-subsets adapted to
+\eqref{eq:parseval}, and under it the subset sum dominates on average,
+clearing the threshold by a factor of at least $k$ in trace.  Turning
+that average into a single subset is the derandomization the problem asks
+for.
 
 We work
 in the chart of \S\ref{sec:chart}: $v_c=\sqrt{t_c}\,g_c$, the matrix $V$
@@ -514,20 +547,20 @@ For every atom $c$,
 \end{lemma}
 
 \begin{proof}
-Fix $c$ and let $D_\sigma:=\diag(1,\dots,\sigma,\dots,1)$ carry $\sigma$
+Fix $c$ and let $E_\sigma:=\diag(1,\dots,\sigma,\dots,1)$ carry $\sigma$
 in the position $c$.  On one hand
-$V\adj D_\sigma V=V\adj V+(\sigma-1)v_c^{\vphantom{\mathsf{H}}}v_c\adj$ is a
+$V\adj E_\sigma V=V\adj V+(\sigma-1)v_c^{\vphantom{\mathsf{H}}}v_c\adj$ is a
 rank-one perturbation of the identity, and
 $\det(I_k+\lambda uu\adj)=1+\lambda\lVert u\rVert^{2}$, so
 \[
-  \det\bigl(V\adj D_\sigma V\bigr)\;=\;1+(\sigma-1)\lVert v_c\rVert^{2}
+  \det\bigl(V\adj E_\sigma V\bigr)\;=\;1+(\sigma-1)\lVert v_c\rVert^{2}
   \;=\;1+(\sigma-1)s_c .
 \]
 On the other hand Lemma~\ref{lem:cauchybinet} applied to
-$X=V\adj D_\sigma$ and $Y=V$ gives, since scaling the column $c$ of
+$X=V\adj E_\sigma$ and $Y=V$ gives, since scaling the column $c$ of
 $V\adj$ multiplies every minor containing it by that factor,
 \[
-  \det\bigl(V\adj D_\sigma V\bigr)
+  \det\bigl(V\adj E_\sigma V\bigr)
   \;=\;\sum_{\lvert C\rvert=k}\sigma^{[c\in C]}\,\pi_C
   \;=\;\sum_{C\not\ni c}\pi_C\;+\;\sigma\sum_{C\ni c}\pi_C .
 \]

@@ -1,19 +1,21 @@
 \section{Interior critical points}\label{sec:interior}
 
-\S\ref{sec:compactness} upgrades a failure of $\Gtz(m,k)$ to an extremal
-failure: not merely some design below the threshold, but one minimizing
-the objective.  What does minimality cost such a design?  The constraint
+\S\ref{sec:compactness} upgrades a failure of $\Gtz(m,k)$ to a
+minimizing failure: not merely some design below the threshold, but one
+minimizing the chart objective.  What does minimality cost such a design?
+The constraint
 set is a smooth manifold, which gives the question a tangent space to be
 answered in.  The objective is a maximum of least-eigenvalue functions,
-locally Lipschitz but in general nowhere differentiable, so the answer
+locally Lipschitz but in general not differentiable, so the answer
 comes from nonsmooth first-order theory rather than from a gradient.  The
 two together yield one vector identity and one scalar identity at each
 index.
 
 A design at $(m,k)$ over $\R$ is written as a pair $(g,t)$ with
-$g=(g_1,\dots,g_m)\in(\R^k)^m$ and $t=(t_1,\dots,t_m)$.  Put
+$g=(g_1,\dots,g_m)\in(\R^k)^m$ and $t=(t_1,\dots,t_m)$.  In these
+coordinates the design objective \eqref{eq:value} reads
 \begin{equation}\label{eq:designobjective}
-  F(g,t)\;:=\;\max_{\lvert C\rvert=k}\lmin\bigl(\SC\bigr),
+  F(g,t)\;=\;\max_{\lvert C\rvert=k}\lmin\bigl(\SC\bigr),
   \qquad \SC=\sum_{c\in C}g_c^{\vphantom{\mathsf{T}}}g_c\tp.
 \end{equation}
 By Definition~\ref{def:design} and the eigenvalue reading recorded in
@@ -33,7 +35,7 @@ $x\tp\SC x=\sum_{c\in C}\langle g_c,x\rangle^2>0$, so $\lmin(\SC)>0$.
 \end{proof}
 
 \begin{definition}\label{def:extremalcex}
-The cell $(m,k)$ \emph{has an extremal counterexample} if $F$ attains a
+The cell $(m,k)$ \emph{has a minimizing counterexample} if $F$ attains a
 local minimum, over the designs of size $m$ and rank $k$, at a design
 whose value is below $1$.
 \end{definition}
@@ -68,7 +70,8 @@ $k\times k$ matrices, and let
   \sigma(t)\;:=\;\sum_c t_c-1\;\in\;\R .
 \end{equation}
 The designs are the points of $\{\Phi=0\}\cap\{\sigma=0\}$ satisfying the
-open condition $t\pd0$.  Both maps are polynomial, with differentials
+open condition $t_c>0$ at every index.  Both maps are polynomial, with
+differentials
 \begin{equation}\label{eq:conGrad}
   \Phi'(g,t)[\dot g,\dot t]
   =\sum_c\Bigl(\dot t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp
@@ -89,7 +92,8 @@ consists of the pairs $(\dot g,\dot t)$ annihilated by
 \begin{proof}
 Let $(Y,a)\in\mathbb{S}^k\times\R$ be given.  Choose $\dot t$ with
 $\sum_c\dot t_c=a$, put
-$Y':=Y-\sum_c\dot t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp$, and take
+$Y':=Y-\sum_c\dot t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp$, again
+symmetric, and take
 $\dot g_c:=\tfrac12Y'g_c$.  Then by \eqref{eq:parseval}
 \[
   \sum_c t_c\bigl(\dot g_c^{\vphantom{\mathsf{T}}}g_c\tp
@@ -151,6 +155,24 @@ $\langle\Theta,\dot g_c^{\vphantom{\mathsf{T}}}g_c\tp
     \ :\ \Theta\in\partial\lmin(\SC)\,\Bigr\}.
 \end{equation}
 The functionals $\phi_{C,\Theta}$ do not involve $\dot t$.
+Figure~\ref{fig:spectraplex} draws the spectraplex at $k=2$.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/spectraplex}
+  \caption{The spectraplex \eqref{eq:spectraplex} at $k=2$.  Trace one cuts
+  the cone in a horizontal disc of radius $\tfrac12$, whose boundary circle
+  meets each extreme ray once and consists of the rank-one projectors.  Since
+  $\lmin$ is concave, \eqref{eq:spectraplex} is a superdifferential; it is the
+  face of that disc spanned by the unit eigenvectors at $\lmin(A)$.  The face
+  at an eigenspace of dimension $r$ has dimension $\tfrac12r(r+1)-1$, so none
+  has dimension one, and the multiplier attached to an active subset in
+  Theorem~\ref{thm:firstorder} is a positive semidefinite matrix of trace one
+  on the eigenspace rather than a scalar.  Neither the spectraplex nor the
+  passage of \S\ref{sec:kkt} from a local minimum to
+  \eqref{eq:statg}--\eqref{eq:statt} is formal (\S\ref{sec:boundaries}).}
+  \label{fig:spectraplex}
+\end{figure}
 
 \begin{theorem}\label{thm:firstorder}
 Let $(g,t)$ be a design at which $F$ attains a local minimum over the
@@ -222,9 +244,9 @@ $\dot g_c$ gives \eqref{eq:statg} after division by $2$, and the
 coefficient of $\dot t_c$ gives \eqref{eq:statt}.
 \end{proof}
 
-The maximum rule in \eqref{eq:zeta} is only an inclusion, because the pieces
-are concave and therefore not Clarke regular; the sharper first-order
-statement available at such a point is the directional one, namely
+The maximum rule in \eqref{eq:zeta} is only an inclusion; the sharper
+first-order statement available at such a point is the directional one,
+namely
 $\max_{C\in\mathcal{A}}\lmin\bigl(Q_C\tp\dot S_CQ_C\bigr)\ge0$ for every
 $(\dot g,\dot t)\in \tang$, where $Q_C$ is an orthonormal basis of the
 $\lmin$-eigenspace of $\SC$ and $\dot S_C$ is the derivative of $\SC$
@@ -263,7 +285,10 @@ multiplicity $r$ contributes $r$ indices carrying one subset, the form
 the spectral decomposition in the proof of Theorem~\ref{thm:firstorder}
 delivers.  Nothing below assumes that
 $i\mapsto C_i$ is injective, and this is why the active family is defined
-as a set of subsets rather than as a set of indices.
+as a set of subsets rather than as a set of indices.  Indices with
+$\lambda_i=0$ may be discarded: dropping them changes neither
+\eqref{eq:statg} nor \eqref{eq:statt}, neither $\Lambda$ nor $A^{+}$, so
+one may assume $\{C_i:i\in A\}=A^{+}$.
 
 Definition~\ref{def:datum} asks only that $\cv$ be \emph{an} eigenvalue of
 each $S_{C_i}$.  It does not ask that $\cv=\lmin(S_{C_i})$, and it does not
@@ -344,7 +369,24 @@ The coverage law \eqref{eq:coverage} is the contraction
 that same contraction summed over $c$.  The two are therefore not
 independent constraints, and no count of the equations of the system may
 treat them as such: the content of a stationarity datum is exactly
-\eqref{eq:statg} and \eqref{eq:statt}.
+\eqref{eq:statg} and \eqref{eq:statt}.  Figure~\ref{fig:quadric} draws the
+quadric at $(6,3)$.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/quadric}
+  \caption{The quadric law \eqref{eq:quadric}.  A stationarity datum confines
+  every vector of its design to one central quadric of the multiplier, an
+  ellipsoid whenever $\Lambda$ is nonsingular.  Drawn at $(6,3)$: the six
+  vectors of a design, all on the ellipsoid of
+  $\Lambda=\diag(\tfrac12,\tfrac13,\tfrac16)$ at $\cv=1$, with its three
+  principal sections and its silhouette.  By \eqref{eq:multiplier} the surface
+  is assembled from the tight directions, the semi-axis along $u_i$ having
+  length $\sqrt{\cv/\lambda_i}$: it is longest where the multiplier mass is
+  least.  Inset: at the tetrahedron of Example~\ref{ex:tetrakkt} the multiplier
+  is $\tfrac13I_3$ and the quadric is the sphere $\lVert x\rVert^2=3$.}
+  \label{fig:quadric}
+\end{figure}
 
 Reading the quadric law through \eqref{eq:multiplier} removes the
 restriction $c\in C_i$ from the sum.
@@ -390,9 +432,10 @@ its terms is nonzero, and that forces $\lambda_i>0$, $c\in C_i$ and
 $\langle u_i,g_c\rangle\ne0$ for the corresponding $i$.
 \end{proof}
 
-Part (iii) names a unit vector; it implies $\lmax(\SC)\ge k$ for every $k$-subset, but the vector is the
-useful half.  Part (i) says every vector of a stationary design is heavy
-in the weak sense; the strict inequality $\ell_c>1$ would require
+Part (iii) names a unit vector; it implies $\lmax(\SC)\ge k$ for every
+$k$-subset, but the vector is the useful half.  Part (i) says every
+vector of a stationary design is heavy in the weak sense; the strict
+inequality $\ell_c>1$ would require
 excluding equality in Cauchy--Schwarz at every positively weighted index
 simultaneously, and is not available.
 
@@ -418,12 +461,11 @@ vanishes exactly when each term does.
 \end{proof}
 
 Part (ii) of Lemma~\ref{lem:overlap} is the nonnegativity of the defect.
-A vanishing defect says $t_c\cv=1$, and $t_c\le1$ then forces $\cv\ge1$:
-the defect is what keeps a datum below the threshold, and every exclusion
-that reaches such a datum reaches it by driving the defect to zero
-somewhere.  Summing \eqref{eq:defect} over $c$ against $\sum_ct_c=1$
-sharpens the bound $\cv\le m$ of that same part into an identity, the
-total defect being
+A vanishing defect says $t_c\cv=1$, and $t_c\le1$ then forces $\cv\ge1$.
+
+Summing \eqref{eq:defect} over $c$ against $\sum_ct_c=1$ sharpens the
+bound $\cv\le m$ of that same part into an identity, the total defect
+being
 \begin{equation}\label{eq:totaldefect}
   \sum_c\ \sum_{i\,:\,c\notin C_i}\lambda_i\langle u_i,g_c\rangle^2
   \;=\;m-\cv .
@@ -649,9 +691,14 @@ $7\le3\lvert A^{+}\rvert$.
 
 Whether the partition branch at $(6,3)$ is inhabited is open.
 
+\begin{wip}
+Decide the partition branch of Corollary~\ref{cor:e3}: either exclude a
+datum whose active family is a two-block partition of $\{1,\dots,6\}$
+with $0<\cv<1$, or exhibit one.
+\end{wip}
+
 A fourth exclusion follows from the same subsum comparison, and it acts
-on the opposite end of the range: on families so large that a single
-vector meets all of them.
+on the families in which a single vector lies in every member.
 
 \begin{proposition}[Lean]\label{prop:saturated}
 Let a stationarity datum with $\cv\ne0$ be given, and suppose some index
@@ -686,8 +733,8 @@ vertices.  Let $h_0,\dots,h_3$ be the sign vectors $(1,1,1)$,
 $(1,-1,-1)$, $(-1,1,-1)$, $(-1,-1,1)$, so that
 $\sum_dh_d^{\vphantom{\mathsf{T}}}h_d\tp=4I_3$ and $\langle h_d,h_e\rangle=-1$
 for $d\ne e$; these are the vectors of Example~\ref{ex:tetra} in
-coordinates.  Give the seven vectors $g_0,\dots,g_6$ the directions
-$h_0,h_1,h_2,h_3,h_0,h_1,h_2$ and the weights
+coordinates.  Take the seven vectors $g_0,\dots,g_6$ to be
+$h_0,h_1,h_2,h_3,h_0,h_1,h_2$ and give them the weights
 $\tfrac18,\tfrac18,\tfrac18,\tfrac14,\tfrac18,\tfrac18,\tfrac18$.  Each
 direction carries total weight $\tfrac14$, so \eqref{eq:parseval} holds.
 This is one of the extremal designs of
@@ -724,11 +771,17 @@ multiplier $\tfrac1{16}$, giving
   \tfrac13\Bigl(\tfrac4{32}+\tfrac2{16}+\tfrac2{16}\Bigr)
   =\tfrac13\cdot\tfrac38=\tfrac18=t_0 .
 \]
+For \eqref{eq:statg} itself at $c=3$, each of the twelve triples
+containing $g_3$ contributes
+$\tfrac1{16}\bigl(-\tfrac{1}{\sqrt3}\bigr)\tfrac{h_d}{\sqrt3}
+=-\tfrac1{48}h_d$ at its missed direction $h_d$, four triples for each
+$d\ne3$, so $\sum_dh_d=0$ turns the total into
+$-\tfrac1{12}(h_0+h_1+h_2)=\tfrac1{12}h_3=t_3\Lambda g_3$.
 The datum is admissible, and $\lvert A^{+}\rvert=20$.
 \end{example}
 
-Example~\ref{ex:splitseven} puts twenty triples in the active family at the cell to which rank
-three reduces.  It does not conflict
+Example~\ref{ex:splitseven} puts twenty triples in the active family at
+the cell to which rank three reduces.  It does not conflict
 with Proposition~\ref{prop:carath} below, which asserts only that the
 multipliers \emph{may be taken} supported on at most nineteen indices.
 
@@ -800,20 +853,26 @@ $\dfrac{\sqrt2}{4+2\sqrt2}=\dfrac{\sqrt2\,(4-2\sqrt2)}{8}
   t_0\Lambda g_0=\tfrac14\cdot\tfrac{2-\sqrt2}{2}\,(\sqrt2,0)
   =\frac{2\sqrt2-2}{8}\,(1,0)=\frac{\sqrt2-1}{4}\,(1,0).
 \]
-The three remaining vectors are handled in the same way.  Finally, the
-two pairs omitted from the active family are orthogonal:
+The rotation through $135^{\circ}$ sends $g_0,g_1,g_3,g_2$ to
+$g_1,-g_3,-g_2,-g_0$, and a sign does not change
+$g_c^{\vphantom{\mathsf{T}}}g_c\tp$; the weights and the multipliers are
+equal and $\Lambda$ is a multiple of the identity, so the rotation
+carries the datum to itself with the pairs cycled
+$C_0\to C_2\to C_3\to C_1$.  The three remaining indices follow.  Finally,
+the two pairs omitted from the active family are orthogonal:
 $S_{\{0,3\}}=S_{\{1,2\}}=2I_2$, so $\lmin=2$ there, $F=2$, and
 $S_{\{0,3\}}-I=I\pd0$.
 \end{proof}
 
 The datum of Theorem~\ref{thm:reach} is stationary for the maximum taken
-over the four chosen pairs, which minimize $\lmin(\SC)$, and not for $F$.  It violates
+over the four chosen pairs, which minimize $\lmin(\SC)$, and not for $F$.
+It violates
 \eqref{eq:argmax}, a disjunctive semialgebraic condition rather than an
 equation and therefore beyond the algebra of \S\ref{sec:laws}.  It also
 violates the hypothesis of every exclusion: its multiplier is isotropic
 rather than of rank one, its four tight directions lie in $\R^2$ and
-are dependent, and its active family is four distinct pairs, neither a
-singleton nor a partition.
+are dependent, its active family is four distinct pairs, neither a
+singleton nor a partition, and no index lies in every pair.
 
 \subsection{The residue}\label{sec:census}
 
@@ -868,6 +927,7 @@ between $2$ and $15$ members, the value $2$ occurring only in the
 partition branch of Corollary~\ref{cor:e3}; at $(7,3)$ it covers
 $\{1,\dots,7\}$ and has between $3$ and $19$ members.  The number of
 possibilities is finite, and at $(6,3)$ small enough to be listed.
+Figure~\ref{fig:census} shows the distribution.
 
 \begin{proposition}\label{prop:census}
 Up to relabelling, the families of $3$-subsets of $\{1,\dots,6\}$ whose
@@ -880,18 +940,6 @@ $7\,011\,184$; every one has at least three members, and $5\,249\,381$
 have at most nineteen.
 \end{proposition}
 
-Against this census the exclusions reach only a corner.  Of the $2136$
-classes of families of $3$-subsets of $\{1,\dots,6\}$,
-Lemma~\ref{lem:overlap}(iv) removes the $34$ that fail to cover;
-Proposition~\ref{prop:saturated} removes $23$ more, those in which some
-index lies in every member; and Corollary~\ref{cor:e3} leaves the single
-partition class undecided.  Fifty-seven classes are excluded, $2079$ are
-not.  The reason is visible in Table~\ref{tab:census}: the exclusions
-bite at the two ends of the range, on families too small to cover and on
-families large enough to be saturated, while the distribution peaks at
-cardinality ten, where they say nothing.  Conjecture~\ref{conj:sixthree}
-is not a finite verification away from what is proved here.
-
 \begin{proof}
 Orbit enumeration under the symmetric group.  For $n=6$ the $2^{20}$
 families of triples were partitioned into orbits directly.  Independently,
@@ -899,7 +947,7 @@ for $n=6$ and $n=7$ the number of orbits of covering families of
 cardinality $j$ was computed from Burnside's lemma as
 \[
   \frac1{n!}\sum_{\varsigma\in S_n}\ \sum_{R}(-1)^{r-\lvert R\rvert}
-    \bigl[x^{j}\bigr]\!\!\prod_{\kappa\,\subseteq\, T_R}
+    \bigl[x^{j}\bigr]\!\!\prod_{\kappa}
       \bigl(1+x^{\lvert\kappa\rvert}\bigr),
 \]
 where $\varsigma$ has $r$ cycles on $\{1,\dots,n\}$, the index $R$ runs over
@@ -910,6 +958,14 @@ union of points is $\varsigma$-invariant, so the alternating sum is
 inclusion--exclusion over the sets a fixed family can avoid.  The two
 computations agree at $n=6$.
 \end{proof}
+
+Against this census the exclusions reach only a corner.  Of the $2136$
+classes of families of $3$-subsets of $\{1,\dots,6\}$,
+Lemma~\ref{lem:overlap}(iv) removes the $34$ that fail to cover;
+Proposition~\ref{prop:saturated} removes $23$ more, those in which some
+index lies in every member; and Corollary~\ref{cor:e3} leaves the single
+partition class undecided.  Fifty-seven classes are excluded, $2079$ are
+not.
 
 \begin{table}[ht]
 \small
@@ -960,7 +1016,7 @@ fixed active family the unknowns are the $mk$ coordinates, the $m$
 weights, the multipliers, the tight directions, the entries of $\Lambda$
 and the value $\cv$; the conditions are \eqref{eq:statg},
 \eqref{eq:statt}, $\lVert u_i\rVert=1$, $S_{C_i}u_i=\cv u_i$,
-$\lambda_i\ge0$, $\sum_i\lambda_i=1$, \eqref{eq:parseval}, $t\pd0$,
+$\lambda_i\ge0$, $\sum_i\lambda_i=1$, \eqref{eq:parseval}, $t_c>0$,
 $\sum_ct_c=1$, $0<\cv<1$, and \eqref{eq:argmax} --- the last a disjunction
 of sign conditions on the leading principal minors of $\SC-\cv I$, one
 disjunction for each $k$-subset $C$.
@@ -968,7 +1024,7 @@ disjunction for each $k$-subset $C$.
 \begin{theorem}[conditional]\label{thm:rankthree}
 Assume Conjectures~\ref{conj:sixthree} and~\ref{conj:seventhree}, and
 assume that a failure of $\Gtz(6,3)$, respectively of $\Gtz(7,3)$,
-produces an extremal counterexample at that cell in the sense of
+produces a minimizing counterexample at that cell in the sense of
 Definition~\ref{def:extremalcex}.  Then $\Gtz(m,3)$ holds for every $m$.
 \end{theorem}
 
@@ -983,7 +1039,7 @@ Conjecture~\ref{conj:sixthree}.  The same argument at $(7,3)$ with
 Conjecture~\ref{conj:seventhree} gives $\Gtz(7,3)$.
 \end{proof}
 
-The extremality hypothesis is all this section takes from
+The minimality hypothesis is all this section takes from
 \S\ref{sec:compactness}; Theorem~\ref{thm:variational} supplies it for
 the chart objective.
 
@@ -993,9 +1049,3 @@ an argument uniform in the active family is required.  The exclusions of
 configurations, and Example~\ref{ex:splitseven} lives in what remains: a
 system realized at the frontier size, at the threshold, by an active
 family of twenty triples.
-
-\begin{wip}
-Decide the partition branch of Corollary~\ref{cor:e3}: either exclude a
-datum whose active family is a two-block partition of $\{1,\dots,6\}$
-with $0<\cv<1$, or exhibit one.
-\end{wip}

@@ -21,8 +21,9 @@ satisfy $U\adj U=I_k$, let $u_c\adj$ be its $c$-th row, and put
 $g_c:=\sqrt m\,u_c$ and $t_c:=1/m$.  Then \eqref{eq:parseval} holds,
 the two factors of $m$ cancelling and leaving
 $\sum_cu_c^{\vphantom{\mathsf{H}}}u_c\adj=U\adj U=I_k$.  Writing $U_C$ for the
-$k\times k$ submatrix on the rows $C$, the same cancellation gives
-$\SC=m\,U_C\adj U_C^{\vphantom{\mathsf{H}}}$, so the requirement
+$k\times k$ submatrix on the rows $C$, the same row identity gives
+$\SC=m\,U_C\adj U_C^{\vphantom{\mathsf{H}}}$, the factor $m$ surviving here
+because $\SC$ carries no weights, so the requirement
 \eqref{eq:dominate} reads
 \[
   U_C\adj U_C^{\vphantom{\mathsf{H}}}\;\psd\;\tfrac1m I_k,
@@ -40,56 +41,63 @@ content of the maximal-volume principle, and it remains open.
 The principle does prove a weaker bound \cite{GZT1997,GT2001}.
 Among the finitely many $k$-subsets choose one of maximal volume, that is
 one maximizing $\lvert\det U_C\rvert$.  It is nonsingular: by the
-Cauchy--Binet formula
+Cauchy--Binet formula \cite[\S0.8.7]{HornJohnson2013}
 $\sum_{\lvert C\rvert=k}\lvert\det U_C\rvert^2=\det(U\adj U)=1$, so the
 volumes do not all vanish.  Put $B:=UU_C^{-1}$.  Replacing the
 $j$-th row of $U_C$ by the $r$-th row of $U$ replaces that row by its
-expansion $\sum_i B_{ri}(U_C)_i$ in the selected rows; expanding the
-determinant linearly in that row leaves only the term $i=j$, every other
-having a repeated row, so the new determinant is $B_{rj}\det U_C$.  For
-$r\notin C$ that determinant belongs to a genuine $k$-subset, and an entry
-of modulus greater than $1$ would name one of strictly larger volume; so
-maximality bounds those entries by $1$.  The rows of $B$ indexed by $C$ are
-$U_CU_C^{-1}=I_k$, so every entry of $B$ has modulus at most $1$ and the
-$k$ rows on $C$ contribute exactly $k$ to the Frobenius norm, whence
+expansion $\sum_i B_{ri}(U_C)_i$ in the selected rows, since $BU_C=U$;
+expanding the determinant linearly in that row leaves only the term
+$i=j$, every other having a repeated row, so the new determinant is
+$B_{rj}\det U_C$.  For $r\notin C$ that determinant belongs to a genuine
+$k$-subset, and an entry of modulus greater than $1$ would name one of
+strictly larger volume; so maximality bounds those entries by $1$.  The
+rows of $B$ indexed by $C$ are $U_CU_C^{-1}=I_k$, so every entry of $B$
+has modulus at most $1$.  Those $k$ rows contribute exactly $k$ to the
+squared Frobenius norm and each of the other $m-k$ rows at most $k$, whence
 \[
   \tr\bigl((U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\bigr)
   \;=\;\lVert U_C^{-1}\rVert_F^2
   \;=\;\lVert B\rVert_F^2
   \;\le\;k+k(m-k),
 \]
-using $\lVert UX\rVert_F=\lVert X\rVert_F$ in the middle step.  Moreover
-$U_C\adj U_C^{\vphantom{\mathsf{H}}}\preceq U\adj U=I_k$, so
-$(U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\psd I_k$; a Hermitian $k\times k$ matrix
-dominating the identity has all its eigenvalues at least $1$ and so has
-largest eigenvalue at most its trace diminished by $k-1$.  Therefore
-$\lVert U_C^{-1}\rVert_2^2\le k(m-k)+1$ and
-$\SC\psd\frac{m}{k(m-k)+1}I_k$.  The bound and the conjecture differ by a
-single term:
+using $(U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}=U_C^{-1}(U_C^{-1})\adj$ at
+the first equality and $\lVert UX\rVert_F=\lVert X\rVert_F$ at the second.
+Moreover $I_k-U_C\adj U_C^{\vphantom{\mathsf{H}}}
+=\sum_{c\notin C}u_c^{\vphantom{\mathsf{H}}}u_c\adj\psd0$, so
+$(U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\psd I_k$, inversion reversing
+the Loewner order; a Hermitian $k\times k$ matrix dominating the identity
+has all its eigenvalues at least $1$ and so has largest eigenvalue at most
+its trace diminished by $k-1$.  Therefore
+$\lVert U_C^{-1}\rVert_2^2
+=\lmax\bigl((U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\bigr)
+\le k+k(m-k)-(k-1)=k(m-k)+1$, so that
+$\SC=m\,U_C\adj U_C^{\vphantom{\mathsf{H}}}\psd\frac{m}{k(m-k)+1}I_k$.
+
+The bound and the conjecture differ by a single term:
 \begin{equation}\label{eq:deficit}
   k(m-k)+1\;=\;m\;+\;(k-1)(m-k-1),
 \end{equation}
-a ring identity in the substitution $k=a+1$, $m-k=b+1$.  The deficit
-$(k-1)(m-k-1)$ vanishes precisely when $k=1$ or $m=k+1$, and is positive
-otherwise; at $(m,k)=(7,3)$ it equals $6$, and the principle delivers
-$\sigma_{\min}^2\ge1/13$ where $1/7$ is asked.  The classical argument
-therefore suffices exactly on the range
+a ring identity in the substitution $k=a+1$, $m-k=b+1$.  For $k\ge1$ and
+$m\ge k+1$ the deficit $(k-1)(m-k-1)$ vanishes precisely when $k=1$ or
+$m=k+1$, and is positive otherwise.  At $(m,k)=(7,3)$ it equals $6$: the
+principle delivers $\sigma_{\min}^2\ge1/13$ where $1/7$ is asked.  The
+classical argument therefore suffices exactly on the range
 \begin{equation}\label{eq:elementary}
   k\le1\quad\text{or}\quad m\le k+1 .
 \end{equation}
 
-Beyond \eqref{eq:elementary} the known cases are few.  Nesterenko
-\cite{Nesterenko2023} settled $(m,k)=(4,2)$ over $\R$ by an argument in
-Pl\"ucker coordinates, and reformulated the rank-two problem as an
-isoperimetric question for closed polygons \cite{Nesterenko2024}; Sengupta
-and Pautov \cite{SenguptaPautov2026} then settled rank two over $\R$ for
-every $m$.  Nesterenko also described the equality locus at rank two over
-$\R$ \cite{Nesterenko2026real}, and built configurations attaining the
-bound $1$ at every pair $(m,k)$ from the star spaces of series-parallel
-graphs \cite{Nesterenko2025}.  Over $\C$ the
-conjecture is false at rank two: at uniform weights some pair always
-satisfies $\SC\psd\alpha I_2$ with $\alpha=2-2/\sqrt3<1$, and $\alpha$
-cannot be raised, being attained when $4\mid m$ and approached otherwise
+Beyond \eqref{eq:elementary} the known cases are few, and all of them at
+uniform weights.  Nesterenko \cite{Nesterenko2023} settled $(m,k)=(4,2)$
+over $\R$ by an argument in Pl\"ucker coordinates, and reformulated the
+rank-two problem as an isoperimetric question for closed polygons
+\cite{Nesterenko2024}; Sengupta and Pautov \cite{SenguptaPautov2026} then
+settled rank two over $\R$ for every $m$.  Nesterenko also described the
+equality locus at rank two over $\R$ \cite{Nesterenko2026real}, and built
+configurations attaining the bound $1$ from the star spaces of
+series-parallel graphs \cite{Nesterenko2025}.  Over $\C$ the conjecture is
+false at rank two: at uniform weights some pair always satisfies
+$\SC\psd\alpha I_2$ with $\alpha=2-2/\sqrt3<1$, and $\alpha$ cannot be
+raised, being attained when $4\mid m$ and approached otherwise
 \cite{Nesterenko2026complex}.  The restricted-invertibility theorems
 \cite{BourgainTzafriri1987,SpielmanSrivastava2012,MSS2022} select subsets
 of size strictly below the rank, with a least eigenvalue controlled by a
@@ -99,23 +107,24 @@ volume is itself NP-hard, and NP-hard to approximate
 \cite{CivrilMagdonIsmail2009}, so the selection principle asserts
 existence without exhibiting a subset, and the algorithmic literature
 settles for the polynomial factors of \cite{GuEisenstat1996}.
+Problem~\ref{prob:effective} collects what is known about exhibiting a
+subset.
 
 \medskip
 
-We study the problem with general weights.  The weights then
-become a coordinate of the problem rather than a fixed normalization:
-vectors and weights vary independently subject to \eqref{eq:parseval},
-and the extremal configurations appear as sections over the weight
-simplex instead of isolated matrices.  Under the
-substitution $v_c:=\sqrt{t_c}\,g_c$ the condition \eqref{eq:parseval} says
-that the matrix $V$ with rows $v_c\adj$ is an isometry, and
-\eqref{eq:dominate} compares a principal block of the projection
-$P=VV\adj$ with the corresponding block of $\diag(t)$.  These coordinates
-put the problem on a compact set and open it to variational methods.  At
-a fixed pair $(m,k)$ the weighted statement is formally stronger than the
-classical one; over all sizes the two agree, since a design with rational
-weights is a uniform design of larger size with repeated vectors, and
-arbitrary weights follow by a limit.
+We study the problem with general weights.  Vectors and weights vary
+independently subject to \eqref{eq:parseval}, and the extremal
+configurations appear as sections over the weight simplex instead of
+isolated matrices.  Under the substitution $v_c:=\sqrt{t_c}\,g_c$ the
+condition \eqref{eq:parseval} says that the matrix $V$ with rows
+$v_c\adj$ is an isometry, and \eqref{eq:dominate} compares a principal
+block of the projection $P=VV\adj$ with the corresponding block of
+$\diag(t)$.  These coordinates put the problem inside a compact set and
+open it to variational methods.  At a fixed pair $(m,k)$ the weighted
+statement is formally stronger than the classical one; over all sizes the
+two agree, since a design with rational weights is a uniform design of
+larger size with repeated vectors, and arbitrary weights follow by a
+limit.
 
 \medskip
 
@@ -126,8 +135,7 @@ complex design when $m\le k+1$ and fails whenever $m\ge k+2$
 where the maximal-volume count already proves it, and fails everywhere
 else.
 
-Nothing remains open over $\C$, and no field-independent argument can
-settle the real conjecture.
+No field-independent argument can settle the real conjecture.
 
 Over $\R$, rank two holds at
 every size (Theorem~\ref{thm:ranktwo}), corank one and corank two hold at
@@ -135,26 +143,28 @@ every rank (Theorems~\ref{thm:corankone} and~\ref{thm:coranktwo}), and at
 each fixed rank the problem is finite: if $\Gtz(m,k)$ holds for all
 $m\le k(k+1)/2+1$ then it holds for all $m$ (Theorem~\ref{thm:window}).
 That bound is one more than the dimension of the space of real symmetric
-$k\times k$ matrices, the size at which a support-reduction argument
+$k\times k$ matrices, the size above which a support-reduction argument
 applied to \eqref{eq:parseval} starts to bite.  Rank three leaves the
-cells $(6,3)$ and $(7,3)$, and no symmetry reduces the pair further:
-$(6,3)$ is self-dual, and duality carries $(7,3)$ to $(7,4)$, again of
-corank three (Corollary~\ref{cor:twocells}).
+cells $(6,3)$ and $(7,3)$ (Corollary~\ref{cor:twocells}), and no symmetry
+reduces the pair further: $(6,3)$ is self-dual, and duality carries
+$(7,3)$ to $(7,4)$, again of corank three.  Figure~\ref{fig:board}
+records the state of the board.
 
 The threshold in \eqref{eq:dominate} is attained at every size
 $m\ge k+1$: there are designs in which some $k$-subset dominates and none
 dominates strictly (Theorem~\ref{thm:tieseverywhere}).  At corank one
 these designs are classified, and they form a section over the whole open
-weight simplex, a set of dimension $m-1$ (Theorem~\ref{thm:corankone}).
-The regular tetrahedron of Example~\ref{ex:tetra} is one of them; another,
-at $(5,3)$, has pairwise non-parallel vectors
+weight simplex, a set of dimension $m-1$ (Theorem~\ref{thm:corankone} and
+Proposition~\ref{prop:section}).
+The regular tetrahedron of Example~\ref{ex:tetra} is one of them.  Another
+extremal design, at $(5,3)$, has pairwise non-parallel vectors
 (Example~\ref{ex:diamond}), so splitting a vector of a smaller design
 does not produce the whole locus.
 
 The space of designs is not compact: its weights range over an open
-simplex, and by \eqref{eq:parseval} a vector diverges as its weight tends
-to zero.  In the coordinates $(P,t)$ that space becomes the interior of a
-compact one, on which the objective
+simplex, and by \eqref{eq:parseval} a vector may diverge as its weight
+tends to zero.  In the coordinates $(P,t)$ that space becomes the
+interior of a compact one, on which the objective
 $\max_{\lvert C\rvert=k}\lmin(W[C])$, $W=P-\diag(t)$, extends
 continuously.  The smaller cells discharge the added boundary points.
 Grant the same statement at $(m-1,k)$ and at $(m-1,k-1)$: then every point
@@ -167,8 +177,9 @@ of \S\ref{sec:real}; at $(7,3)$ one of them is the cell $(6,3)$.
 Rank three then reduces to excluding critical points below the threshold
 at the two surviving cells.  \S\ref{sec:interior} derives the system such
 a point satisfies: a multiplier $\Lambda$ obeying a quadric law
-$g_c\adj\Lambda g_c=\cv$ at every $c$, a coverage law, and three
-exclusions that cut down the possible configurations of active subsets.
+$g_c\adj\Lambda g_c=\cv$ at every $c$, a coverage law, and four
+exclusions: two on the multiplier and the tight directions, two on the
+configurations of active subsets.
 A congruence relates the objective minimized in \S\ref{sec:compactness}
 to the one differentiated in \S\ref{sec:interior}, and the two need not
 share their minimizers.  Definition~\ref{def:extremalcex} therefore makes
@@ -192,7 +203,7 @@ degenerate limit fails at every positive weight, however small
 (Theorem~\ref{thm:sharp}); hence the variational principle runs through a
 compactification rather than through a density argument.
 Appendix~\ref{app:graveyard} collects these strategies with the exact
-rational witnesses that refute them.
+witnesses that refute them.
 
 The cells $(6,3)$ and $(7,3)$ remain open
 (Conjectures~\ref{conj:sixthree} and~\ref{conj:seventhree}), and with them
@@ -264,7 +275,7 @@ where the field is $\FF$, with no other decoration for either operation.
   \caption{The decision board.  Rows are the rank $k$, columns the size
   $m$; cells with $m<k$ carry no design.  Over $\R$ the two open cells at
   rank three are $(6,3)$ and $(7,3)$; the hatched region reduces to them
-  by Theorem~\ref{thm:window}.  Over $\C$ the answer is $m\le k+1$ for
-  every $k\ge2$.}
+  by Theorem~\ref{thm:window} and Corollary~\ref{cor:dualcell}.  Over
+  $\C$ the answer is $m\le k+1$ for every $k\ge2$.}
   \label{fig:board}
 \end{figure}

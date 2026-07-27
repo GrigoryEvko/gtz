@@ -1,22 +1,22 @@
 \section{The real problem: decided cells}\label{sec:real}
 
 The counting of \S\ref{sec:first} decides rank one and the square $m=k$,
-and duality converts corank one and corank two into rank one and rank two
-(Theorem~\ref{thm:duality}).  Rank two itself is thus the last small case
-outstanding, and nothing so far bounds the size.  One kind of
+the rank-one criterion of \S\ref{sec:chart} decides corank one
+(Theorem~\ref{thm:corankone}), and duality converts corank two into rank
+two (Theorem~\ref{thm:duality}).  Rank two itself is thus the last small
+case outstanding, and nothing so far bounds the size.  One kind of
 device supplies both: an operation that produces from a design a smaller
 design whose dominating subsets transport back.
 
 There are two such operations, and they pay for the reduction in
-different currencies.  Deleting a vector of length at most one
-(\S\ref{sec:light}) costs one from the size but moves every surviving
-vector by a congruence; the transport back is an identity between
-quadratic forms, and it works only because the deleted vector was short.
-Carathéodory reduction (\S\ref{sec:crystal}) leaves the vectors where
-they are and cuts the size to $k(k+1)/2+1$, and there the transport back
-is immediate, since $\SC$ in \eqref{eq:dominate} never sees the weights.
-Deletion stalls when every vector is long; at rank two the stalled case
-can be handled directly (\S\ref{sec:ranktwo}).
+different currencies.  Deleting a vector of length at most one costs one
+from the size but moves every surviving vector by a congruence; the
+transport back is an identity between quadratic forms, and it works only
+because the deleted vector was short.  Carathéodory reduction leaves the
+vectors where they are and cuts the size to $k(k+1)/2+1$, and there the
+transport back is immediate, since $\SC$ in \eqref{eq:dominate} never
+sees the weights.  Deletion stalls when every vector is long; at rank two
+the stalled case can be handled directly.
 
 \subsection{Deleting a light vector}\label{sec:light}
 
@@ -28,8 +28,9 @@ heavy.
 
 By Lemma~\ref{lem:trace} the $t$-weighted mean of the $\ell_c$ equals $k$,
 so at rank $k\ge2$ a design always has a heavy vector; whether it has a
-light one is the dichotomy exploited here.  The elementary fact behind the
-deletion is the rank-one criterion
+light one is the dichotomy exploited here.
+
+The elementary fact behind the deletion is the rank-one criterion
 \begin{equation}\label{eq:schurone}
   I_k-g^{\vphantom{\mathsf{T}}}g\tp\psd0
   \quad\Longleftrightarrow\quad
@@ -56,8 +57,8 @@ $\sum_{c\ne d}t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp$.  For $u\ne0$,
   u\tp \Sigma_d u=\lVert u\rVert^2-t_d\langle g_d,u\rangle^2
   \;\ge\;(1-t_d\ell_d)\lVert u\rVert^2\;>\;0 ,
 \]
-using Cauchy--Schwarz and $t_d\ell_d\le t_d<1$.  Write $\Sigma_d=LL\tp$ with $L$
-invertible and set $R:=L^{-\mathsf{T}}$, so that
+using Cauchy--Schwarz and $t_d\ell_d\le t_d<1$.  By Lemma~\ref{lem:whiten}
+applied to $\Sigma_d$ there is an $R$ with
 \begin{equation}\label{eq:whiten}
   R\tp \Sigma_d R=I_k ,\qquad \det R\ne0 .
 \end{equation}
@@ -121,18 +122,18 @@ all-heavy and the assumption applies.
 
 The tetrahedron of Example~\ref{ex:tetra} has $\ell_c=3$ for every $c$ and
 is therefore all-heavy: the deletion is unavailable precisely at the
-design where, by Example~\ref{ex:tetra}, every dominating triple has
-$\lmin(\SC)=1$.  The reductions consume the interior of the problem and
-leave the extremal locus of \S\ref{sec:ties} standing, and they do so
-again at every later stage.
+design where every dominating triple has $\lmin(\SC)=1$.  The reductions
+consume the interior of the problem and leave the extremal locus of
+\S\ref{sec:ties} standing.
 
 \subsection{Rank two}\label{sec:ranktwo}
 
 Fix a design at $(m,2)$ and write $g_c=(x_c,y_c)$.  Identify $\R^2$ with
 $\C$ by $(x,y)\mapsto x+iy$ (a device for the computation below,
-unrelated to the complex problem of \S\ref{sec:complex}), and let
-$\eta_c\in\R^2$ correspond to the square of the complex number attached to
-$g_c$:
+unrelated to the complex problem of \S\ref{sec:complex}), so that the
+inner product of two vectors is the real part of the first complex number
+times the conjugate of the second, and let $\eta_c\in\R^2$ correspond to
+the square of the complex number attached to $g_c$:
 \begin{equation}\label{eq:doubleangle}
   \eta_c\;:=\;\bigl(x_c^2-y_c^2,\;2x_cy_c\bigr),
   \qquad
@@ -161,9 +162,8 @@ $\sum_ct_cx_cy_c=0$, so that
   \qquad
   \sum_c t_c\,\hat\ell_c\;=\;0 .
 \end{equation}
-The design is thus centred in the squared picture, and its centred lengths
-are centred as well.  These three identities are the only use made of
-\eqref{eq:parseval} in this subsection.
+These three identities are the only use made of \eqref{eq:parseval} in
+this subsection.
 
 \begin{example}\label{ex:trine2}
 Let $u_0,u_1,u_2\in\R^2$ be unit vectors at mutual angles $2\pi/3$ and put
@@ -183,9 +183,6 @@ $C=\{c,d\}$ has
 where $e$ is the third index.  Every pair therefore dominates, and none
 strictly.  We call this design the rank-two trine.
 \end{example}
-
-The remaining argument turns on one scalar invariant of a pair of
-indices.
 
 \begin{definition}\label{def:obstruction}
 For indices $c,d$ of a design at $(m,2)$ put
@@ -208,7 +205,7 @@ and $\tr A=\ell_c+\ell_d$, so
   \det X\;=\;b_{cd}^2-\ell_c-\ell_d+1 .
 \end{equation}
 On the other hand, eliminating $a_{cd}^2$ from \eqref{eq:wdot} in
-\eqref{eq:obstruction} and using $\hat\ell=\ell-2$,
+\eqref{eq:obstruction}, using $\hat\ell=\ell-2$ and then \eqref{eq:pairdet},
 \[
   K_{cd}
   =\ell_c\ell_d-2b_{cd}^2-(\ell_c-2)(\ell_d-2)+2
@@ -258,8 +255,8 @@ If \eqref{eq:allfail} holds and $u$ is not constant, the left side of
 \end{lemma}
 
 \begin{proof}
-Summing \eqref{eq:obstruction} against $t_d$ and using the three balance
-identities \eqref{eq:balance2},
+Summing \eqref{eq:obstruction} against $t_d$ and using the first and
+third identities of \eqref{eq:balance2} together with $\sum_dt_d=1$,
 \[
   \sum_d t_dK_{cd}
   =\Bigl\langle \eta_c,\sum_d t_d\eta_d\Bigr\rangle
@@ -280,13 +277,13 @@ u_d$, and \eqref{eq:allfail} makes the corresponding summand strictly
 positive.
 \end{proof}
 
-Identity \eqref{eq:core} is the only use of the balance identities
-\eqref{eq:balance2}, and it is sharp: the correction term
-vanishes identically when $K\equiv0$, as at the rank-two trine.  It remains to
-produce a nonconstant $u$ for which the left side of \eqref{eq:core} is at
-least $2\sum_ct_cu_c^2$.  The test vectors are the linear functionals of
-the squared picture, $u_c=\langle \eta_c,r\rangle$, and the two lemmas below
-treat the two possible positions of the family $(\eta_c)$ in the plane.
+Identity \eqref{eq:core} is sharp: the correction term vanishes
+identically when $K$ vanishes off the diagonal, as at the rank-two trine.
+It remains to produce a nonconstant $u$ for which the left side of
+\eqref{eq:core} is at least $2\sum_ct_cu_c^2$.  The test vectors are the
+linear functionals of the squared picture, $u_c=\langle \eta_c,r\rangle$,
+and the two lemmas below treat the two possible positions of the family
+$(\eta_c)$ in the plane.
 
 \begin{lemma}\label{lem:collinear}
 Let a design at $(m,2)$ be all-heavy and suppose the vectors $\eta_c$ all lie
@@ -354,8 +351,9 @@ $\sum_ct_c\langle \eta_c,\xi\rangle^2=\xi\tp\Omega\xi=\zeta\tp
   \;=\;\sigma-\zeta\tp\Omega^{-1}\zeta ,
 \end{equation}
 so $\zeta\tp\Omega^{-1}\zeta\le\sigma$: the residual of the least-squares
-fit of $\hat\ell$ by a linear functional of $\eta$ is nonnegative.  Choose $R$
-invertible with $R\tp\Omega R=I_2$; inverting both sides gives
+fit of $\hat\ell$ by a linear functional of $\eta$ is nonnegative.  By
+Lemma~\ref{lem:whiten} choose $R$ invertible with $R\tp\Omega R=I_2$;
+inverting both sides gives
 $RR\tp=\Omega^{-1}$.  Let $r_1,r_2$ be its columns.  Then $\tr(R\tp\Omega^2R)
 =\tr(\Omega^2RR\tp)=\tr\Omega$ and $\tr(R\tp\zeta\zeta\tp R)
 =\zeta\tp\Omega^{-1}\zeta$, while the third term of $\Psi$ contributes
@@ -416,20 +414,39 @@ Corollary~\ref{cor:heavy} demands.  The rank-two trine of
 Example~\ref{ex:trine2} shows the argument has nothing to spare: there
 $\Omega=2I_2$, $\zeta=0$ and $\sigma=0$, so $\Psi=\Omega^2-2\Omega=0$,
 every direction is admissible in Lemma~\ref{lem:spanning}, and the strict
-inequality of Lemma~\ref{lem:rowsum} fails, as it must at a design with
-$K\equiv0$.
+inequality of Lemma~\ref{lem:rowsum} fails, as it must where $K$ vanishes
+off the diagonal.  Figure~\ref{fig:regression} draws the fit.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/regression}
+  \caption{Lemma~\ref{lem:spanning} as a fit.  By \eqref{eq:residual} the
+  slack $\sigma-\zeta\tp\Omega^{-1}\zeta$ is the $t$-weighted squared
+  residual of $\hat\ell$ against the linear functional
+  $\langle\eta,\xi\rangle$, $\xi:=\Omega^{-1}\zeta$; disc area is the
+  weight, and an atom under the fitted plane carries a dashed segment.
+  Left: an all-heavy design at $(5,2)$.  There $\det\Psi<0$, so $\Psi$ is
+  indefinite, and the trace taken in the proof, rather than a sign for
+  $\Psi$ itself, is what supplies a direction nonnegative for $\Psi$.
+  Right: the trine of Example~\ref{ex:trine2}, where $\hat\ell$ vanishes
+  identically and the fit is exact.}
+  \label{fig:regression}
+\end{figure}
 
 For uniform weights $t_c=1/m$, Theorem~\ref{thm:ranktwo} is the theorem of
 Sengupta and Pautov \cite{SenguptaPautov2026}, whose base case $m=4$ is
 due to Nesterenko \cite{Nesterenko2023}; the substitution
-\eqref{eq:doubleangle} and the light/heavy split are theirs.  The passage to arbitrary weights is new; it costs the reweighting of
+\eqref{eq:doubleangle} and the light/heavy split are theirs.  The passage
+to arbitrary weights is new; it costs the reweighting of
 Theorem~\ref{thm:light} in the light branch, and it replaces the
 Perron--Frobenius step of \cite{SenguptaPautov2026} by
 Lemma~\ref{lem:rowsum} and the trace computation of
-Lemma~\ref{lem:spanning} in the heavy branch.  The designs with $K\equiv0$
-at uniform weights are classified in \cite{Nesterenko2026real}: the
-squared vectors fall into three clusters of equal vectors, of sizes
-$p,q,r$ with $p+q+r=m$, the cluster of size $p$ having length
+Lemma~\ref{lem:spanning} in the heavy branch.
+
+At uniform weights the designs whose $K$ vanishes off the diagonal are
+classified in \cite{Nesterenko2026real}: the squared vectors fall into
+three clusters of equal vectors, of sizes $p,q,r$ with $p+q+r=m$, the
+cluster of size $p$ having length
 $\tfrac1{2m}+\tfrac1{2p}$ and similarly for the other two.  The rank-two
 trine is the case $p=q=r=1$ at $m=3$: there the common length is
 $\tfrac16+\tfrac12=\tfrac23$, which is $\lVert \eta_c\rVert/m=2/3$ for the
@@ -452,7 +469,7 @@ $\Gtz(k+2,2)$, which is a case of Theorem~\ref{thm:ranktwo}.
 Unwinding the duality at $r=m-k=2$ makes the reduction explicit.  Let
 $\dsn$ be a design at $(k+2,k)$, and put $m:=k+2$.  Its kernel plane
 carries an orthonormal basis, arranged as the columns of an $m\times2$
-matrix $Z$ with rows $z_c\adj$, and the co-weight rescaling
+matrix $Z$ with rows $z_c\tp$, and the co-weight rescaling
 $w_c=z_c/\sqrt{1-t_c}\in\R^2$ satisfies
 \[
   \sum_c(1-t_c)\,w_c^{\vphantom{\mathsf{T}}}w_c\tp
@@ -483,9 +500,9 @@ yields a false statement; Example~\ref{ex:uneven} exhibits the first of
 these failures at corank one.
 
 The reduction is field-independent, but its input is not: over $\C$ rank
-two fails at size four (Theorem~\ref{thm:complex}), and accordingly
-$\GtzC(k+2,k)$ is false for every $k\ge2$; the two are the same
-statement, read through Corollary~\ref{cor:dualcell}.
+two fails at every size above three (Theorem~\ref{thm:complex}), and
+accordingly $\GtzC(k+2,k)$ is false for every $k\ge2$, since
+Corollary~\ref{cor:dualcell} identifies it with $\GtzC(k+2,2)$.
 
 \begin{corollary}[Lean]\label{cor:corank}
 $\Gtz(m,k)$ holds whenever $m-k\le2$, and in particular whenever $m\le5$.
@@ -581,15 +598,33 @@ sum of $C$ in $\dsn'$, and $C$ dominates in $\dsn$.
 The bound is Carathéodory's \cite{Caratheodory1911}: condition
 \eqref{eq:parseval} exhibits $I_k$ as a convex combination of the points
 $g_c^{\vphantom{\mathsf{T}}}g_c\tp$ of the $k(k+1)/2$-dimensional space
-$\mathrm{Sym}_k$, and a point of a convex hull in dimension $N$ is a
-convex combination of at most $N+1$ of the points (\cite{Rockafellar1970},
-\S17).  The proof of Theorem~\ref{thm:reduce} is the standard
-support-reduction step of that theorem, carried out by hand because the
-representation must use a \emph{subfamily of the given vectors} rather
-than merely few matrices: only then is the dominating subset produced
-downstairs a subset of the original index set.  This step uses the weight-freeness of \eqref{eq:dominate}, and it
+$\mathrm{Sym}_k$, and a point of a convex hull in dimension $k(k+1)/2$ is
+a convex combination of at most $\win(k)$ of the points
+(\cite{Rockafellar1970}, \S17).  The proof of Theorem~\ref{thm:reduce} is
+the standard support-reduction step of that theorem, carried out by hand
+because the representation must use a \emph{subfamily of the given
+vectors} rather than merely few matrices: only then is the dominating
+subset produced downstairs a subset of the original index set.  The
+transport back uses the weight-freeness of \eqref{eq:dominate}, and it
 separates the reduction from that of Theorem~\ref{thm:light}, where the
 vectors move and \eqref{eq:reassemble} must carry the conclusion back.
+Figure~\ref{fig:psdcone} draws $\mathrm{Sym}_2$.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/psdcone}
+  \caption{The cone $\{A\psd0\}$ in $\mathrm{Sym}_2$.  The three coordinate
+  directions are Frobenius-orthogonal of equal length, so the cone is circular,
+  of half-angle $\pi/4$ about the ray of scalar matrices.  Left: the rank-two
+  trine of Example~\ref{ex:trine2}.  Its three atoms lie on the boundary circle
+  at height $1$, and \eqref{eq:parseval} exhibits $I_2$ as their centroid.
+  Right: the horizontal projection.  The atom of $g_c$ lands at radius
+  $\ell_c/2$ and at argument $2\theta_c$, twice that of $g_c$: the dot at the
+  midpoint of $\eta_c$.  So $g_c$ and $-g_c$ give the same point, and the
+  doubling is \eqref{eq:doubleangle}.  The window $\win(2)$ of
+  Theorem~\ref{thm:window} is the Carath\'eodory number of this space.}
+  \label{fig:psdcone}
+\end{figure}
 
 Domination never enters Lemma~\ref{lem:null}, so there is no reason to
 expect $\win(k)$ to be the true threshold; see Problem~\ref{prob:higher}.
@@ -652,7 +687,10 @@ $m\le \win(k)$; Theorem~\ref{thm:window} then gives every $m$.
 \subsection{Rank three}\label{sec:rankthree}
 
 At $k=3$ the bound of Theorem~\ref{thm:window} is $\win(3)=7$ and
-Corollary~\ref{cor:corank} disposes of every size up to five.
+Corollary~\ref{cor:corank} disposes of every size up to five.  A
+sufficient condition in the first two spectral moments is available at
+this rank (Proposition~\ref{prop:twomoment}); \S\ref{app:moments} shows
+it decides no triple of the icosahedral design.
 
 \begin{corollary}\label{cor:twocells}
 $\Gtz(m,3)$ for all $m$ is equivalent to the conjunction of $\Gtz(6,3)$
@@ -721,14 +759,16 @@ $\Gtz(8,4)$ implies all of rank three.  The family of statements
 $\Gtz(m,k)$ is therefore monotone in both parameters, and no implication
 in this section can be shown to be strict: were the conjecture true, all
 of them would be equivalences, so a strictness proof would refute it.
+Figure~\ref{fig:ladder} collects the implications.
 
 \begin{figure}[ht]
   \centering
   \input{figures/ladder}
-  \caption{Rank three.  Solid arrows are the reductions of
-  Corollary~\ref{cor:corank} and Theorem~\ref{thm:window}; the boundary
-  analysis of \S\ref{sec:compactness} at a cell consumes the two cells one
-  size below.  Dashed arrows carry the two unproved inputs of
-  \S\ref{sec:interior}.}
+  \caption{Rank three.  The box on the left is
+  Corollary~\ref{cor:corank}; the filled arrows are
+  Proposition~\ref{prop:splitting} and Theorem~\ref{thm:window}; the open
+  arrows are the boundary analysis of \S\ref{sec:compactness}, which at a
+  cell consumes the two cells one size below.  Dashed arrows carry the
+  two unproved inputs of \S\ref{sec:interior}.}
   \label{fig:ladder}
 \end{figure}
