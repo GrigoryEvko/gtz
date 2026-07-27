@@ -191,9 +191,12 @@ import Gtz.Quantitative.InteriorExclusion
 
 -- the chart stationarity arc: the first-order system in projection-chart coordinates,
 -- its range/kernel multiplier split, the unconditional chart identities, the two-block
--- branch, and the witnesses that make the bundle inhabited
+-- branch, the witnesses that make the bundle inhabited, the strengthening that quantifies
+-- over every tight selection, and that strengthening's covering form
 import Gtz.Quantitative.ChartStationary
 import Gtz.Quantitative.ChartMultiplierSplit
 import Gtz.Quantitative.ChartHadamard
 import Gtz.Quantitative.ChartTwoBlock
 import Gtz.Quantitative.ChartInstances
+import Gtz.Quantitative.ChartStrongStationary
+import Gtz.Quantitative.ChartCovering

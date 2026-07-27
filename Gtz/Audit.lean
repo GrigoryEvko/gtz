@@ -188,6 +188,8 @@ import Gtz.Quantitative.ChartMultiplierSplit
 import Gtz.Quantitative.ChartHadamard
 import Gtz.Quantitative.ChartTwoBlock
 import Gtz.Quantitative.ChartInstances
+import Gtz.Quantitative.ChartStrongStationary
+import Gtz.Quantitative.ChartCovering
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -4385,3 +4387,129 @@ import Gtz.Quantitative.ChartInstances
 #print axioms Gtz.chartSplitSixDesignMultiplierWeight
 #print axioms Gtz.chartSplitSixDesignMultiplier_assembly_diagonal
 #print axioms Gtz.not_isChartStationaryData_of_designSideMultiplier
+
+-- Gtz/Quantitative/ChartStrongStationary.lean -- the chart stationarity system quantified
+-- over EVERY tight selection: the tangent directions, the algebraic equivalence between
+-- balance and the two stationarity equations, the Gordan descent lemma with its converse,
+-- the reduction that makes the two systems coincide at simple multiplicity, and the
+-- tetrahedron witness
+#print axioms Gtz.gordan_alternative_finsetFamily
+#print axioms Gtz.IsChartTangent
+#print axioms Gtz.IsChartTangent.isSymmetric
+#print axioms Gtz.IsChartTangent.rangeBlock_eq_zero
+#print axioms Gtz.IsChartTangent.kernelBlock_eq_zero
+#print axioms Gtz.IsChartTangent.weight_sum_zero
+#print axioms Gtz.chartOffBlockDirection
+#print axioms Gtz.chartCenteredWeight
+#print axioms Gtz.sum_chartCenteredWeight_eq_zero
+#print axioms Gtz.isChartTangent_weightDifference
+#print axioms Gtz.isChartTangent_chartOffBlockDirection
+#print axioms Gtz.chartOffBlockDirection_eq_self_of_isChartTangent
+#print axioms Gtz.chartCenteredWeight_eq_self_of_sum_eq_zero
+#print axioms Gtz.chartTangentSlope
+#print axioms Gtz.chartTangentSlope_eq_sub
+#print axioms Gtz.chartTangentSlope_smul
+#print axioms Gtz.trace_atomMatrix_mul_of_symmetric
+#print axioms Gtz.transpose_chartMultiplierAssembly
+#print axioms Gtz.trace_chartMultiplierAssembly_eq_sum
+#print axioms Gtz.trace_chartMultiplierAssembly_eq_one
+#print axioms Gtz.sum_multiplier_chartTangentSlope_eq
+#print axioms Gtz.trace_mul_eq_zero_of_commutes_of_isChartTangent
+#print axioms Gtz.trace_mul_chartOffBlockDirection_eq
+#print axioms Gtz.trace_mul_transpose_self_eq_sum_sq
+#print axioms Gtz.commutes_of_offBlock_eq_zero
+#print axioms Gtz.offBlock_chartMultiplierAssembly_apply
+#print axioms Gtz.IsChartBalancedMultiplier
+#print axioms Gtz.HasBalancedMultiplier
+#print axioms Gtz.isChartBalancedMultiplier_iff
+#print axioms Gtz.sum_multiplier_sq_eq_inv_size_of_isChartBalancedMultiplier
+#print axioms Gtz.IsChartTightDirection
+#print axioms Gtz.IsChartTightDirection.isUnit
+#print axioms Gtz.IsChartTightDirection.hasSupport
+#print axioms Gtz.IsChartTightDirection.isTight
+#print axioms Gtz.IsChartStrongStationaryData
+#print axioms Gtz.IsChartStrongStationaryData.isSymmetric
+#print axioms Gtz.IsChartStrongStationaryData.isIdempotent
+#print axioms Gtz.IsChartStrongStationaryData.hasTraceRank
+#print axioms Gtz.IsChartStrongStationaryData.weight_pos
+#print axioms Gtz.IsChartStrongStationaryData.weight_sum_one
+#print axioms Gtz.IsChartStrongStationaryData.activeSubset_card
+#print axioms Gtz.IsChartStrongStationaryData.exists_tightDir
+#print axioms Gtz.IsChartStrongStationaryData.hasBalancedMultiplier_of_isChartTightSelection
+#print axioms Gtz.size_pos_of_isChartStrongStationaryData
+#print axioms Gtz.exists_multiplier_isChartStationaryData_of_isChartStrongStationaryData
+#print axioms Gtz.exists_isChartStationaryData_of_isChartStrongStationaryData
+#print axioms Gtz.chartTangentRiesz
+#print axioms Gtz.dotProduct_mulVec_eq_sum_sum
+#print axioms Gtz.dotProduct_chartOffBlockDirection_mulVec
+#print axioms Gtz.sum_chartTangentRiesz_mul_eq_chartTangentSlope
+#print axioms Gtz.exists_isChartTangent_forall_chartTangentSlope_neg
+#print axioms Gtz.not_hasBalancedMultiplier_of_forall_chartTangentSlope_neg
+#print axioms Gtz.hasBalancedMultiplier_iff_not_exists_descent
+#print axioms Gtz.IsChartInactiveStrict
+#print axioms Gtz.exists_eq_activeSubset_of_isChartInactiveStrict
+#print axioms Gtz.isChartStrongStationaryData_of_isChartStationaryData_of_simpleTightBlocks
+#print axioms Gtz.isChartStrongStationaryData_iff_of_simpleTightBlocks
+#print axioms Gtz.exists_mem_activeSubset_of_isChartStrongStationaryData
+#print axioms Gtz.neg_inv_size_le_value_of_isChartStrongStationaryData
+#print axioms Gtz.chartTetraGap_mulVec_apply
+#print axioms Gtz.isChartTightDirection_chartTetraTightDir
+#print axioms Gtz.chartTetraTight_eq_smul_chartTetraTightDir
+#print axioms Gtz.chartTetraProjection_isChartStrongStationaryData
+#print axioms Gtz.exists_isChartStrongStationaryData
+
+-- Gtz/Quantitative/ChartCovering.lean -- the covering form of that system: the tight
+-- eigenspace as a subspace, the closed convex cone of each active block, the quantifier
+-- exchange against the universal-selection condition, the halfspace case at simple
+-- multiplicity, and the tetrahedron witness
+#print axioms Gtz.ChartDirection
+#print axioms Gtz.IsChartTightVector
+#print axioms Gtz.IsChartTightVector.hasSupport
+#print axioms Gtz.IsChartTightVector.isTight
+#print axioms Gtz.isChartTightVector_of_isChartTightDirection
+#print axioms Gtz.isChartTightVector_zero
+#print axioms Gtz.isChartTightVector_add
+#print axioms Gtz.isChartTightVector_smul
+#print axioms Gtz.chartTightSubspace
+#print axioms Gtz.mem_chartTightSubspace_iff
+#print axioms Gtz.exists_pos_isChartTightDirection_smul_of_isChartTightVector
+#print axioms Gtz.chartTangentSlope_eq_double_sum
+#print axioms Gtz.chartTangentSlope_eq_subset_double_sum
+#print axioms Gtz.chartStationaryGap_add
+#print axioms Gtz.chartStationaryGap_smul
+#print axioms Gtz.chartTangentSlope_add_direction
+#print axioms Gtz.chartTangentSlope_smul_direction
+#print axioms Gtz.chartTangentSlope_zero_vector
+#print axioms Gtz.chartTangentSlope_zero_direction
+#print axioms Gtz.chartTangentSlopeFunctional
+#print axioms Gtz.chartTangentSlopeFunctional_apply
+#print axioms Gtz.isChartTangent_zero
+#print axioms Gtz.isChartTangent_add
+#print axioms Gtz.isChartTangent_smul
+#print axioms Gtz.chartTangentSubmodule
+#print axioms Gtz.mem_chartTangentSubmodule_iff
+#print axioms Gtz.isClosed_chartTangentSubmodule
+#print axioms Gtz.chartTightCone
+#print axioms Gtz.mem_chartTightCone_iff
+#print axioms Gtz.chartTightCone_coe_subset_chartTangentSubmodule
+#print axioms Gtz.pointed_chartTightCone
+#print axioms Gtz.convex_chartTightCone
+#print axioms Gtz.isClosed_chartTightCone
+#print axioms Gtz.mem_chartTightCone_iff_forall_isChartTightDirection
+#print axioms Gtz.IsChartTightCovering
+#print axioms Gtz.isChartTightCovering_iff_iUnion_eq
+#print axioms Gtz.isChartTightCovering_of_forall_isChartTightVector_eq_zero
+#print axioms Gtz.forall_hasBalancedMultiplier_of_isChartTightCovering
+#print axioms Gtz.isChartTightCovering_of_forall_hasBalancedMultiplier
+#print axioms Gtz.isChartTightCovering_iff_forall_hasBalancedMultiplier
+#print axioms Gtz.iUnion_chartTightCone_eq_iff_forall_hasBalancedMultiplier
+#print axioms Gtz.isChartTightCovering_of_isChartStrongStationaryData
+#print axioms Gtz.size_pos_of_weight_sum_eq_one
+#print axioms Gtz.isChartStrongStationaryData_of_isChartTightCovering
+#print axioms Gtz.isChartStrongStationaryData_iff_isChartTightCovering
+#print axioms Gtz.exists_smul_of_isChartTightVector_of_simple
+#print axioms Gtz.mem_chartTightCone_iff_of_simple
+#print axioms Gtz.chartTightCone_coe_eq_inter_of_simple
+#print axioms Gtz.isChartTightCovering_iff_hasBalancedMultiplier_of_simple
+#print axioms Gtz.chartTetraProjection_isChartTightCovering
+#print axioms Gtz.exists_isChartTightCovering
