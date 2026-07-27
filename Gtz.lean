@@ -188,3 +188,12 @@ import Gtz.Audit
 import Gtz.Quantitative.PositivstellensatzRankThree
 import Gtz.Reduction.CompactnessReduction
 import Gtz.Quantitative.InteriorExclusion
+
+-- the chart stationarity arc: the first-order system in projection-chart coordinates,
+-- its range/kernel multiplier split, the unconditional chart identities, the two-block
+-- branch, and the witnesses that make the bundle inhabited
+import Gtz.Quantitative.ChartStationary
+import Gtz.Quantitative.ChartMultiplierSplit
+import Gtz.Quantitative.ChartHadamard
+import Gtz.Quantitative.ChartTwoBlock
+import Gtz.Quantitative.ChartInstances
