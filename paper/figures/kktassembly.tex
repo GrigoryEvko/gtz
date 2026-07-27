@@ -1,0 +1,173 @@
+% The assembly of the first-order system eq:statg and eq:statt at a local
+% minimum of the design objective, and the line below which the development
+% starts.  This is a flow schematic, not a drawing of a subset of R^n, so no
+% projection is stated; the coordinate system is the picture's own, x = y =
+% 1cm, and every body coordinate is fixed by the grid below.
+%
+% GRID.  Two panels, after the idiom of figures/boundary.tex.
+%   Panel (a), the spine.  Boxes of text width 59mm and inner separation 4pt,
+%   so 59mm + 2*4pt = 61.81mm wide (1pt = 0.35146mm), centred on x = 2.80:
+%   they span x in [-0.29, 5.89].  Row centres, top to bottom:
+%       A 8.50   B 7.20   C 5.90   D 4.35   E 2.90   F 0.35,
+%   a pitch of 1.30 between two one-line boxes, 1.45 to 1.55 where one of the
+%   pair carries two, and 2.55 from E to F, which is the room the formality
+%   rule and its two labels need.  The five vertical arrows run border to
+%   border; the first four carry, at their midpoints and on a white ground,
+%   the number of the rule that licenses the step.
+%   The measure 59mm is set by the two widest lines, both of which must not
+%   wrap: box A at 154.4pt and the first line of box F at 146.3pt, against
+%   59mm = 167.9pt, which leaves A 13.5pt of slack and F 21.5pt.  At 52mm =
+%   148.0pt box A overflows by 6.4pt.  Boxes B, C, E and the two lines of D
+%   measure 130.3, 112.9, 99.3, 128.4 and 87.2pt.  Each width is the natural
+%   width of that line at \small with its equation tag and the space before
+%   the \hfill counted, the \hfill itself contributing none.
+%   Panel (b), the commentary.  Text blocks of width 82mm anchored north west
+%   at x = 6.45, spanning x in [6.45, 14.65].  At \scriptsize with the
+%   document's \linespread the line advance is 8pt * 1.08 * 1.2 = 10.4pt =
+%   0.365cm; blocks sit 0.18 apart, so an n-line block advances the anchor by
+%   0.365n + 0.18.  With line counts 3, 3, 3, 3, 2, 3 the anchors are
+%       (1) 9.00   (2) 7.73   (3) 6.46   (4) 5.19   (5) 3.92
+%       rotations 3.01,
+%   and the last block clears the formality rule, its descender reaching 1.96
+%   against the rule at 1.70.  The ledger below the rule is anchored at 1.58.
+%   The formality rule is the pair of horizontal lines at y = 1.70 and 1.64,
+%   drawn from x = -0.35 to 2.58 and from x = 3.02 to 14.65: the gap is where
+%   the last arrow of the spine crosses it, at x = 2.80.  What stands above the
+%   rule is not in the development and what stands below it is.
+%   Total extent x in [-0.35, 14.65], y in [-0.25, 9.00]: 15.0cm by 9.24cm,
+%   inside the 16.2cm measure.  The y floor is box F, two lines centred on
+%   0.35, whose lower border falls at -0.25; the ledger of panel (b) stops
+%   just above it, its five lines putting the last baseline at 1.58 - 4*0.365
+%   and the descender below that at -0.16.
+%
+% THE FIVE INGREDIENTS, keyed to the arrows of panel (a):
+%   (1) Clarke, Prop. 2.3.2 with the chain rule Thm. 2.3.10 -- zero lies in the
+%       Clarke subdifferential of the composition with a parametrization of the
+%       manifold of Lemma lem:tangent, which returns psi vanishing on T.
+%   (2) Clarke, Prop. 2.3.12, the maximum rule.  An INCLUSION and not an
+%       equality: each lmin is concave and so is not Clarke regular where the
+%       least eigenvalue is multiple.
+%   (3) Clarke, Thm. 2.3.10, the composition rule, giving eq:pieceSub.  ALSO
+%       an inclusion, and for the same reason -- the chain rule closes to an
+%       equality when the outer function is regular, and lmin is not.  The
+%       display eq:pieceSub is printed with a subset sign, so a caption or a
+%       panel calling (2) the only inclusion contradicts the section.
+%   (4) Overton; Hiriart-Urruty--Lemarechal -- the spectraplex eq:spectraplex,
+%       drawn at k = 2 in figures/spectraplex.tex and NOT redrawn here.
+%   (5) surjectivity of (Phi', sigma') with kernel T, Lemma lem:tangent.
+% Arrows (3) and (4) act at the same step, so one arrow carries both numbers.
+% The last arrow carries no number: comparing the coefficients of dot g and
+% dot t is algebra and no rule licenses it.
+%
+% THE DIMENSION ARITHMETIC of the rotation aside is Lemma lem:tangent with
+% Proposition prop:carath:
+%   dim T = mk + m - k(k+1)/2 - 1,   dim O = k(k-1)/2,
+%   dim T - dim O = mk + m - k^2 - 1,
+%   (6,3): 18 + 6 - 6 - 1 = 17, less 3, = 14; Caratheodory 14 + 1 = 15,
+%   (7,3): 21 + 7 - 6 - 1 = 21, less 3, = 18; Caratheodory 18 + 1 = 19,
+%   and 15 = 6*4 - 9, 19 = 7*4 - 9, which is m(k+1) - k^2 = eq:carath.
+% The face of the spectraplex at an eigenspace of dimension r has dimension
+% r(r+1)/2 - 1, which is 0 at r = 1 and 2 at r = 2, never 1.
+%
+% DISCRETIONARY CHOICES.  The rules are numbered rather than named on the
+% arrows because three of the five are Clarke's -- (1), (2) and (3), against
+% Overton and Hiriart-Urruty--Lemarechal for (4) and lem:tangent for (5) --
+% and naming them there would repeat one attribution down the spine; the
+% names are in panel (b).  The spectraplex
+% is cited and not drawn, since figures/spectraplex.tex draws it.  No \cite
+% appears: no figure body in this paper carries one, and the running text of
+% Section 8 carries all five attributions.
+%
+% DISCLOSED: NOTHING ABOVE THE FORMALITY RULE IS MECHANIZED.  Section 9.3
+% records the passage from a local minimum to eq:statg and eq:statt as the
+% third of three steps taken on trust, and the ambient library carries no
+% Clarke subdifferential, no maximum rule and no subdifferential of lmin.  The
+% repository module Gtz.LinAlg.EigenvalueSubdifferential is named for the wall
+% it AVOIDS -- it replaces the derivative by an exact congruence and asserts no
+% subdifferential -- so its name is not evidence for (4).  Below the rule,
+% Gtz.IsQuadricStationaryData is a structure of Prop-valued fields, a
+% hypothesis and never a theorem, and the four cited consequences are
+% kernel-checked from it.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  bx/.style={draw, rounded corners=1pt, inner sep=4pt, align=center,
+             text width=59mm, font=\small},
+  ar/.style={-{Latex[length=2mm,width=1.5mm]}, line width=0.6pt},
+  lab/.style={font=\scriptsize, fill=white, inner sep=1.2pt},
+  blk/.style={font=\scriptsize, anchor=north west, align=left,
+              text width=82mm, inner sep=0pt},
+  bar/.style={line width=0.5pt, black!70}]
+
+% ===================== panel (a): the spine ==============================
+\node[bx] (A) at (2.80,8.50) {$F$ attains a local minimum at $(g,t)$};
+\node[bx] (B) at (2.80,7.20) {$\psi\in\partial F(g,t)$ with $\psi=0$ on $\tang$};
+\node[bx] (C) at (2.80,5.90)
+  {$\psi=\sum_{C\in\mathcal{A}}\lambda_C\,\phi_{C,\Theta_C}$
+   \hfill \eqref{eq:zeta}};
+\node[bx] (D) at (2.80,4.35)
+  {$\phi_{C,\Theta}(\dot g,\dot t)
+     =2\sum_{c\in C}\langle\Theta g_c,\dot g_c\rangle$,\\[1pt]
+   $\Theta\in\partial\lmin(\SC)$ \hfill \eqref{eq:pieceSub}};
+\node[bx] (E) at (2.80,2.90)
+  {$\psi=\langle\Lambda,\Phi'\rangle-\mu\,\sigma'$ \hfill \eqref{eq:lagrange}};
+\node[bx] (F) at (2.80,0.35)
+  {$\sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle\,u_i
+     =t_c\Lambda g_c$ \hfill \eqref{eq:statg}\\[2pt]
+   $g_c\tp\Lambda\,g_c=\mu$ \hfill \eqref{eq:statt}};
+
+\draw[ar] (A) -- (B) node[lab, midway] {(1)};
+\draw[ar] (B) -- (C) node[lab, midway] {(2)};
+\draw[ar] (C) -- (D) node[lab, midway] {(3), (4)};
+\draw[ar] (D) -- (E) node[lab, midway] {(5)};
+\draw[ar] (E) -- (F);
+
+% ---- the formality rule, broken where the last arrow crosses ------------
+\draw[bar] (-0.35,1.70) -- (2.58,1.70);
+\draw[bar] (-0.35,1.64) -- (2.58,1.64);
+\draw[bar] ( 3.02,1.70) -- (14.65,1.70);
+\draw[bar] ( 3.02,1.64) -- (14.65,1.64);
+\node[font=\scriptsize\itshape, anchor=south west] at (-0.35,1.76)
+  {(1)--(5): not formal};
+\node[font=\scriptsize\itshape, anchor=north west] at (-0.35,1.56)
+  {formal from here};
+
+% ===================== panel (b): what licenses each step =================
+\node[blk] at (6.45,9.00)
+  {\textbf{(1)} $F$ is locally Lipschitz, and in a chart of
+   Lemma~\ref{lem:tangent} the minimum is unconstrained:
+   $0\in\partial(F\circ\mathrm{chart})$, and the chain rule returns a $\psi$
+   killing $\tang$.  Clarke, 2.3.2 and 2.3.10.};
+\node[blk] at (6.45,7.73)
+  {\textbf{(2)} Maximum rule, Clarke 2.3.12:
+   $\partial F\subseteq\operatorname{conv}\bigcup_{C\in\mathcal{A}}
+   \partial(\lmin\circ\SC)$.  An inclusion, since $\lmin$ is concave and so
+   not regular at a multiple eigenvalue.};
+\node[blk] at (6.45,6.46)
+  {\textbf{(3)} Composition rule, Clarke 2.3.10, an inclusion again and for the
+   same reason: into the image of the adjoint derivative.  Symmetry of $\Theta$
+   leaves $2\langle\Theta g_c,\dot g_c\rangle$; no $\dot t$ survives.};
+\node[blk] at (6.45,5.19)
+  {\textbf{(4)} Spectraplex \eqref{eq:spectraplex}: $\Theta\psd0$,
+   $\tr\Theta=1$, range in the tight eigenspace.  At multiplicity $r$ its
+   dimension is $\tfrac12r(r+1)-1$, so $\Theta$ is a matrix
+   (Figure~\ref{fig:spectraplex}).};
+\node[blk] at (6.45,3.92)
+  {\textbf{(5)} $(\Phi',\sigma')$ is surjective with kernel $\tang$
+   (Lemma~\ref{lem:tangent}), so $\psi$ factors through it, with factor
+   $(\Lambda,\mu)$.};
+\node[blk] at (6.45,3.01)
+  {\textbf{The rotations cost nothing.}
+   $\phi_{C,\Theta}[(Xg_c)_c,0]=2\cv\tr(\Theta X)$ vanishes by
+   \eqref{eq:rotationkill}, so (2) happens in the annihilator of
+   $\mathcal{O}$: dimension $mk+m-k^{2}-1$, $14$ at $(6,3)$, $18$ at $(7,3)$.};
+
+\node[blk] at (6.45,1.58)
+  {\S\ref{sec:boundaries} carries (1)--(5) as the third of three steps taken
+   on trust; the ambient library has no Clarke calculus and no
+   $\partial\lmin$.  The system is
+   \texttt{Gtz.Is\allowbreak Quadric\allowbreak Stationary\allowbreak Data},
+   and Proposition~\ref{prop:quadric}, Lemma~\ref{lem:overlap},
+   Corollary~\ref{cor:singleactive} and Proposition~\ref{prop:saturated} are
+   kernel-checked from it.};
+
+\end{tikzpicture}

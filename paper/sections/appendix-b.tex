@@ -5,8 +5,7 @@ Every design recorded here is given by data from which
 in three places: the
 icosahedral design of \S\ref{app:icosa}, the whitener of a graphic design
 in \S\ref{app:diamond}, and the unit tight eigenvectors of the
-tetrahedron.  Each time, the algebraic relation that eliminates them is
-displayed.
+tetrahedron.
 
 \subsection{The tetrahedron at \texorpdfstring{$(4,3)$}{(4,3)}}\label{app:tetra}
 
@@ -15,10 +14,13 @@ Atoms and weights:
   g_0=(1,1,1),\quad g_1=(1,-1,-1),\quad g_2=(-1,1,-1),\quad g_3=(-1,-1,1),
   \qquad t_c=\tfrac14 .
 \]
-These are the four sign vectors with an even number of minus signs.  For
-$i\ne j$ the coordinatewise products of $g_i$ and $g_j$ sum to $-1$, and for
-each pair of distinct coordinates the four products $(g_c)_a(g_c)_b$ are
-two $+1$ and two $-1$; hence
+These are the four sign vectors with an even number of minus signs.  Each
+has three entries, all $\pm1$.  For $i\ne j$ the coordinatewise products
+of $g_i$ and $g_j$ sum to $-1$.  In
+$\sum_c g_c^{\vphantom{\mathsf{T}}}g_c\tp$ the diagonal entry at a
+coordinate is the sum of the four squares $(g_c)_a^2=1$, and the entry at a
+pair of distinct coordinates is the sum of the four products
+$(g_c)_a(g_c)_b$, two $+1$ and two $-1$.  Hence
 \[
   \ell_c=3,\qquad \langle g_i,g_j\rangle=-1 \ (i\ne j),
   \qquad \sum_c g_c^{\vphantom{\mathsf{T}}}g_c\tp=4I_3 ,
@@ -41,9 +43,10 @@ positive form
 \[
   x\tp(S_{\{0,1,2\}}-I)x=(x_0-x_1)^2+(x_0+x_2)^2+(x_1+x_2)^2 ,
 \]
-with null line $\R\,(1,1,-1)$.  Every triple dominates and none dominates
-strictly: the tetrahedron is extremal in the sense of
-Definition~\ref{def:tie}.
+with null line $\R\,(1,1,-1)$.
+
+Every triple dominates and none dominates strictly: the tetrahedron is
+extremal in the sense of Definition~\ref{def:tie}.
 
 \emph{Chart and volume sampling.}  Here $v_c=\tfrac12 g_c$, so
 $P_{cd}=\tfrac14\langle g_c,g_d\rangle$, that is $P=\tfrac14(4I_4-J_4)$ with
@@ -54,7 +57,7 @@ $P[C]=\tfrac14(4I_3-J_3)$, whose eigenvalues are $\tfrac14\{1,4,4\}$, so by
   \pi_C=\det P[C]=\tfrac{16}{64}=\tfrac14 \qquad\text{for each of the four triples,}
 \]
 confirming $\sum_C\pi_C=1$.  All four characteristic polynomials coincide,
-whence
+and $\E_\pi$ averages against a measure of mass one, whence
 \[
   q(x)=\E_\pi[\chi_{\SC}(x)]=(x-1)(x-4)^2=x^3-9x^2+24x-16 ,
 \]
@@ -108,12 +111,14 @@ gets a member which is not a rotation of the tetrahedron:
 \]
 with $\ell=(\tfrac43,\tfrac{19}3,\tfrac{19}3,\tfrac{19}3)$, the single
 dependency $3g_0+2g_1+2g_2+2g_3=0$, and dominating triple $\{1,2,3\}$ whose
-gap is $\tfrac83\bigl[(x_0-x_1)^2+(x_0-x_2)^2+(x_1-x_2)^2\bigr]$.  The
-equality locus is therefore not a single orbit even at corank one.  Two
-readings of this member.  Its squared cosines take two values,
+gap is $\tfrac83\bigl[(x_0-x_1)^2+(x_0-x_2)^2+(x_1-x_2)^2\bigr]$.
+
+The equality locus is therefore not a single orbit even at corank one.
+
+This member's squared cosines take two values,
 $\tfrac1{19}$ between $g_0$ and each other atom and $\tfrac{64}{361}$
 between the others, so a real extremal design need not be equiangular
-(\texttt{Gtz.sharp\allowbreak Atom\_not\_equiangular}) --- against the icosahedron of
+(\texttt{Gtz.sharp\allowbreak Atom\_\allowbreak not\_\allowbreak equiangular}) --- against the icosahedron of
 \S\ref{app:icosa}, whose single squared cosine is $\tfrac15$.  And the
 dependency coefficients $y=(3,2,2,2)$ satisfy $y_c^2/\bigl(t_c(1-t_c)\bigr)
 =\tfrac{81}2$ at every atom, which is \eqref{eq:tielaw} read on this
@@ -256,7 +261,14 @@ edges $ac,ad,bc,bd$.  By \eqref{eq:graphicleverage},
 Every leverage exceeds $1$.  The star at $a$, that is $E'=\{ab,ac,ad\}$,
 dominates: the left side of \eqref{eq:graphicdominate} is
 $5\bigl(2b_0b_0\tp+3b_1b_1\tp+3b_2b_2\tp\bigr)$, and subtracting $L$ gives
-the form $Q$.  Doubling and completing the square in $y_a$ leaves $9y_c^2$:
+the form $Q$, whose matrix is
+\[
+  \begin{pmatrix}32&-8&-12\\ -8&2&3\\ -12&3&9\end{pmatrix} .
+\]
+Completing the square in $y_a$ is the first step of an $LDL\tp$
+factorization of $Q$.  The pivot is $Q_{aa}=32$, doubling clears the
+denominators it introduces, and the residue is twice the Schur complement
+$\tfrac92y_c^2$ of that pivot:
 \[
   2\,Q(y)\;=\;(-8y_a+2y_b+3y_c)^2+9y_c^2 ,
 \]
@@ -268,30 +280,37 @@ $y\tp Ly=3+3=6$, the two ground edges $ad$ and $bd$ contributing, so the gap
 form equals $-6$; likewise at $E'=\{ab,ad,bd\}$ with $y=(0,0,1)$.  The
 certificates for all ten subsets are listed in the proof of
 Example~\ref{ex:diamond}.
-The diamond is therefore an extremal design at $(5,3)$.  Its five incidence
-rows are pairwise non-proportional, and by \eqref{eq:graphicatom}
-proportionality of two atoms forces proportionality of the corresponding rows;
-so no two atoms of the diamond are parallel.  This is
-Example~\ref{ex:diamond}.
+
+The diamond is therefore an extremal design at $(5,3)$.
+
+Its five incidence rows are pairwise non-proportional, and by
+\eqref{eq:graphicatom} proportionality of two atoms forces proportionality
+of the corresponding rows; so no two atoms of the diamond are parallel.
+This is Example~\ref{ex:diamond}.
 
 The conductances are forced: keep the rim conductance at
 $c_{\mathrm{rim}}=3$, let the spine carry $c_{ab}=p>0$, and ask that the star
 at $a$ dominate.  With $L$ recomputed at those conductances,
 \eqref{eq:graphicdominate} for $E'=\{ab,ac,ad\}$ reads $Q\psd0$ for a
 symmetric $3\times3$ form whose leading principal minors are $4p+24$,
-$72(p-2)$ and $324p-648$.  For $p<2$ the second is negative, so $Q$ is not
-positive semidefinite; for $p>2$ all three are positive, so $Q\pd0$; at
-$p=2$ the form is the singular $Q$ above.  So $p=2$ is the unique conductance
-at which the star dominates without dominating strictly, which is
-extremality.  Then $K_4-e$ is three internally disjoint $a$-to-$b$ paths:
+$72(p-2)$ and $324p-648$.  A positive semidefinite matrix has all its
+principal minors nonnegative, so $Q$ is not positive semidefinite for
+$p<2$, where the second is negative.  For $p>2$ all three are positive, and
+Sylvester's criterion gives $Q\pd0$.  At $p=2$ the form is the singular $Q$
+above.
+
+So $p=2$ is the unique conductance at which the star dominates without
+dominating strictly, which is extremality.
+
+Then $K_4-e$ is three internally disjoint $a$-to-$b$ paths:
 the edge $ab$ of conductance $2$ and two two-edge paths of conductance
 $\tfrac32$ each, whose conductances add to $5$.  So
 $R_{\mathrm{eff}}(ab)=\tfrac15$ and $s_{ab}=\tfrac25$, as computed
 above.
 
-Three facts about graphic designs in general, each formal.  Domination is a
-matroid condition: an edge set of the right size dominates only if it is a
-spanning tree, and positive definiteness of the Laplacian restricted to a
+Domination is a matroid condition: an edge set of the right size dominates
+only if it is a spanning tree, and positive definiteness of the Laplacian
+restricted to a
 set is connectivity to the ground
 (\texttt{Gtz.is\allowbreak Spanning\allowbreak Tree\_of\_dominates},
 \texttt{Gtz.pos\allowbreak Def\_laplacian\allowbreak On\_iff\_is\allowbreak Ground\allowbreak Connected}), which is the
@@ -303,7 +322,7 @@ conductance and uniform weight $\tfrac16$ is a design at $(6,3)$ whose star
 at the ground dominates \emph{strictly}, with the explicit certificate
 $2(y_a^2+y_b^2+y_c^2)+(y_a+y_b+y_c)^2$
 (\texttt{Gtz.complete\allowbreak Four\allowbreak Data\_dominates\_strictly}).  It is the foil to the
-diamond: same construction, one cell up, and the margin is positive.
+diamond: same construction, one cell up.
 
 The equality locus has a graphic realization at every rational point, and
 with it a closed form for the leverage.  Bundle the $(k+1)$-cycle: replace
@@ -324,12 +343,34 @@ the transversal omitting arc $j_0$ is
   \qquad\text{(\texttt{Gtz.bundled\allowbreak Cycle\_gap\_eq\_engel\allowbreak Deficiency})},
 \]
 the Engel form of Cauchy--Schwarz in the drops $d_j$: nonnegative always,
-and zero exactly on the ray $d_j\propto p_j$.  That is the mechanism behind
-the extremality asserted in \S\ref{app:split} --- the margin vanishes
-because a Cauchy--Schwarz is tight, not by an accident of the construction.
+and zero exactly on the ray $d_j\propto p_j$ $(j\ne j_0)$.  The dropped
+coordinate is not free to join that ray, since $\sum_jd_j=0$ pins it at
+$d_{j_0}=-\lambda(n-p_{j_0})$.  That is the mechanism behind
+the extremality asserted in \S\ref{app:split}: the margin vanishes
+because a Cauchy--Schwarz is tight.
 At rank two the gap is the exact rational square
 $(d_1p_2-d_2p_1)^2/\bigl(p_1p_2(p_1+p_2)\bigr)$, so the slack off the tight
-ray is an explicit function of the drops.
+ray is an explicit function of the drops.  Figure~\ref{fig:bundledcycle} draws
+the bundling at $(6,3)$, the leverages it is checked at, and that tight ray.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/bundledcycle}
+  \caption{The bundled cycle.  Left: arc $j$ of the $4$-cycle carries $p_j$
+  parallel edges of conductance $1/\bigl(p_j(n-p_j)\bigr)$, drawn at
+  $p=(2,2,1,1)$ and $n=6$; the three heavy edges are a transversal and the open
+  vertex is the ground.  Middle: the closed form, and seven bundlings, each an
+  exact tie; every distinct rank-three leverage listed is evaluated in the
+  kernel, and at rank two what the kernel evaluates is the companion projection
+  diagonal, $8/63$ and $5/9$ at $(7,1,1)$, and $13/72$, $2/9$ and $11/36$
+  at $(4,3,2)$.
+  Right: at rank two the gap is the rational square above, drawn at
+  $(p_1,p_2)=(4,3)$, where the heavy line is the ray $d\propto p$ and the two
+  dashed lines are the level $3/7$.  Every leverage listed satisfies
+  $k\,T\,\ell_e=k-1+T$ at the arc total $T=p/n$, which is
+  \eqref{eq:tielaw}.}
+  \label{fig:bundledcycle}
+\end{figure}
 
 \subsection{Split families at
 \texorpdfstring{$(6,3)$ and $(7,3)$}{(6,3) and (7,3)}}\label{app:split}
@@ -379,9 +420,10 @@ Theorem~\ref{thm:tieseverywhere}.
 
 At $k=3$ and $m=6$ the class profiles are $(3,1,1,1)$ and $(2,2,1,1)$; at
 $m=7$ they are $(4,1,1,1)$, $(3,2,1,1)$ and $(2,2,2,1)$.  The two families
-displayed above are the profiles $(2,2,1,1)$ and $(2,2,2,1)$.  Since a member
-of this family has at most $k+1$ distinct directions and the diamond has
-$k+2=5$, the diamond is not one of them.
+displayed above are the profiles $(2,2,1,1)$ and $(2,2,2,1)$.
+
+Since a member of this family has at most $k+1$ distinct directions and the
+diamond has $k+2=5$, the diamond is not one of them.
 
 \emph{A rational extremal design with an exact certificate.}  Take the $(6,3)$
 split at $(a,b)=(\tfrac16,\tfrac18)$, so
@@ -409,9 +451,11 @@ Put
   \mu:=\sqrt{\frac{3+\rho}{2}},
 \end{equation}
 so that $\sigma^2+\mu^2=3$ and
-$\sigma^2\mu^2=\tfrac{9-\rho^2}{4}=\tfrac{9-9/5}{4}=\tfrac95=\rho^2$, whence
-$\sigma\mu=\rho$.  The six atoms are the six diagonals of a regular
-icosahedron, in the scaling that makes $\ell_c=3$:
+$\sigma^2\mu^2=\tfrac{9-\rho^2}{4}=\tfrac{9-9/5}{4}=\tfrac95=\rho^2$.  Both
+radicands are positive, since $\rho<3$, so $\sigma$ and $\mu$ are positive
+and $\sigma\mu$ is the positive square root of $\rho^2$, which is $\rho$.
+The six atoms are the six diagonals of a regular icosahedron, in the
+scaling that makes $\ell_c=3$:
 \[
   (\sigma,\mu,0),\ (-\sigma,\mu,0),\
   (0,\sigma,\mu),\ (0,-\sigma,\mu),\
@@ -426,26 +470,40 @@ $\pm\sigma\mu$ or $\mu^2-\sigma^2$, and $\mu^2-\sigma^2=\rho=\sigma\mu$ by
 \begin{equation}\label{eq:icosapair}
   \ell_c=3,\qquad \langle g_c,g_d\rangle^2=\tfrac95 \quad(c\ne d).
 \end{equation}
-For $C=\{0,2,4\}$ all three pairings equal $+\rho$, so
-$\SC=(3-\rho)I_3+\rho J_3$, with spectrum $\{3-\rho,3-\rho,3+2\rho\}$ and
+For $C=\{0,2,4\}$ all three pairings equal $+\rho$.  Each diagonal entry of
+$\SC$ is $\sigma^2+\mu^2=3$, and at each pair of distinct coordinates two of
+the three atoms carry a zero at one of them, leaving the single product
+$\sigma\mu$.  So $\SC=(3-\rho)I_3+\rho J_3$, with spectrum
+$\{3-\rho,3-\rho,3+2\rho\}$ and
 \[
-  \lmin(S_{\{0,2,4\}})=3-\frac{3}{\sqrt5}=1.6584\ldots>1 :
+  \lmin(S_{\{0,2,4\}})=3-\frac{3}{\sqrt5}=1.6583\ldots>1 :
 \]
+the icosahedral design dominates, and dominates strictly.
+
 \begin{sloppypar}
-the icosahedral design dominates, and dominates strictly; the margin is
-pinned two-sidedly to $2-3/\sqrt5$, which lies in $(\tfrac12,\tfrac23)$
-(\texttt{Gtz.icosa\allowbreak Design\_rayleigh\_floor},
-\texttt{Gtz.icosa\allowbreak Design\_rayleigh\_attained},
-\texttt{Gtz.icosa\_margin\_window}).  By \eqref{eq:icosapair} every triple
-carries the same trace and the same pairing modulus, so the verdict depends
-only on the sign of the product of the three pairings, and exactly ten of
-the twenty triples dominate.  That count is the one assertion of this
+The margin is pinned two-sidedly to $2-3/\sqrt5$, which lies in
+$(\tfrac12,\tfrac23)$
+(\texttt{Gtz.icosa\allowbreak Design\_\allowbreak rayleigh\_\allowbreak floor},
+\texttt{Gtz.icosa\allowbreak Design\_\allowbreak rayleigh\_\allowbreak attained},
+\texttt{Gtz.icosa\_\allowbreak margin\_\allowbreak window}).
+\end{sloppypar}
+
+By \eqref{eq:icosapair} the Gram matrix of a triple is $3I_3$ plus $\rho$
+times a symmetric matrix with zero diagonal and entries $\pm1$ off it, and
+by Lemma~\ref{lem:flip}, $M_C$ being square, the verdict is a comparison of
+that Gram matrix with $I_3$.  Conjugation by a diagonal sign matrix
+preserves the comparison and negates the two off-diagonal entries at each
+index it negates, so it fixes the product of the three signs and is
+transitive on the patterns of a given product.  The verdict therefore depends only on the sign
+of the product of the three pairings, and exactly ten of the twenty triples
+dominate.  That count is the one assertion of this
 appendix with no theorem behind it: the development records it in a
 docstring, not a statement.  The design is used in
 Appendix~\ref{app:graveyard} as the one on which the two-moment criterion is
 silent.
-\end{sloppypar}
-Figure~\ref{fig:icosa} draws the design and two of its triples.
+
+Figure~\ref{fig:icosa} draws the design and two of its triples, and
+Figure~\ref{fig:icosaspec} all twenty, with the sign grid that decides them.
 
 \begin{figure}[ht]
   \centering
@@ -461,6 +519,23 @@ Figure~\ref{fig:icosa} draws the design and two of its triples.
   criterion in the trace and the determinant certifies the triple that
   dominates.}
   \label{fig:icosa}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/icosaspec}
+  \caption{The twenty triples of the icosahedral design.  Left: the sign of
+  $\langle g_c,g_d\rangle/\rho$ at each pair, the diagonal carrying the
+  leverage $3$.  Middle: the triples sorted by the product $\tau$ of their
+  three pairings.  Right: the trace $9$, the pairing squares $27/5$ and the
+  modulus $\rho^3$ are common to all twenty, and every line below them is a
+  function of the sign of $\tau$; the two spectra are
+  $\{3-\rho,3-\rho,3+2\rho\}$ and $\{3-2\rho,3+\rho,3+\rho\}$, and no other
+  occurs.  The split ten and ten is the assertion with no theorem behind it;
+  the criterion that produces it, that the product of the three pairings
+  normalized by the excesses $\ell_c-1$ be at least $7/40$, is
+  kernel-checked.}
+  \label{fig:icosaspec}
 \end{figure}
 
 \subsection{Active-family census at

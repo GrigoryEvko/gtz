@@ -1,0 +1,192 @@
+% Theorem thm:light executed at (3,2): a design with one light vector, the
+% congruence that deletes it, and eq:reassemble as a sum of two positive
+% semidefinite matrices.
+%
+% NO PROJECTION.  The two panels are the plane itself, face-on at 0.80cm per
+% unit with the first coordinate to the right; the upper is drawn at (0,1.90)
+% and the lower at (0,-2.15).  Every coordinate is 0.80 times the exact pair in
+% its trailing comment, plus the panel offset.
+%
+% THE DESIGN, exact and closed in the rationals:
+%   c    g_c            t_c        ell_c       t_c ell_c
+%   1    (20/9, -1)     81/625     481/81      481/625
+%   2    (0, 5/3)      144/625     25/9        400/625
+%   3    (3/4, 3/5)    400/625     369/400     369/625
+% Checked over the rationals: the weights are positive and sum to 625/625,
+% sum_c t_c g_c g_c^T = I_2, and sum_c t_c ell_c = (481+400+369)/625 = 2, which
+% is the trace of eq:parseval.  The third vector is light, ell_3 = 369/400 < 1;
+% the other two are heavy.
+%
+% THE UPPER PANEL draws three things.  The dotted unit circle, which g_3 sits
+% inside: that is lightness.  DISCLOSED, since it is the panel's headline
+% claim: the containment is a number here and not a visual.  |g_3| =
+% sqrt(369)/20 = 0.960468, so at 0.80cm per unit the arrowhead of g_3 stops
+% 0.0316cm -- 0.9pt -- short of the circle, and no scale this panel can carry
+% opens that gap.  The ledger to the right prints ell_3 = 369/400, which is
+% where the reader gets the fact.  The three vectors.  And the solid ellipse
+% E = {u : u^T Sigma_3 u = 1} of the residual Parseval mass
+% Sigma_3 = I_2 - t_3 g_3 g_3^T.  Since Sigma_3 = I_2 - (positive semidefinite),
+% E contains the unit circle, and the two touch where Sigma_3 acts as the
+% identity.  Sigma_3 has eigenvalue 1 - t_3 ell_3 = 256/625 along g_3 and 1
+% across it, so E has semi-axis (1 - t_3 ell_3)^{-1/2} = 25/16 along g_3 and 1
+% across; E is bounded -- Sigma_3 is positive definite -- precisely because
+% t_3 ell_3 < 1.  The direction of g_3 = (3/4, 3/5) is (5,4)/sqrt41, at
+% atan(4/5) = 38.659808 degrees, so the ellipse is drawn with semi-axes
+% 1.25cm = 0.80 * 25/16 and 0.80cm at that rotation; its half-widths on the
+% page are then
+%   sqrt(a^2 cos^2 + b^2 sin^2) = 1.09659  and
+%   sqrt(a^2 sin^2 + b^2 cos^2) = 1.00000 ,
+% both inside the reach of g_1.  The two tangency points are
+% +- 0.80 (-4,5)/sqrt41 = +-(-0.499756, 0.624695).
+%
+% THE LOWER PANEL is the deflated design at (2,2), in its own copy of the plane
+% after the congruence: g'_c = sqrt(1-t_3) R^T g_c comes out on the two
+% coordinate axes, and both deflated vectors lie outside the unit circle, so
+% the deflation has made the design all-heavy.  At m = k the whole index set is
+% the only k-subset and it dominates (prop:sizerank), which is what Step 3
+% imports.
+%
+% THE WHITENER is the Cholesky one of lem:whiten, chosen because it is rational
+% here: Sigma_3 = LL^T with L = [[4/5,0],[-9/25,4/5]], and R = (L^T)^{-1}.
+% Any invertible R with R^T Sigma_3 R = I_2 would serve as well.
+%
+% WHERE LIGHTNESS ENTERS.  The second summand of eq:reassemble is
+% Y = t_3(I_2 - g_3 g_3^T), whose eigenvalues are t_3(1 - ell_3) along g_3 and
+% t_3 across it.  Only the first can go negative, and it does not, because
+% ell_3 <= 1; at ell_3 = 1 it is zero.  That single eigenvalue is the whole
+% content of the hypothesis, and the ledger prints it.
+%
+% DISCLOSED: Theorem thm:light is tagged, as Gtz.dominating_of_light_atom, and
+% the ledger of Section 9 records it.  The declaration is indexed at (m+1,k)
+% against a hypothesis GtzWeighted m k, with 1 <= m, which in that indexing is
+% the statement's m >= 2; so the hypotheses match entry for entry.  It
+% concludes only that SOME k-subset dominates, so the identification of that
+% subset with the complement of the light index, which this instance exhibits,
+% is not part of the statement.  eq:reassemble is not a declaration of its
+% own, and the arithmetic drawn here is not in the development at all.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  vec/.style   ={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt},
+  light/.style ={-{Latex[length=2mm,width=1.5mm]}, line width=1.1pt},
+  rim/.style   ={line width=0.5pt, black!70},
+  frame/.style ={densely dotted, line width=0.3pt, black!35},
+  hair/.style  ={line width=0.4pt, black!45},
+  passto/.style={-{Latex[length=2mm,width=1.5mm]}, line width=0.6pt, black!58},
+  note/.style  ={font=\footnotesize, inner sep=1.5pt},
+  every node/.style={font=\small}]
+
+% =====================================================================
+% upstairs: the design at (3,2), the unit circle, and the ellipse of the
+% residual Parseval mass
+% =====================================================================
+\begin{scope}[shift={(0,1.90)}]
+  \draw[frame] (-1.35,0) -- (2.00,0);
+  \draw[frame] (0,-1.05) -- (0,1.50);
+  \draw[frame] (0,0) circle (0.80);                    % the unit circle
+  \draw[rim, rotate=38.659808] (0,0) ellipse (1.25 and 0.80);
+  \fill[black!58] (-0.4998, 0.6247) circle (1.2pt);    % 0.80 (-4,5)/sqrt41
+  \fill[black!58] ( 0.4998,-0.6247) circle (1.2pt);
+
+  \draw[vec]   (0,0)--( 1.7778,-0.8000);               % g_1 = (20/9, -1)
+  \draw[vec]   (0,0)--( 0.0000, 1.3333);               % g_2 = (0, 5/3)
+  \draw[light] (0,0)--( 0.6000, 0.4800);               % g_3 = (3/4, 3/5)
+  \fill (0,0) circle (1.1pt);
+
+  \node[note, anchor=north west] at ( 1.80,-0.78) {$g_1$};
+  \node[note, anchor=south east] at (-0.04, 1.33) {$g_2$};
+  \node[note, anchor=south west] at ( 0.62, 0.49) {$g_3$};
+\end{scope}
+
+\node[anchor=north, font=\scriptsize, inner sep=1.5pt]
+  at (0.20, 0.72) {at $(3,2)$};
+
+% ---- the deflation --------------------------------------------------
+\draw[passto] (0,-0.05) -- (0,-0.80);
+\node[note, anchor=west] at (0.12,-0.42) {$\sqrt{1-t_3}\;R\tp$};
+
+% =====================================================================
+% downstairs: the deflated design at (2,2)
+% =====================================================================
+\begin{scope}[shift={(0,-2.15)}]
+  \draw[frame] (-1.00,0) -- (1.60,0);
+  \draw[frame] (0,-0.95) -- (0,1.20);
+  \draw[frame] (0,0) circle (0.80);
+  \draw[vec] (0,0)--( 1.3333, 0.0000);                 % g'_1 = (5/3, 0)
+  \draw[vec] (0,0)--( 0.0000, 1.0000);                 % g'_2 = (0, 5/4)
+  \fill (0,0) circle (1.1pt);
+  \node[note, anchor=north west] at ( 1.35,-0.04) {$g'_1$};
+  \node[note, anchor=south east] at (-0.04, 1.00) {$g'_2$};
+\end{scope}
+
+\node[anchor=north, font=\scriptsize, inner sep=1.5pt]
+  at (0.20,-3.20) {at $(2,2)$};
+
+% =====================================================================
+% the ledger, at x = 2.30
+% =====================================================================
+\begin{scope}[every node/.style={anchor=west, inner sep=1.5pt,
+                                 font=\scriptsize}]
+\node at (2.30, 2.82)
+  {$g_1=\bigl(\tfrac{20}9,-1\bigr)$, \ $g_2=\bigl(0,\tfrac53\bigr)$, \
+   $g_3=\bigl(\tfrac34,\tfrac35\bigr)$, \
+   $t=\tfrac1{625}(81,144,400)$};
+\node at (2.30, 2.44)
+  {$\ell=\bigl(\tfrac{481}{81},\tfrac{25}9,\tfrac{369}{400}\bigr)$, \
+   $t_c\ell_c=\tfrac1{625}(481,400,369)$ sums to $2$, \
+   $\ell_3\le1$: the vector $d=3$ is light};
+\draw[hair] (2.26, 2.24) -- (14.20, 2.24);
+
+\node at (2.30, 1.97)
+  {\emph{Step 1.} \
+   $\Sigma_3=I_2-t_3\,g_3^{\vphantom{\mathsf{T}}}g_3\tp
+    =\tfrac1{625}\begin{psmallmatrix}400&-180\\-180&481\end{psmallmatrix}
+    =t_1g_1^{\vphantom{\mathsf{T}}}g_1\tp
+     +t_2g_2^{\vphantom{\mathsf{T}}}g_2\tp$};
+\node at (2.30, 1.55)
+  {\qquad $\det\Sigma_3=1-t_3\ell_3=\tfrac{256}{625}>0$, because
+   $t_3\ell_3\le t_3=\tfrac{16}{25}<1$; \
+   $\operatorname{spec}\Sigma_3=\bigl\{\tfrac{256}{625},1\bigr\}$};
+\node at (2.30, 1.13)
+  {\qquad $R=\begin{psmallmatrix}5/4&9/16\\0&5/4\end{psmallmatrix}$, \
+   $R\tp\Sigma_3R=I_2$, \ $\det R=\tfrac{25}{16}$};
+\draw[hair] (2.26, 0.88) -- (14.20, 0.88);
+
+\node at (2.30, 0.62)
+  {\emph{Step 2.} \ $g'_c=\tfrac35R\tp g_c$ gives
+   $g'_1=\bigl(\tfrac53,0\bigr)$ and $g'_2=\bigl(0,\tfrac54\bigr)$; \
+   $t'_c=\tfrac{25}9t_c$ gives $t'=\bigl(\tfrac9{25},\tfrac{16}{25}\bigr)$};
+\node at (2.30, 0.24)
+  {\qquad $\tfrac9{25}\cdot\tfrac{25}9=1$ and
+   $\tfrac{16}{25}\cdot\tfrac{25}{16}=1$: \
+   $\sum_c t'_c\,g'_c(g'_c)\tp=I_2$, a design at $(2,2)$};
+\draw[hair] (2.26, 0.04) -- (14.20, 0.04);
+
+\node at (2.30,-0.22)
+  {\emph{Step 3.} \ $C=\{1,2\}$ is all of the index set downstairs:
+   $S'_C-I_2=\diag\bigl(\tfrac{16}9,\tfrac9{16}\bigr)\psd0$};
+\node at (2.30,-0.70)
+  {\qquad $X:=(1-t_3)\SC-\Sigma_3
+   =\begin{psmallmatrix}256/225&-64/125\\-64/125&369/625\end{psmallmatrix}$,
+   \ $R\tp XR=S'_C-I_2$, \ so $X\psd0$};
+\node at (2.30,-1.20)
+  {\qquad $Y:=t_3\bigl(I_2-g_3^{\vphantom{\mathsf{T}}}g_3\tp\bigr)
+   =\tfrac1{625}\begin{psmallmatrix}175&-180\\-180&256\end{psmallmatrix}$,
+   \ $\operatorname{spec}Y=\bigl\{t_3(1-\ell_3),\,t_3\bigr\}
+   =\bigl\{\tfrac{31}{625},\tfrac{16}{25}\bigr\}$};
+\node at (2.30,-1.70)
+  {\qquad $\tfrac1{1-t_3}(X+Y)
+   =\tfrac{25}9\begin{psmallmatrix}319/225&-4/5\\-4/5&1\end{psmallmatrix}
+   =\begin{psmallmatrix}319/81&-20/9\\-20/9&25/9\end{psmallmatrix}
+   =\SC-I_2\psd0$};
+\draw[hair] (2.26,-1.98) -- (14.20,-1.98);
+
+\node at (2.30,-2.22)
+  {Lightness enters at $\lmin Y=t_3(1-\ell_3)\ge0$ and nowhere else, and
+   vanishes at $\ell_3=1$};
+\node at (2.30,-2.60)
+  {The other two pairs fail:
+   $\det\bigl(S_{\{1,3\}}-I_2\bigr)=-\tfrac{3079}{2025}$ and
+   $\det\bigl(S_{\{2,3\}}-I_2\bigr)=-\tfrac{256}{225}$};
+\end{scope}
+
+\end{tikzpicture}

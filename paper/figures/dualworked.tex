@@ -1,0 +1,214 @@
+% Duality at (m,k) = (4,2), the self-dual cell, on the design of
+% Example ex:chartworked.  Three panels: the kernel rows z_c, the dual atoms
+% h_c against the unit circle, and the two normalizations run against each
+% other over all six pairs.  The cell is self-dual, m - k = k = 2, so the dual
+% design lives at (4,2) as well and the complement map C -> C^c is an
+% involution on the six pairs: the opposite-edge map of the square in
+% figures/chartworked.tex.
+%
+% PROJECTION.  Both drawn panels are plane figures and carry no projection of a
+% higher-dimensional space; the map is the identity of R^2, scaled by 1.55cm in
+% the kernel panel and by 1.05cm in the dual-atom panel,
+%   panel A:  X = 1.55 x_1,  Y = 1.55 x_2
+%   panel B:  X = 1.05 x_1,  Y = 1.05 x_2
+% so no viewing normal and no visibility rule are needed and no line is hidden.
+% The two scales differ because the longest kernel row has norm
+% sqrt(5/9) = 0.7453560 while the longest dual atom has norm
+% sqrt(61/28) = 1.4759985, a ratio of sqrt(549/140) = 1.9802597; at a common
+% scale one panel would be twice the other.  The unit circle is drawn in both,
+% so the eye compares against it and not across panels.
+%
+% THE PRIMAL DATA.  Over R, m = 4, k = 2, t = (2,3,3,1)/9,
+%   g_0 = (sqrt2,0), g_1 = (2,1)/sqrt3, g_2 = (1,-2)/sqrt3, g_3 = (0,2),
+% with s = (4,5,5,4)/9 and the rational chart 9P = [[4,4,2,0],[4,5,0,2],
+% [2,0,5,-4],[0,2,-4,4]].  See figures/chartworked.tex for the Parseval check.
+%
+% THE KERNEL BASIS.  ker P is orthogonal to the two columns (2,2,1,0) and
+% (0,1,-2,2) of 3V.  The integer vectors n1 = (-5,4,2,0) and n2 = (0,-2,4,5)
+% annihilate both -- 2(-5)+2(4)+1(2) = 0, 1(4)+(-2)(2) = 0, 2(-2)+1(4) = 0,
+% 1(-2)+(-2)(4)+2(5) = 0 -- and satisfy n1.n1 = n2.n2 = 45, n1.n2 = 0.  So
+% Z = [n1 n2]/(3 sqrt5) has Z^T Z = I_2 and Z Z^T = I - P, and its rows are
+%   z_0 = (-5, 0)/(3 sqrt5)   |z_0|^2 = 5/9 = 1 - s_0
+%   z_1 = ( 4,-2)/(3 sqrt5)   |z_1|^2 = 4/9 = 1 - s_1
+%   z_2 = ( 2, 4)/(3 sqrt5)   |z_2|^2 = 4/9 = 1 - s_2
+%   z_3 = ( 0, 5)/(3 sqrt5)   |z_3|^2 = 5/9 = 1 - s_3
+% Panel A draws these four rows.
+%
+% THE TWO NORMALIZATIONS.  With 1 - t = (7,6,6,8)/9,
+%   w_c = z_c/sqrt(1-t_c):  |w_c|^2 = (5/7, 2/3, 2/3, 5/8),
+%   S^perp = sum_c t_c w_c w_c^T = diag(8/21, 7/24),  det = 1/9,
+%   R = diag(sqrt(21/8), sqrt(24/7)),  R^T S^perp R = I_2,
+%   h_0 = (-sqrt(30)/4, 0)          = (-sqrt30, 0)/4       |h_0|^2 = 15/8
+%   h_1 = ( sqrt(35)/5, -4 sqrt(35)/35) = (7,-4)/sqrt35     |h_1|^2 = 13/7
+%   h_2 = ( sqrt(35)/10, 8 sqrt(35)/35) = (7,16)/(2 sqrt35) |h_2|^2 = 61/28
+%   h_3 = ( 0, sqrt(105)/7)         = (0, sqrt105)/7        |h_3|^2 = 15/7
+% and sum_c t_c |h_c|^2 = 5/12 + 13/21 + 61/84 + 5/21 = 2 = m - k.  The naive
+% rescaling u_c = z_c/sqrt(t_c) gives |u_c|^2 = (5/2, 4/3, 4/3, 5) and chart
+% (Z Z^T, t) = (I - P, t), whose gap is 9(I-P-D) = [[3,-4,-2,0],[-4,1,0,-2],
+% [-2,0,1,4],[0,-2,4,4]].  Panel B draws the h_c; the u_c are not drawn, since
+% u_c is a positive multiple of z_c and panel A already carries their
+% directions, all four of which the naive dual keeps.
+%
+% ELLIPSE FRAME.  At E = {1,3} the dual selection matrix is
+% h_1 h_1^T + h_3 h_3^T = [[7/5,-4/5],[-4/5,13/5]], of spectrum {1,3}, so the
+% ellipse {x : x^T (h_1 h_1^T + h_3 h_3^T) x = 1} has semi-axes 1 and
+% 1/sqrt3 = 0.5773503, the long one along the eigenvector (2,1)/sqrt5 at
+% atan2(1,2) = 26.5651 degrees, and it touches the unit circle exactly at
+% +-(2,1)/sqrt5 = +-(0.8944272, 0.4472136).  Upstairs the same picture stands
+% at C = {0,2} with spectrum {1, 8/3} and tangency along (1,2)/sqrt5.
+%
+% THE TABLE.  81 det W[C] over {0,1}, {0,2}, {0,3}, {1,2}, {1,3}, {2,3} is
+% -12, 0, +6, +4, +2, -10; det(sum_{c in E} h_c h_c^T - I_2) over the
+% complementary pairs {2,3}, {1,3}, {1,2}, {0,3}, {0,2}, {0,1} is -18/7, 0,
+% 27/28, 1, 3/8, -15/8; and 81 det (I-P-D)[E] over the same is -12, 0, +1, +12,
+% -1, -13.  The sign agrees in all six rows for the co-weight normalization and
+% in five for the weight normalization, the exception being C = {1,3} against
+% E = {0,2}, boxed in the body.
+%
+% DISCLOSED: this design is new to the paper and no Lean declaration mentions
+% it; every number here was computed in exact arithmetic outside the assistant
+% -- rational for the chart, S^perp, the leverage scores and all three minor
+% columns, algebraic for z_c, R, h_c and the ellipse frame, whose decimals in
+% the body are truncations of those exact values.  Theorem thm:duality is
+% mechanized over R, but as an EXISTENTIAL over dual designs, and by a
+% construction that is not the one drawn: the formal proof whitens the
+% co-Parseval operator and takes the dual atoms from an orthonormal
+% completion.  What panel B draws is therefore the printed
+% construction, and the formal statement covers it only in asserting that some
+% dual design with these weights flips domination.  No complex Naimark duality
+% exists in the development, so nothing here transfers to C.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  vec/.style   ={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt},
+  rim/.style   ={line width=0.6pt, black!70},
+  lev/.style   ={line width=0.5pt, black!70},
+  frame/.style ={densely dotted, line width=0.3pt, black!35},
+  tight/.style ={line width=0.5pt, black!55, dashed,
+                 dash pattern=on 2.2pt off 1.6pt},
+  hair/.style  ={line width=0.4pt, black!45},
+  box/.style   ={line width=0.45pt, black!60},
+  tag/.style   ={font=\footnotesize, fill=white, inner sep=0.8pt},
+  every node/.style={inner sep=1.5pt, font=\small}]
+
+% ==================== panel A: the rows of the kernel basis ================
+\begin{scope}[shift={(2.00,3.90)}]
+  \draw[frame] (-1.72,0)--(1.72,0);
+  \draw[frame] (0,-1.72)--(0,1.72);
+  \draw[rim] (0,0) circle (1.55);
+
+  \draw[vec] (0,0)--(-1.15530, 0.00000);   % z_0 = (-5, 0)/(3 sqrt5)
+  \draw[vec] (0,0)--( 0.92424,-0.46212);   % z_1 = ( 4,-2)/(3 sqrt5)
+  \draw[vec] (0,0)--( 0.46212, 0.92424);   % z_2 = ( 2, 4)/(3 sqrt5)
+  \draw[vec] (0,0)--( 0.00000, 1.15530);   % z_3 = ( 0, 5)/(3 sqrt5)
+  \fill (0,0) circle (1.1pt);
+  \node[tag, anchor=east]       at (-1.19, 0.00) {$z_0$};
+  \node[tag, anchor=north west] at ( 0.95,-0.48) {$z_1$};
+  \node[tag, anchor=south west] at ( 0.50, 0.92) {$z_2$};
+  \node[tag, anchor=east]       at (-0.06, 1.10) {$z_3$};
+
+  \node[anchor=south, font=\footnotesize] at (0,1.64)
+    {$\ker P$, \ $Z\adj Z=I_2$};
+  \node[anchor=north, align=center, font=\footnotesize] at (0,-1.64)
+    {$\lVert z_c\rVert^2=1-s_c$\\[2pt] $=\tfrac19(5,4,4,5)$};
+\end{scope}
+
+% ==================== panel B: the dual atoms h_c ==========================
+\begin{scope}[shift={(6.30,3.90)}]
+  \draw[frame] (-1.72,0)--(1.72,0);
+  \draw[frame] (0,-1.30)--(0,1.72);
+  \draw[rim] (0,0) circle (1.05);
+  % the ellipse of h_1 h_1^H + h_3 h_3^H, spectrum {1,3}: semi-axes 1 and
+  % 1/sqrt3, the long one along (2,1)/sqrt5
+  \draw[lev, rotate=26.5651] (0,0) ellipse (1.05 and 0.60622);
+  \draw[tight] (-1.16454,-0.58227)--(1.16454,0.58227);       % +-1.24 (2,1)/sqrt5
+  \draw[lev, fill=white] ( 0.93915, 0.46957) circle (1.4pt); % + (2,1)/sqrt5
+  \draw[lev, fill=white] (-0.93915,-0.46957) circle (1.4pt); % - (2,1)/sqrt5
+
+  \draw[vec] (0,0)--(-1.43777, 0.00000);   % h_0 = (-sqrt30/4, 0)
+  \draw[vec] (0,0)--( 1.24238,-0.70993);   % h_1 = (sqrt35/5, -4 sqrt35/35)
+  \draw[vec] (0,0)--( 0.62119, 1.41986);   % h_2 = (sqrt35/10, 8 sqrt35/35)
+  \draw[vec] (0,0)--( 0.00000, 1.53704);   % h_3 = (0, sqrt105/7)
+  \fill (0,0) circle (1.1pt);
+  \node[tag, anchor=south]      at (-1.40, 0.05) {$h_0$};
+  \node[tag, anchor=north west] at ( 1.26,-0.72) {$h_1$};
+  \node[tag, anchor=west]       at ( 0.68, 1.38) {$h_2$};
+  \node[tag, anchor=east]       at (-0.08, 1.38) {$h_3$};
+
+  \node[anchor=south, font=\footnotesize] at (0,1.72)
+    {$\dsn^{\perp}$, \
+     $\textstyle\sum_ct_ch_c^{\vphantom{\mathsf{H}}}h_c\adj=I_2$};
+  \node[anchor=north, align=center, font=\footnotesize] at (0,-1.34)
+    {$x\adj\bigl(h_1^{\vphantom{\mathsf{H}}}h_1\adj
+       +h_3^{\vphantom{\mathsf{H}}}h_3\adj\bigr)x=1$\\[2pt]
+     spectrum $\{1,3\}$, tangent at $\pm\tfrac1{\sqrt5}(2,1)$};
+\end{scope}
+
+% =============== the two normalizations, side by side ======================
+\begin{scope}[every node/.style={anchor=west, inner sep=1.5pt,
+                                 font=\footnotesize}]
+  \node at ( 8.90, 5.36) {co-weights};
+  \node at (13.10, 5.36) {weights};
+  % the header rule spans the block it underlines: from the west edge of the
+  % left column's nodes at 8.90 to the east edge of the widest ink in the right
+  % column, the 79.25pt of the u_c-norm row at 13.10 plus its 1.5pt inner sep,
+  % which is 15.938; its node box reaches 15.991, so the rule adds no width.
+  \draw[hair] ( 8.90, 5.18)--(15.94, 5.18);
+  \draw[hair] (12.94, 5.16)--(12.94, 3.16);
+  \node at ( 8.90, 4.96) {$w_c=z_c/\sqrt{1-t_c}$};
+  \node at (13.10, 4.96) {$u_c=z_c/\sqrt{t_c}$};
+  \node at ( 8.90, 4.56) {$\Sdual=\diag\bigl(\tfrac8{21},\tfrac7{24}\bigr)$};
+  \node at (13.10, 4.56) {chart $(I-P,\,t)$};
+  \node at ( 8.90, 4.16) {$R=\diag\bigl(\sqrt{21/8},\sqrt{24/7}\bigr)$};
+  \node at (13.10, 4.10)
+    {$\lVert u_c\rVert^2=\bigl(\tfrac52,\tfrac43,\tfrac43,5\bigr)$};
+  \node at ( 8.90, 3.76) {$h_c=R\adj w_c$};
+  \node at ( 8.90, 3.36)
+    {$\lVert h_c\rVert^2=\bigl(\tfrac{15}8,\tfrac{13}7,
+       \tfrac{61}{28},\tfrac{15}7\bigr)$};
+\end{scope}
+
+% ==================== the six pairs, three columns =========================
+\begin{scope}[every node/.style={inner sep=1.5pt, font=\scriptsize}]
+  \node[anchor=west] at ( 1.30, 0.72) {$C$};
+  \node[anchor=east] at ( 4.10, 0.72) {$81\det W[C]$};
+  \node[anchor=west] at ( 5.20, 0.72) {$E=C^{\complement}$};
+  \node[anchor=east] at ( 9.60, 0.72)
+    {$\det\bigl(\sum_{c\in E}h_c^{\vphantom{\mathsf{H}}}h_c\adj-I_2\bigr)$};
+  \node[anchor=east] at (13.90, 0.72) {$81\det(I-P-D)[E]$};
+  \draw[hair] ( 1.20, 0.44)--(14.00, 0.44);
+  \draw[hair] ( 4.65, 0.92)--( 4.65,-2.30);
+  \draw[hair] (10.20, 0.92)--(10.20,-2.30);
+
+  % Rows 0.44 apart, in the order {0,1} {0,2} {0,3} {1,2} {1,3} {2,3}.  The
+  % pitch is set by column four: a \tfrac at \scriptsize has height 7.137pt and
+  % depth 3.137pt, so a pitch of 10.274pt = 0.3610 would put the denominator of
+  % one fraction row on the numerator of the next, which 0.36 did; 0.44 =
+  % 12.520pt leaves 2.25pt, the gap the reading block of
+  % figures/chartworked.tex runs at.  The header sits at 0.72 rather than 0.66
+  % so that its tallest entry, whose centred box reaches 6.014pt below the row,
+  % clears the rule at 0.44 by 1.94pt instead of 0.24pt.
+  \foreach \yy/\CC/\dW/\EE/\dH/\dN in {%
+     0.14/{\{0,1\}}/{-12}/{\{2,3\}}/{-\tfrac{18}7}/{-12},
+    -0.30/{\{0,2\}}/{0}/{\{1,3\}}/{0}/{0},
+    -0.74/{\{0,3\}}/{+6}/{\{1,2\}}/{\tfrac{27}{28}}/{+1},
+    -1.18/{\{1,2\}}/{+4}/{\{0,3\}}/{1}/{+12},
+    -1.62/{\{1,3\}}/{+2}/{\{0,2\}}/{\tfrac38}/{-1},
+    -2.06/{\{2,3\}}/{-10}/{\{0,1\}}/{-\tfrac{15}8}/{-13}}{%
+    \node[anchor=west] at ( 1.30,\yy) {$\CC$};
+    \node[anchor=east] at ( 4.10,\yy) {$\dW$};
+    \node[anchor=west] at ( 5.20,\yy) {$\EE$};
+    \node[anchor=east] at ( 9.60,\yy) {$\dH$};
+    \node[anchor=east] at (13.90,\yy) {$\dN$};}
+  % The one row where the weight normalization disagrees in sign.  The entry
+  % $-1$ is 10.861pt wide with 1.5pt of inner sep, so its ink runs from 13.4658
+  % to 13.8473 and, centred on the row, from 0.1052 above to 0.1052 below it;
+  % the frame clears that by 1.87, 2.07 and 2.13pt on the left, the right and
+  % the two horizontals.  The previous frame cleared the left by 0.26pt.
+  \draw[box] (13.40,-1.80) rectangle (13.92,-1.44);
+
+  \node[anchor=west, font=\footnotesize] at ( 1.20,-2.60)
+    {The sign of column two matches column four at all six pairs and
+     column five at five.};
+\end{scope}
+
+\end{tikzpicture}

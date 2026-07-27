@@ -1,0 +1,236 @@
+% The witness of Lemma lem:direction on the octahedral design of Example
+% ex:octa at (6,3), and what a k-subset is asked for instead.  Left: the
+% sphere of directions, one witness region, and one meridian across it.
+% Right: that meridian read twice, one atom at a time and three atoms at once.
+%
+% Orthographic projection of R^3 with azimuth 24 and elevation 30 degrees,
+% scaled by 1.3cm:
+%   X = 1.3(-0.4067366 x_1 + 0.9135455 x_2)
+%   Y = 1.3(-0.4567727 x_1 - 0.2033683 x_2 + 0.8660254 x_3)
+% The viewing normal is the cross product of the two rows,
+% e = (0.7911536, 0.3522443, 0.5000000), of unit length to ten places; a point
+% of the sphere is drawn solid where <e,x> > 0 and dashed where <e,x> < 0.
+%
+% DESIGN DATA (Example ex:octa; Gtz.balancedOctahedronDesign).  Six atoms
+%   g_0 = +sqrt3 e_1   g_1 = -sqrt3 e_1   g_2 = +sqrt3 e_2
+%   g_3 = -sqrt3 e_2   g_4 = +sqrt3 e_3   g_5 = -sqrt3 e_3
+% at t_c = 1/6.  Each axis carries two atoms, so
+% sum_c t_c g_c g_c^T = (1/6)(3)(2) sum_i e_i e_i^T = I_3 over the rationals;
+% ell_c = 3 and s_c = t_c ell_c = 1/2, and sum_c s_c = 3 = k.  Projected atom
+% ends carry their source vector in a trailing comment.
+%
+% THE WITNESS REGION.  <x,g_c>^2 = 3 x_i^2 for both atoms of the i-th axis, so
+% the directions witnessed by an axis form the double cone 3 x_i^2 >= ||x||^2,
+% of angular radius arccos(1/sqrt3) = 54.735610 degrees about +-e_i.  Only the
+% cap about +e_3 is drawn; the other five are its images under the octahedral
+% symmetries of the design.  Its rim is the circle x_3 = 1/sqrt3, of centre
+% (0,0,1/sqrt3) and radius sqrt(2/3), so
+%   (X,Y)(a) = (0, 0.650000) + A cos a + B sin a,
+%   A = 1.3 sqrt(2/3) P(e_1) = (-0.431729, -0.484839),
+%   B = 1.3 sqrt(2/3) P(e_2) = ( 0.969679, -0.215864),
+% with semi-major 1.3 sqrt(2/3) = 1.061446cm and semi-minor
+% 1.061446 sin30 = 0.530723cm.  On the rim
+% <e,x> = 0.2886751 + 0.7071068 cos(a - 24), which vanishes at
+% a = 24 +- 114.09484; the rim is in front for a in (-90.09484, 138.09484) and
+% behind for the rest, and the two crossings sit on the silhouette at polar
+% angles 41.81031 and 138.18969, where the shaded region closes along the
+% silhouette.  The elevation is kept at 30 degrees, below 90 - 54.735610, so
+% that the viewing direction lies outside the cap and the shaded region is a
+% band across the top rather than a disc filling the middle of the sphere.
+%
+% THE MERIDIAN.  x(theta) = cos theta e_3 + sin theta (e_1+e_2)/sqrt2, that is
+% (sin theta/sqrt2, sin theta/sqrt2, cos theta), theta from 0 to 90 degrees.
+% Projection is linear, so the projected arc is
+%   cos theta (0, 1.1258330) + sin theta (0.4658783, -0.6068273),
+% and <e,x(theta)> = 0.8085 sin theta + 0.5 cos theta > 0 throughout, so the
+% whole arc is in front.  It leaves the cap where 3 x_3^2 = ||x||^2, at
+% theta* = arccos(1/sqrt3), and there x = (1,1,1)/sqrt3 and all six atoms meet
+% the bound with equality.  Every great circle through e_3 and a direction of
+% equality lies in x_1 = x_2 or in x_1 = -x_2 -- the normal e_3 x p of the
+% plane through e_3 and p = (a,b,c)/sqrt3 is (-b,a,0) with a,b = +-1 -- so on
+% any such meridian two of the three curves on the right coincide, as they do
+% here.
+%
+% THE EIGHT DIRECTIONS OF EQUALITY are (+-1,+-1,+-1)/sqrt3: with ||x|| = 1 the
+% bound max_i 3 x_i^2 >= 1 forces x_i^2 = 1/3 at every i.  The four with
+% x_3 = +1/sqrt3 lie on the drawn rim, at rim parameters a = 45, -45, 135, 225
+% and depths <e,x> = 0.94882, 0.54208, 0.03527 and -0.37147.  Three are in
+% front and filled; the third of those clears the silhouette by only
+% arcsin(0.03527) = 2.02 degrees and is drawn at projected radius 1.299191
+% against the silhouette's 1.3, so it sits on the rim where the two meet.  The
+% fourth is behind, on the dashed half of the rim, and is drawn open.
+%
+% RIGHT PANEL.  theta runs 0 to 90 degrees at 0.040cm per degree and the value
+% axis is 0.42cm per unit; theta* = 54.735610 sits at 2.189424cm and
+% theta_1 = arcsin(sqrt2/3) = 28.125506 at 1.125020cm.  Along the meridian
+%   <x,g_4>^2 = <x,g_5>^2 = 3 cos^2 theta,
+%   <x,g_0>^2 = <x,g_1>^2 = <x,g_2>^2 = <x,g_3>^2 = (3/2) sin^2 theta,
+% whose weighted mean is 1 = ||x||^2 at every theta.  The two curves meet the
+% level 1 at the same angle, since 3cos^2 = 1 and (3/2)sin^2 = 1 both say
+% cos^2 theta = 1/3, and they meet each other there as well.  For the triples,
+% the sum over {0,2,4} is 3(x_1^2+x_2^2+x_3^2) = 3 and the sum over {0,1,2} is
+% 6x_1^2 + 3x_2^2 = (9/2) sin^2 theta, which meets 1 at sin^2 theta = 2/9.
+%
+% DISCLOSED.  Mechanized: the design, its leverages, and that {0,2,4}
+% dominates, the proof establishing S_C - I_3 = diag(2,2,2)
+% (Gtz.balancedOctahedronDesign,
+% Gtz.leverageOf_balancedOctahedronDesign,
+% Gtz.dominates_balancedOctahedronDesign_coordinateTriple), the covering
+% property of Lemma lem:direction over R (Gtz.exists_atom_covering_direction),
+% and the identity half of the trace test, tr S_C = sum_{c in C} ell_c
+% (Gtz.trace_subsetSum).  NOT mechanized: the failure of the twelve triples that
+% repeat an axis -- the mechanism is Gtz.not_dominates_of_parallel at ratio -1,
+% but no instantiation at this design exists -- and the inequality half of the
+% trace test, tr S_C >= k at a dominating C, which has no declaration.  Every
+% count and every curve here is exact rational or exact algebraic arithmetic
+% carried out outside the assistant.  Example ex:octa carries no Lean tag and
+% this figure claims none.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  vec/.style     ={-{Latex[length=2mm,width=1.5mm]}, line width=0.55pt,
+                   black!45, dashed, dash pattern=on 1.4pt off 1.2pt},
+  heavy/.style   ={-{Latex[length=2mm,width=1.5mm]}, line width=1.1pt},
+  silh/.style    ={line width=0.5pt, black!55},
+  rim/.style     ={line width=0.6pt, black!70},
+  rimback/.style ={line width=0.45pt, black!45, dashed,
+                   dash pattern=on 1.4pt off 1.2pt},
+  mer/.style     ={line width=0.7pt, black!85},
+  curve/.style   ={line width=0.7pt, black!85},
+  curvetwo/.style={line width=0.55pt, black!55},
+  axisl/.style   ={line width=0.5pt, black!70},
+  thr/.style     ={line width=0.5pt, dashed, dash pattern=on 1.7pt off 1.5pt},
+  guide/.style   ={line width=0.4pt, black!45, dashed,
+                   dash pattern=on 1.4pt off 1.2pt},
+  tag/.style     ={font=\footnotesize, fill=white, inner sep=0.6pt},
+  every node/.style={font=\small}]
+
+% ===================== left: the sphere of directions =====================
+\coordinate (O) at (0,0);
+
+% ---- the cap 3 x_3^2 >= ||x||^2, closed along the silhouette -------------
+\path[fill=black!10]
+  plot[domain=-90.09484:138.09484, samples=81, smooth, variable=\ang]
+    ({-0.431729*cos(\ang)+0.969679*sin(\ang)},
+     {0.65-0.484839*cos(\ang)-0.215864*sin(\ang)})
+  arc[start angle=41.81031, end angle=138.18969, radius=1.3] -- cycle;
+
+\draw[silh] (O) circle (1.3);
+\draw[rimback]
+  plot[domain=138.09484:269.90516, samples=51, smooth, variable=\ang]
+    ({-0.431729*cos(\ang)+0.969679*sin(\ang)},
+     {0.65-0.484839*cos(\ang)-0.215864*sin(\ang)});
+\draw[rim]
+  plot[domain=-90.09484:138.09484, samples=81, smooth, variable=\ang]
+    ({-0.431729*cos(\ang)+0.969679*sin(\ang)},
+     {0.65-0.484839*cos(\ang)-0.215864*sin(\ang)});
+
+% ---- the six atoms; the heavy three are the triple C = {0,2,4} ----------
+\draw[heavy] (O)--(-0.9158,-1.0285);   % g_0 = +sqrt3 e_1
+\draw[vec]   (O)--( 0.9158, 1.0285);   % g_1 = -sqrt3 e_1
+\draw[heavy] (O)--( 2.0570,-0.4579);   % g_2 = +sqrt3 e_2
+\draw[vec]   (O)--(-2.0570, 0.4579);   % g_3 = -sqrt3 e_2
+\draw[heavy] (O)--( 0.0000, 1.9500);   % g_4 = +sqrt3 e_3
+\draw[vec]   (O)--( 0.0000,-1.9500);   % g_5 = -sqrt3 e_3
+\fill (O) circle (1.1pt);
+\node[tag, anchor=north east] at (-0.8858,-1.0685) {$g_0$};
+\node[tag, anchor=south west] at ( 0.8958, 1.0685) {$g_1$};
+\node[tag, anchor=west]       at ( 2.0870,-0.4579) {$g_2$};
+\node[tag, anchor=east]       at (-2.0870, 0.4579) {$g_3$};
+\node[tag, anchor=south west] at ( 0.0400, 1.9400) {$g_4$};
+\node[tag, anchor=north west] at ( 0.0400,-1.9400) {$g_5$};
+
+% ---- the meridian, and three of its points -----------------------------
+\draw[mer]
+  plot[domain=0:90, samples=61, smooth, variable=\th]
+    ({0.4658783*sin(\th)}, {1.1258330*cos(\th)-0.6068273*sin(\th)});
+\fill (0.000000, 1.125833) circle (1.2pt);   % theta =  0,  x = e_3
+\fill (0.465878,-0.606827) circle (1.2pt);   % theta = 90,  x = (e_1+e_2)/sqrt2
+\node[tag, anchor=north west, font=\scriptsize] at (0.49,-0.62)
+  {$\theta=90^{\circ}$};
+
+% ---- the directions of equality on the rim ------------------------------
+\fill        ( 0.380388, 0.154528) circle (1.5pt);   % ( 1, 1,1)/sqrt3, a =  45
+\fill        (-0.990945, 0.459806) circle (1.5pt);   % ( 1,-1,1)/sqrt3, a = 315
+\fill        ( 0.990945, 0.840194) circle (1.5pt);   % (-1, 1,1)/sqrt3, a = 135
+\draw[line width=0.4pt, black!55, fill=white]
+             (-0.380388, 1.145472) circle (1.4pt);   % (-1,-1,1)/sqrt3, a = 225
+\node[tag, anchor=west, font=\scriptsize] at (0.62,0.04) {$\theta_{*}$};
+
+\draw[line width=0.4pt, black!55] (-1.38,1.02)--(-0.86,0.86);
+\node[anchor=east, font=\scriptsize] at (-1.40,1.02)
+  {$3x_3^{2}\ge\lVert x\rVert^{2}$};
+
+% ======================= right: the meridian, twice ========================
+\begin{scope}[shift={(3.15,0.85)}]
+
+% ---- one atom at a time -------------------------------------------------
+\draw[axisl] (0,0)--(3.72,0);
+\foreach \t in {0,30,60,90}{
+  \pgfmathsetmacro{\xx}{0.040*\t}
+  \draw[line width=0.5pt] (\xx,0)--(\xx,-0.07);
+  \node[anchor=north, font=\scriptsize, inner sep=2pt] at (\xx,-0.07)
+    {$\t^{\circ}$};}
+\draw[line width=0.5pt] (0,0)--(0,1.30);
+\foreach \v in {1,2,3}{
+  \pgfmathsetmacro{\yy}{0.42*\v}
+  \draw[line width=0.5pt] (0,\yy)--(-0.07,\yy);
+  \node[anchor=east, font=\scriptsize, inner sep=2pt] at (-0.07,\yy) {\v};}
+\draw[thr] (0,0.42)--(3.72,0.42);
+\draw[guide] (2.189424,0)--(2.189424,0.42);
+\draw[curve]
+  plot[domain=0:90, samples=61, smooth, variable=\th]
+    ({0.040*\th}, {0.42*3*cos(\th)*cos(\th)});
+\draw[curvetwo]
+  plot[domain=0:90, samples=61, smooth, variable=\th]
+    ({0.040*\th}, {0.42*1.5*sin(\th)*sin(\th)});
+\fill (2.189424,0.42) circle (1.5pt);
+\node[anchor=west, font=\footnotesize] at (1.06,1.14)
+  {$3\cos^{2}\theta$};
+\node[anchor=south, font=\footnotesize] at (3.20,0.66)
+  {$\tfrac32\sin^{2}\theta$};
+\node[anchor=east, font=\scriptsize] at (-0.26,0.42) {$\lVert x\rVert^{2}$};
+\node[tag, anchor=south west, font=\scriptsize] at (2.24,0.60) {$\theta_{*}$};
+\node[anchor=south west, font=\footnotesize] at (-0.05,1.52)
+  {one atom at a time: \ $\max_c\langle x,g_c\rangle^{2}
+   \ge\lVert x\rVert^{2}$};
+
+% ---- three atoms at once ------------------------------------------------
+\begin{scope}[shift={(0,-3.35)}]
+  \path[fill=black!10] (0,0) rectangle (1.125020,1.95);
+  \draw[axisl] (0,0)--(3.72,0);
+  \foreach \t in {0,30,60,90}{
+    \pgfmathsetmacro{\xx}{0.040*\t}
+    \draw[line width=0.5pt] (\xx,0)--(\xx,-0.07);
+    \node[anchor=north, font=\scriptsize, inner sep=2pt] at (\xx,-0.07)
+      {$\t^{\circ}$};}
+  \draw[line width=0.5pt] (0,0)--(0,1.95);
+  \foreach \v in {1,2,3,4}{
+    \pgfmathsetmacro{\yy}{0.42*\v}
+    \draw[line width=0.5pt] (0,\yy)--(-0.07,\yy);
+    \node[anchor=east, font=\scriptsize, inner sep=2pt] at (-0.07,\yy) {\v};}
+  \draw[thr] (0,0.42)--(3.72,0.42);
+  \draw[curve] (0,1.26)--(3.60,1.26);
+  \draw[curvetwo]
+    plot[domain=0:90, samples=61, smooth, variable=\th]
+      ({0.040*\th}, {0.42*4.5*sin(\th)*sin(\th)});
+  \fill (1.125020,0.42) circle (1.5pt);
+  \node[anchor=east, font=\scriptsize] at (-0.26,0.42) {$\lVert x\rVert^{2}$};
+  \node[anchor=west, font=\footnotesize] at (3.78,1.26) {$C=\{0,2,4\}$};
+  \node[anchor=west, font=\footnotesize] at (3.78,1.89) {$C=\{0,1,2\}$};
+  \node[anchor=north, font=\scriptsize] at (1.125020,0.36) {$\theta_{1}$};
+  \node[anchor=south west, font=\footnotesize] at (-0.05,2.17)
+    {three atoms at once: \ $\sum_{c\in C}\langle x,g_c\rangle^{2}
+     \ge\lVert x\rVert^{2}$};
+\end{scope}
+\end{scope}
+
+% ---------------------------- the exact data -----------------------------
+\node[anchor=north, align=center, font=\footnotesize] at (2.55,-3.10)
+  {$m=6$, \ $k=3$, \ $g_c=\pm\sqrt3\,e_i$, \ $t_c=\tfrac16$, \
+   $\ell_c=3$, \ $s_c=\tfrac12$, \ $\sum_c s_c=3=k$\\[2.5pt]
+   $\theta_{*}=\arccos\tfrac1{\sqrt3}=54.735610^{\circ}$, where
+   $x=\tfrac1{\sqrt3}(1,1,1)$; \qquad
+   $\theta_{1}=\arcsin\tfrac{\sqrt2}{3}=28.125506^{\circ}$\\[2.5pt]
+   $\tr\SC=9$ at all twenty triples, and eight of them have $\SC=3I_3$};
+
+\end{tikzpicture}

@@ -1,0 +1,246 @@
+% The failure gallery of Appendix A: the nine strategies, their witnesses, and
+% the exact quantity that kills each.  There is no projection -- the plate is a
+% three-column board -- so the coordinate derivation below is the layout metric.
+%
+% LAYOUT.  x = y = 1cm.  Column left edges and widths, in cm:
+%   A  strategy and pointer     0.00  width 4.20   (text set at x = 0.06)
+%   B  witness                  4.35  width 4.20   (text set at x = 4.41)
+%   C  the quantity that kills  8.70  width 6.90   (text set at x = 8.76)
+% Total measure 15.60cm, inside the 16.20cm text block.  At \scriptsize (8pt)
+% Latin Modern advances about 3.6pt a character, so those widths carry roughly
+% 33, 33 and 54 characters; every line below was set and measured, and the
+% widest lines in the three columns are 3.35, 4.13 and 6.83cm, none of them
+% past its column, so the rules set the plate width.  Fractions are
+% written with a slash and not with \tfrac: a display fraction on a line makes
+% TeX fall back on \lineskip, which raises a three-line cell from 1.02cm to
+% 1.13cm against the 0.26cm of air the pitch leaves.
+%
+% Rows.  The tallest cell below is three \scriptsize lines, measured at 1.10cm;
+% the pitch is 1.34cm, so the closest neighbouring rows, which are unruled,
+% leave 0.26cm of air.  A row centre is the vertical anchor, so
+% cells of different depth in one row share a centre line.  Vertical stops:
+%   top rule                      y =  0.50
+%   header centre                 y =  0.20      (band  0.50 .. -0.10)
+%   rule                          y = -0.10
+%   first band                    y = -0.10 .. -0.72, centre -0.41
+%   rows 1..4 centres             y = -1.39, -2.73, -4.07, -5.41  (pitch 1.34)
+%   rule                          y = -6.08
+%   second band                   y = -6.08 .. -6.70, centre -6.39
+%   rows 5..9 centres             y = -7.37, -8.71, -10.05, -11.39, -12.73
+%   bottom rule                   y = -13.40
+% Row i of the first group sits at -1.39 - 1.34(i-1), row j of the second at
+% -7.37 - 1.34(j-1); every y in the body is one of those nine numbers.  The two
+% column hairlines break at the bands, which span all three columns.
+%
+% THE NINE WITNESSES, with the arithmetic each printed number rests on.  Every
+% one was recomputed here in exact rational or exact algebraic form.
+%
+%  1. Split tetrahedron at (7,3).  Atoms g_c = tetraAtom(d_c) along
+%     d = (0,1,2,3,0,1,2), tetraAtom = (1,1,1), (1,-1,-1), (-1,1,-1), (-1,-1,1);
+%     weights (1,1,1,2,1,1,1)/8.  Then sum_c t_c g_c g_c^T = I_3 over the
+%     rationals and every leverage is 3.  Of the 35 triples the 20 carrying
+%     three distinct directions have Gram_C - I_3 = 3I_3 - J_3, determinant 0;
+%     the 15 repeating a direction have determinant -8.
+%  2. Deletion price.  kappa_e = (1 - s_e)/(1 - t_e), so
+%     kappa_e^{-1} - 1 = (s_e - t_e)/(1 - s_e) = t_e(ell_e - 1)/(1 - s_e),
+%     positive exactly when ell_e > 1.
+%  3. Restriction of the weight region.  Theorem thm:tieseverywhere puts an
+%     extremal design over every weight vector, so the infimum of the objective
+%     over any nonempty relatively open set of weights is at most 1.
+%  4. Compression lift.  P = M/3 with M the integer matrix of eq:liftchart
+%     satisfies M^2 = 3M and tr P = 2; at the weights t^(tau) of eq:liftweights,
+%     det W[{0,1}] = ((1+tau)(1-3tau) - 1)/9 = -tau(2+3tau)/9.
+%  5. Real-rootedness.  f_1 = X^2 - X and f_2 = X^2 - 23X + 60 have least roots
+%     0 and 3; their average X^2 - 12X + 30 has discriminant 24 and least root
+%     6 - sqrt6 = 3.5505..., and the convex family lambda f_1 + (1-lambda) f_2
+%     has discriminant 484 lambda^2 - 772 lambda + 289, equal to -471/25 at
+%     lambda = 4/5.
+%  6. Icosahedron at (6,3).  rho = 3/sqrt5, sigma^2 = (3-rho)/2,
+%     mu^2 = (3+rho)/2, sigma mu = rho; six atoms (sigma,mu,0), (-sigma,mu,0),
+%     (0,sigma,mu), (0,-sigma,mu), (mu,0,sigma), (mu,0,-sigma) at weight 1/6,
+%     with sum_c t_c g_c g_c^T = I_3, ell_c = 3 and every distinct pairing
+%     squared 9/5.  For a triple of pairing product tau, gamma(C) = 8 tau - 104/5,
+%     and |tau| = rho^3 = 27 sqrt5 / 25 gives 8|tau| = 216 sqrt5 / 25 = 19.319...,
+%     below 104/5 = 20.8.
+%  7. Inertia.  B_2 = [[-1,3],[3,-1]] of remark rem:nogo has eigenvalues 2 and
+%     -4, hence inertia (1,1,0), and both diagonal entries are negative.
+%  8. Volume at general weights, (7,3).  Integer atoms (1,1,0), (0,1,-1),
+%     (-1,-1,-2), (2,0,0), (2,0,-2), (1,0,1), (-1,2,1) with weight numerators
+%     n = (12,18,2,3,3,15,7) summing to 60, and Parseval as the integer identity
+%     sum_c n_c g_c g_c^T = 60 I_3.  Leverages (2,2,6,4,8,2,6).  Over the 35
+%     triples sum_C pi_C = 1; pi is largest, uniquely, at {1,5,6}, where
+%     pi_C = 7/50, S_C = [[2,-2,0],[-2,5,1],[0,1,3]] and
+%     det(S_C - I_3) = det[[1,-2,0],[-2,4,1],[0,1,2]] = 7 - 8 = -1.  The
+%     unweighted maximizer is {2,4,6}, uniquely, at |det M_C| = 12, and its gap
+%     is positive definite.
+%  9. Exchange at (6,3).  The full data is in figures/exchange.tex; the two
+%     numbers used here are lmin(S_{0,1,2}) = 576/625 and S_{3,4,5} = 4 I_3.
+%
+% DISCLOSED.  The pointer in column A reproduces the tag the statement already
+% carries in the appendix, and does not extend to the numbers in column C.  Two
+% of those are computed here in exact rational arithmetic and nowhere else:
+% det(S_C - I_3) = -1 at the volume maximizer, and |det M_C| = 12 at the
+% unweighted maximizer.  The declarations tagged on prop:volumefails say that the
+% pi-maximizer fails and that some triple dominates -- the triple they exhibit is
+% {0,1,6}, not {2,4,6} -- and neither evaluates a determinant.  The gap matrix
+% !![1,-2,0; -2,4,1; 0,1,2] whose determinant is -1 is kernel-checked
+% (Gtz.gap_shadowArgmaxSubset), as is the score 7/50 there
+% (Gtz.shadowDeterminant_shadowArgmaxSubset).
+%
+% The split 20/15 of row 1 is NOT one of the two.  It lies outside the three
+% declarations tagged on prop:noaggregate, which bound every nonnegative
+% combination of the legs without counting them, and inside the development all
+% the same: Gtz.rainbowTriplesSeven_card = 20 and
+% Gtz.repeatedTriplesSeven_card = 15 count the two classes, and
+% Gtz.splitSevenDesign_discriminantTie_of_rainbowDirections and
+% Gtz.splitSevenDesign_discriminantTie_of_notRainbow evaluate the leg at 0 and at
+% -8.  Those four carry the leg as the polynomial discriminantTie; that this
+% polynomial is det(Gram_C - I_3) is an identity in the six Gram entries of a
+% triple, checked here and recorded in the module docstring rather than as a
+% declaration.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  body/.style={font=\scriptsize, anchor=west, align=left, inner sep=0pt},
+  head/.style={font=\footnotesize, anchor=west, inner sep=0pt},
+  band/.style={font=\scriptsize, anchor=west, inner sep=0pt},
+  heavyrule/.style={line width=0.7pt},
+  rule/.style={line width=0.4pt},
+  hair/.style={line width=0.25pt, black!45}]
+
+% ---- column hairlines, first so the rules and bands overprint them -------
+\foreach \cx in {4.27, 8.62}{%
+  \draw[hair] (\cx, 0.50) -- (\cx,-0.10);
+  \draw[hair] (\cx,-0.72) -- (\cx,-6.08);
+  \draw[hair] (\cx,-6.70) -- (\cx,-13.40);}
+
+\draw[heavyrule] (0,0.50) -- (15.60,0.50);
+\node[head] at (0.06, 0.20) {strategy};
+\node[head] at (4.41, 0.20) {witness};
+\node[head] at (8.76, 0.20) {the quantity that kills it};
+\draw[rule] (0,-0.10) -- (15.60,-0.10);
+
+% ================= first group: on the equality locus ====================
+\path[fill=black!12] (0,-0.10) rectangle (15.60,-0.72);
+\node[band] at (0.06,-0.41)
+  {Four fail on the equality locus alone.  By Corollary~\ref{cor:nomargin} a
+   device whose output is positive asserts something false there.};
+
+% ---- row 1, y = -1.39 ---------------------------------------------------
+\node[body] at (0.06,-1.39)
+  {Certificates with a\\ uniform floor\\
+   \S\ref{app:certificates}, Prop.~\ref{prop:noaggregate} [Lean]};
+\node[body] at (4.41,-1.39)
+  {the split tetrahedron\\ at $(7,3)$, directions\\
+   $(0,1,2,3,0,1,2)$, $\ell_c=3$};
+\node[body] at (8.76,-1.39)
+  {the leg $\delta(C)=\det(\Gram_C-I_3)$ is $0$ at $20$ triples\\
+   and $-8$ at the other $15$, so $\sum_Cw_C\,\delta(C)\le0$\\
+   for every $w\ge0$, at any degree and any equivariance};
+
+% ---- row 2, y = -2.73 ---------------------------------------------------
+\node[body] at (0.06,-2.73)
+  {Margin transfer across\\ a deletion\\
+   \S\ref{app:transfer}, Cor.~\ref{cor:noheavydeletion}};
+\node[body] at (4.41,-2.73)
+  {Corollary~\ref{cor:nomargin} applied\\ downstairs at $(m-1,3)$,\\
+   for every $m\ge5$};
+\node[body] at (8.76,-2.73)
+  {the deletion costs $\kappa_e^{-1}-1=t_e(\ell_e-1)/(1-s_e)>0$\\
+   at a heavy atom.  By Lemma~\ref{lem:trace} some atom carries\\
+   $\ell_e\ge k$, so no choice of the deleted index repairs it};
+
+% ---- row 3, y = -4.07 ---------------------------------------------------
+\node[body] at (0.06,-4.07)
+  {Restricting the region\\
+   \S\ref{app:region}, Thm.~\ref{thm:tieseverywhere}};
+\node[body] at (4.41,-4.07)
+  {one extremal design over\\ every weight vector;\\
+   the diamond at $(5,3)$};
+\node[body] at (8.76,-4.07)
+  {the infimum of the objective over any nonempty\\
+   relatively open set of weights is at most $1$, and no\\
+   cut by parallel pairs removes the diamond};
+
+% ---- row 4, y = -5.41 ---------------------------------------------------
+\node[body] at (0.06,-5.41)
+  {The compression lift\\ at positive weight\\
+   \S\ref{app:lift}, Thm.~\ref{thm:sharp}};
+\node[body] at (4.41,-5.41)
+  {the chart point \eqref{eq:liftchart}\\ at $(4,2)$, weights
+   \eqref{eq:liftweights},\\ pivot $z=1$};
+\node[body] at (8.76,-5.41)
+  {$\det W[\{0,1\}]=-\tau(2+3\tau)/9<0$ at every $\tau>0$,\\
+   of first order in $\tau$ against a compressed slack that\\
+   the family freezes at $0$};
+
+\draw[rule] (0,-6.08) -- (15.60,-6.08);
+
+% ================= second group: at explicit witnesses ===================
+\path[fill=black!12] (0,-6.08) rectangle (15.60,-6.70);
+\node[band] at (0.06,-6.39)
+  {Five fail at explicit witnesses, and none of the five runs through
+   Corollary~\ref{cor:nomargin}.};
+
+% ---- row 5, y = -7.37 ---------------------------------------------------
+\node[body] at (0.06,-7.37)
+  {Real-rootedness of\\ the mixture\\
+   \S\ref{app:rooted}, Prop.~\ref{prop:rootedness}};
+\node[body] at (4.41,-7.37)
+  {$f_1=X^2-X$ and\\ $f_2=X^2-23X+60$,\\
+   of least roots $0$ and $3$};
+\node[body] at (8.76,-7.37)
+  {the average $X^2-12X+30$ has least root\\
+   $6-\sqrt6=3.5505\ldots$, above both; and the convex\\
+   family has discriminant $-471/25$ at $\lambda=4/5$};
+
+% ---- row 6, y = -8.71 ---------------------------------------------------
+\node[body] at (0.06,-8.71)
+  {Two moments\\
+   \S\ref{app:moments}, Prop.~\ref{prop:icosa} [Lean]};
+\node[body] at (4.41,-8.71)
+  {the icosahedral design\\ at $(6,3)$, $\ell_c=3$,\\
+   $\langle g_c,g_d\rangle^2=9/5$};
+\node[body] at (8.76,-8.71)
+  {$\gamma(C)=8\tau-104/5<0$ at all twenty triples, since\\
+   $8\lvert\tau\rvert=216\sqrt5/25$, while $\{0,2,4\}$ dominates strictly\\
+   at $\lmin(\SC)=3-3/\sqrt5$};
+
+% ---- row 7, y = -10.05 --------------------------------------------------
+\node[body] at (0.06,-10.05)
+  {Structure inherited\\ from smaller sizes\\
+   \S\ref{app:structure}, Rem.~\ref{rem:signature}};
+\node[body] at (4.41,-10.05)
+  {$B_2=\begin{psmallmatrix}-1&3\\3&-1\end{psmallmatrix}$
+   of Remark~\ref{rem:nogo};\\ the diamond at $(5,3)$};
+\node[body] at (8.76,-10.05)
+  {$B_2$ has inertia $(1,1,0)$ and negative diagonal, so\\
+   no positive semidefinite block; the diamond's five\\
+   atoms are pairwise non-parallel};
+
+% ---- row 8, y = -11.39 --------------------------------------------------
+\node[body] at (0.06,-11.39)
+  {Maximal volume at\\ general weights\\
+   \S\ref{app:volume}, Prop.~\ref{prop:volumefails} [Lean]};
+\node[body] at (4.41,-11.39)
+  {$(7,3)$, integral atoms,\\ weights $(12,18,2,3,3,15,7)/60$,\\
+   every $\ell_c\ge2$};
+\node[body] at (8.76,-11.39)
+  {$\pi_C$ is largest at $\{1,5,6\}$, where $\pi_C=7/50$ and\\
+   $\delta(C)=-1$; the unweighted maximizer $\{2,4,6\}$, at\\
+   $\lvert\det M_C\rvert=12$, dominates strictly};
+
+% ---- row 9, y = -12.73 --------------------------------------------------
+\node[body] at (0.06,-12.73)
+  {Bounded-radius exchange\\
+   \S\ref{app:exchange}, Fig.~\ref{fig:exchange}};
+\node[body] at (4.41,-12.73)
+  {an all-heavy $(6,3)$ design\\ stuck at the triple
+   $\{0,1,2\}$};
+\node[body] at (8.76,-12.73)
+  {$\lmin(S_{\{0,1,2\}})=576/625<1$, and the eighteen\\
+   others within two swaps score at most $512/625$;\\
+   the dominating $S_{\{3,4,5\}}=4I_3$ is three swaps away};
+
+\draw[heavyrule] (0,-13.40) -- (15.60,-13.40);
+
+\end{tikzpicture}

@@ -1,0 +1,230 @@
+% The two padding operations of Section 4.4 as block matrices, and the ladder of
+% Theorem thm:ladder as a staircase in the cell lattice.  No projection; two
+% block diagrams in centimetres, one lattice panel, and a ledger.
+%
+% THE MATRIX CONVENTION.  A is the m x k matrix whose c-th row is g_c^H, so that
+% (Ax)_c = <g_c, x>, and D = diag(t_1, ..., t_m); the Parseval condition
+% eq:parseval is A^H D A = I_k, as in the proof of prop:rankfloor.  A block of k
+% columns is drawn 1.55cm wide and one column 1.02cm -- wide enough for the
+% widest single-column entry, w^{-1/2}, which sets 0.835cm at \scriptsize and
+% would cross both the internal rule and the delimiter in a narrower cell; a
+% block of m rows is
+% 1.30cm tall and one row 0.45cm.  Delimiters sit 0.07cm outside the block
+% rectangle horizontally and run 0.06cm past it vertically, with 0.12cm serifs;
+% internal rules are hairlines at black!45.  Each
+% panel's prose is a node of measure 8.5cm, set from the measured line widths so
+% that no line of it wraps; the widest is the split identity at 7.89cm.
+%
+% PANEL A, the spike, lem:spike, (m,k) -> (m+1,k+1).  With
+%   ghat_c = (g_c/sqrt(1-w), 0),  ghat_{m+1} = w^{-1/2} e_{k+1},
+%   that_c = (1-w) t_c,           that_{m+1} = w,
+% the new matrix and weight are
+%   Ahat = [[ A/sqrt(1-w), 0 ], [ 0, w^{-1/2} ]],   Dhat = diag((1-w)D, w),
+% and the Parseval check is one block product:
+%   Ahat^H Dhat Ahat = [[ A^H (1-w) D A / (1-w), 0 ], [ 0, w^{-1/2} w w^{-1/2} ]]
+%                    = [[ I_k, 0 ], [ 0, 1 ]] = I_{k+1}.
+% The weights are positive and sum to (1-w) + w = 1.  The box occupies
+% x 0 .. 2.57 and y -0.12 .. -1.87, with internal rules at x = 1.55, y = -1.42;
+% the one-column cells are centred at x = 2.06.
+%
+% PANEL B, the split, lem:split, (m,k) -> (m+1,k).  Row c_0 of A is listed a
+% second time and its weight is divided:
+%   Atil = [[ A ], [ g_{c_0}^H ]],  ttil_{c_0} = f t_{c_0},
+%   ttil_{m+1} = (1-f) t_{c_0},
+%   Atil^H Dtil Atil = A^H D A - t_{c_0} g g^H + (f + (1-f)) t_{c_0} g g^H = I_k,
+% the two split terms restoring exactly the term they replaced.  A k-subset
+% holding both labels carries two equal rows, so its vectors span at most k-1
+% dimensions and a null direction x has x^H S_C x = 0 < s ||x||^2.  The box
+% occupies x 0 .. 1.55 and y -3.06 .. -4.81, the internal rule sits at
+% y = -4.36, and the dotted line at y = -3.89 marks the row that is repeated.
+%
+% PANEL C, the lattice, placed at (0.35, -8.38), at 0.62cm per unit of m and
+% 0.52cm per unit of k:
+%   X = 0.62 (m - 4) cm,   Y = 0.52 (k - 2) cm.
+% Lattice dots are drawn for 2 <= k <= 6 and k <= m <= 10.  The shaded band is
+% m = k .. k+1, where GtzC holds by prop:cpositive; its corners are
+% (m,k) = (2,2), (6,6), (7,6), (3,2), that is (-1.24,0), (1.24,2.08),
+% (1.86,2.08), (-0.62,0).  The staircase drawn is the instance (m,k) = (9,5):
+%   (4,2) -> ( 0.00, 0.00)   the seed eq:sic, of value alpha_SIC
+%   (5,3) -> ( 0.62, 0.52)   spike
+%   (6,4) -> ( 1.24, 1.04)   spike
+%   (7,5) -> ( 1.86, 1.56)   spike, e = k-2 = 3 of them, ending at (k+2,k)
+%   (8,5) -> ( 2.48, 1.56)   split
+%   (9,5) -> ( 3.10, 1.56)   split, m-k-2 = 2 of them, ending at (m,k)
+% Each arrow runs from 0.07 past its tail to 0.07 short of its head, so the
+% lattice dots stay visible.  Every spike keeps m - k = 2, so the spikes walk up
+% the diagonal m = k+2, the smallest failing cell at each rank; the splits then
+% run right along the row k.
+% The row pitch is 0.52cm, so no label carrying a stacked fraction fits between
+% two lattice rules: the bound at (k+2,k) is therefore set with a solidus, at
+% y = 1.79 with ink 1.72 .. 2.00, clear of the k = 5 rule at 1.56 and the k = 6
+% rule at 2.08.  For the same reason (m,k) hangs below the k = 5 rule rather
+% than sitting on it, anchored north west at (3.16, 1.50).
+%
+% EXACT ARITHMETIC.  With the common spike weight w = 1 - (9/10)^{1/e} one has
+% (1-w)^e = 9/10 exactly at every rank, so e applications of lem:spike carry the
+% bound alpha_SIC to alpha_SIC/(9/10) = (10/9) alpha_SIC = 20/9 - 20 sqrt3/27,
+% independently of k.  The tabulated weights are truncations of exact algebraic
+% numbers computed to 22 places: 1/10 exactly at e = 1, then 0.0513167019...,
+% 0.0345106153..., 0.0259962535... at e = 2, 3, 4.
+%
+% The weight ledger sits at (6.20, 6.80, 8.20), header at -7.45 and four rows a
+% uniform 0.36 apart from -7.92, rules at -7.68 and -9.24.  Both the header cell
+% w = 1 - (9/10)^{1/e} and the first row's 1/10 carry a stacked fraction, whose
+% ink runs 0.184 and 0.181cm below its row; 0.18 puts the opening rule inside the
+% header's denominator, so the rule clears the header by 0.23.
+%
+% The cost is strict, which is what the ledger's first three lines record: for
+% b > 0 and 0 < w < 1 one has b/(1-w) - b = bw/(1-w) > 0, so no member of the
+% family attains b, while b/(1-w) -> b as w -> 0.  Nothing here is disclosed as
+% unverified: both lemmas are proved in Section 4.4, and the staircase is their
+% composition.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  blockrule/.style={line width=0.4pt, black!45},
+  delim/.style={line width=0.5pt, black!70},
+  rowmark/.style={densely dotted, line width=0.45pt, black!55},
+  hair/.style={line width=0.4pt, black!45},
+  latt/.style={line width=0.4pt, black!35},
+  rung/.style={-{Latex[length=2mm,width=1.5mm]}, line width=0.9pt, black},
+  head/.style={font=\footnotesize},
+  every node/.style={font=\scriptsize}]
+
+% =================== panel A: the spike, (m,k) -> (m+1,k+1) ===============
+\node[head, anchor=west] at (-1.40,0.54)
+  {The spike, Lemma~\ref{lem:spike}: one coordinate and one atom along it.};
+
+\draw[blockrule] (1.55,-0.12) -- (1.55,-1.87);          % k | 1 columns
+\draw[blockrule] (0,-1.42) -- (2.57,-1.42);             % m / 1 rows
+\draw[delim] (0.05,-0.06) -- (-0.07,-0.06) -- (-0.07,-1.93) -- (0.05,-1.93);
+\draw[delim] (2.52,-0.06) -- ( 2.64,-0.06) -- ( 2.64,-1.93) -- (2.52,-1.93);
+\node[anchor=east, font=\footnotesize] at (-0.62,-1.00) {$\widehat A=$};
+\node[font=\footnotesize] at (0.775,-0.77)  {$\dfrac{A}{\sqrt{1-w}}$};
+\node[font=\footnotesize] at (2.060,-0.77)  {$0$};
+\node[font=\footnotesize] at (0.775,-1.645) {$0$};
+\node at (2.060,-1.645) {$w^{-1/2}$};
+\node[anchor=south] at (0.775,0.00)  {$k$};
+\node[anchor=south] at (2.060,0.00)  {$1$};
+\node[anchor=east]  at (-0.16,-0.77) {$m$};
+\node[anchor=east]  at (-0.16,-1.645) {$1$};
+
+\node[anchor=north west, align=left, text width=8.5cm, inner sep=1.5pt]
+  at (3.30,0.08)
+  {$\widehat D=\diag\bigl((1-w)D,\ w\bigr)$, and $\widehat t$ sums to
+   $(1-w)+w=1$.\\[1.5pt]
+   $\widehat A\adj\widehat D\widehat A
+     =\begin{psmallmatrix}A\adj DA&0\\0&1\end{psmallmatrix}=I_{k+1}$.\\[1.5pt]
+   Only the spike lives on the new coordinate;\\[1.5pt]
+   on the old ones it is invisible and they are rescaled.\\[1.5pt]
+   $(m,k)\mapsto(m+1,k+1)$, \ bound $b\mapsto b/(1-w)$.};
+
+% =================== panel B: the split, (m,k) -> (m+1,k) ================
+\node[head, anchor=west] at (-1.40,-2.46)
+  {The split, Lemma~\ref{lem:split}: one atom listed twice.};
+
+\draw[blockrule] (0,-4.36) -- (1.55,-4.36);             % m / 1 rows
+\draw[rowmark]   (0.08,-3.89) -- (1.47,-3.89);          % the row c_0 of A
+\draw[delim] (0.05,-3.00) -- (-0.07,-3.00) -- (-0.07,-4.87) -- (0.05,-4.87);
+\draw[delim] (1.50,-3.00) -- ( 1.62,-3.00) -- ( 1.62,-4.87) -- (1.50,-4.87);
+\node[anchor=east, font=\footnotesize] at (-0.62,-3.94) {$\widetilde A=$};
+\node[font=\footnotesize] at (0.775,-3.71)  {$A$};
+\node[font=\footnotesize] at (0.775,-4.585) {$g_{c_0}\adj$};
+\node[anchor=south] at (0.775,-3.00)  {$k$};
+\node[anchor=east]  at (-0.16,-3.71)  {$m$};
+\node[anchor=east]  at (-0.16,-4.585) {$1$};
+\draw[hair] (1.95,-3.89) -- (1.70,-3.89);
+\node[anchor=west] at (1.98,-3.89) {row $c_0$};
+
+\node[anchor=north west, align=left, text width=8.5cm, inner sep=1.5pt]
+  at (3.30,-2.98)
+  {$\widetilde D$ splits $t_{c_0}$ into $f\,t_{c_0}$ and $(1-f)t_{c_0}$;
+   the sum is still $1$.\\[1.5pt]
+   $\widetilde A\adj\widetilde D\widetilde A
+     =A\adj DA-t_{c_0}g_{c_0}^{\vphantom{\mathsf{H}}}g_{c_0}\adj
+      +\bigl(f+(1-f)\bigr)t_{c_0}
+       g_{c_0}^{\vphantom{\mathsf{H}}}g_{c_0}\adj=I_k$.\\[1.5pt]
+   A $k$-subset holding both labels has two equal rows,\\[1.5pt]
+   so its vectors span at most $k-1$ dimensions.\\[1.5pt]
+   $(m,k)\mapsto(m+1,k)$, \ bound $b\mapsto b$.};
+
+% =================== panel C: the ladder in the cell lattice =============
+\node[head, anchor=west] at (-1.40,-5.45)
+  {The ladder, Theorem~\ref{thm:ladder}, at $(m,k)=(9,5)$: three spikes, then
+   two splits.};
+
+\begin{scope}[shift={(0.35,-8.38)}]
+  % the band m = k .. k+1, where GtzC holds
+  \fill[black!12] (-1.24,0) -- (1.24,2.08) -- (1.86,2.08) -- (-0.62,0) -- cycle;
+
+  % the lattice: 2 <= k <= 6 and k <= m <= 10
+  \foreach \kk in {2,3,4,5,6}{
+    \pgfmathsetmacro{\yy}{0.52*(\kk-2)}
+    \pgfmathsetmacro{\xa}{0.62*(\kk-4)}
+    \draw[latt] (\xa,\yy) -- (3.72,\yy);
+    \foreach \mm in {2,3,4,5,6,7,8,9,10}{
+      \pgfmathsetmacro{\xx}{0.62*(\mm-4)}
+      \ifnum\mm<\kk\relax\else\fill[black!45] (\xx,\yy) circle (0.9pt);\fi}}
+
+  % the staircase: three spikes up the diagonal m = k+2, then two splits
+  \draw[rung] (0.05,0.04) -- (0.57,0.48);              % (4,2) -> (5,3)
+  \draw[rung] (0.67,0.56) -- (1.19,1.00);              % (5,3) -> (6,4)
+  \draw[rung] (1.29,1.08) -- (1.81,1.52);              % (6,4) -> (7,5)
+  \draw[rung] (1.93,1.56) -- (2.41,1.56);              % (7,5) -> (8,5)
+  \draw[rung] (2.55,1.56) -- (3.03,1.56);              % (8,5) -> (9,5)
+  \foreach \px/\py in {0.00/0.00, 0.62/0.52, 1.24/1.04, 1.86/1.56,
+                       2.48/1.56, 3.10/1.56}
+    {\fill (\px,\py) circle (1.6pt);}
+
+  \draw[hair] (1.45,0.78) -- (1.05,0.86);
+  \node[anchor=west]      at (1.48,0.78) {spike};
+  \node[anchor=north]     at (2.72,1.50) {split};
+  \node[anchor=north west] at (0.06,-0.08)
+    {$(4,2)$, \ $\alpha_{\mathrm{SIC}}$};
+  \node[anchor=west] at (1.95,1.79)
+    {$(k+2,k)$, \ $10\alpha_{\mathrm{SIC}}/9$};
+  \node[anchor=north west] at (3.16,1.50) {$(m,k)$};
+  \draw[hair] (1.30,1.90) -- (1.60,2.34);
+  \node[anchor=west] at (1.65,2.38) {$m\le k+1$: $\GtzC$ holds};
+
+  % axes
+  \draw[hair] (-1.44,-0.52) -- (3.92,-0.52);
+  \foreach \mm in {4,6,8,10}{
+    \pgfmathsetmacro{\xx}{0.62*(\mm-4)}
+    \draw[hair] (\xx,-0.52) -- (\xx,-0.59);
+    \node[anchor=north, inner sep=1.5pt] at (\xx,-0.59) {$\mm$};}
+  \node[anchor=west] at (3.96,-0.52) {$m$};
+  \draw[hair] (-1.44,-0.52) -- (-1.44,2.30);
+  \foreach \kk in {2,3,4,5,6}{
+    \pgfmathsetmacro{\yy}{0.52*(\kk-2)}
+    \draw[hair] (-1.44,\yy) -- (-1.51,\yy);
+    \node[anchor=east, inner sep=1.5pt] at (-1.51,\yy) {$\kk$};}
+  \node[anchor=south] at (-1.44,2.34) {$k$};
+\end{scope}
+
+% =================== the cost of a spike, and the chosen weights =========
+\begin{scope}[every node/.style={anchor=west, inner sep=1.5pt,
+                                 font=\scriptsize}]
+\node at (6.20,-5.95)
+  {For $b>0$ and $0<w<1$, \ $b/(1-w)-b=bw/(1-w)>0$:};
+\node at (6.20,-6.55) {no member of the family attains $b$, and the};
+\node at (6.20,-6.92) {levels descend to it only as $w\to0$.};
+
+\node at (6.20,-7.45) {$k$};
+\node at (6.80,-7.45) {$e=k-2$};
+\node at (8.20,-7.45) {$w=1-(\tfrac9{10})^{1/e}$};
+\node at (6.20,-7.92) {$3$};  \node at (6.80,-7.92) {$1$};
+\node at (8.20,-7.92) {$\tfrac1{10}$};
+\node at (6.20,-8.28) {$4$};  \node at (6.80,-8.28) {$2$};
+\node at (8.20,-8.28) {$0.0513167019\ldots$};
+\node at (6.20,-8.64) {$5$};  \node at (6.80,-8.64) {$3$};
+\node at (8.20,-8.64) {$0.0345106153\ldots$};
+\node at (6.20,-9.00) {$6$};  \node at (6.80,-9.00) {$4$};
+\node at (8.20,-9.00) {$0.0259962535\ldots$};
+\node at (6.20,-9.50)
+  {so $(1-w)^{e}=\tfrac9{10}$ and the bound is
+   $\tfrac{10}9\alpha_{\mathrm{SIC}}$ at every rank};
+\end{scope}
+\draw[hair] (6.20,-7.68) -- (10.70,-7.68);
+\draw[hair] (6.20,-9.24) -- (10.70,-9.24);
+
+\end{tikzpicture}

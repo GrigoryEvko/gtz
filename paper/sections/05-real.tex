@@ -4,15 +4,15 @@ The counting of \S\ref{sec:first} decides rank one and the square $m=k$,
 the rank-one criterion of \S\ref{sec:chart} decides corank one
 (Theorem~\ref{thm:corankone}), and duality converts corank two into rank
 two (Theorem~\ref{thm:duality}).  Rank two itself is thus the last small
-case outstanding, and nothing so far bounds the size.  One kind of
-device supplies both: an operation that produces from a design a smaller
-design whose dominating subsets transport back.
+case outstanding, and nothing so far bounds the size.  Both are supplied
+by reductions: operations that produce from a design a smaller design
+whose dominating subsets transport back.
 
-There are two such operations, and they pay for the reduction in
-different currencies.  Deleting a vector of length at most one costs one
-from the size but moves every surviving vector by a congruence; the
-transport back is an identity between quadratic forms, and it works only
-because the deleted vector was short.  Carathéodory reduction leaves the
+They pay for the reduction in different currencies.  Deleting a vector of
+length at most one costs one from the size but moves every surviving
+vector by a congruence; the transport back is an identity between
+quadratic forms, and it works only
+because the deleted vector was short.  Carath\'eodory reduction leaves the
 vectors where they are and cuts the size to $k(k+1)/2+1$, and there the
 transport back is immediate, since $\SC$ in \eqref{eq:dominate} never
 sees the weights.  Deletion stalls when every vector is long; at rank two
@@ -90,8 +90,9 @@ $\sum_{c\in C}(g'_c)(g'_c)\tp=(1-t_d)R\tp\SC R$, and $I_k=R\tp\Sigma_dR$ by
 \[
   R\tp\bigl((1-t_d)\SC-\Sigma_d\bigr)R\;\psd\;0 ,
 \]
-and congruence by the invertible $R$ gives $(1-t_d)\SC-\Sigma_d\psd0$.  The
-identity
+and congruence by the invertible $R$ gives $(1-t_d)\SC-\Sigma_d\psd0$,
+since $u\tp Au=(R^{-1}u)\tp(R\tp AR)(R^{-1}u)$ for every $u$ and every
+symmetric $A$.  The identity
 \begin{equation}\label{eq:reassemble}
   \SC-I_k
   \;=\;\frac{1}{1-t_d}\Bigl[\bigl((1-t_d)\SC-\Sigma_d\bigr)
@@ -104,8 +105,28 @@ previous display, its second by \eqref{eq:schurone} and $\ell_d\le1$, and
 the scalar is positive.  Hence $C$ dominates in $\dsn$.
 \end{proof}
 
+\begin{figure}[ht]
+  \centering
+  \input{figures/lightdelete}
+  \caption{Theorem~\ref{thm:light} at $(3,2)$, with $g_3$ the light vector.
+  Left, upstairs: the unit circle, which $g_3$ lies inside, and the ellipse
+  $u\tp\Sigma_3u=1$, bounded because $t_3\ell_3=\tfrac{369}{625}<1$ and
+  stretched by $\tfrac{25}{16}$ along $g_3$ alone.  Left, downstairs: the
+  deflated design, both of whose vectors are heavy.  Right: the three steps
+  of the proof, ending in \eqref{eq:reassemble} as a sum $X+Y$ of two
+  positive semidefinite matrices.  The hypothesis $\ell_3\le1$ is used once,
+  at the smaller eigenvalue $t_3(1-\ell_3)=\tfrac{31}{625}$ of $Y$; the other
+  two pairs of this design fail, so the pair the theorem produces is the
+  complement of the light index.}
+  \label{fig:lightdelete}
+\end{figure}
+
 Lightness enters \eqref{eq:reassemble} at one place only, the second
-summand.  Iterating the theorem removes light vectors one at a time:
+summand.  That summand has eigenvalue $t_d(1-\ell_d)$ along $g_d$ and $t_d$
+with multiplicity $k-1$ across it, so one of the $k$ can go negative, and
+$\ell_d\le1$ stops it.  Figure~\ref{fig:lightdelete} runs the three
+steps on a design at $(3,2)$.  Iterating the theorem removes light
+vectors one at a time:
 
 \begin{corollary}[Lean]\label{cor:heavy}
 Let $k\ge1$.  If every all-heavy design of rank $k$, of whatever size,
@@ -122,9 +143,10 @@ all-heavy and the assumption applies.
 
 The tetrahedron of Example~\ref{ex:tetra} has $\ell_c=3$ for every $c$ and
 is therefore all-heavy: the deletion is unavailable precisely at the
-design where every dominating triple has $\lmin(\SC)=1$.  The reductions
-consume the interior of the problem and leave the extremal locus of
-\S\ref{sec:ties} standing.
+design where every dominating triple has $\lmin(\SC)=1$.
+
+The reductions consume the interior of the problem and leave the extremal
+locus of \S\ref{sec:ties} standing.
 
 \subsection{Rank two}\label{sec:ranktwo}
 
@@ -139,7 +161,9 @@ the square of the complex number attached to $g_c$:
   \qquad
   \hat\ell_c\;:=\;\ell_c-2 .
 \end{equation}
-Squaring doubles arguments and squares moduli, so $\lVert
+The square is the quotient by $g_c\mapsto-g_c$, a sign that
+$g_c^{\vphantom{\mathsf{T}}}g_c\tp$ does not see.  Squaring doubles
+arguments and squares moduli, so $\lVert
 \eta_c\rVert=\ell_c$; and since the complex number attached to $g_c$ times
 the conjugate of the one attached to $g_d$ has real part
 $a_{cd}:=\langle g_c,g_d\rangle$ and imaginary part $\pm b_{cd}$, where
@@ -152,7 +176,14 @@ taking real parts of the square of that product gives
   \qquad
   a_{cd}^2+b_{cd}^2\;=\;\ell_c\ell_d ,
 \end{equation}
-the second identity being Lagrange's.  The three scalar components of
+the second identity being Lagrange's.  Which sign the imaginary part
+carries depends on the order of the pair, and it never matters: $b_{cd}$
+occurs in \eqref{eq:wdot}, and everywhere below, squared.  Domination of
+$\{c,d\}$ turns on $\ell_c$, $\ell_d$ and $b_{cd}^2$ alone, by
+\eqref{eq:pairdet} below, and \eqref{eq:wdot} makes the last of the three
+a function of the squared picture.
+
+The three scalar components of
 \eqref{eq:parseval} at $k=2$ read $\sum_ct_cx_c^2=\sum_ct_cy_c^2=1$ and
 $\sum_ct_cx_cy_c=0$, so that
 \begin{equation}\label{eq:balance2}
@@ -162,6 +193,7 @@ $\sum_ct_cx_cy_c=0$, so that
   \qquad
   \sum_c t_c\,\hat\ell_c\;=\;0 .
 \end{equation}
+
 These three identities are the only use made of \eqref{eq:parseval} in
 this subsection.
 
@@ -204,8 +236,10 @@ and $\tr A=\ell_c+\ell_d$, so
 \begin{equation}\label{eq:pairdet}
   \det X\;=\;b_{cd}^2-\ell_c-\ell_d+1 .
 \end{equation}
-On the other hand, eliminating $a_{cd}^2$ from \eqref{eq:wdot} in
-\eqref{eq:obstruction}, using $\hat\ell=\ell-2$ and then \eqref{eq:pairdet},
+On the other hand, eliminate $a_{cd}^2$ from \eqref{eq:wdot} in
+\eqref{eq:obstruction} and use $\hat\ell=\ell-2$.  The two products
+$\ell_c\ell_d$ cancel, leaving an expression affine in the leverages,
+which \eqref{eq:pairdet} identifies:
 \[
   K_{cd}
   =\ell_c\ell_d-2b_{cd}^2-(\ell_c-2)(\ell_d-2)+2
@@ -230,9 +264,33 @@ $X\psd0$ if and only if $K_{cd}\le0$.
 At the rank-two trine of Example~\ref{ex:trine2} one has $\hat\ell_c=0$ and $\langle
 \eta_c,\eta_d\rangle=4\cos(4\pi/3)=-2$ for $c\ne d$, so $K_{cd}=0$ for every
 pair: consistent with Lemma~\ref{lem:pairobs} and with
-$\det(\SC-I)=0\cdot2=0$.  The inequality $K_{cd}\le0$ is therefore tight
-at a genuine design, and no argument below may improve it to a strict
-inequality.
+$\det(\SC-I)=0\cdot2=0$.
+
+The inequality $K_{cd}\le0$ is therefore tight at a genuine design, and no
+argument below may improve it to a strict inequality.
+Figure~\ref{fig:obstruction} draws the arc of positions of $\eta_d$ that
+Lemma~\ref{lem:pairobs} admits, and the ten pairs of a design at $(5,2)$,
+four of which dominate.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/obstruction}
+  \caption{The pair obstruction \eqref{eq:obstruction} at $(5,2)$.  Left: the
+  squared vectors of an all-heavy design, at distance $\ell_c$ from the
+  origin.  The two circles drawn are those of the pair $\{1,3\}$, and the arc
+  on the circle of radius $\ell_3=2$ carries the partners $\eta_d$ with
+  $K_{1d}\le0$.  Every point of that arc makes an angle of at
+  least $\psi^{*}$ with $\eta_1$, where $\cos\psi^{*}=\kappa(\ell_c,\ell_d):=
+  \bigl[(\ell_c-2)(\ell_d-2)-2\bigr]/(\ell_c\ell_d)$; both
+  $\kappa+1=2(\ell_c-1)(\ell_d-1)/(\ell_c\ell_d)$ and
+  $1-\kappa=2(\ell_c+\ell_d-1)/(\ell_c\ell_d)$ are positive at a heavy pair,
+  so the arc is proper and nonempty there and the two leverages by themselves
+  decide no pair.  Centre: the ten pairs, four of them dominating.  Right: the
+  trine of Example~\ref{ex:trine2}, where the cosine the design realizes and
+  the threshold $\kappa(2,2)$ are both $-\tfrac12$, so each pair sits at an
+  endpoint of the arc and $K_{cd}=0$.}
+  \label{fig:obstruction}
+\end{figure}
 
 In an all-heavy design every pair has $\ell_c+\ell_d>2$, so if no pair
 dominates then Lemma~\ref{lem:pairobs} gives
@@ -263,27 +321,37 @@ third identities of \eqref{eq:balance2} together with $\sum_dt_d=1$,
    -\hat\ell_c\sum_d t_d\hat\ell_d+2\sum_d t_d
   =0-0+2 .
 \]
-Symmetry of $K$ is symmetry of the inner product.  For \eqref{eq:core},
-expand $(u_c-u_d)^2$ and use the row sum twice:
+Symmetry of $K$ is symmetry of the inner product.  Those two facts carry
+\eqref{eq:core} on their own, for any symmetric array with row sums $2$;
+\eqref{eq:allfail} enters only at the last clause of the statement, to
+give the correction term a sign.  Expand $(u_c-u_d)^2$ and use the row sum
+twice:
 \[
   \sum_{c,d}t_ct_dK_{cd}u_c^2
   =\sum_c t_cu_c^2\sum_d t_dK_{cd}
   =2\sum_c t_cu_c^2 ,
 \]
 and likewise for $u_d^2$ by symmetry, so the correction term equals
-$4\sum_ct_cu_c^2$ minus twice the left side.  The diagonal terms of the
-correction vanish; if $u$ is nonconstant there are $c\ne d$ with $u_c\ne
-u_d$, and \eqref{eq:allfail} makes the corresponding summand strictly
-positive.
+$4\sum_ct_cu_c^2$ minus twice the left side; halve that and subtract it
+from $2\sum_ct_cu_c^2$, and the left side comes back, which is
+\eqref{eq:core}.  The diagonal terms of the correction vanish, so the
+undetermined $K_{cc}$ do no harm; \eqref{eq:allfail} constrains $c\ne d$
+only.  If $u$ is nonconstant there are $c\ne d$ with $u_c\ne u_d$, and
+\eqref{eq:allfail} makes the corresponding summand strictly positive.
 \end{proof}
 
 Identity \eqref{eq:core} is sharp: the correction term vanishes
 identically when $K$ vanishes off the diagonal, as at the rank-two trine.
 It remains to produce a nonconstant $u$ for which the left side of
-\eqref{eq:core} is at least $2\sum_ct_cu_c^2$.  The test vectors are the
-linear functionals of the squared picture, $u_c=\langle \eta_c,r\rangle$,
-and the two lemmas below treat the two possible positions of the family
-$(\eta_c)$ in the plane.
+\eqref{eq:core} is at least $2\sum_ct_cu_c^2$.  The family $(\eta_c)$
+either lies on a line through the origin or spans the plane, and the two
+lemmas below share one ingredient, the barycentre identity
+$\sum_ct_c\eta_c=0$ tested against a direction.  In the spanning case that
+direction is the $r$ carrying the test vector $u_c=\langle
+\eta_c,r\rangle$, and the identity makes $u$ nonconstant.  In the
+collinear case it is the line itself, the identity forces a sign change
+among the $\langle \eta_c,\cdot\rangle$, and \eqref{eq:obstruction}
+settles the resulting antipodal pair without \eqref{eq:core}.
 
 \begin{lemma}\label{lem:collinear}
 Let a design at $(m,2)$ be all-heavy and suppose the vectors $\eta_c$ all lie
@@ -294,7 +362,10 @@ on one line through the origin.  Then some pair dominates.
 Let $r\ne0$ be orthogonal to that line and let $r^{\perp}$ be $r$ rotated
 by $\pi/2$, so every $\eta_c$ is a multiple of $r^{\perp}$.  Put
 $\mu_c:=\langle \eta_c,r^{\perp}\rangle$; then $\lvert\mu_c\rvert=\lVert
-\eta_c\rVert\lVert r\rVert=\ell_c\lVert r\rVert\ne0$.  By
+\eta_c\rVert\lVert r\rVert=\ell_c\lVert r\rVert\ne0$, the first equality
+because $\eta_c$ is parallel to $r^{\perp}$ and $\lVert
+r^{\perp}\rVert=\lVert r\rVert$, the nonvanishing because all-heavy makes
+$\ell_c>1$.  By
 \eqref{eq:balance2} $\sum_ct_c\mu_c=0$, and the weights are positive, so
 the $\mu_c$ take both signs; choose $\mu_p>0>\mu_q$.  Since
 $\eta_p=(\mu_p/\lVert r\rVert^2)\,r^{\perp}$ and likewise for $q$,
@@ -307,10 +378,12 @@ $\eta_p=(\mu_p/\lVert r\rVert^2)\,r^{\perp}$ and likewise for $q$,
 whence $\langle \eta_p,\eta_q\rangle=-\ell_p\ell_q$ and
 \[
   K_{pq}=-\ell_p\ell_q-(\ell_p-2)(\ell_q-2)+2
-        =-2(\ell_p-1)(\ell_q-1)<0
+        =-2(\ell_p-1)(\ell_q-1)<0 .
 \]
-because both vectors are heavy.  By Lemma~\ref{lem:pairobs} the pair
-$\{p,q\}$ dominates.
+Here the two products $\ell_p\ell_q$ add instead of cancelling, and what
+survives factors into the two heaviness margins, both positive in an
+all-heavy design.  By Lemma~\ref{lem:pairobs} the pair $\{p,q\}$
+dominates.
 \end{proof}
 
 \begin{lemma}\label{lem:spanning}
@@ -329,9 +402,10 @@ Introduce the second moments of the squared picture,
 \]
 so that $\Omega$ is a symmetric $2\times2$ matrix with $r\tp\Omega
 r=\sum_ct_c\langle \eta_c,r\rangle^2$.  This vanishes only if every $\langle
-\eta_c,r\rangle$ does, so the spanning hypothesis gives $\Omega\pd0$.  Since
-$\lVert \eta_c\rVert=\ell_c$, the second and third identities of
-\eqref{eq:balance2} give
+\eta_c,r\rangle$ does, so the spanning hypothesis gives $\Omega\pd0$.  Each
+$\tr(\eta_c^{\vphantom{\mathsf{T}}}\eta_c\tp)$ is $\lVert
+\eta_c\rVert^2=\ell_c^2$, so $\tr\Omega=\sum_ct_c\ell_c^2$, and the second
+identity of \eqref{eq:balance2} with $\sum_ct_c=1$ gives
 \begin{equation}\label{eq:tromega}
   \sigma=\sum_c t_c(\ell_c-2)^2=\sum_c t_c\ell_c^2-4\sum_ct_c\ell_c+4
         =\tr\Omega-4 .
@@ -340,6 +414,10 @@ Put
 \[
   \Psi\;:=\;\Omega^2-\zeta\zeta\tp-2\Omega .
 \]
+At $u_c=\langle \eta_c,r\rangle$ the two sides of \eqref{eq:core} are
+$r\tp(\Omega^2-\zeta\zeta\tp)r$ and $2\,r\tp\Omega r$, so $\Psi$ is their
+difference, and under \eqref{eq:allfail} Lemma~\ref{lem:rowsum} forbids a
+direction with $r\tp\Psi r\ge0$.  The proof produces one.
 
 \emph{Some direction is nonnegative for $\Psi$.}  Let $\xi:=\Omega^{-1}
 \zeta$.  Expanding the square and using
@@ -367,14 +445,17 @@ $-2\tr(R\tp\Omega R)=-2\tr I_2=-4$.  So by \eqref{eq:tromega} and
   \;\ge\;0 .
 \]
 Hence $r\tp\Psi r\ge0$ for $r:=r_1$ or $r:=r_2$, and $r\ne0$ because $R$
-is invertible.
+is invertible.  $\Psi$ need not be positive semidefinite; one nonnegative
+direction suffices, and the trace supplies it.
 
 \emph{The test vector.}  Suppose no pair dominates, so
 \eqref{eq:allfail} holds, and put $u_c:=\langle \eta_c,r\rangle$.  By
 \eqref{eq:balance2}, $\sum_ct_cu_c=0$, so a constant $u$ would be
 identically zero; then $r$ would be orthogonal to every $\eta_c$, hence
 zero by the spanning hypothesis, which it is not.  So
-Lemma~\ref{lem:rowsum} applies to $u$.  Compute both sides.  First
+Lemma~\ref{lem:rowsum} applies to $u$.  Compute both sides.  The first sum
+below is $\Omega r$, which is $\Omega$ read as an operator rather than as
+a moment:
 \[
   \sum_d t_du_dK_{cd}
   =\Bigl\langle \eta_c,\sum_d t_d\langle \eta_d,r\rangle \eta_d\Bigr\rangle
@@ -382,8 +463,11 @@ Lemma~\ref{lem:rowsum} applies to $u$.  Compute both sides.  First
    +2\sum_d t_d\langle \eta_d,r\rangle
   =\langle \eta_c,\Omega r\rangle-\hat\ell_c\langle\zeta,r\rangle ,
 \]
-the last term vanishing by \eqref{eq:balance2}; multiplying by $t_cu_c$
-and summing,
+the last term vanishing by \eqref{eq:balance2}.  Multiply by
+$t_cu_c=t_c\langle \eta_c,r\rangle$ and sum: the first term becomes
+$r\tp\Omega^2r$, which is $\langle\Omega r,\Omega r\rangle$ because
+$\Omega$ is symmetric, and the second collapses by the definition of
+$\zeta$,
 \[
   \sum_{c,d}t_ct_dK_{cd}u_cu_d
   =\langle\Omega r,\Omega r\rangle-\langle\zeta,r\rangle^2
@@ -425,9 +509,8 @@ off the diagonal.  Figure~\ref{fig:regression} draws the fit.
   residual of $\hat\ell$ against the linear functional
   $\langle\eta,\xi\rangle$, $\xi:=\Omega^{-1}\zeta$; disc area is the
   weight, and an atom under the fitted plane carries a dashed segment.
-  Left: an all-heavy design at $(5,2)$.  There $\det\Psi<0$, so $\Psi$ is
-  indefinite, and the trace taken in the proof, rather than a sign for
-  $\Psi$ itself, is what supplies a direction nonnegative for $\Psi$.
+  Left: an all-heavy design at $(5,2)$, where $\det\Psi<0$ and $\Psi$ is
+  indefinite.
   Right: the trine of Example~\ref{ex:trine2}, where $\hat\ell$ vanishes
   identically and the fit is exact.}
   \label{fig:regression}
@@ -602,7 +685,7 @@ of $\dsn'$ are those of $\dsn$, so the subset sum of $C$ in $\dsn$ is the subset
 sum of $C$ in $\dsn'$, and $C$ dominates in $\dsn$.
 \end{proof}
 
-The bound is Carathéodory's \cite{Caratheodory1911}: condition
+The bound is Carath\'eodory's \cite{Caratheodory1911}: condition
 \eqref{eq:parseval} exhibits $I_k$ as a convex combination of the points
 $g_c^{\vphantom{\mathsf{T}}}g_c\tp$ of the $k(k+1)/2$-dimensional space
 $\mathrm{Sym}_k$, and a point of a convex hull in dimension $k(k+1)/2$ is
@@ -615,7 +698,9 @@ subset produced downstairs a subset of the original index set.  The
 transport back uses the weight-freeness of \eqref{eq:dominate}, and it
 separates the reduction from that of Theorem~\ref{thm:light}, where the
 vectors move and \eqref{eq:reassemble} must carry the conclusion back.
-Figure~\ref{fig:psdcone} draws $\mathrm{Sym}_2$.
+Figure~\ref{fig:psdcone} draws $\mathrm{Sym}_2$.  In the design at $(5,2)$ of
+Figure~\ref{fig:crystal} the moment map has rank $4$, so its kernel is a
+line, and the walk along that line leaves the simplex at $\theta=\tfrac1{56}$.
 
 \begin{figure}[ht]
   \centering
@@ -631,6 +716,25 @@ Figure~\ref{fig:psdcone} draws $\mathrm{Sym}_2$.
   doubling is \eqref{eq:doubleangle}.  The window $\win(2)$ of
   Theorem~\ref{thm:window} is the Carath\'eodory number of this space.}
   \label{fig:psdcone}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/crystal}
+  \caption{Theorem~\ref{thm:reduce} at $(5,2)$, in the coordinates of
+  Figure~\ref{fig:psdcone}.  Left: five rank-one atoms on the boundary of the
+  cone, at heights $\ell_c/2$, with $I_2$ their $t$-barycentre by
+  \eqref{eq:parseval}; disc area is the weight, and the signed integer beside
+  an atom is its coordinate of $\delta$.  Since
+  $\dim\mathrm{Sym}_2+1=\win(2)=4<5$ the moment map has a kernel, here the
+  line spanned by $\delta=(-9,1,3,-3,8)$.  Right: the five weights
+  $t_c-\theta\delta_c$ along that line, every one of them a Parseval
+  weighting, all nonnegative exactly on
+  $-\tfrac1{42}\le\theta\le\tfrac1{56}$.  At the right end the ringed atom
+  loses its weight and the design drops to $(4,2)$ with
+  $t'=\tfrac18(3,1,3,1,0)$; the atoms themselves never moved, which leaves
+  the smaller design on a subfamily of the given vectors.}
+  \label{fig:crystal}
 \end{figure}
 
 Domination never enters Lemma~\ref{lem:null}, so there is no reason to
@@ -714,8 +818,7 @@ $\Gtz(6,3)$ from $\Gtz(7,3)$.
 Both cells are carried through the rest of the paper even though the
 second implies the first, because the variational argument of
 \S\ref{sec:compactness} at a cell consumes the two cells one size below:
-at $(7,3)$ it consumes $(6,3)$ and $(6,2)$.  The logical reduction to one
-cell and the analytic route to that cell run in opposite directions.
+at $(7,3)$ it consumes $(6,3)$ and $(6,2)$.
 
 Neither cell is reducible by the symmetries at hand.  The cell $(6,3)$ is
 self-dual, having rank and corank both equal to $3$; and

@@ -101,11 +101,12 @@ Since a maximum over a finite set is attained,
   \quad\Longleftrightarrow\quad
   \text{some $k$-subset dominates at $(P,t)$.}
 \end{equation}
-No condition ties $P$ to $t$: the relation \eqref{eq:pivotlev} is the
-definition of $s_c$, not a constraint, and on the compactification the
-vector lengths are recovered only where $t_c>0$, by $\ell_c=P_{cc}/t_c$.
-That formula is the boundary's only singularity, and it does not
-appear in Definition~\ref{def:chartpoint}.
+No condition ties $P$ to $t$.
+
+The relation \eqref{eq:pivotlev} is the definition of $s_c$, not a
+constraint, and on the compactification the vector lengths are recovered
+only where $t_c>0$, by $\ell_c=P_{cc}/t_c$.  That formula is the
+boundary's only singularity.
 
 \begin{example}\label{ex:tetragap}
 The tetrahedron of Example~\ref{ex:tetra} has $P=I_4-\tfrac14J_4$ and
@@ -133,23 +134,27 @@ if and only if it dominates at the chart point.
 
 \begin{proof}
 A design produces $(VV\tp,t)$, which satisfies
-Definition~\ref{def:chartpoint}: $VV\tp$ is symmetric, idempotent
-because $V\tp V=I_k$, and of trace $\tr(V\tp V)=k$; and $t$ lies in the
-open simplex.  Conversely let $(P,t)$ be a chart point with all weights
-positive.  A symmetric idempotent is the orthogonal projection onto its
-range, so $\rk P=\tr P=k$; let the columns of the $m\times k$ matrix $V$
-be an orthonormal basis of that range, so that $P=VV\tp$ and
-$V\tp V=I_k$.  Write $v_c\tp$ for the $c$-th row of $V$ and put
-$g_c:=v_c/\sqrt{t_c}$.  Then
+Definition~\ref{def:chartpoint}.  Here $VV\tp$ is symmetric; it is
+idempotent because $VV\tp VV\tp=V(V\tp V)V\tp$ and $V\tp V=I_k$, the
+columns of $V$ being orthonormal; and $\tr(VV\tp)=\tr(V\tp V)=k$ by
+cyclicity of the trace.  The weights lie in the open simplex.
+Conversely let $(P,t)$ be a chart point with all weights positive.  A
+symmetric idempotent is the orthogonal projection onto its range, and
+its eigenvalues are $0$ and $1$, so its rank and its trace agree:
+$\rk P=\tr P=k$.  Let the columns of the $m\times k$ matrix $V$ be an
+orthonormal basis of that range, so that $P=VV\tp$ and $V\tp V=I_k$.
+Write $v_c\tp$ for the $c$-th row of $V$ and put $g_c:=v_c/\sqrt{t_c}$.
+Then
 \[
   \sum_c t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp
   \;=\;\sum_c v_c^{\vphantom{\mathsf{T}}}v_c\tp\;=\;V\tp V\;=\;I_k ,
 \]
 which is \eqref{eq:parseval}; the weights are positive and sum to one; so
 this is a design, and its chart point is $(P,t)$.  Two orthonormal bases
-of the range differ by an element of the orthogonal group, which acts on
-the $g_c$ by that element and leaves \eqref{eq:dominate} invariant.  The
-last assertion is Lemma~\ref{lem:chart}.
+of the range differ by an orthogonal $Q$, and the substitution
+$V\mapsto VQ$ sends $g_c\mapsto Q\tp g_c$ and $\SC\mapsto Q\tp\SC Q$.
+The comparison \eqref{eq:dominate} with $I_k$ survives because
+$Q\tp I_kQ=I_k$.  The last assertion is Lemma~\ref{lem:chart}.
 \end{proof}
 
 \begin{lemma}\label{lem:compact}
@@ -185,10 +190,13 @@ For symmetric $A$ one has
 $\lmin(A)=\min_{\lVert x\rVert=1}x\tp Ax$, an infimum of functions of $A$
 each of which satisfies
 $\lvert x\tp Ax-x\tp Bx\rvert\le\lVert A-B\rVert_{2}$ for
-$\lVert x\rVert=1$; hence
-$\lvert\lmin(A)-\lmin(B)\rvert\le\lVert A-B\rVert_{2}$.  Restriction to a
-principal block does not increase the operator norm.  The two gap
-matrices differ by $(P-Q)-\diag(t-t')$, of operator norm at most
+$\lVert x\rVert=1$.  Two infima over the same index set differ by at
+most the supremum of the difference, so
+$\lvert\lmin(A)-\lmin(B)\rvert\le\lVert A-B\rVert_{2}$.  Restriction to
+the principal block on an index set $C$ is $A\mapsto E\tp AE$, where the
+columns of $E$ are the coordinate vectors $e_c$ with $c\in C$, so it
+does not increase the operator norm.  The two gap matrices differ by
+$(P-Q)-\diag(t-t')$, of operator norm at most
 $\lVert P-Q\rVert_{2}+\max_c\lvert t_c-t'_c\rvert$.  So each of the
 finitely many functions $(P,t)\mapsto\lmin(W[C])$ obeys the stated bound,
 and so does their maximum.
@@ -221,21 +229,24 @@ $t^{\theta}_c\ge\theta/m>0$ for $\theta>0$; $P$ is untouched.  Identity
 \eqref{eq:relax} is
 $\diag(t^{\theta})=\diag(t)+\theta\diag(\bar t-t)$ evaluated against $x$.
 Letting $\theta\to0$ gives $t^{\theta}\to t$, which is the density
-statement; the displayed equality of extrema then follows from
-Lemma~\ref{lem:continuity} together with
-Proposition~\ref{prop:chartdesign}, which identifies the points with
-positive weights as the chart points of designs, and from
-Lemma~\ref{lem:compact}, which supplies the minimum.
+statement.  For the equality of extrema, $\min G$ exists by
+Lemmas~\ref{lem:compact} and~\ref{lem:continuity}, and is at most the
+infimum, a minimum over the chart points being at most an infimum over
+some of them.  For the reverse, apply the mixing to an arbitrary chart
+point $(A,u)$: at $\theta>0$ the weights of $u^{\theta}$ are strictly
+positive, so $(A,u^{\theta})$ is the chart point of a design by
+Proposition~\ref{prop:chartdesign}, and $G(A,u^{\theta})$ is at least
+the infimum.  Lemma~\ref{lem:continuity} along $u^{\theta}\to u$ carries
+that bound to $G(A,u)$, and in particular to the minimum.
 \end{proof}
 
 The design space itself admits no such statement.  It is the locus
 $t_c>0$, which is open in the compactification and, by
 Example~\ref{ex:escape}, not closed in it; a minimizing sequence of
-designs need not converge to a design.  Hence the added
-points must be treated, and no argument confined to designs
-produces a minimizer.
+designs need not converge to a design.
 
-\begin{remark}\label{rem:objectives}
+\subsection{The two objectives}\label{sec:objectives}
+
 The objective \eqref{eq:objective} is not the design objective $F$ of
 \eqref{eq:value}.  With
 $D[C]=\diag(t_c)_{c\in C}$ the congruence \eqref{eq:congruence} reads
@@ -254,6 +265,8 @@ gives $\lmin(\SC)-1$, and
     \frac{x\tp W[C]x}{x\tp D[C]x},
 \]
 against $G=\max_C\min_{\lVert x\rVert=1}x\tp W[C]x$.
+
+\begin{remark}\label{rem:objectives}
 The two agree in sign, by \eqref{eq:threshold} and
 Lemma~\ref{lem:chart}.  Beyond the sign they are related by a congruence
 which is not a scalar unless the selected weights are equal, so they
@@ -261,6 +274,127 @@ need not share their minimizers.  The generalized form degenerates where
 $D[C]$ becomes singular, that is on the points the compactification adds.
 The absolute form does not.
 \end{remark}
+
+At a selection whose weights are all equal the congruence is that common
+weight, and $\lmin(W[C])=t_c\bigl(\lmin(\SC)-1\bigr)$ at any $c\in C$.
+Where the selected weights differ the factor differs with $C$, and the
+order of two selections can invert.
+
+\begin{example}\label{ex:objectives}
+On the index set $\{0,1,2,3\}$ let
+\[
+  P=\begin{pmatrix}
+     \tfrac45&\tfrac25&0&0\\[2pt]
+     \tfrac25&\tfrac15&0&0\\[2pt]
+     0&0&\tfrac12&\tfrac12\\[2pt]
+     0&0&\tfrac12&\tfrac12\end{pmatrix},
+  \qquad
+  t=\Bigl(t_0,\ \tfrac23-t_0,\ \tfrac16,\ \tfrac16\Bigr),
+  \qquad 0\le t_0\le\tfrac23 .
+\]
+The diagonal blocks are $\tfrac15uu\tp$ with $u=(2,1)$ and
+$\tfrac12ww\tp$ with $w=(1,1)$, and $\lVert u\rVert^{2}=5$,
+$\lVert w\rVert^{2}=2$, so each block is an orthogonal projection of rank
+one.  Hence $P$ is symmetric and idempotent with $\tr P=2$.  The weights
+are nonnegative and sum to one, so $(P,t)$ is a chart point of size four
+and rank two at every $t_0$.  At every interior $t_0$ it is the chart
+point of a design, by Proposition~\ref{prop:chartdesign}, and that design
+puts $g_0,g_1$ on one axis of $\R^2$ and $g_2,g_3$ on the other, with
+\[
+  \ell_0=\frac4{5t_0},\qquad
+  \ell_1=\frac1{5\bigl(\tfrac23-t_0\bigr)},\qquad
+  \ell_2=\ell_3=3 ,
+\]
+the leverage scores being the diagonal
+$s=(\tfrac45,\tfrac15,\tfrac12,\tfrac12)$ of $P$, of sum $2=k$.
+
+For a mixed pair $P_{ab}=0$, so $W[C]=\diag(A_a,A_b)$ with
+$A_c:=s_c-t_c$, and $\Gram_C=\diag(\ell_a,\ell_b)$.  A pair inside one
+block has parallel vectors, so there $\Gram_C$ is singular; it shares its
+characteristic polynomial with $\SC$, whence $\lmin(\SC)=0$, the subset
+sum being positive semidefinite.  And
+$\det(\Gram_C-I_2)=-(\ell_a+\ell_b-1)$ is negative, since
+$\ell_0\ge\tfrac65$ at every interior $t_0$ and $\ell_2=\ell_3=3$, so
+$\det W[C]<0$ by Corollary~\ref{cor:minor}.  The mixed pair $\{0,2\}$
+carries $\lmin(\SC)=\min(\ell_0,3)\ge\tfrac65$ and
+$\lmin(W[C])=\min(A_0,\tfrac13)\ge\tfrac2{15}$, above both, so neither
+maximum is attained inside a block.  The two indices of a mixed pair run
+over the two blocks independently, so a maximum over mixed pairs of a
+minimum is the minimum of the two block maxima:
+\[
+  F=\min\bigl\{\max(\ell_0,\ell_1),\ 3\bigr\},
+  \qquad
+  G=\min\bigl\{\max(A_0,A_1),\ \tfrac13\bigr\} .
+\]
+
+Now $A_0=\tfrac45-t_0$ and $A_1=t_0-\tfrac7{15}$ have constant sum
+$\tfrac13$, so $\max(A_0,A_1)\ge\tfrac16$, with equality where the two
+agree, at $t_0=\tfrac{19}{30}$.  And $\ell_0$ falls while $\ell_1$ rises,
+so $\max(\ell_0,\ell_1)$ is least where they agree, at $t_0=\tfrac8{15}$,
+both being $\tfrac32$ there.  Since $\tfrac13>\tfrac16$ and $3>\tfrac32$,
+neither truncating constant binds at those two weights, and
+\[
+  \min G=\tfrac16\ \ \text{at }t_0=\tfrac{19}{30},
+  \qquad
+  \min F=\tfrac32\ \ \text{at }t_0=\tfrac8{15},
+\]
+each at that weight and at no other.  At $t_0=\tfrac{19}{30}$ the design
+objective is $3$, twice its own least value; at $t_0=\tfrac8{15}$ the
+chart objective is $\tfrac4{15}$.
+
+Between the two weights the objectives select different pairs.  At
+$t_0=\tfrac{17}{30}$, where $t=\tfrac1{30}(17,3,5,5)$ and
+$\ell=(\tfrac{24}{17},2,3,3)$, the leverage maximum $2$ of the first
+block sits at the index $1$ and its slack maximum $\tfrac7{30}$ at the
+index $0$; so $F=2$ at $\{1,2\}$ and $\{1,3\}$, while $G=\tfrac7{30}$ at
+$\{0,2\}$ and $\{0,3\}$.  The congruence carries the reversal:
+$D[\{0,2\}]=\diag(\tfrac{17}{30},\tfrac16)$ takes the relative slack
+$\tfrac7{17}$ up to $\tfrac7{30}$, and
+$D[\{1,2\}]=\diag(\tfrac1{10},\tfrac16)$ takes the larger relative slack
+$1$ down to $\tfrac3{30}$.  Corollary~\ref{cor:minor} reaches the same
+two blocks through their determinants,
+\[
+  \det W[\{0,2\}]
+    =\tfrac{17}{30}\cdot\tfrac16\cdot\tfrac7{17}\cdot2=\tfrac7{90},
+  \qquad
+  \det W[\{1,2\}]=\tfrac1{10}\cdot\tfrac16\cdot1\cdot2=\tfrac1{30} .
+\]
+
+At the endpoint $t_0=0$ the matrix $D[\{0,2\}]=\diag(0,\tfrac16)$ is
+singular while $e_0\tp W[\{0,2\}]e_0=\tfrac45$, so the quotient
+$x\tp W[C]x/x\tp D[C]x$ is unbounded above on that pair, and the leverage
+$\ell_0=4/(5t_0)$ diverges with it: no design charts the endpoint.  The
+gap matrix there is $W[\{0,2\}]=\diag(\tfrac45,\tfrac13)$, so
+$G=\tfrac13$ and the pair $\{0,2\}$ dominates, which is
+Theorem~\ref{thm:boundary} in the branch $P_{00}=\tfrac45>0$.  Along the
+whole segment $F\ge\tfrac32$ and $G\ge\tfrac16$, above the threshold
+Corollary~\ref{cor:corank} guarantees at corank two.
+\end{example}
+
+Figure~\ref{fig:objectives} draws the two graphs and the six pairs.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/objectives}
+  \caption{The two objectives at $(4,2)$, on the weight segment of
+  Example~\ref{ex:objectives}.  Left: the design objective above the
+  chart objective, on one abscissa; the marked weight $\tfrac8{15}$
+  carries the least value of the first and $\tfrac{19}{30}$ that of the
+  second, and at $\tfrac{19}{30}$ the first is $3$ while at $\tfrac8{15}$
+  the second is $\tfrac4{15}$.  Right: the six pairs at the dotted weight
+  $\tfrac{17}{30}$, with an arrow on the pair each objective selects.
+  The congruence \eqref{eq:congruence} makes the six rows agree in sign,
+  by Sylvester's law, and lets them disagree in order: it carries the
+  relative slack $\tfrac7{17}$ of $\{0,2\}$ up to $\tfrac7{30}$ and the
+  larger relative slack $1$ of $\{1,2\}$ down to $\tfrac3{30}$, being
+  a scalar only at $\{2,3\}$, whose two weights agree.  At the endpoint
+  $t_0=0$ the leverage $\ell_0$ diverges and the generalized quotient on
+  $\{0,2\}$ is unbounded above, while the gap stays finite and $\{0,2\}$
+  dominates.  Neither
+  objective is a Lean definition, and none of the arithmetic here is
+  mechanized.}
+  \label{fig:objectives}
+\end{figure}
 
 \subsection{The boundary}\label{sec:boundary}
 
@@ -285,9 +419,11 @@ zero.
 \end{proof}
 
 By \eqref{eq:pivotlev} the quantity $P_{zz}$ is the limit of the leverage
-score $s_z$.  The dichotomy is therefore the distinction between the two
-ways an atom can leave a design: its Parseval mass vanishes, or its mass
-survives while its weight vanishes and its vector escapes to infinity.
+score $s_z$.
+
+The dichotomy is therefore the distinction between the two ways an atom
+can leave a design: its Parseval mass vanishes, or its mass survives
+while its weight vanishes and its vector escapes to infinity.
 Example~\ref{ex:escape} is of the second kind, with $P_{zz}=\tfrac12$.
 
 \subsubsection*{Case A: the atom vanishes}
@@ -391,10 +527,15 @@ $y\tp Py=y\tp P'y+a^{2}/P_{zz}$.  Since $y_z=0$,
 $x\tp Dx=y\tp Dy+t_zx_z^{2}$.  Subtracting,
 \[
   x\tp Wx\;=\;y\tp(P'-D)y
-    +\frac{a^{2}}{P_{zz}}+2x_za+x_z^{2}P_{zz}-t_zx_z^{2},
+    +\frac{a^{2}}{P_{zz}}+2x_za+x_z^{2}P_{zz}-t_zx_z^{2} .
 \]
-and the three middle terms are $(a+x_zP_{zz})^{2}/P_{zz}$, since
-$P_{zz}\ne0$.
+The three middle terms complete a square: since $P_{zz}>0$,
+\[
+  \frac{a^{2}}{P_{zz}}+2x_za+x_z^{2}P_{zz}
+  \;=\;\frac{a^{2}+2x_zaP_{zz}+x_z^{2}P_{zz}^{2}}{P_{zz}}
+  \;=\;\frac{\bigl(a+x_zP_{zz}\bigr)^{2}}{P_{zz}} ,
+\]
+which is the middle term of \eqref{eq:schur}.
 \end{proof}
 
 Identity \eqref{eq:schur} is exact at every weight.  Its three terms are,
@@ -459,7 +600,9 @@ cardinality $k$, dominates at $(P,t)$.
 \end{proof}
 
 Both branches reduce the size by one, so an induction on the dichotomy is
-well founded on the size alone.  At $k=1$ the second hypothesis is
+well founded on the size alone.
+
+At $k=1$ the second hypothesis is
 $\Gtz^{\mathrm{ch}}(m-1,0)$, which holds because the empty selection
 dominates.  Every step of the reduction is an identity, so it consumes no
 slack and stays compatible with Corollary~\ref{cor:nomargin}.
@@ -508,8 +651,10 @@ the same size and rank.
 \begin{proof}
 Let $(P,t)$ be a chart point at which no $k$-subset dominates.  For each
 of the finitely many $k$-subsets $C$ choose $x^{C}$ supported on $C$ with
-$(x^{C})\tp Wx^{C}<0$, scaled so that $(x^{C})\tp Wx^{C}=-1$.  The common
-value lets one mixing parameter serve every selection.  Put
+$(x^{C})\tp Wx^{C}<0$.  The form is quadratic, so rescaling $x^{C}$ by
+$u>0$ multiplies its value by $u^{2}$, and $x^{C}$ may be normalized to
+$(x^{C})\tp Wx^{C}=-1$.  The common value lets one mixing parameter
+serve every selection.  Put
 $\mu_C:=\sum_c(1/m-t_c)(x^{C}_c)^{2}$ and
 $\theta:=\bigl(1+\sum_C\lvert\mu_C\rvert\bigr)^{-1}\in(0,1]$.  By
 \eqref{eq:relax},
@@ -517,7 +662,9 @@ $\theta:=\bigl(1+\sum_C\lvert\mu_C\rvert\bigr)^{-1}\in(0,1]$.  By
   (x^{C})\tp W^{\theta}x^{C}\;=\;-1-\theta\mu_C\;<\;0
   \qquad\text{for every }C,
 \]
-since $\theta\lvert\mu_C\rvert<1$.  So no $k$-subset dominates at
+since
+$\theta\lvert\mu_C\rvert\le\theta\sum_{C'}\lvert\mu_{C'}\rvert<1$, each
+term being at most the whole sum.  So no $k$-subset dominates at
 $(P,t^{\theta})$, whose weights are strictly positive by
 Lemma~\ref{lem:relax}, contradicting
 $\Gtz^{\mathrm{ch}}_{\circ}(m,k)$.
@@ -584,17 +731,14 @@ in order: $(6,3)$ first, and its resolution supplies the hypothesis
 needed at $(7,3)$.
 
 By Corollary~\ref{cor:equivalent} the statement about chart points with
-positive weights is the original problem, so nothing has been weakened
-along the way.  The theorem adds the minimality of the counterexample.
-The mixing of Lemma~\ref{lem:relax} does move a counterexample into the
-interior, but
+positive weights is the original problem.  The mixing of
+Lemma~\ref{lem:relax} does move a counterexample into the interior, but
 it destroys whatever distinguished the original point, so it cannot be
 applied to a minimizer.  Minimizing over the design space directly fails
 as well: that space is not compact, and a minimizing sequence of designs
 need not converge to a design (Example~\ref{ex:escape}).  The minimum
-exists only on the
-compactification, and Corollary~\ref{cor:interiorcex} puts it back
-inside.
+exists only on the compactification, and
+Corollary~\ref{cor:interiorcex} puts it back inside.
 
 \begin{wip}
 Transport stationarity across the congruence $D[C]^{1/2}$ of
@@ -654,9 +798,10 @@ fixed.  If $\varepsilon>0$ then the determinant tends to
 $\varepsilon\,P_{zz}>0$, and the pair ceases to obstruct for all small
 $t_z$.  If $\varepsilon=0$ then the determinant is
 $-t_z(P_{cc}-t_c-t_cP_{zz}/(1-t_z))$, negative for every $t_z>0$ at which
-the bracket is positive.  The lift therefore fails wherever the
-compressed slack vanishes against a positive bracket, however small
-$t_z$ is.
+the bracket is positive.
+
+The lift therefore fails wherever the compressed slack vanishes against
+a positive bracket, however small $t_z$ is.
 
 \begin{example}\label{ex:liftfailure}
 On the index set $\{0,1,2,3\}$ let
@@ -751,6 +896,34 @@ wherever its weights are positive; and by
 Theorem~\ref{thm:tieseverywhere} designs whose dominating subsets all
 have $\lmin(\SC)=1$, that is with chart slack zero, exist at every cell
 with $m\ge k+1$ and at every weight vector.
+
+The compression sends the whole family to one point, the surviving
+weights being $\tfrac13$ at every $\tau$.  That point charts the design
+$g=(1,-1,1)$ at $(3,1)$, of leverage $1$ at each index, so each of its
+singletons dominates with $\lmin(\SC)=1$.
+Figure~\ref{fig:boundarytrace} runs the four steps and the fork on the
+family.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/boundarytrace}
+  \caption{The dichotomy of Theorem~\ref{thm:boundary} executed on the
+  chart point of \S\ref{app:liftfail}, at $(4,2)$ with pivot $z=1$.
+  Left: the four steps of the compression lift, each with the matrix it
+  produces; none of them sees $\tau$, and the deletion returns the same
+  compressed point at every $\tau$, the chart point of the design
+  $g=(1,-1,1)$ at $(3,1)$ on which every singleton dominates with
+  $\lmin(\SC)=1$.  Right: identity \eqref{eq:schur} on the pair
+  $\{0,1\}$, and the two branches it splits into.  At $\tau=0$ the
+  deflated gap and the deficit vanish together and
+  Theorem~\ref{thm:schurstep} lifts $\{0\}$ to $\{0,1\}$ with least
+  eigenvalue $0$, so the lift leaves no slack.  At $\tau>0$ the deficit
+  survives, and \eqref{eq:family} at $\varepsilon=0$ turns it into a
+  negative determinant.  The pair $\{0,2\}$ dominates throughout the
+  family, so what fails at positive weight is the lift rather than the
+  chart point.}
+  \label{fig:boundarytrace}
+\end{figure}
 
 This is Corollary~\ref{cor:nomargin} again, in local form.  It is why the
 boundary is discharged at $t_z=0$ by the identity \eqref{eq:schur}

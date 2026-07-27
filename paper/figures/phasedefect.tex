@@ -1,0 +1,243 @@
+% The phase defect at rank three: identity eq:tripledet read at s = 1, and the
+% disc the triangle invariant beta_abc lives in.  No projection; two Cartesian
+% panels and a table.
+%
+% LEFT PANEL.  Horizontal Re beta_abc, vertical det(S_C - I_3).  Scales
+%   X = 1.05 * (Re beta_abc) cm,      Y = 0.38 * det cm,
+% so the slope 2 of every line below draws at 2 * 0.38 / 1.05 = 0.724.  At
+% leverage 3 and s = 1 the identity eq:tripledet reads
+%   det(S_C - I_3) = 8 - 2B + 2 Re beta_abc,
+% B the modulus budget |beta_ab|^2 + |beta_bc|^2 + |beta_ca|^2.  Every line has
+% slope 2, only the intercept 8 - 2B moves, and each crosses zero at
+% Re beta_abc = B - 4.  Two configurations are drawn, with exact endpoints:
+%   trine, B = 5, |beta_abc| = sqrt3 = 1.7320508:
+%     (-sqrt3, -2-2 sqrt3) = (-1.7320508, -5.4641016) -> (-1.81865, -2.07636)
+%     (+sqrt3, -2+2 sqrt3) = (+1.7320508, +1.4641016) -> (+1.81865, +0.55636)
+%     the design's own value (0, -2)                  -> ( 0.00000, -0.76000)
+%     zero crossing at Re = B - 4 = 1                 -> X = 1.05000
+%   icosahedron, B = 27/5, |beta_abc| = (9/5)^{3/2} = 27 sqrt5/25 = 2.4149534:
+%     (-2.4149534, -14/5 - 54 sqrt5/25 = -7.6299068) -> (-2.53570, -2.89936)
+%     (+2.4149534, -14/5 + 54 sqrt5/25 = +2.0299068) -> (+2.53570, +0.77136)
+%     zero crossing at Re = B - 4 = 7/5              -> X = 1.47000
+% The bottom axis sits at Y = -3.20 with ticks at Re = -2,-1,0,1,2, that is
+% X = -2.10,-1.05,0,1.05,2.10; the left axis sits at X = -2.95 with ticks at
+% det = 2,0,-2,-4,-6,-8, that is Y = 0.76,0,-0.76,-1.52,-2.28,-3.04.  The two
+% lines run 2*(27/5 - 5) = 0.8 apart in determinant, which is 0.304cm, so both
+% legend rows and the region label are placed in the band above the zero level,
+% which no line enters left of X = 1.05.
+%
+% A FILLED dot is a value some triple of the named design actually takes; an
+% OPEN dot is an endpoint of the permitted range that the named design misses.
+% The complex design sits at the CENTRE of its interval and the real one at
+% both ENDS: that is the content of Remark rem:phase.
+%
+% The band above the zero level is the rectangle (-2.95, 0) to (2.85, 1.10),
+% shaded black!7; it is exactly the region det(S_C - I_3) > 0 inside the frame.
+%
+% RIGHT PANEL, the beta_abc plane of the trine's eighteen MIXED triples (its two
+% coplanar triples have |beta_abc| = 3 sqrt3 and lie outside the drawn disc),
+% with origin at (5.15, -0.80) and 0.80cm per unit:
+%   the circle |beta_abc| = sqrt3          radius 0.80 sqrt3      = 1.385641
+%   the real axis, the locus over R, is the horizontal diameter
+%   the two values the trine takes, +- i sqrt3, at (0, +-1.385641), labelled from
+%     (0.14, +-1.41) outward so that the label box clears the rim: at x = 0.14 the
+%     rim sits at y = 1.375, and a white-filled box crossing it erases the arc
+%   the chord Re beta_abc = 1 at x = 0.80, half-height 0.80 sqrt(3-1) = 1.131371
+%   the shaded lens beyond it, 0.80 <= x <= 1.385641, is where det(S_C-I_3) > 0
+% The phase defect |beta_abc|^2 - (Re beta_abc)^2 = (Im beta_abc)^2 is the
+% squared height above the real axis: maximal at the trine, zero on the axis.
+%
+% EXACT ARITHMETIC, and what admissibility permits.  A triple of leverage-3
+% vectors with prescribed pairing moduli exists precisely when its Gram matrix
+% is positive semidefinite, and det Gram = 27 - 3B + 2 Re beta_abc.  For the two
+% drawn configurations that determinant stays positive across the whole interval
+% -- at least 12 - 2 sqrt3 = 8.5359 for the trine and 54/5 - 54 sqrt5/25 = 5.9701
+% for the icosahedron, against 2x2 minors 6, 8, 8 and 36/5, 36/5, 36/5 -- so
+% every abscissa drawn is a genuine triple of leverage-3 vectors.  DISCLOSED:
+% the figure does not assert that each such triple sits inside a weighted
+% design.  What it asserts of designs is the six table rows, each computed from
+% that design's own vectors in exact arithmetic.
+%
+% The two Hesse rows are the same law at B = 27/4, where beta_abc^3 = -(27/8)^3
+% admits only Re beta_abc = -27/8 and 27/16.  The first is the left endpoint of
+% the interval, and det Gram = 27 - 81/4 - 27/4 = 0 there: those twelve triples
+% degenerate to a line, which is why their least eigenvalue is 0.  DISCLOSED:
+% the two daggered rows are complementary halves of the single assertion of
+% app:icosa that has no theorem behind it, namely that ten of the twenty
+% triples dominate; the criterion producing the split IS kernel-checked
+% (Gtz.icosaDesign_dominates_iff_pairingProduct), the count is not.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  axis/.style={line width=0.5pt, black!70},
+  guide/.style={densely dotted, line width=0.3pt, black!35},
+  zero/.style={line width=0.5pt, black!55, dashed,
+               dash pattern=on 2.2pt off 1.6pt},
+  seg/.style={line width=0.9pt, black},
+  segb/.style={line width=0.55pt, black!55},
+  rim/.style={line width=0.5pt, black!70},
+  diam/.style={line width=1.05pt, black!85},
+  hair/.style={line width=0.4pt, black!45},
+  tag/.style={font=\footnotesize, fill=white, inner sep=0.8pt},
+  every node/.style={font=\footnotesize}]
+
+% ======================= left panel: the affine law =======================
+\fill[black!7] (-2.95,0) rectangle (2.85,1.10);
+\draw[zero]  (-2.95,0) -- (2.85,0);
+\draw[guide] (0,-3.20) -- (0,1.10);
+
+\draw[axis] (-2.95,-3.20) -- (2.85,-3.20);
+\foreach \tx/\tl in {-2.10/{-2}, -1.05/{-1}, 0/{0}, 1.05/{1}, 2.10/{2}}{
+  \draw[axis] (\tx,-3.20) -- (\tx,-3.27);
+  \node[anchor=north, inner sep=2pt] at (\tx,-3.27) {$\tl$};}
+\draw[axis] (-2.95,-3.20) -- (-2.95,1.10);
+\foreach \ty/\tl in {0.76/{2}, 0/{0}, -0.76/{-2}, -1.52/{-4}, -2.28/{-6},
+                     -3.04/{-8}}{
+  \draw[axis] (-2.95,\ty) -- (-3.02,\ty);
+  \node[anchor=east, inner sep=2pt] at (-3.02,\ty) {$\tl$};}
+
+% the icosahedron, B = 27/5: both real ends taken, nothing between them
+\draw[segb] (-2.53570,-2.89936) -- (2.53570,0.77136);   % Re = -+ 27 sqrt5/25
+\fill[black!55] (-2.53570,-2.89936) circle (1.7pt);
+\fill[black!55] ( 2.53570, 0.77136) circle (1.7pt);
+
+% the trine, B = 5: the design sits at the centre and misses both ends
+\draw[seg] (-1.81865,-2.07636) -- (1.81865,0.55636);    % Re = -+ sqrt3
+\draw[line width=0.5pt, black, fill=white] (-1.81865,-2.07636) circle (1.7pt);
+\draw[line width=0.5pt, black, fill=white] ( 1.81865, 0.55636) circle (1.7pt);
+\fill (0.00000,-0.76000) circle (1.9pt);                % (0, -2)
+
+% the icosahedral crossing, at Re = B - 4 = 7/5
+\draw[hair] (1.47000,0) -- (1.47000,-0.22);
+\node[anchor=north, font=\scriptsize, inner sep=1.5pt] at (1.47000,-0.22)
+  {$\tfrac75$};
+
+% legend and region label, both inside the band, which no line enters
+% left of X = 1.05
+\draw[seg]  (-2.85,0.78) -- (-2.50,0.78);
+\node[anchor=west, font=\scriptsize] at (-2.43,0.78) {trine, $B=5$};
+\draw[segb] (-2.85,0.38) -- (-2.50,0.38);
+\node[anchor=west, font=\scriptsize] at (-2.43,0.38)
+  {icosahedron, $B=\tfrac{27}5$};
+\node[anchor=east, font=\scriptsize] at (2.82,0.93) {$\det(\SC-I_3)>0$};
+\node[anchor=north, inner sep=2pt] at (-0.05,-3.62)
+  {$\operatorname{Re}\beta_{abc}$};
+
+% ======================= right panel: the beta plane ======================
+\begin{scope}[shift={(5.15,-0.80)}]
+  \begin{scope}
+    \clip (0,0) circle (1.385641);
+    \fill[black!12] (0.80,-1.5) rectangle (1.6,1.5);
+  \end{scope}
+  \draw[rim]   (0,0) circle (1.385641);                 % |beta_abc| = sqrt3
+  \draw[guide] (-1.62,0) -- (1.62,0);
+  \draw[guide] (0,-1.62) -- (0,1.62);
+  \draw[axis]  (0.80,-1.131371) -- (0.80,1.131371);     % Re beta_abc = 1
+
+  % the real locus: the horizontal diameter, with its two unoccupied ends
+  \draw[diam] (-1.385641,0) -- (1.385641,0);
+  \draw[line width=0.5pt, black, fill=white] (-1.385641,0) circle (1.7pt);
+  \draw[line width=0.5pt, black, fill=white] ( 1.385641,0) circle (1.7pt);
+
+  % the two values the trine takes
+  \fill (0, 1.385641) circle (1.9pt);                   % + i sqrt3
+  \fill (0,-1.385641) circle (1.9pt);                   % - i sqrt3
+
+  \node[tag, anchor=south west, font=\scriptsize] at (0.14, 1.41) {$+i\sqrt3$};
+  \node[tag, anchor=north west, font=\scriptsize] at (0.14,-1.41) {$-i\sqrt3$};
+  \node[anchor=north west, font=\scriptsize] at ( 1.28,-0.09) {$\sqrt3$};
+  \node[anchor=north east, font=\scriptsize] at (-1.28,-0.09) {$-\sqrt3$};
+  \node[anchor=west,  font=\scriptsize] at (1.66,0) {$\operatorname{Re}$};
+  \node[anchor=east,  font=\scriptsize] at (-0.10,1.50) {$\operatorname{Im}$};
+  \draw[hair] (1.09,0.58) -- (1.62,0.92);
+  \node[anchor=west, font=\scriptsize] at (1.64,0.95) {$\det>0$};
+  \node[tag, anchor=north] at (-0.72,-0.05) {over $\R$};
+  \node[anchor=north, align=center, font=\scriptsize] at (0,-1.74)
+    {$\beta_{abc}=\beta_{ab}\beta_{bc}\beta_{ca}$ at the trine\\[1.5pt]
+     defect $\lvert\beta_{abc}\rvert^{2}
+       -(\operatorname{Re}\beta_{abc})^{2}=3$};
+\end{scope}
+
+% ============================ the table ==================================
+% Eight columns at -3.45, -0.39, 0.16, 0.76, 1.89, 3.11, 4.72, 6.67, set from
+% the measured cell widths; header at -4.45, six data rows 0.50 apart from -4.85,
+% rules at -4.63 and -7.63.  The pitch is set by the tallest cell, the icosahedral
+% -14/5 +- 54 sqrt5/25, whose ink runs 0.212cm either side of its row: 0.44 leaves
+% two such rows 0.4pt apart and puts the closing rule INSIDE the last row's
+% denominators, so 0.50 with the rule 0.28 clear of the last row.
+\begin{scope}[every node/.style={anchor=west, inner sep=1.5pt,
+                                 font=\scriptsize}]
+\node at (-3.45,-4.45) {design and triples};
+\node at (-0.39,-4.45) {$\FF$};
+\node at ( 0.16,-4.45) {$B$};
+\node at ( 0.76,-4.45) {$\lvert\beta_{abc}\rvert^{2}$};
+\node at ( 1.89,-4.45) {$\operatorname{Re}\beta_{abc}$};
+\node at ( 3.11,-4.45) {$(\operatorname{Im}\beta_{abc})^{2}$};
+\node at ( 4.72,-4.45) {$\det(\SC-I_3)$};
+\node at ( 6.67,-4.45) {how many};
+
+\node at (-3.45,-4.85) {trine $(6,3)$, mixed};
+\node at (-0.39,-4.85) {$\C$};
+\node at ( 0.16,-4.85) {$5$};
+\node at ( 0.76,-4.85) {$3$};
+\node at ( 1.89,-4.85) {$0$};
+\node at ( 3.11,-4.85) {$3$};
+\node at ( 4.72,-4.85) {$-2$};
+\node at ( 6.67,-4.85) {$18$ of $20$};
+
+\node at (-3.45,-5.35) {trine $(6,3)$, coplanar};
+\node at (-0.39,-5.35) {$\C$};
+\node at ( 0.16,-5.35) {$9$};
+\node at ( 0.76,-5.35) {$27$};
+\node at ( 1.89,-5.35) {$0$};
+\node at ( 3.11,-5.35) {$27$};
+\node at ( 4.72,-5.35) {$-10$};
+\node at ( 6.67,-5.35) {$2$ of $20$};
+
+\node at (-3.45,-5.85) {Hesse $(9,3)$, generic};
+\node at (-0.39,-5.85) {$\C$};
+\node at ( 0.16,-5.85) {$\tfrac{27}4$};
+\node at ( 0.76,-5.85) {$\tfrac{729}{64}$};
+\node at ( 1.89,-5.85) {$\tfrac{27}{16}$};
+\node at ( 3.11,-5.85) {$\tfrac{2187}{256}$};
+\node at ( 4.72,-5.85) {$-\tfrac{17}8$};
+\node at ( 6.67,-5.85) {$72$ of $84$};
+
+\node at (-3.45,-6.35) {Hesse $(9,3)$, on a line};
+\node at (-0.39,-6.35) {$\C$};
+\node at ( 0.16,-6.35) {$\tfrac{27}4$};
+\node at ( 0.76,-6.35) {$\tfrac{729}{64}$};
+\node at ( 1.89,-6.35) {$-\tfrac{27}8$};
+\node at ( 3.11,-6.35) {$0$};
+\node at ( 4.72,-6.35) {$-\tfrac{49}4$};
+\node at ( 6.67,-6.35) {$12$ of $84$};
+
+\node at (-3.45,-6.85) {icosahedron $(6,3)$};
+\node at (-0.39,-6.85) {$\R$};
+\node at ( 0.16,-6.85) {$\tfrac{27}5$};
+\node at ( 0.76,-6.85) {$\tfrac{729}{125}$};
+\node at ( 1.89,-6.85) {$\tfrac{27\sqrt5}{25}$};
+\node at ( 3.11,-6.85) {$0$};
+\node at ( 4.72,-6.85) {$-\tfrac{14}5+\tfrac{54\sqrt5}{25}$};
+\node at ( 6.67,-6.85) {$10$ of $20^{\dagger}$};
+
+\node at (-3.45,-7.35) {icosahedron $(6,3)$};
+\node at (-0.39,-7.35) {$\R$};
+\node at ( 0.16,-7.35) {$\tfrac{27}5$};
+\node at ( 0.76,-7.35) {$\tfrac{729}{125}$};
+\node at ( 1.89,-7.35) {$-\tfrac{27\sqrt5}{25}$};
+\node at ( 3.11,-7.35) {$0$};
+\node at ( 4.72,-7.35) {$-\tfrac{14}5-\tfrac{54\sqrt5}{25}$};
+\node at ( 6.67,-7.35) {$10$ of $20^{\dagger}$};
+\end{scope}
+\draw[hair] (-3.45,-4.63) -- (8.10,-4.63);
+\draw[hair] (-3.45,-7.63) -- (8.10,-7.63);
+\node[anchor=north west, align=left, text width=11.5cm, font=\scriptsize,
+      inner sep=1.5pt] at (-3.45,-7.70)
+  {$\det(\SC-I_3)=8-2B+2\operatorname{Re}\beta_{abc}$ in every row, and
+   $\lvert\beta_{abc}\rvert^{2}$ is the product of the three squared moduli.
+   Over $\R$ the last two columns lock together: the defect is $0$ and
+   $\operatorname{Re}\beta_{abc}=\pm\lvert\beta_{abc}\rvert$.
+   \ $^{\dagger}$~the two halves of the one count \S\ref{app:icosa} carries
+   without a theorem.};
+
+\end{tikzpicture}

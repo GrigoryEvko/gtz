@@ -1,77 +1,78 @@
 \contentsline {section}{\tocsection {}{1}{Introduction}}{3}{section.1}%
-\contentsline {subsection}{\tocsubsection {}{}{Tags}}{5}{section*.2}%
-\contentsline {subsection}{\tocsubsection {}{}{Notation}}{5}{section*.3}%
-\contentsline {section}{\tocsection {}{2}{Elementary cases}}{6}{section.2}%
-\contentsline {subsection}{\tocsubsection {}{2.1}{The objects}}{6}{subsection.2.1}%
-\contentsline {subsection}{\tocsubsection {}{2.2}{Three counting identities}}{7}{subsection.2.2}%
-\contentsline {subsection}{\tocsubsection {}{2.3}{The cases that close by counting}}{8}{subsection.2.3}%
-\contentsline {subsection}{\tocsubsection {}{2.4}{Where counting stops}}{8}{subsection.2.4}%
-\contentsline {subsection}{\tocsubsection {}{2.5}{The tetrahedron}}{9}{subsection.2.5}%
-\contentsline {section}{\tocsection {}{3}{The projection chart}}{10}{section.3}%
-\contentsline {subsection}{\tocsubsection {}{3.1}{Construction}}{11}{subsection.3.1}%
-\contentsline {subsection}{\tocsubsection {}{3.2}{The criterion}}{12}{subsection.3.2}%
-\contentsline {subsection}{\tocsubsection {}{3.3}{Inertia, and what it does not decide}}{13}{subsection.3.3}%
-\contentsline {subsection}{\tocsubsection {}{3.4}{Duality}}{14}{subsection.3.4}%
-\contentsline {subsection}{\tocsubsection {}{3.5}{Corank one}}{17}{subsection.3.5}%
-\contentsline {section}{\tocsection {}{4}{The complex problem}}{19}{section.4}%
-\contentsline {subsection}{\tocsubsection {}{4.1}{The value of a design}}{20}{subsection.4.1}%
-\contentsline {subsection}{\tocsubsection {}{4.2}{The positive half}}{21}{subsection.4.2}%
-\contentsline {subsection}{\tocsubsection {}{4.3}{The seed}}{21}{subsection.4.3}%
-\contentsline {subsection}{\tocsubsection {}{4.4}{Two padding operations}}{22}{subsection.4.4}%
-\contentsline {subsection}{\tocsubsection {}{4.5}{The ladder}}{24}{subsection.4.5}%
-\contentsline {subsection}{\tocsubsection {}{4.6}{The sharp constants}}{25}{subsection.4.6}%
-\contentsline {section}{\tocsection {}{5}{The real problem: decided cells}}{28}{section.5}%
-\contentsline {subsection}{\tocsubsection {}{5.1}{Deleting a light vector}}{29}{subsection.5.1}%
-\contentsline {subsection}{\tocsubsection {}{5.2}{Rank two}}{30}{subsection.5.2}%
-\contentsline {subsection}{\tocsubsection {}{5.3}{Corank at most two}}{33}{subsection.5.3}%
-\contentsline {subsection}{\tocsubsection {}{5.4}{Crystallization}}{34}{subsection.5.4}%
-\contentsline {subsection}{\tocsubsection {}{5.5}{Monotonicity in the size}}{35}{subsection.5.5}%
-\contentsline {subsection}{\tocsubsection {}{5.6}{Rank three}}{36}{subsection.5.6}%
-\contentsline {section}{\tocsection {}{6}{The equality locus}}{37}{section.6}%
-\contentsline {subsection}{\tocsubsection {}{6.1}{Extremal designs}}{38}{subsection.6.1}%
-\contentsline {subsection}{\tocsubsection {}{6.2}{Splitting, and existence at every size}}{38}{subsection.6.2}%
-\contentsline {subsection}{\tocsubsection {}{6.3}{No margin}}{40}{subsection.6.3}%
-\contentsline {subsection}{\tocsubsection {}{6.4}{The diamond}}{41}{subsection.6.4}%
-\contentsline {subsection}{\tocsubsection {}{6.5}{Volume sampling}}{43}{subsection.6.5}%
-\contentsline {section}{\tocsection {}{7}{A variational principle}}{46}{section.7}%
-\contentsline {subsection}{\tocsubsection {}{7.1}{The compactification}}{47}{subsection.7.1}%
-\contentsline {subsection}{\tocsubsection {}{7.2}{The boundary}}{50}{subsection.7.2}%
-\contentsline {subsubsection}{\tocsubsubsection {}{}{Case A: the atom vanishes}}{50}{section*.4}%
-\contentsline {subsubsection}{\tocsubsubsection {}{}{Case B: the direction escapes}}{51}{section*.5}%
-\contentsline {subsubsection}{\tocsubsubsection {}{}{The dichotomy}}{52}{section*.6}%
-\contentsline {subsection}{\tocsubsection {}{7.3}{The principle}}{52}{subsection.7.3}%
-\contentsline {subsection}{\tocsubsection {}{7.4}{Sharpness of the boundary step}}{54}{subsection.7.4}%
-\contentsline {section}{\tocsection {}{8}{Interior critical points}}{56}{section.8}%
-\contentsline {subsection}{\tocsubsection {}{8.1}{The design manifold}}{57}{subsection.8.1}%
-\contentsline {subsection}{\tocsubsection {}{8.2}{The first-order system}}{58}{subsection.8.2}%
-\contentsline {subsection}{\tocsubsection {}{8.3}{Stationarity data}}{59}{subsection.8.3}%
-\contentsline {subsection}{\tocsubsection {}{8.4}{The quadric law and the coverage law}}{60}{subsection.8.4}%
-\contentsline {subsection}{\tocsubsection {}{8.5}{The tetrahedron}}{62}{subsection.8.5}%
-\contentsline {subsection}{\tocsubsection {}{8.6}{Exclusions}}{63}{subsection.8.6}%
-\contentsline {subsection}{\tocsubsection {}{8.7}{The reach of the system}}{65}{subsection.8.7}%
-\contentsline {subsection}{\tocsubsection {}{8.8}{The residue}}{67}{subsection.8.8}%
-\contentsline {section}{\tocsection {}{9}{Formalization}}{69}{section.9}%
-\contentsline {subsection}{\tocsubsection {}{9.1}{What is formalized}}{69}{subsection.9.1}%
-\contentsline {subsection}{\tocsubsection {}{9.2}{Axiom discipline}}{73}{subsection.9.2}%
-\contentsline {subsection}{\tocsubsection {}{9.3}{Where the formalization stops}}{73}{subsection.9.3}%
-\contentsline {section}{\tocsection {}{10}{Problems}}{75}{section.10}%
-\contentsline {section}{\tocsection {Appendix}{A}{Strategies excluded, with witnesses}}{78}{section.A}%
-\contentsline {subsection}{\tocsubsection {}{A.1}{Certificates with a uniform floor}}{78}{subsection.A.1}%
-\contentsline {subsection}{\tocsubsection {}{A.2}{Margin transfer across a deletion}}{80}{subsection.A.2}%
-\contentsline {subsection}{\tocsubsection {}{A.3}{Restricting the region}}{80}{subsection.A.3}%
-\contentsline {subsection}{\tocsubsection {}{A.4}{The compression lift at positive weight}}{81}{subsection.A.4}%
-\contentsline {subsection}{\tocsubsection {}{A.5}{Real-rootedness of the mixture}}{81}{subsection.A.5}%
-\contentsline {subsection}{\tocsubsection {}{A.6}{Two moments}}{81}{subsection.A.6}%
-\contentsline {subsection}{\tocsubsection {}{A.7}{Structure inherited from smaller sizes}}{82}{subsection.A.7}%
-\contentsline {subsection}{\tocsubsection {}{A.8}{Maximal volume at general weights}}{83}{subsection.A.8}%
-\contentsline {subsection}{\tocsubsection {}{A.9}{Bounded-radius exchange}}{83}{subsection.A.9}%
-\contentsline {subsection}{\tocsubsection {}{A.10}{Conditioning}}{83}{subsection.A.10}%
-\contentsline {section}{\tocsection {Appendix}{B}{Exact data}}{84}{section.B}%
-\contentsline {subsection}{\tocsubsection {}{B.1}{The tetrahedron at $(4,3)$}}{84}{subsection.B.1}%
-\contentsline {subsection}{\tocsubsection {}{B.2}{The corank-one extremal family}}{85}{subsection.B.2}%
-\contentsline {subsection}{\tocsubsection {}{B.3}{The chart point of \S \ref {sec:sharp}}}{85}{subsection.B.3}%
-\contentsline {subsection}{\tocsubsection {}{B.4}{Graphic designs, and the diamond at $(5,3)$}}{86}{subsection.B.4}%
-\contentsline {subsection}{\tocsubsection {}{B.5}{Split families at $(6,3)$ and $(7,3)$}}{88}{subsection.B.5}%
-\contentsline {subsection}{\tocsubsection {}{B.6}{The icosahedral design at $(6,3)$}}{89}{subsection.B.6}%
-\contentsline {subsection}{\tocsubsection {}{B.7}{Active-family census at $(6,3)$ and $(7,3)$}}{89}{subsection.B.7}%
-\contentsline {section}{\tocsection {Appendix}{}{References}}{90}{section*.7}%
+\contentsline {subsection}{\tocsubsection {}{}{Tags}}{6}{section*.2}%
+\contentsline {subsection}{\tocsubsection {}{}{Notation}}{6}{section*.3}%
+\contentsline {section}{\tocsection {}{2}{Elementary cases}}{7}{section.2}%
+\contentsline {subsection}{\tocsubsection {}{2.1}{The objects}}{7}{subsection.2.1}%
+\contentsline {subsection}{\tocsubsection {}{2.2}{Three counting identities}}{9}{subsection.2.2}%
+\contentsline {subsection}{\tocsubsection {}{2.3}{The cases that close by counting}}{9}{subsection.2.3}%
+\contentsline {subsection}{\tocsubsection {}{2.4}{Where counting stops}}{10}{subsection.2.4}%
+\contentsline {subsection}{\tocsubsection {}{2.5}{The tetrahedron}}{11}{subsection.2.5}%
+\contentsline {section}{\tocsection {}{3}{The projection chart}}{13}{section.3}%
+\contentsline {subsection}{\tocsubsection {}{3.1}{Construction}}{14}{subsection.3.1}%
+\contentsline {subsection}{\tocsubsection {}{3.2}{The criterion}}{15}{subsection.3.2}%
+\contentsline {subsection}{\tocsubsection {}{3.3}{Inertia, and what it does not decide}}{18}{subsection.3.3}%
+\contentsline {subsection}{\tocsubsection {}{3.4}{Duality}}{20}{subsection.3.4}%
+\contentsline {subsection}{\tocsubsection {}{3.5}{Corank one}}{24}{subsection.3.5}%
+\contentsline {section}{\tocsection {}{4}{The complex problem}}{27}{section.4}%
+\contentsline {subsection}{\tocsubsection {}{4.1}{The value of a design}}{27}{subsection.4.1}%
+\contentsline {subsection}{\tocsubsection {}{4.2}{The positive half}}{28}{subsection.4.2}%
+\contentsline {subsection}{\tocsubsection {}{4.3}{The seed}}{29}{subsection.4.3}%
+\contentsline {subsection}{\tocsubsection {}{4.4}{Two padding operations}}{30}{subsection.4.4}%
+\contentsline {subsection}{\tocsubsection {}{4.5}{The ladder}}{31}{subsection.4.5}%
+\contentsline {subsection}{\tocsubsection {}{4.6}{The sharp constants}}{33}{subsection.4.6}%
+\contentsline {section}{\tocsection {}{5}{The real problem: decided cells}}{37}{section.5}%
+\contentsline {subsection}{\tocsubsection {}{5.1}{Deleting a light vector}}{38}{subsection.5.1}%
+\contentsline {subsection}{\tocsubsection {}{5.2}{Rank two}}{40}{subsection.5.2}%
+\contentsline {subsection}{\tocsubsection {}{5.3}{Corank at most two}}{45}{subsection.5.3}%
+\contentsline {subsection}{\tocsubsection {}{5.4}{Crystallization}}{46}{subsection.5.4}%
+\contentsline {subsection}{\tocsubsection {}{5.5}{Monotonicity in the size}}{48}{subsection.5.5}%
+\contentsline {subsection}{\tocsubsection {}{5.6}{Rank three}}{48}{subsection.5.6}%
+\contentsline {section}{\tocsection {}{6}{The equality locus}}{49}{section.6}%
+\contentsline {subsection}{\tocsubsection {}{6.1}{Extremal designs}}{49}{subsection.6.1}%
+\contentsline {subsection}{\tocsubsection {}{6.2}{Splitting, and existence at every size}}{50}{subsection.6.2}%
+\contentsline {subsection}{\tocsubsection {}{6.3}{No margin}}{52}{subsection.6.3}%
+\contentsline {subsection}{\tocsubsection {}{6.4}{The diamond}}{53}{subsection.6.4}%
+\contentsline {subsection}{\tocsubsection {}{6.5}{Volume sampling}}{56}{subsection.6.5}%
+\contentsline {section}{\tocsection {}{7}{A variational principle}}{60}{section.7}%
+\contentsline {subsection}{\tocsubsection {}{7.1}{The compactification}}{60}{subsection.7.1}%
+\contentsline {subsection}{\tocsubsection {}{7.2}{The two objectives}}{63}{subsection.7.2}%
+\contentsline {subsection}{\tocsubsection {}{7.3}{The boundary}}{65}{subsection.7.3}%
+\contentsline {subsubsection}{\tocsubsubsection {}{}{Case A: the atom vanishes}}{66}{section*.4}%
+\contentsline {subsubsection}{\tocsubsubsection {}{}{Case B: the direction escapes}}{66}{section*.5}%
+\contentsline {subsubsection}{\tocsubsubsection {}{}{The dichotomy}}{67}{section*.6}%
+\contentsline {subsection}{\tocsubsection {}{7.4}{The principle}}{68}{subsection.7.4}%
+\contentsline {subsection}{\tocsubsection {}{7.5}{Sharpness of the boundary step}}{69}{subsection.7.5}%
+\contentsline {section}{\tocsection {}{8}{Interior critical points}}{71}{section.8}%
+\contentsline {subsection}{\tocsubsection {}{8.1}{The design manifold}}{73}{subsection.8.1}%
+\contentsline {subsection}{\tocsubsection {}{8.2}{The tetrahedron}}{74}{subsection.8.2}%
+\contentsline {subsection}{\tocsubsection {}{8.3}{The first-order system}}{75}{subsection.8.3}%
+\contentsline {subsection}{\tocsubsection {}{8.4}{Stationarity data}}{76}{subsection.8.4}%
+\contentsline {subsection}{\tocsubsection {}{8.5}{The quadric law and the coverage law}}{77}{subsection.8.5}%
+\contentsline {subsection}{\tocsubsection {}{8.6}{Exclusions}}{80}{subsection.8.6}%
+\contentsline {subsection}{\tocsubsection {}{8.7}{The reach of the system}}{83}{subsection.8.7}%
+\contentsline {subsection}{\tocsubsection {}{8.8}{The residue}}{84}{subsection.8.8}%
+\contentsline {section}{\tocsection {}{9}{Formalization}}{88}{section.9}%
+\contentsline {subsection}{\tocsubsection {}{9.1}{What is formalized}}{88}{subsection.9.1}%
+\contentsline {subsection}{\tocsubsection {}{9.2}{Axiom discipline}}{91}{subsection.9.2}%
+\contentsline {subsection}{\tocsubsection {}{9.3}{Where the formalization stops}}{91}{subsection.9.3}%
+\contentsline {section}{\tocsection {}{10}{Problems}}{93}{section.10}%
+\contentsline {section}{\tocsection {Appendix}{A}{Strategies excluded, with witnesses}}{96}{section.A}%
+\contentsline {subsection}{\tocsubsection {}{A.1}{Certificates with a uniform floor}}{97}{subsection.A.1}%
+\contentsline {subsection}{\tocsubsection {}{A.2}{Margin transfer across a deletion}}{99}{subsection.A.2}%
+\contentsline {subsection}{\tocsubsection {}{A.3}{Restricting the region}}{100}{subsection.A.3}%
+\contentsline {subsection}{\tocsubsection {}{A.4}{The compression lift at positive weight}}{100}{subsection.A.4}%
+\contentsline {subsection}{\tocsubsection {}{A.5}{Real-rootedness of the mixture}}{100}{subsection.A.5}%
+\contentsline {subsection}{\tocsubsection {}{A.6}{Two moments}}{100}{subsection.A.6}%
+\contentsline {subsection}{\tocsubsection {}{A.7}{Structure inherited from smaller sizes}}{102}{subsection.A.7}%
+\contentsline {subsection}{\tocsubsection {}{A.8}{Maximal volume at general weights}}{102}{subsection.A.8}%
+\contentsline {subsection}{\tocsubsection {}{A.9}{Bounded-radius exchange}}{102}{subsection.A.9}%
+\contentsline {subsection}{\tocsubsection {}{A.10}{Conditioning}}{103}{subsection.A.10}%
+\contentsline {section}{\tocsection {Appendix}{B}{Exact data}}{104}{section.B}%
+\contentsline {subsection}{\tocsubsection {}{B.1}{The tetrahedron at $(4,3)$}}{104}{subsection.B.1}%
+\contentsline {subsection}{\tocsubsection {}{B.2}{The corank-one extremal family}}{105}{subsection.B.2}%
+\contentsline {subsection}{\tocsubsection {}{B.3}{The chart point of \S \ref {sec:sharp}}}{105}{subsection.B.3}%
+\contentsline {subsection}{\tocsubsection {}{B.4}{Graphic designs, and the diamond at $(5,3)$}}{106}{subsection.B.4}%
+\contentsline {subsection}{\tocsubsection {}{B.5}{Split families at $(6,3)$ and $(7,3)$}}{109}{subsection.B.5}%
+\contentsline {subsection}{\tocsubsection {}{B.6}{The icosahedral design at $(6,3)$}}{109}{subsection.B.6}%
+\contentsline {subsection}{\tocsubsection {}{B.7}{Active-family census at $(6,3)$ and $(7,3)$}}{111}{subsection.B.7}%
+\contentsline {section}{\tocsection {Appendix}{}{References}}{111}{section*.7}%

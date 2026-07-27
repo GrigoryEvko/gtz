@@ -1,0 +1,118 @@
+% The twenty triples of the octahedral design of Example ex:octa at (6,3), on
+% one eigenvalue axis, with the invariants that separate them and the one that
+% does not.
+%
+% There is no projection: the drawing is a number line.  Two scales sit on the
+% one axis.  The eigenvalue lambda of S_C is drawn at abscissa 0.62 lambda cm,
+% lambda from 0 to 6, and coincident eigenvalues are stacked 0.16cm apart.  The
+% second scale below the first is the chart gap, at (lambda - 1)/6; it is
+% affine in the first, so the same dots read in both, and the level lambda = 1
+% is the level 0 of the gap.
+%
+% DESIGN DATA (Example ex:octa; Gtz.balancedOctahedronDesign).  Atoms
+% g_0 = +sqrt3 e_1, g_1 = -sqrt3 e_1, g_2 = +sqrt3 e_2, g_3 = -sqrt3 e_2,
+% g_4 = +sqrt3 e_3, g_5 = -sqrt3 e_3 at t_c = 1/6.  Parseval holds over the
+% rationals, sum_c t_c g_c g_c^T = (1/6)(3)(2) sum_i e_i e_i^T = I_3, and
+% ell_c = 3, s_c = 1/2, sum_c s_c = 3 = k.
+%
+% THE TWO CLASSES.  A triple either takes one atom from each of the three
+% antipodal pairs, which is 2*2*2 = 8 triples, or it takes both atoms of one
+% pair and one of the remaining four, which is 3*4 = 12; the two counts sum to
+% binom(6,3) = 20.  In the first case S_C = 3(e_1e_1^T + e_2e_2^T + e_3e_3^T)
+% = 3 I_3 whatever the signs, so spec S_C = {3,3,3} and det S_C = 27.  In the
+% second S_C = 6 e_ie_i^T + 3 e_je_j^T with i the repeated axis and j the other
+% one, a permutation of diag(6,3,0), so spec S_C = {0,3,6} and det S_C = 0.
+% Both classes have trace 9.
+%
+% THE CHART, AS A CROSS-CHECK.  v_c = sqrt(t_c) g_c = (1/sqrt2)(+-e_i), so
+% V^T V = I_3 and P = V V^T is block diagonal with three copies of
+% [[1/2,-1/2],[-1/2,1/2]], one per antipodal pair.  Hence P_cc = s_c = 1/2 and
+% tr P = 3 = k.  With D = I_6/6 the gap W = P - D has diagonal 1/3.  For
+% |C| = k the matrices S_C and Gram_C are similar, and the congruence of
+% Lemma lem:congruence reads W[C] = (1/6)(Gram_C - I_3) at uniform weight 1/6, so
+% spec W[C] = (spec S_C - 1)/6 entry by entry: {1/3,1/3,1/3} against
+% {-1/6,1/3,5/6}.  Corollary cor:minor gives the determinants a second way:
+% det W[C] = (prod_{c in C} t_c) det(Gram_C - I_3) = (1/216)(8) = 1/27 in the
+% first class and (1/216)(-10) = -5/108 in the second.  Volume sampling agrees
+% as well: pi_C = det P[C] is (1/2)^3 = 1/8 on a triple with three distinct
+% axes and 0 on one carrying an antipodal pair, and 8(1/8) + 12(0) = 1, which
+% is the Cauchy-Binet normalization.
+%
+% DISCLOSED.  Mechanized: the design, its leverages, and that {0,2,4}
+% dominates, the proof establishing S_C - I_3 = diag(2,2,2)
+% (Gtz.balancedOctahedronDesign, Gtz.leverageOf_balancedOctahedronDesign,
+% Gtz.dominates_balancedOctahedronDesign_coordinateTriple).  NOT mechanized:
+% the census -- neither count, neither spectrum, no determinant and no pi_C has
+% a declaration, and no instantiation of Gtz.not_dominates_of_parallel at this
+% design exists.  Every entry below is exact rational arithmetic carried out
+% outside the assistant.  Example ex:octa carries no Lean tag and this figure
+% claims none.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  axisl/.style ={line width=0.5pt, black!70},
+  thr/.style   ={line width=0.5pt, dashed, dash pattern=on 1.7pt off 1.5pt},
+  hair/.style  ={line width=0.4pt, black!45},
+  every node/.style={font=\small}]
+
+% ---- the eigenvalue axis, 0.62cm per unit -------------------------------
+\draw[axisl] (-0.16,0)--(3.90,0);
+\foreach \lev in {0,1,2,3,4,5,6}{
+  \pgfmathsetmacro{\xx}{0.62*\lev}
+  \draw[line width=0.5pt] (\xx,0)--(\xx,-0.08);
+  \node[anchor=north, font=\footnotesize, inner sep=2pt] at (\xx,-0.08)
+    {\lev};}
+\draw[thr] (0.62,-0.14)--(0.62,2.60);
+\node[anchor=west, font=\footnotesize] at (0.70,2.52) {the threshold $1$};
+\node[anchor=south, font=\small] at (2.48,2.78) {$\operatorname{spec}\SC$};
+
+% ---- the second scale: the chart gap, at (lambda - 1)/6 -----------------
+\draw[hair] (-0.16,-0.52)--(3.90,-0.52);
+\foreach \xx/\val in {0/{-\tfrac16}, 0.62/{0}, 1.86/{\tfrac13}, 3.72/{\tfrac56}}{
+  \draw[line width=0.4pt, black!45] (\xx,-0.52)--(\xx,-0.44);
+  \node[anchor=north, font=\scriptsize, inner sep=2pt] at (\xx,-0.60)
+    {$\val$};}
+\node[anchor=west, font=\footnotesize] at (4.00,-0.52)
+  {$\operatorname{spec}W[C]=\tfrac16(\operatorname{spec}\SC-1)$};
+
+% ---- eight triples with one atom from each antipodal pair ---------------
+\fill[black] (1.86,1.94) circle (1.7pt);   % lambda = 3
+\fill[black] (1.86,2.10) circle (1.7pt);   % lambda = 3
+\fill[black] (1.86,2.26) circle (1.7pt);   % lambda = 3
+\node[anchor=east, align=right, font=\footnotesize, inner sep=0pt]
+  at (-0.30,2.10) {eight triples, one atom\\[2pt] per axis pair:
+   \ $\SC=3I_3$};
+\node[anchor=west, font=\footnotesize] at (4.00,2.10) {$\tr\SC=9$};
+
+% ---- twelve triples repeating an axis -----------------------------------
+\fill[black!55] (0.00,1.10) circle (1.7pt);   % lambda = 0
+\fill[black!55] (1.86,1.10) circle (1.7pt);   % lambda = 3
+\fill[black!55] (3.72,1.10) circle (1.7pt);   % lambda = 6
+\node[anchor=east, align=right, font=\footnotesize, inner sep=0pt]
+  at (-0.30,1.10) {twelve triples, an axis\\[2pt] repeated:
+   \ $\det\SC=0$};
+\node[anchor=west, font=\footnotesize] at (4.00,1.10) {$\tr\SC=9$};
+
+% ---- the invariants, and the counts -------------------------------------
+\node[anchor=north, inner sep=0pt, font=\scriptsize] at (1.86,-1.30)
+  {\begin{tabular}{@{}l@{\hspace{1.3em}}c@{\hspace{1.3em}}c@{\hspace{1.3em}}c@{\hspace{1.3em}}c@{\hspace{1.3em}}c@{}}
+   \toprule
+   class & count & $\operatorname{spec}\SC$ & $\operatorname{spec}W[C]$
+     & $\det W[C]$ & $\pi_C=\det P[C]$\\
+   \midrule
+   one atom per axis pair & $2\cdot2\cdot2=8$ & $\{3,3,3\}$
+     & $\{\tfrac13,\tfrac13,\tfrac13\}$ & $\tfrac1{27}$ & $\tfrac18$\\[1.5pt]
+   an axis repeated & $3\cdot4=12$ & $\{0,3,6\}$
+     & $\{-\tfrac16,\tfrac13,\tfrac56\}$ & $-\tfrac5{108}$ & $0$\\
+   \bottomrule
+   \end{tabular}};
+
+\node[anchor=north, align=center, font=\footnotesize] at (1.86,-2.90)
+  {$P$ is block diagonal with three copies of
+   $\begin{psmallmatrix}\ \ \tfrac12&-\tfrac12\\[1pt]-\tfrac12&\ \ \tfrac12
+   \end{psmallmatrix}$, one per antipodal pair, so $s_c=\tfrac12$ and
+   $\tr P=3$\\[2.5pt]
+   Corollary~\ref{cor:minor} returns the determinants as
+   $\bigl(\tfrac16\bigr)^{3}\det(\Gram_C-I_3)=\tfrac8{216}$ and
+   $-\tfrac{10}{216}$, \quad and $\sum_C\pi_C=8\cdot\tfrac18=1$};
+
+\end{tikzpicture}

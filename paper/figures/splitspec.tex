@@ -1,0 +1,145 @@
+% The split tetrahedron at (7,3), and the spectra of all thirty-five of its
+% triples.  Three flat panels, no projection; the one scale is the eigenvalue
+% axis, which carries one unit at 0.62cm, so the eigenvalue lam sits at abscissa
+% 0.62 lam.  The class diagram sits above the axis and the count table is
+% shifted by 7.00cm.
+%
+% DESIGN DATA (Example ex:split, Appendix app:split).  Seven atoms carrying the
+% four tetrahedron directions h_0 = (1,1,1), h_1 = (1,-1,-1), h_2 = (-1,1,-1),
+% h_3 = (-1,-1,1) in the pattern (0,1,2,3,0,1,2), with weights
+% (1/8, 1/8, 1/8, 1/4, 1/8, 1/8, 1/8).  Each direction then carries class total
+% 1/4, so sum_c t_c g_c g_c^T = (1/4) sum_d h_d h_d^T = (1/4).4 I_3 = I_3 over
+% the rationals; every leverage is |h_d|^2 = 3 and sum_c t_c ell_c = 3 = k.
+%
+% THE TWO SPECTRA.  A triple meeting three distinct directions and missing h_d
+% has S_C = 4 I_3 - h_d h_d^T, of spectrum {1,4,4} since |h_d|^2 = 3.  A triple
+% repeating a direction carries two copies of one h_d and one h_e, so
+% S_C = 2 h_d h_d^T + h_e h_e^T, which is 0 on the orthogonal complement of
+% span(h_d,h_e) and, in the basis (h_d,h_e) with |h_d|^2 = |h_e|^2 = 3 and
+% <h_d,h_e> = -1, is [[6,-2],[-1,3]] of trace 9 and determinant 16.  Its
+% eigenvalues are the roots of lam^2 - 9 lam + 16, so
+%   spec S_C = {0, (9 - sqrt17)/2, (9 + sqrt17)/2}
+%            = {0, 2.4384471871..., 6.5615528128...},
+% truncations of the exact values; the two nonzero ones sit at abscissa 1.5118
+% and 4.0682.  Both rows have tr S_C = 9, three leverages of 3.
+%
+% The symmetric functions printed under the table are those of Gram_C - I_3, the
+% matrix with the heavy excesses ell_c - 1 = 2 on the diagonal and the pairings
+% <g_c,g_d> off it; since M_C is square, Gram_C = M_C M_C^T and S_C = M_C^T M_C
+% are cospectral, so they are also the symmetric functions of S_C - I_3.  At a
+% rainbow triple the three are (6, 9, 0), whence lam(lam-3)^2 and the gap
+% spectrum {0,3,3}; at a repeating one (6, 1, -8), whence
+% lam^3 - 6 lam^2 + lam + 8, of roots -1 and (7 -+ sqrt17)/2, which is the lower
+% row of the axis -- the repeating spectrum itself -- shifted by one.
+%
+% THE COUNT.  With direction multiplicities (2,2,2,1), the triples meeting three
+% distinct directions number e_3(2,2,2,1) = 2.2.2 + 2.2.1 + 2.2.1 + 2.2.1
+% = 8 + 4 + 4 + 4 = 20, one summand per choice of three directions, and the
+% direction left out is the one the triple misses.  The other 15 = 35 - 20
+% choose the doubled direction in 3 ways and the remaining atom in 5.
+%
+% DISCLOSED: the design, its leverages, its extremality, the classification of
+% the dominating triples as the rainbow ones, the counts 35, 20, 15, the three
+% symmetric functions (6, 9, 0) of Gram_C - I at a rainbow triple with the
+% factorisation lam(lam-3)^2, and the multiplier column together with its
+% stationarity datum at value 1 and Lambda = I/3, are all kernel-checked
+% (Gtz.splitSevenDesign_leverage, Gtz.splitSevenDesign_isTie,
+% Gtz.splitSevenDesign_dominates_iff_rainbowDirections,
+% Gtz.rainbowTriplesSeven_card, Gtz.repeatedTriplesSeven_card,
+% Gtz.splitSevenDesign_gapCharPoly_of_rainbowDirections,
+% Gtz.splitSevenDesign_isQuadricStationaryData).  The lower row is NOT: of the
+% three symmetric functions (6, 1, -8) of Gram_C - I at a repeating triple the
+% development carries the first (Gtz.splitSevenDesign_excessSum, which has no
+% rainbow hypothesis) and the last
+% (Gtz.splitSevenDesign_discriminantTie_of_repeatedDirection), and the spectrum
+% {0, (9 -+ sqrt17)/2} drawn here is computed in exact arithmetic outside it.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  box/.style={draw, line width=0.5pt, fill=black!7},
+  thresh/.style={dashed, dash pattern=on 1.9pt off 1.6pt, line width=0.55pt,
+                 black!60},
+  rule/.style={line width=0.4pt, black!45},
+  every node/.style={font=\small}]
+
+% ==================== the four direction classes ==========================
+% column j at X = 1.20 j; the split classes carry two boxes, the unsplit one a
+% single box of both heights
+\foreach \col/\atomtop/\atombot in {0/0/4, 1/1/5, 2/2/6}{%
+  \pgfmathsetmacro{\cx}{1.20*\col}
+  \draw[box] (\cx,3.04) rectangle (\cx+1.00,3.40);
+  \node[font=\scriptsize] at (\cx+0.50,3.22) {$\atomtop$: $\tfrac18$};
+  \draw[box] (\cx,2.60) rectangle (\cx+1.00,2.96);
+  \node[font=\scriptsize] at (\cx+0.50,2.78) {$\atombot$: $\tfrac18$};}
+\draw[box] (3.60,2.60) rectangle (4.60,3.40);
+\node[font=\scriptsize] at (4.10,3.00) {$3$: $\tfrac14$};
+
+\foreach \col/\dir in {0/0, 1/1, 2/2, 3/3}{%
+  \pgfmathsetmacro{\cx}{1.20*\col+0.50}
+  \node[anchor=south, font=\footnotesize] at (\cx,3.46) {$h_{\dir}$};
+  \node[anchor=north, font=\footnotesize] at (\cx,2.54) {$\tfrac14$};}
+\node[anchor=west, font=\footnotesize] at (4.80,2.40) {class totals};
+\node[anchor=north west, font=\footnotesize] at (0,2.06)
+  {$m=7$, \ $k=3$, \ every $\ell_c=3$, \ $\sum_ct_c\ell_c=3$};
+
+% ==================== the eigenvalue axis ================================
+\draw[line width=0.5pt, black!70] (-0.10,0) -- (4.62,0);
+\foreach \lev in {0,1,2,3,4,5,6,7}{%
+  \pgfmathsetmacro{\xx}{0.62*\lev}
+  \draw[line width=0.5pt] (\xx,0) -- (\xx,-0.07);
+  \node[anchor=north, font=\footnotesize, inner sep=2pt] at (\xx,-0.07) {\lev};}
+\draw[thresh] (0.62,0) -- (0.62,1.37);
+
+% ---- the twenty triples of three distinct directions: {1,4,4} -----------
+\fill[black] (0.62,1.15) circle (1.7pt);
+\fill[black] (2.48,1.07) circle (1.7pt);
+\fill[black] (2.48,1.23) circle (1.7pt);
+\node[anchor=west, font=\footnotesize] at (4.72,1.15) {$20$ rainbow};
+
+% ---- the fifteen that repeat a direction: {0, (9-+sqrt17)/2} ------------
+\fill[black!55] (0.0000,0.52) circle (1.7pt);
+\fill[black!55] (1.5118,0.52) circle (1.7pt);   % 0.62 (9 - sqrt17)/2
+\fill[black!55] (4.0682,0.52) circle (1.7pt);   % 0.62 (9 + sqrt17)/2
+\node[anchor=west, font=\footnotesize] at (4.72,0.52) {$15$ repeats};
+
+\node[anchor=north west, align=left, font=\footnotesize, inner sep=0pt]
+  at (-0.15,-0.62)
+  {rainbow: \ $\SC=4I_3-h_d^{\vphantom{\mathsf{T}}}h_d\tp$, \
+    $\lVert h_d\rVert^{2}=3$\\[3pt]
+   repeat: \ $\SC=2h_d^{\vphantom{\mathsf{T}}}h_d\tp
+     +h_e^{\vphantom{\mathsf{T}}}h_e\tp$, \
+    $\langle h_d,h_e\rangle=-1$\\[3pt]
+   $\tr\SC=9$ at all thirty-five};
+
+% ==================== the count, and the multipliers =====================
+\begin{scope}[shift={(7.00,0)}, every node/.style={font=\footnotesize}]
+\node[anchor=west] at (0.00,3.30) {directions};
+\node[anchor=west] at (1.80,3.30) {atoms};
+\node[anchor=west] at (3.60,3.30) {misses};
+\node[anchor=west] at (4.80,3.30) {$\lambda_C$};
+\draw[rule] (0.00,3.12)--(5.30,3.12);
+
+\foreach \rowy/\dirs/\atomcount/\misseddir/\mult in {%
+  2.86/{h_0h_1h_2}/{2\cdot2\cdot2=8}/{h_3}/{\tfrac1{32}},
+  2.42/{h_0h_1h_3}/{2\cdot2\cdot1=4}/{h_2}/{\tfrac1{16}},
+  1.98/{h_0h_2h_3}/{2\cdot2\cdot1=4}/{h_1}/{\tfrac1{16}},
+  1.54/{h_1h_2h_3}/{2\cdot2\cdot1=4}/{h_0}/{\tfrac1{16}}}{%
+  \node[anchor=west] at (0.00,\rowy) {$\dirs$};
+  \node[anchor=west] at (1.80,\rowy) {$\atomcount$};
+  \node[anchor=west] at (3.60,\rowy) {$\misseddir$};
+  \node[anchor=west] at (4.80,\rowy) {$\mult$};}
+
+\draw[rule] (0.00,1.32)--(5.30,1.32);
+\node[anchor=west] at (0.00,1.08) {$e_3(2,2,2,1)$};
+\node[anchor=west] at (1.80,1.08) {$20$};
+\node[anchor=west] at (4.80,1.08) {$1$};
+
+\node[anchor=north west, align=left, inner sep=0pt] at (0.00,0.66)
+  {a repeated direction: \ $3\cdot5=15$, \ and $20+15=35$\\[3pt]
+   tight direction $u_C=h_d/\sqrt3$ at $\cv=1$, \
+   $\Lambda=\tfrac13I_3$\\[6pt]
+   $\SC-I_3$, symmetric functions and charpoly\\[3pt]
+   \quad rainbow \ $(6,9,0)$: \ $\lambda(\lambda-3)^{2}$\\[3pt]
+   \quad repeat \ \ $(6,1,-8)$: \ $\lambda^{3}-6\lambda^{2}+\lambda+8$};
+\end{scope}
+
+\end{tikzpicture}

@@ -10,7 +10,6 @@
 \newlabel{sec:intro}{{1}{3}{Introduction}{section.1}{}}
 \newlabel{eq:parseval}{{1}{3}{Introduction}{equation.1}{}}
 \newlabel{eq:dominate}{{2}{3}{Introduction}{equation.2}{}}
-\newlabel{eq:deficit}{{3}{3}{Introduction}{equation.3}{}}
 \citation{Nesterenko2023}
 \citation{Nesterenko2024}
 \citation{SenguptaPautov2026}
@@ -22,499 +21,558 @@
 \citation{MSS2022}
 \citation{CivrilMagdonIsmail2009}
 \citation{GuEisenstat1996}
+\newlabel{eq:deficit}{{3}{4}{Introduction}{equation.3}{}}
 \newlabel{eq:elementary}{{4}{4}{Introduction}{equation.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{}{Tags}}{5}{section*.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{}{Notation}}{5}{section*.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The decision board. Rows are the rank $k$, columns the size $m$; cells with $m<k$ carry no design. Over $\mathbb  {R}$ the two open cells at rank three are $(6,3)$ and $(7,3)$; the hatched region reduces to them by Theorem\nonbreakingspace \ref {thm:window} and Corollary\nonbreakingspace \ref {cor:dualcell}. Over $\mathbb  {C}$ the answer is $m\le k+1$ for every $k\ge 2$.}}{6}{figure.1}\protected@file@percent }
-\newlabel{fig:board}{{1}{6}{The decision board. Rows are the rank $k$, columns the size $m$; cells with $m<k$ carry no design. Over $\R $ the two open cells at rank three are $(6,3)$ and $(7,3)$; the hatched region reduces to them by Theorem~\ref {thm:window} and Corollary~\ref {cor:dualcell}. Over $\C $ the answer is $m\le k+1$ for every $k\ge 2$}{figure.1}{}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{2}{Elementary cases}}{6}{section.2}\protected@file@percent }
-\newlabel{sec:first}{{2}{6}{Elementary cases}{section.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{2.1}{The objects}}{6}{subsection.2.1}\protected@file@percent }
-\newlabel{def:design}{{2.1}{6}{}{theorem.2.1}{}}
-\newlabel{lem:span}{{2.2}{7}{Lean}{theorem.2.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{2.2}{Three counting identities}}{7}{subsection.2.2}\protected@file@percent }
-\newlabel{lem:trace}{{2.3}{7}{Lean}{theorem.2.3}{}}
-\newlabel{lem:share}{{2.4}{7}{Lean}{theorem.2.4}{}}
-\newlabel{eq:erased}{{5}{7}{Three counting identities}{equation.5}{}}
-\newlabel{lem:coparseval}{{2.5}{7}{Lean}{theorem.2.5}{}}
-\newlabel{eq:coparseval}{{6}{7}{Lean}{equation.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{2.3}{The cases that close by counting}}{8}{subsection.2.3}\protected@file@percent }
-\newlabel{prop:sizerank}{{2.6}{8}{Lean}{theorem.2.6}{}}
-\newlabel{prop:rankone}{{2.7}{8}{Lean}{theorem.2.7}{}}
-\newlabel{prop:classical}{{2.8}{8}{Lean}{theorem.2.8}{}}
-\newlabel{sec:stops}{{2.4}{8}{Where counting stops}{subsection.2.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{2.4}{Where counting stops}}{8}{subsection.2.4}\protected@file@percent }
-\newlabel{eq:pointwise}{{7}{8}{Where counting stops}{equation.7}{}}
-\newlabel{lem:direction}{{2.9}{8}{Lean}{theorem.2.9}{}}
-\newlabel{eq:tracetest}{{8}{9}{Where counting stops}{equation.8}{}}
-\newlabel{ex:octa}{{2.10}{9}{}{theorem.2.10}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{2.5}{The tetrahedron}}{9}{subsection.2.5}\protected@file@percent }
-\newlabel{ex:tetra}{{2.11}{9}{Lean}{theorem.2.11}{}}
-\newlabel{eq:tetraparseval}{{9}{9}{Lean}{equation.9}{}}
-\newlabel{eq:tetraspec}{{10}{9}{Lean}{equation.10}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The design of Example\nonbreakingspace \ref {ex:tetra}: four vectors to the vertices of a regular tetrahedron, drawn inside the cube whose even-sign vertices they are. Every triple omits one vector and has spectrum $\{1,4,4\}$ by \eqref  {eq:tetraspec}, so it dominates with nothing to spare.}}{10}{figure.2}\protected@file@percent }
-\newlabel{fig:tetrahedron}{{2}{10}{The design of Example~\ref {ex:tetra}: four vectors to the vertices of a regular tetrahedron, drawn inside the cube whose even-sign vertices they are. Every triple omits one vector and has spectrum $\{1,4,4\}$ by \eqref {eq:tetraspec}, so it dominates with nothing to spare}{figure.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces The gap $S_{C}-I_3$ at the triple $C=\{0,1,2\}$ of Example\nonbreakingspace \ref {ex:tetra}. Left: the level set $x^{\mathsf  {T}}(S_{C}-I_3)x=1$, in the cube and the projection of Figure\nonbreakingspace \ref {fig:tetrahedron}; the omitted atom $g_3$ carries an open head and spans the null line. Right: the same set seen along that line. Both nonzero eigenvalues of the gap equal $3$ (\S  \ref {app:tetra}), so the level set is a circular cylinder of radius $1/\sqrt  3$ rather than a general elliptic one. Dominating with nothing to spare is a form singular along one line, and that line is spanned by the atom the triple omits (\S  \ref {sec:ties}).}}{10}{figure.3}\protected@file@percent }
-\newlabel{fig:tetragap}{{3}{10}{The gap $\SC -I_3$ at the triple $C=\{0,1,2\}$ of Example~\ref {ex:tetra}. Left: the level set $x\tp (\SC -I_3)x=1$, in the cube and the projection of Figure~\ref {fig:tetrahedron}; the omitted atom $g_3$ carries an open head and spans the null line. Right: the same set seen along that line. Both nonzero eigenvalues of the gap equal $3$ (\S \ref {app:tetra}), so the level set is a circular cylinder of radius $1/\sqrt 3$ rather than a general elliptic one. Dominating with nothing to spare is a form singular along one line, and that line is spanned by the atom the triple omits (\S \ref {sec:ties})}{figure.3}{}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{3}{The projection chart}}{10}{section.3}\protected@file@percent }
-\newlabel{sec:chart}{{3}{10}{The projection chart}{section.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The identity \eqref  {eq:deficit} at $(7,3)$, and the deficit over the board of Figure\nonbreakingspace \ref {fig:board}. Left: the $k\times (m-k)$ rectangle with one cell adjoined, cut by its bottom row and its right column; the hook so cut has $(m-k)+k-1=m-1$ cells, and with the adjoined cell it numbers $m$, leaving the block of $(k-1)(m-k-1)$. Below it, the maximal-volume bound against the conjecture at the two cells that survive at rank three; the ratio of the two denominators is $k-(k^2-1)/m$, which at rank three is $3-8/m$ and grows with the size towards $k$. Right: the integer $(k-1)(m-k-1)$ at every cell of corank at least one; over $\mathbb  {C}$ its zeros are the cells at which selection succeeds and its positive entries those at which it fails (Theorem\nonbreakingspace \ref {thm:complex}). No design is exhibited at either surviving cell, and nothing here asserts that the classical bound is attained at one.}}{4}{figure.1}\protected@file@percent }
+\newlabel{fig:deficit}{{1}{4}{The identity \eqref {eq:deficit} at $(7,3)$, and the deficit over the board of Figure~\ref {fig:board}. Left: the $k\times (m-k)$ rectangle with one cell adjoined, cut by its bottom row and its right column; the hook so cut has $(m-k)+k-1=m-1$ cells, and with the adjoined cell it numbers $m$, leaving the block of $(k-1)(m-k-1)$. Below it, the maximal-volume bound against the conjecture at the two cells that survive at rank three; the ratio of the two denominators is $k-(k^2-1)/m$, which at rank three is $3-8/m$ and grows with the size towards $k$. Right: the integer $(k-1)(m-k-1)$ at every cell of corank at least one; over $\C $ its zeros are the cells at which selection succeeds and its positive entries those at which it fails (Theorem~\ref {thm:complex}). No design is exhibited at either surviving cell, and nothing here asserts that the classical bound is attained at one}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{}{Tags}}{6}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{}{Notation}}{6}{section*.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The decision board. Rows are the rank $k$, columns the size $m$; cells with $m<k$ carry no design. Over $\mathbb  {R}$ the two open cells at rank three are $(6,3)$ and $(7,3)$; the hatched region reduces to them by Theorem\nonbreakingspace \ref {thm:window} and Corollary\nonbreakingspace \ref {cor:dualcell}. Over $\mathbb  {C}$ the answer is $m\le k+1$ for every $k\ge 2$.}}{7}{figure.2}\protected@file@percent }
+\newlabel{fig:board}{{2}{7}{The decision board. Rows are the rank $k$, columns the size $m$; cells with $m<k$ carry no design. Over $\R $ the two open cells at rank three are $(6,3)$ and $(7,3)$; the hatched region reduces to them by Theorem~\ref {thm:window} and Corollary~\ref {cor:dualcell}. Over $\C $ the answer is $m\le k+1$ for every $k\ge 2$}{figure.2}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{2}{Elementary cases}}{7}{section.2}\protected@file@percent }
+\newlabel{sec:first}{{2}{7}{Elementary cases}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{2.1}{The objects}}{7}{subsection.2.1}\protected@file@percent }
+\newlabel{def:design}{{2.1}{7}{}{theorem.2.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces The reserved notation at the tetrahedron of Example\nonbreakingspace \ref {ex:tetra}. Left: the design, with $C=\{0,1,2\}$ the shaded face, $g_3$ the omitted atom, and the chart atom $v_c=\sqrt  {t_c}\,g_c$ marked at half length on each arrow, where $\lVert v_c\rVert ^2=s_c$. Upper right: the two products of $M_C$ of \eqref  {eq:twoproducts}, different matrices of one trace, one determinant and one spectrum; the equivalence below them is Lemma\nonbreakingspace \ref {lem:flip} with Lemma\nonbreakingspace \ref {lem:chart}, and holds at the one selection size $\lvert C\rvert =k$ at which $M_C$ is square. Bottom: the chart of \eqref  {eq:chart}, with the block $W[C]$ shaded; its determinant is taken directly and again through Corollary\nonbreakingspace \ref {cor:minor}, and the same reading at the pair $\{0,1\}$ returns $\tfrac  3{16}$, so the $3\times 3$ minor vanishes and the $2\times 2$ one does not. The strip on the right places the design at $m=4$ against the window $N(3)=7$ and rings the two cells of Corollary\nonbreakingspace \ref {cor:twocells}. Every weight, leverage and leverage score is constant in $c$ here, so the plate carries no variation across the atoms and no domination with positive slack.}}{8}{figure.3}\protected@file@percent }
+\newlabel{fig:notation}{{3}{8}{The reserved notation at the tetrahedron of Example~\ref {ex:tetra}. Left: the design, with $C=\{0,1,2\}$ the shaded face, $g_3$ the omitted atom, and the chart atom $v_c=\sqrt {t_c}\,g_c$ marked at half length on each arrow, where $\lVert v_c\rVert ^2=s_c$. Upper right: the two products of $M_C$ of \eqref {eq:twoproducts}, different matrices of one trace, one determinant and one spectrum; the equivalence below them is Lemma~\ref {lem:flip} with Lemma~\ref {lem:chart}, and holds at the one selection size $\lvert C\rvert =k$ at which $M_C$ is square. Bottom: the chart of \eqref {eq:chart}, with the block $W[C]$ shaded; its determinant is taken directly and again through Corollary~\ref {cor:minor}, and the same reading at the pair $\{0,1\}$ returns $\tfrac 3{16}$, so the $3\times 3$ minor vanishes and the $2\times 2$ one does not. The strip on the right places the design at $m=4$ against the window $\win (3)=7$ and rings the two cells of Corollary~\ref {cor:twocells}. Every weight, leverage and leverage score is constant in $c$ here, so the plate carries no variation across the atoms and no domination with positive slack}{figure.3}{}}
+\newlabel{lem:span}{{2.2}{8}{Lean}{theorem.2.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{2.2}{Three counting identities}}{9}{subsection.2.2}\protected@file@percent }
+\newlabel{lem:trace}{{2.3}{9}{Lean}{theorem.2.3}{}}
+\newlabel{lem:share}{{2.4}{9}{Lean}{theorem.2.4}{}}
+\newlabel{eq:erased}{{5}{9}{Three counting identities}{equation.5}{}}
+\newlabel{lem:coparseval}{{2.5}{9}{Lean}{theorem.2.5}{}}
+\newlabel{eq:coparseval}{{6}{9}{Lean}{equation.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{2.3}{The cases that close by counting}}{9}{subsection.2.3}\protected@file@percent }
+\newlabel{prop:sizerank}{{2.6}{9}{Lean}{theorem.2.6}{}}
+\newlabel{prop:rankone}{{2.7}{9}{Lean}{theorem.2.7}{}}
+\newlabel{prop:classical}{{2.8}{10}{Lean}{theorem.2.8}{}}
+\newlabel{sec:stops}{{2.4}{10}{Where counting stops}{subsection.2.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{2.4}{Where counting stops}}{10}{subsection.2.4}\protected@file@percent }
+\newlabel{eq:pointwise}{{7}{10}{Where counting stops}{equation.7}{}}
+\newlabel{lem:direction}{{2.9}{10}{Lean}{theorem.2.9}{}}
+\newlabel{eq:tracetest}{{8}{10}{Where counting stops}{equation.8}{}}
+\newlabel{ex:octa}{{2.10}{10}{}{theorem.2.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The witness of Lemma\nonbreakingspace \ref {lem:direction} on the design of Example\nonbreakingspace \ref {ex:octa}. Left: the sphere of directions, the upper cap of the region $3x_3^2\ge \lVert x\rVert ^2$ witnessed by the third axis, and the meridian from $e_3$ to $(e_1+e_2)/\sqrt  2$ across it; the rim carries four of the eight directions at which the bound is an equality at all six atoms, three of them in front. Right: the meridian read twice. One atom at a time, the maximum stays at or above $\lVert x\rVert ^2$ and the index attaining it changes at $\theta _*$, where the two curves meet each other and the level $\lVert x\rVert ^2$ together. Three atoms at once, the sum over $\{0,1,2\}$ falls below $\lVert x\rVert ^2$ on $[0,\theta _1)$, an arc about the axis that triple omits, while $\operatorname  {tr}S_{C}=9$ there as at every triple.}}{11}{figure.4}\protected@file@percent }
+\newlabel{fig:witness}{{4}{11}{The witness of Lemma~\ref {lem:direction} on the design of Example~\ref {ex:octa}. Left: the sphere of directions, the upper cap of the region $3x_3^2\ge \lVert x\rVert ^2$ witnessed by the third axis, and the meridian from $e_3$ to $(e_1+e_2)/\sqrt 2$ across it; the rim carries four of the eight directions at which the bound is an equality at all six atoms, three of them in front. Right: the meridian read twice. One atom at a time, the maximum stays at or above $\lVert x\rVert ^2$ and the index attaining it changes at $\theta _*$, where the two curves meet each other and the level $\lVert x\rVert ^2$ together. Three atoms at once, the sum over $\{0,1,2\}$ falls below $\lVert x\rVert ^2$ on $[0,\theta _1)$, an arc about the axis that triple omits, while $\tr \SC =9$ there as at every triple}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{2.5}{The tetrahedron}}{11}{subsection.2.5}\protected@file@percent }
+\newlabel{ex:tetra}{{2.11}{11}{Lean}{theorem.2.11}{}}
+\newlabel{eq:tetraparseval}{{9}{11}{Lean}{equation.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The twenty triples of Example\nonbreakingspace \ref {ex:octa} on one eigenvalue axis. Eight take one atom from each antipodal pair and have $S_{C}=3I_3$; twelve repeat an axis and have $\operatorname  {spec}S_{C}=\{0,3,6\}$. The trace is $9$ in both rows, so the trace test \eqref  {eq:tracetest} passes at all twenty. The second scale is the chart gap of \S  \ref {sec:chart}, which at uniform weight $\tfrac  16$ is $\operatorname  {spec}W[C] =\tfrac  16(\operatorname  {spec}S_{C}-1)$; Corollary\nonbreakingspace \ref {cor:minor} returns the two determinants a second way, and volume sampling puts all its mass on the eight.}}{12}{figure.5}\protected@file@percent }
+\newlabel{fig:octaspec}{{5}{12}{The twenty triples of Example~\ref {ex:octa} on one eigenvalue axis. Eight take one atom from each antipodal pair and have $\SC =3I_3$; twelve repeat an axis and have $\operatorname {spec}\SC =\{0,3,6\}$. The trace is $9$ in both rows, so the trace test \eqref {eq:tracetest} passes at all twenty. The second scale is the chart gap of \S \ref {sec:chart}, which at uniform weight $\tfrac 16$ is $\operatorname {spec}W[C] =\tfrac 16(\operatorname {spec}\SC -1)$; Corollary~\ref {cor:minor} returns the two determinants a second way, and volume sampling puts all its mass on the eight}{figure.5}{}}
+\newlabel{eq:tetraspec}{{10}{12}{Lean}{equation.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces The design of Example\nonbreakingspace \ref {ex:tetra}: four vectors to the vertices of a regular tetrahedron, drawn inside the cube whose even-sign vertices they are. Every triple omits one vector and has spectrum $\{1,4,4\}$ by \eqref  {eq:tetraspec}, so it dominates with nothing to spare.}}{13}{figure.6}\protected@file@percent }
+\newlabel{fig:tetrahedron}{{6}{13}{The design of Example~\ref {ex:tetra}: four vectors to the vertices of a regular tetrahedron, drawn inside the cube whose even-sign vertices they are. Every triple omits one vector and has spectrum $\{1,4,4\}$ by \eqref {eq:tetraspec}, so it dominates with nothing to spare}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces The gap $S_{C}-I_3$ at the triple $C=\{0,1,2\}$ of Example\nonbreakingspace \ref {ex:tetra}. Left: the level set $x^{\mathsf  {T}}(S_{C}-I_3)x=1$, in the cube and the projection of Figure\nonbreakingspace \ref {fig:tetrahedron}; the omitted atom $g_3$ carries an open head and spans the null line. Right: the same set seen along that line. Both nonzero eigenvalues of the gap equal $3$ (\S  \ref {app:tetra}), so the level set is a circular cylinder of radius $1/\sqrt  3$ rather than a general elliptic one. Dominating with nothing to spare is a form singular along one line, and that line is spanned by the atom the triple omits (\S  \ref {sec:ties}).}}{13}{figure.7}\protected@file@percent }
+\newlabel{fig:tetragap}{{7}{13}{The gap $\SC -I_3$ at the triple $C=\{0,1,2\}$ of Example~\ref {ex:tetra}. Left: the level set $x\tp (\SC -I_3)x=1$, in the cube and the projection of Figure~\ref {fig:tetrahedron}; the omitted atom $g_3$ carries an open head and spans the null line. Right: the same set seen along that line. Both nonzero eigenvalues of the gap equal $3$ (\S \ref {app:tetra}), so the level set is a circular cylinder of radius $1/\sqrt 3$ rather than a general elliptic one. Dominating with nothing to spare is a form singular along one line, and that line is spanned by the atom the triple omits (\S \ref {sec:ties})}{figure.7}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{3}{The projection chart}}{13}{section.3}\protected@file@percent }
+\newlabel{sec:chart}{{3}{13}{The projection chart}{section.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces The certificate of Example\nonbreakingspace \ref {ex:tetra} at the triple $C=\{1,2,3\}$. Each square $(x_i-x_j)^2$ vanishes on a plane spanned by $g_0$ and one selected atom, drawn left as its great circle on the circumsphere; the three planes meet in $\mathbb  {R}g_0$ alone, the eigenline of $S_{C}$ for the eigenvalue $1$ of \eqref  {eq:tetraspec}. Right: the same three planes seen along that line, six rays $60^{\circ }$ apart, with the unit normals $n_c$, signed to sum to zero, at $120^{\circ }$ and the level $x^{\mathsf  {T}}(S_{C}-I_3)x=1$ the circle of radius $1/\sqrt  3$ of Figure\nonbreakingspace \ref {fig:tetragap}. The grouping drawn is the one of Example\nonbreakingspace \ref {ex:tetra}; the development certifies the triple $C=\{0,1,2\}$ instead, by the image of this certificate under $\operatorname  {diag}(-1,-1,1)$, which permutes the atoms by $(0\,3)(1\,2)$.}}{14}{figure.8}\protected@file@percent }
+\newlabel{fig:tetracert}{{8}{14}{The certificate of Example~\ref {ex:tetra} at the triple $C=\{1,2,3\}$. Each square $(x_i-x_j)^2$ vanishes on a plane spanned by $g_0$ and one selected atom, drawn left as its great circle on the circumsphere; the three planes meet in $\R g_0$ alone, the eigenline of $\SC $ for the eigenvalue $1$ of \eqref {eq:tetraspec}. Right: the same three planes seen along that line, six rays $60^{\circ }$ apart, with the unit normals $n_c$, signed to sum to zero, at $120^{\circ }$ and the level $x\tp (\SC -I_3)x=1$ the circle of radius $1/\sqrt 3$ of Figure~\ref {fig:tetragap}. The grouping drawn is the one of Example~\ref {ex:tetra}; the development certifies the triple $C=\{0,1,2\}$ instead, by the image of this certificate under $\diag (-1,-1,1)$, which permutes the atoms by $(0\,3)(1\,2)$}{figure.8}{}}
+\newlabel{eq:twoproducts}{{11}{14}{The projection chart}{equation.11}{}}
+\newlabel{sec:chartconstruction}{{3.1}{14}{Construction}{subsection.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.1}{Construction}}{14}{subsection.3.1}\protected@file@percent }
+\newlabel{eq:isometry}{{12}{14}{Construction}{equation.12}{}}
+\newlabel{eq:chart}{{13}{14}{Construction}{equation.13}{}}
+\newlabel{eq:chartgap}{{14}{14}{Construction}{equation.14}{}}
+\newlabel{prop:chartid}{{3.1}{14}{Lean}{theorem.3.1}{}}
 \citation{CasazzaKutyniok2013}
 \citation{GTZ1997}
 \citation{Nesterenko2023}
 \citation{Nesterenko2025}
-\newlabel{eq:twoproducts}{{11}{11}{The projection chart}{equation.11}{}}
-\newlabel{sec:chartconstruction}{{3.1}{11}{Construction}{subsection.3.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.1}{Construction}}{11}{subsection.3.1}\protected@file@percent }
-\newlabel{eq:isometry}{{12}{11}{Construction}{equation.12}{}}
-\newlabel{eq:chart}{{13}{11}{Construction}{equation.13}{}}
-\newlabel{eq:chartgap}{{14}{11}{Construction}{equation.14}{}}
-\newlabel{prop:chartid}{{3.1}{11}{Lean}{theorem.3.1}{}}
-\newlabel{lem:realize}{{3.2}{11}{}{theorem.3.2}{}}
-\newlabel{rem:frames}{{3.3}{12}{}{theorem.3.3}{}}
-\newlabel{sec:criterion}{{3.2}{12}{The criterion}{subsection.3.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.2}{The criterion}}{12}{subsection.3.2}\protected@file@percent }
-\newlabel{lem:congruence}{{3.4}{12}{Lean}{theorem.3.4}{}}
-\newlabel{eq:congruence}{{15}{12}{Lean}{equation.15}{}}
-\newlabel{lem:flip}{{3.5}{12}{Lean}{theorem.3.5}{}}
-\newlabel{lem:chart}{{3.6}{12}{Lean}{theorem.3.6}{}}
+\newlabel{lem:realize}{{3.2}{15}{}{theorem.3.2}{}}
+\newlabel{rem:frames}{{3.3}{15}{}{theorem.3.3}{}}
+\newlabel{sec:criterion}{{3.2}{15}{The criterion}{subsection.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.2}{The criterion}}{15}{subsection.3.2}\protected@file@percent }
+\newlabel{lem:congruence}{{3.4}{15}{Lean}{theorem.3.4}{}}
+\newlabel{eq:congruence}{{15}{15}{Lean}{equation.15}{}}
+\newlabel{lem:flip}{{3.5}{15}{Lean}{theorem.3.5}{}}
+\newlabel{lem:chart}{{3.6}{16}{Lean}{theorem.3.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces The chart, at $m=6$, $k=3$ and $C=\{1,3,4\}$. The design data pass through the isometry $V$ of \eqref  {eq:isometry} to the projection $P=VV^{\mathsf  {H}}$ of \eqref  {eq:chart} and the gap $W=P-D$ of \eqref  {eq:chartgap}. Selecting $C$ is taking a principal block, and Lemma\nonbreakingspace \ref {lem:chart} identifies its semidefiniteness with domination.}}{16}{figure.9}\protected@file@percent }
+\newlabel{fig:chart}{{9}{16}{The chart, at $m=6$, $k=3$ and $C=\{1,3,4\}$. The design data pass through the isometry $V$ of \eqref {eq:isometry} to the projection $P=VV\adj $ of \eqref {eq:chart} and the gap $W=P-D$ of \eqref {eq:chartgap}. Selecting $C$ is taking a principal block, and Lemma~\ref {lem:chart} identifies its semidefiniteness with domination}{figure.9}{}}
+\newlabel{rem:size}{{3.7}{16}{}{theorem.3.7}{}}
+\newlabel{cor:minor}{{3.8}{17}{Lean}{theorem.3.8}{}}
+\newlabel{ex:chartworked}{{3.9}{17}{}{theorem.3.9}{}}
+\newlabel{sec:inertia}{{3.3}{18}{Inertia, and what it does not decide}{subsection.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.3}{Inertia, and what it does not decide}}{18}{subsection.3.3}\protected@file@percent }
+\newlabel{lem:rayleigh}{{3.10}{18}{Lean}{theorem.3.10}{}}
 \citation{HornJohnson2013}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The chart, at $m=6$, $k=3$ and $C=\{1,3,4\}$. The design data pass through the isometry $V$ of \eqref  {eq:isometry} to the projection $P=VV^{\mathsf  {H}}$ of \eqref  {eq:chart} and the gap $W=P-D$ of \eqref  {eq:chartgap}. Selecting $C$ is taking a principal block, and Lemma\nonbreakingspace \ref {lem:chart} identifies its semidefiniteness with domination.}}{13}{figure.4}\protected@file@percent }
-\newlabel{fig:chart}{{4}{13}{The chart, at $m=6$, $k=3$ and $C=\{1,3,4\}$. The design data pass through the isometry $V$ of \eqref {eq:isometry} to the projection $P=VV\adj $ of \eqref {eq:chart} and the gap $W=P-D$ of \eqref {eq:chartgap}. Selecting $C$ is taking a principal block, and Lemma~\ref {lem:chart} identifies its semidefiniteness with domination}{figure.4}{}}
-\newlabel{rem:size}{{3.7}{13}{}{theorem.3.7}{}}
-\newlabel{cor:minor}{{3.8}{13}{Lean}{theorem.3.8}{}}
-\newlabel{sec:inertia}{{3.3}{13}{Inertia, and what it does not decide}{subsection.3.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.3}{Inertia, and what it does not decide}}{13}{subsection.3.3}\protected@file@percent }
-\newlabel{lem:rayleigh}{{3.9}{13}{Lean}{theorem.3.9}{}}
-\newlabel{lem:inertia}{{3.10}{14}{}{theorem.3.10}{}}
-\newlabel{rem:nogo}{{3.11}{14}{Lean}{theorem.3.11}{}}
-\newlabel{sec:duality}{{3.4}{14}{Duality}{subsection.3.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.4}{Duality}}{14}{subsection.3.4}\protected@file@percent }
-\newlabel{eq:kernelframe}{{16}{15}{Duality}{equation.16}{}}
-\newlabel{eq:dualgram}{{17}{15}{Duality}{equation.17}{}}
-\newlabel{lem:dualgram}{{3.12}{15}{}{theorem.3.12}{}}
-\newlabel{lem:whiten}{{3.13}{15}{Lean}{theorem.3.13}{}}
-\newlabel{thm:duality}{{3.14}{15}{Lean}{theorem.3.14}{}}
-\newlabel{cor:dualcell}{{3.15}{16}{Lean}{theorem.3.15}{}}
-\newlabel{rem:naive}{{3.16}{16}{}{theorem.3.16}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Duality at $m=3$, $k=1$ (Theorem\nonbreakingspace \ref {thm:duality}). The vector $v_c=\sqrt  {t_c}\,g_c$ has norm one, so the chart $P=vv^{\mathsf  {H}}$ projects onto a line of the index space and $I-P$ onto the complementary plane, where the shadow of $e_3$ is the kernel row $z_3$ in coordinates. Selecting $\{3\}$ from $P$ and deleting it from $I-P$ are one operation, and no weight enters it. The weights enter the normalization. Rescaling the kernel rows by the co-weights and whitening by $S^{\perp }$ carries the dominating singleton $\{3\}$ to the dominating pair $\{1,2\}$; the rescaling by the weights of Remark\nonbreakingspace \ref {rem:naive}, whose chart is $(I-P,t)$ itself, refuses that pair. Example\nonbreakingspace \ref {ex:uneven} carries the failure in the other direction at $m=2$.}}{16}{figure.5}\protected@file@percent }
-\newlabel{fig:duality}{{5}{16}{Duality at $m=3$, $k=1$ (Theorem~\ref {thm:duality}). The vector $v_c=\sqrt {t_c}\,g_c$ has norm one, so the chart $P=vv\adj $ projects onto a line of the index space and $I-P$ onto the complementary plane, where the shadow of $e_3$ is the kernel row $z_3$ in coordinates. Selecting $\{3\}$ from $P$ and deleting it from $I-P$ are one operation, and no weight enters it. The weights enter the normalization. Rescaling the kernel rows by the co-weights and whitening by $\Sdual $ carries the dominating singleton $\{3\}$ to the dominating pair $\{1,2\}$; the rescaling by the weights of Remark~\ref {rem:naive}, whose chart is $(I-P,t)$ itself, refuses that pair. Example~\ref {ex:uneven} carries the failure in the other direction at $m=2$}{figure.5}{}}
-\newlabel{ex:uneven}{{3.17}{16}{}{theorem.3.17}{}}
-\newlabel{sec:corankone}{{3.5}{17}{Corank one}{subsection.3.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.5}{Corank one}}{17}{subsection.3.5}\protected@file@percent }
-\newlabel{eq:pvars}{{18}{17}{Corank one}{equation.18}{}}
-\newlabel{eq:pnorm}{{19}{17}{Corank one}{equation.19}{}}
-\newlabel{lem:rankone}{{3.18}{17}{Lean}{theorem.3.18}{}}
-\newlabel{thm:corankone}{{3.19}{17}{Lean}{theorem.3.19}{}}
-\newlabel{eq:corankone}{{20}{17}{Lean}{Item.1}{}}
-\newlabel{eq:tielaw}{{21}{17}{Lean}{Item.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Lemma\nonbreakingspace \ref {lem:rankone} in three coordinates. The locus $q=1$ is the image of the unit sphere under $A^{1/2}$, and the criterion asks which side of it $b$ lies on; the open circle marks where the ray through $b$ leaves the ellipsoid. At $m=k+1$ the comparison is \eqref  {eq:corankone}, the ratio at the omitted index against the $t$-weighted mean of all of them. The ellipsoid then lives in the index space: its coordinates are the selected indices, its semi-axes are the square roots of the co-weights $1-t_c$, and the vectors $g_c$ do not enter. Figure\nonbreakingspace \ref {fig:jensen} is the same comparison in bar-chart form.}}{18}{figure.6}\protected@file@percent }
-\newlabel{fig:rankoneball}{{6}{18}{Lemma~\ref {lem:rankone} in three coordinates. The locus $q=1$ is the image of the unit sphere under $A^{1/2}$, and the criterion asks which side of it $b$ lies on; the open circle marks where the ray through $b$ leaves the ellipsoid. At $m=k+1$ the comparison is \eqref {eq:corankone}, the ratio at the omitted index against the $t$-weighted mean of all of them. The ellipsoid then lives in the index space: its coordinates are the selected indices, its semi-axes are the square roots of the co-weights $1-t_c$, and the vectors $g_c$ do not enter. Figure~\ref {fig:jensen} is the same comparison in bar-chart form}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces The design of Example\nonbreakingspace \ref {ex:chartworked} at $(4,2)$. Top: the atoms pass through $V$ to the chart $P=VV^{\mathsf  {H}}$ of \eqref  {eq:chart} and the gap $W=P-D$ of \eqref  {eq:chartgap}; the atoms carry $\sqrt  2$ and $\sqrt  3$ and $9P$ is integral. Left: at $C=\{0,2\}$ the ellipse $x^{\mathsf  {H}}S_{C}x=1$ lies in the closed unit disc, which for a positive definite $S_{C}$ is what $S_{C}\succeq I_2$ says, and touches the circle at $\pm \tfrac  1{\sqrt  5}(1,2)$, where the slack vanishes. Centre: the six pairs as the edges of $K_4$, labelled by $81\det W[C]$; the complement map $C\DOTSB \mapstochar \rightarrow C^{\complement }$ of \S  \ref {sec:duality} carries each edge to the edge opposite it. Right: the edge styles, and the diagonal entry $\tfrac  13$ that settles each failure on the design side while every $W_{cc}>0$ leaves the chart side needing the minor. No Lean declaration mentions this design.}}{19}{figure.10}\protected@file@percent }
+\newlabel{fig:chartworked}{{10}{19}{The design of Example~\ref {ex:chartworked} at $(4,2)$. Top: the atoms pass through $V$ to the chart $P=VV\adj $ of \eqref {eq:chart} and the gap $W=P-D$ of \eqref {eq:chartgap}; the atoms carry $\sqrt 2$ and $\sqrt 3$ and $9P$ is integral. Left: at $C=\{0,2\}$ the ellipse $x\adj \SC x=1$ lies in the closed unit disc, which for a positive definite $\SC $ is what $\SC \psd I_2$ says, and touches the circle at $\pm \tfrac 1{\sqrt 5}(1,2)$, where the slack vanishes. Centre: the six pairs as the edges of $K_4$, labelled by $81\det W[C]$; the complement map $C\mapsto C^{\complement }$ of \S \ref {sec:duality} carries each edge to the edge opposite it. Right: the edge styles, and the diagonal entry $\tfrac 13$ that settles each failure on the design side while every $W_{cc}>0$ leaves the chart side needing the minor. No Lean declaration mentions this design}{figure.10}{}}
+\newlabel{lem:inertia}{{3.11}{19}{}{theorem.3.11}{}}
+\newlabel{rem:nogo}{{3.12}{19}{Lean}{theorem.3.12}{}}
+\newlabel{sec:duality}{{3.4}{20}{Duality}{subsection.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.4}{Duality}}{20}{subsection.3.4}\protected@file@percent }
+\newlabel{eq:kernelframe}{{16}{20}{Duality}{equation.16}{}}
+\newlabel{eq:dualgram}{{17}{20}{Duality}{equation.17}{}}
+\newlabel{lem:dualgram}{{3.13}{20}{}{theorem.3.13}{}}
+\newlabel{lem:whiten}{{3.14}{20}{Lean}{theorem.3.14}{}}
+\newlabel{thm:duality}{{3.15}{21}{Lean}{theorem.3.15}{}}
+\newlabel{cor:dualcell}{{3.16}{21}{Lean}{theorem.3.16}{}}
+\newlabel{rem:naive}{{3.17}{22}{}{theorem.3.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Duality at $m=3$, $k=1$ (Theorem\nonbreakingspace \ref {thm:duality}). The vector $v_c=\sqrt  {t_c}\,g_c$ has norm one, so the chart $P=vv^{\mathsf  {H}}$ projects onto a line of the index space and $I-P$ onto the complementary plane, where the shadow of $e_3$ is the kernel row $z_3$ in coordinates. Selecting $\{3\}$ from $P$ and deleting it from $I-P$ are one operation, and no weight enters it. The weights enter the normalization. Rescaling the kernel rows by the co-weights and whitening by $S^{\perp }$ carries the dominating singleton $\{3\}$ to the dominating pair $\{1,2\}$; the rescaling by the weights of Remark\nonbreakingspace \ref {rem:naive}, whose chart is $(I-P,t)$ itself, refuses that pair. Example\nonbreakingspace \ref {ex:uneven} carries the failure in the other direction at $m=2$.}}{22}{figure.11}\protected@file@percent }
+\newlabel{fig:duality}{{11}{22}{Duality at $m=3$, $k=1$ (Theorem~\ref {thm:duality}). The vector $v_c=\sqrt {t_c}\,g_c$ has norm one, so the chart $P=vv\adj $ projects onto a line of the index space and $I-P$ onto the complementary plane, where the shadow of $e_3$ is the kernel row $z_3$ in coordinates. Selecting $\{3\}$ from $P$ and deleting it from $I-P$ are one operation, and no weight enters it. The weights enter the normalization. Rescaling the kernel rows by the co-weights and whitening by $\Sdual $ carries the dominating singleton $\{3\}$ to the dominating pair $\{1,2\}$; the rescaling by the weights of Remark~\ref {rem:naive}, whose chart is $(I-P,t)$ itself, refuses that pair. Example~\ref {ex:uneven} carries the failure in the other direction at $m=2$}{figure.11}{}}
+\newlabel{ex:uneven}{{3.18}{22}{}{theorem.3.18}{}}
+\newlabel{ex:dualworked}{{3.19}{22}{}{theorem.3.19}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Duality at $(4,2)$, where the dual cell is the cell itself, on the design of Example\nonbreakingspace \ref {ex:chartworked}. Left: the rows of an orthonormal basis of $\ker P$, of squared lengths $1-s_c=\tfrac  19(5,4,4,5)$. Centre: the dual atoms of Theorem\nonbreakingspace \ref {thm:duality}, and the ellipse of $h_1^{\vphantom  {\mathsf  {H}}}h_1^{\mathsf  {H}}+h_3^{\vphantom  {\mathsf  {H}}}h_3^{\mathsf  {H}}$, of spectrum $\{1,3\}$, touching the unit circle at $\pm \tfrac  1{\sqrt  5}(2,1)$. Right: the two normalizations of Remark\nonbreakingspace \ref {rem:naive}. Below: at each of the six pairs, the gap minor of $\mathcal  {D}$ and the minor of each normalization, the boxed entry the one at which the rescaling by the weights takes the wrong sign. The dual atoms drawn are those of the construction above Theorem\nonbreakingspace \ref {thm:duality}; the mechanized statement asserts only that some dual design with these weights flips domination.}}{24}{figure.12}\protected@file@percent }
+\newlabel{fig:dualworked}{{12}{24}{Duality at $(4,2)$, where the dual cell is the cell itself, on the design of Example~\ref {ex:chartworked}. Left: the rows of an orthonormal basis of $\ker P$, of squared lengths $1-s_c=\tfrac 19(5,4,4,5)$. Centre: the dual atoms of Theorem~\ref {thm:duality}, and the ellipse of $h_1^{\vphantom {\mathsf {H}}}h_1\adj +h_3^{\vphantom {\mathsf {H}}}h_3\adj $, of spectrum $\{1,3\}$, touching the unit circle at $\pm \tfrac 1{\sqrt 5}(2,1)$. Right: the two normalizations of Remark~\ref {rem:naive}. Below: at each of the six pairs, the gap minor of $\dsn $ and the minor of each normalization, the boxed entry the one at which the rescaling by the weights takes the wrong sign. The dual atoms drawn are those of the construction above Theorem~\ref {thm:duality}; the mechanized statement asserts only that some dual design with these weights flips domination}{figure.12}{}}
+\newlabel{sec:corankone}{{3.5}{24}{Corank one}{subsection.3.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.5}{Corank one}}{24}{subsection.3.5}\protected@file@percent }
+\newlabel{eq:pvars}{{18}{24}{Corank one}{equation.18}{}}
+\newlabel{eq:pnorm}{{19}{24}{Corank one}{equation.19}{}}
+\newlabel{lem:rankone}{{3.20}{24}{Lean}{theorem.3.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Lemma\nonbreakingspace \ref {lem:rankone} in three coordinates. The locus $q=1$ is the image of the unit sphere under $A^{1/2}$, and the criterion asks which side of it $b$ lies on; the open circle marks where the ray through $b$ leaves the ellipsoid. At $m=k+1$ the comparison is \eqref  {eq:corankone}, the ratio at the omitted index against the $t$-weighted mean of all of them. The ellipsoid then lives in the index space: its coordinates are the selected indices, its semi-axes are the square roots of the co-weights $1-t_c$, and the vectors $g_c$ do not enter. Figure\nonbreakingspace \ref {fig:jensen} is the same comparison in bar-chart form.}}{25}{figure.13}\protected@file@percent }
+\newlabel{fig:rankoneball}{{13}{25}{Lemma~\ref {lem:rankone} in three coordinates. The locus $q=1$ is the image of the unit sphere under $A^{1/2}$, and the criterion asks which side of it $b$ lies on; the open circle marks where the ray through $b$ leaves the ellipsoid. At $m=k+1$ the comparison is \eqref {eq:corankone}, the ratio at the omitted index against the $t$-weighted mean of all of them. The ellipsoid then lives in the index space: its coordinates are the selected indices, its semi-axes are the square roots of the co-weights $1-t_c$, and the vectors $g_c$ do not enter. Figure~\ref {fig:jensen} is the same comparison in bar-chart form}{figure.13}{}}
+\newlabel{thm:corankone}{{3.21}{25}{Lean}{theorem.3.21}{}}
+\newlabel{eq:corankone}{{20}{25}{Lean}{Item.1}{}}
+\newlabel{eq:tielaw}{{21}{25}{Lean}{Item.2}{}}
+\newlabel{ex:tetrachart}{{3.22}{26}{}{theorem.3.22}{}}
 \citation{Nesterenko2026real}
-\newlabel{ex:tetrachart}{{3.20}{19}{}{theorem.3.20}{}}
-\newlabel{rem:ktwo}{{3.21}{19}{}{theorem.3.21}{}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{4}{The complex problem}}{19}{section.4}\protected@file@percent }
-\newlabel{sec:complex}{{4}{19}{The complex problem}{section.4}{}}
+\newlabel{rem:ktwo}{{3.23}{27}{}{theorem.3.23}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Theorem\nonbreakingspace \ref {thm:corankone} at $(4,3)$. The ratios $p_c$ of \eqref  {eq:pvars} have co-weighted mean $1/k$ by \eqref  {eq:pnorm}. Left: the largest $p_{c_0}$ is at least the $t$-weighted mean $\DOTSB \sum@ \slimits@ _ct_cp_c$, so by \eqref  {eq:corankone} its complement dominates. Right: when $p$ is constant every $p_c$ equals $1/k$, the tie law \eqref  {eq:tielaw} holds, every $k$-subset dominates and none dominates strictly.}}{27}{figure.14}\protected@file@percent }
+\newlabel{fig:jensen}{{14}{27}{Theorem~\ref {thm:corankone} at $(4,3)$. The ratios $p_c$ of \eqref {eq:pvars} have co-weighted mean $1/k$ by \eqref {eq:pnorm}. Left: the largest $p_{c_0}$ is at least the $t$-weighted mean $\sum _ct_cp_c$, so by \eqref {eq:corankone} its complement dominates. Right: when $p$ is constant every $p_c$ equals $1/k$, the tie law \eqref {eq:tielaw} holds, every $k$-subset dominates and none dominates strictly}{figure.14}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{4}{The complex problem}}{27}{section.4}\protected@file@percent }
+\newlabel{sec:complex}{{4}{27}{The complex problem}{section.4}{}}
+\newlabel{sec:cvalue}{{4.1}{27}{The value of a design}{subsection.4.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.1}{The value of a design}}{27}{subsection.4.1}\protected@file@percent }
+\newlabel{eq:cover}{{22}{27}{The value of a design}{equation.22}{}}
+\newlabel{eq:value}{{23}{27}{The value of a design}{equation.23}{}}
 \citation{GT2001}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Theorem\nonbreakingspace \ref {thm:corankone} at $(4,3)$. The ratios $p_c$ of \eqref  {eq:pvars} have co-weighted mean $1/k$ by \eqref  {eq:pnorm}. Left: the largest $p_{c_0}$ is at least the $t$-weighted mean $\DOTSB \sum@ \slimits@ _ct_cp_c$, so by \eqref  {eq:corankone} its complement dominates. Right: when $p$ is constant every $p_c$ equals $1/k$, the tie law \eqref  {eq:tielaw} holds, every $k$-subset dominates and none dominates strictly.}}{20}{figure.7}\protected@file@percent }
-\newlabel{fig:jensen}{{7}{20}{Theorem~\ref {thm:corankone} at $(4,3)$. The ratios $p_c$ of \eqref {eq:pvars} have co-weighted mean $1/k$ by \eqref {eq:pnorm}. Left: the largest $p_{c_0}$ is at least the $t$-weighted mean $\sum _ct_cp_c$, so by \eqref {eq:corankone} its complement dominates. Right: when $p$ is constant every $p_c$ equals $1/k$, the tie law \eqref {eq:tielaw} holds, every $k$-subset dominates and none dominates strictly}{figure.7}{}}
-\newlabel{sec:cvalue}{{4.1}{20}{The value of a design}{subsection.4.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.1}{The value of a design}}{20}{subsection.4.1}\protected@file@percent }
-\newlabel{eq:cover}{{22}{20}{The value of a design}{equation.22}{}}
-\newlabel{eq:value}{{23}{20}{The value of a design}{equation.23}{}}
-\newlabel{prop:rankfloor}{{4.1}{20}{Lean}{theorem.4.1}{}}
-\newlabel{sec:cpositive}{{4.2}{21}{The positive half}{subsection.4.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.2}{The positive half}}{21}{subsection.4.2}\protected@file@percent }
-\newlabel{prop:cpositive}{{4.2}{21}{Lean}{theorem.4.2}{}}
-\newlabel{prop:square}{{4.3}{21}{}{theorem.4.3}{}}
-\newlabel{sec:cseed}{{4.3}{21}{The seed}{subsection.4.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.3}{The seed}}{21}{subsection.4.3}\protected@file@percent }
-\newlabel{ex:sic}{{4.4}{21}{Lean}{theorem.4.4}{}}
-\newlabel{eq:sic}{{24}{21}{Lean}{equation.24}{}}
-\newlabel{lem:sicvalue}{{4.5}{22}{Lean}{theorem.4.5}{}}
-\newlabel{sec:cpadding}{{4.4}{22}{Two padding operations}{subsection.4.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.4}{Two padding operations}}{22}{subsection.4.4}\protected@file@percent }
-\newlabel{lem:spike}{{4.6}{22}{Lean}{theorem.4.6}{}}
-\newlabel{eq:spike}{{25}{22}{Lean}{equation.25}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces The design \eqref  {eq:sic} on the Bloch sphere. A line in $\mathbb  {C}^{2}$ is a point of $S^{2}$, and unit vectors obey $\lvert \langle u,v\rangle \rvert ^{2}=\tfrac  12\bigl  (1+n_u\cdot n_v\bigr  )$. At leverage $2$ the value $\tfrac  43$ of Example\nonbreakingspace \ref {ex:sic} therefore reads $n_a\cdot n_b=-\tfrac  13$, and the four Bloch vectors are the vertices of a regular tetrahedron: all six pairs are congruent, so all six share the characteristic polynomial of Lemma\nonbreakingspace \ref {lem:sicvalue}. At $k=2$ the argument of $\langle g_a,g_b\rangle \langle g_b,g_c\rangle \langle g_c,g_a\rangle $ is half the oriented area of the geodesic triangle $n_a n_b n_c$; the hatched face has area $\pi $, so that product is purely imaginary. Over $\mathbb  {R}$ the Bloch map is the angle-doubling map \eqref  {eq:doubleangle} normalized, and its image is a great circle. Three points of a circle bound no area, which is the phase defect of Remark\nonbreakingspace \ref {rem:phase} vanishing over $\mathbb  {R}$.}}{23}{figure.8}\protected@file@percent }
-\newlabel{fig:bloch}{{8}{23}{The design \eqref {eq:sic} on the Bloch sphere. A line in $\C ^{2}$ is a point of $S^{2}$, and unit vectors obey $\lvert \langle u,v\rangle \rvert ^{2}=\tfrac 12\bigl (1+n_u\cdot n_v\bigr )$. At leverage $2$ the value $\tfrac 43$ of Example~\ref {ex:sic} therefore reads $n_a\cdot n_b=-\tfrac 13$, and the four Bloch vectors are the vertices of a regular tetrahedron: all six pairs are congruent, so all six share the characteristic polynomial of Lemma~\ref {lem:sicvalue}. At $k=2$ the argument of $\langle g_a,g_b\rangle \langle g_b,g_c\rangle \langle g_c,g_a\rangle $ is half the oriented area of the geodesic triangle $n_a n_b n_c$; the hatched face has area $\pi $, so that product is purely imaginary. Over $\R $ the Bloch map is the angle-doubling map \eqref {eq:doubleangle} normalized, and its image is a great circle. Three points of a circle bound no area, which is the phase defect of Remark~\ref {rem:phase} vanishing over $\R $}{figure.8}{}}
-\newlabel{lem:split}{{4.7}{23}{Lean}{theorem.4.7}{}}
-\newlabel{eq:split}{{26}{23}{Lean}{equation.26}{}}
+\newlabel{prop:rankfloor}{{4.1}{28}{Lean}{theorem.4.1}{}}
+\newlabel{sec:cpositive}{{4.2}{28}{The positive half}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.2}{The positive half}}{28}{subsection.4.2}\protected@file@percent }
+\newlabel{prop:cpositive}{{4.2}{28}{Lean}{theorem.4.2}{}}
+\newlabel{prop:square}{{4.3}{28}{}{theorem.4.3}{}}
+\newlabel{sec:cseed}{{4.3}{29}{The seed}{subsection.4.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.3}{The seed}}{29}{subsection.4.3}\protected@file@percent }
+\newlabel{ex:sic}{{4.4}{29}{Lean}{theorem.4.4}{}}
+\newlabel{eq:sic}{{24}{29}{Lean}{equation.24}{}}
+\newlabel{lem:sicvalue}{{4.5}{29}{Lean}{theorem.4.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces The design \eqref  {eq:sic} on the Bloch sphere. A line in $\mathbb  {C}^{2}$ is a point of $S^{2}$, and unit vectors obey $\lvert \langle u,v\rangle \rvert ^{2}=\tfrac  12\bigl  (1+n_u\cdot n_v\bigr  )$. At leverage $2$ the value $\tfrac  43$ of Example\nonbreakingspace \ref {ex:sic} therefore reads $n_a\cdot n_b=-\tfrac  13$, and the four Bloch vectors are the vertices of a regular tetrahedron: all six pairs are congruent, so all six share the characteristic polynomial of Lemma\nonbreakingspace \ref {lem:sicvalue}. At $k=2$ the argument of $\langle g_a,g_b\rangle \langle g_b,g_c\rangle \langle g_c,g_a\rangle $ is half the oriented area of the geodesic triangle $n_a n_b n_c$; the hatched face has area $\pi $, so that product is purely imaginary. Over $\mathbb  {R}$ the Bloch map is the angle-doubling map \eqref  {eq:doubleangle} normalized, and its image is a great circle. Three points of a circle bound no area, which is the phase defect of Remark\nonbreakingspace \ref {rem:phase} vanishing over $\mathbb  {R}$.}}{30}{figure.15}\protected@file@percent }
+\newlabel{fig:bloch}{{15}{30}{The design \eqref {eq:sic} on the Bloch sphere. A line in $\C ^{2}$ is a point of $S^{2}$, and unit vectors obey $\lvert \langle u,v\rangle \rvert ^{2}=\tfrac 12\bigl (1+n_u\cdot n_v\bigr )$. At leverage $2$ the value $\tfrac 43$ of Example~\ref {ex:sic} therefore reads $n_a\cdot n_b=-\tfrac 13$, and the four Bloch vectors are the vertices of a regular tetrahedron: all six pairs are congruent, so all six share the characteristic polynomial of Lemma~\ref {lem:sicvalue}. At $k=2$ the argument of $\langle g_a,g_b\rangle \langle g_b,g_c\rangle \langle g_c,g_a\rangle $ is half the oriented area of the geodesic triangle $n_a n_b n_c$; the hatched face has area $\pi $, so that product is purely imaginary. Over $\R $ the Bloch map is the angle-doubling map \eqref {eq:doubleangle} normalized, and its image is a great circle. Three points of a circle bound no area, which is the phase defect of Remark~\ref {rem:phase} vanishing over $\R $}{figure.15}{}}
+\newlabel{sec:cpadding}{{4.4}{30}{Two padding operations}{subsection.4.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.4}{Two padding operations}}{30}{subsection.4.4}\protected@file@percent }
+\newlabel{lem:spike}{{4.6}{30}{Lean}{theorem.4.6}{}}
+\newlabel{eq:spike}{{25}{30}{Lean}{equation.25}{}}
 \citation{Nesterenko2026complex}
-\newlabel{sec:cladder}{{4.5}{24}{The ladder}{subsection.4.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.5}{The ladder}}{24}{subsection.4.5}\protected@file@percent }
-\newlabel{thm:ladder}{{4.8}{24}{Lean}{theorem.4.8}{}}
-\newlabel{thm:complex}{{4.9}{24}{Lean}{theorem.4.9}{}}
+\newlabel{lem:split}{{4.7}{31}{Lean}{theorem.4.7}{}}
+\newlabel{eq:split}{{26}{31}{Lean}{equation.26}{}}
+\newlabel{sec:cladder}{{4.5}{31}{The ladder}{subsection.4.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.5}{The ladder}}{31}{subsection.4.5}\protected@file@percent }
+\newlabel{thm:ladder}{{4.8}{31}{Lean}{theorem.4.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces The two operations of \S  \ref {sec:cpadding}, and the ladder they compose. Above: the matrix $A$ of a design has $c$-th row $g_c^{\mathsf  {H}}$ and satisfies $A^{\mathsf  {H}}DA=I_k$; the spike borders it with one column and one row, the split repeats one row, and in each case the bordered Parseval product is the identity of the new rank. The spike divides the value bound by $1-w$ and the split leaves it alone, which is the whole cost accounting of Theorem\nonbreakingspace \ref {thm:ladder}. Below: the cells $(m,k)$ for $2\le k\le 6$, the shaded band $m\le k+1$ where $\mathrm  {GTZ}_{\mathbb  {C}}$ holds by Proposition\nonbreakingspace \ref {prop:cpositive}, and the staircase at $(9,5)$: three spikes up the diagonal $m=k+2$, then two splits along $k=5$. The tabulated $w=1-(\tfrac  9{10})^{1/e}$ gives $(1-w)^{e}=\tfrac  9{10}$ at every rank, so the bound after the spikes is $\tfrac  {10}9\alpha _{\mathrm  {SIC}}$ whatever $k$ is, and since $b<b/(1-w)$ for every $b>0$ and every admissible $w$ no member of the family attains $b$.}}{32}{figure.16}\protected@file@percent }
+\newlabel{fig:padding}{{16}{32}{The two operations of \S \ref {sec:cpadding}, and the ladder they compose. Above: the matrix $A$ of a design has $c$-th row $g_c\adj $ and satisfies $A\adj DA=I_k$; the spike borders it with one column and one row, the split repeats one row, and in each case the bordered Parseval product is the identity of the new rank. The spike divides the value bound by $1-w$ and the split leaves it alone, which is the whole cost accounting of Theorem~\ref {thm:ladder}. Below: the cells $(m,k)$ for $2\le k\le 6$, the shaded band $m\le k+1$ where $\GtzC $ holds by Proposition~\ref {prop:cpositive}, and the staircase at $(9,5)$: three spikes up the diagonal $m=k+2$, then two splits along $k=5$. The tabulated $w=1-(\tfrac 9{10})^{1/e}$ gives $(1-w)^{e}=\tfrac 9{10}$ at every rank, so the bound after the spikes is $\tfrac {10}9\alpha _{\mathrm {SIC}}$ whatever $k$ is, and since $b<b/(1-w)$ for every $b>0$ and every admissible $w$ no member of the family attains $b$}{figure.16}{}}
 \citation{Nesterenko2026complex}
-\newlabel{sec:csharp}{{4.6}{25}{The sharp constants}{subsection.4.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.6}{The sharp constants}}{25}{subsection.4.6}\protected@file@percent }
-\newlabel{ex:trine}{{4.10}{25}{Lean}{theorem.4.10}{}}
-\newlabel{eq:tripledet}{{27}{25}{The sharp constants}{equation.27}{}}
-\newlabel{ex:hesse}{{4.11}{25}{Lean}{theorem.4.11}{}}
-\newlabel{eq:hessedet}{{28}{26}{The sharp constants}{equation.28}{}}
-\newlabel{eq:hessecubic}{{29}{26}{The sharp constants}{equation.29}{}}
-\newlabel{prop:hesse}{{4.12}{26}{Lean}{theorem.4.12}{}}
-\newlabel{eq:hessewindow}{{30}{26}{The sharp constants}{equation.30}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces The nine directions of Example\nonbreakingspace \ref {ex:hesse}, slot $p$ across and phase $q$ down as in the display, and the twelve triples that \eqref  {eq:hessedet} puts at $\operatorname  {Re}\beta _{abc}=-\tfrac  {27}{8}$. They are the twelve lines of the affine plane of order three on the residues $(p,q)$: rows, columns and two diagonal classes closing through the opposite edge, with every one of the thirty-six pairs on one of them. A drawing by straight lines in the real plane would then have no ordinary line, which Sylvester--Gallai forbids. The remaining seventy-two sit at $\tfrac  {27}{16}$, among them the ringed $\{u_0,u_1,u_3\}$ that carries the certificate \eqref  {eq:hesseldl}.}}{27}{figure.9}\protected@file@percent }
-\newlabel{fig:hesse}{{9}{27}{The nine directions of Example~\ref {ex:hesse}, slot $p$ across and phase $q$ down as in the display, and the twelve triples that \eqref {eq:hessedet} puts at $\operatorname {Re}\beta _{abc}=-\tfrac {27}{8}$. They are the twelve lines of the affine plane of order three on the residues $(p,q)$: rows, columns and two diagonal classes closing through the opposite edge, with every one of the thirty-six pairs on one of them. A drawing by straight lines in the real plane would then have no ordinary line, which Sylvester--Gallai forbids. The remaining seventy-two sit at $\tfrac {27}{16}$, among them the ringed $\{u_0,u_1,u_3\}$ that carries the certificate \eqref {eq:hesseldl}}{figure.9}{}}
-\newlabel{eq:hesseldl}{{31}{27}{The sharp constants}{equation.31}{}}
-\newlabel{rem:phase}{{4.13}{28}{}{theorem.4.13}{}}
-\newlabel{rem:sharpc}{{4.14}{28}{}{theorem.4.14}{}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{5}{The real problem: decided cells}}{28}{section.5}\protected@file@percent }
-\newlabel{sec:real}{{5}{28}{The real problem: decided cells}{section.5}{}}
-\newlabel{sec:light}{{5.1}{29}{Deleting a light vector}{subsection.5.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.1}{Deleting a light vector}}{29}{subsection.5.1}\protected@file@percent }
-\newlabel{def:light}{{5.1}{29}{}{theorem.5.1}{}}
-\newlabel{eq:schurone}{{32}{29}{Deleting a light vector}{equation.32}{}}
-\newlabel{thm:light}{{5.2}{29}{Lean}{theorem.5.2}{}}
-\newlabel{eq:whiten}{{33}{29}{Deleting a light vector}{equation.33}{}}
-\newlabel{eq:reassemble}{{34}{29}{Deleting a light vector}{equation.34}{}}
-\newlabel{cor:heavy}{{5.3}{29}{Lean}{theorem.5.3}{}}
-\newlabel{sec:ranktwo}{{5.2}{30}{Rank two}{subsection.5.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.2}{Rank two}}{30}{subsection.5.2}\protected@file@percent }
-\newlabel{eq:doubleangle}{{35}{30}{Rank two}{equation.35}{}}
-\newlabel{eq:wdot}{{36}{30}{Rank two}{equation.36}{}}
-\newlabel{eq:balance2}{{37}{30}{Rank two}{equation.37}{}}
-\newlabel{ex:trine2}{{5.4}{30}{}{theorem.5.4}{}}
-\newlabel{def:obstruction}{{5.5}{30}{}{theorem.5.5}{}}
-\newlabel{eq:obstruction}{{38}{30}{}{equation.38}{}}
-\newlabel{lem:pairobs}{{5.6}{30}{}{theorem.5.6}{}}
-\newlabel{eq:pairdet}{{39}{30}{Rank two}{equation.39}{}}
-\newlabel{eq:allfail}{{40}{31}{Rank two}{equation.40}{}}
-\newlabel{lem:rowsum}{{5.7}{31}{}{theorem.5.7}{}}
-\newlabel{eq:core}{{41}{31}{}{equation.41}{}}
-\newlabel{lem:collinear}{{5.8}{31}{}{theorem.5.8}{}}
-\newlabel{lem:spanning}{{5.9}{32}{}{theorem.5.9}{}}
-\newlabel{eq:tromega}{{42}{32}{Rank two}{equation.42}{}}
-\newlabel{eq:residual}{{43}{32}{Rank two}{equation.43}{}}
-\newlabel{thm:ranktwo}{{5.10}{32}{Lean}{theorem.5.10}{}}
+\newlabel{thm:complex}{{4.9}{33}{Lean}{theorem.4.9}{}}
+\newlabel{sec:csharp}{{4.6}{33}{The sharp constants}{subsection.4.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.6}{The sharp constants}}{33}{subsection.4.6}\protected@file@percent }
+\newlabel{ex:trine}{{4.10}{33}{Lean}{theorem.4.10}{}}
+\newlabel{eq:tripledet}{{27}{33}{The sharp constants}{equation.27}{}}
+\newlabel{ex:hesse}{{4.11}{34}{Lean}{theorem.4.11}{}}
+\newlabel{eq:hessedet}{{28}{34}{The sharp constants}{equation.28}{}}
+\newlabel{eq:hessecubic}{{29}{34}{The sharp constants}{equation.29}{}}
+\newlabel{prop:hesse}{{4.12}{34}{Lean}{theorem.4.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces The nine directions of Example\nonbreakingspace \ref {ex:hesse}, slot $p$ across and phase $q$ down as in the display, and the twelve triples that \eqref  {eq:hessedet} puts at $\operatorname  {Re}\beta _{abc}=-\tfrac  {27}{8}$. They are the twelve lines of the affine plane of order three on the residues $(p,q)$: rows, columns and two diagonal classes closing through the opposite edge, with every one of the thirty-six pairs on one of them. A drawing by straight lines in the real plane would then have no ordinary line, which Sylvester--Gallai forbids. The remaining seventy-two sit at $\tfrac  {27}{16}$, among them the ringed $\{u_0,u_1,u_3\}$ that carries the certificate \eqref  {eq:hesseldl}.}}{35}{figure.17}\protected@file@percent }
+\newlabel{fig:hesse}{{17}{35}{The nine directions of Example~\ref {ex:hesse}, slot $p$ across and phase $q$ down as in the display, and the twelve triples that \eqref {eq:hessedet} puts at $\operatorname {Re}\beta _{abc}=-\tfrac {27}{8}$. They are the twelve lines of the affine plane of order three on the residues $(p,q)$: rows, columns and two diagonal classes closing through the opposite edge, with every one of the thirty-six pairs on one of them. A drawing by straight lines in the real plane would then have no ordinary line, which Sylvester--Gallai forbids. The remaining seventy-two sit at $\tfrac {27}{16}$, among them the ringed $\{u_0,u_1,u_3\}$ that carries the certificate \eqref {eq:hesseldl}}{figure.17}{}}
+\newlabel{eq:hessewindow}{{30}{35}{The sharp constants}{equation.30}{}}
+\citation{Nesterenko2026complex}
+\citation{Nesterenko2026complex}
+\newlabel{eq:hesseldl}{{31}{36}{The sharp constants}{equation.31}{}}
+\newlabel{rem:phase}{{4.13}{36}{}{theorem.4.13}{}}
+\newlabel{rem:sharpc}{{4.14}{36}{}{theorem.4.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Identity \eqref  {eq:tripledet} at $s=1$, where it reads $\det (S_{C}-I_3)=8-2B+2\operatorname  {Re}\beta _{abc}$ with $B$ the modulus budget. Left: the two lines share the slope $2$ and differ only in $B$, so each crosses zero at $\operatorname  {Re}\beta _{abc}=B-4$: $\tfrac  75$ for the icosahedron, marked, and $1$ for the trine. A filled dot is a value some triple of the named design takes, an open dot an endpoint of the permitted range that it misses. The trine sits at the centre of its interval with $\operatorname  {Re}\beta _{abc}=0$, so its budget $5$ would have allowed $-2+2\sqrt  3>0$ and its phase does not, while the icosahedron is real and sits at both ends, ten of its triples landing above the zero level. Right: the disc $\lvert \beta _{abc}\rvert \le \sqrt  3$, the trine's eighteen mixed triples all on its boundary, the real locus its horizontal diameter, the shaded lens the region $\operatorname  {Re}\beta _{abc}>1$ where the determinant is positive, and the phase defect the squared height above the diameter, which is $3$ at $\pm i\sqrt  3$. Every abscissa drawn is a genuine triple of leverage-$3$ vectors, since the leading minors $3$, $9-\lvert \beta _{ab}\rvert ^{2}$ and $\det \operatorname  {Gram}_C=27-3B+2\operatorname  {Re}\beta _{abc}$ stay positive along both intervals, though the figure does not assert that each such triple sits inside a design; the icosahedral split of ten and ten is the one count \S  \ref {app:icosa} records without a theorem.}}{37}{figure.18}\protected@file@percent }
+\newlabel{fig:phasedefect}{{18}{37}{Identity \eqref {eq:tripledet} at $s=1$, where it reads $\det (\SC -I_3)=8-2B+2\operatorname {Re}\beta _{abc}$ with $B$ the modulus budget. Left: the two lines share the slope $2$ and differ only in $B$, so each crosses zero at $\operatorname {Re}\beta _{abc}=B-4$: $\tfrac 75$ for the icosahedron, marked, and $1$ for the trine. A filled dot is a value some triple of the named design takes, an open dot an endpoint of the permitted range that it misses. The trine sits at the centre of its interval with $\operatorname {Re}\beta _{abc}=0$, so its budget $5$ would have allowed $-2+2\sqrt 3>0$ and its phase does not, while the icosahedron is real and sits at both ends, ten of its triples landing above the zero level. Right: the disc $\lvert \beta _{abc}\rvert \le \sqrt 3$, the trine's eighteen mixed triples all on its boundary, the real locus its horizontal diameter, the shaded lens the region $\operatorname {Re}\beta _{abc}>1$ where the determinant is positive, and the phase defect the squared height above the diameter, which is $3$ at $\pm i\sqrt 3$. Every abscissa drawn is a genuine triple of leverage-$3$ vectors, since the leading minors $3$, $9-\lvert \beta _{ab}\rvert ^{2}$ and $\det \Gram _C=27-3B+2\operatorname {Re}\beta _{abc}$ stay positive along both intervals, though the figure does not assert that each such triple sits inside a design; the icosahedral split of ten and ten is the one count \S \ref {app:icosa} records without a theorem}{figure.18}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{5}{The real problem: decided cells}}{37}{section.5}\protected@file@percent }
+\newlabel{sec:real}{{5}{37}{The real problem: decided cells}{section.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces The six constants of \S  \ref {sec:complex} on one axis. Below the axis, the ledger giving each its exact form and, for three of them, a polynomial it is the least root of: the floor $1/k$, the Hesse record $h_3$, the trine value $3-\sqrt  5$, the seed value $\alpha _{\mathrm  {SIC}}$, the padded bound $\tfrac  {10}9\alpha _{\mathrm  {SIC}}$, and the threshold $1$. Above it each rank carries the interval its two ends close, a filled dot marking an end attained by a design and an arrowhead an end running to $0$ with $1/k$. Rank two over $\mathbb  {C}$ is a point, while rank three spans $[\tfrac  13,h_3]$ and stays open: the light arrow on that row is the record of Remark\nonbreakingspace \ref {rem:sharpc} moving down through $\tfrac  {10}9\alpha _{\mathrm  {SIC}}$ and $3-\sqrt  5$ without pinning anything. The lower end that pins $\alpha _2(\mathbb  {C})$ is \cite  {Nesterenko2026complex} at uniform weights carried to arbitrary weights in \S  \ref {sec:cpadding}, and the top row's $\alpha _k(\mathbb  {R})=1$ is the conjecture; what is proved on that row is the bracket $[1/k,1]$ together with a design whose value is exactly $1$.}}{38}{figure.19}\protected@file@percent }
+\newlabel{fig:constants}{{19}{38}{The six constants of \S \ref {sec:complex} on one axis. Below the axis, the ledger giving each its exact form and, for three of them, a polynomial it is the least root of: the floor $1/k$, the Hesse record $h_3$, the trine value $3-\sqrt 5$, the seed value $\alpha _{\mathrm {SIC}}$, the padded bound $\tfrac {10}9\alpha _{\mathrm {SIC}}$, and the threshold $1$. Above it each rank carries the interval its two ends close, a filled dot marking an end attained by a design and an arrowhead an end running to $0$ with $1/k$. Rank two over $\C $ is a point, while rank three spans $[\tfrac 13,h_3]$ and stays open: the light arrow on that row is the record of Remark~\ref {rem:sharpc} moving down through $\tfrac {10}9\alpha _{\mathrm {SIC}}$ and $3-\sqrt 5$ without pinning anything. The lower end that pins $\alpha _2(\C )$ is \cite {Nesterenko2026complex} at uniform weights carried to arbitrary weights in \S \ref {sec:cpadding}, and the top row's $\alpha _k(\R )=1$ is the conjecture; what is proved on that row is the bracket $[1/k,1]$ together with a design whose value is exactly $1$}{figure.19}{}}
+\newlabel{sec:light}{{5.1}{38}{Deleting a light vector}{subsection.5.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.1}{Deleting a light vector}}{38}{subsection.5.1}\protected@file@percent }
+\newlabel{def:light}{{5.1}{38}{}{theorem.5.1}{}}
+\newlabel{eq:schurone}{{32}{38}{Deleting a light vector}{equation.32}{}}
+\newlabel{thm:light}{{5.2}{38}{Lean}{theorem.5.2}{}}
+\newlabel{eq:whiten}{{33}{39}{Deleting a light vector}{equation.33}{}}
+\newlabel{eq:reassemble}{{34}{39}{Deleting a light vector}{equation.34}{}}
+\newlabel{cor:heavy}{{5.3}{39}{Lean}{theorem.5.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces Theorem\nonbreakingspace \ref {thm:light} at $(3,2)$, with $g_3$ the light vector. Left, upstairs: the unit circle, which $g_3$ lies inside, and the ellipse $u^{\mathsf  {T}}\Sigma _3u=1$, bounded because $t_3\ell _3=\tfrac  {369}{625}<1$ and stretched by $\tfrac  {25}{16}$ along $g_3$ alone. Left, downstairs: the deflated design, both of whose vectors are heavy. Right: the three steps of the proof, ending in \eqref  {eq:reassemble} as a sum $X+Y$ of two positive semidefinite matrices. The hypothesis $\ell _3\le 1$ is used once, at the smaller eigenvalue $t_3(1-\ell _3)=\tfrac  {31}{625}$ of $Y$; the other two pairs of this design fail, so the pair the theorem produces is the complement of the light index.}}{40}{figure.20}\protected@file@percent }
+\newlabel{fig:lightdelete}{{20}{40}{Theorem~\ref {thm:light} at $(3,2)$, with $g_3$ the light vector. Left, upstairs: the unit circle, which $g_3$ lies inside, and the ellipse $u\tp \Sigma _3u=1$, bounded because $t_3\ell _3=\tfrac {369}{625}<1$ and stretched by $\tfrac {25}{16}$ along $g_3$ alone. Left, downstairs: the deflated design, both of whose vectors are heavy. Right: the three steps of the proof, ending in \eqref {eq:reassemble} as a sum $X+Y$ of two positive semidefinite matrices. The hypothesis $\ell _3\le 1$ is used once, at the smaller eigenvalue $t_3(1-\ell _3)=\tfrac {31}{625}$ of $Y$; the other two pairs of this design fail, so the pair the theorem produces is the complement of the light index}{figure.20}{}}
+\newlabel{sec:ranktwo}{{5.2}{40}{Rank two}{subsection.5.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.2}{Rank two}}{40}{subsection.5.2}\protected@file@percent }
+\newlabel{eq:doubleangle}{{35}{40}{Rank two}{equation.35}{}}
+\newlabel{eq:wdot}{{36}{40}{Rank two}{equation.36}{}}
+\newlabel{eq:balance2}{{37}{40}{Rank two}{equation.37}{}}
+\newlabel{ex:trine2}{{5.4}{41}{}{theorem.5.4}{}}
+\newlabel{def:obstruction}{{5.5}{41}{}{theorem.5.5}{}}
+\newlabel{eq:obstruction}{{38}{41}{}{equation.38}{}}
+\newlabel{lem:pairobs}{{5.6}{41}{}{theorem.5.6}{}}
+\newlabel{eq:pairdet}{{39}{41}{Rank two}{equation.39}{}}
+\newlabel{eq:allfail}{{40}{41}{Rank two}{equation.40}{}}
+\newlabel{lem:rowsum}{{5.7}{41}{}{theorem.5.7}{}}
+\newlabel{eq:core}{{41}{41}{}{equation.41}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces The pair obstruction \eqref  {eq:obstruction} at $(5,2)$. Left: the squared vectors of an all-heavy design, at distance $\ell _c$ from the origin. The two circles drawn are those of the pair $\{1,3\}$, and the arc on the circle of radius $\ell _3=2$ carries the partners $\eta _d$ with $K_{1d}\le 0$. Every point of that arc makes an angle of at least $\psi ^{*}$ with $\eta _1$, where $\cos \psi ^{*}=\kappa (\ell _c,\ell _d):= \bigl  [(\ell _c-2)(\ell _d-2)-2\bigr  ]/(\ell _c\ell _d)$; both $\kappa +1=2(\ell _c-1)(\ell _d-1)/(\ell _c\ell _d)$ and $1-\kappa =2(\ell _c+\ell _d-1)/(\ell _c\ell _d)$ are positive at a heavy pair, so the arc is proper and nonempty there and the two leverages by themselves decide no pair. Centre: the ten pairs, four of them dominating. Right: the trine of Example\nonbreakingspace \ref {ex:trine2}, where the cosine the design realizes and the threshold $\kappa (2,2)$ are both $-\tfrac  12$, so each pair sits at an endpoint of the arc and $K_{cd}=0$.}}{42}{figure.21}\protected@file@percent }
+\newlabel{fig:obstruction}{{21}{42}{The pair obstruction \eqref {eq:obstruction} at $(5,2)$. Left: the squared vectors of an all-heavy design, at distance $\ell _c$ from the origin. The two circles drawn are those of the pair $\{1,3\}$, and the arc on the circle of radius $\ell _3=2$ carries the partners $\eta _d$ with $K_{1d}\le 0$. Every point of that arc makes an angle of at least $\psi ^{*}$ with $\eta _1$, where $\cos \psi ^{*}=\kappa (\ell _c,\ell _d):= \bigl [(\ell _c-2)(\ell _d-2)-2\bigr ]/(\ell _c\ell _d)$; both $\kappa +1=2(\ell _c-1)(\ell _d-1)/(\ell _c\ell _d)$ and $1-\kappa =2(\ell _c+\ell _d-1)/(\ell _c\ell _d)$ are positive at a heavy pair, so the arc is proper and nonempty there and the two leverages by themselves decide no pair. Centre: the ten pairs, four of them dominating. Right: the trine of Example~\ref {ex:trine2}, where the cosine the design realizes and the threshold $\kappa (2,2)$ are both $-\tfrac 12$, so each pair sits at an endpoint of the arc and $K_{cd}=0$}{figure.21}{}}
+\newlabel{lem:collinear}{{5.8}{43}{}{theorem.5.8}{}}
+\newlabel{lem:spanning}{{5.9}{43}{}{theorem.5.9}{}}
+\newlabel{eq:tromega}{{42}{43}{Rank two}{equation.42}{}}
+\newlabel{eq:residual}{{43}{43}{Rank two}{equation.43}{}}
 \citation{SenguptaPautov2026}
 \citation{Nesterenko2023}
 \citation{SenguptaPautov2026}
+\newlabel{thm:ranktwo}{{5.10}{44}{Lean}{theorem.5.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces Lemma\nonbreakingspace \ref {lem:spanning} as a fit. By \eqref  {eq:residual} the slack $\sigma -\zeta ^{\mathsf  {T}}\Omega ^{-1}\zeta $ is the $t$-weighted squared residual of $\hat  \ell $ against the linear functional $\langle \eta ,\xi \rangle $, $\xi :=\Omega ^{-1}\zeta $; disc area is the weight, and an atom under the fitted plane carries a dashed segment. Left: an all-heavy design at $(5,2)$, where $\det \Psi <0$ and $\Psi $ is indefinite. Right: the trine of Example\nonbreakingspace \ref {ex:trine2}, where $\hat  \ell $ vanishes identically and the fit is exact.}}{44}{figure.22}\protected@file@percent }
+\newlabel{fig:regression}{{22}{44}{Lemma~\ref {lem:spanning} as a fit. By \eqref {eq:residual} the slack $\sigma -\zeta \tp \Omega ^{-1}\zeta $ is the $t$-weighted squared residual of $\hat \ell $ against the linear functional $\langle \eta ,\xi \rangle $, $\xi :=\Omega ^{-1}\zeta $; disc area is the weight, and an atom under the fitted plane carries a dashed segment. Left: an all-heavy design at $(5,2)$, where $\det \Psi <0$ and $\Psi $ is indefinite. Right: the trine of Example~\ref {ex:trine2}, where $\hat \ell $ vanishes identically and the fit is exact}{figure.22}{}}
 \citation{Nesterenko2026real}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Lemma\nonbreakingspace \ref {lem:spanning} as a fit. By \eqref  {eq:residual} the slack $\sigma -\zeta ^{\mathsf  {T}}\Omega ^{-1}\zeta $ is the $t$-weighted squared residual of $\hat  \ell $ against the linear functional $\langle \eta ,\xi \rangle $, $\xi :=\Omega ^{-1}\zeta $; disc area is the weight, and an atom under the fitted plane carries a dashed segment. Left: an all-heavy design at $(5,2)$. There $\det \Psi <0$, so $\Psi $ is indefinite, and the trace taken in the proof, rather than a sign for $\Psi $ itself, is what supplies a direction nonnegative for $\Psi $. Right: the trine of Example\nonbreakingspace \ref {ex:trine2}, where $\hat  \ell $ vanishes identically and the fit is exact.}}{33}{figure.10}\protected@file@percent }
-\newlabel{fig:regression}{{10}{33}{Lemma~\ref {lem:spanning} as a fit. By \eqref {eq:residual} the slack $\sigma -\zeta \tp \Omega ^{-1}\zeta $ is the $t$-weighted squared residual of $\hat \ell $ against the linear functional $\langle \eta ,\xi \rangle $, $\xi :=\Omega ^{-1}\zeta $; disc area is the weight, and an atom under the fitted plane carries a dashed segment. Left: an all-heavy design at $(5,2)$. There $\det \Psi <0$, so $\Psi $ is indefinite, and the trace taken in the proof, rather than a sign for $\Psi $ itself, is what supplies a direction nonnegative for $\Psi $. Right: the trine of Example~\ref {ex:trine2}, where $\hat \ell $ vanishes identically and the fit is exact}{figure.10}{}}
-\newlabel{sec:corank}{{5.3}{33}{Corank at most two}{subsection.5.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.3}{Corank at most two}}{33}{subsection.5.3}\protected@file@percent }
-\newlabel{thm:coranktwo}{{5.11}{33}{Lean}{theorem.5.11}{}}
-\newlabel{eq:pairdom}{{44}{34}{Corank at most two}{equation.44}{}}
-\newlabel{cor:corank}{{5.12}{34}{Lean}{theorem.5.12}{}}
-\newlabel{sec:crystal}{{5.4}{34}{Crystallization}{subsection.5.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.4}{Crystallization}}{34}{subsection.5.4}\protected@file@percent }
-\newlabel{lem:null}{{5.13}{34}{Lean}{theorem.5.13}{}}
-\newlabel{eq:moment}{{45}{34}{Lean}{equation.45}{}}
-\newlabel{thm:reduce}{{5.14}{34}{Lean}{theorem.5.14}{}}
+\newlabel{sec:corank}{{5.3}{45}{Corank at most two}{subsection.5.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.3}{Corank at most two}}{45}{subsection.5.3}\protected@file@percent }
+\newlabel{thm:coranktwo}{{5.11}{45}{Lean}{theorem.5.11}{}}
+\newlabel{eq:pairdom}{{44}{45}{Corank at most two}{equation.44}{}}
+\newlabel{cor:corank}{{5.12}{45}{Lean}{theorem.5.12}{}}
 \citation{Caratheodory1911}
 \citation{Rockafellar1970}
-\newlabel{thm:window}{{5.15}{35}{Lean}{theorem.5.15}{}}
-\newlabel{sec:monotone}{{5.5}{35}{Monotonicity in the size}{subsection.5.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.5}{Monotonicity in the size}}{35}{subsection.5.5}\protected@file@percent }
-\newlabel{lem:repeat}{{5.16}{35}{Lean}{theorem.5.16}{}}
-\newlabel{prop:splitting}{{5.17}{35}{Lean}{theorem.5.17}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces The cone $\{A\succeq 0\}$ in $\mathrm  {Sym}_2$. The three coordinate directions are Frobenius-orthogonal of equal length, so the cone is circular, of half-angle $\pi /4$ about the ray of scalar matrices. Left: the rank-two trine of Example\nonbreakingspace \ref {ex:trine2}. Its three atoms lie on the boundary circle at height $1$, and \eqref  {eq:parseval} exhibits $I_2$ as their centroid. Right: the horizontal projection. The atom of $g_c$ lands at radius $\ell _c/2$ and at argument $2\theta _c$, twice that of $g_c$: the dot at the midpoint of $\eta _c$. So $g_c$ and $-g_c$ give the same point, and the doubling is \eqref  {eq:doubleangle}. The window $N(2)$ of Theorem\nonbreakingspace \ref {thm:window} is the Carath\'eodory number of this space.}}{36}{figure.11}\protected@file@percent }
-\newlabel{fig:psdcone}{{11}{36}{The cone $\{A\psd 0\}$ in $\mathrm {Sym}_2$. The three coordinate directions are Frobenius-orthogonal of equal length, so the cone is circular, of half-angle $\pi /4$ about the ray of scalar matrices. Left: the rank-two trine of Example~\ref {ex:trine2}. Its three atoms lie on the boundary circle at height $1$, and \eqref {eq:parseval} exhibits $I_2$ as their centroid. Right: the horizontal projection. The atom of $g_c$ lands at radius $\ell _c/2$ and at argument $2\theta _c$, twice that of $g_c$: the dot at the midpoint of $\eta _c$. So $g_c$ and $-g_c$ give the same point, and the doubling is \eqref {eq:doubleangle}. The window $\win (2)$ of Theorem~\ref {thm:window} is the Carath\'eodory number of this space}{figure.11}{}}
-\newlabel{thm:topcell}{{5.18}{36}{Lean}{theorem.5.18}{}}
-\newlabel{sec:rankthree}{{5.6}{36}{Rank three}{subsection.5.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.6}{Rank three}}{36}{subsection.5.6}\protected@file@percent }
-\newlabel{cor:twocells}{{5.19}{36}{Lean}{theorem.5.19}{}}
-\newlabel{prop:spike}{{5.20}{36}{Lean}{theorem.5.20}{}}
-\newlabel{eq:unifgap}{{46}{37}{Rank three}{equation.46}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Rank three. The box on the left is Corollary\nonbreakingspace \ref {cor:corank}; the filled arrows are Proposition\nonbreakingspace \ref {prop:splitting} and Theorem\nonbreakingspace \ref {thm:window}; the open arrows are the boundary analysis of \S  \ref {sec:compactness}, which at a cell consumes the two cells one size below. Dashed arrows carry the two unproved inputs of \S  \ref {sec:interior}.}}{37}{figure.12}\protected@file@percent }
-\newlabel{fig:ladder}{{12}{37}{Rank three. The box on the left is Corollary~\ref {cor:corank}; the filled arrows are Proposition~\ref {prop:splitting} and Theorem~\ref {thm:window}; the open arrows are the boundary analysis of \S \ref {sec:compactness}, which at a cell consumes the two cells one size below. Dashed arrows carry the two unproved inputs of \S \ref {sec:interior}}{figure.12}{}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{6}{The equality locus}}{37}{section.6}\protected@file@percent }
-\newlabel{sec:ties}{{6}{37}{The equality locus}{section.6}{}}
-\newlabel{sec:extremal}{{6.1}{38}{Extremal designs}{subsection.6.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{6.1}{Extremal designs}}{38}{subsection.6.1}\protected@file@percent }
-\newlabel{def:tie}{{6.1}{38}{}{theorem.6.1}{}}
-\newlabel{lem:tiemax}{{6.2}{38}{}{theorem.6.2}{}}
-\newlabel{eq:alpha}{{47}{38}{Extremal designs}{equation.47}{}}
-\newlabel{sec:split}{{6.2}{38}{Splitting, and existence at every size}{subsection.6.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{6.2}{Splitting, and existence at every size}}{38}{subsection.6.2}\protected@file@percent }
-\newlabel{eq:gapform}{{48}{38}{Splitting, and existence at every size}{equation.48}{}}
-\newlabel{lem:parallel}{{6.3}{38}{}{theorem.6.3}{}}
-\newlabel{thm:tieseverywhere}{{6.4}{39}{Lean}{theorem.6.4}{}}
-\newlabel{prop:section}{{6.5}{39}{}{theorem.6.5}{}}
-\newlabel{prop:tielawcorank}{{6.6}{40}{Lean}{theorem.6.6}{}}
-\newlabel{ex:split}{{6.7}{40}{Lean}{theorem.6.7}{}}
-\newlabel{sec:nomargin}{{6.3}{40}{No margin}{subsection.6.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{6.3}{No margin}}{40}{subsection.6.3}\protected@file@percent }
-\newlabel{cor:nomargin}{{6.8}{40}{Lean}{theorem.6.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces The equality locus as a section, at $(6,3)$. Floor: the slice $t_4=t_5=t_6=\tfrac  16$ of the open weight simplex, its excluded boundary dashed and the uniform point marked. Vertical: the fibre of the weight map, drawn as a single dimension. Each sheet is a section $t\DOTSB \mapstochar \rightarrow \mathcal  {D}(t,\varphi )$ of Proposition\nonbreakingspace \ref {prop:section} restricted to that slice; the section is defined at every weight vector and its image has dimension $m-1=5$, the dimension of the weights. One sheet occurs for each partition of $\{1,\dots  ,6\}$ into four classes, $65$ in all, of which three are drawn. However small, the shaded $\mathcal  {U}$ meets every one of them, so no restriction of the weights isolates a region on which the slack has a positive infimum; four of the nine strategies of Appendix\nonbreakingspace \ref {app:graveyard} fail on that account.}}{41}{figure.13}\protected@file@percent }
-\newlabel{fig:section}{{13}{41}{The equality locus as a section, at $(6,3)$. Floor: the slice $t_4=t_5=t_6=\tfrac 16$ of the open weight simplex, its excluded boundary dashed and the uniform point marked. Vertical: the fibre of the weight map, drawn as a single dimension. Each sheet is a section $t\mapsto \dsn (t,\varphi )$ of Proposition~\ref {prop:section} restricted to that slice; the section is defined at every weight vector and its image has dimension $m-1=5$, the dimension of the weights. One sheet occurs for each partition of $\{1,\dots ,6\}$ into four classes, $65$ in all, of which three are drawn. However small, the shaded $\mathcal {U}$ meets every one of them, so no restriction of the weights isolates a region on which the slack has a positive infimum; four of the nine strategies of Appendix~\ref {app:graveyard} fail on that account}{figure.13}{}}
-\newlabel{sec:diamond}{{6.4}{41}{The diamond}{subsection.6.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{6.4}{The diamond}}{41}{subsection.6.4}\protected@file@percent }
-\newlabel{eq:drops}{{49}{41}{The diamond}{equation.49}{}}
-\newlabel{eq:laplacian}{{50}{42}{The diamond}{equation.50}{}}
-\newlabel{eq:diamondatoms}{{51}{42}{The diamond}{equation.51}{}}
-\newlabel{eq:diamondlev}{{52}{42}{The diamond}{equation.52}{}}
-\newlabel{eq:diamondgap}{{53}{42}{The diamond}{equation.53}{}}
-\newlabel{ex:diamond}{{6.9}{42}{Lean}{theorem.6.9}{}}
-\newlabel{eq:diamondstar}{{54}{43}{The diamond}{equation.54}{}}
-\newlabel{cor:noparallel}{{6.10}{43}{Lean}{theorem.6.10}{}}
-\newlabel{sec:averaging}{{6.5}{43}{Volume sampling}{subsection.6.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{6.5}{Volume sampling}}{43}{subsection.6.5}\protected@file@percent }
-\newlabel{lem:cauchybinet}{{6.11}{43}{}{theorem.6.11}{}}
+\newlabel{sec:crystal}{{5.4}{46}{Crystallization}{subsection.5.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.4}{Crystallization}}{46}{subsection.5.4}\protected@file@percent }
+\newlabel{lem:null}{{5.13}{46}{Lean}{theorem.5.13}{}}
+\newlabel{eq:moment}{{45}{46}{Lean}{equation.45}{}}
+\newlabel{thm:reduce}{{5.14}{46}{Lean}{theorem.5.14}{}}
+\newlabel{thm:window}{{5.15}{46}{Lean}{theorem.5.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces The cone $\{A\succeq 0\}$ in $\mathrm  {Sym}_2$. The three coordinate directions are Frobenius-orthogonal of equal length, so the cone is circular, of half-angle $\pi /4$ about the ray of scalar matrices. Left: the rank-two trine of Example\nonbreakingspace \ref {ex:trine2}. Its three atoms lie on the boundary circle at height $1$, and \eqref  {eq:parseval} exhibits $I_2$ as their centroid. Right: the horizontal projection. The atom of $g_c$ lands at radius $\ell _c/2$ and at argument $2\theta _c$, twice that of $g_c$: the dot at the midpoint of $\eta _c$. So $g_c$ and $-g_c$ give the same point, and the doubling is \eqref  {eq:doubleangle}. The window $N(2)$ of Theorem\nonbreakingspace \ref {thm:window} is the Carath\'eodory number of this space.}}{47}{figure.23}\protected@file@percent }
+\newlabel{fig:psdcone}{{23}{47}{The cone $\{A\psd 0\}$ in $\mathrm {Sym}_2$. The three coordinate directions are Frobenius-orthogonal of equal length, so the cone is circular, of half-angle $\pi /4$ about the ray of scalar matrices. Left: the rank-two trine of Example~\ref {ex:trine2}. Its three atoms lie on the boundary circle at height $1$, and \eqref {eq:parseval} exhibits $I_2$ as their centroid. Right: the horizontal projection. The atom of $g_c$ lands at radius $\ell _c/2$ and at argument $2\theta _c$, twice that of $g_c$: the dot at the midpoint of $\eta _c$. So $g_c$ and $-g_c$ give the same point, and the doubling is \eqref {eq:doubleangle}. The window $\win (2)$ of Theorem~\ref {thm:window} is the Carath\'eodory number of this space}{figure.23}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces Theorem\nonbreakingspace \ref {thm:reduce} at $(5,2)$, in the coordinates of Figure\nonbreakingspace \ref {fig:psdcone}. Left: five rank-one atoms on the boundary of the cone, at heights $\ell _c/2$, with $I_2$ their $t$-barycentre by \eqref  {eq:parseval}; disc area is the weight, and the signed integer beside an atom is its coordinate of $\delta $. Since $\dim \mathrm  {Sym}_2+1=N(2)=4<5$ the moment map has a kernel, here the line spanned by $\delta =(-9,1,3,-3,8)$. Right: the five weights $t_c-\theta \delta _c$ along that line, every one of them a Parseval weighting, all nonnegative exactly on $-\tfrac  1{42}\le \theta \le \tfrac  1{56}$. At the right end the ringed atom loses its weight and the design drops to $(4,2)$ with $t'=\tfrac  18(3,1,3,1,0)$; the atoms themselves never moved, which leaves the smaller design on a subfamily of the given vectors.}}{47}{figure.24}\protected@file@percent }
+\newlabel{fig:crystal}{{24}{47}{Theorem~\ref {thm:reduce} at $(5,2)$, in the coordinates of Figure~\ref {fig:psdcone}. Left: five rank-one atoms on the boundary of the cone, at heights $\ell _c/2$, with $I_2$ their $t$-barycentre by \eqref {eq:parseval}; disc area is the weight, and the signed integer beside an atom is its coordinate of $\delta $. Since $\dim \mathrm {Sym}_2+1=\win (2)=4<5$ the moment map has a kernel, here the line spanned by $\delta =(-9,1,3,-3,8)$. Right: the five weights $t_c-\theta \delta _c$ along that line, every one of them a Parseval weighting, all nonnegative exactly on $-\tfrac 1{42}\le \theta \le \tfrac 1{56}$. At the right end the ringed atom loses its weight and the design drops to $(4,2)$ with $t'=\tfrac 18(3,1,3,1,0)$; the atoms themselves never moved, which leaves the smaller design on a subfamily of the given vectors}{figure.24}{}}
+\newlabel{sec:monotone}{{5.5}{47}{Monotonicity in the size}{subsection.5.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.5}{Monotonicity in the size}}{48}{subsection.5.5}\protected@file@percent }
+\newlabel{lem:repeat}{{5.16}{48}{Lean}{theorem.5.16}{}}
+\newlabel{prop:splitting}{{5.17}{48}{Lean}{theorem.5.17}{}}
+\newlabel{thm:topcell}{{5.18}{48}{Lean}{theorem.5.18}{}}
+\newlabel{sec:rankthree}{{5.6}{48}{Rank three}{subsection.5.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.6}{Rank three}}{48}{subsection.5.6}\protected@file@percent }
+\newlabel{cor:twocells}{{5.19}{48}{Lean}{theorem.5.19}{}}
+\newlabel{prop:spike}{{5.20}{48}{Lean}{theorem.5.20}{}}
+\newlabel{eq:unifgap}{{46}{49}{Rank three}{equation.46}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces Rank three. The box on the left is Corollary\nonbreakingspace \ref {cor:corank}; the filled arrows are Proposition\nonbreakingspace \ref {prop:splitting} and Theorem\nonbreakingspace \ref {thm:window}; the open arrows are the boundary analysis of \S  \ref {sec:compactness}, which at a cell consumes the two cells one size below. Dashed arrows carry the two unproved inputs of \S  \ref {sec:interior}.}}{49}{figure.25}\protected@file@percent }
+\newlabel{fig:ladder}{{25}{49}{Rank three. The box on the left is Corollary~\ref {cor:corank}; the filled arrows are Proposition~\ref {prop:splitting} and Theorem~\ref {thm:window}; the open arrows are the boundary analysis of \S \ref {sec:compactness}, which at a cell consumes the two cells one size below. Dashed arrows carry the two unproved inputs of \S \ref {sec:interior}}{figure.25}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{6}{The equality locus}}{49}{section.6}\protected@file@percent }
+\newlabel{sec:ties}{{6}{49}{The equality locus}{section.6}{}}
+\newlabel{sec:extremal}{{6.1}{49}{Extremal designs}{subsection.6.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{6.1}{Extremal designs}}{49}{subsection.6.1}\protected@file@percent }
+\newlabel{def:tie}{{6.1}{49}{}{theorem.6.1}{}}
+\newlabel{lem:tiemax}{{6.2}{50}{}{theorem.6.2}{}}
+\newlabel{eq:alpha}{{47}{50}{Extremal designs}{equation.47}{}}
+\newlabel{sec:split}{{6.2}{50}{Splitting, and existence at every size}{subsection.6.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{6.2}{Splitting, and existence at every size}}{50}{subsection.6.2}\protected@file@percent }
+\newlabel{eq:gapform}{{48}{50}{Splitting, and existence at every size}{equation.48}{}}
+\newlabel{lem:parallel}{{6.3}{50}{}{theorem.6.3}{}}
+\newlabel{thm:tieseverywhere}{{6.4}{50}{Lean}{theorem.6.4}{}}
+\newlabel{prop:section}{{6.5}{51}{}{theorem.6.5}{}}
+\newlabel{prop:tielawcorank}{{6.6}{52}{Lean}{theorem.6.6}{}}
+\newlabel{ex:split}{{6.7}{52}{Lean}{theorem.6.7}{}}
+\newlabel{sec:nomargin}{{6.3}{52}{No margin}{subsection.6.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{6.3}{No margin}}{52}{subsection.6.3}\protected@file@percent }
+\newlabel{cor:nomargin}{{6.8}{52}{Lean}{theorem.6.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {26}{\ignorespaces The split tetrahedron at $(7,3)$ of Example\nonbreakingspace \ref {ex:split}, and all thirty-five of its triples on one eigenvalue axis. Top left: the seven atoms by direction class, three classes of two and one of one, each carrying total weight $\tfrac  14$; the count on the right runs over the resulting multiplicities $(2,2,2,1)$. Bottom left: both spectra on one axis with the threshold dashed, the twenty triples that meet three directions on the upper row and the fifteen that repeat one below, singular on the line orthogonal to the two directions they carry. Right: the multipliers of the stationarity datum of Example\nonbreakingspace \ref {ex:splitseven}, positive and summing to one; they are also the volume-sampling probabilities \eqref  {eq:dpp} of the same triples, $\pi _C=\bigl  (\DOTSB \prod@ \slimits@ _{c\in C}t_c\bigr  )\cdot 16$. The lower spectrum is computed here, and of the three symmetric functions behind it the development carries the first and the last.}}{53}{figure.26}\protected@file@percent }
+\newlabel{fig:splitspec}{{26}{53}{The split tetrahedron at $(7,3)$ of Example~\ref {ex:split}, and all thirty-five of its triples on one eigenvalue axis. Top left: the seven atoms by direction class, three classes of two and one of one, each carrying total weight $\tfrac 14$; the count on the right runs over the resulting multiplicities $(2,2,2,1)$. Bottom left: both spectra on one axis with the threshold dashed, the twenty triples that meet three directions on the upper row and the fifteen that repeat one below, singular on the line orthogonal to the two directions they carry. Right: the multipliers of the stationarity datum of Example~\ref {ex:splitseven}, positive and summing to one; they are also the volume-sampling probabilities \eqref {eq:dpp} of the same triples, $\pi _C=\bigl (\prod _{c\in C}t_c\bigr )\cdot 16$. The lower spectrum is computed here, and of the three symmetric functions behind it the development carries the first and the last}{figure.26}{}}
+\newlabel{sec:diamond}{{6.4}{53}{The diamond}{subsection.6.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{6.4}{The diamond}}{53}{subsection.6.4}\protected@file@percent }
+\newlabel{eq:drops}{{49}{53}{The diamond}{equation.49}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {27}{\ignorespaces The equality locus as a section, at $(6,3)$. Floor: the slice $t_4=t_5=t_6=\tfrac  16$ of the open weight simplex, its excluded boundary dashed and the uniform point marked. Vertical: the fibre of the weight map, drawn as a single dimension. Each sheet is a section $t\DOTSB \mapstochar \rightarrow \mathcal  {D}(t,\varphi )$ of Proposition\nonbreakingspace \ref {prop:section} restricted to that slice; the section is defined at every weight vector and its image has dimension $m-1=5$, the dimension of the weights. One sheet occurs for each partition of $\{1,\dots  ,6\}$ into four classes, $65$ in all, of which three are drawn. However small, the shaded $\mathcal  {U}$ meets every one of them, so no restriction of the weights isolates a region on which the slack has a positive infimum; four of the nine strategies of Appendix\nonbreakingspace \ref {app:graveyard} fail on that account.}}{54}{figure.27}\protected@file@percent }
+\newlabel{fig:section}{{27}{54}{The equality locus as a section, at $(6,3)$. Floor: the slice $t_4=t_5=t_6=\tfrac 16$ of the open weight simplex, its excluded boundary dashed and the uniform point marked. Vertical: the fibre of the weight map, drawn as a single dimension. Each sheet is a section $t\mapsto \dsn (t,\varphi )$ of Proposition~\ref {prop:section} restricted to that slice; the section is defined at every weight vector and its image has dimension $m-1=5$, the dimension of the weights. One sheet occurs for each partition of $\{1,\dots ,6\}$ into four classes, $65$ in all, of which three are drawn. However small, the shaded $\mathcal {U}$ meets every one of them, so no restriction of the weights isolates a region on which the slack has a positive infimum; four of the nine strategies of Appendix~\ref {app:graveyard} fail on that account}{figure.27}{}}
+\newlabel{eq:laplacian}{{50}{54}{The diamond}{equation.50}{}}
+\newlabel{eq:diamondatoms}{{51}{54}{The diamond}{equation.51}{}}
+\newlabel{eq:diamondlev}{{52}{55}{The diamond}{equation.52}{}}
+\newlabel{eq:diamondgap}{{53}{55}{The diamond}{equation.53}{}}
+\newlabel{ex:diamond}{{6.9}{55}{Lean}{theorem.6.9}{}}
+\newlabel{eq:diamondstar}{{54}{55}{The diamond}{equation.54}{}}
+\newlabel{cor:noparallel}{{6.10}{56}{Lean}{theorem.6.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {28}{\ignorespaces The diamond $\mathcal  {D}_{\Diamond }$. Left: the graph $K_4$ with the edge $34$ deleted and the vertex $4$ grounded, its edges carrying the conductances $c=(2,3,3,3,3)$ and the uniform weights $t_e=\tfrac  15$; line weight is proportional to conductance. Right: the five reduced incidence vectors of \eqref  {eq:drops}, pairwise non-proportional, whence the five atoms \eqref  {eq:diamondatoms} are pairwise non-parallel.}}{56}{figure.28}\protected@file@percent }
+\newlabel{fig:diamond}{{28}{56}{The diamond $\dsn _{\Diamond }$. Left: the graph $K_4$ with the edge $34$ deleted and the vertex $4$ grounded, its edges carrying the conductances $c=(2,3,3,3,3)$ and the uniform weights $t_e=\tfrac 15$; line weight is proportional to conductance. Right: the five reduced incidence vectors of \eqref {eq:drops}, pairwise non-proportional, whence the five atoms \eqref {eq:diamondatoms} are pairwise non-parallel}{figure.28}{}}
+\newlabel{sec:averaging}{{6.5}{56}{Volume sampling}{subsection.6.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{6.5}{Volume sampling}}{56}{subsection.6.5}\protected@file@percent }
+\newlabel{lem:cauchybinet}{{6.11}{56}{}{theorem.6.11}{}}
 \citation{DRVW2006}
 \citation{Lyons2003}
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces The diamond $\mathcal  {D}_{\Diamond }$. Left: the graph $K_4$ with the edge $34$ deleted and the vertex $4$ grounded, its edges carrying the conductances $c=(2,3,3,3,3)$ and the uniform weights $t_e=\tfrac  15$; line weight is proportional to conductance. Right: the five reduced incidence vectors of \eqref  {eq:drops}, pairwise non-proportional, whence the five atoms \eqref  {eq:diamondatoms} are pairwise non-parallel.}}{44}{figure.14}\protected@file@percent }
-\newlabel{fig:diamond}{{14}{44}{The diamond $\dsn _{\Diamond }$. Left: the graph $K_4$ with the edge $34$ deleted and the vertex $4$ grounded, its edges carrying the conductances $c=(2,3,3,3,3)$ and the uniform weights $t_e=\tfrac 15$; line weight is proportional to conductance. Right: the five reduced incidence vectors of \eqref {eq:drops}, pairwise non-proportional, whence the five atoms \eqref {eq:diamondatoms} are pairwise non-parallel}{figure.14}{}}
-\newlabel{eq:dpp}{{55}{44}{Volume sampling}{equation.55}{}}
-\newlabel{lem:marginal}{{6.12}{44}{}{theorem.6.12}{}}
-\newlabel{thm:leverageaverage}{{6.13}{45}{Lean}{theorem.6.13}{}}
-\newlabel{thm:average}{{6.14}{45}{}{theorem.6.14}{}}
-\newlabel{prop:jensen}{{6.15}{45}{Lean}{theorem.6.15}{}}
-\newlabel{eq:mixture}{{56}{45}{Volume sampling}{equation.56}{}}
-\newlabel{prop:totaltight}{{6.16}{45}{}{theorem.6.16}{}}
-\newlabel{prop:qonezero}{{6.17}{45}{Lean}{theorem.6.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {29}{\ignorespaces The certificate of the star at $(5,3)$, and the two circuits. Left: the zero sets of the two linear forms of \eqref  {eq:diamondstar}, drawn in the potential space; $Q_C$ vanishes where both do, on their common line, and congruence by $R$ carries that inertia to $S_{C}-I_3$. The witness $(1,4,0)$ of Example\nonbreakingspace \ref {ex:diamond} lies on that line, and the tally below the panel is \eqref  {eq:diamondgap} evaluated there. Right: the two circuits $\{e_0,e_1,e_3\}$ and $\{e_0,e_2,e_4\}$, each shaded on its vertex set; a potential constant there kills the three selected drops and leaves the two edges of the cut, of conductance $3$ and drop $1$ apiece. That eight of the ten $3$-subsets dominate, each with a one-dimensional kernel and the eight null lines pairwise distinct, is computed here; Example\nonbreakingspace \ref {ex:diamond} needs one dominating subset and the ten nonpositive values, and the development proves no more.}}{57}{figure.29}\protected@file@percent }
+\newlabel{fig:diamondcert}{{29}{57}{The certificate of the star at $(5,3)$, and the two circuits. Left: the zero sets of the two linear forms of \eqref {eq:diamondstar}, drawn in the potential space; $Q_C$ vanishes where both do, on their common line, and congruence by $R$ carries that inertia to $\SC -I_3$. The witness $(1,4,0)$ of Example~\ref {ex:diamond} lies on that line, and the tally below the panel is \eqref {eq:diamondgap} evaluated there. Right: the two circuits $\{e_0,e_1,e_3\}$ and $\{e_0,e_2,e_4\}$, each shaded on its vertex set; a potential constant there kills the three selected drops and leaves the two edges of the cut, of conductance $3$ and drop $1$ apiece. That eight of the ten $3$-subsets dominate, each with a one-dimensional kernel and the eight null lines pairwise distinct, is computed here; Example~\ref {ex:diamond} needs one dominating subset and the ten nonpositive values, and the development proves no more}{figure.29}{}}
+\newlabel{eq:dpp}{{55}{57}{Volume sampling}{equation.55}{}}
+\newlabel{lem:marginal}{{6.12}{57}{}{theorem.6.12}{}}
+\newlabel{thm:leverageaverage}{{6.13}{58}{Lean}{theorem.6.13}{}}
+\newlabel{thm:average}{{6.14}{58}{}{theorem.6.14}{}}
+\newlabel{prop:jensen}{{6.15}{58}{Lean}{theorem.6.15}{}}
+\newlabel{eq:mixture}{{56}{58}{Volume sampling}{equation.56}{}}
+\newlabel{prop:totaltight}{{6.16}{58}{}{theorem.6.16}{}}
 \citation{BorceaBrandenLiggett2009}
 \citation{AnariOveisGharan2015}
 \citation{MSS2015}
-\newlabel{prop:qone}{{6.18}{46}{}{theorem.6.18}{}}
-\newlabel{eq:qtetra}{{57}{46}{Volume sampling}{equation.57}{}}
-\newlabel{rem:interlace}{{6.19}{46}{}{theorem.6.19}{}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{7}{A variational principle}}{46}{section.7}\protected@file@percent }
-\newlabel{sec:compactness}{{7}{46}{A variational principle}{section.7}{}}
-\newlabel{sec:compactchart}{{7.1}{47}{The compactification}{subsection.7.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{7.1}{The compactification}}{47}{subsection.7.1}\protected@file@percent }
-\newlabel{eq:levbound}{{58}{47}{The compactification}{equation.58}{}}
-\newlabel{ex:escape}{{7.1}{47}{}{theorem.7.1}{}}
-\newlabel{eq:pivotlev}{{59}{47}{The compactification}{equation.59}{}}
-\newlabel{def:chartpoint}{{7.2}{47}{}{theorem.7.2}{}}
-\newlabel{eq:objective}{{60}{47}{}{equation.60}{}}
-\newlabel{eq:threshold}{{61}{47}{The compactification}{equation.61}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces The two simplices at $(4,3)$. Left: the weights, in $\Delta ^{3}$. Right: the leverage scores, confined by Lemmas\nonbreakingspace \ref {lem:trace} and\nonbreakingspace \ref {lem:share} to $\{s\in [0,1]^{4}:\DOTSB \sum@ \slimits@ _c s_c=3\}$, which at corank one is again $\Delta ^{3}$, in the coordinates $1-s_c$. The tetrahedron design of Example\nonbreakingspace \ref {ex:tetra} is the barycentre of each. With its chart held fixed (Lemma\nonbreakingspace \ref {lem:realize}) the weights run to a vertex while the leverage scores stand still, and the leverages $\ell _c=s_c/t_c$ diverge; Example\nonbreakingspace \ref {ex:escape} is the same motion at $(2,1)$. The leverage score is the coordinate that stays compact and the weight the one that reaches the boundary, so the compactification is taken in $(P,t)$ rather than in the design data.}}{48}{figure.15}\protected@file@percent }
-\newlabel{fig:twosimplices}{{15}{48}{The two simplices at $(4,3)$. Left: the weights, in $\Delta ^{3}$. Right: the leverage scores, confined by Lemmas~\ref {lem:trace} and~\ref {lem:share} to $\{s\in [0,1]^{4}:\sum _c s_c=3\}$, which at corank one is again $\Delta ^{3}$, in the coordinates $1-s_c$. The tetrahedron design of Example~\ref {ex:tetra} is the barycentre of each. With its chart held fixed (Lemma~\ref {lem:realize}) the weights run to a vertex while the leverage scores stand still, and the leverages $\ell _c=s_c/t_c$ diverge; Example~\ref {ex:escape} is the same motion at $(2,1)$. The leverage score is the coordinate that stays compact and the weight the one that reaches the boundary, so the compactification is taken in $(P,t)$ rather than in the design data}{figure.15}{}}
-\newlabel{ex:tetragap}{{7.3}{48}{}{theorem.7.3}{}}
-\newlabel{prop:chartdesign}{{7.4}{48}{}{theorem.7.4}{}}
-\newlabel{lem:compact}{{7.5}{48}{}{theorem.7.5}{}}
-\newlabel{lem:continuity}{{7.6}{49}{}{theorem.7.6}{}}
-\newlabel{lem:relax}{{7.7}{49}{}{theorem.7.7}{}}
-\newlabel{eq:relax}{{62}{49}{}{equation.62}{}}
-\newlabel{rem:objectives}{{7.8}{49}{}{theorem.7.8}{}}
-\newlabel{sec:boundary}{{7.2}{50}{The boundary}{subsection.7.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{7.2}{The boundary}}{50}{subsection.7.2}\protected@file@percent }
-\newlabel{lem:pivot}{{7.9}{50}{Lean}{theorem.7.9}{}}
-\newlabel{eq:pivot}{{63}{50}{Lean}{equation.63}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{}{Case A: the atom vanishes}}{50}{section*.4}\protected@file@percent }
-\newlabel{lem:delete}{{7.10}{50}{Lean}{theorem.7.10}{}}
-\newlabel{eq:reweight}{{64}{50}{Lean}{equation.64}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{}{Case B: the direction escapes}}{51}{section*.5}\protected@file@percent }
-\newlabel{lem:deflate}{{7.11}{51}{Lean}{theorem.7.11}{}}
-\newlabel{eq:deflate}{{65}{51}{Lean}{equation.65}{}}
-\newlabel{eq:transverse}{{66}{51}{Case B: the direction escapes}{equation.66}{}}
-\newlabel{lem:schur}{{7.12}{51}{}{theorem.7.12}{}}
-\newlabel{eq:schur}{{67}{51}{}{equation.67}{}}
-\newlabel{thm:schurstep}{{7.13}{51}{Lean}{theorem.7.13}{}}
-\newlabel{ex:escapeb}{{7.14}{52}{}{theorem.7.14}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{}{The dichotomy}}{52}{section*.6}\protected@file@percent }
-\newlabel{thm:boundary}{{7.15}{52}{Lean}{theorem.7.15}{}}
-\newlabel{cor:interiorcex}{{7.16}{52}{Lean}{theorem.7.16}{}}
-\newlabel{sec:variational}{{7.3}{52}{The principle}{subsection.7.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{7.3}{The principle}}{52}{subsection.7.3}\protected@file@percent }
-\newlabel{prop:density}{{7.17}{52}{Lean}{theorem.7.17}{}}
-\newlabel{cor:equivalent}{{7.18}{52}{}{theorem.7.18}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces The compactification and the boundary dichotomy. Left: the objective $G$ of \eqref  {eq:objective} is continuous on a compact space, so it attains its minimum; Theorem\nonbreakingspace \ref {thm:boundary} empties the faces $t_z=0$ of counterexamples, which places a negative minimum in the interior. Right: the two mechanisms, separated by the pivot identity \eqref  {eq:pivot}. At $P_{zz}=0$ the atom is deleted and the weights rescaled; at $P_{zz}>0$ the point is deflated by \eqref  {eq:deflate} and the selected subset regains $z$, the deficit in \eqref  {eq:schur} being absent because $t_z=0$.}}{53}{figure.16}\protected@file@percent }
-\newlabel{fig:boundary}{{16}{53}{The compactification and the boundary dichotomy. Left: the objective $G$ of \eqref {eq:objective} is continuous on a compact space, so it attains its minimum; Theorem~\ref {thm:boundary} empties the faces $t_z=0$ of counterexamples, which places a negative minimum in the interior. Right: the two mechanisms, separated by the pivot identity \eqref {eq:pivot}. At $P_{zz}=0$ the atom is deleted and the weights rescaled; at $P_{zz}>0$ the point is deflated by \eqref {eq:deflate} and the selected subset regains $z$, the deficit in \eqref {eq:schur} being absent because $t_z=0$}{figure.16}{}}
-\newlabel{thm:variational}{{7.19}{53}{}{theorem.7.19}{}}
-\newlabel{sec:sharp}{{7.4}{54}{Sharpness of the boundary step}{subsection.7.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{7.4}{Sharpness of the boundary step}}{54}{subsection.7.4}\protected@file@percent }
-\newlabel{lem:pairdet}{{7.20}{54}{}{theorem.7.20}{}}
-\newlabel{eq:family}{{68}{54}{}{equation.68}{}}
-\newlabel{ex:liftfailure}{{7.21}{54}{}{theorem.7.21}{}}
-\newlabel{thm:sharp}{{7.22}{55}{Lean}{theorem.7.22}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Sharpness of the compression lift. The compressed slack $\varepsilon $ enters \eqref  {eq:family} undamped, the pivot weight $t_z$ linearly. The family of Example\nonbreakingspace \ref {ex:liftfailure} is frozen on the axis $\varepsilon =0$. The zero level leaves the origin with slope $\tfrac  23$, so that axis lies strictly inside the failure region for every $t_z>0$, and no threshold in $t_z$ repairs the lift.}}{56}{figure.17}\protected@file@percent }
-\newlabel{fig:sharp}{{17}{56}{Sharpness of the compression lift. The compressed slack $\varepsilon $ enters \eqref {eq:family} undamped, the pivot weight $t_z$ linearly. The family of Example~\ref {ex:liftfailure} is frozen on the axis $\varepsilon =0$. The zero level leaves the origin with slope $\tfrac 23$, so that axis lies strictly inside the failure region for every $t_z>0$, and no threshold in $t_z$ repairs the lift}{figure.17}{}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{8}{Interior critical points}}{56}{section.8}\protected@file@percent }
-\newlabel{sec:interior}{{8}{56}{Interior critical points}{section.8}{}}
-\newlabel{eq:designobjective}{{69}{56}{Interior critical points}{equation.69}{}}
-\newlabel{lem:fpos}{{8.1}{56}{}{theorem.8.1}{}}
+\newlabel{prop:qonezero}{{6.17}{59}{Lean}{theorem.6.17}{}}
+\newlabel{prop:qone}{{6.18}{59}{}{theorem.6.18}{}}
+\newlabel{eq:qtetra}{{57}{59}{Volume sampling}{equation.57}{}}
+\newlabel{rem:interlace}{{6.19}{59}{}{theorem.6.19}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {30}{\ignorespaces Volume sampling at the tetrahedron of Example\nonbreakingspace \ref {ex:tetra}. Left: the measure \eqref  {eq:dpp} on the four triples as a bar of mass one, and below it one row per atom hatching the triples that contain it, so that the hatched mass is the marginal of Lemma\nonbreakingspace \ref {lem:marginal}. Right: the common spectrum of the four triples, the spectrum of the average, and the mixture \eqref  {eq:mixture} over its own baseline, whose root at the threshold Proposition\nonbreakingspace \ref {prop:qone} forces at a totally tight design. The two rows put Theorem\nonbreakingspace \ref {thm:average} and Corollary\nonbreakingspace \ref {cor:nomargin} at one design. The common spectrum and the mixture are mechanized. The four masses, the marginals hatched below them and the average's own spectrum are not: the development carries the masses only through their sum, and Lemma\nonbreakingspace \ref {lem:marginal}, which names the average, is a hypothesis there rather than a theorem.}}{60}{figure.30}\protected@file@percent }
+\newlabel{fig:mixture}{{30}{60}{Volume sampling at the tetrahedron of Example~\ref {ex:tetra}. Left: the measure \eqref {eq:dpp} on the four triples as a bar of mass one, and below it one row per atom hatching the triples that contain it, so that the hatched mass is the marginal of Lemma~\ref {lem:marginal}. Right: the common spectrum of the four triples, the spectrum of the average, and the mixture \eqref {eq:mixture} over its own baseline, whose root at the threshold Proposition~\ref {prop:qone} forces at a totally tight design. The two rows put Theorem~\ref {thm:average} and Corollary~\ref {cor:nomargin} at one design. The common spectrum and the mixture are mechanized. The four masses, the marginals hatched below them and the average's own spectrum are not: the development carries the masses only through their sum, and Lemma~\ref {lem:marginal}, which names the average, is a hypothesis there rather than a theorem}{figure.30}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{7}{A variational principle}}{60}{section.7}\protected@file@percent }
+\newlabel{sec:compactness}{{7}{60}{A variational principle}{section.7}{}}
+\newlabel{sec:compactchart}{{7.1}{60}{The compactification}{subsection.7.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{7.1}{The compactification}}{60}{subsection.7.1}\protected@file@percent }
+\newlabel{eq:levbound}{{58}{60}{The compactification}{equation.58}{}}
+\newlabel{ex:escape}{{7.1}{60}{}{theorem.7.1}{}}
+\newlabel{eq:pivotlev}{{59}{61}{The compactification}{equation.59}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {31}{\ignorespaces The two simplices at $(4,3)$. Left: the weights, in $\Delta ^{3}$. Right: the leverage scores, confined by Lemmas\nonbreakingspace \ref {lem:trace} and\nonbreakingspace \ref {lem:share} to $\{s\in [0,1]^{4}:\DOTSB \sum@ \slimits@ _c s_c=3\}$, which at corank one is again $\Delta ^{3}$, in the coordinates $1-s_c$. The tetrahedron design of Example\nonbreakingspace \ref {ex:tetra} is the barycentre of each. With its chart held fixed (Lemma\nonbreakingspace \ref {lem:realize}) the weights run to a vertex while the leverage scores stand still, and the leverages $\ell _c=s_c/t_c$ diverge; Example\nonbreakingspace \ref {ex:escape} is the same motion at $(2,1)$. The leverage score is the coordinate that stays compact and the weight the one that reaches the boundary, so the compactification is taken in $(P,t)$ rather than in the design data.}}{61}{figure.31}\protected@file@percent }
+\newlabel{fig:twosimplices}{{31}{61}{The two simplices at $(4,3)$. Left: the weights, in $\Delta ^{3}$. Right: the leverage scores, confined by Lemmas~\ref {lem:trace} and~\ref {lem:share} to $\{s\in [0,1]^{4}:\sum _c s_c=3\}$, which at corank one is again $\Delta ^{3}$, in the coordinates $1-s_c$. The tetrahedron design of Example~\ref {ex:tetra} is the barycentre of each. With its chart held fixed (Lemma~\ref {lem:realize}) the weights run to a vertex while the leverage scores stand still, and the leverages $\ell _c=s_c/t_c$ diverge; Example~\ref {ex:escape} is the same motion at $(2,1)$. The leverage score is the coordinate that stays compact and the weight the one that reaches the boundary, so the compactification is taken in $(P,t)$ rather than in the design data}{figure.31}{}}
+\newlabel{def:chartpoint}{{7.2}{61}{}{theorem.7.2}{}}
+\newlabel{eq:objective}{{60}{61}{}{equation.60}{}}
+\newlabel{eq:threshold}{{61}{62}{The compactification}{equation.61}{}}
+\newlabel{ex:tetragap}{{7.3}{62}{}{theorem.7.3}{}}
+\newlabel{prop:chartdesign}{{7.4}{62}{}{theorem.7.4}{}}
+\newlabel{lem:compact}{{7.5}{62}{}{theorem.7.5}{}}
+\newlabel{lem:continuity}{{7.6}{62}{}{theorem.7.6}{}}
+\newlabel{lem:relax}{{7.7}{63}{}{theorem.7.7}{}}
+\newlabel{eq:relax}{{62}{63}{}{equation.62}{}}
+\newlabel{sec:objectives}{{7.2}{63}{The two objectives}{subsection.7.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{7.2}{The two objectives}}{63}{subsection.7.2}\protected@file@percent }
+\newlabel{rem:objectives}{{7.8}{63}{}{theorem.7.8}{}}
+\newlabel{ex:objectives}{{7.9}{64}{}{theorem.7.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {32}{\ignorespaces The two objectives at $(4,2)$, on the weight segment of Example\nonbreakingspace \ref {ex:objectives}. Left: the design objective above the chart objective, on one abscissa; the marked weight $\tfrac  8{15}$ carries the least value of the first and $\tfrac  {19}{30}$ that of the second, and at $\tfrac  {19}{30}$ the first is $3$ while at $\tfrac  8{15}$ the second is $\tfrac  4{15}$. Right: the six pairs at the dotted weight $\tfrac  {17}{30}$, with an arrow on the pair each objective selects. The congruence \eqref  {eq:congruence} makes the six rows agree in sign, by Sylvester's law, and lets them disagree in order: it carries the relative slack $\tfrac  7{17}$ of $\{0,2\}$ up to $\tfrac  7{30}$ and the larger relative slack $1$ of $\{1,2\}$ down to $\tfrac  3{30}$, being a scalar only at $\{2,3\}$, whose two weights agree. At the endpoint $t_0=0$ the leverage $\ell _0$ diverges and the generalized quotient on $\{0,2\}$ is unbounded above, while the gap stays finite and $\{0,2\}$ dominates. Neither objective is a Lean definition, and none of the arithmetic here is mechanized.}}{65}{figure.32}\protected@file@percent }
+\newlabel{fig:objectives}{{32}{65}{The two objectives at $(4,2)$, on the weight segment of Example~\ref {ex:objectives}. Left: the design objective above the chart objective, on one abscissa; the marked weight $\tfrac 8{15}$ carries the least value of the first and $\tfrac {19}{30}$ that of the second, and at $\tfrac {19}{30}$ the first is $3$ while at $\tfrac 8{15}$ the second is $\tfrac 4{15}$. Right: the six pairs at the dotted weight $\tfrac {17}{30}$, with an arrow on the pair each objective selects. The congruence \eqref {eq:congruence} makes the six rows agree in sign, by Sylvester's law, and lets them disagree in order: it carries the relative slack $\tfrac 7{17}$ of $\{0,2\}$ up to $\tfrac 7{30}$ and the larger relative slack $1$ of $\{1,2\}$ down to $\tfrac 3{30}$, being a scalar only at $\{2,3\}$, whose two weights agree. At the endpoint $t_0=0$ the leverage $\ell _0$ diverges and the generalized quotient on $\{0,2\}$ is unbounded above, while the gap stays finite and $\{0,2\}$ dominates. Neither objective is a Lean definition, and none of the arithmetic here is mechanized}{figure.32}{}}
+\newlabel{sec:boundary}{{7.3}{65}{The boundary}{subsection.7.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{7.3}{The boundary}}{65}{subsection.7.3}\protected@file@percent }
+\newlabel{lem:pivot}{{7.10}{65}{Lean}{theorem.7.10}{}}
+\newlabel{eq:pivot}{{63}{65}{Lean}{equation.63}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{}{Case A: the atom vanishes}}{66}{section*.4}\protected@file@percent }
+\newlabel{lem:delete}{{7.11}{66}{Lean}{theorem.7.11}{}}
+\newlabel{eq:reweight}{{64}{66}{Lean}{equation.64}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{}{Case B: the direction escapes}}{66}{section*.5}\protected@file@percent }
+\newlabel{lem:deflate}{{7.12}{66}{Lean}{theorem.7.12}{}}
+\newlabel{eq:deflate}{{65}{66}{Lean}{equation.65}{}}
+\newlabel{eq:transverse}{{66}{66}{Case B: the direction escapes}{equation.66}{}}
+\newlabel{lem:schur}{{7.13}{67}{}{theorem.7.13}{}}
+\newlabel{eq:schur}{{67}{67}{}{equation.67}{}}
+\newlabel{thm:schurstep}{{7.14}{67}{Lean}{theorem.7.14}{}}
+\newlabel{ex:escapeb}{{7.15}{67}{}{theorem.7.15}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{}{The dichotomy}}{67}{section*.6}\protected@file@percent }
+\newlabel{thm:boundary}{{7.16}{67}{Lean}{theorem.7.16}{}}
+\newlabel{cor:interiorcex}{{7.17}{68}{Lean}{theorem.7.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {33}{\ignorespaces The compactification and the boundary dichotomy. Left: the objective $G$ of \eqref  {eq:objective} is continuous on a compact space, so it attains its minimum; Theorem\nonbreakingspace \ref {thm:boundary} empties the faces $t_z=0$ of counterexamples, which places a negative minimum in the interior. Right: the two mechanisms, separated by the pivot identity \eqref  {eq:pivot}. At $P_{zz}=0$ the atom is deleted and the weights rescaled; at $P_{zz}>0$ the point is deflated by \eqref  {eq:deflate} and the selected subset regains $z$, the deficit in \eqref  {eq:schur} being absent because $t_z=0$.}}{68}{figure.33}\protected@file@percent }
+\newlabel{fig:boundary}{{33}{68}{The compactification and the boundary dichotomy. Left: the objective $G$ of \eqref {eq:objective} is continuous on a compact space, so it attains its minimum; Theorem~\ref {thm:boundary} empties the faces $t_z=0$ of counterexamples, which places a negative minimum in the interior. Right: the two mechanisms, separated by the pivot identity \eqref {eq:pivot}. At $P_{zz}=0$ the atom is deleted and the weights rescaled; at $P_{zz}>0$ the point is deflated by \eqref {eq:deflate} and the selected subset regains $z$, the deficit in \eqref {eq:schur} being absent because $t_z=0$}{figure.33}{}}
+\newlabel{sec:variational}{{7.4}{68}{The principle}{subsection.7.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{7.4}{The principle}}{68}{subsection.7.4}\protected@file@percent }
+\newlabel{prop:density}{{7.18}{68}{Lean}{theorem.7.18}{}}
+\newlabel{cor:equivalent}{{7.19}{69}{}{theorem.7.19}{}}
+\newlabel{thm:variational}{{7.20}{69}{}{theorem.7.20}{}}
+\newlabel{sec:sharp}{{7.5}{69}{Sharpness of the boundary step}{subsection.7.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{7.5}{Sharpness of the boundary step}}{69}{subsection.7.5}\protected@file@percent }
+\newlabel{lem:pairdet}{{7.21}{69}{}{theorem.7.21}{}}
+\newlabel{eq:family}{{68}{70}{}{equation.68}{}}
+\newlabel{ex:liftfailure}{{7.22}{70}{}{theorem.7.22}{}}
+\newlabel{thm:sharp}{{7.23}{71}{Lean}{theorem.7.23}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{8}{Interior critical points}}{71}{section.8}\protected@file@percent }
+\newlabel{sec:interior}{{8}{71}{Interior critical points}{section.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {34}{\ignorespaces The dichotomy of Theorem\nonbreakingspace \ref {thm:boundary} executed on the chart point of \S  \ref {app:liftfail}, at $(4,2)$ with pivot $z=1$. Left: the four steps of the compression lift, each with the matrix it produces; none of them sees $\tau $, and the deletion returns the same compressed point at every $\tau $, the chart point of the design $g=(1,-1,1)$ at $(3,1)$ on which every singleton dominates with $\lambda _{\min }(S_{C})=1$. Right: identity \eqref  {eq:schur} on the pair $\{0,1\}$, and the two branches it splits into. At $\tau =0$ the deflated gap and the deficit vanish together and Theorem\nonbreakingspace \ref {thm:schurstep} lifts $\{0\}$ to $\{0,1\}$ with least eigenvalue $0$, so the lift leaves no slack. At $\tau >0$ the deficit survives, and \eqref  {eq:family} at $\varepsilon =0$ turns it into a negative determinant. The pair $\{0,2\}$ dominates throughout the family, so what fails at positive weight is the lift rather than the chart point.}}{72}{figure.34}\protected@file@percent }
+\newlabel{fig:boundarytrace}{{34}{72}{The dichotomy of Theorem~\ref {thm:boundary} executed on the chart point of \S \ref {app:liftfail}, at $(4,2)$ with pivot $z=1$. Left: the four steps of the compression lift, each with the matrix it produces; none of them sees $\tau $, and the deletion returns the same compressed point at every $\tau $, the chart point of the design $g=(1,-1,1)$ at $(3,1)$ on which every singleton dominates with $\lmin (\SC )=1$. Right: identity \eqref {eq:schur} on the pair $\{0,1\}$, and the two branches it splits into. At $\tau =0$ the deflated gap and the deficit vanish together and Theorem~\ref {thm:schurstep} lifts $\{0\}$ to $\{0,1\}$ with least eigenvalue $0$, so the lift leaves no slack. At $\tau >0$ the deficit survives, and \eqref {eq:family} at $\varepsilon =0$ turns it into a negative determinant. The pair $\{0,2\}$ dominates throughout the family, so what fails at positive weight is the lift rather than the chart point}{figure.34}{}}
+\newlabel{eq:designobjective}{{69}{72}{Interior critical points}{equation.69}{}}
+\newlabel{lem:fpos}{{8.1}{72}{}{theorem.8.1}{}}
+\newlabel{def:extremalcex}{{8.2}{72}{}{theorem.8.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {35}{\ignorespaces Sharpness of the compression lift. The compressed slack $\varepsilon $ enters \eqref  {eq:family} undamped, the pivot weight $t_z$ linearly. The family of Example\nonbreakingspace \ref {ex:liftfailure} is frozen on the axis $\varepsilon =0$. The zero level leaves the origin with slope $\tfrac  23$, so that axis lies strictly inside the failure region for every $t_z>0$, and no threshold in $t_z$ repairs the lift.}}{73}{figure.35}\protected@file@percent }
+\newlabel{fig:sharp}{{35}{73}{Sharpness of the compression lift. The compressed slack $\varepsilon $ enters \eqref {eq:family} undamped, the pivot weight $t_z$ linearly. The family of Example~\ref {ex:liftfailure} is frozen on the axis $\varepsilon =0$. The zero level leaves the origin with slope $\tfrac 23$, so that axis lies strictly inside the failure region for every $t_z>0$, and no threshold in $t_z$ repairs the lift}{figure.35}{}}
+\newlabel{sec:manifold}{{8.1}{73}{The design manifold}{subsection.8.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.1}{The design manifold}}{73}{subsection.8.1}\protected@file@percent }
+\newlabel{eq:constraints}{{70}{73}{The design manifold}{equation.70}{}}
+\newlabel{eq:conGrad}{{71}{73}{The design manifold}{equation.71}{}}
+\newlabel{lem:tangent}{{8.3}{73}{}{theorem.8.3}{}}
 \citation{Clarke1990}
-\newlabel{def:extremalcex}{{8.2}{57}{}{theorem.8.2}{}}
-\newlabel{sec:manifold}{{8.1}{57}{The design manifold}{subsection.8.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.1}{The design manifold}}{57}{subsection.8.1}\protected@file@percent }
-\newlabel{eq:constraints}{{70}{57}{The design manifold}{equation.70}{}}
-\newlabel{eq:conGrad}{{71}{57}{The design manifold}{equation.71}{}}
-\newlabel{lem:tangent}{{8.3}{57}{}{theorem.8.3}{}}
-\newlabel{eq:orbit}{{72}{57}{The design manifold}{equation.72}{}}
+\newlabel{eq:orbit}{{72}{74}{The design manifold}{equation.72}{}}
+\newlabel{sec:tetracalib}{{8.2}{74}{The tetrahedron}{subsection.8.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.2}{The tetrahedron}}{74}{subsection.8.2}\protected@file@percent }
+\newlabel{eq:statg}{{73}{74}{The tetrahedron}{equation.73}{}}
+\newlabel{eq:statt}{{74}{74}{The tetrahedron}{equation.74}{}}
+\newlabel{ex:tetrakkt}{{8.4}{74}{}{theorem.8.4}{}}
 \citation{Overton1988}
 \citation{HiriartUrrutyLemarechal1993}
 \citation{Clarke1990}
-\newlabel{sec:kkt}{{8.2}{58}{The first-order system}{subsection.8.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.2}{The first-order system}}{58}{subsection.8.2}\protected@file@percent }
-\newlabel{eq:spectraplex}{{73}{58}{The first-order system}{equation.73}{}}
-\newlabel{eq:pieceSub}{{74}{58}{The first-order system}{equation.74}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces The spectraplex \eqref  {eq:spectraplex} at $k=2$. Trace one cuts the cone in a horizontal disc of radius $\tfrac  12$, whose boundary circle meets each extreme ray once and consists of the rank-one projectors. Since $\lambda _{\min }$ is concave, \eqref  {eq:spectraplex} is a superdifferential; it is the face of that disc spanned by the unit eigenvectors at $\lambda _{\min }(A)$. The face at an eigenspace of dimension $r$ has dimension $\tfrac  12r(r+1)-1$, so none has dimension one, and the multiplier attached to an active subset in Theorem\nonbreakingspace \ref {thm:firstorder} is a positive semidefinite matrix of trace one on the eigenspace rather than a scalar. Neither the spectraplex nor the passage of \S  \ref {sec:kkt} from a local minimum to \eqref  {eq:statg}--\eqref  {eq:statt} is formal (\S  \ref {sec:boundaries}).}}{58}{figure.18}\protected@file@percent }
-\newlabel{fig:spectraplex}{{18}{58}{The spectraplex \eqref {eq:spectraplex} at $k=2$. Trace one cuts the cone in a horizontal disc of radius $\tfrac 12$, whose boundary circle meets each extreme ray once and consists of the rank-one projectors. Since $\lmin $ is concave, \eqref {eq:spectraplex} is a superdifferential; it is the face of that disc spanned by the unit eigenvectors at $\lmin (A)$. The face at an eigenspace of dimension $r$ has dimension $\tfrac 12r(r+1)-1$, so none has dimension one, and the multiplier attached to an active subset in Theorem~\ref {thm:firstorder} is a positive semidefinite matrix of trace one on the eigenspace rather than a scalar. Neither the spectraplex nor the passage of \S \ref {sec:kkt} from a local minimum to \eqref {eq:statg}--\eqref {eq:statt} is formal (\S \ref {sec:boundaries})}{figure.18}{}}
-\newlabel{thm:firstorder}{{8.4}{58}{}{theorem.8.4}{}}
 \citation{Clarke1990}
 \citation{Clarke1990}
 \citation{Clarke1990}
+\newlabel{sec:kkt}{{8.3}{75}{The first-order system}{subsection.8.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.3}{The first-order system}}{75}{subsection.8.3}\protected@file@percent }
+\newlabel{eq:spectraplex}{{75}{75}{The first-order system}{equation.75}{}}
+\newlabel{eq:pieceSub}{{76}{75}{The first-order system}{equation.76}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {36}{\ignorespaces The spectraplex \eqref  {eq:spectraplex} at $k=2$. Trace one cuts the cone in a horizontal disc of radius $\tfrac  12$, whose boundary circle meets each extreme ray once and consists of the rank-one projectors. Since $\lambda _{\min }$ is concave, \eqref  {eq:spectraplex} is a superdifferential; it is the face of that disc spanned by the unit eigenvectors at $\lambda _{\min }(A)$. The face at an eigenspace of dimension $r$ has dimension $\tfrac  12r(r+1)-1$, so none has dimension one, and the multiplier attached to an active subset in Theorem\nonbreakingspace \ref {thm:firstorder} is a positive semidefinite matrix of trace one on the eigenspace rather than a scalar. Neither the spectraplex nor the passage of \S  \ref {sec:kkt} from a local minimum to \eqref  {eq:statg}--\eqref  {eq:statt} is formal (\S  \ref {sec:boundaries}).}}{75}{figure.36}\protected@file@percent }
+\newlabel{fig:spectraplex}{{36}{75}{The spectraplex \eqref {eq:spectraplex} at $k=2$. Trace one cuts the cone in a horizontal disc of radius $\tfrac 12$, whose boundary circle meets each extreme ray once and consists of the rank-one projectors. Since $\lmin $ is concave, \eqref {eq:spectraplex} is a superdifferential; it is the face of that disc spanned by the unit eigenvectors at $\lmin (A)$. The face at an eigenspace of dimension $r$ has dimension $\tfrac 12r(r+1)-1$, so none has dimension one, and the multiplier attached to an active subset in Theorem~\ref {thm:firstorder} is a positive semidefinite matrix of trace one on the eigenspace rather than a scalar. Neither the spectraplex nor the passage of \S \ref {sec:kkt} from a local minimum to \eqref {eq:statg}--\eqref {eq:statt} is formal (\S \ref {sec:boundaries})}{figure.36}{}}
+\newlabel{thm:firstorder}{{8.5}{75}{}{theorem.8.5}{}}
 \citation{HiriartUrrutyYe1995}
 \citation{Danskin1967}
-\newlabel{eq:statg}{{75}{59}{}{equation.75}{}}
-\newlabel{eq:statt}{{76}{59}{}{equation.76}{}}
-\newlabel{eq:zeta}{{77}{59}{The first-order system}{equation.77}{}}
-\newlabel{eq:zetarankone}{{78}{59}{The first-order system}{equation.78}{}}
-\newlabel{eq:lagrange}{{79}{59}{The first-order system}{equation.79}{}}
-\newlabel{eq:rotationkill}{{80}{59}{The first-order system}{equation.80}{}}
-\newlabel{sec:data}{{8.3}{59}{Stationarity data}{subsection.8.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.3}{Stationarity data}}{59}{subsection.8.3}\protected@file@percent }
-\newlabel{def:datum}{{8.5}{59}{}{theorem.8.5}{}}
-\newlabel{eq:argmax}{{81}{59}{}{equation.81}{}}
-\newlabel{sec:laws}{{8.4}{60}{The quadric law and the coverage law}{subsection.8.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.4}{The quadric law and the coverage law}}{60}{subsection.8.4}\protected@file@percent }
-\newlabel{eq:contract}{{82}{60}{The quadric law and the coverage law}{equation.82}{}}
-\newlabel{eq:polarized}{{83}{60}{The quadric law and the coverage law}{equation.83}{}}
-\newlabel{prop:quadric}{{8.6}{60}{Lean}{theorem.8.6}{}}
-\newlabel{eq:quadric}{{84}{60}{Lean}{equation.84}{}}
-\newlabel{eq:coverage}{{85}{60}{Lean}{equation.85}{}}
-\newlabel{eq:multiplier}{{86}{60}{Lean}{equation.86}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces The quadric law \eqref  {eq:quadric}. A stationarity datum confines every vector of its design to one central quadric of the multiplier, an ellipsoid whenever $\Lambda $ is nonsingular. Drawn at $(6,3)$: the six vectors of a design, all on the ellipsoid of $\Lambda =\operatorname  {diag}(\tfrac  12,\tfrac  13,\tfrac  16)$ at $\nu =1$, with its three principal sections and its silhouette. By \eqref  {eq:multiplier} the surface is assembled from the tight directions, the semi-axis along $u_i$ having length $\sqrt  {\nu /\lambda _i}$: it is longest where the multiplier mass is least. Inset: at the tetrahedron of Example\nonbreakingspace \ref {ex:tetrakkt} the multiplier is $\tfrac  13I_3$ and the quadric is the sphere $\lVert x\rVert ^2=3$.}}{61}{figure.19}\protected@file@percent }
-\newlabel{fig:quadric}{{19}{61}{The quadric law \eqref {eq:quadric}. A stationarity datum confines every vector of its design to one central quadric of the multiplier, an ellipsoid whenever $\Lambda $ is nonsingular. Drawn at $(6,3)$: the six vectors of a design, all on the ellipsoid of $\Lambda =\diag (\tfrac 12,\tfrac 13,\tfrac 16)$ at $\cv =1$, with its three principal sections and its silhouette. By \eqref {eq:multiplier} the surface is assembled from the tight directions, the semi-axis along $u_i$ having length $\sqrt {\cv /\lambda _i}$: it is longest where the multiplier mass is least. Inset: at the tetrahedron of Example~\ref {ex:tetrakkt} the multiplier is $\tfrac 13I_3$ and the quadric is the sphere $\lVert x\rVert ^2=3$}{figure.19}{}}
-\newlabel{lem:overlap}{{8.7}{61}{Lean}{theorem.8.7}{}}
-\newlabel{eq:overlapone}{{87}{61}{Lean}{equation.87}{}}
-\newlabel{lem:defect}{{8.8}{62}{Lean}{theorem.8.8}{}}
-\newlabel{eq:defect}{{88}{62}{Lean}{equation.88}{}}
-\newlabel{eq:totaldefect}{{89}{62}{The quadric law and the coverage law}{equation.89}{}}
-\newlabel{sec:tetracalib}{{8.5}{62}{The tetrahedron}{subsection.8.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.5}{The tetrahedron}}{62}{subsection.8.5}\protected@file@percent }
-\newlabel{ex:tetrakkt}{{8.9}{62}{}{theorem.8.9}{}}
-\newlabel{sec:exclusions}{{8.6}{63}{Exclusions}{subsection.8.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.6}{Exclusions}}{63}{subsection.8.6}\protected@file@percent }
-\newlabel{prop:e1}{{8.10}{63}{Lean}{theorem.8.10}{}}
-\newlabel{eq:rankonecollapse}{{90}{63}{Exclusions}{equation.90}{}}
-\newlabel{cor:e1}{{8.11}{63}{Lean}{theorem.8.11}{}}
-\newlabel{prop:e2}{{8.12}{64}{Lean}{theorem.8.12}{}}
-\newlabel{eq:vanishing}{{91}{64}{Exclusions}{equation.91}{}}
-\newlabel{prop:count}{{8.13}{64}{}{theorem.8.13}{}}
-\newlabel{eq:count}{{92}{64}{}{equation.92}{}}
-\newlabel{cor:singleactive}{{8.14}{64}{Lean}{theorem.8.14}{}}
-\newlabel{cor:e3}{{8.15}{64}{Lean}{theorem.8.15}{}}
-\newlabel{prop:saturated}{{8.16}{65}{Lean}{theorem.8.16}{}}
-\newlabel{cor:saturated}{{8.17}{65}{}{theorem.8.17}{}}
-\newlabel{sec:reach}{{8.7}{65}{The reach of the system}{subsection.8.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.7}{The reach of the system}}{65}{subsection.8.7}\protected@file@percent }
-\newlabel{ex:splitseven}{{8.18}{65}{}{theorem.8.18}{}}
-\newlabel{thm:reach}{{8.19}{66}{Lean}{theorem.8.19}{}}
+\newlabel{eq:zeta}{{77}{76}{The first-order system}{equation.77}{}}
+\newlabel{eq:zetarankone}{{78}{76}{The first-order system}{equation.78}{}}
+\newlabel{eq:lagrange}{{79}{76}{The first-order system}{equation.79}{}}
+\newlabel{eq:rotationkill}{{80}{76}{The first-order system}{equation.80}{}}
+\newlabel{sec:data}{{8.4}{76}{Stationarity data}{subsection.8.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.4}{Stationarity data}}{76}{subsection.8.4}\protected@file@percent }
+\newlabel{def:datum}{{8.6}{76}{}{theorem.8.6}{}}
+\newlabel{eq:argmax}{{81}{76}{}{equation.81}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {37}{\ignorespaces The assembly of \eqref  {eq:statg}--\eqref  {eq:statt}. Left: the passage from a local minimum of $F$ to the system in five steps, each arrow labelled by the rules that license it; the last carries no label, being the comparison of coefficients. Right: the rules. Two give inclusions rather than equalities, (2) and (3), for one reason: $\lambda _{\min }$ is concave and so not Clarke regular where the least eigenvalue is multiple. Both inclusions run the direction a necessary condition needs. The infinitesimal rotations \eqref  {eq:orbit} impose nothing by \eqref  {eq:rotationkill}, so the combination in (2) takes place in a space of dimension $mk+m-k^{2}-1$, which is $14$ at $(6,3)$ and $18$ at $(7,3)$ and is where the bound \eqref  {eq:carath} comes from. Nothing above the rule is formal: \S  \ref {sec:boundaries} carries the whole passage as one of three steps taken on trust, and the ambient library has no Clarke calculus and no $\partial \lambda _{\min }$.}}{77}{figure.37}\protected@file@percent }
+\newlabel{fig:kktassembly}{{37}{77}{The assembly of \eqref {eq:statg}--\eqref {eq:statt}. Left: the passage from a local minimum of $F$ to the system in five steps, each arrow labelled by the rules that license it; the last carries no label, being the comparison of coefficients. Right: the rules. Two give inclusions rather than equalities, (2) and (3), for one reason: $\lmin $ is concave and so not Clarke regular where the least eigenvalue is multiple. Both inclusions run the direction a necessary condition needs. The infinitesimal rotations \eqref {eq:orbit} impose nothing by \eqref {eq:rotationkill}, so the combination in (2) takes place in a space of dimension $mk+m-k^{2}-1$, which is $14$ at $(6,3)$ and $18$ at $(7,3)$ and is where the bound \eqref {eq:carath} comes from. Nothing above the rule is formal: \S \ref {sec:boundaries} carries the whole passage as one of three steps taken on trust, and the ambient library has no Clarke calculus and no $\partial \lmin $}{figure.37}{}}
+\newlabel{sec:laws}{{8.5}{77}{The quadric law and the coverage law}{subsection.8.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.5}{The quadric law and the coverage law}}{77}{subsection.8.5}\protected@file@percent }
+\newlabel{eq:contract}{{82}{77}{The quadric law and the coverage law}{equation.82}{}}
+\newlabel{eq:polarized}{{83}{78}{The quadric law and the coverage law}{equation.83}{}}
+\newlabel{prop:quadric}{{8.7}{78}{Lean}{theorem.8.7}{}}
+\newlabel{eq:quadric}{{84}{78}{Lean}{equation.84}{}}
+\newlabel{eq:coverage}{{85}{78}{Lean}{equation.85}{}}
+\newlabel{eq:multiplier}{{86}{78}{Lean}{equation.86}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {38}{\ignorespaces The quadric law \eqref  {eq:quadric}. A stationarity datum confines every vector of its design to one central quadric of the multiplier, an ellipsoid whenever $\Lambda $ is nonsingular. Drawn at $(6,3)$: the six vectors of a design, all on the ellipsoid of $\Lambda =\operatorname  {diag}(\tfrac  12,\tfrac  13,\tfrac  16)$ at $\nu =1$, with its three principal sections and its silhouette. By \eqref  {eq:multiplier} the surface is assembled from the tight directions, the semi-axis along $u_i$ having length $\sqrt  {\nu /\lambda _i}$: it is longest where the multiplier mass is least. Inset: at the tetrahedron of Example\nonbreakingspace \ref {ex:tetrakkt} the multiplier is $\tfrac  13I_3$ and the quadric is the sphere $\lVert x\rVert ^2=3$.}}{79}{figure.38}\protected@file@percent }
+\newlabel{fig:quadric}{{38}{79}{The quadric law \eqref {eq:quadric}. A stationarity datum confines every vector of its design to one central quadric of the multiplier, an ellipsoid whenever $\Lambda $ is nonsingular. Drawn at $(6,3)$: the six vectors of a design, all on the ellipsoid of $\Lambda =\diag (\tfrac 12,\tfrac 13,\tfrac 16)$ at $\cv =1$, with its three principal sections and its silhouette. By \eqref {eq:multiplier} the surface is assembled from the tight directions, the semi-axis along $u_i$ having length $\sqrt {\cv /\lambda _i}$: it is longest where the multiplier mass is least. Inset: at the tetrahedron of Example~\ref {ex:tetrakkt} the multiplier is $\tfrac 13I_3$ and the quadric is the sphere $\lVert x\rVert ^2=3$}{figure.38}{}}
+\newlabel{lem:overlap}{{8.8}{79}{Lean}{theorem.8.8}{}}
+\newlabel{eq:overlapone}{{87}{79}{Lean}{equation.87}{}}
+\newlabel{lem:defect}{{8.9}{80}{Lean}{theorem.8.9}{}}
+\newlabel{eq:defect}{{88}{80}{Lean}{equation.88}{}}
+\newlabel{eq:totaldefect}{{89}{80}{The quadric law and the coverage law}{equation.89}{}}
+\newlabel{sec:exclusions}{{8.6}{80}{Exclusions}{subsection.8.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.6}{Exclusions}}{80}{subsection.8.6}\protected@file@percent }
+\newlabel{prop:e1}{{8.10}{80}{Lean}{theorem.8.10}{}}
+\newlabel{eq:rankonecollapse}{{90}{80}{Exclusions}{equation.90}{}}
+\newlabel{cor:e1}{{8.11}{81}{Lean}{theorem.8.11}{}}
+\newlabel{prop:e2}{{8.12}{81}{Lean}{theorem.8.12}{}}
+\newlabel{eq:vanishing}{{91}{81}{Exclusions}{equation.91}{}}
+\newlabel{prop:count}{{8.13}{81}{}{theorem.8.13}{}}
+\newlabel{eq:count}{{92}{81}{}{equation.92}{}}
+\newlabel{cor:singleactive}{{8.14}{82}{Lean}{theorem.8.14}{}}
+\newlabel{cor:e3}{{8.15}{82}{Lean}{theorem.8.15}{}}
+\newlabel{prop:saturated}{{8.16}{82}{Lean}{theorem.8.16}{}}
+\newlabel{cor:saturated}{{8.17}{82}{}{theorem.8.17}{}}
+\newlabel{sec:reach}{{8.7}{83}{The reach of the system}{subsection.8.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.7}{The reach of the system}}{83}{subsection.8.7}\protected@file@percent }
+\newlabel{ex:splitseven}{{8.18}{83}{}{theorem.8.18}{}}
+\newlabel{thm:reach}{{8.19}{83}{Lean}{theorem.8.19}{}}
+\newlabel{sec:census}{{8.8}{84}{The residue}{subsection.8.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.8}{The residue}}{84}{subsection.8.8}\protected@file@percent }
+\newlabel{prop:carath}{{8.20}{84}{}{theorem.8.20}{}}
+\newlabel{eq:carath}{{93}{84}{}{equation.93}{}}
 \citation{Caratheodory1911}
 \citation{Rockafellar1970}
-\newlabel{sec:census}{{8.8}{67}{The residue}{subsection.8.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.8}{The residue}}{67}{subsection.8.8}\protected@file@percent }
-\newlabel{prop:carath}{{8.20}{67}{}{theorem.8.20}{}}
-\newlabel{eq:carath}{{93}{67}{}{equation.93}{}}
-\newlabel{prop:census}{{8.21}{67}{}{theorem.8.21}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces The number $N_j$ of families of $j$ triples covering $\{1,\dots  ,6\}$, up to relabelling. The total is $2102$; the Carath\'eodory bound \eqref  {eq:carath} discards the last five columns, leaving $2069$.}}{68}{table.1}\protected@file@percent }
-\newlabel{tab:census}{{1}{68}{The number $N_j$ of families of $j$ triples covering $\{1,\dots ,6\}$, up to relabelling. The total is $2102$; the Carath\'eodory bound \eqref {eq:carath} discards the last five columns, leaving $2069$}{table.1}{}}
-\newlabel{conj:sixthree}{{8.22}{68}{}{theorem.8.22}{}}
-\newlabel{conj:seventhree}{{8.23}{68}{}{theorem.8.23}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces The census of Proposition\nonbreakingspace \ref {prop:census} at $(6,3)$. The active family covers $\{1,\dots  ,6\}$, so it has at least two members, and the one class of cardinality two is the partition that Corollary\nonbreakingspace \ref {cor:e3} leaves undecided; \eqref  {eq:carath} removes the classes above fifteen.}}{69}{figure.20}\protected@file@percent }
-\newlabel{fig:census}{{20}{69}{The census of Proposition~\ref {prop:census} at $(6,3)$. The active family covers $\{1,\dots ,6\}$, so it has at least two members, and the one class of cardinality two is the partition that Corollary~\ref {cor:e3} leaves undecided; \eqref {eq:carath} removes the classes above fifteen}{figure.20}{}}
-\newlabel{thm:rankthree}{{8.24}{69}{conditional}{theorem.8.24}{}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{9}{Formalization}}{69}{section.9}\protected@file@percent }
-\newlabel{sec:formalization}{{9}{69}{Formalization}{section.9}{}}
-\newlabel{sec:whatformal}{{9.1}{69}{What is formalized}{subsection.9.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{9.1}{What is formalized}}{69}{subsection.9.1}\protected@file@percent }
+\newlabel{prop:census}{{8.21}{85}{}{theorem.8.21}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces The number $N_j$ of families of $j$ triples covering $\{1,\dots  ,6\}$, up to relabelling. The total is $2102$; the Carath\'eodory bound \eqref  {eq:carath} discards the last five columns, leaving $2069$.}}{86}{table.1}\protected@file@percent }
+\newlabel{tab:census}{{1}{86}{The number $N_j$ of families of $j$ triples covering $\{1,\dots ,6\}$, up to relabelling. The total is $2102$; the Carath\'eodory bound \eqref {eq:carath} discards the last five columns, leaving $2069$}{table.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {39}{\ignorespaces The census of Proposition\nonbreakingspace \ref {prop:census} at $(6,3)$. The active family covers $\{1,\dots  ,6\}$, so it has at least two members, and the one class of cardinality two is the partition that Corollary\nonbreakingspace \ref {cor:e3} leaves undecided; \eqref  {eq:carath} removes the classes above fifteen.}}{86}{figure.39}\protected@file@percent }
+\newlabel{fig:census}{{39}{86}{The census of Proposition~\ref {prop:census} at $(6,3)$. The active family covers $\{1,\dots ,6\}$, so it has at least two members, and the one class of cardinality two is the partition that Corollary~\ref {cor:e3} leaves undecided; \eqref {eq:carath} removes the classes above fifteen}{figure.39}{}}
+\newlabel{conj:sixthree}{{8.22}{86}{}{theorem.8.22}{}}
+\newlabel{conj:seventhree}{{8.23}{86}{}{theorem.8.23}{}}
+\newlabel{thm:rankthree}{{8.24}{86}{conditional}{theorem.8.24}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {40}{\ignorespaces The reach of the exclusions at $(6,3)$. Upper: the census of Proposition\nonbreakingspace \ref {prop:census}, $2102$ covering classes with $351$ of them at $\lvert A^{+}\rvert =10$. Lower, on its own scale: the $34$ classes that Lemma\nonbreakingspace \ref {lem:overlap}(iv) removes for failing to cover, and the $23$ that Proposition\nonbreakingspace \ref {prop:saturated} removes for carrying an index in every member. Only the second sits inside the census, the non-covering classes being absent from it; it takes $1/3$ of the column at $\lvert A^{+}\rvert =3$ and $1/351$ at the peak, and neither exclusion reaches above ten. Both excluded families are graphs on five vertices. The two drawn are the extremes of the $23$, a path beside an edge at three triples and the complete graph at ten. The bars are an external enumeration: neither Proposition\nonbreakingspace \ref {prop:census} nor Proposition\nonbreakingspace \ref {prop:carath} carries a declaration, and only the criteria the panels apply are kernel-checked.}}{87}{figure.40}\protected@file@percent }
+\newlabel{fig:exclusionreach}{{40}{87}{The reach of the exclusions at $(6,3)$. Upper: the census of Proposition~\ref {prop:census}, $2102$ covering classes with $351$ of them at $\lvert A^{+}\rvert =10$. Lower, on its own scale: the $34$ classes that Lemma~\ref {lem:overlap}(iv) removes for failing to cover, and the $23$ that Proposition~\ref {prop:saturated} removes for carrying an index in every member. Only the second sits inside the census, the non-covering classes being absent from it; it takes $1/3$ of the column at $\lvert A^{+}\rvert =3$ and $1/351$ at the peak, and neither exclusion reaches above ten. Both excluded families are graphs on five vertices. The two drawn are the extremes of the $23$, a path beside an edge at three triples and the complete graph at ten. The bars are an external enumeration: neither Proposition~\ref {prop:census} nor Proposition~\ref {prop:carath} carries a declaration, and only the criteria the panels apply are kernel-checked}{figure.40}{}}
 \gdef \LT@i {\LT@entry 
     {5}{78.88936pt}\LT@entry 
     {5}{373.36005pt}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{9}{Formalization}}{88}{section.9}\protected@file@percent }
+\newlabel{sec:formalization}{{9}{88}{Formalization}{section.9}{}}
+\newlabel{sec:whatformal}{{9.1}{88}{What is formalized}{subsection.9.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{9.1}{What is formalized}}{88}{subsection.9.1}\protected@file@percent }
 \gdef \LT@ii {\LT@entry 
     {5}{79.11105pt}\LT@entry 
     {5}{378.61003pt}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{Correspondence between the numbered statements and the formal development, first part: the elementary theory, the chart, the complex answer and the decided real cells.}}{71}{table.2}\protected@file@percent }
-\newlabel{tab:lean}{{2}{71}{Correspondence between the numbered statements and the formal development, first part: the elementary theory, the chart, the complex answer and the decided real cells}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{Correspondence between the numbered statements and the formal development, first part: the elementary theory, the chart, the complex answer and the decided real cells.}}{90}{table.2}\protected@file@percent }
+\newlabel{tab:lean}{{2}{90}{Correspondence between the numbered statements and the formal development, first part: the elementary theory, the chart, the complex answer and the decided real cells}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{Correspondence, second part: the equality locus, the variational principle, the interior system and the excluded strategies.}}{91}{table.3}\protected@file@percent }
+\newlabel{tab:leantwo}{{3}{91}{Correspondence, second part: the equality locus, the variational principle, the interior system and the excluded strategies}{table.3}{}}
+\newlabel{sec:axioms}{{9.2}{91}{Axiom discipline}{subsection.9.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{9.2}{Axiom discipline}}{91}{subsection.9.2}\protected@file@percent }
+\newlabel{sec:boundaries}{{9.3}{91}{Where the formalization stops}{subsection.9.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{9.3}{Where the formalization stops}}{91}{subsection.9.3}\protected@file@percent }
 \citation{Danskin1967}
 \citation{Overton1988}
 \citation{HiriartUrrutyYe1995}
 \citation{Clarke1990}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{Correspondence, second part: the equality locus, the variational principle, the interior system and the excluded strategies.}}{73}{table.3}\protected@file@percent }
-\newlabel{tab:leantwo}{{3}{73}{Correspondence, second part: the equality locus, the variational principle, the interior system and the excluded strategies}{table.3}{}}
-\newlabel{sec:axioms}{{9.2}{73}{Axiom discipline}{subsection.9.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{9.2}{Axiom discipline}}{73}{subsection.9.2}\protected@file@percent }
-\newlabel{sec:boundaries}{{9.3}{73}{Where the formalization stops}{subsection.9.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{9.3}{Where the formalization stops}}{73}{subsection.9.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\tocsection {}{10}{Problems}}{93}{section.10}\protected@file@percent }
+\newlabel{sec:open}{{10}{93}{Problems}{section.10}{}}
+\newlabel{prob:sixthree}{{1}{93}{Problems}{Item.3}{}}
 \citation{Caratheodory1911}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{10}{Problems}}{75}{section.10}\protected@file@percent }
-\newlabel{sec:open}{{10}{75}{Problems}{section.10}{}}
-\newlabel{prob:sixthree}{{1}{75}{Problems}{Item.3}{}}
 \citation{DRVW2006}
 \citation{Lyons2003}
 \citation{BorceaBrandenLiggett2009}
 \citation{AnariOveisGharan2015}
 \citation{MSS2015}
-\newlabel{prob:seventhree}{{2}{76}{Problems}{Item.4}{}}
-\newlabel{prob:sharpc}{{3}{76}{Problems}{Item.5}{}}
-\newlabel{prob:interlace}{{4}{76}{Problems}{Item.6}{}}
+\newlabel{prob:seventhree}{{2}{94}{Problems}{Item.4}{}}
+\newlabel{prob:sharpc}{{3}{94}{Problems}{Item.5}{}}
+\newlabel{prob:interlace}{{4}{94}{Problems}{Item.6}{}}
 \citation{GT2001}
 \citation{CivrilMagdonIsmail2009}
 \citation{GuEisenstat1996}
-\newlabel{prob:structure}{{5}{77}{Problems}{Item.7}{}}
-\newlabel{prob:higher}{{6}{77}{Problems}{Item.8}{}}
-\newlabel{prob:effective}{{7}{77}{Problems}{Item.9}{}}
-\@writefile{toc}{\contentsline {section}{\tocsection {Appendix}{A}{Strategies excluded, with witnesses}}{78}{section.A}\protected@file@percent }
-\newlabel{app:graveyard}{{A}{78}{Strategies excluded, with witnesses}{section.A}{}}
-\newlabel{eq:tieleg}{{94}{78}{Strategies excluded, with witnesses}{equation.94}{}}
-\newlabel{eq:twomoment}{{95}{78}{Strategies excluded, with witnesses}{equation.95}{}}
-\newlabel{app:certificates}{{A.1}{78}{Certificates with a uniform floor}{subsection.A.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.1}{Certificates with a uniform floor}}{78}{subsection.A.1}\protected@file@percent }
-\newlabel{prop:noaggregate}{{A.1}{78}{Lean}{theorem.A.1}{}}
-\newlabel{cor:noputinar}{{A.2}{79}{}{theorem.A.2}{}}
-\newlabel{rem:stengle}{{A.3}{79}{}{theorem.A.3}{}}
-\newlabel{app:transfer}{{A.2}{80}{Margin transfer across a deletion}{subsection.A.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.2}{Margin transfer across a deletion}}{80}{subsection.A.2}\protected@file@percent }
-\newlabel{prop:deletionprice}{{A.4}{80}{}{theorem.A.4}{}}
-\newlabel{eq:kappa}{{96}{80}{}{equation.96}{}}
-\newlabel{cor:noheavydeletion}{{A.5}{80}{}{theorem.A.5}{}}
-\newlabel{app:region}{{A.3}{80}{Restricting the region}{subsection.A.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.3}{Restricting the region}}{80}{subsection.A.3}\protected@file@percent }
+\newlabel{prob:structure}{{5}{95}{Problems}{Item.7}{}}
+\newlabel{prob:higher}{{6}{95}{Problems}{Item.8}{}}
+\newlabel{prob:effective}{{7}{95}{Problems}{Item.9}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {Appendix}{A}{Strategies excluded, with witnesses}}{96}{section.A}\protected@file@percent }
+\newlabel{app:graveyard}{{A}{96}{Strategies excluded, with witnesses}{section.A}{}}
+\newlabel{eq:tieleg}{{94}{96}{Strategies excluded, with witnesses}{equation.94}{}}
+\newlabel{eq:twomoment}{{95}{96}{Strategies excluded, with witnesses}{equation.95}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {41}{\ignorespaces The nine strategies of this appendix. The third column carries the quantity that refutes each: a determinant leg, a deletion price, an infimum, a $2\times 2$ determinant, a least root, a two-moment discriminant, an inertia, a volume maximizer and a least eigenvalue. The four above the second band fail wherever the selection inequality is an equality; the five below fail at explicit witnesses, none of them through Corollary\nonbreakingspace \ref {cor:nomargin}. Two numbers here are computed in exact rational arithmetic rather than in the kernel: $\delta (C)=-1$ at the maximizer of $\pi _C$, whose gap matrix the development does fix, and $\lvert \det M_C\rvert =12$ at the maximizer of the unweighted volume. The split $20$ and $15$ of the determinant legs at $(7,3)$ is kernel-checked, though not by any declaration tagged on Proposition\nonbreakingspace \ref {prop:noaggregate}.}}{97}{figure.41}\protected@file@percent }
+\newlabel{fig:gallery}{{41}{97}{The nine strategies of this appendix. The third column carries the quantity that refutes each: a determinant leg, a deletion price, an infimum, a $2\times 2$ determinant, a least root, a two-moment discriminant, an inertia, a volume maximizer and a least eigenvalue. The four above the second band fail wherever the selection inequality is an equality; the five below fail at explicit witnesses, none of them through Corollary~\ref {cor:nomargin}. Two numbers here are computed in exact rational arithmetic rather than in the kernel: $\delta (C)=-1$ at the maximizer of $\pi _C$, whose gap matrix the development does fix, and $\lvert \det M_C\rvert =12$ at the maximizer of the unweighted volume. The split $20$ and $15$ of the determinant legs at $(7,3)$ is kernel-checked, though not by any declaration tagged on Proposition~\ref {prop:noaggregate}}{figure.41}{}}
+\newlabel{app:certificates}{{A.1}{97}{Certificates with a uniform floor}{subsection.A.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.1}{Certificates with a uniform floor}}{97}{subsection.A.1}\protected@file@percent }
+\newlabel{prop:noaggregate}{{A.1}{97}{Lean}{theorem.A.1}{}}
+\newlabel{cor:noputinar}{{A.2}{98}{}{theorem.A.2}{}}
+\newlabel{rem:stengle}{{A.3}{98}{}{theorem.A.3}{}}
+\newlabel{app:transfer}{{A.2}{99}{Margin transfer across a deletion}{subsection.A.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.2}{Margin transfer across a deletion}}{99}{subsection.A.2}\protected@file@percent }
+\newlabel{prop:deletionprice}{{A.4}{99}{}{theorem.A.4}{}}
+\newlabel{eq:kappa}{{96}{99}{}{equation.96}{}}
+\newlabel{cor:noheavydeletion}{{A.5}{99}{}{theorem.A.5}{}}
 \citation{MSS2015}
-\newlabel{app:lift}{{A.4}{81}{The compression lift at positive weight}{subsection.A.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.4}{The compression lift at positive weight}}{81}{subsection.A.4}\protected@file@percent }
-\newlabel{app:rooted}{{A.5}{81}{Real-rootedness of the mixture}{subsection.A.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.5}{Real-rootedness of the mixture}}{81}{subsection.A.5}\protected@file@percent }
-\newlabel{prop:rootedness}{{A.6}{81}{}{theorem.A.6}{}}
-\newlabel{app:moments}{{A.6}{81}{Two moments}{subsection.A.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.6}{Two moments}}{81}{subsection.A.6}\protected@file@percent }
-\newlabel{prop:twomoment}{{A.7}{81}{Lean}{theorem.A.7}{}}
+\newlabel{app:region}{{A.3}{100}{Restricting the region}{subsection.A.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.3}{Restricting the region}}{100}{subsection.A.3}\protected@file@percent }
+\newlabel{app:lift}{{A.4}{100}{The compression lift at positive weight}{subsection.A.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.4}{The compression lift at positive weight}}{100}{subsection.A.4}\protected@file@percent }
+\newlabel{app:rooted}{{A.5}{100}{Real-rootedness of the mixture}{subsection.A.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.5}{Real-rootedness of the mixture}}{100}{subsection.A.5}\protected@file@percent }
+\newlabel{prop:rootedness}{{A.6}{100}{}{theorem.A.6}{}}
+\newlabel{app:moments}{{A.6}{100}{Two moments}{subsection.A.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.6}{Two moments}}{100}{subsection.A.6}\protected@file@percent }
+\newlabel{prop:twomoment}{{A.7}{100}{Lean}{theorem.A.7}{}}
+\newlabel{prop:momentsharp}{{A.8}{101}{}{theorem.A.8}{}}
+\newlabel{prop:icosa}{{A.9}{101}{Lean}{theorem.A.9}{}}
 \citation{GT2001}
-\newlabel{prop:momentsharp}{{A.8}{82}{}{theorem.A.8}{}}
-\newlabel{prop:icosa}{{A.9}{82}{Lean}{theorem.A.9}{}}
-\newlabel{app:structure}{{A.7}{82}{Structure inherited from smaller sizes}{subsection.A.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.7}{Structure inherited from smaller sizes}}{82}{subsection.A.7}\protected@file@percent }
-\newlabel{rem:signature}{{A.10}{82}{}{theorem.A.10}{}}
-\newlabel{app:volume}{{A.8}{83}{Maximal volume at general weights}{subsection.A.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.8}{Maximal volume at general weights}}{83}{subsection.A.8}\protected@file@percent }
-\newlabel{prop:volumefails}{{A.11}{83}{Lean}{theorem.A.11}{}}
-\newlabel{app:exchange}{{A.9}{83}{Bounded-radius exchange}{subsection.A.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.9}{Bounded-radius exchange}}{83}{subsection.A.9}\protected@file@percent }
-\newlabel{app:hygiene}{{A.10}{83}{Conditioning}{subsection.A.10}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.10}{Conditioning}}{83}{subsection.A.10}\protected@file@percent }
-\newlabel{rem:hygiene}{{A.12}{83}{}{theorem.A.12}{}}
-\@writefile{toc}{\contentsline {section}{\tocsection {Appendix}{B}{Exact data}}{84}{section.B}\protected@file@percent }
-\newlabel{app:data}{{B}{84}{Exact data}{section.B}{}}
-\newlabel{app:tetra}{{B.1}{84}{The tetrahedron at \texorpdfstring {$(4,3)$}{(4,3)}}{subsection.B.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.1}{The tetrahedron at $(4,3)$}}{84}{subsection.B.1}\protected@file@percent }
-\newlabel{app:corankone}{{B.2}{85}{The corank-one extremal family}{subsection.B.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.2}{The corank-one extremal family}}{85}{subsection.B.2}\protected@file@percent }
-\newlabel{app:liftfail}{{B.3}{85}{The chart point of \texorpdfstring {\S \ref {sec:sharp}}{the sharpness section}}{subsection.B.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.3}{The chart point of \S  \ref {sec:sharp}}}{85}{subsection.B.3}\protected@file@percent }
-\newlabel{eq:liftchart}{{97}{85}{The chart point of \texorpdfstring {\S \ref {sec:sharp}}{the sharpness section}}{equation.97}{}}
-\newlabel{eq:liftweights}{{98}{85}{The chart point of \texorpdfstring {\S \ref {sec:sharp}}{the sharpness section}}{equation.98}{}}
-\newlabel{app:diamond}{{B.4}{86}{Graphic designs, and the diamond at \texorpdfstring {$(5,3)$}{(5,3)}}{subsection.B.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.4}{Graphic designs, and the diamond at $(5,3)$}}{86}{subsection.B.4}\protected@file@percent }
-\newlabel{eq:graphicatom}{{99}{86}{Graphic designs, and the diamond at \texorpdfstring {$(5,3)$}{(5,3)}}{equation.99}{}}
-\newlabel{eq:graphicleverage}{{100}{86}{Graphic designs, and the diamond at \texorpdfstring {$(5,3)$}{(5,3)}}{equation.100}{}}
-\newlabel{eq:graphicdominate}{{101}{86}{Graphic designs, and the diamond at \texorpdfstring {$(5,3)$}{(5,3)}}{equation.101}{}}
-\newlabel{app:split}{{B.5}{88}{Split families at \texorpdfstring {$(6,3)$ and $(7,3)$}{(6,3) and (7,3)}}{subsection.B.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.5}{Split families at $(6,3)$ and $(7,3)$}}{88}{subsection.B.5}\protected@file@percent }
+\newlabel{app:structure}{{A.7}{102}{Structure inherited from smaller sizes}{subsection.A.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.7}{Structure inherited from smaller sizes}}{102}{subsection.A.7}\protected@file@percent }
+\newlabel{rem:signature}{{A.10}{102}{}{theorem.A.10}{}}
+\newlabel{app:volume}{{A.8}{102}{Maximal volume at general weights}{subsection.A.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.8}{Maximal volume at general weights}}{102}{subsection.A.8}\protected@file@percent }
+\newlabel{prop:volumefails}{{A.11}{102}{Lean}{theorem.A.11}{}}
+\newlabel{app:exchange}{{A.9}{102}{Bounded-radius exchange}{subsection.A.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.9}{Bounded-radius exchange}}{102}{subsection.A.9}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {42}{\ignorespaces Bounded-radius exchange at $(6,3)$. Left: the twenty triples by exchange distance from the stuck $\{0,1,2\}$, in shells of $1$, $9$, $9$ and $1$, with the ball of radius two shaded; the heavy path is the geodesic $\{0,1,2\}$, $013$, $034$, $\{3,4,5\}$, one swap at each step. Right: the design, and the score axis, on which the hatched band is a ceiling over the eighteen and not their values, which run off to its left. The stuck triple scores $576/625$, which is $49/625$ below the threshold, and the eighteen others within two swaps score at most $512/625$, which is $64/625$ below the stuck one; the only triple that dominates scores $4$ and lies three swaps away, three being the rank. So radius $k$ is global search and radius $k-1$ cannot see the subset it needs.}}{103}{figure.42}\protected@file@percent }
+\newlabel{fig:exchange}{{42}{103}{Bounded-radius exchange at $(6,3)$. Left: the twenty triples by exchange distance from the stuck $\{0,1,2\}$, in shells of $1$, $9$, $9$ and $1$, with the ball of radius two shaded; the heavy path is the geodesic $\{0,1,2\}$, $013$, $034$, $\{3,4,5\}$, one swap at each step. Right: the design, and the score axis, on which the hatched band is a ceiling over the eighteen and not their values, which run off to its left. The stuck triple scores $576/625$, which is $49/625$ below the threshold, and the eighteen others within two swaps score at most $512/625$, which is $64/625$ below the stuck one; the only triple that dominates scores $4$ and lies three swaps away, three being the rank. So radius $k$ is global search and radius $k-1$ cannot see the subset it needs}{figure.42}{}}
+\newlabel{app:hygiene}{{A.10}{103}{Conditioning}{subsection.A.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{A.10}{Conditioning}}{103}{subsection.A.10}\protected@file@percent }
+\newlabel{rem:hygiene}{{A.12}{103}{}{theorem.A.12}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {Appendix}{B}{Exact data}}{104}{section.B}\protected@file@percent }
+\newlabel{app:data}{{B}{104}{Exact data}{section.B}{}}
+\newlabel{app:tetra}{{B.1}{104}{The tetrahedron at \texorpdfstring {$(4,3)$}{(4,3)}}{subsection.B.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.1}{The tetrahedron at $(4,3)$}}{104}{subsection.B.1}\protected@file@percent }
+\newlabel{app:corankone}{{B.2}{105}{The corank-one extremal family}{subsection.B.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.2}{The corank-one extremal family}}{105}{subsection.B.2}\protected@file@percent }
+\newlabel{app:liftfail}{{B.3}{105}{The chart point of \texorpdfstring {\S \ref {sec:sharp}}{the sharpness section}}{subsection.B.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.3}{The chart point of \S  \ref {sec:sharp}}}{105}{subsection.B.3}\protected@file@percent }
+\newlabel{eq:liftchart}{{97}{105}{The chart point of \texorpdfstring {\S \ref {sec:sharp}}{the sharpness section}}{equation.97}{}}
+\newlabel{eq:liftweights}{{98}{105}{The chart point of \texorpdfstring {\S \ref {sec:sharp}}{the sharpness section}}{equation.98}{}}
+\newlabel{app:diamond}{{B.4}{106}{Graphic designs, and the diamond at \texorpdfstring {$(5,3)$}{(5,3)}}{subsection.B.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.4}{Graphic designs, and the diamond at $(5,3)$}}{106}{subsection.B.4}\protected@file@percent }
+\newlabel{eq:graphicatom}{{99}{106}{Graphic designs, and the diamond at \texorpdfstring {$(5,3)$}{(5,3)}}{equation.99}{}}
+\newlabel{eq:graphicleverage}{{100}{106}{Graphic designs, and the diamond at \texorpdfstring {$(5,3)$}{(5,3)}}{equation.100}{}}
+\newlabel{eq:graphicdominate}{{101}{106}{Graphic designs, and the diamond at \texorpdfstring {$(5,3)$}{(5,3)}}{equation.101}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {43}{\ignorespaces The bundled cycle. Left: arc $j$ of the $4$-cycle carries $p_j$ parallel edges of conductance $1/\bigl  (p_j(n-p_j)\bigr  )$, drawn at $p=(2,2,1,1)$ and $n=6$; the three heavy edges are a transversal and the open vertex is the ground. Middle: the closed form, and seven bundlings, each an exact tie; every distinct rank-three leverage listed is evaluated in the kernel, and at rank two what the kernel evaluates is the companion projection diagonal, $8/63$ and $5/9$ at $(7,1,1)$, and $13/72$, $2/9$ and $11/36$ at $(4,3,2)$. Right: at rank two the gap is the rational square above, drawn at $(p_1,p_2)=(4,3)$, where the heavy line is the ray $d\propto p$ and the two dashed lines are the level $3/7$. Every leverage listed satisfies $k\,T\,\ell _e=k-1+T$ at the arc total $T=p/n$, which is \eqref  {eq:tielaw}.}}{108}{figure.43}\protected@file@percent }
+\newlabel{fig:bundledcycle}{{43}{108}{The bundled cycle. Left: arc $j$ of the $4$-cycle carries $p_j$ parallel edges of conductance $1/\bigl (p_j(n-p_j)\bigr )$, drawn at $p=(2,2,1,1)$ and $n=6$; the three heavy edges are a transversal and the open vertex is the ground. Middle: the closed form, and seven bundlings, each an exact tie; every distinct rank-three leverage listed is evaluated in the kernel, and at rank two what the kernel evaluates is the companion projection diagonal, $8/63$ and $5/9$ at $(7,1,1)$, and $13/72$, $2/9$ and $11/36$ at $(4,3,2)$. Right: at rank two the gap is the rational square above, drawn at $(p_1,p_2)=(4,3)$, where the heavy line is the ray $d\propto p$ and the two dashed lines are the level $3/7$. Every leverage listed satisfies $k\,T\,\ell _e=k-1+T$ at the arc total $T=p/n$, which is \eqref {eq:tielaw}}{figure.43}{}}
+\newlabel{app:split}{{B.5}{109}{Split families at \texorpdfstring {$(6,3)$ and $(7,3)$}{(6,3) and (7,3)}}{subsection.B.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.5}{Split families at $(6,3)$ and $(7,3)$}}{109}{subsection.B.5}\protected@file@percent }
+\newlabel{app:icosa}{{B.6}{109}{The icosahedral design at \texorpdfstring {$(6,3)$}{(6,3)}}{subsection.B.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.6}{The icosahedral design at $(6,3)$}}{109}{subsection.B.6}\protected@file@percent }
+\newlabel{eq:icosaconst}{{102}{109}{The icosahedral design at \texorpdfstring {$(6,3)$}{(6,3)}}{equation.102}{}}
+\newlabel{eq:icosapair}{{103}{110}{The icosahedral design at \texorpdfstring {$(6,3)$}{(6,3)}}{equation.103}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {44}{\ignorespaces The icosahedral design at $(6,3)$, in the constants of \eqref  {eq:icosaconst}: six atoms along the six diagonals of a regular icosahedron, each drawn as $\sigma $ times the vertex it points at. All twenty triples carry the trace $9$ and the single pairing modulus $\rho $, and ten of them dominate. The verdict is the sign of the product $\tau $ of the three pairings. The heavy atoms point at the vertices of the shaded face, the light ones at three vertices joined by no edge. By Propositions\nonbreakingspace \ref {prop:icosa} and\nonbreakingspace \ref {prop:momentsharp} no criterion in the trace and the determinant certifies the triple that dominates.}}{110}{figure.44}\protected@file@percent }
+\newlabel{fig:icosa}{{44}{110}{The icosahedral design at $(6,3)$, in the constants of \eqref {eq:icosaconst}: six atoms along the six diagonals of a regular icosahedron, each drawn as $\sigma $ times the vertex it points at. All twenty triples carry the trace $9$ and the single pairing modulus $\rho $, and ten of them dominate. The verdict is the sign of the product $\tau $ of the three pairings. The heavy atoms point at the vertices of the shaded face, the light ones at three vertices joined by no edge. By Propositions~\ref {prop:icosa} and~\ref {prop:momentsharp} no criterion in the trace and the determinant certifies the triple that dominates}{figure.44}{}}
 \bibstyle{amsplain}
 \bibdata{refs}
-\newlabel{app:icosa}{{B.6}{89}{The icosahedral design at \texorpdfstring {$(6,3)$}{(6,3)}}{subsection.B.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.6}{The icosahedral design at $(6,3)$}}{89}{subsection.B.6}\protected@file@percent }
-\newlabel{eq:icosaconst}{{102}{89}{The icosahedral design at \texorpdfstring {$(6,3)$}{(6,3)}}{equation.102}{}}
-\newlabel{eq:icosapair}{{103}{89}{The icosahedral design at \texorpdfstring {$(6,3)$}{(6,3)}}{equation.103}{}}
-\newlabel{app:census}{{B.7}{89}{Active-family census at \texorpdfstring {$(6,3)$ and $(7,3)$}{(6,3) and (7,3)}}{subsection.B.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.7}{Active-family census at $(6,3)$ and $(7,3)$}}{89}{subsection.B.7}\protected@file@percent }
 \bibcite{AnariOveisGharan2015}{1}
 \bibcite{BorceaBrandenLiggett2009}{2}
+\@writefile{lof}{\contentsline {figure}{\numberline {45}{\ignorespaces The twenty triples of the icosahedral design. Left: the sign of $\langle g_c,g_d\rangle /\rho $ at each pair, the diagonal carrying the leverage $3$. Middle: the triples sorted by the product $\tau $ of their three pairings. Right: the trace $9$, the pairing squares $27/5$ and the modulus $\rho ^3$ are common to all twenty, and every line below them is a function of the sign of $\tau $; the two spectra are $\{3-\rho ,3-\rho ,3+2\rho \}$ and $\{3-2\rho ,3+\rho ,3+\rho \}$, and no other occurs. The split ten and ten is the assertion with no theorem behind it; the criterion that produces it, that the product of the three pairings normalized by the excesses $\ell _c-1$ be at least $7/40$, is kernel-checked.}}{111}{figure.45}\protected@file@percent }
+\newlabel{fig:icosaspec}{{45}{111}{The twenty triples of the icosahedral design. Left: the sign of $\langle g_c,g_d\rangle /\rho $ at each pair, the diagonal carrying the leverage $3$. Middle: the triples sorted by the product $\tau $ of their three pairings. Right: the trace $9$, the pairing squares $27/5$ and the modulus $\rho ^3$ are common to all twenty, and every line below them is a function of the sign of $\tau $; the two spectra are $\{3-\rho ,3-\rho ,3+2\rho \}$ and $\{3-2\rho ,3+\rho ,3+\rho \}$, and no other occurs. The split ten and ten is the assertion with no theorem behind it; the criterion that produces it, that the product of the three pairings normalized by the excesses $\ell _c-1$ be at least $7/40$, is kernel-checked}{figure.45}{}}
+\newlabel{app:census}{{B.7}{111}{Active-family census at \texorpdfstring {$(6,3)$ and $(7,3)$}{(6,3) and (7,3)}}{subsection.B.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{B.7}{Active-family census at $(6,3)$ and $(7,3)$}}{111}{subsection.B.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\tocsection {Appendix}{}{References}}{111}{section*.7}\protected@file@percent }
 \bibcite{BourgainTzafriri1987}{3}
 \bibcite{Caratheodory1911}{4}
 \bibcite{CasazzaKutyniok2013}{5}
@@ -526,9 +584,6 @@
 \bibcite{GTZ1997}{11}
 \bibcite{GZT1997}{12}
 \bibcite{GuEisenstat1996}{13}
-\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces The icosahedral design at $(6,3)$, in the constants of \eqref  {eq:icosaconst}: six atoms along the six diagonals of a regular icosahedron, each drawn as $\sigma $ times the vertex it points at. All twenty triples carry the trace $9$ and the single pairing modulus $\rho $, and ten of them dominate. The verdict is the sign of the product $\tau $ of the three pairings. The heavy atoms point at the vertices of the shaded face, the light ones at three vertices joined by no edge. By Propositions\nonbreakingspace \ref {prop:icosa} and\nonbreakingspace \ref {prop:momentsharp} no criterion in the trace and the determinant certifies the triple that dominates.}}{90}{figure.21}\protected@file@percent }
-\newlabel{fig:icosa}{{21}{90}{The icosahedral design at $(6,3)$, in the constants of \eqref {eq:icosaconst}: six atoms along the six diagonals of a regular icosahedron, each drawn as $\sigma $ times the vertex it points at. All twenty triples carry the trace $9$ and the single pairing modulus $\rho $, and ten of them dominate. The verdict is the sign of the product $\tau $ of the three pairings. The heavy atoms point at the vertices of the shaded face, the light ones at three vertices joined by no edge. By Propositions~\ref {prop:icosa} and~\ref {prop:momentsharp} no criterion in the trace and the determinant certifies the triple that dominates}{figure.21}{}}
-\@writefile{toc}{\contentsline {section}{\tocsection {Appendix}{}{References}}{90}{section*.7}\protected@file@percent }
 \bibcite{HiriartUrrutyLemarechal1993}{14}
 \bibcite{HiriartUrrutyYe1995}{15}
 \bibcite{HornJohnson2013}{16}
@@ -549,4 +604,4 @@
 \newlabel{tocindent1}{72.39157pt}
 \newlabel{tocindent2}{41.7008pt}
 \newlabel{tocindent3}{0pt}
-\gdef \@abspage@last{91}
+\gdef \@abspage@last{112}

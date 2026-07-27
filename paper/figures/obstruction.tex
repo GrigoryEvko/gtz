@@ -1,0 +1,225 @@
+% The pair obstruction K of Definition def:obstruction, at (5,2), and the
+% admissible arc it cuts out of the squared picture.
+%
+% NO PROJECTION.  Panel (a) is the plane of the squared vectors itself, drawn
+% face-on at 0.75cm per unit with the first coordinate to the right; the trine
+% inset is that plane at 0.52cm per unit.  Panel (b) is a table.  Every
+% coordinate carrying a trailing comment is 0.75 (resp. 0.52) times the exact
+% pair in it, and at 0.75 every one of those terminates; the arc endpoints and
+% the label anchors are the stated angles at the stated radii.
+%
+% THE MECHANISM.  By eq:doubleangle the squared vector eta_c has length ell_c,
+% so <eta_c,eta_d> = ell_c ell_d cos psi with psi the angle between them, and
+% eq:obstruction reads
+%   K_cd = ell_c ell_d cos psi - (ell_c - 2)(ell_d - 2) + 2 ,
+% strictly decreasing in psi.  Hence K_cd <= 0 exactly when cos psi <= kappa,
+%   kappa(ell_c,ell_d) := [(ell_c - 2)(ell_d - 2) - 2] / (ell_c ell_d)
+%                       = 1 - 2(ell_c + ell_d - 1)/(ell_c ell_d) ,
+% and the admissible positions of eta_d form the arc of its own circle at
+% angular distance at least psi* := arccos kappa from eta_c, the angle taken
+% at the origin, which is where the figure marks it.  Two identities fix that
+% arc.  Since 1 - kappa = 2(ell_c+ell_d-1)/(ell_c ell_d) is positive, kappa < 1
+% and the excluded arc is never empty; since kappa + 1 =
+% 2(ell_c-1)(ell_d-1)/(ell_c ell_d) is positive at a heavy pair, kappa > -1 and
+% the admissible arc is never empty either.  The leverages
+% alone therefore decide no pair: only the position of eta_d does.
+% Equivalently, in the coordinates of figures/psdcone.tex the atom of g_c sits
+% at (eta_c/2, ell_c/2), so S_{c,d} - I_2 sits at ((eta_c+eta_d)/2,
+% (ell_c+ell_d)/2 - 1) and its determinant is
+%   ((ell_c+ell_d)/2 - 1)^2 - ||eta_c+eta_d||^2/4 = -K_cd/2 ;
+% K_cd <= 0 says ||eta_c + eta_d|| <= ell_c + ell_d - 2.
+%
+% THE DESIGN of panel (a) is the design at (5,2) of figures/regression.tex,
+% entry for entry, so the two figures share their base plane:
+%   c        1            2           3        4          5
+%   t_c      3/10         1/5         1/10     1/4        3/20
+%   eta_c    (16/15,4/5)  (-9/5,12/5) (-2,0)   (0,-8/5)   (8/5,-32/15)
+%   ell_c    4/3          3           2        8/5        8/3
+% Checked over the rationals: sum t_c = 1, and sum t_c eta_c = 0 together with
+% sum t_c ell_c = 2, which at k = 2 is eq:parseval written in the squared
+% picture; also ||eta_c|| = ell_c at every c.  Every leverage exceeds 1, so the
+% design is all-heavy and lem:pairobs applies to all ten pairs.
+%
+% THE DRAWN PAIR is {1,3}, chosen because it is the one that lands near the
+% boundary: kappa(4/3,2) = -3/4 against cos psi = <eta_1,eta_3>/(ell_1 ell_3)
+% = -4/5, that is psi = 143.130102 degrees against psi* = 138.590378, so eta_3
+% clears the arc endpoint by 4.539724 degrees and K_13 = -2/15.  The two
+% circles drawn are the ones this pair uses, of radii ell_1 = 4/3 and
+% ell_3 = 2; the arc runs on the second, from 36.869898 + 138.590378 =
+% 175.460276 degrees to 36.869898 - 138.590378 + 360 = 258.279520, and eta_3
+% lies at 180.  As eta_d runs once around that circle K_1d sweeps [-2/3, 14/3].
+% Every arrow in the figure, inset included, stops at 0.92 of its length, so
+% that no arrowhead covers the dot marking where a squared vector meets its
+% circle.  Dot radius here is 1.7pt on the drawn pair and 1.5pt on the other
+% three: a highlight, and NOT the disc-area-is-the-weight convention of
+% figures/regression.tex and figures/crystal.tex.
+%
+% THE COLLINEAR PAIR.  eta_5 = -(ell_5/ell_2) eta_2 exactly, so {2,5} is the
+% opposite-sign pair of lem:collinear sitting inside a design whose squared
+% vectors span the plane; its axis is the dashed line.
+%
+% DISCLOSED: nothing here carries a Lean tag, and of the statements drawn --
+% def:obstruction, lem:pairobs, lem:collinear -- none is tagged in the text.
+% (Theorem thm:ranktwo, which closes Section 5.2, is tagged, as
+% Gtz.gtz_rank_two.)  The chain is in the development -- the obstruction,
+% the determinant identity K = -2 det(S_C - I_2), the row sums, the core
+% inequality, the collinear branch and the Psi argument are private
+% declarations of Gtz/Reduction/RankTwo.lean -- but the ledger names only that
+% file's export, Gtz.exists_dominating_pair_of_heavy, so none of the drawn
+% statements is audited under a name of its own.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  vec/.style   ={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt},
+  faint/.style ={-{Latex[length=2mm,width=1.5mm]}, line width=0.6pt, black!55},
+  arc/.style   ={line width=1.1pt, black!85},
+  cut/.style   ={line width=0.5pt, black!58, dashed,
+                 dash pattern=on 2.2pt off 1.5pt},
+  axis/.style  ={line width=0.45pt, black!45, dashed,
+                 dash pattern=on 1.4pt off 1.2pt},
+  frame/.style ={densely dotted, line width=0.3pt, black!35},
+  note/.style  ={font=\footnotesize, inner sep=1.5pt},
+  every node/.style={font=\small}]
+
+% =====================================================================
+% (a)  the squared picture, and the arc on which a partner of leverage 2
+%      dominates against eta_1
+% =====================================================================
+\coordinate (O) at (0,0);
+
+\draw[frame] (0,0) circle (1.0000);            % ell_1 = 4/3
+\draw[frame] (0,0) circle (1.5000);            % ell_3 = 2
+\draw[frame] (-2.40,0) -- (2.40,0);
+\draw[frame] (0,-2.40) -- (0,2.40);
+
+% ---- the collinear pair {2,5}, whose squared vectors are antiparallel ----
+\draw[axis] (-1.5525, 2.0700) -- ( 1.3800,-1.8400);   % 1.15 eta_2, 1.15 eta_5
+
+% ---- the admissible arc, and the two critical positions ----------------
+\draw[cut] (O) -- (-1.4953, 0.1187);           % 175.460276 deg, radius 2
+\draw[cut] (O) -- (-0.3047,-1.4687);           % 258.279520 deg, radius 2
+\draw[arc] (175.460276:1.5)
+  arc[start angle=175.460276, end angle=258.279520, radius=1.5];
+\node[note, anchor=north east] at (-1.4560,-1.0920) {$K_{1d}\le0$};
+
+% ---- the angle psi* at the origin ---------------------------------------
+\draw[line width=0.4pt, black!58]
+  (36.869898:0.55) arc[start angle=36.869898, end angle=175.460276, radius=0.55];
+\node[note] at (-0.2005, 0.6915) {$\psi^{*}$};
+
+% ---- the five squared vectors, each stopping at 0.92 of its length ------
+\draw[faint] (O)--(-1.2420, 1.6560);           % eta_2 = (-9/5, 12/5)
+\draw[faint] (O)--( 0.0000,-1.1040);           % eta_4 = (0, -8/5)
+\draw[faint] (O)--( 1.1040,-1.4720);           % eta_5 = (8/5, -32/15)
+\draw[vec]   (O)--( 0.7360, 0.5520);           % eta_1 = (16/15, 4/5)
+\draw[vec]   (O)--(-1.3800, 0.0000);           % eta_3 = (-2, 0)
+\fill (O) circle (1.1pt);
+\fill ( 0.8000, 0.6000) circle (1.7pt);
+\fill (-1.3500, 1.8000) circle (1.5pt);
+\fill (-1.5000, 0.0000) circle (1.7pt);
+\fill ( 0.0000,-1.2000) circle (1.5pt);
+\fill ( 1.2000,-1.6000) circle (1.5pt);
+
+\node[note, anchor=west]       at ( 0.88, 0.63) {$\eta_1$};
+\node[note, anchor=east]       at (-1.42, 1.86) {$\eta_2$};
+\node[note, anchor=south east] at (-1.48, 0.08) {$\eta_3$};
+\node[note, anchor=west]       at ( 0.09,-1.24) {$\eta_4$};
+\node[note, anchor=west]       at ( 1.29,-1.63) {$\eta_5$};
+
+\node[note, anchor=north, align=center] at (0,-2.62)
+  {$\kappa\bigl(\tfrac43,2\bigr)=-\tfrac34$ against
+   $\cos\psi_{13}=-\tfrac45$\\[3pt]
+   $K_{13}=-\tfrac2{15}$};
+
+% =====================================================================
+% (b)  the ten pairs.  Header at 2.55, ten rows 0.42 apart from 2.13;
+%      columns at 3.42 (marker), 3.75, 4.80, 5.95.
+% =====================================================================
+\begin{scope}[every node/.style={font=\scriptsize, inner sep=1.5pt}]
+\node[anchor=west] at (3.75, 2.55) {$\{c,d\}$};
+\node[anchor=west] at (4.80, 2.55) {$\langle\eta_c,\eta_d\rangle$};
+\node[anchor=west] at (5.95, 2.55) {$K_{cd}$};
+\draw[line width=0.4pt, black!45] (3.38, 2.32) -- (6.90, 2.32);
+
+\node[anchor=west, black!58] at (3.75, 2.13) {$\{1,2\}$};
+\node[anchor=west, black!58] at (4.80, 2.13) {$0$};
+\node[anchor=west, black!58] at (5.95, 2.13) {$\tfrac83$};
+
+\fill (3.42, 1.71) circle (1.6pt);
+\node[anchor=west] at (3.75, 1.71) {$\{1,3\}$};
+\node[anchor=west] at (4.80, 1.71) {$-\tfrac{32}{15}$};
+\node[anchor=west] at (5.95, 1.71) {$-\tfrac2{15}$};
+
+\node[anchor=west, black!58] at (3.75, 1.29) {$\{1,4\}$};
+\node[anchor=west, black!58] at (4.80, 1.29) {$-\tfrac{32}{25}$};
+\node[anchor=west, black!58] at (5.95, 1.29) {$\tfrac{34}{75}$};
+
+\node[anchor=west, black!58] at (3.75, 0.87) {$\{1,5\}$};
+\node[anchor=west, black!58] at (4.80, 0.87) {$0$};
+\node[anchor=west, black!58] at (5.95, 0.87) {$\tfrac{22}9$};
+
+\node[anchor=west, black!58] at (3.75, 0.45) {$\{2,3\}$};
+\node[anchor=west, black!58] at (4.80, 0.45) {$\tfrac{18}5$};
+\node[anchor=west, black!58] at (5.95, 0.45) {$\tfrac{28}5$};
+
+\fill (3.42, 0.03) circle (1.6pt);
+\node[anchor=west] at (3.75, 0.03) {$\{2,4\}$};
+\node[anchor=west] at (4.80, 0.03) {$-\tfrac{96}{25}$};
+\node[anchor=west] at (5.95, 0.03) {$-\tfrac{36}{25}$};
+
+\fill (3.42,-0.39) circle (1.6pt);
+\node[anchor=west] at (3.75,-0.39) {$\{2,5\}$};
+\node[anchor=west] at (4.80,-0.39) {$-8$};
+\node[anchor=west] at (5.95,-0.39) {$-\tfrac{20}3$};
+
+\node[anchor=west, black!58] at (3.75,-0.81) {$\{3,4\}$};
+\node[anchor=west, black!58] at (4.80,-0.81) {$0$};
+\node[anchor=west, black!58] at (5.95,-0.81) {$2$};
+
+\fill (3.42,-1.23) circle (1.6pt);
+\node[anchor=west] at (3.75,-1.23) {$\{3,5\}$};
+\node[anchor=west] at (4.80,-1.23) {$-\tfrac{16}5$};
+\node[anchor=west] at (5.95,-1.23) {$-\tfrac65$};
+
+\node[anchor=west, black!58] at (3.75,-1.65) {$\{4,5\}$};
+\node[anchor=west, black!58] at (4.80,-1.65) {$\tfrac{256}{75}$};
+\node[anchor=west, black!58] at (5.95,-1.65) {$\tfrac{142}{25}$};
+
+\draw[line width=0.4pt, black!45] (3.38,-1.90) -- (6.90,-1.90);
+\node[anchor=north west, align=left, inner sep=2pt] at (3.38,-1.99)
+  {filled: $K_{cd}\le0$ and $\{c,d\}$ dominates, four of the ten\\[3pt]
+   $K_{cd}=-2\det\bigl(S_{\{c,d\}}-I_2\bigr)$ and
+   $\tr\bigl(S_{\{c,d\}}-I_2\bigr)=\ell_c+\ell_d-2>0$\\[3pt]
+   $\operatorname{spec}\bigl(S_{\{2,5\}}-I_2\bigr)=\{\tfrac53,2\}$, \quad
+   $\operatorname{spec}\bigl(S_{\{1,4\}}-I_2\bigr)=\{-\tfrac15,\tfrac{17}{15}\}$};
+\end{scope}
+
+% =====================================================================
+% (c)  the trine, where the inequality is an equality
+% =====================================================================
+\begin{scope}[shift={(8.55,1.05)}]
+  \draw[frame] (0,0) circle (1.04);            % ell = 2 at 0.52cm per unit
+  \draw[arc] (210:1.04) arc[start angle=210, end angle=330, radius=1.04];
+  \draw[vec]   (0,0)--( 0.0000, 0.9568);       % length 2 at  90 deg
+  \draw[faint] (0,0)--(-0.8286,-0.4784);       % length 2 at 210 deg
+  \draw[faint] (0,0)--( 0.8286,-0.4784);       % length 2 at 330 deg
+  \fill (0,0) circle (1.0pt);
+  \fill ( 0.0000, 1.0400) circle (1.6pt);
+  \fill (-0.9007,-0.5200) circle (1.6pt);
+  \fill ( 0.9007,-0.5200) circle (1.6pt);
+  \node[note, anchor=west] at (0.09, 1.02) {$\eta_c$};
+  \node[anchor=south] at (0,1.42) {the trine};
+  \node[anchor=north, align=center, font=\scriptsize, inner sep=1.5pt]
+    at (0,-1.20)
+    {$\kappa(2,2)=-\tfrac12=\cos\tfrac{2\pi}3$\\[3pt]
+     $K_{cd}=0$ at every pair};
+\end{scope}
+
+% ---- the design, across the foot of both panels -------------------------
+\node[anchor=north, align=center, font=\scriptsize, inner sep=1.5pt]
+  at (3.10,-3.62)
+  {$t=\bigl(\tfrac3{10},\tfrac15,\tfrac1{10},\tfrac14,\tfrac3{20}\bigr)$,\quad
+   $\ell=\bigl(\tfrac43,3,2,\tfrac85,\tfrac83\bigr)$,\quad
+   $\lVert\eta_c\rVert=\ell_c$,\quad $\sum_c t_c\,\eta_c=0$,\quad
+   $\sum_c t_c\,\ell_c=2$,\quad every $\ell_c>1$};
+
+\end{tikzpicture}

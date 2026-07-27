@@ -1,0 +1,243 @@
+% The exchange graph at (6,3), and the all-heavy design at which radius-two
+% local search on the least eigenvalue gets stuck.  There is no projection: the
+% left panel is a plane drawing of the twenty 3-subsets of a six-element index
+% set, laid out by exchange distance from the stuck triple, and the right panel
+% is a score axis and three blocks of data.  x = y = 1cm throughout.
+%
+% THE METRIC.  exchangeDistance(C, C') = |C' \ C|, so on k-subsets it is the
+% Johnson distance and one swap changes it by at most one.  From C = {0,1,2}
+% the twenty triples split by |C' \ {0,1,2}| into 1 + 9 + 9 + 1:
+%   distance 0   012
+%   distance 1   013 014 015 023 024 025 123 124 125   (one index from {3,4,5})
+%   distance 2   034 035 045 134 135 145 234 235 245   (two)
+%   distance 3   345
+% Radius two therefore reaches nineteen of the twenty and misses exactly one.
+%
+% LEFT PANEL LAYOUT.  Concentric shells about the origin, drawn as dotted
+% circles of radius 1.85 and 3.05.  Within a shell the nine triples sit at
+% 40-degree intervals starting at 90 degrees, in the orders listed above; a
+% vertex at angle A has coordinates (r cos A, r sin A).  Labels sit on the same
+% ray at radius 2.30 and 3.50, except the two on the vertical, which are pushed
+% right by 0.24 so as to clear the highlighted path.  The dashed rim at radius
+% 3.95 is the ball of radius two; the dominating triple 345 sits outside it at
+% (0, 4.65).  Nine light spokes run from the centre to shell 1, one swap each.
+% The heavy path 012 - 013 - 034 - 345 is a geodesic: 013 \ 012 = {3},
+% 034 \ 013 = {4} and 345 \ 034 = {5}, one swap at each step, and it is the
+% shortest route from the stuck triple to the dominating one.
+%   shell 1, radius 1.85, angles 90 130 170 210 250 290 330 10 50:
+%     ( 0.0000, 1.8500) (-1.1892, 1.4172) (-1.8219, 0.3212) (-1.6021,-0.9250)
+%     (-0.6327,-1.7384) ( 0.6327,-1.7384) ( 1.6021,-0.9250) ( 1.8219, 0.3212)
+%     ( 1.1892, 1.4172)
+%   shell 2, radius 3.05, same angles:
+%     ( 0.0000, 3.0500) (-1.9605, 2.3364) (-3.0037, 0.5296) (-2.6414,-1.5250)
+%     (-1.0432,-2.8661) ( 1.0432,-2.8661) ( 2.6414,-1.5250) ( 3.0037, 0.5296)
+%     ( 1.9605, 2.3364)
+%   labels at radius 2.30, same angles:
+%     ( 0.2400, 2.0600) (-1.4784, 1.7619) (-2.2651, 0.3994) (-1.9919,-1.1500)
+%     (-0.7866,-2.1613) ( 0.7866,-2.1613) ( 1.9919,-1.1500) ( 2.2651, 0.3994)
+%     ( 1.4784, 1.7619)
+%   labels at radius 3.50, same angles:
+%     ( 0.2400, 3.2600) (-2.2498, 2.6812) (-3.4468, 0.6078) (-3.0311,-1.7500)
+%     (-1.1971,-3.2889) ( 1.1971,-3.2889) ( 3.0311,-1.7500) ( 3.4468, 0.6078)
+%     ( 2.2498, 2.6812)
+% The first entry of each label list is the pushed one, set at height 2.06 and
+% 3.26 rather than 2.30 and 3.50 so that it clears its own vertex.
+%
+% THE DESIGN, exactly.  Six atoms in R^3 and six weights:
+%   g_0 = ( 16/25,  16/25, -9/20)     t_0 = t_1 = t_2 = 40000/333372
+%   g_1 = ( -8/25,  16/25,  9/10)     t_3 = t_4 = 74127/333372
+%   g_2 = ( 16/25,  -8/25,  9/10)     t_5 = 65118/333372
+%   g_3 = (2,0,0),  g_4 = (0,2,0),  g_5 = (0,0,2)
+% The weights are the common-denominator form of 10000/83343 (three times),
+% 24709/111124 (twice) and 10853/55562: 83343 x 4 = 111124 x 3 = 55562 x 6
+% = 333372, and 3(40000) + 2(74127) + 65118 = 333372, so they sum to one.
+% Parseval holds over the rationals, sum_c t_c g_c g_c^T = I_3; the leverages
+% are (10217/10000, 661/500, 661/500, 4, 4, 4), every one above 1, so the design
+% is all-heavy and the light-atom reduction is unavailable; and the leverage
+% scores sum to 3 = k.
+%
+% THE TWO SCORES.  The atom sums of the two extreme triples are diagonal:
+%   S_{0,1,2} = diag(576/625, 576/625, 729/400).  The off-diagonal entries
+%     cancel exactly -- in position (0,1), (16/25)(16/25) + (-8/25)(16/25)
+%     + (16/25)(-8/25) = (256 - 128 - 128)/625 = 0, and likewise at (0,2) and
+%     (1,2) -- so lmin = 576/625 = 0.9216 < 1 and the triple fails.
+%   S_{3,4,5} = 4 I_3, so that triple dominates, with margin 3.
+% Every one of the eighteen triples at distance one or two is blocked by a
+% single coordinate probe: lmin(S_C) <= (S_C)_ii for the coordinate i recorded
+% in Lean, and the eighteen values (S_C)_ii are
+%   512/625 at 013 (i=1) and 024 (i=0)                              2 of them
+%   64/125  at 014, 015, 124, 125 (i=0) and 023, 025, 123 (i=1)     7
+%   81/100  at 134 and 234 (i=2)                                    2
+%   256/625 at 045, 245 (i=0) and 035, 135 (i=1)                    4
+%   81/400  at 034 (i=2)                                            1
+%   64/625  at 145 (i=0) and 235 (i=1)                              2
+% all at most 512/625 = 0.8192, and the ceiling is attained twice.  The margin
+% between the stuck score and the ceiling is 576/625 - 512/625 = 64/625.
+%
+% RIGHT PANEL LAYOUT.  The panel is shifted to x = 4.55 and everything below is
+% local to that origin.  Its three hairlines span 0.10 to 7.00; two set lines run
+% past them, the weight vector to 7.04 and the first line of the key to 7.31, and
+% on the other side the rim reaches -3.96, so the plate is
+% 3.96 + 4.55 + 7.31 = 15.82cm wide, inside the 16.20cm text block.  The score
+% axis runs at 19cm per unit, calibrated by ticks at 3/4 and 21/20, so lambda
+% maps to x = 0.10 + 19(lambda - 3/4):
+%   3/4     -> 0.1000      512/625 -> 1.4148      1     -> 4.8500
+%   576/625 -> 3.3604      21/20   -> 5.8000
+% Both ends carry an arrowhead, because neither end of the drawn segment is an
+% end of the scale: the eighteen neighbours are bounded above by 512/625 and
+% their actual scores run off to the left, and the score 4 of the dominating
+% triple is far off to the right.  The hatched region is therefore open on the
+% left, and the value 4 is named in the key rather than plotted.
+%
+% DISCLOSED.  The layout of the left panel asserts the exchange distances and
+% nothing else: no adjacency is drawn except the nine spokes out of the centre
+% and the three steps of the highlighted path, and the ninety edges of the
+% exchange graph are not drawn.  The shell sizes and the multiplicities of the
+% eighteen certificate values are computed here.  What Lean carries is the
+% lower bound 576/625 at the stuck triple, the ceiling 512/625 at every
+% candidate within distance two, domination at 345, all-heaviness, and the
+% refutation that follows from them.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  spoke/.style={line width=0.3pt, black!35},
+  route/.style={line width=1.05pt, black!85},
+  shell/.style={densely dotted, line width=0.3pt, black!25},
+  rim/.style={line width=0.5pt, black!45, dashed,
+              dash pattern=on 2.2pt off 1.6pt},
+  axisline/.style={line width=0.5pt, black!70},
+  hair/.style={line width=0.25pt, black!45},
+  tag/.style={font=\scriptsize, fill=white, inner sep=0.7pt},
+  note/.style={font=\scriptsize, anchor=west, align=left, inner sep=0pt},
+  every node/.style={font=\small}]
+
+% ============================ left panel ==============================
+\path[fill=black!7] (0,0) circle (3.95);
+\draw[rim] (0,0) circle (3.95);
+\draw[shell] (0,0) circle (1.85);
+\draw[shell] (0,0) circle (3.05);
+
+% the nine spokes out of the centre, one swap each
+\foreach \sx/\sy in {0.0000/1.8500, -1.1892/1.4172, -1.8219/0.3212,
+                     -1.6021/-0.9250, -0.6327/-1.7384, 0.6327/-1.7384,
+                     1.6021/-0.9250, 1.8219/0.3212, 1.1892/1.4172}
+  {\draw[spoke] (0,0) -- (\sx,\sy);}
+
+% the geodesic 012 - 013 - 034 - 345
+\draw[route] (0,0) -- (0,4.65);
+
+\foreach \sx/\sy in {0.0000/1.8500, -1.1892/1.4172, -1.8219/0.3212,
+                     -1.6021/-0.9250, -0.6327/-1.7384, 0.6327/-1.7384,
+                     1.6021/-0.9250, 1.8219/0.3212, 1.1892/1.4172,
+                     0.0000/3.0500, -1.9605/2.3364, -3.0037/0.5296,
+                     -2.6414/-1.5250, -1.0432/-2.8661, 1.0432/-2.8661,
+                     2.6414/-1.5250, 3.0037/0.5296, 1.9605/2.3364}
+  {\fill[black!70] (\sx,\sy) circle (1.3pt);}
+
+% shell-1 labels
+\node[tag, anchor=west] at ( 0.2400, 2.0600) {$013$};
+\node[tag] at (-1.4784, 1.7619) {$014$};
+\node[tag] at (-2.2651, 0.3994) {$015$};
+\node[tag] at (-1.9919,-1.1500) {$023$};
+\node[tag] at (-0.7866,-2.1613) {$024$};
+\node[tag] at ( 0.7866,-2.1613) {$025$};
+\node[tag] at ( 1.9919,-1.1500) {$123$};
+\node[tag] at ( 2.2651, 0.3994) {$124$};
+\node[tag] at ( 1.4784, 1.7619) {$125$};
+% shell-2 labels
+\node[tag, anchor=west] at ( 0.2400, 3.2600) {$034$};
+\node[tag] at (-2.2498, 2.6812) {$035$};
+\node[tag] at (-3.4468, 0.6078) {$045$};
+\node[tag] at (-3.0311,-1.7500) {$134$};
+\node[tag] at (-1.1971,-3.2889) {$135$};
+\node[tag] at ( 1.1971,-3.2889) {$145$};
+\node[tag] at ( 3.0311,-1.7500) {$234$};
+\node[tag] at ( 3.4468, 0.6078) {$235$};
+\node[tag] at ( 2.2498, 2.6812) {$245$};
+
+% the two distinguished triples
+\fill[black] (0,0) circle (2.1pt);
+\node[tag, anchor=west] at (0.2800,-0.2600) {$\{0,1,2\}$};
+\draw[line width=0.9pt, fill=white] (0,4.65) circle (2.4pt);
+\node[tag, anchor=west] at (0.3400, 4.6500) {$\{3,4,5\}$};
+
+\node[note, anchor=north, align=center] at (0,-4.22)
+  {shells by exchange distance from $\{0,1,2\}$, of sizes\\
+   $1+9+9+1$: the ball of radius two holds nineteen of the\\
+   twenty triples and misses the one that dominates};
+
+% ============================ right panel =============================
+\begin{scope}[shift={(4.55,0)}]
+
+\node[note] at (0.10, 4.60) {$m=6$, \ $k=3$, \ every leverage above $1$};
+\node[note] at (0.10, 4.16) {$g_0=(16/25,\ 16/25,\ -9/20)$};
+\node[note] at (0.10, 3.82) {$g_1=(-8/25,\ 16/25,\ 9/10)$};
+\node[note] at (0.10, 3.48) {$g_2=(16/25,\ -8/25,\ 9/10)$};
+\node[note] at (0.10, 3.14)
+  {$g_3=(2,0,0)$, \ $g_4=(0,2,0)$, \ $g_5=(0,0,2)$};
+\node[note] at (0.10, 2.72)
+  {$t=(40000,40000,40000,74127,74127,65118)/333372$};
+\node[note] at (0.10, 2.38)
+  {$\ell=(10217/10000,\ 661/500,\ 661/500,\ 4,4,4)$};
+\node[note] at (0.10, 2.04)
+  {$\sum_ct_cg_c^{\vphantom{\mathsf{T}}}g_c\tp=I_3$ and
+   $\sum_ct_c\ell_c=3$, over the rationals};
+
+\draw[hair] (0.10,1.76) -- (7.00,1.76);
+
+\node[note] at (0.10, 1.50) {the score $\lmin(\SC)$};
+
+% ---- the axis, its calibration and its three marks -------------------
+\draw[axisline, {Latex[length=2mm,width=1.5mm]}-{Latex[length=2mm,width=1.5mm]}]
+      (-0.36,0.55) -- (6.30,0.55);
+\path[pattern=north east lines, pattern color=black!55, draw=black!45,
+      line width=0.3pt] (-0.30,0.55) rectangle (1.4148,0.90);
+\draw[line width=1.1pt] (3.3604,0.55) -- (3.3604,0.90);
+\draw[dashed, dash pattern=on 1.7pt off 1.5pt, line width=0.5pt]
+      (4.8500,0.42) -- (4.8500,1.02);
+\node[tag, anchor=south, inner sep=1pt] at (4.8500,1.00) {$1$};
+% the window ends
+\foreach \tx in {0.1000, 5.8000}{\draw[line width=0.5pt] (\tx,0.55)--(\tx,0.47);}
+\node[tag, anchor=north, inner sep=2pt] at (0.1000,0.47) {$\tfrac34$};
+\node[tag, anchor=north, inner sep=2pt] at (5.8000,0.47) {$\tfrac{21}{20}$};
+% the margin between the ceiling and the stuck score
+\draw[line width=0.4pt] (1.4148,0.47) -- (1.4148,0.37) -- (3.3604,0.37)
+                        -- (3.3604,0.47);
+\node[tag, anchor=north, inner sep=2pt] at (2.3876,0.37) {$64/625$};
+
+% ---- the key ---------------------------------------------------------
+\path[pattern=north east lines, pattern color=black!55, draw=black!45,
+      line width=0.3pt] (0.10,-0.40) rectangle (0.44,-0.18);
+\node[note] at (0.62,-0.29)
+  {the eighteen triples within two swaps: $\lambda\le512/625$};
+\draw[line width=1.1pt] (0.27,-0.78) -- (0.27,-0.56);
+\node[note] at (0.62,-0.67) {the stuck triple $\{0,1,2\}$: $\lambda=576/625$};
+\draw[line width=0.9pt, fill=white] (0.27,-1.02) circle (2.4pt);
+\node[note] at (0.62,-1.02)
+  {the dominating triple $\{3,4,5\}$: $\lambda=4$, off scale};
+
+\draw[hair] (0.10,-1.34) -- (7.00,-1.34);
+
+\node[note] at (0.10,-1.60)
+  {Each neighbour is blocked by one coordinate probe:};
+\node[note] at (0.10,-1.92)
+  {$\lmin(\SC)\le(\SC)_{ii}$ at the $i$ recorded in Lean, and};
+\node[note] at (0.10,-2.24)
+  {the eighteen values $(\SC)_{ii}$ are $512/625$ twice,};
+\node[note] at (0.10,-2.56)
+  {$64/125$ seven times, $81/100$ twice, $256/625$ four};
+\node[note] at (0.10,-2.88)
+  {times, $81/400$ once and $64/625$ twice.  The ceiling};
+\node[note] at (0.10,-3.20)
+  {is attained at $013$ in coordinate $1$ and $024$ in $0$.};
+
+\draw[hair] (0.10,-3.52) -- (7.00,-3.52);
+
+\node[note] at (0.10,-3.78)
+  {At $r\ge k=3$ every triple lies within reach and the};
+\node[note] at (0.10,-4.10)
+  {hypothesis is global search; at $r\le2$ it cannot see};
+\node[note] at (0.10,-4.42)
+  {the one triple that dominates.};
+\end{scope}
+
+\end{tikzpicture}

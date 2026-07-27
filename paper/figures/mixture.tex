@@ -1,0 +1,147 @@
+% The mixture at the tetrahedron (4,3): volume sampling, the common spectrum of
+% the four triples, and the average against the maximum.  Two flat panels, no
+% projection; the two scales are
+%   LEFT   measure axis: total mass 1 drawn at 4.20cm, so pi_C = 1/4 is 1.05cm.
+%   RIGHT  eigenvalue axis: one unit at 0.95cm, origin at the panel origin, so
+%          the eigenvalue lam sits at abscissa 0.95 lam; the mixture is drawn at
+%          0.27cm per unit of q about the baseline Y = 1.95, so the point above
+%          lam is (0.95 lam, 1.95 + 0.27 q(lam)).
+% The right panel is shifted by 7.30cm.
+%
+% DESIGN DATA (Example ex:tetra, Appendix app:tetra).  Atoms g_0 = (1,1,1),
+% g_1 = (1,-1,-1), g_2 = (-1,1,-1), g_3 = (-1,-1,1), weights t_c = 1/4.  Then
+% sum_c t_c g_c g_c^T = I_3 over the rationals, ell_c = 3 and s_c = t_c ell_c
+% = 3/4 at every atom, so sum_c s_c = 3 = k.  Write C_j := {0,1,2,3} minus {j}
+% for the four triples.
+%
+% LEFT PANEL, derivation of every entry.  The chart is v_c = g_c/2, so
+% P = (1/4)(4 I_4 - J_4) and P[C] = (1/4)(4 I_3 - J_3), of determinant
+% 16/64 = 1/4; equivalently pi_C = (prod_{c in C} t_c) det Gram_C
+% = (1/64) . 16 = 1/4.  The four blocks of the bar are those four masses and
+% they exhaust it.  Row c hatches the blocks C_j with c in C_j, that is every
+% block but the j = c one, since c lies in C_j exactly when j is not c; the
+% hatched mass is 3/4 = s_c.  Blocks: [0,1.05], [1.05,2.10], [2.10,3.15],
+% [3.15,4.20]; bar Y in [0,0.52]; the four marginal rows of height 0.32 with
+% lower edges at Y = -0.58, -1.06, -1.54, -2.02.
+%
+% RIGHT PANEL, derivation of every entry.  S_{C_j} = 4 I_3 - g_j g_j^T with
+% |g_j|^2 = 3, so spec S_C = {1,4,4} and chi_{S_C}(x) = (x-1)(x-4)^2 at all
+% four triples; the mixture q = E_pi[chi] is that same polynomial because the
+% four coincide and the masses sum to one.  Its critical points are the roots
+% of q' = 3(x-2)(x-4), so q runs from q(0.83) = -1.7083 up to q(2) = 4 and back
+% to q(4) = 0, which is what fixes the plotted domain [0.83, 4.78]: at 0.83 the
+% curve is 0.46cm below its baseline, so its lowest drawn point is Y = 1.49 and
+% the binding clearance is against the average's dots at Y = 1.22, not against
+% the spectrum row below them; and at 4.78 it is 0.62cm above, inside the panel.  Dots: eigenvalue 1 at
+% X = 0.95, the double eigenvalue 4 as a stacked pair at X = 3.80.  The average
+% E_pi[S_C] = sum_c s_c g_c g_c^T = (3/4) . 4 I_3 = 3 I_3 has spectrum {3,3,3},
+% three dots stacked at X = 2.85.  The dashed vertical at X = 0.95 runs from the
+% eigenvalue axis to the baseline because the threshold and the least root of q
+% are the same number.
+%
+% DISCLOSED, mechanized.  chi_{S_C} = (X-1)(X-4)^2 at every triple
+% (Gtz.charpoly_four_smul_sub_tetraAtom, with
+% Gtz.subsetSum_tetraDesign_of_card_three), and the mixture itself,
+% Gtz.mixedCharPoly_tetraDesign, with q(1) = 0, q'(1) = 9 and q''(1) = -12 in
+% Gtz.mixedCharPoly_tetraDesign_taylorAtOne.  The measure is defined there --
+% Gtz.shadowDeterminant IS det P[C] -- and carries total mass one
+% (Gtz.sum_shadowDeterminant_eq_one), which is all the mixture proof consumes,
+% the four characteristic polynomials coinciding.
+%
+% DISCLOSED, not mechanized -- in BOTH panels, and for one reason.  The
+% one-point marginal is a hypothesis there:
+% Gtz.IsProjectionOnePointMarginal is a def, whose own docstring records it as
+% cited standard DPP theory and absent from the repository, and the mechanized
+% form of Theorem thm:average,
+% Gtz.expectedSubsetSum_eq_leverageWeightedAtomSum, carries it as an argument.
+% So the four masses 1/4 and the hatched marginals of the left panel are
+% computed here -- no declaration evaluates det P[C] at this design -- and so is
+% the average's row {3,3,3} on the right, since no declaration evaluates the
+% volume-sampling expectation or the leverage-weighted atom sum at the
+% tetrahedron either.  Both computations are exact rational arithmetic.  Lemma
+% lem:marginal and Theorem thm:average are untagged in the paper.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  block/.style={draw, line width=0.5pt, fill=black!7},
+  hit/.style={draw, line width=0.5pt,
+              pattern=north east lines, pattern color=black!45},
+  miss/.style={draw, line width=0.4pt, black!45},
+  curve/.style={line width=0.9pt, black!85},
+  base/.style={line width=0.4pt, black!45},
+  thresh/.style={dashed, dash pattern=on 1.9pt off 1.6pt, line width=0.55pt,
+                 black!60},
+  lead/.style={densely dotted, line width=0.3pt, black!35},
+  every node/.style={font=\small}]
+
+% ==================== left panel: the measure and its marginals ============
+\begin{scope}
+
+% ---- the four masses, pi_{C_j} = 1/4 each -------------------------------
+\foreach \bx/\lab in {0/0, 1.05/1, 2.10/2, 3.15/3}{%
+  \draw[block] (\bx,0) rectangle (\bx+1.05,0.52);
+  \node[font=\footnotesize] at (\bx+0.525,0.26) {$C_{\lab}$};}
+\node[anchor=south, font=\footnotesize] at (2.10,0.62)
+  {$\pi_{C_j}=\det P[C_j]=\tfrac14$};
+
+% ---- the marginal of each atom: the blocks that contain it ---------------
+% row c leaves the block j = c empty and hatches the other three
+\foreach \rowc/\ylo in {0/-0.58, 1/-1.06, 2/-1.54, 3/-2.02}{%
+  \foreach \bcol/\bx in {0/0, 1/1.05, 2/2.10, 3/3.15}{%
+    \ifnum\bcol=\rowc
+      \draw[miss] (\bx,\ylo) rectangle (\bx+1.05,\ylo+0.32);
+    \else
+      \draw[hit]  (\bx,\ylo) rectangle (\bx+1.05,\ylo+0.32);
+    \fi}
+  \node[anchor=east, font=\footnotesize] at (-0.10,\ylo+0.16) {$c=\rowc$};
+  \node[anchor=west, font=\footnotesize] at ( 4.30,\ylo+0.16)
+    {$s_{\rowc}=\tfrac34$};}
+
+\node[anchor=north west, align=left, font=\footnotesize, inner sep=0pt]
+  at (-0.85,-2.34)
+  {$\pi_C=\bigl(\prod_{c\in C}t_c\bigr)\det\Gram_C
+    =\tfrac1{64}\cdot16$, \quad $C_j:=\{0,1,2,3\}\setminus\{j\}$\\[3pt]
+   row $c$ misses the one triple that omits $c$: \ $\sum_c s_c=3=k$};
+\end{scope}
+
+% ============ right panel: the spectra, the average, the mixture ==========
+\begin{scope}[shift={(7.30,0)}]
+
+% ---- the mixture q(x) = (x-1)(x-4)^2 over its own baseline ---------------
+\draw[base] (-0.08,1.95) -- (4.95,1.95);
+\draw[curve] plot[domain=0.83:4.78, samples=97, smooth, variable=\ev]
+  ({0.95*\ev}, {1.95+0.27*(\ev-1)*(\ev-4)*(\ev-4)});
+\draw[line width=0.4pt, fill=white] (0.95,1.95) circle (1.4pt);   % simple root 1
+\draw[line width=0.4pt, fill=white] (3.80,1.95) circle (1.4pt);   % double root 4
+\node[anchor=south, font=\footnotesize] at (1.90,3.03) {$q$};
+\node[anchor=west,  font=\footnotesize] at (4.99,1.95) {$q=0$};
+
+% ---- the eigenvalue axis -------------------------------------------------
+\draw[line width=0.5pt, black!70] (-0.10,0) -- (4.95,0);
+\foreach \lev in {0,1,2,3,4,5}{%
+  \pgfmathsetmacro{\xx}{0.95*\lev}
+  \draw[line width=0.5pt] (\xx,0) -- (\xx,-0.07);
+  \node[anchor=north, font=\footnotesize, inner sep=2pt] at (\xx,-0.07) {\lev};}
+\draw[thresh] (0.95,0) -- (0.95,1.95);
+
+% ---- spec E_pi[S_C] = {3,3,3} -------------------------------------------
+\draw[lead] (-0.18,1.06) -- (2.72,1.06);
+\fill[black!55] (2.85,0.90) circle (1.7pt);
+\fill[black!55] (2.85,1.06) circle (1.7pt);
+\fill[black!55] (2.85,1.22) circle (1.7pt);
+\node[anchor=east, font=\footnotesize] at (-0.22,1.06) {$\E_\pi[\SC]$};
+
+% ---- spec S_C = {1,4,4}, the same at all four triples --------------------
+\draw[lead] (-0.18,0.46) -- (0.82,0.46);
+\fill[black] (0.95,0.46) circle (1.7pt);
+\fill[black] (3.80,0.38) circle (1.7pt);
+\fill[black] (3.80,0.54) circle (1.7pt);
+\node[anchor=east, font=\footnotesize] at (-0.22,0.46) {each $\SC$};
+
+\node[anchor=north west, align=left, font=\footnotesize, inner sep=0pt]
+  at (-1.32,-0.52)
+  {$q(x)=x^{3}-9x^{2}+24x-16$\\[3pt]
+   $[x^{2}]q=-\sum_ct_c\ell_c^{2}=-9=-k^{2}$\\[3pt]
+   $\E_\pi[\SC]=3I_3$ \ while \ $\max_C\lmin(\SC)=1$};
+\end{scope}
+
+\end{tikzpicture}

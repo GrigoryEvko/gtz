@@ -1,0 +1,168 @@
+% The certificate of the diamond at (5,3): the star's two squares as planes,
+% and the two circuits as cuts.
+%
+% DESIGN DATA (Example ex:diamond, Appendix app:diamond).  The graph is K_4 with
+% the edge 34 deleted, grounded at the vertex 4, with edges e_0 = 12, e_1 = 13,
+% e_2 = 14, e_3 = 23, e_4 = 24, conductances c = (2,3,3,3,3) and weights
+% t_e = 1/5.  The reduced Laplacian is L = [[8,-2,-3],[-2,8,-3],[-3,-3,6]] with
+% leading principal minors 8, 60, 180, so L is positive definite; the leverages
+% are ell_0 = 2 and ell_e = 13/4 for the four rim edges, and
+% sum_e t_e ell_e = (2 + 4.13/4)/5 = 3 = k over the rationals.
+%
+% LEFT PANEL.  For C = {e_0,e_1,e_2}, the star at the vertex 1, the gap form in
+% the potential y is 2 Q_C(y) = (8y_1 - 2y_2 - 3y_3)^2 + 9y_3^2, so Q_C
+% vanishes exactly where both linear forms do: on the intersection of the plane
+% 8y_1 - 2y_2 - 3y_3 = 0 with the plane y_3 = 0.  Solving the pair leaves
+% 8y_1 = 2y_2 and y_3 = 0, the line R(1,4,0).  Congruence preserves inertia, so
+% Q_C positive semidefinite of rank two says S_C - I_3 is too.
+%
+% Orthographic projection of R^3 with azimuth 25 and elevation 22 degrees,
+% scaled by 0.40cm:
+%   X = 0.40(-0.42261826 y_1 + 0.90630779 y_2)
+%   Y = 0.40(-0.33950887 y_1 - 0.15831559 y_2 + 0.92718385 y_3)
+% The viewing normal is e = (0.8403139, 0.3918448, 0.3746066), the cross product
+% of the two rows.  Each plane is drawn as a parallelogram through the origin,
+% split by the common line into the half on the viewer's side of the OTHER plane,
+% drawn solid and filled, and the half on the far side, drawn dashed; the two
+% halves are the sign halves of the transverse parameter, since the transverse
+% directions have e-components +0.7202 and -0.5983 respectively.  The two solid
+% halves never overlap in projection: a viewing ray meeting both planes crosses
+% them on opposite sides of the line.
+%
+% Frame.  Along the line, u = (1,4,0)/sqrt17 = (0.2425356, 0.9701425, 0), with
+% P(u) = (0.7767477, -0.2359317).  Transverse in y_3 = 0 and orthogonal to u,
+% w = (4,-1,0)/sqrt17 = (0.9701425, -0.2425356, 0), P(w) = (-0.6298119,
+% -0.2909748).  Transverse in 8y_1-2y_2-3y_3 = 0 and orthogonal to u,
+% v = u x (8,-2,-3) normalized = (-12,3,-34)/sqrt1309 = (-0.3316740, 0.0829185,
+% -0.9397430), P(v) = (0.2153212, -0.7718356); <u,w> = <u,v> = 0 and
+% <(8,-2,-3),v> = 0 to fifteen places.  Scaled by 0.40 these give the three
+% patch vectors A.P(u) = (1.5535,-0.4719), B.P(w) = (-0.8062,-0.3724),
+% B.P(v) = (0.2756,-0.9879) at half-length A = 5.0 along the line and half-width
+% B = 3.2 across it.  A = 5.0 is the smallest round choice that puts the witness
+% inside the patch, since |(1,4,0)| = sqrt17 = 4.1231; the line itself is drawn
+% to +-5.6 u so that it leaves both patches.
+%
+% RIGHT PANEL.  The two circuits, {e_0,e_1,e_3} on the vertices 1,2,3 and
+% {e_0,e_2,e_4} on the vertices 1,2,4.  A potential constant on the circuit's
+% vertex set kills the three selected drops, so Q_C is minus the Dirichlet
+% contribution of the two edges leaving that set; each of the two carries
+% conductance 3 and a drop of modulus 1, whence Q_C = -6.  The vertex layout is
+% that of figures/diamond.tex scaled by 0.62 -- v1 (-0.651,0), v2 (0.651,0),
+% v3 (0,0.713), v4 (0,-0.713) -- so the three drawings are registered; the two
+% copies are centred at X = 5.70 and X = 8.70 and lifted by 0.55, and the line
+% below them is centred on their midpoint 7.20.  That midpoint is what fixes
+% the horizontal separation.  The left block is set from X = -2.40 and its four
+% lines run 162.5, 144.6, 138.7 and 176.0pt; the right block is centred and its
+% three run 148.0, 192.8 and 210.4pt.  Both start at Y = -1.80 with the same
+% leading, so line faces line, at gaps of 1.29, 1.13 and 1.03cm -- closest on
+% the third.  The left block's fourth line is its widest and overhangs the right
+% block's left edge by 0.28cm, clearing it by sitting below its last line.
+%
+% DISCLOSED: the development proves that the star dominates, by the sum of
+% squares above, and that no three-subset dominates strictly
+% (Gtz.diamondDesign_dominates_spine, Gtz.diamondDesign_no_strictDominator).  It
+% does NOT carry the values of Q_C, and the count in the bottom line -- that all
+% eight spanning trees dominate, each with a one-dimensional kernel, and that the
+% eight null lines are pairwise distinct -- is computed here in exact rational
+% arithmetic.  Example ex:diamond needs only one dominating subset and the ten
+% nonpositive values.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  face/.style={line width=0.5pt, black!70, fill=black!12},
+  hatch/.style={line width=0.5pt, black!70, fill=white,
+                postaction={pattern=north east lines, pattern color=black!35}},
+  hidden/.style={line width=0.45pt, black!45, dashed,
+                 dash pattern=on 1.4pt off 1.2pt},
+  nullline/.style={line width=1.1pt, black!85},
+  lead/.style={line width=0.4pt, black!45},
+  tag/.style={font=\footnotesize, fill=white, inner sep=1pt},
+  ver/.style={circle, draw, line width=0.5pt, fill=white, inner sep=0pt,
+              minimum size=4.0mm, font=\scriptsize},
+  sel/.style={line width=0.6pt, black!70},
+  cut/.style={line width=1.1pt},
+  every node/.style={font=\small}]
+
+% ============ left panel: the two squares, as planes =======================
+\begin{scope}
+
+% ---- far halves: outlines only -------------------------------------------
+\draw[hidden] ( 1.5535,-0.4719)--( 1.8291,-1.4598)      % +A u + B v
+              --(-1.2779,-0.5161)--(-1.5535, 0.4719)--cycle;
+\draw[hidden] ( 1.5535,-0.4719)--( 2.3597,-0.0994)      % +A u - B w
+              --(-0.7473, 0.8443)--(-1.5535, 0.4719)--cycle;
+
+% ---- near halves: y_3 = 0 shaded, 8y_1-2y_2-3y_3 = 0 hatched -------------
+\draw[face]  ( 1.5535,-0.4719)--( 0.7473,-0.8443)       % +A u + B w
+             --(-2.3597, 0.0994)--(-1.5535, 0.4719)--cycle;
+\draw[hatch] ( 1.5535,-0.4719)--( 1.2779, 0.5161)       % +A u - B v
+             --(-1.8291, 1.4598)--(-1.5535, 0.4719)--cycle;
+
+% ---- the common line, and the witness on it ------------------------------
+\draw[nullline] (-1.7399, 0.5285)--( 1.7399,-0.5285);   % +-5.6 u
+\fill ( 1.2810,-0.3891) circle (1.5pt);                 % (1,4,0) = sqrt17 u
+\node[tag, anchor=south] at ( 1.2810,-0.3300) {$(1,4,0)$};
+\node[anchor=west, font=\footnotesize] at ( 1.8600,-0.6000) {$Q_C=0$};
+
+% ---- the two planes, named by their equations ----------------------------
+\node[tag] at (-1.1756,-0.0673) {$y_3=0$};              % alpha = -2.0, beta = 2.2
+\draw[lead] (-0.6000, 1.5000)--(-1.0500, 1.0000);
+\node[anchor=south, font=\footnotesize] at (-0.6000, 1.5400)
+  {$8y_1-2y_2-3y_3=0$};
+
+\node[anchor=north west, align=left, font=\footnotesize, inner sep=0pt]
+  at (-2.4000,-1.8000)
+  {$C=\{e_0,e_1,e_2\}$, the star at the vertex $1$\\[3pt]
+   $2\,Q_C(y)=(8y_1-2y_2-3y_3)^{2}+9y_3^{2}$\\[3pt]
+   at $y=(1,4,0)$: \ $d=(-3,1,1,4,4)$\\[3pt]
+   \hphantom{at $y=(1,4,0)$: \ }$72+12+12-48-48=0$};
+\end{scope}
+
+% ============ right panel: the two circuits, as cuts ======================
+% ---- the circuit on the vertices 1, 2, 3 --------------------------------
+\begin{scope}[shift={(5.70,0.55)}]
+  \coordinate (a1) at (-0.651, 0);
+  \coordinate (a2) at ( 0.651, 0);
+  \coordinate (a3) at ( 0, 0.713);
+  \coordinate (a4) at ( 0,-0.713);
+  \path[fill=black!12] (a1)--(a2)--(a3)--cycle;
+  \draw[sel] (a1)--(a2) (a1)--(a3) (a2)--(a3);
+  \draw[cut] (a1)--(a4) (a2)--(a4);
+  \node[ver] at (a1) {$1$};
+  \node[ver] at (a2) {$2$};
+  \node[ver] at (a3) {$3$};
+  \node[ver] at (a4) {$4$};
+  \draw[line width=0.5pt] (0,-0.90)--(0,-1.04);
+  \draw[line width=0.7pt] (-0.20,-1.04)--(0.20,-1.04);
+  \draw[line width=0.5pt] (-0.11,-1.13)--(0.11,-1.13);
+  \node[tag, anchor=south] at (0,0.96) {$y\equiv1$};
+  \node[anchor=north, font=\footnotesize] at (0,-1.34) {$\{e_0,e_1,e_3\}$};
+\end{scope}
+
+% ---- the circuit on the vertices 1, 2, 4 --------------------------------
+\begin{scope}[shift={(8.70,0.55)}]
+  \coordinate (b1) at (-0.651, 0);
+  \coordinate (b2) at ( 0.651, 0);
+  \coordinate (b3) at ( 0, 0.713);
+  \coordinate (b4) at ( 0,-0.713);
+  \path[fill=black!12] (b1)--(b2)--(b4)--cycle;
+  \draw[sel] (b1)--(b2) (b1)--(b4) (b2)--(b4);
+  \draw[cut] (b1)--(b3) (b2)--(b3);
+  \node[ver] at (b1) {$1$};
+  \node[ver] at (b2) {$2$};
+  \node[ver] at (b3) {$3$};
+  \node[ver] at (b4) {$4$};
+  \draw[line width=0.5pt] (0,-0.90)--(0,-1.04);
+  \draw[line width=0.7pt] (-0.20,-1.04)--(0.20,-1.04);
+  \draw[line width=0.5pt] (-0.11,-1.13)--(0.11,-1.13);
+  \draw[lead] (-0.82,-0.30)--(-0.30,-0.26);
+  \node[tag, anchor=east] at (-0.86,-0.30) {$y\equiv0$};
+  \node[tag, anchor=south] at (0,0.96) {$y_3=1$};
+  \node[anchor=north, font=\footnotesize] at (0,-1.34) {$\{e_0,e_2,e_4\}$};
+\end{scope}
+
+\node[anchor=north, align=center, font=\footnotesize] at (7.20,-1.80)
+  {$Q_C=-(3\cdot1^{2}+3\cdot1^{2})=-6$ at each\\[3pt]
+   ten $3$-subsets: eight spanning trees, two circuits\\[3pt]
+   each tree has $Q_C\psd0$ and singular, so $\lmin(\SC)=1$};
+
+\end{tikzpicture}

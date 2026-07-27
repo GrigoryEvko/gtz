@@ -118,6 +118,70 @@ matrix killing a spanning set is zero.  Write $\mathcal{O}\subseteq \tang$
 for the resulting subspace, of dimension $\tfrac12k(k-1)$.  The
 objective \eqref{eq:designobjective} is constant along $\mathcal{O}$.
 
+\subsection{The tetrahedron}\label{sec:tetracalib}
+
+A local minimum of $F$ ties the vectors to the weights through a system in
+an index set $A$, $k$-subsets $C_i$ ($i\in A$), multipliers
+$\lambda_i\ge0$ summing to one, unit vectors $u_i$ with
+$S_{C_i}u_i=\cv u_i$ at the value $\cv=F(g,t)$, a symmetric matrix
+$\Lambda$ and a scalar $\mu$:
+\begin{align}
+  \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle\,u_i
+    &\;=\;t_c\,\Lambda g_c &&(1\le c\le m), \label{eq:statg}\\
+  g_c\tp\Lambda\,g_c &\;=\;\mu &&(1\le c\le m). \label{eq:statt}
+\end{align}
+Every constant in the system can be displayed at the tetrahedron of
+Example~\ref{ex:tetra}.
+
+\begin{example}\label{ex:tetrakkt}
+Take the tetrahedron: $g_c=\sqrt3\,u_c$ with $u_c$ the four unit vertex
+vectors, $t_c=\tfrac14$, so that $\ell_c=3$ and
+$\langle g_i,g_j\rangle=-1$ for $i\ne j$.  There are four triples, each
+the complement of one index; for $C=\{0,1,2,3\}\setminus\{c_0\}$ one has
+$\SC=4I_3-g_{c_0}^{\vphantom{\mathsf{T}}}g_{c_0}\tp$, with spectrum $\{1,4,4\}$.
+Take
+\[
+  A=\{0,1,2,3\},\qquad C_i=\{0,1,2,3\}\setminus\{i\},\qquad
+  \lambda_i=\tfrac14,\qquad
+  u_i=\tfrac{1}{\sqrt3}\,g_i,\qquad \cv=1 ,
+\]
+and for the multiplier
+\[
+  \Lambda\;:=\;\tfrac1{12}\sum_ig_i^{\vphantom{\mathsf{T}}}g_i\tp
+  \;=\;\tfrac1{12}\cdot4I_3\;=\;\tfrac13I_3 ,
+\]
+using $\sum_ig_i^{\vphantom{\mathsf{T}}}g_i\tp=4I_3$, which is
+\eqref{eq:parseval} at $t_i=\tfrac14$.
+
+The multipliers are nonnegative and sum to one.  Each $u_i$ is a unit
+vector, and it is the tight eigenvector:
+$\langle g_i,u_i\rangle=3/\sqrt3=\sqrt3$, so
+$S_{C_i}u_i=4u_i-\sqrt3\,g_i=4u_i-3u_i=u_i$, the eigenvalue being
+$\cv=1$.  Condition \eqref{eq:statt} holds with $\mu=1$, since
+$g_c\tp\Lambda g_c=\ell_c/3=1$ at every index.  For \eqref{eq:statg}, the
+triples containing $c$ are the three with $i\ne c$, and for those
+$\langle u_i,g_c\rangle=\langle g_i,g_c\rangle/\sqrt3=-1/\sqrt3$, so,
+using $\sum_ig_i=0$,
+\[
+  \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle u_i
+  \;=\;\sum_{i\ne c}\tfrac14\Bigl(-\tfrac1{\sqrt3}\Bigr)
+       \tfrac{g_i}{\sqrt3}
+  \;=\;-\tfrac1{12}\sum_{i\ne c}g_i
+  \;=\;\tfrac{g_c}{12}
+  \;=\;\tfrac14\cdot\tfrac13\,g_c
+  \;=\;t_c\Lambda g_c .
+\]
+Pairing that identity with $g_c$ replaces each $u_i$ by
+$\langle u_i,g_c\rangle=-1/\sqrt3$ and leaves
+$3\cdot\tfrac14\cdot\tfrac13=\tfrac14$, which is $t_c\cv$.  The scalar
+$\mu$ of \eqref{eq:statt}, the eigenvalue $\cv$ and $\tr\Lambda$ are all
+$1$ here.
+\end{example}
+
+By Theorem~\ref{thm:corankone}(ii) every design at $(4,3)$ has $F\ge1$,
+and $F=1$ at the tetrahedron, so the datum sits at a minimum.
+Theorem~\ref{thm:firstorder} produces one at every local minimum of $F$.
+
 \subsection{The first-order system}\label{sec:kkt}
 
 The objective is a maximum of finitely many least-eigenvalue functions of
@@ -183,13 +247,8 @@ designs.  Put $\cv:=F(g,t)$ and
 $\mathcal{A}:=\{C:\lvert C\rvert=k,\ \lmin(\SC)=\cv\}$.  Then there are a
 finite index set $A$, subsets $C_i\in\mathcal{A}$, reals $\lambda_i\ge0$
 with $\sum_{i\in A}\lambda_i=1$, unit vectors $u_i$ with
-$S_{C_i}u_i=\cv u_i$, a symmetric matrix $\Lambda$ and a scalar $\mu$ such
-that
-\begin{align}
-  \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle\,u_i
-    &\;=\;t_c\,\Lambda g_c &&(1\le c\le m), \label{eq:statg}\\
-  g_c\tp\Lambda\,g_c &\;=\;\mu &&(1\le c\le m). \label{eq:statt}
-\end{align}
+$S_{C_i}u_i=\cv u_i$, a symmetric matrix $\Lambda$ and a scalar $\mu$
+satisfying \eqref{eq:statg} and \eqref{eq:statt}.
 \end{theorem}
 
 \begin{proof}
@@ -263,6 +322,28 @@ $\Theta\SC=\cv\Theta=\SC\Theta$, so
   =2\tr\bigl(\Theta X\SC\bigr)=2\cv\,\tr(\Theta X)=0,
 \end{equation}
 because $\Theta$ is symmetric and $X$ antisymmetric.
+Figure~\ref{fig:kktassembly} assembles the five rules and marks where the
+development begins.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/kktassembly}
+  \caption{The assembly of \eqref{eq:statg}--\eqref{eq:statt}.  Left: the
+  passage from a local minimum of $F$ to the system in five steps, each arrow
+  labelled by the rules that license it; the last carries no label, being the
+  comparison of coefficients.  Right: the rules.  Two give inclusions rather
+  than equalities, (2) and (3), for one reason: $\lmin$ is concave and so not
+  Clarke regular where the least eigenvalue is multiple.  Both inclusions run
+  the direction a necessary condition needs.  The infinitesimal rotations
+  \eqref{eq:orbit} impose nothing by \eqref{eq:rotationkill}, so the
+  combination in (2) takes place in a space of dimension $mk+m-k^{2}-1$, which
+  is $14$ at $(6,3)$ and $18$ at $(7,3)$ and is where the bound
+  \eqref{eq:carath} comes from.  Nothing above the rule is formal:
+  \S\ref{sec:boundaries} carries the whole passage as one of three steps taken
+  on trust, and the ambient library has no Clarke calculus and no
+  $\partial\lmin$.}
+  \label{fig:kktassembly}
+\end{figure}
 
 \subsection{Stationarity data}\label{sec:data}
 
@@ -292,6 +373,9 @@ as a set of subsets rather than as a set of indices.  Indices with
 $\lambda_i=0$ may be discarded: dropping them changes neither
 \eqref{eq:statg} nor \eqref{eq:statt}, neither $\Lambda$ nor $A^{+}$, so
 one may assume $\{C_i:i\in A\}=A^{+}$.
+
+The tetrahedron datum of Example~\ref{ex:tetrakkt} is admissible: every
+triple there has $\lmin(\SC)=1$, so $F=1=\cv$.
 
 Definition~\ref{def:datum} asks only that $\cv$ be \emph{an} eigenvalue of
 each $S_{C_i}$.  It does not ask that $\cv=\lmin(S_{C_i})$, and it does not
@@ -360,9 +444,9 @@ For \eqref{eq:multiplier}, fix $x\in\R^k$ and resolve it through
 \end{align*}
 the last step by symmetry of $S_{C_i}$ together with
 $S_{C_i}u_i=\cv u_i$.  A matrix is determined by its action, which is
-\eqref{eq:multiplier}.  Finally
-$\cv=u_i\tp S_{C_i}u_i=\sum_{c\in C_i}\langle g_c,u_i\rangle^2\ge0$ for any
-$i$, and \eqref{eq:multiplier} then exhibits $\Lambda$ as a nonnegative
+\eqref{eq:multiplier}.  Finally $A$ is nonempty, since $\sum_i\lambda_i=1$,
+and $\cv=u_i\tp S_{C_i}u_i=\sum_{c\in C_i}\langle g_c,u_i\rangle^2\ge0$ for
+any $i\in A$; \eqref{eq:multiplier} then exhibits $\Lambda$ as a nonnegative
 multiple of a convex combination of rank-one projectors, so
 $\Lambda\psd0$ and $\tr\Lambda=\cv\sum_i\lambda_i=\cv$.
 \end{proof}
@@ -371,13 +455,21 @@ The coverage law \eqref{eq:coverage} is the contraction
 \eqref{eq:contract} rewritten by the quadric law, and the quadric law is
 that same contraction summed over $c$.  The two are therefore not
 independent constraints, and no count of the equations of the system may
-treat them as such: the content of a stationarity datum is exactly
-\eqref{eq:statg} and \eqref{eq:statt}.  Symmetry of $\Lambda$ is not part
-of that content either: nothing in the proof above uses it, and
-\eqref{eq:multiplier} produces it, so Definition~\ref{def:datum} asks for a
-property it would have granted.  The formal development drops the
-hypothesis and derives symmetry with the rest.  Figure~\ref{fig:quadric}
-draws the quadric at $(6,3)$.
+treat them as such.
+
+The content of a stationarity datum is exactly \eqref{eq:statg} and
+\eqref{eq:statt}.
+
+Symmetry of $\Lambda$ is not part of that content either: nothing in the
+proof above uses it, and \eqref{eq:multiplier} produces it, so
+Definition~\ref{def:datum} asks for a property it would have granted.  The
+formal development drops the hypothesis and derives symmetry with the
+rest.  Figure~\ref{fig:quadric} draws the quadric at $(6,3)$.
+
+At the tetrahedron of Example~\ref{ex:tetrakkt} the multiplier was chosen
+by hand, and \eqref{eq:multiplier} returns that choice:
+$\cv\sum_i\lambda_i\,u_i^{\vphantom{\mathsf{T}}}u_i\tp
+=\tfrac14\cdot\tfrac13\sum_ig_i^{\vphantom{\mathsf{T}}}g_i\tp=\tfrac13I_3$.
 
 \begin{figure}[ht]
   \centering
@@ -428,15 +520,20 @@ $\langle u_i,g_c\rangle^2\le\ell_c$; substituting in
 
 (ii) The sum in \eqref{eq:coverage} is a subsum of the sum in
 \eqref{eq:overlapone} with nonnegative terms, so $t_c\cv\le1$.  Summing
-over $c$ against $\sum_ct_c=1$ gives $\cv\le m$.
+over $c$ against $\sum_ct_c=1$ gives $\cv\le m$, the right side being $1$
+at each of the $m$ indices.
 
-(iii) Sum \eqref{eq:overlapone} over the $k$ vectors of $C$ and use
+(iii) Sum \eqref{eq:overlapone} over the $k$ vectors of $C$, exchange the
+two summations as in Proposition~\ref{prop:quadric}, and use
 \eqref{eq:polarized}: $\sum_i\lambda_i\,u_i\tp\SC u_i=k$.  A convex
 combination does not exceed its largest term.
 
-(iv) By \eqref{eq:coverage} the sum at $c$ equals $t_c\cv\ne0$, so one of
-its terms is nonzero, and that forces $\lambda_i>0$, $c\in C_i$ and
-$\langle u_i,g_c\rangle\ne0$ for the corresponding $i$.
+(iv) The sum in \eqref{eq:coverage} runs over $\{i:c\in C_i\}$, and its
+value $t_c\cv$ is nonzero because $t_c>0$ at a design and $\cv\ne0$.  Some
+term is therefore nonzero.  Membership $c\in C_i$ is the range of the
+summation and comes free; the term itself is
+$\lambda_i\langle u_i,g_c\rangle^2$, so its nonvanishing forces
+$\lambda_i>0$ and $\langle u_i,g_c\rangle\ne0$.
 \end{proof}
 
 Part (iii) names a unit vector; it implies $\lmax(\SC)\ge k$ for every
@@ -445,6 +542,19 @@ vector of a stationary design is heavy in the weak sense; the strict
 inequality $\ell_c>1$ would require
 excluding equality in Cauchy--Schwarz at every positively weighted index
 simultaneously, and is not available.
+
+At the tetrahedron of Example~\ref{ex:tetrakkt} the bounds read
+$\ell_c=3\ge1$, $t_c\cv=\tfrac14\le1$ and $\cv=1\le4=m$, and
+\eqref{eq:overlapone} restores the index $i=c$ that \eqref{eq:coverage}
+omits, for which $\langle u_c,g_c\rangle^2=3$: indeed
+$\tfrac14+\tfrac14\cdot3=1$.  Part (iii) is not realized at the tight
+index of the subset itself, since $u_i\tp S_{C_i}u_i=\cv=1<3$; it is
+realized at any other index, for which
+\[
+  u_j\tp S_{C_i}u_j=4-\langle g_i,u_j\rangle^2
+   =4-\tfrac{\langle g_i,g_j\rangle^2}{3}=4-\tfrac13=\tfrac{11}3\;\ge\;3
+   \qquad(j\ne i).
+\]
 
 Subtracting the two sums leaves the quantity on which the exclusions of
 \S\ref{sec:exclusions} act.
@@ -468,7 +578,8 @@ vanishes exactly when each term does.
 \end{proof}
 
 Part (ii) of Lemma~\ref{lem:overlap} is the nonnegativity of the defect.
-A vanishing defect says $t_c\cv=1$, and $t_c\le1$ then forces $\cv\ge1$.
+A vanishing defect says $t_c\cv=1$, and $t_c\le1$ then forces $\cv\ge1$;
+call this the \emph{defect floor}.
 
 Summing \eqref{eq:defect} over $c$ against $\sum_ct_c=1$ sharpens the
 bound $\cv\le m$ of that same part into an identity, the total defect
@@ -478,77 +589,10 @@ being
   \;=\;m-\cv .
 \end{equation}
 
-\subsection{The tetrahedron}\label{sec:tetracalib}
-
-Every constant in the system can be displayed at the tetrahedron of
-Example~\ref{ex:tetra}.
-
-\begin{example}\label{ex:tetrakkt}
-Take the tetrahedron: $g_c=\sqrt3\,u_c$ with $u_c$ the four unit vertex
-vectors, $t_c=\tfrac14$, so that $\ell_c=3$ and
-$\langle g_i,g_j\rangle=-1$ for $i\ne j$.  There are four triples, each
-the complement of one index; for $C=\{0,1,2,3\}\setminus\{c_0\}$ one has
-$\SC=4I_3-g_{c_0}^{\vphantom{\mathsf{T}}}g_{c_0}\tp$, with spectrum $\{1,4,4\}$.
-Take
-\[
-  A=\{0,1,2,3\},\qquad C_i=\{0,1,2,3\}\setminus\{i\},\qquad
-  \lambda_i=\tfrac14,\qquad
-  u_i=\tfrac{1}{\sqrt3}\,g_i,\qquad \cv=1 .
-\]
-Each $u_i$ is a unit vector, and it is the tight eigenvector:
-$\langle g_i,u_i\rangle=3/\sqrt3=\sqrt3$, so
-$S_{C_i}u_i=4u_i-\sqrt3\,g_i=4u_i-3u_i=u_i$, the eigenvalue being
-$\cv=1$.  The multiplier predicted by \eqref{eq:multiplier} is
-\[
-  \Lambda\;=\;1\cdot\sum_{i}\tfrac14\cdot\tfrac13\,
-    g_i^{\vphantom{\mathsf{T}}}g_i\tp
-  \;=\;\tfrac1{12}\sum_ig_i^{\vphantom{\mathsf{T}}}g_i\tp
-  \;=\;\tfrac1{12}\cdot4I_3\;=\;\tfrac13I_3 ,
-\]
-using $\sum_ig_i^{\vphantom{\mathsf{T}}}g_i\tp=4I_3$, which is
-\eqref{eq:parseval} at $t_i=\tfrac14$.  Then $\tr\Lambda=1=\cv$, as
-Proposition~\ref{prop:quadric} requires, and the quadric law
-\eqref{eq:quadric} reads $g_c\tp\Lambda g_c=\ell_c/3=1=\cv$.
-
-For the coverage law, the triples containing $c$ are the three with
-$i\ne c$, and for those
-$\langle u_i,g_c\rangle=\langle g_i,g_c\rangle/\sqrt3=-1/\sqrt3$, so
-\[
-  \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle^2
-  \;=\;3\cdot\tfrac14\cdot\tfrac13\;=\;\tfrac14\;=\;t_c\cv .
-\]
-Identity \eqref{eq:overlapone} restores the missing index $i=c$, for
-which $\langle u_c,g_c\rangle^2=3$, and indeed
-$\tfrac14+\tfrac14\cdot3=1$.  For \eqref{eq:statg} itself, using
-$\sum_ig_i=0$,
-\[
-  \sum_{i\,:\,c\in C_i}\lambda_i\langle u_i,g_c\rangle u_i
-  \;=\;\sum_{i\ne c}\tfrac14\Bigl(-\tfrac1{\sqrt3}\Bigr)
-       \tfrac{g_i}{\sqrt3}
-  \;=\;-\tfrac1{12}\sum_{i\ne c}g_i
-  \;=\;\tfrac{g_c}{12}
-  \;=\;\tfrac14\cdot\tfrac13\,g_c
-  \;=\;t_c\Lambda g_c .
-\]
-The datum is admissible: every triple has $\lmin=1$, so $F=1=\cv$.  The
-bounds of Lemma~\ref{lem:overlap} read $\ell_c=3\ge1$,
-$t_c\cv=\tfrac14\le1$ and $\cv=1\le4=m$.  Part (iii) of that lemma is not
-realized at the tight index of the subset itself, since
-$u_i\tp S_{C_i}u_i=\cv=1<3$; it is realized at any other index, for which
-\[
-  u_j\tp S_{C_i}u_j=4-\langle g_i,u_j\rangle^2
-   =4-\tfrac{\langle g_i,g_j\rangle^2}{3}=4-\tfrac13=\tfrac{11}3\;\ge\;3
-   \qquad(j\ne i).
-\]
-\end{example}
-
 \subsection{Exclusions}\label{sec:exclusions}
 
-Two of the four exclusions below drive the defect \eqref{eq:defect} to
-zero, one at a single index and one at every index; the other two run on
-the multiplier \eqref{eq:multiplier} and on a count of the active family.
-Each is a statement about the datum alone, and admissibility is nowhere
-used.
+Each exclusion below is a statement about the datum alone, and
+admissibility is nowhere used.
 
 \begin{proposition}[Lean]\label{prop:e1}
 Let a stationarity datum with $\cv\ne0$ have $\Lambda=a\,ww\tp$ for
@@ -557,7 +601,8 @@ $\Lambda\psd0$, this covers every datum with $\rk\Lambda\le1$.
 \end{proposition}
 
 \begin{proof}
-Taking traces in \eqref{eq:multiplier} gives $a=\tr\Lambda=\cv$.
+Taking traces in \eqref{eq:multiplier} gives $\tr\Lambda=\cv$, while
+$\tr(a\,ww\tp)=a\lVert w\rVert^2=a$, so $a=\cv$.
 Evaluating \eqref{eq:multiplier} as a quadratic form at an arbitrary $x$
 gives $\cv\langle w,x\rangle^2=\cv\sum_i\lambda_i\langle u_i,x\rangle^2$, so
 after cancelling $\cv\ne0$,
@@ -568,7 +613,8 @@ after cancelling $\cv\ne0$,
 Put $x=w$.  Then $\sum_i\lambda_i\langle u_i,w\rangle^2=1
 =\sum_i\lambda_i$, so
 $\sum_i\lambda_i\bigl(1-\langle u_i,w\rangle^2\bigr)=0$; every summand is
-nonnegative, because $\lVert u_i\rVert=\lVert w\rVert=1$ forces
+nonnegative, because Cauchy--Schwarz and
+$\lVert u_i\rVert=\lVert w\rVert=1$ force
 $\langle u_i,w\rangle^2\le1$.  Hence every summand vanishes.  Fix $i$
 with $\lambda_i>0$.  Then $\langle u_i,w\rangle^2=1$ and
 \[
@@ -577,7 +623,9 @@ with $\lambda_i>0$.  Then $\langle u_i,w\rangle^2=1$ and
 \]
 so $u_i=\pm w$.  Now read \eqref{eq:quadric} through $\Lambda=\cv\,ww\tp$:
 it says $\cv\langle w,g_c\rangle^2=\cv$, so $\langle w,g_c\rangle^2=1$ for
-every $c$.  Therefore, by \eqref{eq:polarized},
+every $c$.  The tight direction enters the value quadratically, so the
+sign in $u_i=\pm w$ drops and $u_i\tp S_{C_i}u_i=w\tp S_{C_i}w$.
+Therefore, by \eqref{eq:polarized},
 \[
   \cv\;=\;u_i\tp S_{C_i}u_i\;=\;w\tp S_{C_i}w
     \;=\;\sum_{c\in C_i}\langle w,g_c\rangle^2
@@ -614,14 +662,16 @@ Substituting \eqref{eq:multiplier} into the right side of
 \eqref{eq:statg} turns it into a combination of the $u_i$,
 \[
   t_c\Lambda g_c
-  \;=\;t_c\cv\sum_{i\in A}\lambda_i\langle u_i,g_c\rangle\,u_i ,
+  \;=\;t_c\cv\sum_{i\in A}\lambda_i\langle u_i,g_c\rangle\,u_i .
 \]
-so subtraction gives the relation
+Write $[\,\cdot\,]$ for $1$ when the condition holds and $0$ otherwise.
+The left side of \eqref{eq:statg} is the same sum over all of $A$ with
+each term carrying the factor $[\,c\in C_i\,]$, so the two sides subtract
+term by term and leave the relation
 \begin{equation}\label{eq:vanishing}
   \sum_{i\in A}\lambda_i\,\langle u_i,g_c\rangle\,
-    \bigl(\,[\,c\in C_i\,]-t_c\cv\,\bigr)\,u_i\;=\;0 ,
+    \bigl(\,[\,c\in C_i\,]-t_c\cv\,\bigr)\,u_i\;=\;0 .
 \end{equation}
-where $[\,\cdot\,]$ is $1$ when the condition holds and $0$ otherwise.
 Independence kills every coefficient:
 \[
   \lambda_i\,\langle u_i,g_c\rangle\,
@@ -630,8 +680,8 @@ Independence kills every coefficient:
 Fix $c$.  By Lemma~\ref{lem:overlap}(iv) there is $i$ with
 $\lambda_i>0$, $c\in C_i$ and $\langle u_i,g_c\rangle\ne0$; for that $i$
 the last factor is $1-t_c\cv$, so $t_c\cv=1$.  Summing over $c$ against
-$\sum_ct_c=1$ gives $\cv=m$, and then $t_c=1/m$.  A design has at least one
-vector, so $\cv=m\ge1$.
+$\sum_ct_c=1$ gives $\cv=m$, and then $t_c=1/m$.  The defect floor gives
+$\cv\ge1$.
 \end{proof}
 
 The conclusion identifies the datum rather than contradicting it.  One
@@ -663,10 +713,13 @@ second assertion is \eqref{eq:count} read backwards.  If $A^{+}=\{C\}$
 then $m\le k$, while $m\ge k$ always, so $m=k$; moreover every index with
 $\lambda_i>0$ carries the same subset $C$, so summing
 \eqref{eq:overlapone} over $c\in C$ gives, as in
-Lemma~\ref{lem:overlap}(iii), $\sum_i\lambda_iu_i\tp\SC u_i=k$, while
-each such $u_i$ is a unit eigenvector of $\SC$ at $\cv$, whence $\cv=k$.  If
+Lemma~\ref{lem:overlap}(iii), $\sum_i\lambda_iu_i\tp\SC u_i=k$.  An index
+with $\lambda_i=0$ may carry a different subset; it is weighted by zero
+and drops.  Every remaining $u_i$ is a unit eigenvector of $\SC$ at $\cv$,
+so the sum collapses to $\cv\sum_i\lambda_i=\cv$, whence $\cv=k$.  If
 $m=2k$ and $A^{+}=\{C,C'\}$ then $C\cup C'$ has $2k$ elements and
-$\lvert C\rvert+\lvert C'\rvert=2k$, so $C\cap C'=\emptyset$.
+$\lvert C\rvert+\lvert C'\rvert=2k$, so inclusion--exclusion leaves
+$C\cap C'=\emptyset$.
 \end{proof}
 
 \begin{corollary}[Lean]\label{cor:singleactive}
@@ -726,8 +779,7 @@ $\cv\ge1$.
 
 \begin{proof}
 The hypothesis empties the index set of \eqref{eq:defect}, so the defect
-at $c$ vanishes and $t_c\cv=1$.  Since $t_c\le1$ this gives
-$\cv=1/t_c\ge1$.
+at $c$ vanishes and the defect floor gives $t_c\cv=1$ and $\cv\ge1$.
 \end{proof}
 
 \begin{corollary}\label{cor:saturated}
@@ -884,13 +936,15 @@ $S_{\{0,3\}}-I=I\pd0$.
 
 The datum of Theorem~\ref{thm:reach} is stationary for the maximum taken
 over the four chosen pairs, which minimize $\lmin(\SC)$, and not for $F$.
-It violates
-\eqref{eq:argmax}, a disjunctive semialgebraic condition rather than an
-equation and therefore beyond the algebra of \S\ref{sec:laws}.  It also
-violates the hypothesis of every exclusion: its multiplier is isotropic
-rather than of rank one, its four tight directions lie in $\R^2$ and
-are dependent, its active family is four distinct pairs, neither a
-singleton nor a partition, and no index lies in every pair.
+
+It violates \eqref{eq:argmax}, a disjunctive semialgebraic condition
+rather than an equation and therefore beyond the algebra of
+\S\ref{sec:laws}.
+
+It also violates the hypothesis of every exclusion: its multiplier is
+isotropic rather than of rank one, its four tight directions lie in
+$\R^2$ and are dependent, its active family is four distinct pairs,
+neither a singleton nor a partition, and no index lies in every pair.
 
 \subsection{The residue}\label{sec:census}
 
@@ -992,7 +1046,8 @@ They carry between three and ten triples, $1,4,5,5,4,2,1,1$ of them in
 order, so no more than five fall in any one column of
 Table~\ref{tab:census}.  The last, the ten triples through one index, sits
 in the peak column, so the exclusions are not silent where the census is
-largest; they are thin everywhere.
+largest.  Figure~\ref{fig:exclusionreach} sets the two exclusions against
+the census.
 
 \begin{table}[ht]
 \small
@@ -1025,6 +1080,26 @@ leaving $2069$.}
   \label{fig:census}
 \end{figure}
 
+\begin{figure}[ht]
+  \centering
+  \input{figures/exclusionreach}
+  \caption{The reach of the exclusions at $(6,3)$.  Upper: the census of
+  Proposition~\ref{prop:census}, $2102$ covering classes with $351$ of them at
+  $\lvert A^{+}\rvert=10$.  Lower, on its own scale: the $34$ classes that
+  Lemma~\ref{lem:overlap}(iv) removes for failing to cover, and the $23$ that
+  Proposition~\ref{prop:saturated} removes for carrying an index in every
+  member.  Only the second sits inside the census, the non-covering classes
+  being absent from it; it takes $1/3$ of the column at $\lvert A^{+}\rvert=3$
+  and $1/351$ at the peak, and neither exclusion reaches above ten.  Both
+  excluded families are graphs on five vertices.  The two drawn are the
+  extremes of the $23$, a path beside an edge at three triples and the complete
+  graph at ten.  The bars are an external
+  enumeration: neither Proposition~\ref{prop:census} nor
+  Proposition~\ref{prop:carath} carries a declaration, and only the criteria
+  the panels apply are kernel-checked.}
+  \label{fig:exclusionreach}
+\end{figure}
+
 \begin{conjecture}\label{conj:sixthree}
 No design at $(6,3)$ carries an admissible stationarity datum with
 $0<\cv<1$.
@@ -1044,9 +1119,8 @@ says $\lmin(\SC)\le\cv<1$ at every $k$-subset and no subset dominates
 of\_\allowbreak is\allowbreak Argmax\allowbreak Dominated\_\allowbreak of\_\allowbreak
 value\_\allowbreak lt\_one}).
 Contrapositively $\Gtz(6,3)$ implies Conjecture~\ref{conj:sixthree}, and
-$\Gtz(7,3)$ implies Conjecture~\ref{conj:seventhree}.  What the interior
-route buys is therefore the first-order system, not a smaller problem: the
-conjectures are equivalent to their cells given the two nonformal steps of
+$\Gtz(7,3)$ implies Conjecture~\ref{conj:seventhree}.  The conjectures are
+equivalent to their cells given the two nonformal steps of
 \S\ref{sec:boundaries}, and the equations of \eqref{eq:statg} and
 \eqref{eq:statt} are the whole of the gain.
 

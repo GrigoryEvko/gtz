@@ -1,0 +1,185 @@
+% The chart of one real design at (4,2), carried through and read off at all
+% six pairs.  Three panels: the pipeline g -> V -> P -> W with the matrices in
+% it, the four atoms against the unit circle of F^2 = R^2, and the six pairs as
+% the edges of K_4 labelled by 81 det W[C].
+%
+% PROJECTION.  The atom panel is a plane figure and carries no projection of a
+% higher-dimensional space: the map is the identity of R^2 scaled by 1.05cm,
+%   X = 1.05 x_1,   Y = 1.05 x_2,
+% so no viewing normal and no visibility rule are needed and no line is hidden.
+% Every coordinate in that panel is that pair.  The K_4 panel is a graph
+% drawing on the square derived below, and the reading block is a stack of
+% rows.  Every coordinate in all three carries its exact source in a trailing
+% comment.
+%
+% THE DESIGN, exactly.  Over R, m = 4, k = 2.
+%   g_0 = (sqrt2, 0)        t_0 = 2/9    ell_0 = 2      s_0 = 4/9
+%   g_1 = (2, 1)/sqrt3      t_1 = 3/9    ell_1 = 5/3    s_1 = 5/9
+%   g_2 = (1,-2)/sqrt3      t_2 = 3/9    ell_2 = 5/3    s_2 = 5/9
+%   g_3 = (0, 2)            t_3 = 1/9    ell_3 = 4      s_3 = 4/9
+% The weights are positive and sum to one, and sum_c t_c g_c g_c^T = I_2 over
+% the rationals: the four rank-one terms are (2/9)[[2,0],[0,0]],
+% (1/9)[[4,2],[2,1]], (1/9)[[1,-2],[-2,4]] and (1/9)[[0,0],[0,4]], of sum
+% (1/9)[[9,0],[0,9]].  The leverage scores sum to 4/9+5/9+5/9+4/9 = 2 = k.
+% Whitening gives v_c = sqrt(t_c) g_c = (1/3)(2,0), (1/3)(2,1), (1/3)(1,-2),
+% (1/3)(0,2), whence the rational V, P = V V^T and W = P - diag(t) printed in
+% the pipeline.  81 det W[C] over the six pairs is -12, 0, +6, +4, +2, -10 in
+% the order {0,1}, {0,2}, {0,3}, {1,2}, {1,3}, {2,3}.
+%
+% ELLIPSE FRAME.  For a pair C the set {x : x^T S_C x = 1} is an ellipse with
+% semi-axes 1/sqrt(lambda) along the eigenvectors of S_C, and S_C >= I holds
+% exactly when that ellipse lies in the closed unit disc.  At C = {0,2},
+% S_C = [[7/3,-2/3],[-2/3,4/3]] has spectrum {1, 8/3}, so the semi-axes are 1
+% and sqrt(3/8) = 0.6123724, the long one along the eigenvector (1,2)/sqrt5 at
+% atan2(2,1) = 63.4349 degrees, and the ellipse touches the unit circle at the
+% two points +-(1,2)/sqrt5 = +-(0.4472136, 0.8944272).  Only this ellipse is
+% drawn.  The two failing pairs have long semi-axis 2.0163 at C = {2,3} and
+% 2.2830 at C = {0,1}, and bounding half-extents sqrt((S_C^-1)_jj) of (2, 1/2)
+% and (1/sqrt2, sqrt5) = (0.7071068, 2.2360680) against the 1.05 of the unit
+% circle, so each widens the plate in one direction; and the K_4 panel already
+% records the sign that decides them.
+%
+% K_4 FRAME.  The four indices sit at the corners of a square of half-side
+% 1.05cm in the cyclic order 0, 1, 2, 3, so that the complement map C -> C^c on
+% pairs is the opposite-edge map: {0,1} against {2,3}, {0,3} against {1,2}, and
+% the two diagonals {0,2} against {1,3}.  That is the pairing thm:duality uses
+% at this self-dual cell; figures/dualworked.tex runs the same pairing down its
+% table, C in the first column against E = C^c in the third.  Edge labels sit
+% at parameter 0.28 from the first endpoint on the two diagonals and at the
+% midpoint on the four sides; the open marker on {0,2} sits at parameter 0.75
+% along it, clear of the crossing.  The tangency label names the line through
+% the two marks and so carries the sign +-, as the caption does.
+%
+% DISCLOSED: this design is new to the paper and no Lean declaration mentions
+% it.  Every number above and below was computed in exact arithmetic outside
+% the assistant -- rational for the chart, the gap and the six minors,
+% algebraic for the atoms, the ellipse and the tangency, whose decimals in the
+% body are truncations of those exact values.  What is mechanized is the
+% machinery it instantiates,
+% not the instance: the chart identities of prop:chartid, the criterion of
+% lem:chart, and the minor identity of cor:minor.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  ar/.style     ={-{Latex[length=2mm,width=1.5mm]}, line width=0.5pt},
+  vec/.style    ={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt},
+  rim/.style    ={line width=0.6pt, black!70},
+  lev/.style    ={line width=0.5pt, black!70},
+  frame/.style  ={densely dotted, line width=0.3pt, black!35},
+  tight/.style  ={line width=0.5pt, black!55, dashed,
+                  dash pattern=on 2.2pt off 1.6pt},
+  win/.style    ={line width=1.1pt},
+  lose/.style   ={line width=0.55pt, black!55, dashed,
+                  dash pattern=on 1.4pt off 1.2pt},
+  tag/.style    ={font=\footnotesize, fill=white, inner sep=0.8pt},
+  blk/.style    ={inner sep=1.5pt, font=\scriptsize},
+  every node/.style={inner sep=1.5pt, font=\small}]
+
+% =========================== the pipeline ================================
+\node[blk, anchor=west, align=left] (A) at (0,4.75)
+  {$m=4$, \ $k=2$, \ over $\R$\\[3pt]
+   $g_0=(\sqrt2,0)$\\[2pt]
+   $g_1=\tfrac1{\sqrt3}(2,1)$\\[2pt]
+   $g_2=\tfrac1{\sqrt3}(1,-2)$\\[2pt]
+   $g_3=(0,2)$\\[3pt]
+   $t=\tfrac19(2,3,3,1)$};
+\node[blk, right=15mm of A] (Vm)
+  {$V=\tfrac13\begin{psmallmatrix}2&0\\2&1\\1&-2\\0&2\end{psmallmatrix}$};
+\node[blk, right=15mm of Vm] (Pm)
+  {$P=\tfrac19\begin{psmallmatrix}
+      4&4&2&0\\4&5&0&2\\2&0&5&-4\\0&2&-4&4\end{psmallmatrix}$};
+\node[blk, right=15mm of Pm] (Wm)
+  {$W=\tfrac19\begin{psmallmatrix}
+      2&4&2&0\\4&2&0&2\\2&0&2&-4\\0&2&-4&3\end{psmallmatrix}$};
+
+\draw[ar] (A)  -- node[above, font=\scriptsize] {$\sqrt{t_c}\,g_c$} (Vm);
+\draw[ar] (Vm) -- node[above, font=\scriptsize] {$VV\adj$} (Pm);
+\draw[ar] (Pm) -- node[above, font=\scriptsize] {$-\,D$} (Wm);
+
+\node[blk, below=2mm of Vm] {$V\adj V=I_2$};
+\node[blk, below=2mm of Pm, align=center]
+  {$P^2=P$, \ $\tr P=2$\\[2pt]
+   $s=\tfrac19(4,5,5,4)$, \ $\ell=(2,\tfrac53,\tfrac53,4)$};
+\node[blk, below=2mm of Wm, align=center]
+  {$W_{cc}=t_c(\ell_c-1)$\\[2pt] $\textstyle\sum_cW_{cc}=k-1=1$};
+
+% ======================= the atoms, against the unit circle ================
+\begin{scope}[shift={(2.05,0)}]
+  \draw[frame] (-1.75,0)--(1.78,0);
+  \draw[frame] (0,-1.62)--(0,2.42);
+  \node[anchor=west,  font=\footnotesize] at ( 1.82, 0.00) {$e_1$};
+  \node[anchor=south, font=\footnotesize] at ( 0.00, 2.46) {$e_2$};
+
+  \draw[rim] (0,0) circle (1.05);
+  % the ellipse x^T S_C x = 1 at C = {0,2}: semi-axes 1 and sqrt(3/8), the
+  % long one along (1,2)/sqrt5
+  \draw[lev, rotate=63.4349] (0,0) ellipse (1.05 and 0.64299);
+  \draw[tight] (-0.58227,-1.16454)--(0.58227,1.16454);       % +-1.24 (1,2)/sqrt5
+  \draw[lev, fill=white] ( 0.46957, 0.93915) circle (1.4pt); % + (1,2)/sqrt5
+  \draw[lev, fill=white] (-0.46957,-0.93915) circle (1.4pt); % - (1,2)/sqrt5
+
+  \draw[vec] (0,0)--( 1.48492, 0.00000);   % g_0 = (sqrt2, 0)
+  \draw[vec] (0,0)--( 1.21244, 0.60622);   % g_1 = (2, 1)/sqrt3
+  \draw[vec] (0,0)--( 0.60622,-1.21244);   % g_2 = (1,-2)/sqrt3
+  \draw[vec] (0,0)--( 0.00000, 2.10000);   % g_3 = (0, 2)
+  \fill (0,0) circle (1.1pt);
+  \node[tag, anchor=north]      at ( 1.46000,-0.09) {$g_0$};
+  \node[tag, anchor=south west] at ( 1.23000, 0.63) {$g_1$};
+  \node[tag, anchor=west]       at ( 0.65000,-1.24) {$g_2$};
+  \node[tag, anchor=east]       at (-0.07000, 1.92) {$g_3$};
+  % names the tangency LINE, whose two ends are +-(1,2)/sqrt5; set clear of the
+  % dashed segment, which stops at x = -0.58227
+  \node[tag, anchor=north east] at (-0.62000,-1.02) {$\pm\tfrac1{\sqrt5}(1,2)$};
+
+  \node[anchor=north west, font=\footnotesize] at (-1.75,-1.72)
+    {$x\adj\SC x=1$ at $C=\{0,2\}$, \ $\operatorname{spec}\SC=\{1,\tfrac83\}$};
+\end{scope}
+
+% ========================= the six pairs as K_4 ============================
+\begin{scope}[shift={(6.65,0.40)}]
+  \coordinate (n0) at (-1.05, 1.05);
+  \coordinate (n1) at ( 1.05, 1.05);
+  \coordinate (n2) at ( 1.05,-1.05);
+  \coordinate (n3) at (-1.05,-1.05);
+
+  \draw[lose] (n0)--(n1);          % {0,1}
+  \draw[lose] (n2)--(n3);          % {2,3}
+  \draw[win]  (n0)--(n3);          % {0,3}
+  \draw[win]  (n1)--(n2);          % {1,2}
+  \draw[win]  (n0)--(n2);          % {0,2}
+  \draw[win]  (n1)--(n3);          % {1,3}
+  \draw[lev, fill=white] (0.52500,-0.52500) circle (1.4pt);  % 0.75 along {0,2}
+
+  \foreach \nn in {n0,n1,n2,n3}{\fill (\nn) circle (1.5pt);}
+  \node[anchor=south east, font=\footnotesize] at (n0) {$0$};
+  \node[anchor=south west, font=\footnotesize] at (n1) {$1$};
+  \node[anchor=north west, font=\footnotesize] at (n2) {$2$};
+  \node[anchor=north east, font=\footnotesize] at (n3) {$3$};
+
+  \node[tag] at ( 0.00000, 1.05000) {$-12$};   % midpoint {0,1}
+  \node[tag] at ( 0.00000,-1.05000) {$-10$};   % midpoint {2,3}
+  \node[tag] at (-1.05000, 0.00000) {$+6$};    % midpoint {0,3}
+  \node[tag] at ( 1.05000, 0.00000) {$+4$};    % midpoint {1,2}
+  \node[tag] at (-0.46200, 0.46200) {$0$};     % 0.28 along {0,2}
+  \node[tag] at ( 0.46200, 0.46200) {$+2$};    % 0.28 along {1,3}
+
+  \node[anchor=north, font=\footnotesize] at (0,-1.44) {$81\det W[C]$};
+\end{scope}
+
+% ============================ the readings ================================
+\begin{scope}[every node/.style={anchor=west, inner sep=1.5pt,
+                                 font=\footnotesize}]
+  \draw[win]  (9.30, 1.30)--(9.85, 1.30);
+  \node at (9.98, 1.30) {$\det W[C]>0$: dominates strictly};
+  \draw[win]  (9.30, 0.86)--(9.85, 0.86);
+  \draw[lev, fill=white] (9.575, 0.86) circle (1.4pt);
+  \node at (9.98, 0.86) {$=0$: dominates, no slack};
+  \draw[lose] (9.30, 0.42)--(9.85, 0.42);
+  \node at (9.98, 0.42) {$<0$: fails};
+
+  \node at (9.30,-0.18) {$\lmin(S_{\{0,2\}})=1$, attained at
+    $\tfrac1{\sqrt5}(1,2)$};
+  \node at (9.30,-0.66) {$(S_{\{0,1\}})_{22}=(S_{\{2,3\}})_{11}=\tfrac13<1$};
+  \node at (9.30,-1.14) {$W_{cc}>0$ at all four indices};
+\end{scope}
+
+\end{tikzpicture}

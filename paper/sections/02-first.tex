@@ -1,9 +1,5 @@
 \section{Elementary cases}\label{sec:first}
 
-The condition \eqref{eq:parseval} yields three elementary consequences on
-its own, and between them they settle the cells $m=k$ and $k=1$, and no
-others.
-
 \subsection{The objects}
 
 \begin{definition}\label{def:design}
@@ -71,15 +67,18 @@ equality only if $s_c=1$ throughout.
 \end{lemma}
 
 \begin{proof}
-Fix $e$ and separate the $e$-th term of \eqref{eq:parseval}:
+Both factors of $s_e=t_e\ell_e$ are nonnegative, which is the lower
+bound.  For the upper bound fix $e$ and separate the $e$-th term of
+\eqref{eq:parseval}:
 \begin{equation}\label{eq:erased}
   I_k-t_e\,g_e^{\vphantom{\mathsf{H}}}g_e\adj
   \;=\;\sum_{c\ne e}t_c\,g_c^{\vphantom{\mathsf{H}}}g_c\adj\;\psd\;0 .
 \end{equation}
-Evaluating the quadratic form of \eqref{eq:erased} at $g_e$ gives
-$0\le\ell_e-t_e\ell_e^2$, the second term because
-$\lvert\langle g_e,g_e\rangle\rvert^2=\ell_e^2$.  If $\ell_e=0$ then
-$s_e=0\le1$; otherwise divide by $\ell_e>0$.
+Evaluate the quadratic form of \eqref{eq:erased} at $g_e$.  Its first
+term is $g_e\adj I_kg_e=\lVert g_e\rVert^2=\ell_e$ and its second is
+$t_e\lvert\langle g_e,g_e\rangle\rvert^2=t_e\ell_e^2$, so
+$0\le\ell_e-t_e\ell_e^2$.  If $\ell_e=0$ then $s_e=0\le1$; otherwise
+divide by $\ell_e>0$.
 \end{proof}
 
 \begin{lemma}[Lean]\label{lem:coparseval}
@@ -156,12 +155,18 @@ where $A_r\adj$ denotes the $r$-th row of $A$.
 \end{proposition}
 
 \begin{proof}
-Put $g_r:=\sqrt n\,A_r$ and $t_r:=1/n$.  Then
+Put $g_r:=\sqrt n\,A_r$ and $t_r:=1/n$, so that
+$g_r^{\vphantom{\mathsf{H}}}g_r\adj=n\,A_r^{\vphantom{\mathsf{H}}}A_r\adj$.
+For a matrix whose $r$-th row is $A_r\adj$ the row identity reads
+$A\adj A=\sum_r A_r^{\vphantom{\mathsf{H}}}A_r\adj$, so the two factors of
+$n$ cancel and
 $\sum_r t_r g_r^{\vphantom{\mathsf{H}}}g_r\adj=\sum_r A_r^{\vphantom{\mathsf{H}}}A_r\adj
-=A\adj A=I_k$, so this is a design of size $n$ and rank $k$.  Let $C$
-dominate and let $\iota$ enumerate $C$ in increasing order.  Then
+=A\adj A=I_k$: a design of size $n$ and rank $k$.  Let $C$ dominate and
+let $\iota$ enumerate $C$ in increasing order.  The same row identity
+applied to $A_\iota$ gives
 $(A_\iota)\adj A_\iota^{\vphantom{\mathsf{H}}}=\sum_{r\in C}A_r^{\vphantom{\mathsf{H}}}A_r\adj
-=\frac1n\SC$, so
+=\frac1n\SC$, the factor $n$ surviving here because $\SC$ carries no
+weights.  So
 \[
   (A_\iota)\adj A_\iota^{\vphantom{\mathsf{H}}}-\tfrac1n I_k
   \;=\;\tfrac1n\bigl(\SC-I_k\bigr)\;\psd\;0 . \qedhere
@@ -204,9 +209,11 @@ At $k=1$ this is the theorem: there is one direction up to scalars, and
 the witnessing index may be chosen once and for all.  At $k\ge2$ the
 witness of Lemma~\ref{lem:direction} depends on $x$, while
 \eqref{eq:pointwise} demands $k$ indices that work simultaneously for
-every $x$ on the unit sphere of $\FF^k$.  Domination is a matrix
-inequality, and \eqref{eq:parseval} determines only the linear
-functionals of the family; the least eigenvalue is not one of them.
+every $x$ on the unit sphere of $\FF^k$.
+
+Domination is a matrix inequality, and \eqref{eq:parseval} determines
+only the linear functionals of the family; the least eigenvalue is not
+one of them.
 
 The trace is one of them.  If $C$ dominates then all $k$ eigenvalues of
 $\SC$ are at least $1$, so
@@ -233,17 +240,52 @@ take one vector from each axis pair and have $\SC=3I_3\pd I_3$; the
 remaining twelve repeat an axis, as $\{\sqrt3e_1,-\sqrt3e_1,\sqrt3e_2\}$
 does with
 $\SC=6\,e_1^{\vphantom{\mathsf{T}}}e_1\tp+3\,e_2^{\vphantom{\mathsf{T}}}e_2\tp$,
-and are singular in the direction they omit.  The trace is blind to which
-direction that is.
+and are singular in the direction they omit.
+
+The trace is blind to which direction that is.
+
+Along the meridian from $e_3$ to $(e_1+e_2)/\sqrt2$ the
+witnessing index of Lemma~\ref{lem:direction} changes once, at the direction
+$\tfrac1{\sqrt3}(1,1,1)$ where all six atoms attain the bound
+(Figure~\ref{fig:witness}).  Figure~\ref{fig:octaspec} carries the twenty
+spectra.
 \end{example}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/witness}
+  \caption{The witness of Lemma~\ref{lem:direction} on the design of
+  Example~\ref{ex:octa}.  Left: the sphere of directions, the upper cap of the
+  region $3x_3^2\ge\lVert x\rVert^2$ witnessed by the third axis, and the meridian
+  from $e_3$ to $(e_1+e_2)/\sqrt2$ across it; the rim carries four of the
+  eight directions at which the bound is an equality at all six atoms, three
+  of them in front.  Right: the meridian read twice.  One atom at a time, the
+  maximum stays at or above $\lVert x\rVert^2$ and the index attaining it
+  changes at $\theta_*$, where the two curves meet each other and the level
+  $\lVert x\rVert^2$ together.  Three atoms at once, the sum over $\{0,1,2\}$
+  falls below $\lVert x\rVert^2$ on $[0,\theta_1)$, an arc about the axis that
+  triple omits, while $\tr\SC=9$ there as at every triple.}
+  \label{fig:witness}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/octaspec}
+  \caption{The twenty triples of Example~\ref{ex:octa} on one eigenvalue axis.
+  Eight take one atom from each antipodal pair and have $\SC=3I_3$; twelve
+  repeat an axis and have $\operatorname{spec}\SC=\{0,3,6\}$.  The trace is
+  $9$ in both rows, so the trace test \eqref{eq:tracetest} passes at all
+  twenty.  The second scale is the chart gap of \S\ref{sec:chart}, which at
+  uniform weight $\tfrac16$ is $\operatorname{spec}W[C]
+  =\tfrac16(\operatorname{spec}\SC-1)$; Corollary~\ref{cor:minor} returns the
+  two determinants a second way, and volume sampling puts all its mass on the
+  eight.}
+  \label{fig:octaspec}
+\end{figure}
 
 Selection is therefore a combinatorial problem about the directions a
 $k$-subset leaves uncovered, constrained by the metric identity
-\eqref{eq:parseval}.  The remaining sections develop two instruments for
-it: a change of coordinates turning \eqref{eq:dominate} into a statement
-about principal blocks of a projection (\S\ref{sec:chart}), and, where
-that does not decide the cell, a variational analysis of the worst design
-(\S\ref{sec:compactness} and \S\ref{sec:interior}).
+\eqref{eq:parseval}.
 
 \subsection{The tetrahedron}
 
@@ -275,26 +317,35 @@ Subtracting the omitted term from \eqref{eq:tetraparseval},
 \]
 The matrix $g_{c_0}^{\vphantom{\mathsf{T}}}g_{c_0}\tp$ has eigenvalue
 $\ell_{c_0}=3$ on the line $\R g_{c_0}$ and $0$ on its orthogonal
-complement, so
+complement, so $\SC$ has $4-3$ on that line and $4-0$ on the complement:
 \begin{equation}\label{eq:tetraspec}
   \operatorname{spec}\SC=\{1,4,4\},\qquad \lmin(\SC)=1 .
 \end{equation}
-For $c_0=0$ the certificate is a sum of squares: writing
+For $c_0=0$ the certificate is a sum of squares.  Writing
 $x=(x_1,x_2,x_3)$,
 \[
   x\tp\bigl(\SC-I_3\bigr)x
   \;=\;3\lVert x\rVert^2-\langle x,g_0\rangle^2
   \;=\;3\sum_i x_i^2-\Bigl(\sum_i x_i\Bigr)^{\!2}
-  \;=\;\sum_{i<j}(x_i-x_j)^2 ,
+  \;=\;\sum_{i<j}(x_i-x_j)^2 .
 \]
-which vanishes exactly on $\R g_0$, the direction omitted from $C$.
+Here $\ell_0=\lVert g_0\rVert^2=3$, so
+$3\lVert x\rVert^2-\langle x,g_0\rangle^2$ is the Cauchy--Schwarz
+deficiency of $x$ against $g_0$, and the last equality is Lagrange's
+identity, whose general term $\bigl(x_i(g_0)_j-x_j(g_0)_i\bigr)^2$ is
+$(x_i-x_j)^2$ because every entry of $g_0$ is $1$.  A sum of squares
+vanishes only where every square vanishes, that is where $x_1=x_2=x_3$.
+So the form vanishes exactly on $\R g_0$, the direction omitted from $C$.
 \end{example}
 
 At uniform weights the tetrahedron is the smallest design at rank three
-with $\lmin(\SC)=1$ at every triple; Figure~\ref{fig:tetrahedron} draws
-it.  Splitting its vectors produces designs with that property at every
-size $m\ge4$ and rank $3$.  Figure~\ref{fig:tetragap} draws the gap at
-one triple.
+with $\lmin(\SC)=1$ at every triple.
+
+Splitting its vectors produces designs with that property at every size
+$m\ge4$ and rank $3$.  Figure~\ref{fig:tetrahedron} draws the design and
+Figure~\ref{fig:tetragap} the gap at one triple.  The three squares of the
+certificate vanish on three planes through $g_0$, drawn in
+Figure~\ref{fig:tetracert}.
 
 \begin{figure}[ht]
   \centering
@@ -320,4 +371,22 @@ one triple.
   spare is a form singular along one line, and that line is spanned by the
   atom the triple omits (\S\ref{sec:ties}).}
   \label{fig:tetragap}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/tetracert}
+  \caption{The certificate of Example~\ref{ex:tetra} at the triple
+  $C=\{1,2,3\}$.  Each square $(x_i-x_j)^2$ vanishes on a plane spanned by
+  $g_0$ and one selected atom, drawn left as its great circle on the
+  circumsphere; the three planes meet in $\R g_0$ alone, the eigenline of
+  $\SC$ for the eigenvalue $1$ of \eqref{eq:tetraspec}.  Right: the same three
+  planes seen along that line, six rays $60^{\circ}$ apart, with the unit
+  normals $n_c$, signed to sum to zero, at $120^{\circ}$ and the level
+  $x\tp(\SC-I_3)x=1$ the circle of radius $1/\sqrt3$ of
+  Figure~\ref{fig:tetragap}.  The grouping drawn is
+  the one of Example~\ref{ex:tetra}; the development certifies the triple
+  $C=\{0,1,2\}$ instead, by the image of this certificate under
+  $\diag(-1,-1,1)$, which permutes the atoms by $(0\,3)(1\,2)$.}
+  \label{fig:tetracert}
 \end{figure}

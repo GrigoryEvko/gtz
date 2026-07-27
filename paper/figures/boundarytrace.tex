@@ -1,0 +1,185 @@
+% The boundary dichotomy executed on the chart point of app:liftfail at (4,2),
+% with the intermediate matrix printed at every step, and the fork at the lift.
+%
+% PROJECTION.  There is none: the figure is a flow of text and matrices, and no
+% space of dimension above zero is drawn.  The layout is a grid in picture
+% centimetres, and every ordinate below is a node CENTRE, set so that
+% consecutive boxes clear one another by about 9pt, which is twice the 1.7mm
+% arrowhead that joins them.  The datum spans the top from the ordinate 9.15
+% down.  The four steps of the compression are stacked in one column, centred at
+% the abscissa 3.45 on the ordinates 6.52, 4.57, 2.22 and -0.01 under a title on
+% 7.80, and joined downwards by arrows; they are the steps that do not see the
+% parameter.  The stem at the abscissa 7.35 carries the compressed verdict into
+% both branches, which are centred at the abscissa 11.35 on the ordinates 4.95
+% and 1.93, with the identity they share above them on 7.80, a rule on 0.12, and
+% the standing pair anchored north on -0.06.  Every number in the body is an
+% entry of one of the matrices derived below, and no drawn coordinate carries
+% data.
+%
+% THE CHART POINT, exactly, as in eq:liftchart and eq:liftweights.
+%   P = (1/3) [[2,1,0,1],[1,1,1,0],[0,1,2,-1],[1,0,-1,1]],
+%   t = ( (1-tau)/3, tau, (1-tau)/3, (1-tau)/3 ),   0 <= tau <= 1 .
+% With M := 3P the ten inner products of the rows of M are
+%   <m_0,m_0> = 6  <m_0,m_1> = 3  <m_0,m_2> = 0  <m_0,m_3> =  3
+%   <m_1,m_1> = 3  <m_1,m_2> = 3  <m_1,m_3> = 0  <m_2,m_2> =  6
+%   <m_2,m_3> = -3 <m_3,m_3> = 3
+% that is M^2 = 3M, whence P^2 = P; P is symmetric and tr P = (2+1+2+1)/3 = 2.
+% The weights are nonnegative and sum to 3*(1-tau)/3 + tau = 1.  So (P,t) is a
+% chart point of size four and rank two at every tau in [0,1].
+%
+% THE RANGE.  ex:liftfailure declares 0 <= tau <= 1 and eq:liftweights the open
+% interval, which is where the lift fails and where the chart point is the chart
+% point of a design.  The figure takes the closed range: the left branch of the
+% fork is the member at tau = 0, the one thm:schurstep applies to, and that
+% member is a chart point and not a design.  Lean's Gtz.liftFailurePointAt
+% carries the same closed range, 0 <= pivotWeight <= 1, and its frozen-slack
+% theorem carries in addition the tau < 1 that STEP 3 needs.
+%
+% STEP 1, the pivot, at z = 1.  Column 1 of P is (1,1,1,0)/3, of squared length
+% 3*(1/9) = 1/3, which is P_11: this is eq:pivot, and P_11 > 0 puts the point in
+% the second branch of thm:boundary.
+%
+% STEP 2, deflation.  (P e_1)(P e_1)^T / P_11 = 3 * (1/9) J on the index block
+% {0,1,2}, that is 1/3 at each of the nine entries indexed there and 0 elsewhere,
+% so eq:deflate subtracts 1/3 from every entry indexed in {0,1,2}:
+%   P' = (1/3) [[1,0,-1,1],[0,0,0,0],[-1,0,1,-1],[1,0,-1,1]] .
+% With u = (1,0,-1,1) one has u u^T equal to that integer matrix and ||u||^2 = 3,
+% so P' = u u^T/||u||^2 is the orthogonal projection on the line R u: symmetric,
+% idempotent, of trace 1 = k - 1, with P' e_1 = 0.
+%
+% STEP 3, deletion.  Striking the row and column 1 leaves, on the survivors
+% {0,2,3} in that order,
+%   hat P = (1/3) [[1,-1,1],[-1,1,-1],[1,-1,1]] ,
+% and lem:delete, whose hypothesis is t_z < 1, renormalizes each surviving weight
+% to ((1-tau)/3)/(1-tau) = 1/3, the same number at every tau < 1: the compression
+% sends the whole one-parameter family to one point.  This is the one step of the
+% four that does not run at tau = 1.  That point has positive weights,
+% so by prop:chartdesign it is the chart point of a design at (3,1); the rows of
+% V are the entries of u/sqrt3 = (1,-1,1)/sqrt3, and g_c = v_c/sqrt(t_c) gives
+%   g = (1,-1,1),   ell_c = 1,   sum_c t_c g_c^2 = 3*(1/3)*1 = 1 .
+% Every singleton has S_C = 1, so every singleton dominates with equality: the
+% compressed point lies on the equality locus of section sec:ties.
+%
+% STEP 4, the compressed gap.  hat W = hat P - diag(1/3,1/3,1/3) =
+% (1/3)[[0,-1,1],[-1,0,-1],[1,-1,0]], whose diagonal is zero.  So the compressed
+% slack of lem:pairdet is eps = hat W_00 = 0, at every tau.
+%
+% THE IDENTITY.  For x supported on {0,1}, write x = y + x_1 e_1 with y = x_0 e_0.
+% Then <P e_1, y> = x_0/3, P'_00 - t_0 = 1/3 - (1-tau)/3 = tau/3, and eq:schur is
+%   x^T W x = (tau/3) x_0^2 + (1/3)(x_0 + x_1)^2 - tau x_1^2 ,
+% which expands to ((1+tau)/3)x_0^2 + (2/3)x_0 x_1 + (1/3 - tau)x_1^2, the form of
+% W[{0,1}].  The three terms are the deflated gap, the square and the deficit.
+%
+% THE FORK.  At tau = 0 the deficit is absent and the first term vanishes with
+% it, leaving (1/3)(x_0+x_1)^2 >= 0; there W[{0,1}] = (1/3)[[1,1],[1,1]], of trace
+% 2/3 and determinant 0, hence of spectrum {0, 2/3}.  At tau > 0,
+%   W[{0,1}] = [[(1+tau)/3, 1/3],[1/3, 1/3 - tau]],
+%   det = ((1+tau)(1-3tau) - 1)/9 = -tau(2+3tau)/9 ,
+% which is eq:family at eps = 0, P_zz = 1/3, P_cc = 2/3, t_c = (1-tau)/3; and the
+% probe (-1, 1+tau, 0, 0) gives ((1+tau)/3)(1 - 2 + (1+tau)(1-3tau)) =
+% -tau(1+tau)(2+3tau)/3.  At tau = 1/4 the block is [[5/12,1/3],[1/3,1/12]] of
+% determinant 5/144 - 16/144 = -11/144, and (1,-4,0,0) gives
+% 5/12 - 8/3 + 16/12 = -11/12.
+%
+% THE STANDING PAIR.  P_02 = 0, P_00 = P_22 = 2/3 and t_0 = t_2 = (1-tau)/3, so
+% W[{0,2}] = ((1+tau)/3) I_2, positive semidefinite at every tau in [0,1].  The
+% pair {0,2} therefore dominates throughout the family.
+%
+% DISCLOSED.  The Lean development carries the chart (symmetric, idempotent, of
+% trace two), the one-parameter family, the frozen compressed slack and the
+% failure of the lift at every positive weight, together with the three general
+% steps; it does not state the displayed P', hat P and hat W, which are computed
+% inside its proofs, and it does not state the standing pair {0,2}.  The passage
+% from the compressed chart point to the design g = (1,-1,1) uses the half of
+% prop:chartdesign that section sec:formalization records as not mechanized.
+\begin{tikzpicture}[
+  bx/.style={draw, rounded corners=1pt, line width=0.5pt, inner sep=4pt,
+             align=center, font=\scriptsize},
+  ar/.style={-{Latex[length=1.7mm]}, line width=0.5pt},
+  ttl/.style={font=\scriptsize\itshape, align=center},
+  txt/.style={font=\scriptsize, align=center, inner sep=1.5pt},
+  hair/.style={line width=0.4pt, black!45}]
+
+% ====================== the datum, spanning the top =======================
+\node[anchor=north west, align=left, font=\scriptsize, inner sep=0pt]
+  at (0,9.15) {%
+  $P=\tfrac13\begin{psmallmatrix}2&1&0&1\\1&1&1&0\\0&1&2&-1\\
+                                 1&0&-1&1\end{psmallmatrix}$, \
+  $t^{(\tau)}=\bigl(\tfrac{1-\tau}{3},\ \tau,\ \tfrac{1-\tau}{3},
+                    \ \tfrac{1-\tau}{3}\bigr)$, \
+  $M:=3P$ has $M^{2}=3M$, so $P^{2}=P$; and $P\tp=P$, $\tr P=2$\\[3pt]
+  a chart point of size four and rank two at every $\tau\in[0,1]$
+  (Definition~\ref{def:chartpoint}), with escaping index $z=1$};
+
+% ================ the compression, four steps, one column =================
+\node[ttl, anchor=north] at (3.45,7.80) {the four steps below are free of
+  $\tau$};
+
+\node[bx] (s1) at (3.45,6.52) {%
+  \textit{the pivot} (Lemma~\ref{lem:pivot})\\[3pt]
+  $Pe_1=\tfrac13(1,1,1,0)\tp$, \
+  $\lVert Pe_1\rVert^{2}=\tfrac13=P_{11}>0$};
+
+\node[bx] (s2) at (3.45,4.57) {%
+  \textit{deflation} (Lemma~\ref{lem:deflate})\\[3pt]
+  $P'=\tfrac13\begin{psmallmatrix}1&0&-1&1\\0&0&0&0\\-1&0&1&-1\\
+                                  1&0&-1&1\end{psmallmatrix}
+      =\tfrac13uu\tp$, \ $u=(1,0,-1,1)$\\[3pt]
+  $\tr P'=1$, \ $P'e_1=0$};
+
+\node[bx] (s3) at (3.45,2.22) {%
+  \textit{deletion} (Lemma~\ref{lem:delete}, at $\tau<1$)\\[3pt]
+  $\widehat P=\tfrac13\begin{psmallmatrix}1&-1&1\\-1&1&-1\\
+                                          1&-1&1\end{psmallmatrix}$
+  on $\{0,2,3\}$, \
+  $\widehat t_c=\dfrac{(1-\tau)/3}{1-\tau}=\tfrac13$\\[3pt]
+  its design at $(3,1)$: \ $g=(1,-1,1)$, \ $\ell_c=1$};
+
+\node[bx] (s4) at (3.45,-0.01) {%
+  \textit{the compressed point}\\[3pt]
+  $\widehat W=\tfrac13\begin{psmallmatrix}0&-1&1\\-1&0&-1\\
+                                          1&-1&0\end{psmallmatrix}$, \
+  $\varepsilon=\widehat W_{00}=0$\\[3pt]
+  $\{0\}$ dominates, with slack $0$};
+
+\draw[ar] (s1) -- (s2);
+\draw[ar] (s2) -- (s3);
+\draw[ar] (s3) -- (s4);
+
+% ================= the identity that both branches read ===================
+\node[txt, anchor=north] at (11.35,7.80) {%
+  for $x$ supported on $\{0,1\}$, identity \eqref{eq:schur} reads\\[3pt]
+  $x\tp Wx=\tfrac{\tau}{3}x_0^{2}
+     +\tfrac13\bigl(x_0+x_1\bigr)^{2}-\tau x_1^{2}$\\[3pt]
+  the deflated gap, a square, and the deficit};
+
+% ================================ the fork ================================
+\node[bx] (f0) at (11.35,4.95) {%
+  \textit{the lift, at} $\tau=0$\\[3pt]
+  only the square survives: \
+  $x\tp Wx=\tfrac13(x_0+x_1)^{2}\ge0$\\[3pt]
+  $W[\{0,1\}]=\tfrac13\begin{psmallmatrix}1&1\\1&1\end{psmallmatrix}$, \
+  $\operatorname{spec}=\{0,\tfrac23\}$\\[3pt]
+  Theorem~\ref{thm:schurstep}: $\{0,1\}$ dominates, $\lmin=0$};
+
+\node[bx] (f1) at (11.35,1.93) {%
+  \textit{the lift fails, at} $\tau>0$\\[3pt]
+  $W[\{0,1\}]=\begin{psmallmatrix}(1+\tau)/3&1/3\\
+                                  1/3&1/3-\tau\end{psmallmatrix}$, \
+  and \eqref{eq:family}\\[3pt]
+  at $\varepsilon=0$ gives $\det=-\tfrac{\tau(2+3\tau)}{9}$\\[3pt]
+  $x=(-1,1+\tau,0,0)$ gives $-\tfrac13\tau(1+\tau)(2+3\tau)$\\[3pt]
+  at $\tau=\tfrac14$: \ $\det=-\tfrac{11}{144}$ and
+  $(1,-4,0,0)$ gives $-\tfrac{11}{12}$};
+
+\draw[line width=0.5pt] (s4.east) -| (7.35,4.95);
+\draw[ar] (7.35,4.95) -- (f0.west);
+\draw[ar] (7.35,1.93) -- (f1.west);
+
+% ========================== what stands throughout ========================
+\draw[hair] (7.80,0.12) -- (15.00,0.12);
+\node[txt, anchor=north] at (11.35,-0.06) {%
+  $W[\{0,2\}]=\tfrac{1+\tau}{3}I_2\psd0$ at every $\tau$:\\[2pt]
+  the pair $\{0,2\}$ dominates throughout};
+
+\end{tikzpicture}

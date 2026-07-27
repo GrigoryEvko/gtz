@@ -1,0 +1,220 @@
+% The design objective F against the chart objective G on one segment of
+% weights at (4,2), and the six pairs read off at one point of that segment.
+%
+% PROJECTION.  There is none: the two drawn panels are graphs of functions of
+% one real variable and the third panel is a table.  The two axis boxes are
+% pgfplots boxes of exactly 5.8cm by 2.2cm (scale only axis), the upper with its
+% south west corner at picture coordinate (0,0) and the lower at (0,-3.10cm), so
+% the two share one abscissa and a vertical line at a given weight meets both at
+% the same picture abscissa.  The maps from data to picture are
+%   upper   X = 5.8 * t_0 / (2/3),   Y = 2.2 * (F-1) / 2.2
+%   lower   X = 5.8 * t_0 / (2/3),   Y = 2.2 * G / 0.37
+% and every plotted coordinate below is written in axis cs, that is as the pair
+% (t_0, value), with its exact rational source in a trailing comment.  Decimals
+% in the body are six-place roundings of those rationals and of nothing else:
+%   4/15 = 0.266667   7/15 = 0.466667   8/15 = 0.533333   17/30 = 0.566667
+%   3/5  = 0.6        19/30 = 0.633333  2/3  = 0.666667   1/6   = 0.166667
+%   1/5  = 0.2        7/30 = 0.233333   1/3  = 0.333333
+% The worst of them is off by 3.4e-7, which at 5.8cm over a range of 2/3
+% displaces a point by 3e-6 cm.  The three marked weights are named outside both
+% frames, at picture abscissae 5.8 * (8/15)/(2/3) = 4.64,
+% 5.8 * (17/30)/(2/3) = 4.93 and 5.8 * (19/30)/(2/3) = 5.51: the two minimizers
+% anchored south on the ordinate 2.30, clear of the upper frame, and the census
+% weight anchored north on -0.23, centred in the 0.90-wide band that separates
+% the two frames and that carries nothing else, the upper abscissa being left
+% unlabelled.  The third panel sits at the abscissa 6.60, its two blocks anchored
+% north west on the ordinates 2.42 and -1.60 with a rule between them on -1.42.
+%
+% THE CHART POINT, exactly.  On the index set {0,1,2,3},
+%   P = [[4/5,2/5,0,0],[2/5,1/5,0,0],[0,0,1/2,1/2],[0,0,1/2,1/2]],
+%   t = ( t_0, 2/3 - t_0, 1/6, 1/6 ),   0 <= t_0 <= 2/3 .
+% The two diagonal blocks are u u^T/5 with u = (2,1) and w w^T/2 with w = (1,1);
+% since ||u||^2 = 5 and ||w||^2 = 2 each is a rank-one orthogonal projection, so
+% P^T = P, P^2 = P and tr P = 1 + 1 = 2.  The weights are nonnegative and sum to
+% t_0 + (2/3 - t_0) + 1/6 + 1/6 = 1.  So (P,t) is a chart point of size four and
+% rank two at every t_0, and the chart point of a design at every interior t_0.
+%
+% THE DESIGN, exactly.  The range of P is spanned by (2,1,0,0)/sqrt5 and
+% (0,0,1,1)/sqrt2, so the rows of V are
+%   v_0 = (2/sqrt5,0)  v_1 = (1/sqrt5,0)  v_2 = (0,1/sqrt2)  v_3 = (0,1/sqrt2)
+% and g_c = v_c/sqrt(t_c) puts g_0, g_1 on the first axis of R^2 and g_2, g_3 on
+% the second, with leverages and leverage scores
+%   ell_0 = 4/(5 t_0)          s_0 = P_00 = 4/5
+%   ell_1 = 1/(5(2/3 - t_0))   s_1 = P_11 = 1/5
+%   ell_2 = ell_3 = 3          s_2 = s_3 = 1/2 .
+% Parseval holds over the rationals at every interior t_0: sum_c t_c g_c g_c^T is
+% diag(s_0 + s_1, s_2 + s_3) = diag(1,1) = I_2, and sum_c s_c = 2 = k.
+%
+% THE TWO OBJECTIVES.  For a mixed pair P_ab = 0, so W[C] = diag(A_a,A_b) with
+% A_c = s_c - t_c, and Gram_C = diag(ell_a, ell_b).  A pair drawn from one block
+% has parallel vectors, so there its Gram matrix is singular; sharing a
+% characteristic polynomial with S_C, and S_C being positive semidefinite, that
+% puts lmin(S_C) = 0.  And det(Gram_C - I_2) = -(ell_a + ell_b - 1) < 0, because
+% ell_0 >= 6/5 at every interior t_0 and ell_2 = ell_3 = 3, so det W[C] < 0 by
+% cor:minor.  (ell_1 is NOT bounded below by 6/5.  It rises from 3/10 at t_0 = 0
+% and passes 6/5 only at t_0 = 1/2, so the bound must be carried by ell_0 alone.)
+% The mixed pair {0,2} carries lmin(S_C) = min(ell_0,3) >= 6/5 and
+% lmin(W[C]) = min(A_0,1/3) >= 2/15, above both, so neither maximum is attained
+% inside a block.  The two indices of a mixed pair range independently over the
+% blocks, so a maximum over mixed pairs of a minimum is the minimum of the two
+% block maxima:
+%   F = min( max(ell_0, ell_1), 3 ),      G = min( max(A_0, A_1), 1/3 ) .
+% Here A_0 = 4/5 - t_0 and A_1 = t_0 - 7/15, of constant sum 1/3, so max(A_0,A_1)
+% is a V with vertex at t_0 = 19/30 and value 1/6; and ell_0 falls while ell_1
+% rises, so max(ell_0,ell_1) has its least value 3/2 at t_0 = 8/15.  Hence
+% min G = 1/6 at t_0 = 19/30 and min F = 3/2 at t_0 = 8/15, each at that one
+% weight and nowhere else.  Breakpoints of the two graphs:
+%   F - 1 = 2 on (0,4/15];  4/(5t_0) - 1 on [4/15,8/15];
+%           1/(5(2/3-t_0)) - 1 on [8/15,3/5];  2 on [3/5,2/3)
+%   G     = 1/3 on [0,7/15];  4/5 - t_0 on [7/15,19/30];  t_0 - 7/15 on [19/30,2/3]
+% with F-1 = 1/2 at 8/15, = 1 at 17/30, = 2 at 19/30, and G = 4/15 at 8/15,
+% = 7/30 at 17/30, = 1/6 at 19/30, = 1/3 at 0, = 1/5 at 2/3.  On the whole
+% segment F >= 3/2 and G >= 1/6, so the family carries no counterexample, and
+% none is claimed: (4,2) is corank two, where the conjecture is a theorem.
+%
+% F IS A DESIGN OBJECTIVE, so it has no value at a weight no design charts, and
+% the two endpoints of the segment are such weights.  Both horizontal segments
+% are drawn closed all the same: at either end max(ell_0,ell_1) diverges while
+% the truncating constant ell_2 = 3 binds, so F extends continuously with value
+% 3.  G is defined at both endpoints, being a function of the chart point alone.
+%
+% THE CENSUS ABSCISSA.  t_0 = 17/30 lies in the open interval
+% (8/15, 19/30) between the two minimizers, which is where the leverage maximum
+% of the first block has moved to the index 1 while its slack maximum still sits
+% at the index 0; the two objectives therefore select different pairs there, and
+% 17/30 keeps every entry rational or a single surd.  At it t = (17,3,5,5)/30 and
+% ell = (24/17, 2, 3, 3), and, least eigenvalue first,
+%          spec(Gram_C - I_2)   spec W[C]
+%   {0,1}  -1, 41/17            1/6 - sqrt37/15, 1/6 + sqrt37/15
+%   {0,2}  7/17, 2              7/30, 1/3
+%   {0,3}  7/17, 2              7/30, 1/3
+%   {1,2}  1, 2                 1/10, 1/3
+%   {1,3}  1, 2                 1/10, 1/3
+%   {2,3}  -1, 5                -1/6, 5/6
+% The {0,1} row: the trace is A_0 + A_1 = 1/3 and the determinant is
+% (7/30)(1/10) - (2/5)^2 = -41/300, so the eigenvalues are
+% (1/3 +- sqrt(1/9 + 41/75))/2 with 1/9 + 41/75 = 148/225.  The {2,3} row is the
+% one whose selected weights agree: D[C] = I_2/6 there, and spec W[C] is
+% spec(Gram_C - I_2) divided by 6, entry for entry.
+%
+% DISCLOSED.  NOTHING IN THIS FIGURE IS MECHANIZED.  Neither F nor G is a Lean
+% definition -- the compactness development carries the predicate
+% Gtz.ChartDominates and no real-valued chart objective -- and no declaration
+% evaluates either at this chart point or exhibits this design.  The results the
+% panels invoke (lem:congruence, lem:chart, cor:minor, thm:boundary) carry their
+% own tags; the arithmetic here carries none.  Nearest miss, recorded so that a
+% later reader does not take the absence for an oversight: the anonymous function
+% sup'_{C in gates} lambdaMinMat(subsetSumRaw config C) - 1 appears inside
+% Gtz.continuous_dominationMargin, and that is F - 1 in all but name.  It is not
+% a definition, its maximum runs over a supplied gate family rather than over all
+% k-subsets, its argument is an unconstrained pair (vectors, weights) with no
+% Parseval condition, and nothing evaluates it anywhere.
+\begin{tikzpicture}[
+  gcurve/.style={line width=1.1pt},
+  guide/.style={line width=0.5pt, black!55, dashed,
+                dash pattern=on 2.2pt off 1.6pt},
+  census/.style={line width=0.4pt, black!45, densely dotted},
+  hair/.style={line width=0.4pt, black!45}]
+
+% ================= upper panel: the design objective F - 1 =================
+\begin{axis}[
+  name=Fax, at={(0,0)},
+  width=5.8cm, height=2.2cm, scale only axis,
+  xmin=0, xmax=0.666667, ymin=0, ymax=2.2,
+  xtick={0,0.2,0.4,0.6}, xticklabel=\empty,
+  ytick={0,1,2}, yticklabels={$0$,$1$,$2$},
+  yticklabel style={font=\scriptsize},
+  ylabel={$F(\dsn)-1$}, ylabel style={font=\footnotesize},
+  tick style={line width=0.4pt}, axis line style={line width=0.5pt},
+  clip=true]
+
+\draw[guide]  (axis cs:0.533333,0) -- (axis cs:0.533333,2.2);   % t_0 = 8/15
+\draw[guide]  (axis cs:0.633333,0) -- (axis cs:0.633333,2.2);   % t_0 = 19/30
+\draw[census] (axis cs:0.566667,0) -- (axis cs:0.566667,2.2);   % t_0 = 17/30
+
+\draw[gcurve] (axis cs:0,2)   -- (axis cs:0.266667,2);          % (0,2)--(4/15,2)
+\draw[gcurve] (axis cs:0.6,2) -- (axis cs:0.666667,2);          % (3/5,2)--(2/3,2)
+\addplot[gcurve, domain=0.266667:0.533333, samples=90]          % 4/(5t_0) - 1
+  {4/(5*x) - 1};
+\addplot[gcurve, domain=0.533333:0.6, samples=60]               % 1/(5(2/3-t_0)) - 1
+  {1/(5*(0.666667 - x)) - 1};
+
+\fill (axis cs:0.533333,0.5) circle (1.7pt);                    % (8/15, 1/2)
+\draw[line width=0.4pt, fill=white]
+      (axis cs:0.566667,1) circle (1.5pt)                       % (17/30, 1)
+      (axis cs:0.633333,2) circle (1.5pt);                      % (19/30, 2)
+\node[font=\scriptsize, anchor=west, inner sep=2pt]
+  at (axis cs:0.024,1.44) {$\min F=\tfrac32$};
+\end{axis}
+
+% ================= lower panel: the chart objective G ======================
+\begin{axis}[
+  name=Gax, at={(0,-3.10cm)},
+  width=5.8cm, height=2.2cm, scale only axis,
+  xmin=0, xmax=0.666667, ymin=0, ymax=0.37,
+  xtick={0,0.2,0.4,0.6}, xticklabels={$0$,$\tfrac15$,$\tfrac25$,$\tfrac35$},
+  xticklabel style={font=\scriptsize},
+  ytick={0,0.166667,0.333333}, yticklabels={$0$,$\tfrac16$,$\tfrac13$},
+  yticklabel style={font=\scriptsize},
+  xlabel={$t_0$}, ylabel={$G(P,t)$},
+  xlabel style={font=\footnotesize}, ylabel style={font=\footnotesize},
+  tick style={line width=0.4pt}, axis line style={line width=0.5pt},
+  clip=true]
+
+\draw[guide]  (axis cs:0.533333,0) -- (axis cs:0.533333,0.37);  % t_0 = 8/15
+\draw[guide]  (axis cs:0.633333,0) -- (axis cs:0.633333,0.37);  % t_0 = 19/30
+\draw[census] (axis cs:0.566667,0) -- (axis cs:0.566667,0.37);  % t_0 = 17/30
+
+\draw[gcurve] (axis cs:0,0.333333)                              % (0, 1/3)
+           -- (axis cs:0.466667,0.333333)                       % (7/15, 1/3)
+           -- (axis cs:0.633333,0.166667)                       % (19/30, 1/6)
+           -- (axis cs:0.666667,0.2);                           % (2/3, 1/5)
+
+\fill (axis cs:0.633333,0.166667) circle (1.7pt);               % (19/30, 1/6)
+\draw[line width=0.4pt, fill=white]
+      (axis cs:0.533333,0.266667) circle (1.5pt)                % (8/15, 4/15)
+      (axis cs:0.566667,0.233333) circle (1.5pt);               % (17/30, 7/30)
+\node[font=\scriptsize, anchor=west, inner sep=2pt]
+  at (axis cs:0.024,0.070) {$\min G=\tfrac16$};
+\end{axis}
+
+% ---- the three marked weights, named outside the frames ------------------
+\node[font=\scriptsize, anchor=south] at (4.64,2.30) {$\tfrac8{15}$};
+\node[font=\scriptsize, anchor=south] at (5.51,2.30) {$\tfrac{19}{30}$};
+\node[font=\scriptsize, anchor=north, inner sep=1pt]
+  at (4.93,-0.23) {$\tfrac{17}{30}$};
+
+% ============ the six pairs at t_0 = 17/30, and the boundary ==============
+\node[anchor=north west, align=left, font=\scriptsize, inner sep=0pt]
+  at (6.60,2.42) {%
+  $m=4$, \ $k=2$, \ $t=\tfrac1{30}(17,3,5,5)$, \
+  $\ell=(\tfrac{24}{17},2,3,3)$\\[4pt]
+  \begin{tabular}{@{}l@{\hspace{1.4em}}l@{\hspace{1.4em}}l@{\hspace{0.8em}}l@{}}
+    $C$ & $\operatorname{spec}(\Gram_C-I_2)$ & $\operatorname{spec}W[C]$ &\\[1.5pt]
+    $\{0,1\}$ & $-1,\ \tfrac{41}{17}$ & $\tfrac16\mp\tfrac1{15}\sqrt{37}$ &\\[1.5pt]
+    $\{0,2\}$ & $\tfrac7{17},\ 2$ & $\tfrac7{30},\ \tfrac13$ & $\leftarrow G$\\[1.5pt]
+    $\{0,3\}$ & $\tfrac7{17},\ 2$ & $\tfrac7{30},\ \tfrac13$ & $\leftarrow G$\\[1.5pt]
+    $\{1,2\}$ & $1,\ 2$ & $\tfrac1{10},\ \tfrac13$ & $\leftarrow F$\\[1.5pt]
+    $\{1,3\}$ & $1,\ 2$ & $\tfrac1{10},\ \tfrac13$ & $\leftarrow F$\\[1.5pt]
+    $\{2,3\}$ & $-1,\ 5$ & $-\tfrac16,\ \tfrac56$ &\\
+  \end{tabular}};
+
+\draw[hair] (6.60,-1.42) -- (13.55,-1.42);
+
+\node[anchor=north west, align=left, font=\scriptsize, inner sep=0pt]
+  at (6.60,-1.60) {%
+  \begin{tabular}{@{}l@{\hspace{1.2em}}l@{\hspace{1.2em}}l@{}}
+    at $\{0,2\}$ & $D[C]=\diag(\tfrac{17}{30},\tfrac16)$
+      & $\tfrac{17}{30}\cdot\tfrac7{17}=\tfrac7{30}$\\[2pt]
+    at $\{1,2\}$ & $D[C]=\diag(\tfrac1{10},\tfrac16)$
+      & $\tfrac1{10}\cdot1=\tfrac3{30}$\\[2pt]
+    at $\{2,3\}$ & $D[C]=\tfrac16I_2$
+      & $\tfrac16\cdot(-1)=-\tfrac16$\\
+  \end{tabular}\\[5pt]
+  at $t_0=0$: \ $D[\{0,2\}]=\diag(0,\tfrac16)$ is singular,\\
+  \phantom{at $t_0=0$: \ }%
+  $e_0\tp W[\{0,2\}]e_0=\tfrac45$ and $\ell_0=4/(5t_0)$ diverges,\\
+  \phantom{at $t_0=0$: \ }%
+  while $W[\{0,2\}]=\diag(\tfrac45,\tfrac13)$ and $G=\tfrac13$};
+
+\end{tikzpicture}

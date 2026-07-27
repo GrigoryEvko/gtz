@@ -42,18 +42,26 @@ The principle does prove a weaker bound \cite{GZT1997,GT2001}.
 Among the finitely many $k$-subsets choose one of maximal volume, that is
 one maximizing $\lvert\det U_C\rvert$.  It is nonsingular: by the
 Cauchy--Binet formula \cite[\S0.8.7]{HornJohnson2013}
-$\sum_{\lvert C\rvert=k}\lvert\det U_C\rvert^2=\det(U\adj U)=1$, so the
-volumes do not all vanish.  Put $B:=UU_C^{-1}$.  Replacing the
-$j$-th row of $U_C$ by the $r$-th row of $U$ replaces that row by its
-expansion $\sum_i B_{ri}(U_C)_i$ in the selected rows, since $BU_C=U$;
-expanding the determinant linearly in that row leaves only the term
-$i=j$, every other having a repeated row, so the new determinant is
-$B_{rj}\det U_C$.  For $r\notin C$ that determinant belongs to a genuine
-$k$-subset, and an entry of modulus greater than $1$ would name one of
-strictly larger volume; so maximality bounds those entries by $1$.  The
-rows of $B$ indexed by $C$ are $U_CU_C^{-1}=I_k$, so every entry of $B$
-has modulus at most $1$.  Those $k$ rows contribute exactly $k$ to the
-squared Frobenius norm and each of the other $m-k$ rows at most $k$, whence
+$\sum_{\lvert C\rvert=k}\lvert\det U_C\rvert^2=\det(U\adj U)=1$, and a
+finite family of nonnegative numbers summing to $1$ has a positive
+maximum.  Put $B:=UU_C^{-1}$, the matrix expressing each row of $U$ in the
+basis of the selected rows.  Replacing the $j$-th row of $U_C$ by the
+$r$-th row of $U$ replaces that row by its expansion $\sum_i B_{ri}(U_C)_i$
+in the selected rows, since $BU_C=U$.  Expand the determinant linearly in
+that row.  For $i\ne j$ the term carries the row $(U_C)_i$ in position $i$
+and again in position $j$, so it vanishes; only $i=j$ survives, and the new
+determinant is $B_{rj}\det U_C$.  For $r\notin C$ the matrix so formed
+carries, in some order, the rows of $U$ on the set obtained from $C$ by
+replacing its $j$-th index with $r$.  That set again has $k$ elements,
+since $r\notin C$, so an entry $B_{rj}$ of modulus greater than $1$ would
+name a $k$-subset of strictly larger volume.  Maximality therefore bounds
+$\lvert B_{rj}\rvert$ by $1$ at every $j$ and every $r\notin C$.  The
+remaining rows, those indexed by $C$, are $U_CU_C^{-1}=I_k$, since
+restriction to the rows $C$ commutes with multiplication on the right.
+The two cases exhaust the rows, so every entry of $B$ has modulus at most
+$1$.  Those $k$ rows contribute exactly $k$ to the squared Frobenius norm,
+and each of the other $m-k$ rows carries $k$ entries of modulus at most
+$1$ and so contributes at most $k$, whence
 \[
   \tr\bigl((U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\bigr)
   \;=\;\lVert U_C^{-1}\rVert_F^2
@@ -62,16 +70,25 @@ squared Frobenius norm and each of the other $m-k$ rows at most $k$, whence
 \]
 using $(U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}=U_C^{-1}(U_C^{-1})\adj$ at
 the first equality and $\lVert UX\rVert_F=\lVert X\rVert_F$ at the second.
-Moreover $I_k-U_C\adj U_C^{\vphantom{\mathsf{H}}}
-=\sum_{c\notin C}u_c^{\vphantom{\mathsf{H}}}u_c\adj\psd0$, so
-$(U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\psd I_k$, inversion reversing
-the Loewner order; a Hermitian $k\times k$ matrix dominating the identity
-has all its eigenvalues at least $1$ and so has largest eigenvalue at most
-its trace diminished by $k-1$.  Therefore
-$\lVert U_C^{-1}\rVert_2^2
+The row identity at $U$ and again at $U_C$ gives
+$I_k-U_C\adj U_C^{\vphantom{\mathsf{H}}}
+=\sum_{c\notin C}u_c^{\vphantom{\mathsf{H}}}u_c\adj\psd0$.  Inversion
+reverses the Loewner order between positive definite matrices, and
+$U_C\adj U_C^{\vphantom{\mathsf{H}}}$ is one because $U_C$ is nonsingular,
+so $(U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\psd I_k$.  A Hermitian
+$k\times k$ matrix dominating the identity has all its eigenvalues at least
+$1$.  Its largest eigenvalue is the trace less the other $k-1$, each of
+which is at least $1$, so it is at most the trace diminished by $k-1$.
+Therefore $\lVert U_C^{-1}\rVert_2^2
 =\lmax\bigl((U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\bigr)
-\le k+k(m-k)-(k-1)=k(m-k)+1$, so that
-$\SC=m\,U_C\adj U_C^{\vphantom{\mathsf{H}}}\psd\frac{m}{k(m-k)+1}I_k$.
+\le k+k(m-k)-(k-1)=k(m-k)+1$, and the two readings of a smallest singular
+value, $\lVert U_C^{-1}\rVert_2=\sigma_{\min}(U_C)^{-1}$ and
+$\sigma_{\min}(U_C)^2=\lmin(U_C\adj U_C^{\vphantom{\mathsf{H}}})$, carry
+the bound back to the subset sum:
+\[
+  \SC\;=\;m\,U_C\adj U_C^{\vphantom{\mathsf{H}}}
+  \;\psd\;\frac{m}{k(m-k)+1}\,I_k .
+\]
 
 The bound and the conjecture differ by a single term:
 \begin{equation}\label{eq:deficit}
@@ -79,17 +96,40 @@ The bound and the conjecture differ by a single term:
 \end{equation}
 a ring identity in the substitution $k=a+1$, $m-k=b+1$.  For $k\ge1$ and
 $m\ge k+1$ the deficit $(k-1)(m-k-1)$ vanishes precisely when $k=1$ or
-$m=k+1$, and is positive otherwise.  At $(m,k)=(7,3)$ it equals $6$: the
-principle delivers $\sigma_{\min}^2\ge1/13$ where $1/7$ is asked.  The
-classical argument therefore suffices exactly on the range
+$m=k+1$, and is positive otherwise.  The classical argument therefore
+suffices exactly on the range
 \begin{equation}\label{eq:elementary}
   k\le1\quad\text{or}\quad m\le k+1 .
 \end{equation}
+Figure~\ref{fig:deficit} draws the identity as an area and the deficit at
+every cell.
 
-Beyond \eqref{eq:elementary} the known cases are few, and all of them at
-uniform weights.  Nesterenko \cite{Nesterenko2023} settled $(m,k)=(4,2)$
-over $\R$ by an argument in Pl\"ucker coordinates, and reformulated the
-rank-two problem as an isoperimetric question for closed polygons
+At $(m,k)=(7,3)$ the deficit equals $6$: the principle delivers
+$\sigma_{\min}^2\ge1/13$ where $1/7$ is asked.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/deficit}
+  \caption{The identity \eqref{eq:deficit} at $(7,3)$, and the deficit over
+  the board of Figure~\ref{fig:board}.  Left: the $k\times(m-k)$ rectangle
+  with one cell adjoined, cut by its bottom row and its right column; the
+  hook so cut has $(m-k)+k-1=m-1$ cells, and with the adjoined cell it
+  numbers $m$, leaving the block of $(k-1)(m-k-1)$.  Below it, the
+  maximal-volume bound against the conjecture at the two cells that survive
+  at rank three; the ratio of the two denominators is $k-(k^2-1)/m$, which
+  at rank three is $3-8/m$ and grows with the size towards $k$.  Right: the
+  integer $(k-1)(m-k-1)$ at every cell of corank at least one; over $\C$ its
+  zeros are the cells at which selection succeeds and its positive entries
+  those at which it fails (Theorem~\ref{thm:complex}).  No design is
+  exhibited at either surviving cell, and nothing here asserts that the
+  classical bound is attained at one.}
+  \label{fig:deficit}
+\end{figure}
+
+Beyond \eqref{eq:elementary} the known cases are all at uniform weights.
+Nesterenko \cite{Nesterenko2023} settled $(m,k)=(4,2)$ over $\R$ by an
+argument in Pl\"ucker coordinates, and reformulated the rank-two problem
+as an isoperimetric question for closed polygons
 \cite{Nesterenko2024}; Sengupta and Pautov \cite{SenguptaPautov2026} then
 settled rank two over $\R$ for every $m$.  Nesterenko also described the
 equality locus at rank two over $\R$ \cite{Nesterenko2026real}, and built
@@ -137,18 +177,20 @@ else.
 
 No field-independent argument can settle the real conjecture.
 
-Over $\R$, rank two holds at
-every size (Theorem~\ref{thm:ranktwo}), corank one and corank two hold at
-every rank (Theorems~\ref{thm:corankone} and~\ref{thm:coranktwo}), and at
-each fixed rank the problem is finite: if $\Gtz(m,k)$ holds for all
-$m\le k(k+1)/2+1$ then it holds for all $m$ (Theorem~\ref{thm:window}).
+Over $\R$, rank two holds at every size (Theorem~\ref{thm:ranktwo}),
+corank one and corank two hold at every rank (Theorems~\ref{thm:corankone}
+and~\ref{thm:coranktwo}), and at each fixed rank the problem is finite: if
+$\Gtz(m,k)$ holds for all $m\le k(k+1)/2+1$ then it holds for all $m$
+(Theorem~\ref{thm:window}).
+
 That bound is one more than the dimension of the space of real symmetric
 $k\times k$ matrices, the size above which a support-reduction argument
-applied to \eqref{eq:parseval} starts to bite.  Rank three leaves the
-cells $(6,3)$ and $(7,3)$ (Corollary~\ref{cor:twocells}), and no symmetry
-reduces the pair further: $(6,3)$ is self-dual, and duality carries
-$(7,3)$ to $(7,4)$, again of corank three.  Figure~\ref{fig:board}
-records the state of the board.
+applied to \eqref{eq:parseval} starts to bite.
+
+Rank three leaves the cells $(6,3)$ and $(7,3)$
+(Corollary~\ref{cor:twocells}), and no symmetry reduces the pair further:
+$(6,3)$ is self-dual, and duality carries $(7,3)$ to $(7,4)$, again of
+corank three.  Figure~\ref{fig:board} records the state of the board.
 
 The threshold in \eqref{eq:dominate} is attained at every size
 $m\ge k+1$: there are designs in which some $k$-subset dominates and none
@@ -166,13 +208,14 @@ simplex, and by \eqref{eq:parseval} a vector may diverge as its weight
 tends to zero.  In the coordinates $(P,t)$ that space becomes the
 interior of a compact one, on which the objective
 $\max_{\lvert C\rvert=k}\lmin(W[C])$, $W=P-\diag(t)$, extends
-continuously.  The smaller cells discharge the added boundary points.
-Grant the same statement at $(m-1,k)$ and at $(m-1,k-1)$: then every point
-with a vanishing weight carries a dominating $k$-subset
+continuously.  Grant the same statement at $(m-1,k)$ and at $(m-1,k-1)$:
+then every point with a vanishing weight carries a dominating $k$-subset
 (Theorem~\ref{thm:boundary}), and if $\Gtz(m,k)$ fails the objective
 attains its minimum at an interior point, that is at a genuine weighted
-design (Theorem~\ref{thm:variational}).  At $(6,3)$ both hypotheses are theorems
-of \S\ref{sec:real}; at $(7,3)$ one of them is the cell $(6,3)$.
+design (Theorem~\ref{thm:variational}).
+
+At $(6,3)$ both hypotheses are theorems of \S\ref{sec:real}; at $(7,3)$
+one of them is the cell $(6,3)$.
 
 Rank three then reduces to excluding critical points below the threshold
 at the two surviving cells.  \S\ref{sec:interior} derives the system such
@@ -191,13 +234,14 @@ Theorem~\ref{thm:rankthree} is the only statement that carries it.
 Because the threshold is attained, and attained on a set of full dimension
 in the weights, no proof of $\Gtz$ can carry a uniform margin: for every
 $\varepsilon>0$ there are designs admitting no $k$-subset with
-$\SC\psd(1+\varepsilon)I_k$ (Corollary~\ref{cor:nomargin}).  That costs
-several familiar strategies.  An induction on the size or on the rank
-cannot transport a quantitative slack across a step, there being none to
-transport at the source.  A certificate for \eqref{eq:dominate}, whether a
-sum-of-squares identity, a dual multiplier, or a determinantal or
-interlacing bound, must be exact on the extremal locus, so any strategy
-whose output is a strict inequality fails at the outset.  A minimizing
+$\SC\psd(1+\varepsilon)I_k$ (Corollary~\ref{cor:nomargin}).
+
+An induction on the size or on the rank cannot transport a quantitative
+slack across a step, there being none to transport at the source.  A
+certificate for \eqref{eq:dominate}, whether a sum-of-squares identity, a
+dual multiplier, or a determinantal or interlacing bound, must be exact
+on the extremal locus, so any strategy whose output is a strict
+inequality fails at the outset.  A minimizing
 sequence cannot be handled term by term, since the identity available at a
 degenerate limit fails at every positive weight, however small
 (Theorem~\ref{thm:sharp}); hence the variational principle runs through a
@@ -264,10 +308,14 @@ $\tang$ & the tangent space & $\gph$ & a graph\\
 \medskip
 \noindent
 Transpose and adjoint are written $A^{\mathsf{T}}$ and $A^{\mathsf{H}}$,
-as in numerical linear algebra, and are set upright so that neither can be
-mistaken for a variable.  Over $\R$ the two agree; the paper writes
+as in numerical linear algebra.  Over $\R$ the two agree; the paper writes
 $\mathsf{T}$ in the sections that are real throughout and $\mathsf{H}$
 where the field is $\FF$, with no other decoration for either operation.
+
+Figure~\ref{fig:notation} labels eighteen of the table's twenty-six entries
+on the tetrahedron of Example~\ref{ex:tetra}.  The eight it does not reach
+are $\Sdual$, $F$ and $G$, $\cv$, $\Lambda$, $\lambda_i$, $\alpha$, $\tang$
+and $\gph$.
 
 \begin{figure}[ht]
   \centering
@@ -278,4 +326,27 @@ where the field is $\FF$, with no other decoration for either operation.
   by Theorem~\ref{thm:window} and Corollary~\ref{cor:dualcell}.  Over
   $\C$ the answer is $m\le k+1$ for every $k\ge2$.}
   \label{fig:board}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/notation}
+  \caption{The reserved notation at the tetrahedron of
+  Example~\ref{ex:tetra}.  Left: the design, with $C=\{0,1,2\}$ the shaded
+  face, $g_3$ the omitted atom, and the chart atom $v_c=\sqrt{t_c}\,g_c$
+  marked at half length on each arrow, where $\lVert v_c\rVert^2=s_c$.
+  Upper right: the two products of $M_C$ of \eqref{eq:twoproducts},
+  different matrices of one trace, one determinant and one spectrum; the
+  equivalence below them is Lemma~\ref{lem:flip} with Lemma~\ref{lem:chart},
+  and holds at the one selection size $\lvert C\rvert=k$ at which $M_C$ is
+  square.  Bottom: the chart of \eqref{eq:chart}, with the block $W[C]$
+  shaded; its determinant is taken directly and again through
+  Corollary~\ref{cor:minor}, and the same reading at the pair $\{0,1\}$
+  returns $\tfrac3{16}$, so the $3\times3$ minor vanishes and the
+  $2\times2$ one does not.  The strip on the right places the design at $m=4$ against the
+  window $\win(3)=7$ and rings the two cells of
+  Corollary~\ref{cor:twocells}.  Every weight, leverage and leverage score
+  is constant in $c$ here, so the plate carries no variation across the
+  atoms and no domination with positive slack.}
+  \label{fig:notation}
 \end{figure}

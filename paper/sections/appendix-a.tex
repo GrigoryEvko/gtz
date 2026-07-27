@@ -21,6 +21,27 @@ Domination of $C$ implies $\delta(C)\ge0$; we call $\delta$ the
   \gamma(C)\;:=\;4\det\Gram_C-\bigl(\tr\Gram_C-1\bigr)^2 ,
 \end{equation}
 a function of the first two moments of the spectrum of $\SC$ alone.
+Figure~\ref{fig:gallery} carries the nine strategies, their witnesses and the
+quantity that kills each.
+
+\begin{figure}[htbp]
+  \centering
+  \input{figures/gallery}
+  \caption{The nine strategies of this appendix.  The third column carries the
+  quantity that refutes each: a determinant leg, a deletion price, an infimum,
+  a $2\times2$ determinant, a least root, a two-moment discriminant, an
+  inertia, a volume maximizer and a least eigenvalue.  The four above the
+  second band fail wherever the selection inequality is an equality; the five
+  below fail at explicit witnesses, none of them through
+  Corollary~\ref{cor:nomargin}.  Two numbers here are computed in exact rational
+  arithmetic rather than in the kernel: $\delta(C)=-1$ at the maximizer of
+  $\pi_C$, whose gap matrix the development does fix, and
+  $\lvert\det M_C\rvert=12$ at the maximizer of the unweighted volume.  The
+  split $20$ and $15$ of the determinant legs at $(7,3)$ is kernel-checked,
+  though not by any declaration tagged on
+  Proposition~\ref{prop:noaggregate}.}
+  \label{fig:gallery}
+\end{figure}
 
 \subsection{Certificates with a uniform floor}\label{app:certificates}
 
@@ -56,7 +77,7 @@ Hence $\delta(C)\le0$ for all $35$ triples, and every nonnegative combination
 of the legs at $\dsn_{\triangle}$ is at most $0$.
 \end{proof}
 
-Any Positivstellensatz certificate in Putinar or Schmüdgen form yields, on
+Any Positivstellensatz certificate in Putinar or Schm\"udgen form yields, on
 evaluation at a design, exactly such a combination: its generators are the
 $-\delta(C)$, its coefficients the sums of squares evaluated there, and its
 floor the constant of the representation.  So:
@@ -446,7 +467,25 @@ for every score meeting its specification --- a specification that is both
 inhabited and categorical
 (\texttt{Gtz.is\allowbreak Least\allowbreak Eigenvalue\allowbreak Score\_\allowbreak least\allowbreak Eigenvalue},
 \texttt{Gtz.eq\_of\_\allowbreak is\allowbreak Least\allowbreak Eigenvalue\allowbreak Score}), so nothing is
-gained by reformulating the score.
+gained by reformulating the score.  Figure~\ref{fig:exchange} draws the twenty
+triples of the $(6,3)$ witness by exchange distance.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/exchange}
+  \caption{Bounded-radius exchange at $(6,3)$.  Left: the twenty triples by
+  exchange distance from the stuck $\{0,1,2\}$, in shells of $1$, $9$, $9$ and
+  $1$, with the ball of radius two shaded; the heavy path is the geodesic
+  $\{0,1,2\}$, $013$, $034$, $\{3,4,5\}$, one swap at each step.  Right: the
+  design, and the score axis, on which the hatched band is a ceiling over the
+  eighteen and not their values, which run off to its left.  The stuck triple
+  scores $576/625$, which is $49/625$ below the threshold, and the eighteen
+  others within two swaps score at most $512/625$, which is $64/625$ below the
+  stuck one; the only triple that dominates scores $4$ and lies three swaps away,
+  three being the rank.  So radius $k$ is global search and radius $k-1$ cannot
+  see the subset it needs.}
+  \label{fig:exchange}
+\end{figure}
 
 For the clipped trace --- the trace of $\SC$ with each eigenvalue replaced
 by its minimum with $1$, a score designed to reward partial progress --- the

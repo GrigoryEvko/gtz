@@ -239,6 +239,30 @@ remaining $15$ triples repeat a class and do not dominate, by
 Lemma~\ref{lem:parallel}.
 \end{example}
 
+Those fifteen share one spectrum,
+$\bigl\{0,\ (9-\sqrt{17})/2,\ (9+\sqrt{17})/2\bigr\}$: each carries two copies
+of one tetrahedron vertex and one other vertex, whatever the labels.
+Figure~\ref{fig:splitspec} puts all thirty-five on one axis.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/splitspec}
+  \caption{The split tetrahedron at $(7,3)$ of Example~\ref{ex:split}, and all
+  thirty-five of its triples on one eigenvalue axis.  Top left: the seven atoms
+  by direction class, three classes of two and one of one, each carrying total
+  weight $\tfrac14$; the count on the right runs over the resulting
+  multiplicities $(2,2,2,1)$.  Bottom left: both spectra on one axis with the
+  threshold dashed, the twenty triples that meet three directions on the upper
+  row and the fifteen that repeat one below, singular on the line orthogonal to
+  the two directions they carry.  Right: the multipliers of the stationarity
+  datum of Example~\ref{ex:splitseven}, positive and summing to one; they are
+  also the volume-sampling probabilities \eqref{eq:dpp} of the same triples,
+  $\pi_C=\bigl(\prod_{c\in C}t_c\bigr)\cdot16$.  The lower spectrum is computed
+  here, and of the three symmetric functions behind it the development carries
+  the first and the last.}
+  \label{fig:splitspec}
+\end{figure}
+
 \subsection{No margin}\label{sec:nomargin}
 
 \begin{corollary}[Lean]\label{cor:nomargin}
@@ -463,7 +487,8 @@ requires a separate treatment of $\dsn_{\Diamond}$, and of every extremal
 design not obtained by splitting a smaller one.  Whether the tetrahedron
 and the diamond generate the whole rank-three extremal locus is
 Problem~\ref{prob:structure}.  Figure~\ref{fig:diamond} shows the graph
-and its incidence vectors.
+and its incidence vectors, and Figure~\ref{fig:diamondcert} the certificate of
+the star and the two circuits.
 
 \begin{figure}[ht]
   \centering
@@ -475,6 +500,25 @@ and its incidence vectors.
   incidence vectors of \eqref{eq:drops}, pairwise non-proportional, whence
   the five atoms \eqref{eq:diamondatoms} are pairwise non-parallel.}
   \label{fig:diamond}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/diamondcert}
+  \caption{The certificate of the star at $(5,3)$, and the two circuits.  Left:
+  the zero sets of the two linear forms of \eqref{eq:diamondstar}, drawn in the
+  potential space; $Q_C$ vanishes where both do, on their common line, and
+  congruence by $R$ carries that inertia to $\SC-I_3$.  The witness $(1,4,0)$
+  of Example~\ref{ex:diamond} lies on that line, and the tally below the panel
+  is \eqref{eq:diamondgap} evaluated there.  Right: the two circuits
+  $\{e_0,e_1,e_3\}$ and $\{e_0,e_2,e_4\}$, each shaded on its vertex set; a
+  potential constant there kills the three selected drops and leaves the two
+  edges of the cut, of conductance $3$ and drop $1$ apiece.  That eight of the
+  ten $3$-subsets dominate, each with a one-dimensional kernel and the eight
+  null lines pairwise distinct, is computed here; Example~\ref{ex:diamond}
+  needs one dominating subset and the ten nonpositive values, and the
+  development proves no more.}
+  \label{fig:diamondcert}
 \end{figure}
 
 \subsection{Volume sampling}\label{sec:averaging}
@@ -716,7 +760,27 @@ Proposition~\ref{prop:qone} requires; and the least root of $q$ sits
 at the threshold.  Meanwhile
 $\E_\pi[\SC]=\tfrac34\sum_cg_c^{\vphantom{\mathsf{T}}}g_c\tp=3I_3$ while
 $\max_C\lmin(\SC)=1$: the average clears the threshold by a factor of
-three, and no triple exceeds it.
+three, and no triple exceeds it.  Figure~\ref{fig:mixture} draws the measure,
+the spectra and the mixture.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/mixture}
+  \caption{Volume sampling at the tetrahedron of Example~\ref{ex:tetra}.  Left:
+  the measure \eqref{eq:dpp} on the four triples as a bar of mass one, and below
+  it one row per atom hatching the triples that contain it, so that the hatched
+  mass is the marginal of Lemma~\ref{lem:marginal}.  Right: the common spectrum
+  of the four triples, the spectrum of the average, and the mixture
+  \eqref{eq:mixture} over its own baseline, whose root at the threshold
+  Proposition~\ref{prop:qone} forces at a totally tight design.  The two rows
+  put Theorem~\ref{thm:average} and Corollary~\ref{cor:nomargin} at one design.
+  The common spectrum and the mixture are mechanized.  The four masses, the
+  marginals hatched below them and the average's own spectrum are not: the
+  development carries the masses only through their sum, and
+  Lemma~\ref{lem:marginal}, which names the average, is a hypothesis there
+  rather than a theorem.}
+  \label{fig:mixture}
+\end{figure}
 
 \begin{remark}\label{rem:interlace}
 Only the identities above have been used; three nearby statements do

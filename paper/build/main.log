@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.31)  27 JUL 2026 09:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.31)  27 JUL 2026 14:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1186,9 +1186,9 @@ ps/lm/lm-mathsy.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc
 }{/usr/share/texlive/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
 pdfTeX warning (font expansion): font should be expanded before its first use
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 70.
+(Font)              <10.95> on input line 71.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 70.
+(Font)              <8> on input line 71.
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
@@ -1199,99 +1199,122 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \openout5 = `main.toc'.
 
 
-(./sections/01-intro.tex [2] [3] [4]
-Underfull \vbox (badness 4266) has occurred while \output is active []
-
- [5]
-(./figures/board.tex)) (./sections/02-first.tex [6] [7] [8]
-(./figures/tetrahedron.tex
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 35.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 35.
-
+(./sections/01-intro.tex [2] [3] (./figures/deficit.tex
 pdfTeX warning (font expansion): font should be expanded before its first use
-) [9] (./figures/tetragap.tex)) (./sections/03-chart.tex [10] [11]
-(./figures/chart.tex) [12] [13] [14] [15] (./figures/duality.tex) [16]
-(./figures/rankoneball.tex) [17] [18] (./figures/jensen.tex))
-(./sections/04-complex.tex [19] [20] [21] (./figures/bloch.tex) [22] [23]
-[24] [25] (./figures/hesse.tex) [26] [27]) (./sections/05-real.tex [28]
-[29] [30] [31] [32] (./figures/regression.tex) [33] [34] (./figures/psdcone.tex
-) [35] [36] (./figures/ladder.tex)) (./sections/06-ties.tex [37] [38] [39]
-[40] (./figures/section.tex) [41] [42] (./figures/diamond.tex) [43] [44]
-[45]) (./sections/07-compactness.tex [46] (./figures/twosimplices.tex) [47]
-[48] [49] [50] [51] (./figures/boundary.tex) [52] [53] [54]
-(./figures/sharp.tex) [55]) (./sections/08-interior.tex [56] [57]
-(./figures/spectraplex.tex) [58] [59] [60] (./figures/quadric.tex) [61]
-[62] [63] [64]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 7
-06.
- (/usr/share/texlive/texmf-dist/tex/latex/lm/t1lmtt.fd
+) [4] [5]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [6]
+(./figures/board.tex) (./figures/notation.tex
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 104.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 104.
+)) (./sections/02-first.tex
+[7] [8] [9] [10] (./figures/witness.tex) (./figures/octaspec.tex) [11]
+(./figures/tetrahedron.tex) (./figures/tetragap.tex) (./figures/tetracert.tex))
+(./sections/03-chart.tex [12] [13] [14] [15] (./figures/chart.tex) [16]
+[17] (./figures/chartworked.tex) [18] [19] [20] [21] (./figures/duality.tex)
+[22] (./figures/dualworked.tex) [23] [24] (./figures/rankoneball.tex) [25]
+[26] (./figures/jensen.tex)) (./sections/04-complex.tex [27] [28]
+(./figures/bloch.tex) [29] [30] (./figures/padding.tex) [31] [32] [33]
+(./figures/hesse.tex) [34] [35] (./figures/phasedefect.tex)
+(./figures/constants.tex)) (./sections/05-real.tex [36] [37] [38]
+(./figures/lightdelete.tex) [39] [40] (./figures/obstruction.tex) [41] [42]
+[43] (./figures/regression.tex) [44] [45] (./figures/psdcone.tex)
+(./figures/crystal.tex) [46]
+Underfull \vbox (badness 3158) has occurred while \output is active []
+
+ [47]
+[48] (./figures/ladder.tex)) (./sections/06-ties.tex [49] [50] [51]
+(./figures/splitspec.tex) [52] (./figures/section.tex) [53] [54] [55]
+(./figures/diamond.tex) (./figures/diamondcert.tex) [56] [57] [58]
+(./figures/mixture.tex)) (./sections/07-compactness.tex [59] [60]
+(./figures/twosimplices.tex) [61] [62] [63] [64] (./figures/objectives.tex)
+[65] [66] [67] (./figures/boundary.tex) [68] [69] [70]
+(./figures/boundarytrace.tex) (./figures/sharp.tex))
+(./sections/08-interior.tex [71] [72] [73] [74] (./figures/spectraplex.tex)
+[75] (./figures/kktassembly.tex
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
+68.
+
+(/usr/share/texlive/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- [65]
-[66] [67] (./figures/census.tex) [68]) (./sections/09-formalization.tex
-[69] [70] [71] [72] [73] [74]) (./sections/10-open.tex [75]
+) [76] [77]
+(./figures/quadric.tex) [78] [79] [80] [81] [82] [83] [84]
+(./figures/census.tex) (./figures/exclusionreach.tex) [85] [86])
+(./sections/09-formalization.tex [87] [88] [89] [90] [91] [92])
+(./sections/10-open.tex [93]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [76]
-[77]) (./sections/appendix-a.tex [78] [79] [80] [81] [82]
-Underfull \hbox (badness 1383) in paragraph at lines 475--485
+ [94]
+Underfull \vbox (badness 4765) has occurred while \output is active []
+
+ [95])
+(./sections/appendix-a.tex (./figures/gallery.tex) [96] [97] [98] [99] [100]
+[101] (./figures/exchange.tex) [102]
+Underfull \hbox (badness 1383) in paragraph at lines 514--524
 \T1/lmr/m/n/10.95 (+20) (\T1/lmtt/m/n/10.95 Gtz.shadowDeterminant_eq_weightProd
 uct_mul_detSq\T1/lmr/m/n/10.95 (+20) ), the nor-mal-iza-tion $[][] \OML/lmm/m/i
 t/10.95 ^^Y[] \OT1/lmr/m/n/10.95 (+20) = 1$
  []
 
-[83]) (./sections/appendix-b.tex [84] [85] [86] [87] [88] (./figures/icosa.tex)
-) (build/main.bbl [89] [90]) [91] (build/main.aux)
+[103]) (./sections/appendix-b.tex [104] [105] [106] [107]
+(./figures/bundledcycle.tex) [108] [109] (./figures/icosa.tex)
+(./figures/icosaspec.tex) [110]) (build/main.bbl [111]) [112] (build/main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 45FE329160C6084628CE78D478CF3110;14187.
+(rerunfilecheck)             Checksum: F33679A3D8E19B36F7515850AF5FFA7C;14369.
  ) 
 Here is how much of TeX's memory you used:
- 45590 strings out of 467363
- 1038435 string characters out of 5419001
- 1847891 words of memory out of 6000000
- 72764 multiletter control sequences out of 15000+600000
- 756386 words of font info for 360 fonts, out of 8000000 for 9000
+ 47579 strings out of 467363
+ 1077052 string characters out of 5419001
+ 1912079 words of memory out of 6000000
+ 74611 multiletter control sequences out of 15000+600000
+ 760212 words of font info for 371 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
- 102i,14n,107p,1171b,2303s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 102i,16n,107p,1638b,2319s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/share/t
-exlive/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/lm/lmcsc10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/lm/lmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmmi1
-0.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/lm/lmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/lm/lmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmr10
-.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/share
-/texlive/texmf-dist/fonts/type1/public/lm/lmr5.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/lm/lmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
-blic/lm/lmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmr8.pfb>
-</usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmr9.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/public/lm/lmri8.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/lm/lmri9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmss10.pfb>
-</usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmss8.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/lm/lmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/lm/lmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmsy9.pfb>
-</usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/lm/lmtt9.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/symbols/msam7.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on build/main.pdf (91 pages, 1170643 bytes).
+exlive/texmf-dist/fonts/type1/public/lm/lmbx8.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/lm/lmbx9.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/lm/lmcsc10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmex10
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/lm/lmmi5.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/lm/lmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/lm/lmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmmi8
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmmi9.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/share/texlive/texmf-d
+ist/fonts/type1/public/lm/lmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/lm/lmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmr6.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/lm/lmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/lm/lmri10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmri8.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmri9.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/lm/lmss10.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/lm/lmss8.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
+c/lm/lmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmsy6.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/lm/lmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
+c/lm/lmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmtt8.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/lm/lmtt9.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/share/texlive
+/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
+Output written on build/main.pdf (112 pages, 1476063 bytes).
 PDF statistics:
- 2585 PDF objects out of 2984 (max. 8388607)
- 2365 compressed objects within 24 object streams
- 475 named destinations out of 1000 (max. 500000)
- 64753 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 2958 PDF objects out of 2984 (max. 8388607)
+ 2703 compressed objects within 28 object streams
+ 524 named destinations out of 1000 (max. 500000)
+ 66809 words of extra memory for PDF output out of 74296 (max. 10000000)
 

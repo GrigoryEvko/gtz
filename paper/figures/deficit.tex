@@ -1,0 +1,196 @@
+% The deficit (k-1)(m-k-1) of eq:deficit, as an area at (7,3) and as an integer
+% board.  Left, upper: the k by (m-k) rectangle with one cell adjoined, cut into
+% the deficit block and the rest.  Left, lower: the two thresholds at the cells
+% left open at rank three.  Right: the deficit on the board of figures/board.tex.
+%
+% There is no projection: every panel is plane and every length is an exact
+% rational multiple of a stated unit.
+%
+% AREA PANEL, (m,k) = (7,3), cell side 0.88cm, upper left corner (1.05, 3.70).
+% The rectangle is k = 3 rows by m - k = 4 columns, so its cells number
+% k(m-k) = 12, and one further cell is drawn detached in the row of its bottom
+% row, making k(m-k) + 1 = 13 in all.  Cut the rectangle by its bottom row and
+% its right column:
+%   the bottom row has m - k = 4 cells, the right column has k = 3, and they
+%   share the corner, so together they are (m-k) + k - 1 = m - 1 = 6 cells;
+%   what is left is the top-left block of k - 1 = 2 rows and m - k - 1 = 3
+%   columns, which is (k-1)(m-k-1) = 6 cells.
+% Hence 12 + 1 = (6 + 1) + 6, that is k(m-k) + 1 = m + (k-1)(m-k-1) = 13.  The
+% hook and the detached cell -- the m cells -- are filled black!12; the block is
+% hatched.  Coordinates: rectangle x 1.05..4.57, y 1.06..3.70; block x
+% 1.05..3.69, y 1.94..3.70; hook = the row y 1.06..1.94 together with the column
+% x 3.69..4.57; detached cell x 5.17..6.05, y 1.06..1.94.
+% The identity is a ring identity in the substitution k = a+1, m-k = b+1, where
+% it reads (a+1)(b+1) + 1 = (a+1) + (b+1) + ab; the cut above is that expansion
+% drawn.
+%
+% THRESHOLD PANEL.  At a cell (m,k) the maximal-volume count gives
+% sigma_min(U_C)^2 >= 1/(k(m-k)+1) and the conjecture asks 1/m.  Exact values:
+%   (6,3): k(m-k)+1 = 3*3+1 = 10, so 1/10 against 1/6, a ratio of 10/6 = 5/3;
+%   (7,3): k(m-k)+1 = 3*4+1 = 13, so 1/13 against 1/7, a ratio of 13/7.
+% The axis carries sigma_min^2 under the affine map X = 0.95 + 32(v - 0.06)cm,
+% that is X = 32v - 97/100.  Every other length in this figure is exact as
+% written; the four marks are the only coordinates printed as truncations, and
+% each is given below with the rational it truncates:
+%   v = 1/13 -> X = 1939/1300 = 1.4915,  v = 1/10 -> X =  223/100 = 2.2300,
+%   v = 1/7  -> X = 2521/700  = 3.6014,  v = 1/6  -> X = 1309/300 = 4.3633,
+% and the axis runs from v = 0.06 to v = 0.175, that is X = 0.95 to X = 4.63.
+% The origin is off the axis; the panel compares two pairs of values and no
+% length on it is meant to be read against zero.
+%
+% BOARD PANEL.  The geometry of figures/board.tex, unaltered: the cell (m,k) is
+% the unit square with lower left corner (m-1, k-1) and the unit is 6.1mm; the
+% board is shifted to (9.70, 0.62).  Entries, computed as (k-1)(m-k-1) for
+% m >= k+1:
+%   k=1: 0 0 0 0 0 0 0 0        (m = 2..9)
+%   k=2: 0 1 2 3 4 5 6          (m = 3..9)
+%   k=3: 0 2 4 6 8 10           (m = 4..9)
+%   k=4: 0 3 6 9 12             (m = 5..9)
+%   k=5: 0 4 8 12               (m = 6..9)
+% A zero entry is filled black!12.  For k >= 1 and m >= k+1 the product vanishes
+% precisely when k = 1 or m = k+1, which is eq:elementary.
+%
+% DISCRETIONARY CHOICES.  (i) The diagonal m = k carries corank zero, where the
+% identity still holds in the integers -- it reads 1 = k - (k-1) -- but with a
+% negative second term; those cells carry a dot and no entry, and the panel
+% states the deficit only for m >= k+1.  (ii) The cells m < k take the dotted
+% frame of figures/board.tex, where they mark the absence of a design.
+% (iii) The two open cells are ringed with the 0.9pt frame of that figure but
+% keep their entries, so the ring replaces its centre dot rather than joining it.
+%
+% DISCLOSED.  The threshold panel draws the CLASSICAL bound and the CONJECTURED
+% one, not a computed least singular value at any design: no design is exhibited
+% at either cell, and nothing on the panel asserts that the classical bound is
+% attained there.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  cellline/.style={draw=black!45, line width=0.25pt},
+  border/.style={draw=black!85, line width=0.5pt},
+  dim/.style={{Bar[width=1.4mm]}-{Bar[width=1.4mm]}, line width=0.4pt,
+              black!70},
+  nodesign/.style={draw=black!25, line width=0.25pt,
+                   dash pattern=on 0.5pt off 0.7pt},
+  every node/.style={font=\small}]
+
+% ==================== the identity as area, at (7,3) =====================
+% the deficit block, hatched
+\path[pattern=north east lines, pattern color=black!45]
+  (1.05,1.94) rectangle (3.69,3.70);
+% the hook: the bottom row and the right column
+\path[fill=black!12] (1.05,1.06) rectangle (4.57,1.94);
+\path[fill=black!12] (3.69,1.06) rectangle (4.57,3.70);
+% the twelve cells of the rectangle
+\foreach \gi in {0,...,4}{\draw[cellline] ({1.05+0.88*\gi},1.06)
+                                       -- ({1.05+0.88*\gi},3.70);}
+\foreach \gj in {0,...,3}{\draw[cellline] (1.05,{1.06+0.88*\gj})
+                                       -- (4.57,{1.06+0.88*\gj});}
+\draw[border] (1.05,1.06) rectangle (4.57,3.70);
+% the adjoined cell
+\path[fill=black!12] (5.17,1.06) rectangle (6.05,1.94);
+\draw[border] (5.17,1.06) rectangle (6.05,1.94);
+\node[font=\footnotesize, anchor=south, inner sep=3pt] at (5.61,1.96) {$+1$};
+
+\draw[dim] (1.05,3.90) -- (4.57,3.90);
+\node[anchor=south, font=\footnotesize, inner sep=1.5pt] at (2.81,3.92)
+  {$m-k=4$};
+\draw[dim] (0.85,1.06) -- (0.85,3.70);
+\node[anchor=east, font=\footnotesize, inner sep=2pt] at (0.81,2.38) {$k=3$};
+
+\node[align=center, font=\scriptsize, inner sep=0pt] at (2.37,2.82)
+  {$(k-1)(m-k-1)$\\[3pt] $=2\cdot3=6$};
+
+\node[anchor=north west, align=left, font=\footnotesize, inner sep=0pt]
+  at (0.30,0.84)
+  {$k(m-k)+1\;=\;13\;=\;7+6\;=\;m+(k-1)(m-k-1)$\\[3pt]
+   shaded, $m=7$ cells; \ hatched, the deficit, $6$ cells};
+
+% ============= the two thresholds at the surviving cells =================
+\node[anchor=east, font=\scriptsize, inner sep=2pt] at (0.90,-0.42)
+  {$(7,3)$};
+\path[pattern=north east lines, pattern color=black!35]
+  (1.4915,-0.51) rectangle (3.6014,-0.33);
+\draw[border] (1.4915,-0.51) rectangle (3.6014,-0.33);
+\node[anchor=west, font=\scriptsize, inner sep=3pt] at (3.6014,-0.42)
+  {$\tfrac{13}{7}$};
+
+\node[anchor=east, font=\scriptsize, inner sep=2pt] at (0.90,-0.82)
+  {$(6,3)$};
+\path[pattern=north east lines, pattern color=black!35]
+  (2.2300,-0.91) rectangle (4.3633,-0.73);
+\draw[border] (2.2300,-0.91) rectangle (4.3633,-0.73);
+\node[anchor=west, font=\scriptsize, inner sep=3pt] at (4.3633,-0.82)
+  {$\tfrac53$};
+
+\draw[line width=0.5pt, black!70] (0.95,-1.14) -- (4.63,-1.14);
+\foreach \xx/\lab in {1.4915/{\tfrac1{13}}, 2.2300/{\tfrac1{10}},
+                      3.6014/{\tfrac17}, 4.3633/{\tfrac16}}{%
+  \draw[line width=0.5pt] (\xx,-1.14) -- (\xx,-1.22);
+  \node[anchor=north, font=\scriptsize, inner sep=2.5pt] at (\xx,-1.22)
+    {$\lab$};}
+\node[anchor=west, font=\scriptsize, inner sep=2pt] at (4.65,-1.14)
+  {$\sigma_{\min}^{2}$};
+
+\node[anchor=north west, align=left, font=\scriptsize, inner sep=0pt]
+  at (0.30,-1.88)
+  {left end: the maximal-volume bound $1/(k(m-k)+1)$; right end: the\\[3pt]
+   conjecture, $1/m$; at the right, the ratio of the two denominators};
+
+% ======================= the deficit on the board ========================
+% cell (m,k) is the unit square with lower left corner (m-1,k-1), unit 6.1mm
+\begin{scope}[shift={(9.70,0.62)}, x=6.1mm, y=6.1mm]
+  % k = 1, every entry zero
+  \foreach \m in {2,...,9}{%
+    \path[fill=black!12] (\m-1,0) rectangle ++(1,1);
+    \draw[cellline] (\m-1,0) rectangle ++(1,1);
+    \node[font=\scriptsize, inner sep=1pt] at (\m-0.5,0.5) {0};}
+  % k = 2..5, entry (k-1)(m-k-1) where m >= k+1
+  \foreach \k in {2,3,4,5}{%
+    \foreach \m in {1,...,9}{%
+      \pgfmathtruncatemacro{\dd}{(\k-1)*(\m-\k-1)}
+      \ifnum\m<\k\relax
+        \path[nodesign] (\m-1,\k-1) rectangle ++(1,1);
+      \else
+        \ifnum\m=\k\relax
+          \draw[cellline] (\m-1,\k-1) rectangle ++(1,1);
+          \fill[black!45] (\m-0.5,\k-0.5) circle[radius=0.35mm];
+        \else
+          \ifnum\dd=0\relax
+            \path[fill=black!12] (\m-1,\k-1) rectangle ++(1,1);
+          \fi
+          \draw[cellline] (\m-1,\k-1) rectangle ++(1,1);
+          \node[font=\scriptsize, inner sep=1pt] at (\m-0.5,\k-0.5) {\dd};
+        \fi
+      \fi}}
+  % the cell m = k = 1
+  \draw[cellline] (0,0) rectangle ++(1,1);
+  \fill[black!45] (0.5,0.5) circle[radius=0.35mm];
+  % the two cells left open at rank three
+  \draw[line width=0.9pt] (5,2) rectangle ++(2,1);
+
+  \foreach \m in {1,...,9}{%
+    \node[font=\scriptsize, anchor=north, inner sep=2pt] at (\m-0.5,-0.12)
+      {\m};}
+  \foreach \k in {1,...,5}{%
+    \node[font=\scriptsize, anchor=east, inner sep=2pt] at (-0.12,\k-0.5)
+      {\k};}
+  \node[anchor=north, font=\footnotesize] at (4.5,-0.85) {size $m$};
+  \node[rotate=90, anchor=south, font=\footnotesize] at (-0.95,2.5)
+    {rank $k$};
+\end{scope}
+
+\node[anchor=north west, align=left, font=\scriptsize, inner sep=0pt]
+  at (0.30,-2.90)
+  {$(k-1)(m-k-1)$ on the board of Figure~\ref{fig:board}.  Shaded: the zeros,
+     that is \eqref{eq:elementary}, where the\\[3pt]
+   maximal-volume count already proves the conjecture.  Among the cells of
+     corank at least one those\\[3pt]
+   are exactly the cells at which $\GtzC$ holds (Theorem~\ref{thm:complex});
+     at every positive entry it fails.};
+
+\node[anchor=north west, align=left, font=\scriptsize, inner sep=0pt]
+  at (10.20,-0.55)
+  {Ringed: $(6,3)$ and $(7,3)$.\\[3pt]
+   Dot: $m=k$, corank zero.\\[3pt]
+   Dotted: $m<k$, no design (Lemma~\ref{lem:span}).};
+
+\end{tikzpicture}

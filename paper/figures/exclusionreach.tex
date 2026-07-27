@@ -1,0 +1,199 @@
+% What the exclusions of Section 8.6 reach, against the (6,3) census of
+% Proposition prop:census.  A bar chart in two registered panels and a ledger;
+% no projection, the coordinate system being the two pgfplots axes and, for the
+% closing row, a translate of the lower axis.
+%
+% REGISTRATION.  Both axes are 12.6cm by (3.5cm, 1.5cm) with scale only axis,
+% xmin = -0.7, xmax = 20.7 and xtick 0,...,20, so a column at cardinality j
+% sits at the same abscissa in both; the lower axis is placed at
+% (pop.below south west) with anchor north west and yshift -5mm.  Only the
+% lower axis carries x tick labels; each carries its own y ticks, on its own
+% scale, which is why the two panels may not be read against one another
+% vertically.  The closing row is a scope translated to
+% (exc.below south west) + (0, -0.62), with its own cm coordinates.
+%
+% THE DATA.  Every number below was computed twice in exact integer arithmetic,
+% once by orbit enumeration of the 2^20 families of triples of {1,...,6} under
+% the 720 relabellings by union-find, and once from Burnside's lemma with the
+% inclusion-exclusion over avoided point-cycles that the proof of
+% prop:census states.  The two agree.
+%
+%   UPPER PANEL, the population: N_j, the covering classes, from
+%   Table tab:census.
+%     j    2   3   4   5   6   7   8   9  10  11  12  13  14  15
+%     N_j  1   3  15  37  88 157 247 311 351 312 249 161  94  43
+%     j   16  17  18  19  20
+%     N_j 21   7   3   1   1        total 2102
+%
+%   LOWER PANEL, the excluded, on its own scale.
+%     fail to cover (Lemma lem:overlap(iv)), by cardinality j = 0,...,10:
+%       1, 1, 2, 4, 6, 6, 6, 4, 2, 1, 1                    total 34
+%     an index in every member (Proposition prop:saturated), j = 3,...,10:
+%       1, 4, 5, 5, 4, 2, 1, 1                             total 23
+%   The two are disjoint: a saturated family covers by construction of the
+%   count, and a non-covering class is not counted among the 23.
+%   Ledger: 2136 = 34 + 23 + 2079, and 2136 - 34 = 2102 is the census total.
+%   Of the 2102, the Caratheodory bound eq:carath discards the 33 classes with
+%   more than fifteen members (21 + 7 + 3 + 1 + 1), leaving 2069.
+%
+% THE GRAPH READING, both halves.  Fix a saturated family and the index c in
+% every member: each member is c together with a 2-subset of the other five
+% points, so the family IS a graph on those five vertices, and covering says
+% exactly that no vertex is isolated.  There are 23 such graphs up to
+% isomorphism, with 3, 4, ..., 10 edges in the multiplicities 1, 4, 5, 5, 4, 2,
+% 1, 1; the check g(5) = 34 = 1 + 0 + 1 + 2 + 7 + 23 against the numbers of
+% graphs on 0,...,5 vertices with no isolated vertex closes it.  A family that
+% fails to cover misses a point, so it is a family of triples of the remaining
+% five, and a triple of a 5-set is the complement of a pair: that family too is
+% a graph on five vertices, now with no condition.  There are 34 of those, with
+% 0, 1, ..., 10 edges in the multiplicities 1, 1, 2, 4, 6, 6, 6, 4, 2, 1, 1 --
+% which is the lower panel's first series, computed independently.
+%   The two members drawn in the closing row are the EXTREMES of the 23, at the
+% least and the greatest edge count the series carries.  They are NOT the only
+% ones alone in their column: the multiplicities 1, 4, 5, 5, 4, 2, 1, 1 hit 1 at
+% three places, j = 3, 9 and 10, the ninth being the complement of a single
+% edge.  At 3 edges the degree sequence must be (2,1,1,1,1), so the graph is a
+% path on three vertices beside an edge, P_3 + K_2; at 10 edges it is the
+% complete graph K_5, whose family is the ten triples through one index.
+%
+% THE KEY sits at abscissae 12.1 to 20.6 of the lower panel, which no
+% exclusion reaches: the last excluded class has ten members.
+%
+% PENTAGON GLYPHS.  Five vertices at radius 0.42cm and angles 90 + 72k degrees:
+%   P0 = (  0.00000,  0.42000)      P1 = ( -0.39944,  0.12979)
+%   P2 = ( -0.24687, -0.33979)      P3 = (  0.24687, -0.33979)
+%   P4 = (  0.39944,  0.12979)
+% Left glyph: P0P1, P0P2, P3P4.  Right glyph: all ten pairs.
+%
+% CLOSING ROW, in the translated frame.  The ledger is a block of width 88mm
+% anchored north west at the origin.  The two glyphs are centred at
+% (10.35, -0.72) and (12.30, -0.72), each labelled at (0, -0.52) of its own
+% frame, and the line naming them is centred at (11.32, -1.60) over 42mm.  The
+% key of the lower panel sits at abscissae 12.1 to 12.6 of that axis, its two
+% swatches spanning the ordinates 4.9 to 6.5 and 1.4 to 3.0, with the text
+% anchored west at 12.9.
+%
+% DISCLOSED: THE BARS ARE NOT VERIFIED DATA.  Proposition prop:census and
+% Proposition prop:carath carry no tag and no declaration; both are external
+% enumerations.  What is kernel-checked is the three criteria the panels apply
+% -- Gtz.exists_mem_activeSubset_of_isQuadricStationaryData for coverage,
+% Gtz.one_le_value_of_saturatedAtom for the common index, and
+% Gtz.three_le_card_activeSubsetImage_or_dependentPartition_sixThree for the
+% (6,3) disjunction -- and the first of these is the weaker form recorded in
+% Section 9.3: it produces an active index containing the atom, not the
+% refinement of Lemma lem:overlap(iv) with a positive multiplier and a nonzero
+% overlap.  All three are in the ledger Gtz/Audit.lean.
+\begin{tikzpicture}
+% ================= upper panel: the census of prop:census =================
+\begin{axis}[
+  name=pop,
+  width=12.6cm, height=3.5cm, scale only axis,
+  ybar, bar width=3.4mm,
+  xmin=-0.7, xmax=20.7, ymin=0, ymax=395,
+  xtick={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20},
+  xticklabels={},
+  ytick={0,100,200,300},
+  ylabel={classes under $S_6$},
+  ylabel style={font=\small},
+  tick label style={font=\scriptsize},
+  axis lines=left,
+  every axis plot/.append style={bar shift=0pt},
+  clip=false]
+
+\addplot[draw=black, line width=0.4pt, fill=black!12]
+  coordinates {(2,1) (3,3) (4,15) (5,37) (6,88) (7,157) (8,247) (9,311)
+               (10,351) (11,312) (12,249) (13,161) (14,94) (15,43)
+               (16,21) (17,7) (18,3) (19,1) (20,1)};
+
+\draw[dashed, line width=0.7pt] (axis cs:15.5,0) -- (axis cs:15.5,345);
+\node[font=\scriptsize, anchor=north east, align=right]
+  at (axis cs:20.5,392)
+  {$2102$ covering classes; \eqref{eq:carath}\\ discards the last $33$};
+\node[font=\scriptsize, anchor=south] at (axis cs:10,353) {$351$};
+\end{axis}
+
+% ================= lower panel: what the exclusions take ==================
+\begin{axis}[
+  name=exc,
+  at={(pop.below south west)}, anchor=north west, yshift=-5mm,
+  width=12.6cm, height=1.5cm, scale only axis,
+  ybar, bar width=1.8mm,
+  xmin=-0.7, xmax=20.7, ymin=0, ymax=7,
+  xtick={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20},
+  ytick={0,3,6},
+  xlabel={cardinality $\lvert A^{+}\rvert$ of the family},
+  ylabel={excluded},
+  xlabel style={font=\small}, ylabel style={font=\small},
+  tick label style={font=\scriptsize},
+  axis lines=left,
+  nodes near coords,
+  nodes near coords style={font=\tiny, inner sep=1.2pt},
+  clip=false]
+
+\addplot[draw=black, line width=0.4pt, fill=black!25, bar shift=-1.0mm,
+         nodes near coords={}]
+  coordinates {(0,1) (1,1) (2,2) (3,4) (4,6) (5,6) (6,6) (7,4) (8,2)
+               (9,1) (10,1)};
+\addplot[draw=black, line width=0.4pt, fill=black!55, bar shift=1.0mm]
+  coordinates {(3,1) (4,4) (5,5) (6,5) (7,4) (8,2) (9,1) (10,1)};
+
+% ---- the key, in the half of the panel the exclusions never reach -------
+\draw[draw=black, line width=0.4pt, fill=black!25]
+  (axis cs:12.1,4.9) rectangle (axis cs:12.6,6.5);
+\node[font=\scriptsize, anchor=west, align=left] at (axis cs:12.9,5.7)
+  {fails to cover: $34$, Lemma~\ref{lem:overlap}(iv)};
+\draw[draw=black, line width=0.4pt, fill=black!55]
+  (axis cs:12.1,1.4) rectangle (axis cs:12.6,3.0);
+\node[font=\scriptsize, anchor=west, align=left] at (axis cs:12.9,2.2)
+  {an index in every member: $23$,\\ Proposition~\ref{prop:saturated}};
+\end{axis}
+
+% ================= the ledger and the two extreme graphs ==================
+\begin{scope}[shift={($(exc.below south west)+(0,-0.62)$)}]
+
+\node[font=\scriptsize, anchor=north west, align=left, text width=88mm,
+      inner sep=0pt] at (0,0)
+  {$2136$ classes in all: $34$ fail to cover and $23$ have an index in every
+   member, so $2079$ survive, one of them the two-block partition that
+   Corollary~\ref{cor:e3} leaves undecided.  Both excluded families are graphs
+   on five vertices.  Fix the shared index: a saturated family is that index
+   together with an edge on the other five, and covering says no vertex is
+   isolated.  A family that misses a point is a family of triples of the other
+   five, and a triple there is the complement of a pair.  The share $s_j/N_j$
+   falls from $1/3$ at $j=3$ to $1/351$ at $j=10$.};
+
+% ---- the two extreme saturated classes ----------------------------------
+\begin{scope}[shift={(10.35,-0.72)}]
+  \draw[line width=0.5pt]
+    ( 0.00000, 0.42000) -- (-0.39944, 0.12979)
+    ( 0.00000, 0.42000) -- (-0.24687,-0.33979)
+    ( 0.24687,-0.33979) -- ( 0.39944, 0.12979);
+  \foreach \px/\py in {0.00000/0.42000, -0.39944/0.12979, -0.24687/-0.33979,
+                       0.24687/-0.33979, 0.39944/0.12979}
+    {\fill (\px,\py) circle (1.1pt);}
+  \node[font=\scriptsize, anchor=north] at (0,-0.52) {$j=3$};
+\end{scope}
+
+\begin{scope}[shift={(12.30,-0.72)}]
+  \draw[line width=0.5pt]
+    ( 0.00000, 0.42000) -- (-0.39944, 0.12979)
+    ( 0.00000, 0.42000) -- (-0.24687,-0.33979)
+    ( 0.00000, 0.42000) -- ( 0.24687,-0.33979)
+    ( 0.00000, 0.42000) -- ( 0.39944, 0.12979)
+    (-0.39944, 0.12979) -- (-0.24687,-0.33979)
+    (-0.39944, 0.12979) -- ( 0.24687,-0.33979)
+    (-0.39944, 0.12979) -- ( 0.39944, 0.12979)
+    (-0.24687,-0.33979) -- ( 0.24687,-0.33979)
+    (-0.24687,-0.33979) -- ( 0.39944, 0.12979)
+    ( 0.24687,-0.33979) -- ( 0.39944, 0.12979);
+  \foreach \px/\py in {0.00000/0.42000, -0.39944/0.12979, -0.24687/-0.33979,
+                       0.24687/-0.33979, 0.39944/0.12979}
+    {\fill (\px,\py) circle (1.1pt);}
+  \node[font=\scriptsize, anchor=north] at (0,-0.52) {$j=10$};
+\end{scope}
+
+\node[font=\scriptsize, anchor=north, align=center, text width=42mm]
+  at (11.32,-1.60) {$P_3\sqcup K_2$ and $K_5$, the extremes of the $23$};
+
+\end{scope}
+\end{tikzpicture}

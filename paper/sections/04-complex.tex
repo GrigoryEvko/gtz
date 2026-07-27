@@ -303,6 +303,7 @@ The spike is invisible in the flat directions and is the only atom
 visible in the new one.  The factor $1/(1-w)$ costs something real: for
 $b>0$ every admissible $w$ has $b<b/(1-w)$, so no member of the family
 attains the level $b$, though the levels descend to it as $w\to0$.
+Figure~\ref{fig:padding} draws both operations as block matrices.
 
 \begin{lemma}[Lean]\label{lem:split}
 Let $\dsn$ be a complex weighted design at $(m,k)$, let $c_0\le m$ and let
@@ -337,6 +338,26 @@ most $k-1$; choosing $x\ne0$ orthogonal to that subspace gives
 $x\adj S_Cx=0$ by \eqref{eq:cover}, while
 $x\adj(sI_k)x=s\lVert x\rVert^{2}>0$.
 \end{proof}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/padding}
+  \caption{The two operations of \S\ref{sec:cpadding}, and the ladder they
+  compose.  Above: the matrix $A$ of a design has $c$-th row $g_c\adj$ and
+  satisfies $A\adj DA=I_k$; the spike borders it with one column and one row,
+  the split repeats one row, and in each case the bordered Parseval product is
+  the identity of the new rank.  The spike divides the value bound by $1-w$
+  and the split leaves it alone, which is the whole cost accounting of
+  Theorem~\ref{thm:ladder}.  Below: the cells $(m,k)$ for $2\le k\le6$, the
+  shaded band $m\le k+1$ where $\GtzC$ holds by
+  Proposition~\ref{prop:cpositive}, and the staircase at $(9,5)$: three spikes
+  up the diagonal $m=k+2$, then two splits along $k=5$.  The tabulated
+  $w=1-(\tfrac9{10})^{1/e}$ gives $(1-w)^{e}=\tfrac9{10}$ at every rank, so the
+  bound after the spikes is $\tfrac{10}9\alpha_{\mathrm{SIC}}$ whatever $k$ is,
+  and since $b<b/(1-w)$ for every $b>0$ and every admissible $w$ no member of
+  the family attains $b$.}
+  \label{fig:padding}
+\end{figure}
 
 The constant $\alpha_{\mathrm{SIC}}$ of Lemma~\ref{lem:sicvalue} is
 sharp: by \cite{Nesterenko2026complex} no uniform-weight design of rank
@@ -696,7 +717,35 @@ $\operatorname{Re}\beta_{abc}$ is $0$, leaving $\det(\SC-I_3)=-2$.  No
 argument that sees only the moduli $\lvert\beta_{ij}\rvert$ can decide
 either problem: at the icosahedral design of \S\ref{app:icosa} all twenty
 triples have the same moduli and exactly ten dominate.
+Figure~\ref{fig:phasedefect} draws the law at $s=1$ for both designs.
 \end{remark}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/phasedefect}
+  \caption{Identity \eqref{eq:tripledet} at $s=1$, where it reads
+  $\det(\SC-I_3)=8-2B+2\operatorname{Re}\beta_{abc}$ with $B$ the modulus
+  budget.  Left: the two lines share the slope $2$ and differ only in $B$, so
+  each crosses zero at $\operatorname{Re}\beta_{abc}=B-4$: $\tfrac75$ for the
+  icosahedron, marked, and $1$ for the trine.
+  A filled dot is a value some triple of the named design takes, an open dot
+  an endpoint of the permitted range that it misses.  The trine sits at the
+  centre of its interval with $\operatorname{Re}\beta_{abc}=0$, so its budget
+  $5$ would have allowed $-2+2\sqrt3>0$ and its phase does not, while the
+  icosahedron is real and sits at both ends, ten of its triples landing above
+  the zero level.  Right: the disc $\lvert\beta_{abc}\rvert\le\sqrt3$, the
+  trine's eighteen mixed triples all on its boundary, the real locus its
+  horizontal diameter, the shaded lens the region
+  $\operatorname{Re}\beta_{abc}>1$ where the determinant is positive, and the
+  phase defect the squared height above the diameter, which is $3$ at
+  $\pm i\sqrt3$.  Every abscissa drawn is a genuine triple of leverage-$3$
+  vectors, since the leading minors $3$, $9-\lvert\beta_{ab}\rvert^{2}$ and
+  $\det\Gram_C=27-3B+2\operatorname{Re}\beta_{abc}$ stay
+  positive along both intervals, though the figure does not assert that each
+  such triple sits inside a design; the icosahedral split of ten and ten is the
+  one count \S\ref{app:icosa} records without a theorem.}
+  \label{fig:phasedefect}
+\end{figure}
 
 \begin{remark}\label{rem:sharpc}
 Collecting the two ends,
@@ -710,4 +759,28 @@ statement above bounds $\alpha_3(\C)$ from above, and such bounds move
 the record down without pinning it.  Determining $\alpha_3(\C)$ is
 Problem~\ref{prob:sharpc}.  The rank-inverse bound $1/k$ is sharp only at
 $k=1$, where the one-atom design at $(1,1)$ has value $1$.
+Figure~\ref{fig:constants} draws the interval each rank closes.
 \end{remark}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/constants}
+  \caption{The six constants of \S\ref{sec:complex} on one axis.  Below the
+  axis, the ledger giving each its exact form and, for three of them, a
+  polynomial it is the least root of: the floor
+  $1/k$, the Hesse record $h_3$, the trine value $3-\sqrt5$, the seed value
+  $\alpha_{\mathrm{SIC}}$, the padded bound
+  $\tfrac{10}9\alpha_{\mathrm{SIC}}$, and the threshold $1$.  Above it each
+  rank carries the interval its two ends close, a filled dot marking an end
+  attained by a design and an arrowhead an end running to $0$ with $1/k$.
+  Rank two over $\C$
+  is a point, while rank three spans $[\tfrac13,h_3]$ and stays open: the light
+  arrow on that row is the record of Remark~\ref{rem:sharpc} moving down
+  through $\tfrac{10}9\alpha_{\mathrm{SIC}}$ and $3-\sqrt5$ without pinning
+  anything.  The lower end that pins $\alpha_2(\C)$ is
+  \cite{Nesterenko2026complex} at uniform weights carried to arbitrary weights
+  in \S\ref{sec:cpadding}, and the top row's $\alpha_k(\R)=1$ is the
+  conjecture; what is proved on that row is the bracket $[1/k,1]$ together with
+  a design whose value is exactly $1$.}
+  \label{fig:constants}
+\end{figure}

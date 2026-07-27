@@ -1,0 +1,216 @@
+% The sum-of-squares certificate of Example ex:tetra at the triple
+% C = {1,2,3}, whose omitted atom is g_0.  Left: the three planes on which the
+% three squares vanish, cut by the circumsphere.  Right: the same three planes
+% seen along their common line.
+%
+% Orthographic projection of R^3 with azimuth 15 and elevation 70 degrees,
+% scaled by 1.35cm in the left panel:
+%   X = 1.35(-0.2588190 x_1 + 0.9659258 x_2)
+%   Y = 1.35(-0.9076734 x_1 - 0.2432103 x_2 + 0.3420201 x_3)
+% This is the projection of figures/tetrahedron.tex and figures/tetragap.tex,
+% copied unaltered, so the three tetrahedron figures of the section are
+% registered and the cube is the one already drawn there.  The viewing normal
+% is the cross product of the two rows, e = (0.330366, 0.088521, 0.939693); a
+% point of the sphere is drawn solid where <e,x> > 0 and dashed where
+% <e,x> < 0.  The four atoms sit at <e,g_c> = +1.3586 (g_0), -0.6978 (g_1),
+% -1.1815 (g_2) and +0.5208 (g_3).
+%
+% DESIGN DATA (Example ex:tetra; Gtz.tetraDesign).  Atoms g_0 = (1,1,1),
+% g_1 = (1,-1,-1), g_2 = (-1,1,-1), g_3 = (-1,-1,1) at t_c = 1/4.  Every
+% diagonal entry of sum_c g_c g_c^T is 4 and every off-diagonal entry is
+% 1-1-1+1 = 0, so sum_c t_c g_c g_c^T = I_3 over the rationals; ell_c = 3,
+% s_c = 3/4, sum_c s_c = 3 = k, and <g_i,g_j> = -1 for i != j.  Each atom has
+% length sqrt3, so all four lie on the drawn sphere and the sphere is the
+% circumsphere of the cube.
+%
+% THE CERTIFICATE.  Subtracting the omitted term, S_C = 4I_3 - g_0 g_0^T, so
+%   S_C - I_3 = 3I_3 - g_0 g_0^T = 3 Pi,   Pi := I_3 - (1/3) g_0 g_0^T,
+% and Pi is the orthogonal projection onto g_0^perp: it is symmetric, it
+% squares to itself because ||g_0||^2 = 3, and its trace is 2.  Hence
+% spec(S_C - I_3) = {0,3,3} and spec S_C = {1,4,4}, which is eq:tetraspec.
+% In coordinates the form is
+%   x^T(S_C - I_3)x = 3||x||^2 - <x,g_0>^2 = sum_{i<j}(x_i - x_j)^2.
+% The square (x_i - x_j)^2 is 2<n,x>^2 for either unit normal +-(e_i-e_j)/sqrt2
+% of the plane it cuts out, and that plane is span{g_0, g_c} for exactly one
+% selected atom.  The free sign is fixed by n_1 + n_2 + n_3 = 0:
+%   c = 1, g_1 = ( 1,-1,-1):  n_1 = ( 0, 1,-1)/sqrt2,  plane x_2 = x_3
+%   c = 2, g_2 = (-1,1,-1):  n_2 = (-1, 0, 1)/sqrt2,  plane x_1 = x_3
+%   c = 3, g_3 = (-1,-1,1):  n_3 = ( 1,-1, 0)/sqrt2,  plane x_1 = x_2
+% since <n_c,g_0> = <n_c,g_c> = 0 in each row.  The three planes therefore all
+% contain R g_0 and meet in it alone.  At those signs <n_c,n_d> = -1/2 for
+% c != d, so the three stand at 120 degrees inside the plane g_0^perp; this is
+% the same fact as sum_c n_c n_c^T = (3/2) Pi, three unit vectors 120 degrees
+% apart being a tight frame of a 2-space with constant 3/2.  Hence
+% 2 sum_c <n_c,x>^2 = 3 x^T Pi x is the form again.  Reversing any one sign
+% leaves n_c n_c^T, and so the form, untouched, but puts two of the three
+% pairs at 60 degrees instead.
+%
+% THE THREE CIRCLES.  The plane span{g_0, g_c} cuts the sphere in
+%   x(t) = cos t g_0 + sin t (sqrt3 w_c),
+% w_c the unit vector of that plane orthogonal to g_0, so sqrt3 w_1 =
+% (2,-1,-1)/sqrt2, sqrt3 w_2 = (-1,2,-1)/sqrt2, sqrt3 w_3 = (-1,-1,2)/sqrt2.
+% Projection is linear, so each circle is the ellipse
+% cos t P(g_0) + sin t P(sqrt3 w_c) with
+%   P(g_0)       = ( 0.954594, -1.091966)
+%   P(sqrt3 w_1) = (-1.416201, -1.827243)
+%   P(sqrt3 w_2) = ( 2.091201,  0.075635)
+%   P(sqrt3 w_3) = (-0.675000,  1.751608).
+% Each passes through g_c at t = arccos(-1/3) = 109.4712 and through -g_c at
+% 289.4712, so each threads four vertices of the cube.  Depth along circle c is
+% 1.358580 cos t + d_c sin t with d_c = -0.259849, -0.772879, +1.032728, which
+% vanishes at t = 79.1721, 60.3650, 127.2404 and 180 degrees later; the visible
+% arcs are (-100.8279, 79.1721), (-119.6350, 60.3650) and (-52.7596, 127.2404).
+% The semi-major axis is sqrt3 * 1.35 = 2.33827cm for all three and the
+% semi-minor is that times |<n_c,e>| = 0.601869, 0.430859, 0.171009, giving
+% 1.40733, 1.00746 and 0.39987cm.  Circle 1 is labelled on its own arc, at
+% t = 40.  The other two are labelled just outside the silhouette at the ends of
+% their visible arcs -- circle 2 at t = 60.365, (2.289678, -0.474206), and
+% circle 3 at t = -52.7596, (1.115052, -2.055276) -- because a label of this
+% width, 1.08cm, covers an atom almost everywhere inside the sphere: along the
+% visible arc of circle 3 the distance to the nearest atom exceeds the label's
+% half width of 0.54cm only for t in (-52.8, -28.3), the stretch running out to
+% that same end.  DISCLOSED: the plane x_1 = x_2 sits 9.85
+% degrees from the viewing direction, so its circle is drawn nearly edge on;
+% the projection is kept anyway, because registration with the two neighbouring
+% figures is worth more than a rounder third ellipse, and that circle is the
+% one whose two poles and two cube vertices are all marked.
+%
+% THE CROSS-SECTION uses the orthonormal frame p = (1,-1,0)/sqrt2,
+% q = (1,1,-2)/sqrt6 of g_0^perp, at 1.15cm per unit.  There n_3 = (1,0) at 0
+% degrees, n_1 = (-1/2, sqrt3/2) at 120 and n_2 = (-1/2,-sqrt3/2) at 240, so the
+% three kernel lines lie at 30, 90 and 150 degrees and the six rays are 60
+% degrees apart.  The component of g_c orthogonal to g_0 is
+% g_c + (1/3) g_0, of length sqrt(8/3) = 1.632993, at (p,q)-angle 30 for g_1,
+% 150 for g_2 and 270 for g_3; each sits on the kernel line of its own square.
+% The restriction of the form to g_0^perp is 3||y||^2, so its level 1 is the
+% circle of radius 1/sqrt3 = 0.577350, drawn at 0.663953cm -- the cross-section
+% of the cylinder of figures/tetragap.tex, at the other triple.
+%
+% DISCLOSED.  Mechanized: the design (Gtz.tetraDesign), that {0,1,2} dominates
+% (Gtz.tetraDesign_dominates), that no triple dominates strictly
+% (Gtz.tetraDesign_no_strictDominator), the tie (Gtz.tetraDesign_isTie), and
+% the characteristic polynomial (X-1)(X-4)^2 of 4I_3 - g_d g_d^T
+% (Gtz.charpoly_four_smul_sub_tetraAtom), which is eq:tetraspec.  NOT
+% mechanized: the grouping drawn here.  Lean's certificate is the one at
+% C = {0,1,2}, whose gap form is (x_1-x_2)^2 + (x_1+x_3)^2 + (x_2+x_3)^2 and
+% whose null line is R g_3; it is the form drawn here composed with
+% sigma = diag(-1,-1,1), an orthogonal symmetry of the design permuting the
+% atoms by (0 3)(1 2).  The identity sum_{i<j}(x_i-x_j)^2 = 3||x||^2 - <x,g_0>^2
+% and the decomposition into the three planes have no declaration, and are
+% exact rational arithmetic carried out outside the assistant.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  vec/.style     ={-{Latex[length=2mm,width=1.5mm]}, line width=0.75pt},
+  vecomit/.style ={-{Latex[length=2mm,width=1.5mm,fill=white]},
+                   line width=0.75pt},
+  cube/.style    ={densely dotted, line width=0.3pt, black!35},
+  silh/.style    ={line width=0.5pt, black!55},
+  arc/.style     ={line width=0.6pt, black!70},
+  arcback/.style ={line width=0.45pt, black!45, dashed,
+                   dash pattern=on 1.4pt off 1.2pt},
+  nullline/.style={line width=0.5pt, black!55, dashed,
+                   dash pattern=on 2.2pt off 1.6pt},
+  ker/.style     ={line width=0.5pt, black!70},
+  lev/.style     ={line width=0.55pt, black!85},
+  tag/.style     ={font=\scriptsize, fill=white, inner sep=0.8pt},
+  every node/.style={font=\small}]
+
+% =============== left: three planes through one line ======================
+\coordinate (ppp) at ( 0.9546,-1.0920);   % g_0 = ( 1, 1, 1)
+\coordinate (ppm) at ( 0.9546,-2.0154);   %       ( 1, 1,-1)
+\coordinate (pmp) at (-1.6534,-0.4354);   %       ( 1,-1, 1)
+\coordinate (pmm) at (-1.6534,-1.3588);   % g_1 = ( 1,-1,-1)
+\coordinate (mpp) at ( 1.6534, 1.3588);   %       (-1, 1, 1)
+\coordinate (mpm) at ( 1.6534, 0.4354);   % g_2 = (-1, 1,-1)
+\coordinate (mmp) at (-0.9546, 2.0154);   % g_3 = (-1,-1, 1)
+\coordinate (mmm) at (-0.9546, 1.0920);   %       (-1,-1,-1)
+\coordinate (O)   at ( 0,0);
+
+\draw[silh] (O) circle (2.33827);          % the circumsphere, radius sqrt3
+\draw[cube] (ppp)--(ppm) (ppp)--(pmp) (ppp)--(mpp)
+            (ppm)--(pmm) (ppm)--(mpm) (pmp)--(pmm) (pmp)--(mmp)
+            (mpp)--(mpm) (mpp)--(mmp) (pmm)--(mmm) (mpm)--(mmm) (mmp)--(mmm);
+
+% ---- the three great circles, hidden halves then visible halves ---------
+\draw[arcback] plot[domain=79.1721:259.1721, samples=61, smooth, variable=\t]
+  ({0.954594*cos(\t)-1.416201*sin(\t)}, {-1.091966*cos(\t)-1.827243*sin(\t)});
+\draw[arcback] plot[domain=60.3650:240.3650, samples=61, smooth, variable=\t]
+  ({0.954594*cos(\t)+2.091201*sin(\t)}, {-1.091966*cos(\t)+0.075635*sin(\t)});
+\draw[arcback] plot[domain=127.2404:307.2404, samples=61, smooth, variable=\t]
+  ({0.954594*cos(\t)-0.675000*sin(\t)}, {-1.091966*cos(\t)+1.751608*sin(\t)});
+\draw[arc] plot[domain=-100.8279:79.1721, samples=61, smooth, variable=\t]
+  ({0.954594*cos(\t)-1.416201*sin(\t)}, {-1.091966*cos(\t)-1.827243*sin(\t)});
+\draw[arc] plot[domain=-119.6350:60.3650, samples=61, smooth, variable=\t]
+  ({0.954594*cos(\t)+2.091201*sin(\t)}, {-1.091966*cos(\t)+0.075635*sin(\t)});
+\draw[arc] plot[domain=-52.7596:127.2404, samples=61, smooth, variable=\t]
+  ({0.954594*cos(\t)-0.675000*sin(\t)}, {-1.091966*cos(\t)+1.751608*sin(\t)});
+
+% ---- the common line, which is the null line of the certificate ---------
+\draw[nullline] (-1.0978, 1.2558)--( 1.0978,-1.2558);   % +-1.15 g_0
+
+% ---- the four atoms; g_0 is the one C omits -----------------------------
+\draw[vec]     (O)--(pmm);
+\draw[vec]     (O)--(mpm);
+\draw[vec]     (O)--(mmp);
+\draw[vecomit] (O)--(ppp);
+\fill (O) circle (1.1pt);
+\node[tag, anchor=north west] at ( 1.0000,-1.1200) {$g_0$};
+\node[tag, anchor=north east] at (-1.6734,-1.3788) {$g_1$};
+\node[tag, anchor=west]       at ( 1.6834, 0.4354) {$g_2$};
+\node[tag, anchor=south east] at (-0.9746, 2.0354) {$g_3$};
+\node[tag, anchor=north west] at ( 1.1178,-1.4558) {$\R g_0$};
+\node[tag] at (-0.179045,-2.011017) {$x_2=x_3$};   % circle 1 at t =  40
+\node[tag, anchor=west]       at ( 2.360000,-0.474206) {$x_1=x_3$};
+                                        % circle 2 leaves the silhouette here
+\node[tag, anchor=north west] at ( 1.150000,-2.100000) {$x_1=x_2$};
+                                        % circle 3 leaves the silhouette here
+
+\node[anchor=north, font=\footnotesize] at (0,-2.62)
+  {$\SC-I_3=3I_3-g_0^{\vphantom{\mathsf{T}}}g_0\tp$};
+
+% ============ right: the same planes, seen along R g_0 ====================
+\begin{scope}[shift={(6.20,0)}]
+  \draw[ker] ( 1.818653, 1.050000)--(-1.818653,-1.050000);   % line x_2 = x_3
+  \draw[ker] ( 0.000000, 2.100000)--( 0.000000,-2.100000);   % line x_1 = x_2
+  \draw[ker] (-1.818653, 1.050000)--( 1.818653,-1.050000);   % line x_1 = x_3
+  \draw[lev] (0,0) circle (0.663953);                        % 1.15/sqrt3
+
+  \draw[vec] (0,0)--( 1.150000, 0.000000);   % n_3 = ( 1,-1, 0)/sqrt2, at   0
+  \draw[vec] (0,0)--(-0.575000, 0.995929);   % n_1 = ( 0, 1,-1)/sqrt2, at 120
+  \draw[vec] (0,0)--(-0.575000,-0.995929);   % n_2 = (-1, 0, 1)/sqrt2, at 240
+  \fill (0,0) circle (1.1pt);
+
+  \fill ( 1.626346, 0.938971) circle (1.5pt);   % g_1 + g_0/3, at 30 degrees
+  \fill (-1.626346, 0.938971) circle (1.5pt);   % g_2 + g_0/3, at 150 degrees
+  \fill ( 0.000000,-1.877942) circle (1.5pt);   % g_3 + g_0/3, at 270 degrees
+  \node[tag, anchor=south west] at ( 1.660000, 0.960000) {$g_1$};
+  \node[tag, anchor=south east] at (-1.660000, 0.960000) {$g_2$};
+  \node[tag, anchor=north west] at ( 0.040000,-1.900000) {$g_3$};
+  \node[tag, anchor=north west] at ( 1.170000,-0.020000) {$n_3$};
+  \node[tag, anchor=south east] at (-0.600000, 1.010000) {$n_1$};
+  \node[tag, anchor=north east] at (-0.600000,-1.010000) {$n_2$};
+  \draw[line width=0.4pt, black!55] (0,0)--( 0.331977,-0.575000);
+  \node[tag, anchor=north west] at ( 0.360000,-0.590000) {$\tfrac1{\sqrt3}$};
+  \node[tag, anchor=north east] at (-1.848653,-1.070000) {$x_2=x_3$};
+  \node[tag, anchor=north west] at ( 1.848653,-1.070000) {$x_1=x_3$};
+  \node[tag, anchor=south]      at ( 0.000000, 2.130000) {$x_1=x_2$};
+
+  \node[anchor=north, font=\footnotesize] at (0,-2.62)
+    {$g_0^{\perp}$, \ where the form is $3\lVert y\rVert^{2}$};
+\end{scope}
+
+% ------------------------------- the ledger -------------------------------
+\node[anchor=north, align=center, font=\footnotesize] at (3.10,-3.14)
+  {$\Pi:=I_3-\tfrac13\,g_0^{\vphantom{\mathsf{T}}}g_0\tp$ \ is the projection
+   onto $g_0^{\perp}$, and $\SC-I_3=3\Pi$, \ so
+   $\operatorname{spec}\SC=\{1,4,4\}$ by \eqref{eq:tetraspec}\\[2.5pt]
+   $x\tp(\SC-I_3)x=\sum_{i<j}(x_i-x_j)^{2}
+    =2\sum_{c\in C}\langle n_c,x\rangle^{2}$, \ with $n_c$ the unit normal of
+   $\operatorname{span}\{g_0,g_c\}$\\[2.5pt]
+   the three $n_c$ sum to zero, so they stand at $120^{\circ}$ to one another in
+   $g_0^{\perp}$, where
+   $\sum_{c\in C}n_c^{\vphantom{\mathsf{T}}}n_c\tp=\tfrac32\Pi$\\[2.5pt]
+   $m=4$, \ $k=3$, \ $t_c=\tfrac14$, \ $\ell_c=3$, \ $s_c=\tfrac34$, \
+   $\langle g_i,g_j\rangle=-1$ for $i\ne j$, \ $C=\{1,2,3\}$};
+
+\end{tikzpicture}
