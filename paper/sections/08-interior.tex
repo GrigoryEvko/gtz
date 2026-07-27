@@ -121,13 +121,16 @@ objective \eqref{eq:designobjective} is constant along $\mathcal{O}$.
 \subsection{The first-order system}\label{sec:kkt}
 
 The objective is a maximum of finitely many least-eigenvalue functions of
-matrices depending polynomially on $g$.  It is locally Lipschitz, not
-differentiable, and not Clarke regular: each $\lmin(\SC)$ is a
-\emph{concave} function of $\SC$, and for a maximum of functions that are
-not regular the subdifferential is contained in, and in general not
-equal to, the convex hull of the subdifferentials of the active pieces
+matrices depending polynomially on $g$.  It is locally Lipschitz, and
+where a least eigenvalue is multiple it is neither differentiable nor
+Clarke regular: each $\lmin(\SC)$ is a \emph{concave} function of $\SC$,
+smooth at a simple least eigenvalue and nonsmooth, hence not regular, at
+a multiple one.  For a maximum of functions that are not regular the
+subdifferential is contained in, and in general not equal to, the convex
+hull of the subdifferentials of the active pieces
 \cite[Prop.~2.3.12]{Clarke1990}.  The inclusion runs in the direction a
-necessary condition needs.
+necessary condition needs, and nothing below uses more than the
+inclusion.
 
 The function $\lmin$ is concave on $\mathbb{S}^k$, and its
 superdifferential at $A$ is the \emph{spectraplex}
@@ -543,7 +546,7 @@ the multiplier \eqref{eq:multiplier} and on a count of the active family.
 Each is a statement about the datum alone, and admissibility is nowhere
 used.
 
-\begin{proposition}\label{prop:e1}
+\begin{proposition}[Lean]\label{prop:e1}
 Let a stationarity datum with $\cv\ne0$ have $\Lambda=a\,ww\tp$ for
 some unit vector $w$ and some $a\in\R$.  Then $\cv=k$.  Since
 $\Lambda\psd0$, this covers every datum with $\rk\Lambda\le1$.
@@ -578,7 +581,7 @@ every $c$.  Therefore, by \eqref{eq:polarized},
 \]
 \end{proof}
 
-\begin{corollary}\label{cor:e1}
+\begin{corollary}[Lean]\label{cor:e1}
 No stationarity datum with $0<\cv<1$ has a multiplier of rank at most one.
 \end{corollary}
 
@@ -594,7 +597,7 @@ $\lambda_i\kappa_i=0$ for every $i$; linear independence of the family
 $(u_i)_{\lambda_i>0}$ implies this, and the stated form makes the
 zero-multiplier indices cost nothing.
 
-\begin{proposition}\label{prop:e2}
+\begin{proposition}[Lean]\label{prop:e2}
 Let a stationarity datum with $\cv\ne0$ have independent tight support.
 Then $t_c\cv=1$ for every $c$; hence $\cv=m$ and $t_c=1/m$ for every $c$.
 In particular no stationarity datum with $0<\cv<1$ has independent tight
@@ -673,7 +676,7 @@ and Proposition~\ref{prop:count} gives $\cv=k$; and $\cv\ne0$ forces $k\ge1$,
 whence $\cv\ge1$.
 \end{proof}
 
-\begin{corollary}\label{cor:e3}
+\begin{corollary}[Lean]\label{cor:e3}
 Let a stationarity datum at $(6,3)$ have $0<\cv<1$.  Then either
 $\lvert A^{+}\rvert\ge3$, or $A^{+}$ consists of two disjoint triples
 partitioning $\{1,\dots,6\}$ and the tight directions carried by positive
@@ -785,13 +788,13 @@ the cell to which rank three reduces.  It does not conflict
 with Proposition~\ref{prop:carath} below, which asserts only that the
 multipliers \emph{may be taken} supported on at most nineteen indices.
 
-\begin{theorem}\label{thm:reach}
+\begin{theorem}[Lean]\label{thm:reach}
 There is a design at $(4,2)$ carrying a stationarity datum with
 $\cv=2-\sqrt2<1$.  That design satisfies $\Gtz(4,2)$ with margin: some
 $2$-subset $C$ has $\SC-I=I\pd0$, so $F=2$.  Consequently the
 implication ``a stationarity datum with $\cv\ne0$ has $\cv\ge1$'' is false,
-and no strengthening of the identities \eqref{eq:statg} and
-\eqref{eq:statt} can make it true.
+and nothing derived from the identities \eqref{eq:statg} and
+\eqref{eq:statt} alone can establish it.
 \end{theorem}
 
 \begin{proof}

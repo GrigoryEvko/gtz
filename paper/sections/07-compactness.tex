@@ -126,8 +126,8 @@ without slack.  The gap $\SC-I_3$ has spectrum $\{0,3,3\}$ by
 \begin{proposition}\label{prop:chartdesign}
 The chart points of size $m$ and rank $k$ with $t_c>0$ for every $c$ are
 exactly the chart points of designs of size $m$ and rank $k$ over $\R$,
-and the design is determined by the chart point up to a rotation of
-$\R^k$.  Under this correspondence a $k$-subset dominates in the design
+and the design is determined by the chart point up to an orthogonal
+transformation of $\R^k$.  Under this correspondence a $k$-subset dominates in the design
 if and only if it dominates at the chart point.
 \end{proposition}
 
@@ -148,7 +148,7 @@ $g_c:=v_c/\sqrt{t_c}$.  Then
 which is \eqref{eq:parseval}; the weights are positive and sum to one; so
 this is a design, and its chart point is $(P,t)$.  Two orthonormal bases
 of the range differ by an element of the orthogonal group, which acts on
-the $g_c$ by a rotation and leaves \eqref{eq:dominate} invariant.  The
+the $g_c$ by that element and leaves \eqref{eq:dominate} invariant.  The
 last assertion is Lemma~\ref{lem:chart}.
 \end{proof}
 
@@ -268,7 +268,7 @@ Let $(P,t)$ be a chart point with $t_z=0$ for some index $z$.  The
 diagonal entry $P_{zz}$ decides which of two identities disposes of it,
 and that entry is a squared length.
 
-\begin{lemma}\label{lem:pivot}
+\begin{lemma}[Lean]\label{lem:pivot}
 For every chart point and every index $z$,
 \begin{equation}\label{eq:pivot}
   \lVert Pe_z\rVert^{2}\;=\;e_z\tp P\tp Pe_z\;=\;e_z\tp P^{2}e_z
@@ -292,7 +292,7 @@ Example~\ref{ex:escape} is of the second kind, with $P_{zz}=\tfrac12$.
 
 \subsubsection*{Case A: the atom vanishes}
 
-\begin{lemma}\label{lem:delete}
+\begin{lemma}[Lean]\label{lem:delete}
 Let $(P,t)$ be a chart point of size $m$ and rank $k$ and let $z$ satisfy
 $t_z<1$ and $Pe_z=0$.  Delete the index $z$: let $\widehat P$ be the
 principal submatrix of $P$ on the remaining indices and
@@ -330,7 +330,7 @@ case, where \S\ref{sec:sharp} locates the failure.
 
 \subsubsection*{Case B: the direction escapes}
 
-\begin{lemma}\label{lem:deflate}
+\begin{lemma}[Lean]\label{lem:deflate}
 Let $(P,t)$ be a chart point of size $m$ and rank $k\ge1$ and let
 $P_{zz}>0$.  Then
 \begin{equation}\label{eq:deflate}
@@ -402,7 +402,7 @@ in order: the deflated gap, a square, and a deficit proportional to the
 weight at the pivot.  At $t_z=0$ the deficit is absent and the lift
 follows.
 
-\begin{theorem}\label{thm:schurstep}
+\begin{theorem}[Lean]\label{thm:schurstep}
 Let $(P,t)$ be a chart point of size $m$ and rank $k\ge1$, let $z$
 satisfy $P_{zz}>0$ and $t_z=0$, and let $C$ be a subset of the remaining
 indices dominating at the chart point $(P',t)$ of rank $k-1$.  Then
@@ -497,7 +497,7 @@ closed statement and the statement about designs are the same statement,
 so the hypotheses of Theorem~\ref{thm:boundary} are ordinary smaller
 instances of the problem.
 
-\begin{proposition}\label{prop:density}
+\begin{proposition}[Lean]\label{prop:density}
 Write $\Gtz^{\mathrm{ch}}_{\circ}(m,k)$ for the assertion that every
 chart point of size $m$ and rank $k$ with strictly positive weights
 admits a dominating $k$-subset.  Then

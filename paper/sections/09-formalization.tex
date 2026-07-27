@@ -3,8 +3,11 @@
 The development is carried out in Lean~4 over Mathlib.
 Tables~\ref{tab:lean} and~\ref{tab:leantwo} name the declaration behind
 every tagged statement, and all of them where a statement is assembled from
-several.  Eleven tags are not discharged in full, and \S\ref{sec:boundaries}
-records which.
+several.  Twenty-one tags are not discharged in full, and
+\S\ref{sec:boundaries} records which.  Declarations named in running text
+rather than in the tables --- in \S\ref{sec:boundaries} itself and in
+\S\ref{sec:open} --- back prose that carries no tag; they are covered by
+the ledger of \S\ref{sec:axioms} on the same terms as the tabulated ones.
 
 The formal statements are the originals, and the statements in the text
 are their transcriptions.
@@ -19,8 +22,8 @@ design of size $m$ and rank $k$ admits a dominating subset of cardinality $k$.
 No nondegeneracy is assumed: repeated atoms and zero atoms are admitted, and
 the results of \S\ref{sec:ties} depend on that.
 
-The design structure and the elementary theory are written once for scalars
-in an \texttt{RCLike} field with real weights, and $\R$ and $\C$ are
+The design structure and part of the elementary theory are written once for
+scalars in an \texttt{RCLike} field with real weights, and $\R$ and $\C$ are
 instantiations, definitionally so over $\R$; the chart of \S\ref{sec:chart}
 with its congruence, its criterion and its two Rayleigh halves,
 Theorem~\ref{thm:corankone} and Proposition~\ref{prop:sizerank} are proved at
@@ -69,7 +72,9 @@ Lemma~\ref{lem:span}           & \texttt{Gtz.rank\_le\_size\_of\_fieldDesign}, \
 Lemma~\ref{lem:trace}          & \texttt{Gtz.sum\_weight\_mul\_fieldLeverage},
                                  \texttt{Gtz.exists\_leverage\_ge\_rank} \\
 Lemma~\ref{lem:share}          & \texttt{Gtz.weighted\_leverage\_le\_one} \\
-Lemma~\ref{lem:coparseval}     & \texttt{Gtz.coParsevalOperator\_posDef} \\
+Lemma~\ref{lem:coparseval}     & \texttt{Gtz.coParsevalOperator\_eq\_universalGap}, \\
+                               & \texttt{Gtz.coParsevalOperator\_posSemidef},
+                                 \texttt{Gtz.coParsevalOperator\_posDef} \\
 Proposition~\ref{prop:sizerank}& \texttt{Gtz.fieldGtzWeighted\_square} \\
 Proposition~\ref{prop:rankone} & \texttt{Gtz.gtz\_rank\_one},
                                  \texttt{Gtz.complexGtzWeighted\_rankOne} \\
@@ -78,7 +83,10 @@ Proposition~\ref{prop:classical}
                                & \texttt{Gtz.gtzOriginal\_iff\_frameProjectionCovering} \\
 Lemma~\ref{lem:direction}      & \texttt{Gtz.exists\_atom\_covering\_direction}, \\
                                & \texttt{Gtz.exists\_atom\_covering\_direction\_complex} \\
-Example~\ref{ex:tetra}         & \texttt{Gtz.tetraDesign\_isTie} \\
+Example~\ref{ex:tetra}         & \texttt{Gtz.sum\_tetraAtomMatrix\_eq\_fourSmulOne}, \\
+                               & \texttt{Gtz.subsetSum\_tetraDesign\_of\_card\_three}, \\
+                               & \texttt{Gtz.charpoly\_four\_smul\_sub\_tetraAtom},
+                                 \texttt{Gtz.tetraDesign\_isTie} \\
 \addlinespace
 \multicolumn{2}{@{}l}{\emph{\S\ref{sec:chart}, the projection chart}}\\
 Proposition~\ref{prop:chartid} & \texttt{Gtz.projectionChart\_diagonal},
@@ -116,7 +124,8 @@ Lemma~\ref{lem:sicvalue}       & \texttt{Gtz.sicDesign\_valueAtMost},
 Lemma~\ref{lem:spike}          & \texttt{Gtz.spikePaddedDesign\_valueAtMost} \\
 Lemma~\ref{lem:split}          & \texttt{Gtz.splitAtomWeight\_valueAtMost} \\
 Theorem~\ref{thm:ladder}       & \texttt{Gtz.complexRankConstantAtMostAtSize\_rank\_add} \\
-Theorem~\ref{thm:complex}      & \texttt{Gtz.complexGtzWeighted\_iff\_size\_le\_rank\_add\_one} \\
+Theorem~\ref{thm:complex}      & \texttt{Gtz.complexGtzWeighted\_iff\_size\_le\_rank\_add\_one}, \\
+                               & \texttt{Gtz.complexGtzWeighted\_rank\_le\_one} \\
 \quad (negative half)          & \texttt{Gtz.not\_complexGtzWeighted\_of\_rank\_add\_two\_le\_size} \\
 Example~\ref{ex:trine}         & \texttt{Gtz.trineBinding\_leastEigenvalue}, \\
                                & \texttt{Gtz.trineDesign\_valueAtMost},
@@ -133,7 +142,9 @@ Corollary~\ref{cor:heavy}      & \texttt{Gtz.gtzWeightedAll\_of\_heavy} \\
 Theorem~\ref{thm:ranktwo}      & \texttt{Gtz.gtz\_rank\_two} \\
 Theorem~\ref{thm:coranktwo}    & \texttt{Gtz.gtzWeighted\_corank\_two} \\
 Corollary~\ref{cor:corank}     & \texttt{Gtz.gtzWeighted\_of\_le\_five},
-                                 \texttt{Gtz.gtzWeighted\_corank\_two} \\
+                                 \texttt{Gtz.gtz\_rank\_one}, \\
+                               & \texttt{Gtz.gtzWeighted\_square},
+                                 \texttt{Gtz.gtzWeighted\_corank\_one\_and\_two} \\
 Lemma~\ref{lem:null}           & \texttt{Gtz.exists\_null\_direction} \\
 Theorem~\ref{thm:reduce}       & \texttt{Gtz.exists\_reduced\_design} \\
 Theorem~\ref{thm:window}       & \texttt{Gtz.crystallization} \\
@@ -141,6 +152,8 @@ Lemma~\ref{lem:repeat}         & \texttt{Gtz.not\_dominates\_of\_repeated\_atom\
 Proposition~\ref{prop:splitting}& \texttt{Gtz.gtzWeighted\_of\_succ} \\
 Theorem~\ref{thm:topcell}      & \texttt{Gtz.gtzWeightedAll\_of\_top}, \\
                                & \texttt{Gtz.gtz\_iff\_top\_of\_each\_rank} \\
+Corollary~\ref{cor:twocells}   & \texttt{Gtz.rank\_three\_iff\_the\_two\_residuals}, \\
+                               & \texttt{Gtz.gtzWeightedAll\_three\_of\_seven\_three} \\
 Proposition~\ref{prop:spike}   & \texttt{Gtz.gtzWeighted\_of\_spike}
 \end{longtable}}
 
@@ -176,15 +189,29 @@ Corollary~\ref{cor:nomargin}   & \texttt{Gtz.not\_exists\_card\_posSemidef\_sub\
 Example~\ref{ex:diamond}       & \texttt{Gtz.diamondDesign\_isTie}$^{a}$, \\
                                & \texttt{Gtz.not\_hasParallelPair\_diamondDesign} \\
 Corollary~\ref{cor:noparallel} & \texttt{Gtz.not\_hingeHoldsAtSize\_five\_three},
-                                 \texttt{Gtz.diamondEdgeVector\_eq} \\
+                                 \texttt{Gtz.diamondEdgeVector\_eq}, \\
+                               & \texttt{Gtz.splitTetraDesign\_hasParallelPair},
+                                 \texttt{Gtz.splitClassAtom\_eq\_of\_sameClass} \\
 Theorem~\ref{thm:leverageaverage}
                                & \texttt{Gtz.posSemidef\_leverageWeightedAtomSum\_sub\_one} \\
 Proposition~\ref{prop:jensen}  & \texttt{Gtz.sq\_rank\_le\_sum\_weight\_mul\_leverage\_sq} \\
 Proposition~\ref{prop:qonezero}& \texttt{Gtz.mixedCharPoly\_eval\_one\_eq\_zero\_of\_totalTieSupported} \\
 \addlinespace
 \multicolumn{2}{@{}l}{\emph{\S\ref{sec:compactness}, the variational principle}}\\
+Lemma~\ref{lem:pivot}          & \texttt{Gtz.chartPointColumn\_dotProduct\_self},
+                                 \texttt{Gtz.chartPoint\_diag\_nonneg}, \\
+                               & \texttt{Gtz.chartPointColumn\_eq\_zero\_of\_diag\_eq\_zero} \\
+Lemma~\ref{lem:delete}         & \texttt{Gtz.chartPointDelete}, \\
+                               & \texttt{Gtz.chartDominates\_image\_of\_chartPointDelete} \\
+Lemma~\ref{lem:deflate}        & \texttt{Gtz.deflatedChartMatrix\_transpose},
+                                 \texttt{Gtz.deflatePoint}, \\
+                               & \texttt{Gtz.deflatedChartMatrix\_mul\_self},
+                                 \texttt{Gtz.trace\_deflatedChartMatrix}, \\
+                               & \texttt{Gtz.deflatedChartMatrix\_column\_eq\_zero} \\
+Theorem~\ref{thm:schurstep}    & \texttt{Gtz.chartDominates\_insert\_of\_deflate} \\
 Theorem~\ref{thm:boundary}     & \texttt{Gtz.exists\_chartDominates\_of\_weight\_eq\_zero} \\
 Corollary~\ref{cor:interiorcex}& \texttt{Gtz.weight\_pos\_of\_forall\_not\_chartDominates} \\
+Proposition~\ref{prop:density} & \texttt{Gtz.chartGtz\_of\_chartGtzInterior} \\
 Theorem~\ref{thm:sharp}        & \texttt{Gtz.not\_eventualCompressionLiftClaim} \\
 \addlinespace
 \multicolumn{2}{@{}l}{\emph{\S\ref{sec:interior}, interior critical points}}\\
@@ -202,11 +229,19 @@ Lemma~\ref{lem:overlap}        & \texttt{Gtz.tightOverlap\_sum\_eq\_one\_of\_isQ
                                & \texttt{Gtz.exists\_mem\_activeSubset\_of\_isQuadricStationaryData} \\
 Lemma~\ref{lem:defect}         & \texttt{Gtz.weight\_mul\_value\_le\_one\_of\_isQuadricStationaryData}, \\
                                & \texttt{Gtz.weight\_mul\_value\_eq\_one\_of\_saturatedAtom} \\
+Proposition~\ref{prop:e1}      & \texttt{Gtz.value\_eq\_rank\_of\_rankOneMultiplier} \\
+Corollary~\ref{cor:e1}         & \texttt{Gtz.not\_isQuadricStationaryData\_of\_rankOneMultiplier\_of\_value\_lt\_one} \\
+Proposition~\ref{prop:e2}      & \texttt{Gtz.weight\_mul\_value\_eq\_one\_of\_independentTightSupport}, \\
+                               & \texttt{Gtz.value\_eq\_size\_of\_independentTightSupport} \\
 Corollary~\ref{cor:singleactive}
                                & \texttt{Gtz.value\_eq\_rank\_of\_singleActive}, \\
                                & \texttt{Gtz.not\_isQuadricStationaryData\_of\_singleActive\_of\_value\_lt\_one} \\
+Corollary~\ref{cor:e3}         & \texttt{Gtz.three\_le\_card\_activeSubsetImage\_or\_dependentPartition\_sixThree} \\
 Proposition~\ref{prop:saturated}& \texttt{Gtz.weight\_mul\_value\_eq\_one\_of\_saturatedAtom}, \\
                                & \texttt{Gtz.one\_le\_value\_of\_saturatedAtom} \\
+Theorem~\ref{thm:reach}        & \texttt{Gtz.exists\_isQuadricStationaryData\_value\_lt\_one}, \\
+                               & \texttt{Gtz.subsetSum\_belowOneDesign\_orthogonalPair}, \\
+                               & \texttt{Gtz.not\_forall\_one\_le\_value\_of\_isQuadricStationaryData} \\
 \addlinespace
 \multicolumn{2}{@{}l}{\emph{Appendix~\ref{app:graveyard}, excluded strategies}}\\
 Proposition~\ref{prop:noaggregate}
@@ -241,16 +276,20 @@ marked $a$ in Table~\ref{tab:leantwo}.  Its proof is checked when its module
 is elaborated, but its axiom use is not certified by the ledger.
 
 No numerical assertion in the paper rests on floating-point evaluation.  The
-witnesses of \S\ref{sec:sharp} and Appendix~\ref{app:graveyard} are exact
-rationals in the formal statements and are checked as such; the icosahedral and
-graphic designs of Appendix~\ref{app:data} carry radicals, and the
+witnesses of \S\ref{sec:sharp}, and those of
+Appendix~\ref{app:graveyard} other than the icosahedron, are exact
+rationals in the formal statements and are checked as such.  The
+icosahedral design --- which carries Appendix~\ref{app:graveyard}'s refutation
+of the two-moment certificate as well as the data of
+Appendix~\ref{app:data} --- and the graphic designs of
+Appendix~\ref{app:data} carry radicals, and the
 formal statements use the algebraic relations \eqref{eq:icosaconst} and
 \eqref{eq:graphicleverage} that eliminate them.  Remark~\ref{rem:hygiene}
 records the conditioning that forces the discipline.
 
 \subsection{Where the formalization stops}\label{sec:boundaries}
 
-Two steps of the argument are not formal.  Both lie in
+Three steps of the argument are not formal.  All three lie in
 \S\ref{sec:compactness}--\S\ref{sec:interior}.
 
 The first is the attainment in Theorem~\ref{thm:variational}: a continuous
@@ -263,7 +302,16 @@ inputs, Theorem~\ref{thm:boundary} and Corollary~\ref{cor:interiorcex},
 which place the minimizer at a design rather than at a boundary point,
 are formal.
 
-The second is the passage from a local minimum to the system
+The second is one half of Proposition~\ref{prop:chartdesign}.  That a design
+produces a chart point is formal; that every chart point with positive
+weights is the chart point of a design is left as the named leaf
+\texttt{Gtz.ChartPointHasDesign}, whose content is the spectral theorem.
+Theorem~\ref{thm:variational}'s conclusion that the minimizer is the chart
+point of a design rides on it, and so does the identification of
+$\Gtz(m,k)$ with $\Gtz^{\mathrm{ch}}_{\circ}(m,k)$ in
+Corollary~\ref{cor:equivalent}.
+
+The third is the passage from a local minimum to the system
 \eqref{eq:statg}--\eqref{eq:statt}.  Its ingredients are the spectraplex,
 the composition rule and the maximum rule, assembled in \S\ref{sec:kkt};
 each is classical
@@ -276,46 +324,110 @@ rather than deriving the system from minimality.
 
 The two conjectural inputs of Theorem~\ref{thm:rankthree} speak about the
 system, not about minimality, so a proof of either closes the corresponding
-cell only together with the two steps above.
+cell only together with the three steps above.
 
-Eleven tags are narrower than the statement they head.  Seven are one
-mechanism: the statement is printed over $\FF$, or over both fields, and the
-formal statement is over $\R$.  The field-generic layer is the design
-structure, the trace identity, the chart of \S\ref{sec:chart} with its
-congruence and its two Rayleigh halves, the weak form of
+Twenty-one tags are narrower than the statement they head, in two families.
+
+Twelve are one mechanism: the statement is printed over $\FF$, or over both
+fields, and the formal statement is over $\R$.  The field-generic layer is
+the design structure, the trace identity, the chart of \S\ref{sec:chart}
+with its congruence and its two Rayleigh halves, the weak form of
 Lemma~\ref{lem:rankone}, the co-Parseval operator,
-Proposition~\ref{prop:sizerank} and Theorem~\ref{thm:corankone}.  The seven lie
-outside it: the spanning assertion of Lemma~\ref{lem:span}, the complex half of
-Proposition~\ref{prop:classical}, Theorem~\ref{thm:duality},
-Corollary~\ref{cor:dualcell}, Theorem~\ref{thm:leverageaverage},
-Proposition~\ref{prop:rankfloor}, and Theorem~\ref{thm:tieseverywhere} over
-$\C$ above size $k+1$.
+Proposition~\ref{prop:sizerank} and Theorem~\ref{thm:corankone}.  The twelve
+lie outside it: the spanning assertion of Lemma~\ref{lem:span}; the
+pigeonhole half of Lemma~\ref{lem:trace}; Lemma~\ref{lem:share};
+Corollary~\ref{cor:minor}; Lemma~\ref{lem:whiten}; the strict half of
+Lemma~\ref{lem:rankone}; the complex half of
+Proposition~\ref{prop:classical}; Theorem~\ref{thm:duality};
+Corollary~\ref{cor:dualcell}; Theorem~\ref{thm:leverageaverage};
+Theorem~\ref{thm:tieseverywhere} over $\C$ above size $k+1$; and
+Proposition~\ref{prop:twomoment}.  In each of them the printed proof does not
+consult the field, so each is a transcription rather than a mathematical
+gap --- with the exception named next.
 
-Proposition~\ref{prop:rankfloor} is formalized as
-\texttt{Gtz.gtzWeightedFloor\_inv\_rank}, and its proof does not consult the
-field, so its complex case is a transcription and not a mathematical gap.
+The exception is Theorem~\ref{thm:duality} and, with it,
+Corollary~\ref{cor:dualcell}.  No complex Naimark duality is stated anywhere
+in the development, and the complex half of the corollary would need one; it
+does follow from Theorem~\ref{thm:complex}, but \S\ref{sec:chart} precedes
+\S\ref{sec:complex} and that route is not available where the corollary
+stands.  Even over $\R$ the mechanized duality is not the printed
+construction: the paper takes $h_c=R\adj w_c$ from an orthonormal basis of
+$\ker P$, while the formal proof whitens
+$\sum_c(1-t_c)g_c^{\vphantom{\mathsf{H}}}g_c\adj$ and draws the dual atoms
+from an orthonormal completion.  What is mechanized is that some dual design
+with the same weights flips domination, not that this one does.
 
-No complex Naimark duality is stated anywhere in the development.
+Proposition~\ref{prop:rankfloor} is not among the twelve.  It is mechanized
+at $\R$ and at $\C$ separately, by the same three steps, as\\
+\texttt{Gtz.gtzWeightedFloor\_inv\_rank} and\\
+\texttt{Gtz.complexRankConstantAtLeast\_rankInverse};\\
+what is missing is only the form at a generic \texttt{RCLike} scalar.
 
-The other four are gaps inside one field.
+Nine are gaps inside one field: a clause of the printed statement has no
+formal counterpart at either.
 \begin{enumerate}
-\item[\rm(i)] In Proposition~\ref{prop:tielawcorank} the per-atom
+\item[\rm(i)] Theorem~\ref{thm:corankone}(i), the erasure criterion, is
+  carried in the development as the named open proposition\\
+  \texttt{Gtz.JensenErasureCriterion}.  What is formal is the same criterion
+  in the pivot chart,\\
+  \texttt{Gtz.fieldDominates\_erase\_iff\_coParsevalPivot\_le\_one},\\
+  with the strict half over $\R$ only; the step between them is the
+  uniqueness of rank-one Hermitian idempotents, which the ambient library
+  does not package.  Parts (ii)--(iv) are formal.
+\item[\rm(ii)] In Proposition~\ref{prop:tielawcorank} the per-atom
   equivalence is formal, as\\
   \texttt{Gtz.jensenRatio\_eq\_inv\_rank\_iff\_leverageIdentity},\\
   and the summation that concludes $m=k+1$ is not.
-\item[\rm(ii)] In Proposition~\ref{prop:jensen} the inequality is formal, as\\
+\item[\rm(iii)] In Proposition~\ref{prop:jensen} the inequality is formal, as\\
   \texttt{Gtz.sq\_rank\_le\_sum\_weight\_mul\_leverage\_sq},\\
   and the equality case, $\ell_c=k$ throughout, is not stated.
-\item[\rm(iii)] In Lemma~\ref{lem:overlap} the covering asserted in~(iv) is
+\item[\rm(iv)] In Lemma~\ref{lem:overlap} the covering asserted in~(iv) is
   formal, as\\
   \texttt{Gtz.exists\_mem\_activeSubset\_of\_isQuadricStationaryData},\\
   and the refinement that the covering index carries $\lambda_i>0$ and
-  $\langle u_i,g_c\rangle\ne0$ is not.
-\item[\rm(iv)] In Lemma~\ref{lem:defect} the two consequences drawn from the
+  $\langle u_i,g_c\rangle\ne0$ is not.  That refinement survives only inside
+  the proof of Proposition~\ref{prop:e2}, whose printed argument consumes it,
+  as does \eqref{eq:count}.
+\item[\rm(v)] In Lemma~\ref{lem:defect} the two consequences drawn from the
   identity elsewhere in the section are formal, as\\
   \texttt{Gtz.weight\_mul\_value\_le\_one\_of\_isQuadricStationaryData} and\\
   \texttt{Gtz.weight\_mul\_value\_eq\_one\_of\_saturatedAtom};\\
   the identity itself, one subtraction of \eqref{eq:coverage} from
   \eqref{eq:overlapone}, is not stated on its own, and neither is the
   criterion for its vanishing.
+\item[\rm(vi)] In Lemma~\ref{lem:sicvalue} the value is formal on one side,
+  as \texttt{Gtz.sicDesign\_valueAtMost} together with the vanishing of the
+  shifted pair determinant; the attainment that turns ``at most'' into
+  ``exactly'' is not stated.  Example~\ref{ex:trine} and
+  Proposition~\ref{prop:hesse} carry the matching greatest-element
+  declarations and this one does not.
+\item[\rm(vii)] In Proposition~\ref{prop:hesse} the root
+  $3(1-\cos\tfrac{2\pi}9)$ is formal, as \texttt{Gtz.hesseMargin\_isRoot};
+  the other two roots of $h$ do not occur in the development, and neither
+  does the assertion that the first is the least of the three.  The rest of
+  the proposition is formal.
+\item[\rm(viii)] Theorem~\ref{thm:reduce} prints the smaller design's vectors
+  indexed in increasing order, where\\
+  \texttt{Gtz.exists\_reduced\_design}\\
+  concludes only that the index map is injective; the enumeration is what the
+  construction builds and not what the statement carries.  Nothing downstream
+  uses the ordering.
+\item[\rm(ix)] Corollary~\ref{cor:noparallel}(a) is printed for every design
+  of Theorem~\ref{thm:tieseverywhere} of size $m\ge k+2$.  Formal are the
+  mechanism and one instance, as\\
+  \texttt{Gtz.splitClassAtom\_eq\_of\_sameClass} and\\
+  \texttt{Gtz.splitTetraDesign\_hasParallelPair};\\
+  the quantified statement is not assembled from them.
 \end{enumerate}
+
+Two further declarations reach past what the text credits.  The mechanism of
+Lemma~\ref{lem:continuity} is formal for the design objective $F$ --- Weyl's
+bound as \texttt{Gtz.lipschitzWith\_lambdaMinCLM}, the finite maximum as
+\texttt{Gtz.continuous\_dominationMargin} --- while the transcription to the
+chart, with the additive modulus in $\lVert P-Q\rVert$ and
+$\max_c\lvert t_c-t'_c\rvert$, is not stated.  And
+Lemma~\ref{lem:marginal} runs the other way: the paper proves it, by
+Cauchy--Binet, where the development carries it as the hypothesis
+\texttt{Gtz.IsProjectionOnePointMarginal} on which its
+Theorem~\ref{thm:average} is conditional.  Both statements are untagged, so
+neither is an over-claim.
