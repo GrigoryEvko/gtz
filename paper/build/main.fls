@@ -601,6 +601,12 @@ INPUT ./figures/quadric.tex
 INPUT ./figures/quadric.tex
 INPUT ./figures/quadric.tex
 INPUT figures/quadric.tex
+INPUT /usr/share/texlive/texmf-dist/tex/latex/lm/t1lmtt.fd
+INPUT /usr/share/texlive/texmf-dist/tex/latex/lm/t1lmtt.fd
+INPUT /usr/share/texlive/texmf-dist/tex/latex/lm/t1lmtt.fd
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmtt10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmtt8.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmtt8.tfm
 INPUT ./figures/census.tex
 INPUT ./figures/census.tex
 INPUT ./figures/census.tex
@@ -611,14 +617,8 @@ INPUT ./sections/09-formalization.tex
 INPUT ./sections/09-formalization.tex
 INPUT ./sections/09-formalization.tex
 INPUT sections/09-formalization.tex
-INPUT /usr/share/texlive/texmf-dist/tex/latex/lm/t1lmtt.fd
-INPUT /usr/share/texlive/texmf-dist/tex/latex/lm/t1lmtt.fd
-INPUT /usr/share/texlive/texmf-dist/tex/latex/lm/t1lmtt.fd
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmtt10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmri10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmtt10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmtt8.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/lm/ec-lmtt8.tfm
 INPUT ./sections/10-open.tex
 INPUT ./sections/10-open.tex
 INPUT ./sections/10-open.tex

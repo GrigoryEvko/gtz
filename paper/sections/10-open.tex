@@ -85,13 +85,31 @@ $\Gtz(m,k)$ at every rank at once:
 \item[(b)] that least root is at least $1$.
 \end{enumerate}
 
-Neither is available.  Statement (a) does not follow from real-rootedness of
-$q$ alone (Proposition~\ref{prop:rootedness}), and the interlacing method of
+Statement (a) is unavailable: it does not follow from real-rootedness of $q$
+alone (Proposition~\ref{prop:rootedness}), and the interlacing method of
 \cite{MSS2015} requires the whole convex family to be real-rooted, a property
-of volume sampling that has not been verified.  Statement (b) must be exact
-on the equality locus, by Proposition~\ref{prop:qone}: at a design where
-every basis has $1$ in the spectrum of $\SC$ one has $q(1)=0$, with no
-margin, and at the tetrahedron $q=(x-1)(x-4)^2$ (\S\ref{app:tetra}).
+of volume sampling that has not been verified.  Statement (b) is worse than
+unavailable.  It is false, at both residual cells of rank three, with exact
+witnesses at which $\Gtz$ itself holds.  At $(6,3)$ take the six directions
+of the $D_3$ root system at uniform weight $\tfrac16$ --- every leverage
+equal to $3$, so the design is as isotropic as a design of that size can
+be.  There $q(1)=\tfrac7{16}>0$ while $q(0)<0$, so a root lies strictly
+inside $(0,1)$; it is $0.94007\ldots$
+(\texttt{Gtz.not\_mixed\allowbreak Root\allowbreak At\allowbreak Least\allowbreak One\_six\allowbreak Three}).  At $(7,3)$ take the four
+tetrahedron directions together with three doubled coordinate axes:
+$q(1)=\tfrac{11}{256}>0$ and the least root is $0.99437\ldots$
+(\texttt{Gtz.not\_mixed\allowbreak Root\allowbreak At\allowbreak Least\allowbreak One\_seven\allowbreak Three}).  Each cell is refuted on
+its own, and both together
+(\texttt{Gtz.not\_mixed\allowbreak Root\allowbreak At\allowbreak Least\allowbreak One\_rank\allowbreak Three\allowbreak Residuals}).  What the
+witnesses kill is the bound, not the conjecture.
+
+That the margin in (b) is zero anyway was already forced from the other
+side, by Proposition~\ref{prop:qone}: at a design where every basis has $1$
+in the spectrum of $\SC$ one has $q(1)=0$, and at the tetrahedron
+$q=(x-1)(x-4)^2$ (\S\ref{app:tetra}).  The witnesses above push the least
+root below $1$, so the mixture is not merely tight but wrong.  Any
+derandomization of Theorem~\ref{thm:average} must replace the mixture, not
+sharpen it.
 
 A route through this problem would be the first argument in the subject that
 does not proceed cell by cell.  Nothing in this paper manages that.
@@ -156,51 +174,38 @@ approximate it \cite{GuEisenstat1996} inherit the weaker guarantee.
 The witnesses named below are Lean declarations, verified and covered by
 the ledger of \S\ref{sec:axioms}.
 
-At general weights the rule fails outright.  The volume of $C$ is $\pi_C$ of
-\eqref{eq:dpp}; at a design at $(7,3)$ whose atom vectors are integral, whose
-weights are integer multiples of $\tfrac1{60}$ and whose leverages are all at
-least $2$, the maximum of $\pi_C$ over the thirty-five triples is attained at a
-triple that does not dominate
-(\texttt{Gtz.shadowDeterminant\_\allowbreak le\_\allowbreak shadowArgmaxSubset},
-\texttt{Gtz.shadowArgmaxSubset\_\allowbreak not\_\allowbreak dominates}), while
-another triple does
-(\texttt{Gtz.shadowArgmaxDesign\_\allowbreak hasDominatingSubset}).  At that same design the
-maximizer of the unweighted volume $\lvert\det M_C\rvert$ dominates strictly, so
-what breaks the rule is the weighting by $\prod_{c\in C}t_c$ in \eqref{eq:dpp},
-and Proposition~\ref{prop:rankfloor}, whose subset is the unweighted maximizer,
-is untouched.
+At general weights the rule fails outright:
+Proposition~\ref{prop:volumefails} exhibits a design at $(7,3)$ where the
+maximizer of the volume $\pi_C$ of \eqref{eq:dpp} does not dominate and
+another triple does.  What breaks there is the weighting by
+$\prod_{c\in C}t_c$, not the determinant, so the uniform-weight question is
+the one that stays open.
 
 Whatever exhibits the subset must read the atom labels.  No triple dominates at
 every design at $(6,3)$: two rational designs there each have a dominating
 triple and share none
 (\texttt{Gtz.no\_\allowbreak universal\_\allowbreak dominating\_\allowbreak subset},
-\texttt{Gtz.exists\_\allowbreak designs\_\allowbreak with\_\allowbreak disjoint\_\allowbreak dominationSets}).  Invariant data
+\texttt{Gtz.exists\_\allowbreak designs\_\allowbreak with\_\allowbreak disjoint\_\allowbreak domination\allowbreak Sets}).  Invariant data
 is not enough either: some design at $(6,3)$ is fixed atom-for-atom and
 weight-for-weight by a nontrivial relabelling of its indices, has a dominating
 triple, and has none that the relabelling fixes
-(\texttt{Gtz.exists\_\allowbreak symmetry\_\allowbreak with\_\allowbreak no\_\allowbreak fixed\_\allowbreak dominatingSubset}), so every
+(\texttt{Gtz.exists\_\allowbreak symmetry\_\allowbreak with\_\allowbreak no\_\allowbreak fixed\_\allowbreak dominating\allowbreak Subset}), so every
 rule computed from relabelling-invariant data fails there.  That witness is the
 $(6,3)$ split tetrahedron of \S\ref{app:split} at $a=b=\tfrac18$, the
 relabelling exchanging the two copies in each split direction, so the
 obstruction sits on the equality locus.  Taking the atom of greatest leverage
 fails at a design all of whose leverages exceed $1$
-(\texttt{Gtz.heaviest\_\allowbreak atom\_\allowbreak can\_\allowbreak lie\_\allowbreak outside\_\allowbreak every\_\allowbreak dominatingSubset},
-\texttt{Gtz.heavyPivotDesign\_\allowbreak allHeavy}).
+(\texttt{Gtz.heaviest\_\allowbreak atom\_\allowbreak can\_\allowbreak lie\_\allowbreak outside\_\allowbreak every\_\allowbreak dominating\allowbreak Subset},
+\texttt{Gtz.heavy\allowbreak Pivot\allowbreak Design\_\allowbreak all\allowbreak Heavy}).
 Maximizing $\lmin(\SC)$ is not refuted and cannot be: its argmax dominates
 whenever any triple does, and computing that argmax is the exhaustive search.
 
-Local search is refuted at a bounded exchange radius.  Suppose a score has the
-property that at every non-dominating $k$-subset some $k$-subset within $r$
-swaps scores strictly higher; a finite argmax then proves $\Gtz(m,k)$.  At rank
-three and $r\le2$ the property fails on all-heavy designs for $\lmin(\SC)$ at
-both open cells, and at $(7,3)$ for the clipped trace, the trace of $\SC$ with
-each eigenvalue replaced by its minimum with $1$, and for $\pi_C$
-(\texttt{Gtz.not\_\allowbreak exchangeImprovesWithinRadiusHeavy\_\allowbreak of\_\allowbreak le\_\allowbreak two\_\allowbreak rankThree},
-\texttt{Gtz.boundedRadiusExchangeHeavy\_\allowbreak refuted\_\allowbreak sevenThree}).  At $r=k$ the
-radius constraint is vacuous.  The first two scores separate dominating from
-failing subsets by a threshold, so at that radius their hypothesis is
-$\Gtz(m,k)$ verbatim; for $\pi_C$ it is false with no radius bound at all.
-Every witness above satisfies $\Gtz$ at its own cell.
+Local search fares no better.  A score that improves within a bounded
+exchange radius at every non-dominating subset would prove $\Gtz(m,k)$ by a
+finite argmax; \S\ref{app:exchange} refutes the hypothesis for the three
+natural scores and states the boundary, which is that no radius survives
+with content rather than that every radius is refuted.  Every witness there
+satisfies $\Gtz$ at its own cell.
 
 Two questions therefore stand apart from the conjecture itself: does a subset of
 maximal volume dominate at uniform weights, and, granting $\Gtz(m,k)$, is there

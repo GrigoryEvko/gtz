@@ -436,12 +436,19 @@ off the diagonal.  Figure~\ref{fig:regression} draws the fit.
 For uniform weights $t_c=1/m$, Theorem~\ref{thm:ranktwo} is the theorem of
 Sengupta and Pautov \cite{SenguptaPautov2026}, whose base case $m=4$ is
 due to Nesterenko \cite{Nesterenko2023}; the substitution
-\eqref{eq:doubleangle} and the light/heavy split are theirs.  The passage
-to arbitrary weights is new; it costs the reweighting of
-Theorem~\ref{thm:light} in the light branch, and it replaces the
+\eqref{eq:doubleangle} and the light/heavy split are theirs.  As a
+statement the theorem is not more than theirs: the uniform result at every
+size gives the weighted one by the transfer of \S\ref{sec:intro} --- split
+each atom of a rational-weight design into equal copies, apply the uniform
+result to the larger design, and pass to the limit, exactly as
+\S\ref{sec:cladder} does over $\C$ through Lemma~\ref{lem:split}.  What is
+new is the proof at arbitrary weights, which costs the reweighting of
+Theorem~\ref{thm:light} in the light branch and replaces the
 Perron--Frobenius step of \cite{SenguptaPautov2026} by
 Lemma~\ref{lem:rowsum} and the trace computation of
-Lemma~\ref{lem:spanning} in the heavy branch.
+Lemma~\ref{lem:spanning} in the heavy branch.  It is also what the
+formalization carries: the transfer argument is not mechanized and the
+direct one is.
 
 At uniform weights the designs whose $K$ vanishes off the diagonal are
 classified in \cite{Nesterenko2026real}: the squared vectors fall into

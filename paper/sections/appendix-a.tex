@@ -3,8 +3,9 @@
 By Corollary~\ref{cor:nomargin} the selection inequality
 \eqref{eq:dominate} is an equality on a set of full dimension in the
 weights.  A device whose output is a strictly positive quantity therefore
-asserts something false at every point of that set.  Four of the seven
-strategies below fail for that reason alone.
+asserts something false at every point of that set.  Four of the nine
+strategies below fail for that reason alone; the rest fail at explicit
+designs.
 
 For a $k$-subset $C$ of a design write $\Gram_C$ for the Gram matrix
 $(\langle g_c,g_d\rangle)_{c,d\in C}$.  By \eqref{eq:twoproducts},
@@ -115,6 +116,24 @@ Stengle certificate has degree at least $12$ in the $28$ Gram entries and at
 least $24$ in the $21$ coordinates.  A sum of squares of degree $12$ in $28$
 variables has a half-degree monomial basis of $\binom{34}{6}=1\,344\,904$
 elements.
+
+Two limits on that floor.  It bounds a certificate of emptiness of the
+strict system, so it constrains neither the atlas route of
+\S\ref{app:region} nor any certificate whose monoid part uses an $e_2$
+generator: at the block family $e_2\ge1>0$, so such a factor is strictly
+positive there and the vanishing argument does not run.  And it is a
+property of this presentation, not of the problem.  Lift the system by one
+auxiliary $u_T$ per triple, with ideal generator
+$(e_2-u_T)(e_3-u_T)=0$, cone generators $e_2-u_T\ge0$ and $e_3-u_T\ge0$,
+and strict generator $-u_T>0$; the lifted system is empty exactly when the
+original is, and its strict generators have degree $0$ in the Gram entries,
+so the same argument returns $4\times0=0$.  The cardinality floor of four
+triples is presentation-independent; the degree floor is not.  Finally, of
+the two counts above only one is kernel-checked: that no set of at most
+three triples suffices is
+\texttt{Gtz.not\_is\allowbreak Stengle\allowbreak Tie\allowbreak Support\allowbreak Seven\_of\_card\_le\_three}, decided over
+all $35^3$ cases, while the count $5355$ comes from an exhaustive search
+outside the proof assistant.
 \end{remark}
 
 \subsection{Margin transfer across a deletion}\label{app:transfer}
@@ -377,6 +396,98 @@ An induction branching on the presence of a parallel pair therefore owes a
 separate treatment of the diamond, and of every extremal family not obtained by
 splitting, a list not known to be finite.  This is part of
 Problem~\ref{prob:structure}.
+
+\subsection{Maximal volume at general weights}\label{app:volume}
+
+% These two subsections carry Lean declaration names, which set as long
+% unbreakable runs.  Loosen the interword glue over them rather than let a
+% name push past the measure.
+\sloppy
+
+The maximal-volume principle \cite{GT2001} names a subset: take the one of
+greatest $\lvert\det M_C\rvert$.  Weighted by \eqref{eq:dpp} it names the
+maximizer of $\pi_C=\bigl(\prod_{c\in C}t_c\bigr)\lvert\det M_C\rvert^2$,
+which is the subset volume sampling favours most.  That rule is false.
+
+\begin{proposition}[Lean]\label{prop:volumefails}
+There is a design at $(7,3)$, with integral atom vectors, weights integer
+multiples of $\tfrac1{60}$ and every leverage at least $2$, at which the
+maximizer of $\pi_C$ over the thirty-five triples does not dominate, while
+some other triple does.
+\end{proposition}
+
+The witness is exact and the maximization is over the full list of
+thirty-five
+(\texttt{Gtz.shadow\allowbreak Determinant\_\allowbreak le\_\allowbreak
+shadow\allowbreak Argmax\allowbreak Subset}, \texttt{Gtz.shadow\allowbreak Argmax\allowbreak Subset\_\allowbreak
+not\_\allowbreak dominates}, \texttt{Gtz.shadow\allowbreak Argmax\allowbreak Design\_\allowbreak
+has\allowbreak Dominating\allowbreak Subset}).  At the same design the maximizer of the unweighted
+volume $\lvert\det M_C\rvert$ dominates strictly, so what breaks the rule is
+the factor $\prod_{c\in C}t_c$ and not the determinant.
+Proposition~\ref{prop:rankfloor}, whose subset is the unweighted maximizer,
+is untouched, and so is the uniform-weight question, which stays open
+(Problem~\ref{prob:effective}).  This exclusion does not run through
+Corollary~\ref{cor:nomargin}: the witness is a single explicit design, not a
+statement about the equality locus.
+
+\subsection{Bounded-radius exchange}\label{app:exchange}
+
+Local search would name the subset.  Fix a score $\sigma$ on $k$-subsets and
+a radius $r$, and suppose that at every non-dominating $C$ some $k$-subset
+within $r$ swaps of $C$ scores strictly higher.  Then a maximizer of
+$\sigma$ over the finite list of $k$-subsets dominates, so $\Gtz(m,k)$
+holds (\texttt{Gtz.gtz\allowbreak Weighted\_of\_exchange\allowbreak Improves\allowbreak Within\allowbreak Radius}).  The
+reduction is sound; the hypothesis fails.
+
+For $\sigma=\lmin(\SC)$ it fails at $r\le2$ on all-heavy designs at $(6,3)$
+(\texttt{Gtz.not\_\allowbreak exchange\allowbreak Improves\allowbreak Within\allowbreak Radius\allowbreak Heavy\_\allowbreak
+of\_\allowbreak le\_\allowbreak two\_\allowbreak rank\allowbreak Three}).  The witness
+is stuck at the triple $\{0,1,2\}$, where
+$\SC=\diag(\tfrac{576}{625},\tfrac{576}{625},\tfrac{729}{400})$, and the
+dominating triple $\{3,4,5\}$ has $\SC=4I_3$ but sits at exchange distance
+exactly three.  At $(7,3)$ the same failure holds not for $\lmin$ alone but
+for every score meeting its specification --- a specification that is both
+inhabited and categorical
+(\texttt{Gtz.is\allowbreak Least\allowbreak Eigenvalue\allowbreak Score\_\allowbreak least\allowbreak Eigenvalue},
+\texttt{Gtz.eq\_of\_\allowbreak is\allowbreak Least\allowbreak Eigenvalue\allowbreak Score}), so nothing is
+gained by reformulating the score.
+
+For the clipped trace --- the trace of $\SC$ with each eigenvalue replaced
+by its minimum with $1$, a score designed to reward partial progress --- the
+hypothesis fails at $(7,3)$ and $r\le2$
+(\texttt{Gtz.not\_\allowbreak
+exchange\allowbreak Improves\allowbreak Within\allowbreak Radius\allowbreak Heavy\_\allowbreak clipped\allowbreak Trace\_\allowbreak
+of\_\allowbreak le\_\allowbreak two}).  For $\sigma=\pi_C$ it fails with no
+radius bound at all
+(\texttt{Gtz.not\_\allowbreak exchange\allowbreak Improves\allowbreak Heavy\_\allowbreak
+shadow\allowbreak Determinant}), and that unbounded refutation is the informative one:
+$\pi_C$ is the only one of the three that is not threshold-shaped.
+
+The boundary is worth stating exactly, because it is not that every radius
+is refuted.  At $r\ge k$ the constraint is vacuous --- any $k$-subset is
+within $k$ swaps of any other
+(\texttt{Gtz.does\allowbreak Exchange\allowbreak Improve\allowbreak Within\allowbreak Radius\_\allowbreak
+iff\_\allowbreak unbounded\_\allowbreak of\_\allowbreak rank\_\allowbreak
+le}) --- and there a score that merely separates dominating subsets from
+failing ones by a threshold has, as its hypothesis, $\Gtz(m,k)$ verbatim
+(\texttt{Gtz.does\allowbreak Exchange\allowbreak Improve\_\allowbreak iff\_\allowbreak
+gtz\allowbreak Weighted\_\allowbreak of\allowbreak Threshold}).  So the honest verdict is that no
+radius survives with content, not that every radius is refuted.  Each
+witness above satisfies $\Gtz$ at its own cell, and none of them runs
+through Corollary~\ref{cor:nomargin}.
+
+What survives is the identity behind $\pi_C$ and its consequences:
+$\pi_C=\bigl(\prod_{c\in C}t_c\bigr)\lvert\det M_C\rvert^2$
+(\texttt{Gtz.shadow\allowbreak Determinant\_\allowbreak eq\_\allowbreak
+weight\allowbreak Product\_\allowbreak mul\_\allowbreak det\allowbreak Sq}), the normalization
+$\sum_C\pi_C=1$ (\texttt{Gtz.sum\_\allowbreak shadow\allowbreak Determinant\_\allowbreak
+eq\_one}), and hence a subset with
+$\pi_C\ge\binom{m}{k}^{-1}$
+(\texttt{Gtz.exists\_\allowbreak shadow\allowbreak Determinant\_\allowbreak
+ge\_\allowbreak inv\_\allowbreak binomial}).  That subset is not shown to
+dominate.
+
+\fussy
 
 \subsection{Conditioning}\label{app:hygiene}
 

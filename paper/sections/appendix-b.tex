@@ -109,7 +109,23 @@ gets a member which is not a rotation of the tetrahedron:
 with $\ell=(\tfrac43,\tfrac{19}3,\tfrac{19}3,\tfrac{19}3)$, the single
 dependency $3g_0+2g_1+2g_2+2g_3=0$, and dominating triple $\{1,2,3\}$ whose
 gap is $\tfrac83\bigl[(x_0-x_1)^2+(x_0-x_2)^2+(x_1-x_2)^2\bigr]$.  The
-equality locus is therefore not a single orbit even at corank one.
+equality locus is therefore not a single orbit even at corank one.  Two
+readings of this member.  Its squared cosines take two values,
+$\tfrac1{19}$ between $g_0$ and each other atom and $\tfrac{64}{361}$
+between the others, so a real extremal design need not be equiangular
+(\texttt{Gtz.sharp\allowbreak Atom\_not\_equiangular}) --- against the icosahedron of
+\S\ref{app:icosa}, whose single squared cosine is $\tfrac15$.  And the
+dependency coefficients $y=(3,2,2,2)$ satisfy $y_c^2/\bigl(t_c(1-t_c)\bigr)
+=\tfrac{81}2$ at every atom, which is \eqref{eq:tielaw} read on this
+design.
+
+The family has a graphic realization, uniform in the rank: the
+$(k+1)$-cycle at unit conductance and uniform weight, whose dominating
+subsets are its paths, dominating with margin exactly zero
+(\texttt{Gtz.cycle\allowbreak Graph\allowbreak Data\_dominates},
+\texttt{Gtz.cycle\allowbreak Graph\allowbreak Data\_not\_pos\allowbreak Def}).  The gap is a telescoping
+Cauchy--Schwarz, so the vanishing of the margin is visible at every rank
+rather than instance by instance.
 
 \subsection{The chart point of
 \texorpdfstring{\S\ref{sec:sharp}}{the sharpness section}}\label{app:liftfail}
@@ -273,6 +289,48 @@ $\tfrac32$ each, whose conductances add to $5$.  So
 $R_{\mathrm{eff}}(ab)=\tfrac15$ and $s_{ab}=\tfrac25$, as computed
 above.
 
+Three facts about graphic designs in general, each formal.  Domination is a
+matroid condition: an edge set of the right size dominates only if it is a
+spanning tree, and positive definiteness of the Laplacian restricted to a
+set is connectivity to the ground
+(\texttt{Gtz.is\allowbreak Spanning\allowbreak Tree\_of\_dominates},
+\texttt{Gtz.pos\allowbreak Def\_laplacian\allowbreak On\_iff\_is\allowbreak Ground\allowbreak Connected}), which is the
+dictionary behind ``the eight spanning trees'' above.  Deleting a light edge
+preserves domination in the Loewner order
+(\texttt{Gtz.dominates\_of\_deleted\_dominates}), the graph reading of the
+leverage ceiling.  And slack is available at the binding cell: $K_4$ at unit
+conductance and uniform weight $\tfrac16$ is a design at $(6,3)$ whose star
+at the ground dominates \emph{strictly}, with the explicit certificate
+$2(y_a^2+y_b^2+y_c^2)+(y_a+y_b+y_c)^2$
+(\texttt{Gtz.complete\allowbreak Four\allowbreak Data\_dominates\_strictly}).  It is the foil to the
+diamond: same construction, one cell up, and the margin is positive.
+
+The equality locus has a graphic realization at every rational point, and
+with it a closed form for the leverage.  Bundle the $(k+1)$-cycle: replace
+arc $j$ by $p_j$ parallel edges, and write $n=\sum_jp_j$.  Then an edge in
+an arc of $p$ parallel edges has
+\[
+  \ell_e=\frac{(k-1)n+p}{k\,p},
+  \qquad
+  P_{ee}=\frac{k-1}{k\,p}+\frac{1}{k\,n}
+  \qquad\text{(\texttt{Gtz.bundled\allowbreak Cycle\_leverage})},
+\]
+proved by exhibiting the transfer current, never by inverting the Laplacian,
+and agreeing with \eqref{eq:tielaw} at the arc total $T=p/n$.  The gap of
+the transversal omitting arc $j_0$ is
+\[
+  \sum_{j\ne j_0}\frac{d_j^2}{p_j}
+  \;-\;\frac{\bigl(\sum_{j\ne j_0}d_j\bigr)^2}{\sum_{j\ne j_0}p_j}
+  \qquad\text{(\texttt{Gtz.bundled\allowbreak Cycle\_gap\_eq\_engel\allowbreak Deficiency})},
+\]
+the Engel form of Cauchy--Schwarz in the drops $d_j$: nonnegative always,
+and zero exactly on the ray $d_j\propto p_j$.  That is the mechanism behind
+the extremality asserted in \S\ref{app:split} --- the margin vanishes
+because a Cauchy--Schwarz is tight, not by an accident of the construction.
+At rank two the gap is the exact rational square
+$(d_1p_2-d_2p_1)^2/\bigl(p_1p_2(p_1+p_2)\bigr)$, so the slack off the tight
+ray is an explicit function of the drops.
+
 \subsection{Split families at
 \texorpdfstring{$(6,3)$ and $(7,3)$}{(6,3) and (7,3)}}\label{app:split}
 
@@ -373,9 +431,20 @@ $\SC=(3-\rho)I_3+\rho J_3$, with spectrum $\{3-\rho,3-\rho,3+2\rho\}$ and
 \[
   \lmin(S_{\{0,2,4\}})=3-\frac{3}{\sqrt5}=1.6584\ldots>1 :
 \]
-the icosahedral design dominates, and dominates strictly.  Exactly ten of its
-twenty triples dominate.  It is used in Appendix~\ref{app:graveyard} as the
-design on which the two-moment criterion is silent.
+\begin{sloppypar}
+the icosahedral design dominates, and dominates strictly; the margin is
+pinned two-sidedly to $2-3/\sqrt5$, which lies in $(\tfrac12,\tfrac23)$
+(\texttt{Gtz.icosa\allowbreak Design\_rayleigh\_floor},
+\texttt{Gtz.icosa\allowbreak Design\_rayleigh\_attained},
+\texttt{Gtz.icosa\_margin\_window}).  By \eqref{eq:icosapair} every triple
+carries the same trace and the same pairing modulus, so the verdict depends
+only on the sign of the product of the three pairings, and exactly ten of
+the twenty triples dominate.  That count is the one assertion of this
+appendix with no theorem behind it: the development records it in a
+docstring, not a statement.  The design is used in
+Appendix~\ref{app:graveyard} as the one on which the two-moment criterion is
+silent.
+\end{sloppypar}
 Figure~\ref{fig:icosa} draws the design and two of its triples.
 
 \begin{figure}[ht]

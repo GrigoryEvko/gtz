@@ -372,8 +372,12 @@ The coverage law \eqref{eq:coverage} is the contraction
 that same contraction summed over $c$.  The two are therefore not
 independent constraints, and no count of the equations of the system may
 treat them as such: the content of a stationarity datum is exactly
-\eqref{eq:statg} and \eqref{eq:statt}.  Figure~\ref{fig:quadric} draws the
-quadric at $(6,3)$.
+\eqref{eq:statg} and \eqref{eq:statt}.  Symmetry of $\Lambda$ is not part
+of that content either: nothing in the proof above uses it, and
+\eqref{eq:multiplier} produces it, so Definition~\ref{def:datum} asks for a
+property it would have granted.  The formal development drops the
+hypothesis and derives symmetry with the rest.  Figure~\ref{fig:quadric}
+draws the quadric at $(6,3)$.
 
 \begin{figure}[ht]
   \centering
@@ -692,7 +696,18 @@ support at $\cv<1$.  At $(7,3)$, \eqref{eq:count} reads
 $7\le3\lvert A^{+}\rvert$.
 \end{proof}
 
-Whether the partition branch at $(6,3)$ is inhabited is open.
+Whether the partition branch at $(6,3)$ is inhabited is open.  One
+constraint on it is available and does not close it.  If every active
+subset either equals a chosen block or is disjoint from it --- which is
+what a partition family does --- then that block's multiplier mass equals
+its Parseval weight mass,
+\[
+  \sum_{i\,:\,C_i=B}\lambda_i\;=\;\sum_{c\in B}t_c
+  \qquad\text{(\texttt{Gtz.active\allowbreak Weight\_block\allowbreak Mass\_eq\_weight\_block\allowbreak Mass})},
+\]
+so a two-block datum at $(6,3)$ has its two multipliers equal to the two
+block weights.  Every candidate must satisfy this; none is thereby
+excluded.
 
 \begin{wip}
 Decide the partition branch of Corollary~\ref{cor:e3}: either exclude a
@@ -970,6 +985,15 @@ index lies in every member; and Corollary~\ref{cor:e3} leaves the single
 partition class undecided.  Fifty-seven classes are excluded, $2079$ are
 not.
 
+Those $23$ are the graphs on five vertices with no isolated vertex.  Fix
+the common index: a saturated family is that index together with an edge on
+the other five points, and covering says no point of the five is isolated.
+They carry between three and ten triples, $1,4,5,5,4,2,1,1$ of them in
+order, so no more than five fall in any one column of
+Table~\ref{tab:census}.  The last, the ten triples through one index, sits
+in the peak column, so the exclusions are not silent where the census is
+largest; they are thin everywhere.
+
 \begin{table}[ht]
 \small
 \centering
@@ -1012,7 +1036,21 @@ $0<\cv<1$.
 \end{conjecture}
 
 Admissibility may not be dropped: Theorem~\ref{thm:reach} refutes the
-corresponding statement at $(4,2)$ without it.  With it, each conjecture
+corresponding statement at $(4,2)$ without it.  Neither, though, does it
+make the conjectures weaker than the cells they decide.  An admissible
+datum with $\cv<1$ refutes $\Gtz(m,k)$ outright, since \eqref{eq:argmax}
+says $\lmin(\SC)\le\cv<1$ at every $k$-subset and no subset dominates
+(\texttt{Gtz.not\_\allowbreak gtz\allowbreak Weighted\_\allowbreak
+of\_\allowbreak is\allowbreak Argmax\allowbreak Dominated\_\allowbreak of\_\allowbreak
+value\_\allowbreak lt\_one}).
+Contrapositively $\Gtz(6,3)$ implies Conjecture~\ref{conj:sixthree}, and
+$\Gtz(7,3)$ implies Conjecture~\ref{conj:seventhree}.  What the interior
+route buys is therefore the first-order system, not a smaller problem: the
+conjectures are equivalent to their cells given the two nonformal steps of
+\S\ref{sec:boundaries}, and the equations of \eqref{eq:statg} and
+\eqref{eq:statt} are the whole of the gain.
+
+With admissibility, each conjecture
 is a finite conjunction of semialgebraic emptiness questions, one for
 each of the classes counted in Proposition~\ref{prop:census}.  For a
 fixed active family the unknowns are the $mk$ coordinates, the $m$
