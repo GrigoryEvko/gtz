@@ -170,9 +170,7 @@ Statement & Declaration \\
 \endfoot
 \bottomrule
 \caption{Correspondence, second part: the equality locus, the variational
-principle, the interior system and the excluded strategies.  The declaration
-marked $a$ is proved but does not appear in the axiom ledger described in
-\S\ref{sec:axioms}.}
+principle, the interior system and the excluded strategies.}
 \label{tab:leantwo}\\
 \endlastfoot
 \multicolumn{2}{@{}l}{\emph{\S\ref{sec:ties}, the equality locus}}\\
@@ -186,7 +184,7 @@ Example~\ref{ex:split}         & \texttt{Gtz.splitTetraDesign\_dominates}, \\
                                & \texttt{Gtz.splitTetraDesign\_no\_strictDominator} \\
 Corollary~\ref{cor:nomargin}   & \texttt{Gtz.not\_exists\_card\_posSemidef\_sub\_smul\_one\_of\_isTie}, \\
                                & \texttt{Gtz.not\_gtzWeightedFloor\_rankThree\_of\_one\_lt} \\
-Example~\ref{ex:diamond}       & \texttt{Gtz.diamondDesign\_isTie}$^{a}$, \\
+Example~\ref{ex:diamond}       & \texttt{Gtz.diamondDesign\_isTie}, \\
                                & \texttt{Gtz.not\_hasParallelPair\_diamondDesign} \\
 Corollary~\ref{cor:noparallel} & \texttt{Gtz.not\_hingeHoldsAtSize\_five\_three},
                                  \texttt{Gtz.diamondEdgeVector\_eq}, \\
@@ -258,8 +256,8 @@ Proposition~\ref{prop:icosa}   & \texttt{Gtz.icosa\_twoMomentGap\_eq},
 
 The ledger module \texttt{Gtz/Audit.lean} lists, declaration by
 declaration, the axioms on which each depends, printed by the kernel rather
-than asserted by the author: $3638$ invocations of \texttt{\#print axioms}
-over $153$ imported modules.  The permitted set is Mathlib's
+than asserted by the author: $3710$ invocations of \texttt{\#print axioms}
+over $157$ imported modules.  The permitted set is Mathlib's
 $\{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}$, and
 nothing outside it occurs.  Classical logic is used freely, and nothing in
 the development is a constructive claim.
@@ -270,10 +268,10 @@ Closed arithmetic over concrete finite index sets is discharged by kernel
 evaluation of decidable propositions, which introduces no axiom.  No proof
 is closed by compiled evaluation.
 
-The ledger covers exactly what it lists.  Of the declarations named in
-Tables~\ref{tab:lean} and~\ref{tab:leantwo} one is absent from it, the entry
-marked $a$ in Table~\ref{tab:leantwo}.  Its proof is checked when its module
-is elaborated, but its axiom use is not certified by the ledger.
+The ledger lists every \texttt{theorem} and \texttt{lemma} of the
+development, so every declaration named in Tables~\ref{tab:lean}
+and~\ref{tab:leantwo} is covered.  Its one deliberate omission is a module
+that nothing imports and that duplicates another.
 
 No numerical assertion in the paper rests on floating-point evaluation.  The
 witnesses of \S\ref{sec:sharp}, and those of

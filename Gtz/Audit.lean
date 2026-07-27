@@ -7,14 +7,19 @@ set for Mathlib-backed proofs: `propext`, `Classical.choice`, `Quot.sound` — a
 NOTHING else. In particular `sorryAx` appearing for any theorem listed here is a
 broken promise; roadmap statements carrying `sorry` are deliberately NOT listed.
 
-Coverage is a maintained invariant, not an aspiration: an adversarial audit
-found 162 proved public theorems silently absent from this ledger — all of them
-axiom-clean, so the defect was documentary, but the docstring had promised total
-coverage it did not deliver. The gap was closed by enumerating every
-`theorem`/`lemma` in `Gtz/` and appending what was absent. If you add a theorem,
-add its line; the list is checked by re-running that enumeration, and the
-honest long-term fix is a meta-level probe that enumerates `Gtz.*` constants and
-asserts the axiom set, which cannot drift.
+Coverage is a maintained invariant, not an aspiration, and it has drifted
+twice. A first adversarial audit found 162 proved public theorems silently
+absent; a second found 72 more, together with four modules this file reached
+only transitively and so could not name. All were axiom-clean, so both defects
+were documentary — but the docstring had promised total coverage it did not
+deliver. Each gap was closed by enumerating every `theorem`/`lemma` in `Gtz/`
+and appending what was absent. The one deliberate exclusion is
+`Gtz/Ties/DiamondTie.lean`, which no module imports and which duplicates
+`Gtz/Design/DiamondPrimitive.lean`.
+
+If you add a theorem, add its line; the list is checked by re-running that
+enumeration, and the honest long-term fix is a meta-level probe that enumerates
+`Gtz.*` constants and asserts the axiom set, which cannot drift.
 
 Definitions are listed selectively — the ones whose junk-value or `noncomputable`
 behaviour is load-bearing — not exhaustively.
@@ -174,6 +179,10 @@ import Gtz.Design.VolumeSamplingAverage
 import Gtz.Quantitative.ExpectedCharPolynomial
 import Gtz.Reduction.CompactnessReduction
 import Gtz.Quantitative.InteriorExclusion
+import Gtz.Design.DiamondPrimitive
+import Gtz.Quantitative.FlooredSpreadRegion
+import Gtz.Quantitative.ProjectionChartLegs
+import Gtz.Reduction.BranchTransferConstants
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -3974,3 +3983,110 @@ import Gtz.Quantitative.InteriorExclusion
 #print axioms Gtz.one_le_value_of_isArgmaxDominated
 #print axioms Gtz.not_gtzWeighted_of_isArgmaxDominated_of_value_lt_one
 #print axioms Gtz.not_isArgmaxDominated_belowOneDesign
+
+-- Coverage sweep: every `theorem`/`lemma` enumerated from `Gtz/` that was
+-- absent from the list above.  Gtz/Ties/DiamondTie.lean is deliberately
+-- excluded: it is imported by nothing and duplicates
+-- Gtz/Design/DiamondPrimitive.lean.
+
+-- Gtz.Complex.SharpConstantLedger
+#print axioms Gtz.trineDesign_atom
+
+-- Gtz.Design.DiamondPrimitive
+#print axioms Gtz.diamondGraph_isGroundConnected
+#print axioms Gtz.diamondDrop_eq_grounded
+#print axioms Gtz.diamondGap_form
+#print axioms Gtz.diamondGap_form_indicator
+#print axioms Gtz.diamondGap_not_posDef_of_direction
+#print axioms Gtz.diamondWitness_ne_zero
+#print axioms Gtz.diamondDesign_dominates_spine
+#print axioms Gtz.diamondDesign_no_strictDominator
+#print axioms Gtz.diamondDesign_isTie
+
+-- Gtz.Design.NearPencilStrictDomination
+#print axioms Gtz.nearPencilPlaneDesign_atom
+
+-- Gtz.Design.NearPencilTransport
+#print axioms Gtz.rescaledPlanarDesign_atom
+
+-- Gtz.Quantitative.DecisionAtlasSevenThree
+#print axioms Gtz.splitSevenDesign_atom
+
+-- Gtz.Quantitative.FlooredSpreadRegion
+#print axioms Gtz.hasWeightFloor_mono
+#print axioms Gtz.leverageOf_nonneg
+#print axioms Gtz.hasSpreadAtLeast_mono
+#print axioms Gtz.isFlooredSpreadDesign_mono
+#print axioms Gtz.pairDefect_comm
+#print axioms Gtz.symmetricLegs_nonneg_of_dominantPairingTriangle
+#print axioms Gtz.flooredSpreadCovering_of_symmetricCovering
+#print axioms Gtz.flooredSpreadCovering_mono
+#print axioms Gtz.flooredSpreadCovering_of_alwaysDominantPairingTriangle
+#print axioms Gtz.icosaAtom_leverageOf
+#print axioms Gtz.icosaDesign_hasSpreadAtLeast
+#print axioms Gtz.icosaDesign_hasWeightFloor
+#print axioms Gtz.icosaDesign_isFlooredSpreadDesign
+#print axioms Gtz.splitTetraAtom_two_eq_three
+#print axioms Gtz.splitTetraDesign_not_hasSpreadAtLeast
+#print axioms Gtz.splitTetraDesign_balanced_hasWeightFloor
+
+-- Gtz.Quantitative.PhaseFreeNoGo
+#print axioms Gtz.phaseFreeOfDesign_weight
+#print axioms Gtz.phaseFreeOfDesign_excess
+#print axioms Gtz.phaseFreeOfDesign_pairing
+#print axioms Gtz.phaseFreeOfDesign_triangle
+#print axioms Gtz.trinePoint_triangle
+#print axioms Gtz.trinePoint_weight
+#print axioms Gtz.trinePoint_excess
+#print axioms Gtz.trinePoint_pairing
+
+-- Gtz.Quantitative.ProjectionChartLegs
+#print axioms Gtz.chartEntry_comm
+#print axioms Gtz.chartEntry_eq
+#print axioms Gtz.chartEntry_self
+#print axioms Gtz.chartEntry_sq
+#print axioms Gtz.chartEntry_triangle
+#print axioms Gtz.chartGapDiagonal_eq
+#print axioms Gtz.chartGapMatrix_eq
+#print axioms Gtz.chartTie_eq
+#print axioms Gtz.chartMinorSum_eq
+#print axioms Gtz.weightProduct_pos
+#print axioms Gtz.chartTie_nonneg_iff
+#print axioms Gtz.chartMinorSum_nonneg_iff
+#print axioms Gtz.chartSpread_iff
+
+-- Gtz.Quantitative.RealnessEngine
+#print axioms Gtz.icosaDesign_atom
+
+-- Gtz.Reduction.BranchTransferConstants
+#print axioms Gtz.sum_atomMatrix_conj
+#print axioms Gtz.conjugatedFamily_form_at_preimage
+#print axioms Gtz.preimage_length_eq_defect_form
+#print axioms Gtz.whitenedPullback_form_ge
+#print axioms Gtz.mergeFrameDefect_eq
+#print axioms Gtz.mergeFrameDefect_eq_zero_of_atoms_eq
+#print axioms Gtz.mergeFrameDefect_form_le
+#print axioms Gtz.exists_parallelAtoms_with_positive_mergeFrameDefect
+#print axioms Gtz.merge_pullback_form_ge
+#print axioms Gtz.sum_atomShare_eq_rank
+#print axioms Gtz.exists_atomShare_le_rank_div_size
+#print axioms Gtz.dropFrameDefect_form_le
+#print axioms Gtz.drop_pullback_form_ge
+#print axioms Gtz.dropWeight_sum_one
+#print axioms Gtz.dropWhitened_parseval
+
+-- Gtz.Reduction.BranchTwoRational
+#print axioms Gtz.RatDesign.dot_cast
+
+-- Gtz.Reduction.Compression
+#print axioms Gtz.compressedDesign_atom
+
+-- Gtz.Ties.NonTetrahedralTie
+#print axioms Gtz.sharpDesign_atom
+
+-- Gtz.Ties.SplitTetrahedronTie
+#print axioms Gtz.splitTetraDesign_atom
+#print axioms Gtz.splitTetraDesign_weight
+
+-- Gtz.Ties.TetrahedronCertifiedTie
+#print axioms Gtz.tetraDesign_atom
