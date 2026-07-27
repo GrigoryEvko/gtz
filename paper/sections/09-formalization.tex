@@ -46,12 +46,23 @@ existential and the atoms are determined only up to the orthogonal group,
 so what is rational, and what the formal statements quantify over, is the
 graph data.
 
-\begin{table}[htbp]
-\small
-\begin{tabular}{@{}ll@{}}
+{\small
+\begin{longtable}{@{}ll@{}}
 \toprule
 Statement & Declaration \\
 \midrule
+\endfirsthead
+\toprule
+Statement & Declaration \\
+\midrule
+\endhead
+\endfoot
+\bottomrule
+\caption{Correspondence between the numbered statements and the formal
+development, first part: the elementary theory, the chart, the complex answer
+and the decided real cells.}
+\label{tab:lean}\\
+\endlastfoot
 \multicolumn{2}{@{}l}{\emph{\S\ref{sec:first}, elementary cases}}\\
 Lemma~\ref{lem:span}           & \texttt{Gtz.rank\_le\_size\_of\_fieldDesign}, \\
                                & \texttt{Gtz.eq\_zero\_of\_forall\_atom\_dot\_eq\_zero} \\
@@ -130,22 +141,27 @@ Lemma~\ref{lem:repeat}         & \texttt{Gtz.not\_dominates\_of\_repeated\_atom\
 Proposition~\ref{prop:splitting}& \texttt{Gtz.gtzWeighted\_of\_succ} \\
 Theorem~\ref{thm:topcell}      & \texttt{Gtz.gtzWeightedAll\_of\_top}, \\
                                & \texttt{Gtz.gtz\_iff\_top\_of\_each\_rank} \\
-Proposition~\ref{prop:spike}   & \texttt{Gtz.gtzWeighted\_of\_spike} \\
-\bottomrule
-\end{tabular}
-\medskip
-\caption{Correspondence between the numbered statements and the formal
-development, first part: the elementary theory, the chart, the complex answer
-and the decided real cells.}
-\label{tab:lean}
-\end{table}
+Proposition~\ref{prop:spike}   & \texttt{Gtz.gtzWeighted\_of\_spike}
+\end{longtable}}
 
-\begin{table}[htbp]
-\small
-\begin{tabular}{@{}ll@{}}
+{\small
+\begin{longtable}{@{}ll@{}}
 \toprule
 Statement & Declaration \\
 \midrule
+\endfirsthead
+\toprule
+Statement & Declaration \\
+\midrule
+\endhead
+\endfoot
+\bottomrule
+\caption{Correspondence, second part: the equality locus, the variational
+principle, the interior system and the excluded strategies.  The declaration
+marked $a$ is proved but does not appear in the axiom ledger described in
+\S\ref{sec:axioms}.}
+\label{tab:leantwo}\\
+\endlastfoot
 \multicolumn{2}{@{}l}{\emph{\S\ref{sec:ties}, the equality locus}}\\
 Theorem~\ref{thm:tieseverywhere}& \texttt{Gtz.exists\_isTie\_of\_weights\_of\_classes}, \\
                                & \texttt{Gtz.splitClassDesign\_isTie},
@@ -200,16 +216,8 @@ Proposition~\ref{prop:noaggregate}
 Proposition~\ref{prop:twomoment}& \texttt{Gtz.dominates\_of\_twoMomentGap\_nonneg} \\
 Proposition~\ref{prop:icosa}   & \texttt{Gtz.icosa\_twoMomentGap\_eq},
                                  \texttt{Gtz.icosa\_no\_twoMoment\_certificate}, \\
-                               & \texttt{Gtz.icosaDesign\_strictly\_dominates} \\
-\bottomrule
-\end{tabular}
-\medskip
-\caption{Correspondence, second part: the equality locus, the variational
-principle, the interior system and the excluded strategies.  The declaration
-marked $a$ is proved but does not appear in the axiom ledger described in
-\S\ref{sec:axioms}.}
-\label{tab:leantwo}
-\end{table}
+                               & \texttt{Gtz.icosaDesign\_strictly\_dominates}
+\end{longtable}}
 
 \subsection{Axiom discipline}\label{sec:axioms}
 

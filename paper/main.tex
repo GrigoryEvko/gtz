@@ -11,6 +11,11 @@
 \usepackage[a4paper, left=24mm, right=24mm, top=22mm, bottom=25mm,
             footskip=14mm]{geometry}
 \usepackage{amsmath,amssymb,mathtools,booktabs,array}
+% The Section 9 correspondence tables outgrow a page and must break across
+% them; a float cannot.  Their captions take the measure every other caption
+% in the paper takes, not longtable's 4in default.
+\usepackage{longtable}
+\setlength{\LTcapwidth}{\textwidth}
 \usepackage{microtype}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{tikz}
