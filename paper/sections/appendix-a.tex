@@ -523,20 +523,3 @@ ge\_\allowbreak inv\_\allowbreak binomial}).  That subset is not shown to
 dominate.
 
 \fussy
-
-\subsection{Conditioning}\label{app:hygiene}
-
-\begin{remark}\label{rem:hygiene}
-The selection objective is ill-conditioned near the boundary of the weight
-simplex.  Parseval bounds the leverage only from above,
-$\ell_c\le1/t_c$ by Lemma~\ref{lem:share}, so a vanishing weight permits a
-diverging leverage without forcing one; splitting an atom drives $t_c$ to
-zero at fixed $\ell_c$.  The bound is attained on the corank-one extremal
-family of \S\ref{app:corankone}, where $\ell_c=(k-1+t_c)/(k\,t_c)$ and the
-leverage does grow like $1/t_c$.  There the entries of $\SC$ grow like
-$1/\min_ct_c$, and the difference $\lmin(\SC)-1$ is the difference of two
-quantities of that size.  A floating-point evaluation of
-$\lmin$ on a formed Gram matrix therefore carries no information about the sign
-of the margin; the stable quantity is $\sigma_{\min}(M_C)-1$, computed from the
-matrix $M_C$ of \eqref{eq:twoproducts} directly.
-\end{remark}
