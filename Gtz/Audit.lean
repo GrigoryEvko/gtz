@@ -201,6 +201,8 @@ import Gtz.Quantitative.ProjectionOnePointMarginal
 import Gtz.Quantitative.ElementaryValueFloor
 import Gtz.Quantitative.SubsetDeterminantBound
 import Gtz.Quantitative.OddRankDeterminantUpgrade
+import Gtz.Quantitative.TwoBlockEliminationCertificate
+import Gtz.Quantitative.ClassRouteCost
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -5125,3 +5127,233 @@ import Gtz.Quantitative.OddRankDeterminantUpgrade
 #print axioms Gtz.mixedCharPoly_rootKillDesign_eval_zero_le
 #print axioms Gtz.axisKillDesign_weightElementary_three
 #print axioms Gtz.mixedCharPoly_axisKillDesign_eval_zero_le
+
+-- Gtz/Quantitative/TwoBlockEliminationCertificate.lean -- THE ELIMINATION STEP, DISCHARGED.
+-- Gtz.EliminatesChartTwoBlockValue 3 -- asserted and never proved since the header of
+-- Gtz.Quantitative.ChartEmptinessCertificate -- is now the theorem
+-- Gtz.eliminatesChartTwoBlockValue_three, so the two-block partition class of the (6,3)
+-- covering census becomes the FIRST class this project closes carrying no class-specific
+-- hypothesis.  It is a corollary of something stronger and simpler than an elimination: a chart
+-- stationarity datum whose active family is two complementary blocks and whose value is
+-- NEGATIVE has value = -1/size EXACTLY, at every size and every rank.  The value is PINNED, not
+-- merely confined to the root set of a cubic, and the proof is a trace argument with no case
+-- split, no Groebner basis and no admissibility.  Write Xi for the assembly and Q for the
+-- orthogonal projection onto its range.  The BLOCK-DIAGONAL TRUNCATION of the chart acts on Xi
+-- exactly as N = value + diag t -- the global identity P Xi = N Xi is FALSE, its cross-block
+-- entries need not vanish, and the truncation is what repairs it; the chart commutes with Xi
+-- hence with Q, the block indicator commutes with Xi so Q is block diagonal, and the truncation
+-- minus N annihilates Xi hence Q, which together give tr(P Q) = sum_c (value + t_c) Q_cc.  Then
+-- tr Xi = 1 forces Xi nonzero so tr Q >= 1; a symmetric idempotent has diagonal in [0,1] and
+-- the weights sum to one, so sum_c t_c Q_cc <= 1; and value < 0 gives tr(P Q) <= value + 1 < 1.
+-- INTEGRALITY IS THE CRUX: P Q is a symmetric idempotent, a NONZERO one has trace at least one
+-- by one discrete Cauchy-Schwarz, so P Q = 0, so P Xi = 0, and the shipped forced diagonal
+-- tr(P Xi) = value + 1/size pins the value.  Read against Xi itself the same trace gives only
+-- the shipped floor value + 1/size >= 0, which is exactly why the range projection is built.
+-- WHAT IS NOT USED, recorded because the sibling header says otherwise: ADMISSIBILITY --
+-- Gtz.IsChartArgmaxValue is bound and discarded, and the (4,2) witness cited to justify it is
+-- vacuous at rank three, where two occupied blocks force size = 2 * rank = 6; THE RANK, the
+-- value theorem holding at every (size, rank); BLOCK NONEMPTINESS, chosenSubset and its
+-- complement partitioning the atoms either way; and THE CAUCHY-BINET VALUE FLOOR -3/20, since
+-- the SHIPPED strict floor at -1/size finishes it.  Negativity is used exactly once and has no
+-- substitute -- at value = 1/3 with distinct weights the same bound reads 3 = 6/3 + 1 and is
+-- TIGHT.  So Gtz.zero_le_value_of_isChartTwoBlockFamily_of_design and its non-existence form
+-- are the shipped pair with heliminates and hrank BOTH removed.  The exact RATIONAL (6,3)
+-- witness at value = -1/6, uniform weights and assembly 1/6 inside the blocks, makes the
+-- discharged statement one about a NONEMPTY class; it is INADMISSIBLE by one completed square
+-- on the triple {0,1,5}, where the gap's least eigenvalue is +1/6, so it contradicts no shipped
+-- floor, and it is the exact form of the numerical note in the header of
+-- Gtz.Quantitative.ChartTwoBlock.  The two cofactor identities are CORROBORATION OF THE
+-- ELIMINANT ONLY, and NO SATURATION IS PERFORMED ANYWHERE: neither divides by anything, carries
+-- a g^N multiplier or invokes a nonvanishing side polynomial, which matters because the total
+-- multiplier mass sum_c tau_c = 1 + 6 value IS the factor 6 value + 1 whose root is the value
+-- landed on.  Neither identity is the discharge and no cofactor list could be -- the
+-- elimination step has a SIGN antecedent no ideal membership sees, and they cover only the
+-- rank-one-multiplier branch.  ONE class of the 2069; the other 2068 are untouched
+#print axioms Gtz.diagonal_eq_sum_sq_of_symmetricIdempotent
+#print axioms Gtz.zero_le_diagonal_of_symmetricIdempotent
+#print axioms Gtz.diagonal_le_one_of_symmetricIdempotent
+#print axioms Gtz.trace_eq_sum_sq_of_symmetricIdempotent
+#print axioms Gtz.one_le_trace_of_symmetricIdempotent_of_ne_zero
+#print axioms Gtz.orthogonalConjugate_mul_orthogonalConjugate
+#print axioms Gtz.orthogonalConjugate_orthogonalConjugate_symm
+#print axioms Gtz.eq_of_orthogonalConjugate_eq
+#print axioms Gtz.commute_diagonalConjugate_of_commute
+#print axioms Gtz.mul_diagonalConjugate_eq_zero_of_mul_eq_zero
+#print axioms Gtz.spectralIndicator
+#print axioms Gtz.rangeProjection
+#print axioms Gtz.transpose_mul_eigenvectorUnitary_self
+#print axioms Gtz.eigenvectorUnitary_mul_transpose_self
+#print axioms Gtz.eq_eigenvectorUnitary_mul_diagonal_mul_transpose
+#print axioms Gtz.spectralIndicator_mul_self
+#print axioms Gtz.spectralIndicator_mul_eigenvalue
+#print axioms Gtz.eigenvalues_ne_of_spectralIndicator_ne
+#print axioms Gtz.spectralIndicator_eq_zero_of_eigenvalue_eq_zero
+#print axioms Gtz.rangeProjection_transpose
+#print axioms Gtz.rangeProjection_mul_self
+#print axioms Gtz.rangeProjection_mul_eq_self
+#print axioms Gtz.trace_rangeProjection_eq_sum_spectralIndicator
+#print axioms Gtz.one_le_trace_rangeProjection_of_trace_ne_zero
+#print axioms Gtz.commute_rangeProjection_of_commute
+#print axioms Gtz.mul_rangeProjection_eq_zero_of_mul_eq_zero
+#print axioms Gtz.chartBlockDiagonalPart
+#print axioms Gtz.chartBlockDiagonalPart_apply_of_sameBlock
+#print axioms Gtz.chartBlockDiagonalPart_apply_of_crossBlock
+#print axioms Gtz.chartMultiplierAssembly_apply_eq_zero_of_notSameBlock
+#print axioms Gtz.chartShiftedWeightDiagonal
+#print axioms Gtz.chartBlockDiagonalPart_mul_multiplier
+#print axioms Gtz.chartBlockIndicator
+#print axioms Gtz.chartBlockIndicator_ne_of_notSameBlock
+#print axioms Gtz.blockIndicator_mul_multiplier_comm
+#print axioms Gtz.isHermitian_chartMultiplierAssembly_of_isChartStationaryData
+#print axioms Gtz.rangeProjection_apply_eq_zero_of_notSameBlock
+#print axioms Gtz.trace_projection_mul_rangeProjection
+#print axioms Gtz.value_eq_neg_inv_size_of_isChartTwoBlockFamily_of_negativeValue
+#print axioms Gtz.eliminatesChartTwoBlockValue_three
+#print axioms Gtz.zero_le_value_of_isChartTwoBlockFamily_of_design
+#print axioms Gtz.not_isChartStationaryData_of_isChartTwoBlockFamily_of_design_of_negativeValue
+#print axioms Gtz.twoBlockEliminantCubic_eq_coreCofactorCombination
+#print axioms Gtz.twoBlockEliminantCubic_eq_couplingCofactorCombination
+#print axioms Gtz.blockLevelSum_cubic_eq_idempotentCombination
+#print axioms Gtz.twoBlockEliminantCubic_eq_levelSum_cubic
+#print axioms Gtz.chartTwoBlockTripleAxis
+#print axioms Gtz.chartTwoBlockTripleSign
+#print axioms Gtz.chartTwoBlockTripleProjection
+#print axioms Gtz.chartTwoBlockTripleWeight
+#print axioms Gtz.chartTwoBlockTripleSubset
+#print axioms Gtz.chartTwoBlockTripleMultiplierWeight
+#print axioms Gtz.chartTwoBlockTripleSupport
+#print axioms Gtz.chartTwoBlockTripleTightDir
+#print axioms Gtz.chartTwoBlockTripleMultiplier
+#print axioms Gtz.chartTwoBlockTripleProjection_transpose
+#print axioms Gtz.chartTwoBlockTripleProjection_mul_self
+#print axioms Gtz.chartTwoBlockTripleSupport_dotProduct_self
+#print axioms Gtz.chartTwoBlockTripleAxis_of_mem
+#print axioms Gtz.chartTwoBlockTripleAxis_ne_of_notMem
+#print axioms Gtz.chartTwoBlockTripleGap_mulVec_support
+#print axioms Gtz.chartTwoBlockTripleMultiplierAssembly_eq
+#print axioms Gtz.chartTwoBlockTripleProjection_isChartStationaryData
+#print axioms Gtz.chartTwoBlockTriple_isChartTwoBlockFamily
+#print axioms Gtz.exists_isChartStationaryData_isChartTwoBlockFamily_rankThree_negativeValue
+#print axioms Gtz.not_chartTwoBlockTriple_isChartArgmaxValue
+
+-- Gtz/Quantitative/ClassRouteCost.lean -- A SECOND ELIMINANT, AND THE PROOF THAT THE
+-- CLASS-BY-CLASS ROUTE CANNOT BE FINISHED.  Two halves, and the second is the load-bearing one.
+-- THE MACHINE STILL WORKS one class up.  Gtz.threeMemberEliminant is the degree-seven
+-- E3(g) = 3888 g^7 - 9072 g^6 + 7560 g^5 - 2520 g^4 + 147 g^3 + 77 g^2 - 10 g, factored by ring
+-- as g(2g-1)(3g-2)(3g-1)(6g-5)(6g-1)(6g+1), equivalently (1/72) prod_{j=-1}^{5} (6g - j), whose
+-- seven roots are exactly the seven sixths -1/6, 0, 1/6, 1/3, 1/2, 2/3, 5/6.  It is STRICTLY
+-- POSITIVE on [-4/27, 0), read off the rewriting E3 = (-g)(1-2g)(2-3g)(1-3g)(5-6g)(1-6g)(6g+1)
+-- in which six factors are positive because g < 0 and the seventh because -4/27 > -1/6 -- and
+-- THAT LAST INEQUALITY IS THE WHOLE REASON EVERY ELIMINANT COMPUTED SO FAR CLOSES, there being
+-- no sixth in the window at all.  So the floor's improvement from -1/6 to -4/27 is what makes
+-- them close, which is NOT a floor closing a class: the floor is class-INDEPENDENT, it narrows
+-- the window for all 2069 and excludes none.  Two census-surviving classes are closed by it,
+-- {{0,1,2},{0,4,5},{1,2,3}} and {{0,1,5},{0,2,4},{1,2,3}}, each CONDITIONAL on its own instance
+-- of the new hypothesis Gtz.EliminatesThreeMemberValue -- TWO NEW CITABLE HOLES BOUGHT TWO NEW
+-- CONDITIONAL CLOSURES, and neither has the strength of the unconditional two-block closure.
+-- That hypothesis carries the RANK-ONE BRANCH restriction IN THE STATEMENT, which is what the
+-- outside computation covered and which the bundle does not force, and it is deliberately
+-- admissibility-FREE because what was eliminated is the stationarity ideal.  No cofactor list
+-- exists for E3: it is msolve output cross-checked over five primes and by a reversed variable
+-- order, exactly the standing the two-block cubic had before a trace argument discharged it.
+-- THE MACHINE CANNOT FINISH, and that is a theorem rather than a timing measurement.
+-- Gtz.windowChartProjection_isChartStationaryData is an EXACT chart stationarity datum over
+-- Q(sqrt 5) at value = (2 - sqrt 5)/6 = -0.0393446629..., STRICTLY INSIDE [-4/27, 0), on the
+-- census-surviving four-member class {{0,3,5},{0,4,5},{1,2,3},{1,2,4}}.  Its chart is
+-- (1/2) I + (sqrt 5/10) B for an explicit symmetric integer B of trace zero with B^2 = 5 I, so
+-- every bundle field is discharged with no spectral decomposition and sqrt 5 enters in exactly
+-- two places.  Hence Gtz.not_exists_windowRootFree_eliminatesWindowChartFamilyValue: NO real
+-- function is both an eliminant for that class and nonvanishing on the window, for any
+-- generator and at any cost, the obstruction being a POINT OF THE VARIETY rather than a
+-- property of a generator.  The witness is INADMISSIBLE by one completed square on the triple
+-- {1,3,4}, which is why it contradicts nothing shipped -- every value floor in the repository
+-- carries Gtz.IsChartArgmaxValue -- and equally why it is fatal to a route that cannot see
+-- admissibility at all.  It also refutes outright any "all chart-stationary values at (6,3) are
+-- sixths" law.  It refutes the ROUTE and not the conjecture: GtzWeighted 6 3 is untouched.
+-- Supporting combinatorics.  The SATURATED-ATOM FILTER, lifted from the shipped leg-side
+-- Gtz.one_le_value_of_saturatedAtom to family vocabulary, with five decide audits: the star
+-- {{0,1,4},{0,1,5},{0,2,3}} and the double star {{0,1,2},{0,1,3},{0,1,4},{0,1,5}} ARE saturated
+-- and so were already dead before their 0.78 s and 750 s eliminations were run, while the two
+-- closed classes and the window class survive it, so any future class selection must apply that
+-- filter FIRST.  And the double count sum_c deg(c) = rank * |family|, whose (6,3) reading is
+-- that a covering family of triples has every atom of degree one IF AND ONLY IF it has exactly
+-- two members -- so the one class closed unconditionally was the only one of its structural
+-- kind and its cheapness extrapolates to nothing.  The filter is stated on the LEG side, where
+-- it is true; the chart bundle has no analogue and none is claimed.  Nothing here corrects the
+-- census counts 2102, 2069, 2068, which are right.  Three classes of 2069 is three classes,
+-- and (6,3) is not closed
+#print axioms Gtz.threeMemberEliminant
+#print axioms Gtz.threeMemberEliminant_eq_prod
+#print axioms Gtz.threeMemberEliminant_eq_sixthProduct
+#print axioms Gtz.threeMemberEliminant_eq_windowPositiveProduct
+#print axioms Gtz.neg_inv_six_lt_neg_four_div_twentySeven
+#print axioms Gtz.threeMemberEliminant_pos_of_mem_flooredWindow
+#print axioms Gtz.threeMemberEliminant_ne_zero_of_flooredNegativeValue
+#print axioms Gtz.not_exists_flooredNegativeValue_root_threeMemberEliminant
+#print axioms Gtz.threeMemberEliminant_eq_zero_iff
+#print axioms Gtz.IsActiveFamily
+#print axioms Gtz.HasSimpleActiveSubsets
+#print axioms Gtz.HasSaturatedAtom
+#print axioms Gtz.mem_of_isActiveFamily
+#print axioms Gtz.one_le_value_of_hasSaturatedAtom_of_isActiveFamily
+#print axioms Gtz.activeFamilyDegree
+#print axioms Gtz.sum_activeFamilyDegree_eq_rank_mul_card
+#print axioms Gtz.forall_activeFamilyDegree_eq_one_iff_card_eq_two
+#print axioms Gtz.chartTripleSharedEdgeFamily
+#print axioms Gtz.chartTriplePairwiseMeetFamily
+#print axioms Gtz.chartTripleStarFamily
+#print axioms Gtz.chartTripleDoubleStarFamily
+#print axioms Gtz.hasSaturatedAtom_chartTripleStarFamily
+#print axioms Gtz.hasSaturatedAtom_chartTripleDoubleStarFamily
+#print axioms Gtz.not_hasSaturatedAtom_chartTripleSharedEdgeFamily
+#print axioms Gtz.not_hasSaturatedAtom_chartTriplePairwiseMeetFamily
+#print axioms Gtz.EliminatesThreeMemberValue
+#print axioms Gtz.zero_le_value_of_eliminatesThreeMemberValue
+#print axioms Gtz.not_isChartStationaryData_of_eliminatesThreeMemberValue_of_negativeValue
+#print axioms Gtz.zero_le_value_of_chartTripleSharedEdgeFamily_of_eliminates
+#print axioms Gtz.zero_le_value_of_chartTriplePairwiseMeetFamily_of_eliminates
+#print axioms Gtz.halfCoreShift
+#print axioms Gtz.halfCoreShift_transpose
+#print axioms Gtz.halfCoreShift_trace
+#print axioms Gtz.halfCoreShift_mul_self
+#print axioms Gtz.halfCoreShift_mulVec
+#print axioms Gtz.halfCoreShift_mul_smul_comm
+#print axioms Gtz.sqrt_five_sq
+#print axioms Gtz.two_lt_sqrt_five
+#print axioms Gtz.sqrt_five_lt_nine_div_four
+#print axioms Gtz.windowChartCore
+#print axioms Gtz.windowChartCore_transpose
+#print axioms Gtz.windowChartCore_mul_self
+#print axioms Gtz.windowChartCore_trace
+#print axioms Gtz.windowChartProjection
+#print axioms Gtz.windowChartProjection_transpose
+#print axioms Gtz.windowChartProjection_mul_self
+#print axioms Gtz.windowChartProjection_trace
+#print axioms Gtz.windowChartWeight
+#print axioms Gtz.windowChartValue
+#print axioms Gtz.windowChartValue_neg
+#print axioms Gtz.neg_four_div_twentySeven_lt_windowChartValue
+#print axioms Gtz.windowChartValue_mem_flooredWindow
+#print axioms Gtz.windowChartSubset
+#print axioms Gtz.windowChartFamily
+#print axioms Gtz.windowChartSign
+#print axioms Gtz.windowChartTightDir
+#print axioms Gtz.windowChartMultiplierWeight
+#print axioms Gtz.windowChartMultiplierCore
+#print axioms Gtz.windowChartCore_mul_multiplierCore_comm
+#print axioms Gtz.windowChartLevel
+#print axioms Gtz.windowChartCore_mulVec_sign
+#print axioms Gtz.windowChartWeight_level_eq_value
+#print axioms Gtz.windowChartGap_mulVec
+#print axioms Gtz.windowChartGap_mulVec_sign
+#print axioms Gtz.windowChartMultiplierAssembly_eq
+#print axioms Gtz.windowChartProjection_isChartStationaryData
+#print axioms Gtz.windowChart_isActiveFamily
+#print axioms Gtz.windowChart_hasSimpleActiveSubsets
+#print axioms Gtz.not_hasSaturatedAtom_windowChartFamily
+#print axioms Gtz.windowChartFamily_activeFamilyDegree_eq_two
+#print axioms Gtz.windowChartQuadraticForm
+#print axioms Gtz.not_windowChartProjection_isChartArgmaxValue
+#print axioms Gtz.eq_zero_at_windowChartValue_of_eliminatesWindowChartFamilyValue
+#print axioms Gtz.not_exists_windowRootFree_eliminatesWindowChartFamilyValue
+#print axioms Gtz.exists_isChartStationaryData_value_mem_flooredWindow
