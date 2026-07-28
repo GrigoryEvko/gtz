@@ -190,6 +190,8 @@ import Gtz.Quantitative.ChartTwoBlock
 import Gtz.Quantitative.ChartInstances
 import Gtz.Quantitative.ChartStrongStationary
 import Gtz.Quantitative.ChartCovering
+import Gtz.Quantitative.RankTwoRealnessCount
+import Gtz.Quantitative.VolumeSelectionFailure
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -4513,3 +4515,116 @@ import Gtz.Quantitative.ChartCovering
 #print axioms Gtz.isChartTightCovering_iff_hasBalancedMultiplier_of_simple
 #print axioms Gtz.chartTetraProjection_isChartTightCovering
 #print axioms Gtz.exists_isChartTightCovering
+
+-- Gtz/Quantitative/RankTwoRealnessCount.lean -- the dimension count the rank-two
+-- adjugate-pairing step consumes: the pairing identity at every dimension, with the
+-- size of the moment operator visible as 2n where the shipped proof writes a literal 4,
+-- the budget 2n <= k^2 and the sign it buys, the traceless self-adjoint dimension over
+-- each field, the three instances -- equality at (R,2), deficit two at (C,2), deficit
+-- exactly one at (R,3) -- and the complex-SIC Bloch moment, where the paired trace is
+-- -128/27
+#print axioms Gtz.adjugatePairingForm
+#print axioms Gtz.trace_mul_vecMulVec
+#print axioms Gtz.trace_adjugate_mul_adjugatePairingForm
+#print axioms Gtz.trace_adjugate_mul_adjugatePairingForm_atDimensionTwo
+#print axioms Gtz.IsWithinAdjugatePairingBudget
+#print axioms Gtz.trace_adjugate_mul_adjugatePairingForm_nonneg_of_isWithinAdjugatePairingBudget
+#print axioms Gtz.symmetricSubmodule
+#print axioms Gtz.hermitianSubmodule
+#print axioms Gtz.symmetricTracelessSubmodule
+#print axioms Gtz.hermitianTracelessSubmodule
+#print axioms Gtz.mem_symmetricSubmodule_iff
+#print axioms Gtz.mem_hermitianSubmodule_iff
+#print axioms Gtz.mem_symmetricTracelessSubmodule_iff
+#print axioms Gtz.mem_hermitianTracelessSubmodule_iff
+#print axioms Gtz.sub_smul_one_mem_symmetricTracelessSubmodule
+#print axioms Gtz.ofReal_re_trace_eq_trace_of_hermitian
+#print axioms Gtz.sub_smul_one_mem_hermitianTracelessSubmodule
+#print axioms Gtz.atomMatrix_sub_smul_one_mem_symmetricTracelessSubmodule
+#print axioms Gtz.conjTranspose_complexAtom
+#print axioms Gtz.complexAtom_sub_smul_one_mem_hermitianTracelessSubmodule
+#print axioms Gtz.upperTriangleIndex
+#print axioms Gtz.two_mul_card_upperTriangleIndex
+#print axioms Gtz.symmetrizeUpperTriangle
+#print axioms Gtz.symmetrizeUpperTriangle_apply
+#print axioms Gtz.injective_symmetrizeUpperTriangle
+#print axioms Gtz.range_symmetrizeUpperTriangle_eq_symmetricSubmodule
+#print axioms Gtz.two_mul_finrank_symmetricSubmodule
+#print axioms Gtz.finrank_skewAdjoint_eq_finrank_selfAdjoint
+#print axioms Gtz.finrank_hermitianSubmodule
+#print axioms Gtz.sup_span_one_symmetricTracelessSubmodule
+#print axioms Gtz.sup_span_one_hermitianTracelessSubmodule
+#print axioms Gtz.two_mul_finrank_symmetricTracelessSubmodule_add_two
+#print axioms Gtz.finrank_hermitianTracelessSubmodule_add_one
+#print axioms Gtz.finrank_symmetricTracelessSubmodule
+#print axioms Gtz.finrank_hermitianTracelessSubmodule
+#print axioms Gtz.finrank_symmetricTracelessSubmodule_atRankTwo
+#print axioms Gtz.finrank_hermitianTracelessSubmodule_atRankTwo
+#print axioms Gtz.finrank_symmetricTracelessSubmodule_atRankThree
+#print axioms Gtz.twiceFinrank_symmetricTracelessSubmodule_eq_sq_atRankTwo
+#print axioms Gtz.twiceFinrank_hermitianTracelessSubmodule_eq_sq_add_two_atRankTwo
+#print axioms Gtz.twiceFinrank_symmetricTracelessSubmodule_eq_sq_add_one_atRankThree
+#print axioms Gtz.isWithinAdjugatePairingBudget_symmetricTracelessSubmodule_atRankTwo
+#print axioms Gtz.not_isWithinAdjugatePairingBudget_hermitianTracelessSubmodule_atRankTwo
+#print axioms Gtz.not_isWithinAdjugatePairingBudget_symmetricTracelessSubmodule_atRankThree
+#print axioms Gtz.isWithinAdjugatePairingBudget_symmetricTracelessSubmodule_iff
+#print axioms Gtz.isWithinAdjugatePairingBudget_hermitianTracelessSubmodule_iff
+#print axioms Gtz.complexSicBlochMoment
+#print axioms Gtz.det_complexSicBlochMoment
+#print axioms Gtz.trace_complexSicBlochMoment
+#print axioms Gtz.trace_adjugate_mul_adjugatePairingForm_complexSicBlochMoment
+#print axioms Gtz.trace_adjugate_mul_adjugatePairingForm_complexSicBlochMoment_neg
+
+-- Gtz/Quantitative/VolumeSelectionFailure.lean -- the maximal-volume rule does not
+-- select a dominating subset: the two readings of the score and their identification
+-- with the volume-sampling probability at selection size exactly the rank, the rank-two
+-- pair kit, the general-weight (3,2) witness at corank one where the weighting is
+-- innocent and the determinant is what fails, the uniform-weight (4,2) witness that
+-- answers the standing-apart question of prob:effective NO, and the rule refuted in the
+-- shape a rule has
+#print axioms Gtz.volumeScore
+#print axioms Gtz.weightScaledVolumeScore
+#print axioms Gtz.IsStrictVolumeMaximiser
+#print axioms Gtz.IsStrictWeightScaledVolumeMaximiser
+#print axioms Gtz.weightScaledVolumeScore_eq_shadowDeterminant
+#print axioms Gtz.weightScaledVolumeScore_eq_shadowDeterminant_ofCard
+#print axioms Gtz.subsetSum_pair
+#print axioms Gtz.volumeScore_pair
+#print axioms Gtz.weightScaledVolumeScore_pair
+#print axioms Gtz.not_dominates_pair_of_negativeDirection
+#print axioms Gtz.dominates_pair_of_coercive
+#print axioms Gtz.finset_card_two_cases_atSizeThree
+#print axioms Gtz.finset_card_two_cases_atSizeFour
+#print axioms Gtz.corankOneVolumeRuleAtom
+#print axioms Gtz.corankOneVolumeRuleDesign
+#print axioms Gtz.corankOneVolumeRuleDesign_volumeScore_zeroOne
+#print axioms Gtz.corankOneVolumeRuleDesign_volumeScore_zeroTwo
+#print axioms Gtz.corankOneVolumeRuleDesign_volumeScore_oneTwo
+#print axioms Gtz.corankOneVolumeRuleDesign_isStrictVolumeMaximiser
+#print axioms Gtz.corankOneVolumeRuleDesign_not_dominates_oneTwo
+#print axioms Gtz.corankOneVolumeRuleDesign_dominates_zeroTwo
+#print axioms Gtz.corankOneVolumeRuleDesign_weightScaledVolumeScore_zeroOne
+#print axioms Gtz.corankOneVolumeRuleDesign_weightScaledVolumeScore_zeroTwo
+#print axioms Gtz.corankOneVolumeRuleDesign_weightScaledVolumeScore_oneTwo
+#print axioms Gtz.corankOneVolumeRuleDesign_isStrictWeightScaledVolumeMaximiser
+#print axioms Gtz.corankOneVolumeRuleDesign_weightScaledVolumeMaximiser_dominates
+#print axioms Gtz.uniformVolumeRuleAtom
+#print axioms Gtz.uniformVolumeRuleDesign
+#print axioms Gtz.uniformVolumeRuleDesign_weight_eq
+#print axioms Gtz.uniformVolumeRuleDesign_volumeScore_zeroOne
+#print axioms Gtz.uniformVolumeRuleDesign_volumeScore_zeroTwo
+#print axioms Gtz.uniformVolumeRuleDesign_volumeScore_zeroThree
+#print axioms Gtz.uniformVolumeRuleDesign_volumeScore_oneTwo
+#print axioms Gtz.uniformVolumeRuleDesign_volumeScore_oneThree
+#print axioms Gtz.uniformVolumeRuleDesign_volumeScore_twoThree
+#print axioms Gtz.uniformVolumeRuleDesign_isStrictVolumeMaximiser
+#print axioms Gtz.uniformVolumeRuleDesign_weightScaledVolumeScore_eq
+#print axioms Gtz.uniformVolumeRuleDesign_isStrictWeightScaledVolumeMaximiser
+#print axioms Gtz.uniformVolumeRuleDesign_not_dominates_zeroOne
+#print axioms Gtz.uniformVolumeRuleDesign_dominates_zeroThree
+#print axioms Gtz.uniformVolumeRuleDesign_dominates_oneTwo
+#print axioms Gtz.volumeMaximiser_can_fail_to_dominate
+#print axioms Gtz.volumeMaximiser_can_fail_to_dominate_atUniformWeights
+#print axioms Gtz.shadowDeterminantMaximiser_can_fail_to_dominate_atUniformWeights
+#print axioms Gtz.not_forall_strictVolumeMaximiser_dominates_atSizeThree
+#print axioms Gtz.not_forall_strictVolumeMaximiser_dominates_atSizeFour

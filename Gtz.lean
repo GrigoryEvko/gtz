@@ -121,9 +121,11 @@ import Gtz.Quantitative.Interface
 import Gtz.Quantitative.MarginContinuity
 import Gtz.Quantitative.OneObjectNarrowing
 import Gtz.Quantitative.PhaseFreeNoGo
+import Gtz.Quantitative.RankTwoRealnessCount
 import Gtz.Quantitative.RealnessEngine
 import Gtz.Quantitative.StrictDomination
 import Gtz.Quantitative.TwoMomentCertificate
+import Gtz.Quantitative.VolumeSelectionFailure
 import Gtz.Ties.StratumFirstOrder
 import Gtz.Ties.StratumSharpMaximum
 import Gtz.Reduction.MixedCharPolynomial
