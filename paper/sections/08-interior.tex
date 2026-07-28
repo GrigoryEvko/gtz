@@ -63,12 +63,12 @@ hypothesis; nothing else in the paper does.
 
 Fix $m$ and $k$, write $\mathbb{S}^k$ for the space of real symmetric
 $k\times k$ matrices, and let
-\begin{equation}\label{eq:constraints}
+\[
   \Phi(g,t)\;:=\;\sum_{c}t_c\,g_c^{\vphantom{\mathsf{T}}}g_c\tp-I_k
   \;\in\;\mathbb{S}^{k},
   \qquad
   \sigma(t)\;:=\;\sum_c t_c-1\;\in\;\R .
-\end{equation}
+\]
 The designs are the points of $\{\Phi=0\}\cap\{\sigma=0\}$ satisfying the
 open condition $t_c>0$ at every index.  Both maps are polynomial, with
 differentials
@@ -584,10 +584,10 @@ call this the \emph{defect floor}.
 Summing \eqref{eq:defect} over $c$ against $\sum_ct_c=1$ sharpens the
 bound $\cv\le m$ of that same part into an identity, the total defect
 being
-\begin{equation}\label{eq:totaldefect}
+\[
   \sum_c\ \sum_{i\,:\,c\notin C_i}\lambda_i\langle u_i,g_c\rangle^2
   \;=\;m-\cv .
-\end{equation}
+\]
 
 \subsection{Exclusions}\label{sec:exclusions}
 
@@ -606,10 +606,10 @@ $\tr(a\,ww\tp)=a\lVert w\rVert^2=a$, so $a=\cv$.
 Evaluating \eqref{eq:multiplier} as a quadratic form at an arbitrary $x$
 gives $\cv\langle w,x\rangle^2=\cv\sum_i\lambda_i\langle u_i,x\rangle^2$, so
 after cancelling $\cv\ne0$,
-\begin{equation}\label{eq:rankonecollapse}
+\[
   \sum_{i\in A}\lambda_i\langle u_i,x\rangle^2
   \;=\;\langle w,x\rangle^2\qquad\text{for every }x .
-\end{equation}
+\]
 Put $x=w$.  Then $\sum_i\lambda_i\langle u_i,w\rangle^2=1
 =\sum_i\lambda_i$, so
 $\sum_i\lambda_i\bigl(1-\langle u_i,w\rangle^2\bigr)=0$; every summand is
@@ -668,10 +668,10 @@ Write $[\,\cdot\,]$ for $1$ when the condition holds and $0$ otherwise.
 The left side of \eqref{eq:statg} is the same sum over all of $A$ with
 each term carrying the factor $[\,c\in C_i\,]$, so the two sides subtract
 term by term and leave the relation
-\begin{equation}\label{eq:vanishing}
+\[
   \sum_{i\in A}\lambda_i\,\langle u_i,g_c\rangle\,
     \bigl(\,[\,c\in C_i\,]-t_c\cv\,\bigr)\,u_i\;=\;0 .
-\end{equation}
+\]
 Independence kills every coefficient:
 \[
   \lambda_i\,\langle u_i,g_c\rangle\,

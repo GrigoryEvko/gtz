@@ -239,13 +239,13 @@ by a one-line computation, and each preserves a value bound.
 \begin{lemma}[Lean]\label{lem:spike}
 Let $\dsn$ be a complex weighted design at $(m,k)$ and let $0<w<1$.  Define
 $\widehat{\dsn}$ at $(m+1,k+1)$ by
-\begin{equation}\label{eq:spike}
+\[
   \widehat g_c:=\Bigl(\frac{g_c}{\sqrt{1-w}},\,0\Bigr)\ \ (c\le m),
   \qquad
   \widehat g_{m+1}:=\frac{1}{\sqrt w}\,e_{k+1},
   \qquad
   \widehat t_c:=(1-w)t_c,\quad \widehat t_{m+1}:=w .
-\end{equation}
+\]
 Then $\widehat{\dsn}$ is a design, and if $\dsn$ has value at most $b\ge0$ then
 $\widehat{\dsn}$ has value at most $b/(1-w)$.
 \end{lemma}
@@ -299,14 +299,14 @@ Figure~\ref{fig:padding} draws both operations as block matrices.
 Let $\dsn$ be a complex weighted design at $(m,k)$, let $c_0\le m$ and let
 $0<f<1$.  Define $\widetilde{\dsn}$ at $(m+1,k)$ by listing the vector
 $g_{c_0}$ twice,
-\begin{equation}\label{eq:split}
+\[
   \widetilde g_c:=g_c\ (c\le m),
   \quad \widetilde g_{m+1}:=g_{c_0},
   \qquad
   \widetilde t_{c_0}:=f\,t_{c_0},
   \quad \widetilde t_{m+1}:=(1-f)t_{c_0},
   \quad \widetilde t_c:=t_c\ \text{otherwise.}
-\end{equation}
+\]
 Then $\widetilde{\dsn}$ is a design, and if $\dsn$ has value at most $b\ge0$ then
 so does $\widetilde{\dsn}$.
 \end{lemma}
