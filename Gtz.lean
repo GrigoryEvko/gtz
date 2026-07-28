@@ -112,9 +112,12 @@ import Gtz.Certificates.TriangleClosure
 -- Quantitative: the analytic layer -- collar rates, gates, constants (partly open)
 import Gtz.Quantitative.CapArgmax
 import Gtz.Quantitative.CapBoundaryConstant
+import Gtz.Quantitative.ChartEmptinessCertificate
 import Gtz.Quantitative.CollarFloor
 import Gtz.Quantitative.CollarRate
+import Gtz.Quantitative.ComplexRankThreeFloor
 import Gtz.Quantitative.DiscriminantSystem
+import Gtz.Quantitative.ExtremalBasisActivity
 import Gtz.Quantitative.FirstOrderLaw
 import Gtz.Quantitative.GapStabilityFacts
 import Gtz.Quantitative.Interface

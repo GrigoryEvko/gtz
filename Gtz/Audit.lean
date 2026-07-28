@@ -192,6 +192,9 @@ import Gtz.Quantitative.ChartStrongStationary
 import Gtz.Quantitative.ChartCovering
 import Gtz.Quantitative.RankTwoRealnessCount
 import Gtz.Quantitative.VolumeSelectionFailure
+import Gtz.Quantitative.ChartEmptinessCertificate
+import Gtz.Quantitative.ComplexRankThreeFloor
+import Gtz.Quantitative.ExtremalBasisActivity
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -4628,3 +4631,149 @@ import Gtz.Quantitative.VolumeSelectionFailure
 #print axioms Gtz.shadowDeterminantMaximiser_can_fail_to_dominate_atUniformWeights
 #print axioms Gtz.not_forall_strictVolumeMaximiser_dominates_atSizeThree
 #print axioms Gtz.not_forall_strictVolumeMaximiser_dominates_atSizeFour
+
+-- Gtz/Quantitative/ChartEmptinessCertificate.lean -- the exact certificate that empties the
+-- two-block class on the floored negative window: the eliminant cubic and its rational
+-- factorisation, the four-coefficient positive Handelman identity and the sharp margin
+-- 1711/2000 it yields on [-3/20, 0], the root set {-1/6, 1/3, 5/6} and its coincidence with
+-- three shipped chart landmarks, the theorem that interval positivity FAILS on the shipped
+-- window [-1/6, 0] so the improved floor is load-bearing rather than cosmetic, and the
+-- closure of the negative-value branch CONDITIONAL on the named hypothesis
+-- EliminatesChartTwoBlockValue, which this development does not discharge
+#print axioms Gtz.twoBlockEliminantCubic
+#print axioms Gtz.twoBlockEliminantCubic_eq_prod
+#print axioms Gtz.twoBlockEliminantCubic_eq_handelmanCombination
+#print axioms Gtz.twoBlockEliminantCubic_nonneg_of_mem_flooredWindow
+#print axioms Gtz.twoBlockEliminantCubic_sub_margin_eq_prod
+#print axioms Gtz.handelmanMargin_le_twoBlockEliminantCubic
+#print axioms Gtz.twoBlockEliminantCubic_pos_of_mem_flooredWindow
+#print axioms Gtz.twoBlockEliminantCubic_ne_zero_of_flooredNegativeValue
+#print axioms Gtz.not_exists_flooredNegativeValue_root_twoBlockEliminantCubic
+#print axioms Gtz.twoBlockEliminantCubic_eq_zero_iff
+#print axioms Gtz.twoBlockEliminantCubic_eq_zero_iff_of_negativeValue
+#print axioms Gtz.twoBlockEliminantCubic_eq_zero_iff_chartLandmark
+#print axioms Gtz.not_flooredWindow_neg_inv_six
+#print axioms Gtz.not_forall_pos_twoBlockEliminantCubic_on_shippedWindow
+#print axioms Gtz.not_hasDistinctWeightsOn_both_of_negativeValue_of_isChartTwoBlockFamily
+#print axioms Gtz.EliminatesChartTwoBlockValue
+#print axioms Gtz.zero_le_value_of_isChartTwoBlockFamily_of_eliminates
+#print axioms Gtz.not_isChartStationaryData_of_isChartTwoBlockFamily_of_flooredNegativeValue
+
+-- Gtz/Quantitative/ComplexRankThreeFloor.lean -- the rank-three floor 1/3 is sharp for the
+-- MAXIMAL-VOLUME SELECTION RULE, over both fields: the two-parameter (4,3) family and its
+-- Parseval, the twenty-four row determinants with the apex bound that makes the leading
+-- triple the unique volume maximizer, the all-ones probe capping the level that triple
+-- certifies at the diagonal scale squared, the parameters driving that scale to 1/3, and
+-- the same obstruction coerced to C -- with the honesty guard that the family itself
+-- SATISFIES GTZ, so only the selection rule is closed and alpha_3 is untouched
+#print axioms Gtz.maximalVolumeSharpOffset
+#print axioms Gtz.maximalVolumeSharpRow
+#print axioms Gtz.sum_maximalVolumeSharpRow_lead
+#print axioms Gtz.abs_det_maximalVolumeSharpTriple_le
+#print axioms Gtz.abs_det_maximalVolumeSharpTriple_le_apex
+#print axioms Gtz.det_maximalVolumeSharpTriple_lead
+#print axioms Gtz.IsMaximalVolumeSharpParameter
+#print axioms Gtz.IsMaximalVolumeSharpParameter.isAxisPositive
+#print axioms Gtz.IsMaximalVolumeSharpParameter.rankInverse_lt_diagonalSq
+#print axioms Gtz.maximalVolumeSharpApex
+#print axioms Gtz.maximalVolumeSharpApex_nonneg
+#print axioms Gtz.maximalVolumeSharpApex_sq
+#print axioms Gtz.maximalVolumeSharpApex_lt_diagonal
+#print axioms Gtz.maximalVolumeSharpAtom
+#print axioms Gtz.maximalVolumeSharpWeight
+#print axioms Gtz.maximalVolumeSharpDesign
+#print axioms Gtz.maximalVolumeSharpDesign_atom
+#print axioms Gtz.maximalVolumeSharpDesign_weight
+#print axioms Gtz.leadingTriplePick
+#print axioms Gtz.leadingTriplePick_injective
+#print axioms Gtz.image_leadingTriplePick
+#print axioms Gtz.selectedFrameRows_maximalVolumeSharp
+#print axioms Gtz.det_selectedFrameRows_leadingTriplePick
+#print axioms Gtz.isMaximalVolume_leadingTriplePick
+#print axioms Gtz.det_selectedFrameRows_leadingTriplePick_ne_zero
+#print axioms Gtz.abs_det_selectedFrameRows_lt_of_takes_apex
+#print axioms Gtz.image_eq_leadingTriple_of_isMaximalVolume
+#print axioms Gtz.sum_entries_subsetSum_maximalVolumeSharpDesign
+#print axioms Gtz.dotProduct_subsetSum_maximalVolumeSharpDesign_ones
+#print axioms Gtz.not_posSemidef_subsetSum_maximalVolumeSharpDesign_sub_smul_one
+#print axioms Gtz.maximalVolumeSharpDesign_hasDominatingSubset
+#print axioms Gtz.isMaximalVolumeSharpParameter_ofGap
+#print axioms Gtz.exists_design_maximalVolumePick_not_posSemidef
+#print axioms Gtz.exists_design_forall_maximalVolumePick_not_posSemidef
+#print axioms Gtz.not_forall_maximalVolumePick_posSemidef_sub_smul_one
+#print axioms Gtz.fieldSelectedAtomRows
+#print axioms Gtz.fieldSelectedAtomRows_complexifyDesign
+#print axioms Gtz.det_complexifyMatrix
+#print axioms Gtz.fieldSubsetSum_complexifyDesign
+#print axioms Gtz.complexMaximalVolumeSharpDesign
+#print axioms Gtz.norm_det_fieldSelectedAtomRows_complexMaximalVolumeSharpDesign
+#print axioms Gtz.isMaximalVolume_leadingTriplePick_complex
+#print axioms Gtz.not_posSemidef_fieldSubsetSum_complexMaximalVolumeSharpDesign_sub_smul_one
+#print axioms Gtz.exists_design_forall_maximalVolumePick_not_posSemidef_complex
+#print axioms Gtz.not_forall_maximalVolumePick_posSemidef_sub_smul_one_complex
+
+-- Gtz/Quantitative/ExtremalBasisActivity.lean -- which subsets are active at an extremal
+-- design: the parallel splitting of an ARBITRARY base and its activity law -- a subset
+-- dominates upstairs exactly when it is class-injective and its image dominates
+-- downstairs -- the tie transfer that needs no induction, the corank-one corollary that
+-- activity is basis membership at every size and every weight vector, the shipped
+-- split-class family as an instance of it, the diamond's eight spanning-tree certificates
+-- and two triangle refutations that make it the repository's first TOTAL tie at corank
+-- two, and the (6,3) and (7,3) diamond classes with the proof that the (6,3) one is a
+-- splitting of no corank-one design
+#print axioms Gtz.IsParallelSplitting
+#print axioms Gtz.sum_weight_eq_one_of_isParallelSplitting
+#print axioms Gtz.surjective_classOf_of_isParallelSplitting
+#print axioms Gtz.parallelSplitDesign
+#print axioms Gtz.parallelSplitDesign_atom
+#print axioms Gtz.parallelSplitDesign_weight
+#print axioms Gtz.subsetSum_parallelSplitDesign_of_injOn
+#print axioms Gtz.dominates_parallelSplitDesign_iff_of_injOn
+#print axioms Gtz.exists_repeated_class_of_not_injOn
+#print axioms Gtz.not_dominates_parallelSplitDesign_of_not_injOn
+#print axioms Gtz.dominates_parallelSplitDesign_iff
+#print axioms Gtz.exists_injOn_preimage_of_surjective
+#print axioms Gtz.parallelSplitDesign_isTie
+#print axioms Gtz.det_subsetRowMatrix_parallelSplitDesign_eq_zero_of_not_injOn
+#print axioms Gtz.dominates_parallelSplitDesign_of_injOn_of_corankOne
+#print axioms Gtz.dominates_parallelSplitDesign_iff_det_ne_zero_of_corankOne
+#print axioms Gtz.exactlyTied_parallelSplitDesign_of_det_ne_zero_of_corankOne
+#print axioms Gtz.splitClass_isParallelSplitting
+#print axioms Gtz.splitClassDesign_eq_parallelSplitDesign
+#print axioms Gtz.splitClassDesign_dominates_of_injOn
+#print axioms Gtz.splitClassDesign_dominates_iff_det_ne_zero
+#print axioms Gtz.splitClassDesign_exactlyTied_of_injOn
+#print axioms Gtz.diamond_dominates_of_nonneg
+#print axioms Gtz.diamond_not_dominates_of_negative
+#print axioms Gtz.diamond_dominates_congr
+#print axioms Gtz.diamondDesign_dominates_014
+#print axioms Gtz.diamondDesign_dominates_023
+#print axioms Gtz.diamondDesign_dominates_034
+#print axioms Gtz.diamondDesign_dominates_123
+#print axioms Gtz.diamondDesign_dominates_124
+#print axioms Gtz.diamondDesign_dominates_134
+#print axioms Gtz.diamondDesign_dominates_234
+#print axioms Gtz.diamondDesign_not_dominates_013
+#print axioms Gtz.diamondDesign_not_dominates_024
+#print axioms Gtz.diamondDesign_dominates_of_ne_circuits
+#print axioms Gtz.diamondDesign_dominates_iff
+#print axioms Gtz.not_isGroundConnected_diamond_013
+#print axioms Gtz.not_isGroundConnected_diamond_024
+#print axioms Gtz.diamondDesign_dominates_iff_isSpanningTree
+#print axioms Gtz.diamondDesign_isTotalTie
+#print axioms Gtz.diamondDesign_weight
+#print axioms Gtz.sixIntoFiveDiamond
+#print axioms Gtz.sixSplitDiamondWeight
+#print axioms Gtz.sixSplitDiamond_isParallelSplitting
+#print axioms Gtz.sixSplitDiamondDesign
+#print axioms Gtz.sixSplitDiamondDesign_isTie
+#print axioms Gtz.sixSplitDiamondDesign_dominates_iff
+#print axioms Gtz.sevenIntoFiveDiamond
+#print axioms Gtz.sevenSplitDiamondWeight
+#print axioms Gtz.sevenSplitDiamond_isParallelSplitting
+#print axioms Gtz.sevenSplitDiamondDesign
+#print axioms Gtz.sevenSplitDiamondDesign_isTie
+#print axioms Gtz.sevenSplitDiamondDesign_dominates_iff
+#print axioms Gtz.exists_injOn_not_dominates_sixSplitDiamondDesign
+#print axioms Gtz.sixSplitDiamondDesign_atom_castSucc
+#print axioms Gtz.not_eq_parallelSplitDesign_corankOne_sixSplitDiamondDesign
