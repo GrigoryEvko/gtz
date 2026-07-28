@@ -397,9 +397,77 @@ $\Gtz(6,3)$ must consume $e_2(\Gram_C)$.
 
 \subsection{Structure inherited from smaller sizes}\label{app:structure}
 
-\begin{remark}\label{rem:signature}
-The signature of $W$ is excluded by Remark~\ref{rem:nogo}: a proof of
-$\Gtz$ cannot run on the inertia of $W$ alone.
+The gap $W$ has a fixed signature, which by itself decides nothing.
+
+\begin{lemma}[Lean]\label{lem:rayleigh}
+Let $m\ge2$.  If $Px=x$ then
+$\langle x,Wx\rangle=\sum_c(1-t_c)\lvert x_c\rvert^2$, which is positive
+for $x\ne0$.  If $Px=0$ then
+$\langle x,Wx\rangle=-\sum_ct_c\lvert x_c\rvert^2$, which is negative for
+$x\ne0$.
+\end{lemma}
+
+\begin{proof}
+$\langle x,Dx\rangle=\sum_ct_c\lvert x_c\rvert^2$ in both cases.  If
+$Px=x$ then $\langle x,Px\rangle=\lVert x\rVert^2=\sum_c\lvert
+x_c\rvert^2$, and subtracting gives the first identity; each coefficient
+$1-t_c$ is strictly positive because $m\ge2$ forces $t_c<1$.  If $Px=0$
+then $\langle x,Px\rangle=0$ and the second identity follows; each $t_c$
+is strictly positive.
+\end{proof}
+
+\begin{lemma}\label{lem:inertia}
+For $m\ge2$ the matrix $W$ has inertia $(k,\,m-k,\,0)$.
+\end{lemma}
+
+\begin{proof}
+The subspaces $\operatorname{ran}P$ and $\ker P$ are complementary of
+dimensions $k$ and $m-k$, and by Lemma~\ref{lem:rayleigh} the form
+$\langle x,Wx\rangle$ is positive definite on the first and negative
+definite on the second.  Sylvester's law of inertia
+\cite[\S4.5]{HornJohnson2013} gives the count.
+\end{proof}
+
+The hypothesis $m\ge2$ is necessary: at $m=k=1$ the only design has
+$t_1=1$ and $\ell_1=1$, so $P=D=1$ and $W=0$, of inertia $(0,0,1)$.
+
+\begin{remark}[Lean]\label{rem:nogo}
+A positive semidefinite matrix has a nonnegative diagonal.  Hence a
+Hermitian matrix whose diagonal entries are all negative has no positive
+semidefinite principal submatrix of any nonempty size.  At $(m,k)=(2,1)$
+take
+\[
+  B_2=\begin{pmatrix}-1&3\\3&-1\end{pmatrix},
+  \qquad \det B_2=1-9=-8 .
+\]
+Its form is $\langle x,B_2x\rangle=-x_1^2-x_2^2+6x_1x_2$, which takes the
+value $4$ at $(1,1)$ and $-8$ at $(1,-1)$: the inertia is $(1,1,0)$,
+which by Lemma~\ref{lem:inertia} is the inertia of a chart gap at
+$(2,1)$.  At $(m,k)=(3,2)$ take
+\[
+  B_3=\begin{pmatrix}-1&2&2\\2&-1&-2\\2&-2&-1\end{pmatrix},
+  \qquad \det B_3=-5 .
+\]
+On the plane spanned by $(1,1,0)$ and $(1,0,1)$, parameterized as
+$x=(a+b,a,b)$,
+\[
+  \langle x,B_3x\rangle
+  \;=\;-(a+b)^2-a^2-b^2+4a(a+b)+4b(a+b)-4ab
+  \;=\;2a^2+2ab+2b^2,
+\]
+which is $(a+b)^2+a^2+b^2$, hence positive definite; so $B_3$ has at
+least two positive eigenvalues, and $\det B_3<0$ excludes three, leaving
+inertia $(2,1,0)$, the inertia of a chart gap at $(3,2)$.  Every diagonal
+entry of $B_2$ and of $B_3$ is $-1$, so neither matrix has a positive
+semidefinite principal block of the required size.  No statement of the
+form ``a Hermitian matrix of inertia $(k,m-k,0)$ possesses a positive
+semidefinite $k\times k$ principal block'' is therefore available, and no
+proof of $\Gtz$ can run on the signature of $W$ alone.
+
+A chart gap differs from $B_2$ and $B_3$ in its diagonal: by
+Proposition~\ref{prop:chartid} it has $W_{cc}=t_c(\ell_c-1)\ge-t_c$ at
+every index, with $-t_c>-1$ once $m\ge2$, and $\sum_cW_{cc}=k-1\ge0$, so
+at least one diagonal entry is nonnegative.
 \end{remark}
 
 By Corollary~\ref{cor:noparallel} the statement ``every extremal design

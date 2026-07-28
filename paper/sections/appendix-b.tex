@@ -120,6 +120,361 @@ subsets are its paths, dominating with margin exactly zero
 Cauchy--Schwarz, so the vanishing of the margin is visible at every rank
 rather than instance by instance.
 
+\subsection{The worked design at \texorpdfstring{$(4,2)$}{(4,2)}}\label{app:chartworked}
+
+The design below has four dominating pairs of six, one of them with slack
+zero.
+
+\begin{example}\label{ex:chartworked}
+Over $\R$ at $(m,k)=(4,2)$ take
+\[
+  g_0=(\sqrt2,0),\qquad
+  g_1=\tfrac1{\sqrt3}(2,1),\qquad
+  g_2=\tfrac1{\sqrt3}(1,-2),\qquad
+  g_3=(0,2)
+\]
+with weights $t=\tfrac19(2,3,3,1)$, which are positive and sum to one.
+The four terms of \eqref{eq:parseval} are
+\[
+  \tfrac19\begin{pmatrix}4&0\\0&0\end{pmatrix},\qquad
+  \tfrac19\begin{pmatrix}4&2\\2&1\end{pmatrix},\qquad
+  \tfrac19\begin{pmatrix}1&-2\\-2&4\end{pmatrix},\qquad
+  \tfrac19\begin{pmatrix}0&0\\0&4\end{pmatrix},
+\]
+of sum $\tfrac19\begin{psmallmatrix}9&0\\0&9\end{psmallmatrix}=I_2$: a
+design at $(4,2)$.  The leverages are
+$\ell=(2,\tfrac53,\tfrac53,4)$ and the leverage scores
+$s_c=t_c\ell_c=\tfrac19(4,5,5,4)$, which sum to $2=k$
+(Lemma~\ref{lem:trace}).
+
+Whitening clears the radicals.  With $v_c=\sqrt{t_c}\,g_c$,
+\[
+  V=\tfrac13\begin{pmatrix}2&0\\2&1\\1&-2\\0&2\end{pmatrix},
+\]
+and the two columns of $3V$ have squared lengths $4+4+1+0=9$ and
+$0+1+4+4=9$ and inner product $0+2-2+0=0$.  Dividing by $9$ gives
+$V\adj V=I_2$, which is \eqref{eq:isometry}.  The atoms carry $\sqrt2$ and
+$\sqrt3$ and the chart carries neither:
+\[
+  P=VV\adj=\tfrac19\begin{pmatrix}
+    4&4&2&0\\ 4&5&0&2\\ 2&0&5&-4\\ 0&2&-4&4\end{pmatrix}.
+\]
+Idempotency is ten integer identities.  Write $r_c$ for the $c$-th row of
+$9P$.  Then $\bigl((9P)^2\bigr)_{cd}=\langle r_c,r_d\rangle$, and $P^2=P$
+asks that this equal $9\,(9P)_{cd}$.  The ten inner products are
+\[
+  \begin{array}{llll}
+  \langle r_0,r_0\rangle=36, & \langle r_0,r_1\rangle=36,
+    & \langle r_0,r_2\rangle=18, & \langle r_0,r_3\rangle=0,\\[2pt]
+  \langle r_1,r_1\rangle=45, & \langle r_1,r_2\rangle=0,
+    & \langle r_1,r_3\rangle=18, & \langle r_2,r_2\rangle=45,\\[2pt]
+  \langle r_2,r_3\rangle=-36, & \langle r_3,r_3\rangle=36,
+  \end{array}
+\]
+which are $9$ times $4,4,2,0,5,0,2,5,-4,4$, the corresponding entries of
+$9P$.  The trace is $\tfrac19(4+5+5+4)=2=k$ and the diagonal is $s$, as
+Proposition~\ref{prop:chartid} says.  Subtracting $D=\diag(t)$,
+\[
+  W=\tfrac19\begin{pmatrix}
+    2&4&2&0\\ 4&2&0&2\\ 2&0&2&-4\\ 0&2&-4&3\end{pmatrix},
+  \qquad
+  W_{cc}=t_c(\ell_c-1)=\tfrac19(2,2,2,3),
+  \qquad \textstyle\sum_cW_{cc}=1=k-1 .
+\]
+
+Now take the six blocks.  Every $W_{cc}$ is positive, so a $2\times2$
+principal block of $W$ is positive semidefinite precisely when its
+determinant is nonnegative and positive definite precisely when that
+determinant is positive:
+\[
+  \begin{array}{r|rrrrrr}
+  C & \{0,1\} & \{0,2\} & \{0,3\} & \{1,2\} & \{1,3\} & \{2,3\}\\[2pt]
+  81\det W[C] & -12 & 0 & 6 & 4 & 2 & -10
+  \end{array}
+\]
+By Lemma~\ref{lem:chart} four pairs dominate, three of them strictly,
+while $\{0,1\}$ and $\{2,3\}$ do not.
+
+Corollary~\ref{cor:minor} checks each entry a second way.  For a pair,
+$\det(\Gram_C-I)=(\ell_c-1)(\ell_d-1)-\lvert\langle
+g_c,g_d\rangle\rvert^2$, in which the inner product enters squared, so the
+radicals cancel there too.  Here $\ell_c-1=(1,\tfrac23,\tfrac23,3)$, and
+the six squared inner products, in the order of the table below, are
+$\tfrac83$, $\tfrac23$, $0$, $0$, $\tfrac43$, $\tfrac{16}3$, whence
+\[
+  \begin{array}{r|rrrrrr}
+  C & \{0,1\} & \{0,2\} & \{0,3\} & \{1,2\} & \{1,3\} & \{2,3\}\\[2pt]
+  \prod_{c\in C}t_c
+    & \tfrac2{27} & \tfrac2{27} & \tfrac2{81}
+    & \tfrac19 & \tfrac1{27} & \tfrac1{27}\\[4pt]
+  \det(\Gram_C-I) & -2 & 0 & 3 & \tfrac49 & \tfrac23 & -\tfrac{10}3
+  \end{array}
+\]
+The six products of the last two rows, multiplied by $81$, return the
+minors of the first table.  At $\{0,3\}$ the product is
+$\tfrac2{81}\cdot3=\tfrac6{81}$ and $81\cdot\tfrac6{81}=6$.
+
+The pair with determinant zero is $\{0,2\}$, where
+\[
+  \SC=\begin{pmatrix}2&0\\0&0\end{pmatrix}
+     +\tfrac13\begin{pmatrix}1&-2\\-2&4\end{pmatrix}
+     =\begin{pmatrix}\tfrac73&-\tfrac23\\[3pt]
+                     -\tfrac23&\tfrac43\end{pmatrix} .
+\]
+The matrix $\SC-I_2$ has determinant $0$ and trace $\tfrac53$, so
+$\operatorname{spec}\SC=\{1,\tfrac83\}$ and $\lmin(\SC)=1$.  Its kernel is
+spanned by $(1,2)$, and at $x=\tfrac1{\sqrt5}(1,2)$ the pointwise form
+\eqref{eq:pointwise} reads $\tfrac25+\tfrac35=1$: the pair covers that one
+direction with nothing to spare and every other direction strictly.
+
+The two failures need no determinant.  A dominating pair has
+$(\SC)_{jj}\ge1$ at every $j$, and
+\[
+  S_{\{0,1\}}=\begin{pmatrix}\tfrac{10}3&\tfrac23\\[3pt]
+                             \tfrac23&\tfrac13\end{pmatrix},
+  \qquad
+  S_{\{2,3\}}=\begin{pmatrix}\tfrac13&-\tfrac23\\[3pt]
+                             -\tfrac23&\tfrac{16}3\end{pmatrix}
+\]
+fall to $\tfrac13$ at $e_2$ and at $e_1$.  On the chart side that shortcut
+is unavailable, since every $W_{cc}$ is positive.  Over the six pairs
+$\max_C\lmin(\SC)=2$, attained at $\{0,3\}$, where $\SC=\diag(2,4)$.
+\end{example}
+
+The six pairs are the edges of $K_4$ on the four indices.
+Figure~\ref{fig:chartworked} labels each edge with its minor, and the two
+failing pairs come out opposite edges.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/chartworked}
+  \caption{The design of Example~\ref{ex:chartworked} at $(4,2)$.  Top: the
+  atoms pass through $V$ to the chart $P=VV\adj$ of \eqref{eq:chart} and the
+  gap $W=P-D$ of \eqref{eq:chartgap}; the atoms carry $\sqrt2$ and $\sqrt3$
+  and $9P$ is integral.  Left: at $C=\{0,2\}$ the ellipse $x\adj\SC x=1$ lies
+  in the closed unit disc, which for a positive definite $\SC$ is what
+  $\SC\psd I_2$ says, and touches the circle at $\pm\tfrac1{\sqrt5}(1,2)$,
+  where the slack vanishes.  Centre: the six pairs as the edges of $K_4$,
+  labelled by $81\det W[C]$; the complement
+  map $C\mapsto C^{\complement}$ of \S\ref{sec:duality} carries each edge to
+  the edge opposite it.  Right: the edge styles, and the diagonal entry
+  $\tfrac13$ that settles each failure on the design side while every
+  $W_{cc}>0$ leaves the chart side needing the minor.  No Lean declaration
+  mentions this design.}
+  \label{fig:chartworked}
+\end{figure}
+
+At $(4,2)$ the two cells of Corollary~\ref{cor:dualcell} coincide and the
+correspondence becomes an involution on the six pairs.
+
+\begin{example}\label{ex:dualworked}
+Take the design of Example~\ref{ex:chartworked}, at $(4,2)$ with
+$t=\tfrac19(2,3,3,1)$ and the chart printed there.  Since $m-k=k=2$, the
+dual $\dsn^{\perp}$ is again a design at $(4,2)$ and
+$C\mapsto C^{\complement}$ sends pairs to pairs.
+
+The kernel of $P$ is orthogonal to the two columns $(2,2,1,0)$ and
+$(0,1,-2,2)$ of $3V$.  The integer vectors
+\[
+  n_1=(-5,4,2,0),\qquad n_2=(0,-2,4,5)
+\]
+annihilate both: $2(-5)+2(4)+1(2)=0$ and $1(4)+(-2)(2)=0$ for $n_1$,
+$2(-2)+1(4)=0$ and $1(-2)+(-2)(4)+2(5)=0$ for $n_2$.  They also satisfy
+$\lVert n_1\rVert^2=\lVert n_2\rVert^2=45$ and $\langle n_1,n_2\rangle=0$,
+so $Z:=\tfrac1{3\sqrt5}(n_1\ n_2)$ has $Z\adj Z=I_2$ and
+$ZZ\adj=I_4-P$.  Its rows are
+\[
+  z_0=\tfrac1{3\sqrt5}(-5,0),\quad
+  z_1=\tfrac1{3\sqrt5}(4,-2),\quad
+  z_2=\tfrac1{3\sqrt5}(2,4),\quad
+  z_3=\tfrac1{3\sqrt5}(0,5),
+\]
+of squared lengths $\tfrac19(5,4,4,5)$, which is $1-s_c$ index by index.
+
+Rescale by the co-weights $1-t=\tfrac19(7,6,6,8)$.  Then
+$\lVert w_c\rVert^2=\bigl(\tfrac57,\tfrac23,\tfrac23,\tfrac58\bigr)$ and
+the operator \eqref{eq:dualgram} is
+\[
+  \Sdual=\sum_c t_c\,w_c^{\vphantom{\mathsf{H}}}w_c\adj
+    =\diag\bigl(\tfrac8{21},\tfrac7{24}\bigr),
+  \qquad \det\Sdual=\tfrac19,
+\]
+positive definite as Lemma~\ref{lem:dualgram} requires.  Take
+$R=\diag\bigl(\sqrt{21/8},\sqrt{24/7}\bigr)$, so that $R\adj\Sdual R=I_2$
+as in Lemma~\ref{lem:whiten}.  The dual atoms $h_c=R\adj w_c$ are
+\[
+  h_0=\tfrac14(-\sqrt{30},0),\quad
+  h_1=\tfrac1{\sqrt{35}}(7,-4),\quad
+  h_2=\tfrac1{2\sqrt{35}}(7,16),\quad
+  h_3=\tfrac17(0,\sqrt{105}),
+\]
+and the radicals cancel again in the rank-one terms:
+\[
+  h_0^{\vphantom{\mathsf{H}}}h_0\adj
+    =\begin{pmatrix}\tfrac{15}8&0\\[2pt]0&0\end{pmatrix},
+  \quad
+  h_1^{\vphantom{\mathsf{H}}}h_1\adj
+    =\begin{pmatrix}\tfrac75&-\tfrac45\\[2pt]
+                    -\tfrac45&\tfrac{16}{35}\end{pmatrix},
+  \quad
+  h_2^{\vphantom{\mathsf{H}}}h_2\adj
+    =\begin{pmatrix}\tfrac7{20}&\tfrac45\\[2pt]
+                    \tfrac45&\tfrac{64}{35}\end{pmatrix},
+  \quad
+  h_3^{\vphantom{\mathsf{H}}}h_3\adj
+    =\begin{pmatrix}0&0\\[2pt]0&\tfrac{15}7\end{pmatrix}.
+\]
+Their $t$-weighted sum is $I_2$: the first diagonal entries give
+$\tfrac5{12}+\tfrac7{15}+\tfrac7{60}=1$, the two off-diagonal
+contributions cancel, and the second diagonal entries give
+$\tfrac{16}{105}+\tfrac{64}{105}+\tfrac{25}{105}=1$.  So $\dsn^{\perp}$ is
+a design at $(4,2)$ carrying the weights of $\dsn$, with leverage scores
+$t_c\lVert h_c\rVert^2=\tfrac1{84}(35,52,61,20)$ summing to $2$.
+
+Figure~\ref{fig:dualworked} runs the correspondence at all six pairs.  Take
+two of them.  Upstairs $\{0,2\}$ dominates with slack
+zero; downstairs its complement gives
+\[
+  h_1^{\vphantom{\mathsf{H}}}h_1\adj+h_3^{\vphantom{\mathsf{H}}}h_3\adj-I_2
+   =\begin{pmatrix}\tfrac25&-\tfrac45\\[3pt]
+                   -\tfrac45&\tfrac85\end{pmatrix},
+\]
+of determinant $0$ and trace $2$, so $\{1,3\}$ dominates in $\dsn^{\perp}$
+with slack zero as well.  The spectra are $\{1,\tfrac83\}$ upstairs and
+$\{1,3\}$ downstairs, and $\lmin=1$ at both ends.  Upstairs $\{2,3\}$
+fails; downstairs
+$h_0^{\vphantom{\mathsf{H}}}h_0\adj+h_1^{\vphantom{\mathsf{H}}}h_1\adj-I_2$
+has $(2,2)$ entry $\tfrac{16}{35}-1<0$, so $\{0,1\}$ fails in
+$\dsn^{\perp}$.
+
+The naive dual of Remark~\ref{rem:naive} is also a design at $(4,2)$ with
+the weights of $\dsn$, of chart $(I_4-P,t)$ and gap
+\[
+  (I_4-P)-D=\tfrac19\begin{pmatrix}
+    3&-4&-2&0\\ -4&1&0&-2\\ -2&0&1&4\\ 0&-2&4&4\end{pmatrix} .
+\]
+Over $\{0,1\},\{0,2\},\{0,3\},\{1,2\},\{1,3\},\{2,3\}$ its six principal
+$2\times2$ minors, multiplied by $81$, are $-13$, $-1$, $12$, $1$, $0$,
+$-12$.  Five carry the sign the correspondence demands.  The sixth is
+$E=\{0,2\}$, whose block
+$\tfrac19\begin{psmallmatrix}3&-2\\-2&1\end{psmallmatrix}$ has
+determinant $-\tfrac1{81}$, so $E$ fails there, while the complementary
+pair $\{1,3\}$ dominates strictly in $\dsn$ with $81\det W[\{1,3\}]=2$.
+\end{example}
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/dualworked}
+  \caption{Duality at $(4,2)$, where the dual cell is the cell itself, on
+  the design of Example~\ref{ex:chartworked}.  Left: the rows of an
+  orthonormal basis of $\ker P$, of squared lengths
+  $1-s_c=\tfrac19(5,4,4,5)$.  Centre: the dual atoms of
+  Theorem~\ref{thm:duality}, and the ellipse of
+  $h_1^{\vphantom{\mathsf{H}}}h_1\adj+h_3^{\vphantom{\mathsf{H}}}h_3\adj$,
+  of spectrum $\{1,3\}$, touching the unit circle at
+  $\pm\tfrac1{\sqrt5}(2,1)$.  Right: the two normalizations of
+  Remark~\ref{rem:naive}.  Below: at each of the six pairs, the gap minor of
+  $\dsn$ and the minor of each normalization, the boxed entry the one at which
+  the rescaling by the weights takes the wrong sign.
+  The dual atoms drawn are those of the construction above
+  Theorem~\ref{thm:duality}; the mechanized statement asserts only that some
+  dual design with these weights flips domination.}
+  \label{fig:dualworked}
+\end{figure}
+
+\subsection{The two objectives at \texorpdfstring{$(4,2)$}{(4,2)}}\label{app:objectives}
+
+\begin{example}\label{ex:objectives}
+On the index set $\{0,1,2,3\}$ let
+\[
+  P=\begin{pmatrix}
+     \tfrac45&\tfrac25&0&0\\[2pt]
+     \tfrac25&\tfrac15&0&0\\[2pt]
+     0&0&\tfrac12&\tfrac12\\[2pt]
+     0&0&\tfrac12&\tfrac12\end{pmatrix},
+  \qquad
+  t=\Bigl(t_0,\ \tfrac23-t_0,\ \tfrac16,\ \tfrac16\Bigr),
+  \qquad 0\le t_0\le\tfrac23 .
+\]
+The diagonal blocks are $\tfrac15uu\tp$ with $u=(2,1)$ and
+$\tfrac12ww\tp$ with $w=(1,1)$, and $\lVert u\rVert^{2}=5$,
+$\lVert w\rVert^{2}=2$, so each block is an orthogonal projection of rank
+one.  Hence $P$ is symmetric and idempotent with $\tr P=2$.  The weights
+are nonnegative and sum to one, so $(P,t)$ is a chart point of size four
+and rank two at every $t_0$.  At every interior $t_0$ it is the chart
+point of a design, by Proposition~\ref{prop:chartdesign}, and that design
+puts $g_0,g_1$ on one axis of $\R^2$ and $g_2,g_3$ on the other, with
+\[
+  \ell_0=\frac4{5t_0},\qquad
+  \ell_1=\frac1{5\bigl(\tfrac23-t_0\bigr)},\qquad
+  \ell_2=\ell_3=3 ,
+\]
+the leverage scores being the diagonal
+$s=(\tfrac45,\tfrac15,\tfrac12,\tfrac12)$ of $P$, of sum $2=k$.
+
+For a mixed pair $P_{ab}=0$, so $W[C]=\diag(A_a,A_b)$ with
+$A_c:=s_c-t_c$, and $\Gram_C=\diag(\ell_a,\ell_b)$.  A pair inside one
+block has parallel vectors, so there $\Gram_C$ is singular; it shares its
+characteristic polynomial with $\SC$, whence $\lmin(\SC)=0$, the subset
+sum being positive semidefinite.  And
+$\det(\Gram_C-I_2)=-(\ell_a+\ell_b-1)$ is negative, since
+$\ell_0\ge\tfrac65$ at every interior $t_0$ and $\ell_2=\ell_3=3$, so
+$\det W[C]<0$ by Corollary~\ref{cor:minor}.  The mixed pair $\{0,2\}$
+carries $\lmin(\SC)=\min(\ell_0,3)\ge\tfrac65$ and
+$\lmin(W[C])=\min(A_0,\tfrac13)\ge\tfrac2{15}$, above both, so neither
+maximum is attained inside a block.  The two indices of a mixed pair run
+over the two blocks independently, so a maximum over mixed pairs of a
+minimum is the minimum of the two block maxima:
+\[
+  F=\min\bigl\{\max(\ell_0,\ell_1),\ 3\bigr\},
+  \qquad
+  G=\min\bigl\{\max(A_0,A_1),\ \tfrac13\bigr\} .
+\]
+
+Now $A_0=\tfrac45-t_0$ and $A_1=t_0-\tfrac7{15}$ have constant sum
+$\tfrac13$, so $\max(A_0,A_1)\ge\tfrac16$, with equality where the two
+agree, at $t_0=\tfrac{19}{30}$.  And $\ell_0$ falls while $\ell_1$ rises,
+so $\max(\ell_0,\ell_1)$ is least where they agree, at $t_0=\tfrac8{15}$,
+both being $\tfrac32$ there.  Since $\tfrac13>\tfrac16$ and $3>\tfrac32$,
+neither truncating constant binds at those two weights, and
+\[
+  \min G=\tfrac16\ \ \text{at }t_0=\tfrac{19}{30},
+  \qquad
+  \min F=\tfrac32\ \ \text{at }t_0=\tfrac8{15},
+\]
+each at that weight and at no other.  At $t_0=\tfrac{19}{30}$ the design
+objective is $3$, twice its own least value; at $t_0=\tfrac8{15}$ the
+chart objective is $\tfrac4{15}$.
+
+Between the two weights the objectives select different pairs.  At
+$t_0=\tfrac{17}{30}$, where $t=\tfrac1{30}(17,3,5,5)$ and
+$\ell=(\tfrac{24}{17},2,3,3)$, the leverage maximum $2$ of the first
+block sits at the index $1$ and its slack maximum $\tfrac7{30}$ at the
+index $0$; so $F=2$ at $\{1,2\}$ and $\{1,3\}$, while $G=\tfrac7{30}$ at
+$\{0,2\}$ and $\{0,3\}$.  The congruence carries the reversal:
+$D[\{0,2\}]=\diag(\tfrac{17}{30},\tfrac16)$ takes the relative slack
+$\tfrac7{17}$ up to $\tfrac7{30}$, and
+$D[\{1,2\}]=\diag(\tfrac1{10},\tfrac16)$ takes the larger relative slack
+$1$ down to $\tfrac3{30}$.  Corollary~\ref{cor:minor} reaches the same
+two blocks through their determinants,
+\[
+  \det W[\{0,2\}]
+    =\tfrac{17}{30}\cdot\tfrac16\cdot\tfrac7{17}\cdot2=\tfrac7{90},
+  \qquad
+  \det W[\{1,2\}]=\tfrac1{10}\cdot\tfrac16\cdot1\cdot2=\tfrac1{30} .
+\]
+
+At the endpoint $t_0=0$ the matrix $D[\{0,2\}]=\diag(0,\tfrac16)$ is
+singular while $e_0\tp W[\{0,2\}]e_0=\tfrac45$, so the quotient
+$x\tp W[C]x/x\tp D[C]x$ is unbounded above on that pair, and the leverage
+$\ell_0=4/(5t_0)$ diverges with it: no design charts the endpoint.  The
+gap matrix there is $W[\{0,2\}]=\diag(\tfrac45,\tfrac13)$, so
+$G=\tfrac13$ and the pair $\{0,2\}$ dominates, which is
+Theorem~\ref{thm:boundary} in the branch $P_{00}=\tfrac45>0$.  Along the
+whole segment $F\ge\tfrac32$ and $G\ge\tfrac16$, above the threshold
+Corollary~\ref{cor:corank} guarantees at corank two.
+\end{example}
+
 \subsection{Graphic designs, and the diamond at
 \texorpdfstring{$(5,3)$}{(5,3)}}\label{app:diamond}
 
