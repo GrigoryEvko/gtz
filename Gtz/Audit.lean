@@ -195,6 +195,8 @@ import Gtz.Quantitative.VolumeSelectionFailure
 import Gtz.Quantitative.ChartEmptinessCertificate
 import Gtz.Quantitative.ComplexRankThreeFloor
 import Gtz.Quantitative.ExtremalBasisActivity
+import Gtz.Quantitative.CauchyBinetValueFloor
+import Gtz.Quantitative.VolumeAverageLaw
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -4777,3 +4779,116 @@ import Gtz.Quantitative.ExtremalBasisActivity
 #print axioms Gtz.exists_injOn_not_dominates_sixSplitDiamondDesign
 #print axioms Gtz.sixSplitDiamondDesign_atom_castSucc
 #print axioms Gtz.not_eq_parallelSplitDesign_corankOne_sixSplitDiamondDesign
+
+-- Gtz/Quantitative/CauchyBinetValueFloor.lean -- FLOOR-CB, the Cauchy-Binet floor
+-- -(1/size)(1 - 1/C(size - 1, rank - 1)) on the value of an admissible chart stationarity
+-- datum: the contraction step putting a block determinant below every Rayleigh quotient, the
+-- per-subset cap det P[C] <= max over the subset of (weight + value), which needs neither the
+-- weight floor nor any sign condition, the double count against Cauchy-Binet that turns that
+-- cap into the floor, the improvement over the shipped -1/size recorded as the exact positive
+-- identity 1/(size * C(size - 1, rank - 1)) so that no cell merely reproduces the old floor,
+-- the six cell values -3/20, -2/15, -5/42, -3/28, -3/20 and -19/140, and the DISCHARGE of the
+-- numeric floor hypothesis of
+-- not_isChartStationaryData_of_isChartTwoBlockFamily_of_flooredNegativeValue -- one of that
+-- theorem's two undischarged hypotheses, EliminatesChartTwoBlockValue remaining
+#print axioms Gtz.sum_eq_sum_of_vanishes_offSubset
+#print axioms Gtz.sum_selected_eq_sum_pick
+#print axioms Gtz.eigenvalue_le_one_of_posSemidef_one_sub
+#print axioms Gtz.det_le_eigenvalue_of_posSemidef_of_posSemidef_one_sub
+#print axioms Gtz.det_le_dotProduct_mulVec_of_posSemidef_of_posSemidef_one_sub
+#print axioms Gtz.posSemidef_projectionOfDesign
+#print axioms Gtz.posSemidef_one_sub_projectionOfDesign
+#print axioms Gtz.shadowDeterminant_le_dotProduct_mulVec_of_pick
+#print axioms Gtz.shadowDeterminant_le_dotProduct_mulVec_of_support
+#print axioms Gtz.rank_pos_of_isChartArgmaxValue
+#print axioms Gtz.shadowDeterminant_le_of_isChartArgmaxValue
+#print axioms Gtz.shadowDeterminant_le_sup'_weight_add_value_of_isChartArgmaxValue
+#print axioms Gtz.sum_powersetCard_sum_mem_eq_choose_mul_sum
+#print axioms Gtz.cauchyBinetValueFloor
+#print axioms Gtz.one_le_choose_mul_one_add_size_mul_value_of_isChartArgmaxValue
+#print axioms Gtz.cauchyBinetValueFloor_le_value_of_isChartArgmaxValue
+#print axioms Gtz.cauchyBinetValueFloor_le_value_of_isChartStationaryData
+#print axioms Gtz.cauchyBinetValueFloor_sub_neg_inv_size_eq
+#print axioms Gtz.neg_inv_size_lt_cauchyBinetValueFloor
+#print axioms Gtz.cauchyBinetValueFloor_sixThree
+#print axioms Gtz.cauchyBinetValueFloor_sevenThree
+#print axioms Gtz.cauchyBinetValueFloor_eightThree
+#print axioms Gtz.cauchyBinetValueFloor_nineThree
+#print axioms Gtz.cauchyBinetValueFloor_sixFour
+#print axioms Gtz.cauchyBinetValueFloor_sevenFour
+#print axioms Gtz.neg_three_div_twenty_le_value_of_isChartStationaryData
+#print axioms Gtz.neg_two_div_fifteen_le_value_of_isChartStationaryData
+#print axioms Gtz.zero_le_value_of_isChartTwoBlockFamily_of_eliminates_of_design
+#print axioms Gtz.not_isChartStationaryData_of_isChartTwoBlockFamily_of_negativeValue
+
+-- Gtz/Quantitative/VolumeAverageLaw.lean -- THE VOLUME-AVERAGE LAW IS FALSE: the campaign
+-- premise that the projection determinantal average of the least eigenvalue clears the
+-- domination threshold, stated existentially through IsBelowSubsetSpectrum so that no
+-- eigenvalue machinery, no spectral theorem and no surd is needed; the implication the law
+-- was for, that an average never exceeds a maximum and so the law would give GTZ outright;
+-- the tetrahedron, where all four triples dominate and the law holds with EQUALITY, so the
+-- refutation is about the functional and not about a vacuous statement; and TWO exactly
+-- rational (3,2) witnesses refuting it, the second with every leverage strictly above one so
+-- the all-heavy retreat is closed too -- both exhibiting a dominating 2-subset, so
+-- GtzWeighted is untouched, and at the first the MATRIX average is verified above the
+-- identity by hand, separating the two functionals on one design.  Then the
+-- elementary-symmetric bound det S_C >= 1/e_rank(t), sharp at the tetrahedron, with the
+-- degenerate division form named in the statement rather than left to Lean's x/0 = 0
+#print axioms Gtz.IsBelowSubsetSpectrum
+#print axioms Gtz.isBelowSubsetSpectrum_form_le
+#print axioms Gtz.isBelowSubsetSpectrum_zero
+#print axioms Gtz.dominates_of_one_le_isBelowSubsetSpectrum
+#print axioms Gtz.volumeSamplingAverage
+#print axioms Gtz.HasDominatingVolumeSamplingAverage
+#print axioms Gtz.exists_dominates_of_hasDominatingVolumeSamplingAverage
+#print axioms Gtz.posSemidef_expectedSubsetSum_sub_volumeSamplingAverage_smul_one
+#print axioms Gtz.hasDominatingVolumeSamplingAverage_of_forall_dominates
+#print axioms Gtz.leverageOf_tetraAtom
+#print axioms Gtz.tetraDesign_dominates_of_card_three
+#print axioms Gtz.tetraDesign_hasDominatingVolumeSamplingAverage
+#print axioms Gtz.volumeAverageKillAtom
+#print axioms Gtz.volumeAverageKillDesign
+#print axioms Gtz.volumeAverageKillDesign_leverage_eq
+#print axioms Gtz.volumeAverageKillDesign_shadowDeterminant_zeroOne
+#print axioms Gtz.volumeAverageKillDesign_shadowDeterminant_zeroTwo
+#print axioms Gtz.volumeAverageKillDesign_shadowDeterminant_oneTwo
+#print axioms Gtz.volumeAverageKillDesign_shadowDeterminant_sum
+#print axioms Gtz.isBelowSubsetSpectrum_pair_form_le
+#print axioms Gtz.volumeAverageKillDesign_isBelowSubsetSpectrum_zeroOne_le
+#print axioms Gtz.volumeAverageKillDesign_isBelowSubsetSpectrum_zeroTwo_le
+#print axioms Gtz.volumeAverageKillDesign_isBelowSubsetSpectrum_oneTwo_le
+#print axioms Gtz.volumeSamplingAverage_atSizeThreeRankTwo
+#print axioms Gtz.volumeAverageKillDesign_volumeSamplingAverage_le
+#print axioms Gtz.volumeAverageKillDesign_not_hasDominatingVolumeSamplingAverage
+#print axioms Gtz.volumeAverageKillDesign_dominates_zeroTwo
+#print axioms Gtz.not_forall_hasDominatingVolumeSamplingAverage
+#print axioms Gtz.exists_design_failing_volumeSamplingAverage_law_with_dominator
+#print axioms Gtz.volumeAverageKillDesign_expectedSubsetSum_eq
+#print axioms Gtz.volumeAverageKillDesign_posSemidef_expectedSubsetSum_sub_one
+#print axioms Gtz.heavyVolumeAverageKillAtom
+#print axioms Gtz.heavyVolumeAverageKillDesign
+#print axioms Gtz.heavyVolumeAverageKillDesign_allHeavy
+#print axioms Gtz.heavyVolumeAverageKillDesign_shadowDeterminant_zeroOne
+#print axioms Gtz.heavyVolumeAverageKillDesign_shadowDeterminant_zeroTwo
+#print axioms Gtz.heavyVolumeAverageKillDesign_shadowDeterminant_oneTwo
+#print axioms Gtz.heavyVolumeAverageKillDesign_isBelowSubsetSpectrum_zeroOne_le
+#print axioms Gtz.heavyVolumeAverageKillDesign_isBelowSubsetSpectrum_zeroTwo_le
+#print axioms Gtz.heavyVolumeAverageKillDesign_isBelowSubsetSpectrum_oneTwo_le
+#print axioms Gtz.heavyVolumeAverageKillDesign_volumeSamplingAverage_le
+#print axioms Gtz.heavyVolumeAverageKillDesign_not_hasDominatingVolumeSamplingAverage
+#print axioms Gtz.heavyVolumeAverageKillDesign_dominates_oneTwo
+#print axioms Gtz.exists_allHeavy_design_failing_volumeSamplingAverage_law
+#print axioms Gtz.weightElementary
+#print axioms Gtz.subsetWeightProduct_pos
+#print axioms Gtz.weightElementary_pos
+#print axioms Gtz.exists_detSubsetSum_ge_inv_weightElementary
+#print axioms Gtz.weightElementary_of_uniformWeight
+#print axioms Gtz.exists_detSubsetSum_ge_pow_div_choose
+#print axioms Gtz.sum_shadowDeterminant_div_detSubsetSum_eq_independentWeightProduct
+#print axioms Gtz.sum_independentWeightProduct_le_weightElementary
+#print axioms Gtz.sum_independentWeightProduct_lt_weightElementary_of_dependentSubset
+#print axioms Gtz.subsetSum_triple
+#print axioms Gtz.finset_card_three_cases_atSizeFour
+#print axioms Gtz.tetraDesign_detSubsetSum_eq
+#print axioms Gtz.tetraDesign_weightElementary_three
+#print axioms Gtz.tetraDesign_detSubsetSum_eq_inv_weightElementary
