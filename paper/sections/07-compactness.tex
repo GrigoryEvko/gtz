@@ -805,14 +805,17 @@ a positive bracket, however small $t_z$ is.
 
 \begin{example}\label{ex:liftfailure}
 On the index set $\{0,1,2,3\}$ let
-\[
+\begin{equation}\label{eq:liftchart}
   P\;=\;\frac13\begin{pmatrix}
     2&1&0&1\\ 1&1&1&0\\ 0&1&2&-1\\ 1&0&-1&1\end{pmatrix},
-  \qquad
+\end{equation}
+and let the weights run over the one-parameter family
+\begin{equation}\label{eq:liftweights}
   t_1=\tau,\quad t_0=t_2=t_3=\frac{1-\tau}{3}
   \qquad(0\le\tau\le1),
-\]
-and let $z=1$ be the pivot and $c=0$ the survivor.  Write $M:=3P$.  The
+\end{equation}
+whose member at $\tau=\tfrac14$ is the uniform vector.  Let $z=1$ be the
+pivot and $c=0$ the survivor.  Write $M:=3P$.  The
 ten inner products of the rows $m_0,\dots,m_3$ of $M$ are
 \[
   \begin{array}{c|cccc}
@@ -865,9 +868,23 @@ $x=(-1,1+\tau,0,0)$ gives
   &\;=\;\frac{1+\tau}{3}\bigl(-1+(1-3\tau)(1+\tau)\bigr)
   \;=\;-\frac{(1+\tau)\tau(2+3\tau)}{3}.
 \end{align*}
-The leverages and the arithmetic at $\tau=\tfrac14$ are in
-\S\ref{app:liftfail}.
+At $\tau=\tfrac14$ the block, its determinant and the probe $(1,-4)$ are
+\[
+  W[\{0,1\}]=\begin{pmatrix}5/12&1/3\\ 1/3&1/12\end{pmatrix},
+  \qquad \det=-\tfrac{11}{144},
+  \qquad (1,-4)\,W[\{0,1\}]\,(1,-4)\tp=-\tfrac{11}{12}.
+\]
+The leverages $P_{cc}/t_c$ at $\tau=\tfrac14$ are
+$\tfrac83,\tfrac43,\tfrac83,\tfrac43$, all exceeding $1$, so the point is not
+disposed of by deletion of a light atom.
 \end{example}
+
+\begin{wip}
+Exhibit a one-parameter deformation of \eqref{eq:liftchart} with compressed
+slack $\varepsilon>0$, and display the resulting determinant
+$(3\varepsilon-2\tau-3\tau^{2})/9$ of \eqref{eq:family} changing sign at
+$\tau\asymp \varepsilon$.
+\end{wip}
 
 \begin{theorem}[Lean]\label{thm:sharp}
 There is no $\tau_0>0$ such that the compression lift holds at every
@@ -908,7 +925,7 @@ family.
   \centering
   \input{figures/boundarytrace}
   \caption{The dichotomy of Theorem~\ref{thm:boundary} executed on the
-  chart point of \S\ref{app:liftfail}, at $(4,2)$ with pivot $z=1$.
+  chart point of Example~\ref{ex:liftfailure}, at $(4,2)$ with pivot $z=1$.
   Left: the four steps of the compression lift, each with the matrix it
   produces; none of them sees $\tau$, and the deletion returns the same
   compressed point at every $\tau$, the chart point of the design

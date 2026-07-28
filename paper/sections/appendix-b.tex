@@ -48,24 +48,12 @@ with null line $\R\,(1,1,-1)$.
 Every triple dominates and none dominates strictly: the tetrahedron is
 extremal in the sense of Definition~\ref{def:tie}.
 
-\emph{Chart and volume sampling.}  Here $v_c=\tfrac12 g_c$, so
+\emph{Chart.}  Here $v_c=\tfrac12 g_c$, so
 $P_{cd}=\tfrac14\langle g_c,g_d\rangle$, that is $P=\tfrac14(4I_4-J_4)$ with
 $J_n$ the all-ones $n\times n$ matrix.  For a triple $C$,
-$P[C]=\tfrac14(4I_3-J_3)$, whose eigenvalues are $\tfrac14\{1,4,4\}$, so by
-\eqref{eq:dpp}
-\[
-  \pi_C=\det P[C]=\tfrac{16}{64}=\tfrac14 \qquad\text{for each of the four triples,}
-\]
-confirming $\sum_C\pi_C=1$.  All four characteristic polynomials coincide,
-and $\E_\pi$ averages against a measure of mass one, whence
-\[
-  q(x)=\E_\pi[\chi_{\SC}(x)]=(x-1)(x-4)^2=x^3-9x^2+24x-16 ,
-\]
-\[
-  q(1)=0,\qquad q'(1)=9,\qquad q''(1)=-12 .
-\]
-The subleading coefficient is $-9=-\sum_c t_c\ell_c^2=-4\cdot\tfrac14\cdot9$,
-attaining the bound $-k^2$ of Proposition~\ref{prop:qone}.
+$P[C]=\tfrac14(4I_3-J_3)$, whose eigenvalues are $\tfrac14\{1,4,4\}$.  The
+volume-sampling measure and the mixture polynomial this design carries are
+computed in \S\ref{sec:averaging}.
 
 \emph{Stationarity data.}  Take $\lambda_C=\tfrac14$ on each of the four
 triples and $u_C=g_{c_0}/\sqrt3$ for $C$ the complement of $\{c_0\}$.  Then
@@ -131,71 +119,6 @@ subsets are its paths, dominating with margin exactly zero
 \texttt{Gtz.cycle\allowbreak Graph\allowbreak Data\_not\_pos\allowbreak Def}).  The gap is a telescoping
 Cauchy--Schwarz, so the vanishing of the margin is visible at every rank
 rather than instance by instance.
-
-\subsection{The chart point of
-\texorpdfstring{\S\ref{sec:sharp}}{the sharpness section}}\label{app:liftfail}
-
-Fix the symmetric matrix
-\begin{equation}\label{eq:liftchart}
-  P=\frac13\begin{pmatrix}
-    2&1&0&1\\ 1&1&1&0\\ 0&1&2&-1\\ 1&0&-1&1\end{pmatrix},
-  \qquad M:=3P .
-\end{equation}
-Then $M^2=3M$, as one checks entry by entry, hence $P^2=P$, and
-$\tr P=\tfrac{2+1+2+1}{3}=2$.  So
-$P$ is a symmetric idempotent of rank two and $(P,t)$ is a chart point of size
-four and rank two in the sense of Definition~\ref{def:chartpoint} for every $t$
-in the closed simplex.  Take the escaping index $z=1$ and the one-parameter
-family of weights
-\begin{equation}\label{eq:liftweights}
-  t^{(\tau)}=\Bigl(\tfrac{1-\tau}{3},\ \tau,\ \tfrac{1-\tau}{3},\
-  \tfrac{1-\tau}{3}\Bigr),\qquad 0<\tau<1 ,
-\end{equation}
-whose member at $\tau=\tfrac14$ is the uniform vector.  With
-$W=P-\diag(t^{(\tau)})$,
-\[
-  W[\{0,1\}]=
-  \begin{pmatrix}\dfrac{1+\tau}{3} & \dfrac13\\[6pt]
-                 \dfrac13 & \dfrac13-\tau\end{pmatrix},
-  \qquad
-  \det W[\{0,1\}]
-   =\frac{(1+\tau)(1-3\tau)-1}{9}
-   =-\frac{\tau(2+3\tau)}{9} .
-\]
-The determinant is strictly negative for every $\tau\in(0,1)$ and vanishes to
-first order as $\tau\to0$.  An explicit witness is $(-1,\,1+\tau)$:
-\[
-  (-1,1+\tau)\,W[\{0,1\}]\,(-1,1+\tau)\tp
-  =\frac{1+\tau}{3}\bigl[1-2+(1+\tau)(1-3\tau)\bigr]
-  =-\tfrac13(1+\tau)\,\tau\,(2+3\tau).
-\]
-At $\tau=\tfrac14$ the block, its determinant and the probe $(1,-4)$ are
-\[
-  W[\{0,1\}]=\begin{pmatrix}5/12&1/3\\ 1/3&1/12\end{pmatrix},
-  \qquad \det=-\tfrac{11}{144},
-  \qquad (1,-4)\,W[\{0,1\}]\,(1,-4)\tp=-\tfrac{11}{12}.
-\]
-The leverages $P_{cc}/t_c$ at $\tau=\tfrac14$ are
-$\tfrac83,\tfrac43,\tfrac83,\tfrac43$, all exceeding $1$, so the point is not
-disposed of by deletion of a light atom.
-
-The deflation \eqref{eq:deflate} at $z=1$, where $P_{11}=\tfrac13>0$, is a
-symmetric idempotent of trace $1$ with $P'_{00}=\tfrac13$.  Deleting $z$ and
-renormalizing puts each survivor at weight
-$\bigl((1-\tau)/3\bigr)/(1-\tau)=\tfrac13$, so the compressed gap at the
-surviving index $0$ is exactly $0$, at every $\tau$.
-
-Theorem~\ref{thm:sharp} exploits that frozen equality: the Schur term of
-\eqref{eq:schur} is matched in full at $t_z=0$ and falls short by a quantity
-of first order in $t_z$ thereafter, with no downstairs slack to close the
-gap.
-
-\begin{wip}
-Exhibit a one-parameter deformation of \eqref{eq:liftchart} with compressed
-slack $\varepsilon>0$, and display the resulting determinant
-$(3\varepsilon-2\tau-3\tau^{2})/9$ of \eqref{eq:family} changing sign at
-$\tau\asymp \varepsilon$.
-\end{wip}
 
 \subsection{Graphic designs, and the diamond at
 \texorpdfstring{$(5,3)$}{(5,3)}}\label{app:diamond}
