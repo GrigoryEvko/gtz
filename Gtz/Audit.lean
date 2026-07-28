@@ -203,6 +203,11 @@ import Gtz.Quantitative.SubsetDeterminantBound
 import Gtz.Quantitative.OddRankDeterminantUpgrade
 import Gtz.Quantitative.TwoBlockEliminationCertificate
 import Gtz.Quantitative.ClassRouteCost
+import Gtz.Reduction.ChartAttainment
+import Gtz.Reduction.ChartPointFactorisation
+import Gtz.Quantitative.ChartDescentFromMinimality
+import Gtz.Quantitative.HeavyAtomDichotomy
+import Gtz.Quantitative.SignReadingCell
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -5357,3 +5362,445 @@ import Gtz.Quantitative.ClassRouteCost
 #print axioms Gtz.eq_zero_at_windowChartValue_of_eliminatesWindowChartFamilyValue
 #print axioms Gtz.not_exists_windowRootFree_eliminatesWindowChartFamilyValue
 #print axioms Gtz.exists_isChartStationaryData_value_mem_flooredWindow
+
+-- Gtz/Reduction/ChartAttainment.lean -- S1, ATTAINMENT.  The closed chart domain is
+-- COMPACT and the chart objective attains its minimum on it.  Gtz.chartDomain carries the
+-- domain on the RAW configuration space and cuts it out by five NON-STRICT SCALAR
+-- conditions, so Gtz.isClosed_chartDomain is five isClosed_eq / isClosed_le steps with no
+-- matrix-valued separation axiom; boundedness is the one inequality
+-- Gtz.abs_chartEntry_le_one_of_mem_chartDomain, symmetry plus idempotency giving
+-- sum_r P_rc^2 = P_cc at every column, so Gtz.isCompact_chartDomain is Heine-Borel in a
+-- finite-dimensional space and holds at EVERY (size, rank) with no hypothesis at all.  No
+-- manifold, no Grassmannian and no spectral factorisation appears, and the chart is never
+-- factorised as V V^T, so this module is independent of the leaf S2 discharges.  Continuity
+-- of the objective is the shipped Weyl bound Gtz.lipschitzWith_lambdaMinCLM through
+-- Gtz.continuous_lambdaMinMat, closed under a finite sup'; attainment is then the extreme
+-- value theorem, and Gtz.exists_chartObjective_isMin carries exactly [Nonempty (Fin rank)]
+-- and ONE witness chart point.  The threshold dictionary
+-- Gtz.zero_le_chartObjective_iff_exists_chartDominates reads 0 <= G as domination by some
+-- rank-subset, at threshold ZERO because this is the CHART objective; the OBJECTIVE
+-- MISMATCH recorded in Gtz.Reduction.CompactnessReduction stands undisturbed, since the
+-- chart and design objectives share a threshold but not their minimisers, being related by
+-- the non-uniform congruence diagonal(sqrt t_C), and nothing here transports a minimiser
+-- across it.  The consumable form is Gtz.exists_interior_minimiser_of_not_chartGtz, which
+-- composes with the shipped boundary dichotomy Gtz.weight_pos_of_forall_not_chartDominates
+-- -- until now consumed by NOTHING, its own docstring naming it the packaging "a
+-- compactness argument consumes" -- to produce one minimiser with all weights strictly
+-- positive, strictly negative value, and no dominating subset.  Two guards keep the file
+-- from vacuity at the shipped (4,2) witness.  It closes NO cell and supplies no
+-- stationarity, no multiplier and no tangent direction: the minimiser is NOT proved to be a
+-- critical point of anything, this repository carrying no subdifferential calculus
+#print axioms Gtz.zero_le_lambdaMinMat_iff_forall
+#print axioms Gtz.zero_le_lambdaMinMat_iff_posSemidef
+#print axioms Gtz.chartDomain
+#print axioms Gtz.chartConfig_mem_chartDomain
+#print axioms Gtz.chartPointOfMem
+#print axioms Gtz.abs_chartEntry_le_one_of_mem_chartDomain
+#print axioms Gtz.chartPoint_diag_le_one
+#print axioms Gtz.rank_le_size_of_chartPoint
+#print axioms Gtz.isClosed_chartDomain
+#print axioms Gtz.isCompact_chartDomain
+#print axioms Gtz.chartGapRaw
+#print axioms Gtz.chartGapRaw_chartConfig
+#print axioms Gtz.continuous_chartGapRaw
+#print axioms Gtz.chartBlockValue
+#print axioms Gtz.chartCandidates
+#print axioms Gtz.mem_chartCandidates_iff
+#print axioms Gtz.chartCandidates_nonempty
+#print axioms Gtz.chartObjectiveRaw
+#print axioms Gtz.chartObjective
+#print axioms Gtz.chartObjective_eq_chartObjectiveRaw
+#print axioms Gtz.chartObjective_chartPointOfMem
+#print axioms Gtz.continuous_chartBlockValue
+#print axioms Gtz.continuous_chartObjectiveRaw
+#print axioms Gtz.isHermitian_chartPointGap_submatrix
+#print axioms Gtz.chartBlockValue_chartConfig
+#print axioms Gtz.zero_le_chartBlockValue_iff_chartDominates
+#print axioms Gtz.zero_le_chartObjective_iff_exists_chartDominates
+#print axioms Gtz.exists_isMinOn_chartObjectiveRaw
+#print axioms Gtz.exists_chartObjective_isMin
+#print axioms Gtz.chartGtz_of_isMin_of_nonneg
+#print axioms Gtz.gtzWeighted_of_isMin_of_nonneg
+#print axioms Gtz.exists_minimiser_of_not_chartGtz
+#print axioms Gtz.exists_interior_minimiser_of_not_chartGtz
+#print axioms Gtz.exists_interior_minimiser_of_not_gtzWeighted
+#print axioms Gtz.exists_chartObjective_isMin_fourTwo
+#print axioms Gtz.chartBlockValue_liftFailure_neg
+
+-- Gtz/Reduction/ChartPointFactorisation.lean -- S2, THE CHART-TO-DESIGN FACTORISATION,
+-- DISCHARGED.  Gtz.ChartPointHasDesign (Gtz/Reduction/CompactnessReduction.lean:1527) was
+-- an explicitly named UNPROVED LEAF whose own header called it "the SOLE obstruction to
+-- feeding the already kernel-checked small rungs into any chart-side assembly"; it is now
+-- the theorem Gtz.chartPointHasDesign, whose printed statement is
+-- "forall (size rank : Nat), Gtz.ChartPointHasDesign size rank" -- NO hypothesis whatever,
+-- at every cell.  So Gtz.chartGtzInterior_of_gtzWeighted_unconditional drops the hfactors
+-- hypothesis, and Gtz.chartGtzInterior_iff_gtzWeighted and Gtz.chartGtz_iff_gtzWeighted are
+-- plain equivalences carrying nothing: the chart route is an EQUIVALENCE at the top rather
+-- than a strictly stronger hypothesis.  ENGINEERING, not research.  The content is the real
+-- spectral theorem, which Mathlib carries and which this repository ALREADY had in
+-- transpose form as Gtz.eq_eigenvectorUnitary_mul_diagonal_mul_transpose and its two
+-- orthogonality companions -- shipped in Gtz/Quantitative/TwoBlockEliminationCertificate.lean,
+-- which is why a Gtz/Reduction/ module imports a Gtz/Quantitative/ one.  That LAYERING DEBT
+-- is recorded rather than repaired: the triple is generic linear algebra with no two-block
+-- content and belongs in Gtz/LinAlg/.  Idempotency forces the eigenvalues into {0,1} by
+-- conjugating, the trace counts the ones, and the frame is the corresponding block of
+-- columns; no rank theory and no eigenvector reasoning is used.  THE POSITIVITY OF THE
+-- WEIGHTS ENTERS IN EXACTLY ONE PLACE, the division by sqrt(weight c), which is why the
+-- discharged statement is the INTERIOR one -- and the restriction is not an artifact:
+-- Gtz.not_exists_design_of_weight_eq_zero shows a boundary chart point is the chart of NO
+-- weighted design at all, so the boundary version of the leaf is FALSE, not open.  A second
+-- honesty claim falls out for free: Gtz/LinAlg/ProjectionForm.lean:403-405 says of
+-- Gtz.gtzOriginal_of_projectionCovering that it runs "one direction only" because the
+-- surjectivity of A |-> A A^T onto the symmetric idempotents of trace k "is the spectral
+-- factorization this repo does not have"; that surjectivity is step 1, so
+-- Gtz.gtzOriginal_iff_projectionCovering upgrades the one-way statement to an iff, under
+-- 0 < atoms and nothing else.  Gtz.ChartGtzInterior stays an unproved leaf and is NOT
+-- weakened -- LEAD 1 of that module shows it is not weaker than the target -- and nothing
+-- here bears on Gtz.GtzWeighted 6 3 or Gtz.GtzWeighted 7 3
+#print axioms Gtz.exists_orthonormalFrame_of_symmetric_idempotent
+#print axioms Gtz.designOfOrthonormalFrame
+#print axioms Gtz.scaledAtomRows_designOfOrthonormalFrame
+#print axioms Gtz.projectionOfDesign_designOfOrthonormalFrame
+#print axioms Gtz.chartPoint_eq_of_chart_eq_of_weight_eq
+#print axioms Gtz.chartPointHasDesign
+#print axioms Gtz.not_exists_design_of_weight_eq_zero
+#print axioms Gtz.chartGtzInterior_of_gtzWeighted_unconditional
+#print axioms Gtz.chartGtzInterior_iff_gtzWeighted
+#print axioms Gtz.chartGtz_iff_gtzWeighted
+#print axioms Gtz.projectionCovering_of_frameProjectionCovering
+#print axioms Gtz.projectionCovering_iff_frameProjectionCovering
+#print axioms Gtz.gtzOriginal_iff_projectionCovering
+
+-- Gtz/Quantitative/ChartDescentFromMinimality.lean -- S3, THE FIRST-ORDER SYSTEM DERIVED
+-- FROM MINIMALITY.  Gtz.Quantitative.ChartStationary, ChartStrongStationary and
+-- ChartCovering all take their datum as a HYPOTHESIS; the passage from "this point
+-- minimises the chart objective" to "this datum holds" lived outside Lean, and honesty (a)
+-- of ChartStrongStationary named the three ingredients it needed.  ALL THREE ARE SUPPLIED
+-- HERE, and one of them was not needed.  (i) THE CURVE is the CAYLEY transform
+-- Q(s) = (1 + sK)(1 - sK)^-1 at the skew K = (1/2)[Pdot, P]: orthogonal and RATIONAL in the
+-- step, with no matrix exponential, and Gtz.chartCayleyProjection is a symmetric idempotent
+-- of the same trace at EVERY step, so the constraint set is preserved exactly and not to
+-- first order.  The smallness hypothesis is DELETED from the transform itself --
+-- Gtz.coercive_chartCayleyDenominator makes 1 - sK invertible at every real step, since
+-- <x, Kx> = 0 for skew K -- and smallness enters only in keeping the weights positive,
+-- meeting the closeness radius, and beating the remainder.  (ii) THE EXPANSION is
+-- Gtz.abs_chartCayleyProjection_form_sub_le, a FROZEN unit probe's Rayleigh quotient along
+-- the curve equal to the base quotient plus 2s <v, [K,P] v> with error at most
+-- 8 s^2 ||K||_F^2: Cauchy-Schwarz, the shipped resolvent contraction, and the fact that an
+-- orthogonal projection contracts.  No operator norm, no eigenvalue, no derivative and no
+-- differentiability API appears anywhere in the file.  (iii) WEYL IS NOT CONSUMED, contrary
+-- to what honesty (a) predicted: Gtz.IsChartInactiveStrict hands back a PROBE rather than an
+-- eigenvalue, so the same frozen-probe estimate covers the inactive blocks and uniformity is
+-- a Finset minimum of finitely many positive slacks.  Gtz.chartTangentSkew_commutator is
+-- [K, P] = (1/2) Pdot exactly when the direction's two diagonal blocks vanish, which IS
+-- Gtz.IsChartTangent, so the curve realises the prescribed direction and the first-order
+-- term is the SHIPPED Gtz.chartTangentSlope.  The descent lemma
+-- Gtz.exists_chartTangentCurve_descent then lands
+-- Gtz.isChartTightCovering_of_localMinimum -- LOCAL minimality suffices, by the entrywise
+-- Lipschitz estimate Gtz.sq_chartCayleyProjection_sub_entry_le -- with the global form its
+-- corollary, exactly on the shipped Gtz.IsChartTightCovering, which the shipped Gordan
+-- exchange already turns into the strong multiplier bundle.  ADMISSIBILITY IS DERIVED:
+-- Gtz.isChartArgmaxValue_of_isChartInactiveStrict gives Gtz.IsChartArgmaxValue -- the
+-- hypothesis every exclusion, both value floors and every class closure in this layer
+-- consumes -- from the inactive side condition plus one tight direction per active block,
+-- and Gtz.chartTetraProjection_isChartArgmaxValue proves the shipped (4,3) tetrahedron
+-- ADMISSIBLE outright, which the note at Gtz/Quantitative/ChartInstances.lean:95-96 says of
+-- none of its three witnesses.  THREE THINGS ARE NOT ESTABLISHED AND MUST NOT BE READ IN.
+-- (1) exists_tightDir -- a tight eigenvector at a block where lambda_min(W[C]) EQUALS the
+-- value, which is the spectral theorem on a subblock -- is CARRIED AS A HYPOTHESIS, visible
+-- in the printed statement of
+-- Gtz.exists_isChartStationaryData_and_isChartArgmaxValue_of_globalMinimum as a per-active-
+-- block existential standing beside Gtz.IsChartInactiveStrict; the honest reading of that
+-- theorem is minimality PLUS those two.  (2) ATTAINMENT is not proved here; it is S1, in
+-- Gtz.Reduction.ChartAttainment, and NO COMPOSITION THEOREM CHAINS THE TWO -- this module
+-- does not import that one, S1 speaks of Gtz.chartObjective on Gtz.ChartPoint while S3's
+-- minimality hypothesis is Gtz.HasChartDominatingSubsetAtValue on raw moved charts, and
+-- nothing in the repository identifies the two.  The chain is three separate links and the
+-- missing weld is named here rather than papered over.  (3) NO CLAIM ABOUT ANY PAPER-SIDE
+-- conditional theorem is made or implied.  IT CLOSES NO CELL, and the reason is structural:
+-- the condition derived is Gtz.IsChartTightCovering, which honesty (c) of
+-- ChartStrongStationary records HOLDS at the (4,2) SIC, the (6,3) trine and the (9,3) Hesse
+-- configuration, where every active tight eigenvalue is SIMPLE.  A necessary condition MUST
+-- accept genuine minima; that is correct behaviour and not a defect.  What it means is that
+-- this file contains no realness ingredient, cannot separate the fields, and must never be
+-- advertised as a route to (6,3) or (7,3)
+#print axioms Gtz.chartFrobeniusSquare
+#print axioms Gtz.chartFrobeniusSquare_nonneg
+#print axioms Gtz.mulVec_dotProduct_self_le_chartFrobeniusSquare
+#print axioms Gtz.abs_le_of_sq_le_sq_of_nonneg
+#print axioms Gtz.dotProduct_mulVec_skew_self_eq_zero
+#print axioms Gtz.dotProduct_mulVec_nonneg_of_symmetricIdempotent
+#print axioms Gtz.dotProduct_mulVec_le_self_of_symmetricIdempotent
+#print axioms Gtz.mulVec_dotProduct_self_le_of_symmetricIdempotent
+#print axioms Gtz.chartCayleyDenominator
+#print axioms Gtz.transpose_chartCayleyDenominator
+#print axioms Gtz.chartCayleyDenominator_mulVec
+#print axioms Gtz.coercive_chartCayleyDenominator
+#print axioms Gtz.isUnit_det_chartCayleyDenominator
+#print axioms Gtz.inverse_chartCayleyDenominator_contraction
+#print axioms Gtz.chartCayley
+#print axioms Gtz.chartCayleyDenominator_mul_chartCayleyDenominator
+#print axioms Gtz.chartCayleyDenominator_mul_comm
+#print axioms Gtz.inverse_chartCayleyDenominator_mul_comm
+#print axioms Gtz.transpose_chartCayley
+#print axioms Gtz.chartCayley_transpose_mul_self
+#print axioms Gtz.chartCayley_mul_transpose_self
+#print axioms Gtz.transpose_chartCayley_eq_two_smul_inverse_sub_one
+#print axioms Gtz.chartCayleyProjection
+#print axioms Gtz.transpose_chartCayleyProjection
+#print axioms Gtz.chartCayleyProjection_mul_self
+#print axioms Gtz.trace_chartCayleyProjection
+#print axioms Gtz.smul_mulVec_eq_smul_mulVec
+#print axioms Gtz.dotProduct_mulVec_comm_of_symmetric
+#print axioms Gtz.dotProduct_mulVec_commutator_eq
+#print axioms Gtz.chartCayleyPull
+#print axioms Gtz.chartCayleyPull_dotProduct_self_le
+#print axioms Gtz.chartCayleyPull_sub_eq
+#print axioms Gtz.chartCayleyOffset
+#print axioms Gtz.chartCayleyOffset_eq
+#print axioms Gtz.neg_smul_dotProduct_self
+#print axioms Gtz.chartCayleyProjection_form_eq
+#print axioms Gtz.abs_chartCayleyProjection_form_sub_le
+#print axioms Gtz.chartCayley_mulVec_dotProduct_self
+#print axioms Gtz.chartCayleyOffset_dotProduct_self_le
+#print axioms Gtz.add_dotProduct_self_le_two_mul
+#print axioms Gtz.chartCayleyProjection_sub_mulVec
+#print axioms Gtz.sq_chartCayleyProjection_sub_entry_le
+#print axioms Gtz.chartTangentSkew
+#print axioms Gtz.transpose_chartTangentSkew
+#print axioms Gtz.chartTangentSkew_commutator
+#print axioms Gtz.chartTangentCurve
+#print axioms Gtz.chartCayleyWeight
+#print axioms Gtz.sum_chartCayleyWeight_eq
+#print axioms Gtz.dotProduct_chartStationaryGap_mulVec_eq
+#print axioms Gtz.abs_chartTangentCurve_gap_form_sub_le
+#print axioms Gtz.ChartBlockDominatesAtValue
+#print axioms Gtz.HasChartDominatingSubsetAtValue
+#print axioms Gtz.not_chartBlockDominatesAtValue_of_probe
+#print axioms Gtz.dotProduct_chartStationaryGap_mulVec_of_isChartTightVector
+#print axioms Gtz.exists_pos_le_forall_mem
+#print axioms Gtz.abs_le_one_add_of_sq_le
+#print axioms Gtz.chartWeightCap
+#print axioms Gtz.chartWeightCap_nonneg
+#print axioms Gtz.abs_directionWeight_le_chartWeightCap
+#print axioms Gtz.chartSlopeCap
+#print axioms Gtz.chartSlopeCap_nonneg
+#print axioms Gtz.abs_chartTangentSlope_le_chartSlopeCap
+#print axioms Gtz.exists_chartTangentCurve_descent
+#print axioms Gtz.isChartArgmaxValue_of_isChartInactiveStrict
+#print axioms Gtz.isChartTightCovering_of_localMinimum
+#print axioms Gtz.isChartTightCovering_of_globalMinimum
+#print axioms Gtz.isChartStrongStationaryData_of_globalMinimum
+#print axioms Gtz.exists_isChartStationaryData_and_isChartArgmaxValue_of_globalMinimum
+#print axioms Gtz.chartCayley_zero
+#print axioms Gtz.chartCayleyProjection_zero
+#print axioms Gtz.chartTangentCurve_zero
+#print axioms Gtz.chartCayleyWeight_zero
+#print axioms Gtz.chartTetraProjection_isChartInactiveStrict
+#print axioms Gtz.chartTetraProjection_isChartArgmaxValue
+
+-- THE SECOND-ORDER STRENGTHENING OF THE CHART LAYER IS FIELD-GENERIC AND CLOSES NO CELL.
+-- Recorded here, in the ledger, because it is the verdict on a route this layer's three
+-- honesty blocks invite and it must not be rediscovered an eighth time.  It is PROSE, it is
+-- a statement about work done OUTSIDE Lean, and nothing below it is mechanized.  No
+-- Prop-valued second-order condition exists in this repository and none should be added
+-- while this note stands.
+--
+-- THE ROUTE.  Honesty (c) of Gtz.Quantitative.ChartStrongStationary observes that the
+-- FIRST-order strengthening cannot separate the fields, since at the (4,2) SIC, the (6,3)
+-- trine and the (9,3) Hesse configuration every active tight eigenvalue is simple and the
+-- strong system holds exactly when the weak one does.  The natural next hypothesis is
+-- SECOND-order minimality: minimise G = max_C lambda_min(W[C]) over the symmetric
+-- idempotents of trace rank crossed with the simplex, along the Cayley curve S3 builds, and
+-- ask whether the multiplier-weighted second variation restricted to the critical cone can
+-- exclude a negative value at (6,3).  The rotation algebra is so(m) over R and u(m) over C,
+-- 15 against 36 dimensions at m = 6, so second order is the first place in this project
+-- where a condition COULD see the field.
+--
+-- IT DOES NOT.  [MEASURED, outside Lean, not mechanized; 60-digit mpmath from the
+-- repository's own Gtz.Complex.SharpConstantLedger data, with the balanced multiplier
+-- SOLVED rather than assumed.]  At the (6,3) complex trine the chart is Hermitian idempotent
+-- of trace 3 to residual 1.6e-61; G over all 20 triples equals the chart value to 2.0e-61,
+-- so the admissibility defect is EXACTLY ZERO; 18 triples are active, every active tight
+-- eigenvalue is SIMPLE with gap sqrt5/6, and the uniform 1/18 multiplier is balanced to
+-- 6.5e-62.  The shipped Gtz.trace_projection_mul_multiplier_of_isChartStationaryData holds
+-- there VERBATIM over C.  The second-variation form has inertia (0 negative, 5 zero, 5
+-- positive) on the whole 10-dimensional critical cone, robustly across the balanced-
+-- multiplier polytope -- so it is POSITIVE SEMIDEFINITE, and a PSD form restricts to a PSD
+-- form on every subspace, whence no direction is load-bearing for acceptance and nothing
+-- lacking a real analogue is consumed.  The trine is moreover a LOCAL MINIMUM of the complex
+-- chart objective [MEASURED: 4000 random unit tangent rays at five step sizes give
+-- min(G(moved) - value) = +3.5e-4 > 0, and 40 descents seeded at the trine do not leave it],
+-- so adding local minimality does not dodge the obstruction.  The same form is PSD at the
+-- (4,2) SIC, inertia (0,3,3).
+--
+-- THE KILL, stated as the package it refutes.  Every ingredient of
+-- {admissibility, chart stationarity with a balanced multiplier, tightness, all-simple
+-- active blocks, the -1/size, FLOOR-CB and FLOOR-E2 value floors, the second variation
+-- positive semidefinite on the critical cone, local minimality} is FIELD-GENERIC -- the
+-- second-variation formula contains only squared moduli, no argument, no cycle and no
+-- Bargmann invariant -- and the package is SATISFIED at the complex trine at chart value
+-- (2 - sqrt5)/6, the root of 36 v^2 - 24 v - 1 [DERIVED, exact], which is Gtz.windowChartValue
+-- and lies strictly inside both (-1/6, 0) and the floored window (-4/27, 0).  So any proof
+-- of the (6,3) interior exclusion from that package would prove the same statement over C,
+-- where it is FALSE.  The route retires the last unused hypothesis in this layer.
+--
+-- THE TWO ESCAPES, both closed.  (1) Imposing the COMPLEX condition at a REAL point IS
+-- field-sensitive and does bite [MEASURED: at the real (6,3) split tetrahedron the real
+-- critical cone has dimension 5 with the form identically zero, while the complex cone has
+-- dimension 14 = 5 + 9 with four strictly negative eigenvalues, the nine extra directions
+-- being the imaginary Grassmannian block].  But it is not NECESSARY for a real
+-- counterexample: a real minimiser of G over the real domain need not be a complex local
+-- minimum, and Gtz.not_complexGtzWeighted_of_rank_add_two_le_size proves real ties never
+-- are.  (2) Restricting to tight multiplicity greater than one is VACUOUS at the all-simple
+-- trine, so it passes the complex gate only by being silent there, and for exactly that
+-- reason cannot touch an all-simple real candidate -- which is where the shipped window
+-- witness Gtz.windowChartProjection and any generic counterexample live.  It would close
+-- only the multiplicity stratum, which the shipped strong first-order system already closes.
+--
+-- WHAT IS ALSO REFUTED, so that no one re-derives it.  The brief-level intuition that the
+-- complex Grassmannian's extra curvature directions make a minimum EASIER to sustain points
+-- the wrong way for a NECESSARY condition: more tangent directions means more critical
+-- directions to test and more balance equations, so the complex condition is strictly
+-- STRONGER, which is what the real split tetrahedron measures.  The hope that the shipped
+-- second-order flexibility of the (7,3) tie stratum
+-- (Gtz.Ties.StratumFirstOrder) is a non-degeneracy the operator can exploit is dead: the form
+-- is IDENTICALLY ZERO on the 6-dimensional critical cone at splitSevenDesign, as it is at the
+-- (4,3) tetrahedron and at the (6,3) split tetrahedron at four weight splits, for EVERY
+-- balanced multiplier -- extremal ties are second-order PLATEAUX, so the tie gate passes with
+-- exact equality and NO strict or uniform second-order margin bound can exist.  Finally: the
+-- CONCAVITY TERM of that second variation is ALREADY SHIPPED, in
+-- Gtz/Reduction/StrengthenedInductionHypothesis.lean, as the "rate of a positive semidefinite
+-- form along a direction" section -- the scalar solution . direction at any solution of
+-- form *v solution = direction, which that section's own header calls "direction^T W^+
+-- direction without a pseudo-inverse".  Gtz.solutionRate_unique is its well-definedness and
+-- Gtz.solutionRate_nonneg its sign, and Gtz.rankOneForm_le_of_solutionRate_le is advertised
+-- as needing "no inverse, no pseudo-inverse, no eigenvalues, and no positive-definiteness" --
+-- exactly the resolvent-free quadratic rate the second-order derivations re-derived twice in
+-- one campaign.  There is NO declaration named Gtz.solutionRate: the object is a scalar and
+-- the kit is the Gtz.solutionRate_* family, which is why every grep for a resolvent or a
+-- pseudo-inverse missed it.
+
+-- Gtz/Quantitative/HeavyAtomDichotomy.lean -- THE TIE GATE BINDS AT EVERY LEVERAGE SCALE.
+-- WHAT IS NOT HERE, first, because the file name invites the opposite reading:
+-- Gtz.HeavyAtomCovering is NOT inhabited at any cap and NOT refuted at any cap, no cap is
+-- stated, and nothing below discharges the hypothesis of
+-- Gtz.discriminantCovering_of_heavyAtomCovering_of_capped or of
+-- Gtz.rank_three_of_heavyAtomCovering_of_capped.  Both stay CONDITIONAL, the
+-- compactification is not delivered, and Gtz.DiscriminantCovering 7 -- hence
+-- Gtz.GtzWeightedAll 3, hence the 1997 statement at rank three -- is exactly as open after
+-- this file as before it.
+--
+-- WHAT IS ESTABLISHED.  Load the shipped class-tie section Gtz.splitClassDesign at the
+-- (2,2,2,1) partition Gtz.sevenIntoFourBalanced with spikeWeight on the singleton class and
+-- the rest split evenly over the other six atoms.  The result is an exact Gtz.IsTie at every
+-- admissible spikeWeight (Gtz.spikeClassTieDesign_isTie), all-heavy
+-- (Gtz.spikeClassTieDesign_allHeavy), with the singleton atom's leverage equal to
+-- (2 + spikeWeight)/(3*spikeWeight) (Gtz.spikeClassTieDesign_spike_leverage) -- which is cap
+-- exactly at spikeWeight = 2/(3*cap - 1).  So for EVERY cap there is an all-heavy weighted
+-- (7,3) design carrying an atom of leverage at least cap at which NO 3-subset dominates
+-- STRICTLY (Gtz.exists_allHeavy_isTie_seven_with_leverage_ge).  The single computation
+-- underneath is the shipped corank-one identity k*t*l = (k-1) + t solved for the leverage.
+--
+-- THE CONSEQUENCES, all of them constraints on how the brick could ever be proved.  Every
+-- STRICT reading of the heavy-atom brick is false at every cap
+-- (Gtz.not_heavyAtomStrictCovering), so no barrier, concentration, interlacing or strictly
+-- positive Positivstellensatz argument can reach it; the same holds for the capped half at
+-- every cap above three (Gtz.not_cappedStrictCovering_of_three_lt), so the zero-margin
+-- burden sits on BOTH hypotheses of the corollary at once and compactifying MOVES the
+-- tightness rather than removing it.  Gtz.heavyAtomCovering_of_heavyAtomStrictCovering
+-- records which of the two is the stronger statement, so nobody proves the wrong one.
+--
+-- WHAT IS RETIRED.  The reading "the (7,3) ties this repository names top out at leverage
+-- five, so the tie gate is vacuous at large cap" is a MEASUREMENT ON THE CATALOGUE, never a
+-- fact about the stratum, and the curve above refutes it: the (7,3) tie stratum carries
+-- UNBOUNDED leverage.  The tie gate is vacuous nowhere.  At spikeWeight = 1/4 every leverage
+-- is exactly three (Gtz.spikeClassTieDesign_quarter_spike_leverage), the uniform point; that
+-- it IS the split tetrahedron up to rotation and relabelling is NOT mechanized, the two
+-- constructions coming from different sections, so the curve is stated on its own terms.
+--
+-- TWO ROUTES DELIBERATELY NOT TAKEN, because neither is true as stated.  The RESIDUE route
+-- ("a spike of weight w -> 0 leaves the other six carrying weight -> 1, hence nearly a
+-- design") fails because the residue of an atom of weighted leverage tau is I - tau*u u^T,
+-- whose deficit is tau, and tau is free in (0,1] INDEPENDENTLY of the leverage -- a large cap
+-- does not make the residue close to a design.  The DEFLATION route is circular at (7,3): its
+-- heavy branch consumes Gtz.GtzWeighted 6 3, which is open.
+#print axioms Gtz.simplexTieAtom_leverage_identity
+#print axioms Gtz.one_lt_leverage_simplexTieAtom
+#print axioms Gtz.leverage_simplexTieAtom_eq
+#print axioms Gtz.spikeClassWeight
+#print axioms Gtz.spikeClassWeight_zero
+#print axioms Gtz.spikeClassWeight_apply
+#print axioms Gtz.spikeClassWeight_pos
+#print axioms Gtz.spikeClassWeight_sum
+#print axioms Gtz.classTotalWeight_spikeClassWeight_zero
+#print axioms Gtz.spikeClassTieDesign
+#print axioms Gtz.spikeClassTieDesign_weight
+#print axioms Gtz.spikeClassTieDesign_atom
+#print axioms Gtz.spikeClassTieDesign_isTie
+#print axioms Gtz.spikeClassTieDesign_allHeavy
+#print axioms Gtz.spikeClassTieDesign_spike_leverage
+#print axioms Gtz.exists_allHeavy_isTie_seven_with_leverage_ge
+#print axioms Gtz.spikeClassTieDesign_quarter_spike_leverage
+#print axioms Gtz.HeavyAtomStrictCovering
+#print axioms Gtz.heavyAtomCovering_of_heavyAtomStrictCovering
+#print axioms Gtz.not_heavyAtomStrictCovering
+#print axioms Gtz.CappedStrictCovering
+#print axioms Gtz.not_cappedStrictCovering_of_three_lt
+
+-- Gtz/Quantitative/SignReadingCell.lean -- A DECISION CELL THAT SPENDS THE MAGNITUDE OF THE
+-- ORIENTED PAIRING PRODUCT.  Gtz.Quantitative.GoodTripleGraph proves no certificate reading
+-- only SQUARED pairings can close the covering: every such family lies inside the exact
+-- closure Gtz.IsSignBlindGoodTriple, refuted at the frontier size, while
+-- Gtz.icosaDesign_dominates_iff_pairingProduct shows the discarded verdict is carried by the
+-- ORIENTATION of p_ab p_ac p_bc alone.  Gtz.dominates_of_coherentPairings reads that sign and
+-- then throws the MAGNITUDE away, its second hypothesis being term for term 0 <= excessGap.
+-- Gtz.dominates_of_productFloor spends the magnitude: two compatible pivot minors, a LOWER
+-- bound productFloor*(u_p u_a u_b) on the oriented product, and a sign-blind aggregate
+-- RELAXED by exactly twice that amount.  The determinant leg is then one addition, the trace
+-- leg the sum of the two pivot minors.  Every multiplier has degree zero and no hypothesis is
+-- strict, which is mandatory: (7,3) sits on the ceiling, so if the conjecture holds there it
+-- holds with zero margin.  At productFloor = 0 the cell CONTAINS the shipped coherent-sign
+-- cell (Gtz.isInCell_productFloorCell_zero_of_coherentPairings), so productFloor > 0 is a
+-- genuine extension and not a re-parameterisation.
+--
+-- WHAT IT IS NOT, recorded as a theorem rather than as prose because two independent passes
+-- of one campaign asserted the opposite.  It is NOT the first DecisionCell here --
+-- Gtz.tautologicalCell and Gtz.tautologicalCell_discharges are shipped and audited.  It is
+-- NOT the first shipped cell to read the sign of the pairing product and NOT the first to
+-- reach excessGap < 0: Gtz.dominates_of_twoMomentGap_nonneg already does BOTH, since
+-- twoMomentGap = 4*e3 + 4*e2 - e1^2 carries the oriented product inside e3 and imposes no
+-- sign on excessGap at all.  Gtz.twoMomentCell_reaches_negative_excessGap is the six-scalar
+-- witness: at leverages (4,4,4) and pairings (2,2,2) the shipped gap is +7 >= 0 with total
+-- leverage 12 > 3, so the shipped cell FIRES while the sign-blind part of the tie leg is -9;
+-- flipping one pairing to -2 sends the gap to -121, so that cell is genuinely sign-sensitive
+-- too.  Three sentences die on that witness and none of them may be restated: that the union
+-- of the shipped cells is {excessGap >= 0} intersect {tie >= 0}; that this file is the first
+-- or only cell reaching excessGap < 0; that Gtz.dominates_of_coherentPairings is the only
+-- shipped sign-reading cell.  What IS new is the particular trade, and that this is the first
+-- NON-TAUTOLOGICAL cell family wrapped into the DecisionCell interface so that
+-- Gtz.discriminantCovering_of_atlas can consume it
+-- (Gtz.doesAtlasDischarge_of_forall_productFloorCell).
+--
+-- MEASURED COVERAGE -- A MEASUREMENT, NEVER A THEOREM, AND NOT A COVERING.  On two
+-- optimiser-seeded pools of exactified all-heavy (7,3) designs the union of the shipped cell
+-- library INCLUDING the two-moment cell covers 10311/10796 = 0.95508 of the first pool and
+-- 10422/10800 = 0.96500 of the second; the product-floor family at the fixed rational grid
+-- {1/8, 1/4, 3/8} covers 485/485 and 378/378 of the two residues.  Every number is a
+-- measurement on a pool an optimiser produced from ONE basin, not a statement about the
+-- parameter space.  DoesAtlasCover is untouched, no atlas built from this family is proved to
+-- cover, and the true residue survives at exactly rational points: the (6,3) graphic design
+-- of K4 and its (7,3) atom split have every leverage three, Gram entries in {3, +-3/2, 0},
+-- strictly dominating triples, and NO shipped cell firing at any triple.  That census is not
+-- mechanized here.  Gtz.isSignBlindGoodTriple_of_dominates_of_product_nonpos records the
+-- complementary half in three lines: a dominating triple with NONPOSITIVE oriented product is
+-- sign-blind-good outright, so every dominating triple the sign-blind family misses has a
+-- strictly positive oriented product -- exactly the quantity the product floor bounds below.
+#print axioms Gtz.dominates_of_productFloor
+#print axioms Gtz.productFloorCell
+#print axioms Gtz.isInCell_productFloorCell_iff
+#print axioms Gtz.doesCellDischarge_productFloorCell
+#print axioms Gtz.doesAtlasDischarge_of_forall_productFloorCell
+#print axioms Gtz.isInCell_productFloorCell_zero_of_coherentPairings
+#print axioms Gtz.isSignBlindGoodTriple_of_dominates_of_product_nonpos
+#print axioms Gtz.twoMomentCell_reaches_negative_excessGap

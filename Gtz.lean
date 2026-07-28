@@ -123,6 +123,7 @@ import Gtz.Quantitative.ElementaryValueFloor
 import Gtz.Quantitative.ExtremalBasisActivity
 import Gtz.Quantitative.FirstOrderLaw
 import Gtz.Quantitative.GapStabilityFacts
+import Gtz.Quantitative.HeavyAtomDichotomy
 import Gtz.Quantitative.Interface
 import Gtz.Quantitative.MarginContinuity
 import Gtz.Quantitative.OddRankDeterminantUpgrade
@@ -131,6 +132,7 @@ import Gtz.Quantitative.PhaseFreeNoGo
 import Gtz.Quantitative.ProjectionOnePointMarginal
 import Gtz.Quantitative.RankTwoRealnessCount
 import Gtz.Quantitative.RealnessEngine
+import Gtz.Quantitative.SignReadingCell
 import Gtz.Quantitative.StrictDomination
 import Gtz.Quantitative.SubsetDeterminantBound
 import Gtz.Quantitative.TwoBlockEliminationCertificate
@@ -213,3 +215,11 @@ import Gtz.Quantitative.ChartTwoBlock
 import Gtz.Quantitative.ChartInstances
 import Gtz.Quantitative.ChartStrongStationary
 import Gtz.Quantitative.ChartCovering
+
+-- the chart scaffolding under that arc: the descent lemma deriving the covering condition
+-- from minimality along a Cayley curve, the compactness of the closed chart domain with
+-- attainment of the chart objective on it, and the spectral factorisation discharging
+-- ChartPointHasDesign.  Scaffolding only -- no cell is closed by any of the three
+import Gtz.Quantitative.ChartDescentFromMinimality
+import Gtz.Reduction.ChartAttainment
+import Gtz.Reduction.ChartPointFactorisation
