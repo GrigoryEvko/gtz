@@ -321,21 +321,6 @@ complement, so $\SC$ has $4-3$ on that line and $4-0$ on the complement:
 \begin{equation}\label{eq:tetraspec}
   \operatorname{spec}\SC=\{1,4,4\},\qquad \lmin(\SC)=1 .
 \end{equation}
-For $c_0=0$ the certificate is a sum of squares.  Writing
-$x=(x_1,x_2,x_3)$,
-\[
-  x\tp\bigl(\SC-I_3\bigr)x
-  \;=\;3\lVert x\rVert^2-\langle x,g_0\rangle^2
-  \;=\;3\sum_i x_i^2-\Bigl(\sum_i x_i\Bigr)^{\!2}
-  \;=\;\sum_{i<j}(x_i-x_j)^2 .
-\]
-Here $\ell_0=\lVert g_0\rVert^2=3$, so
-$3\lVert x\rVert^2-\langle x,g_0\rangle^2$ is the Cauchy--Schwarz
-deficiency of $x$ against $g_0$, and the last equality is Lagrange's
-identity, whose general term $\bigl(x_i(g_0)_j-x_j(g_0)_i\bigr)^2$ is
-$(x_i-x_j)^2$ because every entry of $g_0$ is $1$.  A sum of squares
-vanishes only where every square vanishes, that is where $x_1=x_2=x_3$.
-So the form vanishes exactly on $\R g_0$, the direction omitted from $C$.
 \end{example}
 
 At uniform weights the tetrahedron is the smallest design at rank three
@@ -343,9 +328,7 @@ with $\lmin(\SC)=1$ at every triple.
 
 Splitting its vectors produces designs with that property at every size
 $m\ge4$ and rank $3$.  Figure~\ref{fig:tetrahedron} draws the design and
-Figure~\ref{fig:tetragap} the gap at one triple.  The three squares of the
-certificate vanish on three planes through $g_0$, drawn in
-Figure~\ref{fig:tetracert}.
+Figure~\ref{fig:tetragap} the gap at one triple.
 
 \begin{figure}[ht]
   \centering
@@ -373,20 +356,4 @@ Figure~\ref{fig:tetracert}.
   \label{fig:tetragap}
 \end{figure}
 
-\begin{figure}[ht]
-  \centering
-  \input{figures/tetracert}
-  \caption{The certificate of Example~\ref{ex:tetra} at the triple
-  $C=\{1,2,3\}$.  Each square $(x_i-x_j)^2$ vanishes on a plane spanned by
-  $g_0$ and one selected atom, drawn left as its great circle on the
-  circumsphere; the three planes meet in $\R g_0$ alone, the eigenline of
-  $\SC$ for the eigenvalue $1$ of \eqref{eq:tetraspec}.  Right: the same three
-  planes seen along that line, six rays $60^{\circ}$ apart, with the unit
-  normals $n_c$, signed to sum to zero, at $120^{\circ}$ and the level
-  $x\tp(\SC-I_3)x=1$ the circle of radius $1/\sqrt3$ of
-  Figure~\ref{fig:tetragap}.  The grouping drawn is
-  the one of Example~\ref{ex:tetra}; the development certifies the triple
-  $C=\{0,1,2\}$ instead, by the image of this certificate under
-  $\diag(-1,-1,1)$, which permutes the atoms by $(0\,3)(1\,2)$.}
-  \label{fig:tetracert}
-\end{figure}
+

@@ -45,6 +45,40 @@ positive form
 \]
 with null line $\R\,(1,1,-1)$.
 
+For $c_0=0$ the certificate is a sum of squares.  Writing
+$x=(x_1,x_2,x_3)$,
+\[
+  x\tp\bigl(\SC-I_3\bigr)x
+  \;=\;3\lVert x\rVert^2-\langle x,g_0\rangle^2
+  \;=\;3\sum_i x_i^2-\Bigl(\sum_i x_i\Bigr)^{\!2}
+  \;=\;\sum_{i<j}(x_i-x_j)^2 .
+\]
+Here $\ell_0=\lVert g_0\rVert^2=3$, so
+$3\lVert x\rVert^2-\langle x,g_0\rangle^2$ is the Cauchy--Schwarz
+deficiency of $x$ against $g_0$, and the last equality is Lagrange's
+identity, whose general term $\bigl(x_i(g_0)_j-x_j(g_0)_i\bigr)^2$ is
+$(x_i-x_j)^2$ because every entry of $g_0$ is $1$.  A sum of squares
+vanishes only where every square vanishes, that is where $x_1=x_2=x_3$.
+So the form vanishes exactly on $\R g_0$, the direction omitted from $C$.
+
+\begin{figure}[ht]
+  \centering
+  \input{figures/tetracert}
+  \caption{The certificate of Example~\ref{ex:tetra} at the triple
+  $C=\{1,2,3\}$.  Each square $(x_i-x_j)^2$ vanishes on a plane spanned by
+  $g_0$ and one selected atom, drawn left as its great circle on the
+  circumsphere; the three planes meet in $\R g_0$ alone, the eigenline of
+  $\SC$ for the eigenvalue $1$ of \eqref{eq:tetraspec}.  Right: the same three
+  planes seen along that line, six rays $60^{\circ}$ apart, with the unit
+  normals $n_c$, signed to sum to zero, at $120^{\circ}$ and the level
+  $x\tp(\SC-I_3)x=1$ the circle of radius $1/\sqrt3$ of
+  Figure~\ref{fig:tetragap}.  The grouping drawn is
+  the one of Example~\ref{ex:tetra}; the development certifies the triple
+  $C=\{0,1,2\}$ instead, by the image of this certificate under
+  $\diag(-1,-1,1)$, which permutes the atoms by $(0\,3)(1\,2)$.}
+  \label{fig:tetracert}
+\end{figure}
+
 Every triple dominates and none dominates strictly: the tetrahedron is
 extremal in the sense of Definition~\ref{def:tie}.
 
@@ -119,6 +153,32 @@ subsets are its paths, dominating with margin exactly zero
 \texttt{Gtz.cycle\allowbreak Graph\allowbreak Data\_not\_pos\allowbreak Def}).  The gap is a telescoping
 Cauchy--Schwarz, so the vanishing of the margin is visible at every rank
 rather than instance by instance.
+
+\subsection{The naive dual at \texorpdfstring{$(3,1)$}{(3,1)}}\label{app:uneven}
+
+\begin{example}\label{ex:uneven}
+Take $m=2$, $k=1$, $t=(\tfrac15,\tfrac45)$ and $g=(2,\tfrac12)$; the
+Parseval condition holds, $\tfrac15\cdot4+\tfrac45\cdot\tfrac14=1$.  Here
+$v=\bigl(2/\sqrt5,\;1/\sqrt5\bigr)$, of norm one, so
+$\ker P$ is spanned by the unit vector $z=(-1/\sqrt5,\,2/\sqrt5)$, giving
+$\lvert z_1\rvert^2=\tfrac15$ and $\lvert z_2\rvert^2=\tfrac45$.  The
+singleton $\{1\}$ dominates, $g_1^2=4\ge1$, and $\{2\}$ does not,
+$g_2^2=\tfrac14<1$.
+
+The correct dual: $w_1^2=\tfrac{1/5}{4/5}=\tfrac14$,
+$w_2^2=\tfrac{4/5}{1/5}=4$, so
+$\Sdual=\tfrac15\cdot\tfrac14+\tfrac45\cdot4=\tfrac{13}{4}$ and
+$h_c^2=w_c^2/\Sdual$, that is $h_1^2=\tfrac1{13}$ and $h_2^2=\tfrac{16}{13}$.
+Parseval holds, $\tfrac15\cdot\tfrac1{13}+\tfrac45\cdot\tfrac{16}{13}=1$,
+and the correspondence is exact: $\{2\}$ dominates in $\dsn^{\perp}$
+because $\tfrac{16}{13}\ge1$, matching $\{1\}$ upstairs, and $\{1\}$
+fails downstairs because $\tfrac1{13}<1$, matching $\{2\}$ upstairs.
+
+The naive dual of Remark~\ref{rem:naive}: $u_1^2=\tfrac{1/5}{1/5}=1$ and
+$u_2^2=\tfrac{4/5}{4/5}=1$.  Both singletons dominate, so the
+correspondence fails at $C=\{2\}$, which does not dominate upstairs while
+its complement does downstairs.
+\end{example}
 
 \subsection{The worked design at \texorpdfstring{$(4,2)$}{(4,2)}}\label{app:chartworked}
 
