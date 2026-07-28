@@ -59,21 +59,11 @@ $k$-subset $C$ with $\SC\psd\frac1k I_k$.  Hence $\alpha_k(\FF)\ge1/k$.
 Let $A$ be the $m\times k$ matrix whose $c$-th row is $g_c\adj$, so that
 $(Ax)_c=\langle g_c,x\rangle$, and let $D=\diag(t_1,\dots,t_m)$.
 Condition \eqref{eq:parseval} reads $A\adj DA=I_k$; in particular $A$ has
-rank $k$, so some $k$-subset indexes an invertible $k\times k$ submatrix.
-Choose $C$ maximizing $\lvert\det A_C\rvert$ among all $k$-subsets, put
-$M:=A_C$ and $B:=AM^{-1}$.  Then $A=BM$, so the $c$-th row of $B$ holds
-the coefficients expressing $g_c\adj$ in the rows of $M$, and the rows of
-$B$ indexed by $C$ form $I_k$.  By Cramer's rule, $B_{ci}\det M$ is the
-determinant of the matrix obtained from $M$ by substituting $g_c\adj$ for
-its $i$-th row; that matrix is, up to a permutation of rows, $A_{C'}$ with
-$C':=(C\setminus\{c_i\})\cup\{c\}$, where $c_i$ is the $i$-th element of
-$C$; if $c$ already lies in $C\setminus\{c_i\}$ then that matrix has two
-equal rows and its determinant vanishes.  Hence
-\[
-  \lvert B_{ci}\rvert\;=\;\frac{\lvert\det A_{C'}\rvert}{\lvert\det A_C\rvert}
-  \;\le\;1
-\]
-for every $c$ and $i$, by maximality of the volume \cite{GT2001}.  By
+rank $k$.  Choose $C$ maximizing $\lvert\det A_C\rvert$ among all
+$k$-subsets, put $M:=A_C$ and $B:=AM^{-1}$.  Then $A=BM$, so the $c$-th
+row of $B$ holds the coefficients expressing $g_c\adj$ in the rows of $M$,
+and by Lemma~\ref{lem:maxvolume} the rows of $B$ indexed by $C$ form $I_k$
+and $\lvert B_{ci}\rvert\le1$ for every $c$ and $i$.  By
 Cauchy--Schwarz, for every $u\in\FF^k$,
 \[
   \lvert (Bu)_c\rvert^{2}

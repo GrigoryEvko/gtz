@@ -45,24 +45,38 @@ Cauchy--Binet \cite[\S0.8.7]{HornJohnson2013}, proved as
 Lemma~\ref{lem:cauchybinet},
 $\sum_{\lvert C\rvert=k}\lvert\det U_C\rvert^2=\det(U\adj U)=1$, and a
 finite family of nonnegative numbers summing to $1$ has a positive
-maximum.  Put $B:=UU_C^{-1}$, the matrix expressing each row of $U$ in the
-basis of the selected rows.  Replacing the $j$-th row of $U_C$ by the
-$r$-th row of $U$ replaces that row by its expansion $\sum_i B_{ri}(U_C)_i$
-in the selected rows, since $BU_C=U$.  Expand the determinant linearly in
-that row.  For $i\ne j$ the term carries the row $(U_C)_i$ in position $i$
-and again in position $j$, so it vanishes; only $i=j$ survives, and the new
-determinant is $B_{rj}\det U_C$.  For $r\notin C$ the matrix so formed
-carries, in some order, the rows of $U$ on the set obtained from $C$ by
-replacing its $j$-th index with $r$.  That set again has $k$ elements,
-since $r\notin C$, so an entry $B_{rj}$ of modulus greater than $1$ would
-name a $k$-subset of strictly larger volume.  Maximality therefore bounds
-$\lvert B_{rj}\rvert$ by $1$ at every $j$ and every $r\notin C$.  The
-remaining rows, those indexed by $C$, are $U_CU_C^{-1}=I_k$, since
-restriction to the rows $C$ commutes with multiplication on the right.
-The two cases exhaust the rows, so every entry of $B$ has modulus at most
-$1$.  Those $k$ rows contribute exactly $k$ to the squared Frobenius norm,
-and each of the other $m-k$ rows carries $k$ entries of modulus at most
-$1$ and so contributes at most $k$, whence
+maximum.  Maximality also controls the change of basis it induces.
+
+\begin{lemma}\label{lem:maxvolume}
+Let $A\in\FF^{m\times k}$ have rank $k$, let $C$ maximize
+$\lvert\det A_C\rvert$ over the $k$-subsets, and put $B:=AA_C^{-1}$.  Then
+the rows of $B$ indexed by $C$ form $I_k$, and every entry of $B$ has
+modulus at most $1$.
+\end{lemma}
+
+\begin{proof}
+Some $k\times k$ submatrix of $A$ is invertible, so the maximum is over a
+nonempty set and $A_C$ is invertible.  Restriction to the rows $C$
+commutes with multiplication on the right, so the rows of $B$ indexed by
+$C$ are $A_CA_C^{-1}=I_k$.  For the entries, fix $c$ and $i$ and let $c_i$
+be the $i$-th element of $C$.  By Cramer's rule $B_{ci}\det A_C$ is the
+determinant of the matrix obtained from $A_C$ by substituting the $c$-th
+row of $A$ for its $i$-th row; that matrix is, up to a permutation of
+rows, $A_{C'}$ with $C':=(C\setminus\{c_i\})\cup\{c\}$, and if $c$ already
+lies in $C\setminus\{c_i\}$ then it has two equal rows and its determinant
+vanishes.  Hence
+\[
+  \lvert B_{ci}\rvert
+  \;=\;\frac{\lvert\det A_{C'}\rvert}{\lvert\det A_C\rvert}\;\le\;1
+\]
+by maximality of the volume \cite{GT2001}.
+\end{proof}
+
+Put $B:=UU_C^{-1}$, the matrix expressing each row of $U$ in the
+basis of the selected rows.  By Lemma~\ref{lem:maxvolume} the $k$ rows of
+$B$ indexed by $C$ are $I_k$ and contribute exactly $k$ to the squared
+Frobenius norm, and each of the other $m-k$ rows carries $k$ entries of
+modulus at most $1$ and so contributes at most $k$, whence
 \[
   \tr\bigl((U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\bigr)
   \;=\;\lVert U_C^{-1}\rVert_F^2
