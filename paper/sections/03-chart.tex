@@ -801,8 +801,7 @@ the second expression by $\lvert z_c\rvert^2=1-P_{cc}=1-s_c$
 \end{equation}
 The $p_c$ therefore have co-weighted mean $1/k$.  Domination compares a
 positive diagonal with a rank-one perturbation of it, and one scalar
-decides such a comparison.  Figure~\ref{fig:rankoneball} draws the
-comparison.
+decides such a comparison.
 
 \begin{lemma}[Lean]\label{lem:rankone}
 Let $A\pd0$ and let $b$ be a vector, and put $q:=b\adj A^{-1}b$.  Then
@@ -833,21 +832,6 @@ $A-bb\adj\psd0$ this is nonnegative, which forces $q\le1$ since $q\ge0$.
 If moreover $q=1$ then $y\ne0$, because $\langle y,Ay\rangle=1$, and the
 form vanishes at $y$, so $A-bb\adj$ is not positive definite.
 \end{proof}
-
-\begin{figure}[ht]
-  \centering
-  \input{figures/rankoneball}
-  \caption{Lemma~\ref{lem:rankone} in three coordinates.  The locus $q=1$ is the
-  image of the unit sphere under $A^{1/2}$, and the criterion asks which side of
-  it $b$ lies on; the open circle marks where the ray through $b$ leaves the
-  ellipsoid.  At $m=k+1$ the comparison is \eqref{eq:corankone}, the ratio at the
-  omitted index against the $t$-weighted mean of all of them.  The ellipsoid then
-  lives in the index space: its coordinates are the selected indices, its
-  semi-axes are the square roots of the co-weights $1-t_c$, and the vectors $g_c$
-  do not enter.  Figure~\ref{fig:jensen} is the same comparison in bar-chart
-  form.}
-  \label{fig:rankoneball}
-\end{figure}
 
 \begin{theorem}[Lean]\label{thm:corankone}
 Let $m=k+1$, $k\ge1$, over either field.
@@ -933,7 +917,6 @@ No step of the argument sees the field, so the complex collapse of
 \S\ref{sec:complex} must wait one size longer.  Part (iv) produces a
 family of designs attaining the threshold with no slack, one over each
 point of the open weight simplex; \S\ref{sec:ties} draws the consequence.
-Figure~\ref{fig:jensen} shows the two cases.
 
 \begin{example}\label{ex:tetrachart}
 The tetrahedron of Example~\ref{ex:tetra} is the uniform member at $k=3$.
@@ -966,18 +949,6 @@ are the magnitudes appearing in the equality description of
 $p+q+r=n$ correspond to the three vectors of a corank-one design with
 weights $p/n$, $q/n$, $r/n$.
 \end{remark}
-
-\begin{figure}[ht]
-  \centering
-  \input{figures/jensen}
-  \caption{Theorem~\ref{thm:corankone} at $(4,3)$.  The ratios $p_c$ of
-  \eqref{eq:pvars} have co-weighted mean $1/k$ by \eqref{eq:pnorm}.  Left:
-  the largest $p_{c_0}$ is at least the $t$-weighted mean $\sum_ct_cp_c$,
-  so by \eqref{eq:corankone} its complement dominates.  Right: when $p$ is
-  constant every $p_c$ equals $1/k$, the tie law \eqref{eq:tielaw} holds,
-  every $k$-subset dominates and none dominates strictly.}
-  \label{fig:jensen}
-\end{figure}
 
 Corank two is one further step: Corollary~\ref{cor:dualcell} converts it
 into rank two, which is Theorem~\ref{thm:ranktwo}, and \S\ref{sec:corank}

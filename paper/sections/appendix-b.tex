@@ -1,6 +1,8 @@
-\section{Exact data}\label{app:data}
+\section{Worked designs}\label{app:data}
 
-Every design recorded here is given by data from which
+This is the instance catalogue: every design the paper computes with,
+recorded once, with the numbers each body statement reads off it.  Each is
+given by data from which
 \eqref{eq:parseval} can be checked in finite arithmetic.  Radicals occur
 in three places: the
 icosahedral design of \S\ref{app:icosa}, the whitener of a graphic design
@@ -56,7 +58,11 @@ $P[C]=\tfrac14(4I_3-J_3)$, whose eigenvalues are $\tfrac14\{1,4,4\}$, so by
 \[
   \pi_C=\det P[C]=\tfrac{16}{64}=\tfrac14 \qquad\text{for each of the four triples,}
 \]
-confirming $\sum_C\pi_C=1$.  All four characteristic polynomials coincide,
+confirming $\sum_C\pi_C=1$.  Corollary~\ref{cor:minor} reads the gap minors:
+$\det W[C]=\bigl(\prod_{c\in C}t_c\bigr)\det(\Gram_C-I_3)=\tfrac1{64}\cdot0=0$
+at every triple, while the same reading at the pair $\{0,1\}$ gives
+$\tfrac1{16}\cdot3=\tfrac3{16}$, so the $3\times3$ minor vanishes and the
+$2\times2$ one does not.  All four characteristic polynomials coincide,
 and $\E_\pi$ averages against a measure of mass one, whence
 \[
   q(x)=\E_\pi[\chi_{\SC}(x)]=(x-1)(x-4)^2=x^3-9x^2+24x-16 ,
@@ -537,39 +543,3 @@ Figure~\ref{fig:icosaspec} all twenty, with the sign grid that decides them.
   kernel-checked.}
   \label{fig:icosaspec}
 \end{figure}
-
-\subsection{Active-family census at
-\texorpdfstring{$(6,3)$ and $(7,3)$}{(6,3) and (7,3)}}\label{app:census}
-
-By \eqref{eq:coverage} the family $A^{+}$ of active $k$-subsets
-carrying a positive multiplier covers the index set.  The covering families
-of $3$-subsets are counted here up to the symmetric group of the index set
-and listed by cardinality.  At $m=6$ a covering family has at
-least two members and at most twenty; Table~\ref{tab:census} lists the
-counts, whose total is $2102$.  The single class of cardinality two is the
-partition branch that Corollary~\ref{cor:e3} leaves undecided; setting
-it aside leaves $2101$.  By Proposition~\ref{prop:carath} the support of the
-multiplier vector may be taken of size at most $15$ here, so only the columns
-up to $15$ bear on
-Conjecture~\ref{conj:sixthree}; they account for $2069$ of the $2102$ classes,
-and for $2068$ of the $2101$ with at least three members.
-
-At $m=7$ a covering family has at least three members, and the counts are
-\[
-\begin{array}{c|cccccccc}
-\lvert A^{+}\rvert & 3&4&5&6&7&8&9&10\\ \hline
-\text{classes} & 3&17&94&415&1599&5308&15397&39081\\[4pt]
-\lvert A^{+}\rvert & 11&12&13&14&15&16&17&18\\ \hline
-\text{classes} & 87347&172684&303116&473733&660907&824389&920439&920443\\[4pt]
-\lvert A^{+}\rvert & 19&20&21&22&23&24&25&26\\ \hline
-\text{classes} & 824409&660949&473827&303277&172933&87659&39433&15709\\[4pt]
-\lvert A^{+}\rvert & 27&28&29&30&31&32&33&34\\ \hline
-\text{classes} & 5557&1760&509&137&38&10&3&1
-\end{array}
-\]
-together with a single class of cardinality $35$,
-with total $7\,011\,184$.  By Proposition~\ref{prop:carath} the bound at
-$(7,3)$ is $19$, and the classes of cardinality at most
-$19$ already number $5\,249\,381$.  Enumeration at this size is not a route;
-Problem~\ref{prob:seventhree} asks instead for an argument uniform in
-the active family.

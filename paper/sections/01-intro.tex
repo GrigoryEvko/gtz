@@ -40,55 +40,18 @@ content of the maximal-volume principle, and it remains open.
 
 The principle does prove a weaker bound \cite{GZT1997,GT2001}.
 Among the finitely many $k$-subsets choose one of maximal volume, that is
-one maximizing $\lvert\det U_C\rvert$.  It is nonsingular: by the
-Cauchy--Binet formula \cite[\S0.8.7]{HornJohnson2013}
-$\sum_{\lvert C\rvert=k}\lvert\det U_C\rvert^2=\det(U\adj U)=1$, and a
-finite family of nonnegative numbers summing to $1$ has a positive
-maximum.  Put $B:=UU_C^{-1}$, the matrix expressing each row of $U$ in the
-basis of the selected rows.  Replacing the $j$-th row of $U_C$ by the
-$r$-th row of $U$ replaces that row by its expansion $\sum_i B_{ri}(U_C)_i$
-in the selected rows, since $BU_C=U$.  Expand the determinant linearly in
-that row.  For $i\ne j$ the term carries the row $(U_C)_i$ in position $i$
-and again in position $j$, so it vanishes; only $i=j$ survives, and the new
-determinant is $B_{rj}\det U_C$.  For $r\notin C$ the matrix so formed
-carries, in some order, the rows of $U$ on the set obtained from $C$ by
-replacing its $j$-th index with $r$.  That set again has $k$ elements,
-since $r\notin C$, so an entry $B_{rj}$ of modulus greater than $1$ would
-name a $k$-subset of strictly larger volume.  Maximality therefore bounds
-$\lvert B_{rj}\rvert$ by $1$ at every $j$ and every $r\notin C$.  The
-remaining rows, those indexed by $C$, are $U_CU_C^{-1}=I_k$, since
-restriction to the rows $C$ commutes with multiplication on the right.
-The two cases exhaust the rows, so every entry of $B$ has modulus at most
-$1$.  Those $k$ rows contribute exactly $k$ to the squared Frobenius norm,
-and each of the other $m-k$ rows carries $k$ entries of modulus at most
-$1$ and so contributes at most $k$, whence
-\[
-  \tr\bigl((U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\bigr)
-  \;=\;\lVert U_C^{-1}\rVert_F^2
-  \;=\;\lVert B\rVert_F^2
-  \;\le\;k+k(m-k),
-\]
-using $(U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}=U_C^{-1}(U_C^{-1})\adj$ at
-the first equality and $\lVert UX\rVert_F=\lVert X\rVert_F$ at the second.
-The row identity at $U$ and again at $U_C$ gives
-$I_k-U_C\adj U_C^{\vphantom{\mathsf{H}}}
-=\sum_{c\notin C}u_c^{\vphantom{\mathsf{H}}}u_c\adj\psd0$.  Inversion
-reverses the Loewner order between positive definite matrices, and
-$U_C\adj U_C^{\vphantom{\mathsf{H}}}$ is one because $U_C$ is nonsingular,
-so $(U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\psd I_k$.  A Hermitian
-$k\times k$ matrix dominating the identity has all its eigenvalues at least
-$1$.  Its largest eigenvalue is the trace less the other $k-1$, each of
-which is at least $1$, so it is at most the trace diminished by $k-1$.
-Therefore $\lVert U_C^{-1}\rVert_2^2
-=\lmax\bigl((U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}\bigr)
-\le k+k(m-k)-(k-1)=k(m-k)+1$, and the two readings of a smallest singular
-value, $\lVert U_C^{-1}\rVert_2=\sigma_{\min}(U_C)^{-1}$ and
-$\sigma_{\min}(U_C)^2=\lmin(U_C\adj U_C^{\vphantom{\mathsf{H}}})$, carry
-the bound back to the subset sum:
+one maximizing $\lvert\det U_C\rvert$.  It is nonsingular, every entry of
+$B:=UU_C^{-1}$ has modulus at most $1$ because a larger one would name a
+$k$-subset of larger volume, and counting the $k+k(m-k)$ entries of $B$
+against $\lVert U_C^{-1}\rVert_F^2$ bounds the largest eigenvalue of
+$(U_C\adj U_C^{\vphantom{\mathsf{H}}})^{-1}$ by the trace less $k-1$.
+Hence
 \[
   \SC\;=\;m\,U_C\adj U_C^{\vphantom{\mathsf{H}}}
   \;\psd\;\frac{m}{k(m-k)+1}\,I_k .
 \]
+The derivation is written out in \S\ref{app:volumebound}, where
+Problem~\ref{prob:effective} asks how far its constant can be pushed.
 
 The bound and the conjecture differ by a single term:
 \begin{equation}\label{eq:deficit}
@@ -101,6 +64,9 @@ suffices exactly on the range
 \begin{equation}\label{eq:elementary}
   k\le1\quad\text{or}\quad m\le k+1 .
 \end{equation}
+On that range \S\ref{sec:first} and \S\ref{sec:chart} do better than the
+principle: they settle both cells outright, over both fields, and classify
+the designs at which the selection inequality is an equality.
 Figure~\ref{fig:deficit} draws the identity as an area and the deficit at
 every cell.
 
@@ -173,9 +139,9 @@ complex design when $m\le k+1$ and fails whenever $m\ge k+2$
 (Theorem~\ref{thm:complex}); for $k\le1$ it always succeeds.  Against
 \eqref{eq:elementary} this reads: over $\C$ the conjecture holds just
 where the maximal-volume count already proves it, and fails everywhere
-else.
-
-No field-independent argument can settle the real conjecture.
+else.  So no field-independent argument can settle the real conjecture:
+any such argument would prove the complex statement too, and the complex
+statement is false at every cell the real one leaves open.
 
 Over $\R$, rank two holds at every size (Theorem~\ref{thm:ranktwo}),
 corank one and corank two hold at every rank (Theorems~\ref{thm:corankone}
@@ -312,11 +278,6 @@ as in numerical linear algebra.  Over $\R$ the two agree; the paper writes
 $\mathsf{T}$ in the sections that are real throughout and $\mathsf{H}$
 where the field is $\FF$, with no other decoration for either operation.
 
-Figure~\ref{fig:notation} labels eighteen of the table's twenty-six entries
-on the tetrahedron of Example~\ref{ex:tetra}.  The eight it does not reach
-are $\Sdual$, $F$ and $G$, $\cv$, $\Lambda$, $\lambda_i$, $\alpha$, $\tang$
-and $\gph$.
-
 \begin{figure}[ht]
   \centering
   \input{figures/board}
@@ -326,27 +287,4 @@ and $\gph$.
   by Theorem~\ref{thm:window} and Corollary~\ref{cor:dualcell}.  Over
   $\C$ the answer is $m\le k+1$ for every $k\ge2$.}
   \label{fig:board}
-\end{figure}
-
-\begin{figure}[ht]
-  \centering
-  \input{figures/notation}
-  \caption{The reserved notation at the tetrahedron of
-  Example~\ref{ex:tetra}.  Left: the design, with $C=\{0,1,2\}$ the shaded
-  face, $g_3$ the omitted atom, and the chart atom $v_c=\sqrt{t_c}\,g_c$
-  marked at half length on each arrow, where $\lVert v_c\rVert^2=s_c$.
-  Upper right: the two products of $M_C$ of \eqref{eq:twoproducts},
-  different matrices of one trace, one determinant and one spectrum; the
-  equivalence below them is Lemma~\ref{lem:flip} with Lemma~\ref{lem:chart},
-  and holds at the one selection size $\lvert C\rvert=k$ at which $M_C$ is
-  square.  Bottom: the chart of \eqref{eq:chart}, with the block $W[C]$
-  shaded; its determinant is taken directly and again through
-  Corollary~\ref{cor:minor}, and the same reading at the pair $\{0,1\}$
-  returns $\tfrac3{16}$, so the $3\times3$ minor vanishes and the
-  $2\times2$ one does not.  The strip on the right places the design at $m=4$ against the
-  window $\win(3)=7$ and rings the two cells of
-  Corollary~\ref{cor:twocells}.  Every weight, leverage and leverage score
-  is constant in $c$ here, so the plate carries no variation across the
-  atoms and no domination with positive slack.}
-  \label{fig:notation}
 \end{figure}
