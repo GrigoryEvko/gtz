@@ -701,6 +701,41 @@ the bundling at $(6,3)$, the leverages it is checked at, and that tight ray.
   \label{fig:bundledcycle}
 \end{figure}
 
+\subsection{The graphic instance}\label{app:graphicinstance}
+
+Restricting the problem to the designs of \eqref{eq:graphicatom} gives a
+statement of its own: every connected weighted multigraph with $m$ edges and
+$k+1$ vertices has a $k$-subset of edges that dominates, which by
+\texttt{Gtz.is\allowbreak Spanning\allowbreak Tree\_of\_dominates} is a
+spanning tree.  The formal statement quantifies over the graph, the
+conductances and the weights (\texttt{Gtz.Graphic\allowbreak Gtz} over
+\texttt{Gtz.Graph\allowbreak Design\allowbreak Data}).  Graphic designs are
+designs, so one direction is immediate: $\Gtz(m,k)$ implies its graphic
+instance (\texttt{Gtz.graphic\allowbreak Gtz\_of\_gtz\allowbreak Weighted}).
+
+The converse fails at the level of statements.  Fix the multigraph.  Global
+rescaling of the conductances leaves \eqref{eq:graphicatom} fixed, since
+$c\mapsto\lambda c$ sends $L$ to $\lambda L$ and $R$ to $\lambda^{-1/2}R$ and
+the two factors cancel in $g_e$; so the family the graph carries is
+parameterized by $c$ modulo scale and $t$ in the simplex, of dimension
+$2m-2$.  Designs at $(m,k)$ modulo the orthogonal group have dimension
+$mk+m-1-k^2$: the vectors and the weights, less the $\binom{k+1}2$ equations
+of \eqref{eq:parseval} and the $\binom k2$ dimensions of $O(k)$.  There are
+finitely many multigraphs on $k+1$ vertices with $m$ edges, so the graphic
+designs form a finite union of families of positive codimension --- $10$
+against $14$ at $(6,3)$, and $12$ against $18$ at $(7,3)$.
+
+A proof of the graphic instance is therefore not a proof of $\Gtz(m,k)$.  The
+instance gives a refutation lane instead: a graphic counterexample is a
+counterexample, so \eqref{eq:graphicdominate} may be searched in the
+electrical reading without the restriction weakening what a witness would
+settle.  Nothing in this paper has found one.
+
+The dimension count above is not formalized.
+\texttt{Gtz.graphic\allowbreak Gtz\_of\_gtz\allowbreak Weighted} is, and it
+is the only implication between the two statements that the development
+carries.
+
 \subsection{Split families at
 \texorpdfstring{$(6,3)$ and $(7,3)$}{(6,3) and (7,3)}}\label{app:split}
 
