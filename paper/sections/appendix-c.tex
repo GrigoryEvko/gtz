@@ -3,18 +3,34 @@
 \subsection{Active-family census at
 \texorpdfstring{$(6,3)$ and $(7,3)$}{(6,3) and (7,3)}}\label{app:census}
 
-By \eqref{eq:coverage} the family $A^{+}$ of active $k$-subsets
-carrying a positive multiplier covers the index set.  The covering families
-of $3$-subsets are counted here up to the symmetric group of the index set
-and listed by cardinality.  At $m=6$ a covering family has at
-least two members and at most twenty; Table~\ref{tab:census} lists the
-counts, whose total is $2102$.  The single class of cardinality two is the
-partition branch that Corollary~\ref{cor:e3} leaves undecided; setting
-it aside leaves $2101$.  By Proposition~\ref{prop:carath} the support of the
-multiplier vector may be taken of size at most $15$ here, so only the columns
-up to $15$ bear on
-Conjecture~\ref{conj:sixthree}; they account for $2069$ of the $2102$ classes,
-and for $2068$ of the $2101$ with at least three members.
+By \eqref{eq:coverage} the family $A^{+}$ of active $k$-subsets carrying a
+positive multiplier covers the index set.  Proposition~\ref{prop:census}
+counts the covering families of $3$-subsets up to the symmetric group of
+the index set; their distribution by cardinality is recorded here.
+
+\begin{table}[ht]
+\small
+\centering
+\begin{tabular}{@{}l*{10}{r}@{}}
+\toprule
+$j$   & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11\\
+$N_j$ & 1 & 3 & 15 & 37 & 88 & 157 & 247 & 311 & 351 & 312\\
+\midrule
+$j$   & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 20 & \\
+$N_j$ & 249 & 161 & 94 & 43 & 21 & 7 & 3 & 1 & 1 & \\
+\bottomrule
+\end{tabular}
+\medskip
+\caption{The number $N_j$ of families of $j$ triples covering
+$\{1,\dots,6\}$, up to relabelling.  The total is $2102$; the
+Carath\'eodory bound \eqref{eq:carath} discards the last five columns,
+leaving $2069$.}
+\label{tab:census}
+\end{table}
+
+Setting aside the partition class that Corollary~\ref{cor:e3} leaves
+undecided, the columns up to fifteen that bear on
+Conjecture~\ref{conj:sixthree} account for $2068$ classes.
 
 At $m=7$ a covering family has at least three members, and the counts are
 \[
@@ -29,9 +45,6 @@ At $m=7$ a covering family has at least three members, and the counts are
 \text{classes} & 5557&1760&509&137&38&10&3&1
 \end{array}
 \]
-together with a single class of cardinality $35$,
-with total $7\,011\,184$.  By Proposition~\ref{prop:carath} the bound at
-$(7,3)$ is $19$, and the classes of cardinality at most
-$19$ already number $5\,249\,381$.  Enumeration at this size is not a route;
-Problem~\ref{prob:seventhree} asks instead for an argument uniform in
-the active family.
+together with a single class of cardinality $35$.  Enumeration at this
+size is not a route; Problem~\ref{prob:seventhree} asks instead for an
+argument uniform in the active family.

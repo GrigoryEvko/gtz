@@ -159,19 +159,18 @@ Take the diamond $\dsn_{\Diamond}$ of \S\ref{sec:diamond}, writing
 $a,b,c,d$ for its vertices $1,2,3,4$, so that its five edges
 $e_0,\dots,e_4$ are $ab,ac,ad,bc,bd$, its incidence vectors
 $b_0,\dots,b_4$ are those of \eqref{eq:drops}, and its Laplacian and
-inverse are \eqref{eq:laplacian} and \eqref{eq:diamondlev}.  Its
-leverages read through \eqref{eq:graphicleverage} rather than through
-\eqref{eq:diamondlev}: $R_{\mathrm{eff}}(ab)=\tfrac1{180}(39-21-21+39)=\tfrac15$ and
-$R_{\mathrm{eff}}(e)=\tfrac{39}{180}=\tfrac{13}{60}$ for each of the four rim
-edges $ac,ad,bc,bd$, so that
+inverse are \eqref{eq:laplacian} and \eqref{eq:diamondlev}.  The
+quantities $b_e\tp L^{-1}b_e$ computed there are its effective
+resistances, so \eqref{eq:graphicleverage} reads the leverages
+$\ell_{ab}=2$ and $\ell_{\mathrm{rim}}=\tfrac{13}4$ of
+\eqref{eq:diamondlev} as
 \[
-  s_{ab}=\tfrac25,\quad s_{\mathrm{rim}}=\tfrac{13}{20},
+  s_{ab}=c_{ab}R_{\mathrm{eff}}(ab)=2\cdot\tfrac15=\tfrac25,
   \qquad
-  \ell_{ab}=2,\quad \ell_{\mathrm{rim}}=\tfrac{13}{4},
-  \qquad
-  \tfrac25+4\cdot\tfrac{13}{20}=3=k .
+  s_{\mathrm{rim}}=3\cdot\tfrac{13}{60}=\tfrac{13}{20},
 \]
-Every leverage exceeds $1$.  The star at $a$, that is $E'=\{ab,ac,ad\}$,
+whose total is $\tfrac25+4\cdot\tfrac{13}{20}=3=\lvert V\rvert-1$.  Every
+leverage exceeds $1$.  The star at $a$, that is $E'=\{ab,ac,ad\}$,
 dominates: the left side of \eqref{eq:graphicdominate} is
 $5\bigl(2b_0b_0\tp+3b_1b_1\tp+3b_2b_2\tp\bigr)$, and subtracting $L$ gives
 the form $Q$, whose matrix is
