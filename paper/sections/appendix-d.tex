@@ -1,0 +1,278 @@
+\section{The equality locus at rank two}\label{app:planar}
+
+At uniform weights the locus is classified in \cite{Nesterenko2026real},
+quoted in \S\ref{sec:ranktwo}: the squared vectors fall into three
+clusters.  The arbitrary-weight classification runs through the
+\emph{tight graph}, whose vertices are the atoms and whose edges are the
+pairs at equality in Lemma~\ref{lem:planarsilence}.
+
+Every declaration named here is over $\R$ at $k=2$, and the design is
+all-heavy ($\ell_c>1$ at every index), which by
+Corollary~\ref{cor:heavy} is the only case that matters.  The squared
+vectors $\eta_c$ of \eqref{eq:doubleangle} are written in polar form
+\begin{equation}\label{eq:planarcoords}
+  u_c\;:=\;\eta_c/\ell_c ,
+  \qquad
+  \nu_c\;:=\;1-\frac1{\ell_c} ,
+\end{equation}
+so $u_c$ is a unit vector and the \emph{conic value} $\nu_c$ lies in
+$(0,1)$ and increases with the leverage.
+
+\subsection{Silence, tightness, and the focal conic}\label{app:planardict}
+
+\begin{lemma}[Lean]\label{lem:planarsilence}
+A pair of heavy atoms dominates if and only if
+$\langle g_c,g_d\rangle^2\le(\ell_c-1)(\ell_d-1)$; in the coordinates
+\eqref{eq:planarcoords} this reads
+$\tfrac12\bigl(1+\langle u_c,u_d\rangle\bigr)\le\nu_c\nu_d$.
+\end{lemma}
+
+The $2\times2$ excess $\eta_c\eta_c\tp+\eta_d\eta_d\tp-I$ has trace
+$\ell_c+\ell_d-2$, positive on heavy atoms, so its positive
+semidefiniteness is the sign of its determinant, and that determinant is
+$(\ell_c-1)(\ell_d-1)-\langle g_c,g_d\rangle^2$.  The second form is the
+first divided by $\ell_c\ell_d$, using that squaring doubles arguments.
+
+A pair is \emph{tight} at equality and \emph{silent} when the inequality
+runs the other way.
+
+Where no pair dominates, the multipliers of a stationary system place
+every atom on a conic.  Pairing that conic against $\sum_ct_c=1$,
+$\sum_ct_c\eta_c=0$ and $\sum_ct_c\ell_c=2$ eliminates its free constant.
+
+\begin{proposition}[Lean]\label{prop:focalconic}
+Atoms on the conic $\mu_0+\langle\xi,\eta_c\rangle+\beta\ell_c=0$ satisfy
+$\mu_0=-2\beta$, and dividing by the leverage puts every atom on
+\begin{equation}\label{eq:focalconic}
+  \nu_c\;=\;\tfrac12+\langle\tilde\xi,u_c\rangle ,
+  \qquad \tilde\xi:=-\xi/(2\beta) .
+\end{equation}
+\end{proposition}
+
+Antipodal directions pair to one, $\nu(-u)=1-\nu(u)$, the reflection
+sending leverage $\ell$ to its conjugate $\ell/(\ell-1)$.  Positivity of
+the conic at every direction is finiteness and positivity of every
+direction's leverage, and evaluating at the antipode of $\tilde\xi$'s own
+direction turns it into $\lVert\tilde\xi\rVert<\tfrac12$.
+
+The covector exists at all:
+
+\begin{proposition}[Lean]\label{prop:momentcovector}
+At a triangle of pairwise-tight atoms of leverage above one there is a
+$\tilde\xi$ satisfying \eqref{eq:focalconic} at all three, and the conic
+values satisfy
+\begin{equation}\label{eq:spread}
+  2\nu_a\nu_b\nu_c+\nu_a\nu_b+\nu_a\nu_c+\nu_b\nu_c-1\;=\;0 .
+\end{equation}
+\end{proposition}
+
+Eliminating the geometry from the three tightness relations leaves a
+product of \eqref{eq:spread} with
+$2\nu_a\nu_b\nu_c-\nu_a\nu_b-\nu_a\nu_c-\nu_b\nu_c+1$, exactly one factor
+of which vanishes.  In the co-leverage coordinates $x=1-\nu=1/\ell$ the
+second factor is $xy(1-z)+xz(1-y)+yz$, and multiplied by
+$\ell_a\ell_b\ell_c$ it is $\ell_a+\ell_b+\ell_c-2$: positive as soon as
+the three leverages pass two, so heavy atoms cannot satisfy it and
+\eqref{eq:spread} is forced.  The informal argument runs in the angle
+parameterization $p+q+r=\pi$, which assumes the surviving branch rather
+than selecting it.
+
+Equation \eqref{eq:spread} is the weight-free form of the cluster law.
+Write $\tau_a,\tau_b,\tau_c$ for the total weights of the three clusters
+of \S\ref{sec:ranktwo}.  Then $\nu_X=(1-\tau_X)/(1+\tau_X)$ with
+$\tau_a+\tau_b+\tau_c=1$ satisfies \eqref{eq:spread} identically, and at
+uniform weights $\tau_X$ is the cluster's size over $m$.
+
+\subsection{The tight graph has maximum degree two}\label{app:tightgraph}
+
+Fix an atom and read \eqref{eq:focalconic} into
+Lemma~\ref{lem:planarsilence}.  Tightness against that atom becomes a
+condition $\langle n,u\rangle+e=0$ on the partner's direction, with $n$
+and $e$ depending only on the fixed atom and the covector.  The condition
+is affine, and a line meets the unit circle at most twice.
+
+\begin{theorem}[Lean]\label{thm:degreetwo}
+Let a design carry the focal conic \eqref{eq:focalconic} with
+$\lVert\tilde\xi\rVert<\tfrac12$, and let an atom of conic value in
+$[0,1]$ be tight against three unit directions.  Then two of the three
+coincide.
+\end{theorem}
+
+The tight graph is therefore a disjoint union of paths and cycles, and the
+star $K_{1,3}$ does not occur in it.
+
+\subsection{Paths and partial cycles are empty}\label{app:paths}
+
+A \emph{stress leaf} is an atom carrying a single stressed edge.  Its
+stress equation is the angular criticality of that edge's polar form, and
+criticality with tightness makes the neighbour's polar line tangent to the
+circle at the leaf.
+
+\begin{theorem}[Lean]\label{thm:leaftangency}
+At a stress leaf whose neighbour has conic value $\nu_j\ne1$, any
+direction tight against that neighbour is the leaf's own.
+\end{theorem}
+
+A tangent line meets the circle once, so the neighbour has no second
+partner and the component cannot extend.  Every path component and every
+partially stressed cycle is empty.  At three atoms the remaining case is
+settled by an exact factorization.
+
+\begin{proposition}[Lean]\label{prop:pthree}
+Place three atoms at directions of argument $2a$, $0$, $-2b$ with middle
+conic value $n$, tight along the two edges of the path.  The four design
+equations in three weights are compatible only where
+$4n\sin(a+b)\cdot G$ vanishes, $G:=n\cos(a+b)+\cos a\cos b$; and the third
+pair's tightness gap is $\bigl(n\cos(a+b)-\cos a\cos b\bigr)G$.
+\end{proposition}
+
+Away from clones ($\sin(a+b)\ne0$) and degenerate levels, feasibility
+forces $G=0$, and $G=0$ annihilates the third gap.
+
+The path closes into the triangle.
+
+\subsection{No dust, and no collinear designs}\label{app:nodust}
+
+Tightness forces $\langle g_c,g_d\rangle^2=(\ell_c-1)(\ell_d-1)$, whose
+right side is negative when one leverage is below one and the other above.
+A pair of atoms both below one violates the trace floor
+$\ell_c+\ell_d\ge2$.  A tight pair cannot be completed by light atoms
+either: if its mass parameters satisfy the closure bound
+$\alpha\beta\le(1-a)(1-b)$ and the trace bound $\alpha+\beta\ge1$ with
+$\alpha\le a<1$ and $\beta\le b<1$, the chain
+\[
+  \alpha\beta\;\le\;(1-a)(1-b)\;\le\;(1-\alpha)(1-\beta)
+  \;=\;1-\alpha-\beta+\alpha\beta\;\le\;\alpha\beta
+\]
+collapses and forces $\nu_A=\nu_B=1$, which no finite leverage attains.
+
+The degenerate stratum is empty for a separate reason.
+
+\begin{proposition}[Lean]\label{prop:collinear}
+Signed positions on a line with positive weights summing to one, closure
+$\sum_ct_cs_c=0$, trace $\sum_ct_c\lvert s_c\rvert=2$, and silence across
+the origin, every opposite pair having a side of leverage at most one, are
+contradictory.
+\end{proposition}
+
+Closure splits the leverage mass evenly, each side carrying exactly one,
+and a side capped at leverage one cannot carry mass one on weight below
+one.  So $\beta\ne0$ in the stationary system, and \eqref{eq:focalconic}
+is available.
+
+\subsection{The triangle is a family split}\label{app:planarcomplete}
+
+\begin{theorem}[Lean]\label{thm:planarcomplete}
+Let a design carry a pairwise-tight triangle of clusters with spanning
+directions $v_A,v_B,v_C$, conic values in $(0,1)$ satisfying
+\eqref{eq:focalconic}, leverages $\ell_X(1-\nu_X)=1$, and
+$\lVert\tilde\xi\rVert<\tfrac12$.  If every atom is silent against all
+three clusters, then every atom's squared vector is one of
+$\ell_Av_A$, $\ell_Bv_B$, $\ell_Cv_C$.
+\end{theorem}
+
+The defect $d(\eta):=1-\ell\bigl(\tfrac12-\langle\tilde\xi,u\rangle\bigr)$
+is nonnegative at every atom and zero only at a cluster.  Light atoms are
+positive because the conic curve stays positive inside the disk
+$\lVert\tilde\xi\rVert<\tfrac12$.  Heavy atoms on a cluster direction are
+squeezed to that cluster's leverage by silence against a second cluster.
+Heavy atoms off the cluster directions are positive because the three
+chord functions
+\[
+  f_X(u)\;=\;\tfrac12\bigl(1+\langle v_X,u\rangle\bigr)
+  -\nu_X\bigl(\tfrac12+\langle\tilde\xi,u\rangle\bigr)
+\]
+cannot all be nonnegative away from a vertex: tightness and
+\eqref{eq:focalconic} make $f_X$ vanish at the other two cluster
+directions and equal $1-\nu_X^2$ at its own, so the normalized values are
+barycentric coordinates, and a unit convex combination of three distinct
+unit vectors is one of them.  Pairing the three design equations against
+$(1,\tilde\xi,-\tfrac12)$ gives $\sum_ct_cd_c=0$, and positive weights
+annihilate the population off the clusters.
+
+The hypotheses are satisfiable.  At the symmetric point \eqref{eq:spread}
+factors as $(t+1)^2(2t-1)$, so $\nu=\tfrac12$, hence $\ell=2$ and
+$\tfrac12(1+\langle v_X,v_Y\rangle)=\tfrac14$: three unit directions at
+mutual angle $2\pi/3$, weights $\tfrac13$, and $\tilde\xi=0$.  That is the
+rank-two trine of Example~\ref{ex:trine2}, where the theorem excludes a
+fourth direction.
+
+\subsection{What is formal}\label{app:planarformal}
+
+Table~\ref{tab:leanplanar} names the declarations, and three
+qualifications belong with them on the terms of \S\ref{sec:boundaries}.
+
+The chain is not assembled.  Proposition~\ref{prop:collinear} and
+Theorems~\ref{thm:degreetwo}--\ref{thm:planarcomplete} are formal as
+stated, and their composition into a single classification is not, so
+``the equality locus at rank two is a family split'' is not a statement of
+the development.
+
+The covering used in \S\ref{app:nodust}, that every atom of an equality
+design lies in a tight pair, is carried by \texttt{Gtz.covered\_of\_conic}
+as a per-atom contradiction: an atom of positive weight and finite
+positive leverage on \eqref{eq:focalconic} cannot have an empty stress
+equation, since that equation pins its direction to $2\tilde\xi$ and unit
+length then forces $\lVert\tilde\xi\rVert=\tfrac12$, a conic value of one.
+The quantified form over all atoms is not assembled from it.
+
+\texttt{Gtz.dust\_pair\_never\_tight} concludes from $\ell_c<1$,
+$\ell_d<1$ and $\ell_c+\ell_d\ge2$ alone; the pairing does not enter, so
+the light-pair sentence of \S\ref{app:nodust} is formal only in that
+weaker form.
+
+{\small
+\begin{longtable}{@{}ll@{}}
+\toprule
+Statement & Declaration \\
+\midrule
+\endfirsthead
+\toprule
+Statement & Declaration \\
+\midrule
+\endhead
+\endfoot
+\bottomrule
+\caption{Correspondence for Appendix~\ref{app:planar}.}
+\label{tab:leanplanar}\\
+\endlastfoot
+Lemma~\ref{lem:planarsilence}  & \texttt{Gtz.pair\_dominates\_iff\_coherence\_le}, \\
+                               & \texttt{Gtz.pair\_silent\_iff\_coherence\_gt},
+                                 \texttt{Gtz.bloch\_halfAngle}, \\
+                               & \texttt{Gtz.pair\_dominates\_iff\_halfAngle} \\
+Proposition~\ref{prop:focalconic}
+                               & \texttt{Gtz.conic\_normalization},
+                                 \texttt{Gtz.focal\_conic\_form} \\
+\eqref{eq:focalconic}, antipode& \texttt{Gtz.focal\_conic\_antipode},
+                                 \texttt{Gtz.moment\_short\_of\_conic\_pos} \\
+Proposition~\ref{prop:momentcovector}
+                               & \texttt{Gtz.spreadRelation\_eq\_zero\_of\_tight}, \\
+                               & \texttt{Gtz.thirdConic\_of\_spread},
+                                 \texttt{Gtz.branchProduct\_eq\_zero}, \\
+                               & \texttt{Gtz.coSpreadRelation\_mul\_leverages}, \\
+                               & \texttt{Gtz.coSpreadRelation\_pos\_of\_heavy} \\
+Theorem~\ref{thm:degreetwo}    & \texttt{Gtz.tight\_partners\_le\_two},
+                                 \texttt{Gtz.star\_three\_impossible}, \\
+                               & \texttt{Gtz.tight\_iff\_polar},
+                                 \texttt{Gtz.unitCircle\_line\_le\_two} \\
+Theorem~\ref{thm:leaftangency} & \texttt{Gtz.leaf\_tangency},
+                                 \texttt{Gtz.affine\_double\_zero\_unique} \\
+Proposition~\ref{prop:pthree}  & \texttt{Gtz.p3\_stratum\_is\_family}, \\
+                               & \texttt{Gtz.p3\_compatibility\_factors},
+                                 \texttt{Gtz.p3\_thirdGap\_factors} \\
+\S\ref{app:nodust}, dust       & \texttt{Gtz.dust\_never\_tight},
+                                 \texttt{Gtz.dust\_pair\_never\_tight}, \\
+                               & \texttt{Gtz.dustOnly\_completion\_forces\_saturation} \\
+\S\ref{app:nodust}, covering   & \texttt{Gtz.covered\_of\_conic},
+                                 \texttt{Gtz.uncovered\_atom\_forces\_pole}, \\
+                               & \texttt{Gtz.pole\_contradicts\_conic} \\
+Proposition~\ref{prop:collinear}& \texttt{Gtz.collinear\_stratum\_empty} \\
+Theorem~\ref{thm:planarcomplete}
+                               & \texttt{Gtz.equality\_manifold\_complete}, \\
+                               & \texttt{Gtz.chord\_silence\_envelope},
+                                 \texttt{Gtz.chordFn\_vanishes}, \\
+                               & \texttt{Gtz.chordFn\_at\_vertex},
+                                 \texttt{Gtz.inscribed\_triangle\_vertex}, \\
+                               & \texttt{Gtz.conic\_curve\_pos},
+                                 \texttt{Gtz.sum\_weighted\_defect\_eq\_zero}
+\end{longtable}}
