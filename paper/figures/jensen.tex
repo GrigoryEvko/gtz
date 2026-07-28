@@ -1,0 +1,53 @@
+% The corank-one mechanism at m = k+1.  Left: the pivots p_c of a design whose
+% pivot vector is not constant; the maximal pivot lies above the t-weighted
+% mean, and the complement of a maximising index dominates.  Right: the
+% extremal case, in which every pivot equals 1/k.
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  bar/.style={draw, line width=0.5pt, fill=black!10},
+  hit/.style={draw, line width=0.7pt,
+              pattern=north east lines, pattern color=black!55},
+  mean/.style={dashed, dash pattern=on 1.9pt off 1.6pt, line width=0.55pt},
+  every node/.style={font=\small}]
+
+% ================= p not constant =========================================
+\begin{scope}
+  % heights are 4.4 p_c for p = (1/2, 1/4, 2/5, 1/5); the weighted mean is 7/20
+  \draw[hit] (0.20,0) rectangle (0.70,2.20);
+  \draw[bar] (0.95,0) rectangle (1.45,1.10);
+  \draw[bar] (1.70,0) rectangle (2.20,1.76);
+  \draw[bar] (2.45,0) rectangle (2.95,0.88);
+  \draw[line width=0.6pt] (0.02,0)--(3.13,0);
+
+  \draw[mean] (0.05,1.54)--(3.28,1.54);
+  \node[anchor=west, font=\footnotesize] at (3.32,1.54) {$\sum_c t_cp_c$};
+
+  \node[font=\footnotesize] at (0.45,2.42) {$c_0$};
+  \foreach \x/\lab in {0.45/1, 1.20/2, 1.95/3, 2.70/4}
+    {\node[anchor=north, font=\footnotesize] at (\x,-0.06) {$p_{\lab}$};}
+
+  \node at (1.575,2.78) {$p$ not constant};
+  \node[font=\footnotesize, align=center] at (1.575,-1.02)
+    {$p_{c_0}\ \ge\ \sum_c t_cp_c$\\[2pt]
+     $\{1,\dots,m\}\setminus\{c_0\}$ dominates};
+\end{scope}
+
+% ================= p constant =============================================
+\begin{scope}[shift={(6.05,0)}]
+  % every pivot equals 1/k with k = 3
+  \draw[mean] (0.05,1.4667)--(3.28,1.4667);
+  \node[anchor=west, font=\footnotesize] at (3.32,1.4667) {$1/k$};
+  \foreach \x in {0.20, 0.95, 1.70, 2.45}
+    {\draw[bar] (\x,0) rectangle (\x+0.50,1.4667);}
+  \draw[line width=0.6pt] (0.02,0)--(3.13,0);
+
+  \foreach \x/\lab in {0.45/1, 1.20/2, 1.95/3, 2.70/4}
+    {\node[anchor=north, font=\footnotesize] at (\x,-0.06) {$p_{\lab}$};}
+
+  \node at (1.575,2.78) {$p$ constant};
+  \node[font=\footnotesize, align=center] at (1.575,-1.02)
+    {$k\,t_c\ell_c=k-1+t_c$\\[2pt]
+     every $k$-subset dominates, none strictly};
+\end{scope}
+
+\end{tikzpicture}
