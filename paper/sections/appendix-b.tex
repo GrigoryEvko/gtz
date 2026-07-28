@@ -155,25 +155,15 @@ The atoms need not be rational and are determined only up to the orthogonal
 group; at rational conductances the graph, $L$, the effective resistances and
 the leverages are rational.
 
-Take $\gph=K_4-e$ on vertices $a,b,c,d$ with $d$ the ground and $cd$ the missing
-edge.  The five edges and their reduced incidence rows in the coordinates
-$(y_a,y_b,y_c)$ are
-\[
-  \begin{array}{llllll}
-    e_0=ab: & (1,-1,0), &\quad e_1=ac: & (1,0,-1), &\quad e_2=ad: & (1,0,0),\\
-    e_3=bc: & (0,1,-1), &\quad e_4=bd: & (0,1,0). &&
-  \end{array}
-\]
-Conductances $c=(2,3,3,3,3)$ and uniform weights $t_e=\tfrac15$.  Then
-\[
-  L=\begin{pmatrix}8&-2&-3\\ -2&8&-3\\ -3&-3&6\end{pmatrix},
-  \qquad \det L=180,
-  \qquad L^{-1}=\frac1{180}\begin{pmatrix}39&21&30\\ 21&39&30\\ 30&30&60
-  \end{pmatrix},
-\]
-so $R_{\mathrm{eff}}(ab)=\tfrac1{180}(39-21-21+39)=\tfrac15$ and
+Take the diamond $\dsn_{\Diamond}$ of \S\ref{sec:diamond}, writing
+$a,b,c,d$ for its vertices $1,2,3,4$, so that its five edges
+$e_0,\dots,e_4$ are $ab,ac,ad,bc,bd$, its incidence vectors
+$b_0,\dots,b_4$ are those of \eqref{eq:drops}, and its Laplacian and
+inverse are \eqref{eq:laplacian} and \eqref{eq:diamondlev}.  Its
+leverages read through \eqref{eq:graphicleverage} rather than through
+\eqref{eq:diamondlev}: $R_{\mathrm{eff}}(ab)=\tfrac1{180}(39-21-21+39)=\tfrac15$ and
 $R_{\mathrm{eff}}(e)=\tfrac{39}{180}=\tfrac{13}{60}$ for each of the four rim
-edges $ac,ad,bc,bd$.  By \eqref{eq:graphicleverage},
+edges $ac,ad,bc,bd$, so that
 \[
   s_{ab}=\tfrac25,\quad s_{\mathrm{rim}}=\tfrac{13}{20},
   \qquad
