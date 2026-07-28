@@ -276,10 +276,17 @@ identity:
 at every size and every rank, for every weighted design.  GTZ asks for a single
 `rank`-subset with `∑_{c ∈ C} g_c g_cᵀ ⪰ 1`; this says the volume-sampling AVERAGE
 of those subset sums already is, so the conjecture is exactly the derandomisation
-of this inequality.  Contrast `Gtz.not_mixedRootAtLeastOne_sixThree`: the same
-average taken through `λ_min` instead of through the matrix is FALSE, which is why
-the campaign's expected-polynomial instruments and not the matrix average are the
-live route. -/
+of this inequality.  Contrast the eigenvalue average, which is FALSE: the same
+average taken through `λ_min` instead of through the matrix fails at a `(3,2)`
+design, `Gtz.volumeAverageKillDesign_not_hasDominatingVolumeSamplingAverage` in the
+downstream `Gtz.Quantitative.VolumeAverageLaw`, and that witness still has a
+dominating subset (`Gtz.volumeAverageKillDesign_dominates_zeroTwo`), so what dies
+there is the averaging law and not GTZ.  An earlier version of this docstring cited
+`Gtz.not_mixedRootAtLeastOne_sixThree` for the same contrast; that theorem is about
+the least ROOT of the mixture, a DIFFERENT functional, and the two separate in sign
+at the `D₃` root design — least root `0.94007…`, below one, against an eigenvalue
+average `21/8 − 9√2/8 = 1.03401…`, above it (measured, not mechanized).  So the
+earlier citation did not support the claim it was attached to. -/
 theorem posSemidef_leverageWeightedAtomSum_sub_one (D : WeightedDesign m k) :
     (leverageWeightedAtomSum D - 1).PosSemidef := by
   refine Matrix.posSemidef_iff_dotProduct_mulVec.mpr

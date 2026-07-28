@@ -197,6 +197,10 @@ import Gtz.Quantitative.ComplexRankThreeFloor
 import Gtz.Quantitative.ExtremalBasisActivity
 import Gtz.Quantitative.CauchyBinetValueFloor
 import Gtz.Quantitative.VolumeAverageLaw
+import Gtz.Quantitative.ProjectionOnePointMarginal
+import Gtz.Quantitative.ElementaryValueFloor
+import Gtz.Quantitative.SubsetDeterminantBound
+import Gtz.Quantitative.OddRankDeterminantUpgrade
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -4892,3 +4896,232 @@ import Gtz.Quantitative.VolumeAverageLaw
 #print axioms Gtz.tetraDesign_detSubsetSum_eq
 #print axioms Gtz.tetraDesign_weightElementary_three
 #print axioms Gtz.tetraDesign_detSubsetSum_eq_inv_weightElementary
+
+-- Gtz/Quantitative/ProjectionOnePointMarginal.lean -- C7, the projection one-point marginal
+-- DISCHARGED: the rank-subsets containing a fixed atom carry exactly the chart's diagonal
+-- entry there, sum over |C| = rank with c in C of det P_C = P_cc = t_c * l_c, for every
+-- weighted design and with no side condition.  So Gtz.IsProjectionOnePointMarginal -- a
+-- def ... : Prop that was never discharged and that four shipped theorems carried as a
+-- hypothesis -- is now the theorem Gtz.isProjectionOnePointMarginal and can be supplied at
+-- every call site.  The erased chart (1 - E_cc) P is P with one row zeroed, so its principal
+-- minors are exactly the chart minors AVOIDING that atom; Weinstein-Aronszajn moves its
+-- generating function to size rank as 1 + X (1 - v_c v_c^T), where every principal block is
+-- again a rank-one gap and det(1 - u u^T) = 1 - <u,u>, so the level-minors of the gap sum to
+-- C(rank, level) - C(rank - 1, level - 1) P_cc by the shipped double count.  That is C7-A,
+-- det(1 + X (1 - E_cc) P) = (1 + X)^(rank - 1) (1 + (1 - P_cc) X), by Pascal's rule and in ONE
+-- polynomial variable -- the construction plan recorded on the Prop asks for a bivariate
+-- argument and is unnecessary.  Subtracting the avoiding minors from the shipped total gives
+-- the marginal at every subset size, and one exchange of summation over the incidence
+-- B subset C gives the count FLOOR-E2 consumes, (size - rank)(rank - 1) P_cc + rank.  The
+-- hypotheses are sharp and stated: 0 < level (the identity is false at level 0 under Nat
+-- subtraction), 1 <= rank for C7-A (at rank 0 the two sides are 1 and 1 + X), 2 <= rank for
+-- the e_{rank-1} count; the discharge itself carries nothing beyond the design, rank 0
+-- included.  Closes no covering class and moves no cell
+#print axioms Gtz.det_one_sub_vecMulVec
+#print axioms Gtz.erasedRowChart
+#print axioms Gtz.erasedRowChart_apply
+#print axioms Gtz.erasedRowChart_eq_erasedFrame_mul_transpose
+#print axioms Gtz.transpose_mul_erasedScaledAtomRows
+#print axioms Gtz.det_one_add_X_smul_erasedRowChart_eq_rankGap
+#print axioms Gtz.projectionOfDesign_diagonal_eq_sum_sq
+#print axioms Gtz.det_submatrix_erasedRowChart
+#print axioms Gtz.det_submatrix_one_sub_vecMulVec
+#print axioms Gtz.sum_det_submatrix_one_sub_vecMulVec
+#print axioms Gtz.det_one_add_X_smul_erasedRow_projectionOfDesign
+#print axioms Gtz.sum_shadowDeterminant_eq_choose
+#print axioms Gtz.sum_shadowDeterminant_notMem_eq
+#print axioms Gtz.sum_shadowDeterminant_mem_eq_diag_mul_choose
+#print axioms Gtz.sum_shadowDeterminant_mem_eq_diag
+#print axioms Gtz.isProjectionOnePointMarginal
+#print axioms Gtz.powersetCard_eq_filter_subset
+#print axioms Gtz.card_filter_powersetCard_superset_mem
+#print axioms Gtz.sum_esym_shadowDeterminant_mem_eq
+
+-- Gtz/Quantitative/ElementaryValueFloor.lean -- FLOOR-E2, the elementary-symmetric floor
+-- -(1/size)(1 - 1/((size - rank)(rank - 1) + rank)) on the value of an admissible chart
+-- stationarity datum: -4/27 at (6,3) and -10/77 at (7,3), against FLOOR-CB's -3/20 and -2/15.
+-- FLOOR-CB reads det P[C] as lambda_min times the other eigenvalues and caps that factor by
+-- one, which needs P[C] <= 1; E2 caps it by e_{rank-1}(P[C]) instead, of which it is one
+-- nonnegative term, so the contraction hypothesis gets WEAKER -- the spectral step assumes
+-- only positive semidefiniteness.  Its ingredients: the minor-side spectral dictionary that
+-- the level-minors of a Hermitian matrix sum to e_level of its spectrum, read off one charpoly
+-- coefficient two ways; the per-matrix step det A <= <u, A u> e_{n-1}(A) at a unit probe; the
+-- block bridge putting e_{rank-1}(P[C]) as a sum of chart minors, with no esymm and no block
+-- in the statement; E2-A, the per-subset cap against an arbitrary cap exactly as FLOOR-CB's
+-- C1-A; and the sum against Cauchy-Binet through the shipped count
+-- Gtz.sum_esym_shadowDeterminant_mem_eq and the leverage bound P_cc <= 1.  FLOOR-E2 proper
+-- carries 2 <= rank, which is that count's hypothesis and not caution about the edges; the
+-- COMBINED floor, at the count min(C(size - 1, rank - 1), (size - rank)(rank - 1) + rank),
+-- carries no rank hypothesis at all -- rank 1 makes both counts one and dispatches to
+-- FLOOR-CB, and rank 0 is unreachable by Gtz.rank_pos_of_isChartArgmaxValue -- so the kernel
+-- holds one floor at least as good as either parent with no cell excluded at either edge.
+-- The two counts cross between (5,3), where the binomial still wins at 6 against 7, and
+-- (6,3), where E2 wins at 9 against 10.  Then C8-a, the tightened Handelman certificate
+-- 64 E(g) = 18603(-g)^3 + 196101(g + 4/27)(-g)^2 + 269001(g + 4/27)^2(-g) + 98415(g + 4/27)^3,
+-- all four coefficients positive integers, giving the margin 689/729 <= E on [-4/27, 0]
+-- against the 1711/2000 the shipped certificate gives on the wider window; E(-1/6) = 0 and
+-- -1/6 < -4/27, so the original -1/size window does contain a root of the eliminant and the
+-- floor is load-bearing rather than cosmetic.  Closes no covering class and discharges
+-- nothing: that arc's numeric hypothesis was already discharged at -3/20 by FLOOR-CB, so this
+-- supplies margin, and Gtz.EliminatesChartTwoBlockValue remains undischarged
+#print axioms Gtz.dotProduct_self_pick_eq_of_support
+#print axioms Gtz.dotProduct_mulVec_submatrix_pick_eq_of_support
+#print axioms Gtz.dotProduct_mulVec_le_of_admissibleProbe
+#print axioms Gtz.sum_det_principalMinors_eq_sum_prod_eigenvalues
+#print axioms Gtz.codimOneMinorSum
+#print axioms Gtz.codimOneMinorSum_nonneg
+#print axioms Gtz.det_le_eigenvalue_mul_codimOneMinorSum
+#print axioms Gtz.det_le_dotProduct_mulVec_mul_codimOneMinorSum
+#print axioms Gtz.mappedSubsetEquiv
+#print axioms Gtz.shadowDeterminant_map_eq_det_blockMinor
+#print axioms Gtz.sum_shadowDeterminant_powersetCard_eq_sum_det_blockMinors
+#print axioms Gtz.codimOneMinorSum_submatrix_eq_sum_shadowDeterminant
+#print axioms Gtz.shadowDeterminant_le_mul_sum_shadowDeterminant_of_isChartArgmaxValue
+#print axioms Gtz.elementaryCount
+#print axioms Gtz.combinedCount
+#print axioms Gtz.valueFloorOfCount
+#print axioms Gtz.elementaryValueFloor
+#print axioms Gtz.combinedValueFloor
+#print axioms Gtz.cauchyBinetValueFloor_eq
+#print axioms Gtz.valueFloorOfCount_le_valueFloorOfCount_of_count_le
+#print axioms Gtz.valueFloorOfCount_le_value_of_one_le_mul
+#print axioms Gtz.sum_powersetCard_sum_mem_mul_eq
+#print axioms Gtz.one_le_elementaryCount_mul_one_add_size_mul_value_of_isChartArgmaxValue
+#print axioms Gtz.elementaryCount_pos
+#print axioms Gtz.cauchyBinetCount_pos
+#print axioms Gtz.combinedCount_pos
+#print axioms Gtz.elementaryValueFloor_le_value_of_isChartArgmaxValue
+#print axioms Gtz.elementaryValueFloor_le_value_of_isChartStationaryData
+#print axioms Gtz.combinedValueFloor_le_value_of_isChartArgmaxValue
+#print axioms Gtz.combinedValueFloor_le_value_of_isChartStationaryData
+#print axioms Gtz.cauchyBinetValueFloor_le_combinedValueFloor
+#print axioms Gtz.elementaryValueFloor_le_combinedValueFloor
+#print axioms Gtz.elementaryCount_lt_choose_sixThree
+#print axioms Gtz.choose_lt_elementaryCount_fiveThree
+#print axioms Gtz.elementaryCount_sixThree
+#print axioms Gtz.elementaryCount_sevenThree
+#print axioms Gtz.elementaryValueFloor_sixThree
+#print axioms Gtz.elementaryValueFloor_sevenThree
+#print axioms Gtz.combinedCount_sixThree
+#print axioms Gtz.combinedCount_sevenThree
+#print axioms Gtz.combinedValueFloor_sixThree
+#print axioms Gtz.combinedValueFloor_sevenThree
+#print axioms Gtz.neg_four_div_twentySeven_le_value_of_isChartStationaryData
+#print axioms Gtz.neg_ten_div_seventySeven_le_value_of_isChartStationaryData
+#print axioms Gtz.twoBlockEliminantCubic_eq_tightenedHandelmanCombination
+#print axioms Gtz.twoBlockEliminantCubic_nonneg_of_mem_tightenedWindow
+#print axioms Gtz.twoBlockEliminantCubic_sub_tightenedMargin_eq_prod
+#print axioms Gtz.tightenedHandelmanMargin_le_twoBlockEliminantCubic
+#print axioms Gtz.twoBlockEliminantCubic_pos_of_mem_tightenedWindow
+#print axioms Gtz.twoBlockEliminantCubic_ne_zero_of_tightenedNegativeValue
+#print axioms Gtz.twoBlockEliminantCubic_neg_inv_six_eq_zero
+#print axioms Gtz.not_tightenedWindow_neg_inv_six
+#print axioms Gtz.neg_three_div_twenty_lt_neg_four_div_twentySeven
+
+-- Gtz/Quantitative/SubsetDeterminantBound.lean -- two independent things, and the first is a
+-- completion rather than a construction.  C2, the elementary-symmetric bound
+-- det S_C >= 1/e_rank(t), was ALREADY SHIPPED in Gtz.Quantitative.VolumeAverageLaw together
+-- with its uniform-weight form, its tetrahedron sharpness triple and the degenerate division
+-- form; none of that is restated.  What is added is the division-free primitive -- a uniform
+-- cap on the subset determinants forces 1 <= cap * e_rank(t), stated against an arbitrary cap,
+-- so no maximum, no positivity of e_rank(t) and no nonempty family are needed -- the
+-- supersession over the binomial pigeonhole MEASURED as exactly the factor C(size, rank), with
+-- no Maclaurin inequality anywhere; the three uniform-weight numerals 16 at (4,3), 54/5 at
+-- (6,3) and 49/5 at (7,3), which need no Maclaurin because at uniform weights e_rank(t) is an
+-- exact evaluation; and the weight-free form at arbitrary weights CONDITIONAL on Maclaurin's
+-- inequality, which Mathlib does not carry and which is an explicit hypothesis, not a proof.
+-- Then C4, the determinant-trace floor: AM-GM in natural-power form, absent from Mathlib in
+-- that shape, gives (dim - 1)^(dim - 1) det A <= lambda_j(A) tr(A)^(dim - 1) at EVERY
+-- eigenvalue index and with no case split on the dimension, solved for the eigenvalue as
+-- detTraceFloor and restated in the Loewner form the repository speaks.  It is landed as
+-- matrix analysis and NOT as a route: the (det, tr) = (27/2, 9) fibre in dimension three
+-- carries positive semidefinite forms on both sides of the domination threshold -- spectra
+-- (6, 3/2, 3/2) and (3 - 3 sqrt2/2, 3, 3 + 3 sqrt2/2) -- so EVERY function of the pair that
+-- floors the spectrum is at most 3 - 3 sqrt2/2 < 1 there and can never certify S_C >= 1.  The
+-- two witnesses are diagonal representatives of those spectra; that the sixteen independent
+-- triples of the D_3 root design realise exactly them is NOT asserted here.  C4's own value on
+-- that fibre is 2/3, strictly below the ceiling, so it is not sharp for its own method either.
+-- Finally the C6 companion: E_pi[S_C] >= 1 for every weighted design UNCONDITIONALLY, which is
+-- the shipped leverage-weighted statement plus the one-point marginal, now that the marginal
+-- is a theorem rather than an assumed Prop; and the derandomisation gap in design-free form, a
+-- two-member positive semidefinite family whose uniform average is exactly the identity while
+-- NO member admits any positive Loewner floor.  Closes no cell and excludes no covering class
+#print axioms Gtz.one_le_capValue_mul_weightElementary
+#print axioms Gtz.exists_one_le_detSubsetSum_mul_weightElementary
+#print axioms Gtz.exists_inv_choose_le_weightElementary_mul_detSubsetSum
+#print axioms Gtz.exists_detSubsetSum_ge_pow_div_choose_of_maclaurin
+#print axioms Gtz.exists_detSubsetSum_ge_sixteen_of_uniformWeight
+#print axioms Gtz.exists_detSubsetSum_ge_fiftyFour_div_five_of_uniformWeight
+#print axioms Gtz.exists_detSubsetSum_ge_fortyNine_div_five_of_uniformWeight
+#print axioms Gtz.prod_le_pow_sum_div_card
+#print axioms Gtz.pow_card_mul_prod_le_pow_sum
+#print axioms Gtz.pow_pred_mul_det_le_eigenvalue_mul_trace_pow
+#print axioms Gtz.detTraceFloor
+#print axioms Gtz.detTraceFloor_le_eigenvalue_of_posSemidef
+#print axioms Gtz.posSemidef_sub_detTraceFloor_smul_one
+#print axioms Gtz.diagonal_sub_smul_one
+#print axioms Gtz.sqrt_two_sq
+#print axioms Gtz.sqrt_two_lt_two
+#print axioms Gtz.four_div_three_lt_sqrt_two
+#print axioms Gtz.dominatingFibreForm
+#print axioms Gtz.slackFibreForm
+#print axioms Gtz.posSemidef_dominatingFibreForm
+#print axioms Gtz.det_dominatingFibreForm
+#print axioms Gtz.trace_dominatingFibreForm
+#print axioms Gtz.posSemidef_dominatingFibreForm_sub_one
+#print axioms Gtz.posSemidef_slackFibreForm
+#print axioms Gtz.det_slackFibreForm
+#print axioms Gtz.trace_slackFibreForm
+#print axioms Gtz.slackFibreLeast_lt_one
+#print axioms Gtz.not_posSemidef_slackFibreForm_sub_one
+#print axioms Gtz.exists_pair_on_detTraceFibre_separated_by_domination
+#print axioms Gtz.detTraceFloorFunction_le_slackFibreLeast
+#print axioms Gtz.detTraceFloorFunction_lt_one
+#print axioms Gtz.detTraceFloor_rankThreeFibre
+#print axioms Gtz.detTraceFloor_rankThreeFibre_lt_slackFibreLeast
+#print axioms Gtz.posSemidef_expectedSubsetSum_sub_one
+#print axioms Gtz.averageGapForm
+#print axioms Gtz.posSemidef_averageGapForm
+#print axioms Gtz.averageGapForm_floor_nonpos
+#print axioms Gtz.half_smul_averageGapForm_add
+#print axioms Gtz.exists_family_flooring_average_without_flooring_member
+
+-- Gtz/Quantitative/OddRankDeterminantUpgrade.lean -- the odd-rank value at zero, with a
+-- constant: q(0) <= -1/e_rank(t) at every real weighted design of odd rank and with no side
+-- condition.  That strictly strengthens the shipped Gtz.mixedCharPoly_eval_zero_nonpos_of_odd,
+-- recovered here in one step, and removes the nonsingular-subset witness that
+-- Gtz.mixedCharPoly_eval_zero_neg_of_odd consumes for strictness; neither shipped theorem is
+-- modified.  Two shipped identities and one classical inequality, with no new analysis: (I1)
+-- reads each volume-sampling mass as det P_C = (product of weights on C) det S_C, which turns
+-- the rank-level coefficient into the volume-sampling average of det S_C and gives
+-- q(0) = (-1)^rank E_pi[det S_C]; Cauchy-Schwarz in Engel form against the masses and their
+-- weight products has numerator C(rank, level)^2 by the shipped total, which Cauchy-Binet
+-- makes 1 at level = rank; and the parity sign is the only place the rank being odd is spent.
+-- The level-parametric Engel bound is stated because it is free -- its level-one instance IS
+-- the shipped Gtz.sq_rank_le_expectedElementary_one, which is therefore NOT restated -- and the
+-- even-rank companion is recorded for completeness of the parity split, consumed by nothing.
+-- ATTAINED exactly at the regular tetrahedron, where e_3(t) = 1/16 and q(0) = -16, so no
+-- strengthening of the Cauchy-Schwarz step could lower the constant.  At uniform weights the
+-- constant is -54/5 at (6,3) and -49/5 at (7,3), recorded against the two rank-three
+-- witnesses; their true values at zero are MEASURED elsewhere and proved neither here nor
+-- anywhere in the repository.  It bounds no ROOT -- the refutations
+-- Gtz.not_mixedRootAtLeastOne_sixThree and Gtz.not_mixedRootAtLeastOne_sevenThree turn on the
+-- value at 1, which this leaves untouched -- exhibits no subset, since a floor on an average
+-- names none, closes no covering class and decides no cell
+#print axioms Gtz.expectedElementary_rank_eq_volumeSamplingAverage_detSubsetSum
+#print axioms Gtz.expectedElementary_rank_eq_sum_weightProduct_mul_detSubsetSum_sq
+#print axioms Gtz.mixedCharPoly_eval_zero_eq_neg_one_pow_mul_expectedElementary
+#print axioms Gtz.weightElementary_one
+#print axioms Gtz.sq_choose_div_weightElementary_le_expectedElementary
+#print axioms Gtz.inv_weightElementary_le_expectedElementary_rank
+#print axioms Gtz.inv_weightElementary_le_volumeSamplingAverage_detSubsetSum
+#print axioms Gtz.neg_inv_weightElementary_lt_zero
+#print axioms Gtz.mixedCharPoly_eval_zero_le_neg_inv_weightElementary_of_odd
+#print axioms Gtz.mixedCharPoly_eval_zero_nonpos_of_odd_from_upgrade
+#print axioms Gtz.mixedCharPoly_eval_zero_lt_zero_of_odd
+#print axioms Gtz.inv_weightElementary_le_mixedCharPoly_eval_zero_of_even
+#print axioms Gtz.tetraDesign_attains_neg_inv_weightElementary_floor
+#print axioms Gtz.rootKillDesign_weightElementary_three
+#print axioms Gtz.mixedCharPoly_rootKillDesign_eval_zero_le
+#print axioms Gtz.axisKillDesign_weightElementary_three
+#print axioms Gtz.mixedCharPoly_axisKillDesign_eval_zero_le
