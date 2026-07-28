@@ -261,8 +261,7 @@ Proposition~\ref{prop:volumefails}
 
 The ledger module \texttt{Gtz/Audit.lean} lists, declaration by
 declaration, the axioms on which each depends, printed by the kernel rather
-than asserted by the author: $3710$ invocations of \texttt{\#print axioms}
-over $157$ imported modules.  The permitted set is Mathlib's
+than asserted by the author.  The permitted set is Mathlib's
 $\{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}$, and
 nothing outside it occurs.  Classical logic is used freely, and nothing in
 the development is a constructive claim.
@@ -273,10 +272,10 @@ Closed arithmetic over concrete finite index sets is discharged by kernel
 evaluation of decidable propositions, which introduces no axiom.  No proof
 is closed by compiled evaluation.
 
-The ledger lists every \texttt{theorem} and \texttt{lemma} of the
-development, so every declaration named in Tables~\ref{tab:lean}
-and~\ref{tab:leantwo} is covered.  Its one deliberate omission is a module
-that nothing imports and that duplicates another.
+Every declaration named in Tables~\ref{tab:lean} and~\ref{tab:leantwo} is
+covered, and so is every theorem named in running text.  Declarations marked
+\texttt{private} stand outside the ledger, which cannot address them from
+another module, and so do modules that nothing imports.
 
 No numerical assertion in the paper rests on floating-point evaluation.  The
 witnesses of \S\ref{sec:sharp}, and those of
