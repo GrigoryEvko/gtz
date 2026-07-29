@@ -16,11 +16,13 @@ import Gtz.LinAlg.BernsteinPositivity
 import Gtz.LinAlg.Completion
 import Gtz.LinAlg.CongruenceRobustness
 import Gtz.LinAlg.EigenvalueSubdifferential
+import Gtz.LinAlg.ElliptopeInterval
 import Gtz.LinAlg.GordanAlternative
 import Gtz.LinAlg.ProjectionForm
 import Gtz.LinAlg.PsdKit
 import Gtz.LinAlg.ResolventPerturbation
 import Gtz.LinAlg.SchurRankOne
+import Gtz.LinAlg.SignForcing
 import Gtz.LinAlg.TwoByTwo
 
 -- Design: WeightedDesign facts: trace identity, leverage, margins, compactness
@@ -29,9 +31,13 @@ import Gtz.Design.CapSlack
 import Gtz.Design.ClosureObtuse
 import Gtz.Design.CollaredCompact
 import Gtz.Design.DeflationCertificate
+import Gtz.Design.DominationGates
 import Gtz.Design.DowndateInterlacing
+import Gtz.Design.FrameConservation
 import Gtz.Design.LeverageBound
 import Gtz.Design.MarginTransfer
+import Gtz.Design.RhoNormalForm
+import Gtz.Design.SignSelectedAggregate
 import Gtz.Design.StressCertificate
 import Gtz.Design.SymmetryReduction
 import Gtz.Design.TraceIdentity
