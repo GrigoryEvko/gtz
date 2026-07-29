@@ -214,6 +214,12 @@ import Gtz.Design.RhoNormalForm
 import Gtz.Design.FrameConservation
 import Gtz.Design.DominationGates
 import Gtz.Design.SignSelectedAggregate
+import Gtz.Quantitative.HollowInvolution
+import Gtz.Quantitative.MirrorLaw
+import Gtz.Quantitative.TripleCubicCriterion
+import Gtz.Quantitative.WeightProductFloor
+import Gtz.Quantitative.EqualShareSixThree
+import Gtz.Quantitative.EqualShareSixThreeMargin
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -6194,3 +6200,433 @@ import Gtz.Design.SignSelectedAggregate
 #print axioms Gtz.cherryWitnessDesign_isLightCherry_block
 #print axioms Gtz.cherryWitnessDesign_not_dominates_block
 #print axioms Gtz.exists_allHeavy_design_with_failing_lightCherry_fourBlock
+
+-- The U6 layer: the equal-share (6,3) cell, closed.  The stratum is the set of
+-- `Gtz.WeightedDesign 6 3` with every weight `1/6` and every leverage `3`
+-- (`Gtz.IsEqualShare`) -- six unit directions in `R^3` summing to `2 I`.  Its headline is
+-- `Gtz.gtzWeighted_six_three_of_isEqualShare`: every design OF THAT STRATUM has a dominating
+-- triple.  That is `Gtz.GtzWeighted 6 3` with `IsEqualShare` added as a hypothesis, NOT the
+-- unrestricted `GtzWeighted 6 3`, which remains open.  The stratum is inhabited
+-- (`Gtz.isEqualShare_icosaDesign`, `Gtz.isEqualShare_octahedronDesign`), so the restriction is
+-- not vacuous.  Four inputs feed the four-case squeeze that proves it -- the
+-- norm cap and the domination dictionary (HollowInvolution), the cubic criterion under that
+-- cap (TripleCubicCriterion), the sign-free weight squeeze (WeightProductFloor), and the
+-- sigma-preserved / P-negated split law (MirrorLaw) -- and the margin file then removes the
+-- one hypothesis the first assembly could not: two trace laws on a blocked symmetric
+-- involution replace the missing Jacobi complementary-minor identity, so
+-- `Gtz.IsHollowInvolution.exists_posSemidef_twoThirds_shift` holds for EVERY hollow
+-- symmetric involution on `Fin 6`, with no coherence and no realizability side condition.
+--
+-- Four refutations are carried here as theorems and none of them may be restated as a
+-- claim.  The pen's "entries in (-1,1)" is NOT a consequence of the S1 data
+-- (`Gtz.exists_isHollowInvolution_abs_apply_eq_one`) and is FALSE on the stratum itself:
+-- the octahedron has `gamma = -1` on three antipodal pairs
+-- (`Gtz.not_forall_abs_directionGram_lt_one_of_isEqualShare`), and it dominates anyway
+-- (`Gtz.dominates_octahedronDesign`), so the hypothesis would delete a point at which the
+-- conclusion holds.  The mirror law is NOT a fact about symmetric involutions in general
+-- (`Gtz.not_forall_det_shift_mirror_ofSymmetricInvolution`); what makes it true here is the
+-- tight-frame trace identity, not genericity.  Cap slack buys NO margin at `4/9`
+-- (`Gtz.exists_capSlack_signFreeTripleResidual_eq_four_ninths`), yet `4/9` is not tight
+-- either: the uniform margin is `9/25` on the eigenvalue side
+-- (`Gtz.exists_nine_twentyfifths_le_lambdaMinMat_of_isEqualShare`), whose measured truth is
+-- near `0.4122` -- a MEASUREMENT, never a theorem.  Finally the coordinate trap is a
+-- theorem, not a warning: this repository's `rho` and the pen's `gamma` differ by `3/2` at
+-- this stratum (`Gtz.normalizedPairing_eq_three_halves_mul_directionGram`), so a shipped
+-- `rho`-threshold read as a `gamma`-threshold silently changes every constant.
+
+-- Gtz/Quantitative/HollowInvolution.lean
+#print axioms Gtz.IsHollowInvolution
+#print axioms Gtz.IsHollowInvolution.symmetric
+#print axioms Gtz.IsHollowInvolution.diagonal_eq_zero
+#print axioms Gtz.IsHollowInvolution.square_eq_one
+#print axioms Gtz.IsHollowInvolution.apply_comm
+#print axioms Gtz.IsHollowInvolution.isHermitian
+#print axioms Gtz.IsHollowInvolution.trace_eq_zero
+#print axioms Gtz.IsHollowInvolution.neg
+#print axioms Gtz.IsHollowInvolution.sum_sq_row
+#print axioms Gtz.IsHollowInvolution.sum_sq_row_erase
+#print axioms Gtz.IsHollowInvolution.sq_apply_le_one
+#print axioms Gtz.IsHollowInvolution.abs_apply_le_one
+#print axioms Gtz.IsHollowInvolution.sq_apply_eq_one_iff
+#print axioms Gtz.IsHollowInvolution.sum_sdiff_pair_mul
+#print axioms Gtz.IsHollowInvolution.posSemidef_one_sub
+#print axioms Gtz.IsHollowInvolution.posSemidef_one_add
+#print axioms Gtz.IsHollowInvolution.posSemidef_one_sub_submatrix
+#print axioms Gtz.IsHollowInvolution.posSemidef_one_add_submatrix
+#print axioms Gtz.IsHollowInvolution.submatrix_transpose
+#print axioms Gtz.IsHollowInvolution.submatrix_diagonal_eq_zero
+#print axioms Gtz.IsHollowInvolution.positivePart
+#print axioms Gtz.IsHollowInvolution.negativePart
+#print axioms Gtz.IsHollowInvolution.isIdempotentElem_positivePart
+#print axioms Gtz.IsHollowInvolution.isIdempotentElem_negativePart
+#print axioms Gtz.IsHollowInvolution.positivePart_add_negativePart
+#print axioms Gtz.IsHollowInvolution.positivePart_mul_negativePart
+#print axioms Gtz.IsHollowInvolution.trace_positivePart
+#print axioms Gtz.IsHollowInvolution.trace_negativePart
+#print axioms Gtz.IsHollowInvolution.sq_eigenvalues_eq_one
+#print axioms Gtz.IsHollowInvolution.eigenvalues_eq_one_or_neg_one
+#print axioms Gtz.IsHollowInvolution.card_eigenvalues_eq_one
+#print axioms Gtz.swapInvolutionTwo
+#print axioms Gtz.isHollowInvolution_swapInvolutionTwo
+#print axioms Gtz.exists_isHollowInvolution_abs_apply_eq_one
+#print axioms Gtz.hollowMatrixThree
+#print axioms Gtz.hollowMatrixThree_transpose
+#print axioms Gtz.one_add_hollowMatrixThree
+#print axioms Gtz.one_sub_hollowMatrixThree
+#print axioms Gtz.sq_sum_add_two_mul_abs_prod_le_one_of_posSemidef
+#print axioms Gtz.IsHollowInvolution.submatrix_three_eq_hollowMatrixThree
+#print axioms Gtz.IsHollowInvolution.normCap_triple
+#print axioms Gtz.dotProduct_atom_eq_of_uniformLeverage
+#print axioms Gtz.IsEqualShare
+#print axioms Gtz.IsEqualShare.leverage_eq
+#print axioms Gtz.IsEqualShare.weight_eq
+#print axioms Gtz.IsEqualShare.size_pos
+#print axioms Gtz.IsEqualShare.leverage_pos
+#print axioms Gtz.IsEqualShare.atomShare_eq
+#print axioms Gtz.IsEqualShare.directionGram_self
+#print axioms Gtz.IsEqualShare.allHeavy
+#print axioms Gtz.IsEqualShare.dotProduct_atom_eq
+#print axioms Gtz.correlationInvolution
+#print axioms Gtz.correlationInvolution_apply_of_ne
+#print axioms Gtz.correlationInvolution_apply_self
+#print axioms Gtz.correlationInvolution_submatrix_three_eq_hollowMatrixThree
+#print axioms Gtz.directionGramMatrix_sq_of_isEqualShare
+#print axioms Gtz.isHollowInvolution_correlationInvolution
+#print axioms Gtz.sum_sq_directionGram_erase_of_isEqualShare
+#print axioms Gtz.sum_sdiff_directionGram_mul_of_isEqualShare
+#print axioms Gtz.directionGram_normCap_triple
+#print axioms Gtz.unitFrameSum
+#print axioms Gtz.subsetSum_eq_smul_unitFrameSum
+#print axioms Gtz.dominates_iff_posSemidef_unitFrameSum
+#print axioms Gtz.tripleGapMatrix_eq_smul_hollowShift
+#print axioms Gtz.dominates_triple_iff_posSemidef_hollowShift
+#print axioms Gtz.dominates_triple_iff_posSemidef_correlationInvolution_submatrix
+#print axioms Gtz.dominates_triple_iff_posSemidef_directionGramMatrix_submatrix
+#print axioms Gtz.le_lambdaMinMat_iff_posSemidef_sub_smul_one
+#print axioms Gtz.dominates_triple_iff_inv_three_le_lambdaMinMat
+#print axioms Gtz.posSemidef_unitFrameSum_iff_posSemidef_directionGramMatrix_submatrix
+#print axioms Gtz.normalizedPairing_eq_three_halves_mul_directionGram
+#print axioms Gtz.correlationMatrixThree_normalizedPairing_eq_smul_hollowShift
+#print axioms Gtz.tightFrameDesign
+#print axioms Gtz.tightFrameDesign_atom
+#print axioms Gtz.isEqualShare_tightFrameDesign
+#print axioms Gtz.unitAtom_tightFrameDesign
+#print axioms Gtz.directionGram_tightFrameDesign
+#print axioms Gtz.isEqualShare_icosaDesign
+#print axioms Gtz.isHollowInvolution_icosaDesign
+#print axioms Gtz.octahedronFrame
+#print axioms Gtz.octahedronFrame_tight
+#print axioms Gtz.octahedronFrame_unit
+#print axioms Gtz.octahedronDesign
+#print axioms Gtz.isEqualShare_octahedronDesign
+#print axioms Gtz.directionGram_octahedronDesign_zero_one
+#print axioms Gtz.not_forall_abs_directionGram_lt_one_of_isEqualShare
+#print axioms Gtz.dominates_octahedronDesign
+#print axioms Gtz.directionGram_eq_zero_of_sq_directionGram_eq_one
+#print axioms Gtz.isEqualShare_six_of_weight_of_leverage
+#print axioms Gtz.IsEqualShare.weight_eq_six
+#print axioms Gtz.IsEqualShare.leverage_eq_three
+#print axioms Gtz.IsEqualShare.allHeavy_three
+#print axioms Gtz.isHollowInvolution_correlationInvolution_six
+#print axioms Gtz.sum_sq_directionGram_erase_six
+#print axioms Gtz.sum_sdiff_directionGram_mul_six
+#print axioms Gtz.directionGram_normCap_triple_six
+#print axioms Gtz.dominates_triple_iff_posSemidef_hollowShift_six
+#print axioms Gtz.dominates_triple_iff_inv_three_le_lambdaMinMat_six
+#print axioms Gtz.dominates_iff_posSemidef_unitFrameSum_six
+#print axioms Gtz.normalizedPairing_eq_three_halves_mul_directionGram_six
+#print axioms Gtz.inv_three_le_lambdaMinMat_icosaDesign
+#print axioms Gtz.posSemidef_hollowShift_icosaDesign
+#print axioms Gtz.sum_sq_directionGram_erase_octahedronDesign
+
+-- Gtz/Quantitative/MirrorLaw.lean
+#print axioms Gtz.matrixScalar_eq_smul_one
+#print axioms Gtz.det_smul_one_sub_eq_evalCharpoly
+#print axioms Gtz.det_shift_gram_eq_det_shift_frame
+#print axioms Gtz.det_shift_frame_mirror
+#print axioms Gtz.det_shift_gram_mirror
+#print axioms Gtz.det_shift_gap_mirror
+#print axioms Gtz.det_shift_gap_mirror_ofLevelTwo
+#print axioms Gtz.det_gram_eq_det_level_smul_one_sub_gram
+#print axioms Gtz.trace_gram_add_trace_gram
+#print axioms Gtz.charpoly_gram_mirror
+#print axioms Gtz.posSemidef_gram_sub_smul_one_iff_ofTightSplit
+#print axioms Gtz.pow_mul_det_shift_gram_mirror
+#print axioms Gtz.pow_mul_det_shift_gram_mirror_ofSquareLeft
+#print axioms Gtz.det_shift_gram_mirror_sevenThree
+#print axioms Gtz.det_shift_eq_of_intertwine
+#print axioms Gtz.det_shift_mirror_of_anticommutingBlocks
+#print axioms Gtz.det_shift_mirror_of_symmetricInvolutionBlocks
+#print axioms Gtz.not_forall_det_shift_mirror_ofSymmetricInvolution
+#print axioms Gtz.directionFrame
+#print axioms Gtz.directionFrame_mul_transpose
+#print axioms Gtz.transpose_mul_directionFrame_apply
+#print axioms Gtz.leverageOf_pos_of_atomShare_pos
+#print axioms Gtz.subsetSum_add_subsetSum_compl_of_uniformWeight
+#print axioms Gtz.dominates_iff_posSemidef_smul_one_sub_subsetSum_compl
+#print axioms Gtz.subsetSum_eq_smul_sum_atomMatrix_unitAtom
+#print axioms Gtz.subsetSum_triple_eq_smul_directionFrame_mul_transpose
+#print axioms Gtz.sum_atomMatrix_unitAtom_of_uniformShare
+#print axioms Gtz.sum_eq_of_bijective_six
+#print axioms Gtz.directionFrame_tightSplit_six
+#print axioms Gtz.directionTripleSigma
+#print axioms Gtz.directionTripleProduct
+#print axioms Gtz.det_one_smul_sub_directionGram_triple
+#print axioms Gtz.directionTripleProduct_compl_eq_neg
+#print axioms Gtz.exists_nonneg_directionTripleProduct_ofSplit
+#print axioms Gtz.sum_directionGram_sq_split
+#print axioms Gtz.directionTripleSigma_compl_eq
+#print axioms Gtz.directionSquareMass
+#print axioms Gtz.directionCrossSquareMass
+#print axioms Gtz.sum_directionGram_sq_of_uniformShare
+#print axioms Gtz.directionSquareMass_add_directionCrossSquareMass
+#print axioms Gtz.directionCrossSquareMass_compl
+#print axioms Gtz.directionSquareMass_sub_directionSquareMass_compl
+#print axioms Gtz.directionSquareMass_compl_eq
+#print axioms Gtz.directionSquareMass_triple
+#print axioms Gtz.directionSquareMass_compl_sub_sevenThree
+#print axioms Gtz.atomShare_icosaDesign
+#print axioms Gtz.directionTripleSigma_icosaDesign_mirror
+#print axioms Gtz.directionTripleProduct_icosaDesign_mirror
+
+-- Gtz/Quantitative/TripleCubicCriterion.lean
+#print axioms Gtz.hollowSymmetricThree
+#print axioms Gtz.hollowSymmetricThree_transpose
+#print axioms Gtz.eq_hollowSymmetricThree_of_transpose_eq_of_diagonal_eq_zero
+#print axioms Gtz.smul_one_add_hollowSymmetricThree
+#print axioms Gtz.smul_one_sub_hollowSymmetricThree
+#print axioms Gtz.smul_one_add_hollowSymmetricThree_transpose
+#print axioms Gtz.correlationMatrixThree_eq_one_add_hollowSymmetricThree
+#print axioms Gtz.trace_hollowSymmetricThree
+#print axioms Gtz.det_smul_one_add_hollowSymmetricThree
+#print axioms Gtz.det_smul_one_sub_hollowSymmetricThree
+#print axioms Gtz.charpoly_hollowSymmetricThree
+#print axioms Gtz.eval_charpoly_hollowSymmetricThree
+#print axioms Gtz.nonneg_of_cubicRoot_of_elementarySymmetric_nonneg
+#print axioms Gtz.pos_of_cubicRoot_of_elementarySymmetric_pos
+#print axioms Gtz.posSemidef_three_of_elementarySymmetric
+#print axioms Gtz.posDef_three_of_elementarySymmetric
+#print axioms Gtz.smul_hollowSymmetricThree
+#print axioms Gtz.smul_one_add_hollowSymmetricThree_eq_smul_correlationMatrixThree
+#print axioms Gtz.elliptopeBracket_div_eq_det_div
+#print axioms Gtz.posSemidef_smul_one_add_hollowSymmetricThree_iff
+#print axioms Gtz.posSemidef_smul_one_sub_hollowSymmetricThree_iff
+#print axioms Gtz.posSemidef_twoThirds_smul_one_add_hollowSymmetricThree_iff_correlationMatrixThree
+#print axioms Gtz.elliptopeBracket_threeHalves_eq_criterionResidual
+#print axioms Gtz.determinantCriterion_of_posSemidef_smul_one_add_hollowSymmetricThree
+#print axioms Gtz.posSemidef_smul_one_add_hollowSymmetricThree_of_squareSum_le
+#print axioms Gtz.nonneg_of_posSemidef_smul_one_sub_hollowSymmetricThree
+#print axioms Gtz.mul_squareSum_add_two_mul_product_le_of_spectralCapUpper
+#print axioms Gtz.mul_squareSum_sub_two_mul_product_le_of_spectralCapLower
+#print axioms Gtz.mul_squareSum_add_two_mul_abs_product_le_of_spectralCap
+#print axioms Gtz.squareSum_add_two_mul_abs_product_le_one
+#print axioms Gtz.add_mul_squareSum_le_of_spectralCapUpper_of_determinantCriterion
+#print axioms Gtz.squareSum_le_three_mul_sq_of_spectralCapUpper
+#print axioms Gtz.posSemidef_smul_one_add_hollowSymmetricThree_iff_of_spectralCapUpper
+#print axioms Gtz.posSemidef_twoThirds_smul_one_add_hollowSymmetricThree_iff_of_spectralCapUpper
+#print axioms Gtz.posSemidef_smul_one_sub_hollowSymmetricThree_iff_of_spectralCapLower
+#print axioms Gtz.posDef_smul_one_add_hollowSymmetricThree_iff_of_spectralCapUpper
+#print axioms Gtz.uniformStratumQuadratic_factor
+#print axioms Gtz.uniformStratumCap_le_hinge_iff_size_le_seven
+#print axioms Gtz.posSemidef_smul_one_add_hollowSymmetricThree_iff_of_spectralCapFourThirds
+#print axioms Gtz.determinantCriterion_of_spectralCapUpper_of_heavyProduct
+#print axioms Gtz.posSemidef_smul_one_add_hollowSymmetricThree_of_spectralCapUpper_of_heavyProduct
+#print axioms Gtz.posSemidef_twoThirds_of_spectralCapUpper_of_ninth_le_product
+#print axioms Gtz.posSemidef_twoThirds_of_spectralCapUpper_of_coherent_of_ninth_le_abs_product
+#print axioms Gtz.criterion_hollowSymmetricThree_negThird_eq_fourNinths
+#print axioms Gtz.det_twoThirds_smul_one_add_hollowSymmetricThree_negThird
+#print axioms Gtz.posSemidef_twoThirds_smul_one_add_hollowSymmetricThree_negThird
+#print axioms Gtz.criterion_hollowSymmetricThree_half_eq_threeEighths
+#print axioms Gtz.posSemidef_twoThirds_smul_one_add_hollowSymmetricThree_half
+#print axioms Gtz.squareSum_add_two_mul_abs_product_hollowSymmetricThree_half_eq_one
+#print axioms Gtz.heavyProduct_hollowSymmetricThree_half
+#print axioms Gtz.criterion_hollowSymmetricThree_equiangularFifth
+#print axioms Gtz.not_heavyProduct_hollowSymmetricThree_equiangularFifth
+#print axioms Gtz.criterion_hollowSymmetricThree_one_one_one
+#print axioms Gtz.not_posSemidef_twoThirds_smul_one_add_hollowSymmetricThree_one_one_one
+#print axioms Gtz.not_posSemidef_one_sub_hollowSymmetricThree_one_one_one
+#print axioms Gtz.exists_hollowSymmetricThree_criterion_without_posSemidef
+#print axioms Gtz.exists_hollowSymmetricThree_capSharpness
+#print axioms Gtz.posSemidef_one_sub_hollowSymmetricThree_negHalf
+#print axioms Gtz.posSemidef_one_add_hollowSymmetricThree_negHalf
+#print axioms Gtz.exists_spectralCapped_hollowSymmetricThree_incoherent_heavy_not_posSemidef
+#print axioms Gtz.posSemidef_smul_one_add_iff_of_hollow_of_entries
+#print axioms Gtz.mul_squareSum_add_two_mul_abs_product_le_of_hollow_of_entries
+#print axioms Gtz.posSemidef_smul_one_add_of_hollow_of_entries_of_heavyProduct
+
+-- Gtz/Quantitative/WeightProductFloor.lean
+#print axioms Gtz.edgeWeight
+#print axioms Gtz.edgeWeight_comm
+#print axioms Gtz.edgeWeight_nonneg
+#print axioms Gtz.edgeWeight_le_one
+#print axioms Gtz.edgeWeight_self
+#print axioms Gtz.sum_erase_edgeWeight_eq_of_atomShare_eq
+#print axioms Gtz.size_mul_atomShare_eq_rank_of_atomShare_eq
+#print axioms Gtz.sum_erase_edgeWeight_eq_of_equalShare
+#print axioms Gtz.sum_erase_edgeWeight_eq_one_of_uniformSixThree
+#print axioms Gtz.sum_sum_erase_edgeWeight_eq_of_equalShare
+#print axioms Gtz.signFreeTripleResidual
+#print axioms Gtz.signFreeTripleResidual_swap_first_second
+#print axioms Gtz.signFreeTripleResidual_swap_second_third
+#print axioms Gtz.signFreeTripleResidual_le_sum
+#print axioms Gtz.signFreeTripleResidual_le_three_mul_of_le_bound
+#print axioms Gtz.sqrt_sq_mul_sq_mul_sq
+#print axioms Gtz.signFreeTripleResidual_sq_eq_sub_abs
+#print axioms Gtz.signFreeTripleResidual_sq_eq_min
+#print axioms Gtz.signFreeTripleResidual_sq_eq_of_nonneg_product
+#print axioms Gtz.signFreeTripleResidual_sq_le_sub
+#print axioms Gtz.signFreeTripleResidual_sq_le_add
+#print axioms Gtz.signFreeTripleResidual_le_of_sq_le_edgeProduct
+#print axioms Gtz.sub_le_signFreeTripleResidual_of_edgeProduct_le_sq
+#print axioms Gtz.signFreeTripleResidual_le_sub_of_normCap
+#print axioms Gtz.triangleProductFloor
+#print axioms Gtz.triangleProductFloor_le_edgeProduct_of_bound_le
+#print axioms Gtz.triangleProductFloor_le_edgeProduct_of_le_bound
+#print axioms Gtz.rootProductFloor_le_edgeProduct_of_sq_le
+#print axioms Gtz.rootProductFloor_le_edgeProduct_of_le_sq
+#print axioms Gtz.sq_pow_three_le_edgeProduct_of_sq_le
+#print axioms Gtz.pow_mul_sub_le_prod_of_bound_le
+#print axioms Gtz.pow_mul_sub_le_prod_of_le_bound
+#print axioms Gtz.failureQuadratic
+#print axioms Gtz.failureQuadratic_eq
+#print axioms Gtz.failureQuadratic_sq
+#print axioms Gtz.failureQuadratic_expand
+#print axioms Gtz.lt_failureQuadratic_of_lt_signFreeTripleResidual
+#print axioms Gtz.signFreeTripleResidual_le_of_failureQuadratic_nonpos
+#print axioms Gtz.quadratic_nonpos_of_endpoints_nonpos
+#print axioms Gtz.quadratic_neg_of_endpoints_neg
+#print axioms Gtz.failureQuadratic_nonpos_of_endpoints_nonpos
+#print axioms Gtz.signFreeTripleResidual_le_of_heavyTriangle_endpoints
+#print axioms Gtz.signFreeTripleResidual_le_of_lightTriangle_endpoints
+#print axioms Gtz.failureQuadratic_at_threshold
+#print axioms Gtz.failureQuadratic_at_threshold_nonpos
+#print axioms Gtz.failureQuadratic_at_three_mul
+#print axioms Gtz.failureQuadratic_four_ninths_at_three_mul
+#print axioms Gtz.failureQuadratic_four_ninths_at_three_mul_nonpos
+#print axioms Gtz.failureQuadratic_four_ninths_at_normCap_nonpos
+#print axioms Gtz.three_mul_sq_le_one_sub_two_mul_pow_three
+#print axioms Gtz.signFreeTripleResidual_le_four_ninths_of_lightTriangle
+#print axioms Gtz.signFreeTripleResidual_le_four_ninths_of_heavyTriangle_of_normCap
+#print axioms Gtz.signFreeTripleResidual_le_four_ninths_of_heavyTriangle_of_largeRoot
+#print axioms Gtz.signFreeTripleResidual_le_four_ninths_of_heavyTriangle
+#print axioms Gtz.signFreeTripleResidual_le_four_ninths_of_lightTriangle_or_heavyTriangle
+#print axioms Gtz.orientedTripleResidual
+#print axioms Gtz.triangleResidual
+#print axioms Gtz.triangleResidual_swap_first_second
+#print axioms Gtz.triangleResidual_swap_second_third
+#print axioms Gtz.sqrt_edgeWeight_product_eq_abs
+#print axioms Gtz.triangleResidual_eq_min
+#print axioms Gtz.triangleResidual_le_orientedTripleResidual
+#print axioms Gtz.triangleResidual_eq_orientedTripleResidual_of_coherent
+#print axioms Gtz.triangleResidual_le_orientedTripleResidual_and_eq_of_coherent
+#print axioms Gtz.triangleResidual_le_of_heavyTriangle_endpoints
+#print axioms Gtz.triangleResidual_le_of_lightTriangle_endpoints
+#print axioms Gtz.triangleResidual_le_three_mul_of_le_bound
+#print axioms Gtz.triangleResidual_le_sub_of_normCap
+#print axioms Gtz.triangleResidual_le_four_ninths_of_lightTriangle
+#print axioms Gtz.triangleResidual_le_four_ninths_of_heavyTriangle
+#print axioms Gtz.triangleResidual_le_four_ninths_of_lightTriangle_or_heavyTriangle
+
+-- Gtz/Quantitative/EqualShareSixThree.lean
+#print axioms Gtz.distinctTriples
+#print axioms Gtz.mem_distinctTriples
+#print axioms Gtz.distinctTriples_nonempty
+#print axioms Gtz.minTripleWeight
+#print axioms Gtz.minTripleWeight_nonneg
+#print axioms Gtz.maxMinWeight
+#print axioms Gtz.minTripleWeight_le_maxMinWeight
+#print axioms Gtz.maxMinWeight_nonneg
+#print axioms Gtz.exists_heavyTriple
+#print axioms Gtz.exists_lightTriple
+#print axioms Gtz.pow_three_le_sqrt_edgeProduct
+#print axioms Gtz.normCap_pow_three_of_normCap_sqrt
+#print axioms Gtz.exists_signFreeTripleResidual_le_four_ninths
+#print axioms Gtz.IsHollowInvolution.normCap_sqrt
+#print axioms Gtz.exists_signFreeTripleResidual_le_four_ninths_of_isHollowInvolution
+#print axioms Gtz.IsHollowInvolution.posSemidef_twoThirds_of_coherent_of_signFreeTripleResidual_le
+#print axioms Gtz.edgeWeight_normCap_sqrt
+#print axioms Gtz.exists_triangleResidual_le_four_ninths
+#print axioms Gtz.exists_bijective_completion_of_distinct
+#print axioms Gtz.orientedTripleResidual_eq_sigma_sub
+#print axioms Gtz.exists_coherent_orientedTripleResidual_le_of_triangleResidual_le
+#print axioms Gtz.dominates_of_orientedTripleResidual_le_four_ninths
+#print axioms Gtz.exists_dominating_triple_of_isEqualShare
+#print axioms Gtz.gtzWeighted_six_three_of_isEqualShare
+#print axioms Gtz.exists_inv_three_le_lambdaMinMat_of_isEqualShare
+#print axioms Gtz.tightSide
+#print axioms Gtz.tightEdgeWeight
+#print axioms Gtz.tightEdgeWeight_comm
+#print axioms Gtz.tightEdgeWeight_nonneg
+#print axioms Gtz.signFreeTripleResidual_intra
+#print axioms Gtz.signFreeTripleResidual_mixed_first
+#print axioms Gtz.signFreeTripleResidual_mixed_second
+#print axioms Gtz.signFreeTripleResidual_mixed_third
+#print axioms Gtz.signFreeTripleResidual_tightEdgeWeight
+#print axioms Gtz.sum_erase_tightEdgeWeight
+#print axioms Gtz.not_normCap_tightEdgeWeight
+#print axioms Gtz.not_cap_hypothesis_tightEdgeWeight
+#print axioms Gtz.signFreeTripleResidual_le_sub_of_lightTriangle
+#print axioms Gtz.signFreeTripleResidual_le_sub_of_heavyTriangle_of_capSlack
+#print axioms Gtz.posDef_of_orientedTripleResidual_lt_four_ninths
+#print axioms Gtz.failureQuadratic_four_ninths_at_three_mul_eq_zero_iff
+#print axioms Gtz.not_normCap_equilateral_four_ninths
+#print axioms Gtz.signFreeTripleResidual_tripod
+#print axioms Gtz.signFreeTripleResidual_kFourStar
+#print axioms Gtz.signFreeTripleResidual_icosahedral
+#print axioms Gtz.signFreeTripleResidual_icosahedral_lt_four_ninths
+#print axioms Gtz.exists_dominating_triple_icosaDesign
+#print axioms Gtz.exists_dominating_triple_octahedronDesign
+#print axioms Gtz.exists_capSlack_signFreeTripleResidual_eq_four_ninths
+#print axioms Gtz.signFreeTripleResidual_equilateral
+#print axioms Gtz.signFreeTripleResidual_equilateral_sub_four_ninths
+#print axioms Gtz.le_half_of_normCap_equilateral
+#print axioms Gtz.signFreeTripleResidual_equilateral_le_three_eighths
+#print axioms Gtz.signFreeTripleResidual_equilateral_half
+#print axioms Gtz.normCap_equilateral_half
+#print axioms Gtz.signFreeTripleResidual_equilateral_lt_four_ninths
+#print axioms Gtz.signFreeTripleResidual_le_max_of_lightTriangle
+#print axioms Gtz.signFreeTripleResidual_degenerate
+#print axioms Gtz.signFreeTripleResidual_lt_four_ninths_of_lightTriangle_of_lt
+
+-- Gtz/Quantitative/EqualShareSixThreeMargin.lean
+#print axioms Gtz.upperBlockRelation_of_squareEqOne
+#print axioms Gtz.crossBlockRelation_of_squareEqOne
+#print axioms Gtz.lowerBlockRelation_of_squareEqOne
+#print axioms Gtz.trace_cube_add_trace_cube_of_blockRelations
+#print axioms Gtz.trace_square_sub_trace_square_of_blockRelations
+#print axioms Gtz.trace_hollowMatrixThree
+#print axioms Gtz.trace_square_hollowMatrixThree
+#print axioms Gtz.trace_cube_hollowMatrixThree
+#print axioms Gtz.injective_three_of_ne
+#print axioms Gtz.sum_split_of_bijective_six
+#print axioms Gtz.IsHollowInvolution.ne_of_bijective_six
+#print axioms Gtz.IsHollowInvolution.tripleSigma_compl_eq
+#print axioms Gtz.IsHollowInvolution.tripleProduct_compl_eq_neg
+#print axioms Gtz.IsHollowInvolution.exists_nonneg_tripleProduct_of_split
+#print axioms Gtz.IsHollowInvolution.det_one_sub_submatrix_eq_det_one_add_compl
+#print axioms Gtz.IsHollowInvolution.normCap_eq_one_iff_degenerate
+#print axioms Gtz.sub_le_max_of_heavyBounds
+#print axioms Gtz.signFreeTripleResidual_le_max_of_heavyTriangle
+#print axioms Gtz.root_le_half_of_capBound
+#print axioms Gtz.lightBranch_le_two_fifths
+#print axioms Gtz.heavyBranch_le_two_fifths
+#print axioms Gtz.exists_signFreeTripleResidual_le_two_fifths
+#print axioms Gtz.signFreeTripleResidual_lightExtremal
+#print axioms Gtz.signFreeTripleResidual_heavyExtremal
+#print axioms Gtz.normCap_heavyExtremal
+#print axioms Gtz.heavyBranch_at_half
+#print axioms Gtz.signFreeTripleResidual_kFourStarWeights
+#print axioms Gtz.exists_coherent_orientedTripleResidual_le
+#print axioms Gtz.exists_triangleResidual_le_two_fifths
+#print axioms Gtz.posSemidef_smul_one_add_hollowSymmetricThree_of_criterion_le_sq
+#print axioms Gtz.directionGramMatrix_submatrix_three_eq_one_add_hollowMatrixThree
+#print axioms Gtz.exists_nine_twentyfifths_le_lambdaMinMat_of_isEqualShare
+#print axioms Gtz.exists_orientedTripleResidual_le_two_fifths
+#print axioms Gtz.exists_dominating_triple_with_margin
+#print axioms Gtz.exists_posDef_shift_of_isEqualShare
+#print axioms Gtz.det_subsetSum_triple_eq_smul_det_directionGramMatrix
+#print axioms Gtz.normCap_eq_one_iff_det_subsetSum_eq_zero
+#print axioms Gtz.IsHollowInvolution.exists_signFreeTripleResidual_le_two_fifths
+#print axioms Gtz.IsHollowInvolution.exists_coherent_criterion_le
+#print axioms Gtz.IsHollowInvolution.exists_posSemidef_marginShift
+#print axioms Gtz.IsHollowInvolution.exists_posSemidef_twoThirds_shift
