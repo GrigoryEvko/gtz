@@ -227,6 +227,14 @@ import Gtz.Quantitative.GTransformGate
 import Gtz.Quantitative.PlanarTightFrameRigidity
 import Gtz.Quantitative.CheapAtomGate
 import Gtz.Quantitative.WeightedBandCovering
+import Gtz.Quantitative.SevenThreeInvolution
+import Gtz.Quantitative.SevenThreeConservation
+import Gtz.Quantitative.SevenThreeRigidity
+import Gtz.Quantitative.SevenThreeCapsGates
+import Gtz.Quantitative.SevenThreeMaxVolume
+import Gtz.Quantitative.SevenThreeNoGo
+import Gtz.Quantitative.SevenThreeCBFloor
+import Gtz.Quantitative.SevenThreeMiddleBand
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -7022,3 +7030,352 @@ import Gtz.Quantitative.WeightedBandCovering
 #print axioms Gtz.mercedesCone_gateThreshold_lt_five_sixths
 #print axioms Gtz.mercedesCone_covers_symmetricBand
 #print axioms Gtz.involSlackDeterminant_mercedesCone_at_nine_tenths
+
+-- The (7,3) frontier layer: the July 2026 pen campaign mechanized.  The uniform-share
+-- (7,3) cell is the global frontier -- rank-three GTZ at every size IS the all-heavy (7,3)
+-- statement (`Gtz.discriminantCovering_seven_iff_rank_three`) -- and on that stratum the
+-- landed square law `Gamma^2 = (7/3) Gamma` becomes the quadratic law
+-- `M^2 = (1/3) M + (4/3) 1` on the hollow correlation matrix, the one engine all eight
+-- modules below run on.  SevenThreeInvolution lands the quadratic package (cube law, trace
+-- laws, row law, positive supply chain), the one-line spectral caps, the single-clause
+-- criterion `Dominates T <-> sigma_T - 3 P_T <= 4/9` (C1-IFF), and the basis-plus-tetrapod
+-- witness `Gtz.sevenThreeBasisTetrapodDesign` -- the first design in the tree with every
+-- share `3/7`, closing wf3's named non-vacuity gap and inhabiting both the hypothesis
+-- stratum and the conclusion of `Gtz.GtzUniformShareSevenThree`.  SevenThreeConservation
+-- lands the six conservation laws (C-P1, C-P2, C-P3, C-D1, C-D2, C-5SET, every constant
+-- exact) and the weighted aggregate identity C-AGG: the 35 determinant clauses have the
+-- frame-independent total `e_3(tau) - (10/3) sum tau + 28/27`, negative on the whole
+-- capacity polytope -- no aggregate selector exists; what survives is the starved-hub gate
+-- `Gtz.exists_dominates_of_starvedHub_sevenThree`.  SevenThreeRigidity lands the
+-- interlacing-free block freezes -- the dropped-atom 6x6 charpoly
+-- `(t+1)^3 (t-4/3)^2 (t-1/3)` with the dropped profile as the `1/3`-eigenvector, the
+-- five-block one-parameter factorization -- and the sevenths reformulation R-7:
+-- `T` dominates iff `2*1 - Gamma[F] >= 0` on the complementary four-set, with the exact
+-- charpoly reflection `det(t 1_4 - Gamma[F]) = -t det((7/3 - t) 1_3 - Gamma[T])`.
+-- SevenThreeCapsGates lands the two determinant caps, the sigma mass cap `13/9` (the
+-- campaign's unverified chart maximum, now chart-exact; design-side attainment stays open),
+-- the light gate at edge weight `1/9` and the RIGID heavy gate at `4/9` -- both ties landed
+-- as PSD blocks with vanishing determinant -- so every failing triple lives in the open
+-- middle band `m in (1/9, 4/9)` of the endpoint cubic `9(m - 1/9)(m - 4/9)^2`.
+-- SevenThreeMaxVolume lands the fifths theorem STRICT (at every swap-maximal nonsingular
+-- pick of a uniform-share design, `Gamma[T#] - (1/5) 1` is positive DEFINITE, the boundary
+-- killed by the parity argument `extremalSignQuadratic_ne_one`, no eigenvalues anywhere)
+-- and records the share-agnostic gate silent at (7,3): `3/7 + 1/9 = 34/63 < 1`.
+-- SevenThreeNoGo closes six dead routes as theorems: Kneser disjointness (disjoint triples
+-- cannot both starve -- the topological route needs overlap, so it cannot fire), axis
+-- spillover (no (3,2,2) clustering is isotropic), the deflation-gate cancellation
+-- (`s(1 - 1/l) = t(l - 1)` identically, the Schur route buys nothing at any leverage), the
+-- field-blindness of the 2025 interlacing family (its (4,2) bound IS `Gtz.alphaRankTwo`,
+-- the sharp COMPLEX constant, and R3 is a real-vs-complex separation), the capacity-point
+-- aggregate constant `-224/9` (ordered form), and the two-zero-ATOM corner (honest
+-- transport of the pen's zero-weight corner), which falls to `Gtz.gtzWeighted_of_le_five`.
+-- The two frontier lanes: SevenThreeCBFloor sharpens the fifths floor to the Cauchy-Binet
+-- floor `lambda_min(Gamma[T#]) > 31/150` at every maximal-volume pick (pick supplied
+-- unconditionally), the relaxation optimum bracketed by sign evaluations of
+-- `135 x^3 - 405 x^2 + 315 x - 49`, with the ERRATUM re-verified in exact arithmetic: the
+-- campaign's earlier `0.2543` was the symmetric slice, the genuine optimum is asymmetric at
+-- `0.2067...`; conjecture M7 is NAMED as the Prop `Gtz.MaxVolumeGramThirdFloorSevenThree`
+-- (maximal-volume Gram clears `1/3`), shown to imply domination on the leverage-3 stratum,
+-- and left OPEN -- the equality-case kill `fourEvenSignVectors_unitNorm_inconsistent` does
+-- not perturb to a floor above `31/150` and the file says so.  SevenThreeMiddleBand fences
+-- the band: per-pair completion identities (the pair mean NEVER certifies -- vacuity
+-- recorded), the starve-feed sandwich `4/9 < r_T < 8/9 + 2 w_min`, five-set coherent floors
+-- (every five-set carries strictly positive product mass), the new sigma gate
+-- `sigma_T <= 1/3` forces domination (sharp at the witness's tetrapod tie), and the Ramsey
+-- pigeonhole making both band endpoints kernel facts.  HONEST LEDGER: no sub-band of
+-- `(1/9, 4/9)` is closed by this layer; the per-triple scalar system admits failing-shaped
+-- data throughout the band, so interior closures need cross-triple realizability -- exactly
+-- the open content of R3.  The named residuals: M7, the middle band, design-side attainment
+-- of the `13/9` corner, and the light squeeze at free weights.
+
+-- Gtz/Quantitative/SevenThreeInvolution.lean
+#print axioms Gtz.correlationInvolution_sq_of_uniformShare
+#print axioms Gtz.directionGramMatrix_sq_sevenThree
+#print axioms Gtz.correlationInvolution_sq_uniformSevenThree
+#print axioms Gtz.correlationInvolution_cube_uniformSevenThree
+#print axioms Gtz.trace_correlationInvolution_of_uniformShare
+#print axioms Gtz.trace_correlationInvolution_sq_uniformSevenThree
+#print axioms Gtz.trace_correlationInvolution_cube_uniformSevenThree
+#print axioms Gtz.sum_erase_edgeWeight_sevenThree
+#print axioms Gtz.sum_sum_erase_edgeWeight_sevenThree
+#print axioms Gtz.sum_sdiff_directionGram_mul_directionGram_sevenThree
+#print axioms Gtz.posSemidef_smul_one_sub_of_sq_eq_smul
+#print axioms Gtz.posSemidef_smul_one_sub_directionGramMatrix_of_uniformShare
+#print axioms Gtz.posSemidef_sevenThirds_smul_one_sub_directionGramMatrix
+#print axioms Gtz.posSemidef_fourThirds_smul_one_sub_hollowSymmetricThree_sevenThree
+#print axioms Gtz.directionTripleSigma_add_three_halves_mul_directionTripleProduct_le_sevenThree
+#print axioms Gtz.nonneg_one_sub_directionTripleSigma_add_two_mul_directionTripleProduct
+#print axioms Gtz.two_mul_directionTripleProduct_le_directionTripleSigma
+#print axioms Gtz.one_sub_directionTripleSigma_add_two_mul_directionTripleProduct_le_one
+#print axioms Gtz.dominates_triple_iff_sigma_sub_three_mul_product_sevenThree
+#print axioms Gtz.sevenThreeBasisTetrapodAtom
+#print axioms Gtz.sevenThreeBasisTetrapodAtom_zero
+#print axioms Gtz.sevenThreeBasisTetrapodAtom_one
+#print axioms Gtz.sevenThreeBasisTetrapodAtom_two
+#print axioms Gtz.sevenThreeBasisTetrapodAtom_three
+#print axioms Gtz.sevenThreeBasisTetrapodAtom_four
+#print axioms Gtz.sevenThreeBasisTetrapodAtom_five
+#print axioms Gtz.sevenThreeBasisTetrapodAtom_six
+#print axioms Gtz.sevenThreeBasisTetrapodDesign
+#print axioms Gtz.sevenThreeBasisTetrapodDesign_atom
+#print axioms Gtz.sevenThreeBasisTetrapodDesign_weight
+#print axioms Gtz.leverageOf_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.isEqualShare_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.atomShare_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.allHeavy_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.weightSlack_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.directionGram_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.directionGram_sevenThreeBasisTetrapodDesign_zero_one
+#print axioms Gtz.directionGram_sevenThreeBasisTetrapodDesign_zero_two
+#print axioms Gtz.directionGram_sevenThreeBasisTetrapodDesign_one_two
+#print axioms Gtz.directionGram_sevenThreeBasisTetrapodDesign_three_four
+#print axioms Gtz.directionGram_sevenThreeBasisTetrapodDesign_three_five
+#print axioms Gtz.directionGram_sevenThreeBasisTetrapodDesign_three_six
+#print axioms Gtz.directionGram_sevenThreeBasisTetrapodDesign_four_five
+#print axioms Gtz.directionGram_sevenThreeBasisTetrapodDesign_four_six
+#print axioms Gtz.directionGram_sevenThreeBasisTetrapodDesign_five_six
+#print axioms Gtz.directionGram_sevenThreeBasisTetrapodDesign_zero_three
+#print axioms Gtz.edgeWeight_sevenThreeBasisTetrapodDesign_zero_three
+#print axioms Gtz.directionTripleSigma_tetrapodTriple_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.directionTripleProduct_tetrapodTriple_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.tetrapodTriple_tie_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.gramBracket_tetrapodTriple_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.slackDeterminantThree_tetrapodTriple_eq_zero
+#print axioms Gtz.dominates_tetrapodTriple_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.directionTripleSigma_basisTriple_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.directionTripleProduct_basisTriple_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.gramBracket_basisTriple_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.dominates_basisTriple_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.basisTripleGap_form_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.posDef_basisTripleGap_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.GtzUniformShareSevenThree
+#print axioms Gtz.exists_dominating_triple_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.sevenThreeBasisTetrapodDesign_witnesses_gtzUniformShareSevenThree
+
+-- Gtz/Quantitative/SevenThreeConservation.lean
+#print axioms Gtz.sum_eq_of_bijective_seven
+#print axioms Gtz.ne_of_bijective_seven
+#print axioms Gtz.correlationInvolution_comm
+#print axioms Gtz.involSlackDeterminant_one_eq_hollowTripleBracket
+#print axioms Gtz.correlationInvolution_sq_sevenThree
+#print axioms Gtz.correlationInvolution_cube_sevenThree
+#print axioms Gtz.trace_correlationInvolution_sevenThree
+#print axioms Gtz.trace_sq_correlationInvolution_sevenThree
+#print axioms Gtz.trace_cube_correlationInvolution_sevenThree
+#print axioms Gtz.sum_sq_correlationInvolution_sevenThree
+#print axioms Gtz.sum_correlationInvolution_chain_sevenThree
+#print axioms Gtz.sum_tripleProduct_pair_sevenThree
+#print axioms Gtz.sum_sdiff_tripleProduct_pair_sevenThree
+#print axioms Gtz.sum_sdiff_tripleProduct_pair_nonneg_sevenThree
+#print axioms Gtz.sum_ordered_tripleProduct_vertex_sevenThree
+#print axioms Gtz.sum_sq_row_sevenThree
+#print axioms Gtz.sum_tripleProduct_throughPair_sevenThree
+#print axioms Gtz.sum_pairTripleProduct_vertex_sevenThree
+#print axioms Gtz.sum_tripleProduct_sevenThree
+#print axioms Gtz.sum_pairSquare_sevenThree
+#print axioms Gtz.sum_pairSquare_sixSet_sevenThree
+#print axioms Gtz.sum_pairSquare_fiveSet_sevenThree
+#print axioms Gtz.sum_sdiff_tripleBracket_pair_sevenThree
+#print axioms Gtz.sum_tripleSigma_vertex_sevenThree
+#print axioms Gtz.sum_tripleBracket_vertex_sevenThree
+#print axioms Gtz.sum_tripleSigma_sevenThree
+#print axioms Gtz.sum_tripleBracket_sevenThree
+#print axioms Gtz.sum_tripleProduct_fiveSet_sevenThree
+#print axioms Gtz.sum_tripleProduct_fiveSet_pos_sevenThree
+#print axioms Gtz.exists_distinct_tripleProduct_ge_avoiding_sevenThree
+#print axioms Gtz.sum_involSlackDeterminant_sevenThree
+#print axioms Gtz.sum_involSlackDeterminant_eq_of_constant_sevenThree
+#print axioms Gtz.sum_involSlackDeterminant_slack_one_sevenThree
+#print axioms Gtz.sum_involSlackDeterminant_criterion_sevenThree
+#print axioms Gtz.slackSimplexSeven
+#print axioms Gtz.sum_involSlackDeterminant_le_of_mem_slackSimplexSeven
+#print axioms Gtz.constantSlackAggregate_sub_factor_sevenThree
+#print axioms Gtz.constantSlackAggregate_stationary_iff_sevenThree
+#print axioms Gtz.pairSumValueSeven
+#print axioms Gtz.pairSumValueSeven_self
+#print axioms Gtz.pairSumValueSeven_criterionPoint
+#print axioms Gtz.pairSumValueSeven_one_one
+#print axioms Gtz.pairSumValueSeven_le
+#print axioms Gtz.pairSumValueSeven_nonpos
+#print axioms Gtz.sum_involSlackDeterminant_through_pair_sevenThree
+#print axioms Gtz.sum_involSlackDeterminant_through_pair_criterion_sevenThree
+#print axioms Gtz.sum_involSlackDeterminant_off_hub_sevenThree
+#print axioms Gtz.exists_nonneg_involSlackDeterminant_of_starvedHub_sevenThree
+#print axioms Gtz.exists_dominates_of_starvedHub_sevenThree
+#print axioms Gtz.sum_det_principalMinors_eq_sum_tripleBracket_sevenThree
+
+-- Gtz/Quantitative/SevenThreeRigidity.lean
+#print axioms Gtz.det_smul_one_sub_transpose_mul_comm
+#print axioms Gtz.det_transpose_mul_self_eq_zero_of_lt
+#print axioms Gtz.posSemidef_smul_one_sub_transpose_mul_comm
+#print axioms Gtz.sixBlockMatrix
+#print axioms Gtz.sixBlockProfile
+#print axioms Gtz.sixBlockProfile_dotProduct_self
+#print axioms Gtz.sixBlockProfile_ne_zero
+#print axioms Gtz.sixBlockMatrix_sq
+#print axioms Gtz.sixBlockMatrix_mulVec_profile
+#print axioms Gtz.smul_one_sub_sixBlockMatrix_mul_add_one
+#print axioms Gtz.sixBlockMatrix_cubic_eq_zero
+#print axioms Gtz.trace_sixBlockMatrix
+#print axioms Gtz.trace_sixBlockMatrix_sq
+#print axioms Gtz.trace_sixBlockMatrix_cube
+#print axioms Gtz.det_smul_one_sub_sixBlockMatrix
+#print axioms Gtz.det_sixBlockMatrix
+#print axioms Gtz.fiveBlockMatrix
+#print axioms Gtz.fiveBlockProfileOne
+#print axioms Gtz.fiveBlockProfileTwo
+#print axioms Gtz.fiveBlockProfileOne_dotProduct_self
+#print axioms Gtz.fiveBlockProfileTwo_dotProduct_self
+#print axioms Gtz.fiveBlockMatrix_sq
+#print axioms Gtz.trace_fiveBlockMatrix
+#print axioms Gtz.trace_fiveBlockMatrix_sq
+#print axioms Gtz.det_smul_one_sub_fiveBlockMatrix
+#print axioms Gtz.det_fiveBlockMatrix
+#print axioms Gtz.posSemidef_unitFrameSum_sub_iff_quadGramCap_sevenThree
+#print axioms Gtz.dominates_triple_iff_posSemidef_quadGramCap_sevenThree
+#print axioms Gtz.det_smul_one_sub_quadGram_reflection_sevenThree
+
+-- Gtz/Quantitative/SevenThreeCapsGates.lean
+#print axioms Gtz.bandGateCubic_factorisation
+#print axioms Gtz.bandGateCubic_vanishes_at_lightGate
+#print axioms Gtz.bandGateCubic_vanishes_at_heavyGate
+#print axioms Gtz.squeezeNonTransferSeptic_factorisation
+#print axioms Gtz.squeezeNonTransferSeptic_vanishes_at_twoThirds
+#print axioms Gtz.squeezeNonTransferSeptic_pos_of_ne_twoThirds
+#print axioms Gtz.squeezeNonTransferSeptic_pos_of_lt_twoThirds
+#print axioms Gtz.posSemidef_of_mul_self_eq_smul
+#print axioms Gtz.posSemidef_smul_one_sub_of_mul_self_eq_smul
+#print axioms Gtz.posSemidef_smul_one_sub_directionGramMatrix_of_atomShare_eq
+#print axioms Gtz.directionGramMatrix_submatrix_three_eq_correlationMatrixThree
+#print axioms Gtz.posSemidef_smul_one_sub_hollowSymmetricThree_of_uniformShare
+#print axioms Gtz.posSemidef_fourThirds_smul_one_sub_hollowSymmetricThree_of_uniformShare
+#print axioms Gtz.orientedTripleResidual_eq_sigma_sub_three_mul_product
+#print axioms Gtz.dominates_triple_iff_orientedTripleResidual_le_four_ninths_of_uniformShare
+#print axioms Gtz.dominates_triple_iff_orientedTripleResidual_le_four_ninths_sevenThree
+#print axioms Gtz.posSemidef_smul_one_add_hollowSymmetricThree_iff_sevenThree
+#print axioms Gtz.edgeWeight_le_four_ninths_of_dominates_triple
+#print axioms Gtz.directionTripleSigma_le_one_add_two_mul_directionTripleProduct
+#print axioms Gtz.directionTripleSigma_add_two_mul_abs_directionTripleProduct_le_one_of_nonpos
+#print axioms Gtz.directionTripleSigma_add_three_halves_mul_product_le_sevenThree
+#print axioms Gtz.directionTripleSigma_le_thirteen_ninths_of_uniformShare_sevenThree
+#print axioms Gtz.dominates_triple_of_lightEdges_sevenThree
+#print axioms Gtz.heavyEdges_rigid_of_uniformShare_sevenThree
+#print axioms Gtz.dominates_triple_of_heavyEdges_sevenThree
+#print axioms Gtz.middleBandEdges_of_not_dominates_sevenThree
+#print axioms Gtz.failingChartCorner_thirteen_ninths
+#print axioms Gtz.posSemidef_lightGateTie
+#print axioms Gtz.det_lightGateTie_eq_zero
+#print axioms Gtz.posSemidef_heavyGateTie
+#print axioms Gtz.det_heavyGateTie_eq_zero
+
+-- Gtz/Quantitative/SevenThreeMaxVolume.lean
+#print axioms Gtz.offSquareSumScaled_le_of_traceCap
+#print axioms Gtz.shiftedDetThreshold_nonneg_of_traceCap
+#print axioms Gtz.sevenThreeShiftedDet_boundary_forces
+#print axioms Gtz.extremalSignQuadratic_ne_one
+#print axioms Gtz.det_of_unitDiagonalThree
+#print axioms Gtz.inv_diagonal_of_unitDiagonalThree
+#print axioms Gtz.posSemidef_sub_smul_one_of_traceCap
+#print axioms Gtz.posSemidef_trace_smul_one_sub_of_three
+#print axioms Gtz.IsSwapMaximalRowPick
+#print axioms Gtz.abs_solveMatrix_le_one_of_swapMaximalRowPick
+#print axioms Gtz.rawAtomRows
+#print axioms Gtz.rawAtomRows_apply
+#print axioms Gtz.sum_weight_smul_atomMatrix_solveMatrix
+#print axioms Gtz.sum_atomMatrix_solveMatrix_of_uniformShare
+#print axioms Gtz.inv_pickGram_eq_diagonal_add_outside
+#print axioms Gtz.inv_unitPickGram_diagonal_of_uniformShare
+#print axioms Gtz.inv_unitPickGram_diagonal_le_of_swapMaximal
+#print axioms Gtz.inv_unitPickGram_diagonal_le_sevenThree
+#print axioms Gtz.trace_inv_unitPickGram_le_sevenThree
+#print axioms Gtz.posDef_unitPickGram_sub_fifth_sevenThree
+#print axioms Gtz.posSemidef_unitPickGram_sub_fifth_sevenThree
+#print axioms Gtz.posSemidef_unitPickGram_sub_sqrtSeventeenFloor_sixThree
+#print axioms Gtz.dominates_of_pickWeight_add_inv_leverageSum
+#print axioms Gtz.pickWeight_add_inv_leverageSum_lt_one_of_sevenThree
+
+-- Gtz/Quantitative/SevenThreeNoGo.lean
+#print axioms Gtz.subsetSum_univ_sevenThree_of_uniformWeight
+#print axioms Gtz.subsetSum_disjoint_add_eq_seven_smul_one_sub_atomMatrix
+#print axioms Gtz.posSemidef_smul_one_sub_atomMatrix_of_leverage_le
+#print axioms Gtz.posSemidef_subsetSum_disjoint_add_sub_four_sevenThree
+#print axioms Gtz.not_dotProduct_lt_of_disjoint_triples_sevenThree
+#print axioms Gtz.not_dotProduct_lt_of_disjoint_triples_of_isEqualShare
+#print axioms Gtz.sum_sq_dotProduct_unitAtom_of_uniformShare
+#print axioms Gtz.sq_dotProduct_unitAtom_le_dotProduct_self
+#print axioms Gtz.third_le_sum_sdiff_sq_dotProduct_unitAtom_sevenThree
+#print axioms Gtz.deflationGateBound
+#print axioms Gtz.deflationGate_cancellation
+#print axioms Gtz.deflationGateBound_eq_weight_gate
+#print axioms Gtz.deflationGateBound_lt_share
+#print axioms Gtz.exists_deflationGateBound_near_share
+#print axioms Gtz.xuQuadraticFourTwo_eq_zero_iff
+#print axioms Gtz.xuQuadraticRootFourTwo_pos
+#print axioms Gtz.xuQuadraticRootFourTwo_lt_mirror
+#print axioms Gtz.four_mul_xuQuadraticRootFourTwo_eq_alphaRankTwo
+#print axioms Gtz.exists_xuCubicRoot_sevenThree_lt_inv_seven
+#print axioms Gtz.sum_sdiff_involSlackDeterminant_capacity_sevenThree
+#print axioms Gtz.sum_ordered_involSlackDeterminant_capacity_sevenThree
+#print axioms Gtz.exists_involSlackDeterminant_capacity_neg_sevenThree
+#print axioms Gtz.exists_dominating_triple_of_two_zero_atoms_sevenThree
+
+-- Gtz/Quantitative/SevenThreeCBFloor.lean
+#print axioms Gtz.relaxationCubic_image_eq_cauchyBinetFloorCubic_sevenThree
+#print axioms Gtz.cauchyBinetFloorCubic_sevenThree_neg_at_landedFloor
+#print axioms Gtz.cauchyBinetFloorCubic_sevenThree_pos_at_upperBracket
+#print axioms Gtz.cauchyBinetFloorCubic_sixThree_neg_at_landedFloor
+#print axioms Gtz.cauchyBinetFloorCubic_sixThree_pos_at_quarter
+#print axioms Gtz.squareSum_le_fourThirds_of_traceGate
+#print axioms Gtz.squareSum_le_fiveFourths_of_traceGate
+#print axioms Gtz.fourEvenSignVectors_unitNorm_inconsistent
+#print axioms Gtz.det_tetrahedralCorrelationThree
+#print axioms Gtz.sq_det_tetrapodUnitTriple
+#print axioms Gtz.abs_det_solveMatrix_submatrix_le_one_of_maximalVolume
+#print axioms Gtz.abs_twoRowMinor_solveMatrix_le_one_of_maximalVolume
+#print axioms Gtz.det_transpose_mul_self_four_rows_eq_sum_sq_minors
+#print axioms Gtz.trace_transpose_mul_self_le_of_abs_entries_le_one
+#print axioms Gtz.posDef_sub_cauchyBinetFloor_of_exchangeGates_sevenThree
+#print axioms Gtz.posDef_sub_cauchyBinetFloor_of_exchangeGates_sixThree
+#print axioms Gtz.exists_injective_pick_det_unitAtomRows_ne_zero
+#print axioms Gtz.exists_maximalVolume_pick_unitAtomRows
+#print axioms Gtz.unitPickGram_eq_directionGramMatrix_submatrix
+#print axioms Gtz.traceGate_of_maximalVolume_sevenThree
+#print axioms Gtz.volumeGate_of_maximalVolume_sevenThree
+#print axioms Gtz.directionTripleSigma_le_fourThirds_of_maximalVolume_sevenThree
+#print axioms Gtz.posDef_unitPickGram_sub_cauchyBinetFloor_sevenThree
+#print axioms Gtz.posDef_directionGramMatrix_submatrix_sub_cauchyBinetFloor_sevenThree
+#print axioms Gtz.exists_pick_posDef_unitPickGram_sub_cauchyBinetFloor_sevenThree
+#print axioms Gtz.traceGate_of_maximalVolume_sixThree
+#print axioms Gtz.nonneg_directionTripleProduct_of_maximalVolume_sixThree
+#print axioms Gtz.directionTripleSigma_le_fiveFourths_of_maximalVolume_sixThree
+#print axioms Gtz.posDef_unitPickGram_sub_cauchyBinetFloor_sixThree
+#print axioms Gtz.exists_pick_posDef_unitPickGram_sub_cauchyBinetFloor_sixThree
+#print axioms Gtz.exists_pick_posDef_sub_cauchyBinetFloor_icosaDesign
+#print axioms Gtz.MaxVolumeGramThirdFloorSevenThree
+#print axioms Gtz.exists_dominating_triple_of_maxVolumeGramThirdFloor
+
+-- Gtz/Quantitative/SevenThreeMiddleBand.lean
+#print axioms Gtz.sum_tripleSigma_pairCompletions_bandSeven
+#print axioms Gtz.sum_tripleProduct_pairCompletions_bandSeven
+#print axioms Gtz.sum_orientedResidual_pairCompletions_bandSeven
+#print axioms Gtz.sum_slackDeterminantThree_pairCompletions_bandSeven
+#print axioms Gtz.pairCompletions_mean_exceeds_criterion_bandSeven
+#print axioms Gtz.sum_ordered_orientedResidual_bandSeven
+#print axioms Gtz.exists_orientedResidual_le_mean_bandSeven
+#print axioms Gtz.four_ninths_lt_orientedResidual_of_not_dominates_bandSeven
+#print axioms Gtz.four_ninths_lt_tripleSigma_of_coherent_not_dominates_bandSeven
+#print axioms Gtz.tripleProduct_lt_of_not_dominates_bandSeven
+#print axioms Gtz.orientedResidual_window_of_allFailing_bandSeven
+#print axioms Gtz.exists_dominates_completion_of_starvedHub_bandSeven
+#print axioms Gtz.sum_ordered_tripleProduct_avoidingPair_bandSeven
+#print axioms Gtz.exists_tripleProduct_ge_floor_avoidingPair_bandSeven
+#print axioms Gtz.exists_coherentCarrier_of_allFailing_avoidingPair_bandSeven
+#print axioms Gtz.dominates_triple_of_tripleSigma_le_third_bandSeven
+#print axioms Gtz.third_lt_tripleSigma_of_not_dominates_bandSeven
+#print axioms Gtz.sum_sum_edgeWeight_complementFourSet_bandSeven
+#print axioms Gtz.two_lt_sum_sum_edgeWeight_complementFourSet_of_not_dominates_bandSeven
+#print axioms Gtz.dominates_triple_of_sum_sum_edgeWeight_complementFourSet_le_bandSeven
+#print axioms Gtz.edgeWeight_floor_le_quarter_of_tripleProduct_nonpos
+#print axioms Gtz.exists_edgeWeight_le_four_ninths_bandSeven
+#print axioms Gtz.exists_edgeWeight_lt_four_ninths_of_not_dominates_bandSeven
+#print axioms Gtz.exists_heavyTriangle_of_allFailing_bandSeven
