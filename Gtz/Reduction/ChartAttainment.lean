@@ -29,7 +29,8 @@ sits in the unit ball and `Gtz.isCompact_chartDomain` is Heine-Borel
 (`Metric.isCompact_of_isClosed_isBounded`) in a finite-dimensional space.  NO
 MANIFOLD, no Grassmannian and no spectral factorisation is used; the domain is a
 PRODUCT and the chart is never factorised as `V Vᵀ`, so this file is independent
-of the `Gtz.ChartPointHasDesign` leaf.
+of `Gtz.ChartPointHasDesign` -- which is in any case no longer a leaf: it was
+discharged at every size and rank by `Gtz.chartPointHasDesign`.
 
 The objective is `G = max_C lambda_min(W[C])` over the `rank`-subsets, with `W`
 the affine chart gap `P - diag t`.  `Gtz.chartBlockValue` is the per-subset
@@ -108,8 +109,16 @@ now known to be interior -- and that is its entire content.  In particular the
 minimiser produced here is not proved to be a critical point of anything, because
 this repository carries no subdifferential calculus and this file adds none.
 
-`Gtz.ChartPointHasDesign` is untouched and remains the sole obstruction to
-feeding the shipped design-side rungs into the chart-side ladder.
+`Gtz.ChartPointHasDesign` is NOT an obstruction any more, and this docstring said
+for several revisions that it was.  It was DISCHARGED at every size and every rank,
+with no hypothesis left over, by `Gtz.chartPointHasDesign`
+(`Gtz/Reduction/ChartPointFactorisation.lean`).  The positivity that discharge
+needs sits INSIDE the predicate rather than beside it -- and the boundary version,
+with a vanishing weight, is not merely unproved but outright FALSE, proved so in
+that same file.  Positivity is exactly what the interiority half of THIS file
+supplies, so the two compose.  What still blocks feeding the shipped design-side
+rungs into the chart-side ladder is therefore the quantitative rungs themselves,
+not the factorisation.
 -/
 import Mathlib
 import Gtz.Core.Basic
@@ -212,7 +221,8 @@ theorem chartConfig_mem_chartDomain (point : ChartPoint size rank) :
 
 /-- A member of the closed chart domain IS a chart point.  No factorisation is
 involved: the chart stays a matrix and is never written as `V Vᵀ`, so this is
-unrelated to the `Gtz.ChartPointHasDesign` leaf. -/
+unrelated to `Gtz.ChartPointHasDesign`, itself discharged by
+`Gtz.chartPointHasDesign`. -/
 def chartPointOfMem {config : (Fin size → Fin size → ℝ) × (Fin size → ℝ)}
     (hmem : config ∈ chartDomain size rank) : ChartPoint size rank where
   chart := Matrix.of config.1

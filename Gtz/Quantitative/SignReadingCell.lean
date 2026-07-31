@@ -50,9 +50,35 @@ rational grid `{1/8, 1/4, 3/8}` covers `485/485` and `378/378` of the two residu
 Every one of those numbers is a MEASUREMENT on a pool that was produced by an
 optimiser from one basin, not a statement about the parameter space, and NONE of them
 is a covering theorem: no atlas built from this family is proved to cover, and the
-true residue survives. It survives at exactly rational points — the `(6,3)` graphic
-design of `K4` and its `(7,3)` atom split have every leverage `3`, Gram entries in
-`{3, ±3/2, 0}`, strictly dominating triples, and no shipped cell firing at any triple.
+true residue survives.
+
+**CORRECTED — the `K4` claim that stood here was false, and self-contradictory.**
+This paragraph used to end: the residue "survives at exactly rational points — the
+`(6,3)` graphic design of `K4` and its `(7,3)` atom split have every leverage `3`,
+Gram entries in `{3, ±3/2, 0}`, strictly dominating triples, and no shipped cell
+firing at any triple." The final clause is FALSE, and it already contradicted the
+measurement two sentences above it, which records the product-floor family covering
+`485/485` and `378/378` of the residues. `Gtz.Quantitative.DecisionAtlasCellsSevenThree`
+builds the object and settles it: at the star triple `{0,2,4}` of
+`Gtz.graphicKFourDesign` the SHIPPED `Gtz.productFloorCell` fires at
+`productFloor = 3/8`, a value on the very grid measured here
+(`Gtz.isInCell_productFloorCell_threeEighths_graphicKFour`), with admissible window
+`11/32 ≤ productFloor ≤ 27/64` (`Gtz.graphicKFour_productFloor_window`) — inside,
+with room on both sides, not a knife edge. The `(7,3)` split falls the same way
+(`Gtz.isInCell_productFloorCell_threeEighths_graphicKFourSeven`).
+
+The rest of the claim IS confirmed, and proved rather than asserted: at that triple
+the sign-blind closure fails (`Gtz.not_isSignBlindGoodTriple_graphicKFour_starTriple`),
+the coherent-sign cell fails (`Gtz.graphicKFour_starTriple_excessGap_neg`), and the
+two-moment certificate fails (`Gtz.graphicKFour_starTriple_twoMomentGap`). So the
+honest statement is: the `K4` residue survives against THREE of the four shipped
+families and is COVERED by the fourth.
+
+Second correction, on scope: do NOT log the `(7,3)` half as a `(7,3)` obstruction
+datum. `Gtz.graphicKFourSevenDesign` duplicates atom `0`, so it satisfies
+`Gtz.HasParallelPair` and is NON-PRIMITIVE; `Gtz.dominating_of_parallel_pair` folds
+it back one size, where the `(6,3)` original already dominates. It witnesses only
+that the recorded claim was false at the frontier size, not a new obstruction there.
 -/
 import Mathlib
 import Gtz.Core.Basic

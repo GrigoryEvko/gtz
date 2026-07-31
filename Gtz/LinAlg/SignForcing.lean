@@ -43,14 +43,25 @@ Both theorems are stated over an arbitrary finite coordinate index, so they appl
 verbatim to `C^dim` viewed as `R^(2 dim)` through `realifyComplexVector`. That is
 where the real/complex separation becomes a number: over `R^3` the obtuse bound
 is `4` and sign forcing starts at `5` atoms, while over `C^3` the bound is `7` and
-sign forcing starts at `9`. The complex constant `2 dim + 1` is EXACT, upper
+sign forcing starts at `8`. Each threshold is exactly one past its bound, because
+forcing assumes `dim + 2` atoms over `R` and `2 dim + 2` over `C` -- read the
+hypotheses of `exists_pos_triangleProduct_of_card_ge` and
+`exists_pos_realTriangleProduct_of_complex_card_ge`, which is where those two
+numbers actually live. The complex constant `2 dim + 1` is EXACT, upper
 bound by `card_le_two_mul_add_one_of_isPairwiseObtuseComplex` and attainment by
 `isPairwiseObtuseComplex_complexifiedSimplex`, which complexifies the real
-simplex of `R^(2 dim)`. The campaign's complex counterexamples live at
-`m = 6` (`Gtz.trineDesign`) and `m = 9` (the Hesse SIC), i.e. inside the gap where
-the real argument has no force -- which is exactly why an argument entering here
-is not replayable over `C` at the sizes that matter, and is therefore not
-touched by `phaseFree_certificates_cannot_prove_rank_three`. The complex failure
+simplex of `R^(2 dim)`.
+
+So the window in which the real argument has force and the complex one does not is
+`m = 5, 6, 7`, and the two campaign counterexamples fall on OPPOSITE sides of it.
+`m = 6` (`Gtz.trineDesign`) is inside. `m = 9` (the Hesse SIC) is NOT: nine atoms
+is past the complex threshold of eight, so what spares it is the theorem's OTHER
+hypothesis -- every pairwise real part nonzero, which a SIC need not satisfy --
+and not its size. This docstring read `9` for the threshold and placed both
+counterexamples inside the gap; both statements were wrong, while the bound `7`
+beside them was right. Either way an argument entering here is not replayable
+over `C` at the sizes that matter, and is therefore not touched by
+`phaseFree_certificates_cannot_prove_rank_three`. The complex failure
 is a remark about the SIZE THRESHOLD, proved here as
 `exists_pos_realTriangleProduct_of_complex_card_ge`; no claim is made that Lemma A
 itself is false over `C`, because no complex counterexample to it is exhibited.
@@ -718,10 +729,14 @@ vectors of `C^dim` whose Hermitian pairings all have nonzero real part carry a
 triple whose triangle product OF REAL PARTS is strictly positive.
 
 Read this as the honest statement of where the real argument dies over `C`: at
-`dim = 3` the threshold moves from `5` atoms to `9`, and the campaign's complex
-counterexamples sit at `m = 6` (`trineDesign`) and `m = 9`, i.e. inside the gap.
-No claim is made here that Lemma A itself fails over `C`; what fails is the
-obtuse bound that powers it, and it fails by exactly the factor two. -/
+`dim = 3` the threshold moves from `5` atoms to `8` -- the hypothesis below is
+`2 dim + 2 <= card`, so at `dim = 3` it reads `8 <= card` -- leaving `m = 5, 6, 7`
+as the window where the real argument forces and the complex one does not. Of the
+campaign's complex counterexamples `m = 6` (`trineDesign`) lies in that window;
+`m = 9` (the Hesse SIC) lies ABOVE it, and escapes this theorem only through the
+nonzero-real-part hypothesis, not through its size. No claim is made here that
+Lemma A itself fails over `C`; what fails is the obtuse bound that powers it, and
+it fails by the doubling of the real dimension. -/
 theorem exists_pos_realTriangleProduct_of_complex_card_ge {atomIndex coord : Type*}
     [Fintype atomIndex] [DecidableEq atomIndex] [Fintype coord]
     (vec : atomIndex → (coord → ℂ))

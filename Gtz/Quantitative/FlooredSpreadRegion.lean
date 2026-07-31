@@ -46,8 +46,16 @@ obstruction of `PositivstellensatzObstruction` is a tie carrying a parallel pair
 and any positive spread removes THAT tie.
 
 DO NOT STRENGTHEN THIS TO "ties carry parallel pairs". That sentence is
-`Gtz.HingeHoldsAtSize`, which is OPEN at sizes six and seven — `0/9` and `1/23`
-isomorphism classes discharged in `Gtz.Design.PrimitiveTightClassification` —
+`Gtz.HingeHoldsAtSize`, which is OPEN at sizes six and seven — `1/9` and `2/23`
+isomorphism classes discharged, three of thirty-two with twenty-nine open, the
+count being maintained in `Gtz.Design.StratumEmptinessLedger` and NOT in
+`Gtz.Design.PrimitiveTightClassification`.  This file read `0/9` and `1/23` for
+several revisions; that was the count BEFORE the near-pencil transport
+mechanized `q6m3` at six points and `q7m4` at seven, on top of the Fano `q7m22`.
+`Gtz.Design.LinePatternEnumeration` and `Gtz.Design.StratumTieFreeClasses` add
+NO further class — they re-derive those same three by new routes, the first in a
+list-decidable pattern encoding and the second through a blind-label criterion —
+so `1/9` and `2/23` is still current —
 and PROVED FALSE at `(5,3)` by `Gtz.not_hingeHoldsAtSize_five_three`, the
 diamond being an unsplit tie with pairwise non-parallel atoms.  What is shipped
 here is the single witness, not the universal claim.  `splitTetraDesign_hasWeightFloor`
