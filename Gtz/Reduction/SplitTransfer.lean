@@ -243,6 +243,7 @@ import Gtz.Reduction.RankFourWindow
 import Gtz.Reduction.BranchTransferConstants
 import Gtz.Reduction.RealVolumeFloor
 import Gtz.Reduction.Reductions
+import Gtz.Reduction.DescentLadder
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -895,6 +896,13 @@ chain is walked ONCE in `LoewnerEquiv` instead of twice in `PosSemidef`.  Since
 the first projection of the new one; `weighted_naimark_duality_of_loewnerEquiv`
 proves that in two lines and is the retirement path for the older proof.
 
+The chain now also carries a THIRD verdict, the dual-leverage dictionary, added
+in place rather than as a fourth copy of the construction.  A downstream module
+cannot derive it: the flip is stated only for subsets of size `k`, so at
+`m > k + 1` it is silent about co-singletons, whose size is `m − 1`.  Anything
+that wants to read dual heaviness as a primal condition therefore has to be
+inside this proof, next to the `B` it is reading the diagonal of.
+
 TRAP for anyone reusing this.  The dual here is NOT the textbook Naimark
 complement.  The natural choice — rows `√t_c · g_c`, which are orthonormal by
 Parseval — makes the flip FALSE; an adversarial audit measured one to two
@@ -905,14 +913,71 @@ while Parseval is not, so the complement that has to be orthonormal is the one
 built from `1 − t_c`.
 -/
 
-/-- **Naimark duality as a two-sided Loewner equivalence.**  For every weighted
-`(m,k)`-design there is a dual `(m, m−k)`-design with the same weights whose gap
-matrix at `Cᶜ` has the SAME positive-semidefinite and positive-definite verdicts
-as the primal gap matrix at `C`. -/
+/-! ### Three inputs to the leverage dictionary
+
+The dual-leverage conjunct of the theorem below reads the diagonal of the
+orthonormal complement `B` as a quadratic form in the whitened primal atom.
+Three small facts turn that reading into a statement about the primal: the
+co-singleton excess as a rank-one drop from the co-Parseval operator, the
+inversion of the whitening congruence, and the adjoint identity that moves the
+whitener from the vector to the matrix. -/
+
+/-- **The co-singleton excess.**  Deleting one atom from the full unweighted sum
+subtracts exactly its rank-one square from the co-Parseval operator
+`Σ_c (1 − t_c) A_c`, which `Gtz.fullExcess_eq_coParseval` identifies with the full
+excess `S_univ − 1`.  This is the primal side of the leverage dictionary: it is
+what makes `(subsetSum D {c}ᶜ − 1).PosDef` a rank-one Schur question about a
+positive-definite operator rather than an unstructured definiteness claim. -/
+theorem coSingletonExcess_eq_coParseval_sub_atomMatrix (D : WeightedDesign m k)
+    (atomIndex : Fin m) :
+    subsetSum D {atomIndex}ᶜ - 1
+      = (∑ c, (1 - D.weight c) • atomMatrix (D.atom c))
+        - Matrix.vecMulVec (D.atom atomIndex) (D.atom atomIndex) := by
+  classical
+  have hsplit : subsetSum D Finset.univ
+      = atomMatrix (D.atom atomIndex) + subsetSum D {atomIndex}ᶜ := by
+    rw [subsetSum, subsetSum,
+      ← Finset.sum_add_sum_compl ({atomIndex} : Finset (Fin m))
+        (fun c => atomMatrix (D.atom c)), Finset.sum_singleton]
+  rw [← fullExcess_eq_coParseval, hsplit, atomMatrix]
+  abel
+
+/-- Whitening inverts the operator it whitens: `RᵀWR = 1` gives `W⁻¹ = R Rᵀ`. -/
+private theorem inv_eq_mul_transpose_of_congruence_to_one
+    {W R : Matrix (Fin k) (Fin k) ℝ} (hRdet : IsUnit R.det) (hRWR : Rᵀ * W * R = 1) :
+    W⁻¹ = R * Rᵀ := by
+  have hRTdet : IsUnit (Rᵀ).det := by rwa [Matrix.det_transpose]
+  have hleft : Rᵀ * (W * R) = 1 := by rw [← Matrix.mul_assoc]; exact hRWR
+  have hWR : W * R = (Rᵀ)⁻¹ := by
+    have := congrArg (fun M => (Rᵀ)⁻¹ * M) hleft
+    simpa [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hRTdet] using this
+  refine Matrix.inv_eq_right_inv ?_
+  rw [← Matrix.mul_assoc, hWR, Matrix.nonsing_inv_mul _ hRTdet]
+
+/-- The whitened square norm is the `W⁻¹` quadratic form, by the repository's own
+adjoint identity `Gtz.dotProduct_mulVec_transpose`. -/
+private theorem dotSelf_transpose_mulVec
+    (R : Matrix (Fin k) (Fin k) ℝ) (vec : Fin k → ℝ) :
+    (Rᵀ *ᵥ vec) ⬝ᵥ (Rᵀ *ᵥ vec) = vec ⬝ᵥ ((R * Rᵀ) *ᵥ vec) := by
+  rw [dotProduct_mulVec_transpose, Matrix.mulVec_mulVec]
+
+/-- **Naimark duality as a two-sided Loewner equivalence, with the leverage
+dictionary.**  For every weighted `(m,k)`-design there is a dual `(m, m−k)`-design
+with the same weights whose gap matrix at `Cᶜ` has the SAME positive-semidefinite
+and positive-definite verdicts as the primal gap matrix at `C`.
+
+The middle conjunct is the DUAL-LEVERAGE DICTIONARY: a dual atom is heavy exactly
+when the primal co-singleton it indexes strictly dominates.  It has to be proved
+here, about the dual this construction builds, rather than derived afterwards
+from the flip: the flip speaks only about subsets of size `k`, so at `m > k + 1`
+it says nothing whatever about co-singletons, which have size `m − 1`.  Exposing
+the construction is therefore the only route, and it is why this conjunct lives
+inside the existential instead of in a downstream module. -/
 theorem exists_naimarkDual_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
     (D : WeightedDesign m k) :
     ∃ dualDesign : WeightedDesign m (m - k),
       (∀ c, dualDesign.weight c = D.weight c) ∧
+      (∀ c, 1 < leverageOf (dualDesign.atom c) ↔ (subsetSum D {c}ᶜ - 1).PosDef) ∧
       ∀ C : Finset (Fin m), C.card = k →
         LoewnerEquiv (subsetSum D C - 1) (subsetSum dualDesign Cᶜ - 1) := by
   have hm2 : 2 ≤ m := by omega
@@ -946,7 +1011,7 @@ theorem exists_naimarkDual_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
             weight := D.weight
             weight_pos := D.weight_pos
             weight_sum_one := D.weight_sum_one
-            isParseval := ?_ }, fun c => rfl, ?_⟩
+            isParseval := ?_ }, fun c => rfl, ?_, ?_⟩
   · calc ∑ c, D.weight c
           • atomMatrix ((Real.sqrt (D.weight c))⁻¹ • (fun j => B c j))
         = ∑ c, atomMatrix (fun j => B c j) := by
@@ -955,6 +1020,68 @@ theorem exists_naimarkDual_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤ m)
             Real.sq_sqrt (D.weight_pos c).le,
             mul_inv_cancel₀ (D.weight_pos c).ne', one_smul]
       _ = 1 := by rw [← transpose_mul_self_eq_sum_rows, hBB]
+  · -- THE LEVERAGE DICTIONARY.  A dual atom is heavy exactly when the primal
+    -- co-singleton it indexes strictly dominates.  Only the completion identity
+    -- `AAᵀ + BBᵀ = 1` and the whitening `RᵀWR = 1` are used; the flip below is
+    -- independent of this bullet.
+    intro atomIndex
+    show 1 < leverageOf ((Real.sqrt (D.weight atomIndex))⁻¹ • (fun j => B atomIndex j)) ↔ _
+    have hweightPos := D.weight_pos atomIndex
+    have hcoParsevalPd : (∑ c, (1 - D.weight c) • atomMatrix (D.atom c)).PosDef :=
+      coParseval_posDef D hm2
+    have hinvW : (∑ c, (1 - D.weight c) • atomMatrix (D.atom c))⁻¹ = R * Rᵀ :=
+      inv_eq_mul_transpose_of_congruence_to_one hRdet hRWR
+    set whitenedForm : ℝ :=
+      D.atom atomIndex ⬝ᵥ ((∑ c, (1 - D.weight c) • atomMatrix (D.atom c))⁻¹
+        *ᵥ D.atom atomIndex) with hwhitenedForm
+    have hAdiag : (Amat * Amatᵀ) atomIndex atomIndex
+        = (1 - D.weight atomIndex) * whitenedForm := by
+      have hraw : (Amat * Amatᵀ) atomIndex atomIndex
+          = (Real.sqrt (1 - D.weight atomIndex) * Real.sqrt (1 - D.weight atomIndex))
+            * ((Rᵀ *ᵥ D.atom atomIndex) ⬝ᵥ (Rᵀ *ᵥ D.atom atomIndex)) := by
+        simp only [Matrix.mul_apply, Matrix.transpose_apply, hAmat, Matrix.of_apply,
+          dotProduct, Finset.mul_sum]
+        exact Finset.sum_congr rfl fun j _ => by ring
+      rw [hraw, Real.mul_self_sqrt (hspos atomIndex).le, hwhitenedForm, hinvW,
+        dotSelf_transpose_mulVec]
+    have hBdiag : (B * Bᵀ) atomIndex atomIndex
+        = 1 - (1 - D.weight atomIndex) * whitenedForm := by
+      have hce := congrFun (congrFun hcomplete atomIndex) atomIndex
+      rw [Matrix.add_apply, Matrix.one_apply_eq] at hce
+      rw [← hAdiag]
+      linarith
+    have hleverage :
+        leverageOf ((Real.sqrt (D.weight atomIndex))⁻¹ • (fun j => B atomIndex j))
+          = (D.weight atomIndex)⁻¹ * (1 - (1 - D.weight atomIndex) * whitenedForm) := by
+      have hsum : ∑ j, ((Real.sqrt (D.weight atomIndex))⁻¹ * B atomIndex j) ^ 2
+          = ((Real.sqrt (D.weight atomIndex))⁻¹) ^ 2 * ∑ j, B atomIndex j ^ 2 := by
+        rw [Finset.mul_sum]
+        exact Finset.sum_congr rfl fun j _ => by ring
+      have hsq : ((Real.sqrt (D.weight atomIndex))⁻¹) ^ 2 = (D.weight atomIndex)⁻¹ := by
+        rw [inv_pow, Real.sq_sqrt (D.weight_pos atomIndex).le]
+      have hrow : ∑ j, B atomIndex j ^ 2 = (B * Bᵀ) atomIndex atomIndex := by
+        simp only [Matrix.mul_apply, Matrix.transpose_apply, sq]
+      simp only [leverageOf, Pi.smul_apply, smul_eq_mul]
+      rw [hsum, hsq, hrow, hBdiag]
+    rw [hleverage, coSingletonExcess_eq_coParseval_sub_atomMatrix D atomIndex,
+      posDef_sub_vecMulVec_iff _ hcoParsevalPd, ← hwhitenedForm]
+    have hkey : (D.weight atomIndex)⁻¹ * (1 - (1 - D.weight atomIndex) * whitenedForm) - 1
+        = (D.weight atomIndex)⁻¹ * (1 - D.weight atomIndex) * (1 - whitenedForm) := by
+      field_simp
+      ring
+    have hpos : 0 < (D.weight atomIndex)⁻¹ * (1 - D.weight atomIndex) :=
+      mul_pos (inv_pos.mpr hweightPos) (hspos atomIndex)
+    constructor
+    · intro hheavy
+      have hprod : 0 < (D.weight atomIndex)⁻¹ * (1 - D.weight atomIndex)
+          * (1 - whitenedForm) := by
+        rw [← hkey]; linarith
+      nlinarith [hprod, hpos]
+    · intro hsmall
+      have hprod : 0 < (D.weight atomIndex)⁻¹ * (1 - D.weight atomIndex)
+          * (1 - whitenedForm) := mul_pos hpos (by linarith)
+      rw [← hkey] at hprod
+      linarith
   · intro C hC
     have hCc : Cᶜ.card = m - k := by
       rw [Finset.card_compl, Fintype.card_fin, hC]
@@ -1170,7 +1297,7 @@ theorem weighted_naimark_duality_of_loewnerEquiv (hk : 1 ≤ k) (hkm : k + 1 ≤
     ∃ dualDesign : WeightedDesign m (m - k),
       (∀ c, dualDesign.weight c = D.weight c) ∧
       ∀ C : Finset (Fin m), C.card = k → (Dominates D C ↔ Dominates dualDesign Cᶜ) := by
-  obtain ⟨dualDesign, hweights, hequiv⟩ := exists_naimarkDual_loewnerEquiv hk hkm D
+  obtain ⟨dualDesign, hweights, -, hequiv⟩ := exists_naimarkDual_loewnerEquiv hk hkm D
   exact ⟨dualDesign, hweights, fun C hC => (hequiv C hC).1⟩
 
 /-- **The tie predicate crosses Naimark duality.**  A design is an exact tie iff
@@ -1181,7 +1308,7 @@ theorem isTie_naimarkDual (hk : 1 ≤ k) (hkm : k + 1 ≤ m) (D : WeightedDesign
     ∃ dualDesign : WeightedDesign m (m - k),
       (∀ c, dualDesign.weight c = D.weight c) ∧ (IsTie D ↔ IsTie dualDesign) := by
   classical
-  obtain ⟨dualDesign, hweights, hequiv⟩ := exists_naimarkDual_loewnerEquiv hk hkm D
+  obtain ⟨dualDesign, hweights, -, hequiv⟩ := exists_naimarkDual_loewnerEquiv hk hkm D
   refine ⟨dualDesign, hweights, ?_⟩
   have hcomplCard : ∀ C : Finset (Fin m), C.card = k → Cᶜ.card = m - k := by
     intro C hC

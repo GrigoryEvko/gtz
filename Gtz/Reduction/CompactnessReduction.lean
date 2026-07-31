@@ -165,16 +165,19 @@ UNPROVED LEAVES, all of them, named:
      configuration class (which compactifies away from the boundary, i.e.
      complementary to what is needed here), but there is NO nonsmooth-analysis
      layer anywhere, so that decomposition is not available and is not attempted.
-  2. `Gtz.ChartPointHasDesign` -- the factorisation `P = V Vᵀ`, needing an
-     orthonormal basis of the range of `P`.  Only the design-to-chart direction is
-     shipped (`Gtz.chartPointOfDesign`).  This is the SOLE obstruction to feeding
-     the already kernel-checked small rungs (`Gtz.gtzWeighted_of_le_five`,
-     `Gtz.gtz_rank_two`, `Gtz.gtzWeighted_corank_two`) into any chart-side
-     assembly.  CORRECTING an optimistic reading from the campaign notes: those
-     theorems discharge the smaller rungs in the DESIGN form, and the chart-side
-     statements consume the CHART form; the two are connected only through this
-     leaf.  The leaf is TRUE (spectral theorem) and not vacuous, merely
-     unmechanized.
+  2. `Gtz.ChartPointHasDesign` -- NO LONGER A LEAF.  It was one when this header
+     was written, and the entry is kept because the reasoning it records is still
+     the reason the leaf mattered: the factorisation `P = V Vᵀ` needs an
+     orthonormal basis of the range of `P`, the shipped small rungs
+     (`Gtz.gtzWeighted_of_le_five`, `Gtz.gtz_rank_two`,
+     `Gtz.gtzWeighted_corank_two`) discharge the smaller rungs in the DESIGN form,
+     the chart-side statements consume the CHART form, and the two were connected
+     only through this leaf.  It is now DISCHARGED at every size and rank with no
+     hypothesis left over, by `Gtz.chartPointHasDesign`
+     (`Gtz/Reduction/ChartPointFactorisation.lean`), and
+     `Gtz.chartGtz_iff_gtzWeighted` in the same file is consequently a genuine
+     iff.  So `Gtz.ChartGtz` and `Gtz.GtzWeighted` are interchangeable and the
+     obstruction described above is gone.  Only leaf 1 remains.
 
 ## THE OBJECTIVE MISMATCH -- a defect in the brief's hypothesis (b)
 
@@ -1515,15 +1518,19 @@ theorem gtzWeighted_of_chartGtzInterior {atoms rankValue : ℕ}
     hinterior (chartPointOfDesign design) (fun atomIndex => design.weight_pos atomIndex)
   exact ⟨selected, hcard, (dominates_iff_chartDominates design selected hcard).mpr hdominates⟩
 
-/-- **The missing link in the OTHER direction**, named so the gap is citable: every
-chart point with strictly positive weights comes from a weighted design.
+/-- **The link in the OTHER direction**, named so it is citable: every chart point with
+strictly positive weights comes from a weighted design.
 
 This is the chart-to-design factorisation `P = V Vᵀ`, which needs an orthonormal
-basis of the range of `P`; nothing in the repository supplies it, and only the
-design-to-chart direction (`chartPointOfDesign`) is shipped.  It is the sole
-obstruction to feeding the ALREADY KERNEL-CHECKED small rungs
+basis of the range of `P`.  It was an unproved leaf when this file was written --
+the sole obstruction to feeding the already kernel-checked small rungs
 (`Gtz.gtzWeighted_of_le_five`, `Gtz.gtz_rank_two`, `Gtz.gtzWeighted_corank_two`)
-into `ChartGtzInterior` and hence into the ladder above.  UNPROVED LEAF. -/
+into `ChartGtzInterior` and hence into the ladder above.  IT IS NOW DISCHARGED, at
+every size and rank and with no hypothesis left over, by `Gtz.chartPointHasDesign`
+in `Gtz/Reduction/ChartPointFactorisation.lean`; that file's
+`Gtz.chartGtz_iff_gtzWeighted` is therefore a genuine iff, and `Gtz.ChartGtz` and
+`Gtz.GtzWeighted` are interchangeable.  The predicate is kept because the
+statements below take it as a hypothesis and reads better named than inlined. -/
 def ChartPointHasDesign (size rank : ℕ) : Prop :=
   ∀ point : ChartPoint size rank, (∀ atomIndex, 0 < point.weight atomIndex) →
     ∃ design : WeightedDesign size rank, chartPointOfDesign design = point
