@@ -13,9 +13,15 @@ absent; a second found 72 more, together with four modules this file reached
 only transitively and so could not name. All were axiom-clean, so both defects
 were documentary — but the docstring had promised total coverage it did not
 deliver. Each gap was closed by enumerating every `theorem`/`lemma` in `Gtz/`
-and appending what was absent. The one deliberate exclusion is
-`Gtz/Ties/DiamondTie.lean`, which no module imports and which duplicates
-`Gtz/Design/DiamondPrimitive.lean`.
+and appending what was absent.
+
+There are now NO exclusions. `Gtz/Ties/DiamondTie.lean` was the last one: it was
+excluded because no module imported it, which also meant `lake build Gtz` never
+compiled it, so its 25 theorems were unaudited AND unbuilt by the root target.
+Both halves are fixed — `Gtz.lean` imports it and its declarations are pinned
+below. Its overlap with `Gtz/Design/DiamondPrimitive.lean` is mathematical, not
+nominal: the two files share no declaration name, so co-importing them shadows
+nothing. Re-derive that with the enumeration before reinstating any exclusion.
 
 If you add a theorem, add its line; the list is checked by re-running that
 enumeration, and the honest long-term fix is a meta-level probe that enumerates
@@ -159,6 +165,8 @@ import Gtz.Quantitative.GlobalMinimumRankThree
 import Gtz.Design.EqualityLocus
 import Gtz.Complex.AtomSplitting
 import Gtz.Reduction.SplitTransfer
+import Gtz.Reduction.WeightFloorWindow
+import Gtz.Reduction.HeavyTraceFrame
 import Gtz.Ties.StratumLocalCovering
 import Gtz.Complex.HesseMarginAttained
 import Gtz.Complex.AttainmentRankThree
@@ -235,6 +243,37 @@ import Gtz.Quantitative.SevenThreeMaxVolume
 import Gtz.Quantitative.SevenThreeNoGo
 import Gtz.Quantitative.SevenThreeCBFloor
 import Gtz.Quantitative.SevenThreeMiddleBand
+import Gtz.Ties.DiamondTie
+import Gtz.Design.LinePatternEnumeration
+import Gtz.Design.StratumTieFreeClasses
+import Gtz.Quantitative.DecisionAtlasCellsSevenThree
+import Gtz.Quantitative.IsolatedBlockExclusion
+import Gtz.Quantitative.SevenThreeM7March
+import Gtz.Quantitative.SevenThreeMetricBound
+import Gtz.Quantitative.SevenThreeSyzygy
+import Gtz.Quantitative.SixThreeNuCovering
+import Gtz.Quantitative.SixThreePenLedger
+import Gtz.Quantitative.SpreadFloorRegionSevenThree
+import Gtz.Reduction.AllHeavyMinimiser
+import Gtz.Reduction.ChartAttainmentWeld
+import Gtz.Reduction.NaimarkLeverage
+import Gtz.Design.DiamondLeverage
+import Gtz.Reduction.LineCountReduction
+import Gtz.Quantitative.ArgmaxFloorDictionary
+import Gtz.Quantitative.PrivateAtomLocalisation
+import Gtz.Quantitative.EqualShareSevenThree
+import Gtz.Quantitative.PairRungAggregate
+import Gtz.Quantitative.VeroneseRankFiveNoGo
+import Gtz.Certificates.LiftedCoveringPresentation
+import Gtz.Design.GraphicRankThreeCap
+import Gtz.Ties.DominationMatroidRefutation
+import Gtz.Quantitative.ClassicalConstantAttained
+import Gtz.Quantitative.TieRowLaw
+import Gtz.Quantitative.TiltConcentration
+import Gtz.Quantitative.TiltLevelOneSignLaw
+import Gtz.Quantitative.SixThreeCrux
+import Gtz.Quantitative.FourthMomentRealness
+import Gtz.Quantitative.SwitchingTwoGraph
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -7379,3 +7418,1274 @@ import Gtz.Quantitative.SevenThreeMiddleBand
 #print axioms Gtz.exists_edgeWeight_le_four_ninths_bandSeven
 #print axioms Gtz.exists_edgeWeight_lt_four_ninths_of_not_dominates_bandSeven
 #print axioms Gtz.exists_heavyTriangle_of_allFailing_bandSeven
+
+-- Gtz/Ties/DiamondTie.lean
+#print axioms Gtz.diamondTieGraph
+#print axioms Gtz.diamondTieGraph_isGroundConnected
+#print axioms Gtz.diamondTieConductance
+#print axioms Gtz.diamondTieData
+#print axioms Gtz.diamondTieDesign
+#print axioms Gtz.diamondTieDrop
+#print axioms Gtz.groundedPotential_diamondTie_zero
+#print axioms Gtz.groundedPotential_diamondTie_one
+#print axioms Gtz.groundedPotential_diamondTie_two
+#print axioms Gtz.groundedPotential_diamondTie_three
+#print axioms Gtz.diamondTieDrop_spec
+#print axioms Gtz.diamondTieSelected_ratio
+#print axioms Gtz.diamondTieGapForm
+#print axioms Gtz.diamondTieFullForm
+#print axioms Gtz.diamondTie_gapValue
+#print axioms Gtz.diamondTieDesign_dominates
+#print axioms Gtz.diamondTie_notPosDef_of_nonpositive
+#print axioms Gtz.diamondTie_notPosDef_congr
+#print axioms Gtz.diamondTie_notPosDef_012
+#print axioms Gtz.diamondTie_notPosDef_013
+#print axioms Gtz.diamondTie_notPosDef_014
+#print axioms Gtz.diamondTie_notPosDef_023
+#print axioms Gtz.diamondTie_notPosDef_024
+#print axioms Gtz.diamondTie_notPosDef_034
+#print axioms Gtz.diamondTie_notPosDef_123
+#print axioms Gtz.diamondTie_notPosDef_124
+#print axioms Gtz.diamondTie_notPosDef_134
+#print axioms Gtz.diamondTie_notPosDef_234
+#print axioms Gtz.diamondTieDesign_no_strictDominator
+#print axioms Gtz.diamondTieDesign_isTie
+
+-- Gtz/Design/LinePatternEnumeration.lean
+#print axioms Gtz.lineFamilyPattern
+#print axioms Gtz.decidableLineFamilyPattern
+#print axioms Gtz.decidableNearPencilLinePattern
+#print axioms Gtz.agreesOnDistinctTriples_of_forall
+#print axioms Gtz.agreesOnDistinctTriples_symm
+#print axioms Gtz.agreesOnDistinctTriples_trans
+#print axioms Gtz.IsSpanningLinearSpacePattern
+#print axioms Gtz.pattern_rotate_of_isSpanningLinearSpacePattern
+#print axioms Gtz.nearPencilSixFamily
+#print axioms Gtz.graphicKFourFamily
+#print axioms Gtz.lineFamiliesSix
+#print axioms Gtz.fanoLineFamily
+#print axioms Gtz.fanoMinusLineFamily
+#print axioms Gtz.nearPencilSevenFamily
+#print axioms Gtz.lineFamiliesSeven
+#print axioms Gtz.linePatternListSix
+#print axioms Gtz.linePatternListSeven
+#print axioms Gtz.length_lineFamiliesSix
+#print axioms Gtz.length_lineFamiliesSeven
+#print axioms Gtz.IsPartialLinearSpaceFamily
+#print axioms Gtz.IsSpanningFamily
+#print axioms Gtz.IsGoodLineFamily
+#print axioms Gtz.decidableIsPartialLinearSpaceFamily
+#print axioms Gtz.decidableIsSpanningFamily
+#print axioms Gtz.decidableIsGoodLineFamily
+#print axioms Gtz.isSpanningLinearSpacePattern_lineFamilyPattern
+#print axioms Gtz.forall_isGoodLineFamily_six
+#print axioms Gtz.forall_isGoodLineFamily_seven
+#print axioms Gtz.forall_isSpanningLinearSpacePattern_linePatternListSix
+#print axioms Gtz.forall_isSpanningLinearSpacePattern_linePatternListSeven
+#print axioms Gtz.tripleBracket_eq_zero_of_outerRepeat
+#print axioms Gtz.tripleBracket_eq_zero_of_tailRepeat
+#print axioms Gtz.tripleBracket_eq_zero_of_forall_dotProduct_eq_zero
+#print axioms Gtz.atomBracket_eq_zero_iff_dotProduct_bracketNormal
+#print axioms Gtz.atomBracket_lineClosure
+#print axioms Gtz.exists_basisTriple_of_isPrimitiveDesign
+#print axioms Gtz.dependencePattern
+#print axioms Gtz.hasLinePattern_dependencePattern
+#print axioms Gtz.isSpanningLinearSpacePattern_dependencePattern
+#print axioms Gtz.LinearSpaceListIsComplete
+#print axioms Gtz.patternListIsCompleteUpToRelabel_of_linearSpaceListIsComplete
+#print axioms Gtz.IsNearPencilFamily
+#print axioms Gtz.decidableIsNearPencilFamily
+#print axioms Gtz.isNearPencilClass_of_isNearPencilFamily
+#print axioms Gtz.not_isNearPencilClass_of_not_isNearPencilFamily
+#print axioms Gtz.isNearPencilFamily_nearPencilSixFamily
+#print axioms Gtz.isNearPencilFamily_nearPencilSevenFamily
+#print axioms Gtz.isNearPencilFamily_iff_eq_nearPencilSixFamily
+#print axioms Gtz.isNearPencilFamily_iff_eq_nearPencilSevenFamily
+#print axioms Gtz.agreesOnDistinctTriples_fanoLineFamily
+#print axioms Gtz.isFanoClass_fanoLineFamilyPattern
+#print axioms Gtz.stratumIsTieFree_nearPencilSixFamilyPattern
+#print axioms Gtz.stratumIsTieFree_nearPencilSevenFamilyPattern
+#print axioms Gtz.stratumIsTieFree_fanoLineFamilyPattern
+#print axioms Gtz.pattern_allSlotOrders
+#print axioms Gtz.pattern_of_forall_pattern_pivot
+#print axioms Gtz.pattern_pole_of_pattern_pole_seed
+#print axioms Gtz.not_pattern_pole_of_forall_pattern_off_pole
+#print axioms Gtz.agreesOnDistinctTriples_nearPencil_of_forall_pattern_off_pole
+#print axioms Gtz.swap_apply_eq_target_iff
+#print axioms Gtz.nearPencilLinePattern_comp_swap_iff
+#print axioms Gtz.lineFamiliesFour
+#print axioms Gtz.linePatternListFour
+#print axioms Gtz.length_lineFamiliesFour
+#print axioms Gtz.forall_isGoodLineFamily_four
+#print axioms Gtz.lineFamilyPattern_singleLineFour_iff
+#print axioms Gtz.agreesOnDistinctTriples_singleLineFour_comp_swap
+#print axioms Gtz.exists_forall_pattern_off_pole_four
+#print axioms Gtz.linearSpaceListIsComplete_four
+#print axioms Gtz.patternListIsCompleteUpToRelabel_four
+#print axioms Gtz.isPrimitiveDesign_tetraDesign
+#print axioms Gtz.not_hingeHoldsAtSize_four_three
+#print axioms Gtz.exists_hasLinePattern_relabel_tetraDesign
+#print axioms Gtz.hasLinePattern_nearPencilSixFamilyPattern
+#print axioms Gtz.hasLinePattern_nearPencilSevenFamilyPattern
+#print axioms Gtz.not_isGoodLineFamily_overlappingLines
+#print axioms Gtz.not_isGoodLineFamily_fullLine
+#print axioms Gtz.not_isNearPencilFamily_graphicKFourFamily
+#print axioms Gtz.not_isNearPencilClass_graphicKFourFamilyPattern
+#print axioms Gtz.not_isNearPencilFamily_uniformSix
+#print axioms Gtz.not_isNearPencilFamily_uniformSeven
+#print axioms Gtz.hingeHoldsAtSize_of_linearSpaceEnumeration_sixThree
+#print axioms Gtz.hingeHoldsAtSize_of_linearSpaceEnumeration_sevenThree
+
+-- Gtz/Design/StratumTieFreeClasses.lean
+#print axioms Gtz.eq_smul_normal_of_orthogonal_annihilates
+#print axioms Gtz.sum_weighted_atomPairing
+#print axioms Gtz.dotProduct_atom_pole_eq_zero_of_share_eq_one
+#print axioms Gtz.atom_ne_zero_of_share_eq_one
+#print axioms Gtz.share_eq_one_iff_forall_dotProduct_eq_zero
+#print axioms Gtz.not_isTie_of_share_eq_one
+#print axioms Gtz.share_lt_one_of_isTie
+#print axioms Gtz.share_bracket_strict_of_isTie_sixThree
+#print axioms Gtz.exists_deflatedGapBound_of_isTie
+#print axioms Gtz.atomBracket_ne_zero_of_deflatedGapBound
+#print axioms Gtz.exists_basisTriple_avoiding_of_isTie
+#print axioms Gtz.exists_basisTriple_avoiding_of_isTie_sixThree
+#print axioms Gtz.stratumIsTieFree_of_blindLabel
+#print axioms Gtz.stratumIsTieFree_nearPencil_viaBlindLabel_sixThree
+#print axioms Gtz.exists_distinctTriple_avoiding
+#print axioms Gtz.not_blindLabel_lineFree
+#print axioms Gtz.one_le_offPlaneWeightedLeverage
+#print axioms Gtz.coplanarWeightedLeverage_le_two
+#print axioms Gtz.two_le_card_offPlane_of_isTie
+#print axioms Gtz.exists_lineNormal_of_hasLinePattern
+#print axioms Gtz.two_le_card_offLine_of_isTie
+#print axioms Gtz.offPlanePair_pairing
+#print axioms Gtz.offPlanePair_combination_eq_normal
+#print axioms Gtz.offPlanePair_normalSquare_eq
+#print axioms Gtz.offPlanePair_projection_antiparallel
+#print axioms Gtz.exists_planarProbe_of_offPlanePair_of_isPrimitive
+
+-- Gtz/Quantitative/DecisionAtlasCellsSevenThree.lean
+#print axioms Gtz.conditionalPairing
+#print axioms Gtz.pairMinor_product_eq_tie_add_conditionalPairing_sq
+#print axioms Gtz.heavyExcess_mul_discriminantTie_eq
+#print axioms Gtz.dominates_of_conditionalPairingBox
+#print axioms Gtz.dominates_of_unitConditionalPairingBox
+#print axioms Gtz.exists_conditionalPairingBox_iff_dominates
+#print axioms Gtz.conditionalPairingBoxCell
+#print axioms Gtz.isInCell_conditionalPairingBoxCell_iff
+#print axioms Gtz.doesCellDischarge_conditionalPairingBoxCell
+#print axioms Gtz.dominates_of_pairingFloor
+#print axioms Gtz.pairingFloorCell
+#print axioms Gtz.isInCell_pairingFloorCell_iff
+#print axioms Gtz.doesCellDischarge_pairingFloorCell
+#print axioms Gtz.exists_productFloor_iff_dominates
+#print axioms Gtz.discriminantCovering_iff_conditionalPairingCovering
+#print axioms Gtz.conditionalPairingCovering_seven_iff_rank_three
+#print axioms Gtz.kFourEdgeVector
+#print axioms Gtz.graphicKFourScale
+#print axioms Gtz.graphicKFourScale_mul_self
+#print axioms Gtz.graphicKFourScale_sq
+#print axioms Gtz.graphicKFourAtom
+#print axioms Gtz.atomMatrix_graphicKFourAtom_apply
+#print axioms Gtz.graphicKFourDesign
+#print axioms Gtz.graphicKFourDesign_atom
+#print axioms Gtz.graphicKFourDesign_leverage
+#print axioms Gtz.graphicKFourDesign_allHeavy
+#print axioms Gtz.graphicKFourDesign_heavyExcess
+#print axioms Gtz.graphicKFourDesign_atomPairing
+#print axioms Gtz.graphicKFourDesign_atomPairing_zeroTwo
+#print axioms Gtz.graphicKFourDesign_atomPairing_zeroFour
+#print axioms Gtz.graphicKFourDesign_atomPairing_twoFour
+#print axioms Gtz.graphicKFourDesign_pairMinor_zeroTwo
+#print axioms Gtz.graphicKFourDesign_pairMinor_zeroFour
+#print axioms Gtz.graphicKFourDesign_excessGap_starTriple
+#print axioms Gtz.graphicKFourDesign_discriminantTie_starTriple
+#print axioms Gtz.isInCell_productFloorCell_threeEighths_graphicKFour
+#print axioms Gtz.graphicKFour_productFloor_window
+#print axioms Gtz.graphicKFourDesign_dominates_starTriple
+#print axioms Gtz.not_isSignBlindGoodTriple_graphicKFour_starTriple
+#print axioms Gtz.graphicKFour_starTriple_excessGap_neg
+#print axioms Gtz.graphicKFour_starTriple_twoMomentGap
+#print axioms Gtz.isSignBlindGoodTriple_of_radiusBox
+#print axioms Gtz.no_radiusBox_at_graphicKFour_starTriple
+#print axioms Gtz.graphicKFourDesign_conditionalPairing_starTriple
+#print axioms Gtz.graphicKFourDesign_dominates_starTriple_of_unitConditionalBox
+#print axioms Gtz.graphicKFourDesign_dominates_starTriple_of_pairingFloor
+#print axioms Gtz.graphicKFourSevenDesign
+#print axioms Gtz.graphicKFourSevenDesign_atom_castSucc
+#print axioms Gtz.graphicKFourSevenDesign_allHeavy
+#print axioms Gtz.graphicKFourSevenDesign_heavyExcess_castSucc
+#print axioms Gtz.graphicKFourSevenDesign_atomPairing_castSucc
+#print axioms Gtz.graphicKFourSevenDesign_leverage
+#print axioms Gtz.graphicKFourSevenDesign_pairMinor_zeroTwo
+#print axioms Gtz.graphicKFourSevenDesign_pairMinor_zeroFour
+#print axioms Gtz.isInCell_productFloorCell_threeEighths_graphicKFourSeven
+#print axioms Gtz.graphicKFourSevenDesign_dominates_liftedStarTriple
+#print axioms Gtz.tetraDesign_pairMinor_zeroOne
+#print axioms Gtz.tetraDesign_pairMinor_zeroTwo
+#print axioms Gtz.tetraDesign_conditionalPairing
+#print axioms Gtz.unitConditionalPairingBox_tight_at_tetraDesign
+#print axioms Gtz.pairingFloorCell_blind_at_tetraDesign
+#print axioms Gtz.tieLeg_alone_does_not_imply_traceLeg
+
+-- Gtz/Quantitative/IsolatedBlockExclusion.lean
+#print axioms Gtz.not_exists_tripleBlockCount_seven
+#print axioms Gtz.rank_dvd_size_of_blockCount
+#print axioms Gtz.not_rank_dvd_size_sevenThree
+#print axioms Gtz.IsIsolatedActiveBlock
+#print axioms Gtz.mem_activeSubset_iff_eq_block_of_isIsolatedActiveBlock
+#print axioms Gtz.subsetSum_mulVec_eq_sum
+#print axioms Gtz.subsetSum_mulVec_dotProduct_eq_sum
+#print axioms Gtz.subsetSum_mulVec_dotProduct_comm
+#print axioms Gtz.clarkePairing
+#print axioms Gtz.blockClarkePairing
+#print axioms Gtz.clarkePairing_comm
+#print axioms Gtz.blockClarkePairing_comm
+#print axioms Gtz.blockClarkePairing_sum_right
+#print axioms Gtz.clarkePairing_atom_self_eq_one
+#print axioms Gtz.multiplierPairing_eq_value_mul_clarkePairing
+#print axioms Gtz.blockClarkePairing_atom_eq
+#print axioms Gtz.blockClarkePairing_subsetSum_eq
+#print axioms Gtz.clarkePairing_subsetSum_atom_eq_value
+#print axioms Gtz.multiplierTotal_subsetSum_form_eq_card
+#print axioms Gtz.multiplierTotal_subsetSum_normSq_eq_card_mul_value
+#print axioms Gtz.sq_multiplierPairingTotal_le_multiplierNormTotal
+#print axioms Gtz.card_le_value_of_isIsolatedActiveBlock
+#print axioms Gtz.rank_le_value_of_isIsolatedActiveBlock_mem_image
+#print axioms Gtz.rank_le_value_of_pairwiseDisjoint_activeSubset
+#print axioms Gtz.not_value_lt_one_of_pairwiseDisjoint_activeSubset
+#print axioms Gtz.not_value_lt_one_of_isIsolatedActiveBlock
+#print axioms Gtz.not_isIsolatedActiveBlock_of_two_distinct_activeSubset
+#print axioms Gtz.rank_le_value_of_constant_activeSubset
+#print axioms Gtz.multiplierTotal_subsetSum_moments_eq_of_constant_activeSubset
+#print axioms Gtz.rank_le_value_of_disjointPair_activeSubsetImage
+#print axioms Gtz.three_le_card_activeSubsetImage_sixThree
+#print axioms Gtz.not_isIsolatedActiveBlock_belowOneSubset_of_nonempty
+#print axioms Gtz.card_activeSubsetImage_belowOneSubset
+#print axioms Gtz.exists_isQuadricStationaryData_three_le_card_activeSubsetImage_value_lt_one
+
+-- Gtz/Quantitative/SevenThreeM7March.lean
+#print axioms Gtz.pairProductForm_le_one
+#print axioms Gtz.sq_twoByTwoMinor_le_entrySlack
+#print axioms Gtz.twoByTwoSignMinor_eq_zero_of_sq_le_one
+#print axioms Gtz.exists_complex_unimodular_minor_ne_zero
+#print axioms Gtz.columnPairMinor_le_entrySlack_fourRows
+#print axioms Gtz.columnPairMinor_le_entrySlack_threeRows
+#print axioms Gtz.minorLawIdentity_sevenThree
+#print axioms Gtz.minorLawIdentity_sixThree
+#print axioms Gtz.minorRelaxationCubic_image_eq_minorFloorCubic_sevenThree
+#print axioms Gtz.minorFloorCubic_sevenThree_neg_at_landedFloor
+#print axioms Gtz.minorFloorCubic_sevenThree_pos_at_quarter
+#print axioms Gtz.minorFloorQuadratic_sixThree_pos_at_landedFloor
+#print axioms Gtz.minorFloorQuadratic_sixThree_neg_at_upperBracket
+#print axioms Gtz.minorGateFromAdjugateLaw_sevenThree
+#print axioms Gtz.minorGateFromAdjugateLaw_sixThree
+#print axioms Gtz.posDef_sub_minorFloor_of_exchangeGates_sevenThree
+#print axioms Gtz.posDef_sub_minorFloor_of_exchangeGates_sixThree
+#print axioms Gtz.minorGate_of_maximalVolume_sevenThree
+#print axioms Gtz.posDef_unitPickGram_sub_minorFloor_sevenThree
+#print axioms Gtz.posDef_directionGramMatrix_submatrix_sub_minorFloor_sevenThree
+#print axioms Gtz.exists_pick_posDef_unitPickGram_sub_minorFloor_sevenThree
+#print axioms Gtz.minorGate_of_maximalVolume_sixThree
+#print axioms Gtz.posDef_unitPickGram_sub_minorFloor_sixThree
+#print axioms Gtz.exists_pick_posDef_unitPickGram_sub_minorFloor_sixThree
+#print axioms Gtz.exists_pick_posDef_sub_minorFloor_icosaDesign
+#print axioms Gtz.exchangeGates_corner_tight_sevenThree
+#print axioms Gtz.shiftedDet_at_gateCorner_eq_minorFloorCubic_sevenThree
+#print axioms Gtz.exists_correlation_satisfying_gates_not_posDef_at_quarter_sevenThree
+
+-- Gtz/Quantitative/SevenThreeMetricBound.lean
+#print axioms Gtz.frobeniusInner
+#print axioms Gtz.frobeniusNormSq
+#print axioms Gtz.frobeniusInner_comm
+#print axioms Gtz.frobeniusInner_add_left
+#print axioms Gtz.frobeniusInner_add_right
+#print axioms Gtz.frobeniusNormSq_add_add
+#print axioms Gtz.frobeniusInner_eq_trace_mul
+#print axioms Gtz.veroneseTracelessPart
+#print axioms Gtz.transpose_atomMatrix
+#print axioms Gtz.transpose_veroneseTracelessPart
+#print axioms Gtz.trace_atomMatrix_mul_atomMatrix
+#print axioms Gtz.trace_veroneseTracelessPart
+#print axioms Gtz.frobeniusInner_veroneseTracelessPart
+#print axioms Gtz.frobeniusNormSq_veroneseTracelessPart
+#print axioms Gtz.sum_atomMatrix_unitAtom_of_equalShare
+#print axioms Gtz.sum_veroneseTracelessPart_eq_zero
+#print axioms Gtz.sum_veroneseTracelessPart_subset_eq
+#print axioms Gtz.veroneseTracelessPart_sq
+#print axioms Gtz.frobeniusNormSq_tripleTracelessSum_eq_two_mul_tripleSigma
+#print axioms Gtz.dominates_triple_of_frobeniusNormSq_le_two_thirds
+#print axioms Gtz.MetricTripleBoundSevenThree
+#print axioms Gtz.GtzWeightedEqualShareSevenThree
+#print axioms Gtz.gtzWeightedEqualShareSevenThree_of_metricTripleBound
+#print axioms Gtz.pentagonSideCosine
+#print axioms Gtz.pentagonDiagonalCosine
+#print axioms Gtz.pentagonSideSine
+#print axioms Gtz.pentagonDiagonalSine
+#print axioms Gtz.coneAxisHeight
+#print axioms Gtz.conePlaneRadius
+#print axioms Gtz.rootFive_sq
+#print axioms Gtz.rootThree_sq
+#print axioms Gtz.coneAxisHeight_sq
+#print axioms Gtz.conePlaneRadius_sq
+#print axioms Gtz.pentagonSideCosine_sq
+#print axioms Gtz.pentagonDiagonalCosine_sq
+#print axioms Gtz.rootFive_lt_three
+#print axioms Gtz.pentagonSideSine_sq
+#print axioms Gtz.pentagonDiagonalSine_sq
+#print axioms Gtz.pentagonSine_mul
+#print axioms Gtz.pentagonPairAtom
+#print axioms Gtz.leverageOf_pentagonPairAtom
+#print axioms Gtz.sum_atomMatrix_pentagonPairAtom
+#print axioms Gtz.pentagonPairDesign
+#print axioms Gtz.pentagonPairDesign_leverage
+#print axioms Gtz.pentagonPairDesign_atomShare
+#print axioms Gtz.hasParallelPair_pentagonPairDesign
+#print axioms Gtz.axisPentagonPairing
+#print axioms Gtz.pentagonSidePairing
+#print axioms Gtz.pentagonDiagonalPairing
+#print axioms Gtz.pentagonPairPairing
+#print axioms Gtz.dotProduct_pentagonPairAtom
+#print axioms Gtz.directionGram_pentagonPairDesign
+#print axioms Gtz.pentagonPairEdgeNumerator
+#print axioms Gtz.pentagonPairEdgeRootCoefficient
+#print axioms Gtz.edgeWeight_pentagonPairDesign
+#print axioms Gtz.pentagonPairEdge_triple_shadow
+#print axioms Gtz.sum_edgeWeight_pentagonPairDesign
+#print axioms Gtz.directionTripleSigma_eq_sum_edgeWeight
+#print axioms Gtz.edgeWeight_pentagonPairDesign_entry
+#print axioms Gtz.directionTripleSigma_pentagonPairDesign_extremal
+#print axioms Gtz.directionTripleSigma_pentagonPairDesign_ge
+#print axioms Gtz.pentagonPairDesign_min_tripleSigma
+#print axioms Gtz.nine_lt_seven_mul_rootFive
+#print axioms Gtz.pentagonPairDesign_tripleSigma_margin
+#print axioms Gtz.dominates_pentagonPairDesign_extremalTriple
+#print axioms Gtz.le_level_of_forall_exists_tripleSigma_le
+#print axioms Gtz.le_level_of_forall_exists_frobeniusNormSq_le
+#print axioms Gtz.frobeniusInner_sum_right
+#print axioms Gtz.veroneseTracelessRows
+#print axioms Gtz.veroneseGram
+#print axioms Gtz.posSemidef_veroneseGram
+#print axioms Gtz.veroneseGram_diag
+#print axioms Gtz.sum_veroneseGram_row
+#print axioms Gtz.AbstractMetricTripleBoundSevenThree
+#print axioms Gtz.metricTripleBoundSevenThree_of_abstract
+#print axioms Gtz.uniformVeroneseGramWitness
+#print axioms Gtz.uniformVeroneseGramWitness_diag
+#print axioms Gtz.uniformVeroneseGramWitness_offDiag
+#print axioms Gtz.uniformVeroneseGramWitness_quadraticForm
+#print axioms Gtz.posSemidef_uniformVeroneseGramWitness
+#print axioms Gtz.sum_uniformVeroneseGramWitness_row
+#print axioms Gtz.not_abstractMetricTripleBound_sevenThree
+#print axioms Gtz.veroneseSquareRows
+#print axioms Gtz.veroneseCoRows
+#print axioms Gtz.hadamardSquareDirectionGram
+#print axioms Gtz.hadamardSquareDirectionGram_eq_veronese_mul
+#print axioms Gtz.rank_hadamardSquareDirectionGram_le_six
+#print axioms Gtz.uniformHadamardSquareTarget
+#print axioms Gtz.uniformHadamardSquareTarget_eq_witness_add
+#print axioms Gtz.uniformHadamardSquareTarget_quadraticForm
+#print axioms Gtz.posDef_uniformHadamardSquareTarget
+#print axioms Gtz.rank_uniformHadamardSquareTarget
+#print axioms Gtz.not_exists_design_with_uniform_edgeWeight_two_ninths
+#print axioms Gtz.MergeBoundaryCollarSevenThree
+#print axioms Gtz.gtzWeightedEqualShareSevenThree_of_mergeBoundaryCollar
+#print axioms Gtz.pentagonPairDesign_satisfies_both_mergeBoundaryBranches
+#print axioms Gtz.exists_dominating_pentagonPairDesign_of_gtzWeighted_six
+
+-- Gtz/Quantitative/SevenThreeSyzygy.lean
+#print axioms Gtz.veroneseCoordinate
+#print axioms Gtz.veroneseCoordinate_zero
+#print axioms Gtz.veroneseCoordinate_one
+#print axioms Gtz.veroneseCoordinate_two
+#print axioms Gtz.veroneseCoordinate_three
+#print axioms Gtz.veroneseCoordinate_four
+#print axioms Gtz.veroneseCoordinate_five
+#print axioms Gtz.veroneseCoordinate_six
+#print axioms Gtz.veroneseCoordinate_dotProduct
+#print axioms Gtz.veroneseSixRows
+#print axioms Gtz.hadamardSquareGram
+#print axioms Gtz.hadamardSquareGram_apply
+#print axioms Gtz.hadamardSquareGram_nonneg
+#print axioms Gtz.hadamardSquareGram_comm
+#print axioms Gtz.hadamardSquareGram_diagonal
+#print axioms Gtz.isHermitian_hadamardSquareGram
+#print axioms Gtz.hadamardSquareGram_eq_veroneseRows_mul_transpose
+#print axioms Gtz.hadamardSquareGram_eq_veroneseSixRows_mul_transpose
+#print axioms Gtz.posSemidef_hadamardSquareGram
+#print axioms Gtz.rank_hadamardSquareGram_le_six
+#print axioms Gtz.det_veroneseRows_eq_zero
+#print axioms Gtz.det_hadamardSquareGram_eq_zero
+#print axioms Gtz.momentCombination
+#print axioms Gtz.momentCombination_apply
+#print axioms Gtz.exists_veroneseSyzygy
+#print axioms Gtz.sum_mul_sq_dotProduct_of_momentCombination_eq_zero
+#print axioms Gtz.sum_eq_zero_of_momentCombination_eq_zero
+#print axioms Gtz.hadamardSquareGram_mulVec_eq_zero
+#print axioms Gtz.dotProduct_hadamardSquareGram_mulVec_eq_zero
+#print axioms Gtz.sum_sub_scaled_add_scaled
+#print axioms Gtz.sum_sq_sub_scaled
+#print axioms Gtz.dotProduct_mulVec_eq_entrySum
+#print axioms Gtz.sum_hadamardSquareGram_row_of_uniformShare
+#print axioms Gtz.sum_hadamardSquareGram_column_of_uniformShare
+#print axioms Gtz.hadamardSquareGram_mulVec_ones_of_uniformShare
+#print axioms Gtz.dotProduct_hadamardSquareGram_mulVec_le
+#print axioms Gtz.posSemidef_smul_one_sub_hadamardSquareGram
+#print axioms Gtz.dotProduct_hadamardSquareGram_mulVec_le_shifted
+#print axioms Gtz.dotProduct_hadamardSquareGram_mulVec_le_kernelDeflated
+#print axioms Gtz.not_equiangular_uniformShare_sevenThree
+#print axioms Gtz.syzygyTestEntry
+#print axioms Gtz.sum_hadamardSquareGram_mul_syzygyTestEntry_row
+#print axioms Gtz.sum_syzygyTestEntry_sq_row
+#print axioms Gtz.fourth_moment_ge_of_uniformShare
+#print axioms Gtz.fourth_moment_eq_seven_add_offDiagonal
+#print axioms Gtz.edge_second_moment_ge_of_uniformShare
+#print axioms Gtz.twentySeven_mul_prod_le_cube_sum
+#print axioms Gtz.sigma_sub_three_mul_product_le_four_ninths_of_sigma_le_third
+#print axioms Gtz.dominates_triple_of_directionTripleSigma_le_third
+#print axioms Gtz.tetrapodPairingSquare
+#print axioms Gtz.sq_atomPairing_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.hadamardSquareGram_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.fourth_moment_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.fourth_moment_sevenThreeBasisTetrapodDesign_sub_floor
+#print axioms Gtz.edge_second_moment_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.fourth_moment_ge_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.uniform_edge_total_lt_edge_floor
+#print axioms Gtz.naiveEdgeFloor_lt_syzygyEdgeFloor
+#print axioms Gtz.countingFamilyCeiling
+#print axioms Gtz.countingFamilyCeiling_fourTwo
+#print axioms Gtz.countingFamilyCeiling_fourTwo_eq_combinedValueFloor
+#print axioms Gtz.countingFamilyCeiling_sixThree
+#print axioms Gtz.countingFamilyCeiling_sevenThree
+#print axioms Gtz.countingFamilyCeiling_sevenThree_neg
+#print axioms Gtz.countingFamilyCeiling_fourTwo_lt_complexSicValue
+#print axioms Gtz.complexSicValue_fourTwo_neg
+
+-- Gtz/Quantitative/SixThreeNuCovering.lean
+#print axioms Gtz.unitComplement
+#print axioms Gtz.unitComplement_apply
+#print axioms Gtz.unitComplement_unitComplement
+#print axioms Gtz.inv_leverage_eq_one_sub_weightSlack
+#print axioms Gtz.sum_inv_leverage_eq_two_six_three
+#print axioms Gtz.submatrix_sub_diagonal_eq_slackHollowThree
+#print axioms Gtz.dominates_triple_iff_posSemidef_gramSubmatrix_sub_diagonal
+#print axioms Gtz.invariantLeverageCell
+#print axioms Gtz.mem_invariantLeverageCell_iff
+#print axioms Gtz.mem_invariantLeverageCell_iff_unitComplement_mem_tripleSlackCell
+#print axioms Gtz.tripleSlackCell_congr_offDiagonal
+#print axioms Gtz.convex_invariantLeverageCell
+#print axioms Gtz.mem_invariantLeverageCell_of_le
+#print axioms Gtz.zero_mem_invariantLeverageCell
+#print axioms Gtz.tripleSlackMargin
+#print axioms Gtz.mem_tripleSlackCell_iff_zero_le_tripleSlackMargin
+#print axioms Gtz.concave_lambdaMinMat
+#print axioms Gtz.concave_tripleSlackMargin
+#print axioms Gtz.concave_invariantLeverageMargin
+#print axioms Gtz.frameGram_apply
+#print axioms Gtz.frameGram_diagonal
+#print axioms Gtz.frameGram_comm
+#print axioms Gtz.invariantLeverageHypersimplex
+#print axioms Gtz.invariantLeverageDesignRegion
+#print axioms Gtz.sum_unitComplement_six
+#print axioms Gtz.unitComplement_mem_slackSimplex_iff
+#print axioms Gtz.unitComplement_mem_heavySlackSimplex_iff
+#print axioms Gtz.constantThird_mem_invariantLeverageHypersimplex
+#print axioms Gtz.constantHalf_notMem_invariantLeverageHypersimplex
+#print axioms Gtz.CoversInvariantLeverageRegion
+#print axioms Gtz.mem_invariantLeverageCell_frameGram_iff
+#print axioms Gtz.coversInvariantLeverageDesignRegion_iff_coversHeavySlackSimplex
+#print axioms Gtz.gtzUniformShareSixThree_iff_forall_coversInvariantLeverageDesignRegion
+#print axioms Gtz.quarterFrame
+#print axioms Gtz.quarterFrame_unit
+#print axioms Gtz.quarterFrame_tight
+#print axioms Gtz.isUnitTightFrameSix_quarterFrame
+#print axioms Gtz.quarterGram
+#print axioms Gtz.quarterFrame_mul_transpose
+#print axioms Gtz.quarterGram_comm
+#print axioms Gtz.quarterGram_diagonal
+#print axioms Gtz.transpose_submatrix_quarterGram
+#print axioms Gtz.not_mem_tripleSlackCell_quarterGram_half
+#print axioms Gtz.diagonal_const_eq_smul_one
+#print axioms Gtz.constantHalf_notMem_invariantLeverageCell_quarterGram
+#print axioms Gtz.not_two_inv_le_lambdaMinMat_quarterGram
+#print axioms Gtz.quarterFrame_tight_cast
+#print axioms Gtz.quarterDesign
+#print axioms Gtz.isEqualShare_quarterDesign
+#print axioms Gtz.directionGram_quarterDesign
+#print axioms Gtz.QuarterConjectureSixThree
+#print axioms Gtz.not_quarterConjectureSixThree
+#print axioms Gtz.exists_dominating_triple_quarterDesign
+#print axioms Gtz.quarterGram_zero_two
+#print axioms Gtz.quarterGram_zero_five
+#print axioms Gtz.quarterGram_two_five
+#print axioms Gtz.edgeWeightFloor_le_maxMinWeight_quarterDesign
+#print axioms Gtz.one_eighth_lt_maxMinWeight_quarterDesign
+#print axioms Gtz.invariantLeverageCell_congr
+#print axioms Gtz.mem_invariantLeverageCell_of_vanishing
+#print axioms Gtz.tripleSlackMargin_unitComplement_eq_lambdaMinMat_of_vanishing
+#print axioms Gtz.exists_third_le_of_sum_eq_two
+#print axioms Gtz.eq_third_of_le_third_of_sum_eq_two
+#print axioms Gtz.mem_invariantLeverageCell_of_le_lambdaMinMat
+#print axioms Gtz.gram_eq_zero_of_mem_invariantLeverageCell_of_eq_one
+#print axioms Gtz.exists_dominates_of_inv_leverage_le_nine_twentyfifths
+#print axioms Gtz.zero_mem_iInter_invariantLeverageCell
+
+-- Gtz/Quantitative/SixThreePenLedger.lean
+#print axioms Gtz.elliptopeBracket_add_product_eq_one_sub_orientedResidual
+#print axioms Gtz.directionTripleDeterminant_add_product_eq_one_sub_orientedTripleResidual
+#print axioms Gtz.orientedTripleResidual_le_four_ninths_iff_five_ninths_le_determinant_add_product
+#print axioms Gtz.dominates_triple_iff_five_ninths_le_determinant_add_product_of_uniformShare
+#print axioms Gtz.dominates_triple_iff_five_ninths_le_determinant_add_product_sixThree
+#print axioms Gtz.dominates_triple_iff_five_ninths_le_determinant_add_product_sevenThree
+#print axioms Gtz.det_directionGramMatrix_submatrix_three_eq_directionTripleDeterminant
+#print axioms Gtz.directionTripleDeterminant_nonneg
+#print axioms Gtz.elliptopeBracket_add_product_at_tetrahedralTie
+#print axioms Gtz.elliptopeBracket_add_product_at_heavyTie
+#print axioms Gtz.elliptopeBracket_add_product_tetrahedralTie_eq_heavyTie
+#print axioms Gtz.equilateralCriterionCubic_factorisation
+#print axioms Gtz.elliptopeBracket_add_product_equilateral_sub_five_ninths
+#print axioms Gtz.sum_directionTripleProduct_eq_inv_share_mul_edgeWeight
+#print axioms Gtz.sum_directionTripleProduct_off_pair_eq
+#print axioms Gtz.sum_directionTripleProduct_off_pair_eq_zero_sixThree
+#print axioms Gtz.sum_directionTripleProduct_off_pair_eq_third_mul_edgeWeight_sevenThree
+#print axioms Gtz.sq_directionTripleProduct_icosaDesign
+#print axioms Gtz.sum_directionTripleProduct_off_pair_eq_zero_icosaDesign
+#print axioms Gtz.sum_directionTripleProduct_eq_two_fifths_icosaDesign
+#print axioms Gtz.directionTripleProduct_heavy_eq_neg_sum_mixed
+#print axioms Gtz.exists_mixed_directionTripleProduct_ge_third_of_heavyTriple
+#print axioms Gtz.exists_mixed_directionTripleProduct_ge_third_nonneg_of_frustratedHeavy
+#print axioms Gtz.elliptopeBracket_product_ge_neg_eighth
+#print axioms Gtz.shiftedCorrelationDeterminant_factorisation
+#print axioms Gtz.posSemidef_correlationMatrixThree_sub_four_ninths_bracket_smul_one
+#print axioms Gtz.posSemidef_directionGramMatrix_submatrix_three_sub_gate
+#print axioms Gtz.posSemidef_correlationMatrixThree_sub_eight_forty_fifths_smul_one
+#print axioms Gtz.posSemidef_correlationMatrixThree_sub_two_ninths_deficit_smul_one
+#print axioms Gtz.exists_gateTriple_avoiding_sixThree
+#print axioms Gtz.exists_gateTriple_sixThree
+#print axioms Gtz.exists_dotProduct_le_neg_half_of_vanishingCombination
+#print axioms Gtz.exists_dotProduct_le_neg_quarter_of_fiveTermVanishingCombination
+#print axioms Gtz.fiveTermCertificate_symmetricValue
+#print axioms Gtz.equalCorrelationFiveGram
+#print axioms Gtz.posSemidef_equalCorrelationFiveGram
+#print axioms Gtz.equalCorrelationFiveGram_mulVec_ones_eq_zero
+#print axioms Gtz.deletionFloor_ge_third_iff_le_third
+#print axioms Gtz.deletionFloor_at_pole
+#print axioms Gtz.deletionAveraging_collapse
+#print axioms Gtz.deletionAveraging_misses_third_by_two_sixty_ninths
+#print axioms Gtz.radonFiveDirectionGap
+
+-- Gtz/Quantitative/SpreadFloorRegionSevenThree.lean
+#print axioms Gtz.edgeWeight_mul_leverageProduct_eq_atomPairing_sq
+#print axioms Gtz.edgeWeight_le_of_hasSpreadAtLeast
+#print axioms Gtz.hasSpreadAtLeast_of_edgeWeight_le
+#print axioms Gtz.hasSpreadAtLeast_iff_edgeWeight_le
+#print axioms Gtz.atomShare_nonneg
+#print axioms Gtz.sum_erase_atomShare_eq
+#print axioms Gtz.one_sub_atomShare_le_edgeCap_mul_three_sub_atomShare
+#print axioms Gtz.size_sub_three_le_three_mul_size_sub_one_mul_one_sub_spread
+#print axioms Gtz.spread_le_four_fifths_of_hasSpreadAtLeast_sixThree
+#print axioms Gtz.spread_le_seven_ninths_of_hasSpreadAtLeast_sevenThree
+#print axioms Gtz.leveragePos_of_allHeavy
+#print axioms Gtz.spread_le_eight_ninths_of_hasSpreadAtLeast_fourThree
+#print axioms Gtz.tetraDesign_hasSpreadAtLeast_eight_ninths
+#print axioms Gtz.not_forall_spread_le_of_lt_four_fifths_sixThree
+#print axioms Gtz.not_isFlooredSpreadDesign_sixThree_of_four_fifths_lt_spread
+#print axioms Gtz.not_isFlooredSpreadDesign_sevenThree_of_seven_ninths_lt_spread
+#print axioms Gtz.weight_eq_inv_size_of_hasWeightFloor_inv_size
+#print axioms Gtz.sum_erase_edgeWeight_eq_four_thirds_of_uniformShare_sevenThree
+#print axioms Gtz.sum_sum_erase_edgeWeight_eq_twentyEight_thirds_of_uniformShare_sevenThree
+#print axioms Gtz.leveragePos_of_uniformShare_sevenThree
+#print axioms Gtz.exists_two_ninths_le_edgeWeight_of_uniformShare_sevenThree
+#print axioms Gtz.edgeWeight_eq_two_ninths_of_hasSpreadAtLeast_seven_ninths
+#print axioms Gtz.HasLightTripleSevenThree
+#print axioms Gtz.spread_le_thirteen_eighteenths_of_two_lightEdges_sevenThree
+#print axioms Gtz.not_hasLightTripleSevenThree_of_thirteen_eighteenths_lt_spread
+#print axioms Gtz.not_hasLightTripleSevenThree_of_hasSpreadAtLeast_seven_ninths
+#print axioms Gtz.edgeWeight_lt_four_ninths_of_five_ninths_lt_spread
+#print axioms Gtz.gateLayerFenced_of_thirteen_eighteenths_lt_spread
+#print axioms Gtz.exists_dominates_of_hasLightTripleSevenThree
+#print axioms Gtz.symmetricLegs_nonneg_of_hasLightTripleSevenThree
+#print axioms Gtz.FlooredSpreadCoveringAtSize
+#print axioms Gtz.flooredSpreadCovering_iff_flooredSpreadCoveringAtSize_six
+#print axioms Gtz.flooredSpreadCoveringAtSize_mono
+#print axioms Gtz.flooredSpreadCoveringAtSize_of_symmetricCovering
+#print axioms Gtz.flooredSpreadCoveringAtSize_six_of_four_fifths_lt_spread
+#print axioms Gtz.flooredSpreadCoveringAtSize_seven_of_seven_ninths_lt_spread
+#print axioms Gtz.atomPairing_sq_le_three_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.sevenThreeBasisTetrapodDesign_hasSpreadAtLeast_two_thirds
+#print axioms Gtz.atomPairing_sq_zero_three_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.sevenThreeBasisTetrapodDesign_not_hasSpreadAtLeast_of_two_thirds_lt
+#print axioms Gtz.sevenThreeBasisTetrapodDesign_hasWeightFloor_one_seventh
+#print axioms Gtz.sevenThreeBasisTetrapodDesign_isFlooredSpreadDesign
+#print axioms Gtz.edgeWeight_three_four_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.edgeWeight_three_five_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.edgeWeight_four_five_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.sevenThreeBasisTetrapodDesign_hasLightTripleSevenThree
+#print axioms Gtz.symmetricLegs_nonneg_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.splitSevenDesign_not_hasSpreadAtLeast
+#print axioms Gtz.splitSevenDesign_not_isFlooredSpreadDesign
+
+-- Gtz/Reduction/WeightFloorWindow.lean -- the weight floor has exactly one usable
+-- interval, (0, 1/size]; outside it one branch of the four-branch split carries the
+-- entire problem, and the right endpoint is attained by the uniform icosahedral design
+#print axioms Gtz.not_hasDustAtom_of_weightFloor_nonpos
+#print axioms Gtz.dustDropCertificate_of_weightFloor_nonpos
+#print axioms Gtz.not_hasDustAtom_of_weight_eq_sizeInv
+#print axioms Gtz.not_hasDustAtom_icosaDesign_sizeInv
+#print axioms Gtz.IsLiveWeightFloor
+#print axioms Gtz.isLiveWeightFloor_sizeInv
+#print axioms Gtz.degenerate_of_not_isLiveWeightFloor
+#print axioms Gtz.dustDropCertificate_and_spreadFloorCertificate_of_gtzWeighted
+#print axioms Gtz.weight_eq_sizeInv_of_not_hasDustAtom_sizeInv
+#print axioms Gtz.spreadFloorCertificate_sizeInv_iff_uniform
+#print axioms Gtz.subsetSum_univ_eq_size_smul_one_of_weight_eq_sizeInv
+#print axioms Gtz.exists_dominating_triple_of_isSpreadAndFloored_sizeInv_of_leverage_eq_rank
+#print axioms Gtz.spreadFloorCertificate_sixThree_sizeInv_of_unequalLeverage
+#print axioms Gtz.spreadFloorCertificate_sevenThree_sizeInv_iff_uniform
+#print axioms Gtz.not_dotProduct_lt_of_disjoint_triples_of_isSpreadAndFloored_sizeInv
+#print axioms Gtz.isEqualShare_of_isSpreadAndFloored_sizeInv_of_leverage_eq_rank_sevenThree
+#print axioms Gtz.subsetSum_univ_eq_and_leverage_of_isEqualShare_sevenThree
+#print axioms Gtz.countingFamilyCeiling_neg_at_both_frontier_cells
+#print axioms Gtz.sum_leverage_eq_size_mul_rank_of_weight_eq_sizeInv
+#print axioms Gtz.exists_dominating_triple_of_light_atom_sixThree
+#print axioms Gtz.spreadFloorCertificate_sixThree_sizeInv_of_heavyUnequalLeverage
+#print axioms Gtz.leverage_le_size_of_weight_eq_sizeInv
+#print axioms Gtz.exists_dominating_triple_of_hasParallelPair_sixThree
+#print axioms Gtz.spreadFloorCertificate_sixThree_sizeInv_of_closedResidue
+#print axioms Gtz.hasDustAtom_of_ne_sizeInv
+#print axioms Gtz.weight_eq_sizeInv_or_hasDustAtom
+
+-- Gtz/Reduction/HeavyTraceFrame.lean -- the trace test, and the route correction:
+-- the two-obligation all-heavy reduction supersedes the four-obligation weight-floor
+-- route, and the trace test refutes nothing inside the all-heavy frame
+#print axioms Gtz.rank_le_sum_leverage_of_dominates
+#print axioms Gtz.not_dominates_of_sum_leverage_lt_rank
+#print axioms Gtz.rank_lt_sum_leverage_of_allHeavy
+#print axioms Gtz.gtzWeightedHeavy_of_gtzWeighted
+#print axioms Gtz.gtzWeightedAll_three_of_heavy_frontier
+
+-- Gtz/Reduction/AllHeavyMinimiser.lean -- the all-heavy minimising counterexample and the
+-- deflation lane, read as a level rather than a sign: the share-only certificate and the
+-- named deflation level; the UNIVERSAL share floor and the all-heaviness it yields at a
+-- counterexample; the size-aware floors 3/5 (unconditional at (6,3)) and 2/3 (granted the
+-- open cell); the lane's exact ceiling, attained on the equal-share stratum; the minimiser
+-- itself, unconditional at (6,3); and the equivalence saying the minimising all-heavy
+-- residue is NOT a discount
+#print axioms Gtz.exists_posSemidef_sub_of_atomShare_le
+#print axioms Gtz.deflationLevel
+#print axioms Gtz.deflationLevel_le_lambdaMinMat_subsetSum
+#print axioms Gtz.lt_atomShare_of_forall_not_posSemidef
+#print axioms Gtz.lt_leverage_of_forall_not_posSemidef
+#print axioms Gtz.allHeavy_of_forall_not_dominates
+#print axioms Gtz.gtzWeightedFloor_succ_of_gtzWeighted
+#print axioms Gtz.gtzWeightedFloor_six_three_three_fifths
+#print axioms Gtz.gtzWeightedFloor_seven_three_two_thirds
+#print axioms Gtz.deflationLevel_lt_one_iff_one_lt_leverage
+#print axioms Gtz.deflationLevel_lt_one_of_allHeavy
+#print axioms Gtz.deflationLevel_eq_of_uniform
+#print axioms Gtz.one_lt_level_of_dustBudget
+#print axioms Gtz.gtzWeighted_succ_of_heavy_of_smaller
+#print axioms Gtz.gtzWeighted_seven_three_of_six_three_of_heavy
+#print axioms Gtz.exists_allHeavy_minimiser_of_not_gtzWeighted
+#print axioms Gtz.exists_allHeavy_minimiser_sixThree
+#print axioms Gtz.exists_allHeavy_minimiser_sevenThree
+#print axioms Gtz.exists_allHeavy_minimiser_of_not_rank_three
+#print axioms Gtz.weight_lt_chart_diag_of_allHeavy
+#print axioms Gtz.leverage_le_one_of_projection_diag_le_weight
+#print axioms Gtz.GtzWeightedHeavyMinimal
+#print axioms Gtz.gtzWeighted_of_heavyMinimal
+#print axioms Gtz.gtzWeighted_six_three_of_heavyMinimal
+#print axioms Gtz.gtzWeighted_seven_three_of_heavyMinimal
+#print axioms Gtz.gtzWeightedAll_three_of_heavyMinimal
+#print axioms Gtz.gtzWeightedHeavyMinimal_iff_gtzWeighted
+#print axioms Gtz.gtzWeightedHeavyMinimal_iff_gtzWeighted_six_three
+#print axioms Gtz.gtzWeightedHeavyMinimal_iff_gtzWeighted_seven_three
+#print axioms Gtz.allHeavy_and_two_thirds_seven_three
+#print axioms Gtz.deflationLevel_lt_one_seven_three
+#print axioms Gtz.exists_chartObjective_isMin_sevenThree
+
+-- Gtz/Reduction/ChartAttainmentWeld.lean -- the weld joining the attained chart objective
+-- to the descent layer's minimality hypothesis, which were produced and consumed in
+-- disjoint files; the free inactive side condition at the argmax family; the spectral leg
+-- discharging hexistsTight, which the descent layer's own header names as NOT free; and
+-- the design-side collared minimiser, the only design-side attainment in the tree
+#print axioms Gtz.chartBlockDominatesAtValue_of_le_chartBlockValue
+#print axioms Gtz.hasChartDominatingSubsetAtValue_of_le_chartObjective
+#print axioms Gtz.movedChartPoint
+#print axioms Gtz.hasChartDominatingSubsetAtValue_of_isMin
+#print axioms Gtz.exists_unit_of_dotProduct_lt
+#print axioms Gtz.exists_unit_probe_lt_of_chartBlockValue_lt
+#print axioms Gtz.chartArgmaxFamily
+#print axioms Gtz.mem_chartArgmaxFamily_iff
+#print axioms Gtz.chartArgmaxFamily_nonempty
+#print axioms Gtz.isChartInactiveStrict_chartArgmaxFamily
+#print axioms Gtz.isChartTightCovering_of_isMin
+#print axioms Gtz.isChartStrongStationaryData_of_isMin
+#print axioms Gtz.isSelfAdjoint_toEuclideanCLM
+#print axioms Gtz.exists_unit_eigenvector_lambdaMinMat
+#print axioms Gtz.mulVec_selectionInjection_apply
+#print axioms Gtz.selectionInjection_mulVec_apply
+#print axioms Gtz.exists_isChartTightDirection_of_mem_chartArgmaxFamily
+#print axioms Gtz.isChartStrongStationaryData_of_isMin_of_weightPos
+#print axioms Gtz.exists_isChartStationaryData_and_isChartArgmaxValue_of_isMin
+#print axioms Gtz.exists_isChartTightCovering_minimiser_of_not_gtzWeighted
+#print axioms Gtz.exists_minimiser_hasChartDominatingSubsetAtValue_of_not_gtzWeighted
+#print axioms Gtz.exists_isChartStrongStationaryData_minimiser_of_not_gtzWeighted
+#print axioms Gtz.hasChartDominatingSubsetAtValue_of_isMin_fourTwo
+#print axioms Gtz.designMargin
+#print axioms Gtz.continuous_designMargin
+#print axioms Gtz.designMargin_neg_of_forall_not_dominates
+#print axioms Gtz.forall_not_dominates_of_designMargin_neg
+#print axioms Gtz.designOfCollared
+#print axioms Gtz.exists_collared_minimiser_of_forall_not_dominates
+#print axioms Gtz.exists_collared_allHeavy_minimiser_sevenThree
+
+-- Gtz/Reduction/SplitTransfer.lean -- the co-singleton excess, new alongside the
+-- IN-PLACE generalisation of Gtz.exists_naimarkDual_loewnerEquiv (pinned above at its
+-- original position, line 3141) to also return the dual-leverage dictionary.  The two
+-- matrix helpers that feed the new conjunct are `private` and so cannot be pinned by
+-- name; they are covered transitively by the theorem that consumes them.
+#print axioms Gtz.coSingletonExcess_eq_coParseval_sub_atomMatrix
+
+-- Gtz/Reduction/NaimarkLeverage.lean -- the primal-intrinsic reading of dual
+-- all-heaviness, bridged to the shipped pivot chart; the UNCONDITIONAL co-singleton
+-- decision at (7,3) and (6,3), which carries no open hypothesis because the DUAL
+-- deflation lands on corank two; the narrowing of both residual cells to the
+-- doubly-heavy stratum; the lonelyAxis witness proving that narrowing PROPER; and the
+-- dual-cell chain giving GtzWeightedHeavy 7 4 as a single-obligation frontier plus the
+-- identification of the campaign's two polynomial encodings one rank apart
+#print axioms Gtz.HasStrictlyDominatingCoSingletons
+#print axioms Gtz.hasStrictlyDominatingCoSingletons_iff_forall_pivot_lt_one
+#print axioms Gtz.exists_naimarkDual_allHeavy_iff
+#print axioms Gtz.dominating_of_coSingleton_not_posDef
+#print axioms Gtz.dominating_of_coSingleton_not_posDef_sevenThree
+#print axioms Gtz.dominating_of_coSingleton_not_posDef_sixThree
+#print axioms Gtz.gtzWeightedHeavy_of_doublyHeavy
+#print axioms Gtz.gtzWeightedHeavy_seven_three_of_doublyHeavy
+#print axioms Gtz.gtzWeightedHeavy_six_three_of_doublyHeavy
+#print axioms Gtz.gtzWeightedAll_three_of_doublyHeavy_seven_three
+#print axioms Gtz.gtz_original_rank_three_of_doublyHeavy_seven_three
+#print axioms Gtz.lonelyAxisAtom
+#print axioms Gtz.lonelyAxisWeight
+#print axioms Gtz.lonelyAxisDesign
+#print axioms Gtz.lonelyAxisDesign_atom
+#print axioms Gtz.lonelyAxisDesign_weight
+#print axioms Gtz.allHeavy_lonelyAxisDesign
+#print axioms Gtz.not_posDef_coSingleton_lonelyAxisDesign
+#print axioms Gtz.exists_allHeavy_sevenThree_not_hasStrictlyDominatingCoSingletons
+#print axioms Gtz.gtzWeighted_corank_three_of_heavy
+#print axioms Gtz.gtzWeightedAll_three_of_heavy_corank_three
+#print axioms Gtz.gtzWeightedAll_three_of_heavy_seven_four
+#print axioms Gtz.gtz_original_rank_three_of_heavy_seven_four
+#print axioms Gtz.gtzWeightedAll_three_of_pivotMinorCoveringFour_seven
+#print axioms Gtz.discriminantCovering_seven_iff_pivotMinorCoveringFour_seven
+#print axioms Gtz.exists_isTie_seven_four
+
+-- Gtz/Design/DiamondLeverage.lean -- the diamond primitive's five leverages, computed by
+-- solving the reduced Laplacian against each edge vector: the spine carries 2, each rim
+-- edge 13/4.  diamondDesign_allHeavy is the load-bearing one -- the tree previously had
+-- only the NON-STRICT diamondDesign_forall_leverage_one_le, which by construction cannot
+-- separate leverage 1 from leverage above 1.  not_hingeHoldsAmongAllHeavy_five_three is
+-- the calibration that becomes statable once it exists: narrowing the (5,3) hinge to
+-- all-heavy designs does not restore it.
+#print axioms Gtz.diamondFullLaplacian_eq
+#print axioms Gtz.diamondFullLaplacian_solves_of_check
+#print axioms Gtz.diamondFullLaplacian_solves_spine
+#print axioms Gtz.diamondFullLaplacian_solves_rimOne
+#print axioms Gtz.diamondFullLaplacian_solves_rimTwo
+#print axioms Gtz.diamondFullLaplacian_solves_rimThree
+#print axioms Gtz.diamondFullLaplacian_solves_rimFour
+#print axioms Gtz.diamondDesign_leverage_spine
+#print axioms Gtz.diamondDesign_leverage_rimOne
+#print axioms Gtz.diamondDesign_leverage_rimTwo
+#print axioms Gtz.diamondDesign_leverage_rimThree
+#print axioms Gtz.diamondDesign_leverage_rimFour
+#print axioms Gtz.diamondDesign_allHeavy
+#print axioms Gtz.atom_ne_zero_of_allHeavy
+#print axioms Gtz.HingeHoldsAmongAllHeavy
+#print axioms Gtz.not_hingeHoldsAmongAllHeavy_five_three
+
+-- Gtz/Reduction/LineCountReduction.lean -- the line-count predicate and the iterated
+-- parallel merge, unconditional at every rank and size; the exact ceiling saying that
+-- rank + 3 lines IS the conjecture, so the ladder is finished at rank + 2; the local
+-- two-collision forms; and the (7,3) tie strata, where the diamond split is shown
+-- all-heavy and NOT on four lines, refuting the split-simplex conjecture C2
+#print axioms Gtz.HasAtMostLines
+#print axioms Gtz.hasAtMostLines_of_directions
+#print axioms Gtz.mergeScaleSq_pos
+#print axioms Gtz.mergedParallelDesign_atom_eq_posSmul
+#print axioms Gtz.hasAtMostLines_mergedParallelDesign
+#print axioms Gtz.exists_dominating_of_hasAtMostLines
+#print axioms Gtz.exists_dominating_of_hasAtMostLines_rankAddTwo
+#print axioms Gtz.exists_dominating_of_hasAtMostLines_five_rankThree
+#print axioms Gtz.gtzWeightedAll_three_of_hasAtMostLines_rankAddThree
+#print axioms Gtz.gtzWeighted_seven_three_of_sixLines
+#print axioms Gtz.gtzWeightedHeavy_seven_three_of_sixLines
+#print axioms Gtz.hasParallelPair_mergedParallelDesign
+#print axioms Gtz.exists_dominating_of_two_parallel_relations
+#print axioms Gtz.exists_dominating_sevenThree_of_two_disjoint_parallel_pairs
+#print axioms Gtz.exists_dominating_sevenThree_of_parallel_triple
+#print axioms Gtz.hasAtMostLines_parallelSplitDesign
+#print axioms Gtz.hasAtMostLines_splitClassDesign
+#print axioms Gtz.sevenIntoFiveDiamond_castSucc_castSucc
+#print axioms Gtz.sevenSplitDiamondDesign_atom_castSucc_castSucc
+#print axioms Gtz.sevenSplitDiamondDesign_allHeavy
+#print axioms Gtz.not_hasAtMostLines_four_sevenSplitDiamondDesign
+#print axioms Gtz.exists_allHeavy_isTie_not_hasAtMostLines_four
+#print axioms Gtz.hasAtMostLines_sevenSplitDiamondDesign
+#print axioms Gtz.hasAtMostLines_tetraScaled
+#print axioms Gtz.exists_dominating_of_tetraScaled
+#print axioms Gtz.hasAtMostLines_splitSevenDesign
+#print axioms Gtz.both_sevenThree_tieStrata_are_free
+
+-- Gtz/Quantitative/ArgmaxFloorDictionary.lean -- the floor statement and the unconditional
+-- lower bound on argmax-dominated values are the SAME statement, hence the NO-GO
+-- gtzWeighted_iff_forall_one_le_value_of_isArgmaxDominated: deleting the GtzWeighted premise
+-- from the shipped argmax theorem IS proving the conjecture.  The equivalence is
+-- argmax-only and does not close the bundled interior lane.  The two closing corollaries
+-- read the landed deflation floors on the argmax side: 3/5 at (6,3) unconditionally, 2/3 at
+-- (7,3) granted the open GtzWeighted 6 3.
+#print axioms Gtz.le_value_of_gtzWeightedFloor_of_isArgmaxDominated
+#print axioms Gtz.gtzWeightedFloor_of_forall_le_value_of_isArgmaxDominated
+#print axioms Gtz.gtzWeightedFloor_iff_forall_le_value_of_isArgmaxDominated
+#print axioms Gtz.gtzWeighted_iff_gtzWeightedFloor_one
+#print axioms Gtz.gtzWeighted_iff_forall_one_le_value_of_isArgmaxDominated
+#print axioms Gtz.gtzWeighted_sevenThree_iff_forall_one_le_value_of_isArgmaxDominated
+#print axioms Gtz.inv_rank_le_value_of_isArgmaxDominated
+#print axioms Gtz.exists_selection_one_le_value_mul_selectedLevel_of_isArgmaxDominated
+#print axioms Gtz.inv_rank_lt_value_of_isArgmaxDominated
+#print axioms Gtz.inv_three_lt_value_of_isArgmaxDominated_sevenThree
+#print axioms Gtz.three_fifths_le_value_of_isArgmaxDominated_sixThree
+#print axioms Gtz.two_thirds_le_value_of_isArgmaxDominated_sevenThree
+
+-- Gtz/Quantitative/PrivateAtomLocalisation.lean -- the shipped isolated-BLOCK localisation
+-- weakened to a per-ATOM privacy condition, and the cross-mass inequality it generalises to.
+-- The below-one consumers are dead (a nonempty private part already forces 1 <= value), so
+-- the source scratch's (7,3) two-private-atom bound and its three-triple PATH classification
+-- are VACUOUS and are not landed.  What survives is value-agnostic: the unrestricted Clarke
+-- right-linearity, the private-atom localisation and bridge, the hypothesis-free second
+-- moment, the cross-mass pair, the Clarke Cauchy-Schwarz and the correlation bound.
+#print axioms Gtz.clarkePairing_sum_right
+#print axioms Gtz.clarkePairing_subsetSum_mulVec_left
+#print axioms Gtz.blockClarkePairing_atom_eq_of_privateAtom
+#print axioms Gtz.blockOverlapSum_eq_value_of_privateAtom
+#print axioms Gtz.multiplierTotal_subsetSum_normSq_eq_sum
+#print axioms Gtz.crossMass_le_of_privatePart
+#print axioms Gtz.card_le_value_of_isIsolatedActiveBlock_viaCrossMass
+#print axioms Gtz.sq_clarkePairing_le_mul
+#print axioms Gtz.abs_clarkePairing_atom_le_one
+#print axioms Gtz.overlapAbsSum_ge_of_privatePart
+#print axioms Gtz.exists_pos_activeWeight_of_privateAtom
+#print axioms Gtz.exists_dependence_tightDir_of_value_lt_one
+#print axioms Gtz.three_le_card_activeSubsetImage_sevenThree
+
+-- Gtz/Quantitative/PairRungAggregate.lean -- the pair rung of the averaging ladder: the
+-- entrywise bridge carrying the shipped chart pair conservation law into atom coordinates,
+-- and the strictly positive pair minor it yields on every all-heavy rank-three design
+#print axioms Gtz.weight_mul_weight_mul_pairMinor_eq_chartGapPairMinor
+#print axioms Gtz.sum_offDiag_weight_mul_pairMinor
+#print axioms Gtz.one_le_sum_offDiag_weight_mul_pairMinor
+#print axioms Gtz.exists_pos_pairMinor_of_allHeavy
+
+-- Gtz/Quantitative/EqualShareSevenThree.lean -- the compatible graph of the (7,3)
+-- equal-share stratum always has a triangle, so the refutation channel of
+-- not_gtzWeightedAll_three_of_no_compatibleTriangle is closed THERE and only there; the
+-- cubic tie leg is untouched and the stratum is not settled
+#print axioms Gtz.IsEqualShare.heavyExcess_eq_two
+#print axioms Gtz.IsEqualShare.heavyExcess_pos
+#print axioms Gtz.compatibleNeighbourhood
+#print axioms Gtz.incompatibleNeighbourhood
+#print axioms Gtz.ne_and_isCompatiblePair_of_mem_compatibleNeighbourhood
+#print axioms Gtz.compatibleNeighbourhood_subset_erase
+#print axioms Gtz.card_incompatibleNeighbourhood_le_two_of_isEqualShare_sevenThree
+#print axioms Gtz.four_le_card_compatibleNeighbourhood_of_isEqualShare_sevenThree
+#print axioms Gtz.exists_isCompatibleTriangle_of_isEqualShare_sevenThree
+#print axioms Gtz.isEqualShare_of_atomShare_of_leverage_sevenThree
+#print axioms Gtz.exists_isCompatibleTriangle_of_uniformShare_sevenThree
+#print axioms Gtz.exists_isCompatibleTriangle_sevenThreeBasisTetrapodDesign
+#print axioms Gtz.four_ninths_lt_edgeWeight_of_pairMinor_neg
+
+-- Gtz/Quantitative/VeroneseRankFiveNoGo.lean -- the shipped Veronese barrier survives the
+-- rank bound every real Y-Gram satisfies for free: the shipped refuting witness has rank
+-- six, this one has rank at most five, so the dimension of the traceless chart does not
+-- rescue the relaxation
+#print axioms Gtz.AbstractMetricTripleBoundSevenThreeRankFive
+#print axioms Gtz.abstractMetricTripleBoundSevenThreeRankFive_of_abstract
+#print axioms Gtz.rankFiveSpreadWitnessVector
+#print axioms Gtz.rankFiveSpreadWitnessTable
+#print axioms Gtz.rankFiveSpreadWitnessVector_dotProduct
+#print axioms Gtz.rankFiveSpreadWitnessTable_diagonal
+#print axioms Gtz.rankFiveSpreadWitnessTable_rowSum
+#print axioms Gtz.rankFiveSpreadWitnessTable_triple_lower
+#print axioms Gtz.rankFiveSpreadWitnessRows
+#print axioms Gtz.rankFiveSpreadWitnessGram
+#print axioms Gtz.rankFiveSpreadWitnessGram_apply
+#print axioms Gtz.posSemidef_rankFiveSpreadWitnessGram
+#print axioms Gtz.rank_rankFiveSpreadWitnessGram_le_five
+#print axioms Gtz.rankFiveSpreadWitnessGram_diagonal
+#print axioms Gtz.sum_rankFiveSpreadWitnessGram_row
+#print axioms Gtz.rankFiveSpreadWitnessGram_triple_lower
+#print axioms Gtz.not_abstractMetricTripleBoundSevenThreeRankFive
+
+
+-- Gtz/Certificates/LiftedCoveringPresentation.lean -- the lifted, disjunction-free
+-- presentation of the (7,3) covering.  Both Positivstellensatz obstructions survive the
+-- lifting, with scope caveat (i) removed and the support floor at FOUR, not five; the
+-- degree reading, caveat (ii), does NOT transport
+#print axioms Gtz.minimumLeg
+#print axioms Gtz.minimumLeg_le_tie
+#print axioms Gtz.minimumLeg_nonneg_iff
+#print axioms Gtz.minimumLeg_of_legs
+#print axioms Gtz.closedCoveringFailure_min_inhabited_seven
+#print axioms Gtz.HasUniformCoveringAggregateSeven
+#print axioms Gtz.splitSevenDesign_weightedMinimumLegAggregate_nonpos
+#print axioms Gtz.not_hasUniformCoveringAggregateSeven
+#print axioms Gtz.IsStengleCoveringSupportSeven
+#print axioms Gtz.isStengleCoveringSupportSeven_increasing_iff
+#print axioms Gtz.tetraBlockDesign_minimumLeg_of_repeated
+#print axioms Gtz.tetraBlockDesign_minimumLeg_nonpos
+#print axioms Gtz.not_isStengleCoveringSupportSeven_of_card_le_three
+#print axioms Gtz.four_le_card_of_isStengleCoveringSupportSeven
+#print axioms Gtz.isStengleCoveringSupportSeven_of_tie_hypotheses
+
+-- Gtz/Quantitative/TieRowLaw.lean -- the e_3 pair row law the shipped ChartHadamard header
+-- records as missing, and the barrier it opens: pair-conditioned averaging of the tie leg
+-- is strictly NEGATIVE under AllHeavy at every weight and every size, so no such average
+-- can certify a dominating triple.  The weak and strict barriers are separate on purpose
+#print axioms Gtz.sum_weight_mul_discriminantTie
+#print axioms Gtz.discriminantTie_self_pivot
+#print axioms Gtz.discriminantTie_self_pairFirst
+#print axioms Gtz.shareSurplus
+#print axioms Gtz.sum_shareSurplus
+#print axioms Gtz.sum_offPair_weight_mul_discriminantTie
+#print axioms Gtz.exists_pos_discriminantTie_of_pos_surplusForm
+#print axioms Gtz.shareSurplus_neg_of_atomShare_le_half
+#print axioms Gtz.sum_offPair_weight_mul_discriminantTie_nonpos
+#print axioms Gtz.sum_offPair_weight_mul_discriminantTie_neg
+#print axioms Gtz.sum_offPair_weight_mul_discriminantTie_neg_uniformShareSeven
+#print axioms Gtz.sum_ordered_weight_mul_discriminantTie
+
+-- Gtz/Ties/DominationMatroidRefutation.lean -- the dominating triples are NOT the bases of
+-- a matroid.  The all-heavy (7,3) two-frame design carries two DISJOINT dominating triples
+-- that no single swap joins, so greedy, exchange and basis-augmentation selection all die
+#print axioms Gtz.twoFrameAtom
+#print axioms Gtz.twoFrameWeight
+#print axioms Gtz.twoFrameAtom_zero
+#print axioms Gtz.twoFrameAtom_one
+#print axioms Gtz.twoFrameAtom_two
+#print axioms Gtz.twoFrameAtom_three
+#print axioms Gtz.twoFrameAtom_four
+#print axioms Gtz.twoFrameAtom_five
+#print axioms Gtz.twoFrameAtom_six
+#print axioms Gtz.twoFrameWeight_zero
+#print axioms Gtz.twoFrameWeight_one
+#print axioms Gtz.twoFrameWeight_two
+#print axioms Gtz.twoFrameWeight_three
+#print axioms Gtz.twoFrameWeight_four
+#print axioms Gtz.twoFrameWeight_five
+#print axioms Gtz.twoFrameWeight_six
+#print axioms Gtz.twoFrameDesign
+#print axioms Gtz.twoFrameDesign_atom
+#print axioms Gtz.twoFrameDesign_weight
+#print axioms Gtz.twoFrameDesign_allHeavy
+#print axioms Gtz.twoFrameDesign_dominates_axisFrame
+#print axioms Gtz.twoFrameDesign_dominates_rotatedFrame
+#print axioms Gtz.twoFrameDesign_not_dominates_zeroFourFive
+#print axioms Gtz.twoFrameDesign_not_dominates_oneFourFive
+#print axioms Gtz.twoFrameDesign_not_dominates_twoFourFive
+#print axioms Gtz.HasDominationBasisExchange
+#print axioms Gtz.not_hasDominationBasisExchange_twoFrameDesign
+#print axioms Gtz.exists_allHeavy_sevenThree_dominationMask_not_matroid
+
+-- Gtz/Design/GraphicRankThreeCap.lean -- the graphic slice at rank three degenerates above
+-- size six: no loops under all-heaviness, six loopless endpoint pairs on four vertices, so
+-- a parallel pair by pigeonhole and a jointly dead pair through the shipped pruning rule
+#print axioms Gtz.edgeVector_ne_zero_of_allHeavy
+#print axioms Gtz.edgeTail_ne_edgeHead_of_allHeavy
+#print axioms Gtz.endpointKey
+#print axioms Gtz.card_loopless_pairs_four
+#print axioms Gtz.endpoints_eq_or_swapped
+#print axioms Gtz.exists_same_endpointKey
+#print axioms Gtz.edgeVector_eq_or_neg_of_same_endpointKey
+#print axioms Gtz.graphicRankThree_exists_parallel_atoms
+#print axioms Gtz.graphicRankThree_hasParallelPair
+#print axioms Gtz.graphicRankThree_exists_jointly_dead_pair
+
+-- Gtz/Quantitative/TiltConcentration.lean -- THE TILT FAMILY IS CIRCULAR.  Strict GTZ at
+-- every design of a cell implies EcpStar at that cell, so the tilt is a consequence of the
+-- conjecture it was introduced to attack; the witness must be BUILT FROM a subset already
+-- known to dominate strictly, and the instrument is silent on the tie locus
+#print axioms Gtz.tiltedMixture_eval
+#print axioms Gtz.charpolyEval_nonpos_of_nonpos
+#print axioms Gtz.charpolyEval_neg_of_posDefGap
+#print axioms Gtz.shadowDeterminant_pos_of_posDefGap
+#print axioms Gtz.detSubsetSum_pos_of_shadowDeterminant_pos
+#print axioms Gtz.posDef_subsetSum_of_shadowDeterminant_pos
+#print axioms Gtz.exists_shadowDeterminant_pos
+#print axioms Gtz.concentratedTilt
+#print axioms Gtz.concentratedTilt_pos
+#print axioms Gtz.prod_concentratedTilt
+#print axioms Gtz.prod_concentratedTilt_self
+#print axioms Gtz.card_inter_lt_of_ne
+#print axioms Gtz.competingMass
+#print axioms Gtz.continuous_competingMass
+#print axioms Gtz.competingMass_nonneg
+#print axioms Gtz.exists_tilt_no_root_below_one_of_posDefGap
+#print axioms Gtz.tiltedMixture_eval_neg_of_nonpos
+#print axioms Gtz.tiltedMixture_eval_neg_of_neg
+#print axioms Gtz.tiltedMixture_eval_zero_neg
+#print axioms Gtz.tiltedMixture_eval_one_eq_zero_of_totalTieSupported
+#print axioms Gtz.posDefGap_rootKillDesign_zeroTwoFour
+#print axioms Gtz.exists_tilt_no_root_below_one_rootKillDesign
+#print axioms Gtz.posDefGap_axisKillDesign_fourFiveSix
+#print axioms Gtz.exists_tilt_no_root_below_one_axisKillDesign
+#print axioms Gtz.ecpStar_of_forall_exists_posDefGap
+
+-- Gtz/Quantitative/TiltLevelOneSignLaw.lean -- the tilt buys EXACTLY one bit, and the
+-- dichotomy reduces the lane's fate to the campaign's OPEN non-total-tie question.  The
+-- decoy design shows the level-one test is strictly weaker than domination, so satisfying
+-- the tilt family's only binding constraint proves nothing about GTZ
+#print axioms Gtz.tiltedMixture_eval_det
+#print axioms Gtz.det_scalarZero_sub_subsetSum
+#print axioms Gtz.levelOneCoefficient
+#print axioms Gtz.tiltedMixture_eval_one
+#print axioms Gtz.isTotalTieSupported_iff_forall_levelOneCoefficient_eq_zero
+#print axioms Gtz.levelOneCoefficient_neg_iff
+#print axioms Gtz.levelOneCoefficient_neg_of_posDef
+#print axioms Gtz.competingLevelOneMass
+#print axioms Gtz.competingLevelOneMass_nonneg
+#print axioms Gtz.exists_tilt_eval_one_neg_of_levelOneCoefficient_neg
+#print axioms Gtz.exists_tilt_eval_one_neg_iff_exists_levelOneCoefficient_neg
+#print axioms Gtz.tiltedMixture_eval_one_nonpos_of_witness
+#print axioms Gtz.not_exists_witnessTilt_of_levelOneCoefficient_nonneg
+#print axioms Gtz.exists_levelOneCoefficient_neg_or_isTotalTieSupported
+#print axioms Gtz.forall_design_levelOneCoefficient_neg_or_isTotalTieSupported_of_ecpStar
+#print axioms Gtz.not_ecpStar_of_levelOneCoefficient_nonneg
+#print axioms Gtz.not_posDef_gap_of_levelOneCoefficient_nonneg
+#print axioms Gtz.isTie_of_levelOneCoefficient_nonneg
+#print axioms Gtz.not_isTotalTieSupported_of_levelOneCoefficient_pos
+#print axioms Gtz.exists_posSemidef_levelOneNegative_not_dominating
+#print axioms Gtz.tiltedMixture_axisKillDesign_uniform_eval_one_pos
+#print axioms Gtz.exists_tilt_eval_one_neg_axisKillDesign
+#print axioms Gtz.exists_tilt_eval_one_neg_icosaDesign
+#print axioms Gtz.decoyVector
+#print axioms Gtz.decoyWeightNumerator
+#print axioms Gtz.decoyWeightNumerator_sum
+#print axioms Gtz.decoyVector_parseval
+#print axioms Gtz.decoyDesign
+#print axioms Gtz.decoyDesign_atom
+#print axioms Gtz.decoyDesign_weight
+#print axioms Gtz.decoyGram
+#print axioms Gtz.subsetSum_decoyDesign_apply
+#print axioms Gtz.decoyGram_zeroOneTwo
+#print axioms Gtz.det_subsetSum_decoyDesign_zeroOneTwo
+#print axioms Gtz.det_scalarOne_sub_subsetSum_decoyDesign_zeroOneTwo
+#print axioms Gtz.shadowDeterminant_decoyDesign_zeroOneTwo_pos
+#print axioms Gtz.not_dominates_decoyDesign_zeroOneTwo
+#print axioms Gtz.levelOneCoefficient_neg_and_not_dominates_decoyDesign
+
+-- Gtz/Quantitative/ClassicalConstantAttained.lean -- every inequality in the classical
+-- maximal-volume chain is an EQUALITY at B = [I_3 ; J_(4x3)], so the constant k(n-k)+1
+-- cannot be improved by sharpening that argument, and the configuration is all-heavy so
+-- restricting to all-heavy designs does not rescue it either.  FRAME-SIDE ONLY: no
+-- WeightedDesign is constructed and the Parseval bridge is NOT mechanized.  GTZ itself is
+-- not refuted -- the pick {0,1,3} clears 1/7
+#print axioms Gtz.classicalExtremalFrame
+#print axioms Gtz.classicalExtremalPick
+#print axioms Gtz.classicalAlternativePick
+#print axioms Gtz.classicalExtremalBlock
+#print axioms Gtz.onesGapThree
+#print axioms Gtz.isHermitian_onesGapThree
+#print axioms Gtz.posSemidef_onesGapThree
+#print axioms Gtz.onesGapThree_mulVec_ones
+#print axioms Gtz.classicalExtremalFrame_gram
+#print axioms Gtz.classicalExtremalFrame_transpose
+#print axioms Gtz.selectedFrameRows_classicalExtremal
+#print axioms Gtz.det_selectedFrameRows_classicalExtremal
+#print axioms Gtz.classicalExtremalBlock_isInverse
+#print axioms Gtz.solveMatrix_classicalExtremal
+#print axioms Gtz.abs_solveMatrix_classicalExtremal_le_one
+#print axioms Gtz.solveMatrix_classicalExtremal_outside_eq_one
+#print axioms Gtz.isSwapMaximalRowPick_classicalExtremal
+#print axioms Gtz.frobeniusSq_solveMatrix_classicalExtremal
+#print axioms Gtz.thirteen_sub_classicalExtremalGram_eq_onesGapThree
+#print axioms Gtz.posSemidef_thirteen_sub_classicalExtremalGram
+#print axioms Gtz.thirteen_sub_classicalExtremalGram_mulVec_ones
+#print axioms Gtz.classicalExtremalBlock_sub_thirteenth_eq
+#print axioms Gtz.posSemidef_classicalExtremalBlock_sub_thirteenth
+#print axioms Gtz.classicalExtremalBlock_sub_thirteenth_mulVec_ones
+#print axioms Gtz.classicalExtremalBlock_sub_seventh_eq
+#print axioms Gtz.not_posSemidef_classicalExtremalBlock_sub_seventh
+#print axioms Gtz.classicalExtremalProjection
+#print axioms Gtz.gramSandwich_classicalExtremal
+#print axioms Gtz.classicalExtremalProjection_idem
+#print axioms Gtz.classicalExtremalBlock_transpose
+#print axioms Gtz.classicalExtremalProjection_transpose
+#print axioms Gtz.trace_classicalExtremalProjection
+#print axioms Gtz.projectionBlock_classicalExtremalPick
+#print axioms Gtz.projectionBlock_classicalAlternativePick
+#print axioms Gtz.classicalAlternativeBlock_sub_seventh_eq
+#print axioms Gtz.isHermitian_classicalAlternativeGap
+#print axioms Gtz.posSemidef_classicalAlternativeBlock_sub_seventh
+#print axioms Gtz.classicalExtremalProjection_diag_ge
+
+-- Gtz/Quantitative/SixThreeCrux.lean -- the (6,3) counterexample NORMAL FORM: eight
+-- constraints bundled on one design, inhabited iff GtzWeighted 6 3 fails, with the whole
+-- first-order layer derived rather than assumed.  The chart-side coverage combinatorics
+-- reaches two argmax blocks and their disjoint-partition classification; the third block is
+-- quadric-side only.  The (7,3) analogue has seven fields and a conditional production.
+#print axioms Gtz.exists_mem_chartArgmaxFamily_of_isMin
+#print axioms Gtz.size_le_rank_mul_card_chartArgmaxFamily_of_isMin
+#print axioms Gtz.two_le_card_chartArgmaxFamily_sixThree_of_isMin
+#print axioms Gtz.disjoint_partition_of_card_chartArgmaxFamily_eq_two_sixThree
+#print axioms Gtz.SixThreeCrux
+#print axioms Gtz.SixThreeCrux.weight_pos
+#print axioms Gtz.SixThreeCrux.isChartStrongStationaryData
+#print axioms Gtz.SixThreeCrux.isChartArgmaxValue
+#print axioms Gtz.SixThreeCrux.exists_multiplier_isChartStationaryData
+#print axioms Gtz.SixThreeCrux.isChartTightCovering
+#print axioms Gtz.SixThreeCrux.chartArgmaxFamily_nonempty
+#print axioms Gtz.SixThreeCrux.exists_mem_chartArgmaxFamily
+#print axioms Gtz.SixThreeCrux.two_le_card_chartArgmaxFamily
+#print axioms Gtz.SixThreeCrux.three_le_card_chartArgmaxFamily_or_disjoint_partition
+#print axioms Gtz.SixThreeCrux.neg_inv_six_le_chartObjective
+#print axioms Gtz.SixThreeCrux.hasNoAtMostFiveLines
+#print axioms Gtz.SixThreeCrux.deflationLevel_lt_one
+#print axioms Gtz.SixThreeCrux.exists_dominates_at_three_fifths
+#print axioms Gtz.SixThreeCrux.exists_naimarkDual_allHeavy_not_dominating
+#print axioms Gtz.not_gtzWeighted_six_three_of_sixThreeCrux
+#print axioms Gtz.nonempty_sixThreeCrux_of_not_gtzWeighted_six_three
+#print axioms Gtz.nonempty_sixThreeCrux_iff_not_gtzWeighted_six_three
+#print axioms Gtz.gtzWeighted_six_three_of_isEmpty_sixThreeCrux
+#print axioms Gtz.SevenThreeCrux
+#print axioms Gtz.SevenThreeCrux.weight_pos
+#print axioms Gtz.SevenThreeCrux.isChartStrongStationaryData
+#print axioms Gtz.SevenThreeCrux.isChartArgmaxValue
+#print axioms Gtz.SevenThreeCrux.three_le_card_chartArgmaxFamily
+#print axioms Gtz.SevenThreeCrux.hasNoAtMostFiveLines
+#print axioms Gtz.SevenThreeCrux.deflationLevel_lt_one
+#print axioms Gtz.not_gtzWeighted_seven_three_of_sevenThreeCrux
+#print axioms Gtz.nonempty_sevenThreeCrux_of_not_gtzWeighted_seven_three
+#print axioms Gtz.gtzWeightedAll_three_of_isEmpty_cruxes
+
+-- Gtz/Quantitative/FourthMomentRealness.lean -- the real fourth-moment (projective
+-- 2-design) floor 3k/(k+2), unconditional at every rank and size; the field-blind floor
+-- 2k/(k+1) proved by the same certificate WITHOUT the swap contraction; the strict gap
+-- between them, which is the realness; the (7,3) cross-check re-deriving the shipped 49/5
+-- by an independent route; and the two per-row refinements
+#print axioms Gtz.atomShare_mul_leverageOf_unitAtom
+#print axioms Gtz.veroneseMomentTensor
+#print axioms Gtz.sum_veroneseMomentTensor_direct
+#print axioms Gtz.sum_veroneseMomentTensor_swap
+#print axioms Gtz.sum_veroneseMomentTensor_trace
+#print axioms Gtz.shareWeightedFourthMoment
+#print axioms Gtz.sum_sq_veroneseMomentTensor
+#print axioms Gtz.isotropicMomentNumerator
+#print axioms Gtz.hermitianMomentNumerator
+#print axioms Gtz.sum_tensor_mul_isotropicMomentNumerator
+#print axioms Gtz.sum_tensor_mul_hermitianMomentNumerator
+#print axioms Gtz.sum_sq_isotropicMomentNumerator
+#print axioms Gtz.sum_sq_hermitianMomentNumerator
+#print axioms Gtz.realMomentFloor_le_shareWeightedFourthMoment
+#print axioms Gtz.hermitianMomentFloor_le_shareWeightedFourthMoment
+#print axioms Gtz.hermitianMomentFloor_lt_realMomentFloor
+#print axioms Gtz.nine_fifths_le_shareWeightedFourthMoment
+#print axioms Gtz.fourth_moment_ge_of_uniformShare_viaRealMomentFloor
+#print axioms Gtz.inv_rank_le_rowFourthMoment
+#print axioms Gtz.sharpRowFourthMoment_ge
+
+-- Gtz/Quantitative/SwitchingTwoGraph.lean -- the switching action on designs, the two-graph,
+-- and the bridge from the triple parity to discriminantTie.  Gtz.switchedDesign acts at EVERY
+-- rank and fixes subsetSum, hence Dominates; Gtz.tripleParity is its invariant on triples; the
+-- bridge Gtz.discriminantTie_eq_excessGap_add_parity isolates the whole non-sign-blind content
+-- of the tie leg in one +-1 bit.  Gtz.tripleParity_fourSet_product is the two-graph axiom and
+-- needs no hypothesis.  The sharp count of negative triangles at six and seven lines is WALLED
+-- in the file header, not proved.
+#print axioms Gtz.abs_discriminantTie_sub_excessGap
+#print axioms Gtz.allHeavy_switchedDesign_iff
+#print axioms Gtz.atomMatrix_switchedDesign
+#print axioms Gtz.atomPairingProduct_switchedDesign
+#print axioms Gtz.atomPairing_sq_switchedDesign
+#print axioms Gtz.atomPairing_switchedDesign
+#print axioms Gtz.discriminantTie_eq_excessGap_add_parity
+#print axioms Gtz.discriminantTie_nonneg_of_coherent_of_excessGap_nonneg
+#print axioms Gtz.discriminantTie_of_coherent
+#print axioms Gtz.discriminantTie_of_incoherent
+#print axioms Gtz.discriminantTie_switchedDesign
+#print axioms Gtz.dominates_of_coherent_of_excessGap_nonneg
+#print axioms Gtz.dominates_switchedDesign_iff
+#print axioms Gtz.edgeSign
+#print axioms Gtz.edgeSign_comm
+#print axioms Gtz.edgeSign_eq_one_or_neg_one
+#print axioms Gtz.edgeSign_mul_abs_atomPairing
+#print axioms Gtz.edgeSign_ne_zero
+#print axioms Gtz.edgeSign_sq
+#print axioms Gtz.edgeSign_switchedDesign
+#print axioms Gtz.even_negativeParity_count_fourSet
+#print axioms Gtz.excessGap_switchedDesign
+#print axioms Gtz.exists_coherentTriple_through_atom
+#print axioms Gtz.exists_tripleParity_eq_one_of_five_atoms
+#print axioms Gtz.exists_tripleParity_eq_one_through_base
+#print axioms Gtz.heavyExcess_switchedDesign
+#print axioms Gtz.icosaDesign_abs_atomPairingProduct_sq
+#print axioms Gtz.icosaDesign_dominates_iff_tripleParity
+#print axioms Gtz.icosaDesign_excessGap
+#print axioms Gtz.isSignBlindGoodTriple_iff_adverseTie_nonneg
+#print axioms Gtz.IsSwitchingSign
+#print axioms Gtz.IsSwitchingSign.eq_one_or_neg_one
+#print axioms Gtz.IsSwitchingSign.ne_zero
+#print axioms Gtz.isSwitchingSign_one
+#print axioms Gtz.leverageOf_switchedDesign
+#print axioms Gtz.pairMinor_switchedDesign
+#print axioms Gtz.splitSevenDesign_bridge_at_rainbowTie
+#print axioms Gtz.splitSevenDesign_edgeSign_of_differentDirection
+#print axioms Gtz.splitSevenDesign_edgeSign_of_sameDirection
+#print axioms Gtz.splitSevenDesign_excessGap_of_rainbowDirections
+#print axioms Gtz.splitSevenDesign_excessGap_of_repeatedDirection
+#print axioms Gtz.splitSevenDesign_tripleParity_of_rainbowDirections
+#print axioms Gtz.splitSevenDesign_tripleParity_of_repeatedDirection
+#print axioms Gtz.subsetSum_switchedDesign
+#print axioms Gtz.switchedDesign
+#print axioms Gtz.tetraDesign_bridge_at_tie
+#print axioms Gtz.tetraDesign_discriminantTie_via_parity
+#print axioms Gtz.tetraDesign_edgeSign_oneTwo
+#print axioms Gtz.tetraDesign_edgeSign_zeroOne
+#print axioms Gtz.tetraDesign_edgeSign_zeroTwo
+#print axioms Gtz.tetraDesign_tripleParity
+#print axioms Gtz.tripleParity
+#print axioms Gtz.tripleParity_comm_left
+#print axioms Gtz.tripleParity_comm_right
+#print axioms Gtz.tripleParity_eq_neg_one_of_base_incoherent
+#print axioms Gtz.tripleParity_eq_neg_one_of_neg_atomPairingProduct
+#print axioms Gtz.tripleParity_eq_neg_one_of_one_incoherent
+#print axioms Gtz.tripleParity_eq_one_of_pos_atomPairingProduct
+#print axioms Gtz.tripleParity_eq_one_of_three_coherent
+#print axioms Gtz.tripleParity_eq_one_or_neg_one
+#print axioms Gtz.tripleParity_fourSet_product
+#print axioms Gtz.tripleParity_mul_abs_atomPairingProduct
+#print axioms Gtz.tripleParity_ne_zero
+#print axioms Gtz.tripleParity_sq
+#print axioms Gtz.tripleParity_switchedDesign
+#print axioms Gtz.switchedDesign_atom
+#print axioms Gtz.switchedDesign_weight
+
+-- Gtz/Quantitative/SixThreeCrux.lean -- the field projections of the two crux structures.
+-- Coverage repair: the structures themselves and every theorem in their namespaces were
+-- pinned when the file landed, but the field projections were not.  The convention for a
+-- Type-valued structure carrying data plus Prop fields is set by Gtz.ChartPoint, whose
+-- data fields (chart, weight) and Prop fields are all pinned; these follow it.
+#print axioms Gtz.SixThreeCrux.design
+#print axioms Gtz.SixThreeCrux.isChartMinimiser
+#print axioms Gtz.SixThreeCrux.hasNegativeChartValue
+#print axioms Gtz.SixThreeCrux.hasNoDominatingTriple
+#print axioms Gtz.SixThreeCrux.isAllHeavy
+#print axioms Gtz.SixThreeCrux.hasStrictlyDominatingCoSingletons
+#print axioms Gtz.SixThreeCrux.hasNoParallelPair
+#print axioms Gtz.SixThreeCrux.avoidsEqualShareStratum
+#print axioms Gtz.SevenThreeCrux.design
+#print axioms Gtz.SevenThreeCrux.isChartMinimiser
+#print axioms Gtz.SevenThreeCrux.hasNegativeChartValue
+#print axioms Gtz.SevenThreeCrux.hasNoDominatingTriple
+#print axioms Gtz.SevenThreeCrux.isAllHeavy
+#print axioms Gtz.SevenThreeCrux.hasStrictlyDominatingCoSingletons
+#print axioms Gtz.SevenThreeCrux.hasNoParallelPair
