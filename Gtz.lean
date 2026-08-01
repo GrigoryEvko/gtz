@@ -443,3 +443,1444 @@ import Gtz.Quantitative.FourthMomentRealness
 -- strata both return discriminantTie = 0 EXACTLY at parity -1, and at the icosahedron the
 -- parity decides domination outright.
 import Gtz.Quantitative.SwitchingTwoGraph
+
+-- The sign layer at the (6,3) crux, plus the realness law of a real Gram.  Two independent
+-- pieces of substrate for the sign-side rungs.
+--   THE PARITY-FREE GATE.  Gtz.dominates_of_excessGap_nonneg_of_discriminantTie_nonneg drops
+--     the parity hypothesis of Gtz.dominates_of_coherent_of_excessGap_nonneg for what the
+--     parity was only ever used to supply, so the coherent cell becomes one special case and
+--     the vanishing-pairing cell Gtz.dominates_of_excessGap_nonneg_of_exists_atomPairing_eq_zero
+--     a second, disjoint one.  Against Gtz.SixThreeCrux.hasNoDominatingTriple it contraposes to
+--     THE SQUEEZE, Gtz.SixThreeCrux.discriminantTie_neg_of_excessGap_nonneg: at a crux a
+--     nonnegative sign-blind gap forces a strictly negative tie leg.  Unwound
+--     (Gtz.SixThreeCrux.isIncoherent_of_excessGap_nonneg) that single inequality says the
+--     triple is incoherent, ALL THREE of its pairings are nonzero, and its gap is capped by
+--     twice the pairing magnitude.  X0's disjunction, the coherent reading, the
+--     vanishing-pairing reading and the quantitative cap are all corollaries of it.
+--   THE REALNESS LAW.  Gtz.atomBracket_sq is Cauchy-Binet at rank three -- the Gram
+--     determinant is the SQUARE of the bracket -- and Gtz.atomBracket_sq_eq_discriminantTie_add
+--     shifts it onto the discriminant system's own six scalars.  Squaring returns the
+--     campaign's E2 (Gtz.four_mul_atomPairingProduct_sq_eq) with its coplanar specialisation.
+-- Read four things before citing it.
+--   X0'S THIRD DISJUNCT IS VACUOUS.  Gtz.dominates_of_coherent_of_excessGap_nonneg carries NO
+--     nonzero-pairing hypothesis, so the dichotomy needs no zero-pairing escape clause; the
+--     vanishing-pairing case lands in the gap disjunct outright.
+--   THE REALNESS INEQUALITY Gtz.two_mul_abs_atomPairingProduct_le_of_incoherent IS SLACK.  It
+--     is an equality EXACTLY on the coplanar locus and nowhere else -- at the tetrahedron it
+--     reads 2 <= 18 and at the icosahedron 54/(5*sqrt 5) <= 54/5.  A true constraint, NOT a
+--     finished lever.
+--   NOTHING OVER THE COMPLEX NUMBERS IS FORMALISED.  The prose records that the same expansion
+--     carries 2*Re(p_ab p_bc p_ca) over C, so the two-valuedness of a real Gram determinant is
+--     the realness content; that identification is a citation, not a theorem here.
+--   NO COUNT AND NO GLOBAL CONTRADICTION.  Every statement about the crux is PER-TRIPLE.
+--     Nothing here bounds how many triples can be incoherent, nothing bounds the pairing
+--     magnitude at a crux beyond the cap above, and nothing transports to the Naimark dual.
+-- Guarded at both ends: at the icosahedron X0's disjunction is satisfied by its GAP leg at all
+-- twenty triples (Gtz.icosaDesign_excessGap_neg), so coherence forcing alone constrains the
+-- icosahedral sign pattern NOT AT ALL; and at the (4,3) tie the parity-free gate FIRES on an
+-- INCOHERENT triple (Gtz.dominates_tetraDesign_of_parityFreeGate), which the coherent cell
+-- cannot reach, with the squeeze's conclusion failing there by exactly zero.
+import Gtz.Quantitative.SixThreeCruxSigns
+
+-- The disjoint two-block branch, KILLED on the chart side.  Gtz.SixThreeCrux.three_le_card_chartArgmaxFamily
+-- collapses the shipped disjunction three_le_card_chartArgmaxFamily_or_disjoint_partition onto
+-- its left branch: the argmax family of a (6,3) crux carries at least THREE triples, matching
+-- the (7,3) floor that counting already gave.  Stated generally: at size = 2 * rank the argmax
+-- family of a strictly interior global minimiser whose chart is a DESIGN's, at a NEGATIVE value,
+-- is never contained in {C, C-complement} -- so it never has two members, and no set of rank
+-- atoms is isolated from it.
+-- THIS SUPERSEDES A STANDING OPENNESS CLAIM.  The SixThreeCrux header, and this file's own
+-- SixThreeCrux cluster above, say the branch is open chart-side and reachable only from
+-- Gtz.IsQuadricStationaryData.  It was already closed, by
+-- Gtz.not_isChartStationaryData_of_isChartTwoBlockFamily_of_design_of_negativeValue in
+-- Gtz.Quantitative.TwoBlockEliminationCertificate, which is phrased as TWO COMPLEMENTARY BLOCKS
+-- and never says "disjoint" or "isolated" -- which is why a grep for either word missed it.
+-- Nothing here ports the quadric chain; what was missing was the WELD, that at size = 2 * rank
+-- a two-member argmax family IS a complementary pair.
+-- Landed beside it, and NEW: the chart-side SATURATED-ATOM law, which
+-- Gtz.Quantitative.ClassRouteCost records as absent.  A saturated atom's multiplier row is a
+-- chart eigenvector of eigenvalue value + t_c, idempotence makes that 0 or 1, and negativity
+-- picks 0 -- so the atom's weight is EXACTLY -value and it is a lightest atom.  It is an
+-- EQUATION, sharper in form than the quadric 1 <= value, and it EXCLUDES NOTHING on its own:
+-- -value <= t_c holds everywhere already.  What DOES cost blocks is having two of them: the
+-- ClassRouteCost double count leaves only rank*|family| - size above the coverage floor, so at
+-- (6,3) two saturated atoms force a FOURTH argmax triple, and a three-member family carries at
+-- most one saturated atom.
+-- Read two things before citing any of it.
+--   ADMISSIBILITY IS LOAD-BEARING.  Gtz.chartTwoBlockUniformProjection_isChartStationaryData is
+--     a (4,2) two-block datum with uniform weights at value = -1/4 = -1/size, NEGATIVE.  It is
+--     inadmissible, and that is the only reason it does not refute the theorems here.
+--   THREE IS A FLOOR, NOT A CONTRADICTION.  The (6,3) covering census has 2069 classes with two
+--     or more members; this closes ONE of them.
+import Gtz.Quantitative.ChartDisjointBlockExclusion
+
+-- Gtz.Quantitative.CoherentCountFloor -- THE SHARP COHERENT COUNT.  The switching layer's own
+-- header records, as a wall rather than an omission, that it "does not produce a NUMBER" for how
+-- many triangles at a vertex must be coherent, and names two declined routes.  Route (i) is
+-- executed here.  The mechanism is one identity: read at the design level the shipped gauge
+-- Gtz.switchSign is MINUS the shipped Gtz.edgeSign (Gtz.switchSign_eq_neg_edgeSign, no
+-- hypothesis, the vanishing pairing included), so after switching at a base the sign of an
+-- off-base edge IS the parity of its triangle through that base
+-- (Gtz.edgeSign_baseSwitchedDesign).  The coherence-through-base graph is then literally the
+-- positive-edge graph of an honest design, a totally incoherent neighbourhood is pairwise obtuse
+-- with the base, and the real obtuse cap 3 + 1 in R^3 bounds it by THREE
+-- (Gtz.card_le_three_of_forall_incoherent_through_base, sharp at the tetrahedron).  Greedy
+-- independence over a bare Finset of ordered pairs (Gtz.exists_independent_of_edges) turns the
+-- cap into the count: Gtz.card_coherentPairsThroughBase_ge gives m - 4 coherent triangles through
+-- EVERY atom of a rank-three design with nonzero pairings -- 2 at m = 6, 3 at m = 7 -- and the
+-- family form Gtz.card_coherentPairsThroughBase_ge_of_family degrades gracefully, an orthogonality
+-- costing one triangle rather than the whole count.  Composed with the substrate squeeze:
+-- Gtz.SixThreeCrux.two_le_card_coherentPairsThroughBase_and_forall_negative -- two coherent
+-- triangles through every crux atom, each with a strictly POSITIVE oriented product, a strictly
+-- NEGATIVE sign-blind gap, and a tie leg strictly below twice that product; the (7,3) sibling
+-- sits at three.  The vanishing-pairing branch is content, not caveat:
+-- Gtz.SixThreeCrux.pairMinor_neg_of_common_orthogonalPartner says an atom orthogonal to two
+-- others forces those two to span an INCOMPATIBLE edge, because excessGap collapses to
+-- heavyExcess * pairMinor when two pairings vanish.  Landed alongside, and reusable far beyond
+-- this rung: Gtz.tripleParity_eq_product_through_base, the four-set axiom SOLVED -- the parity of
+-- any triangle is the product of the three parities joining it to any base, so the whole
+-- two-graph is determined by its star at one vertex.
+-- Read three things before citing any of it.
+--   NO GLOBAL COUNT IS CLOSED.  Only the summed form Gtz.sum_card_coherentPairsThroughBase_ge is
+--     landed.  Dividing by three -- each triangle counted once per vertex, hence m(m-4)/3, i.e. 4
+--     of the 20 at m = 6 -- needs a three-to-one fibre count that is NOT performed.
+--   THE COUNT DOES NOT NARROW THE TWO-GRAPH.  The recorded enumeration at six points leaves eight
+--     isomorphism classes surviving every combinatorial constraint, the icosahedral one at five
+--     coherent triangles per vertex, comfortably inside any band this route reaches.
+--   THE NONVANISHING HYPOTHESIS IS REAL.  A crux is not known to have all pairings nonzero, and
+--     Gtz.IsPairwiseObtuse is STRICT, so the cap genuinely breaks at a zero pairing.  The honest
+--     statement without hypotheses is the dichotomy
+--     Gtz.SixThreeCrux.two_le_card_coherentPairsThroughBase_or_exists_orthogonalPair.
+import Gtz.Quantitative.CoherentCountFloor
+
+-- Gtz.Quantitative.CoherentCountFloor, ADDENDUM: THE GLOBAL COUNT IS NOW CLOSED TOO, so the
+-- first caveat of the cluster above -- "NO GLOBAL COUNT IS CLOSED" -- is SUPERSEDED and should
+-- not be cited.  Section 8 of the module carries the three-to-one fibre count the caveat said was
+-- not performed: Gtz.coherentFlags (a base together with a coherent pair through it) fibres over
+-- Gtz.coherentTripleSets with at most three flags per triangle, one per vertex
+-- (Gtz.card_filter_flagAtoms_le_three, whose determinacy step is the ordered-pair lemma
+-- Gtz.orderedPair_eq_of_pairFinset_eq), so Gtz.card_coherentTripleSets_ge divides the summed count
+-- and gives m(m-4) <= 3 * card -- at least FOUR of the twenty triangles at (6,3)
+-- (Gtz.four_le_card_coherentTripleSets_sixThree) and SEVEN of the thirty-five at (7,3).  The other
+-- two caveats stand unchanged: the count does not narrow WHICH two-graph a crux carries, and the
+-- nonvanishing hypothesis is real.  A third is added here -- the global count is a bare
+-- CARDINALITY and says nothing about how the coherent triangles are distributed, so it is not a
+-- covering statement and produces no dominating triple.
+
+-- Gtz.Quantitative.ActiveOverlapPatternsSixThree: the OVERLAP CLASSIFICATION of a three-member
+-- active family.  Gtz.SixThreeCrux.three_le_card_chartArgmaxFamily put a floor of three under the
+-- argmax family of a (6,3) crux; this module says what three covering triples of six atoms can be.
+-- Three-set inclusion-exclusion (Gtz.card_union_three_add_pairwiseOverlapSum) plus the fact that
+-- distinct equal-card blocks cannot overlap fully leaves EXACTLY THREE SHAPES, and
+-- Gtz.overlapPattern_trichotomy_sixThree is the disjunction, stated in ordering-free invariants so
+-- that no relabelling is needed at the point of use:
+--   TRIANGLE  overlaps 1,1,1, empty core, private parts 1,1,1;
+--   CHAIN     overlaps 2,1,0, empty core, private parts 0,1,2 -- and the disjoint pair is a
+--             COMPLEMENTARY pair (Gtz.eq_compl_of_card_inter_eq_zero_sixThree);
+--   STAR      overlaps 2,1,1, core one atom, private parts 1,1,2 -- and the core IS
+--             Gtz.HasSaturatedAtom (Gtz.hasSaturatedAtom_triple_iff).
+-- The private counts come from one identity, Gtz.card_privateParts_eq_pairwiseOverlapSum_sixThree:
+-- TOTAL PRIVATE MASS EQUALS TOTAL OVERLAP MASS, three at the core-free patterns and four at the
+-- star.  Its corollary Gtz.exists_nonempty_blockPrivatePart_sixThree says every pattern has a
+-- private atom, which is what makes Gtz.Quantitative.PrivateAtomLocalisation applicable at all;
+-- Gtz.private_of_mem_blockPrivatePart_of_isActiveFamily is the bridge to that file's quantifier and
+-- Gtz.overlapAbsSum_ge_of_isActiveFamily_triple the cross-mass inequality it yields.
+-- The crux weld is Gtz.SixThreeCrux.exists_overlapPattern_of_card_chartArgmaxFamily_eq_three, with
+-- Gtz.SixThreeCrux.le_pairwiseOverlapSum_chartArgmaxFamily as the unconditional floor that survives
+-- inside a larger family.  At (7,3) the identity drops to 2 + core and the shapes become PATH,
+-- SPLIT and CORE; below one the outer two die -- the split's third block is ISOLATED and the core
+-- is SATURATED -- leaving Gtz.pathPattern_of_isActiveFamily_of_value_lt_one_sevenThree, the PATH
+-- CLASSIFICATION the header of Gtz.Quantitative.PrivateAtomLocalisation records as dropped.
+-- Read four things before citing any of it.
+--   THE STAR IS NOT EXCLUDED AT A CRUX.  The chart-side saturation law is an EQUATION, not an
+--     exclusion: Gtz.SixThreeCrux.weight_eq_neg_chartObjective_of_starPattern pins the core atom's
+--     weight to -chartObjective and closes NOTHING, since six weights at or above -chartObjective
+--     summing to one are consistent for every value in the window.  The crux statement therefore
+--     keeps the star as an explicit third disjunct.
+--   THE TWO SIDES ARE NOT INTERCHANGEABLE.  The star DOES die below one on the QUADRIC side, by
+--     Gtz.one_le_value_of_hasSaturatedAtom_of_isActiveFamily -- that is
+--     Gtz.triangle_or_chain_of_isActiveFamily_of_value_lt_one_sixThree.  A Gtz.SixThreeCrux carries
+--     Gtz.IsChartStationaryData and never Gtz.IsQuadricStationaryData, so that theorem does NOT
+--     apply to a crux and the private-atom kit does not reach one either.
+--   NON-VACUITY OF THE BELOW-ONE QUADRIC COROLLARIES IS OPEN.  The header of
+--     Gtz.Quantitative.PrivateAtomLocalisation records, as a verified-but-UNLANDED fact, that a
+--     nonempty private part already forces 1 <= value -- and every pattern here has one.  If that
+--     is right the three-member below-one hypothesis is contradictory and those two corollaries are
+--     vacuously true.  The CLASSIFICATION itself carries no such hypothesis and is not vacuous.
+--   NOTHING HERE EXCLUDES A TRIANGLE OR A CHAIN, on either side, and NOTHING HERE CONSTRAINS AN
+--     ARGMAX FAMILY OF FOUR OR MORE MEMBERS beyond the unconditional overlap floor: three distinct
+--     members of a larger family need not cover, and the classification consumes covering.
+import Gtz.Quantitative.ActiveOverlapPatternsSixThree
+
+-- Gtz.Quantitative.ChartDuality: THE CHART DUAL, and the exact boundary of what transports
+-- across it.  The campaign ledger's TIER D asked for a dual design whose atom pairings are the
+-- NEGATIVES of the primal's (D1), whose leverages are 1/t_c - l_c (D2), whose two-graph is the
+-- COMPLEMENT of the primal's (D3), and whose chart gap adds to the primal's to give a diagonal
+-- (D5).  All four are proved here at every size and rank from ONE construction:
+-- 1 - Gtz.projectionOfDesign is symmetric, idempotent, of trace m - k, so
+-- Gtz.exists_orthonormalFrame_of_symmetric_idempotent factors it and
+-- Gtz.designOfOrthonormalFrame reattaches the ORIGINAL weights.  Gtz.IsChartDual names the
+-- relation, Gtz.exists_isChartDual builds it, Gtz.IsChartDual.symm makes it an involution, and
+-- at (6,3) the dual rank is again three -- the cell is literally self-dual.
+-- The load-bearing readings: Gtz.dotProduct_chartDual_of_ne (D1, SAME zero set),
+-- Gtz.leverageOf_chartDual and Gtz.atomShare_chartDual (D2, s' = 1 - s),
+-- Gtz.tripleParity_chartDual (D3, THE ANTI-PARITY LAW), Gtz.chartPointGap_add_chartDual (D5).
+-- Read three things before citing any of it.
+--   THERE ARE NOW TWO DUALS AND THEY ARE DIFFERENT DESIGNS.  Gtz.dualDesign of
+--     Gtz/Reduction/SplitTransfer.lean is built from a different isometry precisely so that the
+--     LOEWNER FLIP Gtz.exists_naimarkDual_loewnerEquiv holds; it does NOT have negated pairings.
+--     The chart dual has negated pairings and does NOT satisfy the flip -- proved, not conjectured,
+--     by Gtz.exists_naimarkDual_dominates_and_chartDual_not_dominates at the new rational
+--     all-heavy (6,3) witness Gtz.orthoSplitDesign.  ALWAYS SAY WHICH DUAL YOU MEAN.
+--   THE LEDGER'S D4 BAND IS THEREFORE UNAVAILABLE.  Its antecedent asked one object to carry both
+--     the parity flip and the crux's allHeavy / non-dominating transport; no object does.
+--   THE ANTI-PARITY LAW NEEDS NONVANISHING PAIRINGS, because the shipped edgeSign convention sends
+--     zero to +1.  The sign-blind half, Gtz.atomPairingProduct_chartDual, is hypothesis-free.
+--     Gtz.exists_antiParityPartner_sixThree is the repaired form of the anti-parity partner: it
+--     quantifies over PAIRWISE DISTINCT triples, because Gtz.tripleParity_degenerate makes the
+--     unrestricted version UNSATISFIABLE.
+import Gtz.Quantitative.ChartDuality
+
+-- Gtz.Quantitative.ActiveOverlapPatternsSixThree, ADDENDUM: the private-mass identity now has a
+-- SET-LEVEL form.  The three private parts are pairwise disjoint
+-- (Gtz.disjoint_blockPrivatePart_first_second and its two siblings), so
+-- Gtz.card_union_blockPrivateParts_eq_pairwiseOverlapSum_sixThree upgrades the counting identity to
+-- a statement about the union, and Gtz.card_union_blockPrivateParts_of_trianglePattern_sixThree
+-- reads off that AT THE TRIANGLE THE PRIVATE ATOMS THEMSELVES FORM A TRIPLE -- by coverage exactly
+-- the complement of the triple of meeting points, so the triangle splits the six atoms into two
+-- triples canonically.  NEITHER OF THOSE TWO TRIPLES IS KNOWN TO BE AN ARGMAX BLOCK, and nothing
+-- here says it is; the split is a structural refinement of the pattern, not a new active family.
+
+-- Gtz.Quantitative.ExcessGapCensus -- the excess-gap census at the (6,3) crux.  The rung was
+-- commissioned to produce a LOWER bound on #(triples with excessGap >= 0); it does not exist, and
+-- the refutation is a theorem here rather than prose.  What the cluster proves:
+--   THE CENSUS OF THE ICOSAHEDRON IS EMPTY, Gtz.censusTripleSets_icosaDesign_eq_empty -- every one
+--     of its twenty triples has sign-blind gap exactly -14/5.  Gtz.icosaDesign_allHeavy and the new
+--     Gtz.icosaDesign_hasNoParallelPair give it two of the crux's sign-blind fields, and excessGap
+--     reads ONLY the three heavy excesses and the three squared pairings, so no hypothesis
+--     expressible in sign-blind data can force a census triple to exist.
+--   THE QUARTER WINDOW, Gtz.SixThreeCrux.excessGap_lt_quarter_mul_heavyExcess_prod -- at a crux
+--     excessGap < u_a u_b u_c / 4 at EVERY triple with no hypothesis, i.e. the normalized edge sum
+--     q_ab + q_ac + q_bc exceeds 3/4 everywhere.  Sharp: the chain closes with equality at
+--     q = 1/4 on all three edges, the split-tetrahedron tie.
+--   THE CENSUS CEILING, Gtz.SixThreeCrux.card_censusTripleSets_le_sixteen and its per-atom form at
+--     eight of ten, by composing the substrate squeeze with the shipped coherent floors.
+--   THE TWO-SIDED SIGN BAND -- the upper halves are new.  For ANY (6,3) design with nonvanishing
+--     pairings the coherent triples number between four and sixteen
+--     (Gtz.card_coherentTripleSets_mem_band_sixThree) and between two and eight through every atom
+--     (Gtz.card_coherentPairsThroughBase_mem_band_sixThree).  The ceilings run the shipped floors
+--     on the ANTI-PARITY PARTNER, whose coherent triples are exactly this design's incoherent ones.
+--   THE SET-LEVEL INVARIANCE, Gtz.tripleParity_congr_of_eq_triple and
+--     Gtz.excessGap_congr_of_eq_triple -- both sign-blind scalars are functions of the
+--     three-element SET, which is what the existentially-ordered triple families needed.
+-- WHAT THIS CLUSTER DOES NOT CLOSE:
+--   NO CENSUS FLOOR AT ANY THRESHOLD.  The icosahedral theorem says none is available from
+--     sign-blind data at all, so a sector table keyed on the census runs at threshold T = 0 and
+--     gains nothing.  A floor is reachable only to an argument consuming two-graph realizability.
+--   NO TWO-GRAPH CLASS IS EXCLUDED.  The band [2,8] is SHARP at both ends and leaves twelve of the
+--     sixteen isomorphism classes standing; the icosahedron sits at five coherent per vertex,
+--     comfortably inside it.
+--   NOTHING ABOUT IsEmpty for either crux, and no bound on the census from below at any atom.
+--   Gtz.IsCoSingletonSpreadLemma IS STATED, NOT PROVED.  The co-singleton cap
+--     Gtz.SixThreeCrux.not_posSemidef_coSingleton_sub_five is CONDITIONAL on it.
+import Gtz.Quantitative.ExcessGapCensus
+
+-- Gtz.Quantitative.ExcessGapCensus, ADDENDUM: THE D6 OBLIGATION IS DISCHARGED, so the caveat above
+-- is superseded and must not be cited.  Gtz.isCoSingletonSpreadLemma is a THEOREM and
+-- Gtz.SixThreeCrux.not_posSemidef_coSingleton_sub_five is UNCONDITIONAL: no co-singleton of a (6,3)
+-- crux reaches five times the identity.  The route needs no square root -- whiten the co-singleton
+-- ALREADY SCALED by the uniform weight 1/5, which is positive definite, so
+-- Gtz.exists_congruence_to_one supplies the congruence directly; re-index the five surviving atoms
+-- by the order isomorphism of {c}^c and read them through Gtz.whitenedFamilyDesign as a genuine
+-- Gtz.WeightedDesign 5 3, where Gtz.gtzWeighted_corank_two 3 applies; transport the floor back with
+-- Gtz.posSemidef_congr_right.  With the crux field hasStrictlyDominatingCoSingletons this is the
+-- two-sided window Gtz.SixThreeCrux.coSingletonWindow.
+-- STILL NOT CLOSED: the window EXCLUDES NOTHING BY ITSELF.  It constrains each of the six
+-- co-singletons separately and is consistent with every weight vector a crux could carry; the
+-- upper end is genuinely attained at the (6,3) diamond ties, so it is a true constraint with no
+-- slack rather than a contradiction in waiting.
+
+-- Gtz.Quantitative.TwoGraphCollision: THE SIGN LAYER OF THE (6,3) CELL, AS ONE DECIDABLE OBJECT,
+-- WITH EVERY KNOWN CONSTRAINT PROVED AND APPLIED.  A two-graph on six atoms is its LINK at atom 0
+-- -- ten parities, a Nat below 1024 -- because Gtz.tripleParity_eq_product_through_base is
+-- hypothesis-free, so the four-set cocycle law holds DEFINITIONALLY and no switching gauge has to
+-- be fixed at the design level.  Gtz.sectorIncoherent decodes an arbitrary triple as the
+-- exclusive-or of three link bits and Gtz.sectorIncoherent_linkWordOf proves the decode agrees with
+-- Gtz.tripleParity at EVERY triple of every design, degenerate ones included.
+--   THE THREE LEVERS, ALL PROVED.  L1 is the shipped Gtz.card_le_three_of_forall_incoherent_through_base.
+--     L2, NEW, is Gtz.card_le_three_of_forall_coherent_through_base: the same cap with the parities
+--     reversed, obtained by running L1 on the anti-parity partner Gtz.exists_antiParityPartner_sixThree.
+--     L3, NEW and the deepest, rests on Gtz.sum_erasePair_weight_mul_atomPairing -- THE EDGE LAW,
+--     the Parseval identity read at an off-diagonal entry with the two diagonal terms split off,
+--     sum_e t_e p_ce p_ed = p_cd (1 - s_c - s_d).  Multiplying by p_cd makes each summand the
+--     oriented triple product of {c,d,e}, whose sign IS the parity, so a uniformly signed edge
+--     forces s_c + s_d off one (Gtz.atomShare_add_atomShare_lt_one_of_coherentEdge and
+--     Gtz.one_lt_atomShare_add_atomShare_of_incoherentEdge) and three such edges in a perfect
+--     matching contradict Gtz.sum_atomShare_eq_rank.
+--   THE RESIDUE.  Gtz.card_residualSectors: 842 OF THE 1024 TWO-GRAPHS SURVIVE, in eight of the
+--     sixteen isomorphism classes; Gtz.card_leverOneSectors records 948 for L1 alone and
+--     Gtz.card_leverOneAndTwoSectors 872 for L1 and L2, so the two new levers are worth 76 and 30
+--     patterns.  Gtz.SixThreeCrux.linkWord_mem_residualSectors puts every crux with nonvanishing
+--     pairings inside Gtz.residualSectors, ONE explicit decidable object for X7 and for any later
+--     campaign.
+-- THIS DOES NOT CLOSE THE (6,3) CELL, AND THE RESIDUE IS SHARP RATHER THAN MERELY BEST-KNOWN.
+--   THE SECTOR TABLE DOES NOT EMPTY: 842 of 1024 survive, and this is now the WHOLE known
+--     combinatorial lane, not a stage of it -- all three levers are proved above.
+--   EVERY ONE OF THE EIGHT SURVIVING CLASSES IS REALISED BY A DESIGN, by an explicit six-tuple of
+--     integer directions with exact positive rational Parseval coefficients, so NO CORRECT
+--     SIGN-ONLY ARGUMENT CUTS ANY OF THEM.  Representatives are pinned both ways by
+--     Gtz.sectorSurvives_survivingClassRepresentatives and
+--     Gtz.not_sectorSurvives_killedClassRepresentatives.
+--   NO SURVIVING CLASS HAS A MAGNITUDE MARGIN: the per-class infimum of the domination margin is
+--     exactly one, measured to eighty digits, so there is no per-class inequality to mechanize.
+--   THE WHOLE TABLE LIVES IN THE NONVANISHING BRANCH.  All three levers need pairings that do not
+--     vanish and a crux is NOT known to satisfy that; two DISJOINT orthogonal pairs block all
+--     thirty L1 tests at once and revert the table to all 1024 patterns.  The hypothesis is carried
+--     explicitly and is not removable by anything here.
+--   THE COMPLEMENT FILTER IS NOT APPLIED: it would need the complement two-graph to be carried by
+--     another CRUX, and Gtz.exists_naimarkDual_dominates_and_chartDual_not_dominates says the chart
+--     dual is not the Naimark dual.
+--   NOTHING ABOUT IsEmpty for either crux.
+import Gtz.Quantitative.TwoGraphCollision
+
+-- Gtz.Quantitative.TwoGraphCollision, ADDENDUM (section 8): ONE PIECE OF THE VANISHING-PAIRING
+-- BRANCH IS REACHED, so the caveat above is sharpened rather than superseded.  At an ORTHOGONAL
+-- edge the edge law's right-hand side is identically zero, so the four star products must CANCEL
+-- and the edge CANNOT BE SIGN-SATURATED AT ALL, in either parity --
+-- Gtz.not_forall_coherent_of_orthogonalEdge and Gtz.not_forall_incoherent_of_orthogonalEdge,
+-- strictly stronger than the share inequalities the nonvanishing case gives.  So L3's obstruction
+-- survives an orthogonality ON a matching edge.
+-- STILL NOT CLOSED: L1 and L2 genuinely FAIL at a vanishing pairing rather than merely resisting
+-- proof, because Gtz.card_le_succ_of_isPairwiseObtuse_on demands STRICT obtuseness and the
+-- non-strict cap in R^3 is six, not four.  Gtz.SixThreeCrux.linkWord_mem_residualSectors therefore
+-- still carries the global nonvanishing hypothesis, and nothing here removes it.
+
+import Gtz.Quantitative.SixThreeExclusionFrontier
+
+-- Gtz/Quantitative/SixThreeExclusionFrontier.lean -- THE TERMINAL MODULE OF THE (6,3)
+-- EXCLUSION CAMPAIGN.  It contracts Gtz.SixThreeCrux as far as the landed material allows
+-- and names what survives.  Four things land here.  (1) THE SHARP WINDOW: the crux's chart
+-- value lies in [-4/27, 0), not the shipped [-1/6, 0) -- free from data the crux already
+-- carries, via Gtz.neg_four_div_twentySeven_le_value_of_isChartStationaryData, with the
+-- (7,3) sibling at -10/77 against -1/7.  (2) THE UNIFIED STAR LAW: an edge whose four
+-- triples all carry the SAME parity has its own pairing nonzero AND its two shares off one,
+-- under STAR-nonvanishing alone -- where the shipped saturated-edge lemmas asked for GLOBAL
+-- nonvanishing and the shipped orthogonal-edge lemmas covered only the vanishing edge.  One
+-- statement subsumes all four.  (3) THE ZERO-PAIRING BRANCH, given content: at a crux an
+-- orthogonal edge with nonvanishing star carries BOTH parities among its four triples.
+-- (4) THE FRONTIER Gtz.SixThreeCrux.frontier, hypothesis-free, and the design-level
+-- REFUTATION TARGET Gtz.IsSixThreeRefutationCandidate, whose emptiness SUFFICES for the
+-- wall cell and -- with the (7,3) half -- for GtzOriginal n 3 at every positive n.
+-- WHAT THIS DOES NOT CLOSE, AND THE CAPITALS ARE THE POINT: IsEmpty Gtz.SixThreeCrux IS
+-- STILL OPEN, AND NOTHING HERE APPROACHES IT.  The frontier is a CONJUNCTION THAT IS NOT
+-- CONTRADICTORY.  THE SIGN LANE IS CLOSED IN BOTH DIRECTIONS: all three levers are proved
+-- and they leave Gtz.card_residualSectors = 842 of the 1024 two-graphs in eight isomorphism
+-- classes, each realised by an explicit design, so no correct sign-only argument cuts any of
+-- them.  THE CENSUS LANE IS EMPTY BY THEOREM (Gtz.censusTripleSets_icosaDesign_eq_empty).
+-- THE ZERO-PAIRING BRANCH IS NOT CLOSED EITHER -- it is merely no longer a black hole.
+-- THE SINGLE HIGHEST-VALUE MISSING INEQUALITY IS A LOWER BOUND ON |chartObjective| AT A
+-- CRUX; without it the domination margin's constrained infimum is exactly one in every
+-- surviving sign class, so there is NO per-sector magnitude inequality to mechanize.
+
+import Gtz.Reduction.StressWalk
+
+-- Gtz/Reduction/StressWalk.lean -- CRYSTALLIZATION ONE ATOM BELOW THE SHIPPED CAP, AND WITH
+-- IT THE ARROW THE TREE WAS MISSING.  Gtz.exists_null_direction asks its perturbation to
+-- annihilate SEVEN functionals -- the six upper-triangle Parseval coordinates AND the total
+-- mass -- so Gtz.crystallization stops at M(k) = k(k+1)/2 + 1 and at rank three cannot reach
+-- (7,3).  Gtz.exists_parsevalNullDirection DROPS THE MASS FUNCTIONAL by composing
+-- Gtz.momentMap with LinearMap.fst: six functionals on seven unknowns always have a kernel,
+-- so EVERY (7,3) design carries a stress and the hypothesis relaxes to k(k+1)/2 < m.  The
+-- price is that the mass drifts, and the whole content is that the drift is AFFINE -- along
+-- w(s) = t + s*stress the mass is exactly 1 - s*A with A = sum stress -- so after normalising
+-- the sign of A the walk that terminates is also the walk that does not gain mass, landing at
+-- W in (0,1].  Parseval is preserved EXACTLY along the whole line.  A mass BELOW one is a
+-- GIFT, not a loss: Gtz.Dominates reads the WEIGHT-FREE Gtz.subsetSum, so a triple dominating
+-- the shrunken atoms gives W*S >= I hence S >= (1/W)*I >= I --
+-- Gtz.posSemidef_sub_one_of_smul_sub_one, which is where W <= 1 is spent.
+--   THE FLAGSHIP: Gtz.gtzWeighted_seven_three_of_six_three, demanding nothing beyond (6,3)
+--     where the pre-existing Gtz.gtzWeighted_seven_three_of_six_three_of_heavy still demanded
+--     Gtz.GtzWeightedHeavy 7 3.  With the shipped converse the two cells are EQUIVALENT
+--     (Gtz.gtzWeighted_six_three_iff_seven_three), so the campaign may fight at whichever
+--     carries more structure -- and RANK THREE IS NOW ONE OBJECT AS AN IFF,
+--     Gtz.rank_three_iff_six_three, sharpening Gtz.rank_three_iff_the_two_residuals from a
+--     conjunction of two cells to a single cell.  Gtz.liftingLemma_two_iff_six_three does the
+--     same for Gtz.liftingLemma_two_iff_the_two_residuals.
+--   THE CAP DROPS AT EVERY RANK: Gtz.crystallizationSharp at M'(k) = k(k+1)/2, so rank four's
+--     single object falls from (11,4) to (10,4) (Gtz.gtzWeightedAll_four_of_ten) and
+--     Gtz.gtzWeightedAll_of_veroneseTop states one object per rank at the Veronese dimension.
+--     At rank two M'(2) = 3 and every size at or below three is already a theorem, so
+--     Gtz.gtzWeightedAll_two_of_walk reproves weighted rank two from the pigeonhole -- and a
+--     transitive walk over ConstantInfo.value? (allowOpaque := true) confirms its proof term
+--     never reaches Gtz.gtz_rank_two, against a POSITIVE CONTROL in which
+--     Gtz.rank_three_of_the_two_residuals correctly does.
+--   THE ALL-HEAVY WINDOW DROPS BY THE SAME ATOM, and this is the STRONGEST rank-three
+--     reduction in the tree: Gtz.gtzWeightedAll_of_heavy_bounded reaches its cap through
+--     Gtz.crystallization and that call is the ONLY place the cap enters -- the deflation
+--     induction beneath it merely DECREASES the size -- so running it under
+--     Gtz.crystallizationSharp gives Gtz.gtzWeightedAll_of_heavyVeroneseWindow and hence
+--     Gtz.rank_three_of_heavy_six_three: rank three from the ALL-HEAVY (6,3) cell ALONE.
+--     That is STRICTLY STRONGER than the plain arrow, because Gtz.GtzWeightedHeavy 6 3 is a
+--     weaker hypothesis than Gtz.GtzWeighted 6 3, and it sharpens all three of
+--     Gtz.rank_three_of_heavy_residuals (heavy at six AND seven), Gtz.rank_three_of_heavy_top
+--     (heavy at seven) and Gtz.gtz_original_rank_three_of_heavy.  So the AllHeavy conjunct of
+--     Gtz.IsSixThreeRefutationCandidate is not a restriction of the search but a property of
+--     it: the whole rank-three conjecture now sits on all-heavy (6,3) designs.
+--     AND THAT CHAIN IS INDEPENDENT OF SENGUPTA-PAUTOV.  Its size-five rung is discharged by
+--     Gtz.gtzWeightedAll_two_of_walk rather than by the shipped Gtz.gtz_rank_two, so the
+--     transitive walk from Gtz.rank_three_of_heavy_six_three reaches 39692 constants and
+--     NEITHER Gtz.gtz_rank_two NOR Gtz.exists_dominating_pair_of_heavy, where the same walk
+--     from Gtz.rank_three_of_the_two_residuals reaches both (POSITIVE CONTROL).
+-- THIS PROVES NOTHING ABOUT (6,3).  It deletes the SECOND open cell of the rank-three
+-- frontier and leaves the first exactly as open as it was: IsEmpty Gtz.SixThreeCrux is
+-- untouched and remains the wall.  The frontier shrinks in COUNT, from two objects to one,
+-- not in difficulty.
+-- THERE IS NO ALL-HEAVY VARIANT OF THE ARROW ITSELF, and it should not be attempted -- which
+-- is NOT in tension with the heavy WINDOW result above, since that one reruns the shipped
+-- deflation induction under the sharper cap and never transports all-heaviness ALONG the
+-- walk.  What fails is Gtz.GtzWeightedHeavy 6 3 -> Gtz.GtzWeightedHeavy 7 3: the reduced
+-- atoms are scaled by sqrt(W) <= 1, so leverages SHRINK and all-heaviness is destroyed.  A
+-- measured (7,3) design of three axis spikes and four whitened planar atoms, all leverages
+-- above one, walks to W = 6/7 with support five and a reduced atom of leverage EXACTLY one
+-- [exact rational, outside Lean].  So Gtz.gtzWeighted_seven_three_of_six_three_of_heavy is
+-- not subsumed.
+-- THE ARGUMENT HAS NO COMPLEX ANALOGUE, BY A DIMENSION COUNT: the stress exists because seven
+-- rank-one symmetric matrices cannot be independent in Sym_3(R), of dimension six, whereas
+-- Herm_3(C) has real dimension nine and 7 < 9 leaves seven complex atoms with NO stress at
+-- all.  Same mechanism as Gtz.hermitianMomentFloor_lt_realMomentFloor, and consistent with
+-- Gtz.complexGtzWeighted_six_three_fails: the arrow proved here is a REAL theorem and cannot
+-- transport a false complex (6,3) into a complex (7,3).
+
+import Gtz.Quantitative.SixThreeCruxPropagation
+
+-- Gtz/Quantitative/SixThreeCruxPropagation.lean -- IsEmpty Gtz.SevenThreeCrux IS NOW DERIVED
+-- RATHER THAN ASSUMED, so every terminus of the exclusion campaign loses its second open
+-- antecedent.  Gtz.isEmpty_sevenThreeCrux_of_gtzWeighted_six_three does the work; the two
+-- termini Gtz.gtzWeightedAll_three_of_forall_not_isSixThreeRefutationCandidate_sharp and
+-- Gtz.gtzOriginal_rank_three_of_forall_not_isSixThreeRefutationCandidate_sharp then stand on
+-- the (6,3) BOX SEARCH ALONE, and Gtz.gtzWeightedAll_three_of_isEmpty_sixThreeCrux is the
+-- two-crux assembly Gtz.gtzWeightedAll_three_of_isEmpty_cruxes on ONE crux.
+-- NOTHING HERE APPROACHES IsEmpty Gtz.SixThreeCrux, which is still the wall and still open.
+-- The (7,3) crux is not refuted either -- it is shown to be a CONSEQUENCE of the (6,3) cell,
+-- so a counterexample hunt may now run at (6,3) exclusively and lose nothing.
+
+import Gtz.Reduction.RankThreeFromSixThree
+
+-- Gtz/Reduction/RankThreeFromSixThree.lean -- WHAT THE DELETED ANTECEDENT BUYS DOWNSTREAM.
+-- Gtz/Quantitative/SixThreeCruxPropagation.lean spent the arrow on the two termini; this
+-- spends it on everything else the tree had phrased at (7,3), at a PAIR of cells, or at a
+-- DICHOTOMY.  Every theorem is a composition and every original is left untouched.
+--   THE ALL-HEAVY MINIMISER DICHOTOMY COLLAPSES.  Gtz.exists_allHeavy_minimiser_of_not_rank_three
+--     offers a minimising counterexample at (6,3) OR at (7,3); its (7,3) branch was reachable
+--     only through the missing arrow, so Gtz.exists_allHeavy_minimiser_of_not_rank_three_sharp
+--     hands back the (6,3) branch alone.  A counterexample hunt no longer has two shapes.
+--   A THIRD CELL JOINS THE EQUIVALENCE CLASS, AND IT IS AT ANOTHER RANK.
+--     Gtz.gtzWeighted_six_three_iff_seven_four: Naimark duality at m = 7 sends rank three up
+--     to (7,4) via Gtz.gtzWeighted_seven_four_of_seven_three, and Gtz.gtzWeighted_of_spike
+--     sends (7,4) back down to (6,3).  That loop did not close before.  The tree's lowest
+--     rank-four entry into rank three was Gtz.gtzWeightedAll_three_of_eight_four; it is now
+--     Gtz.gtzWeightedAll_three_of_seven_four, one size lower and an iff rather than an arrow.
+--   THE DOUBLY-HEAVY AND LINE-COUNT RESIDUALS MOVE TO SIZE SIX.
+--     Gtz.gtzWeightedAll_three_of_doublyHeavy_six_three and Gtz.gtzWeightedAll_three_of_sixLines
+--     pose their narrowings on TWENTY triples instead of thirty-five.  Both ride
+--     Gtz.rank_three_of_heavy_six_three; Gtz.gtzWeightedHeavy_six_three_of_doublyHeavy was
+--     already in the tree at size six and had nowhere to go, because the only heavy-to-rank
+--     arrow, Gtz.rank_three_of_heavy_top, starts at seven.
+--   CRUXES DESCEND.  Gtz.isEmpty_sevenThreeCrux_of_isEmpty_sixThreeCrux and its contrapositive
+--     Gtz.nonempty_sixThreeCrux_of_nonempty_sevenThreeCrux: any (7,3) crux is accompanied by a
+--     (6,3) crux.  THE CONVERSE IS NOT PROVED and does not follow -- 
+--     Gtz.nonempty_sevenThreeCrux_of_not_gtzWeighted_seven_three carries GtzWeighted 6 3 as a
+--     hypothesis, so it cannot be run at a design that refutes it.  One direction only.
+-- NOTHING HERE TOUCHES IsEmpty Gtz.SixThreeCrux.
+
+import Gtz.Quantitative.OrthogonalEdgeSectors
+
+-- Gtz/Quantitative/OrthogonalEdgeSectors.lean -- THE SIGN LAYER WITH ONE PAIRING ALLOWED TO
+-- VANISH.  Gtz.residualSectors and Gtz.SixThreeCrux.linkWord_mem_residualSectors need all
+-- FIFTEEN pairings nonzero and a crux supplies none of them; the vanishing branch had the
+-- mathematics (Gtz.not_forall_coherent_of_orthogonalEdge and its sibling) but no aggregate,
+-- and Gtz/Quantitative/SixThreeExclusionFrontier.lean recorded the consequence as PROSE --
+-- "measured on the sector table outside Lean, one orthogonal edge leaves 840".  It is now a
+-- theorem, Gtz.card_residualSectorsOrthEdgeZeroOne, and the branch is one decidable object.
+--   WHAT MADE IT WORK WAS RELOCALIZING L2.  L1's cap
+--     Gtz.card_le_three_of_forall_incoherent_through_base already took PER-EDGE nonvanishing;
+--     L2's went through Gtz.exists_antiParityPartner_sixThree, whose hypothesis is GLOBAL.
+--     Gtz.card_le_three_of_forall_coherent_through_base_local unpacks it --
+--     Gtz.exists_isChartDual_sixThree is hypothesis-free and the two transport laws consume
+--     one edge each -- and that is the step the branch was missing.  A base and a four-set
+--     span five of six atoms, so a configuration avoids the edge exactly when the OMITTED
+--     atom is 0 or 1: TEN of the thirty.  ORTH needed no repair; it was already local.
+--   THE LEDGER, ALL BY decide +kernel: L1 alone 994, L2 alone 994, both 964, ORTH alone 896,
+--     all three 840 -- against 842 in the nonvanishing branch.
+--   L3 IS ABSENT AND MUST BE.  A matching edge carries the third lever only where
+--     Gtz.atomShare_add_atomShare_lt_one_of_coherentEdge applies, and that needs the edge's OWN
+--     pairing nonzero, not merely its star; every perfect matching either contains {0,1} or
+--     matches 0 elsewhere and then THAT edge's star runs through {0,1}, so the honest count of
+--     usable matchings here is ZERO.  Nothing is lost --
+--     Gtz.sectorCount_orthEdgeZeroOne_matchingThroughEdge_redundant grants L3 at the three
+--     matchings through the vanishing edge anyway and finds it removes NO two-graph, a count
+--     of zero and hence set containment rather than a cardinality coincidence.  But the FULL
+--     fifteen-matching test must not be imported: Gtz.sectorCount_orthEdgeZeroOne_not_hasNoSaturatedMatching
+--     counts 24 branch survivors it would exclude on matchings whose edges have a star through
+--     {0,1}, so an unexamined reuse of the generic lever would report 816 instead of 840.
+--   THE TWO RESIDUES ARE INCOMPARABLE, so 840 against 842 is a coincidence of size and NOT a
+--     containment: Gtz.sectorCount_orthEdgeZeroOne_not_residual counts 72 two-graphs the
+--     vanishing branch admits and the generic one forbids, and
+--     Gtz.sectorCount_residual_not_orthEdgeZeroOne counts 74 the other way.
+--   THE AGGREGATE.  Gtz.linkWordOf_mem_residualSectorsEdgeZeroOneFree places EVERY (6,3)
+--     design inside one explicit 914-element object under FOURTEEN nonvanishing hypotheses
+--     instead of fifteen, the pairing at {0,1} left completely free.  Dropping one hypothesis
+--     costs 72 patterns and does not cost the lane.
+-- THE EDGE IS NAMED and nothing here quantifies over WHICH pairing vanishes; the link word is
+-- read at atom 0, so relabelling moves it and the fifteen sets are not translates inside one
+-- encoding.  Two or more vanishing pairings are out of scope.  Like the generic branch, this
+-- one DOES NOT EMPTY, so no sign-only argument cuts it either.
+
+-- Gtz/Quantitative/OrthogonalEdgeSectors.lean, ADDENDUM -- DO NOT DO THE OTHER FOURTEEN.
+-- The strength of the branch is in the edge being NAMED, and quantifying over which pairing
+-- vanishes destroys almost all of it.  Measured outside Lean on the same encoding this module
+-- mechanizes: all fifteen single-edge branches have cardinality exactly 840, as S(6)-equivariance
+-- of the constraint set predicts, so one representative determines every count -- but the fifteen
+-- SETS are pairwise distinct and their UNION is 992 of 1024, which also swallows
+-- Gtz.residualSectors whole (992 again with the generic branch thrown in).  So the unconditional
+-- reading, "exactly one pairing vanishes, at an unknown edge", would exclude 32 two-graphs where
+-- the named-edge statement excludes 184, and the fourteen further clause sets it would cost are
+-- not worth spending.  Their INTERSECTION is 192, and that is not a new object either: it is
+-- exactly the two-graphs with no saturated star at any of the fifteen edges, the 192 already in
+-- this campaign's ledger.  Proving edge-independence INSIDE Lean rather than measuring it needs
+-- an ingredient the tree does not have -- an action of Equiv.Perm (Fin 6) on
+-- Gtz.WeightedDesign 6 3 with transport of Gtz.tripleParity along it; Equiv.Perm appears in
+-- Gtz/Design/LinePatternEnumeration.lean only as an abstract relabelling of PATTERNS.
+
+import Gtz.Quantitative.ChartValueZeroLocus
+-- Gtz/Quantitative/ChartValueZeroLocus.lean -- THE CHART-VALUE-ZERO LOCUS, and route C as ONE
+-- named obligation.  Chart value zero is the ONLY level at which the chart-to-quadric bridge of
+-- Gtz/Quantitative/ChartMultiplierSplit.lean is exact, so it is the only level at which the
+-- design-side quadric machinery is even addressable from chart data.  This module mechanizes
+-- what is true there.
+--   THE HEADLINE, Gtz.not_saturatedAtom_of_chartValueZero: NO ATOM OF A VALUE-ZERO CHART
+--     STATIONARITY DATUM IS SATURATED, at every size above one and every rank.  This completes a
+--     trichotomy the tree had two thirds of.  The shipped Gtz.sq_value_add_weight_of_saturatedAtom
+--     makes a saturated atom's eigenvalue value + t_c idempotent, hence 0 or 1.  At a NEGATIVE
+--     value the root 0 survives, giving the shipped EQUATION
+--     Gtz.weight_eq_neg_value_of_saturatedAtom_of_negativeValue, which
+--     Gtz/Quantitative/ChartDisjointBlockExclusion.lean's header correctly calls rigidity and not
+--     exclusion.  At value 1/2 the root 1 survives, which is that file's own two-atom witness.  At
+--     value ZERO the root 0 asks for t_c = 0 against strict interiority and the root 1 asks for
+--     t_c = 1 against any second positive weight, so BOTH die.  Both hypotheses are needed and the
+--     tree witnesses each root elsewhere, so the exclusion is a property of the level and not of
+--     the shape of the datum.  The census-facing form Gtz.not_hasSaturatedAtom_of_chartValueZero
+--     removes from a covering class census exactly the classes with a saturated atom.
+--     READ THE HYPOTHESIS.  This does NOT close the recorded chart-side saturated-atom wall, which
+--     is a statement about a CRUX and a crux has value strictly NEGATIVE, never zero.  There the
+--     four recorded attempts stand refuted exactly as before: the law is an equation, the weight is
+--     -chartObjective, and Gtz.SixThreeCrux.weight_mem_window_of_saturatedAtom below only reads it
+--     against the sharp window.  What is new is a DIFFERENT regime, the one the bridge is exact on.
+--   THE TIE HALF, Gtz.not_posDef_subsetSum_sub_one_of_chartValueZeroAdmissible: admissibility at
+--     level zero -- every rank-subset carrying a supported unit probe of nonpositive chart
+--     quotient -- forbids a STRICT dominator, at every size and rank, with no stationarity bundle.
+--     A strict dominator makes the projection block positive semidefinite (it dominates) with
+--     nonzero determinant (Gtz.det_projectionBlock_sub_weightDiagonal rescales the design gap's
+--     determinant by the positive weight product, and Gtz.det_gramGap_eq_det_transposeGap
+--     identifies the two Gram gaps through Matrix.det_one_sub_mul_comm), hence positive definite,
+--     hence strictly positive on the probe's nonzero restriction.
+--   ROUTE C IS NOW ONE NAMED OBLIGATION.  Gtz.IsChartValueZeroLimit is the object a deformation
+--     argument must produce -- a (6,3) design with a value-zero stationarity datum, admissible at
+--     level zero, carrying a dominating triple, all-heavy and parallel-free -- and the two leaves
+--     Gtz.HasChartValueZeroLimitAtEveryCrux and Gtz.HasNoChartValueZeroLimit compose into
+--     IsEmpty Gtz.SixThreeCrux and hence Gtz.GtzWeighted 6 3.
+--   AND THE SECOND LEAF IS THE SHIPPED HINGE.  Gtz.isTie_of_isChartValueZeroLimit shows the limit
+--     object is an EXACT TIE -- its domination field is one half, the admissibility exclusion above
+--     is the other -- and it has no parallel pair, so Gtz.hasNoChartValueZeroLimit_of_hingeHoldsAtSize
+--     empties the class from Gtz.HingeHoldsAtSize 6 3.  Route C's second leaf is therefore not a
+--     new question; it is the hinge, which is OPEN at six and which
+--     Gtz.not_hingeHoldsAtSize_five_three proves FALSE at (5,3), so no size-generic argument
+--     reaches it.
+--   AND THE OBSTRUCTION IS LOCATED, Gtz.exists_isTie_allHeavy_not_hasParallelPair_fiveThree: one
+--     size down the class "exact tie, all-heavy, no parallel pair" is INHABITED by the shipped
+--     diamond, all three properties being theorems of the tree.  So any argument emptying
+--     Gtz.IsChartValueZeroLimit from those three properties alone would prove something false at
+--     (5,3), and whatever strength the leaf has beyond the plain hinge must come from the two
+--     fields the diamond is not known to carry -- the value-zero stationarity datum and
+--     admissibility at level zero.  That is where the next attempt should be aimed.
+--   WHAT THE BRIDGE DOES AND DOES NOT BUY.  Gtz.exists_multiplier_of_chartValueZero packages the
+--     three shipped bridge conclusions plus the gap-trace law, and
+--     Gtz.one_le_leverageOf_of_chartValueZero derives NON-STRICT all-heaviness for free, so at value
+--     zero Gtz.AllHeavy carries only the strict upgrade -- exactly the absence of unit-length atoms,
+--     by Gtz.allHeavy_iff_forall_leverageOf_ne_one_of_chartValueZero.  But the quadric-side kills
+--     Gtz.one_le_value_of_saturatedAtom, Gtz.rank_le_value_of_disjointPair_activeSubsetImage and
+--     Gtz.three_le_card_activeSubsetImage_sixThree all consume the full
+--     Gtz.IsQuadricStationaryData bundle, and the bridge manufactures only three of its
+--     CONCLUSIONS -- never atomStationarity, activeSubset_card, tightDir_isEigenvector or
+--     activeWeight_sum_one.  Gtz.exists_chartValueZero_bridge_and_dominates records the consequence
+--     as a theorem: a genuine (6,3) design carries a value-zero datum, receives the whole package,
+--     and DOMINATES.  Value zero plus the bridge contradicts nothing, and the value-zero class is
+--     not a counterexample class -- it is the boundary.
+--   PARALLEL-FREENESS IS INDISPENSABLE, Gtz.exists_chartValueZero_stationary_allHeavy_hasParallelPair:
+--     delete it and the interface's other demands are met by the shipped split-tetrahedron datum,
+--     whose atoms 2 ~ 3 and 4 ~ 5 repeat a tetrahedron direction.
+--   THE NEGATIVE-VALUE READING, Gtz.SixThreeCrux.weight_mem_window_of_saturatedAtom and its (7,3)
+--     twin: composing the shipped saturated-atom equation with the shipped sharp windows puts a
+--     saturated crux atom's weight in (0, 4/27] at (6,3) and (0, 10/77] at (7,3).  The value-zero
+--     exclusion is the limiting case, where the window closes on the endpoint interiority forbids.
+--   NOT PROVED, AND IT IS THE HARD LEAF.  Nothing here produces a value-zero limit.  Every crux is
+--     a global minimiser of the SAME Gtz.chartObjective over the SAME compact domain, so all cruxes
+--     carry one value in [-4/27, 0) and no minimising sequence has values tending to zero: leaf one
+--     is a deformation statement, not a subsequence extraction.  IsEmpty Gtz.SixThreeCrux is
+--     untouched.
+
+import Gtz.Reduction.StressConditionalWalk
+-- Gtz/Reduction/StressConditionalWalk.lean -- THE STRESS-CONDITIONAL WALK, and the conic that
+-- manufactures a stress.  Gtz.exists_rescaledReducedDesign spends its size hypothesis
+-- rank*(rank+1)/2 < size in exactly ONE place -- manufacturing a Parseval-preserving direction out
+-- of a finrank count -- so Gtz.exists_rescaledReducedDesign_of_stress takes that direction as a
+-- HYPOTHESIS and runs at EVERY size, in particular at (6,3), where 3*4/2 = 6 leaves the count
+-- nothing to say.
+--   THE PAYOFF, Gtz.exists_dominating_sixThree_of_stress: a (6,3) design carrying ANY nonzero
+--     stress is DOMINATED, with no open hypothesis.  The walk lands at size at most five and
+--     Gtz.gtzWeighted_of_le_five closes it.  This is the transport of the reduction tool from the
+--     cell it was built for onto the terminal cell of rank three.
+--   THE GEOMETRY, Gtz.exists_stress_of_commonQuadric.  A stress is a dependency among the six
+--     Veronese images inside the SIX-dimensional Sym_3(R); dually six vectors of a six-dimensional
+--     space are dependent as soon as they all annihilate one functional, and the functionals are
+--     the symmetric forms under the Frobenius pairing <g g^T, Q> = g^T Q g.  So a conic through all
+--     six directions manufactures a stress, and Gtz.exists_dominating_of_commonQuadric turns it
+--     into a dominating triple.  The proof never mentions hyperplanes: it appends Q to the six
+--     images, applies the seven-in-six count Gtz.exists_dependency_of_symmetric_family, and pairs
+--     the relation with Q, whose own coefficient dies against its nonzero Frobenius norm.
+--   THE DEGENERATE CASE WITH NO CONIC VOCABULARY, Gtz.exists_dominating_of_twoPlanes: if every atom
+--     is orthogonal to one of two fixed nonzero normals -- in particular if the six atoms split
+--     into two COPLANAR TRIPLES -- the design is dominated.  The atoms may be pairwise
+--     non-parallel, so Gtz.HasParallelPair does not see this; Gtz.not_hasParallelPair_of_no_stress
+--     records the converse containment, that a parallel pair IS a stress.
+--   NO COMPLEX ANALOGUE, and this is orientation prose rather than a theorem of the module.  Over C
+--     the Veronese images are Hermitian and live in a NINE-dimensional real space, so six of them
+--     carry no forced dependency -- the same dimension gap 6 = dim Sym_3(R) against
+--     9 = dim Herm_3(C) that powers Gtz.hermitianMomentFloor_lt_realMomentFloor.
+
+import Gtz.Quantitative.SixThreeStressExclusion
+-- Gtz/Quantitative/SixThreeStressExclusion.lean -- A (6,3) CRUX CARRIES NO STRESS: the new crux
+-- field, in three vocabularies.  A crux is not dominated, so
+-- Gtz.exists_dominating_sixThree_of_stress gives Gtz.SixThreeCrux.stress_eq_zero at once, and its
+-- six Veronese images are linearly independent in Sym_3(R) -- hence, there being exactly six of
+-- them, a BASIS of it (Gtz.SixThreeCrux.linearIndependent_veronese).
+--   GEOMETRIC, Gtz.SixThreeCrux.no_commonQuadric: THE SIX DIRECTIONS OF A (6,3) CRUX LIE ON NO
+--     CONIC OF RP^2.  Strictly stronger than the shipped field hasNoParallelPair, which it reproves
+--     as Gtz.SixThreeCrux.not_hasParallelPair_via_stress, and strictly stronger again by
+--     Gtz.SixThreeCrux.not_twoPlanes, whose line-pair configurations carry no parallel pair at all.
+--   ALGEBRAIC, Gtz.SixThreeCrux.det_hadamardSquareGram_ne_zero and .rank_hadamardSquareGram_eq_six:
+--     the shipped cap Gtz.rank_hadamardSquareGram_le_six is ATTAINED at a crux.  A nonvanishing
+--     determinant is a legitimate saturation polynomial for an elimination run.
+--   PARAMETRIC, Gtz.SixThreeCrux.weight_unique: Parseval has a UNIQUE solution at a crux, so the
+--     weights are DETERMINED by the atoms and six unknowns leave any search over the crux locus.
+--   THE BRIDGE BETWEEN THE VOCABULARIES is the Frobenius identity
+--     Gtz.trace_transpose_mul_self_momentCombination, which reads the Hadamard-square Gram's
+--     quadratic form as a squared Frobenius norm and upgrades the shipped one-way
+--     Gtz.hadamardSquareGram_mulVec_eq_zero to the equivalence
+--     Gtz.hadamardSquareGram_mulVec_eq_zero_iff: the kernel of the Hadamard square IS the syzygy
+--     space, not merely a superset.
+--   WHERE REALNESS IS SPENT, and this is orientation prose rather than a theorem.  The exclusion is
+--     inherited from the walk, whose landing theorem Gtz.gtzWeighted_of_le_five is FALSE over C --
+--     Gtz.complexGtzWeighted_iff_size_le_rank_add_one pins the complex rank-three threshold at size
+--     at most four.  The complex refuting witness DOES carry a stress (its antipodal spike pair has
+--     equal Hermitian images), so the walk RUNS over C and concludes nothing.
+
+import Gtz.Quantitative.ChartSecondOrder
+-- Gtz/Quantitative/ChartSecondOrder.lean -- SECOND-ORDER DATA AT A CHART MINIMISER, the first in
+-- the tree.  Everything previously extracted from Gtz.SixThreeCrux.isChartMinimiser was FIRST
+-- order; a crux is a GLOBAL minimiser, so every feasible curve carries a second-order inequality
+-- too, and this module extracts the weight-slice half of that family.
+--   WHY THE WEIGHT SLICE.  Gtz.chartDomain is a PRODUCT, so at a fixed chart the weights range over
+--     the whole simplex and Gtz.chartPointGap is AFFINE there; the perturbed block is M - step * D
+--     with D the direction's restricted diagonal.  The Grassmannian directions are NOT touched --
+--     the projection variety contains no line, so they carry curvature this module never sees.
+--   THE MECHANISM IS MARGIN-FREE, Gtz.not_posSemidef_sub_smul_of_mulVec_ne_zero: if the first-order
+--     effect vanishes at a tight vector but the perturbation MOVES that vector, then
+--     M - step * D fails to be positive semidefinite for EVERY nonzero step, both signs, every
+--     size.  Exact algebraic non-definiteness, not a Taylor estimate, so no inequality carrying
+--     slack appears anywhere in the chain.
+--   THE OTHER BLOCKS ARE HELD BY RAYLEIGH ALONE, Gtz.lambdaMinMat_sub_smul_lt_of_lt: an INACTIVE
+--     block sits strictly below the value already and stays there as long as the step does not eat
+--     its own gap.  That is an explicit finite family of strict inequalities, satisfied for every
+--     small enough step but SUPPLIED as the hypothesis hstepSmall rather than derived -- turning it
+--     into an existential over the step is the one analytic step this module does not take.  So
+--     Gtz.chartObjective_lt_of_perturbedWeight uses no continuity anywhere, and the ACTIVE half
+--     carries no margin at all.  Gtz.lambdaMinMat_sub_smul_le_of_dotProduct_zero records the flat
+--     special case, where the condition collapses to inactivity itself.
+--   THE DERIVED FACT AT A CRUX, Gtz.SixThreeCrux.exists_tight_annihilated_of_flatDirection: no
+--     feasible weight direction can be flat at every ARGMAX block AND move every active tight
+--     vector -- some argmax block has its tight vector ANNIHILATED, vanishing at first order not
+--     being enough.  This is the weight-slice second-order condition, mechanized.
+--   THE TIE-RIGIDITY CERTIFICATE route C consumes, Gtz.eq_zero_of_flatDirection_of_span_top: when
+--     the first-order functionals SPAN there is no flat direction at all, the condition above is
+--     vacuous and the point is weight-slice rigid.  The check is a rank computation on the
+--     eigen-square rows.  Its contrapositive Gtz.span_ne_top_of_card_add_one_lt, and the count
+--     Gtz.exists_flatDirection_of_card_add_one_lt behind it, supply a flat direction from the
+--     member count alone -- the all-ones vector consuming the extra dimension.
+--   NOT PROVED, and recorded rather than hidden: an unconditional floor on the argmax family beyond
+--     the shipped Gtz.SixThreeCrux.three_le_card_chartArgmaxFamily.  Turning the derived fact into
+--     5 <= |A| needs, on top of what is here, that a real vector space is not a finite union of
+--     proper subspaces, plus the support analysis of the tight vectors.
+--   THE MECHANISM IS FIELD-BLIND, again orientation prose: every step runs verbatim over C with
+--     u u^* in place of u u^T, so nothing here can close the cell alone.
+
+import Gtz.Quantitative.DesignQuadraticFloors
+-- Gtz/Quantitative/DesignQuadraticFloors.lean -- THE MOMENT DICTIONARY, and two quadratic-form
+-- floors.  Gtz.dominates_iff_forall_moment_ge turns Gtz.Dominates into "the moment image MISSES the
+-- open half-space sum_{c in C} y_c < |x|^2", and Gtz.not_dominates_iff_exists_moment_lt exhibits
+-- the failure witness as a single probe direction.  Pinning the reading down as a theorem also
+-- settles what it can see: each condition is the minimum of a LINEAR functional over the moment
+-- body, hence a condition on its CONVEX HULL alone -- never on the image's topology, its
+-- self-intersections, or the dimension of the domain it came from.
+--   THE UNIFORM LOEWNER FLOOR, Gtz.posSemidef_bound_smul_subsetSum_sub_one: if every weight is at
+--     most bound, the full unweighted atom sum dominates (1/bound) . 1.  Sharpens the shipped
+--     Gtz.posDef_fullExcess from "positive definite" to an explicit constant, and its equality case
+--     is the shipped Gtz.subsetSum_univ_eq_size_smul_one_of_weight_eq_sizeInv.
+--   THE PAIRING-MASS FLOOR, Gtz.leverage_lt_sum_sq_atomPairing_compl: wherever the co-singleton at
+--     an atom STRICTLY dominates, that atom's leverage is outweighed by the squared pairings from
+--     it to all the others.  Feed the atom itself into its co-singleton's positive-definite gap.
+--     Strictly stronger than what Parseval alone gives -- the shipped bilinear identity
+--     Gtz.sum_weight_mul_atomPairing_mul_atomPairing yields the same bound discounted by one minus
+--     the atom's share -- and the hypothesis cannot be dropped: an orthogonal design has vanishing
+--     off-diagonal pairings and positive leverages, and there the co-singleton is singular.  A
+--     (6,3) crux carries Gtz.HasStrictlyDominatingCoSingletons, so the floor holds at all six of
+--     its atoms.  Both floors are degree two in the Gram entries, hence usable by an algebraic
+--     search.
+
+import Gtz.Quantitative.SixThreeFrontierSharp
+-- Gtz/Quantitative/SixThreeFrontierSharp.lean -- THE SHARPENED (6,3) FRONTIER, and the campaign's
+-- one-antecedent terminus.  Gtz.gtzOriginal_rank_three_of_forall_not_isSixThreeRefutationCandidateSharp
+-- takes a SINGLE open hypothesis -- that no (6,3) weighted design satisfies an explicit design-level
+-- predicate -- and returns GtzOriginal atomCount 3 for every positive atomCount.  The shipped
+-- Gtz.gtzOriginal_rank_three_of_forall_not_isSixThreeRefutationCandidate needed that search AND
+-- IsEmpty Gtz.SevenThreeCrux; the stress walk deleted the second, and Gtz.rank_three_iff_six_three
+-- states the collapse as an iff.  Read plainly the terminus quantifies over ALL rank-three
+-- configurations of ANY size; what is NOT proved, here or anywhere in this tree, is that the box is
+-- empty.  GtzWeighted 6 3 and IsEmpty Gtz.SixThreeCrux remain OPEN, and every conjunct below is a
+-- necessary condition on a hypothetical counterexample, never an exclusion of one.
+--   Gtz.SixThreeCrux.frontierSharp -- the layer Gtz.SixThreeCrux.frontier did not have, EXTENDING it
+--     rather than replacing it, so the full frontier is the two theorems conjoined.  The stress layer
+--     (a crux carries no stress, so its six Veronese images are a BASIS of Sym_3(R)) with its
+--     algebraic face det(hadamardSquareGram) != 0 -- a single polynomial NONVANISHING, hence a
+--     saturation variable an algebraic search can use -- and its geometric face, no conic of RP^2
+--     through the six directions.  The quadratic floor at every atom.  All-heaviness as a strictly
+--     positive chart gap diagonal, and the first characteristic coefficient strictly positive at all
+--     twenty triples, which cuts admissibility to two branches per triple rather than three.
+--   Gtz.IsSixThreeRefutationCandidateSharp -- the shipped box plus the new DESIGN-LEVEL conjuncts,
+--     no chart in any of them.  THE TWO BOXES ARE THE SAME BOX, and
+--     Gtz.isSixThreeRefutationCandidateSharp_iff proves it, so that nobody reads the sharpened
+--     frontier as a reduction of the search space: every new conjunct is a CONSEQUENCE of the
+--     shipped box, a stress or a common conic each producing a dominating triple that the box's own
+--     no-domination clause forbids, and the quadratic floor following from all-heaviness with the
+--     strictly dominating co-singletons.  What it buys is a reduction of the WORK at each point of
+--     an unchanged box -- four extra facts made explicit, one a polynomial nonvanishing -- and
+--     Gtz.gtzWeighted_six_three_of_forall_not_isSixThreeRefutationCandidateSharp shows emptying it
+--     still suffices.
+--   THE ROUTE-BY-ROUTE LEDGER lives in the module docstring: A landed as a reduction; B walled
+--     structurally, the chart-KKT variety being positive-dimensional so real solving never starts;
+--     C landed in part with leaf two identified as the shipped Gtz.HingeHoldsAtSize 6 3 and leaf one
+--     open and NOT a compactness extraction; D refuted as a cell, its tool surviving as the stress
+--     layer; E killed, every domination condition being the minimum of a LINEAR functional and hence
+--     blind to everything but a contractible convex hull; F landed in part, open, and field-blind.
+--   THE SINGLE NEXT QUESTION IS UNCHANGED: a positive lower bound on |chartObjective| at a crux.
+--     What this run adds is where NOT to look -- the stress layer is SLACK at the wall, the
+--     closest-to-crux all-heavy configuration being stress-free with a healthy margin while the
+--     exact ties are the stress-carrying objects.  Measured outside Lean, and recorded as such.
+
+import Gtz.Quantitative.ChartDiamondValueZero
+-- Gtz/Quantitative/ChartDiamondValueZero.lean -- THE DIAMOND CHART DATUM AT VALUE ZERO, five atoms.
+-- Gtz.IsChartStationaryData is a HYPOTHESIS bundle of thirteen fields, and which SIZES inhabit it is
+-- decided by none of them.  Before this file the bundle was known inhabited at four atoms
+-- (Gtz.chartTetraProjection, Gtz.chartCorankOneProjection) and at six (Gtz.chartSplitSixProjection,
+-- Gtz.chartTwoBlockTripleProjection); at FIVE it was measured outside Lean and never mechanized.
+--   Gtz.diamondChart_isChartStationaryData -- all thirteen fields at five atoms, rank three, value
+--     exactly zero, eight active triples, chart exact in Q(sqrt 6), every atom strictly heavy
+--     (leverages 2 and 13/4).  Gtz.exists_isChartStationaryData_five_value_eq_zero is the size-five
+--     inhabitation as an existence statement, the sibling of the shipped
+--     Gtz.exists_isChartStationaryData_weight_ne at four atoms.
+--   WHY IT MATTERS.  A value-zero obligation is size-non-generic exactly when a five-atom object can
+--     already satisfy it, and this is that object.  Any strengthening of the value-zero leaves that
+--     hopes to be size-generic has to survive it.
+--   THE MULTIPLIER IS NOT TRIVIAL.  Its five eigenvalues are 1/20, 1/20, 1/10 on the chart's range
+--     and 8/15, 4/15 on its kernel, so Gtz.diamondChartProjection_mul_multiplier_comm is a genuine
+--     commutation rather than an artefact of a scalar assembly -- unlike the (6,3) octahedron, whose
+--     assembly is I/6.  Nor is the multiplier family determined by the point: a whole segment of
+--     multipliers satisfies all thirteen fields, and Gtz.diamondChartMultiplierWeight is the unique
+--     member whose ratio multiplier/normSquare is the constant 1/120.
+--   THE ARITHMETIC IS SPECTRAL, NOT TABULAR, and that is reusable.  The chart is a sum of rank-one
+--     atoms of PAIRWISE-ORTHOGONAL explicit directions, never an entry table, so symmetry,
+--     idempotence, the trace and the commutation carry no matrix index at all --
+--     Gtz.mul_atomMatrix_of_mulVec_smul and Gtz.atomMatrix_mul_of_mulVec_smul turn "this vector is an
+--     eigenvector" into "this matrix absorbs that atom" on either side.  The entry-table definition
+--     was tried first and abandoned: inside this import environment its ext/fin_cases idempotence
+--     proof does not finish at four million heartbeats, where the same proof over plain Mathlib costs
+--     sixteen seconds.
+--   ADMISSIBILITY TOO.  Gtz.diamondChart_isChartArgmaxValue proves the second chart-side field: no
+--     triple beats the value.  Eight of the ten triples attain zero exactly, carrying their own tight
+--     direction, and the two triangles sit at -1/5.  So the diamond is the COMPLETE chart-side
+--     value-zero object at five atoms, and both size-five facts a size-generic value-zero obligation
+--     would have to survive are theorems rather than measurements.
+--   ONE SIZE- AND RANK-GENERIC BRICK RIDES ALONG.  Gtz.dotProduct_chartStationaryGap_mulVec_tightDir:
+--     a tight direction's Rayleigh quotient against the gap IS the value.  The bundle gives the
+--     eigen-equation coordinatewise ON the subset and vanishing OFF it; together they pin the
+--     quotient, and nothing in Gtz.ChartStationary said so.  It is the pointwise content behind
+--     trace (Xi * W) = value, and this campaign adds by extension only, so it is stated here.
+--   CONIC VACUITY AT FIVE ATOMS.  Gtz.exists_commonQuadric_of_five_atoms: dim Sym_3(R) = 6 > 5, so
+--     EVERY five-atom family in R^3 lies on a conic.  Strengthening a value-zero or tie-freeness
+--     obligation by "the atoms admit no common quadric" therefore makes it unfalsifiable at (5,3) --
+--     the diamond's refutation of the plain hinge would evaporate, and so would every scrap of
+--     evidence FOR the strengthened form.  A conic-strengthened hinge is a SIZE-SIX question.
+--     Contrast Gtz.SixThreeCrux.no_commonQuadric, where the same count is 6 = 6 and the conclusion
+--     reverses.
+--   WHAT IS NOT HERE.  The bridge to Gtz.projectionOfDesign Gtz.diamondDesign, which needs
+--     whitener * whitenerᵀ = (fullLaplacian)⁻¹; without it the three DESIGN-side fields of
+--     Gtz.IsChartValueZeroLimit -- a dominating triple, AllHeavy, no parallel pair -- are not reached.
+
+-- SECOND ORDER: THE STEP, THE CURVATURE, AND THE COMPRESSION FORM.  Gtz.ChartSecondOrder names
+-- three things it does not carry; this module carries all three.
+--   THE STEP, DERIVED.  Gtz.exists_pos_step_feasible_and_gapPreserving manufactures, at any chart
+--     point with strictly positive weights, a strictly positive step that keeps the weights
+--     nonnegative AND leaves every inactive block's own gap unspent.  Those are exactly the slots
+--     that Gtz.chartObjective_lt_of_perturbedWeight and
+--     Gtz.SixThreeCrux.exists_tight_annihilated_of_flatDirection SUPPLY rather than derive -- the
+--     shipped docstring says so in as many words.  The construction is a finite minimum and nothing
+--     else: the shipped Gtz.exists_pos_le_forall_mem for the two floors, the shipped
+--     Gtz.chartWeightCap for one cap covering every block and every unit vector at once.  No
+--     continuity, no compactness, no limit.
+--   THE CONSUMER FORM.  Gtz.SixThreeCrux.exists_tight_annihilated_of_flatWeightDirection: a flat
+--     weight direction at a crux annihilates the tight vector of SOME argmax block, with no side
+--     condition beyond flatness.  Gtz.eigenSquareRow_dotProduct joins it to the shipped
+--     flat-direction producer Gtz.exists_flatDirection_of_card_add_one_lt, whose functionals are
+--     plain vectors.  Distinct from Gtz.exists_chartTangentCurve_descent, which is FIRST order and
+--     needs every active slope strictly negative; this is the complementary flat case.  Read
+--     through full support, Gtz.SixThreeCrux.exists_argmax_direction_eq_zero_of_flatWeightDirection
+--     says a flat direction VANISHES on some argmax block -- the shape an index argument consumes,
+--     but NOT the index theorem, which additionally needs that a real vector space is not a finite
+--     union of proper subspaces.  The shipped floor stays Gtz.SixThreeCrux.three_le_card_chartArgmaxFamily.
+--   THE GRASSMANNIAN HALF.  Gtz.trace_mul_grassmannAcceleration computes the curvature
+--     Gtz.ChartSecondOrder declares out of scope: trace (Xi A) = -2 trace (Xi (2P - 1) B B) for any
+--     curve of projections, so it depends on the VELOCITY alone and the free part of the
+--     acceleration cancels (Gtz.trace_assembly_mul_acceleration_eq_of_sameVelocity).
+--     Gtz.trace_assembly_mul_chartStationaryGap is a COROLLARY of the shipped
+--     Gtz.trace_projection_mul_multiplier_of_isChartStationaryData, not a second proof of it.
+--     HONEST SIGN: at a crux the value is negative, so the averaged curvature trace is POSITIVE --
+--     the Grassmannian directions are stabilising and cannot by themselves contradict minimality.
+--     NON-VACUITY, discharged before anything is built on the identity:
+--     Gtz.blockDiagonal_velocitySquare_of_grassmannTangent plus
+--     Gtz.exists_acceleration_of_blockDiagonal_velocitySquare solve the curve constraint at EVERY
+--     Grassmannian tangent velocity, and Gtz.exists_grassmannCurvature_datum_nontrivial exhibits an
+--     explicit instance with nonzero velocity and nonzero conclusion.
+--   THE COMPRESSION FORM.  Gtz.tightCompression is the right first-order object at a MULTIPLE least
+--     eigenvalue, where the scalar test u . D u is wrong (the Gtz.icosaDesign trap).
+--     Gtz.mulVec_eq_zero_of_posSemidef_of_tightCompression_eq_zero generalises
+--     Gtz.mulVec_eq_zero_of_posSemidef_of_dotProduct_zero to a frame and asks nothing of it --
+--     not orthonormality, not injectivity.  Gtz.tightCompression_replicateCol_eq_zero_iff is the
+--     simple-case equivalence.
+--   FIELD-BLIND, as the whole second-order layer is: every step runs verbatim over C.
+import Gtz.Quantitative.ChartSecondOrderStep
+
+-- THE INDEX FLOOR ON THE ARGMAX FAMILY.  Gtz.Quantitative.ChartSecondOrder states, in its own
+-- words, that turning its second-order condition into 5 <= |A| "needs, on top of what is here,
+-- that a real vector space is not a finite union of proper subspaces, plus the support analysis
+-- of the tight vectors", and Gtz.Quantitative.ChartSecondOrderStep repeats the reservation twice.
+-- This module supplies both ingredients and lands the floor.
+--   THE UNION-OF-SUBSPACES LEMMA WAS NOT MISSING, ONLY UNLOCATED.  It is Mathlib's
+--     Subspace.exists_eq_top_of_iUnion_eq_univ (Mathlib/GroupTheory/CosetCover.lean), stated over
+--     any INFINITE division ring.  Gtz.exists_le_of_forall_exists_mem packages it in the form a
+--     covering argument consumes -- a submodule each of whose members lies in one of finitely many
+--     submodules lies wholly inside one of them -- by transporting the cover into the submodule.
+--   THE COUNT.  Gtz.exists_flatPair_of_card_add_one_lt produces two flat directions separated by a
+--     pivot coordinate, so their independence is exhibited rather than computed;
+--     Gtz.SixThreeCrux.exists_argmax_le_vanishingSubmodule upgrades the shipped escape from "each
+--     flat direction vanishes SOMEWHERE" to "they all vanish on ONE common argmax block"; and
+--     Gtz.eq_zero_of_vanishing_of_sumZero_of_rowFlat kills the pair on the three atoms left over,
+--     using a THIRD argmax block whose eigen-square row is non-constant there.  The third block
+--     exists because Gtz.SixThreeCrux.three_le_card_chartArgmaxFamily already puts three in the
+--     family and {C, C complement} has only two members, so the proof CONSUMES the shipped floor.
+--   WHAT THE MULTIPLIER LAYER BUYS, PRICED EXACTLY.  A constant assembly diagonal exhibits the
+--     all-ones vector as a multiplier combination of the eigen-square rows, so a flat direction is
+--     automatically feasible for the simplex (Gtz.sum_eq_zero_of_flat_of_assemblyDiagonal).  That
+--     frees one functional and is the whole difference between the two landed floors:
+--     Gtz.SixThreeCrux.four_le_card_chartArgmaxFamily_of_fullSupport without it, and
+--     Gtz.SixThreeCrux.five_le_card_chartArgmaxFamily_of_assemblyDiagonal with it.
+--   THE HYPOTHESES, AND WHY THEY ARE HYPOTHESES.  Both floors carry what the shipped escape
+--     carries: a unit tight eigenvector at EVERY one of the twenty triples, and FULL SUPPORT.
+--     Full support is what turns annihilation into vanishing; the honest ladder is |A| >= 2 + s
+--     with s the smallest tight support, and only s = 3 is proved here.  The SUPPORT-TWO rung
+--     needs a different proof -- three independent flat directions and a rank-two kill -- and is
+--     not built.  The assembly identity is a hypothesis because the shipped
+--     Gtz.SixThreeCrux.exists_multiplier_isChartStationaryData supplies a constant diagonal for ITS
+--     OWN tight directions at the argmax blocks only, while the escape needs one at every triple;
+--     Gtz.assemblyDiagonal_of_isChartStationaryData_of_rowEq and
+--     Gtz.eigenSquareRow_eq_mul_self_of_support say exactly which compatibility closes that gap,
+--     and it can fail at a MULTIPLE least eigenvalue.
+--   NON-VACUITY, discharged before the floors are built:
+--     Gtz.exists_twoAtomKill_datum_nontrivial satisfies every side condition of the kill together
+--     with a NONZERO direction, and Gtz.exists_assemblyDiagonal_datum_nontrivial realises the
+--     constant assembly diagonal at a two-block (6,3)-shaped family.
+--   THE MEASURED FLOOR IS NOT ASSUMED.  Numerical campaigns report no admissible chart-stationary
+--     point below eight argmax blocks; that is a measurement with a known component bias and is
+--     proved nowhere.  It appears only as the explicit, undischarged hypothesis of
+--     Gtz.SixThreeCrux.six_le_card_chartArgmaxFamily_of_assemblyDiagonal_of_ne_five.
+--   FIELD-BLIND, as the whole second-order layer is: every step runs verbatim over C.
+import Gtz.Quantitative.ChartArgmaxIndexFloor
+
+-- Gtz/Reduction/ConverseBridge.lean -- THE MISSING ARROW: classical GTZ implies the weighted form,
+-- so the campaign's frame is an EQUIVALENCE rather than a one-way reduction.
+--   WHAT WAS MISSING.  Gtz.original_of_weighted and Gtz.original_of_weighted_single run one way,
+--     weighted ==> original, via Gtz.rowDesign at the uniform weight 1/n.  Nothing ran the other
+--     way: no theorem in the tree took Gtz.GtzOriginal as a HYPOTHESIS.  So a weighted (6,3)
+--     counterexample did not, in the kernel, refute the 1997 conjecture.  It does now.
+--   THE HEADLINE.  Gtz.gtzWeightedAll_iff_forall_gtzOriginal : GtzWeightedAll k is EQUIVALENT to
+--     "for every positive n, GtzOriginal n k".  In counterexample form,
+--     Gtz.exists_not_gtzOriginal_of_forall_not_dominates turns any failing (m,k) design into an
+--     explicit size N at which the literal 1997 statement fails.
+--   THE FOUR STEPS.  (1) ROUNDING, the only analytic step: non-domination is a STRICT inequality
+--     at a witness probe, there are finitely many subsets, and ONE archimedean choice of scale
+--     preserves all of them at once under rounding the weights to floor(scale*t_c).  No continuity,
+--     no compactness, no Lipschitz constant -- Gtz.continuous_designMargin and the MarginContinuity
+--     machinery are NOT used, and whether a topological route would also close is untested.
+--     (2) WHITENING: rounded weights break Parseval, and one invertible congruence repairs it;
+--     because Gtz.Dominates is a congruence statement the congruence cancels on both sides, so
+--     domination of the repaired design is exactly the RAW Loewner comparison S_C >= F and no
+--     matrix square root is built.  (3) REPLICATION to the flat weight, where a k-subset either
+--     repeats an atom -- killed by the shipped Gtz.not_dominates_of_repeated_atom_general -- or is
+--     a faithful copy of a k-subset of the original.  (4) READING OFF THE MATRIX on the uniform
+--     slice, where Gtz.scaledAtomRows inverts Gtz.rowDesign.
+--   DOWNSTREAM, three rank-three termini stop being sufficient conditions and become
+--     CHARACTERISATIONS of the 1997 conjecture: Gtz.isEmpty_sixThreeCrux_iff_gtzOriginal_rank_three,
+--     Gtz.nonempty_sixThreeCrux_iff_not_gtzOriginal_rank_three, and
+--     Gtz.forall_not_isSixThreeRefutationCandidateSharp_iff_gtzOriginal_rank_three.
+--   AND AT EVERY RANK.  Gtz.gtzWeighted_veroneseTop_iff_forall_gtzOriginal composes the arrow with
+--     the crystallization Gtz.gtzWeightedAll_of_veroneseTop: the single cell k(k+1)/2 decides the
+--     1997 conjecture at rank k both ways.  Its rank-three instance IS the six-three statement
+--     (3*(3+1)/2 = 6 on Nat), so those two are not independent facts; rank four is new.
+--   REUSE RATHER THAN RE-PROOF.  The whitened design is the shipped Gtz.whitenedFamilyDesign with
+--     Gtz.whitenedDesign_subsetSum_eq and Gtz.sum_atomMatrix_conj; the atom count is the shipped
+--     Gtz.size_pos_of_design.  Only the domination EQUIVALENCE is new, and its hypothesis is bare
+--     positive definiteness where Gtz.exists_whitenedDesign_of_framePinched demands the pinch.
+--   HONEST SCOPE.  The construction is SIZE-CHANGING: a counterexample at (m,k) produces one at
+--     (N,k) with only N >= m guaranteed, and N is not effective -- it comes from exists_nat_gt off
+--     the per-gate ratios slack/gapValue.  NOTHING here proves or disproves a fixed-size arrow
+--     GtzOriginal n k ==> GtzWeighted n k.  That is all the equivalence needs, since both sides
+--     quantify over all sizes.
+--   NON-VACUITY (P4) is checked at build time by five unnamed examples, two of which reprove
+--     shipped weighted theorems by the NEW route off the ORIGINAL rank-one and rank-two statements.
+import Gtz.Reduction.ConverseBridge
+
+-- Gtz/Quantitative/EdgeOrbitSectors.lean -- THE VANISHING PAIRING AT AN UNKNOWN EDGE: the
+-- named-edge sign branch becomes edge-independent by relabelling, not by fifteen case sets.
+--   WHAT THE NAMED-EDGE BRANCH ASKED FOR.  Gtz/Quantitative/OrthogonalEdgeSectors.lean proves
+--     the vanishing branch only at the NAMED edge {0,1}, and its header says the general case
+--     "needs an ingredient the tree does not have: an action of Equiv.Perm (Fin 6) on
+--     Gtz.WeightedDesign 6 3 together with the transport of Gtz.tripleParity along it", while
+--     warning that a successor "should not spend the fourteen further clause sets it would take".
+--     That sentence is half STALE and half superseded, and the halves are worth separating.
+--     The ACTION half was already FALSE WHEN WRITTEN: Gtz.relabelDesign is in the TRACKED HEAD
+--     version of Gtz/Ties/SelectionObstruction.lean, while OrthogonalEdgeSectors.lean is one of
+--     the modules written on top of that HEAD, so its companion claim that Equiv.Perm "appears
+--     in Gtz/Design/LinePatternEnumeration.lean only as an abstract relabelling of PATTERNS,
+--     never as an action on designs" was already wrong -- the action was one directory away.
+--     The TRANSPORT half was accurate: no sign-layer transport existed anywhere, and that is
+--     what is supplied here.  Either way no clause set is spent.
+--   THE ACTION WAS ALREADY SHIPPED.  Gtz.relabelDesign (Gtz/Ties/SelectionObstruction.lean) has
+--     carried Gtz.subsetSum_relabelDesign and Gtz.dominates_relabelDesign_iff since before this
+--     campaign, and Gtz/Design/PrimitiveTightClassification.lean already transports
+--     Gtz.atomBracket, Gtz.IsTie and Gtz.HasLinePattern along it.  Only the SIGN layer was
+--     missing, and Gtz.atomPairing_relabelDesign, Gtz.edgeSign_relabelDesign and
+--     Gtz.tripleParity_relabelDesign are each `rfl` -- those three functions are built from one
+--     another by formulas that never mention an index.  Gtz.allHeavy_relabelDesign_iff completes
+--     the layer on the design side: a consumer of the orbit form receives a RELABELLED design,
+--     and that is what says the crux field Gtz.SixThreeCrux.isAllHeavy survives the move.
+--   THE HEADLINE, in orbit form.  Gtz.exists_relabel_linkWord_mem_residualSectorsOrthEdgeZeroOne:
+--     a design whose pairings are nonzero away from ONE edge, wherever that edge is, relabels
+--     into the SAME 840-element object the named-edge branch produces.  The witness is explicit
+--     (Gtz.pairPerm, two transpositions) and the statement returns it together with the two
+--     equations that identify it.  Gtz.exists_pairPerm is the two-point transitivity behind it.
+--   WHY RELABELLING BEATS FORGETTING.  In the relabelled frame 184 two-graphs stay forbidden; in
+--     the design's own frame only 32 do.  Relabelling does not forget WHERE the pairing vanishes,
+--     which the named-edge header identifies as where all the information sits -- it moves the
+--     label instead.
+--   THE EDGE-FORGETTING FORM, for a consumer who cannot relabel.  Gtz.relabelLinkWord moves a
+--     two-graph rather than a design and Gtz.linkWordOf_relabelDesign says the two agree, so the
+--     fifteen branches and the generic branch have a computable union:
+--     Gtz.card_unionEdgeBranchSectors = 992 by decide +kernel, and
+--     Gtz.linkWordOf_mem_unionEdgeBranchSectors places every design with at most one vanishing
+--     pairing inside it WITH NO RELABELLING IN THE CONCLUSION.  This mechanizes two measurements
+--     of the named-edge header at once -- the fifteen-fold union is 992, and it is still 992 with
+--     the generic branch thrown in, which is how the definition here is written.
+--   SELF-TEST OF THE ENCODING.  Gtz.relabelLinkWord_pairPerm_zero_one: at the canonical edge the
+--     relabelling is the identity and so is the induced action, over all 1024 two-graphs; hence
+--     Gtz.edgeBranchSectors_zero_one identifies the canonical branch with the shipped set.
+--   WHAT IS NOT HERE.  The UNIFORM per-edge cardinality over all thirty ordered edges is NOT
+--     landed: it was built and measured at over two minutes of kernel time, and was dropped
+--     rather than charged to every future build.  Gtz.card_edgeBranchSectors_zero_two and
+--     Gtz.card_edgeBranchSectors_two_three confirm the measured 840 at the two shapes a
+--     relabelling can take -- an edge sharing an atom with {0,1} and an edge disjoint from it.
+--   THE RESIDUE DOES NOT SHRINK.  992 is larger than the 842 of the nonvanishing branch, not
+--     smaller, and nothing here approaches IsEmpty Gtz.SixThreeCrux.  What the orbit form removes
+--     is the fifteen-fold case split, not the residue.
+--   NON-VACUITY (P4).  A hypothesis quantifying over an UNKNOWN edge could in principle be
+--     satisfiable at no design at all, so it is discharged rather than assumed:
+--     Gtz.hasAtMostOneVanishingPairing_icosaDesign, off the shipped
+--     Gtz.icosaDesign_atomPairing_sq_of_ne, and the concrete consequence
+--     Gtz.linkWordOf_icosaDesign_mem_unionEdgeBranchSectors.
+import Gtz.Quantitative.EdgeOrbitSectors
+
+-- GAP 7, THE HINGE AT SIX POINTS, ATTACKED ON BOTH OF ITS TWO INPUTS.
+--   Gtz.hingeHoldsAtSize_of_linearSpaceEnumeration_sixThree reduces
+--   Gtz.HingeHoldsAtSize 6 3 to exactly two things: the combinatorial completeness of
+--   Gtz.linePatternListSix, and one tie-freeness obligation per non-near-pencil entry of
+--   Gtz.lineFamiliesSix.  Two modules, one per input.  NEITHER INPUT IS DISCHARGED.
+--
+--   Gtz.Design.LinePatternSixCases -- THE ENUMERATION (gap 7a).  Purely combinatorial: no
+--     design, no Parseval, no bracket, no real number, because
+--     Gtz.patternListIsCompleteUpToRelabel_of_linearSpaceListIsComplete already removed the
+--     analysis upstream.  FOUR of the nine isomorphism classes are discharged, ordered by
+--     longest line -- #0 no dependent triple, #1 one three-point line, #6 one four-point
+--     line, #8 the near pencil.  The residual splits along the largest line into
+--     Gtz.LinearSpaceFourPointLineCasesSix (ONE class, #7: a four-point line with a
+--     dependent triple outside it) and Gtz.LinearSpaceThreePointLineCasesSix (FOUR classes,
+--     #2 through #5: no four-point line, at least two three-point lines).  Every route to
+--     the enumeration still takes those as explicit undischarged hypotheses; the
+--     contribution is that they cover five classes and not nine.  The coarser
+--     Gtz.LinearSpaceMultiLineCasesSix (six classes) and Gtz.LinearSpaceMiddleCasesSix
+--     (seven) are kept as the shallower cuts and everything stated against them is derived.
+--     The reusable half is the transport kit: Gtz.lineFamilyPattern_map_iff,
+--     Gtz.agreesOnDistinctTriples_comp_relabel_of_forall,
+--     Gtz.isSpanningLinearSpacePattern_comp_relabel, the axiom-free
+--     Gtz.agreesOnDistinctTriples_lineFamilyPattern_of_sound_complete, and the case closer
+--     Gtz.exists_relabel_agreesOnDistinctTriples_of_labelledFamily, which lets a structural
+--     case name six labels and never write an Equiv.Perm.  #1 and #6 are the two worked
+--     templates; a further case differs only in which lines it names.
+--
+--   Gtz.Quantitative.HingeStressNarrowing -- THE LEDGER (gap 7b).  ZERO of the eight entries
+--     is discharged.  There were eight open obligations, sixteen after
+--     Gtz.stratumIsTieFreeAmongHeavy_of_allHeavy_and_unitLeverage splits each at the
+--     unit-leverage face, and there still are.  What changes is what each may assume.
+--     Gtz.exists_posDef_sixThree_of_stress_sum_ne_zero upgrades the shipped
+--     Gtz.exists_dominating_sixThree_of_stress from PosSemidef to PosDef when the stress has
+--     nonzero coordinate sum -- the shipped form cannot exclude a tie, because a tie already
+--     has a weakly dominating triple, which is why the hinge lane never consumed it.  So
+--     every stress of a (6,3) tie is balanced, and each of the four ledger shapes gains that
+--     hypothesis for free: Gtz.stratumIsTieFreeAmongHeavy_of_balancedStress_sixThree and its
+--     three siblings.  Orthogonal to the ledger's own narrowing, which constrains atom
+--     LENGTHS where this one constrains DEPENDENCIES.
+--
+--   THREE OF THE EIGHT ENTRIES ARE SHARPENED FROM A STRATUM TO A SUBLOCUS.
+--     Gtz.PatternForcesStress names the entries whose pattern alone manufactures a stress
+--     through a line-pair quadric covering all six labels: [[0,1,2],[3,4,5]], the
+--     four-point line [[0,1,2,3]], and [[0,1,2,3],[0,4,5]].  The four-point line is the one
+--     worth noticing -- its second plane is not a line of the pattern at all, since any two
+--     vectors lie in a plane and no line carries both labels off the four-point line.  On
+--     those three a tie must carry a nonzero stress of zero coordinate sum, so what is owed
+--     is not "no tie on the stratum" but "no tie on the codimension-one sublocus".  The
+--     other five entries admit no covering pair and get nothing.
+--
+--   WHAT A TIE MUST LOOK LIKE.  Gtz.sq_eq_one_of_parallel_of_isTie_sixThree: a parallel pair
+--     of a (6,3) tie has ratio squared one, so the two atoms have EQUAL LENGTH -- a
+--     sharpening of Gtz.HingeHoldsAtSize's own conclusion.  And
+--     Gtz.exists_smallerTie_size_four_or_five_of_stress_of_isTie_sixThree: a STRESSED (6,3)
+--     tie restricts to a tie on four or five atoms carrying the SAME vectors, the first
+--     descent this lane has had.  It does not bottom out: U(3,4) and the (5,3) diamond both
+--     host ties.
+--
+--   NOTHING HERE APPROACHES Gtz.GtzWeighted 6 3.  The hinge is one lane among several, and
+--     both of its inputs remain open.  Gtz.hingeHoldsAtSize_of_lineSizeCases_sixThree and
+--     Gtz.hingeHoldsAtSize_of_multiLineCases_balancedStress_sixThree record the shape the
+--     two inputs have been reduced to, not a proof of either.
+import Gtz.Design.LinePatternSixCases
+import Gtz.Quantitative.HingeStressNarrowing
+-- ---------------------------------------------------------------------------------------
+-- THE QUANTITATIVE BRIDGE AT (6,3): BOTH LANES, STATED PRECISELY FOR THE FIRST TIME
+--
+-- Gap 3 of the ledger reads "quantitative bridge, collar lane -- HALF-BUILT ... Open input:
+-- the modulus lower bound", and gap 4 reads "quantitative bridge, value lane -- ABSENT ...
+-- the precise closing implication has never been stated".  These two modules state both
+-- implications.  Neither lane closes anything, and in both the reason is now a theorem
+-- rather than a difficulty.
+--
+--   THE COLLAR LANE'S OPEN INPUT IS NOT WEAKER THAN ITS TARGET.
+--     Gtz.exists_dominates_of_hasCollarTubeLawAtFloor: the htube slot of
+--     Gtz.collared_two_piece_law, instantiated at the tree's own designMargin, tieLocus and
+--     collaredSet with the rate and radius merely EXISTENTIAL, already forces domination.
+--     Gtz.gtzWeightedHeavy_of_forall_hasCollarTubeLaw: the per-floor family of those slots
+--     gives GtzWeightedHeavy m k outright, hence at (6,3) the whole of rank three through
+--     the shipped Gtz.rank_three_of_heavy_six_three.  The mechanism is that Gtz.tieLocus is
+--     {margin <= 0} and not {margin = 0}; at rank five, where the collar layer was
+--     calibrated, Gtz.gtzWeighted_of_le_five closes that gap, and at (6,3) closing it is
+--     exactly what is open, so every counterexample sits IN the locus at distance zero,
+--     where the tube inequality degenerates to 0 <= margin.  The named wall of gap 3 is
+--     therefore the CHOICE OF REFERENCE SET, not any analytic modulus.
+--
+--   AND THE MEASURED EROSION WAS NEVER ON THE LOGICAL PATH.  A counterexample supplies its
+--     own floor -- its smallest weight -- so a consumer needs the law once PER FLOOR and
+--     never with a floor-uniform constant.  That is visible in the proof of
+--     gtzWeightedHeavy_of_forall_hasCollarTubeLaw, which instantiates at
+--     Finset.univ.inf' _ D.weight and nowhere needs uniformity.
+--
+--   THE LEVERAGE CAP RUNS ONE WAY ONLY.  Gtz.leverageOf_le_inv_weightFloor_of_mem_collaredSet
+--     is the composite the tree proves inline but never states: collared implies capped.
+--     Gtz.weight_mul_leverageCap_sub_le is the converse's obituary -- from the trace
+--     identity a cap l_c <= cap yields t_c (cap - l_c) <= cap - k, an UPPER bound on the
+--     weight and a lower bound nowhere.  So the crux funnel does NOT cap the leverage, and
+--     the collar's l parameter is 1/weightFloor by construction rather than the design's
+--     largest leverage.
+--
+--   THE REPAIR IS A MARGIN-INDEPENDENT REFERENCE VARIETY.  Gtz.stressLocus is the collared
+--     configurations carrying a nonzero stress, cut out without mentioning the margin, and
+--     Gtz.designMargin_nonneg_of_mem_stressLocus is its boundary condition -- a THEOREM, off
+--     the shipped Gtz.exists_dominating_sixThree_of_stress, where the tie locus offered only
+--     the conjecture.  Gtz.neg_lipschitz_mul_infDist_le_margin is the missing companion of
+--     the shipped Gtz.consumedModulus_le_lipschitzConstant: that one caps the modulus from
+--     ABOVE at a set where the margin VANISHES, this one floors the margin from BELOW and
+--     needs only NONNEGATIVITY, which is the whole point.  Together:
+--     Gtz.designMargin_ge_neg_reach_of_stressLocus, an a-priori value floor from a Lipschitz
+--     constant and a REACH, neither of them a Lojasiewicz exponent.
+--
+--   THE VALUE LANE'S SLOGAN IS A THEOREM.  All cruxes are global minimisers of one objective
+--     over one domain, so they share one value (Gtz.SixThreeCrux.chartObjective_eq) and
+--     Gtz.SixThreeCrux.exists_pos_forall_le_neg_chartObjective discharges "there is a
+--     positive lower bound on |chartObjective| at a crux" outright.  What the chain consumes
+--     is an EXPLICIT value, because the crux supplies its own floor at the unknown height
+--     -chartObjective (Gtz.SixThreeCrux.hasWeightFloor_neg_chartObjective).
+--
+--   AND THE ALL-FLOORS COVERING IS THE CELL, AT BOTH PREDICATES.
+--     Gtz.forall_weightFlooredCovering_iff_gtzWeighted_six_three and
+--     Gtz.forall_flooredSpreadCovering_iff_gtzWeighted_six_three: quantified over all
+--     positive floors, both the new covering and the tree's OWN shipped
+--     Gtz.FlooredSpreadCovering at zero spread are equivalent to GtzWeighted 6 3.  The
+--     collapse is a property of the quantifier, not of the covering notion, so no floored
+--     covering "for all eps > 0" can be easier than the cell.
+--
+--   WHAT REMAINS IS ONE EXPLICIT NUMBER, WITH A KNOWN RANGE.
+--     Gtz.isEmpty_sixThreeCrux_of_bandExclusion_of_flooredSpreadCovering closes the cell from
+--     a band exclusion plus the SHIPPED covering at the same band -- the weakest available
+--     ingredient, reached through Gtz.hasSpreadAtLeast_zero (zero spread is Cauchy-Schwarz,
+--     no restriction) and Gtz.flooredSpreadCovering_of_weightFlooredCovering.  And
+--     Gtz.isEmpty_sixThreeCrux_of_bandExclusion_of_four_div_twentySeven_lt shows a band above
+--     4/27 contradicts the shipped value window by itself, so the useful range is exactly
+--     (0, 4/27] -- above it the band exclusion is not a sub-goal but the whole cell.
+--
+--   NO C*eps^2 MARGIN LAW IS STATED, DELIBERATELY.  That law is measured FALSE: the floored
+--     chart minimum is zero on the whole feasible floor range, and on the useful band range
+--     the covering carries no margin at all.  The tree already says as much in its own words
+--     at Gtz/Quantitative/FlooredSpreadRegion.lean:411-414, where
+--     Gtz.splitTetraDesign_balanced_hasWeightFloor puts an exact tie inside the 1/8-floored
+--     family and the header records that "the floor alone does NOT remove it".
+--
+--   AND ONE HYPOTHESIS HAD TO BE REPAIRED BEFORE IT COULD BE LANDED.  The natural form of
+--     that assembly asks for a GLOBAL Lipschitz constant for the design margin, and
+--     Gtz.not_lipschitzWith_designMargin_sixThree proves no such constant exists: atomMatrix
+--     g is g gᵀ, so the margin is quadratic in the atoms on an unbounded configuration
+--     space, and Gtz.spikeGrowthConfig reaches margin about scale^2 at distance scale.  An
+--     assembly resting on a global constant would have been VACUOUSLY TRUE -- a quantitative
+--     theorem in appearance, asserting nothing.  The landed statements use LipschitzOnWith
+--     on the collared class, where the class is compact, the margin is continuous, and the
+--     open content is the constant's SIZE.
+--
+--   NOTHING HERE APPROACHES Gtz.GtzWeighted 6 3.  Neither lane supplies an ingredient; the
+--     collar lane's two open inputs are a Lipschitz constant and a reach, and even a correct
+--     constant on the class is not obviously enough, since 6*sqrt 3/sqrt weightFloor is about
+--     29.4 at floor 1/8 and the product beats even the trivial floor -1 only below reach
+--     0.034.  That arithmetic is quoted, not mechanized.
+import Gtz.Quantitative.CollarReferenceVariety
+import Gtz.Quantitative.ValueLaneBandExclusion
+
+-- ============================================================================
+-- GAP 13 -- THE MINIMALITY LAYER OF THE (6,3) BOX, AND A PROPERNESS WITNESS
+-- Gtz/Quantitative/SixThreeMinimalityLayer.lean
+-- Gtz/Quantitative/SixThreeMinimalityWitness.lean
+-- ============================================================================
+--
+--   THE SHIPPED BOX DID NOT FAIL TO PROVE ITS FIRST TWO MINIMALITY CONJUNCTS -- IT THREW
+--     THEM AWAY.  Gtz.SixThreeCrux.frontier proves, as its first two components,
+--     -4/27 <= chartObjective and 3 <= card chartArgmaxFamily.  The projection to the
+--     design level, Gtz.isSixThreeRefutationCandidate_of_sixThreeCrux, destructures that
+--     conjunction with an obtain pattern whose first two slots are `_`.  Both are
+--     functions of the design; they were dropped only because they read in chart
+--     vocabulary.  Gtz.HasChartValueAboveSharpFloor and Gtz.HasThreeArgmaxBlocks recover
+--     them as box conjuncts, at one line each.
+--
+--   AND TWO MORE COME FROM THE SAME PLACE.  Gtz.HasCoveringArgmaxFamily -- every atom
+--     lies in some argmax triple -- is the shipped Gtz.SixThreeCrux.exists_mem_chartArgmaxFamily
+--     read as a conjunct, and Gtz.HasSupportedCoveringArgmaxFamily strengthens it by
+--     keeping the tight direction that does not vanish at the atom.  The general law
+--     behind the second is new at every size and rank: the shipped
+--     Gtz.exists_mem_activeSubset_of_isChartStationaryData uses only that the constant
+--     assembly diagonal is NONZERO, and
+--     Gtz.exists_mem_activeSubset_pos_activeWeight_tightDir_ne_zero_of_isChartStationaryData
+--     keeps the positive summand instead of discarding it.
+--
+--   ALL FOUR SPEND MINIMALITY, NOT NON-DOMINATION.  That is the whole point of the layer.
+--     Gtz.isSixThreeRefutationCandidateSharp_iff proved the previous enlargement EQUAL to
+--     the shipped box because each of its conjuncts was derived from the box's own
+--     no-domination clause; these four are derived from Gtz.SixThreeCrux.isChartMinimiser.
+--     The terminus survives on the smaller box:
+--     Gtz.gtzOriginal_rank_three_of_forall_not_isSixThreeRefutationCandidateMinimal has the
+--     same one-antecedent shape as its sharp predecessor.
+--
+--   NOTHING ASSERTS THAT THE BOX GOT SMALLER, AND THAT IS A THEOREM RATHER THAN A CAVEAT.
+--     Every member of the shipped box refutes the cell
+--     (Gtz.not_gtzWeighted_six_three_of_isSixThreeRefutationCandidate), so a design
+--     witnessing a strict shrink IS a refutation of Gtz.GtzWeighted 6 3 --
+--     Gtz.not_gtzWeighted_six_three_of_exists_strictShrink, and
+--     Gtz.not_gtzWeighted_six_three_of_exists_candidate_not_satisfying at an ARBITRARY
+--     extra predicate, so that no future run re-attempts the impossible.  STRICT
+--     PROPERNESS IS UNEXHIBITABLE WHILE THE CELL STANDS, which is a different situation
+--     from the previous run's iff-trap, where the added conjuncts were PROVABLY IMPLIED.
+--
+--   SO PROPERNESS HAS TO BE RELATIVE, AND IT SPLITS INTO A MEASURED HALF AND A PROVED ONE.
+--     Gtz.IsSixThreeShapeCandidate is the shipped box minus its one global conjunct, a set
+--     that is not conjecturally empty.  Over all TEN of its conjuncts, properness is
+--     Gtz.MinimalityLayerIsProperOverShape -- a Prop, NOT a theorem, carrying its exact
+--     six-integer-direction witness in its docstring, with
+--     Gtz.exists_shapeCandidate_not_isSixThreeRefutationCandidateMinimal_of_properOverShape
+--     as the consumer that keeps it a hypothesis rather than an inert assertion.  Over the
+--     FIRST of those ten alone it is a KERNEL THEOREM:
+--     Gtz.minimalityLayerIsProperOverAllHeavy exhibits an ALL-HEAVY design whose argmax
+--     family is a single block, so neither Gtz.HasThreeArgmaxBlocks nor
+--     Gtz.HasCoveringArgmaxFamily follows from all-heaviness.  That conjunct is the one
+--     worth isolating: Gtz.rank_three_of_heavy_six_three carries the whole of rank three
+--     off the all-heavy box alone.
+--
+--   THE WITNESS IS EXPLICIT AND ITS CHART IS RATIONAL.  Gtz.heavySpikeDesign has atoms
+--     2s e_0, 2s e_1, 2s e_2, s e_0, s e_1, s e_2 with s = sqrt (6/5) at the uniform
+--     weight 1/6; Parseval is 4 s^2 + s^2 = 6 and both leverages 24/5 and 6/5 exceed one.
+--     Uniform weight makes P = (1/6) Gram, so Gtz.heavySpikeGap_apply pins the whole gap
+--     rationally: 19/30 on the heavy diagonal, 1/30 on the light one, 2/5 across.  The
+--     three heavy atoms are orthogonal, so the block {0,1,2} is exactly (19/30) . 1, while
+--     every block meeting a light atom has a diagonal entry 1/30 and hence a smaller least
+--     eigenvalue.  IT IS NOT A SHAPE CANDIDATE -- 2s e_0 and s e_0 are parallel and the
+--     heavy triple is orthogonal -- so the ten-conjunct properness is untouched by it.
+--
+--   MOMENTUM, general in size and rank:
+--     Gtz.activeWeight_le_rank_div_size_of_isChartStationaryData caps every active
+--     multiplier at rank/size -- one half at (6,3) -- because a unit tight direction
+--     supported on its own rank-element block splits its multiplier into rank summands of
+--     the assembly diagonal.  No shipped sibling bounds an individual multiplier above.
+--     Gtz.chartBlockValue_le_chartGapRaw_diagonal bounds a block value by the chart gap's
+--     diagonal at any atom of the block, without ever evaluating Finset.orderEmbOfFin,
+--     which does not reduce in the kernel.
+--
+--   NOTHING HERE APPROACHES Gtz.GtzWeighted 6 3.  The layer restates minimality at the
+--     design level; its conjuncts are conjecturally vacuous exactly when the cell holds,
+--     and the argument that a closed empty-interior condition cannot follow from an open
+--     one is prose in the module header, not a theorem of this tree.
+import Gtz.Quantitative.SixThreeMinimalityLayer
+import Gtz.Quantitative.SixThreeMinimalityWitness
+
+-- ## THE gtz-g3 HARVEST (land-sweep): eight prototypes, 180 declarations
+--
+--   The `gtz-g3` run left eight compiling prototypes that no writer's slot owned.  They
+--   are landed here, each in its own module, with the R6 repairs the harvest turned up.
+--   NONE of them approaches Gtz.GtzWeighted 6 3; each module says so in its own header.
+--
+--   WHAT THE HARVEST'S OWN DUPLICATE SCAN CAUGHT.  A kernel env.contains scan over every
+--   name the eight prototypes declare found SEVEN already present, and only four of those
+--   had been flagged by anyone:
+--
+--     * Gtz.gtzWeightedHeavy_of_gtzWeighted was claimed as new by the (7,3) prototype,
+--       which reported zero collisions.  It has been in the TRACKED, pre-existing
+--       Gtz/Reduction/HeavyTraceFrame.lean since before this campaign, with a
+--       character-identical statement AND a character-identical proof.  Dropped; that
+--       module is imported instead, so the uses resolve to the shipped theorem.
+--     * Gtz.trace_assembly_mul_chartStationaryGap and Gtz.trace_mul_grassmannAcceleration
+--       are in Gtz/Quantitative/ChartSecondOrderStep.lean.  Dropped, along with the
+--       prototype's third trace lemma, which is the trace-commuted twin of the shipped
+--       Gtz.trace_projection_mul_multiplier_of_isChartStationaryData.
+--     * the four relabelling transports are in Gtz/Quantitative/EdgeOrbitSectors.lean.
+--
+--   AND WHAT ONLY A CONCEPT SCAN CAUGHT -- three semantic duplicates carrying no name in
+--   common with their shipped originals:
+--
+--     * the covering prototype's chart symmetry reader IS Gtz.projection_apply_comm
+--       (ChartHadamard.lean:187), character-for-character including the proof, and its
+--       row-square identity IS Gtz.sum_sq_projectionRow_eq_diagonal (:197) read in the
+--       other direction.  Both dropped; the one genuinely absent lemma there, the RAW
+--       diagonal bound asking only symmetry and idempotence, is stated on top of them.
+--     * the aggregate prototype's first power trace re-proves
+--       Gtz.trace_projectionOfDesign_sub_weightDiagonal (ChartHadamard.lean:179).  Now
+--       consumed, and Gtz.chartGapMatrix_eq_chartPointGap checks by rfl that the
+--       prototype's gap alias IS the shipped Gtz.chartPointGap at the design's chart, so
+--       every power trace is a statement about the tree's object rather than a copy.
+--
+--   THE EIGHT MODULES.
+--
+--   Gtz/Quantitative/RungThreeAggregate.lean (16) -- THE AVERAGING LADDER DOES NOT DIE AT
+--     j = rank.  Gtz/Quantitative/PairRungAggregate.lean:40 says "the ladder climbs to
+--     j = rank - 1 and dies at j = rank" and ChartHadamard.lean:775 says the aggregate is
+--     not design-independent at non-uniform weights; both are true of the FLAT triple sum
+--     and stop one step short.  With the prod-of-weights factor the rung-three aggregate
+--     closes: Gtz.rungThreeAggregate_eq_sum_det_chartGapMinor identifies it with e_3 of
+--     the chart gap, and the three power traces give the closed form.  Consequence:
+--     Gtz.exists_nonneg_det_subsetSum_sub_one_sixThree, a pigeonhole exclusion.  The
+--     identity is FIELD-BLIND, so it is not a realness consumer.
+--
+--   Gtz/Reduction/CoveringForm.lean (15) -- the conjecture as a COVERING statement.
+--     Gtz.gtzWeighted_six_three_iff_forall_coversSimplex exchanges the quantifiers in the
+--     shipped Gtz.chartGtz_iff_gtzWeighted: the cell says the twenty domination sets cover
+--     the weight simplex at every rank-three projection.  The down-set and face laws are
+--     landed, and Gtz.card_dead_add_rank_le is the first place idempotence does work.  The
+--     module's own header records that the picture's whole content is BOUNDARY content
+--     while the open cell is its interior.
+--
+--   Gtz/Quantitative/SevenThreeCollapse.lean (12) -- the (7,3) lane collapses onto (6,3),
+--     and FIVE shipped (7,3) results carry contradictory hypotheses as a result.  The
+--     three Gtz.false_of_* certificates state that in the kernel; the honest unconditional
+--     (7,3) normal form is Gtz.nonempty_sixThreeCrux_iff_not_gtzWeighted_seven_three.
+--     Gtz.SevenThreeCrux is left with no production theorem, which is a real open item.
+--
+--   Gtz/Quantitative/DeformationAndCurvature.lean (15) -- route C's FIRST leaf is the cell:
+--     Gtz.hasChartValueZeroLimitAtEveryCrux_iff_gtzWeighted_six_three, because
+--     Gtz.IsChartValueZeroLimit's dominating-triple clause is the verbatim negation of a
+--     crux field.  Also: three crux fields follow from a negative chart value alone, and
+--     every common quadric of a design is TRACELESS.
+--
+--   Gtz/Quantitative/PairRungRow.lean (5) -- the pair conservation law at a FIXED VERTEX,
+--     which the shipped ladder states only as an aggregate over all pairs.
+--
+--   Gtz/Quantitative/ChartValueTwoRegime.lean (14) -- the a-priori two-regime predicate,
+--     with Gtz.chartValueBandExclusion_of_chartValueTwoRegime bridging it to the shipped
+--     crux-quantified Gtz.ChartValueBandExclusion.  The two were produced by agents who
+--     could not see each other and are DIFFERENT objects; the bridge runs one way.  Both
+--     the 4/27 ceiling and its strict form are landed, so the lane's target range is
+--     pinned to (0, 4/27).
+--
+--   Gtz/Quantitative/SectorClassWitnesses.lean (96) -- gap 23: an explicit rational,
+--     all-heavy, parallel-free, pairing-nonvanishing design for EACH of the eight
+--     surviving sign classes, with its link word proved equal to the representative the
+--     kernel already names, plus a relabelling invariant proving the eight PAIRWISE
+--     NON-ISOMORPHIC.  This makes the sign layer's sharpness a theorem and thereby closes
+--     that lane rather than advancing it.
+--
+--   Gtz/Quantitative/HypothesisWitnesses.lean (7) -- two hypothesis separations that
+--     shipped as docstring prose.  Gtz.exists_posDef_not_frameOperatorIsPinched keeps
+--     Gtz.exists_design_of_frame from being a restatement of its pinched neighbour, and
+--     Gtz.blockDiagonal_velocitySquare_of_exists_acceleration makes block-diagonality
+--     EQUIVALENT to solvability of the curve constraint, which is more than the shipped
+--     existence lemma alone says.
+import Gtz.Quantitative.RungThreeAggregate
+import Gtz.Reduction.CoveringForm
+import Gtz.Quantitative.SevenThreeCollapse
+import Gtz.Quantitative.DeformationAndCurvature
+import Gtz.Quantitative.PairRungRow
+import Gtz.Quantitative.ChartValueTwoRegime
+import Gtz.Quantitative.SectorClassWitnesses
+import Gtz.Quantitative.HypothesisWitnesses
+
+-- ---------------------------------------------------------------------------
+-- land-smallfix [gtz-g3, Sweep]: the Veronese dichotomy between the two fields,
+-- and a stress-free complex (7,3).
+--
+--   Gtz/Quantitative/ComplexVeroneseDichotomy.lean (22).
+--
+-- The stress walk runs on ONE count: seven rank-one symmetric 3x3 matrices cannot be
+-- independent, because dim_R Sym_3(R) = 6.  Gtz/Reduction/StressWalk.lean (lines
+-- 113-122) and Gtz/Reduction/StressConditionalWalk.lean (lines 30-34) both record, as
+-- ORIENTATION PROSE, that the count has no complex analogue -- and both hedge honestly
+-- ("not mechanized in this file", "not a theorem of this file").  This module supplies
+-- the theorems the hedges point at.
+--
+--   THE REAL HALF.  Gtz.span_atomMatrix_eq_symmetricSubmodule_of_linearIndependent:
+--     six independent Veronese images at rank three SPAN the symmetrics, so
+--     independence upgrades to a basis.  Read at a crux by
+--     Gtz.SixThreeCrux.span_veronese_eq_symmetricSubmodule off the shipped
+--     Gtz.SixThreeCrux.linearIndependent_veronese.
+--
+--   THE COMPLEX HALF.  Gtz.span_complexAtom_hermitianSpanAtom: NINE explicit Veronese
+--     images span the Hermitians, so the rank-one Hermitians really do attain all nine
+--     real dimensions.  Hence Gtz.exists_mem_hermitianSubmodule_notMem_span_of_six and
+--     its Veronese form Gtz.exists_complexAtom_notMem_span_complexAtom_of_six: SIX
+--     matrices never span -- the exact converse of the real half.
+--
+--   THE WITNESS (gap 18, the N3 item).  Gtz.stressFreeSevenDesign is a complex (7,3)
+--     design with rational weights and Gaussian-rational atoms whose seven Veronese
+--     images are ℝ-linearly independent:
+--     Gtz.exists_complexWeightedDesign_sevenThree_stress_eq_zero.  The two halves are
+--     then stated side by side in the hypothesis shape the walk consumes --
+--     Gtz.exists_nonzero_stress_atomMatrix_sevenThree (over ℝ EVERY seven-family carries
+--     a nonzero stress, the shipped Gtz.exists_parsevalNullDirection at 6 < 7) against
+--     Gtz.not_exists_nonzero_stress_stressFreeSevenDesign (over ℂ this design carries
+--     none).  So the mechanism is not merely unproved over ℂ; it is absent.
+--
+-- PROVENANCE.  dim_R Herm_3(C) = 9 is NOT proved here: it is the shipped, TRACKED
+-- Gtz.finrank_hermitianSubmodule (Gtz/Quantitative/RankTwoRealnessCount.lean), with
+-- Gtz.two_mul_finrank_symmetricSubmodule for the real side.  Both prose sites above
+-- were written on top of that tracked file, so their hedges understate the tree: the
+-- dimension count itself was already a theorem one directory away.  What was genuinely
+-- missing is the VERONESE layer -- that the rank-one images attain those dimensions,
+-- and that a complex (7,3) DESIGN can be stress-free.
+--
+-- WHAT THIS DOES NOT DO.  It does not touch Gtz.GtzWeighted 6 3 and cannot: every
+-- statement is about ℂ, where weighted GTZ at rank three is already FALSE.  Its content
+-- is negative -- which real mechanism does NOT transport.  The witness is ONE design;
+-- nothing here says a GENERIC complex (7,3) design is stress-free, and nothing here
+-- bounds how many do carry a stress.
+import Gtz.Quantitative.ComplexVeroneseDichotomy
+
+-- ## SYNTHESIS: THE CRUX VALUE CONTROLS THE COLLAR GEOMETRY
+--
+-- Two lanes of this campaign each concluded, separately, that a leverage cap at a crux
+-- was unavailable.  The collar lane (gap 3) proved that a cap gives no weight floor and
+-- read that as the funnel failing to cap the leverage.  The value lane (gap 4) proved
+-- that a crux HAS a weight floor, namely `-chartObjective`, which is strictly positive.
+-- Both landed in one slot and were never joined.  Joining them supplies the converse
+-- direction, which nothing had consumed:
+--
+--   Gtz.SixThreeCrux.leverageOf_le_inv_neg_chartObjective -- at a crux every leverage is
+--     at most the reciprocal of the crux's own chart value.
+--
+-- Three consequences, each of which the collar lane had listed as missing:
+--
+--   Gtz.SixThreeCrux.mem_collaredSet_neg_chartObjective -- every crux lies in the
+--     compact collared class at an explicit floor.  The lane had no theorem placing a
+--     crux in its own class.
+--
+--   Gtz.SixThreeCrux.mem_collaredSet_neg_chartObjective_of_other -- ONE floor serves
+--     EVERY crux, because all cruxes share one chart value.  The measured erosion of the
+--     collar constant, thought to be the lane's obstruction, is therefore not on the
+--     path: a consumer needs the law once per floor and there is only one floor.
+--
+--   Gtz.SixThreeCrux.leverageOf_le_inv_of_chartValueBandExclusion -- an a-priori value
+--     band of width `band` IS a leverage cap of `1 / band`.  Gap 2's missing epsilon and
+--     gap 3's missing cap are reciprocals of one unknown; neither closes without the
+--     other.
+--
+-- A sharpening from the third lane.  The sharp box's quadratic floor
+-- `Gtz.SixThreeCrux.pairingMassFloor`, fed through the weighted diagonal law
+-- `Gtz.sum_weight_mul_atomPairing_mul_atomPairing`, gives
+-- `Gtz.SixThreeCrux.atomShare_lt_one_sub_neg_chartObjective` -- every share is strictly
+-- below `1 - (-chartObjective)`, sharpening the shipped `share < 1` -- and dividing by
+-- the weight floor improves the cap by a unit
+-- (`Gtz.SixThreeCrux.leverageOf_lt_inv_neg_chartObjective_sub_one`).
+--
+-- WHAT THIS DOES NOT DO.  It moves nothing and names no number: the crux value is at
+-- most 4/27, so the cap is at least 27/4 and has no upper bound without gap 2.  Every
+-- statement is conditional on a crux, so none is exhibitable.  What changes is the map --
+-- two lanes being costed separately are one lane.
+import Gtz.Quantitative.CruxCollarFloor
+
+-- ## SYNTHESIS: EVERY MECHANIZED FORM OF THE OPEN CELL, AGAINST THE 1997 CONJECTURE
+--
+-- `Gtz.gtzWeightedAll_iff_forall_gtzOriginal` made the frame an equivalence and
+-- connected three rank-three termini to the literal 1997 statement.  Six further forms,
+-- each proved equivalent to `Gtz.GtzWeighted 6 3` in its own module by a different lane,
+-- were left unconnected: the size-seven cell, the two all-heavy boxes, the value-zero
+-- deformation obligation, the covering of the weight simplex, and the two floored
+-- covering families.  This file closes all of them.
+--
+-- EVERY THEOREM IN IT IS ONE `Iff.trans` OF TWO SHIPPED EQUIVALENCES AND CARRIES NO NEW
+-- MATHEMATICS.  It is a census, and it exists for three reasons.  The composition fell
+-- between two authors, each of whom identified it and recorded it as belonging to the
+-- other.  A form whose equivalence is untracked goes silently inert -- five shipped
+-- theorems in this tree acquired contradictory hypotheses the moment
+-- `Gtz.gtzWeighted_six_three_iff_seven_three` landed, and stayed inert across two
+-- campaigns because nothing recorded that the two sides had become one.  And the
+-- campaign's target is the 1997 conjecture rather than a weighted proxy, so a reader
+-- should not have to chain two theorems by hand to see what is open.
+--
+-- An equivalence is not progress.  Several of the forms named here were originally
+-- advertised as reductions of the cell before being shown to be the cell itself, and the
+-- file is written so that cannot happen again.
+import Gtz.Reduction.RankThreeEquivalenceHub
