@@ -339,6 +339,10 @@ import Gtz.LinAlg.PolynomialOpenVanishing
 import Gtz.Reduction.ChartPullback
 import Gtz.Reduction.GenericityReduction
 import Gtz.Reduction.SignClashReduction
+import Gtz.Design.EraseSystem
+import Gtz.Reduction.ForcedSignForcing
+import Gtz.Reduction.SignClashCoverage
+import Gtz.Design.ExceptionalWitnessDesign
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -10669,3 +10673,61 @@ closed unconditionally. -/
 #print axioms Gtz.dominates_of_isSignClashTriple
 #print axioms Gtz.GenericExceptionalSignClash
 #print axioms Gtz.gtzWeighted_six_three_of_genericExceptionalSignClash
+#print axioms Gtz.edgeTripleValue
+#print axioms Gtz.edgeTripleValue_eq_tripleParity_mul_tripleRadius
+#print axioms Gtz.abs_edgeTripleValue
+#print axioms Gtz.sum_erasePair_weight_mul_edgeTripleValue
+#print axioms Gtz.sum_erase_weight_mul_sq_dotProduct
+#print axioms Gtz.sum_erase_weight_mul_atomPairing_sq
+#print axioms Gtz.eq_of_sum_eq_of_flipSubsetSums_ne_zero
+#print axioms Gtz.eq_of_sum_eq_of_signedSubsetSums_ne_zero
+#print axioms Gtz.EdgeFlipClean
+#print axioms Gtz.AllEdgesFlipClean
+#print axioms Gtz.eraseConsistent_edge_eq_own
+#print axioms Gtz.IsEraseConsistentAssignment
+#print axioms Gtz.own_isEraseConsistentAssignment
+#print axioms Gtz.eraseConsistentAssignment_eq_own
+#print axioms Gtz.exists_flipped_edge_reading
+#print axioms Gtz.exists_nonneg_edgeTripleValue_of_boxDeficit
+#print axioms Gtz.exists_pos_edgeTripleValue_of_lightEdge
+#print axioms Gtz.exists_neg_edgeTripleValue_of_heavyEdge
+#print axioms Gtz.sum_atomShare_of_three_part_cover
+#print axioms Gtz.exists_pos_and_neg_edgeTripleValue_of_matching
+#print axioms Gtz.isEdgeCoboundary_const_one
+#print axioms Gtz.edgeFlipDegeneracyPoly
+#print axioms Gtz.eval_flipSubsetSum_designParamsOf
+#print axioms Gtz.eval_edgeFlipDegeneracyPoly_ne_zero_iff
+#print axioms Gtz.flipDegeneracyPoly
+#print axioms Gtz.eval_flipDegeneracyPoly_ne_zero_iff
+#print axioms Gtz.gtzWeighted_of_forall_generic_flipClean_dominates
+#print axioms Gtz.atomPairingProduct_swap
+#print axioms Gtz.atomPairingProduct_rotate
+#print axioms Gtz.edgeTripleValue_eq_atomPairingProduct
+#print axioms Gtz.IsForcedMinusTriple
+#print axioms Gtz.hasNonnegTraceLeg_phaseFreeOfDesign_iff
+#print axioms Gtz.atomShare_phaseFreeOfDesign
+#print axioms Gtz.excessGap_phaseFreeOfDesign
+#print axioms Gtz.abs_triangle_phaseFreeOfDesign
+#print axioms Gtz.exists_isSignClashTriple_of_forcedMinus_of_nonneg_product
+#print axioms Gtz.neg_atomPairingProduct_of_isForcedMinusTriple
+#print axioms Gtz.exists_not_isForcedMinusTriple_of_lightEdge_of_isExceptional
+#print axioms Gtz.exists_isSignClashTriple_of_forcedBoxDeficit
+#print axioms Gtz.HasForcedBoxDeficitEdge
+#print axioms Gtz.exists_isSignClashTriple_of_hasForcedBoxDeficitEdge
+#print axioms Gtz.exists_isSignClashTriple_of_isExceptional_of_hasForcedBoxDeficitEdge
+#print axioms Gtz.genericExceptionalSignClash_of_forall_without_deficit_signClash
+#print axioms Gtz.OwnSignForcedClash
+#print axioms Gtz.OwnSignForcedClashOnClean
+#print axioms Gtz.EraseConsistentForcedClashOnClean
+#print axioms Gtz.ownSignForcedClashOnClean_of_eraseConsistentForcedClashOnClean
+#print axioms Gtz.genericExceptionalSignClash_of_ownSignForcedClash
+#print axioms Gtz.eraseConsistentForcedClashOnClean_of_ownSignForcedClash
+#print axioms Gtz.genericExceptionalSignClash_of_eraseConsistentForcedClashOnClean
+#print axioms Gtz.exceptionalWitnessAtom
+#print axioms Gtz.exceptionalWitnessDesign
+#print axioms Gtz.exceptionalWitnessDesign_allHeavy
+#print axioms Gtz.exceptionalWitnessDesign_isGenericDesign
+#print axioms Gtz.exceptionalWitnessDesign_isExceptional
+#print axioms Gtz.exists_allHeavy_generic_exceptional_design
+#print axioms Gtz.eraseConsistentForcedClashOnClean_of_ownSignForcedClashOnClean
+#print axioms Gtz.genericExceptionalSignClash_of_ownSignForcedClashOnClean

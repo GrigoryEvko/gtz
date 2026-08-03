@@ -1909,3 +1909,7 @@ import Gtz.LinAlg.PolynomialOpenVanishing
 import Gtz.Reduction.ChartPullback
 import Gtz.Reduction.GenericityReduction
 import Gtz.Reduction.SignClashReduction
+import Gtz.Design.EraseSystem
+import Gtz.Reduction.ForcedSignForcing
+import Gtz.Reduction.SignClashCoverage
+import Gtz.Design.ExceptionalWitnessDesign
