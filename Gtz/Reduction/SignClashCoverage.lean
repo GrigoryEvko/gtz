@@ -362,4 +362,52 @@ theorem genericExceptionalSignClash_of_eraseConsistentForcedClashOnClean
   genericExceptionalSignClash_of_ownSignForcedClashOnClean
     (ownSignForcedClashOnClean_of_eraseConsistentForcedClashOnClean hcsp) hdirty
 
+/-! ## The clean forms reach the open cell with NO flip-dirty hypothesis
+
+The two theorems above route through `Gtz.GenericExceptionalSignClash`, and every
+route into that Prop pays for the flip-dirty designs with an extra residue
+hypothesis `hdirty`.  With the witness flip certificate
+(`Gtz.eval_flipDegeneracyPoly_genericWitnessDesign_ne_zero`) landed, that price is no
+longer necessary: the genericity template dissolves the flip-dirty locus outright, so
+the clean forms reach `Gtz.GtzWeighted 6 3` directly.
+
+The docstring of `Gtz.OwnSignForcedClashOnClean` priced this exactly — "dissolvable
+through `Gtz.gtzWeighted_of_forall_generic_flipClean_dominates` at the price of the
+witness flip certificate".  The price is paid; here is the collection. -/
+
+/-- **THE CLEAN SIGMA FORM REACHES THE OPEN CELL.**  No flip-dirty residue, no
+`Gtz.GenericExceptionalSignClash` detour: on the flip-clean locus the forced-minus
+triple with nonnegative pairing product IS a sign-clash triple, and off the
+exceptional locus the shipped vertex exclusion dominates outright. -/
+theorem gtzWeighted_six_three_of_ownSignForcedClashOnClean
+    (hsigma : OwnSignForcedClashOnClean) : GtzWeighted 6 3 := by
+  refine gtzWeighted_of_forall_generic_flipClean_dominates ?_
+  intro D hheavy hgeneric hclean
+  by_cases hexceptional : (phaseFreeOfDesign D).IsExceptional
+  · obtain ⟨first, second, third, hfirstSecond, hfirstThird, hsecondThird,
+      hforced, hproduct⟩ := hsigma D hheavy hgeneric hexceptional hclean
+    obtain ⟨pivot, pairFirst, pairSecond, hpivotFirst, hpivotSecond,
+      hpairDistinct, hclash⟩ :=
+      exists_isSignClashTriple_of_forcedMinus_of_nonneg_product D
+        hfirstSecond hfirstThird hsecondThird hforced hproduct
+    exact ⟨{pivot, pairFirst, pairSecond},
+      card_triple_eq_three hpivotFirst hpivotSecond hpairDistinct,
+      dominates_of_isSignClashTriple hheavy hpivotFirst hpivotSecond hpairDistinct hclash⟩
+  · exact exists_dominates_of_not_isExceptional D hheavy (by norm_num) hexceptional
+
+/-- The CSP reading of the same obligation reaches the cell too, through the shipped
+clean pair. -/
+theorem gtzWeighted_six_three_of_eraseConsistentForcedClashOnClean
+    (hcsp : EraseConsistentForcedClashOnClean) : GtzWeighted 6 3 :=
+  gtzWeighted_six_three_of_ownSignForcedClashOnClean
+    (ownSignForcedClashOnClean_of_eraseConsistentForcedClashOnClean hcsp)
+
+/-- And so does the unqualified sigma form, which was already the strongest of the
+three — so it is never the right target: it implies the clean form by weakening, and
+the clean form already suffices. -/
+theorem gtzWeighted_six_three_of_ownSignForcedClash (hsigma : OwnSignForcedClash) :
+    GtzWeighted 6 3 :=
+  gtzWeighted_six_three_of_ownSignForcedClashOnClean
+    (fun D hheavy hgeneric hexceptional _ => hsigma D hheavy hgeneric hexceptional)
+
 end Gtz

@@ -142,9 +142,19 @@ theorem gtz_rank_two : GtzWeightedAll 2 := by
     · push Not at hlight
       exact exists_dominating_pair_of_heavy D hlight
 
+/-- **The rank-two Veronese top, named.**  `Gtz.gtz_rank_two` proves every rank-two
+cell, so the single cell `(4,2)` at which the crystallization ledger below bottoms out
+is a theorem rather than an open assumption.  It is stated separately because a census
+that indexes theorems by the head constant of their conclusion cannot see it inside
+`GtzWeightedAll 2` — the wrapper is a `def`, and the residual is an APPLICATION of it.
+That blind spot is why `(4,2)` was carried as an undischarged hypothesis. -/
+theorem gtzWeighted_four_two : GtzWeighted 4 2 := gtz_rank_two 4
+
 /-- **Rank 2 collapses to the single weighted case (4,2)**: crystallization
 caps the support at M(2) = 4; below it the ledger is vacuous m ≤ 1, the
-square m = 2, and duality descent to rank 1 at m = 3. -/
+square m = 2, and duality descent to rank 1 at m = 3.  The hypothesis is now
+`Gtz.gtzWeighted_four_two`, a theorem; this statement is kept as the documentary
+record of the reduction, not as a route to anything. -/
 theorem gtz_rank_two_of_four_two (h42 : GtzWeighted 4 2) :
     GtzWeightedAll 2 := by
   refine crystallization 2 fun m hm => ?_

@@ -1913,3 +1913,6 @@ import Gtz.Design.EraseSystem
 import Gtz.Reduction.ForcedSignForcing
 import Gtz.Reduction.SignClashCoverage
 import Gtz.Design.ExceptionalWitnessDesign
+
+-- Residual threading (phase 4): the census bridges and the bordered-slack converse
+import Gtz.Reduction.ResidualThreading

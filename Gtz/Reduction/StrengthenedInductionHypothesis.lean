@@ -827,17 +827,66 @@ dependence rather than assuming it. -/
 def DoesPropagateBorderedSlack (rank : ℕ) : Prop :=
   BorderedSlackLifting rank → BorderedSlackLifting (rank + 1)
 
-/-- **The propagation Prop is exactly as strong as the ladder it would climb.** Given a
-base case and propagation at every rank, GTZ falls at every rank — the shape the search
-was after, with the two unproved inputs isolated as hypotheses. This is a conditional,
-not a closure. -/
-theorem gtzWeightedAll_of_base_of_propagates (hbase : BorderedSlackLifting 0)
+/-- Every `Fin 0`-indexed real matrix is positive semidefinite: both clauses of the
+quadratic-form criterion quantify over an empty index. -/
+theorem posSemidef_of_isEmptyIndex (mat : Matrix (Fin 0) (Fin 0) ℝ) : mat.PosSemidef := by
+  refine Matrix.posSemidef_iff_dotProduct_mulVec.mpr ⟨?_, fun testVec => ?_⟩
+  · show matᴴ = mat
+    ext rowIndex; exact rowIndex.elim0
+  · simp [dotProduct]
+
+/-- The one quantitative content of the base case: a rank-one design has an atom whose
+squared coordinate is at least one. This IS `Gtz.gtz_rank_one` read through
+`Gtz.sum_sq_ge_of_dominates` at the dominating singleton. -/
+theorem exists_one_le_sq_atom_of_rank_one (size : ℕ) (D : WeightedDesign size 1) :
+    ∃ pivot : Fin size, 1 ≤ (D.atom pivot 0) ^ 2 := by
+  obtain ⟨dominator, hcard, hdominates⟩ := gtz_rank_one size D
+  obtain ⟨pivot, hpivot⟩ := Finset.card_eq_one.mp hcard
+  refine ⟨pivot, ?_⟩
+  have hsum := sum_sq_ge_of_dominates hdominates (fun _ => (1 : ℝ))
+  rw [hpivot, Finset.sum_singleton] at hsum
+  simpa [dotProduct] using hsum
+
+/-- **Requirement (c), DISCHARGED — the base case is a theorem, not a hypothesis.**
+
+At rank zero the deflator is a `Fin 0`-row matrix, so the coisometry, kill, solve and
+rate clauses are `Subsingleton`-trivial and the projected domination is dimension-zero.
+The ONLY surviving quantitative clause is the lift budget, and that clause IS rank-one
+GTZ, which ships unconditionally as `Gtz.gtz_rank_one`. The header above recorded this
+as true in prose (`BorderedSlackLifting 0` and `1` "both hold"); here it is kernel-checked,
+which is what lets `Gtz.gtzWeightedAll_of_base_of_propagates` drop its base-case binder. -/
+theorem borderedSlackLifting_zero : BorderedSlackLifting 0 := by
+  intro size D
+  obtain ⟨pivot, hleverage⟩ := exists_one_le_sq_atom_of_rank_one size D
+  refine ⟨pivot, fun _ => (1 : ℝ), (0 : Matrix (Fin 0) (Fin 1) ℝ), ?_, (∅ : Finset (Fin size)),
+    (fun slot => slot.elim0), ?_, ?_, (by simp), Finset.card_empty, ?_, ?_, ?_, ?_⟩
+  · ext rowIndex; exact rowIndex.elim0
+  · ext rowIndex colIndex
+    fin_cases rowIndex; fin_cases colIndex
+    simp [atomMatrix, Matrix.vecMulVec_apply]
+  · ext rowIndex; exact rowIndex.elim0
+  · exact posSemidef_of_isEmptyIndex _
+  · show (0 : ℝ) ≤ liftBudget D pivot (fun _ => (1 : ℝ)) ∅
+    rw [liftBudget_eq]
+    simpa [dotProduct] using hleverage
+  · ext rowIndex; exact rowIndex.elim0
+  · show (fun slot : Fin 0 => slot.elim0) ⬝ᵥ _ ≤ liftBudget D pivot (fun _ => (1 : ℝ)) ∅
+    rw [liftBudget_eq]
+    simp only [dotProduct, Finset.univ_eq_empty, Finset.sum_empty]
+    simpa [dotProduct] using hleverage
+
+/-- **The propagation Prop is exactly as strong as the ladder it would climb.** Given
+propagation at every rank, GTZ falls at every rank — the shape the search was after,
+with the ONE unproved input isolated as a hypothesis. The base case used to be a second
+hypothesis; `Gtz.borderedSlackLifting_zero` discharges it, so this is now a conditional
+on propagation alone. The NAME is unchanged so the audit pin keeps pointing at it. -/
+theorem gtzWeightedAll_of_base_of_propagates
     (hpropagates : ∀ rank, DoesPropagateBorderedSlack rank) :
     ∀ rank, GtzWeightedAll rank := by
   have hall : ∀ rank, BorderedSlackLifting rank := by
     intro rank
     induction rank with
-    | zero => exact hbase
+    | zero => exact borderedSlackLifting_zero
     | succ predRank ih => exact hpropagates predRank ih
   exact gtzWeightedAll_of_borderedSlackLifting hall
 

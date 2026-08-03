@@ -343,6 +343,7 @@ import Gtz.Design.EraseSystem
 import Gtz.Reduction.ForcedSignForcing
 import Gtz.Reduction.SignClashCoverage
 import Gtz.Design.ExceptionalWitnessDesign
+import Gtz.Reduction.ResidualThreading
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -10731,3 +10732,97 @@ closed unconditionally. -/
 #print axioms Gtz.exists_allHeavy_generic_exceptional_design
 #print axioms Gtz.eraseConsistentForcedClashOnClean_of_ownSignForcedClashOnClean
 #print axioms Gtz.genericExceptionalSignClash_of_ownSignForcedClashOnClean
+
+-- Residual threading (phase 4): the bordered-slack base case, discharged.
+#print axioms Gtz.posSemidef_of_isEmptyIndex
+#print axioms Gtz.exists_one_le_sq_atom_of_rank_one
+#print axioms Gtz.borderedSlackLifting_zero
+
+-- Residual threading (phase 4): canonical names and bridges, Gtz/Reduction/ResidualThreading.lean
+#print axioms Gtz.range_inf_ker_eq_bot_of_symmetric
+#print axioms Gtz.range_sup_ker_eq_top_of_symmetric
+#print axioms Gtz.exists_mulVec_solution_of_rankOneForm_le
+#print axioms Gtz.exists_nonzero_atom_of_dominates
+#print axioms Gtz.borderedSlackLifting_of_gtzWeighted
+#print axioms Gtz.borderedSlackLifting_iff_gtzWeightedAll
+#print axioms Gtz.borderedSlackLifting_iff_liftingLemma
+#print axioms Gtz.borderedSlackLifting_one
+#print axioms Gtz.forall_borderedSlackLifting_iff_forall_gtzWeightedAll
+#print axioms Gtz.forall_doesPropagateBorderedSlack_iff_forall_gtzWeightedAll
+#print axioms Gtz.doesPropagateBorderedSlack_iff_rankStep
+#print axioms Gtz.doesPropagateBorderedSlack_one_iff_gtzWeightedAll_three
+#print axioms Gtz.isEmpty_sixThreeCrux_iff_gtzWeighted_six_three
+#print axioms Gtz.chartValueTwoRegime_four_div_twentySeven_iff_gtzWeighted_six_three
+#print axioms Gtz.chartValueTwoRegime_of_gtzWeighted_six_three
+#print axioms Gtz.discriminantCovering_six_iff_gtzWeighted_six_three
+#print axioms Gtz.discriminantCovering_seven_iff_gtzWeighted_six_three
+#print axioms Gtz.symmetricCovering_six_iff_gtzWeighted_six_three
+#print axioms Gtz.pivotMinorCoveringFour_seven_iff_gtzWeighted_six_three
+#print axioms Gtz.gtzWeightedAll_three_iff_gtzWeighted_six_three
+#print axioms Gtz.gtzWeightedHeavy_seven_four_iff_gtzWeighted_six_three
+#print axioms Gtz.not_gtzWeighted_seven_three_iff_not_gtzWeighted_six_three
+#print axioms Gtz.not_gtzWeightedHeavy_seven_three_iff_not_gtzWeighted_six_three
+#print axioms Gtz.not_gtzWeightedAll_three_iff_not_gtzWeighted_six_three
+#print axioms Gtz.forall_doublyHeavy_dominates_six_iff_gtzWeighted_six_three
+#print axioms Gtz.forall_doublyHeavy_dominates_seven_iff_gtzWeighted_six_three
+#print axioms Gtz.forall_heavy_sixLines_dominates_six_iff_gtzWeighted_six_three
+#print axioms Gtz.forall_sixLines_dominates_six_iff_gtzWeighted_six_three
+#print axioms Gtz.forall_heavy_sixLines_dominates_seven_iff_gtzWeighted_six_three
+#print axioms Gtz.forall_sixLines_dominates_seven_iff_gtzWeighted_six_three
+#print axioms Gtz.forall_generic_dominates_iff_gtzWeighted_six_three
+#print axioms Gtz.forall_nonzeroPairings_dominates_iff_gtzWeighted_six_three
+#print axioms Gtz.forall_not_isSixThreeRefutationCandidate_iff_gtzWeighted_six_three
+#print axioms Gtz.forall_not_isSixThreeRefutationCandidateSharp_iff_gtzWeighted_six_three
+#print axioms Gtz.forall_not_isSixThreeRefutationCandidateMinimal_iff_gtzWeighted_six_three
+#print axioms Gtz.exists_isSixThreeRefutationCandidate_iff_not_gtzWeighted_six_three
+#print axioms Gtz.forall_corankThree_iff_gtzWeighted_six_three
+#print axioms Gtz.forall_hasAtMostLines_rankAddThree_iff_gtzWeightedAll_three
+#print axioms Gtz.gtzWeighted_eleven_four_iff_gtzWeightedAll_four
+#print axioms Gtz.gtzWeighted_ten_four_iff_gtzWeightedAll_four
+#print axioms Gtz.gtzWeightedHeavy_eleven_four_iff_gtzWeightedAll_four
+#print axioms Gtz.gtzWeightedHeavy_sixteen_five_iff_gtzWeightedAll_five
+#print axioms Gtz.forall_chartGtzInterior_iff_forall_gtzWeighted
+#print axioms Gtz.forall_canonicalWindow_iff_forall_gtzWeightedAll
+#print axioms Gtz.spreadFloorCertificate_sixThree_uniform_iff
+#print axioms Gtz.forall_unequalLeverage_dominates_iff_spreadFloorCertificate
+#print axioms Gtz.forall_heavyUnequalLeverage_dominates_iff_spreadFloorCertificate
+#print axioms Gtz.forall_closedResidue_dominates_iff_spreadFloorCertificate
+#print axioms Gtz.stratumIsTieFreeAmongHeavyAtBalancedStress_iff_stratumIsTieFree
+#print axioms Gtz.stratumIsTieFreeAmongAllHeavyAtBalancedStress_iff_stratumIsTieFreeAmongAllHeavy
+#print axioms Gtz.stratumIsTieFreeAtUnitLeverageAtBalancedStress_iff_stratumIsTieFreeAtUnitLeverage
+#print axioms Gtz.stratumIsTieFreeAmongHeavyAtBalancedStress_iff_faces
+#print axioms Gtz.HingeStratumObligationSix
+#print axioms Gtz.HingeStratumObligationSeven
+#print axioms Gtz.hingeHoldsAtSize_six_three_of_hingeStratumObligationSix
+#print axioms Gtz.hingeStratumObligationSix_iff_balancedStress
+#print axioms Gtz.hingeHoldsAtSize_seven_three_of_hingeStratumObligationSeven
+#print axioms Gtz.eraseConsistentForcedClashOnClean_iff_ownSignForcedClashOnClean
+
+-- Residual threading (phase 4): the witness flip certificate, Gtz/Design/EraseSystem.lean
+#print axioms Gtz.edgeTripleValue_edge_comm
+#print axioms Gtz.edgeFlipClean_edge_comm
+#print axioms Gtz.edgeFlipClean_zero_one
+#print axioms Gtz.edgeFlipClean_zero_two
+#print axioms Gtz.edgeFlipClean_zero_three
+#print axioms Gtz.edgeFlipClean_zero_four
+#print axioms Gtz.edgeFlipClean_zero_five
+#print axioms Gtz.edgeFlipClean_one_two
+#print axioms Gtz.edgeFlipClean_one_three
+#print axioms Gtz.edgeFlipClean_one_four
+#print axioms Gtz.edgeFlipClean_one_five
+#print axioms Gtz.edgeFlipClean_two_three
+#print axioms Gtz.edgeFlipClean_two_four
+#print axioms Gtz.edgeFlipClean_two_five
+#print axioms Gtz.edgeFlipClean_three_four
+#print axioms Gtz.edgeFlipClean_three_five
+#print axioms Gtz.edgeFlipClean_four_five
+#print axioms Gtz.allEdgesFlipClean_genericWitnessDesign
+#print axioms Gtz.eval_flipDegeneracyPoly_genericWitnessDesign_ne_zero
+
+-- Residual threading (phase 4): the rank-two Veronese top, named.
+#print axioms Gtz.gtzWeighted_four_two
+
+-- Residual threading (phase 4): the clean sign-clash forms reach the open cell.
+#print axioms Gtz.gtzWeighted_six_three_of_ownSignForcedClashOnClean
+#print axioms Gtz.gtzWeighted_six_three_of_eraseConsistentForcedClashOnClean
+#print axioms Gtz.gtzWeighted_six_three_of_ownSignForcedClash

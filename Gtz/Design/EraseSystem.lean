@@ -82,14 +82,12 @@ hypotheses are exactly where the field enters.
   `Gtz.eval_flipDegeneracyPoly_ne_zero_iff`): flip-cleanliness is the
   nonvanishing of one polynomial in the packed design parameters, so the
   flip-dirty locus dissolves through the genericity template at the price of
-  one witness evaluation.  The template application
-  `Gtz.gtzWeighted_of_forall_generic_flipClean_dominates` carries that
-  witness evaluation as an EXPLICIT HYPOTHESIS: it is a finite rational
-  computation, measured true externally (all `15 × 15` plain flip
-  subset-sums nonzero at `Gtz.genericWitnessDesign`, gtz-p3 exact-arithmetic
-  run over `619` designs with zero generic violations), and NOT yet
-  kernel-checked.  No margin is manufactured anywhere: genericity narrows
-  quantifiers only.
+  one witness evaluation.  That price is PAID:
+  `Gtz.eval_flipDegeneracyPoly_genericWitnessDesign_ne_zero` kernel-checks the
+  evaluation from the fifteen unordered-edge certificates below, so the
+  template application `Gtz.gtzWeighted_of_forall_generic_flipClean_dominates`
+  carries no hypothesis beyond its closing quantifier.  No margin is
+  manufactured anywhere: genericity narrows quantifiers only.
 
 Provenance: gtz-p3 land-substrate; the rigidity chain and the capacity lemma
 were compiled first as free-standing probes by the derive-rigidity and
@@ -876,23 +874,410 @@ theorem eval_flipDegeneracyPoly_ne_zero_iff (D : WeightedDesign 6 3) :
     exact (eval_edgeFlipDegeneracyPoly_ne_zero_iff D orderedPair.1 orderedPair.2).mpr
       (hclean orderedPair.1 orderedPair.2 (Finset.mem_offDiag.mp hmember).2.2)
 
+/-! ### The witness flip certificate
+
+`Gtz.gtzWeighted_of_forall_generic_flipClean_dominates` below used to carry the
+witness evaluation as an explicit hypothesis, on the grounds that it was measured
+externally and not kernel-checked.  This section kernel-checks it, so the theorem
+is unconditional.
+
+Route.  `Gtz.eval_flipDegeneracyPoly_ne_zero_iff` turns the evaluation into
+`Gtz.AllEdgesFlipClean Gtz.genericWitnessDesign`; flip-cleanliness is a property of
+the UNORDERED edge (`Gtz.edgeFlipClean_edge_comm`, general size), so only fifteen of
+the thirty ordered edges are computed and the other fifteen follow; each edge
+enumerates the sixteen subsets of its four-element star through `fin_cases` on
+powerset membership, the empty one dying on the nonemptiness hypothesis and the
+fifteen others being exact rational arithmetic over denominator `289^3 * 9`.
+
+There is no near-zero margin anywhere: the smallest absolute subset-sum over all
+450 ordered cases is `400/1419857` (EXTERNAL MEASUREMENT, exact rational
+arithmetic; the kernel proof below does not depend on it). -/
+
+section FlipCleanCertificate
+
+set_option maxHeartbeats 2000000
+
+variable {sizeIndex : ℕ}
+
+/-! ## The unordered-edge symmetry (general size) -/
+
+/-- The edge triple value is symmetric in the two edge endpoints: all three
+pairings commute and the product reassociates. -/
+theorem edgeTripleValue_edge_comm (D : Gtz.WeightedDesign sizeIndex 3)
+    (edgeFirst edgeSecond other : Fin sizeIndex) :
+    Gtz.edgeTripleValue D edgeFirst edgeSecond other
+      = Gtz.edgeTripleValue D edgeSecond edgeFirst other := by
+  simp only [Gtz.edgeTripleValue]
+  rw [Gtz.atomPairing_comm D edgeFirst edgeSecond,
+    Gtz.atomPairing_comm D edgeFirst other,
+    Gtz.atomPairing_comm D other edgeSecond]
+  ring
+
+/-- **Flip-cleanliness is a property of the UNORDERED edge.**  The star is the
+same set (`Finset.erase_right_comm`) and every coefficient is the same real, so
+the two ordered readings of one edge stand or fall together.  This halves the
+certificate below and is the general statement, at every ambient size. -/
+theorem edgeFlipClean_edge_comm (D : Gtz.WeightedDesign sizeIndex 3)
+    (edgeFirst edgeSecond : Fin sizeIndex)
+    (hclean : Gtz.EdgeFlipClean D edgeFirst edgeSecond) :
+    Gtz.EdgeFlipClean D edgeSecond edgeFirst := by
+  intro flipSet hsub hne
+  rw [Finset.erase_right_comm] at hsub
+  have hsum : ∑ other ∈ flipSet,
+      D.weight other * Gtz.edgeTripleValue D edgeSecond edgeFirst other
+      = ∑ other ∈ flipSet,
+        D.weight other * Gtz.edgeTripleValue D edgeFirst edgeSecond other :=
+    Finset.sum_congr rfl fun other _ => by
+      rw [edgeTripleValue_edge_comm D edgeSecond edgeFirst other]
+  rw [hsum]
+  exact hclean flipSet hsub hne
+
+/-! ## The fifteen unordered edges of the witness -/
+
+/-- Edge `(0,1)`: all fifteen nonempty flip subset-sums of the star
+`{2, 3, 4, 5}` are nonzero at the witness. -/
+theorem edgeFlipClean_zero_one :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 0 1 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (0 : Fin 6)).erase 1 = {2, 3, 4, 5} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({2, 3, 4, 5} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(0,2)`: all fifteen nonempty flip subset-sums of the star
+`{1, 3, 4, 5}` are nonzero at the witness. -/
+theorem edgeFlipClean_zero_two :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 0 2 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (0 : Fin 6)).erase 2 = {1, 3, 4, 5} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({1, 3, 4, 5} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(0,3)`: all fifteen nonempty flip subset-sums of the star
+`{1, 2, 4, 5}` are nonzero at the witness. -/
+theorem edgeFlipClean_zero_three :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 0 3 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (0 : Fin 6)).erase 3 = {1, 2, 4, 5} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({1, 2, 4, 5} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(0,4)`: all fifteen nonempty flip subset-sums of the star
+`{1, 2, 3, 5}` are nonzero at the witness. -/
+theorem edgeFlipClean_zero_four :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 0 4 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (0 : Fin 6)).erase 4 = {1, 2, 3, 5} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({1, 2, 3, 5} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(0,5)`: all fifteen nonempty flip subset-sums of the star
+`{1, 2, 3, 4}` are nonzero at the witness. -/
+theorem edgeFlipClean_zero_five :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 0 5 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (0 : Fin 6)).erase 5 = {1, 2, 3, 4} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({1, 2, 3, 4} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(1,2)`: all fifteen nonempty flip subset-sums of the star
+`{0, 3, 4, 5}` are nonzero at the witness. -/
+theorem edgeFlipClean_one_two :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 1 2 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (1 : Fin 6)).erase 2 = {0, 3, 4, 5} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({0, 3, 4, 5} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(1,3)`: all fifteen nonempty flip subset-sums of the star
+`{0, 2, 4, 5}` are nonzero at the witness. -/
+theorem edgeFlipClean_one_three :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 1 3 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (1 : Fin 6)).erase 3 = {0, 2, 4, 5} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({0, 2, 4, 5} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(1,4)`: all fifteen nonempty flip subset-sums of the star
+`{0, 2, 3, 5}` are nonzero at the witness. -/
+theorem edgeFlipClean_one_four :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 1 4 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (1 : Fin 6)).erase 4 = {0, 2, 3, 5} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({0, 2, 3, 5} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(1,5)`: all fifteen nonempty flip subset-sums of the star
+`{0, 2, 3, 4}` are nonzero at the witness. -/
+theorem edgeFlipClean_one_five :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 1 5 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (1 : Fin 6)).erase 5 = {0, 2, 3, 4} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({0, 2, 3, 4} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(2,3)`: all fifteen nonempty flip subset-sums of the star
+`{0, 1, 4, 5}` are nonzero at the witness. -/
+theorem edgeFlipClean_two_three :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 2 3 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (2 : Fin 6)).erase 3 = {0, 1, 4, 5} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({0, 1, 4, 5} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(2,4)`: all fifteen nonempty flip subset-sums of the star
+`{0, 1, 3, 5}` are nonzero at the witness. -/
+theorem edgeFlipClean_two_four :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 2 4 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (2 : Fin 6)).erase 4 = {0, 1, 3, 5} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({0, 1, 3, 5} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(2,5)`: all fifteen nonempty flip subset-sums of the star
+`{0, 1, 3, 4}` are nonzero at the witness. -/
+theorem edgeFlipClean_two_five :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 2 5 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (2 : Fin 6)).erase 5 = {0, 1, 3, 4} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({0, 1, 3, 4} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(3,4)`: all fifteen nonempty flip subset-sums of the star
+`{0, 1, 2, 5}` are nonzero at the witness. -/
+theorem edgeFlipClean_three_four :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 3 4 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (3 : Fin 6)).erase 4 = {0, 1, 2, 5} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({0, 1, 2, 5} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(3,5)`: all fifteen nonempty flip subset-sums of the star
+`{0, 1, 2, 4}` are nonzero at the witness. -/
+theorem edgeFlipClean_three_five :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 3 5 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (3 : Fin 6)).erase 5 = {0, 1, 2, 4} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({0, 1, 2, 4} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-- Edge `(4,5)`: all fifteen nonempty flip subset-sums of the star
+`{0, 1, 2, 3}` are nonzero at the witness. -/
+theorem edgeFlipClean_four_five :
+    Gtz.EdgeFlipClean Gtz.genericWitnessDesign 4 5 := by
+  intro flipSet hsub hne
+  have hstar : (Finset.univ.erase (4 : Fin 6)).erase 5 = {0, 1, 2, 3} := by decide
+  rw [hstar] at hsub
+  have hmem : flipSet ∈ ({0, 1, 2, 3} : Finset (Fin 6)).powerset :=
+    Finset.mem_powerset.mpr hsub
+  clear hsub hstar
+  fin_cases hmem
+  all_goals
+    first
+      | exact absurd rfl (Finset.nonempty_iff_ne_empty.mp hne)
+      | (simp [Gtz.edgeTripleValue, Gtz.atomPairing, Gtz.genericWitnessDesign,
+        Gtz.genericWitnessAtom, dotProduct, Fin.sum_univ_three]
+         norm_num)
+
+/-! ## The global certificate -/
+
+/-- **THE hwitnessFlip CERTIFICATE, design side**: every edge of the shipped
+generic witness is flip-clean.  Fifteen computed edges plus the symmetry
+lemma. -/
+theorem allEdgesFlipClean_genericWitnessDesign :
+    Gtz.AllEdgesFlipClean Gtz.genericWitnessDesign := by
+  intro edgeFirst edgeSecond hedge
+  fin_cases edgeFirst <;> fin_cases edgeSecond
+  · exact absurd rfl hedge
+  · exact edgeFlipClean_zero_one
+  · exact edgeFlipClean_zero_two
+  · exact edgeFlipClean_zero_three
+  · exact edgeFlipClean_zero_four
+  · exact edgeFlipClean_zero_five
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_zero_one
+  · exact absurd rfl hedge
+  · exact edgeFlipClean_one_two
+  · exact edgeFlipClean_one_three
+  · exact edgeFlipClean_one_four
+  · exact edgeFlipClean_one_five
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_zero_two
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_one_two
+  · exact absurd rfl hedge
+  · exact edgeFlipClean_two_three
+  · exact edgeFlipClean_two_four
+  · exact edgeFlipClean_two_five
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_zero_three
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_one_three
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_two_three
+  · exact absurd rfl hedge
+  · exact edgeFlipClean_three_four
+  · exact edgeFlipClean_three_five
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_zero_four
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_one_four
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_two_four
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_three_four
+  · exact absurd rfl hedge
+  · exact edgeFlipClean_four_five
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_zero_five
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_one_five
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_two_five
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_three_five
+  · exact edgeFlipClean_edge_comm _ _ _ edgeFlipClean_four_five
+  · exact absurd rfl hedge
+
+end FlipCleanCertificate
+
+/-- **The witness evaluation, kernel-checked.**  This is the hypothesis
+`Gtz.gtzWeighted_of_forall_generic_flipClean_dominates` used to carry: one
+application of the evaluation bracket above to the design-side certificate. -/
+theorem eval_flipDegeneracyPoly_genericWitnessDesign_ne_zero :
+    MvPolynomial.eval (designParamsOf genericWitnessDesign) flipDegeneracyPoly ≠ 0 :=
+  (eval_flipDegeneracyPoly_ne_zero_iff genericWitnessDesign).mpr
+    allEdgesFlipClean_genericWitnessDesign
+
+
 /-- **THE AVOIDANCE-TEMPLATE APPLICATION.**  To prove the open cell it
 suffices to dominate the GENERIC FLIP-CLEAN all-heavy designs — the
 flip-dirty locus dissolves by one polynomial multiplication through
 `Gtz.gtzWeighted_of_forall_avoiding_dominates`, exactly as the zero-pairing
 branch did.
 
-The witness evaluation `hwitnessFlip` is carried as an EXPLICIT HYPOTHESIS,
-per the residue-reduction precedent for conditional statements: it is a
-closed finite rational computation (`30` ordered edges, `15` nonempty flip
-subsets each, at the shipped `Gtz.genericWitnessDesign`), measured true by
-exact arithmetic externally (gtz-p3), and NOT yet kernel-checked.
-Discharging it upgrades this theorem to an unconditional sibling of
-`Gtz.gtzWeighted_of_forall_generic_dominates`.  Scope honesty: genericity
-and flip-cleanliness narrow quantifiers only; no margin is manufactured. -/
+The witness evaluation USED to be carried as an explicit hypothesis
+`hwitnessFlip`, per the residue-reduction precedent for conditional
+statements, on the grounds that it was a closed finite rational computation
+(`30` ordered edges, `15` nonempty flip subsets each, at the shipped
+`Gtz.genericWitnessDesign`) measured true externally and not kernel-checked.
+`Gtz.eval_flipDegeneracyPoly_genericWitnessDesign_ne_zero` above now
+discharges it, so the binder is gone and this theorem is the unconditional
+sibling of `Gtz.gtzWeighted_of_forall_generic_dominates` its own docstring
+promised.  Scope honesty is unchanged: genericity and flip-cleanliness narrow
+quantifiers only; no margin is manufactured. -/
 theorem gtzWeighted_of_forall_generic_flipClean_dominates
-    (hwitnessFlip : MvPolynomial.eval (designParamsOf genericWitnessDesign)
-      flipDegeneracyPoly ≠ 0)
     (hclose : ∀ D : WeightedDesign 6 3, AllHeavy D → IsGenericDesign D →
       AllEdgesFlipClean D →
       ∃ C : Finset (Fin 6), C.card = 3 ∧ Dominates D C) :
@@ -901,7 +1286,8 @@ theorem gtzWeighted_of_forall_generic_flipClean_dominates
     (genericBundlePoly 6 * flipDegeneracyPoly) genericWitnessDesign
     ((eval_designParamsOf_mul_ne_zero_iff genericWitnessDesign
         (genericBundlePoly 6) flipDegeneracyPoly).mpr
-      ⟨eval_genericBundlePoly_genericWitnessDesign_ne_zero, hwitnessFlip⟩)
+      ⟨eval_genericBundlePoly_genericWitnessDesign_ne_zero,
+        eval_flipDegeneracyPoly_genericWitnessDesign_ne_zero⟩)
   intro D hheavy havoid
   obtain ⟨hbundle, hflip⟩ := (eval_designParamsOf_mul_ne_zero_iff D
     (genericBundlePoly 6) flipDegeneracyPoly).mp havoid

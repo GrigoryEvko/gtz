@@ -155,6 +155,7 @@ import Gtz.Quantitative.MirrorLaw
 import Gtz.Quantitative.HollowInvolution
 import Gtz.Quantitative.SevenThreeMiddleBand
 import Gtz.Reduction.SplitTransfer
+import Gtz.Reduction.StressWalk
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -1207,23 +1208,20 @@ def MergeBoundaryCollarSevenThree : Prop :=
           tripleFirst ≠ tripleSecond ∧ tripleFirst ≠ tripleThird ∧ tripleSecond ≠ tripleThird ∧
             directionTripleSigma D tripleFirst tripleSecond tripleThird ≤ 1 / 3
 
-/-- **What the dichotomy would buy.**  Together with the (6,3) cell it closes the
-(7,3) equal-share cell.  Both inputs are open; the point of the statement is that
-it isolates the merge branch's exact contribution. -/
+/-- **What the dichotomy would buy: NOTHING BEYOND THE (6,3) CELL.**  The collar
+hypothesis is REDUNDANT here, and this theorem is the demonstration.  Crystallization
+sends `(6,3)` to `(7,3)` unconditionally (`Gtz.gtzWeighted_six_three_iff_seven_three`,
+`3*(3+1)/2 = 6 < 7`), and the equal-share cell is `Gtz.GtzWeighted 7 3` with two
+hypotheses discarded — so the merge branch's "exact contribution" is empty relative to
+the cell that was already assumed alongside it.
+
+The NAME is unchanged, and the binder it names is gone, because `Gtz/Audit.lean` is
+append-only: renaming would strand the pin.  Read the name as a historical route
+label.  `Gtz.MergeBoundaryCollarSevenThree` therefore has no consumer left that needs
+it, which is the whole content of this edit. -/
 theorem gtzWeightedEqualShareSevenThree_of_mergeBoundaryCollar
-    (hsixThree : GtzWeighted 6 3) (hcollar : MergeBoundaryCollarSevenThree) :
-    GtzWeightedEqualShareSevenThree := by
-  intro D huniform hleverage
-  rcases hcollar D huniform hleverage with hparallel | hsigma
-  · obtain ⟨keptLabel, dropLabel, ratio, hdistinct, hproportional⟩ := hparallel
-    exact dominating_of_parallel_pair D hsixThree hdistinct hproportional
-  · obtain ⟨tripleFirst, tripleSecond, tripleThird, hfirstSecond, hfirstThird, hsecondThird,
-      hbound⟩ := hsigma
-    refine ⟨{tripleFirst, tripleSecond, tripleThird}, ?_, ?_⟩
-    · rw [Finset.card_insert_of_notMem (by simp [hfirstSecond, hfirstThird]),
-        Finset.card_insert_of_notMem (by simp [hsecondThird]), Finset.card_singleton]
-    · exact dominates_triple_of_tripleSigma_le_third_bandSeven D huniform hleverage hfirstSecond
-        hfirstThird hsecondThird hbound
+    (hsixThree : GtzWeighted 6 3) : GtzWeightedEqualShareSevenThree :=
+  fun D _ _ => gtzWeighted_six_three_iff_seven_three.mp hsixThree D
 
 /-- **The extremal satisfies BOTH branches** — it has a parallel pair AND its
 minimising triple passes the gate.  So the numerically identified worst case
