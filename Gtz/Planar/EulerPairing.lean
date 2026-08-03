@@ -37,7 +37,6 @@ theorem euler_pairing_global
     (hchordPos : ∀ c d, lambda c d ≠ 0
       → planarNorm (square c + square d) ≠ 0)
     (hsym : ∀ c d, lambda c d = lambda d c)
-    (hdiagFree : ∀ c, lambda c c = 0)
     (hstress : ∀ c, ∑ d, lambda c d
         • ((planarNorm (square c))⁻¹ • square c
           - (planarNorm (square c + square d))⁻¹ • (square c + square d))
@@ -154,7 +153,6 @@ theorem stress_mass_pinned
     (hchordPos : ∀ c d, lambda c d ≠ 0
       → planarNorm (square c + square d) ≠ 0)
     (hsym : ∀ c d, lambda c d = lambda d c)
-    (hdiagFree : ∀ c, lambda c c = 0)
     (hstress : ∀ c, ∑ d, lambda c d
         • ((planarNorm (square c))⁻¹ • square c
           - (planarNorm (square c + square d))⁻¹ • (square c + square d))
@@ -165,7 +163,7 @@ theorem stress_mass_pinned
     (htight : ∀ c d, lambda c d ≠ 0 → slackOf square c d = 0) :
     ∑ c, ∑ d, lambda c d = 2 := by
   have hpairing := euler_pairing_global weight square lambda moment hlevPos
-    hchordPos hsym hdiagFree hstress htrace hclosure
+    hchordPos hsym hstress htrace hclosure
   have hterms : ∀ c d, lambda c d * (slackOf square c d + 1)
       = lambda c d := by
     intro c d

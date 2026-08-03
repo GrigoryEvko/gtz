@@ -48,9 +48,11 @@ theorem leaf_cleared_eq_criticality
     Matrix.cons_val_zero, Matrix.cons_val_one]
   ring
 
-/-- **The leverage dictionary**: `ℓ = 1/(1−ν) = 2/D` at `D = 1−2rc`. -/
-theorem leverage_cleared (moment ownCos : ℝ)
-    (hgate : 1 - 2*moment*ownCos ≠ 0) :
+/-- **The leverage dictionary**: `ℓ = 1/(1−ν) = 2/D` at `D = 1−2rc`.
+
+Unconditional: the rewrite runs through `one_div_div`, which needs no gate.
+The sibling `beta_cleared` below does need its `hgate`. -/
+theorem leverage_cleared (moment ownCos : ℝ) :
     1 / (1 - (1/2 + moment*ownCos)) = 2 / (1 - 2*moment*ownCos) := by
   rw [show 1 - (1/2 + moment*ownCos) = (1 - 2*moment*ownCos)/2 by ring,
     one_div_div]

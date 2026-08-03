@@ -60,7 +60,6 @@ set_option maxHeartbeats 3200000 in
 theorem leaf_tangency_corner_certificate
     (c1 s1 c2 s2 c3 s3 r w v : ℝ)
     (h1 : c1^2 + s1^2 - 1 = 0)
-    (h2 : c2^2 + s2^2 - 1 = 0)
     (h3 : c3^2 + s3^2 - 1 = 0)
     (h4 : -4*c1*c2*r^2 + 2*c1*c2 - 2*c1*r + 2*s1*s2 - 2*c2*r + 1 = 0)
     (h5 : -4*c2*c3*r^2 + 2*c2*c3 - 2*c2*r + 2*s2*s3 - 2*c3*r + 1 = 0)

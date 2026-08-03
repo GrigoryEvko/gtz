@@ -275,7 +275,6 @@ theorem icosaAtom_distinct_lines {first second : Fin 6} (hne : first ≠ second)
     icosaAtom_leverage]
   norm_num
 
-set_option linter.unusedSimpArgs false in
 /-- **The maximal real equiangular set is a weighted `(6,3)` design**, at uniform
 weight `1/6`: each coordinate pair contributes `2·short²` and `2·long²` to one
 diagonal entry, and every cross term cancels against its sign partner. -/
@@ -293,7 +292,7 @@ noncomputable def icosaDesign : WeightedDesign 6 3 where
     fin_cases rowIndex <;> fin_cases colIndex <;>
       simp only [icosaAtom, Matrix.cons_val', Matrix.cons_val_zero,
         Matrix.cons_val_one, Matrix.head_cons, Matrix.empty_val',
-        Matrix.cons_val_fin_one, Matrix.cons_val_succ, Matrix.cons_val_two,
+        Matrix.cons_val_fin_one, Matrix.cons_val_two,
         Matrix.cons_val_three, Matrix.cons_val_four, Matrix.cons_val,
         Matrix.tail_cons, Matrix.one_apply] <;>
       norm_num <;>

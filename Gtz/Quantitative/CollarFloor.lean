@@ -95,7 +95,7 @@ with the explicit margin `(4/3)(3−δ)((−G) − G₀)`. No weight enters the 
 so the conclusion holds for every extra weight — the off-window half of the
 collar is discharged uniformly. -/
 theorem offWindow_cap_fires {ballDefect capDrift conicValue capValue : ℝ}
-    (hballNonneg : 0 ≤ ballDefect) (hballLt : ballDefect < 3)
+    (hballLt : ballDefect < 3)
     (hcapBound : capValue
       ≤ (3 - ballDefect) * (-(1 / 3) + (4 / 3) * conicValue + capDrift))
     (hoffWindow : offWindowGate ballDefect capDrift ≤ -conicValue) :

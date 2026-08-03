@@ -177,7 +177,6 @@ set_option maxHeartbeats 4000000
 set_option maxRecDepth 10000
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace Gtz
 
@@ -1309,7 +1308,7 @@ theorem radiusTwoStuckSubset_form (direction : Fin 3 → ℝ) :
     sum_over_triple _ (by decide) (by decide) (by decide)]
   simp only [radiusTwoStuckDesign, radiusTwoStuckAtom, dotProduct, Fin.sum_univ_three,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two,
-    Matrix.cons_val_three, Matrix.cons_val_four, Matrix.cons_val, Matrix.tail_cons]
+    Matrix.tail_cons]
   ring
 
 /-- **The stuck subset fails to dominate**: at the first coordinate direction the
@@ -1321,7 +1320,7 @@ theorem radiusTwoStuckDesign_not_dominates :
     (by decide) (by decide) (by decide) ![1, 0, 0] ?_
   simp only [radiusTwoStuckDesign, radiusTwoStuckAtom, dotProduct, Fin.sum_univ_three,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two,
-    Matrix.cons_val_three, Matrix.cons_val_four, Matrix.cons_val, Matrix.tail_cons]
+    Matrix.tail_cons]
   norm_num
 
 /-- **GTZ HOLDS at this design.** The three scaled axes give `S_{3,4,5} = 4·I`, whose

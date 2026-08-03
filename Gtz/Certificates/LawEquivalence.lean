@@ -35,7 +35,7 @@ theorem law_implies_floor {phi dist lawConst : ℝ} {alpha : ℕ}
 theorem law_confines_zero_set {phi dist lawConst : ℝ} {alpha : ℕ}
     (hlaw : lawConst * dist ^ alpha ≤ phi)
     (hconst : 0 < lawConst) (hdist : 0 ≤ dist)
-    (halpha : alpha ≠ 0) (hzero : phi = 0) : dist = 0 := by
+    (hzero : phi = 0) : dist = 0 := by
   by_contra hne
   have hdistPos : 0 < dist := lt_of_le_of_ne hdist (Ne.symm hne)
   have hpowPos : 0 < dist ^ alpha := pow_pos hdistPos alpha
@@ -50,7 +50,7 @@ compactness half's SHAPE — what the wrapper must produce, with the constant
 chain visible. -/
 theorem two_piece_law_assembly {phi dist tubeRate tubeRadius offGap
     domainCap : ℝ}
-    (htubeRate : 0 < tubeRate) (hoffGap : 0 < offGap)
+    (hoffGap : 0 < offGap)
     (hdomainCap : 0 < domainCap)
     (hdist : 0 ≤ dist) (hdomain : dist ≤ domainCap)
     (htube : dist ≤ tubeRadius → tubeRate * dist ≤ phi)
@@ -75,7 +75,7 @@ theorem two_piece_law_assembly {phi dist tubeRate tubeRadius offGap
 on the explicit radius `dist ≤ rate/(2·curv)`. The Stiemke-tube assembly
 (rate 0.206, curvature C₂) in its generic division-free form. -/
 theorem tube_law_from_rate_curvature {phi dist rate curv : ℝ}
-    (hrate : 0 < rate) (hcurv : 0 < curv) (hdist : 0 ≤ dist)
+    (hdist : 0 ≤ dist)
     (hradius : dist * (2 * curv) ≤ rate)
     (hexpansion : rate * dist - curv * dist ^ 2 ≤ phi) :
     (rate / 2) * dist ≤ phi := by

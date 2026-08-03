@@ -117,15 +117,22 @@ the corner limit of the X-channel face at two-at-cap level `L` equals
 the two-at-cap vertex value plus the square gap —
 `C_B(L) = C₂cap(L) + 4(L−2)²/(2L−3)` with
 `C₂cap(L) = (2L−1)(L−1)·4(L²+L−4)/(2L−3)²` the vertex reading. Certified
-here as the polynomial identity the two closed forms satisfy, `L`-generic
-away from the pole `L = 3/2`. -/
-theorem classical_face_closed_form {lev : ℝ} (hpole : 2*lev - 3 ≠ 0) :
+here as the polynomial identity the two closed forms satisfy.
+
+Stated without a pole hypothesis: at `L = 3/2` every term collapses to the
+same junk value under Lean's `x / 0 = 0` convention, so the identity is
+unconditional.  The intended reading is still the generic one, away from
+`L = 3/2`. -/
+theorem classical_face_closed_form {lev : ℝ} :
     4*(lev-1)*(2*lev^3 - lev^2 - 8*lev + 8) / (2*lev-3)^2
       = (4*(lev-1)*(2*lev^3 - lev^2 - 8*lev + 8) - 4*(lev-2)^2*(2*lev-3))
           / (2*lev-3)^2
         + 4*(lev-2)^2 / (2*lev-3) := by
-  field_simp
-  ring
+  rcases eq_or_ne (2*lev - 3) 0 with hzero | hpole
+  · rw [hzero]
+    norm_num
+  · field_simp
+    ring
 
 /-- **The quotient-constant certificate** (gaps-stability S1,
 triple-verified): the two-at-cap moment-Gram characteristic polynomial

@@ -89,10 +89,10 @@ theorem twoMoment_factorisation (smallest total : ℝ) :
 /-- The multiplier is strictly positive on the unit interval once the trace
 exceeds the rank: its value at `1` is `(total − 1)(total − 3)`, and it decreases
 towards `1` because its vertex sits at `total − 1/2 > 1`. -/
-theorem twoMoment_multiplier_pos {smallest total : ℝ} (hnonneg : 0 ≤ smallest)
+theorem twoMoment_multiplier_pos {smallest total : ℝ}
     (hsmall : smallest ≤ 1) (hbig : 3 < total) :
     0 < smallest ^ 2 + (1 - 2 * total) * smallest + (total - 1) ^ 2 := by
-  nlinarith [mul_nonneg hnonneg (sub_nonneg.mpr hsmall), sq_nonneg (smallest - 1),
+  nlinarith [sq_nonneg (smallest - 1),
     mul_nonneg (sub_nonneg.mpr hsmall) (le_of_lt (sub_pos.mpr hbig))]
 
 /-- **The scalar certificate.**  Three nonnegative reals whose sum exceeds `3`
@@ -100,7 +100,6 @@ and whose product clears the two-moment threshold are each at least `1`.  Stated
 asymmetrically in the first argument; the hypotheses are symmetric, so the other
 two follow by reordering. -/
 theorem one_le_of_twoMoment {first second third : ℝ} (hfirst : 0 ≤ first)
-    (hsecond : 0 ≤ second) (hthird : 0 ≤ third)
     (hbig : 3 < first + second + third)
     (hmoment : (first + second + third - 1) ^ 2 ≤ 4 * (first * second * third)) :
     1 ≤ first := by
@@ -112,7 +111,7 @@ theorem one_le_of_twoMoment {first second third : ℝ} (hfirst : 0 ≤ first)
       4 * (first * second * third)
         ≤ first * ((first + second + third) - first) ^ 2 := by
     nlinarith [hamgm, hfirst]
-  have hmult := twoMoment_multiplier_pos hfirst hcontra.le hbig
+  have hmult := twoMoment_multiplier_pos hcontra.le hbig
   have hfact := twoMoment_factorisation first (first + second + third)
   nlinarith [hfact, hmult, hbound, hmoment,
     mul_pos_of_neg_of_neg (sub_neg.mpr hcontra) (neg_neg_iff_pos.mpr hmult)]
@@ -183,15 +182,17 @@ theorem posSemidef_sub_one_of_twoMoment {form : Matrix (Fin 3) (Fin 3) ℝ}
   rw [htrace] at hbig hmoment
   rw [hdet] at hmoment
   have hslotZero : (1 : ℝ) ≤ eigen 0 :=
-    one_le_of_twoMoment (hnonneg 0) (hnonneg 1) (hnonneg 2) hbig hmoment
+    one_le_of_twoMoment (hnonneg 0) hbig hmoment
   have hslotOne : (1 : ℝ) ≤ eigen 1 := by
-    refine one_le_of_twoMoment (hnonneg 1) (hnonneg 0) (hnonneg 2) (by linarith) ?_
+    refine one_le_of_twoMoment (second := eigen 0) (third := eigen 2)
+      (hnonneg 1) (by linarith) ?_
     calc (eigen 1 + eigen 0 + eigen 2 - 1) ^ 2
         = (eigen 0 + eigen 1 + eigen 2 - 1) ^ 2 := by ring
       _ ≤ 4 * (eigen 0 * eigen 1 * eigen 2) := hmoment
       _ = 4 * (eigen 1 * eigen 0 * eigen 2) := by ring
   have hslotTwo : (1 : ℝ) ≤ eigen 2 := by
-    refine one_le_of_twoMoment (hnonneg 2) (hnonneg 0) (hnonneg 1) (by linarith) ?_
+    refine one_le_of_twoMoment (second := eigen 0) (third := eigen 1)
+      (hnonneg 2) (by linarith) ?_
     calc (eigen 2 + eigen 0 + eigen 1 - 1) ^ 2
         = (eigen 0 + eigen 1 + eigen 2 - 1) ^ 2 := by ring
       _ ≤ 4 * (eigen 0 * eigen 1 * eigen 2) := hmoment

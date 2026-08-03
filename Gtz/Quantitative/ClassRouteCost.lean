@@ -914,11 +914,16 @@ theorem windowChartProjection_isChartStationaryData :
     rw [windowChartMultiplierAssembly_eq, windowChartProjection]
     exact halfCoreShift_mul_smul_comm _ _ _ _ windowChartCore_mul_multiplierCore_comm
 
-/-- The window datum's active family is the window class. -/
+/-- The window datum's active family is the window class.
+
+The statement has real content and is not vacuous — perturbing one of the four
+subsets to collide with another, to carry a foreign triple, or to shrink to a
+pair each makes it FALSE, as does perturbing the family itself.  That content
+just happens to be decidable by evaluation: both sides reduce to the same
+normal form, so `rfl` closes it and no decision procedure is needed. -/
 theorem windowChart_isActiveFamily :
-    IsActiveFamily (Finset.univ : Finset (Fin 4)) windowChartSubset windowChartFamily := by
-  unfold IsActiveFamily windowChartSubset windowChartFamily
-  decide
+    IsActiveFamily (Finset.univ : Finset (Fin 4)) windowChartSubset windowChartFamily :=
+  rfl
 
 /-- The window datum is on the rank-one branch: its four labels carry four distinct
 triples. -/

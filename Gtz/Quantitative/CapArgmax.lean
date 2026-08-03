@@ -119,9 +119,13 @@ noncomputable def capChannelNumerator (leverage xcoord radius : ℝ) : ℝ :=
         + 9 * radius ^ 2 - 8 * radius + 4) / (2 * leverage - 3) ^ 2
 
 /-- `capChannelNumerator` as a single fraction over `(2L−3)²`.  Used to keep
-`field_simp` from re-deriving the squared denominator as an opaque atom. -/
-theorem capChannelNumerator_eq_div {leverage xcoord radius : ℝ}
-    (h3 : (2 * leverage - 3) ≠ 0) :
+`field_simp` from re-deriving the squared denominator as an opaque atom.
+
+Stated without a pole hypothesis: at `2L − 3 = 0` both sides collapse to the
+same junk value under Lean's `x / 0 = 0` convention, so the identity is
+unconditional.  A reader who wants the nonzero-denominator reading must
+supply it separately. -/
+theorem capChannelNumerator_eq_div {leverage xcoord radius : ℝ} :
     capChannelNumerator leverage xcoord radius
       = (-4 * (leverage - 2) ^ 2 * (2 * leverage - 3) * xcoord ^ 2
           + 2 * (leverage - 2) * (leverage - 1)
@@ -132,8 +136,12 @@ theorem capChannelNumerator_eq_div {leverage xcoord radius : ℝ}
               + 10 * leverage ^ 2 * radius - 14 * leverage ^ 2 - 12 * leverage * radius ^ 2
               + 4 * leverage * radius + 9 * radius ^ 2 - 8 * radius + 4))
         / (2 * leverage - 3) ^ 2 := by
-  unfold capChannelNumerator
-  field_simp
+  rcases eq_or_ne (2 * leverage - 3) 0 with hzero | h3
+  · unfold capChannelNumerator
+    rw [hzero]
+    norm_num
+  · unfold capChannelNumerator
+    field_simp
 
 /-- **The corner advantage** `C_B(L)·d(X) − H(X)`: nonnegative exactly when the
 probe `X` does not beat the corner rate `C_B(L)`. -/

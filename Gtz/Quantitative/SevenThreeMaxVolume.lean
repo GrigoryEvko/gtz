@@ -165,7 +165,6 @@ Below `σ = 12/25` the factorisation
 strictly positive; at and above, the identity
 `28(64-100σ+250P) = 75·T + 2·(25σ+125P-4)` pins both lines to zero. -/
 theorem sevenThreeShiftedDet_boundary_forces {squareSum tripleProduct : ℝ}
-    (hlower : 0 ≤ squareSum)
     (hamgm : 27 * tripleProduct ^ 2 ≤ squareSum ^ 3)
     (htrace : 0 ≤ (45 : ℝ) / 7 * (1 - squareSum + 2 * tripleProduct) - (3 - squareSum))
     (hzero : ((4 : ℝ) / 5) ^ 3 - 4 / 5 * squareSum + 2 * tripleProduct = 0) :
@@ -586,8 +585,7 @@ private theorem solveMatrix_row_eq_mulVec
 a nonsingular pick basis: the weighted coordinate atoms resolve the *inverse*
 of the picked Gram, `Σ_c t_c x_c x_cᵀ = (S Sᵀ)⁻¹`. -/
 theorem sum_weight_smul_atomMatrix_solveMatrix (D : WeightedDesign size rank)
-    (pick : Fin rank → Fin size)
-    (hunit : IsUnit (selectedFrameRows (rawAtomRows D) pick).det) :
+    (pick : Fin rank → Fin size) :
     ∑ atomIndex, D.weight atomIndex
         • atomMatrix (solveMatrix (rawAtomRows D) pick atomIndex)
       = (selectedFrameRows (rawAtomRows D) pick
@@ -610,8 +608,7 @@ unit Gram — the `(m, k)`-generic master behind the `(7,3)` bound `15/7` and
 the `(6,3)` bound `2`. -/
 theorem sum_atomMatrix_solveMatrix_of_uniformShare (D : WeightedDesign size rank)
     {shareValue : ℝ} (huniform : ∀ atomIndex, atomShare D atomIndex = shareValue)
-    (hshare : 0 < shareValue) (pick : Fin rank → Fin size)
-    (hunit : IsUnit (selectedFrameRows (unitAtomRows D) pick).det) :
+    (hshare : 0 < shareValue) (pick : Fin rank → Fin size) :
     ∑ atomIndex, atomMatrix (solveMatrix (unitAtomRows D) pick atomIndex)
       = shareValue⁻¹ • (selectedFrameRows (unitAtomRows D) pick
           * (selectedFrameRows (unitAtomRows D) pick)ᵀ)⁻¹ := by
@@ -651,7 +648,7 @@ theorem inv_pickGram_eq_diagonal_add_outside (D : WeightedDesign size rank)
       = Matrix.diagonal (fun slot => D.weight (pick slot))
         + ∑ atomIndex ∈ (Finset.image pick Finset.univ)ᶜ,
             D.weight atomIndex • atomMatrix (solveMatrix (rawAtomRows D) pick atomIndex) := by
-  rw [← sum_weight_smul_atomMatrix_solveMatrix D pick hunit,
+  rw [← sum_weight_smul_atomMatrix_solveMatrix D pick,
     ← Finset.sum_add_sum_compl (Finset.image pick Finset.univ)]
   congr 1
   rw [Finset.sum_image (fun leftSlot _ rightSlot _ heq => hinj heq)]
@@ -691,7 +688,7 @@ theorem inv_unitPickGram_diagonal_of_uniformShare (D : WeightedDesign size rank)
         * (selectedFrameRows (unitAtomRows D) pick)ᵀ)⁻¹ slot slot
       = shareValue * (1 + ∑ atomIndex ∈ (Finset.image pick Finset.univ)ᶜ,
           solveMatrix (unitAtomRows D) pick atomIndex slot ^ 2) := by
-  have hmaster := sum_atomMatrix_solveMatrix_of_uniformShare D huniform hshare pick hunit
+  have hmaster := sum_atomMatrix_solveMatrix_of_uniformShare D huniform hshare pick
   have hentry := congrFun (congrFun hmaster slot) slot
   rw [Matrix.sum_apply] at hentry
   simp only [atomMatrix, Matrix.vecMulVec_apply, Matrix.smul_apply, smul_eq_mul] at hentry
@@ -1010,7 +1007,7 @@ theorem posDef_unitPickGram_sub_fifth_sevenThree (D : WeightedDesign 7 3)
       + 2 * (pickGram 0 1 * pickGram 0 2 * pickGram 1 2) ≠ 0 := by
     intro hzero
     obtain ⟨hsigmaEq, hprodEq⟩ :=
-      sevenThreeShiftedDet_boundary_forces hsigmaNonneg hamgm htraceCapForm hzero
+      sevenThreeShiftedDet_boundary_forces hamgm htraceCapForm hzero
     have hdetVal : pickGram.det = 49 / 125 := by
       rw [hdetFormula, hsigmaEq, hprodEq]
       norm_num

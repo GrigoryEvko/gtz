@@ -211,14 +211,12 @@ assembly with the tube modulus now a positive rate (itself conditional on the
 open rate law). -/
 theorem collared_two_piece_law
     {phi dist rateConst leverageCap tubeRadius offGap domainCap : ℝ}
-    (hRateConst : 0 < rateConst) (hCap : 0 < leverageCap)
     (hoffGap : 0 < offGap) (hdomainCap : 0 < domainCap)
     (hdist : 0 ≤ dist) (hdomain : dist ≤ domainCap)
     (htube : dist ≤ tubeRadius → (rateConst / leverageCap) * dist ≤ phi)
     (hoff : tubeRadius ≤ dist → offGap ≤ phi) :
     min (rateConst / leverageCap) (offGap / domainCap) * dist ≤ phi :=
-  two_piece_law_assembly (collar_rate_positive hRateConst hCap) hoffGap hdomainCap
-    hdist hdomain htube hoff
+  two_piece_law_assembly hoffGap hdomainCap hdist hdomain htube hoff
 
 /-- **The off-tube gap exists by compactness** (residual 4's second quantitative
 input).  A continuous margin `phi`, strictly positive on a compact off-tube

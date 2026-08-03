@@ -162,7 +162,7 @@ theorem zeroSetConfinement_of_funnelingLaw
     (distToTieVariety margin : WeightedDesign m k → ℝ)
     (isInClass : WeightedDesign m k → Prop)
     (lawConst : ℝ) (alpha : ℕ)
-    (hlawConstPos : 0 < lawConst) (halphaNonzero : alpha ≠ 0)
+    (hlawConstPos : 0 < lawConst)
     (hdistNonneg : ∀ D, 0 ≤ distToTieVariety D)
     (hmarginAtTie : ∀ D, isInClass D → IsTie D → margin D = 0)
     (hlaw : ∀ D, isInClass D
@@ -170,7 +170,7 @@ theorem zeroSetConfinement_of_funnelingLaw
     ZeroSetConfinement distToTieVariety isInClass := by
   intro D hisInClass hisTie
   exact law_confines_zero_set (hlaw D hisInClass) hlawConstPos
-    (hdistNonneg D) halphaNonzero (hmarginAtTie D hisInClass hisTie)
+    (hdistNonneg D) (hmarginAtTie D hisInClass hisTie)
 
 /-- **The P3-closure numerator factors** (the dissolution certificate): the
 conic-tightness gap of an atom's two partners, reduced via Vieta, is exactly

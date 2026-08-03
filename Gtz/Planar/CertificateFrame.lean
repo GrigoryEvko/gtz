@@ -205,8 +205,13 @@ theorem dust_never_tight {dustLev heavyLev pairing : ℝ}
 
 /-- Two dust atoms cannot be tight either: the pairing square would have to
 exceed the product bound while both leverages sit below one. Tightness plus
-the trace floor `ℓ_c + ℓ_d ≥ 2` excludes the pair. -/
-theorem dust_pair_never_tight {firstLev secondLev pairing : ℝ}
+the trace floor `ℓ_c + ℓ_d ≥ 2` excludes the pair.
+
+The pairing itself never enters: the trace floor alone contradicts the two
+dust bounds.  Carrying `pairing` as an implicit binder occurring nowhere in
+the statement made the theorem unapplicable, since no elaboration could ever
+solve it; it is dropped. -/
+theorem dust_pair_never_tight {firstLev secondLev : ℝ}
     (hfirst : firstLev < 1) (hsecond : secondLev < 1)
     (htrace : 2 ≤ firstLev + secondLev) : False := by
   linarith

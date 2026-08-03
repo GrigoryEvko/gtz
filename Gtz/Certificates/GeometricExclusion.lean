@@ -132,7 +132,6 @@ certificate consumed through the dictionary. -/
 theorem no_tight_path_three_leaf_tangency_off_pole
     {firstCos firstSin secondCos secondSin thirdCos thirdSin moment : ℝ}
     (hfirstUnit : firstCos ^ 2 + firstSin ^ 2 = 1)
-    (hsecondUnit : secondCos ^ 2 + secondSin ^ 2 = 1)
     (hthirdUnit : thirdCos ^ 2 + thirdSin ^ 2 = 1)
     (htightFirstSecond : (1 + (firstCos * secondCos + firstSin * secondSin)) / 2
       = (1/2 + moment * firstCos) * (1/2 + moment * secondCos))
@@ -148,9 +147,8 @@ theorem no_tight_path_three_leaf_tangency_off_pole
   obtain ⟨poleWitness, hpoleGuard⟩ := pole_guard_of_gate hsecondGate
   refine leaf_tangency_corner_certificate firstCos firstSin secondCos
     secondSin thirdCos thirdSin moment firstThirdWitness poleWitness
-    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
+    ?_ ?_ ?_ ?_ ?_ ?_ ?_
   · linear_combination hfirstUnit
-  · linear_combination hsecondUnit
   · linear_combination hthirdUnit
   · linear_combination 4 * htightFirstSecond
   · linear_combination 4 * htightSecondThird
@@ -346,7 +344,6 @@ theorem no_tight_path_three_leaf_tangency_off_pole_of_directions
     {firstDir secondDir thirdDir moment : Fin 2 → ℝ}
     (hgauge : moment 1 = 0)
     (hfirstUnit : firstDir ⬝ᵥ firstDir = 1)
-    (hsecondUnit : secondDir ⬝ᵥ secondDir = 1)
     (hthirdUnit : thirdDir ⬝ᵥ thirdDir = 1)
     (htightFirstSecond : (1 + firstDir ⬝ᵥ secondDir) / 2
       = (1/2 + moment ⬝ᵥ firstDir) * (1/2 + moment ⬝ᵥ secondDir))
@@ -364,9 +361,8 @@ theorem no_tight_path_three_leaf_tangency_off_pole_of_directions
     (firstCos := firstDir 0) (firstSin := firstDir 1)
     (secondCos := secondDir 0) (secondSin := secondDir 1)
     (thirdCos := thirdDir 0) (thirdSin := thirdDir 1)
-    (moment := moment 0) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
+    (moment := moment 0) ?_ ?_ ?_ ?_ ?_ ?_ ?_
   · rw [hdotExpand] at hfirstUnit; linear_combination hfirstUnit
-  · rw [hdotExpand] at hsecondUnit; linear_combination hsecondUnit
   · rw [hdotExpand] at hthirdUnit; linear_combination hthirdUnit
   · rw [hdotExpand, hmomentDot, hmomentDot] at htightFirstSecond
     linear_combination htightFirstSecond

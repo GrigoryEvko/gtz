@@ -67,8 +67,7 @@ theorem ballTauCeiling (tieWeight : ℝ) (hnonneg : 0 ≤ tieWeight)
 /-- The pairing law itself: a pair `(τ₀, ε₀′)` is nonvacuous exactly when the
 ball radius clears the tube's own distance floor. This is the one-line test
 whose omission produced the §73 defect. -/
-theorem interfacePair_nonvacuous_iff (tauFloor ballRadius : ℝ)
-    (hfloorPos : 0 < tauFloor) :
+theorem interfacePair_nonvacuous_iff (tauFloor ballRadius : ℝ) :
     (∃ tieWeight : ℝ, tauFloor ≤ tieWeight
         ∧ cornerDistanceRate * tieWeight ≤ ballRadius)
       ↔ cornerDistanceRate * tauFloor ≤ ballRadius := by
