@@ -338,6 +338,7 @@ import Gtz.LinAlg.CayleyAtlas
 import Gtz.LinAlg.PolynomialOpenVanishing
 import Gtz.Reduction.ChartPullback
 import Gtz.Reduction.GenericityReduction
+import Gtz.Reduction.SignClashReduction
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -10664,3 +10665,7 @@ closed unconditionally. -/
 #print axioms Gtz.gtzWeighted_of_forall_nonzero_pairings_dominates
 #print axioms Gtz.eval_designParamsOf_mul_ne_zero_iff
 #print axioms Gtz.liftingLemma_two_iff_gtzWeighted_six_three
+#print axioms Gtz.IsSignClashTriple
+#print axioms Gtz.dominates_of_isSignClashTriple
+#print axioms Gtz.GenericExceptionalSignClash
+#print axioms Gtz.gtzWeighted_six_three_of_genericExceptionalSignClash
