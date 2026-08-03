@@ -1184,10 +1184,11 @@ rank-2 bundled cycle is exactly a three-cluster design of cluster sizes
 equality family (CITED: arXiv:2604.14050 Prop 1); that nothing else has it is
 the cited theorem, not this one. -/
 theorem bundledCycle_rankTwo_clusterMagnitude (bundling : CycleBundling edgeCount 2)
-    (hrank : 1 ≤ 2) (edge : Fin edgeCount) :
-    projectionOfDesign (bundledCycleDesign bundling hrank) edge edge
+    (edge : Fin edgeCount) :
+    projectionOfDesign (bundledCycleDesign bundling (by norm_num)) edge edge
       = 1 / (2 * (edgeCount : ℝ))
         + 1 / (2 * (bundleSize bundling.bundleOf (bundling.bundleOf edge) : ℝ)) := by
+  have hrank : (1 : ℕ) ≤ 2 := by norm_num
   have hsize := bundling.bundleSize_pos_cast (bundling.bundleOf edge)
   have hedgePos : (0 : ℝ) < (edgeCount : ℝ) := by
     exact_mod_cast bundling.edgeCount_pos hrank

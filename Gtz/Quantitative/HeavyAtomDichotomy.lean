@@ -275,10 +275,10 @@ theorem exists_allHeavy_isTie_seven_with_leverage_ge (cap : ℝ) :
 `spikeWeight = 1/4` all four class totals are `1/4`, so this is the tie the split
 tetrahedron already exhibits, and the curve above is a genuine deformation of it
 rather than a new species. -/
-theorem spikeClassTieDesign_quarter_spike_leverage
-    (hspikePos : (0 : ℝ) < 1 / 4) (hspikeLt : (1 : ℝ) / 4 < 1) :
-    leverageOf ((spikeClassTieDesign hspikePos hspikeLt).atom 0) = 3 := by
-  rw [spikeClassTieDesign_spike_leverage hspikePos hspikeLt]
+theorem spikeClassTieDesign_quarter_spike_leverage :
+    leverageOf ((spikeClassTieDesign (by norm_num : (0 : ℝ) < 1 / 4)
+      (by norm_num : (1 : ℝ) / 4 < 1)).atom 0) = 3 := by
+  rw [spikeClassTieDesign_spike_leverage]
   norm_num
 
 /-! ### The strict readings, refuted at every cap -/

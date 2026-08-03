@@ -781,13 +781,12 @@ conditions hold:
 The rest of the recorded claim is CONFIRMED below: the sign-blind, coherent-sign and
 two-moment families all fail at this triple. So the correct statement is that the
 residue survives against three of the four shipped families, not all four. -/
-theorem isInCell_productFloorCell_threeEighths_graphicKFour
-    (hzeroTwo : (0 : Fin 6) ≠ 2) (hzeroFour : (0 : Fin 6) ≠ 4)
-    (htwoFour : (2 : Fin 6) ≠ 4) :
-    IsInCell (productFloorCell (3 / 8) (0 : Fin 6) 2 4 hzeroTwo hzeroFour htwoFour)
+theorem isInCell_productFloorCell_threeEighths_graphicKFour :
+    IsInCell (productFloorCell (3 / 8) (0 : Fin 6) 2 4
+        (by decide) (by decide) (by decide))
       graphicKFourDesign := by
-  refine (isInCell_productFloorCell_iff graphicKFourDesign (3 / 8) hzeroTwo hzeroFour
-    htwoFour).mpr ⟨?_, ?_, ?_, ?_⟩
+  refine (isInCell_productFloorCell_iff graphicKFourDesign (3 / 8)
+    (by decide) (by decide) (by decide)).mpr ⟨?_, ?_, ?_, ?_⟩
   · rw [graphicKFourDesign_pairMinor_zeroTwo]; norm_num
   · rw [graphicKFourDesign_pairMinor_zeroFour]; norm_num
   · rw [graphicKFourDesign_heavyExcess, graphicKFourDesign_heavyExcess,
@@ -1074,14 +1073,12 @@ theorem graphicKFourSevenDesign_pairMinor_zeroFour :
 fires at the grid value `3/8` on the lifted star triple. So the recorded claim that no
 shipped cell fires at any triple of this object is false at `(7,3)` as well as at
 `(6,3)`, and `DiscriminantCovering 7` is not obstructed here. -/
-theorem isInCell_productFloorCell_threeEighths_graphicKFourSeven
-    (hzeroTwo : (0 : Fin 6).castSucc ≠ (2 : Fin 6).castSucc)
-    (hzeroFour : (0 : Fin 6).castSucc ≠ (4 : Fin 6).castSucc)
-    (htwoFour : (2 : Fin 6).castSucc ≠ (4 : Fin 6).castSucc) :
+theorem isInCell_productFloorCell_threeEighths_graphicKFourSeven :
     IsInCell (productFloorCell (3 / 8) ((0 : Fin 6).castSucc) ((2 : Fin 6).castSucc)
-        ((4 : Fin 6).castSucc) hzeroTwo hzeroFour htwoFour) graphicKFourSevenDesign := by
-  refine (isInCell_productFloorCell_iff graphicKFourSevenDesign (3 / 8) hzeroTwo hzeroFour
-    htwoFour).mpr ⟨?_, ?_, ?_, ?_⟩
+        ((4 : Fin 6).castSucc) (by decide) (by decide) (by decide))
+      graphicKFourSevenDesign := by
+  refine (isInCell_productFloorCell_iff graphicKFourSevenDesign (3 / 8)
+    (by decide) (by decide) (by decide)).mpr ⟨?_, ?_, ?_, ?_⟩
   · rw [graphicKFourSevenDesign_pairMinor_zeroTwo]; norm_num
   · rw [graphicKFourSevenDesign_pairMinor_zeroFour]; norm_num
   · rw [graphicKFourSevenDesign_heavyExcess_castSucc,
