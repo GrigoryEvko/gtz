@@ -1916,3 +1916,38 @@ import Gtz.Design.ExceptionalWitnessDesign
 
 -- Residual threading (phase 4): the census bridges and the bordered-slack converse
 import Gtz.Reduction.ResidualThreading
+
+-- Phase 5 (cheap-farkas): the multi-edge capacity lemma and its certificate region
+import Gtz.Reduction.FarkasCapacity
+
+-- Phase 5 (front-connected): the connectedness route from the hinge to the frontier,
+-- and the small-cell calibration showing neither of its two premises is slack
+import Gtz.Reduction.ConnectednessRoute
+import Gtz.Reduction.ConnectednessRouteCalibration
+
+-- Phase 5 (front-hinge-decide): the hinge's evidence base at (6,3) -- the parallel
+-- census of every shipped tie, the repeated-atom equivalence, and the complex
+-- witness that says where the hinge spends its realness
+import Gtz.Design.ShippedTieParallelCensus
+import Gtz.Quantitative.HingeRepeatedAtom
+import Gtz.Complex.TrinePrimitive
+
+-- Phase 5 (front-signclash): the star tripartition certificate, the free-sub-star
+-- budget, and the threshold decomposition that makes the star alphabet exhaustive
+import Gtz.Design.StarTripartitionCapacity
+
+-- Phase 5 (front-integrality): the degree/triangle bridge -- the torsion is
+-- invisible to every linear functional, and sign conditions are where it is spendable
+import Gtz.Quantitative.HypersimplexTorsion
+
+-- Phase 5 (mv-spinor): the harmonic lift transports to every rank, and the one
+-- invariant it discards is the symmetric cubic that carries the triple product's sign
+import Gtz.Quantitative.SpinorTransport
+
+-- Phase 5 (mv-selfdual): the chart dual carries the Loewner flip on the uniform slice,
+-- and the complementation involution is fixed-point free
+import Gtz.Quantitative.SelfDualInvolution
+
+-- Phase 5 (mv-tightframe): the right-endpoint spread obligation IS GtzOriginal 6 3,
+-- the 1997 conjecture at its first open shape
+import Gtz.Reduction.UniformSliceIdentification

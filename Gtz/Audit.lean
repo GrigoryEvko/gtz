@@ -344,6 +344,17 @@ import Gtz.Reduction.ForcedSignForcing
 import Gtz.Reduction.SignClashCoverage
 import Gtz.Design.ExceptionalWitnessDesign
 import Gtz.Reduction.ResidualThreading
+import Gtz.Reduction.FarkasCapacity
+import Gtz.Reduction.ConnectednessRoute
+import Gtz.Reduction.ConnectednessRouteCalibration
+import Gtz.Design.ShippedTieParallelCensus
+import Gtz.Quantitative.HingeRepeatedAtom
+import Gtz.Complex.TrinePrimitive
+import Gtz.Design.StarTripartitionCapacity
+import Gtz.Quantitative.HypersimplexTorsion
+import Gtz.Quantitative.SpinorTransport
+import Gtz.Quantitative.SelfDualInvolution
+import Gtz.Reduction.UniformSliceIdentification
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -10826,3 +10837,204 @@ closed unconditionally. -/
 #print axioms Gtz.gtzWeighted_six_three_of_ownSignForcedClashOnClean
 #print axioms Gtz.gtzWeighted_six_three_of_eraseConsistentForcedClashOnClean
 #print axioms Gtz.gtzWeighted_six_three_of_ownSignForcedClash
+
+-- Phase 5 (cheap-farkas): the multi-edge capacity lemma and its certificate region
+#print axioms Gtz.exists_nonneg_of_farkasCertificate
+#print axioms Gtz.exists_nonneg_edgeTripleValue_of_boxDeficit_of_farkasCertificate
+#print axioms Gtz.orderedDistinctPairs
+#print axioms Gtz.orderedDistinctTriples
+#print axioms Gtz.mem_orderedDistinctPairs
+#print axioms Gtz.mem_orderedDistinctTriples
+#print axioms Gtz.orderedDistinctTriples_six_eq_distinctTriples
+#print axioms Gtz.sum_orderedDistinctTriples_swapFirstSecond
+#print axioms Gtz.sum_orderedDistinctTriples_swapSecondThird
+#print axioms Gtz.sum_orderedDistinctTriples_rotateRight
+#print axioms Gtz.sum_orderedDistinctTriples_rotateLeft
+#print axioms Gtz.sum_orderedDistinctTriples_swapFirstThird
+#print axioms Gtz.edgeTripleValue_rotateRight
+#print axioms Gtz.edgeTripleValue_rotateLeft
+#print axioms Gtz.edgeTripleValue_swapSecondThird
+#print axioms Gtz.edgeTripleValue_swapFirstThird
+#print axioms Gtz.farkasAggregate
+#print axioms Gtz.farkasCertificateValue
+#print axioms Gtz.farkasCertificateValue_eq_sum_orderedDistinctTriples
+#print axioms Gtz.sum_orderedDistinctTriples_farkasAggregate_mul_edgeTripleValue
+#print axioms Gtz.exists_nonneg_edgeTripleValue_of_farkasCertificate
+#print axioms Gtz.discriminantTrace_swapPair
+#print axioms Gtz.tripleRadius_edge_comm
+#print axioms Gtz.tripleRadius_rotateRight
+#print axioms Gtz.tripleRadius_rotateLeft
+#print axioms Gtz.tripleRadius_swapSecondThird
+#print axioms Gtz.tripleRadius_swapFirstThird
+#print axioms Gtz.isForcedMinusTriple_edge_comm
+#print axioms Gtz.isForcedMinusTriple_rotateRight
+#print axioms Gtz.isForcedMinusTriple_rotateLeft
+#print axioms Gtz.isForcedMinusTriple_swapSecondThird
+#print axioms Gtz.isForcedMinusTriple_swapFirstThird
+#print axioms Gtz.HasFarkasCertificate
+#print axioms Gtz.exists_isSignClashTriple_of_hasFarkasCertificate
+#print axioms Gtz.genericExceptionalSignClash_of_forall_without_farkasCertificate_signClash
+#print axioms Gtz.genericExceptionalSignClash_of_forall_without_certificate_signClash
+#print axioms Gtz.gtzWeighted_six_three_of_forall_without_certificate_signClash
+
+-- Phase 5 (front-connected): the connectedness route and its small-cell calibration
+#print axioms Gtz.atomFamilySum
+#print axioms Gtz.atomFamilySum_eq_subsetSum
+#print axioms Gtz.atomMatrix_neg
+#print axioms Gtz.AtomsStrict
+#print axioms Gtz.atomsStrict_icosaDesign
+#print axioms Gtz.atomsStrict_iff
+#print axioms Gtz.atomsStrict_transfer
+#print axioms Gtz.atomsStrict_transfer_const
+#print axioms Gtz.AtomsWeak
+#print axioms Gtz.atomsWeak_iff
+#print axioms Gtz.atomsWeak_of_atomsStrict
+#print axioms Gtz.continuous_gapForm_pair
+#print axioms Gtz.continuous_selfDotProduct
+#print axioms Gtz.gapForm_eq
+#print axioms Gtz.gapForm_smul
+#print axioms Gtz.gapForm_twoTwo
+#print axioms Gtz.gtzWeightedAll_three_of_hinge_of_reach
+#print axioms Gtz.gtzWeighted_of_hinge_of_reach
+#print axioms Gtz.gtzWeighted_six_three_of_hinge_of_reach
+#print axioms Gtz.gtzWeighted_twoTwo
+#print axioms Gtz.HasDominatingSubset
+#print axioms Gtz.hasDominatingSubset_of_strict
+#print axioms Gtz.hasParallelPair_of_pairDet_eq_zero
+#print axioms Gtz.hasParallelPair_of_reweight
+#print axioms Gtz.hasParallelPair_reweight_of
+#print axioms Gtz.HasStrictlyDominatingSubset
+#print axioms Gtz.hingeHoldsAtSize_twoTwo
+#print axioms Gtz.icosaDesign_hasStrictlyDominatingSubset
+#print axioms Gtz.inv_mul_inv_mul_self_eq_one
+#print axioms Gtz.isClosed_atomsWeak
+#print axioms Gtz.isCompact_unitLevel
+#print axioms Gtz.isHermitian_gap
+#print axioms Gtz.isOpen_atomsStrict
+#print axioms Gtz.isTie_iff_dominating_and_not_strict
+#print axioms Gtz.negateAtom
+#print axioms Gtz.negateAtom_atom_other
+#print axioms Gtz.negateAtom_atom_self
+#print axioms Gtz.not_atomsStrict_zero
+#print axioms Gtz.not_forall_parallelFree_strictlyDominates_fiveThree
+#print axioms Gtz.not_hasParallelPair_negateAtom
+#print axioms Gtz.not_hasParallelPair_twoTwo
+#print axioms Gtz.not_parallelFreeReachesAnchor_rankTwo
+#print axioms Gtz.not_parallelFreeReachesAnchor_twoTwo
+#print axioms Gtz.pairDet
+#print axioms Gtz.pairDet_negateAtom
+#print axioms Gtz.pairDet_ne_zero_of_parallelFree
+#print axioms Gtz.pairDet_ne_zero_twoTwo
+#print axioms Gtz.ParallelFreeReachesAnchor
+#print axioms Gtz.parallelFreeReachesAnchor_at_anchor
+#print axioms Gtz.parsevalEntry
+#print axioms Gtz.parsevalForm_twoTwo
+#print axioms Gtz.posDef_gap_of_pos_on_unitLevel
+#print axioms Gtz.posDef_gap_twoTwo
+#print axioms Gtz.pos_on_unitLevel_of_posDef
+#print axioms Gtz.reweight
+#print axioms Gtz.reweight_atom
+#print axioms Gtz.selfDotProduct_pos
+#print axioms Gtz.strictlyDominating_of_hinge_of_reach
+#print axioms Gtz.strict_or_not_dominating_of_not_isTie
+#print axioms Gtz.trichotomy_of_design
+#print axioms Gtz.unitLevel
+#print axioms Gtz.weight_mul_pairDet_sq
+
+-- Phase 5 (front-hinge-decide): the hinge's evidence base at (6,3)
+#print axioms Gtz.every_shipped_sixThree_tie_hasParallelPair
+#print axioms Gtz.hasParallelPair_bundledCycleDesign
+#print axioms Gtz.hasParallelPair_bundlingSevenThreeHeavy
+#print axioms Gtz.hasParallelPair_bundlingSevenThreeMixed
+#print axioms Gtz.hasParallelPair_bundlingSevenThreePaired
+#print axioms Gtz.hasParallelPair_bundlingSixThreeHeavy
+#print axioms Gtz.hasParallelPair_bundlingSixThreePaired
+#print axioms Gtz.hasParallelPair_splitTetraDesign
+#print axioms Gtz.hingeHoldsAtSize_six_three_iff_repeatedAtom
+#print axioms Gtz.not_isTie_of_parallel_ratio_ne_sixThree
+#print axioms Gtz.trineDesign_isPrimitive
+
+-- Phase 5 (front-signclash, front-integrality): the star certificate layer and the torsion bridge
+#print axioms Gtz.certificate_does_not_decide_domination
+#print axioms Gtz.discriminantTie_icosaDesign_zeroOneFour
+#print axioms Gtz.edgeTripleValue_link_comm
+#print axioms Gtz.eq_neg_radius_of_neg_of_abs_eq
+#print axioms Gtz.exists_isTorsionPoint_neg_on_forced
+#print axioms Gtz.exists_nonneg_edgeTripleValue_of_boxDeficit_torsionFree
+#print axioms Gtz.exists_nonneg_edgeTripleValue_of_freeStarBudget
+#print axioms Gtz.exists_nonneg_edgeTripleValue_of_starTripartitionDeficit
+#print axioms Gtz.exists_nonneg_of_boxDeficit
+#print axioms Gtz.exists_nonneg_of_torsionDeficit
+#print axioms Gtz.exists_thresholdSign_triple_sum_neg
+#print axioms Gtz.forcedExtreme
+#print axioms Gtz.hasForcedBoxDeficitEdge_of_torsionFreeDeficit
+#print axioms Gtz.hypersimplexRelaxationWeight_congr
+#print axioms Gtz.hypersimplexRelaxationWeight_relabelDesign_of_constant
+#print axioms Gtz.hypersimplexRelaxationWeight_uniform
+#print axioms Gtz.IsBoxPoint
+#print axioms Gtz.isBoxPoint_of_isTorsionPoint
+#print axioms Gtz.IsFractionalCertificate
+#print axioms Gtz.isFractionalCertificate_congr
+#print axioms Gtz.isGreatest_sum_smul_isBoxPoint
+#print axioms Gtz.isGreatest_sum_smul_isTorsionPoint
+#print axioms Gtz.IsTorsionPoint
+#print axioms Gtz.isTorsionPoint_signedExtreme
+#print axioms Gtz.not_dominates_icosaDesign_zeroOneFour
+#print axioms Gtz.posSemidef_of_isFractionalCertificate
+#print axioms Gtz.signedExtreme
+#print axioms Gtz.sum_link_symmetric_coefficient_mul_edgeTripleValue
+#print axioms Gtz.sum_smul_le_free_of_isBoxPoint
+#print axioms Gtz.sum_smul_le_free_sub_forced_of_isTorsionPoint
+#print axioms Gtz.sum_smul_le_sum_abs_smul_of_isBoxPoint
+#print axioms Gtz.sum_smul_signedExtreme
+#print axioms Gtz.sum_weight_mul_abs_edgeTripleValue_sq_le_freeBudget
+#print axioms Gtz.thresholdSign
+#print axioms Gtz.thresholdSign_add_eq_zero
+#print axioms Gtz.thresholdSign_add_nonneg_mul
+#print axioms Gtz.torsionBudget
+#print axioms Gtz.torsionDeficit_of_boxDeficit
+#print axioms Gtz.torsion_invisible_to_linear_functionals
+#print axioms Gtz.trineSixData_one_le_pairing
+#print axioms Gtz.trineSixData_torsion_fails
+#print axioms Gtz.trineSixData_triangle_eq_zero
+
+-- Phase 5 (mv-spinor, mv-selfdual, mv-tightframe): the multiverse layer
+#print axioms Gtz.allHeavy_chartDual_of_uniformWeight_sixThree
+#print axioms Gtz.atomMatrix_def_vecMulVec
+#print axioms Gtz.atomPairing_product_eq_cubicInvariant_add
+#print axioms Gtz.atomPairing_product_rankTwo
+#print axioms Gtz.card_image_compl_residualSectors
+#print axioms Gtz.compl_mem_residualSectors
+#print axioms Gtz.dominates_iff_dominates_chartDual_compl_of_uniformWeight_sixThree
+#print axioms Gtz.dominates_iff_posSemidef_five_smul_one_sub_subsetSum_compl_sixThree
+#print axioms Gtz.dotProduct_chartDual_of_uniformWeight
+#print axioms Gtz.exists_dominates_of_hasParallelPair_chartDual_of_uniformWeight_sixThree
+#print axioms Gtz.gtzOriginal_five_three_and_spreadFloorCertificate_iff
+#print axioms Gtz.gtzOriginal_iff_forall_uniform_dominates
+#print axioms Gtz.gtzOriginal_of_forall_uniform_dominates
+#print axioms Gtz.icosaDesign_cubicInvariant
+#print axioms Gtz.icosaDesign_cubicInvariant_separates
+#print axioms Gtz.icosaDesign_lift_does_not_decide_domination
+#print axioms Gtz.icosaDesign_tracelessNorm
+#print axioms Gtz.icosaDesign_tracelessPairing
+#print axioms Gtz.leverage_mem_Icc_of_weight_eq_sizeInv
+#print axioms Gtz.leverageOf_lt_of_hasStrictlyDominatingCoSingletons_of_uniformWeight
+#print axioms Gtz.not_dominates_icosaDesign_zeroThreeFour
+#print axioms Gtz.posSemidef_smul_one_sub_transpose_comm
+#print axioms Gtz.projectionOfDesign_ne_of_isChartDual
+#print axioms Gtz.sectorCount_twoSidedBand
+#print axioms Gtz.sectorCount_twoSidedBand_and_sectorSurvives
+#print axioms Gtz.sectorSurvives_compl_eq
+#print axioms Gtz.selectedAtomRows_mul_transpose_chartDual_of_uniformWeight
+#print axioms Gtz.selfDual_eq_top_iff_of_pos
+#print axioms Gtz.selfDual_ne_top_of_ne_three
+#print axioms Gtz.SixThreeCrux.exists_selfDual_partner_of_uniformWeight
+#print axioms Gtz.SixThreeCrux.hasNoParallelPair_chartDual_of_uniformWeight
+#print axioms Gtz.spreadFloorCertificate_sixThree_sizeInv_iff_gtzOriginal
+#print axioms Gtz.trace_atomMatrix_mul_mul
+#print axioms Gtz.trace_sub_smul_one_mul_sub_smul_one
+#print axioms Gtz.trace_tracelessAtomMatrix_mul
+#print axioms Gtz.trace_tracelessAtomMatrix_mul_mul_rankTwo
+#print axioms Gtz.trace_tracelessAtomMatrix_sq
+#print axioms Gtz.twoSidedBand
+#print axioms Gtz.twoSidedBandAtBase
