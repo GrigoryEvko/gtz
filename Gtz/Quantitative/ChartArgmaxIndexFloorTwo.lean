@@ -63,9 +63,11 @@ no pivot.
 * NOTHING IS SAID ABOUT `s = 0` OR `s = 1` BEING EXCLUDED.  A unit tight vector has support
   at least one, so `s = 1` is free and gives only `|A| >= 3`, which the shipped
   `Gtz.SixThreeCrux.three_le_card_chartArgmaxFamily` already has.  The content is `s = 2`.
-* THE MEASURED FLOOR IS STILL NOT PROVED.  Two numerical campaigns report no admissible
-  chart-stationary point below eight argmax blocks.  That is a MEASUREMENT with a known
-  component bias and nothing here assumes any of it.
+* THE MEASURED FLOOR IS SIX, NOT EIGHT, AND IS STILL NOT PROVED.  An earlier reading of the
+  numerical record put it at eight; the record itself refutes that.  The fifteen refined
+  census points are admissible chart-stationary points whose argmax families have size six
+  at five of them and seven at the other ten, verified to four hundred digits.  Nothing here
+  assumes any of it, and the ladder above delivers `2 + s` independently.
 
 ## The vanishing-pairing layer, and an honest negative
 

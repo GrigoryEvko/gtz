@@ -314,10 +314,14 @@ fixes six of the nine classes and sends the other three to non-simple matroids,
 so there is no dual PAIR to exploit, and at seven points it exports to rank four
 and off this rung.  Confirmed exactly by matroid duality on all nine classes.
 
-`PatternListIsCompleteUpToRelabel` — the enumeration itself — remains unproved in
-Lean, and no `List (LinePattern 6)` or `List (LinePattern 7)` exists anywhere in
-the repository; every assembly below takes it as a named hypothesis and none
-pretends otherwise.  A boundary-behaviour measurement worth recording because it
+`PatternListIsCompleteUpToRelabel` — the enumeration itself — was unproved and
+listless when this file was written, and both gaps have since closed at six
+points.  `Gtz.linePatternListSix` and `Gtz.linePatternListSeven` ship in
+`Gtz.Design.LinePatternEnumeration`; `Gtz.patternListIsCompleteUpToRelabel_six`
+and `Gtz.linearSpaceListIsComplete_six` are hypothesis-free theorems in
+`Gtz.Design.LinePatternSixCasesTwo`, as is the four-point sibling.  Seven points
+is still open.  Every assembly below still takes the enumeration as a named
+hypothesis, which is now dischargeable at six points and genuine at seven.  A boundary-behaviour measurement worth recording because it
 constrains attacks rather than settling anything: with the design constrained
 only by Parseval (Stiefel rows) and a barrier holding the non-line brackets off
 zero, both known-tie classes register as INTERIOR ties (all constraints slack)

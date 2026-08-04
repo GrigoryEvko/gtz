@@ -17,7 +17,7 @@ gauge `g_c ↦ z_c g_c`, `|z_c| = 1`, with `pairing c d = |⟨g_c,g_d⟩|²` and
 is built from these coordinates and every relation it invokes is one that holds
 over `ℂ` as well as over `ℝ`.
 
-`isPhaseFreeAdmissible_of_design` lists thirteen such relations and proves that
+`isPhaseFreeAdmissible_of_design` lists fifteen such relations and proves that
 every all-heavy real design satisfies all of them. Exactly one of them is
 weakened on the way: over `ℝ` the triangle invariant obeys the EQUALITY
 
@@ -28,7 +28,7 @@ of the Bargmann invariant. `triangleCap` records the inequality.
 
 **The theorem.** That single weakening is already fatal.
 `trineSixData` and `trineSevenData` are explicit RATIONAL points — every
-coordinate is one of `1/12, 1/6, 0, 1, 2, 3, 9` — which satisfy all thirteen
+coordinate is one of `1/12, 1/6, 0, 1, 2, 3, 9` — which satisfy all fifteen
 relations and at which EVERY ordered triple has `determinantLeg < 0`. So the
 phase-free relaxation of `DiscriminantCovering 6` and of `DiscriminantCovering 7`
 is FALSE. A Positivstellensatz certificate proves the emptiness of a
@@ -40,7 +40,7 @@ semialgebraic set; these points are members of the corresponding set; hence
 The points are not invented: they are the phase-free image of the shared-axis
 trine of `Gtz/Complex/SharpConstantLedger.lean` (and of its atom split), whose
 twenty triples all fail over `ℂ`. That is what makes them satisfy every relation
-valid over `ℂ` — including relations far beyond the thirteen listed here, such as
+valid over `ℂ` — including relations far beyond the fifteen listed here, such as
 every higher Bargmann invariant and every rank condition. Enlarging the list
 cannot repair the obstruction; only re-imposing the phase defect can.
 
@@ -96,7 +96,7 @@ def determinantLeg (point : PhaseFreeData size) (pivot pairFirst pairSecond : Fi
 
 end PhaseFreeData
 
-/-- **The phase-free relaxation.** Thirteen relations, every one of them valid
+/-- **The phase-free relaxation.** Fifteen relations, every one of them valid
 for every all-heavy weighted `(size,3)` design over `ℝ` — and, with `pairing` and
 `triangle` read as squared modulus and real part of the Bargmann invariant, valid
 over `ℂ` as well. The real system satisfies `triangleCap` with EQUALITY; asking

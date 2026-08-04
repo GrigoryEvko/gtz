@@ -18,10 +18,17 @@ known to impose on a design, applies all of them, and records the exact residue.
 `Gtz.tripleParity_eq_product_through_base` is hypothesis-free: the parity of ANY
 triple is the product of the three parities joining it to ANY base atom.  So the
 whole two-graph is determined by its LINK at atom `0` -- the ten parities
-`tripleParity design 0 x y` with `x` and `y` in `{1,...,5}` -- and all `2 ^ 10`
-links occur.  A two-graph is therefore a natural number below `1024`, the cocycle
-law holds DEFINITIONALLY instead of as a hypothesis, and no switching gauge has to
-be fixed at the design level.  `Gtz.sectorIncoherent` decodes a link back to the
+`tripleParity design 0 x y` with `x` and `y` in `{1,...,5}` -- and every natural
+number below `2 ^ 10` is a legitimate link word, so the encoding discards nothing.
+It is NOT claimed that every link is REALIZED by a design.  That is a strictly
+stronger, realizability statement; nothing in the tree proves it; and on the
+nonvanishing branch this file REFUTES it, because
+`Gtz.hasNoIncoherentQuadruple_linkWordOf` puts every nonvanishing design's link
+inside the 948 of `Gtz.card_leverOneSectors`, excluding 76, and all three levers
+together leave the 842 of `Gtz.card_residualSectors`, excluding 182.  A two-graph
+is therefore a natural number below `1024`, the cocycle law holds DEFINITIONALLY
+instead of as a hypothesis, and no switching gauge has to be fixed at the design
+level.  `Gtz.sectorIncoherent` decodes a link back to the
 parity of an arbitrary triple as the exclusive-or of its three link bits, and
 `Gtz.sectorIncoherent_linkWordOf` proves the decode agrees with `Gtz.tripleParity`
 at EVERY triple of every design -- no distinctness, no nonvanishing, degenerate

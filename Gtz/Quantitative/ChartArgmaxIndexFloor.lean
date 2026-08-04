@@ -72,13 +72,17 @@ support, and only the case `s = 3` is proved here.
   three independent flat directions instead of two, and a rank-two kill instead of the
   two-atom one below.  Neither is built here.  Note the multiplier-free floor of four proved
   below is a DIFFERENT statement -- it still assumes full support -- and does not cover it.
-* THE MEASURED FLOOR.  Outside the kernel the floor has been measured much higher.  Two
-  independent numerical campaigns report no admissible chart-stationary point with fewer
-  than eight argmax blocks; that is a MEASUREMENT with a known component bias, it is proved
-  nowhere, and this file assumes none of it.
+* THE MEASURED FLOOR IS SIX, NOT EIGHT.  An earlier reading of the numerical record put it
+  at eight -- no admissible chart-stationary point with fewer than eight argmax blocks --
+  and the record refutes that reading.  The fifteen refined census points ARE admissible
+  chart-stationary points, and their argmax families have size exactly six at five of them
+  and seven at the other ten: every weight positive, every multiplier nonnegative, Parseval
+  to four hundred digits, and each declared family equal to its own measured argmax set.
+  So the measured floor is six, the proved floor below is five, and the gap is one rung
+  rather than three.  Neither number is assumed anywhere in this file.
   `Gtz.SixThreeCrux.six_le_card_chartArgmaxFamily_of_assemblyDiagonal_of_ne_five` is the only
-  place any of it appears, and it appears as an EXPLICIT hypothesis that the file does not
-  discharge.
+  place any of it appears, and what it appears as is the explicit hypothesis that the argmax
+  family does not have exactly five members, which the file does not discharge.
 * A DISCHARGE OF THE MULTIPLIER HYPOTHESIS.  The shipped
   `Gtz.SixThreeCrux.exists_multiplier_isChartStationaryData` supplies an assembly with
   constant diagonal, but for ITS OWN tight directions, and only at the argmax blocks.  The
