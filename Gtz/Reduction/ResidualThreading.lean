@@ -663,48 +663,16 @@ theorem stratumIsTieFreeAmongHeavyAtBalancedStress_iff_faces (pattern : LinePatt
 
 end StratumLattice
 
-/-! ## Section 6. Names for the anonymous open obligations
+/-! ## Section 6. The named open obligations, from the frontier side
 
-The two propositions below are carried by the tree as inline `∀`s inside a hypothesis
-and are therefore invisible to any census that indexes by head constant.  Naming them is
-what lets the next census count them.
+`Gtz.HingeStratumObligationSix` and `Gtz.HingeStratumObligationSeven` are defined in
+`Gtz.Design.LinePatternEnumeration`, at the earliest point where every ingredient is in
+scope, and the assemblies there take them by name.  What this section adds is the
+frontier-side reading: what each obligation buys, and that the balanced-stress narrowing
+of the six-point one is the same proposition.
 -/
 
 section OpenObligations
-
-/-- **OPEN.  The six-point hinge stratum obligation.**  Tie-freeness of the eight
-non-near-pencil six-point strata, all-heavy.  Every route into `Gtz.HingeHoldsAtSize 6 3`
-is equivalent to this, and by `Gtz.hingeHoldsAtSize_sixThree_of_tieFreeResidual` it
-suffices for the hinge at `(6,3)` -- which, unlike the seven-point hinge, IS on the path
-to the frontier.
-
-EXTERNAL MEASUREMENT (phase-4 census, not re-derived here).  An exhaustive walk of the
-8947 `Gtz` theorems finds FOUR declarations whose conclusion has this head and ZERO that
-conclude the statement itself; a `Not`-headed pool of 448 candidates yields no
-refutation, with two same-head positive controls firing one and two sizes down
-(`Gtz.not_hingeHoldsAtSize_five_three`, `Gtz.not_hingeHoldsAtSize_four_three`) so the
-sweep provably sees a refutation of this predicate family when one exists.  The
-near-pencil guard peels exactly one of the nine entries of `Gtz.lineFamiliesSix`, so
-eight strata survive; none is discharged anywhere in the tree.  No prior art was found
-for ties on a rank-3 matroid stratum of a weighted Parseval frame. -/
-def HingeStratumObligationSix : Prop :=
-  ∀ lines ∈ lineFamiliesSix, ¬ IsNearPencilFamily lines →
-    StratumIsTieFreeAmongHeavy (lineFamilyPattern lines)
-
-/-- **OPEN.  The seven-point hinge stratum obligation**, with the near-pencil and Fano
-guards.
-
-EXTERNAL MEASUREMENT (phase-4 census, not re-derived here).  Zero producers and exactly
-one consumer tree-wide, and that consumer's conclusion `Gtz.HingeHoldsAtSize 7 3` has
-ZERO consumers -- so unlike the six-point obligation this one is OFF EVERY PATH, and
-discharging it would move nothing.  The two guards peel exactly two of the twenty-three
-entries of `Gtz.lineFamiliesSeven` (near pencil, Fano), both of which are already
-tie-free theorems, leaving twenty-one.  No refutation in the 448-theorem `Not`-headed
-pool, with three positive controls firing. -/
-def HingeStratumObligationSeven : Prop :=
-  ∀ lines ∈ lineFamiliesSeven, ¬ IsNearPencilFamily lines →
-    ¬ IsFanoClass (lineFamilyPattern lines) →
-      StratumIsTieFreeAmongHeavy (lineFamilyPattern lines)
 
 /-- The named six-point obligation is exactly the hypothesis the shipped assembly takes,
 so naming it costs nothing at the call site. -/

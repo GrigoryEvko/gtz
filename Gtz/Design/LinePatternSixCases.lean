@@ -956,16 +956,14 @@ gap 7b.  The contribution is that the combinatorial half no longer mentions `#0`
 theorem hingeHoldsAtSize_of_lineSizeCases_sixThree
     (hthreePoint : LinearSpaceThreePointLineCasesSix)
     (hfourPoint : LinearSpaceFourPointLineCasesSix)
-    (hresidual : ∀ lines ∈ lineFamiliesSix, ¬ IsNearPencilFamily lines →
-      StratumIsTieFreeAmongHeavy (lineFamilyPattern lines)) :
+    (hresidual : HingeStratumObligationSix) :
     HingeHoldsAtSize 6 3 :=
   hingeHoldsAtSize_of_linearSpaceEnumeration_sixThree
     (linearSpaceListIsComplete_six_of_lineSizeCases hthreePoint hfourPoint) hresidual
 
 /-- The six-class form of the hinge assembly. -/
 theorem hingeHoldsAtSize_of_multiLineCases_sixThree (hmulti : LinearSpaceMultiLineCasesSix)
-    (hresidual : ∀ lines ∈ lineFamiliesSix, ¬ IsNearPencilFamily lines →
-      StratumIsTieFreeAmongHeavy (lineFamilyPattern lines)) :
+    (hresidual : HingeStratumObligationSix) :
     HingeHoldsAtSize 6 3 :=
   hingeHoldsAtSize_of_lineSizeCases_sixThree
     (linearSpaceThreePointLineCasesSix_of_multiLineCases hmulti)
@@ -973,8 +971,7 @@ theorem hingeHoldsAtSize_of_multiLineCases_sixThree (hmulti : LinearSpaceMultiLi
 
 /-- The seven-class form of the hinge assembly. -/
 theorem hingeHoldsAtSize_of_middleCases_sixThree (hmiddle : LinearSpaceMiddleCasesSix)
-    (hresidual : ∀ lines ∈ lineFamiliesSix, ¬ IsNearPencilFamily lines →
-      StratumIsTieFreeAmongHeavy (lineFamilyPattern lines)) :
+    (hresidual : HingeStratumObligationSix) :
     HingeHoldsAtSize 6 3 :=
   hingeHoldsAtSize_of_multiLineCases_sixThree
     (linearSpaceMultiLineCasesSix_of_middleCases hmiddle) hresidual

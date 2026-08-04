@@ -107,8 +107,15 @@ combinatorics.
 `LinearSpaceListIsComplete 7 linePatternListSeven` are NOT proved here.  Each says:
 every ternary relation on `Fin n` that is slot-symmetric, closed under the line
 law, and spanning agrees on distinct triples with a relabelling of a listed
-pattern.  Both are decidable propositions about a finite structure — there is no
-undecidability wall.
+pattern.  Neither is a decidable proposition in Lean's sense and neither can be:
+each quantifies over `LinePattern n = Fin n → Fin n → Fin n → Prop`, so no
+`Decidable` instance synthesises and `decide` is unavailable, while
+`Fintype (LinePattern n)` exists only through Mathlib's classical `Prop.fintype`.
+There is nonetheless no undecidability wall — the CONTENT is finite, and the two
+steps that make it finite are that `AgreesOnDistinctTriples` never inspects a
+degenerate triple and that slot symmetry folds the remaining `n(n-1)(n-2)`
+ordered ones onto `C(n,3)`.  Until both steps are taken the domain is `2 ^ 216`
+at six points and `2 ^ 343` at seven, not the `2 ^ 20` and `2 ^ 35` priced below.
 
 Both are also TRUE, and the argument is short enough to state exactly.  A
 canonicalization outside Lean, over all `6!` and all `7!` relabellings of each
@@ -126,12 +133,20 @@ What is missing is a Lean proof, and the honest reason is measured, not guessed:
   points and `2 ^ 35` at seven.  Measured kernel throughput on this toolchain is
   about `10 ^ 5` to `10 ^ 6` decision steps per second (a 5040-case `decide` over
   `Equiv.Perm (Fin 7)` with an integer payload costs 76 s), and the axiom test
-  alone is of order a hundred steps per case.  Six points is therefore hours at
-  best and seven points is out of reach by ten orders of magnitude.
-* Canonical-form reduction does not help the SWEEP: canonicalizing is cheap
-  (about 253 000 permutation applications for the 352 labelled six-point strata),
-  but the universally quantified sweep over non-solutions is what dominates, and
-  canonicalization does not shrink it.
+  alone is of order a hundred steps per case.  Six points is therefore two to
+  twenty minutes and seven points is `2 ^ 15` times that — four and a half orders
+  of magnitude, forty days to a year.
+* Canonical-form reduction does not help the SWEEP, but SEARCH does, and that is
+  the sharpest thing known about this obligation.  Slot symmetry plus the line law
+  says any two triples inside a four-set share a pair, so the dependent count in
+  every four-subset lies in `{0, 1, 4}`: the constraint is `C(n,4)` conditions of
+  arity four, not one condition of arity `C(n,3)`.  Depth-first search with unit
+  propagation over that system is BACKTRACK-FREE — zero conflicts at every size
+  tested — and visits `2 S - 1` nodes for `S` solutions: 705 nodes and 353
+  solutions at six points, 16 779 nodes and 8390 at seven, of which 352 and 8389
+  are spanning, reproducing the labelled counts recorded below.  So the sweep over
+  non-solutions costs nothing; they are never enumerated.  What blocks the Lean
+  route is not the size of the search but that `decide` cannot propagate.
 * The route that does work is the structural one — case on the maximal line size,
   then on the number of three-point lines — and at six points it is genuinely
   short on paper: max line size five forces the near pencil; four forces
@@ -1127,6 +1142,48 @@ What each theorem takes is exactly the residual: the combinatorial completeness 
 the list, plus per surviving family a tie-freeness statement.  Everything that was
 analysis is discharged. -/
 
+/-! ### The residual, named
+
+Each assembly's residual hypothesis is one of the two propositions below.  They are
+named here, at the earliest point where every ingredient is in scope, so that a census
+indexing by head constant can see them: carried inline, a `∀` inside a hypothesis is
+invisible to such a census.  The bridges that consume them from the frontier side live
+in `Gtz.Reduction.ResidualThreading`. -/
+
+/-- **OPEN.  The six-point hinge stratum obligation.**  Tie-freeness of the eight
+non-near-pencil six-point strata, all-heavy.  Every route into `Gtz.HingeHoldsAtSize 6 3`
+is equivalent to this, and by `Gtz.hingeHoldsAtSize_sixThree_of_tieFreeResidual` it
+suffices for the hinge at `(6,3)` -- which, unlike the seven-point hinge, IS on the path
+to the frontier.
+
+EXTERNAL MEASUREMENT (phase-4 census, not re-derived here).  An exhaustive walk of the
+8947 `Gtz` theorems finds FOUR declarations whose conclusion has this head and ZERO that
+conclude the statement itself; a `Not`-headed pool of 448 candidates yields no
+refutation, with two same-head positive controls firing one and two sizes down
+(`Gtz.not_hingeHoldsAtSize_five_three`, `Gtz.not_hingeHoldsAtSize_four_three`) so the
+sweep provably sees a refutation of this predicate family when one exists.  The
+near-pencil guard peels exactly one of the nine entries of `Gtz.lineFamiliesSix`, so
+eight strata survive; none is discharged anywhere in the tree.  No prior art was found
+for ties on a rank-3 matroid stratum of a weighted Parseval frame. -/
+def HingeStratumObligationSix : Prop :=
+  ∀ lines ∈ lineFamiliesSix, ¬ IsNearPencilFamily lines →
+    StratumIsTieFreeAmongHeavy (lineFamilyPattern lines)
+
+/-- **OPEN.  The seven-point hinge stratum obligation**, with the near-pencil and Fano
+guards.
+
+EXTERNAL MEASUREMENT (phase-4 census, not re-derived here).  Zero producers and exactly
+one consumer tree-wide, and that consumer's conclusion `Gtz.HingeHoldsAtSize 7 3` has
+ZERO consumers -- so unlike the six-point obligation this one is OFF EVERY PATH, and
+discharging it would move nothing.  The two guards peel exactly two of the twenty-three
+entries of `Gtz.lineFamiliesSeven` (near pencil, Fano), both of which are already
+tie-free theorems, leaving twenty-one.  No refutation in the 448-theorem `Not`-headed
+pool, with three positive controls firing. -/
+def HingeStratumObligationSeven : Prop :=
+  ∀ lines ∈ lineFamiliesSeven, ¬ IsNearPencilFamily lines →
+    ¬ IsFanoClass (lineFamilyPattern lines) →
+      StratumIsTieFreeAmongHeavy (lineFamilyPattern lines)
+
 /-- **The hinge at six points, from this list.**  The hypotheses are (i) the
 combinatorial completeness of `linePatternListSix`, which is decidable and true by
 the classical catalogue, and (ii) for each of the EIGHT families that is not the
@@ -1134,8 +1191,7 @@ near pencil, tie-freeness among designs of leverage at least one — the narrowi
 the ledger's leverage floor already pays for.  Nothing else. -/
 theorem hingeHoldsAtSize_of_linearSpaceEnumeration_sixThree
     (hcomplete : LinearSpaceListIsComplete 6 linePatternListSix)
-    (hresidual : ∀ lines ∈ lineFamiliesSix, ¬ IsNearPencilFamily lines →
-      StratumIsTieFreeAmongHeavy (lineFamilyPattern lines)) :
+    (hresidual : HingeStratumObligationSix) :
     HingeHoldsAtSize 6 3 := by
   refine hingeHoldsAtSize_of_heavyResidualLedger_sixThree linePatternListSix
     (patternListIsCompleteUpToRelabel_of_linearSpaceListIsComplete (by omega) _ hcomplete) ?_
@@ -1151,9 +1207,7 @@ twenty-one families, and the only non-combinatorial input is the open
 `Gtz.GtzWeighted 6 3` that buys the leverage floor one size up. -/
 theorem hingeHoldsAtSize_of_linearSpaceEnumeration_sevenThree (hsixThree : GtzWeighted 6 3)
     (hcomplete : LinearSpaceListIsComplete 7 linePatternListSeven)
-    (hresidual : ∀ lines ∈ lineFamiliesSeven, ¬ IsNearPencilFamily lines →
-      ¬ IsFanoClass (lineFamilyPattern lines) →
-        StratumIsTieFreeAmongHeavy (lineFamilyPattern lines)) :
+    (hresidual : HingeStratumObligationSeven) :
     HingeHoldsAtSize 7 3 := by
   refine hingeHoldsAtSize_of_heavyResidualLedger_sevenThree hsixThree linePatternListSeven
     (patternListIsCompleteUpToRelabel_of_linearSpaceListIsComplete (by omega) _ hcomplete) ?_

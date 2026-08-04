@@ -1556,8 +1556,7 @@ theorem patternListIsCompleteUpToRelabel_six :
 of `Gtz.hingeHoldsAtSize_of_lineSizeCases_sixThree` is discharged; the eight
 ledger entries are all that is left. -/
 theorem hingeHoldsAtSize_sixThree_of_tieFreeResidual
-    (hresidual : ∀ lines ∈ lineFamiliesSix, ¬ IsNearPencilFamily lines →
-      StratumIsTieFreeAmongHeavy (lineFamilyPattern lines)) :
+    (hresidual : HingeStratumObligationSix) :
     HingeHoldsAtSize 6 3 :=
   hingeHoldsAtSize_of_linearSpaceEnumeration_sixThree linearSpaceListIsComplete_six hresidual
 
