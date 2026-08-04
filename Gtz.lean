@@ -1951,3 +1951,9 @@ import Gtz.Quantitative.SelfDualInvolution
 -- Phase 5 (mv-tightframe): the right-endpoint spread obligation IS GtzOriginal 6 3,
 -- the 1997 conjecture at its first open shape
 import Gtz.Reduction.UniformSliceIdentification
+-- Phase 6: the reach hypothesis PROVEN -- Cholesky whitening (T2), the
+-- parallel-free reach with its hinge-only capstones (T1+T3), and the
+-- general-rank stress sign-split for the (7,3) syzygy lane
+import Gtz.Reduction.CholeskyWhitening
+import Gtz.Reduction.ParallelFreeReach
+import Gtz.Reduction.StressSignSplit
