@@ -358,6 +358,10 @@ import Gtz.Reduction.UniformSliceIdentification
 import Gtz.Reduction.CholeskyWhitening
 import Gtz.Reduction.ParallelFreeReach
 import Gtz.Reduction.StressSignSplit
+import Gtz.Reduction.StressExistence
+import Gtz.Reduction.K4Diagonal
+import Gtz.Reduction.SpCertificates
+import Gtz.Reduction.ChartRealization
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11176,3 +11180,54 @@ closed unconditionally. -/
 #print axioms Gtz.weightedDesign_atoms_span
 #print axioms Gtz.design_rank_le_card_sides
 #print axioms Gtz.sevenThree_design_stress_split
+#print axioms Gtz.HasIndependentDropOneFamilies
+#print axioms Gtz.stress_eq_zero_of_coordinate_eq_zero
+#print axioms Gtz.stress_coordinates_ne_zero
+#print axioms Gtz.exists_ratio_of_second_stress
+#print axioms Gtz.stress_restricts_to_support
+#print axioms Gtz.stress_support_dichotomy
+#print axioms Gtz.not_linearIndependent_on_support_of_stress
+#print axioms Gtz.sevenThree_stressLine_of_dropOneIndependent
+#print axioms Gtz.sevenThree_canonicalStress_of_dropOneIndependent
+#print axioms Gtz.sevenThree_exists_rescaledReducedDesign
+#print axioms Gtz.k4TreeTriples_length
+#print axioms Gtz.k4TreeTriples_count_eq_eight
+#print axioms Gtz.k4_all_trees_tight_forces_zero
+#print axioms Gtz.k4_no_common_kernel_all_trees_tight
+#print axioms Gtz.k4_averaged_gapForm_identity
+#print axioms Gtz.k4_averaged_positivity
+#print axioms Gtz.k4_exists_tree_gapForm_nonneg
+#print axioms Gtz.k4TreeGapForm_apexStar_stratum
+#print axioms Gtz.k4StratumGapMatrix_det_sub_smul
+#print axioms Gtz.k4StratumGapMatrix_det_sub_smul_stratum
+#print axioms Gtz.k4StratumGapMatrix_charpoly
+#print axioms Gtz.k4StratumGapMatrix_charpoly_stratum
+#print axioms Gtz.k4StratumGapMatrix_mulVec_of_sum_eq_zero
+#print axioms Gtz.k4StratumGapMatrix_mulVec_const
+#print axioms Gtz.k4StratumGapForm_pencil
+#print axioms Gtz.k4StratumGapForm_ge_twoMin
+#print axioms Gtz.k4StratumGapForm_eq_twoMin_of_sum_eq_zero
+#print axioms Gtz.sq_sum_le_sum_inv_mul_sum_mul_sq
+#print axioms Gtz.harmonicMean_mul_sq_sum_le
+#print axioms Gtz.saddle_cleared
+#print axioms Gtz.seriesForest_saddle_bound
+#print axioms Gtz.parallelForest_combine
+#print axioms Gtz.parallelTree_combine
+#print axioms Gtz.rootParallel_nonpos
+#print axioms Gtz.parallelTree_combine_mean
+#print axioms Gtz.seriesTree_combine
+#print axioms Gtz.seriesForest_combine
+#print axioms Gtz.exists_child_ge_weightedMean
+#print axioms Gtz.exists_child_ratio_ge
+#print axioms Gtz.diamondNetEnergy_pair
+#print axioms Gtz.diamondNetEnergy_triple
+#print axioms Gtz.diamondNetEnergy_sdiff_add
+#print axioms Gtz.diamondPathTree_bound
+#print axioms Gtz.diamondPathForest_bound
+#print axioms Gtz.diamondRoot_choice
+#print axioms Gtz.diamondNet_exists_spanningTree_energy_bound
+#print axioms Gtz.exists_design_minimiser_of_not_gtzWeighted
+#print axioms Gtz.exists_design_minimiser_over_designs_of_not_gtzWeighted
+#print axioms Gtz.chartGtz_five_three
+#print axioms Gtz.chartGtz_five_two
+#print axioms Gtz.exists_design_minimiser_of_not_gtzWeighted_sixThree

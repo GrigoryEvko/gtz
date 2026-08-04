@@ -1957,3 +1957,11 @@ import Gtz.Reduction.UniformSliceIdentification
 import Gtz.Reduction.CholeskyWhitening
 import Gtz.Reduction.ParallelFreeReach
 import Gtz.Reduction.StressSignSplit
+-- Phase 7: the wave-1 landings -- the canonical (7,3) stress with its
+-- (3,4) split, the K4 diagonal bricks and pencil law, the Nesterenko
+-- series-parallel certificate kit with the diamond instance, and the
+-- design-form variational principle
+import Gtz.Reduction.StressExistence
+import Gtz.Reduction.K4Diagonal
+import Gtz.Reduction.SpCertificates
+import Gtz.Reduction.ChartRealization
