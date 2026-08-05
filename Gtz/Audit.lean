@@ -11774,3 +11774,9 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.dependency_sq_eq_of_tieFrame
 #print axioms Gtz.pairing_eq_of_tieFrame
 #print axioms Gtz.weighted_sq_le_neg_mul_of_mean_zero
+#print axioms EndpointSpike.endpointBottomTieExclusionFiveThree_holds
+#print axioms EndpointSpike.sharedLinePairAtEveryTie_holds
+#print axioms EndpointSpike.exists_naimarkDual_with_bracketDictionary
+#print axioms EndpointSpike.posDef_primalGap_of_posDef_dualPairGap
+#print axioms EndpointSpike.dependence_of_dualPairBracket_eq_zero
+#print axioms EndpointSpike.atomBracket_eq_zero_of_offPairDependence

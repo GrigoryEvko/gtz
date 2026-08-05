@@ -367,10 +367,12 @@ theorem no_sharedLinePair_of_spikedBottom
     (atom_ne_zero_of_isPrimitiveDesign (by norm_num) bottomDesign hprimitive (relabel 1))
     hnormalOneNonzero hnormalTwoNonzero
 
-/-! ## The residual, refactored
+/-! ## The residual
 
-Copied verbatim from the endpoint artifact's definition, so that the reduction
-below is a statement about the SAME Prop. -/
+The target Prop is the tree's `Gtz.EndpointBottomTieExclusionFiveThree`
+(defined in `Gtz.Reduction.EndpointGaugeDescent` and visible here through
+`open Gtz`), so the reduction and the closure below are statements about the
+SAME Prop the endpoint chain consumes. -/
 
 /-- **The matroid residual.**  Every primitive `(5,3)` tie carries two dependent
 atom triples through a common atom -- the shared line pair.  Both of the tree's
@@ -550,5 +552,800 @@ theorem matching_or_triangle_of_coveringEdges (edge : Fin 5 → Fin 5 → Prop)
     Ne.symm hspokeSndSnd, hseedEdge, ?_, hsymm _ _ hspokeSndEdge⟩
   rw [hspokesEq]
   exact hsymm _ _ hspokeFstEdge
+
+/-! ## The explicit Naimark dual at `(5,3)`, with the bracket dictionary
+
+`Gtz.weighted_naimark_duality` ships the dual design but keeps its atoms
+opaque, so nothing can be said about their PARALLELISM.  The residual needs
+exactly that: a dual whose bracket-zero pairs certify primal dependent
+triples.  The construction below replays the shipped one — whitener of the
+co-Parseval operator, slack-scaled co-design rows, orthonormal completion,
+weight-rescaled dual atoms — and exports the two facts the endgame consumes:
+
+* **the dictionary**: a vanishing dual pair bracket yields a nontrivial
+  primal atom dependence supported off the pair;
+* **the transfer**: a strictly dominating dual pair yields a strictly
+  dominating primal triple (its complement).
+
+The completion columns span the orthocomplement of the co-design columns, so
+a dual parallel pair gives a kernel vector of the co-design transpose
+vanishing at both labels — a dependence of the three complementary atoms.
+That is the classical Gale dictionary, and it was verified exactly, all ten
+pairs, on both shipped `(5,3)` ties before being mechanized here. -/
+
+/-- **The dictionary half.**  All construction data passed explicitly. -/
+theorem dependence_of_dualPairBracket_eq_zero (D : WeightedDesign 5 3)
+    (whitener : Matrix (Fin 3) (Fin 3) ℝ) (hwhitenerUnit : IsUnit whitener.det)
+    (coDesign : Matrix (Fin 5) (Fin 3) ℝ)
+    (hcoDesignShape : ∀ (label : Fin 5) (coordIdx : Fin 3), coDesign label coordIdx
+        = Real.sqrt (1 - D.weight label) * (whitenerᵀ *ᵥ D.atom label) coordIdx)
+    (completion : Matrix (Fin 5) (Fin 2) ℝ)
+    (hcompletionOrtho : completionᵀ * completion = 1)
+    (hcoDesignPerp : coDesignᵀ * completion = 0)
+    (dualDesign : WeightedDesign 5 2)
+    (hdualAtom : ∀ label : Fin 5, dualDesign.atom label
+        = (Real.sqrt (D.weight label))⁻¹ • (fun colIdx => completion label colIdx))
+    (pairFst pairSnd : Fin 5)
+    (hbracket : pairBracket dualDesign pairFst pairSnd = 0) :
+    ∃ dependence : Fin 5 → ℝ,
+      (∃ witnessLabel, dependence witnessLabel ≠ 0)
+        ∧ dependence pairFst = 0 ∧ dependence pairSnd = 0
+        ∧ (∑ label, dependence label • D.atom label) = 0 := by
+  classical
+  have hslackPos : ∀ label : Fin 5, 0 < 1 - D.weight label := fun label => by
+    linarith [weight_lt_one D (by norm_num) label]
+  have hrootPos : ∀ label : Fin 5, 0 < Real.sqrt (D.weight label) := fun label =>
+    Real.sqrt_pos.mpr (D.weight_pos label)
+  -- the completion rows of the pair are dependent
+  have hcompletionDet : completion pairFst 0 * completion pairSnd 1
+      - completion pairFst 1 * completion pairSnd 0 = 0 := by
+    have hexpand : pairBracket dualDesign pairFst pairSnd
+        = (Real.sqrt (D.weight pairFst))⁻¹ * (Real.sqrt (D.weight pairSnd))⁻¹
+          * (completion pairFst 0 * completion pairSnd 1
+              - completion pairFst 1 * completion pairSnd 0) := by
+      rw [pairBracket, hdualAtom pairFst, hdualAtom pairSnd]
+      simp only [Pi.smul_apply, smul_eq_mul]
+      ring
+    rw [hexpand] at hbracket
+    rcases mul_eq_zero.mp hbracket with hscale | hdet
+    · exfalso
+      rcases mul_eq_zero.mp hscale with hfst | hsnd
+      · exact (inv_ne_zero (hrootPos pairFst).ne') hfst
+      · exact (inv_ne_zero (hrootPos pairSnd).ne') hsnd
+    · exact hdet
+  -- a common orthogonal of the two completion rows
+  obtain ⟨mixCoeff, hmixNe, hrowFst, hrowSnd⟩ :
+      ∃ mixCoeff : Fin 2 → ℝ, mixCoeff ≠ 0
+        ∧ completion pairFst 0 * mixCoeff 0 + completion pairFst 1 * mixCoeff 1 = 0
+        ∧ completion pairSnd 0 * mixCoeff 0 + completion pairSnd 1 * mixCoeff 1 = 0 := by
+    by_cases hfstLive : completion pairFst 0 ≠ 0 ∨ completion pairFst 1 ≠ 0
+    · refine ⟨![completion pairFst 1, -(completion pairFst 0)], ?_, ?_, ?_⟩
+      · intro hzero
+        rcases hfstLive with hone | htwo
+        · refine hone ?_
+          have hentry := congrFun hzero 1
+          simp only [Matrix.cons_val_one, Matrix.cons_val_zero, Pi.zero_apply,
+            neg_eq_zero] at hentry
+          exact hentry
+        · refine htwo ?_
+          have hentry := congrFun hzero 0
+          simp only [Matrix.cons_val_zero, Pi.zero_apply] at hentry
+          exact hentry
+      · simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
+        ring
+      · simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
+        linarith [hcompletionDet]
+    · push Not at hfstLive
+      obtain ⟨hfstZeroA, hfstZeroB⟩ := hfstLive
+      by_cases hsndLive : completion pairSnd 0 ≠ 0 ∨ completion pairSnd 1 ≠ 0
+      · refine ⟨![completion pairSnd 1, -(completion pairSnd 0)], ?_, ?_, ?_⟩
+        · intro hzero
+          rcases hsndLive with hone | htwo
+          · refine hone ?_
+            have hentry := congrFun hzero 1
+            simp only [Matrix.cons_val_one, Matrix.cons_val_zero, Pi.zero_apply,
+              neg_eq_zero] at hentry
+            exact hentry
+          · refine htwo ?_
+            have hentry := congrFun hzero 0
+            simp only [Matrix.cons_val_zero, Pi.zero_apply] at hentry
+            exact hentry
+        · simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
+          rw [hfstZeroA, hfstZeroB]
+          ring
+        · simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
+          ring
+      · push Not at hsndLive
+        obtain ⟨hsndZeroA, hsndZeroB⟩ := hsndLive
+        refine ⟨![1, 0], ?_, ?_, ?_⟩
+        · intro hzero
+          have hentry := congrFun hzero 0
+          simp only [Matrix.cons_val_zero, Pi.zero_apply] at hentry
+          exact one_ne_zero hentry
+        · simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
+          rw [hfstZeroA, hfstZeroB]
+          ring
+        · simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
+          rw [hsndZeroA, hsndZeroB]
+          ring
+  -- the kernel vector of the co-design transpose
+  set kernelVec : Fin 5 → ℝ := completion *ᵥ mixCoeff with hkernelVecDef
+  have hkernelFst : kernelVec pairFst = 0 := by
+    rw [hkernelVecDef]
+    show ∑ colIdx, completion pairFst colIdx * mixCoeff colIdx = 0
+    rw [Fin.sum_univ_two]
+    exact hrowFst
+  have hkernelSnd : kernelVec pairSnd = 0 := by
+    rw [hkernelVecDef]
+    show ∑ colIdx, completion pairSnd colIdx * mixCoeff colIdx = 0
+    rw [Fin.sum_univ_two]
+    exact hrowSnd
+  have hkernelNe : kernelVec ≠ 0 := by
+    intro hzero
+    refine hmixNe ?_
+    have hpull := congrArg (fun vec => completionᵀ *ᵥ vec) hzero
+    simp only [Matrix.mulVec_zero] at hpull
+    rwa [hkernelVecDef, Matrix.mulVec_mulVec, hcompletionOrtho, Matrix.one_mulVec] at hpull
+  have hcoKernel : coDesignᵀ *ᵥ kernelVec = 0 := by
+    rw [hkernelVecDef, Matrix.mulVec_mulVec, hcoDesignPerp, Matrix.zero_mulVec]
+  -- the dependence, with the slack roots folded in
+  refine ⟨fun label => kernelVec label * Real.sqrt (1 - D.weight label), ?_, ?_, ?_, ?_⟩
+  · obtain ⟨witnessLabel, hwitness⟩ := Function.ne_iff.mp hkernelNe
+    simp only [Pi.zero_apply] at hwitness
+    exact ⟨witnessLabel,
+      mul_ne_zero hwitness (Real.sqrt_pos.mpr (hslackPos witnessLabel)).ne'⟩
+  · show kernelVec pairFst * Real.sqrt (1 - D.weight pairFst) = 0
+    rw [hkernelFst, zero_mul]
+  · show kernelVec pairSnd * Real.sqrt (1 - D.weight pairSnd) = 0
+    rw [hkernelSnd, zero_mul]
+  · -- the whitener transports the co-design kernel to the atom dependence
+    have hcoordZero : ∀ coordIdx : Fin 3,
+        ∑ label, (kernelVec label * Real.sqrt (1 - D.weight label))
+          * (whitenerᵀ *ᵥ D.atom label) coordIdx = 0 := by
+      intro coordIdx
+      have hentry := congrFun hcoKernel coordIdx
+      simp only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Pi.zero_apply] at hentry
+      rw [← hentry]
+      refine Finset.sum_congr rfl fun label _ => ?_
+      rw [hcoDesignShape label coordIdx]
+      ring
+    have hwhitenedSum : whitenerᵀ *ᵥ (∑ label,
+        (kernelVec label * Real.sqrt (1 - D.weight label)) • D.atom label) = 0 := by
+      rw [← Matrix.mulVecLin_apply, map_sum]
+      funext coordIdx
+      simp only [Finset.sum_apply, LinearMap.map_smul, Matrix.mulVecLin_apply,
+        Pi.smul_apply, smul_eq_mul, Pi.zero_apply]
+      exact hcoordZero coordIdx
+    by_contra hsumNe
+    have hdetZero : (whitenerᵀ).det = 0 :=
+      Matrix.exists_mulVec_eq_zero_iff.mp ⟨_, hsumNe, hwhitenedSum⟩
+    rw [Matrix.det_transpose] at hdetZero
+    exact (isUnit_iff_ne_zero.mp hwhitenerUnit) hdetZero
+
+/-- **The transfer half**: a strictly dominating dual pair complements to a
+strictly dominating primal triple.  The shipped four-congruence chain, walked
+once, in the definite verdict, in the dual-to-primal direction. -/
+theorem posDef_primalGap_of_posDef_dualPairGap (D : WeightedDesign 5 3)
+    (whitener : Matrix (Fin 3) (Fin 3) ℝ) (hwhitenerUnit : IsUnit whitener.det)
+    (hwhitened : whitenerᵀ * (∑ label, (1 - D.weight label) • atomMatrix (D.atom label))
+        * whitener = 1)
+    (coDesign : Matrix (Fin 5) (Fin 3) ℝ)
+    (hcoDesignShape : ∀ (label : Fin 5) (coordIdx : Fin 3), coDesign label coordIdx
+        = Real.sqrt (1 - D.weight label) * (whitenerᵀ *ᵥ D.atom label) coordIdx)
+    (completion : Matrix (Fin 5) (Fin 2) ℝ)
+    (hcomplete : coDesign * coDesignᵀ + completion * completionᵀ = 1)
+    (dualDesign : WeightedDesign 5 2)
+    (hdualAtom : ∀ label : Fin 5, dualDesign.atom label
+        = (Real.sqrt (D.weight label))⁻¹ • (fun colIdx => completion label colIdx))
+    (dualPair : Finset (Fin 5)) (hpairCard : dualPair.card = 2)
+    (hdom : (Gtz.subsetSum dualDesign dualPair - 1).PosDef) :
+    (Gtz.subsetSum D dualPairᶜ - 1).PosDef := by
+  classical
+  have hslackPos : ∀ label : Fin 5, 0 < 1 - D.weight label := fun label => by
+    linarith [weight_lt_one D (by norm_num) label]
+  have hrootPos : ∀ label : Fin 5, 0 < Real.sqrt (D.weight label) := fun label =>
+    Real.sqrt_pos.mpr (D.weight_pos label)
+  -- the pair enumeration and the two stacked row matrices
+  set enumPair : Fin 2 → Fin 5 :=
+    fun slotIdx => ((dualPair.orderIsoOfFin hpairCard) slotIdx).val with henumPairDef
+  have henumMem : ∀ slotIdx, enumPair slotIdx ∈ dualPair := fun slotIdx =>
+    ((dualPair.orderIsoOfFin hpairCard) slotIdx).2
+  have henumInj : Function.Injective enumPair := fun slotIdx slotIdx' heq =>
+    (dualPair.orderIsoOfFin hpairCard).toEquiv.injective (Subtype.val_injective heq)
+  set whitenedRows : Matrix (Fin 2) (Fin 3) ℝ :=
+    Matrix.of (fun slotIdx coordIdx =>
+      (whitenerᵀ *ᵥ D.atom (enumPair slotIdx)) coordIdx) with hwhitenedRowsDef
+  set dualRows : Matrix (Fin 2) (Fin 2) ℝ :=
+    Matrix.of (fun slotIdx colIdx =>
+      (Real.sqrt (D.weight (enumPair slotIdx)))⁻¹ * completion (enumPair slotIdx) colIdx)
+    with hdualRowsDef
+  -- STEP 0: the complement dictionary
+  have hgapSplit : Gtz.subsetSum D dualPairᶜ - 1
+      = (∑ label, (1 - D.weight label) • atomMatrix (D.atom label))
+        - Gtz.subsetSum D dualPair := by
+    have hweightless : (∑ label, (1 - D.weight label) • atomMatrix (D.atom label))
+        = (∑ label, atomMatrix (D.atom label)) - 1 := by
+      rw [← D.isParseval, ← Finset.sum_sub_distrib]
+      exact Finset.sum_congr rfl fun label _ => by rw [sub_smul, one_smul]
+    have htotalSplit : (∑ label, atomMatrix (D.atom label))
+        = Gtz.subsetSum D dualPair + Gtz.subsetSum D dualPairᶜ :=
+      (Finset.sum_add_sum_compl dualPair _).symm
+    rw [hweightless, htotalSplit]
+    abel
+  -- STEP 1: congruence by the whitener
+  have hcoParsevalSymm : ((∑ label, (1 - D.weight label) • atomMatrix (D.atom label))
+      - Gtz.subsetSum D dualPair)ᵀ
+      = (∑ label, (1 - D.weight label) • atomMatrix (D.atom label))
+        - Gtz.subsetSum D dualPair := by
+    rw [Matrix.transpose_sub, Matrix.transpose_sum, Gtz.subsetSum, Matrix.transpose_sum]
+    congr 1
+    · exact Finset.sum_congr rfl fun label _ => by
+        rw [Matrix.transpose_smul,
+          transpose_eq_of_isHermitian (posSemidef_atomMatrix (D.atom label)).1]
+    · exact Finset.sum_congr rfl fun label _ =>
+        transpose_eq_of_isHermitian (posSemidef_atomMatrix (D.atom label)).1
+  have hwhitenerConj : whitenerᵀ
+      * ((∑ label, (1 - D.weight label) • atomMatrix (D.atom label))
+          - Gtz.subsetSum D dualPair) * whitener
+      = 1 - whitenedRowsᵀ * whitenedRows := by
+    have hrowsGram : whitenedRowsᵀ * whitenedRows
+        = ∑ label ∈ dualPair, atomMatrix (whitenerᵀ *ᵥ D.atom label) := by
+      rw [transpose_mul_self_eq_sum_rows,
+        ← sum_orderIsoOfFin dualPair hpairCard
+          (fun label => atomMatrix (whitenerᵀ *ᵥ D.atom label))]
+      exact Finset.sum_congr rfl fun slotIdx _ =>
+        congrArg atomMatrix (funext fun coordIdx => by
+          simp [hwhitenedRowsDef, henumPairDef])
+    have hconjSum : whitenerᵀ * Gtz.subsetSum D dualPair * whitener
+        = ∑ label ∈ dualPair, atomMatrix (whitenerᵀ *ᵥ D.atom label) := by
+      rw [Gtz.subsetSum, Matrix.mul_sum, Matrix.sum_mul]
+      exact Finset.sum_congr rfl fun label _ => transpose_mul_atomMatrix_mul whitener _
+    rw [Matrix.mul_sub, Matrix.sub_mul, hwhitened, hconjSum, hrowsGram]
+  -- STEP 2 entries: the co-design and completion Gram formulas
+  have hcoGramEntry : ∀ label label' : Fin 5, (coDesign * coDesignᵀ) label label'
+      = Real.sqrt (1 - D.weight label) * Real.sqrt (1 - D.weight label')
+        * ((whitenerᵀ *ᵥ D.atom label) ⬝ᵥ (whitenerᵀ *ᵥ D.atom label')) := by
+    intro label label'
+    simp only [Matrix.mul_apply, Matrix.transpose_apply, dotProduct, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun coordIdx _ => ?_
+    rw [hcoDesignShape label coordIdx, hcoDesignShape label' coordIdx]
+    ring
+  have hwhitenedGramEntry : ∀ slotIdx slotIdx' : Fin 2,
+      (whitenedRows * whitenedRowsᵀ) slotIdx slotIdx'
+        = (whitenerᵀ *ᵥ D.atom (enumPair slotIdx))
+            ⬝ᵥ (whitenerᵀ *ᵥ D.atom (enumPair slotIdx')) := by
+    intro slotIdx slotIdx'
+    simp only [Matrix.mul_apply, Matrix.transpose_apply, hwhitenedRowsDef,
+      Matrix.of_apply, dotProduct]
+  have hdualGramEntry : ∀ slotIdx slotIdx' : Fin 2,
+      (dualRows * dualRowsᵀ) slotIdx slotIdx'
+        = (Real.sqrt (D.weight (enumPair slotIdx)))⁻¹
+          * (Real.sqrt (D.weight (enumPair slotIdx')))⁻¹
+          * ∑ colIdx, completion (enumPair slotIdx) colIdx
+              * completion (enumPair slotIdx') colIdx := by
+    intro slotIdx slotIdx'
+    simp only [Matrix.mul_apply, Matrix.transpose_apply, hdualRowsDef,
+      Matrix.of_apply, Finset.mul_sum]
+    exact Finset.sum_congr rfl fun colIdx _ => by ring
+  -- STEP 2: diagonal congruence by the slack roots
+  have hdiagSlack : (Matrix.diagonal
+        (fun slotIdx => Real.sqrt (1 - D.weight (enumPair slotIdx))))ᵀ
+        * (1 - whitenedRows * whitenedRowsᵀ)
+        * Matrix.diagonal (fun slotIdx => Real.sqrt (1 - D.weight (enumPair slotIdx)))
+      = Matrix.diagonal (fun slotIdx => 1 - D.weight (enumPair slotIdx))
+        - Matrix.of (fun slotIdx slotIdx' =>
+            (coDesign * coDesignᵀ) (enumPair slotIdx) (enumPair slotIdx')) := by
+    rw [Matrix.diagonal_transpose]
+    ext slotIdx slotIdx'
+    rw [Matrix.mul_diagonal, Matrix.diagonal_mul]
+    simp only [Matrix.sub_apply, Matrix.one_apply, Matrix.diagonal_apply, Matrix.of_apply]
+    rw [hwhitenedGramEntry slotIdx slotIdx', hcoGramEntry (enumPair slotIdx) (enumPair slotIdx')]
+    rcases eq_or_ne slotIdx slotIdx' with rfl | hne
+    · rw [if_pos rfl, if_pos rfl]
+      have hss := Real.mul_self_sqrt (hslackPos (enumPair slotIdx)).le
+      linear_combination hss
+    · rw [if_neg hne, if_neg hne]
+      ring
+  -- STEP 3: completeness swaps the co-design block for the completion block
+  have hcompleteEntry : ∀ slotIdx slotIdx' : Fin 2,
+      (coDesign * coDesignᵀ) (enumPair slotIdx) (enumPair slotIdx')
+        + (completion * completionᵀ) (enumPair slotIdx) (enumPair slotIdx')
+      = if slotIdx = slotIdx' then 1 else 0 := by
+    intro slotIdx slotIdx'
+    have hentry := congrFun (congrFun hcomplete (enumPair slotIdx)) (enumPair slotIdx')
+    rw [Matrix.add_apply, Matrix.one_apply] at hentry
+    rwa [if_congr ⟨fun heq => henumInj heq, fun heq => heq ▸ rfl⟩ rfl rfl] at hentry
+  have hblockSwap : Matrix.diagonal (fun slotIdx => 1 - D.weight (enumPair slotIdx))
+        - Matrix.of (fun slotIdx slotIdx' =>
+            (coDesign * coDesignᵀ) (enumPair slotIdx) (enumPair slotIdx'))
+      = Matrix.of (fun slotIdx slotIdx' =>
+            (completion * completionᵀ) (enumPair slotIdx) (enumPair slotIdx'))
+        - Matrix.diagonal (fun slotIdx => D.weight (enumPair slotIdx)) := by
+    ext slotIdx slotIdx'
+    simp only [Matrix.sub_apply, Matrix.diagonal_apply, Matrix.of_apply]
+    have hentry := hcompleteEntry slotIdx slotIdx'
+    rcases eq_or_ne slotIdx slotIdx' with rfl | hne
+    · rw [if_pos rfl] at hentry
+      rw [if_pos rfl, if_pos rfl]
+      linarith
+    · rw [if_neg hne] at hentry
+      rw [if_neg hne, if_neg hne]
+      linarith
+  -- STEP 4: diagonal congruence by the inverse weight roots
+  have hdiagWeight : (Matrix.diagonal
+        (fun slotIdx => (Real.sqrt (D.weight (enumPair slotIdx)))⁻¹))ᵀ
+        * (Matrix.of (fun slotIdx slotIdx' =>
+              (completion * completionᵀ) (enumPair slotIdx) (enumPair slotIdx'))
+            - Matrix.diagonal (fun slotIdx => D.weight (enumPair slotIdx)))
+        * Matrix.diagonal (fun slotIdx => (Real.sqrt (D.weight (enumPair slotIdx)))⁻¹)
+      = dualRows * dualRowsᵀ - 1 := by
+    rw [Matrix.diagonal_transpose]
+    ext slotIdx slotIdx'
+    rw [Matrix.mul_diagonal, Matrix.diagonal_mul]
+    simp only [Matrix.sub_apply, Matrix.one_apply, Matrix.diagonal_apply, Matrix.of_apply]
+    rw [hdualGramEntry slotIdx slotIdx',
+      show (completion * completionᵀ) (enumPair slotIdx) (enumPair slotIdx')
+          = ∑ colIdx, completion (enumPair slotIdx) colIdx
+              * completion (enumPair slotIdx') colIdx from by
+        simp [Matrix.mul_apply, Matrix.transpose_apply]]
+    rcases eq_or_ne slotIdx slotIdx' with rfl | hne
+    · rw [if_pos rfl, if_pos rfl]
+      have hroot := Real.mul_self_sqrt (D.weight_pos (enumPair slotIdx)).le
+      have hcancel : (Real.sqrt (D.weight (enumPair slotIdx)))⁻¹
+          * D.weight (enumPair slotIdx)
+          * (Real.sqrt (D.weight (enumPair slotIdx)))⁻¹ = 1 := by
+        rw [show (Real.sqrt (D.weight (enumPair slotIdx)))⁻¹
+              * D.weight (enumPair slotIdx)
+              * (Real.sqrt (D.weight (enumPair slotIdx)))⁻¹
+            = D.weight (enumPair slotIdx) * (Real.sqrt (D.weight (enumPair slotIdx))
+                * Real.sqrt (D.weight (enumPair slotIdx)))⁻¹ from by
+          rw [mul_inv]; ring,
+          hroot, mul_inv_cancel₀ (D.weight_pos (enumPair slotIdx)).ne']
+      linear_combination (-1 : ℝ) * hcancel
+    · rw [if_neg hne, if_neg hne]
+      ring
+  -- STEP 5: the dual rows realize the dual subset sum
+  have hdualRowsGram : dualRowsᵀ * dualRows = Gtz.subsetSum dualDesign dualPair := by
+    rw [transpose_mul_self_eq_sum_rows, Gtz.subsetSum,
+      ← sum_orderIsoOfFin dualPair hpairCard
+        (fun label => atomMatrix (dualDesign.atom label))]
+    refine Finset.sum_congr rfl fun slotIdx _ =>
+      congrArg atomMatrix (funext fun colIdx => ?_)
+    rw [hdualAtom (enumPair slotIdx)]
+    simp [hdualRowsDef, henumPairDef, Pi.smul_apply, smul_eq_mul]
+  -- symmetry and determinant side conditions
+  have hgapSymmOne : (1 - whitenedRows * whitenedRowsᵀ)ᵀ
+      = 1 - whitenedRows * whitenedRowsᵀ := by
+    rw [Matrix.transpose_sub, Matrix.transpose_one, Matrix.transpose_mul,
+      Matrix.transpose_transpose]
+  have hcompletionGramSymm : (completion * completionᵀ)ᵀ = completion * completionᵀ := by
+    rw [Matrix.transpose_mul, Matrix.transpose_transpose]
+  have hgapSymmTwo : (Matrix.of (fun slotIdx slotIdx' =>
+          (completion * completionᵀ) (enumPair slotIdx) (enumPair slotIdx'))
+        - Matrix.diagonal (fun slotIdx => D.weight (enumPair slotIdx)))ᵀ
+      = Matrix.of (fun slotIdx slotIdx' =>
+            (completion * completionᵀ) (enumPair slotIdx) (enumPair slotIdx'))
+        - Matrix.diagonal (fun slotIdx => D.weight (enumPair slotIdx)) := by
+    rw [Matrix.transpose_sub, Matrix.diagonal_transpose]
+    congr 1
+    ext slotIdx slotIdx'
+    rw [Matrix.transpose_apply, Matrix.of_apply, Matrix.of_apply]
+    have hsym := congrFun (congrFun hcompletionGramSymm (enumPair slotIdx)) (enumPair slotIdx')
+    rw [Matrix.transpose_apply] at hsym
+    exact hsym
+  have hdetSlack : IsUnit (Matrix.diagonal
+      (fun slotIdx => Real.sqrt (1 - D.weight (enumPair slotIdx)))).det := by
+    rw [Matrix.det_diagonal, isUnit_iff_ne_zero]
+    exact Finset.prod_ne_zero_iff.mpr fun slotIdx _ =>
+      (Real.sqrt_pos.mpr (hslackPos (enumPair slotIdx))).ne'
+  have hdetWeight : IsUnit (Matrix.diagonal
+      (fun slotIdx => (Real.sqrt (D.weight (enumPair slotIdx)))⁻¹)).det := by
+    rw [Matrix.det_diagonal, isUnit_iff_ne_zero]
+    exact Finset.prod_ne_zero_iff.mpr fun slotIdx _ =>
+      inv_ne_zero (hrootPos (enumPair slotIdx)).ne'
+  -- the chain, dual to primal, in the definite verdict
+  have hstepSix : (dualRowsᵀ * dualRows - 1).PosDef := by
+    rw [hdualRowsGram]
+    exact hdom
+  have hstepFive : (dualRows * dualRowsᵀ - 1).PosDef :=
+    (posDef_transpose_mul_sub_one_comm dualRows).mp hstepSix
+  have hstepFour : (Matrix.of (fun slotIdx slotIdx' =>
+        (completion * completionᵀ) (enumPair slotIdx) (enumPair slotIdx'))
+      - Matrix.diagonal (fun slotIdx => D.weight (enumPair slotIdx))).PosDef :=
+    (posDef_congr_right hgapSymmTwo hdetWeight).mpr (by rw [hdiagWeight]; exact hstepFive)
+  have hstepThree : (1 - whitenedRows * whitenedRowsᵀ).PosDef :=
+    (posDef_congr_right hgapSymmOne hdetSlack).mpr
+      (by rw [hdiagSlack, hblockSwap]; exact hstepFour)
+  have hstepTwo : (1 - whitenedRowsᵀ * whitenedRows).PosDef :=
+    (posDef_one_sub_transpose_comm whitenedRows).mpr hstepThree
+  have hstepOne : ((∑ label, (1 - D.weight label) • atomMatrix (D.atom label))
+      - Gtz.subsetSum D dualPair).PosDef :=
+    (posDef_congr_right hcoParsevalSymm hwhitenerUnit).mpr
+      (by rw [hwhitenerConj]; exact hstepTwo)
+  rw [hgapSplit]
+  exact hstepOne
+
+/-- **The packaged dual.**  Every `(5,3)` design has an explicit Naimark dual
+carrying both the bracket dictionary and the strict-domination transfer. -/
+theorem exists_naimarkDual_with_bracketDictionary (D : WeightedDesign 5 3) :
+    ∃ dualDesign : WeightedDesign 5 2,
+      (∀ pairFst pairSnd : Fin 5, pairBracket dualDesign pairFst pairSnd = 0 →
+        ∃ dependence : Fin 5 → ℝ,
+          (∃ witnessLabel, dependence witnessLabel ≠ 0)
+            ∧ dependence pairFst = 0 ∧ dependence pairSnd = 0
+            ∧ (∑ label, dependence label • D.atom label) = 0)
+        ∧ ∀ dualPair : Finset (Fin 5), dualPair.card = 2 →
+            (Gtz.subsetSum dualDesign dualPair - 1).PosDef →
+            (Gtz.subsetSum D dualPairᶜ - 1).PosDef := by
+  classical
+  have hslackPos : ∀ label : Fin 5, 0 < 1 - D.weight label := fun label => by
+    linarith [weight_lt_one D (by norm_num) label]
+  obtain ⟨whitener, hwhitenerUnit, hwhitened⟩ :=
+    exists_congruence_to_one (coParseval_posDef D (by norm_num))
+  set coDesign : Matrix (Fin 5) (Fin 3) ℝ :=
+    Matrix.of (fun label coordIdx =>
+      Real.sqrt (1 - D.weight label) * (whitenerᵀ *ᵥ D.atom label) coordIdx)
+    with hcoDesignDef
+  have hcoDesignShape : ∀ (label : Fin 5) (coordIdx : Fin 3), coDesign label coordIdx
+      = Real.sqrt (1 - D.weight label) * (whitenerᵀ *ᵥ D.atom label) coordIdx :=
+    fun label coordIdx => rfl
+  have hconjSum : whitenerᵀ * (∑ label, (1 - D.weight label) • atomMatrix (D.atom label))
+      * whitener
+      = ∑ label, (1 - D.weight label) • atomMatrix (whitenerᵀ *ᵥ D.atom label) := by
+    rw [Matrix.mul_sum, Matrix.sum_mul]
+    refine Finset.sum_congr rfl fun label _ => ?_
+    rw [Matrix.mul_smul, Matrix.smul_mul, transpose_mul_atomMatrix_mul]
+  have hcoDesignOrtho : coDesignᵀ * coDesign = 1 := by
+    rw [← hwhitened, hconjSum]
+    ext coordIdx coordIdx'
+    simp only [Matrix.mul_apply, Matrix.transpose_apply, hcoDesignDef, Matrix.of_apply,
+      Matrix.sum_apply, Matrix.smul_apply, atomMatrix, Matrix.vecMulVec_apply,
+      smul_eq_mul]
+    refine Finset.sum_congr rfl fun label _ => ?_
+    rw [show Real.sqrt (1 - D.weight label) * (whitenerᵀ *ᵥ D.atom label) coordIdx
+          * (Real.sqrt (1 - D.weight label) * (whitenerᵀ *ᵥ D.atom label) coordIdx')
+        = (Real.sqrt (1 - D.weight label) * Real.sqrt (1 - D.weight label))
+          * ((whitenerᵀ *ᵥ D.atom label) coordIdx
+              * (whitenerᵀ *ᵥ D.atom label) coordIdx') from by ring,
+      Real.mul_self_sqrt (hslackPos label).le]
+  obtain ⟨completion, hcompletionOrtho, hcoDesignPerp, hcomplete⟩ :=
+    exists_orthonormal_completion coDesign hcoDesignOrtho
+  refine ⟨{ atom := fun label => (Real.sqrt (D.weight label))⁻¹
+              • (fun colIdx => completion label colIdx)
+            weight := D.weight
+            weight_pos := D.weight_pos
+            weight_sum_one := D.weight_sum_one
+            isParseval := ?_ }, ?_, ?_⟩
+  · calc ∑ label, D.weight label
+        • atomMatrix ((Real.sqrt (D.weight label))⁻¹ • (fun colIdx => completion label colIdx))
+        = ∑ label, atomMatrix (fun colIdx => completion label colIdx) := by
+          refine Finset.sum_congr rfl fun label _ => ?_
+          rw [atomMatrix_smul, smul_smul, inv_pow,
+            Real.sq_sqrt (D.weight_pos label).le,
+            mul_inv_cancel₀ (D.weight_pos label).ne', one_smul]
+      _ = 1 := by rw [← transpose_mul_self_eq_sum_rows, hcompletionOrtho]
+  · intro pairFst pairSnd hbracket
+    exact dependence_of_dualPairBracket_eq_zero D whitener hwhitenerUnit coDesign
+      hcoDesignShape completion hcompletionOrtho hcoDesignPerp _
+      (fun label => rfl) pairFst pairSnd hbracket
+  · intro dualPair hpairCard hdom
+    exact posDef_primalGap_of_posDef_dualPairGap D whitener hwhitenerUnit hwhitened
+      coDesign hcoDesignShape completion hcomplete _
+      (fun label => rfl) dualPair hpairCard hdom
+
+/-! ## The endgame: from the dual cover to the shared line pair -/
+
+/-- **The plane absorbs the third label.**  A dependence vanishing on an edge
+is supported on the complementary triple; pairing it against a common
+orthogonal of two of those atoms forces the third atom onto their plane. -/
+theorem atomDot_eq_zero_of_offPairDependence (D : WeightedDesign 5 3)
+    (hprimitive : IsPrimitiveDesign D)
+    (edgeFst edgeSnd thirdLabel planeFst planeSnd : Fin 5)
+    (hplaneNe : planeFst ≠ planeSnd)
+    (hcover : ∀ label : Fin 5, label = edgeFst ∨ label = edgeSnd ∨ label = thirdLabel
+        ∨ label = planeFst ∨ label = planeSnd)
+    (dependence : Fin 5 → ℝ)
+    (hwitness : ∃ witnessLabel, dependence witnessLabel ≠ 0)
+    (hdepEdgeFst : dependence edgeFst = 0) (hdepEdgeSnd : dependence edgeSnd = 0)
+    (hdepSum : (∑ label, dependence label • D.atom label) = 0)
+    (normal : Fin 3 → ℝ)
+    (hdotPlaneFst : D.atom planeFst ⬝ᵥ normal = 0)
+    (hdotPlaneSnd : D.atom planeSnd ⬝ᵥ normal = 0) :
+    D.atom thirdLabel ⬝ᵥ normal = 0 := by
+  classical
+  -- the third coefficient survives, else the plane pair carries a dependence
+  have hthirdNe : dependence thirdLabel ≠ 0 := by
+    intro hthirdZero
+    have hoffSupport : ∀ label ∈ (Finset.univ : Finset (Fin 5)),
+        label ∉ ({planeFst, planeSnd} : Finset (Fin 5)) →
+        dependence label • D.atom label = 0 := by
+      intro label _ hnotPlane
+      rcases hcover label with rfl | rfl | rfl | rfl | rfl
+      · rw [hdepEdgeFst, zero_smul]
+      · rw [hdepEdgeSnd, zero_smul]
+      · rw [hthirdZero, zero_smul]
+      · exact absurd (Finset.mem_insert_self _ _) hnotPlane
+      · exact absurd (Finset.mem_insert_of_mem (Finset.mem_singleton_self _)) hnotPlane
+    have hcollapsed := Finset.sum_subset
+      (Finset.subset_univ ({planeFst, planeSnd} : Finset (Fin 5))) hoffSupport
+    rw [hdepSum, Finset.sum_pair hplaneNe] at hcollapsed
+    obtain ⟨hplaneFstZero, hplaneSndZero⟩ :=
+      coeffPair_eq_zero_of_smul_add_smul_eq_zero (D.atom planeFst) (D.atom planeSnd)
+        (dependence planeFst) (dependence planeSnd)
+        (fun ratio => hprimitive planeFst planeSnd ratio hplaneNe)
+        (atom_ne_zero_of_isPrimitiveDesign (by norm_num) D hprimitive planeFst)
+        hcollapsed
+    obtain ⟨witnessLabel, hwitnessNe⟩ := hwitness
+    rcases hcover witnessLabel with rfl | rfl | rfl | rfl | rfl
+    · exact hwitnessNe hdepEdgeFst
+    · exact hwitnessNe hdepEdgeSnd
+    · exact hwitnessNe hthirdZero
+    · exact hwitnessNe hplaneFstZero
+    · exact hwitnessNe hplaneSndZero
+  -- pair the dependence against the normal
+  have hdotSum : ∑ label, dependence label * (D.atom label ⬝ᵥ normal) = 0 := by
+    have happlied := congrArg (fun vector => vector ⬝ᵥ normal) hdepSum
+    simp only [zero_dotProduct] at happlied
+    rw [← happlied, sum_dotProduct]
+    exact Finset.sum_congr rfl fun label _ => by
+      rw [smul_dotProduct, smul_eq_mul]
+  have hsingled : ∑ label, dependence label * (D.atom label ⬝ᵥ normal)
+      = dependence thirdLabel * (D.atom thirdLabel ⬝ᵥ normal) := by
+    refine Finset.sum_eq_single thirdLabel (fun label _ hlabelNe => ?_)
+      (fun habsent => absurd (Finset.mem_univ _) habsent)
+    rcases hcover label with rfl | rfl | rfl | rfl | rfl
+    · rw [hdepEdgeFst, zero_mul]
+    · rw [hdepEdgeSnd, zero_mul]
+    · exact absurd rfl hlabelNe
+    · rw [hdotPlaneFst, mul_zero]
+    · rw [hdotPlaneSnd, mul_zero]
+  rw [hsingled] at hdotSum
+  exact (mul_eq_zero.mp hdotSum).resolve_left hthirdNe
+
+/-- **The edge certifies the complementary collinear triple.**  A dependence
+vanishing on an edge collapses to the complementary triple and kills its
+bracket. -/
+theorem atomBracket_eq_zero_of_offPairDependence (D : WeightedDesign 5 3)
+    (edgeFst edgeSnd sharedLabel offFst offSnd : Fin 5)
+    (hcover : ∀ label : Fin 5, label = edgeFst ∨ label = edgeSnd ∨ label = sharedLabel
+        ∨ label = offFst ∨ label = offSnd)
+    (hsharedNeOffFst : sharedLabel ≠ offFst) (hsharedNeOffSnd : sharedLabel ≠ offSnd)
+    (hoffNe : offFst ≠ offSnd)
+    (dependence : Fin 5 → ℝ)
+    (hwitness : ∃ witnessLabel, dependence witnessLabel ≠ 0)
+    (hdepEdgeFst : dependence edgeFst = 0) (hdepEdgeSnd : dependence edgeSnd = 0)
+    (hdepSum : (∑ label, dependence label • D.atom label) = 0) :
+    atomBracket D sharedLabel offFst offSnd = 0 := by
+  classical
+  have hsharedNotOff : sharedLabel ∉ ({offFst, offSnd} : Finset (Fin 5)) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    intro hmem
+    rcases hmem with heq | heq
+    · exact hsharedNeOffFst heq
+    · exact hsharedNeOffSnd heq
+  have hoffSupport : ∀ label ∈ (Finset.univ : Finset (Fin 5)),
+      label ∉ ({sharedLabel, offFst, offSnd} : Finset (Fin 5)) →
+      dependence label • D.atom label = 0 := by
+    intro label _ hnotTriple
+    rcases hcover label with rfl | rfl | rfl | rfl | rfl
+    · rw [hdepEdgeFst, zero_smul]
+    · rw [hdepEdgeSnd, zero_smul]
+    · exact absurd (Finset.mem_insert_self _ _) hnotTriple
+    · exact absurd (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)) hnotTriple
+    · exact absurd (Finset.mem_insert_of_mem
+        (Finset.mem_insert_of_mem (Finset.mem_singleton_self _))) hnotTriple
+  have hcollapsed := Finset.sum_subset
+    (Finset.subset_univ ({sharedLabel, offFst, offSnd} : Finset (Fin 5))) hoffSupport
+  rw [hdepSum, Finset.sum_insert hsharedNotOff, Finset.sum_pair hoffNe] at hcollapsed
+  have hvanish : dependence sharedLabel • D.atom sharedLabel
+      + dependence offFst • D.atom offFst + dependence offSnd • D.atom offSnd = 0 := by
+    rw [add_assoc]
+    exact hcollapsed
+  have hnontrivial : dependence sharedLabel ≠ 0 ∨ dependence offFst ≠ 0
+      ∨ dependence offSnd ≠ 0 := by
+    obtain ⟨witnessLabel, hwitnessNe⟩ := hwitness
+    rcases hcover witnessLabel with rfl | rfl | rfl | rfl | rfl
+    · exact absurd hdepEdgeFst hwitnessNe
+    · exact absurd hdepEdgeSnd hwitnessNe
+    · exact Or.inl hwitnessNe
+    · exact Or.inr (Or.inl hwitnessNe)
+    · exact Or.inr (Or.inr hwitnessNe)
+  show tripleBracket (D.atom sharedLabel) (D.atom offFst) (D.atom offSnd) = 0
+  exact tripleBracket_eq_zero_of_dependence _ _ _ _ _ _ hnontrivial hvanish
+
+/-- **THE MATROID RESIDUAL, PROVED.**  Every primitive `(5,3)` tie carries two
+dependent triples through a common atom.  Route: the explicit Naimark dual is
+tie-locked (no strictly dominating pair), the proved rank-two hinge turns that
+into a cover of every dual quadruple by bracket-zero pairs, the cover contains
+a two-edge matching or a full triangle, the dictionary pulls each dual edge
+back to a primal collinear triple — a matching complements to the shared line
+pair, and a triangle would put all five atoms on one plane, which Parseval
+forbids. -/
+theorem sharedLinePairAtEveryTie_holds : SharedLinePairAtEveryTieFiveThree := by
+  intro bottomDesign hprimitive htie
+  classical
+  obtain ⟨dualDesign, hdictionary, htransfer⟩ :=
+    exists_naimarkDual_with_bracketDictionary bottomDesign
+  -- the dual is tie-locked: no strictly dominating pair
+  have hnoStrictPair : ∀ dualPair : Finset (Fin 5), dualPair.card = 2 →
+      ¬ (Gtz.subsetSum dualDesign dualPair - 1).PosDef := by
+    intro dualPair hcard hposDef
+    have hcomplCard : dualPairᶜ.card = 3 := by
+      rw [Finset.card_compl, Fintype.card_fin, hcard]
+    exact htie.2 dualPairᶜ hcomplCard (htransfer dualPair hcard hposDef)
+  -- bracket vanishing is symmetric
+  have hedgeSymm : ∀ leftIdx rightIdx : Fin 5,
+      pairBracket dualDesign leftIdx rightIdx = 0 →
+      pairBracket dualDesign rightIdx leftIdx = 0 := by
+    intro leftIdx rightIdx hzero
+    have hanti : pairBracket dualDesign rightIdx leftIdx
+        = -(pairBracket dualDesign leftIdx rightIdx) := by
+      unfold pairBracket
+      ring
+    rw [hanti, hzero, neg_zero]
+  -- the hinge covers every quadruple with a bracket-zero pair
+  have hfour : ∀ quadA quadB quadC quadD : Fin 5,
+      quadA ≠ quadB → quadA ≠ quadC → quadA ≠ quadD →
+      quadB ≠ quadC → quadB ≠ quadD → quadC ≠ quadD →
+      pairBracket dualDesign quadA quadB = 0 ∨ pairBracket dualDesign quadA quadC = 0
+        ∨ pairBracket dualDesign quadA quadD = 0 ∨ pairBracket dualDesign quadB quadC = 0
+        ∨ pairBracket dualDesign quadB quadD = 0
+        ∨ pairBracket dualDesign quadC quadD = 0 := by
+    intro quadA quadB quadC quadD hdAB hdAC hdAD hdBC hdBD hdCD
+    by_contra hnone
+    push Not at hnone
+    obtain ⟨hneAB, hneAC, hneAD, hneBC, hneBD, hneCD⟩ := hnone
+    obtain ⟨dominatingPair, hpairCard, hpairPosDef⟩ :=
+      rankTwoFourDirectionHinge_holds 5 dualDesign quadA quadB quadC quadD
+        hdAB hdAC hdAD hdBC hdBD hdCD hneAB hneAC hneAD hneBC hneBD hneCD
+    exact hnoStrictPair dominatingPair hpairCard hpairPosDef
+  -- matching or triangle
+  rcases matching_or_triangle_of_coveringEdges
+      (fun leftIdx rightIdx => pairBracket dualDesign leftIdx rightIdx = 0)
+      hedgeSymm hfour with
+    ⟨pairAFst, pairASnd, pairBFst, pairBSnd, hmatchA, hmatchB, hcrossOne, hcrossTwo,
+      hcrossThree, hcrossFour, hedgeA, hedgeB⟩ |
+    ⟨triA, triB, triC, htriAB, htriAC, htriBC, hedgeTriAB, hedgeTriAC, hedgeTriBC⟩
+  · -- MATCHING: the shared line pair, by construction
+    have hquadNotFst : pairAFst ∉ ({pairASnd, pairBFst, pairBSnd} : Finset (Fin 5)) := by
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      intro hmem
+      rcases hmem with heq | heq | heq
+      · exact hmatchA heq
+      · exact hcrossOne heq
+      · exact hcrossTwo heq
+    have hquadNotSnd : pairASnd ∉ ({pairBFst, pairBSnd} : Finset (Fin 5)) := by
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      intro hmem
+      rcases hmem with heq | heq
+      · exact hcrossThree heq
+      · exact hcrossFour heq
+    have hquadNotThd : pairBFst ∉ ({pairBSnd} : Finset (Fin 5)) := by
+      simp only [Finset.mem_singleton]
+      exact hmatchB
+    have hquadCard : ({pairAFst, pairASnd, pairBFst, pairBSnd} : Finset (Fin 5)).card = 4 := by
+      rw [Finset.card_insert_of_notMem hquadNotFst,
+        Finset.card_insert_of_notMem hquadNotSnd,
+        Finset.card_insert_of_notMem hquadNotThd, Finset.card_singleton]
+    have hsharedCard :
+        (({pairAFst, pairASnd, pairBFst, pairBSnd} : Finset (Fin 5))ᶜ).card = 1 := by
+      rw [Finset.card_compl, Fintype.card_fin, hquadCard]
+    obtain ⟨sharedLabel, hsharedEq⟩ := Finset.card_eq_one.mp hsharedCard
+    have hsharedNotQuad :
+        sharedLabel ∉ ({pairAFst, pairASnd, pairBFst, pairBSnd} : Finset (Fin 5)) := by
+      refine Finset.mem_compl.mp ?_
+      rw [hsharedEq]
+      exact Finset.mem_singleton_self _
+    have hsharedSplit : ¬ (sharedLabel = pairAFst ∨ sharedLabel = pairASnd
+        ∨ sharedLabel = pairBFst ∨ sharedLabel = pairBSnd) := by
+      simpa only [Finset.mem_insert, Finset.mem_singleton] using hsharedNotQuad
+    push Not at hsharedSplit
+    obtain ⟨hsharedNeAFst, hsharedNeASnd, hsharedNeBFst, hsharedNeBSnd⟩ := hsharedSplit
+    have hcover : ∀ label : Fin 5, label = pairAFst ∨ label = pairASnd
+        ∨ label = pairBFst ∨ label = pairBSnd ∨ label = sharedLabel := by
+      intro label
+      by_cases hmem : label ∈ ({pairAFst, pairASnd, pairBFst, pairBSnd} : Finset (Fin 5))
+      · simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+        tauto
+      · have hlabelCompl : label ∈ ({pairAFst, pairASnd, pairBFst, pairBSnd}
+            : Finset (Fin 5))ᶜ := Finset.mem_compl.mpr hmem
+        rw [hsharedEq] at hlabelCompl
+        exact Or.inr (Or.inr (Or.inr (Or.inr (Finset.mem_singleton.mp hlabelCompl))))
+    -- the two dictionary dependences and the two brackets
+    obtain ⟨depA, hwitA, hdepAFst, hdepASnd, hsumA⟩ := hdictionary pairAFst pairASnd hedgeA
+    obtain ⟨depB, hwitB, hdepBFst, hdepBSnd, hsumB⟩ := hdictionary pairBFst pairBSnd hedgeB
+    have hbracketFromA : atomBracket bottomDesign sharedLabel pairBFst pairBSnd = 0 := by
+      refine atomBracket_eq_zero_of_offPairDependence bottomDesign pairAFst pairASnd
+        sharedLabel pairBFst pairBSnd (fun label => ?_) hsharedNeBFst hsharedNeBSnd
+        hmatchB depA hwitA hdepAFst hdepASnd hsumA
+      rcases hcover label with heq | heq | heq | heq | heq <;> tauto
+    have hbracketFromB : atomBracket bottomDesign sharedLabel pairAFst pairASnd = 0 := by
+      refine atomBracket_eq_zero_of_offPairDependence bottomDesign pairBFst pairBSnd
+        sharedLabel pairAFst pairASnd (fun label => ?_) hsharedNeAFst hsharedNeASnd
+        hmatchA depB hwitB hdepBFst hdepBSnd hsumB
+      rcases hcover label with heq | heq | heq | heq | heq <;> tauto
+    -- the relabeling permutation
+    set relabelFun : Fin 5 → Fin 5 :=
+      ![sharedLabel, pairBFst, pairBSnd, pairAFst, pairASnd] with hrelabelDef
+    have hsymOne := Ne.symm hsharedNeAFst
+    have hsymTwo := Ne.symm hsharedNeASnd
+    have hsymThree := Ne.symm hsharedNeBFst
+    have hsymFour := Ne.symm hsharedNeBSnd
+    have hsymFive := Ne.symm hcrossOne
+    have hsymSix := Ne.symm hcrossTwo
+    have hsymSeven := Ne.symm hcrossThree
+    have hsymEight := Ne.symm hcrossFour
+    have hsymNine := Ne.symm hmatchA
+    have hsymTen := Ne.symm hmatchB
+    have hrelabelInj : Function.Injective relabelFun := by
+      intro relabelLeft relabelRight hvalueEq
+      fin_cases relabelLeft <;> fin_cases relabelRight <;> simp_all
+    refine ⟨Equiv.ofBijective relabelFun (Finite.injective_iff_bijective.mp hrelabelInj),
+      ?_, ?_⟩
+    · exact hbracketFromA
+    · exact hbracketFromB
+  · -- TRIANGLE: five coplanar atoms against Parseval
+    exfalso
+    have htriNotFst : triA ∉ ({triB, triC} : Finset (Fin 5)) := by
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      intro hmem
+      rcases hmem with heq | heq
+      · exact htriAB heq
+      · exact htriAC heq
+    have htriNotSnd : triB ∉ ({triC} : Finset (Fin 5)) := by
+      simp only [Finset.mem_singleton]
+      exact htriBC
+    have htriCard : ({triA, triB, triC} : Finset (Fin 5)).card = 3 := by
+      rw [Finset.card_insert_of_notMem htriNotFst,
+        Finset.card_insert_of_notMem htriNotSnd, Finset.card_singleton]
+    have hplaneCard : (({triA, triB, triC} : Finset (Fin 5))ᶜ).card = 2 := by
+      rw [Finset.card_compl, Fintype.card_fin, htriCard]
+    obtain ⟨planeFst, planeSnd, hplaneNe, hplaneEq⟩ := Finset.card_eq_two.mp hplaneCard
+    have hcover : ∀ label : Fin 5, label = triA ∨ label = triB ∨ label = triC
+        ∨ label = planeFst ∨ label = planeSnd := by
+      intro label
+      by_cases hmem : label ∈ ({triA, triB, triC} : Finset (Fin 5))
+      · simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+        tauto
+      · have hlabelCompl : label ∈ ({triA, triB, triC} : Finset (Fin 5))ᶜ :=
+          Finset.mem_compl.mpr hmem
+        rw [hplaneEq] at hlabelCompl
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hlabelCompl
+        tauto
+    obtain ⟨normal, hnormalNe, hdotPlaneFst, hdotPlaneSnd⟩ :=
+      exists_commonOrthogonal_pair (bottomDesign.atom planeFst) (bottomDesign.atom planeSnd)
+    obtain ⟨depAB, hwitAB, hdepABFst, hdepABSnd, hsumAB⟩ := hdictionary triA triB hedgeTriAB
+    obtain ⟨depAC, hwitAC, hdepACFst, hdepACSnd, hsumAC⟩ := hdictionary triA triC hedgeTriAC
+    obtain ⟨depBC, hwitBC, hdepBCFst, hdepBCSnd, hsumBC⟩ := hdictionary triB triC hedgeTriBC
+    have hdotThird : bottomDesign.atom triC ⬝ᵥ normal = 0 := by
+      refine atomDot_eq_zero_of_offPairDependence bottomDesign hprimitive triA triB triC
+        planeFst planeSnd hplaneNe (fun label => hcover label) depAB hwitAB
+        hdepABFst hdepABSnd hsumAB normal hdotPlaneFst hdotPlaneSnd
+    have hdotSecond : bottomDesign.atom triB ⬝ᵥ normal = 0 := by
+      refine atomDot_eq_zero_of_offPairDependence bottomDesign hprimitive triA triC triB
+        planeFst planeSnd hplaneNe (fun label => ?_) depAC hwitAC
+        hdepACFst hdepACSnd hsumAC normal hdotPlaneFst hdotPlaneSnd
+      rcases hcover label with heq | heq | heq | heq | heq <;> tauto
+    have hdotFirst : bottomDesign.atom triA ⬝ᵥ normal = 0 := by
+      refine atomDot_eq_zero_of_offPairDependence bottomDesign hprimitive triB triC triA
+        planeFst planeSnd hplaneNe (fun label => ?_) depBC hwitBC
+        hdepBCFst hdepBCSnd hsumBC normal hdotPlaneFst hdotPlaneSnd
+      rcases hcover label with heq | heq | heq | heq | heq <;> tauto
+    have hallDots : ∀ label : Fin 5, bottomDesign.atom label ⬝ᵥ normal = 0 := by
+      intro label
+      rcases hcover label with rfl | rfl | rfl | rfl | rfl
+      · exact hdotFirst
+      · exact hdotSecond
+      · exact hdotThird
+      · exact hdotPlaneFst
+      · exact hdotPlaneSnd
+    exact hnormalNe (eq_zero_of_forall_atom_dot_eq_zero bottomDesign hallDots)
+
+/-- **THE TARGET RESIDUAL, CLOSED.**  `EndpointBottomTieExclusionFiveThree`
+holds unconditionally: the matroid residual is a theorem, and the landed
+reduction consumes it.  Branch (ii) of the `(6,3)` stress trichotomy now
+rests on the two-vanished statement and the hinge alone. -/
+theorem endpointBottomTieExclusionFiveThree_holds : EndpointBottomTieExclusionFiveThree :=
+  endpointBottomTieExclusion_of_sharedLinePair sharedLinePairAtEveryTie_holds
 
 end EndpointSpike
