@@ -2027,3 +2027,12 @@ import Gtz.Reduction.EndpointGaugeDescent
 -- slice, neither pointwise nor along the whole walk orbit.
 import Gtz.Certificates.PureTripleSelectionRefuted
 import Gtz.Certificates.OrbitPureTripleSelectionRefuted
+
+-- Branch (i) instruments: planar compression and the pair budget along tight
+-- axes, the four-on-plane stress lever, the axis-mass budget transport with
+-- its weakened drop residual, and the kernel witness that pair-budget
+-- equality does not force coplanar outside atoms.
+import Gtz.Design.TightAxisPairBudget
+import Gtz.Design.FourOnPlaneStress
+import Gtz.Design.AxisMassBudgetTransport
+import Gtz.Certificates.PairBudgetEqualityWitness

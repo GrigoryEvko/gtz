@@ -402,6 +402,10 @@ import Gtz.Reduction.BalancedTieReduction
 import Gtz.Reduction.EndpointGaugeDescent
 import Gtz.Certificates.PureTripleSelectionRefuted
 import Gtz.Certificates.OrbitPureTripleSelectionRefuted
+import Gtz.Design.TightAxisPairBudget
+import Gtz.Design.FourOnPlaneStress
+import Gtz.Design.AxisMassBudgetTransport
+import Gtz.Certificates.PairBudgetEqualityWitness
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11677,3 +11681,69 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.OrbitPureTripleRefutation.orbBudgetBoundWNeg19
 #print axioms Gtz.OrbitPureTripleRefutation.triple_cases
 #print axioms Gtz.OrbitPureTripleRefutation.pureTripleOrbitSelection_refuted
+
+/-! ### The tight-axis pair budget, the four-on-plane lever, and the axis-mass budget transport -/
+
+#print axioms Gtz.not_dominates_pair_rank_three
+#print axioms Gtz.orthonormalFrame_expansion
+#print axioms Gtz.planarCompressionDesign_atom
+#print axioms Gtz.planarCompression_pairBracket
+#print axioms Gtz.crossProduct_orthonormalFrame_eq_smul_axis
+#print axioms Gtz.exists_planeStrictPair_of_fourTransversal
+#print axioms Gtz.exists_orthonormal_planarFrame
+#print axioms Gtz.exists_planeStrictPair_of_transversalAxis
+#print axioms Gtz.sixThree_not_isTie_of_dropOnPlane_of_pairPlaneStrict
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_tightDropOnPlane
+#print axioms Gtz.ldl_clearing_identity
+#print axioms Gtz.posQuadForm_of_frameMinors
+#print axioms Gtz.nonnegQuadForm_of_frameMinors_detZero
+#print axioms Gtz.dotProduct_transpose_mulVec_three
+#print axioms Gtz.symmPairing_comm
+#print axioms Gtz.frameGram_eq_one
+#print axioms Gtz.orthonormalFrame_resolution
+#print axioms Gtz.det_frameCongruence
+#print axioms Gtz.frameCongruence_entry
+#print axioms Gtz.det_eq_framePairing_det
+#print axioms Gtz.quadForm_frameCoordinates
+#print axioms Gtz.transpose_gap_eq_gap
+#print axioms Gtz.det_gap_nonpos_of_isTie_of_pairPlaneStrict
+#print axioms Gtz.pairBudget_nonpos_of_isTie
+#print axioms Gtz.dominates_completion_of_pairPlaneStrict_of_det_eq_zero
+#print axioms Gtz.forall_completion_dominates_of_pairBudget_eq_zero
+#print axioms Gtz.sixThree_tie_pairBudget_of_transversalAxis
+#print axioms Gtz.exists_stress_of_four_onPlane_atoms
+#print axioms Gtz.exists_stress_of_four_onPlane_atoms_of_ne_zero
+#print axioms Gtz.planarLabels_card_le_three_of_stressFree
+#print axioms Gtz.dotProduct_sq_le_dotProduct_self_mul
+#print axioms Gtz.margin_le_quadForm_of_posDef_binary
+#print axioms Gtz.sum_sq_pairing_of_planarCombination
+#print axioms Gtz.posDef_exchangeTriple_of_axisMassBudget
+#print axioms Gtz.not_isTie_of_axisMassBudget
+#print axioms Gtz.exists_ratioMargin_of_planeStrict_subset
+#print axioms Gtz.tightDropWithinBudget_of_tightDropOnPlane
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_tightDropWithinBudget
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_tightDropOnPlane_viaBudget
+#print axioms Gtz.subsetSum_explicitTriple
+#print axioms Gtz.det_gapTriple_mirrorPair
+#print axioms Gtz.mirrorAtomFamily_zero
+#print axioms Gtz.mirrorAtomFamily_one
+#print axioms Gtz.mirrorAtomFamily_two
+#print axioms Gtz.mirrorAtomFamily_three
+#print axioms Gtz.mirrorAtomFamily_four
+#print axioms Gtz.mirrorAtomFamily_five
+#print axioms Gtz.mirrorWeightFamily_zero
+#print axioms Gtz.mirrorWeightFamily_one
+#print axioms Gtz.mirrorWeightFamily_two
+#print axioms Gtz.mirrorWeightFamily_three
+#print axioms Gtz.mirrorWeightFamily_four
+#print axioms Gtz.mirrorWeightFamily_five
+#print axioms Gtz.mirrorFamilyDesign_atom
+#print axioms Gtz.mirrorPair_planeStrict
+#print axioms Gtz.mirrorOutside_spans
+#print axioms Gtz.witnessSeedRoot_sq
+#print axioms Gtz.witnessProbeRoot_sq
+#print axioms Gtz.witnessOutsideRoot_sq
+#print axioms Gtz.witnessLastRoot_sq
+#print axioms Gtz.witnessOutsideRoot_pos
+#print axioms Gtz.witnessLastRoot_pos
+#print axioms Gtz.exists_pairBudgetEquality_with_spanningOutside
