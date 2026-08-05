@@ -2041,3 +2041,8 @@ import Gtz.Certificates.PairBudgetEqualityWitness
 -- full-support spike, reducing the endpoint (5,3) tie exclusion to the
 -- shared-line-pair matroid statement.
 import Gtz.Ties.SpikeMatroidObstruction
+
+-- The two-vanished (4,3) boundary residual holds unconditionally: the
+-- conservation dichotomy, the total-tie frame, Bhatia-Davis selection, and
+-- the two-rank-one exchange close the second vanished-count stratum.
+import Gtz.Reduction.TwoVanishedBoundary

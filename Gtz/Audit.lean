@@ -407,6 +407,7 @@ import Gtz.Design.FourOnPlaneStress
 import Gtz.Design.AxisMassBudgetTransport
 import Gtz.Certificates.PairBudgetEqualityWitness
 import Gtz.Ties.SpikeMatroidObstruction
+import Gtz.Reduction.TwoVanishedBoundary
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11763,3 +11764,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms EndpointSpike.exists_commonOrthogonal_pair
 #print axioms EndpointSpike.fin_five_translates_distinct
 #print axioms EndpointSpike.matching_or_triangle_of_coveringEdges
+#print axioms Gtz.twoVanishedRigidBottomDomination_holds
+#print axioms Gtz.tieFrame_of_totalTie
+#print axioms Gtz.twoRankOne_exchange_posDef
+#print axioms Gtz.sum_stress_mul_pivotDefect_eq_zero
+#print axioms Gtz.sum_coweight_mul_pivot_eq_rank
+#print axioms Gtz.exists_pivot_lt_one_or_forall_pivot_eq_one
+#print axioms Gtz.dotProduct_eq_zero_of_resolution
+#print axioms Gtz.dependency_sq_eq_of_tieFrame
+#print axioms Gtz.pairing_eq_of_tieFrame
+#print axioms Gtz.weighted_sq_le_neg_mul_of_mean_zero
