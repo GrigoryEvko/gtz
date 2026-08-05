@@ -373,6 +373,12 @@ import Gtz.Certificates.KillInequalityAnchors
 import Gtz.Certificates.KillCellCertificate
 import Gtz.Design.DiamondStressSupport
 import Gtz.Design.TwoPoleStratum
+import Gtz.Ties.RankTwoMassCircuit
+import Gtz.Ties.ConicCaratheodory
+import Gtz.Ties.RankTwoBand
+import Gtz.Design.RankTwoTieCriterion
+import Gtz.Ties.RankTwoHingeBridge
+import Gtz.Design.CompanionConstruction
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11371,3 +11377,32 @@ closed unconditionally. -/
 #print axioms Gtz.sixThree_hasParallelPair_of_isTie_of_offPlaneCard_le_two
 #print axioms Gtz.sixThree_offPlaneCard_le_two_of_coplanarStress
 #print axioms Gtz.sixThree_hasParallelPair_of_isTie_of_coplanarStress
+
+-- Ties/RankTwoMassCircuit.lean
+#print axioms Gtz.sum_mass_mul_heaviness_le_one_of_support_card_le_three
+#print axioms Gtz.not_forall_crossCap_of_unitMoments
+#print axioms Gtz.not_cornerHeaviness_of_pairCap
+#print axioms Gtz.not_isTie_of_circuitReduction_of_equalityStratum
+-- Ties/ConicCaratheodory.lean
+#print axioms Gtz.exists_reduced_coefficient_of_recession
+#print axioms Gtz.exists_threeAtomSubdesign_atLeastAsHeavy
+#print axioms Gtz.rankTwoCircuitReduction_holds
+#print axioms Gtz.exists_isSymm_shapeMatrix_traceOne_of_isTie
+#print axioms Gtz.not_isTie_of_equalityStratum
+-- Ties/RankTwoBand.lean
+#print axioms Gtz.eq_of_shapeNonneg_of_orthogonalConeTriple
+#print axioms Gtz.rankTwoEqualityStratum_holds
+#print axioms Gtz.not_isTie_of_fourNonParallel
+-- Design/RankTwoTieCriterion.lean
+#print axioms Gtz.exists_posDef_pair_of_nesterenkoExcess
+#print axioms Gtz.twoPoleStratumSelection_of_hinge_of_handoff
+-- Ties/RankTwoHingeBridge.lean
+#print axioms Gtz.rankTwoFourDirectionHinge_holds
+#print axioms Gtz.unitPairGram_ne_one_of_pairBracket_ne_zero
+#print axioms Gtz.not_forall_pairBracket_ne_zero_of_unitPairGram_ne_one
+#print axioms Gtz.twoPoleStratumSelection_of_strictCompanionHandoff
+-- Design/CompanionConstruction.lean
+#print axioms Gtz.strictCompanionPairClosesTwoPoleSixThree_holds
+#print axioms Gtz.twoPoleStratumSelection_six_of_hinge
+#print axioms Gtz.twoPoleStratumSelection_six_unconditional
+#print axioms Gtz.sixThree_hasParallelPair_of_isTie_of_coplanarStress_unconditional

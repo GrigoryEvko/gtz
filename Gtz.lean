@@ -1980,3 +1980,12 @@ import Gtz.Certificates.KillInequalityAnchors
 import Gtz.Certificates.KillCellCertificate
 import Gtz.Design.DiamondStressSupport
 import Gtz.Design.TwoPoleStratum
+-- the rank-two hinge chain: circuit engine, conic Caratheodory + equality
+-- stratum, the nu-band closure, the tie criterion, the hinge bridge, and the
+-- companion construction closing branch (iii) unconditionally
+import Gtz.Ties.RankTwoMassCircuit
+import Gtz.Ties.ConicCaratheodory
+import Gtz.Ties.RankTwoBand
+import Gtz.Design.RankTwoTieCriterion
+import Gtz.Ties.RankTwoHingeBridge
+import Gtz.Design.CompanionConstruction
