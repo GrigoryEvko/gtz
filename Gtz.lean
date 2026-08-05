@@ -2046,3 +2046,9 @@ import Gtz.Ties.SpikeMatroidObstruction
 -- conservation dichotomy, the total-tie frame, Bhatia-Davis selection, and
 -- the two-rank-one exchange close the second vanished-count stratum.
 import Gtz.Reduction.TwoVanishedBoundary
+
+-- Branch (i)'s two tie constraint families in kernel form: the on-plane drop
+-- is impossible at any tie (both drop residuals are exactly the stress-free
+-- hinge), and the insert-plane pair-completion gate prices the second family.
+import Gtz.Design.OnPlaneDropObstruction
+import Gtz.Design.InsertPlaneCompletion
