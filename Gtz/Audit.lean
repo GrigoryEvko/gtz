@@ -385,6 +385,19 @@ import Gtz.Reduction.RankThreeComposite
 import Gtz.Design.StressFreeStratum
 import Gtz.Design.StressFreeNormalizer
 import Gtz.Design.StressFreeClosureFailure
+import Gtz.Certificates.KillInequalityD7
+import Gtz.Quantitative.CauchyBinetLayerSum
+import Gtz.Quantitative.WindowCofactorBridge
+import Gtz.Quantitative.WindowGramSignature
+import Gtz.Quantitative.GeneralPositionWindow
+import Gtz.Quantitative.WindowPolarity
+import Gtz.Ties.TieBasisWindow
+import Gtz.Ties.TieFreeNoGo
+import Gtz.Ties.AllTied
+import Gtz.Design.TetrahedralRigidity
+import Gtz.Design.GaleDualWindow
+import Gtz.Design.BalancedNormalForm
+import Gtz.Design.LinePatternCompleteness
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11449,3 +11462,34 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_relaxed_stressFree_sixThree_without_posDef_triple
 #print axioms Gtz.not_relaxedStressFreeHinge_of_fiveThree_tie
 #print axioms Gtz.not_relaxedStressFreeHinge_of_diamond
+
+/-! ### The kill-inequality certificate and the window/layer/dual kit -/
+
+#print axioms Gtz.KillFormsD7.killInequality
+#print axioms Gtz.KillFormsD7.killInequalityStrong
+#print axioms Gtz.not_forall_dominates_of_isTie_sixThree
+#print axioms Gtz.not_forall_dominates_of_isTie_uniform_sixThree
+#print axioms Gtz.det_subsetSum_sub_one_eq_zero_of_isTie_of_dominates
+#print axioms Gtz.exists_not_dominates_det_mul_card_le_layer_of_isTie
+#print axioms Gtz.budget_does_not_pin_window_sixThree
+#print axioms Gtz.rayDesign_not_isTie
+#print axioms Gtz.no_window_local_trace_one
+#print axioms Gtz.forall_window_posDef_corankOne
+#print axioms Gtz.exists_gated_window_of_tight_line
+#print axioms Gtz.forall_dominates_refuted_by_crux
+#print axioms Gtz.noGo_carries_no_information_against_crux
+#print axioms Gtz.det_gap_eq_zero_of_isTie_of_dominates
+#print axioms Gtz.one_le_pivot_of_isTie
+#print axioms Gtz.not_forall_dominates_uniform_sixThree
+#print axioms Gtz.not_forall_dominates_splitTetra
+#print axioms Gtz.tetraPadRelaxation_isSolvable
+#print axioms Gtz.weightPositivity_isIndispensable
+#print axioms Gtz.tetrahedralRigidity_iff_allTiedLocus_isEmpty
+#print axioms Gtz.not_exists_allTied_of_relaxedClassification
+#print axioms Gtz.not_forall_dominates_of_uniform_weights_sixThree
+#print axioms Gtz.not_forall_dominates_of_galeDualWindow_pos
+#print axioms Gtz.balancedFrameDomination_iff_balancedStratumHasStrictDominator
+#print axioms Gtz.hasParallelPair_of_isTie_of_fullSupportStress_of_frameDomination
+#print axioms Gtz.balancedStratumHasStrictDominator_of_zeroSumStresses
+#print axioms Gtz.hingeHoldsAtSize_sevenThree_of_multiLineCases
+#print axioms Gtz.linearSpaceListIsComplete_seven_lineFreeCase

@@ -2000,3 +2000,19 @@ import Gtz.Reduction.RankThreeComposite
 import Gtz.Design.StressFreeStratum
 import Gtz.Design.StressFreeNormalizer
 import Gtz.Design.StressFreeClosureFailure
+
+-- The kill-inequality kernel certificate and the window/layer/dual kit
+-- supporting the hinge and balanced-stratum frontiers.
+import Gtz.Certificates.KillInequalityD7
+import Gtz.Quantitative.CauchyBinetLayerSum
+import Gtz.Quantitative.WindowCofactorBridge
+import Gtz.Quantitative.WindowGramSignature
+import Gtz.Quantitative.GeneralPositionWindow
+import Gtz.Quantitative.WindowPolarity
+import Gtz.Ties.TieBasisWindow
+import Gtz.Ties.TieFreeNoGo
+import Gtz.Ties.AllTied
+import Gtz.Design.TetrahedralRigidity
+import Gtz.Design.GaleDualWindow
+import Gtz.Design.BalancedNormalForm
+import Gtz.Design.LinePatternCompleteness
