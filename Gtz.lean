@@ -1994,3 +1994,9 @@ import Gtz.Design.CompanionConstruction
 import Gtz.Design.BalancedStratum
 import Gtz.Reduction.TrichotomyLedger
 import Gtz.Reduction.RankThreeComposite
+
+-- Branch (i) of the stress trichotomy: the stratum's geometry, the normalizer
+-- quadric kit, and the closure counterexample that pins weight positivity.
+import Gtz.Design.StressFreeStratum
+import Gtz.Design.StressFreeNormalizer
+import Gtz.Design.StressFreeClosureFailure

@@ -382,6 +382,9 @@ import Gtz.Design.CompanionConstruction
 import Gtz.Design.BalancedStratum
 import Gtz.Reduction.TrichotomyLedger
 import Gtz.Reduction.RankThreeComposite
+import Gtz.Design.StressFreeStratum
+import Gtz.Design.StressFreeNormalizer
+import Gtz.Design.StressFreeClosureFailure
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11421,3 +11424,28 @@ closed unconditionally. -/
 #print axioms Gtz.forall_gtzOriginal_rank_three_of_twoSelections_and_stressFreeHinge
 -- Reduction/RankThreeComposite.lean
 #print axioms Gtz.forall_gtzOriginal_rank_three_of_balancedSelection_and_stressFreeHinge
+
+/-! ### Branch (i): the stress-free stratum, its normalizer quadric, and the
+closure failure that shows `weight_pos` is load-bearing at every label -/
+
+#print axioms Gtz.stressFree_iff_veroneseGrid_det_ne_zero
+#print axioms Gtz.stressFree_iff_no_conic_sixThree
+#print axioms Gtz.sq_rank_le_sum_leverage
+#print axioms Gtz.sixThree_exists_triple_three_halves_le_trace_gap
+#print axioms Gtz.trace_gap_pos_of_dominates_of_stressFree
+#print axioms Gtz.posDef_three_of_trace_nonneg_of_two_mul_frobeniusNormSq_lt
+#print axioms Gtz.sixThree_not_isTie_of_stressFree_of_primitive
+#print axioms Gtz.sixThree_hasParallelPair_of_isTie_of_stressFree
+#print axioms Gtz.trace_eq_one_of_isNormalizerForm
+#print axioms Gtz.trace_gap_mul_normalizerForm
+#print axioms Gtz.isNormalizerForm_unique_of_noConic
+#print axioms Gtz.normalizerBand_collapses_at_graphicKFour
+#print axioms Gtz.labelFreeSelection_fails_on_stressFree_graphicKFour
+#print axioms Gtz.maxVolume_is_blind_at_graphicKFour
+#print axioms Gtz.not_isTie_of_tightAxisGate
+#print axioms Gtz.sixThree_not_isTie_of_transportResidual
+#print axioms Gtz.not_tightAxisTransportResidual_five
+#print axioms Gtz.det_subsetSum_pos_of_dominates
+#print axioms Gtz.exists_relaxed_stressFree_sixThree_without_posDef_triple
+#print axioms Gtz.not_relaxedStressFreeHinge_of_fiveThree_tie
+#print axioms Gtz.not_relaxedStressFreeHinge_of_diamond
