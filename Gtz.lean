@@ -2016,3 +2016,9 @@ import Gtz.Design.TetrahedralRigidity
 import Gtz.Design.GaleDualWindow
 import Gtz.Design.BalancedNormalForm
 import Gtz.Design.LinePatternCompleteness
+
+-- Branch (ii) machinery: the balanced-tie reduction (the selection Prop is a
+-- tie exclusion on the zero-sum slice) and the endpoint-gauge descent with its
+-- vanished-count residuals.
+import Gtz.Reduction.BalancedTieReduction
+import Gtz.Reduction.EndpointGaugeDescent

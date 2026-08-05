@@ -398,6 +398,8 @@ import Gtz.Design.TetrahedralRigidity
 import Gtz.Design.GaleDualWindow
 import Gtz.Design.BalancedNormalForm
 import Gtz.Design.LinePatternCompleteness
+import Gtz.Reduction.BalancedTieReduction
+import Gtz.Reduction.EndpointGaugeDescent
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11493,3 +11495,48 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.balancedStratumHasStrictDominator_of_zeroSumStresses
 #print axioms Gtz.hingeHoldsAtSize_sevenThree_of_multiLineCases
 #print axioms Gtz.linearSpaceListIsComplete_seven_lineFreeCase
+
+/-! ### The balanced-tie reduction and the endpoint-gauge descent -/
+
+#print axioms Gtz.exists_posDef_triple_of_stress_of_not_isTie
+#print axioms Gtz.stress_ne_zero_of_fullSupport
+#print axioms Gtz.balancedStratumSelection_six_of_noPrimitiveBalancedTie
+#print axioms Gtz.noPrimitiveBalancedTie_of_balancedStratumSelection_six
+#print axioms Gtz.balancedStratumSelection_six_iff_noPrimitiveBalancedTie
+#print axioms Gtz.noPrimitiveBalancedTie_iff_zeroSum
+#print axioms Gtz.balancedStratumSelection_six_of_zeroSumSlice
+#print axioms Gtz.balancedStratumSelection_six_of_zeroSumTieExclusion
+#print axioms Gtz.stress_of_twoSidedResolutions
+#print axioms Gtz.zeroSumFrameDomination_of_endpointGauge
+#print axioms Gtz.mulVec_ne_smul_of_ne_smul
+#print axioms Gtz.exists_posDef_triple_of_zeroSumFrameDomination
+#print axioms Gtz.noPrimitiveBalancedTie_of_zeroSumExclusion
+#print axioms Gtz.noPrimitiveBalancedTieZeroSum_of_zeroSumFrameDomination
+#print axioms Gtz.balancedStratumSelection_six_of_endpointGauge
+#print axioms Gtz.forall_gtzOriginal_rank_three_of_endpointGauge_and_stressFreeHinge
+#print axioms Gtz.diagonalZeroSumFrameDomination_of_endpointGauge
+#print axioms Gtz.exists_posDef_triple_of_diagonalZeroSumFrameDomination
+#print axioms Gtz.noPrimitiveBalancedTieZeroSum_of_diagonalZeroSumFrameDomination
+#print axioms Gtz.balancedStratumSelection_six_of_diagonalEndpointGauge
+#print axioms Gtz.forall_gtzOriginal_rank_three_of_diagonalEndpointGauge_and_stressFreeHinge
+#print axioms Gtz.dotProduct_frameTripleSum_inv_self_eq_one
+#print axioms Gtz.entry_of_atomCombination
+#print axioms Gtz.sum_split_by_signEnumerations
+#print axioms Gtz.axisSupported_negAtom_contradiction
+#print axioms Gtz.offdiagZero_negAtom_contradiction
+#print axioms Gtz.commonVanishedCoord_contradiction
+#print axioms Gtz.proportionalOffdiag_negPair_contradiction
+#print axioms Gtz.diagonalGauge_dependence_proportional
+#print axioms Gtz.diagonalGauge_dependence_eq_zero_of_vanishes
+#print axioms Gtz.probe_eq_zero_of_negSide_orthogonal
+#print axioms Gtz.isHermitian_selectedSub_weightedGram
+#print axioms Gtz.exists_posDef_of_threeVanished
+#print axioms Gtz.diagonalEndpointGauge_of_vanishedCases
+#print axioms Gtz.balancedStratumSelection_six_of_vanishedCases
+#print axioms Gtz.forall_gtzOriginal_rank_three_of_vanishedCases_and_stressFreeHinge
+#print axioms Gtz.no_diamondShape_of_fullSupport_stress
+#print axioms Gtz.no_relabeled_diamondShape_of_endpointGauge
+#print axioms Gtz.spikedBottomDomination_of_tieExclusion
+#print axioms Gtz.oneVanished_of_spikedBottomDomination
+#print axioms Gtz.balancedStratumSelection_six_of_spikedBottom_and_twoVanished
+#print axioms Gtz.forall_gtzOriginal_rank_three_of_tieExclusion_twoVanished_stressFreeHinge
