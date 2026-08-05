@@ -362,6 +362,9 @@ import Gtz.Reduction.StressExistence
 import Gtz.Reduction.K4Diagonal
 import Gtz.Reduction.SpCertificates
 import Gtz.Reduction.ChartRealization
+import Gtz.Reduction.HingeFunnel
+import Gtz.Reduction.StressMassGap
+import Gtz.Reduction.StressSupportTaxonomy
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11231,3 +11234,58 @@ closed unconditionally. -/
 #print axioms Gtz.chartGtz_five_three
 #print axioms Gtz.chartGtz_five_two
 #print axioms Gtz.exists_design_minimiser_of_not_gtzWeighted_sixThree
+#print axioms Gtz.dominating_of_hasParallelPair_sixThree
+#print axioms Gtz.parallelFree_of_no_dominating_sixThree
+#print axioms Gtz.hingeHoldsAtSize_six_three_iff_no_parallelFree_tie
+#print axioms Gtz.sevenThree_dominating_of_hasParallelPair_of_sixThree
+#print axioms Gtz.sevenThree_parallelFree_of_no_dominating_of_sixThree
+#print axioms Gtz.weighted_atomForm_eq_on
+#print axioms Gtz.sixThree_fullSupport_stress_splits_three_three
+#print axioms Gtz.exists_orthogonal_probe_of_support_card_lt
+#print axioms Gtz.stress_fullSupport_or_orthogonalProbe
+#print axioms Gtz.posSide_sum_eq_negSide_sum
+#print axioms Gtz.posDef_posSide_sum
+#print axioms Gtz.sixThree_stress_trichotomy
+#print axioms Gtz.orthonormal_of_three_rank_ones_sum_one
+#print axioms Gtz.exists_whitening_of_positiveSide
+#print axioms Gtz.whitened_sum_parseval
+#print axioms Gtz.twoFrame_normalForm
+#print axioms Gtz.mem_stressSupport_iff
+#print axioms Gtz.atom_mem_supportSpan
+#print axioms Gtz.eq_zero_of_mem_supportSpan_of_orthogonal
+#print axioms Gtz.finrank_supportSpan_le_card_positiveSide
+#print axioms Gtz.supportSpan_neg
+#print axioms Gtz.finrank_supportSpan_le_card_negativeSide
+#print axioms Gtz.card_positiveSide_add_card_negativeSide
+#print axioms Gtz.twice_finrank_supportSpan_le_card_stressSupport
+#print axioms Gtz.matrixCombinationMap_apply
+#print axioms Gtz.finrank_range_matrixCombinationMap_le
+#print axioms Gtz.range_matrixCombinationMap_le
+#print axioms Gtz.extendByZero_injective
+#print axioms Gtz.stressMap_extendByZero
+#print axioms Gtz.finrank_ker_stressMap_le_one
+#print axioms Gtz.card_stressSupport_le_succ_finrank_range
+#print axioms Gtz.card_stressSupport_le_of_generators
+#print axioms Gtz.atomMatrix_zero
+#print axioms Gtz.exists_representation_of_finrank_eq
+#print axioms Gtz.dotProduct_eq_zero_of_generators_orthogonal
+#print axioms Gtz.exists_generator_of_finrank_eq_one
+#print axioms Gtz.exists_generating_pair_of_finrank_eq_two
+#print axioms Gtz.atomMatrix_pair_expansion
+#print axioms Gtz.card_stressSupport_eq_one_of_finrank_eq_zero
+#print axioms Gtz.card_stressSupport_le_two_of_finrank_eq_one
+#print axioms Gtz.card_stressSupport_le_four_of_finrank_eq_two
+#print axioms Gtz.hasParallelPair_iff_hasParallelAtomPair
+#print axioms Gtz.finrank_supportSpan_eq_of_hasSpanningSupport
+#print axioms Gtz.rank_le_card_positiveSide_of_hasSpanningSupport
+#print axioms Gtz.hasSpanningSupport_of_finrank_eq
+#print axioms Gtz.hasCoplanarSupport_of_finrank_eq_two
+#print axioms Gtz.hasParallelAtomPair_of_finrank_le_one
+#print axioms Gtz.uniqueStress_support_taxonomy
+#print axioms Gtz.card_stressSupport_ne_three
+#print axioms Gtz.card_stressSupport_ne_five
+#print axioms Gtz.card_stressSupport_mem_strata
+#print axioms Gtz.uniqueStress_sevenThree_trichotomy
+#print axioms Gtz.dominates_iff_forall_discountedMoment_ge
+#print axioms Gtz.posDef_gap_of_stressMassGap
+#print axioms Gtz.posDef_negSide_gap_of_rigidity

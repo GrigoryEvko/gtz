@@ -1965,3 +1965,6 @@ import Gtz.Reduction.StressExistence
 import Gtz.Reduction.K4Diagonal
 import Gtz.Reduction.SpCertificates
 import Gtz.Reduction.ChartRealization
+import Gtz.Reduction.HingeFunnel
+import Gtz.Reduction.StressMassGap
+import Gtz.Reduction.StressSupportTaxonomy
