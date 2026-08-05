@@ -365,6 +365,14 @@ import Gtz.Reduction.ChartRealization
 import Gtz.Reduction.HingeFunnel
 import Gtz.Reduction.StressMassGap
 import Gtz.Reduction.StressSupportTaxonomy
+import Gtz.Reduction.NoStressRigidity
+import Gtz.Reduction.CoplanarStress
+import Gtz.Reduction.PairEngineCore
+import Gtz.Certificates.K4LeafPrototype
+import Gtz.Certificates.KillInequalityAnchors
+import Gtz.Certificates.KillCellCertificate
+import Gtz.Design.DiamondStressSupport
+import Gtz.Design.TwoPoleStratum
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11289,3 +11297,77 @@ closed unconditionally. -/
 #print axioms Gtz.dominates_iff_forall_discountedMoment_ge
 #print axioms Gtz.posDef_gap_of_stressMassGap
 #print axioms Gtz.posDef_negSide_gap_of_rigidity
+
+-- Reduction/NoStressRigidity.lean
+#print axioms Gtz.parsevalWeights_unique_of_stressFree
+#print axioms Gtz.weight_eq_of_stressFree_of_parseval
+#print axioms Gtz.weight_eq_of_atom_eq_of_stressFree
+#print axioms Gtz.stressFree_iff_linearIndependent_atomMatrix
+#print axioms Gtz.sixThree_noStress_weights_determined
+-- Reduction/CoplanarStress.lean
+#print axioms Gtz.scaledGap_bound_of_tiltedMoment
+#print axioms Gtz.momentFloor_of_scaledGap
+#print axioms Gtz.dominates_insert_carrier_iff_planarTarget
+#print axioms Gtz.probePairing_sq_mul_weight_eq_one_of_unique_carrier
+#print axioms Gtz.one_lt_probePairing_sq_of_unique_carrier
+#print axioms Gtz.hasParallelAtomPair_of_supportSpan_le_one
+#print axioms Gtz.sixThree_primitiveCoplanar_structure
+#print axioms Gtz.dominates_of_singleCarrier_of_planarPair
+-- Reduction/PairEngineCore.lean
+#print axioms Gtz.parseval_pairing_eq_norm_sq
+#print axioms Gtz.pairFailure_iff_engineForm
+#print axioms Gtz.exists_offPair_probe_mass_quarter
+-- Certificates/K4LeafPrototype.lean
+#print axioms Gtz.k4LeafZeroVertex0_posSemidef
+#print axioms Gtz.k4LeafZeroVertex1_posSemidef
+#print axioms Gtz.k4LeafZeroVertex2_posSemidef
+#print axioms Gtz.k4LeafZeroVertex3_posSemidef
+#print axioms Gtz.k4LeafZeroVertex4_posSemidef
+#print axioms Gtz.k4LeafZeroVertex5_posSemidef
+#print axioms Gtz.k4LeafZeroVertex6_posSemidef
+#print axioms Gtz.k4LeafZeroVertex7_posSemidef
+#print axioms Gtz.k4LeafZeroVertex8_posSemidef
+#print axioms Gtz.k4LeafZeroVertex9_posSemidef
+#print axioms Gtz.k4LeafZeroVertex10_posSemidef
+#print axioms Gtz.k4LeafZeroVertex11_posSemidef
+#print axioms Gtz.k4LeafZeroVertex12_posSemidef
+#print axioms Gtz.k4LeafZeroVertex13_posSemidef
+#print axioms Gtz.k4LeafZeroVertex14_posSemidef
+#print axioms Gtz.k4LeafZeroVertex15_posSemidef
+#print axioms Gtz.k4LeafZeroVertex16_posSemidef
+#print axioms Gtz.k4LeafZeroVertex17_posSemidef
+#print axioms Gtz.k4LeafZeroVertex18_posSemidef
+#print axioms Gtz.k4LeafZeroVertex19_posSemidef
+#print axioms Gtz.k4LeafZeroVertex20_posSemidef
+#print axioms Gtz.k4LeafZeroVertex21_posSemidef
+-- Certificates/KillInequalityAnchors.lean
+#print axioms Gtz.KillAnchors.ellipsoidA_anchor_exact
+#print axioms Gtz.KillAnchors.ellipsoidB_anchor_exact
+-- Certificates/KillCellCertificate.lean
+#print axioms Gtz.KillCellCertificate.certificate_identity
+#print axioms Gtz.KillCellCertificate.targetForm_nonneg_on_cell
+-- Design/DiamondStressSupport.lean
+#print axioms Gtz.stress_probe_combination_eq_zero
+#print axioms Gtz.diamondExtension_stress_support
+#print axioms Gtz.diamondExtension_no_fullSupport_stress
+#print axioms Gtz.diamondExtension_stressFree_or_coplanarStress
+-- Design/TwoPoleStratum.lean
+#print axioms Gtz.momentFloorStrict_of_scaledGapStrict
+#print axioms Gtz.planarCross_probe_dot
+#print axioms Gtz.planarCross_seed_dot
+#print axioms Gtz.planarCross_self_dot
+#print axioms Gtz.planarBasis_bilinear_expansion
+#print axioms Gtz.posDef_insert_carrier_of_planarTargetStrict
+#print axioms Gtz.polePairSubform_pos
+#print axioms Gtz.polePairClearedForm_pos
+#print axioms Gtz.posDef_polePair_triple_of_scalarGate
+#print axioms Gtz.offPlanePair_inPlanePart_eq_smul
+#print axioms Gtz.exists_posDef_triple_of_gateAverage
+#print axioms Gtz.soleOffPlane_inPlanePart_eq_zero
+#print axioms Gtz.twoPole_weight_sum_lt_one
+#print axioms Gtz.one_lt_axisBlock_of_offPlanePair
+#print axioms Gtz.seed_ne_zero_of_offPlanePair_of_isPrimitive
+#print axioms Gtz.not_isTie_of_offPlanePair_of_selection
+#print axioms Gtz.sixThree_hasParallelPair_of_isTie_of_offPlaneCard_le_two
+#print axioms Gtz.sixThree_offPlaneCard_le_two_of_coplanarStress
+#print axioms Gtz.sixThree_hasParallelPair_of_isTie_of_coplanarStress

@@ -1968,3 +1968,15 @@ import Gtz.Reduction.ChartRealization
 import Gtz.Reduction.HingeFunnel
 import Gtz.Reduction.StressMassGap
 import Gtz.Reduction.StressSupportTaxonomy
+-- the three branches of `sixThree_stress_trichotomy` and the certificate
+-- payloads they consume.  Several import upward out of their own directory,
+-- so they sit here rather than in the layer blocks above.  Branches (ii) and
+-- (iii) land a NAMED RESIDUAL, not the target -- read each file's header
+import Gtz.Reduction.NoStressRigidity
+import Gtz.Reduction.CoplanarStress
+import Gtz.Reduction.PairEngineCore
+import Gtz.Certificates.K4LeafPrototype
+import Gtz.Certificates.KillInequalityAnchors
+import Gtz.Certificates.KillCellCertificate
+import Gtz.Design.DiamondStressSupport
+import Gtz.Design.TwoPoleStratum
