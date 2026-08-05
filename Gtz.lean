@@ -2036,3 +2036,8 @@ import Gtz.Design.TightAxisPairBudget
 import Gtz.Design.FourOnPlaneStress
 import Gtz.Design.AxisMassBudgetTransport
 import Gtz.Certificates.PairBudgetEqualityWitness
+
+-- The spike matroid obstruction: five atoms covered by two planes carry no
+-- full-support spike, reducing the endpoint (5,3) tie exclusion to the
+-- shared-line-pair matroid statement.
+import Gtz.Ties.SpikeMatroidObstruction

@@ -406,6 +406,7 @@ import Gtz.Design.TightAxisPairBudget
 import Gtz.Design.FourOnPlaneStress
 import Gtz.Design.AxisMassBudgetTransport
 import Gtz.Certificates.PairBudgetEqualityWitness
+import Gtz.Ties.SpikeMatroidObstruction
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11747,3 +11748,18 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.witnessOutsideRoot_pos
 #print axioms Gtz.witnessLastRoot_pos
 #print axioms Gtz.exists_pairBudgetEquality_with_spanningOutside
+
+/-! ### The spike matroid obstruction and the shared-line-pair reduction -/
+
+#print axioms EndpointSpike.pairing_smul_atomMatrix
+#print axioms EndpointSpike.pairing_fiveAtoms
+#print axioms EndpointSpike.coeffPair_eq_zero_of_smul_add_smul_eq_zero
+#print axioms EndpointSpike.planeNormal_eq_zero_of_spike_on_plane
+#print axioms EndpointSpike.no_spike_of_sharedLinePair
+#print axioms EndpointSpike.spikeExpansion_of_dependence
+#print axioms EndpointSpike.no_sharedLinePair_of_spikedBottom
+#print axioms EndpointSpike.endpointBottomTieExclusion_of_sharedLinePair
+#print axioms EndpointSpike.tripleBracket_eq_zero_of_dependence
+#print axioms EndpointSpike.exists_commonOrthogonal_pair
+#print axioms EndpointSpike.fin_five_translates_distinct
+#print axioms EndpointSpike.matching_or_triangle_of_coveringEdges
