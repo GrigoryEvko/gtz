@@ -379,6 +379,9 @@ import Gtz.Ties.RankTwoBand
 import Gtz.Design.RankTwoTieCriterion
 import Gtz.Ties.RankTwoHingeBridge
 import Gtz.Design.CompanionConstruction
+import Gtz.Design.BalancedStratum
+import Gtz.Reduction.TrichotomyLedger
+import Gtz.Reduction.RankThreeComposite
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11406,3 +11409,15 @@ closed unconditionally. -/
 #print axioms Gtz.twoPoleStratumSelection_six_of_hinge
 #print axioms Gtz.twoPoleStratumSelection_six_unconditional
 #print axioms Gtz.sixThree_hasParallelPair_of_isTie_of_coplanarStress_unconditional
+-- Design/BalancedStratum.lean
+#print axioms Gtz.weight_add_weight_lt_one
+#print axioms Gtz.posDef_gap_of_freeMassBudget
+#print axioms Gtz.sixThree_posDef_negSide_of_rigidity
+#print axioms Gtz.subsetSum_sub_one_eq_freeMass_sub_boundMass
+-- Reduction/TrichotomyLedger.lean
+#print axioms Gtz.hingeHoldsAtSize_sixThree_of_stressFreeHinge
+#print axioms Gtz.forall_gtzOriginal_rank_three_of_stressFreeHinge
+#print axioms Gtz.balancedStratumCapstone_of_balancedStratumSelection
+#print axioms Gtz.forall_gtzOriginal_rank_three_of_twoSelections_and_stressFreeHinge
+-- Reduction/RankThreeComposite.lean
+#print axioms Gtz.forall_gtzOriginal_rank_three_of_balancedSelection_and_stressFreeHinge

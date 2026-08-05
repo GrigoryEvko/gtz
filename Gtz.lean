@@ -1989,3 +1989,8 @@ import Gtz.Ties.RankTwoBand
 import Gtz.Design.RankTwoTieCriterion
 import Gtz.Ties.RankTwoHingeBridge
 import Gtz.Design.CompanionConstruction
+-- the balanced stratum, the trichotomy ledger (three-Prop reduction), and the
+-- rank-three composite: GtzOriginal n 3 at every size from two remaining Props
+import Gtz.Design.BalancedStratum
+import Gtz.Reduction.TrichotomyLedger
+import Gtz.Reduction.RankThreeComposite
