@@ -2022,3 +2022,8 @@ import Gtz.Design.LinePatternCompleteness
 -- vanished-count residuals.
 import Gtz.Reduction.BalancedTieReduction
 import Gtz.Reduction.EndpointGaugeDescent
+
+-- Kernel refutation certificates: no pure-triple selection closes the zero-sum
+-- slice, neither pointwise nor along the whole walk orbit.
+import Gtz.Certificates.PureTripleSelectionRefuted
+import Gtz.Certificates.OrbitPureTripleSelectionRefuted
