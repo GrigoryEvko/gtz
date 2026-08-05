@@ -410,6 +410,7 @@ import Gtz.Ties.SpikeMatroidObstruction
 import Gtz.Reduction.TwoVanishedBoundary
 import Gtz.Design.OnPlaneDropObstruction
 import Gtz.Design.InsertPlaneCompletion
+import Gtz.Reduction.BalancedStratumClosure
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11789,3 +11790,5 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.tightDropWithinBudget_of_stressFreeHinge
 #print axioms Gtz.posDef_insertCompletion_of_insertPlaneGate
 #print axioms Gtz.exists_insertGateFailure_of_isTie
+#print axioms Gtz.balancedStratumSelection_six_holds
+#print axioms Gtz.forall_gtzOriginal_rank_three_of_stressFreeHingeAlone

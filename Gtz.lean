@@ -2052,3 +2052,8 @@ import Gtz.Reduction.TwoVanishedBoundary
 -- hinge), and the insert-plane pair-completion gate prices the second family.
 import Gtz.Design.OnPlaneDropObstruction
 import Gtz.Design.InsertPlaneCompletion
+
+-- The balanced stratum is closed: branches (ii) and (iii) of the stress
+-- trichotomy are theorems, and rank-3 GTZ at every size rests on the
+-- stress-free hinge alone.
+import Gtz.Reduction.BalancedStratumClosure
