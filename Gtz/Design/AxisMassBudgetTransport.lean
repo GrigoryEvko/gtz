@@ -38,7 +38,7 @@ here is unconditional.
   replaced by a neighbourhood, which is the shape the branch-(iii) lesson
   demands.
 
-Calibration (exact rationals, lane report under `/tmp/gtz-p17/tightdrop/`): on
+Calibration (exact rationals): on
 the symmetric budget-equality family at `(6,3)` the exchange that kills the
 configuration fires at drop axis mass about `0.62` against a plane margin about
 `0.30` — far outside this budget.  So the budget names the on-plane

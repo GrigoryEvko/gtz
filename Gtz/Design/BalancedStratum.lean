@@ -425,15 +425,15 @@ fire on it.  Every firing region is discharged unconditionally: the mass gap by
 equal-ratio slice is excluded outright by
 `Gtz.sixThree_posDef_negSide_of_rigidity`, which needs no hypothesis at all.
 
-Hammered in exact rationals across five adversarial samplers — generic, spread
-weights, spread stress scales, nearly aligned frames, far rotated frames —
-covering 6,992 primitive balanced configurations: the twenty-triple budget
-fires on EVERY one, including every configuration certified within one percent
-of the tie boundary, with zero false positives against the exact minor test.
-It is a hypothesis because the budget is a Cauchy-Schwarz relaxation, not an
-equivalence: at an exact tie every budget is at least one, so the cell this
-names is precisely the tie locus together with the configurations whose winning
-triple the relaxation cannot see. -/
+The budget does NOT cover the residual region: an exact-rational witness
+(denominators up to 10^8) exhibits a primitive balanced configuration where no
+triple meets the free-mass budget and neither stress mass gap holds, yet seven
+triples strictly dominate.  Earlier sampling that suggested full budget
+coverage was refuted by that witness.  The hypothesis stands because the budget
+is a Cauchy-Schwarz relaxation, not an equivalence: at an exact tie every
+budget is at least one, so the cell this names is precisely the tie locus
+together with the configurations whose winning triple the relaxation cannot
+see. -/
 def BalancedStratumSelection (size : ℕ) : Prop :=
   ∀ (design : WeightedDesign size 3) (stressCoeff : Fin size → ℝ),
     (∑ c, stressCoeff c • atomMatrix (design.atom c)) = 0 →

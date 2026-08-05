@@ -756,9 +756,10 @@ no `IsTie` anywhere, in the shape of `Gtz.TwoPoleTransportResidual`.
 
 ## What the `(5,3)` diamond says about all of this — MEASURED, not claimed here
 
-`Gtz.diamondDesign` is the campaign's only kernel-checked TIE and the reason
-`Gtz.not_hingeHoldsAtSize_five_three` holds, so it is the filter every step of
-this chain must survive.  Measured in exact rationals, by congruating the graphic
+`Gtz.diamondDesign` is a kernel-checked primitive `(5,3)` TIE — one of two in
+the tree, with `Gtz.uniformTieParentDesign` sharing the same dependent-triple
+matroid — and the reason `Gtz.not_hingeHoldsAtSize_five_three` holds, so it is
+the filter every step of this chain must survive.  Measured in exact rationals, by congruating the graphic
 design through its whitener so that domination reads
 `sum_{e in C} (cond_e / t_e) v_e v_e^T >= L`:
 

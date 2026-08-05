@@ -47,7 +47,7 @@ open Matrix
 variable {size : ℕ}
 
 /-! ## Part 1: an orthonormal frame under a unit axis (textual base:
-`/tmp/gtz-p16/tightaxis/TightAxisPairLane.lean`, verified against the tree) -/
+`Gtz.Design.TightAxisPairBudget`, verified against the tree) -/
 
 /-! ## Part 2: four rank-one atoms of a plane are dependent -/
 

@@ -503,8 +503,9 @@ theorem not_relaxedStressFreeHinge_of_fiveThree_tie
 
 /-! ## The diamond instance
 
-`Gtz.diamondDesign` is the campaign's only kernel-checked tie, so it is the
-concrete witness this no-go wants.  Its five atoms ARE independent in the
+`Gtz.diamondDesign` is a kernel-checked primitive `(5,3)` tie (as is
+`Gtz.uniformTieParentDesign`, a different design with the same dependent-triple
+matroid), so it is a concrete witness this no-go wants.  Its five atoms ARE independent in the
 symmetric three-by-three matrices, but that fact is not proved here: the
 diamond's atoms are the whitened incidence rows of `K4` minus an edge, and
 reading them off needs the whitener, which is a `Classical.choose`.  Verified

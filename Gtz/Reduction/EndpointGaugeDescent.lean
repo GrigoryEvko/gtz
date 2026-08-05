@@ -381,7 +381,7 @@ theorem exists_posDef_triple_of_zeroSumFrameDomination
 
 /-! ## The `/tmp` reduction of p15, re-recorded
 
-The following block re-records `/tmp/gtz-p15/balanced/BalancedTieReduction.lean`
+The following block builds on `Gtz.Reduction.BalancedTieReduction`
 (verified against the tree, never landed) so this file's chain is closed. -/
 
 /-- The zero-sum slice is no restriction on the tie side. -/
