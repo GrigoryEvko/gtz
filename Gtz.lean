@@ -30,6 +30,7 @@ import Gtz.Design.BhatiaDavis
 import Gtz.Design.CapSlack
 import Gtz.Design.ClosureObtuse
 import Gtz.Design.CollaredCompact
+import Gtz.Design.CorankThreeHinge
 import Gtz.Design.DeflationCertificate
 import Gtz.Design.DiamondPrimitive
 import Gtz.Design.DominationGates

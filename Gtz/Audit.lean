@@ -35,6 +35,7 @@ Update this file in the same commit that completes a proof.
 import Gtz.Design.BhatiaDavis
 import Gtz.Core.Sanity
 import Gtz.LinAlg.SchurRankOne
+import Gtz.Design.CorankThreeHinge
 import Gtz.Design.TraceIdentity
 import Gtz.Certificates.TriangleClosure
 import Gtz.Certificates.ResidueDissolution
@@ -13028,3 +13029,7 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms GtzCollarChartSoundnessChart43210.chartSoundnessCore390
 #print axioms GtzCollarChartSoundnessChart43210.chartSoundnessCore391
 #print axioms GtzCollarChartSoundnessChart43210.chartSoundnessCore392
+
+-- the corank-three hinge: the rank-3 frontier stated rank-generically
+#print axioms Gtz.stressFreeHingeHoldsAtCorankThree_three_iff_sixThree
+#print axioms Gtz.stressFreeHingeHoldsAtCorankThree_three_of_bothCharts
