@@ -2057,3 +2057,9 @@ import Gtz.Design.InsertPlaneCompletion
 -- trichotomy are theorems, and rank-3 GTZ at every size rests on the
 -- stress-free hinge alone.
 import Gtz.Reduction.BalancedStratumClosure
+
+-- The one-frame gate system at a tie: the master gate extraction, the
+-- coupling floor, the equality law on the dominating stratum, the dual-conic
+-- polarity of the stress-free stratum, the gate trichotomy, and the
+-- light-weight collar criteria.
+import Gtz.Design.TwoFamilyTightFrame

@@ -411,6 +411,7 @@ import Gtz.Reduction.TwoVanishedBoundary
 import Gtz.Design.OnPlaneDropObstruction
 import Gtz.Design.InsertPlaneCompletion
 import Gtz.Reduction.BalancedStratumClosure
+import Gtz.Design.TwoFamilyTightFrame
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11792,3 +11793,35 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_insertGateFailure_of_isTie
 #print axioms Gtz.balancedStratumSelection_six_holds
 #print axioms Gtz.forall_gtzOriginal_rank_three_of_stressFreeHingeAlone
+
+/-! ### The one-frame gate system and the dual-conic polarity -/
+
+#print axioms Gtz.exists_axisGateFailure_of_isTie
+#print axioms Gtz.sum_axisPairing_smul_atom_eq_axis_of_tight
+#print axioms Gtz.couplingShadow_floor_of_isTie_of_planarMargin
+#print axioms Gtz.gapPairing_bilinear
+#print axioms Gtz.exists_axisGateEquality_of_isTie_of_dominates
+#print axioms Gtz.leverage_le_frameOverlap_of_dominates
+#print axioms Gtz.exists_negDirection_orthKernel_of_trace_mul_neg
+#print axioms Gtz.trace_mul_nonneg_of_posSemidef
+#print axioms Gtz.frameOverlap_floor_of_dominates_pair
+#print axioms Gtz.exists_deficientDirection_outsiderTriple_of_isTie
+#print axioms Gtz.trace_eq_weight_of_atomPairing
+#print axioms Gtz.trace_gapPairing_of_atomPairing
+#print axioms Gtz.exists_negDirection_conic_of_dominates_of_atomPairing
+#print axioms Gtz.exists_posDirection_orthKernel_of_trace_mul_pos
+#print axioms Gtz.exists_posDirection_conic_of_dominates_of_atomPairing
+#print axioms Gtz.exists_posDirection_of_trace_pos
+#print axioms Gtz.exists_dualConic_of_stressFree
+#print axioms Gtz.dualConic_unique_of_stressFree
+#print axioms Gtz.exists_conic_through_five
+#print axioms Gtz.dualConic_never_unique_fivePoints
+#print axioms Gtz.sixThree_exists_dominating_with_indefinite_outsider_conics_of_isTie
+#print axioms Gtz.sq_dotProduct_mulVec_le_of_posSemidef
+#print axioms Gtz.exists_strictGateOvershoot_of_not_dominates
+#print axioms Gtz.planarExcess_mono_of_subset
+#print axioms Gtz.dominates_or_strictGateOvershoot_of_axisMassExcess
+#print axioms Gtz.sixThree_complementaryTightPair_or_overshoot_of_isTie
+#print axioms Gtz.exists_insiderCarrying_strictPair_of_outsiderDeficiencies
+#print axioms Gtz.posDef_insertCompletion_of_planeMargin
+#print axioms Gtz.posDef_insertCompletion_of_leverage_gt
