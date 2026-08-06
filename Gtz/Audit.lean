@@ -46,6 +46,7 @@ import Gtz.LinAlg.SchurRankOne
 import Gtz.Design.CorankThreeHinge
 import Gtz.Design.SpGraphicCap
 import Gtz.Design.TraceIdentity
+import Gtz.Certificates.CollarLinePositivity
 import Gtz.Certificates.TriangleClosure
 import Gtz.Certificates.ResidueDissolution
 import Gtz.Design.CollaredCompact
@@ -15249,6 +15250,31 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.completeFourEdgeVector_eq
 #print axioms Gtz.not_hasParallelPair_completeFourDesign
 #print axioms Gtz.completeFourData_isPrimitive_hasAllSixDirections
+
+
+-- Gtz/Certificates/CollarLinePositivity.lean -- the collar positivity layer, line tube pilot
+#print axioms GtzCollarLinePositivity.polyEvalRat_append
+#print axioms GtzCollarLinePositivity.polyEvalRat_neg
+#print axioms GtzCollarLinePositivity.termEvalRat_termMul
+#print axioms GtzCollarLinePositivity.polyEvalRat_mulTerm
+#print axioms GtzCollarLinePositivity.polyEvalRat_mul
+#print axioms GtzCollarLinePositivity.intPow_eq_pow
+#print axioms GtzCollarLinePositivity.polyToMv_evalInt
+#print axioms GtzCollarLinePositivity.polyToMv_aevalRat
+#print axioms GtzCollarLinePositivity.polyEvalRat_eq_of_int_identity
+#print axioms GtzCollarLinePositivity.lineWindowMarginLhsEval
+#print axioms GtzCollarLinePositivity.lineWindowMarginFactorizationRat
+#print axioms GtzCollarLinePositivity.lineTubeHeadFactorIsPositive
+#print axioms GtzCollarLinePositivity.lineTubeHalfWallIsNegative
+#print axioms GtzCollarLinePositivity.lineTubeDiagonalWallIsNegative
+#print axioms GtzCollarLinePositivity.lineTubeQuarticFactorIsNegative
+#print axioms GtzCollarLinePositivity.lineRatioDenIsNegativeOnTube
+#print axioms GtzCollarLinePositivity.lineThrDenIsPositiveOnTube
+#print axioms GtzCollarLinePositivity.lineWindowIsOpenOnTube
+#print axioms GtzCollarLinePositivity.linePivotCoreBFactorization
+#print axioms GtzCollarLinePositivity.linePivotCoreBIsNonnegativeOnTube
+#print axioms GtzCollarLinePositivity.linePivotCoreBIsPositiveOffDiagonal
+#print axioms GtzCollarLinePositivity.linePivotCoreBVanishesIffDiagonalContact
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

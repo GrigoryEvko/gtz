@@ -118,6 +118,7 @@ import Gtz.Certificates.CertificateAnchor
 import Gtz.Certificates.CollarChartSoundness
 import Gtz.Certificates.CollarChartSoundnessChart43210
 import Gtz.Certificates.CollarDictionaryIdentities
+import Gtz.Certificates.CollarLinePositivity
 import Gtz.Certificates.CollarMarginIdentities
 import Gtz.Certificates.CollarRealClosure
 import Gtz.Certificates.CollarWindowComposite
