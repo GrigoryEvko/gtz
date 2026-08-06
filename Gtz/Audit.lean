@@ -549,6 +549,11 @@ import Gtz.Reduction.KFourSosCore
 import Gtz.Reduction.KFourMixtureLaw
 import Gtz.Certificates.CollarMarginIdentities
 import Gtz.Design.RigidityBridge
+import Gtz.Certificates.CollarDictionaryIdentities
+import Gtz.Certificates.CollarWindowCriterion
+import Gtz.Certificates.CollarRealClosure
+import Gtz.Certificates.CollarChartSoundness
+import Gtz.Certificates.CollarWindowComposite
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -12650,3 +12655,79 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.graphicKFourFamily_mem_stressFreeResidualFamiliesSix
 #print axioms Gtz.stressFreeHingeHoldsSixThree_of_kFourChart
 #print axioms Gtz.stressFreeHingeHoldsSixThree_of_bothCharts
+
+-- bridge (iii): the collar dictionary ring identities -- the Cramer layer
+-- underneath the rung-14 margin identities
+#print axioms GtzCollarDictionary.intPow_add
+#print axioms GtzCollarDictionary.polyEval_append
+#print axioms GtzCollarDictionary.polyEval_neg
+#print axioms GtzCollarDictionary.termEval_termMul
+#print axioms GtzCollarDictionary.polyEval_mulTerm
+#print axioms GtzCollarDictionary.polyEval_mul
+#print axioms GtzCollarDictionary.termEval_mergeCoeff
+#print axioms GtzCollarDictionary.polyEval_insertTerm
+#print axioms GtzCollarDictionary.polyEval_sortMerge
+#print axioms GtzCollarDictionary.polyEval_filterZero
+#print axioms GtzCollarDictionary.polyEval_canon
+#print axioms GtzCollarDictionary.polyEval_eq_of_canon_eq
+#print axioms GtzCollarDictionary.sharedRatioNumFactorization
+#print axioms GtzCollarDictionary.ratioDenCoreIsNegatedMarginDenominatorS0
+#print axioms GtzCollarDictionary.ratioDenCoreIsNegatedMarginDenominatorS1
+#print axioms GtzCollarDictionary.ratioDenCoreIsNegatedMarginDenominatorS2
+#print axioms GtzCollarDictionary.ratioDenCoreIsNegatedMarginDenominatorS3
+#print axioms GtzCollarDictionary.betaSlotFactorizationS0Position0
+#print axioms GtzCollarDictionary.betaSlotFactorizationS0Position1
+#print axioms GtzCollarDictionary.betaSlotFactorizationS0Position2
+#print axioms GtzCollarDictionary.betaSlotFactorizationS0Position3
+#print axioms GtzCollarDictionary.betaSlotFactorizationS0Position4
+#print axioms GtzCollarDictionary.betaSlotFactorizationS1Position0
+#print axioms GtzCollarDictionary.betaSlotFactorizationS1Position1
+#print axioms GtzCollarDictionary.betaSlotFactorizationS1Position2
+#print axioms GtzCollarDictionary.betaSlotFactorizationS1Position3
+#print axioms GtzCollarDictionary.betaSlotFactorizationS1Position4
+#print axioms GtzCollarDictionary.betaSlotFactorizationS2Position0
+#print axioms GtzCollarDictionary.betaSlotFactorizationS2Position1
+#print axioms GtzCollarDictionary.betaSlotFactorizationS2Position2
+#print axioms GtzCollarDictionary.betaSlotFactorizationS2Position3
+#print axioms GtzCollarDictionary.betaSlotFactorizationS2Position4
+#print axioms GtzCollarDictionary.betaSlotFactorizationS3Position0
+#print axioms GtzCollarDictionary.betaSlotFactorizationS3Position1
+#print axioms GtzCollarDictionary.betaSlotFactorizationS3Position2
+#print axioms GtzCollarDictionary.betaSlotFactorizationS3Position3
+#print axioms GtzCollarDictionary.betaSlotFactorizationS3Position4
+
+-- bridge (i): the collar window criterion over an ordered field
+#print axioms GtzCollarWindow.directedSlotSumIsNonneg
+#print axioms GtzCollarWindow.coupledSumIsNonnegOfDirectedSlots
+#print axioms GtzCollarWindow.directedCoupledSumIsNonneg
+#print axioms GtzCollarWindow.ratioNumMulRatioDenIsPositive
+#print axioms GtzCollarWindow.crossInequalityOfMarginSign
+#print axioms GtzCollarWindow.thrDenIsNonzeroOfMarginSign
+#print axioms GtzCollarWindow.thresholdLtRatioOfSignPackage
+#print axioms GtzCollarWindow.thresholdIsNegativeOfFreeWin
+#print axioms GtzCollarWindow.ratioIsPositive
+#print axioms GtzCollarWindow.rhoStarLeThreshold
+#print axioms GtzCollarWindow.ratioLeRhoGStar
+#print axioms GtzCollarWindow.windowIsOpenOfCandidate
+#print axioms GtzCollarWindow.windowIsOpenOfFreeWin
+#print axioms GtzCollarWindow.signPackageIsRescalingStable
+
+-- bridge (iv): from the rational points of the chart cube to the real cube
+#print axioms GtzCollarRealClosure.nonnegOnClosureOfNonnegOn
+#print axioms GtzCollarRealClosure.approximateNumeratorIsAdmissible
+#print axioms GtzCollarRealClosure.approximateNumeratorIsClose
+#print axioms GtzCollarRealClosure.cubeSubsetClosureOfChartRationalPoints
+#print axioms GtzCollarRealClosure.valueIsNonnegOnClosedCube
+
+-- bridge (ii): the emitted chart polynomials ARE the flat dictionary cores
+-- composed with the barycentric order-chart substitution
+#print axioms GtzCollarChartSoundness.polyEval_substituteFlatTerm
+#print axioms GtzCollarChartSoundness.polyEval_substituteFlatPoly
+#print axioms GtzCollarChartSoundness.slotMonomialValueIsPos
+#print axioms GtzCollarChartSoundness.normalizerValueIsPos
+#print axioms GtzCollarChartSoundness.chartCoreMatchesSubstitution
+
+-- the composite: kernel-replay acceptance to rho_star < rho_G* at a point
+#print axioms GtzCollarWindowComposite.realThresholdRecordIsValid
+#print axioms GtzCollarWindowComposite.windowIsOpenOfCandidateWinsAt
+#print axioms GtzCollarWindowComposite.windowIsOpenOfFreeWinAt
