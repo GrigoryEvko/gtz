@@ -547,6 +547,7 @@ import Gtz.Reduction.KFourDetFloor
 import Gtz.Reduction.KFourUniversalFace
 import Gtz.Reduction.KFourSosCore
 import Gtz.Reduction.KFourMixtureLaw
+import Gtz.Certificates.CollarMarginIdentities
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -12545,3 +12546,48 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.kFour_mixtureLaw
 #print axioms Gtz.kFour_mixtureLaw_leverageForm_strict
 #print axioms Gtz.kFour_mixtureLaw_strict
+
+-- the M(K4) collar margin identities (rung-14 obligation (7c) payload)
+#print axioms GtzCollarMargins.intPow_add
+#print axioms GtzCollarMargins.polyEval_append
+#print axioms GtzCollarMargins.polyEval_neg
+#print axioms GtzCollarMargins.termEval_termMul
+#print axioms GtzCollarMargins.polyEval_mulTerm
+#print axioms GtzCollarMargins.polyEval_mul
+#print axioms GtzCollarMargins.termEval_mergeCoeff
+#print axioms GtzCollarMargins.polyEval_insertTerm
+#print axioms GtzCollarMargins.polyEval_sortMerge
+#print axioms GtzCollarMargins.polyEval_filterZero
+#print axioms GtzCollarMargins.polyEval_canon
+#print axioms GtzCollarMargins.polyEval_eq_of_canon_eq
+#print axioms GtzCollarMargins.marginS0AIdentity
+#print axioms GtzCollarMargins.marginS0BIdentity
+#print axioms GtzCollarMargins.marginS1AIdentity
+#print axioms GtzCollarMargins.marginS1BIdentity
+#print axioms GtzCollarMargins.marginS2AIdentity
+#print axioms GtzCollarMargins.marginS2BIdentity
+#print axioms GtzCollarMargins.marginS3AIdentity
+#print axioms GtzCollarMargins.marginS3BIdentity
+#print axioms GtzCollarMargins.gordanSumLawC
+#print axioms GtzCollarMargins.gordanSumLawB
+#print axioms GtzCollarMargins.pivotSumLawAB
+#print axioms GtzCollarMargins.pivotSumLawAC
+#print axioms GtzCollarMargins.pivotExchangeT01245Tree0
+#print axioms GtzCollarMargins.pivotExchangeT12345Tree3
+#print axioms GtzCollarMargins.pivotExchangeT01256Tree0
+#print axioms GtzCollarMargins.pivotExchangeT12356Tree3
+#print axioms GtzCollarMargins.pivotExchangeT01247Tree0
+#print axioms GtzCollarMargins.pivotExchangeT12347Tree3
+#print axioms GtzCollarMargins.lineBetaTree0Factorization
+#print axioms GtzCollarMargins.lineBetaTree2Factorization
+#print axioms GtzCollarMargins.lineBetaTree3Factorization
+#print axioms GtzCollarMargins.lineBetaTree5Factorization
+#print axioms GtzCollarMargins.lineBetaTree6Factorization
+#print axioms GtzCollarMargins.lineWindowMarginFactorization
+#print axioms GtzCollarMargins.sheetWallOrderLaw
+#print axioms GtzCollarMargins.sheetMiddleWallBetaFactorization
+#print axioms GtzCollarMargins.sheetMiddleWindowMarginFactorization
+#print axioms GtzCollarMargins.sheetLowWallBetaFactorization
+#print axioms GtzCollarMargins.sheetLowWindowMarginFactorization
+#print axioms GtzCollarMargins.sheetTopWallBetaFactorization
+#print axioms GtzCollarMargins.sheetTopWindowMarginFactorization

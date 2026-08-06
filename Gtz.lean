@@ -112,6 +112,7 @@ import Gtz.Planar.WedgeChain
 -- Certificates: Nullstellensatz payloads and their geometric consumption
 import Gtz.Certificates.CFiveCertificate
 import Gtz.Certificates.CertificateAnchor
+import Gtz.Certificates.CollarMarginIdentities
 import Gtz.Certificates.CyclicStress
 import Gtz.Certificates.FrameBridge
 import Gtz.Certificates.FrameEncoding
