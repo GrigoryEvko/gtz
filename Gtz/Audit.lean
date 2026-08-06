@@ -418,6 +418,8 @@ import Gtz.Uniform.SharedCircuitPair
 import Gtz.Uniform.InductionStep
 import Gtz.Uniform.UniformPositionBridge
 import Gtz.Uniform.RouteBProps
+import Gtz.Uniform.AnchorBookkeeping
+import Gtz.Uniform.AnchorAssembly
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11944,3 +11946,29 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.UniformPositionBridge.windowAnchorReachFree_of_weakWitness
 #print axioms Gtz.UniformPositionBridge.not_windowAnchorReachFree_two
 #print axioms Gtz.UniformPositionBridge.windowCell_meets_walkSchedule
+
+/-! ### The core-tail anchor: bookkeeping and the diagonal tail -/
+
+#print axioms Gtz.UniformPositionBridge.posSemidef_smul_one_sub_one
+#print axioms Gtz.UniformPositionBridge.coreTailBookkeeping_feasible
+#print axioms Gtz.UniformPositionBridge.oddTailBlock_sums_diagonal
+#print axioms Gtz.UniformPositionBridge.evenTailPair_sums_diagonal
+#print axioms Gtz.UniformPositionBridge.tailCoeff_last
+#print axioms Gtz.UniformPositionBridge.tailCoeff_castSucc
+#print axioms Gtz.UniformPositionBridge.tailRawWeight_last
+#print axioms Gtz.UniformPositionBridge.tailRawWeight_castSucc
+#print axioms Gtz.UniformPositionBridge.tailRawWeight_pos
+#print axioms Gtz.UniformPositionBridge.tailCoeff_ne_zero
+#print axioms Gtz.UniformPositionBridge.tailCoeff_injective
+#print axioms Gtz.UniformPositionBridge.sum_tailRawWeight_mul_tailCoeff
+#print axioms Gtz.UniformPositionBridge.tailAtomVec_apply_zero
+#print axioms Gtz.UniformPositionBridge.tailAtomVec_apply_one
+#print axioms Gtz.UniformPositionBridge.coreAtomVec_apply
+#print axioms Gtz.UniformPositionBridge.tailAtomVec_ne_smul_coreAtomVec
+#print axioms Gtz.UniformPositionBridge.tailAtomVec_ne_smul_tailAtomVec
+#print axioms Gtz.UniformPositionBridge.coreAtomVec_ne_smul_coreAtomVec
+#print axioms Gtz.UniformPositionBridge.coreAtomVec_eq_smul
+#print axioms Gtz.UniformPositionBridge.sum_axis_atomMatrix
+#print axioms Gtz.UniformPositionBridge.sum_core_atomMatrix
+#print axioms Gtz.UniformPositionBridge.tailDiagonalProfile_nonneg
+#print axioms Gtz.UniformPositionBridge.tailAtomVec_apply

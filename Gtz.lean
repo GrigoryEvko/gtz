@@ -2084,3 +2084,9 @@ import Gtz.Uniform.InductionStep
 -- half of the reach obligation.
 import Gtz.Uniform.UniformPositionBridge
 import Gtz.Uniform.RouteBProps
+
+-- The core-tail anchor for route (b)'s reach obligation: the Parseval
+-- bookkeeping is feasible at every rank, and the diagonal tail assembles in a
+-- single coordinate 2-plane with telescoping weights.
+import Gtz.Uniform.AnchorBookkeeping
+import Gtz.Uniform.AnchorAssembly
