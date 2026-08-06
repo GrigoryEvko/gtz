@@ -2076,3 +2076,11 @@ import Gtz.Uniform.SharedCircuitPair
 -- grand conditional resting the whole conjecture on per-rank window closures,
 -- and the named open gap Props of routes (a) and (b).
 import Gtz.Uniform.InductionStep
+
+-- The rank-two uniform-position bridge (named gap 4 closed) with the uniform
+-- dependence dictionary, the route-(a) composition on its two remaining
+-- Props, the rank-3 hinge corank-2 slice, and route (b) wired uniformly;
+-- then the relativized window hinge, the corank wall, and the free anchor
+-- half of the reach obligation.
+import Gtz.Uniform.UniformPositionBridge
+import Gtz.Uniform.RouteBProps

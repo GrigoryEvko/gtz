@@ -416,6 +416,8 @@ import Gtz.Uniform.NaimarkCorankTwo
 import Gtz.Uniform.CorankTwoTransfer
 import Gtz.Uniform.SharedCircuitPair
 import Gtz.Uniform.InductionStep
+import Gtz.Uniform.UniformPositionBridge
+import Gtz.Uniform.RouteBProps
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11887,3 +11889,58 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.InductionStep.routeAWindowArrow_of_windowArrow
 #print axioms Gtz.InductionStep.forall_strengthenedHypothesis_of_routeA
 #print axioms Gtz.InductionStep.forall_gtzWeightedAll_of_routeA
+
+/-! ### The uniform-position bridge and the route-(a)/(b) wiring -/
+
+#print axioms Gtz.UniformPositionBridge.pickedRowMatrix_apply
+#print axioms Gtz.UniformPositionBridge.spreadAlongPick_at_pick
+#print axioms Gtz.UniformPositionBridge.spreadAlongPick_off_image
+#print axioms Gtz.UniformPositionBridge.isDependentSelection_image_iff_det_eq_zero
+#print axioms Gtz.UniformPositionBridge.injective_pairPick
+#print axioms Gtz.UniformPositionBridge.image_pairPick_eq
+#print axioms Gtz.UniformPositionBridge.det_pickedRowMatrix_pair_eq_pairBracket
+#print axioms Gtz.UniformPositionBridge.pairBracket_eq_zero_iff_isDependentSelection
+#print axioms Gtz.UniformPositionBridge.pairBracket_ne_zero_swap
+#print axioms Gtz.UniformPositionBridge.injective_triplePick
+#print axioms Gtz.UniformPositionBridge.image_triplePick_eq
+#print axioms Gtz.UniformPositionBridge.det_pickedRowMatrix_triple_eq_atomBracket
+#print axioms Gtz.UniformPositionBridge.atomBracket_eq_zero_iff_isDependentSelection
+#print axioms Gtz.UniformPositionBridge.pairBracket_ne_zero_of_uniformPosition
+#print axioms Gtz.UniformPositionBridge.isUniformPositionFamily_of_sixBracketsNonzero
+#print axioms Gtz.UniformPositionBridge.isUniformPositionFamily_iff_sixBracketsNonzero
+#print axioms Gtz.UniformPositionBridge.rankTwoUniformPositionBridge_holds
+#print axioms Gtz.UniformPositionBridge.rankHingeUniformPosition_two_holds
+#print axioms Gtz.UniformPositionBridge.strengthenedHypothesis_two_holds
+#print axioms Gtz.UniformPositionBridge.rankTwoFourDirectionHinge_of_uniformPositionBridge
+#print axioms Gtz.UniformPositionBridge.forall_strengthenedHypothesis_of_twoGaps
+#print axioms Gtz.UniformPositionBridge.routeA_target
+#print axioms Gtz.UniformPositionBridge.routeA_target_original
+#print axioms Gtz.UniformPositionBridge.closesCanonicalWindowThree_iff_routeAWindowArrowThree
+#print axioms Gtz.UniformPositionBridge.isPrimitiveDesign_of_uniformPosition_fiveThree
+#print axioms Gtz.UniformPositionBridge.rankHingeUniformPositionThree_holdsAtCorankTwoCell
+#print axioms Gtz.UniformPositionBridge.rankHingeUniformPosition_three_of_beyondCorankTwoCell
+#print axioms Gtz.UniformPositionBridge.diamondDesign_not_isUniformPositionFamily
+#print axioms Gtz.UniformPositionBridge.parallelPairAtTopCellTie_of_windowTie
+#print axioms Gtz.UniformPositionBridge.gtzWeighted_succ_of_hinge_of_reach
+#print axioms Gtz.UniformPositionBridge.gtzWeighted_belowWindow_of_predecessor
+#print axioms Gtz.UniformPositionBridge.closesCanonicalWindow_of_windowTie_of_reach
+#print axioms Gtz.UniformPositionBridge.routeB_target
+#print axioms Gtz.UniformPositionBridge.gtzWeighted_six_three_of_hinge_viaUniformRung
+#print axioms Gtz.UniformPositionBridge.parallelPairAtWindowTieRelative_of_windowTie
+#print axioms Gtz.UniformPositionBridge.closesCanonicalWindow_of_relativeWindowTie_of_reach
+#print axioms Gtz.UniformPositionBridge.routeB_target_relative
+#print axioms Gtz.UniformPositionBridge.windowCell_corank_ge_rank
+#print axioms Gtz.UniformPositionBridge.corankTwoCell_not_insideCanonicalWindow
+#print axioms Gtz.UniformPositionBridge.naimarkDual_corank_eq_rank
+#print axioms Gtz.UniformPositionBridge.windowCell_neither_corankTwo_nor_dualCorankTwo
+#print axioms Gtz.UniformPositionBridge.canonicalWindow_cellCount
+#print axioms Gtz.UniformPositionBridge.hingeHoldsAtSize_iff_strictOnPrimitiveLocus
+#print axioms Gtz.UniformPositionBridge.parallelPairAtWindowTieRelative_three_of_landedInputs
+#print axioms Gtz.UniformPositionBridge.rescaledDesign_atom
+#print axioms Gtz.UniformPositionBridge.hasParallelPair_of_rescaled
+#print axioms Gtz.UniformPositionBridge.subsetSum_rescaledDesign_of_constOn
+#print axioms Gtz.UniformPositionBridge.exists_strictAnchor_of_weakDominator
+#print axioms Gtz.UniformPositionBridge.windowAnchorReach_of_windowAnchorReachFree
+#print axioms Gtz.UniformPositionBridge.windowAnchorReachFree_of_weakWitness
+#print axioms Gtz.UniformPositionBridge.not_windowAnchorReachFree_two
+#print axioms Gtz.UniformPositionBridge.windowCell_meets_walkSchedule
