@@ -420,6 +420,7 @@ import Gtz.Uniform.UniformPositionBridge
 import Gtz.Uniform.RouteBProps
 import Gtz.Uniform.AnchorBookkeeping
 import Gtz.Uniform.AnchorAssembly
+import Gtz.Design.StressFreeMatroidStratification
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11972,3 +11973,40 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.UniformPositionBridge.sum_core_atomMatrix
 #print axioms Gtz.UniformPositionBridge.tailDiagonalProfile_nonneg
 #print axioms Gtz.UniformPositionBridge.tailAtomVec_apply
+
+/-! ### The matroid stratification of the stress-free hinge -/
+
+#print axioms Gtz.isPlanePairCovered_comp_relabel
+#print axioms Gtz.atom_dotProduct_bracketNormal_eq_zero_of_onPlane
+#print axioms Gtz.not_isPlanePairCovered_of_stressFree
+#print axioms Gtz.stressFreeStratumIsTieFree_of_isPlanePairCovered
+#print axioms Gtz.isPlanePairCovered_twoDisjointLines
+#print axioms Gtz.isPlanePairCovered_fourPointLine
+#print axioms Gtz.isPlanePairCovered_fourPointLineWithThreePointLine
+#print axioms Gtz.isPlanePairCovered_nearPencilSix
+#print axioms Gtz.not_isPlanePairCovered_lineFree
+#print axioms Gtz.not_isPlanePairCovered_oneThreePointLine
+#print axioms Gtz.not_isPlanePairCovered_twoMeetingLines
+#print axioms Gtz.not_isPlanePairCovered_threeLines
+#print axioms Gtz.not_isPlanePairCovered_graphicKFour
+#print axioms Gtz.length_stressFreeResidualFamiliesSix
+#print axioms Gtz.not_isPlanePairCovered_iff_mem_stressFreeResidualFamiliesSix
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_uncoveredResidual
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_residualFamilies
+#print axioms Gtz.exists_isPlanePairCovered_mem_lineFamiliesSix
+#print axioms Gtz.exists_not_isPlanePairCovered_mem_lineFamiliesSix
+#print axioms Gtz.isPlanePairCovered_diamondFamilyFive
+#print axioms Gtz.isGoodLineFamily_diamondFamilyFive
+#print axioms Gtz.dotProduct_gap_insert_eq
+#print axioms Gtz.not_posDef_gap_insert_of_orthogonal_tightDirection
+#print axioms Gtz.dotProduct_tightDirection_ne_zero_of_gated
+#print axioms Gtz.exists_isTie_and_not_forall_window_posDef_sixThree
+#print axioms Gtz.not_hasSharedLinePairRestriction_lineFree
+#print axioms Gtz.not_hasSharedLinePairRestriction_oneThreePointLine
+#print axioms Gtz.hasSharedLinePairRestriction_twoMeetingLines
+#print axioms Gtz.hasSharedLinePairRestriction_threeLines
+#print axioms Gtz.hasSharedLinePairRestriction_graphicKFour
+#print axioms Gtz.not_isTie_of_not_hasSharedLinePairRestriction
+#print axioms Gtz.hasSharedLinePairRestriction_iff_mem_diamondCarrying
+#print axioms Gtz.stressFreeResidualFamiliesSix_eq_append
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_seamSplit

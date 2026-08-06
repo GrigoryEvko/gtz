@@ -2090,3 +2090,10 @@ import Gtz.Uniform.RouteBProps
 -- single coordinate 2-plane with telescoping weights.
 import Gtz.Uniform.AnchorBookkeeping
 import Gtz.Uniform.AnchorAssembly
+
+-- The matroid stratification of the stress-free hinge: the plane-pair escape
+-- law empties four of the nine six-point classes, the hinge follows from
+-- tie-freeness of the five named survivors, and the seam splits those five by
+-- the diamond restriction; plus the gating wall on the general-position
+-- stratum, named and priced.
+import Gtz.Design.StressFreeMatroidStratification
