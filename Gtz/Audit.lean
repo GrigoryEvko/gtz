@@ -548,6 +548,7 @@ import Gtz.Reduction.KFourUniversalFace
 import Gtz.Reduction.KFourSosCore
 import Gtz.Reduction.KFourMixtureLaw
 import Gtz.Certificates.CollarMarginIdentities
+import Gtz.Design.RigidityBridge
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -12591,3 +12592,61 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms GtzCollarMargins.sheetLowWindowMarginFactorization
 #print axioms GtzCollarMargins.sheetTopWallBetaFactorization
 #print axioms GtzCollarMargins.sheetTopWindowMarginFactorization
+
+-- the rigidity bridge: the direction chart, its congruence invariance,
+-- and the two covering instances that close classes #5 and #4
+#print axioms Gtz.fin_three_cases
+#print axioms Gtz.fin_six_cases
+#print axioms Gtz.atomMatrix_transpose
+#print axioms Gtz.tripleBracket_smul_slots
+#print axioms Gtz.tripleBracket_rotate
+#print axioms Gtz.directionChartGap_transpose
+#print axioms Gtz.directionChartIsTieFree_of_hasStrictTriple
+#print axioms Gtz.congr_sum_smul_atomMatrix
+#print axioms Gtz.atomMatrix_of_realization
+#print axioms Gtz.subsetSum_sub_one_eq_congr_directionChartGap
+#print axioms Gtz.dominates_iff_posSemidef_directionChartGap
+#print axioms Gtz.posDef_gap_iff_posDef_directionChartGap
+#print axioms Gtz.map_symm_toEmbedding_map
+#print axioms Gtz.not_isTie_of_isDirectionChartRealization
+#print axioms Gtz.stressFreeStratumIsTieFree_of_directionChart
+#print axioms Gtz.stressFreeStratumIsTieFree_of_parameterizedChart
+#print axioms Gtz.tripleBracket_smul_eq_cramer
+#print axioms Gtz.smul_eq_two_term_expansion
+#print axioms Gtz.eq_div_smul_of_smul_eq_smul
+#print axioms Gtz.columnMatrix_mulVec
+#print axioms Gtz.det_columnMatrix
+#print axioms Gtz.tripleBracket_of_two_term_expansions
+#print axioms Gtz.kFourDirection_zero
+#print axioms Gtz.kFourDirection_one
+#print axioms Gtz.kFourDirection_two
+#print axioms Gtz.kFourDirection_three
+#print axioms Gtz.kFourDirection_four
+#print axioms Gtz.kFourDirection_five
+#print axioms Gtz.tripleBracket_kFourDirection_eq_zero_iff
+#print axioms Gtz.columnMatrix_mulVec_kFourZero
+#print axioms Gtz.columnMatrix_mulVec_kFourOne
+#print axioms Gtz.columnMatrix_mulVec_kFourTwo
+#print axioms Gtz.columnMatrix_mulVec_kFourThree
+#print axioms Gtz.columnMatrix_mulVec_kFourFour
+#print axioms Gtz.columnMatrix_mulVec_kFourFive
+#print axioms Gtz.exists_realization_of_kFourCoordinates
+#print axioms Gtz.exists_kFourCoordinates
+#print axioms Gtz.exists_kFourRealization_of_brackets
+#print axioms Gtz.directionChartCoversPrimitiveStratum_kFourDirection
+#print axioms Gtz.stressFreeStratumIsTieFree_graphicKFour_of_chart
+#print axioms Gtz.stressFreeStratumIsTieFree_graphicKFour_of_strictTriple
+#print axioms Gtz.threeLinesDirection_zero
+#print axioms Gtz.threeLinesDirection_one
+#print axioms Gtz.threeLinesDirection_two
+#print axioms Gtz.threeLinesDirection_three
+#print axioms Gtz.threeLinesDirection_four
+#print axioms Gtz.threeLinesDirection_five
+#print axioms Gtz.tripleBracket_threeLinesDirection_eq_zero_iff
+#print axioms Gtz.exists_threeLinesCoordinates
+#print axioms Gtz.exists_threeLinesRealization_of_brackets
+#print axioms Gtz.parameterizedChartCovers_threeLinesDirection
+#print axioms Gtz.stressFreeStratumIsTieFree_threeLines_of_chart
+#print axioms Gtz.graphicKFourFamily_mem_stressFreeResidualFamiliesSix
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_kFourChart
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_bothCharts
