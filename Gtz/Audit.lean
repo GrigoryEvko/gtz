@@ -415,6 +415,7 @@ import Gtz.Design.TwoFamilyTightFrame
 import Gtz.Uniform.NaimarkCorankTwo
 import Gtz.Uniform.CorankTwoTransfer
 import Gtz.Uniform.SharedCircuitPair
+import Gtz.Uniform.InductionStep
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11859,3 +11860,30 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms CorankTwo.sharedCircuitPair_conclusion_impossible_rankTwo
 #print axioms CorankTwo.diamond_realizes_sharedCircuitPair
 #print axioms CorankTwo.corankOneTie_isUniformCircuit
+
+/-! ### The uniform induction step and the grand conditional -/
+
+#print axioms Gtz.InductionStep.corankFloor_holds
+#print axioms Gtz.InductionStep.gtzWeighted_of_le_five_rederived
+#print axioms Gtz.InductionStep.corankFloor_meetsWindow_iff
+#print axioms Gtz.InductionStep.topCell_isInsideCanonicalWindow
+#print axioms Gtz.InductionStep.closesCanonicalWindow_iff_top
+#print axioms Gtz.InductionStep.closesCanonicalWindow_one
+#print axioms Gtz.InductionStep.closesCanonicalWindow_two
+#print axioms Gtz.InductionStep.gtzWeighted_of_spike_chain
+#print axioms Gtz.InductionStep.gtzWeightedAll_of_higherRank
+#print axioms Gtz.InductionStep.gtzWeightedAll_of_closesCanonicalWindow
+#print axioms Gtz.InductionStep.inductionStep_of_windowClosure
+#print axioms Gtz.InductionStep.inductionStep_viaDescentLadder
+#print axioms Gtz.InductionStep.closesCanonicalWindow_three_of_stressFreeHinge
+#print axioms Gtz.InductionStep.gtzWeightedAll_three_of_stressFreeHinge_viaStep
+#print axioms Gtz.InductionStep.forall_gtzOriginal_rank_three_viaStep
+#print axioms Gtz.InductionStep.forall_gtzWeightedAll_of_windowClosures
+#print axioms Gtz.InductionStep.forall_gtzWeighted_of_windowClosures
+#print axioms Gtz.InductionStep.forall_gtzOriginal_of_windowClosures
+#print axioms Gtz.InductionStep.forall_gtzWeightedAll_of_windowArrow
+#print axioms Gtz.InductionStep.windowArrow_iff_forall_gtzWeightedAll
+#print axioms Gtz.InductionStep.windowArrow_three_of_stressFreeHinge
+#print axioms Gtz.InductionStep.routeAWindowArrow_of_windowArrow
+#print axioms Gtz.InductionStep.forall_strengthenedHypothesis_of_routeA
+#print axioms Gtz.InductionStep.forall_gtzWeightedAll_of_routeA

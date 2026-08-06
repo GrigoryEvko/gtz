@@ -2070,3 +2070,9 @@ import Gtz.Design.TwoFamilyTightFrame
 import Gtz.Uniform.NaimarkCorankTwo
 import Gtz.Uniform.CorankTwoTransfer
 import Gtz.Uniform.SharedCircuitPair
+
+-- The uniform induction step: the corank floor at every rank, the
+-- window-closure step skeleton with its descent-ladder mechanism twin, the
+-- grand conditional resting the whole conjecture on per-rank window closures,
+-- and the named open gap Props of routes (a) and (b).
+import Gtz.Uniform.InductionStep
