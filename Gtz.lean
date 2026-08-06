@@ -46,6 +46,11 @@ import Gtz.Design.WhiteningDistortion
 
 -- Reduction: the ladder: crystallization, Naimark duality, deflation, the lifting lemma
 import Gtz.Reduction.ExchangeInvariant
+import Gtz.Reduction.KFourDetFloor
+import Gtz.Reduction.KFourMixtureLaw
+import Gtz.Reduction.KFourSosCore
+import Gtz.Reduction.KFourTreeAlgebra
+import Gtz.Reduction.KFourUniversalFace
 import Gtz.Reduction.MaximalVolume
 import Gtz.Reduction.BranchTransferConstants
 import Gtz.Reduction.ChargeSelection

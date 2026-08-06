@@ -542,6 +542,11 @@ import Gtz.Certificates.CollarAtlas.Chart43102
 import Gtz.Certificates.CollarAtlas.Chart43120
 import Gtz.Certificates.CollarAtlas.Chart43201
 import Gtz.Certificates.CollarAtlas.Chart43210
+import Gtz.Reduction.KFourTreeAlgebra
+import Gtz.Reduction.KFourDetFloor
+import Gtz.Reduction.KFourUniversalFace
+import Gtz.Reduction.KFourSosCore
+import Gtz.Reduction.KFourMixtureLaw
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -12468,3 +12473,75 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.CollarReplay.Chart43201.chartWindowCertified
 #print axioms Gtz.CollarReplay.Chart43210.chartCheckPasses
 #print axioms Gtz.CollarReplay.Chart43210.chartWindowCertified
+
+-- wave 5: the M(K4) pen laws (tree algebra, det floor, universal face, SOS core, mixture law)
+#print axioms Gtz.kFourTreeWeightProduct_pos
+#print axioms Gtz.kFourTreeWeightProduct_nonneg
+#print axioms Gtz.kFourSpanningTreeSum_pos
+#print axioms Gtz.kFourWeightLaplacian_zero_zero
+#print axioms Gtz.kFourWeightLaplacian_zero_one
+#print axioms Gtz.kFourWeightLaplacian_zero_two
+#print axioms Gtz.kFourWeightLaplacian_one_zero
+#print axioms Gtz.kFourWeightLaplacian_one_one
+#print axioms Gtz.kFourWeightLaplacian_one_two
+#print axioms Gtz.kFourWeightLaplacian_two_zero
+#print axioms Gtz.kFourWeightLaplacian_two_one
+#print axioms Gtz.kFourWeightLaplacian_two_two
+#print axioms Gtz.dotProduct_kFourWeightLaplacian_mulVec
+#print axioms Gtz.det_kFourWeightLaplacian_eq_spanningTreeSum
+#print axioms Gtz.kFourTreesThroughEdge_zero
+#print axioms Gtz.kFourTreesThroughEdge_one
+#print axioms Gtz.kFourTreesThroughEdge_two
+#print axioms Gtz.kFourTreesThroughEdge_three
+#print axioms Gtz.kFourTreesThroughEdge_four
+#print axioms Gtz.kFourTreesThroughEdge_five
+#print axioms Gtz.weight_mul_kFourEdgeCompanionSum
+#print axioms Gtz.kFourEdgeCompanionSum_nonneg
+#print axioms Gtz.twentySeven_mul_product_le_cube_sum
+#print axioms Gtz.kFourSpanningTreeSum_eq_hadamardForm
+#print axioms Gtz.kFourSpanningTreeSum_le_diagonalProduct
+#print axioms Gtz.det_kFourWeightLaplacian_le_cube_third_trace
+#print axioms Gtz.kFourSpanningTreeSum_le_eightTwentySevenths
+#print axioms Gtz.det_kFourWeightLaplacian_le_eightTwentySevenths
+#print axioms Gtz.kFourSpanningTreeSum_mass_expansion
+#print axioms Gtz.exists_tree_product_ge_twentySevenEighths_mul_detB
+#print axioms Gtz.exists_tree_massRatioProduct_ge_twentySevenEighths_mul_detB
+#print axioms Gtz.exists_tree_detRatio_ge_twentySevenEighths
+#print axioms Gtz.pairSum_gt_product_of_first_le_one
+#print axioms Gtz.product_lt_quarter_sq_sum_of_first_le_one
+#print axioms Gtz.universalFace_pairSum_gt_product
+#print axioms Gtz.universalFace_pairSum_ge_product
+#print axioms Gtz.universalFace_product_lt_quarter_sq_trace
+#print axioms Gtz.kFourTreeQuadratic_sos_starZero
+#print axioms Gtz.kFourTreeQuadratic_sos_path014
+#print axioms Gtz.kFourTreeQuadratic_sos_path015
+#print axioms Gtz.kFourTreeQuadratic_sos_path023
+#print axioms Gtz.kFourTreeQuadratic_sos_path025
+#print axioms Gtz.kFourTreeQuadratic_sos_starOne
+#print axioms Gtz.kFourTreeQuadratic_sos_path035
+#print axioms Gtz.kFourTreeQuadratic_sos_path045
+#print axioms Gtz.kFourTreeQuadratic_sos_path123
+#print axioms Gtz.kFourTreeQuadratic_sos_path124
+#print axioms Gtz.kFourTreeQuadratic_sos_path134
+#print axioms Gtz.kFourTreeQuadratic_sos_starTwo
+#print axioms Gtz.kFourTreeQuadratic_sos_path145
+#print axioms Gtz.kFourTreeQuadratic_sos_path234
+#print axioms Gtz.kFourTreeQuadratic_sos_path235
+#print axioms Gtz.kFourTreeQuadratic_sos_starThree
+#print axioms Gtz.kFourTreeQuadratic_lt_one
+#print axioms Gtz.one_sub_kFourTreeQuadratic_starZero
+#print axioms Gtz.one_sub_kFourTreeQuadratic_pathZeroThreeFive
+#print axioms Gtz.conductance_mul_massCompanion_le_bound_mul_weightCompanion
+#print axioms Gtz.kFourTraceNumerator_le_bound_mul_treeQuadratic
+#print axioms Gtz.kFourDropCovector_dotProduct
+#print axioms Gtz.kFourWeightLaplacian_eq_matrixLiteral
+#print axioms Gtz.dropCovector_dotProduct_adjugate_mulVec
+#print axioms Gtz.mass_mul_adjugatePairing_eq_treesThroughEdge_sum
+#print axioms Gtz.exists_kFourTreeWeightProduct_max
+#print axioms Gtz.kFourTraceNumerator_lt_maxTree_product
+#print axioms Gtz.kFour_detTrace_law
+#print axioms Gtz.kFour_mixture_treeForm_expansion
+#print axioms Gtz.kFour_mixtureLaw_leverageForm
+#print axioms Gtz.kFour_mixtureLaw
+#print axioms Gtz.kFour_mixtureLaw_leverageForm_strict
+#print axioms Gtz.kFour_mixtureLaw_strict
