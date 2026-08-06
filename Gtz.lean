@@ -2063,3 +2063,10 @@ import Gtz.Reduction.BalancedStratumClosure
 -- polarity of the stress-free stratum, the gate trichotomy, and the
 -- light-weight collar criteria.
 import Gtz.Design.TwoFamilyTightFrame
+
+-- The uniform-in-rank corank-2 descent: the explicit rank-two Naimark dual
+-- with its pair and triple bracket dictionaries, the tie-locking of that
+-- dual, and the shared-circuit-pair law at every primitive corank-2 tie.
+import Gtz.Uniform.NaimarkCorankTwo
+import Gtz.Uniform.CorankTwoTransfer
+import Gtz.Uniform.SharedCircuitPair

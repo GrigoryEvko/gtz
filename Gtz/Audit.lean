@@ -412,6 +412,9 @@ import Gtz.Design.OnPlaneDropObstruction
 import Gtz.Design.InsertPlaneCompletion
 import Gtz.Reduction.BalancedStratumClosure
 import Gtz.Design.TwoFamilyTightFrame
+import Gtz.Uniform.NaimarkCorankTwo
+import Gtz.Uniform.CorankTwoTransfer
+import Gtz.Uniform.SharedCircuitPair
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -11825,3 +11828,34 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_insiderCarrying_strictPair_of_outsiderDeficiencies
 #print axioms Gtz.posDef_insertCompletion_of_planeMargin
 #print axioms Gtz.posDef_insertCompletion_of_leverage_gt
+
+/-! ### The uniform-in-rank corank-2 descent and the shared-circuit-pair law -/
+
+#print axioms CorankTwo.exists_orthonormal_completion_width_two
+#print axioms CorankTwo.exists_commonOrthogonal_of_rowPair_det_eq_zero
+#print axioms CorankTwo.exists_commonOrthogonal_of_rowTriple_det_eq_zero
+#print axioms CorankTwo.dependence_of_completion_mix
+#print axioms CorankTwo.completionRowDet_eq_zero_of_pairBracket_eq_zero
+#print axioms CorankTwo.posDef_primalGap_of_posDef_dualPairGap
+#print axioms CorankTwo.exists_naimarkDualCorankTwo
+#print axioms CorankTwo.naimarkDual_landed_fiveThree_rederived
+#print axioms CorankTwo.pairBracket_eq_zero_symm
+#print axioms CorankTwo.dual_noStrictPair_of_isTie
+#print axioms CorankTwo.dual_quadrupleBracketCover_of_noStrictPair
+#print axioms CorankTwo.exists_tieLockedNaimarkDual
+#print axioms CorankTwo.coeffPair_eq_zero_of_smul_add_smul_eq_zero
+#print axioms CorankTwo.eq_smul_of_planeDet_eq_zero
+#print axioms CorankTwo.dependentPair_impossible_of_isPrimitive
+#print axioms CorankTwo.not_isTie_of_isPrimitive_fourTwo
+#print axioms CorankTwo.exists_edge_avoiding
+#print axioms CorankTwo.matching_or_triangle_of_coveringEdges_general
+#print axioms CorankTwo.false_of_coveringEdges_triangle_without_matching
+#print axioms CorankTwo.exists_dependentRest_of_dualTriangle
+#print axioms CorankTwo.no_dualTriangle_of_isPrimitive_fiveThree
+#print axioms CorankTwo.sharedCircuitPairAtCorankTwoTie_holds
+#print axioms CorankTwo.atomBracket_eq_zero_of_dependentTriple
+#print axioms CorankTwo.sharedLinePairAtEveryTieFiveThree_rederived
+#print axioms CorankTwo.sharedCircuitPair_rankTwo_holds
+#print axioms CorankTwo.sharedCircuitPair_conclusion_impossible_rankTwo
+#print axioms CorankTwo.diamond_realizes_sharedCircuitPair
+#print axioms CorankTwo.corankOneTie_isUniformCircuit
