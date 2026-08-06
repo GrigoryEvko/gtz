@@ -44,6 +44,7 @@ import Gtz.Design.BhatiaDavis
 import Gtz.Core.Sanity
 import Gtz.LinAlg.SchurRankOne
 import Gtz.Design.CorankThreeHinge
+import Gtz.Design.MultiLineSeven
 import Gtz.Design.SpGraphicCap
 import Gtz.Design.TraceIdentity
 import Gtz.Certificates.CollarLinePositivity
@@ -15275,6 +15276,30 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms GtzCollarLinePositivity.linePivotCoreBIsNonnegativeOnTube
 #print axioms GtzCollarLinePositivity.linePivotCoreBIsPositiveOffDiagonal
 #print axioms GtzCollarLinePositivity.linePivotCoreBVanishesIffDiagonalContact
+
+
+-- Gtz/Design/MultiLineSeven.lean -- the certified seven-point enumeration + the MultiLineCasesSeven producer
+#print axioms Gtz.MultiLineCert.holdsBelow_sound
+#print axioms Gtz.MultiLineCert.encodeBits_lt
+#print axioms Gtz.MultiLineCert.encodeBits_bit
+#print axioms Gtz.MultiLineCert.bitOfPrefix
+#print axioms Gtz.MultiLineCert.isLeafAccepted_covers
+#print axioms Gtz.MultiLineCert.consumeLeaves_covers
+#print axioms Gtz.MultiLineCert.isChunkRunAccepted_covers
+#print axioms Gtz.MultiLineCert.pattern_transport
+#print axioms Gtz.MultiLineCert.closure_offshoots
+#print axioms Gtz.MultiLineCert.labelsSeven_finSound
+#print axioms Gtz.MultiLineCert.labelsSeven_sound
+#print axioms Gtz.MultiLineCert.tripleIdxOfSeven_finSound
+#print axioms Gtz.MultiLineCert.tripleIdxOfSeven_sound
+#print axioms Gtz.MultiLineCert.allOnesBitSeven_finSound
+#print axioms Gtz.MultiLineCert.allOnesBitSeven_sound
+#print axioms Gtz.MultiLineCert.classMaskSeven_finSound
+#print axioms Gtz.MultiLineCert.patternAtIdxSeven_iff
+#print axioms Gtz.MultiLineCert.conflictWitnessRefutedSeven
+#print axioms Gtz.MultiLineCert.certificateRunSeven
+#print axioms Gtz.MultiLineCert.linearSpaceListIsComplete_seven_certified
+#print axioms Gtz.MultiLineCert.linearSpaceMultiLineCasesSeven_holds
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

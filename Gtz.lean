@@ -38,6 +38,7 @@ import Gtz.Design.DowndateInterlacing
 import Gtz.Design.FrameConservation
 import Gtz.Design.LeverageBound
 import Gtz.Design.MarginTransfer
+import Gtz.Design.MultiLineSeven
 import Gtz.Design.RhoNormalForm
 import Gtz.Design.RigidityBridge
 import Gtz.Design.SignSelectedAggregate
