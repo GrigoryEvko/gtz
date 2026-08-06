@@ -114,6 +114,7 @@ import Gtz.Planar.WedgeChain
 import Gtz.Certificates.CFiveCertificate
 import Gtz.Certificates.CertificateAnchor
 import Gtz.Certificates.CollarChartSoundness
+import Gtz.Certificates.CollarChartSoundnessChart43210
 import Gtz.Certificates.CollarDictionaryIdentities
 import Gtz.Certificates.CollarMarginIdentities
 import Gtz.Certificates.CollarRealClosure
