@@ -44,6 +44,7 @@ import Gtz.Design.BhatiaDavis
 import Gtz.Core.Sanity
 import Gtz.LinAlg.SchurRankOne
 import Gtz.Design.CorankThreeHinge
+import Gtz.Design.SpGraphicCap
 import Gtz.Design.TraceIdentity
 import Gtz.Certificates.TriangleClosure
 import Gtz.Certificates.ResidueDissolution
@@ -15225,6 +15226,29 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.sum_det_subsetSum_sub_one_nonneg_of_forall_dominates
 #print axioms Gtz.subsetSum_repeatedTriple_splitTetra
 #print axioms Gtz.det_subsetSum_sub_one_repeatedTriple_splitTetra
+
+
+-- Gtz/Design/SpGraphicCap.lean -- the SP-graphic cap at five, unconditional
+#print axioms Gtz.exists_graphicAtom_parallel_of_edgeVector_parallel
+#print axioms Gtz.graphicAtom_eq_zero_of_loop
+#print axioms Gtz.hasParallelPair_of_loop
+#print axioms Gtz.edgeTail_ne_edgeHead_of_not_hasParallelPair
+#print axioms Gtz.edgeVector_eq_or_neg_of_same_endpointKey_of_loopless
+#print axioms Gtz.endpointKey_injective_of_not_hasParallelPair
+#print axioms Gtz.endpointKey_image_subset_looplessPairs
+#print axioms Gtz.card_endpointKey_image_of_not_hasParallelPair
+#print axioms Gtz.edgeCount_le_six_of_not_hasParallelPair
+#print axioms Gtz.graphicRankThree_hasParallelPair_of_six_lt
+#print axioms Gtz.hasAllSixDirections_of_not_hasParallelPair
+#print axioms Gtz.seriesParallelGraphic_cap_five
+#print axioms Gtz.seriesParallelGraphic_hasParallelPair_of_six_le
+#print axioms Gtz.seriesParallelGraphic_cap_five_of_isPrimitiveDesign
+#print axioms Gtz.diamondGraph_isSeriesParallelSupport
+#print axioms Gtz.diamondData_attains_cap
+#print axioms Gtz.completeFourGraph_hasAllSixDirections
+#print axioms Gtz.completeFourEdgeVector_eq
+#print axioms Gtz.not_hasParallelPair_completeFourDesign
+#print axioms Gtz.completeFourData_isPrimitive_hasAllSixDirections
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

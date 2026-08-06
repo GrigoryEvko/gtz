@@ -41,6 +41,7 @@ import Gtz.Design.MarginTransfer
 import Gtz.Design.RhoNormalForm
 import Gtz.Design.RigidityBridge
 import Gtz.Design.SignSelectedAggregate
+import Gtz.Design.SpGraphicCap
 import Gtz.Design.StressCertificate
 import Gtz.Design.SymmetryReduction
 import Gtz.Design.TraceIdentity
