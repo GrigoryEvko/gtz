@@ -421,6 +421,127 @@ import Gtz.Uniform.RouteBProps
 import Gtz.Uniform.AnchorBookkeeping
 import Gtz.Uniform.AnchorAssembly
 import Gtz.Design.StressFreeMatroidStratification
+import Gtz.Certificates.CollarChartReplay
+import Gtz.Certificates.CollarAtlas.Chart01234
+import Gtz.Certificates.CollarAtlas.Chart01243
+import Gtz.Certificates.CollarAtlas.Chart01324
+import Gtz.Certificates.CollarAtlas.Chart01342
+import Gtz.Certificates.CollarAtlas.Chart01423
+import Gtz.Certificates.CollarAtlas.Chart01432
+import Gtz.Certificates.CollarAtlas.Chart02134
+import Gtz.Certificates.CollarAtlas.Chart02143
+import Gtz.Certificates.CollarAtlas.Chart02314
+import Gtz.Certificates.CollarAtlas.Chart02341
+import Gtz.Certificates.CollarAtlas.Chart02413
+import Gtz.Certificates.CollarAtlas.Chart02431
+import Gtz.Certificates.CollarAtlas.Chart03124
+import Gtz.Certificates.CollarAtlas.Chart03142
+import Gtz.Certificates.CollarAtlas.Chart03214
+import Gtz.Certificates.CollarAtlas.Chart03241
+import Gtz.Certificates.CollarAtlas.Chart03412
+import Gtz.Certificates.CollarAtlas.Chart03421
+import Gtz.Certificates.CollarAtlas.Chart04123
+import Gtz.Certificates.CollarAtlas.Chart04132
+import Gtz.Certificates.CollarAtlas.Chart04213
+import Gtz.Certificates.CollarAtlas.Chart04231
+import Gtz.Certificates.CollarAtlas.Chart04312
+import Gtz.Certificates.CollarAtlas.Chart04321
+import Gtz.Certificates.CollarAtlas.Chart10234
+import Gtz.Certificates.CollarAtlas.Chart10243
+import Gtz.Certificates.CollarAtlas.Chart10324
+import Gtz.Certificates.CollarAtlas.Chart10342
+import Gtz.Certificates.CollarAtlas.Chart10423
+import Gtz.Certificates.CollarAtlas.Chart10432
+import Gtz.Certificates.CollarAtlas.Chart12034
+import Gtz.Certificates.CollarAtlas.Chart12043
+import Gtz.Certificates.CollarAtlas.Chart12304
+import Gtz.Certificates.CollarAtlas.Chart12340
+import Gtz.Certificates.CollarAtlas.Chart12403
+import Gtz.Certificates.CollarAtlas.Chart12430
+import Gtz.Certificates.CollarAtlas.Chart13024
+import Gtz.Certificates.CollarAtlas.Chart13042
+import Gtz.Certificates.CollarAtlas.Chart13204
+import Gtz.Certificates.CollarAtlas.Chart13240
+import Gtz.Certificates.CollarAtlas.Chart13402
+import Gtz.Certificates.CollarAtlas.Chart13420
+import Gtz.Certificates.CollarAtlas.Chart14023
+import Gtz.Certificates.CollarAtlas.Chart14032
+import Gtz.Certificates.CollarAtlas.Chart14203
+import Gtz.Certificates.CollarAtlas.Chart14230
+import Gtz.Certificates.CollarAtlas.Chart14302
+import Gtz.Certificates.CollarAtlas.Chart14320
+import Gtz.Certificates.CollarAtlas.Chart20134
+import Gtz.Certificates.CollarAtlas.Chart20143
+import Gtz.Certificates.CollarAtlas.Chart20314
+import Gtz.Certificates.CollarAtlas.Chart20341
+import Gtz.Certificates.CollarAtlas.Chart20413
+import Gtz.Certificates.CollarAtlas.Chart20431
+import Gtz.Certificates.CollarAtlas.Chart21034
+import Gtz.Certificates.CollarAtlas.Chart21043
+import Gtz.Certificates.CollarAtlas.Chart21304
+import Gtz.Certificates.CollarAtlas.Chart21340
+import Gtz.Certificates.CollarAtlas.Chart21403
+import Gtz.Certificates.CollarAtlas.Chart21430
+import Gtz.Certificates.CollarAtlas.Chart23014
+import Gtz.Certificates.CollarAtlas.Chart23041
+import Gtz.Certificates.CollarAtlas.Chart23104
+import Gtz.Certificates.CollarAtlas.Chart23140
+import Gtz.Certificates.CollarAtlas.Chart23401
+import Gtz.Certificates.CollarAtlas.Chart23410
+import Gtz.Certificates.CollarAtlas.Chart24013
+import Gtz.Certificates.CollarAtlas.Chart24031
+import Gtz.Certificates.CollarAtlas.Chart24103
+import Gtz.Certificates.CollarAtlas.Chart24130
+import Gtz.Certificates.CollarAtlas.Chart24301
+import Gtz.Certificates.CollarAtlas.Chart24310
+import Gtz.Certificates.CollarAtlas.Chart30124
+import Gtz.Certificates.CollarAtlas.Chart30142
+import Gtz.Certificates.CollarAtlas.Chart30214
+import Gtz.Certificates.CollarAtlas.Chart30241
+import Gtz.Certificates.CollarAtlas.Chart30412
+import Gtz.Certificates.CollarAtlas.Chart30421
+import Gtz.Certificates.CollarAtlas.Chart31024
+import Gtz.Certificates.CollarAtlas.Chart31042
+import Gtz.Certificates.CollarAtlas.Chart31204
+import Gtz.Certificates.CollarAtlas.Chart31240
+import Gtz.Certificates.CollarAtlas.Chart31402
+import Gtz.Certificates.CollarAtlas.Chart31420
+import Gtz.Certificates.CollarAtlas.Chart32014
+import Gtz.Certificates.CollarAtlas.Chart32041
+import Gtz.Certificates.CollarAtlas.Chart32104
+import Gtz.Certificates.CollarAtlas.Chart32140
+import Gtz.Certificates.CollarAtlas.Chart32401
+import Gtz.Certificates.CollarAtlas.Chart32410
+import Gtz.Certificates.CollarAtlas.Chart34012
+import Gtz.Certificates.CollarAtlas.Chart34021
+import Gtz.Certificates.CollarAtlas.Chart34102
+import Gtz.Certificates.CollarAtlas.Chart34120
+import Gtz.Certificates.CollarAtlas.Chart34201
+import Gtz.Certificates.CollarAtlas.Chart34210
+import Gtz.Certificates.CollarAtlas.Chart40123
+import Gtz.Certificates.CollarAtlas.Chart40132
+import Gtz.Certificates.CollarAtlas.Chart40213
+import Gtz.Certificates.CollarAtlas.Chart40231
+import Gtz.Certificates.CollarAtlas.Chart40312
+import Gtz.Certificates.CollarAtlas.Chart40321
+import Gtz.Certificates.CollarAtlas.Chart41023
+import Gtz.Certificates.CollarAtlas.Chart41032
+import Gtz.Certificates.CollarAtlas.Chart41203
+import Gtz.Certificates.CollarAtlas.Chart41230
+import Gtz.Certificates.CollarAtlas.Chart41302
+import Gtz.Certificates.CollarAtlas.Chart41320
+import Gtz.Certificates.CollarAtlas.Chart42013
+import Gtz.Certificates.CollarAtlas.Chart42031
+import Gtz.Certificates.CollarAtlas.Chart42103
+import Gtz.Certificates.CollarAtlas.Chart42130
+import Gtz.Certificates.CollarAtlas.Chart42301
+import Gtz.Certificates.CollarAtlas.Chart42310
+import Gtz.Certificates.CollarAtlas.Chart43012
+import Gtz.Certificates.CollarAtlas.Chart43021
+import Gtz.Certificates.CollarAtlas.Chart43102
+import Gtz.Certificates.CollarAtlas.Chart43120
+import Gtz.Certificates.CollarAtlas.Chart43201
+import Gtz.Certificates.CollarAtlas.Chart43210
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -12010,3 +12131,340 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.hasSharedLinePairRestriction_iff_mem_diamondCarrying
 #print axioms Gtz.stressFreeResidualFamiliesSix_eq_append
 #print axioms Gtz.stressFreeHingeHoldsSixThree_of_seamSplit
+
+-- Certificates/CollarChartReplay.lean (the collar atlas kernel-replay checker)
+#print axioms Gtz.CollarReplay.intPow_add
+#print axioms Gtz.CollarReplay.intPow_nonneg
+#print axioms Gtz.CollarReplay.intPow_pos
+#print axioms Gtz.CollarReplay.intPow_le_intPow
+#print axioms Gtz.CollarReplay.intPow_mul
+#print axioms Gtz.CollarReplay.square_nonneg
+#print axioms Gtz.CollarReplay.intPow_even_nonneg
+#print axioms Gtz.CollarReplay.polyEval_append
+#print axioms Gtz.CollarReplay.polyEval_neg
+#print axioms Gtz.CollarReplay.termEval_termMul
+#print axioms Gtz.CollarReplay.polyEval_mulTerm
+#print axioms Gtz.CollarReplay.polyEval_mul
+#print axioms Gtz.CollarReplay.termEval_mergeCoeff
+#print axioms Gtz.CollarReplay.polyEval_insertTerm
+#print axioms Gtz.CollarReplay.polyEval_sortMerge
+#print axioms Gtz.CollarReplay.polyEval_filterZero
+#print axioms Gtz.CollarReplay.polyEval_canon
+#print axioms Gtz.CollarReplay.polyEval_eq_of_canon_eq
+#print axioms Gtz.CollarReplay.mul_le_mul_of_nonpos_left
+#print axioms Gtz.CollarReplay.pos_of_mul_pos_of_pos_right
+#print axioms Gtz.CollarReplay.mul_self_pos_of_ne_zero
+#print axioms Gtz.CollarReplay.intPow_two_mul
+#print axioms Gtz.CollarReplay.intPow_even_pos
+#print axioms Gtz.CollarReplay.rootBox_covers
+#print axioms Gtz.CollarReplay.double_side_low
+#print axioms Gtz.CollarReplay.double_side_high
+#print axioms Gtz.CollarReplay.pointLiesInBox_double
+#print axioms Gtz.CollarReplay.pointLiesInBox_setMid
+#print axioms Gtz.CollarReplay.splitBox_covers
+#print axioms Gtz.CollarReplay.mul_le_mul_of_nonneg_pair
+#print axioms Gtz.CollarReplay.prodFour_le
+#print axioms Gtz.CollarReplay.prodFour_nonneg
+#print axioms Gtz.CollarReplay.termLowCorner_scaled_le
+#print axioms Gtz.CollarReplay.isHomog_spec
+#print axioms Gtz.CollarReplay.lowBound_scaled_le
+#print axioms Gtz.CollarReplay.evalPos_of_lowBound_pos
+#print axioms Gtz.CollarReplay.intPow_zero
+#print axioms Gtz.CollarReplay.intPow_split_by_flag
+#print axioms Gtz.CollarReplay.termEval_masked_split
+#print axioms Gtz.CollarReplay.polyEval_of_sharedKey
+#print axioms Gtz.CollarReplay.polyEval_filter_split
+#print axioms Gtz.CollarReplay.keyMonomialValue_nonneg
+#print axioms Gtz.CollarReplay.keyMonomialValue_zero_key
+#print axioms Gtz.CollarReplay.keyMonomialValue_pos_of_masked
+#print axioms Gtz.CollarReplay.groupedScanHolds_nonneg
+#print axioms Gtz.CollarReplay.groupedScanHolds_pos_of_zeroKey
+#print axioms Gtz.CollarReplay.groupedScanHolds_pos_of_maskedPositive
+#print axioms Gtz.CollarReplay.polyEval_unitPoly
+#print axioms Gtz.CollarReplay.polyEval_powPoly
+#print axioms Gtz.CollarReplay.polyEval_denMinusOne
+#print axioms Gtz.CollarReplay.polyEval_denMinusTwo
+#print axioms Gtz.CollarReplay.polyEval_denMinusThree
+#print axioms Gtz.CollarReplay.polyEval_denMinusFour
+#print axioms Gtz.CollarReplay.polyEval_slotFactorOne
+#print axioms Gtz.CollarReplay.polyEval_slotFactorTwo
+#print axioms Gtz.CollarReplay.polyEval_slotFactorThree
+#print axioms Gtz.CollarReplay.polyEval_slotFactorFour
+#print axioms Gtz.CollarReplay.reflectCoord_involution
+#print axioms Gtz.CollarReplay.polyEval_reflectPoly
+#print axioms Gtz.CollarReplay.findVariantPoly_verified
+#print axioms Gtz.CollarReplay.variantValue_eq_baseValue
+#print axioms Gtz.CollarReplay.reflect_side_low
+#print axioms Gtz.CollarReplay.reflect_side_high
+#print axioms Gtz.CollarReplay.pointLiesInBox_reflectBox
+#print axioms Gtz.CollarReplay.boxIsSane_spec
+#print axioms Gtz.CollarReplay.reflectBox_lowsNonneg
+#print axioms Gtz.CollarReplay.reflectCoord_nonneg
+#print axioms Gtz.CollarReplay.directedPositiveGrade_sound
+#print axioms Gtz.CollarReplay.coreSignEvidence_sound
+#print axioms Gtz.CollarReplay.mul_nonpos_of_nonneg_of_nonpos
+#print axioms Gtz.CollarReplay.mul_neg_of_pos_of_neg
+#print axioms Gtz.CollarReplay.intPow_pos_of_even
+#print axioms Gtz.CollarReplay.intPow_nonneg_of_even
+#print axioms Gtz.CollarReplay.intPow_neg_of_odd
+#print axioms Gtz.CollarReplay.intPow_nonpos_of_odd
+#print axioms Gtz.CollarReplay.strictFactorsSign_sound
+#print axioms Gtz.CollarReplay.strictTripleSign_sound
+#print axioms Gtz.CollarReplay.guardFactorsScan_sound
+#print axioms Gtz.CollarReplay.guardSlotScan_sound
+#print axioms Gtz.CollarReplay.foldBetaSlotsGuarded_classify
+#print axioms Gtz.CollarReplay.product_positive_transfer
+#print axioms Gtz.CollarReplay.product_negative_transfer
+#print axioms Gtz.CollarReplay.triple_product_positive_transfer
+#print axioms Gtz.CollarReplay.checkValidity_sound
+#print axioms Gtz.CollarReplay.checkMarginCondition_sound
+#print axioms Gtz.CollarReplay.foldedSlots_directed
+#print axioms Gtz.CollarReplay.sigma_exists_for_point
+#print axioms Gtz.CollarReplay.checkWindowWin_sound
+#print axioms Gtz.CollarReplay.checkFreeWin_sound
+#print axioms Gtz.CollarReplay.checkGuardMemberSigma_sound
+#print axioms Gtz.CollarReplay.checkLeaf_sound
+#print axioms Gtz.CollarReplay.checkCoverTree_sound
+#print axioms Gtz.CollarReplay.checkChart_sound
+
+-- Certificates/CollarAtlas/Chart*.lean (the 120 replayed atlas charts)
+#print axioms Gtz.CollarReplay.Chart01234.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart01234.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart01243.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart01243.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart01324.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart01324.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart01342.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart01342.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart01423.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart01423.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart01432.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart01432.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart02134.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart02134.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart02143.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart02143.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart02314.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart02314.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart02341.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart02341.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart02413.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart02413.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart02431.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart02431.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart03124.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart03124.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart03142.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart03142.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart03214.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart03214.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart03241.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart03241.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart03412.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart03412.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart03421.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart03421.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart04123.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart04123.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart04132.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart04132.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart04213.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart04213.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart04231.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart04231.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart04312.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart04312.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart04321.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart04321.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart10234.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart10234.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart10243.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart10243.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart10324.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart10324.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart10342.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart10342.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart10423.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart10423.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart10432.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart10432.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart12034.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart12034.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart12043.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart12043.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart12304.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart12304.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart12340.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart12340.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart12403.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart12403.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart12430.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart12430.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart13024.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart13024.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart13042.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart13042.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart13204.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart13204.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart13240.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart13240.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart13402.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart13402.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart13420.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart13420.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart14023.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart14023.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart14032.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart14032.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart14203.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart14203.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart14230.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart14230.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart14302.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart14302.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart14320.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart14320.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart20134.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart20134.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart20143.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart20143.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart20314.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart20314.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart20341.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart20341.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart20413.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart20413.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart20431.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart20431.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart21034.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart21034.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart21043.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart21043.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart21304.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart21304.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart21340.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart21340.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart21403.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart21403.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart21430.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart21430.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart23014.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart23014.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart23041.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart23041.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart23104.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart23104.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart23140.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart23140.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart23401.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart23401.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart23410.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart23410.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart24013.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart24013.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart24031.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart24031.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart24103.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart24103.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart24130.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart24130.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart24301.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart24301.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart24310.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart24310.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart30124.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart30124.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart30142.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart30142.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart30214.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart30214.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart30241.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart30241.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart30412.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart30412.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart30421.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart30421.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart31024.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart31024.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart31042.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart31042.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart31204.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart31204.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart31240.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart31240.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart31402.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart31402.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart31420.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart31420.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart32014.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart32014.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart32041.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart32041.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart32104.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart32104.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart32140.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart32140.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart32401.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart32401.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart32410.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart32410.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart34012.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart34012.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart34021.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart34021.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart34102.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart34102.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart34120.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart34120.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart34201.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart34201.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart34210.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart34210.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart40123.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart40123.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart40132.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart40132.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart40213.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart40213.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart40231.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart40231.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart40312.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart40312.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart40321.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart40321.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart41023.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart41023.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart41032.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart41032.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart41203.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart41203.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart41230.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart41230.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart41302.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart41302.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart41320.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart41320.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart42013.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart42013.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart42031.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart42031.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart42103.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart42103.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart42130.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart42130.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart42301.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart42301.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart42310.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart42310.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart43012.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart43012.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart43021.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart43021.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart43102.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart43102.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart43120.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart43120.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart43201.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart43201.chartWindowCertified
+#print axioms Gtz.CollarReplay.Chart43210.chartCheckPasses
+#print axioms Gtz.CollarReplay.Chart43210.chartWindowCertified
