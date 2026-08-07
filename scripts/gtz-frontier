@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# THE ONE COMMAND.  Prints, from the kernel, exactly which propositions the
+# rank-three and general-rank GTZ capstones still rest on, then runs the
+# anti-drift gate.  Exit 0 means the scaffold is honest.
+#
+#   bash scripts/gtz-frontier
+#
+# `lake build Skeleton` compiles the scaffold against the current tree;
+# `lake env lean Skeleton/Report.lean` re-elaborates the report so the frontier
+# is PRINTED every run (a warm .olean would otherwise stay silent).  The report
+# throws if any capstone reaches an axiom outside the Skeleton registry and the
+# classical triple, if a declared obligation is unreachable from every capstone,
+# or if the ledger and the registry disagree.
+set -u
+
+cd "$(dirname "$0")/.." || { echo "gtz-frontier: cannot enter the repository root"; exit 2; }
+
+LAKE="$HOME/.elan/bin/lake"
+
+"$LAKE" build Skeleton || exit $?
+exec "$LAKE" env lean Skeleton/Report.lean

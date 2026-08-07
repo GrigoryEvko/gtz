@@ -1,6 +1,6 @@
 name = "gtz"
 version = "0.1.0"
-defaultTargets = ["Gtz"]
+defaultTargets = ["Gtz", "Skeleton"]
 
 [[require]]
 name = "mathlib"
@@ -13,3 +13,10 @@ relaxedAutoImplicit = false
 
 [[lean_lib]]
 name = "Gtz"
+
+# The obligation scaffold.  Separate library, separate module root: Gtz/Audit.lean's
+# sweep enumerates theorems whose module root is `Gtz`, so it never sees these, and
+# the Gtz tree keeps its zero-axiom guarantee while Skeleton carries the named
+# obligations that rank-three and general-rank GTZ still rest on.
+[[lean_lib]]
+name = "Skeleton"
