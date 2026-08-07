@@ -2118,6 +2118,16 @@ import Gtz.Design.StressFreeClassSplit
 import Gtz.Design.TieCensusCompletion
 import Gtz.Design.KFourChartSample
 
+-- the census ladder for the two chartless classes, the relabel bridge from
+-- identity-labelled tie-freeness, the fully rational one-line sample with two
+-- strict dominators, and the direction-generic open-atom lift identity
+import Gtz.Design.LineClassObstructions
+
+-- U(3,6): the off-conic formulation of stress-freeness, the exact rational
+-- icosa approximant sample, and the mass-reading clearance functionals
+-- positive exactly on the open line-free stratum
+import Gtz.Design.LineFreeConicBridge
+
 -- the collar atlas kernel replay: the verified interval/graded/guarded box
 -- checker for the rung-15 barycentric order-chart certificates, and the 120
 -- replayed charts -- one decide per chart turns the adaptive coarsest cover

@@ -436,6 +436,8 @@ import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
 import Gtz.Design.TieCensusCompletion
 import Gtz.Design.KFourChartSample
+import Gtz.Design.LineClassObstructions
+import Gtz.Design.LineFreeConicBridge
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -15342,6 +15344,82 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.tetrahedron_gap_eq
 #print axioms Gtz.tetrahedron_gap_posDef
 #print axioms Gtz.tetrahedronChartPoint_hasStrictTriple
+
+-- Design/LineClassObstructions: the census ladder for the two chartless
+-- classes (dominators avoid lines, normals exist and are over-covered by the
+-- complements, the two-meeting-lines rigidity kernel), the relabel bridge
+-- from identity-labelled tie-freeness to the class obligation, the fully
+-- rational one-line sample with two strict dominators, and the
+-- direction-generic open-atom lift identity.
+#print axioms Gtz.atomBracket_eq_zero_of_left_atom_eq_zero
+#print axioms Gtz.atomBracket_eq_zero_of_mid_atom_eq_zero
+#print axioms Gtz.atomBracket_eq_zero_of_right_atom_eq_zero
+#print axioms Gtz.tripleBracket_eq_zero_of_commonOrthogonal
+#print axioms Gtz.bracketNormal_bracketNormal
+#print axioms Gtz.exists_smul_of_both_smul_of_ne_zero
+#print axioms Gtz.stressFreeStratumIsTieFree_of_stratumIsTieFree
+#print axioms Gtz.oneLine_lineTriple_not_dominates
+#print axioms Gtz.oneLine_tieDominator_avoids_line
+#print axioms Gtz.twoMeetingLines_lineTriples_not_dominate
+#print axioms Gtz.twoMeetingLines_tieDominator_avoids_both_lines
+#print axioms Gtz.oneLine_has_lineNormal
+#print axioms Gtz.twoMeetingLines_have_two_normals
+#print axioms Gtz.oneLine_atoms_ne_zero
+#print axioms Gtz.twoMeetingLines_atoms_ne_zero
+#print axioms Gtz.normalParseval_on_complement
+#print axioms Gtz.complement_strictly_overcovers_normal
+#print axioms Gtz.oneLine_freeTriple_strictly_overcovers_normal
+#print axioms Gtz.oneLine_dominator_freeAtoms_cover_normal
+#print axioms Gtz.twoMeetingLines_complements_strictly_overcover_normals
+#print axioms Gtz.twoMeetingLines_normals_not_parallel
+#print axioms Gtz.twoMeetingLines_sharedAtom_spans_intersection
+#print axioms Gtz.oneLine_tie_has_nullVector_on_dominator
+#print axioms Gtz.oneLineSampleAtom
+#print axioms Gtz.oneLineSampleWeight
+#print axioms Gtz.oneLineSampleDesign
+#print axioms Gtz.oneLineSampleDesign_hasLinePattern
+#print axioms Gtz.oneLineSample_freeTripleGap_eq
+#print axioms Gtz.oneLineSample_freeTripleGap_form
+#print axioms Gtz.oneLineSample_freeTripleGap_posSemidef
+#print axioms Gtz.oneLineSample_freeTripleGap_posDef
+#print axioms Gtz.oneLineSample_mixedTripleGap_eq
+#print axioms Gtz.oneLineSample_mixedTripleGap_form
+#print axioms Gtz.oneLineSample_mixedTripleGap_posSemidef
+#print axioms Gtz.oneLineSample_mixedTripleGap_posDef
+#print axioms Gtz.oneLineSampleDesign_dominates_freeTriple
+#print axioms Gtz.oneLineSampleDesign_hasStrictDominator
+#print axioms Gtz.oneLineSampleDesign_not_isTie
+#print axioms Gtz.directionChartGap_openAtom
+#print axioms Gtz.posSemidef_selectedFaceAtomSum
+
+-- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
+-- (both bridges + the Veronese-determinant Iff), the antecedent-
+-- keeping attack Prop and its verbatim reduction to the class
+-- obligation, the two-family assembly, the exact rational icosa
+-- approximant (line-free, stress-free, off-conic, strict dominator
+-- at the uniform chart point), and the mass-reading clearance
+-- functionals with their positivity chain.
+#print axioms Gtz.hasNoCommonQuadric_of_stressFree
+#print axioms Gtz.not_stressFree_of_commonQuadric
+#print axioms Gtz.isStressFreeDesign_iff_hasNoCommonQuadric
+#print axioms Gtz.hasNoCommonQuadric_iff_veroneseGrid_det_ne_zero
+#print axioms Gtz.hasLinePattern_lineFree_of_relabel
+#print axioms Gtz.stressFreeStratumIsTieFree_lineFree_of_weakToStrict
+#print axioms Gtz.lineFreeOffConicWeakToStrict_of_twoFamilies
+#print axioms Gtz.tripleBracket_icosaApproximantDirection_ne_zero
+#print axioms Gtz.icosaApproximantDirection_isStressFree
+#print axioms Gtz.hasNoCommonQuadric_icosaApproximantDirection
+#print axioms Gtz.icosaApproximant_gap_eq
+#print axioms Gtz.icosaApproximant_gap_posDef
+#print axioms Gtz.icosaApproximantChartPoint_hasStrictTriple
+#print axioms Gtz.sum_designMassOf_eq_three
+#print axioms Gtz.atom_ne_zero_of_hasLinePattern_lineFree
+#print axioms Gtz.designMassOf_pos
+#print axioms Gtz.massClearanceOf_pos
+#print axioms Gtz.conicClearanceOf_pos
+#print axioms Gtz.distinctLabelTriples_nonempty
+#print axioms Gtz.bracketClearanceOf_pos
+#print axioms Gtz.wallClearanceOf_pos
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
