@@ -2116,6 +2116,7 @@ import Gtz.Uniform.AnchorAssembly
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
 import Gtz.Design.TieCensusCompletion
+import Gtz.Design.KFourChartSample
 
 -- the collar atlas kernel replay: the verified interval/graded/guarded box
 -- checker for the rung-15 barycentric order-chart certificates, and the 120

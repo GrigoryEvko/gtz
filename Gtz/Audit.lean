@@ -435,6 +435,7 @@ import Gtz.Uniform.AnchorAssembly
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
 import Gtz.Design.TieCensusCompletion
+import Gtz.Design.KFourChartSample
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -15332,6 +15333,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.completedSixThreeTieCensus
 #print axioms Gtz.eightFourBundledDesign_isTie
 #print axioms Gtz.eightFourBundledDesign_hasParallelPair
+
+-- Design/KFourChartSample: the first Road-A sample on the K4 chart -- the
+-- tetrahedron's fully rational chart image (mass 1/4, weight 1/6) and the
+-- strictly dominating coordinate-axis triple there, margin 1/2.
+#print axioms Gtz.tetrahedron_gap_eq
+#print axioms Gtz.tetrahedron_gap_posDef
+#print axioms Gtz.tetrahedronChartPoint_hasStrictTriple
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
