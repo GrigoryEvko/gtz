@@ -2115,6 +2115,7 @@ import Gtz.Uniform.AnchorAssembly
 -- stratum, named and priced.
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
+import Gtz.Design.TieCensusCompletion
 
 -- the collar atlas kernel replay: the verified interval/graded/guarded box
 -- checker for the rung-15 barycentric order-chart certificates, and the 120

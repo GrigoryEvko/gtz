@@ -434,6 +434,7 @@ import Gtz.Uniform.AnchorBookkeeping
 import Gtz.Uniform.AnchorAssembly
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
+import Gtz.Design.TieCensusCompletion
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -15312,6 +15313,20 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.coordinateDiagonalDesign_hasNoParallelPair
 #print axioms Gtz.stressFreeStratumIsTieFree_of_stressFreeHinge
 #print axioms Gtz.stressFreeResidualFamilies_tieFree_iff_stressFreeHinge
+
+-- Design/TieCensusCompletion: the factoring lemma (atoms through a smaller
+-- index set are never parallel-free), the three ties the shipped census
+-- omitted, the completed census, and the (8,4) sub-threshold band witness.
+#print axioms Gtz.hasParallelPair_of_atomFactorsThroughSmallerIndex
+#print axioms Gtz.bundledCycleDesign_hasParallelPair_of_windowFloor
+#print axioms Gtz.parallelSplitDesign_hasParallelPair_of_moreAtoms
+#print axioms Gtz.splitClassDesign_hasParallelPair_of_windowFloor
+#print axioms Gtz.paddedTetraDesign_hasParallelPair
+#print axioms Gtz.chartSplitSixDesign_hasParallelPair
+#print axioms Gtz.sixSplitDiamondDesign_hasParallelPair
+#print axioms Gtz.completedSixThreeTieCensus
+#print axioms Gtz.eightFourBundledDesign_isTie
+#print axioms Gtz.eightFourBundledDesign_hasParallelPair
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
