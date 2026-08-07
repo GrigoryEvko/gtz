@@ -26,22 +26,29 @@ build if any theorem whose module root is `Gtz` reaches an axiom outside
 that sweep, so it lives outside the repository under its own root and is
 imported by nothing inside it.
 
-## The frontier: four axioms, three independent obligations
+## The frontier after the five-class split
 
 Two roots are in play.
 
-* Root A, rank three: `forall n, 0 < n -> Gtz.GtzOriginal n 3`.  Needs exactly
-  one obligation, `obligationStressFreeHingeSixThree`.
+* Root A, rank three: `forall n, 0 < n -> Gtz.GtzOriginal n 3`.  Rests on FIVE
+  class obligations, one per surviving matroid class of the stress-free (6,3)
+  stratum: `obligationTieFreeUThreeSix`, `obligationTieFreeOneLine`,
+  `obligationTieFreeTwoMeetingLines`, `obligationTieFreeThreeLines`,
+  `obligationTieFreeKFour`.  Their conjunction is EXACTLY the original single
+  obligation `obligationStressFreeHingeSixThree`, which survives below as a
+  theorem assembled from the five, so the split is lossless and every class
+  discharge shrinks the frontier monotonically.
 * Root B, general rank: `forall rank, Gtz.GtzWeightedAll rank`, with no rank
   excluded because `Gtz.gtzWeighted_dim_zero` discharges rank zero.  Needs
   exactly three, `obligationSubThresholdBandHinge`,
   `obligationThresholdCellHinge` and `obligationSharpWindowAnchorReach`.
 
-The merged count is THREE, not four: `stressFreeHingeSixThree_of_thresholdCellHinge`
-below derives Root A's obligation from Root B's threshold-cell hinge, because
-that hinge's own antecedent at rank three is `Gtz.GtzWeighted 5 3`, a theorem.
-Root A's axiom is kept separately so the cheap rank-three capstone does not have
-to assume the general-rank obligations.
+The merged mathematical count is still THREE:
+`stressFreeHingeSixThree_of_thresholdCellHinge` below derives the whole
+rank-three side from Root B's threshold-cell hinge, because that hinge's own
+antecedent at rank three is `Gtz.GtzWeighted 5 3`, a theorem.  The class axioms
+are kept separately so the cheap rank-three capstone does not have to assume
+the general-rank obligations, and so each class closes independently.
 
 ## Standing prohibitions carried from the verifier
 
@@ -57,14 +64,98 @@ Do not add any of the six rank-three equivalent spellings alongside
 
 namespace Skeleton
 
-/--
+/-!
+### SPLIT RECORD: `obligationStressFreeHingeSixThree`, split into the five matroid classes
+
+Retired as an axiom and re-proved below as a theorem assembled from the five
+class obligations.  The split is LOSSLESS: the hinge implies every class
+statement at every pattern, because its tie-emptiness reading
+(`Gtz.stressFreeHingeHoldsSixThree_iff_no_stressFree_tie`) carries no pattern
+hypothesis at all -- so each class axiom is strictly weaker than the parent and
+their conjunction is exactly it.  The five classes are the entries of
+`Gtz.stressFreeResidualFamiliesSix`, the survivors of the plane-pair escape law
+(Gtz/Design/StressFreeMatroidStratification.lean:303 proves the residual list is
+EXACTLY the not-plane-pair-covered list).
+
+Original five fields, kept as provenance; the live fields are on the class
+axioms below.
+
 STATUS: partial proof -- reduced to two chart obligations whose RIGIDITY halves are already unconditional theorems (`Gtz.directionChartCoversPrimitiveStratum_kFourDirection`, `Gtz.parameterizedChartCovers_threeLinesDirection`); only the analytic half over an eleven-real chart is open. NOT VACUOUS: the stage-four audit constructed a stress-free (6,3) design (the six coordinate-plane diagonals at uniform weight one sixth, /tmp/gtz-chain/stage4/audit/audit5.lean), so this obligation genuinely quantifies over an inhabited stratum. It is also STRICTLY STRONGER than rank-three GTZ: the value holds at (5,3) while the hinge is refuted there.
 CONSUMERS: the rank-three capstone in `Skeleton.RankThree`; ten in-tree consumers headed by `Gtz.forall_gtzOriginal_rank_three_of_stressFreeHingeAlone`. Subsumed at rank three by `obligationThresholdCellHinge` via `Skeleton.stressFreeHingeSixThree_of_thresholdCellHinge`.
 WHY OPEN: eight producers in the tree, ZERO of them unconditional. Every producer is either a restatement (residual families, uncovered residual, tight drop, corank-three alias -- all Iff-equal to this statement) or needs `Gtz.DirectionChartIsTieFree`, whose sole producer `Gtz.directionChartIsTieFree_of_hasStrictTriple` needs `Gtz.DirectionChartHasStrictTriple`, which has zero producers tree-wide.
 ATTACK: take `Gtz.stressFreeHingeHoldsSixThree_of_kFourChart` (Gtz/Design/RigidityBridge.lean:1160), cost two, because its rigidity half is already discharged; what remains is positive-definiteness of `Gtz.directionChartGap` on the K4 chart plus tie-freeness of the four `Gtz.nonRigidResidualFamiliesSix` classes. Route through `Gtz.DirectionChartIsTieFree`, never through `Gtz.DirectionChartHasStrictTriple`, which drops the `PosSemidef` antecedent and is refutable.
 NOT-REFUTED: no row of the stage-2 refutation census (533 refutation rows, 874 False-conclusion rows) targets it. The nearest refutations `Gtz.not_hingeHoldsAtSize_five_three` and `Gtz.not_hingeHoldsAtSize_four_three` are at sizes five and four, strictly below six. The refuted `0 <= weight` relaxation `Gtz.not_relaxedStressFreeHinge_of_fiveThree_tie` cannot touch this statement: `Gtz.WeightedDesign` carries `weight_pos : forall label, 0 < weight label`, STRICT.
 -/
-axiom obligationStressFreeHingeSixThree : Gtz.StressFreeHingeHoldsSixThree
+
+/--
+STATUS: open, no producer. The single MIXED class: on the line-free stratum a stress has full support, and full support means the six directions lie on a conic (`Gtz.stratumStressHasFullSupport_lineFree`, Gtz/Reduction/TrichotomyLedger.lean:524), so stress-free here means OFF-CONIC. Uniquely among the five classes the stress-freeness hypothesis excludes a genuine sublocus, and that sublocus is exactly where the margin degenerates. This is where the (4,3) tetrahedron and (5,3) diamond tie shadows live.
+CONSUMERS: `obligationStressFreeHingeSixThree` (the split parent, now a theorem), hence the rank-three capstone.
+WHY OPEN: on a line-free stratum every distinct triple is a basis, so no pruning rule bites, and the deflation rule is provably inert (`Gtz.not_blindLabel_lineFree`, Gtz/Design/StratumTieFreeClasses.lean). The tree records that attacking this class FIRST is backwards (StratumTieFreeClasses.lean:207-215); it is sequenced LAST, after the four rigid classes.
+ATTACK: start from the conic characterization, never from a selector. Orbit-split by the weakly dominating triple via `Gtz.relabelDesign`; per representative a TWO-FAMILY argument -- interior certificate plus boundary compactification onto the proved (5,3) exclusions (`EndpointSpike.endpointBottomTieExclusionFiveThree_holds`, `Gtz.twoVanishedRigidBottomDomination_holds`). Candidate non-vacuity anchor: `Gtz.icosaDesign` (parallel-free, has a strictly dominating triple, hence itself no tie); its line-freeness is not yet a kernel fact.
+NOT-REFUTED: no census row targets the class statement. What IS refuted are methods: every finite pure-triple or orbit selector, every constant, label-free or continuous selector, matroid exchange, bounded-radius search, weight-uniform threshold certificates (margin infimum zero), and Putinar/Schmuedgen. A stress-forcing pattern filter cannot apply here: it would assert every line-free design lies on a conic.
+-/
+axiom obligationTieFreeUThreeSix :
+    Gtz.StressFreeStratumIsTieFree (Gtz.lineFamilyPattern [])
+
+/--
+STATUS: open, no producer, no chart. The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_oneThreePointLine`, Gtz/Reduction/TrichotomyLedger.lean:485), so the stress-freeness hypothesis is automatic and this obligation reads exactly: no (6,3) design realizing one three-point line is an exact tie.
+CONSUMERS: `obligationStressFreeHingeSixThree` (the split parent, now a theorem), hence the rank-three capstone.
+WHY OPEN: of the six producers of `Gtz.StressFreeStratumIsTieFree` in the tree, three are chart instances at other patterns, the plane-pair filter is provably anti-aligned (the residual list IS the not-plane-pair-covered list, Gtz/Design/StressFreeMatroidStratification.lean:303), and the two generic chart forms need a chart nobody has built for this pattern.
+ATTACK: build the chart following the shipped precedent -- Gtz/Design/RigidityBridge.lean:1-60 (PGL(3) simply transitive on four general lines, made rational, plus the per-atom scaling group) and the structure of `Gtz.directionChartCoversPrimitiveStratum_kFourDirection`. The pattern pins only three atoms projectively, so the chart carries genuine moduli and the analytic half is a parametric family. Pen-work triage of /tmp/gtz-p38/rigidity2 pending.
+NOT-REFUTED: no census row targets it. No stress-forcing pattern filter can ever apply: the pattern forces stress-freeNESS (TrichotomyLedger.lean:485), the opposite polarity, so the plane-pair mechanism has nothing left to kill here.
+-/
+axiom obligationTieFreeOneLine :
+    Gtz.StressFreeStratumIsTieFree (Gtz.lineFamilyPattern [[0, 1, 2]])
+
+/--
+STATUS: open, no producer, no chart. The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_twoMeetingLines`, Gtz/Reduction/TrichotomyLedger.lean:491), so this obligation reads exactly: no (6,3) design realizing two meeting three-point lines is an exact tie.
+CONSUMERS: `obligationStressFreeHingeSixThree` (the split parent, now a theorem), hence the rank-three capstone.
+WHY OPEN: same producer situation as the one-line class -- no chart exists for this pattern and the plane-pair filter is structurally inapplicable. Two concurrent lines are the closest residual pattern to the plane-pair boundary: the two line planes cover five of the six atoms, and it is exactly the sixth that escapes the escape law.
+ATTACK: same chart-building precedent as the one-line class (RigidityBridge.lean:1-60 plus the :796 covering structure); the pattern pins five atoms up to the two line moduli, so the chart is SMALLER than the one-line chart -- build this one first of the two. Pen-work triage of /tmp/gtz-p38/rigidity2 pending.
+NOT-REFUTED: no census row targets it. No stress-forcing pattern filter can apply (TrichotomyLedger.lean:491, opposite polarity).
+-/
+axiom obligationTieFreeTwoMeetingLines :
+    Gtz.StressFreeStratumIsTieFree (Gtz.lineFamilyPattern [[0, 1, 2], [0, 3, 4]])
+
+/--
+STATUS: chart-covered, analytic half open. The covering half is the unconditional `Gtz.parameterizedChartCovers_threeLinesDirection` (Gtz/Design/RigidityBridge.lean:1098) with consumer `Gtz.stressFreeStratumIsTieFree_threeLines_of_chart` (:1135); the stratum is uniformly stress-free (`Gtz.stratumIsStressFree_threeLines`, Gtz/Reduction/TrichotomyLedger.lean:497). What is open is `Gtz.DirectionChartIsTieFree (Gtz.threeLinesDirection slide)` at every admissible slide (`Gtz.IsAdmissibleThreeLinesParameter`: slide != 0 and slide != -1, RigidityBridge.lean:883) -- twelve numbers, one more than the K4 chart.
+CONSUMERS: `obligationStressFreeHingeSixThree` (the split parent, now a theorem), hence the rank-three capstone.
+WHY OPEN: the sole producer of `Gtz.DirectionChartIsTieFree` routes through `Gtz.DirectionChartHasStrictTriple`, which is FALSE at a degenerate direction; no direct certificate exists at any slide.
+ATTACK: inherit whatever certificate format closes the K4 chart, PARAMETRICALLY in the slide from the start; partition the admissible line into finitely many intervals with exact algebraic endpoints. The two excluded slides are the degenerations onto a collapsed atom (a parallel pair, outside every stress-free stratum) or the M(K4) pattern (the K4 class); they are not gaps.
+NOT-REFUTED: no census row targets it. The strict-triple refutation kills only that producer's premise at a degenerate direction, not this statement. No stress-forcing filter can apply (TrichotomyLedger.lean:497).
+-/
+axiom obligationTieFreeThreeLines :
+    Gtz.StressFreeStratumIsTieFree
+      (Gtz.lineFamilyPattern [[0, 1, 2], [0, 3, 4], [1, 3, 5]])
+
+/--
+STATUS: the most rigid class; covering half PROVED (`Gtz.directionChartCoversPrimitiveStratum_kFourDirection`, Gtz/Design/RigidityBridge.lean:796), direct class consumer `Gtz.stressFreeStratumIsTieFree_graphicKFour_of_chart` (:834). The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_graphicKFour`, Gtz/Reduction/TrichotomyLedger.lean:505). NOT VACUOUS: the stage-four audit's coordinate-diagonal design (the regular tetrahedron's six edge directions) realizes exactly this pattern. Open: `Gtz.DirectionChartIsTieFree Gtz.kFourDirection` -- eleven positive reals against six FIXED rational chart vectors, twenty triples, no design, no whitener, no square root in the statement.
+CONSUMERS: `obligationStressFreeHingeSixThree` (the split parent, now a theorem), hence the rank-three capstone.
+WHY OPEN: the sole producer of `Gtz.DirectionChartIsTieFree` is `Gtz.directionChartIsTieFree_of_hasStrictTriple` (:176), whose premise `Gtz.DirectionChartHasStrictTriple` is kernel-FALSE at a degenerate chart point; the weak-domination antecedent must stay in every lemma. The class-level sibling `stressFreeStratumIsTieFree_graphicKFour_of_strictTriple` (:841) is forbidden for the same reason.
+ATTACK: decide weld-vs-direct FIRST. Direct road: expand the three Sylvester minors of `Gtz.directionChartGap` (:128) into explicit polynomials in the chart coordinates; certificates in the KillCellCertificate style; first exact sample point, the chart image of the tetrahedron witness. Weld road: the collar layer's terminal theorem (`windowIsOpenOfCandidateWinsAt`, Gtz/Certificates/CollarWindowComposite.lean:81) concludes only a record-level inequality and has ZERO design-level consumers -- the weld statement does not exist yet; do not grind collar certificates before it does.
+NOT-REFUTED: no census row targets it. The relaxed-weight refutation needs `0 <= weight`; chart points carry strict positivity. No stress-forcing filter can apply (TrichotomyLedger.lean:505 plus the tetrahedron inhabitant).
+-/
+axiom obligationTieFreeKFour :
+    Gtz.StressFreeStratumIsTieFree
+      (Gtz.lineFamilyPattern [[0, 1, 2], [0, 3, 4], [1, 3, 5], [2, 4, 5]])
+
+/-- **Split, not weakened.**  Same name, same statement as the axiom it
+replaces, assembled from the five class obligations through the tree's own
+`Gtz.stressFreeHingeHoldsSixThree_of_residualFamilies`, with the enumeration
+premise discharged by `Gtz.linearSpaceListIsComplete_six`.  Every downstream
+capstone compiles untouched. -/
+theorem obligationStressFreeHingeSixThree : Gtz.StressFreeHingeHoldsSixThree :=
+  Gtz.stressFreeHingeHoldsSixThree_of_residualFamilies Gtz.linearSpaceListIsComplete_six
+    (by
+      intro lines hlines
+      simp only [Gtz.stressFreeResidualFamiliesSix, List.mem_cons, List.not_mem_nil,
+        or_false] at hlines
+      rcases hlines with rfl | rfl | rfl | rfl | rfl
+      · exact obligationTieFreeUThreeSix
+      · exact obligationTieFreeOneLine
+      · exact obligationTieFreeTwoMeetingLines
+      · exact obligationTieFreeThreeLines
+      · exact obligationTieFreeKFour)
 
 /--
 STATUS: no evidence. The band holds `rank * (rank - 3) / 2` cells and is EMPTY at rank three, so no rank-three theorem in the tree is evidence about it. The only unconditional `Gtz.HingeHoldsAtSize` instance anywhere is the vacuous `(2,2)`.
@@ -142,7 +233,11 @@ every axiom declared in this namespace, so it cannot silently drift.
 /-- Every obligation axiom declared in this module, in declaration order.
 Kept honest by `#gtz_registry_check` in `Skeleton.Frontier`. -/
 def liveObligationNames : List Lean.Name :=
-  [`Skeleton.obligationStressFreeHingeSixThree,
+  [`Skeleton.obligationTieFreeUThreeSix,
+   `Skeleton.obligationTieFreeOneLine,
+   `Skeleton.obligationTieFreeTwoMeetingLines,
+   `Skeleton.obligationTieFreeThreeLines,
+   `Skeleton.obligationTieFreeKFour,
    `Skeleton.obligationSubThresholdBandHinge,
    `Skeleton.obligationThresholdCellHinge,
    `Skeleton.obligationSharpWindowAnchorReach]

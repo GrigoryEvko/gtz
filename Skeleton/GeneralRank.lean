@@ -71,8 +71,9 @@ obligation is declared, because none is used.
 `Gtz.GtzWeighted 5 3` is the theorem `Gtz.gtzWeighted_of_le_five`.
 `rankThreeObligationIsSubsumed` records this in the kernel: the general-rank
 registry already contains the rank-three obligation.  The dead-obligation scan
-at the foot of this file therefore reports the rank-three axiom as unreached
-FROM HERE, which is correct -- `Skeleton.RankThree` is what spends it.
+at the foot of this file therefore reports the five rank-three class axioms as
+unreached FROM HERE, which is correct -- `Skeleton.RankThree` is what spends
+them, through the split parent theorem `obligationStressFreeHingeSixThree`.
 -/
 
 namespace Skeleton.GeneralRank
@@ -419,11 +420,12 @@ answer to "what is still assumed", recomputed on every build.
 The three base-rank controls must each report ZERO obligations.  The two
 capstones must each report exactly the three general-rank obligations.
 
-The dead-obligation scan reports `Skeleton.obligationStressFreeHingeSixThree` as
-unreached FROM THIS FILE.  That is correct and expected: section 10 shows it is
-subsumed by `Skeleton.obligationThresholdCellHinge`, and `Skeleton.RankThree` is
-the capstone that spends it, buying rank three alone at a strictly lower price
-than the general route. -/
+The dead-obligation scan reports the five rank-three class obligations as
+unreached FROM THIS FILE.  That is correct and expected: section 10 shows their
+conjunction -- `Skeleton.obligationStressFreeHingeSixThree`, since the split a
+theorem -- is subsumed by `Skeleton.obligationThresholdCellHinge`, and
+`Skeleton.RankThree` is the capstone that spends them, buying rank three alone
+at a strictly lower price than the general route. -/
 
 #gtz_frontier gtzWeightedAllRankZero_ofCorankFloor
 

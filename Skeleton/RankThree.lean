@@ -58,7 +58,9 @@ No `sorry`, no new axiom, and no second rank-three obligation: the six spellings
 `Gtz.HingeHoldsAtSize 6 3`, `Gtz.TightDropOnPlaneSixThree`,
 `Gtz.TightDropWithinBudgetSixThree`, `Gtz.StressFreeHingeHoldsAtCorankThree 3`,
 the residual-families obligation and the not-plane-pair-covered obligation are
-all the same sentence as the one obligation already registered.
+all the same sentence as `obligationStressFreeHingeSixThree`, which since the
+five-class split is itself a theorem assembled from the five registered class
+obligations.
 -/
 
 namespace Skeleton
@@ -244,7 +246,8 @@ theorem skeletonHingeIsStrictlyStrongerThanRankThree :
 `skeletonRankThreeShapesAgree` must report zero obligations, confirming the
 coordinate changes are free.  `skeletonGtzOriginalRankThreeViaThresholdHinge`
 must report the threshold-cell hinge, confirming the subsumption.  The capstone
-must report exactly one obligation. -/
+must report exactly the five class obligations of the split parent
+`obligationStressFreeHingeSixThree`. -/
 
 #gtz_frontier skeletonRankThreeShapesAgree
 

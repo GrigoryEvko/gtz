@@ -46,9 +46,9 @@ a theorem -- so a real split passes and a quiet strengthening does not.
 
 ## What the operator actually types
 
-    bash /tmp/gtz-chain/stage4/protocol/gtz-frontier
+    bash scripts/gtz-frontier
 
-which rebuilds the five modules in dependency order and elaborates this file.
+which rebuilds the Skeleton library and elaborates this file.
 -/
 
 namespace Skeleton.Report
@@ -68,12 +68,23 @@ def baselineObligationNames : List Name :=
 
 /-- Obligations removed since the baseline, by discharge or by split.  Each name
 must no longer be a declared axiom; the gate checks that. -/
-def retiredObligationNames : List Name := []
+def retiredObligationNames : List Name :=
+  [-- 2026-08-07: split into the five matroid classes; survives as a theorem
+   -- assembled from them (lossless -- the tie-emptiness reading of the hinge
+   -- carries no pattern hypothesis).
+   `Skeleton.obligationStressFreeHingeSixThree]
 
 /-- Obligations added since the baseline.  Each name must be a declared axiom;
 the gate checks that.  Adding to this list with `retiredObligationNames` still
 empty is rejected: that is a new assumption, not a split. -/
-def introducedObligationNames : List Name := []
+def introducedObligationNames : List Name :=
+  [-- 2026-08-07: the five-class split of the rank-three obligation, one axiom
+   -- per entry of `Gtz.stressFreeResidualFamiliesSix`.
+   `Skeleton.obligationTieFreeUThreeSix,
+   `Skeleton.obligationTieFreeOneLine,
+   `Skeleton.obligationTieFreeTwoMeetingLines,
+   `Skeleton.obligationTieFreeThreeLines,
+   `Skeleton.obligationTieFreeKFour]
 
 /-! ### The gate -/
 
