@@ -438,6 +438,7 @@ import Gtz.Design.TieCensusCompletion
 import Gtz.Design.KFourChartSample
 import Gtz.Design.LineClassObstructions
 import Gtz.Design.LineFreeConicBridge
+import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -15420,6 +15421,73 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.distinctLabelTriples_nonempty
 #print axioms Gtz.bracketClearanceOf_pos
 #print axioms Gtz.wallClearanceOf_pos
+
+-- Design/KFourChartClosure: the K4 chart route minus the endgame -- the
+-- rank-two Foster engine, positive definiteness from leading minors by
+-- completed squares, the deletion-contraction determinant normal forms,
+-- the rank-two slack lemma (Lemma A), chart bookkeeping, the twelve
+-- entrywise gap matrices, the dependent-triple exclusion, the
+-- contraction winner at edge 5, and the consumption bridge taking the
+-- max-edge host statement as a hypothesis.
+#print axioms Gtz.fosterIdentitySeries
+#print axioms Gtz.slackRatio_mono
+#print axioms Gtz.rankTwoPairGap_det
+#print axioms Gtz.posDef_of_leadingMinors_fin_two
+#print axioms Gtz.posDef_fin_two_corner_pos
+#print axioms Gtz.posDef_fin_two_minor_pos
+#print axioms Gtz.posDef_of_leadingMinors_fin_three
+#print axioms Gtz.sylvesterLift
+#print axioms Gtz.starLiftDet_normalForm
+#print axioms Gtz.starLiftDetGaugeNode_normalForm
+#print axioms Gtz.pathLiftDetDoubledClasses_normalForm
+#print axioms Gtz.pathLiftDetSingletonClass_normalForm
+#print axioms Gtz.rankTwoSlackLemma
+#print axioms Gtz.massDivConductance_eq_weight
+#print axioms Gtz.offEdgeSlack_eq_one_sub_weight
+#print axioms Gtz.kappaPositive_atMaxEdge
+#print axioms Gtz.kFourTreesThroughEdgeFive_spanning
+#print axioms Gtz.kFourGap_treeOneTwoFive_eq
+#print axioms Gtz.kFourGap_treeThreeFourFive_eq
+#print axioms Gtz.kFourGap_treeOneFourFive_eq
+#print axioms Gtz.kFourGap_treeTwoThreeFive_eq
+#print axioms Gtz.kFourGap_treeZeroOneFive_eq
+#print axioms Gtz.kFourGap_treeZeroTwoFive_eq
+#print axioms Gtz.kFourGap_treeZeroThreeFive_eq
+#print axioms Gtz.kFourGap_treeZeroFourFive_eq
+#print axioms Gtz.kFourGap_triangleZeroOneTwo_eq
+#print axioms Gtz.kFourGap_triangleZeroThreeFour_eq
+#print axioms Gtz.kFourGap_triangleOneThreeFive_eq
+#print axioms Gtz.kFourGap_triangleTwoFourFive_eq
+#print axioms Gtz.kFourGap_triangleZeroOneTwo_not_posSemidef
+#print axioms Gtz.kFourGap_triangleZeroThreeFour_not_posSemidef
+#print axioms Gtz.kFourGap_triangleOneThreeFive_not_posSemidef
+#print axioms Gtz.kFourGap_triangleTwoFourFive_not_posSemidef
+#print axioms Gtz.kFourDependentTriple_gap_not_posSemidef
+#print axioms Gtz.kFourContraction_treeOneTwoFive_eq
+#print axioms Gtz.kFourContraction_treeThreeFourFive_eq
+#print axioms Gtz.kFourContraction_treeOneFourFive_eq
+#print axioms Gtz.kFourContraction_treeTwoThreeFive_eq
+#print axioms Gtz.kFourContraction_treeZeroOneFive_eq
+#print axioms Gtz.kFourContraction_treeZeroTwoFive_eq
+#print axioms Gtz.kFourContraction_treeZeroThreeFive_eq
+#print axioms Gtz.kFourContraction_treeZeroFourFive_eq
+#print axioms Gtz.kFourContractionSlack
+#print axioms Gtz.kFourContractionHasWinner
+#print axioms Gtz.exists_maxConductanceEdge
+#print axioms Gtz.directionChartIsTieFree_kFour_of_maxEdgeHosts
+
+-- Design/KFourChartClosure, the refutation section: the max-conductance
+-- selection mechanism is FALSE in kernel -- at maxEdgeRefuterPoint the
+-- strict argmax edge hosts no strictly dominating selection and every
+-- through-tree det is negative, while the chart obligation itself stays
+-- intact there ({0,1,4} dominates strictly).
+#print axioms Gtz.maxEdgeRefuter_isMaxConductanceEdge_three
+#print axioms Gtz.finsetThroughThree_enumeration
+#print axioms Gtz.not_posDef_of_dotProduct_mulVec_nonpos
+#print axioms Gtz.kFourMaxEdgeHostsStrictTree_refuted
+#print axioms Gtz.kFourMaxEdgeDetPigeonhole_refuted
+#print axioms Gtz.maxEdgeRefuter_gap_zeroOneFour_posDef
+#print axioms Gtz.maxEdgeRefuterPoint_hasStrictTriple
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

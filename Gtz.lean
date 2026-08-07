@@ -2128,6 +2128,13 @@ import Gtz.Design.LineClassObstructions
 -- positive exactly on the open line-free stratum
 import Gtz.Design.LineFreeConicBridge
 
+-- the K4 contraction-descent bricks: the rank-two Foster engine, Sylvester
+-- lifts by completed squares, the deletion-contraction det normal forms, the
+-- rank-two slack lemma, the contraction winner at edge 5, the endgame
+-- vocabulary -- AND the kernel refutation of the max-conductance-edge
+-- selection at an exact witness where the chart obligation stays intact
+import Gtz.Design.KFourChartClosure
+
 -- the collar atlas kernel replay: the verified interval/graded/guarded box
 -- checker for the rung-15 barycentric order-chart certificates, and the 120
 -- replayed charts -- one decide per chart turns the adaptive coarsest cover
