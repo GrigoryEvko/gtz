@@ -15489,6 +15489,58 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.maxEdgeRefuter_gap_zeroOneFour_posDef
 #print axioms Gtz.maxEdgeRefuterPoint_hasStrictTriple
 
+-- Design/KFourChartClosure, stage 3a: the repaired-selection
+-- adjudication -- max-alpha and dominant-mass-pair selections refuted
+-- in kernel at the dual witness pair (heavyPairRefuterPoint: same
+-- weights, closer mass 18 past the series threshold 120/7), the
+-- entry-level Sylvester wrapper, the surviving per-edge det-argmax
+-- host Prop and the selection-free lift-threshold residue with both
+-- consumption bridges to the chart obligation.
+#print axioms Gtz.maxEdgeRefuter_isMaxAlphaEdge_three
+#print axioms Gtz.kFourMaxAlphaEdgeHostsStrictTree_refuted
+#print axioms Gtz.heavyPairRefuterMass_zero
+#print axioms Gtz.heavyPairRefuterMass_one
+#print axioms Gtz.heavyPairRefuterMass_two
+#print axioms Gtz.heavyPairRefuterMass_three
+#print axioms Gtz.heavyPairRefuterMass_four
+#print axioms Gtz.heavyPairRefuterMass_five
+#print axioms Gtz.heavyPairRefuterPoint_mass_eq
+#print axioms Gtz.heavyPairRefuterPoint_weight_eq
+#print axioms Gtz.heavyPairRefuter_isDominantMassPair_zeroFour
+#print axioms Gtz.finsetContainingZeroAndFour_enumeration
+#print axioms Gtz.heavyPairRefuter_gap_zeroOneFour_eq
+#print axioms Gtz.heavyPairRefuter_gap_zeroTwoFour_eq
+#print axioms Gtz.heavyPairRefuter_gap_zeroThreeFour_eq
+#print axioms Gtz.heavyPairRefuter_gap_zeroFourFive_eq
+#print axioms Gtz.heavyPairRefuter_gap_zeroOneFour_not_posDef
+#print axioms Gtz.heavyPairRefuter_gap_zeroTwoFour_not_posDef
+#print axioms Gtz.heavyPairRefuter_gap_zeroThreeFour_not_posDef
+#print axioms Gtz.heavyPairRefuter_gap_zeroFourFive_not_posDef
+#print axioms Gtz.kFourDominantMassPairHostsStrictTree_refuted
+#print axioms Gtz.heavyPairRefuter_gap_threeFourFive_eq
+#print axioms Gtz.heavyPairRefuter_gap_threeFourFive_posDef
+#print axioms Gtz.heavyPairRefuterPoint_hasStrictTriple
+#print axioms Gtz.directionChartGap_posDef_of_leadingMinors
+#print axioms Gtz.directionChartIsTieFree_kFour_of_edgeDetArgmaxHosts
+#print axioms Gtz.directionChartIsTieFree_kFour_of_someTreeLiftThreshold
+-- Design/KFourChartClosure, stage 3b: the certificate atlas Layer A --
+-- the diagonal-splitting engine (pair absorption + split dominance),
+-- the two missing star entrywise gap matrices, all FOUR star cells,
+-- the selection-free star dispatch, and kernel capture of the
+-- refutation witness (node-2 cell) and the tetrahedron (node-4 cell).
+#print axioms Gtz.offDiagonalAbsorption_nonneg
+#print axioms Gtz.splitQuadraticForm_pos
+#print axioms Gtz.kFourGap_treeZeroOneThree_eq
+#print axioms Gtz.kFourGap_treeZeroTwoFour_eq
+#print axioms Gtz.kFourAtlas_starNodeOne_posDef_of_cell
+#print axioms Gtz.kFourAtlas_starNodeTwo_posDef_of_cell
+#print axioms Gtz.kFourAtlas_starNodeThree_posDef_of_cell
+#print axioms Gtz.kFourAtlas_starNodeFour_posDef_of_cell
+#print axioms Gtz.kFourAtlas_hasStrictTriple_of_anyStarCell
+#print axioms Gtz.maxEdgeRefuterPoint_satisfiesStarNodeTwoCell
+#print axioms Gtz.maxEdgeRefuterPoint_hasStrictTriple_viaAtlas
+#print axioms Gtz.tetrahedronChartPoint_satisfiesStarNodeFourCell
+
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
 -- module, enumerated from the ENVIRONMENT (not from this file's pin

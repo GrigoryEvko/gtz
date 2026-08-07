@@ -1,4 +1,5 @@
 import Gtz.Design.RigidityBridge
+import Gtz.Design.KFourChartSample
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -1760,5 +1761,1164 @@ theorem maxEdgeRefuterPoint_hasStrictTriple :
       (directionChartGap kFourDirection maxEdgeRefuterPoint.mass
         maxEdgeRefuterPoint.weight selected).PosDef :=
   ⟨{0, 1, 4}, by decide, maxEdgeRefuter_gap_zeroOneFour_posDef⟩
+
+
+/-! ## The repaired-selection adjudication: every scalar-argmax selection dies
+
+After the max-conductance refutation above, the repair campaign adjudicated
+every remaining single-functional selection at exact rationals (four
+mandatory points, seven named witnesses, 4340 fresh points across eleven
+adversarial regimes including both refuter families, the sliver family, and
+perturbation shells; lane record `/tmp/gtz-chain/wfk3/k8-repair/`):
+
+* argmax-MASS edge hosting — FALSE (70 exact failures, multiscale regime);
+* argmax-ALPHA edge hosting — FALSE, refuted in kernel below at the ALREADY
+  LANDED `maxEdgeRefuterPoint` (the alpha argmax there is again edge `3`);
+* dominant-mass-PAIR hosting — FALSE, refuted in kernel below at the dual
+  witness `heavyPairRefuterPoint`;
+* mass-product-argmax tree (the greedy max-mass basis) — FALSE (592
+  failures, generic regime included; the kernel witness below kills it too,
+  since its argmax trees all contain the dominant pair `{0, 4}`);
+* alpha-product-argmax tree — FALSE (dies at five of the eight named
+  witnesses, `P1` included);
+* GLOBAL det-argmax tree PD when its det is positive — FALSE (371 exact
+  failures; already at `maxEdgeRefuterPoint` the global det-argmax tree is
+  `{1, 2, 5}` with positive determinant and indefinite gap).
+
+The two kernel witnesses are DUAL: `maxEdgeRefuterPoint` kills every
+conductance-side selection (dominant masses on a triangle THROUGH the argmax
+edge), and `heavyPairRefuterPoint` — same weights, the triangle-closer mass
+`18` pushed past the pair's series threshold
+`alpha_0 * alpha_4 / (alpha_0 + alpha_4) = 120/7` — kills every mass-side
+selection: once the closer crosses the threshold, EVERY selection keeping
+both heavy edges fails on the triangle plane and the winners all keep the
+closer instead.  Which side wins is a genuine polynomial threshold in the
+triangle data, so no ordering of per-label scalars can decide it: a correct
+selection must read the pairwise block tests themselves.
+
+Representative-based winner rules die too: near the tetrahedron the strict
+trees are exactly the four STARS, every contracted block of all 48
+(edge, pair) candidates is positive definite (the contraction layer is
+uninformative there), and picking a star requires a CORRELATED choice of
+the two class representatives — per-class rules (max-conductance reps,
+max-mass reps, or their disjunction, the argmax-edge lanes' R-TWOREP) are
+steered by the perturbation into the anti-correlated mix at every edge
+simultaneously (six exact witnesses, e.g. masses
+`(124989/500000, 200019/800000, 999991/4000000, 249989/1000000,
+500031/2000000, 499959/2000000)` with weights summing to one nearby
+`1/6`).  Selection data must be JOINT over the kept pair.
+
+What SURVIVES every exact point ever tested (~30,000 upstream + 4340 +
+2900 + 2900 fresh this lane, zero failures): the strict form itself; the
+global det pigeonhole (SOME of the sixteen tree gaps has positive
+determinant); and — the repaired selection — the six-candidate per-edge
+det-argmax host `KFourEdgeDetArgmaxHostsStrictTree` below: at SOME edge
+the maximum-determinant spanning tree through that edge is strictly
+dominating.  The determinant is a joint polynomial in the pair data, so
+this rule is compatible with every impossibility above; it holds at both
+kernel witnesses (via edges away from the broken argmax), at every
+tetrahedron-shell two-rep killer, and across all regimes.  The Prop
+`KFourSomeTreeLiftThreshold` below it is the selection-free scalar residue
+either route discharges; both bridges to the chart obligation are
+complete. -/
+
+/-- `edge` attains the maximum alpha `mass/weight - mass` at the chart
+point.  The alpha-argmax sibling of `IsMaxConductanceEdge`. -/
+def IsMaxAlphaEdge (point : DirectionChartPoint 6) (edge : Fin 6) : Prop :=
+  ∀ label, point.mass label / point.weight label - point.mass label
+    ≤ point.mass edge / point.weight edge - point.mass edge
+
+/-- **The max-alpha host statement — FALSE.**  At an argmax-alpha edge some
+card-3 selection through the edge is strictly dominating.  Refuted below at
+the landed `maxEdgeRefuterPoint`, whose alpha vector
+`(24, 59/60, 59/60, 90, 60, 59/60)` puts the argmax on edge `3` again. -/
+def KFourMaxAlphaEdgeHostsStrictTree : Prop :=
+  ∀ (point : DirectionChartPoint 6) (edge : Fin 6),
+    IsMaxAlphaEdge point edge →
+      ∃ selected : Finset (Fin 6), selected.card = 3 ∧ edge ∈ selected ∧
+        (directionChartGap kFourDirection point.mass point.weight
+          selected).PosDef
+
+/-- Edge `3` is also the (strict) argmax-ALPHA edge at the landed witness. -/
+theorem maxEdgeRefuter_isMaxAlphaEdge_three :
+    IsMaxAlphaEdge maxEdgeRefuterPoint 3 := by
+  intro label
+  fin_cases label <;>
+    norm_num [maxEdgeRefuterMass, maxEdgeRefuterWeight]
+
+/-- **The max-alpha selection is refuted** — by the SAME ten landed not-PD
+certificates: at `maxEdgeRefuterPoint` the alpha argmax coincides with the
+conductance argmax, and no selection through edge `3` dominates. -/
+theorem kFourMaxAlphaEdgeHostsStrictTree_refuted :
+    ¬ KFourMaxAlphaEdgeHostsStrictTree := by
+  intro hhost
+  obtain ⟨selected, hcard, hmem, hpd⟩ :=
+    hhost maxEdgeRefuterPoint 3 maxEdgeRefuter_isMaxAlphaEdge_three
+  have hpow : selected ∈ (Finset.univ : Finset (Fin 6)).powersetCard 3 :=
+    Finset.mem_powersetCard.mpr ⟨Finset.subset_univ _, hcard⟩
+  rcases finsetThroughThree_enumeration selected hpow hmem with
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · exact maxEdgeRefuter_gap_zeroOneThree_not_posDef hpd
+  · exact maxEdgeRefuter_gap_zeroTwoThree_not_posDef hpd
+  · exact maxEdgeRefuter_gap_zeroThreeFour_not_posDef hpd
+  · exact maxEdgeRefuter_gap_zeroThreeFive_not_posDef hpd
+  · exact maxEdgeRefuter_gap_oneTwoThree_not_posDef hpd
+  · exact maxEdgeRefuter_gap_oneThreeFour_not_posDef hpd
+  · exact maxEdgeRefuter_gap_oneThreeFive_not_posDef hpd
+  · exact maxEdgeRefuter_gap_twoThreeFour_not_posDef hpd
+  · exact maxEdgeRefuter_gap_twoThreeFive_not_posDef hpd
+  · exact maxEdgeRefuter_gap_threeFourFive_not_posDef hpd
+
+/-! ## The dual witness: the dominant-mass pair does NOT always host
+
+Same weights as `maxEdgeRefuterPoint`; the mass of the triangle-closer edge
+`3` is `18 > 120/7 = alpha_0 alpha_4 / (alpha_0 + alpha_4)`, so on the
+triangle plane of `{0, 3, 4}` every selection keeping both dominant-mass
+edges `0` and `4` fails.  All six strictly dominating trees at this point
+keep the closer `3` instead. -/
+
+/-- Masses of the dual refuting point: the dominant pair `(36, 20)` on edges
+`0, 4` and the triangle-closer mass `18` past the series threshold. -/
+noncomputable def heavyPairRefuterMass : Fin 6 → ℝ
+  | 0 => 36
+  | 1 => 1/60
+  | 2 => 1/60
+  | 3 => 18
+  | 4 => 20
+  | 5 => 1/60
+
+@[simp] theorem heavyPairRefuterMass_zero : heavyPairRefuterMass 0 = 36 := rfl
+@[simp] theorem heavyPairRefuterMass_one : heavyPairRefuterMass 1 = 1/60 := rfl
+@[simp] theorem heavyPairRefuterMass_two : heavyPairRefuterMass 2 = 1/60 := rfl
+@[simp] theorem heavyPairRefuterMass_three : heavyPairRefuterMass 3 = 18 := rfl
+@[simp] theorem heavyPairRefuterMass_four : heavyPairRefuterMass 4 = 20 := rfl
+@[simp] theorem heavyPairRefuterMass_five : heavyPairRefuterMass 5 = 1/60 := rfl
+
+/-- The dual refuting chart point: weights verbatim those of
+`maxEdgeRefuterPoint`, conductances `(60, 1, 1, 180, 80, 1)`. -/
+noncomputable def heavyPairRefuterPoint : DirectionChartPoint 6 where
+  mass := heavyPairRefuterMass
+  weight := maxEdgeRefuterWeight
+  mass_pos := by
+    intro label; fin_cases label <;> norm_num [heavyPairRefuterMass]
+  weight_pos := by
+    intro label; fin_cases label <;> norm_num [maxEdgeRefuterWeight]
+  weight_sum_one := by
+    rw [Fin.sum_univ_six]
+    norm_num
+
+@[simp] theorem heavyPairRefuterPoint_mass_eq :
+    heavyPairRefuterPoint.mass = heavyPairRefuterMass := rfl
+
+@[simp] theorem heavyPairRefuterPoint_weight_eq :
+    heavyPairRefuterPoint.weight = maxEdgeRefuterWeight := rfl
+
+/-- The pair `(edgeOne, edgeTwo)` carries the two dominant masses of the
+chart point. -/
+def IsDominantMassPair (point : DirectionChartPoint 6)
+    (edgeOne edgeTwo : Fin 6) : Prop :=
+  edgeOne ≠ edgeTwo ∧
+    ∀ label, label ≠ edgeOne → label ≠ edgeTwo →
+      point.mass label ≤ point.mass edgeOne ∧
+        point.mass label ≤ point.mass edgeTwo
+
+/-- **The dominant-mass-pair host statement — FALSE.**  Some card-3
+selection containing both dominant-mass edges is strictly dominating.  This
+was the surviving pointer of the max-edge refutation ("the witness's PD
+triples all contain the dominant-MASS pair"); the dual witness below kills
+it, and with it the mass-product-argmax (greedy max-mass basis) selection,
+whose argmax trees always contain the dominant pair. -/
+def KFourDominantMassPairHostsStrictTree : Prop :=
+  ∀ (point : DirectionChartPoint 6) (edgeOne edgeTwo : Fin 6),
+    IsDominantMassPair point edgeOne edgeTwo →
+      ∃ selected : Finset (Fin 6), selected.card = 3 ∧
+        edgeOne ∈ selected ∧ edgeTwo ∈ selected ∧
+        (directionChartGap kFourDirection point.mass point.weight
+          selected).PosDef
+
+/-- `{0, 4}` is the (strict) dominant-mass pair at the dual witness:
+`36 > 20 > 18 > 1/60`. -/
+theorem heavyPairRefuter_isDominantMassPair_zeroFour :
+    IsDominantMassPair heavyPairRefuterPoint 0 4 := by
+  refine ⟨by decide, ?_⟩
+  intro label hneZero hneFour
+  fin_cases label
+  · simp at hneZero
+  · constructor <;> norm_num [heavyPairRefuterMass]
+  · constructor <;> norm_num [heavyPairRefuterMass]
+  · constructor <;> norm_num [heavyPairRefuterMass]
+  · simp at hneFour
+  · constructor <;> norm_num [heavyPairRefuterMass]
+
+/-- Every card-3 selection containing labels `0` and `4` is one of four
+explicit finsets. -/
+theorem finsetContainingZeroAndFour_enumeration :
+    ∀ selected ∈ (Finset.univ : Finset (Fin 6)).powersetCard 3,
+      (0 : Fin 6) ∈ selected → (4 : Fin 6) ∈ selected →
+      selected = {0, 1, 4} ∨ selected = {0, 2, 4} ∨ selected = {0, 3, 4} ∨
+      selected = {0, 4, 5} := by decide
+
+/-! ### Entrywise gap identities for the four selections containing `{0, 4}` -/
+
+theorem heavyPairRefuter_gap_zeroOneFour_eq :
+    directionChartGap kFourDirection heavyPairRefuterPoint.mass
+        heavyPairRefuterPoint.weight {0, 1, 4}
+      = !![419/60, -24, -59/60; -24, 5039/60, 1/60; -59/60, 1/60, 19/20] := by
+  simp only [directionChartGap, heavyPairRefuterPoint_mass_eq,
+    heavyPairRefuterPoint_weight_eq]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;>
+    norm_num
+
+theorem heavyPairRefuter_gap_zeroTwoFour_eq :
+    directionChartGap kFourDirection heavyPairRefuterPoint.mass
+        heavyPairRefuterPoint.weight {0, 2, 4}
+      = !![359/60, -24, 1/60; -24, 5099/60, -59/60; 1/60, -59/60, 19/20] := by
+  simp only [directionChartGap, heavyPairRefuterPoint_mass_eq,
+    heavyPairRefuterPoint_weight_eq]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;>
+    norm_num
+
+theorem heavyPairRefuter_gap_zeroThreeFour_eq :
+    directionChartGap kFourDirection heavyPairRefuterPoint.mass
+        heavyPairRefuterPoint.weight {0, 3, 4}
+      = !![11159/60, -24, 1/60; -24, 5039/60, 1/60; 1/60, 1/60, -1/20] := by
+  simp only [directionChartGap, heavyPairRefuterPoint_mass_eq,
+    heavyPairRefuterPoint_weight_eq]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;>
+    norm_num
+
+theorem heavyPairRefuter_gap_zeroFourFive_eq :
+    directionChartGap kFourDirection heavyPairRefuterPoint.mass
+        heavyPairRefuterPoint.weight {0, 4, 5}
+      = !![359/60, -24, 1/60; -24, 5039/60, 1/60; 1/60, 1/60, 19/20] := by
+  simp only [directionChartGap, heavyPairRefuterPoint_mass_eq,
+    heavyPairRefuterPoint_weight_eq]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;>
+    norm_num
+
+/-! ### None of the four is positive definite -/
+
+theorem heavyPairRefuter_gap_zeroOneFour_not_posDef :
+    ¬ (directionChartGap kFourDirection heavyPairRefuterPoint.mass
+        heavyPairRefuterPoint.weight {0, 1, 4}).PosDef := by
+  rw [heavyPairRefuter_gap_zeroOneFour_eq]
+  refine not_posDef_of_dotProduct_mulVec_nonpos _ ![-3, -1, -1] ?_ ?_
+  · intro hzero
+    have hentry := congrFun hzero 0
+    norm_num at hentry
+  · simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+    norm_num
+
+theorem heavyPairRefuter_gap_zeroTwoFour_not_posDef :
+    ¬ (directionChartGap kFourDirection heavyPairRefuterPoint.mass
+        heavyPairRefuterPoint.weight {0, 2, 4}).PosDef := by
+  rw [heavyPairRefuter_gap_zeroTwoFour_eq]
+  refine not_posDef_of_dotProduct_mulVec_nonpos _ ![-3, -1, 0] ?_ ?_
+  · intro hzero
+    have hentry := congrFun hzero 0
+    norm_num at hentry
+  · simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+    norm_num
+
+theorem heavyPairRefuter_gap_zeroThreeFour_not_posDef :
+    ¬ (directionChartGap kFourDirection heavyPairRefuterPoint.mass
+        heavyPairRefuterPoint.weight {0, 3, 4}).PosDef := by
+  rw [heavyPairRefuter_gap_zeroThreeFour_eq]
+  refine not_posDef_of_dotProduct_mulVec_nonpos _ ![0, 0, -1] ?_ ?_
+  · intro hzero
+    have hentry := congrFun hzero 2
+    norm_num [Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
+      at hentry
+  · simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+    norm_num
+
+theorem heavyPairRefuter_gap_zeroFourFive_not_posDef :
+    ¬ (directionChartGap kFourDirection heavyPairRefuterPoint.mass
+        heavyPairRefuterPoint.weight {0, 4, 5}).PosDef := by
+  rw [heavyPairRefuter_gap_zeroFourFive_eq]
+  refine not_posDef_of_dotProduct_mulVec_nonpos _ ![-3, -1, 0] ?_ ?_
+  · intro hzero
+    have hentry := congrFun hzero 0
+    norm_num at hentry
+  · simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+    norm_num
+
+/-- **The dominant-mass-pair selection is FALSE.**  At the dual witness no
+card-3 selection containing both dominant-mass edges dominates: the
+triangle-closer mass has crossed the series threshold of the pair. -/
+theorem kFourDominantMassPairHostsStrictTree_refuted :
+    ¬ KFourDominantMassPairHostsStrictTree := by
+  intro hhost
+  obtain ⟨selected, hcard, hmemZero, hmemFour, hpd⟩ :=
+    hhost heavyPairRefuterPoint 0 4
+      heavyPairRefuter_isDominantMassPair_zeroFour
+  have hpow : selected ∈ (Finset.univ : Finset (Fin 6)).powersetCard 3 :=
+    Finset.mem_powersetCard.mpr ⟨Finset.subset_univ _, hcard⟩
+  rcases finsetContainingZeroAndFour_enumeration selected hpow hmemZero
+      hmemFour with rfl | rfl | rfl | rfl
+  · exact heavyPairRefuter_gap_zeroOneFour_not_posDef hpd
+  · exact heavyPairRefuter_gap_zeroTwoFour_not_posDef hpd
+  · exact heavyPairRefuter_gap_zeroThreeFour_not_posDef hpd
+  · exact heavyPairRefuter_gap_zeroFourFive_not_posDef hpd
+
+/-! ### The chart obligation is INTACT at the dual witness -/
+
+theorem heavyPairRefuter_gap_threeFourFive_eq :
+    directionChartGap kFourDirection heavyPairRefuterPoint.mass
+        heavyPairRefuterPoint.weight {3, 4, 5}
+      = !![7559/60, 36, 1/60; 36, 1439/60, 1/60; 1/60, 1/60, 19/20] := by
+  simp only [directionChartGap, heavyPairRefuterPoint_mass_eq,
+    heavyPairRefuterPoint_weight_eq]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;>
+    norm_num
+
+/-- The closer-keeping tree `{3, 4, 5}` dominates strictly at the dual
+witness (leading minors `7559/60`, `6211801/3600`, `354067979/216000`). -/
+theorem heavyPairRefuter_gap_threeFourFive_posDef :
+    (directionChartGap kFourDirection heavyPairRefuterPoint.mass
+      heavyPairRefuterPoint.weight {3, 4, 5}).PosDef := by
+  rw [heavyPairRefuter_gap_threeFourFive_eq]
+  refine posDef_of_leadingMinors_fin_three (7559/60) 36 (1/60) (1439/60)
+    (1/60) (19/20) (by norm_num) (by norm_num) (by norm_num)
+
+/-- The strict form holds at the dual witness: the refutation kills ONLY the
+mass-side selection mechanisms, not the chart obligation. -/
+theorem heavyPairRefuterPoint_hasStrictTriple :
+    ∃ selected : Finset (Fin 6), selected.card = 3 ∧
+      (directionChartGap kFourDirection heavyPairRefuterPoint.mass
+        heavyPairRefuterPoint.weight selected).PosDef :=
+  ⟨{3, 4, 5}, by decide, heavyPairRefuter_gap_threeFourFive_posDef⟩
+
+/-! ## The selection-free scalar residue and its bridge
+
+With every per-label ordering dead on both sides and every per-class
+representative rule dead at the tetrahedron shells, the surviving selection
+reads JOINT pair data: the per-edge det-argmax host, and, below it, the
+selector-free residue — SOME spanning tree has the three Sylvester minors
+of its gap positive.  For the symmetric chart gap the latter is exactly
+positive definiteness (via `posDef_of_leadingMinors_fin_two` +
+`sylvesterLift` and the landed transpose identity): the pointwise strict
+form in scalar clothing, three polynomial inequalities per point, the
+exact shape either route (the det-argmax selection or the atlas)
+discharges.  Neither statement was ever refuted: ~30,000 exact points
+upstream and this lane's fresh adversarial corpus, zero failures. -/
+
+/-- Positive leading minors make the (symmetric) chart gap positive
+definite: the entry-level Sylvester wrapper. -/
+theorem directionChartGap_posDef_of_leadingMinors {size : ℕ}
+    (direction : Fin size → (Fin 3 → ℝ)) (mass weight : Fin size → ℝ)
+    (selected : Finset (Fin size))
+    (hcorner : 0 < directionChartGap direction mass weight selected 0 0)
+    (hblock : 0 < directionChartGap direction mass weight selected 0 0
+        * directionChartGap direction mass weight selected 1 1
+      - directionChartGap direction mass weight selected 0 1 ^ 2)
+    (hdet : 0 < (directionChartGap direction mass weight selected).det) :
+    (directionChartGap direction mass weight selected).PosDef := by
+  set gap := directionChartGap direction mass weight selected with hgapDef
+  have hsymm : gapᵀ = gap := directionChartGap_transpose direction mass
+    weight selected
+  have hOneZero : gap 1 0 = gap 0 1 := by
+    have happly := congrFun (congrFun hsymm 0) 1
+    simpa [Matrix.transpose_apply] using happly
+  have hTwoZero : gap 2 0 = gap 0 2 := by
+    have happly := congrFun (congrFun hsymm 0) 2
+    simpa [Matrix.transpose_apply] using happly
+  have hTwoOne : gap 2 1 = gap 1 2 := by
+    have happly := congrFun (congrFun hsymm 1) 2
+    simpa [Matrix.transpose_apply] using happly
+  have hexplicit : gap = !![gap 0 0, gap 0 1, gap 0 2;
+      gap 0 1, gap 1 1, gap 1 2;
+      gap 0 2, gap 1 2, gap 2 2] := by
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [hOneZero, hTwoZero, hTwoOne]
+  have hblockPd : (!![gap 0 0, gap 0 1; gap 0 1, gap 1 1]
+      : Matrix (Fin 2) (Fin 2) ℝ).PosDef :=
+    posDef_of_leadingMinors_fin_two _ _ _ hcorner hblock
+  have hdetExplicit : 0 < (!![gap 0 0, gap 0 1, gap 0 2;
+      gap 0 1, gap 1 1, gap 1 2;
+      gap 0 2, gap 1 2, gap 2 2] : Matrix (Fin 3) (Fin 3) ℝ).det := by
+    rw [← hexplicit]
+    exact hdet
+  have hfullPd := sylvesterLift (gap 0 0) (gap 0 1) (gap 0 2) (gap 1 1)
+    (gap 1 2) (gap 2 2) hblockPd hdetExplicit
+  rw [hexplicit]
+  exact hfullPd
+
+/-- **The repaired selection: the six-candidate per-edge det-argmax host.**
+At every chart point some edge's maximum-determinant through-tree is
+strictly dominating.  One designated candidate per edge, each a determinant
+comparison (JOINT pair data — per-label scalar orderings are refuted
+above); never refuted at ~30,000 upstream plus this lane's fresh exact
+points, including both kernel witnesses and the tetrahedron shells that
+kill every representative-based rule.  Proving this Prop (or the
+selection-free residue below) is the residual K4 endgame. -/
+def KFourEdgeDetArgmaxHostsStrictTree : Prop :=
+  ∀ point : DirectionChartPoint 6,
+    ∃ edge : Fin 6, ∃ tree ∈ kFourSpanningTreeList, edge ∈ tree ∧
+      (∀ other ∈ kFourSpanningTreeList, edge ∈ other →
+        (directionChartGap kFourDirection point.mass point.weight other).det
+          ≤ (directionChartGap kFourDirection point.mass point.weight
+            tree).det) ∧
+      (directionChartGap kFourDirection point.mass point.weight
+        tree).PosDef
+
+/-- **The repaired selection's consumption bridge.**  The per-edge
+det-argmax host closes the chart obligation (argmax data discarded; the
+weak antecedent discarded pointwise per the forbidden-route law). -/
+theorem directionChartIsTieFree_kFour_of_edgeDetArgmaxHosts
+    (hhost : KFourEdgeDetArgmaxHostsStrictTree) :
+    DirectionChartIsTieFree kFourDirection := by
+  intro point _hweak
+  obtain ⟨edge, tree, htreeMem, _hedgeMem, _hargmax, hposDef⟩ := hhost point
+  have hcard : tree.card = 3 := by
+    have hall : ∀ candidate ∈ kFourSpanningTreeList, candidate.card = 3 := by
+      decide
+    exact hall tree htreeMem
+  exact ⟨tree, hcard, hposDef⟩
+
+/-- **The selection-free lift threshold (the scalar residue).**  At every
+chart point some spanning tree's gap has its three leading minors positive.
+Equivalent to the pointwise strict form; the shape any certificate route —
+the det-argmax selection above, or the atlas — discharges. -/
+def KFourSomeTreeLiftThreshold : Prop :=
+  ∀ point : DirectionChartPoint 6,
+    ∃ tree ∈ kFourSpanningTreeList,
+      0 < directionChartGap kFourDirection point.mass point.weight tree 0 0 ∧
+      0 < directionChartGap kFourDirection point.mass point.weight tree 0 0
+          * directionChartGap kFourDirection point.mass point.weight tree 1 1
+        - directionChartGap kFourDirection point.mass point.weight tree 0 1
+          ^ 2 ∧
+      0 < (directionChartGap kFourDirection point.mass point.weight
+        tree).det
+
+/-- **The repaired consumption bridge.**  The selection-free lift threshold
+closes the chart obligation: nothing but three polynomial inequalities per
+point stands between a certificate route and
+`DirectionChartIsTieFree kFourDirection`.  (The weak antecedent is discarded
+pointwise, per the standing forbidden-route law.) -/
+theorem directionChartIsTieFree_kFour_of_someTreeLiftThreshold
+    (hlift : KFourSomeTreeLiftThreshold) :
+    DirectionChartIsTieFree kFourDirection := by
+  intro point _hweak
+  obtain ⟨tree, htreeMem, hcorner, hblock, hdet⟩ := hlift point
+  have hcard : tree.card = 3 := by
+    have hall : ∀ candidate ∈ kFourSpanningTreeList, candidate.card = 3 := by
+      decide
+    exact hall tree htreeMem
+  exact ⟨tree, hcard, directionChartGap_posDef_of_leadingMinors kFourDirection
+    point.mass point.weight tree hcorner hblock hdet⟩
+
+
+/-! ## The certificate atlas, Layer A: the diagonal-splitting engine and the
+four star cells
+
+Selection-rule-free covering certificates for the K4 chart obligation
+(`DirectionChartIsTieFree kFourDirection`), the fallback route after the
+kernel refutation of the max-edge selection above.  A Layer-A cell is a
+finite list of strict rational inequalities in the raw chart fields; on the
+cell ONE designated spanning tree has positive definite gap, certified by
+completed squares (pair absorption), never by eigenvalue reasoning.
+
+The engine is scalar: a symmetric quadratic form in three variables whose
+three off-diagonal couplings are absorbed by Cauchy-Schwarz splits
+(`offDiagonalAbsorption_nonneg`), leaving a strictly positive residual
+diagonal (`splitQuadraticForm_pos`).  Each cell certificate rewrites the
+tree's entrywise gap matrix, converts the raw cell inequalities through
+`lt_div_iff₀`, and instantiates the engine at the tree's fundamental-cycle
+coordinates.
+
+The four star cells below (one per K4 node; designated tree = the star at
+that node) are the bulk of the atlas: on exact-rational scans (2,968
+adversarial points across six regimes plus the full S4 orbits of the named
+hard points) they cover 66 percent of all points, including the ENTIRE
+orbit of `maxEdgeRefuterPoint` (the max-edge selection's refutation witness
+is caught by the node-2 star cell, re-proved below), the tetrahedron, and
+the P1/genericD selection-killers.  The remaining cells of the atlas (the
+sixteen scale-free harmonic cells and the knife-collar minor cells) are
+enumerated in the campaign ledger; their engine is this same file's. -/
+
+/-- **Pair absorption.**  A single off-diagonal coupling `2*p*zL*zR` is
+absorbed by any positive Cauchy-Schwarz split `(sL, sR)` with
+`p^2 <= sL*sR`: the key identity is
+`sL * (sL*zL^2 + sR*zR^2 + 2*p*zL*zR) = (sL*zL + p*zR)^2 + (sL*sR - p^2)*zR^2`. -/
+theorem offDiagonalAbsorption_nonneg (offDiag splitLeft splitRight
+    zLeft zRight : ℝ) (hsplitLeftPos : 0 < splitLeft)
+    (hsplitProduct : offDiag ^ 2 ≤ splitLeft * splitRight) :
+    0 ≤ splitLeft * zLeft ^ 2 + splitRight * zRight ^ 2
+      + 2 * offDiag * (zLeft * zRight) := by
+  have hkey : splitLeft * (splitLeft * zLeft ^ 2 + splitRight * zRight ^ 2
+        + 2 * offDiag * (zLeft * zRight))
+      = (splitLeft * zLeft + offDiag * zRight) ^ 2
+        + (splitLeft * splitRight - offDiag ^ 2) * zRight ^ 2 := by ring
+  have hscaled : splitLeft * 0 ≤ splitLeft * (splitLeft * zLeft ^ 2
+      + splitRight * zRight ^ 2 + 2 * offDiag * (zLeft * zRight)) := by
+    rw [mul_zero, hkey]
+    have hsquare := sq_nonneg (splitLeft * zLeft + offDiag * zRight)
+    have hexcess : 0 ≤ (splitLeft * splitRight - offDiag ^ 2) * zRight ^ 2 :=
+      mul_nonneg (by linarith) (sq_nonneg _)
+    linarith
+  exact le_of_mul_le_mul_left hscaled hsplitLeftPos
+
+/-- **The diagonal-splitting engine.**  A symmetric quadratic form in three
+variables is strictly positive at any nonzero point once each off-diagonal
+coupling has a positive split (`off^2 <= split*split'`) and the splits are
+strictly diagonally dominated.  Subsumes unweighted, scaled, and banded
+diagonal dominance at once; the split parameters may be arbitrary positive
+expressions of the chart point, so scale-free cells fit too. -/
+theorem splitQuadraticForm_pos (diagOne diagTwo diagThree offOneTwo
+    offOneThree offTwoThree splitOneTwo splitTwoOne splitOneThree
+    splitThreeOne splitTwoThree splitThreeTwo zOne zTwo zThree : ℝ)
+    (hsplitOneTwoPos : 0 < splitOneTwo)
+    (hsplitOneThreePos : 0 < splitOneThree)
+    (hsplitTwoThreePos : 0 < splitTwoThree)
+    (hproductOneTwo : offOneTwo ^ 2 ≤ splitOneTwo * splitTwoOne)
+    (hproductOneThree : offOneThree ^ 2 ≤ splitOneThree * splitThreeOne)
+    (hproductTwoThree : offTwoThree ^ 2 ≤ splitTwoThree * splitThreeTwo)
+    (hdominanceOne : splitOneTwo + splitOneThree < diagOne)
+    (hdominanceTwo : splitTwoOne + splitTwoThree < diagTwo)
+    (hdominanceThree : splitThreeOne + splitThreeTwo < diagThree)
+    (hsomeNonzero : zOne ≠ 0 ∨ zTwo ≠ 0 ∨ zThree ≠ 0) :
+    0 < diagOne * zOne ^ 2 + diagTwo * zTwo ^ 2 + diagThree * zThree ^ 2
+      + 2 * offOneTwo * (zOne * zTwo) + 2 * offOneThree * (zOne * zThree)
+      + 2 * offTwoThree * (zTwo * zThree) := by
+  have habsorbOneTwo := offDiagonalAbsorption_nonneg offOneTwo splitOneTwo
+    splitTwoOne zOne zTwo hsplitOneTwoPos hproductOneTwo
+  have habsorbOneThree := offDiagonalAbsorption_nonneg offOneThree
+    splitOneThree splitThreeOne zOne zThree hsplitOneThreePos
+    hproductOneThree
+  have habsorbTwoThree := offDiagonalAbsorption_nonneg offTwoThree
+    splitTwoThree splitThreeTwo zTwo zThree hsplitTwoThreePos
+    hproductTwoThree
+  have hdecompose : diagOne * zOne ^ 2 + diagTwo * zTwo ^ 2
+        + diagThree * zThree ^ 2 + 2 * offOneTwo * (zOne * zTwo)
+        + 2 * offOneThree * (zOne * zThree)
+        + 2 * offTwoThree * (zTwo * zThree)
+      = (splitOneTwo * zOne ^ 2 + splitTwoOne * zTwo ^ 2
+          + 2 * offOneTwo * (zOne * zTwo))
+        + (splitOneThree * zOne ^ 2 + splitThreeOne * zThree ^ 2
+          + 2 * offOneThree * (zOne * zThree))
+        + (splitTwoThree * zTwo ^ 2 + splitThreeTwo * zThree ^ 2
+          + 2 * offTwoThree * (zTwo * zThree))
+        + (diagOne - splitOneTwo - splitOneThree) * zOne ^ 2
+        + (diagTwo - splitTwoOne - splitTwoThree) * zTwo ^ 2
+        + (diagThree - splitThreeOne - splitThreeTwo) * zThree ^ 2 := by
+    ring
+  rcases hsomeNonzero with hnonzero | hnonzero | hnonzero
+  · have hresidualOne : 0 < (diagOne - splitOneTwo - splitOneThree)
+        * zOne ^ 2 :=
+      mul_pos (by linarith) (pow_two_pos_of_ne_zero hnonzero)
+    have hresidualTwo : 0 ≤ (diagTwo - splitTwoOne - splitTwoThree)
+        * zTwo ^ 2 := mul_nonneg (by linarith) (sq_nonneg _)
+    have hresidualThree : 0 ≤ (diagThree - splitThreeOne - splitThreeTwo)
+        * zThree ^ 2 := mul_nonneg (by linarith) (sq_nonneg _)
+    linarith
+  · have hresidualOne : 0 ≤ (diagOne - splitOneTwo - splitOneThree)
+        * zOne ^ 2 := mul_nonneg (by linarith) (sq_nonneg _)
+    have hresidualTwo : 0 < (diagTwo - splitTwoOne - splitTwoThree)
+        * zTwo ^ 2 :=
+      mul_pos (by linarith) (pow_two_pos_of_ne_zero hnonzero)
+    have hresidualThree : 0 ≤ (diagThree - splitThreeOne - splitThreeTwo)
+        * zThree ^ 2 := mul_nonneg (by linarith) (sq_nonneg _)
+    linarith
+  · have hresidualOne : 0 ≤ (diagOne - splitOneTwo - splitOneThree)
+        * zOne ^ 2 := mul_nonneg (by linarith) (sq_nonneg _)
+    have hresidualTwo : 0 ≤ (diagTwo - splitTwoOne - splitTwoThree)
+        * zTwo ^ 2 := mul_nonneg (by linarith) (sq_nonneg _)
+    have hresidualThree : 0 < (diagThree - splitThreeOne - splitThreeTwo)
+        * zThree ^ 2 :=
+      mul_pos (by linarith) (pow_two_pos_of_ne_zero hnonzero)
+    linarith
+
+/-! ## Entrywise gap matrices for the two off-edge-5 star trees
+
+`{0,1,3}` (star at node `1`) and `{0,2,4}` (star at node `2`); the other
+two stars `{1,2,5}`, `{3,4,5}` are already stated above.  Sympy-verified
+against the definition before statement, house template. -/
+
+/-- The `{0,1,3}` chart gap (star at node `1`), entry by entry. -/
+theorem kFourGap_treeZeroOneThree_eq (point : DirectionChartPoint 6) :
+    directionChartGap kFourDirection point.mass point.weight {0, 1, 3}
+      = Matrix.of
+          ![![point.mass 0 / point.weight 0 + point.mass 1 / point.weight 1
+                + point.mass 3 / point.weight 3
+                - (point.mass 0 + point.mass 1 + point.mass 3),
+              point.mass 0 - point.mass 0 / point.weight 0,
+              point.mass 1 - point.mass 1 / point.weight 1],
+            ![point.mass 0 - point.mass 0 / point.weight 0,
+              point.mass 0 / point.weight 0
+                - (point.mass 0 + point.mass 2 + point.mass 4),
+              point.mass 2],
+            ![point.mass 1 - point.mass 1 / point.weight 1,
+              point.mass 2,
+              point.mass 1 / point.weight 1
+                - (point.mass 1 + point.mass 2 + point.mass 5)]] := by
+  simp only [directionChartGap]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;> ring
+
+/-- The `{0,2,4}` chart gap (star at node `2`), entry by entry. -/
+theorem kFourGap_treeZeroTwoFour_eq (point : DirectionChartPoint 6) :
+    directionChartGap kFourDirection point.mass point.weight {0, 2, 4}
+      = Matrix.of
+          ![![point.mass 0 / point.weight 0
+                - (point.mass 0 + point.mass 1 + point.mass 3),
+              point.mass 0 - point.mass 0 / point.weight 0,
+              point.mass 1],
+            ![point.mass 0 - point.mass 0 / point.weight 0,
+              point.mass 0 / point.weight 0 + point.mass 2 / point.weight 2
+                + point.mass 4 / point.weight 4
+                - (point.mass 0 + point.mass 2 + point.mass 4),
+              point.mass 2 - point.mass 2 / point.weight 2],
+            ![point.mass 1,
+              point.mass 2 - point.mass 2 / point.weight 2,
+              point.mass 2 / point.weight 2
+                - (point.mass 1 + point.mass 2 + point.mass 5)]] := by
+  simp only [directionChartGap]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;> ring
+
+/-! ## The four star cells
+
+Cell of the star at node `n`: for each of the three edges `e` at `n`, the
+raw quadratic inequality `w_e * (m_e + 2*m_a + 2*m_b) < m_e`, where
+`a`, `b` are the two off-tree edges whose fundamental cycle uses `e`
+(equivalently `alpha_e > 2*(m_a + m_b)` in conductance currency).  On the
+cell the star's gap is positive definite via the engine at the star's
+fundamental-cycle coordinates. -/
+
+/-- **Star cell at node `1`** (tree `{0,1,3}`; off-tree cycles: edge `2`
+over `{0,1}`, edge `4` over `{0,3}`, edge `5` over `{1,3}`). -/
+theorem kFourAtlas_starNodeOne_posDef_of_cell (point : DirectionChartPoint 6)
+    (hedgeZero : point.weight 0 * (point.mass 0 + 2 * point.mass 2
+      + 2 * point.mass 4) < point.mass 0)
+    (hedgeOne : point.weight 1 * (point.mass 1 + 2 * point.mass 2
+      + 2 * point.mass 5) < point.mass 1)
+    (hedgeThree : point.weight 3 * (point.mass 3 + 2 * point.mass 4
+      + 2 * point.mass 5) < point.mass 3) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {0, 1, 3}).PosDef := by
+  have hcoeffZero : point.mass 0 + 2 * point.mass 2 + 2 * point.mass 4
+      < point.mass 0 / point.weight 0 := by
+    rw [lt_div_iff₀ (point.weight_pos 0)]
+    calc (point.mass 0 + 2 * point.mass 2 + 2 * point.mass 4)
+          * point.weight 0
+        = point.weight 0 * (point.mass 0 + 2 * point.mass 2
+            + 2 * point.mass 4) := by ring
+      _ < point.mass 0 := hedgeZero
+  have hcoeffOne : point.mass 1 + 2 * point.mass 2 + 2 * point.mass 5
+      < point.mass 1 / point.weight 1 := by
+    rw [lt_div_iff₀ (point.weight_pos 1)]
+    calc (point.mass 1 + 2 * point.mass 2 + 2 * point.mass 5)
+          * point.weight 1
+        = point.weight 1 * (point.mass 1 + 2 * point.mass 2
+            + 2 * point.mass 5) := by ring
+      _ < point.mass 1 := hedgeOne
+  have hcoeffThree : point.mass 3 + 2 * point.mass 4 + 2 * point.mass 5
+      < point.mass 3 / point.weight 3 := by
+    rw [lt_div_iff₀ (point.weight_pos 3)]
+    calc (point.mass 3 + 2 * point.mass 4 + 2 * point.mass 5)
+          * point.weight 3
+        = point.weight 3 * (point.mass 3 + 2 * point.mass 4
+            + 2 * point.mass 5) := by ring
+      _ < point.mass 3 := hedgeThree
+  rw [kFourGap_treeZeroOneThree_eq]
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · refine isHermitian_of_transpose_eq ?_
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [Matrix.transpose_apply]
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 1 ≠ 0 ∨ vecArg 0 - vecArg 2 ≠ 0
+        ∨ vecArg 0 ≠ 0 := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvZero : vecArg 0 = 0 := hcycleThree
+      have hvOne : vecArg 1 = 0 := by linarith
+      have hvTwo : vecArg 2 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvZero
+      · exact hbad hvOne
+      · exact hbad hvTwo
+    have hform : vecArg ⬝ᵥ ((Matrix.of
+          ![![point.mass 0 / point.weight 0 + point.mass 1 / point.weight 1
+                + point.mass 3 / point.weight 3
+                - (point.mass 0 + point.mass 1 + point.mass 3),
+              point.mass 0 - point.mass 0 / point.weight 0,
+              point.mass 1 - point.mass 1 / point.weight 1],
+            ![point.mass 0 - point.mass 0 / point.weight 0,
+              point.mass 0 / point.weight 0
+                - (point.mass 0 + point.mass 2 + point.mass 4),
+              point.mass 2],
+            ![point.mass 1 - point.mass 1 / point.weight 1,
+              point.mass 2,
+              point.mass 1 / point.weight 1
+                - (point.mass 1 + point.mass 2 + point.mass 5)]]
+            : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ vecArg)
+        = (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+              - point.mass 4) * (vecArg 0 - vecArg 1) ^ 2
+          + (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+              - point.mass 5) * (vecArg 0 - vecArg 2) ^ 2
+          + (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+              - point.mass 5) * (vecArg 0) ^ 2
+          + 2 * point.mass 2 * ((vecArg 0 - vecArg 1) * (vecArg 0 - vecArg 2))
+          + 2 * point.mass 4 * ((vecArg 0 - vecArg 1) * (vecArg 0))
+          + 2 * point.mass 5 * ((vecArg 0 - vecArg 2) * (vecArg 0)) := by
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact splitQuadraticForm_pos
+      (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+        - point.mass 4)
+      (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+        - point.mass 5)
+      (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+        - point.mass 5)
+      (point.mass 2) (point.mass 4) (point.mass 5)
+      (point.mass 2) (point.mass 2) (point.mass 4) (point.mass 4)
+      (point.mass 5) (point.mass 5)
+      (vecArg 0 - vecArg 1) (vecArg 0 - vecArg 2) (vecArg 0)
+      (point.mass_pos 2) (point.mass_pos 4) (point.mass_pos 5)
+      (le_of_eq (by ring)) (le_of_eq (by ring)) (le_of_eq (by ring))
+      (by linarith) (by linarith) (by linarith)
+      hzNonzero
+
+/-- **Star cell at node `2`** (tree `{0,2,4}`; off-tree cycles: edge `1`
+over `{0,2}`, edge `3` over `{0,4}`, edge `5` over `{2,4}`). -/
+theorem kFourAtlas_starNodeTwo_posDef_of_cell (point : DirectionChartPoint 6)
+    (hedgeZero : point.weight 0 * (point.mass 0 + 2 * point.mass 1
+      + 2 * point.mass 3) < point.mass 0)
+    (hedgeTwo : point.weight 2 * (point.mass 2 + 2 * point.mass 1
+      + 2 * point.mass 5) < point.mass 2)
+    (hedgeFour : point.weight 4 * (point.mass 4 + 2 * point.mass 3
+      + 2 * point.mass 5) < point.mass 4) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {0, 2, 4}).PosDef := by
+  have hcoeffZero : point.mass 0 + 2 * point.mass 1 + 2 * point.mass 3
+      < point.mass 0 / point.weight 0 := by
+    rw [lt_div_iff₀ (point.weight_pos 0)]
+    calc (point.mass 0 + 2 * point.mass 1 + 2 * point.mass 3)
+          * point.weight 0
+        = point.weight 0 * (point.mass 0 + 2 * point.mass 1
+            + 2 * point.mass 3) := by ring
+      _ < point.mass 0 := hedgeZero
+  have hcoeffTwo : point.mass 2 + 2 * point.mass 1 + 2 * point.mass 5
+      < point.mass 2 / point.weight 2 := by
+    rw [lt_div_iff₀ (point.weight_pos 2)]
+    calc (point.mass 2 + 2 * point.mass 1 + 2 * point.mass 5)
+          * point.weight 2
+        = point.weight 2 * (point.mass 2 + 2 * point.mass 1
+            + 2 * point.mass 5) := by ring
+      _ < point.mass 2 := hedgeTwo
+  have hcoeffFour : point.mass 4 + 2 * point.mass 3 + 2 * point.mass 5
+      < point.mass 4 / point.weight 4 := by
+    rw [lt_div_iff₀ (point.weight_pos 4)]
+    calc (point.mass 4 + 2 * point.mass 3 + 2 * point.mass 5)
+          * point.weight 4
+        = point.weight 4 * (point.mass 4 + 2 * point.mass 3
+            + 2 * point.mass 5) := by ring
+      _ < point.mass 4 := hedgeFour
+  rw [kFourGap_treeZeroTwoFour_eq]
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · refine isHermitian_of_transpose_eq ?_
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [Matrix.transpose_apply]
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 1 ≠ 0 ∨ vecArg 1 - vecArg 2 ≠ 0
+        ∨ vecArg 1 ≠ 0 := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvOne : vecArg 1 = 0 := hcycleThree
+      have hvZero : vecArg 0 = 0 := by linarith
+      have hvTwo : vecArg 2 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvZero
+      · exact hbad hvOne
+      · exact hbad hvTwo
+    have hform : vecArg ⬝ᵥ ((Matrix.of
+          ![![point.mass 0 / point.weight 0
+                - (point.mass 0 + point.mass 1 + point.mass 3),
+              point.mass 0 - point.mass 0 / point.weight 0,
+              point.mass 1],
+            ![point.mass 0 - point.mass 0 / point.weight 0,
+              point.mass 0 / point.weight 0 + point.mass 2 / point.weight 2
+                + point.mass 4 / point.weight 4
+                - (point.mass 0 + point.mass 2 + point.mass 4),
+              point.mass 2 - point.mass 2 / point.weight 2],
+            ![point.mass 1,
+              point.mass 2 - point.mass 2 / point.weight 2,
+              point.mass 2 / point.weight 2
+                - (point.mass 1 + point.mass 2 + point.mass 5)]]
+            : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ vecArg)
+        = (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+              - point.mass 3) * (vecArg 0 - vecArg 1) ^ 2
+          + (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+              - point.mass 5) * (vecArg 1 - vecArg 2) ^ 2
+          + (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+              - point.mass 5) * (vecArg 1) ^ 2
+          + 2 * (-point.mass 1)
+              * ((vecArg 0 - vecArg 1) * (vecArg 1 - vecArg 2))
+          + 2 * (-point.mass 3) * ((vecArg 0 - vecArg 1) * (vecArg 1))
+          + 2 * point.mass 5 * ((vecArg 1 - vecArg 2) * (vecArg 1)) := by
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact splitQuadraticForm_pos
+      (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+        - point.mass 3)
+      (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+        - point.mass 5)
+      (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+        - point.mass 5)
+      (-point.mass 1) (-point.mass 3) (point.mass 5)
+      (point.mass 1) (point.mass 1) (point.mass 3) (point.mass 3)
+      (point.mass 5) (point.mass 5)
+      (vecArg 0 - vecArg 1) (vecArg 1 - vecArg 2) (vecArg 1)
+      (point.mass_pos 1) (point.mass_pos 3) (point.mass_pos 5)
+      (le_of_eq (by ring)) (le_of_eq (by ring)) (le_of_eq (by ring))
+      (by linarith) (by linarith) (by linarith)
+      hzNonzero
+
+/-- **Star cell at node `3`** (tree `{1,2,5}`; off-tree cycles: edge `0`
+over `{1,2}`, edge `3` over `{1,5}`, edge `4` over `{2,5}`). -/
+theorem kFourAtlas_starNodeThree_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hedgeOne : point.weight 1 * (point.mass 1 + 2 * point.mass 0
+      + 2 * point.mass 3) < point.mass 1)
+    (hedgeTwo : point.weight 2 * (point.mass 2 + 2 * point.mass 0
+      + 2 * point.mass 4) < point.mass 2)
+    (hedgeFive : point.weight 5 * (point.mass 5 + 2 * point.mass 3
+      + 2 * point.mass 4) < point.mass 5) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {1, 2, 5}).PosDef := by
+  have hcoeffOne : point.mass 1 + 2 * point.mass 0 + 2 * point.mass 3
+      < point.mass 1 / point.weight 1 := by
+    rw [lt_div_iff₀ (point.weight_pos 1)]
+    calc (point.mass 1 + 2 * point.mass 0 + 2 * point.mass 3)
+          * point.weight 1
+        = point.weight 1 * (point.mass 1 + 2 * point.mass 0
+            + 2 * point.mass 3) := by ring
+      _ < point.mass 1 := hedgeOne
+  have hcoeffTwo : point.mass 2 + 2 * point.mass 0 + 2 * point.mass 4
+      < point.mass 2 / point.weight 2 := by
+    rw [lt_div_iff₀ (point.weight_pos 2)]
+    calc (point.mass 2 + 2 * point.mass 0 + 2 * point.mass 4)
+          * point.weight 2
+        = point.weight 2 * (point.mass 2 + 2 * point.mass 0
+            + 2 * point.mass 4) := by ring
+      _ < point.mass 2 := hedgeTwo
+  have hcoeffFive : point.mass 5 + 2 * point.mass 3 + 2 * point.mass 4
+      < point.mass 5 / point.weight 5 := by
+    rw [lt_div_iff₀ (point.weight_pos 5)]
+    calc (point.mass 5 + 2 * point.mass 3 + 2 * point.mass 4)
+          * point.weight 5
+        = point.weight 5 * (point.mass 5 + 2 * point.mass 3
+            + 2 * point.mass 4) := by ring
+      _ < point.mass 5 := hedgeFive
+  rw [kFourGap_treeOneTwoFive_eq]
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · refine isHermitian_of_transpose_eq ?_
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [Matrix.transpose_apply]
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 2 ≠ 0 ∨ vecArg 1 - vecArg 2 ≠ 0
+        ∨ vecArg 2 ≠ 0 := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvTwo : vecArg 2 = 0 := hcycleThree
+      have hvZero : vecArg 0 = 0 := by linarith
+      have hvOne : vecArg 1 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvZero
+      · exact hbad hvOne
+      · exact hbad hvTwo
+    have hform : vecArg ⬝ᵥ ((Matrix.of
+          ![![point.mass 1 / point.weight 1 - (point.mass 1 + point.mass 3)
+                - point.mass 0,
+              point.mass 0,
+              point.mass 1 - point.mass 1 / point.weight 1],
+            ![point.mass 0,
+              point.mass 2 / point.weight 2 - (point.mass 2 + point.mass 4)
+                - point.mass 0,
+              point.mass 2 - point.mass 2 / point.weight 2],
+            ![point.mass 1 - point.mass 1 / point.weight 1,
+              point.mass 2 - point.mass 2 / point.weight 2,
+              point.mass 5 / point.weight 5 + point.mass 1 / point.weight 1
+                + point.mass 2 / point.weight 2
+                - (point.mass 1 + point.mass 2 + point.mass 5)]]
+            : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ vecArg)
+        = (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+              - point.mass 3) * (vecArg 0 - vecArg 2) ^ 2
+          + (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+              - point.mass 4) * (vecArg 1 - vecArg 2) ^ 2
+          + (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+              - point.mass 4) * (vecArg 2) ^ 2
+          + 2 * point.mass 0
+              * ((vecArg 0 - vecArg 2) * (vecArg 1 - vecArg 2))
+          + 2 * (-point.mass 3) * ((vecArg 0 - vecArg 2) * (vecArg 2))
+          + 2 * (-point.mass 4) * ((vecArg 1 - vecArg 2) * (vecArg 2)) := by
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact splitQuadraticForm_pos
+      (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+        - point.mass 3)
+      (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+        - point.mass 4)
+      (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+        - point.mass 4)
+      (point.mass 0) (-point.mass 3) (-point.mass 4)
+      (point.mass 0) (point.mass 0) (point.mass 3) (point.mass 3)
+      (point.mass 4) (point.mass 4)
+      (vecArg 0 - vecArg 2) (vecArg 1 - vecArg 2) (vecArg 2)
+      (point.mass_pos 0) (point.mass_pos 3) (point.mass_pos 4)
+      (le_of_eq (by ring)) (le_of_eq (by ring)) (le_of_eq (by ring))
+      (by linarith) (by linarith) (by linarith)
+      hzNonzero
+
+/-- **Star cell at node `4`** (tree `{3,4,5}`, the gauge-node star;
+off-tree cycles: edge `0` over `{3,4}`, edge `1` over `{3,5}`, edge `2`
+over `{4,5}`).  The PoC region certificate, re-founded on the engine. -/
+theorem kFourAtlas_starNodeFour_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hedgeThree : point.weight 3 * (point.mass 3 + 2 * point.mass 0
+      + 2 * point.mass 1) < point.mass 3)
+    (hedgeFour : point.weight 4 * (point.mass 4 + 2 * point.mass 0
+      + 2 * point.mass 2) < point.mass 4)
+    (hedgeFive : point.weight 5 * (point.mass 5 + 2 * point.mass 1
+      + 2 * point.mass 2) < point.mass 5) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {3, 4, 5}).PosDef := by
+  have hcoeffThree : point.mass 3 + 2 * point.mass 0 + 2 * point.mass 1
+      < point.mass 3 / point.weight 3 := by
+    rw [lt_div_iff₀ (point.weight_pos 3)]
+    calc (point.mass 3 + 2 * point.mass 0 + 2 * point.mass 1)
+          * point.weight 3
+        = point.weight 3 * (point.mass 3 + 2 * point.mass 0
+            + 2 * point.mass 1) := by ring
+      _ < point.mass 3 := hedgeThree
+  have hcoeffFour : point.mass 4 + 2 * point.mass 0 + 2 * point.mass 2
+      < point.mass 4 / point.weight 4 := by
+    rw [lt_div_iff₀ (point.weight_pos 4)]
+    calc (point.mass 4 + 2 * point.mass 0 + 2 * point.mass 2)
+          * point.weight 4
+        = point.weight 4 * (point.mass 4 + 2 * point.mass 0
+            + 2 * point.mass 2) := by ring
+      _ < point.mass 4 := hedgeFour
+  have hcoeffFive : point.mass 5 + 2 * point.mass 1 + 2 * point.mass 2
+      < point.mass 5 / point.weight 5 := by
+    rw [lt_div_iff₀ (point.weight_pos 5)]
+    calc (point.mass 5 + 2 * point.mass 1 + 2 * point.mass 2)
+          * point.weight 5
+        = point.weight 5 * (point.mass 5 + 2 * point.mass 1
+            + 2 * point.mass 2) := by ring
+      _ < point.mass 5 := hedgeFive
+  rw [kFourGap_treeThreeFourFive_eq]
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · refine isHermitian_of_transpose_eq ?_
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [Matrix.transpose_apply]
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hform : vecArg ⬝ᵥ ((Matrix.of
+          ![![point.mass 3 / point.weight 3 - (point.mass 1 + point.mass 3)
+                - point.mass 0,
+              point.mass 0, point.mass 1],
+            ![point.mass 0,
+              point.mass 4 / point.weight 4 - (point.mass 2 + point.mass 4)
+                - point.mass 0,
+              point.mass 2],
+            ![point.mass 1, point.mass 2,
+              point.mass 5 / point.weight 5
+                - (point.mass 1 + point.mass 2 + point.mass 5)]]
+            : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ vecArg)
+        = (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+              - point.mass 1) * (vecArg 0) ^ 2
+          + (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+              - point.mass 2) * (vecArg 1) ^ 2
+          + (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+              - point.mass 2) * (vecArg 2) ^ 2
+          + 2 * point.mass 0 * (vecArg 0 * vecArg 1)
+          + 2 * point.mass 1 * (vecArg 0 * vecArg 2)
+          + 2 * point.mass 2 * (vecArg 1 * vecArg 2) := by
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact splitQuadraticForm_pos
+      (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+        - point.mass 1)
+      (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+        - point.mass 2)
+      (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+        - point.mass 2)
+      (point.mass 0) (point.mass 1) (point.mass 2)
+      (point.mass 0) (point.mass 0) (point.mass 1) (point.mass 1)
+      (point.mass 2) (point.mass 2)
+      (vecArg 0) (vecArg 1) (vecArg 2)
+      (point.mass_pos 0) (point.mass_pos 1) (point.mass_pos 2)
+      (le_of_eq (by ring)) (le_of_eq (by ring)) (le_of_eq (by ring))
+      (by linarith) (by linarith) (by linarith)
+      hsomeCoordinateNonzero
+
+/-! ## Layer-A star dispatch and the caught witnesses -/
+
+/-- **The star dispatch.**  Any of the four star cells delivers the chart
+obligation's conclusion outright — no weak antecedent, no selection rule.
+This is the assembled bulk layer of the atlas; the remaining cells extend
+this disjunction, never replace it. -/
+theorem kFourAtlas_hasStrictTriple_of_anyStarCell
+    (point : DirectionChartPoint 6)
+    (hcell :
+      (point.weight 0 * (point.mass 0 + 2 * point.mass 2 + 2 * point.mass 4)
+          < point.mass 0
+        ∧ point.weight 1 * (point.mass 1 + 2 * point.mass 2
+            + 2 * point.mass 5) < point.mass 1
+        ∧ point.weight 3 * (point.mass 3 + 2 * point.mass 4
+            + 2 * point.mass 5) < point.mass 3)
+      ∨ (point.weight 0 * (point.mass 0 + 2 * point.mass 1
+            + 2 * point.mass 3) < point.mass 0
+        ∧ point.weight 2 * (point.mass 2 + 2 * point.mass 1
+            + 2 * point.mass 5) < point.mass 2
+        ∧ point.weight 4 * (point.mass 4 + 2 * point.mass 3
+            + 2 * point.mass 5) < point.mass 4)
+      ∨ (point.weight 1 * (point.mass 1 + 2 * point.mass 0
+            + 2 * point.mass 3) < point.mass 1
+        ∧ point.weight 2 * (point.mass 2 + 2 * point.mass 0
+            + 2 * point.mass 4) < point.mass 2
+        ∧ point.weight 5 * (point.mass 5 + 2 * point.mass 3
+            + 2 * point.mass 4) < point.mass 5)
+      ∨ (point.weight 3 * (point.mass 3 + 2 * point.mass 0
+            + 2 * point.mass 1) < point.mass 3
+        ∧ point.weight 4 * (point.mass 4 + 2 * point.mass 0
+            + 2 * point.mass 2) < point.mass 4
+        ∧ point.weight 5 * (point.mass 5 + 2 * point.mass 1
+            + 2 * point.mass 2) < point.mass 5)) :
+    ∃ selected : Finset (Fin 6), selected.card = 3 ∧
+      (directionChartGap kFourDirection point.mass point.weight
+        selected).PosDef := by
+  rcases hcell with ⟨hA, hB, hC⟩ | ⟨hA, hB, hC⟩ | ⟨hA, hB, hC⟩ | ⟨hA, hB, hC⟩
+  · exact ⟨{0, 1, 3}, by decide,
+      kFourAtlas_starNodeOne_posDef_of_cell point hA hB hC⟩
+  · exact ⟨{0, 2, 4}, by decide,
+      kFourAtlas_starNodeTwo_posDef_of_cell point hA hB hC⟩
+  · exact ⟨{1, 2, 5}, by decide,
+      kFourAtlas_starNodeThree_posDef_of_cell point hA hB hC⟩
+  · exact ⟨{3, 4, 5}, by decide,
+      kFourAtlas_starNodeFour_posDef_of_cell point hA hB hC⟩
+
+/-- The max-edge refutation witness sits inside the node-`2` star cell
+(margins `119/30`, `11/12`, `1199/30` in conductance currency): the atlas
+catches TEST POINT ZERO with no selection rule. -/
+theorem maxEdgeRefuterPoint_satisfiesStarNodeTwoCell :
+    maxEdgeRefuterPoint.weight 0 * (maxEdgeRefuterPoint.mass 0
+        + 2 * maxEdgeRefuterPoint.mass 1 + 2 * maxEdgeRefuterPoint.mass 3)
+      < maxEdgeRefuterPoint.mass 0
+    ∧ maxEdgeRefuterPoint.weight 2 * (maxEdgeRefuterPoint.mass 2
+        + 2 * maxEdgeRefuterPoint.mass 1 + 2 * maxEdgeRefuterPoint.mass 5)
+      < maxEdgeRefuterPoint.mass 2
+    ∧ maxEdgeRefuterPoint.weight 4 * (maxEdgeRefuterPoint.mass 4
+        + 2 * maxEdgeRefuterPoint.mass 3 + 2 * maxEdgeRefuterPoint.mass 5)
+      < maxEdgeRefuterPoint.mass 4 := by
+  refine ⟨?_, ?_, ?_⟩ <;> norm_num
+
+/-- The atlas's independent re-derivation of the strict triple at the
+refutation witness: the star dispatch applied at the node-`2` cell. -/
+theorem maxEdgeRefuterPoint_hasStrictTriple_viaAtlas :
+    ∃ selected : Finset (Fin 6), selected.card = 3 ∧
+      (directionChartGap kFourDirection maxEdgeRefuterPoint.mass
+        maxEdgeRefuterPoint.weight selected).PosDef :=
+  kFourAtlas_hasStrictTriple_of_anyStarCell maxEdgeRefuterPoint
+    (Or.inr (Or.inl maxEdgeRefuterPoint_satisfiesStarNodeTwoCell))
+
+/-- The tetrahedron sits inside ALL FOUR star cells (margin `1/24` per
+inequality); the node-`4` membership re-derives the landed sample. -/
+theorem tetrahedronChartPoint_satisfiesStarNodeFourCell :
+    tetrahedronChartPoint.weight 3 * (tetrahedronChartPoint.mass 3
+        + 2 * tetrahedronChartPoint.mass 0 + 2 * tetrahedronChartPoint.mass 1)
+      < tetrahedronChartPoint.mass 3
+    ∧ tetrahedronChartPoint.weight 4 * (tetrahedronChartPoint.mass 4
+        + 2 * tetrahedronChartPoint.mass 0 + 2 * tetrahedronChartPoint.mass 2)
+      < tetrahedronChartPoint.mass 4
+    ∧ tetrahedronChartPoint.weight 5 * (tetrahedronChartPoint.mass 5
+        + 2 * tetrahedronChartPoint.mass 1 + 2 * tetrahedronChartPoint.mass 2)
+      < tetrahedronChartPoint.mass 5 := by
+  refine ⟨?_, ?_, ?_⟩ <;>
+    · show (1 / 6 : ℝ) * (1 / 4 + 2 * (1 / 4) + 2 * (1 / 4)) < 1 / 4
+      norm_num
 
 end Gtz
