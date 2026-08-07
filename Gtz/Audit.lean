@@ -12021,6 +12021,11 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.UniformPositionBridge.sum_core_atomMatrix
 #print axioms Gtz.UniformPositionBridge.tailDiagonalProfile_nonneg
 #print axioms Gtz.UniformPositionBridge.tailAtomVec_apply
+#print axioms Gtz.UniformPositionBridge.sum_tail_atomMatrix
+#print axioms Gtz.UniformPositionBridge.sum_tailRawWeight_atomMatrix
+#print axioms Gtz.UniformPositionBridge.tailAtomVec_ne_smul_axisVec
+#print axioms Gtz.UniformPositionBridge.diagonalTailAtCell_of_two_le
+#print axioms Gtz.UniformPositionBridge.not_diagonalTailAtCell_one
 
 /-! ### The matroid stratification of the stress-free hinge -/
 

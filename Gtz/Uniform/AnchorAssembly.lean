@@ -266,21 +266,151 @@ theorem tailAtomVec_apply {rank : ℕ} (coeff : ℝ) (coord : Fin rank) :
     tailAtomVec coeff coord
       = if (coord : ℕ) = 0 then 1 else if (coord : ℕ) = 1 then coeff else 0 := rfl
 
-/-! ### Not yet mechanized: the tail block's diagonality as a matrix identity
+/-! ### The tail block's diagonality, as a matrix identity
 
-`sum_tailRawWeight_mul_tailCoeff` above IS the mathematical content -- the only
-off-diagonal entries of the tail sum sit at `(0,1)` and `(1,0)` and both equal
-that vanishing sum.  Packaging it as the matrix identity
+The nine-way case split this file once recorded as blocked: each matrix entry
+of the weighted tail sum is decided by the underlying indices of its two
+coordinates, and the single cancellation `sum of (weight * coeff) = 0` kills
+both off-diagonal survivors at `(0,1)` and `(1,0)`.  Proved at GENERAL rank and
+GENERAL slot count, for ANY coefficient and weight families satisfying the
+cancellation -- the named `tailCoeff`/`tailRawWeight` family is one instance. -/
 
-    (sum over slots of tailRawWeight slot . atomMatrix (tailAtomVec (tailCoeff slot)))
-      = Matrix.diagonal (tailDiagonalProfile rank tailCount)
+/-- **The diagonality identity.**  Tail atoms all in the same coordinate
+2-plane: one scalar cancellation makes their weighted outer products sum to a
+diagonal matrix, at every rank and every slot count. -/
+theorem sum_tail_atomMatrix {rank extra : ℕ} (coeff weight : Fin extra → ℝ)
+    (hcancel : ∑ slot, weight slot * coeff slot = 0) :
+    (∑ slot, weight slot • atomMatrix (tailAtomVec (rank := rank) (coeff slot)))
+      = Matrix.diagonal (fun coord : Fin rank =>
+          if (coord : ℕ) = 0 then ∑ slot, weight slot
+          else if (coord : ℕ) = 1 then ∑ slot, weight slot * coeff slot ^ 2
+          else 0) := by
+  ext rowIndex colIndex
+  simp only [Matrix.sum_apply, Matrix.smul_apply, atomMatrix, Matrix.vecMulVec_apply,
+    smul_eq_mul, Matrix.diagonal_apply, tailAtomVec]
+  by_cases hrowZero : (rowIndex : ℕ) = 0
+  · by_cases hcolZero : (colIndex : ℕ) = 0
+    · have hsame : rowIndex = colIndex := Fin.ext (by omega)
+      simp [hcolZero, hsame]
+    · by_cases hcolOne : (colIndex : ℕ) = 1
+      · have hdiffer : rowIndex ≠ colIndex := fun heq => hcolZero (heq ▸ hrowZero)
+        simpa [hrowZero, hcolZero, hcolOne, hdiffer] using hcancel
+      · have hdiffer : rowIndex ≠ colIndex := fun heq => hcolZero (heq ▸ hrowZero)
+        simp [hrowZero, hcolZero, hcolOne, hdiffer]
+  · by_cases hrowOne : (rowIndex : ℕ) = 1
+    · by_cases hcolZero : (colIndex : ℕ) = 0
+      · have hdiffer : rowIndex ≠ colIndex := fun heq => hrowZero (heq ▸ hcolZero)
+        simpa [hrowZero, hrowOne, hcolZero, hdiffer, mul_comm] using hcancel
+      · by_cases hcolOne : (colIndex : ℕ) = 1
+        · have hsame : rowIndex = colIndex := Fin.ext (by omega)
+          simp [hcolOne, hsame, sq]
+        · have hdiffer : rowIndex ≠ colIndex := fun heq => hcolOne (heq ▸ hrowOne)
+          simp [hrowOne, hcolZero, hcolOne, hdiffer]
+    · by_cases hsame : rowIndex = colIndex
+      · subst hsame
+        simp [hrowZero, hrowOne]
+      · simp [hrowZero, hrowOne, hsame]
 
-remains to be proved: the nine-way case split on the underlying indices of the
-two matrix coordinates needs each summand rewritten UNDER the sum binder, and
-`Finset.sum_congr` with an inline `rw` proof leaves the target function to be
-inferred, which fails.  The fix is mechanical -- state each of the nine
-pointwise identities as its own `have` with both sides spelled out.  It is
-recorded here rather than claimed. -/
+/-- **The tail block is diagonal** -- the identity this file once self-declared
+unproved, at the named coefficient and weight families.  The diagonal is
+exactly `tailDiagonalProfile`, definitionally. -/
+theorem sum_tailRawWeight_atomMatrix (rank tailCount : ℕ) :
+    (∑ slot, tailRawWeight tailCount slot •
+        atomMatrix (tailAtomVec (rank := rank) (tailCoeff tailCount slot)))
+      = Matrix.diagonal (tailDiagonalProfile rank tailCount) :=
+  sum_tail_atomMatrix (tailCoeff tailCount) (tailRawWeight tailCount)
+    (sum_tailRawWeight_mul_tailCoeff tailCount)
+
+/-- The axis clause of `DiagonalTailAtCell`, against the bare axis indicator:
+a tail atom with nonzero coefficient has TWO nonzero coordinates, so it is
+parallel to no axis. -/
+theorem tailAtomVec_ne_smul_axisVec {rank : ℕ} (hrank : 2 ≤ rank) {coeff : ℝ}
+    (hcoeff : coeff ≠ 0) (axis : Fin rank) (ratio : ℝ) :
+    tailAtomVec (rank := rank) coeff
+      ≠ ratio • (fun coord : Fin rank => if coord = axis then (1 : ℝ) else 0) := by
+  intro hparallel
+  by_cases haxisIsZero : axis = (⟨0, by omega⟩ : Fin rank)
+  · have hatOne := congrFun hparallel ⟨1, by omega⟩
+    rw [tailAtomVec_apply_one hrank] at hatOne
+    have honeNeAxis : (⟨1, by omega⟩ : Fin rank) ≠ axis := by
+      rw [haxisIsZero]
+      exact fun hcollide => absurd (congrArg Fin.val hcollide) (by norm_num)
+    simp [honeNeAxis] at hatOne
+    exact hcoeff hatOne
+  · have hatZero := congrFun hparallel ⟨0, by omega⟩
+    rw [tailAtomVec_apply_zero hrank] at hatZero
+    have hzeroNeAxis : (⟨0, by omega⟩ : Fin rank) ≠ axis :=
+      fun hcollide => haxisIsZero hcollide.symm
+    simp [hzeroNeAxis] at hatZero
+
+/-! ### The obligation, discharged at every count from two up -/
+
+/-- **`DiagonalTailAtCell` holds at every `2 <= extra` and every `2 <= rank`.**
+No parity split, no block decomposition, no `rank >= 3`: the single-plane
+family with the telescoping cancellation does every count at once.  The guard
+`2 <= extra` is SHARP -- see `not_diagonalTailAtCell_one` -- and the sharp
+window supplies it for free, since `extra = size - rank >= rank` there. -/
+theorem diagonalTailAtCell_of_two_le {extra rank : ℕ} (hextra : 2 ≤ extra)
+    (hrank : 2 ≤ rank) : DiagonalTailAtCell extra rank := by
+  obtain ⟨tailCount, rfl⟩ : ∃ tailCount, extra = tailCount + 1 := ⟨extra - 1, by omega⟩
+  have hcount : 1 ≤ tailCount := by omega
+  refine ⟨fun slot => tailAtomVec (tailCoeff tailCount slot), tailRawWeight tailCount,
+    tailDiagonalProfile rank tailCount, tailRawWeight_pos hcount,
+    tailDiagonalProfile_nonneg hcount, sum_tailRawWeight_atomMatrix rank tailCount,
+    ?_, ?_⟩
+  · intro slot axis ratio
+    exact tailAtomVec_ne_smul_axisVec hrank (tailCoeff_ne_zero tailCount slot) axis ratio
+  · intro leftSlot rightSlot ratio hdifferent
+    exact tailAtomVec_ne_smul_tailAtomVec hrank
+      (fun hequal => hdifferent (tailCoeff_injective tailCount hequal)) ratio
+
+/-! ### And refuted at count one -/
+
+/-- **A single tail vector cannot work**: its outer product is diagonal only if
+at most one coordinate is nonzero, i.e. only if it is axis-parallel -- which
+the obligation's axis clause forbids.  So `2 <= extra` is the correct guard and
+any `1 <= extra` strengthening is refutable. -/
+theorem not_diagonalTailAtCell_one {rank : ℕ} (hrank : 1 ≤ rank) :
+    ¬ DiagonalTailAtCell 1 rank := by
+  classical
+  rintro ⟨tailAtom, tailWeight, tailDiagonal, hweightPos, _, hsum, hnotAxisParallel, _⟩
+  have hentry : ∀ rowIndex colIndex : Fin rank, rowIndex ≠ colIndex →
+      tailWeight 0 * (tailAtom 0 rowIndex * tailAtom 0 colIndex) = 0 := by
+    intro rowIndex colIndex hdifferent
+    have hpointwise := congrFun (congrFun hsum rowIndex) colIndex
+    simpa [Fin.sum_univ_one, atomMatrix, Matrix.vecMulVec_apply, Matrix.diagonal_apply,
+      hdifferent] using hpointwise
+  have hproductZero : ∀ rowIndex colIndex : Fin rank, rowIndex ≠ colIndex →
+      tailAtom 0 rowIndex * tailAtom 0 colIndex = 0 := by
+    intro rowIndex colIndex hdifferent
+    have := hentry rowIndex colIndex hdifferent
+    rcases mul_eq_zero.mp this with hweightZero | hproduct
+    · exact absurd hweightZero (ne_of_gt (hweightPos 0))
+    · exact hproduct
+  by_cases hallZero : ∀ coord : Fin rank, tailAtom 0 coord = 0
+  · refine hnotAxisParallel 0 ⟨0, by omega⟩ 0 (funext fun coord => ?_)
+    simp [hallZero coord]
+  · obtain ⟨axis, haxisNonzero⟩ := not_forall.mp hallZero
+    refine hnotAxisParallel 0 axis (tailAtom 0 axis) (funext fun coord => ?_)
+    by_cases hcoordIsAxis : coord = axis
+    · simp [hcoordIsAxis]
+    · have := hproductZero coord axis hcoordIsAxis
+      rcases mul_eq_zero.mp this with hcoordZero | hcontradiction
+      · simp [hcoordIsAxis, hcoordZero]
+      · exact absurd hcontradiction haxisNonzero
+
+/-! ### The honest residual
+
+With the tail block diagonal (`diagonalTailAtCell_of_two_le`), the core block
+diagonal (`sum_core_atomMatrix`), the weights feasible
+(`coreTailBookkeeping_feasible`) and the domination free
+(`posSemidef_smul_one_sub_one`), what remains of route (b)'s anchor half is
+pure ASSEMBLY: reindex the core and tail families along
+`Fin size ≃ Fin rank ⊕ Fin (size - rank)`, check Parseval for the combined
+family, and package the result as the weak parallel-free dominator that
+`windowAnchorReachFree_of_weakWitness` consumes.  Nothing mathematical is
+open in that step; it is bookkeeping over the equivalence, recorded here
+rather than claimed. -/
 
 end UniformPositionBridge
 end Gtz

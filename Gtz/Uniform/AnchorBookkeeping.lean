@@ -26,12 +26,12 @@ and this file proves it: `coreTailBookkeeping_feasible`.  Two facts drive it.
 
 WHERE THE CONSTRUCTION ACTUALLY PINCHES — and it is NOT the weights: the core
 atoms are axis-aligned, so they can only supply a DIAGONAL residual.  The
-tail's weighted outer products must therefore sum to a diagonal matrix.
-That, not the Parseval bookkeeping, is the remaining obligation
-(`DiagonalTailAtCell`); the explicit diagonal tails are recorded below — a
-planar pair per even step (`evenTailPair_sums_diagonal`) and one
-three-vector block in `R^3` to absorb an odd count
-(`oddTailBlock_sums_diagonal`).
+tail's weighted outer products must therefore sum to a diagonal matrix.  That
+obligation, `DiagonalTailAtCell`, is DISCHARGED in `AnchorAssembly` at every
+count from two up (`diagonalTailAtCell_of_two_le`, single-plane construction,
+no parity split) and REFUTED at count one (`not_diagonalTailAtCell_one`), so
+`2 <= extra` is the sharp guard.  The planar-pair and three-vector-block
+witnesses below are the superseded block plan, kept as verified exemplars.
 -/
 import Gtz.Uniform.RouteBProps
 
@@ -138,15 +138,14 @@ DIAGONAL matrix.  Everything else in the core-tail construction is discharged �
 the weights by `coreTailBookkeeping_feasible`, the domination by
 `posSemidef_smul_one_sub_one`.
 
-Diagonality is the binding constraint, and it is what forces the count analysis:
-a planar pair `{basis i + c * basis j, basis i - c * basis j}` contributes
-`2 * (basis i) (basis i)^T + 2 c^2 * (basis j) (basis j)^T`, diagonal, with both
-vectors off every axis and non-parallel to each other — so every EVEN count is
-covered, with distinct `c` keeping different pairs non-parallel.  An ODD count
-needs one three-vector block, which exists as soon as `rank >= 3`:
-`(1,1,1)`, `(1,-1,-1)`, `(0,2,-1)` sum to `diagonal (2, 6, 3)`.  Both
-witnesses are verified below; mechanizing the indexed family at general
-`extra` is the outstanding work. -/
+Diagonality is the binding constraint, and it is DISCHARGED in `AnchorAssembly`
+at every `2 <= extra` and every `2 <= rank` (`diagonalTailAtCell_of_two_le`):
+every tail atom sits in the SAME coordinate 2-plane, so diagonality is one
+scalar cancellation and no count analysis is needed.  The predicate is FALSE at
+`extra = 1` (`not_diagonalTailAtCell_one`) — a single outer product is diagonal
+only for an axis-parallel vector, which the axis clause forbids — so
+`2 <= extra` is the sharp guard, and the window supplies it for free since
+`extra = size - rank >= rank` there. -/
 def DiagonalTailAtCell (extra rank : ℕ) : Prop :=
   ∃ (tailAtom : Fin extra → (Fin rank → ℝ)) (tailWeight : Fin extra → ℝ)
     (tailDiagonal : Fin rank → ℝ),
@@ -159,10 +158,12 @@ def DiagonalTailAtCell (extra rank : ℕ) : Prop :=
       ∧ (∀ (leftSlot rightSlot : Fin extra) (ratio : ℝ), leftSlot ≠ rightSlot →
           tailAtom leftSlot ≠ ratio • tailAtom rightSlot)
 
-/-- The three-vector block that absorbs an ODD tail count, verified in kernel:
-`(1,1,1)`, `(1,-1,-1)`, `(0,2,-1)` have outer products summing to
-`diagonal (2, 6, 3)`.  None is axis-parallel and no two are parallel, so this is
-a legitimate tail block wherever `rank >= 3`. -/
+/-- SUPERSEDED by the single-plane construction in `AnchorAssembly`
+(`diagonalTailAtCell_of_two_le`); kept as a verified exemplar of the block
+plan.  The three-vector block that absorbs an ODD tail count: `(1,1,1)`,
+`(1,-1,-1)`, `(0,2,-1)` have outer products summing to `diagonal (2, 6, 3)`.
+None is axis-parallel and no two are parallel, so this is a legitimate tail
+block wherever `rank >= 3`. -/
 theorem oddTailBlock_sums_diagonal :
     atomMatrix ![(1 : ℝ), 1, 1] + atomMatrix ![(1 : ℝ), -1, -1]
         + atomMatrix ![(0 : ℝ), 2, -1]
@@ -171,8 +172,10 @@ theorem oddTailBlock_sums_diagonal :
   fin_cases leftIndex <;> fin_cases rightIndex <;>
     simp [atomMatrix, Matrix.vecMulVec, Matrix.diagonal] <;> norm_num
 
-/-- The planar pair that absorbs an EVEN tail step, verified in kernel at the
-representative plane: `(1, c)` and `(1, -c)` have outer products summing to
+/-- SUPERSEDED by the single-plane construction in `AnchorAssembly`
+(`diagonalTailAtCell_of_two_le`); kept as a verified exemplar of the block
+plan.  The planar pair that absorbs an EVEN tail step, at the representative
+plane: `(1, c)` and `(1, -c)` have outer products summing to
 `diagonal (2, 2 c^2)`.  Both are off both axes for `c` nonzero, and they are
 non-parallel to each other. -/
 theorem evenTailPair_sums_diagonal (offAxis : ℝ) :

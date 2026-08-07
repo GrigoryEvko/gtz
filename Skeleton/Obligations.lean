@@ -222,10 +222,10 @@ theorem obligationSharpWindowAnchorReachRankThree :
     Gtz.parallelFreeReachesAnchor_six_three⟩
 
 /--
-STATUS: no kernel evidence at any rank in this range.
+STATUS: no kernel evidence at any rank in this range, but the anchor half's tail obligation is now a THEOREM: `Gtz.UniformPositionBridge.diagonalTailAtCell_of_two_le` discharges `DiagonalTailAtCell` at every `2 <= extra` and every `2 <= rank` (Gtz/Uniform/AnchorAssembly.lean, single-plane construction; FALSE at `extra = 1`, `not_diagonalTailAtCell_one`, so the guard is sharp -- and the window supplies `extra = size - rank >= rank` for free).
 CONSUMERS: `obligationSharpWindowAnchorReach`, which survives as a theorem so no capstone changed.
 WHY OPEN: the only `Gtz.ParallelFreeReachesAnchor` instance in the tree is the rank-three one, so nothing here has a single supporting instance.
-ATTACK: `Gtz.UniformPositionBridge.windowAnchorReachFree_of_weakWitness` plus `exists_strictAnchor_of_weakDominator`, then wire `Gtz.UniformPositionBridge.DiagonalTailAtCell` into the weak witness.
+ATTACK: two pieces remain. (1) ASSEMBLY, mechanical: reindex the axis-aligned core (`sum_core_atomMatrix`) and the diagonal tail (`sum_tailRawWeight_atomMatrix`) along `Fin size = Fin rank (+) Fin (size - rank)`, balance Parseval with `coreTailBookkeeping_feasible`, and feed the weak dominator to `windowAnchorReachFree_of_weakWitness` with `exists_strictAnchor_of_weakDominator`. (2) TOPOLOGY, the real content: per-cell connectivity of the parallel-free locus -- generalize the (6,3) moment-curve walk of Gtz/Reduction/ParallelFreeReach.lean, whose schedule condition is exactly the window floor (`windowCell_meets_walkSchedule`).
 NOT-REFUTED: no census row targets any cell with `2 * rank <= size <= rank * (rank + 1) / 2` at rank four or above.
 -/
 axiom obligationSharpWindowAnchorReachRankFourAndUp :
