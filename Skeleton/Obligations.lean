@@ -41,7 +41,11 @@ Two roots are in play.
 * Root B, general rank: `forall rank, Gtz.GtzWeightedAll rank`, with no rank
   excluded because `Gtz.gtzWeighted_dim_zero` discharges rank zero.  Needs
   exactly three, `obligationSubThresholdBandHinge`,
-  `obligationThresholdCellHinge` and `obligationSharpWindowAnchorReach`.
+  `obligationThresholdCellHinge` and
+  `obligationSharpWindowAnchorReachRankFourAndUp` -- the reach obligation's
+  rank-three half is DISCHARGED (`Gtz.icosaDesign`), and the original name
+  `obligationSharpWindowAnchorReach` survives as a theorem assembled from the
+  two halves.
 
 The merged mathematical count is still THREE:
 `stressFreeHingeSixThree_of_thresholdCellHinge` below derives the whole
@@ -184,19 +188,67 @@ axiom obligationThresholdCellHinge :
         ∀ design : Gtz.WeightedDesign (rank * (rank + 1) / 2) rank,
           Gtz.IsTie design → Gtz.HasParallelPair design
 
-/--
+/-!
+### SPLIT RECORD: `obligationSharpWindowAnchorReach`, split by rank
+
+Retired as an axiom and re-proved below from `...RankThree` and
+`...RankFourAndUp`.  Its original five fields are kept verbatim here because
+they are the provenance of the two finer statements; the live fields are on
+those.
+
 STATUS: partial proof, and a THEOREM at rank three. At rank three the sharp window is the single cell size six, discharged by `Gtz.icosaDesign` with `Gtz.icosaDesign_hasStrictlyDominatingSubset` and `Gtz.parallelFreeReachesAnchor_six_three`. The anchor's STRICT half is free at every rank by positive rescaling, `Gtz.UniformPositionBridge.exists_strictAnchor_of_weakDominator`.
 CONSUMERS: the general-rank capstone in `Skeleton.GeneralRank`, feeding every rung of `Gtz.UniformPositionBridge.gtzWeighted_succ_of_hinge_of_reach`.
 WHY OPEN: the only `Gtz.ParallelFreeReachesAnchor` instance in the entire tree is the rank-three one. Above rank three what is missing is per-cell connectivity of the parallel-free locus, plus an assembly step that nothing in the tree performs: `Gtz.UniformPositionBridge.DiagonalTailAtCell` has ZERO producers AND ZERO consumers, so even proving it would leave it unwired.
 ATTACK: `Gtz.UniformPositionBridge.windowAnchorReachFree_of_weakWitness` plus `exists_strictAnchor_of_weakDominator` already reduce this to a weak parallel-free dominator at each cell together with per-cell connectivity. Two concrete gaps remain: wire `DiagonalTailAtCell` and `Gtz.UniformPositionBridge.coreTailBookkeeping_feasible` into that weak witness (the Fin reindexing and the Parseval sum are unwritten), and close the tail-block diagonality matrix identity that Gtz/Uniform/AnchorAssembly.lean:269-283 self-declares unproved, whose content `sum_tailRawWeight_mul_tailCoeff` is already a theorem.
 NOT-REFUTED: `Gtz.UniformPositionBridge.not_windowAnchorReachFree_two` and `Gtz.not_parallelFreeReachesAnchor_rankTwo` refute reach at RANK TWO, but they are not instances of this statement: the sharp window is empty at rank two, since `2 * 2 = 4` exceeds `2 * (2 + 1) / 2 = 3`. The stage-2 lane confirmed the rank-two obstruction dissolves under the sharpening. The guard `3 <= rank` is therefore what keeps this statement clear of the only known refutation.
 -/
-axiom obligationSharpWindowAnchorReach :
-    ∀ rank : ℕ, 3 ≤ rank →
+
+/--
+STATUS: partial proof. The sharp window at rank three is the single cell size six.
+CONSUMERS: `obligationSharpWindowAnchorReach`, which survives as a theorem so no capstone changed.
+WHY OPEN: split off from `obligationSharpWindowAnchorReach` so the rank-three half can be discharged separately.
+ATTACK: `Gtz.icosaDesign` with `Gtz.icosaDesign_hasStrictlyDominatingSubset` and `Gtz.parallelFreeReachesAnchor_six_three`, exactly as `skeletonSharpWindowAnchorReachAtRankThree` already does in `Skeleton.RankThree`.
+NOT-REFUTED: the rank-two refutations are not instances; the sharp window is empty at rank two.
+-/
+theorem obligationSharpWindowAnchorReachRankThree :
+    ∀ size : ℕ, 2 * 3 ≤ size → size ≤ 3 * (3 + 1) / 2 →
+      ∃ anchor : Gtz.WeightedDesign size 3,
+        Gtz.HasStrictlyDominatingSubset anchor
+          ∧ Gtz.ParallelFreeReachesAnchor size 3 anchor := by
+  intro size hsizeAtLeastSix hsizeAtMostSix
+  have hsizeIsSix : size = 6 := by omega
+  subst hsizeIsSix
+  exact ⟨Gtz.icosaDesign, Gtz.icosaDesign_hasStrictlyDominatingSubset,
+    Gtz.parallelFreeReachesAnchor_six_three⟩
+
+/--
+STATUS: no kernel evidence at any rank in this range.
+CONSUMERS: `obligationSharpWindowAnchorReach`, which survives as a theorem so no capstone changed.
+WHY OPEN: the only `Gtz.ParallelFreeReachesAnchor` instance in the tree is the rank-three one, so nothing here has a single supporting instance.
+ATTACK: `Gtz.UniformPositionBridge.windowAnchorReachFree_of_weakWitness` plus `exists_strictAnchor_of_weakDominator`, then wire `Gtz.UniformPositionBridge.DiagonalTailAtCell` into the weak witness.
+NOT-REFUTED: no census row targets any cell with `2 * rank <= size <= rank * (rank + 1) / 2` at rank four or above.
+-/
+axiom obligationSharpWindowAnchorReachRankFourAndUp :
+    ∀ rank : ℕ, 4 ≤ rank →
       ∀ size : ℕ, 2 * rank ≤ size → size ≤ rank * (rank + 1) / 2 →
         ∃ anchor : Gtz.WeightedDesign size rank,
           Gtz.HasStrictlyDominatingSubset anchor
             ∧ Gtz.ParallelFreeReachesAnchor size rank anchor
+
+/-- **Split, not weakened.**  Same name, same type as the axiom it replaces, so
+every downstream capstone compiles untouched. -/
+theorem obligationSharpWindowAnchorReach :
+    ∀ rank : ℕ, 3 ≤ rank →
+      ∀ size : ℕ, 2 * rank ≤ size → size ≤ rank * (rank + 1) / 2 →
+        ∃ anchor : Gtz.WeightedDesign size rank,
+          Gtz.HasStrictlyDominatingSubset anchor
+            ∧ Gtz.ParallelFreeReachesAnchor size rank anchor := by
+  intro rank hrankAtLeastThree
+  rcases Nat.lt_or_ge rank 4 with hrankBelowFour | hrankAtLeastFour
+  · have hrankIsThree : rank = 3 := by omega
+    subst hrankIsThree
+    exact obligationSharpWindowAnchorReachRankThree
+  · exact obligationSharpWindowAnchorReachRankFourAndUp rank hrankAtLeastFour
 
 /-!
 ## The subsumption, as a kernel fact rather than a docstring claim
@@ -240,6 +292,6 @@ def liveObligationNames : List Lean.Name :=
    `Skeleton.obligationTieFreeKFour,
    `Skeleton.obligationSubThresholdBandHinge,
    `Skeleton.obligationThresholdCellHinge,
-   `Skeleton.obligationSharpWindowAnchorReach]
+   `Skeleton.obligationSharpWindowAnchorReachRankFourAndUp]
 
 end Skeleton

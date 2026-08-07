@@ -72,7 +72,13 @@ def retiredObligationNames : List Name :=
   [-- 2026-08-07: split into the five matroid classes; survives as a theorem
    -- assembled from them (lossless -- the tie-emptiness reading of the hinge
    -- carries no pattern hypothesis).
-   `Skeleton.obligationStressFreeHingeSixThree]
+   `Skeleton.obligationStressFreeHingeSixThree,
+   -- 2026-08-07: split by rank; survives as a theorem assembled from the two
+   -- halves.
+   `Skeleton.obligationSharpWindowAnchorReach,
+   -- 2026-08-07: introduced by the rank split and discharged in the same edit
+   -- (Gtz.icosaDesign; the sharp window at rank three is the single cell six).
+   `Skeleton.obligationSharpWindowAnchorReachRankThree]
 
 /-- Obligations added since the baseline.  Each name must be a declared axiom;
 the gate checks that.  Adding to this list with `retiredObligationNames` still
@@ -84,7 +90,11 @@ def introducedObligationNames : List Name :=
    `Skeleton.obligationTieFreeOneLine,
    `Skeleton.obligationTieFreeTwoMeetingLines,
    `Skeleton.obligationTieFreeThreeLines,
-   `Skeleton.obligationTieFreeKFour]
+   `Skeleton.obligationTieFreeKFour,
+   -- 2026-08-07: the rank split of the reach obligation.  The rank-three half
+   -- was discharged in the same edit, so it also appears in the retired list.
+   `Skeleton.obligationSharpWindowAnchorReachRankThree,
+   `Skeleton.obligationSharpWindowAnchorReachRankFourAndUp]
 
 /-! ### The gate -/
 
