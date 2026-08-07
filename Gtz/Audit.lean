@@ -433,6 +433,7 @@ import Gtz.Uniform.RouteBProps
 import Gtz.Uniform.AnchorBookkeeping
 import Gtz.Uniform.AnchorAssembly
 import Gtz.Design.StressFreeMatroidStratification
+import Gtz.Design.StressFreeClassSplit
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -15300,6 +15301,17 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.MultiLineCert.certificateRunSeven
 #print axioms Gtz.MultiLineCert.linearSpaceListIsComplete_seven_certified
 #print axioms Gtz.MultiLineCert.linearSpaceMultiLineCasesSeven_holds
+
+-- Design/StressFreeClassSplit: the five-class split's kernel backing --
+-- non-vacuity of the stress-free (6,3) stratum (the tetrahedron-edge witness,
+-- which realizes the M(K4) pattern) and losslessness of the class split.
+#print axioms Gtz.diagonalScale_sq
+#print axioms Gtz.coordinateDiagonalDesign_atomMatrix_entry
+#print axioms Gtz.coordinateDiagonalDesign_isStressFree
+#print axioms Gtz.stressFreeStratumSixThreeIsInhabited
+#print axioms Gtz.coordinateDiagonalDesign_hasNoParallelPair
+#print axioms Gtz.stressFreeStratumIsTieFree_of_stressFreeHinge
+#print axioms Gtz.stressFreeResidualFamilies_tieFree_iff_stressFreeHinge
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
