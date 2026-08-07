@@ -22,9 +22,12 @@ That configuration is not an incidental one.  Both of the tree's primitive
   `{0,1,3}` (the plane `z = 0`) and `{0,2,4}` (the plane `y = 0`), again sharing
   the atom `0`.
 
-Both were verified independently, in exact arithmetic, to be primitive and
-stress-free, with exactly those two dependent triples and no others.  So the
-theorem below excludes every `(5,3)` tie the campaign knows.
+The diamond's stress-freeness is now a KERNEL theorem —
+`Gtz.diamondDesign_atomMatrices_linearIndependent`
+(Gtz/Design/StressFreeClosureFailure.lean); the second design remains verified
+in exact rational arithmetic outside the kernel, primitive and stress-free
+with exactly those two dependent triples and no others.  So the theorem below
+excludes every `(5,3)` tie the campaign knows.
 
 The mechanism is short and needs neither stress-freeness nor the endpoint
 gauge.  Write the spike's expansion `v v^T = sum_i c_i g_i g_i^T` with every

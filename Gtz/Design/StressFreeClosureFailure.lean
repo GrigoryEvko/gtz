@@ -54,6 +54,7 @@ import Gtz.Ties.RepeatedAtomExclusion
 import Gtz.Design.MarginTransfer
 import Gtz.Certificates.ResidueDissolution
 import Gtz.Design.DiamondPrimitive
+import Gtz.Design.RigidityBridge
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -505,28 +506,110 @@ theorem not_relaxedStressFreeHinge_of_fiveThree_tie
 
 `Gtz.diamondDesign` is a kernel-checked primitive `(5,3)` tie (as is
 `Gtz.uniformTieParentDesign`, a different design with the same dependent-triple
-matroid), so it is a concrete witness this no-go wants.  Its five atoms ARE independent in the
-symmetric three-by-three matrices, but that fact is not proved here: the
-diamond's atoms are the whitened incidence rows of `K4` minus an edge, and
-reading them off needs the whitener, which is a `Classical.choose`.  Verified
-instead in exact rational arithmetic, through the congruence-invariant chart
-in which the diamond's Parseval identity reads
-`sum_e conductance_e v_e v_e^T = L` with
+matroid), so it is a concrete witness this no-go wants.  Its five atoms ARE
+independent in the symmetric three-by-three matrices, and that fact is now
+PROVED below.  The whitener is a `Classical.choose`, but independence never
+reads its entries: the five raw edge rank-ones of
+`(1,-1,0), (1,0,-1), (1,0,0), (0,1,-1), (0,1,0)` are independent because five
+entries of a vanishing combination read the coefficients off directly, and
+`atomMatrix_graphicAtom` transports any vanishing combination of the design's
+atoms through the invertible whitener congruence and the positive
+conductance-to-weight scales down to the raw ones.  The premise the instance
+used to carry is retired. -/
 
-    L = !![8, -2, -3; -2, 8, -3; -3, -3, 6],   det L = 180,
+/-- The five raw diamond edge rank-ones are linearly independent: the three
+off-diagonal entries of a vanishing combination kill the three non-axis
+coefficients, the two remaining diagonal entries kill the rest. -/
+theorem diamondEdgeAtomMatrices_linearIndependent (coeff : Fin 5 → ℝ)
+    (hvanish : (∑ edge, coeff edge • atomMatrix (diamondGraph.edgeVector edge)) = 0) :
+    coeff = 0 := by
+  have hentry : ∀ row col : Fin 3,
+      (∑ edge, coeff edge • atomMatrix (diamondGraph.edgeVector edge)) row col = 0 := by
+    intro row col
+    rw [hvanish]
+    rfl
+  have hZeroOne := hentry 0 1
+  have hZeroTwo := hentry 0 2
+  have hOneTwo := hentry 1 2
+  have hZeroZero := hentry 0 0
+  have hOneOne := hentry 1 1
+  simp [Matrix.sum_apply, atomMatrix, Matrix.vecMulVec_apply,
+    MultigraphOnGround.edgeVector, diamondGraph, Fin.sum_univ_five,
+    Fin.isValue] at hZeroOne hZeroTwo hOneTwo hZeroZero hOneOne
+  funext edge
+  fin_cases edge <;> simp <;> linarith
 
-the five rank-one matrices `v_e v_e^T` of the edge vectors
-`(1,-1,0), (1,0,-1), (1,0,0), (0,1,-1), (0,1,0)` have rank five in `Sym(3)`, and
-independence is preserved by the congruence.  So the premise below is TRUE and
-is the single unlanded step of the instance. -/
-
-/-- **THE INSTANCE, WITH ITS ONE PREMISE NAMED.**  Granted only that the
-diamond's five atoms are independent, the relaxed branch-(i) statement is
-false. -/
-theorem not_relaxedStressFreeHinge_of_diamond
-    (hdiamondIndependent : ∀ stressCoeff : Fin 5 → ℝ,
+/-- **The diamond design's five atom matrices are linearly independent** — the
+fact the instance below used to take as a hypothesis.  A vanishing combination
+of the design's atoms is a vanishing combination of the whitener-congruated
+raw rank-ones with the conductance-to-weight ratios folded in; the congruence
+is invertible and the ratios are positive, so the raw independence finishes. -/
+theorem diamondDesign_atomMatrices_linearIndependent :
+    ∀ stressCoeff : Fin 5 → ℝ,
       (∑ label, stressCoeff label • atomMatrix (diamondDesign.atom label)) = 0 →
-        stressCoeff = 0) :
+        stressCoeff = 0 := by
+  intro stressCoeff hvanish
+  have hatomShape : ∀ label : Fin 5,
+      atomMatrix (diamondDesign.atom label)
+        = (diamondData.conductance label / diamondData.weight label) •
+            ((diamondData.whitener)ᵀ
+              * atomMatrix (diamondGraph.edgeVector label) * diamondData.whitener) :=
+    fun label => diamondData.atomMatrix_graphicAtom label
+  have hscaledVanish :
+      (diamondData.whitener)ᵀ
+          * (∑ label, (stressCoeff label
+                * (diamondData.conductance label / diamondData.weight label)) •
+              atomMatrix (diamondGraph.edgeVector label))
+          * diamondData.whitener = 0 := by
+    have hpull := congr_sum_smul_atomMatrix (diamondData.whitener)ᵀ
+      (fun label => stressCoeff label
+        * (diamondData.conductance label / diamondData.weight label))
+      diamondGraph.edgeVector Finset.univ
+    rw [Matrix.transpose_transpose] at hpull
+    rw [hpull, ← hvanish]
+    refine Finset.sum_congr rfl fun label _ => ?_
+    rw [hatomShape label, smul_smul]
+  have hwhitenerDet : IsUnit (diamondData.whitener).det := diamondData.whitener_isUnit
+  have hwhitenerTransposeDet : IsUnit ((diamondData.whitener)ᵀ).det := by
+    rwa [Matrix.det_transpose]
+  have hrawVanish :
+      (∑ label, (stressCoeff label
+            * (diamondData.conductance label / diamondData.weight label)) •
+          atomMatrix (diamondGraph.edgeVector label)) = 0 := by
+    set rawSum := ∑ label, (stressCoeff label
+        * (diamondData.conductance label / diamondData.weight label)) •
+        atomMatrix (diamondGraph.edgeVector label) with hrawSumDef
+    have hconjIsZero : ((diamondData.whitener)ᵀ)⁻¹
+        * ((diamondData.whitener)ᵀ * rawSum * diamondData.whitener)
+        * (diamondData.whitener)⁻¹ = 0 := by
+      rw [hscaledVanish, Matrix.mul_zero, Matrix.zero_mul]
+    have hconjIsRawSum : ((diamondData.whitener)ᵀ)⁻¹
+        * ((diamondData.whitener)ᵀ * rawSum * diamondData.whitener)
+        * (diamondData.whitener)⁻¹ = rawSum := by
+      rw [Matrix.mul_assoc (diamondData.whitener)ᵀ rawSum diamondData.whitener,
+        ← Matrix.mul_assoc ((diamondData.whitener)ᵀ)⁻¹ (diamondData.whitener)ᵀ
+          (rawSum * diamondData.whitener),
+        Matrix.nonsing_inv_mul _ hwhitenerTransposeDet, Matrix.one_mul,
+        Matrix.mul_assoc rawSum diamondData.whitener (diamondData.whitener)⁻¹,
+        Matrix.mul_nonsing_inv _ hwhitenerDet, Matrix.mul_one]
+    exact hconjIsRawSum.symm.trans hconjIsZero
+  have hscaledCoeff := diamondEdgeAtomMatrices_linearIndependent
+    (fun label => stressCoeff label
+      * (diamondData.conductance label / diamondData.weight label)) hrawVanish
+  funext label
+  have hlabelZero := congrFun hscaledCoeff label
+  have hratioPos : 0 < diamondData.conductance label / diamondData.weight label :=
+    div_pos (diamondData.conductance_pos label) (diamondData.weight_pos label)
+  have hproductZero : stressCoeff label
+      * (diamondData.conductance label / diamondData.weight label) = 0 := hlabelZero
+  rcases mul_eq_zero.mp hproductZero with hcoeffZero | hratioZero
+  · exact hcoeffZero
+  · exact absurd hratioZero hratioPos.ne'
+
+/-- **THE INSTANCE, PREMISE-FREE.**  The relaxed branch-(i) statement is
+false, unconditionally: the diamond is a kernel-checked tie and its atoms are
+independent by the theorem above. -/
+theorem not_relaxedStressFreeHinge_of_diamond :
     ¬ ∀ (atom : Fin 6 → Fin 3 → ℝ) (weight : Fin 6 → ℝ),
         (∀ label, 0 ≤ weight label) →
         (∑ label, weight label) = 1 →
@@ -537,6 +620,6 @@ theorem not_relaxedStressFreeHinge_of_diamond
           ∧ (atomMatrix (atom first) + atomMatrix (atom second) + atomMatrix (atom third)
               - (1 : Matrix (Fin 3) (Fin 3) ℝ)).PosDef :=
   not_relaxedStressFreeHinge_of_fiveThree_tie diamondDesign diamondDesign_isTie
-    hdiamondIndependent
+    diamondDesign_atomMatrices_linearIndependent
 
 end Gtz

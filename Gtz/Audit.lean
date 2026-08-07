@@ -11533,6 +11533,8 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.det_subsetSum_pos_of_dominates
 #print axioms Gtz.exists_relaxed_stressFree_sixThree_without_posDef_triple
 #print axioms Gtz.not_relaxedStressFreeHinge_of_fiveThree_tie
+#print axioms Gtz.diamondEdgeAtomMatrices_linearIndependent
+#print axioms Gtz.diamondDesign_atomMatrices_linearIndependent
 #print axioms Gtz.not_relaxedStressFreeHinge_of_diamond
 
 /-! ### The kill-inequality certificate and the window/layer/dual kit -/
