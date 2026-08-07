@@ -683,4 +683,211 @@ theorem posSemidef_selectedFaceAtomSum {size : ℕ}
   exact (posSemidef_atomMatrix (direction label)).smul
     (div_nonneg (hmassNonneg label) (hweightNonneg label))
 
+
+/-! ## Strict-domination producers: the pointwise seed and the Schur completion
+
+The ladder above says what a tie must LOOK like; this section builds the tools
+that will refuse it.  Three design-level facts:
+
+* every free atom of the one-line stratum sits strictly off the line plane
+  (`oneLine_freeAtom_normal_dot_ne_zero`) — a vanishing normal component would
+  merge the atom into the line plane and kill a bracket the pattern declares
+  independent;
+* SOME SINGLE complement atom strictly over-covers the normal
+  (`exists_complementAtom_overcovers_normal`) — the pointwise strengthening of
+  `complement_strictly_overcovers_normal`: not just the complement's sum but
+  one atom alone beats `|n|²`, because the complement's weights sum to
+  strictly less than one;
+* the uniform Schur producer (`posDef_of_normalSurplus_planeCover`): for ANY
+  selected subset, a strict normal surplus plus a plane cover beating the
+  cross-coupling square yields a POSITIVE DEFINITE gap.  The engine is one
+  completed square,
+  `alpha * gapForm = (alpha * planeSurplus - cross²) + (cross + alpha*t)²`,
+  so the statement is triple-type-agnostic: two line atoms plus one free
+  (where the cross collapses to the free atom's own term), one line plus two
+  free, or the free triple — one lemma serves all nineteen candidates, and it
+  is direction-generic, so the two-meeting-lines class consumes it verbatim.
+
+The tie-side reading (`isTie_yields_planeCover_failure`) turns the producer
+around: a tie must exhibit, for EVERY normal-surplus triple, an in-plane probe
+where the cross square meets the scaled plane surplus.  That quantified
+failure family is the exact residual obstruction a direct closure of the class
+obligation still has to refute. -/
+
+/-- **Free atoms sit strictly off the line plane.**  A free atom orthogonal to
+the line normal would be coplanar with two line atoms, so the bracket of
+`{0, 1, f}` — independent in the pattern — would vanish. -/
+theorem oneLine_freeAtom_normal_dot_ne_zero (design : WeightedDesign 6 3)
+    (hpattern : HasLinePattern design (lineFamilyPattern [[(0 : Fin 6), 1, 2]]))
+    (normalVec : Fin 3 → ℝ) (hnormalNe : normalVec ≠ 0)
+    (horthogonal : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalVec = 0)
+    (freeLabel : Fin 6) (hfreeMem : freeLabel ∈ ({3, 4, 5} : Finset (Fin 6))) :
+    design.atom freeLabel ⬝ᵥ normalVec ≠ 0 := by
+  fin_cases hfreeMem <;> intro hzero
+  · exact absurd ((hpattern 0 1 3 (by decide) (by decide) (by decide)).mp
+      (by rw [atomBracket]
+          exact tripleBracket_eq_zero_of_commonOrthogonal hnormalNe
+            (horthogonal 0 (by decide)) (horthogonal 1 (by decide)) hzero)) (by decide)
+  · exact absurd ((hpattern 0 1 4 (by decide) (by decide) (by decide)).mp
+      (by rw [atomBracket]
+          exact tripleBracket_eq_zero_of_commonOrthogonal hnormalNe
+            (horthogonal 0 (by decide)) (horthogonal 1 (by decide)) hzero)) (by decide)
+  · exact absurd ((hpattern 0 1 5 (by decide) (by decide) (by decide)).mp
+      (by rw [atomBracket]
+          exact tripleBracket_eq_zero_of_commonOrthogonal hnormalNe
+            (horthogonal 0 (by decide)) (horthogonal 1 (by decide)) hzero)) (by decide)
+
+/-- **Some single complement atom strictly over-covers the normal** — the
+pointwise strengthening of `Gtz.complement_strictly_overcovers_normal`.  If
+every complement atom stayed at or below `|n|²` in the normal direction, the
+complement's weighted Parseval share — whose weights sum strictly below one —
+could not carry the full `|n|²`. -/
+theorem exists_complementAtom_overcovers_normal (design : WeightedDesign 6 3)
+    (lineTriple : Finset (Fin 6)) (normalVec : Fin 3 → ℝ)
+    (hlineNonempty : lineTriple.Nonempty) (hnormalNe : normalVec ≠ 0)
+    (horthogonal : ∀ lineLabel ∈ lineTriple, design.atom lineLabel ⬝ᵥ normalVec = 0) :
+    ∃ freeLabel ∈ lineTripleᶜ,
+      normalVec ⬝ᵥ normalVec < (design.atom freeLabel ⬝ᵥ normalVec) ^ 2 := by
+  by_contra hnone
+  push Not at hnone
+  have hcarried := normalParseval_on_complement design lineTriple normalVec horthogonal
+  have hnormPos : 0 < normalVec ⬝ᵥ normalVec := dotProduct_self_pos hnormalNe
+  have hbound : ∑ freeLabel ∈ lineTripleᶜ,
+        design.weight freeLabel * (design.atom freeLabel ⬝ᵥ normalVec) ^ 2
+      ≤ (∑ freeLabel ∈ lineTripleᶜ, design.weight freeLabel)
+        * (normalVec ⬝ᵥ normalVec) := by
+    rw [Finset.sum_mul]
+    exact Finset.sum_le_sum fun freeLabel hmem =>
+      mul_le_mul_of_nonneg_left (hnone freeLabel hmem) (design.weight_pos freeLabel).le
+  have hcomplLtOne : ∑ freeLabel ∈ lineTripleᶜ, design.weight freeLabel < 1 := by
+    have hsplit := Finset.sum_add_sum_compl lineTriple design.weight
+    rw [design.weight_sum_one] at hsplit
+    have hlinePos : 0 < ∑ lineLabel ∈ lineTriple, design.weight lineLabel :=
+      Finset.sum_pos (fun lineLabel _ => design.weight_pos lineLabel) hlineNonempty
+    linarith
+  have hshrunk : (∑ freeLabel ∈ lineTripleᶜ, design.weight freeLabel)
+      * (normalVec ⬝ᵥ normalVec) < normalVec ⬝ᵥ normalVec :=
+    mul_lt_of_lt_one_left hnormPos hcomplLtOne
+  linarith [hcarried.le, hbound, hshrunk]
+
+/-- The one-line reading: some single free atom of `{3, 4, 5}` strictly
+over-covers the line normal — the seed atom every completion argument grows
+from. -/
+theorem oneLine_exists_freeAtom_overcovers_normal (design : WeightedDesign 6 3)
+    (normalVec : Fin 3 → ℝ) (hnormalNe : normalVec ≠ 0)
+    (horthogonal : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalVec = 0) :
+    ∃ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+      normalVec ⬝ᵥ normalVec < (design.atom freeLabel ⬝ᵥ normalVec) ^ 2 := by
+  have hexists := exists_complementAtom_overcovers_normal design {0, 1, 2} normalVec
+    ⟨0, by decide⟩ hnormalNe horthogonal
+  rwa [show ({0, 1, 2} : Finset (Fin 6))ᶜ = {3, 4, 5} by decide] at hexists
+
+/-- **The uniform Schur producer.**  A selected subset whose atoms carry a
+STRICT surplus along a unit normal, and whose in-plane coverage beats the
+identity by more than the cross-coupling square demands, has a POSITIVE
+DEFINITE gap.  The engine is the completed square
+`alpha * gapForm = (alpha * planeSurplus - cross²) + (cross + alpha * t)²`
+with `alpha = normal surplus`, so no eigenvalue machinery is needed, and the
+statement is uniform over the selected subset's anatomy — line pairs plus a
+free atom, mixed triples, and the free triple all instantiate it. -/
+theorem posDef_of_normalSurplus_planeCover {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) (unitNormal : Fin 3 → ℝ)
+    (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (hsurplus : 1 < ∑ selectedLabel ∈ selected,
+      (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2)
+    (hplaneCover : ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ unitNormal = 0 → probe ≠ 0 →
+      (∑ selectedLabel ∈ selected, (design.atom selectedLabel ⬝ᵥ probe)
+          * (design.atom selectedLabel ⬝ᵥ unitNormal)) ^ 2
+        < ((∑ selectedLabel ∈ selected, (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) - 1)
+          * ((∑ selectedLabel ∈ selected, (design.atom selectedLabel ⬝ᵥ probe) ^ 2)
+              - probe ⬝ᵥ probe)) :
+    (subsetSum design selected - 1).PosDef := by
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun probeVec hprobeNe => ?_⟩
+  · exact ((Matrix.posSemidef_sum selected fun selectedLabel _ =>
+      posSemidef_atomMatrix (design.atom selectedLabel)).1).sub Matrix.isHermitian_one
+  · rw [star_trivial, dominationGap_form]
+    set normalCoord : ℝ := probeVec ⬝ᵥ unitNormal with hnormalCoord
+    set planePart : Fin 3 → ℝ := probeVec - normalCoord • unitNormal with hplanePart
+    have hdecompose : probeVec = planePart + normalCoord • unitNormal := by
+      rw [hplanePart, sub_add_cancel]
+    have horthPlane : planePart ⬝ᵥ unitNormal = 0 := by
+      rw [hplanePart, sub_dotProduct, smul_dotProduct, hunit, smul_eq_mul, mul_one,
+        ← hnormalCoord, sub_self]
+    have hatomSplit : ∀ selectedLabel : Fin size,
+        design.atom selectedLabel ⬝ᵥ probeVec
+          = design.atom selectedLabel ⬝ᵥ planePart
+            + normalCoord * (design.atom selectedLabel ⬝ᵥ unitNormal) := by
+      intro selectedLabel
+      rw [hdecompose, dotProduct_add, dotProduct_smul, smul_eq_mul]
+    have hnormSplit : probeVec ⬝ᵥ probeVec
+        = planePart ⬝ᵥ planePart + normalCoord ^ 2 := by
+      rw [hdecompose, dotProduct_add, add_dotProduct, add_dotProduct,
+        dotProduct_smul, smul_dotProduct, smul_dotProduct, dotProduct_smul,
+        horthPlane, dotProduct_comm unitNormal planePart, horthPlane, hunit]
+      simp only [smul_eq_mul, mul_zero, mul_one]
+      ring
+    set coverSum : ℝ := ∑ selectedLabel ∈ selected,
+      (design.atom selectedLabel ⬝ᵥ planePart) ^ 2 with hcoverSum
+    set crossSum : ℝ := ∑ selectedLabel ∈ selected,
+      (design.atom selectedLabel ⬝ᵥ planePart)
+        * (design.atom selectedLabel ⬝ᵥ unitNormal) with hcrossSum
+    set surplusBase : ℝ := ∑ selectedLabel ∈ selected,
+      (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2 with hsurplusBase
+    have hsumExpand : ∑ selectedLabel ∈ selected,
+        (design.atom selectedLabel ⬝ᵥ probeVec) ^ 2
+          = coverSum + 2 * normalCoord * crossSum + normalCoord ^ 2 * surplusBase := by
+      rw [hcoverSum, hcrossSum, hsurplusBase, Finset.mul_sum, Finset.mul_sum,
+        ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+      refine Finset.sum_congr rfl fun selectedLabel _ => ?_
+      rw [hatomSplit selectedLabel]
+      ring
+    rw [hsumExpand, hnormSplit]
+    by_cases hplaneZero : planePart = 0
+    · have hcoverZero : coverSum = 0 := by
+        rw [hcoverSum]
+        exact Finset.sum_eq_zero fun selectedLabel _ => by simp [hplaneZero]
+      have hcrossZero : crossSum = 0 := by
+        rw [hcrossSum]
+        exact Finset.sum_eq_zero fun selectedLabel _ => by simp [hplaneZero]
+      have hplaneNormZero : planePart ⬝ᵥ planePart = 0 := by simp [hplaneZero]
+      have hcoordNe : normalCoord ≠ 0 := by
+        intro hzero
+        exact hprobeNe (by rw [hdecompose, hplaneZero, hzero, zero_smul, add_zero])
+      have hcoordSqPos : 0 < normalCoord ^ 2 := by positivity
+      rw [hcoverZero, hcrossZero, hplaneNormZero]
+      nlinarith [mul_pos hcoordSqPos (sub_pos.mpr hsurplus)]
+    · have hcover := hplaneCover planePart horthPlane hplaneZero
+      have halphaPos : 0 < surplusBase - 1 := by linarith [hsurplus]
+      have hbracketPos :
+          0 < (surplusBase - 1) * (coverSum - planePart ⬝ᵥ planePart) - crossSum ^ 2 := by
+        linarith [hcover]
+      have hproductPos : 0 < (surplusBase - 1)
+          * (coverSum + 2 * normalCoord * crossSum + normalCoord ^ 2 * surplusBase
+              - (planePart ⬝ᵥ planePart + normalCoord ^ 2)) := by
+        nlinarith [hbracketPos, sq_nonneg (crossSum + (surplusBase - 1) * normalCoord)]
+      nlinarith [hproductPos, halphaPos]
+
+/-- **What a tie must refuse, quantified.**  At a tie, EVERY normal-surplus
+subset comes with an in-plane probe where the cross-coupling square reaches
+the scaled plane surplus — the producer's hypothesis fails everywhere.  This
+family of failing probes is the exact residual obstruction of the direct
+route. -/
+theorem isTie_yields_planeCover_failure {size : ℕ} (design : WeightedDesign size 3)
+    (htie : IsTie design) (selected : Finset (Fin size)) (hcard : selected.card = 3)
+    (unitNormal : Fin 3 → ℝ) (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (hsurplus : 1 < ∑ selectedLabel ∈ selected,
+      (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) :
+    ∃ probe : Fin 3 → ℝ, probe ⬝ᵥ unitNormal = 0 ∧ probe ≠ 0 ∧
+      ((∑ selectedLabel ∈ selected, (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) - 1)
+          * ((∑ selectedLabel ∈ selected, (design.atom selectedLabel ⬝ᵥ probe) ^ 2)
+              - probe ⬝ᵥ probe)
+        ≤ (∑ selectedLabel ∈ selected, (design.atom selectedLabel ⬝ᵥ probe)
+            * (design.atom selectedLabel ⬝ᵥ unitNormal)) ^ 2 := by
+  by_contra hnone
+  push Not at hnone
+  exact htie.2 selected hcard (posDef_of_normalSurplus_planeCover design selected
+    unitNormal hunit hsurplus fun probe horth hne => hnone probe horth hne)
+
 end Gtz

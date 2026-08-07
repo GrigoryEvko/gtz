@@ -15392,6 +15392,18 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.oneLineSampleDesign_not_isTie
 #print axioms Gtz.directionChartGap_openAtom
 #print axioms Gtz.posSemidef_selectedFaceAtomSum
+-- Design/LineClassObstructions, stage 3: the strict-domination
+-- producers -- free atoms strictly off the line plane, the pointwise
+-- normal seed (ONE complement atom over-covers |n|^2), the uniform
+-- Schur producer (normal surplus + plane cover => PosDef gap, one
+-- completed square, triple-anatomy-agnostic and direction-generic),
+-- and the tie-side quantified plane-cover failure (the named RCP
+-- residual of the direct O8 route).
+#print axioms Gtz.oneLine_freeAtom_normal_dot_ne_zero
+#print axioms Gtz.exists_complementAtom_overcovers_normal
+#print axioms Gtz.oneLine_exists_freeAtom_overcovers_normal
+#print axioms Gtz.posDef_of_normalSurplus_planeCover
+#print axioms Gtz.isTie_yields_planeCover_failure
 
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-
