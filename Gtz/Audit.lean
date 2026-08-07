@@ -15421,6 +15421,54 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.distinctLabelTriples_nonempty
 #print axioms Gtz.bracketClearanceOf_pos
 #print axioms Gtz.wallClearanceOf_pos
+-- Design/LineFreeConicBridge, stage 3 interior (Family I): floor
+-- weakening, the clearance-bounded interior Prop (weak antecedent
+-- KEPT) and its ramp reduction into the two-family assembly, the
+-- full relabelling-invariance suite collapsing the orbit split to
+-- the base triple {0,1,2}, and the quantitative icosa seed (moment
+-- matrix = tau*1, gap {0,4,5} >= 3*1 by exact integer SOS).
+#print axioms Gtz.posSemidef_identityFloor_of_le
+#print axioms Gtz.posSemidef_identityFloor_of_dominates
+#print axioms Gtz.clearanceRampFloor_pos
+#print axioms Gtz.interiorFamilyMarginFloor_of_clearanceBounded
+#print axioms Gtz.lineFreeOffConic_noTie_of_clearanceBoundedAndCollar
+#print axioms Gtz.designMassOf_relabelDesign
+#print axioms Gtz.massClearanceOf_relabelDesign
+#print axioms Gtz.conicClearanceOf_relabelDesign
+#print axioms Gtz.bracketClearanceOf_relabelDesign
+#print axioms Gtz.wallClearanceOf_relabelDesign
+#print axioms Gtz.hasNoCommonQuadric_relabelDesign
+#print axioms Gtz.hasLinePattern_lineFree_relabelDesign
+#print axioms Gtz.exists_relabel_map_baseTriple
+#print axioms Gtz.clearanceBoundedInteriorFloor_of_baseTriple
+#print axioms Gtz.icosaApproximant_atomMomentMatrix_eq
+#print axioms Gtz.icosaApproximant_gap_floorThree
+-- Design/LineFreeConicBridge, stage 3 collar (Family II): the
+-- per-wall split of the collar claim, the attained-mass-wall trilogy
+-- (a vanished atom is a stress; the mass wall lies ON the conic wall
+-- and is weakly dominated there), the quantified stress walk with
+-- explicit off-wall residual, the dust-monotonicity engine, and
+-- kernel dust-ray collar witnesses at BOTH named surviving boundary
+-- ties (tetra ray (0,1/4], diamond ray (0,1/16]).
+#print axioms Gtz.boundaryCollarExcludesTies_wallClearance_of_perWall
+#print axioms Gtz.not_stressFree_of_atom_eq_zero
+#print axioms Gtz.not_hasNoCommonQuadric_of_atom_eq_zero
+#print axioms Gtz.exists_dominating_of_atom_eq_zero
+#print axioms Gtz.exists_walkedWeights_of_positiveStressEntry
+#print axioms Gtz.exists_walkedWeights_parseval_of_commonQuadric
+#print axioms Gtz.posDef_sub_smul_of_scale_le
+#print axioms Gtz.tripleBracket_tetraCornerDirection_ne_zero
+#print axioms Gtz.tetraCornerDirection_isStressFree
+#print axioms Gtz.hasNoCommonQuadric_tetraCornerDirection
+#print axioms Gtz.tetraCorner_gap_form
+#print axioms Gtz.tetraCorner_gap_posDef_on_dustRay
+#print axioms Gtz.tetraCornerChartPoint_hasStrictTriple
+#print axioms Gtz.tripleBracket_diamondCornerDirection_ne_zero
+#print axioms Gtz.diamondCornerDirection_isStressFree
+#print axioms Gtz.hasNoCommonQuadric_diamondCornerDirection
+#print axioms Gtz.diamondCorner_gap_form
+#print axioms Gtz.diamondCorner_gap_posDef_on_dustRay
+#print axioms Gtz.diamondCornerChartPoint_hasStrictTriple
 
 -- Design/KFourChartClosure: the K4 chart route minus the endgame -- the
 -- rank-two Foster engine, positive definiteness from leading minors by
