@@ -15870,6 +15870,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- bounded by Cauchy-Schwarz, and the whole thing reduced to ONE division-free
 -- inequality `tiltBound * complementWeight < margin * lineWeight`.
 #print axioms Gtz.oneLine_freeTriple_posDef_of_constants
+
+-- Design/TightAntecedentMining, the FIRST region on which the chartless
+-- residual is a THEOREM: equal complement weights make the cross identity
+-- kill the tilt outright, so surplus (free) plus a line-mass ceiling suffice
+-- and the free triple strictly dominates.
+#print axioms Gtz.complement_tilt_vanishes_of_equalWeights
+#print axioms Gtz.oneLine_freeTriple_posDef_of_equalWeights
 #print axioms Gtz.firstAxis_isUnit
 #print axioms Gtz.producerNormal_transfers
 #print axioms Gtz.patternTightDominatedCoverProperty_iff_strictSelector

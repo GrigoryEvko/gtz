@@ -955,4 +955,100 @@ theorem oneLine_freeTriple_posDef_of_constants (design : WeightedDesign 6 3)
   · rw [hheightSum]
     nlinarith [hsurplusProduct, hbeat, hmarginPos, hfreeWeightPos, hlineWeightPos]
 
+/-- **Equal complement weights kill the tilt outright.**  The cross identity
+`Gtz.oneLine_crossIdentity` says the complement's WEIGHTED height-times-shadow
+readings cancel exactly against any in-plane probe.  When the complement
+weights are all equal that common weight factors out, so the UNWEIGHTED tilt --
+the single quantity the Schur complement subtracts -- vanishes identically.
+The third input of `Gtz.posDef_of_coverMargin_of_tiltBound` is then not merely
+bounded but discharged. -/
+theorem complement_tilt_vanishes_of_equalWeights {size : ℕ} (design : WeightedDesign size 3)
+    (lineTriple : Finset (Fin size)) (unitNormal probe : Fin 3 → ℝ) (commonWeight : ℝ)
+    (hprobeFlat : probe ⬝ᵥ unitNormal = 0)
+    (horth : ∀ lineLabel ∈ lineTriple, design.atom lineLabel ⬝ᵥ unitNormal = 0)
+    (hequal : ∀ freeLabel ∈ lineTripleᶜ, design.weight freeLabel = commonWeight)
+    (hcommonPos : 0 < commonWeight) :
+    ∑ freeLabel ∈ lineTripleᶜ,
+        (design.atom freeLabel ⬝ᵥ unitNormal) * (design.atom freeLabel ⬝ᵥ probe) = 0 := by
+  have hcross := oneLine_crossIdentity design lineTriple unitNormal probe hprobeFlat horth
+  have hfactor : ∑ freeLabel ∈ lineTripleᶜ, design.weight freeLabel
+        * ((design.atom freeLabel ⬝ᵥ unitNormal) * (design.atom freeLabel ⬝ᵥ probe))
+      = commonWeight * ∑ freeLabel ∈ lineTripleᶜ,
+          (design.atom freeLabel ⬝ᵥ unitNormal) * (design.atom freeLabel ⬝ᵥ probe) := by
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun freeLabel hmem => by rw [hequal freeLabel hmem]
+  rw [hfactor] at hcross
+  rcases mul_eq_zero.mp hcross with hzero | hzero
+  · exact absurd hzero (ne_of_gt hcommonPos)
+  · exact hzero
+
+/-- **The free triple strictly dominates whenever its weights are equal and the
+line is thin.**  With the tilt discharged, the only surviving requirement is
+the in-plane cover -- and `Gtz.complementShadow_coverMargin_of_lineMassCeiling`
+buys that from a ceiling on the line atoms' weighted in-plane reading.  The
+surplus comes free from `Gtz.complement_surplus_ge_lineWeight`.
+
+So on the one-line stratum the chartless residual is DISCHARGED at every
+design whose three free atoms share a weight and whose line mass stays below
+`1 - (1 + margin) * commonWeight` of the probe norm.  That is a genuine
+uniform region of the stratum, and the first one on which the residual is
+proved rather than assumed. -/
+theorem oneLine_freeTriple_posDef_of_equalWeights (design : WeightedDesign 6 3)
+    (unitNormal : Fin 3 → ℝ) (commonWeight lineMassCeiling margin : ℝ)
+    (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (horth : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ unitNormal = 0)
+    (hcommonPos : 0 < commonWeight)
+    (hequal : ∀ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+      design.weight freeLabel = commonWeight)
+    (hlineMass : ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ unitNormal = 0 →
+      ∑ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+          design.weight lineLabel * (design.atom lineLabel ⬝ᵥ probe) ^ 2
+        ≤ lineMassCeiling * (probe ⬝ᵥ probe))
+    (hmarginPos : 0 < margin)
+    (hmarginFits : (1 + margin) * commonWeight ≤ 1 - lineMassCeiling) :
+    (subsetSum design ({3, 4, 5} : Finset (Fin 6)) - 1).PosDef := by
+  have hcompl : (({0, 1, 2} : Finset (Fin 6)))ᶜ = ({3, 4, 5} : Finset (Fin 6)) := by decide
+  have hsumThree : ∀ valueOf : Fin 6 → ℝ,
+      ∑ selectedLabel ∈ ({3, 4, 5} : Finset (Fin 6)), valueOf selectedLabel
+        = valueOf 3 + valueOf 4 + valueOf 5 := by
+    intro valueOf
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton,
+      add_assoc]
+  have hlineWeightPos : 0 < ∑ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)), design.weight lineLabel :=
+    Finset.sum_pos (fun label _ => design.weight_pos label) ⟨0, by decide⟩
+  have hfreeWeightPos : 0 < ∑ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)), design.weight freeLabel :=
+    Finset.sum_pos (fun label _ => design.weight_pos label) ⟨3, by decide⟩
+  have hsurplusProduct := complement_surplus_ge_lineWeight design ({0, 1, 2} : Finset (Fin 6))
+    unitNormal hunit horth
+  rw [hcompl] at hsurplusProduct
+  have hheightSum : (design.atom 3 ⬝ᵥ unitNormal) ^ 2 + (design.atom 4 ⬝ᵥ unitNormal) ^ 2
+      + (design.atom 5 ⬝ᵥ unitNormal) ^ 2
+      = ∑ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+          (design.atom freeLabel ⬝ᵥ unitNormal) ^ 2 :=
+    (hsumThree (fun freeLabel => (design.atom freeLabel ⬝ᵥ unitNormal) ^ 2)).symm
+  have hsurplus : 1 < (design.atom 3 ⬝ᵥ unitNormal) ^ 2 + (design.atom 4 ⬝ᵥ unitNormal) ^ 2
+      + (design.atom 5 ⬝ᵥ unitNormal) ^ 2 := by
+    rw [hheightSum]
+    nlinarith [hsurplusProduct, hlineWeightPos, hfreeWeightPos]
+  refine posDef_of_coverMargin_of_tiltBound design 3 4 5 unitNormal margin 0
+    (by decide) (by decide) (by decide) hunit hsurplus ?_ ?_ ?_
+  · intro probe hprobeFlat
+    have hcover := complementShadow_coverMargin_of_lineMassCeiling design
+      ({0, 1, 2} : Finset (Fin 6)) probe commonWeight lineMassCeiling margin hcommonPos
+      (by rw [hcompl]; exact fun freeLabel hmem => le_of_eq (hequal freeLabel hmem))
+      (hlineMass probe hprobeFlat) hmarginFits
+    rw [hcompl, hsumThree (fun freeLabel => (design.atom freeLabel ⬝ᵥ probe) ^ 2)] at hcover
+    exact hcover
+  · intro probe hprobeFlat
+    have hvanish := complement_tilt_vanishes_of_equalWeights design
+      ({0, 1, 2} : Finset (Fin 6)) unitNormal probe commonWeight hprobeFlat horth
+      (by rw [hcompl]; exact hequal) hcommonPos
+    rw [hcompl, hsumThree (fun freeLabel =>
+      (design.atom freeLabel ⬝ᵥ unitNormal) * (design.atom freeLabel ⬝ᵥ probe))] at hvanish
+    rw [hvanish]
+    simp
+  · rw [hheightSum]
+    nlinarith [hsurplusProduct, hmarginPos, hlineWeightPos, hfreeWeightPos]
+
 end Gtz
