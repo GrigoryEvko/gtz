@@ -449,6 +449,7 @@ import Gtz.Design.ComplementEngine
 import Gtz.Design.PairCapEngine
 import Gtz.Design.BalancedShareBarrier
 import Gtz.Design.SplitTetraSurplusBarrier
+import Gtz.Design.ThreeLinesTriangleCell
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
@@ -15993,6 +15994,23 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- decomposition of the frontier.
 #print axioms Gtz.splitTetraDesign_surplusForm_nonpos
 #print axioms Gtz.exists_isTie_allHeavy_with_surplusForm_nonpos
+
+-- Design/ThreeLinesTriangleCell, the first proved cell of the three-lines
+-- chart, plus two general-purpose chart tools.
+-- `directionChartGap_eq_excessSplit` rewrites ANY chart gap in excess form --
+-- the total moment matrix disappears and both sums run over half the labels --
+-- and `posDef_of_dominance_fin_three` is absolute-value-free symmetric
+-- dominance with the off-diagonal bounds given as squares.  Both are chart
+-- generic and are the shared tooling the M(K4) lane consumes.
+-- `threeLines_triangle_posDef_of_dominance` is the cell itself: it is
+-- parametric in a bound on `|slide|`, so it holds on the whole admissible
+-- parameter line, fundamental domain included.
+#print axioms Gtz.directionChartGap_eq_excessSplit
+#print axioms Gtz.chartExcess
+#print axioms Gtz.chartExcess_pos
+#print axioms Gtz.posDef_of_dominance_fin_three
+#print axioms Gtz.threeLinesGap_triangle_eq
+#print axioms Gtz.threeLines_triangle_posDef_of_dominance
 
 #print axioms Gtz.firstAxis_isUnit
 #print axioms Gtz.producerNormal_transfers
