@@ -768,5 +768,85 @@ theorem not_oneLineLlfSelectorAtTightAntecedent :
   exact tightLlf_llf_notPosDef lineFirst lineSecond freeLabel hfirst hsecond hne
     hfree hposDef
 
+/-- **The shadow bound.**  Against a probe orthogonal to a unit normal an atom
+reads at most through its SHADOW: leverage minus squared height. -/
+theorem atomShadow_reading_sq_le {rank : ℕ} (atomVec unitNormal probe : Fin rank → ℝ)
+    (hunit : unitNormal ⬝ᵥ unitNormal = 1) (hprobeFlat : probe ⬝ᵥ unitNormal = 0) :
+    (atomVec ⬝ᵥ probe) ^ 2
+      ≤ (leverageOf atomVec - (atomVec ⬝ᵥ unitNormal) ^ 2) * (probe ⬝ᵥ probe) := by
+  set shadow : Fin rank → ℝ := atomVec - (atomVec ⬝ᵥ unitNormal) • unitNormal with hshadow
+  have hnormalProbe : unitNormal ⬝ᵥ probe = 0 := by rw [dotProduct_comm]; exact hprobeFlat
+  have hreading : shadow ⬝ᵥ probe = atomVec ⬝ᵥ probe := by
+    rw [hshadow, sub_dotProduct, smul_dotProduct, smul_eq_mul, hnormalProbe]
+    ring
+  have hshadowNorm : shadow ⬝ᵥ shadow = leverageOf atomVec - (atomVec ⬝ᵥ unitNormal) ^ 2 := by
+    have hexpand : shadow ⬝ᵥ shadow
+        = atomVec ⬝ᵥ atomVec - (atomVec ⬝ᵥ unitNormal) ^ 2 := by
+      simp only [hshadow, sub_dotProduct, dotProduct_sub, smul_dotProduct, dotProduct_smul,
+        smul_eq_mul, hunit, dotProduct_comm unitNormal atomVec]
+      ring
+    rw [hexpand, leverageOf_eq_dotProduct]
+  have hcauchy := dotProduct_sq_le_mul shadow probe
+  rw [hreading, hshadowNorm] at hcauchy
+  exact hcauchy
+
+/-- **The quantitative two-line-plus-one-free producer.**  If the LINE PAIR
+covers the whole in-plane with a strict multiplicative MARGIN, and some free
+atom's squared height exceeds one by more than its shadow divided by that
+margin, the triple strictly dominates.
+
+This is the exact quantitative form of the route
+`Gtz.oneLine_planeCover_of_inPlaneExcess` needs, and it names precisely why
+that route is not uniform: at `Gtz.narrowConeDesign` no line pair admits ANY
+positive margin, so the hypothesis is unsatisfiable there, not merely
+unverified. -/
+theorem oneLine_llf_posDef_of_coverMargin {size : ℕ} (design : WeightedDesign size 3)
+    (lineFirst lineSecond freeLabel : Fin size) (unitNormal : Fin 3 → ℝ) (margin : ℝ)
+    (hdistinctFirstSecond : lineFirst ≠ lineSecond)
+    (hdistinctFirstFree : lineFirst ≠ freeLabel)
+    (hdistinctSecondFree : lineSecond ≠ freeLabel)
+    (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (hfirstFlat : design.atom lineFirst ⬝ᵥ unitNormal = 0)
+    (hsecondFlat : design.atom lineSecond ⬝ᵥ unitNormal = 0)
+    (hmarginPos : 0 < margin)
+    (hcover : ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ unitNormal = 0 →
+      (1 + margin) * (probe ⬝ᵥ probe)
+        ≤ (design.atom lineFirst ⬝ᵥ probe) ^ 2 + (design.atom lineSecond ⬝ᵥ probe) ^ 2)
+    (hheightBeatsShadow :
+      leverageOf (design.atom freeLabel) - (design.atom freeLabel ⬝ᵥ unitNormal) ^ 2
+        < margin * ((design.atom freeLabel ⬝ᵥ unitNormal) ^ 2 - 1)) :
+    (subsetSum design ({lineFirst, lineSecond, freeLabel} : Finset (Fin size)) - 1).PosDef := by
+  have hshadowNonneg :
+      0 ≤ leverageOf (design.atom freeLabel) - (design.atom freeLabel ⬝ᵥ unitNormal) ^ 2 := by
+    have hcauchy := dotProduct_sq_le_mul (design.atom freeLabel) unitNormal
+    rw [hunit, mul_one, ← leverageOf_eq_dotProduct] at hcauchy
+    linarith
+  have hsurplus : 1 < (design.atom freeLabel ⬝ᵥ unitNormal) ^ 2 := by
+    by_contra hcontra
+    push Not at hcontra
+    nlinarith [hheightBeatsShadow, hshadowNonneg, hmarginPos]
+  refine oneLine_planeCover_of_inPlaneExcess design lineFirst lineSecond freeLabel unitNormal
+    hdistinctFirstSecond hdistinctFirstFree hdistinctSecondFree hunit hfirstFlat hsecondFlat
+    hsurplus ?_
+  intro probe hprobeFlat hprobeNe
+  have hnormPos : 0 < probe ⬝ᵥ probe := dotProduct_self_pos hprobeNe
+  have hshadow := atomShadow_reading_sq_le (design.atom freeLabel) unitNormal probe hunit
+    hprobeFlat
+  have hplane := hcover probe hprobeFlat
+  nlinarith [hshadow, hplane, hnormPos, hheightBeatsShadow, hsurplus]
+
+/-- **The margin is exactly what the narrow cone lacks.**  At
+`Gtz.narrowConeDesign` the strictly heavy line pair `{0,2}` reads only one half
+against the transverse in-plane probe whose own norm is one, so NO positive
+margin exists for it -- the hypothesis of the quantitative producer is
+unsatisfiable there, which is the sharp form of the LLF refutation. -/
+theorem narrowCone_pairZeroTwo_admits_no_coverMargin (margin : ℝ) (hmarginPos : 0 < margin) :
+    ¬ ((1 + margin) * ((![0, 1, 0] : Fin 3 → ℝ) ⬝ᵥ ![0, 1, 0])
+        ≤ (narrowConeDesign.atom 0 ⬝ᵥ ![0, 1, 0]) ^ 2
+          + (narrowConeDesign.atom 2 ⬝ᵥ ![0, 1, 0]) ^ 2) := by
+  obtain ⟨hreads, hnorm⟩ := narrowCone_strictlyHeavyPair_inPlane_deficit
+  rw [hreads, hnorm]
+  intro hle
+  linarith
 
 end Gtz

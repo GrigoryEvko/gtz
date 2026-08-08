@@ -15688,6 +15688,15 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.OneLineLlfSelectorAtTightAntecedent
 #print axioms Gtz.not_oneLineLlfSelectorAtTightAntecedent
 
+-- Design/SelectorEquivalences, the QUANTITATIVE form of the two-line route:
+-- the shadow bound, the producer keyed on a strict multiplicative cover margin
+-- of the line pair, and the proof that the narrow cone admits NO positive
+-- margin -- the sharp form of the LLF refutation (unsatisfiable hypothesis,
+-- not merely unverified).
+#print axioms Gtz.atomShadow_reading_sq_le
+#print axioms Gtz.oneLine_llf_posDef_of_coverMargin
+#print axioms Gtz.narrowCone_pairZeroTwo_admits_no_coverMargin
+
 -- Design/LineMarginCap: the margin cap at a line normal and its own floor --
 -- the two together pin the LINE WEIGHT as the only channel that can drive the
 -- margin to zero -- plus the tie-dominator exclusion, the flat-pair
