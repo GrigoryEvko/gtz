@@ -6023,4 +6023,1060 @@ theorem kFourGapDet_treeThreeFourFive_pos_of_exchangeBound
     mul_nonpos_iff.mpr (Or.inr ⟨hnonpos, hproductPos.le⟩)
   nlinarith [hform, hboost, hexchange, hdetTimesWeights]
 
+/-! ## The invariant-Sylvester pencil engine
+
+The knife-round certificate basis.  For the reduced K4 Laplacian
+`L1 = sum_c A_c = !![3,-1,-1; -1,3,-1; -1,-1,3]` (determinant `16`), the
+pencil determinant of a symmetric matrix `N` against `L1` expands as
+
+    det (N + t * L1) = 16 t^3 + 8 * D1 t^2 + D2 t + D3,
+
+where `D1` is the sum of the six entries (diagonal plus upper triangle),
+`D2` the fixed invariant quadratic below, and `D3 = det N`.  Under the
+kFour chart dictionary (gap = `sum_c s_c A_c` with `s = alpha` on the
+selected tree and `-mass` off it) these are the three S4-invariant
+polynomials of the selection vector: `D1 = sum_c s_c`,
+`D2 = 4 * (opposite-pair products) + 3 * (adjacent-pair products)`,
+`D3` the spanning-tree polynomial.  `posDef_of_invariantPencilTriple`
+proves positive definiteness FROM the three coefficient positivities —
+eigenvalue-free: the set of pencil parameters where the three Sylvester
+minors are positive is nonempty far out and (when the target is not yet
+certified) bounded below by zero; at its infimum the form is positive
+semidefinite by a squeeze, a kernel vector is forbidden because the
+pencil determinant has all coefficients positive on the half-line, and
+the landed completed-square bricks re-enter the set strictly below the
+infimum through an explicit polynomial openness bound — contradiction.
+The three converses extract the coefficient positivities from positive
+definiteness by explicit test vectors; `D2` is realized as the sum of
+the six plane-restriction block determinants (the adjugate compound
+identity, one block per K4 edge direction).  Exact adjudication before
+statement: the equivalence holds at 52,064 fresh exact tree-instances
+(mandatory battery, the 464-point and 467-point knife corpora, and
+2,307 adversarial points) on top of the stage-4 7,712. -/
+
+/-- Positive energy of the reduced K4 Laplacian quadratic form:
+`3x0^2 + 3x1^2 + 3x2^2 - 2x0x1 - 2x0x2 - 2x1x2` is the square sum
+`x0^2 + x1^2 + x2^2 + (x0-x1)^2 + (x0-x2)^2 + (x1-x2)^2`, positive at
+every nonzero vector. -/
+theorem kFourPencilLaplacianForm_pos (vecArg : Fin 3 → ℝ) (hne : vecArg ≠ 0) :
+    0 < 3 * vecArg 0 ^ 2 + 3 * vecArg 1 ^ 2 + 3 * vecArg 2 ^ 2
+      - 2 * (vecArg 0 * vecArg 1) - 2 * (vecArg 0 * vecArg 2)
+      - 2 * (vecArg 1 * vecArg 2) := by
+  have hcases : vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+    rcases eq_or_ne (vecArg 0) 0 with hzero | hnonzero
+    · rcases eq_or_ne (vecArg 1) 0 with hone | hnonone
+      · rcases eq_or_ne (vecArg 2) 0 with htwo | hnontwo
+        · exfalso
+          apply hne
+          funext index
+          fin_cases index
+          · exact hzero
+          · exact hone
+          · exact htwo
+        · exact Or.inr (Or.inr hnontwo)
+      · exact Or.inr (Or.inl hnonone)
+    · exact Or.inl hnonzero
+  rcases hcases with hcoord | hcoord | hcoord
+  · linarith [pow_two_pos_of_ne_zero hcoord, sq_nonneg (vecArg 0 - vecArg 1),
+      sq_nonneg (vecArg 0 - vecArg 2), sq_nonneg (vecArg 1 - vecArg 2),
+      sq_nonneg (vecArg 1), sq_nonneg (vecArg 2)]
+  · linarith [pow_two_pos_of_ne_zero hcoord, sq_nonneg (vecArg 0 - vecArg 1),
+      sq_nonneg (vecArg 0 - vecArg 2), sq_nonneg (vecArg 1 - vecArg 2),
+      sq_nonneg (vecArg 0), sq_nonneg (vecArg 2)]
+  · linarith [pow_two_pos_of_ne_zero hcoord, sq_nonneg (vecArg 0 - vecArg 1),
+      sq_nonneg (vecArg 0 - vecArg 2), sq_nonneg (vecArg 1 - vecArg 2),
+      sq_nonneg (vecArg 0), sq_nonneg (vecArg 1)]
+
+set_option maxHeartbeats 1600000 in
+/-- **The invariant-Sylvester pencil engine.**  A symmetric `3x3` matrix
+whose three invariant pencil coefficients are positive — the entry sum,
+the invariant quadratic, and the determinant — is positive definite.
+The three hypotheses are exactly the `t^2`, `t^1`, `t^0` coefficients
+(the first divided by its content `8`) of `det (N + t * L1)` for the
+reduced K4 Laplacian `L1`; positive definiteness at every knife-band
+point is certified by evaluating three fixed polynomials, no per-tree
+frame. -/
+theorem posDef_of_invariantPencilTriple
+    (entryOneOne entryOneTwo entryOneThree entryTwoTwo entryTwoThree
+      entryThreeThree : ℝ)
+    (hlinear : 0 < entryOneOne + entryTwoTwo + entryThreeThree
+      + entryOneTwo + entryOneThree + entryTwoThree)
+    (hquadratic : 0 < 3 * entryOneOne * entryTwoTwo
+      + 3 * entryOneOne * entryThreeThree + 3 * entryTwoTwo * entryThreeThree
+      + 2 * entryOneOne * entryTwoThree + 2 * entryTwoTwo * entryOneThree
+      + 2 * entryThreeThree * entryOneTwo
+      - 3 * entryOneTwo ^ 2 - 3 * entryOneThree ^ 2 - 3 * entryTwoThree ^ 2
+      - 2 * entryOneTwo * entryOneThree - 2 * entryOneTwo * entryTwoThree
+      - 2 * entryOneThree * entryTwoThree)
+    (hcubic : 0 < entryOneOne * entryTwoTwo * entryThreeThree
+      - entryOneOne * entryTwoThree ^ 2 - entryOneTwo ^ 2 * entryThreeThree
+      + 2 * entryOneTwo * entryOneThree * entryTwoThree
+      - entryOneThree ^ 2 * entryTwoTwo) :
+    (!![entryOneOne, entryOneTwo, entryOneThree;
+        entryOneTwo, entryTwoTwo, entryTwoThree;
+        entryOneThree, entryTwoThree, entryThreeThree]
+      : Matrix (Fin 3) (Fin 3) ℝ).PosDef := by
+  set linearCoefficient : ℝ := entryOneOne + entryTwoTwo + entryThreeThree
+    + entryOneTwo + entryOneThree + entryTwoThree with hlinearDef
+  set quadraticCoefficient : ℝ := 3 * entryOneOne * entryTwoTwo
+    + 3 * entryOneOne * entryThreeThree + 3 * entryTwoTwo * entryThreeThree
+    + 2 * entryOneOne * entryTwoThree + 2 * entryTwoTwo * entryOneThree
+    + 2 * entryThreeThree * entryOneTwo
+    - 3 * entryOneTwo ^ 2 - 3 * entryOneThree ^ 2 - 3 * entryTwoThree ^ 2
+    - 2 * entryOneTwo * entryOneThree - 2 * entryOneTwo * entryTwoThree
+    - 2 * entryOneThree * entryTwoThree with hquadraticDef
+  set cubicCoefficient : ℝ := entryOneOne * entryTwoTwo * entryThreeThree
+    - entryOneOne * entryTwoThree ^ 2 - entryOneTwo ^ 2 * entryThreeThree
+    + 2 * entryOneTwo * entryOneThree * entryTwoThree
+    - entryOneThree ^ 2 * entryTwoTwo with hcubicDef
+  set blockCoefficient : ℝ := 3 * entryOneOne + 3 * entryTwoTwo
+    + 2 * entryOneTwo with hblockCoefficientDef
+  set blockConstant : ℝ := entryOneOne * entryTwoTwo - entryOneTwo ^ 2
+    with hblockConstantDef
+  set pencilMemberSet : Set ℝ := {timeVal : ℝ |
+    0 < entryOneOne + 3 * timeVal ∧
+    0 < 8 * timeVal ^ 2 + blockCoefficient * timeVal + blockConstant ∧
+    0 < 16 * timeVal ^ 3 + 8 * linearCoefficient * timeVal ^ 2
+      + quadraticCoefficient * timeVal + cubicCoefficient} with hsetDef
+  clear_value linearCoefficient quadraticCoefficient cubicCoefficient
+    blockCoefficient blockConstant pencilMemberSet
+  have hformEval : ∀ (timeVal : ℝ) (vecArg : Fin 3 → ℝ),
+      vecArg ⬝ᵥ ((!![entryOneOne + 3 * timeVal, entryOneTwo - timeVal,
+          entryOneThree - timeVal;
+          entryOneTwo - timeVal, entryTwoTwo + 3 * timeVal,
+          entryTwoThree - timeVal;
+          entryOneThree - timeVal, entryTwoThree - timeVal,
+          entryThreeThree + 3 * timeVal] : Matrix (Fin 3) (Fin 3) ℝ)
+        *ᵥ vecArg)
+      = (entryOneOne * vecArg 0 ^ 2 + entryTwoTwo * vecArg 1 ^ 2
+          + entryThreeThree * vecArg 2 ^ 2
+          + 2 * entryOneTwo * (vecArg 0 * vecArg 1)
+          + 2 * entryOneThree * (vecArg 0 * vecArg 2)
+          + 2 * entryTwoThree * (vecArg 1 * vecArg 2))
+        + timeVal * (3 * vecArg 0 ^ 2 + 3 * vecArg 1 ^ 2 + 3 * vecArg 2 ^ 2
+          - 2 * (vecArg 0 * vecArg 1) - 2 * (vecArg 0 * vecArg 2)
+          - 2 * (vecArg 1 * vecArg 2)) := by
+    intro timeVal vecArg
+    simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+    ring
+  have hmemberPosDef : ∀ timeVal ∈ pencilMemberSet,
+      (!![entryOneOne + 3 * timeVal, entryOneTwo - timeVal,
+          entryOneThree - timeVal;
+          entryOneTwo - timeVal, entryTwoTwo + 3 * timeVal,
+          entryTwoThree - timeVal;
+          entryOneThree - timeVal, entryTwoThree - timeVal,
+          entryThreeThree + 3 * timeVal] : Matrix (Fin 3) (Fin 3) ℝ).PosDef := by
+    intro timeVal htime
+    rw [hsetDef] at htime
+    obtain ⟨honeMinor, htwoMinor, hthreeMinor⟩ := htime
+    refine posDef_of_leadingMinors_fin_three (entryOneOne + 3 * timeVal)
+      (entryOneTwo - timeVal) (entryOneThree - timeVal)
+      (entryTwoTwo + 3 * timeVal) (entryTwoThree - timeVal)
+      (entryThreeThree + 3 * timeVal) honeMinor ?_ ?_
+    · have hidentity : (entryOneOne + 3 * timeVal) * (entryTwoTwo + 3 * timeVal)
+          - (entryOneTwo - timeVal) ^ 2
+          = 8 * timeVal ^ 2 + blockCoefficient * timeVal + blockConstant := by
+        rw [hblockCoefficientDef, hblockConstantDef]
+        ring
+      rw [hidentity]
+      exact htwoMinor
+    · have hidentity : (entryOneOne + 3 * timeVal) * (entryTwoTwo + 3 * timeVal)
+            * (entryThreeThree + 3 * timeVal)
+          - (entryOneOne + 3 * timeVal) * (entryTwoThree - timeVal) ^ 2
+          - (entryOneTwo - timeVal) ^ 2 * (entryThreeThree + 3 * timeVal)
+          + 2 * (entryOneTwo - timeVal) * (entryOneThree - timeVal)
+            * (entryTwoThree - timeVal)
+          - (entryOneThree - timeVal) ^ 2 * (entryTwoTwo + 3 * timeVal)
+          = 16 * timeVal ^ 3 + 8 * linearCoefficient * timeVal ^ 2
+            + quadraticCoefficient * timeVal + cubicCoefficient := by
+        rw [hlinearDef, hquadraticDef, hcubicDef]
+        ring
+      rw [hidentity]
+      exact hthreeMinor
+  have hmemberFormPos : ∀ timeVal ∈ pencilMemberSet, ∀ vecArg : Fin 3 → ℝ,
+      vecArg ≠ 0 →
+      0 < vecArg ⬝ᵥ ((!![entryOneOne + 3 * timeVal, entryOneTwo - timeVal,
+          entryOneThree - timeVal;
+          entryOneTwo - timeVal, entryTwoTwo + 3 * timeVal,
+          entryTwoThree - timeVal;
+          entryOneThree - timeVal, entryTwoThree - timeVal,
+          entryThreeThree + 3 * timeVal] : Matrix (Fin 3) (Fin 3) ℝ)
+        *ᵥ vecArg) := by
+    intro timeVal htime vecArg hne
+    have hvalue := (hmemberPosDef timeVal htime).dotProduct_mulVec_pos hne
+    rwa [star_trivial] at hvalue
+  have hformGivesMinors : ∀ timeVal : ℝ,
+      (∀ vecArg : Fin 3 → ℝ, vecArg ≠ 0 →
+        0 < vecArg ⬝ᵥ ((!![entryOneOne + 3 * timeVal, entryOneTwo - timeVal,
+            entryOneThree - timeVal;
+            entryOneTwo - timeVal, entryTwoTwo + 3 * timeVal,
+            entryTwoThree - timeVal;
+            entryOneThree - timeVal, entryTwoThree - timeVal,
+            entryThreeThree + 3 * timeVal] : Matrix (Fin 3) (Fin 3) ℝ)
+          *ᵥ vecArg)) →
+      0 < entryOneOne + 3 * timeVal ∧
+        0 < 8 * timeVal ^ 2 + blockCoefficient * timeVal + blockConstant := by
+    intro timeVal hform
+    have hbasisNe : (![1, 0, 0] : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 0
+      norm_num at hcomp
+    have hcornerValue : (![1, 0, 0] : Fin 3 → ℝ)
+        ⬝ᵥ ((!![entryOneOne + 3 * timeVal, entryOneTwo - timeVal,
+            entryOneThree - timeVal;
+            entryOneTwo - timeVal, entryTwoTwo + 3 * timeVal,
+            entryTwoThree - timeVal;
+            entryOneThree - timeVal, entryTwoThree - timeVal,
+            entryThreeThree + 3 * timeVal] : Matrix (Fin 3) (Fin 3) ℝ)
+          *ᵥ ![1, 0, 0])
+        = entryOneOne + 3 * timeVal := by
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+    have hcorner : 0 < entryOneOne + 3 * timeVal := by
+      have hvalue := hform ![1, 0, 0] hbasisNe
+      rw [hcornerValue] at hvalue
+      exact hvalue
+    have hwitnessNe : (![entryOneTwo - timeVal, -(entryOneOne + 3 * timeVal), 0]
+        : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 1
+      norm_num at hcomp
+      linarith [hcomp, hcorner]
+    have hwitnessValue : (![entryOneTwo - timeVal, -(entryOneOne + 3 * timeVal),
+          0] : Fin 3 → ℝ)
+        ⬝ᵥ ((!![entryOneOne + 3 * timeVal, entryOneTwo - timeVal,
+            entryOneThree - timeVal;
+            entryOneTwo - timeVal, entryTwoTwo + 3 * timeVal,
+            entryTwoThree - timeVal;
+            entryOneThree - timeVal, entryTwoThree - timeVal,
+            entryThreeThree + 3 * timeVal] : Matrix (Fin 3) (Fin 3) ℝ)
+          *ᵥ ![entryOneTwo - timeVal, -(entryOneOne + 3 * timeVal), 0])
+        = (entryOneOne + 3 * timeVal)
+          * (8 * timeVal ^ 2 + blockCoefficient * timeVal + blockConstant) := by
+      rw [hblockCoefficientDef, hblockConstantDef]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    have hproduct := hform _ hwitnessNe
+    rw [hwitnessValue] at hproduct
+    refine ⟨hcorner, ?_⟩
+    by_contra hnotBlock
+    have hblockNonpos := not_lt.mp hnotBlock
+    linarith [hproduct, mul_nonneg hcorner.le (neg_nonneg.mpr hblockNonpos)]
+  by_cases hzeroMember : (0 : ℝ) ∈ pencilMemberSet
+  · rw [hsetDef] at hzeroMember
+    obtain ⟨honeMinor, htwoMinor, hthreeMinor⟩ := hzeroMember
+    rw [hblockConstantDef] at htwoMinor
+    rw [hcubicDef] at hthreeMinor
+    refine posDef_of_leadingMinors_fin_three entryOneOne entryOneTwo
+      entryOneThree entryTwoTwo entryTwoThree entryThreeThree ?_ ?_ ?_
+    · linarith [honeMinor]
+    · linarith [htwoMinor]
+    · linarith [hthreeMinor]
+  · exfalso
+    set bigTime : ℝ := 1 + entryOneOne ^ 2 + blockCoefficient ^ 2
+      + blockConstant ^ 2 with hbigDef
+    clear_value bigTime
+    have hbigOne : 1 ≤ bigTime := by
+      rw [hbigDef]
+      linarith [sq_nonneg entryOneOne, sq_nonneg blockCoefficient,
+        sq_nonneg blockConstant]
+    have hbigPos : 0 < bigTime := by linarith
+    have hbigCorner : 1 + entryOneOne ^ 2 ≤ bigTime := by
+      rw [hbigDef]
+      linarith [sq_nonneg blockCoefficient, sq_nonneg blockConstant]
+    have hbigBlockCoef : 1 + blockCoefficient ^ 2 ≤ bigTime := by
+      rw [hbigDef]
+      linarith [sq_nonneg entryOneOne, sq_nonneg blockConstant]
+    have hbigBlockConst : 1 + blockConstant ^ 2 ≤ bigTime := by
+      rw [hbigDef]
+      linarith [sq_nonneg entryOneOne, sq_nonneg blockCoefficient]
+    have hbigMember : bigTime ∈ pencilMemberSet := by
+      rw [hsetDef]
+      refine ⟨?_, ?_, ?_⟩
+      · linarith [sq_nonneg (6 * entryOneOne + 1), hbigCorner]
+      · have hcoefLower : -((1 + blockCoefficient ^ 2) / 2) ≤ blockCoefficient := by
+          linarith [sq_nonneg (1 + blockCoefficient)]
+        have hcoefProduct := mul_le_mul_of_nonneg_right hcoefLower hbigPos.le
+        have hcoefSquare := mul_le_mul_of_nonneg_right hbigBlockCoef hbigPos.le
+        have hconstLower : -((1 + blockConstant ^ 2) / 2) ≤ blockConstant := by
+          linarith [sq_nonneg (1 + blockConstant)]
+        have hbigSelf : bigTime ≤ bigTime ^ 2 := by
+          linarith [mul_nonneg hbigPos.le (by linarith : (0:ℝ) ≤ bigTime - 1)]
+        linarith [hcoefProduct, hcoefSquare, hconstLower, hbigBlockConst,
+          hbigSelf, hbigOne]
+      · have hcubeTerm : (0:ℝ) < bigTime ^ 3 := pow_pos hbigPos 3
+        have hsquareTerm : (0:ℝ) < linearCoefficient * bigTime ^ 2 :=
+          mul_pos hlinear (pow_pos hbigPos 2)
+        have hlinearTerm : (0:ℝ) < quadraticCoefficient * bigTime :=
+          mul_pos hquadratic hbigPos
+        linarith [hcubeTerm, hsquareTerm, hlinearTerm, hcubic]
+    have hSetNonempty : pencilMemberSet.Nonempty := ⟨bigTime, hbigMember⟩
+    have hlowerBound : ∀ member ∈ pencilMemberSet, (0 : ℝ) ≤ member := by
+      intro member hmember
+      by_contra hnotNonneg
+      have hmemberNeg : member < 0 := not_le.mp hnotNonneg
+      apply hzeroMember
+      have hformZero : ∀ vecArg : Fin 3 → ℝ, vecArg ≠ 0 →
+          0 < vecArg ⬝ᵥ ((!![entryOneOne + 3 * (0:ℝ), entryOneTwo - (0:ℝ),
+              entryOneThree - (0:ℝ);
+              entryOneTwo - (0:ℝ), entryTwoTwo + 3 * (0:ℝ),
+              entryTwoThree - (0:ℝ);
+              entryOneThree - (0:ℝ), entryTwoThree - (0:ℝ),
+              entryThreeThree + 3 * (0:ℝ)] : Matrix (Fin 3) (Fin 3) ℝ)
+            *ᵥ vecArg) := by
+        intro vecArg hne
+        have hmemberForm := hmemberFormPos member hmember vecArg hne
+        rw [hformEval member vecArg] at hmemberForm
+        rw [hformEval (0:ℝ) vecArg]
+        have hlapPos := kFourPencilLaplacianForm_pos vecArg hne
+        linarith [hmemberForm, mul_pos (by linarith : (0:ℝ) < -member) hlapPos]
+      obtain ⟨hcornerZero, hblockZero⟩ := hformGivesMinors (0:ℝ) hformZero
+      rw [hsetDef]
+      refine ⟨hcornerZero, hblockZero, ?_⟩
+      linarith [hcubic]
+    have hbddBelow : BddBelow pencilMemberSet :=
+      ⟨0, fun member hmember => hlowerBound member hmember⟩
+    set criticalTime : ℝ := sInf pencilMemberSet with hcriticalDef
+    clear_value criticalTime
+    have hcriticalNonneg : 0 ≤ criticalTime := by
+      rw [hcriticalDef]
+      exact le_csInf hSetNonempty hlowerBound
+    have hdetCritical : 0 < 16 * criticalTime ^ 3
+        + 8 * linearCoefficient * criticalTime ^ 2
+        + quadraticCoefficient * criticalTime + cubicCoefficient := by
+      have hcubeTerm : (0:ℝ) ≤ criticalTime ^ 3 := pow_nonneg hcriticalNonneg 3
+      have hsquareTerm : (0:ℝ) ≤ linearCoefficient * criticalTime ^ 2 :=
+        mul_nonneg hlinear.le (sq_nonneg criticalTime)
+      have hlinearTerm : (0:ℝ) ≤ quadraticCoefficient * criticalTime :=
+        mul_nonneg hquadratic.le hcriticalNonneg
+      linarith [hcubeTerm, hsquareTerm, hlinearTerm, hcubic]
+    have hpsdCritical : ∀ vecArg : Fin 3 → ℝ,
+        0 ≤ vecArg ⬝ᵥ ((!![entryOneOne + 3 * criticalTime,
+            entryOneTwo - criticalTime, entryOneThree - criticalTime;
+            entryOneTwo - criticalTime, entryTwoTwo + 3 * criticalTime,
+            entryTwoThree - criticalTime;
+            entryOneThree - criticalTime, entryTwoThree - criticalTime,
+            entryThreeThree + 3 * criticalTime] : Matrix (Fin 3) (Fin 3) ℝ)
+          *ᵥ vecArg) := by
+      intro vecArg
+      rcases eq_or_ne vecArg 0 with rfl | hne
+      · simp
+      · rw [hformEval criticalTime vecArg]
+        set baseValue : ℝ := entryOneOne * vecArg 0 ^ 2
+          + entryTwoTwo * vecArg 1 ^ 2 + entryThreeThree * vecArg 2 ^ 2
+          + 2 * entryOneTwo * (vecArg 0 * vecArg 1)
+          + 2 * entryOneThree * (vecArg 0 * vecArg 2)
+          + 2 * entryTwoThree * (vecArg 1 * vecArg 2) with hbaseDef
+        set laplacianValue : ℝ := 3 * vecArg 0 ^ 2 + 3 * vecArg 1 ^ 2
+          + 3 * vecArg 2 ^ 2 - 2 * (vecArg 0 * vecArg 1)
+          - 2 * (vecArg 0 * vecArg 2) - 2 * (vecArg 1 * vecArg 2)
+          with hlaplacianDef
+        clear_value baseValue laplacianValue
+        have hlapPos : 0 < laplacianValue := by
+          rw [hlaplacianDef]
+          exact kFourPencilLaplacianForm_pos vecArg hne
+        by_contra hnotNonneg
+        have hformNeg : baseValue + criticalTime * laplacianValue < 0 :=
+          not_le.mp hnotNonneg
+        set epsilonValue : ℝ :=
+          -(baseValue + criticalTime * laplacianValue) / (2 * laplacianValue)
+          with hepsilonDef
+        clear_value epsilonValue
+        have hepsilonPos : 0 < epsilonValue := by
+          rw [hepsilonDef]
+          exact div_pos (by linarith) (by linarith)
+        obtain ⟨member, hmember, hmemberLt⟩ :=
+          exists_lt_of_csInf_lt hSetNonempty
+            (show sInf pencilMemberSet < criticalTime + epsilonValue by
+              rw [← hcriticalDef]; linarith)
+        have hcriticalLe : criticalTime ≤ member := by
+          rw [hcriticalDef]
+          exact csInf_le hbddBelow hmember
+        have hmemberForm := hmemberFormPos member hmember vecArg hne
+        rw [hformEval member vecArg] at hmemberForm
+        rw [← hbaseDef, ← hlaplacianDef] at hmemberForm
+        have hlaplacianNe : laplacianValue ≠ 0 := ne_of_gt hlapPos
+        have hepsilonLap : epsilonValue * laplacianValue
+            = -(baseValue + criticalTime * laplacianValue) / 2 := by
+          rw [hepsilonDef]
+          field_simp
+        have hshiftLt : member - criticalTime < epsilonValue := by linarith
+        have hproductLt : (member - criticalTime) * laplacianValue
+            < epsilonValue * laplacianValue :=
+          mul_lt_mul_of_pos_right hshiftLt hlapPos
+        linarith [hmemberForm, hproductLt, hepsilonLap, hformNeg]
+    have hstrictCritical : ∀ vecArg : Fin 3 → ℝ, vecArg ≠ 0 →
+        0 < vecArg ⬝ᵥ ((!![entryOneOne + 3 * criticalTime,
+            entryOneTwo - criticalTime, entryOneThree - criticalTime;
+            entryOneTwo - criticalTime, entryTwoTwo + 3 * criticalTime,
+            entryTwoThree - criticalTime;
+            entryOneThree - criticalTime, entryTwoThree - criticalTime,
+            entryThreeThree + 3 * criticalTime] : Matrix (Fin 3) (Fin 3) ℝ)
+          *ᵥ vecArg) := by
+      intro vecArg hne
+      rcases (hpsdCritical vecArg).lt_or_eq with hlt | heq
+      · exact hlt
+      · exfalso
+        have hqZero : vecArg ⬝ᵥ ((!![entryOneOne + 3 * criticalTime,
+            entryOneTwo - criticalTime, entryOneThree - criticalTime;
+            entryOneTwo - criticalTime, entryTwoTwo + 3 * criticalTime,
+            entryTwoThree - criticalTime;
+            entryOneThree - criticalTime, entryTwoThree - criticalTime,
+            entryThreeThree + 3 * criticalTime] : Matrix (Fin 3) (Fin 3) ℝ)
+          *ᵥ vecArg) = 0 := heq.symm
+        have hexpandQuadratic : ∀ (scaleVal : ℝ) (otherVec : Fin 3 → ℝ),
+            (vecArg + scaleVal • otherVec)
+              ⬝ᵥ ((!![entryOneOne + 3 * criticalTime,
+                entryOneTwo - criticalTime, entryOneThree - criticalTime;
+                entryOneTwo - criticalTime, entryTwoTwo + 3 * criticalTime,
+                entryTwoThree - criticalTime;
+                entryOneThree - criticalTime, entryTwoThree - criticalTime,
+                entryThreeThree + 3 * criticalTime]
+                : Matrix (Fin 3) (Fin 3) ℝ)
+              *ᵥ (vecArg + scaleVal • otherVec))
+            = vecArg ⬝ᵥ ((!![entryOneOne + 3 * criticalTime,
+                entryOneTwo - criticalTime, entryOneThree - criticalTime;
+                entryOneTwo - criticalTime, entryTwoTwo + 3 * criticalTime,
+                entryTwoThree - criticalTime;
+                entryOneThree - criticalTime, entryTwoThree - criticalTime,
+                entryThreeThree + 3 * criticalTime]
+                : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ vecArg)
+              + 2 * scaleVal * (vecArg
+                ⬝ᵥ ((!![entryOneOne + 3 * criticalTime,
+                  entryOneTwo - criticalTime, entryOneThree - criticalTime;
+                  entryOneTwo - criticalTime, entryTwoTwo + 3 * criticalTime,
+                  entryTwoThree - criticalTime;
+                  entryOneThree - criticalTime, entryTwoThree - criticalTime,
+                  entryThreeThree + 3 * criticalTime]
+                  : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ otherVec))
+              + scaleVal ^ 2 * (otherVec
+                ⬝ᵥ ((!![entryOneOne + 3 * criticalTime,
+                  entryOneTwo - criticalTime, entryOneThree - criticalTime;
+                  entryOneTwo - criticalTime, entryTwoTwo + 3 * criticalTime,
+                  entryTwoThree - criticalTime;
+                  entryOneThree - criticalTime, entryTwoThree - criticalTime,
+                  entryThreeThree + 3 * criticalTime]
+                  : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ otherVec)) := by
+          intro scaleVal otherVec
+          simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three, Pi.add_apply,
+            Pi.smul_apply, smul_eq_mul]
+          ring
+        have hpairingZero : ∀ otherVec : Fin 3 → ℝ,
+            vecArg ⬝ᵥ ((!![entryOneOne + 3 * criticalTime,
+              entryOneTwo - criticalTime, entryOneThree - criticalTime;
+              entryOneTwo - criticalTime, entryTwoTwo + 3 * criticalTime,
+              entryTwoThree - criticalTime;
+              entryOneThree - criticalTime, entryTwoThree - criticalTime,
+              entryThreeThree + 3 * criticalTime]
+              : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ otherVec) = 0 := by
+          intro otherVec
+          set pairingValue : ℝ := vecArg
+            ⬝ᵥ ((!![entryOneOne + 3 * criticalTime,
+              entryOneTwo - criticalTime, entryOneThree - criticalTime;
+              entryOneTwo - criticalTime, entryTwoTwo + 3 * criticalTime,
+              entryTwoThree - criticalTime;
+              entryOneThree - criticalTime, entryTwoThree - criticalTime,
+              entryThreeThree + 3 * criticalTime]
+              : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ otherVec) with hpairingDef
+          set diagonalValue : ℝ := otherVec
+            ⬝ᵥ ((!![entryOneOne + 3 * criticalTime,
+              entryOneTwo - criticalTime, entryOneThree - criticalTime;
+              entryOneTwo - criticalTime, entryTwoTwo + 3 * criticalTime,
+              entryTwoThree - criticalTime;
+              entryOneThree - criticalTime, entryTwoThree - criticalTime,
+              entryThreeThree + 3 * criticalTime]
+              : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ otherVec) with hdiagonalDef
+          clear_value pairingValue diagonalValue
+          have hdiagonalNonneg : 0 ≤ diagonalValue := by
+            rw [hdiagonalDef]
+            exact hpsdCritical otherVec
+          have hdiagonalShiftNe : diagonalValue + 1 ≠ 0 :=
+            ne_of_gt (by linarith : (0:ℝ) < diagonalValue + 1)
+          set scaleChoice : ℝ := -pairingValue / (diagonalValue + 1)
+            with hscaleDef
+          clear_value scaleChoice
+          have hscaleEq : scaleChoice * (diagonalValue + 1) = -pairingValue := by
+            rw [hscaleDef]
+            field_simp
+          have hquadNonneg := hpsdCritical (vecArg + scaleChoice • otherVec)
+          rw [hexpandQuadratic scaleChoice otherVec, hqZero] at hquadNonneg
+          rw [← hpairingDef, ← hdiagonalDef] at hquadNonneg
+          have hproductNonneg : 0 ≤ (2 * scaleChoice * pairingValue
+              + scaleChoice ^ 2 * diagonalValue) * (diagonalValue + 1) ^ 2 := by
+            have hquadClean : 0 ≤ 2 * scaleChoice * pairingValue
+                + scaleChoice ^ 2 * diagonalValue := by linarith [hquadNonneg]
+            exact mul_nonneg hquadClean (sq_nonneg _)
+          have hrewriteProduct : (2 * scaleChoice * pairingValue
+              + scaleChoice ^ 2 * diagonalValue) * (diagonalValue + 1) ^ 2
+              = 2 * (scaleChoice * (diagonalValue + 1)) * pairingValue
+                  * (diagonalValue + 1)
+                + (scaleChoice * (diagonalValue + 1)) ^ 2 * diagonalValue := by
+            ring
+          rw [hrewriteProduct, hscaleEq] at hproductNonneg
+          have hsquareZero : pairingValue ^ 2 = 0 := by
+            refine le_antisymm ?_ (sq_nonneg _)
+            nlinarith [hproductNonneg, hdiagonalNonneg, sq_nonneg pairingValue]
+          exact (pow_eq_zero_iff (by norm_num : (2:ℕ) ≠ 0)).mp hsquareZero
+        have hkernel : (!![entryOneOne + 3 * criticalTime,
+            entryOneTwo - criticalTime, entryOneThree - criticalTime;
+            entryOneTwo - criticalTime, entryTwoTwo + 3 * criticalTime,
+            entryTwoThree - criticalTime;
+            entryOneThree - criticalTime, entryTwoThree - criticalTime,
+            entryThreeThree + 3 * criticalTime] : Matrix (Fin 3) (Fin 3) ℝ)
+            *ᵥ vecArg = 0 := by
+          have hpairZero := hpairingZero ![1, 0, 0]
+          have hpairOne := hpairingZero ![0, 1, 0]
+          have hpairTwo := hpairingZero ![0, 0, 1]
+          simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+            at hpairZero hpairOne hpairTwo
+          funext index
+          fin_cases index <;>
+            simp [Matrix.mulVec, dotProduct, Fin.sum_univ_three] <;>
+            linarith [hpairZero, hpairOne, hpairTwo]
+        have hdetZero : (!![entryOneOne + 3 * criticalTime,
+            entryOneTwo - criticalTime, entryOneThree - criticalTime;
+            entryOneTwo - criticalTime, entryTwoTwo + 3 * criticalTime,
+            entryTwoThree - criticalTime;
+            entryOneThree - criticalTime, entryTwoThree - criticalTime,
+            entryThreeThree + 3 * criticalTime]
+            : Matrix (Fin 3) (Fin 3) ℝ).det = 0 :=
+          Matrix.exists_mulVec_eq_zero_iff.mp ⟨vecArg, hne, hkernel⟩
+        have hdetEval : (!![entryOneOne + 3 * criticalTime,
+            entryOneTwo - criticalTime, entryOneThree - criticalTime;
+            entryOneTwo - criticalTime, entryTwoTwo + 3 * criticalTime,
+            entryTwoThree - criticalTime;
+            entryOneThree - criticalTime, entryTwoThree - criticalTime,
+            entryThreeThree + 3 * criticalTime]
+            : Matrix (Fin 3) (Fin 3) ℝ).det
+            = 16 * criticalTime ^ 3
+              + 8 * linearCoefficient * criticalTime ^ 2
+              + quadraticCoefficient * criticalTime + cubicCoefficient := by
+          rw [hlinearDef, hquadraticDef, hcubicDef]
+          simp [Matrix.det_fin_three]
+          ring
+        rw [hdetEval] at hdetZero
+        linarith [hdetCritical]
+    obtain ⟨hcornerCritical, hblockCritical⟩ :=
+      hformGivesMinors criticalTime hstrictCritical
+    have hcriticalMember : criticalTime ∈ pencilMemberSet := by
+      rw [hsetDef]
+      exact ⟨hcornerCritical, hblockCritical, hdetCritical⟩
+    set cornerCritical : ℝ := entryOneOne + 3 * criticalTime
+      with hcornerCriticalDef
+    set blockValueCritical : ℝ := 8 * criticalTime ^ 2
+      + blockCoefficient * criticalTime + blockConstant
+      with hblockValueCriticalDef
+    set cubicValueCritical : ℝ := 16 * criticalTime ^ 3
+      + 8 * linearCoefficient * criticalTime ^ 2
+      + quadraticCoefficient * criticalTime + cubicCoefficient
+      with hcubicValueCriticalDef
+    set blockSlope : ℝ := 16 * criticalTime + blockCoefficient
+      with hblockSlopeDef
+    set cubicSlope : ℝ := 48 * criticalTime ^ 2
+      + 16 * linearCoefficient * criticalTime + quadraticCoefficient
+      with hcubicSlopeDef
+    set cubicCurve : ℝ := 48 * criticalTime + 8 * linearCoefficient
+      with hcubicCurveDef
+    clear_value cornerCritical blockValueCritical cubicValueCritical
+      blockSlope cubicSlope cubicCurve
+    set shiftAmount : ℝ := min 1 (min (cornerCritical / 6)
+      (min (blockValueCritical / (1 + blockSlope ^ 2))
+        (cubicValueCritical / (2 * (17 + cubicSlope ^ 2 + cubicCurve ^ 2)))))
+      with hshiftDef
+    clear_value shiftAmount
+    have hblockDenPos : (0:ℝ) < 1 + blockSlope ^ 2 := by positivity
+    have hcubicDenPos : (0:ℝ) < 2 * (17 + cubicSlope ^ 2 + cubicCurve ^ 2) := by
+      positivity
+    have hshiftPos : 0 < shiftAmount := by
+      rw [hshiftDef]
+      refine lt_min (by norm_num) (lt_min ?_ (lt_min ?_ ?_))
+      · exact div_pos hcornerCritical (by norm_num)
+      · exact div_pos hblockCritical hblockDenPos
+      · exact div_pos hdetCritical hcubicDenPos
+    have hshiftLeOne : shiftAmount ≤ 1 := by
+      rw [hshiftDef]
+      exact min_le_left _ _
+    have hshiftLeCorner : shiftAmount ≤ cornerCritical / 6 := by
+      rw [hshiftDef]
+      exact le_trans (min_le_right _ _) (min_le_left _ _)
+    have hshiftLeBlock : shiftAmount
+        ≤ blockValueCritical / (1 + blockSlope ^ 2) := by
+      rw [hshiftDef]
+      exact le_trans (min_le_right _ _)
+        (le_trans (min_le_right _ _) (min_le_left _ _))
+    have hshiftLeCubic : shiftAmount
+        ≤ cubicValueCritical / (2 * (17 + cubicSlope ^ 2 + cubicCurve ^ 2)) := by
+      rw [hshiftDef]
+      exact le_trans (min_le_right _ _)
+        (le_trans (min_le_right _ _) (min_le_right _ _))
+    have hshiftBlockProduct : shiftAmount * (1 + blockSlope ^ 2)
+        ≤ blockValueCritical := (le_div_iff₀ hblockDenPos).mp hshiftLeBlock
+    have hshiftCubicProduct : shiftAmount
+        * (2 * (17 + cubicSlope ^ 2 + cubicCurve ^ 2))
+        ≤ cubicValueCritical := (le_div_iff₀ hcubicDenPos).mp hshiftLeCubic
+    have hshiftMember : criticalTime - shiftAmount ∈ pencilMemberSet := by
+      rw [hsetDef]
+      refine ⟨?_, ?_, ?_⟩
+      · have hexpand : entryOneOne + 3 * (criticalTime - shiftAmount)
+            = cornerCritical - 3 * shiftAmount := by
+          rw [hcornerCriticalDef]
+          ring
+        rw [hexpand]
+        linarith [hshiftLeCorner, hcornerCritical]
+      · have hexpand : 8 * (criticalTime - shiftAmount) ^ 2
+            + blockCoefficient * (criticalTime - shiftAmount) + blockConstant
+            = blockValueCritical - shiftAmount * blockSlope
+              + 8 * shiftAmount ^ 2 := by
+          rw [hblockValueCriticalDef, hblockSlopeDef]
+          ring
+        rw [hexpand]
+        have hslopeUpper : blockSlope ≤ (1 + blockSlope ^ 2) / 2 := by
+          linarith [sq_nonneg (1 - blockSlope)]
+        have hslopeProduct : shiftAmount * blockSlope
+            ≤ shiftAmount * ((1 + blockSlope ^ 2) / 2) :=
+          mul_le_mul_of_nonneg_left hslopeUpper hshiftPos.le
+        linarith [hslopeProduct, hshiftBlockProduct, sq_nonneg shiftAmount,
+          hblockCritical]
+      · have hexpand : 16 * (criticalTime - shiftAmount) ^ 3
+            + 8 * linearCoefficient * (criticalTime - shiftAmount) ^ 2
+            + quadraticCoefficient * (criticalTime - shiftAmount)
+            + cubicCoefficient
+            = cubicValueCritical - shiftAmount * cubicSlope
+              + shiftAmount ^ 2 * cubicCurve - 16 * shiftAmount ^ 3 := by
+          rw [hcubicValueCriticalDef, hcubicSlopeDef, hcubicCurveDef]
+          ring
+        rw [hexpand]
+        have hslopeUpper : cubicSlope ≤ (1 + cubicSlope ^ 2) / 2 := by
+          linarith [sq_nonneg (1 - cubicSlope)]
+        have hcurveLower : -((1 + cubicCurve ^ 2) / 2) ≤ cubicCurve := by
+          linarith [sq_nonneg (1 + cubicCurve)]
+        have hsquareLe : shiftAmount ^ 2 ≤ shiftAmount := by
+          linarith [mul_nonneg hshiftPos.le
+            (by linarith : (0:ℝ) ≤ 1 - shiftAmount)]
+        have hcubeLe : shiftAmount ^ 3 ≤ shiftAmount := by
+          linarith [mul_nonneg (mul_nonneg hshiftPos.le hshiftPos.le)
+            (by linarith : (0:ℝ) ≤ 1 - shiftAmount), hsquareLe]
+        have hslopeProduct : shiftAmount * cubicSlope
+            ≤ shiftAmount * ((1 + cubicSlope ^ 2) / 2) :=
+          mul_le_mul_of_nonneg_left hslopeUpper hshiftPos.le
+        have hcurveProduct : shiftAmount ^ 2 * (-((1 + cubicCurve ^ 2) / 2))
+            ≤ shiftAmount ^ 2 * cubicCurve :=
+          mul_le_mul_of_nonneg_left hcurveLower (sq_nonneg _)
+        have hcurveSquare : shiftAmount ^ 2 * ((1 + cubicCurve ^ 2) / 2)
+            ≤ shiftAmount * ((1 + cubicCurve ^ 2) / 2) :=
+          mul_le_mul_of_nonneg_right hsquareLe (by positivity)
+        have hslopeSquareNonneg : (0:ℝ) ≤ shiftAmount * cubicSlope ^ 2 :=
+          mul_nonneg hshiftPos.le (sq_nonneg _)
+        have hcurveSquareNonneg : (0:ℝ) ≤ shiftAmount * cubicCurve ^ 2 :=
+          mul_nonneg hshiftPos.le (sq_nonneg _)
+        linarith [hslopeProduct, hcurveProduct, hcurveSquare, hcubeLe,
+          hshiftCubicProduct, hslopeSquareNonneg, hcurveSquareNonneg,
+          hdetCritical]
+    have hcontradiction : criticalTime ≤ criticalTime - shiftAmount := by
+      have hinfLe := csInf_le hbddBelow hshiftMember
+      rw [← hcriticalDef] at hinfLe
+      exact hinfLe
+    linarith [hshiftPos, hcontradiction]
+
+/-- Positive definiteness forces the linear pencil coefficient: the entry
+sum is one half of `q(e0) + q(e1) + q(e2) + q(ones)`. -/
+theorem invariantPencilLinear_pos_of_posDef
+    (entryOneOne entryOneTwo entryOneThree entryTwoTwo entryTwoThree
+      entryThreeThree : ℝ)
+    (hposDef : (!![entryOneOne, entryOneTwo, entryOneThree;
+        entryOneTwo, entryTwoTwo, entryTwoThree;
+        entryOneThree, entryTwoThree, entryThreeThree]
+      : Matrix (Fin 3) (Fin 3) ℝ).PosDef) :
+    0 < entryOneOne + entryTwoTwo + entryThreeThree
+      + entryOneTwo + entryOneThree + entryTwoThree := by
+  have hbasisZeroNe : (![1, 0, 0] : Fin 3 → ℝ) ≠ 0 := by
+    intro hzero
+    have hcomp := congrFun hzero 0
+    norm_num at hcomp
+  have hbasisOneNe : (![0, 1, 0] : Fin 3 → ℝ) ≠ 0 := by
+    intro hzero
+    have hcomp := congrFun hzero 1
+    norm_num at hcomp
+  have hbasisTwoNe : (![0, 0, 1] : Fin 3 → ℝ) ≠ 0 := by
+    intro hzero
+    have hcomp := congrFun hzero 2
+    norm_num [Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] at hcomp
+  have honesNe : (![1, 1, 1] : Fin 3 → ℝ) ≠ 0 := by
+    intro hzero
+    have hcomp := congrFun hzero 0
+    norm_num at hcomp
+  have hvalueZero := hposDef.dotProduct_mulVec_pos hbasisZeroNe
+  have hvalueOne := hposDef.dotProduct_mulVec_pos hbasisOneNe
+  have hvalueTwo := hposDef.dotProduct_mulVec_pos hbasisTwoNe
+  have hvalueOnes := hposDef.dotProduct_mulVec_pos honesNe
+  rw [star_trivial] at hvalueZero hvalueOne hvalueTwo hvalueOnes
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+    at hvalueZero hvalueOne hvalueTwo hvalueOnes
+  linarith [hvalueZero, hvalueOne, hvalueTwo, hvalueOnes]
+
+set_option maxHeartbeats 800000 in
+/-- Positive definiteness forces the quadratic pencil coefficient: the
+invariant quadratic is the sum of the six plane-restriction block
+determinants (the adjugate compound identity), one per K4 edge
+direction, each positive by a completed-square witness. -/
+theorem invariantPencilQuadratic_pos_of_posDef
+    (entryOneOne entryOneTwo entryOneThree entryTwoTwo entryTwoThree
+      entryThreeThree : ℝ)
+    (hposDef : (!![entryOneOne, entryOneTwo, entryOneThree;
+        entryOneTwo, entryTwoTwo, entryTwoThree;
+        entryOneThree, entryTwoThree, entryThreeThree]
+      : Matrix (Fin 3) (Fin 3) ℝ).PosDef) :
+    0 < 3 * entryOneOne * entryTwoTwo + 3 * entryOneOne * entryThreeThree
+      + 3 * entryTwoTwo * entryThreeThree + 2 * entryOneOne * entryTwoThree
+      + 2 * entryTwoTwo * entryOneThree + 2 * entryThreeThree * entryOneTwo
+      - 3 * entryOneTwo ^ 2 - 3 * entryOneThree ^ 2 - 3 * entryTwoThree ^ 2
+      - 2 * entryOneTwo * entryOneThree - 2 * entryOneTwo * entryTwoThree
+      - 2 * entryOneThree * entryTwoThree := by
+  have hformPos : ∀ probeVec : Fin 3 → ℝ, probeVec ≠ 0 →
+      0 < probeVec ⬝ᵥ ((!![entryOneOne, entryOneTwo, entryOneThree;
+        entryOneTwo, entryTwoTwo, entryTwoThree;
+        entryOneThree, entryTwoThree, entryThreeThree]
+        : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ probeVec) := by
+    intro probeVec hne
+    have hvalue := hposDef.dotProduct_mulVec_pos hne
+    rwa [star_trivial] at hvalue
+  have hcornerPos : 0 < entryOneOne := by
+    have hne : (![1, 0, 0] : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 0
+      norm_num at hcomp
+    have hvalue := hformPos _ hne
+    simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+    linarith [hvalue]
+  have hdiagTwoPos : 0 < entryTwoTwo := by
+    have hne : (![0, 1, 0] : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 1
+      norm_num at hcomp
+    have hvalue := hformPos _ hne
+    simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+    linarith [hvalue]
+  have hblockFive : 0 < entryOneOne * entryTwoTwo - entryOneTwo ^ 2 := by
+    have hne : (![entryOneTwo, -entryOneOne, 0] : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 1
+      norm_num at hcomp
+      exact absurd hcomp (ne_of_gt hcornerPos)
+    have hvalue := hformPos _ hne
+    have hrewrite : (![entryOneTwo, -entryOneOne, 0] : Fin 3 → ℝ)
+        ⬝ᵥ ((!![entryOneOne, entryOneTwo, entryOneThree;
+          entryOneTwo, entryTwoTwo, entryTwoThree;
+          entryOneThree, entryTwoThree, entryThreeThree]
+          : Matrix (Fin 3) (Fin 3) ℝ)
+          *ᵥ ![entryOneTwo, -entryOneOne, 0])
+        = entryOneOne * (entryOneOne * entryTwoTwo - entryOneTwo ^ 2) := by
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hrewrite] at hvalue
+    by_contra hnotBlock
+    have hblockNonpos := not_lt.mp hnotBlock
+    linarith [hvalue, mul_nonneg hcornerPos.le (neg_nonneg.mpr hblockNonpos)]
+  have hblockFour : 0 < entryOneOne * entryThreeThree - entryOneThree ^ 2 := by
+    have hne : (![entryOneThree, 0, -entryOneOne] : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 2
+      norm_num [Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
+        at hcomp
+      exact absurd hcomp (ne_of_gt hcornerPos)
+    have hvalue := hformPos _ hne
+    have hrewrite : (![entryOneThree, 0, -entryOneOne] : Fin 3 → ℝ)
+        ⬝ᵥ ((!![entryOneOne, entryOneTwo, entryOneThree;
+          entryOneTwo, entryTwoTwo, entryTwoThree;
+          entryOneThree, entryTwoThree, entryThreeThree]
+          : Matrix (Fin 3) (Fin 3) ℝ)
+          *ᵥ ![entryOneThree, 0, -entryOneOne])
+        = entryOneOne * (entryOneOne * entryThreeThree - entryOneThree ^ 2) := by
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hrewrite] at hvalue
+    by_contra hnotBlock
+    have hblockNonpos := not_lt.mp hnotBlock
+    linarith [hvalue, mul_nonneg hcornerPos.le (neg_nonneg.mpr hblockNonpos)]
+  have hblockThree : 0 < entryTwoTwo * entryThreeThree - entryTwoThree ^ 2 := by
+    have hne : (![0, entryTwoThree, -entryTwoTwo] : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 2
+      norm_num [Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
+        at hcomp
+      exact absurd hcomp (ne_of_gt hdiagTwoPos)
+    have hvalue := hformPos _ hne
+    have hrewrite : (![0, entryTwoThree, -entryTwoTwo] : Fin 3 → ℝ)
+        ⬝ᵥ ((!![entryOneOne, entryOneTwo, entryOneThree;
+          entryOneTwo, entryTwoTwo, entryTwoThree;
+          entryOneThree, entryTwoThree, entryThreeThree]
+          : Matrix (Fin 3) (Fin 3) ℝ)
+          *ᵥ ![0, entryTwoThree, -entryTwoTwo])
+        = entryTwoTwo * (entryTwoTwo * entryThreeThree - entryTwoThree ^ 2) := by
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hrewrite] at hvalue
+    by_contra hnotBlock
+    have hblockNonpos := not_lt.mp hnotBlock
+    linarith [hvalue, mul_nonneg hdiagTwoPos.le (neg_nonneg.mpr hblockNonpos)]
+  have hplaneZeroPos : 0 < entryOneOne + entryTwoTwo + 2 * entryOneTwo := by
+    have hne : (![1, 1, 0] : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 0
+      norm_num at hcomp
+    have hvalue := hformPos _ hne
+    simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+    linarith [hvalue]
+  have hblockZero : 0 < (entryOneOne + entryTwoTwo + 2 * entryOneTwo)
+      * entryThreeThree - (entryOneThree + entryTwoThree) ^ 2 := by
+    have hne : (![entryOneThree + entryTwoThree, entryOneThree + entryTwoThree,
+        -(entryOneOne + entryTwoTwo + 2 * entryOneTwo)] : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 2
+      norm_num [Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
+        at hcomp
+      linarith [hcomp, hplaneZeroPos]
+    have hvalue := hformPos _ hne
+    have hrewrite : (![entryOneThree + entryTwoThree,
+          entryOneThree + entryTwoThree,
+          -(entryOneOne + entryTwoTwo + 2 * entryOneTwo)] : Fin 3 → ℝ)
+        ⬝ᵥ ((!![entryOneOne, entryOneTwo, entryOneThree;
+          entryOneTwo, entryTwoTwo, entryTwoThree;
+          entryOneThree, entryTwoThree, entryThreeThree]
+          : Matrix (Fin 3) (Fin 3) ℝ)
+          *ᵥ ![entryOneThree + entryTwoThree, entryOneThree + entryTwoThree,
+            -(entryOneOne + entryTwoTwo + 2 * entryOneTwo)])
+        = (entryOneOne + entryTwoTwo + 2 * entryOneTwo)
+          * ((entryOneOne + entryTwoTwo + 2 * entryOneTwo) * entryThreeThree
+            - (entryOneThree + entryTwoThree) ^ 2) := by
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hrewrite] at hvalue
+    by_contra hnotBlock
+    have hblockNonpos := not_lt.mp hnotBlock
+    linarith [hvalue, mul_nonneg hplaneZeroPos.le (neg_nonneg.mpr hblockNonpos)]
+  have hplaneOnePos : 0 < entryOneOne + entryThreeThree + 2 * entryOneThree := by
+    have hne : (![1, 0, 1] : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 0
+      norm_num at hcomp
+    have hvalue := hformPos _ hne
+    simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+    linarith [hvalue]
+  have hblockOne : 0 < (entryOneOne + entryThreeThree + 2 * entryOneThree)
+      * entryTwoTwo - (entryOneTwo + entryTwoThree) ^ 2 := by
+    have hne : (![entryOneTwo + entryTwoThree,
+        -(entryOneOne + entryThreeThree + 2 * entryOneThree),
+        entryOneTwo + entryTwoThree] : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 1
+      norm_num at hcomp
+      linarith [hcomp, hplaneOnePos]
+    have hvalue := hformPos _ hne
+    have hrewrite : (![entryOneTwo + entryTwoThree,
+          -(entryOneOne + entryThreeThree + 2 * entryOneThree),
+          entryOneTwo + entryTwoThree] : Fin 3 → ℝ)
+        ⬝ᵥ ((!![entryOneOne, entryOneTwo, entryOneThree;
+          entryOneTwo, entryTwoTwo, entryTwoThree;
+          entryOneThree, entryTwoThree, entryThreeThree]
+          : Matrix (Fin 3) (Fin 3) ℝ)
+          *ᵥ ![entryOneTwo + entryTwoThree,
+            -(entryOneOne + entryThreeThree + 2 * entryOneThree),
+            entryOneTwo + entryTwoThree])
+        = (entryOneOne + entryThreeThree + 2 * entryOneThree)
+          * ((entryOneOne + entryThreeThree + 2 * entryOneThree) * entryTwoTwo
+            - (entryOneTwo + entryTwoThree) ^ 2) := by
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hrewrite] at hvalue
+    by_contra hnotBlock
+    have hblockNonpos := not_lt.mp hnotBlock
+    linarith [hvalue, mul_nonneg hplaneOnePos.le (neg_nonneg.mpr hblockNonpos)]
+  have hplaneTwoPos : 0 < entryTwoTwo + entryThreeThree + 2 * entryTwoThree := by
+    have hne : (![0, 1, 1] : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 1
+      norm_num at hcomp
+    have hvalue := hformPos _ hne
+    simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+    linarith [hvalue]
+  have hblockTwo : 0 < (entryTwoTwo + entryThreeThree + 2 * entryTwoThree)
+      * entryOneOne - (entryOneTwo + entryOneThree) ^ 2 := by
+    have hne : (![-(entryTwoTwo + entryThreeThree + 2 * entryTwoThree),
+        entryOneTwo + entryOneThree, entryOneTwo + entryOneThree]
+        : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 0
+      norm_num at hcomp
+      linarith [hcomp, hplaneTwoPos]
+    have hvalue := hformPos _ hne
+    have hrewrite : (![-(entryTwoTwo + entryThreeThree + 2 * entryTwoThree),
+          entryOneTwo + entryOneThree, entryOneTwo + entryOneThree]
+          : Fin 3 → ℝ)
+        ⬝ᵥ ((!![entryOneOne, entryOneTwo, entryOneThree;
+          entryOneTwo, entryTwoTwo, entryTwoThree;
+          entryOneThree, entryTwoThree, entryThreeThree]
+          : Matrix (Fin 3) (Fin 3) ℝ)
+          *ᵥ ![-(entryTwoTwo + entryThreeThree + 2 * entryTwoThree),
+            entryOneTwo + entryOneThree, entryOneTwo + entryOneThree])
+        = (entryTwoTwo + entryThreeThree + 2 * entryTwoThree)
+          * ((entryTwoTwo + entryThreeThree + 2 * entryTwoThree) * entryOneOne
+            - (entryOneTwo + entryOneThree) ^ 2) := by
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hrewrite] at hvalue
+    by_contra hnotBlock
+    have hblockNonpos := not_lt.mp hnotBlock
+    linarith [hvalue, mul_nonneg hplaneTwoPos.le (neg_nonneg.mpr hblockNonpos)]
+  linarith [hblockZero, hblockOne, hblockTwo, hblockThree, hblockFour,
+    hblockFive]
+
+/-- Positive definiteness forces the cubic pencil coefficient (the
+determinant), by the adjugate-column witness against the leading `2x2`
+minor. -/
+theorem invariantPencilCubic_pos_of_posDef
+    (entryOneOne entryOneTwo entryOneThree entryTwoTwo entryTwoThree
+      entryThreeThree : ℝ)
+    (hposDef : (!![entryOneOne, entryOneTwo, entryOneThree;
+        entryOneTwo, entryTwoTwo, entryTwoThree;
+        entryOneThree, entryTwoThree, entryThreeThree]
+      : Matrix (Fin 3) (Fin 3) ℝ).PosDef) :
+    0 < entryOneOne * entryTwoTwo * entryThreeThree
+      - entryOneOne * entryTwoThree ^ 2 - entryOneTwo ^ 2 * entryThreeThree
+      + 2 * entryOneTwo * entryOneThree * entryTwoThree
+      - entryOneThree ^ 2 * entryTwoTwo := by
+  have hformPos : ∀ probeVec : Fin 3 → ℝ, probeVec ≠ 0 →
+      0 < probeVec ⬝ᵥ ((!![entryOneOne, entryOneTwo, entryOneThree;
+        entryOneTwo, entryTwoTwo, entryTwoThree;
+        entryOneThree, entryTwoThree, entryThreeThree]
+        : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ probeVec) := by
+    intro probeVec hne
+    have hvalue := hposDef.dotProduct_mulVec_pos hne
+    rwa [star_trivial] at hvalue
+  have hcornerPos : 0 < entryOneOne := by
+    have hne : (![1, 0, 0] : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 0
+      norm_num at hcomp
+    have hvalue := hformPos _ hne
+    simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+    linarith [hvalue]
+  have hblockPos : 0 < entryOneOne * entryTwoTwo - entryOneTwo ^ 2 := by
+    have hne : (![entryOneTwo, -entryOneOne, 0] : Fin 3 → ℝ) ≠ 0 := by
+      intro hzero
+      have hcomp := congrFun hzero 1
+      norm_num at hcomp
+      exact absurd hcomp (ne_of_gt hcornerPos)
+    have hvalue := hformPos _ hne
+    have hrewrite : (![entryOneTwo, -entryOneOne, 0] : Fin 3 → ℝ)
+        ⬝ᵥ ((!![entryOneOne, entryOneTwo, entryOneThree;
+          entryOneTwo, entryTwoTwo, entryTwoThree;
+          entryOneThree, entryTwoThree, entryThreeThree]
+          : Matrix (Fin 3) (Fin 3) ℝ)
+          *ᵥ ![entryOneTwo, -entryOneOne, 0])
+        = entryOneOne * (entryOneOne * entryTwoTwo - entryOneTwo ^ 2) := by
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hrewrite] at hvalue
+    by_contra hnotBlock
+    have hblockNonpos := not_lt.mp hnotBlock
+    linarith [hvalue, mul_nonneg hcornerPos.le (neg_nonneg.mpr hblockNonpos)]
+  have hwitnessNe : (![entryOneTwo * entryTwoThree - entryOneThree * entryTwoTwo,
+      entryOneThree * entryOneTwo - entryOneOne * entryTwoThree,
+      entryOneOne * entryTwoTwo - entryOneTwo ^ 2] : Fin 3 → ℝ) ≠ 0 := by
+    intro hzero
+    have hcomp := congrFun hzero 2
+    norm_num [Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] at hcomp
+    exact absurd hcomp (ne_of_gt hblockPos)
+  have hvalue := hformPos _ hwitnessNe
+  have hrewrite : (![entryOneTwo * entryTwoThree - entryOneThree * entryTwoTwo,
+        entryOneThree * entryOneTwo - entryOneOne * entryTwoThree,
+        entryOneOne * entryTwoTwo - entryOneTwo ^ 2] : Fin 3 → ℝ)
+      ⬝ᵥ ((!![entryOneOne, entryOneTwo, entryOneThree;
+        entryOneTwo, entryTwoTwo, entryTwoThree;
+        entryOneThree, entryTwoThree, entryThreeThree]
+        : Matrix (Fin 3) (Fin 3) ℝ)
+        *ᵥ ![entryOneTwo * entryTwoThree - entryOneThree * entryTwoTwo,
+          entryOneThree * entryOneTwo - entryOneOne * entryTwoThree,
+          entryOneOne * entryTwoTwo - entryOneTwo ^ 2])
+      = (entryOneOne * entryTwoTwo * entryThreeThree
+          - entryOneOne * entryTwoThree ^ 2
+          - entryOneTwo ^ 2 * entryThreeThree
+          + 2 * entryOneTwo * entryOneThree * entryTwoThree
+          - entryOneThree ^ 2 * entryTwoTwo)
+        * (entryOneOne * entryTwoTwo - entryOneTwo ^ 2) := by
+    simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+    ring
+  rw [hrewrite] at hvalue
+  by_contra hnotCubic
+  have hcubicNonpos := not_lt.mp hnotCubic
+  linarith [hvalue, mul_nonneg (neg_nonneg.mpr hcubicNonpos) hblockPos.le]
+
+/-- **The kernel equivalence of the invariant-Sylvester triple.**
+Positive definiteness of a symmetric `3x3` matrix is EQUIVALENT to
+positivity of the three invariant pencil coefficients — the frame-free
+restatement of Sylvester's criterion the knife band certifies against. -/
+theorem posDef_iff_invariantPencilTriple
+    (entryOneOne entryOneTwo entryOneThree entryTwoTwo entryTwoThree
+      entryThreeThree : ℝ) :
+    (!![entryOneOne, entryOneTwo, entryOneThree;
+        entryOneTwo, entryTwoTwo, entryTwoThree;
+        entryOneThree, entryTwoThree, entryThreeThree]
+      : Matrix (Fin 3) (Fin 3) ℝ).PosDef
+    ↔ (0 < entryOneOne + entryTwoTwo + entryThreeThree
+          + entryOneTwo + entryOneThree + entryTwoThree
+        ∧ 0 < 3 * entryOneOne * entryTwoTwo
+          + 3 * entryOneOne * entryThreeThree
+          + 3 * entryTwoTwo * entryThreeThree
+          + 2 * entryOneOne * entryTwoThree + 2 * entryTwoTwo * entryOneThree
+          + 2 * entryThreeThree * entryOneTwo
+          - 3 * entryOneTwo ^ 2 - 3 * entryOneThree ^ 2
+          - 3 * entryTwoThree ^ 2
+          - 2 * entryOneTwo * entryOneThree - 2 * entryOneTwo * entryTwoThree
+          - 2 * entryOneThree * entryTwoThree
+        ∧ 0 < entryOneOne * entryTwoTwo * entryThreeThree
+          - entryOneOne * entryTwoThree ^ 2 - entryOneTwo ^ 2 * entryThreeThree
+          + 2 * entryOneTwo * entryOneThree * entryTwoThree
+          - entryOneThree ^ 2 * entryTwoTwo) := by
+  constructor
+  · intro hposDef
+    exact ⟨invariantPencilLinear_pos_of_posDef _ _ _ _ _ _ hposDef,
+      invariantPencilQuadratic_pos_of_posDef _ _ _ _ _ _ hposDef,
+      invariantPencilCubic_pos_of_posDef _ _ _ _ _ _ hposDef⟩
+  · intro htriple
+    exact posDef_of_invariantPencilTriple _ _ _ _ _ _ htriple.1 htriple.2.1
+      htriple.2.2
+
+/-! ### The engine firing on the knife band
+
+`heavyPairRefuterPoint` is the one mandatory point outside atlas
+Layer A (no star cell, no harmonic cell fires there).  The invariant
+triple certifies its through-edge-3 tree `{0, 1, 3}` from three
+polynomial evaluations: `D1 = 3339/20`, `D2 = 1145083/1200`,
+`D3 = 33967979/216000`. -/
+
+/-- Entrywise chart gap at the dual refuter for the through-edge-3 tree
+`{0, 1, 3}`. -/
+theorem heavyPairRefuter_gap_zeroOneThree_eq :
+    directionChartGap kFourDirection heavyPairRefuterPoint.mass
+        heavyPairRefuterPoint.weight {0, 1, 3}
+      = !![11219/60, -24, -59/60; -24, 239/60, 1/60; -59/60, 1/60, 19/20] := by
+  simp only [directionChartGap, heavyPairRefuterPoint_mass_eq,
+    heavyPairRefuterPoint_weight_eq]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;>
+    norm_num
+
+/-- The knife-band demonstration: the invariant-Sylvester engine
+certifies the strictly dominating tree `{0, 1, 3}` at
+`heavyPairRefuterPoint` by evaluating the three fixed polynomials —
+no Layer-A cell fires at this point. -/
+theorem heavyPairRefuter_gap_zeroOneThree_posDef :
+    (directionChartGap kFourDirection heavyPairRefuterPoint.mass
+        heavyPairRefuterPoint.weight {0, 1, 3}).PosDef := by
+  rw [heavyPairRefuter_gap_zeroOneThree_eq]
+  refine posDef_of_invariantPencilTriple (11219/60) (-24) (-59/60) (239/60)
+    (1/60) (19/20) ?_ ?_ ?_ <;> norm_num
+
 end Gtz

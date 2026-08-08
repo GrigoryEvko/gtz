@@ -15767,6 +15767,20 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.kFourGapDet_treeThreeFourFive_leverageForm
 #print axioms Gtz.kFourGapDet_treeThreeFourFive_pos_of_exchangeBound
 
+-- Design/KFourChartClosure, knife round: the invariant-Sylvester
+-- pencil engine -- the (D1, D2, D3) triple is kernel-equivalent to
+-- positive definiteness (eigenvalue-free pencil march), the three
+-- converses by test vectors and the adjugate compound identity,
+-- and the engine firing at the Layer-A-uncovered band point.
+#print axioms Gtz.kFourPencilLaplacianForm_pos
+#print axioms Gtz.posDef_of_invariantPencilTriple
+#print axioms Gtz.invariantPencilLinear_pos_of_posDef
+#print axioms Gtz.invariantPencilQuadratic_pos_of_posDef
+#print axioms Gtz.invariantPencilCubic_pos_of_posDef
+#print axioms Gtz.posDef_iff_invariantPencilTriple
+#print axioms Gtz.heavyPairRefuter_gap_zeroOneThree_eq
+#print axioms Gtz.heavyPairRefuter_gap_zeroOneThree_posDef
+
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
 -- module, enumerated from the ENVIRONMENT (not from this file's pin
