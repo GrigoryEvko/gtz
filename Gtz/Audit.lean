@@ -15468,6 +15468,38 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- atom's own in-plane contribution.
 #print axioms Gtz.oneLine_planeCover_of_inPlaneExcess
 
+-- Design/LineClassObstructions, the chartless collapse: the producer pair IS
+-- positive definiteness of the gap (the landed Schur producer composed with
+-- its own landed converse), so the unit-normal existential carries no content;
+-- the tightness antecedent is manufacturable on demand, so the whole registry
+-- Prop collapses to a bare heavy weak-to-strict upgrade, proved interderivable
+-- both ways.  Then the obstructions the collapse exposes: the tight direction
+-- always has an outside over-coverer (pattern-free, heaviness-free); deflation
+-- (annihilate any member by tilting the probe, the rest must beat the norm PLUS
+-- the tilt penalty); the free-shadow triangle (no in-plane direction is
+-- invisible to two free atoms); strict heaviness of every atom of a strictly
+-- dominating triple; and the multiplicative surplus seed pinning the available
+-- surplus to the line weight.
+#print axioms Gtz.existsProducerNormal_iff_posDef
+#print axioms Gtz.patternTightDominatedCoverProperty_of_heavyWeakToStrict
+#print axioms Gtz.heavyWeakToStrict_of_patternTightDominatedCoverProperty
+#print axioms Gtz.patternTightDominatedCoverProperty_iff_heavyWeakToStrict
+#print axioms Gtz.tightDirection_sum_sq_eq
+#print axioms Gtz.dominatorAtom_reading_le_normSq
+#print axioms Gtz.exists_outsideAtom_strictly_overcovers_tightDirection
+#print axioms Gtz.posDef_deflatedExcess
+#print axioms Gtz.oneLine_freeCross_eq_zero
+#print axioms Gtz.oneLine_no_two_freeAtoms_flat
+#print axioms Gtz.one_lt_leverage_of_mem_strictTriple
+#print axioms Gtz.oneLine_linePair_dominates_inPlane_of_posDef
+#print axioms Gtz.oneLine_freeAtom_sees_inPlaneDirection
+#print axioms Gtz.stratumIsTieFree_of_heavyWeakToStrict
+#print axioms Gtz.stratumIsTieFreeOneLine_of_heavyWeakToStrict
+#print axioms Gtz.stressFreeStratumIsTieFreeOneLine_of_heavyWeakToStrict
+#print axioms Gtz.stratumIsTieFreeTwoMeetingLines_of_heavyWeakToStrict
+#print axioms Gtz.stressFreeStratumIsTieFreeTwoMeetingLines_of_heavyWeakToStrict
+#print axioms Gtz.oneLine_exists_freeAtom_height_lower_bound
+
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-
 -- keeping attack Prop and its verbatim reduction to the class

@@ -41,6 +41,7 @@ cost is the rank-one subtraction.
 -/
 import Gtz.Design.RigidityBridge
 import Gtz.Design.StratumEmptinessLedger
+import Gtz.Quantitative.PhaseFreeNoGo
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -1499,5 +1500,486 @@ theorem stressFreeStratumIsTieFree_twoMeetingLines_of_tightDominatedCover
     StressFreeStratumIsTieFree (lineFamilyPattern [[0, 1, 2], [0, 3, 4]]) :=
   stressFreeStratumIsTieFree_of_stratumIsTieFree _
     (stratumIsTieFree_of_tightDominatedCoverProperty hproperty)
+
+
+/-! ## The residual restated: the heavy weak-to-strict upgrade
+
+The producer pair carries no content beyond a positive definite gap -- surplus
+and plane cover at SOME unit normal, at EVERY unit normal, and `PosDef` of the
+gap are one statement, by composing the uniform Schur producer with its own
+converse.  Feeding that back through the tightness antecedent (which
+`isTie_yields_tightDirection` manufactures on demand) collapses the registry
+Prop to a bare weak-to-strict upgrade: no unit normal, no probe quantifier, no
+Rayleigh equation.  The collapse is an EQUIVALENCE, so nothing is asserted or
+lost; what shrinks is the formula a prover has to attack.
+
+The obstructions below are what the collapse exposes.  Deflation is the general
+statement behind the line-pair filter: any member of a strictly dominating
+subset can be annihilated by tilting the probe along the normal, and the
+remaining atoms must then beat the probe's norm PLUS the tilt penalty.  The
+free-shadow triangle rules out an in-plane direction invisible to two free
+atoms.  Strict heaviness says every atom of a strictly dominating triple has
+leverage strictly above one, so an atom at the heaviness floor poisons ten of
+the twenty triples.
+-/
+
+
+
+/-! ### 1. The producer pair carries no content beyond a positive definite gap -/
+
+theorem existsProducerNormal_iff_posDef {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) :
+    (∃ unitNormal : Fin 3 → ℝ, unitNormal ⬝ᵥ unitNormal = 1 ∧
+        (1 < ∑ selectedLabel ∈ selected,
+          (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) ∧
+        ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ unitNormal = 0 → probe ≠ 0 →
+          (∑ selectedLabel ∈ selected, (design.atom selectedLabel ⬝ᵥ probe)
+              * (design.atom selectedLabel ⬝ᵥ unitNormal)) ^ 2
+            < ((∑ selectedLabel ∈ selected,
+                  (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) - 1)
+              * ((∑ selectedLabel ∈ selected,
+                    (design.atom selectedLabel ⬝ᵥ probe) ^ 2) - probe ⬝ᵥ probe))
+      ↔ (subsetSum design selected - 1).PosDef := by
+  constructor
+  · rintro ⟨unitNormal, hunit, hsurplus, hcover⟩
+    exact posDef_of_normalSurplus_planeCover design selected unitNormal hunit hsurplus hcover
+  · intro hposDef
+    exact ⟨![1, 0, 0], by norm_num,
+      normalSurplus_planeCover_of_posDef design selected ![1, 0, 0] (by norm_num) hposDef⟩
+
+/-! ### 2. The residual, restated as a weak-to-strict upgrade -/
+
+/-- **The heavy weak-to-strict property at a pattern.**  Every HEAVY design of the
+stratum that carries SOME weakly dominating card-3 subset carries a STRICTLY
+dominating one.  No unit normal, no plane-cover quantifier, no tight direction. -/
+def PatternHeavyWeakToStrict {size : ℕ} (pattern : LinePattern size) : Prop :=
+  ∀ design : WeightedDesign size 3, HasLinePattern design pattern →
+    (∀ label : Fin size, 1 ≤ leverageOf (design.atom label)) →
+    (∃ dominator : Finset (Fin size), dominator.card = 3 ∧ Dominates design dominator) →
+    ∃ selected : Finset (Fin size), selected.card = 3 ∧
+      (subsetSum design selected - 1).PosDef
+
+theorem patternTightDominatedCoverProperty_of_heavyWeakToStrict {size : ℕ}
+    (pattern : LinePattern size) (hupgrade : PatternHeavyWeakToStrict pattern) :
+    PatternTightDominatedCoverProperty pattern := by
+  intro design hpattern hheavy dominator _ hcard hdominates _ _
+  obtain ⟨selected, hcardSelected, hposDef⟩ :=
+    hupgrade design hpattern hheavy ⟨dominator, hcard, hdominates⟩
+  exact ⟨selected, ![1, 0, 0], hcardSelected, by norm_num,
+    normalSurplus_planeCover_of_posDef design selected ![1, 0, 0] (by norm_num) hposDef⟩
+
+theorem heavyWeakToStrict_of_patternTightDominatedCoverProperty {size : ℕ}
+    (pattern : LinePattern size)
+    (hproperty : PatternTightDominatedCoverProperty pattern) :
+    PatternHeavyWeakToStrict pattern := by
+  intro design hpattern hheavy hweak
+  by_cases hstrict : ∃ selected : Finset (Fin size), selected.card = 3 ∧
+      (subsetSum design selected - 1).PosDef
+  · exact hstrict
+  · have htie : IsTie design :=
+      ⟨hweak, fun selected hcardSelected hposDef =>
+        hstrict ⟨selected, hcardSelected, hposDef⟩⟩
+    obtain ⟨dominator, tightDir, hcard, hdominates, htightNe, htight⟩ :=
+      isTie_yields_tightDirection htie
+    obtain ⟨selected, unitNormal, hcardSelected, hunit, hsurplus, hcover⟩ :=
+      hproperty design hpattern hheavy dominator tightDir hcard hdominates htightNe htight
+    exact ⟨selected, hcardSelected,
+      posDef_of_normalSurplus_planeCover design selected unitNormal hunit hsurplus hcover⟩
+
+/-- **The exact residual, restated.**  The chartless residual Prop is EXACTLY the
+heavy weak-to-strict upgrade on its stratum. -/
+theorem patternTightDominatedCoverProperty_iff_heavyWeakToStrict {size : ℕ}
+    (pattern : LinePattern size) :
+    PatternTightDominatedCoverProperty pattern ↔ PatternHeavyWeakToStrict pattern :=
+  ⟨heavyWeakToStrict_of_patternTightDominatedCoverProperty pattern,
+    patternTightDominatedCoverProperty_of_heavyWeakToStrict pattern⟩
+
+/-! ### 3. What the tight direction hands over for free -/
+
+theorem tightDirection_sum_sq_eq {size rank : ℕ} (design : WeightedDesign size rank)
+    (dominator : Finset (Fin size)) (tightDir : Fin rank → ℝ)
+    (htight : tightDir ⬝ᵥ ((subsetSum design dominator - 1) *ᵥ tightDir) = 0) :
+    ∑ selectedLabel ∈ dominator, (design.atom selectedLabel ⬝ᵥ tightDir) ^ 2
+      = tightDir ⬝ᵥ tightDir := by
+  rw [dominationGap_form] at htight
+  linarith
+
+theorem dominatorAtom_reading_le_normSq {size rank : ℕ} (design : WeightedDesign size rank)
+    (dominator : Finset (Fin size)) (tightDir : Fin rank → ℝ)
+    (htight : tightDir ⬝ᵥ ((subsetSum design dominator - 1) *ᵥ tightDir) = 0)
+    {selectedLabel : Fin size} (hmem : selectedLabel ∈ dominator) :
+    (design.atom selectedLabel ⬝ᵥ tightDir) ^ 2 ≤ tightDir ⬝ᵥ tightDir := by
+  have hbound := Finset.single_le_sum
+    (f := fun label : Fin size => (design.atom label ⬝ᵥ tightDir) ^ 2)
+    (fun label _ => sq_nonneg _) hmem
+  rw [tightDirection_sum_sq_eq design dominator tightDir htight] at hbound
+  exact hbound
+
+/-- **Some atom outside the tight dominator strictly over-covers the tight
+direction.**  Pattern-free and heaviness-free: the tight identity forces every
+dominator atom to under-cover, at least one strictly, and Parseval then forces
+some atom of the design to exceed, which the same bound excludes from the
+dominator. -/
+theorem exists_outsideAtom_strictly_overcovers_tightDirection {size rank : ℕ}
+    (design : WeightedDesign size rank) (dominator : Finset (Fin size))
+    (tightDir : Fin rank → ℝ) (hcardTwo : 2 ≤ dominator.card) (htightNe : tightDir ≠ 0)
+    (htight : tightDir ⬝ᵥ ((subsetSum design dominator - 1) *ᵥ tightDir) = 0) :
+    ∃ overLabel : Fin size, overLabel ∉ dominator ∧
+      tightDir ⬝ᵥ tightDir < (design.atom overLabel ⬝ᵥ tightDir) ^ 2 := by
+  have hnormPos : 0 < tightDir ⬝ᵥ tightDir := dotProduct_self_pos htightNe
+  have hsum := tightDirection_sum_sq_eq design dominator tightDir htight
+  have hle : ∀ label ∈ dominator,
+      (design.atom label ⬝ᵥ tightDir) ^ 2 ≤ tightDir ⬝ᵥ tightDir :=
+    fun label hmem => dominatorAtom_reading_le_normSq design dominator tightDir htight hmem
+  have hstrictInside : ∃ lowLabel ∈ dominator,
+      (design.atom lowLabel ⬝ᵥ tightDir) ^ 2 < tightDir ⬝ᵥ tightDir := by
+    by_contra hnone
+    push Not at hnone
+    have heq : ∀ label ∈ dominator,
+        (design.atom label ⬝ᵥ tightDir) ^ 2 = tightDir ⬝ᵥ tightDir :=
+      fun label hmem => le_antisymm (hle label hmem) (hnone label hmem)
+    rw [Finset.sum_congr rfl heq, Finset.sum_const, nsmul_eq_mul] at hsum
+    have hcardReal : (2 : ℝ) ≤ (dominator.card : ℝ) := by exact_mod_cast hcardTwo
+    nlinarith [hsum, hnormPos, hcardReal]
+  obtain ⟨lowLabel, hlowMem, hlow⟩ := hstrictInside
+  have hexistsOver : ∃ overLabel : Fin size,
+      tightDir ⬝ᵥ tightDir < (design.atom overLabel ⬝ᵥ tightDir) ^ 2 := by
+    by_contra hnone
+    push Not at hnone
+    have hparseval := dotProduct_self_eq_sum_weight_mul_sq design tightDir
+    have hstrictSum : ∑ label, design.weight label * (design.atom label ⬝ᵥ tightDir) ^ 2
+        < ∑ label : Fin size, design.weight label * (tightDir ⬝ᵥ tightDir) := by
+      refine Finset.sum_lt_sum (fun label _ =>
+        mul_le_mul_of_nonneg_left (hnone label) (design.weight_pos label).le)
+        ⟨lowLabel, Finset.mem_univ lowLabel, ?_⟩
+      exact mul_lt_mul_of_pos_left hlow (design.weight_pos lowLabel)
+    rw [← Finset.sum_mul, design.weight_sum_one, one_mul] at hstrictSum
+    linarith [hparseval, hstrictSum]
+  obtain ⟨overLabel, hover⟩ := hexistsOver
+  refine ⟨overLabel, fun hmem => ?_, hover⟩
+  exact absurd (hle overLabel hmem) (not_le.mpr hover)
+
+/-! ### 4. The deflation bound: one atom of a strict dominator can always be
+tilted away, at the cost of an explicit penalty -/
+
+/-- **Deflation.**  If a selection has a POSITIVE DEFINITE gap and one of its
+atoms has a nonzero height against a unit normal, then that atom can be
+annihilated by tilting any in-plane probe along the normal.  What survives is a
+strictly stronger requirement on the REMAINING atoms: their tilted readings must
+beat the probe's own norm PLUS the square of the tilt.  Instantiated at two flat
+atoms and one free atom this is the line-pair obstruction; instantiated at a
+mixed or free triple it is new. -/
+theorem posDef_deflatedExcess {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) (unitNormal : Fin 3 → ℝ)
+    (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (dropLabel : Fin size) (hdropMem : dropLabel ∈ selected)
+    (hdropHeight : design.atom dropLabel ⬝ᵥ unitNormal ≠ 0)
+    (hposDef : (subsetSum design selected - 1).PosDef)
+    (probe : Fin 3 → ℝ) (hprobeFlat : probe ⬝ᵥ unitNormal = 0) (hprobeNe : probe ≠ 0) :
+    probe ⬝ᵥ probe
+        + ((design.atom dropLabel ⬝ᵥ probe)
+            / (design.atom dropLabel ⬝ᵥ unitNormal)) ^ 2
+      < ∑ keptLabel ∈ selected.erase dropLabel,
+          (design.atom keptLabel ⬝ᵥ probe
+            - ((design.atom dropLabel ⬝ᵥ probe)
+                / (design.atom dropLabel ⬝ᵥ unitNormal))
+              * (design.atom keptLabel ⬝ᵥ unitNormal)) ^ 2 := by
+  set tilt : ℝ := (design.atom dropLabel ⬝ᵥ probe)
+      / (design.atom dropLabel ⬝ᵥ unitNormal) with htilt
+  set tilted : Fin 3 → ℝ := probe - tilt • unitNormal with htilted
+  have hreading : ∀ label : Fin size,
+      design.atom label ⬝ᵥ tilted
+        = design.atom label ⬝ᵥ probe - tilt * (design.atom label ⬝ᵥ unitNormal) := by
+    intro label
+    rw [htilted, dotProduct_sub, dotProduct_smul, smul_eq_mul]
+  have hdropVanishes : design.atom dropLabel ⬝ᵥ tilted = 0 := by
+    rw [hreading, htilt, div_mul_cancel₀ _ hdropHeight, sub_self]
+  have hnormalAgainstProbe : unitNormal ⬝ᵥ probe = 0 := by
+    rw [dotProduct_comm]; exact hprobeFlat
+  have htiltedNorm : tilted ⬝ᵥ tilted = probe ⬝ᵥ probe + tilt ^ 2 := by
+    rw [htilted, sub_dotProduct, dotProduct_sub, dotProduct_sub, smul_dotProduct,
+      dotProduct_smul, dotProduct_smul, smul_dotProduct, hprobeFlat,
+      hnormalAgainstProbe, hunit]
+    simp only [smul_eq_mul, mul_zero, mul_one]
+    ring
+  have htiltedNe : tilted ≠ 0 := by
+    intro hzero
+    have hzeroDot : tilted ⬝ᵥ probe = 0 := by rw [hzero]; simp
+    rw [htilted, sub_dotProduct, smul_dotProduct, hnormalAgainstProbe] at hzeroDot
+    simp only [smul_eq_mul, mul_zero, sub_zero] at hzeroDot
+    exact absurd hzeroDot (ne_of_gt (dotProduct_self_pos hprobeNe))
+  have hvalue := hposDef.dotProduct_mulVec_pos htiltedNe
+  rw [star_trivial, dominationGap_form, htiltedNorm] at hvalue
+  have hsplit : ∑ label ∈ selected, (design.atom label ⬝ᵥ tilted) ^ 2
+      = ∑ keptLabel ∈ selected.erase dropLabel, (design.atom keptLabel ⬝ᵥ tilted) ^ 2 := by
+    rw [← Finset.sum_erase_add selected _ hdropMem, hdropVanishes]
+    ring
+  rw [hsplit] at hvalue
+  have hcongr : ∑ keptLabel ∈ selected.erase dropLabel,
+        (design.atom keptLabel ⬝ᵥ tilted) ^ 2
+      = ∑ keptLabel ∈ selected.erase dropLabel,
+        (design.atom keptLabel ⬝ᵥ probe
+          - tilt * (design.atom keptLabel ⬝ᵥ unitNormal)) ^ 2 :=
+    Finset.sum_congr rfl fun keptLabel _ => by rw [hreading]
+  rw [hcongr] at hvalue
+  linarith
+
+/-! ### 5. The free-shadow triangle: no in-plane direction is invisible to two
+free atoms -/
+
+set_option maxHeartbeats 4000000 in
+/-- **The cross identity on the one-line stratum.**  Polarised Parseval against an
+in-plane probe and the line normal: the line atoms drop out, so the three free
+atoms' cross terms cancel exactly. -/
+theorem oneLine_freeCross_eq_zero (design : WeightedDesign 6 3)
+    (normalVec : Fin 3 → ℝ)
+    (horthogonal : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalVec = 0)
+    (probe : Fin 3 → ℝ) (hprobeFlat : probe ⬝ᵥ normalVec = 0) :
+    ∑ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+        design.weight freeLabel
+          * ((design.atom freeLabel ⬝ᵥ probe) * (design.atom freeLabel ⬝ᵥ normalVec))
+      = 0 := by
+  have hpolar := dotProduct_eq_sum_weight_mul_pair design probe normalVec
+  have hlineVanishes : ∑ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.weight lineLabel
+        * ((design.atom lineLabel ⬝ᵥ probe) * (design.atom lineLabel ⬝ᵥ normalVec)) = 0 :=
+    Finset.sum_eq_zero fun lineLabel hmem => by
+      rw [horthogonal lineLabel hmem]; ring
+  have hcompl : (({0, 1, 2} : Finset (Fin 6)))ᶜ = ({3, 4, 5} : Finset (Fin 6)) := by decide
+  rw [← Finset.sum_add_sum_compl ({0, 1, 2} : Finset (Fin 6))
+      (fun atomLabel => design.weight atomLabel
+        * ((design.atom atomLabel ⬝ᵥ probe) * (design.atom atomLabel ⬝ᵥ normalVec))),
+    hlineVanishes, zero_add, hcompl] at hpolar
+  rw [← hpolar, hprobeFlat]
+
+set_option maxHeartbeats 4000000 in
+/-- **The free-shadow triangle.**  On the one-line stratum NO nonzero in-plane
+direction is orthogonal to two distinct free atoms.  If two free shadows missed
+the probe, the cross identity would force the third to miss it too, and the probe
+would be a common orthogonal of `{3,4,5}` — a triple the pattern declares
+independent. -/
+theorem oneLine_no_two_freeAtoms_flat (design : WeightedDesign 6 3)
+    (hpattern : HasLinePattern design (lineFamilyPattern [[(0 : Fin 6), 1, 2]]))
+    (normalVec : Fin 3 → ℝ) (hnormalNe : normalVec ≠ 0)
+    (horthogonal : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalVec = 0)
+    (probe : Fin 3 → ℝ) (hprobeNe : probe ≠ 0) (hprobeFlat : probe ⬝ᵥ normalVec = 0)
+    (freeFirst freeSecond : Fin 6)
+    (hfirstMem : freeFirst ∈ ({3, 4, 5} : Finset (Fin 6)))
+    (hsecondMem : freeSecond ∈ ({3, 4, 5} : Finset (Fin 6)))
+    (hdistinct : freeFirst ≠ freeSecond)
+    (hfirstFlat : design.atom freeFirst ⬝ᵥ probe = 0)
+    (hsecondFlat : design.atom freeSecond ⬝ᵥ probe = 0) : False := by
+  have hcross := oneLine_freeCross_eq_zero design normalVec horthogonal probe hprobeFlat
+  have hheight : ∀ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+      design.atom freeLabel ⬝ᵥ normalVec ≠ 0 :=
+    fun freeLabel hmem => oneLine_freeAtom_normal_dot_ne_zero design hpattern normalVec
+      hnormalNe horthogonal freeLabel hmem
+  have hallFlat : ∀ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+      design.atom freeLabel ⬝ᵥ probe = 0 := by
+    intro freeLabel hmem
+    by_cases hisFirst : freeLabel = freeFirst
+    · rw [hisFirst]; exact hfirstFlat
+    by_cases hisSecond : freeLabel = freeSecond
+    · rw [hisSecond]; exact hsecondFlat
+    have hsingle : ∑ label ∈ ({3, 4, 5} : Finset (Fin 6)),
+        design.weight label
+          * ((design.atom label ⬝ᵥ probe) * (design.atom label ⬝ᵥ normalVec))
+        = design.weight freeLabel
+            * ((design.atom freeLabel ⬝ᵥ probe)
+              * (design.atom freeLabel ⬝ᵥ normalVec)) := by
+      refine Finset.sum_eq_single_of_mem freeLabel hmem fun other hother hne => ?_
+      have : design.atom other ⬝ᵥ probe = 0 := by
+        fin_cases hmem <;> fin_cases hfirstMem <;> fin_cases hsecondMem <;>
+          fin_cases hother <;>
+          simp_all
+      rw [this]; ring
+    rw [hsingle] at hcross
+    rcases mul_eq_zero.mp hcross with hzero | hzero
+    · exact absurd hzero (ne_of_gt (design.weight_pos freeLabel))
+    rcases mul_eq_zero.mp hzero with hzero' | hzero'
+    · exact hzero'
+    · exact absurd hzero' (hheight freeLabel hmem)
+  have hbracketZero : atomBracket design 3 4 5 = 0 := by
+    rw [atomBracket]
+    refine tripleBracket_eq_zero_of_commonOrthogonal (normalVec := probe) hprobeNe ?_ ?_ ?_
+    · exact hallFlat 3 (by decide)
+    · exact hallFlat 4 (by decide)
+    · exact hallFlat 5 (by decide)
+  exact absurd ((hpattern 3 4 5 (by decide) (by decide) (by decide)).mp hbracketZero)
+    (by decide)
+
+/-! ### Every atom of a strictly dominating triple is STRICTLY heavy -/
+
+theorem one_lt_leverage_of_mem_strictTriple {size : ℕ} (design : WeightedDesign size 3)
+    (heavyLabel otherFirst otherSecond : Fin size)
+    (hdistinctFirst : heavyLabel ≠ otherFirst)
+    (hdistinctSecond : heavyLabel ≠ otherSecond)
+    (hdistinctOthers : otherFirst ≠ otherSecond)
+    (hposDef : (subsetSum design {heavyLabel, otherFirst, otherSecond} - 1).PosDef) :
+    1 < leverageOf (design.atom heavyLabel) := by
+  obtain ⟨probe, hprobeNe, hfirstZero, hsecondZero⟩ :=
+    exists_ne_zero_dotProduct_pair_eq_zero (design.atom otherFirst) (design.atom otherSecond)
+  have hvalue := hposDef.dotProduct_mulVec_pos hprobeNe
+  rw [star_trivial, dominationGap_form,
+    Finset.sum_insert (by simp [hdistinctFirst, hdistinctSecond]),
+    Finset.sum_insert (by simp [hdistinctOthers]), Finset.sum_singleton,
+    hfirstZero, hsecondZero] at hvalue
+  have hcs : (design.atom heavyLabel ⬝ᵥ probe) ^ 2
+      ≤ (design.atom heavyLabel ⬝ᵥ design.atom heavyLabel) * (probe ⬝ᵥ probe) :=
+    dotProduct_sq_le_mul _ _
+  have hlev : leverageOf (design.atom heavyLabel)
+      = design.atom heavyLabel ⬝ᵥ design.atom heavyLabel := by
+    simp only [leverageOf, dotProduct_self_eq_sum_sq]
+  have hpos : 0 < probe ⬝ᵥ probe := dotProduct_self_pos hprobeNe
+  rw [hlev]
+  nlinarith [hvalue, hcs, hpos]
+
+/-! ### The line-pair obstruction, as an instance of deflation -/
+
+theorem oneLine_linePair_dominates_inPlane_of_posDef {size : ℕ}
+    (design : WeightedDesign size 3)
+    (lineFirst lineSecond freeLabel : Fin size) (unitNormal : Fin 3 → ℝ)
+    (hdistinctFirstSecond : lineFirst ≠ lineSecond)
+    (hdistinctFirstFree : lineFirst ≠ freeLabel)
+    (hdistinctSecondFree : lineSecond ≠ freeLabel)
+    (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (hfirstFlat : design.atom lineFirst ⬝ᵥ unitNormal = 0)
+    (hsecondFlat : design.atom lineSecond ⬝ᵥ unitNormal = 0)
+    (hfreeHeight : design.atom freeLabel ⬝ᵥ unitNormal ≠ 0)
+    (hposDef : (subsetSum design ({lineFirst, lineSecond, freeLabel}
+      : Finset (Fin size)) - 1).PosDef)
+    (probe : Fin 3 → ℝ) (hprobeFlat : probe ⬝ᵥ unitNormal = 0) (hprobeNe : probe ≠ 0) :
+    probe ⬝ᵥ probe
+        + ((design.atom freeLabel ⬝ᵥ probe)
+            / (design.atom freeLabel ⬝ᵥ unitNormal)) ^ 2
+      < (design.atom lineFirst ⬝ᵥ probe) ^ 2
+        + (design.atom lineSecond ⬝ᵥ probe) ^ 2 := by
+  have hdeflate := posDef_deflatedExcess design
+    ({lineFirst, lineSecond, freeLabel} : Finset (Fin size))
+    unitNormal hunit freeLabel (by simp) hfreeHeight hposDef probe hprobeFlat hprobeNe
+  have herase : ({lineFirst, lineSecond, freeLabel} : Finset (Fin size)).erase freeLabel
+      = {lineFirst, lineSecond} := by
+    ext label
+    simp only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · rintro ⟨hne, hcases⟩
+      rcases hcases with hcase | hcase | hcase
+      · exact Or.inl hcase
+      · exact Or.inr hcase
+      · exact absurd hcase hne
+    · rintro (hcase | hcase)
+      · exact ⟨by rw [hcase]; exact hdistinctFirstFree, Or.inl hcase⟩
+      · exact ⟨by rw [hcase]; exact hdistinctSecondFree, Or.inr (Or.inl hcase)⟩
+  rw [herase, Finset.sum_insert (by simp [hdistinctFirstSecond]), Finset.sum_singleton,
+    hfirstFlat, hsecondFlat] at hdeflate
+  have hnormalise : ∀ reading scale : ℝ, (reading - scale * 0) ^ 2 = reading ^ 2 := by
+    intro reading scale; ring
+  rw [hnormalise, hnormalise] at hdeflate
+  exact hdeflate
+
+/-! ### Every free atom of the one-line stratum sees some in-plane direction -/
+
+set_option maxHeartbeats 4000000 in
+/-- **Every free atom sees an in-plane direction.**  A free atom whose shadow
+vanished would be invisible to every in-plane probe, and in particular to a probe
+that also misses a second free atom — which the free-shadow triangle forbids. -/
+theorem oneLine_freeAtom_sees_inPlaneDirection (design : WeightedDesign 6 3)
+    (hpattern : HasLinePattern design (lineFamilyPattern [[(0 : Fin 6), 1, 2]]))
+    (normalVec : Fin 3 → ℝ) (hnormalNe : normalVec ≠ 0)
+    (horthogonal : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalVec = 0)
+    (freeLabel : Fin 6) (hfreeMem : freeLabel ∈ ({3, 4, 5} : Finset (Fin 6))) :
+    ∃ probe : Fin 3 → ℝ, probe ≠ 0 ∧ probe ⬝ᵥ normalVec = 0 ∧
+      design.atom freeLabel ⬝ᵥ probe ≠ 0 := by
+  have hother : ∃ otherFree ∈ ({3, 4, 5} : Finset (Fin 6)), otherFree ≠ freeLabel := by
+    fin_cases hfreeMem
+    · exact ⟨4, by decide, by decide⟩
+    · exact ⟨3, by decide, by decide⟩
+    · exact ⟨3, by decide, by decide⟩
+  obtain ⟨otherFree, hotherMem, hotherNe⟩ := hother
+  obtain ⟨probe, hprobeNe, hnormalDot, hotherDot⟩ :=
+    exists_ne_zero_dotProduct_pair_eq_zero normalVec (design.atom otherFree)
+  have hprobeFlat : probe ⬝ᵥ normalVec = 0 := by
+    rw [dotProduct_comm]; exact hnormalDot
+  refine ⟨probe, hprobeNe, hprobeFlat, fun hzero => ?_⟩
+  exact oneLine_no_two_freeAtoms_flat design hpattern normalVec hnormalNe horthogonal
+    probe hprobeNe hprobeFlat freeLabel otherFree hfreeMem hotherMem
+    (Ne.symm hotherNe) hzero hotherDot
+
+/-! ### The discharge chain from the restated residual to the class obligations -/
+
+theorem stratumIsTieFree_of_heavyWeakToStrict {pattern : LinePattern 6}
+    (hupgrade : PatternHeavyWeakToStrict pattern) : StratumIsTieFree pattern :=
+  stratumIsTieFree_of_tightDominatedCoverProperty
+    (patternTightDominatedCoverProperty_of_heavyWeakToStrict pattern hupgrade)
+
+theorem stratumIsTieFreeOneLine_of_heavyWeakToStrict
+    (hupgrade : PatternHeavyWeakToStrict (lineFamilyPattern [[(0 : Fin 6), 1, 2]])) :
+    StratumIsTieFree (lineFamilyPattern [[(0 : Fin 6), 1, 2]]) :=
+  stratumIsTieFree_of_heavyWeakToStrict hupgrade
+
+theorem stressFreeStratumIsTieFreeOneLine_of_heavyWeakToStrict
+    (hupgrade : PatternHeavyWeakToStrict (lineFamilyPattern [[(0 : Fin 6), 1, 2]])) :
+    StressFreeStratumIsTieFree (lineFamilyPattern [[(0 : Fin 6), 1, 2]]) :=
+  stressFreeStratumIsTieFree_of_stratumIsTieFree _
+    (stratumIsTieFree_of_heavyWeakToStrict hupgrade)
+
+theorem stratumIsTieFreeTwoMeetingLines_of_heavyWeakToStrict
+    (hupgrade : PatternHeavyWeakToStrict
+      (lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]])) :
+    StratumIsTieFree (lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]]) :=
+  stratumIsTieFree_of_heavyWeakToStrict hupgrade
+
+theorem stressFreeStratumIsTieFreeTwoMeetingLines_of_heavyWeakToStrict
+    (hupgrade : PatternHeavyWeakToStrict
+      (lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]])) :
+    StressFreeStratumIsTieFree (lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]]) :=
+  stressFreeStratumIsTieFree_of_stratumIsTieFree _
+    (stratumIsTieFree_of_heavyWeakToStrict hupgrade)
+
+/-- **The quantitative surplus seed.**  Some free atom's squared height against
+the line normal is at least `|n|²` divided by the TOTAL FREE WEIGHT — stated
+multiplicatively, so no division appears.  Since the free weight is strictly
+below one this strengthens `Gtz.oneLine_exists_freeAtom_overcovers_normal`
+quantitatively, and it pins the available normal surplus to exactly the quantity
+the line-starved corner drives to zero: the line weight. -/
+theorem oneLine_exists_freeAtom_height_lower_bound (design : WeightedDesign 6 3)
+    (normalVec : Fin 3 → ℝ)
+    (horthogonal : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalVec = 0) :
+    ∃ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+      normalVec ⬝ᵥ normalVec
+        ≤ (∑ other ∈ ({3, 4, 5} : Finset (Fin 6)), design.weight other)
+          * (design.atom freeLabel ⬝ᵥ normalVec) ^ 2 := by
+  have hcompl : (({0, 1, 2} : Finset (Fin 6)))ᶜ = ({3, 4, 5} : Finset (Fin 6)) := by decide
+  have hcarried := normalParseval_on_complement design ({0, 1, 2} : Finset (Fin 6))
+    normalVec horthogonal
+  rw [hcompl] at hcarried
+  set freeWeight : ℝ := ∑ other ∈ ({3, 4, 5} : Finset (Fin 6)), design.weight other
+    with hfreeWeight
+  have hfreeWeightPos : 0 < freeWeight :=
+    Finset.sum_pos (fun label _ => design.weight_pos label) ⟨3, by decide⟩
+  by_contra hnone
+  push Not at hnone
+  have hstrict : ∑ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+        design.weight freeLabel * (freeWeight * (design.atom freeLabel ⬝ᵥ normalVec) ^ 2)
+      < ∑ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+        design.weight freeLabel * (normalVec ⬝ᵥ normalVec) := by
+    refine Finset.sum_lt_sum_of_nonempty ⟨3, by decide⟩ fun freeLabel hmem => ?_
+    exact mul_lt_mul_of_pos_left (hnone freeLabel hmem) (design.weight_pos freeLabel)
+  have hleft : ∑ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+        design.weight freeLabel * (freeWeight * (design.atom freeLabel ⬝ᵥ normalVec) ^ 2)
+      = freeWeight * ∑ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+          design.weight freeLabel * (design.atom freeLabel ⬝ᵥ normalVec) ^ 2 := by
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun freeLabel _ => by ring
+  have hright : ∑ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+        design.weight freeLabel * (normalVec ⬝ᵥ normalVec)
+      = freeWeight * (normalVec ⬝ᵥ normalVec) := by
+    rw [hfreeWeight, Finset.sum_mul]
+  rw [hleft, hright, hcarried] at hstrict
+  exact absurd hstrict (lt_irrefl _)
 
 end Gtz

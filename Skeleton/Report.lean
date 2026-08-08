@@ -127,7 +127,18 @@ def retiredObligationNames : List Name :=
    -- subsets.  All three survive as theorems of exactly their old types.
    `Skeleton.obligationWeakToStrictUThreeSix,
    `Skeleton.obligationChartTieFreeThreeLines,
-   `Skeleton.obligationKnifeBandKFour]
+   `Skeleton.obligationKnifeBandKFour,
+   -- 2026-08-08, round 4: the two chartless residuals collapse.  The producer
+   -- pair -- a unit normal with a strict normal surplus and a plane cover --
+   -- is EXACTLY positive definiteness of the gap, by composing the landed
+   -- uniform Schur producer with its own landed converse; so the unit-normal
+   -- existential carries no content and the forall-probe inequality is a
+   -- re-encoding.  Feeding that through `Gtz.isTie_yields_tightDirection`,
+   -- which manufactures the tight direction on demand, leaves a bare
+   -- weak-to-strict upgrade.  Both survive as theorems of exactly their old
+   -- types.
+   `Skeleton.obligationTightDominatedCoverOneLine,
+   `Skeleton.obligationTightDominatedCoverTwoMeetingLines]
 
 /-- Obligations added since the baseline.  Each name must be a declared axiom;
 the gate checks that.  Adding to this list with `retiredObligationNames` still
@@ -174,7 +185,14 @@ def introducedObligationNames : List Name :=
    -- the exchange-star determinant pair (K4).
    `Skeleton.obligationBaseTripleTightUThreeSix,
    `Skeleton.obligationChartTieFreeThreeLinesFundamentalDomain,
-   `Skeleton.obligationKnifeBandRefinedKFour]
+   `Skeleton.obligationKnifeBandRefinedKFour,
+   -- 2026-08-08, round 4: the collapsed chartless residuals.  Three
+   -- quantifiers and a quadratic-inequality family are deleted at zero
+   -- logical cost -- `Gtz.patternTightDominatedCoverProperty_iff_heavyWeakToStrict`
+   -- proves the two Props interderivable, so this is a change of FORMULA,
+   -- never of strength, and it cannot repeat the round-2 over-strengthening.
+   `Skeleton.obligationHeavyWeakToStrictOneLine,
+   `Skeleton.obligationHeavyWeakToStrictTwoMeetingLines]
 
 /-! ### The gate -/
 
