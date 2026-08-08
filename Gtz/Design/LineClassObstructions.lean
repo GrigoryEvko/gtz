@@ -40,6 +40,7 @@ companion PSD lemma makes "the eps term only helps" formal: the whole off-face
 cost is the rank-one subtraction.
 -/
 import Gtz.Design.RigidityBridge
+import Gtz.Design.StratumEmptinessLedger
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -1229,5 +1230,226 @@ theorem stratumIsTieFree_of_reducedCoverProperty {size : ℕ}
   exact htie.2 selected hcard
     (posDef_of_normalSurplus_planeCover design selected unitNormal hunit
       hsurplus hcover)
+
+
+/-! ## The sharpened chartless residual
+
+`PatternReducedCoverProperty` demands a producer pair at EVERY design of the
+stratum.  A tie supplies three landed facts for free, and none of them is
+currently spent on this path:
+
+* every atom is heavy (`leverage_one_le_of_isTie_sixThree`, unconditional at
+  six points through `gtzWeighted_of_le_five`);
+* a card-3 subset dominates weakly (`IsTie.1`);
+* that subset's gap is singular with an explicit nonzero null vector
+  (`isTie_yields_tightDirection`).
+
+Conditioning on all three yields a strictly weaker Prop that still discharges
+the class statement, and spends the narrowing `stratumIsTieFree_of_amongHeavy_sixThree`
+on the way. -/
+
+/-- **The sharpened reduced cover property.**  Only heavy designs carrying a
+weakly dominating card-3 subset with an explicit tight direction are asked for
+a producer pair. -/
+def PatternTightDominatedCoverProperty {size : ℕ} (pattern : LinePattern size) : Prop :=
+  ∀ design : WeightedDesign size 3, HasLinePattern design pattern →
+    (∀ label : Fin size, 1 ≤ leverageOf (design.atom label)) →
+    ∀ (dominator : Finset (Fin size)) (tightDir : Fin 3 → ℝ),
+      dominator.card = 3 → Dominates design dominator →
+      tightDir ≠ 0 →
+      tightDir ⬝ᵥ ((subsetSum design dominator - 1) *ᵥ tightDir) = 0 →
+      ∃ (selected : Finset (Fin size)) (unitNormal : Fin 3 → ℝ),
+        selected.card = 3 ∧ unitNormal ⬝ᵥ unitNormal = 1 ∧
+        (1 < ∑ selectedLabel ∈ selected,
+          (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) ∧
+        ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ unitNormal = 0 → probe ≠ 0 →
+          (∑ selectedLabel ∈ selected, (design.atom selectedLabel ⬝ᵥ probe)
+              * (design.atom selectedLabel ⬝ᵥ unitNormal)) ^ 2
+            < ((∑ selectedLabel ∈ selected,
+                  (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) - 1)
+              * ((∑ selectedLabel ∈ selected,
+                    (design.atom selectedLabel ⬝ᵥ probe) ^ 2) - probe ⬝ᵥ probe)
+
+/-- **Legality: the landed axiom implies the sharpened one**, by discarding the
+three antecedents.  Refinement in the sufficient direction; no converse claimed
+here. -/
+theorem patternTightDominatedCoverProperty_of_reducedCoverProperty {size : ℕ}
+    (pattern : LinePattern size)
+    (hproperty : PatternReducedCoverProperty pattern) :
+    PatternTightDominatedCoverProperty pattern :=
+  fun design hpattern _ _ _ _ _ _ _ => hproperty design hpattern
+
+/-- **The sharpened property closes the stratum.**  Spends the heavy narrowing
+`stratumIsTieFree_of_amongHeavy_sixThree` (hence `gtzWeighted_of_le_five`), the
+tie's own weak dominator and tight direction, and finally the uniform Schur
+producer against the tie's second component. -/
+theorem stratumIsTieFree_of_tightDominatedCoverProperty {pattern : LinePattern 6}
+    (hproperty : PatternTightDominatedCoverProperty pattern) :
+    StratumIsTieFree pattern := by
+  refine stratumIsTieFree_of_amongHeavy_sixThree ?_
+  intro design hpattern hheavy htie
+  obtain ⟨dominator, tightDir, hcard, hdominates, htightNe, htight⟩ :=
+    isTie_yields_tightDirection htie
+  obtain ⟨selected, unitNormal, hcardSelected, hunit, hsurplus, hcover⟩ :=
+    hproperty design hpattern hheavy dominator tightDir hcard hdominates htightNe htight
+  exact htie.2 selected hcardSelected
+    (posDef_of_normalSurplus_planeCover design selected unitNormal hunit
+      hsurplus hcover)
+
+/-! ## What the two Props really are
+
+The converse of the uniform Schur producer, at ANY unit normal.  With it the
+sharpened Prop is kernel-EQUIVALENT to the class statement, and the landed one
+is the class statement CONJOINED with a stratum-restricted instance of the
+conclusion the campaign is proving. -/
+
+set_option maxHeartbeats 4000000 in
+/-- **The converse of the uniform Schur producer.**  A positive definite gap
+supplies the producer pair at EVERY unit normal, so the normal existential in
+the reduced cover property carries no content. -/
+theorem normalSurplus_planeCover_of_posDef {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) (unitNormal : Fin 3 → ℝ)
+    (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (hposDef : (subsetSum design selected - 1).PosDef) :
+    (1 < ∑ selectedLabel ∈ selected,
+        (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2)
+      ∧ ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ unitNormal = 0 → probe ≠ 0 →
+          (∑ selectedLabel ∈ selected, (design.atom selectedLabel ⬝ᵥ probe)
+              * (design.atom selectedLabel ⬝ᵥ unitNormal)) ^ 2
+            < ((∑ selectedLabel ∈ selected,
+                  (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) - 1)
+              * ((∑ selectedLabel ∈ selected,
+                    (design.atom selectedLabel ⬝ᵥ probe) ^ 2) - probe ⬝ᵥ probe) := by
+  have hquad : ∀ vector : Fin 3 → ℝ, vector ≠ 0 →
+      0 < (∑ selectedLabel ∈ selected,
+            (design.atom selectedLabel ⬝ᵥ vector) ^ 2) - vector ⬝ᵥ vector := by
+    intro vector hvectorNe
+    have hvalue := hposDef.dotProduct_mulVec_pos hvectorNe
+    rw [star_trivial, dominationGap_form] at hvalue
+    exact hvalue
+  have hnormalNe : unitNormal ≠ 0 := by
+    intro hzero
+    rw [hzero] at hunit
+    simp at hunit
+  have hsurplus : 1 < ∑ selectedLabel ∈ selected,
+      (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2 := by
+    have hvalue := hquad unitNormal hnormalNe
+    rw [hunit] at hvalue
+    linarith
+  refine ⟨hsurplus, fun probe horth hprobeNe => ?_⟩
+  have hnormalAgainstProbe : unitNormal ⬝ᵥ probe = 0 := by
+    rw [dotProduct_comm]; exact horth
+  have hatomCombo : ∀ (alpha beta : ℝ) (selectedLabel : Fin size),
+      design.atom selectedLabel ⬝ᵥ (alpha • probe + beta • unitNormal)
+        = alpha * (design.atom selectedLabel ⬝ᵥ probe)
+          + beta * (design.atom selectedLabel ⬝ᵥ unitNormal) := by
+    intro alpha beta selectedLabel
+    rw [dotProduct_add, dotProduct_smul, dotProduct_smul]
+    simp [smul_eq_mul]
+  have hsumCombo : ∀ alpha beta : ℝ,
+      ∑ selectedLabel ∈ selected,
+          (design.atom selectedLabel ⬝ᵥ (alpha • probe + beta • unitNormal)) ^ 2
+        = alpha ^ 2 * (∑ selectedLabel ∈ selected,
+              (design.atom selectedLabel ⬝ᵥ probe) ^ 2)
+          + 2 * alpha * beta * (∑ selectedLabel ∈ selected,
+              (design.atom selectedLabel ⬝ᵥ probe)
+                * (design.atom selectedLabel ⬝ᵥ unitNormal))
+          + beta ^ 2 * (∑ selectedLabel ∈ selected,
+              (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) := by
+    intro alpha beta
+    rw [Finset.mul_sum, Finset.mul_sum, Finset.mul_sum,
+      ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun selectedLabel _ => ?_
+    rw [hatomCombo alpha beta selectedLabel]
+    ring
+  have hnormCombo : ∀ alpha beta : ℝ,
+      (alpha • probe + beta • unitNormal) ⬝ᵥ (alpha • probe + beta • unitNormal)
+        = alpha ^ 2 * (probe ⬝ᵥ probe) + beta ^ 2 := by
+    intro alpha beta
+    simp only [add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul,
+      smul_eq_mul, horth, hnormalAgainstProbe, hunit]
+    ring
+  have hcomboNe : ∀ alpha beta : ℝ, alpha ≠ 0 →
+      alpha • probe + beta • unitNormal ≠ 0 := by
+    intro alpha beta halphaNe hzero
+    have hagainstNormal : (alpha • probe + beta • unitNormal) ⬝ᵥ unitNormal = 0 := by
+      rw [hzero]; simp
+    rw [add_dotProduct, smul_dotProduct, smul_dotProduct, horth, hunit] at hagainstNormal
+    simp only [smul_eq_mul, mul_zero, mul_one, zero_add] at hagainstNormal
+    rw [hagainstNormal, zero_smul, add_zero] at hzero
+    exact hprobeNe ((smul_eq_zero.mp hzero).resolve_left halphaNe)
+  have hsurplusPos : 0 < (∑ selectedLabel ∈ selected,
+      (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) - 1 := by linarith
+  have hkey := hquad
+    (((∑ selectedLabel ∈ selected,
+          (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) - 1) • probe
+      + (-(∑ selectedLabel ∈ selected, (design.atom selectedLabel ⬝ᵥ probe)
+            * (design.atom selectedLabel ⬝ᵥ unitNormal))) • unitNormal)
+    (hcomboNe _ _ (ne_of_gt hsurplusPos))
+  rw [hsumCombo, hnormCombo] at hkey
+  have hfactored : 0 < ((∑ selectedLabel ∈ selected,
+        (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) - 1)
+      * (((∑ selectedLabel ∈ selected,
+            (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) - 1)
+          * ((∑ selectedLabel ∈ selected,
+                (design.atom selectedLabel ⬝ᵥ probe) ^ 2) - probe ⬝ᵥ probe)
+        - (∑ selectedLabel ∈ selected, (design.atom selectedLabel ⬝ᵥ probe)
+              * (design.atom selectedLabel ⬝ᵥ unitNormal)) ^ 2) := by
+    nlinarith [hkey]
+  nlinarith [hfactored, hsurplusPos]
+
+/-- **The sharpened Prop is kernel-equivalent to the class statement.**  So it
+is exactly at the floor set by the class, and asserts nothing beyond it. -/
+theorem patternTightDominatedCoverProperty_of_stratumIsTieFree {size : ℕ}
+    {pattern : LinePattern size} (hfree : StratumIsTieFree pattern) :
+    PatternTightDominatedCoverProperty pattern := by
+  intro design hpattern _ dominator _ hcard hdominates _ _
+  by_cases hstrict : ∃ selected : Finset (Fin size), selected.card = 3 ∧
+      (subsetSum design selected - 1).PosDef
+  · obtain ⟨selected, hcardSelected, hposDef⟩ := hstrict
+    obtain ⟨hsurplus, hcover⟩ :=
+      normalSurplus_planeCover_of_posDef design selected ![1, 0, 0] (by norm_num) hposDef
+    exact ⟨selected, ![1, 0, 0], hcardSelected, by norm_num, hsurplus, hcover⟩
+  · exact absurd (⟨⟨dominator, hcard, hdominates⟩, by
+      intro selected hcardSelected hposDef
+      exact hstrict ⟨selected, hcardSelected, hposDef⟩⟩ : IsTie design)
+      (hfree design hpattern)
+
+theorem patternTightDominatedCoverProperty_iff_stratumIsTieFree
+    {pattern : LinePattern 6} :
+    PatternTightDominatedCoverProperty pattern ↔ StratumIsTieFree pattern :=
+  ⟨stratumIsTieFree_of_tightDominatedCoverProperty,
+    patternTightDominatedCoverProperty_of_stratumIsTieFree⟩
+
+/-- **What the landed axiom asserts on top of the class statement.**  The
+reduced cover property forces a STRICTLY dominating card-3 subset at every
+design of the stratum -- the stratum-restricted strict half of the very
+conclusion the campaign is proving, over and above tie-freeness. -/
+theorem hasStrictDominator_of_reducedCoverProperty {size : ℕ}
+    (pattern : LinePattern size) (hproperty : PatternReducedCoverProperty pattern)
+    (design : WeightedDesign size 3) (hpattern : HasLinePattern design pattern) :
+    ∃ selected : Finset (Fin size), selected.card = 3 ∧
+      (subsetSum design selected - 1).PosDef := by
+  obtain ⟨selected, unitNormal, hcard, hunit, hsurplus, hcover⟩ :=
+    hproperty design hpattern
+  exact ⟨selected, hcard,
+    posDef_of_normalSurplus_planeCover design selected unitNormal hunit
+      hsurplus hcover⟩
+
+/-! ## The two class discharges, at the exact target types -/
+
+theorem stressFreeStratumIsTieFree_oneLine_of_tightDominatedCover
+    (hproperty : PatternTightDominatedCoverProperty
+      (lineFamilyPattern [[(0 : Fin 6), 1, 2]])) :
+    StressFreeStratumIsTieFree (lineFamilyPattern [[0, 1, 2]]) :=
+  stressFreeStratumIsTieFree_of_stratumIsTieFree _
+    (stratumIsTieFree_of_tightDominatedCoverProperty hproperty)
+
+theorem stressFreeStratumIsTieFree_twoMeetingLines_of_tightDominatedCover
+    (hproperty : PatternTightDominatedCoverProperty
+      (lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]])) :
+    StressFreeStratumIsTieFree (lineFamilyPattern [[0, 1, 2], [0, 3, 4]]) :=
+  stressFreeStratumIsTieFree_of_stratumIsTieFree _
+    (stratumIsTieFree_of_tightDominatedCoverProperty hproperty)
 
 end Gtz

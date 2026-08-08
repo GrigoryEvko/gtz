@@ -15425,9 +15425,24 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- Design/LineClassObstructions, residual interface: the reduced
 -- cover property (both producer hypotheses, subset and unit normal
 -- existential) and its pattern-generic stratum closure -- one Schur
--- application against the tie's second component, consumed verbatim
--- by the one-line and two-meeting-lines obligations.
+-- application against the tie's second component.
 #print axioms Gtz.stratumIsTieFree_of_reducedCoverProperty
+
+-- Design/LineClassObstructions, round-3 repair: the reduced cover
+-- property is STRICTLY STRONGER than the class statement it served
+-- (it forces a strictly dominating triple at every design of the
+-- stratum), so the registry now carries the tight-dominated form --
+-- heavy, weakly dominated, with an explicit tight direction -- which
+-- is kernel-EQUIVALENT to the class statement.  The equivalence needs
+-- the new converse of the uniform Schur producer.
+#print axioms Gtz.hasStrictDominator_of_reducedCoverProperty
+#print axioms Gtz.patternTightDominatedCoverProperty_of_reducedCoverProperty
+#print axioms Gtz.stratumIsTieFree_of_tightDominatedCoverProperty
+#print axioms Gtz.normalSurplus_planeCover_of_posDef
+#print axioms Gtz.patternTightDominatedCoverProperty_of_stratumIsTieFree
+#print axioms Gtz.patternTightDominatedCoverProperty_iff_stratumIsTieFree
+#print axioms Gtz.stressFreeStratumIsTieFree_oneLine_of_tightDominatedCover
+#print axioms Gtz.stressFreeStratumIsTieFree_twoMeetingLines_of_tightDominatedCover
 
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-

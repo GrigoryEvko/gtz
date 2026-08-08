@@ -101,7 +101,21 @@ def retiredObligationNames : List Name :=
    -- twenty landed Layer-A cells).  Each survives as a theorem.
    `Skeleton.obligationStratumTieFreeOneLine,
    `Skeleton.obligationStratumTieFreeTwoMeetingLines,
-   `Skeleton.obligationChartTieFreeKFour]
+   `Skeleton.obligationChartTieFreeKFour,
+   -- 2026-08-08, round 3: the DEFECT REPAIR, and the campaign's first
+   -- retirement that is a DELETION rather than a demotion.  The round-2
+   -- chartless entries were STRICTLY STRONGER than the class statements they
+   -- served -- unconditioned on ties, `Gtz.PatternReducedCoverProperty`
+   -- forces a strictly dominating card-3 subset at every design of the
+   -- stratum (`Gtz.hasStrictDominator_of_reducedCoverProperty`), i.e. the
+   -- stratum-restricted strict half of the conclusion the campaign is
+   -- proving.  They CANNOT survive as theorems, because the repaired Prop
+   -- does not imply them; that non-implication IS the repair.  Nothing
+   -- downstream moves: the capstone consumes
+   -- `obligationStratumTieFree{OneLine,TwoMeetingLines}`, which stay theorems
+   -- of exactly their old types.
+   `Skeleton.obligationReducedCoverOneLine,
+   `Skeleton.obligationReducedCoverTwoMeetingLines]
 
 /-- Obligations added since the baseline.  Each name must be a declared axiom;
 the gate checks that.  Adding to this list with `retiredObligationNames` still
@@ -133,7 +147,13 @@ def introducedObligationNames : List Name :=
    -- below the residual it replaces, not merely one landed bridge.
    `Skeleton.obligationReducedCoverOneLine,
    `Skeleton.obligationReducedCoverTwoMeetingLines,
-   `Skeleton.obligationKnifeBandKFour]
+   `Skeleton.obligationKnifeBandKFour,
+   -- 2026-08-08, round 3: the repaired chartless residuals, carrying the same
+   -- weak-domination antecedent the other three residuals already carry, plus
+   -- heaviness and the tie's own tight direction -- three landed engines spent
+   -- instead of re-demanded, and kernel-EQUIVALENT to the class statement.
+   `Skeleton.obligationTightDominatedCoverOneLine,
+   `Skeleton.obligationTightDominatedCoverTwoMeetingLines]
 
 /-! ### The gate -/
 
