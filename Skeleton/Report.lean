@@ -191,6 +191,19 @@ def introducedObligationNames : List Name :=
    -- logical cost -- `Gtz.patternTightDominatedCoverProperty_iff_heavyWeakToStrict`
    -- proves the two Props interderivable, so this is a change of FORMULA,
    -- never of strength, and it cannot repeat the round-2 over-strengthening.
+   -- 2026-08-08, round 4 landings (SIX new modules, no ledger movement):
+   -- the two entries above are unchanged as Props, but the layer beneath them
+   -- is now much thicker, and the change is measured by SPEND, not by
+   -- strength.  `Gtz.subsetSum_posDef_iff_tripleInvariants` makes strict
+   -- domination three polynomial inequalities; heaviness discharges the first
+   -- outright, so TWO remain.  The tie side is three two-dimensional refusals
+   -- (`Gtz.noStrictDominator_yields_overReaderRefusals`).  The in-plane half
+   -- is an instance of the in-tree THEOREM `Gtz.gtz_rank_two`, via
+   -- `Gtz.inPlaneRestriction`.  Every named anatomy and every named selector
+   -- is refuted by an exact witness -- including INSIDE this obligation's own
+   -- antecedent region (`Gtz.not_oneLineLlfSelectorAtTightAntecedent`) -- and
+   -- the mechanism is the leverage floor.  The margin question is settled
+   -- two-sided by `Gtz.margin_cap_and_its_floor`.
    `Skeleton.obligationHeavyWeakToStrictOneLine,
    `Skeleton.obligationHeavyWeakToStrictTwoMeetingLines]
 
