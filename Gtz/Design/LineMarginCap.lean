@@ -633,5 +633,72 @@ theorem margin_cap_and_its_floor {size : ℕ} (design : WeightedDesign size 3)
   rw [dominationGap_form, hunit]
   linarith [hle, hsplit.le, hsplit.ge]
 
+/-- **The complement's surplus is at least the line weight, times nothing.**
+Division-free form: along a unit normal every line atom is blind to, the
+complement's total squared height exceeds one by at least the LINE WEIGHT
+divided by the complement weight -- stated as a product so no division
+appears.  Combined with strict positivity of the line weights this says the
+complement ALWAYS carries a strict normal surplus on a line stratum, with an
+explicit floor. -/
+theorem complement_surplus_ge_lineWeight {size : ℕ} (design : WeightedDesign size 3)
+    (lineTriple : Finset (Fin size)) (unitNormal : Fin 3 → ℝ)
+    (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (horth : ∀ lineLabel ∈ lineTriple, design.atom lineLabel ⬝ᵥ unitNormal = 0) :
+    (∑ lineLabel ∈ lineTriple, design.weight lineLabel)
+      ≤ (∑ freeLabel ∈ lineTripleᶜ, design.weight freeLabel)
+        * ((∑ freeLabel ∈ lineTripleᶜ, (design.atom freeLabel ⬝ᵥ unitNormal) ^ 2) - 1) := by
+  have hproduct := complement_normalHeights_ge_inv_weight design lineTriple unitNormal
+    hunit horth
+  have hweights := Finset.sum_add_sum_compl lineTriple design.weight
+  rw [design.weight_sum_one] at hweights
+  nlinarith [hproduct, hweights]
+
+/-- **The complement's unweighted cover, from the line's mass deficit.**  What
+the line atoms fail to carry of a probe's own norm is carried by the
+complement, weighted; bounding every complement weight by one constant turns
+that into an UNWEIGHTED cover bound.  No orthogonality and no in-plane
+restriction are needed -- this is just the weighted Parseval identity split
+over a set and its complement. -/
+theorem complementShadow_cover_of_lineMassDeficit {size : ℕ} (design : WeightedDesign size 3)
+    (lineTriple : Finset (Fin size)) (probe : Fin 3 → ℝ) (maxComplementWeight : ℝ)
+    (hmax : ∀ freeLabel ∈ lineTripleᶜ, design.weight freeLabel ≤ maxComplementWeight) :
+    (probe ⬝ᵥ probe)
+        - ∑ lineLabel ∈ lineTriple,
+            design.weight lineLabel * (design.atom lineLabel ⬝ᵥ probe) ^ 2
+      ≤ maxComplementWeight
+        * ∑ freeLabel ∈ lineTripleᶜ, (design.atom freeLabel ⬝ᵥ probe) ^ 2 := by
+  have hparseval := parseval_weighted_sum_sq design probe
+  have hsplit := Finset.sum_add_sum_compl lineTriple
+    (fun label => design.weight label * (design.atom label ⬝ᵥ probe) ^ 2)
+  rw [hparseval] at hsplit
+  have hbound : ∑ freeLabel ∈ lineTripleᶜ,
+        design.weight freeLabel * (design.atom freeLabel ⬝ᵥ probe) ^ 2
+      ≤ ∑ freeLabel ∈ lineTripleᶜ,
+        maxComplementWeight * (design.atom freeLabel ⬝ᵥ probe) ^ 2 :=
+    Finset.sum_le_sum fun freeLabel hmem =>
+      mul_le_mul_of_nonneg_right (hmax freeLabel hmem) (sq_nonneg _)
+  rw [← Finset.mul_sum] at hbound
+  linarith [hsplit, hbound]
+
+/-- **The complement cover margin, from a line-mass ceiling.**  If the line
+atoms' weighted reading never reaches a fixed fraction of the probe's own norm,
+the complement's unweighted readings cover the probe with an explicit
+multiplicative MARGIN.  The two constants trade directly: a thinner line mass
+or a smaller largest complement weight both widen the margin. -/
+theorem complementShadow_coverMargin_of_lineMassCeiling {size : ℕ}
+    (design : WeightedDesign size 3) (lineTriple : Finset (Fin size)) (probe : Fin 3 → ℝ)
+    (maxComplementWeight lineMassCeiling margin : ℝ)
+    (hmaxPos : 0 < maxComplementWeight)
+    (hmax : ∀ freeLabel ∈ lineTripleᶜ, design.weight freeLabel ≤ maxComplementWeight)
+    (hlineMass : ∑ lineLabel ∈ lineTriple,
+        design.weight lineLabel * (design.atom lineLabel ⬝ᵥ probe) ^ 2
+      ≤ lineMassCeiling * (probe ⬝ᵥ probe))
+    (hmarginFits : (1 + margin) * maxComplementWeight ≤ 1 - lineMassCeiling) :
+    (1 + margin) * (probe ⬝ᵥ probe)
+      ≤ ∑ freeLabel ∈ lineTripleᶜ, (design.atom freeLabel ⬝ᵥ probe) ^ 2 := by
+  have hdeficit := complementShadow_cover_of_lineMassDeficit design lineTriple probe
+    maxComplementWeight hmax
+  have hnormNonneg : 0 ≤ probe ⬝ᵥ probe := dotProduct_self_nonneg probe
+  nlinarith [hdeficit, hlineMass, hmarginFits, hnormNonneg, hmaxPos]
 
 end Gtz

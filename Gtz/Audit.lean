@@ -15736,6 +15736,16 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.complement_normalHeights_ge_inv_weight
 #print axioms Gtz.margin_cap_and_its_floor
 
+-- Design/LineMarginCap, the complement's two guarantees: its normal surplus
+-- is ALWAYS strictly positive with the LINE WEIGHT as an explicit floor
+-- (division-free), and its unweighted cover is bounded below by whatever of
+-- the probe's own norm the line atoms fail to carry -- which turns a
+-- line-mass ceiling directly into a cover MARGIN.  These are the two inputs
+-- `Gtz.posDef_of_coverMargin_of_tiltBound` consumes.
+#print axioms Gtz.complement_surplus_ge_lineWeight
+#print axioms Gtz.complementShadow_cover_of_lineMassDeficit
+#print axioms Gtz.complementShadow_coverMargin_of_lineMassCeiling
+
 -- Design/PairDifferenceCover: the anatomy-free pair-difference form of the
 -- plane cover (LLF/LFF/FFF are its three specializations, each an Iff, each
 -- with its producer and its blind-probe kill), the coverForm quadratic on an
