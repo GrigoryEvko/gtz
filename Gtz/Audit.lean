@@ -440,6 +440,7 @@ import Gtz.Design.LineClassObstructions
 import Gtz.Design.TightSwapObstructions
 import Gtz.Design.InPlaneRestriction
 import Gtz.Design.SelectorEquivalences
+import Gtz.Design.LineMarginCap
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
@@ -15684,6 +15685,45 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.tightLlf_llf_notPosDef
 #print axioms Gtz.OneLineLlfSelectorAtTightAntecedent
 #print axioms Gtz.not_oneLineLlfSelectorAtTightAntecedent
+
+-- Design/LineMarginCap: the margin cap at a line normal and its own floor --
+-- the two together pin the LINE WEIGHT as the only channel that can drive the
+-- margin to zero -- plus the tie-dominator exclusion, the flat-pair
+-- Cauchy-Schwarz kill at unit leverage, and the two two-meeting-lines
+-- witnesses (the shared atom unusable at unit leverage; the line complement
+-- not a selector either).
+#print axioms Gtz.no_producerPair_of_not_posDef
+#print axioms Gtz.tieDominator_admits_no_producerPair
+#print axioms Gtz.flatPair_planeDomination_of_posDef
+#print axioms Gtz.flatPair_cauchySchwarz_contradiction
+#print axioms Gtz.flatPair_unitLeverage_not_posDef
+#print axioms Gtz.oneLine_gapForm_at_lineNormal_le
+#print axioms Gtz.gapForm_at_flatNormal_le
+#print axioms Gtz.sharedAtomUnitAtom
+#print axioms Gtz.sharedAtomUnitWeight
+#print axioms Gtz.sharedAtomUnitDesign
+#print axioms Gtz.sharedAtomUnitDesign_hasLinePattern
+#print axioms Gtz.sharedAtomUnitDesign_heavy
+#print axioms Gtz.sharedAtomUnit_not_posDef_012
+#print axioms Gtz.sharedAtomUnit_not_posDef_013
+#print axioms Gtz.sharedAtomUnit_not_posDef_014
+#print axioms Gtz.sharedAtomUnit_not_posDef_015
+#print axioms Gtz.sharedAtomUnit_not_posDef_023
+#print axioms Gtz.sharedAtomUnit_not_posDef_024
+#print axioms Gtz.sharedAtomUnit_not_posDef_025
+#print axioms Gtz.sharedAtomUnit_not_posDef_034
+#print axioms Gtz.sharedAtomUnit_not_posDef_035
+#print axioms Gtz.sharedAtomUnit_not_posDef_045
+#print axioms Gtz.sharedAtomUnit_every_subset_with_shared_atom_fails
+#print axioms Gtz.mixedSurvivorAtom
+#print axioms Gtz.mixedSurvivorWeight
+#print axioms Gtz.mixedSurvivorDesign
+#print axioms Gtz.mixedSurvivorDesign_hasLinePattern
+#print axioms Gtz.mixedSurvivorDesign_heavy
+#print axioms Gtz.mixedSurvivor_lineComplement_not_posDef
+#print axioms Gtz.mixedSurvivor_lineComplement_no_producerPair
+#print axioms Gtz.complement_normalHeights_ge_inv_weight
+#print axioms Gtz.margin_cap_and_its_floor
 
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-

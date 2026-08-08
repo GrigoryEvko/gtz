@@ -2125,6 +2125,7 @@ import Gtz.Design.LineClassObstructions
 import Gtz.Design.TightSwapObstructions
 import Gtz.Design.InPlaneRestriction
 import Gtz.Design.SelectorEquivalences
+import Gtz.Design.LineMarginCap
 
 -- U(3,6): the off-conic formulation of stress-freeness, the exact rational
 -- icosa approximant sample, and the mass-reading clearance functionals
