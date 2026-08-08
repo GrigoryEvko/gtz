@@ -890,4 +890,287 @@ theorem isTie_yields_planeCover_failure {size : ℕ} (design : WeightedDesign si
   exact htie.2 selected hcard (posDef_of_normalSurplus_planeCover design selected
     unitNormal hunit hsurplus fun probe horth hne => hnone probe horth hne)
 
+
+/-! ## The corner Half-Plane Lemma: leg B of the one-line corner dichotomy
+
+The fiber corner of the one-line stratum (line weights to zero, free weights
+to their normal masses) reduces the direct route's margin question to a
+two-dimensional corner datum: a plane matrix (the line part of the corner
+Parseval split), three shadow points with positive masses summing to one and
+barycenter zero, and per line a unit normal whose normal deficit is the plane
+matrix's quadratic form there.  The corner dichotomy splits on the least
+normal deficit against `1/2`; this section proves the CLOSED `<= 1/2` leg in
+kernel:
+
+* the strict range bound (`halfPlane_minMaxPair_product_lt_neg_secondMoment`):
+  positive masses summing to one, zero-mean values, pairwise-distinct entries
+  — the extreme pair product lies STRICTLY below minus the second moment.
+  The non-strict bound is the mass average of the pointwise inequality
+  `0 <= (value - min) * (max - value)`; equality would force every value onto
+  the two-point support `{min, max}`, and three pairwise-distinct values do
+  not fit in two slots;
+* the corner feeds: the barycenter identity dotted with the normal gives the
+  zero mean (`cornerBarycenter_zeroMean`), and the matrix Parseval split
+  evaluated at the unit normal gives the second moment as one minus the
+  normal deficit (`cornerSplit_secondMoment_eq_one_sub_normalDeficit`);
+* the covering statements: on any corner datum the extreme shadow pair's
+  reading product lies strictly below minus the normal complement
+  (`cornerHalfPlane_pair_product_lt_neg_normalComplement`, the sharp form),
+  hence strictly below `-(1/2)` whenever the normal deficit is at most `1/2`
+  (`cornerHalfPlane_pair_product_lt_neg_half`) — the CLOSED region, including
+  the knife face where the deficit is exactly `1/2` and the fine adversary's
+  value reaches zero;
+* the seam hooks (`tripleBracket_planeAtom_expand`,
+  `shadowReadings_separated_of_bracket_ne_zero`): the design bracket of a
+  plane atom against two off-plane atoms factors through the difference of
+  their shadow normal readings, so the one-line pattern's declared
+  independence of `{line, free, free}` is exactly the pairwise-distinctness
+  the range bound consumes.
+
+The OPEN `> 1/2` leg (the vertex dual certificate) and the corner-to-interior
+seam are NOT stated here; they remain the named residuals of the corner
+endgame. -/
+
+/-- **The strict range bound with the two-point-support kill.**  Positive
+masses summing to one, zero-mean values, pairwise-distinct entries: the
+extreme pair product lies strictly below minus the second moment.  The mass
+average of `0 <= (value - min) * (max - value)` gives the non-strict bound;
+equality forces every value onto `{min, max}`, and three pairwise-distinct
+values do not fit in two slots. -/
+theorem halfPlane_minMaxPair_product_lt_neg_secondMoment
+    (shadowMass shadowValue : Fin 3 → ℝ)
+    (hmassPos : ∀ shadowIdx, 0 < shadowMass shadowIdx)
+    (hmassSum : ∑ shadowIdx, shadowMass shadowIdx = 1)
+    (hzeroMean : ∑ shadowIdx, shadowMass shadowIdx * shadowValue shadowIdx = 0)
+    (hseparated : ∀ firstIdx secondIdx : Fin 3, firstIdx ≠ secondIdx →
+      shadowValue firstIdx ≠ shadowValue secondIdx) :
+    ∃ minIdx maxIdx : Fin 3, minIdx ≠ maxIdx ∧
+      shadowValue minIdx * shadowValue maxIdx
+        < -(∑ shadowIdx, shadowMass shadowIdx * shadowValue shadowIdx ^ 2) := by
+  obtain ⟨minIdx, -, hminLe⟩ :=
+    Finset.exists_min_image Finset.univ shadowValue Finset.univ_nonempty
+  obtain ⟨maxIdx, -, hmaxLe⟩ :=
+    Finset.exists_max_image Finset.univ shadowValue Finset.univ_nonempty
+  have htermNonneg : ∀ shadowIdx : Fin 3,
+      0 ≤ shadowMass shadowIdx * ((shadowValue shadowIdx - shadowValue minIdx)
+        * (shadowValue maxIdx - shadowValue shadowIdx)) := fun shadowIdx =>
+    mul_nonneg (hmassPos shadowIdx).le (mul_nonneg
+      (sub_nonneg.mpr (hminLe shadowIdx (Finset.mem_univ shadowIdx)))
+      (sub_nonneg.mpr (hmaxLe shadowIdx (Finset.mem_univ shadowIdx))))
+  have hkeyIdentity : ∑ shadowIdx, shadowMass shadowIdx
+        * ((shadowValue shadowIdx - shadowValue minIdx)
+          * (shadowValue maxIdx - shadowValue shadowIdx))
+      = -(∑ shadowIdx, shadowMass shadowIdx * shadowValue shadowIdx ^ 2)
+        - shadowValue minIdx * shadowValue maxIdx := by
+    simp only [Fin.sum_univ_three] at hzeroMean hmassSum ⊢
+    linear_combination (shadowValue minIdx + shadowValue maxIdx) * hzeroMean
+      - shadowValue minIdx * shadowValue maxIdx * hmassSum
+  have hsumNonneg : 0 ≤ ∑ shadowIdx, shadowMass shadowIdx
+      * ((shadowValue shadowIdx - shadowValue minIdx)
+        * (shadowValue maxIdx - shadowValue shadowIdx)) :=
+    Finset.sum_nonneg fun shadowIdx _ => htermNonneg shadowIdx
+  have hsumPos : 0 < ∑ shadowIdx, shadowMass shadowIdx
+      * ((shadowValue shadowIdx - shadowValue minIdx)
+        * (shadowValue maxIdx - shadowValue shadowIdx)) := by
+    rcases hsumNonneg.lt_or_eq with hpos | hzeroSum
+    · exact hpos
+    · exfalso
+      have hallZero := (Finset.sum_eq_zero_iff_of_nonneg
+        fun shadowIdx _ => htermNonneg shadowIdx).mp hzeroSum.symm
+      have hvalueSplit : ∀ shadowIdx : Fin 3,
+          shadowValue shadowIdx = shadowValue minIdx
+            ∨ shadowValue shadowIdx = shadowValue maxIdx := by
+        intro shadowIdx
+        have hterm := hallZero shadowIdx (Finset.mem_univ shadowIdx)
+        rcases mul_eq_zero.mp hterm with hmassZero | hfactorZero
+        · exact absurd hmassZero (hmassPos shadowIdx).ne'
+        · rcases mul_eq_zero.mp hfactorZero with hleftFactor | hrightFactor
+          · exact Or.inl (sub_eq_zero.mp hleftFactor)
+          · exact Or.inr (sub_eq_zero.mp hrightFactor).symm
+      rcases hvalueSplit 0 with hzero | hzero <;>
+        rcases hvalueSplit 1 with hone | hone <;>
+          rcases hvalueSplit 2 with htwo | htwo
+      · exact hseparated 0 1 (by decide) (hzero.trans hone.symm)
+      · exact hseparated 0 1 (by decide) (hzero.trans hone.symm)
+      · exact hseparated 0 2 (by decide) (hzero.trans htwo.symm)
+      · exact hseparated 1 2 (by decide) (hone.trans htwo.symm)
+      · exact hseparated 1 2 (by decide) (hone.trans htwo.symm)
+      · exact hseparated 0 2 (by decide) (hzero.trans htwo.symm)
+      · exact hseparated 0 1 (by decide) (hzero.trans hone.symm)
+      · exact hseparated 0 1 (by decide) (hzero.trans hone.symm)
+  have hproductLt : shadowValue minIdx * shadowValue maxIdx
+      < -(∑ shadowIdx, shadowMass shadowIdx * shadowValue shadowIdx ^ 2) := by
+    linarith [hkeyIdentity, hsumPos]
+  have hsecondNonneg : 0 ≤ ∑ shadowIdx, shadowMass shadowIdx
+      * shadowValue shadowIdx ^ 2 :=
+    Finset.sum_nonneg fun shadowIdx _ =>
+      mul_nonneg (hmassPos shadowIdx).le (sq_nonneg _)
+  have hneIdx : minIdx ≠ maxIdx := by
+    intro heqIdx
+    have hproductNeg : shadowValue minIdx * shadowValue maxIdx < 0 :=
+      hproductLt.trans_le (neg_nonpos.mpr hsecondNonneg)
+    rw [heqIdx] at hproductNeg
+    exact absurd hproductNeg (not_lt.mpr (mul_self_nonneg (shadowValue maxIdx)))
+  exact ⟨minIdx, maxIdx, hneIdx, hproductLt⟩
+
+/-- **The pair bound under a second-moment floor.**  Any lower bound on the
+second moment transfers to the extreme pair: the reading product drops
+strictly below minus the bound.  At bound `1/2` this is the corner covering
+conclusion of the closed leg. -/
+theorem halfPlane_exists_pair_product_lt_neg_bound
+    (shadowMass shadowValue : Fin 3 → ℝ) (boundVal : ℝ)
+    (hmassPos : ∀ shadowIdx, 0 < shadowMass shadowIdx)
+    (hmassSum : ∑ shadowIdx, shadowMass shadowIdx = 1)
+    (hzeroMean : ∑ shadowIdx, shadowMass shadowIdx * shadowValue shadowIdx = 0)
+    (hseparated : ∀ firstIdx secondIdx : Fin 3, firstIdx ≠ secondIdx →
+      shadowValue firstIdx ≠ shadowValue secondIdx)
+    (hsecondBound : boundVal
+      ≤ ∑ shadowIdx, shadowMass shadowIdx * shadowValue shadowIdx ^ 2) :
+    ∃ minIdx maxIdx : Fin 3, minIdx ≠ maxIdx ∧
+      shadowValue minIdx * shadowValue maxIdx < -boundVal := by
+  obtain ⟨minIdx, maxIdx, hneIdx, hproductLt⟩ :=
+    halfPlane_minMaxPair_product_lt_neg_secondMoment shadowMass shadowValue
+      hmassPos hmassSum hzeroMean hseparated
+  exact ⟨minIdx, maxIdx, hneIdx, hproductLt.trans_le (by linarith)⟩
+
+/-- **The corner barycenter dotted with any direction is a zero mean.** -/
+theorem cornerBarycenter_zeroMean
+    (shadowMass : Fin 3 → ℝ) (shadowPoint : Fin 3 → (Fin 2 → ℝ))
+    (normalVec : Fin 2 → ℝ)
+    (hbarycenter : ∑ shadowIdx, shadowMass shadowIdx • shadowPoint shadowIdx = 0) :
+    ∑ shadowIdx, shadowMass shadowIdx * (shadowPoint shadowIdx ⬝ᵥ normalVec) = 0 := by
+  have happlied := congrArg
+    (fun leftVec : Fin 2 → ℝ => leftVec ⬝ᵥ normalVec) hbarycenter
+  simp only [Fin.sum_univ_three] at happlied ⊢
+  simpa only [add_dotProduct, smul_dotProduct, zero_dotProduct, smul_eq_mul]
+    using happlied
+
+/-- The quadratic form of a scaled outer square: the scale times the squared
+reading. -/
+theorem dotProduct_smul_vecMulVec_self
+    (scaleVal : ℝ) (shadowVec probeVec : Fin 2 → ℝ) :
+    probeVec ⬝ᵥ ((scaleVal • Matrix.vecMulVec shadowVec shadowVec) *ᵥ probeVec)
+      = scaleVal * (shadowVec ⬝ᵥ probeVec) ^ 2 := by
+  simp only [Matrix.mulVec, Matrix.vecMulVec_apply, dotProduct,
+    Matrix.smul_apply, smul_eq_mul, Fin.sum_univ_two]
+  ring
+
+/-- **The corner Parseval split evaluated at the unit normal.**  If the plane
+matrix and the shadow outer squares split the identity, the shadows' weighted
+second moment along a unit direction is one minus the plane matrix's normal
+deficit there. -/
+theorem cornerSplit_secondMoment_eq_one_sub_normalDeficit
+    (planeMatrix : Matrix (Fin 2) (Fin 2) ℝ)
+    (shadowMass : Fin 3 → ℝ) (shadowPoint : Fin 3 → (Fin 2 → ℝ))
+    (normalVec : Fin 2 → ℝ)
+    (hsplit : planeMatrix + ∑ shadowIdx, shadowMass shadowIdx •
+        Matrix.vecMulVec (shadowPoint shadowIdx) (shadowPoint shadowIdx) = 1)
+    (hunit : normalVec ⬝ᵥ normalVec = 1) :
+    ∑ shadowIdx, shadowMass shadowIdx * (shadowPoint shadowIdx ⬝ᵥ normalVec) ^ 2
+      = 1 - normalVec ⬝ᵥ (planeMatrix *ᵥ normalVec) := by
+  have happlied := congrArg
+    (fun mat : Matrix (Fin 2) (Fin 2) ℝ => normalVec ⬝ᵥ (mat *ᵥ normalVec)) hsplit
+  simp only [Fin.sum_univ_three] at happlied
+  simp only [Matrix.add_mulVec, dotProduct_add, Matrix.one_mulVec,
+    dotProduct_smul_vecMulVec_self, hunit] at happlied
+  simp only [Fin.sum_univ_three]
+  linarith [happlied]
+
+/-- **The corner Half-Plane Lemma, sharp form.**  On a corner datum — positive
+shadow masses summing to one, barycenter zero, the Parseval split, pairwise
+distinct normal readings — the extreme shadow pair's reading product lies
+strictly below minus the normal complement. -/
+theorem cornerHalfPlane_pair_product_lt_neg_normalComplement
+    (planeMatrix : Matrix (Fin 2) (Fin 2) ℝ)
+    (shadowMass : Fin 3 → ℝ) (shadowPoint : Fin 3 → (Fin 2 → ℝ))
+    (normalVec : Fin 2 → ℝ)
+    (hmassPos : ∀ shadowIdx, 0 < shadowMass shadowIdx)
+    (hmassSum : ∑ shadowIdx, shadowMass shadowIdx = 1)
+    (hbarycenter : ∑ shadowIdx, shadowMass shadowIdx • shadowPoint shadowIdx = 0)
+    (hsplit : planeMatrix + ∑ shadowIdx, shadowMass shadowIdx •
+        Matrix.vecMulVec (shadowPoint shadowIdx) (shadowPoint shadowIdx) = 1)
+    (hunit : normalVec ⬝ᵥ normalVec = 1)
+    (hseparated : ∀ firstIdx secondIdx : Fin 3, firstIdx ≠ secondIdx →
+      shadowPoint firstIdx ⬝ᵥ normalVec ≠ shadowPoint secondIdx ⬝ᵥ normalVec) :
+    ∃ minIdx maxIdx : Fin 3, minIdx ≠ maxIdx ∧
+      (shadowPoint minIdx ⬝ᵥ normalVec) * (shadowPoint maxIdx ⬝ᵥ normalVec)
+        < -(1 - normalVec ⬝ᵥ (planeMatrix *ᵥ normalVec)) := by
+  have hsecond := cornerSplit_secondMoment_eq_one_sub_normalDeficit
+    planeMatrix shadowMass shadowPoint normalVec hsplit hunit
+  obtain ⟨minIdx, maxIdx, hneIdx, hproductLt⟩ :=
+    halfPlane_minMaxPair_product_lt_neg_secondMoment shadowMass
+      (fun shadowIdx => shadowPoint shadowIdx ⬝ᵥ normalVec) hmassPos hmassSum
+      (cornerBarycenter_zeroMean shadowMass shadowPoint normalVec hbarycenter)
+      hseparated
+  refine ⟨minIdx, maxIdx, hneIdx, ?_⟩
+  have hbounded := hproductLt
+  simp only [hsecond] at hbounded
+  exact hbounded
+
+/-- **The corner covering statement on the closed leg-B region.**  If a
+line's normal deficit is at most `1/2` — the CLOSED region, including the
+knife face where the deficit equals `1/2` exactly — the extreme shadow pair
+for that line wins strictly: its normal-reading product drops strictly below
+`-(1/2)`. -/
+theorem cornerHalfPlane_pair_product_lt_neg_half
+    (planeMatrix : Matrix (Fin 2) (Fin 2) ℝ)
+    (shadowMass : Fin 3 → ℝ) (shadowPoint : Fin 3 → (Fin 2 → ℝ))
+    (normalVec : Fin 2 → ℝ)
+    (hmassPos : ∀ shadowIdx, 0 < shadowMass shadowIdx)
+    (hmassSum : ∑ shadowIdx, shadowMass shadowIdx = 1)
+    (hbarycenter : ∑ shadowIdx, shadowMass shadowIdx • shadowPoint shadowIdx = 0)
+    (hsplit : planeMatrix + ∑ shadowIdx, shadowMass shadowIdx •
+        Matrix.vecMulVec (shadowPoint shadowIdx) (shadowPoint shadowIdx) = 1)
+    (hunit : normalVec ⬝ᵥ normalVec = 1)
+    (hseparated : ∀ firstIdx secondIdx : Fin 3, firstIdx ≠ secondIdx →
+      shadowPoint firstIdx ⬝ᵥ normalVec ≠ shadowPoint secondIdx ⬝ᵥ normalVec)
+    (hdeficit : normalVec ⬝ᵥ (planeMatrix *ᵥ normalVec) ≤ 1 / 2) :
+    ∃ minIdx maxIdx : Fin 3, minIdx ≠ maxIdx ∧
+      (shadowPoint minIdx ⬝ᵥ normalVec) * (shadowPoint maxIdx ⬝ᵥ normalVec)
+        < -(1 / 2) := by
+  obtain ⟨minIdx, maxIdx, hneIdx, hproductLt⟩ :=
+    cornerHalfPlane_pair_product_lt_neg_normalComplement planeMatrix shadowMass
+      shadowPoint normalVec hmassPos hmassSum hbarycenter hsplit hunit hseparated
+  exact ⟨minIdx, maxIdx, hneIdx, hproductLt.trans_le (by linarith)⟩
+
+/-- **The bracket of a plane atom against two off-plane atoms, expanded.**
+The bracket depends on the two free atoms only through their heights and the
+difference of their shadow normal readings. -/
+theorem tripleBracket_planeAtom_expand
+    (planeX planeY : ℝ) (freeFirst freeSecond : Fin 3 → ℝ) :
+    tripleBracket ![planeX, planeY, 0] freeFirst freeSecond
+      = freeFirst 2 * (planeY * freeSecond 0 - planeX * freeSecond 1)
+        - freeSecond 2 * (planeY * freeFirst 0 - planeX * freeFirst 1) := by
+  rw [tripleBracket_eq]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- **Bracket independence separates the shadow normal readings** — the seam
+hook feeding the pairwise-distinctness hypothesis of the range bound: when
+the one-line pattern declares a line atom with two free atoms independent,
+the two free shadows read differently against the line's rotated (normal)
+direction. -/
+theorem shadowReadings_separated_of_bracket_ne_zero
+    (planeX planeY : ℝ) (freeFirst freeSecond : Fin 3 → ℝ)
+    (hfirstHeight : freeFirst 2 ≠ 0) (hsecondHeight : freeSecond 2 ≠ 0)
+    (hbracket : tripleBracket ![planeX, planeY, 0] freeFirst freeSecond ≠ 0) :
+    (![-planeY, planeX] : Fin 2 → ℝ)
+        ⬝ᵥ ![freeFirst 0 / freeFirst 2, freeFirst 1 / freeFirst 2]
+      ≠ (![-planeY, planeX] : Fin 2 → ℝ)
+        ⬝ᵥ ![freeSecond 0 / freeSecond 2, freeSecond 1 / freeSecond 2] := by
+  have hreadingEq : ∀ freeVec : Fin 3 → ℝ,
+      (![-planeY, planeX] : Fin 2 → ℝ)
+          ⬝ᵥ ![freeVec 0 / freeVec 2, freeVec 1 / freeVec 2]
+        = (planeX * freeVec 1 - planeY * freeVec 0) / freeVec 2 := by
+    intro freeVec
+    simp only [dotProduct, Fin.sum_univ_two, Matrix.cons_val_zero,
+      Matrix.cons_val_one]
+    ring
+  intro hcontra
+  rw [hreadingEq, hreadingEq,
+    div_eq_div_iff hfirstHeight hsecondHeight] at hcontra
+  apply hbracket
+  rw [tripleBracket_planeAtom_expand]
+  linear_combination hcontra
 end Gtz

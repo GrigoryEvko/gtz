@@ -15405,6 +15405,23 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.posDef_of_normalSurplus_planeCover
 #print axioms Gtz.isTie_yields_planeCover_failure
 
+-- Design/LineClassObstructions, stage 5: leg B of the one-line corner
+-- dichotomy in kernel -- the strict range bound with the two-point-
+-- support kill, the corner zero-mean and matrix-Parseval second-moment
+-- feeds, the corner Half-Plane covering statements (sharp and on the
+-- CLOSED deficit <= 1/2 region, knife face included), and the bracket
+-- seam hooks that turn pattern independence into the separation
+-- hypothesis.
+#print axioms Gtz.halfPlane_minMaxPair_product_lt_neg_secondMoment
+#print axioms Gtz.halfPlane_exists_pair_product_lt_neg_bound
+#print axioms Gtz.cornerBarycenter_zeroMean
+#print axioms Gtz.dotProduct_smul_vecMulVec_self
+#print axioms Gtz.cornerSplit_secondMoment_eq_one_sub_normalDeficit
+#print axioms Gtz.cornerHalfPlane_pair_product_lt_neg_normalComplement
+#print axioms Gtz.cornerHalfPlane_pair_product_lt_neg_half
+#print axioms Gtz.tripleBracket_planeAtom_expand
+#print axioms Gtz.shadowReadings_separated_of_bracket_ne_zero
+
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-
 -- keeping attack Prop and its verbatim reduction to the class
