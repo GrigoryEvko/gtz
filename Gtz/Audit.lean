@@ -15546,6 +15546,54 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.baseTripleClearanceBoundedFloor_sixteenth_quarter_refuted
 #print axioms Gtz.clearanceBoundedInteriorFloor_sixteenth_quarter_refuted
 
+-- Design/LineFreeConicBridge, stage 5 minimax cartography: the
+-- dust-weight channel -- a second exact rational Parseval refuter
+-- with wall clearance above 3/8 defeats all twenty triples at the
+-- 1/16 floor, killing EVERY constant pair with clearanceFloor <= 3/8
+-- and marginFloor >= 1/16 (both interior Props) and EVERY monotone
+-- clearance-graded floor through InteriorFamilyMarginFloor
+-- wallClearanceOf reaching 1/16 by clearance 3/8; includes the
+-- second exact 6x6 Veronese determinant in the tree.
+#print axioms Gtz.minimaxRefuterDesign_atom_eq
+#print axioms Gtz.minimaxRefuterDesign_weight_eq
+#print axioms Gtz.minimaxRefuterAtom_bracketSq_ge
+#print axioms Gtz.minimaxRefuterDesign_hasLinePattern_lineFree
+#print axioms Gtz.minimaxRefuterVeroneseGrid_eq
+#print axioms Gtz.minimaxRefuterVeronese_columnReduction
+#print axioms Gtz.minimaxRefuterVeroneseElimination_det
+#print axioms Gtz.minimaxRefuterVeroneseReduced_det
+#print axioms Gtz.minimaxRefuterVeronese_det
+#print axioms Gtz.hasNoCommonQuadric_minimaxRefuterAtom
+#print axioms Gtz.minimaxRefuter_subsetSum_baseTriple_eq
+#print axioms Gtz.minimaxRefuterDesign_dominates_baseTriple
+#print axioms Gtz.minimaxRefuter_massClearance_ge
+#print axioms Gtz.minimaxRefuter_bracketClearance_ge
+#print axioms Gtz.minimaxRefuter_conicClearance_ge
+#print axioms Gtz.minimaxRefuter_wallClearance_ge
+#print axioms Gtz.minimaxRefuter_gap_zeroOneTwo_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_zeroOneThree_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_zeroOneFour_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_zeroOneFive_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_zeroTwoThree_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_zeroTwoFour_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_zeroTwoFive_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_zeroThreeFour_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_zeroThreeFive_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_zeroFourFive_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_oneTwoThree_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_oneTwoFour_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_oneTwoFive_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_oneThreeFour_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_oneThreeFive_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_oneFourFive_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_twoThreeFour_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_twoThreeFive_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_twoFourFive_not_posSemidef
+#print axioms Gtz.minimaxRefuter_gap_threeFourFive_not_posSemidef
+#print axioms Gtz.baseTripleClearanceBoundedFloor_rectangle_refuted
+#print axioms Gtz.clearanceBoundedInteriorFloor_rectangle_refuted
+#print axioms Gtz.interiorFamilyMarginFloor_monotoneGraded_refuted
+
 -- Design/KFourChartClosure: the K4 chart route minus the endgame -- the
 -- rank-two Foster engine, positive definiteness from leading minors by
 -- completed squares, the deletion-contraction determinant normal forms,
