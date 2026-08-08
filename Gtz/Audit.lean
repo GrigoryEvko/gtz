@@ -443,6 +443,7 @@ import Gtz.Design.SelectorEquivalences
 import Gtz.Design.LineMarginCap
 import Gtz.Design.PairDifferenceCover
 import Gtz.Design.TightAntecedentMining
+import Gtz.Design.OneLineShadow
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
@@ -15877,6 +15878,20 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- and the free triple strictly dominates.
 #print axioms Gtz.complement_tilt_vanishes_of_equalWeights
 #print axioms Gtz.oneLine_freeTriple_posDef_of_equalWeights
+
+-- Design/OneLineShadow, the case-(ii) collapse of the hinge branch split.  When
+-- the rank-two four-direction hinge does NOT apply at the line normal, every
+-- free shadow lands on a line atom's direction; one plane lemma then forces the
+-- free-to-line assignment to be injective with no vanishing shadow, so the
+-- hinge-free shape is exactly three free atoms one per line plane.
+#print axioms Gtz.tripleBracket_eq_zero_of_spannedByPair
+#print axioms Gtz.spannedByPair_self
+#print axioms Gtz.spannedByPair_of_shadow_eq_smul
+#print axioms Gtz.oneLine_freeAtoms_not_shareLinePlane
+#print axioms Gtz.oneLine_exists_freePartner
+#print axioms Gtz.oneLine_shadowColumn_injective_and_nonzero
+#print axioms Gtz.weightedPair_lt_max_of_massLtOne
+#print axioms Gtz.oneLine_columnMass_lt_max
 #print axioms Gtz.firstAxis_isUnit
 #print axioms Gtz.producerNormal_transfers
 #print axioms Gtz.patternTightDominatedCoverProperty_iff_strictSelector
