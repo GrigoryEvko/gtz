@@ -439,6 +439,7 @@ import Gtz.Design.KFourChartSample
 import Gtz.Design.LineClassObstructions
 import Gtz.Design.TightSwapObstructions
 import Gtz.Design.InPlaneRestriction
+import Gtz.Design.SelectorEquivalences
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
@@ -15628,6 +15629,61 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.shadowLine_no_llf_posDef
 #print axioms Gtz.refutes_uniform_llf_rule
 #print axioms Gtz.refutes_uniform_fff_rule
+
+-- Design/SelectorEquivalences: the residual restated as a bare strict-dominator
+-- selector (the unit normal drops out) and again with the over-covering atom
+-- handed over free; the leverage floor (an atom at leverage exactly one
+-- poisons every card-3 subset containing it); the flat-pair obstructions
+-- making the two-line-plus-one-free route an exact equivalence; and the
+-- IN-SCOPE refutation -- tightLlfDesign fires every antecedent of the
+-- chartless residual and no two-line-plus-one-free subset of it dominates.
+#print axioms Gtz.firstAxisUnit
+#print axioms Gtz.producerPair_iff_posDef
+#print axioms Gtz.PatternStrictDominatorSelector
+#print axioms Gtz.patternTightDominatedCoverProperty_iff_strictDominatorSelector
+#print axioms Gtz.tightSubsetAtom_reading_le_normSq
+#print axioms Gtz.exists_tightSubsetAtom_reading_lt_normSq
+#print axioms Gtz.exists_commonOrthogonal_of_pair
+#print axioms Gtz.notPosDef_of_leverage_le_one_of_annihilated
+#print axioms Gtz.one_lt_leverage_of_mem_of_posDef
+#print axioms Gtz.notPosDef_of_flatPair_inPlane_deficit
+#print axioms Gtz.flatPair_inPlane_domination_of_posDef
+#print axioms Gtz.narrowCone_lineLeverages
+#print axioms Gtz.narrowCone_freeTripleGap_eq
+#print axioms Gtz.narrowCone_freeTripleGap_posSemidef
+#print axioms Gtz.narrowConeDesign_hasStrictDominator
+#print axioms Gtz.overcoveringAtom_is_strictly_heavy
+#print axioms Gtz.PatternStrictDominatorSelectorGivenOvercoverer
+#print axioms Gtz.patternStrictDominatorSelector_iff_givenOvercoverer
+#print axioms Gtz.patternTightDominatedCoverProperty_iff_givenOvercoverer
+#print axioms Gtz.narrowCone_unitAtom_leverage
+#print axioms Gtz.narrowCone_notPosDef_of_unitAtomFirst
+#print axioms Gtz.narrowCone_notPosDef_of_unitAtomSecond
+#print axioms Gtz.narrowCone_pairZeroTwo_notPosDef
+#print axioms Gtz.narrowCone_pairTwoZero_notPosDef
+#print axioms Gtz.narrowCone_llf_notPosDef
+#print axioms Gtz.narrowCone_strictlyHeavyPair_inPlane_deficit
+#print axioms Gtz.OneLineLlfSelector
+#print axioms Gtz.not_oneLineLlfSelector
+#print axioms Gtz.notPosDef_of_flatPair_shortThird
+#print axioms Gtz.tightLlfAtom
+#print axioms Gtz.tightLlfWeight
+#print axioms Gtz.tightLlfDesign
+#print axioms Gtz.tightLlfDesign_hasLinePattern
+#print axioms Gtz.tightLlfDesign_isHeavy
+#print axioms Gtz.tightLlf_unitAtom_leverage
+#print axioms Gtz.tightLlf_dominatorGap_form
+#print axioms Gtz.tightLlf_dominatorGap_posSemidef
+#print axioms Gtz.tightLlfDesign_dominates
+#print axioms Gtz.tightLlf_tightDirection_ne_zero
+#print axioms Gtz.tightLlf_tightDirection_rayleigh
+#print axioms Gtz.tightLlf_notPosDef_of_unitAtomFirst
+#print axioms Gtz.tightLlf_notPosDef_of_unitAtomSecond
+#print axioms Gtz.tightLlf_pairZeroOne_notPosDef
+#print axioms Gtz.tightLlf_pairOneZero_notPosDef
+#print axioms Gtz.tightLlf_llf_notPosDef
+#print axioms Gtz.OneLineLlfSelectorAtTightAntecedent
+#print axioms Gtz.not_oneLineLlfSelectorAtTightAntecedent
 
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-
