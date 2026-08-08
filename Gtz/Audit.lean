@@ -448,6 +448,7 @@ import Gtz.Design.GeneralRankAveraging
 import Gtz.Design.ComplementEngine
 import Gtz.Design.PairCapEngine
 import Gtz.Design.BalancedShareBarrier
+import Gtz.Design.SplitTetraSurplusBarrier
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
@@ -15980,6 +15981,18 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_atom_deadAgainstBalancedPartners_sixThree
 #print axioms Gtz.sum_offPair_weight_mul_discriminantTie_eq_pairSurplusForm
 #print axioms Gtz.sum_offPair_weight_mul_discriminantTie_neg_of_balanced
+
+-- Design/SplitTetraSurplusBarrier, the extremal object of the surplus
+-- accounting.  Every member of the shipped `Gtz.splitTetraDesign` family is an
+-- exact tie at which the pair-conditioned criterion is nonpositive at all
+-- thirty-six ordered pairs, and it VANISHES at the pair of undivided
+-- directions, so the family sits exactly on the criterion's boundary and the
+-- boundary is a tie.  Consequence, recorded permanently: the criterion's
+-- non-firing region contains genuine ties, so "all caps hold implies a strict
+-- triple" is equivalent to the open conjecture itself and cannot be used as a
+-- decomposition of the frontier.
+#print axioms Gtz.splitTetraDesign_surplusForm_nonpos
+#print axioms Gtz.exists_isTie_allHeavy_with_surplusForm_nonpos
 
 #print axioms Gtz.firstAxis_isUnit
 #print axioms Gtz.producerNormal_transfers
