@@ -784,5 +784,101 @@ theorem one_lt_leverage_of_posDef {size : ℕ} (design : WeightedDesign size 3)
 #print axioms notPosDef_of_mem_leverage_le_one
 #print axioms one_lt_leverage_of_posDef
 
+/-- **The margin-versus-tilt producer.**  ANATOMY-FREE, and the sharpest
+sufficient condition the Schur decomposition admits: a card-three subset
+strictly dominates as soon as three scalars line up --
+
+* a normal SURPLUS `sigma = (sum of squared heights) - 1 > 0`;
+* a strict multiplicative COVER MARGIN of the subset's in-plane readings over
+  the plane's own norm;
+* a TILT BOUND on the subset's height-weighted in-plane reading, the single
+  quantity the Schur complement subtracts;
+
+subject to the one inequality `tiltBound < margin * sigma`.
+
+No flatness is assumed of any slot, so this covers every anatomy at once: the
+two-line-plus-one-free route is the instance where two heights vanish and the
+tilt collapses onto the free atom's shadow alone.  Read against
+`Gtz.margin_cap_and_its_floor`, which caps `sigma` from above by the
+complement's height budget and floors that cap by the line weight, this is the
+exact trade the chartless residual has to win. -/
+theorem posDef_of_coverMargin_of_tiltBound {size : ℕ} (design : WeightedDesign size 3)
+    (firstLabel secondLabel thirdLabel : Fin size) (unitNormal : Fin 3 → ℝ)
+    (margin tiltBound : ℝ)
+    (hfirstSecond : firstLabel ≠ secondLabel) (hfirstThird : firstLabel ≠ thirdLabel)
+    (hsecondThird : secondLabel ≠ thirdLabel)
+    (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (hsurplus : 1 < (design.atom firstLabel ⬝ᵥ unitNormal) ^ 2
+      + (design.atom secondLabel ⬝ᵥ unitNormal) ^ 2
+      + (design.atom thirdLabel ⬝ᵥ unitNormal) ^ 2)
+    (hcover : ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ unitNormal = 0 →
+      (1 + margin) * (probe ⬝ᵥ probe)
+        ≤ (design.atom firstLabel ⬝ᵥ probe) ^ 2
+          + (design.atom secondLabel ⬝ᵥ probe) ^ 2
+          + (design.atom thirdLabel ⬝ᵥ probe) ^ 2)
+    (htilt : ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ unitNormal = 0 →
+      ((design.atom firstLabel ⬝ᵥ unitNormal) * (design.atom firstLabel ⬝ᵥ probe)
+          + (design.atom secondLabel ⬝ᵥ unitNormal) * (design.atom secondLabel ⬝ᵥ probe)
+          + (design.atom thirdLabel ⬝ᵥ unitNormal) * (design.atom thirdLabel ⬝ᵥ probe)) ^ 2
+        ≤ tiltBound * (probe ⬝ᵥ probe))
+    (hbeat : tiltBound < margin * ((design.atom firstLabel ⬝ᵥ unitNormal) ^ 2
+      + (design.atom secondLabel ⬝ᵥ unitNormal) ^ 2
+      + (design.atom thirdLabel ⬝ᵥ unitNormal) ^ 2 - 1)) :
+    (subsetSum design ({firstLabel, secondLabel, thirdLabel} : Finset (Fin size)) - 1).PosDef := by
+  have hsumThree : ∀ valueOf : Fin size → ℝ,
+      ∑ selectedLabel ∈ ({firstLabel, secondLabel, thirdLabel} : Finset (Fin size)),
+          valueOf selectedLabel
+        = valueOf firstLabel + valueOf secondLabel + valueOf thirdLabel := by
+    intro valueOf
+    rw [Finset.sum_insert (by simp [hfirstSecond, hfirstThird]),
+      Finset.sum_insert (by simp [hsecondThird]), Finset.sum_singleton, add_assoc]
+  refine posDef_of_normalSurplus_planeCover design _ unitNormal hunit ?_ ?_
+  · rw [hsumThree (fun selectedLabel => (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2)]
+    exact hsurplus
+  · intro probe hprobeFlat hprobeNe
+    have hnormPos : 0 < probe ⬝ᵥ probe := dotProduct_self_pos hprobeNe
+    have hcoverAt := hcover probe hprobeFlat
+    have htiltAt := htilt probe hprobeFlat
+    rw [hsumThree (fun selectedLabel =>
+        (design.atom selectedLabel ⬝ᵥ probe) * (design.atom selectedLabel ⬝ᵥ unitNormal)),
+      hsumThree (fun selectedLabel => (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2),
+      hsumThree (fun selectedLabel => (design.atom selectedLabel ⬝ᵥ probe) ^ 2)]
+    nlinarith [hcoverAt, htiltAt, hnormPos, hbeat, hsurplus]
+
+/-- **The tilt bound is always available**, with the height-weighted total
+leverage as the constant: Cauchy-Schwarz on the three height-scaled shadows. -/
+theorem tiltBound_of_leverages {size : ℕ} (design : WeightedDesign size 3)
+    (firstLabel secondLabel thirdLabel : Fin size) (unitNormal probe : Fin 3 → ℝ)
+    (hunit : unitNormal ⬝ᵥ unitNormal = 1) (hprobeFlat : probe ⬝ᵥ unitNormal = 0) :
+    ((design.atom firstLabel ⬝ᵥ unitNormal) * (design.atom firstLabel ⬝ᵥ probe)
+        + (design.atom secondLabel ⬝ᵥ unitNormal) * (design.atom secondLabel ⬝ᵥ probe)
+        + (design.atom thirdLabel ⬝ᵥ unitNormal) * (design.atom thirdLabel ⬝ᵥ probe)) ^ 2
+      ≤ 3 * ((design.atom firstLabel ⬝ᵥ unitNormal) ^ 2
+              * (leverageOf (design.atom firstLabel)
+                  - (design.atom firstLabel ⬝ᵥ unitNormal) ^ 2)
+            + (design.atom secondLabel ⬝ᵥ unitNormal) ^ 2
+              * (leverageOf (design.atom secondLabel)
+                  - (design.atom secondLabel ⬝ᵥ unitNormal) ^ 2)
+            + (design.atom thirdLabel ⬝ᵥ unitNormal) ^ 2
+              * (leverageOf (design.atom thirdLabel)
+                  - (design.atom thirdLabel ⬝ᵥ unitNormal) ^ 2))
+        * (probe ⬝ᵥ probe) := by
+  have hfirst := atomShadow_reading_sq_le (design.atom firstLabel) unitNormal probe hunit
+    hprobeFlat
+  have hsecond := atomShadow_reading_sq_le (design.atom secondLabel) unitNormal probe hunit
+    hprobeFlat
+  have hthird := atomShadow_reading_sq_le (design.atom thirdLabel) unitNormal probe hunit
+    hprobeFlat
+  have hnormNonneg : 0 ≤ probe ⬝ᵥ probe := dotProduct_self_nonneg probe
+  nlinarith [hfirst, hsecond, hthird, hnormNonneg,
+    sq_nonneg ((design.atom firstLabel ⬝ᵥ unitNormal) * (design.atom firstLabel ⬝ᵥ probe)
+      - (design.atom secondLabel ⬝ᵥ unitNormal) * (design.atom secondLabel ⬝ᵥ probe)),
+    sq_nonneg ((design.atom firstLabel ⬝ᵥ unitNormal) * (design.atom firstLabel ⬝ᵥ probe)
+      - (design.atom thirdLabel ⬝ᵥ unitNormal) * (design.atom thirdLabel ⬝ᵥ probe)),
+    sq_nonneg ((design.atom secondLabel ⬝ᵥ unitNormal) * (design.atom secondLabel ⬝ᵥ probe)
+      - (design.atom thirdLabel ⬝ᵥ unitNormal) * (design.atom thirdLabel ⬝ᵥ probe)),
+    sq_nonneg (design.atom firstLabel ⬝ᵥ unitNormal),
+    sq_nonneg (design.atom secondLabel ⬝ᵥ unitNormal),
+    sq_nonneg (design.atom thirdLabel ⬝ᵥ unitNormal)]
 
 end Gtz

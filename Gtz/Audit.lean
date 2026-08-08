@@ -15847,6 +15847,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.r4Llf_complement_not_dominates
 #print axioms Gtz.r4Llf_freeTripleGap_form
 #print axioms Gtz.r4Llf_freeTripleGap_posDef
+
+-- Design/TightAntecedentMining, the ANATOMY-FREE producer: strict domination
+-- from three scalars -- normal surplus, in-plane cover margin, tilt bound --
+-- subject to the single inequality `tiltBound < margin * surplus`, plus the
+-- Cauchy-Schwarz tilt bound that always supplies the third.
+#print axioms Gtz.posDef_of_coverMargin_of_tiltBound
+#print axioms Gtz.tiltBound_of_leverages
 #print axioms Gtz.firstAxis_isUnit
 #print axioms Gtz.producerNormal_transfers
 #print axioms Gtz.patternTightDominatedCoverProperty_iff_strictSelector
