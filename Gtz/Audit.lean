@@ -446,6 +446,7 @@ import Gtz.Design.TightAntecedentMining
 import Gtz.Design.OneLineShadow
 import Gtz.Design.GeneralRankAveraging
 import Gtz.Design.ComplementEngine
+import Gtz.Design.PairCapEngine
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
@@ -15936,6 +15937,31 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- dominates -- at any rank, any subset size, with no heaviness hypothesis.  The
 -- two engines are logical complements, so their union is the certificate cover.
 #print axioms Gtz.posDef_subsetSum_of_outside_share_lt
+
+-- Design/PairCapEngine, the SYLVESTER TRANSPORT the shipped pair criterion was
+-- missing.  `Gtz.exists_pos_discriminantTie_of_pos_surplusForm` stops at
+-- `0 < discriminantTie`, which is only the third leading minor; the Schur
+-- factorisation `schurDeterminant_eq_heavyExcess_mul_discriminantTie` makes the
+-- MIDDLE minor a consequence of the corner and the tie leg, so
+-- `subsetSum_posDef_of_heavyPivot_of_minor_of_tie` reaches a genuine strict
+-- dominator.  Under heaviness both Sylvester side conditions are themselves
+-- consequences of the cap excess, which is what makes the engine
+-- side-condition free.  The cap is ATTAINED at the regular tetrahedron, so it
+-- cannot be sharpened, and `patternHeavyWeakToStrict_of_capBlindSpot` names the
+-- exact residual: the chartless obligation at ANY line pattern reduces to the
+-- designs at which no pair has positive cap excess.
+#print axioms Gtz.surplusForm_eq_pairCapExcess
+#print axioms Gtz.schurDeterminant_eq_heavyExcess_mul_discriminantTie
+#print axioms Gtz.subsetSum_posDef_of_heavyPivot_of_minor_of_tie
+#print axioms Gtz.weight_lt_one_of_ne
+#print axioms Gtz.exists_posDef_triple_of_pairCapExcess
+#print axioms Gtz.pairCapExcess_le_of_no_strict_triple
+#print axioms Gtz.tetraDesign_pairCap_attained
+#print axioms Gtz.narrowConeDesign_pairFourFive_overflows
+#print axioms Gtz.narrowConeDesign_engine_returns_strict_triple
+#print axioms Gtz.IsCapBlindSpot
+#print axioms Gtz.patternHeavyWeakToStrict_of_capBlindSpot
+#print axioms Gtz.twoMeetingLines_heavyWeakToStrict_of_capBlindSpot
 
 #print axioms Gtz.firstAxis_isUnit
 #print axioms Gtz.producerNormal_transfers
