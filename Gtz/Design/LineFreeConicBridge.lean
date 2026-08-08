@@ -620,9 +620,13 @@ the line-free off-conic stratum -- wall clearance at least `clearanceFloor` --
 every weakly dominated design has a triple dominating strictly above the
 CONSTANT identity floor `marginFloor`.  This is the exact obligation the
 per-orbit cell certificates must discharge; the ramp reduction feeds it
-verbatim into `Gtz.lineFreeOffConicWeakToStrict_of_twoFamilies`.  Scan-verified
-constants (exact rationals, 1371 adjudicated points, zero failures):
-`clearanceFloor = 1/16`, `marginFloor = 1/4`. -/
+verbatim into `Gtz.lineFreeOffConicWeakToStrict_of_twoFamilies`.  NO verified
+constant pair is known: the scan-proposed `(1/16, 1/4)` is REFUTED in kernel
+(`Gtz.clearanceBoundedInteriorFloor_sixteenth_quarter_refuted` below), and the
+in-region margin record ladder (0.237 -> 0.1724 -> 0.1145 under heavy weight
+tilts) has not stabilized at any positive floor -- the instance question is
+open parametrically, or via a clearance-graded `floorOf` through
+`Gtz.InteriorFamilyMarginFloor`. -/
 def ClearanceBoundedInteriorFloor (clearanceFloor marginFloor : ℝ) : Prop :=
   ∀ design : WeightedDesign 6 3,
     HasLinePattern design (lineFamilyPattern ([] : List (List (Fin 6)))) →
@@ -813,7 +817,10 @@ theorem exists_relabel_map_baseTriple (selected : Finset (Fin 6))
 obligation with the weakly dominating triple pinned at the base triple
 `{0, 1, 2}`.  Every hypothesis is relabelling-invariant, so this single
 representative implies the full clearance-bounded core -- the shape the
-per-cell certificates are built against. -/
+per-cell certificates are built against.  The instance at the scan-proposed
+constants `(1/16, 1/4)` is REFUTED in kernel
+(`Gtz.baseTripleClearanceBoundedFloor_sixteenth_quarter_refuted` below); no
+verified constant pair is currently known. -/
 def BaseTripleClearanceBoundedFloor (clearanceFloor marginFloor : ℝ) : Prop :=
   ∀ design : WeightedDesign 6 3,
     HasLinePattern design (lineFamilyPattern ([] : List (List (Fin 6)))) →
@@ -1623,5 +1630,973 @@ theorem diamondCornerChartPoint_hasStrictTriple (dustScale : ℝ) (hdustPos : 0 
         (diamondCornerChartPoint dustScale hdustPos (by linarith)).mass
         (diamondCornerChartPoint dustScale hdustPos (by linarith)).weight selected).PosDef :=
   ⟨{0, 1, 2}, by decide, diamondCorner_gap_posDef_on_dustRay dustScale hdustPos hdustLe⟩
+
+
+
+/-! ## The clearance-bounded interior floor is FALSE at the scan constants
+
+An explicit rational design refutes `Gtz.BaseTripleClearanceBoundedFloor
+(1/16) (1/4)`: it is line-free (every squared atom bracket is at least
+`1/16`), off-conic (stress-free by the exact inverse of its Veronese grid),
+weakly dominated AT the base triple `{0, 1, 2}`, and has wall clearance
+above `1/16` -- yet NO triple of the twenty reaches the identity floor
+`1/4` (each is refuted by an explicit rational probe vector).  The design
+is an exact rational Parseval frame: the six atoms are the rows of a
+rational Stiefel matrix (a Cayley transform of a rational skew matrix)
+divided by rational sphere coordinates whose squares are the weights, so
+`isParseval` holds by construction and every hypothesis is decided by
+rational arithmetic.  Consequence: the interior family's constant pair
+must move below the true in-region margin floor; the clearance-bounded
+FORMULATION (and every landed reduction consuming it) is untouched --
+only the instance `(1/16, 1/4)` dies. -/
+
+/-- The floor-refuting atoms: rows of an exact rational Stiefel frame
+scaled by the inverse sphere coordinates of the weights.  Numerically the
+whitened image of the direction tuple `(-4,6,-7), (1,3,1), (1,1,-4),
+(7,-8,4), (-3,2,-1), (4,-2,3)` at unit masses under the weight tilt
+`13/32` on the fourth label -- a deep pocket of the clearance-bounded
+region found by the exact cartography. -/
+noncomputable def floorRefuterAtom : Fin 6 → (Fin 3 → ℝ)
+  | 0 => ![-(174621712615 / 1757819585819), 1760824766148 / 1757819585819, -(3361373256444 / 1757819585819)]
+  | 1 => ![170994768427 / 140742852576, 3377843407001 / 1688914230912, 42420072177 / 46914284192]
+  | 2 => ![164735898971 / 140742852576, 5554055297 / 46914284192, -(3108696243541 / 1688914230912)]
+  | 3 => ![56635636267 / 67439283526, -(130247073243 / 134878567052), -(2277522219 / 67439283526)]
+  | 4 => ![-(308584667447 / 281485705152), 12782492079 / 93828568384, 3020254685 / 23457142096]
+  | 5 => ![136209686963 / 93828568384, 43165409119 / 93828568384, 53101921411 / 70371426288]
+
+/-- The floor-refuting weights: exact rational squares summing to one
+(sphere coordinates `1199/3409, 1152/3409 (x4), 2208/3409`). -/
+noncomputable def floorRefuterWeight : Fin 6 → ℝ
+  | 0 => 1437601 / 11621281
+  | 1 => 1327104 / 11621281
+  | 2 => 1327104 / 11621281
+  | 3 => 4875264 / 11621281
+  | 4 => 1327104 / 11621281
+  | 5 => 1327104 / 11621281
+
+/-- The floor-refuting design.  Parseval is exact: the weighted atom sum
+is the Gram of the underlying Stiefel frame. -/
+noncomputable def floorRefuterDesign : WeightedDesign 6 3 where
+  atom := floorRefuterAtom
+  weight := floorRefuterWeight
+  weight_pos := by
+    intro label
+    fin_cases label <;> norm_num [floorRefuterWeight]
+  weight_sum_one := by
+    rw [Fin.sum_univ_six]
+    norm_num [floorRefuterWeight]
+  isParseval := by
+    rw [Fin.sum_univ_six]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, floorRefuterWeight, atomMatrix,
+        Matrix.add_apply] <;>
+      norm_num
+
+/-- The design's atoms, read back. -/
+theorem floorRefuterDesign_atom_eq : floorRefuterDesign.atom = floorRefuterAtom :=
+  rfl
+
+/-- The design's weights, read back. -/
+theorem floorRefuterDesign_weight_eq :
+    floorRefuterDesign.weight = floorRefuterWeight := rfl
+
+set_option maxHeartbeats 1600000 in
+/-- **EVERY SQUARED BRACKET CLEARS `1/16`** -- one bound serving both the
+line-freeness of the refuter (a vanishing bracket would violate it) and its
+bracket-clearance leg. -/
+theorem floorRefuterAtom_bracketSq_ge (leftLabel midLabel rightLabel : Fin 6)
+    (hleftMid : leftLabel ≠ midLabel) (hleftRight : leftLabel ≠ rightLabel)
+    (hmidRight : midLabel ≠ rightLabel) :
+    (1 / 16 : ℝ) ≤ tripleBracket (floorRefuterAtom leftLabel)
+      (floorRefuterAtom midLabel) (floorRefuterAtom rightLabel) ^ 2 := by
+  rcases fin_six_cases leftLabel with rfl | rfl | rfl | rfl | rfl | rfl <;>
+    rcases fin_six_cases midLabel with rfl | rfl | rfl | rfl | rfl | rfl <;>
+      rcases fin_six_cases rightLabel with rfl | rfl | rfl | rfl | rfl | rfl <;>
+        first
+          | exact absurd rfl hleftMid
+          | exact absurd rfl hleftRight
+          | exact absurd rfl hmidRight
+          | (simp [floorRefuterAtom, tripleBracket_eq]; norm_num)
+
+/-- The refuter realizes the empty line family: no bracket vanishes. -/
+theorem floorRefuterDesign_hasLinePattern_lineFree :
+    HasLinePattern floorRefuterDesign
+      (lineFamilyPattern ([] : List (List (Fin 6)))) := by
+  intro leftLabel midLabel rightLabel hleftMid hleftRight hmidRight
+  constructor
+  · intro hvanishes
+    exfalso
+    have hlower := floorRefuterAtom_bracketSq_ge leftLabel midLabel rightLabel
+      hleftMid hleftRight hmidRight
+    have hbracket : tripleBracket (floorRefuterAtom leftLabel)
+        (floorRefuterAtom midLabel) (floorRefuterAtom rightLabel) = 0 := hvanishes
+    rw [hbracket] at hlower
+    norm_num at hlower
+  · intro hpattern
+    simp [lineFamilyPattern] at hpattern
+
+/-- **THE REFUTER IS EXACTLY STRESS-FREE**: the certificate is the exact
+inverse of its six-by-six Veronese grid, one `linear_combination` per
+coordinate. -/
+theorem floorRefuterAtom_isStressFree :
+    ∀ stressCoeff : Fin 6 → ℝ,
+      (∑ atomIndex, stressCoeff atomIndex
+          • atomMatrix (floorRefuterAtom atomIndex)) = 0 →
+        stressCoeff = 0 := by
+  intro stressCoeff hstress
+  have hentry : ∀ rowIndex colIndex : Fin 3,
+      ∑ atomIndex, stressCoeff atomIndex
+          * (floorRefuterAtom atomIndex rowIndex
+            * floorRefuterAtom atomIndex colIndex) = 0 := by
+    intro rowIndex colIndex
+    rw [← sum_smul_atomMatrix_apply floorRefuterAtom stressCoeff rowIndex colIndex,
+      hstress, Matrix.zero_apply]
+  have haxisFirst := hentry 0 0
+  have haxisSecond := hentry 1 1
+  have haxisThird := hentry 2 2
+  have hcrossTop := hentry 0 1
+  have hcrossSide := hentry 0 2
+  have hcrossBottom := hentry 1 2
+  simp [floorRefuterAtom, Fin.sum_univ_six] at haxisFirst haxisSecond haxisThird
+  simp [floorRefuterAtom, Fin.sum_univ_six] at hcrossTop hcrossSide hcrossBottom
+  have hzeroth : stressCoeff 0 = 0 := by
+    linear_combination
+      (4377041194391856057300086799 / 154770218213782097954379612295 : ℝ) * haxisFirst +
+      (108576259525333501412627586536 / 773851091068910489771898061475 : ℝ) * haxisSecond +
+      (-(34732853275304793541319047056 / 773851091068910489771898061475) : ℝ) * haxisThird +
+      (379864792143802624846035847163 / 2321553273206731469315694184425 : ℝ) * hcrossTop +
+      (10511324993642237170603377367 / 773851091068910489771898061475 : ℝ) * hcrossSide +
+      (-(418842617200497311027908760531 / 773851091068910489771898061475) : ℝ) * hcrossBottom
+  have hfirst : stressCoeff 1 = 0 := by
+    linear_combination
+      (2475605632977455032941576192 / 154770218213782097954379612295 : ℝ) * haxisFirst +
+      (2696370005722748618912248774656 / 13155468548171478326122267045075 : ℝ) * haxisSecond +
+      (-(1404494377541880908521070002176 / 13155468548171478326122267045075) : ℝ) * haxisThird +
+      (3275864928562777914955966857216 / 13155468548171478326122267045075 : ℝ) * hcrossTop +
+      (-(1684292020239075806545465171968 / 13155468548171478326122267045075) : ℝ) * hcrossSide +
+      (-(1604805455289318080670065074176 / 13155468548171478326122267045075) : ℝ) * hcrossBottom
+  have hsecond : stressCoeff 2 = 0 := by
+    linear_combination
+      (-(6326005036997326675280265216 / 154770218213782097954379612295) : ℝ) * haxisFirst +
+      (-(103308535411466751226458537984 / 773851091068910489771898061475) : ℝ) * haxisSecond +
+      (223309272771979936849401790464 / 773851091068910489771898061475 : ℝ) * haxisThird +
+      (-(128444301201045737596222439424 / 773851091068910489771898061475) : ℝ) * hcrossTop +
+      (-(74622442684146498317980827648 / 773851091068910489771898061475) : ℝ) * hcrossSide +
+      (371284266283838755760789028864 / 773851091068910489771898061475 : ℝ) * hcrossBottom
+  have hthird : stressCoeff 3 = 0 := by
+    linear_combination
+      (-(11079101141549591275603985888 / 92862130928269258772627767377) : ℝ) * haxisFirst +
+      (19793219880685589950140004256 / 154770218213782097954379612295 : ℝ) * haxisSecond +
+      (27257089164654423157764678016 / 66330093520192327694734119555 : ℝ) * haxisThird +
+      (-(540908565646210099950224666752 / 464310654641346293863138836885) : ℝ) * hcrossTop +
+      (557255810250946655357385254888 / 1392931963924038881589416510655 : ℝ) * hcrossSide +
+      (1324719460894253671088145009976 / 1392931963924038881589416510655 : ℝ) * hcrossBottom
+  have hfourth : stressCoeff 4 = 0 := by
+    linear_combination
+      (28074740405758813211404176384 / 30954043642756419590875922459 : ℝ) * haxisFirst +
+      (1463535246154919734122446149632 / 2631093709634295665224453409015 : ℝ) * haxisSecond +
+      (-(3549427759247628579453558592512 / 2631093709634295665224453409015) : ℝ) * haxisThird +
+      (3602617007789646974023464794112 / 2631093709634295665224453409015 : ℝ) * hcrossTop +
+      (-(3165752345266754370732490360576 / 2631093709634295665224453409015) : ℝ) * hcrossSide +
+      (-(6497923909074704086810317435392 / 2631093709634295665224453409015) : ℝ) * hcrossBottom
+  have hfifth : stressCoeff 5 = 0 := by
+    linear_combination
+      (275206772393477372891667456 / 22110031173397442564911373185 : ℝ) * haxisFirst +
+      (-(323043077683477106731396380672 / 773851091068910489771898061475) : ℝ) * haxisSecond +
+      (401781552825231950926729946112 / 773851091068910489771898061475 : ℝ) * haxisThird +
+      (-(354627972901022096304753518592 / 773851091068910489771898061475) : ℝ) * hcrossTop +
+      (545243847612534467973177705216 / 773851091068910489771898061475 : ℝ) * hcrossSide +
+      (670312835085653901131981056512 / 773851091068910489771898061475 : ℝ) * hcrossBottom
+  funext label
+  rcases fin_six_cases label with rfl | rfl | rfl | rfl | rfl | rfl
+  · exact hzeroth
+  · exact hfirst
+  · exact hsecond
+  · exact hthird
+  · exact hfourth
+  · exact hfifth
+
+/-- **THE REFUTER IS EXACTLY OFF-CONIC** -- stress-freeness read through
+the Veronese kernel duality. -/
+theorem hasNoCommonQuadric_floorRefuterAtom :
+    HasNoCommonQuadric floorRefuterAtom := by
+  have hconic := (stressFree_iff_no_conic_sixThree floorRefuterAtom).mp
+    floorRefuterAtom_isStressFree
+  intro form hsymmetric hquadric
+  exact hconic form hsymmetric hquadric
+
+/-- The base-triple subset sum, entry by entry. -/
+theorem floorRefuter_subsetSum_baseTriple_eq :
+    subsetSum floorRefuterDesign {0, 1, 2}
+      = !![
+        40664417805607618036860993385 / 14238396040499162292790706688, 843696541530889988069882077919 / 341721504971979895026976960512, -(295900650251359749683460947147 / 341721504971979895026976960512);
+        843696541530889988069882077919 / 341721504971979895026976960512, 20574941443031652472825286606881 / 4100658059663758740323723526144, -(9255047472394720147692067667 / 28476792080998324585581413376);
+        -(295900650251359749683460947147 / 341721504971979895026976960512), -(9255047472394720147692067667 / 28476792080998324585581413376), 32240321980734618910826167199209 / 4100658059663758740323723526144] := by
+  simp only [subsetSum, floorRefuterDesign_atom_eq]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [floorRefuterAtom, atomMatrix, Matrix.add_apply] <;>
+    norm_num
+
+/-- **THE BASE TRIPLE WEAKLY DOMINATES**: the gap above the identity is an
+explicit rational sum of squares. -/
+theorem floorRefuterDesign_dominates_baseTriple :
+    Dominates floorRefuterDesign {0, 1, 2} := by
+  have hgap : subsetSum floorRefuterDesign {0, 1, 2} - 1
+      = !![
+        26426021765108455744070286697 / 14238396040499162292790706688, 843696541530889988069882077919 / 341721504971979895026976960512, -(295900650251359749683460947147 / 341721504971979895026976960512);
+        843696541530889988069882077919 / 341721504971979895026976960512, 16474283383367893732501563080737 / 4100658059663758740323723526144, -(9255047472394720147692067667 / 28476792080998324585581413376);
+        -(295900650251359749683460947147 / 341721504971979895026976960512), -(9255047472394720147692067667 / 28476792080998324585581413376), 28139663921070860170502443673065 / 4100658059663758740323723526144] := by
+    rw [floorRefuter_subsetSum_baseTriple_eq]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [Matrix.sub_apply] <;> norm_num
+  show (subsetSum floorRefuterDesign {0, 1, 2} - 1).PosSemidef
+  rw [hgap]
+  refine Matrix.posSemidef_iff_dotProduct_mulVec.mpr ⟨?_, fun probeVec => ?_⟩
+  · refine isHermitian_of_transpose_eq ?_
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;> simp [Matrix.transpose_apply]
+  · rw [star_trivial]
+    have hkey : (11143565940738243821368968025312260979111195357662216964625461222121099263382431345440436027392 : ℝ)
+          * (probeVec ⬝ᵥ ((!![
+            26426021765108455744070286697 / 14238396040499162292790706688, 843696541530889988069882077919 / 341721504971979895026976960512, -(295900650251359749683460947147 / 341721504971979895026976960512);
+            843696541530889988069882077919 / 341721504971979895026976960512, 16474283383367893732501563080737 / 4100658059663758740323723526144, -(9255047472394720147692067667 / 28476792080998324585581413376);
+            -(295900650251359749683460947147 / 341721504971979895026976960512), -(9255047472394720147692067667 / 28476792080998324585581413376), 28139663921070860170502443673065 / 4100658059663758740323723526144]
+              : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ probeVec))
+        = 51417250206863875808409985804647097 * (634224522362602937857686880728 * probeVec 0 + 843696541530889988069882077919 * probeVec 1 - 295900650251359749683460947147 * probeVec 2) ^ 2
+          + 3089929696288880705900761 * (51417250206863875808409985804647097 * probeVec 1 + 57999060210846234336824569396820221 * probeVec 2) ^ 2
+          + 61573589695430783375688231189947834815934898144898519324526373606954535495148051625810669060096 * probeVec 2 ^ 2 := by
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    linarith [hkey, sq_nonneg (634224522362602937857686880728 * probeVec 0 + 843696541530889988069882077919 * probeVec 1 - 295900650251359749683460947147 * probeVec 2), sq_nonneg (51417250206863875808409985804647097 * probeVec 1 + 57999060210846234336824569396820221 * probeVec 2),
+      sq_nonneg (probeVec 2)]
+
+/-- The mass clearance clears the collar threshold: every design mass is
+far above `1/16` (the smallest is `~0.141`). -/
+theorem floorRefuter_massClearance_ge :
+    (1 / 16 : ℝ) ≤ massClearanceOf floorRefuterDesign := by
+  simp only [massClearanceOf]
+  refine Finset.le_inf' _ _ fun label _ => ?_
+  fin_cases label <;>
+    simp [designMassOf, leverageOf, floorRefuterDesign_atom_eq,
+      floorRefuterDesign_weight_eq, floorRefuterAtom, floorRefuterWeight,
+      Fin.sum_univ_three] <;>
+    norm_num
+
+/-- The bracket clearance clears the collar threshold, from the uniform
+squared-bracket bound. -/
+theorem floorRefuter_bracketClearance_ge :
+    (1 / 16 : ℝ) ≤ bracketClearanceOf floorRefuterDesign := by
+  simp only [bracketClearanceOf]
+  refine Finset.le_inf' _ _ fun labels hmem => ?_
+  simp only [distinctLabelTriples, Finset.mem_filter, Finset.mem_univ,
+    true_and] at hmem
+  obtain ⟨hfirstMid, hfirstLast, hmidLast⟩ := hmem
+  have hlower := floorRefuterAtom_bracketSq_ge labels.1 labels.2.1 labels.2.2
+    hfirstMid hfirstLast hmidLast
+  simpa [atomBracket, floorRefuterDesign_atom_eq] using hlower
+
+/-- The refuter's Veronese grid, entry by entry. -/
+noncomputable def floorRefuterVeroneseGrid : Matrix (Fin 6) (Fin 6) ℝ :=
+  !![
+    30492742516595650138225 / 3089929696288880705900761, 3100503857080158886757904 / 3089929696288880705900761, 11298830169136940987525136 / 3089929696288880705900761, -(307478236279670636557020 / 3089929696288880705900761), 586968754778510864841060 / 3089929696288880705900761, -(5918789278214147534057712 / 3089929696288880705900761);
+    29239210829403356054329 / 19808550551229669835776, 11409826082220123335814001 / 2852431279377072456351744, 1799462523501889519329 / 2200950061247741092864, 577593551162804705557427 / 237702606614756038029312, 2417870139520913585193 / 2200950061247741092864, 15920929014176223012353 / 8803800244990964371456;
+    27137916409783518858841 / 19808550551229669835776, 30847530242133758209 / 2200950061247741092864, 9663992334605924384218681 / 2852431279377072456351744, 914952292285939399387 / 6602850183743223278592, -(512113870307497387296311 / 237702606614756038029312), -(17265870838202893086677 / 79234202204918679343104);
+    3207595295367925695289 / 4548056962500214992676, 16964300088367406537049 / 18192227850000859970704, 5187107458038683961 / 4548056962500214992676, -(7376625865031856103881 / 9096113925000429985352), -(128988919985294716473 / 4548056962500214992676), 296640603270652886217 / 9096113925000429985352;
+    95224496983375581497809 / 79234202204918679343104, 163392103749697742241 / 8803800244990964371456, 9121938362264449225 / 550237515311935273216, -(1314827022447375550771 / 8803800244990964371456), -(932004287575968739195 / 6602850183743223278592), 38606381587575140115 / 2200950061247741092864;
+    18553078822558452163369 / 8803800244990964371456, 1863252544410648356161 / 8803800244990964371456, 2819814057540020230921 / 4952137637807417458944, 5879546863728815615597 / 8803800244990964371456, 7232996092526137264793 / 6602850183743223278592, 2292166162710800746909 / 6602850183743223278592]
+
+/-- Unit upper-triangular column-elimination certificate for the Veronese
+determinant. -/
+noncomputable def floorRefuterVeroneseElimination : Matrix (Fin 6) (Fin 6) ℝ :=
+  !![
+    1, -(266795360776506384 / 2623871027350225), 614583693415540661319234000 / 64174994106169211791810019, -(1306686059846267259946465990518492 / 2720045052229304606287475566716223), 39675898404879265458602902548300 / 33916543305524975931869456929831, 6270987652195122429172110 / 436401585342222591882800167;
+    0, 1, -(239910264949545447174037296 / 64174994106169211791810019), -(6282377143724609477268297818890764 / 13600225261146523031437377833581115), -(26688209394383321213637623545704 / 33916543305524975931869456929831), -(210314503700180408028252852 / 436401585342222591882800167);
+    0, 0, 1, 2111681447791955846135777867372496 / 13600225261146523031437377833581115, 5526269099338433760331160977356 / 33916543305524975931869456929831, 261576531787260384717923142 / 436401585342222591882800167;
+    0, 0, 0, 1, 2638424140035859323028799283918 / 33916543305524975931869456929831, -(230877586524102927281740572 / 436401585342222591882800167);
+    0, 0, 0, 0, 1, 709952926578820921840075137 / 872803170684445183765600334;
+    0, 0, 0, 0, 0, 1]
+
+/-- The lower-triangular column-reduced form of the Veronese grid. -/
+noncomputable def floorRefuterVeroneseReduced : Matrix (Fin 6) (Fin 6) ℝ :=
+  !![
+    30492742516595650138225 / 3089929696288880705900761, 0, 0, 0, 0, 0;
+    29239210829403356054329 / 19808550551229669835776, -(745795639681136243781137729414339 / 5105080072131246228263218790400), 0, 0, 0, 0;
+    27137916409783518858841 / 19808550551229669835776, -(548672825259102591700449619011 / 3939104993928430731684582400), 2054676512500067642176972822193825858208095 / 124860742058422549103498564774170875641856, 0, 0, 0;
+    3207595295367925695289 / 4548056962500214992676, -(2304508555651083315250674150459 / 32559164715439685266580376400), 650849083029146246305238483585846357043 / 199084118649044923308951644379148561724, -(90958541608194137959036572530530000041 / 57556153305172085469042982991715278680), 0, 0;
+    95224496983375581497809 / 79234202204918679343104, -(1925144670335870334482748063139 / 15756419975713722926738329600), 16231779086966623354398744082247076777 / 1416811252478469375266641303265373952, -(122446179506653922063207541369314210627 / 167119568008968475010302498819044741120), 86216272685826648381911776728416759 / 69461080689715150708468647792293888, 0;
+    18553078822558452163369 / 8803800244990964371456, -(3372950654175225882747294581891 / 15756419975713722926738329600), 4326786317429457118575636542264163668105 / 216772121629205814415796119399602214656, -(3942733783856233059329906009529216301 / 11141304533931231667353499921269649408), 737443356093511583834678638827048605 / 208383242069145452125405943376881664, 773851091068910489771898061475 / 670312835085653901131981056512]
+
+/-- The abstract Veronese grid of the refuter is the explicit one. -/
+theorem floorRefuterVeroneseGrid_eq :
+    veroneseGrid floorRefuterAtom = floorRefuterVeroneseGrid := by
+  ext atomIndex coordIndex
+  fin_cases atomIndex <;> fin_cases coordIndex <;>
+    simp [veroneseGrid, veroneseCoords, floorRefuterAtom,
+      floorRefuterVeroneseGrid] <;>
+    norm_num
+
+set_option maxHeartbeats 800000 in
+/-- The column elimination, verified entrywise. -/
+theorem floorRefuterVeronese_columnReduction :
+    floorRefuterVeroneseGrid * floorRefuterVeroneseElimination
+      = floorRefuterVeroneseReduced := by
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [floorRefuterVeroneseGrid, floorRefuterVeroneseElimination,
+      floorRefuterVeroneseReduced, Matrix.mul_apply, Fin.sum_univ_six] <;>
+    norm_num
+
+/-- The elimination matrix is unit upper triangular, so its determinant is
+one. -/
+theorem floorRefuterVeroneseElimination_det :
+    floorRefuterVeroneseElimination.det = 1 := by
+  have htri : floorRefuterVeroneseElimination.BlockTriangular id := by
+    intro rowIndex colIndex hlt
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp_all [floorRefuterVeroneseElimination]
+  rw [Matrix.det_of_upperTriangular htri, Fin.prod_univ_six]
+  simp [floorRefuterVeroneseElimination]
+
+/-- The reduced form is lower triangular; its determinant is the diagonal
+product. -/
+theorem floorRefuterVeroneseReduced_det :
+    floorRefuterVeroneseReduced.det = 164031558612224485491243275397886285393828313361765046989947401475 / 3053271314662738061920843255706665722660499978837226478744109056 := by
+  have htri : floorRefuterVeroneseReducedᵀ.BlockTriangular id := by
+    intro rowIndex colIndex hlt
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp_all [floorRefuterVeroneseReduced, Matrix.transpose_apply]
+  rw [← Matrix.det_transpose, Matrix.det_of_upperTriangular htri,
+    Fin.prod_univ_six]
+  simp [floorRefuterVeroneseReduced, Matrix.transpose_apply]
+  norm_num
+
+/-- **THE EXACT VERONESE DETERMINANT** of the refuter, via the triangular
+factorization. -/
+theorem floorRefuterVeronese_det :
+    (veroneseGrid floorRefuterAtom).det = 164031558612224485491243275397886285393828313361765046989947401475 / 3053271314662738061920843255706665722660499978837226478744109056 := by
+  have hproduct := congrArg Matrix.det floorRefuterVeronese_columnReduction
+  rw [Matrix.det_mul, floorRefuterVeroneseElimination_det, mul_one,
+    floorRefuterVeroneseReduced_det] at hproduct
+  rw [floorRefuterVeroneseGrid_eq]
+  exact hproduct
+
+/-- The conic clearance clears the collar threshold (the determinant is
+`~53.7`). -/
+theorem floorRefuter_conicClearance_ge :
+    (1 / 16 : ℝ) ≤ conicClearanceOf floorRefuterDesign := by
+  simp only [conicClearanceOf, floorRefuterDesign_atom_eq]
+  rw [floorRefuterVeronese_det, abs_of_pos (by norm_num)]
+  norm_num
+
+/-- **THE REFUTER SITS IN THE CLEARANCE-BOUNDED REGION**: its wall
+clearance is at least `1/16`. -/
+theorem floorRefuter_wallClearance_ge :
+    (1 / 16 : ℝ) ≤ wallClearanceOf floorRefuterDesign := by
+  simp only [wallClearanceOf, le_min_iff]
+  exact ⟨floorRefuter_massClearance_ge,
+    floorRefuter_conicClearance_ge, floorRefuter_bracketClearance_ge⟩
+
+/-! ### No triple reaches the identity floor `1/4`
+
+Each of the twenty floor-shifted gaps has an explicit rational probe with
+strictly negative Rayleigh value. -/
+
+/-- The `{0, 1, 2}` gap fails the `1/4` floor at the probe
+`![3, -2, 0]`. -/
+theorem floorRefuter_gap_zeroOneTwo_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {0, 1, 2}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {0, 1, 2}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        22866422754983665170872610025 / 14238396040499162292790706688, 843696541530889988069882077919 / 341721504971979895026976960512, -(295900650251359749683460947147 / 341721504971979895026976960512);
+        843696541530889988069882077919 / 341721504971979895026976960512, 15449118868451954047420632199201 / 4100658059663758740323723526144, -(9255047472394720147692067667 / 28476792080998324585581413376);
+        -(295900650251359749683460947147 / 341721504971979895026976960512), -(9255047472394720147692067667 / 28476792080998324585581413376), 27114499406154920485421512791529 / 4100658059663758740323723526144] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![3, -2, 0]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{0, 1, 3}` gap fails the `1/4` floor at the probe
+`![3, -1, -1]`. -/
+theorem floorRefuter_gap_zeroOneThree_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {0, 1, 3}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {0, 1, 3}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        14178838051686288005512373984617 / 15064223010848113705772567675904, 274667596782812291805196822294979 / 180770676130177364469270812110848, 2109255677502015813330834926169 / 1673802556760901522863618630656;
+        274667596782812291805196822294979 / 180770676130177364469270812110848, 10165010215382035909321369082730529 / 2169248113562128373631249745330176, -(498672986985956585802429938767 / 6695210227043606091454474522624);
+        2109255677502015813330834926169 / 1673802556760901522863618630656, -(498672986985956585802429938767 / 6695210227043606091454474522624), 5398661827210722446154627944593 / 1673802556760901522863618630656] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![3, -1, -1]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{0, 1, 4}` gap fails the `1/4` floor at the probe
+`![2, -1, -1]`. -/
+theorem floorRefuter_gap_zeroOneFour_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {0, 1, 4}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {0, 1, 4}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        163772231053182254723857874645 / 113907168323993298342325653504, 372654562148264447459261133385 / 170860752485989947513488480256, 42543419180438671149677309 / 37079156355466568470809132;
+        372654562148264447459261133385 / 170860752485989947513488480256, 15467751100957165110094513518421 / 4100658059663758740323723526144, -(1133415120749677484700846739 / 12656352035999255371369517056);
+        42543419180438671149677309 / 37079156355466568470809132, -(1133415120749677484700846739 / 12656352035999255371369517056), 10254256036041419080430891813 / 3164088008999813842842379264] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![2, -1, -1]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{0, 1, 5}` gap fails the `1/4` floor at the probe
+`![2, -1, -1]`. -/
+theorem floorRefuter_gap_zeroOneFive_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {0, 1, 5}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {0, 1, 5}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        266924720980884215883629098357 / 113907168323993298342325653504, 512280189905664958518245476153 / 170860752485989947513488480256, 5657282005406866876939135973 / 2373066006749860382131784448;
+        512280189905664958518245476153 / 170860752485989947513488480256, 16259516727428063047475643436501 / 4100658059663758740323723526144, 9114629235147651696072391639 / 37969056107997766114108551168;
+        5657282005406866876939135973 / 2373066006749860382131784448, 9114629235147651696072391639 / 37969056107997766114108551168, 108031280882492063778915936301 / 28476792080998324585581413376] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![2, -1, -1]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{0, 2, 3}` gap fails the `1/4` floor at the probe
+`![1, 1, 0]`. -/
+theorem floorRefuter_gap_zeroTwoThree_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {0, 2, 3}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {0, 2, 3}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        12580822706407082189886950256265 / 15064223010848113705772567675904, -(3876049845843177772793097777941 / 5021407670282704568590855891968), -(360245317143123368122185861780743 / 180770676130177364469270812110848);
+        -(3876049845843177772793097777941 / 5021407670282704568590855891968), 1171561873710535349788673547761 / 1673802556760901522863618630656, -(126588093905417906201576141715269 / 60256892043392454823090270703616);
+        -(360245317143123368122185861780743 / 180770676130177364469270812110848), -(126588093905417906201576141715269 / 60256892043392454823090270703616), 12572500732105001937297017901070441 / 2169248113562128373631249745330176] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![1, 1, 0]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{0, 2, 4}` gap fails the `1/4` floor at the probe
+`![0, -1, 0]`. -/
+theorem floorRefuter_gap_zeroTwoFour_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {0, 2, 4}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {0, 2, 4}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        151688939217422664435574897493 / 113907168323993298342325653504, -(4187537172926466333511880525 / 37969056107997766114108551168), -(719535974189109486385738445411 / 341721504971979895026976960512);
+        -(4187537172926466333511880525 / 37969056107997766114108551168), -(2708497833361582258368051259 / 12656352035999255371369517056), -(241013660514997186075642728905 / 113907168323993298342325653504);
+        -(719535974189109486385738445411 / 341721504971979895026976960512), -(241013660514997186075642728905 / 113907168323993298342325653504), 23829846643200994151075146725145 / 4100658059663758740323723526144] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![0, -1, 0]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{0, 2, 5}` gap fails the `1/4` floor at the probe
+`![0, 1, 0]`. -/
+theorem floorRefuter_gap_zeroTwoFive_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {0, 2, 5}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {0, 2, 5}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        254841429145124625595346121205 / 113907168323993298342325653504, 26840380106495869457373528979 / 37969056107997766114108551168, -(296967516577443449421928945043 / 341721504971979895026976960512);
+        26840380106495869457373528979 / 37969056107997766114108551168, -(264776764006958994846045339 / 12656352035999255371369517056), -(203469036722807133625117933337 / 113907168323993298342325653504);
+        -(296967516577443449421928945043 / 341721504971979895026976960512), -(203469036722807133625117933337 / 113907168323993298342325653504), 26096835267570172207000605762841 / 4100658059663758740323723526144] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![0, 1, 0]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{0, 3, 4}` gap fails the `1/4` floor at the probe
+`![-1, -2, -1]`. -/
+theorem floorRefuter_gap_zeroThreeFour_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {0, 3, 4}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {0, 3, 4}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        40188099953670870505335731086465 / 60256892043392454823090270703616, -(7095731043234496966578550374211 / 6695210227043606091454474522624), 102681300198558253450704873461 / 5021407670282704568590855891968;
+        -(7095731043234496966578550374211 / 6695210227043606091454474522624), 4716668639889229831730259678289 / 6695210227043606091454474522624, -(3122238967881108135381123829341 / 1673802556760901522863618630656);
+        102681300198558253450704873461 / 5021407670282704568590855891968, -(3122238967881108135381123829341 / 1673802556760901522863618630656), 1014483876632420767620981899513 / 418450639190225380715904657664] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![-1, -2, -1]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{0, 3, 5}` gap fails the `1/4` floor at the probe
+`![-1, 3, 2]`. -/
+theorem floorRefuter_gap_zeroThreeFive_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {0, 3, 5}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {0, 3, 5}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        10528418569491689773206078714457 / 6695210227043606091454474522624, -(1624474962963025088785756498339 / 6695210227043606091454474522624), 6312090024547761963280016698313 / 5021407670282704568590855891968;
+        -(1624474962963025088785756498339 / 6695210227043606091454474522624), 6009397085577825538133400809969 / 6695210227043606091454474522624, -(7711624738137612927282736750067 / 5021407670282704568590855891968);
+        6312090024547761963280016698313 / 5021407670282704568590855891968, -(7711624738137612927282736750067 / 5021407670282704568590855891968), 11212363539503063282867600691001 / 3766055752712028426443141918976] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![-1, 3, 2]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{0, 4, 5}` gap fails the `1/4` floor at the probe
+`![0, -1, 0]`. -/
+theorem floorRefuter_gap_zeroFourFive_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {0, 4, 5}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {0, 4, 5}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        117841139079218779476111557825 / 56953584161996649171162826752, 2651407476372254295648184253 / 6328176017999627685684758528, 5430740067233876299679973359 / 4746132013499720764263568896;
+        2651407476372254295648184253 / 6328176017999627685684758528, -(103634936779388351321353967 / 6328176017999627685684758528), -(7360399288332306266527386805 / 4746132013499720764263568896);
+        5430740067233876299679973359 / 4746132013499720764263568896, -(7360399288332306266527386805 / 4746132013499720764263568896), 10652649031358446918244382605 / 3559599010124790573197676672] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![0, -1, 0]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{1, 2, 3}` gap fails the `1/4` floor at the probe
+`![4, -3, 3]`. -/
+theorem floorRefuter_gap_oneTwoThree_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {1, 2, 3}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {1, 2, 3}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        12057697909028469226052953 / 5239361620800247671562752, 220996864061216740381753967 / 125744678899205944117506048, -(136336766241310711251547547 / 125744678899205944117506048);
+        220996864061216740381753967 / 125744678899205944117506048, 5577863293709425281179967121 / 1508936146790471329410072576, 17008204315738708954662109 / 10478723241600495343125504;
+        -(136336766241310711251547547 / 125744678899205944117506048), 17008204315738708954662109 / 10478723241600495343125504, 4461485433994962504118589401 / 1508936146790471329410072576] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![4, -3, 3]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{1, 2, 4}` gap fails the `1/4` floor at the probe
+`![-1, 1, -1]`. -/
+theorem floorRefuter_gap_oneTwoFour_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {1, 2, 4}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {1, 2, 4}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        73896751061324910657203 / 26411400734972893114368, 287515752039509692032271 / 118851303307378019014656, -(284536049591973594706487 / 237702606614756038029312);
+        287515752039509692032271 / 118851303307378019014656, 7937204423807490184499269 / 2852431279377072456351744, 3981635000829244345895 / 2476068818903708729472;
+        -(284536049591973594706487 / 237702606614756038029312), 3981635000829244345895 / 2476068818903708729472, 8477844794313011535611785 / 2852431279377072456351744] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![-1, 1, -1]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{1, 2, 5}` gap fails the `1/4` floor at the probe
+`![-1, 1, -1]`. -/
+theorem floorRefuter_gap_oneTwoFive_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {1, 2, 5}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {1, 2, 5}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        293443465603625219944121 / 79234202204918679343104, 384639799502888272778239 / 118851303307378019014656, 9403964091702221437081 / 237702606614756038029312;
+        384639799502888272778239 / 118851303307378019014656, 8487959206581638183409349 / 2852431279377072456351744, 9595530265119545186713 / 4952137637807417458944;
+        9403964091702221437081 / 237702606614756038029312, 9595530265119545186713 / 4952137637807417458944, 10054769562986084283839881 / 2852431279377072456351744] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![-1, 1, -1]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{1, 3, 4}` gap fails the `1/4` floor at the probe
+`![0, 0, 1]`. -/
+theorem floorRefuter_gap_oneThreeFour_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {1, 3, 4}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {1, 3, 4}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        89411511053331510515457029 / 41914892966401981372502016, 92396419122653722734082873 / 62872339449602972058753024, 6338019829576750106281 / 6822085443750322489014;
+        92396419122653722734082873 / 62872339449602972058753024, 5584719473550185444921146501 / 1508936146790471329410072576, 8655742540813105247761181 / 4657210329600220152500224;
+        6338019829576750106281 / 6822085443750322489014, 8655742540813105247761181 / 4657210329600220152500224, -(482832631983759764277163 / 1164302582400055038125056)] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![0, 0, 1]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{1, 3, 5}` gap fails the `1/4` floor at the probe
+`![-1, 0, 2]`. -/
+theorem floorRefuter_gap_oneThreeFive_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {1, 3, 5}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {1, 3, 5}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        127368960423326618652915877 / 41914892966401981372502016, 143775040230780991948699945 / 62872339449602972058753024, 1891087838454327532631381 / 873226936800041278593792;
+        143775040230780991948699945 / 62872339449602972058753024, 5876068753637709736344578821 / 1508936146790471329410072576, 30572377912417443134292967 / 13971630988800660457500672;
+        1891087838454327532631381 / 873226936800041278593792, 30572377912417443134292967 / 13971630988800660457500672, 1447514663729880759093469 / 10478723241600495343125504] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![-1, 0, 2]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{1, 4, 5}` gap fails the `1/4` floor at the probe
+`![0, -1, 2]`. -/
+theorem floorRefuter_gap_oneFourFive_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {1, 4, 5}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {1, 4, 5}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        140058148473933363003283 / 39617101102459339671552, 700840986877403587307729 / 237702606614756038029312, 13554602223512909281177 / 6602850183743223278592;
+        700840986877403587307729 / 237702606614756038029312, 8500919849002734901256569 / 2852431279377072456351744, 57394728272422773706075 / 26411400734972893114368;
+        13554602223512909281177 / 6602850183743223278592, 57394728272422773706075 / 26411400734972893114368, 3042120533681519475025 / 19808550551229669835776] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![0, -1, 2]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{2, 3, 4}` gap fails the `1/4` floor at the probe
+`![1, 1, 1]`. -/
+theorem floorRefuter_gap_twoThreeFour_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {2, 3, 4}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {2, 3, 4}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        84965172061415935009804421 / 41914892966401981372502016, -(11481088762835868205531901 / 13971630988800660457500672), -(292223612705016294870023603 / 125744678899205944117506048);
+        -(11481088762835868205531901 / 13971630988800660457500672), -(1326944292502273979125003 / 4657210329600220152500224), -(7031505842584380974814137 / 41914892966401981372502016);
+        -(292223612705016294870023603 / 125744678899205944117506048), -(7031505842584380974814137 / 41914892966401981372502016), 3252818139243061920528825865 / 1508936146790471329410072576] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![1, 1, 1]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{2, 3, 5}` gap fails the `1/4` floor at the probe
+`![0, -1, 0]`. -/
+theorem floorRefuter_gap_twoThreeFive_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {2, 3, 5}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {2, 3, 5}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        122922621431411043147263269 / 41914892966401981372502016, -(63617405474252824505885 / 13971630988800660457500672), -(136729345466351788130076131 / 125744678899205944117506048);
+        -(63617405474252824505885 / 13971630988800660457500672), -(427718119392631104361323 / 4657210329600220152500224), 6783945027350001198214135 / 41914892966401981372502016;
+        -(136729345466351788130076131 / 125744678899205944117506048), 6783945027350001198214135 / 41914892966401981372502016, 4087011341871117404341488649 / 1508936146790471329410072576] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![0, -1, 0]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{2, 4, 5}` gap fails the `1/4` floor at the probe
+`![0, 1, 0]`. -/
+theorem floorRefuter_gap_twoFourFive_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {2, 4, 5}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {2, 4, 5}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        135855559634693688612307 / 39617101102459339671552, 8676984346494038896013 / 13205700367486446557184, -(285278165329291320374783 / 237702606614756038029312);
+        8676984346494038896013 / 13205700367486446557184, -(4427357768554912166541 / 4401900122495482185728), 11629952851479420920371 / 79234202204918679343104;
+        -(285278165329291320374783 / 237702606614756038029312), 11629952851479420920371 / 79234202204918679343104, 7769954260997614371571897 / 2852431279377072456351744] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![0, 1, 0]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The `{3, 4, 5}` gap fails the `1/4` floor at the probe
+`![0, 0, -1]`. -/
+theorem floorRefuter_gap_threeFourFive_not_posSemidef :
+    ¬ (subsetSum floorRefuterDesign {3, 4, 5}
+      - (1 + (1 / 4 : ℝ) • 1)).PosSemidef := by
+  have hgap : subsetSum floorRefuterDesign {3, 4, 5}
+      - (1 + (1 / 4 : ℝ) • 1)
+      = !![
+        57936274606257399927148337 / 20957446483200990686251008, -(681047823429214265447059 / 2328605164800110076250112), 1617080587134966403895039 / 1746453873600082557187584;
+        -(681047823429214265447059 / 2328605164800110076250112), -(203278535250698015543039 / 2328605164800110076250112), 693867109654713025392347 / 1746453873600082557187584;
+        1617080587134966403895039 / 1746453873600082557187584, 693867109654713025392347 / 1746453873600082557187584, -(868251027061456383923875 / 1309840405200061917890688)] := by
+    simp only [subsetSum, floorRefuterDesign_atom_eq]
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [floorRefuterAtom, atomMatrix, Matrix.sub_apply,
+        Matrix.add_apply, Matrix.smul_apply] <;>
+      norm_num
+  intro hpsd
+  rw [hgap] at hpsd
+  have hvalue := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 ![0, 0, -1]
+  rw [star_trivial] at hvalue
+  simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three] at hvalue
+  norm_num at hvalue
+
+/-- The twenty card-three subsets of the six labels, enumerated. -/
+theorem cardThreeFinsetsOfSix_enumeration :
+    ∀ selected ∈ (Finset.univ : Finset (Fin 6)).powersetCard 3,
+      selected = {0, 1, 2} ∨
+      selected = {0, 1, 3} ∨
+      selected = {0, 1, 4} ∨
+      selected = {0, 1, 5} ∨
+      selected = {0, 2, 3} ∨
+      selected = {0, 2, 4} ∨
+      selected = {0, 2, 5} ∨
+      selected = {0, 3, 4} ∨
+      selected = {0, 3, 5} ∨
+      selected = {0, 4, 5} ∨
+      selected = {1, 2, 3} ∨
+      selected = {1, 2, 4} ∨
+      selected = {1, 2, 5} ∨
+      selected = {1, 3, 4} ∨
+      selected = {1, 3, 5} ∨
+      selected = {1, 4, 5} ∨
+      selected = {2, 3, 4} ∨
+      selected = {2, 3, 5} ∨
+      selected = {2, 4, 5} ∨
+      selected = {3, 4, 5} := by
+  decide
+
+/-- **THE SCAN CONSTANTS ARE REFUTED IN KERNEL.**  The rational refuter
+design satisfies every hypothesis of the base-triple clearance-bounded
+floor at `(1/16, 1/4)` and defeats every candidate triple, so that
+instance of the interior Prop is FALSE.  (The refuter's own best floor is
+`~0.221`; any repaired constant pair must sit below it.) -/
+theorem baseTripleClearanceBoundedFloor_sixteenth_quarter_refuted :
+    ¬ BaseTripleClearanceBoundedFloor (1 / 16) (1 / 4) := by
+  intro hbase
+  obtain ⟨selected, hcard, hfloor⟩ :=
+    hbase floorRefuterDesign floorRefuterDesign_hasLinePattern_lineFree
+      hasNoCommonQuadric_floorRefuterAtom floorRefuterDesign_dominates_baseTriple
+      floorRefuter_wallClearance_ge
+  have hpow : selected ∈ (Finset.univ : Finset (Fin 6)).powersetCard 3 :=
+    Finset.mem_powersetCard.mpr ⟨Finset.subset_univ _, hcard⟩
+  rcases cardThreeFinsetsOfSix_enumeration selected hpow with
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · exact floorRefuter_gap_zeroOneTwo_not_posSemidef hfloor
+  · exact floorRefuter_gap_zeroOneThree_not_posSemidef hfloor
+  · exact floorRefuter_gap_zeroOneFour_not_posSemidef hfloor
+  · exact floorRefuter_gap_zeroOneFive_not_posSemidef hfloor
+  · exact floorRefuter_gap_zeroTwoThree_not_posSemidef hfloor
+  · exact floorRefuter_gap_zeroTwoFour_not_posSemidef hfloor
+  · exact floorRefuter_gap_zeroTwoFive_not_posSemidef hfloor
+  · exact floorRefuter_gap_zeroThreeFour_not_posSemidef hfloor
+  · exact floorRefuter_gap_zeroThreeFive_not_posSemidef hfloor
+  · exact floorRefuter_gap_zeroFourFive_not_posSemidef hfloor
+  · exact floorRefuter_gap_oneTwoThree_not_posSemidef hfloor
+  · exact floorRefuter_gap_oneTwoFour_not_posSemidef hfloor
+  · exact floorRefuter_gap_oneTwoFive_not_posSemidef hfloor
+  · exact floorRefuter_gap_oneThreeFour_not_posSemidef hfloor
+  · exact floorRefuter_gap_oneThreeFive_not_posSemidef hfloor
+  · exact floorRefuter_gap_oneFourFive_not_posSemidef hfloor
+  · exact floorRefuter_gap_twoThreeFour_not_posSemidef hfloor
+  · exact floorRefuter_gap_twoThreeFive_not_posSemidef hfloor
+  · exact floorRefuter_gap_twoFourFive_not_posSemidef hfloor
+  · exact floorRefuter_gap_threeFourFive_not_posSemidef hfloor
+
+/-- The unpinned clearance-bounded interior floor falls with its
+base-triple form: pinning the weak triple only specializes the
+antecedent. -/
+theorem clearanceBoundedInteriorFloor_sixteenth_quarter_refuted :
+    ¬ ClearanceBoundedInteriorFloor (1 / 16) (1 / 4) := by
+  intro hbounded
+  refine baseTripleClearanceBoundedFloor_sixteenth_quarter_refuted ?_
+  intro design hlineFree hoffConic hdominates hclearance
+  exact hbounded design hlineFree hoffConic
+    ⟨{0, 1, 2}, by decide, hdominates⟩ hclearance
 
 end Gtz

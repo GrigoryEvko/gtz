@@ -15481,6 +15481,53 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.diamondCorner_gap_form
 #print axioms Gtz.diamondCorner_gap_posDef_on_dustRay
 #print axioms Gtz.diamondCornerChartPoint_hasStrictTriple
+-- Design/LineFreeConicBridge, stage 4 interior adjudication: the
+-- scan constants are FALSE -- an exact rational Parseval frame
+-- (Cayley Stiefel rows over square weights) is line-free, off-conic,
+-- weakly dominated at the base triple, clearance-bounded above 1/16,
+-- and defeats all twenty triples at the 1/4 floor; includes the
+-- first exact 6x6 Veronese determinant in kernel (triangular
+-- column-elimination certificate).
+#print axioms Gtz.floorRefuterDesign_atom_eq
+#print axioms Gtz.floorRefuterDesign_weight_eq
+#print axioms Gtz.floorRefuterAtom_bracketSq_ge
+#print axioms Gtz.floorRefuterDesign_hasLinePattern_lineFree
+#print axioms Gtz.floorRefuterAtom_isStressFree
+#print axioms Gtz.hasNoCommonQuadric_floorRefuterAtom
+#print axioms Gtz.floorRefuter_subsetSum_baseTriple_eq
+#print axioms Gtz.floorRefuterDesign_dominates_baseTriple
+#print axioms Gtz.floorRefuter_massClearance_ge
+#print axioms Gtz.floorRefuter_bracketClearance_ge
+#print axioms Gtz.floorRefuterVeroneseGrid_eq
+#print axioms Gtz.floorRefuterVeronese_columnReduction
+#print axioms Gtz.floorRefuterVeroneseElimination_det
+#print axioms Gtz.floorRefuterVeroneseReduced_det
+#print axioms Gtz.floorRefuterVeronese_det
+#print axioms Gtz.floorRefuter_conicClearance_ge
+#print axioms Gtz.floorRefuter_wallClearance_ge
+#print axioms Gtz.floorRefuter_gap_zeroOneTwo_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_zeroOneThree_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_zeroOneFour_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_zeroOneFive_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_zeroTwoThree_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_zeroTwoFour_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_zeroTwoFive_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_zeroThreeFour_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_zeroThreeFive_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_zeroFourFive_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_oneTwoThree_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_oneTwoFour_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_oneTwoFive_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_oneThreeFour_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_oneThreeFive_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_oneFourFive_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_twoThreeFour_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_twoThreeFive_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_twoFourFive_not_posSemidef
+#print axioms Gtz.floorRefuter_gap_threeFourFive_not_posSemidef
+#print axioms Gtz.cardThreeFinsetsOfSix_enumeration
+#print axioms Gtz.baseTripleClearanceBoundedFloor_sixteenth_quarter_refuted
+#print axioms Gtz.clearanceBoundedInteriorFloor_sixteenth_quarter_refuted
 
 -- Design/KFourChartClosure: the K4 chart route minus the endgame -- the
 -- rank-two Foster engine, positive definiteness from leading minors by
