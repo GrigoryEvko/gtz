@@ -442,6 +442,7 @@ import Gtz.Design.InPlaneRestriction
 import Gtz.Design.SelectorEquivalences
 import Gtz.Design.LineMarginCap
 import Gtz.Design.PairDifferenceCover
+import Gtz.Design.TightAntecedentMining
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
@@ -15770,6 +15771,78 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.oneLineSample_notPosDef_125
 #print axioms Gtz.twoFlat_linePair_overcovers_of_planeCover
 #print axioms Gtz.oneLineSample_firstLinePair_inPlaneExcess_fails
+
+-- Design/TightAntecedentMining: the tightness antecedent as kernel membership
+-- and vector reconstruction, the canonical unit normal read off the tight
+-- direction, the surplus half discharged outright, the residual that actually
+-- remains (PatternPlaneCoverAtTightDirection), the leverage floor in
+-- three-element form, and the two exact witnesses -- free-triple dominator
+-- with tight direction inside the line plane, LLF dominator with it off the
+-- plane -- which together kill the complement and free-triple selectors.
+#print axioms Gtz.tightDirection_mem_kernel
+#print axioms Gtz.tightDirection_reconstruction
+#print axioms Gtz.exists_dominatorAtom_reading_lt_normSq
+#print axioms Gtz.dominatorComplement_strictly_overcovers_tightDirection
+#print axioms Gtz.normalizedDirection
+#print axioms Gtz.normalizedDirection_isUnit
+#print axioms Gtz.dotProduct_normalizedDirection_sq
+#print axioms Gtz.surplus_of_mem_of_overcovers
+#print axioms Gtz.antecedents_determine_surplus_witness
+#print axioms Gtz.PatternPlaneCoverAtTightDirection
+#print axioms Gtz.patternTightDominatedCoverProperty_of_planeCoverAtTightDirection
+#print axioms Gtz.oneLine_dominator_meets_freeTriple
+#print axioms Gtz.oneLine_tightDirection_normalComponent
+#print axioms Gtz.r4WitnessAtom
+#print axioms Gtz.r4WitnessWeight
+#print axioms Gtz.r4WitnessDesign
+#print axioms Gtz.r4WitnessDesign_hasLinePattern
+#print axioms Gtz.r4WitnessDesign_isHeavy
+#print axioms Gtz.r4Witness_freeTripleGap_form
+#print axioms Gtz.r4Witness_freeTripleGap_posSemidef
+#print axioms Gtz.r4WitnessDesign_dominates_freeTriple
+#print axioms Gtz.r4Witness_tightDirection_rayleigh
+#print axioms Gtz.r4Witness_tightDirection_ne_zero
+#print axioms Gtz.r4Witness_tightDirection_in_linePlane
+#print axioms Gtz.r4Witness_lineAtoms_orthogonal_to_normal
+#print axioms Gtz.r4Witness_freeTripleComplement_eq
+#print axioms Gtz.r4Witness_complement_not_dominates
+#print axioms Gtz.r4Witness_complement_not_posDef
+#print axioms Gtz.r4Witness_lineAtomZero_overcovers
+#print axioms Gtz.r4Witness_freeAtoms_undercover
+#print axioms Gtz.r4Witness_llfGap_form
+#print axioms Gtz.r4Witness_llfGap_posDef
+#print axioms Gtz.ComplementSelectorRule
+#print axioms Gtz.FreeTripleSelectorRule
+#print axioms Gtz.r4Witness_freeTripleGap_not_posDef
+#print axioms Gtz.not_freeTripleSelectorRule
+#print axioms Gtz.not_complementSelectorRule
+#print axioms Gtz.r4Witness_tightDirection_isUnit
+#print axioms Gtz.r4Witness_refinedSelector_survives
+#print axioms Gtz.r4LlfAtom
+#print axioms Gtz.r4LlfWeight
+#print axioms Gtz.r4LlfDesign
+#print axioms Gtz.r4LlfDesign_hasLinePattern
+#print axioms Gtz.r4LlfDesign_isHeavy
+#print axioms Gtz.r4Llf_gap_form
+#print axioms Gtz.r4Llf_gap_posSemidef
+#print axioms Gtz.r4LlfDesign_dominates_llfTriple
+#print axioms Gtz.r4Llf_tightDirection_ne_zero
+#print axioms Gtz.r4Llf_tightDirection_rayleigh
+#print axioms Gtz.r4Llf_tightDirection_off_linePlane
+#print axioms Gtz.r4Llf_lineAtoms_orthogonal_to_normal
+#print axioms Gtz.r4Llf_normSq
+#print axioms Gtz.r4Llf_freeAtomFour_overcovers
+#print axioms Gtz.r4Llf_lineAtomTwo_undercovers
+#print axioms Gtz.r4Llf_complement_eq
+#print axioms Gtz.r4Llf_complementGap_form
+#print axioms Gtz.r4Llf_complement_not_dominates
+#print axioms Gtz.r4Llf_freeTripleGap_form
+#print axioms Gtz.r4Llf_freeTripleGap_posDef
+#print axioms Gtz.firstAxis_isUnit
+#print axioms Gtz.producerNormal_transfers
+#print axioms Gtz.patternTightDominatedCoverProperty_iff_strictSelector
+#print axioms Gtz.notPosDef_of_mem_leverage_le_one
+#print axioms Gtz.one_lt_leverage_of_posDef
 
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-
