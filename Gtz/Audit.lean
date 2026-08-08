@@ -15524,6 +15524,12 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.gapOfDirectionTriple_posDef_iff_tripleInvariants
 #print axioms Gtz.subsetSum_posDef_iff_tripleInvariants
 
+-- Design/LineClassObstructions: heaviness discharges the FIRST of the three
+-- invariants outright, so the open content of the chartless residual is two
+-- polynomial inequalities, not three.
+#print axioms Gtz.tripleLeverageSum_sub_three_pos_of_heavy
+#print axioms Gtz.subsetSum_posDef_of_heavy_of_minorSum_of_det
+
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-
 -- keeping attack Prop and its verbatim reduction to the class

@@ -2646,6 +2646,49 @@ theorem subsetSum_posDef_iff_tripleInvariants {size : ℕ} (design : WeightedDes
     hfirstSecond hfirstThird hsecondThird, atomBracket,
     gapOfDirectionTriple_posDef_iff_tripleInvariants]
 
+/-- **Heaviness discharges the trace invariant.**  On a heavy design the first
+of the three invariants costs nothing: three leverages at least one sum to at
+least three, and one strictly heavy member makes the sum strictly exceed it.
+The tight direction always supplies such a member outside the dominator
+(`exists_outsideAtom_strictly_overcovers_tightDirection` plus
+`one_lt_leverage_of_mem_strictTriple`'s Cauchy-Schwarz), so the residual never
+has to argue about the trace. -/
+theorem tripleLeverageSum_sub_three_pos_of_heavy {size : ℕ}
+    (design : WeightedDesign size 3) (firstLabel secondLabel thirdLabel : Fin size)
+    (hheavy : ∀ label : Fin size, 1 ≤ leverageOf (design.atom label))
+    (hstrict : 1 < leverageOf (design.atom firstLabel)) :
+    0 < tripleLeverageSum (design.atom firstLabel) (design.atom secondLabel)
+          (design.atom thirdLabel) - 3 := by
+  have hsecond := hheavy secondLabel
+  have hthird := hheavy thirdLabel
+  simp only [tripleLeverageSum, leverageOf] at *
+  linarith
+
+/-- **The residual, minus its trace half.**  At a heavy design, a card-3 subset
+strictly dominates as soon as its second-minor and determinant invariants are
+positive and ONE of its atoms is strictly heavy.  So the open content of the
+chartless residual is exactly two polynomial inequalities, not three. -/
+theorem subsetSum_posDef_of_heavy_of_minorSum_of_det {size : ℕ}
+    (design : WeightedDesign size 3) (firstLabel secondLabel thirdLabel : Fin size)
+    (hfirstSecond : firstLabel ≠ secondLabel) (hfirstThird : firstLabel ≠ thirdLabel)
+    (hsecondThird : secondLabel ≠ thirdLabel)
+    (hheavy : ∀ label : Fin size, 1 ≤ leverageOf (design.atom label))
+    (hstrict : 1 < leverageOf (design.atom firstLabel))
+    (hminorSum : 0 < triplePairAreaSum (design.atom firstLabel) (design.atom secondLabel)
+        (design.atom thirdLabel)
+      - 2 * tripleLeverageSum (design.atom firstLabel) (design.atom secondLabel)
+          (design.atom thirdLabel) + 3)
+    (hdet : 0 < atomBracket design firstLabel secondLabel thirdLabel ^ 2
+      - triplePairAreaSum (design.atom firstLabel) (design.atom secondLabel)
+          (design.atom thirdLabel)
+      + tripleLeverageSum (design.atom firstLabel) (design.atom secondLabel)
+          (design.atom thirdLabel) - 1) :
+    (subsetSum design ({firstLabel, secondLabel, thirdLabel} : Finset (Fin size)) - 1).PosDef :=
+  (subsetSum_posDef_iff_tripleInvariants design firstLabel secondLabel thirdLabel
+    hfirstSecond hfirstThird hsecondThird).mpr
+    ⟨tripleLeverageSum_sub_three_pos_of_heavy design firstLabel secondLabel thirdLabel
+      hheavy hstrict, hminorSum, hdet⟩
+
 end ThreeInvariantCriterion
 
 end Gtz
