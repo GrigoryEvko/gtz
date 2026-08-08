@@ -15864,6 +15864,12 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- Cauchy-Schwarz tilt bound that always supplies the third.
 #print axioms Gtz.posDef_of_coverMargin_of_tiltBound
 #print axioms Gtz.tiltBound_of_leverages
+
+-- Design/TightAntecedentMining, the composed free-triple producer: surplus
+-- free from the line weight, cover margin bought by a line-mass ceiling, tilt
+-- bounded by Cauchy-Schwarz, and the whole thing reduced to ONE division-free
+-- inequality `tiltBound * complementWeight < margin * lineWeight`.
+#print axioms Gtz.oneLine_freeTriple_posDef_of_constants
 #print axioms Gtz.firstAxis_isUnit
 #print axioms Gtz.producerNormal_transfers
 #print axioms Gtz.patternTightDominatedCoverProperty_iff_strictSelector
