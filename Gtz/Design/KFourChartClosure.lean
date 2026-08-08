@@ -2921,4 +2921,3106 @@ theorem tetrahedronChartPoint_satisfiesStarNodeFourCell :
     · show (1 / 6 : ℝ) * (1 / 4 + 2 * (1 / 4) + 2 * (1 / 4)) < 1 / 4
       norm_num
 
+
+/-! ## The certificate atlas, Layer A completed: the sixteen scale-free
+harmonic cells
+
+The scale-free complement of the four star cells above.  Cell
+HARMONIC(T) asserts, at the designated spanning tree `T`, a positive
+Z-form diagonal (three raw degree-2 inequalities, one per tree edge) plus
+Jacobi-scaled strict diagonal dominance in cleared form --
+`A*d3 + B*d2 < d2*d3`, `A*d3 + C*d1 < d1*d3`, `B*d2 + C*d1 < d1*d2`,
+where `d1, d2, d3` are the tree-form diagonal entries and `A`, `B`, `C`
+the off-diagonal mass sums.  No off-diagonal of any of the sixteen tree
+forms mixes signs, so the absolute values are polynomial GLOBALLY and no
+sign sub-cells are needed.  The certificate is the same splitting engine
+at the scale-free splits `(d1*A/d2, d2*A/d1)` etc., packaged once as
+`harmonicSplitQuadraticForm_pos`; being scale-free, the cells survive the
+weight-floor collar where every bounded-menu splitting family provably
+blows up (campaign ledger, step-4/6 refutations).  Six new entrywise gap
+matrices (the off-edge-5 path trees) complete the sixteen per-tree closed
+forms; `kFourAtlas_hasStrictTriple_of_anyCell` extends the star dispatch
+to the full twenty-cell Layer A. -/
+
+/-! ### Entrywise gap matrices for the six off-edge-5 path trees
+
+`{0,1,4}`, `{0,2,3}`, `{1,2,3}`, `{1,2,4}`, `{1,3,4}`, `{2,3,4}` -- the
+sixteen spanning trees now all have entrywise closed forms in the module.
+Sympy-verified against the definition before statement, house rule. -/
+
+/-- The `{0, 1, 4}` chart gap (off-edge-5 path), entry by entry (atlas frame). -/
+theorem kFourGap_treeZeroOneFour_eq (point : DirectionChartPoint 6) :
+    directionChartGap kFourDirection point.mass point.weight {0, 1, 4}
+      = Matrix.of
+          ![![point.mass 0 / point.weight 0 + point.mass 1 / point.weight 1
+                - (point.mass 0 + point.mass 1 + point.mass 3),
+              point.mass 0 - point.mass 0 / point.weight 0,
+              point.mass 1 - point.mass 1 / point.weight 1],
+            ![point.mass 0 - point.mass 0 / point.weight 0,
+              point.mass 0 / point.weight 0 + point.mass 4 / point.weight 4
+                - (point.mass 0 + point.mass 2 + point.mass 4),
+              point.mass 2],
+            ![point.mass 1 - point.mass 1 / point.weight 1,
+              point.mass 2,
+              point.mass 1 / point.weight 1 - (point.mass 1 + point.mass 2
+                + point.mass 5)]] := by
+  simp only [directionChartGap]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;> ring
+
+/-- The `{0, 2, 3}` chart gap (off-edge-5 path), entry by entry (atlas frame). -/
+theorem kFourGap_treeZeroTwoThree_eq (point : DirectionChartPoint 6) :
+    directionChartGap kFourDirection point.mass point.weight {0, 2, 3}
+      = Matrix.of
+          ![![point.mass 0 / point.weight 0 + point.mass 3 / point.weight 3
+                - (point.mass 0 + point.mass 1 + point.mass 3),
+              point.mass 0 - point.mass 0 / point.weight 0,
+              point.mass 1],
+            ![point.mass 0 - point.mass 0 / point.weight 0,
+              point.mass 0 / point.weight 0 + point.mass 2 / point.weight 2
+                - (point.mass 0 + point.mass 2 + point.mass 4),
+              point.mass 2 - point.mass 2 / point.weight 2],
+            ![point.mass 1,
+              point.mass 2 - point.mass 2 / point.weight 2,
+              point.mass 2 / point.weight 2 - (point.mass 1 + point.mass 2
+                + point.mass 5)]] := by
+  simp only [directionChartGap]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;> ring
+
+/-- The `{1, 2, 3}` chart gap (off-edge-5 path), entry by entry (atlas frame). -/
+theorem kFourGap_treeOneTwoThree_eq (point : DirectionChartPoint 6) :
+    directionChartGap kFourDirection point.mass point.weight {1, 2, 3}
+      = Matrix.of
+          ![![point.mass 1 / point.weight 1 + point.mass 3 / point.weight 3
+                - (point.mass 0 + point.mass 1 + point.mass 3),
+              point.mass 0,
+              point.mass 1 - point.mass 1 / point.weight 1],
+            ![point.mass 0,
+              point.mass 2 / point.weight 2 - (point.mass 0 + point.mass 2
+                + point.mass 4),
+              point.mass 2 - point.mass 2 / point.weight 2],
+            ![point.mass 1 - point.mass 1 / point.weight 1,
+              point.mass 2 - point.mass 2 / point.weight 2,
+              point.mass 1 / point.weight 1 + point.mass 2 / point.weight 2
+                - (point.mass 1 + point.mass 2 + point.mass 5)]] := by
+  simp only [directionChartGap]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;> ring
+
+/-- The `{1, 2, 4}` chart gap (off-edge-5 path), entry by entry (atlas frame). -/
+theorem kFourGap_treeOneTwoFour_eq (point : DirectionChartPoint 6) :
+    directionChartGap kFourDirection point.mass point.weight {1, 2, 4}
+      = Matrix.of
+          ![![point.mass 1 / point.weight 1 - (point.mass 0 + point.mass 1
+                + point.mass 3),
+              point.mass 0,
+              point.mass 1 - point.mass 1 / point.weight 1],
+            ![point.mass 0,
+              point.mass 2 / point.weight 2 + point.mass 4 / point.weight 4
+                - (point.mass 0 + point.mass 2 + point.mass 4),
+              point.mass 2 - point.mass 2 / point.weight 2],
+            ![point.mass 1 - point.mass 1 / point.weight 1,
+              point.mass 2 - point.mass 2 / point.weight 2,
+              point.mass 1 / point.weight 1 + point.mass 2 / point.weight 2
+                - (point.mass 1 + point.mass 2 + point.mass 5)]] := by
+  simp only [directionChartGap]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;> ring
+
+/-- The `{1, 3, 4}` chart gap (off-edge-5 path), entry by entry (atlas frame). -/
+theorem kFourGap_treeOneThreeFour_eq (point : DirectionChartPoint 6) :
+    directionChartGap kFourDirection point.mass point.weight {1, 3, 4}
+      = Matrix.of
+          ![![point.mass 1 / point.weight 1 + point.mass 3 / point.weight 3
+                - (point.mass 0 + point.mass 1 + point.mass 3),
+              point.mass 0,
+              point.mass 1 - point.mass 1 / point.weight 1],
+            ![point.mass 0,
+              point.mass 4 / point.weight 4 - (point.mass 0 + point.mass 2
+                + point.mass 4),
+              point.mass 2],
+            ![point.mass 1 - point.mass 1 / point.weight 1,
+              point.mass 2,
+              point.mass 1 / point.weight 1 - (point.mass 1 + point.mass 2
+                + point.mass 5)]] := by
+  simp only [directionChartGap]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;> ring
+
+/-- The `{2, 3, 4}` chart gap (off-edge-5 path), entry by entry (atlas frame). -/
+theorem kFourGap_treeTwoThreeFour_eq (point : DirectionChartPoint 6) :
+    directionChartGap kFourDirection point.mass point.weight {2, 3, 4}
+      = Matrix.of
+          ![![point.mass 3 / point.weight 3 - (point.mass 0 + point.mass 1
+                + point.mass 3),
+              point.mass 0,
+              point.mass 1],
+            ![point.mass 0,
+              point.mass 2 / point.weight 2 + point.mass 4 / point.weight 4
+                - (point.mass 0 + point.mass 2 + point.mass 4),
+              point.mass 2 - point.mass 2 / point.weight 2],
+            ![point.mass 1,
+              point.mass 2 - point.mass 2 / point.weight 2,
+              point.mass 2 / point.weight 2 - (point.mass 1 + point.mass 2
+                + point.mass 5)]] := by
+  simp only [directionChartGap]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;> ring
+
+/-- **The harmonic engine: Jacobi-scaled strict diagonal dominance.**
+The diagonal-splitting engine at the scale-free splits
+`(d1*A/d2, d2*A/d1)`, `(d1*B/d3, d3*B/d1)`, `(d2*C/d3, d3*C/d2)`:
+a symmetric quadratic form with positive diagonal `d1, d2, d3` whose
+off-diagonals match positive absolute values `A, B, C` (as squares) is
+strictly positive at any nonzero point once the three cleared Jacobi
+inequalities `A*d3 + B*d2 < d2*d3`, `A*d3 + C*d1 < d1*d3`,
+`B*d2 + C*d1 < d1*d2` hold.  No menu constants: weight-floor collars
+cannot escape by ratio blowup. -/
+theorem harmonicSplitQuadraticForm_pos (diagOne diagTwo diagThree offOneTwo
+    offOneThree offTwoThree absOneTwo absOneThree absTwoThree
+    zOne zTwo zThree : ℝ)
+    (hdiagOnePos : 0 < diagOne) (hdiagTwoPos : 0 < diagTwo)
+    (hdiagThreePos : 0 < diagThree)
+    (habsOneTwoPos : 0 < absOneTwo)
+    (habsOneThreePos : 0 < absOneThree)
+    (habsTwoThreePos : 0 < absTwoThree)
+    (hsquareOneTwo : offOneTwo ^ 2 = absOneTwo ^ 2)
+    (hsquareOneThree : offOneThree ^ 2 = absOneThree ^ 2)
+    (hsquareTwoThree : offTwoThree ^ 2 = absTwoThree ^ 2)
+    (hdominanceOne : absOneTwo * diagThree + absOneThree * diagTwo
+      < diagTwo * diagThree)
+    (hdominanceTwo : absOneTwo * diagThree + absTwoThree * diagOne
+      < diagOne * diagThree)
+    (hdominanceThree : absOneThree * diagTwo + absTwoThree * diagOne
+      < diagOne * diagTwo)
+    (hsomeNonzero : zOne ≠ 0 ∨ zTwo ≠ 0 ∨ zThree ≠ 0) :
+    0 < diagOne * zOne ^ 2 + diagTwo * zTwo ^ 2 + diagThree * zThree ^ 2
+      + 2 * offOneTwo * (zOne * zTwo) + 2 * offOneThree * (zOne * zThree)
+      + 2 * offTwoThree * (zTwo * zThree) := by
+  have hproductOneTwo : diagOne * absOneTwo / diagTwo
+      * (diagTwo * absOneTwo / diagOne) = absOneTwo ^ 2 := by
+    field_simp [ne_of_gt hdiagOnePos, ne_of_gt hdiagTwoPos]
+  have hproductOneThree : diagOne * absOneThree / diagThree
+      * (diagThree * absOneThree / diagOne) = absOneThree ^ 2 := by
+    field_simp [ne_of_gt hdiagOnePos, ne_of_gt hdiagThreePos]
+  have hproductTwoThree : diagTwo * absTwoThree / diagThree
+      * (diagThree * absTwoThree / diagTwo) = absTwoThree ^ 2 := by
+    field_simp [ne_of_gt hdiagTwoPos, ne_of_gt hdiagThreePos]
+  have hsplitDomOne : diagOne * absOneTwo / diagTwo
+      + diagOne * absOneThree / diagThree < diagOne := by
+    have hcombine : diagOne * absOneTwo / diagTwo
+        + diagOne * absOneThree / diagThree
+        = diagOne * (absOneTwo * diagThree + absOneThree * diagTwo)
+          / (diagTwo * diagThree) := by
+      field_simp [ne_of_gt hdiagTwoPos, ne_of_gt hdiagThreePos]
+    rw [hcombine, div_lt_iff₀ (mul_pos hdiagTwoPos hdiagThreePos)]
+    exact mul_lt_mul_of_pos_left hdominanceOne hdiagOnePos
+  have hsplitDomTwo : diagTwo * absOneTwo / diagOne
+      + diagTwo * absTwoThree / diagThree < diagTwo := by
+    have hcombine : diagTwo * absOneTwo / diagOne
+        + diagTwo * absTwoThree / diagThree
+        = diagTwo * (absOneTwo * diagThree + absTwoThree * diagOne)
+          / (diagOne * diagThree) := by
+      field_simp [ne_of_gt hdiagOnePos, ne_of_gt hdiagThreePos]
+    rw [hcombine, div_lt_iff₀ (mul_pos hdiagOnePos hdiagThreePos)]
+    exact mul_lt_mul_of_pos_left hdominanceTwo hdiagTwoPos
+  have hsplitDomThree : diagThree * absOneThree / diagOne
+      + diagThree * absTwoThree / diagTwo < diagThree := by
+    have hcombine : diagThree * absOneThree / diagOne
+        + diagThree * absTwoThree / diagTwo
+        = diagThree * (absOneThree * diagTwo + absTwoThree * diagOne)
+          / (diagOne * diagTwo) := by
+      field_simp [ne_of_gt hdiagOnePos, ne_of_gt hdiagTwoPos]
+    rw [hcombine, div_lt_iff₀ (mul_pos hdiagOnePos hdiagTwoPos)]
+    exact mul_lt_mul_of_pos_left hdominanceThree hdiagThreePos
+  refine splitQuadraticForm_pos diagOne diagTwo diagThree offOneTwo
+    offOneThree offTwoThree
+    (diagOne * absOneTwo / diagTwo) (diagTwo * absOneTwo / diagOne)
+    (diagOne * absOneThree / diagThree) (diagThree * absOneThree / diagOne)
+    (diagTwo * absTwoThree / diagThree) (diagThree * absTwoThree / diagTwo)
+    zOne zTwo zThree
+    (div_pos (mul_pos hdiagOnePos habsOneTwoPos) hdiagTwoPos)
+    (div_pos (mul_pos hdiagOnePos habsOneThreePos) hdiagThreePos)
+    (div_pos (mul_pos hdiagTwoPos habsTwoThreePos) hdiagThreePos)
+    ?_ ?_ ?_ hsplitDomOne hsplitDomTwo hsplitDomThree hsomeNonzero
+  · rw [hproductOneTwo]
+    exact le_of_eq hsquareOneTwo
+  · rw [hproductOneThree]
+    exact le_of_eq hsquareOneThree
+  · rw [hproductTwoThree]
+    exact le_of_eq hsquareTwoThree
+
+/-! ### The sixteen harmonic cells
+
+One cell per spanning tree, hypotheses in the raw chart fields (diagonal
+positivity) and cleared Jacobi currency (dominance); each certificate is
+the harmonic engine at the tree's fundamental-cycle coordinates, with the
+nonzero-coordinate transfer supplied by the explicit basis solve. -/
+
+/-- **Harmonic cell on tree `{0, 1, 3}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `2` over `{0,1}`, edge `4` over `{0,3}`, edge `5` over `{1,3}`). -/
+theorem kFourAtlas_harmonicZeroOneThree_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeZero : point.weight 0 * (point.mass 0 + point.mass 2
+      + point.mass 4) < point.mass 0)
+    (hdiagEdgeOne : point.weight 1 * (point.mass 1 + point.mass 2
+      + point.mass 5) < point.mass 1)
+    (hdiagEdgeThree : point.weight 3 * (point.mass 3 + point.mass 4
+      + point.mass 5) < point.mass 3)
+    (hdomRowOne : point.mass 2 * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 4 - point.mass 5) + point.mass 4
+      * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+      - point.mass 5) < (point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 2 - point.mass 5) * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 4 - point.mass 5))
+    (hdomRowTwo : point.mass 2 * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 4 - point.mass 5) + point.mass 5
+      * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+      - point.mass 4) < (point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 2 - point.mass 4) * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 4 - point.mass 5))
+    (hdomRowThree : point.mass 4 * (point.mass 1 / point.weight 1
+      - point.mass 1 - point.mass 2 - point.mass 5) + point.mass 5
+      * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+      - point.mass 4) < (point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 2 - point.mass 4) * (point.mass 1 / point.weight 1
+      - point.mass 1 - point.mass 2 - point.mass 5)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {0, 1, 3}).PosDef := by
+  have hcoeffZero : point.mass 0 + point.mass 2 + point.mass 4
+      < point.mass 0 / point.weight 0 := by
+    rw [lt_div_iff₀ (point.weight_pos 0)]
+    calc (point.mass 0 + point.mass 2 + point.mass 4) * point.weight 0
+        = point.weight 0 * (point.mass 0 + point.mass 2 + point.mass 4)
+            := by ring
+      _ < point.mass 0 := hdiagEdgeZero
+  have hcoeffOne : point.mass 1 + point.mass 2 + point.mass 5
+      < point.mass 1 / point.weight 1 := by
+    rw [lt_div_iff₀ (point.weight_pos 1)]
+    calc (point.mass 1 + point.mass 2 + point.mass 5) * point.weight 1
+        = point.weight 1 * (point.mass 1 + point.mass 2 + point.mass 5)
+            := by ring
+      _ < point.mass 1 := hdiagEdgeOne
+  have hcoeffThree : point.mass 3 + point.mass 4 + point.mass 5
+      < point.mass 3 / point.weight 3 := by
+    rw [lt_div_iff₀ (point.weight_pos 3)]
+    calc (point.mass 3 + point.mass 4 + point.mass 5) * point.weight 3
+        = point.weight 3 * (point.mass 3 + point.mass 4 + point.mass 5)
+            := by ring
+      _ < point.mass 3 := hdiagEdgeThree
+  have hdiagOnePos : 0 < point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 2 - point.mass 4 := by linarith
+  have hdiagTwoPos : 0 < point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 2 - point.mass 5 := by linarith
+  have hdiagThreePos : 0 < point.mass 3 / point.weight 3 - point.mass 3
+      - point.mass 4 - point.mass 5 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {0, 1, 3})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 1 ≠ 0 ∨ vecArg 0 - vecArg 2 ≠ 0
+        ∨ vecArg 0 ≠ 0 := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {0, 1, 3} *ᵥ vecArg)
+        = (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+          - point.mass 4) * (vecArg 0 - vecArg 1) ^ 2
+          + (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+          - point.mass 5) * (vecArg 0 - vecArg 2) ^ 2
+          + (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+          - point.mass 5) * (vecArg 0) ^ 2 + 2 * point.mass 2 * ((vecArg 0
+          - vecArg 1) * (vecArg 0 - vecArg 2)) + 2 * point.mass 4
+          * ((vecArg 0 - vecArg 1) * (vecArg 0)) + 2 * point.mass 5
+          * ((vecArg 0 - vecArg 2) * (vecArg 0)) := by
+      rw [kFourGap_treeZeroOneThree_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+        - point.mass 4)
+      (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+        - point.mass 5)
+      (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+        - point.mass 5)
+      (point.mass 2) (point.mass 4) (point.mass 5)
+      (point.mass 2) (point.mass 4) (point.mass 5)
+      (vecArg 0 - vecArg 1) (vecArg 0 - vecArg 2) (vecArg 0)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (point.mass_pos 2) (point.mass_pos 4) (point.mass_pos 5)
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{0, 1, 4}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `2` over `{0,1}`, edge `3` over `{0,4}`, edge `5` over `{0,1,4}`). -/
+theorem kFourAtlas_harmonicZeroOneFour_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeZero : point.weight 0 * (point.mass 0 + point.mass 2
+      + point.mass 3 + point.mass 5) < point.mass 0)
+    (hdiagEdgeOne : point.weight 1 * (point.mass 1 + point.mass 2
+      + point.mass 5) < point.mass 1)
+    (hdiagEdgeFour : point.weight 4 * (point.mass 4 + point.mass 3
+      + point.mass 5) < point.mass 4)
+    (hdomRowOne : (point.mass 2 + point.mass 5)
+      * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+      - point.mass 5) + (point.mass 3 + point.mass 5)
+      * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+      - point.mass 5) < (point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 2 - point.mass 5) * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 3 - point.mass 5))
+    (hdomRowTwo : (point.mass 2 + point.mass 5)
+      * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+      - point.mass 5) + point.mass 5 * (point.mass 0 / point.weight 0
+      - point.mass 0 - point.mass 2 - point.mass 3 - point.mass 5)
+      < (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+      - point.mass 3 - point.mass 5) * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 3 - point.mass 5))
+    (hdomRowThree : (point.mass 3 + point.mass 5)
+      * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+      - point.mass 5) + point.mass 5 * (point.mass 0 / point.weight 0
+      - point.mass 0 - point.mass 2 - point.mass 3 - point.mass 5)
+      < (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+      - point.mass 3 - point.mass 5) * (point.mass 1 / point.weight 1
+      - point.mass 1 - point.mass 2 - point.mass 5)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {0, 1, 4}).PosDef := by
+  have hcoeffZero : point.mass 0 + point.mass 2 + point.mass 3
+      + point.mass 5 < point.mass 0 / point.weight 0 := by
+    rw [lt_div_iff₀ (point.weight_pos 0)]
+    calc (point.mass 0 + point.mass 2 + point.mass 3 + point.mass 5)
+          * point.weight 0
+        = point.weight 0 * (point.mass 0 + point.mass 2 + point.mass 3
+            + point.mass 5) := by ring
+      _ < point.mass 0 := hdiagEdgeZero
+  have hcoeffOne : point.mass 1 + point.mass 2 + point.mass 5
+      < point.mass 1 / point.weight 1 := by
+    rw [lt_div_iff₀ (point.weight_pos 1)]
+    calc (point.mass 1 + point.mass 2 + point.mass 5) * point.weight 1
+        = point.weight 1 * (point.mass 1 + point.mass 2 + point.mass 5)
+            := by ring
+      _ < point.mass 1 := hdiagEdgeOne
+  have hcoeffFour : point.mass 4 + point.mass 3 + point.mass 5
+      < point.mass 4 / point.weight 4 := by
+    rw [lt_div_iff₀ (point.weight_pos 4)]
+    calc (point.mass 4 + point.mass 3 + point.mass 5) * point.weight 4
+        = point.weight 4 * (point.mass 4 + point.mass 3 + point.mass 5)
+            := by ring
+      _ < point.mass 4 := hdiagEdgeFour
+  have hdiagOnePos : 0 < point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 2 - point.mass 3 - point.mass 5 := by linarith
+  have hdiagTwoPos : 0 < point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 2 - point.mass 5 := by linarith
+  have hdiagThreePos : 0 < point.mass 4 / point.weight 4 - point.mass 4
+      - point.mass 3 - point.mass 5 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {0, 1, 4})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 1 ≠ 0 ∨ vecArg 0 - vecArg 2 ≠ 0
+        ∨ vecArg 1 ≠ 0 := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {0, 1, 4} *ᵥ vecArg)
+        = (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+          - point.mass 3 - point.mass 5) * (vecArg 0 - vecArg 1) ^ 2
+          + (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+          - point.mass 5) * (vecArg 0 - vecArg 2) ^ 2
+          + (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+          - point.mass 5) * (vecArg 1) ^ 2 + 2 * (point.mass 2
+          + point.mass 5) * ((vecArg 0 - vecArg 1) * (vecArg 0 - vecArg 2))
+          + 2 * (-(point.mass 3 + point.mass 5)) * ((vecArg 0 - vecArg 1)
+          * (vecArg 1)) + 2 * point.mass 5 * ((vecArg 0 - vecArg 2)
+          * (vecArg 1)) := by
+      rw [kFourGap_treeZeroOneFour_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+        - point.mass 3 - point.mass 5)
+      (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+        - point.mass 5)
+      (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+        - point.mass 5)
+      (point.mass 2 + point.mass 5) (-(point.mass 3 + point.mass 5))
+        (point.mass 5)
+      (point.mass 2 + point.mass 5) (point.mass 3 + point.mass 5)
+        (point.mass 5)
+      (vecArg 0 - vecArg 1) (vecArg 0 - vecArg 2) (vecArg 1)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (add_pos (point.mass_pos 2) (point.mass_pos 5)) (add_pos
+        (point.mass_pos 3) (point.mass_pos 5)) (point.mass_pos 5)
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{0, 1, 5}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `2` over `{0,1}`, edge `3` over `{1,5}`, edge `4` over `{0,1,5}`). -/
+theorem kFourAtlas_harmonicZeroOneFive_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeZero : point.weight 0 * (point.mass 0 + point.mass 2
+      + point.mass 4) < point.mass 0)
+    (hdiagEdgeOne : point.weight 1 * (point.mass 1 + point.mass 2
+      + point.mass 3 + point.mass 4) < point.mass 1)
+    (hdiagEdgeFive : point.weight 5 * (point.mass 5 + point.mass 3
+      + point.mass 4) < point.mass 5)
+    (hdomRowOne : (point.mass 2 + point.mass 4)
+      * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+      - point.mass 4) + point.mass 4 * (point.mass 1 / point.weight 1
+      - point.mass 1 - point.mass 2 - point.mass 3 - point.mass 4)
+      < (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+      - point.mass 3 - point.mass 4) * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 3 - point.mass 4))
+    (hdomRowTwo : (point.mass 2 + point.mass 4)
+      * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+      - point.mass 4) + (point.mass 3 + point.mass 4)
+      * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+      - point.mass 4) < (point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 2 - point.mass 4) * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 3 - point.mass 4))
+    (hdomRowThree : point.mass 4 * (point.mass 1 / point.weight 1
+      - point.mass 1 - point.mass 2 - point.mass 3 - point.mass 4)
+      + (point.mass 3 + point.mass 4) * (point.mass 0 / point.weight 0
+      - point.mass 0 - point.mass 2 - point.mass 4)
+      < (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+      - point.mass 4) * (point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 2 - point.mass 3 - point.mass 4)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {0, 1, 5}).PosDef := by
+  have hcoeffZero : point.mass 0 + point.mass 2 + point.mass 4
+      < point.mass 0 / point.weight 0 := by
+    rw [lt_div_iff₀ (point.weight_pos 0)]
+    calc (point.mass 0 + point.mass 2 + point.mass 4) * point.weight 0
+        = point.weight 0 * (point.mass 0 + point.mass 2 + point.mass 4)
+            := by ring
+      _ < point.mass 0 := hdiagEdgeZero
+  have hcoeffOne : point.mass 1 + point.mass 2 + point.mass 3 + point.mass 4
+      < point.mass 1 / point.weight 1 := by
+    rw [lt_div_iff₀ (point.weight_pos 1)]
+    calc (point.mass 1 + point.mass 2 + point.mass 3 + point.mass 4)
+          * point.weight 1
+        = point.weight 1 * (point.mass 1 + point.mass 2 + point.mass 3
+            + point.mass 4) := by ring
+      _ < point.mass 1 := hdiagEdgeOne
+  have hcoeffFive : point.mass 5 + point.mass 3 + point.mass 4
+      < point.mass 5 / point.weight 5 := by
+    rw [lt_div_iff₀ (point.weight_pos 5)]
+    calc (point.mass 5 + point.mass 3 + point.mass 4) * point.weight 5
+        = point.weight 5 * (point.mass 5 + point.mass 3 + point.mass 4)
+            := by ring
+      _ < point.mass 5 := hdiagEdgeFive
+  have hdiagOnePos : 0 < point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 2 - point.mass 4 := by linarith
+  have hdiagTwoPos : 0 < point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 2 - point.mass 3 - point.mass 4 := by linarith
+  have hdiagThreePos : 0 < point.mass 5 / point.weight 5 - point.mass 5
+      - point.mass 3 - point.mass 4 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {0, 1, 5})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 1 ≠ 0 ∨ vecArg 0 - vecArg 2 ≠ 0
+        ∨ vecArg 2 ≠ 0 := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {0, 1, 5} *ᵥ vecArg)
+        = (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+          - point.mass 4) * (vecArg 0 - vecArg 1) ^ 2
+          + (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+          - point.mass 3 - point.mass 4) * (vecArg 0 - vecArg 2) ^ 2
+          + (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+          - point.mass 4) * (vecArg 2) ^ 2 + 2 * (point.mass 2
+          + point.mass 4) * ((vecArg 0 - vecArg 1) * (vecArg 0 - vecArg 2))
+          + 2 * point.mass 4 * ((vecArg 0 - vecArg 1) * (vecArg 2)) + 2
+          * (-(point.mass 3 + point.mass 4)) * ((vecArg 0 - vecArg 2)
+          * (vecArg 2)) := by
+      rw [kFourGap_treeZeroOneFive_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+        - point.mass 4)
+      (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+        - point.mass 3 - point.mass 4)
+      (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+        - point.mass 4)
+      (point.mass 2 + point.mass 4) (point.mass 4) (-(point.mass 3
+        + point.mass 4))
+      (point.mass 2 + point.mass 4) (point.mass 4) (point.mass 3
+        + point.mass 4)
+      (vecArg 0 - vecArg 1) (vecArg 0 - vecArg 2) (vecArg 2)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (add_pos (point.mass_pos 2) (point.mass_pos 4)) (point.mass_pos 4)
+        (add_pos (point.mass_pos 3) (point.mass_pos 4))
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{0, 2, 3}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `1` over `{0,2}`, edge `4` over `{0,3}`, edge `5` over `{0,2,3}`). -/
+theorem kFourAtlas_harmonicZeroTwoThree_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeZero : point.weight 0 * (point.mass 0 + point.mass 1
+      + point.mass 4 + point.mass 5) < point.mass 0)
+    (hdiagEdgeTwo : point.weight 2 * (point.mass 2 + point.mass 1
+      + point.mass 5) < point.mass 2)
+    (hdiagEdgeThree : point.weight 3 * (point.mass 3 + point.mass 4
+      + point.mass 5) < point.mass 3)
+    (hdomRowOne : (point.mass 1 + point.mass 5)
+      * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+      - point.mass 5) + (point.mass 4 + point.mass 5)
+      * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+      - point.mass 5) < (point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 1 - point.mass 5) * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 4 - point.mass 5))
+    (hdomRowTwo : (point.mass 1 + point.mass 5)
+      * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+      - point.mass 5) + point.mass 5 * (point.mass 0 / point.weight 0
+      - point.mass 0 - point.mass 1 - point.mass 4 - point.mass 5)
+      < (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+      - point.mass 4 - point.mass 5) * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 4 - point.mass 5))
+    (hdomRowThree : (point.mass 4 + point.mass 5)
+      * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+      - point.mass 5) + point.mass 5 * (point.mass 0 / point.weight 0
+      - point.mass 0 - point.mass 1 - point.mass 4 - point.mass 5)
+      < (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+      - point.mass 4 - point.mass 5) * (point.mass 2 / point.weight 2
+      - point.mass 2 - point.mass 1 - point.mass 5)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {0, 2, 3}).PosDef := by
+  have hcoeffZero : point.mass 0 + point.mass 1 + point.mass 4
+      + point.mass 5 < point.mass 0 / point.weight 0 := by
+    rw [lt_div_iff₀ (point.weight_pos 0)]
+    calc (point.mass 0 + point.mass 1 + point.mass 4 + point.mass 5)
+          * point.weight 0
+        = point.weight 0 * (point.mass 0 + point.mass 1 + point.mass 4
+            + point.mass 5) := by ring
+      _ < point.mass 0 := hdiagEdgeZero
+  have hcoeffTwo : point.mass 2 + point.mass 1 + point.mass 5
+      < point.mass 2 / point.weight 2 := by
+    rw [lt_div_iff₀ (point.weight_pos 2)]
+    calc (point.mass 2 + point.mass 1 + point.mass 5) * point.weight 2
+        = point.weight 2 * (point.mass 2 + point.mass 1 + point.mass 5)
+            := by ring
+      _ < point.mass 2 := hdiagEdgeTwo
+  have hcoeffThree : point.mass 3 + point.mass 4 + point.mass 5
+      < point.mass 3 / point.weight 3 := by
+    rw [lt_div_iff₀ (point.weight_pos 3)]
+    calc (point.mass 3 + point.mass 4 + point.mass 5) * point.weight 3
+        = point.weight 3 * (point.mass 3 + point.mass 4 + point.mass 5)
+            := by ring
+      _ < point.mass 3 := hdiagEdgeThree
+  have hdiagOnePos : 0 < point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 1 - point.mass 4 - point.mass 5 := by linarith
+  have hdiagTwoPos : 0 < point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 1 - point.mass 5 := by linarith
+  have hdiagThreePos : 0 < point.mass 3 / point.weight 3 - point.mass 3
+      - point.mass 4 - point.mass 5 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {0, 2, 3})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 1 ≠ 0 ∨ vecArg 1 - vecArg 2 ≠ 0
+        ∨ vecArg 0 ≠ 0 := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {0, 2, 3} *ᵥ vecArg)
+        = (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+          - point.mass 4 - point.mass 5) * (vecArg 0 - vecArg 1) ^ 2
+          + (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+          - point.mass 5) * (vecArg 1 - vecArg 2) ^ 2
+          + (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+          - point.mass 5) * (vecArg 0) ^ 2 + 2 * (-(point.mass 1
+          + point.mass 5)) * ((vecArg 0 - vecArg 1) * (vecArg 1 - vecArg 2))
+          + 2 * (point.mass 4 + point.mass 5) * ((vecArg 0 - vecArg 1)
+          * (vecArg 0)) + 2 * point.mass 5 * ((vecArg 1 - vecArg 2)
+          * (vecArg 0)) := by
+      rw [kFourGap_treeZeroTwoThree_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+        - point.mass 4 - point.mass 5)
+      (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+        - point.mass 5)
+      (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+        - point.mass 5)
+      (-(point.mass 1 + point.mass 5)) (point.mass 4 + point.mass 5)
+        (point.mass 5)
+      (point.mass 1 + point.mass 5) (point.mass 4 + point.mass 5)
+        (point.mass 5)
+      (vecArg 0 - vecArg 1) (vecArg 1 - vecArg 2) (vecArg 0)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (add_pos (point.mass_pos 1) (point.mass_pos 5)) (add_pos
+        (point.mass_pos 4) (point.mass_pos 5)) (point.mass_pos 5)
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{0, 2, 4}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `1` over `{0,2}`, edge `3` over `{0,4}`, edge `5` over `{2,4}`). -/
+theorem kFourAtlas_harmonicZeroTwoFour_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeZero : point.weight 0 * (point.mass 0 + point.mass 1
+      + point.mass 3) < point.mass 0)
+    (hdiagEdgeTwo : point.weight 2 * (point.mass 2 + point.mass 1
+      + point.mass 5) < point.mass 2)
+    (hdiagEdgeFour : point.weight 4 * (point.mass 4 + point.mass 3
+      + point.mass 5) < point.mass 4)
+    (hdomRowOne : point.mass 1 * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 3 - point.mass 5) + point.mass 3
+      * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+      - point.mass 5) < (point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 1 - point.mass 5) * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 3 - point.mass 5))
+    (hdomRowTwo : point.mass 1 * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 3 - point.mass 5) + point.mass 5
+      * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+      - point.mass 3) < (point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 1 - point.mass 3) * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 3 - point.mass 5))
+    (hdomRowThree : point.mass 3 * (point.mass 2 / point.weight 2
+      - point.mass 2 - point.mass 1 - point.mass 5) + point.mass 5
+      * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+      - point.mass 3) < (point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 1 - point.mass 3) * (point.mass 2 / point.weight 2
+      - point.mass 2 - point.mass 1 - point.mass 5)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {0, 2, 4}).PosDef := by
+  have hcoeffZero : point.mass 0 + point.mass 1 + point.mass 3
+      < point.mass 0 / point.weight 0 := by
+    rw [lt_div_iff₀ (point.weight_pos 0)]
+    calc (point.mass 0 + point.mass 1 + point.mass 3) * point.weight 0
+        = point.weight 0 * (point.mass 0 + point.mass 1 + point.mass 3)
+            := by ring
+      _ < point.mass 0 := hdiagEdgeZero
+  have hcoeffTwo : point.mass 2 + point.mass 1 + point.mass 5
+      < point.mass 2 / point.weight 2 := by
+    rw [lt_div_iff₀ (point.weight_pos 2)]
+    calc (point.mass 2 + point.mass 1 + point.mass 5) * point.weight 2
+        = point.weight 2 * (point.mass 2 + point.mass 1 + point.mass 5)
+            := by ring
+      _ < point.mass 2 := hdiagEdgeTwo
+  have hcoeffFour : point.mass 4 + point.mass 3 + point.mass 5
+      < point.mass 4 / point.weight 4 := by
+    rw [lt_div_iff₀ (point.weight_pos 4)]
+    calc (point.mass 4 + point.mass 3 + point.mass 5) * point.weight 4
+        = point.weight 4 * (point.mass 4 + point.mass 3 + point.mass 5)
+            := by ring
+      _ < point.mass 4 := hdiagEdgeFour
+  have hdiagOnePos : 0 < point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 1 - point.mass 3 := by linarith
+  have hdiagTwoPos : 0 < point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 1 - point.mass 5 := by linarith
+  have hdiagThreePos : 0 < point.mass 4 / point.weight 4 - point.mass 4
+      - point.mass 3 - point.mass 5 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {0, 2, 4})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 1 ≠ 0 ∨ vecArg 1 - vecArg 2 ≠ 0
+        ∨ vecArg 1 ≠ 0 := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {0, 2, 4} *ᵥ vecArg)
+        = (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+          - point.mass 3) * (vecArg 0 - vecArg 1) ^ 2
+          + (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+          - point.mass 5) * (vecArg 1 - vecArg 2) ^ 2
+          + (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+          - point.mass 5) * (vecArg 1) ^ 2 + 2 * (-point.mass 1)
+          * ((vecArg 0 - vecArg 1) * (vecArg 1 - vecArg 2)) + 2
+          * (-point.mass 3) * ((vecArg 0 - vecArg 1) * (vecArg 1)) + 2
+          * point.mass 5 * ((vecArg 1 - vecArg 2) * (vecArg 1)) := by
+      rw [kFourGap_treeZeroTwoFour_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+        - point.mass 3)
+      (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+        - point.mass 5)
+      (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+        - point.mass 5)
+      (-point.mass 1) (-point.mass 3) (point.mass 5)
+      (point.mass 1) (point.mass 3) (point.mass 5)
+      (vecArg 0 - vecArg 1) (vecArg 1 - vecArg 2) (vecArg 1)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (point.mass_pos 1) (point.mass_pos 3) (point.mass_pos 5)
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{0, 2, 5}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `1` over `{0,2}`, edge `3` over `{0,2,5}`, edge `4` over `{2,5}`). -/
+theorem kFourAtlas_harmonicZeroTwoFive_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeZero : point.weight 0 * (point.mass 0 + point.mass 1
+      + point.mass 3) < point.mass 0)
+    (hdiagEdgeTwo : point.weight 2 * (point.mass 2 + point.mass 1
+      + point.mass 3 + point.mass 4) < point.mass 2)
+    (hdiagEdgeFive : point.weight 5 * (point.mass 5 + point.mass 3
+      + point.mass 4) < point.mass 5)
+    (hdomRowOne : (point.mass 1 + point.mass 3)
+      * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+      - point.mass 4) + point.mass 3 * (point.mass 2 / point.weight 2
+      - point.mass 2 - point.mass 1 - point.mass 3 - point.mass 4)
+      < (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+      - point.mass 3 - point.mass 4) * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 3 - point.mass 4))
+    (hdomRowTwo : (point.mass 1 + point.mass 3)
+      * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+      - point.mass 4) + (point.mass 3 + point.mass 4)
+      * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+      - point.mass 3) < (point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 1 - point.mass 3) * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 3 - point.mass 4))
+    (hdomRowThree : point.mass 3 * (point.mass 2 / point.weight 2
+      - point.mass 2 - point.mass 1 - point.mass 3 - point.mass 4)
+      + (point.mass 3 + point.mass 4) * (point.mass 0 / point.weight 0
+      - point.mass 0 - point.mass 1 - point.mass 3)
+      < (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+      - point.mass 3) * (point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 1 - point.mass 3 - point.mass 4)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {0, 2, 5}).PosDef := by
+  have hcoeffZero : point.mass 0 + point.mass 1 + point.mass 3
+      < point.mass 0 / point.weight 0 := by
+    rw [lt_div_iff₀ (point.weight_pos 0)]
+    calc (point.mass 0 + point.mass 1 + point.mass 3) * point.weight 0
+        = point.weight 0 * (point.mass 0 + point.mass 1 + point.mass 3)
+            := by ring
+      _ < point.mass 0 := hdiagEdgeZero
+  have hcoeffTwo : point.mass 2 + point.mass 1 + point.mass 3 + point.mass 4
+      < point.mass 2 / point.weight 2 := by
+    rw [lt_div_iff₀ (point.weight_pos 2)]
+    calc (point.mass 2 + point.mass 1 + point.mass 3 + point.mass 4)
+          * point.weight 2
+        = point.weight 2 * (point.mass 2 + point.mass 1 + point.mass 3
+            + point.mass 4) := by ring
+      _ < point.mass 2 := hdiagEdgeTwo
+  have hcoeffFive : point.mass 5 + point.mass 3 + point.mass 4
+      < point.mass 5 / point.weight 5 := by
+    rw [lt_div_iff₀ (point.weight_pos 5)]
+    calc (point.mass 5 + point.mass 3 + point.mass 4) * point.weight 5
+        = point.weight 5 * (point.mass 5 + point.mass 3 + point.mass 4)
+            := by ring
+      _ < point.mass 5 := hdiagEdgeFive
+  have hdiagOnePos : 0 < point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 1 - point.mass 3 := by linarith
+  have hdiagTwoPos : 0 < point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 1 - point.mass 3 - point.mass 4 := by linarith
+  have hdiagThreePos : 0 < point.mass 5 / point.weight 5 - point.mass 5
+      - point.mass 3 - point.mass 4 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {0, 2, 5})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 1 ≠ 0 ∨ vecArg 1 - vecArg 2 ≠ 0
+        ∨ vecArg 2 ≠ 0 := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {0, 2, 5} *ᵥ vecArg)
+        = (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+          - point.mass 3) * (vecArg 0 - vecArg 1) ^ 2
+          + (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+          - point.mass 3 - point.mass 4) * (vecArg 1 - vecArg 2) ^ 2
+          + (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+          - point.mass 4) * (vecArg 2) ^ 2 + 2 * (-(point.mass 1
+          + point.mass 3)) * ((vecArg 0 - vecArg 1) * (vecArg 1 - vecArg 2))
+          + 2 * (-point.mass 3) * ((vecArg 0 - vecArg 1) * (vecArg 2)) + 2
+          * (-(point.mass 3 + point.mass 4)) * ((vecArg 1 - vecArg 2)
+          * (vecArg 2)) := by
+      rw [kFourGap_treeZeroTwoFive_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+        - point.mass 3)
+      (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+        - point.mass 3 - point.mass 4)
+      (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+        - point.mass 4)
+      (-(point.mass 1 + point.mass 3)) (-point.mass 3) (-(point.mass 3
+        + point.mass 4))
+      (point.mass 1 + point.mass 3) (point.mass 3) (point.mass 3
+        + point.mass 4)
+      (vecArg 0 - vecArg 1) (vecArg 1 - vecArg 2) (vecArg 2)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (add_pos (point.mass_pos 1) (point.mass_pos 3)) (point.mass_pos 3)
+        (add_pos (point.mass_pos 3) (point.mass_pos 4))
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{0, 3, 5}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `1` over `{3,5}`, edge `2` over `{0,3,5}`, edge `4` over `{0,3}`). -/
+theorem kFourAtlas_harmonicZeroThreeFive_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeZero : point.weight 0 * (point.mass 0 + point.mass 2
+      + point.mass 4) < point.mass 0)
+    (hdiagEdgeThree : point.weight 3 * (point.mass 3 + point.mass 1
+      + point.mass 2 + point.mass 4) < point.mass 3)
+    (hdiagEdgeFive : point.weight 5 * (point.mass 5 + point.mass 1
+      + point.mass 2) < point.mass 5)
+    (hdomRowOne : (point.mass 2 + point.mass 4)
+      * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+      - point.mass 2) + point.mass 2 * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 1 - point.mass 2 - point.mass 4)
+      < (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 1
+      - point.mass 2 - point.mass 4) * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 1 - point.mass 2))
+    (hdomRowTwo : (point.mass 2 + point.mass 4)
+      * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+      - point.mass 2) + (point.mass 1 + point.mass 2)
+      * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+      - point.mass 4) < (point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 2 - point.mass 4) * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 1 - point.mass 2))
+    (hdomRowThree : point.mass 2 * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 1 - point.mass 2 - point.mass 4)
+      + (point.mass 1 + point.mass 2) * (point.mass 0 / point.weight 0
+      - point.mass 0 - point.mass 2 - point.mass 4)
+      < (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+      - point.mass 4) * (point.mass 3 / point.weight 3 - point.mass 3
+      - point.mass 1 - point.mass 2 - point.mass 4)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {0, 3, 5}).PosDef := by
+  have hcoeffZero : point.mass 0 + point.mass 2 + point.mass 4
+      < point.mass 0 / point.weight 0 := by
+    rw [lt_div_iff₀ (point.weight_pos 0)]
+    calc (point.mass 0 + point.mass 2 + point.mass 4) * point.weight 0
+        = point.weight 0 * (point.mass 0 + point.mass 2 + point.mass 4)
+            := by ring
+      _ < point.mass 0 := hdiagEdgeZero
+  have hcoeffThree : point.mass 3 + point.mass 1 + point.mass 2
+      + point.mass 4 < point.mass 3 / point.weight 3 := by
+    rw [lt_div_iff₀ (point.weight_pos 3)]
+    calc (point.mass 3 + point.mass 1 + point.mass 2 + point.mass 4)
+          * point.weight 3
+        = point.weight 3 * (point.mass 3 + point.mass 1 + point.mass 2
+            + point.mass 4) := by ring
+      _ < point.mass 3 := hdiagEdgeThree
+  have hcoeffFive : point.mass 5 + point.mass 1 + point.mass 2
+      < point.mass 5 / point.weight 5 := by
+    rw [lt_div_iff₀ (point.weight_pos 5)]
+    calc (point.mass 5 + point.mass 1 + point.mass 2) * point.weight 5
+        = point.weight 5 * (point.mass 5 + point.mass 1 + point.mass 2)
+            := by ring
+      _ < point.mass 5 := hdiagEdgeFive
+  have hdiagOnePos : 0 < point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 2 - point.mass 4 := by linarith
+  have hdiagTwoPos : 0 < point.mass 3 / point.weight 3 - point.mass 3
+      - point.mass 1 - point.mass 2 - point.mass 4 := by linarith
+  have hdiagThreePos : 0 < point.mass 5 / point.weight 5 - point.mass 5
+      - point.mass 1 - point.mass 2 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {0, 3, 5})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 1 ≠ 0 ∨ vecArg 0 ≠ 0 ∨ vecArg 2 ≠ 0
+        := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {0, 3, 5} *ᵥ vecArg)
+        = (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+          - point.mass 4) * (vecArg 0 - vecArg 1) ^ 2
+          + (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 1
+          - point.mass 2 - point.mass 4) * (vecArg 0) ^ 2
+          + (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+          - point.mass 2) * (vecArg 2) ^ 2 + 2 * (point.mass 2
+          + point.mass 4) * ((vecArg 0 - vecArg 1) * (vecArg 0)) + 2
+          * (-point.mass 2) * ((vecArg 0 - vecArg 1) * (vecArg 2)) + 2
+          * (point.mass 1 + point.mass 2) * ((vecArg 0) * (vecArg 2)) := by
+      rw [kFourGap_treeZeroThreeFive_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+        - point.mass 4)
+      (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 1
+        - point.mass 2 - point.mass 4)
+      (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+        - point.mass 2)
+      (point.mass 2 + point.mass 4) (-point.mass 2) (point.mass 1
+        + point.mass 2)
+      (point.mass 2 + point.mass 4) (point.mass 2) (point.mass 1
+        + point.mass 2)
+      (vecArg 0 - vecArg 1) (vecArg 0) (vecArg 2)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (add_pos (point.mass_pos 2) (point.mass_pos 4)) (point.mass_pos 2)
+        (add_pos (point.mass_pos 1) (point.mass_pos 2))
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{0, 4, 5}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `1` over `{0,4,5}`, edge `2` over `{4,5}`, edge `3` over `{0,4}`). -/
+theorem kFourAtlas_harmonicZeroFourFive_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeZero : point.weight 0 * (point.mass 0 + point.mass 1
+      + point.mass 3) < point.mass 0)
+    (hdiagEdgeFour : point.weight 4 * (point.mass 4 + point.mass 1
+      + point.mass 2 + point.mass 3) < point.mass 4)
+    (hdiagEdgeFive : point.weight 5 * (point.mass 5 + point.mass 1
+      + point.mass 2) < point.mass 5)
+    (hdomRowOne : (point.mass 1 + point.mass 3)
+      * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+      - point.mass 2) + point.mass 1 * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 1 - point.mass 2 - point.mass 3)
+      < (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 1
+      - point.mass 2 - point.mass 3) * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 1 - point.mass 2))
+    (hdomRowTwo : (point.mass 1 + point.mass 3)
+      * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+      - point.mass 2) + (point.mass 1 + point.mass 2)
+      * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+      - point.mass 3) < (point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 1 - point.mass 3) * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 1 - point.mass 2))
+    (hdomRowThree : point.mass 1 * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 1 - point.mass 2 - point.mass 3)
+      + (point.mass 1 + point.mass 2) * (point.mass 0 / point.weight 0
+      - point.mass 0 - point.mass 1 - point.mass 3)
+      < (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+      - point.mass 3) * (point.mass 4 / point.weight 4 - point.mass 4
+      - point.mass 1 - point.mass 2 - point.mass 3)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {0, 4, 5}).PosDef := by
+  have hcoeffZero : point.mass 0 + point.mass 1 + point.mass 3
+      < point.mass 0 / point.weight 0 := by
+    rw [lt_div_iff₀ (point.weight_pos 0)]
+    calc (point.mass 0 + point.mass 1 + point.mass 3) * point.weight 0
+        = point.weight 0 * (point.mass 0 + point.mass 1 + point.mass 3)
+            := by ring
+      _ < point.mass 0 := hdiagEdgeZero
+  have hcoeffFour : point.mass 4 + point.mass 1 + point.mass 2
+      + point.mass 3 < point.mass 4 / point.weight 4 := by
+    rw [lt_div_iff₀ (point.weight_pos 4)]
+    calc (point.mass 4 + point.mass 1 + point.mass 2 + point.mass 3)
+          * point.weight 4
+        = point.weight 4 * (point.mass 4 + point.mass 1 + point.mass 2
+            + point.mass 3) := by ring
+      _ < point.mass 4 := hdiagEdgeFour
+  have hcoeffFive : point.mass 5 + point.mass 1 + point.mass 2
+      < point.mass 5 / point.weight 5 := by
+    rw [lt_div_iff₀ (point.weight_pos 5)]
+    calc (point.mass 5 + point.mass 1 + point.mass 2) * point.weight 5
+        = point.weight 5 * (point.mass 5 + point.mass 1 + point.mass 2)
+            := by ring
+      _ < point.mass 5 := hdiagEdgeFive
+  have hdiagOnePos : 0 < point.mass 0 / point.weight 0 - point.mass 0
+      - point.mass 1 - point.mass 3 := by linarith
+  have hdiagTwoPos : 0 < point.mass 4 / point.weight 4 - point.mass 4
+      - point.mass 1 - point.mass 2 - point.mass 3 := by linarith
+  have hdiagThreePos : 0 < point.mass 5 / point.weight 5 - point.mass 5
+      - point.mass 1 - point.mass 2 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {0, 4, 5})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 1 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0
+        := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {0, 4, 5} *ᵥ vecArg)
+        = (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+          - point.mass 3) * (vecArg 0 - vecArg 1) ^ 2
+          + (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 1
+          - point.mass 2 - point.mass 3) * (vecArg 1) ^ 2
+          + (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+          - point.mass 2) * (vecArg 2) ^ 2 + 2 * (-(point.mass 1
+          + point.mass 3)) * ((vecArg 0 - vecArg 1) * (vecArg 1)) + 2
+          * point.mass 1 * ((vecArg 0 - vecArg 1) * (vecArg 2)) + 2
+          * (point.mass 1 + point.mass 2) * ((vecArg 1) * (vecArg 2)) := by
+      rw [kFourGap_treeZeroFourFive_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+        - point.mass 3)
+      (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 1
+        - point.mass 2 - point.mass 3)
+      (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+        - point.mass 2)
+      (-(point.mass 1 + point.mass 3)) (point.mass 1) (point.mass 1
+        + point.mass 2)
+      (point.mass 1 + point.mass 3) (point.mass 1) (point.mass 1
+        + point.mass 2)
+      (vecArg 0 - vecArg 1) (vecArg 1) (vecArg 2)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (add_pos (point.mass_pos 1) (point.mass_pos 3)) (point.mass_pos 1)
+        (add_pos (point.mass_pos 1) (point.mass_pos 2))
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{1, 2, 3}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `0` over `{1,2}`, edge `4` over `{1,2,3}`, edge `5` over `{1,3}`). -/
+theorem kFourAtlas_harmonicOneTwoThree_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeOne : point.weight 1 * (point.mass 1 + point.mass 0
+      + point.mass 4 + point.mass 5) < point.mass 1)
+    (hdiagEdgeTwo : point.weight 2 * (point.mass 2 + point.mass 0
+      + point.mass 4) < point.mass 2)
+    (hdiagEdgeThree : point.weight 3 * (point.mass 3 + point.mass 4
+      + point.mass 5) < point.mass 3)
+    (hdomRowOne : (point.mass 0 + point.mass 4)
+      * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+      - point.mass 5) + (point.mass 4 + point.mass 5)
+      * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+      - point.mass 4) < (point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 0 - point.mass 4) * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 4 - point.mass 5))
+    (hdomRowTwo : (point.mass 0 + point.mass 4)
+      * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+      - point.mass 5) + point.mass 4 * (point.mass 1 / point.weight 1
+      - point.mass 1 - point.mass 0 - point.mass 4 - point.mass 5)
+      < (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+      - point.mass 4 - point.mass 5) * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 4 - point.mass 5))
+    (hdomRowThree : (point.mass 4 + point.mass 5)
+      * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+      - point.mass 4) + point.mass 4 * (point.mass 1 / point.weight 1
+      - point.mass 1 - point.mass 0 - point.mass 4 - point.mass 5)
+      < (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+      - point.mass 4 - point.mass 5) * (point.mass 2 / point.weight 2
+      - point.mass 2 - point.mass 0 - point.mass 4)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {1, 2, 3}).PosDef := by
+  have hcoeffOne : point.mass 1 + point.mass 0 + point.mass 4 + point.mass 5
+      < point.mass 1 / point.weight 1 := by
+    rw [lt_div_iff₀ (point.weight_pos 1)]
+    calc (point.mass 1 + point.mass 0 + point.mass 4 + point.mass 5)
+          * point.weight 1
+        = point.weight 1 * (point.mass 1 + point.mass 0 + point.mass 4
+            + point.mass 5) := by ring
+      _ < point.mass 1 := hdiagEdgeOne
+  have hcoeffTwo : point.mass 2 + point.mass 0 + point.mass 4
+      < point.mass 2 / point.weight 2 := by
+    rw [lt_div_iff₀ (point.weight_pos 2)]
+    calc (point.mass 2 + point.mass 0 + point.mass 4) * point.weight 2
+        = point.weight 2 * (point.mass 2 + point.mass 0 + point.mass 4)
+            := by ring
+      _ < point.mass 2 := hdiagEdgeTwo
+  have hcoeffThree : point.mass 3 + point.mass 4 + point.mass 5
+      < point.mass 3 / point.weight 3 := by
+    rw [lt_div_iff₀ (point.weight_pos 3)]
+    calc (point.mass 3 + point.mass 4 + point.mass 5) * point.weight 3
+        = point.weight 3 * (point.mass 3 + point.mass 4 + point.mass 5)
+            := by ring
+      _ < point.mass 3 := hdiagEdgeThree
+  have hdiagOnePos : 0 < point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 0 - point.mass 4 - point.mass 5 := by linarith
+  have hdiagTwoPos : 0 < point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 0 - point.mass 4 := by linarith
+  have hdiagThreePos : 0 < point.mass 3 / point.weight 3 - point.mass 3
+      - point.mass 4 - point.mass 5 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {1, 2, 3})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 2 ≠ 0 ∨ vecArg 1 - vecArg 2 ≠ 0
+        ∨ vecArg 0 ≠ 0 := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {1, 2, 3} *ᵥ vecArg)
+        = (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+          - point.mass 4 - point.mass 5) * (vecArg 0 - vecArg 2) ^ 2
+          + (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+          - point.mass 4) * (vecArg 1 - vecArg 2) ^ 2
+          + (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+          - point.mass 5) * (vecArg 0) ^ 2 + 2 * (point.mass 0
+          + point.mass 4) * ((vecArg 0 - vecArg 2) * (vecArg 1 - vecArg 2))
+          + 2 * (point.mass 4 + point.mass 5) * ((vecArg 0 - vecArg 2)
+          * (vecArg 0)) + 2 * (-point.mass 4) * ((vecArg 1 - vecArg 2)
+          * (vecArg 0)) := by
+      rw [kFourGap_treeOneTwoThree_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+        - point.mass 4 - point.mass 5)
+      (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+        - point.mass 4)
+      (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+        - point.mass 5)
+      (point.mass 0 + point.mass 4) (point.mass 4 + point.mass 5)
+        (-point.mass 4)
+      (point.mass 0 + point.mass 4) (point.mass 4 + point.mass 5)
+        (point.mass 4)
+      (vecArg 0 - vecArg 2) (vecArg 1 - vecArg 2) (vecArg 0)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (add_pos (point.mass_pos 0) (point.mass_pos 4)) (add_pos
+        (point.mass_pos 4) (point.mass_pos 5)) (point.mass_pos 4)
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{1, 2, 4}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `0` over `{1,2}`, edge `3` over `{1,2,4}`, edge `5` over `{2,4}`). -/
+theorem kFourAtlas_harmonicOneTwoFour_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeOne : point.weight 1 * (point.mass 1 + point.mass 0
+      + point.mass 3) < point.mass 1)
+    (hdiagEdgeTwo : point.weight 2 * (point.mass 2 + point.mass 0
+      + point.mass 3 + point.mass 5) < point.mass 2)
+    (hdiagEdgeFour : point.weight 4 * (point.mass 4 + point.mass 3
+      + point.mass 5) < point.mass 4)
+    (hdomRowOne : (point.mass 0 + point.mass 3)
+      * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+      - point.mass 5) + point.mass 3 * (point.mass 2 / point.weight 2
+      - point.mass 2 - point.mass 0 - point.mass 3 - point.mass 5)
+      < (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+      - point.mass 3 - point.mass 5) * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 3 - point.mass 5))
+    (hdomRowTwo : (point.mass 0 + point.mass 3)
+      * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+      - point.mass 5) + (point.mass 3 + point.mass 5)
+      * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+      - point.mass 3) < (point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 0 - point.mass 3) * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 3 - point.mass 5))
+    (hdomRowThree : point.mass 3 * (point.mass 2 / point.weight 2
+      - point.mass 2 - point.mass 0 - point.mass 3 - point.mass 5)
+      + (point.mass 3 + point.mass 5) * (point.mass 1 / point.weight 1
+      - point.mass 1 - point.mass 0 - point.mass 3)
+      < (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+      - point.mass 3) * (point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 0 - point.mass 3 - point.mass 5)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {1, 2, 4}).PosDef := by
+  have hcoeffOne : point.mass 1 + point.mass 0 + point.mass 3
+      < point.mass 1 / point.weight 1 := by
+    rw [lt_div_iff₀ (point.weight_pos 1)]
+    calc (point.mass 1 + point.mass 0 + point.mass 3) * point.weight 1
+        = point.weight 1 * (point.mass 1 + point.mass 0 + point.mass 3)
+            := by ring
+      _ < point.mass 1 := hdiagEdgeOne
+  have hcoeffTwo : point.mass 2 + point.mass 0 + point.mass 3 + point.mass 5
+      < point.mass 2 / point.weight 2 := by
+    rw [lt_div_iff₀ (point.weight_pos 2)]
+    calc (point.mass 2 + point.mass 0 + point.mass 3 + point.mass 5)
+          * point.weight 2
+        = point.weight 2 * (point.mass 2 + point.mass 0 + point.mass 3
+            + point.mass 5) := by ring
+      _ < point.mass 2 := hdiagEdgeTwo
+  have hcoeffFour : point.mass 4 + point.mass 3 + point.mass 5
+      < point.mass 4 / point.weight 4 := by
+    rw [lt_div_iff₀ (point.weight_pos 4)]
+    calc (point.mass 4 + point.mass 3 + point.mass 5) * point.weight 4
+        = point.weight 4 * (point.mass 4 + point.mass 3 + point.mass 5)
+            := by ring
+      _ < point.mass 4 := hdiagEdgeFour
+  have hdiagOnePos : 0 < point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 0 - point.mass 3 := by linarith
+  have hdiagTwoPos : 0 < point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 0 - point.mass 3 - point.mass 5 := by linarith
+  have hdiagThreePos : 0 < point.mass 4 / point.weight 4 - point.mass 4
+      - point.mass 3 - point.mass 5 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {1, 2, 4})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 2 ≠ 0 ∨ vecArg 1 - vecArg 2 ≠ 0
+        ∨ vecArg 1 ≠ 0 := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {1, 2, 4} *ᵥ vecArg)
+        = (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+          - point.mass 3) * (vecArg 0 - vecArg 2) ^ 2
+          + (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+          - point.mass 3 - point.mass 5) * (vecArg 1 - vecArg 2) ^ 2
+          + (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+          - point.mass 5) * (vecArg 1) ^ 2 + 2 * (point.mass 0
+          + point.mass 3) * ((vecArg 0 - vecArg 2) * (vecArg 1 - vecArg 2))
+          + 2 * (-point.mass 3) * ((vecArg 0 - vecArg 2) * (vecArg 1)) + 2
+          * (point.mass 3 + point.mass 5) * ((vecArg 1 - vecArg 2)
+          * (vecArg 1)) := by
+      rw [kFourGap_treeOneTwoFour_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+        - point.mass 3)
+      (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+        - point.mass 3 - point.mass 5)
+      (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+        - point.mass 5)
+      (point.mass 0 + point.mass 3) (-point.mass 3) (point.mass 3
+        + point.mass 5)
+      (point.mass 0 + point.mass 3) (point.mass 3) (point.mass 3
+        + point.mass 5)
+      (vecArg 0 - vecArg 2) (vecArg 1 - vecArg 2) (vecArg 1)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (add_pos (point.mass_pos 0) (point.mass_pos 3)) (point.mass_pos 3)
+        (add_pos (point.mass_pos 3) (point.mass_pos 5))
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{1, 2, 5}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `0` over `{1,2}`, edge `3` over `{1,5}`, edge `4` over `{2,5}`). -/
+theorem kFourAtlas_harmonicOneTwoFive_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeOne : point.weight 1 * (point.mass 1 + point.mass 0
+      + point.mass 3) < point.mass 1)
+    (hdiagEdgeTwo : point.weight 2 * (point.mass 2 + point.mass 0
+      + point.mass 4) < point.mass 2)
+    (hdiagEdgeFive : point.weight 5 * (point.mass 5 + point.mass 3
+      + point.mass 4) < point.mass 5)
+    (hdomRowOne : point.mass 0 * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 3 - point.mass 4) + point.mass 3
+      * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+      - point.mass 4) < (point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 0 - point.mass 4) * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 3 - point.mass 4))
+    (hdomRowTwo : point.mass 0 * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 3 - point.mass 4) + point.mass 4
+      * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+      - point.mass 3) < (point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 0 - point.mass 3) * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 3 - point.mass 4))
+    (hdomRowThree : point.mass 3 * (point.mass 2 / point.weight 2
+      - point.mass 2 - point.mass 0 - point.mass 4) + point.mass 4
+      * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+      - point.mass 3) < (point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 0 - point.mass 3) * (point.mass 2 / point.weight 2
+      - point.mass 2 - point.mass 0 - point.mass 4)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {1, 2, 5}).PosDef := by
+  have hcoeffOne : point.mass 1 + point.mass 0 + point.mass 3
+      < point.mass 1 / point.weight 1 := by
+    rw [lt_div_iff₀ (point.weight_pos 1)]
+    calc (point.mass 1 + point.mass 0 + point.mass 3) * point.weight 1
+        = point.weight 1 * (point.mass 1 + point.mass 0 + point.mass 3)
+            := by ring
+      _ < point.mass 1 := hdiagEdgeOne
+  have hcoeffTwo : point.mass 2 + point.mass 0 + point.mass 4
+      < point.mass 2 / point.weight 2 := by
+    rw [lt_div_iff₀ (point.weight_pos 2)]
+    calc (point.mass 2 + point.mass 0 + point.mass 4) * point.weight 2
+        = point.weight 2 * (point.mass 2 + point.mass 0 + point.mass 4)
+            := by ring
+      _ < point.mass 2 := hdiagEdgeTwo
+  have hcoeffFive : point.mass 5 + point.mass 3 + point.mass 4
+      < point.mass 5 / point.weight 5 := by
+    rw [lt_div_iff₀ (point.weight_pos 5)]
+    calc (point.mass 5 + point.mass 3 + point.mass 4) * point.weight 5
+        = point.weight 5 * (point.mass 5 + point.mass 3 + point.mass 4)
+            := by ring
+      _ < point.mass 5 := hdiagEdgeFive
+  have hdiagOnePos : 0 < point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 0 - point.mass 3 := by linarith
+  have hdiagTwoPos : 0 < point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 0 - point.mass 4 := by linarith
+  have hdiagThreePos : 0 < point.mass 5 / point.weight 5 - point.mass 5
+      - point.mass 3 - point.mass 4 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {1, 2, 5})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 2 ≠ 0 ∨ vecArg 1 - vecArg 2 ≠ 0
+        ∨ vecArg 2 ≠ 0 := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {1, 2, 5} *ᵥ vecArg)
+        = (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+          - point.mass 3) * (vecArg 0 - vecArg 2) ^ 2
+          + (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+          - point.mass 4) * (vecArg 1 - vecArg 2) ^ 2
+          + (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+          - point.mass 4) * (vecArg 2) ^ 2 + 2 * point.mass 0 * ((vecArg 0
+          - vecArg 2) * (vecArg 1 - vecArg 2)) + 2 * (-point.mass 3)
+          * ((vecArg 0 - vecArg 2) * (vecArg 2)) + 2 * (-point.mass 4)
+          * ((vecArg 1 - vecArg 2) * (vecArg 2)) := by
+      rw [kFourGap_treeOneTwoFive_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+        - point.mass 3)
+      (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+        - point.mass 4)
+      (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+        - point.mass 4)
+      (point.mass 0) (-point.mass 3) (-point.mass 4)
+      (point.mass 0) (point.mass 3) (point.mass 4)
+      (vecArg 0 - vecArg 2) (vecArg 1 - vecArg 2) (vecArg 2)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (point.mass_pos 0) (point.mass_pos 3) (point.mass_pos 4)
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{1, 3, 4}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `0` over `{3,4}`, edge `2` over `{1,3,4}`, edge `5` over `{1,3}`). -/
+theorem kFourAtlas_harmonicOneThreeFour_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeOne : point.weight 1 * (point.mass 1 + point.mass 2
+      + point.mass 5) < point.mass 1)
+    (hdiagEdgeThree : point.weight 3 * (point.mass 3 + point.mass 0
+      + point.mass 2 + point.mass 5) < point.mass 3)
+    (hdiagEdgeFour : point.weight 4 * (point.mass 4 + point.mass 0
+      + point.mass 2) < point.mass 4)
+    (hdomRowOne : (point.mass 2 + point.mass 5)
+      * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+      - point.mass 2) + point.mass 2 * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 0 - point.mass 2 - point.mass 5)
+      < (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+      - point.mass 2 - point.mass 5) * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 0 - point.mass 2))
+    (hdomRowTwo : (point.mass 2 + point.mass 5)
+      * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+      - point.mass 2) + (point.mass 0 + point.mass 2)
+      * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+      - point.mass 5) < (point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 2 - point.mass 5) * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 0 - point.mass 2))
+    (hdomRowThree : point.mass 2 * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 0 - point.mass 2 - point.mass 5)
+      + (point.mass 0 + point.mass 2) * (point.mass 1 / point.weight 1
+      - point.mass 1 - point.mass 2 - point.mass 5)
+      < (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+      - point.mass 5) * (point.mass 3 / point.weight 3 - point.mass 3
+      - point.mass 0 - point.mass 2 - point.mass 5)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {1, 3, 4}).PosDef := by
+  have hcoeffOne : point.mass 1 + point.mass 2 + point.mass 5
+      < point.mass 1 / point.weight 1 := by
+    rw [lt_div_iff₀ (point.weight_pos 1)]
+    calc (point.mass 1 + point.mass 2 + point.mass 5) * point.weight 1
+        = point.weight 1 * (point.mass 1 + point.mass 2 + point.mass 5)
+            := by ring
+      _ < point.mass 1 := hdiagEdgeOne
+  have hcoeffThree : point.mass 3 + point.mass 0 + point.mass 2
+      + point.mass 5 < point.mass 3 / point.weight 3 := by
+    rw [lt_div_iff₀ (point.weight_pos 3)]
+    calc (point.mass 3 + point.mass 0 + point.mass 2 + point.mass 5)
+          * point.weight 3
+        = point.weight 3 * (point.mass 3 + point.mass 0 + point.mass 2
+            + point.mass 5) := by ring
+      _ < point.mass 3 := hdiagEdgeThree
+  have hcoeffFour : point.mass 4 + point.mass 0 + point.mass 2
+      < point.mass 4 / point.weight 4 := by
+    rw [lt_div_iff₀ (point.weight_pos 4)]
+    calc (point.mass 4 + point.mass 0 + point.mass 2) * point.weight 4
+        = point.weight 4 * (point.mass 4 + point.mass 0 + point.mass 2)
+            := by ring
+      _ < point.mass 4 := hdiagEdgeFour
+  have hdiagOnePos : 0 < point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 2 - point.mass 5 := by linarith
+  have hdiagTwoPos : 0 < point.mass 3 / point.weight 3 - point.mass 3
+      - point.mass 0 - point.mass 2 - point.mass 5 := by linarith
+  have hdiagThreePos : 0 < point.mass 4 / point.weight 4 - point.mass 4
+      - point.mass 0 - point.mass 2 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {1, 3, 4})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 2 ≠ 0 ∨ vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0
+        := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {1, 3, 4} *ᵥ vecArg)
+        = (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+          - point.mass 5) * (vecArg 0 - vecArg 2) ^ 2
+          + (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+          - point.mass 2 - point.mass 5) * (vecArg 0) ^ 2
+          + (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+          - point.mass 2) * (vecArg 1) ^ 2 + 2 * (point.mass 2
+          + point.mass 5) * ((vecArg 0 - vecArg 2) * (vecArg 0)) + 2
+          * (-point.mass 2) * ((vecArg 0 - vecArg 2) * (vecArg 1)) + 2
+          * (point.mass 0 + point.mass 2) * ((vecArg 0) * (vecArg 1)) := by
+      rw [kFourGap_treeOneThreeFour_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+        - point.mass 5)
+      (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+        - point.mass 2 - point.mass 5)
+      (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+        - point.mass 2)
+      (point.mass 2 + point.mass 5) (-point.mass 2) (point.mass 0
+        + point.mass 2)
+      (point.mass 2 + point.mass 5) (point.mass 2) (point.mass 0
+        + point.mass 2)
+      (vecArg 0 - vecArg 2) (vecArg 0) (vecArg 1)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (add_pos (point.mass_pos 2) (point.mass_pos 5)) (point.mass_pos 2)
+        (add_pos (point.mass_pos 0) (point.mass_pos 2))
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{1, 4, 5}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `0` over `{1,4,5}`, edge `2` over `{4,5}`, edge `3` over `{1,5}`). -/
+theorem kFourAtlas_harmonicOneFourFive_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeOne : point.weight 1 * (point.mass 1 + point.mass 0
+      + point.mass 3) < point.mass 1)
+    (hdiagEdgeFour : point.weight 4 * (point.mass 4 + point.mass 0
+      + point.mass 2) < point.mass 4)
+    (hdiagEdgeFive : point.weight 5 * (point.mass 5 + point.mass 0
+      + point.mass 2 + point.mass 3) < point.mass 5)
+    (hdomRowOne : point.mass 0 * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 0 - point.mass 2 - point.mass 3)
+      + (point.mass 0 + point.mass 3) * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 0 - point.mass 2)
+      < (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+      - point.mass 2) * (point.mass 5 / point.weight 5 - point.mass 5
+      - point.mass 0 - point.mass 2 - point.mass 3))
+    (hdomRowTwo : point.mass 0 * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 0 - point.mass 2 - point.mass 3)
+      + (point.mass 0 + point.mass 2) * (point.mass 1 / point.weight 1
+      - point.mass 1 - point.mass 0 - point.mass 3)
+      < (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+      - point.mass 3) * (point.mass 5 / point.weight 5 - point.mass 5
+      - point.mass 0 - point.mass 2 - point.mass 3))
+    (hdomRowThree : (point.mass 0 + point.mass 3)
+      * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+      - point.mass 2) + (point.mass 0 + point.mass 2)
+      * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+      - point.mass 3) < (point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 0 - point.mass 3) * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 0 - point.mass 2)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {1, 4, 5}).PosDef := by
+  have hcoeffOne : point.mass 1 + point.mass 0 + point.mass 3
+      < point.mass 1 / point.weight 1 := by
+    rw [lt_div_iff₀ (point.weight_pos 1)]
+    calc (point.mass 1 + point.mass 0 + point.mass 3) * point.weight 1
+        = point.weight 1 * (point.mass 1 + point.mass 0 + point.mass 3)
+            := by ring
+      _ < point.mass 1 := hdiagEdgeOne
+  have hcoeffFour : point.mass 4 + point.mass 0 + point.mass 2
+      < point.mass 4 / point.weight 4 := by
+    rw [lt_div_iff₀ (point.weight_pos 4)]
+    calc (point.mass 4 + point.mass 0 + point.mass 2) * point.weight 4
+        = point.weight 4 * (point.mass 4 + point.mass 0 + point.mass 2)
+            := by ring
+      _ < point.mass 4 := hdiagEdgeFour
+  have hcoeffFive : point.mass 5 + point.mass 0 + point.mass 2
+      + point.mass 3 < point.mass 5 / point.weight 5 := by
+    rw [lt_div_iff₀ (point.weight_pos 5)]
+    calc (point.mass 5 + point.mass 0 + point.mass 2 + point.mass 3)
+          * point.weight 5
+        = point.weight 5 * (point.mass 5 + point.mass 0 + point.mass 2
+            + point.mass 3) := by ring
+      _ < point.mass 5 := hdiagEdgeFive
+  have hdiagOnePos : 0 < point.mass 1 / point.weight 1 - point.mass 1
+      - point.mass 0 - point.mass 3 := by linarith
+  have hdiagTwoPos : 0 < point.mass 4 / point.weight 4 - point.mass 4
+      - point.mass 0 - point.mass 2 := by linarith
+  have hdiagThreePos : 0 < point.mass 5 / point.weight 5 - point.mass 5
+      - point.mass 0 - point.mass 2 - point.mass 3 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {1, 4, 5})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 0 - vecArg 2 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0
+        := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {1, 4, 5} *ᵥ vecArg)
+        = (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+          - point.mass 3) * (vecArg 0 - vecArg 2) ^ 2
+          + (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+          - point.mass 2) * (vecArg 1) ^ 2 + (point.mass 5 / point.weight 5
+          - point.mass 5 - point.mass 0 - point.mass 2 - point.mass 3)
+          * (vecArg 2) ^ 2 + 2 * point.mass 0 * ((vecArg 0 - vecArg 2)
+          * (vecArg 1)) + 2 * (-(point.mass 0 + point.mass 3)) * ((vecArg 0
+          - vecArg 2) * (vecArg 2)) + 2 * (point.mass 0 + point.mass 2)
+          * ((vecArg 1) * (vecArg 2)) := by
+      rw [kFourGap_treeOneFourFive_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+        - point.mass 3)
+      (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+        - point.mass 2)
+      (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 0
+        - point.mass 2 - point.mass 3)
+      (point.mass 0) (-(point.mass 0 + point.mass 3)) (point.mass 0
+        + point.mass 2)
+      (point.mass 0) (point.mass 0 + point.mass 3) (point.mass 0
+        + point.mass 2)
+      (vecArg 0 - vecArg 2) (vecArg 1) (vecArg 2)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (point.mass_pos 0) (add_pos (point.mass_pos 0) (point.mass_pos 3))
+        (add_pos (point.mass_pos 0) (point.mass_pos 2))
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{2, 3, 4}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `0` over `{3,4}`, edge `1` over `{2,3,4}`, edge `5` over `{2,4}`). -/
+theorem kFourAtlas_harmonicTwoThreeFour_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeTwo : point.weight 2 * (point.mass 2 + point.mass 1
+      + point.mass 5) < point.mass 2)
+    (hdiagEdgeThree : point.weight 3 * (point.mass 3 + point.mass 0
+      + point.mass 1) < point.mass 3)
+    (hdiagEdgeFour : point.weight 4 * (point.mass 4 + point.mass 0
+      + point.mass 1 + point.mass 5) < point.mass 4)
+    (hdomRowOne : point.mass 1 * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 0 - point.mass 1 - point.mass 5)
+      + (point.mass 1 + point.mass 5) * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 0 - point.mass 1)
+      < (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+      - point.mass 1) * (point.mass 4 / point.weight 4 - point.mass 4
+      - point.mass 0 - point.mass 1 - point.mass 5))
+    (hdomRowTwo : point.mass 1 * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 0 - point.mass 1 - point.mass 5)
+      + (point.mass 0 + point.mass 1) * (point.mass 2 / point.weight 2
+      - point.mass 2 - point.mass 1 - point.mass 5)
+      < (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+      - point.mass 5) * (point.mass 4 / point.weight 4 - point.mass 4
+      - point.mass 0 - point.mass 1 - point.mass 5))
+    (hdomRowThree : (point.mass 1 + point.mass 5)
+      * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+      - point.mass 1) + (point.mass 0 + point.mass 1)
+      * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+      - point.mass 5) < (point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 1 - point.mass 5) * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 0 - point.mass 1)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {2, 3, 4}).PosDef := by
+  have hcoeffTwo : point.mass 2 + point.mass 1 + point.mass 5
+      < point.mass 2 / point.weight 2 := by
+    rw [lt_div_iff₀ (point.weight_pos 2)]
+    calc (point.mass 2 + point.mass 1 + point.mass 5) * point.weight 2
+        = point.weight 2 * (point.mass 2 + point.mass 1 + point.mass 5)
+            := by ring
+      _ < point.mass 2 := hdiagEdgeTwo
+  have hcoeffThree : point.mass 3 + point.mass 0 + point.mass 1
+      < point.mass 3 / point.weight 3 := by
+    rw [lt_div_iff₀ (point.weight_pos 3)]
+    calc (point.mass 3 + point.mass 0 + point.mass 1) * point.weight 3
+        = point.weight 3 * (point.mass 3 + point.mass 0 + point.mass 1)
+            := by ring
+      _ < point.mass 3 := hdiagEdgeThree
+  have hcoeffFour : point.mass 4 + point.mass 0 + point.mass 1
+      + point.mass 5 < point.mass 4 / point.weight 4 := by
+    rw [lt_div_iff₀ (point.weight_pos 4)]
+    calc (point.mass 4 + point.mass 0 + point.mass 1 + point.mass 5)
+          * point.weight 4
+        = point.weight 4 * (point.mass 4 + point.mass 0 + point.mass 1
+            + point.mass 5) := by ring
+      _ < point.mass 4 := hdiagEdgeFour
+  have hdiagOnePos : 0 < point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 1 - point.mass 5 := by linarith
+  have hdiagTwoPos : 0 < point.mass 3 / point.weight 3 - point.mass 3
+      - point.mass 0 - point.mass 1 := by linarith
+  have hdiagThreePos : 0 < point.mass 4 / point.weight 4 - point.mass 4
+      - point.mass 0 - point.mass 1 - point.mass 5 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {2, 3, 4})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 1 - vecArg 2 ≠ 0 ∨ vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0
+        := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {2, 3, 4} *ᵥ vecArg)
+        = (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+          - point.mass 5) * (vecArg 1 - vecArg 2) ^ 2
+          + (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+          - point.mass 1) * (vecArg 0) ^ 2 + (point.mass 4 / point.weight 4
+          - point.mass 4 - point.mass 0 - point.mass 1 - point.mass 5)
+          * (vecArg 1) ^ 2 + 2 * (-point.mass 1) * ((vecArg 1 - vecArg 2)
+          * (vecArg 0)) + 2 * (point.mass 1 + point.mass 5) * ((vecArg 1
+          - vecArg 2) * (vecArg 1)) + 2 * (point.mass 0 + point.mass 1)
+          * ((vecArg 0) * (vecArg 1)) := by
+      rw [kFourGap_treeTwoThreeFour_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+        - point.mass 5)
+      (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+        - point.mass 1)
+      (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+        - point.mass 1 - point.mass 5)
+      (-point.mass 1) (point.mass 1 + point.mass 5) (point.mass 0
+        + point.mass 1)
+      (point.mass 1) (point.mass 1 + point.mass 5) (point.mass 0
+        + point.mass 1)
+      (vecArg 1 - vecArg 2) (vecArg 0) (vecArg 1)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (point.mass_pos 1) (add_pos (point.mass_pos 1) (point.mass_pos 5))
+        (add_pos (point.mass_pos 0) (point.mass_pos 1))
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{2, 3, 5}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `0` over `{2,3,5}`, edge `1` over `{3,5}`, edge `4` over `{2,5}`). -/
+theorem kFourAtlas_harmonicTwoThreeFive_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeTwo : point.weight 2 * (point.mass 2 + point.mass 0
+      + point.mass 4) < point.mass 2)
+    (hdiagEdgeThree : point.weight 3 * (point.mass 3 + point.mass 0
+      + point.mass 1) < point.mass 3)
+    (hdiagEdgeFive : point.weight 5 * (point.mass 5 + point.mass 0
+      + point.mass 1 + point.mass 4) < point.mass 5)
+    (hdomRowOne : point.mass 0 * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 0 - point.mass 1 - point.mass 4)
+      + (point.mass 0 + point.mass 4) * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 0 - point.mass 1)
+      < (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+      - point.mass 1) * (point.mass 5 / point.weight 5 - point.mass 5
+      - point.mass 0 - point.mass 1 - point.mass 4))
+    (hdomRowTwo : point.mass 0 * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 0 - point.mass 1 - point.mass 4)
+      + (point.mass 0 + point.mass 1) * (point.mass 2 / point.weight 2
+      - point.mass 2 - point.mass 0 - point.mass 4)
+      < (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+      - point.mass 4) * (point.mass 5 / point.weight 5 - point.mass 5
+      - point.mass 0 - point.mass 1 - point.mass 4))
+    (hdomRowThree : (point.mass 0 + point.mass 4)
+      * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+      - point.mass 1) + (point.mass 0 + point.mass 1)
+      * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+      - point.mass 4) < (point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 0 - point.mass 4) * (point.mass 3 / point.weight 3
+      - point.mass 3 - point.mass 0 - point.mass 1)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {2, 3, 5}).PosDef := by
+  have hcoeffTwo : point.mass 2 + point.mass 0 + point.mass 4
+      < point.mass 2 / point.weight 2 := by
+    rw [lt_div_iff₀ (point.weight_pos 2)]
+    calc (point.mass 2 + point.mass 0 + point.mass 4) * point.weight 2
+        = point.weight 2 * (point.mass 2 + point.mass 0 + point.mass 4)
+            := by ring
+      _ < point.mass 2 := hdiagEdgeTwo
+  have hcoeffThree : point.mass 3 + point.mass 0 + point.mass 1
+      < point.mass 3 / point.weight 3 := by
+    rw [lt_div_iff₀ (point.weight_pos 3)]
+    calc (point.mass 3 + point.mass 0 + point.mass 1) * point.weight 3
+        = point.weight 3 * (point.mass 3 + point.mass 0 + point.mass 1)
+            := by ring
+      _ < point.mass 3 := hdiagEdgeThree
+  have hcoeffFive : point.mass 5 + point.mass 0 + point.mass 1
+      + point.mass 4 < point.mass 5 / point.weight 5 := by
+    rw [lt_div_iff₀ (point.weight_pos 5)]
+    calc (point.mass 5 + point.mass 0 + point.mass 1 + point.mass 4)
+          * point.weight 5
+        = point.weight 5 * (point.mass 5 + point.mass 0 + point.mass 1
+            + point.mass 4) := by ring
+      _ < point.mass 5 := hdiagEdgeFive
+  have hdiagOnePos : 0 < point.mass 2 / point.weight 2 - point.mass 2
+      - point.mass 0 - point.mass 4 := by linarith
+  have hdiagTwoPos : 0 < point.mass 3 / point.weight 3 - point.mass 3
+      - point.mass 0 - point.mass 1 := by linarith
+  have hdiagThreePos : 0 < point.mass 5 / point.weight 5 - point.mass 5
+      - point.mass 0 - point.mass 1 - point.mass 4 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {2, 3, 5})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hzNonzero : vecArg 1 - vecArg 2 ≠ 0 ∨ vecArg 0 ≠ 0 ∨ vecArg 2 ≠ 0
+        := by
+      by_contra hallCycleZero
+      push Not at hallCycleZero
+      obtain ⟨hcycleOne, hcycleTwo, hcycleThree⟩ := hallCycleZero
+      have hvalueZero : vecArg 0 = 0 := by linarith
+      have hvalueTwo : vecArg 2 = 0 := by linarith
+      have hvalueOne : vecArg 1 = 0 := by linarith
+      rcases hsomeCoordinateNonzero with hbad | hbad | hbad
+      · exact hbad hvalueZero
+      · exact hbad hvalueOne
+      · exact hbad hvalueTwo
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {2, 3, 5} *ᵥ vecArg)
+        = (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+          - point.mass 4) * (vecArg 1 - vecArg 2) ^ 2
+          + (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+          - point.mass 1) * (vecArg 0) ^ 2 + (point.mass 5 / point.weight 5
+          - point.mass 5 - point.mass 0 - point.mass 1 - point.mass 4)
+          * (vecArg 2) ^ 2 + 2 * point.mass 0 * ((vecArg 1 - vecArg 2)
+          * (vecArg 0)) + 2 * (-(point.mass 0 + point.mass 4)) * ((vecArg 1
+          - vecArg 2) * (vecArg 2)) + 2 * (point.mass 0 + point.mass 1)
+          * ((vecArg 0) * (vecArg 2)) := by
+      rw [kFourGap_treeTwoThreeFive_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+        - point.mass 4)
+      (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+        - point.mass 1)
+      (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 0
+        - point.mass 1 - point.mass 4)
+      (point.mass 0) (-(point.mass 0 + point.mass 4)) (point.mass 0
+        + point.mass 1)
+      (point.mass 0) (point.mass 0 + point.mass 4) (point.mass 0
+        + point.mass 1)
+      (vecArg 1 - vecArg 2) (vecArg 0) (vecArg 2)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (point.mass_pos 0) (add_pos (point.mass_pos 0) (point.mass_pos 4))
+        (add_pos (point.mass_pos 0) (point.mass_pos 1))
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hzNonzero
+
+/-- **Harmonic cell on tree `{3, 4, 5}`** (scale-free Jacobi dominance;
+off-tree cycles: edge `0` over `{3,4}`, edge `1` over `{3,5}`, edge `2` over `{4,5}`). -/
+theorem kFourAtlas_harmonicThreeFourFive_posDef_of_cell
+    (point : DirectionChartPoint 6)
+    (hdiagEdgeThree : point.weight 3 * (point.mass 3 + point.mass 0
+      + point.mass 1) < point.mass 3)
+    (hdiagEdgeFour : point.weight 4 * (point.mass 4 + point.mass 0
+      + point.mass 2) < point.mass 4)
+    (hdiagEdgeFive : point.weight 5 * (point.mass 5 + point.mass 1
+      + point.mass 2) < point.mass 5)
+    (hdomRowOne : point.mass 0 * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 1 - point.mass 2) + point.mass 1
+      * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+      - point.mass 2) < (point.mass 4 / point.weight 4 - point.mass 4
+      - point.mass 0 - point.mass 2) * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 1 - point.mass 2))
+    (hdomRowTwo : point.mass 0 * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 1 - point.mass 2) + point.mass 2
+      * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+      - point.mass 1) < (point.mass 3 / point.weight 3 - point.mass 3
+      - point.mass 0 - point.mass 1) * (point.mass 5 / point.weight 5
+      - point.mass 5 - point.mass 1 - point.mass 2))
+    (hdomRowThree : point.mass 1 * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 0 - point.mass 2) + point.mass 2
+      * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+      - point.mass 1) < (point.mass 3 / point.weight 3 - point.mass 3
+      - point.mass 0 - point.mass 1) * (point.mass 4 / point.weight 4
+      - point.mass 4 - point.mass 0 - point.mass 2)) :
+    (directionChartGap kFourDirection point.mass point.weight
+      {3, 4, 5}).PosDef := by
+  have hcoeffThree : point.mass 3 + point.mass 0 + point.mass 1
+      < point.mass 3 / point.weight 3 := by
+    rw [lt_div_iff₀ (point.weight_pos 3)]
+    calc (point.mass 3 + point.mass 0 + point.mass 1) * point.weight 3
+        = point.weight 3 * (point.mass 3 + point.mass 0 + point.mass 1)
+            := by ring
+      _ < point.mass 3 := hdiagEdgeThree
+  have hcoeffFour : point.mass 4 + point.mass 0 + point.mass 2
+      < point.mass 4 / point.weight 4 := by
+    rw [lt_div_iff₀ (point.weight_pos 4)]
+    calc (point.mass 4 + point.mass 0 + point.mass 2) * point.weight 4
+        = point.weight 4 * (point.mass 4 + point.mass 0 + point.mass 2)
+            := by ring
+      _ < point.mass 4 := hdiagEdgeFour
+  have hcoeffFive : point.mass 5 + point.mass 1 + point.mass 2
+      < point.mass 5 / point.weight 5 := by
+    rw [lt_div_iff₀ (point.weight_pos 5)]
+    calc (point.mass 5 + point.mass 1 + point.mass 2) * point.weight 5
+        = point.weight 5 * (point.mass 5 + point.mass 1 + point.mass 2)
+            := by ring
+      _ < point.mass 5 := hdiagEdgeFive
+  have hdiagOnePos : 0 < point.mass 3 / point.weight 3 - point.mass 3
+      - point.mass 0 - point.mass 1 := by linarith
+  have hdiagTwoPos : 0 < point.mass 4 / point.weight 4 - point.mass 4
+      - point.mass 0 - point.mass 2 := by linarith
+  have hdiagThreePos : 0 < point.mass 5 / point.weight 5 - point.mass 5
+      - point.mass 1 - point.mass 2 := by linarith
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun vecArg hne => ?_⟩
+  · exact isHermitian_of_transpose_eq
+      (directionChartGap_transpose kFourDirection point.mass point.weight
+        {3, 4, 5})
+  · rw [star_trivial]
+    have hsomeCoordinateNonzero :
+        vecArg 0 ≠ 0 ∨ vecArg 1 ≠ 0 ∨ vecArg 2 ≠ 0 := by
+      by_contra hallZero
+      push Not at hallZero
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hallZero
+      apply hne
+      funext index
+      fin_cases index
+      · exact hzeroFirst
+      · exact hzeroSecond
+      · exact hzeroThird
+    have hform : vecArg ⬝ᵥ (directionChartGap kFourDirection point.mass
+          point.weight {3, 4, 5} *ᵥ vecArg)
+        = (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+          - point.mass 1) * (vecArg 0) ^ 2 + (point.mass 4 / point.weight 4
+          - point.mass 4 - point.mass 0 - point.mass 2) * (vecArg 1) ^ 2
+          + (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+          - point.mass 2) * (vecArg 2) ^ 2 + 2 * point.mass 0 * ((vecArg 0)
+          * (vecArg 1)) + 2 * point.mass 1 * ((vecArg 0) * (vecArg 2)) + 2
+          * point.mass 2 * ((vecArg 1) * (vecArg 2)) := by
+      rw [kFourGap_treeThreeFourFive_eq]
+      simp [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+      ring
+    rw [hform]
+    exact harmonicSplitQuadraticForm_pos
+      (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+        - point.mass 1)
+      (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+        - point.mass 2)
+      (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+        - point.mass 2)
+      (point.mass 0) (point.mass 1) (point.mass 2)
+      (point.mass 0) (point.mass 1) (point.mass 2)
+      (vecArg 0) (vecArg 1) (vecArg 2)
+      hdiagOnePos hdiagTwoPos hdiagThreePos
+      (point.mass_pos 0) (point.mass_pos 1) (point.mass_pos 2)
+      (by ring) (by ring) (by ring)
+      hdomRowOne hdomRowTwo hdomRowThree
+      hsomeCoordinateNonzero
+
+/-- **The twenty-cell Layer-A dispatch.**  Any of the four star cells or
+the sixteen harmonic cells delivers the chart obligation's conclusion
+outright -- no weak antecedent, no selection rule.  Extends
+`kFourAtlas_hasStrictTriple_of_anyStarCell`; the knife-band cells extend
+this disjunction in turn, never replace it. -/
+theorem kFourAtlas_hasStrictTriple_of_anyCell
+    (point : DirectionChartPoint 6)
+    (hcell :
+      (point.weight 0 * (point.mass 0 + 2 * point.mass 2 + 2 * point.mass 4)
+            < point.mass 0
+        ∧ point.weight 1 * (point.mass 1 + 2 * point.mass 2 + 2
+            * point.mass 5) < point.mass 1
+        ∧ point.weight 3 * (point.mass 3 + 2 * point.mass 4 + 2
+            * point.mass 5) < point.mass 3)
+      ∨ (point.weight 0 * (point.mass 0 + 2 * point.mass 1 + 2
+            * point.mass 3) < point.mass 0
+        ∧ point.weight 2 * (point.mass 2 + 2 * point.mass 1 + 2
+            * point.mass 5) < point.mass 2
+        ∧ point.weight 4 * (point.mass 4 + 2 * point.mass 3 + 2
+            * point.mass 5) < point.mass 4)
+      ∨ (point.weight 1 * (point.mass 1 + 2 * point.mass 0 + 2
+            * point.mass 3) < point.mass 1
+        ∧ point.weight 2 * (point.mass 2 + 2 * point.mass 0 + 2
+            * point.mass 4) < point.mass 2
+        ∧ point.weight 5 * (point.mass 5 + 2 * point.mass 3 + 2
+            * point.mass 4) < point.mass 5)
+      ∨ (point.weight 3 * (point.mass 3 + 2 * point.mass 0 + 2
+            * point.mass 1) < point.mass 3
+        ∧ point.weight 4 * (point.mass 4 + 2 * point.mass 0 + 2
+            * point.mass 2) < point.mass 4
+        ∧ point.weight 5 * (point.mass 5 + 2 * point.mass 1 + 2
+            * point.mass 2) < point.mass 5)
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 2 + point.mass 4)
+            < point.mass 0
+        ∧ point.weight 1 * (point.mass 1 + point.mass 2 + point.mass 5)
+            < point.mass 1
+        ∧ point.weight 3 * (point.mass 3 + point.mass 4 + point.mass 5)
+            < point.mass 3
+        ∧ point.mass 2 * (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 4 - point.mass 5) + point.mass 4
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+            - point.mass 5) < (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 2 - point.mass 5) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 4 - point.mass 5)
+        ∧ point.mass 2 * (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 4 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+            - point.mass 4) < (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 2 - point.mass 4) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 4 - point.mass 5)
+        ∧ point.mass 4 * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 2 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+            - point.mass 4) < (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 2 - point.mass 4) * (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 2 - point.mass 5))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 2 + point.mass 3
+            + point.mass 5) < point.mass 0
+        ∧ point.weight 1 * (point.mass 1 + point.mass 2 + point.mass 5)
+            < point.mass 1
+        ∧ point.weight 4 * (point.mass 4 + point.mass 3 + point.mass 5)
+            < point.mass 4
+        ∧ (point.mass 2 + point.mass 5) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 3 - point.mass 5) + (point.mass 3
+            + point.mass 5) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 2 - point.mass 5) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 2 - point.mass 5)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+            - point.mass 5)
+        ∧ (point.mass 2 + point.mass 5) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 3 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+            - point.mass 3 - point.mass 5) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 2 - point.mass 3 - point.mass 5)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+            - point.mass 5)
+        ∧ (point.mass 3 + point.mass 5) * (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 2 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+            - point.mass 3 - point.mass 5) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 2 - point.mass 3 - point.mass 5)
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+            - point.mass 5))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 2 + point.mass 4)
+            < point.mass 0
+        ∧ point.weight 1 * (point.mass 1 + point.mass 2 + point.mass 3
+            + point.mass 4) < point.mass 1
+        ∧ point.weight 5 * (point.mass 5 + point.mass 3 + point.mass 4)
+            < point.mass 5
+        ∧ (point.mass 2 + point.mass 4) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 3 - point.mass 4) + point.mass 4
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+            - point.mass 3 - point.mass 4) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 2 - point.mass 3 - point.mass 4)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+            - point.mass 4)
+        ∧ (point.mass 2 + point.mass 4) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 3 - point.mass 4) + (point.mass 3
+            + point.mass 4) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 2 - point.mass 4) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 2 - point.mass 4)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+            - point.mass 4)
+        ∧ point.mass 4 * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 2 - point.mass 3 - point.mass 4) + (point.mass 3
+            + point.mass 4) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 2 - point.mass 4) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 2 - point.mass 4)
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+            - point.mass 3 - point.mass 4))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 1 + point.mass 4
+            + point.mass 5) < point.mass 0
+        ∧ point.weight 2 * (point.mass 2 + point.mass 1 + point.mass 5)
+            < point.mass 2
+        ∧ point.weight 3 * (point.mass 3 + point.mass 4 + point.mass 5)
+            < point.mass 3
+        ∧ (point.mass 1 + point.mass 5) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 4 - point.mass 5) + (point.mass 4
+            + point.mass 5) * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 1 - point.mass 5) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 1 - point.mass 5)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+            - point.mass 5)
+        ∧ (point.mass 1 + point.mass 5) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 4 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+            - point.mass 4 - point.mass 5) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 1 - point.mass 4 - point.mass 5)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+            - point.mass 5)
+        ∧ (point.mass 4 + point.mass 5) * (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 1 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+            - point.mass 4 - point.mass 5) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 1 - point.mass 4 - point.mass 5)
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+            - point.mass 5))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 1 + point.mass 3)
+            < point.mass 0
+        ∧ point.weight 2 * (point.mass 2 + point.mass 1 + point.mass 5)
+            < point.mass 2
+        ∧ point.weight 4 * (point.mass 4 + point.mass 3 + point.mass 5)
+            < point.mass 4
+        ∧ point.mass 1 * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 3 - point.mass 5) + point.mass 3
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+            - point.mass 5) < (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 1 - point.mass 5) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 3 - point.mass 5)
+        ∧ point.mass 1 * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 3 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+            - point.mass 3) < (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 1 - point.mass 3) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 3 - point.mass 5)
+        ∧ point.mass 3 * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 1 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+            - point.mass 3) < (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 1 - point.mass 3) * (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 1 - point.mass 5))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 1 + point.mass 3)
+            < point.mass 0
+        ∧ point.weight 2 * (point.mass 2 + point.mass 1 + point.mass 3
+            + point.mass 4) < point.mass 2
+        ∧ point.weight 5 * (point.mass 5 + point.mass 3 + point.mass 4)
+            < point.mass 5
+        ∧ (point.mass 1 + point.mass 3) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 3 - point.mass 4) + point.mass 3
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+            - point.mass 3 - point.mass 4) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 1 - point.mass 3 - point.mass 4)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+            - point.mass 4)
+        ∧ (point.mass 1 + point.mass 3) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 3 - point.mass 4) + (point.mass 3
+            + point.mass 4) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 1 - point.mass 3) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 1 - point.mass 3)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+            - point.mass 4)
+        ∧ point.mass 3 * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 1 - point.mass 3 - point.mass 4) + (point.mass 3
+            + point.mass 4) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 1 - point.mass 3) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 1 - point.mass 3)
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+            - point.mass 3 - point.mass 4))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 2 + point.mass 4)
+            < point.mass 0
+        ∧ point.weight 3 * (point.mass 3 + point.mass 1 + point.mass 2
+            + point.mass 4) < point.mass 3
+        ∧ point.weight 5 * (point.mass 5 + point.mass 1 + point.mass 2)
+            < point.mass 5
+        ∧ (point.mass 2 + point.mass 4) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 1 - point.mass 2) + point.mass 2
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 1
+            - point.mass 2 - point.mass 4) < (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 1 - point.mass 2 - point.mass 4)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+            - point.mass 2)
+        ∧ (point.mass 2 + point.mass 4) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 1 - point.mass 2) + (point.mass 1
+            + point.mass 2) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 2 - point.mass 4) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 2 - point.mass 4)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+            - point.mass 2)
+        ∧ point.mass 2 * (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 1 - point.mass 2 - point.mass 4) + (point.mass 1
+            + point.mass 2) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 2 - point.mass 4) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 2 - point.mass 4)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 1
+            - point.mass 2 - point.mass 4))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 1 + point.mass 3)
+            < point.mass 0
+        ∧ point.weight 4 * (point.mass 4 + point.mass 1 + point.mass 2
+            + point.mass 3) < point.mass 4
+        ∧ point.weight 5 * (point.mass 5 + point.mass 1 + point.mass 2)
+            < point.mass 5
+        ∧ (point.mass 1 + point.mass 3) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 1 - point.mass 2) + point.mass 1
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 1
+            - point.mass 2 - point.mass 3) < (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 1 - point.mass 2 - point.mass 3)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+            - point.mass 2)
+        ∧ (point.mass 1 + point.mass 3) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 1 - point.mass 2) + (point.mass 1
+            + point.mass 2) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 1 - point.mass 3) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 1 - point.mass 3)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+            - point.mass 2)
+        ∧ point.mass 1 * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 1 - point.mass 2 - point.mass 3) + (point.mass 1
+            + point.mass 2) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 1 - point.mass 3) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 1 - point.mass 3)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 1
+            - point.mass 2 - point.mass 3))
+      ∨ (point.weight 1 * (point.mass 1 + point.mass 0 + point.mass 4
+            + point.mass 5) < point.mass 1
+        ∧ point.weight 2 * (point.mass 2 + point.mass 0 + point.mass 4)
+            < point.mass 2
+        ∧ point.weight 3 * (point.mass 3 + point.mass 4 + point.mass 5)
+            < point.mass 3
+        ∧ (point.mass 0 + point.mass 4) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 4 - point.mass 5) + (point.mass 4
+            + point.mass 5) * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 0 - point.mass 4) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 0 - point.mass 4)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+            - point.mass 5)
+        ∧ (point.mass 0 + point.mass 4) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 4 - point.mass 5) + point.mass 4
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+            - point.mass 4 - point.mass 5) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 0 - point.mass 4 - point.mass 5)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+            - point.mass 5)
+        ∧ (point.mass 4 + point.mass 5) * (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 0 - point.mass 4) + point.mass 4
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+            - point.mass 4 - point.mass 5) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 0 - point.mass 4 - point.mass 5)
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+            - point.mass 4))
+      ∨ (point.weight 1 * (point.mass 1 + point.mass 0 + point.mass 3)
+            < point.mass 1
+        ∧ point.weight 2 * (point.mass 2 + point.mass 0 + point.mass 3
+            + point.mass 5) < point.mass 2
+        ∧ point.weight 4 * (point.mass 4 + point.mass 3 + point.mass 5)
+            < point.mass 4
+        ∧ (point.mass 0 + point.mass 3) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 3 - point.mass 5) + point.mass 3
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+            - point.mass 3 - point.mass 5) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 0 - point.mass 3 - point.mass 5)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+            - point.mass 5)
+        ∧ (point.mass 0 + point.mass 3) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 3 - point.mass 5) + (point.mass 3
+            + point.mass 5) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 0 - point.mass 3) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 0 - point.mass 3)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+            - point.mass 5)
+        ∧ point.mass 3 * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 0 - point.mass 3 - point.mass 5) + (point.mass 3
+            + point.mass 5) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 0 - point.mass 3) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 0 - point.mass 3)
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+            - point.mass 3 - point.mass 5))
+      ∨ (point.weight 1 * (point.mass 1 + point.mass 0 + point.mass 3)
+            < point.mass 1
+        ∧ point.weight 2 * (point.mass 2 + point.mass 0 + point.mass 4)
+            < point.mass 2
+        ∧ point.weight 5 * (point.mass 5 + point.mass 3 + point.mass 4)
+            < point.mass 5
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 3 - point.mass 4) + point.mass 3
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+            - point.mass 4) < (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 0 - point.mass 4) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 3 - point.mass 4)
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 3 - point.mass 4) + point.mass 4
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+            - point.mass 3) < (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 0 - point.mass 3) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 3 - point.mass 4)
+        ∧ point.mass 3 * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 0 - point.mass 4) + point.mass 4
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+            - point.mass 3) < (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 0 - point.mass 3) * (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 0 - point.mass 4))
+      ∨ (point.weight 1 * (point.mass 1 + point.mass 2 + point.mass 5)
+            < point.mass 1
+        ∧ point.weight 3 * (point.mass 3 + point.mass 0 + point.mass 2
+            + point.mass 5) < point.mass 3
+        ∧ point.weight 4 * (point.mass 4 + point.mass 0 + point.mass 2)
+            < point.mass 4
+        ∧ (point.mass 2 + point.mass 5) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 0 - point.mass 2) + point.mass 2
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+            - point.mass 2 - point.mass 5) < (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 0 - point.mass 2 - point.mass 5)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+            - point.mass 2)
+        ∧ (point.mass 2 + point.mass 5) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 0 - point.mass 2) + (point.mass 0
+            + point.mass 2) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 2 - point.mass 5) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 2 - point.mass 5)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+            - point.mass 2)
+        ∧ point.mass 2 * (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 0 - point.mass 2 - point.mass 5) + (point.mass 0
+            + point.mass 2) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 2 - point.mass 5) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 2 - point.mass 5)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+            - point.mass 2 - point.mass 5))
+      ∨ (point.weight 1 * (point.mass 1 + point.mass 0 + point.mass 3)
+            < point.mass 1
+        ∧ point.weight 4 * (point.mass 4 + point.mass 0 + point.mass 2)
+            < point.mass 4
+        ∧ point.weight 5 * (point.mass 5 + point.mass 0 + point.mass 2
+            + point.mass 3) < point.mass 5
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 0 - point.mass 2 - point.mass 3) + (point.mass 0
+            + point.mass 3) * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 0 - point.mass 2) < (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 0 - point.mass 2)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 0
+            - point.mass 2 - point.mass 3)
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 0 - point.mass 2 - point.mass 3) + (point.mass 0
+            + point.mass 2) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 0 - point.mass 3) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 0 - point.mass 3)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 0
+            - point.mass 2 - point.mass 3)
+        ∧ (point.mass 0 + point.mass 3) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 0 - point.mass 2) + (point.mass 0
+            + point.mass 2) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 0 - point.mass 3) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 0 - point.mass 3)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+            - point.mass 2))
+      ∨ (point.weight 2 * (point.mass 2 + point.mass 1 + point.mass 5)
+            < point.mass 2
+        ∧ point.weight 3 * (point.mass 3 + point.mass 0 + point.mass 1)
+            < point.mass 3
+        ∧ point.weight 4 * (point.mass 4 + point.mass 0 + point.mass 1
+            + point.mass 5) < point.mass 4
+        ∧ point.mass 1 * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 0 - point.mass 1 - point.mass 5) + (point.mass 1
+            + point.mass 5) * (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 0 - point.mass 1) < (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 0 - point.mass 1)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+            - point.mass 1 - point.mass 5)
+        ∧ point.mass 1 * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 0 - point.mass 1 - point.mass 5) + (point.mass 0
+            + point.mass 1) * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 1 - point.mass 5) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 1 - point.mass 5)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+            - point.mass 1 - point.mass 5)
+        ∧ (point.mass 1 + point.mass 5) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 0 - point.mass 1) + (point.mass 0
+            + point.mass 1) * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 1 - point.mass 5) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 1 - point.mass 5)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+            - point.mass 1))
+      ∨ (point.weight 2 * (point.mass 2 + point.mass 0 + point.mass 4)
+            < point.mass 2
+        ∧ point.weight 3 * (point.mass 3 + point.mass 0 + point.mass 1)
+            < point.mass 3
+        ∧ point.weight 5 * (point.mass 5 + point.mass 0 + point.mass 1
+            + point.mass 4) < point.mass 5
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 0 - point.mass 1 - point.mass 4) + (point.mass 0
+            + point.mass 4) * (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 0 - point.mass 1) < (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 0 - point.mass 1)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 0
+            - point.mass 1 - point.mass 4)
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 0 - point.mass 1 - point.mass 4) + (point.mass 0
+            + point.mass 1) * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 0 - point.mass 4) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 0 - point.mass 4)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 0
+            - point.mass 1 - point.mass 4)
+        ∧ (point.mass 0 + point.mass 4) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 0 - point.mass 1) + (point.mass 0
+            + point.mass 1) * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 0 - point.mass 4) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 0 - point.mass 4)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+            - point.mass 1))
+      ∨ (point.weight 3 * (point.mass 3 + point.mass 0 + point.mass 1)
+            < point.mass 3
+        ∧ point.weight 4 * (point.mass 4 + point.mass 0 + point.mass 2)
+            < point.mass 4
+        ∧ point.weight 5 * (point.mass 5 + point.mass 1 + point.mass 2)
+            < point.mass 5
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 1 - point.mass 2) + point.mass 1
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+            - point.mass 2) < (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 0 - point.mass 2) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 1 - point.mass 2)
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 1 - point.mass 2) + point.mass 2
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+            - point.mass 1) < (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 0 - point.mass 1) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 1 - point.mass 2)
+        ∧ point.mass 1 * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 0 - point.mass 2) + point.mass 2
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+            - point.mass 1) < (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 0 - point.mass 1) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 0 - point.mass 2))) :
+    ∃ selected : Finset (Fin 6), selected.card = 3 ∧
+      (directionChartGap kFourDirection point.mass point.weight
+        selected).PosDef := by
+  rcases hcell with ⟨hFirst, hSecond, hThird⟩ | ⟨hFirst, hSecond, hThird⟩ |
+    ⟨hFirst, hSecond, hThird⟩ | ⟨hFirst, hSecond, hThird⟩ | ⟨hFirst,
+    hSecond, hThird, hFourth, hFifth, hSixth⟩ | ⟨hFirst, hSecond, hThird,
+    hFourth, hFifth, hSixth⟩ | ⟨hFirst, hSecond, hThird, hFourth, hFifth,
+    hSixth⟩ | ⟨hFirst, hSecond, hThird, hFourth, hFifth, hSixth⟩ | ⟨hFirst,
+    hSecond, hThird, hFourth, hFifth, hSixth⟩ | ⟨hFirst, hSecond, hThird,
+    hFourth, hFifth, hSixth⟩ | ⟨hFirst, hSecond, hThird, hFourth, hFifth,
+    hSixth⟩ | ⟨hFirst, hSecond, hThird, hFourth, hFifth, hSixth⟩ | ⟨hFirst,
+    hSecond, hThird, hFourth, hFifth, hSixth⟩ | ⟨hFirst, hSecond, hThird,
+    hFourth, hFifth, hSixth⟩ | ⟨hFirst, hSecond, hThird, hFourth, hFifth,
+    hSixth⟩ | ⟨hFirst, hSecond, hThird, hFourth, hFifth, hSixth⟩ | ⟨hFirst,
+    hSecond, hThird, hFourth, hFifth, hSixth⟩ | ⟨hFirst, hSecond, hThird,
+    hFourth, hFifth, hSixth⟩ | ⟨hFirst, hSecond, hThird, hFourth, hFifth,
+    hSixth⟩ | ⟨hFirst, hSecond, hThird, hFourth, hFifth, hSixth⟩
+  · exact ⟨{0, 1, 3}, by decide,
+      kFourAtlas_starNodeOne_posDef_of_cell point hFirst hSecond hThird⟩
+  · exact ⟨{0, 2, 4}, by decide,
+      kFourAtlas_starNodeTwo_posDef_of_cell point hFirst hSecond hThird⟩
+  · exact ⟨{1, 2, 5}, by decide,
+      kFourAtlas_starNodeThree_posDef_of_cell point hFirst hSecond hThird⟩
+  · exact ⟨{3, 4, 5}, by decide,
+      kFourAtlas_starNodeFour_posDef_of_cell point hFirst hSecond hThird⟩
+  · exact ⟨{0, 1, 3}, by decide,
+      kFourAtlas_harmonicZeroOneThree_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{0, 1, 4}, by decide,
+      kFourAtlas_harmonicZeroOneFour_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{0, 1, 5}, by decide,
+      kFourAtlas_harmonicZeroOneFive_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{0, 2, 3}, by decide,
+      kFourAtlas_harmonicZeroTwoThree_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{0, 2, 4}, by decide,
+      kFourAtlas_harmonicZeroTwoFour_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{0, 2, 5}, by decide,
+      kFourAtlas_harmonicZeroTwoFive_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{0, 3, 5}, by decide,
+      kFourAtlas_harmonicZeroThreeFive_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{0, 4, 5}, by decide,
+      kFourAtlas_harmonicZeroFourFive_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{1, 2, 3}, by decide,
+      kFourAtlas_harmonicOneTwoThree_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{1, 2, 4}, by decide,
+      kFourAtlas_harmonicOneTwoFour_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{1, 2, 5}, by decide,
+      kFourAtlas_harmonicOneTwoFive_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{1, 3, 4}, by decide,
+      kFourAtlas_harmonicOneThreeFour_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{1, 4, 5}, by decide,
+      kFourAtlas_harmonicOneFourFive_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{2, 3, 4}, by decide,
+      kFourAtlas_harmonicTwoThreeFour_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{2, 3, 5}, by decide,
+      kFourAtlas_harmonicTwoThreeFive_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+  · exact ⟨{3, 4, 5}, by decide,
+      kFourAtlas_harmonicThreeFourFive_posDef_of_cell point hFirst hSecond hThird hFourth hFifth
+        hSixth⟩
+
+
+/-! ## The leverage layer: the contraction tree polynomial, the designated
+leverage edge, and the surviving leverage-hosted selection
+
+The determinant currency of the chart gap factors through the weights only:
+with `y_c = mass c / weight c` Cauchy-Binet over the totally unimodular K4
+tree basis gives `det G_T = sum over trees S of y_S * c(S, T)` where
+`c(S, T) = prod_{c in S cap T} (1 - w_c) * prod_{c in S \ T} (-w_c)`.  The
+round-four campaign proved this route CLOSED in its linear form: at every
+mandatory point and every knife-corpus point there is an exact rational
+dual `z >= 0` with `sum_S z_S c(S, T) < 0` for all sixteen trees, so no
+nonnegative tree aggregate with y-free coefficients can certify even the
+det-positivity half of the endgame; the toric product structure
+`y_S = prod y_c` is load-bearing (lane record `/tmp/gtz-chain/wfk4/detmax/`).
+
+What survives is a POLYNOMIAL leverage structure.  For the mass Laplacian
+`M = sum_c mass_c A_c` the matrix-determinant lemma and Cauchy-Binet give,
+with no inverse anywhere,
+
+* `det M = kFourMassTreeSum mass` (the sixteen tree mass-products),
+* `u_c^T adj(M) u_c = kFourContractionTreePolynomial mass c` (the weighted
+  spanning-tree polynomial of the contraction `K4/c`: eight two-edge
+  products), and
+* `mass_c * kFourContractionTreePolynomial mass c` = the tree mass-sum
+  THROUGH `c`, so the statistical leverage score of atom `c` is exactly
+  `mass_c * Q_c / kFourMassTreeSum mass` and the scores sum to `3`
+  (`kFourLeverage_sumIdentity`, a ring fact).
+
+The designated LEVERAGE EDGE maximizes `mass_c * Q_c / weight_c`
+(`IsMaxLeverageEdge`, stated cross-multiplied; an argmax always exists).
+The pigeonhole `isMaxLeverageEdge_leverageFloor` gives
+`3 * w_e * treeSum <= mass_e * Q_e` there: every tree through the leverage
+edge clears the floor `2 * det M` in its leverage term.  This designation
+is a JOINT polynomial functional of all six masses, so it is compatible
+with the kernel refutations of every per-label scalar ordering above; and
+unlike all of them it SURVIVES both landed refuter points in kernel below
+(edge `5` is the leverage edge at both, hosting `{0, 4, 5}` at
+`maxEdgeRefuterPoint` and the landed `{3, 4, 5}` at
+`heavyPairRefuterPoint`).  Adjudication record: the hosting statement
+`KFourLeverageEdgeHostsStrictTree` holds at all fifteen mandatory points,
+all 467 knife-corpus leftovers, and 2900 fresh exact adversarial points
+(tetraShell, sliver, triangleCloser, twoHeavyMass, knifeEdge, multiscale,
+generic) with zero failures -- the first surviving selection with a
+designated edge.  It is UNPROVED vocabulary with the consumption bridge
+`directionChartIsTieFree_kFour_of_leverageEdgeHosts` proved below.
+
+The det normal form `kFourGapDet_treeThreeFourFive_leverageForm` displays
+the leverage reduction at the gauge star: the gap determinant splits into
+the through-tree leverage terms minus the tree sum minus three exchange
+terms (each an adjacent-tree mass-product), and the corollary
+`kFourGapDet_treeThreeFourFive_pos_of_exchangeBound` states the reduced
+residual obligation in kernel: past the leverage floor, det-positivity at
+the gauge star is exactly an exchange bound. -/
+
+/-- The spanning-tree mass polynomial of the K4 chart: the sum of the
+sixteen tree mass-products.  Equals `det (sum_c mass_c A_c)` by
+Cauchy-Binet (sympy-verified; the kernel consumes only the polynomial). -/
+noncomputable def kFourMassTreeSum (massVec : Fin 6 → ℝ) : ℝ :=
+  massVec 0 * massVec 1 * massVec 3 + massVec 0 * massVec 2 * massVec 4
+    + massVec 1 * massVec 2 * massVec 5 + massVec 3 * massVec 4 * massVec 5
+    + massVec 0 * massVec 1 * massVec 4 + massVec 0 * massVec 1 * massVec 5
+    + massVec 0 * massVec 2 * massVec 3 + massVec 0 * massVec 2 * massVec 5
+    + massVec 0 * massVec 3 * massVec 5 + massVec 0 * massVec 4 * massVec 5
+    + massVec 1 * massVec 2 * massVec 3 + massVec 1 * massVec 2 * massVec 4
+    + massVec 1 * massVec 3 * massVec 4 + massVec 1 * massVec 4 * massVec 5
+    + massVec 2 * massVec 3 * massVec 4 + massVec 2 * massVec 3 * massVec 5
+
+/-- The weighted spanning-tree polynomial of the contraction `K4/c`: the
+two parallel classes of `K4/c` multiply and the opposite edge couples to
+their union.  Equals `u_c^T adj(M) u_c` for the mass Laplacian `M`
+(matrix-determinant lemma, sympy-verified), and
+`massVec c * kFourContractionTreePolynomial massVec c` is the sum of the
+eight tree mass-products through `c`. -/
+noncomputable def kFourContractionTreePolynomial (massVec : Fin 6 → ℝ) :
+    Fin 6 → ℝ
+  | 0 => (massVec 1 + massVec 2) * (massVec 3 + massVec 4)
+      + massVec 5 * (massVec 1 + massVec 2 + massVec 3 + massVec 4)
+  | 1 => (massVec 0 + massVec 2) * (massVec 3 + massVec 5)
+      + massVec 4 * (massVec 0 + massVec 2 + massVec 3 + massVec 5)
+  | 2 => (massVec 0 + massVec 1) * (massVec 4 + massVec 5)
+      + massVec 3 * (massVec 0 + massVec 1 + massVec 4 + massVec 5)
+  | 3 => (massVec 0 + massVec 4) * (massVec 1 + massVec 5)
+      + massVec 2 * (massVec 0 + massVec 4 + massVec 1 + massVec 5)
+  | 4 => (massVec 0 + massVec 3) * (massVec 2 + massVec 5)
+      + massVec 1 * (massVec 0 + massVec 3 + massVec 2 + massVec 5)
+  | 5 => (massVec 1 + massVec 3) * (massVec 2 + massVec 4)
+      + massVec 0 * (massVec 1 + massVec 3 + massVec 2 + massVec 4)
+
+theorem kFourContractionTreePolynomial_zero (massVec : Fin 6 → ℝ) :
+    kFourContractionTreePolynomial massVec 0
+      = (massVec 1 + massVec 2) * (massVec 3 + massVec 4)
+        + massVec 5 * (massVec 1 + massVec 2 + massVec 3 + massVec 4) := rfl
+
+theorem kFourContractionTreePolynomial_one (massVec : Fin 6 → ℝ) :
+    kFourContractionTreePolynomial massVec 1
+      = (massVec 0 + massVec 2) * (massVec 3 + massVec 5)
+        + massVec 4 * (massVec 0 + massVec 2 + massVec 3 + massVec 5) := rfl
+
+theorem kFourContractionTreePolynomial_two (massVec : Fin 6 → ℝ) :
+    kFourContractionTreePolynomial massVec 2
+      = (massVec 0 + massVec 1) * (massVec 4 + massVec 5)
+        + massVec 3 * (massVec 0 + massVec 1 + massVec 4 + massVec 5) := rfl
+
+theorem kFourContractionTreePolynomial_three (massVec : Fin 6 → ℝ) :
+    kFourContractionTreePolynomial massVec 3
+      = (massVec 0 + massVec 4) * (massVec 1 + massVec 5)
+        + massVec 2 * (massVec 0 + massVec 4 + massVec 1 + massVec 5) := rfl
+
+theorem kFourContractionTreePolynomial_four (massVec : Fin 6 → ℝ) :
+    kFourContractionTreePolynomial massVec 4
+      = (massVec 0 + massVec 3) * (massVec 2 + massVec 5)
+        + massVec 1 * (massVec 0 + massVec 3 + massVec 2 + massVec 5) := rfl
+
+theorem kFourContractionTreePolynomial_five (massVec : Fin 6 → ℝ) :
+    kFourContractionTreePolynomial massVec 5
+      = (massVec 1 + massVec 3) * (massVec 2 + massVec 4)
+        + massVec 0 * (massVec 1 + massVec 3 + massVec 2 + massVec 4) := rfl
+
+/-- The tree mass-sum is positive at positive masses: the floor of the
+leverage pigeonhole is never vacuous. -/
+theorem kFourMassTreeSum_pos (massVec : Fin 6 → ℝ)
+    (hmassPos : ∀ label, 0 < massVec label) :
+    0 < kFourMassTreeSum massVec := by
+  have hzero := hmassPos 0
+  have hone := hmassPos 1
+  have htwo := hmassPos 2
+  have hthree := hmassPos 3
+  have hfour := hmassPos 4
+  have hfive := hmassPos 5
+  unfold kFourMassTreeSum
+  positivity
+
+/-- **The leverage trace identity.**  The six leverage numerators sum to
+three times the tree sum: each tree is counted once per edge.  This is the
+polynomial face of `tr(M^{-1} M) = 3` for the mass Laplacian. -/
+theorem kFourLeverage_sumIdentity (massVec : Fin 6 → ℝ) :
+    massVec 0 * kFourContractionTreePolynomial massVec 0
+      + massVec 1 * kFourContractionTreePolynomial massVec 1
+      + massVec 2 * kFourContractionTreePolynomial massVec 2
+      + massVec 3 * kFourContractionTreePolynomial massVec 3
+      + massVec 4 * kFourContractionTreePolynomial massVec 4
+      + massVec 5 * kFourContractionTreePolynomial massVec 5
+    = 3 * kFourMassTreeSum massVec := by
+  simp only [kFourContractionTreePolynomial_zero,
+    kFourContractionTreePolynomial_one, kFourContractionTreePolynomial_two,
+    kFourContractionTreePolynomial_three, kFourContractionTreePolynomial_four,
+    kFourContractionTreePolynomial_five, kFourMassTreeSum]
+  ring
+
+/-- `edge` attains the maximum leverage ratio
+`mass * kFourContractionTreePolynomial / weight` at the chart point, stated
+cross-multiplied (weights are positive).  Unlike the refuted conductance,
+alpha, and mass designations, this reads a JOINT polynomial of all six
+masses. -/
+def IsMaxLeverageEdge (point : DirectionChartPoint 6) (edge : Fin 6) : Prop :=
+  ∀ label,
+    point.mass label * kFourContractionTreePolynomial point.mass label
+        * point.weight edge
+      ≤ point.mass edge * kFourContractionTreePolynomial point.mass edge
+        * point.weight label
+
+/-- A leverage edge always exists: finite argmax of the ratio. -/
+theorem exists_isMaxLeverageEdge (point : DirectionChartPoint 6) :
+    ∃ edge, IsMaxLeverageEdge point edge := by
+  obtain ⟨edge, -, hmax⟩ := Finset.exists_max_image
+    (Finset.univ : Finset (Fin 6))
+    (fun label => point.mass label
+      * kFourContractionTreePolynomial point.mass label
+      / point.weight label) Finset.univ_nonempty
+  refine ⟨edge, fun label => ?_⟩
+  have hratio := hmax label (Finset.mem_univ label)
+  rw [div_le_div_iff₀ (point.weight_pos label) (point.weight_pos edge)]
+    at hratio
+  exact hratio
+
+/-- **The leverage pigeonhole.**  The scores sum to `3` while the weights
+sum to `1`, so the leverage edge clears three times its weight share:
+`3 * w_e * treeSum <= mass_e * Q_e`.  Consequently every spanning tree
+through the leverage edge has its leverage term at least `3 * det M`, a
+floor of `2 * det M` past the tree-sum subtraction. -/
+theorem isMaxLeverageEdge_leverageFloor (point : DirectionChartPoint 6)
+    {edge : Fin 6} (hmax : IsMaxLeverageEdge point edge) :
+    3 * point.weight edge * kFourMassTreeSum point.mass
+      ≤ point.mass edge * kFourContractionTreePolynomial point.mass edge := by
+  have hsum := kFourLeverage_sumIdentity point.mass
+  have hweight := point.weight_sum_one
+  rw [Fin.sum_univ_six] at hweight
+  have hscaled : (point.mass 0 * kFourContractionTreePolynomial point.mass 0
+        + point.mass 1 * kFourContractionTreePolynomial point.mass 1
+        + point.mass 2 * kFourContractionTreePolynomial point.mass 2
+        + point.mass 3 * kFourContractionTreePolynomial point.mass 3
+        + point.mass 4 * kFourContractionTreePolynomial point.mass 4
+        + point.mass 5 * kFourContractionTreePolynomial point.mass 5)
+          * point.weight edge
+      ≤ point.mass edge * kFourContractionTreePolynomial point.mass edge
+          * (point.weight 0 + point.weight 1 + point.weight 2
+            + point.weight 3 + point.weight 4 + point.weight 5) := by
+    have hzero := hmax 0
+    have hone := hmax 1
+    have htwo := hmax 2
+    have hthree := hmax 3
+    have hfour := hmax 4
+    have hfive := hmax 5
+    ring_nf
+    ring_nf at hzero hone htwo hthree hfour hfive
+    linarith
+  rw [hsum, hweight] at hscaled
+  linarith
+
+/-- **The surviving leverage-hosted selection.**  At every chart point the
+leverage edge hosts a strictly dominating spanning tree.  The designation
+is a joint polynomial comparison, so it is compatible with every kernel
+refutation of per-label orderings; it survives both refuter points (in
+kernel below), the full mandatory battery, the 467-point knife corpus, and
+2900 fresh adversarial points with zero failures.  UNPROVED vocabulary;
+proving it (or `KFourEdgeDetArgmaxHostsStrictTree`, or the selection-free
+`KFourSomeTreeLiftThreshold`) is the residual K4 endgame. -/
+def KFourLeverageEdgeHostsStrictTree : Prop :=
+  ∀ (point : DirectionChartPoint 6) (edge : Fin 6),
+    IsMaxLeverageEdge point edge →
+      ∃ tree ∈ kFourSpanningTreeList, edge ∈ tree ∧
+        (directionChartGap kFourDirection point.mass point.weight
+          tree).PosDef
+
+/-- **The leverage selection's consumption bridge.**  The leverage-hosted
+selection closes the chart obligation (the argmax data and the weak
+antecedent are discarded pointwise, per the standing forbidden-route law). -/
+theorem directionChartIsTieFree_kFour_of_leverageEdgeHosts
+    (hhost : KFourLeverageEdgeHostsStrictTree) :
+    DirectionChartIsTieFree kFourDirection := by
+  intro point _hweak
+  obtain ⟨edge, hmax⟩ := exists_isMaxLeverageEdge point
+  obtain ⟨tree, htreeMem, _hedgeMem, hposDef⟩ := hhost point edge hmax
+  have hcard : tree.card = 3 := by
+    have hall : ∀ candidate ∈ kFourSpanningTreeList, candidate.card = 3 := by
+      decide
+    exact hall tree htreeMem
+  exact ⟨tree, hcard, hposDef⟩
+
+/-! ### The leverage selection is ALIVE at both landed refuter points
+
+At `maxEdgeRefuterPoint` (which kernel-kills the conductance and alpha
+designations) and at `heavyPairRefuterPoint` (which kernel-kills the
+dominant-mass-pair designation) the leverage edge is `5`, away from the
+broken argmax edge `3` in both cases, and it hosts: `{0, 4, 5}` dominates
+strictly at the first, the landed `{3, 4, 5}` at the second. -/
+
+/-- Edge `5` is the leverage edge at the landed max-edge refuter. -/
+theorem maxEdgeRefuter_isMaxLeverageEdge_five :
+    IsMaxLeverageEdge maxEdgeRefuterPoint 5 := by
+  intro label
+  fin_cases label <;>
+    norm_num [kFourContractionTreePolynomial, maxEdgeRefuterMass,
+      maxEdgeRefuterWeight]
+
+/-- The `{0,4,5}` chart gap at `maxEdgeRefuterPoint`, entry by entry. -/
+theorem maxEdgeRefuter_gap_zeroFourFive_eq :
+    directionChartGap kFourDirection maxEdgeRefuterPoint.mass
+        maxEdgeRefuterPoint.weight {0, 4, 5}
+      = !![839/60, -24, 1/60; -24, 5039/60, 1/60; 1/60, 1/60, 19/20] := by
+  simp only [directionChartGap, maxEdgeRefuterPoint_mass_eq,
+    maxEdgeRefuterPoint_weight_eq]
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+    Finset.sum_singleton, Fin.sum_univ_six]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.sub_apply] <;>
+    norm_num
+
+/-- The through-leverage-edge tree `{0, 4, 5}` dominates strictly at the
+max-edge refuter (leading minors `839/60`, `2154121/3600`,
+`122776139/216000`). -/
+theorem maxEdgeRefuter_gap_zeroFourFive_posDef :
+    (directionChartGap kFourDirection maxEdgeRefuterPoint.mass
+      maxEdgeRefuterPoint.weight {0, 4, 5}).PosDef := by
+  rw [maxEdgeRefuter_gap_zeroFourFive_eq]
+  refine posDef_of_leadingMinors_fin_three (839/60) (-24) (1/60) (5039/60)
+    (1/60) (19/20) (by norm_num) (by norm_num) (by norm_num)
+
+/-- The leverage edge HOSTS at the point that kernel-killed the
+conductance and alpha designations. -/
+theorem maxEdgeRefuterPoint_leverageEdge_hostsStrictTree :
+    ∃ tree ∈ kFourSpanningTreeList, (5 : Fin 6) ∈ tree ∧
+      (directionChartGap kFourDirection maxEdgeRefuterPoint.mass
+        maxEdgeRefuterPoint.weight tree).PosDef :=
+  ⟨{0, 4, 5}, by decide, by decide, maxEdgeRefuter_gap_zeroFourFive_posDef⟩
+
+/-- Edge `5` is the leverage edge at the dual (heavy-pair) refuter too. -/
+theorem heavyPairRefuter_isMaxLeverageEdge_five :
+    IsMaxLeverageEdge heavyPairRefuterPoint 5 := by
+  intro label
+  fin_cases label <;>
+    norm_num [kFourContractionTreePolynomial, heavyPairRefuterMass,
+      maxEdgeRefuterWeight]
+
+/-- The leverage edge HOSTS at the point that kernel-killed the
+dominant-mass-pair designation: the landed `{3, 4, 5}` certificate is a
+through-`5` tree. -/
+theorem heavyPairRefuterPoint_leverageEdge_hostsStrictTree :
+    ∃ tree ∈ kFourSpanningTreeList, (5 : Fin 6) ∈ tree ∧
+      (directionChartGap kFourDirection heavyPairRefuterPoint.mass
+        heavyPairRefuterPoint.weight tree).PosDef :=
+  ⟨{3, 4, 5}, by decide, by decide, heavyPairRefuter_gap_threeFourFive_posDef⟩
+
+/-! ### The det leverage normal form at the gauge star
+
+The gap determinant of `{3, 4, 5}` splits into the three through-tree
+leverage terms minus the tree sum, minus three exchange terms (each pairing
+a chord mass with the adjacent-tree product), all times the tree's weight
+product.  At a chart point the closer factor `1 - w3 - w4 - w5` equals
+`w0 + w1 + w2`.  With the leverage floor at edge `5` the tree-sum
+subtraction is over-paid, and det-positivity at the gauge star reduces to
+one exchange bound -- the kernel-precise residual obligation of the
+leverage program. -/
+
+/-- The `{3,4,5}` gap determinant in leverage normal form (free identity,
+no chart constraint: the closer factor appears as `1 - w3 - w4 - w5`). -/
+theorem kFourGapDet_treeThreeFourFive_leverageForm
+    (point : DirectionChartPoint 6) :
+    (directionChartGap kFourDirection point.mass point.weight {3, 4, 5}).det
+        * (point.weight 3 * point.weight 4 * point.weight 5)
+      = point.mass 3 * point.mass 4 * point.mass 5
+            * (1 - point.weight 3 - point.weight 4 - point.weight 5)
+        - (point.mass 0 + point.mass 1) * point.mass 4 * point.mass 5
+            * point.weight 3
+        - (point.mass 0 + point.mass 2) * point.mass 3 * point.mass 5
+            * point.weight 4
+        - (point.mass 1 + point.mass 2) * point.mass 3 * point.mass 4
+            * point.weight 5
+        + point.mass 3 * kFourContractionTreePolynomial point.mass 3
+            * (point.weight 4 * point.weight 5)
+        + point.mass 4 * kFourContractionTreePolynomial point.mass 4
+            * (point.weight 3 * point.weight 5)
+        + point.mass 5 * kFourContractionTreePolynomial point.mass 5
+            * (point.weight 3 * point.weight 4)
+        - point.weight 3 * point.weight 4 * point.weight 5
+            * kFourMassTreeSum point.mass := by
+  have hthreeNe : point.weight 3 ≠ 0 := ne_of_gt (point.weight_pos 3)
+  have hfourNe : point.weight 4 ≠ 0 := ne_of_gt (point.weight_pos 4)
+  have hfiveNe : point.weight 5 ≠ 0 := ne_of_gt (point.weight_pos 5)
+  rw [kFourGap_treeThreeFourFive_eq]
+  simp only [kFourContractionTreePolynomial_three,
+    kFourContractionTreePolynomial_four, kFourContractionTreePolynomial_five,
+    kFourMassTreeSum]
+  simp [Matrix.det_fin_three]
+  field_simp
+  ring
+
+/-- **The reduced residual obligation at the gauge star.**  Given the
+leverage floor at edge `5` and the exchange bound (the three exchange
+terms below the retained leverage terms plus twice the weighted tree sum),
+the `{3,4,5}` gap determinant is positive.  This is the exact shape the
+K-term round must prove for the leverage program to close its
+det-positivity half at star-designated points. -/
+theorem kFourGapDet_treeThreeFourFive_pos_of_exchangeBound
+    (point : DirectionChartPoint 6)
+    (hfloor : 3 * point.weight 5 * kFourMassTreeSum point.mass
+      ≤ point.mass 5 * kFourContractionTreePolynomial point.mass 5)
+    (hexchange : (point.mass 0 + point.mass 1) * point.mass 4 * point.mass 5
+          * point.weight 3
+        + (point.mass 0 + point.mass 2) * point.mass 3 * point.mass 5
+          * point.weight 4
+        + (point.mass 1 + point.mass 2) * point.mass 3 * point.mass 4
+          * point.weight 5
+      < point.mass 3 * point.mass 4 * point.mass 5
+            * (1 - point.weight 3 - point.weight 4 - point.weight 5)
+        + point.mass 3 * kFourContractionTreePolynomial point.mass 3
+            * (point.weight 4 * point.weight 5)
+        + point.mass 4 * kFourContractionTreePolynomial point.mass 4
+            * (point.weight 3 * point.weight 5)
+        + 2 * (point.weight 3 * point.weight 4 * point.weight 5)
+            * kFourMassTreeSum point.mass) :
+    0 < (directionChartGap kFourDirection point.mass point.weight
+      {3, 4, 5}).det := by
+  have hform := kFourGapDet_treeThreeFourFive_leverageForm point
+  have hpairPos : 0 < point.weight 3 * point.weight 4 :=
+    mul_pos (point.weight_pos 3) (point.weight_pos 4)
+  have hproductPos : 0 < point.weight 3 * point.weight 4 * point.weight 5 :=
+    mul_pos hpairPos (point.weight_pos 5)
+  have hboost := mul_le_mul_of_nonneg_right hfloor hpairPos.le
+  by_contra hnot
+  have hnonpos : (directionChartGap kFourDirection point.mass point.weight
+      {3, 4, 5}).det ≤ 0 := not_lt.mp hnot
+  have hdetTimesWeights : (directionChartGap kFourDirection point.mass
+        point.weight {3, 4, 5}).det
+        * (point.weight 3 * point.weight 4 * point.weight 5) ≤ 0 :=
+    mul_nonpos_iff.mpr (Or.inr ⟨hnonpos, hproductPos.le⟩)
+  nlinarith [hform, hboost, hexchange, hdetTimesWeights]
+
 end Gtz

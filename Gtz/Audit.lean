@@ -15600,6 +15600,60 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.maxEdgeRefuterPoint_satisfiesStarNodeTwoCell
 #print axioms Gtz.maxEdgeRefuterPoint_hasStrictTriple_viaAtlas
 #print axioms Gtz.tetrahedronChartPoint_satisfiesStarNodeFourCell
+-- Design/KFourChartClosure, stage 4: atlas Layer A completed --
+-- the six missing entrywise gap matrices (off-edge-5 path trees),
+-- the scale-free harmonic engine (Jacobi-scaled dominance through
+-- the splitting engine, division bookkeeping spent once), all
+-- sixteen HARMONIC(T) cells, and the twenty-cell dispatch.
+#print axioms Gtz.kFourGap_treeZeroOneFour_eq
+#print axioms Gtz.kFourGap_treeZeroTwoThree_eq
+#print axioms Gtz.kFourGap_treeOneTwoThree_eq
+#print axioms Gtz.kFourGap_treeOneTwoFour_eq
+#print axioms Gtz.kFourGap_treeOneThreeFour_eq
+#print axioms Gtz.kFourGap_treeTwoThreeFour_eq
+#print axioms Gtz.harmonicSplitQuadraticForm_pos
+#print axioms Gtz.kFourAtlas_harmonicZeroOneThree_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicZeroOneFour_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicZeroOneFive_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicZeroTwoThree_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicZeroTwoFour_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicZeroTwoFive_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicZeroThreeFive_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicZeroFourFive_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicOneTwoThree_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicOneTwoFour_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicOneTwoFive_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicOneThreeFour_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicOneFourFive_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicTwoThreeFour_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicTwoThreeFive_posDef_of_cell
+#print axioms Gtz.kFourAtlas_harmonicThreeFourFive_posDef_of_cell
+#print axioms Gtz.kFourAtlas_hasStrictTriple_of_anyCell
+-- Design/KFourChartClosure, stage 4 selection: the leverage layer --
+-- the contraction tree polynomial and mass tree-sum, the trace
+-- identity, the designated leverage edge with pigeonhole floor, the
+-- surviving leverage-hosted selection Prop with proved consumption
+-- bridge, kernel liveness at both landed refuter points, and the
+-- gauge-star det normal form with the exchange-bound residual.
+#print axioms Gtz.kFourContractionTreePolynomial_zero
+#print axioms Gtz.kFourContractionTreePolynomial_one
+#print axioms Gtz.kFourContractionTreePolynomial_two
+#print axioms Gtz.kFourContractionTreePolynomial_three
+#print axioms Gtz.kFourContractionTreePolynomial_four
+#print axioms Gtz.kFourContractionTreePolynomial_five
+#print axioms Gtz.kFourMassTreeSum_pos
+#print axioms Gtz.kFourLeverage_sumIdentity
+#print axioms Gtz.exists_isMaxLeverageEdge
+#print axioms Gtz.isMaxLeverageEdge_leverageFloor
+#print axioms Gtz.directionChartIsTieFree_kFour_of_leverageEdgeHosts
+#print axioms Gtz.maxEdgeRefuter_isMaxLeverageEdge_five
+#print axioms Gtz.maxEdgeRefuter_gap_zeroFourFive_eq
+#print axioms Gtz.maxEdgeRefuter_gap_zeroFourFive_posDef
+#print axioms Gtz.maxEdgeRefuterPoint_leverageEdge_hostsStrictTree
+#print axioms Gtz.heavyPairRefuter_isMaxLeverageEdge_five
+#print axioms Gtz.heavyPairRefuterPoint_leverageEdge_hostsStrictTree
+#print axioms Gtz.kFourGapDet_treeThreeFourFive_leverageForm
+#print axioms Gtz.kFourGapDet_treeThreeFourFive_pos_of_exchangeBound
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
