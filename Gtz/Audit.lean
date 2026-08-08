@@ -445,6 +445,7 @@ import Gtz.Design.PairDifferenceCover
 import Gtz.Design.TightAntecedentMining
 import Gtz.Design.OneLineShadow
 import Gtz.Design.GeneralRankAveraging
+import Gtz.Design.ComplementEngine
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
@@ -15925,6 +15926,16 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.sum_shareSurplusOf
 #print axioms Gtz.two_mul_sum_shareSurplusOf_thresholdCell
 #print axioms Gtz.sum_shareSurplusOf_thresholdCell_eq_zero_iff
+
+-- Design/ComplementEngine, the BALANCE-side certificate.  The shipped
+-- concentration-side engine `Gtz.exists_pos_discriminantTie_of_pos_surplusForm`
+-- needs an atom of above-half leverage share, and `Gtz.sum_atomShare_eq_rank`
+-- pins the average share to exactly a half at size six, so it is dead on the
+-- balanced stratum.  This certificate reads only the OUTSIDE of the candidate
+-- subset: when no direction is dominated by the complement, the subset strictly
+-- dominates -- at any rank, any subset size, with no heaviness hypothesis.  The
+-- two engines are logical complements, so their union is the certificate cover.
+#print axioms Gtz.posDef_subsetSum_of_outside_share_lt
 
 #print axioms Gtz.firstAxis_isUnit
 #print axioms Gtz.producerNormal_transfers
