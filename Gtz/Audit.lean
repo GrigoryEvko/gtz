@@ -441,6 +441,7 @@ import Gtz.Design.TightSwapObstructions
 import Gtz.Design.InPlaneRestriction
 import Gtz.Design.SelectorEquivalences
 import Gtz.Design.LineMarginCap
+import Gtz.Design.PairDifferenceCover
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
@@ -15724,6 +15725,51 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.mixedSurvivor_lineComplement_no_producerPair
 #print axioms Gtz.complement_normalHeights_ge_inv_weight
 #print axioms Gtz.margin_cap_and_its_floor
+
+-- Design/PairDifferenceCover: the anatomy-free pair-difference form of the
+-- plane cover (LLF/LFF/FFF are its three specializations, each an Iff, each
+-- with its producer and its blind-probe kill), the coverForm quadratic on an
+-- orthonormal plane frame, strict domination as THREE scalar inequalities with
+-- the probe quantifier eliminated, normal-transfer, and the two-meeting-lines
+-- instance where the shared atom plus the second line's private pair is
+-- pair-difference blind at every first normal.
+#print axioms Gtz.sumOverTriple
+#print axioms Gtz.coverIneq_iff_pairDifferenceExcess
+#print axioms Gtz.planeCover_iff_pairDifferenceExcess
+#print axioms Gtz.twoFlat_planeCover_iff_inPlaneExcess
+#print axioms Gtz.oneFlat_planeCover_iff_freePairExcess
+#print axioms Gtz.posDef_of_oneFlat_freePairExcess
+#print axioms Gtz.posDef_of_pairDifferenceExcess
+#print axioms Gtz.planeCover_fails_of_pairDifferenceReadings_vanish
+#print axioms Gtz.oneFlat_planeCover_fails_at_blindProbe
+#print axioms Gtz.projectOffBase
+#print axioms Gtz.projectOffBase_orthogonal
+#print axioms Gtz.projectOffBase_ne_zero
+#print axioms Gtz.dotProduct_projectOffBase_of_orthogonal
+#print axioms Gtz.twoMeetingLines_freePair_blind_at_secondNormalProjection
+#print axioms Gtz.twoMeetingLines_sharedAtom_blind_at_secondNormalProjection
+#print axioms Gtz.twoMeetingLines_secondLine_planeCover_fails
+#print axioms Gtz.twoMeetingLines_coverBudget_at_secondNormalProjection
+#print axioms Gtz.bracketNormal_self_dotProduct
+#print axioms Gtz.tripleBracket_ne_zero_of_orthonormalFrame
+#print axioms Gtz.inPlaneProbe_eq_frameCombination
+#print axioms Gtz.coverForm
+#print axioms Gtz.planeCoverAt_iff_coverForm_pos
+#print axioms Gtz.coverForm_frameCombination
+#print axioms Gtz.planeCover_iff_frameMinors
+#print axioms Gtz.posDef_iff_surplus_and_frameMinors
+#print axioms Gtz.producerPair_transfers_between_normals
+#print axioms Gtz.oneLineSample_notPosDef_013
+#print axioms Gtz.oneLineSample_notPosDef_014
+#print axioms Gtz.oneLineSample_notPosDef_015
+#print axioms Gtz.oneLineSample_notPosDef_023
+#print axioms Gtz.oneLineSample_notPosDef_123
+#print axioms Gtz.oneLineSample_notPosDef_024
+#print axioms Gtz.oneLineSample_notPosDef_025
+#print axioms Gtz.oneLineSample_notPosDef_124
+#print axioms Gtz.oneLineSample_notPosDef_125
+#print axioms Gtz.twoFlat_linePair_overcovers_of_planeCover
+#print axioms Gtz.oneLineSample_firstLinePair_inPlaneExcess_fails
 
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-
