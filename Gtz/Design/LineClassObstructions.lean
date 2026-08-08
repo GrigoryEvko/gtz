@@ -891,6 +891,54 @@ theorem isTie_yields_planeCover_failure {size : ℕ} (design : WeightedDesign si
   exact htie.2 selected hcard (posDef_of_normalSurplus_planeCover design selected
     unitNormal hunit hsurplus fun probe horth hne => hnone probe horth hne)
 
+/-- **The line-pair reduction.**  On a line stratum, a selected subset made of
+TWO line atoms plus ONE free atom collapses the three-dimensional plane-cover
+hypothesis of `posDef_of_normalSurplus_planeCover` to a purely TWO-dimensional
+inequality inside the line plane: the free atom's in-plane shadow must be
+beaten by the line pair's excess over the identity, scaled by the normal
+surplus.  Both line atoms are invisible along the normal, so the entire
+cross-coupling term is carried by the single free atom and cancels against the
+free atom's own contribution to the in-plane coverage.
+
+The reduced inequality is SHARP as a route condition: it forces the line pair
+to strictly dominate the identity IN the plane (probe against a direction the
+pair misses), which pairwise non-parallelism alone does not supply.  Choosing
+the subset anatomy is therefore the remaining content, not the algebra. -/
+theorem oneLine_planeCover_of_inPlaneExcess {size : ℕ} (design : WeightedDesign size 3)
+    (lineFirst lineSecond freeLabel : Fin size) (unitNormal : Fin 3 → ℝ)
+    (hdistinctFirstSecond : lineFirst ≠ lineSecond)
+    (hdistinctFirstFree : lineFirst ≠ freeLabel)
+    (hdistinctSecondFree : lineSecond ≠ freeLabel)
+    (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (hfirstFlat : design.atom lineFirst ⬝ᵥ unitNormal = 0)
+    (hsecondFlat : design.atom lineSecond ⬝ᵥ unitNormal = 0)
+    (hsurplus : 1 < (design.atom freeLabel ⬝ᵥ unitNormal) ^ 2)
+    (hinPlaneExcess : ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ unitNormal = 0 → probe ≠ 0 →
+      (design.atom freeLabel ⬝ᵥ probe) ^ 2
+        < ((design.atom freeLabel ⬝ᵥ unitNormal) ^ 2 - 1)
+          * ((design.atom lineFirst ⬝ᵥ probe) ^ 2
+              + (design.atom lineSecond ⬝ᵥ probe) ^ 2 - probe ⬝ᵥ probe)) :
+    (subsetSum design ({lineFirst, lineSecond, freeLabel} : Finset (Fin size)) - 1).PosDef := by
+  have hsumThree : ∀ valueOf : Fin size → ℝ,
+      ∑ selectedLabel ∈ ({lineFirst, lineSecond, freeLabel} : Finset (Fin size)),
+          valueOf selectedLabel
+        = valueOf lineFirst + valueOf lineSecond + valueOf freeLabel := by
+    intro valueOf
+    rw [Finset.sum_insert (by simp [hdistinctFirstSecond, hdistinctFirstFree]),
+      Finset.sum_insert (by simp [hdistinctSecondFree]), Finset.sum_singleton, add_assoc]
+  refine posDef_of_normalSurplus_planeCover design _ unitNormal hunit ?_ ?_
+  · rw [hsumThree (fun selectedLabel => (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2),
+      hfirstFlat, hsecondFlat]
+    simpa using hsurplus
+  · intro probe hprobeFlat hprobeNe
+    have hexcess := hinPlaneExcess probe hprobeFlat hprobeNe
+    rw [hsumThree (fun selectedLabel =>
+        (design.atom selectedLabel ⬝ᵥ probe) * (design.atom selectedLabel ⬝ᵥ unitNormal)),
+      hsumThree (fun selectedLabel => (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2),
+      hsumThree (fun selectedLabel => (design.atom selectedLabel ⬝ᵥ probe) ^ 2),
+      hfirstFlat, hsecondFlat]
+    nlinarith [hexcess, hsurplus, sq_nonneg (design.atom freeLabel ⬝ᵥ probe)]
+
 
 /-! ## The corner Half-Plane Lemma: leg B of the one-line corner dichotomy
 

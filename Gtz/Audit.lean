@@ -15461,6 +15461,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.stressFreeStratumIsTieFree_oneLine_of_tightDominatedCover
 #print axioms Gtz.stressFreeStratumIsTieFree_twoMeetingLines_of_tightDominatedCover
 
+-- Design/LineClassObstructions, the line-pair reduction: at a subset made
+-- of two line atoms plus one free atom the producer's three-dimensional
+-- plane-cover hypothesis collapses to a two-dimensional inequality inside
+-- the line plane, the cross-coupling term cancelling against the free
+-- atom's own in-plane contribution.
+#print axioms Gtz.oneLine_planeCover_of_inPlaneExcess
+
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-
 -- keeping attack Prop and its verbatim reduction to the class
