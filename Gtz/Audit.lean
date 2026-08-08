@@ -447,6 +447,7 @@ import Gtz.Design.OneLineShadow
 import Gtz.Design.GeneralRankAveraging
 import Gtz.Design.ComplementEngine
 import Gtz.Design.PairCapEngine
+import Gtz.Design.BalancedShareBarrier
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
@@ -15962,6 +15963,23 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.IsCapBlindSpot
 #print axioms Gtz.patternHeavyWeakToStrict_of_capBlindSpot
 #print axioms Gtz.twoMeetingLines_heavyWeakToStrict_of_capBlindSpot
+
+-- Design/BalancedShareBarrier, what firing the pair criterion COSTS.  A strictly
+-- positive surplus form forces one of the two atoms to carry MORE than half the
+-- leverage share, while `Gtz.sum_atomShare_eq_rank` pins the average share to
+-- exactly a half at `(6,3)`.  So the balanced stratum -- where the tie locus
+-- sits -- is uniformly dead for pair-conditioned averaging, and the size-six
+-- pigeonhole says every design has an atom that can only ever fire alongside a
+-- strictly above-half partner.  This is the exact logical complement of the
+-- balance-side certificate in `Gtz/Design/ComplementEngine.lean`.
+#print axioms Gtz.pairSurplusForm_neg_of_shares_le_half
+#print axioms Gtz.exists_atomShare_gt_half_of_pos_pairSurplusForm
+#print axioms Gtz.pairSurplusForm_neg_of_balanced
+#print axioms Gtz.exists_atomShare_le_half_sixThree
+#print axioms Gtz.exists_shareSurplus_neg_sixThree
+#print axioms Gtz.exists_atom_deadAgainstBalancedPartners_sixThree
+#print axioms Gtz.sum_offPair_weight_mul_discriminantTie_eq_pairSurplusForm
+#print axioms Gtz.sum_offPair_weight_mul_discriminantTie_neg_of_balanced
 
 #print axioms Gtz.firstAxis_isUnit
 #print axioms Gtz.producerNormal_transfers
