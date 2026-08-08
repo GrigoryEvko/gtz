@@ -63,17 +63,18 @@ the sharp window at every rank at least three and keeps the atom count equal to
 the dimension of the ambient symmetric space.  No separate coincidence
 obligation is declared, because none is used.
 
-## The rank-three obligation is subsumed, not skipped
+## Rank three costs exactly the rank-three currency
 
-`skeletonGtzWeightedAllEveryRank` does NOT reach
-`Skeleton.obligationStressFreeHingeSixThree`; it closes rank three with
-`Skeleton.obligationThresholdCellHinge` at `rank = 3`, whose own antecedent
-`Gtz.GtzWeighted 5 3` is the theorem `Gtz.gtzWeighted_of_le_five`.
-`rankThreeObligationIsSubsumed` records this in the kernel: the general-rank
-registry already contains the rank-three obligation.  The dead-obligation scan
-at the foot of this file therefore reports the five rank-three class axioms as
-unreached FROM HERE, which is correct -- `Skeleton.RankThree` is what spends
-them, through the split parent theorem `obligationStressFreeHingeSixThree`.
+Before 2026-08-08 the registry's threshold-cell hinge covered `3 <= rank`, so
+its rank-three instance silently assumed the whole `(6,3)` frontier a second
+time -- the general capstone paid for rank three with a strictly stronger
+axiom.  The rank split removed that: `Skeleton.obligationThresholdCellHinge`
+is now a THEOREM whose rank-three instance is discharged from the five class
+residuals through the trichotomy assembly, and the axiom survives only as
+`Skeleton.obligationThresholdCellHingeRankFourAndUp`.  So
+`skeletonGtzWeightedAllEveryRank` now reaches ALL EIGHT registry obligations:
+the five sharpened class residuals (its rank-three price, identical to the
+rank-three capstone's) plus the three genuinely general-rank assumptions.
 -/
 
 namespace Skeleton.GeneralRank
@@ -216,9 +217,10 @@ theorem sharpWindowIsEmptyBelowRankThree {rank size : ℕ}
 theorem closesCorankFloor_everyRank (rank : ℕ) : ClosesCorankFloor rank :=
   Gtz.InductionStep.corankFloor_holds rank
 
-/-- The hinge closure, from the registry.  The threshold cell is the top of the
-window, so the case split is exactly the split between
-`Skeleton.obligationThresholdCellHinge` and
+/-- The hinge closure.  The threshold cell is the top of the window, so the
+case split is exactly the split between `Skeleton.obligationThresholdCellHinge`
+(a theorem since the 2026-08-08 rank split: rank three from the class
+residuals, rank four and up from the registry) and
 `Skeleton.obligationSubThresholdBandHinge`. -/
 theorem hingeHoldsAcrossSharpWindow_ofRegistry {rank : ℕ} (hrankAtLeastThree : 3 ≤ rank) :
     HingeHoldsAcrossSharpWindow rank := by
@@ -379,7 +381,7 @@ theorem skeletonGtzOriginalFromThresholdCell (rank : ℕ) :
     ∀ size : ℕ, 0 < size → Gtz.GtzOriginal size rank :=
   (Gtz.gtzWeighted_veroneseTop_iff_forall_gtzOriginal rank).mp (closesThresholdCell_everyRank rank)
 
-/-! ## 10. Rank three is subsumed, not skipped -/
+/-! ## 10. Rank three costs exactly the rank-three currency -/
 
 /-- Rank three of the 1997 statement, out of the general capstone.  Its
 threshold cell is `thresholdCell 3 = 6`, so this is the `(6,3)` frontier reached
@@ -390,13 +392,15 @@ theorem skeletonGtzOriginalRankThree : ∀ size : ℕ, 0 < size → Gtz.GtzOrigi
 /-- The threshold cell at rank three is six -- the coincidence, computed. -/
 theorem thresholdCell_three : thresholdCell 3 = 6 := by decide
 
-/-- **The rank-three obligation is contained in the general-rank registry.**
-`Skeleton.obligationThresholdCellHinge` at `rank = 3` yields
-`Gtz.StressFreeHingeHoldsSixThree` outright, because that hinge's own antecedent
-`Gtz.GtzWeighted 5 3` is the theorem `Gtz.gtzWeighted_of_le_five`.  So the
-general route does not skip rank three; it pays for it with the same axiom it
-pays for every other rank. -/
-theorem rankThreeObligationIsSubsumed : Gtz.StressFreeHingeHoldsSixThree :=
+/-- **The general route pays for rank three with the rank-three currency.**
+Before the 2026-08-08 rank split this derivation showed the registry's
+threshold-cell hinge SUBSUMED the whole rank-three frontier -- assuming the
+`(6,3)` hinge a second time inside a general-rank axiom.
+`Skeleton.obligationThresholdCellHinge` is now a theorem whose rank-three
+instance is discharged from the five class residuals, so this same derivation
+now reaches exactly those five plus nothing else at rank three: the detour
+and the rank-three capstone spend the identical currency. -/
+theorem rankThreeSpendsClassResiduals : Gtz.StressFreeHingeHoldsSixThree :=
   Skeleton.stressFreeHingeSixThree_of_thresholdCellHinge Skeleton.obligationThresholdCellHinge
 
 /-! ## 11. Discharging the tree's own residual -/
@@ -418,14 +422,12 @@ The printed lists below are the whole point of the scaffold: the kernel's own
 answer to "what is still assumed", recomputed on every build.
 
 The three base-rank controls must each report ZERO obligations.  The two
-capstones must each report exactly the three general-rank obligations.
-
-The dead-obligation scan reports the five rank-three class obligations as
-unreached FROM THIS FILE.  That is correct and expected: section 10 shows their
-conjunction -- `Skeleton.obligationStressFreeHingeSixThree`, since the split a
-theorem -- is subsumed by `Skeleton.obligationThresholdCellHinge`, and
-`Skeleton.RankThree` is the capstone that spends them, buying rank three alone
-at a strictly lower price than the general route. -/
+capstones must each report ALL EIGHT registry obligations: the five sharpened
+class residuals (the rank-three price, paid through the discharged rank-three
+instance of the threshold-cell hinge) plus the three genuinely general-rank
+assumptions.  Since the 2026-08-08 rank split there is no subsumption and no
+dead weight from either root alone: `Skeleton.RankThree` spends the five class
+residuals, this file spends all eight. -/
 
 #gtz_frontier gtzWeightedAllRankZero_ofCorankFloor
 

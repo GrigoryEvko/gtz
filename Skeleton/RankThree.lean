@@ -217,11 +217,14 @@ theorem skeletonGtzOriginalRankThreeViaTreeCapstone :
   Gtz.forall_gtzOriginal_rank_three_of_stressFreeHingeAlone
     Skeleton.obligationStressFreeHingeSixThree
 
-/-- **A third route, through the general-rank registry instead.**  Rides
-`Skeleton.stressFreeHingeSixThree_of_thresholdCellHinge`, so it reaches
-`Skeleton.obligationThresholdCellHinge` and NOT the rank-three obligation.  This
-is why the merged frontier count over both roots is three and not four: whoever
-assumes the general-rank threshold-cell hinge already has rank three. -/
+/-- **A third route, through the general-rank threshold hinge instead.**  Rides
+`Skeleton.stressFreeHingeSixThree_of_thresholdCellHinge`.  Since the 2026-08-08
+rank split, `Skeleton.obligationThresholdCellHinge` is a THEOREM whose
+rank-three instance is discharged from the five class residuals, so this route
+reaches those five PLUS `obligationThresholdCellHingeRankFourAndUp` -- the
+detour through general rank now costs strictly MORE than the direct capstone,
+which is the whole point of the split: no registry axiom subsumes the
+rank-three frontier any more. -/
 theorem skeletonGtzOriginalRankThreeViaThresholdHinge :
     ∀ n : ℕ, 0 < n → Gtz.GtzOriginal n 3 :=
   Gtz.forall_gtzOriginal_rank_three_of_stressFreeHingeAlone
@@ -245,9 +248,10 @@ theorem skeletonHingeIsStrictlyStrongerThanRankThree :
 
 `skeletonRankThreeShapesAgree` must report zero obligations, confirming the
 coordinate changes are free.  `skeletonGtzOriginalRankThreeViaThresholdHinge`
-must report the threshold-cell hinge, confirming the subsumption.  The capstone
-must report exactly the five class obligations of the split parent
-`obligationStressFreeHingeSixThree`. -/
+must report the five sharpened class residuals PLUS the rank-four-and-up
+threshold hinge, confirming the subsumption is gone.  The capstone must report
+exactly the five sharpened class residuals -- the exact attack surface of
+rank three, nothing above it. -/
 
 #gtz_frontier skeletonRankThreeShapesAgree
 

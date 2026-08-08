@@ -78,7 +78,20 @@ def retiredObligationNames : List Name :=
    `Skeleton.obligationSharpWindowAnchorReach,
    -- 2026-08-07: introduced by the rank split and discharged in the same edit
    -- (Gtz.icosaDesign; the sharp window at rank three is the single cell six).
-   `Skeleton.obligationSharpWindowAnchorReachRankThree]
+   `Skeleton.obligationSharpWindowAnchorReachRankThree,
+   -- 2026-08-08: the five class obligations SHARPENED one landed reduction
+   -- each -- every class statement survives as a theorem discharged from the
+   -- exact residual Prop the campaign attacks (refinement in the sufficient
+   -- direction; no converse claimed).
+   `Skeleton.obligationTieFreeUThreeSix,
+   `Skeleton.obligationTieFreeOneLine,
+   `Skeleton.obligationTieFreeTwoMeetingLines,
+   `Skeleton.obligationTieFreeThreeLines,
+   `Skeleton.obligationTieFreeKFour,
+   -- 2026-08-08: split by rank -- the rank-three instance IS the (6,3) hinge,
+   -- i.e. the five class obligations in a strictly stronger wrapper; it is now
+   -- DISCHARGED from them, and the axiom survives only at rank four and up.
+   `Skeleton.obligationThresholdCellHinge]
 
 /-- Obligations added since the baseline.  Each name must be a declared axiom;
 the gate checks that.  Adding to this list with `retiredObligationNames` still
@@ -94,7 +107,17 @@ def introducedObligationNames : List Name :=
    -- 2026-08-07: the rank split of the reach obligation.  The rank-three half
    -- was discharged in the same edit, so it also appears in the retired list.
    `Skeleton.obligationSharpWindowAnchorReachRankThree,
-   `Skeleton.obligationSharpWindowAnchorReachRankFourAndUp]
+   `Skeleton.obligationSharpWindowAnchorReachRankFourAndUp,
+   -- 2026-08-08: the five sharpened class residuals, one landed reduction
+   -- below the class statements they replace.
+   `Skeleton.obligationWeakToStrictUThreeSix,
+   `Skeleton.obligationStratumTieFreeOneLine,
+   `Skeleton.obligationStratumTieFreeTwoMeetingLines,
+   `Skeleton.obligationChartTieFreeThreeLines,
+   `Skeleton.obligationChartTieFreeKFour,
+   -- 2026-08-08: the rank-four-and-up half of the threshold-cell hinge; the
+   -- rank-three half is discharged from the class obligations.
+   `Skeleton.obligationThresholdCellHingeRankFourAndUp]
 
 /-! ### The gate -/
 
