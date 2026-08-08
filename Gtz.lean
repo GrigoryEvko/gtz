@@ -2122,6 +2122,7 @@ import Gtz.Design.KFourChartSample
 -- identity-labelled tie-freeness, the fully rational one-line sample with two
 -- strict dominators, and the direction-generic open-atom lift identity
 import Gtz.Design.LineClassObstructions
+import Gtz.Design.TightSwapObstructions
 
 -- U(3,6): the off-conic formulation of stress-freeness, the exact rational
 -- icosa approximant sample, and the mass-reading clearance functionals

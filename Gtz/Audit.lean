@@ -437,6 +437,7 @@ import Gtz.Design.StressFreeClassSplit
 import Gtz.Design.TieCensusCompletion
 import Gtz.Design.KFourChartSample
 import Gtz.Design.LineClassObstructions
+import Gtz.Design.TightSwapObstructions
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
@@ -15529,6 +15530,40 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- polynomial inequalities, not three.
 #print axioms Gtz.tripleLeverageSum_sub_three_pos_of_heavy
 #print axioms Gtz.subsetSum_posDef_of_heavy_of_minorSum_of_det
+
+-- Design/TightSwapObstructions: the tie side collapsed to two dimensions --
+-- the tight-direction identities (kernel membership, cross identity, square
+-- identity, member cap), the one-slot swap's plane-cover collapse to the
+-- dominator's own gap form against a single rank-one square, the swap
+-- producer and its corank obstruction, the outside over-reader from weighted
+-- Parseval, the swap decided as an Iff, the two refusal families, and the
+-- exact witness where the swap {3,4,5} -> {0,3,4} strictly dominates.
+#print axioms Gtz.tightDirection_mem_gapKernel
+#print axioms Gtz.tightDirection_crossReadings_vanish
+#print axioms Gtz.tightDirection_squareReadings_eq_one
+#print axioms Gtz.tightDirection_memberReading_le_one
+#print axioms Gtz.sum_over_tightSwap
+#print axioms Gtz.card_tightSwap
+#print axioms Gtz.tightSwap_planeCover_iff_dominatorGapExcess
+#print axioms Gtz.posDef_of_tightSwap_dominatorGapExcess
+#print axioms Gtz.tightSwap_not_posDef_of_degenerateDominatorGap
+#print axioms Gtz.exists_outsideAtom_overreads_tightDirection
+#print axioms Gtz.tightSwap_posDef_iff_surplus_and_gapExcess
+#print axioms Gtz.noStrictDominator_yields_tightSwapExcess_failure
+#print axioms Gtz.noStrictDominator_yields_overReaderRefusals
+#print axioms Gtz.swapWitnessAtom
+#print axioms Gtz.swapWitnessWeight
+#print axioms Gtz.swapWitnessDesign
+#print axioms Gtz.swapWitnessDesign_hasLinePattern
+#print axioms Gtz.swapWitnessDesign_isHeavy
+#print axioms Gtz.swapWitness_freeTripleGap_form
+#print axioms Gtz.swapWitness_dominates_freeTriple
+#print axioms Gtz.swapWitness_tightDirection_isUnit
+#print axioms Gtz.swapWitness_tightDirection_rayleigh
+#print axioms Gtz.swapWitness_swapSet
+#print axioms Gtz.swapWitness_swapGap_form
+#print axioms Gtz.swapWitness_swapGap_posDef
+#print axioms Gtz.swapWitness_tightSwapConclusion
 
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-
