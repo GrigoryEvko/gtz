@@ -444,6 +444,7 @@ import Gtz.Design.LineMarginCap
 import Gtz.Design.PairDifferenceCover
 import Gtz.Design.TightAntecedentMining
 import Gtz.Design.OneLineShadow
+import Gtz.Design.GeneralRankAveraging
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
@@ -15892,6 +15893,39 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.oneLine_shadowColumn_injective_and_nonzero
 #print axioms Gtz.weightedPair_lt_max_of_massLtOne
 #print axioms Gtz.oneLine_columnMass_lt_max
+
+-- Design/GeneralRankAveraging, the triple-gap averaging law at ARBITRARY rank.
+-- The shipped `Gtz.sum_offPair_weight_mul_discriminantTie` is its rank-three
+-- case: `tripleGapForm_offPair_agrees_with_surplusForm` proves the two right
+-- hand sides are one polynomial, so this is a genuine lift and not a rival
+-- identity.  The rank enters through a single coefficient `3 - rank`.
+-- The pair `rankTwoCaratheodoryCoincidence_iff` /
+-- `sum_shareSurplusOf_thresholdCell_eq_zero_iff` is the collision: the
+-- arithmetic obstruction to lifting the rank-two Caratheodory circuit bound and
+-- the vanishing of the surplus budget at the threshold cell are ONE polynomial,
+-- `(rank - 1) (rank - 2)`, so they are one obstruction and not two.
+#print axioms Gtz.gapExcessOf_eq_heavyExcess
+#print axioms Gtz.gapPairingOf_eq_atomPairing
+#print axioms Gtz.tripleGapForm_eq_neg_discriminantTie
+#print axioms Gtz.sum_weight_mul_gapExcessOf
+#print axioms Gtz.sum_weight_mul_gapPairingOf_sq
+#print axioms Gtz.sum_weight_mul_gapPairingOf_cross
+#print axioms Gtz.sum_weight_mul_tripleGapForm
+#print axioms Gtz.gapPairingOf_self
+#print axioms Gtz.gapPairingOf_comm
+#print axioms Gtz.tripleGapForm_pivot_eq_first
+#print axioms Gtz.tripleGapForm_pivot_eq_second
+#print axioms Gtz.sum_offPair_weight_mul_tripleGapForm
+#print axioms Gtz.tripleGapForm_offPair_agrees_with_surplusForm
+#print axioms Gtz.rankTwoCaratheodoryCoincidence_iff
+#print axioms Gtz.tetraDesign_atomHeaviness
+#print axioms Gtz.tetraDesign_unitPairGram_zeroOne
+#print axioms Gtz.tetraDesign_violates_rankTwoPairCap
+#print axioms Gtz.shareSurplusOf_eq_shareSurplus
+#print axioms Gtz.sum_shareSurplusOf
+#print axioms Gtz.two_mul_sum_shareSurplusOf_thresholdCell
+#print axioms Gtz.sum_shareSurplusOf_thresholdCell_eq_zero_iff
+
 #print axioms Gtz.firstAxis_isUnit
 #print axioms Gtz.producerNormal_transfers
 #print axioms Gtz.patternTightDominatedCoverProperty_iff_strictSelector
