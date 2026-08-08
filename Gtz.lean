@@ -2123,6 +2123,7 @@ import Gtz.Design.KFourChartSample
 -- strict dominators, and the direction-generic open-atom lift identity
 import Gtz.Design.LineClassObstructions
 import Gtz.Design.TightSwapObstructions
+import Gtz.Design.InPlaneRestriction
 
 -- U(3,6): the off-conic formulation of stress-freeness, the exact rational
 -- icosa approximant sample, and the mass-reading clearance functionals

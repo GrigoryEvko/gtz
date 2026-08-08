@@ -438,6 +438,7 @@ import Gtz.Design.TieCensusCompletion
 import Gtz.Design.KFourChartSample
 import Gtz.Design.LineClassObstructions
 import Gtz.Design.TightSwapObstructions
+import Gtz.Design.InPlaneRestriction
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Certificates.CollarChartReplay
@@ -15564,6 +15565,69 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.swapWitness_swapGap_form
 #print axioms Gtz.swapWitness_swapGap_posDef
 #print axioms Gtz.swapWitness_tightSwapConclusion
+
+-- Design/InPlaneRestriction: the one-line constraint algebra (C0-C6), the
+-- in-plane restriction as a genuine rank-two WeightedDesign -- which makes the
+-- in-tree THEOREM `Gtz.gtz_rank_two` spendable on the plane half of the
+-- problem -- and the two exact witnesses that refute both uniform anatomy
+-- rules: narrowCone (no line pair covers, free triple is the only strict
+-- dominator) and shadowLine (free triple fails even weakly, the answer is
+-- line + free + free).
+#print axioms Gtz.weightedPairSum_eq_dotProduct
+#print axioms Gtz.inPlaneRestriction
+#print axioms Gtz.exists_inPlane_dominating_pair
+#print axioms Gtz.lineSplit_polarizedParseval
+#print axioms Gtz.oneLine_normalIdentity
+#print axioms Gtz.oneLine_crossIdentity
+#print axioms Gtz.oneLine_inPlaneParseval
+#print axioms Gtz.oneLine_linePart_le_identity
+#print axioms Gtz.leverage_split_at_unitNormal
+#print axioms Gtz.heavy_shadow_lower_bound
+#print axioms Gtz.llf_posDef_forces_linePair_inPlane_domination
+#print axioms Gtz.llf_not_posDef_of_linePair_inPlane_failure
+#print axioms Gtz.narrowConeAtom
+#print axioms Gtz.narrowConeWeight
+#print axioms Gtz.narrowConeDesign
+#print axioms Gtz.narrowConeDesign_hasLinePattern
+#print axioms Gtz.narrowConeDesign_heavy
+#print axioms Gtz.narrowConeNormal
+#print axioms Gtz.narrowConeNormal_unit
+#print axioms Gtz.narrowCone_lineAtoms_flat
+#print axioms Gtz.narrowCone_freeAtoms_height_ne_zero
+#print axioms Gtz.narrowCone_pairZeroOne_fails
+#print axioms Gtz.narrowCone_pairOneTwo_fails
+#print axioms Gtz.narrowCone_pairZeroTwo_fails
+#print axioms Gtz.narrowCone_lineMass_transverse
+#print axioms Gtz.narrowCone_freeTripleGap_form
+#print axioms Gtz.narrowCone_freeTripleGap_posDef
+#print axioms Gtz.shadowLineAtom
+#print axioms Gtz.shadowLineWeight
+#print axioms Gtz.shadowLineDesign
+#print axioms Gtz.shadowLineDesign_hasLinePattern
+#print axioms Gtz.shadowLineDesign_heavy
+#print axioms Gtz.shadowLineNormal
+#print axioms Gtz.shadowLineNormal_unit
+#print axioms Gtz.shadowLine_lineAtoms_flat
+#print axioms Gtz.shadowLine_freeAtoms_height_ne_zero
+#print axioms Gtz.shadowLine_freeTriple_gap_negative
+#print axioms Gtz.shadowLine_freeTriple_not_dominates
+#print axioms Gtz.shadowLine_pairZeroOne_fails
+#print axioms Gtz.shadowLine_pairZeroTwo_fails
+#print axioms Gtz.shadowLine_pairOneTwo_fails
+#print axioms Gtz.shadowLine_mixedTripleGap_form
+#print axioms Gtz.shadowLine_mixedTripleGap_posDef
+#print axioms Gtz.narrowCone_probeCross_flat
+#print axioms Gtz.narrowCone_probeCross_ne
+#print axioms Gtz.narrowCone_probeTransverse_flat
+#print axioms Gtz.narrowCone_probeTransverse_ne
+#print axioms Gtz.narrowCone_probeSecond_flat
+#print axioms Gtz.narrowCone_probeSecond_ne
+#print axioms Gtz.narrowCone_no_llf_posDef
+#print axioms Gtz.shadowLine_probeShadow_flat
+#print axioms Gtz.shadowLine_probeShadow_ne
+#print axioms Gtz.shadowLine_no_llf_posDef
+#print axioms Gtz.refutes_uniform_llf_rule
+#print axioms Gtz.refutes_uniform_fff_rule
 
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-
