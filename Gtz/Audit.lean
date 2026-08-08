@@ -15422,6 +15422,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.tripleBracket_planeAtom_expand
 #print axioms Gtz.shadowReadings_separated_of_bracket_ne_zero
 
+-- Design/LineClassObstructions, residual interface: the reduced
+-- cover property (both producer hypotheses, subset and unit normal
+-- existential) and its pattern-generic stratum closure -- one Schur
+-- application against the tie's second component, consumed verbatim
+-- by the one-line and two-meeting-lines obligations.
+#print axioms Gtz.stratumIsTieFree_of_reducedCoverProperty
+
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-
 -- keeping attack Prop and its verbatim reduction to the class
@@ -15780,6 +15787,14 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.posDef_iff_invariantPencilTriple
 #print axioms Gtz.heavyPairRefuter_gap_zeroOneThree_eq
 #print axioms Gtz.heavyPairRefuter_gap_zeroOneThree_posDef
+
+-- Design/KFourChartClosure, residual interface: the Layer-A region
+-- named (the twenty-cell disjunction verbatim), the landed dispatch
+-- restated over it, and the knife-band residual (weak antecedent
+-- kept, quantified only off the region) closing the chart by a
+-- boundary split.
+#print axioms Gtz.kFourAtlas_hasStrictTriple_of_layerAFires
+#print axioms Gtz.directionChartIsTieFree_kFour_of_knifeBandWeakToStrict
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

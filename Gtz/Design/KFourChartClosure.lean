@@ -7079,4 +7079,516 @@ theorem heavyPairRefuter_gap_zeroOneThree_posDef :
   refine posDef_of_invariantPencilTriple (11219/60) (-24) (-59/60) (239/60)
     (1/60) (19/20) ?_ ?_ ?_ <;> norm_num
 
+
+/-! ## The knife band, named: the Layer-A region and the exact K4 residual
+
+The twenty-cell dispatch above inlines its coverage condition; naming that
+condition turns the landed atlas into a REGION, so the chart obligation can
+be split along its boundary.  The residual keeps BOTH landed reductions:
+the twenty proved cells are spent (covered points demand nothing), and the
+chart obligation's own weak antecedent is kept (strictness is demanded only
+where weak domination already holds).  The stage-four census isolated the
+uncovered set exactly -- 464 exact leftover points, 405 knife-edge, with
+`heavyPairRefuterPoint` the canonical inhabitant (its PD trees are exactly
+the six through edge 3, so no star or harmonic cell fires there). -/
+
+/-- **The Layer-A region.**  The exact twenty-cell disjunction of
+`kFourAtlas_hasStrictTriple_of_anyCell`, verbatim: four star cells, then
+sixteen harmonic cells.  Where this fires, the landed dispatch delivers a
+strictly dominating triple with no further hypothesis. -/
+def KFourLayerACellFires (point : DirectionChartPoint 6) : Prop :=
+      (point.weight 0 * (point.mass 0 + 2 * point.mass 2 + 2 * point.mass 4)
+            < point.mass 0
+        ∧ point.weight 1 * (point.mass 1 + 2 * point.mass 2 + 2
+            * point.mass 5) < point.mass 1
+        ∧ point.weight 3 * (point.mass 3 + 2 * point.mass 4 + 2
+            * point.mass 5) < point.mass 3)
+      ∨ (point.weight 0 * (point.mass 0 + 2 * point.mass 1 + 2
+            * point.mass 3) < point.mass 0
+        ∧ point.weight 2 * (point.mass 2 + 2 * point.mass 1 + 2
+            * point.mass 5) < point.mass 2
+        ∧ point.weight 4 * (point.mass 4 + 2 * point.mass 3 + 2
+            * point.mass 5) < point.mass 4)
+      ∨ (point.weight 1 * (point.mass 1 + 2 * point.mass 0 + 2
+            * point.mass 3) < point.mass 1
+        ∧ point.weight 2 * (point.mass 2 + 2 * point.mass 0 + 2
+            * point.mass 4) < point.mass 2
+        ∧ point.weight 5 * (point.mass 5 + 2 * point.mass 3 + 2
+            * point.mass 4) < point.mass 5)
+      ∨ (point.weight 3 * (point.mass 3 + 2 * point.mass 0 + 2
+            * point.mass 1) < point.mass 3
+        ∧ point.weight 4 * (point.mass 4 + 2 * point.mass 0 + 2
+            * point.mass 2) < point.mass 4
+        ∧ point.weight 5 * (point.mass 5 + 2 * point.mass 1 + 2
+            * point.mass 2) < point.mass 5)
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 2 + point.mass 4)
+            < point.mass 0
+        ∧ point.weight 1 * (point.mass 1 + point.mass 2 + point.mass 5)
+            < point.mass 1
+        ∧ point.weight 3 * (point.mass 3 + point.mass 4 + point.mass 5)
+            < point.mass 3
+        ∧ point.mass 2 * (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 4 - point.mass 5) + point.mass 4
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+            - point.mass 5) < (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 2 - point.mass 5) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 4 - point.mass 5)
+        ∧ point.mass 2 * (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 4 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+            - point.mass 4) < (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 2 - point.mass 4) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 4 - point.mass 5)
+        ∧ point.mass 4 * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 2 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+            - point.mass 4) < (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 2 - point.mass 4) * (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 2 - point.mass 5))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 2 + point.mass 3
+            + point.mass 5) < point.mass 0
+        ∧ point.weight 1 * (point.mass 1 + point.mass 2 + point.mass 5)
+            < point.mass 1
+        ∧ point.weight 4 * (point.mass 4 + point.mass 3 + point.mass 5)
+            < point.mass 4
+        ∧ (point.mass 2 + point.mass 5) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 3 - point.mass 5) + (point.mass 3
+            + point.mass 5) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 2 - point.mass 5) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 2 - point.mass 5)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+            - point.mass 5)
+        ∧ (point.mass 2 + point.mass 5) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 3 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+            - point.mass 3 - point.mass 5) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 2 - point.mass 3 - point.mass 5)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+            - point.mass 5)
+        ∧ (point.mass 3 + point.mass 5) * (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 2 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 2
+            - point.mass 3 - point.mass 5) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 2 - point.mass 3 - point.mass 5)
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+            - point.mass 5))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 2 + point.mass 4)
+            < point.mass 0
+        ∧ point.weight 1 * (point.mass 1 + point.mass 2 + point.mass 3
+            + point.mass 4) < point.mass 1
+        ∧ point.weight 5 * (point.mass 5 + point.mass 3 + point.mass 4)
+            < point.mass 5
+        ∧ (point.mass 2 + point.mass 4) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 3 - point.mass 4) + point.mass 4
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+            - point.mass 3 - point.mass 4) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 2 - point.mass 3 - point.mass 4)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+            - point.mass 4)
+        ∧ (point.mass 2 + point.mass 4) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 3 - point.mass 4) + (point.mass 3
+            + point.mass 4) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 2 - point.mass 4) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 2 - point.mass 4)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+            - point.mass 4)
+        ∧ point.mass 4 * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 2 - point.mass 3 - point.mass 4) + (point.mass 3
+            + point.mass 4) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 2 - point.mass 4) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 2 - point.mass 4)
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 2
+            - point.mass 3 - point.mass 4))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 1 + point.mass 4
+            + point.mass 5) < point.mass 0
+        ∧ point.weight 2 * (point.mass 2 + point.mass 1 + point.mass 5)
+            < point.mass 2
+        ∧ point.weight 3 * (point.mass 3 + point.mass 4 + point.mass 5)
+            < point.mass 3
+        ∧ (point.mass 1 + point.mass 5) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 4 - point.mass 5) + (point.mass 4
+            + point.mass 5) * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 1 - point.mass 5) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 1 - point.mass 5)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+            - point.mass 5)
+        ∧ (point.mass 1 + point.mass 5) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 4 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+            - point.mass 4 - point.mass 5) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 1 - point.mass 4 - point.mass 5)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+            - point.mass 5)
+        ∧ (point.mass 4 + point.mass 5) * (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 1 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+            - point.mass 4 - point.mass 5) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 1 - point.mass 4 - point.mass 5)
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+            - point.mass 5))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 1 + point.mass 3)
+            < point.mass 0
+        ∧ point.weight 2 * (point.mass 2 + point.mass 1 + point.mass 5)
+            < point.mass 2
+        ∧ point.weight 4 * (point.mass 4 + point.mass 3 + point.mass 5)
+            < point.mass 4
+        ∧ point.mass 1 * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 3 - point.mass 5) + point.mass 3
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+            - point.mass 5) < (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 1 - point.mass 5) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 3 - point.mass 5)
+        ∧ point.mass 1 * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 3 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+            - point.mass 3) < (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 1 - point.mass 3) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 3 - point.mass 5)
+        ∧ point.mass 3 * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 1 - point.mass 5) + point.mass 5
+            * (point.mass 0 / point.weight 0 - point.mass 0 - point.mass 1
+            - point.mass 3) < (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 1 - point.mass 3) * (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 1 - point.mass 5))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 1 + point.mass 3)
+            < point.mass 0
+        ∧ point.weight 2 * (point.mass 2 + point.mass 1 + point.mass 3
+            + point.mass 4) < point.mass 2
+        ∧ point.weight 5 * (point.mass 5 + point.mass 3 + point.mass 4)
+            < point.mass 5
+        ∧ (point.mass 1 + point.mass 3) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 3 - point.mass 4) + point.mass 3
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+            - point.mass 3 - point.mass 4) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 1 - point.mass 3 - point.mass 4)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+            - point.mass 4)
+        ∧ (point.mass 1 + point.mass 3) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 3 - point.mass 4) + (point.mass 3
+            + point.mass 4) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 1 - point.mass 3) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 1 - point.mass 3)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 3
+            - point.mass 4)
+        ∧ point.mass 3 * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 1 - point.mass 3 - point.mass 4) + (point.mass 3
+            + point.mass 4) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 1 - point.mass 3) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 1 - point.mass 3)
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 1
+            - point.mass 3 - point.mass 4))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 2 + point.mass 4)
+            < point.mass 0
+        ∧ point.weight 3 * (point.mass 3 + point.mass 1 + point.mass 2
+            + point.mass 4) < point.mass 3
+        ∧ point.weight 5 * (point.mass 5 + point.mass 1 + point.mass 2)
+            < point.mass 5
+        ∧ (point.mass 2 + point.mass 4) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 1 - point.mass 2) + point.mass 2
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 1
+            - point.mass 2 - point.mass 4) < (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 1 - point.mass 2 - point.mass 4)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+            - point.mass 2)
+        ∧ (point.mass 2 + point.mass 4) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 1 - point.mass 2) + (point.mass 1
+            + point.mass 2) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 2 - point.mass 4) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 2 - point.mass 4)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+            - point.mass 2)
+        ∧ point.mass 2 * (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 1 - point.mass 2 - point.mass 4) + (point.mass 1
+            + point.mass 2) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 2 - point.mass 4) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 2 - point.mass 4)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 1
+            - point.mass 2 - point.mass 4))
+      ∨ (point.weight 0 * (point.mass 0 + point.mass 1 + point.mass 3)
+            < point.mass 0
+        ∧ point.weight 4 * (point.mass 4 + point.mass 1 + point.mass 2
+            + point.mass 3) < point.mass 4
+        ∧ point.weight 5 * (point.mass 5 + point.mass 1 + point.mass 2)
+            < point.mass 5
+        ∧ (point.mass 1 + point.mass 3) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 1 - point.mass 2) + point.mass 1
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 1
+            - point.mass 2 - point.mass 3) < (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 1 - point.mass 2 - point.mass 3)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+            - point.mass 2)
+        ∧ (point.mass 1 + point.mass 3) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 1 - point.mass 2) + (point.mass 1
+            + point.mass 2) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 1 - point.mass 3) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 1 - point.mass 3)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 1
+            - point.mass 2)
+        ∧ point.mass 1 * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 1 - point.mass 2 - point.mass 3) + (point.mass 1
+            + point.mass 2) * (point.mass 0 / point.weight 0 - point.mass 0
+            - point.mass 1 - point.mass 3) < (point.mass 0 / point.weight 0
+            - point.mass 0 - point.mass 1 - point.mass 3)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 1
+            - point.mass 2 - point.mass 3))
+      ∨ (point.weight 1 * (point.mass 1 + point.mass 0 + point.mass 4
+            + point.mass 5) < point.mass 1
+        ∧ point.weight 2 * (point.mass 2 + point.mass 0 + point.mass 4)
+            < point.mass 2
+        ∧ point.weight 3 * (point.mass 3 + point.mass 4 + point.mass 5)
+            < point.mass 3
+        ∧ (point.mass 0 + point.mass 4) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 4 - point.mass 5) + (point.mass 4
+            + point.mass 5) * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 0 - point.mass 4) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 0 - point.mass 4)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+            - point.mass 5)
+        ∧ (point.mass 0 + point.mass 4) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 4 - point.mass 5) + point.mass 4
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+            - point.mass 4 - point.mass 5) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 0 - point.mass 4 - point.mass 5)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 4
+            - point.mass 5)
+        ∧ (point.mass 4 + point.mass 5) * (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 0 - point.mass 4) + point.mass 4
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+            - point.mass 4 - point.mass 5) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 0 - point.mass 4 - point.mass 5)
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+            - point.mass 4))
+      ∨ (point.weight 1 * (point.mass 1 + point.mass 0 + point.mass 3)
+            < point.mass 1
+        ∧ point.weight 2 * (point.mass 2 + point.mass 0 + point.mass 3
+            + point.mass 5) < point.mass 2
+        ∧ point.weight 4 * (point.mass 4 + point.mass 3 + point.mass 5)
+            < point.mass 4
+        ∧ (point.mass 0 + point.mass 3) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 3 - point.mass 5) + point.mass 3
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+            - point.mass 3 - point.mass 5) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 0 - point.mass 3 - point.mass 5)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+            - point.mass 5)
+        ∧ (point.mass 0 + point.mass 3) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 3 - point.mass 5) + (point.mass 3
+            + point.mass 5) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 0 - point.mass 3) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 0 - point.mass 3)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 3
+            - point.mass 5)
+        ∧ point.mass 3 * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 0 - point.mass 3 - point.mass 5) + (point.mass 3
+            + point.mass 5) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 0 - point.mass 3) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 0 - point.mass 3)
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+            - point.mass 3 - point.mass 5))
+      ∨ (point.weight 1 * (point.mass 1 + point.mass 0 + point.mass 3)
+            < point.mass 1
+        ∧ point.weight 2 * (point.mass 2 + point.mass 0 + point.mass 4)
+            < point.mass 2
+        ∧ point.weight 5 * (point.mass 5 + point.mass 3 + point.mass 4)
+            < point.mass 5
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 3 - point.mass 4) + point.mass 3
+            * (point.mass 2 / point.weight 2 - point.mass 2 - point.mass 0
+            - point.mass 4) < (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 0 - point.mass 4) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 3 - point.mass 4)
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 3 - point.mass 4) + point.mass 4
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+            - point.mass 3) < (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 0 - point.mass 3) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 3 - point.mass 4)
+        ∧ point.mass 3 * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 0 - point.mass 4) + point.mass 4
+            * (point.mass 1 / point.weight 1 - point.mass 1 - point.mass 0
+            - point.mass 3) < (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 0 - point.mass 3) * (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 0 - point.mass 4))
+      ∨ (point.weight 1 * (point.mass 1 + point.mass 2 + point.mass 5)
+            < point.mass 1
+        ∧ point.weight 3 * (point.mass 3 + point.mass 0 + point.mass 2
+            + point.mass 5) < point.mass 3
+        ∧ point.weight 4 * (point.mass 4 + point.mass 0 + point.mass 2)
+            < point.mass 4
+        ∧ (point.mass 2 + point.mass 5) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 0 - point.mass 2) + point.mass 2
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+            - point.mass 2 - point.mass 5) < (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 0 - point.mass 2 - point.mass 5)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+            - point.mass 2)
+        ∧ (point.mass 2 + point.mass 5) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 0 - point.mass 2) + (point.mass 0
+            + point.mass 2) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 2 - point.mass 5) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 2 - point.mass 5)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+            - point.mass 2)
+        ∧ point.mass 2 * (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 0 - point.mass 2 - point.mass 5) + (point.mass 0
+            + point.mass 2) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 2 - point.mass 5) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 2 - point.mass 5)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+            - point.mass 2 - point.mass 5))
+      ∨ (point.weight 1 * (point.mass 1 + point.mass 0 + point.mass 3)
+            < point.mass 1
+        ∧ point.weight 4 * (point.mass 4 + point.mass 0 + point.mass 2)
+            < point.mass 4
+        ∧ point.weight 5 * (point.mass 5 + point.mass 0 + point.mass 2
+            + point.mass 3) < point.mass 5
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 0 - point.mass 2 - point.mass 3) + (point.mass 0
+            + point.mass 3) * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 0 - point.mass 2) < (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 0 - point.mass 2)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 0
+            - point.mass 2 - point.mass 3)
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 0 - point.mass 2 - point.mass 3) + (point.mass 0
+            + point.mass 2) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 0 - point.mass 3) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 0 - point.mass 3)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 0
+            - point.mass 2 - point.mass 3)
+        ∧ (point.mass 0 + point.mass 3) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 0 - point.mass 2) + (point.mass 0
+            + point.mass 2) * (point.mass 1 / point.weight 1 - point.mass 1
+            - point.mass 0 - point.mass 3) < (point.mass 1 / point.weight 1
+            - point.mass 1 - point.mass 0 - point.mass 3)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+            - point.mass 2))
+      ∨ (point.weight 2 * (point.mass 2 + point.mass 1 + point.mass 5)
+            < point.mass 2
+        ∧ point.weight 3 * (point.mass 3 + point.mass 0 + point.mass 1)
+            < point.mass 3
+        ∧ point.weight 4 * (point.mass 4 + point.mass 0 + point.mass 1
+            + point.mass 5) < point.mass 4
+        ∧ point.mass 1 * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 0 - point.mass 1 - point.mass 5) + (point.mass 1
+            + point.mass 5) * (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 0 - point.mass 1) < (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 0 - point.mass 1)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+            - point.mass 1 - point.mass 5)
+        ∧ point.mass 1 * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 0 - point.mass 1 - point.mass 5) + (point.mass 0
+            + point.mass 1) * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 1 - point.mass 5) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 1 - point.mass 5)
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+            - point.mass 1 - point.mass 5)
+        ∧ (point.mass 1 + point.mass 5) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 0 - point.mass 1) + (point.mass 0
+            + point.mass 1) * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 1 - point.mass 5) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 1 - point.mass 5)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+            - point.mass 1))
+      ∨ (point.weight 2 * (point.mass 2 + point.mass 0 + point.mass 4)
+            < point.mass 2
+        ∧ point.weight 3 * (point.mass 3 + point.mass 0 + point.mass 1)
+            < point.mass 3
+        ∧ point.weight 5 * (point.mass 5 + point.mass 0 + point.mass 1
+            + point.mass 4) < point.mass 5
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 0 - point.mass 1 - point.mass 4) + (point.mass 0
+            + point.mass 4) * (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 0 - point.mass 1) < (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 0 - point.mass 1)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 0
+            - point.mass 1 - point.mass 4)
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 0 - point.mass 1 - point.mass 4) + (point.mass 0
+            + point.mass 1) * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 0 - point.mass 4) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 0 - point.mass 4)
+            * (point.mass 5 / point.weight 5 - point.mass 5 - point.mass 0
+            - point.mass 1 - point.mass 4)
+        ∧ (point.mass 0 + point.mass 4) * (point.mass 3 / point.weight 3
+            - point.mass 3 - point.mass 0 - point.mass 1) + (point.mass 0
+            + point.mass 1) * (point.mass 2 / point.weight 2 - point.mass 2
+            - point.mass 0 - point.mass 4) < (point.mass 2 / point.weight 2
+            - point.mass 2 - point.mass 0 - point.mass 4)
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+            - point.mass 1))
+      ∨ (point.weight 3 * (point.mass 3 + point.mass 0 + point.mass 1)
+            < point.mass 3
+        ∧ point.weight 4 * (point.mass 4 + point.mass 0 + point.mass 2)
+            < point.mass 4
+        ∧ point.weight 5 * (point.mass 5 + point.mass 1 + point.mass 2)
+            < point.mass 5
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 1 - point.mass 2) + point.mass 1
+            * (point.mass 4 / point.weight 4 - point.mass 4 - point.mass 0
+            - point.mass 2) < (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 0 - point.mass 2) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 1 - point.mass 2)
+        ∧ point.mass 0 * (point.mass 5 / point.weight 5 - point.mass 5
+            - point.mass 1 - point.mass 2) + point.mass 2
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+            - point.mass 1) < (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 0 - point.mass 1) * (point.mass 5 / point.weight 5
+            - point.mass 5 - point.mass 1 - point.mass 2)
+        ∧ point.mass 1 * (point.mass 4 / point.weight 4 - point.mass 4
+            - point.mass 0 - point.mass 2) + point.mass 2
+            * (point.mass 3 / point.weight 3 - point.mass 3 - point.mass 0
+            - point.mass 1) < (point.mass 3 / point.weight 3 - point.mass 3
+            - point.mass 0 - point.mass 1) * (point.mass 4 / point.weight 4
+            - point.mass 4 - point.mass 0 - point.mass 2))
+
+/-- The landed twenty-cell dispatch, restated over the named region. -/
+theorem kFourAtlas_hasStrictTriple_of_layerAFires
+    (point : DirectionChartPoint 6) (hfires : KFourLayerACellFires point) :
+    ∃ selected : Finset (Fin 6), selected.card = 3 ∧
+      (directionChartGap kFourDirection point.mass point.weight
+        selected).PosDef :=
+  kFourAtlas_hasStrictTriple_of_anyCell point hfires
+
+/-- **The exact K4 residual.**  Off the Layer-A region, every weakly
+dominated chart point has a strictly dominating triple.  Strictly lighter
+than each surviving selection Prop (each implies it -- see the cross-checks
+below) and strictly below the chart obligation (the twenty landed cells are
+spent, not assumed).  `heavyPairRefuterPoint` is the mandatory first test
+of any candidate proof. -/
+def KFourKnifeBandWeakToStrict : Prop :=
+  ∀ point : DirectionChartPoint 6, ¬ KFourLayerACellFires point →
+    (∃ selected : Finset (Fin 6), selected.card = 3 ∧
+        (directionChartGap kFourDirection point.mass point.weight
+          selected).PosSemidef) →
+      ∃ selected : Finset (Fin 6), selected.card = 3 ∧
+        (directionChartGap kFourDirection point.mass point.weight
+          selected).PosDef
+
+/-- **The knife band closes the chart.**  Split any chart point along the
+Layer-A boundary: covered points are dispatched by the landed atlas,
+uncovered ones by the band residual. -/
+theorem directionChartIsTieFree_kFour_of_knifeBandWeakToStrict
+    (hband : KFourKnifeBandWeakToStrict) :
+    DirectionChartIsTieFree kFourDirection := by
+  intro point hweak
+  by_cases hfires : KFourLayerACellFires point
+  · exact kFourAtlas_hasStrictTriple_of_layerAFires point hfires
+  · exact hband point hfires hweak
+
+/-- Every surviving selection closes the band, so the band residual is
+DOWNSTREAM of all three live endgame routes -- proving any one of them
+still finishes the class.  Hypothesis-taking; reaches no axiom. -/
+example (hhost : KFourLeverageEdgeHostsStrictTree) : KFourKnifeBandWeakToStrict :=
+  fun point _ hweak =>
+    directionChartIsTieFree_kFour_of_leverageEdgeHosts hhost point hweak
+
+example (hhost : KFourEdgeDetArgmaxHostsStrictTree) : KFourKnifeBandWeakToStrict :=
+  fun point _ hweak =>
+    directionChartIsTieFree_kFour_of_edgeDetArgmaxHosts hhost point hweak
+
+example (hlift : KFourSomeTreeLiftThreshold) : KFourKnifeBandWeakToStrict :=
+  fun point _ hweak =>
+    directionChartIsTieFree_kFour_of_someTreeLiftThreshold hlift point hweak
+
 end Gtz

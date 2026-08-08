@@ -1173,4 +1173,61 @@ theorem shadowReadings_separated_of_bracket_ne_zero
   apply hbracket
   rw [tripleBracket_planeAtom_expand]
   linear_combination hcontra
+
+/-! ## The reduced cover property: the exact residual of the chartless classes
+
+The producer layer above is complete: `posDef_of_normalSurplus_planeCover`
+turns a strict normal surplus plus a plane cover into a positive definite
+gap, and `isTie_yields_planeCover_failure` shows a tie must defeat EVERY
+surplus triple's cover.  What no theorem in the tree supplies is the
+existence half -- that every design of a chartless stratum ADMITS a
+producer-satisfying pair.  Naming that existence (the reduced cover
+property) makes it the exact residual: the class statements follow by one
+application of the producer against the tie's own refusal.  The property is
+UNCONDITIONED on ties deliberately -- under a tie no producer pair can
+exist (the producer would hand the tie a strictly dominating triple), so a
+tie-conditioned sibling could only be proved by proving tie-freeness first;
+the unconditioned form is the one statement a sign-only construction can
+attack design by design. -/
+
+/-- **The reduced cover property at a pattern.**  Every design realizing the
+pattern admits a card-3 subset and a unit normal satisfying BOTH hypotheses
+of `posDef_of_normalSurplus_planeCover`: a strict normal surplus, and a
+plane cover beating the cross-coupling square at every in-plane probe.  The
+subset and the normal are both existential -- the attack chooses its lever
+(for the one-line class the line's common orthogonal makes the free-triple
+surplus automatic through `oneLine_exists_freeAtom_overcovers_normal`; the
+genuinely open half is the cover).  Sign-only by necessity: the stratum
+admits NO uniform margin floor (the margin collapses like `1/N` at the
+line-starved normal-matched corner), so any proof must produce signs, not
+floors. -/
+def PatternReducedCoverProperty {size : ℕ} (pattern : LinePattern size) : Prop :=
+  ∀ design : WeightedDesign size 3, HasLinePattern design pattern →
+    ∃ (selected : Finset (Fin size)) (unitNormal : Fin 3 → ℝ),
+      selected.card = 3 ∧ unitNormal ⬝ᵥ unitNormal = 1 ∧
+      (1 < ∑ selectedLabel ∈ selected,
+        (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) ∧
+      ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ unitNormal = 0 → probe ≠ 0 →
+        (∑ selectedLabel ∈ selected, (design.atom selectedLabel ⬝ᵥ probe)
+            * (design.atom selectedLabel ⬝ᵥ unitNormal)) ^ 2
+          < ((∑ selectedLabel ∈ selected,
+                (design.atom selectedLabel ⬝ᵥ unitNormal) ^ 2) - 1)
+            * ((∑ selectedLabel ∈ selected,
+                  (design.atom selectedLabel ⬝ᵥ probe) ^ 2) - probe ⬝ᵥ probe)
+
+/-- **The reduced cover property closes a stratum.**  One application of the
+uniform Schur producer against the tie's second component.  Pattern-generic:
+the one-line and two-meeting-lines classes consume the SAME theorem at their
+patterns, which is exactly why the producer was stated direction-generically. -/
+theorem stratumIsTieFree_of_reducedCoverProperty {size : ℕ}
+    (pattern : LinePattern size)
+    (hproperty : PatternReducedCoverProperty pattern) :
+    StratumIsTieFree pattern := by
+  intro design hpattern htie
+  obtain ⟨selected, unitNormal, hcard, hunit, hsurplus, hcover⟩ :=
+    hproperty design hpattern
+  exact htie.2 selected hcard
+    (posDef_of_normalSurplus_planeCover design selected unitNormal hunit
+      hsurplus hcover)
+
 end Gtz

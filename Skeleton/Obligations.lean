@@ -32,22 +32,31 @@ Two roots are in play.
 
 * Root A, rank three: `forall n, 0 < n -> Gtz.GtzOriginal n 3`.  Rests on FIVE
   obligations, one per surviving matroid class of the stress-free (6,3)
-  stratum.  Since the 2026-08-08 SHARPENING each of the five is the EXACT
-  residual Prop of its class, one landed reduction theorem below the old class
-  statement: `obligationWeakToStrictUThreeSix`
-  (`Gtz.LineFreeOffConicWeakToStrict`), `obligationStratumTieFreeOneLine` and
-  `obligationStratumTieFreeTwoMeetingLines` (identity-labelled
-  `Gtz.StratumIsTieFree` at the two patterns), `obligationChartTieFreeThreeLines`
-  (`Gtz.DirectionChartIsTieFree` at every admissible slide) and
-  `obligationChartTieFreeKFour` (`Gtz.DirectionChartIsTieFree` at the K4
-  chart).  The five OLD class statements `obligationTieFree*` survive as
-  THEOREMS, each discharged from its finer axiom through the tree's own
-  consumer, and their conjunction still assembles
-  `obligationStressFreeHingeSixThree` exactly as before.  The sharpening moves
-  each axiom DOWN the proved chain to the first genuinely open statement; it is
-  a refinement in the sufficient direction (each finer Prop implies its class
-  statement by a kernel theorem; no converse is claimed), so what the frontier
-  prints is now the true attack surface.
+  stratum.  The 2026-08-08 SHARPENING pushed each of the five DOWN the proved
+  chain until it names the first genuinely open statement, spending every
+  landed reduction on the way:
+
+  - `obligationWeakToStrictUThreeSix` = `Gtz.LineFreeOffConicWeakToStrict`
+    (the design-level weak-to-strict upgrade, `PosSemidef` antecedent kept);
+  - `obligationReducedCoverOneLine` and
+    `obligationReducedCoverTwoMeetingLines` =
+    `Gtz.PatternReducedCoverProperty` at the two chartless patterns -- some
+    card-3 subset and unit normal satisfy BOTH hypotheses of the landed
+    uniform Schur producer, the campaign's RCP verbatim;
+  - `obligationChartTieFreeThreeLines` = `Gtz.DirectionChartIsTieFree` at
+    every admissible slide;
+  - `obligationKnifeBandKFour` = `Gtz.KFourKnifeBandWeakToStrict`, strictness
+    demanded ONLY off the named Layer-A region `Gtz.KFourLayerACellFires`, so
+    the twenty proved atlas cells are SPENT, not re-assumed.
+
+  Everything above each axiom survives as a THEOREM -- the old class
+  statements `obligationTieFree*`, the intermediate
+  `obligationStratumTieFree*` and `obligationChartTieFreeKFour`, and their
+  assembly `obligationStressFreeHingeSixThree` -- so no downstream capstone
+  changed.  Each step is a refinement in the sufficient direction (the finer
+  Prop implies the coarser one by a kernel theorem; no converse is claimed),
+  which is what makes the printed frontier the true attack surface rather
+  than a convenient restatement.
 * Root B, general rank: `forall rank, Gtz.GtzWeightedAll rank`, with no rank
   excluded because `Gtz.gtzWeighted_dim_zero` discharges rank zero.  Needs
   exactly three, `obligationSubThresholdBandHinge`,
@@ -119,41 +128,56 @@ theorem obligationTieFreeUThreeSix :
   Gtz.stressFreeStratumIsTieFree_lineFree_of_weakToStrict obligationWeakToStrictUThreeSix
 
 /--
-STATUS: open, no producer, no chart. The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_oneThreePointLine`, Gtz/Reduction/TrichotomyLedger.lean:485), so the stress-freeness hypothesis is automatic and this obligation reads exactly: no (6,3) design realizing one three-point line is an exact tie.
-CONSUMERS: `obligationStressFreeHingeSixThree` (the split parent, now a theorem), hence the rank-three capstone.
+STATUS: open -- THE EXACT ONE-LINE RESIDUAL: `Gtz.PatternReducedCoverProperty` at the one-line pattern. Every design of the stratum admits a card-3 subset and a unit normal satisfying BOTH hypotheses of the landed uniform Schur producer (strict normal surplus, strict plane cover) -- the campaign's RCP, verbatim. Everything between this Prop and the class statement is a theorem: `Gtz.stratumIsTieFree_of_reducedCoverProperty` closes the stratum by one producer application against the tie's own refusal, and the relabel bridge lifts it to the class. The property is UNCONDITIONED on ties deliberately: under a tie no producer pair can exist, so a tie-conditioned sibling could only be proved via tie-freeness itself. The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_oneThreePointLine`, Gtz/Reduction/TrichotomyLedger.lean:485), so no stress-freeness hypothesis survives anywhere in the chain, and the surplus half is automatic at the free triple against the line normal (`Gtz.oneLine_exists_freeAtom_overcovers_normal`) -- the genuinely open half is the plane cover.
+CONSUMERS: `obligationStratumTieFreeOneLine` (now a theorem), hence `obligationTieFreeOneLine`, `obligationStressFreeHingeSixThree`, and the rank-three capstone.
 WHY OPEN: of the six producers of `Gtz.StressFreeStratumIsTieFree` in the tree, three are chart instances at other patterns, the plane-pair filter is provably anti-aligned (the residual list IS the not-plane-pair-covered list, Gtz/Design/StressFreeMatroidStratification.lean:303), and the two generic chart forms need a chart nobody has built for this pattern.
 ATTACK: build the chart following the shipped precedent -- Gtz/Design/RigidityBridge.lean:1-60 (PGL(3) simply transitive on four general lines, made rational, plus the per-atom scaling group) and the structure of `Gtz.directionChartCoversPrimitiveStratum_kFourDirection`. The pattern pins only three atoms projectively, so the chart carries genuine moduli and the analytic half is a parametric family. BUILD THIS CLASS FIRST of the two chartless ones: its boundary is diamond-FREE, so uniform-in-parameter arguments should survive. Corpora triage complete (2026-08-07): /tmp/gtz-p38/rigidity2 and /tmp/gtz-p35/zerochart are empty/dead; the w2 lane targeted the K4 tube route, nothing shortcuts the chart build. Direct-route levers: a tie's weak dominator avoids the line (`Gtz.not_dominates_of_atomBracket_eq_zero`), hence is one of the NINETEEN basis triples; the line's common orthogonal is the lever -- Parseval transfers the whole normal direction to the three free atoms, and positivity of the line weights makes the free triple exceed the identity STRICTLY along the normal, a strict seed present on every design of the stratum. Exact-rational non-vacuity sample with two strictly dominating triples now IN KERNEL: `Gtz.oneLineSampleDesign` (Gtz/Design/LineClassObstructions.lean) with `Gtz.oneLineSampleDesign_not_isTie`; the census ladder G1-G3/O1-O7 is landed in the same module (the relabel bridge `Gtz.stressFreeStratumIsTieFree_of_stratumIsTieFree` closes this obligation from any identity-labelled tie-freeness proof). STAGE-3 UPDATE (2026-08-08): the producer layer is LANDED -- the pointwise normal seed `Gtz.exists_complementAtom_overcovers_normal` (one complement atom alone beats the squared normal), the uniform Schur producer `Gtz.posDef_of_normalSurplus_planeCover` (normal surplus + plane cover => PosDef gap, one completed square, direction-generic), and the tie-side `Gtz.isTie_yields_planeCover_failure`. The class residual is ONE statement, RCP: some card-3 subset satisfies both producer hypotheses. Constraints on any RCP proof (exact witnesses in the campaign record): the argmax-normal-conductance selection is refuted at the matched-normal knife, and NO uniform margin floor exists on the stratum (an explicit rational family collapses the margin like 1/N at the line-starved normal-matched weight corner) -- the proof must be sign-only; recommended attack is rank-2 slack in the plane with per-atom penalty deflations, worked at that corner first. STAGE-4 UPDATE (2026-08-08): the corner reduces to a dichotomy on min_i eps_i vs 1/2; leg B (all eps in the closed half [0, 1/2], including the E = I/2 knife) is PEN-PROVED via the Half-Plane Lemma (Bhatia-Davis range bound x_min x_max <= -V with a matroid equality-kill; campaign record, stage-4 rcp lane -- NOT yet in kernel); leg C is reduced with zero slack (gamma-elimination + von Neumann duality) to RCP-C1: all eps_i > 1/2 implies an admissible vertex dual y with VERT_k below mu_k (401 strict exact confirmations, zero violations, max cValue -23/799); plus the RCP-LIFT seam (corner-to-interior: A-triples are corner-redundant but NOT interior-redundant, 9/360). CLOSED DOOR: b-averaged and ALL line-data-only C-engines are provably insufficient -- they die on the isotropic band E = cI (exact witness: lines (1,0), (4,7), (-4,7), masses (363/980, 11/1960, 11/1960), c = 11/20; band (1/2, 4/7]); any C-certificate must read shadow data.
 NOT-REFUTED: no census row targets it. The stress-forcing filter door is CLOSED, not just unused: the pattern forces stress-freeNESS uniformly (`Gtz.stratumIsStressFree_oneThreePointLine`, TrichotomyLedger.lean:485), so a filter asserting a forced nonzero stress is refutable at any design of the stratum, and the residual list is already exactly the not-plane-pair-covered list (StressFreeMatroidStratification.lean:303). Only direct tie obstructions remain admissible here.
 -/
-axiom obligationStratumTieFreeOneLine :
-    Gtz.StratumIsTieFree (Gtz.lineFamilyPattern [[(0 : Fin 6), 1, 2]])
+axiom obligationReducedCoverOneLine :
+    Gtz.PatternReducedCoverProperty (Gtz.lineFamilyPattern [[(0 : Fin 6), 1, 2]])
+
+/-- **Discharged from the sharpened axiom.**  Same name, same statement as the
+axiom it replaces: `Gtz.stratumIsTieFree_of_reducedCoverProperty` closes the
+stratum from the reduced cover property by one application of the uniform
+Schur producer `Gtz.posDef_of_normalSurplus_planeCover` against the tie's
+second component. -/
+theorem obligationStratumTieFreeOneLine :
+    Gtz.StratumIsTieFree (Gtz.lineFamilyPattern [[(0 : Fin 6), 1, 2]]) :=
+  Gtz.stratumIsTieFree_of_reducedCoverProperty _ obligationReducedCoverOneLine
 
 /-- **Discharged from the sharpened axiom.**  Same name, same statement as the
 axiom it replaces: the relabel bridge
 `Gtz.stressFreeStratumIsTieFree_of_stratumIsTieFree` closes the class statement
-from identity-labelled tie-freeness, so the axiom moves down to
-`obligationStratumTieFreeOneLine` -- no relabel quantifier, no stress-freeness
-hypothesis (the stratum is uniformly stress-free,
+from identity-labelled tie-freeness -- no relabel quantifier, no
+stress-freeness hypothesis (the stratum is uniformly stress-free,
 `Gtz.stratumIsStressFree_oneThreePointLine`). -/
 theorem obligationTieFreeOneLine :
     Gtz.StressFreeStratumIsTieFree (Gtz.lineFamilyPattern [[0, 1, 2]]) :=
   Gtz.stressFreeStratumIsTieFree_of_stratumIsTieFree _ obligationStratumTieFreeOneLine
 
 /--
-STATUS: open, no producer, no chart. The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_twoMeetingLines`, Gtz/Reduction/TrichotomyLedger.lean:491), so this obligation reads exactly: no (6,3) design realizing two meeting three-point lines is an exact tie.
-CONSUMERS: `obligationStressFreeHingeSixThree` (the split parent, now a theorem), hence the rank-three capstone.
+STATUS: open -- THE EXACT TWO-MEETING-LINES RESIDUAL: `Gtz.PatternReducedCoverProperty` at the two-meeting-lines pattern, the SAME pattern-generic Prop as the one-line residual because the uniform Schur producer is direction-generic and consumes this class verbatim. Everything between this Prop and the class statement is a theorem (`Gtz.stratumIsTieFree_of_reducedCoverProperty` + the relabel bridge). Refinement in the sufficient direction only: the class statement does not require RCP, and this class is diamond-CARRYING, so any candidate proof must survive the weight-zero diamond boundary where margins die linearly -- sign-only, one strict seed per line (a tie's weak dominator avoids BOTH lines, the two normals are provably non-parallel). The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_twoMeetingLines`, Gtz/Reduction/TrichotomyLedger.lean:491).
+CONSUMERS: `obligationStratumTieFreeTwoMeetingLines` (now a theorem), hence `obligationTieFreeTwoMeetingLines`, `obligationStressFreeHingeSixThree`, and the rank-three capstone.
 WHY OPEN: same producer situation as the one-line class -- no chart exists for this pattern and the plane-pair filter is structurally inapplicable. Two concurrent lines are the closest residual pattern to the plane-pair boundary: the two line planes cover five of the six atoms, and it is exactly the sixth that escapes the escape law.
 ATTACK: same chart-building precedent as the one-line class (RigidityBridge.lean:1-60 plus the :796 covering structure); the pattern pins five atoms up to the two line moduli, so the chart is SMALLER than the one-line chart -- but build it SECOND: this class is diamond-CARRYING (`Gtz.diamondCarryingResidualFamiliesSix`, StressFreeMatroidStratification.lean:580), a positive-dimensional (5,3) tie family through `Gtz.diamondDesign` sits on its weight-zero boundary, margins die linearly there and no uniform-in-weights certificate exists; the boundary leg must route the diamond shadow through the proved five-label exclusions, with the open-atom lift identity as the skeleton. Direct-route levers: a tie's weak dominator avoids BOTH lines, leaving EIGHTEEN basis triples; the two normals are provably non-parallel and the shared atom is pinned projectively to the plane intersection -- the class's rigidity kernel; Parseval gives one strict seed per line.
 NOT-REFUTED: no census row targets it. The stress-forcing filter door is CLOSED, not just unused: the pattern forces stress-freeNESS uniformly (`Gtz.stratumIsStressFree_twoMeetingLines`, TrichotomyLedger.lean:491), the opposite polarity to any stress-forcing mechanism, and the plane-pair law already consumed every coverable class (StressFreeMatroidStratification.lean:303). Only direct tie obstructions remain admissible here.
 -/
-axiom obligationStratumTieFreeTwoMeetingLines :
-    Gtz.StratumIsTieFree (Gtz.lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]])
+axiom obligationReducedCoverTwoMeetingLines :
+    Gtz.PatternReducedCoverProperty
+      (Gtz.lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]])
+
+/-- **Discharged from the sharpened axiom.**  Same name, same statement as the
+axiom it replaces: the same pattern-generic
+`Gtz.stratumIsTieFree_of_reducedCoverProperty` closes this stratum too. -/
+theorem obligationStratumTieFreeTwoMeetingLines :
+    Gtz.StratumIsTieFree (Gtz.lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]]) :=
+  Gtz.stratumIsTieFree_of_reducedCoverProperty _ obligationReducedCoverTwoMeetingLines
 
 /-- **Discharged from the sharpened axiom.**  Same name, same statement as the
 axiom it replaces: the relabel bridge
 `Gtz.stressFreeStratumIsTieFree_of_stratumIsTieFree` closes the class statement
-from identity-labelled tie-freeness at this pattern too, so the axiom moves
-down to `obligationStratumTieFreeTwoMeetingLines`. -/
+from identity-labelled tie-freeness at this pattern too. -/
 theorem obligationTieFreeTwoMeetingLines :
     Gtz.StressFreeStratumIsTieFree (Gtz.lineFamilyPattern [[0, 1, 2], [0, 3, 4]]) :=
   Gtz.stressFreeStratumIsTieFree_of_stratumIsTieFree _ obligationStratumTieFreeTwoMeetingLines
@@ -180,13 +204,22 @@ theorem obligationTieFreeThreeLines :
   Gtz.stressFreeStratumIsTieFree_threeLines_of_chart obligationChartTieFreeThreeLines
 
 /--
-STATUS: the most rigid class; covering half PROVED (`Gtz.directionChartCoversPrimitiveStratum_kFourDirection`, Gtz/Design/RigidityBridge.lean:796), direct class consumer `Gtz.stressFreeStratumIsTieFree_graphicKFour_of_chart` (:834). The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_graphicKFour`, Gtz/Reduction/TrichotomyLedger.lean:505). NOT VACUOUS: the stage-four audit's coordinate-diagonal design (the regular tetrahedron's six edge directions) realizes exactly this pattern. Open: `Gtz.DirectionChartIsTieFree Gtz.kFourDirection` -- eleven positive reals against six FIXED rational chart vectors, twenty triples, no design, no whitener, no square root in the statement.
-CONSUMERS: `obligationStressFreeHingeSixThree` (the split parent, now a theorem), hence the rank-three capstone.
+STATUS: the most rigid class; covering half PROVED (`Gtz.directionChartCoversPrimitiveStratum_kFourDirection`, Gtz/Design/RigidityBridge.lean:796), direct class consumer `Gtz.stressFreeStratumIsTieFree_graphicKFour_of_chart` (:834). The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_graphicKFour`, Gtz/Reduction/TrichotomyLedger.lean:505). NOT VACUOUS: the stage-four audit's coordinate-diagonal design (the regular tetrahedron's six edge directions) realizes exactly this pattern. Open: `Gtz.KFourKnifeBandWeakToStrict` -- strictness demanded ONLY at weakly dominated chart points where no Layer-A cell fires (the twenty landed cells, named `Gtz.KFourLayerACellFires`, are spent as the theorem `Gtz.kFourAtlas_hasStrictTriple_of_layerAFires`; the boundary split `Gtz.directionChartIsTieFree_kFour_of_knifeBandWeakToStrict` closes the chart). The uncovered set is the stage-four knife band: 464 exact leftover points, 405 knife-edge, canonical inhabitant `Gtz.heavyPairRefuterPoint` -- the mandatory first test of any candidate proof. Eleven positive reals against six FIXED rational chart vectors, twenty triples, no design, no whitener, no square root in the statement.
+CONSUMERS: `obligationChartTieFreeKFour` (now a theorem), hence `obligationTieFreeKFour`, `obligationStressFreeHingeSixThree`, and the rank-three capstone.
 WHY OPEN: the sole producer of `Gtz.DirectionChartIsTieFree` is `Gtz.directionChartIsTieFree_of_hasStrictTriple` (:176), whose premise `Gtz.DirectionChartHasStrictTriple` is kernel-FALSE at a degenerate DIRECTION (a non-spanning family -- no refutation exists at any valid `kFourDirection` chart point, and ~19000 exact-rational adjudications found none); the antecedent-free form is still never landed as a named global. The class-level sibling `stressFreeStratumIsTieFree_graphicKFour_of_strictTriple` (:841) stays forbidden as a route.
 ATTACK: DECIDED (spike, 2026-08-07): the DIRECT road; collar weld rejected (three nonexistent layers). LANDED SINCE (Gtz/Design/KFourChartClosure.lean, 2026-08-08): the whole contraction-descent brick set -- the rank-two Foster engine, `Gtz.rankTwoSlackLemma` (Lemma A), kappa-free `Gtz.sylvesterLift`, the twelve entrywise gap matrices, the dependent-triple PSD exclusion, `Gtz.kFourContractionHasWinner` (at EVERY chart point some tree through edge 5 has PD contracted block, no maximality needed), the det normal forms, and the consumption bridge -- PLUS the kernel REFUTATION of the max-conductance selection: `Gtz.kFourMaxEdgeHostsStrictTree_refuted` and `Gtz.kFourMaxEdgeDetPigeonhole_refuted` at `Gtz.maxEdgeRefuterPoint` (strict argmax edge 3, dominant masses on the dependent triangle {0,3,4}), while the chart obligation stays INTACT there (`Gtz.maxEdgeRefuterPoint_hasStrictTriple`, {0,1,4} dominates strictly). STAGE-3 UPDATE (2026-08-08): the mass-reading direction is ALSO kernel-refuted -- `Gtz.kFourDominantMassPairHostsStrictTree_refuted` at the dual witness `Gtz.heavyPairRefuterPoint` (same weights, triangle-closer mass 18 past the pair's series threshold 120/7) and `Gtz.kFourMaxAlphaEdgeHostsStrictTree_refuted` at the landed witness; with the max-conductance refutation these close every per-label scalar ordering, and per-class representative rules die at tetrahedron shells (exact witnesses, campaign record). STAGE-4 UPDATE (2026-08-08): the certificate atlas's Layer A is COMPLETE -- all TWENTY cells (four star + sixteen harmonic, entrywise gap lemmas for every spanning tree, engine `Gtz.harmonicSplitQuadraticForm_pos`) with total dispatch `Gtz.kFourAtlas_hasStrictTriple_of_anyCell`; Layer A is NOT a total atlas: `Gtz.heavyPairRefuterPoint` fires no Layer-A cell (its PD trees are exactly the six through edge 3), and the fresh-seed census leaves a 464-point exact leftover corpus (405 knife-edge; campaign record, stage-4 harm lane) -- the residual is the knife band ALONE, with the S4-invariant Sylvester triple (D1, D2, D3) the recommended certificate basis (PD-equivalent at 7712 instances, kernel equivalence pending). The surviving selections are now THREE, sharpest first, all with LANDED consumption bridges: `Gtz.KFourLeverageEdgeHostsStrictTree` (the max-(m_c Q_c / w_c) leverage edge hosts a strictly dominating tree; alive at 15/15 mandatory + 467/467 corpus + 2900/2900 adversarial, kernel-live at both refuter points with leverage edge 5; bridge `Gtz.directionChartIsTieFree_kFour_of_leverageEdgeHosts`, leverage layer `Gtz.kFourMassTreeSum` = det M, `Gtz.kFourContractionTreePolynomial`, trace identity, pigeonhole), `Gtz.KFourEdgeDetArgmaxHostsStrictTree`, `Gtz.KFourSomeTreeLiftThreshold`. CLOSED DOOR: no linear-in-y_S tree-determinant aggregate exists (exact phantom-Y Farkas duals at 14/15 mandatory points and 467/467 corpus under 1500 adversarial weights; any aggregate must engage the toric product relations); det-argmax at the leverage edge (RHO-EDGE, 16/467) and the pair variant (RHO-PAIR, 269/467) are refuted; det-argmax and leverage-argmax do not compose (`wallKFourDetArgmaxHostLift` ledger complete). Sample points: `Gtz.tetrahedronChartPoint` (margin 1/2), the refuter witness, and `Gtz.heavyPairRefuterPoint` (doubly mandatory: the only Layer-A-uncovered point AND the leverage liveness witness) are the mandatory first tests of any candidate selection or knife-band cell. STAGE-5 UPDATE (2026-08-08): the knife-band CERTIFICATE BASIS is LANDED as a kernel equivalence -- `Gtz.posDef_iff_invariantPencilTriple` (positive definiteness of the symmetric 3x3 IS positivity of the three S4-invariant pencil coefficients D1/D2/D3; eigenvalue-free engine `Gtz.posDef_of_invariantPencilTriple`, exact-verified at 52,064 fresh tree-instances before Lean, firing demonstrated at `Gtz.heavyPairRefuter_gap_zeroOneThree_posDef`), so a Layer-B cell is now THREE FIXED POLYNOMIAL INEQUALITIES at a designated tree -- no frame, no per-tree Sylvester lift -- and closing this class is exactly the sentence "at every chart point some spanning tree has D1 > 0, D2 > 0, D3 > 0". The SELECTION half resisted round five: all four invariant-argmax designations are refuted with exact witnesses (D1/D2/D3-argmax at the leverage edge and D2-argmax globally), NO constant normalized floor exists on the band (best-tree floors span 36 orders of magnitude, minimum 1.10e-39; the binding invariant is D3 at 464/464 band points), and det-positivity does NOT pointwise imply hosting (1,371 exact det-positive-not-PD leverage through-trees; witness {1,2,5} at heavyPair with D3 > 0, D1 < 0). `wallKFourKnifeBandSelection` is hereby DECLARED in its narrowed post-engine form: on the knife band, produce a designated-tree family with moduli-dependent floors making the three invariant inequalities provable cellwise -- equivalently prove `Gtz.KFourLeverageEdgeHostsStrictTree` (alive at 6,153 cumulative exact points, zero failures; its hosting tree supplies the designation, its bridge is landed, and it is now reducible to a det floor plus two cheap invariant checks); ledger = the stage-5 knife campaign record (52,064-instance equivalence verification, four argmax refutations with exact first witnesses, the 464-point bestFloor distribution, the det-half gap census). TRANSPORT: the engine is K4-specific only through the literal reference form L1; D2 = tr(adj(N) * L) is the transportable second-order invariant for the U(3,6) joint corner and the one-line 1/N corner (swap the reference form, recompute the three coefficient polynomials from the same det(N + t*L) expansion).
 NOT-REFUTED: no census row targets it. The relaxed-weight refutation needs `0 <= weight`; chart points carry strict positivity. No stress-forcing filter can apply (TrichotomyLedger.lean:505 plus the tetrahedron inhabitant).
 -/
-axiom obligationChartTieFreeKFour : Gtz.DirectionChartIsTieFree Gtz.kFourDirection
+axiom obligationKnifeBandKFour : Gtz.KFourKnifeBandWeakToStrict
+
+/-- **Discharged from the sharpened axiom.**  Same name, same statement as the
+axiom it replaces: the twenty Layer-A cells are spent as the theorem
+`Gtz.kFourAtlas_hasStrictTriple_of_layerAFires`, and
+`Gtz.directionChartIsTieFree_kFour_of_knifeBandWeakToStrict` closes the chart
+by splitting every point along the Layer-A boundary -- covered points from
+the atlas, band points from the residual. -/
+theorem obligationChartTieFreeKFour : Gtz.DirectionChartIsTieFree Gtz.kFourDirection :=
+  Gtz.directionChartIsTieFree_kFour_of_knifeBandWeakToStrict obligationKnifeBandKFour
 
 /-- **Discharged from the sharpened axiom.**  Same name, same statement as the
 axiom it replaces: the covering half is the unconditional
@@ -198,21 +231,25 @@ theorem obligationTieFreeKFour :
       (Gtz.lineFamilyPattern [[0, 1, 2], [0, 3, 4], [1, 3, 5], [2, 4, 5]]) :=
   Gtz.stressFreeStratumIsTieFree_graphicKFour_of_chart obligationChartTieFreeKFour
 
-/-- Kernel cross-checks that the three landed selection bridges really produce
-exactly the sharpened K4 axiom's statement -- each surviving selection Prop is
-one proof away from discharging `obligationChartTieFreeKFour`.  Off the chain:
-hypothesis-taking, so none reaches an axiom. -/
+/-- Kernel cross-checks that the sharpened K4 axiom really is DOWNSTREAM of all
+three surviving endgame routes: each selection Prop discharges the knife-band
+residual, so proving any one of them still closes the class -- the sharpening
+gave up no route.  Off the chain: hypothesis-taking, so none reaches an
+axiom. -/
 example (hlev : Gtz.KFourLeverageEdgeHostsStrictTree) :
-    Gtz.DirectionChartIsTieFree Gtz.kFourDirection :=
-  Gtz.directionChartIsTieFree_kFour_of_leverageEdgeHosts hlev
+    Gtz.KFourKnifeBandWeakToStrict :=
+  fun point _ hweak =>
+    Gtz.directionChartIsTieFree_kFour_of_leverageEdgeHosts hlev point hweak
 
 example (hhost : Gtz.KFourEdgeDetArgmaxHostsStrictTree) :
-    Gtz.DirectionChartIsTieFree Gtz.kFourDirection :=
-  Gtz.directionChartIsTieFree_kFour_of_edgeDetArgmaxHosts hhost
+    Gtz.KFourKnifeBandWeakToStrict :=
+  fun point _ hweak =>
+    Gtz.directionChartIsTieFree_kFour_of_edgeDetArgmaxHosts hhost point hweak
 
 example (hlift : Gtz.KFourSomeTreeLiftThreshold) :
-    Gtz.DirectionChartIsTieFree Gtz.kFourDirection :=
-  Gtz.directionChartIsTieFree_kFour_of_someTreeLiftThreshold hlift
+    Gtz.KFourKnifeBandWeakToStrict :=
+  fun point _ hweak =>
+    Gtz.directionChartIsTieFree_kFour_of_someTreeLiftThreshold hlift point hweak
 
 /-- **Split, not weakened.**  Same name, same statement as the axiom it
 replaces, assembled from the five class obligations through the tree's own
@@ -389,10 +426,10 @@ every axiom declared in this namespace, so it cannot silently drift.
 Kept honest by `#gtz_registry_check` in `Skeleton.Frontier`. -/
 def liveObligationNames : List Lean.Name :=
   [`Skeleton.obligationWeakToStrictUThreeSix,
-   `Skeleton.obligationStratumTieFreeOneLine,
-   `Skeleton.obligationStratumTieFreeTwoMeetingLines,
+   `Skeleton.obligationReducedCoverOneLine,
+   `Skeleton.obligationReducedCoverTwoMeetingLines,
    `Skeleton.obligationChartTieFreeThreeLines,
-   `Skeleton.obligationChartTieFreeKFour,
+   `Skeleton.obligationKnifeBandKFour,
    `Skeleton.obligationSubThresholdBandHinge,
    `Skeleton.obligationThresholdCellHingeRankFourAndUp,
    `Skeleton.obligationSharpWindowAnchorReachRankFourAndUp]

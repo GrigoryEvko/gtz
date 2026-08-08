@@ -91,7 +91,17 @@ def retiredObligationNames : List Name :=
    -- 2026-08-08: split by rank -- the rank-three instance IS the (6,3) hinge,
    -- i.e. the five class obligations in a strictly stronger wrapper; it is now
    -- DISCHARGED from them, and the axiom survives only at rank four and up.
-   `Skeleton.obligationThresholdCellHinge]
+   `Skeleton.obligationThresholdCellHinge,
+   -- 2026-08-08, second sharpening round: three of the five class residuals
+   -- pushed BELOW the landed producers rather than merely below the class
+   -- bridges -- the two chartless strata onto the reduced cover property
+   -- (`Gtz.stratumIsTieFree_of_reducedCoverProperty` spends the uniform Schur
+   -- producer), and the K4 chart onto the knife band
+   -- (`Gtz.directionChartIsTieFree_kFour_of_knifeBandWeakToStrict` spends all
+   -- twenty landed Layer-A cells).  Each survives as a theorem.
+   `Skeleton.obligationStratumTieFreeOneLine,
+   `Skeleton.obligationStratumTieFreeTwoMeetingLines,
+   `Skeleton.obligationChartTieFreeKFour]
 
 /-- Obligations added since the baseline.  Each name must be a declared axiom;
 the gate checks that.  Adding to this list with `retiredObligationNames` still
@@ -117,7 +127,13 @@ def introducedObligationNames : List Name :=
    `Skeleton.obligationChartTieFreeKFour,
    -- 2026-08-08: the rank-four-and-up half of the threshold-cell hinge; the
    -- rank-three half is discharged from the class obligations.
-   `Skeleton.obligationThresholdCellHingeRankFourAndUp]
+   `Skeleton.obligationThresholdCellHingeRankFourAndUp,
+   -- 2026-08-08, second sharpening round: the reduced cover property at the
+   -- two chartless patterns and the K4 knife band -- each one landed ENGINE
+   -- below the residual it replaces, not merely one landed bridge.
+   `Skeleton.obligationReducedCoverOneLine,
+   `Skeleton.obligationReducedCoverTwoMeetingLines,
+   `Skeleton.obligationKnifeBandKFour]
 
 /-! ### The gate -/
 
