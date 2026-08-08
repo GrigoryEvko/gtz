@@ -12582,6 +12582,23 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.stressFreeHingeHoldsSixThree_of_kFourChart
 #print axioms Gtz.stressFreeHingeHoldsSixThree_of_bothCharts
 
+-- Design/RigidityBridge, round-3 residual interface for the three-lines
+-- chart: direction-generic chart transport along a relabelling and a
+-- basis change (gap identity, then tie-freeness), the slide involution
+-- slide <-> 1/slide realized by the swap (0 1)(4 5) against the basis
+-- with unit determinant, admissibility carried across it, and the
+-- fundamental-domain residual -- tie-freeness demanded on 1 <= |slide|
+-- only, the other half of the parameter line now a theorem.
+#print axioms Gtz.directionChartGap_of_reindex
+#print axioms Gtz.directionChartIsTieFree_of_reindex
+#print axioms Gtz.det_threeLinesSlideBasis
+#print axioms Gtz.threeLinesDirection_eq_reindex_inv
+#print axioms Gtz.threeLinesSlideScale_ne_zero
+#print axioms Gtz.isAdmissibleThreeLinesParameter_inv
+#print axioms Gtz.directionChartIsTieFree_threeLines_of_inv
+#print axioms Gtz.chartTieFreeThreeLines_of_fundamentalDomain
+#print axioms Gtz.stressFreeStratumIsTieFree_threeLines_of_fundamentalDomain
+
 -- bridge (iii): the collar dictionary ring identities -- the Cramer layer
 -- underneath the rung-14 margin identities
 #print axioms GtzCollarDictionary.intPow_add
@@ -15616,6 +15633,19 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.clearanceBoundedInteriorFloor_rectangle_refuted
 #print axioms Gtz.interiorFamilyMarginFloor_monotoneGraded_refuted
 
+-- Design/LineFreeConicBridge, round-3 residual interface: the pointwise
+-- KKT extraction (a weakly dominating triple that is not positive
+-- definite carries a nonzero tight direction), the base-triple-tight
+-- residual -- weak triple pinned at {0,1,2} by the relabelling-invariance
+-- suite, tie's own tight direction carried, PosSemidef antecedent kept --
+-- its discharge of the class statement, and both producers.
+#print axioms Gtz.exists_tightDirection_of_dominates_not_posDef
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_weakToStrict
+#print axioms Gtz.lineFreeOffConicWeakToStrict_of_baseTripleTight
+#print axioms Gtz.stressFreeStratumIsTieFree_lineFree_of_baseTripleTight
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_noTie
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_twoFamilies
+
 -- Design/KFourChartClosure: the K4 chart route minus the endgame -- the
 -- rank-two Foster engine, positive definiteness from leading minors by
 -- completed squares, the deletion-contraction determinant normal forms,
@@ -15810,6 +15840,29 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- boundary split.
 #print axioms Gtz.kFourAtlas_hasStrictTriple_of_layerAFires
 #print axioms Gtz.directionChartIsTieFree_kFour_of_knifeBandWeakToStrict
+
+-- Design/KFourChartClosure, round-3 residual interface: a SECOND named
+-- covered region (the exchange star), spending the two determinant
+-- lemmas that were otherwise orphaned; the card-3 dichotomy (spanning
+-- tree or dependent triple) and the count of the sixteen trees, which
+-- together let the weak antecedent produce a tree so both quantifiers
+-- restrict from twenty subsets to sixteen; the refined knife band and
+-- its discharge of the round-2 band; the three selection producers
+-- restated; and the two mandatory band witnesses -- heavyPairRefuterPoint
+-- is now COVERED by the exchange star, so bandResidualWitnessPoint is
+-- the canonical inhabitant of the surviving region.
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_exchangeStarCell
+#print axioms Gtz.cardThreeSubset_isSpanningTreeOrDependentTriple
+#print axioms Gtz.kFourSpanningTree_card
+#print axioms Gtz.kFourWeakAntecedent_yieldsSpanningTree
+#print axioms Gtz.kFourKnifeBandWeakToStrict_of_refined
+#print axioms Gtz.kFourKnifeBandRefined_of_leverageEdgeHosts
+#print axioms Gtz.kFourKnifeBandRefined_of_edgeDetArgmaxHosts
+#print axioms Gtz.kFourKnifeBandRefined_of_someTreeLiftThreshold
+#print axioms Gtz.heavyPairRefuterPoint_notLayerACellFires
+#print axioms Gtz.heavyPairRefuterPoint_exchangeStarCellFires
+#print axioms Gtz.bandResidualWitnessPoint_notLayerACellFires
+#print axioms Gtz.bandResidualWitnessPoint_notExchangeStarCellFires
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

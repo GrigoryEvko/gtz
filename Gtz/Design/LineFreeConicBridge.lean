@@ -33,10 +33,13 @@ this class the antecedent is load-bearing: the per-direction-tuple margin
 infimum over masses and weights is zero at EVERY tuple (mass-collapse cascade),
 so no antecedent-free strict-triple form can hold.
 `Gtz.stressFreeStratumIsTieFree_lineFree_of_weakToStrict` closes the class
-obligation from the attack Prop verbatim, and
-`Gtz.lineFreeOffConicWeakToStrict_of_twoFamilies` assembles the attack Prop
-from an interior margin floor plus a boundary collar exclusion over any
-clearance functional.
+obligation from the attack Prop verbatim.  `Gtz.lineFreeOffConicWeakToStrict_of_twoFamilies`
+assembles an interior margin floor plus a boundary collar exclusion over any
+clearance functional into the NO-TIE conclusion shape -- NOT into the attack
+Prop's own type; `Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_noTie`
+is the bridge that converts, and
+`Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_twoFamilies` is the two
+composed.
 
 ## Layer 2: the rational sample point
 
@@ -194,10 +197,12 @@ def BoundaryCollarExcludesTies (wallClearance : WeightedDesign 6 3 → ℝ)
     wallClearance design ≤ collarWidth →
     ¬ IsTie design
 
-/-- **THE TWO-FAMILY ASSEMBLY.**  The two families assemble to the attack
-Prop's conclusion shape, hence (through the reduction above) to the
-obligation: a tie is excluded in the collar, and outside the collar the
-interior floor upgrades the tie's own weak triple to a strict one. -/
+/-- **THE TWO-FAMILY ASSEMBLY.**  The two families assemble to the NO-TIE
+shape -- a tie is excluded in the collar, and outside the collar the interior
+floor upgrades the tie's own weak triple to a strict one.  This is NOT the
+attack Prop's type: reaching the registry residual takes the further bridge
+`baseTripleTightLineFreeOffConicWeakToStrict_of_noTie` (composed for you as
+`baseTripleTightLineFreeOffConicWeakToStrict_of_twoFamilies`). -/
 theorem lineFreeOffConicWeakToStrict_of_twoFamilies
     (wallClearance : WeightedDesign 6 3 → ℝ) (floorOf : ℝ → ℝ) (collarWidth : ℝ)
     (hinterior : InteriorFamilyMarginFloor wallClearance floorOf)
@@ -3520,5 +3525,140 @@ theorem interiorFamilyMarginFloor_monotoneGraded_refuted
   · exact minimaxRefuter_gap_twoThreeFive_not_posSemidef hfloorSixteenth
   · exact minimaxRefuter_gap_twoFourFive_not_posSemidef hfloorSixteenth
   · exact minimaxRefuter_gap_threeFourFive_not_posSemidef hfloorSixteenth
+
+
+
+/-! ## The sharpened U(3,6) residual
+
+Two landed facts sit unspent between `Gtz.LineFreeOffConicWeakToStrict` and the
+class statement.
+
+* The relabelling-invariance suite (`hasLinePattern_lineFree_relabelDesign`,
+  `hasNoCommonQuadric_relabelDesign`, `dominates_relabelDesign_iff`,
+  `subsetSum_relabelDesign`, `exists_relabel_map_baseTriple`) pins the weak
+  triple at the base triple `{0, 1, 2}`; today it is spent only on the
+  kernel-refuted clearance-bounded lane, never on the live residual.
+* The Rayleigh/KKT extraction turns a weakly dominating triple that is NOT
+  strictly dominating into an explicit nonzero null vector of its gap.  If the
+  triple IS strictly dominating the residual is not needed at all, so the
+  residual may assume the null vector outright.
+
+Both antecedents are pure additions, so the sharpened Prop is a syntactic
+restriction of the landed one. -/
+
+/-- **The pointwise KKT extraction.**  A weakly dominating subset that fails
+to dominate strictly has a nonzero tight direction.  This is the per-subset
+half of `isTie_yields_tightDirection`, which needs the whole tie. -/
+theorem exists_tightDirection_of_dominates_not_posDef {m k : ℕ}
+    (design : WeightedDesign m k) (selected : Finset (Fin m))
+    (hdominates : Dominates design selected)
+    (hnotPosDef : ¬ (subsetSum design selected - 1).PosDef) :
+    ∃ tightDir : Fin k → ℝ, tightDir ≠ 0 ∧
+      tightDir ⬝ᵥ ((subsetSum design selected - 1) *ᵥ tightDir) = 0 := by
+  rw [Matrix.posDef_iff_dotProduct_mulVec] at hnotPosDef
+  push Not at hnotPosDef
+  obtain ⟨tightDir, hne, hle⟩ := hnotPosDef hdominates.1
+  rw [star_trivial] at hle
+  have hge : 0 ≤ tightDir ⬝ᵥ ((subsetSum design selected - 1) *ᵥ tightDir) := by
+    have hpsd := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdominates).2 tightDir
+    rwa [star_trivial] at hpsd
+  exact ⟨tightDir, hne, le_antisymm hle hge⟩
+
+/-- **The sharpened U(3,6) residual.**  The weak triple is pinned at the base
+triple and comes with an explicit tight direction; the `PosSemidef` antecedent
+is KEPT, in its base-triple form. -/
+def BaseTripleTightLineFreeOffConicWeakToStrict : Prop :=
+  ∀ (design : WeightedDesign 6 3) (tightDir : Fin 3 → ℝ),
+    HasLinePattern design (lineFamilyPattern ([] : List (List (Fin 6)))) →
+    HasNoCommonQuadric design.atom →
+    Dominates design {0, 1, 2} →
+    tightDir ≠ 0 →
+    tightDir ⬝ᵥ ((subsetSum design {0, 1, 2} - 1) *ᵥ tightDir) = 0 →
+    ∃ selected : Finset (Fin 6), selected.card = 3 ∧
+      (subsetSum design selected - 1).PosDef
+
+/-- **Legality: the landed residual implies the sharpened one**, by discarding
+the base-triple pinning and the tight direction. -/
+theorem baseTripleTightLineFreeOffConicWeakToStrict_of_weakToStrict
+    (hattack : LineFreeOffConicWeakToStrict) :
+    BaseTripleTightLineFreeOffConicWeakToStrict :=
+  fun design _ hlineFree hoffConic hdominates _ _ =>
+    hattack design hlineFree hoffConic ⟨{0, 1, 2}, by decide, hdominates⟩
+
+/-- **The sharpened residual discharges the landed one.**  Spends the whole
+relabelling-invariance suite and the pointwise KKT extraction; the branch where
+the weak triple is already strict needs no residual at all. -/
+theorem lineFreeOffConicWeakToStrict_of_baseTripleTight
+    (hbase : BaseTripleTightLineFreeOffConicWeakToStrict) :
+    LineFreeOffConicWeakToStrict := by
+  intro design hlineFree hoffConic hweak
+  obtain ⟨weakTriple, hweakCard, hweakDominates⟩ := hweak
+  obtain ⟨relabel, hmap⟩ := exists_relabel_map_baseTriple weakTriple hweakCard
+  have hdominatesBase : Dominates (relabelDesign design relabel) {0, 1, 2} := by
+    rw [dominates_relabelDesign_iff, hmap]
+    exact hweakDominates
+  by_cases hstrict :
+      (subsetSum (relabelDesign design relabel) {0, 1, 2} - 1).PosDef
+  · refine ⟨({0, 1, 2} : Finset (Fin 6)).map relabel.toEmbedding, ?_, ?_⟩
+    · rw [Finset.card_map]
+      decide
+    · rw [← subsetSum_relabelDesign]
+      exact hstrict
+  · obtain ⟨tightDir, htightNe, htight⟩ :=
+      exists_tightDirection_of_dominates_not_posDef (relabelDesign design relabel)
+        {0, 1, 2} hdominatesBase hstrict
+    obtain ⟨strictTriple, hstrictCard, hstrictGap⟩ :=
+      hbase (relabelDesign design relabel) tightDir
+        (hasLinePattern_lineFree_relabelDesign design relabel hlineFree)
+        (hasNoCommonQuadric_relabelDesign design relabel hoffConic)
+        hdominatesBase htightNe htight
+    refine ⟨strictTriple.map relabel.toEmbedding, ?_, ?_⟩
+    · rw [Finset.card_map]
+      exact hstrictCard
+    · rw [← subsetSum_relabelDesign]
+      exact hstrictGap
+
+/-- The class discharge at the exact target type: the sharpened residual
+reaches `Skeleton.obligationTieFreeUThreeSix` through the tree's own
+reduction. -/
+theorem stressFreeStratumIsTieFree_lineFree_of_baseTripleTight
+    (hbase : BaseTripleTightLineFreeOffConicWeakToStrict) :
+    StressFreeStratumIsTieFree (lineFamilyPattern ([] : List (List (Fin 6)))) :=
+  stressFreeStratumIsTieFree_lineFree_of_weakToStrict
+    (lineFreeOffConicWeakToStrict_of_baseTripleTight hbase)
+
+/-! ## Route preservation
+
+The two-family assembly does not produce the attack Prop's type (its
+conclusion is the `noTie` shape), so the bridge below is stated and proved
+here: any interior-plus-collar pair still closes the sharpened residual. -/
+
+/-- The `noTie` shape reaches the sharpened residual, so the two-family
+assembly `lineFreeOffConicWeakToStrict_of_twoFamilies` is not lost. -/
+theorem baseTripleTightLineFreeOffConicWeakToStrict_of_noTie
+    (hnoTie : ∀ design : WeightedDesign 6 3,
+      HasLinePattern design (lineFamilyPattern ([] : List (List (Fin 6)))) →
+      HasNoCommonQuadric design.atom → ¬ IsTie design) :
+    BaseTripleTightLineFreeOffConicWeakToStrict := by
+  intro design _tightDir hlineFree hoffConic hdominates _ _
+  by_contra hnoStrict
+  push Not at hnoStrict
+  refine hnoTie design hlineFree hoffConic ⟨⟨{0, 1, 2}, by decide, hdominates⟩, ?_⟩
+  intro selected hcard hposDef
+  exact hnoStrict selected hcard hposDef
+
+/-- Composite: interior margin floor plus boundary collar still closes the
+sharpened residual, at any clearance functional. -/
+theorem baseTripleTightLineFreeOffConicWeakToStrict_of_twoFamilies
+    (wallClearance : WeightedDesign 6 3 → ℝ) (floorOf : ℝ → ℝ) (collarWidth : ℝ)
+    (hinterior : InteriorFamilyMarginFloor wallClearance floorOf)
+    (hfloorPos : ∀ clearance : ℝ, collarWidth < clearance → 0 < floorOf clearance)
+    (hcollar : BoundaryCollarExcludesTies wallClearance collarWidth)
+    (hcollarNonneg : 0 ≤ collarWidth) :
+    BaseTripleTightLineFreeOffConicWeakToStrict :=
+  baseTripleTightLineFreeOffConicWeakToStrict_of_noTie
+    (lineFreeOffConicWeakToStrict_of_twoFamilies wallClearance floorOf collarWidth
+      hinterior hfloorPos hcollar hcollarNonneg)
+
 
 end Gtz

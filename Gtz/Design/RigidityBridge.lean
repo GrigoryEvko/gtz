@@ -1199,4 +1199,235 @@ theorem stressFreeHingeHoldsSixThree_of_bothCharts
   · exact stressFreeStratumIsTieFree_threeLines_of_chart hthreeLinesChart
   · exact stressFreeStratumIsTieFree_graphicKFour_of_chart hkFourChart
 
+
+/-! ## Chart-to-chart transport, direction-generic
+
+A chart whose directions are a rescaled linear image of another chart's
+directions, up to a relabelling, inherits tie-freeness.  Everything is spent:
+`atomMatrix_conj`, `atomMatrix_smul`, `congr_sum_smul_atomMatrix`,
+`directionChartGap_transpose`, `map_symm_toEmbedding_map`, and the PSD kit's
+invertible-congruence pair. -/
+
+/-- The chart point carried along a relabelling and a per-label rescaling: the
+mass absorbs the square of the scale, the weight is just permuted. -/
+noncomputable def reindexedChartPoint {size : ℕ} (point : DirectionChartPoint size)
+    (relabel : Equiv.Perm (Fin size)) (scale : Fin size → ℝ)
+    (hscaleNe : ∀ label, scale label ≠ 0) : DirectionChartPoint size where
+  mass target := point.mass (relabel.symm target) * scale (relabel.symm target) ^ 2
+  weight target := point.weight (relabel.symm target)
+  mass_pos target :=
+    mul_pos (point.mass_pos _) (pow_two_pos_of_ne_zero (hscaleNe _))
+  weight_pos target := point.weight_pos _
+  weight_sum_one := by
+    rw [Equiv.sum_comp relabel.symm point.weight]
+    exact point.weight_sum_one
+
+/-- **The chart-to-chart gap dictionary.**  A realization of the source
+directions over the target directions turns the source gap into a congruence
+of the target gap at the reindexed point. -/
+theorem directionChartGap_of_reindex {size : ℕ}
+    (sourceDirection targetDirection : Fin size → (Fin 3 → ℝ))
+    (relabel : Equiv.Perm (Fin size)) (basisChange : Matrix (Fin 3) (Fin 3) ℝ)
+    (scale : Fin size → ℝ)
+    (hrealize : ∀ label : Fin size, sourceDirection label
+      = scale label • (basisChange *ᵥ targetDirection (relabel label)))
+    (mass weight : Fin size → ℝ) (selected : Finset (Fin size)) :
+    directionChartGap sourceDirection mass weight selected
+      = basisChange
+        * directionChartGap targetDirection
+            (fun target => mass (relabel.symm target) * scale (relabel.symm target) ^ 2)
+            (fun target => weight (relabel.symm target))
+            (selected.map relabel.toEmbedding)
+        * basisChangeᵀ := by
+  have hatom : ∀ label : Fin size, atomMatrix (sourceDirection label)
+      = scale label ^ 2
+        • (basisChange * atomMatrix (targetDirection (relabel label)) * basisChangeᵀ) := by
+    intro label
+    rw [hrealize label, atomMatrix_smul, atomMatrix_conj]
+  have hpush : ∀ (coefficient : Fin size → ℝ) (region : Finset (Fin size)),
+      ∑ label ∈ region, coefficient label • atomMatrix (sourceDirection label)
+        = basisChange
+          * (∑ target ∈ region.map relabel.toEmbedding,
+              (coefficient (relabel.symm target) * scale (relabel.symm target) ^ 2)
+                • atomMatrix (targetDirection target))
+          * basisChangeᵀ := by
+    intro coefficient region
+    rw [congr_sum_smul_atomMatrix, Finset.sum_map]
+    refine Finset.sum_congr rfl fun label _ => ?_
+    rw [hatom label]
+    simp only [Equiv.coe_toEmbedding, Equiv.symm_apply_apply, smul_smul]
+  have huniv : (Finset.univ : Finset (Fin size)).map relabel.toEmbedding = Finset.univ := by
+    ext label
+    simp
+  have hinner : ∑ target ∈ selected.map relabel.toEmbedding,
+        (mass (relabel.symm target) / weight (relabel.symm target)
+            * scale (relabel.symm target) ^ 2)
+          • atomMatrix (targetDirection target)
+      = ∑ target ∈ selected.map relabel.toEmbedding,
+        (mass (relabel.symm target) * scale (relabel.symm target) ^ 2
+            / weight (relabel.symm target))
+          • atomMatrix (targetDirection target) := by
+    refine Finset.sum_congr rfl fun target _ => ?_
+    congr 1
+    ring
+  rw [directionChartGap, directionChartGap,
+    hpush (fun label => mass label / weight label) selected,
+    hpush mass Finset.univ, huniv, hinner, ← Matrix.sub_mul, ← Matrix.mul_sub]
+
+/-- **The chart-to-chart transport of tie-freeness.** -/
+theorem directionChartIsTieFree_of_reindex {size : ℕ}
+    (sourceDirection targetDirection : Fin size → (Fin 3 → ℝ))
+    (relabel : Equiv.Perm (Fin size)) (basisChange : Matrix (Fin 3) (Fin 3) ℝ)
+    (scale : Fin size → ℝ)
+    (hbasisUnit : IsUnit basisChange.det)
+    (hscaleNe : ∀ label, scale label ≠ 0)
+    (hrealize : ∀ label : Fin size, sourceDirection label
+      = scale label • (basisChange *ᵥ targetDirection (relabel label)))
+    (htarget : DirectionChartIsTieFree targetDirection) :
+    DirectionChartIsTieFree sourceDirection := by
+  have htransposeUnit : IsUnit (basisChangeᵀ).det := by
+    rwa [Matrix.det_transpose]
+  intro point hweak
+  obtain ⟨selected, hcard, hposSemidef⟩ := hweak
+  set carried := reindexedChartPoint point relabel scale hscaleNe with hcarried
+  have hgap : ∀ region : Finset (Fin size),
+      directionChartGap sourceDirection point.mass point.weight region
+        = (basisChangeᵀ)ᵀ
+          * directionChartGap targetDirection carried.mass carried.weight
+              (region.map relabel.toEmbedding)
+          * basisChangeᵀ := by
+    intro region
+    rw [Matrix.transpose_transpose]
+    exact directionChartGap_of_reindex sourceDirection targetDirection relabel
+      basisChange scale hrealize point.mass point.weight region
+  have hcarriedWeak : ∃ target : Finset (Fin size), target.card = 3 ∧
+      (directionChartGap targetDirection carried.mass carried.weight target).PosSemidef := by
+    refine ⟨selected.map relabel.toEmbedding, by rw [Finset.card_map]; exact hcard, ?_⟩
+    refine (posSemidef_congr_right
+      (directionChartGap_transpose targetDirection carried.mass carried.weight
+        (selected.map relabel.toEmbedding)) htransposeUnit).mpr ?_
+    rw [← hgap selected]
+    exact hposSemidef
+  obtain ⟨strictTarget, hstrictCard, hstrictPosDef⟩ := htarget carried hcarriedWeak
+  refine ⟨strictTarget.map relabel.symm.toEmbedding, ?_, ?_⟩
+  · rw [Finset.card_map]
+    exact hstrictCard
+  · rw [hgap (strictTarget.map relabel.symm.toEmbedding),
+      map_symm_toEmbedding_map relabel strictTarget]
+    exact (posDef_congr_right
+      (directionChartGap_transpose targetDirection carried.mass carried.weight strictTarget)
+      htransposeUnit).mp hstrictPosDef
+
+/-! ## The three-lines slide involution
+
+The pattern automorphism group is `S3` on the triangle `{0, 1, 3}`; its action
+on the projective modulus is trivial on 3-cycles and inverts on transpositions,
+so `Z/2` is all the symmetry there is and halving the parameter line is the
+ceiling of this route. -/
+
+/-- The transposition realizing `slide <-> 1 / slide`: swap the triangle
+vertices `0` and `1`, which forces the side points `4` and `5` to swap. -/
+def threeLinesSlideRelabel : Equiv.Perm (Fin 6) where
+  toFun := ![1, 0, 2, 3, 5, 4]
+  invFun := ![1, 0, 2, 3, 5, 4]
+  left_inv := by decide
+  right_inv := by decide
+
+@[simp] theorem threeLinesSlideRelabel_apply (label : Fin 6) :
+    threeLinesSlideRelabel label = ![1, 0, 2, 3, 5, 4] label := rfl
+
+/-- The accompanying change of basis. -/
+noncomputable def threeLinesSlideBasis (slide : ℝ) : Matrix (Fin 3) (Fin 3) ℝ :=
+  !![0, 1, 0; 1, 0, 0; 0, 0, slide]
+
+theorem det_threeLinesSlideBasis (slide : ℝ) :
+    (threeLinesSlideBasis slide).det = -slide := by
+  simp [threeLinesSlideBasis, Matrix.det_fin_three]
+
+/-- The accompanying per-label rescaling. -/
+noncomputable def threeLinesSlideScale (slide : ℝ) : Fin 6 → ℝ
+  | 0 => 1
+  | 1 => 1
+  | 2 => 1
+  | 3 => 1 / slide
+  | 4 => 1
+  | 5 => 1
+
+/-- **The involution as a realization.**  The chart at `slide` is the chart at
+`1 / slide` relabelled by the transposition and conjugated by
+`threeLinesSlideBasis slide`. -/
+theorem threeLinesDirection_eq_reindex_inv (slide : ℝ) (hslideNe : slide ≠ 0)
+    (label : Fin 6) :
+    threeLinesDirection slide label
+      = threeLinesSlideScale slide label
+        • (threeLinesSlideBasis slide
+            *ᵥ threeLinesDirection (1 / slide) (threeLinesSlideRelabel label)) := by
+  fin_cases label <;>
+    (funext coordinate
+     fin_cases coordinate <;>
+       simp [threeLinesDirection, threeLinesSlideScale, threeLinesSlideBasis] <;>
+       field_simp)
+
+theorem threeLinesSlideScale_ne_zero (slide : ℝ) (hslideNe : slide ≠ 0)
+    (label : Fin 6) : threeLinesSlideScale slide label ≠ 0 := by
+  fin_cases label <;> simp [threeLinesSlideScale]
+  exact hslideNe
+
+theorem isAdmissibleThreeLinesParameter_inv {slide : ℝ}
+    (hadmissible : IsAdmissibleThreeLinesParameter slide) :
+    IsAdmissibleThreeLinesParameter (1 / slide) := by
+  obtain ⟨hslideNe, hslideNeNegOne⟩ := hadmissible
+  refine ⟨one_div_ne_zero hslideNe, ?_⟩
+  intro hinvNegOne
+  apply hslideNeNegOne
+  field_simp at hinvNegOne
+  linarith
+
+/-- **The slide involution transports tie-freeness.** -/
+theorem directionChartIsTieFree_threeLines_of_inv (slide : ℝ) (hslideNe : slide ≠ 0)
+    (hinverse : DirectionChartIsTieFree (threeLinesDirection (1 / slide))) :
+    DirectionChartIsTieFree (threeLinesDirection slide) :=
+  directionChartIsTieFree_of_reindex (threeLinesDirection slide)
+    (threeLinesDirection (1 / slide)) threeLinesSlideRelabel
+    (threeLinesSlideBasis slide) (threeLinesSlideScale slide)
+    (by
+      rw [det_threeLinesSlideBasis]
+      exact (isUnit_iff_ne_zero.mpr (neg_ne_zero.mpr hslideNe)))
+    (threeLinesSlideScale_ne_zero slide hslideNe)
+    (threeLinesDirection_eq_reindex_inv slide hslideNe)
+    hinverse
+
+/-! ## The sharpened three-lines residual: a fundamental domain -/
+
+/-- **The sharpened three-lines residual.**  Tie-freeness is demanded only on
+the fundamental domain `1 <= |slide|` of the involution `slide <-> 1 / slide`;
+the rest of the admissible parameter line is DISCHARGED by the transport. -/
+def ChartTieFreeThreeLinesFundamentalDomain : Prop :=
+  ∀ slide : ℝ, IsAdmissibleThreeLinesParameter slide → 1 ≤ |slide| →
+    DirectionChartIsTieFree (threeLinesDirection slide)
+
+/-- **The fundamental domain discharges the whole admissible line.** -/
+theorem chartTieFreeThreeLines_of_fundamentalDomain
+    (hdomain : ChartTieFreeThreeLinesFundamentalDomain) :
+    ∀ slide : ℝ, IsAdmissibleThreeLinesParameter slide →
+      DirectionChartIsTieFree (threeLinesDirection slide) := by
+  intro slide hadmissible
+  rcases le_or_gt 1 |slide| with hlarge | hsmall
+  · exact hdomain slide hadmissible hlarge
+  · refine directionChartIsTieFree_threeLines_of_inv slide hadmissible.1
+      (hdomain (1 / slide) (isAdmissibleThreeLinesParameter_inv hadmissible) ?_)
+    have hpos : 0 < |slide| := abs_pos.mpr hadmissible.1
+    rw [abs_div, abs_one]
+    rw [le_div_iff₀ hpos]
+    linarith
+
+/-- The class discharge at the exact target type. -/
+theorem stressFreeStratumIsTieFree_threeLines_of_fundamentalDomain
+    (hdomain : ChartTieFreeThreeLinesFundamentalDomain) :
+    StressFreeStratumIsTieFree
+      (lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4], [1, 3, 5]]) :=
+  stressFreeStratumIsTieFree_threeLines_of_chart
+    (chartTieFreeThreeLines_of_fundamentalDomain hdomain)
+
+
 end Gtz

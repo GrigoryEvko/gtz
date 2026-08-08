@@ -7591,4 +7591,222 @@ example (hlift : KFourSomeTreeLiftThreshold) : KFourKnifeBandWeakToStrict :=
   fun point _ hweak =>
     directionChartIsTieFree_kFour_of_someTreeLiftThreshold hlift point hweak
 
+
+/-! ## Layer B, cell one: the exchange star at the gauge tree {3,4,5} -/
+
+/-- **Layer-B cell: the exchange star.**  The two leading minors of the
+gauge-star gap `{3,4,5}` are positive and the landed leverage-floor plus
+exchange-bound pair certifies its determinant.  Every conjunct is read off
+the landed entrywise form `kFourGap_treeThreeFourFive_eq` and the landed
+determinant lemma `kFourGapDet_treeThreeFourFive_pos_of_exchangeBound`. -/
+noncomputable def KFourExchangeStarCellFires (point : DirectionChartPoint 6) : Prop :=
+  0 < point.mass 3 / point.weight 3 - (point.mass 1 + point.mass 3) - point.mass 0
+  ∧ point.mass 0 ^ 2
+      < (point.mass 3 / point.weight 3 - (point.mass 1 + point.mass 3)
+            - point.mass 0)
+        * (point.mass 4 / point.weight 4 - (point.mass 2 + point.mass 4)
+            - point.mass 0)
+  ∧ 3 * point.weight 5 * kFourMassTreeSum point.mass
+      ≤ point.mass 5 * kFourContractionTreePolynomial point.mass 5
+  ∧ (point.mass 0 + point.mass 1) * point.mass 4 * point.mass 5 * point.weight 3
+      + (point.mass 0 + point.mass 2) * point.mass 3 * point.mass 5 * point.weight 4
+      + (point.mass 1 + point.mass 2) * point.mass 3 * point.mass 4 * point.weight 5
+    < point.mass 3 * point.mass 4 * point.mass 5
+          * (1 - point.weight 3 - point.weight 4 - point.weight 5)
+      + point.mass 3 * kFourContractionTreePolynomial point.mass 3
+          * (point.weight 4 * point.weight 5)
+      + point.mass 4 * kFourContractionTreePolynomial point.mass 4
+          * (point.weight 3 * point.weight 5)
+      + 2 * (point.weight 3 * point.weight 4 * point.weight 5)
+          * kFourMassTreeSum point.mass
+
+/-- **The Layer-B dispatch.**  On the exchange-star cell the gauge tree
+`{3,4,5}` is strictly dominating.  Spends the orphaned determinant lemma
+`kFourGapDet_treeThreeFourFive_pos_of_exchangeBound`, the entrywise form,
+and the generic Sylvester wrapper. -/
+theorem kFourAtlas_hasStrictTree_of_exchangeStarCell
+    (point : DirectionChartPoint 6)
+    (hcell : KFourExchangeStarCellFires point) :
+    ∃ tree ∈ kFourSpanningTreeList,
+      (directionChartGap kFourDirection point.mass point.weight tree).PosDef := by
+  obtain ⟨hcorner, hblock, hfloor, hexchange⟩ := hcell
+  refine ⟨{3, 4, 5}, by decide, ?_⟩
+  have hentry := kFourGap_treeThreeFourFive_eq point
+  refine directionChartGap_posDef_of_leadingMinors kFourDirection point.mass
+    point.weight {3, 4, 5} ?_ ?_ ?_
+  · rw [hentry]
+    simpa using hcorner
+  · rw [hentry]
+    simp only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+      Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one]
+    nlinarith [hblock]
+  · exact kFourGapDet_treeThreeFourFive_pos_of_exchangeBound point hfloor hexchange
+
+/-! ## The witness-class restriction: card-3 subsets are trees or triangles -/
+
+/-- Every card-3 subset of the six K4 labels is a spanning tree or one of the
+four dependent triples. -/
+theorem cardThreeSubset_isSpanningTreeOrDependentTriple (selected : Finset (Fin 6))
+    (hcard : selected.card = 3) :
+    selected ∈ kFourSpanningTreeList ∨ selected ∈ kFourDependentTripleList := by
+  revert hcard
+  revert selected
+  decide
+
+/-- Every entry of the spanning-tree list has card three. -/
+theorem kFourSpanningTree_card :
+    ∀ tree ∈ kFourSpanningTreeList, tree.card = 3 := by decide
+
+/-- The weak antecedent already lands inside the spanning-tree class: a
+weakly dominating card-3 subset cannot be a triangle, by the landed
+dependent-triple exclusion. -/
+theorem kFourWeakAntecedent_yieldsSpanningTree (point : DirectionChartPoint 6)
+    (hweak : ∃ selected : Finset (Fin 6), selected.card = 3 ∧
+      (directionChartGap kFourDirection point.mass point.weight selected).PosSemidef) :
+    ∃ tree ∈ kFourSpanningTreeList,
+      (directionChartGap kFourDirection point.mass point.weight tree).PosSemidef := by
+  obtain ⟨selected, hcard, hpsd⟩ := hweak
+  rcases cardThreeSubset_isSpanningTreeOrDependentTriple selected hcard with
+    htree | htriangle
+  · exact ⟨selected, htree, hpsd⟩
+  · exact absurd hpsd (kFourDependentTriple_gap_not_posSemidef point selected htriangle)
+
+/-! ## The refined residual -/
+
+/-- **The sharpened K4 residual.**  Strictness demanded only at weakly
+dominated chart points where NEITHER the twenty Layer-A cells NOR the
+Layer-B exchange star fires, with both quantifiers moved onto the sixteen
+spanning trees. -/
+noncomputable def KFourKnifeBandRefinedWeakToStrict : Prop :=
+  ∀ point : DirectionChartPoint 6, ¬ KFourLayerACellFires point →
+    ¬ KFourExchangeStarCellFires point →
+    (∃ tree ∈ kFourSpanningTreeList,
+        (directionChartGap kFourDirection point.mass point.weight tree).PosSemidef) →
+      ∃ tree ∈ kFourSpanningTreeList,
+        (directionChartGap kFourDirection point.mass point.weight tree).PosDef
+
+/-- **The refined residual discharges the landed one.** -/
+theorem kFourKnifeBandWeakToStrict_of_refined
+    (hrefined : KFourKnifeBandRefinedWeakToStrict) :
+    KFourKnifeBandWeakToStrict := by
+  intro point hnotLayerA hweak
+  by_cases hexchange : KFourExchangeStarCellFires point
+  · obtain ⟨tree, htree, hposDef⟩ :=
+      kFourAtlas_hasStrictTree_of_exchangeStarCell point hexchange
+    exact ⟨tree, kFourSpanningTree_card tree htree, hposDef⟩
+  · obtain ⟨tree, htree, hposDef⟩ :=
+      hrefined point hnotLayerA hexchange
+        (kFourWeakAntecedent_yieldsSpanningTree point hweak)
+    exact ⟨tree, kFourSpanningTree_card tree htree, hposDef⟩
+
+/-! ## No route lost: all three surviving selection Props still close it -/
+
+theorem kFourKnifeBandRefined_of_leverageEdgeHosts
+    (hhost : KFourLeverageEdgeHostsStrictTree) :
+    KFourKnifeBandRefinedWeakToStrict := by
+  intro point _hnotLayerA _hnotExchange hweak
+  obtain ⟨tree, htree, hpsd⟩ := hweak
+  obtain ⟨selected, hcard, hposDef⟩ :=
+    directionChartIsTieFree_kFour_of_leverageEdgeHosts hhost point
+      ⟨tree, kFourSpanningTree_card tree htree, hpsd⟩
+  rcases cardThreeSubset_isSpanningTreeOrDependentTriple selected hcard with
+    hspan | htriangle
+  · exact ⟨selected, hspan, hposDef⟩
+  · exact absurd hposDef.posSemidef
+      (kFourDependentTriple_gap_not_posSemidef point selected htriangle)
+
+theorem kFourKnifeBandRefined_of_edgeDetArgmaxHosts
+    (hhost : KFourEdgeDetArgmaxHostsStrictTree) :
+    KFourKnifeBandRefinedWeakToStrict := by
+  intro point _hnotLayerA _hnotExchange hweak
+  obtain ⟨tree, htree, hpsd⟩ := hweak
+  obtain ⟨selected, hcard, hposDef⟩ :=
+    directionChartIsTieFree_kFour_of_edgeDetArgmaxHosts hhost point
+      ⟨tree, kFourSpanningTree_card tree htree, hpsd⟩
+  rcases cardThreeSubset_isSpanningTreeOrDependentTriple selected hcard with
+    hspan | htriangle
+  · exact ⟨selected, hspan, hposDef⟩
+  · exact absurd hposDef.posSemidef
+      (kFourDependentTriple_gap_not_posSemidef point selected htriangle)
+
+theorem kFourKnifeBandRefined_of_someTreeLiftThreshold
+    (hlift : KFourSomeTreeLiftThreshold) :
+    KFourKnifeBandRefinedWeakToStrict := by
+  intro point _hnotLayerA _hnotExchange hweak
+  obtain ⟨tree, htree, hpsd⟩ := hweak
+  obtain ⟨selected, hcard, hposDef⟩ :=
+    directionChartIsTieFree_kFour_of_someTreeLiftThreshold hlift point
+      ⟨tree, kFourSpanningTree_card tree htree, hpsd⟩
+  rcases cardThreeSubset_isSpanningTreeOrDependentTriple selected hcard with
+    hspan | htriangle
+  · exact ⟨selected, hspan, hposDef⟩
+  · exact absurd hposDef.posSemidef
+      (kFourDependentTriple_gap_not_posSemidef point selected htriangle)
+
+/-! ## Non-vacuity of the sharpened region, in kernel -/
+
+/-- The canonical band inhabitant fires no Layer-A cell.  Until now this
+sat in prose only; if Layer A had been total the K4 axiom would have been
+vacuous. -/
+theorem heavyPairRefuterPoint_notLayerACellFires :
+    ¬ KFourLayerACellFires heavyPairRefuterPoint := by
+  norm_num [KFourLayerACellFires, heavyPairRefuterMass, maxEdgeRefuterWeight]
+
+/-- ... and the Layer-B exchange star DOES fire there, so the new cell
+strictly enlarges the covered region. -/
+theorem heavyPairRefuterPoint_exchangeStarCellFires :
+    KFourExchangeStarCellFires heavyPairRefuterPoint := by
+  refine ⟨by norm_num [heavyPairRefuterMass, maxEdgeRefuterWeight], ?_, ?_, ?_⟩
+  · norm_num [heavyPairRefuterMass, maxEdgeRefuterWeight]
+  · norm_num [kFourMassTreeSum, kFourContractionTreePolynomial_five,
+      heavyPairRefuterMass, maxEdgeRefuterWeight]
+  · norm_num [kFourMassTreeSum, kFourContractionTreePolynomial_three,
+      kFourContractionTreePolynomial_four, heavyPairRefuterMass,
+      maxEdgeRefuterWeight]
+
+/-- The residual after Layer B is still inhabited: a chart point off Layer A
+AND off the exchange star.  This is the new mandatory first test for any
+Layer-C candidate. -/
+noncomputable def bandResidualWitnessMass : Fin 6 → ℝ
+  | 0 => 3
+  | 1 => 16
+  | 2 => 1
+  | 3 => 5
+  | 4 => 3
+  | 5 => 2
+
+noncomputable def bandResidualWitnessWeight : Fin 6 → ℝ
+  | 0 => 3/10
+  | 1 => 1/10
+  | 2 => 1/10
+  | 3 => 1/10
+  | 4 => 3/10
+  | 5 => 1/10
+
+noncomputable def bandResidualWitnessPoint : DirectionChartPoint 6 where
+  mass := bandResidualWitnessMass
+  weight := bandResidualWitnessWeight
+  mass_pos := by intro label; fin_cases label <;> norm_num [bandResidualWitnessMass]
+  weight_pos := by intro label; fin_cases label <;> norm_num [bandResidualWitnessWeight]
+  weight_sum_one := by rw [Fin.sum_univ_six]; norm_num [bandResidualWitnessWeight]
+
+@[simp] theorem bandResidualWitnessPoint_mass_eq :
+    bandResidualWitnessPoint.mass = bandResidualWitnessMass := rfl
+
+@[simp] theorem bandResidualWitnessPoint_weight_eq :
+    bandResidualWitnessPoint.weight = bandResidualWitnessWeight := rfl
+
+theorem bandResidualWitnessPoint_notLayerACellFires :
+    ¬ KFourLayerACellFires bandResidualWitnessPoint := by
+  norm_num [KFourLayerACellFires, bandResidualWitnessMass, bandResidualWitnessWeight]
+
+theorem bandResidualWitnessPoint_notExchangeStarCellFires :
+    ¬ KFourExchangeStarCellFires bandResidualWitnessPoint := by
+  intro hcell
+  obtain ⟨_, _, hfloor, _⟩ := hcell
+  revert hfloor
+  norm_num [kFourMassTreeSum, kFourContractionTreePolynomial_five,
+    bandResidualWitnessMass, bandResidualWitnessWeight]
+
+
 end Gtz

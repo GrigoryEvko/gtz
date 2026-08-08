@@ -115,7 +115,19 @@ def retiredObligationNames : List Name :=
    -- `obligationStratumTieFree{OneLine,TwoMeetingLines}`, which stay theorems
    -- of exactly their old types.
    `Skeleton.obligationReducedCoverOneLine,
-   `Skeleton.obligationReducedCoverTwoMeetingLines]
+   `Skeleton.obligationReducedCoverTwoMeetingLines,
+   -- 2026-08-08, round 3 continued: the remaining three residuals each pushed
+   -- one landed engine deeper, by REGION (the auditable metric).  U(3,6) now
+   -- pins the weak triple at `{0,1,2}` and carries the tie's own tight
+   -- direction, spending the relabelling-invariance suite; the three-lines
+   -- chart is demanded on half the parameter line only, the other half being a
+   -- theorem transported across the kernel-verified slide involution; the K4
+   -- knife band excludes a SECOND named covered region (the exchange star) and
+   -- quantifies over the sixteen spanning trees rather than twenty card-3
+   -- subsets.  All three survive as theorems of exactly their old types.
+   `Skeleton.obligationWeakToStrictUThreeSix,
+   `Skeleton.obligationChartTieFreeThreeLines,
+   `Skeleton.obligationKnifeBandKFour]
 
 /-- Obligations added since the baseline.  Each name must be a declared axiom;
 the gate checks that.  Adding to this list with `retiredObligationNames` still
@@ -153,7 +165,16 @@ def introducedObligationNames : List Name :=
    -- heaviness and the tie's own tight direction -- three landed engines spent
    -- instead of re-demanded, and kernel-EQUIVALENT to the class statement.
    `Skeleton.obligationTightDominatedCoverOneLine,
-   `Skeleton.obligationTightDominatedCoverTwoMeetingLines]
+   `Skeleton.obligationTightDominatedCoverTwoMeetingLines,
+   -- 2026-08-08, round 3 continued: the three chart-and-conic residuals, each
+   -- carved to a strictly smaller region with strictly more antecedents than
+   -- the entry it replaces, and each spending landed machinery that was
+   -- previously orphaned -- the relabelling-invariance suite (U(3,6)), the
+   -- chart-reindexing transport plus the slide involution (three lines), and
+   -- the exchange-star determinant pair (K4).
+   `Skeleton.obligationBaseTripleTightUThreeSix,
+   `Skeleton.obligationChartTieFreeThreeLinesFundamentalDomain,
+   `Skeleton.obligationKnifeBandRefinedKFour]
 
 /-! ### The gate -/
 
