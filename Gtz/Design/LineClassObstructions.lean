@@ -1982,4 +1982,670 @@ theorem oneLine_exists_freeAtom_height_lower_bound (design : WeightedDesign 6 3)
   rw [hleft, hright, hcarried] at hstrict
   exact absurd hstrict (lt_irrefl _)
 
+
+/-! ## The three-invariant criterion: strict domination, quantifier-free
+
+Cauchy-Binet gives the elementary symmetric functions of the gap
+`G = sum_s a_s a_s^T - 1` in the campaign's own vocabulary -- leverages, pair
+cross-norms and the bracket:
+
+    tr G   = sum |a_s|^2 - 3
+    e2 G   = sum_{s<t} |a_s x a_t|^2 - 2 sum |a_s|^2 + 3
+    det G  = bracket^2 - sum_{s<t} |a_s x a_t|^2 + sum |a_s|^2 - 1
+
+and the gap is POSITIVE DEFINITE iff all three are positive.  Mathlib carries no
+Sylvester criterion, so the sufficiency half is proved here from scratch: one
+completed-square identity gives Sylvester at the leading pivot, and a Chio-style
+argument upgrades positive trace/second-minor/determinant to a positive leading
+minor at any pivot.  No eigenvalue theory, no spectral theorem.
+
+The payoff is that strict domination of a card-3 subset -- which after the
+chartless collapse is the WHOLE residual -- becomes three polynomial
+inequalities with no probes, no normals and no matrices.
+-/
+
+section ThreeInvariantCriterion
+
+set_option maxHeartbeats 4000000
+
+noncomputable def gapOfDirectionTriple (firstVec secondVec thirdVec : Fin 3 → ℝ) :
+    Matrix (Fin 3) (Fin 3) ℝ :=
+  atomMatrix firstVec + atomMatrix secondVec + atomMatrix thirdVec - 1
+
+theorem gapOfDirectionTriple_offDiag (firstVec secondVec thirdVec : Fin 3 → ℝ)
+    (rowIndex colIndex : Fin 3) (hdistinct : rowIndex ≠ colIndex) :
+    gapOfDirectionTriple firstVec secondVec thirdVec rowIndex colIndex
+      = firstVec rowIndex * firstVec colIndex + secondVec rowIndex * secondVec colIndex
+        + thirdVec rowIndex * thirdVec colIndex := by
+  simp [gapOfDirectionTriple, atomMatrix, Matrix.sub_apply, Matrix.add_apply,
+    Matrix.vecMulVec_apply, Matrix.one_apply_ne hdistinct]
+
+theorem gapOfDirectionTriple_diag (firstVec secondVec thirdVec : Fin 3 → ℝ)
+    (diagIndex : Fin 3) :
+    gapOfDirectionTriple firstVec secondVec thirdVec diagIndex diagIndex
+      = firstVec diagIndex * firstVec diagIndex + secondVec diagIndex * secondVec diagIndex
+        + thirdVec diagIndex * thirdVec diagIndex - 1 := by
+  simp [gapOfDirectionTriple, atomMatrix, Matrix.sub_apply, Matrix.add_apply,
+    Matrix.vecMulVec_apply, Matrix.one_apply_eq]
+
+theorem gapOfDirectionTriple_form (firstVec secondVec thirdVec probe : Fin 3 → ℝ) :
+    probe ⬝ᵥ (gapOfDirectionTriple firstVec secondVec thirdVec *ᵥ probe)
+      = (firstVec ⬝ᵥ probe) ^ 2 + (secondVec ⬝ᵥ probe) ^ 2 + (thirdVec ⬝ᵥ probe) ^ 2
+        - probe ⬝ᵥ probe := by
+  simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_three,
+    gapOfDirectionTriple_diag,
+    gapOfDirectionTriple_offDiag firstVec secondVec thirdVec 0 1 (by decide),
+    gapOfDirectionTriple_offDiag firstVec secondVec thirdVec 0 2 (by decide),
+    gapOfDirectionTriple_offDiag firstVec secondVec thirdVec 1 0 (by decide),
+    gapOfDirectionTriple_offDiag firstVec secondVec thirdVec 1 2 (by decide),
+    gapOfDirectionTriple_offDiag firstVec secondVec thirdVec 2 0 (by decide),
+    gapOfDirectionTriple_offDiag firstVec secondVec thirdVec 2 1 (by decide)]
+  ring
+
+/-- The gap's Gram diagonal entry at a coordinate. -/
+noncomputable def gramDiagEntry (firstVec secondVec thirdVec : Fin 3 → ℝ)
+    (coordIndex : Fin 3) : ℝ :=
+  firstVec coordIndex * firstVec coordIndex + secondVec coordIndex * secondVec coordIndex
+    + thirdVec coordIndex * thirdVec coordIndex - 1
+
+/-- The gap's Gram off-diagonal entry at a coordinate pair. -/
+noncomputable def gramOffEntry (firstVec secondVec thirdVec : Fin 3 → ℝ)
+    (rowIndex colIndex : Fin 3) : ℝ :=
+  firstVec rowIndex * firstVec colIndex + secondVec rowIndex * secondVec colIndex
+    + thirdVec rowIndex * thirdVec colIndex
+
+theorem gramDiagEntryZero_pos (firstVec secondVec thirdVec : Fin 3 → ℝ)
+    (hposDef : (gapOfDirectionTriple firstVec secondVec thirdVec).PosDef) :
+    0 < gramDiagEntry firstVec secondVec thirdVec 0 := by
+  have hprobeNe : (![1, 0, 0] : Fin 3 → ℝ) ≠ 0 := by
+    intro hzero
+    have hcomponent := congrFun hzero 0
+    simp at hcomponent
+  have hvalue := hposDef.dotProduct_mulVec_pos hprobeNe
+  rw [star_trivial, gapOfDirectionTriple_form] at hvalue
+  simp only [dotProduct, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons] at hvalue
+  rw [gramDiagEntry]
+  nlinarith [hvalue]
+
+theorem gramDiagEntryOne_pos (firstVec secondVec thirdVec : Fin 3 → ℝ)
+    (hposDef : (gapOfDirectionTriple firstVec secondVec thirdVec).PosDef) :
+    0 < gramDiagEntry firstVec secondVec thirdVec 1 := by
+  have hprobeNe : (![0, 1, 0] : Fin 3 → ℝ) ≠ 0 := by
+    intro hzero
+    have hcomponent := congrFun hzero 1
+    simp at hcomponent
+  have hvalue := hposDef.dotProduct_mulVec_pos hprobeNe
+  rw [star_trivial, gapOfDirectionTriple_form] at hvalue
+  simp only [dotProduct, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons] at hvalue
+  rw [gramDiagEntry]
+  nlinarith [hvalue]
+
+theorem gramDiagEntryTwo_pos (firstVec secondVec thirdVec : Fin 3 → ℝ)
+    (hposDef : (gapOfDirectionTriple firstVec secondVec thirdVec).PosDef) :
+    0 < gramDiagEntry firstVec secondVec thirdVec 2 := by
+  have hprobeNe : (![0, 0, 1] : Fin 3 → ℝ) ≠ 0 := by
+    intro hzero
+    have hcomponent := congrFun hzero 2
+    simp at hcomponent
+  have hvalue := hposDef.dotProduct_mulVec_pos hprobeNe
+  rw [star_trivial, gapOfDirectionTriple_form] at hvalue
+  simp only [dotProduct, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons] at hvalue
+  rw [gramDiagEntry]
+  nlinarith [hvalue]
+
+theorem gramMinorZeroOne_pos (firstVec secondVec thirdVec : Fin 3 → ℝ)
+    (hposDef : (gapOfDirectionTriple firstVec secondVec thirdVec).PosDef) :
+    0 < gramDiagEntry firstVec secondVec thirdVec 0
+          * gramDiagEntry firstVec secondVec thirdVec 1
+        - gramOffEntry firstVec secondVec thirdVec 0 1 ^ 2 := by
+  have hdiagPos := gramDiagEntryZero_pos firstVec secondVec thirdVec hposDef
+  have hprobeNe : (![gramOffEntry firstVec secondVec thirdVec 0 1, -(gramDiagEntry firstVec secondVec thirdVec 0), 0] : Fin 3 → ℝ) ≠ 0 := by
+    intro hzero
+    have hcomponent := congrFun hzero 1
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one,
+      Pi.zero_apply, neg_eq_zero] at hcomponent
+    rw [hcomponent] at hdiagPos
+    exact absurd hdiagPos (lt_irrefl 0)
+  have hvalue := hposDef.dotProduct_mulVec_pos hprobeNe
+  rw [star_trivial, gapOfDirectionTriple_form] at hvalue
+  simp only [dotProduct, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons, gramDiagEntry,
+    gramOffEntry] at hvalue hdiagPos ⊢
+  nlinarith [hvalue, hdiagPos]
+
+theorem gramMinorZeroTwo_pos (firstVec secondVec thirdVec : Fin 3 → ℝ)
+    (hposDef : (gapOfDirectionTriple firstVec secondVec thirdVec).PosDef) :
+    0 < gramDiagEntry firstVec secondVec thirdVec 0
+          * gramDiagEntry firstVec secondVec thirdVec 2
+        - gramOffEntry firstVec secondVec thirdVec 0 2 ^ 2 := by
+  have hdiagPos := gramDiagEntryZero_pos firstVec secondVec thirdVec hposDef
+  have hprobeNe : (![gramOffEntry firstVec secondVec thirdVec 0 2, 0, -(gramDiagEntry firstVec secondVec thirdVec 0)] : Fin 3 → ℝ) ≠ 0 := by
+    intro hzero
+    have hcomponent := congrFun hzero 2
+    simp only [Matrix.head_cons,
+      Matrix.cons_val_two, Matrix.tail_cons, Pi.zero_apply, neg_eq_zero] at hcomponent
+    rw [hcomponent] at hdiagPos
+    exact absurd hdiagPos (lt_irrefl 0)
+  have hvalue := hposDef.dotProduct_mulVec_pos hprobeNe
+  rw [star_trivial, gapOfDirectionTriple_form] at hvalue
+  simp only [dotProduct, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons, gramDiagEntry,
+    gramOffEntry] at hvalue hdiagPos ⊢
+  nlinarith [hvalue, hdiagPos]
+
+theorem gramMinorOneTwo_pos (firstVec secondVec thirdVec : Fin 3 → ℝ)
+    (hposDef : (gapOfDirectionTriple firstVec secondVec thirdVec).PosDef) :
+    0 < gramDiagEntry firstVec secondVec thirdVec 1
+          * gramDiagEntry firstVec secondVec thirdVec 2
+        - gramOffEntry firstVec secondVec thirdVec 1 2 ^ 2 := by
+  have hdiagPos := gramDiagEntryOne_pos firstVec secondVec thirdVec hposDef
+  have hprobeNe : (![0, gramOffEntry firstVec secondVec thirdVec 1 2, -(gramDiagEntry firstVec secondVec thirdVec 1)] : Fin 3 → ℝ) ≠ 0 := by
+    intro hzero
+    have hcomponent := congrFun hzero 2
+    simp only [Matrix.head_cons,
+      Matrix.cons_val_two, Matrix.tail_cons, Pi.zero_apply, neg_eq_zero] at hcomponent
+    rw [hcomponent] at hdiagPos
+    exact absurd hdiagPos (lt_irrefl 0)
+  have hvalue := hposDef.dotProduct_mulVec_pos hprobeNe
+  rw [star_trivial, gapOfDirectionTriple_form] at hvalue
+  simp only [dotProduct, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons, gramDiagEntry,
+    gramOffEntry] at hvalue hdiagPos ⊢
+  nlinarith [hvalue, hdiagPos]
+
+/-- A card-three subset's gap IS the triple gap matrix of its atoms. -/
+theorem subsetSum_sub_one_eq_gapOfDirectionTriple {size : ℕ} (design : WeightedDesign size 3)
+    (firstLabel secondLabel thirdLabel : Fin size)
+    (hfirstSecond : firstLabel ≠ secondLabel)
+    (hfirstThird : firstLabel ≠ thirdLabel)
+    (hsecondThird : secondLabel ≠ thirdLabel) :
+    subsetSum design ({firstLabel, secondLabel, thirdLabel} : Finset (Fin size)) - 1
+      = gapOfDirectionTriple (design.atom firstLabel) (design.atom secondLabel)
+          (design.atom thirdLabel) := by
+  rw [gapOfDirectionTriple, subsetSum,
+    Finset.sum_insert (by simp [hfirstSecond, hfirstThird]),
+    Finset.sum_insert (by simp [hsecondThird]), Finset.sum_singleton, add_assoc]
+
+/-- The squared norm of a cross product — the squared area of the spanned
+parallelogram. -/
+noncomputable def crossNormSq (leftVec rightVec : Fin 3 → ℝ) : ℝ :=
+  bracketNormal leftVec rightVec ⬝ᵥ bracketNormal leftVec rightVec
+
+/-- The three atoms' total leverage. -/
+noncomputable def tripleLeverageSum (firstVec secondVec thirdVec : Fin 3 → ℝ) : ℝ :=
+  leverageOf firstVec + leverageOf secondVec + leverageOf thirdVec
+
+/-- The three pairs' total squared area. -/
+noncomputable def triplePairAreaSum (firstVec secondVec thirdVec : Fin 3 → ℝ) : ℝ :=
+  crossNormSq firstVec secondVec + crossNormSq firstVec thirdVec
+    + crossNormSq secondVec thirdVec
+
+/-! ## The three invariants of the gap, in atom vocabulary -/
+
+/-- **Trace.**  The gap's trace is the total leverage minus three. -/
+theorem gapOfDirectionTriple_trace_eq (firstVec secondVec thirdVec : Fin 3 → ℝ) :
+    (gapOfDirectionTriple firstVec secondVec thirdVec).trace
+      = tripleLeverageSum firstVec secondVec thirdVec - 3 := by
+  simp only [gapOfDirectionTriple, tripleLeverageSum, leverageOf, atomMatrix, Matrix.trace,
+    Matrix.diag, Matrix.sub_apply, Matrix.add_apply, Matrix.vecMulVec_apply,
+    Matrix.one_apply_eq, Fin.sum_univ_three]
+  ring
+
+/-- **Second elementary symmetric function.**  The sum of the gap's three
+two-by-two principal minors is the total pair area minus twice the leverage plus
+three. -/
+theorem gapOfDirectionTriple_minorSum_eq (firstVec secondVec thirdVec : Fin 3 → ℝ) :
+    (gapOfDirectionTriple firstVec secondVec thirdVec) 0 0
+          * (gapOfDirectionTriple firstVec secondVec thirdVec) 1 1
+        - (gapOfDirectionTriple firstVec secondVec thirdVec) 0 1 ^ 2
+      + ((gapOfDirectionTriple firstVec secondVec thirdVec) 0 0
+          * (gapOfDirectionTriple firstVec secondVec thirdVec) 2 2
+        - (gapOfDirectionTriple firstVec secondVec thirdVec) 0 2 ^ 2)
+      + ((gapOfDirectionTriple firstVec secondVec thirdVec) 1 1
+          * (gapOfDirectionTriple firstVec secondVec thirdVec) 2 2
+        - (gapOfDirectionTriple firstVec secondVec thirdVec) 1 2 ^ 2)
+      = triplePairAreaSum firstVec secondVec thirdVec
+        - 2 * tripleLeverageSum firstVec secondVec thirdVec + 3 := by
+  have honeDiag : ∀ idx : Fin 3, (1 : Matrix (Fin 3) (Fin 3) ℝ) idx idx = 1 :=
+    fun idx => Matrix.one_apply_eq idx
+  have honeZeroOne : (1 : Matrix (Fin 3) (Fin 3) ℝ) 0 1 = 0 := Matrix.one_apply_ne (by decide)
+  have honeZeroTwo : (1 : Matrix (Fin 3) (Fin 3) ℝ) 0 2 = 0 := Matrix.one_apply_ne (by decide)
+  have honeOneZero : (1 : Matrix (Fin 3) (Fin 3) ℝ) 1 0 = 0 := Matrix.one_apply_ne (by decide)
+  have honeOneTwo : (1 : Matrix (Fin 3) (Fin 3) ℝ) 1 2 = 0 := Matrix.one_apply_ne (by decide)
+  have honeTwoZero : (1 : Matrix (Fin 3) (Fin 3) ℝ) 2 0 = 0 := Matrix.one_apply_ne (by decide)
+  have honeTwoOne : (1 : Matrix (Fin 3) (Fin 3) ℝ) 2 1 = 0 := Matrix.one_apply_ne (by decide)
+  simp only [gapOfDirectionTriple, triplePairAreaSum, tripleLeverageSum, crossNormSq, leverageOf,
+    atomMatrix, bracketNormal, dotProduct, Matrix.sub_apply, Matrix.add_apply,
+    Matrix.vecMulVec_apply, honeDiag, honeZeroOne, honeZeroTwo, honeOneTwo,
+    Fin.sum_univ_three, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- **Determinant.**  The gap's determinant is the squared bracket minus the
+total pair area plus the total leverage minus one. -/
+theorem gapOfDirectionTriple_det_eq (firstVec secondVec thirdVec : Fin 3 → ℝ) :
+    (gapOfDirectionTriple firstVec secondVec thirdVec).det
+      = tripleBracket firstVec secondVec thirdVec ^ 2
+        - triplePairAreaSum firstVec secondVec thirdVec
+        + tripleLeverageSum firstVec secondVec thirdVec - 1 := by
+  have honeDiag : ∀ idx : Fin 3, (1 : Matrix (Fin 3) (Fin 3) ℝ) idx idx = 1 :=
+    fun idx => Matrix.one_apply_eq idx
+  have honeZeroOne : (1 : Matrix (Fin 3) (Fin 3) ℝ) 0 1 = 0 := Matrix.one_apply_ne (by decide)
+  have honeZeroTwo : (1 : Matrix (Fin 3) (Fin 3) ℝ) 0 2 = 0 := Matrix.one_apply_ne (by decide)
+  have honeOneZero : (1 : Matrix (Fin 3) (Fin 3) ℝ) 1 0 = 0 := Matrix.one_apply_ne (by decide)
+  have honeOneTwo : (1 : Matrix (Fin 3) (Fin 3) ℝ) 1 2 = 0 := Matrix.one_apply_ne (by decide)
+  have honeTwoZero : (1 : Matrix (Fin 3) (Fin 3) ℝ) 2 0 = 0 := Matrix.one_apply_ne (by decide)
+  have honeTwoOne : (1 : Matrix (Fin 3) (Fin 3) ℝ) 2 1 = 0 := Matrix.one_apply_ne (by decide)
+  simp only [Matrix.det_fin_three, gapOfDirectionTriple, triplePairAreaSum, tripleLeverageSum,
+    crossNormSq, leverageOf, tripleBracket_eq, atomMatrix, bracketNormal, dotProduct,
+    Matrix.sub_apply, Matrix.add_apply, Matrix.vecMulVec_apply, honeDiag, honeZeroOne,
+    honeZeroTwo, honeOneZero, honeOneTwo, honeTwoZero, honeTwoOne,
+    Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+
+/-! ## The three-invariant criterion: necessity -/
+
+theorem tripleLeverageSum_sub_three_eq_diagSum (firstVec secondVec thirdVec : Fin 3 → ℝ) :
+    tripleLeverageSum firstVec secondVec thirdVec - 3
+      = gramDiagEntry firstVec secondVec thirdVec 0
+        + gramDiagEntry firstVec secondVec thirdVec 1
+        + gramDiagEntry firstVec secondVec thirdVec 2 := by
+  simp only [tripleLeverageSum, leverageOf, gramDiagEntry, Fin.sum_univ_three]
+  ring
+
+theorem pairAreaExcess_eq_minorSum (firstVec secondVec thirdVec : Fin 3 → ℝ) :
+    triplePairAreaSum firstVec secondVec thirdVec
+        - 2 * tripleLeverageSum firstVec secondVec thirdVec + 3
+      = (gramDiagEntry firstVec secondVec thirdVec 0
+            * gramDiagEntry firstVec secondVec thirdVec 1
+          - gramOffEntry firstVec secondVec thirdVec 0 1 ^ 2)
+        + (gramDiagEntry firstVec secondVec thirdVec 0
+            * gramDiagEntry firstVec secondVec thirdVec 2
+          - gramOffEntry firstVec secondVec thirdVec 0 2 ^ 2)
+        + (gramDiagEntry firstVec secondVec thirdVec 1
+            * gramDiagEntry firstVec secondVec thirdVec 2
+          - gramOffEntry firstVec secondVec thirdVec 1 2 ^ 2) := by
+  simp only [triplePairAreaSum, tripleLeverageSum, crossNormSq, leverageOf, gramDiagEntry,
+    gramOffEntry, bracketNormal, dotProduct, Fin.sum_univ_three, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- **The three-invariant criterion, necessity.**  A strictly dominating triple
+has positive total-leverage excess, positive pair-area excess, and positive
+determinant invariant — three coordinate-free polynomial inequalities in the
+atoms' leverages, pair cross-norms, and bracket. -/
+theorem tripleInvariants_pos_of_posDef (firstVec secondVec thirdVec : Fin 3 → ℝ)
+    (hposDef : (gapOfDirectionTriple firstVec secondVec thirdVec).PosDef) :
+    0 < tripleLeverageSum firstVec secondVec thirdVec - 3
+      ∧ 0 < triplePairAreaSum firstVec secondVec thirdVec
+            - 2 * tripleLeverageSum firstVec secondVec thirdVec + 3
+      ∧ 0 < tripleBracket firstVec secondVec thirdVec ^ 2
+            - triplePairAreaSum firstVec secondVec thirdVec
+            + tripleLeverageSum firstVec secondVec thirdVec - 1 := by
+  refine ⟨?_, ?_, ?_⟩
+  · rw [tripleLeverageSum_sub_three_eq_diagSum]
+    have hzero := gramDiagEntryZero_pos firstVec secondVec thirdVec hposDef
+    have hone := gramDiagEntryOne_pos firstVec secondVec thirdVec hposDef
+    have htwo := gramDiagEntryTwo_pos firstVec secondVec thirdVec hposDef
+    linarith
+  · rw [pairAreaExcess_eq_minorSum]
+    have hzeroOne := gramMinorZeroOne_pos firstVec secondVec thirdVec hposDef
+    have hzeroTwo := gramMinorZeroTwo_pos firstVec secondVec thirdVec hposDef
+    have honeTwo := gramMinorOneTwo_pos firstVec secondVec thirdVec hposDef
+    linarith
+  · rw [← gapOfDirectionTriple_det_eq]
+    exact hposDef.det_pos
+
+
+/-- The determinant of a symmetric three-by-three block of scalars. -/
+def symmetricDeterminant (entryZeroZero entryZeroOne entryZeroTwo
+    entryOneOne entryOneTwo entryTwoTwo : ℝ) : ℝ :=
+  entryZeroZero * (entryOneOne * entryTwoTwo - entryOneTwo ^ 2)
+    - entryZeroOne * (entryZeroOne * entryTwoTwo - entryOneTwo * entryZeroTwo)
+    + entryZeroTwo * (entryZeroOne * entryOneTwo - entryOneOne * entryZeroTwo)
+
+/-- The quadratic form of a symmetric three-by-three block of scalars. -/
+def symmetricQuadForm (entryZeroZero entryZeroOne entryZeroTwo
+    entryOneOne entryOneTwo entryTwoTwo coordZero coordOne coordTwo : ℝ) : ℝ :=
+  entryZeroZero * coordZero ^ 2 + 2 * entryZeroOne * coordZero * coordOne
+    + 2 * entryZeroTwo * coordZero * coordTwo + entryOneOne * coordOne ^ 2
+    + 2 * entryOneTwo * coordOne * coordTwo + entryTwoTwo * coordTwo ^ 2
+
+/-- **Sylvester's criterion at the leading pivot, three-by-three.**  One
+completed square per pivot: positive pivot, positive leading two-by-two minor,
+positive determinant force the form positive off the origin. -/
+theorem symmetricQuadForm_pos_of_leadingMinors
+    (entryZeroZero entryZeroOne entryZeroTwo entryOneOne entryOneTwo entryTwoTwo
+      coordZero coordOne coordTwo : ℝ)
+    (hpivotPos : 0 < entryZeroZero)
+    (hleadingMinorPos : 0 < entryZeroZero * entryOneOne - entryZeroOne ^ 2)
+    (hdetPos : 0 < symmetricDeterminant entryZeroZero entryZeroOne entryZeroTwo
+      entryOneOne entryOneTwo entryTwoTwo)
+    (hcoordNe : ¬ (coordZero = 0 ∧ coordOne = 0 ∧ coordTwo = 0)) :
+    0 < symmetricQuadForm entryZeroZero entryZeroOne entryZeroTwo entryOneOne
+      entryOneTwo entryTwoTwo coordZero coordOne coordTwo := by
+  set leadingMinor : ℝ := entryZeroZero * entryOneOne - entryZeroOne ^ 2
+    with hleadingMinor
+  set mixedMinor : ℝ := entryZeroZero * entryOneTwo - entryZeroOne * entryZeroTwo
+    with hmixedMinor
+  have hcompletedSquare :
+      entryZeroZero * leadingMinor
+          * symmetricQuadForm entryZeroZero entryZeroOne entryZeroTwo entryOneOne
+              entryOneTwo entryTwoTwo coordZero coordOne coordTwo
+        = leadingMinor * (entryZeroZero * coordZero + entryZeroOne * coordOne
+              + entryZeroTwo * coordTwo) ^ 2
+          + (leadingMinor * coordOne + mixedMinor * coordTwo) ^ 2
+          + entryZeroZero * symmetricDeterminant entryZeroZero entryZeroOne entryZeroTwo
+              entryOneOne entryOneTwo entryTwoTwo * coordTwo ^ 2 := by
+    rw [hleadingMinor, hmixedMinor, symmetricQuadForm, symmetricDeterminant]
+    ring
+  have hscalePos : 0 < entryZeroZero * leadingMinor := mul_pos hpivotPos hleadingMinorPos
+  have htermLead : 0 ≤ leadingMinor * (entryZeroZero * coordZero + entryZeroOne * coordOne
+        + entryZeroTwo * coordTwo) ^ 2 :=
+    mul_nonneg hleadingMinorPos.le (sq_nonneg _)
+  have htermMid : 0 ≤ (leadingMinor * coordOne + mixedMinor * coordTwo) ^ 2 := sq_nonneg _
+  have htermTail : 0 ≤ entryZeroZero * symmetricDeterminant entryZeroZero entryZeroOne
+        entryZeroTwo entryOneOne entryOneTwo entryTwoTwo * coordTwo ^ 2 :=
+    mul_nonneg (mul_pos hpivotPos hdetPos).le (sq_nonneg _)
+  have hrightPos : 0 < leadingMinor * (entryZeroZero * coordZero + entryZeroOne * coordOne
+        + entryZeroTwo * coordTwo) ^ 2
+      + (leadingMinor * coordOne + mixedMinor * coordTwo) ^ 2
+      + entryZeroZero * symmetricDeterminant entryZeroZero entryZeroOne entryZeroTwo
+          entryOneOne entryOneTwo entryTwoTwo * coordTwo ^ 2 := by
+    rcases eq_or_ne coordTwo 0 with htwoZero | htwoNe
+    · rcases eq_or_ne coordOne 0 with honeZero | honeNe
+      · have hzeroNe : coordZero ≠ 0 := fun hzero => hcoordNe ⟨hzero, honeZero, htwoZero⟩
+        have hcombinationNe : entryZeroZero * coordZero + entryZeroOne * coordOne
+            + entryZeroTwo * coordTwo ≠ 0 := by
+          rw [honeZero, htwoZero, mul_zero, mul_zero, add_zero, add_zero]
+          exact mul_ne_zero (ne_of_gt hpivotPos) hzeroNe
+        have hleadStrict : 0 < leadingMinor * (entryZeroZero * coordZero
+            + entryZeroOne * coordOne + entryZeroTwo * coordTwo) ^ 2 :=
+          mul_pos hleadingMinorPos
+            (lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hcombinationNe)))
+        linarith [hleadStrict, htermMid, htermTail]
+      · have hmidNe : leadingMinor * coordOne + mixedMinor * coordTwo ≠ 0 := by
+          rw [htwoZero, mul_zero, add_zero]
+          exact mul_ne_zero (ne_of_gt hleadingMinorPos) honeNe
+        have hmidStrict : 0 < (leadingMinor * coordOne + mixedMinor * coordTwo) ^ 2 :=
+          lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hmidNe))
+        linarith [htermLead, hmidStrict, htermTail]
+    · have htailStrict : 0 < entryZeroZero * symmetricDeterminant entryZeroZero entryZeroOne
+          entryZeroTwo entryOneOne entryOneTwo entryTwoTwo * coordTwo ^ 2 :=
+        mul_pos (mul_pos hpivotPos hdetPos)
+          (lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 htwoNe)))
+      linarith [htermLead, htermMid, htailStrict]
+  nlinarith [hcompletedSquare, hrightPos, hscalePos]
+
+
+/-- **No pivot can have a negative leading minor.**  Positive trace, positive
+second symmetric function and positive determinant force the leading two-by-two
+minor at a positive pivot to be positive: otherwise both `{0,1}` and `{0,2}`
+minors are negative, and the Chio identity plus a positive-definite
+two-variable bound collapse the second symmetric function. -/
+theorem leadingMinor_pos_of_symmetricInvariants
+    (entryZeroZero entryZeroOne entryZeroTwo entryOneOne entryOneTwo entryTwoTwo : ℝ)
+    (hpivotPos : 0 < entryZeroZero)
+    (htracePos : 0 < entryZeroZero + entryOneOne + entryTwoTwo)
+    (hsecondPos : 0 < (entryZeroZero * entryOneOne - entryZeroOne ^ 2)
+      + (entryZeroZero * entryTwoTwo - entryZeroTwo ^ 2)
+      + (entryOneOne * entryTwoTwo - entryOneTwo ^ 2))
+    (hdetPos : 0 < symmetricDeterminant entryZeroZero entryZeroOne entryZeroTwo
+      entryOneOne entryOneTwo entryTwoTwo) :
+    0 < entryZeroZero * entryOneOne - entryZeroOne ^ 2 := by
+  set leadingMinor : ℝ := entryZeroZero * entryOneOne - entryZeroOne ^ 2 with hleadingMinor
+  set sideMinor : ℝ := entryZeroZero * entryTwoTwo - entryZeroTwo ^ 2 with hsideMinor
+  set mixedMinor : ℝ := entryZeroZero * entryOneTwo - entryZeroOne * entryZeroTwo
+    with hmixedMinor
+  have hchio : entryZeroZero * symmetricDeterminant entryZeroZero entryZeroOne entryZeroTwo
+        entryOneOne entryOneTwo entryTwoTwo
+      = leadingMinor * sideMinor - mixedMinor ^ 2 := by
+    rw [hleadingMinor, hsideMinor, hmixedMinor, symmetricDeterminant]; ring
+  have hproductPos : 0 < leadingMinor * sideMinor := by
+    nlinarith [hchio, mul_pos hpivotPos hdetPos, sq_nonneg mixedMinor]
+  by_contra hleadingNonpos
+  push Not at hleadingNonpos
+  have hleadingNeg : leadingMinor < 0 := by
+    rcases hleadingNonpos.lt_or_eq with hneg | hzero
+    · exact hneg
+    · exfalso; rw [hzero] at hproductPos; simp at hproductPos
+  have hsideNeg : sideMinor < 0 := by nlinarith [hproductPos, hleadingNeg]
+  set leadingDeficit : ℝ := -leadingMinor with hleadingDeficit
+  set sideDeficit : ℝ := -sideMinor with hsideDeficit
+  have hleadingDeficitPos : 0 < leadingDeficit := by rw [hleadingDeficit]; linarith
+  have hsideDeficitPos : 0 < sideDeficit := by rw [hsideDeficit]; linarith
+  set schurValue : ℝ := leadingDeficit * sideDeficit - mixedMinor ^ 2 with hschurValue
+  have hschurPos : 0 < schurValue := by
+    rw [hschurValue, hleadingDeficit, hsideDeficit]
+    nlinarith [hchio, mul_pos hpivotPos hdetPos]
+  set offForm : ℝ := sideDeficit * entryZeroOne ^ 2
+      + 2 * mixedMinor * entryZeroOne * entryZeroTwo
+      + leadingDeficit * entryZeroTwo ^ 2 with hoffForm
+  have hsecondIdentity : entryZeroZero ^ 2
+        * (leadingMinor + sideMinor + (entryOneOne * entryTwoTwo - entryOneTwo ^ 2))
+      = -entryZeroZero ^ 2 * (leadingDeficit + sideDeficit) + schurValue - offForm := by
+    rw [hschurValue, hoffForm, hleadingDeficit, hsideDeficit, hleadingMinor, hsideMinor,
+      hmixedMinor]
+    ring
+  have htraceIdentity : entryZeroZero * (entryZeroZero + entryOneOne + entryTwoTwo)
+      = entryZeroZero ^ 2 - leadingDeficit - sideDeficit
+        + entryZeroOne ^ 2 + entryZeroTwo ^ 2 := by
+    rw [hleadingDeficit, hsideDeficit, hleadingMinor, hsideMinor]; ring
+  have hoffFormBound : (sideDeficit ^ 2 + mixedMinor ^ 2)
+        * ((leadingDeficit + sideDeficit) * offForm
+          - schurValue * (entryZeroOne ^ 2 + entryZeroTwo ^ 2))
+      = ((sideDeficit ^ 2 + mixedMinor ^ 2) * entryZeroOne
+          + mixedMinor * (leadingDeficit + sideDeficit) * entryZeroTwo) ^ 2
+        + schurValue ^ 2 * entryZeroTwo ^ 2 := by
+    rw [hschurValue, hoffForm]; ring
+  have hweightPos : 0 < sideDeficit ^ 2 + mixedMinor ^ 2 := by positivity
+  have hoffFormLower : schurValue * (entryZeroOne ^ 2 + entryZeroTwo ^ 2)
+      ≤ (leadingDeficit + sideDeficit) * offForm := by
+    nlinarith [hoffFormBound, hweightPos,
+      sq_nonneg ((sideDeficit ^ 2 + mixedMinor ^ 2) * entryZeroOne
+        + mixedMinor * (leadingDeficit + sideDeficit) * entryZeroTwo),
+      sq_nonneg (schurValue * entryZeroTwo)]
+  have hsecondStrict : entryZeroZero ^ 2 * (leadingDeficit + sideDeficit) + offForm
+      < schurValue := by
+    nlinarith [hsecondIdentity, mul_pos (pow_pos hpivotPos 2) hsecondPos]
+  have hsumPos : 0 < leadingDeficit + sideDeficit := by linarith
+  have hresidualPos : 0 < leadingDeficit + sideDeficit
+      - entryZeroOne ^ 2 - entryZeroTwo ^ 2 := by
+    nlinarith [hsecondStrict, hoffFormLower, hsumPos, hschurPos, hpivotPos,
+      sq_nonneg (entryZeroZero * (leadingDeficit + sideDeficit))]
+  have hpivotDominates : leadingDeficit + sideDeficit
+      - entryZeroOne ^ 2 - entryZeroTwo ^ 2 < entryZeroZero ^ 2 := by
+    nlinarith [htraceIdentity, htracePos, hpivotPos]
+  have hsquareBound : (leadingDeficit + sideDeficit) ^ 2 < schurValue := by
+    nlinarith [hsecondStrict, hoffFormLower, hsumPos, hschurPos, hresidualPos,
+      hpivotDominates, hpivotPos]
+  nlinarith [hsquareBound, hschurValue, sq_nonneg (leadingDeficit - sideDeficit),
+    sq_nonneg mixedMinor, hsumPos]
+
+
+/-- **The symmetric-function criterion, three-by-three.**  Positive trace,
+positive second symmetric function and positive determinant make the form
+positive definite — no pivot needs to be nominated, the criterion is invariant
+under simultaneous row-column permutation. -/
+theorem symmetricQuadForm_pos_of_symmetricInvariants
+    (entryZeroZero entryZeroOne entryZeroTwo entryOneOne entryOneTwo entryTwoTwo
+      coordZero coordOne coordTwo : ℝ)
+    (htracePos : 0 < entryZeroZero + entryOneOne + entryTwoTwo)
+    (hsecondPos : 0 < (entryZeroZero * entryOneOne - entryZeroOne ^ 2)
+      + (entryZeroZero * entryTwoTwo - entryZeroTwo ^ 2)
+      + (entryOneOne * entryTwoTwo - entryOneTwo ^ 2))
+    (hdetPos : 0 < symmetricDeterminant entryZeroZero entryZeroOne entryZeroTwo
+      entryOneOne entryOneTwo entryTwoTwo)
+    (hcoordNe : ¬ (coordZero = 0 ∧ coordOne = 0 ∧ coordTwo = 0)) :
+    0 < symmetricQuadForm entryZeroZero entryZeroOne entryZeroTwo entryOneOne
+      entryOneTwo entryTwoTwo coordZero coordOne coordTwo := by
+  rcases lt_or_ge 0 entryZeroZero with hpivotZero | hzeroNonpos
+  · exact symmetricQuadForm_pos_of_leadingMinors _ _ _ _ _ _ _ _ _ hpivotZero
+      (leadingMinor_pos_of_symmetricInvariants _ _ _ _ _ _ hpivotZero htracePos hsecondPos
+        hdetPos)
+      hdetPos hcoordNe
+  · rcases lt_or_ge 0 entryOneOne with hpivotOne | honeNonpos
+    · have hswapTrace : 0 < entryOneOne + entryZeroZero + entryTwoTwo := by linarith
+      have hswapSecond : 0 < (entryOneOne * entryZeroZero - entryZeroOne ^ 2)
+          + (entryOneOne * entryTwoTwo - entryOneTwo ^ 2)
+          + (entryZeroZero * entryTwoTwo - entryZeroTwo ^ 2) := by nlinarith [hsecondPos]
+      have hswapDet : 0 < symmetricDeterminant entryOneOne entryZeroOne entryOneTwo
+          entryZeroZero entryZeroTwo entryTwoTwo := by
+        have hdetEq : symmetricDeterminant entryOneOne entryZeroOne entryOneTwo
+              entryZeroZero entryZeroTwo entryTwoTwo
+            = symmetricDeterminant entryZeroZero entryZeroOne entryZeroTwo entryOneOne
+              entryOneTwo entryTwoTwo := by
+          rw [symmetricDeterminant, symmetricDeterminant]; ring
+        rw [hdetEq]; exact hdetPos
+      have hswapNe : ¬ (coordOne = 0 ∧ coordZero = 0 ∧ coordTwo = 0) := by
+        rintro ⟨honeZero, hzeroZero, htwoZero⟩
+        exact hcoordNe ⟨hzeroZero, honeZero, htwoZero⟩
+      have hswapValue := symmetricQuadForm_pos_of_leadingMinors entryOneOne entryZeroOne
+        entryOneTwo entryZeroZero entryZeroTwo entryTwoTwo coordOne coordZero coordTwo
+        hpivotOne
+        (leadingMinor_pos_of_symmetricInvariants _ _ _ _ _ _ hpivotOne hswapTrace
+          hswapSecond hswapDet)
+        hswapDet hswapNe
+      have hformEq : symmetricQuadForm entryOneOne entryZeroOne entryOneTwo entryZeroZero
+            entryZeroTwo entryTwoTwo coordOne coordZero coordTwo
+          = symmetricQuadForm entryZeroZero entryZeroOne entryZeroTwo entryOneOne
+            entryOneTwo entryTwoTwo coordZero coordOne coordTwo := by
+        rw [symmetricQuadForm, symmetricQuadForm]; ring
+      rwa [hformEq] at hswapValue
+    · have hpivotTwo : 0 < entryTwoTwo := by linarith
+      have hrotTrace : 0 < entryTwoTwo + entryZeroZero + entryOneOne := by linarith
+      have hrotSecond : 0 < (entryTwoTwo * entryZeroZero - entryZeroTwo ^ 2)
+          + (entryTwoTwo * entryOneOne - entryOneTwo ^ 2)
+          + (entryZeroZero * entryOneOne - entryZeroOne ^ 2) := by nlinarith [hsecondPos]
+      have hrotDet : 0 < symmetricDeterminant entryTwoTwo entryZeroTwo entryOneTwo
+          entryZeroZero entryZeroOne entryOneOne := by
+        have hdetEq : symmetricDeterminant entryTwoTwo entryZeroTwo entryOneTwo
+              entryZeroZero entryZeroOne entryOneOne
+            = symmetricDeterminant entryZeroZero entryZeroOne entryZeroTwo entryOneOne
+              entryOneTwo entryTwoTwo := by
+          rw [symmetricDeterminant, symmetricDeterminant]; ring
+        rw [hdetEq]; exact hdetPos
+      have hrotNe : ¬ (coordTwo = 0 ∧ coordZero = 0 ∧ coordOne = 0) := by
+        rintro ⟨htwoZero, hzeroZero, honeZero⟩
+        exact hcoordNe ⟨hzeroZero, honeZero, htwoZero⟩
+      have hrotValue := symmetricQuadForm_pos_of_leadingMinors entryTwoTwo entryZeroTwo
+        entryOneTwo entryZeroZero entryZeroOne entryOneOne coordTwo coordZero coordOne
+        hpivotTwo
+        (leadingMinor_pos_of_symmetricInvariants _ _ _ _ _ _ hpivotTwo hrotTrace hrotSecond
+          hrotDet)
+        hrotDet hrotNe
+      have hformEq : symmetricQuadForm entryTwoTwo entryZeroTwo entryOneTwo entryZeroZero
+            entryZeroOne entryOneOne coordTwo coordZero coordOne
+          = symmetricQuadForm entryZeroZero entryZeroOne entryZeroTwo entryOneOne
+            entryOneTwo entryTwoTwo coordZero coordOne coordTwo := by
+        rw [symmetricQuadForm, symmetricQuadForm]; ring
+      rwa [hformEq] at hrotValue
+
+
+/-! ## The criterion at the gap: sufficiency and the equivalence -/
+
+theorem gapOfDirectionTriple_form_eq_symmetricQuadForm
+    (firstVec secondVec thirdVec probe : Fin 3 → ℝ) :
+    probe ⬝ᵥ (gapOfDirectionTriple firstVec secondVec thirdVec *ᵥ probe)
+      = symmetricQuadForm (gramDiagEntry firstVec secondVec thirdVec 0)
+          (gramOffEntry firstVec secondVec thirdVec 0 1)
+          (gramOffEntry firstVec secondVec thirdVec 0 2)
+          (gramDiagEntry firstVec secondVec thirdVec 1)
+          (gramOffEntry firstVec secondVec thirdVec 1 2)
+          (gramDiagEntry firstVec secondVec thirdVec 2)
+          (probe 0) (probe 1) (probe 2) := by
+  rw [gapOfDirectionTriple_form]
+  simp only [symmetricQuadForm, gramDiagEntry, gramOffEntry, dotProduct, Fin.sum_univ_three]
+  ring
+
+theorem symmetricDeterminant_gram_eq (firstVec secondVec thirdVec : Fin 3 → ℝ) :
+    symmetricDeterminant (gramDiagEntry firstVec secondVec thirdVec 0)
+        (gramOffEntry firstVec secondVec thirdVec 0 1)
+        (gramOffEntry firstVec secondVec thirdVec 0 2)
+        (gramDiagEntry firstVec secondVec thirdVec 1)
+        (gramOffEntry firstVec secondVec thirdVec 1 2)
+        (gramDiagEntry firstVec secondVec thirdVec 2)
+      = tripleBracket firstVec secondVec thirdVec ^ 2
+        - triplePairAreaSum firstVec secondVec thirdVec
+        + tripleLeverageSum firstVec secondVec thirdVec - 1 := by
+  simp only [symmetricDeterminant, gramDiagEntry, gramOffEntry, tripleBracket_eq,
+    triplePairAreaSum, tripleLeverageSum, crossNormSq, leverageOf, bracketNormal, dotProduct,
+    Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+theorem gapOfDirectionTriple_isHermitian (firstVec secondVec thirdVec : Fin 3 → ℝ) :
+    (gapOfDirectionTriple firstVec secondVec thirdVec).IsHermitian :=
+  (((posSemidef_atomMatrix firstVec).add (posSemidef_atomMatrix secondVec)).add
+    (posSemidef_atomMatrix thirdVec)).1.sub Matrix.isHermitian_one
+
+/-- **The three-invariant criterion, sufficiency.**  Positive leverage excess,
+positive pair-area excess and positive determinant invariant make the triple a
+STRICT dominator. -/
+theorem gapOfDirectionTriple_posDef_of_tripleInvariants (firstVec secondVec thirdVec : Fin 3 → ℝ)
+    (hleveragePos : 0 < tripleLeverageSum firstVec secondVec thirdVec - 3)
+    (hpairAreaPos : 0 < triplePairAreaSum firstVec secondVec thirdVec
+      - 2 * tripleLeverageSum firstVec secondVec thirdVec + 3)
+    (hdetPos : 0 < tripleBracket firstVec secondVec thirdVec ^ 2
+      - triplePairAreaSum firstVec secondVec thirdVec
+      + tripleLeverageSum firstVec secondVec thirdVec - 1) :
+    (gapOfDirectionTriple firstVec secondVec thirdVec).PosDef := by
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr
+    ⟨gapOfDirectionTriple_isHermitian firstVec secondVec thirdVec, fun probe hprobeNe => ?_⟩
+  rw [star_trivial, gapOfDirectionTriple_form_eq_symmetricQuadForm]
+  refine symmetricQuadForm_pos_of_symmetricInvariants _ _ _ _ _ _ _ _ _ ?_ ?_ ?_ ?_
+  · rw [← tripleLeverageSum_sub_three_eq_diagSum]; exact hleveragePos
+  · rw [← pairAreaExcess_eq_minorSum]; exact hpairAreaPos
+  · rw [symmetricDeterminant_gram_eq]; exact hdetPos
+  · rintro ⟨hzeroCoord, honeCoord, htwoCoord⟩
+    refine hprobeNe (funext fun coordIndex => ?_)
+    fin_cases coordIndex <;> simpa using ‹_›
+
+/-- **The three-invariant criterion.**  A card-three set of directions strictly
+dominates the identity IFF three coordinate-free polynomial inequalities hold in
+its leverages, pair cross-norms and bracket.  No normal, no probe, no frame. -/
+theorem gapOfDirectionTriple_posDef_iff_tripleInvariants
+    (firstVec secondVec thirdVec : Fin 3 → ℝ) :
+    (gapOfDirectionTriple firstVec secondVec thirdVec).PosDef
+      ↔ 0 < tripleLeverageSum firstVec secondVec thirdVec - 3
+        ∧ 0 < triplePairAreaSum firstVec secondVec thirdVec
+              - 2 * tripleLeverageSum firstVec secondVec thirdVec + 3
+        ∧ 0 < tripleBracket firstVec secondVec thirdVec ^ 2
+              - triplePairAreaSum firstVec secondVec thirdVec
+              + tripleLeverageSum firstVec secondVec thirdVec - 1 :=
+  ⟨tripleInvariants_pos_of_posDef firstVec secondVec thirdVec,
+    fun ⟨hleveragePos, hpairAreaPos, hdetPos⟩ =>
+      gapOfDirectionTriple_posDef_of_tripleInvariants firstVec secondVec thirdVec
+        hleveragePos hpairAreaPos hdetPos⟩
+
+/-- **The design-level reading.**  Strict domination by a card-three subset is
+decided by the three invariants of its atoms. -/
+theorem subsetSum_posDef_iff_tripleInvariants {size : ℕ} (design : WeightedDesign size 3)
+    (firstLabel secondLabel thirdLabel : Fin size)
+    (hfirstSecond : firstLabel ≠ secondLabel)
+    (hfirstThird : firstLabel ≠ thirdLabel)
+    (hsecondThird : secondLabel ≠ thirdLabel) :
+    (subsetSum design ({firstLabel, secondLabel, thirdLabel} : Finset (Fin size)) - 1).PosDef
+      ↔ 0 < tripleLeverageSum (design.atom firstLabel) (design.atom secondLabel)
+              (design.atom thirdLabel) - 3
+        ∧ 0 < triplePairAreaSum (design.atom firstLabel) (design.atom secondLabel)
+                (design.atom thirdLabel)
+              - 2 * tripleLeverageSum (design.atom firstLabel) (design.atom secondLabel)
+                (design.atom thirdLabel) + 3
+        ∧ 0 < atomBracket design firstLabel secondLabel thirdLabel ^ 2
+              - triplePairAreaSum (design.atom firstLabel) (design.atom secondLabel)
+                (design.atom thirdLabel)
+              + tripleLeverageSum (design.atom firstLabel) (design.atom secondLabel)
+                (design.atom thirdLabel) - 1 := by
+  rw [subsetSum_sub_one_eq_gapOfDirectionTriple design firstLabel secondLabel thirdLabel
+    hfirstSecond hfirstThird hsecondThird, atomBracket,
+    gapOfDirectionTriple_posDef_iff_tripleInvariants]
+
+end ThreeInvariantCriterion
+
 end Gtz

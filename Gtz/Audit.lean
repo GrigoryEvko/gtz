@@ -15500,6 +15500,30 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.stressFreeStratumIsTieFreeTwoMeetingLines_of_heavyWeakToStrict
 #print axioms Gtz.oneLine_exists_freeAtom_height_lower_bound
 
+-- Design/LineClassObstructions, the three-invariant criterion: Cauchy-Binet
+-- puts the gap's trace, second-minor sum and determinant into the campaign's
+-- own vocabulary (leverages, pair cross-norms, bracket squared), and positive
+-- definiteness is EXACTLY positivity of the three.  Mathlib has no Sylvester
+-- criterion, so sufficiency is built here: one completed-square identity for
+-- Sylvester at the leading pivot, plus a Chio-style upgrade from the symmetric
+-- invariants to a positive leading minor at any pivot.  After the chartless
+-- collapse this decides the whole residual with no probes and no normals.
+#print axioms Gtz.gapOfDirectionTriple_form
+#print axioms Gtz.subsetSum_sub_one_eq_gapOfDirectionTriple
+#print axioms Gtz.gapOfDirectionTriple_trace_eq
+#print axioms Gtz.gapOfDirectionTriple_minorSum_eq
+#print axioms Gtz.gapOfDirectionTriple_det_eq
+#print axioms Gtz.tripleLeverageSum_sub_three_eq_diagSum
+#print axioms Gtz.tripleInvariants_pos_of_posDef
+#print axioms Gtz.symmetricQuadForm_pos_of_leadingMinors
+#print axioms Gtz.leadingMinor_pos_of_symmetricInvariants
+#print axioms Gtz.symmetricQuadForm_pos_of_symmetricInvariants
+#print axioms Gtz.gapOfDirectionTriple_form_eq_symmetricQuadForm
+#print axioms Gtz.gapOfDirectionTriple_isHermitian
+#print axioms Gtz.gapOfDirectionTriple_posDef_of_tripleInvariants
+#print axioms Gtz.gapOfDirectionTriple_posDef_iff_tripleInvariants
+#print axioms Gtz.subsetSum_posDef_iff_tripleInvariants
+
 -- Design/LineFreeConicBridge: U(3,6) — stress-free <=> off-conic
 -- (both bridges + the Veronese-determinant Iff), the antecedent-
 -- keeping attack Prop and its verbatim reduction to the class
