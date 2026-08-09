@@ -476,6 +476,7 @@ import Gtz.Design.UThreeSixStratumWitness
 import Gtz.Design.ComplementHeavy
 import Gtz.Design.TightDoubleSwapObstructions
 import Gtz.Design.FreePairPlane
+import Gtz.Design.AxisBaseOffConic
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17824,6 +17825,29 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.UThreeSixTightLineBranch
 #print axioms Gtz.UThreeSixPlaneTenCandidateBranch
 #print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_iff_tightSpaceBranches
+
+-- Design/AxisBaseOffConic, off-conicity in axis coordinates is one cubic.
+-- When the first three atoms are nonzero multiples of the three coordinate
+-- axes, the three diagonal quadric equations force the quadric's diagonal to
+-- vanish, so only the three off-diagonal Veronese coordinates survive and
+-- `HasNoCommonQuadric` becomes EQUIVALENT to nonvanishing of the three-by-three
+-- determinant whose free rows are `(x_f y_f, x_f z_f, y_f z_f)`.  The
+-- equivalence is constructive both ways: a vanishing determinant builds an
+-- explicit nonzero common quadric out of its kernel vector, and a common
+-- quadric exhibits the kernel vector.  This replaces the six-by-six Veronese
+-- determinant in every downstream equality target with a single cubic in nine
+-- free-atom coordinates.  It is the SECOND of two independent nondegeneracy
+-- facts and must not be conflated with the first: line-freeness gives
+-- independence of the free atoms, a different determinant of a different
+-- matrix, and both are separately available.
+#print axioms Gtz.axisBaseAtom
+#print axioms Gtz.freeOffDiagonalGrid
+#print axioms Gtz.offDiagonalConic
+#print axioms Gtz.offDiagonalConic_isHermitian
+#print axioms Gtz.dotProduct_offDiagonalConic_mulVec
+#print axioms Gtz.offDiagonalConic_ne_zero
+#print axioms Gtz.freeOffDiagonalGrid_det_ne_zero_of_hasNoCommonQuadric
+#print axioms Gtz.hasNoCommonQuadric_axisBaseAtom_iff_freeOffDiagonalGrid_det_ne_zero
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
