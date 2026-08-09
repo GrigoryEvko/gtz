@@ -475,6 +475,7 @@ import Gtz.Design.OneLineLiftCertificate
 import Gtz.Design.UThreeSixStratumWitness
 import Gtz.Design.ComplementHeavy
 import Gtz.Design.TightDoubleSwapObstructions
+import Gtz.Design.FreePairPlane
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17768,6 +17769,61 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.tightDoubleSwap_posDef_iff_surplus_and_gapExcess
 #print axioms Gtz.tightDoubleSwap_posDef_iff_frameMinors
 #print axioms Gtz.noStrictDominator_yields_tightDoubleSwapExcess_failure
+
+-- Design/FreePairPlane, the U(3,6) frontier becomes an equivalence, and the
+-- plane branch becomes ten candidates.  The hinge carries NO transversality
+-- hypothesis: when the base triple's tight space is the whole plane, two
+-- independent tight directions force the planar compression of the base to
+-- resolve the identity, and Parseval then gives the strict floor
+-- `W_F - s = (t1+t2) A0 + (t0+t2) A1 + (t0+t1) A2 > 0`, so normalizing the
+-- free weights and spending rank-two GTZ selects a free pair that strictly
+-- dominates the ENTIRE tight plane.  The candidate list is cut to ten and
+-- proved exhaustive: the tight base kills the base triple itself, and every
+-- candidate retaining two base labels dies by feeding the two orthonormal
+-- tight directions into the corank obstruction, so
+-- `exists_posDef_cardThree_iff_planeBranchTenCandidate` is an IFF -- the
+-- other ten triples are impossible, not merely omitted.  The capstone
+-- `baseTripleTightLineFreeOffConicWeakToStrict_iff_tightSpaceBranches` is a
+-- genuine equivalence with no extra hypothesis, so proving the two branch
+-- Props retires the U(3,6) axiom.  The line branch gets its missing rank
+-- input from `dominationGap_form_pos_of_hasTightLineAt`, the coordinate-free
+-- form of `rank B = 2` that the landed swap and lift criteria want.
+#print axioms Gtz.dominationGap_add_weightedComplement_eq_complementaryWeightedSelected
+#print axioms Gtz.dominationGap_eq_axisAtom_of_orthonormal_tightPair
+#print axioms Gtz.freeThreeLabel
+#print axioms Gtz.freeThreeLabel_injective
+#print axioms Gtz.freeThreeLabel_range
+#print axioms Gtz.freeWeightSum
+#print axioms Gtz.freePlaneAtom
+#print axioms Gtz.normalizedFreeWeight
+#print axioms Gtz.freeWeightedFrame
+#print axioms Gtz.freeWeightSum_pos
+#print axioms Gtz.normalizedFreeWeight_pos
+#print axioms Gtz.normalizedFreeWeight_sum_one
+#print axioms Gtz.frameOperator_normalizedFreeWeight
+#print axioms Gtz.freeWeightedFrame_sub_floor_eq
+#print axioms Gtz.freeWeightedFrame_sub_floor_posDef
+#print axioms Gtz.normalizedFreeFrame_sub_one_posDef
+#print axioms Gtz.normalizedFreeFrame_posDef
+#print axioms Gtz.exists_strict_freePair_of_baseFrame
+#print axioms Gtz.exists_strict_pair_in_freeLabels_of_baseFrame
+#print axioms Gtz.planarCompression_baseFrame_of_two_tightDirections
+#print axioms Gtz.exists_strict_freePair_on_tightPlane
+#print axioms Gtz.exists_orthonormal_tightPair_of_hasFreeTightDirection
+#print axioms Gtz.exists_unitAxis_gapAtom_of_offConic_planeBranch
+#print axioms Gtz.exists_fourVectorFrameIdentity_of_offConic_planeBranch
+#print axioms Gtz.complementaryWeightedBaseTriple_posDef_of_lineFree
+#print axioms Gtz.exists_posDef_fourVectorFrameIdentity_of_offConic_planeBranch
+#print axioms Gtz.oneSlotSwap_not_posDef_of_planeBranch
+#print axioms Gtz.PlaneBranchTenCandidate
+#print axioms Gtz.exists_posDef_cardThree_iff_planeBranchTenCandidate
+#print axioms Gtz.exists_strict_freePair_on_planeBranch
+#print axioms Gtz.exists_free_pairPlaneStrict_of_planeBranch
+#print axioms Gtz.exists_free_pairBudget_nonpos_of_planeBranch_tie
+#print axioms Gtz.dominationGap_form_pos_of_hasTightLineAt
+#print axioms Gtz.UThreeSixTightLineBranch
+#print axioms Gtz.UThreeSixPlaneTenCandidateBranch
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_iff_tightSpaceBranches
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
