@@ -473,6 +473,7 @@ import Gtz.Design.LiftCriterion
 import Gtz.Design.CrossAxisAtlas
 import Gtz.Design.OneLineLiftCertificate
 import Gtz.Design.UThreeSixStratumWitness
+import Gtz.Design.ComplementHeavy
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17711,6 +17712,34 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.scalarBranchDesign_not_isTie
 #print axioms Gtz.scalarBranchDesign_meetsBaseTripleTightAntecedent
 #print axioms Gtz.scalarBalanceTest_strictlyWeaker_and_inhabited
+
+-- Design/ComplementHeavy, a tight weak dominator forces a strictly heavy atom
+-- outside itself.  At any size and any rank, if a weak dominator of at least
+-- two atoms carries a tight direction, some atom in its complement has
+-- leverage strictly above one, with the quantitative floor
+-- `(1 - max_C t_c) / (1 - sum_C t_c)`.  The consequence for the frontier is
+-- structural: a counterexample needs at least four strictly heavy atoms, so
+-- heaviness cannot be concentrated on the dominator.  Specialized to U(3,6),
+-- the excess is turned into a base-weight remainder bound, a tight-reading
+-- floor of `1 + 2 * weightFloor`, and the uniform tight-swap corner, which
+-- feed the one-slot swap refusals and the two-family common-heavy refusals
+-- that the tie side must satisfy.  The excess degenerates exactly when all
+-- but one base weight vanish -- the same corner where the margin dies -- so
+-- the sharpness analysis and the equality analysis are one object.
+#print axioms Gtz.exists_complementAtom_strictlyHeavy_of_tightDirection
+#print axioms Gtz.exists_complementAtom_quantitativelyHeavy_of_tightDirection
+#print axioms Gtz.exists_complementAtom_leverageExcess_of_tightDirection
+#print axioms Gtz.exists_complementAtom_readingExcess_of_tightDirection
+#print axioms Gtz.uThreeSix_exists_complementAtom_leverageExcess
+#print axioms Gtz.uThreeSix_exists_complementAtom_baseWeightRemainder_le
+#print axioms Gtz.uThreeSix_exists_complementAtom_baseReadingRemainder_le
+#print axioms Gtz.uThreeSix_exists_complementAtom_tightReading_gt_one_add_two_mul_weightFloor
+#print axioms Gtz.uThreeSix_exists_complementAtom_uniform_tightSwapCorner
+#print axioms Gtz.uThreeSix_exists_commonIncoming_uniform_and_twoThirds_corner
+#print axioms Gtz.uThreeSix_noStrict_yields_uniform_tightSwap_refusals
+#print axioms Gtz.uThreeSix_isTie_yields_commonHeavy_twoFamily_refusals
+#print axioms Gtz.uThreeSix_exists_complementAtom_one_add_two_mul_weightFloor_lt_leverage
+#print axioms Gtz.uThreeSix_exists_baseWeight_le_half_leverageExcess
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
