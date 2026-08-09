@@ -474,6 +474,7 @@ import Gtz.Design.CrossAxisAtlas
 import Gtz.Design.OneLineLiftCertificate
 import Gtz.Design.UThreeSixStratumWitness
 import Gtz.Design.ComplementHeavy
+import Gtz.Design.TightDoubleSwapObstructions
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17740,6 +17741,33 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.uThreeSix_isTie_yields_commonHeavy_twoFamily_refusals
 #print axioms Gtz.uThreeSix_exists_complementAtom_one_add_two_mul_weightFloor_lt_leverage
 #print axioms Gtz.uThreeSix_exists_baseWeight_le_half_leverageExcess
+
+-- Design/TightDoubleSwapObstructions, strict domination at Hamming distance
+-- two is exactly three polynomial signs.  This lifts the one-slot criterion
+-- of TightSwapObstructions to card-three subsets that retain one label of a
+-- tight weak dominator and bring in two outside atoms.  In any orthonormal
+-- frame of the tight plane the test is quantifier-free: the normal surplus
+-- `tightDoubleSwapAlpha` positive, the first cover minor positive, and the
+-- two-by-two cover determinant positive.  The polarized cancellation against
+-- the original dominator is recorded as `coverForm_tightDoubleSwap`, and the
+-- tie-side refusal as `noStrictDominator_yields_tightDoubleSwapExcess_failure`.
+-- Exact censuses of the U(3,6) antecedent motivate the layer: on every
+-- sampled point where all nine one-slot swaps failed, some double swap
+-- strictly dominated, so this is the first candidate family the one-slot
+-- criteria could not see.
+#print axioms Gtz.tightDoubleSwap
+#print axioms Gtz.tightDoubleSwapAlpha
+#print axioms Gtz.tightDoubleSwapCross
+#print axioms Gtz.tightDoubleSwapPlaneExcess
+#print axioms Gtz.tightDoubleSwapCover
+#print axioms Gtz.sum_over_tightDoubleSwap
+#print axioms Gtz.card_tightDoubleSwap
+#print axioms Gtz.tightDoubleSwap_normalSurplus
+#print axioms Gtz.tightDoubleSwap_planeCover_iff_dominatorGapExcess
+#print axioms Gtz.coverForm_tightDoubleSwap
+#print axioms Gtz.tightDoubleSwap_posDef_iff_surplus_and_gapExcess
+#print axioms Gtz.tightDoubleSwap_posDef_iff_frameMinors
+#print axioms Gtz.noStrictDominator_yields_tightDoubleSwapExcess_failure
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
