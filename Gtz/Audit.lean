@@ -467,6 +467,7 @@ import Gtz.Design.ChartlessKill
 import Gtz.Design.KFourBandAtlas
 import Gtz.Design.ThreeLinesAtlas
 import Gtz.Design.NormalSchurClosure
+import Gtz.Design.OneLineCanonicalTripleRefutation
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17308,6 +17309,33 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.oneLineSample_lineAtoms_orthogonal_to_vertical
 #print axioms Gtz.oneLineSample_planeSchur_holds
 #print axioms Gtz.oneLineSample_strict_cauchySchwarz
+
+-- Design/OneLineCanonicalTripleRefutation.  Every chartless certificate so far
+-- nominates the SAME triple on the one-line stratum -- the line complement
+-- {3,4,5} -- and the shipped sample encourages it.  The nomination is FALSE.
+-- An exact-rational one-line design, heavy at every label and carrying a weak
+-- dominator, has a free-triple gap of determinant minus nine whose form at an
+-- explicit probe is negative, so the canonical triple does not merely fail to
+-- dominate STRICTLY, it fails to dominate at all.  This refutes the STRATEGY
+-- and not the obligation: on the same design the MIXED triple {2,3,5} is
+-- strictly dominating, exhibited as an explicit sum of three squares.  So any
+-- proof of the one-line class must branch and nominate a mixed triple, and the
+-- plane-Schur inequality is pinned failing at the horizontal probe.
+#print axioms Gtz.oneLineFailureAtom
+#print axioms Gtz.oneLineFailureWeight
+#print axioms Gtz.oneLineFailureDesign
+#print axioms Gtz.oneLineFailureDesign_hasLinePattern
+#print axioms Gtz.oneLineFailureDesign_allHeavy
+#print axioms Gtz.oneLineFailure_dominatorGap_form
+#print axioms Gtz.oneLineFailure_dominates_mixedTriple
+#print axioms Gtz.oneLineFailureDesign_hasWeakDominator
+#print axioms Gtz.oneLineFailure_freeTripleGap_at_witness
+#print axioms Gtz.oneLineFailure_freeTriple_not_dominates
+#print axioms Gtz.oneLineFailure_freeTripleGap_not_posDef
+#print axioms Gtz.oneLineFailure_planeSchurCrossTerm_eq
+#print axioms Gtz.oneLineFailure_planeSchurProduct_eq
+#print axioms Gtz.exists_oneLine_heavy_weaklyDominated_freeTriple_not_dominates
+#print axioms Gtz.oneLineFailure_mixedTripleGap_posDef
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
