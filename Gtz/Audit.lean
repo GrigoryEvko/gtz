@@ -469,6 +469,7 @@ import Gtz.Design.ThreeLinesAtlas
 import Gtz.Design.NormalSchurClosure
 import Gtz.Design.OneLineCanonicalTripleRefutation
 import Gtz.Design.OrthogonalConicAndTwinRefutation
+import Gtz.Design.LiftCriterion
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17388,6 +17389,105 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.twinFailure_canonicalTriples_not_posDef
 #print axioms Gtz.exists_twoMeetingLines_heavy_weaklyDominated_bothComplements_fail
 #print axioms Gtz.twinFailure_exists_posDef_cardThree
+
+-- Design/LiftCriterion, one determinant for a whole triple.  Fix a unit normal
+-- and split every atom into its normal reading and its shadow in the
+-- perpendicular plane; the shadow Gram minus one, restricted to a pair, is
+-- exactly that pair's gap in the rank-two shadow design.  Put the normal LAST
+-- in an orthonormal frame and the first two leading Sylvester minors of a
+-- triple gap become free consequences of the shadow gap being positive
+-- definite, so positive definiteness of the whole three-by-three collapses to
+-- the sign of a single polynomial: the lift margin, the cleared form of
+-- (a_x . Q)^2 - (1 + sigma_x) * kappa, with no matrix inverse and no det Gamma
+-- surviving the clearing.  The criterion is an IFF, it hands back a strictly
+-- dominating triple on demand, and it is covered -- every strict triple is
+-- already visible at three normals, so the criterion is an exact
+-- reformulation, not a relaxation.  Sharpness is the regular tetrahedron,
+-- which sits exactly on the boundary at margin zero and whose non-domination
+-- is rederived THROUGH the criterion at a normal where the hypothesis genuinely
+-- holds.  The barrier: the weighted average of the margin over all labels has a
+-- closed form, -(det Delta) * (tr Delta + |eta|^2), strictly negative whenever
+-- the criterion applies, so Parseval averaging can never produce the completing
+-- atom -- a third barrier beside the landed pair-averaging and
+-- split-tetrahedron ones.  The line strata reach this file through
+-- Design/ChartlessKill's unit line normals composed with
+-- shadowPairing_self_eq_leverageOf_of_normalReading_eq_zero, which is the
+-- honest obstruction: at a normal an atom is flat against, that atom's shadow
+-- self-pairing IS its leverage, so a leverage-one line atom can never sit in a
+-- pair whose shadow gap is positive definite at its own line normal.
+#print axioms Gtz.pos_second_of_pos_first_of_pos_det
+#print axioms Gtz.pos_diagonal_of_pos_trace_of_pos_det
+#print axioms Gtz.nonneg_adjugateForm_of_pos_det
+#print axioms Gtz.shadowGapDeterminantOf
+#print axioms Gtz.liftDemandOf
+#print axioms Gtz.liftLeverageOf
+#print axioms Gtz.liftReadingOf
+#print axioms Gtz.liftMarginOf
+#print axioms Gtz.shadowGapDeterminantOf_mul_gapDeterminant_eq_liftMarginOf
+#print axioms Gtz.shadowGapDeterminantOf_eq_planeGapDeterminant
+#print axioms Gtz.planeGapTrace_eq_shadowGapTrace
+#print axioms Gtz.liftLeverageOf_eq_blockMinor
+#print axioms Gtz.liftLeverageOf_eq_shadowGapDeterminantOf_add_adjugateForm
+#print axioms Gtz.posDef_planeGapMatrix_iff_pos_liftMarginOf
+#print axioms Gtz.frameRowMatrix
+#print axioms Gtz.frameRowMatrix_mul_transpose_apply
+#print axioms Gtz.frameRowMatrix_mul_transpose_eq_one
+#print axioms Gtz.frameRowMatrix_conj_apply
+#print axioms Gtz.dotProduct_eq_frameCoordinateSum
+#print axioms Gtz.normalReading
+#print axioms Gtz.shadowPairing
+#print axioms Gtz.shadowGapDeterminant
+#print axioms Gtz.liftMargin
+#print axioms Gtz.shadowPairing_eq_planeCoordinates
+#print axioms Gtz.posDef_tripleGap_iff_posDef_frameGapMatrix
+#print axioms Gtz.shadowPairing_self_eq_planeCoordinates
+#print axioms Gtz.posDef_tripleGap_iff_pos_liftMargin
+#print axioms Gtz.liftReading
+#print axioms Gtz.liftLeverage
+#print axioms Gtz.liftDemand
+#print axioms Gtz.liftMargin_eq_reading_sq_sub
+#print axioms Gtz.liftReadingOf_at_pairFirst
+#print axioms Gtz.liftReadingOf_at_pairSecond
+#print axioms Gtz.liftLeverageOf_at_pairFirst
+#print axioms Gtz.liftLeverageOf_at_pairSecond
+#print axioms Gtz.liftMarginOf_of_heights_eq_zero
+#print axioms Gtz.pos_liftMarginOf_iff_of_heights_eq_zero
+#print axioms Gtz.posDef_tripleGap_iff_lineNormalCollapse
+#print axioms Gtz.shadowPairing_self_eq_leverageOf_of_normalReading_eq_zero
+#print axioms Gtz.exists_unitNormal_of_ne_zero
+#print axioms Gtz.dotProduct_self_eq_leverageOf
+#print axioms Gtz.shadowPairing_comm
+#print axioms Gtz.shadowVector
+#print axioms Gtz.dotProduct_atom_shadowVector
+#print axioms Gtz.dotProduct_shadowVector_normal
+#print axioms Gtz.dotProduct_shadowVector_shadowVector
+#print axioms Gtz.liftAdjugateFirst
+#print axioms Gtz.liftAdjugateSecond
+#print axioms Gtz.liftDirection
+#print axioms Gtz.dotProduct_atom_liftDirection
+#print axioms Gtz.sum_weight_mul_shadowPairing_self
+#print axioms Gtz.sum_weight_mul_shadowPairing_sq
+#print axioms Gtz.sum_weight_mul_liftReading_sq
+#print axioms Gtz.sum_weight_mul_liftLeverage
+#print axioms Gtz.sum_weight_mul_liftMargin_eq_neg
+#print axioms Gtz.sum_weight_mul_liftMargin_neg
+#print axioms Gtz.tetraAtom_dotProduct_of_ne
+#print axioms Gtz.tetraSharpnessNormal
+#print axioms Gtz.tetraSharpnessNormal_dotProduct_self
+#print axioms Gtz.tetraSharpnessNormal_normalReading
+#print axioms Gtz.tetraSharpnessNormal_shadowPairing_self
+#print axioms Gtz.tetraSharpnessNormal_shadowPairing_cross
+#print axioms Gtz.tetraDesign_shadowGapDeterminant_eq_one
+#print axioms Gtz.tetraDesign_shadowPairing_corner_pos
+#print axioms Gtz.tetraDesign_liftMargin_eq_zero
+#print axioms Gtz.tetraDesign_not_posDef_tripleGap
+#print axioms Gtz.exists_posDef_cardThree_of_pos_liftMargin
+#print axioms Gtz.shadowVector_eq_zero_of_shadowPairing_self_eq_zero
+#print axioms Gtz.shadowPairing_eq_zero_of_flat
+#print axioms Gtz.shadowPairing_self_eq_zero_of_normal_parallel
+#print axioms Gtz.shadowGap_pos_of_posDef_tripleGap_of_flatThird
+#print axioms Gtz.exists_unitNormal_parallel_of_ne_zero
+#print axioms Gtz.exists_pos_liftMargin_of_posDef_tripleGap
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
