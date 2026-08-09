@@ -478,6 +478,7 @@ import Gtz.Design.TightDoubleSwapObstructions
 import Gtz.Design.FreePairPlane
 import Gtz.Design.AxisBaseOffConic
 import Gtz.Design.PlaneBranchNormalForm
+import Gtz.Design.PlaneBranchUnitAxisNormalForm
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17936,6 +17937,41 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.planeBranchTenCandidate_iff_axisSelector
 #print axioms Gtz.PlaneBranchAxisFailureWitness
 #print axioms Gtz.not_planeBranchTenCandidate_iff_axisFailureWitness
+
+-- Design/PlaneBranchUnitAxisNormalForm, the same system with three fewer
+-- unknowns.  This normalizes the base atoms to the coordinate vectors
+-- THEMSELVES rather than to scaled multiples, so every base scale is one and
+-- disappears: the metric equation becomes `1 - hidden` instead of
+-- `diagonal (baseScale ^ 2) - hidden`, and the four-vector Parseval identity
+-- reads `hidden + t_3 f_0 + t_4 f_1 + t_5 f_2 = diagonal (1 - t_i)`.  The
+-- failure IFF reappears over the SAME shared `AxisPlanePolynomialFailure`
+-- predicate, instantiated at `baseScale = 1`, so every census, every refusal
+-- pattern and every symbolic elimination transfers between the two forms
+-- unchanged while the unknowns drop from twelve to nine -- a hidden vector
+-- and three free atoms in space, with the three free weights entering only
+-- through the diagonal right-hand side.  Both nondegeneracy facts come along
+-- separately, the free-frame determinant from line-freeness and the
+-- off-diagonal cubic from off-conicity.
+#print axioms Gtz.unitAxisBaseFrame
+#print axioms Gtz.unitAxisBaseFrame_det_ne_zero
+#print axioms Gtz.unitAxisBaseFrame_det_isUnit
+#print axioms Gtz.unitAxisBaseNormalizer
+#print axioms Gtz.unitAxisBaseNormalizer_det_isUnit
+#print axioms Gtz.unitAxisBaseNormalizer_baseAtom
+#print axioms Gtz.unitAxisFreeAtom
+#print axioms Gtz.unitAxisBaseNormalizer_atom_eq_axisBaseAtom
+#print axioms Gtz.unitAxisFreeAtom_offDiagonalGrid_det_ne_zero
+#print axioms Gtz.unitAxisFreeFrame
+#print axioms Gtz.unitAxisFreeFrame_det_ne_zero
+#print axioms Gtz.unitAxisBaseTripleSum
+#print axioms Gtz.unitAxisBaseNormalizer_metric_eq_one_sub_hidden
+#print axioms Gtz.unitAxisTransformedParseval
+#print axioms Gtz.unitAxisFourVectorIdentity
+#print axioms Gtz.exists_planeBranch_unitAxisNormalForm
+#print axioms Gtz.posDef_gap_iff_unitAxisSubsetGap
+#print axioms Gtz.planeBranchTenCandidate_iff_unitAxisTenCandidate
+#print axioms Gtz.UnitAxisPlaneFailureWitness
+#print axioms Gtz.not_planeBranchTenCandidate_iff_unitAxisFailureWitness
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
