@@ -458,6 +458,7 @@ import Gtz.Design.DepthCapAxisParseval
 import Gtz.Design.LivePairExistence
 import Gtz.Design.ComplementFrame
 import Gtz.Design.ResidualLeverageLedger
+import Gtz.Design.FirstTouch
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -16668,6 +16669,72 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.sum_atomShare_eq_rank_ofResidualLedger
 #print axioms Gtz.exists_residualLeverage_ge_three_quarters_sevenThree
 #print axioms Gtz.residualLeverage_le_one_sevenThree
+
+-- Design/FirstTouch, the boundary pair `pairGapExcessOf = 0` and the sign that
+-- governs it.  The master identity is hypothesis-free:
+-- `heavyExcess i * discriminantTie c i j
+--    = pairGapExcessOf i j * pairGapExcessOf i c - (firstTouchNormal ⬝ᵥ atom c)^2`,
+-- the Desnanot-Jacobi form anchored at `i`.  At a boundary pair the first term
+-- dies and the tie leg is MINUS a square, so `discriminantTie ≤ 0` for EVERY
+-- label -- a universal cap, with the equality locus an exact plane.  Parseval
+-- then puts strictly positive mass off the pair, so some genuine completion has
+-- a strictly negative leg and fails to dominate.  The barrier
+-- `surplusForm_neg_of_pairGapExcessOf_eq_zero` needs neither `AllHeavy` nor a
+-- weight-concentration hypothesis, and shows the landed positive criterion can
+-- never fire at a boundary pair.  `boundaryPairDesign` is the rational witness.
+#print axioms Gtz.firstTouchNormal
+#print axioms Gtz.firstTouchNormal_dotProduct
+#print axioms Gtz.firstTouchNormal_dotProduct_atom
+#print axioms Gtz.firstTouchNormal_dotProduct_atom_first
+#print axioms Gtz.firstTouchNormal_dotProduct_atom_second
+#print axioms Gtz.firstTouchNormal_dotProduct_self
+#print axioms Gtz.pairAdjugateForm
+#print axioms Gtz.heavyExcess_mul_pairAdjugateForm
+#print axioms Gtz.discriminantTie_eq_heavyExcess_mul_pairGapExcessOf_sub_pairAdjugateForm
+#print axioms Gtz.heavyExcess_mul_discriminantTie_eq_pairGapExcessOf_mul_sub_sq
+#print axioms Gtz.sum_weight_mul_heavyExcess
+#print axioms Gtz.sum_weight_mul_pairAdjugateForm_atom
+#print axioms Gtz.heavyExcess_mul_discriminantTie_of_pairGapExcessOf_eq_zero
+#print axioms Gtz.discriminantTie_nonpos_of_pairGapExcessOf_eq_zero
+#print axioms Gtz.discriminantTie_nonpos_of_pairGapExcessOf_nonpos
+#print axioms Gtz.heavyExcess_second_nonneg_of_pairGapExcessOf_eq_zero
+#print axioms Gtz.discriminantTie_eq_zero_iff_firstTouchNormal_dotProduct_eq_zero
+#print axioms Gtz.discriminantTie_neg_iff_firstTouchNormal_dotProduct_ne_zero
+#print axioms Gtz.two_le_size_of_labels_ne
+#print axioms Gtz.sum_weight_mul_sq_firstTouchNormal_dotProduct
+#print axioms Gtz.sum_offPair_weight_mul_sq_firstTouchNormal_dotProduct
+#print axioms Gtz.sum_offPair_weight_mul_sq_firstTouchNormal_dotProduct_pos
+#print axioms Gtz.exists_offPair_firstTouchNormal_dotProduct_ne_zero
+#print axioms Gtz.exists_offPair_neg_discriminantTie_of_pairGapExcessOf_eq_zero
+#print axioms Gtz.not_exists_pos_discriminantTie_of_pairGapExcessOf_eq_zero
+#print axioms Gtz.nonneg_discriminantTie_of_dominates
+#print axioms Gtz.sq_firstTouchNormal_dotProduct_le_of_dominates
+#print axioms Gtz.firstTouchNormal_dotProduct_eq_zero_of_dominates
+#print axioms Gtz.not_dominates_of_firstTouchNormal_dotProduct_ne_zero
+#print axioms Gtz.exists_offPair_not_dominates_of_pairGapExcessOf_eq_zero
+#print axioms Gtz.sum_offPair_weight_mul_discriminantTie_neg_of_pairGapExcessOf_eq_zero
+#print axioms Gtz.surplusForm_neg_of_pairGapExcessOf_eq_zero
+#print axioms Gtz.boundaryAtom
+#print axioms Gtz.boundaryWeight
+#print axioms Gtz.boundaryPairDesign
+#print axioms Gtz.boundaryPairDesign_leverageOf_three
+#print axioms Gtz.boundaryPairDesign_leverageOf_zero
+#print axioms Gtz.boundaryPairDesign_leverageOf_one
+#print axioms Gtz.boundaryPairDesign_heavyExcess_three
+#print axioms Gtz.boundaryPairDesign_heavyExcess_zero
+#print axioms Gtz.boundaryPairDesign_heavyExcess_one
+#print axioms Gtz.boundaryPairDesign_atomPairing_three_zero
+#print axioms Gtz.boundaryPairDesign_atomPairing_one_zero
+#print axioms Gtz.boundaryPairDesign_atomPairing_one_three
+#print axioms Gtz.boundaryPairDesign_heavyExcess_three_pos
+#print axioms Gtz.boundaryPairDesign_pairGapExcessOf_three_zero
+#print axioms Gtz.boundaryPairDesign_atom_zero_ne_smul_three
+#print axioms Gtz.boundaryPairDesign_atom_three_ne_smul_zero
+#print axioms Gtz.boundaryPairDesign_discriminantTie_one_three_zero
+#print axioms Gtz.boundaryPairDesign_not_exists_pos_discriminantTie
+#print axioms Gtz.boundaryPairDesign_exists_offPair_neg_discriminantTie
+#print axioms Gtz.boundaryPairDesign_exists_offPair_not_dominates
+#print axioms Gtz.boundaryPairDesign_surplusForm_neg
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
