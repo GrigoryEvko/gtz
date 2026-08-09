@@ -464,6 +464,7 @@ import Gtz.Design.UnevenFourThreeTie
 import Gtz.Design.OneDeterminantReduction
 import Gtz.Design.UThreeSixDisjunction
 import Gtz.Design.ChartlessKill
+import Gtz.Design.KFourBandAtlas
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17061,6 +17062,100 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.oneLineSample_lineAtoms_flat
 #print axioms Gtz.oneLineSample_isLagrangeDominatingTriple
 #print axioms Gtz.oneLineSample_exists_unitAxis_planeStrictPair
+
+-- Design/KFourBandAtlas, the M(K4) band and its exact difficulty.  Rescaling
+-- the chart gap by the product of the selected weights clears every
+-- denominator, so each tree cell is a POLYNOMIAL condition: the set where some
+-- tree is strictly dominating is open, the set where no tree is even weakly
+-- dominating is open, the refined residual says the two cover the convex --
+-- hence preconnected -- parameter set, and the first is inhabited at the
+-- regular tetrahedron.  So the second is EMPTY and the band COLLAPSES: the
+-- refined obligation is EQUIVALENT to the landed antecedent-free endgame
+-- `KFourSomeTreeLiftThreshold`.  The weak-domination antecedent, the twenty
+-- Layer-A cells and the exchange star are therefore all free, and no cell
+-- atlas confined to the band can ever suffice.  Nothing is assumed: both
+-- directions carry their hypothesis.  Cauchy-Binet then gives the determinant
+-- of every one of the sixteen tree gaps in closed form as a signed spanning-
+-- tree polynomial (the four stars lose the complement term, the twelve paths
+-- keep it), and Sylvester at Fin 3 becomes an iff with the determinant, so the
+-- whole axiom is a first-order polynomial statement in eleven positive reals.
+-- A kernel witness shows a positive determinant PLUS a positive block minor
+-- still does not give strict domination, so the substrate's live pair is
+-- load-bearing rather than decoration.
+#print axioms Gtz.kFourScaledGap
+#print axioms Gtz.kFourScaledGap_eq_smul_directionChartGap
+#print axioms Gtz.transpose_kFourScaledGap
+#print axioms Gtz.posDef_smul_iff_pos_factor
+#print axioms Gtz.posSemidef_smul_iff_pos_factor
+#print axioms Gtz.prod_weight_pos
+#print axioms Gtz.kFourScaledGap_posDef_iff
+#print axioms Gtz.kFourScaledGap_posSemidef_iff
+#print axioms Gtz.continuous_kFourMassCoordinate
+#print axioms Gtz.continuous_kFourWeightCoordinate
+#print axioms Gtz.continuous_kFourScaledGapEntry
+#print axioms Gtz.dotProduct_mulVec_expand_sum
+#print axioms Gtz.continuous_kFourScaledGapForm
+#print axioms Gtz.symmetricFinThree_eq_explicit
+#print axioms Gtz.posDef_finThree_iff_leadingMinors
+#print axioms Gtz.isOpen_kFourScaledGapPosDef
+#print axioms Gtz.isClosed_kFourScaledGapPosSemidef
+#print axioms Gtz.kFourChartParameterSet
+#print axioms Gtz.convex_kFourChartParameterSet
+#print axioms Gtz.kFourStrictTreeSet
+#print axioms Gtz.kFourNoWeakTreeSet
+#print axioms Gtz.isOpen_kFourStrictTreeSet
+#print axioms Gtz.isOpen_kFourNoWeakTreeSet
+#print axioms Gtz.notMem_kFourNoWeakTreeSet_of_mem_kFourStrictTreeSet
+#print axioms Gtz.kFourChartPointOfParameters
+#print axioms Gtz.kFourChartPointOfParameters_mass
+#print axioms Gtz.kFourChartPointOfParameters_weight
+#print axioms Gtz.kFourStrictTriple_isSpanningTree
+#print axioms Gtz.exists_strictTree_of_kFourCoveredCell
+#print axioms Gtz.kFourUniformPoint
+#print axioms Gtz.kFourUniformPoint_gaugeTreeGap
+#print axioms Gtz.kFourUniformPoint_hasStrictTree
+#print axioms Gtz.KFourEveryPointHasStrictTree
+#print axioms Gtz.kFourKnifeBandRefined_of_everyPointHasStrictTree
+#print axioms Gtz.exists_strictTree_of_weakTree_of_kFourKnifeBandRefined
+#print axioms Gtz.everyPointHasStrictTree_of_kFourKnifeBandRefined
+#print axioms Gtz.kFourKnifeBandRefined_iff_everyPointHasStrictTree
+#print axioms Gtz.det_explicitFinThree
+#print axioms Gtz.kFourGapDet_treeThreeFourFive_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeOneTwoFive_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeZeroTwoFour_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeZeroOneThree_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeZeroOneFour_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeZeroOneFive_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeZeroTwoThree_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeZeroTwoFive_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeZeroThreeFive_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeZeroFourFive_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeOneTwoThree_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeOneTwoFour_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeOneThreeFour_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeOneFourFive_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeTwoThreeFour_signedTreePolynomial
+#print axioms Gtz.kFourGapDet_treeTwoThreeFive_signedTreePolynomial
+#print axioms Gtz.det_finThree_of_symmetric
+#print axioms Gtz.posDef_finThree_iff_cornerBlockDet
+#print axioms Gtz.kFourEveryPointHasStrictTree_iff_someTreeLiftThreshold
+#print axioms Gtz.kFourKnifeBandRefined_iff_someTreeLiftThreshold
+#print axioms Gtz.directionChartGap_smul_mass
+#print axioms Gtz.posDef_directionChartGap_smul_mass_iff
+#print axioms Gtz.kFourScaledMassPoint
+#print axioms Gtz.posDef_kFourScaledMassPoint_iff
+#print axioms Gtz.detPositiveIndefiniteMass
+#print axioms Gtz.detPositiveIndefiniteWeight
+#print axioms Gtz.detPositiveIndefinitePoint
+#print axioms Gtz.detPositiveIndefinitePoint_treeOneTwoFive_gap
+#print axioms Gtz.detPositiveIndefinitePoint_treeZeroTwoFour_gap
+#print axioms Gtz.exists_kFourChartPoint_tree_positiveBlockAndDet_not_posDef
+#print axioms Gtz.detPositiveIndefinitePoint_hasStrictTree
+#print axioms Gtz.kFourEveryPointHasStrictTree_of_livePairCompletes
+#print axioms Gtz.kFourKnifeBandRefined_of_livePairCompletes
+#print axioms Gtz.bandResidualWitnessPoint_starGap
+#print axioms Gtz.bandResidualWitnessPoint_hasStrictTree
+#print axioms Gtz.bandResidualWitnessPoint_offBothCoveredRegions_hasStrictTree
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
