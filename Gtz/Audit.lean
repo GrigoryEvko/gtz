@@ -477,6 +477,7 @@ import Gtz.Design.ComplementHeavy
 import Gtz.Design.TightDoubleSwapObstructions
 import Gtz.Design.FreePairPlane
 import Gtz.Design.AxisBaseOffConic
+import Gtz.Design.PlaneBranchNormalForm
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17848,6 +17849,93 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.offDiagonalConic_ne_zero
 #print axioms Gtz.freeOffDiagonalGrid_det_ne_zero_of_hasNoCommonQuadric
 #print axioms Gtz.hasNoCommonQuadric_axisBaseAtom_iff_freeOffDiagonalGrid_det_ne_zero
+
+-- Design/PlaneBranchNormalForm, the plane branch stops being geometry and
+-- becomes a semialgebraic emptiness problem.  The normalizer is explicit and
+-- needs no square-root-free whitener: `planeBaseFrame` has rows
+-- `sqrt (1 - t_i) * a_i`, its frame operator is exactly the co-weighted base
+-- triple, line-freeness makes it invertible, and its inverse transports the
+-- WHOLE six-atom family -- not merely the frame operator -- onto the
+-- axis-aligned family.  Off-conicity survives any invertible map, and every
+-- subset test survives as an IFF, so nothing is lost in transport.  Under
+-- exactly the skeleton hypotheses the package `exists_planeBranch_axisNormalForm`
+-- produces a hidden vector satisfying a four-vector Parseval identity, the
+-- metric equation `diagonal (baseScale ^ 2) - hidden`, the one cubic, and
+-- test-equivalence.  Nine of the ten candidates then need only TWO signs, not
+-- three: the transported metric cancels against the retained base axis, and
+-- two distinct free atoms cannot both vanish in one coordinate when the cubic
+-- is nonzero, so the retained corner is strictly positive for free and
+-- Sylvester after an arbitrary coordinate permutation decides the rest.  The
+-- frontier is stated as an IFF on FAILURE:
+-- `not_planeBranchTenCandidate_iff_axisFailureWitness` exhibits an explicit
+-- semialgebraic set -- the Parseval equation, the metric equation, both
+-- determinant inequations, all nine two-sign refusals and the complement
+-- refusal -- whose EMPTINESS *is* the plane branch.  No geometric quantifier
+-- and no selection quantifier remain.  The complement candidate is the
+-- cleanest object in the system: Parseval cancels the hidden atom entirely,
+-- leaving the co-weighted free sum minus a diagonal.  Three general tools
+-- land with it and are reusable far beyond U(3,6): `posDef_submatrix_equiv_real`,
+-- `posDef_finThree_iff_reindexedLeadingMinors`, and Sylvester under an
+-- arbitrary permutation given a positive corner.
+#print axioms Gtz.baseThreeLabel
+#print axioms Gtz.baseThreeLabel_injective
+#print axioms Gtz.hasNoCommonQuadric_congrAtom
+#print axioms Gtz.posDef_congrAtom_sub_metric_iff
+#print axioms Gtz.planeBaseFrame
+#print axioms Gtz.planeBaseFrame_transpose_mul_self
+#print axioms Gtz.planeBaseFrame_det_isUnit
+#print axioms Gtz.planeBaseNormalizer
+#print axioms Gtz.planeBaseNormalizer_det_isUnit
+#print axioms Gtz.planeBaseNormalizer_baseAtom
+#print axioms Gtz.planeBaseScale
+#print axioms Gtz.planeNormalizedFreeAtom
+#print axioms Gtz.planeBaseScale_ne_zero
+#print axioms Gtz.planeBaseNormalizer_baseAtom_eq_smul_single
+#print axioms Gtz.planeBaseNormalizer_atom_eq_axisBaseAtom
+#print axioms Gtz.planeNormalizedFreeAtom_offDiagonalGrid_det_ne_zero
+#print axioms Gtz.planeNormalizedFreeAtom_tripleBracket_ne_zero
+#print axioms Gtz.planeNormalizedFreeFrame
+#print axioms Gtz.planeNormalizedFreeFrame_det_ne_zero
+#print axioms Gtz.planeBaseNormalizer_whitens
+#print axioms Gtz.axisBaseAtom_baseTripleSum
+#print axioms Gtz.planeBaseNormalizer_metric_eq_diagonal_sub_hidden
+#print axioms Gtz.exists_planeBranch_axisNormalForm
+#print axioms Gtz.planeAxisMetric
+#print axioms Gtz.planeAxisSubsetGap
+#print axioms Gtz.AxisPlaneTenCandidate
+#print axioms Gtz.planeAxisPenaltyExcept
+#print axioms Gtz.planeAxisDistanceTwoGap
+#print axioms Gtz.planeAxisComplementGap
+#print axioms Gtz.planeAxisComplementGap_eq_complementaryWeightedFree
+#print axioms Gtz.axisPlaneTenCandidate_iff_explicit
+#print axioms Gtz.not_both_freeAtom_coordinate_eq_zero_of_offDiagonalGrid_det_ne_zero
+#print axioms Gtz.planeAxisDistanceTwoGap_retained_corner_pos
+#print axioms Gtz.posDef_submatrix_equiv_real
+#print axioms Gtz.posDef_finThree_iff_reindexedLeadingMinors
+#print axioms Gtz.posDef_finThree_iff_two_reindexedMinors_of_corner_pos
+#print axioms Gtz.planeAxisDistanceTwoGap_transpose
+#print axioms Gtz.planeAxisDistanceTwoGap_posDef_iff_two_reindexedMinors
+#print axioms Gtz.planeAxisFrontEquiv
+#print axioms Gtz.planeAxisFrontEquiv_zero
+#print axioms Gtz.planeAxisDistanceTwoBlockMinor
+#print axioms Gtz.planeAxisDistanceTwoDetCriterion
+#print axioms Gtz.planeAxisDistanceTwoDetCriterion_eq_det
+#print axioms Gtz.planeAxisDistanceTwoGap_posDef_iff_blockMinor_and_det
+#print axioms Gtz.AxisPlanePolynomialCandidate
+#print axioms Gtz.axisPlaneTenCandidate_iff_polynomial
+#print axioms Gtz.planeAxisComplementCorner
+#print axioms Gtz.planeAxisComplementBlockMinor
+#print axioms Gtz.planeAxisComplementDetCriterion
+#print axioms Gtz.planeAxisComplementGap_transpose
+#print axioms Gtz.planeAxisComplementGap_posDef_iff_three_signs
+#print axioms Gtz.AxisPlanePolynomialFailure
+#print axioms Gtz.not_axisPlaneTenCandidate_iff_polynomialFailure
+#print axioms Gtz.posDef_gap_iff_planeAxisSubsetGap
+#print axioms Gtz.planeBranchTenCandidate_iff_axisPlaneTenCandidate
+#print axioms Gtz.PlaneBranchAxisSelector
+#print axioms Gtz.planeBranchTenCandidate_iff_axisSelector
+#print axioms Gtz.PlaneBranchAxisFailureWitness
+#print axioms Gtz.not_planeBranchTenCandidate_iff_axisFailureWitness
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
