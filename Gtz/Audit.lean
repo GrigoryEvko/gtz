@@ -457,6 +457,7 @@ import Gtz.Design.SphereExistence
 import Gtz.Design.DepthCapAxisParseval
 import Gtz.Design.LivePairExistence
 import Gtz.Design.ComplementFrame
+import Gtz.Design.ResidualLeverageLedger
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -16637,6 +16638,36 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.baseResidual_selectiveAxisDesign_longAxes
 #print axioms Gtz.inv_smul_one_of_ne_zero
 #print axioms Gtz.weight_mul_inverseMetricPairing_selectiveAxisDesign_shortAxis
+
+-- Design/ResidualLeverageLedger, what survives when the complement is LARGER
+-- than the rank -- the case `ComplementFrame` cannot reach, and the one (7,3)
+-- needs.  Orthonormality is then false, but a ledger is not:
+-- `sum_residualLeverage_eq_rank` says the subset's own residual leverages total
+-- exactly the rank, with NO bound on the subset size, and
+-- `residualLeverage_le_one` caps each one -- the Loewner fact that
+-- `R - t_c g_c g_cᵀ` is positive semidefinite, spelled entirely in scalars.
+-- Exactly-determined subsets recover `ComplementFrame`'s diagonal half with no
+-- factorisation; over-complete ones get a pigeonhole share instead.
+#print axioms Gtz.weightedSubsetMass
+#print axioms Gtz.weightedSubsetMass_univ
+#print axioms Gtz.weightedSubsetMass_compl_eq_one_sub
+#print axioms Gtz.dotProduct_weightedSubsetMass_mulVec
+#print axioms Gtz.dotProduct_weightedSubsetMass_mulVec_nonneg
+#print axioms Gtz.trace_mul_weightedSubsetMass
+#print axioms Gtz.residualLeverage
+#print axioms Gtz.sum_residualLeverage_eq_rank
+#print axioms Gtz.weightedSubsetMass_mulVec_inv_mulVec
+#print axioms Gtz.dotProduct_inv_weightedSubsetMass_mulVec_nonneg
+#print axioms Gtz.residualLeverage_nonneg
+#print axioms Gtz.le_one_of_mul_sq_le_self
+#print axioms Gtz.residualLeverage_le_one
+#print axioms Gtz.residualLeverage_eq_one_of_card_eq_rank
+#print axioms Gtz.exists_residualLeverage_card_mul_ge
+#print axioms Gtz.isUnit_det_weightedSubsetMass_univ
+#print axioms Gtz.residualLeverage_univ_eq_atomShare
+#print axioms Gtz.sum_atomShare_eq_rank_ofResidualLedger
+#print axioms Gtz.exists_residualLeverage_ge_three_quarters_sevenThree
+#print axioms Gtz.residualLeverage_le_one_sevenThree
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
