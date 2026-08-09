@@ -472,6 +472,7 @@ import Gtz.Design.OrthogonalConicAndTwinRefutation
 import Gtz.Design.LiftCriterion
 import Gtz.Design.CrossAxisAtlas
 import Gtz.Design.OneLineLiftCertificate
+import Gtz.Design.UThreeSixStratumWitness
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17593,6 +17594,123 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.oneLineFailure_shadowPairing_mixedPair_corner
 #print axioms Gtz.oneLineFailure_liftMargin_mixedPair_eq
 #print axioms Gtz.oneLineFailure_mixedTripleGap_posDef_of_liftMargin
+
+-- Design/UThreeSixStratumWitness, the U(3,6) axiom's antecedent is inhabited,
+-- and its tight space splits in two.  Three exact rational designs are built
+-- and certified against every leg of the antecedent -- Parseval, heaviness,
+-- the line-free bracket condition, off-conicity, and a base triple whose gap
+-- is positive semidefinite and singular -- so the axiom is not vacuously
+-- about an empty stratum.  Off-conicity is discharged by elimination rather
+-- than by a six-by-six Veronese determinant: the six quadric equations are
+-- linear in the six entries of the symmetric form, so a nonsingular system
+-- closes each entry by linear arithmetic.  The rank split: the tight space of
+-- a dominating subset is a subspace, so it is either a single line or it
+-- contains, for every prescribed vector, a nonzero tight direction orthogonal
+-- to it -- a dichotomy proved at any rank and any subset with no dimension
+-- theory and no Matrix.rank, and in the plane branch a tight direction can be
+-- chosen FLAT against any atom one names, which is exactly the hypothesis
+-- shape the lift criterion's collapse wants.  BOTH branches are witnessed: a
+-- line-branch design of tight rank two and a plane-branch design whose base
+-- gap is rank one, so the whole plane is tight.  A correction lands with them:
+-- the scalar balance relaxation FAILS at both, by a factor of two, while the
+-- sharp Loewner form fires -- so the scalar test is strictly weaker on the
+-- live stratum, and a third design is built where it does fire, showing that
+-- branch thin but not empty.  At the tight direction the criterion is exact
+-- and discriminating, certifying one strict triple and refuting another; and
+-- the base triple's own margin is exactly zero for a structural reason
+-- isolated here -- a flat pair plus a third atom that IS the normal forces
+-- margin zero for every shadow Gram, so an exact zero does NOT signal a tie.
+#print axioms Gtz.uThreeSixStratumAtom
+#print axioms Gtz.uThreeSixStratumWeight
+#print axioms Gtz.uThreeSixStratumDesign
+#print axioms Gtz.uThreeSixStratumDesign_hasLinePattern
+#print axioms Gtz.uThreeSixStratumDesign_hasNoCommonQuadric
+#print axioms Gtz.uThreeSixStratumDesign_baseTripleGap_eq
+#print axioms Gtz.uThreeSixStratumDesign_baseTripleGap_form
+#print axioms Gtz.uThreeSixStratumDesign_dominates_baseTriple
+#print axioms Gtz.uThreeSixStratumTightDirection
+#print axioms Gtz.uThreeSixStratumTightDirection_ne_zero
+#print axioms Gtz.uThreeSixStratumTightDirection_dotProduct_self
+#print axioms Gtz.uThreeSixStratumDesign_tightDirection_isTight
+#print axioms Gtz.uThreeSixStratumDesign_not_posDef_baseTripleGap
+#print axioms Gtz.uThreeSixStratumDesign_one_le_leverage
+#print axioms Gtz.uThreeSixStratumDesign_meetsBaseTripleTightAntecedent
+#print axioms Gtz.uThreeSixStratumDesign_complementTripleMaxWeight_eq
+#print axioms Gtz.uThreeSixStratumDesign_baseResidual_form
+#print axioms Gtz.uThreeSixStratumShiftedResidual
+#print axioms Gtz.uThreeSixStratumShiftedResidual_posDef
+#print axioms Gtz.uThreeSixStratumShiftedResidual_form
+#print axioms Gtz.uThreeSixStratumDesign_residualExceedsMaxWeight
+#print axioms Gtz.uThreeSixStratumDesign_posDef_complementTripleGap
+#print axioms Gtz.uThreeSixStratumDesign_baseTripleShare_eq
+#print axioms Gtz.uThreeSixStratumDesign_scalarBalanceTest_fails
+#print axioms Gtz.uThreeSixStratumDesign_hasStrictDominator
+#print axioms Gtz.uThreeSixStratumDesign_not_isTie
+#print axioms Gtz.IsTightDirectionOf
+#print axioms Gtz.isTightDirectionOf_iff_mulVec_eq_zero
+#print axioms Gtz.isTightDirectionOf_add_smul
+#print axioms Gtz.HasTightLineAt
+#print axioms Gtz.HasFreeTightDirection
+#print axioms Gtz.hasFreeTightDirection_of_nonparallel
+#print axioms Gtz.hasTightLineAt_or_hasFreeTightDirection
+#print axioms Gtz.exists_not_isTightDirectionOf_of_gap_ne_zero
+#print axioms Gtz.uThreeSix_baseTripleTightSpace_dichotomy
+#print axioms Gtz.uThreeSixStratumDesign_hasTightLineAt
+#print axioms Gtz.hasFreeTightDirection_of_gap_eq_lastAxisAtom
+#print axioms Gtz.exists_flat_tightDirection_at_label
+#print axioms Gtz.planeBranchAtom
+#print axioms Gtz.planeBranchWeight
+#print axioms Gtz.planeBranchDesign
+#print axioms Gtz.planeBranchDesign_hasLinePattern
+#print axioms Gtz.planeBranchDesign_hasNoCommonQuadric
+#print axioms Gtz.planeBranchDesign_baseTripleGap_eq
+#print axioms Gtz.planeBranchDesign_dominates_baseTriple
+#print axioms Gtz.planeBranchTightDirection
+#print axioms Gtz.planeBranchTightDirection_ne_zero
+#print axioms Gtz.planeBranchDesign_tightDirection_isTight
+#print axioms Gtz.planeBranchDesign_not_posDef_baseTripleGap
+#print axioms Gtz.planeBranchDesign_one_le_leverage
+#print axioms Gtz.planeBranchDesign_hasFreeTightDirection
+#print axioms Gtz.planeBranchDesign_baseTriple_not_orthogonal
+#print axioms Gtz.planeBranchDesign_meetsBaseTripleTightAntecedent
+#print axioms Gtz.planeBranchDesign_complementTripleMaxWeight_eq
+#print axioms Gtz.planeBranchDesign_baseResidual_form
+#print axioms Gtz.planeBranchShiftedResidual
+#print axioms Gtz.planeBranchShiftedResidual_posDef
+#print axioms Gtz.planeBranchShiftedResidual_form
+#print axioms Gtz.planeBranchDesign_residualExceedsMaxWeight
+#print axioms Gtz.planeBranchDesign_posDef_complementTripleGap
+#print axioms Gtz.planeBranchDesign_baseTripleShare_eq
+#print axioms Gtz.planeBranchDesign_scalarBalanceTest_fails
+#print axioms Gtz.planeBranchDesign_not_isTie
+#print axioms Gtz.uThreeSix_bothTightSpaceBranches_inhabited
+#print axioms Gtz.liftMarginOf_eq_zero_of_flatPair_of_normalThird
+#print axioms Gtz.uThreeSixStratumDesign_shadowPairing_basePair
+#print axioms Gtz.uThreeSixStratumDesign_shadowGapDeterminant_basePair
+#print axioms Gtz.uThreeSixStratumDesign_shadowCorner_basePair_pos
+#print axioms Gtz.uThreeSixStratumDesign_liftMargin_baseTriple_eq_zero
+#print axioms Gtz.uThreeSixStratumDesign_liftMargin_zeroOneFive_eq
+#print axioms Gtz.uThreeSixStratumDesign_posDef_zeroOneFiveGap
+#print axioms Gtz.uThreeSixStratumDesign_liftMargin_zeroOneFour_eq
+#print axioms Gtz.uThreeSixStratumDesign_not_posDef_zeroOneFourGap
+#print axioms Gtz.uThreeSixStratumDesign_criterion_rejects_baseTriple
+#print axioms Gtz.scalarBranchAtom
+#print axioms Gtz.scalarBranchWeight
+#print axioms Gtz.scalarBranchDesign
+#print axioms Gtz.scalarBranchDesign_hasLinePattern
+#print axioms Gtz.scalarBranchDesign_hasNoCommonQuadric
+#print axioms Gtz.scalarBranchDesign_baseTripleGap_form
+#print axioms Gtz.scalarBranchDesign_dominates_baseTriple
+#print axioms Gtz.scalarBranchDesign_tightDirection_isTight
+#print axioms Gtz.scalarBranchDesign_not_posDef_baseTripleGap
+#print axioms Gtz.scalarBranchDesign_one_le_leverage
+#print axioms Gtz.scalarBranchDesign_complementTripleMaxWeight_eq
+#print axioms Gtz.scalarBranchDesign_baseTripleShare_eq
+#print axioms Gtz.scalarBranchDesign_scalarBalanceTest_holds
+#print axioms Gtz.scalarBranchDesign_posDef_complementTripleGap
+#print axioms Gtz.scalarBranchDesign_not_isTie
+#print axioms Gtz.scalarBranchDesign_meetsBaseTripleTightAntecedent
+#print axioms Gtz.scalarBalanceTest_strictlyWeaker_and_inhabited
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
