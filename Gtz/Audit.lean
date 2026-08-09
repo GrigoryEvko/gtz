@@ -466,6 +466,7 @@ import Gtz.Design.UThreeSixDisjunction
 import Gtz.Design.ChartlessKill
 import Gtz.Design.KFourBandAtlas
 import Gtz.Design.ThreeLinesAtlas
+import Gtz.Design.NormalSchurClosure
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17258,6 +17259,55 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.HasPositiveThreeLinesMinors
 #print axioms Gtz.posDef_directionChartGap_iff_hasPositiveThreeLinesMinors
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomain_iff_minorSigns
+
+-- Design/NormalSchurClosure, the line-stratum residual as one Schur
+-- complement.  The whole Lagrange apparatus collapses: applying the weighted
+-- Lagrange identity and Parseval at the probe cancels the free readings
+-- between the excess and the surplus-drag product, and what is left is the
+-- SCHUR COMPLEMENT of the gap at the normal -- every weight and every line
+-- atom gone.  So positive definiteness of a symmetric matrix is, at any
+-- nonzero normal, positivity along the normal together with a strict
+-- Cauchy-Schwarz inequality on the orthogonal plane; on either stratum the
+-- normal leg is free from the landed over-cover, leaving ONE inequality.  That
+-- closes the branch the plane-cover anatomy had named as open: three vanishing
+-- minors would force the mixed Parseval budget to blind all three free atoms
+-- to a nonzero probe, making them coplanar, which the pattern forbids -- so
+-- the branch is EMPTY and the readings are never proportional.  The residual
+-- is also given as one explicit matrix that annihilates the normal and whose
+-- form IS the Schur discriminant, so leading minors decide it.  The polarised
+-- subset-sum and gap forms, absent from the tree, are supplied here.
+#print axioms Gtz.dotProduct_mulVec_swap_of_transpose_eq
+#print axioms Gtz.dotProduct_mulVec_expand_along_normal
+#print axioms Gtz.shiftedPlaneProbe_ne_zero
+#print axioms Gtz.exists_planeSplit_of_ne_zero
+#print axioms Gtz.posDef_iff_normalSchur
+#print axioms Gtz.dotProduct_subsetSum_mulVec_pair
+#print axioms Gtz.dominationGap_form_pair
+#print axioms Gtz.posDef_subsetSum_sub_one_iff_normalSchur
+#print axioms Gtz.not_all_blind_of_tripleBracket_ne_zero
+#print axioms Gtz.atom_normal_dot_ne_zero_of_atomBracket_ne_zero
+#print axioms Gtz.mixedParseval_on_complement
+#print axioms Gtz.normalParseval_on_flatComplement
+#print axioms Gtz.sum_tripleLabels_eq
+#print axioms Gtz.strict_cauchySchwarz_readings_of_flatComplement
+#print axioms Gtz.flatLineComplement_posDef_iff_planeSchur
+#print axioms Gtz.oneLine_freeTriple_posDef_iff_planeSchur
+#print axioms Gtz.twoMeetingLines_firstComplement_posDef_iff_planeSchur
+#print axioms Gtz.twoMeetingLines_secondComplement_posDef_iff_planeSchur
+#print axioms Gtz.oneLine_strict_cauchySchwarz_freeReadings
+#print axioms Gtz.twoMeetingLines_firstStrictCauchySchwarz
+#print axioms Gtz.twoMeetingLines_secondStrictCauchySchwarz
+#print axioms Gtz.normalSchurResidual
+#print axioms Gtz.transpose_normalSchurResidual
+#print axioms Gtz.normalSchurResidual_mulVec_normal_eq_zero
+#print axioms Gtz.dotProduct_normalSchurResidual_mulVec
+#print axioms Gtz.dotProduct_normalSchurResidual_mulVec_normal
+#print axioms Gtz.posDef_iff_posDef_normalSchurResidual_add_normalSquare
+#print axioms Gtz.posDef_subsetSum_sub_one_iff_residualMatrix
+#print axioms Gtz.verticalDirection_ne_zero
+#print axioms Gtz.oneLineSample_lineAtoms_orthogonal_to_vertical
+#print axioms Gtz.oneLineSample_planeSchur_holds
+#print axioms Gtz.oneLineSample_strict_cauchySchwarz
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
