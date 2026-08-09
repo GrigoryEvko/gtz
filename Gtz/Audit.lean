@@ -452,6 +452,7 @@ import Gtz.Design.SplitTetraSurplusBarrier
 import Gtz.Design.ThreeLinesTriangleCell
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
+import Gtz.Design.SphereDichotomy
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -16420,6 +16421,42 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.heavyPairRefuterPoint_exchangeStarCellFires
 #print axioms Gtz.bandResidualWitnessPoint_notLayerACellFires
 #print axioms Gtz.bandResidualWitnessPoint_notExchangeStarCellFires
+
+-- Design/SphereDichotomy, the dictionary between the two shadow lanes.  The
+-- stratum lane speaks in `tripleBracket`, the axis lane in
+-- `crossProduct _ _ ⬝ᵥ axis`, and nothing related them, so a consumer holding
+-- line-pattern hypotheses could not reach the shipped plane-strict pair at all.
+-- `tripleBracket_eq_crossProduct_dotProduct` is that bridge, and
+-- `inPlaneRestriction_eq_planarCompressionDesign` collapses the duplicate
+-- definition the two lanes had each landed under its own name.  The dichotomy
+-- proper is an IFF: an in-plane pair bracket vanishes EXACTLY on the plane
+-- spanned by the two atoms, the sign being a frame orientation whose square is
+-- one.  Non-vacuity: the tetrahedron is a tie in three-space whose shadow in a
+-- generic plane is NOT a tie, so the rank drop buys strictness.
+#print axioms Gtz.tripleBracket_eq_crossProduct_dotProduct
+#print axioms Gtz.inPlaneRestriction_eq_planarCompressionDesign
+#print axioms Gtz.frameOrientation
+#print axioms Gtz.frameOrientation_sq_eq_one
+#print axioms Gtz.frameOrientation_ne_zero
+#print axioms Gtz.frameOrientation_eq_one_or_eq_neg_one
+#print axioms Gtz.pairBracket_inPlaneRestriction_eq_frameOrientation_mul_tripleBracket
+#print axioms Gtz.pairBracket_inPlaneRestriction_eq_zero_iff_tripleBracket_eq_zero
+#print axioms Gtz.unitPairGram_inPlaneRestriction_ne_one_of_tripleBracket_ne_zero
+#print axioms Gtz.exists_strictlyDominatingPair_inPlaneRestriction_of_sixTripleBrackets
+#print axioms Gtz.exists_inPlane_strictlyDominatingPair_of_sixTripleBrackets
+#print axioms Gtz.tetraGenericBasisFirst
+#print axioms Gtz.tetraGenericBasisSecond
+#print axioms Gtz.tetraGenericNormal
+#print axioms Gtz.tetraGenericBasisFirst_unit
+#print axioms Gtz.tetraGenericBasisSecond_unit
+#print axioms Gtz.tetraGenericBasis_orth
+#print axioms Gtz.tetraGenericNormal_unit
+#print axioms Gtz.tetraGenericBasisFirst_orth_normal
+#print axioms Gtz.tetraGenericBasisSecond_orth_normal
+#print axioms Gtz.tetraGenericNormal_tripleBracket_ne_zero
+#print axioms Gtz.tetraShadow_exists_strictlyDominatingPair
+#print axioms Gtz.tetraDesign_isTie_and_not_isTie_tetraShadow
+#print axioms Gtz.tetraShadow_exists_planeStrictPair
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
