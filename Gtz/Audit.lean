@@ -456,6 +456,7 @@ import Gtz.Design.SphereDichotomy
 import Gtz.Design.SphereExistence
 import Gtz.Design.DepthCapAxisParseval
 import Gtz.Design.LivePairExistence
+import Gtz.Design.ComplementFrame
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -16587,6 +16588,55 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.dominates_of_livePair
 #print axioms Gtz.exists_livePair_determinantOnly
 #print axioms Gtz.tetraDesign_exists_livePair
+
+-- Design/ComplementFrame, the rigidity of a rank-sized complement.  When a base
+-- subset and its complement partition the labels with the complement exactly
+-- rank-sized, Parseval makes the base residual `1 - Σ_base t g gᵀ` equal the
+-- complement's own weighted mass, that mass factors as `F Fᵀ`, and
+-- `Fᵀ R⁻¹ F = 1` follows in four rewrites -- so the complement atoms are
+-- ORTHONORMAL in the residual metric, `t_c ⟨g_c, R⁻¹ g_c⟩ = 1` and the cross
+-- terms vanish.  No matrix square root is used anywhere.  The degenerate edge
+-- is an IFF, and at rank three it reads off a triple bracket: the residual is
+-- singular exactly when the complement is coplanar.
+#print axioms Gtz.isUnit_det_of_mul_transpose_eq
+#print axioms Gtz.transpose_mul_inv_mul_eq_one_of_mul_transpose_eq
+#print axioms Gtz.atomColumnsOfPick
+#print axioms Gtz.col_atomColumnsOfPick
+#print axioms Gtz.weightedFrameOfPick
+#print axioms Gtz.weightedFrameOfPick_mul_transpose
+#print axioms Gtz.weightedFrameOfPick_conjugate_apply
+#print axioms Gtz.weightedFrameOfPick_eq_atomColumnsOfPick_mul_diagonal
+#print axioms Gtz.det_weightedFrameOfPick
+#print axioms Gtz.sq_prod_sqrt_weight_eq_prod_weight
+#print axioms Gtz.dotProduct_pickSum_mulVec
+#print axioms Gtz.IsInverseMetricOrthonormalOn
+#print axioms Gtz.weight_mul_inverseMetricPairing_eq_one_of_pickSum
+#print axioms Gtz.inverseMetricPairing_eq_zero_of_pickSum
+#print axioms Gtz.baseResidual
+#print axioms Gtz.baseResidual_eq_complementSum
+#print axioms Gtz.sum_compl_eq_sum_over_pick
+#print axioms Gtz.baseResidual_eq_pickSum
+#print axioms Gtz.image_eq_compl_of_injective_of_card
+#print axioms Gtz.complementFrame_of_baseSet
+#print axioms Gtz.complementFrame_of_disjointPick
+#print axioms Gtz.complementFrame_of_card
+#print axioms Gtz.complementFrame_sixThree
+#print axioms Gtz.dotProduct_inv_baseResidual_eq_sum_sq_of_pick
+#print axioms Gtz.posSemidef_pickSum
+#print axioms Gtz.det_pickSum_eq_prod_weight_mul_det_sq
+#print axioms Gtz.linearIndependent_pick_iff_det_atomColumnsOfPick_ne_zero
+#print axioms Gtz.posDef_pickSum_iff_det_atomColumnsOfPick_ne_zero
+#print axioms Gtz.posDef_baseResidual_iff_linearIndependent
+#print axioms Gtz.det_atomColumnsOfPick_eq_tripleBracket
+#print axioms Gtz.posDef_baseResidual_iff_tripleBracket_ne_zero
+#print axioms Gtz.not_posDef_baseResidual_of_spannedByPair
+#print axioms Gtz.posDef_baseResidual_iff_tripleBracket_ne_zero_of_disjointPick
+#print axioms Gtz.atomColumnsOfPick_selectiveAxisDesign_shortAxes
+#print axioms Gtz.posDef_baseResidual_selectiveAxisDesign_longAxes
+#print axioms Gtz.complementFrame_selectiveAxisDesign_longAxes
+#print axioms Gtz.baseResidual_selectiveAxisDesign_longAxes
+#print axioms Gtz.inv_smul_one_of_ne_zero
+#print axioms Gtz.weight_mul_inverseMetricPairing_selectiveAxisDesign_shortAxis
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
