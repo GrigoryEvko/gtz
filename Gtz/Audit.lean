@@ -479,6 +479,7 @@ import Gtz.Design.FreePairPlane
 import Gtz.Design.AxisBaseOffConic
 import Gtz.Design.PlaneBranchNormalForm
 import Gtz.Design.PlaneBranchUnitAxisNormalForm
+import Gtz.Design.PlaneBranchWindowBridge
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17972,6 +17973,66 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.planeBranchTenCandidate_iff_unitAxisTenCandidate
 #print axioms Gtz.UnitAxisPlaneFailureWitness
 #print axioms Gtz.not_planeBranchTenCandidate_iff_unitAxisFailureWitness
+
+-- Design/PlaneBranchWindowBridge, the plane branch always has a strictly
+-- dominating FOUR-label window.  In unit-axis coordinates Parseval reads
+-- `hidden + sum_l u_l f_l f_l^T = diagonal (1 - b_i)`, so the weighted free
+-- frame is `diagonal (1 - b) - hidden` and its positive definiteness -- which
+-- needs only positive free weights and an invertible free frame -- forces the
+-- hidden atom to carry strictly less than unit mass in the diagonal metric,
+-- with NO matrix inverse introduced anywhere.  That single scalar inequality
+-- then splits three ways: the three retained-axis rank-one masses average to
+-- the hidden mass with weights `b_i / (b_0+b_1+b_2)`, so some retained axis
+-- has mass below one, and for that axis the window `complement + e_r e_r^T`
+-- decomposes EXACTLY as a positive rank-one lower comparison plus a positive
+-- free-frame slack.  The conclusion transports back through the unit-axis
+-- subset-gap equivalence, so the winning window is an honest four-label
+-- subset of the original design and not merely a normal-form matrix.  This is
+-- a card-FOUR statement: it does not by itself decide the ten card-three
+-- candidates, and it is the first stage the rank-one census pointed at.
+#print axioms Gtz.unitAxisFreeWeightedFrame
+#print axioms Gtz.unitAxisCofreeFrame
+#print axioms Gtz.unitAxisWeightedComplementGap
+#print axioms Gtz.unitAxisFourWindowGap
+#print axioms Gtz.unitAxisBaseMass
+#print axioms Gtz.unitAxisBaseWeight
+#print axioms Gtz.unitAxisFreeWeight
+#print axioms Gtz.freeAtomRowFrame
+#print axioms Gtz.unitAxisHiddenMass
+#print axioms Gtz.unitAxisWindowRankOneMass
+#print axioms Gtz.unitAxisWindowDiagonal
+#print axioms Gtz.unitAxisWindowLowerGap
+#print axioms Gtz.unitAxisWindowSlackWeight
+#print axioms Gtz.unitAxisWindowSlackFrame
+#print axioms Gtz.planeBranchFourWindow
+#print axioms Gtz.unitAxisFreeWeightedFrame_transpose
+#print axioms Gtz.unitAxisCofreeFrame_transpose
+#print axioms Gtz.unitAxisWeightedComplementGap_transpose
+#print axioms Gtz.unitAxisFourWindowGap_transpose
+#print axioms Gtz.unitAxisFreeWeightedFrame_eq_congruence
+#print axioms Gtz.unitAxisFreeWeightedFrame_posDef
+#print axioms Gtz.freeAtomRowFrame_unitAxisFreeAtom
+#print axioms Gtz.unitAxisHiddenMass_lt_one
+#print axioms Gtz.unitAxisWindowRankOneMass_weighted_average
+#print axioms Gtz.exists_unitAxisWindowRankOneMass_lt_one
+#print axioms Gtz.posDef_diagonal_sub_of_sum_diag_div_lt_one
+#print axioms Gtz.unitAxisWindowDiagonal_pos
+#print axioms Gtz.unitAxisWindowResidualMass_eq
+#print axioms Gtz.unitAxisWindowLowerGap_posDef
+#print axioms Gtz.unitAxisWindowSlackWeight_pos
+#print axioms Gtz.unitAxisWindowSlackFrame_posDef
+#print axioms Gtz.unitAxisWindowDiagonal_matrix_eq
+#print axioms Gtz.unitAxisWindowLowerGap_eq_scaledFree
+#print axioms Gtz.unitAxisScaledFree_add_slack_eq_cofree
+#print axioms Gtz.unitAxisFourWindowGap_eq_lower_add_slack
+#print axioms Gtz.planeAxisComplementGap_one_eq_unitAxisWeightedComplementGap
+#print axioms Gtz.planeAxisSubsetGap_fourWindow_eq_complement_add_coordinate
+#print axioms Gtz.planeAxisSubsetGap_fourWindow_eq_unitAxisFourWindowGap
+#print axioms Gtz.exists_unitAxisFourWindowGap_posDef
+#print axioms Gtz.unitAxis_weight_split
+#print axioms Gtz.exists_posDef_unitAxisFourWindow_of_planeBranch
+#print axioms Gtz.planeBranchFourWindow_card
+#print axioms Gtz.exists_posDef_fourWindow_of_planeBranch
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
