@@ -470,6 +470,7 @@ import Gtz.Design.NormalSchurClosure
 import Gtz.Design.OneLineCanonicalTripleRefutation
 import Gtz.Design.OrthogonalConicAndTwinRefutation
 import Gtz.Design.LiftCriterion
+import Gtz.Design.CrossAxisAtlas
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17488,6 +17489,59 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.shadowGap_pos_of_posDef_tripleGap_of_flatThird
 #print axioms Gtz.exists_unitNormal_parallel_of_ne_zero
 #print axioms Gtz.exists_pos_liftMargin_of_posDef_tripleGap
+
+-- Design/CrossAxisAtlas, the complete atlas of directions, and the fourth
+-- barrier.  A pair's own cross axis is the one direction at which BOTH lift
+-- criterion guards come for free: both readings vanish there, so the shadow
+-- corner is the pair's gap excess and the shadow gap determinant is its pair
+-- gap excess -- the three conjuncts of Gtz.IsLivePair, nothing to discharge.
+-- At that axis the margin has a denominator-free closed form, pairGapExcessOf
+-- times the triple gap determinant, both square roots of the normalisation
+-- cancelling because the third reading enters only squared.  Consequences:
+-- strict domination by an ordered triple IS liveness of its leading pair plus
+-- a positive margin at that pair's own unit cross axis, the direction
+-- quantifier disappears entirely, and completeness becomes CONSTRUCTIVE --
+-- the normal is named rather than asserted, and the undischarged atom-nonzero
+-- side hypothesis of Design/LiftCriterion's coverage theorem is gone.  The
+-- barrier: the gap determinant IS the tie leg, so the closed form reads
+-- pairGapExcessOf times discriminantTie with a positive factor, and the
+-- cross-axis atlas is therefore the SAME predicate as the landed
+-- Gtz.HasLivePairPositiveTie.  Evaluated at the atlas that sees every strict
+-- triple, the lift criterion reproduces exactly the one determinant sign that
+-- Design/OneDeterminantReduction already isolates -- so the atlas is a change
+-- of coordinates, not new leverage, and cross-axis enumeration is closed as a
+-- lane.  Calibration is the tetrahedron, whose margin is exactly zero at every
+-- cross axis of every pair.
+#print axioms Gtz.unitCrossAxis
+#print axioms Gtz.pos_crossAxisBudget_of_isLivePair
+#print axioms Gtz.sq_sqrt_crossAxisBudget_of_isLivePair
+#print axioms Gtz.unitCrossAxis_dotProduct_self
+#print axioms Gtz.normalReading_unitCrossAxis
+#print axioms Gtz.normalReading_unitCrossAxis_pairFirst
+#print axioms Gtz.normalReading_unitCrossAxis_pairSecond
+#print axioms Gtz.crossAxisBudget_mul_normalReading_unitCrossAxis_sq
+#print axioms Gtz.shadowPairing_self_eq_leverageOf_sub_normalReading_sq
+#print axioms Gtz.shadowPairing_unitCrossAxis_pairFirst_self
+#print axioms Gtz.shadowPairing_unitCrossAxis_pairSecond_self
+#print axioms Gtz.shadowPairing_unitCrossAxis_pairFirst_probe
+#print axioms Gtz.shadowPairing_unitCrossAxis_pairSecond_probe
+#print axioms Gtz.shadowGapDeterminant_unitCrossAxis_eq_pairGapExcessOf
+#print axioms Gtz.tripleBracket_sq_eq_gramCombination
+#print axioms Gtz.det_tripleGapMatrix_eq_atomBracket_sq_sub
+#print axioms Gtz.liftMargin_unitCrossAxis_eq_pairGapExcessOf_mul_det
+#print axioms Gtz.isLivePair_of_posDef_tripleGap
+#print axioms Gtz.posDef_tripleGap_iff_pos_liftMargin_unitCrossAxis
+#print axioms Gtz.posDef_tripleGap_iff_isLivePair_and_pos_liftMargin_unitCrossAxis
+#print axioms Gtz.pos_liftMargin_unitCrossAxis_of_posDef_tripleGap
+#print axioms Gtz.exists_posDef_cardThree_of_crossAxisWitness
+#print axioms Gtz.exists_posDef_cardThree_iff_exists_crossAxisWitness
+#print axioms Gtz.pos_liftMargin_unitCrossAxis_iff_pos_det
+#print axioms Gtz.liftMargin_unitCrossAxis_eq_pairGapExcessOf_mul_discriminantTie
+#print axioms Gtz.hasLivePairPositiveTie_iff_exists_crossAxisWitness
+#print axioms Gtz.liftMargin_unitCrossAxis_eq_zero_iff_det_eq_zero
+#print axioms Gtz.tetraDesign_det_tripleGapMatrix_eq_zero
+#print axioms Gtz.tetraDesign_liftMargin_unitCrossAxis_eq_zero
+#print axioms Gtz.tetraDesign_not_posDef_tripleGap_via_crossAxis
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
