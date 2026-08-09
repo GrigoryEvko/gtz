@@ -455,6 +455,7 @@ import Gtz.Design.KFourChartClosure
 import Gtz.Design.SphereDichotomy
 import Gtz.Design.SphereExistence
 import Gtz.Design.DepthCapAxisParseval
+import Gtz.Design.LivePairExistence
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -16546,6 +16547,46 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.tetraDesign_sum_offPair_weight_mul_atomBracket_sq
 #print axioms Gtz.tetraDesign_depthForm_eq_capacity
 #print axioms Gtz.tetraDesign_isTie_and_pos_gapForm_pair
+
+-- Design/LivePairExistence, the theorem that discharges the live-pair
+-- hypothesis: EVERY weighted design of rank at least three carries two labels
+-- with positive gap excess at each and positive pair gap excess between them.
+-- No heaviness, no primitivity, no tightness, no bound on the atom count.  The
+-- proof is a three-law ledger -- heavy mass totals `rank - 1`, the row law caps
+-- each share gap by a quarter, and the share sum caps the gap total by the rank
+-- -- whose ceiling `total^2 - total/4 ≤ rank` contradicts `total ≥ rank - 1`.
+-- The payoff at rank three: a live pair is a positive corner plus a positive
+-- leading two-by-two minor of `tripleGapMatrix`, so Sylvester collapses to its
+-- determinant and `exists_livePair_determinantOnly` decides strict domination
+-- of any completing triple by ONE sign, for every design, hypothesis-free.
+#print axioms Gtz.heavyMassOf
+#print axioms Gtz.heavyMassOf_eq_atomShare_sub_weight
+#print axioms Gtz.sum_heavyMassOf_eq_rank_sub_one
+#print axioms Gtz.sum_erase_weightPair_mul_sq_gapPairing
+#print axioms Gtz.atomShare_nonneg_ofAnyRank
+#print axioms Gtz.atomShare_gap_nonneg
+#print axioms Gtz.atomShare_le_one_ofAnyRank
+#print axioms Gtz.atomShare_gap_le_quarter
+#print axioms Gtz.heavyMassOf_lt_one
+#print axioms Gtz.heavySet
+#print axioms Gtz.mem_heavySet_iff
+#print axioms Gtz.heavyMassOf_pos_of_mem_heavySet
+#print axioms Gtz.heavyMassOf_nonpos_of_notMem_heavySet
+#print axioms Gtz.rank_sub_one_le_sum_heavyMassOf_heavySet
+#print axioms Gtz.three_le_card_heavySet
+#print axioms Gtz.heavyMassOf_mul_sub_le_atomShare_gap
+#print axioms Gtz.heavyMassOf_lt_quarter_of_noLivePair
+#print axioms Gtz.sum_sq_heavyMassOf_le_quarter_mul
+#print axioms Gtz.sum_atomShare_gap_heavySet_le_rank
+#print axioms Gtz.sum_mul_total_sub_self
+#print axioms Gtz.false_of_heavyLedger_ceiling
+#print axioms Gtz.exists_pos_pairGapExcessOf
+#print axioms Gtz.exists_livePair_rankThree
+#print axioms Gtz.posDef_tripleGapMatrix_of_livePair
+#print axioms Gtz.posDef_subsetSum_sub_one_of_livePair
+#print axioms Gtz.dominates_of_livePair
+#print axioms Gtz.exists_livePair_determinantOnly
+#print axioms Gtz.tetraDesign_exists_livePair
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
