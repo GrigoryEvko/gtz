@@ -462,6 +462,7 @@ import Gtz.Design.FirstTouch
 import Gtz.Design.FourThreeRigidity
 import Gtz.Design.UnevenFourThreeTie
 import Gtz.Design.OneDeterminantReduction
+import Gtz.Design.UThreeSixDisjunction
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -16902,6 +16903,83 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.not_hasLivePairPositiveTie_tetraDesign
 #print axioms Gtz.tetraDesign_hasLivePair_and_not_positiveTie
 #print axioms Gtz.exists_design_of_bandResidualWitnessPoint
+
+-- Design/UThreeSixDisjunction, the balance-side disjunction for the U(3,6)
+-- base triple.  The base residual finally gets its QUADRATIC FORM reading (the
+-- landed `baseResidual_eq_complementSum` was a matrix identity only), which
+-- turns the complement engine into a sharp test: when the residual beats the
+-- largest outside weight at every probe, the COMPLEMENT strictly dominates.
+-- At rank three that test collapses to a scalar one on the base share, proved
+-- without any spectral theory -- an orthonormal frame resolves the identity,
+-- so the trace is three frame readings and the residual's Loewner bound caps
+-- two of them.  Read backwards, one weak direction caps the whole trace, so
+-- the sharp branch sits inside the scalar one.  The tight direction is then
+-- shown NEVER to be the obstruction: it saturates the base set's unweighted
+-- mass, and at (6,3) the two maxima cannot fill the weight budget, so the
+-- residual strictly exceeds the complement's largest weight along it -- with
+-- no line-freeness and no off-conicity spent.  The antecedent region is pinned
+-- as the tie hypersurface (the base gap is weakly but never strictly
+-- dominating there, and its tie leg vanishes), bounding the base share on both
+-- sides.  Non-vacuity: `selectiveAxisDesign` meets the whole domination-plus-
+-- tightness half with gap zero and the balance family still fires on it.
+#print axioms Gtz.dotProduct_baseResidual_mulVec_eq_sub_baseMass
+#print axioms Gtz.dotProduct_baseResidual_mulVec_eq_complementMass
+#print axioms Gtz.dotProduct_baseResidual_mulVec_nonneg
+#print axioms Gtz.dotProduct_baseResidual_mulVec_le_self
+#print axioms Gtz.trace_baseResidual_eq_sum_complementShare
+#print axioms Gtz.trace_baseResidual_eq_rank_sub_sum_baseShare
+#print axioms Gtz.posDef_subsetSum_compl_of_residualExceedsMaxWeight
+#print axioms Gtz.sum_atomMatrix_orthonormalFrame_eq_one
+#print axioms Gtz.trace_eq_sum_orthonormalFrame_quadForm
+#print axioms Gtz.trace_sub_two_le_dotProduct_of_quadForm_le_self
+#print axioms Gtz.exists_unitVec_scaling_dotProduct
+#print axioms Gtz.residualExceedsMaxWeight_of_trace_gt
+#print axioms Gtz.trace_baseResidual_le_of_weakDirection
+#print axioms Gtz.posDef_subsetSum_compl_of_baseShare_lt
+#print axioms Gtz.baseTripleMaxWeight
+#print axioms Gtz.complementTripleMaxWeight
+#print axioms Gtz.complementTripleMaxWeight_pos
+#print axioms Gtz.mem_baseTripleComplement_iff
+#print axioms Gtz.weight_le_complementTripleMaxWeight
+#print axioms Gtz.baseTriple_compl_eq_complementTriple
+#print axioms Gtz.weight_le_baseTripleMaxWeight
+#print axioms Gtz.exists_eq_baseTripleMaxWeight
+#print axioms Gtz.exists_eq_complementTripleMaxWeight
+#print axioms Gtz.baseTripleMaxWeight_add_complementTripleMaxWeight_lt_one
+#print axioms Gtz.posDef_subsetSum_complementTriple_of_residualExceedsMaxWeight
+#print axioms Gtz.posDef_subsetSum_complementTriple_of_baseTripleShare_lt
+#print axioms Gtz.complementTriple_compl_eq_baseTriple
+#print axioms Gtz.card_compl_eq_three_of_card_eq_three
+#print axioms Gtz.exists_posDef_cardThree_of_lightTriple
+#print axioms Gtz.not_posDef_of_tightDirection
+#print axioms Gtz.det_eq_zero_of_posSemidef_tightDirection
+#print axioms Gtz.not_posDef_baseTripleGap_of_tightDirection
+#print axioms Gtz.discriminantTie_baseTriple_eq_zero_of_tightDirection
+#print axioms Gtz.tightDirection_complementMass_eq_baseComplementaryMass
+#print axioms Gtz.tightDirection_baseMass_eq_normSq
+#print axioms Gtz.dotProduct_baseResidual_mulVec_tightDirection
+#print axioms Gtz.le_dotProduct_baseResidual_mulVec_tightDirection
+#print axioms Gtz.complementTripleMaxWeight_lt_dotProduct_baseResidual_mulVec_tightDirection
+#print axioms Gtz.heavyBaseTripleShare_of_weakDirection
+#print axioms Gtz.sum_atomShare_baseTriple_add_complementTriple
+#print axioms Gtz.le_sum_atomShare_complementTriple_of_tightDirection
+#print axioms Gtz.sum_atomShare_baseTriple_le_of_tightDirection
+#print axioms Gtz.atomBracket_ne_zero_of_lineFree
+#print axioms Gtz.posDef_baseResidual_baseTriple_of_lineFree
+#print axioms Gtz.complementFrame_baseTriple_of_lineFree
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_weakResidualBranch
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_heavyBaseTripleShare
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_heavyBaseTripleShareLivePairTie
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_separatedWeakResidualBranch
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_noLightTriple
+#print axioms Gtz.atomShare_selectiveAxisDesign_shortAxes
+#print axioms Gtz.sum_atomShare_selectiveAxisDesign_shortTriple
+#print axioms Gtz.weight_selectiveAxisDesign_longAxes
+#print axioms Gtz.complementTripleMaxWeight_selectiveAxisDesign
+#print axioms Gtz.posDef_subsetSum_selectiveAxisDesign_longTriple_via_balanceFamily
+#print axioms Gtz.subsetSum_selectiveAxisDesign_shortTriple_eq_one
+#print axioms Gtz.dominates_selectiveAxisDesign_shortTriple
+#print axioms Gtz.tightDirection_selectiveAxisDesign_shortTriple
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
