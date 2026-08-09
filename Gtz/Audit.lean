@@ -465,6 +465,7 @@ import Gtz.Design.OneDeterminantReduction
 import Gtz.Design.UThreeSixDisjunction
 import Gtz.Design.ChartlessKill
 import Gtz.Design.KFourBandAtlas
+import Gtz.Design.ThreeLinesAtlas
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17156,6 +17157,107 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.bandResidualWitnessPoint_starGap
 #print axioms Gtz.bandResidualWitnessPoint_hasStrictTree
 #print axioms Gtz.bandResidualWitnessPoint_offBothCoveredRegions_hasStrictTree
+
+-- Design/ThreeLinesAtlas, the three-lines chart at its sharpest.  One
+-- coefficient matrix -- a grounded graph Laplacian on three vertices, with the
+-- slide as the gain on one edge -- gives the chart gap of ALL TWENTY subsets
+-- from a single lemma, and its quadratic form is a weighted sum of six squared
+-- readings.  Cauchy-Binet then makes the determinant a sum over the SEVENTEEN
+-- independent triples, which pins the admissibility condition as exactly the
+-- non-degeneracy of that law: the slide zero kills the four triples carrying a
+-- squared slide, the slide minus one kills the free triple.  Sylvester becomes
+-- an iff per subset, so every cell is SHARP and the obligation restates as a
+-- sign-only statement in twelve reals and three explicit polynomials.  The
+-- chart also carries an exact Z/3 symmetry at FIXED slide -- relabelling the
+-- three lines three-cycles the configuration, conjugated by an explicit basis
+-- -- so strict domination transports and the twenty subsets fall into seven
+-- orbits, with the two canonical triples the fixed points.  Both canonical
+-- triples are then refuted together at one kernel witness, the free triple is
+-- shown never reachable by diagonal dominance, and the three lines never even
+-- weakly dominate, leaving seventeen candidates and seven up to rotation.
+#print axioms Gtz.threeLinesCoefficientMatrix
+#print axioms Gtz.threeLinesCoefficientMatrix_eq
+#print axioms Gtz.sum_smul_atomMatrix_threeLinesDirection
+#print axioms Gtz.dotProduct_threeLinesCoefficientMatrix_mulVec
+#print axioms Gtz.threeLinesChartCoefficient
+#print axioms Gtz.threeLinesChartCoefficient_of_mem
+#print axioms Gtz.threeLinesChartCoefficient_of_notMem
+#print axioms Gtz.directionChartGap_threeLines_eq
+#print axioms Gtz.threeLinesCoefficientMatrix_triangle_eq
+#print axioms Gtz.threeLinesCornerMinor
+#print axioms Gtz.threeLinesBlockMinor
+#print axioms Gtz.threeLinesBasisDeterminant
+#print axioms Gtz.det_symmetricFinThree_eq_expansion
+#print axioms Gtz.det_threeLinesCoefficientMatrix
+#print axioms Gtz.posDef_threeLinesCoefficientMatrix_iff
+#print axioms Gtz.posDef_directionChartGap_threeLines_iff
+#print axioms Gtz.dotProduct_directionChartGap_threeLines_mulVec
+#print axioms Gtz.tripleBracket_threeLinesDirection_vertexTriple
+#print axioms Gtz.tripleBracket_threeLinesDirection_freeTriple
+#print axioms Gtz.tripleBracket_threeLinesDirection_oneTwoFive
+#print axioms Gtz.threeLinesBasisDeterminant_of_sideFree
+#print axioms Gtz.threeLinesBasisDeterminant_of_vertexFree
+#print axioms Gtz.threeLinesGap_freeTriple_eq
+#print axioms Gtz.threeLines_freeTriple_not_diagonallyDominant
+#print axioms Gtz.not_posSemidef_of_neg_dotProduct
+#print axioms Gtz.verticalProbe
+#print axioms Gtz.firstAxisProbe
+#print axioms Gtz.canonicalPairFailureMass
+#print axioms Gtz.canonicalPairFailureWeight
+#print axioms Gtz.canonicalPairFailureMass_pos
+#print axioms Gtz.canonicalPairFailureWeight_pos
+#print axioms Gtz.canonicalPairFailureWeight_ne
+#print axioms Gtz.canonicalPairFailureWeight_sum
+#print axioms Gtz.canonicalPairFailurePoint
+#print axioms Gtz.canonicalPairFailure_vertexTriple_verticalForm
+#print axioms Gtz.canonicalPairFailure_vertexTriple_not_posSemidef
+#print axioms Gtz.canonicalPairFailure_freeTriple_axisForm
+#print axioms Gtz.canonicalPairFailure_freeTriple_not_posSemidef
+#print axioms Gtz.canonicalPairFailure_zeroOneFive_posDef
+#print axioms Gtz.exists_threeLinesChartPoint_bothCanonicalTriplesFail
+#print axioms Gtz.threeLinesRotationLabel
+#print axioms Gtz.threeLinesRotationLabelInverse
+#print axioms Gtz.threeLinesRotation
+#print axioms Gtz.threeLinesRotation_apply
+#print axioms Gtz.threeLinesRotation_symm_apply
+#print axioms Gtz.threeLinesRotation_map_firstLine
+#print axioms Gtz.threeLinesRotation_map_secondLine
+#print axioms Gtz.threeLinesRotation_map_thirdLine
+#print axioms Gtz.threeLinesRotation_map_vertexTriple
+#print axioms Gtz.threeLinesRotation_map_freeTriple
+#print axioms Gtz.threeLinesRotationScale
+#print axioms Gtz.threeLinesRotationScale_eq_one_or_slide
+#print axioms Gtz.threeLinesRotationScale_sq_pos
+#print axioms Gtz.threeLinesRotationBasis
+#print axioms Gtz.det_threeLinesRotationBasis
+#print axioms Gtz.threeLinesRotationBasis_mulVec_direction
+#print axioms Gtz.threeLinesCoefficientMatrix_rotate
+#print axioms Gtz.rotatedThreeLinesChartPoint
+#print axioms Gtz.rotatedThreeLinesChartPoint_mass
+#print axioms Gtz.rotatedThreeLinesChartPoint_weight
+#print axioms Gtz.threeLinesChartCoefficient_rotated
+#print axioms Gtz.directionChartGap_threeLines_rotate
+#print axioms Gtz.posDef_directionChartGap_threeLines_rotate_iff
+#print axioms Gtz.card_map_threeLinesRotation
+#print axioms Gtz.freeTripleWitnessMass
+#print axioms Gtz.freeTripleWitnessWeight
+#print axioms Gtz.freeTripleWitnessMass_pos
+#print axioms Gtz.freeTripleWitnessWeight_pos
+#print axioms Gtz.freeTripleWitnessWeight_ne
+#print axioms Gtz.freeTripleWitnessWeight_sum
+#print axioms Gtz.freeTripleWitnessPoint
+#print axioms Gtz.freeTripleWitness_freeTriple_posDef
+#print axioms Gtz.threeLinesRotation_map_zeroOneFive
+#print axioms Gtz.threeLinesRotation_map_oneThreeFour
+#print axioms Gtz.threeLinesRotation_map_zeroTwoThree
+#print axioms Gtz.canonicalPairFailure_rotated_oneThreeFour_posDef
+#print axioms Gtz.secondAxisProbe
+#print axioms Gtz.directionChartGap_threeLines_firstLine_not_posSemidef
+#print axioms Gtz.directionChartGap_threeLines_secondLine_not_posSemidef
+#print axioms Gtz.directionChartGap_threeLines_thirdLine_not_posSemidef
+#print axioms Gtz.HasPositiveThreeLinesMinors
+#print axioms Gtz.posDef_directionChartGap_iff_hasPositiveThreeLinesMinors
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomain_iff_minorSigns
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
