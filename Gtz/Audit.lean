@@ -453,6 +453,7 @@ import Gtz.Design.ThreeLinesTriangleCell
 import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Design.SphereDichotomy
+import Gtz.Design.SphereExistence
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -16457,6 +16458,36 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.tetraShadow_exists_strictlyDominatingPair
 #print axioms Gtz.tetraDesign_isTie_and_not_isTie_tetraShadow
 #print axioms Gtz.tetraShadow_exists_planeStrictPair
+
+-- Design/SphereExistence, the existence half of that dichotomy.  The shipped
+-- `exists_planeStrictPair_of_transversalAxis` consumes a unit axis missing the
+-- six pair-planes, and nothing in the tree PRODUCED one, so the template could
+-- not fire on its own.  The moment curve supplies it: a nonzero covector pairs
+-- against `param ↦ (1, param, param^2)` as a quadratic and so kills at most two
+-- parameters, and `2 * n` bad parameters cannot cover `2 * n + 1` candidates --
+-- pigeonhole, no topology and no measure theory.  Chained against the tree's
+-- simplicity predicate the axis leaves the statement entirely: a design with no
+-- parallel pair and four distinct labels admits a plane in which some pair of
+-- its atoms strictly dominates every nonzero probe, the consumer supplying
+-- nothing but the labels.
+#print axioms Gtz.momentDirection
+#print axioms Gtz.dotProduct_momentDirection
+#print axioms Gtz.momentDirection_dotProduct_self
+#print axioms Gtz.eq_zero_of_three_momentRoots
+#print axioms Gtz.exists_momentParam_dotProduct_ne_zero
+#print axioms Gtz.exists_unitDirection_dotProduct_ne_zero
+#print axioms Gtz.sphereDichotomy_of_family
+#print axioms Gtz.crossProduct_smul_right_self_eq_zero
+#print axioms Gtz.crossProduct_ne_zero_iff_sq_lt_mul
+#print axioms Gtz.eq_smul_of_crossProduct_eq_zero
+#print axioms Gtz.hasParallelPair_of_crossProduct_atom_eq_zero
+#print axioms Gtz.crossProduct_atom_ne_zero_of_not_hasParallelPair
+#print axioms Gtz.exists_unitAxis_transversal_of_labelPairs
+#print axioms Gtz.exists_unitAxis_transversal_of_not_hasParallelPair
+#print axioms Gtz.exists_unitAxis_planeStrictPair_of_sixCrossProducts
+#print axioms Gtz.exists_unitAxis_planeStrictPair_of_not_hasParallelPair
+#print axioms Gtz.tetraDesign_not_hasParallelPair
+#print axioms Gtz.tetraDesign_exists_unitAxis_planeStrictPair
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
