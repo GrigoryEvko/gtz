@@ -459,6 +459,7 @@ import Gtz.Design.LivePairExistence
 import Gtz.Design.ComplementFrame
 import Gtz.Design.ResidualLeverageLedger
 import Gtz.Design.FirstTouch
+import Gtz.Design.FourThreeRigidity
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -16735,6 +16736,71 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.boundaryPairDesign_exists_offPair_neg_discriminantTie
 #print axioms Gtz.boundaryPairDesign_exists_offPair_not_dominates
 #print axioms Gtz.boundaryPairDesign_surplusForm_neg
+
+-- Design/FourThreeRigidity, the complement engine at a single-label complement
+-- and the (4,3) rigidity it forces.  The engine half is size- and rank-generic:
+-- a small enough atom share makes the other labels strictly dominate, so a
+-- design with no strictly dominating triple has every share at least
+-- `1 - topWeight` -- and, via the slack identity, at most `3 * topWeight`, a
+-- two-sided pin the weight simplex alone does not give.  At the uniform cap the
+-- window collapses to the single point `3/4` and the ladder runs: leverages all
+-- three, pairings all squaring to one, triple products all minus one, every
+-- triple weakly dominating, the design an exact tie, and finally the sign-flipped
+-- atoms carrying EXACTLY the tetrahedron's Gram -- and sign flips change no atom
+-- matrix, so nothing GTZ can see distinguishes them.  Recorded honestly: the
+-- summed inequality itself is simplex arithmetic, proved here design-free too.
+#print axioms Gtz.labelsOtherThan
+#print axioms Gtz.mem_labelsOtherThan
+#print axioms Gtz.compl_labelsOtherThan
+#print axioms Gtz.card_labelsOtherThan
+#print axioms Gtz.card_labelsOtherThan_ofFourLabels
+#print axioms Gtz.weight_mul_atomOverlap_sq_le_atomShare_mul
+#print axioms Gtz.posDef_subsetSum_labelsOtherThan_of_atomShare_lt
+#print axioms Gtz.dominates_labelsOtherThan_of_atomShare_lt
+#print axioms Gtz.exists_dominatingTriple_of_atomShare_lt
+#print axioms Gtz.one_sub_le_atomShare_of_not_posDef_labelsOtherThan
+#print axioms Gtz.one_sub_le_atomShare_of_noStrictTriple
+#print axioms Gtz.one_sub_le_atomShare_of_isTie
+#print axioms Gtz.sum_atomShare_fourLabels_eq_three
+#print axioms Gtz.sum_atomShare_slack_eq
+#print axioms Gtz.one_le_four_mul_topWeight_of_noStrictTriple
+#print axioms Gtz.one_le_sum_otherWeightBound_of_noStrictTriple
+#print axioms Gtz.one_le_sum_bound_of_sum_eq_one
+#print axioms Gtz.one_le_sum_otherWeightBound
+#print axioms Gtz.one_le_three_mul_topWeight_add_secondWeight
+#print axioms Gtz.one_le_four_mul_topWeight
+#print axioms Gtz.atomShare_le_three_mul_topWeight_of_noStrictTriple
+#print axioms Gtz.weight_eq_quarter_of_weight_le_quarter
+#print axioms Gtz.atomShare_eq_three_quarters_of_noStrictTriple
+#print axioms Gtz.leverageOf_eq_three_of_noStrictTriple
+#print axioms Gtz.heavyExcess_eq_two_of_noStrictTriple
+#print axioms Gtz.atomPairing_eq_sum_weight_mul_atomPairing
+#print axioms Gtz.sum_atomPairing_mul_atomPairing_eq_four_mul
+#print axioms Gtz.sq_le_one_of_gramRowRelations
+#print axioms Gtz.gramSquares_eq_one_of_leverage_three
+#print axioms Gtz.atomPairing_sq_eq_one_of_leverage_three
+#print axioms Gtz.eq_neg_of_unitSquares_of_sum
+#print axioms Gtz.atomPairing_mul_atomPairing_eq_neg_atomPairing
+#print axioms Gtz.atomPairing_tripleProduct_eq_neg_one
+#print axioms Gtz.discriminantTie_eq_zero_of_noStrictTriple
+#print axioms Gtz.discriminantTrace_eq_six_of_noStrictTriple
+#print axioms Gtz.dominates_triple_of_noStrictTriple
+#print axioms Gtz.isTie_of_noStrictTriple
+#print axioms Gtz.gramRigidity_of_noStrictTriple
+#print axioms Gtz.exists_signChoice_of_noStrictTriple
+#print axioms Gtz.exists_tetrahedralGram_of_noStrictTriple
+#print axioms Gtz.tetraAtom_dot_eq_neg_one
+#print axioms Gtz.tetraDesign_weight_apply
+#print axioms Gtz.tetraDesign_atomShare
+#print axioms Gtz.tetraDesign_atomShare_eq_one_sub_weight
+#print axioms Gtz.tetraDesign_not_atomShare_lt_one_sub_weight
+#print axioms Gtz.tetraDesign_sum_atomShare_slack_eq_zero
+#print axioms Gtz.tetraDesign_sum_otherWeightBound_eq_one
+#print axioms Gtz.tetraDesign_three_mul_topWeight_add_secondWeight_eq_one
+#print axioms Gtz.tetraDesign_weight_le_quarter
+#print axioms Gtz.tetraDesign_noStrictTriple
+#print axioms Gtz.tetraDesign_gramRigidity
+#print axioms Gtz.tetraDesign_atomPairing_sq_eq_tetraAtom_dot_sq
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
