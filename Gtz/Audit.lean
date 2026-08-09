@@ -454,6 +454,7 @@ import Gtz.Design.LineFreeConicBridge
 import Gtz.Design.KFourChartClosure
 import Gtz.Design.SphereDichotomy
 import Gtz.Design.SphereExistence
+import Gtz.Design.DepthCapAxisParseval
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -16488,6 +16489,63 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_unitAxis_planeStrictPair_of_not_hasParallelPair
 #print axioms Gtz.tetraDesign_not_hasParallelPair
 #print axioms Gtz.tetraDesign_exists_unitAxis_planeStrictPair
+
+-- Design/DepthCapAxisParseval, the cross axis as a Parseval carrier and the
+-- depth reading of the tie leg.  `sum_offPair_weight_mul_atomBracket_sq` is the
+-- prize: the two pair members contribute IDENTICALLY zero, so the whole cross
+-- axis budget is carried by the m - 2 atoms off the pair -- no summed-bracket
+-- identity existed anywhere in the tree before.  `depthForm` names the pair's
+-- gap-Gram depth at a probe label, and the sign is taken from the tree rather
+-- than guessed: `depthForm - pairGapExcessOf * heavyExcess` is MINUS
+-- `discriminantTie`, certified against the shipped row law.  Domination then
+-- restates as a cap, `depthForm ≤ pairGapExcessOf * heavyExcess`, whose kernel
+-- at a live pair is exactly the two gap pairings vanishing.
+#print axioms Gtz.adjugateForm_nonneg
+#print axioms Gtz.adjugateForm_eq_zero_iff
+#print axioms Gtz.twoByTwoForm_pos_of_leadingPos_of_detPos
+#print axioms Gtz.crossAxis
+#print axioms Gtz.crossAxisBudget
+#print axioms Gtz.crossAxis_dotProduct_self
+#print axioms Gtz.atom_dotProduct_crossAxis
+#print axioms Gtz.atomBracket_self_left
+#print axioms Gtz.atomBracket_self_right
+#print axioms Gtz.crossAxisBudget_nonneg
+#print axioms Gtz.crossAxisBudget_eq_pairGapExcessOf_add
+#print axioms Gtz.sum_weight_mul_atomBracket_sq
+#print axioms Gtz.sum_offPair_weight_mul_atomBracket_sq
+#print axioms Gtz.weight_mul_atomBracket_sq_le_crossAxisBudget
+#print axioms Gtz.exists_offPair_atomBracket_ne_zero_of_crossAxisBudget_pos
+#print axioms Gtz.card_offPair_add_two
+#print axioms Gtz.exists_offPair_weight_mul_atomBracket_sq_ge
+#print axioms Gtz.depthForm
+#print axioms Gtz.depthForm_eq_heavyExcess_expansion
+#print axioms Gtz.depthForm_sub_pairGapExcessOf_mul_gapExcessOf
+#print axioms Gtz.depthForm_sub_pairGapExcessOf_mul_heavyExcess_eq_neg_discriminantTie
+#print axioms Gtz.discriminantTie_eq_pairGapExcessOf_mul_heavyExcess_sub_depthForm
+#print axioms Gtz.depthForm_nonneg
+#print axioms Gtz.IsLivePair
+#print axioms Gtz.depthForm_eq_zero_iff_of_isLivePair
+#print axioms Gtz.discriminantTie_nonneg_iff_depthForm_le
+#print axioms Gtz.discriminantTie_nonpos_iff_le_depthForm
+#print axioms Gtz.dominates_triple_iff_depthCap
+#print axioms Gtz.crossAxisNorm_mul_dotProduct_self
+#print axioms Gtz.crossAxisNorm_smul_eq_planeResolution
+#print axioms Gtz.smul_eq_smul_crossAxis_of_orthogonal_pair
+#print axioms Gtz.crossAxisBudget_smul_atom_eq_of_depthForm_eq_zero
+#print axioms Gtz.depthForm_eq_zero_of_atom_eq_smul_crossAxis
+#print axioms Gtz.dotProduct_self_lt_pair_of_planar
+#print axioms Gtz.dotProduct_self_lt_pair_of_isLivePair
+#print axioms Gtz.pos_gapForm_pair_of_isLivePair
+#print axioms Gtz.one_lt_crossAxisBudget_of_isLivePair
+#print axioms Gtz.crossAxis_ne_zero_of_isLivePair
+#print axioms Gtz.exists_offPair_atomBracket_ne_zero_of_isLivePair
+#print axioms Gtz.tetraDesign_atomPairing_of_distinct
+#print axioms Gtz.tetraDesign_pairGapExcessOf
+#print axioms Gtz.tetraDesign_isLivePair
+#print axioms Gtz.tetraDesign_crossAxisBudget
+#print axioms Gtz.tetraDesign_sum_offPair_weight_mul_atomBracket_sq
+#print axioms Gtz.tetraDesign_depthForm_eq_capacity
+#print axioms Gtz.tetraDesign_isTie_and_pos_gapForm_pair
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
