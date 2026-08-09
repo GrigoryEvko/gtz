@@ -468,6 +468,7 @@ import Gtz.Design.KFourBandAtlas
 import Gtz.Design.ThreeLinesAtlas
 import Gtz.Design.NormalSchurClosure
 import Gtz.Design.OneLineCanonicalTripleRefutation
+import Gtz.Design.OrthogonalConicAndTwinRefutation
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17336,6 +17337,57 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.oneLineFailure_planeSchurProduct_eq
 #print axioms Gtz.exists_oneLine_heavy_weaklyDominated_freeTriple_not_dominates
 #print axioms Gtz.oneLineFailure_mixedTripleGap_posDef
+
+-- Design/OrthogonalConicAndTwinRefutation, where off-conicity finally does
+-- work.  For three pairwise orthogonal nonzero atoms the three symmetric outer
+-- products of their pairs are quadrics that all three already satisfy --
+-- orthogonality kills every term, with no dual basis and no normalisation --
+-- so a common conic exists as soon as one explicit three-by-three reading
+-- matrix is singular, and polarised Parseval shows the positive free weight
+-- vector always annihilates it.  Hence a (6,3) design with three mutually
+-- orthogonal atoms is NEVER off-conic, and on the off-conic stratum no three
+-- atoms are orthogonal -- which removes the one cheap source of dominators,
+-- since a heavy orthogonal triple dominates for free.  A triple gap is the
+-- zero form exactly when the triple is an orthonormal basis, so on the U(3,6)
+-- antecedent the base gap is positive semidefinite, annihilates the tight
+-- direction, and is never zero: its rank is one or two.  Second, the twin's
+-- two canonical complements are refuted TOGETHER at one integer-atom design --
+-- both fail to dominate even weakly -- while the mixed triple {2,4,5} is
+-- strictly dominating there, so a twin certificate must also go mixed.
+#print axioms Gtz.symmetricOuterPair
+#print axioms Gtz.transpose_symmetricOuterPair
+#print axioms Gtz.dotProduct_symmetricOuterPair_mulVec_pair
+#print axioms Gtz.dotProduct_symmetricOuterPair_mulVec
+#print axioms Gtz.dotProduct_symmetricOuterPair_mulVec_probeLeft
+#print axioms Gtz.consThree_dotProduct
+#print axioms Gtz.exists_orthogonal_of_dependent_rows
+#print axioms Gtz.orthogonalTripleConic
+#print axioms Gtz.transpose_orthogonalTripleConic
+#print axioms Gtz.dotProduct_orthogonalTripleConic_mulVec
+#print axioms Gtz.dotProduct_orthogonalTripleConic_mulVec_pair
+#print axioms Gtz.not_hasNoCommonQuadric_of_orthogonalTriple
+#print axioms Gtz.not_orthogonalTriple_of_hasNoCommonQuadric
+#print axioms Gtz.subsetSum_tripleSet_apply
+#print axioms Gtz.orthonormalTriple_of_subsetSum_eq_one
+#print axioms Gtz.subsetSum_eq_one_of_orthonormalTriple
+#print axioms Gtz.subsetSum_eq_one_iff_orthonormalTriple
+#print axioms Gtz.subsetSum_sub_one_ne_zero_of_hasNoCommonQuadric
+#print axioms Gtz.baseTripleGap_psd_singular_ne_zero_of_offConic
+#print axioms Gtz.twinFailureAtom
+#print axioms Gtz.twinFailureWeight
+#print axioms Gtz.twinFailureDesign
+#print axioms Gtz.twinFailureDesign_hasLinePattern
+#print axioms Gtz.twinFailureDesign_allHeavy
+#print axioms Gtz.twinFailure_dominatorGap_form
+#print axioms Gtz.twinFailure_mixedTripleGap_posDef
+#print axioms Gtz.twinFailureDesign_hasWeakDominator
+#print axioms Gtz.twinFailure_firstComplementGap_at_witness
+#print axioms Gtz.twinFailure_firstComplement_not_dominates
+#print axioms Gtz.twinFailure_secondComplementGap_at_witness
+#print axioms Gtz.twinFailure_secondComplement_not_dominates
+#print axioms Gtz.twinFailure_canonicalTriples_not_posDef
+#print axioms Gtz.exists_twoMeetingLines_heavy_weaklyDominated_bothComplements_fail
+#print axioms Gtz.twinFailure_exists_posDef_cardThree
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
