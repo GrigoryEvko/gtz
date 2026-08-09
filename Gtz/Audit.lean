@@ -471,6 +471,7 @@ import Gtz.Design.OneLineCanonicalTripleRefutation
 import Gtz.Design.OrthogonalConicAndTwinRefutation
 import Gtz.Design.LiftCriterion
 import Gtz.Design.CrossAxisAtlas
+import Gtz.Design.OneLineLiftCertificate
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -17542,6 +17543,56 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.tetraDesign_det_tripleGapMatrix_eq_zero
 #print axioms Gtz.tetraDesign_liftMargin_unitCrossAxis_eq_zero
 #print axioms Gtz.tetraDesign_not_posDef_tripleGap_via_crossAxis
+
+-- Design/OneLineLiftCertificate, the lift criterion driven down the line
+-- strata, and the identification of the cap engine.  At a normal flat against
+-- both members of a pair the shadow Gram IS the Gram, so the criterion's two
+-- guards become the pair's gap excesses and its determinant becomes
+-- pairGapExcessOf -- and all three are FREE from positive definiteness of the
+-- triple gap alone, with no unit hypothesis, because a principal block of a
+-- positive definite matrix is positive definite.  That gives an unguarded
+-- scalar characterisation of strict domination along a flat pair's axis, and
+-- its contrapositive: a flat pair whose shadow gap determinant is nonpositive
+-- sits in no strictly dominating triple.  Specialised to a line, that is the
+-- combinatorial localisation of the one-line residual -- if no line pair has a
+-- positive determinant at the line normal then no strict triple meets the line
+-- twice, cut out by the signs of three explicit Gram-minus-one minors rather
+-- than by any metric degeneracy.  The engine identification: summing the
+-- weighted margin over the off-pair complement returns the shadow gap
+-- determinant times exactly the bracket whose sign Gtz.IsCapBlindSpot tests,
+-- so the pair-cap engine and the lift criterion's complement average are ONE
+-- test in two vocabularies, and on the cap blind spot that average is
+-- nonpositive at every cross axis -- averaging cannot beat the cap.  What
+-- remains is honest and nonempty: the one-line pattern reduces to designs that
+-- are simultaneously cap blind and blind at their own line normal.
+-- Calibration is Gtz.oneLineFailureDesign, whose nine ordered line pairs all
+-- have nonpositive determinant -- so no winner of it meets the line twice --
+-- while its mixed pair recovers the landed strict triple by a wholly different
+-- route, confirming that the line normal is silent only on LINE pairs.
+#print axioms Gtz.shadowPairing_eq_atomPairing_of_normalReading_eq_zero
+#print axioms Gtz.shadowGapDeterminant_eq_pairGapExcessOf_of_flatPair
+#print axioms Gtz.shadowGap_pos_of_posDef_tripleGap_of_flatPair
+#print axioms Gtz.posDef_tripleGap_iff_flatPairFires
+#print axioms Gtz.not_posDef_tripleGap_of_flatPair_of_shadowGapDeterminant_nonpos
+#print axioms Gtz.liftMargin_at_pairFirst_of_flatPair
+#print axioms Gtz.liftMargin_at_pairSecond_of_flatPair
+#print axioms Gtz.sum_offPair_weight_mul_liftMargin_eq_capExcess
+#print axioms Gtz.sum_offPair_weight_mul_liftMargin_nonpos_of_capBlindSpot
+#print axioms Gtz.exists_posDef_cardThree_of_flatPair_capExcess
+#print axioms Gtz.oneLine_normalReading_eq_zero
+#print axioms Gtz.oneLine_exists_freeAtom_one_lt_normalReading_sq
+#print axioms Gtz.one_lt_normalReading_sq_of_posDef_tripleGap_of_flatPair
+#print axioms Gtz.IsOneLineNormalBlindSpot
+#print axioms Gtz.patternHeavyWeakToStrict_oneLine_of_lineNormalBlindSpot
+#print axioms Gtz.oneLine_not_posDef_linePairTriple_of_linePairBlindSpot
+#print axioms Gtz.oneLineFailureDesign_lineNormal_unit
+#print axioms Gtz.oneLineFailureDesign_lineAtoms_flat
+#print axioms Gtz.oneLineFailureDesign_linePair_shadowGapDeterminant_nonpos
+#print axioms Gtz.oneLineFailureDesign_not_posDef_linePairTriple
+#print axioms Gtz.oneLineFailure_shadowGapDeterminant_mixedPair
+#print axioms Gtz.oneLineFailure_shadowPairing_mixedPair_corner
+#print axioms Gtz.oneLineFailure_liftMargin_mixedPair_eq
+#print axioms Gtz.oneLineFailure_mixedTripleGap_posDef_of_liftMargin
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
