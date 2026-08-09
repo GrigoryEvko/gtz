@@ -461,6 +461,7 @@ import Gtz.Design.ResidualLeverageLedger
 import Gtz.Design.FirstTouch
 import Gtz.Design.FourThreeRigidity
 import Gtz.Design.UnevenFourThreeTie
+import Gtz.Design.OneDeterminantReduction
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -16832,6 +16833,75 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.unevenTieDesign_isTie
 #print axioms Gtz.exists_nonUniformWeight_isTie
 #print axioms Gtz.exists_nonUniformWeight_without_strictDominator
+
+-- Design/OneDeterminantReduction, the shared Phase-2 substrate.  Every
+-- rank-three design owns a pair of labels strictly dominating a whole plane,
+-- unconditionally, so the live pair of `LivePairExistence` is free.  Sylvester
+-- then runs BACKWARDS at `Fin 3`: positive definiteness of the triple gap
+-- returns all three leading minors, making `posDef_of_leadingMinors_fin_three`
+-- an equivalence and the leading pair of every strict dominator live.  The two
+-- halves compose into `hasLivePairPositiveTie_iff_exists_posDef_cardThree`: the
+-- existence of a strictly dominating triple IS a live pair plus ONE strictly
+-- positive tie leg -- a faithful restatement in scalar coordinates, not a
+-- weakening, so each weak-to-strict obligation reduces to a single determinant
+-- sign.  The design-side excess split (the twin of the landed
+-- `directionChartGap_eq_excessSplit`, previously missing) reads strict and weak
+-- domination as complement sign conditions at any rank.  Finally the chart-to-
+-- design dictionary, built square-root free from `exists_congruence_to_one`:
+-- every chart point with a positive definite moment matrix IS a weighted
+-- design, one congruence carrying the chart gap of EVERY subset onto the design
+-- gap of the same subset; the moment hypothesis is then discharged outright at
+-- both live charts, so `DirectionChartIsTieFree` at `kFourDirection` and at
+-- `threeLinesDirection` loses all chart data.  The tetrahedron carries a live
+-- pair and no positive tie leg, so the residual is exactly false at the ties
+-- and none of this is a tautology dressed up.
+#print axioms Gtz.exists_isLivePair
+#print axioms Gtz.exists_isLivePair_rankThree
+#print axioms Gtz.exists_pair_dominating_crossAxisPlane
+#print axioms Gtz.exists_pair_posDef_gapForm_on_crossAxisPlane
+#print axioms Gtz.posDef_fin_three_corner_pos
+#print axioms Gtz.posDef_fin_three_secondDiag_pos
+#print axioms Gtz.posDef_fin_three_blockMinor_pos
+#print axioms Gtz.posDef_fin_three_det_pos
+#print axioms Gtz.leadingMinors_pos_iff_posDef_fin_three
+#print axioms Gtz.heavyExcess_pos_of_posDef_tripleGapMatrix
+#print axioms Gtz.pairGapExcessOf_pos_of_posDef_tripleGapMatrix
+#print axioms Gtz.discriminantTie_pos_of_posDef_tripleGapMatrix
+#print axioms Gtz.isLivePair_of_posDef_tripleGapMatrix
+#print axioms Gtz.card_labelTriple_eq_three
+#print axioms Gtz.HasLivePairPositiveTie
+#print axioms Gtz.exists_posDef_cardThree_of_hasLivePairPositiveTie
+#print axioms Gtz.hasLivePairPositiveTie_of_exists_posDef_cardThree
+#print axioms Gtz.hasLivePairPositiveTie_iff_exists_posDef_cardThree
+#print axioms Gtz.exists_posDef_cardThree_of_forall_livePair
+#print axioms Gtz.patternHeavyWeakToStrict_of_livePairTie
+#print axioms Gtz.patternHeavyWeakToStrict_of_hasLivePairPositiveTie
+#print axioms Gtz.patternHeavyWeakToStrict_of_capBlindSpot_livePairTie
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_livePairTie
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_hasLivePairPositiveTie
+#print axioms Gtz.dotProduct_subsetSum_sub_one_mulVec_eq_excessSplit
+#print axioms Gtz.posDef_subsetSum_sub_one_iff_excessSplit
+#print axioms Gtz.dominates_iff_excessSplit
+#print axioms Gtz.dotProduct_directionChartGap_mulVec
+#print axioms Gtz.posDef_directionChartGap_iff_excess
+#print axioms Gtz.posSemidef_directionChartGap_iff_excess
+#print axioms Gtz.chartAtomFamily
+#print axioms Gtz.atomMatrix_chartAtomFamily
+#print axioms Gtz.frameOperatorOfAtoms_chartAtomFamily
+#print axioms Gtz.subsetSumOfAtoms_chartAtomFamily
+#print axioms Gtz.directionChartGap_eq_frameGap
+#print axioms Gtz.exists_design_of_chartPoint
+#print axioms Gtz.directionChartIsTieFree_of_momentPosDef_of_designUpgrade
+#print axioms Gtz.directionChartIsTieFree_of_momentPosDef_of_livePairTie
+#print axioms Gtz.posDef_massMoment_of_spanningTriple
+#print axioms Gtz.eq_zero_of_coordinates_eq_zero
+#print axioms Gtz.posDef_massMoment_kFourDirection
+#print axioms Gtz.posDef_massMoment_threeLinesDirection
+#print axioms Gtz.directionChartIsTieFree_kFour_of_designUpgrade
+#print axioms Gtz.directionChartIsTieFree_threeLines_of_designUpgrade
+#print axioms Gtz.not_hasLivePairPositiveTie_tetraDesign
+#print axioms Gtz.tetraDesign_hasLivePair_and_not_positiveTie
+#print axioms Gtz.exists_design_of_bandResidualWitnessPoint
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
