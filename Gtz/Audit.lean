@@ -460,6 +460,7 @@ import Gtz.Design.ComplementFrame
 import Gtz.Design.ResidualLeverageLedger
 import Gtz.Design.FirstTouch
 import Gtz.Design.FourThreeRigidity
+import Gtz.Design.UnevenFourThreeTie
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -16801,6 +16802,36 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.tetraDesign_noStrictTriple
 #print axioms Gtz.tetraDesign_gramRigidity
 #print axioms Gtz.tetraDesign_atomPairing_sq_eq_tetraAtom_dot_sq
+
+-- Design/UnevenFourThreeTie, the witness showing `FourThreeRigidity`'s weight
+-- cap is a GENUINE hypothesis and not removable.  `unevenTieDesign` is a (4,3)
+-- weighted design whose weights `(1/6, 1/6, 1/3, 1/3)` differ by a factor of
+-- two, yet every triple dominates weakly and none dominates strictly -- an
+-- exact tie off the uniform point.  Two mirror pairs annihilate every
+-- off-diagonal Parseval sum identically; the coordinates are surds but every
+-- GTZ-visible quantity is rational, each triple using exactly two cross
+-- pairings so all twenty-four ordered tie legs are exactly zero.  Nothing in
+-- `FourThreeRigidity` is invalidated: its theorems all carry the cap, which by
+-- simplex arithmetic already forces uniformity.
+#print axioms Gtz.sqrt_six_sq
+#print axioms Gtz.sqrt_thirty_sq
+#print axioms Gtz.unevenTieAtom
+#print axioms Gtz.unevenTieDesign
+#print axioms Gtz.unevenTieDesign_weight
+#print axioms Gtz.unevenTieDesign_atom
+#print axioms Gtz.unevenTieDesign_weight_ne
+#print axioms Gtz.unevenTieCrossPairing
+#print axioms Gtz.unevenTieCrossPairing_sq
+#print axioms Gtz.unevenTiePairingTable
+#print axioms Gtz.unevenTieDesign_atomPairing
+#print axioms Gtz.unevenTieDesign_heavyExcess
+#print axioms Gtz.unevenTieDesign_discriminantTie
+#print axioms Gtz.unevenTieDesign_no_strictDominator
+#print axioms Gtz.posSemidef_of_leadingMinors_fin_three_of_det_zero
+#print axioms Gtz.unevenTieDesign_dominates
+#print axioms Gtz.unevenTieDesign_isTie
+#print axioms Gtz.exists_nonUniformWeight_isTie
+#print axioms Gtz.exists_nonUniformWeight_without_strictDominator
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
