@@ -463,6 +463,7 @@ import Gtz.Design.FourThreeRigidity
 import Gtz.Design.UnevenFourThreeTie
 import Gtz.Design.OneDeterminantReduction
 import Gtz.Design.UThreeSixDisjunction
+import Gtz.Design.ChartlessKill
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -16980,6 +16981,86 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.subsetSum_selectiveAxisDesign_shortTriple_eq_one
 #print axioms Gtz.dominates_selectiveAxisDesign_shortTriple
 #print axioms Gtz.tightDirection_selectiveAxisDesign_shortTriple
+
+-- Design/ChartlessKill, the two line strata without any chart.  Against a unit
+-- normal whose flat set is a triple's complement, the plane-cover discriminant
+-- is EXACTLY the weighted Lagrange excess minus the outside drag -- an
+-- identity, no heaviness, no pattern -- so strict domination of a flat-
+-- complement triple IS `outsideDrag * normalSurplus < lagrangeExcess`, both
+-- sides explicit sums of products of squares.  That pins the sharp no-go on
+-- Cauchy-Schwarz: the excess IS the Cauchy-Schwarz slack, so Cauchy-Schwarz
+-- alone gives only nonnegativity, while the drag is STRICTLY positive at every
+-- in-plane probe on either stratum (two outside atoms blind to one in-plane
+-- probe would be parallel, which the pattern forbids).  The excess is then
+-- rewritten as a sum of squares of three explicit in-plane pair-difference
+-- vectors, and the drag as the probe norm minus the triple's own mass, so the
+-- line's internal geometry drops out.  A conservation law among the pair-
+-- difference readings names the one branch this anatomy cannot close, and the
+-- twin's shadow analysis is corrected for the declared `{0,3,4}` dependence:
+-- a collision is forced onto the meeting label with the free pair exactly
+-- `{3,4}`, while every shadow ratio stays nonzero.
+#print axioms Gtz.patternForbidsParallelPair_oneLinePattern
+#print axioms Gtz.patternForbidsParallelPair_twoMeetingLinesPattern
+#print axioms Gtz.not_hasParallelPair_of_oneLinePattern
+#print axioms Gtz.not_hasParallelPair_of_twoMeetingLinesPattern
+#print axioms Gtz.oneLine_exists_unitAxis_planeStrictPair
+#print axioms Gtz.twoMeetingLines_exists_unitAxis_planeStrictPair
+#print axioms Gtz.dotProduct_subsetSum_sub_one_mulVec_pos_of_outsideFlat
+#print axioms Gtz.one_lt_sum_sq_reading_of_outsideFlat
+#print axioms Gtz.sum_weight_mul_normalReading_mul_reading_eq_zero
+#print axioms Gtz.sum_selected_weight_mul_normalReading_mul_reading_eq_zero
+#print axioms Gtz.sum_over_tripleSet_eq
+#print axioms Gtz.weightedLagrange_three
+#print axioms Gtz.planeCoverDiscriminant_scalar_identity
+#print axioms Gtz.tripleNormalSurplus
+#print axioms Gtz.outsideProbeMass
+#print axioms Gtz.tripleLagrangeExcess
+#print axioms Gtz.outsideProbeMass_nonneg
+#print axioms Gtz.tripleLagrangeExcess_nonneg
+#print axioms Gtz.tripleLagrangeExcess_eq_zero_of_readings_proportional
+#print axioms Gtz.planeCoverDiscriminant_eq_lagrangeExcess_sub_outsideDrag
+#print axioms Gtz.IsLagrangeDominatingTriple
+#print axioms Gtz.posDef_tripleSet_iff_isLagrangeDominatingTriple
+#print axioms Gtz.exists_posDef_cardThree_of_isLagrangeDominatingTriple
+#print axioms Gtz.not_isLagrangeDominatingTriple_of_isTie
+#print axioms Gtz.not_parallel_of_orthogonal_of_ne_zero
+#print axioms Gtz.exists_smul_of_orthogonal_to_independent_normals
+#print axioms Gtz.hasParallelPair_of_two_flat_blind
+#print axioms Gtz.outsideProbeMass_pos_of_flat_outside_pair
+#print axioms Gtz.oneLine_outsideProbeMass_pos
+#print axioms Gtz.twoMeetingLines_outsideProbeMass_pos_firstLine
+#print axioms Gtz.twoMeetingLines_outsideProbeMass_pos_secondLine
+#print axioms Gtz.oneLine_lagrangeExcess_pos_of_isLagrangeDominatingTriple
+#print axioms Gtz.heightPairDifference
+#print axioms Gtz.heightPairDifference_dotProduct
+#print axioms Gtz.heightPairDifference_dotProduct_unitNormal_eq_zero
+#print axioms Gtz.heightPairDifference_ne_zero_of_not_hasParallelPair
+#print axioms Gtz.tripleLagrangeExcess_eq_sum_pairDifference_sq
+#print axioms Gtz.oneLine_heightPairDifference_ne_zero
+#print axioms Gtz.sum_selected_weight_mul_sq_reading_eq_one_of_outsideFlat
+#print axioms Gtz.outsideProbeMass_eq_normSq_sub_selectedMass
+#print axioms Gtz.not_dominates_of_blind_probe
+#print axioms Gtz.readings_eq_zero_of_minors_eq_zero
+#print axioms Gtz.tripleReadings_eq_zero_of_pairDifference_readings_eq_zero
+#print axioms Gtz.not_dominates_tripleSet_of_pairDifference_readings_eq_zero
+#print axioms Gtz.atomShadowAgainst
+#print axioms Gtz.atomShadowAgainst_dotProduct_self_eq_zero
+#print axioms Gtz.atomShadowAgainst_dotProduct_planeNormal_eq_zero
+#print axioms Gtz.lineShadows_parallel_at_inPlaneDirection
+#print axioms Gtz.oneLine_lineShadows_parallel_at_inPlaneDirection
+#print axioms Gtz.twoMeetingLines_shadowCollision_forced
+#print axioms Gtz.twoMeetingLines_shadowColumn_collision_only_at_meetingPlane
+#print axioms Gtz.twoMeetingLines_shadowRatio_ne_zero
+#print axioms Gtz.patternHeavyWeakToStrict_of_lagrangeDominatingTriple
+#print axioms Gtz.exists_unitScaling_of_ne_zero
+#print axioms Gtz.oneLine_exists_unitLineNormal
+#print axioms Gtz.twoMeetingLines_exists_unitLineNormals
+#print axioms Gtz.patternHeavyWeakToStrict_oneLine_of_lagrangeDominance
+#print axioms Gtz.patternHeavyWeakToStrict_twoMeetingLines_of_firstLineDominance
+#print axioms Gtz.patternHeavyWeakToStrict_twoMeetingLines_of_secondLineDominance
+#print axioms Gtz.oneLineSample_lineAtoms_flat
+#print axioms Gtz.oneLineSample_isLagrangeDominatingTriple
+#print axioms Gtz.oneLineSample_exists_unitAxis_planeStrictPair
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
