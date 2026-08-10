@@ -506,6 +506,7 @@ import Gtz.Design.DoubleLightDeflation
 import Gtz.Design.BarycentricOneSlotRigidity
 import Gtz.Design.BarycentricCoverage
 import Gtz.Design.ConservationCalculus
+import Gtz.Design.LivePairRefusalStrata
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18946,6 +18947,107 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.sum_weight_mul_det_tripleGap_add_atomMatrix
 #print axioms Gtz.trace_identity_of_isUnit
 #print axioms Gtz.excess_balance_of_isUnit
+
+-- Design/LivePairRefusalStrata, THE FOUR-WINDOW NECESSITY AND A NAMED
+-- OBSTRUCTION.  THE MASTER IDENTITY, unconditional in every argument and with
+-- no symmetry and no invertibility anywhere:
+--   det N * det (N - u u^T + v v^T)
+--     = det (N - u u^T) * det (N + v v^T) + (u^T adj N v) * (v^T adj N u).
+-- The PRODUCT form is what is true; the SQUARE form is FALSE at a non-symmetric
+-- form and is stated separately with the symmetry hypothesis it needs.
+-- At a design it reads
+--   pairGapExcessOf(s,o) * det(gap{s,o,m,b})
+--     = swapAtomPairing^2 - discriminantTie(m;s,o) * discriminantTie(b;s,o),
+-- so at a live pair with a negative free-triple determinant a NONPOSITIVE
+-- card-four window forces the distance-two candidate dead.  That names no
+-- object -- it bounds where a winner can be -- so it is clear of the refuted
+-- selector family.
+-- THE STRATUM SPLIT COLLAPSES: a DEAD free pair kills its own distance-two
+-- candidates through the landed `isLivePair_freePair_of_posDef_distanceTwoGap`
+-- and a LIVE one is killed by the window necessity, so
+-- `not_posDef_distanceTwo_of_windowRefusal` covers every stratum of the free
+-- live graph and the three-edge / two-edge / one-edge split is unnecessary.
+-- THE OBSTRUCTION `WindowRefusal` -- negative free-triple gap determinant and
+-- all three card-four windows over the free triple nonpositive -- kills the base
+-- triple, all nine distance-two candidates and the complement at once.  So
+-- `exists_posDef_cardThree_iff_tightLineOneSlotFamily_of_windowRefusal`: on that
+-- region the WHOLE obligation is "some one-slot swap is strict", and the winner
+-- is FORCED to keep two BASE labels.  That is the exact opposite of what a
+-- free-pair route delivers, and it is a hard obstruction to every such route.
+-- SATISFIABILITY IS KERNEL-CHECKED IN CONTEXT: `windowRefusalWitnessDesign` is a
+-- literal rational-atom design that inhabits `FreeTripleAllPairsLive`,
+-- `ThreeWindowRefusalSystem` and `WindowRefusal`, dominates weakly at the base
+-- triple with tight direction (0,2,1), and has exactly two strict card-three
+-- subsets, BOTH one-slot -- so both sides of the equivalence are exhibited at one
+-- design.  Its line-freeness (minimum bracket 3/4) and off-conicity (Veronese
+-- determinant 242757/16 in this tree's doubled convention) were verified in exact
+-- rational arithmetic by two independent audits but are NOT mechanized here.
+-- COVERAGE CAVEAT ON THE ENRICHED SYSTEM: `ThreeWindowRefusalSystem` additionally
+-- demands all three free pairs live, and that is RARE -- zero of twenty-six
+-- independently generated `WindowRefusal` designs in a stage-two census met it.
+-- The twelve-to-four collapse it feeds therefore applies to a thin region.
+-- BARRIER DISCLOSURE: `sum_baseWeight_mul_freeWindowDet` is a weighted sum over
+-- the design and inherits every averaging barrier.  It is used here only for
+-- NECESSARY conditions and one emptiness kill on a measure-zero sub-locus; it
+-- certifies nothing and no sign is read off it.
+-- The master conservation law this file uses is the landed
+-- `sum_weight_mul_quadForm_eq_trace` from Design/ConservationCalculus; the
+-- duplicate the module shipped with was deleted at landing time rather than
+-- landed alongside it.
+#print axioms Gtz.det_mul_det_swapAtom
+#print axioms Gtz.adjugateReading_comm_of_transpose_eq
+#print axioms Gtz.det_mul_det_swapAtom_sq
+#print axioms Gtz.swapAtomPairing
+#print axioms Gtz.tripleSet_rotate_last
+#print axioms Gtz.pairGapExcessOf_mul_det_fourWindow
+#print axioms Gtz.discriminantTie_nonpos_of_det_fourWindow_nonpos
+#print axioms Gtz.not_posDef_swapGap_of_det_fourWindow_nonpos
+#print axioms Gtz.pos_det_fourWindow_of_posDef_swapGap
+#print axioms Gtz.trace_adjugate_tripleGap_eq_sum_pairGapExcessOf
+#print axioms Gtz.freeTripleGap
+#print axioms Gtz.freeWindowDet
+#print axioms Gtz.freeWindowDet_eq_det_subsetSum
+#print axioms Gtz.freeWindowDet_eq_add_reading
+#print axioms Gtz.freeWindowDet_freeLabel
+#print axioms Gtz.sum_baseWeight_mul_freeWindowDet
+#print axioms Gtz.FreeTripleAllPairsLive
+#print axioms Gtz.exists_pos_freeWindowDet_of_det_freeTripleGap_eq_zero
+#print axioms Gtz.ThreeWindowRefusalSystem
+#print axioms Gtz.ThreeEdgeRefusalSystem
+#print axioms Gtz.det_freeTripleGap_eq_discriminantTie
+#print axioms Gtz.WindowRefusal
+#print axioms Gtz.windowRefusal_of_threeWindowRefusalSystem
+#print axioms Gtz.not_posDef_freeTripleGap_of_windowRefusal
+#print axioms Gtz.not_posDef_distanceTwo_of_windowRefusal
+#print axioms Gtz.threeEdgeRefusalSystem_of_threeWindowRefusalSystem
+#print axioms Gtz.freeWeight_lt_half_of_threeWindowRefusalSystem
+#print axioms Gtz.card_oneSlotSwap
+#print axioms Gtz.not_posDef_distanceTwoTarget_of_windowRefusal
+#print axioms Gtz.exists_posDef_cardThree_iff_tightLineOneSlotFamily_of_windowRefusal
+#print axioms Gtz.not_exists_posDef_cardThree_iff_not_tightLineOneSlotFamily_of_windowRefusal
+#print axioms Gtz.discriminantTie_eq_det_subsetSum_of_set
+#print axioms Gtz.pairGapExcessOf_mul_det_fourWindow_of_singular
+#print axioms Gtz.nonneg_det_fourWindow_of_singular_of_pos_pairGapExcessOf
+#print axioms Gtz.nonneg_det_baseWindow_of_singular_baseGap
+#print axioms Gtz.windowRefusalWitnessAtom
+#print axioms Gtz.windowRefusalWitnessWeight
+#print axioms Gtz.windowRefusalWitnessDesign
+#print axioms Gtz.windowRefusalWitnessDesign_baseTripleGap_form
+#print axioms Gtz.windowRefusalWitnessDesign_freeTripleGap_form
+#print axioms Gtz.windowRefusalWitnessDesign_det_freeTripleGap
+#print axioms Gtz.windowRefusalWitnessDesign_freeWindow_zero
+#print axioms Gtz.windowRefusalWitnessDesign_freeWindow_one
+#print axioms Gtz.windowRefusalWitnessDesign_freeWindow_two
+#print axioms Gtz.windowRefusalWitnessDesign_freeTripleAllPairsLive
+#print axioms Gtz.windowRefusalWitnessDesign_threeWindowRefusalSystem
+#print axioms Gtz.windowRefusalWitnessDesign_windowRefusal
+#print axioms Gtz.windowRefusalWitnessDesign_dominates_baseTriple
+#print axioms Gtz.windowRefusalWitnessDesign_tightDirection_ne_zero
+#print axioms Gtz.windowRefusalWitnessDesign_isTightDirection
+#print axioms Gtz.windowRefusalWitnessDesign_baseTripleGap_det
+#print axioms Gtz.windowRefusalWitnessDesign_posDef_oneSlot
+#print axioms Gtz.windowRefusalWitnessDesign_tightLineOneSlotFamily
+#print axioms Gtz.windowRefusalWitnessDesign_exists_posDef_cardThree
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
