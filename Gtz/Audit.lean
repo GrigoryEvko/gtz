@@ -546,6 +546,7 @@ import Gtz.Certificates.CollarChartSoundnessChart43210
 import Gtz.Quantitative.ProjectionBasisCoordinates
 import Gtz.Ties.NonUniformLeverageTie
 import Gtz.Design.PairingMinorPlueckerBridge
+import Gtz.Quantitative.ProjectionGapQuadratic
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19216,6 +19217,30 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.weighted_pairing_covariance_three_pos
 #print axioms Gtz.weighted_atom_pairing_covariance_three_pos_of_lineFree
 
+
+-- Quantitative/ProjectionGapQuadratic, THE UNTRACED RICCATI EQUATION OF THE
+-- CHART GAP.
+-- With `Q = P - diag t`, idempotence of the projection chart is EQUIVALENT to
+-- `Q^2 = Q + T - Q T - T Q - T^2`.  The chart development already recorded the
+-- first three power TRACES of `Q`; this is the untraced equation, and it is
+-- strictly stronger.  Off the diagonal it reads as a weighted eigenvector law
+-- with eigenvalue `1 - t_i - t_j`; on the diagonal it pins the squared row norm.
+-- WHY THAT MATTERS: it is an unconditional relation satisfied by EVERY design,
+-- which is what the campaign is short of -- the exhausted positive bracket LP is
+-- a relaxation precisely because it carries no relation at all.
+-- `chartOutsideVariance` / `chartOutsideCovariance` peel the two insider columns
+-- of a fixed pair and evaluate what remains, and the determinant identity keeps
+-- the SPREAD of the four completion columns where a trace contraction would
+-- collapse it.
+#print axioms Gtz.chartGapMatrix_mul_self
+#print axioms Gtz.sum_chartGapMatrix_mul_offDiagonal
+#print axioms Gtz.sum_sq_chartGapMatrix_row
+#print axioms Gtz.chartGapMatrix_transpose
+#print axioms Gtz.chartOutsideVariance
+#print axioms Gtz.chartOutsideCovariance
+#print axioms Gtz.chartOutsideVariance_eq
+#print axioms Gtz.chartOutsideCovariance_eq
+#print axioms Gtz.chartOutsideCovariance_det_eq
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
