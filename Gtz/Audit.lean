@@ -482,6 +482,7 @@ import Gtz.Design.PlaneBranchUnitAxisNormalForm
 import Gtz.Design.PlaneBranchWindowBridge
 import Gtz.Design.PlaneBranchComplementSelector
 import Gtz.Design.TightLineBranchLivePairBridge
+import Gtz.Design.LineBranchFreePairAggregateBridge
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18200,6 +18201,33 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.isLivePair_freePair_of_posDef_distanceTwoGap
 #print axioms Gtz.baseLabel_ne_freeLabel_of_memBaseTriple
 #print axioms Gtz.exists_liveBasePair_freeTie_nonpos_of_not_nineteenCandidate
+
+-- Design/LineBranchFreePairAggregateBridge, the finite sign step that turns a
+-- POSITIVE weighted pair-minor row aggregate into a live pair.  The whole
+-- content is that `pairGapExcessOf a b` is the 2x2 principal minor
+-- `gapExcessOf a * gapExcessOf b - gapPairingOf a b ^ 2`, so a positive minor
+-- forces the two endpoint excesses to share a sign; one heavy endpoint then
+-- upgrades to two, and two heavy endpoints with a positive minor IS
+-- `Gtz.IsLivePair` on the nose.  Two entry points, and the second is the one
+-- to spend: the general form takes "every pair has a heavy endpoint" as a
+-- hypothesis, while on the actual failure locus that hypothesis is FREE --
+-- a weakly dominating base triple together with failure of every card-three
+-- strict candidate is literally `Gtz.IsTie`, and `leverage_one_le_of_isTie_sixThree`
+-- then puts every leverage at least one unconditionally.  So on the locus a
+-- contradiction proof of the tight-line branch needs only the aggregate sign.
+-- NO UNIFORM BOUND IS AVAILABLE and none is assumed here: exact positive
+-- values of the aggregate decay toward zero as weights approach zero, so the
+-- hypothesis is the strict sign and nothing else.  Satisfiability of that
+-- hypothesis is NOT established by this module.
+#print axioms Gtz.isLivePair_of_pairGapExcessOf_pos_of_excess_or
+#print axioms Gtz.pairRowAggregateOn
+#print axioms Gtz.exists_livePair_of_pairRowAggregateOn_pos
+#print axioms Gtz.freePairRowAggregate
+#print axioms Gtz.exists_live_freePair_of_atMostOneNonheavy_of_rowAggregate_pos
+#print axioms Gtz.isLivePair_of_pairGapExcessOf_pos_of_leverage_one_le
+#print axioms Gtz.exists_livePair_of_pairRowAggregateOn_pos_of_isTie
+#print axioms Gtz.isTie_of_dominates_base_of_no_cardThree_posDef
+#print axioms Gtz.exists_live_freePair_of_no_cardThree_posDef_of_rowAggregate_pos
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
