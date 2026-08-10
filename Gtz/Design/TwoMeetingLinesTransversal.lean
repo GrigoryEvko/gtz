@@ -20,14 +20,37 @@ concludes `Gtz.PatternHeavyWeakToStrict` at the two-meeting-lines pattern,
 which is character for character
 `Skeleton.obligationHeavyWeakToStrictTwoMeetingLines`.
 
-**SATISFIABILITY IS UNTESTED, AND THAT CUTS BOTH WAYS.**  No design is
-exhibited here at which both `Gtz.IsLinePairLiftBlindAt` instances hold
-simultaneously.  If that joint blind spot turns out to be EMPTY on the
-antecedent region, the residual hypothesis is vacuously true and this theorem
-discharges the obligation outright -- so testing the joint blind spot for
-emptiness is a cheap first-class target, not a caveat to work around.  Until it
-is tested, the reduction is sound but its residual may be either vacuous or
-genuine, and this file asserts neither.
+**THE JOINT BLIND SPOT IS NONEMPTY, SO THE RESIDUAL IS GENUINE.**  An earlier
+draft of this docstring called emptiness of the joint blind spot "a cheap
+first-class target" on the grounds that emptiness would make the residual
+vacuous.  Emptiness is refuted on two independent grounds.
+
+FIRST, emptiness is STRICTLY STRONGER than the obligation it would discharge.
+Emptiness says every antecedent design fails one of the two blind conditions,
+which by the flat-pair equivalence says every antecedent design carries a
+strictly dominating NON-transversal.  That already implies the hypothesis of
+`Gtz.twoMeetingLines_heavyWeakToStrict_of_capBlindSpot` and discharges the
+obligation by itself, without this module.  So emptiness is not a shortcut to
+the obligation; it is a harder statement than the obligation.
+
+SECOND, emptiness is false.  A census over designs realizing this pattern
+EXACTLY -- dependent triples precisely `{0,1,2}` and `{0,3,4}`, all eighteen
+other brackets bounded away from zero -- found antecedent designs (heavy,
+cap-blind, carrying a weak dominator) whose strictly dominating triples are
+entirely transversals, at a rate near 0.4% of antecedent designs.  Such a
+design is jointly blind and satisfies the obligation, which is exactly the
+configuration emptiness forbids and the obligation permits.
+
+A structural fact from the same census, worth recording because it is easy to
+assume otherwise: the two planes are NEVER perpendicular on this stratum.  If
+they were, an orthonormal frame puts both normals on coordinate axes, the
+Parseval `(y,z)` entry reads `w5 * q * r = 0`, and the free atom is forced onto
+one of the two planes -- creating a third dependent triple and contradicting
+the IFF in `Gtz.HasLinePattern`.  Any parametrization that fixes both normals
+to be orthogonal is searching an EMPTY set.
+
+What remains untested is whether the four-candidate residual is provable, not
+whether it is vacuous.  It is not vacuous.
 -/
 
 /-- The finite matroid calculation behind the two-normal localization: among
