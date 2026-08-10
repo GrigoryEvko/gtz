@@ -500,6 +500,7 @@ import Gtz.Design.LineBranchOneSlotAggregate
 import Gtz.Design.LineBranchFreePairBracketExpansion
 import Gtz.Design.LineBranchBracketCoefficientSigns
 import Gtz.Design.LineBranchRankTwoOneSlot
+import Gtz.Design.LineBranchFreePairAdjugateBalance
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18322,11 +18323,24 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- `native_decide`, which reaches `Lean.ofReduceBool` and would have failed the
 -- sweep; plain `decide` closes it in seconds, so the whole module is inside the
 -- allowed triple.
--- SATISFIABILITY UNTESTED, AND THAT CUTS BOTH WAYS: no design is exhibited at
--- which both `IsLinePairLiftBlindAt` instances hold at once.  If that joint
--- blind spot is EMPTY on the antecedent region, the residual is vacuously true
--- and this theorem discharges the obligation outright, so emptiness-testing is
--- a cheap first-class target rather than a caveat.
+-- SATISFIABILITY SETTLED: THE JOINT BLIND SPOT IS NONEMPTY, SO THE RESIDUAL IS
+-- GENUINE.  An earlier note here called emptiness of the joint blind spot "a
+-- cheap first-class target" because emptiness would make the residual vacuous.
+-- That is wrong twice over.  (1) Emptiness is STRICTLY STRONGER than the
+-- obligation: it says every antecedent design carries a strictly dominating
+-- NON-transversal, which already implies the hypothesis of
+-- `twoMeetingLines_heavyWeakToStrict_of_capBlindSpot` and discharges the
+-- obligation without this module at all.  (2) Emptiness is false: a census over
+-- designs realizing the pattern EXACTLY -- dependent triples precisely {0,1,2}
+-- and {0,3,4}, the other eighteen brackets bounded away from zero -- found
+-- antecedent designs whose strict triples are entirely transversals, near 0.4%
+-- of antecedent designs.  Those are jointly blind AND satisfy the obligation,
+-- the configuration emptiness forbids and the obligation permits.
+-- STRUCTURAL WARNING FROM THE SAME CENSUS: the two planes are never
+-- perpendicular on this stratum.  With orthogonal normals the Parseval (y,z)
+-- entry reads w5 * q * r = 0, forcing the free atom onto one of the planes and
+-- creating a third dependent triple, which the IFF in `HasLinePattern` forbids.
+-- A parametrization that fixes the two normals orthogonal searches an EMPTY set.
 #print axioms Gtz.finSix_cardThree_nontransversal_contains_meetingLinePair
 #print axioms Gtz.IsLinePairLiftBlindAt
 #print axioms Gtz.TwoMeetingLinesTransversalStrict
@@ -18603,6 +18617,26 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- every one-slot site, not only on the line branch.
 #print axioms Gtz.det_threeAtomMatrix_sub_atomMatrix_eq_bracketSquares
 #print axioms Gtz.rankTwo_oneSlot_axis_refusal_iff
+
+-- Design/LineBranchFreePairAdjugateBalance, the SECOND normal form for the same
+-- aggregate.  Where LineBranchFreePairBracketExpansion writes
+-- `metricDet * freePairRowAggregate` as nineteen coordinate-bracket squares,
+-- this writes it as two terms: the free-triple gap determinant scaled by the
+-- free weight total, minus one adjugate trace against the transported metric
+-- less the base-weight diagonal.  `det_sub_atomMatrix_fin_three` is the engine
+-- and needs no invertibility hypothesis.
+-- The two normal forms are exchangeable and neither is stronger; the compact
+-- one is the better target for a sign argument because it has two terms rather
+-- than nineteen, and the bracket one is the better target for a nonvanishing
+-- argument because line-freeness is literally a statement about those brackets.
+-- The SIGN of either is still open -- see the no-go recorded above under
+-- LineBranchBracketCoefficientSigns.
+#print axioms Gtz.unitAxisAbstractFreeTripleGap
+#print axioms Gtz.det_sub_atomMatrix_fin_three
+#print axioms Gtz.trace_adjugate_mul_self_fin_three
+#print axioms Gtz.weighted_freePair_det_sum_eq_adjugateBalance
+#print axioms Gtz.weighted_freePair_det_sum_eq_adjugateBalance_of_frame
+#print axioms Gtz.unitAxisMetricDet_mul_freePairRowAggregate_eq_adjugateBalance
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
