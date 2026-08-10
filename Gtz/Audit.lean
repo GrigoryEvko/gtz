@@ -549,6 +549,8 @@ import Gtz.Design.PairingMinorPlueckerBridge
 import Gtz.Quantitative.ProjectionGapQuadratic
 import Gtz.Design.AllHeavyNegativeAggregate
 import Gtz.Design.BarycentricOpenCellWitness
+import Gtz.Design.KFourLeverageRefuter
+import Gtz.Design.KFourTightLocus
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19311,6 +19313,54 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.freePairKillerDesign_unitAxisTightVector_eq
 #print axioms Gtz.freePairKillerDesign_tightBarycentricOpenCell
 #print axioms Gtz.exists_tightBarycentricOpenCell
+
+
+-- Design/KFourLeverageRefuter, THE MAX-LEVERAGE-EDGE SELECTION DIES AT K4.
+-- Twenty-eight selectors are already refuted (SelectorEquivalences); this adds
+-- the max-leverage edge on the complete quadrilateral, at an exact rational
+-- chart point.  Edge `2` maximises the contraction-tree leverage, EIGHT of the
+-- spanning trees through it have strictly negative gap determinant, and the
+-- enumeration `kFourSpanningTreeThroughTwo_enumeration` shows those eight are
+-- all of them -- so no strict tree hosts the leverage-maximal edge.  The chart
+-- obligation survives regardless: `{0,3,5}` IS positive definite, so the point
+-- has a strict tree, just not one through the maximiser.
+-- WHY IT MATTERS: it is the K4-class instance of the argmax barrier, on the one
+-- geometry (the tetrahedron's six edge directions) that realises the hardest of
+-- the five residual classes.
+#print axioms Gtz.leverageRefuterMass
+#print axioms Gtz.leverageRefuterWeight
+#print axioms Gtz.leverageRefuterPoint
+#print axioms Gtz.leverageRefuterPoint_mass_eq
+#print axioms Gtz.leverageRefuterPoint_weight_eq
+#print axioms Gtz.leverageRefuter_isMaxLeverageEdge_two
+#print axioms Gtz.leverageRefuter_gap_zeroTwoFour_det_neg
+#print axioms Gtz.leverageRefuter_gap_oneTwoFive_det_neg
+#print axioms Gtz.leverageRefuter_gap_zeroTwoThree_det_neg
+#print axioms Gtz.leverageRefuter_gap_zeroTwoFive_det_neg
+#print axioms Gtz.leverageRefuter_gap_oneTwoThree_det_neg
+#print axioms Gtz.leverageRefuter_gap_oneTwoFour_det_neg
+#print axioms Gtz.leverageRefuter_gap_twoThreeFour_det_neg
+#print axioms Gtz.leverageRefuter_gap_twoThreeFive_det_neg
+#print axioms Gtz.kFourSpanningTreeThroughTwo_enumeration
+#print axioms Gtz.leverageRefuter_gap_zeroThreeFive_posDef
+#print axioms Gtz.kFourLeverageEdgeHostsStrictTree_refuted
+
+
+-- Design/KFourTightLocus, THE K4 CHART REDUCES TO ONE TIGHT LOCUS.
+-- `KFourHasTightNoStrictPoint` names the only obstruction left on the complete
+-- quadrilateral: a chart point where some spanning-tree gap is PSD and singular
+-- while NO spanning-tree gap is positive definite.
+-- `kFourEveryPointHasStrictTree_iff_no_tightNoStrict` is an IFF, so the K4 class
+-- obligation is EQUIVALENT to emptiness of that locus -- one object, not a
+-- family, and the target that item D4 has to hit.
+-- The kernel vector is supplied constructively by
+-- `exists_kFourTightDirection_of_posSemidef_not_posDef`, so the tight direction
+-- is never hypothesised.
+#print axioms Gtz.KFourHasTightNoStrictPoint
+#print axioms Gtz.exists_kFourTightDirection_of_posSemidef_not_posDef
+#print axioms Gtz.directionChartIsTieFree_kFour_of_no_tightNoStrict
+#print axioms Gtz.everyPointHasStrictTree_of_directionChartIsTieFree_kFour
+#print axioms Gtz.kFourEveryPointHasStrictTree_iff_no_tightNoStrict
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

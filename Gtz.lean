@@ -2147,6 +2147,12 @@ import Gtz.Design.LineFreeConicBridge
 -- selection at an exact witness where the chart obligation stays intact
 import Gtz.Design.KFourChartClosure
 
+-- the K4 leverage refuter and the K4 tight locus: the max-leverage-edge
+-- selection dies at an exact chart point, and the tie-freeness of the K4
+-- direction chart is reduced to emptiness of one tight-but-not-strict locus
+import Gtz.Design.KFourLeverageRefuter
+import Gtz.Design.KFourTightLocus
+
 -- the collar atlas kernel replay: the verified interval/graded/guarded box
 -- checker for the rung-15 barycentric order-chart certificates, and the 120
 -- replayed charts -- one decide per chart turns the adaptive coarsest cover
