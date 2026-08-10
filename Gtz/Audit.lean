@@ -494,6 +494,10 @@ import Gtz.Design.LineBranchFreePairAggregateBridge
 import Gtz.Design.TightLineRefutationFixtures
 import Gtz.Design.TwoMeetingLinesTransversal
 import Gtz.Design.LineBranchFreePairAggregateBalance
+import Gtz.Design.TightLineUniversalOneSlot
+import Gtz.Design.LineBranchBasePairIsLive
+import Gtz.Design.LineBranchOneSlotAggregate
+import Gtz.Design.LineBranchFreePairBracketExpansion
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18500,6 +18504,62 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.UThreeSixUnitAxisPolynomialExclusion
 #print axioms Gtz.uThreeSixTightLineBranch_iff_unitAxisPolynomialExclusion
 #print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_iff_explicitAxisBranches
+
+-- Design/TightLineUniversalOneSlot, one-slot strictness is one determinant at
+-- EVERY transverse base label, not at one selected one.  The landed base-pair
+-- plane positivity holds at each transverse base atom's own normalized axis, so
+-- the landed unit-axis criterion applies there and turns each of the three
+-- completions into a single determinant sign.  Universal, so no selector.
+#print axioms Gtz.oneSlot_posDef_iff_det_pos_of_transverseBaseLabel
+
+-- Design/LineBranchBasePairIsLive, the tight line's base pairs are live in the
+-- normal form.  The normalized subset gap is the original gap under congruence,
+-- so determinants differ by a positive square; erasing a base label with a
+-- nonzero tight coordinate leaves a strictly positive pair minor, and a live
+-- base pair exists at every tight line.  Forced by the tight coordinate, not
+-- chosen.
+#print axioms Gtz.unitAxisHiddenSubsetGap_eq_congr_gap
+#print axioms Gtz.unitAxisHiddenSubsetGap_det_eq_det_sq_mul
+#print axioms Gtz.unitAxisHiddenSubsetGap_baseErase
+#print axioms Gtz.pairGapExcessOf_baseErase_pos_of_tightCoordinate_ne_zero
+#print axioms Gtz.exists_isLivePair_baseTriple_of_hasTightLineAt
+
+-- Design/LineBranchOneSlotAggregate, the weighted one-slot determinant sum in
+-- closed form.  Three weighted rank-one determinant updates collapse to a trace
+-- identity, and against a frame the whole nine-candidate one-slot determinant
+-- sum becomes one named scalar.  Under one-slot refusal that scalar is
+-- nonpositive.  NOTE THE BARRIER: this is a weighted average over the design
+-- and therefore inherits the campaign's six averaging barriers -- it is an
+-- exact bookkeeping identity and an active-set tool, NOT a route to a sign.
+#print axioms Gtz.three_weighted_quadForm_eq_trace
+#print axioms Gtz.three_weighted_det_add_atomMatrix_eq
+#print axioms Gtz.three_weighted_det_add_atomMatrix_eq_of_frame
+#print axioms Gtz.unitAxisHiddenOneSlot_weighted_det_sum_eq
+#print axioms Gtz.unitAxisHiddenOneSlot_aggregate_nonpos_of_refusal
+#print axioms Gtz.unitAxisHiddenOneSlotAggregateScalar
+#print axioms Gtz.unitAxisHiddenOneSlot_aggregate_eq_scalar
+#print axioms Gtz.unitAxisHiddenOneSlot_scalar_nonpos_of_refusal
+
+-- Design/LineBranchFreePairBracketExpansion, the free-pair row aggregate IS a
+-- determinant ledger.  Against the fixed unit-axis frame each free-pair gap
+-- determinant equals minus the metric determinant times that pair's minor, so
+-- the whole aggregate, scaled by the strictly positive metric determinant,
+-- equals minus the weighted sum of the three free-pair gap determinants.  This
+-- is the exact-identity shape ingredient (b) needs: positivity would be forced
+-- by a NONVANISHING and never by a magnitude.  The author's local copies of
+-- `pairGapExcessOf_comm` and `freePairRowAggregate_eq_threePairs` were DELETED
+-- here and repointed at the landed originals in
+-- LineBranchFreePairAggregateBalance.
+#print axioms Gtz.lineBranchAxisZero
+#print axioms Gtz.lineBranchAxisOne
+#print axioms Gtz.lineBranchAxisTwo
+#print axioms Gtz.unitAxisFrameHiddenForm
+#print axioms Gtz.unitAxisFrameFreePairGap
+#print axioms Gtz.weighted_freePairGap_det_sum_eq_bracketLedger
+#print axioms Gtz.unitAxisFrameHiddenForm_eq_unitAxisHiddenForm
+#print axioms Gtz.unitAxisFrameFreePairGap_eq_congrPairGap
+#print axioms Gtz.unitAxisFrameFreePairGap_det_eq_neg_metricDet_mul_pairGapExcessOf
+#print axioms Gtz.unitAxisMetricDet_mul_freePairRowAggregate_eq_neg_detSum
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
