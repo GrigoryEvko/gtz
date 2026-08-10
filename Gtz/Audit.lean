@@ -501,6 +501,7 @@ import Gtz.Design.LineBranchFreePairBracketExpansion
 import Gtz.Design.LineBranchBracketCoefficientSigns
 import Gtz.Design.LineBranchRankTwoOneSlot
 import Gtz.Design.LineBranchFreePairAdjugateBalance
+import Gtz.Design.ConditionalLineHinge
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18637,6 +18638,83 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.weighted_freePair_det_sum_eq_adjugateBalance
 #print axioms Gtz.weighted_freePair_det_sum_eq_adjugateBalance_of_frame
 #print axioms Gtz.unitAxisMetricDet_mul_freePairRowAggregate_eq_adjugateBalance
+
+-- Design/ConditionalLineHinge, THE WAVE-C RESTATEMENT OF THE U(3,6) RESIDUAL.
+-- The two-ingredient hinge this file replaces asked for (a) at most one light
+-- free atom and (b) a positive weighted free-pair row aggregate, both under a
+-- no-one-slot hypothesis.  (b) IS FALSE, and so is its natural repair "(b) plus
+-- every leverage at least one": exact rational-atom designs meet every
+-- antecedent of `BaseTripleTightLineFreeOffConicWeakToStrict`, have no strict
+-- one-slot swap and every leverage strictly above one, and have a NEGATIVE
+-- aggregate.  Nothing here uses an aggregate.  Ingredient (a) is not needed on
+-- the failure locus either: a weak base triple plus failure of every card-three
+-- candidate is an `IsTie`, and on a (6,3) tie every leverage is at least one, so
+-- a positive pair minor by itself forces both endpoints strictly heavy.
+-- `exists_posDef_cardThree_iff_oneSlot_or_freePairPositiveTie` is the exhaustion:
+-- at ANY antecedent with a nonzero tight direction -- LINE branch or PLANE
+-- branch, no line-freeness, no off-conicity -- a strict card-three candidate
+-- exists IFF some one-slot swap is strict or some free pair is live with a
+-- positive tie leg.  Part 6 folds the plane branch in: there the one-slot
+-- disjunct vanishes by the landed `oneSlotSwap_not_posDef_of_planeBranch` and
+-- the ten landed MATRIX candidates ARE the three scalar free pairs, so ONE
+-- residual serves both branches.
+-- HONESTY, AND IT IS PROVED HERE RATHER THAN ASSERTED:
+-- `baseTripleTightLineFreeOffConicWeakToStrict_iff_freePairResidual` is an IFF,
+-- so this is a change of coordinates and NOT a gain in strength, and the
+-- residual's hypothesis is the conjecturally empty failure locus, so proving it
+-- does the theorem's whole work.  What the coordinates buy is that the target is
+-- now three free pairs and twelve completions, two polynomial signs each, with
+-- no matrix, no eigenvector, no frame, no direction quantifier and no average.
+-- CONTRADICTABILITY, AND THE TRAP IT AVOIDS: `FreePairMinorRefusal` FAILS at
+-- `baseTieKillerDesign` (`not_freePairMinorRefusal_baseTieKillerDesign`), a
+-- landed antecedent design whose branch is TRUE, so it is a genuine failure
+-- characterisation and not one of the S11-shaped statements whose conclusions
+-- also hold where the branch holds.  But the BARE refusal predicate, stripped of
+-- the `NOT TightLineOneSlotFamily` conjunct, DOES hold at branch-true designs --
+-- `freePairMinorRefusal_freePairKillerDesign` is exactly such a design, and
+-- `tightLineOneSlotFamily_freePairKillerDesign` proves why it survives.  Only the
+-- CONJOINED form characterises failure on the line branch; on the plane branch
+-- the conjunct is automatic and the refusal alone is exact.  Do not strip it.
+#print axioms Gtz.card_oneSlotSubset_of_mem_of_notMem
+#print axioms Gtz.card_tripleInsert_of_distinct
+#print axioms Gtz.isLivePair_iff_pos_pairGapExcessOf_of_isTie
+#print axioms Gtz.no_strict_oneSlot_of_no_cardThree_posDef
+#print axioms Gtz.FreePairPositiveTie
+#print axioms Gtz.FreePairTieRefusal
+#print axioms Gtz.freePairTieRefusal_iff_not_freePairPositiveTie
+#print axioms Gtz.freePairPositiveTie_of_posDef_twoFreeLabels
+#print axioms Gtz.exists_posDef_cardThree_of_freePairPositiveTie
+#print axioms Gtz.exists_posDef_cardThree_of_tightLineOneSlotFamily
+#print axioms Gtz.exists_posDef_cardThree_iff_oneSlot_or_freePairPositiveTie
+#print axioms Gtz.not_exists_posDef_cardThree_iff_freePairTieRefusal
+#print axioms Gtz.FreePairMinorPositiveTie
+#print axioms Gtz.freePairPositiveTie_of_freePairMinorPositiveTie_of_isTie
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_freePairMinorPositiveTie
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_iff_freePairResidual
+#print axioms Gtz.exists_freeIndex_of_mem_freeTriple
+#print axioms Gtz.freePairTieRefusal_freePairKillerDesign
+#print axioms Gtz.tightLineOneSlotFamily_freePairKillerDesign
+#print axioms Gtz.freePairPositiveTie_baseTieKillerDesign
+#print axioms Gtz.freePairMinorPositiveTie_of_freePairPositiveTie
+#print axioms Gtz.freePairMinorPositiveTie_baseTieKillerDesign
+#print axioms Gtz.freePairPositiveTie_of_planeBranchTenCandidate
+#print axioms Gtz.planeBranchTenCandidate_iff_freePairPositiveTie
+#print axioms Gtz.not_tightLineOneSlotFamily_of_hasFreeTightDirection
+#print axioms Gtz.exists_posDef_cardThree_iff_freePairPositiveTie_of_hasFreeTightDirection
+#print axioms Gtz.not_exists_posDef_cardThree_iff_freePairTieRefusal_of_hasFreeTightDirection
+#print axioms Gtz.FreePairMinorRefusal
+#print axioms Gtz.freePairMinorRefusal_iff_not_freePairMinorPositiveTie
+#print axioms Gtz.not_exists_posDef_cardThree_iff_freePairMinorRefusal
+#print axioms Gtz.not_exists_posDef_cardThree_iff_freePairMinorRefusal_of_hasFreeTightDirection
+#print axioms Gtz.gapExcessOf_pos_of_isTie_of_leverage_ne_one
+#print axioms Gtz.exists_heavy_freePair_of_isTie_of_leverageOne_unique
+#print axioms Gtz.exists_two_heavy_of_isTie_of_leverageOne_unique
+#print axioms Gtz.exists_heavy_basePair_of_isTie_of_leverageOne_unique
+#print axioms Gtz.patternForbidsParallelPair_lineFamilyPattern_nil
+#print axioms Gtz.not_hasParallelPair_of_hasLinePattern_nil
+#print axioms Gtz.exists_heavy_freePair_of_no_cardThree_posDef_of_leverageOne_unique
+#print axioms Gtz.freePairMinorRefusal_freePairKillerDesign
+#print axioms Gtz.not_freePairMinorRefusal_baseTieKillerDesign
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
