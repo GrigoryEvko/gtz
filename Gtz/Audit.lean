@@ -480,6 +480,7 @@ import Gtz.Design.AxisBaseOffConic
 import Gtz.Design.PlaneBranchNormalForm
 import Gtz.Design.PlaneBranchUnitAxisNormalForm
 import Gtz.Design.PlaneBranchWindowBridge
+import Gtz.Design.PlaneBranchComplementSelector
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18033,6 +18034,77 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_posDef_unitAxisFourWindow_of_planeBranch
 #print axioms Gtz.planeBranchFourWindow_card
 #print axioms Gtz.exists_posDef_fourWindow_of_planeBranch
+
+-- Design/PlaneBranchComplementSelector, one determinant sign per completion of
+-- a plane-strict free pair.  A symmetric 3x3 form strictly positive on the
+-- plane orthogonal to a unit axis already has two positive directions, so its
+-- determinant alone decides definiteness -- proved from the tree's own frame
+-- congruence and Sylvester criterion, with no eigenvalue and no Schur
+-- complement.  Applied to the hinge's free pair this gives the two headline
+-- facts: EVERY plane-strict free pair is live (its gap determinant is strictly
+-- negative, because a card-two gap in rank three is negative on any direction
+-- orthogonal to both selected atoms), so the tempting split on that sign has an
+-- EMPTY easy side; and each of the pair's completions strictly dominates iff
+-- one determinant is positive.  The free-triple candidate {3,4,5} is decided
+-- the same way and closes outright the sub-branch where its gap determinant is
+-- positive, leaving `PlaneBranchHardSideFreePairSelector` as the residual.
+-- CAVEAT recorded at landing: that residual is SUFFICIENT ONLY -- the converse
+-- `branch -> selector` is not proved -- and it must stay EXISTENTIAL over the
+-- three free pairs, since a plane-strict pair with no good completion exists.
+-- CAVEAT recorded at landing: `planeBranchTenCandidate_of_baseSubsetSum_eq_one`
+-- and `posDef_freeTripleGap_of_baseSubsetSum_eq_one` are sound general design
+-- theorems whose hypothesis `subsetSum {0,1,2} = 1` is believed EMPTY inside
+-- the U(3,6) antecedent (it forces an orthonormal base triple, and off-conicity
+-- then forces the free weights to vanish), so they close nothing in the branch.
+#print axioms Gtz.exists_planePositive_witness
+#print axioms Gtz.planeMinor_pos_of_planePositive
+#print axioms Gtz.posDef_of_planePositive_of_det_pos
+#print axioms Gtz.posDef_iff_det_pos_of_planePositive
+#print axioms Gtz.quadForm_split_of_planePositive_of_kernelVector
+#print axioms Gtz.posDef_add_atomMatrix_of_planePositive_of_kernelVector
+#print axioms Gtz.det_neg_of_planePositive_of_negativeDirection
+#print axioms Gtz.quadForm_pairGap_eq_readings_sub_normSq
+#print axioms Gtz.pairGap_planePositive_of_pairPlaneStrict
+#print axioms Gtz.pairGap_det_neg_of_pairPlaneStrict
+#print axioms Gtz.quadForm_insertGap_eq_reading_add
+#print axioms Gtz.insertGap_eq_gap_add_atomMatrix
+#print axioms Gtz.det_add_atomMatrix_fin_three
+#print axioms Gtz.adjugateReading_axis_eq_planeMinor
+#print axioms Gtz.adjugateReading_axis_pos_of_planePositive
+#print axioms Gtz.exists_mem_dotProduct_ne_zero_of_dominates
+#print axioms Gtz.baseLabel_ne_freeLabel
+#print axioms Gtz.posDef_gap_iff_det_pos_of_pairPlaneStrict
+#print axioms Gtz.posDef_gap_iff_adjugateReading_gt_of_pairPlaneStrict
+#print axioms Gtz.exists_liveRefusingPair_of_not_planeBranchTenCandidate
+#print axioms Gtz.PlaneBranchStrictPairCompletionSelector
+#print axioms Gtz.uThreeSixPlaneTenCandidateBranch_of_strictPairCompletionSelector
+#print axioms Gtz.exists_orthonormalFrame_of_unitAxis
+#print axioms Gtz.posDef_of_planePositive_of_det_pos_of_unitAxis
+#print axioms Gtz.posDef_iff_det_pos_of_planePositive_of_unitAxis
+#print axioms Gtz.isTightDirectionOf_of_dotProduct_frameAxis_eq_zero
+#print axioms Gtz.freeTripleReading_gt_normSq_of_isTightDirection
+#print axioms Gtz.freeTripleGap_quadForm_pos_of_isTightDirection
+#print axioms Gtz.exists_unitAxis_freeTripleGap_planePositive_of_planeBranch
+#print axioms Gtz.posDef_freeTripleGap_iff_det_pos_of_planeBranch
+#print axioms Gtz.planeBranchTenCandidate_of_freeTripleGap_det_pos
+#print axioms Gtz.freeTripleGap_det_nonpos_of_not_planeBranchTenCandidate
+#print axioms Gtz.freeTripleGap_planePositive_and_det_nonpos_of_not_planeBranchTenCandidate
+#print axioms Gtz.posDef_freeTripleGap_of_baseSubsetSum_eq_one
+#print axioms Gtz.planeBranchTenCandidate_of_baseSubsetSum_eq_one
+#print axioms Gtz.PlaneBranchHardSideCompletionSelector
+#print axioms Gtz.uThreeSixPlaneTenCandidateBranch_of_hardSideCompletionSelector
+#print axioms Gtz.hardSideCompletionSelector_of_strictPairCompletionSelector
+#print axioms Gtz.PlaneBranchHardSideBaseCompletionSelector
+#print axioms Gtz.uThreeSixPlaneTenCandidateBranch_of_hardSideBaseCompletionSelector
+#print axioms Gtz.sum_dominatorReading_eq_trace_add_baseGapScale_mul_axisReading
+#print axioms Gtz.sum_baseCompletionDet_eq_pairAdjugateBudget
+#print axioms Gtz.exists_baseCompletion_det_pos_of_pairAdjugateBudget_pos
+#print axioms Gtz.planeBranchTenCandidate_of_pairPlaneStrict_of_pairAdjugateBudget_pos
+#print axioms Gtz.freeTriple_eq_of_three_distinct_freeLabels
+#print axioms Gtz.mem_baseTriple_of_not_mem_freeTriple
+#print axioms Gtz.freeCompletion_det_nonpos_of_hardSide
+#print axioms Gtz.PlaneBranchHardSideFreePairSelector
+#print axioms Gtz.hardSideBaseCompletionSelector_of_hardSideFreePairSelector
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
