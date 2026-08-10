@@ -2132,6 +2132,7 @@ import Gtz.Design.LineMarginCap
 import Gtz.Design.PairDifferenceCover
 import Gtz.Design.PairingMinorPlueckerBridge
 import Gtz.Design.TightAntecedentMining
+import Gtz.Design.AllHeavyNegativeAggregate
 
 -- U(3,6): the off-conic formulation of stress-freeness, the exact rational
 -- icosa approximant sample, and the mass-reading clearance functionals

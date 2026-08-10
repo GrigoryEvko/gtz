@@ -547,6 +547,7 @@ import Gtz.Quantitative.ProjectionBasisCoordinates
 import Gtz.Ties.NonUniformLeverageTie
 import Gtz.Design.PairingMinorPlueckerBridge
 import Gtz.Quantitative.ProjectionGapQuadratic
+import Gtz.Design.AllHeavyNegativeAggregate
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19241,6 +19242,47 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.chartOutsideVariance_eq
 #print axioms Gtz.chartOutsideCovariance_eq
 #print axioms Gtz.chartOutsideCovariance_det_eq
+
+
+-- Design/AllHeavyNegativeAggregate, THE ALL-HEAVY DESIGN WHOSE FREE-PAIR ROW
+-- AGGREGATE IS NEGATIVE.
+-- `exists_live_freePair_of_atMostOneNonheavy_of_rowAggregate_pos` produces a live
+-- free pair out of a POSITIVE aggregate, and the conditional tight-line hinge
+-- wants exactly that.  Whether the aggregate is positive when it is needed was
+-- the open question, and the tree could only point at `freePairKillerDesign` --
+-- which carries FIVE strictly dominating one-slot swaps and has an atom at
+-- leverage EXACTLY ONE, so it neither meets the all-heavy hypothesis nor says
+-- anything about the branch where no one-slot swap wins.
+-- THIS DESIGN CLOSES BOTH GAPS AT ONCE.  All six leverages are
+-- `3/2, 55/2, 43/2, 31/18, 65/36, 43/18`, every one strictly above one, so the
+-- "at most one nonheavy" hypothesis holds in its strongest form; the aggregate is
+-- `-619627/2610432`; the base triple dominates with a singular gap and the tight
+-- direction `(1,1,6)` in its kernel; the design is line-free (min bracket `1/6`)
+-- and off-conic (Veronese determinant `181280/243`); and NO one-slot swap is
+-- strict, each of the nine killed by an explicit probe -- `{1,2,5}` by the tight
+-- direction itself, at Rayleigh exactly zero.
+-- SO THE FLAT AGGREGATE CONJECTURE AND ITS ALL-HEAVY REPAIR BOTH DIE HERE, and
+-- they die on the branch, which is what `freePairKillerDesign` could not witness.
+-- WHAT SURVIVES: the landed bridge is an implication OUT OF a positive aggregate
+-- and is untouched.  What dies is the claim that its antecedent is available.
+-- NOT A GTZ COUNTEREXAMPLE: `{1,3,5}` is strict (leading minors `743/36`,
+-- `1195/81`, `299/27`), as are `{1,4,5}`, `{2,3,5}`, `{2,4,5}` -- ALL of them
+-- DISTANCE-TWO, so the branch is reached by a route the aggregate never sees.
+#print axioms Gtz.allHeavyNegativeAggregateAtom
+#print axioms Gtz.allHeavyNegativeAggregateWeight
+#print axioms Gtz.allHeavyNegativeAggregateDesign
+#print axioms Gtz.allHeavyNegativeAggregateDesign_hasLinePattern
+#print axioms Gtz.allHeavyNegativeAggregateDesign_hasNoCommonQuadric
+#print axioms Gtz.allHeavyNegativeAggregateDesign_baseGap_eq
+#print axioms Gtz.allHeavyNegativeAggregateDesign_baseGap_form
+#print axioms Gtz.allHeavyNegativeAggregateDesign_dominates_base
+#print axioms Gtz.allHeavyNegativeAggregateDesign_isTightDirection
+#print axioms Gtz.allHeavyNegativeAggregateDesign_allHeavy
+#print axioms Gtz.allHeavyNegativeAggregateDesign_freePairRowAggregate_neg
+#print axioms Gtz.allHeavyNegativeAggregateDesign_gap_oneThreeFive_eq
+#print axioms Gtz.allHeavyNegativeAggregateDesign_gap_oneThreeFive_posDef
+#print axioms Gtz.allHeavyNegativeAggregateDesign_exists_posDef_cardThree
+#print axioms Gtz.allHeavyNegativeAggregateDesign_not_tightLineOneSlotFamily
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
