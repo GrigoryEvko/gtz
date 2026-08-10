@@ -548,6 +548,7 @@ import Gtz.Ties.NonUniformLeverageTie
 import Gtz.Design.PairingMinorPlueckerBridge
 import Gtz.Quantitative.ProjectionGapQuadratic
 import Gtz.Design.AllHeavyNegativeAggregate
+import Gtz.Design.BarycentricOpenCellWitness
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19283,6 +19284,33 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.allHeavyNegativeAggregateDesign_gap_oneThreeFive_posDef
 #print axioms Gtz.allHeavyNegativeAggregateDesign_exists_posDef_cardThree
 #print axioms Gtz.allHeavyNegativeAggregateDesign_not_tightLineOneSlotFamily
+
+
+-- Design/BarycentricOpenCellWitness, THE BARYCENTRIC OPEN CELL IS INHABITED.
+-- `TightBarycentricOpenCell` is the hypothesis of
+-- `tightLineOneSlotFamily_of_barycentricOpenCell` and of every coverage result
+-- around it, and NOTHING exhibited a design satisfying it -- so all of them were
+-- formally at risk of being VACUOUS.  `freePairKillerDesign` inhabits it.
+-- THE COORDINATES ARE THE TRANSPORTED ONES, NOT THE RAW ATOMS, and the
+-- distinction decides the answer.  Read on `design.atom` the cell FAILS here:
+-- free atom `4` is `(0,0,-1)`, so two of the nine coordinate products are exactly
+-- zero.  The consumers pass `unitAxisTightVector` and `unitAxisFreeAtom`, under
+-- which that atom becomes `(11/15, 2/5, -2/15)` and all nine coordinates are
+-- strictly positive.  The base frame is invertible exactly because the design is
+-- line-free; its determinant is `15`.
+-- THE NINE VALUES with transported tight vector `(2,1,-1)`: free atom `0` reads
+-- `5` giving `46/75, 7/50, 37/150`; free atom `1` reads `2` giving
+-- `11/15, 1/5, 1/15`; free atom `2` reads `5` giving `16/25, 3/25, 6/25`.
+-- THIS IS A SATISFIABILITY CERTIFICATE, NOT PROGRESS.
+-- `not_tightBarycentricOpenCell_of_not_tightLineOneSlotFamily` proves the cell is
+-- disjoint from the no-one-slot stratum, and this design inhabits the cell
+-- precisely because it carries five strictly dominating one-slot swaps.
+#print axioms Gtz.freePairKillerDesign_unitAxisBaseFrame_eq
+#print axioms Gtz.freePairKillerDesign_unitAxisBaseNormalizer_eq
+#print axioms Gtz.freePairKillerDesign_unitAxisFreeAtom_eq
+#print axioms Gtz.freePairKillerDesign_unitAxisTightVector_eq
+#print axioms Gtz.freePairKillerDesign_tightBarycentricOpenCell
+#print axioms Gtz.exists_tightBarycentricOpenCell
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
