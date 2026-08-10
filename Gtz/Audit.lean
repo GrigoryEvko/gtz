@@ -481,6 +481,7 @@ import Gtz.Design.PlaneBranchNormalForm
 import Gtz.Design.PlaneBranchUnitAxisNormalForm
 import Gtz.Design.PlaneBranchWindowBridge
 import Gtz.Design.PlaneBranchComplementSelector
+import Gtz.Design.TightLineBranchLivePairBridge
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18105,6 +18106,100 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.freeCompletion_det_nonpos_of_hardSide
 #print axioms Gtz.PlaneBranchHardSideFreePairSelector
 #print axioms Gtz.hardSideBaseCompletionSelector_of_hardSideFreePairSelector
+
+-- Design/TightLineBranchLivePairBridge, the U(3,6) tight-line branch as
+-- candidates, families and liveness.  Three equivalent finite restatements of
+-- `Gtz.UThreeSixTightLineBranch`: the nineteen explicit non-base card-three
+-- gaps (the base triple is killed by the landed tight-direction obstruction and
+-- nothing else prunes, since exact rational witnesses show each of the three
+-- families is the SOLE strict family at some design), the regrouping into
+-- one-slot / distance-two / complement, and the frame-sign form.  The
+-- mathematics under them is the live-pair dictionary: a pair gap strictly
+-- positive on the plane orthogonal to ANY unit axis is exactly `IsLivePair`
+-- (the determinant half is Sylvester's law of inertia in the only case this
+-- campaign needs), the tight line's canonical base pair -- the one opposite a
+-- transverse base label -- is always live, and at a live pair strict
+-- domination is exactly one `discriminantTie` sign.  The complement candidate
+-- costs two signs rather than three because its normal surplus is free from
+-- the landed uniform corner at weight floor zero.
+-- REFUTED AND DELIBERATELY NOT LANDED: the author's `TightLineBaseTieSelector`
+-- and `uThreeSixTightLineBranch_of_baseTieSelector`, which claimed the branch
+-- follows from one tie sign at that canonical base pair.  A positive tie there
+-- produces a strict triple with TWO base labels, i.e. a one-slot swap, and an
+-- exact rational design (Parseval on the nose, line-free, off-conic, all six
+-- atoms heavy, tight line spanned by e_0) has its three strict triples all at
+-- distance two while the canonical live base pair {0,1} has tie legs
+-- 0, -287/4, -496, -331.  The selector is FALSE, so that implication was a
+-- true theorem with an unsatisfiable hypothesis.  For the same reason the two
+-- `exists_liveBasePair_*_nonpos_of_not_nineteenCandidate` theorems below are
+-- one-way necessary conditions and NOT targets to contradict; the genuine
+-- failure characterization is `not_tightLineNineteenCandidate_iff_livePairTieRefusal`.
+#print axioms Gtz.freeLabel_eq_of_not_mem_baseTriple
+#print axioms Gtz.baseLabel_eq_of_mem_baseTriple
+#print axioms Gtz.TightLineNineteenCandidate
+#print axioms Gtz.exists_posDef_cardThree_iff_tightLineNineteenCandidate
+#print axioms Gtz.UThreeSixTightLineNineteenCandidateBranch
+#print axioms Gtz.uThreeSixTightLineBranch_iff_nineteenCandidateBranch
+#print axioms Gtz.TightLineOneSlotFamily
+#print axioms Gtz.TightLineDoubleSwapFamily
+#print axioms Gtz.TightLineComplementCandidate
+#print axioms Gtz.tightLineNineteenCandidate_iff_tightLineThreeFamilies
+#print axioms Gtz.TightLineThreeFamilySelector
+#print axioms Gtz.uThreeSixTightLineBranch_iff_threeFamilySelector
+#print axioms Gtz.isTightDirectionOf_smul
+#print axioms Gtz.isTightDirectionOf_normalizedDirection
+#print axioms Gtz.hasTightLineAt_smul
+#print axioms Gtz.hasTightLineAt_normalizedDirection
+#print axioms Gtz.dominationGap_form_pos_of_hasTightLineAt_of_transverse
+#print axioms Gtz.basePairGap_form_pos_of_tightLine
+#print axioms Gtz.exists_baseLabel_tightReading_ne_zero
+#print axioms Gtz.exists_liveBasePair_planePositive_of_tightLine
+#print axioms Gtz.TightLineOneSlotSignFamily
+#print axioms Gtz.tightLineOneSlotFamily_iff_signFamily
+#print axioms Gtz.TightLineDoubleSwapSignFamily
+#print axioms Gtz.tightLineDoubleSwapFamily_iff_signFamily
+#print axioms Gtz.complementGap_tightReading_surplus_pos_of_tightDirection
+#print axioms Gtz.posDef_complementGap_iff_two_frameMinors_of_tightDirection
+#print axioms Gtz.TightLineThreeFamilySignSelector
+#print axioms Gtz.uThreeSixTightLineBranch_of_threeFamilySignSelector
+#print axioms Gtz.dotProduct_normalizedDirection_eq_zero_iff
+#print axioms Gtz.insertGap_form_pos_of_form_pos
+#print axioms Gtz.exists_liveBaseLabel_oneSlot_planePositive_of_tightLine
+#print axioms Gtz.quadForm_eq_frameExpansion
+#print axioms Gtz.quadForm_pos_of_planeBlock_pos_of_det_pos
+#print axioms Gtz.posDef_of_unitAxisPlanePositive_of_det_pos
+#print axioms Gtz.posDef_iff_det_pos_of_unitAxisPlanePositive
+#print axioms Gtz.exists_liveBaseLabel_oneSlot_posDef_iff_det_pos_of_tightLine
+#print axioms Gtz.tightLineNineteenCandidate_of_oneSlotGap_posDef
+#print axioms Gtz.exists_tightLineBranch_antecedent_witness
+#print axioms Gtz.frameDeterminant_negativeDirection_identity
+#print axioms Gtz.planeBlock_leading_pos_of_planePositive
+#print axioms Gtz.planeBlock_minor_pos_of_planePositive
+#print axioms Gtz.det_neg_of_unitAxisPlanePositive_of_negativeDirection
+#print axioms Gtz.exists_pairNormal_ne_zero
+#print axioms Gtz.det_pairGap_eq_neg_pairGapExcessOf
+#print axioms Gtz.pairGap_form_neg_of_pairNormal
+#print axioms Gtz.isLivePair_of_planePositive_pairGap
+#print axioms Gtz.isLivePair_iff_planePositive_pairGap
+#print axioms Gtz.isLivePair_basePair_of_tightLine_of_transverse
+#print axioms Gtz.exists_isLivePair_baseTriplePair_of_tightLine
+#print axioms Gtz.posDef_gap_iff_pos_discriminantTie_of_isLivePair
+#print axioms Gtz.oneSlotGap_posDef_iff_pos_discriminantTie_of_tightLine
+#print axioms Gtz.not_posDef_gap_of_tightReading_sum_le_one
+#print axioms Gtz.tightSwap_not_posDef_of_tightReading_le
+#print axioms Gtz.exists_freeLabel_outreads_every_baseLabel
+#print axioms Gtz.LivePairTieRefusal
+#print axioms Gtz.not_exists_posDef_cardThree_iff_livePairTieRefusal
+#print axioms Gtz.not_tightLineNineteenCandidate_iff_livePairTieRefusal
+#print axioms Gtz.exists_liveBasePair_all_discriminantTie_nonpos_of_not_nineteenCandidate
+#print axioms Gtz.TightLineLivePairTieSelector
+#print axioms Gtz.uThreeSixTightLineBranch_iff_livePairTieSelector
+#print axioms Gtz.exists_isLivePair_baseTriplePair_uThreeSixStratumDesign
+#print axioms Gtz.not_livePairTieRefusal_uThreeSixStratumDesign
+#print axioms Gtz.tripleInsert_rotate
+#print axioms Gtz.isLivePair_freePair_of_posDef_distanceTwoGap
+#print axioms Gtz.baseLabel_ne_freeLabel_of_memBaseTriple
+#print axioms Gtz.exists_liveBasePair_freeTie_nonpos_of_not_nineteenCandidate
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
