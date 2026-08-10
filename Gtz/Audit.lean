@@ -545,6 +545,7 @@ import Gtz.Certificates.CollarWindowComposite
 import Gtz.Certificates.CollarChartSoundnessChart43210
 import Gtz.Quantitative.ProjectionBasisCoordinates
 import Gtz.Ties.NonUniformLeverageTie
+import Gtz.Design.PairingMinorPlueckerBridge
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19192,6 +19193,29 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.nonUniformLeverageTieDesign_lightTripleGap_det
 #print axioms Gtz.nonUniformLeverageTieDesign_not_posDef_cardThree
 #print axioms Gtz.nonUniformLeverageTieDesign_isTie
+
+-- Design/PairingMinorPlueckerBridge, LINE-FREENESS AS A STRICT COVARIANCE.
+-- Fix a pair of atoms; every further atom gives a two-component column of
+-- pairings against them, and `pairingMinor` is the determinant of two such
+-- columns.  `pairArea_mul_tripleBracket` is the Pluecker relation in that
+-- vocabulary: the pair's Gram area times a probe bracket is an alternating sum
+-- of pairing minors against the three brackets through the pair.
+-- WHAT IT BUYS: a live pair has strictly positive Gram area, so a nonvanishing
+-- atom bracket forces one pairing minor nonzero, and the weighted Lagrange
+-- identity then makes the three-column covariance determinant STRICTLY
+-- positive.  That is the admissible shape for line-freeness per the campaign's
+-- own no-go: margins vanish inside the branch, so line-freeness may only enter
+-- as a NONVANISHING producing a strict sign, and this puts it in exactly that
+-- form.
+#print axioms Gtz.pairingMinor
+#print axioms Gtz.pairArea
+#print axioms Gtz.pairArea_mul_tripleBracket
+#print axioms Gtz.exists_pairingMinor_ne_zero
+#print axioms Gtz.pairArea_pos_of_isLivePair
+#print axioms Gtz.exists_atom_pairingMinor_ne_zero_of_isLivePair
+#print axioms Gtz.weighted_pairing_covariance_three_pos
+#print axioms Gtz.weighted_atom_pairing_covariance_three_pos_of_lineFree
+
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

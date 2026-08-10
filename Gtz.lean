@@ -2129,6 +2129,7 @@ import Gtz.Design.InPlaneRestriction
 import Gtz.Design.SelectorEquivalences
 import Gtz.Design.LineMarginCap
 import Gtz.Design.PairDifferenceCover
+import Gtz.Design.PairingMinorPlueckerBridge
 import Gtz.Design.TightAntecedentMining
 
 -- U(3,6): the off-conic formulation of stress-freeness, the exact rational
