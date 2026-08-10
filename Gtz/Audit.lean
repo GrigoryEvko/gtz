@@ -498,6 +498,8 @@ import Gtz.Design.TightLineUniversalOneSlot
 import Gtz.Design.LineBranchBasePairIsLive
 import Gtz.Design.LineBranchOneSlotAggregate
 import Gtz.Design.LineBranchFreePairBracketExpansion
+import Gtz.Design.LineBranchBracketCoefficientSigns
+import Gtz.Design.LineBranchRankTwoOneSlot
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18560,6 +18562,47 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.unitAxisFrameFreePairGap_eq_congrPairGap
 #print axioms Gtz.unitAxisFrameFreePairGap_det_eq_neg_metricDet_mul_pairGapExcessOf
 #print axioms Gtz.unitAxisMetricDet_mul_freePairRowAggregate_eq_neg_detSum
+
+-- Design/LineBranchBracketCoefficientSigns, the sign classification of that
+-- ledger -- and the proof that the classification does NOT decide the
+-- aggregate.  Every coefficient in `weighted_freePairGap_det_sum_eq_bracketLedger`
+-- is strictly positive at every design: the three one-slot coefficients (whose
+-- terms are SUBTRACTED), the three cross coefficients, and the free-frame
+-- coefficient.  So the ledger carries exactly ONE negative family and that
+-- family is real.
+--
+-- READ THE NEXT SENTENCE BEFORE SPENDING THIS MODULE.  Coefficient positivity
+-- is UNCONDITIONAL -- `freePairLedger_coefficients_pos` has no hypothesis
+-- beyond the design axioms -- yet the aggregate is NEGATIVE at
+-- `freePairKillerDesign` and POSITIVE at `baseTieKillerDesign`.  Both facts are
+-- theorems here, packaged as `exists_design_freePairRowAggregate_neg_and_exists_pos`,
+-- so the no-go is in the tree rather than in a report.  No argument assembled
+-- from coefficient signs alone can prove the aggregate positive; the negative
+-- family must be DOMINATED, which is the open content of the free-pair
+-- aggregate question and is untouched here.  In particular this module is NOT
+-- the sign argument for the aggregate ingredient of the line hinge: nothing in
+-- it mentions the no-one-slot hypothesis, and that hypothesis is exactly what
+-- separates the positive designs from `freePairKillerDesign`, which has five
+-- strict one-slot triples.
+#print axioms Gtz.freePairLedger_oneSlotCoefficient_pos
+#print axioms Gtz.freePairLedger_crossCoefficient_pos
+#print axioms Gtz.freePairLedger_freeFrameCoefficient_pos
+#print axioms Gtz.unitAxisFreeWeight_pos
+#print axioms Gtz.unitAxisFreeWeight_sum_lt_one
+#print axioms Gtz.freePairLedger_coefficients_pos
+#print axioms Gtz.exists_design_freePairRowAggregate_neg_and_exists_pos
+
+-- Design/LineBranchRankTwoOneSlot, a one-slot gap determinant as four bracket
+-- squares.  Signed Cauchy-Binet turns `det (A_f + A_s + A_in - A_out)` into the
+-- inserted triple's bracket square minus the three bracket squares through the
+-- removed vector, so a one-slot refusal at a single removed vector is one
+-- scalar inequality with no matrix in it.  BOTH statements are UNCONDITIONAL in
+-- the four vectors: no design, no hidden form, no Parseval identity, and --
+-- despite the module and lemma names inherited from the scratch lane -- no
+-- rank-two hypothesis anywhere.  That generality is the point; they apply at
+-- every one-slot site, not only on the line branch.
+#print axioms Gtz.det_threeAtomMatrix_sub_atomMatrix_eq_bracketSquares
+#print axioms Gtz.rankTwo_oneSlot_axis_refusal_iff
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
