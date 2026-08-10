@@ -483,6 +483,7 @@ import Gtz.Design.PlaneBranchWindowBridge
 import Gtz.Design.PlaneBranchComplementSelector
 import Gtz.Design.TightLineBranchLivePairBridge
 import Gtz.Design.LineBranchFreePairAggregateBridge
+import Gtz.Design.TightLineRefutationFixtures
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18228,6 +18229,68 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_livePair_of_pairRowAggregateOn_pos_of_isTie
 #print axioms Gtz.isTie_of_dominates_base_of_no_cardThree_posDef
 #print axioms Gtz.exists_live_freePair_of_no_cardThree_posDef_of_rowAggregate_pos
+
+-- Design/TightLineRefutationFixtures, two exact designs that permanently close
+-- two nominated routes.  Both are literal `WeightedDesign 6 3` values with
+-- rational atoms, Parseval exactly the identity, all six weights strictly
+-- positive, and the FULL line-branch antecedent set: the base triple dominates
+-- weakly, the design is line-free and off-conic, and an explicit tight
+-- direction of the base gap is exhibited.  At both designs the branch HOLDS --
+-- a strictly dominating card-three subset is exhibited -- so neither refutes
+-- anything the campaign is trying to prove.  What each kills is a SELECTOR: a
+-- proposed sufficient condition whose hypothesis is false here while the
+-- conclusion is true, i.e. a true theorem that can never be applied.
+-- `baseTieKillerDesign` (base gap !![0,0,0; 0,3,8; 0,8,31], tight direction
+-- e_0, leverages 16, 20, 1, 9/4, 17, 26) has its sole transverse base label at
+-- 2, so the canonical base pair is {0,1} and that pair IS live -- yet
+-- `discriminantTie` is nonpositive at EVERY ordered pair of distinct base
+-- labels and EVERY completion (the four legs at {0,1} are 0, -287/4, -496,
+-- -331).  Its three strict triples {0,4,5}, {1,3,5}, {1,4,5} all sit at
+-- distance TWO, which is the structural reason: a positive leg at a base pair
+-- would produce a strict triple with two base labels, i.e. a one-slot swap.
+-- `freePairKillerDesign` (base gap !![20,14,3; 14,16,-1; 3,-1,2], tight
+-- direction (1,-1,-2), leverages 9, 26, 6, 11/2, 1, 6) has NO live free pair
+-- while the branch holds five times over with every strict triple a one-slot
+-- swap, so the UNCONDITIONAL "some free pair is live at every tight-line
+-- antecedent" is false and only the no-one-slot-guarded form survives.
+-- The same pair calibrates the aggregate hinge in both directions.  At
+-- `freePairKillerDesign` exactly one free atom is light (label 4, leverage
+-- exactly one, so NOT heavy under `0 < gapExcessOf`), the pairwise heaviness
+-- ingredient HOLDS, and the row aggregate is still -315/128: heaviness does
+-- not imply aggregate positivity, and any proof of the aggregate must consume
+-- the no-one-slot hypothesis, which this design fails.  At
+-- `baseTieKillerDesign` the aggregate is 14107/1008 > 0, the INHABITING
+-- WITNESS for the hypothesis of
+-- `exists_live_freePair_of_no_cardThree_posDef_of_rowAggregate_pos`.
+#print axioms Gtz.pairRowAggregateOn_fin_three
+#print axioms Gtz.baseTieKillerAtom
+#print axioms Gtz.baseTieKillerWeight
+#print axioms Gtz.baseTieKillerDesign
+#print axioms Gtz.baseTieKillerDesign_hasLinePattern
+#print axioms Gtz.baseTieKillerDesign_hasNoCommonQuadric
+#print axioms Gtz.baseTieKillerDesign_baseTripleGap_form
+#print axioms Gtz.baseTieKillerDesign_dominates_baseTriple
+#print axioms Gtz.baseTieKillerDesign_tightDirection_ne_zero
+#print axioms Gtz.baseTieKillerDesign_tightDirection_rayleigh
+#print axioms Gtz.baseTieKillerDesign_isLivePair_baseZeroOne
+#print axioms Gtz.baseTieKillerDesign_baseTriplePair_discriminantTie_nonpos
+#print axioms Gtz.baseTieKillerDesign_strictTripleGap_form
+#print axioms Gtz.baseTieKillerDesign_hasStrictTriple
+#print axioms Gtz.baseTieKillerDesign_freePairRowAggregate_pos
+#print axioms Gtz.freePairKillerAtom
+#print axioms Gtz.freePairKillerWeight
+#print axioms Gtz.freePairKillerDesign
+#print axioms Gtz.freePairKillerDesign_hasLinePattern
+#print axioms Gtz.freePairKillerDesign_hasNoCommonQuadric
+#print axioms Gtz.freePairKillerDesign_baseTripleGap_form
+#print axioms Gtz.freePairKillerDesign_dominates_baseTriple
+#print axioms Gtz.freePairKillerDesign_tightDirection_ne_zero
+#print axioms Gtz.freePairKillerDesign_tightDirection_rayleigh
+#print axioms Gtz.not_isLivePair_freePairKillerDesign_freePair
+#print axioms Gtz.freePairKillerDesign_atMostOneNonheavyFree
+#print axioms Gtz.freePairKillerDesign_freePairRowAggregate_neg
+#print axioms Gtz.freePairKillerDesign_strictTripleGap_form
+#print axioms Gtz.freePairKillerDesign_hasStrictTriple
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
