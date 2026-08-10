@@ -502,6 +502,7 @@ import Gtz.Design.LineBranchBracketCoefficientSigns
 import Gtz.Design.LineBranchRankTwoOneSlot
 import Gtz.Design.LineBranchFreePairAdjugateBalance
 import Gtz.Design.ConditionalLineHinge
+import Gtz.Design.DoubleLightDeflation
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18715,6 +18716,37 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_heavy_freePair_of_no_cardThree_posDef_of_leverageOne_unique
 #print axioms Gtz.freePairMinorRefusal_freePairKillerDesign
 #print axioms Gtz.not_freePairMinorRefusal_baseTieKillerDesign
+
+-- Design/DoubleLightDeflation, INGREDIENT (a) OF THE DEAD HINGE, PROVED --
+-- and it is worth landing even though the hinge it was built for is dead,
+-- because the statement is a rigidity fact about ties and not about aggregates.
+-- `pairwise_free_heavy_of_uThreeSix_tightLine_of_no_oneSlot`: at a line-free
+-- tight-line antecedent with NO strict one-slot swap, every PAIR of free labels
+-- has at least one strictly heavy endpoint.  Equivalently
+-- `atMostOne_light_free_of_tightLine_of_no_oneSlot`, whose only nondegeneracy
+-- hypothesis is `NOT HasParallelPair` rather than the full line pattern.
+-- The engine is a deflation: a positive-definite gap in the design deflated at
+-- a light atom pulls back STRICTLY, because the transported strict summand is
+-- added to a positive-semidefinite light-atom complement, so two light atoms
+-- would manufacture a strict card-three set avoiding both -- and
+-- `cardThree_avoiding_two_free_eq_base_or_oneSlot` says such a set is the base
+-- triple or a one-slot swap, both excluded by hypothesis.
+-- WHAT IT DOES NOT DO: it does not produce a live free pair, and the aggregate
+-- that was supposed to convert it into one is refuted (see ConditionalLineHinge
+-- above).  Its value here is `leverage_eq_one_unique_of_isTie_of_not_hasParallelPair`,
+-- which discharges the uniqueness hypothesis that ConditionalLineHinge's Part 8
+-- otherwise has to carry, and the tie rigidity it states: on a (6,3) tie of a
+-- primitive design at most ONE atom sits at leverage exactly one.
+#print axioms Gtz.posDef_image_of_deflated_posDef_of_light
+#print axioms Gtz.leverage_deflatedDesign_lt_one_of_two_light
+#print axioms Gtz.exists_posDef_cardThree_avoiding_two_of_two_light_of_strictCauchy
+#print axioms Gtz.exists_posDef_cardThree_avoiding_two_of_two_light_of_not_hasParallelPair
+#print axioms Gtz.leverage_eq_one_unique_of_isTie_of_not_hasParallelPair
+#print axioms Gtz.allHeavy_or_existsUnique_leverage_eq_one_of_isTie_of_not_hasParallelPair
+#print axioms Gtz.cardThree_avoiding_two_free_eq_base_or_oneSlot
+#print axioms Gtz.atMostOne_light_free_of_tightLine_of_no_oneSlot
+#print axioms Gtz.atMostOne_light_free_of_uThreeSix_tightLine_of_no_oneSlot
+#print axioms Gtz.pairwise_free_heavy_of_uThreeSix_tightLine_of_no_oneSlot
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
