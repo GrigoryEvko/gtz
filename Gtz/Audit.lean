@@ -484,6 +484,7 @@ import Gtz.Design.PlaneBranchComplementSelector
 import Gtz.Design.TightLineBranchLivePairBridge
 import Gtz.Design.LineBranchFreePairAggregateBridge
 import Gtz.Design.TightLineRefutationFixtures
+import Gtz.Design.TwoMeetingLinesTransversal
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18291,6 +18292,32 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.freePairKillerDesign_freePairRowAggregate_neg
 #print axioms Gtz.freePairKillerDesign_strictTripleGap_form
 #print axioms Gtz.freePairKillerDesign_hasStrictTriple
+
+-- Design/TwoMeetingLinesTransversal, the four-candidate localization of the
+-- two-meeting-lines class.  A nonpositive shadow-gap determinant at a line's
+-- own unit normal kills every strict triple carrying two labels of that line;
+-- applied at both lines it leaves only the four transversals {1,3,5}, {1,4,5},
+-- {2,3,5}, {2,4,5} through the one label on neither line.  The headline
+-- `twoMeetingLines_heavyWeakToStrict_of_transversalResidual` concludes
+-- `PatternHeavyWeakToStrict` at the two-meeting-lines pattern, which is
+-- character for character `Skeleton.obligationHeavyWeakToStrictTwoMeetingLines`,
+-- from a residual demanded ONLY inside the joint lift blind spot: outside it the
+-- landed flat-pair equivalence supplies the strict triple directly.
+-- The finite matroid step is decided in the kernel.  The author's version used
+-- `native_decide`, which reaches `Lean.ofReduceBool` and would have failed the
+-- sweep; plain `decide` closes it in seconds, so the whole module is inside the
+-- allowed triple.
+-- SATISFIABILITY UNTESTED, AND THAT CUTS BOTH WAYS: no design is exhibited at
+-- which both `IsLinePairLiftBlindAt` instances hold at once.  If that joint
+-- blind spot is EMPTY on the antecedent region, the residual is vacuously true
+-- and this theorem discharges the obligation outright, so emptiness-testing is
+-- a cheap first-class target rather than a caveat.
+#print axioms Gtz.finSix_cardThree_nontransversal_contains_meetingLinePair
+#print axioms Gtz.IsLinePairLiftBlindAt
+#print axioms Gtz.TwoMeetingLinesTransversalStrict
+#print axioms Gtz.twoMeetingLines_strictTriple_eq_transversal_of_bothLinePairBlind
+#print axioms Gtz.twoMeetingLines_strictTriple_eq_transversal_of_bothLineNormalBlind
+#print axioms Gtz.twoMeetingLines_heavyWeakToStrict_of_transversalResidual
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
