@@ -485,6 +485,7 @@ import Gtz.Design.TightLineBranchLivePairBridge
 import Gtz.Design.LineBranchFreePairAggregateBridge
 import Gtz.Design.TightLineRefutationFixtures
 import Gtz.Design.TwoMeetingLinesTransversal
+import Gtz.Design.LineBranchFreePairAggregateBalance
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18318,6 +18319,40 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.twoMeetingLines_strictTriple_eq_transversal_of_bothLinePairBlind
 #print axioms Gtz.twoMeetingLines_strictTriple_eq_transversal_of_bothLineNormalBlind
 #print axioms Gtz.twoMeetingLines_heavyWeakToStrict_of_transversalResidual
+
+-- Design/LineBranchFreePairAggregateBalance, the algebra of the free-pair row
+-- aggregate, its exact conservation law, and its consumer.  Three layers, all
+-- downstream of the sign step in LineBranchFreePairAggregateBridge and
+-- independent of whatever coordinates a proof of the aggregate sign uses.
+-- ALGEBRA: the row aggregate collapses to one term per UNORDERED free pair,
+-- (u_c + u_d) * P_cd, and at rank three the general-rank `pairGapExcessOf` is
+-- DEFINITIONALLY the rank-three `pairMinor` -- the two vocabularies the campaign
+-- has been carrying separately are one.
+-- BALANCE: summing the three free-centred pair-row laws splits the six-label row
+-- exactly into the free-free aggregate and the base-weighted cross aggregate,
+-- and once the global leverage trace is spent the weighted free-leverage terms
+-- cancel outright.  This is an exact IDENTITY, not a bound; no uniform positive
+-- lower bound on the aggregate exists, because exact positive values decay
+-- toward zero as the weights do.
+-- CONSUMER: with the aggregate positive and every card-three subset failing, the
+-- bridge returns a live free pair and the landed refusal equivalence upgrades it
+-- to EVERY completion of that pair refusing.  That conjunction is the exact
+-- downstream residual.  Its `hnoStrict` hypothesis is the negation of the
+-- branch, so the conclusion is asserted only where the branch fails: it is
+-- contradictable in the intended sense and is not a statement that also holds
+-- where the branch is true.
+-- The aggregate-positivity hypothesis is INHABITED -- `baseTieKillerDesign` has
+-- aggregate 14107/1008 -- and is not vacuous the other way either:
+-- `freePairKillerDesign` has aggregate -315/128.
+#print axioms Gtz.pairGapExcessOf_comm
+#print axioms Gtz.freePairRowAggregate_eq_threePairs
+#print axioms Gtz.pairGapExcessOf_eq_pairMinor
+#print axioms Gtz.freeBaseCrossPairRowAggregate
+#print axioms Gtz.freeBaseCrossPairRowAggregate_eq_ninePairs
+#print axioms Gtz.freePairRowAggregate_add_cross_eq_freeRowScalars
+#print axioms Gtz.freePairRowAggregate_add_cross_eq_leverageBalance
+#print axioms Gtz.not_exists_cardThree_posDef_of_forall_not_posDef
+#print axioms Gtz.exists_live_freePair_all_discriminantTie_nonpos_of_rowAggregate_pos
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
