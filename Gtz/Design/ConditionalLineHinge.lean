@@ -4,6 +4,7 @@ import Gtz.Design.UThreeSixDisjunction
 import Gtz.Design.TightLineRefutationFixtures
 import Gtz.Design.FreePairPlane
 import Gtz.Reduction.TrichotomyLedger
+import Gtz.Design.UThreeSixStratumWitness
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -773,5 +774,38 @@ theorem not_freePairMinorRefusal_baseTieKillerDesign :
   fun hrefusal =>
     (freePairMinorRefusal_iff_not_freePairMinorPositiveTie baseTieKillerDesign).mp hrefusal
       freePairMinorPositiveTie_baseTieKillerDesign
+
+/-! ## Part 10 -- kernel-checked non-vacuity for the PLANE half
+
+Parts 6 and 7 are hypothesised on `HasFreeTightDirection`, and a theorem whose
+hypothesis is never inhabited proves nothing.  The tree already carries an
+inhabitant, `planeBranchDesign`, together with a proof that its complement
+triple is strictly dominating, so both plane theorems instantiate with no new
+numerics and the gap closes here rather than being left as a caveat. -/
+
+/-- The landed plane-branch witness has a live free pair with a positive tie
+leg, so `FreePairPositiveTie` is inhabited on the plane branch. -/
+theorem freePairPositiveTie_planeBranchDesign :
+    FreePairPositiveTie planeBranchDesign :=
+  freePairPositiveTie_of_posDef_twoFreeLabels planeBranchDesign 3 4 5
+    (by decide) (by decide) (by decide) (by decide) (by decide)
+    planeBranchDesign_posDef_complementTripleGap
+
+/-- The same design instantiates the plane-branch equivalence of Part 6, so the
+ten landed matrix candidates and the three scalar free pairs are both inhabited
+at one design. -/
+theorem planeBranchTenCandidate_planeBranchDesign :
+    PlaneBranchTenCandidate planeBranchDesign :=
+  (planeBranchTenCandidate_iff_freePairPositiveTie planeBranchDesign
+      planeBranchDesign_dominates_baseTriple
+      planeBranchDesign_hasFreeTightDirection).mpr
+    freePairPositiveTie_planeBranchDesign
+
+/-- And the refusal predicate is CONTRADICTABLE on the plane branch too: it
+fails at `planeBranchDesign`, whose branch is true. -/
+theorem not_freePairTieRefusal_planeBranchDesign :
+    ¬ FreePairTieRefusal planeBranchDesign :=
+  (freePairTieRefusal_iff_not_freePairPositiveTie planeBranchDesign).not.mpr
+    (by simpa using freePairPositiveTie_planeBranchDesign)
 
 end Gtz

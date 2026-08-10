@@ -18722,6 +18722,14 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_heavy_freePair_of_no_cardThree_posDef_of_leverageOne_unique
 #print axioms Gtz.freePairMinorRefusal_freePairKillerDesign
 #print axioms Gtz.not_freePairMinorRefusal_baseTieKillerDesign
+-- Part 10, added at landing time: KERNEL-CHECKED NON-VACUITY FOR THE PLANE HALF.
+-- Parts 6 and 7 are hypothesised on `HasFreeTightDirection`, and the landed
+-- `planeBranchDesign` inhabits it together with a strictly dominating complement
+-- triple, so both plane theorems instantiate with no new numerics.  The refusal
+-- predicate is contradictable on the plane branch too.
+#print axioms Gtz.freePairPositiveTie_planeBranchDesign
+#print axioms Gtz.planeBranchTenCandidate_planeBranchDesign
+#print axioms Gtz.not_freePairTieRefusal_planeBranchDesign
 
 -- Design/DoubleLightDeflation, INGREDIENT (a) OF THE DEAD HINGE, PROVED --
 -- and it is worth landing even though the hinge it was built for is dead,
