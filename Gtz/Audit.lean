@@ -507,6 +507,7 @@ import Gtz.Design.BarycentricOneSlotRigidity
 import Gtz.Design.BarycentricCoverage
 import Gtz.Design.ConservationCalculus
 import Gtz.Design.LivePairRefusalStrata
+import Gtz.Design.FreePairAdjugateCorrectionFrame
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -19021,6 +19022,33 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.not_posDef_distanceTwo_of_windowRefusal
 #print axioms Gtz.threeEdgeRefusalSystem_of_threeWindowRefusalSystem
 #print axioms Gtz.freeWeight_lt_half_of_threeWindowRefusalSystem
+
+-- Design/FreePairAdjugateCorrectionFrame, THE SIGNED DIFFERENCE INSIDE THE
+-- ADJUGATE BALANCE.  `unitAxisMetricDet_mul_freePairRowAggregate_eq_adjugateBalance`
+-- writes the scaled aggregate as the free-triple gap determinant scaled by the
+-- free weight total minus one adjugate trace; this names and signs the gap
+-- between those two terms.  `unitAxisFreePairCorrectionFrame_posDef_of_lineFree`
+-- makes the correction POSITIVE DEFINITE from line-freeness alone, which is the
+-- shape every failed route lacked: line-freeness entering as a NONVANISHING that
+-- yields a strict sign, not as a magnitude to bound below -- and no magnitude
+-- bound can exist, because the quantities in question decay to zero inside the
+-- branch.
+-- IT DOES NOT SIGN THE AGGREGATE, and must not be read as doing so: the
+-- aggregate is refuted negative at exact rational-atom designs meeting every
+-- antecedent with no strict one-slot swap and every leverage strictly above one,
+-- and `exists_design_freePairRowAggregate_neg_and_exists_pos` exhibits both signs.
+-- PROVENANCE: these eight declarations were added to the parallel scratch copy
+-- of LineBranchFreePairAdjugateBalance AFTER its six-declaration predecessor had
+-- landed, so they are landed here as a follow-on module rather than by
+-- re-landing a file six of whose names are already in the tree.
+#print axioms Gtz.unitAxisAbstractFreePairDefect
+#print axioms Gtz.unitAxisFreePairCorrectionFrame
+#print axioms Gtz.freeWeightSum_smul_freeTripleGap_sub_defect_eq_correctionFrame
+#print axioms Gtz.unitAxisFreePairCorrectionFrame_posDef
+#print axioms Gtz.weighted_freePair_det_sum_eq_det_sub_trace_defect
+#print axioms Gtz.pos_secondSymmetric_sub_two_mul_thirdSymmetric
+#print axioms Gtz.diagonal_adjugateBalance_pos
+#print axioms Gtz.unitAxisFreePairCorrectionFrame_posDef_of_lineFree
 #print axioms Gtz.card_oneSlotSwap
 #print axioms Gtz.not_posDef_distanceTwoTarget_of_windowRefusal
 #print axioms Gtz.exists_posDef_cardThree_iff_tightLineOneSlotFamily_of_windowRefusal
