@@ -504,6 +504,7 @@ import Gtz.Design.LineBranchFreePairAdjugateBalance
 import Gtz.Design.ConditionalLineHinge
 import Gtz.Design.DoubleLightDeflation
 import Gtz.Design.BarycentricOneSlotRigidity
+import Gtz.Design.BarycentricCoverage
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18844,6 +18845,27 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_nonnegative_barycentricSelectorContribution
 #print axioms Gtz.tightLineBarycentricSelectorContribution
 #print axioms Gtz.exists_nonnegative_tightLineBarycentricSelectorContribution
+
+-- Design/BarycentricCoverage, THE CAVEAT ON THE MODULE ABOVE, AS A THEOREM.
+-- The open-cell closure finishes with the ONE-SLOT disjunct of the nineteen
+-- candidates, so transporting its winner out of the chart gives an ambient
+-- one-slot swap: `tightLineOneSlotFamily_of_barycentricOpenCell`.  By the landed
+-- exhaustion `exists_posDef_cardThree_iff_oneSlot_or_freePairPositiveTie` the
+-- one-slot family is exactly the EASY disjunct, and every residual here is
+-- conditioned on its negation, so cell and residual are DISJOINT.  The two
+-- corollaries say it from both sides: the cell misses the conjecturally empty
+-- failure locus, and -- strictly more --
+-- `not_tightBarycentricOpenCell_of_not_tightLineOneSlotFamily` shows it misses
+-- the ENTIRE no-one-slot stratum, where every hard witness and every refuted
+-- ingredient of this wave lives.  Adjoining `NOT open cell` to the residual is
+-- therefore free and buys nothing.
+-- THIS DOES NOT WEAKEN THE CLOSURE, and the file says so: nine coordinate signs
+-- decide what nine positive-definiteness tests would, the containment is STRICT
+-- (about a tenth of the easy region in a stage-two census, not all of it), and
+-- what is forbidden is only spending it as leverage on the open part.
+#print axioms Gtz.tightLineOneSlotFamily_of_barycentricOpenCell
+#print axioms Gtz.not_tightBarycentricOpenCell_of_no_cardThree_posDef
+#print axioms Gtz.not_tightBarycentricOpenCell_of_not_tightLineOneSlotFamily
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
