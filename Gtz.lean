@@ -202,6 +202,7 @@ import Gtz.Ties.CorankOneTieExistence
 import Gtz.Ties.DiamondTie
 import Gtz.Ties.DominationWithoutCertificate
 import Gtz.Ties.NonTetrahedralTie
+import Gtz.Ties.NonUniformLeverageTie
 import Gtz.Ties.RepeatedAtomExclusion
 import Gtz.Ties.SelectionObstruction
 import Gtz.Ties.SplitTetraLocalBalance

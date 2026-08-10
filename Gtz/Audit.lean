@@ -544,6 +544,7 @@ import Gtz.Certificates.CollarChartSoundness
 import Gtz.Certificates.CollarWindowComposite
 import Gtz.Certificates.CollarChartSoundnessChart43210
 import Gtz.Quantitative.ProjectionBasisCoordinates
+import Gtz.Ties.NonUniformLeverageTie
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19153,6 +19154,44 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.tripleGap_posDef_iff_centeredBasisMoments
 #print axioms Gtz.chartGapPairMinor_eq_basisMarginals
 #print axioms Gtz.weightProduct_mul_det_gap_eq_basisMarginals
+
+-- Ties/NonUniformLeverageTie, THE FIRST (6,3) TIE FIXTURE OFF THE
+-- EQUAL-LEVERAGE LOCUS.
+-- `tetraDesign` is the regular tetrahedron and `splitTetraAtom` is
+-- `tetraAtom . splitTetraDirIndex`, so BOTH (6,3) tie fixtures the tree carried
+-- before this one are uniform at leverage 3.  Every criterion this campaign has
+-- calibrated against a tie was therefore calibrated on the equal-leverage locus
+-- only, and a criterion that silently assumes equal leverage would pass every
+-- soundness gate ever run.  This fixture is an exact tie with leverages 19/3
+-- three times and 4/3 three times, so it closes that blind spot.
+-- WHY IT IS A CLONE, DELIBERATELY: its three light atoms are literally equal,
+-- so it is not line-free.  That makes it admissible as a SOUNDNESS GATE and
+-- inadmissible as an antecedent witness, and the docstring says so.
+-- `Gtz/LinAlg/EigenvalueSubdifferential.lean` had already observed IN PROSE
+-- that an unequal-leverage (6,3) tie exists -- split `sharpDesign`'s atoms 0
+-- and 1, leverages (4/3, 4/3, 19/3, 19/3, 19/3, 19/3) -- but never mechanized
+-- it, and that multiset is four-heavy-two-light against this one's three-three.
+-- THE STANDING WARNING IT CARRIES: `nonUniformLeverageTieDesign_lightTripleGap_det`
+-- shows the subset {3,4,5} has gap determinant +3, strictly POSITIVE, while its
+-- inertia is (1, 0, 2).  A determinant-only strictness test accepts it and is
+-- unsound; the twenty certificates here are Rayleigh probes for that reason.
+#print axioms Gtz.nonUniformLeverageTieAtom
+#print axioms Gtz.nonUniformLeverageTieWeight
+#print axioms Gtz.nonUniformLeverageTieDesign
+#print axioms Gtz.nonUniformLeverageTieDesign_atom
+#print axioms Gtz.nonUniformLeverageTieDesign_weight
+#print axioms Gtz.nonUniformLeverageTieDesign_leverage
+#print axioms Gtz.nonUniformLeverageTieDesign_leverage_ne
+#print axioms Gtz.nonUniformLeverageTieDesign_light_atoms_eq
+#print axioms Gtz.dotProduct_tripleGap_mulVec
+#print axioms Gtz.nonUniformLeverageTieDesign_baseTripleGap_form
+#print axioms Gtz.nonUniformLeverageTieDesign_baseTripleGap_det
+#print axioms Gtz.nonUniformLeverageTieDesign_dominates_baseTriple
+#print axioms Gtz.nonUniformLeverageTieDesign_tightDirection_ne_zero
+#print axioms Gtz.nonUniformLeverageTieDesign_isTightDirection
+#print axioms Gtz.nonUniformLeverageTieDesign_lightTripleGap_det
+#print axioms Gtz.nonUniformLeverageTieDesign_not_posDef_cardThree
+#print axioms Gtz.nonUniformLeverageTieDesign_isTie
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
