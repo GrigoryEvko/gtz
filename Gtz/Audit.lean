@@ -508,6 +508,7 @@ import Gtz.Design.BarycentricCoverage
 import Gtz.Design.ConservationCalculus
 import Gtz.Design.LivePairRefusalStrata
 import Gtz.Design.FreePairAdjugateCorrectionFrame
+import Gtz.Design.AxisBaseConicBracketIdentity
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -19046,6 +19047,22 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.freeWeightSum_smul_freeTripleGap_sub_defect_eq_correctionFrame
 #print axioms Gtz.unitAxisFreePairCorrectionFrame_posDef
 #print axioms Gtz.weighted_freePair_det_sum_eq_det_sub_trace_defect
+
+-- Design/AxisBaseConicBracketIdentity, OFF-CONICITY AS A BRACKET NONVANISHING.
+-- For six vectors ordered as the three coordinate axes followed by three free
+-- vectors, the off-diagonal Veronese determinant is exactly the DIFFERENCE of
+-- the two four-bracket products of the two perfect matchings of the octahedral
+-- bracket diagram, so off-conicity says those two products DIFFER.
+-- WHY THAT SHAPE MATTERS: off-conicity cannot be spent through a lower bound on
+-- the Veronese determinant, because that determinant approaches zero inside the
+-- branch.  The only admissible use is as a saturated DISEQUALITY, and this is
+-- the first tool in the tree that puts it in exactly that form and in the same
+-- bracket vocabulary as line-freeness -- which is what a refusal argument has to
+-- contradict.  Three declarations, and the third consumes `HasNoCommonQuadric`
+-- directly.
+#print axioms Gtz.freeOffDiagonalGrid_det_eq_bracketProducts
+#print axioms Gtz.freeOffDiagonalGrid_det_ne_zero_iff_bracketProducts_ne
+#print axioms Gtz.bracketProducts_ne_of_hasNoCommonQuadric_axisBaseAtom
 #print axioms Gtz.pos_secondSymmetric_sub_two_mul_thirdSymmetric
 #print axioms Gtz.diagonal_adjugateBalance_pos
 #print axioms Gtz.unitAxisFreePairCorrectionFrame_posDef_of_lineFree
