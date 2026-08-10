@@ -503,6 +503,7 @@ import Gtz.Design.LineBranchRankTwoOneSlot
 import Gtz.Design.LineBranchFreePairAdjugateBalance
 import Gtz.Design.ConditionalLineHinge
 import Gtz.Design.DoubleLightDeflation
+import Gtz.Design.BarycentricOneSlotRigidity
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18747,6 +18748,102 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.atMostOne_light_free_of_tightLine_of_no_oneSlot
 #print axioms Gtz.atMostOne_light_free_of_uThreeSix_tightLine_of_no_oneSlot
 #print axioms Gtz.pairwise_free_heavy_of_uThreeSix_tightLine_of_no_oneSlot
+
+-- Design/BarycentricOneSlotRigidity, A PARTIAL CLOSURE OF THE TIGHT-LINE BRANCH,
+-- AND A MEASURED STATEMENT OF EXACTLY WHAT IT COVERS.
+-- The algebra: a symmetric rank-two form whose kernel is the all-ones vector is
+-- a three-vertex Laplacian, and the one-slot determinant obtained by dropping
+-- the axis of squared tight reading s_i is `kappa * (rho - s_i) - s_i * rho *
+-- energy_i(q)` in the barycentric coordinates q of the transverse free atom.
+-- Parseval makes a POSITIVE weighted sum of the nine determinants exactly zero,
+-- so on the cell where every barycentric coordinate is positive, universal
+-- one-slot refusal forces all nine to vanish; the three equalities pin each free
+-- atom's coordinates uniquely when kappa > 0, making all three free atoms
+-- PARALLEL, which the line-free free-frame determinant forbids.  Hence
+-- `exists_posDef_cardThree_of_tightLine_of_barycentricOpenCell`: on the cell,
+-- every line-free tight-line antecedent already has a strict card-three subset,
+-- and off-conicity is not needed to say so.
+-- THE COVERAGE CAVEAT IS NOT PROSE -- IT IS THE THEOREM
+-- `tightLineOneSlotFamily_of_barycentricOpenCell` IN Design/BarycentricCoverage,
+-- WHICH SAYS THE WINNER PRODUCED HERE IS ALWAYS A ONE-SLOT SWAP.  The cell is
+-- therefore contained in the EASY disjunct of the landed exhaustion
+-- `exists_posDef_cardThree_iff_oneSlot_or_freePairPositiveTie`, and its
+-- complement -- the whole no-one-slot stratum, where every Wave-C residual,
+-- every hard witness and every refuted ingredient live -- is untouched.  Read
+-- this module as a cheap SUFFICIENT CONDITION for the easy disjunct, never as
+-- leverage on the residual.
+-- SATISFIABILITY: `TightBarycentricOpenCell` holds at the landed
+-- `freePairKillerDesign`, verified in exact rational arithmetic during the
+-- stage-two audit; NO Lean witness is built, and building one is the cheapest
+-- outstanding satisfiability job on this module.  The cell also demonstrably
+-- EXCLUDES the hard stratum -- zero of 611 hard designs in a stage-two census,
+-- and zero of Codex's own 3,634 -- which is the coverage theorem in the data.
+-- HYPOTHESIS MINIMALITY: line-freeness is LOAD-BEARING and off-conicity is not a
+-- hypothesis at all.  The Df = 0 cyclic tie family found in this wave satisfies
+-- every other hypothesis of the headline -- Dominates, a tight LINE, and all
+-- nine barycentric coordinates EXACTLY 1/3 -- and has NO strict card-three
+-- subset, so line-freeness is the only thing standing between the theorem and a
+-- refutation.  That family is also the campaign's first tie with NON-UNIFORM
+-- leverages, and every selector calibration before it used uniform-leverage ties.
+-- THE SELECTOR BLOCK AT THE END IS BARRIER-SHAPED, AND THE NEXT AGENT SHOULD
+-- KNOW IT: `exists_nonnegative_of_positive_weighted_sum_three` is a pigeonhole
+-- on a conservation law whose weighted sum is IDENTICALLY ZERO, so its
+-- conclusion is `0 <= contribution` and can never be `0 <`.  Every tie in this
+-- development sits exactly at zero on the corresponding determinants, so the gap
+-- between the two is the entire remaining problem, and off the open cell the
+-- barycentric weights are mixed-sign so even a strict version would name nothing.
+#print axioms Gtz.triangleLaplacianCofactor
+#print axioms Gtz.barycentricEnergyZero
+#print axioms Gtz.barycentricEnergyOne
+#print axioms Gtz.barycentricEnergyTwo
+#print axioms Gtz.barycentricOneSlotDetZero
+#print axioms Gtz.barycentricOneSlotDetOne
+#print axioms Gtz.barycentricOneSlotDetTwo
+#print axioms Gtz.det_triangleLaplacian_sub_axis_add_barycentricAtom
+#print axioms Gtz.det_triangleLaplacian_sub_axis_one_add_barycentricAtom
+#print axioms Gtz.det_triangleLaplacian_sub_axis_two_add_barycentricAtom
+#print axioms Gtz.barycentricOneSlot_weighted_det_sum_eq_zero
+#print axioms Gtz.barycentricEnergyZero_sub_one
+#print axioms Gtz.barycentricEnergyZero_sub_two
+#print axioms Gtz.barycentric_energy_differences_of_three_dets_zero
+#print axioms Gtz.barycentric_point_unique_of_three_dets_zero
+#print axioms Gtz.nine_values_eq_zero_of_positive_weighted_sum
+#print axioms Gtz.barycentric_all_oneSlot_dets_eq_zero_of_refusal
+#print axioms Gtz.barycentric_points_equal_of_all_oneSlot_dets_zero
+#print axioms Gtz.exists_positive_barycentricOneSlotDet_of_not_all_points_equal
+#print axioms Gtz.tightBarycentricReading
+#print axioms Gtz.tightBarycentricCoordinate
+#print axioms Gtz.TightBarycentricOpenCell
+#print axioms Gtz.tightBarycentricReading_ne_zero_of_openCell
+#print axioms Gtz.tight_coordinate_ne_zero_of_openCell
+#print axioms Gtz.sum_tightBarycentricCoordinate_eq_one
+#print axioms Gtz.freeAtom_parallel_of_barycentricCoordinates_eq
+#print axioms Gtz.not_all_tightBarycentricPoints_equal_of_tripleBracket_ne_zero
+#print axioms Gtz.tightScaledEdgeZeroOne
+#print axioms Gtz.tightScaledEdgeZeroTwo
+#print axioms Gtz.tightScaledEdgeOneTwo
+#print axioms Gtz.diagonal_mul_form_mul_diagonal_eq_triangleLaplacian
+#print axioms Gtz.sq_tightBarycentricReading_mul_two_coordinates
+#print axioms Gtz.sq_tightBarycentricReading_mul_coordinate
+#print axioms Gtz.tightScaledEdges_eq_barycentricMoments_of_frame
+#print axioms Gtz.barycentricCoordinateMoments_eq_of_frame_of_kernel
+#print axioms Gtz.diagonal_mulVec_eq_reading_smul_barycentricCoordinates
+#print axioms Gtz.diagonal_mulVec_single_eq_smul_single
+#print axioms Gtz.diagonal_congr_oneSlotGap_eq_barycentricUpdate
+#print axioms Gtz.tightBarycentricCoordinates_eq_finThreeVector
+#print axioms Gtz.det_diagonal_congr_eq_coordinateProduct_sq_mul
+#print axioms Gtz.det_diagonal_congr_oneSlot_zero_eq_barycentricOneSlotDet
+#print axioms Gtz.det_diagonal_congr_oneSlot_one_eq_barycentricOneSlotDet
+#print axioms Gtz.det_diagonal_congr_oneSlot_two_eq_barycentricOneSlotDet
+#print axioms Gtz.exists_hiddenOneSlotGap_det_pos_of_tightBarycentricOpenCell
+#print axioms Gtz.exists_posDef_cardThree_of_tightLine_of_barycentricOpenCell
+#print axioms Gtz.barycentricSelectorContribution
+#print axioms Gtz.barycentricSelectorEnergy
+#print axioms Gtz.barycentricSelectorContribution_eq_affine
+#print axioms Gtz.exists_nonnegative_of_positive_weighted_sum_three
+#print axioms Gtz.exists_nonnegative_barycentricSelectorContribution
+#print axioms Gtz.tightLineBarycentricSelectorContribution
+#print axioms Gtz.exists_nonnegative_tightLineBarycentricSelectorContribution
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
