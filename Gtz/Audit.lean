@@ -482,6 +482,14 @@ import Gtz.Design.PlaneBranchUnitAxisNormalForm
 import Gtz.Design.PlaneBranchWindowBridge
 import Gtz.Design.PlaneBranchComplementSelector
 import Gtz.Design.TightLineBranchLivePairBridge
+import Gtz.Design.LineBranchUnitAxisNormalForm
+import Gtz.Design.LineBranchLineFreeCoordinates
+import Gtz.Design.LineBranchCandidateCorners
+import Gtz.Design.LineBranchCandidateReduction
+import Gtz.Design.LineBranchPolynomialFailure
+import Gtz.Design.LineBranchBasePairLiveness
+import Gtz.Design.LineBranchOneSlotDeterminant
+import Gtz.Design.LineBranchExactFrontier
 import Gtz.Design.LineBranchFreePairAggregateBridge
 import Gtz.Design.TightLineRefutationFixtures
 import Gtz.Design.TwoMeetingLinesTransversal
@@ -18353,6 +18361,145 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.freePairRowAggregate_add_cross_eq_leverageBalance
 #print axioms Gtz.not_exists_cardThree_posDef_of_forall_not_posDef
 #print axioms Gtz.exists_live_freePair_all_discriminantTie_nonpos_of_rowAggregate_pos
+
+-- Design/LineBranchUnitAxisNormalForm, the line branch in unit-axis coordinates.
+-- The plane-branch normalizer is not plane-specific: the landed congruence
+-- transport carries the LINE branch too, and the base gap becomes an explicit
+-- hidden form whose kernel is the tight direction's preimage.  Domination
+-- becomes PosSemidef of that form, strict domination of any card-three subset
+-- becomes PosDef of a named normalized subset gap, and the Parseval trace fixes
+-- the scale.  This is the square-root-free coordinate system the rest of the
+-- chain computes in.
+#print axioms Gtz.unitAxisHiddenForm
+#print axioms Gtz.unitAxisHiddenForm_transpose
+#print axioms Gtz.unitAxisHiddenForm_eq_congr_baseGap
+#print axioms Gtz.unitAxisHiddenForm_posSemidef
+#print axioms Gtz.unitAxisFiveVectorIdentity
+#print axioms Gtz.unitAxisBaseNormalizer_metric_eq_one_sub_hiddenForm
+#print axioms Gtz.unitAxisHiddenForm_trace_normalization
+#print axioms Gtz.unitAxisTightVector
+#print axioms Gtz.unitAxisTightVector_ne_zero
+#print axioms Gtz.unitAxisHiddenForm_mulVec_tightVector_eq_zero
+#print axioms Gtz.unitAxisHiddenForm_mulVec_eq_zero_iff
+#print axioms Gtz.unitAxisHiddenSubsetGap
+#print axioms Gtz.posDef_gap_iff_unitAxisHiddenSubsetGap
+#print axioms Gtz.tightLine_unitAxisNormalForm
+
+-- Design/LineBranchLineFreeCoordinates, line-freeness as nineteen inequations.
+-- Triple brackets scale by the determinant under a common congruence, so
+-- line-freeness transports to the unit-axis model unchanged and becomes exactly
+-- nineteen explicit nonvanishings: nine free-atom coordinates, nine components
+-- of the three free-pair bracket normals, and the free-frame determinant.  This
+-- is STRICTLY STRONGER than what the plane machinery consumes, and it is the
+-- only admissible use of line-freeness: a disequality, never a magnitude.
+#print axioms Gtz.tripleBracket_transpose_mulVec
+#print axioms Gtz.unitAxisAtomBracket_ne_zero_of_lineFree
+#print axioms Gtz.unitAxisFreeAtom_coordinate_ne_zero
+#print axioms Gtz.unitAxisFreePair_bracketNormal_coordinate_ne_zero
+#print axioms Gtz.unitAxis_lineFree_nineteen_inequations
+
+-- Design/LineBranchCandidateCorners, the three candidate families as matrices.
+-- One-slot, distance-two and complement gaps get named normalized forms, each
+-- symmetric with a positive corner supplied for free by the transported
+-- Parseval trace.  With the corner free, Sylvester collapses each of the
+-- eighteen non-complement candidates to TWO reindexed minor signs.
+#print axioms Gtz.unitAxisHiddenOneSlotGap
+#print axioms Gtz.unitAxisHiddenDistanceTwoGap
+#print axioms Gtz.unitAxisHiddenComplementGap
+#print axioms Gtz.unitAxisHiddenOneSlotGap_transpose
+#print axioms Gtz.unitAxisHiddenDistanceTwoGap_transpose
+#print axioms Gtz.unitAxisHiddenOneSlotGap_corner_pos
+#print axioms Gtz.unitAxisHiddenDistanceTwoGap_retained_corner_pos
+#print axioms Gtz.unitAxisHiddenOneSlotGap_posDef_iff_two_reindexedMinors
+#print axioms Gtz.unitAxisHiddenDistanceTwoGap_posDef_iff_two_reindexedMinors
+
+-- Design/LineBranchCandidateReduction, existence of a strict card-three subset
+-- IS the nineteen-candidate disjunction.  The three subset families are
+-- enumerated with their cardinalities, each normalized subset gap is identified
+-- with its named matrix, and the resulting equivalence lifts to a restatement
+-- of `UThreeSixTightLineBranch` in unit-axis coordinates.  An equivalence, so it
+-- changes the formula a prover attacks and never the strength.
+#print axioms Gtz.unitAxisOneSlotSubset
+#print axioms Gtz.unitAxisDistanceTwoSubset
+#print axioms Gtz.unitAxisOneSlotSubset_card
+#print axioms Gtz.unitAxisDistanceTwoSubset_card
+#print axioms Gtz.unitAxisHiddenSubsetGap_oneSlot
+#print axioms Gtz.unitAxisHiddenSubsetGap_distanceTwo
+#print axioms Gtz.unitAxisHiddenSubsetGap_complement
+#print axioms Gtz.UnitAxisHiddenNineteenCandidate
+#print axioms Gtz.exists_posDef_cardThree_iff_unitAxisHiddenNineteenCandidate
+#print axioms Gtz.UThreeSixUnitAxisNineteenCandidateBranch
+#print axioms Gtz.uThreeSixTightLineBranch_iff_unitAxisNineteenCandidateBranch
+
+-- Design/LineBranchPolynomialFailure, failure as a finite polynomial sign
+-- system.  Each family's PosDef test is reduced to its explicit sign list --
+-- two for one-slot, two for distance-two, three for the complement -- and the
+-- negation of the whole nineteen-candidate disjunction becomes one named
+-- polynomial failure predicate, with the card-three form of the same statement
+-- beside it.  Contradictable by construction: the predicate holds exactly where
+-- the branch fails, by the equivalence in this file.
+#print axioms Gtz.unitAxisOneSlotFront
+#print axioms Gtz.unitAxisOneSlotOrder
+#print axioms Gtz.unitAxisOneSlotOrder_zero
+#print axioms Gtz.unitAxisOneSlotFront_ne
+#print axioms Gtz.unitAxisHiddenOneSlotBlockMinor
+#print axioms Gtz.unitAxisHiddenOneSlotDetCriterion
+#print axioms Gtz.unitAxisHiddenOneSlotGap_posDef_iff_two_signs
+#print axioms Gtz.unitAxisHiddenDistanceTwoBlockMinor
+#print axioms Gtz.unitAxisHiddenDistanceTwoDetCriterion
+#print axioms Gtz.unitAxisHiddenDistanceTwoGap_posDef_iff_two_signs
+#print axioms Gtz.unitAxisHiddenComplementGap_transpose
+#print axioms Gtz.unitAxisHiddenComplementCorner
+#print axioms Gtz.unitAxisHiddenComplementBlockMinor
+#print axioms Gtz.unitAxisHiddenComplementDetCriterion
+#print axioms Gtz.unitAxisHiddenComplementGap_posDef_iff_three_signs
+#print axioms Gtz.UnitAxisHiddenPolynomialFailure
+#print axioms Gtz.not_unitAxisHiddenNineteenCandidate_iff_polynomialFailure
+#print axioms Gtz.UnitAxisLineFailureWitness
+#print axioms Gtz.not_exists_posDef_cardThree_iff_unitAxisLineFailureWitness
+
+-- Design/LineBranchBasePairLiveness, the hidden form is singular and its
+-- transverse-coordinate submatrix is positive definite, so the corresponding
+-- adjugate diagonal entry is positive and the base-pair gap determinant is
+-- strictly NEGATIVE.  That sign is the signature witness at a base pair, and it
+-- is forced -- no selector chooses it.
+#print axioms Gtz.det_sub_axisAtom_fin_three
+#print axioms Gtz.unitAxisHiddenForm_det_eq_zero
+#print axioms Gtz.unitAxisHiddenForm_submatrix_posDef_of_tightCoordinate_ne_zero
+#print axioms Gtz.unitAxisHiddenForm_adjugate_diag_pos_of_tightCoordinate_ne_zero
+#print axioms Gtz.unitAxisHiddenBasePairGap_det_neg_of_tightCoordinate_ne_zero
+#print axioms Gtz.exists_unitAxisHiddenBasePair_signatureWitness
+
+-- Design/LineBranchOneSlotDeterminant, one-slot strictness is ONE determinant.
+-- Deleting the omitted base row and column from a one-slot gap leaves a
+-- positive definite block, and for a size-three symmetric form with a positive
+-- definite complementary submatrix PosDef is equivalent to a positive
+-- determinant alone.  That determinant is then the adjugate demand of the
+-- inserted free atom.  The author's private copy of the rank-one determinant
+-- update was DELETED here: `det_add_atomMatrix_fin_three` is statement-identical
+-- to the landed one in PlaneBranchComplementSelector, which this module now
+-- imports instead.
+#print axioms Gtz.unitAxisHiddenOneSlotGap_submatrix_succAbove
+#print axioms Gtz.unitAxisHiddenOneSlotGap_survivingBlock_posDef
+#print axioms Gtz.unitAxisOmittedLastOrder
+#print axioms Gtz.unitAxisOmittedLastOrder_two
+#print axioms Gtz.posDef_finThree_iff_det_pos_of_complementSubmatrix_posDef
+#print axioms Gtz.unitAxisHiddenOneSlotGap_posDef_iff_det_pos_of_tightCoordinate_ne_zero
+#print axioms Gtz.unitAxisHiddenOneSlotGap_det_eq_adjugateDemand
+#print axioms Gtz.exists_unitAxisBasePair_oneSlot_adjugateCriterion
+
+-- Design/LineBranchExactFrontier, the U(3,6) obligation in fully explicit
+-- two-branch form.  `BaseTripleTightLineFreeOffConicWeakToStrict` is
+-- EQUIVALENT to the conjunction of a finite polynomial exclusion on the line
+-- side and the landed ten-candidate problem on the plane side.  Read honestly:
+-- an IFF is a change of coordinates, not a reduction in strength -- the landed
+-- branch dichotomy supplies one half and this chain's normal form supplies the
+-- other.  What it buys is that the line half is now a finite sign system in
+-- explicit rational coordinates, which is a shape a computer-algebra attack can
+-- consume and the abstract statement is not.
+#print axioms Gtz.UThreeSixUnitAxisPolynomialExclusion
+#print axioms Gtz.uThreeSixTightLineBranch_iff_unitAxisPolynomialExclusion
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_iff_explicitAxisBranches
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
