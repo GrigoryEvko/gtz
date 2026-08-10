@@ -163,6 +163,7 @@ import Gtz.Quantitative.OddRankDeterminantUpgrade
 import Gtz.Quantitative.OneObjectNarrowing
 import Gtz.Quantitative.PhaseFreeNoGo
 import Gtz.Quantitative.PlanarTightFrameRigidity
+import Gtz.Quantitative.ProjectionBasisCoordinates
 import Gtz.Quantitative.ProjectionChartLegs
 import Gtz.Quantitative.ProjectionOnePointMarginal
 import Gtz.Quantitative.RankTwoRealnessCount

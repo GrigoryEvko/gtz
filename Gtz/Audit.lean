@@ -543,6 +543,7 @@ import Gtz.Certificates.CollarRealClosure
 import Gtz.Certificates.CollarChartSoundness
 import Gtz.Certificates.CollarWindowComposite
 import Gtz.Certificates.CollarChartSoundnessChart43210
+import Gtz.Quantitative.ProjectionBasisCoordinates
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19101,6 +19102,57 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.windowRefusalWitnessDesign_posDef_oneSlot
 #print axioms Gtz.windowRefusalWitnessDesign_tightLineOneSlotFamily
 #print axioms Gtz.windowRefusalWitnessDesign_exists_posDef_cardThree
+
+-- Quantitative/ProjectionBasisCoordinates, STRICT DOMINATION IN THE
+-- PROJECTION-DPP BASIS-MASS COORDINATE.
+-- Cauchy-Binet writes every gap determinant as a linear form in the twenty
+-- squared brackets weighted by their weight products, and those weighted
+-- squares sum to `det 1 = 1`, so they are a PROBABILITY DISTRIBUTION on the
+-- bases.  `orderedBasisMass` is the ordered version of that distribution.
+-- This module supplies the missing local dictionary: the one-, two- and
+-- three-dimensional principal minors of the design projection are exactly the
+-- marginals of that distribution (`sum_orderedBasisMass_third_eq_projectionPairMass`,
+-- `det_projectionBlock_three_eq_orderedBasisMass`), and the three Sylvester
+-- legs of a selected triple gap are the three CENTERED inclusion moments
+-- (`tripleGap_posDef_iff_centeredBasisMoments`, distinctness only, general size).
+-- WHY THAT SHAPE MATTERS: it converts the twenty-candidate covering problem
+-- into a covering problem on the real squared Grassmannian, where
+-- `orderedBasisMassProducts_heronDegenerate` supplies a NONLINEAR relation.
+-- That relation is the first consumer of `Gtz.squaredBracketProducts_heronDegenerate`
+-- outside PlueckerRealness itself, and it is the reason the coordinate is not
+-- just the exhausted positive bracket LP: the LP is a relaxation that drops
+-- Grassmann-Pluecker and is FEASIBLE, so any certificate must consume a real
+-- relation, and this is one in the probability coordinates the domination
+-- tests actually read.
+-- HONEST LIMIT, and it is load-bearing for anyone building on it: the Heron
+-- identity is the UNSIGNED shadow of the three-term Pluecker relation.  From
+-- `P - Q + R = 0` and `u = P^2, v = Q^2, w = R^2` one gets `(v-u-w)^2 = 4uw`,
+-- which expands to the symmetric `(u+v+w)^2 = 4(uv+vw+wu)` recorded here.
+-- Being symmetric in `u, v, w` it cannot see WHICH product is the large one.
+-- It is strictly more than the free cone had -- the free cone had no relation
+-- at all -- and strictly less than the signed relations.
+#print axioms Gtz.posDef_projectionBlock_iff_basisGap
+#print axioms Gtz.posDef_subsetSum_iff_posDef_projectionBlock
+#print axioms Gtz.orderedBasisMass
+#print axioms Gtz.orderedProjectionGap
+#print axioms Gtz.centeredBasisFirst
+#print axioms Gtz.projectionPairMass
+#print axioms Gtz.centeredBasisPair
+#print axioms Gtz.centeredBasisTriple
+#print axioms Gtz.sum_orderedBasisMass_third
+#print axioms Gtz.projectionPairMass_eq_weight_mul_crossAxisBudget
+#print axioms Gtz.sum_orderedBasisMass_third_eq_projectionPairMass
+#print axioms Gtz.det_projectionBlock_three_eq_orderedBasisMass
+#print axioms Gtz.orderedProjectionGap_transpose
+#print axioms Gtz.orderedProjectionGap_zero_zero
+#print axioms Gtz.orderedProjectionGap_leadingPair
+#print axioms Gtz.orderedBasisMassProducts_heronDegenerate
+#print axioms Gtz.det_sub_diagonal_fin_three
+#print axioms Gtz.orderedProjectionGap_det_eq_centeredBasisTriple
+#print axioms Gtz.orderedProjectionGap_posDef_iff_centeredBasisMoments
+#print axioms Gtz.tripleGap_posDef_iff_centeredBasisMoments
+#print axioms Gtz.chartGapPairMinor_eq_basisMarginals
+#print axioms Gtz.weightProduct_mul_det_gap_eq_basisMarginals
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
