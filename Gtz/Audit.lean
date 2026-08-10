@@ -505,6 +505,7 @@ import Gtz.Design.ConditionalLineHinge
 import Gtz.Design.DoubleLightDeflation
 import Gtz.Design.BarycentricOneSlotRigidity
 import Gtz.Design.BarycentricCoverage
+import Gtz.Design.ConservationCalculus
 import Gtz.Certificates.CollarChartReplay
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
@@ -18866,6 +18867,85 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.tightLineOneSlotFamily_of_barycentricOpenCell
 #print axioms Gtz.not_tightBarycentricOpenCell_of_no_cardThree_posDef
 #print axioms Gtz.not_tightBarycentricOpenCell_of_not_tightLineOneSlotFamily
+
+-- Design/ConservationCalculus, THE SUBSTRATE UNDER EVERY CONSERVATION IDENTITY
+-- IN THIS DEVELOPMENT, AND IT IS PACKAGING RATHER THAN LEVERAGE.  It decides no
+-- branch; every statement is an exact identity or an immediate sign consequence
+-- of one, and the weighted ones sit squarely inside the barriered averaging
+-- families.  The module says so and so does this block.
+-- THE MASTER LAW `sum_weight_mul_quadForm_eq_trace` holds at EVERY square
+-- multiplier, every size and every rank, with NO hypothesis: the weighted
+-- quadratic average of any form over a design is its trace.  Every conservation
+-- identity the tree carries is that law at one multiplier -- the landed mass
+-- identity at the identity, the determinant ratio law at an inverse, the
+-- insertion ledger at an adjugate -- and it is two lines from the landed
+-- `trace_mul_weightedSubsetMass` and `weightedSubsetMass_univ`.
+-- THE VOCABULARY BRIDGE: `discriminantTie_eq_neg_pairGapExcessOf_mul_one_add_pivot`
+-- joins the two scalar languages this development has carried separately, the
+-- general-rank erasure calculus (`pivot`, `trace_identity`, `excess_balance`)
+-- and the rank-three alphabet (`gapExcessOf`, `pairGapExcessOf`,
+-- `discriminantTie`, `IsLivePair`).  Its consumer
+-- `det_tripleGap_pos_iff_pivot_lt_neg_one` states strictness in pivot language:
+-- against a LIVE pair the triple is strict exactly when the completing atom's
+-- pivot falls below -1.
+-- THE LIVENESS GUARD THERE IS LOAD-BEARING AND DROPPING IT IS UNSOUND.  At
+-- `splitTetraDesign` sixteen ordered completions have pivot exactly -13/5 < -1
+-- with triple gap determinant -8, i.e. NOT strict; every such pair is a repeated
+-- direction with pair minor -5 and so is not live.  The guard-free criterion
+-- therefore FIRES ON A CERTIFIED TIE, and is one more entry on the refuted
+-- selector list.  The guarded form does not fire there and was checked not to.
+-- THE INSERTION LAW `det_insert_eq_det_mul_one_add_pivot` and its rigidity
+-- `pivot_eq_neg_one_of_det_insert_eq_zero` are general (size, rank): at ANY
+-- subset with singular gap and ANY sub-subset with invertible gap, the omitted
+-- label reads EXACTLY -1.  At `tetraDesign` all twelve completion pivots at
+-- invertible pairs are exactly -1, which is the tie's defining coordinate.
+-- THE SIXTH AVERAGING BARRIER IS NOW A THEOREM, NOT A CENSUS:
+-- `neg_one_lt_sum_weight_mul_pivot_of_isLivePair` puts the weighted pivot
+-- average strictly ABOVE -1 at every live pair of every design, while a strict
+-- completion is a pivot strictly BELOW -1.  It is not close either -- 4/3 away
+-- at the tetrahedron, and at `baseTieKillerDesign` it misses an EXISTING strict
+-- triple by a factor of sixteen.  A proof shaped like "average the pivots and
+-- read off a label below -1" is dead as a theorem.
+-- WEAKENING `PosDef` TO `IsUnit`: `trace_identity_of_isUnit` and
+-- `excess_balance_of_isUnit` widen the landed forms onto the indefinite hard
+-- side, where the landed ones are silent -- 38 base sets at each refutation
+-- fixture, 11 at `tetraDesign`, 31 at each split.  `Gtz.pigeonhole` does NOT
+-- generalise the same way: it routes through `erase_dominates_iff_pivot_le_one`,
+-- which flips sign at an indefinite parent, and the natural hard-side threshold
+-- `trace of the inverse at most -1` is VACUOUS at a live pair by
+-- `pairGapExcessOf_mul_one_add_trace_inv_pairGap`.
+-- FINALLY, THE TRACE IDENTITY CARRIES NO INFORMATION BEYOND THE TWO
+-- CONSERVATION LAWS: it is proved here as their DIFFERENCE, the weighted pivot
+-- average against the unweighted insider pivot sum.
+#print axioms Gtz.sum_weight_mul_quadForm_eq_trace
+#print axioms Gtz.sum_subset_weight_mul_quadForm_eq_trace_sub
+#print axioms Gtz.sum_weight_mul_pivot_eq_trace_inv
+#print axioms Gtz.sum_insider_pivot_eq_rank_add_trace_inv
+#print axioms Gtz.det_insert_eq_det_mul_one_add_pivot
+#print axioms Gtz.pivot_eq_neg_one_of_det_insert_eq_zero
+#print axioms Gtz.isUnit_det_pairGap_of_isLivePair
+#print axioms Gtz.discriminantTie_eq_neg_pairGapExcessOf_mul_one_add_pivot
+#print axioms Gtz.det_tripleGap_pos_iff_pivot_lt_neg_one
+#print axioms Gtz.trace_adjugate_eq_secondInvariantOfThree
+#print axioms Gtz.sum_weight_mul_det_add_atomMatrix_fin_three
+#print axioms Gtz.sum_subset_weight_mul_det_add_atomMatrix_eq_trace_adjugate
+#print axioms Gtz.sum_subset_weight_mul_det_add_atomMatrix
+#print axioms Gtz.sum_weight_mul_det_insert_fin_three
+#print axioms Gtz.sum_det_erase_eq_card_sub_three_mul_det
+#print axioms Gtz.det_sub_atomMatrix_adjugate_of_isUnit
+#print axioms Gtz.sum_det_erase_eq_card_sub_rank_mul_det
+#print axioms Gtz.det_singletonGap_eq_gapExcessOf
+#print axioms Gtz.secondInvariantOfThree_pairGap_eq
+#print axioms Gtz.sum_det_pairGap_eq_neg_secondInvariantOfThree
+#print axioms Gtz.secondInvariantOfThree_tripleGap_eq_sum_pairGapExcessOf
+#print axioms Gtz.det_pairGap_add_atomMatrix_eq_discriminantTie
+#print axioms Gtz.sum_weight_mul_det_pairGap_add_atomMatrix
+#print axioms Gtz.sum_weight_mul_det_pairGap_add_atomMatrix_neg_of_isLivePair
+#print axioms Gtz.pairGapExcessOf_mul_one_add_trace_inv_pairGap
+#print axioms Gtz.neg_one_lt_sum_weight_mul_pivot_of_isLivePair
+#print axioms Gtz.sum_weight_mul_det_tripleGap_add_atomMatrix
+#print axioms Gtz.trace_identity_of_isUnit
+#print axioms Gtz.excess_balance_of_isUnit
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
