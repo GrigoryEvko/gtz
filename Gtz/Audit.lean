@@ -570,6 +570,7 @@ import Gtz.Design.WeightAwareClearance
 import Gtz.Quantitative.SixThreeIndexLadderSpine
 import Gtz.Quantitative.ZeroLeakDependency
 import Gtz.Reduction.LadderRungHasNoBase
+import Gtz.Quantitative.ChartStationaryValueSign
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20407,6 +20408,58 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.axisSplitDesign_baseTriple_nullIndependent
 #print axioms Gtz.axisSplitDesign_dominates_baseTriple_with_no_posDef_extension
 #print axioms Gtz.axisSplitDesign_not_posDef_baseTriple
+
+-- ==========================================================
+-- the sign of an admissible chart stationarity value
+-- ==========================================================
+-- WHAT IT BUYS, AND IT IS A STATEMENT ABOUT A WHOLE LAYER RATHER THAN A NEW
+-- BOUND.  Every quantitative floor bounds `value` from below at a datum
+-- carrying both Gtz.IsChartStationaryData and Gtz.IsChartArgmaxValue, and each
+-- is trivially true when the value is nonnegative.  The sign law measures the
+-- other side: if the cell holds, every admissible datum has 0 <= value.  Four
+-- steps, all shipped -- the datum is a chart point, chartPointHasDesign
+-- realises it, the cell supplies a dominating subset, and argmax supplies at
+-- that very subset a unit probe whose Rayleigh quotient is at most the value
+-- while domination says the quotient is nonnegative.
+--
+-- ** IT USES NEITHER FIRST-ORDER LAW. **  Only the seven ChartPoint fields of
+-- the bundle: no multiplier, no tight direction, no diagonal law, no
+-- commutation.  An argument holding the diagonal law but not commutation still
+-- gets it.
+--
+-- THE UNCONDITIONAL INSTANCES.  At rank two and at every size at most five the
+-- cell is a theorem, so the sign law is one there outright -- and the (4,2)
+-- uniform datum's inadmissibility then costs one line, where the tree proves
+-- the (6,3) analogue by hand with an explicit probe and a nonlinear step
+-- because that cell is open.
+--
+-- WHAT IT COSTS THE FLOOR PROGRAMME, AND THIS IS THE POINT.  At (6,3) the
+-- equivalence gtzWeighted_six_three_iff_chartStationaryValueNonneg composes the
+-- shipped hypothesis-free variational principle with the shipped
+-- minimiser-to-datum producer.  So the antecedent of every floor theorem,
+-- RESTRICTED TO THE NEGATIVE VALUES WHERE THOSE THEOREMS SAY ANYTHING, is
+-- inhabited EXACTLY WHEN THE CELL FAILS: provably empty at rank at most two and
+-- at size at most five, with no known inhabitant at any cell.  ** NO FLOOR CAN
+-- BE IMPROVED INTO A PROOF OF THE CELL WITHOUT BECOMING A PROOF OF THE CELL. **
+--
+-- A DUPLICATE WAS RESOLVED HERE RATHER THAN DOCUMENTED.  The chart-point
+-- coercion was built twice independently; the two copies are equal by `rfl` and
+-- differ only in the ORDER of their implicit binders, which is why a type-level
+-- duplicate hunt could not see them.  One survives, in
+-- ChartStationaryDesignFreeWindow, and this module consumes it; what this
+-- module keeps of its own is the gap bridge, which that module does not carry.
+-- Ledger unchanged.
+#print axioms Gtz.chartPointGap_chartPointOfIsChartStationaryData
+#print axioms Gtz.zero_le_value_of_gtzWeighted_of_isChartArgmaxValue
+#print axioms Gtz.not_gtzWeighted_of_isChartArgmaxValue_of_value_neg
+#print axioms Gtz.zero_le_value_rank_two_of_isChartArgmaxValue
+#print axioms Gtz.zero_le_value_of_size_le_five_of_isChartArgmaxValue
+#print axioms Gtz.not_isChartArgmaxValue_chartTwoBlockUniformProjection
+#print axioms Gtz.ChartStationaryValueNonneg
+#print axioms Gtz.chartStationaryValueNonneg_of_gtzWeighted
+#print axioms Gtz.gtzWeighted_six_three_iff_chartStationaryValueNonneg
+#print axioms Gtz.chartTwoBlockTripleWeight_eq_floor_and_cap
+#print axioms Gtz.chartTwoBlockUniformWeight_eq_floor_and_cap
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

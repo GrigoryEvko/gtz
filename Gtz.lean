@@ -2319,6 +2319,17 @@ import Gtz.Quantitative.ZeroLeakDependency
 -- separation exhibitable rather than merely measured.
 import Gtz.Reduction.LadderRungHasNoBase
 
+
+-- THE SIGN OF AN ADMISSIBLE CHART STATIONARITY VALUE IS THE CELL.  Every
+-- quantitative floor in the layer is trivially true at a nonnegative value, so
+-- all of its content sits on the negative side -- and this proves that side is,
+-- at (6,3), EQUIVALENT to the failure of the cell, and provably EMPTY at rank
+-- two and at every size at most five.  A floor cannot be improved into a proof
+-- of the cell without becoming a proof of the cell.  The sign law needs neither
+-- first-order law, so the trap that the diagonal and commutation laws constrain
+-- jointly does not touch it.
+import Gtz.Quantitative.ChartStationaryValueSign
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
