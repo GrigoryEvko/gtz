@@ -585,6 +585,7 @@ import Gtz.Quantitative.FourFamilyCoverBudget
 import Gtz.Quantitative.FourFamilyCoverProfiles
 import Gtz.Quantitative.QuadrupleAtomDoor
 import Gtz.Quantitative.PencilDoorReduction
+import Gtz.Quantitative.HubFamilyNormalForm
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20887,6 +20888,31 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.image_compl_pair
 #print axioms Gtz.image_map_edgePencil
 #print axioms Gtz.exists_map_family_eq_canonicalEdgePencil_of_two_quadruple_atoms
+
+-- ==========================================================
+-- the hub normal form
+-- ==========================================================
+-- WHAT IT BUYS.  The single-hub profile doors become graphs.  A hub in
+-- every card-three block erases to four pairwise-distinct edges on the
+-- five off-hub atoms (card_erase_hub_eq_two, erase_hub_ne_of_ne,
+-- erase_hub_subset_compl); the family is recovered as the image of the
+-- edge set under insertion of the hub
+-- (family_eq_image_insert_erase_of_hub_mem_all); off-hub cover counts
+-- equal edge degrees (fourBlockCoverCount_erase_hub); covering makes the
+-- edges span the off-hub atoms (exists_mem_erase_of_cover_of_ne_hub);
+-- and a singleton quadruple class caps every off-hub degree at three
+-- (count_ne_four_of_ne_hub_of_classCard_one).  Profile doors (1,0,3,2)
+-- and (1,1,1,3) are thereby exactly the 4-edge graphs on five vertices
+-- with degree sequences (2,2,2,1,1) and (3,2,1,1,1) -- the input to the
+-- graph classification that finishes the quadruple-atom half of the
+-- census.
+#print axioms Gtz.card_erase_hub_eq_two
+#print axioms Gtz.erase_hub_ne_of_ne
+#print axioms Gtz.fourBlockCoverCount_erase_hub
+#print axioms Gtz.family_eq_image_insert_erase_of_hub_mem_all
+#print axioms Gtz.exists_mem_erase_of_cover_of_ne_hub
+#print axioms Gtz.erase_hub_subset_compl
+#print axioms Gtz.count_ne_four_of_ne_hub_of_classCard_one
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

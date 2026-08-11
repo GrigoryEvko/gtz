@@ -2459,6 +2459,16 @@ import Gtz.Quantitative.QuadrupleAtomDoor
 -- closed end to end: normal form, witness permutation, canonical transport.
 import Gtz.Quantitative.PencilDoorReduction
 
+
+-- the hub normal form: a single quadruply-covered hub sits in every block, so
+-- erasing it turns the family into four pairwise-distinct edges on the five
+-- off-hub atoms — the family is the image of that edge set under insertion of
+-- the hub, off-hub cover counts become edge degrees, covering makes the edges
+-- span the off-hub atoms, and a singleton quadruple class caps every off-hub
+-- degree at three.  The single-hub profile doors are now 4-edge graphs on
+-- five vertices, the object the graph classification consumes.
+import Gtz.Quantitative.HubFamilyNormalForm
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
