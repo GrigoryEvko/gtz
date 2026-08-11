@@ -563,6 +563,7 @@ import Gtz.Quantitative.StrongStationarityIndexFloor
 
 import Gtz.Reduction.ComplementKernelRepairsDescent
 import Gtz.Quantitative.JointChartIndexFloor
+import Gtz.Quantitative.ChartFloorAtomSpan
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20028,6 +20029,58 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.finrank_span_centredTightSquareRow_add_one_le_card_of_isChartStationaryData
 #print axioms Gtz.finrank_span_jointChartGradient_add_one_le_four_tetra
 #print axioms Gtz.finrank_span_grassmannGradient_add_one_le_four_tetra
+
+-- ==========================================================
+-- the floor-atom span and the master identity
+-- ==========================================================
+-- WHAT IT BUYS.  The master identity
+--   sum over the active set of mu_l ((P u_l)_c)^2 = (value + weight c) / size
+-- holds at every atom of every Gtz.IsChartStationaryData, at any size and rank.
+-- It is three lines from two landed theorems: the sandwich
+-- projection_mul_multiplier_eq_sandwich makes the assembly diagonal a quadratic
+-- form against the chart column, and the forced diagonal closes it.  Both sides
+-- are manifestly nonnegative, which is where the content is.
+--
+-- Its consequences, in order:
+--   * the leak identity, sum over the blocks MISSING an atom of
+--     mu_l leak_l(c)^2 = r_c (1 - r_c) / size with r_c = value + weight c.
+--     This was carried through an earlier wave as a numerical observation; it
+--     is a corollary of two landed theorems.
+--   * THE ROW LAW.  If an atom attains the landed weight floor, weight c =
+--     -value, then EVERY positively weighted active block has (P u_l)_c = 0 --
+--     the leak at c if the block misses c, zero by tightness if it contains c.
+--     No saturation hypothesis is used.
+--   * zero leak pins its support at the floor and lands in the chart kernel,
+--     from the landed pointwise bounds 0 <= r <= 1 alone.  This is the 0-or-1
+--     dichotomy the tree runs on the MULTIPLIER ROW under saturation, run
+--     instead on the TIGHT DIRECTION from a weaker hypothesis; neither
+--     subsumes the other.
+--   * THE CLOSING THEOREM.  At a datum with -1/size < value < 0 the projected
+--     tight directions of the positively weighted active blocks are never all
+--     collinear.  The proof is an INTEGRALITY argument and contains no
+--     geometry: collinearity forces a natural number to equal a real strictly
+--     inside (0,1).
+--
+-- SATISFIABILITY, AND IT IS THE SHARP CAVEAT.  The closing theorem and its
+-- corollary carry BOTH value < 0 AND -1/size < value.  The unique landed
+-- negative-value (6,3) stationarity datum,
+-- Gtz.chartTwoBlockTripleProjection_isChartStationaryData, sits at value
+-- EXACTLY -1/6: it clears the first and FAILS THE SECOND BY EQUALITY.  So the
+-- open-window family has NO EXHIBITED INHABITANT AT ANY CELL, and building a
+-- (6,3) datum strictly inside (-1/size, 0) is the single most valuable object
+-- anyone could produce for this route.  Ledger unchanged.
+#print axioms Gtz.projection_apply_comm_of_isChartStationaryData
+#print axioms Gtz.dotProduct_projection_mulVec_comm_of_isChartStationaryData
+#print axioms Gtz.sum_activeWeight_mul_sq_projection_mulVec_tightDir
+#print axioms Gtz.projection_mulVec_tightDir_eq_zero_of_weight_eq_neg_value
+#print axioms Gtz.sum_activeWeight_mul_sq_leak
+#print axioms Gtz.projection_mulVec_eq_shifted_of_zeroLeak
+#print axioms Gtz.weight_eq_neg_value_of_zeroLeak
+#print axioms Gtz.projection_mulVec_eq_zero_of_zeroLeak
+#print axioms Gtz.false_of_projected_tightDir_collinear
+#print axioms Gtz.HasFloorSpanningNormal
+#print axioms Gtz.false_of_hasFloorSpanningNormal
+#print axioms Gtz.projection_mulVec_tightDir_eq_zero_of_zeroLeak_of_supported
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

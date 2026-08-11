@@ -2244,6 +2244,18 @@ import Gtz.Reduction.ComplementKernelRepairsDescent
 -- identity, not a bound, in the whole crux regime.
 import Gtz.Quantitative.JointChartIndexFloor
 
+
+-- the floor-atom span: the master identity
+--   sum_l mu_l ((P u_l)_c)^2 = (value + t_c) / size
+-- at every atom of every chart stationarity datum, off the landed sandwich and
+-- the landed forced diagonal.  Its consequences: the leak identity as a
+-- corollary rather than a measurement; the row law, which kills every projected
+-- tight direction at an atom sitting on the landed weight floor; and the
+-- closing theorem, that the projected tight directions of a datum in the OPEN
+-- value window are never all collinear -- proved by an integrality argument,
+-- with no geometry at all.
+import Gtz.Quantitative.ChartFloorAtomSpan
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
