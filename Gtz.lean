@@ -2232,6 +2232,18 @@ import Gtz.Certificates.CollarChartReplay
 -- discharges an obligation: the lattice is the same lattice.
 import Gtz.Reduction.ComplementKernelRepairsDescent
 
+
+-- the joint chart index floor: the two first-order fields of a chart
+-- stationarity datum are the two coordinate blocks of ONE gradient, so both
+-- stationarity laws are the single relation `sum_C mu_C . jointGradient_C = 0`
+-- and the joint floor `|A| >= 1 + rank(J)` DOMINATES both one-block floors,
+-- a coordinate projection being unable to raise a rank.  The Grassmannian
+-- gradient is identified as a rank-one outer product, and the tangent identity
+-- shows the first-order motion of a block value reads only the off-diagonal
+-- corner.  MEASURED CAVEAT CARRIED IN THE AUDIT BLOCK: the floor is an
+-- identity, not a bound, in the whole crux regime.
+import Gtz.Quantitative.JointChartIndexFloor
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

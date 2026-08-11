@@ -562,6 +562,7 @@ import Gtz.Reduction.ComplementKernelWeld
 import Gtz.Quantitative.StrongStationarityIndexFloor
 
 import Gtz.Reduction.ComplementKernelRepairsDescent
+import Gtz.Quantitative.JointChartIndexFloor
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -19973,6 +19974,60 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_gapProbe_ne_zero_orthogonal_of_two_independent
 #print axioms Gtz.not_posDef_gap_insert_of_two_independent_gapProbes
 #print axioms Gtz.kernelGap_decides_dominates_of_two_independent_gapProbes
+
+-- ==========================================================
+-- the joint chart index floor
+-- ==========================================================
+-- WHAT IT BUYS.  `Gtz.IsChartStationaryData` carries two first-order fields --
+-- assembly_diagonal (the weights) and assembly_commutes (the Grassmannian).
+-- They are the two coordinate blocks of one gradient: jointChartGradient pairs
+-- the centred eigen-square row with the Grassmannian corner, and both fields
+-- together are the single vanishing combination
+--   sum over the active set of multiplier . jointChartGradient = 0.
+-- Because a coordinate projection cannot raise a rank, the joint floor
+--   finrank (span of the joint gradients) + 1 <= activeSet.card
+-- DOMINATES both one-block floors, which become corollaries rather than
+-- siblings.  The simplex twin is stated here for the first time.
+--
+-- AND THE IDENTIFICATION.  grassmannGradient_eq_vecMulVec shows the
+-- Grassmannian gradient IS the rank-one outer product of the projected and
+-- co-projected tight direction, so it vanishes exactly when the direction lies
+-- wholly in the chart's range or wholly in its kernel.  The tangent identity
+-- shows that for every symmetric X with both diagonal corners killed the
+-- first-order motion of a block's value reads ONLY the off-diagonal corner.
+--
+-- WHAT IT DOES NOT BUY, AND THE MEASUREMENT IS AGAINST THE ROUTE.  The bound
+-- is an upper bound on a rank; nobody has lower-bounded that rank at a crux.
+-- The theorem forces span dimension <= card - 1, and every stationary point
+-- anyone holds has card - 1 >= rank*(size-rank), so "the span is maximal" and
+-- "the span is at the trivial cap" predict the same number at all of them.
+-- At the first datum where they differ the answer is the CAP.  So at (6,3) the
+-- Grassmannian floor binds only for card >= 10 while a crux is conjectured to
+-- live in [4,9]: IN THE ENTIRE CRUX REGIME THE BOUND IS AN IDENTITY AND
+-- CARRIES NO INFORMATION.  The theorem stands; the counting programme built on
+-- it does not.  Ledger unchanged.
+#print axioms Gtz.finrank_span_add_one_le_of_sum_smul_eq_zero
+#print axioms Gtz.finrank_span_add_one_le_card_of_activeRelation
+#print axioms Gtz.finrank_span_range_linearMap_le
+#print axioms Gtz.grassmannGradient
+#print axioms Gtz.grassmannGradient_eq_vecMulVec
+#print axioms Gtz.dotProduct_transpose_mulVec_self
+#print axioms Gtz.dotProduct_mulVec_eq_two_mul_of_tangent
+#print axioms Gtz.sum_smul_grassmannGradient_eq_corner
+#print axioms Gtz.sum_smul_grassmannGradient_eq_zero_of_isChartStationaryData
+#print axioms Gtz.tightSquareRow
+#print axioms Gtz.sum_smul_tightSquareRow_eq_const_of_isChartStationaryData
+#print axioms Gtz.centredTightSquareRow
+#print axioms Gtz.sum_smul_centredTightSquareRow_eq_zero_of_isChartStationaryData
+#print axioms Gtz.jointChartGradient
+#print axioms Gtz.sum_smul_jointChartGradient_eq_zero_of_isChartStationaryData
+#print axioms Gtz.finrank_span_jointChartGradient_add_one_le_card_of_isChartStationaryData
+#print axioms Gtz.finrank_span_grassmannGradient_le_joint
+#print axioms Gtz.finrank_span_centredTightSquareRow_le_joint
+#print axioms Gtz.finrank_span_grassmannGradient_add_one_le_card_of_isChartStationaryData
+#print axioms Gtz.finrank_span_centredTightSquareRow_add_one_le_card_of_isChartStationaryData
+#print axioms Gtz.finrank_span_jointChartGradient_add_one_le_four_tetra
+#print axioms Gtz.finrank_span_grassmannGradient_add_one_le_four_tetra
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
