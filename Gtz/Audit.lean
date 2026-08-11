@@ -586,6 +586,7 @@ import Gtz.Quantitative.FourFamilyCoverProfiles
 import Gtz.Quantitative.QuadrupleAtomDoor
 import Gtz.Quantitative.PencilDoorReduction
 import Gtz.Quantitative.HubFamilyNormalForm
+import Gtz.Quantitative.ChairDoorReduction
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20913,6 +20914,40 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_mem_erase_of_cover_of_ne_hub
 #print axioms Gtz.erase_hub_subset_compl
 #print axioms Gtz.count_ne_four_of_ne_hub_of_classCard_one
+
+-- ==========================================================
+-- the chair-door reduction
+-- ==========================================================
+-- WHAT IT BUYS.  The second census door closed end to end, and the
+-- count-inversion bricks every remaining door reuses.  The inversions
+-- decode a cover count of 3, 2, or <= 1 into exact membership patterns
+-- (fourBlockCoverCount_eq_three_inversion, _eq_two_inversion,
+-- pairwise_notMem_of_fourBlockCoverCount_le_one); a singleton count class
+-- names its unique atom (exists_unique_atom_of_classCard_one); pair
+-- extraction reads off edge endpoints (exists_other_of_mem_card_two,
+-- eq_pair_of_mem_mem_card_two); the quadSet swaps give deterministic
+-- listed-set permutation transport.  At profile (1,1,1,3) the 24-branch
+-- normalization forces one shared apex-wrist edge (any second collides
+-- two blocks), two apex-leaf edges, one wrist-tail edge
+-- (exists_normalized_of_count_three_two), the chair extraction pins all
+-- five off-hub atoms distinct (edgeSet_eq_chair_of_normalized), and the
+-- capstone exists_map_family_eq_canonicalChair_of_profile assembles the
+-- explicit six-atom permutation carrying any such family onto
+-- canonicalChairFamily = {{0,1,2},{0,1,3},{0,1,4},{0,2,5}} -- the shape
+-- the leaf exits fire at.
+#print axioms Gtz.fourBlockCoverCount_eq_three_inversion
+#print axioms Gtz.fourBlockCoverCount_eq_two_inversion
+#print axioms Gtz.pairwise_notMem_of_fourBlockCoverCount_le_one
+#print axioms Gtz.exists_other_of_mem_card_two
+#print axioms Gtz.eq_pair_of_mem_mem_card_two
+#print axioms Gtz.exists_unique_atom_of_classCard_one
+#print axioms Gtz.quadSet_swap_first_second
+#print axioms Gtz.quadSet_swap_second_third
+#print axioms Gtz.quadSet_swap_third_fourth
+#print axioms Gtz.exists_normalized_of_count_three_two
+#print axioms Gtz.edgeSet_eq_chair_of_normalized
+#print axioms Gtz.injective_sixAtomAssignment
+#print axioms Gtz.exists_map_family_eq_canonicalChair_of_profile
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

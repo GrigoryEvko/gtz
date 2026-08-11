@@ -2469,6 +2469,17 @@ import Gtz.Quantitative.PencilDoorReduction
 -- five vertices, the object the graph classification consumes.
 import Gtz.Quantitative.HubFamilyNormalForm
 
+
+-- the chair-door reduction, COMPLETE: at profile (1,1,1,3) the erased edge
+-- graph is forced into the chair — the triple atom (apex) and double atom
+-- (wrist) share an edge or two blocks collide, the apex carries two leaf
+-- edges, the wrist one tail edge — and the six pinned atoms assemble an
+-- explicit permutation carrying the family onto the canonical chair
+-- {{0,1,2},{0,1,3},{0,1,4},{0,2,5}}.  Second census door closed end to end;
+-- the count inversions and pair-extraction bricks are shared by the
+-- remaining doors.
+import Gtz.Quantitative.ChairDoorReduction
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
