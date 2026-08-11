@@ -551,6 +551,7 @@ import Gtz.Design.AllHeavyNegativeAggregate
 import Gtz.Design.BarycentricOpenCellWitness
 import Gtz.Design.KFourLeverageRefuter
 import Gtz.Design.KFourTightLocus
+import Gtz.Design.FreeMassBudgetDischarge
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19361,6 +19362,40 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.directionChartIsTieFree_kFour_of_no_tightNoStrict
 #print axioms Gtz.everyPointHasStrictTree_of_directionChartIsTieFree_kFour
 #print axioms Gtz.kFourEveryPointHasStrictTree_iff_no_tightNoStrict
+
+
+-- Design/FreeMassBudgetDischarge, THE STRESS-FREE ARM HAS ONE OPEN PROP, NOT TWO.
+-- `Gtz.FreeMassBudgetCertificate size rank` (StressFreeStratum:1012) is DEFINED
+-- as, verbatim, the statement of `Gtz.posDef_gap_of_freeMassBudget`
+-- (BalancedStratum:309); that module's own docstring says it "stands here as a
+-- named hypothesis so that this module carries no duplicate of it".  So the
+-- hypothesis is discharged at EVERY size and rank and the three consumers in
+-- StressFreeStratum can be restated without it.
+-- WHY IT MATTERS, and it cuts BOTH ways.  The arithmetic of the frontier
+-- improves: the stress-free arm of the (6,3) hinge carries ONE open Prop,
+-- `Gtz.NoStressResidual 6`.  But the surviving Prop is STRICTLY STRONGER than
+-- the arm it reduces -- it demands a strictly dominating triple for every
+-- primitive stress-free design, ties or not -- so it entails a piece of
+-- `GtzWeighted 6 3` itself and is not a cheaper target.
+-- AND the certificate arm it unblocks is EMPTY exactly where the class lives:
+-- `not_hasStrictCertificate_of_isTie` proves that NO triple of ANY tie carries
+-- either certificate, so the case split in
+-- `sixThree_exists_posDef_triple_of_stressFree` is vacuous on the whole tie
+-- locus and `NoStressResidual` carries one hundred per cent of the statement.
+-- SATISFIABILITY, MEASURED OUTSIDE THE KERNEL AND RECORDED HERE BECAUSE IT
+-- CLOSES A NOMINATED ROUTE: the hypothesis set of `NoStressResidual 6` is
+-- INHABITED, by the tree's own landed stress-free witness
+-- `Gtz.coordinateDiagonalDesign` (StressFreeClassSplit:72) -- it is primitive
+-- and stress-free and carries ZERO strict certificates at all twenty triples
+-- (the isotropy leg never fires; the free-mass budget totals 6/5 or 7/5, never
+-- below one, and at four triples the inner matrix is not positive definite).
+-- So `NoStressResidual 6` is NOT vacuously true, and the route "prove the
+-- hypothesis set empty and the arm is done" is closed.
+#print axioms Gtz.freeMassBudgetCertificate_holds
+#print axioms Gtz.posDef_gap_of_hasStrictCertificate_unconditional
+#print axioms Gtz.not_hasStrictCertificate_of_isTie
+#print axioms Gtz.sixThree_hasParallelPair_of_isTie_of_stressFree_ofResidual
+#print axioms Gtz.sixThree_exists_posDef_triple_of_stressFree_ofResidual
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

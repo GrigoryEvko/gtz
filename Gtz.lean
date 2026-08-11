@@ -2021,6 +2021,11 @@ import Gtz.Design.StressFreeStratum
 import Gtz.Design.StressFreeNormalizer
 import Gtz.Design.StressFreeClosureFailure
 
+-- the free-mass budget hypothesis discharged, and the certificate arm shown
+-- empty on the whole tie locus: the stress-free arm of the (6,3) hinge carries
+-- ONE open Prop, `NoStressResidual 6`, not two
+import Gtz.Design.FreeMassBudgetDischarge
+
 -- The kill-inequality kernel certificate and the window/layer/dual kit
 -- supporting the hinge and balanced-stratum frontiers.
 import Gtz.Certificates.KillInequalityD7
