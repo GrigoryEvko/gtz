@@ -559,6 +559,7 @@ import Gtz.Design.DualConicLinearBarrier
 import Gtz.Design.KFourForcedForest
 import Gtz.Reduction.RankThreeFromStressFreeResidual
 import Gtz.Reduction.ComplementKernelWeld
+import Gtz.Quantitative.StrongStationarityIndexFloor
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19793,6 +19794,62 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.stressFreeHingeHoldsSixThree_of_noStressResidual
 #print axioms Gtz.hingeHoldsAtSize_sixThree_of_noStressResidual
 #print axioms Gtz.gtzWeightedAll_three_of_noStressResidual
+
+-- ============================================================
+-- the strong-stationarity index floor
+-- ============================================================
+-- THE MECHANISM.  Strong chart stationarity quantifies over EVERY
+-- tight-direction selection, so the selection built from block least
+-- eigenvectors can be fed in and the matching multiplier comes back.  The
+-- compatibility hypothesis DISSOLVES instead of being proved, and a block whose
+-- least eigenvalue repeats stops mattering.
+--
+-- UNCONDITIONAL ON A CRUX.  four_le_card_chartArgmaxFamily_strong raises the
+-- shipped active-family floor from three to FOUR.
+-- exists_argmax_supportTwo_coordinateSingles_mem_finiteRowSpan supplies, with no
+-- side condition, a tight-vector family, a balanced multiplier, and an active
+-- block whose tight support carries at least two labels whose coordinate
+-- singles lie in the finite row span.  exists_multiplier_assembly_-
+-- totalEigenSquareRow supplies the balanced multiplier alone.
+--
+-- CONDITIONAL ONLY ON THE ACTIVE COUNT BEING FOUR.
+-- exists_active_coordinate_zero_on_tightEigenspace_of_card_eq_four: some active
+-- block carries a coordinate vanishing on its WHOLE tight eigenspace, not
+-- merely on one chosen eigenvector.
+--
+-- CONDITIONAL ON SUPPLIED DATA, hence substrate and not result.  Both
+-- five-floors need a tight-eigenvector family: _of_fullSupport asks for full
+-- support at every card-three subset, _of_activeFullSupport asks only at the
+-- active blocks plus a balanced multiplier, and is the weaker hypothesis.
+-- false_of_flatPair_of_activeFullSupport concludes False from active full
+-- support together with a flat pair separated at one pivot: it is a CONDITIONAL
+-- REFUTATION of that configuration, not a proof of False, and it closes nothing.
+--
+-- WHAT IS NOT SETTLED.  This module exhibits NO tight-eigenvector family with
+-- active full support and NO flat pair, so the satisfiability of the supplied-
+-- data hypotheses is untested here.  Every statement is about SixThreeCrux,
+-- which is conjecturally empty: under GTZ they are all vacuous.  They earn their
+-- place by contracting the counterexample normal form, not by inhabiting it.
+-- The ledger does not move and GtzWeighted 6 3 is exactly as open as before.
+#print axioms Gtz.ambientTightSelection
+#print axioms Gtz.isChartTightDirection_ambientTightSelection
+#print axioms Gtz.SixThreeCrux.five_le_card_chartArgmaxFamily_of_fullSupport
+#print axioms Gtz.SixThreeCrux.exists_multiplier_assembly_totalEigenSquareRow
+#print axioms Gtz.exists_two_ne_zero_of_unit_eigen_of_neg_of_pos_diagonal
+#print axioms Gtz.exists_unit_chartBlockEigenvectorFamily
+#print axioms Gtz.SixThreeCrux.four_le_card_chartArgmaxFamily_strong
+#print axioms Gtz.totalTightSupport_eq_self_of_fullSupport
+#print axioms Gtz.SixThreeCrux.false_of_flatPair_of_activeFullSupport
+#print axioms Gtz.SixThreeCrux.five_le_card_chartArgmaxFamily_of_activeFullSupport
+#print axioms Gtz.SixThreeCrux.not_forall_exists_fullSupport_activeEigenvector_of_card_eq_four
+#print axioms Gtz.exists_coordinate_forall_eq_zero_of_no_fullSupport_unit_eigenvector
+#print axioms Gtz.SixThreeCrux.exists_active_coordinate_zero_on_tightEigenspace_of_card_eq_four
+#print axioms Gtz.dotProductBilin_nondegenerate
+#print axioms Gtz.dotProductBilin_isRefl
+#print axioms Gtz.finiteRowSpan
+#print axioms Gtz.coordinateSingle_mem_finiteRowSpan_of_flat_le_vanishing
+#print axioms Gtz.SixThreeCrux.two_le_card_totalTightSupport
+#print axioms Gtz.SixThreeCrux.exists_argmax_supportTwo_coordinateSingles_mem_finiteRowSpan
 
 -- ============================================================
 -- the complement-kernel weld

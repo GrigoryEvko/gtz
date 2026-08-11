@@ -2191,6 +2191,18 @@ import Gtz.Design.KFourDescentLadder
 -- prunes, it cannot decide and it cannot refute
 import Gtz.Design.KFourForcedForest
 
+-- the strong-stationarity index floor: feeding the block least-eigenvector
+-- selection into strong chart stationarity DISSOLVES the compatibility
+-- hypothesis instead of proving it, and multiplicity inside a block stops
+-- mattering.  UNCONDITIONAL: at least FOUR active blocks at a crux, raising the
+-- shipped floor of three; and an active block whose tight support has at least
+-- two labels with its coordinate singles inside the finite row span.  At
+-- exactly four active blocks some active block carries a coordinate vanishing
+-- on its WHOLE tight eigenspace.  The five-floors and the flat-pair refutation
+-- are CONDITIONAL on supplied tight-eigenvector data whose satisfiability this
+-- module does not settle
+import Gtz.Quantitative.StrongStationarityIndexFloor
+
 -- the complement-kernel weld: whitening the full excess turns EVERY complement
 -- test, at any omitted size and any rank, into the principal minors of one
 -- inverse-metric Gram matrix, whose first rung is the already-landed full-base
