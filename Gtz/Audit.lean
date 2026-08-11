@@ -581,6 +581,7 @@ import Gtz.Quantitative.FourActiveCoefficientProjection
 import Gtz.LinAlg.LambdaMinReindex
 import Gtz.Reduction.ChartRelabel
 import Gtz.Quantitative.CruxRelabel
+import Gtz.Quantitative.FourFamilyCoverBudget
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20805,6 +20806,24 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.card_chartArgmaxFamily_relabelDesign
 #print axioms Gtz.SixThreeCrux.relabel
 #print axioms Gtz.SixThreeCrux.card_chartArgmaxFamily_relabel
+
+-- ==========================================================
+-- the four-block cover budget
+-- ==========================================================
+-- WHAT IT BUYS.  The enumeration pre-filters of the four-active orbit
+-- classifier.  Four card-three blocks carry twelve incidence slots over six
+-- atoms (sum_fourBlockCoverCount_eq_twelve, covering or not); a covering
+-- four-family holds every atom at least once
+-- (one_le_fourBlockCoverCount_of_cover), so it spends EXACTLY SIX units of
+-- multiplicity above the floor (sum_fourBlockCoverCount_sub_one_eq_six_of_
+-- cover), and some atom is doubly covered
+-- (exists_two_le_fourBlockCoverCount_of_cover).  Together with the landed
+-- triple-overlap trichotomy these pin the covering four-family orbit
+-- census that the crux relabelling action reduces to.
+#print axioms Gtz.sum_fourBlockCoverCount_eq_twelve
+#print axioms Gtz.one_le_fourBlockCoverCount_of_cover
+#print axioms Gtz.sum_fourBlockCoverCount_sub_one_eq_six_of_cover
+#print axioms Gtz.exists_two_le_fourBlockCoverCount_of_cover
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

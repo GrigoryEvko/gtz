@@ -2429,6 +2429,13 @@ import Gtz.Reduction.ChartRelabel
 -- representatives instead of every covering family.
 import Gtz.Quantitative.CruxRelabel
 
+
+-- the four-block cover budget: four card-three blocks carry twelve incidence
+-- slots over six atoms, so under covering exactly six units of multiplicity
+-- are forced above the floor of one, and some atom is doubly covered.  The
+-- enumeration pre-filters of the four-active orbit classifier.
+import Gtz.Quantitative.FourFamilyCoverBudget
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
