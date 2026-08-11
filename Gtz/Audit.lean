@@ -584,6 +584,7 @@ import Gtz.Quantitative.CruxRelabel
 import Gtz.Quantitative.FourFamilyCoverBudget
 import Gtz.Quantitative.FourFamilyCoverProfiles
 import Gtz.Quantitative.QuadrupleAtomDoor
+import Gtz.Quantitative.PencilDoorReduction
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20863,6 +20864,29 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- the hub normal forms the orbit reduction sends to representatives.
 #print axioms Gtz.mem_all_of_fourBlockCoverCount_eq_four
 #print axioms Gtz.exists_third_of_pair_mem_card_three
+
+-- ==========================================================
+-- the pencil-door reduction
+-- ==========================================================
+-- WHAT IT BUYS.  The first census door closed end to end.  Two
+-- quadruply-covered atoms sit in every block, so each block is the shared
+-- edge plus a third; the four thirds are pairwise distinct because the
+-- blocks are, and four distinct thirds exhaust the four atoms off the edge
+-- (family_eq_edgePencil_of_pair_mem_all).  The explicit two-swap permutation
+-- pairToZeroOne carries the edge to (0,1), the pencil transport moves the
+-- whole family along it, and the capstone
+-- exists_map_family_eq_canonicalEdgePencil_of_two_quadruple_atoms produces
+-- the witness permutation onto canonicalEdgePencil.  Composed with the
+-- landed SixThreeCrux.relabel and chartArgmaxFamily_relabelDesign, any crux
+-- whose argmax family enters profile door (2,0,0,4) relabels to a crux
+-- whose family IS the canonical pencil -- the shape the leaf exits fire at.
+#print axioms Gtz.family_eq_edgePencil_of_pair_mem_all
+#print axioms Gtz.pairToZeroOne_first
+#print axioms Gtz.pairToZeroOne_second
+#print axioms Gtz.map_triple_toEmbedding
+#print axioms Gtz.image_compl_pair
+#print axioms Gtz.image_map_edgePencil
+#print axioms Gtz.exists_map_family_eq_canonicalEdgePencil_of_two_quadruple_atoms
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

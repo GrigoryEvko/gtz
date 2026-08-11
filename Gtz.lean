@@ -2451,6 +2451,14 @@ import Gtz.Quantitative.FourFamilyCoverProfiles
 -- carry a quadruply-covered atom.
 import Gtz.Quantitative.QuadrupleAtomDoor
 
+
+-- the pencil-door reduction, COMPLETE: two quadruply-covered atoms force the
+-- family into the edge pencil (four pairwise-distinct thirds exhaust the four
+-- atoms off the edge), and the explicit pair permutation carries any such
+-- family onto the canonical pencil at the edge {0,1}.  The first census door
+-- closed end to end: normal form, witness permutation, canonical transport.
+import Gtz.Quantitative.PencilDoorReduction
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
