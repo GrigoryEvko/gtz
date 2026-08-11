@@ -2400,6 +2400,15 @@ import Gtz.Quantitative.AssemblyRankFloor
 -- positivity and the (2,2) captured ranks drawn from the landed rank floor.
 import Gtz.Quantitative.FourActiveCoefficientProjection
 
+
+-- reindexing invariance of the least Rayleigh value: a permutation of the
+-- index set is a bijection of nonzero probes preserving quadratic form and
+-- norm, so lambdaMinMat is invariant under permutation submatrices, and the
+-- least eigenvalue of a principal block depends only on the SET of selected
+-- indices, never on the enumeration cutting the block.  The two analytic
+-- bricks under the relabelling equivariance of the chart objective.
+import Gtz.LinAlg.LambdaMinReindex
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

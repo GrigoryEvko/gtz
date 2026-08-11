@@ -578,6 +578,7 @@ import Gtz.Quantitative.ZeroLeakClosure
 import Gtz.Quantitative.CapturedRankFloor
 import Gtz.Quantitative.AssemblyRankFloor
 import Gtz.Quantitative.FourActiveCoefficientProjection
+import Gtz.LinAlg.LambdaMinReindex
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20728,6 +20729,28 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.fourFamilyWeightedTightColumns_span_eq
 #print axioms Gtz.fourFamilyWeightedTightColumns_finrank_range
 #print axioms Gtz.SixThreeCrux.exists_fourFamily_coefficientProjection
+
+-- ==========================================================
+-- reindexing invariance of the least Rayleigh value
+-- ==========================================================
+-- WHAT IT BUYS.  lambdaMinMat is the infimum of Rayleigh quotients over
+-- nonzero probes, and a permutation of the index set is a bijection of
+-- nonzero probes preserving both the quadratic form and the norm; so the
+-- least Rayleigh value of a permuted submatrix equals that of the matrix,
+-- and the least eigenvalue of a principal block depends only on the SET of
+-- selected indices, never on the injective enumeration used to cut the
+-- block (two enumerations with equal range differ by a permutation).
+-- These are the two analytic bricks under the relabelling equivariance of
+-- the chart objective: with them, chartBlockValue transports along atom
+-- permutations block-by-block, the chart objective is relabelling-invariant
+-- as a sup over a permuted candidate family, and the crux relabelling
+-- action -- the reduction of any four-active family to its orbit
+-- representative, which the leaf census fires at -- becomes bookkeeping.
+#print axioms Gtz.dotProduct_comp_equiv
+#print axioms Gtz.submatrix_equiv_mulVec_apply
+#print axioms Gtz.dotProduct_submatrix_equiv_mulVec
+#print axioms Gtz.lambdaMinMat_submatrix_equiv
+#print axioms Gtz.lambdaMinMat_submatrix_eq_of_range_eq
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
