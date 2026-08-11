@@ -2151,6 +2151,11 @@ import Gtz.Quantitative.BasisCoordinateGapExpansion
 -- weight-free bracket-square layer
 import Gtz.Design.ConicBinomialShadow
 
+-- the six dual conics of the stress-free stratum, read JOINTLY: every linear
+-- functional of the frame is an additive set function, and at the tree's landed
+-- stress-free inhabitant no additive score separates the strict triples
+import Gtz.Design.DualConicLinearBarrier
+
 -- U(3,6): the off-conic formulation of stress-freeness, the exact rational
 -- icosa approximant sample, and the mass-reading clearance functionals
 -- positive exactly on the open line-free stratum

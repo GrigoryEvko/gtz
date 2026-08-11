@@ -555,6 +555,7 @@ import Gtz.Design.FreeMassBudgetDischarge
 import Gtz.Design.KFourDescentLadder
 import Gtz.Quantitative.BasisCoordinateGapExpansion
 import Gtz.Design.ConicBinomialShadow
+import Gtz.Design.DualConicLinearBarrier
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19641,6 +19642,71 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_eq_of_odd_family_sq_eq
 #print axioms Gtz.exists_octahedralCoincidence_of_forall_sq_eq
 #print axioms Gtz.exists_octahedralBinomial_ne_of_forall_ne
+
+
+-- Design/DualConicLinearBarrier, THE SIX DUAL CONICS READ JOINTLY, AND THE
+-- BARRIER THAT FOLLOWS.
+-- The stress-free (6,3) stratum carries one symmetric form K_x per atom, pairing
+-- to one at its own atom and zero at every other.  The landed laws read one conic
+-- at a time -- its trace is its atom's weight, and it pairs with every subset gap
+-- to the indicator minus that weight.  This module reads the SIX JOINTLY, and the
+-- answer is a barrier and not a tool.
+-- `trace_gap_linearConicCombination`: EVERY linear functional of the frame,
+-- applied to a subset gap, is an ADDITIVE (modular) set function -- with
+-- coefficients a_x its value at C is (sum_{x in C} a_x) - sum_x a_x t_x.  So the
+-- whole six-dimensional space of linear conic readings sees six numbers per label
+-- and NOTHING about how labels interact, which is exactly the per-label score
+-- shape that the campaign's refuted selector corpus is made of.  One Finset step
+-- on the landed gap-pairing law; the summed conic is the coefficient-free case,
+-- returning card C - 1 at every subset and hence constant on every cardinality.
+-- `dualConicFrame_coefficient_eq_zero_of_sum_eq_zero` makes the frame linearly
+-- independent, so the additive law is EXHAUSTIVE and not a special case.
+-- `atomPairing_smul_of_atom_smul` is the rescaling law, and it is a one-line
+-- corollary of the dual-BASIS property rather than a measurement: rescaling the
+-- atoms rescales the frame inversely and uniqueness does the rest.  Its scope is
+-- what the type says -- the conic's PROJECTIVE class depends on the atom
+-- DIRECTIONS alone and the weights enter only through the traces, which is a
+-- statement about the conics and NOT about their restrictions to a tight plane,
+-- since that plane moves with the weights.
+-- THE BARRIER.  The four subsets {0,2,4} {0,3,5} {1,2,5} {1,3,4} cover every label
+-- exactly twice and {0,1,2} {3,4,5} cover every label exactly once, so their
+-- indicator totals are proportional and NO additive score puts the first family
+-- strictly above the second.  At `Gtz.coordinateDiagonalDesign` -- the tree's
+-- landed stress-free inhabitant, whose four dependent triples are the complete
+-- quadrilateral and whose strictly dominating triples are their complements --
+-- the first family IS the strict set and the second is not dominating at all.
+-- Both sides are exhibited in kernel here, so the composite is not vacuous.
+-- SCOPE, PLAINLY: this kills LINEAR functionals of the frame.  It does not kill
+-- nonlinear ones, and it is not a counterexample to anything -- every design in it
+-- has strictly dominating triples.  Measured outside the kernel: an additive score
+-- DOES separate at `windowRefusalWitnessDesign` and `uThreeSixStratumDesign` and
+-- does NOT at `baseTieKillerDesign`, `freePairKillerDesign`,
+-- `allHeavyNegativeAggregateDesign` and `coordinateDiagonalDesign`, each of the
+-- four by an exact two-versus-two balance -- so the barrier is real and is not a
+-- statement that always fires.
+#print axioms Gtz.trace_gap_linearConicCombination
+#print axioms Gtz.trace_gap_sumDualConic
+#print axioms Gtz.trace_gap_linearConicCombination_eq_of_sum_eq
+#print axioms Gtz.dualConicFrame_coefficient_eq_zero_of_sum_eq_zero
+#print axioms Gtz.atomPairing_smul_of_atom_smul
+#print axioms Gtz.sum_tripleFinset
+#print axioms Gtz.lt_or_lt_of_scoreBalance
+#print axioms Gtz.quadrilateralScoreIdentity
+#print axioms Gtz.not_forall_lt_quadrilateralScore
+#print axioms Gtz.coordinateDiagonalDesign_gap_apply
+#print axioms Gtz.coordinateDiagonalDesign_gap_zeroTwoFour
+#print axioms Gtz.coordinateDiagonalDesign_gap_zeroThreeFive
+#print axioms Gtz.coordinateDiagonalDesign_gap_oneTwoFive
+#print axioms Gtz.coordinateDiagonalDesign_gap_oneThreeFour
+#print axioms Gtz.coordinateDiagonalDesign_gap_zeroOneTwo
+#print axioms Gtz.coordinateDiagonalDesign_gap_threeFourFive
+#print axioms Gtz.coordinateDiagonalDesign_posDef_zeroTwoFour
+#print axioms Gtz.coordinateDiagonalDesign_posDef_zeroThreeFive
+#print axioms Gtz.coordinateDiagonalDesign_posDef_oneTwoFive
+#print axioms Gtz.coordinateDiagonalDesign_posDef_oneThreeFour
+#print axioms Gtz.coordinateDiagonalDesign_not_posDef_zeroOneTwo
+#print axioms Gtz.coordinateDiagonalDesign_not_posDef_threeFourFive
+#print axioms Gtz.no_linearConicFunctional_separates_coordinateDiagonal
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
