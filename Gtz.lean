@@ -2140,6 +2140,12 @@ import Gtz.Design.TightAntecedentMining
 import Gtz.Design.AllHeavyNegativeAggregate
 import Gtz.Design.BarycentricOpenCellWitness
 
+-- the gap determinant in projection-DPP basis coordinates: the Cauchy-Binet
+-- expansion at EVERY subset and cardinality, the dictionary that makes the
+-- centered inclusion moments the campaign's own refusal scalars, and the
+-- transported-frame congruence that removes the whitening from the question
+import Gtz.Quantitative.BasisCoordinateGapExpansion
+
 -- U(3,6): the off-conic formulation of stress-freeness, the exact rational
 -- icosa approximant sample, and the mass-reading clearance functionals
 -- positive exactly on the open line-free stratum

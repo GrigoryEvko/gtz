@@ -553,6 +553,7 @@ import Gtz.Design.KFourLeverageRefuter
 import Gtz.Design.KFourTightLocus
 import Gtz.Design.FreeMassBudgetDischarge
 import Gtz.Design.KFourDescentLadder
+import Gtz.Quantitative.BasisCoordinateGapExpansion
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19490,6 +19491,87 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.starOrbitRefuter_gap_zeroOneFour_posDef
 #print axioms Gtz.starOrbitRefuter_no_star_posDef
 #print axioms Gtz.starOrbitRefuter_path_posDef_and_no_star
+
+
+-- Quantitative/BasisCoordinateGapExpansion, THE GAP IN PROJECTION-DPP COORDINATES.
+-- `Gtz.shadowDeterminant` is the projection-DPP mass p_B = (prod_{i in B} t_i)[B]^2
+-- and the landed `sum_shadowDeterminant_eq_one` makes the twenty masses of a (6,3)
+-- design a probability distribution on bases.  What the tree did NOT have is the
+-- identity that makes that coordinate compute the objects the covering problem is
+-- about:  det (S_T - 1) = sum_{|B| = rank} p_B * prod_{i in B} lambda_i^T, with
+-- lambda_i^T = (1_T(i) - t_i)/t_i -- equivalently, weight-free, with the coefficient
+-- product against the squared bracket.  BOTH HOLD AT EVERY size, EVERY rank AND
+-- EVERY SUBSET T: no cardinality hypothesis, no distinctness, no domination.  So the
+-- card-1, card-2, card-3 and card-4 rows of the bracket-cone programme -- the gap
+-- excesses, the pair minors, the nineteen tie legs, the three windows and the base
+-- tightness equality -- are all instances of ONE theorem.
+-- THE ONE GENUINELY MISSING INGREDIENT was not the composition but
+-- `principalMinorTotal_mul_comm`: the tree's Cauchy-Binet at every level is stated
+-- for the pair `A Aᵀ` / `Aᵀ A`, and the gap needs the flip for INDEPENDENT
+-- rectangular factors because the coefficient diagonal sits between the two copies
+-- of the frame.  Same Weinstein-Aronszajn extraction; the transpose form is the
+-- special case.
+-- THE DICTIONARY makes the restatements EQUIVALENCES rather than bridges: the three
+-- centered inclusion moments of `Gtz/Quantitative/ProjectionBasisCoordinates.lean`
+-- ARE the campaign's three refusal scalars, each times a strictly positive weight
+-- product, so every sign transfers in both directions with no loss.
+-- HONESTY, and it is the module's own: `centeredMomentRefusal_iff_no_posDef_cardThree`
+-- carries NO hypotheses and `freePairMomentRefusal_iff_freePairMinorRefusal` is
+-- unconditional, so this is a LOSSLESS RE-COORDINATIZATION.  One hundred per cent of
+-- the residual becomes expressible in the twenty basis masses and none of it is
+-- discharged.  The four witness theorems keep both new Props off the vacuity list:
+-- each is INHABITED at `nonUniformLeverageTieDesign` and CONTRADICTED at
+-- `allHeavyNegativeAggregateDesign`.  And `FreePairMomentRefusal`, like its landed
+-- twin, is a characterisation of failure only WHEN CONJOINED with "no strict one-slot
+-- swap" -- stripped of that conjunct it holds at branch-true designs.
+-- THE TRANSPORTED FRAME closes the search-level square-root question: the gap of a
+-- transported frame is a CONGRUENCE of the design's gap at every size, rank, subset
+-- and transform, with PosDef and PosSemidef transfer when the transform is
+-- invertible.  A rational frame with rational weights therefore decides the whole
+-- refusal system exactly, even though the design it represents has irrational atoms.
+-- The mathematics was already the tree's -- BalancedNormalForm assembles this
+-- congruence INLINE inside one proof, invisible to a name census -- and what is new
+-- is the named, reusable form with its two transfers.
+#print axioms Gtz.principalMinorTotal_mul_comm
+#print axioms Gtz.det_submatrix_diagonal_mul
+#print axioms Gtz.det_transpose_mul_diagonal_mul
+#print axioms Gtz.transpose_mul_diagonal_mul_eq_sum_atomMatrix
+#print axioms Gtz.inclusionRatio
+#print axioms Gtz.inclusionRatio_of_mem
+#print axioms Gtz.inclusionRatio_of_notMem
+#print axioms Gtz.weight_mul_inclusionRatio
+#print axioms Gtz.transpose_mul_diagonal_inclusionRatio_mul_scaledAtomRows
+#print axioms Gtz.det_subsetSum_sub_one_eq_sum_shadowDeterminant
+#print axioms Gtz.det_subsetSum_sub_one_eq_sum_atomGramMinor
+#print axioms Gtz.shadowDeterminant_eq_weightProduct_mul_atomGramMinor
+#print axioms Gtz.pos_scaled_iff_pos
+#print axioms Gtz.centeredBasisFirst_eq_weight_mul_gapExcess
+#print axioms Gtz.centeredBasisPair_eq_weightProduct_mul_pairGapExcess
+#print axioms Gtz.centeredBasisTriple_eq_weightProduct_mul_discriminantTie
+#print axioms Gtz.centeredBasisFirst_pos_iff
+#print axioms Gtz.centeredBasisPair_pos_iff
+#print axioms Gtz.centeredBasisTriple_pos_iff
+#print axioms Gtz.isLivePair_iff_centeredBasisMoments
+#print axioms Gtz.exists_posDef_cardThree_iff_centeredBasisMoments
+#print axioms Gtz.centeredBasisFirst_nonpos_iff
+#print axioms Gtz.centeredBasisPair_nonpos_iff
+#print axioms Gtz.centeredBasisTriple_nonpos_iff
+#print axioms Gtz.CenteredMomentRefusal
+#print axioms Gtz.centeredMomentRefusal_iff_no_posDef_cardThree
+#print axioms Gtz.FreePairMomentRefusal
+#print axioms Gtz.freePairMomentRefusal_iff_freePairMinorRefusal
+#print axioms Gtz.not_exists_posDef_cardThree_iff_freePairMomentRefusal
+#print axioms Gtz.centeredMomentRefusal_iff_oneSlotRefusal_and_freePairMomentRefusal
+#print axioms Gtz.pairGapExcessOf_of_atom_eq
+#print axioms Gtz.centeredMomentRefusal_nonUniformLeverageTieDesign
+#print axioms Gtz.not_centeredMomentRefusal_allHeavyNegativeAggregateDesign
+#print axioms Gtz.freePairMomentRefusal_nonUniformLeverageTieDesign
+#print axioms Gtz.not_freePairMomentRefusal_allHeavyNegativeAggregateDesign
+#print axioms Gtz.transportedFrameGap
+#print axioms Gtz.transportedFrameGram_eq_conjugation
+#print axioms Gtz.transportedFrameGap_eq_conjugatedGap
+#print axioms Gtz.posDef_transportedFrameGap_iff
+#print axioms Gtz.posSemidef_transportedFrameGap_iff
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
