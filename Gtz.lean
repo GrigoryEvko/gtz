@@ -2158,6 +2158,13 @@ import Gtz.Design.KFourChartClosure
 import Gtz.Design.KFourLeverageRefuter
 import Gtz.Design.KFourTightLocus
 
+-- the K4 forced-edge law and the descent ladder it sits at the top of: the
+-- chart gap in electrical coordinates, the necessary condition every strictly
+-- dominating subset satisfies at each label it omits, the erase rung as an
+-- equivalence at every level, and the rung-two pruning that is exact at the
+-- residual band's canonical inhabitant
+import Gtz.Design.KFourDescentLadder
+
 -- the collar atlas kernel replay: the verified interval/graded/guarded box
 -- checker for the rung-15 barycentric order-chart certificates, and the 120
 -- replayed charts -- one decide per chart turns the adaptive coarsest cover

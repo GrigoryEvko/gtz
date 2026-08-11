@@ -552,6 +552,7 @@ import Gtz.Design.BarycentricOpenCellWitness
 import Gtz.Design.KFourLeverageRefuter
 import Gtz.Design.KFourTightLocus
 import Gtz.Design.FreeMassBudgetDischarge
+import Gtz.Design.KFourDescentLadder
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19396,6 +19397,99 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.not_hasStrictCertificate_of_isTie
 #print axioms Gtz.sixThree_hasParallelPair_of_isTie_of_stressFree_ofResidual
 #print axioms Gtz.sixThree_exists_posDef_triple_of_stressFree_ofResidual
+
+
+-- Design/KFourDescentLadder, THE FORCED-EDGE LAW AND THE LADDER IT TOPS.
+-- The K4 chart gap is a difference of two graph Laplacians, so the class is an
+-- electrical statement.  With `a_c = m_c / w_c` the boosted conductance and
+-- `s_c = a_c (1 - w_c)` the SLACK conductance, the gap has a complement form,
+-- `directionChartGap dir m w S = L(s) - sum_{c not in S} a_c A_c`, and testing
+-- positive definiteness against the single probe `adj L(s) *v d_out` gives a
+-- NECESSARY condition at every omitted label:  `a_out * Q_out(s) < T(s)`, both
+-- sides the tree's own landed tree polynomials read at the slack vector.
+-- Contrapositive: every strictly dominating subset CONTAINS every label whose
+-- boosted slack leverage reaches one.  There is no argmax in it, so it is
+-- untouched by the twenty-eight refuted selectors.
+-- `forcedStarWitness_posDef_cardThree_eq` is the non-vacuity certificate: at an
+-- exact chart point three labels really are forced, and the law alone pins the
+-- strictly dominating subset to `{3,4,5}` without evaluating a candidate.
+-- `dotProduct_adjugate_univGap_lt_det_of_posDef` transports the same probe to a
+-- weighted design at general size and rank.
+-- PART II IS THE LADDER.  Strict monotonicity of domination (the strict twin of
+-- the landed `Gtz.Dominates.mono`, which the tree had only in weak form) makes
+-- the positive definite subsets an UP-SET, so the landed erase rung applies at
+-- EVERY level, not only against the full set.  `posDef_directionChartGap_univ_kFour`
+-- shows the top of the ladder is always occupied, so no descent is vacuous.
+-- Rung one is the forced-edge law; RUNG TWO omits a PAIR and is strictly
+-- stronger -- at `Gtz.bandResidualWitnessPoint`, the canonical inhabitant of the
+-- residual band where rung one prunes nothing at all, five forced-pair clauses
+-- pin the strictly dominating trees EXACTLY (`bandWitness_posDef_tree_mem`).
+-- AND THE TWO RUNGS DIFFER IN KIND: the forced set is always a forest
+-- (`Gtz/Design/KFourForcedForest.lean`), so rung one is automatically consistent
+-- and can never refute the class, while rung two is a conjunction of 2-clauses
+-- over the sixteen spanning trees and IS combinatorially refutable.
+-- `starOrbitRefuter_path_posDef_and_no_star` closes the orbit question from the
+-- other side: at an exact point whose heavy conductance sits on a perfect
+-- matching, NO vertex star is strictly dominating and a path is -- so neither S4
+-- orbit of the sixteen trees may be dropped from any atlas or elimination.
+#print axioms Gtz.det_mul_det_swapScaledAtom
+#print axioms Gtz.chartSlack
+#print axioms Gtz.chartSlack_pos
+#print axioms Gtz.slackLaplacian
+#print axioms Gtz.dotProduct_directionChartGap_mulVec_eq_slack
+#print axioms Gtz.boostedOutside_lt_slackEnergy_of_posDef
+#print axioms Gtz.boostedConductance_mul_adjugateReading_lt_det_of_posDef
+#print axioms Gtz.sum_smul_atomMatrix_kFourDirection
+#print axioms Gtz.det_sum_smul_atomMatrix_kFourDirection
+#print axioms Gtz.dotProduct_adjugate_kFourDirection
+#print axioms Gtz.kFourContractionTreePolynomial_pos
+#print axioms Gtz.chartPoint_weight_lt_one
+#print axioms Gtz.chartSlack_pos_of_chartPoint
+#print axioms Gtz.kFourBoostedSlackLeverage_lt_of_posDef
+#print axioms Gtz.kFourForcedEdge_mem_of_posDef
+#print axioms Gtz.forcedStarWitnessMass
+#print axioms Gtz.forcedStarWitnessWeight
+#print axioms Gtz.forcedStarWitnessPoint
+#print axioms Gtz.forcedStarWitnessPoint_mass
+#print axioms Gtz.forcedStarWitnessPoint_weight
+#print axioms Gtz.forcedStarWitness_forces
+#print axioms Gtz.forcedStarWitness_posDef_cardThree_eq
+#print axioms Gtz.dotProduct_adjugate_univGap_lt_det_of_posDef
+#print axioms Gtz.posDef_subsetSum_sub_one_of_subset
+#print axioms Gtz.pivot_univ_lt_one_of_posDef_of_notMem
+#print axioms Gtz.posDef_sub_smul_vecMulVec_iff
+#print axioms Gtz.directionChartGap_erase
+#print axioms Gtz.posDef_directionChartGap_of_subset
+#print axioms Gtz.chartLadderPivot
+#print axioms Gtz.posDef_directionChartGap_erase_iff
+#print axioms Gtz.chartLadderPivot_lt_one_of_posDef_of_notMem
+#print axioms Gtz.directionChartGap_univ_eq_slackLaplacian
+#print axioms Gtz.posDef_directionChartGap_univ_kFour
+#print axioms Gtz.sum_mass_le_boostedConductance
+#print axioms Gtz.bandWitness_gap_twoThreeFourFive_det_neg
+#print axioms Gtz.bandWitness_gap_zeroThreeFourFive_det_neg
+#print axioms Gtz.bandWitness_gap_zeroTwoFourFive_det_neg
+#print axioms Gtz.bandWitness_gap_zeroTwoThreeFour_det_neg
+#print axioms Gtz.bandWitness_gap_zeroOneTwoFour_det_neg
+#print axioms Gtz.bandWitness_posDef_meets_zeroOne
+#print axioms Gtz.bandWitness_posDef_meets_oneTwo
+#print axioms Gtz.bandWitness_posDef_meets_oneThree
+#print axioms Gtz.bandWitness_posDef_meets_oneFive
+#print axioms Gtz.bandWitness_posDef_meets_threeFive
+#print axioms Gtz.kFourTrees_meeting_bandDeadPairs
+#print axioms Gtz.bandWitness_posDef_tree_mem
+#print axioms Gtz.starOrbitRefuterMass
+#print axioms Gtz.starOrbitRefuterWeight
+#print axioms Gtz.starOrbitRefuterPoint
+#print axioms Gtz.starOrbitRefuterPoint_mass_eq
+#print axioms Gtz.starOrbitRefuterPoint_weight_eq
+#print axioms Gtz.starOrbitRefuter_gap_zeroOneThree_det_neg
+#print axioms Gtz.starOrbitRefuter_gap_zeroTwoFour_det_neg
+#print axioms Gtz.starOrbitRefuter_gap_oneTwoFive_det_neg
+#print axioms Gtz.starOrbitRefuter_gap_threeFourFive_det_neg
+#print axioms Gtz.starOrbitRefuter_gap_zeroOneFour_posDef
+#print axioms Gtz.starOrbitRefuter_no_star_posDef
+#print axioms Gtz.starOrbitRefuter_path_posDef_and_no_star
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
