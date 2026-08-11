@@ -2368,6 +2368,19 @@ import Gtz.Quantitative.DesignFreeFloorScope
 -- equality, so the crux corollary is vacuous if the conjecture holds. **
 import Gtz.Quantitative.ZeroLeakClosure
 
+
+-- the captured rank floor: at negative value NEITHER captured corner of a
+-- stationary assembly has range dimension at most one.  The complement corner
+-- dies by a Rayleigh estimate -- constant diagonal caps each coordinate mass,
+-- per-block Cauchy-Schwarz caps each scaled overlap by rank/size, and the
+-- multiplier average contradicts the corner's trace whenever
+-- rank * size <= (size - 1)^2 -- needing NO multiplier positivity and no
+-- window strictness, so it reaches every multiplier support.  The primal
+-- corner transports rank one into collinearity of the positively weighted
+-- projected tight directions and fires the landed closing theorem.  Together
+-- the corners put every (6,3) crux assembly at rank at least four.
+import Gtz.Quantitative.CapturedRankFloor
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

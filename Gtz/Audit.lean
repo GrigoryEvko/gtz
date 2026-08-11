@@ -575,6 +575,7 @@ import Gtz.Quantitative.FourActiveSupportTwoBlock
 import Gtz.Quantitative.ChartWeightBox
 import Gtz.Quantitative.DesignFreeFloorScope
 import Gtz.Quantitative.ZeroLeakClosure
+import Gtz.Quantitative.CapturedRankFloor
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20615,6 +20616,48 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.false_of_two_floorAtoms
 #print axioms Gtz.false_of_zeroLeak
 #print axioms Gtz.SixThreeCrux.false_of_zeroLeak_tightDirection
+
+-- ==========================================================
+-- the captured rank floor
+-- ==========================================================
+-- WHAT IT BUYS.  Both rank-one exclusions for the captured corners of a
+-- stationary assembly, from landed material alone.  The complement corner
+-- (false_of_complementCaptured_range_finrank_le_one) closes by a Rayleigh
+-- estimate: rank one factors the corner through one chart-annihilated unit
+-- direction, the constant diagonal caps each coordinate mass by 1/size,
+-- Cauchy-Schwarz on each block's rank-atom support caps each scaled squared
+-- overlap by rank/size, and the multiplier average forces
+-- lam^2 <= rank/size for the corner's trace lam = 1 - value - 1/size --
+-- which at negative value strictly exceeds (size - 1)/size, a contradiction
+-- whenever rank * size <= (size - 1)^2, at (6,3): 18 <= 25.
+-- ** THE COMPLEMENT SIDE NEEDS NO MULTIPLIER POSITIVITY AND NO WINDOW
+-- STRICTNESS **, so its crux corollary reaches EVERY stationary datum at
+-- every active count and every multiplier support -- including supports with
+-- vanishing multipliers, where positively-restricted formulations do not
+-- reach.  The primal corner transports rank one into collinearity of the
+-- positively weighted projected tight directions -- the residual against the
+-- factor line is chart-fixed, pairs to zero with the corner, and its assembly
+-- mass concentrates the label's own overlap, which the positive multiplier
+-- kills -- and fires the landed false_of_projected_tightDir_collinear, whose
+-- strict window the crux supplies through the argmax field.
+--
+-- DOWNSTREAM.  With both corners at rank at least two and their ranges
+-- meeting trivially, every crux assembly has rank at least four.  At four
+-- active blocks this forces all four multipliers positive, the four tight
+-- directions independent, and the spectral regime (2,2) with coefficient
+-- trace two -- the exact substrate under the four-active leaf census.
+#print axioms Gtz.dotProduct_sq_le_dotProduct_mul_dotProduct
+#print axioms Gtz.exists_unit_eq_trace_smul_atomMatrix_of_symmetric_of_range_finrank_le_one
+#print axioms Gtz.mulVec_direction_eq_self_of_mul_smul_atomMatrix
+#print axioms Gtz.diagonal_complementProjection_mul_multiplier_le_inv_size
+#print axioms Gtz.trace_complementProjection_mul_multiplier_of_isChartStationaryData
+#print axioms Gtz.posSemidef_complementProjection_mul_multiplier_of_isChartStationaryData
+#print axioms Gtz.sq_dotProduct_tightDir_le_sum_sq_on_subset
+#print axioms Gtz.false_of_complementCaptured_range_finrank_le_one
+#print axioms Gtz.projected_tightDir_eq_smul_of_projectedCaptured_eq_smul_atomMatrix
+#print axioms Gtz.false_of_projectedCaptured_range_finrank_le_one
+#print axioms Gtz.SixThreeCrux.not_complementProjectedMultiplier_range_finrank_le_one
+#print axioms Gtz.SixThreeCrux.not_projectedMultiplier_range_finrank_le_one
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
