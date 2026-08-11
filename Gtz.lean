@@ -2444,6 +2444,13 @@ import Gtz.Quantitative.FourFamilyCoverBudget
 -- orbit census.
 import Gtz.Quantitative.FourFamilyCoverProfiles
 
+
+-- the quadruple-atom door: a cover count of four puts the atom in all four
+-- blocks, and a card-three block through two named atoms is those two plus a
+-- third -- the edge-pencil normal form behind the three profile doors that
+-- carry a quadruply-covered atom.
+import Gtz.Quantitative.QuadrupleAtomDoor
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

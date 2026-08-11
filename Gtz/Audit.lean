@@ -583,6 +583,7 @@ import Gtz.Reduction.ChartRelabel
 import Gtz.Quantitative.CruxRelabel
 import Gtz.Quantitative.FourFamilyCoverBudget
 import Gtz.Quantitative.FourFamilyCoverProfiles
+import Gtz.Quantitative.QuadrupleAtomDoor
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20847,6 +20848,21 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.weighted_sum_fourBlockCountClass_eq_twelve_of_cover
 #print axioms Gtz.fourCoverProfile_arith
 #print axioms Gtz.fourBlockCountClass_profile_of_cover
+
+-- ==========================================================
+-- the quadruple-atom door
+-- ==========================================================
+-- WHAT IT BUYS.  The normal form behind the three profile doors carrying a
+-- quadruply-covered atom.  A cover count of four puts the atom in all four
+-- blocks (mem_all_of_fourBlockCoverCount_eq_four), and a card-three block
+-- through two distinct named atoms is exactly those two plus a third
+-- (exists_third_of_pair_mem_card_three).  At profile (2,0,0,4) the two
+-- quadruple atoms sit in every block, so the family is the edge pencil
+-- {a,b,x} over four distinct thirds; at profiles (1,0,3,2) and (1,1,1,3)
+-- the single quadruple atom makes every block a completion of one atom --
+-- the hub normal forms the orbit reduction sends to representatives.
+#print axioms Gtz.mem_all_of_fourBlockCoverCount_eq_four
+#print axioms Gtz.exists_third_of_pair_mem_card_three
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
