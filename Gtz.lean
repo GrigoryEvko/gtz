@@ -2191,6 +2191,15 @@ import Gtz.Design.KFourDescentLadder
 -- prunes, it cannot decide and it cannot refute
 import Gtz.Design.KFourForcedForest
 
+-- the complement-kernel weld: whitening the full excess turns EVERY complement
+-- test, at any omitted size and any rank, into the principal minors of one
+-- inverse-metric Gram matrix, whose first rung is the already-landed full-base
+-- pivot and is therefore free at a crux -- the residual selector is three edge
+-- conditions plus one determinant.  ITS CLOSING EQUIVALENCE IS A RESTATEMENT
+-- OF THE TARGET AND DISCHARGES NOTHING; what it buys is the change of
+-- coordinates, not a reduction in the open content
+import Gtz.Reduction.ComplementKernelWeld
+
 -- the collar atlas kernel replay: the verified interval/graded/guarded box
 -- checker for the rung-15 barycentric order-chart certificates, and the 120
 -- replayed charts -- one decide per chart turns the adaptive coarsest cover

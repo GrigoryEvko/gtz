@@ -558,6 +558,7 @@ import Gtz.Design.ConicBinomialShadow
 import Gtz.Design.DualConicLinearBarrier
 import Gtz.Design.KFourForcedForest
 import Gtz.Reduction.RankThreeFromStressFreeResidual
+import Gtz.Reduction.ComplementKernelWeld
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19792,6 +19793,51 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.stressFreeHingeHoldsSixThree_of_noStressResidual
 #print axioms Gtz.hingeHoldsAtSize_sixThree_of_noStressResidual
 #print axioms Gtz.gtzWeightedAll_three_of_noStressResidual
+
+-- ============================================================
+-- the complement-kernel weld
+-- ============================================================
+-- WHAT IT BUYS.  Whitening the full excess H = sum_c (1 - t_c) A_c -- positive
+-- definite by the landed coParseval theorem -- carries the gap of the kept
+-- complement onto 1 - U H⁻¹ Uᵀ, where the rows of U are the omitted atoms.  The
+-- transport is a LoewnerEquiv, so it moves the PSD verdict (domination) and the
+-- PD verdict (strict domination) together, at ANY omitted size and ANY rank.
+-- Every complement test is then the principal minors of ONE inverse-metric Gram
+-- matrix.  Its diagonal is not new: complementKernel_diagonal_eq_pivot
+-- identifies it with the already-landed full-base Gtz.pivot, which is exactly
+-- what makes the first rung FREE at a (6,3) crux -- the crux field
+-- hasStrictlyDominatingCoSingletons hands it over.  So the residual selector
+-- carries three edge conditions and one determinant, and no singleton clause.
+--
+-- WHAT IT DOES NOT BUY, AND THIS IS THE POINT.  The closing equivalence
+-- cruxKernelTriangleSelection_iff_gtzWeighted_six_three IS A RESTATEMENT AND IT
+-- DISCHARGES NOTHING.  Its left side unwinds to "no crux exists", which is the
+-- target: good triangle iff the complement weakly dominates iff a crux has a
+-- dominating triple iff no crux exists.  The reverse direction is outright
+-- vacuous -- GtzWeighted 6 3 empties the family the selection quantifies over.
+-- It is a LOSSLESS RE-COORDINATISATION.  No obligation is retired by it, the
+-- ledger does not move, and GtzWeighted 6 3 is exactly as open as before.
+#print axioms Gtz.complementKernelMetric
+#print axioms Gtz.complementKernelMetric_eq_fullExcess
+#print axioms Gtz.complementKernel
+#print axioms Gtz.complementKernelGap
+#print axioms Gtz.inverse_eq_mul_transpose_of_congruence_to_one
+#print axioms Gtz.complementGap_eq_metric_sub_selectedGram
+#print axioms Gtz.loewnerEquiv_complementGap_kernel
+#print axioms Gtz.dominates_complement_iff_kernel_posSemidef
+#print axioms Gtz.posDef_complementGap_iff_kernel_posDef
+#print axioms Gtz.complementKernel_apply
+#print axioms Gtz.complementKernel_diagonal_eq_pivot
+#print axioms Gtz.complementKernel_transpose
+#print axioms Gtz.complementKernelGap_transpose
+#print axioms Gtz.posDef_complementGap_three_iff_kernel_rungs
+#print axioms Gtz.dominates_complement_three_iff_kernel_principal_rungs
+#print axioms Gtz.SixThreeCrux.complementKernel_diagonal_lt_one
+#print axioms Gtz.complementKernelPairClearance
+#print axioms Gtz.IsGoodCruxKernelTriangle
+#print axioms Gtz.SixThreeCrux.not_isGoodCruxKernelTriangle
+#print axioms Gtz.CruxKernelTriangleSelection
+#print axioms Gtz.cruxKernelTriangleSelection_iff_gtzWeighted_six_three
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
