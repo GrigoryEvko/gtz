@@ -35,7 +35,13 @@ point, and what gives weight rigidity throughout that set.
 At any chart stationarity datum, with `Xi` the assembly:
 
     trace (Xi * W)  =  value                               (`trace_assembly_mul_chartStationaryGap`)
-    trace (Xi * P)  =  value + 1/size                      (`trace_assembly_mul_projection`)
+    trace (P * Xi)  =  value + 1/size    (`trace_projection_mul_multiplier_of_isChartStationaryData`)
+
+The second name was previously written here as `trace_assembly_mul_projection`,
+which is NOT and never was a declaration anywhere in this tree; the real theorem
+is the one now cited, at Gtz/Quantitative/ChartStationary.lean:629, and it is
+stated in the order `P * Xi`.  The two orders agree in trace, and in fact agree
+as matrices on this stratum by `assembly_commutes`.
 
 and for ANY curve `s ↦ P s` of projections with `P 0 = P`, velocity `B` and
 acceleration `A` -- the constraint `A P + P A - A = -2 B²` being the second

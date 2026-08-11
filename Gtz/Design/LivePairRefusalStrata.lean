@@ -850,8 +850,11 @@ and the complement are dead, exactly as the region forces.
 
 Verified exactly outside Lean and NOT mechanized here: the design is line-free
 (minimum absolute bracket `3/4`, no bracket zero) and off-conic (Veronese
-determinant `242757/128`).  Those two legs are stated in the report, not proved
-below. -/
+determinant `242757/128` IN THIS TREE'S UNDOUBLED CONVENTION -- the one
+`Gtz.veroneseCoords` implements, `(x^2, y^2, z^2, xy, xz, yz)` with no factor
+two on the cross terms; the same determinant is `242757/16` in the DOUBLED
+convention `(.., 2xy, 2xz, 2yz)`, larger by exactly `2^3 = 8`).  Those two legs
+are stated in the report, not proved below. -/
 
 noncomputable def windowRefusalWitnessAtom : Fin 6 → (Fin 3 → ℝ)
   | 0 => ![0, -1, 1]

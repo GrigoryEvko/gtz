@@ -19007,8 +19007,18 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- triple with tight direction (0,2,1), and has exactly two strict card-three
 -- subsets, BOTH one-slot -- so both sides of the equivalence are exhibited at one
 -- design.  Its line-freeness (minimum bracket 3/4) and off-conicity (Veronese
--- determinant 242757/16 in this tree's doubled convention) were verified in exact
+-- determinant 242757/128 IN THIS TREE'S CONVENTION) were verified in exact
 -- rational arithmetic by two independent audits but are NOT mechanized here.
+-- CONVENTION, CORRECTED: this tree's `Gtz.veroneseCoords` is the UNDOUBLED
+-- (x^2, y^2, z^2, xy, xz, yz), with no factor two on the cross terms, so the
+-- phrase "this tree's doubled convention" that stood here was WRONG -- the tree
+-- is not doubled.  The value 242757/16 that it labelled is the same determinant
+-- read in the DOUBLED convention (.., 2xy, 2xz, 2yz), larger by exactly 2^3 = 8
+-- because three of the six coordinates are scaled in a six-by-six coordinate
+-- determinant.  The undoubled figure 242757/128 published at
+-- Gtz/Design/LivePairRefusalStrata.lean:853 for this same design was correct and
+-- was never in conflict; one phrase was naming two objects.  Nothing was
+-- unsound: both values are nonzero, so off-conicity holds on either reading.
 -- COVERAGE CAVEAT ON THE ENRICHED SYSTEM: `ThreeWindowRefusalSystem` additionally
 -- demands all three free pairs live, and that is RARE -- zero of twenty-six
 -- independently generated `WindowRefusal` designs in a stage-two census met it.

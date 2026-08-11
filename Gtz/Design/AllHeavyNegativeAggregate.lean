@@ -99,7 +99,14 @@ theorem allHeavyNegativeAggregateDesign_hasLinePattern :
           (by decide)
 
 /-- **OFF-CONIC.**  The only symmetric form annihilating all six atoms is zero.
-For the record the Veronese determinant is `181280/243`. -/
+For the record the Veronese determinant is `22660/243` IN THIS TREE'S
+CONVENTION, which is the UNDOUBLED one: `Gtz.veroneseCoords` is
+`(x^2, y^2, z^2, xy, xz, yz)` with no factor two on the cross terms.  The
+previously published figure here was `181280/243`, which is the same
+determinant taken in the DOUBLED convention `(.., 2xy, 2xz, 2yz)`; the two
+differ by exactly `2^3 = 8`, since doubling three of the six coordinates
+multiplies the six-by-six coordinate determinant by `2^3`.  Both are nonzero, so
+off-conicity was never in doubt -- only the label was. -/
 theorem allHeavyNegativeAggregateDesign_hasNoCommonQuadric :
     HasNoCommonQuadric allHeavyNegativeAggregateDesign.atom := by
   intro form hsymmetric hquadric
