@@ -565,6 +565,7 @@ import Gtz.Reduction.ComplementKernelRepairsDescent
 import Gtz.Quantitative.JointChartIndexFloor
 import Gtz.Quantitative.ChartFloorAtomSpan
 import Gtz.Quantitative.ZeroLeakCollinearClosure
+import Gtz.Quantitative.ChartStationaryDesignFreeWindow
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20120,6 +20121,59 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.pairNormal
 #print axioms Gtz.exists_unitNormal_of_projectionFixed_vanishing_pair
 #print axioms Gtz.exists_unitNormal_projected_tightDir_collinear
+
+-- ==========================================================
+-- the design-free value window
+-- ==========================================================
+-- WHAT IT BUYS.  A `Gtz.IsChartStationaryData` already IS a `Gtz.ChartPoint`:
+-- seven of its thirteen fields are the seven of the chart point, with
+-- weight_pos supplying weight_nonneg.  Since Gtz.chartPointHasDesign is
+-- UNCONDITIONAL at every size and rank, the design hypothesis carried by every
+-- shipped value-floor theorem is manufacturable rather than assumed.  The
+-- sharpest floors then hold off the bare bundle plus argmax:
+--   -(4/27) <= value  at (6,3)      -(10/77) <= value  at (7,3)
+-- and these SUPERSEDE the Cauchy-Binet design-free constants, by the landed
+-- cauchyBinetValueFloor_le_combinedValueFloor.
+--
+-- THE WEIGHT CAP.  weight c <= 1 + (size - 1) * value, one line of simplex
+-- arithmetic on the landed weight floor: the other size-1 atoms claim
+-- (size-1)(-value) of the unit budget.  At a negative value it is strictly
+-- sharper than both shipped upper bounds.  Its EQUALITY CASE IS INHABITED, and
+-- mechanized here at a landed object: Gtz.chartTwoBlockTripleProjection at
+-- value -1/6 has every weight 1/6 = 1 + 5(-1/6), so cap and floor pinch.
+--
+-- AND A REFUTATION.  The STRICT dual bound value + weight c < 1 is FALSE over
+-- the bundle alone: the identity chart at size = rank = 4 with uniform weights
+-- is a stationarity datum AND an argmax datum attaining value + weight = 1 at
+-- every atom, because neither structure imposes rank < size.  The strict form
+-- therefore needs a hypothesis; value < 0 is landed here, rank < size is not
+-- tested.  At (6,3) nothing is affected, a crux having a negative value.
+--
+-- WHAT IT DOES NOT BUY.  Every floor here is trivially true at a nonnegative
+-- value, so ALL of its content sits on the negative side -- and the sign law
+-- landed alongside it makes that side, at (6,3), EQUIVALENT to the failure of
+-- the cell.  A sharper floor is a sharper statement about the shape of a
+-- counterexample, never a step towards excluding one.  Ledger unchanged.
+#print axioms Gtz.chartPointOfIsChartStationaryData
+#print axioms Gtz.exists_design_of_isChartStationaryData
+#print axioms Gtz.combinedValueFloor_le_value_of_isChartStationaryData_designFree
+#print axioms Gtz.neg_four_div_twentySeven_le_value_of_isChartStationaryData_designFree
+#print axioms Gtz.neg_ten_div_seventySeven_le_value_of_isChartStationaryData_designFree
+#print axioms Gtz.value_ne_neg_inv_size_of_isChartStationaryData_designFree
+#print axioms Gtz.neg_inv_size_lt_value_of_isChartStationaryData_designFree
+#print axioms Gtz.weight_le_one_add_pred_size_mul_value_of_isChartStationaryData
+#print axioms Gtz.weight_mem_window_of_isChartStationaryData
+#print axioms Gtz.value_add_weight_lt_one_of_isChartStationaryData_of_neg
+#print axioms Gtz.chartTwoBlockTripleWeight_eq_cap
+#print axioms Gtz.chartTwoBlockTripleWeight_le_cap
+#print axioms Gtz.identityChartWeight
+#print axioms Gtz.identityChartSubset
+#print axioms Gtz.identityChartMultiplierWeight
+#print axioms Gtz.identityChartTightDir
+#print axioms Gtz.identityChart_isChartStationaryData
+#print axioms Gtz.identityChart_isChartArgmaxValue
+#print axioms Gtz.identityChart_value_add_weight_eq_one
+#print axioms Gtz.not_forall_value_add_weight_lt_one_of_isChartStationaryData
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

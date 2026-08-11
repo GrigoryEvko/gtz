@@ -2265,6 +2265,16 @@ import Gtz.Quantitative.ChartFloorAtomSpan
 -- landed cross-product kit makes it elementary and no dimension count is used.
 import Gtz.Quantitative.ZeroLeakCollinearClosure
 
+
+-- the design-free value window: the design hypothesis carried by every shipped
+-- value floor is REDUNDANT -- a stationarity datum is a chart point, and
+-- `Gtz.chartPointHasDesign` realises every such point unconditionally -- so the
+-- sharp floors -4/27 at (6,3) and -10/77 at (7,3) hold off the bare bundle plus
+-- argmax.  With them the pointwise weight cap and its window, the cap's
+-- equality case inhabited at a landed datum, and an exact witness showing the
+-- STRICT dual bound is FALSE without a further hypothesis.
+import Gtz.Quantitative.ChartStationaryDesignFreeWindow
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
