@@ -2330,6 +2330,14 @@ import Gtz.Reduction.LadderRungHasNoBase
 -- jointly does not touch it.
 import Gtz.Quantitative.ChartStationaryValueSign
 
+
+-- the four-active support-two block: at a (6,3) counterexample with exactly
+-- four active blocks, EVERY unit least-eigenvector family has an ACTIVE block
+-- of support exactly two.  Two landed theorems 274 lines apart in one file,
+-- composed for the first time, and the composition is multiplicity-robust
+-- because it quantifies over the family rather than choosing an eigenvector.
+import Gtz.Quantitative.FourActiveSupportTwoBlock
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

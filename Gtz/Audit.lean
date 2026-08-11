@@ -571,6 +571,7 @@ import Gtz.Quantitative.SixThreeIndexLadderSpine
 import Gtz.Quantitative.ZeroLeakDependency
 import Gtz.Reduction.LadderRungHasNoBase
 import Gtz.Quantitative.ChartStationaryValueSign
+import Gtz.Quantitative.FourActiveSupportTwoBlock
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20460,6 +20461,40 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.gtzWeighted_six_three_iff_chartStationaryValueNonneg
 #print axioms Gtz.chartTwoBlockTripleWeight_eq_floor_and_cap
 #print axioms Gtz.chartTwoBlockUniformWeight_eq_floor_and_cap
+
+-- ==========================================================
+-- the four-active support-two block
+-- ==========================================================
+-- WHAT IT BUYS.  Two landed theorems in one file, 274 lines apart and never
+-- composed: not_forall_exists_fullSupport_activeEigenvector_of_card_eq_four
+-- says one cannot choose a full-support least eigenvector at every ACTIVE
+-- block, and two_le_card_totalTightSupport says the support is at least two at
+-- active AND inactive blocks alike.  With the support inside its own card-three
+-- block the two bounds PINCH: at exactly four active blocks some active block
+-- carries support exactly two.
+--
+-- ** MULTIPLICITY-ROBUST BY CONSTRUCTION. **  The statement quantifies over ANY
+-- unit least-eigenvector family rather than producing one, so at a block whose
+-- least eigenvalue is multiple no choice of eigenvector inside the eigenspace
+-- escapes it.  A produced form follows from the unconditional
+-- exists_unit_chartBlockEigenvectorFamily, and the contrapositive is the shape
+-- an index floor consumes.
+--
+-- WHAT IT MEANS FOR THE FOUR-ACTIVE CASE TREE.  The support-three branch of the
+-- four-active dichotomy does not have to be worked: a proof may always choose
+-- the support-two block.  ** THE SCOPE LIMIT IS REAL AND IS STATED HERE: if a
+-- downstream argument needs the ROW-SPAN data AT the support-two block, this
+-- does not deliver it, because the row-span block is selected by the vanishing
+-- submodule and need not be the same block. **
+--
+-- SATISFIABILITY.  The hypothesis is a crux with exactly four active blocks --
+-- the boundary case of the landed unconditional floor -- so it is VACUOUS UNDER
+-- THE CONJECTURE, as every crux-quantified statement is.  It is not empty for a
+-- trivial reason: if a four-active crux exists, the support rung of the index
+-- spine is refuted at it.  Ledger unchanged.
+#print axioms Gtz.SixThreeCrux.exists_argmaxBlock_totalTightSupport_eq_two_of_card_eq_four
+#print axioms Gtz.SixThreeCrux.exists_tightVec_argmaxBlock_totalTightSupport_eq_two_of_card_eq_four
+#print axioms Gtz.SixThreeCrux.five_le_card_chartArgmaxFamily_of_forall_totalTightSupport_ne_two
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
