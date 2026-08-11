@@ -2418,6 +2418,17 @@ import Gtz.LinAlg.LambdaMinReindex
 -- consume exactly these three theorems.
 import Gtz.Reduction.ChartRelabel
 
+
+-- the crux relabelling action: every field of a (6,3) crux transports along
+-- an atom permutation -- the projection conjugates, the chart objective does
+-- not move, the minimiser field survives verbatim, the design-side fields
+-- ride the landed domination equivariance -- and the argmax family of the
+-- relabelled crux is the inverse-image family with the SAME CARDINALITY.
+-- Every statement proved at an orbit representative of an active family now
+-- transports to the whole orbit; the four-active census fires at fifteen
+-- representatives instead of every covering family.
+import Gtz.Quantitative.CruxRelabel
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

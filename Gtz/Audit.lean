@@ -580,6 +580,7 @@ import Gtz.Quantitative.AssemblyRankFloor
 import Gtz.Quantitative.FourActiveCoefficientProjection
 import Gtz.LinAlg.LambdaMinReindex
 import Gtz.Reduction.ChartRelabel
+import Gtz.Quantitative.CruxRelabel
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20771,6 +20772,39 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.chartGapRaw_relabelChartConfig
 #print axioms Gtz.chartBlockValue_relabelChartConfig
 #print axioms Gtz.chartObjectiveRaw_relabelChartConfig
+
+-- ==========================================================
+-- the crux relabelling action
+-- ==========================================================
+-- WHAT IT BUYS.  Every field of a (6,3) crux transports along an atom
+-- permutation: the projection form conjugates entrywise
+-- (projectionOfDesign_relabelDesign), the chart objective does not move
+-- (chartObjective_chartPointOfDesign_relabelDesign, through the landed
+-- configuration-level equivariance), the global-minimiser field survives by
+-- one rewrite -- it quantifies over ALL chart points and the value is
+-- unchanged -- and the six design-side fields ride the landed domination
+-- equivariance, the leverage accessors, and the compl-of-singleton
+-- transport.  The argmax family of the relabelled crux is the image of the
+-- original family under the inverse permutation
+-- (chartArgmaxFamily_relabelDesign), with the SAME CARDINALITY.
+--
+-- DOWNSTREAM.  This is the orbit-reduction engine of the active-count
+-- census: a statement refuted at one representative four-family kills every
+-- crux whose family lies in that S6 orbit, because the crux itself moves.
+-- The relabelled crux derives its own stationarity bundle from its own
+-- minimiser field, so no multiplier or tight-direction data transports --
+-- only the family.  The fifteen covering orbits are now the whole rung-four
+-- case list.
+#print axioms Gtz.projectionOfDesign_relabelDesign
+#print axioms Gtz.chartConfig_chartPointOfDesign_relabelDesign
+#print axioms Gtz.chartObjective_chartPointOfDesign_relabelDesign
+#print axioms Gtz.map_toEmbedding_map_symm_toEmbedding
+#print axioms Gtz.map_symm_toEmbedding_map_toEmbedding
+#print axioms Gtz.mem_chartArgmaxFamily_relabelDesign_iff
+#print axioms Gtz.chartArgmaxFamily_relabelDesign
+#print axioms Gtz.card_chartArgmaxFamily_relabelDesign
+#print axioms Gtz.SixThreeCrux.relabel
+#print axioms Gtz.SixThreeCrux.card_chartArgmaxFamily_relabel
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
