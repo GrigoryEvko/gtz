@@ -2391,6 +2391,15 @@ import Gtz.Quantitative.CapturedRankFloor
 -- coefficient projection has trace two, with positivity DERIVED.
 import Gtz.Quantitative.AssemblyRankFloor
 
+
+-- the four-active coefficient projection: the multiplier-weighted tight
+-- columns of an exactly-four argmax family have Gram equal to the assembly
+-- and admit a left inverse, and the chart descends to a coefficient matrix
+-- with P B = B M, symmetric, idempotent, of trace two -- the complete
+-- algebraic interface under the four-active leaf census, with multiplier
+-- positivity and the (2,2) captured ranks drawn from the landed rank floor.
+import Gtz.Quantitative.FourActiveCoefficientProjection
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

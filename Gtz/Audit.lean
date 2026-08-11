@@ -577,6 +577,7 @@ import Gtz.Quantitative.DesignFreeFloorScope
 import Gtz.Quantitative.ZeroLeakClosure
 import Gtz.Quantitative.CapturedRankFloor
 import Gtz.Quantitative.AssemblyRankFloor
+import Gtz.Quantitative.FourActiveCoefficientProjection
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20687,6 +20688,46 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SixThreeCrux.four_le_finrank_range_multiplier
 #print axioms Gtz.SixThreeCrux.activeWeight_pos_of_card_eq_four
 #print axioms Gtz.SixThreeCrux.fourRowSpan_and_capturedRanks_of_card_eq_four
+
+-- ==========================================================
+-- the four-active coefficient projection
+-- ==========================================================
+-- WHAT IT BUYS.  The complete algebraic interface under the four-active leaf
+-- census.  Pack an exactly-four argmax family's tight directions into the
+-- multiplier-weighted column matrix B (columns sqrt(mu) * u): its Gram is
+-- exactly the stationary assembly, its four columns are independent (rank
+-- floor), so B admits a matrix left inverse, and commutation descends the
+-- chart to an explicit coefficient matrix M = Bt P Lt with P B = B M.  The
+-- left inverse transports symmetry, idempotence and the captured rank:
+-- Mt = M, M^2 = M, tr M = 2.  ** EVERY INPUT IS LANDED **: multiplier
+-- positivity comes from activeWeight_pos_of_card_eq_four and the (2,2)
+-- captured ranks from fourRowSpan_and_capturedRanks_of_card_eq_four, so the
+-- producer takes nothing beyond the stationarity bundle and the family
+-- enumeration.  The generic left-inverse layer (existence from independence,
+-- the explicit representation under Gram commutation, the idempotence, rank
+-- and symmetry transports, and the trace-two endgame through the idempotent
+-- trace/range identity) is stated over an arbitrary ambient type for reuse at
+-- the rank-five and rank-six regimes.
+--
+-- DOWNSTREAM.  The four-active leaf exits consume exactly this package: the
+-- tightness rows of B, the coefficient projection M, and tr M = 2.  With this
+-- module the entire foundation chain of the 59-leaf census -- rank-one
+-- exclusions, rank floor, positivity, independence, (2,2), trace two -- is
+-- in-tree; what remains for the first crux rung is the census itself.
+#print axioms Gtz.trace_eq_finrank_range_of_idempotent
+#print axioms Gtz.trace_eq_two_of_idempotent_of_range_finrank_eq_two
+#print axioms Gtz.exists_matrix_leftInverse_of_finrank_range_eq_four
+#print axioms Gtz.commutingAssembly_coefficient_representation
+#print axioms Gtz.coefficient_idempotent_of_leftInverse
+#print axioms Gtz.coefficient_rank_eq_of_leftInverse
+#print axioms Gtz.projectedAssembly_rank_eq_projectedColumns_of_leftInverse
+#print axioms Gtz.coefficient_symmetric_of_commutes_of_leftInverse
+#print axioms Gtz.coefficient_projection_trace_eq_two
+#print axioms Gtz.exists_coefficient_projection_trace_eq_two_of_commutingGram
+#print axioms Gtz.fourFamilyWeightedTightColumns_mul_transpose
+#print axioms Gtz.fourFamilyWeightedTightColumns_span_eq
+#print axioms Gtz.fourFamilyWeightedTightColumns_finrank_range
+#print axioms Gtz.SixThreeCrux.exists_fourFamily_coefficientProjection
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
