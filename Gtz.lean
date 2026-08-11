@@ -2436,6 +2436,14 @@ import Gtz.Quantitative.CruxRelabel
 -- enumeration pre-filters of the four-active orbit classifier.
 import Gtz.Quantitative.FourFamilyCoverBudget
 
+
+-- the seven multiplicity profiles: a covering four-family's cover counts
+-- take values in [1,4], partition the six atoms into four count classes, and
+-- weigh the twelve incidence slots -- so the profile (#4s, #3s, #2s, #1s) is
+-- one of exactly seven tuples.  The outer case split of the four-active
+-- orbit census.
+import Gtz.Quantitative.FourFamilyCoverProfiles
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

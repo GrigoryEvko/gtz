@@ -582,6 +582,7 @@ import Gtz.LinAlg.LambdaMinReindex
 import Gtz.Reduction.ChartRelabel
 import Gtz.Quantitative.CruxRelabel
 import Gtz.Quantitative.FourFamilyCoverBudget
+import Gtz.Quantitative.FourFamilyCoverProfiles
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20824,6 +20825,28 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.one_le_fourBlockCoverCount_of_cover
 #print axioms Gtz.sum_fourBlockCoverCount_sub_one_eq_six_of_cover
 #print axioms Gtz.exists_two_le_fourBlockCoverCount_of_cover
+
+-- ==========================================================
+-- the seven multiplicity profiles
+-- ==========================================================
+-- WHAT IT BUYS.  The outer case split of the four-active orbit census.  The
+-- cover counts of a covering four-family take values in [1,4]
+-- (fourBlockCoverCount_le_four caps the top), the four count classes
+-- partition the six atoms (sum_fourBlockCountClass_eq_six_of_cover) and
+-- weigh the twelve incidence slots
+-- (weighted_sum_fourBlockCountClass_eq_twelve_of_cover), and the arithmetic
+-- core (fourCoverProfile_arith) pins the profile (#4s, #3s, #2s, #1s) to one
+-- of exactly seven tuples: (0,0,6,0), (0,1,4,1), (0,2,2,2), (0,3,0,3),
+-- (1,0,3,2), (1,1,1,3), (2,0,0,4).  Every covering four-family — hence
+-- every four-active argmax family at a crux, by the landed coverage — enters
+-- the census through exactly one of these seven doors, and the doors with a
+-- quadruply-covered atom or a triple of singly-covered atoms are where the
+-- private-atom and disconnection exits fire first.
+#print axioms Gtz.fourBlockCoverCount_le_four
+#print axioms Gtz.sum_fourBlockCountClass_eq_six_of_cover
+#print axioms Gtz.weighted_sum_fourBlockCountClass_eq_twelve_of_cover
+#print axioms Gtz.fourCoverProfile_arith
+#print axioms Gtz.fourBlockCountClass_profile_of_cover
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
