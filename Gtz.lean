@@ -2309,6 +2309,16 @@ import Gtz.Quantitative.SixThreeIndexLadderSpine
 -- counterexample.
 import Gtz.Quantitative.ZeroLeakDependency
 
+
+-- a dominating triple that no ladder rung can certify: a fully RATIONAL (6,3)
+-- design on the three coordinate axes whose base triple dominates with a gap of
+-- corank two, so the blind-spot theorem applies and every rung of the pivot
+-- descent is vacuous there while the complement kernel decides it with no base
+-- at all.  Rationality is not automatic -- at uniform weights none exists, six
+-- not being a sum of two rational squares -- and it is what makes the
+-- separation exhibitable rather than merely measured.
+import Gtz.Reduction.LadderRungHasNoBase
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

@@ -569,6 +569,7 @@ import Gtz.Quantitative.ChartStationaryDesignFreeWindow
 import Gtz.Design.WeightAwareClearance
 import Gtz.Quantitative.SixThreeIndexLadderSpine
 import Gtz.Quantitative.ZeroLeakDependency
+import Gtz.Reduction.LadderRungHasNoBase
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20358,6 +20359,54 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.sum_smul_atom_eq_zero_of_chartStationaryGap_mulVec_eq_smul
 #print axioms Gtz.hasParallelPair_of_zeroLeak_on_support_pair
 #print axioms Gtz.SixThreeCrux.false_of_zeroLeak_on_support_pair
+
+-- ==========================================================
+-- a dominating triple no ladder rung can certify
+-- ==========================================================
+-- WHAT IT BUYS.  The blind-spot theorem in ComplementKernelRepairsDescent says
+-- a subset whose gap carries two independent probes has no positive definite
+-- one-label extension.  THIS MODULE INHABITS THAT HYPOTHESIS, and with rational
+-- data: Gtz.axisSplitDesign puts two atoms on each coordinate axis, of squared
+-- lengths one and four, with the weights fixed by Parseval, and its base triple
+-- {0,1,2} dominates with gap diag(0,0,3) -- corank two.  Every subset sum is
+-- diagonal, so every question about it is three scalar questions.
+--
+-- Rationality is the point and it is not free: at uniform weight 1/6 no
+-- rational version of this configuration exists, because six is not a sum of
+-- two rational squares.  Dropping uniformity buys it.
+--
+-- THE SEPARATION, and it is the reason the two vocabularies are not
+-- interchangeable.  The descent reads domination through the corank-one
+-- criterion, which must INVERT a positive definite base; above a corank-two
+-- dominating subset there is no such base, so every rung is vacuous.  The weld
+-- inverts the full excess once and reads principal minors, so it decides the
+-- same subset with no base at all.  ** THE LADDER AND THE KERNEL AGREE ONLY ON
+-- THE CORANK <= 1 STRATUM. **
+--
+-- A DUPLICATE WAS RESOLVED HERE RATHER THAN DOCUMENTED.  A weaker form of the
+-- blind-spot theorem, carrying a redundant Gtz.Dominates hypothesis, was proved
+-- independently of the one that landed.  The two were compared in the kernel:
+-- the weaker follows from the stronger with the extra hypothesis unused.  The
+-- weaker copy is DELETED and this module consumes the stronger.
+--
+-- SCOPE.  Both this witness and the measured corank histogram of the landed
+-- fixtures put the blind spot at designs WITH parallel pairs; whether it
+-- survives on the parallel-free stratum the hinge is about is untested.  And
+-- for any design whose atoms lie on pairwise orthogonal axes the descent always
+-- succeeds, so this family cannot answer whether the descent can fail as a
+-- DECISION procedure.  Ledger unchanged.
+#print axioms Gtz.axisSplitAtom
+#print axioms Gtz.axisSplitWeight
+#print axioms Gtz.axisSplitDesign
+#print axioms Gtz.axisSplitDesign_baseTripleSubsetSum_eq
+#print axioms Gtz.axisSplitDesign_baseTripleGap_eq
+#print axioms Gtz.axisSplitDesign_baseTripleGap_form
+#print axioms Gtz.axisSplitDesign_dominates_baseTriple
+#print axioms Gtz.axisSplitDesign_baseTriple_firstNull
+#print axioms Gtz.axisSplitDesign_baseTriple_secondNull
+#print axioms Gtz.axisSplitDesign_baseTriple_nullIndependent
+#print axioms Gtz.axisSplitDesign_dominates_baseTriple_with_no_posDef_extension
+#print axioms Gtz.axisSplitDesign_not_posDef_baseTriple
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
