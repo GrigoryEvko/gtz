@@ -564,6 +564,7 @@ import Gtz.Quantitative.StrongStationarityIndexFloor
 import Gtz.Reduction.ComplementKernelRepairsDescent
 import Gtz.Quantitative.JointChartIndexFloor
 import Gtz.Quantitative.ChartFloorAtomSpan
+import Gtz.Quantitative.ZeroLeakCollinearClosure
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20081,6 +20082,44 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.HasFloorSpanningNormal
 #print axioms Gtz.false_of_hasFloorSpanningNormal
 #print axioms Gtz.projection_mulVec_tightDir_eq_zero_of_zeroLeak_of_supported
+
+-- ==========================================================
+-- the rank-three collinearity rigidity
+-- ==========================================================
+-- WHAT IT BUYS.  The floor-atom closing theorem needs its projected tight
+-- directions collinear; the row law supplies vanishing at every floor atom.
+-- The missing rung between them is geometric and is supplied here from the
+-- DESIGN side: in a parallel-free rank-three design, two distinct atoms
+-- determine one unit chart-fixed direction (their normalised cross product),
+-- and every chart-fixed vector vanishing at both is a multiple of it.
+--
+-- IT IS NOT A DIMENSION ARGUMENT.  The landed cross-product kit in
+-- Gtz/Design/SphereExistence.lean does the work: eq_smul_of_crossProduct_eq_zero
+-- and crossProduct_atom_ne_zero_of_not_hasParallelPair, the second of which is
+-- exactly the parallel-free input and which already handles the zero atom.  One
+-- new triple-product identity closes it and the rest is composition.
+--
+-- SATISFIABILITY, BOTH SIDES, AT LANDED OBJECTS, AND THE HYPOTHESIS IS SHARP.
+-- Gtz.tetraDesign is parallel-free and has six such pairs.  Gtz.splitTetraDesign
+-- has the parallel pairs (2,3) and (4,5) and Gtz.nonUniformLeverageTieDesign has
+-- (3,4), (3,5), (4,5) -- and at exactly those pairs the conclusion's space is
+-- two-dimensional rather than a line.  ** THIS RUNG IS NOT VACUOUS UNDER THE
+-- CONJECTURE: it quantifies over parallel-free rank-three designs, which exist
+-- whether or not GTZ holds. **  The SOCKET that composes it with a chart datum
+-- inherits the open-window caveat recorded above the floor-atom span: its
+-- vanishing hypothesis is supplied at two floor atoms, and a floor atom needs a
+-- negative value, for which no rank-three inhabitant is exhibited anywhere.
+-- Ledger unchanged.
+#print axioms Gtz.crossProduct_crossProduct_left
+#print axioms Gtz.exists_smul_crossProduct_of_dotProduct_eq_zero
+#print axioms Gtz.scaledAtomRows_mulVec_apply
+#print axioms Gtz.dotProduct_scaledAtomRows_mulVec_self
+#print axioms Gtz.projectionOfDesign_mulVec_scaledAtomRows_mulVec
+#print axioms Gtz.eq_scaledAtomRows_mulVec_of_projectionOfDesign_mulVec_eq
+#print axioms Gtz.dotProduct_atom_eq_zero_of_apply_eq_zero
+#print axioms Gtz.pairNormal
+#print axioms Gtz.exists_unitNormal_of_projectionFixed_vanishing_pair
+#print axioms Gtz.exists_unitNormal_projected_tightDir_collinear
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

@@ -2256,6 +2256,15 @@ import Gtz.Quantitative.JointChartIndexFloor
 -- with no geometry at all.
 import Gtz.Quantitative.ChartFloorAtomSpan
 
+
+-- the rank-three collinearity rigidity: in a PARALLEL-FREE rank-three design any
+-- two distinct atoms determine ONE unit chart-fixed direction, and every
+-- chart-fixed vector vanishing at both is a multiple of it.  Unconditional,
+-- about designs alone, and NOT vacuous under the conjecture.  It is the socket
+-- the floor-atom closing theorem needs, supplied from the design side where the
+-- landed cross-product kit makes it elementary and no dimension count is used.
+import Gtz.Quantitative.ZeroLeakCollinearClosure
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
