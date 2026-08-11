@@ -2338,6 +2338,16 @@ import Gtz.Quantitative.ChartStationaryValueSign
 -- because it quantifies over the family rather than choosing an eigenvector.
 import Gtz.Quantitative.FourActiveSupportTwoBlock
 
+
+-- the chart weight box: what the pointwise weight cap buys.  The box and its
+-- diameter, the equality case characterising when the cap is attained, the
+-- quantitative deformation of the landed floor rigidity -- every weight within
+-- (size-1)(value + 1/size) of uniform, with the shipped endpoint theorem as its
+-- zero-radius case -- and the crux corollaries.  The cap and the floor are the
+-- two faces of one statement under the simplex, so the SUMMED consequence is
+-- exactly the shipped bound; what is new is that the bound is POINTWISE.
+import Gtz.Quantitative.ChartWeightBox
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

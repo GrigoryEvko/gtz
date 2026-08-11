@@ -572,6 +572,7 @@ import Gtz.Quantitative.ZeroLeakDependency
 import Gtz.Reduction.LadderRungHasNoBase
 import Gtz.Quantitative.ChartStationaryValueSign
 import Gtz.Quantitative.FourActiveSupportTwoBlock
+import Gtz.Quantitative.ChartWeightBox
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20495,6 +20496,55 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SixThreeCrux.exists_argmaxBlock_totalTightSupport_eq_two_of_card_eq_four
 #print axioms Gtz.SixThreeCrux.exists_tightVec_argmaxBlock_totalTightSupport_eq_two_of_card_eq_four
 #print axioms Gtz.SixThreeCrux.five_le_card_chartArgmaxFamily_of_forall_totalTightSupport_ne_two
+
+-- ==========================================================
+-- the chart weight box: what the pointwise cap buys
+-- ==========================================================
+-- WHAT IT BUYS.  The pointwise weight cap itself lands with the design-free
+-- window; this is what the cap buys, and it is a layer rather than a lemma:
+--   * THE BOX AND ITS DIAMETER.  Every weight lies in [-value, 1 + (size-1)value]
+--     and every two weights differ by at most 1 + size*value.  The box is
+--     nonempty exactly when -1/size <= value, which is the shipped summed bound,
+--     so the cap and the floor are the two faces of ONE statement under the
+--     simplex.  ** THE SUMMED CONSEQUENCE IS THEREFORE EXACTLY THE SHIPPED
+--     BOUND AND EXCLUDES NOTHING NEW.  What is new is that it is POINTWISE. **
+--   * THE EQUALITY CASE, characterising attainment: the cap is met at an atom
+--     exactly when every OTHER atom sits on the floor.
+--   * THE DEFORMATION OF THE FLOOR RIGIDITY.  Every weight lies within
+--     (size - 1)(value + 1/size) of uniform.  The shipped
+--     Gtz.weight_eq_inv_size_of_value_eq_neg_inv_size is exactly its
+--     value = -1/size endpoint, where the radius vanishes -- so that rigidity is
+--     now quantitative and linear in the distance of the value from its floor.
+--   * the crux corollaries, and the shifted eigenvalue r_c = value + t_c placed
+--     in [0, 1), closed at the left by the shipped floor and open at the right.
+--
+-- DUPLICATION RESOLVED RATHER THAN DOCUMENTED.  The cap and the strict shifted
+-- bound were each proved twice, independently, with IDENTICAL statements.  One
+-- copy of each survives, in ChartStationaryDesignFreeWindow; the copies here are
+-- DELETED and this module consumes them.  Everything else in the file -- the
+-- box, the diameter, the equality case, the rigidity deformation and all five
+-- crux corollaries -- exists nowhere else, and an instruction to discard this
+-- file wholesale on the strength of the two shared names would have cost
+-- fifteen declarations.
+--
+-- SATISFIABILITY.  The general layer is inhabited wherever the bundle is,
+-- including at landed negative-value data, where the equality case is ATTAINED.
+-- The five crux corollaries are vacuous under the conjecture.  Ledger unchanged.
+#print axioms Gtz.trace_sandwich_projection_multiplier_of_isChartStationaryData
+#print axioms Gtz.pred_size_mul_neg_value_le_sum_erase_weight_of_isChartStationaryData
+#print axioms Gtz.weight_add_sum_erase_weight_eq_one_of_isChartStationaryData
+#print axioms Gtz.weight_mem_box_of_isChartStationaryData
+#print axioms Gtz.weight_sub_weight_le_one_add_size_mul_value_of_isChartStationaryData
+#print axioms Gtz.value_add_weight_le_one_add_size_mul_value_of_isChartStationaryData
+#print axioms Gtz.weight_eq_cap_iff_forall_other_eq_neg_value_of_isChartStationaryData
+#print axioms Gtz.weight_sub_inv_size_le_pred_size_mul_value_add_inv_size_of_isChartStationaryData
+#print axioms Gtz.inv_size_sub_weight_le_value_add_inv_size_of_isChartStationaryData
+#print axioms Gtz.abs_weight_sub_inv_size_le_of_isChartStationaryData
+#print axioms Gtz.SixThreeCrux.weight_mem_box
+#print axioms Gtz.SixThreeCrux.weight_lt_one_of_cap
+#print axioms Gtz.SixThreeCrux.weight_sub_weight_le
+#print axioms Gtz.SixThreeCrux.value_add_weight_mem_unit_interval
+#print axioms Gtz.SixThreeCrux.abs_weight_sub_inv_six_le
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
