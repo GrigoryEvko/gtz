@@ -554,6 +554,7 @@ import Gtz.Design.KFourTightLocus
 import Gtz.Design.FreeMassBudgetDischarge
 import Gtz.Design.KFourDescentLadder
 import Gtz.Quantitative.BasisCoordinateGapExpansion
+import Gtz.Design.ConicBinomialShadow
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19572,6 +19573,74 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.transportedFrameGap_eq_conjugatedGap
 #print axioms Gtz.posDef_transportedFrameGap_iff
 #print axioms Gtz.posSemidef_transportedFrameGap_iff
+
+
+-- Design/ConicBinomialShadow, THE POLARIZED CROSS-AXIS PARSEVAL, AND OFF-CONICITY
+-- BACK INSIDE THE BRACKET-SQUARE LAYER.
+-- PART ONE.  The tree had the DIAGONAL cross-axis Parseval (the weighted squares
+-- of the brackets through a fixed pair total that pair's cross-axis budget); the
+-- POLARIZED form -- pairingMinor a_L a_R a_p a_q = sum_y t_y [L,R,y] [p,q,y] --
+-- was missing, and with it the whole metric pairing-minor algebra becomes a
+-- positive-weight bracket bilinear form.  Two consequences are recorded.
+-- (a) `pairArea` at atoms IS the landed `Gtz.crossAxisBudget`, so the bridge
+-- module carried a second name for a formula the tree already had, and proved
+-- `0 < pairArea` from liveness where `one_lt_crossAxisBudget_of_isLivePair`
+-- already gives the strictly stronger bound from the same hypothesis.
+-- (b) THE LIVE-PAIR HYPOTHESIS OF THE COVARIANCE THEOREM IS REDUNDANT: one
+-- nonvanishing bracket through the pair already forces a positive cross-axis
+-- budget, and line-freeness supplies one at every distinct pair.  The
+-- strengthened statement asks only for distinctness, and it covers the pairs
+-- that are not live -- at `baseTieKillerDesign` six of the fifteen.
+-- IT ALSO SAYS WHAT THE COVARIANCE ROUTE CANNOT DO.  The covariance is a weighted
+-- SUM OF SQUARES of pairing minors, so it is nonnegative at EVERY design, refusing
+-- or not; line-freeness only upgrades `0 <=` to `0 <`.  No hypothesis can force it
+-- nonpositive, and its only other contradiction is a forced VANISHING -- which by
+-- `exists_pairingMinor_ne_zero` is already the endpoint's first disjunct.
+-- OFF-CONICITY IS ONE GRAM DETERMINANT: the entrywise square of the atom Gram is
+-- the Veronese Gram up to a congruence, so `HasNoCommonQuadric` holds exactly when
+-- that PSD grid is nonsingular -- no chart, no base triple, no weight.  With
+-- [i,j,k]^2 = det(Gram_{ijk}) one level down, BOTH disjuncts of the off-conic
+-- endpoint are "a PSD Gram determinant vanishes".
+-- PART TWO puts the combinatorial skeleton back in the BRACKETS.  The eight triples
+-- carrying a four-bracket product are the eight faces of an OCTAHEDRON whose
+-- antipodal pairs are a perfect matching of the six labels, so the decomposition is
+-- indexed by a matching and there are FIFTEEN, not one.  Every triple is a face of
+-- exactly six of them, so the product over the fifteen of both classes is the
+-- product of all twenty brackets to the sixth -- strictly positive under
+-- line-freeness.  FIFTEEN IS ODD, so fifteen pairs of reals with equal squares and
+-- a positive total product cannot all be opposite: a line-free family satisfying
+-- all fifteen binomials carries a genuine octahedral coincidence.
+-- Contrapositively, off-conicity is the FAILURE of at least one of fifteen explicit
+-- binomials in the twenty squared brackets, and they are WEIGHT-FREE, so they read
+-- verbatim in `Gtz.shadowDeterminant`.  They are monomial equations, not linear
+-- forms, so they are not LP rows -- what dies is the claim that off-conicity lies
+-- outside what the bracket-square coordinate can express.
+-- `det_veroneseGrid_swap` and `sq_det_veroneseGrid_relabel` are the reason the
+-- SIGN of the four-bracket difference is not design data: a transposition of labels
+-- flips it, so only its square is a relabelling invariant.
+#print axioms Gtz.tripleBracket_eq_dotProduct_bracketNormal_right
+#print axioms Gtz.pairingMinor_eq_bracketNormal_dotProduct
+#print axioms Gtz.pairArea_eq_bracketNormal_dotProduct_self
+#print axioms Gtz.pairArea_atom_eq_crossAxisBudget
+#print axioms Gtz.pairingMinor_atom_eq_sum_weight_mul_atomBracket
+#print axioms Gtz.pos_crossAxisBudget_of_atomBracket_ne_zero
+#print axioms Gtz.weighted_atom_pairing_covariance_three_pos_of_lineFree_of_ne
+#print axioms Gtz.sum_weight_pair_mul_tripleBracket_sq
+#print axioms Gtz.sum_weight_pair_mul_crossAxisBudget
+#print axioms Gtz.squaredPairingGrid
+#print axioms Gtz.squaredPairingGrid_eq_veroneseGrid_congr
+#print axioms Gtz.det_squaredPairingGrid
+#print axioms Gtz.hasNoCommonQuadric_iff_det_squaredPairingGrid_ne_zero
+#print axioms Gtz.posSemidef_squaredPairingGrid
+#print axioms Gtz.familyBracket
+#print axioms Gtz.det_veroneseGrid_swap
+#print axioms Gtz.sq_det_veroneseGrid_relabel
+#print axioms Gtz.octahedralOddProduct
+#print axioms Gtz.octahedralEvenProduct
+#print axioms Gtz.prod_octahedralProducts_eq_bracketProduct_pow_six
+#print axioms Gtz.exists_eq_of_odd_family_sq_eq
+#print axioms Gtz.exists_octahedralCoincidence_of_forall_sq_eq
+#print axioms Gtz.exists_octahedralBinomial_ne_of_forall_ne
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

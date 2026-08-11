@@ -2146,6 +2146,11 @@ import Gtz.Design.BarycentricOpenCellWitness
 -- transported-frame congruence that removes the whitening from the question
 import Gtz.Quantitative.BasisCoordinateGapExpansion
 
+-- the polarized cross-axis Parseval, off-conicity as a single Gram determinant,
+-- and the fifteen octahedral binomials that put off-conicity back inside the
+-- weight-free bracket-square layer
+import Gtz.Design.ConicBinomialShadow
+
 -- U(3,6): the off-conic formulation of stress-freeness, the exact rational
 -- icosa approximant sample, and the mass-reading clearance functionals
 -- positive exactly on the open line-free stratum
