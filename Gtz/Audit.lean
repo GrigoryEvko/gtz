@@ -556,6 +556,7 @@ import Gtz.Design.KFourDescentLadder
 import Gtz.Quantitative.BasisCoordinateGapExpansion
 import Gtz.Design.ConicBinomialShadow
 import Gtz.Design.DualConicLinearBarrier
+import Gtz.Design.KFourForcedForest
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19707,6 +19708,55 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.coordinateDiagonalDesign_not_posDef_zeroOneTwo
 #print axioms Gtz.coordinateDiagonalDesign_not_posDef_threeFourFive
 #print axioms Gtz.no_linearConicFunctional_separates_coordinateDiagonal
+
+
+-- Design/KFourForcedForest, THE FORCED SET IS A FOREST, SO FORCING CANNOT REFUTE.
+-- A chart label is FORCED when its boosted slack leverage reaches one, which is
+-- exactly the negation of the probe inequality of `Gtz/Design/KFourDescentLadder.lean`;
+-- a forced label therefore lies inside EVERY strictly dominating subset.  This
+-- module settles what the forced set can BE, and the answer bounds the method.
+-- The ratio s_c Q_c / T is the probability that c lies in a random spanning tree of
+-- the slack network, so the cycle bounds are the statement that a spanning tree omits
+-- an edge of every cycle.  At a TRIANGLE that is an explicit polynomial inequality
+-- whose defect is a seven-monomial positive combination; at a FOUR-CYCLE it is free
+-- from the landed `kFourLeverage_sumIdentity`, whose total over all six labels is
+-- exactly three times the tree sum.  Against them the weight budget gives
+-- `n - 1 >= n - (weights) > n - 1`, so NO CYCLE CAN BE FORCED.  With the kernel
+-- decision that a cycle-free subset of the six K4 edges sits inside a spanning tree,
+-- the forced set always extends to a spanning tree.
+-- WHY IT MATTERS, AND IT IS A LIMITATION RATHER THAN A TOOL: the forcing condition
+-- can therefore NEVER exclude every candidate, so the forced-edge family is
+-- automatically consistent and can never witness a counterexample to the class.
+-- Forcing prunes; it cannot decide and it cannot refute.  Rung two of the descent
+-- ladder is a conjunction of 2-clauses over the sixteen trees and IS combinatorially
+-- refutable, which is the sharp difference between the two rungs.
+-- `not_kFourTwoForcedWitness_forcesThird` keeps the triangle bound off the vacuity
+-- list and shows it is SHARP: at an exact chart point TWO of a triangle's three edges
+-- are forced and the third is not.
+-- CONTENT DEDUPLICATION AT LANDING: this module was written against its own copies of
+-- the two elementary chart facts (every chart weight below one; the slack conductance
+-- positive).  Those are `Gtz.chartPoint_weight_lt_one` and
+-- `Gtz.chartSlack_pos_of_chartPoint` in KFourDescentLadder -- the first
+-- statement-identical, the second the same modulo unfolding `Gtz.chartSlack` -- and
+-- the copies were DELETED and their three use sites repointed rather than documented.
+-- The compiler could not have caught them: the names differed.
+#print axioms Gtz.false_of_threeForcedAgainstTwo
+#print axioms Gtz.false_of_fourForcedAgainstThree
+#print axioms Gtz.kFourTriangleLeverage_le_two_mul_treeSum
+#print axioms Gtz.kFourFourCycleLeverage_le_three_mul_treeSum
+#print axioms Gtz.kFourForcedSlackLeverage_scaled
+#print axioms Gtz.not_kFourForcedTriangle
+#print axioms Gtz.not_kFourForcedFourCycle
+#print axioms Gtz.kFourAcyclic_subset_spanningTree
+#print axioms Gtz.exists_kFourSpanningTree_superset_of_forced
+#print axioms Gtz.exists_cardThree_superset_of_forced
+#print axioms Gtz.kFourTwoForcedWitnessMass
+#print axioms Gtz.kFourTwoForcedWitnessWeight
+#print axioms Gtz.kFourTwoForcedWitnessSlack
+#print axioms Gtz.kFourTwoForcedWitnessPoint
+#print axioms Gtz.kFourTwoForcedWitness_slack_eq
+#print axioms Gtz.kFourTwoForcedWitness_forces
+#print axioms Gtz.not_kFourTwoForcedWitness_forcesThird
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

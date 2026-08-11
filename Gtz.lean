@@ -2181,6 +2181,11 @@ import Gtz.Design.KFourTightLocus
 -- residual band's canonical inhabitant
 import Gtz.Design.KFourDescentLadder
 
+-- and what the forced set can be: always a forest, hence always inside a spanning
+-- tree, hence the forcing condition can never exclude every candidate -- forcing
+-- prunes, it cannot decide and it cannot refute
+import Gtz.Design.KFourForcedForest
+
 -- the collar atlas kernel replay: the verified interval/graded/guarded box
 -- checker for the rung-15 barycentric order-chart certificates, and the 120
 -- replayed charts -- one decide per chart turns the adaptive coarsest cover
