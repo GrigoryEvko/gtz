@@ -557,6 +557,7 @@ import Gtz.Quantitative.BasisCoordinateGapExpansion
 import Gtz.Design.ConicBinomialShadow
 import Gtz.Design.DualConicLinearBarrier
 import Gtz.Design.KFourForcedForest
+import Gtz.Reduction.RankThreeFromStressFreeResidual
 
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -19757,6 +19758,40 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.kFourTwoForcedWitness_slack_eq
 #print axioms Gtz.kFourTwoForcedWitness_forces
 #print axioms Gtz.not_kFourTwoForcedWitness_forcesThird
+
+
+-- Reduction/RankThreeFromStressFreeResidual, RANK THREE FROM ONE OPEN PROP, AND
+-- WHY THAT IS A REPACKAGING RATHER THAN A REDUCTION.
+-- With the free-mass budget discharged, the stress-free arm of the (6,3) hinge has
+-- one open Prop.  The hinge assembly's OTHER TWO hypotheses are already landed and
+-- unconditional -- `twoPoleStratumSelection_six_unconditional` and
+-- `balancedStratumCapstone_of_balancedStratumSelection` at
+-- `balancedStratumSelection_six_holds` -- a fact no report in the record states, and
+-- without it this composition is invisible.  Composing them with
+-- `gtzWeightedAll_three_of_hinge` gives `NoStressResidual 6 -> GtzWeightedAll 3`:
+-- rank-three GTZ at EVERY size from ONE Prop.
+-- READ IT WITH `exists_dominating_of_noStressResidual` BESIDE IT.  That theorem is
+-- the reason the single Prop is not a cheaper target: `NoStressResidual 6` concludes
+-- a STRICTLY dominating triple with no hypothesis that any triple dominates at all,
+-- so it already yields weighted domination on its own hypothesis stratum -- a piece
+-- of the open cell -- while the arm it reduces asks only for the weak-to-strict
+-- upgrade.  The frontier therefore has TWO honest descriptions: FIVE goals on the
+-- tree's class route, or ONE on a strictly stronger route.  A brief that carries
+-- only one of the two numbers misleads in one direction or the other.
+-- NON-VACUITY, measured in exact rational arithmetic outside the kernel and checked
+-- independently at landing: the hypothesis set of `NoStressResidual 6` is INHABITED
+-- by `Gtz.coordinateDiagonalDesign`, the tree's own landed stress-free witness.  It
+-- is primitive and stress-free, and it carries ZERO strict certificates at all
+-- twenty triples -- the isotropy leg fires at none of them, the free-mass budget
+-- totals exactly 6/5 or 7/5 at the sixteen triples whose inner matrix is positive
+-- definite, and at the remaining four that inner matrix is not positive definite at
+-- all.  Its four strictly dominating triples are the complements of the four
+-- dependent triples of its complete quadrilateral.  So the Prop is not vacuously
+-- true and the route "prove the hypothesis set empty and the arm is done" is closed.
+#print axioms Gtz.exists_dominating_of_noStressResidual
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_noStressResidual
+#print axioms Gtz.hingeHoldsAtSize_sixThree_of_noStressResidual
+#print axioms Gtz.gtzWeightedAll_three_of_noStressResidual
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

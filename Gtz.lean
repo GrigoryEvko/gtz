@@ -2026,6 +2026,11 @@ import Gtz.Design.StressFreeClosureFailure
 -- ONE open Prop, `NoStressResidual 6`, not two
 import Gtz.Design.FreeMassBudgetDischarge
 
+-- and that Prop carried all the way up: rank-three GTZ at every size from
+-- `NoStressResidual 6` alone -- a REPACKAGING, since the same file proves the
+-- single Prop is strictly stronger than the five class obligations it stands in for
+import Gtz.Reduction.RankThreeFromStressFreeResidual
+
 -- The kill-inequality kernel certificate and the window/layer/dual kit
 -- supporting the hinge and balanced-stratum frontiers.
 import Gtz.Certificates.KillInequalityD7
