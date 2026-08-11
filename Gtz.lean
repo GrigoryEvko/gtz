@@ -2275,6 +2275,18 @@ import Gtz.Quantitative.ZeroLeakCollinearClosure
 -- STRICT dual bound is FALSE without a further hypothesis.
 import Gtz.Quantitative.ChartStationaryDesignFreeWindow
 
+
+-- the weight-aware clearance functional the stage-5 note of the U(3,6)
+-- obligation asks for, built and TESTED: the minimum of the landed wall
+-- clearance and a scaled minimum raw weight, positive on the open stratum and
+-- relabelling-invariant, instantiated into the landed two-family split without
+-- touching one lemma of it.  It removes the landed clearance refutations -- the
+-- design behind all three falls below 3/8 at every weight scale at most 47 --
+-- and the repaired region is inhabited by a landed design and STILL FALSE at
+-- margin floor 1/4.  With it the sharp division-free collar in the weight
+-- chart.  Buys back the rectangle's ground and nothing more.
+import Gtz.Design.WeightAwareClearance
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

@@ -566,6 +566,7 @@ import Gtz.Quantitative.JointChartIndexFloor
 import Gtz.Quantitative.ChartFloorAtomSpan
 import Gtz.Quantitative.ZeroLeakCollinearClosure
 import Gtz.Quantitative.ChartStationaryDesignFreeWindow
+import Gtz.Design.WeightAwareClearance
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20174,6 +20175,72 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.identityChart_isChartArgmaxValue
 #print axioms Gtz.identityChart_value_add_weight_eq_one
 #print axioms Gtz.not_forall_value_add_weight_lt_one_of_isChartStationaryData
+
+-- ==========================================================
+-- the weight-aware clearance functional
+-- ==========================================================
+-- WHAT IT BUYS.  The stage-5 note of the U(3,6) obligation asks, by name, for
+-- the interior family to be re-founded on "a weight-aware clearance functional
+-- (e.g. min of wallClearanceOf and a scaled minimum raw weight)".  This builds
+-- it and tests it.  Raw-weight positivity is UNCONDITIONAL from weight_pos, so
+-- the new leg costs the positivity theorem nothing, and both legs are
+-- relabelling-invariant -- the two properties the landed two-family split
+-- consumes.  The instantiation
+-- lineFreeOffConic_noTie_of_weightAwareBoundedAndCollar spends the landed
+-- assembly unchanged: the split really is parametric in its clearance
+-- functional, and not one of its lemmas had to move.
+--
+-- WHY THE REPAIR IS NEEDED AND WHAT IT REMOVES.  The mass leg cannot see the
+-- dust: mass = weight x leverage, and at the landed minimax refuter the light
+-- labels carry leverages near 75 and 57, so their masses are ordinary and the
+-- mass clearance is attained at a HEAVY label.  The raw-weight leg sees them.
+-- At every weight scale at most 47 that design falls below 3/8 and leaves the
+-- clearance-bounded region, so NEITHER the rectangle refutation NOR the
+-- monotone-graded one transfers to the new functional.
+--
+-- SATISFIABILITY, BOTH SIDES, MECHANIZED, AND THE Prop IS NOT VACUOUS UNDER THE
+-- CONJECTURE.  The region is INHABITED by a landed design --
+-- sixteenth_le_weightAwareClearanceOf_floorRefuterDesign at
+-- Gtz.floorRefuterDesign, which is line-free, off-conic and weakly dominated --
+-- and the floor Prop is REFUTED at margin 1/4 by
+-- weightAwareInteriorFloor_sixteenth_quarter_refuted.  Unlike the crux layer
+-- this quantifies over designs that HAVE strictly dominating triples, so the
+-- region is populated whatever GTZ's truth value.
+--
+-- AND THE COLLAR, SHARPENED.  posDef_insertCompletion_of_lightRawWeight is the
+-- landed plane-margin collar transported into the weight chart, division-free
+-- at general size and rank.  ** IT IS THE SHARP SIBLING, NOT THE LEVERAGE
+-- FORM. **  posDef_insertCompletion_of_leverage_gt is degree-one homogeneous on
+-- both sides and is VOID at every weight once the direction coupling reaches
+-- the plane margin -- at the minimax refuter all ninety insert-pair cases fail
+-- it, while the plane-margin form fires at the lightest label of every
+-- line-free fixture.  Anyone reaching for a collar should reach for this one.
+--
+-- WHAT IT DOES NOT BUY.  No positive instance: the one grid cell the adversarial
+-- hunt could not break clears the margin floor by under two percent, and five
+-- of six settings are refuted by exact witnesses.  The obligation is untouched
+-- and the ledger is unchanged.
+#print axioms Gtz.rawWeightClearanceOf
+#print axioms Gtz.rawWeightClearanceOf_le
+#print axioms Gtz.rawWeightClearanceOf_pos
+#print axioms Gtz.rawWeightClearanceOf_relabelDesign
+#print axioms Gtz.weightAwareClearanceOf
+#print axioms Gtz.weightAwareClearanceOf_le_wallClearanceOf
+#print axioms Gtz.weightAwareClearanceOf_le_scaled_rawWeight
+#print axioms Gtz.weightAwareClearanceOf_pos
+#print axioms Gtz.weightAwareClearanceOf_relabelDesign
+#print axioms Gtz.WeightAwareInteriorFloor
+#print axioms Gtz.interiorFamilyMarginFloor_of_weightAware
+#print axioms Gtz.lineFreeOffConic_noTie_of_weightAwareBoundedAndCollar
+#print axioms Gtz.weightAwareInteriorFloor_of_clearanceBounded
+#print axioms Gtz.rawWeightClearanceOf_minimaxRefuterDesign
+#print axioms Gtz.weightAwareClearanceOf_minimaxRefuterDesign_lt
+#print axioms Gtz.not_threeEighths_le_weightAwareClearanceOf_minimaxRefuterDesign
+#print axioms Gtz.rawWeightClearanceOf_floorRefuterDesign
+#print axioms Gtz.sixteenth_le_scaled_rawWeight_floorRefuterDesign
+#print axioms Gtz.sixteenth_le_weightAwareClearanceOf_floorRefuterDesign
+#print axioms Gtz.weightAwareInteriorFloor_sixteenth_quarter_refuted
+#print axioms Gtz.posDef_insertCompletion_of_lightRawWeight
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
