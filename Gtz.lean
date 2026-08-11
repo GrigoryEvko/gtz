@@ -2217,6 +2217,21 @@ import Gtz.Reduction.ComplementKernelWeld
 -- replayed charts -- one decide per chart turns the adaptive coarsest cover
 -- into the pointwise window sign package on the whole chart cube
 import Gtz.Certificates.CollarChartReplay
+
+-- the descent ladder, its supply, its blind spot, and the kernel that repairs
+-- it: the three rung equivalences identify each rung of the pivot descent with
+-- a nested principal minor of ONE inverse-full-excess Gram, with no rank-one
+-- update anywhere (which matters, because at the tetrahedron the erased base is
+-- singular and the update form does not exist); the cardinality-slack law
+-- generalises the landed excess balance off the rank+1 base and measures the
+-- descent supply; and the blind-spot theorem proves that a dominating subset
+-- whose gap carries two independent probes has NO positive definite one-label
+-- superset, so the descent cannot reach it while the kernel decides it anyway.
+-- THE LADDER AND THE KERNEL ARE THE SAME COORDINATES ONLY ON THE CORANK <= 1
+-- STRATUM; off it the kernel is complete and the descent is not.  Nothing here
+-- discharges an obligation: the lattice is the same lattice.
+import Gtz.Reduction.ComplementKernelRepairsDescent
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

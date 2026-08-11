@@ -561,6 +561,7 @@ import Gtz.Reduction.RankThreeFromStressFreeResidual
 import Gtz.Reduction.ComplementKernelWeld
 import Gtz.Quantitative.StrongStationarityIndexFloor
 
+import Gtz.Reduction.ComplementKernelRepairsDescent
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -19911,6 +19912,67 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SixThreeCrux.not_isGoodCruxKernelTriangle
 #print axioms Gtz.CruxKernelTriangleSelection
 #print axioms Gtz.cruxKernelTriangleSelection_iff_gtzWeighted_six_three
+
+-- ==========================================================
+-- the descent ladder, its blind spot, and the kernel that repairs it
+-- ==========================================================
+-- WHAT IT BUYS.  Three landed vocabularies -- the complement-kernel weld, the
+-- pivot descent ladder, and the trace/excess-balance supply -- describe one
+-- lattice of dominating subsets, and this module closes the gap between them.
+--
+--   * complementKernel_submatrix makes "the omitted-size one, two and three
+--     welds" three readings of a SINGLE matrix, so the rung equivalences below
+--     are nested principal minors rather than three separate transports.
+--   * the three rung equivalences compose the weld at each omitted size with
+--     the landed corank-one criterion at the base the descent has reached.
+--     NO RANK-ONE UPDATE IDENTITY IS USED, and that is load-bearing: at
+--     Gtz.tetraDesign every 1 - K diagonal entry is exactly zero, the erased
+--     base is singular, and the Sherman-Morrison form of the second rung does
+--     not exist -- while the principal-minor form still decides.
+--   * excess_balance_with_cardinality_slack generalises the landed
+--     Gtz.excess_balance, which is stated only at cardinality rank + 1, to
+--     every positive definite base: the insider and outsider excesses differ
+--     by rank + 1 - card.  That term is the descent supply -- strictly
+--     positive above the last rung, EXACTLY ZERO at it, negative below.
+--   * complementKernelGap_id_eq_neg_inv_atomGramGap is the closed form at the
+--     full pick: the kernel gap is minus the inverse full Gram gap, off the
+--     landed push-through and Weinstein-Aronszajn shadow in WindowGramSignature.
+--
+-- THE BLIND SPOT, WHICH IS THE ONE GENUINELY NEW OBSTRUCTION.  A pivot descent
+-- computes a pivot only against a POSITIVE DEFINITE base, so it reaches a
+-- subset only as the single-label erasure of a positive definite superset.
+-- Adding one rank-one atom closes at most one kernel dimension, so a
+-- dominating subset whose gap carries two independent probes is unreachable
+-- from above, whatever tie-break rule the descent uses -- and the complement
+-- kernel decides its domination anyway, because it inverts the full excess and
+-- never the subset's own base.  THE TWO COORDINATE SYSTEMS AGREE ONLY ON THE
+-- CORANK <= 1 STRATUM.
+--
+-- WHAT IT DOES NOT BUY.  Nothing is discharged.  The up-set of dominating
+-- subsets is the same up-set, "some minimal element has cardinality at most
+-- rank" is a restatement of the cell, and the measured claim that every
+-- minimal element of a landed fixture has cardinality three or four is a
+-- FIXTURE FACT -- an exact (6,3) design with a cardinality-five minimal
+-- element exists.  The ledger is unchanged.
+#print axioms Gtz.complementKernel_submatrix
+#print axioms Gtz.complementKernelGap_submatrix
+#print axioms Gtz.image_pick_one
+#print axioms Gtz.image_pick_two
+#print axioms Gtz.image_pick_three
+#print axioms Gtz.compl_pair_eq_erase_erase
+#print axioms Gtz.compl_triple_eq_erase_erase_erase
+#print axioms Gtz.posDef_kernelGap_singleton_iff_pivot_univ_lt_one
+#print axioms Gtz.posDef_kernelGap_pair_iff_pivot_erase_lt_one
+#print axioms Gtz.posDef_kernelGap_triple_iff_pivot_eraseTwo_lt_one
+#print axioms Gtz.pivot_eraseTwo_lt_one_iff_kernel_leadingMinors
+#print axioms Gtz.complementKernelGap_id_eq_neg_inv_atomGramGap
+#print axioms Gtz.excess_balance_with_cardinality_slack
+#print axioms Gtz.exists_erase_posDef_of_outsiderExcess_lt_slack
+#print axioms Gtz.exists_erase_univ_posDef_of_succ_rank_lt_size
+#print axioms Gtz.exists_notMem_dotProduct_ne_zero_of_gap_mulVec_eq_zero
+#print axioms Gtz.exists_gapProbe_ne_zero_orthogonal_of_two_independent
+#print axioms Gtz.not_posDef_gap_insert_of_two_independent_gapProbes
+#print axioms Gtz.kernelGap_decides_dominates_of_two_independent_gapProbes
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
