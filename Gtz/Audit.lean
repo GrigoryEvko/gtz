@@ -576,6 +576,7 @@ import Gtz.Quantitative.ChartWeightBox
 import Gtz.Quantitative.DesignFreeFloorScope
 import Gtz.Quantitative.ZeroLeakClosure
 import Gtz.Quantitative.CapturedRankFloor
+import Gtz.Quantitative.AssemblyRankFloor
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20658,6 +20659,34 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.false_of_projectedCaptured_range_finrank_le_one
 #print axioms Gtz.SixThreeCrux.not_complementProjectedMultiplier_range_finrank_le_one
 #print axioms Gtz.SixThreeCrux.not_projectedMultiplier_range_finrank_le_one
+
+-- ==========================================================
+-- the assembly rank floor
+-- ==========================================================
+-- WHAT IT BUYS.  The captured rank floor composed into dimension bookkeeping.
+-- The two corners live inside the assembly's range (each corner factors as
+-- the assembly times the other side's projection, by commutation) and meet
+-- trivially (one side chart-fixed, the other chart-annihilated); with both
+-- corners past rank one this puts EVERY (6,3) crux assembly at range
+-- dimension at least four -- at every active count and every multiplier
+-- support, with no positivity hypothesis anywhere.
+--
+-- AT EXACTLY FOUR ACTIVE BLOCKS THE FLOOR SATURATES EVERYTHING AT ONCE.  The
+-- assembly is a sum of four rank-one terms, so a vanishing multiplier would
+-- cap its rank at three, below the floor: all four multipliers are positive
+-- (activeWeight_pos_of_card_eq_four).  The four tight directions span a
+-- four-dimensional space, and the corner dimensions pinch to exactly (2,2)
+-- (fourRowSpan_and_capturedRanks_of_card_eq_four) -- the four-active
+-- coefficient projection has trace two.  This is the complete substrate under
+-- the four-active leaf census, with positivity DERIVED rather than
+-- hypothesised, subsuming the positive-support and rank-split scratch routes
+-- in one dimension count.
+#print axioms Gtz.range_multiplier_le_span_tightDir
+#print axioms Gtz.range_multiplier_le_span_positive_tightDir
+#print axioms Gtz.range_projection_mul_multiplier_le_range_multiplier
+#print axioms Gtz.SixThreeCrux.four_le_finrank_range_multiplier
+#print axioms Gtz.SixThreeCrux.activeWeight_pos_of_card_eq_four
+#print axioms Gtz.SixThreeCrux.fourRowSpan_and_capturedRanks_of_card_eq_four
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

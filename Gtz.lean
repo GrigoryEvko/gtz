@@ -2381,6 +2381,16 @@ import Gtz.Quantitative.ZeroLeakClosure
 -- the corners put every (6,3) crux assembly at rank at least four.
 import Gtz.Quantitative.CapturedRankFloor
 
+
+-- the assembly rank floor: the two captured corners live inside the assembly's
+-- range and meet trivially, so with both corners past rank one every (6,3)
+-- crux assembly has range dimension at least four -- at every active count,
+-- with no positivity hypothesis.  At exactly four active blocks the floor
+-- saturates: all four multipliers are positive, the four tight directions are
+-- independent, and the corner ranks pinch to exactly (2,2) -- the four-active
+-- coefficient projection has trace two, with positivity DERIVED.
+import Gtz.Quantitative.AssemblyRankFloor
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
