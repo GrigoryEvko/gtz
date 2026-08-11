@@ -5676,9 +5676,14 @@ unlike all of them it SURVIVES both landed refuter points in kernel below
 `KFourLeverageEdgeHostsStrictTree` holds at all fifteen mandatory points,
 all 467 knife-corpus leftovers, and 2900 fresh exact adversarial points
 (tetraShell, sliver, triangleCloser, twoHeavyMass, knifeEdge, multiscale,
-generic) with zero failures -- the first surviving selection with a
-designated edge.  It is UNPROVED vocabulary with the consumption bridge
-`directionChartIsTieFree_kFour_of_leverageEdgeHosts` proved below.
+generic) with zero failures.  **THAT RECORD IS NOT AN ADJUDICATION AND THE
+STATEMENT IS NOW KERNEL-REFUTED** by
+`Gtz.kFourLeverageEdgeHostsStrictTree_refuted`
+(Gtz/Design/KFourLeverageRefuter.lean:154) at a point the uniform record never
+reached.  It was called "the first surviving selection with a designated edge"
+here; it does not survive.  The consumption bridge
+`directionChartIsTieFree_kFour_of_leverageEdgeHosts` proved below stays valid
+and simply has no live antecedent.
 
 The det normal form `kFourGapDet_treeThreeFourFive_leverageForm` displays
 the leverage reduction at the gauge star: the gap determinant splits into
@@ -5843,14 +5848,27 @@ theorem isMaxLeverageEdge_leverageFloor (point : DirectionChartPoint 6)
   rw [hsum, hweight] at hscaled
   linarith
 
-/-- **The surviving leverage-hosted selection.**  At every chart point the
-leverage edge hosts a strictly dominating spanning tree.  The designation
-is a joint polynomial comparison, so it is compatible with every kernel
-refutation of per-label orderings; it survives both refuter points (in
-kernel below), the full mandatory battery, the 467-point knife corpus, and
-2900 fresh adversarial points with zero failures.  UNPROVED vocabulary;
-proving it (or `KFourEdgeDetArgmaxHostsStrictTree`, or the selection-free
-`KFourSomeTreeLiftThreshold`) is the residual K4 endgame. -/
+/-- **THE LEVERAGE-HOSTED SELECTION, AND IT IS KERNEL-REFUTED.  DO NOT TRY TO
+PROVE IT.**  At every chart point the leverage edge hosts a strictly dominating
+spanning tree.  `Gtz.kFourLeverageEdgeHostsStrictTree_refuted`
+(Gtz/Design/KFourLeverageRefuter.lean:154) proves the NEGATION of this Prop in
+this same tree, at a fresh chart point `Gtz.leverageRefuterPoint` whose
+max-leverage edge is `2` and all eight of whose spanning trees through edge `2`
+fail by exact determinant negativity.
+
+This docstring previously called it "the surviving leverage-hosted selection"
+and named proving it as "the residual K4 endgame".  Both statements are dead.
+The evidence they rested on -- both then-known refuter points, the full
+mandatory battery, the 467-point knife corpus and 2900 fresh adversarial points
+with zero failures -- is exactly the profile the campaign's generic-sample law
+warns about: a uniform record of any size establishes nothing, and a later
+directed hunt found the witness it never reached.
+
+The definition is KEPT because its consumption bridge
+`directionChartIsTieFree_kFour_of_leverageEdgeHosts` and its leverage layer are
+landed, correct and reusable; they simply have no live antecedent now.  The
+still-open selections are `KFourEdgeDetArgmaxHostsStrictTree` and the
+selection-free `KFourSomeTreeLiftThreshold`. -/
 def KFourLeverageEdgeHostsStrictTree : Prop :=
   ∀ (point : DirectionChartPoint 6) (edge : Fin 6),
     IsMaxLeverageEdge point edge →

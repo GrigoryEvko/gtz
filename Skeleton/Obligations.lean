@@ -322,11 +322,20 @@ theorem obligationTieFreeKFour :
       (Gtz.lineFamilyPattern [[0, 1, 2], [0, 3, 4], [1, 3, 5], [2, 4, 5]]) :=
   Gtz.stressFreeStratumIsTieFree_graphicKFour_of_chart obligationChartTieFreeKFour
 
-/-- Kernel cross-checks that the sharpened K4 axiom really is DOWNSTREAM of all
-three surviving endgame routes: each selection Prop discharges the knife-band
-residual, so proving any one of them still closes the class -- the sharpening
-gave up no route.  Off the chain: hypothesis-taking, so none reaches an
-axiom. -/
+/-- Kernel cross-checks that the sharpened K4 axiom really is DOWNSTREAM of each
+selection route: every selection Prop discharges the knife-band residual, so
+proving any LIVE one of them still closes the class -- the sharpening gave up no
+route.  Off the chain: hypothesis-taking, so none reaches an axiom.
+
+COUNT CORRECTED: these were described here as "three surviving endgame routes".
+Only TWO survive.  The first example below takes
+`Gtz.KFourLeverageEdgeHostsStrictTree`, whose NEGATION is proved in this tree by
+`Gtz.kFourLeverageEdgeHostsStrictTree_refuted`
+(Gtz/Design/KFourLeverageRefuter.lean:154).  The example itself stays sound and
+useful -- it is hypothesis-taking, and it records that the bridge is real -- but
+its hypothesis is unreachable, so that route cannot close the class.  The live
+routes are `Gtz.KFourEdgeDetArgmaxHostsStrictTree` and
+`Gtz.KFourSomeTreeLiftThreshold`. -/
 example (hlev : Gtz.KFourLeverageEdgeHostsStrictTree) :
     Gtz.KFourKnifeBandWeakToStrict :=
   fun point _ hweak =>
