@@ -2299,6 +2299,16 @@ import Gtz.Design.WeightAwareClearance
 -- lossless reformulation that buys a countable residual and no mathematics.
 import Gtz.Quantitative.SixThreeIndexLadderSpine
 
+
+-- the zero-leak dependency: the global eigen-equation, which is zero leak,
+-- forces a linear combination of the atoms to vanish -- one theorem, no case
+-- analysis, at every support size and every rank, and consuming no part of the
+-- first-order system.  With it the EQUIVALENCE that a design has a parallel
+-- pair exactly when its projection form has a two-supported kernel vector,
+-- which is what turns the support-two branch into a contradiction at a
+-- counterexample.
+import Gtz.Quantitative.ZeroLeakDependency
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

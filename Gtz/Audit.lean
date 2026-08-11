@@ -568,6 +568,7 @@ import Gtz.Quantitative.ZeroLeakCollinearClosure
 import Gtz.Quantitative.ChartStationaryDesignFreeWindow
 import Gtz.Design.WeightAwareClearance
 import Gtz.Quantitative.SixThreeIndexLadderSpine
+import Gtz.Quantitative.ZeroLeakDependency
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20308,6 +20309,55 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.gtzWeightedAll_three_of_forall_isSixThreeActiveCountExcluded
 #print axioms Gtz.spineRungsHold_of_isEmpty_sixThreeCrux
 #print axioms Gtz.isSixThreeActiveTightSupportFull_and_flatPairSeparated_iff_gtzWeighted_six_three
+
+-- ==========================================================
+-- the zero-leak dependency and the parallel-pair equivalence
+-- ==========================================================
+-- WHAT IT BUYS.  A tight direction with no off-block residual satisfies the
+-- GLOBAL eigen-equation, and the shift w = v - P v then lies in the kernel of
+-- the chart by idempotence alone and has the SAME SUPPORT as v.  Since the
+-- chart is V Vᵀ, the squared length of Vᵀ w is w ⬝ (P w), so the kernel vector
+-- IS an atom dependency:
+--   sum_c ((1 - value - weight c) * sqrt (weight c) * v_c) • atom c = 0.
+-- ** ONE STATEMENT, NO CASE SPLIT ON THE SUPPORT SIZE, ANY SIZE AND ANY RANK,
+-- AND IT CONSUMES NO PART OF THE FIRST-ORDER SYSTEM -- no multiplier, no
+-- diagonal law, no commutation. **  It is therefore immune to the trap that the
+-- diagonal law and the commutation law constrain jointly.
+--
+-- READ THE COEFFICIENTS.  The dependency is a dependency of the ATOMS only
+-- where the scalars are nonzero, i.e. where value + weight c ≠ 1, which the
+-- landed Naimark dual supplies weakly.  ** THE BARE THEOREM CARRIES NO
+-- NONDEGENERACY AND ITS ANTECEDENT IS SATISFIED BY THE ZERO DIRECTION AT EVERY
+-- DESIGN AND EVERY VALUE, WHERE THE CONCLUSION READS 0 = 0. **  The
+-- nondegeneracy is supplied as an explicit hypothesis by the pair theorem
+-- downstream; do not quote the dependency without it.
+--
+-- AND THE EQUIVALENCE.  hasParallelPair_iff_exists_kernel_on_support_pair: a
+-- design has a parallel pair exactly when its projection form carries a
+-- two-supported kernel vector.  The forward half is the support-two kill; the
+-- backward half is an explicit witness, built from any parallel pair with a
+-- nonzero ratio, which is what discharges the satisfiability clause -- and the
+-- landed Gtz.HasParallelPair says in its own words that the scalar may be zero,
+-- so the degenerate case is covered rather than excluded.
+--
+-- SATISFIABILITY.  The kernel hypothesis is INHABITED at landed designs with a
+-- parallel pair (the split tetrahedron, the non-uniform leverage tie) and
+-- NON-INHABITED at Gtz.tetraDesign, which has none.  The CRUX corollary is
+-- vacuous under the conjecture, as every crux-quantified statement is.  Ledger
+-- unchanged.
+#print axioms Gtz.sum_smul_eq_pair_of_support
+#print axioms Gtz.transposeScaledAtomRows_mulVec_eq_sum
+#print axioms Gtz.transposeScaledAtomRows_mulVec_eq_zero_of_projectionOfDesign_mulVec_eq_zero
+#print axioms Gtz.sum_smul_atom_eq_zero_of_projectionOfDesign_mulVec_eq_zero
+#print axioms Gtz.projectionOfDesign_mulVec_eq_zero_of_sum_smul_atom_eq_zero
+#print axioms Gtz.hasParallelPair_of_projectionOfDesign_mulVec_eq_zero_on_support_pair
+#print axioms Gtz.exists_projectionOfDesign_mulVec_eq_zero_on_support_pair_of_parallel
+#print axioms Gtz.hasParallelPair_iff_exists_kernel_on_support_pair
+#print axioms Gtz.projection_mulVec_sub_projection_mulVec_eq_zero
+#print axioms Gtz.sub_projection_mulVec_apply_of_chartStationaryGap_mulVec_eq_smul
+#print axioms Gtz.sum_smul_atom_eq_zero_of_chartStationaryGap_mulVec_eq_smul
+#print axioms Gtz.hasParallelPair_of_zeroLeak_on_support_pair
+#print axioms Gtz.SixThreeCrux.false_of_zeroLeak_on_support_pair
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
