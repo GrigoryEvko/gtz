@@ -567,6 +567,7 @@ import Gtz.Quantitative.ChartFloorAtomSpan
 import Gtz.Quantitative.ZeroLeakCollinearClosure
 import Gtz.Quantitative.ChartStationaryDesignFreeWindow
 import Gtz.Design.WeightAwareClearance
+import Gtz.Quantitative.SixThreeIndexLadderSpine
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20241,6 +20242,72 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.sixteenth_le_weightAwareClearanceOf_floorRefuterDesign
 #print axioms Gtz.weightAwareInteriorFloor_sixteenth_quarter_refuted
 #print axioms Gtz.posDef_insertCompletion_of_lightRawWeight
+
+-- ==========================================================
+-- the (6,3) index-ladder spine, with its open rungs named
+-- ==========================================================
+-- WHAT IT BUYS, AND IT IS A PROGRESS MEASURE RATHER THAN A THEOREM.
+-- Gtz.chartArgmaxFamily is a Finset.filter of Gtz.chartCandidates, which is the
+-- set of rank-subsets of Fin size, so its cardinality is at most
+-- size.choose rank -- TWENTY at (6,3).  ** NO DECLARATION IN THE TREE BOUNDED
+-- IT FROM ABOVE. **  Five modules had been pushing the FLOOR from two to three
+-- to four with two conditional rungs above, and nobody wrote the other end.
+-- With the landed unconditional floor the active count of a (6,3)
+-- counterexample lies in [4,20]: seventeen values, each a named rung, and the
+-- residual of the whole chart route is a countable list rather than an
+-- open-ended search.  Every rung is a NAMED HYPOTHESIS of a compiling theorem
+-- with a docstring saying what would close it -- never a `sorry`.
+--
+-- THE HONEST ACCOUNTING, WHICH THE FILE NOW CARRIES IN ITS OWN DOCSTRING.
+--   * BOTH routes are EQUIVALENCES with the cell.  The seventeen-rung
+--     decomposition is one (forall_isSixThreeActiveCountExcluded_iff_...), and
+--     so is the two-rung capstone
+--     (isSixThreeActiveTightSupportFull_and_flatPairSeparated_iff_...).  A
+--     lossless reformulation cannot be easier to prove than its target, and the
+--     shorter route must not be taken for the cheaper one.
+--   * ZERO of the seventeen IN-WINDOW rungs is discharged unconditionally.  The
+--     two unconditional exclusions cover counts below four and above twenty --
+--     both OUTSIDE the window the file defines -- and the single in-window
+--     discharge is conditional on the support rung, which is itself open and is
+--     one half of the two-rung equivalence.
+--   * spineRungsHold_of_isEmpty_sixThreeCrux settles the satisfiability of
+--     every Prop here at once: all four are crux-quantified, so the cell
+--     inhabits all of them for one reason.  ** THEY ARE DECIDED UP TO THE CELL
+--     AND NOT FURTHER, and every one of them is VACUOUS IF GTZ HOLDS. **  That
+--     is the true answer, not a disclaimer: a crux-quantified Prop cannot be
+--     shown inhabited short of settling the cell, nor empty without exhibiting
+--     a counterexample.
+--   * fourteen of the seventeen counts have never been attacked by any argument
+--     in this repository, and no theorem anywhere has a conclusion that is a
+--     floor above six.
+-- Ledger unchanged, and it will stay unchanged until a rung is discharged.
+#print axioms Gtz.card_chartCandidates_eq_choose
+#print axioms Gtz.chartArgmaxFamily_subset_chartCandidates
+#print axioms Gtz.card_chartArgmaxFamily_le_choose
+#print axioms Gtz.SixThreeCrux.card_chartArgmaxFamily_le_twenty
+#print axioms Gtz.SixThreeCrux.card_chartArgmaxFamily_mem_indexWindow
+#print axioms Gtz.SixThreeCrux.exists_unitTightEigenvectorFamily_and_assemblyMultiplier
+#print axioms Gtz.SixThreeCrux.card_totalTightSupport_eq_two_or_three
+#print axioms Gtz.IsSixThreeActiveCountExcluded
+#print axioms Gtz.isSixThreeActiveCountExcluded_of_lt_four
+#print axioms Gtz.isSixThreeActiveCountExcluded_of_twenty_lt
+#print axioms Gtz.IsSixThreeActiveTightSupportFull
+#print axioms Gtz.IsSixThreeTightSupportFull
+#print axioms Gtz.isSixThreeActiveTightSupportFull_of_isSixThreeTightSupportFull
+#print axioms Gtz.card_totalTightSupport_eq_three_of_isSixThreeActiveTightSupportFull
+#print axioms Gtz.SixThreeCrux.five_le_card_chartArgmaxFamily_of_isSixThreeActiveTightSupportFull
+#print axioms Gtz.isSixThreeActiveCountExcluded_four_of_isSixThreeActiveTightSupportFull
+#print axioms Gtz.IsSixThreeFlatPairSeparated
+#print axioms Gtz.false_of_sixThreeCrux_of_isSixThreeActiveTightSupportFull_of_flatPairSeparated
+#print axioms Gtz.false_of_sixThreeCrux_of_forall_isSixThreeActiveCountExcluded
+#print axioms Gtz.gtzWeighted_six_three_of_forall_isSixThreeActiveCountExcluded
+#print axioms Gtz.forall_isSixThreeActiveCountExcluded_iff_gtzWeighted_six_three
+#print axioms Gtz.forall_isSixThreeActiveCountExcluded_unrestricted_iff_gtzWeighted_six_three
+#print axioms Gtz.gtzWeighted_six_three_of_isSixThreeActiveTightSupportFull_of_forall_excluded
+#print axioms Gtz.gtzWeighted_six_three_of_isSixThreeActiveTightSupportFull_of_flatPairSeparated
+#print axioms Gtz.gtzWeightedAll_three_of_forall_isSixThreeActiveCountExcluded
+#print axioms Gtz.spineRungsHold_of_isEmpty_sixThreeCrux
+#print axioms Gtz.isSixThreeActiveTightSupportFull_and_flatPairSeparated_iff_gtzWeighted_six_three
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

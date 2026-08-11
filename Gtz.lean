@@ -2287,6 +2287,18 @@ import Gtz.Quantitative.ChartStationaryDesignFreeWindow
 -- chart.  Buys back the rectangle's ground and nothing more.
 import Gtz.Design.WeightAwareClearance
 
+
+-- THE (6,3) INDEX-LADDER SPINE: the chart argmax family is a filter of the
+-- rank-subsets, so its cardinality is at most `size.choose rank` -- TWENTY at
+-- (6,3), a ceiling nothing in the tree had ever recorded.  With the landed
+-- unconditional floor of four the active count of a counterexample lies in a
+-- window of SEVENTEEN VALUES, and excluding all seventeen IS the cell: the
+-- ladder is a finite case analysis, not an open-ended climb.  Every open rung
+-- is a NAMED HYPOTHESIS of a compiling theorem, never a `sorry`, and BOTH
+-- routes through the file are proved EQUIVALENT to the cell, so the split is a
+-- lossless reformulation that buys a countable residual and no mathematics.
+import Gtz.Quantitative.SixThreeIndexLadderSpine
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
