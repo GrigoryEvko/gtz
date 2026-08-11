@@ -10272,7 +10272,7 @@ import Gtz.Quantitative.ZeroLeakClosure
 #print axioms Gtz.tripleCoincidentDesign_massFreeStress
 #print axioms Gtz.exists_dominating_tripleCoincidentDesign
 
--- land-balanced (gtz-g4): the balanced-collection layer and the off-diagonal
+-- the balanced-collection layer and the off-diagonal
 -- compound.  C5 at general (size, rank) on top of the master multiplier identity,
 -- the single-subset obstruction, the fractional certificate and the integrality
 -- reading of GTZ; the cross-bracket law and the rank-one compound table.
@@ -10522,7 +10522,7 @@ closed unconditionally. -/
 #print axioms Gtz.chartFullRank_pairwiseDisjoint_activeSubset
 #print axioms Gtz.exists_isChartStationaryData_pairwiseDisjoint_value_eq_rank_sub_one_div_size
 
--- gtz-g5 land-rigidity: cocycle rigidity of the signed erase system
+-- cocycle rigidity of the signed erase system
 #print axioms Gtz.sum_disagreement_eq_zero_of_solvesSame
 #print axioms Gtz.coeff_eq_zero_of_singleton_disagreement
 #print axioms Gtz.disagreement_ne_singleton_of_pos
@@ -10580,7 +10580,7 @@ closed unconditionally. -/
 #print axioms Gtz.atomPairing_sq_icosaComplementDesign
 #print axioms Gtz.solvesSignedEraseSystem_tripleParity_icosaComplementDesign
 
--- gtz-g4 land-support2: the support-two rung of the chart index floor (S4 / G32) and the
+-- the support-two rung of the chart index floor and the
 -- vanishing-pairing degree cap (S5 / G33).  The counting engine and the support-pair kill
 -- are general in (size, rank); the ladder |A| >= 2 + s is complete at (6,3), consuming the
 -- shipped full-support rung at s = 3.  The G33 half lands the degree cap and the edge
@@ -10606,7 +10606,7 @@ closed unconditionally. -/
 #print axioms Gtz.SixThreeCrux.exists_atomPairing_ne_zero
 #print axioms Gtz.exists_nonpos_and_exists_nonneg_erasePair_of_atomPairing_eq_zero
 
--- gtz-g5 land-instances: the exact objects of vertex exclusion
+-- the exact objects of vertex exclusion
 #print axioms Gtz.uniformTriangleTable
 #print axioms Gtz.uniformTriangleTable_swap
 #print axioms Gtz.uniformTriangleTable_rotate
@@ -10679,10 +10679,10 @@ closed unconditionally. -/
 #print axioms Gtz.flipSupport_linkWordOfFlip_nonempty
 #print axioms Gtz.flipSupport_card_ge_of_isEdgeCoboundary
 
--- gtz-g4 land-sweep2 (the harvest): five modules lifted from reconnaissance and
--- adjudication rungs that no wave-A or wave-B writer claimed.  Provenance for each is
--- recorded in its own module header; the sweep re-compiled, re-probed and re-audited
--- every one against the live tree rather than trusting the originating rung's logs.
+-- the harvest: five modules lifted from reconnaissance and adjudication work that no
+-- earlier writer claimed.  Provenance for each is recorded in its own module header;
+-- each was re-compiled, re-probed and re-audited against the live tree rather than
+-- trusted from the originating run's logs.
 #print axioms Gtz.abs_dotProduct_le_sqrt_leverage_mul
 #print axioms Gtz.abs_lambdaMinMat_sub_le
 #print axioms Gtz.abs_one_sub_atomShare_add_atomShare_mul_absPairing_le_edgeStarMass
