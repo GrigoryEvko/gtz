@@ -579,6 +579,7 @@ import Gtz.Quantitative.CapturedRankFloor
 import Gtz.Quantitative.AssemblyRankFloor
 import Gtz.Quantitative.FourActiveCoefficientProjection
 import Gtz.LinAlg.LambdaMinReindex
+import Gtz.Reduction.ChartRelabel
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20751,6 +20752,25 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.dotProduct_submatrix_equiv_mulVec
 #print axioms Gtz.lambdaMinMat_submatrix_equiv
 #print axioms Gtz.lambdaMinMat_submatrix_eq_of_range_eq
+
+-- ==========================================================
+-- relabelling equivariance of the chart objective
+-- ==========================================================
+-- WHAT IT BUYS.  At the configuration level, permuting the atoms conjugates
+-- the gap (chartGapRaw_relabelChartConfig), transports every block value
+-- along C |-> C.map sigma (chartBlockValue_relabelChartConfig, through the
+-- enumeration independence of the least block eigenvalue), and FIXES THE
+-- OBJECTIVE (chartObjectiveRaw_relabelChartConfig): the candidate family is
+-- permutation-stable, so both inequalities of the sup comparison come from
+-- sup'_le against the transported member.  This is the heart of the crux
+-- relabelling action: the chart-point transport, the SixThreeCrux transport
+-- (whose minimiser field survives because the objective value does not
+-- move), and the argmax-family transport that reduces any four-active
+-- family to its S6 orbit representative are bookkeeping on top of these
+-- three theorems.
+#print axioms Gtz.chartGapRaw_relabelChartConfig
+#print axioms Gtz.chartBlockValue_relabelChartConfig
+#print axioms Gtz.chartObjectiveRaw_relabelChartConfig
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

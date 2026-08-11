@@ -2409,6 +2409,15 @@ import Gtz.Quantitative.FourActiveCoefficientProjection
 -- bricks under the relabelling equivariance of the chart objective.
 import Gtz.LinAlg.LambdaMinReindex
 
+
+-- relabelling equivariance of the chart objective at the configuration
+-- level: permuting the atoms conjugates the gap, moves every block value
+-- along C |-> C.map sigma, and fixes the objective -- the candidate family
+-- is permutation-stable and the sup does not move.  The chart-point and
+-- crux transports that reduce any active family to its orbit representative
+-- consume exactly these three theorems.
+import Gtz.Reduction.ChartRelabel
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
