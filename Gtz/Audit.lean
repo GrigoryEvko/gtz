@@ -573,6 +573,7 @@ import Gtz.Reduction.LadderRungHasNoBase
 import Gtz.Quantitative.ChartStationaryValueSign
 import Gtz.Quantitative.FourActiveSupportTwoBlock
 import Gtz.Quantitative.ChartWeightBox
+import Gtz.Quantitative.DesignFreeFloorScope
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20545,6 +20546,37 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SixThreeCrux.weight_sub_weight_le
 #print axioms Gtz.SixThreeCrux.value_add_weight_mem_unit_interval
 #print axioms Gtz.SixThreeCrux.abs_weight_sub_inv_six_le
+
+-- ==========================================================
+-- the design-free floor at its widest scope, and its non-vacuity
+-- ==========================================================
+-- WHAT IT BUYS.  Two things the design-free window does not carry.
+--   * the Cauchy-Binet floor, design-free, AT EVERY CELL WITHOUT EXCEPTION.  It
+--     is weaker than the combined floor wherever both apply -- that is the
+--     landed cauchyBinetValueFloor_le_combinedValueFloor -- but that comparison
+--     carries 0 < rank and rank <= size, and this theorem carries neither.
+--     ** ITS ONLY CONTENT IS SCOPE. **
+--   * NON-VACUITY.  The design-free strict bound is instantiated at two SHIPPED
+--     chart witnesses, the (4,3) tetrahedron and the (5,3) diamond, so the
+--     antecedent of the whole design-free layer is INHABITED rather than merely
+--     unrefuted.
+--
+-- WHAT WAS DELETED RATHER THAN LANDED, AND IT IS A CORRECTION TO THE ACCOUNTING
+-- THIS MODULE ARRIVED WITH.  The (6,3) and (7,3) instances of the Cauchy-Binet
+-- floor, -3/20 and -2/15, were proved alongside these.  ** BOTH ARE STRICTLY
+-- WEAKER COROLLARIES OF THE LANDED SHARP FLOORS WITH NO EXTRA HYPOTHESIS **:
+-- -4/27 > -3/20 and -10/77 > -2/15, and each follows from its sharp sibling by
+-- linarith alone, which was checked in the kernel before deleting them.  They
+-- are recovered redundancy, not recovered content, and they are gone.
+--
+-- AND THE HONEST SCOPE OF THE WITNESSES.  Both live at cells where
+-- Gtz.gtzWeighted_of_le_five makes a negative value IMPOSSIBLE, so neither
+-- exercises a floor -- every floor is trivially true at their values.  They
+-- establish that the antecedent is inhabited and nothing more.  Ledger
+-- unchanged.
+#print axioms Gtz.cauchyBinetValueFloor_le_value_of_isChartStationaryData_designFree
+#print axioms Gtz.chartTetra_neg_inv_four_lt_zero
+#print axioms Gtz.chartDiamond_neg_inv_five_lt_zero
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

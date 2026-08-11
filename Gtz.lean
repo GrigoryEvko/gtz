@@ -2348,6 +2348,15 @@ import Gtz.Quantitative.FourActiveSupportTwoBlock
 -- exactly the shipped bound; what is new is that the bound is POINTWISE.
 import Gtz.Quantitative.ChartWeightBox
 
+
+-- the design-free floor at its widest scope, and its non-vacuity: the
+-- Cauchy-Binet floor design-free at EVERY cell without a rank hypothesis --
+-- weaker than the combined floor wherever both apply, but the comparison
+-- carries `0 < rank` and `rank <= size` and this does not, so its only content
+-- is scope -- together with the two witnesses that make the whole design-free
+-- layer's antecedent inhabited rather than merely unrefuted.
+import Gtz.Quantitative.DesignFreeFloorScope
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
