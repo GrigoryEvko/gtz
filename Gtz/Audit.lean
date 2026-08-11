@@ -19280,7 +19280,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- "at most one nonheavy" hypothesis holds in its strongest form; the aggregate is
 -- `-619627/2610432`; the base triple dominates with a singular gap and the tight
 -- direction `(1,1,6)` in its kernel; the design is line-free (min bracket `1/6`)
--- and off-conic (Veronese determinant `181280/243`); and NO one-slot swap is
+-- and off-conic (Veronese determinant `22660/243` IN THIS TREE'S UNDOUBLED
+-- CONVENTION -- the figure `181280/243` that stood here is the same determinant
+-- read in the DOUBLED convention `(.., 2xy, 2xz, 2yz)`, larger by exactly
+-- `2^3 = 8`; `Gtz.veroneseCoords` is undoubled, so the undoubled value is the
+-- one this tree's own theorems compute, and it is the value published at
+-- Gtz/Design/AllHeavyNegativeAggregate.lean:102.  Both are nonzero, so
+-- off-conicity was never in doubt); and NO one-slot swap is
 -- strict, each of the nine killed by an explicit probe -- `{1,2,5}` by the tight
 -- direction itself, at Rayleigh exactly zero.
 -- SO THE FLAT AGGREGATE CONJECTURE AND ITS ALL-HEAVY REPAIR BOTH DIE HERE, and

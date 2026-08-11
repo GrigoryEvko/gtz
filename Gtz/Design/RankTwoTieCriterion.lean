@@ -768,7 +768,10 @@ theorem pairBracket_ne_zero_of_scaledPlanarAtoms {size : ℕ} (D : WeightedDesig
   exact mul_ne_zero (mul_ne_zero halongScale hacrossScale) hrawBracket
 
 /-- **The transport gate is unnecessary once the pair is strict.**  Strict twin of
-the landed `Gtz.planarPair_strictTarget`, at `planarScale = 1`.  The landed form
+the landed `Gtz.planarPair_strictTarget_of_strictMaster`, at `planarScale = 1`.
+(The bare name `Gtz.planarPair_strictTarget` stood here and is NOT a declaration
+anywhere in this tree; the landed object carries the `_of_strictMaster` suffix.)
+The landed form
 buys its strict conclusion with `1 - planarScale > 0`, and that purchase is the
 only thing the two-pole transport gate exists to enable.  A strictly dominating
 companion pair pays for itself: the conclusion follows with no scale below one,
@@ -795,7 +798,10 @@ theorem planarPair_strictTarget_of_strictMaster
   nlinarith [hlift, hkappaTerm]
 
 /-- **The mixed shape's strict twin, and the gate vanishes there too.**  Strict
-twin of the landed `Gtz.mixedPair_alongBound`, at `planarScale = 1`.  A pole
+twin of the landed `Gtz.mixedPair_alongBound_of_strictMaster`, at
+`planarScale = 1`.  (The bare name `Gtz.mixedPair_alongBound` stood here and is
+NOT a declaration anywhere in this tree; the landed object carries the
+`_of_strictMaster` suffix.)  A pole
 shadow paired with a planar atom is the second of the three shapes the returned
 pair can take, and it was the one shape whose strict route was unverified.
 
