@@ -2357,6 +2357,17 @@ import Gtz.Quantitative.ChartWeightBox
 -- layer's antecedent inhabited rather than merely unrefuted.
 import Gtz.Quantitative.DesignFreeFloorScope
 
+
+-- the zero-leak branch, closed at rank three: a zero-leak tight direction is
+-- supported at two distinct atoms, its support sits on the weight floor, the
+-- row law then kills every projected tight direction there, the rank-three
+-- rigidity makes them all multiples of one normal, and the collinearity theorem
+-- forbids that.  No case split on the support size anywhere.  ** BUT ITS
+-- HYPOTHESIS BUNDLE HAS NO EXHIBITED INHABITANT AT ANY CELL: the one landed
+-- negative-value (6,3) datum sits on the excluded endpoint by an exact
+-- equality, so the crux corollary is vacuous if the conjecture holds. **
+import Gtz.Quantitative.ZeroLeakClosure
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

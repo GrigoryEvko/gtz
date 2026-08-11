@@ -574,6 +574,7 @@ import Gtz.Quantitative.ChartStationaryValueSign
 import Gtz.Quantitative.FourActiveSupportTwoBlock
 import Gtz.Quantitative.ChartWeightBox
 import Gtz.Quantitative.DesignFreeFloorScope
+import Gtz.Quantitative.ZeroLeakClosure
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20577,6 +20578,43 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.cauchyBinetValueFloor_le_value_of_isChartStationaryData_designFree
 #print axioms Gtz.chartTetra_neg_inv_four_lt_zero
 #print axioms Gtz.chartDiamond_neg_inv_five_lt_zero
+
+-- ==========================================================
+-- the zero-leak branch, closed at rank three
+-- ==========================================================
+-- WHAT IT BUYS.  Three landed modules meet and the composition is short: the
+-- floor-atom span supplies the master identity, the row law and the
+-- collinearity theorem; the rank-three rigidity turns two floor atoms into one
+-- line; and the zero-leak dependency supplies the fibre-kernel step.  The chain
+-- runs -- a zero-leak tight direction is supported at TWO DISTINCT atoms, since
+-- a single supported atom would make its direction the zero vector, which a
+-- parallel-free design does not carry; its support sits on the weight floor;
+-- the row law kills every projected tight direction at both atoms; the rigidity
+-- makes them multiples of one normal; the closing theorem forbids that.
+-- ** NO CASE SPLIT ON THE SUPPORT SIZE ANYWHERE. **  The support-two and
+-- support-three branches that earlier statements of this argument split on
+-- collapse once the argument is routed through the FLOOR rather than through
+-- the atom dependency or the two-plane classification.
+--
+-- THE SATISFIABILITY CAVEAT, WHICH IS THE HONEST CONTENT.  false_of_two_floorAtoms
+-- and false_of_zeroLeak carry BOTH value < 0 AND -1/size < value.  ** THE UNIQUE
+-- LANDED NEGATIVE-VALUE (6,3) STATIONARITY DATUM SITS AT value = -1/6 EXACTLY:
+-- IT CLEARS THE FIRST AND FAILS THE SECOND BY EQUALITY. **  So the hypothesis
+-- bundle has NO EXHIBITED INHABITANT AT ANY CELL, and the crux corollary is
+-- vacuous under the conjecture.  Closing a branch of a case analysis over a
+-- conjecturally empty set makes the residual finite and named; it is not
+-- evidence about the conjecture.  Building a rank-three datum strictly inside
+-- (-1/size, 0) would settle whether any of this has an instance; nobody has one.
+--
+-- DUPLICATION RESOLVED RATHER THAN DOCUMENTED.  The fibre-kernel step was proved
+-- twice, independently, with the same statement and different proof text.  The
+-- copy that arrived with this composition is DELETED and the copy in
+-- ZeroLeakDependency is consumed.  Ledger unchanged.
+#print axioms Gtz.transposeScaledAtomRows_mulVec_apply
+#print axioms Gtz.exists_ne_supported_of_zeroLeak
+#print axioms Gtz.false_of_two_floorAtoms
+#print axioms Gtz.false_of_zeroLeak
+#print axioms Gtz.SixThreeCrux.false_of_zeroLeak_tightDirection
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
