@@ -2666,6 +2666,11 @@ import Gtz.Wave.AssemblySupportCap
 -- rank-four generalization.
 import Gtz.Wave.ResidualRowCancellation
 
+-- the tight-direction basis: the exact span law hands every stationary
+-- datum a labelled basis of range Xi drawn from the positive support, the
+-- carrier of the campaign's coefficient coordinates.
+import Gtz.Wave.AssemblyBasisSelection
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
