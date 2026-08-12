@@ -2741,6 +2741,10 @@ import Gtz.Wave.PrivateAtomGeometry
 -- positive semidefinite, and H is the multiplier sum of coefficient atoms.
 import Gtz.Wave.CoefficientProjectionWindow
 
+-- the Gram localization at a private atom: the private slot's Gram row
+-- reads only the labels that carry the private atom.
+import Gtz.Wave.PrivateAtomGramLocalization
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
