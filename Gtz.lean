@@ -2837,6 +2837,10 @@ import Gtz.Wave.TriplePairSectorKill
 -- carrier pair.
 import Gtz.Wave.CarrierPairExtraction
 
+-- the chart block ceiling: every block value sits below the objective,
+-- with no minimality input.
+import Gtz.Wave.ChartBlockCeiling
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

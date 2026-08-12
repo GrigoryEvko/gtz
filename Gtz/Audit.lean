@@ -666,6 +666,7 @@ import Gtz.Wave.CycleQuadKill
 import Gtz.Wave.DiagonalGramSupply
 import Gtz.Wave.TriplePairSectorKill
 import Gtz.Wave.CarrierPairExtraction
+import Gtz.Wave.ChartBlockCeiling
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21680,6 +21681,11 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- ==========================================================
 -- the carrier-pair extraction.
 #print axioms Gtz.exists_carrier_pair_of_multiplicity_two
+
+-- ==========================================================
+-- the chart block ceiling.
+#print axioms Gtz.chartBlockValue_le_chartObjective
+#print axioms Gtz.lambdaMinMat_gap_submatrix_le_chartObjective
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
