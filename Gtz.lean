@@ -2615,6 +2615,7 @@ import Gtz.Wave.CriticalBridge
 import Gtz.Wave.Index46SupportExit
 import Gtz.Wave.SupportProfileCombinatorics
 import Gtz.Wave.CrossSupportedTightExit
+import Gtz.Wave.PencilFamilyClosure
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02

@@ -598,6 +598,7 @@ import Gtz.Wave.Index46SupportExit
 import Gtz.Wave.ZeroFullTwoPositiveTraceGap
 import Gtz.Wave.SupportProfileCombinatorics
 import Gtz.Wave.CrossSupportedTightExit
+import Gtz.Wave.PencilFamilyClosure
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21161,6 +21162,16 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SixThreeCrux.false_of_duplicate_tightDirection_of_card_four
 #print axioms Gtz.SixThreeCrux.false_of_crossSupported_tightDirection
 #print axioms Gtz.SixThreeCrux.false_of_totalTightSupport_subset_neighbor
+
+-- ==========================================================
+-- the first family falls: the edge pencil
+-- ==========================================================
+-- WHAT IT BUYS.  The support dispatch closes its first canonical
+-- family end to end: on the edge pencil each residual block owns a
+-- private atom outside the selected block, coverage forces it into the
+-- residual tight support, and the three-row cancellation kills all
+-- three coefficients against its own nontriviality.  One of fifteen.
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalEdgePencil
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

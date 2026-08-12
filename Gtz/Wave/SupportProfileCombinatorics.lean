@@ -80,7 +80,7 @@ combination whose other two terms are dead (zero coefficient or zero row),
 a nonzero first row forces a zero first coefficient. -/
 theorem firstCoeff_eq_zero_of_sum_three {coeffOne coeffTwo coeffThree : ℝ}
     {rowOne rowTwo rowThree : ℝ}
-    (hsum : coeffOne * rowOne + coeffTwo * rowTwo + coeffThree * rowThree = 0)
+    (hsum : coeffOne * rowOne + (coeffTwo * rowTwo + coeffThree * rowThree) = 0)
     (hdeadTwo : coeffTwo = 0 ∨ rowTwo = 0) (hdeadThree : coeffThree = 0 ∨ rowThree = 0)
     (hrowOne : rowOne ≠ 0) : coeffOne = 0 := by
   have htermTwo : coeffTwo * rowTwo = 0 := by
@@ -93,7 +93,7 @@ theorem firstCoeff_eq_zero_of_sum_three {coeffOne coeffTwo coeffThree : ℝ}
 /-- **THE PRIVATE-ATOM KILL, SECOND SLOT.** -/
 theorem secondCoeff_eq_zero_of_sum_three {coeffOne coeffTwo coeffThree : ℝ}
     {rowOne rowTwo rowThree : ℝ}
-    (hsum : coeffOne * rowOne + coeffTwo * rowTwo + coeffThree * rowThree = 0)
+    (hsum : coeffOne * rowOne + (coeffTwo * rowTwo + coeffThree * rowThree) = 0)
     (hdeadOne : coeffOne = 0 ∨ rowOne = 0) (hdeadThree : coeffThree = 0 ∨ rowThree = 0)
     (hrowTwo : rowTwo ≠ 0) : coeffTwo = 0 :=
   firstCoeff_eq_zero_of_sum_three (by linarith) hdeadOne hdeadThree hrowTwo
@@ -101,7 +101,7 @@ theorem secondCoeff_eq_zero_of_sum_three {coeffOne coeffTwo coeffThree : ℝ}
 /-- **THE PRIVATE-ATOM KILL, THIRD SLOT.** -/
 theorem thirdCoeff_eq_zero_of_sum_three {coeffOne coeffTwo coeffThree : ℝ}
     {rowOne rowTwo rowThree : ℝ}
-    (hsum : coeffOne * rowOne + coeffTwo * rowTwo + coeffThree * rowThree = 0)
+    (hsum : coeffOne * rowOne + (coeffTwo * rowTwo + coeffThree * rowThree) = 0)
     (hdeadOne : coeffOne = 0 ∨ rowOne = 0) (hdeadTwo : coeffTwo = 0 ∨ rowTwo = 0)
     (hrowThree : rowThree ≠ 0) : coeffThree = 0 :=
   firstCoeff_eq_zero_of_sum_three (by linarith) hdeadOne hdeadTwo hrowThree
