@@ -2817,6 +2817,14 @@ import Gtz.Wave.CornerCharacteristic
 -- the complete-pair kill: six pair atoms exhaust the corner budget.
 import Gtz.Wave.CompletePairKill
 
+-- the corner trace bounds: one eigen atom caps the corner trace, and two
+-- independent eigen atoms read it exactly.
+import Gtz.Wave.CornerTraceBounds
+
+-- the cycle kill: one independent double on a four-cycle exhausts the
+-- trace budget under a diagonal Gram.
+import Gtz.Wave.CycleQuadKill
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
