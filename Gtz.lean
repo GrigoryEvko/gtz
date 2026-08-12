@@ -2825,6 +2825,10 @@ import Gtz.Wave.CornerTraceBounds
 -- trace budget under a diagonal Gram.
 import Gtz.Wave.CycleQuadKill
 
+-- the diagonal Gram supply: a basis-only positive set makes the Gram
+-- core the diagonal of the basis weights.
+import Gtz.Wave.DiagonalGramSupply
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
