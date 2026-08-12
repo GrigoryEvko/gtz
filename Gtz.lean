@@ -2865,6 +2865,11 @@ import Gtz.Wave.GapRowDictionary
 -- the full-share kill, and the routed dense-branch closure.
 import Gtz.Wave.DenseShareDichotomy
 
+-- the doubled-pair closure: the full-share omega, the exact split, the
+-- cycle normalization, the atom labeling, the support enumeration, and
+-- the oriented routed closure of the dense branch.
+import Gtz.Wave.DoubledPairClosure
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

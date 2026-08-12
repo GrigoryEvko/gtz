@@ -672,6 +672,7 @@ import Gtz.Wave.AmbientCeilingToolbox
 import Gtz.Wave.ParallelConcentrationLayer
 import Gtz.Wave.GapRowDictionary
 import Gtz.Wave.DenseShareDichotomy
+import Gtz.Wave.DoubledPairClosure
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21781,6 +21782,26 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.doubled_pair_split
 #print axioms Gtz.false_of_two_full_shares
 #print axioms Gtz.false_of_dense_branch_of_profiles
+
+-- ==========================================================
+-- the doubled-pair closure: the omega, the exact split, the cycle
+-- normalization, the labeling, the enumeration, the oriented closure.
+#print axioms Gtz.pairShare_eq_card_shareSet
+#print axioms Gtz.shareSet_comm
+#print axioms Gtz.mem_shareSet_iff
+#print axioms Gtz.quadruple_eq_univ
+#print axioms Gtz.erase_quadruple
+#print axioms Gtz.degree_sum_triple
+#print axioms Gtz.pairShare_eq_card_of_supports_eq
+#print axioms Gtz.share_full_forces_partner_full
+#print axioms Gtz.doubled_cases_split
+#print axioms Gtz.cycle_share_normalization
+#print axioms Gtz.shareSet_carrier_vanishes
+#print axioms Gtz.shareSet_disjoint_atom_ne
+#print axioms Gtz.exists_cycle_atom_labeling
+#print axioms Gtz.cycle_support_enumeration
+#print axioms Gtz.false_of_dense_branch_of_cycle_kills
+#print axioms Gtz.false_of_dense_branch_oriented
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
