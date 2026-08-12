@@ -613,6 +613,7 @@ import Gtz.Wave.KernelDependencyParallelPair
 import Gtz.Wave.ResidualRowSpanHarvest
 import Gtz.Wave.FullRowCrossVanishing
 import Gtz.Wave.FullRowTriangleKill
+import Gtz.Wave.TetrahedronFamilyClosure
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21271,6 +21272,11 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- disconnected class of the 59-leaf support census: every engine of
 -- the rung-4 leaf-exit wave is now landed.
 #print axioms Gtz.SixThreeCrux.false_of_fullRow_isolated_from_residual
+
+-- the tetrahedron falls: the eleventh family, and the first whose
+-- engine leaves (all twelve triangle-plus-full profiles) route through
+-- the completed disconnected engine.
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalTetrahedronFamily
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
