@@ -593,6 +593,7 @@ import Gtz.Quantitative.ThreeTripleDoorReduction
 import Gtz.Quantitative.AllDoubleDoorReduction
 import Gtz.Quantitative.TwoTwoTwoDoorReduction
 import Gtz.Quantitative.PendantDoorReduction
+import Gtz.Quantitative.FifteenFamilyDispatch
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21107,6 +21108,18 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.family_eq_doublePathForm_of_sMemMiss
 #print axioms Gtz.family_eq_pendantForms_of_sMemLead
 #print axioms Gtz.exists_map_family_eq_canonical_of_profile0141
+
+-- ==========================================================
+-- the fifteen-family dispatch
+-- ==========================================================
+-- WHAT IT BUYS.  The rung-4 classifier, COMPLETE.
+-- SixThreeCrux.exists_relabel_family_canonical_of_card_four composes the
+-- quadruple-door dispatch with the four quadruple-free door capstones
+-- and the crux relabelling transport: every crux whose argmax family has
+-- four blocks relabels to a crux whose argmax family IS one of the
+-- fifteen canonical covering four-families.  The rung-4 exclusion is now
+-- exactly fifteen concrete kills — the leaf-exit wave.
+#print axioms Gtz.SixThreeCrux.exists_relabel_family_canonical_of_card_four
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

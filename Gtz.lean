@@ -2542,6 +2542,15 @@ import Gtz.Quantitative.TwoTwoTwoDoorReduction
 -- of triples on six atoms are now pinned by explicit permutations.
 import Gtz.Quantitative.PendantDoorReduction
 
+
+-- the fifteen-family dispatch: the census wired end to end.  Every crux
+-- whose argmax family has four blocks relabels to a crux whose argmax
+-- family IS one of the fifteen canonical covering four-families — the
+-- quadruple doors via the quad dispatch, the quadruple-free profiles via
+-- their door capstones and the relabelling transport.  The rung-4
+-- classifier is complete; the leaf-exit wave has fifteen concrete targets.
+import Gtz.Quantitative.FifteenFamilyDispatch
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
