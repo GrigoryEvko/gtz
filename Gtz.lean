@@ -2761,6 +2761,10 @@ import Gtz.Wave.PrivateSlotExtraction
 -- the Gram diagonal is positive, and the private square law reads 1/size.
 import Gtz.Wave.PinnedSupportDispatch
 
+-- the capture tightness: (M H)_ss = (value + weight) H_ss at each private
+-- atom, and a zero diagonal entry of a PSD matrix kills its column.
+import Gtz.Wave.PrivateAtomCaptureTightness
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
