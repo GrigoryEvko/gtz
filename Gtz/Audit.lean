@@ -617,6 +617,7 @@ import Gtz.Wave.TetrahedronFamilyClosure
 import Gtz.Wave.WeightedColumnSupportBridge
 import Gtz.Wave.TriangleEdgeFamilyClosure
 import Gtz.Wave.PendantForkFamilyClosure
+import Gtz.Wave.PendantSplitFamilyClosure
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21292,6 +21293,12 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- the fifteen canonical families are dead.
 #print axioms Gtz.SixThreeCrux.false_of_family_canonicalTriangleEdgeFamily
 #print axioms Gtz.SixThreeCrux.false_of_family_canonicalPendantForkFamily
+
+-- the pendant-split family falls on its index-46 representative: the
+-- lone residual leaf routes through the landed index-46 phase exit,
+-- everything else through the disconnected drivers and the chains.
+-- Fourteen of fifteen.
+#print axioms Gtz.SixThreeCrux.false_of_family_indexFortySixFamily
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
