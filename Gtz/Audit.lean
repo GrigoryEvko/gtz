@@ -625,6 +625,7 @@ import Gtz.Wave.RungFourCapstone
 import Gtz.Wave.RungFourIndexFloor
 import Gtz.Wave.AssemblyMinimalSupport
 import Gtz.Wave.AssemblySupportCap
+import Gtz.Wave.ResidualRowCancellation
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21404,6 +21405,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.two_mul_card_positiveActiveSet_le_of_independent
 #print axioms Gtz.SixThreeCrux.exists_multiplier_independent_two_mul_card_le
 #print axioms Gtz.SixThreeCrux.exists_multiplier_card_positiveActiveSet_le_twentyOne
+
+-- ==========================================================
+-- the residual-row cancellation, freed from the four-count.  The engine
+-- of the fifteen kills read its count in one cardinality clause only.
+#print axioms Gtz.exists_nontrivial_residualRow_cancellation_off_pair
+#print axioms Gtz.exists_residualRow_cancellation_of_mem_finiteRowSpan
+#print axioms Gtz.exists_residualEigenSquareRow_cancellation_of_support_pair
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

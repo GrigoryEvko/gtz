@@ -2660,6 +2660,12 @@ import Gtz.Wave.AssemblyMinimalSupport
 -- r(r+1)/2 -- ten, fifteen or twenty-one blocks along the rank survivors.
 import Gtz.Wave.AssemblySupportCap
 
+-- the residual-row cancellation, freed from the four-count: the engine of
+-- the fifteen kills consumed its active count in one cardinality clause
+-- only, and the count-free restatement is the working interface of the
+-- rank-four generalization.
+import Gtz.Wave.ResidualRowCancellation
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
