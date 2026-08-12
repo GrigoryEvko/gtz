@@ -642,6 +642,7 @@ import Gtz.Wave.SupportQuadrupleCensus
 import Gtz.Wave.PrivateAtomGeometry
 import Gtz.Wave.CoefficientProjectionWindow
 import Gtz.Wave.PrivateAtomGramLocalization
+import Gtz.Wave.CoefficientCaptureForm
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21543,6 +21544,11 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- ==========================================================
 -- the Gram localization at a private atom.
 #print axioms Gtz.coefficientGram_entry_localized_of_private_atom
+
+-- ==========================================================
+-- the capture form and the private diagonal reading.
+#print axioms Gtz.capture_Hform
+#print axioms Gtz.conjugated_diagonal_eq_of_private_atom
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

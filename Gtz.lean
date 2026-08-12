@@ -2745,6 +2745,10 @@ import Gtz.Wave.CoefficientProjectionWindow
 -- reads only the labels that carry the private atom.
 import Gtz.Wave.PrivateAtomGramLocalization
 
+-- the capture form B (M H) B^T = P Xi, and the private diagonal reading
+-- of every conjugated form through the single surviving coordinate.
+import Gtz.Wave.CoefficientCaptureForm
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
