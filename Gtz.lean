@@ -2870,6 +2870,10 @@ import Gtz.Wave.DenseShareDichotomy
 -- the oriented routed closure of the dense branch.
 import Gtz.Wave.DoubledPairClosure
 
+-- the rank-four rung assembly: the frame, the five named closures, the
+-- branch discharges, the K4 labeling, and the rung modulo the closures.
+import Gtz.Wave.RankFourRungAssembly
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

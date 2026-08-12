@@ -673,6 +673,7 @@ import Gtz.Wave.ParallelConcentrationLayer
 import Gtz.Wave.GapRowDictionary
 import Gtz.Wave.DenseShareDichotomy
 import Gtz.Wave.DoubledPairClosure
+import Gtz.Wave.RankFourRungAssembly
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21802,6 +21803,19 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.cycle_support_enumeration
 #print axioms Gtz.false_of_dense_branch_of_cycle_kills
 #print axioms Gtz.false_of_dense_branch_oriented
+
+-- ==========================================================
+-- the rank-four rung assembly: the frame, the closures, the K4
+-- labeling, the rung modulo the closures.
+#print axioms Gtz.RankFourFrame.hmemAll
+#print axioms Gtz.RankFourFrame.hvalueNeg
+#print axioms Gtz.SixThreeCrux.exists_rankFourFrame
+#print axioms Gtz.RankFourFrame.false_of_multOne_branch
+#print axioms Gtz.RankFourFrame.false_of_dense_branch
+#print axioms Gtz.support_enumeration_of_three_singles
+#print axioms Gtz.kfour_atom_labeling
+#print axioms Gtz.rankFourKFourClosed_of_labeled
+#print axioms Gtz.isSixThreeAssemblyRankExcluded_four_of_closures
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
