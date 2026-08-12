@@ -658,6 +658,9 @@ import Gtz.Wave.CarriedRowReading
 import Gtz.Wave.DenseEigenpairTrace
 import Gtz.Wave.SharedSupportPairTrace
 import Gtz.Wave.TwoSharedPairKill
+import Gtz.Wave.CoefficientCornerWindow
+import Gtz.Wave.CornerCharacteristic
+import Gtz.Wave.CompletePairKill
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21634,6 +21637,22 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- ==========================================================
 -- the two-shared-pair kill.
 #print axioms Gtz.false_of_two_shared_support_pairs
+
+-- ==========================================================
+-- the coefficient corner window under a diagonal Gram.
+#print axioms Gtz.posSemidef_pair_minor_nonneg
+#print axioms Gtz.corner_det_nonneg_of_diagonal_gram
+#print axioms Gtz.corner_complement_det_nonneg_of_diagonal_gram
+#print axioms Gtz.diagonal_window_of_diagonal_gram
+
+-- ==========================================================
+-- the corner characteristic and the determinant cap.
+#print axioms Gtz.corner_det_eq_of_eigen_rows
+#print axioms Gtz.corner_det_le_of_eigen_rows
+
+-- ==========================================================
+-- the complete-pair kill.
+#print axioms Gtz.false_of_complete_pair_pattern
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

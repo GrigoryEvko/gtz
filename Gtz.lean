@@ -2807,6 +2807,16 @@ import Gtz.Wave.SharedSupportPairTrace
 -- the two-shared-pair kill: two shared supports exhaust the trace budget.
 import Gtz.Wave.TwoSharedPairKill
 
+-- the coefficient corner window: corner minors under a diagonal Gram.
+import Gtz.Wave.CoefficientCornerWindow
+
+-- the corner characteristic: an eigen atom prices the corner determinant,
+-- and the complement minor caps it at the shifted weight.
+import Gtz.Wave.CornerCharacteristic
+
+-- the complete-pair kill: six pair atoms exhaust the corner budget.
+import Gtz.Wave.CompletePairKill
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
