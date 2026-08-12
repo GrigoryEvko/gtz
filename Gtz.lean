@@ -2789,6 +2789,9 @@ import Gtz.Wave.AllPrivateSupportKill
 -- the private-support split: full privacy or a shared atom.
 import Gtz.Wave.PrivateSupportSplit
 
+-- the capture symmetry: the exchange law makes M H symmetric.
+import Gtz.Wave.CaptureSymmetry
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

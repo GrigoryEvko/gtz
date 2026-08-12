@@ -653,6 +653,7 @@ import Gtz.Wave.ConjugationTraceTransfer
 import Gtz.Wave.FullyPrivateBlockKill
 import Gtz.Wave.AllPrivateSupportKill
 import Gtz.Wave.PrivateSupportSplit
+import Gtz.Wave.CaptureSymmetry
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21606,6 +21607,11 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- ==========================================================
 -- the private-support split.
 #print axioms Gtz.all_private_or_exists_shared_atom
+
+-- ==========================================================
+-- the capture symmetry.
+#print axioms Gtz.capture_transpose_eq
+#print axioms Gtz.capture_entry_symm
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
