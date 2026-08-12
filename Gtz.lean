@@ -2737,6 +2737,10 @@ import Gtz.Wave.SupportQuadrupleCensus
 -- all at the abstract positive-support datum, no argmax quantification.
 import Gtz.Wave.PrivateAtomGeometry
 
+-- the coefficient projection window and the Gram sum: M H and H - M H are
+-- positive semidefinite, and H is the multiplier sum of coefficient atoms.
+import Gtz.Wave.CoefficientProjectionWindow
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

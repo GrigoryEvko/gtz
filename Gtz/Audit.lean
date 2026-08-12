@@ -640,6 +640,7 @@ import Gtz.Wave.AssemblyBasisCoverage
 import Gtz.Wave.RankFourRelabelTransport
 import Gtz.Wave.SupportQuadrupleCensus
 import Gtz.Wave.PrivateAtomGeometry
+import Gtz.Wave.CoefficientProjectionWindow
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21530,6 +21531,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.coefficient_diagonal_eq_of_private_atom
 #print axioms Gtz.coefficient_row_eq_leak_of_private_atom
 #print axioms Gtz.weight_eq_weight_of_two_private_atoms
+
+-- ==========================================================
+-- the coefficient projection window and the Gram sum.
+#print axioms Gtz.leftInverse_atomMatrix_conjugation
+#print axioms Gtz.coefficientGram_eq_sum_of_Hform
+#print axioms Gtz.coefficientCapture_posSemidef
+#print axioms Gtz.coefficientComplement_posSemidef
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
