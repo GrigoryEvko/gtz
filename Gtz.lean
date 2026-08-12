@@ -2765,6 +2765,10 @@ import Gtz.Wave.PinnedSupportDispatch
 -- atom, and a zero diagonal entry of a PSD matrix kills its column.
 import Gtz.Wave.PrivateAtomCaptureTightness
 
+-- the two-carrier dictionary: the conjugated diagonal at a shared atom
+-- collapses to the four core entries on the two carrier slots.
+import Gtz.Wave.TwoCarrierDictionary
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

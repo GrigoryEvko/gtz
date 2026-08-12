@@ -647,6 +647,7 @@ import Gtz.Wave.AllPrivateSlotsKill
 import Gtz.Wave.PrivateSlotExtraction
 import Gtz.Wave.PinnedSupportDispatch
 import Gtz.Wave.PrivateAtomCaptureTightness
+import Gtz.Wave.TwoCarrierDictionary
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21573,6 +21574,12 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- the capture tightness and the zero-column law.
 #print axioms Gtz.posSemidef_col_eq_zero_of_diag_eq_zero
 #print axioms Gtz.private_atom_capture_tight
+
+-- ==========================================================
+-- the two-carrier dictionary and its two instantiations.
+#print axioms Gtz.conjugated_diagonal_eq_of_two_carriers
+#print axioms Gtz.two_carrier_gram_eq_inv_size
+#print axioms Gtz.two_carrier_capture_eq_forced_diagonal
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
