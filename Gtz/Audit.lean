@@ -612,6 +612,7 @@ import Gtz.Wave.IsolatedRowProjectionKill
 import Gtz.Wave.KernelDependencyParallelPair
 import Gtz.Wave.ResidualRowSpanHarvest
 import Gtz.Wave.FullRowCrossVanishing
+import Gtz.Wave.FullRowTriangleKill
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21257,6 +21258,19 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- the chart then splits across the two coordinate blocks: the
 -- disconnected endgame consumes exactly this conclusion.
 #print axioms Gtz.SixThreeCrux.projection_apply_eq_zero_of_fullRow_isolated
+
+-- ==========================================================
+-- THE DISCONNECTED ENGINE IS COMPLETE
+-- ==========================================================
+-- WHAT IT BUYS.  The full-row triangle kill: with the chart
+-- block-diagonalised by the isolated full row, its three-dimensional
+-- kernel splits across the two coordinate blocks, and one side must
+-- carry two non-proportional kernel vectors supported inside a triple
+-- of atoms — a parallel pair of design atoms, against the crux.
+-- Together with the isolated pair row this closes the entire
+-- disconnected class of the 59-leaf support census: every engine of
+-- the rung-4 leaf-exit wave is now landed.
+#print axioms Gtz.SixThreeCrux.false_of_fullRow_isolated_from_residual
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

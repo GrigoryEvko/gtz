@@ -2629,6 +2629,7 @@ import Gtz.Wave.IsolatedRowProjectionKill
 import Gtz.Wave.KernelDependencyParallelPair
 import Gtz.Wave.ResidualRowSpanHarvest
 import Gtz.Wave.FullRowCrossVanishing
+import Gtz.Wave.FullRowTriangleKill
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
