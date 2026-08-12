@@ -618,6 +618,7 @@ import Gtz.Wave.WeightedColumnSupportBridge
 import Gtz.Wave.TriangleEdgeFamilyClosure
 import Gtz.Wave.PendantForkFamilyClosure
 import Gtz.Wave.PendantSplitFamilyClosure
+import Gtz.Wave.StationaryRelabelTransport
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21299,6 +21300,12 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- everything else through the disconnected drivers and the chains.
 -- Fourteen of fifteen.
 #print axioms Gtz.SixThreeCrux.false_of_family_indexFortySixFamily
+
+-- stationary data transports along a relabelling: every field is a sum
+-- or entry identity and reindexes along the permutation.  This fires a
+-- family-pinned leaf kill at any stabilizer image of its profile — the
+-- last wiring of the rung-four leaf war.
+#print axioms Gtz.SixThreeCrux.isChartStationaryData_relabel
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

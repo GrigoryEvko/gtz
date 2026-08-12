@@ -2635,6 +2635,7 @@ import Gtz.Wave.WeightedColumnSupportBridge
 import Gtz.Wave.TriangleEdgeFamilyClosure
 import Gtz.Wave.PendantForkFamilyClosure
 import Gtz.Wave.PendantSplitFamilyClosure
+import Gtz.Wave.StationaryRelabelTransport
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
