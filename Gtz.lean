@@ -2792,6 +2792,21 @@ import Gtz.Wave.PrivateSupportSplit
 -- the capture symmetry: the exchange law makes M H symmetric.
 import Gtz.Wave.CaptureSymmetry
 
+-- the carried row reading: the pointwise coefficient law at a block atom,
+-- and its two-carrier collapse.
+import Gtz.Wave.CarriedRowReading
+
+-- the dense eigenpair trace: two independent eigenvectors read the trace
+-- of a two-by-two matrix, and a shared support supplies them.
+import Gtz.Wave.DenseEigenpairTrace
+
+-- the shared-support pair trace: two slots on one shared support read
+-- their diagonal sum as two shifted weights.
+import Gtz.Wave.SharedSupportPairTrace
+
+-- the two-shared-pair kill: two shared supports exhaust the trace budget.
+import Gtz.Wave.TwoSharedPairKill
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

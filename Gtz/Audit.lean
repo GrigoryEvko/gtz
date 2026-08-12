@@ -654,6 +654,10 @@ import Gtz.Wave.FullyPrivateBlockKill
 import Gtz.Wave.AllPrivateSupportKill
 import Gtz.Wave.PrivateSupportSplit
 import Gtz.Wave.CaptureSymmetry
+import Gtz.Wave.CarriedRowReading
+import Gtz.Wave.DenseEigenpairTrace
+import Gtz.Wave.SharedSupportPairTrace
+import Gtz.Wave.TwoSharedPairKill
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21612,6 +21616,24 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- the capture symmetry.
 #print axioms Gtz.capture_transpose_eq
 #print axioms Gtz.capture_entry_symm
+
+-- ==========================================================
+-- the carried row reading and the two-carrier collapse.
+#print axioms Gtz.carried_row_reading
+#print axioms Gtz.two_carrier_row_reading
+
+-- ==========================================================
+-- the dense eigenpair trace and the independent pair.
+#print axioms Gtz.trace_eq_add_of_eigen_pair
+#print axioms Gtz.exists_support_det_ne_zero
+
+-- ==========================================================
+-- the shared-support pair trace.
+#print axioms Gtz.pair_trace_eq_of_shared_support
+
+-- ==========================================================
+-- the two-shared-pair kill.
+#print axioms Gtz.false_of_two_shared_support_pairs
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
