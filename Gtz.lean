@@ -2885,6 +2885,11 @@ import Gtz.Wave.SupportTwoClosure
 -- datum-level bridges.
 import Gtz.Wave.CoefficientEngineCore
 
+-- the pencil null-form layer: the scalar null-form law, the pair pencil
+-- identity, the pencil corner inequality, the doubled-pair eigenpair
+-- laws, and the frame lifts.
+import Gtz.Wave.PencilNullFormLayer
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

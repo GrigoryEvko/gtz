@@ -676,6 +676,7 @@ import Gtz.Wave.DoubledPairClosure
 import Gtz.Wave.RankFourRungAssembly
 import Gtz.Wave.SupportTwoClosure
 import Gtz.Wave.CoefficientEngineCore
+import Gtz.Wave.PencilNullFormLayer
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21864,6 +21865,27 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.doubled_pair_dichotomy_of_datum
 #print axioms Gtz.kfour_master_identity_of_datum
 #print axioms Gtz.cfour_master_identity_of_datum
+
+-- ==========================================================
+-- the pencil null-form layer: the scalar law, the pencil, the corner
+-- inequality, the eigenpair laws, and the frame lifts.
+#print axioms Gtz.null_vector_det_nonpos
+#print axioms Gtz.null_vector_det_nonpos'
+#print axioms Gtz.pair_pencil_identity_raw
+#print axioms Gtz.pair_pencil_identity
+#print axioms Gtz.pair_pencil_det_nonpos
+#print axioms Gtz.doubled_pair_diag_solve_left
+#print axioms Gtz.doubled_pair_diag_solve_right
+#print axioms Gtz.doubled_pair_offdiag_solve_left
+#print axioms Gtz.doubled_pair_offdiag_solve_right
+#print axioms Gtz.doubled_pair_trace_law
+#print axioms Gtz.doubled_pair_det_law
+#print axioms Gtz.doubled_pair_corner_spectrum
+#print axioms Gtz.RankFourFrame.captureSymm
+#print axioms Gtz.RankFourFrame.pair_pencil
+#print axioms Gtz.RankFourFrame.pair_pencil_det_nonpos
+#print axioms Gtz.RankFourFrame.doubled_pair_trace
+#print axioms Gtz.RankFourFrame.doubled_pair_det
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
