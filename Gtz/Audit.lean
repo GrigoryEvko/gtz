@@ -668,6 +668,7 @@ import Gtz.Wave.TriplePairSectorKill
 import Gtz.Wave.CarrierPairExtraction
 import Gtz.Wave.ChartBlockCeiling
 import Gtz.Wave.CeilingMarginKill
+import Gtz.Wave.AmbientCeilingToolbox
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21693,6 +21694,31 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.chartGapRaw_transpose_eq
 #print axioms Gtz.gap_submatrix_transpose_eq
 #print axioms Gtz.false_of_gap_submatrix_margin
+
+-- ==========================================================
+-- the ambient ceiling toolbox: the lift calculus, the ambient margin
+-- kill, the domination kills, the triple interface, the parallel layer.
+#print axioms Gtz.sparseLift_apply_enum
+#print axioms Gtz.sparseLift_eq_zero_of_forall_ne
+#print axioms Gtz.sparseLift_dotProduct_self
+#print axioms Gtz.sparseLift_dotProduct_mulVec
+#print axioms Gtz.false_of_gap_margin_of_supported
+#print axioms Gtz.false_of_chartDominates_of_negative
+#print axioms Gtz.SixThreeCrux.false_of_chartDominates
+#print axioms Gtz.chartPointGap_apply
+#print axioms Gtz.card_triple_of_distinct
+#print axioms Gtz.notMem_triple
+#print axioms Gtz.tripleLift_dotProduct_self
+#print axioms Gtz.tripleLift_dotProduct_mulVec
+#print axioms Gtz.SixThreeCrux.false_of_gap_triple_supported
+#print axioms Gtz.eq_tripleLift_of_supported
+#print axioms Gtz.SixThreeCrux.false_of_gap_triple_entries
+#print axioms Gtz.SixThreeCrux.false_of_gap_triple_margin_entries
+#print axioms Gtz.parallel_combination_apply_pair_left
+#print axioms Gtz.parallel_combination_apply_pair_right
+#print axioms Gtz.parallel_combination_apply_of_vanish
+#print axioms Gtz.parallel_combination_mem_span
+#print axioms Gtz.eq_smul_of_parallel_combination_eq_zero
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

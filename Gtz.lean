@@ -2845,6 +2845,11 @@ import Gtz.Wave.ChartBlockCeiling
 -- objective kills the chart point.
 import Gtz.Wave.CeilingMarginKill
 
+-- the ambient ceiling toolbox: the sparse lift calculus, the ambient
+-- margin kill, the domination kills, the explicit-triple interface, and
+-- the parallel combination layer.
+import Gtz.Wave.AmbientCeilingToolbox
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
