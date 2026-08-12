@@ -2697,6 +2697,11 @@ import Gtz.Wave.AssemblyCoefficientTrace
 -- coefficient layer applies with no cast at the call site.
 import Gtz.Wave.AssemblyBasisEnumeration
 
+-- the rank-four normal form: a support-minimal multiplier, four positive
+-- basis labels, and the coefficient coordinates L, M, H with every landed
+-- law and tr M = 2 -- the single interface of the first rank rung.
+import Gtz.Wave.RankFourNormalForm
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

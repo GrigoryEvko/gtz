@@ -632,6 +632,7 @@ import Gtz.Wave.AssemblyCoefficientForm
 import Gtz.Wave.AssemblyCoefficientLaws
 import Gtz.Wave.AssemblyCoefficientTrace
 import Gtz.Wave.AssemblyBasisEnumeration
+import Gtz.Wave.RankFourNormalForm
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21462,6 +21463,12 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- the enumerated basis.  An injective Fin r family of positive labels,
 -- independent directions, exact span, with r the assembly rank.
 #print axioms Gtz.exists_enumerated_basis_of_isChartStationaryData
+
+-- ==========================================================
+-- the rank-four normal form.  Thirteen simultaneous facts at every
+-- rank-four crux datum: the support-minimal multiplier, the four-label
+-- basis, and the coefficient coordinates with tr M = 2.
+#print axioms Gtz.SixThreeCrux.exists_rankFour_coefficient_normalForm
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
