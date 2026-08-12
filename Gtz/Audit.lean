@@ -621,6 +621,7 @@ import Gtz.Wave.PendantSplitFamilyClosure
 import Gtz.Wave.StationaryRelabelTransport
 import Gtz.Wave.NestedFamilyClosure
 import Gtz.Wave.RungFourCapstone
+import Gtz.Wave.RungFourIndexFloor
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21333,6 +21334,19 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SixThreeCrux.false_of_family_canonicalNestedFamily
 #print axioms Gtz.SixThreeCrux.false_of_card_chartArgmaxFamily_eq_four
 #print axioms Gtz.isSixThreeActiveCountExcluded_four
+
+-- ==========================================================
+-- the fourth rung raises the floor.  Excluding four meets the
+-- unconditional four-floor, so a counterexample carries at least FIVE
+-- active blocks with no hypothesis — subsuming every conditional
+-- five-floor in the tree — and the ladder's residual narrows to the
+-- sixteen counts 5..20, still equivalent to the cell.
+#print axioms Gtz.SixThreeCrux.five_le_card_chartArgmaxFamily
+#print axioms Gtz.isSixThreeActiveCountExcluded_of_lt_five
+#print axioms Gtz.SixThreeCrux.card_chartArgmaxFamily_mem_narrowedIndexWindow
+#print axioms Gtz.gtzWeighted_six_three_of_forall_isSixThreeActiveCountExcluded_five_to_twenty
+#print axioms Gtz.gtzWeightedAll_three_of_forall_isSixThreeActiveCountExcluded_five_to_twenty
+#print axioms Gtz.forall_isSixThreeActiveCountExcluded_five_to_twenty_iff_gtzWeighted_six_three
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
