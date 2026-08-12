@@ -609,6 +609,7 @@ import Gtz.Wave.TwinPairsFamilyClosure
 import Gtz.Wave.HookFamilyClosure
 import Gtz.Wave.DoublePathFamilyClosure
 import Gtz.Wave.IsolatedRowProjectionKill
+import Gtz.Wave.KernelDependencyParallelPair
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21218,6 +21219,22 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SixThreeCrux.projection_mulVec_eq_zero_of_orthogonal_of_sixth_le_multiplier
 #print axioms Gtz.SixThreeCrux.sixth_le_multiplier_of_isolated_support_atom
 #print axioms Gtz.SixThreeCrux.false_of_isolated_pair_row
+
+-- ==========================================================
+-- kernel dependencies are parallel pairs
+-- ==========================================================
+-- WHAT IT BUYS.  A chart kernel vector is a linear dependency among
+-- the scaled design atoms; supported on two atoms it makes them
+-- parallel (ratio zero included), and two non-proportional kernel
+-- vectors supported inside a triple cross-combine into a pair-supported
+-- one.  This is the exit of the triangle-plus-full disconnected branch:
+-- after the projection annihilates the full row and block-diagonalises
+-- against the invertible triangle assembly, the three-dimensional
+-- kernel splits across the blocks and one side carries two independent
+-- dependencies inside its triple — a parallel pair against the crux.
+#print axioms Gtz.scaledAtomRows_transpose_mulVec_eq_zero_of_projection_mulVec_eq_zero
+#print axioms Gtz.hasParallelPair_of_pairSupported_dependency
+#print axioms Gtz.hasParallelPair_of_two_kernel_vectors_in_triple
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
