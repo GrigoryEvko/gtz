@@ -2616,6 +2616,15 @@ import Gtz.Wave.Index46SupportExit
 import Gtz.Wave.SupportProfileCombinatorics
 import Gtz.Wave.CrossSupportedTightExit
 import Gtz.Wave.PencilFamilyClosure
+import Gtz.Wave.ChairFamilyClosure
+import Gtz.Wave.TridentFamilyClosure
+import Gtz.Wave.FivePathFamilyClosure
+import Gtz.Wave.ThreeTripleFamilyClosure
+import Gtz.Wave.DoubleDoubleFamilyClosure
+import Gtz.Wave.ZigzagFamilyClosure
+import Gtz.Wave.TwinPairsFamilyClosure
+import Gtz.Wave.HookFamilyClosure
+import Gtz.Wave.DoublePathFamilyClosure
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02

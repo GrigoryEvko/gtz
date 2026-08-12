@@ -599,6 +599,15 @@ import Gtz.Wave.ZeroFullTwoPositiveTraceGap
 import Gtz.Wave.SupportProfileCombinatorics
 import Gtz.Wave.CrossSupportedTightExit
 import Gtz.Wave.PencilFamilyClosure
+import Gtz.Wave.ChairFamilyClosure
+import Gtz.Wave.TridentFamilyClosure
+import Gtz.Wave.FivePathFamilyClosure
+import Gtz.Wave.ThreeTripleFamilyClosure
+import Gtz.Wave.DoubleDoubleFamilyClosure
+import Gtz.Wave.ZigzagFamilyClosure
+import Gtz.Wave.TwinPairsFamilyClosure
+import Gtz.Wave.HookFamilyClosure
+import Gtz.Wave.DoublePathFamilyClosure
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21172,6 +21181,25 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- residual tight support, and the three-row cancellation kills all
 -- three coefficients against its own nontriviality.  One of fifteen.
 #print axioms Gtz.SixThreeCrux.false_of_family_canonicalEdgePencil
+
+-- ==========================================================
+-- nine more families fall: every engine-free canonical is dead
+-- ==========================================================
+-- WHAT IT BUYS.  The generated support dispatch closes all ten
+-- canonical covering four-families whose leaves need no spectral
+-- engine: coverage pins, membership splits, private-atom chains, the
+-- cross-supported thin exit, and the opposite-sign triangle cover every
+-- branch.  Remaining: triangleEdge, nested, pendantFork, pendantSplit,
+-- tetrahedron -- the five engine families of the leaf census.
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalChairFamily
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalTridentFamily
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalFivePathFamily
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalThreeTripleFamily
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalDoubleDoubleFamily
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalZigzagFamily
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalTwinPairsFamily
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalHookFamily
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalDoublePathFamily
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
