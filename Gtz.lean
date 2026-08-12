@@ -2502,6 +2502,15 @@ import Gtz.Quantitative.PathTriangleDoorReduction
 -- the exact interface the remaining census doors consume.
 import Gtz.Quantitative.QuadDoorDispatch
 
+
+-- the three-triple door, COMPLETE: at profile (0,3,0,3) each triply-covered
+-- atom misses exactly one block — coinciding misses collide two all-triple
+-- blocks — so the misses biject with the three mixed blocks: one block holds
+-- all three triple atoms and each mixed block is a triple pair completed by
+-- its own single atom.  An explicit permutation lands the family on
+-- {{0,1,2},{1,2,5},{0,2,4},{0,1,3}}.  First quadruple-free door closed.
+import Gtz.Quantitative.ThreeTripleDoorReduction
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

@@ -589,6 +589,7 @@ import Gtz.Quantitative.HubFamilyNormalForm
 import Gtz.Quantitative.ChairDoorReduction
 import Gtz.Quantitative.PathTriangleDoorReduction
 import Gtz.Quantitative.QuadDoorDispatch
+import Gtz.Quantitative.ThreeTripleDoorReduction
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21001,6 +21002,28 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.union_four_eq_univ_of_biUnion
 #print axioms Gtz.SixThreeCrux.biUnion_chartArgmaxFamily_eq_univ
 #print axioms Gtz.SixThreeCrux.relabel_canonical_or_noQuadProfile_of_card_four
+
+-- ==========================================================
+-- the three-triple door
+-- ==========================================================
+-- WHAT IT BUYS.  The first quadruple-free door closed, and the bricks the
+-- remaining three reuse: a card-three block through three named atoms is
+-- their triple (eq_triple_of_mem_mem_mem_card_three), membership forces a
+-- positive count (one_le_fourBlockCoverCount_of_mem), an empty count class
+-- forbids its value everywhere (count_ne_of_classCard_zero).  At profile
+-- (0,3,0,3) the 64-branch miss-assignment normalization forces the three
+-- triple atoms to miss pairwise-distinct blocks — coinciding misses collide
+-- two all-triple blocks (exists_missAssignment_of_three_count_three) — the
+-- extraction completes each triple pair by its own singly-covered atom
+-- (family_eq_threeTripleForm_of_missAssignment), and the capstone
+-- exists_map_family_eq_canonicalThreeTriple_of_profile lands the family on
+-- canonicalThreeTripleFamily = {{0,1,2},{1,2,5},{0,2,4},{0,1,3}}.
+#print axioms Gtz.eq_triple_of_mem_mem_mem_card_three
+#print axioms Gtz.one_le_fourBlockCoverCount_of_mem
+#print axioms Gtz.count_ne_of_classCard_zero
+#print axioms Gtz.exists_missAssignment_of_three_count_three
+#print axioms Gtz.family_eq_threeTripleForm_of_missAssignment
+#print axioms Gtz.exists_map_family_eq_canonicalThreeTriple_of_profile
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
