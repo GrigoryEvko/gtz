@@ -611,6 +611,7 @@ import Gtz.Wave.DoublePathFamilyClosure
 import Gtz.Wave.IsolatedRowProjectionKill
 import Gtz.Wave.KernelDependencyParallelPair
 import Gtz.Wave.ResidualRowSpanHarvest
+import Gtz.Wave.FullRowCrossVanishing
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21242,6 +21243,20 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- at most one dimension to the erased block.  Input to the cross-block
 -- vanishing and independence steps of the full-row driver.
 #print axioms Gtz.SixThreeCrux.three_le_finrank_span_erase_of_card_four
+
+-- ==========================================================
+-- the full row block-diagonalises the chart
+-- ==========================================================
+-- WHAT IT BUYS.  With one full-support row isolated from the other
+-- active supports, the projection annihilates it, and the commutation
+-- identity entry by entry — expanded against the family listing and
+-- pushed through the independence of the residual rows — kills every
+-- captured residual row on the full block.  Since the residual rows
+-- span the off-block coordinates, every cross entry of the chart
+-- between the full block and its complement vanishes.  The kernel of
+-- the chart then splits across the two coordinate blocks: the
+-- disconnected endgame consumes exactly this conclusion.
+#print axioms Gtz.SixThreeCrux.projection_apply_eq_zero_of_fullRow_isolated
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
