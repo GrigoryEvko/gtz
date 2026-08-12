@@ -578,6 +578,7 @@ import Gtz.Quantitative.ZeroLeakClosure
 import Gtz.Quantitative.CapturedRankFloor
 import Gtz.Quantitative.AssemblyRankFloor
 import Gtz.Quantitative.FourActiveCoefficientProjection
+import Gtz.Quantitative.AssemblyRankSplit
 import Gtz.LinAlg.LambdaMinReindex
 import Gtz.Reduction.ChartRelabel
 import Gtz.Quantitative.CruxRelabel
@@ -21347,6 +21348,31 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.gtzWeighted_six_three_of_forall_isSixThreeActiveCountExcluded_five_to_twenty
 #print axioms Gtz.gtzWeightedAll_three_of_forall_isSixThreeActiveCountExcluded_five_to_twenty
 #print axioms Gtz.forall_isSixThreeActiveCountExcluded_five_to_twenty_iff_gtzWeighted_six_three
+
+-- ==========================================================
+-- the assembly rank split.  The additivity rank Xi = rank(P Xi) +
+-- rank((1-P) Xi) is extracted once, the two corner caps land, and the
+-- survivor list has four cases.  The rank spine has THREE rungs (4, 5, 6),
+-- jointly equivalent to the cell, against the count ladder's sixteen.
+#print axioms Gtz.finrank_range_mul_le_of_idempotent_trace
+#print axioms Gtz.range_eq_captured_sup_of_commutes
+#print axioms Gtz.disjoint_captured_ranges_of_idempotent
+#print axioms Gtz.finrank_range_eq_captured_add_of_commutes
+#print axioms Gtz.projectedMultiplier_range_finrank_le_rank
+#print axioms Gtz.complementProjectedMultiplier_range_finrank_le_corank
+#print axioms Gtz.finrank_range_multiplier_eq_captured_add_of_isChartStationaryData
+#print axioms Gtz.SixThreeCrux.multiplierAssembly_rankSplit_survivors
+#print axioms Gtz.SixThreeCrux.finrank_range_multiplier_mem_rankWindow
+#print axioms Gtz.SixThreeCrux.finrank_range_multiplier_eq_four_or_five_or_six
+#print axioms Gtz.SixThreeCrux.trace_projection_mul_multiplier_mem_traceWindow
+#print axioms Gtz.SixThreeCrux.trace_complementProjection_mul_multiplier_mem_traceWindow
+#print axioms Gtz.SixThreeCrux.value_add_weight_mem_shiftedWindow
+#print axioms Gtz.isSixThreeAssemblyRankExcluded_of_lt_four
+#print axioms Gtz.isSixThreeAssemblyRankExcluded_of_six_lt
+#print axioms Gtz.false_of_sixThreeCrux_of_forall_isSixThreeAssemblyRankExcluded
+#print axioms Gtz.gtzWeighted_six_three_of_forall_isSixThreeAssemblyRankExcluded
+#print axioms Gtz.gtzWeightedAll_three_of_forall_isSixThreeAssemblyRankExcluded
+#print axioms Gtz.forall_isSixThreeAssemblyRankExcluded_iff_gtzWeighted_six_three
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

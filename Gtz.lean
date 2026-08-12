@@ -2401,6 +2401,14 @@ import Gtz.Quantitative.AssemblyRankFloor
 import Gtz.Quantitative.FourActiveCoefficientProjection
 
 
+-- the assembly rank split: the reusable additivity rank Xi = rank(P Xi) +
+-- rank((1-P) Xi), the two corner caps at three, the survivor list (4,2,2),
+-- (5,2,3), (5,3,2), (6,3,3), the captured trace window [1/54, 1/6), the
+-- shifted-weight window [0, 1), and the three-rung rank spine that is
+-- equivalent to the cell.
+import Gtz.Quantitative.AssemblyRankSplit
+
+
 -- reindexing invariance of the least Rayleigh value: a permutation of the
 -- index set is a bijection of nonzero probes preserving quadratic form and
 -- norm, so lambdaMinMat is invariant under permutation submatrices, and the
