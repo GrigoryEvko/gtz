@@ -2717,6 +2717,11 @@ import Gtz.Wave.AssemblyCircuitEquations
 -- submatrix, reconstituted from the coordinatewise tight equation.
 import Gtz.Wave.DatumSupportDichotomy
 
+-- the basis coverage law: the constant diagonal forces every atom into the
+-- datum tight support of a positive label, and the reconstruction pushes
+-- the coverage onto the basis supports.
+import Gtz.Wave.AssemblyBasisCoverage
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

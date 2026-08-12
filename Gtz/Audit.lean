@@ -636,6 +636,7 @@ import Gtz.Wave.RankFourNormalForm
 import Gtz.Wave.AssemblyCoordinates
 import Gtz.Wave.AssemblyCircuitEquations
 import Gtz.Wave.DatumSupportDichotomy
+import Gtz.Wave.AssemblyBasisCoverage
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21490,6 +21491,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.datumTightSupport_subset
 #print axioms Gtz.SixThreeCrux.two_le_card_datumTightSupport
 #print axioms Gtz.SixThreeCrux.card_datumTightSupport_eq_two_or_three
+
+-- ==========================================================
+-- the basis coverage law.  Every atom sits in the datum tight support of a
+-- positive label, and thus of a basis label.
+#print axioms Gtz.exists_positive_datumTightSupport
+#print axioms Gtz.exists_basisIndex_datumTightSupport
+#print axioms Gtz.biUnion_datumTightSupport_basis_eq_univ
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
