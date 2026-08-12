@@ -2637,6 +2637,7 @@ import Gtz.Wave.PendantForkFamilyClosure
 import Gtz.Wave.PendantSplitFamilyClosure
 import Gtz.Wave.StationaryRelabelTransport
 import Gtz.Wave.NestedFamilyClosure
+import Gtz.Wave.RungFourCapstone
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02

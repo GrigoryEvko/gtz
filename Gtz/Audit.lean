@@ -620,6 +620,7 @@ import Gtz.Wave.PendantForkFamilyClosure
 import Gtz.Wave.PendantSplitFamilyClosure
 import Gtz.Wave.StationaryRelabelTransport
 import Gtz.Wave.NestedFamilyClosure
+import Gtz.Wave.RungFourCapstone
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21318,6 +21319,19 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- same exit on the relabelled crux through the stationary transport.
 -- Every leaf of the rung-four support census now has a landed kill.
 #print axioms Gtz.SixThreeCrux.false_of_family_orbitFourFamily
+
+-- ==========================================================
+-- RUNG FOUR IS CLOSED
+-- ==========================================================
+-- WHAT IT BUYS.  Every card-four crux relabels onto one of the fifteen
+-- canonical covering four-families, and every family is dead.  No crux
+-- has an argmax family of four blocks: the entire leaf-exit wave —
+-- census, spine, cancellation, chains, thin exits, disconnected
+-- drivers, type-eight, type-nine and index-46 engines, and the
+-- stationary relabel transport — composes into one unconditional kill.
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalPendantSplitFamily
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalNestedFamily
+#print axioms Gtz.SixThreeCrux.false_of_card_chartArgmaxFamily_eq_four
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
