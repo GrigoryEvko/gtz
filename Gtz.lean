@@ -2782,6 +2782,10 @@ import Gtz.Wave.ConjugationTraceTransfer
 -- through the off-corner intertwiner and the diagonal pin.
 import Gtz.Wave.FullyPrivateBlockKill
 
+-- the all-private-support kill: the census clause with one fully private
+-- support assembles the enumerations and dies against the trace budget.
+import Gtz.Wave.AllPrivateSupportKill
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

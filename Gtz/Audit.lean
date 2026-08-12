@@ -651,6 +651,7 @@ import Gtz.Wave.TwoCarrierDictionary
 import Gtz.Wave.OffBlockColumnIdentity
 import Gtz.Wave.ConjugationTraceTransfer
 import Gtz.Wave.FullyPrivateBlockKill
+import Gtz.Wave.AllPrivateSupportKill
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21596,6 +21597,10 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- ==========================================================
 -- the fully-private-block kill.
 #print axioms Gtz.false_of_fully_private_block
+
+-- ==========================================================
+-- the all-private-support kill on the (6, 3) shape.
+#print axioms Gtz.false_of_all_private_support
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
