@@ -664,6 +664,7 @@ import Gtz.Wave.CompletePairKill
 import Gtz.Wave.CornerTraceBounds
 import Gtz.Wave.CycleQuadKill
 import Gtz.Wave.DiagonalGramSupply
+import Gtz.Wave.TriplePairSectorKill
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21670,6 +21671,10 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- ==========================================================
 -- the diagonal Gram supply.
 #print axioms Gtz.coefficientGram_diagonal_of_positive_basis
+
+-- ==========================================================
+-- the triple-pair sector kill.
+#print axioms Gtz.false_of_triple_pair_sector
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

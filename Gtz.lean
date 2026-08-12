@@ -2829,6 +2829,10 @@ import Gtz.Wave.CycleQuadKill
 -- core the diagonal of the basis weights.
 import Gtz.Wave.DiagonalGramSupply
 
+-- the triple-pair sector kill: three atoms on one pair force two shared
+-- supports on the six-atom shape, and the sector dies.
+import Gtz.Wave.TriplePairSectorKill
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
