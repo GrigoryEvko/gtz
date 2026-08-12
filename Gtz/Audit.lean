@@ -608,6 +608,7 @@ import Gtz.Wave.ZigzagFamilyClosure
 import Gtz.Wave.TwinPairsFamilyClosure
 import Gtz.Wave.HookFamilyClosure
 import Gtz.Wave.DoublePathFamilyClosure
+import Gtz.Wave.IsolatedRowProjectionKill
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21200,6 +21201,23 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SixThreeCrux.false_of_family_canonicalTwinPairsFamily
 #print axioms Gtz.SixThreeCrux.false_of_family_canonicalHookFamily
 #print axioms Gtz.SixThreeCrux.false_of_family_canonicalDoublePathFamily
+
+-- ==========================================================
+-- the isolated-row projection kill: the disconnected engine core
+-- ==========================================================
+-- WHAT IT BUYS.  A tight row whose support meets no other active
+-- support is an assembly eigenvector with eigenvalue its multiplier;
+-- an isolated support atom floors that multiplier at 1/6, and the
+-- Rayleigh-by-trace bound on the positive semidefinite captured
+-- product (trace value + 1/6 < 1/6) forces the projection to
+-- annihilate the row.  On a pair support both weights then equal
+-- -value and the landed parallel-pair floor closes: every isolated
+-- pair-row leaf of the disconnected class is dead.
+#print axioms Gtz.eigenvalue_le_trace_of_posSemidef
+#print axioms Gtz.chartMultiplierAssembly_mulVec_eq_smul_of_orthogonal
+#print axioms Gtz.SixThreeCrux.projection_mulVec_eq_zero_of_orthogonal_of_sixth_le_multiplier
+#print axioms Gtz.SixThreeCrux.sixth_le_multiplier_of_isolated_support_atom
+#print axioms Gtz.SixThreeCrux.false_of_isolated_pair_row
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
