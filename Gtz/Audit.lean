@@ -610,6 +610,7 @@ import Gtz.Wave.HookFamilyClosure
 import Gtz.Wave.DoublePathFamilyClosure
 import Gtz.Wave.IsolatedRowProjectionKill
 import Gtz.Wave.KernelDependencyParallelPair
+import Gtz.Wave.ResidualRowSpanHarvest
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21235,6 +21236,12 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.scaledAtomRows_transpose_mulVec_eq_zero_of_projection_mulVec_eq_zero
 #print axioms Gtz.hasParallelPair_of_pairSupported_dependency
 #print axioms Gtz.hasParallelPair_of_two_kernel_vectors_in_triple
+
+-- the residual three rows of a card-four crux family span at least
+-- three dimensions: the four-dimensional positive-row-span floor loses
+-- at most one dimension to the erased block.  Input to the cross-block
+-- vanishing and independence steps of the full-row driver.
+#print axioms Gtz.SixThreeCrux.three_le_finrank_span_erase_of_card_four
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

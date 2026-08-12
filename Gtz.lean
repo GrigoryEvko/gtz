@@ -2627,6 +2627,7 @@ import Gtz.Wave.HookFamilyClosure
 import Gtz.Wave.DoublePathFamilyClosure
 import Gtz.Wave.IsolatedRowProjectionKill
 import Gtz.Wave.KernelDependencyParallelPair
+import Gtz.Wave.ResidualRowSpanHarvest
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
