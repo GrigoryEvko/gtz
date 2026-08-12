@@ -670,6 +670,7 @@ import Gtz.Wave.ChartBlockCeiling
 import Gtz.Wave.CeilingMarginKill
 import Gtz.Wave.AmbientCeilingToolbox
 import Gtz.Wave.ParallelConcentrationLayer
+import Gtz.Wave.GapRowDictionary
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21740,6 +21741,30 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.bothParallel_concentration_value_single
 #print axioms Gtz.bothParallel_concentration_value_anchor
 #print axioms Gtz.bothParallel_single_exports
+
+-- ==========================================================
+-- the gap row dictionary and the pair-plane reads.
+#print axioms Gtz.gap_row_eigen_sum
+#print axioms Gtz.gap_row_eigen_triple
+#print axioms Gtz.mulVec_mem_range_of_commutes
+#print axioms Gtz.single_mem_range_of_smul_single_mem
+#print axioms Gtz.diagonal_mulVec_single_eq_smul
+#print axioms Gtz.gap_mulVec_single_mem_range
+#print axioms Gtz.mem_span_range_of_four_direction_combination
+#print axioms Gtz.exists_coeff_sum_of_mem_span
+#print axioms Gtz.sum_collapse_one
+#print axioms Gtz.sum_collapse_two
+#print axioms Gtz.gapColumn_read_one_carrier
+#print axioms Gtz.gapColumn_read_two_carriers
+#print axioms Gtz.gap_entry_symm
+#print axioms Gtz.gap_row_eigen_pair
+#print axioms Gtz.projection_entry_symm
+#print axioms Gtz.projection_entry_eq_gap_add
+#print axioms Gtz.projection_row_square
+#print axioms Gtz.projection_offdiag_square
+#print axioms Gtz.projection_row_product
+#print axioms Gtz.exists_gapColumn_coeff_of_single_mem
+#print axioms Gtz.bothParallel_gapColumn_reads
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

@@ -2855,6 +2855,11 @@ import Gtz.Wave.AmbientCeilingToolbox
 -- the independent concentrations export the scaled coordinate singles.
 import Gtz.Wave.ParallelConcentrationLayer
 
+-- the gap row dictionary: eigen rows in entry form, the range
+-- invariance, the span bridge, the collapse calculus with the evaluated
+-- reads, the row squares, and the pair-plane column reads.
+import Gtz.Wave.GapRowDictionary
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
