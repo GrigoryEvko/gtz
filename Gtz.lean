@@ -2511,6 +2511,17 @@ import Gtz.Quantitative.QuadDoorDispatch
 -- {{0,1,2},{1,2,5},{0,2,4},{0,1,3}}.  First quadruple-free door closed.
 import Gtz.Quantitative.ThreeTripleDoorReduction
 
+
+-- the all-double door, COMPLETE: at profile (0,0,6,0) the dual multigraph on
+-- the four blocks is three-regular with six edges, so the family is the
+-- simple K4 — atoms biject with block pairs, the TETRAHEDRON M(K4) — or a
+-- doubled edge with its forced complementary double, the DOUBLE-DOUBLE.
+-- The first block's three atoms each name one companion block: injective
+-- assignment gives the tetrahedron, a repeated target the double-double, a
+-- triple target collides two blocks.  Explicit permutations land the shapes
+-- on {{0,1,2},{0,3,4},{1,3,5},{2,4,5}} and {{0,1,2},{0,1,3},{2,4,5},{3,4,5}}.
+import Gtz.Quantitative.AllDoubleDoorReduction
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

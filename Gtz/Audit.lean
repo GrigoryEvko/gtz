@@ -590,6 +590,7 @@ import Gtz.Quantitative.ChairDoorReduction
 import Gtz.Quantitative.PathTriangleDoorReduction
 import Gtz.Quantitative.QuadDoorDispatch
 import Gtz.Quantitative.ThreeTripleDoorReduction
+import Gtz.Quantitative.AllDoubleDoorReduction
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21024,6 +21025,34 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_missAssignment_of_three_count_three
 #print axioms Gtz.family_eq_threeTripleForm_of_missAssignment
 #print axioms Gtz.exists_map_family_eq_canonicalThreeTriple_of_profile
+
+-- ==========================================================
+-- the all-double door
+-- ==========================================================
+-- WHAT IT BUYS.  Profile (0,0,6,0) closed with BOTH its shapes — including
+-- the tetrahedron M(K4), the very geometry of the standing witness class.
+-- A full double class makes every atom doubly covered
+-- (count_eq_two_of_doubleClassCard_six); the first block's three atoms
+-- each name one companion block, and the 216-branch normalization sorts
+-- injective assignments from repeated ones, killing triple targets on a
+-- block collision (exists_companionAssignment_of_all_count_two).  The
+-- tetrahedron extraction threads the three fresh atoms through the three
+-- block pairs (family_eq_tetrahedronForm_of_assignment, with starvation
+-- kills when both companions crowd one block); the double-double
+-- extraction completes the pair block by one fresh atom, the loner block
+-- by two, and identifies the last block as the complement triple
+-- (family_eq_doubleDoubleForm_of_assignment).  The capstone lands the
+-- family on canonicalTetrahedronFamily = {{0,1,2},{0,3,4},{1,3,5},{2,4,5}}
+-- or canonicalDoubleDoubleFamily = {{0,1,2},{0,1,3},{2,4,5},{3,4,5}}.
+-- Seven of the fifteen census representatives are now pinned; profiles
+-- (0,1,4,1) and (0,2,2,2) remain.
+#print axioms Gtz.tripleSet_swap_first_second
+#print axioms Gtz.tripleSet_swap_second_third
+#print axioms Gtz.count_eq_two_of_doubleClassCard_six
+#print axioms Gtz.exists_companionAssignment_of_all_count_two
+#print axioms Gtz.family_eq_tetrahedronForm_of_assignment
+#print axioms Gtz.family_eq_doubleDoubleForm_of_assignment
+#print axioms Gtz.exists_map_family_eq_canonicalTetrahedron_or_doubleDouble_of_profile
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
