@@ -615,6 +615,8 @@ import Gtz.Wave.FullRowCrossVanishing
 import Gtz.Wave.FullRowTriangleKill
 import Gtz.Wave.TetrahedronFamilyClosure
 import Gtz.Wave.WeightedColumnSupportBridge
+import Gtz.Wave.TriangleEdgeFamilyClosure
+import Gtz.Wave.PendantForkFamilyClosure
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21283,6 +21285,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- language bridge between the spine's total tight supports and the
 -- permutation-invariant type-eight exit, for any four-block labelling.
 #print axioms Gtz.SixThreeCrux.fourFamilyWeightedColumnSupport_eq_totalTightSupport
+
+-- the triangle-edge and pendant-fork families fall: the generated
+-- dispatch now routes type-eight leaves through the invariant exit via
+-- the support bridge, alongside both disconnected drivers.  Thirteen of
+-- the fifteen canonical families are dead.
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalTriangleEdgeFamily
+#print axioms Gtz.SixThreeCrux.false_of_family_canonicalPendantForkFamily
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
