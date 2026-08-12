@@ -644,6 +644,7 @@ import Gtz.Wave.CoefficientProjectionWindow
 import Gtz.Wave.PrivateAtomGramLocalization
 import Gtz.Wave.CoefficientCaptureForm
 import Gtz.Wave.AllPrivateSlotsKill
+import Gtz.Wave.PrivateSlotExtraction
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21554,6 +21555,10 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- ==========================================================
 -- the all-private kill.  Four private atoms exhaust the trace budget.
 #print axioms Gtz.false_of_private_atoms_at_every_slot
+
+-- ==========================================================
+-- the private slot extraction.
+#print axioms Gtz.exists_private_slot_of_multiplicity_one
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

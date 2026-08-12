@@ -2753,6 +2753,10 @@ import Gtz.Wave.CoefficientCaptureForm
 -- the four diagonal pins force value >= 1/4 against the negative value.
 import Gtz.Wave.AllPrivateSlotsKill
 
+-- the private slot extraction: a multiplicity-one atom yields its private
+-- slot with the block membership and the vanishing of the other columns.
+import Gtz.Wave.PrivateSlotExtraction
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
