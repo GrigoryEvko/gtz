@@ -2786,6 +2786,9 @@ import Gtz.Wave.FullyPrivateBlockKill
 -- support assembles the enumerations and dies against the trace budget.
 import Gtz.Wave.AllPrivateSupportKill
 
+-- the private-support split: full privacy or a shared atom.
+import Gtz.Wave.PrivateSupportSplit
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
