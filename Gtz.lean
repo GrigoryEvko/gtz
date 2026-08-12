@@ -2732,6 +2732,11 @@ import Gtz.Wave.RankFourRelabelTransport
 -- the dispatch hands each rank-four datum to its kill group.
 import Gtz.Wave.SupportQuadrupleCensus
 
+-- the private-atom coefficient geometry: the circuit kill at the private
+-- slot, the diagonal pin M_ss = value + weight, and the leak dictionary --
+-- all at the abstract positive-support datum, no argmax quantification.
+import Gtz.Wave.PrivateAtomGeometry
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

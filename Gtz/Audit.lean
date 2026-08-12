@@ -639,6 +639,7 @@ import Gtz.Wave.DatumSupportDichotomy
 import Gtz.Wave.AssemblyBasisCoverage
 import Gtz.Wave.RankFourRelabelTransport
 import Gtz.Wave.SupportQuadrupleCensus
+import Gtz.Wave.PrivateAtomGeometry
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21520,6 +21521,15 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.datumTightSupport_eq_activeSubset_of_card_eq_rank
 #print axioms Gtz.basisSupport_trichotomy
 #print axioms Gtz.SixThreeCrux.exists_rankFour_support_dispatch
+
+-- ==========================================================
+-- the private-atom coefficient geometry.  The circuit kill at the private
+-- slot, the diagonal pin, the leak dictionary, and the equal-weight law.
+#print axioms Gtz.leftInverse_mulVec_tightDir_basisLabel
+#print axioms Gtz.coefficientReading_eq_zero_of_private_atom
+#print axioms Gtz.coefficient_diagonal_eq_of_private_atom
+#print axioms Gtz.coefficient_row_eq_leak_of_private_atom
+#print axioms Gtz.weight_eq_weight_of_two_private_atoms
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
