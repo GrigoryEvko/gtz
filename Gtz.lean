@@ -2712,6 +2712,11 @@ import Gtz.Wave.AssemblyCoordinates
 -- linear system the rank-four census solves against the basis supports.
 import Gtz.Wave.AssemblyCircuitEquations
 
+-- the datum support dichotomy: the ambient support of every active datum
+-- direction has exactly two or three atoms -- the sign engine on the block
+-- submatrix, reconstituted from the coordinatewise tight equation.
+import Gtz.Wave.DatumSupportDichotomy
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

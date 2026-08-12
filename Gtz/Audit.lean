@@ -635,6 +635,7 @@ import Gtz.Wave.AssemblyBasisEnumeration
 import Gtz.Wave.RankFourNormalForm
 import Gtz.Wave.AssemblyCoordinates
 import Gtz.Wave.AssemblyCircuitEquations
+import Gtz.Wave.DatumSupportDichotomy
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21481,6 +21482,14 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- per atom outside a positive label's block.
 #print axioms Gtz.reconstruction_apply_of_mem_positive
 #print axioms Gtz.circuit_equation_of_mem_positive_of_notMem
+
+-- ==========================================================
+-- the datum support dichotomy.  Two or three nonzero coordinates at every
+-- active label of a crux datum.
+#print axioms Gtz.mem_datumTightSupport
+#print axioms Gtz.datumTightSupport_subset
+#print axioms Gtz.SixThreeCrux.two_le_card_datumTightSupport
+#print axioms Gtz.SixThreeCrux.card_datumTightSupport_eq_two_or_three
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
