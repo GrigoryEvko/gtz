@@ -2492,6 +2492,16 @@ import Gtz.Quantitative.ChairDoorReduction
 -- doors (2,0,0,4), (1,1,1,3), (1,0,3,2) all closed.
 import Gtz.Quantitative.PathTriangleDoorReduction
 
+
+-- the quadruple-door dispatch: a card-four crux family names four distinct
+-- covering triples, the profile census fires, and the three closed
+-- quadruple doors compose with the crux relabelling transport — every
+-- card-four crux either relabels to a crux whose argmax family IS one of
+-- the four canonical quadruple representatives (pencil, chair, five-path,
+-- triangle-plus-edge) or realizes one of the four quadruple-free profiles,
+-- the exact interface the remaining census doors consume.
+import Gtz.Quantitative.QuadDoorDispatch
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

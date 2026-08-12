@@ -588,6 +588,7 @@ import Gtz.Quantitative.PencilDoorReduction
 import Gtz.Quantitative.HubFamilyNormalForm
 import Gtz.Quantitative.ChairDoorReduction
 import Gtz.Quantitative.PathTriangleDoorReduction
+import Gtz.Quantitative.QuadDoorDispatch
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20979,6 +20980,27 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.edgeSet_eq_triangle_of_leaf_edge
 #print axioms Gtz.edgeSet_eq_path_of_leaf_edges
 #print axioms Gtz.exists_map_family_eq_canonicalPath_or_triangle_of_profile
+
+-- ==========================================================
+-- the quadruple-door dispatch
+-- ==========================================================
+-- WHAT IT BUYS.  The census wired to the crux.  A card-four argmax family
+-- extracts to four pairwise-distinct card-three blocks
+-- (Finset.card_eq_four + mem_chartArgmaxFamily_iff), the crux coverage law
+-- turns into the four-block union form
+-- (SixThreeCrux.biUnion_chartArgmaxFamily_eq_univ,
+-- union_four_eq_univ_of_biUnion), the profile census fires, and the three
+-- closed quadruple doors compose with chartArgmaxFamily_relabelDesign:
+-- SixThreeCrux.relabel_canonical_or_noQuadProfile_of_card_four says every
+-- card-four crux either relabels to a crux whose argmax family IS
+-- canonicalEdgePencil, canonicalChairFamily, canonicalFivePathFamily, or
+-- canonicalTriangleEdgeFamily, or realizes a quadruple-free profile
+-- (0,0,6,0) / (0,1,4,1) / (0,2,2,2) / (0,3,0,3).  The rung-4 exclusion is
+-- now: kill the four canonical shapes (the leaf-exit wave) and close the
+-- four quadruple-free doors.
+#print axioms Gtz.union_four_eq_univ_of_biUnion
+#print axioms Gtz.SixThreeCrux.biUnion_chartArgmaxFamily_eq_univ
+#print axioms Gtz.SixThreeCrux.relabel_canonical_or_noQuadProfile_of_card_four
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
