@@ -623,6 +623,7 @@ import Gtz.Wave.StationaryRelabelTransport
 import Gtz.Wave.NestedFamilyClosure
 import Gtz.Wave.RungFourCapstone
 import Gtz.Wave.RungFourIndexFloor
+import Gtz.Wave.AssemblyMinimalSupport
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21373,6 +21374,20 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.gtzWeighted_six_three_of_forall_isSixThreeAssemblyRankExcluded
 #print axioms Gtz.gtzWeightedAll_three_of_forall_isSixThreeAssemblyRankExcluded
 #print axioms Gtz.forall_isSixThreeAssemblyRankExcluded_iff_gtzWeighted_six_three
+
+-- ==========================================================
+-- the support-minimal stationary multiplier.  Every datum reduces, with
+-- the same assembly, to one whose positive-support constraint columns
+-- q_C q_C^T are linearly independent.  The independence is among the
+-- columns, NOT among the tight directions.
+#print axioms Gtz.mem_positiveActiveSet
+#print axioms Gtz.positiveActiveSet_subset_activeSet
+#print axioms Gtz.exists_relation_of_not_linearIndependent_on
+#print axioms Gtz.trace_atomMatrix_tightDir_eq_one
+#print axioms Gtz.sum_relation_eq_zero_of_relation_atomMatrix
+#print axioms Gtz.exists_slid_weight_of_dependent_positive_support
+#print axioms Gtz.exists_isChartStationaryData_independent_positive_support
+#print axioms Gtz.SixThreeCrux.exists_multiplier_isChartStationaryData_independent_positive_support
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

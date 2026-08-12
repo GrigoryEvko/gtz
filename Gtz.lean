@@ -2648,6 +2648,12 @@ import Gtz.Wave.NestedFamilyClosure
 import Gtz.Wave.RungFourCapstone
 import Gtz.Wave.RungFourIndexFloor
 
+-- the support-minimal stationary multiplier: sliding along a relation among
+-- the positive-support constraint columns q_C q_C^T keeps the assembly
+-- literally unchanged, and the trace budget forces both signs, so every
+-- datum reduces to one with linearly independent positive constraint columns.
+import Gtz.Wave.AssemblyMinimalSupport
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
