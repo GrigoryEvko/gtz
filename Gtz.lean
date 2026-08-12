@@ -2833,6 +2833,10 @@ import Gtz.Wave.DiagonalGramSupply
 -- supports on the six-atom shape, and the sector dies.
 import Gtz.Wave.TriplePairSectorKill
 
+-- the carrier-pair extraction: a multiplicity-two atom yields its dense
+-- carrier pair.
+import Gtz.Wave.CarrierPairExtraction
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
