@@ -671,6 +671,7 @@ import Gtz.Wave.CeilingMarginKill
 import Gtz.Wave.AmbientCeilingToolbox
 import Gtz.Wave.ParallelConcentrationLayer
 import Gtz.Wave.GapRowDictionary
+import Gtz.Wave.DenseShareDichotomy
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21765,6 +21766,21 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.projection_row_product
 #print axioms Gtz.exists_gapColumn_coeff_of_single_mem
 #print axioms Gtz.bothParallel_gapColumn_reads
+
+-- ==========================================================
+-- the dense share dichotomy and the routed dense branch.
+#print axioms Gtz.pairShare_symm
+#print axioms Gtz.pairShare_self
+#print axioms Gtz.pairShare_le_card
+#print axioms Gtz.sum_erase_pairShare_eq_card
+#print axioms Gtz.share_dichotomy_arith
+#print axioms Gtz.dense_share_dichotomy
+#print axioms Gtz.supports_eq_of_pairShare_full
+#print axioms Gtz.exists_two_shared_atoms_of_two_le_pairShare
+#print axioms Gtz.shared_atom_exclusive_carriers
+#print axioms Gtz.doubled_pair_split
+#print axioms Gtz.false_of_two_full_shares
+#print axioms Gtz.false_of_dense_branch_of_profiles
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

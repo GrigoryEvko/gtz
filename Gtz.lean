@@ -2860,6 +2860,11 @@ import Gtz.Wave.ParallelConcentrationLayer
 -- reads, the row squares, and the pair-plane column reads.
 import Gtz.Wave.GapRowDictionary
 
+-- the dense share dichotomy: the multigraph dispatch of the dense branch
+-- — the K4 profile or two disjoint doubled pairs, with the degree law,
+-- the full-share kill, and the routed dense-branch closure.
+import Gtz.Wave.DenseShareDichotomy
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
