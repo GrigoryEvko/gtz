@@ -2850,6 +2850,11 @@ import Gtz.Wave.CeilingMarginKill
 -- the parallel combination layer.
 import Gtz.Wave.AmbientCeilingToolbox
 
+-- the parallel concentration layer: the both-parallel dichotomy at the
+-- C4 shape — the dependent concentrations die on the left inverse, and
+-- the independent concentrations export the scaled coordinate singles.
+import Gtz.Wave.ParallelConcentrationLayer
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

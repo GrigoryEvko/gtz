@@ -669,6 +669,7 @@ import Gtz.Wave.CarrierPairExtraction
 import Gtz.Wave.ChartBlockCeiling
 import Gtz.Wave.CeilingMarginKill
 import Gtz.Wave.AmbientCeilingToolbox
+import Gtz.Wave.ParallelConcentrationLayer
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21719,6 +21720,26 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.parallel_combination_apply_of_vanish
 #print axioms Gtz.parallel_combination_mem_span
 #print axioms Gtz.eq_smul_of_parallel_combination_eq_zero
+
+-- ==========================================================
+-- the parallel concentration layer: the both-parallel dichotomy.
+#print axioms Gtz.parallel_combination_apply
+#print axioms Gtz.parallel_combination_apply_of_first_vanish
+#print axioms Gtz.parallel_combination_apply_of_second_vanish
+#print axioms Gtz.parallel_combination_ne_zero_of_first_vanish
+#print axioms Gtz.parallel_combination_ne_zero_of_second_vanish
+#print axioms Gtz.twoSparse_crossDet_combination_eq_zero
+#print axioms Gtz.false_of_bothParallel_concentrations_dependent
+#print axioms Gtz.twoSparse_scaled_single_left
+#print axioms Gtz.twoSparse_scaled_single_right
+#print axioms Gtz.four_direction_scaled_single_left
+#print axioms Gtz.four_direction_scaled_single_right
+#print axioms Gtz.twoSparse_eq_combination_of_singles
+#print axioms Gtz.leftInverse_read_of_four_direction_combination
+#print axioms Gtz.bothParallel_concentration_support
+#print axioms Gtz.bothParallel_concentration_value_single
+#print axioms Gtz.bothParallel_concentration_value_anchor
+#print axioms Gtz.bothParallel_single_exports
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
