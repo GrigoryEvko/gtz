@@ -2774,6 +2774,10 @@ import Gtz.Wave.TwoCarrierDictionary
 -- part, and the left inverse reads the diagonal coefficient.
 import Gtz.Wave.OffBlockColumnIdentity
 
+-- the conjugation trace transfer: a kernel-free intertwiner Q A = D Q
+-- forces trace A = trace D.
+import Gtz.Wave.ConjugationTraceTransfer
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

@@ -649,6 +649,7 @@ import Gtz.Wave.PinnedSupportDispatch
 import Gtz.Wave.PrivateAtomCaptureTightness
 import Gtz.Wave.TwoCarrierDictionary
 import Gtz.Wave.OffBlockColumnIdentity
+import Gtz.Wave.ConjugationTraceTransfer
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21586,6 +21587,10 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- the off-block column identity and the diagonal reading.
 #print axioms Gtz.offblock_column_identity
 #print axioms Gtz.offblock_diagonal_reading
+
+-- ==========================================================
+-- the conjugation trace transfer.
+#print axioms Gtz.trace_eq_of_kernel_free_conjugation
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
