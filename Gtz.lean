@@ -2722,6 +2722,11 @@ import Gtz.Wave.DatumSupportDichotomy
 -- the coverage onto the basis supports.
 import Gtz.Wave.AssemblyBasisCoverage
 
+-- the rank relabelling transport: a permutation conjugation keeps the
+-- assembly rank, the datum supports and the positive support transport as
+-- images -- the bridge the census dispatch composes with the normal form.
+import Gtz.Wave.RankFourRelabelTransport
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

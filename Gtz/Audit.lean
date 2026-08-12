@@ -637,6 +637,7 @@ import Gtz.Wave.AssemblyCoordinates
 import Gtz.Wave.AssemblyCircuitEquations
 import Gtz.Wave.DatumSupportDichotomy
 import Gtz.Wave.AssemblyBasisCoverage
+import Gtz.Wave.RankFourRelabelTransport
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21498,6 +21499,17 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_positive_datumTightSupport
 #print axioms Gtz.exists_basisIndex_datumTightSupport
 #print axioms Gtz.biUnion_datumTightSupport_basis_eq_univ
+
+-- ==========================================================
+-- the rank relabelling transport.  The relabelled crux carries the
+-- transported datum with the same assembly rank, and the supports
+-- transport as images.
+#print axioms Gtz.finrank_range_toLin'_submatrix_perm
+#print axioms Gtz.finrank_range_chartMultiplierAssembly_relabel
+#print axioms Gtz.datumTightSupport_relabel
+#print axioms Gtz.card_datumTightSupport_relabel
+#print axioms Gtz.positiveActiveSet_relabel
+#print axioms Gtz.SixThreeCrux.isChartStationaryData_relabel_rank
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
