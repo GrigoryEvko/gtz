@@ -2879,6 +2879,12 @@ import Gtz.Wave.RankFourRungAssembly
 -- energy floor -value <= sum w q^2.
 import Gtz.Wave.SupportTwoClosure
 
+-- the coefficient engine core: the idempotency products, the
+-- division-free pricing, the doubled-pair dichotomy, e2 = 1, the master
+-- identities, the vertex equations, the exchange entries, and the
+-- datum-level bridges.
+import Gtz.Wave.CoefficientEngineCore
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

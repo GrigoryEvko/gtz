@@ -675,6 +675,7 @@ import Gtz.Wave.DenseShareDichotomy
 import Gtz.Wave.DoubledPairClosure
 import Gtz.Wave.RankFourRungAssembly
 import Gtz.Wave.SupportTwoClosure
+import Gtz.Wave.CoefficientEngineCore
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21837,6 +21838,32 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.weightEnergy_le_one
 #print axioms Gtz.neg_value_le_weightEnergy
 #print axioms Gtz.pair_energy_floor
+
+-- ==========================================================
+-- the coefficient engine core: the shared skeleton of the commutation
+-- kills.
+#print axioms Gtz.sum_products_eq_diag_of_idempotent
+#print axioms Gtz.offdiag_products_eq_of_idempotent
+#print axioms Gtz.trace_fin_four_eq
+#print axioms Gtz.two_carrier_product_pricing
+#print axioms Gtz.doubled_pair_dichotomy
+#print axioms Gtz.e2_eq_one_of_idempotent_trace_two
+#print axioms Gtz.kfour_master_identity
+#print axioms Gtz.cfour_master_identity
+#print axioms Gtz.kfour_vertex_equation_zero
+#print axioms Gtz.kfour_vertex_equation_one
+#print axioms Gtz.kfour_vertex_equation_two
+#print axioms Gtz.kfour_vertex_equation_three
+#print axioms Gtz.cfour_vertex_equation_zero
+#print axioms Gtz.cfour_vertex_equation_one
+#print axioms Gtz.cfour_vertex_equation_two
+#print axioms Gtz.cfour_vertex_equation_three
+#print axioms Gtz.exchange_entry_eq
+#print axioms Gtz.exchange_entry_fin_four
+#print axioms Gtz.two_carrier_pricing_of_datum
+#print axioms Gtz.doubled_pair_dichotomy_of_datum
+#print axioms Gtz.kfour_master_identity_of_datum
+#print axioms Gtz.cfour_master_identity_of_datum
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
