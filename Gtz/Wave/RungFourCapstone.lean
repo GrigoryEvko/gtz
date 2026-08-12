@@ -1,3 +1,4 @@
+import Gtz.Quantitative.SixThreeIndexLadderSpine
 import Gtz.Wave.PencilFamilyClosure
 import Gtz.Wave.ChairFamilyClosure
 import Gtz.Wave.TridentFamilyClosure
@@ -81,5 +82,9 @@ theorem SixThreeCrux.false_of_card_chartArgmaxFamily_eq_four
   · exact (crux.relabel relabelPerm).false_of_family_canonicalDoublePathFamily h
   · exact (crux.relabel relabelPerm).false_of_family_canonicalPendantSplitFamily h
   · exact (crux.relabel relabelPerm).false_of_family_canonicalPendantForkFamily h
+
+/-- **THE FOURTH RUNG OF THE LADDER.**  The active count four is excluded. -/
+theorem isSixThreeActiveCountExcluded_four : IsSixThreeActiveCountExcluded 4 :=
+  fun crux hcard => (crux.false_of_card_chartArgmaxFamily_eq_four hcard).elim
 
 end Gtz

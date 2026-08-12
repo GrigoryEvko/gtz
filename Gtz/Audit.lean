@@ -21332,6 +21332,7 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SixThreeCrux.false_of_family_canonicalPendantSplitFamily
 #print axioms Gtz.SixThreeCrux.false_of_family_canonicalNestedFamily
 #print axioms Gtz.SixThreeCrux.false_of_card_chartArgmaxFamily_eq_four
+#print axioms Gtz.isSixThreeActiveCountExcluded_four
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
