@@ -631,6 +631,7 @@ import Gtz.Wave.AssemblyBasisColumns
 import Gtz.Wave.AssemblyCoefficientForm
 import Gtz.Wave.AssemblyCoefficientLaws
 import Gtz.Wave.AssemblyCoefficientTrace
+import Gtz.Wave.AssemblyBasisEnumeration
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21456,6 +21457,11 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- is its rank.  This closes the campaign's step twelve.
 #print axioms Gtz.injective_toLin_tightBasisColumns_of_leftInverse
 #print axioms Gtz.coefficient_trace_eq_capturedRank
+
+-- ==========================================================
+-- the enumerated basis.  An injective Fin r family of positive labels,
+-- independent directions, exact span, with r the assembly rank.
+#print axioms Gtz.exists_enumerated_basis_of_isChartStationaryData
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

@@ -2692,6 +2692,11 @@ import Gtz.Wave.AssemblyCoefficientLaws
 -- the chart restricted to range Xi and an idempotent's trace is its rank.
 import Gtz.Wave.AssemblyCoefficientTrace
 
+-- the enumerated basis: the finset basis becomes an injective Fin r family
+-- of positive labels, with r literally the assembly rank, so the
+-- coefficient layer applies with no cast at the call site.
+import Gtz.Wave.AssemblyBasisEnumeration
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
