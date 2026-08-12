@@ -2778,6 +2778,10 @@ import Gtz.Wave.OffBlockColumnIdentity
 -- forces trace A = trace D.
 import Gtz.Wave.ConjugationTraceTransfer
 
+-- the fully-private-block kill: a private block exhausts the trace budget
+-- through the off-corner intertwiner and the diagonal pin.
+import Gtz.Wave.FullyPrivateBlockKill
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

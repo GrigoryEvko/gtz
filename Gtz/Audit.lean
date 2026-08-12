@@ -650,6 +650,7 @@ import Gtz.Wave.PrivateAtomCaptureTightness
 import Gtz.Wave.TwoCarrierDictionary
 import Gtz.Wave.OffBlockColumnIdentity
 import Gtz.Wave.ConjugationTraceTransfer
+import Gtz.Wave.FullyPrivateBlockKill
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21591,6 +21592,10 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- ==========================================================
 -- the conjugation trace transfer.
 #print axioms Gtz.trace_eq_of_kernel_free_conjugation
+
+-- ==========================================================
+-- the fully-private-block kill.
+#print axioms Gtz.false_of_fully_private_block
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
