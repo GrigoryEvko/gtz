@@ -674,6 +674,7 @@ import Gtz.Wave.GapRowDictionary
 import Gtz.Wave.DenseShareDichotomy
 import Gtz.Wave.DoubledPairClosure
 import Gtz.Wave.RankFourRungAssembly
+import Gtz.Wave.SupportTwoClosure
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21816,6 +21817,26 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.kfour_atom_labeling
 #print axioms Gtz.rankFourKFourClosed_of_labeled
 #print axioms Gtz.isSixThreeAssemblyRankExcluded_four_of_closures
+
+-- ==========================================================
+-- the support-two closure supply: the pair laws and the label energy
+-- calculus.
+#print axioms Gtz.exists_pair_of_support_card_two
+#print axioms Gtz.exists_third_block_atom
+#print axioms Gtz.pair_row_left
+#print axioms Gtz.pair_row_right
+#print axioms Gtz.pair_row_orth
+#print axioms Gtz.pair_ratio_left
+#print axioms Gtz.pair_ratio_right
+#print axioms Gtz.pair_characteristic
+#print axioms Gtz.pair_sign_dichotomy
+#print axioms Gtz.tight_energy_read
+#print axioms Gtz.projection_energy_eq
+#print axioms Gtz.projection_energy_split
+#print axioms Gtz.weightEnergy_sq_le_secondMoment
+#print axioms Gtz.weightEnergy_le_one
+#print axioms Gtz.neg_value_le_weightEnergy
+#print axioms Gtz.pair_energy_floor
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

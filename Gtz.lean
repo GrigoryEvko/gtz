@@ -2874,6 +2874,11 @@ import Gtz.Wave.DoubledPairClosure
 -- branch discharges, the K4 labeling, and the rung modulo the closures.
 import Gtz.Wave.RankFourRungAssembly
 
+-- the support-two closure supply: the pair extraction, the pair row laws,
+-- the multiplied identities, and the label energy calculus with the
+-- energy floor -value <= sum w q^2.
+import Gtz.Wave.SupportTwoClosure
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
