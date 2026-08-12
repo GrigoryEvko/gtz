@@ -614,6 +614,7 @@ import Gtz.Wave.ResidualRowSpanHarvest
 import Gtz.Wave.FullRowCrossVanishing
 import Gtz.Wave.FullRowTriangleKill
 import Gtz.Wave.TetrahedronFamilyClosure
+import Gtz.Wave.WeightedColumnSupportBridge
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21277,6 +21278,11 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- engine leaves (all twelve triangle-plus-full profiles) route through
 -- the completed disconnected engine.
 #print axioms Gtz.SixThreeCrux.false_of_family_canonicalTetrahedronFamily
+
+-- the weighted-column support bridge, freed from its family: the
+-- language bridge between the spine's total tight supports and the
+-- permutation-invariant type-eight exit, for any four-block labelling.
+#print axioms Gtz.SixThreeCrux.fourFamilyWeightedColumnSupport_eq_totalTightSupport
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
