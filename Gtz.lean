@@ -2769,6 +2769,11 @@ import Gtz.Wave.PrivateAtomCaptureTightness
 -- collapses to the four core entries on the two carrier slots.
 import Gtz.Wave.TwoCarrierDictionary
 
+-- the off-block column identity: with a fully private slot, the projected
+-- off-block column splits into the shifted-weight part and the private
+-- part, and the left inverse reads the diagonal coefficient.
+import Gtz.Wave.OffBlockColumnIdentity
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
