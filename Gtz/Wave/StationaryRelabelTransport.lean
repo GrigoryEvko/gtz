@@ -1,5 +1,6 @@
 import Gtz.Quantitative.CruxRelabel
 import Gtz.Wave.WeightedColumnSupportBridge
+import Gtz.Wave.OrbitFourTypeNineSupportExit
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -189,5 +190,47 @@ theorem SixThreeCrux.isChartStationaryData_relabel
     exact hdata.assembly_diagonal (relabelPerm atomIndex)
   · rw [hassemblyEq, hchartEq, Matrix.submatrix_mul_equiv,
       Matrix.submatrix_mul_equiv, hdata.assembly_commutes]
+
+/-- The weighted column support of the transported datum is the preimage of
+the original block's total tight support. -/
+theorem orbitFourWeightedColumnSupport_relabel_eq
+    (relabelPerm : Equiv.Perm (Fin 6))
+    (tightVec : Finset (Fin 6) → (Fin 3 → ℝ)) (multiplier : Finset (Fin 6) → ℝ)
+    (pick : Fin 4)
+    (hcard : ((orbitFourLabel pick).map relabelPerm.toEmbedding).card = 3)
+    (hpositive : 0 < multiplier ((orbitFourLabel pick).map relabelPerm.toEmbedding)) :
+    orbitFourWeightedColumnSupport
+      (orbitFourWeightedTightColumns
+        (fun block => multiplier (block.map relabelPerm.toEmbedding))
+        (fun block atomIndex => ambientTightSelection tightVec
+          (block.map relabelPerm.toEmbedding) (relabelPerm atomIndex))) pick
+      = (totalTightSupport tightVec
+          ((orbitFourLabel pick).map relabelPerm.toEmbedding)).image relabelPerm.symm := by
+  classical
+  have hroot : Real.sqrt (multiplier ((orbitFourLabel pick).map relabelPerm.toEmbedding))
+      ≠ 0 := ne_of_gt (Real.sqrt_pos.2 hpositive)
+  ext atomIndex
+  rw [orbitFourWeightedColumnSupport_mem_iff]
+  show Real.sqrt (multiplier ((orbitFourLabel pick).map relabelPerm.toEmbedding))
+      * ambientTightSelection tightVec
+          ((orbitFourLabel pick).map relabelPerm.toEmbedding)
+          (relabelPerm atomIndex) ≠ 0 ↔ _
+  rw [mul_ne_zero_iff]
+  constructor
+  · intro hproduct
+    refine Finset.mem_image.mpr ⟨relabelPerm atomIndex, ?_, Equiv.symm_apply_apply _ _⟩
+    rw [← totalEigenSquareRow_ne_zero_iff_mem_totalTightSupport tightVec hcard,
+      totalEigenSquareRow_eq_ambientTightSelection_mul_self tightVec hcard]
+    exact mul_ne_zero hproduct.2 hproduct.2
+  · intro hmem
+    obtain ⟨source, hsourceMem, hsourceEq⟩ := Finset.mem_image.mp hmem
+    have hsourceVal : source = relabelPerm atomIndex := by
+      rw [← hsourceEq, Equiv.apply_symm_apply]
+    rw [hsourceVal] at hsourceMem
+    refine ⟨hroot, ?_⟩
+    rw [← totalEigenSquareRow_ne_zero_iff_mem_totalTightSupport tightVec hcard,
+      totalEigenSquareRow_eq_ambientTightSelection_mul_self tightVec hcard] at hsourceMem
+    intro hzero
+    exact hsourceMem (by rw [hzero, zero_mul])
 
 end Gtz

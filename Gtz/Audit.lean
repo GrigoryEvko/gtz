@@ -619,6 +619,7 @@ import Gtz.Wave.TriangleEdgeFamilyClosure
 import Gtz.Wave.PendantForkFamilyClosure
 import Gtz.Wave.PendantSplitFamilyClosure
 import Gtz.Wave.StationaryRelabelTransport
+import Gtz.Wave.NestedFamilyClosure
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21306,6 +21307,17 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- family-pinned leaf kill at any stabilizer image of its profile — the
 -- last wiring of the rung-four leaf war.
 #print axioms Gtz.SixThreeCrux.isChartStationaryData_relabel
+#print axioms Gtz.orbitFourWeightedColumnSupport_relabel_eq
+
+-- ==========================================================
+-- ALL FIFTEEN FAMILIES ARE DEAD
+-- ==========================================================
+-- WHAT IT BUYS.  The nested family — the last of the fifteen — falls:
+-- its type-nine literal leaf routes through the pinned support exit via
+-- the generic column bridge, and its stabilizer-swapped leaf fires the
+-- same exit on the relabelled crux through the stationary transport.
+-- Every leaf of the rung-four support census now has a landed kill.
+#print axioms Gtz.SixThreeCrux.false_of_family_orbitFourFamily
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
