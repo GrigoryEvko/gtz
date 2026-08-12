@@ -2677,6 +2677,12 @@ import Gtz.Wave.AssemblyBasisSelection
 -- the engine of the coefficient H-form.
 import Gtz.Wave.AssemblyBasisColumns
 
+-- the coefficient H-form: with B the labelled basis columns and L a left
+-- inverse, M = L P B and H = L Xi L^T satisfy P B = B M, M^2 = M,
+-- B H B^T = Xi and H^T = H at every active count -- the repair of the
+-- four-active identification B B^T = Xi.
+import Gtz.Wave.AssemblyCoefficientForm
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
