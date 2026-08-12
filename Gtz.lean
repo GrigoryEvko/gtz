@@ -2671,6 +2671,12 @@ import Gtz.Wave.ResidualRowCancellation
 -- carrier of the campaign's coefficient coordinates.
 import Gtz.Wave.AssemblyBasisSelection
 
+-- the basis columns: the labelled basis as a size x r matrix with column
+-- space equal to range Xi, full column rank, a matrix left inverse, and
+-- the absorption identity B (L X) = X on column spaces inside col B --
+-- the engine of the coefficient H-form.
+import Gtz.Wave.AssemblyBasisColumns
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

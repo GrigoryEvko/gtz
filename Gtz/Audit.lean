@@ -627,6 +627,7 @@ import Gtz.Wave.AssemblyMinimalSupport
 import Gtz.Wave.AssemblySupportCap
 import Gtz.Wave.ResidualRowCancellation
 import Gtz.Wave.AssemblyBasisSelection
+import Gtz.Wave.AssemblyBasisColumns
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21421,6 +21422,17 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_tightBasisSet_of_isChartStationaryData
 #print axioms Gtz.exists_basisLabels_of_isChartStationaryData
 #print axioms Gtz.SixThreeCrux.exists_basisLabels_card_le_span
+
+-- ==========================================================
+-- the basis columns.  Column space equal to range Xi, full column rank,
+-- a matrix left inverse at every dimension, and the absorption identity.
+#print axioms Gtz.exists_matrix_leftInverse_of_finrank_range_eq
+#print axioms Gtz.mul_leftInverse_mul_eq_of_range_le
+#print axioms Gtz.tightBasisColumns_mulVec
+#print axioms Gtz.tightBasisColumns_mulVec_single
+#print axioms Gtz.range_tightBasisColumns_eq
+#print axioms Gtz.finrank_range_tightBasisColumns_eq
+#print axioms Gtz.exists_leftInverse_tightBasisColumns
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
