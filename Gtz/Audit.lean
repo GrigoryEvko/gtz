@@ -634,6 +634,7 @@ import Gtz.Wave.AssemblyCoefficientTrace
 import Gtz.Wave.AssemblyBasisEnumeration
 import Gtz.Wave.RankFourNormalForm
 import Gtz.Wave.AssemblyCoordinates
+import Gtz.Wave.AssemblyCircuitEquations
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21474,6 +21475,12 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- ==========================================================
 -- the coordinate dictionary.  q = B (L q) at every positive label.
 #print axioms Gtz.tightDir_eq_reconstruction_of_mem_positive
+
+-- ==========================================================
+-- the circuit equations.  One linear equation on the coefficient reading
+-- per atom outside a positive label's block.
+#print axioms Gtz.reconstruction_apply_of_mem_positive
+#print axioms Gtz.circuit_equation_of_mem_positive_of_notMem
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

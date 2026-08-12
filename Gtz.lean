@@ -2707,6 +2707,11 @@ import Gtz.Wave.RankFourNormalForm
 -- over the basis rather than free data.
 import Gtz.Wave.AssemblyCoordinates
 
+-- the circuit equations: at every atom outside a positive label's block
+-- the coefficient combination of the basis directions vanishes -- the
+-- linear system the rank-four census solves against the basis supports.
+import Gtz.Wave.AssemblyCircuitEquations
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
