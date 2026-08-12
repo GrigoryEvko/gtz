@@ -624,6 +624,7 @@ import Gtz.Wave.NestedFamilyClosure
 import Gtz.Wave.RungFourCapstone
 import Gtz.Wave.RungFourIndexFloor
 import Gtz.Wave.AssemblyMinimalSupport
+import Gtz.Wave.AssemblySupportCap
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21388,6 +21389,21 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_slid_weight_of_dependent_positive_support
 #print axioms Gtz.exists_isChartStationaryData_independent_positive_support
 #print axioms Gtz.SixThreeCrux.exists_multiplier_isChartStationaryData_independent_positive_support
+
+-- ==========================================================
+-- the support cap.  Positive tight directions span exactly the assembly's
+-- range, the constraint columns decompose over the symmetrised pairs of a
+-- basis of that range, and independence caps the positive support:
+-- 2 |S| <= r (r + 1), reading ten, fifteen, twenty-one on the survivors.
+#print axioms Gtz.dotProduct_tightDir_eq_zero_of_multiplier_mulVec_eq_zero
+#print axioms Gtz.tightDir_mem_range_multiplier_of_pos
+#print axioms Gtz.range_multiplier_eq_span_positive_tightDir
+#print axioms Gtz.atomMatrix_sum_smul
+#print axioms Gtz.atomMatrix_mem_span_symPair
+#print axioms Gtz.two_mul_card_le_of_independent_atomMatrix_of_mem_span
+#print axioms Gtz.two_mul_card_positiveActiveSet_le_of_independent
+#print axioms Gtz.SixThreeCrux.exists_multiplier_independent_two_mul_card_le
+#print axioms Gtz.SixThreeCrux.exists_multiplier_card_positiveActiveSet_le_twentyOne
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

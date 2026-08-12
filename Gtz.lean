@@ -2654,6 +2654,12 @@ import Gtz.Wave.RungFourIndexFloor
 -- datum reduces to one with linearly independent positive constraint columns.
 import Gtz.Wave.AssemblyMinimalSupport
 
+-- the support cap: positive tight directions span exactly the assembly's
+-- range, the constraint columns live in the symmetrised pair span of a
+-- basis of that range, and independence caps the positive support at
+-- r(r+1)/2 -- ten, fifteen or twenty-one blocks along the rank survivors.
+import Gtz.Wave.AssemblySupportCap
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
