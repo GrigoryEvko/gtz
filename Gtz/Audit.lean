@@ -594,6 +594,8 @@ import Gtz.Quantitative.AllDoubleDoorReduction
 import Gtz.Quantitative.TwoTwoTwoDoorReduction
 import Gtz.Quantitative.PendantDoorReduction
 import Gtz.Quantitative.FifteenFamilyDispatch
+import Gtz.Wave.Index46SupportExit
+import Gtz.Wave.ZeroFullTwoPositiveTraceGap
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21120,6 +21122,24 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- fifteen canonical covering four-families.  The rung-4 exclusion is now
 -- exactly fifteen concrete kills — the leaf-exit wave.
 #print axioms Gtz.SixThreeCrux.exists_relabel_family_canonical_of_card_four
+
+-- ==========================================================
+-- the wave port
+-- ==========================================================
+-- WHAT IT BUYS.  The leaf-exit stack is in the tree.  The dichotomy
+-- driver says every card-four crux carries a stationarity witness whose
+-- selected block has full tight support or a pair support with an
+-- explicit three-row cancellation
+-- (SixThreeCrux.exists_fullSupport_or_threeRowCancellation_of_card_eq_four);
+-- the conditional family kills consume derived support profiles
+-- (SixThreeCrux.false_of_indexFortySix_totalSupports for the
+-- pendant-split representative).  The open half of the wave is the
+-- support-derivation layer: pinning each family's admissible support
+-- profiles against the 59-leaf pair-cancellation census.
+#print axioms Gtz.SixThreeCrux.exists_fullSupport_or_threeRowCancellation_of_card_eq_four
+#print axioms Gtz.SixThreeCrux.false_of_indexFortySix_totalSupports
+#print axioms Gtz.SixThreeCrux.false_of_indexFortySix_supports
+#print axioms Gtz.sum_univ_eq_sum_block_add_sum_compl
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

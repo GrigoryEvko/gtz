@@ -2551,6 +2551,69 @@ import Gtz.Quantitative.PendantDoorReduction
 -- classifier is complete; the leaf-exit wave has fifteen concrete targets.
 import Gtz.Quantitative.FifteenFamilyDispatch
 
+-- ============================================================
+-- THE WAVE: the rung-4 leaf-exit stack, ported from the verified
+-- Codex scratch campaign (backup 2026-08-11) onto today's tree.
+-- Fifty modules: the support-layer row-span aggregator, the
+-- stationarity dichotomy driver (full support or pair support with a
+-- three-row cancellation), the shared-edge and orbit-aligned spectral
+-- exits, and the conditional family kills the fifteen-family
+-- classifier feeds.  Superseded scratch layers were dropped for their
+-- landed tree twins (FourActiveCoefficientProjection, CapturedRankFloor,
+-- StrongStationarityIndexFloor); three files are slimmed to their
+-- non-superseded remainder.
+-- ============================================================
+import Gtz.Wave.TypeNineAlignedOperatorExit
+import Gtz.Wave.Index46CFreeExit
+import Gtz.Wave.FourRowCoefficientProjection
+import Gtz.Wave.RankOneCapturedRangeFloor
+import Gtz.Wave.RankOneCaptureBridge
+import Gtz.Wave.CapturedRankTraceGap
+import Gtz.Wave.CapturedAmbientTraceGap
+import Gtz.Wave.ThreeRowCapturedDichotomy
+import Gtz.Wave.StationaryPositiveSupport
+import Gtz.Wave.CanonicalSharedEdgeClosure
+import Gtz.Wave.PrivateMultiplierFloor
+import Gtz.Wave.StationaryFinThreeReindex
+import Gtz.Wave.PositiveSupportTwoBlockExit
+import Gtz.Wave.ThreeBlockStationaryClosure
+import Gtz.Wave.GtzEFourRowSpan
+import Gtz.Wave.SharedEdgeSpectralSeparation
+import Gtz.Wave.ZeroLeakPair
+import Gtz.Wave.GlobalZeroLeakFloor
+import Gtz.Wave.SharedEdgeAmbientWrapper
+import Gtz.Wave.ComplementCrossCruxExit
+import Gtz.Wave.SupportThreeNonzero
+import Gtz.Wave.PosDefFourActiveExit
+import Gtz.Wave.ThreeRowAmbientWrapper
+import Gtz.Wave.SupportThreePositiveCollapse
+import Gtz.Wave.SharedEdgePathSpectrum
+import Gtz.Wave.SharedEdgeSpectralTraceGap
+import Gtz.Wave.ZeroFullTwoPositiveTraceGap
+import Gtz.Wave.FourActiveSpine
+import Gtz.Wave.FourActivePositiveMultipliers
+import Gtz.Wave.ComplementRankOneCapture
+import Gtz.Wave.FourActiveRankSplit
+import Gtz.Wave.PositiveRowSpanRankFloor
+import Gtz.Wave.ActiveBlockKernelPromotion
+import Gtz.Wave.OrbitFourCoefficientBridge
+import Gtz.Wave.SupportTypeEightTraceFloor
+import Gtz.Wave.TypeEightProjectionTraceFloor
+import Gtz.Wave.TypeNineAlignedOrthogonalExit
+import Gtz.Wave.OrbitFourAlignedSimilarity
+import Gtz.Wave.OrbitFourAlignedFrame
+import Gtz.Wave.OrbitFourAlignedSelfAdjoint
+import Gtz.Wave.OrbitFourAlignedFullRankExit
+import Gtz.Wave.ActiveKernelExchange
+import Gtz.Wave.OrbitFourAlignedExchange
+import Gtz.Wave.OrbitFourAlignedZeroDetExit
+import Gtz.Wave.OrbitFourTypeNineSupportExit
+import Gtz.Wave.FourFamilyTypeEightExit
+import Gtz.Wave.Index46CruxExit
+import Gtz.Wave.Index46EndpointTrace
+import Gtz.Wave.CriticalBridge
+import Gtz.Wave.Index46SupportExit
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
