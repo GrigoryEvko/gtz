@@ -16,7 +16,9 @@ consumes THIS statement and nothing upstream of it.
 ## PROVED here (no `sorry`, no `axiom`, no `native_decide`)
 
 * `Gtz.SixThreeCrux.exists_rankFour_coefficient_normalForm` — **THE NORMAL
-  FORM.**  Thirteen simultaneous facts at every rank-four crux datum.
+  FORM.**  Fourteen simultaneous facts at every rank-four crux datum,
+  with the basis span law that feeds the reconstruction and the circuit
+  equations.
 
 ## Vacuity
 
@@ -63,6 +65,10 @@ theorem SixThreeCrux.exists_rankFour_coefficient_normalForm
         ∧ Function.Injective basisLabel
         ∧ (∀ columnIndex, basisLabel columnIndex
             ∈ positiveActiveSet activeSet reducedWeight)
+        ∧ Submodule.span ℝ
+              (Set.range fun columnIndex => tightDir (basisLabel columnIndex))
+            = LinearMap.range (Matrix.toLin'
+                (chartMultiplierAssembly activeSet reducedWeight tightDir))
         ∧ L * tightBasisColumns tightDir basisLabel = 1
         ∧ (chartPointOfDesign crux.design).chart * tightBasisColumns tightDir basisLabel
             = tightBasisColumns tightDir basisLabel * M
@@ -189,7 +195,7 @@ theorem SixThreeCrux.exists_rankFour_coefficient_normalForm
       omega
   exact ⟨reducedWeight, basisLabel, L,
     L * ((chartPointOfDesign crux.design).chart * B), L * assembly * Lᵀ,
-    hreducedData, hassemblyEq, hinjective, hmem, hleft, hrepresentation,
+    hreducedData, hassemblyEq, hinjective, hmem, hspan, hleft, hrepresentation,
     hidempotent, hHform, hsymmH,
     coefficientGram_posSemidef hreducedData L,
     coefficientGram_mulVec_eq_zero_imp_of_Hform basisLabel (L * assembly * Lᵀ)

@@ -2727,6 +2727,11 @@ import Gtz.Wave.AssemblyBasisCoverage
 -- images -- the bridge the census dispatch composes with the normal form.
 import Gtz.Wave.RankFourRelabelTransport
 
+-- the support-quadruple census: the mass count forces the trichotomy --
+-- a card-two support, or a private atom, or exact double coverage -- and
+-- the dispatch hands each rank-four datum to its kill group.
+import Gtz.Wave.SupportQuadrupleCensus
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
