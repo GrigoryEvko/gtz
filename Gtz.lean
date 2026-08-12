@@ -2757,6 +2757,10 @@ import Gtz.Wave.AllPrivateSlotsKill
 -- slot with the block membership and the vanishing of the other columns.
 import Gtz.Wave.PrivateSlotExtraction
 
+-- the pinned dispatch: branch two of the census carries its diagonal pin,
+-- the Gram diagonal is positive, and the private square law reads 1/size.
+import Gtz.Wave.PinnedSupportDispatch
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

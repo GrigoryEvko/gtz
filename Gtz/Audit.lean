@@ -645,6 +645,7 @@ import Gtz.Wave.PrivateAtomGramLocalization
 import Gtz.Wave.CoefficientCaptureForm
 import Gtz.Wave.AllPrivateSlotsKill
 import Gtz.Wave.PrivateSlotExtraction
+import Gtz.Wave.PinnedSupportDispatch
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21559,6 +21560,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- ==========================================================
 -- the private slot extraction.
 #print axioms Gtz.exists_private_slot_of_multiplicity_one
+
+-- ==========================================================
+-- the pinned dispatch, the positive Gram diagonal, and the private
+-- square law.
+#print axioms Gtz.posSemidef_diagonal_pos_of_kernel_free
+#print axioms Gtz.private_atom_square_gram_eq_inv_size
+#print axioms Gtz.SixThreeCrux.exists_rankFour_pinned_dispatch
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
