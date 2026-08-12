@@ -633,6 +633,7 @@ import Gtz.Wave.AssemblyCoefficientLaws
 import Gtz.Wave.AssemblyCoefficientTrace
 import Gtz.Wave.AssemblyBasisEnumeration
 import Gtz.Wave.RankFourNormalForm
+import Gtz.Wave.AssemblyCoordinates
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21469,6 +21470,10 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- rank-four crux datum: the support-minimal multiplier, the four-label
 -- basis, and the coefficient coordinates with tr M = 2.
 #print axioms Gtz.SixThreeCrux.exists_rankFour_coefficient_normalForm
+
+-- ==========================================================
+-- the coordinate dictionary.  q = B (L q) at every positive label.
+#print axioms Gtz.tightDir_eq_reconstruction_of_mem_positive
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

@@ -2702,6 +2702,11 @@ import Gtz.Wave.AssemblyBasisEnumeration
 -- law and tr M = 2 -- the single interface of the first rank rung.
 import Gtz.Wave.RankFourNormalForm
 
+-- the coordinate dictionary: every positive tight direction reconstructs
+-- through the basis, q = B (L q), so an extra positive label is a circuit
+-- over the basis rather than free data.
+import Gtz.Wave.AssemblyCoordinates
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
