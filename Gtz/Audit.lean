@@ -629,6 +629,7 @@ import Gtz.Wave.ResidualRowCancellation
 import Gtz.Wave.AssemblyBasisSelection
 import Gtz.Wave.AssemblyBasisColumns
 import Gtz.Wave.AssemblyCoefficientForm
+import Gtz.Wave.AssemblyCoefficientLaws
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21440,6 +21441,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- at every active count -- the repair of the four-active identification.
 #print axioms Gtz.range_mul_le_of_commutes_of_range_eq
 #print axioms Gtz.exists_coefficientForm_of_basis
+
+-- ==========================================================
+-- the coefficient laws.  H is positive semidefinite with trivial kernel,
+-- and M H = H M^T is the commutation in coefficient coordinates.
+#print axioms Gtz.coefficientGram_posSemidef
+#print axioms Gtz.coefficientGram_mulVec_eq_zero_imp_of_Hform
+#print axioms Gtz.coefficient_exchange_of_leftInverse
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

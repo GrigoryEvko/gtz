@@ -2683,6 +2683,11 @@ import Gtz.Wave.AssemblyBasisColumns
 -- four-active identification B B^T = Xi.
 import Gtz.Wave.AssemblyCoefficientForm
 
+-- the coefficient laws: the coordinate Gram is positive semidefinite by
+-- congruence and has trivial kernel by the rank chain, and the exchange
+-- law M H = H M^T is the chart commutation in coefficient coordinates.
+import Gtz.Wave.AssemblyCoefficientLaws
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
