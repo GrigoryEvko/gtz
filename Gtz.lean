@@ -2749,6 +2749,10 @@ import Gtz.Wave.PrivateAtomGramLocalization
 -- of every conjugated form through the single surviving coordinate.
 import Gtz.Wave.CoefficientCaptureForm
 
+-- the all-private kill: four private atoms exhaust the trace budget --
+-- the four diagonal pins force value >= 1/4 against the negative value.
+import Gtz.Wave.AllPrivateSlotsKill
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
