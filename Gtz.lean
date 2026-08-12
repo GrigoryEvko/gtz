@@ -2480,6 +2480,18 @@ import Gtz.Quantitative.HubFamilyNormalForm
 -- remaining doors.
 import Gtz.Quantitative.ChairDoorReduction
 
+
+-- the path-and-triangle door, COMPLETE: at profile (1,0,3,2) the two single
+-- atoms either share their sole edge (the remaining three edges are then
+-- card-two subsets of the three double atoms: the TRIANGLE plus pendant
+-- edge) or hang off two distinct double atoms whose remaining slots thread
+-- through the third (the FIVE-PATH).  The 16-branch leaf dispatcher
+-- renormalizes the family around the leaves with counts carried verbatim,
+-- and explicit permutations land both shapes on their canonical
+-- representatives.  The quadruple-atom half of the census is complete:
+-- doors (2,0,0,4), (1,1,1,3), (1,0,3,2) all closed.
+import Gtz.Quantitative.PathTriangleDoorReduction
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

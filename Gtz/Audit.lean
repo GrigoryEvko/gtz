@@ -587,6 +587,7 @@ import Gtz.Quantitative.QuadrupleAtomDoor
 import Gtz.Quantitative.PencilDoorReduction
 import Gtz.Quantitative.HubFamilyNormalForm
 import Gtz.Quantitative.ChairDoorReduction
+import Gtz.Quantitative.PathTriangleDoorReduction
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -20948,6 +20949,36 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.edgeSet_eq_chair_of_normalized
 #print axioms Gtz.injective_sixAtomAssignment
 #print axioms Gtz.exists_map_family_eq_canonicalChair_of_profile
+
+-- ==========================================================
+-- the path-and-triangle door
+-- ==========================================================
+-- WHAT IT BUYS.  The quadruple-atom half of the census is COMPLETE.  The
+-- count-one inversion names each single atom's sole edge; the class
+-- extractions name the two singles and three doubles
+-- (exists_two_atoms_of_classCard_two, exists_three_atoms_of_classCard_three);
+-- the 16-branch leaf dispatcher renormalizes the four edges around the
+-- leaves with cover counts carried verbatim
+-- (exists_leaf_normalization_of_count_one_one).  When the leaves share
+-- their edge, the remaining three edges are card-two subsets of the three
+-- double atoms and are exactly the three pairs
+-- (eq_pair_of_subset_triple, edgeSet_eq_triangle_of_leaf_edge); when they
+-- hang on distinct edges, the two remaining edges thread through the
+-- middle double atom (edgeSet_eq_path_of_leaf_edges).  The capstone
+-- exists_map_family_eq_canonicalPath_or_triangle_of_profile lands profile
+-- (1,0,3,2) on canonicalFivePathFamily = {{0,1,2},{0,2,3},{0,1,4},{0,3,5}}
+-- or canonicalTriangleEdgeFamily = {{0,1,2},{0,1,3},{0,2,3},{0,4,5}} --
+-- with the pencil and chair doors, every profile carrying a quadruple
+-- atom now relabels onto an explicit representative.
+#print axioms Gtz.fourBlockCoverCount_eq_one_inversion
+#print axioms Gtz.exists_two_atoms_of_classCard_two
+#print axioms Gtz.exists_three_atoms_of_classCard_three
+#print axioms Gtz.quadSet_eq_tripleSet_union
+#print axioms Gtz.eq_pair_of_subset_triple
+#print axioms Gtz.exists_leaf_normalization_of_count_one_one
+#print axioms Gtz.edgeSet_eq_triangle_of_leaf_edge
+#print axioms Gtz.edgeSet_eq_path_of_leaf_edges
+#print axioms Gtz.exists_map_family_eq_canonicalPath_or_triangle_of_profile
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
