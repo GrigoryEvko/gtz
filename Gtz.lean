@@ -2613,6 +2613,8 @@ import Gtz.Wave.Index46CruxExit
 import Gtz.Wave.Index46EndpointTrace
 import Gtz.Wave.CriticalBridge
 import Gtz.Wave.Index46SupportExit
+import Gtz.Wave.SupportProfileCombinatorics
+import Gtz.Wave.CrossSupportedTightExit
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02

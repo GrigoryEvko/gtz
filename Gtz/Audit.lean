@@ -596,6 +596,8 @@ import Gtz.Quantitative.PendantDoorReduction
 import Gtz.Quantitative.FifteenFamilyDispatch
 import Gtz.Wave.Index46SupportExit
 import Gtz.Wave.ZeroFullTwoPositiveTraceGap
+import Gtz.Wave.SupportProfileCombinatorics
+import Gtz.Wave.CrossSupportedTightExit
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21140,6 +21142,25 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SixThreeCrux.false_of_indexFortySix_totalSupports
 #print axioms Gtz.SixThreeCrux.false_of_indexFortySix_supports
 #print axioms Gtz.sum_univ_eq_sum_block_add_sum_compl
+
+-- ==========================================================
+-- the support-profile derivation kit
+-- ==========================================================
+-- WHAT IT BUYS.  The generic tools the per-family support dispatch
+-- consumes: the quadrichotomy listing a block's admissible tight
+-- supports, the private-atom coefficient kills and the opposite-sign
+-- triangle exit inside a three-row cancellation, coverage (every atom
+-- lies in some active tight support), and the cross-supported tight
+-- exit — a block whose tight support sits inside a SECOND active block
+-- duplicates its direction there and dies on the four-dimensional
+-- positive-row-span floor.  The cross exit alone closes every dispatch
+-- branch whose selected pair lies inside another block of the family.
+#print axioms Gtz.support_quadrichotomy
+#print axioms Gtz.false_of_oppositeSign_triangle
+#print axioms Gtz.SixThreeCrux.exists_mem_totalTightSupport_of_positive_multiplier
+#print axioms Gtz.SixThreeCrux.false_of_duplicate_tightDirection_of_card_four
+#print axioms Gtz.SixThreeCrux.false_of_crossSupported_tightDirection
+#print axioms Gtz.SixThreeCrux.false_of_totalTightSupport_subset_neighbor
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
