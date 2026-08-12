@@ -630,6 +630,7 @@ import Gtz.Wave.AssemblyBasisSelection
 import Gtz.Wave.AssemblyBasisColumns
 import Gtz.Wave.AssemblyCoefficientForm
 import Gtz.Wave.AssemblyCoefficientLaws
+import Gtz.Wave.AssemblyCoefficientTrace
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21448,6 +21449,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.coefficientGram_posSemidef
 #print axioms Gtz.coefficientGram_mulVec_eq_zero_imp_of_Hform
 #print axioms Gtz.coefficient_exchange_of_leftInverse
+
+-- ==========================================================
+-- the coefficient trace.  tr (L P B) = rank (P Xi): the coefficient
+-- projection represents the chart on range Xi, and an idempotent's trace
+-- is its rank.  This closes the campaign's step twelve.
+#print axioms Gtz.injective_toLin_tightBasisColumns_of_leftInverse
+#print axioms Gtz.coefficient_trace_eq_capturedRank
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

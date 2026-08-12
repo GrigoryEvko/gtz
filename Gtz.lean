@@ -2688,6 +2688,10 @@ import Gtz.Wave.AssemblyCoefficientForm
 -- law M H = H M^T is the chart commutation in coefficient coordinates.
 import Gtz.Wave.AssemblyCoefficientLaws
 
+-- the coefficient trace: tr (L P B) = rank (P Xi), because M represents
+-- the chart restricted to range Xi and an idempotent's trace is its rank.
+import Gtz.Wave.AssemblyCoefficientTrace
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
