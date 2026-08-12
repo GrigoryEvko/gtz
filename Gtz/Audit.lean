@@ -592,6 +592,7 @@ import Gtz.Quantitative.QuadDoorDispatch
 import Gtz.Quantitative.ThreeTripleDoorReduction
 import Gtz.Quantitative.AllDoubleDoorReduction
 import Gtz.Quantitative.TwoTwoTwoDoorReduction
+import Gtz.Quantitative.PendantDoorReduction
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21081,6 +21082,31 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.triple_pin_of_pair_ids
 #print axioms Gtz.family_eq_splitMissForm_of_splitMiss
 #print axioms Gtz.exists_map_family_eq_canonical_of_profile0222
+
+-- ==========================================================
+-- the pendant door — the census is COMPLETE
+-- ==========================================================
+-- WHAT IT BUYS.  The last profile door, and with it the full
+-- fifteen-representative classification of covering four-families of
+-- triples on six atoms.  The single-miss normalization reorders the
+-- family around the triple atom's miss (exists_missOne_of_count_three);
+-- the thread-first normalization leads with any named thread block
+-- (exists_threadFirst_of_mem); the single atom in the miss block chains
+-- the four doubles end-to-end (family_eq_doublePathForm_of_sMemMiss,
+-- with the crowded-lead configuration starved by a complement-card
+-- collision); the single atom in a thread block sits beside a partner
+-- double whose second slot sorts the pendant-split from the pendant-fork
+-- (family_eq_pendantForms_of_sMemLead).  The capstone
+-- exists_map_family_eq_canonical_of_profile0141 lands profile (0,1,4,1)
+-- on canonicalDoublePathFamily, canonicalPendantSplitFamily, or
+-- canonicalPendantForkFamily.  Every covering four-family of triples now
+-- relabels onto one of fifteen explicit canonical families — the
+-- classification the rung-4 leaf-exit wave fires at.
+#print axioms Gtz.exists_missOne_of_count_three
+#print axioms Gtz.exists_threadFirst_of_mem
+#print axioms Gtz.family_eq_doublePathForm_of_sMemMiss
+#print axioms Gtz.family_eq_pendantForms_of_sMemLead
+#print axioms Gtz.exists_map_family_eq_canonical_of_profile0141
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

@@ -2532,6 +2532,16 @@ import Gtz.Quantitative.AllDoubleDoorReduction
 -- representatives are pinned.
 import Gtz.Quantitative.TwoTwoTwoDoorReduction
 
+
+-- the pendant door, COMPLETE — and with it THE WHOLE CENSUS: at profile
+-- (0,1,4,1) the single atom either sits in the triple atom's miss block
+-- (the DOUBLE-PATH: the four doubles chain end-to-end through the thread
+-- blocks) or completes a thread block beside a partner double, which
+-- either avoids the miss block (the PENDANT-SPLIT) or sits in it (the
+-- PENDANT-FORK).  All fifteen representatives of covering four-families
+-- of triples on six atoms are now pinned by explicit permutations.
+import Gtz.Quantitative.PendantDoorReduction
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
