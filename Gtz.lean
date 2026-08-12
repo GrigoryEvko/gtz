@@ -2522,6 +2522,16 @@ import Gtz.Quantitative.ThreeTripleDoorReduction
 -- on {{0,1,2},{0,3,4},{1,3,5},{2,4,5}} and {{0,1,2},{0,1,3},{2,4,5},{3,4,5}}.
 import Gtz.Quantitative.AllDoubleDoorReduction
 
+
+-- the two-two-two door, COMPLETE: at profile (0,2,2,2) the two triple atoms
+-- miss one block each.  A shared miss gives the TRIDENT (three blocks
+-- through the triple pair, the miss block pairing the doubles with the
+-- leftover).  Split misses sort by where the two pair-completing atoms
+-- land: the ZIGZAG, the TWIN-PAIRS, the HOOK, and the NESTED shape.  All
+-- five relabel onto explicit canonicals; twelve of the fifteen census
+-- representatives are pinned.
+import Gtz.Quantitative.TwoTwoTwoDoorReduction
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

@@ -591,6 +591,7 @@ import Gtz.Quantitative.PathTriangleDoorReduction
 import Gtz.Quantitative.QuadDoorDispatch
 import Gtz.Quantitative.ThreeTripleDoorReduction
 import Gtz.Quantitative.AllDoubleDoorReduction
+import Gtz.Quantitative.TwoTwoTwoDoorReduction
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21053,6 +21054,33 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.family_eq_tetrahedronForm_of_assignment
 #print axioms Gtz.family_eq_doubleDoubleForm_of_assignment
 #print axioms Gtz.exists_map_family_eq_canonicalTetrahedron_or_doubleDouble_of_profile
+
+-- ==========================================================
+-- the two-two-two door
+-- ==========================================================
+-- WHAT IT BUYS.  Profile (0,2,2,2) closed with all FIVE of its shapes.
+-- A positive count names a block (exists_mem_of_one_le_fourBlockCoverCount,
+-- the converse of the membership bound); the 16-branch miss-split
+-- normalization sorts the two triple atoms' misses into shared or split
+-- (exists_missSplit_of_two_count_three); a shared miss forces the trident
+-- via coverage of the leftover atom (family_eq_tridentForm_of_sharedMiss);
+-- split misses dispatch on the nine placements of the two pair-completing
+-- atoms — triple_pin_of_pair_ids collapsing the unordered identifications
+-- — into the zigzag, twin-pairs, hook, and nested shapes
+-- (family_eq_splitMissForm_of_splitMiss), with the double-membership
+-- overflow killed by the triple-class bound and the lonely-fresh-atom
+-- configurations killed by coverage.  The capstone
+-- exists_map_family_eq_canonical_of_profile0222 lands every such family on
+-- canonicalTridentFamily, canonicalZigzagFamily, canonicalTwinPairsFamily,
+-- canonicalHookFamily, or canonicalNestedFamily.  Twelve of the fifteen
+-- census representatives are pinned; profile (0,1,4,1) with its three
+-- shapes is the last open door.
+#print axioms Gtz.exists_mem_of_one_le_fourBlockCoverCount
+#print axioms Gtz.exists_missSplit_of_two_count_three
+#print axioms Gtz.family_eq_tridentForm_of_sharedMiss
+#print axioms Gtz.triple_pin_of_pair_ids
+#print axioms Gtz.family_eq_splitMissForm_of_splitMiss
+#print axioms Gtz.exists_map_family_eq_canonical_of_profile0222
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
