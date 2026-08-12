@@ -2841,6 +2841,10 @@ import Gtz.Wave.CarrierPairExtraction
 -- with no minimality input.
 import Gtz.Wave.ChartBlockCeiling
 
+-- the ceiling margin kill: a block that dominates a margin above the
+-- objective kills the chart point.
+import Gtz.Wave.CeilingMarginKill
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

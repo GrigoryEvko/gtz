@@ -667,6 +667,7 @@ import Gtz.Wave.DiagonalGramSupply
 import Gtz.Wave.TriplePairSectorKill
 import Gtz.Wave.CarrierPairExtraction
 import Gtz.Wave.ChartBlockCeiling
+import Gtz.Wave.CeilingMarginKill
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21686,6 +21687,12 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- the chart block ceiling.
 #print axioms Gtz.chartBlockValue_le_chartObjective
 #print axioms Gtz.lambdaMinMat_gap_submatrix_le_chartObjective
+
+-- ==========================================================
+-- the ceiling margin kill.
+#print axioms Gtz.chartGapRaw_transpose_eq
+#print axioms Gtz.gap_submatrix_transpose_eq
+#print axioms Gtz.false_of_gap_submatrix_margin
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
