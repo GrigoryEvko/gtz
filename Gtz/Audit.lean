@@ -699,6 +699,7 @@ import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
 import Gtz.Wave.RankSixClosureSupply
+import Gtz.Wave.AssemblyRankCapstone
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -22194,6 +22195,14 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankSixFrame.dense_support_eq_block
 #print axioms Gtz.RankSixFrame.false_of_three_supports_equal
 #print axioms Gtz.RankSixFrame.dense_two_doubled_pairs_cover
+
+-- ==========================================================
+-- the assembly-rank capstone.  The cell and the rank-three
+-- payoff modulo the eleven named closures.
+-- ==========================================================
+
+#print axioms Gtz.gtzWeighted_six_three_of_closures
+#print axioms Gtz.gtzWeightedAll_three_of_closures
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

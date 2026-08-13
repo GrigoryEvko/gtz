@@ -2997,6 +2997,10 @@ import Gtz.Wave.RankSixRungAssembly
 -- the doubled-pairs law of the dense branch.
 import Gtz.Wave.RankSixClosureSupply
 
+-- the assembly-rank capstone: the cell and the rank-three payoff
+-- modulo the eleven named closures of the three rungs.
+import Gtz.Wave.AssemblyRankCapstone
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
