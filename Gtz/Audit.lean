@@ -688,6 +688,7 @@ import Gtz.Wave.SharedPairOuterReduction
 import Gtz.Wave.RankFiveNormalForm
 import Gtz.Wave.SupportQuintupleCensus
 import Gtz.Wave.RankFiveRungAssembly
+import Gtz.Wave.BothParallelCollapseSupply
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -22078,3 +22079,13 @@ run_cmd do
     logInfo m!"audit axiom sweep: {sweptTheoremCount} theorems across every Gtz module; reachable axioms {reachableAxioms.toList} are within the allowed set {allowedAxioms}"
   else
     throwError m!"audit axiom sweep FAILED: rogue axioms {rogueAxioms} are reachable from Gtz theorems"
+#print axioms Gtz.pair_row_gap_collapse
+#print axioms Gtz.carrier_row_difference
+#print axioms Gtz.bothParallel_scale_balance
+#print axioms Gtz.four_slot_diag_read
+#print axioms Gtz.collapse_core_b
+#print axioms Gtz.collapse_core_d
+#print axioms Gtz.six_atom_offdiag_budget
+#print axioms Gtz.six_atom_trace_read
+#print axioms Gtz.triple_schur_step
+#print axioms Gtz.schur_sum_nonneg

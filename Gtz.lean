@@ -2925,6 +2925,8 @@ import Gtz.Wave.BothParallelTrichotomy
 -- separation, the effective multipliers, the diagonal-core identity,
 -- the entry reads, the zero cross entry, and the commutation pricing.
 import Gtz.Wave.BothParallelDiagonalCore
+-- The collapse supply: the row-square masses of the diagonal core.
+import Gtz.Wave.BothParallelCollapseSupply
 
 -- the shared-pair outer reduction: the row reads, the entry
 -- Cauchy-Schwarz, the gap floor, the singleton kill, the same-pair
