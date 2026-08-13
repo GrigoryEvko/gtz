@@ -3141,6 +3141,14 @@ import Gtz.Wave.SharedPrivateGramCommutation
 -- the boundary residue narrowed to basis count five.
 import Gtz.Wave.SharedPrivateSlotEnergy
 
+-- the kernel chain: the back substitution at every family size, the
+-- general trace floor of a triangular kernel-fixed family, the three
+-- kernel witnesses with the dead-slot column law, the chain kill with
+-- its quadruple and private-slot corollaries, the double-cover budget
+-- with the single-cover slot, the private-slot structure at trace two,
+-- and the narrowed basis-count-five residue with the five dispatches.
+import Gtz.Wave.SharedPrivateKernelChain
+
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
 -- closure three.

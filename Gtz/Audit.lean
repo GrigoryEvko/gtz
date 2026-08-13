@@ -726,6 +726,7 @@ import Gtz.Wave.SharedPrivateCaptureLeak
 import Gtz.Wave.SharedPrivateBoundaryComplement
 import Gtz.Wave.SharedPrivateGramCommutation
 import Gtz.Wave.SharedPrivateSlotEnergy
+import Gtz.Wave.SharedPrivateKernelChain
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -22828,6 +22829,26 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_five_strata
 #print axioms Gtz.rankSixSharedPrivateClosed_of_five_strata
 
+-- the shared-private kernel chain
+#print axioms Gtz.triangular_family_independent
+#print axioms Gtz.false_of_triangular_fixed_family
+#print axioms Gtz.dead_slot_column_of_frame
+#print axioms Gtz.SharedPrivateData.false_of_kernel_chain
+#print axioms Gtz.SharedPrivateData.false_of_triangular_boundary_quadruple
+#print axioms Gtz.SharedPrivateData.false_of_private_dead_chain
+#print axioms Gtz.SharedPrivateData.four_le_interior_card_of_double_cover
+#print axioms Gtz.SharedPrivateData.exists_single_cover_slot
+#print axioms Gtz.SharedPrivateData.privateSlot_diag_eq_zero
+#print axioms Gtz.SharedPrivateData.interior_notMem_privateSupport
+#print axioms Gtz.SharedPrivateData.interior_card_le_three
+#print axioms Gtz.SharedPrivateData.two_le_multiplicity_of_interior
+#print axioms Gtz.sharedPrivateBoundaryFiveClosed_of_core
+#print axioms Gtz.sharedPrivateBoundaryClosed_of_core
+#print axioms Gtz.sharedPrivateKilled_of_core_strata
+#print axioms Gtz.rankFourSharedPrivateClosed_of_core_strata
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_core_strata
+#print axioms Gtz.rankSixSharedPrivateClosed_of_core_strata
+
 -- the outer block-pin budget
 #print axioms Gtz.blockCarrier_mem
 #print axioms Gtz.false_of_diagonal_coefficient_block_pins
@@ -23151,6 +23172,16 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SharedPrivateData.pairCircuit_mem_support_of_sdiff
 #print axioms Gtz.SharedPrivateData.pairCircuit_two_le_inter_card
 #print axioms Gtz.SharedPrivateData.pairCircuit_capture_eq_zero
+#print axioms Gtz.SharedPrivateData.slot_sandwich_apply
+#print axioms Gtz.SharedPrivateData.capture_pin_column
+#print axioms Gtz.SharedPrivateData.pin_capture_core
+#print axioms Gtz.SharedPrivateData.pin_capture_sq_le
+#print axioms Gtz.SharedPrivateData.false_of_interior_pin
+#print axioms Gtz.SharedPrivateData.capture_privateSlot_eq_zero_of_boundary_pin
+#print axioms Gtz.SharedPrivateData.block_boundary_of_boundary_pin
+#print axioms Gtz.sharedPrivateDeficitSixInteriorClosed_holds
+#print axioms Gtz.sharedPrivateDeficitComplementInteriorClosed_holds
+#print axioms Gtz.sharedPrivateDeficitClosed_holds
 #print axioms Gtz.sharedPrivateDeficitSixInteriorClosed_of_lowMultiplicity
 #print axioms Gtz.sharedPrivateCircuitPairClosed_of_shared
 #print axioms Gtz.sharedPrivateKilled_of_leak_strata
