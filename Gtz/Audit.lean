@@ -706,6 +706,7 @@ import Gtz.Wave.CertificateCornerBackbone
 import Gtz.Wave.SharedPrivateCertificateReduction
 import Gtz.Wave.SharedPrivateComplementTrace
 import Gtz.Wave.SharedPrivateStrataDispatch
+import Gtz.Wave.SharedPrivateKernelResidue
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -22432,6 +22433,10 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFourSharedPrivateClosed_of_strata
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_strata
 #print axioms Gtz.rankSixSharedPrivateClosed_of_strata
+#print axioms Gtz.columnGram_isUnit_det_of_leftInverse
+#print axioms Gtz.columnGram_exchange_of_representation
+#print axioms Gtz.projection_residue_decomposition
+#print axioms Gtz.SharedPrivateData.exists_kernel_residue
 
 -- the outer block-pin budget
 #print axioms Gtz.blockCarrier_mem

@@ -3021,6 +3021,11 @@ import Gtz.Wave.SharedPrivateComplementTrace
 -- rung compositions.
 import Gtz.Wave.SharedPrivateStrataDispatch
 
+-- the kernel-residue decomposition: the column Gram exchange law, the
+-- projection split into the frame part plus a kernel residue with the
+-- six laws, and the datum residue with the boundary heavy floor.
+import Gtz.Wave.SharedPrivateKernelResidue
+
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
 -- closure three.
