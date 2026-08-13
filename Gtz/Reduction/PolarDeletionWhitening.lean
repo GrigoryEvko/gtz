@@ -1599,4 +1599,281 @@ theorem sixThree_tie_deletion_ledger (design : WeightedDesign 6 3) (htie : IsTie
     exact not_isTie_of_singleTiltedLabel_three design hne hlong (by norm_num)
       (deletable_of_planeShadowSq_le_one design pole drop hshadow) hsingle htie
 
+/-! ## Part 11: the plane shadow mass, and where a deletable label comes from
+
+The plane shadows of a design carry a Parseval identity of their own, and it is
+two lines from the shipped tilt mass.  It prices the deletion condition against
+the weights, and it says exactly WHICH labels a deletion can remove: a label of
+HEAVY tilt is always deletable, which is the pairing the selection needs. -/
+
+/-- **THE PLANE SHADOW MASS.**  The weighted plane shadows of a design add up to
+`rank - 1`, with no hypothesis beyond a nonzero pole.  It is the trace of the
+identity of the pole's orthogonal hyperplane, read through the shipped tilt
+mass. -/
+theorem sum_weight_planeShadowSq (design : WeightedDesign size rank) (pole : Fin size)
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) :
+    ∑ c, design.weight c * planeShadowSq design pole c = (rank : ℝ) - 1 := by
+  have hleverage : ∑ c, design.weight c * (design.atom c ⬝ᵥ design.atom c) = (rank : ℝ) := by
+    rw [← sum_weighted_leverage design]
+    exact Finset.sum_congr rfl fun c _ => by rw [leverageOf_eq_dotProduct]
+  have htilt := sum_weight_polarPairing_sq design pole
+  have hsplit : ∑ c, design.weight c * planeShadowSq design pole c
+      = (∑ c, design.weight c * (design.atom c ⬝ᵥ design.atom c))
+        - (∑ c, design.weight c * (design.atom c ⬝ᵥ design.atom pole) ^ 2)
+          / (design.atom pole ⬝ᵥ design.atom pole) := by
+    rw [Finset.sum_div, ← Finset.sum_sub_distrib]
+    exact Finset.sum_congr rfl fun c _ => by rw [planeShadowSq]; ring
+  rw [hsplit, hleverage, htilt, div_self (ne_of_gt hpole)]
+
+/-- The pole casts no shadow on its own orthogonal hyperplane. -/
+theorem planeShadowSq_self (design : WeightedDesign size rank) (pole : Fin size)
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) :
+    planeShadowSq design pole pole = 0 := by
+  rw [planeShadowSq, sq, mul_div_assoc, div_self (ne_of_gt hpole), mul_one, sub_self]
+
+/-- An orthogonal label casts its whole energy as its shadow. -/
+theorem planeShadowSq_of_orthogonal (design : WeightedDesign size rank) {pole label : Fin size}
+    (horthogonal : design.atom label ⬝ᵥ design.atom pole = 0) :
+    planeShadowSq design pole label = design.atom label ⬝ᵥ design.atom label := by
+  rw [planeShadowSq, horthogonal]
+  simp
+
+/-- **THE SHADOW MASS OFF THE POLE.**  The labels other than the pole carry the
+whole shadow mass. -/
+theorem sum_weight_planeShadowSq_erase (design : WeightedDesign size rank) (pole : Fin size)
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) :
+    ∑ c ∈ Finset.univ.erase pole, design.weight c * planeShadowSq design pole c
+      = (rank : ℝ) - 1 := by
+  classical
+  rw [Finset.sum_erase_eq_sub (Finset.mem_univ pole), sum_weight_planeShadowSq design pole hpole,
+    planeShadowSq_self design pole hpole, mul_zero, sub_zero]
+
+/-- **A HEAVILY TILTED LABEL IS ALWAYS DELETABLE.**  This is the pairing the
+selection needs: the labels a covering set must be steered AWAY from are exactly
+the labels the deletion is permitted to remove.  The only input is the leverage
+cap of the design. -/
+theorem deletable_of_tilt_heavy (design : WeightedDesign size rank) {pole drop : Fin size}
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole)
+    (hheavy : (design.atom pole ⬝ᵥ design.atom pole)
+        * (1 - design.weight pole - design.weight drop)
+      < design.weight drop * (design.atom drop ⬝ᵥ design.atom pole) ^ 2) :
+    design.weight drop * planeShadowSq design pole drop
+      < design.weight pole + design.weight drop := by
+  have hcap := weight_mul_selfDotProduct_le_one design drop
+  have hstep : 1 - design.weight pole - design.weight drop
+      < design.weight drop * (design.atom drop ⬝ᵥ design.atom pole) ^ 2
+        / (design.atom pole ⬝ᵥ design.atom pole) := by
+    rw [lt_div_iff₀ hpole, mul_comm]
+    exact hheavy
+  have hshape : design.weight drop * planeShadowSq design pole drop
+      = design.weight drop * (design.atom drop ⬝ᵥ design.atom drop)
+        - design.weight drop * (design.atom drop ⬝ᵥ design.atom pole) ^ 2
+          / (design.atom pole ⬝ᵥ design.atom pole) := by
+    rw [planeShadowSq]; ring
+  rw [hshape]
+  linarith [hcap, hstep]
+
+/-- **THE SMALLEST WEIGHTED SHADOW.**  The shadow mass is spread over the
+`size - 1` labels other than the pole, thus the smallest of them is capped by the
+average. -/
+theorem exists_small_weighted_planeShadow (design : WeightedDesign size rank) (pole : Fin size)
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) (hsize : 2 ≤ size) :
+    ∃ drop : Fin size, drop ≠ pole
+      ∧ ((size : ℝ) - 1) * (design.weight drop * planeShadowSq design pole drop)
+          ≤ (rank : ℝ) - 1 := by
+  classical
+  have hnonempty : (Finset.univ.erase pole).Nonempty := by
+    rw [← Finset.card_pos, Finset.card_erase_of_mem (Finset.mem_univ pole), Finset.card_univ,
+      Fintype.card_fin]
+    omega
+  obtain ⟨bottom, hbottomMem, hbottomMin⟩ := Finset.exists_min_image
+    (Finset.univ.erase pole) (fun c => design.weight c * planeShadowSq design pole c) hnonempty
+  refine ⟨bottom, Finset.ne_of_mem_erase hbottomMem, ?_⟩
+  have hcard : (Finset.univ.erase pole).card = size - 1 := by
+    rw [Finset.card_erase_of_mem (Finset.mem_univ pole), Finset.card_univ, Fintype.card_fin]
+  have hsum := sum_weight_planeShadowSq_erase design pole hpole
+  have hlower : ((Finset.univ.erase pole).card : ℝ)
+      * (design.weight bottom * planeShadowSq design pole bottom)
+      ≤ ∑ c ∈ Finset.univ.erase pole, design.weight c * planeShadowSq design pole c := by
+    rw [← nsmul_eq_mul]
+    exact Finset.card_nsmul_le_sum _ _ _ fun c hc => hbottomMin c hc
+  have hcast : ((Finset.univ.erase pole).card : ℝ) = (size : ℝ) - 1 := by
+    rw [hcard]
+    have hone : (1 : ℕ) ≤ size := by omega
+    push_cast [Nat.cast_sub hone]
+    ring
+  rw [hcast, hsum] at hlower
+  exact hlower
+
+/-- **THE AVERAGE CRITERION FOR A DELETABLE LABEL.**  When the shadow mass
+spread over the labels is beaten by the pole's weight plus the weight floor,
+some label is deletable. -/
+theorem exists_deletable_of_shadow_average (design : WeightedDesign size rank) (pole : Fin size)
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) (hsize : 2 ≤ size)
+    {weightFloor : ℝ} (hfloor : ∀ c, weightFloor ≤ design.weight c)
+    (hgap : (rank : ℝ) - 1 < ((size : ℝ) - 1) * (design.weight pole + weightFloor)) :
+    ∃ drop : Fin size, drop ≠ pole
+      ∧ design.weight drop * planeShadowSq design pole drop
+          < design.weight pole + design.weight drop := by
+  obtain ⟨drop, hne, hbound⟩ := exists_small_weighted_planeShadow design pole hpole hsize
+  have hsizeCast : (0 : ℝ) < (size : ℝ) - 1 := by
+    have hcast : (2 : ℝ) ≤ (size : ℝ) := by exact_mod_cast hsize
+    linarith
+  refine ⟨drop, hne, ?_⟩
+  have hstep : ((size : ℝ) - 1) * (design.weight drop * planeShadowSq design pole drop)
+      < ((size : ℝ) - 1) * (design.weight pole + design.weight drop) := by
+    have hgrow : ((size : ℝ) - 1) * (design.weight pole + weightFloor)
+        ≤ ((size : ℝ) - 1) * (design.weight pole + design.weight drop) :=
+      mul_le_mul_of_nonneg_left (by linarith [hfloor drop]) hsizeCast.le
+    linarith
+  exact lt_of_mul_lt_mul_left hstep hsizeCast.le
+
+/-- **THE CONCENTRATED-TILT KILL.**  When one label carries the WHOLE tilt of the
+pole, the tilt mass identity turns the deletion condition into one inequality
+between three weights and the leverage:
+
+  `weight pole * (leverage - 1) < weight drop`.
+
+Under it the design is not a tie, and nothing about the plane shadow needs to be
+computed. -/
+theorem not_isTie_of_concentratedTilt (hrank : 2 ≤ rank)
+    (hpredecessor : GtzWeightedAll (rank - 1))
+    (design : WeightedDesign size rank) {pole drop : Fin size} (hne : drop ≠ pole)
+    (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole)
+    (hroom : rank + 1 ≤ size)
+    (hsingle : ∀ label : Fin size, label ≠ pole → label ≠ drop →
+      design.atom label ⬝ᵥ design.atom pole = 0)
+    (hweight : design.weight pole * (design.atom pole ⬝ᵥ design.atom pole - 1)
+      < design.weight drop) :
+    ¬ IsTie design := by
+  classical
+  have hpole : (0 : ℝ) < design.atom pole ⬝ᵥ design.atom pole := by linarith
+  -- the whole tilt mass sits on the named label
+  have hmass := sum_weight_polarPairing_sq_erase design pole
+  have hcollapse : ∑ c ∈ Finset.univ.erase pole,
+        design.weight c * (design.atom c ⬝ᵥ design.atom pole) ^ 2
+      = design.weight drop * (design.atom drop ⬝ᵥ design.atom pole) ^ 2 := by
+    refine Finset.sum_eq_single_of_mem drop
+      (Finset.mem_erase.mpr ⟨hne, Finset.mem_univ drop⟩) fun other hother hne' => ?_
+    rw [hsingle other (Finset.ne_of_mem_erase hother) hne']
+    ring
+  rw [hcollapse] at hmass
+  -- the deletion condition follows from the weight inequality alone
+  have hheavy : (design.atom pole ⬝ᵥ design.atom pole)
+        * (1 - design.weight pole - design.weight drop)
+      < design.weight drop * (design.atom drop ⬝ᵥ design.atom pole) ^ 2 := by
+    rw [hmass]
+    nlinarith [hweight, hpole]
+  exact not_isTie_of_singleTiltedLabel hrank hpredecessor design hne hlong hroom
+    (deletable_of_tilt_heavy design hpole hheavy) hsingle
+
+/-- The concentrated-tilt kill at rank three, with the previous rank
+discharged. -/
+theorem not_isTie_of_concentratedTilt_three (design : WeightedDesign size 3)
+    {pole drop : Fin size} (hne : drop ≠ pole)
+    (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole) (hroom : 4 ≤ size)
+    (hsingle : ∀ label : Fin size, label ≠ pole → label ≠ drop →
+      design.atom label ⬝ᵥ design.atom pole = 0)
+    (hweight : design.weight pole * (design.atom pole ⬝ᵥ design.atom pole - 1)
+      < design.weight drop) :
+    ¬ IsTie design :=
+  not_isTie_of_concentratedTilt (by norm_num) gtz_rank_two design hne hlong hroom hsingle hweight
+
+/-- **THE SHADOW LEDGER AT THE DECIDING CELL OF RANK THREE.**  Six labels of
+rank three: the weighted shadows add up to exactly two, the smallest of the five
+non-pole shadows is at most two fifths, and a label of heavy tilt is deletable. -/
+theorem sixThree_planeShadow_ledger (design : WeightedDesign 6 3) {pole : Fin 6}
+    (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole) :
+    (∑ c, design.weight c * planeShadowSq design pole c) = 2
+      ∧ ∃ drop : Fin 6, drop ≠ pole
+          ∧ 5 * (design.weight drop * planeShadowSq design pole drop) ≤ 2 := by
+  have hpole : (0 : ℝ) < design.atom pole ⬝ᵥ design.atom pole := by linarith
+  refine ⟨by rw [sum_weight_planeShadowSq design pole hpole]; norm_num, ?_⟩
+  obtain ⟨drop, hne, hbound⟩ := exists_small_weighted_planeShadow design pole hpole (by norm_num)
+  exact ⟨drop, hne, by push_cast at hbound; linarith⟩
+
+/-! ## Part 12: the heavy label of a tie, and the two-heavy dichotomy
+
+The tilted cover of a tie spends the whole budget over `rank - 1` labels, thus
+one of them is heavy.  A heavy label is deletable as soon as its own weighted
+tilt beats the free mass, and the deletion law then produces a SECOND heavy
+label.  That is a new dichotomy about every tie. -/
+
+/-- **EVERY TIE CARRIES A HEAVY LABEL.**  At every overshooting pole of a tie,
+some other label already carries `1 / (rank - 1)` of the whole tilt budget. -/
+theorem exists_heavy_label_of_isTie (hrank : 2 ≤ rank)
+    (hpredecessor : GtzWeightedAll (rank - 1)) (design : WeightedDesign size rank)
+    (htie : IsTie design) {pole : Fin size}
+    (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole) :
+    ∃ (heavy : Fin size) (margin : ℝ), 0 < margin ∧ heavy ≠ pole
+      ∧ margin * (design.atom pole ⬝ᵥ design.atom pole)
+            * (design.atom pole ⬝ᵥ design.atom pole - 1)
+          ≤ ((rank : ℝ) - 1) * (design.atom heavy ⬝ᵥ design.atom pole) ^ 2 := by
+  classical
+  obtain ⟨covering, margin, hmarginPos, hcard, hnotMem, _hcover, hbudget⟩ :=
+    exists_tilted_polarCover_of_isTie hrank hpredecessor design htie hlong
+  have hnonempty : covering.Nonempty := by
+    rw [← Finset.card_pos, hcard]
+    omega
+  obtain ⟨heavy, hheavyMem, hheavyMax⟩ := Finset.exists_max_image covering
+    (fun label => (design.atom label ⬝ᵥ design.atom pole) ^ 2) hnonempty
+  refine ⟨heavy, margin, hmarginPos, fun heq => hnotMem (heq ▸ hheavyMem), ?_⟩
+  have hspread : ∑ label ∈ covering, (design.atom label ⬝ᵥ design.atom pole) ^ 2
+      ≤ (covering.card : ℝ) * (design.atom heavy ⬝ᵥ design.atom pole) ^ 2 := by
+    rw [← nsmul_eq_mul]
+    exact Finset.sum_le_card_nsmul _ _ _ fun label hlabel => hheavyMax label hlabel
+  have hcast : ((covering.card : ℕ) : ℝ) = (rank : ℝ) - 1 := by
+    rw [hcard]
+    have hone : (1 : ℕ) ≤ rank := by omega
+    push_cast [Nat.cast_sub hone]
+    ring
+  rw [hcast] at hspread
+  linarith [hbudget, hspread]
+
+/-- **THE TWO-HEAVY DICHOTOMY.**  At a tie, if the heavy label of the tilted
+cover is heavy enough to be DELETABLE, then a SECOND label outside the pole and
+that one is heavy for the deletion budget too.  Thus the tilt of a tie never
+concentrates on one label that the free mass cannot hold. -/
+theorem exists_two_heavy_labels_of_isTie (hrank : 2 ≤ rank)
+    (hpredecessor : GtzWeightedAll (rank - 1)) (design : WeightedDesign size rank)
+    (htie : IsTie design) {pole heavy : Fin size} (hne : heavy ≠ pole)
+    (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole) (hroom : rank + 1 ≤ size)
+    (hheavy : (design.atom pole ⬝ᵥ design.atom pole)
+        * (1 - design.weight pole - design.weight heavy)
+      < design.weight heavy * (design.atom heavy ⬝ᵥ design.atom pole) ^ 2) :
+    ∃ second : Fin size, second ≠ pole ∧ second ≠ heavy
+      ∧ deletionMargin design pole heavy * (design.atom pole ⬝ᵥ design.atom pole)
+            * (design.atom pole ⬝ᵥ design.atom pole - 1)
+          ≤ ((rank : ℝ) - 1) * (design.atom second ⬝ᵥ design.atom pole) ^ 2 :=
+  exists_heavy_tilt_of_isTie_of_deletable_sharp hrank hpredecessor design htie hne hlong hroom
+    (deletable_of_tilt_heavy design (by linarith) hheavy)
+
+/-- The heavy label of a rank-three tie, with the previous rank discharged. -/
+theorem exists_heavy_label_of_isTie_three (design : WeightedDesign size 3)
+    (htie : IsTie design) {pole : Fin size}
+    (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole) :
+    ∃ (heavy : Fin size) (margin : ℝ), 0 < margin ∧ heavy ≠ pole
+      ∧ margin * (design.atom pole ⬝ᵥ design.atom pole)
+            * (design.atom pole ⬝ᵥ design.atom pole - 1)
+          ≤ 2 * (design.atom heavy ⬝ᵥ design.atom pole) ^ 2 := by
+  obtain ⟨heavy, margin, hmarginPos, hne, hbudget⟩ :=
+    exists_heavy_label_of_isTie (rank := 3) (by norm_num) gtz_rank_two design htie hlong
+  exact ⟨heavy, margin, hmarginPos, hne, by push_cast at hbudget; linarith⟩
+
+/-- The two-heavy dichotomy at rank three. -/
+theorem exists_two_heavy_labels_of_isTie_three (design : WeightedDesign size 3)
+    (htie : IsTie design) {pole heavy : Fin size} (hne : heavy ≠ pole)
+    (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole) (hroom : 4 ≤ size)
+    (hheavy : (design.atom pole ⬝ᵥ design.atom pole)
+        * (1 - design.weight pole - design.weight heavy)
+      < design.weight heavy * (design.atom heavy ⬝ᵥ design.atom pole) ^ 2) :
+    ∃ second : Fin size, second ≠ pole ∧ second ≠ heavy
+      ∧ deletionMargin design pole heavy * (design.atom pole ⬝ᵥ design.atom pole)
+            * (design.atom pole ⬝ᵥ design.atom pole - 1)
+          ≤ 2 * (design.atom second ⬝ᵥ design.atom pole) ^ 2 := by
+  obtain ⟨second, hsecondPole, hsecondHeavy, hbudget⟩ :=
+    exists_two_heavy_labels_of_isTie (rank := 3) (by norm_num) gtz_rank_two design htie hne hlong
+      hroom hheavy
+  exact ⟨second, hsecondPole, hsecondHeavy, by push_cast at hbudget; linarith⟩
+
 end Gtz
