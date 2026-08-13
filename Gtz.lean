@@ -3133,6 +3133,16 @@ import Gtz.Wave.OuterParallelFold
 -- the gap floor at captured rank three, thus the rank-six profile
 -- kill drops its interiority hypothesis.
 import Gtz.Wave.OuterTraceThreeInterior
+
+-- the outer column-Gram fold: the commuting read Gram of the basis
+-- directions, the capture trace of a rank-six frame, and the rank-six
+-- profile lattice that reduces closure one to two named residues.
+import Gtz.Wave.OuterColumnGramFold
+
+-- the outer zero and the profile lattice: the full-carrier kill, the
+-- degree dichotomy at every rank, the outer zero of the pair column,
+-- the tight census, the pin rigidity, and the boundary kernel line.
+import Gtz.Wave.OuterZeroProfileLattice
 -- the outer dense corner kill: the two-carrier branch of the outer datum
 -- dies with no Gram hypothesis, and the circuit residue narrows
 import Gtz.Wave.OuterDenseCornerKill

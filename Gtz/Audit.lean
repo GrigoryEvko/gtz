@@ -727,6 +727,8 @@ import Gtz.Wave.OuterBlockPinBudget
 import Gtz.Wave.OuterBlockDegreeDispatch
 import Gtz.Wave.OuterParallelFold
 import Gtz.Wave.OuterTraceThreeInterior
+import Gtz.Wave.OuterColumnGramFold
+import Gtz.Wave.OuterZeroProfileLattice
 import Gtz.Wave.OuterDenseCornerKill
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
@@ -22720,6 +22722,66 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankFiveFrame.shifted_weight_pos_of_trace_three
 #print axioms Gtz.RankSixOuterData.false_of_circuitClosed_profile
 #print axioms Gtz.RankFiveOuterData.false_of_circuitClosed_profile
+
+-- the outer column-Gram fold
+#print axioms Gtz.exists_commuting_read_frame
+#print axioms Gtz.read_energy_eq
+#print axioms Gtz.readGram_trace_eq_one
+#print axioms Gtz.capture_trace_eq
+#print axioms Gtz.read_column_self_energy
+#print axioms Gtz.read_column_leak_identity
+#print axioms Gtz.RankSixFrame.exists_commuting_read_frame
+#print axioms Gtz.RankSixFrame.capture_trace_lt_inv_size
+#print axioms Gtz.RankSixFrame.pin_pair_disjoint
+#print axioms Gtz.RankSixFrame.pinSet_singleton
+#print axioms Gtz.RankSixFrame.pairSet_pair
+#print axioms Gtz.rankSixOuterKilled_of_circuit_and_lowProfile
+#print axioms Gtz.rankSixSupportTwoClosed_of_circuit_and_lowProfile
+
+-- the outer zero and the profile lattice
+#print axioms Gtz.dot_mulVec_comm_of_symm
+#print axioms Gtz.projection_row_eq_of_full_block
+#print axioms Gtz.false_of_full_block_carrier
+#print axioms Gtz.RankSixFrame.shifted_weight_lt_one
+#print axioms Gtz.RankSixFrame.blockCarrier_ne_univ
+#print axioms Gtz.RankSixFrame.blockCarrier_card_le_five
+#print axioms Gtz.RankSixFrame.blockCarrier_card_sum
+#print axioms Gtz.RankSixFrame.blockCarrier_card_pos
+#print axioms Gtz.RankSixFrame.regular_or_light
+#print axioms Gtz.RankSixOuterData.exists_outer_zero_atom
+#print axioms Gtz.RankSixOuterData.two_le_zero_atom_carrier
+#print axioms Gtz.RankSixOuterData.zero_atom_not_pin
+#print axioms Gtz.RankSixOuterData.regular_zero_atom_deficient
+#print axioms Gtz.rankSixOuterLowProfileClosed_of_regular_and_thin
+#print axioms Gtz.rankSixOuterKilled_of_circuit_regular_thin
+#print axioms Gtz.rankSixSupportTwoClosed_of_circuit_regular_thin
+#print axioms Gtz.read_kernel_of_boundary
+#print axioms Gtz.kernel_fixed_of_complement
+#print axioms Gtz.boundary_family_card_le
+#print axioms Gtz.false_of_boundary_disjoint_family
+#print axioms Gtz.boundary_family_card_le_of_trace_two
+#print axioms Gtz.mem_tightCarrier
+#print axioms Gtz.tightCarrier_subset_blockCarrier
+#print axioms Gtz.tightCarrier_double_count
+#print axioms Gtz.RankSixOuterData.tight_incidence_le_seventeen
+#print axioms Gtz.RankSixOuterData.exists_tight_deficient_atom
+#print axioms Gtz.RankSixFrame.pin_leftInv_row
+#print axioms Gtz.RankSixFrame.pin_dir_ne_zero
+#print axioms Gtz.RankSixFrame.pin_leftInv_off
+#print axioms Gtz.RankSixFrame.pin_slot_inj
+#print axioms Gtz.RankSixFrame.pin_coeff_diagonal
+#print axioms Gtz.RankSixFrame.regular_pinSet_empty
+#print axioms Gtz.RankSixFrame.regular_pairSet_empty
+#print axioms Gtz.RankSixFrame.regular_profile_zero
+#print axioms Gtz.rankSixOuterRegularClosed_of_lowProfile
+#print axioms Gtz.blockPin_pair_disjoint
+#print axioms Gtz.blockPinSet_singleton
+#print axioms Gtz.blockPairSet_pair
+#print axioms Gtz.blockCarrier_profile_floor
+#print axioms Gtz.RankFiveFrame.profile_mass_ge_three
+#print axioms Gtz.RankFourFrame.profile_mass_ge_six
+#print axioms Gtz.RankFiveFrame.profile_mass_eq_three_of_trace_three
+#print axioms Gtz.RankSixFrame.profile_mass_le_three_of_diagonal_gram
 
 -- the outer dense corner kill
 #print axioms Gtz.corner_product_of_reads_alive
