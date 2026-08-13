@@ -3051,6 +3051,11 @@ import Gtz.Wave.OuterCofactorSpanForm
 -- kill, and the rank-six outer datum joins the kill interface.
 import Gtz.Wave.OuterResidueCollapse
 
+-- the outer block-pin budget: under a diagonal Gram core the
+-- conjugated coefficient matrix is a projection, the block carriers
+-- price the budget, and pinned atoms kill the three ranks.
+import Gtz.Wave.OuterBlockPinBudget
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.

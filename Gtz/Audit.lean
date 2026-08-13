@@ -712,6 +712,7 @@ import Gtz.Wave.OuterSharerDualScaffold
 import Gtz.Wave.OuterCofactorReduction
 import Gtz.Wave.OuterCofactorSpanForm
 import Gtz.Wave.OuterResidueCollapse
+import Gtz.Wave.OuterBlockPinBudget
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -22431,6 +22432,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFourSharedPrivateClosed_of_strata
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_strata
 #print axioms Gtz.rankSixSharedPrivateClosed_of_strata
+
+-- the outer block-pin budget
+#print axioms Gtz.blockCarrier_mem
+#print axioms Gtz.false_of_diagonal_coefficient_block_pins
+#print axioms Gtz.RankFourFrame.false_of_diagonal_gram_block_pin
+#print axioms Gtz.RankFiveFrame.false_of_diagonal_gram_block_pin
+#print axioms Gtz.RankSixFrame.false_of_diagonal_gram_block_pin
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
