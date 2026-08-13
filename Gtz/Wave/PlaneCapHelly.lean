@@ -645,4 +645,147 @@ theorem exists_capPoint_of_pair (readOne readTwo : Fin 2 → ℝ) (levelOne leve
   · rw [hprojTwo, htwo]
     nlinarith [hshareMul, hpair]
 
+/-! ## Layer 9 — the leaf split: the disc leaf is a theorem -/
+
+/-- The half plane of one atom, with the disc removed. -/
+def planeHalf (read : Fin 2 → ℝ) (level : ℝ) : Set (Fin 2 → ℝ) :=
+  {point | level ≤ point ⬝ᵥ read}
+
+theorem convex_planeHalf (read : Fin 2 → ℝ) (level : ℝ) :
+    Convex ℝ (planeHalf read level) := by
+  intro pointOne hone pointTwo htwo shareOne shareTwo hshareOne hshareTwo hshare
+  have hlevelOne : level ≤ pointOne ⬝ᵥ read := hone
+  have hlevelTwo : level ≤ pointTwo ⬝ᵥ read := htwo
+  show level ≤ (shareOne • pointOne + shareTwo • pointTwo) ⬝ᵥ read
+  rw [add_dotProduct, smul_dotProduct, smul_dotProduct, smul_eq_mul, smul_eq_mul]
+  have hone' : shareOne * level ≤ shareOne * (pointOne ⬝ᵥ read) :=
+    mul_le_mul_of_nonneg_left hlevelOne hshareOne
+  have htwo' : shareTwo * level ≤ shareTwo * (pointTwo ⬝ᵥ read) :=
+    mul_le_mul_of_nonneg_left hlevelTwo hshareTwo
+  have hsum : shareOne * level + shareTwo * level = level := by
+    rw [← add_mul, hshare, one_mul]
+  linarith
+
+/-- The closed unit disc, as the cap of the vanishing reading. -/
+theorem planeCap_zero_eq_disc (point : Fin 2 → ℝ) :
+    point ∈ planeCap (0 : Fin 2 → ℝ) 0 ↔ point ⬝ᵥ point ≤ 1 := by
+  constructor
+  · exact fun hpoint => hpoint.1
+  · exact fun hpoint => ⟨hpoint, by rw [dotProduct_zero]⟩
+
+/-- **THE DISC LEAF.**  The disc and TWO half planes always meet.  The pair law
+alone supplies the point, and the atom energies may vanish.
+
+This is the first of the two leaves of the Helly split of the residue: the
+three-subsets of the family `{disc} ∪ {half planes}` are the disc with two half
+planes, and three half planes with no disc. -/
+theorem exists_capPoint_of_two (readOne readTwo : Fin 2 → ℝ)
+    (energyOne energyTwo gapOne gapTwo : ℝ)
+    (hEnergyOne : readOne ⬝ᵥ readOne = energyOne ^ 2)
+    (hEnergyTwo : readTwo ⬝ᵥ readTwo = energyTwo ^ 2)
+    (hGapOne : 0 ≤ gapOne) (hGapTwo : 0 ≤ gapTwo)
+    (hLeOne : gapOne ≤ energyOne) (hLeTwo : gapTwo ≤ energyTwo)
+    (hpair : 2 * gapOne * gapTwo - energyOne * energyTwo ≤ readOne ⬝ᵥ readTwo) :
+    ∃ point : Fin 2 → ℝ, point ⬝ᵥ point ≤ 1
+      ∧ 2 * gapOne - energyOne ≤ point ⬝ᵥ readOne
+      ∧ 2 * gapTwo - energyTwo ≤ point ⬝ᵥ readTwo := by
+  classical
+  have hposOne : (0 : ℝ) ≤ energyOne := le_trans hGapOne hLeOne
+  have hposTwo : (0 : ℝ) ≤ energyTwo := le_trans hGapTwo hLeTwo
+  rcases eq_or_lt_of_le hposOne with hzeroOne | hstrictOne
+  · -- the first atom is degenerate: its reading vanishes and its level is zero
+    have hvanish : readOne = 0 := by
+      apply dotProduct_self_eq_zero.mp
+      rw [hEnergyOne, ← hzeroOne]
+      ring
+    have hgapZero : gapOne = 0 := le_antisymm (by rw [← hzeroOne] at hLeOne; exact hLeOne) hGapOne
+    rcases eq_or_lt_of_le hposTwo with hzeroTwo | hstrictTwo
+    · have hvanishTwo : readTwo = 0 := by
+        apply dotProduct_self_eq_zero.mp
+        rw [hEnergyTwo, ← hzeroTwo]
+        ring
+      have hgapZeroTwo : gapTwo = 0 :=
+        le_antisymm (by rw [← hzeroTwo] at hLeTwo; exact hLeTwo) hGapTwo
+      refine ⟨0, by rw [dot_fin_two]; norm_num, ?_, ?_⟩
+      · rw [hvanish, dotProduct_zero, hgapZero, ← hzeroOne]; norm_num
+      · rw [hvanishTwo, dotProduct_zero, hgapZeroTwo, ← hzeroTwo]; norm_num
+    · refine ⟨(energyTwo)⁻¹ • readTwo, ?_, ?_, ?_⟩
+      · rw [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, hEnergyTwo]
+        field_simp
+        exact le_refl 1
+      · rw [hvanish, dotProduct_zero, hgapZero, ← hzeroOne]; norm_num
+      · rw [smul_dotProduct, smul_eq_mul, hEnergyTwo, inv_mul_eq_div, le_div_iff₀ hstrictTwo]
+        nlinarith [hLeTwo, hstrictTwo]
+  rcases eq_or_lt_of_le hposTwo with hzeroTwo | hstrictTwo
+  · have hvanishTwo : readTwo = 0 := by
+      apply dotProduct_self_eq_zero.mp
+      rw [hEnergyTwo, ← hzeroTwo]
+      ring
+    have hgapZeroTwo : gapTwo = 0 :=
+      le_antisymm (by rw [← hzeroTwo] at hLeTwo; exact hLeTwo) hGapTwo
+    refine ⟨(energyOne)⁻¹ • readOne, ?_, ?_, ?_⟩
+    · rw [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, hEnergyOne]
+      field_simp
+      exact le_refl 1
+    · rw [smul_dotProduct, smul_eq_mul, hEnergyOne, inv_mul_eq_div, le_div_iff₀ hstrictOne]
+      nlinarith [hLeOne, hstrictOne]
+    · rw [hvanishTwo, dotProduct_zero, hgapZeroTwo, ← hzeroTwo]; norm_num
+  -- both energies are positive: normalize and spend the two-atom cap law
+  have hnormOne : ((energyOne)⁻¹ • readOne) ⬝ᵥ ((energyOne)⁻¹ • readOne) = 1 := by
+    rw [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, hEnergyOne]
+    field_simp
+  have hnormTwo : ((energyTwo)⁻¹ • readTwo) ⬝ᵥ ((energyTwo)⁻¹ • readTwo) = 1 := by
+    rw [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, hEnergyTwo]
+    field_simp
+  have hcrossNorm : ((energyOne)⁻¹ • readOne) ⬝ᵥ ((energyTwo)⁻¹ • readTwo)
+      = (readOne ⬝ᵥ readTwo) / (energyOne * energyTwo) := by
+    rw [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul]
+    field_simp
+  obtain ⟨point, hdisc, hone, htwo⟩ :=
+    exists_capPoint_of_pair ((energyOne)⁻¹ • readOne) ((energyTwo)⁻¹ • readTwo)
+      ((2 * gapOne - energyOne) / energyOne) ((2 * gapTwo - energyTwo) / energyTwo)
+      hnormOne hnormTwo
+      (by rw [div_le_one hstrictOne]; linarith)
+      (by rw [div_le_one hstrictTwo]; linarith)
+      (by
+        rw [hcrossNorm]
+        have hdiff : 2 * (1 + (readOne ⬝ᵥ readTwo) / (energyOne * energyTwo))
+            - (1 + (2 * gapOne - energyOne) / energyOne)
+              * (1 + (2 * gapTwo - energyTwo) / energyTwo)
+            = 2 * ((readOne ⬝ᵥ readTwo) - (2 * gapOne * gapTwo - energyOne * energyTwo))
+              / (energyOne * energyTwo) := by
+          field_simp
+          ring
+        have hnonneg : (0 : ℝ)
+            ≤ 2 * ((readOne ⬝ᵥ readTwo) - (2 * gapOne * gapTwo - energyOne * energyTwo))
+              / (energyOne * energyTwo) :=
+          div_nonneg (by linarith) (by positivity)
+        rw [← hdiff] at hnonneg
+        linarith)
+  refine ⟨point, hdisc, ?_, ?_⟩
+  · rw [dotProduct_smul, smul_eq_mul, inv_mul_eq_div] at hone
+    have hkey := mul_le_mul_of_nonneg_right hone hstrictOne.le
+    rw [div_mul_cancel₀ _ (ne_of_gt hstrictOne), div_mul_cancel₀ _ (ne_of_gt hstrictOne)] at hkey
+    exact hkey
+  · rw [dotProduct_smul, smul_eq_mul, inv_mul_eq_div] at htwo
+    have hkey := mul_le_mul_of_nonneg_right htwo hstrictTwo.le
+    rw [div_mul_cancel₀ _ (ne_of_gt hstrictTwo), div_mul_cancel₀ _ (ne_of_gt hstrictTwo)] at hkey
+    exact hkey
+
+/-- **THE HALF-PLANE LEAF.**  The residue with the disc removed: three half
+planes of the doubled reading, tied by the pair law, always meet.
+
+This is the whole remaining content of the plane residue.  The disc leaf is the
+theorem `Gtz.exists_capPoint_of_two`, thus the Helly split of the residue over
+the family `{disc} ∪ {half planes}` leaves this leaf and nothing else. -/
+def PlaneHalfTripleClosed : Prop :=
+  ∀ (read : Fin 3 → (Fin 2 → ℝ)) (energy gap : Fin 3 → ℝ),
+    (∀ index, read index ⬝ᵥ read index = energy index ^ 2) →
+    (∀ index, 0 ≤ gap index) →
+    (∀ index, gap index ≤ energy index) →
+    (∀ indexOne indexTwo,
+      2 * gap indexOne * gap indexTwo - energy indexOne * energy indexTwo
+        ≤ read indexOne ⬝ᵥ read indexTwo) →
+    ∃ point : Fin 2 → ℝ, ∀ index, 2 * gap index - energy index ≤ point ⬝ᵥ read index
+
 end Gtz
