@@ -2936,6 +2936,11 @@ import Gtz.Wave.SharedPairOuterReduction
 -- exchange law, and the captured-trace disjunction tr M = 2 or 3.
 import Gtz.Wave.RankFiveNormalForm
 
+-- the support-quintuple census: the independence cap, the fully
+-- private kill, the quintuple trichotomy with the heavy atom, and
+-- the pinned dispatch of the rank-five rung.
+import Gtz.Wave.SupportQuintupleCensus
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

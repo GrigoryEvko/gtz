@@ -686,6 +686,7 @@ import Gtz.Wave.BothParallelTrichotomy
 import Gtz.Wave.BothParallelDiagonalCore
 import Gtz.Wave.SharedPairOuterReduction
 import Gtz.Wave.RankFiveNormalForm
+import Gtz.Wave.SupportQuintupleCensus
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -22012,6 +22013,19 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- ==========================================================
 
 #print axioms Gtz.SixThreeCrux.exists_rankFive_coefficient_normalForm
+
+-- ==========================================================
+-- the support-quintuple census.  The independence cap, the
+-- fully private kill, the trichotomy with the heavy atom, and
+-- the pinned dispatch of the rank-five rung.
+-- ==========================================================
+
+#print axioms Gtz.linearIndependent_tightDir_of_leftInverse
+#print axioms Gtz.card_le_card_of_supports_subset
+#print axioms Gtz.tightDir_eq_zero_of_multiplicity_one_of_ne
+#print axioms Gtz.false_of_fully_private_quintuple
+#print axioms Gtz.basisSupport_quintuple_trichotomy
+#print axioms Gtz.SixThreeCrux.exists_rankFive_pinned_dispatch
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
