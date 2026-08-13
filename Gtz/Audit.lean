@@ -693,6 +693,7 @@ import Gtz.Wave.RankFiveDenseStructure
 import Gtz.Wave.BothParallelCollapseSupply
 import Gtz.Wave.SharedPairCaptureNarrowing
 import Gtz.Wave.PairWedgeCalculus
+import Gtz.Wave.PairCouplingCalculus
 import Gtz.Wave.CycleSeamReduction
 import Gtz.Wave.KFourCertificateReduction
 import Gtz.Wave.RankSixNormalForm
@@ -22123,6 +22124,30 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.wedge_energy_le_third
 #print axioms Gtz.RankFourFrame.false_of_vanishing_basis_wedges
 #print axioms Gtz.rankFourSupportTwoClosed_of_wedge_outer_kill
+
+-- ==========================================================
+-- the pair coupling calculus.  The split diagonals, the
+-- separated sharer laws, the aligned annihilation, the
+-- third-diagonal pricing, the protrusion law, the one-atom
+-- sharer laws, the kernel read, and the wedge energy demand.
+-- ==========================================================
+
+#print axioms Gtz.pair_diagonal_balance
+#print axioms Gtz.pair_diagonal_split_left
+#print axioms Gtz.pair_diagonal_split_right
+#print axioms Gtz.pair_cross_scaled_left
+#print axioms Gtz.pair_cross_scaled_right
+#print axioms Gtz.bothPair_separated_left
+#print axioms Gtz.bothPair_separated_right
+#print axioms Gtz.bothPair_aligned_annihilation
+#print axioms Gtz.bothPair_third_diagonal
+#print axioms Gtz.pair_excess_pos
+#print axioms Gtz.bothPair_wedge_vanish_of_third_vanish
+#print axioms Gtz.singlePair_scaled_left
+#print axioms Gtz.singlePair_scaled_right
+#print axioms Gtz.gap_mulVec_entry
+#print axioms Gtz.pair_kernel_gap_read
+#print axioms Gtz.wedge_energy_demand
 
 -- ==========================================================
 -- the cycle seam reduction.  The share calculus, the corner

@@ -2967,6 +2967,11 @@ import Gtz.Wave.SharedPairCaptureNarrowing
 -- closure-one bridge.
 import Gtz.Wave.PairWedgeCalculus
 
+-- the pair coupling calculus: the split diagonals, the separated
+-- sharer laws, the aligned annihilation, the third-diagonal pricing,
+-- the protrusion law, the kernel read, and the wedge energy demand.
+import Gtz.Wave.PairCouplingCalculus
+
 -- the cycle seam reduction: the share calculus, the corner trace law,
 -- the parallel weight pin, the pattern transport, the seam
 -- certificate, and the closure-four discharge.
