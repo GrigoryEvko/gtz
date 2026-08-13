@@ -108,7 +108,7 @@ theorem SharedPrivateData.false_of_basisCount_four_shared_slots
             (data.basisLabel slotTwo)) : False := by
   classical
   obtain ⟨S, readVecs, hSsymm, hSidem, hStrace, hsuppFrame, hreadFrame,
-    _hnorm, hnz, _hboundary, _hcarrierNz⟩ :=
+    _hnorm, hnz, _hboundary, _hcarrierNz, _hspan, _hcommute⟩ :=
     data.exists_kernel_read_frame hdiag
   set chartValue := chartObjective (chartPointOfDesign crux.design)
     with hchartValue

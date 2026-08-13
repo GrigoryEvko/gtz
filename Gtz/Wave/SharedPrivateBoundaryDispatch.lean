@@ -330,7 +330,7 @@ theorem SharedPrivateData.pin_card_le_boundary_card {crux : SixThreeCrux}
           atomIndex = 1).card ≤ bndSet.card := by
   classical
   obtain ⟨S, readVecs, hSsymm, hSidem, hStrace, hsuppFrame, hreadFrame,
-    _hnorm, hnz, _hboundary, _hcarrierNz⟩ :=
+    _hnorm, hnz, _hboundary, _hcarrierNz, _hspan, _hcommute⟩ :=
     data.exists_kernel_read_frame hdiag
   set chartValue := chartObjective (chartPointOfDesign crux.design)
     with hchartValue
@@ -809,7 +809,7 @@ theorem SharedPrivateData.false_of_private_slot_boundary_family
       < Matrix.trace data.coeff + T.card) : False := by
   classical
   obtain ⟨S, readVecs, hSsymm, hSidem, hStrace, hsupp, _hread, _hnorm,
-    _hnz, hboundary, hcarrierNz⟩ :=
+    _hnz, hboundary, hcarrierNz, _hspan, _hcommute⟩ :=
     data.exists_kernel_read_frame hdiag
   set count := T.card with hcountDef
   set enum := T.orderIsoOfFin (rfl : T.card = count) with henum

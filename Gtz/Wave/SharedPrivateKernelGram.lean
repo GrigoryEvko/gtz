@@ -1,4 +1,5 @@
 import Gtz.Wave.SharedPrivateStrataDispatch
+import Gtz.Wave.SharedPrivateKernelResidue
 import Gtz.LinAlg.PsdKit
 
 set_option autoImplicit false
@@ -503,7 +504,15 @@ theorem SharedPrivateData.exists_kernel_read_frame {crux : SixThreeCrux}
       ∧ (∀ (atomIndex : Fin 6) (slot : Fin data.basisCount),
           atomIndex ∈ datumTightSupport data.tightDir
             (data.basisLabel slot) →
-          readVecs atomIndex slot ≠ 0) := by
+          readVecs atomIndex slot ≠ 0)
+      ∧ (∀ x : Fin data.basisCount → ℝ,
+          (∀ atomIndex : Fin 6, readVecs atomIndex ⬝ᵥ x = 0) → x = 0)
+      ∧ (∀ rowSlot colSlot : Fin data.basisCount,
+          (∑ atomIndex : Fin 6,
+              readVecs atomIndex rowSlot * (S *ᵥ readVecs atomIndex) colSlot)
+            = ∑ atomIndex : Fin 6,
+              (S *ᵥ readVecs atomIndex) rowSlot
+                * readVecs atomIndex colSlot) := by
   classical
   -- the positive diagonal of the Gram core
   have hpsd := data.hpsd
@@ -753,8 +762,133 @@ theorem SharedPrivateData.exists_kernel_read_frame {crux : SixThreeCrux}
     intro atomIndex slot hmem
     show sq slot * data.tightDir (data.basisLabel slot) atomIndex ≠ 0
     exact mul_ne_zero (hsq slot).ne' (mem_datumTightSupport.mp hmem)
+  -- the span law: no nonzero slot functional annihilates every read
+  have hspanLaw : ∀ x : Fin data.basisCount → ℝ,
+      (∀ atomIndex : Fin 6, readVecs atomIndex ⬝ᵥ x = 0) → x = 0 := by
+    intro x hx
+    set scaled : Fin data.basisCount → ℝ := fun slot => sq slot * x slot
+      with hscaled
+    have hzero : tightBasisColumns data.tightDir data.basisLabel *ᵥ scaled
+        = 0 := by
+      funext atomIndex
+      have heq : (tightBasisColumns data.tightDir data.basisLabel
+          *ᵥ scaled) atomIndex = readVecs atomIndex ⬝ᵥ x := by
+        show (∑ slot, data.tightDir (data.basisLabel slot) atomIndex
+            * (sq slot * x slot))
+          = ∑ slot, sq slot * data.tightDir (data.basisLabel slot) atomIndex
+            * x slot
+        exact Finset.sum_congr rfl fun slot _ => by ring
+      rw [heq, hx atomIndex]
+      rfl
+    have hrecover : data.leftInv
+        *ᵥ (tightBasisColumns data.tightDir data.basisLabel *ᵥ scaled)
+        = scaled := by
+      rw [Matrix.mulVec_mulVec, data.hleft, Matrix.one_mulVec]
+    rw [hzero, Matrix.mulVec_zero] at hrecover
+    funext slot
+    have hslot : sq slot * x slot = 0 := (congrFun hrecover slot).symm
+    rcases mul_eq_zero.mp hslot with hcase | hcase
+    · exact absurd hcase (hsq slot).ne'
+    · exact hcase
+  -- the read Gram commutes with the read idempotent
+  have hSval : ∀ colSlot midSlot : Fin data.basisCount,
+      S colSlot midSlot * sq midSlot
+        = sq colSlot * data.coeff midSlot colSlot := by
+    intro colSlot midSlot
+    have hsym := congrFun (congrFun hSsymm colSlot) midSlot
+    rw [Matrix.transpose_apply] at hsym
+    rw [← hsym, hSapply]
+    have hkinv : (sq midSlot)⁻¹ * sq midSlot = 1 :=
+      inv_mul_cancel₀ (hsq midSlot).ne'
+    linear_combination (data.coeff midSlot colSlot * sq colSlot) * hkinv
+  have hNentry : ∀ rowSlot midSlot : Fin data.basisCount,
+      ((tightBasisColumns data.tightDir data.basisLabel)ᵀ
+          * tightBasisColumns data.tightDir data.basisLabel)
+        rowSlot midSlot
+        = ∑ atomIndex : Fin 6,
+          data.tightDir (data.basisLabel rowSlot) atomIndex
+            * data.tightDir (data.basisLabel midSlot) atomIndex := by
+    intro rowSlot midSlot
+    rw [Matrix.mul_apply]
+    exact Finset.sum_congr rfl fun atomIndex _ => rfl
+  have hkey : ∀ rowSlot colSlot : Fin data.basisCount,
+      (∑ atomIndex : Fin 6,
+          readVecs atomIndex rowSlot * (S *ᵥ readVecs atomIndex) colSlot)
+        = sq rowSlot * sq colSlot
+          * (((tightBasisColumns data.tightDir data.basisLabel)ᵀ
+              * tightBasisColumns data.tightDir data.basisLabel)
+            * data.coeff) rowSlot colSlot := by
+    intro rowSlot colSlot
+    have hterm : ∀ atomIndex : Fin 6,
+        readVecs atomIndex rowSlot * (S *ᵥ readVecs atomIndex) colSlot
+          = ∑ midSlot, (sq rowSlot * sq colSlot
+              * data.coeff midSlot colSlot)
+            * (data.tightDir (data.basisLabel rowSlot) atomIndex
+              * data.tightDir (data.basisLabel midSlot) atomIndex) := by
+      intro atomIndex
+      have hmul : (S *ᵥ readVecs atomIndex) colSlot
+          = ∑ midSlot, S colSlot midSlot * readVecs atomIndex midSlot := rfl
+      rw [hmul, Finset.mul_sum]
+      refine Finset.sum_congr rfl fun midSlot _ => ?_
+      have hv := hSval colSlot midSlot
+      show (sq rowSlot * data.tightDir (data.basisLabel rowSlot) atomIndex)
+          * (S colSlot midSlot
+            * (sq midSlot
+              * data.tightDir (data.basisLabel midSlot) atomIndex))
+        = (sq rowSlot * sq colSlot * data.coeff midSlot colSlot)
+          * (data.tightDir (data.basisLabel rowSlot) atomIndex
+            * data.tightDir (data.basisLabel midSlot) atomIndex)
+      linear_combination (sq rowSlot
+        * data.tightDir (data.basisLabel rowSlot) atomIndex
+        * data.tightDir (data.basisLabel midSlot) atomIndex) * hv
+    have hinner : ∀ midSlot : Fin data.basisCount,
+        (∑ atomIndex : Fin 6, (sq rowSlot * sq colSlot
+            * data.coeff midSlot colSlot)
+          * (data.tightDir (data.basisLabel rowSlot) atomIndex
+            * data.tightDir (data.basisLabel midSlot) atomIndex))
+          = sq rowSlot * sq colSlot
+            * (((tightBasisColumns data.tightDir data.basisLabel)ᵀ
+                * tightBasisColumns data.tightDir data.basisLabel)
+              rowSlot midSlot * data.coeff midSlot colSlot) := by
+      intro midSlot
+      rw [← Finset.mul_sum, ← hNentry rowSlot midSlot]
+      ring
+    rw [Finset.sum_congr rfl fun atomIndex _ => hterm atomIndex,
+      Finset.sum_comm,
+      Finset.sum_congr rfl fun midSlot _ => hinner midSlot,
+      ← Finset.mul_sum, Matrix.mul_apply]
+  have hexch := columnGram_exchange_of_representation
+    data.hdata.isSymmetric data.hrepresentation
+  have hNsymm : ((tightBasisColumns data.tightDir data.basisLabel)ᵀ
+      * tightBasisColumns data.tightDir data.basisLabel)ᵀ
+      = (tightBasisColumns data.tightDir data.basisLabel)ᵀ
+        * tightBasisColumns data.tightDir data.basisLabel := by
+    rw [Matrix.transpose_mul, Matrix.transpose_transpose]
+  have hNMsymm : ((((tightBasisColumns data.tightDir data.basisLabel)ᵀ
+      * tightBasisColumns data.tightDir data.basisLabel)
+        * data.coeff))ᵀ
+      = ((tightBasisColumns data.tightDir data.basisLabel)ᵀ
+          * tightBasisColumns data.tightDir data.basisLabel)
+        * data.coeff := by
+    rw [Matrix.transpose_mul, hNsymm, ← hexch]
+  have hcommute : ∀ rowSlot colSlot : Fin data.basisCount,
+      (∑ atomIndex : Fin 6,
+          readVecs atomIndex rowSlot * (S *ᵥ readVecs atomIndex) colSlot)
+        = ∑ atomIndex : Fin 6,
+          (S *ᵥ readVecs atomIndex) rowSlot
+            * readVecs atomIndex colSlot := by
+    intro rowSlot colSlot
+    have hswap : (∑ atomIndex : Fin 6,
+        (S *ᵥ readVecs atomIndex) rowSlot * readVecs atomIndex colSlot)
+        = ∑ atomIndex : Fin 6,
+          readVecs atomIndex colSlot * (S *ᵥ readVecs atomIndex) rowSlot :=
+      Finset.sum_congr rfl fun _ _ => mul_comm _ _
+    have hentry := congrFun (congrFun hNMsymm colSlot) rowSlot
+    rw [Matrix.transpose_apply] at hentry
+    rw [hswap, hkey rowSlot colSlot, hkey colSlot rowSlot, hentry]
+    ring
   exact ⟨S, readVecs, hSsymm, hSidem, hStrace, hsupp, hread, hnorm, hnz,
-    hboundary, hcarrierNz⟩
+    hboundary, hcarrierNz, hspanLaw, hcommute⟩
 
 set_option maxHeartbeats 1600000 in
 /-- **THE DISJOINT-FAMILY KILL.**  At a diagonal Gram core, a family
@@ -775,7 +909,7 @@ theorem SharedPrivateData.false_of_disjoint_support_family
       < Matrix.trace data.coeff + T.card) : False := by
   classical
   obtain ⟨S, readVecs, hSsymm, hSidem, hStrace, hsupp, hread, hnorm, hnz,
-    _hboundary, _hcarrierNz⟩ :=
+    _hboundary, _hcarrierNz, _hspan, _hcommute⟩ :=
     data.exists_kernel_read_frame hdiag
   set chartValue := chartObjective (chartPointOfDesign crux.design)
     with hchartValue
