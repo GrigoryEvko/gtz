@@ -1868,4 +1868,119 @@ theorem not_isTie_of_no_quadruple_residue_six_three
   exact absurd (hclosed design quadruple outside hcard hposDef hnotMem) (not_lt.mpr hpivot)
 
 
+/-! ## Part 14: the arm-free route to the deciding cell of rank three
+
+The two free drops carry every `(6,3)` design to a strictly dominating quadruple.
+A quadruple is a set of card `rank + 1` at rank three, thus the whole deciding
+cell reduces to ONE statement about card-`rank + 1` sets, and the three-arm
+trichotomy is bypassed entirely.
+
+The reduction is FAITHFUL and not a strengthening: at `(6,3)` the named Prop is
+equivalent to the absence of a tie, because every design carries the quadruple
+the Prop speaks about. -/
+
+/-- **THE LAST STAGE, NAMED.**  A strictly dominating set of card `rank + 1`
+yields a strictly dominating set of card `rank`.  The witness is not asked to sit
+inside the given set, thus this is the weakest form of the last drop. -/
+def RankSuccShrinks (size rank : ℕ) : Prop :=
+  ∀ (design : WeightedDesign size rank) (base : Finset (Fin size)),
+    base.card = rank + 1 → (subsetSum design base - 1).PosDef →
+      ∃ selected : Finset (Fin size), selected.card = rank
+        ∧ (subsetSum design selected - 1).PosDef
+
+/-- A design that reaches a strictly dominating set of card `rank + 1` is not a
+tie, once the last stage is available. -/
+theorem not_isTie_of_rankSuccShrinks (hshrink : RankSuccShrinks size rank)
+    (design : WeightedDesign size rank) {base : Finset (Fin size)}
+    (hcard : base.card = rank + 1) (hposDef : (subsetSum design base - 1).PosDef) :
+    ¬ IsTie design := by
+  intro htie
+  obtain ⟨selected, hselectedCard, hselectedPosDef⟩ := hshrink design base hcard hposDef
+  exact htie.2 selected hselectedCard hselectedPosDef
+
+/-- **NO `(6,3)` TIE, FROM THE LAST STAGE ALONE.**  The quadruple is a theorem,
+thus the last stage is the only input. -/
+theorem not_isTie_six_three_of_rankSuccShrinks (hshrink : RankSuccShrinks 6 3)
+    (design : WeightedDesign 6 3) : ¬ IsTie design := by
+  obtain ⟨quadruple, hcard, hposDef⟩ := exists_card_four_posDef_six_three design
+  exact not_isTie_of_rankSuccShrinks hshrink design (by omega) hposDef
+
+/-- **THE HINGE AT `(6,3)` FROM THE LAST STAGE ALONE.**  With no tie the hinge is
+vacuous, thus the three-arm trichotomy is not used at all. -/
+theorem hingeHoldsAtSize_six_three_of_rankSuccShrinks (hshrink : RankSuccShrinks 6 3) :
+    HingeHoldsAtSize 6 3 := fun design htie =>
+  absurd htie (not_isTie_six_three_of_rankSuccShrinks hshrink design)
+
+/-- **WEIGHTED GTZ AT `(6,3)` FROM THE LAST STAGE ALONE.**  No stress-free arm, no
+balanced arm, no degenerate arm, no reach, no anchor, no icosahedron: one
+statement about strictly dominating quadruples. -/
+theorem gtzWeighted_six_three_of_rankSuccShrinks (hshrink : RankSuccShrinks 6 3) :
+    GtzWeighted 6 3 :=
+  gtzWeighted_six_three_of_hinge (hingeHoldsAtSize_six_three_of_rankSuccShrinks hshrink)
+
+/-- **ALL OF RANK THREE FROM THE LAST STAGE ALONE.** -/
+theorem gtzWeightedAll_three_of_rankSuccShrinks (hshrink : RankSuccShrinks 6 3) :
+    GtzWeightedAll 3 :=
+  gtzWeightedAll_three_of_hinge (hingeHoldsAtSize_six_three_of_rankSuccShrinks hshrink)
+
+/-- **THE REDUCTION IS FAITHFUL.**  The named Prop follows from the conjecture it
+is used to prove, together with the absence of a tie.  Thus it asserts nothing
+beyond the deciding cell, and the trade is a change of formula and not a change
+of strength. -/
+theorem rankSuccShrinks_six_three_of_gtz_of_noTie (hgtz : GtzWeighted 6 3)
+    (hnoTie : ∀ design : WeightedDesign 6 3, ¬ IsTie design) : RankSuccShrinks 6 3 := by
+  classical
+  intro design _base _hcard _hposDef
+  obtain ⟨weakDominator, hweakCard, hweakDominates⟩ := hgtz design
+  by_contra hnone
+  push Not at hnone
+  exact hnoTie design ⟨⟨weakDominator, hweakCard, hweakDominates⟩,
+    fun selected hcard hposDef => hnone selected hcard hposDef⟩
+
+/-- **THE `(6,3)` EQUIVALENCE.**  At the deciding cell of rank three the last
+stage and the absence of a tie are the same statement, because the quadruple the
+last stage speaks about always exists. -/
+theorem rankSuccShrinks_six_three_iff_noTie :
+    RankSuccShrinks 6 3 ↔ ∀ design : WeightedDesign 6 3, ¬ IsTie design := by
+  refine ⟨fun hshrink design => not_isTie_six_three_of_rankSuccShrinks hshrink design,
+    fun hnoTie => ?_⟩
+  exact rankSuccShrinks_six_three_of_gtz_of_noTie
+    (gtzWeighted_six_three_of_hinge fun design htie => absurd htie (hnoTie design)) hnoTie
+
+/-- **THE GENERAL-RANK SHAPE.**  A cell whose designs all reach a strictly
+dominating set of card `rank + 1` reduces its hinge to the last stage.  Rank
+three reaches it unconditionally; at rank four and up the free drops of Part 12
+reach card `size - 2`, which is above `rank + 1` at the deciding cell, and the
+gap is exactly `size - rank - 3` more drops. -/
+theorem hingeHoldsAtSize_of_rankSuccShrinks_of_reach (hshrink : RankSuccShrinks size rank)
+    (hreach : ∀ design : WeightedDesign size rank, ∃ base : Finset (Fin size),
+      base.card = rank + 1 ∧ (subsetSum design base - 1).PosDef) :
+    HingeHoldsAtSize size rank := by
+  intro design htie
+  obtain ⟨base, hcard, hposDef⟩ := hreach design
+  exact absurd htie (not_isTie_of_rankSuccShrinks hshrink design hcard hposDef)
+
+/-- The deciding cell of rank three reaches card `rank + 1` unconditionally. -/
+theorem reach_rankSucc_six_three (design : WeightedDesign 6 3) :
+    ∃ base : Finset (Fin 6), base.card = 3 + 1
+      ∧ (subsetSum design base - 1).PosDef := by
+  obtain ⟨quadruple, hcard, hposDef⟩ := exists_card_four_posDef_six_three design
+  exact ⟨quadruple, by omega, hposDef⟩
+
+/-- **THE RESIDUE, IN ITS SMALLEST SHAPE.**  At `(6,3)` the last stage is exactly
+this: a strictly dominating quadruple with every pivot value at least one cannot
+occur.  The stage law turns that into one label outside the quadruple, and
+`Gtz.sixThree_tie_quadruple_residue` is the reading a certificate must refute. -/
+theorem rankSuccShrinks_six_three_of_insideDrop
+    (hdrop : ∀ (design : WeightedDesign 6 3) (base : Finset (Fin 6)),
+      base.card = 4 → (subsetSum design base - 1).PosDef →
+        ∃ label ∈ base, pivot design base label < 1) :
+    RankSuccShrinks 6 3 := by
+  classical
+  intro design base hcard hposDef
+  obtain ⟨label, hmem, hlabel⟩ := hdrop design base (by omega) hposDef
+  refine ⟨base.erase label, ?_, posDef_erase_of_pivot_lt_one design hmem hposDef hlabel⟩
+  rw [Finset.card_erase_of_mem hmem, hcard]
+
+
 end Gtz
