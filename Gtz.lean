@@ -3212,6 +3212,13 @@ import Gtz.Wave.SharedPrivateLeakEnergy
 -- dispatches.
 import Gtz.Wave.SharedPrivateDualRead
 
+-- the co-parallel columns and the nonzero leak: the column resolution of
+-- a symmetric idempotent, the dichotomy that either joins the special
+-- column to the parallel family or prices its diagonal entry at one, the
+-- read combination of a two-seer probe, the nonzero leak of the second
+-- seer, the interior dual seers, and the unique separator kill.
+import Gtz.Wave.SharedPrivateCoparallelColumn
+
 -- the circuit rank-one link: the corner rows of a tight direction on a
 -- triple, the wedge law, the rank-one shifted gap block of a shared
 -- triple, the triple kill that refuses three basis columns on one

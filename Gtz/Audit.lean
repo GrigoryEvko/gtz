@@ -735,6 +735,7 @@ import Gtz.Wave.SharedPrivateKernelChain
 import Gtz.Wave.SharedPrivateConfinement
 import Gtz.Wave.SharedPrivateLeakEnergy
 import Gtz.Wave.SharedPrivateDualRead
+import Gtz.Wave.SharedPrivateCoparallelColumn
 import Gtz.Wave.SharedPrivateCircuitRankOne
 import Gtz.Wave.SharedPrivateCircuitSaturation
 import Gtz.Wave.KFourCertificateProof
@@ -796,6 +797,12 @@ import Gtz.Wave.PlaneWitnessLedger
 #print axioms Gtz.SixThreeCrux.shifted_weight_pos_of_planeWitness
 #print axioms Gtz.forall_shifted_weight_pos_of_planeWitness
 #print axioms Gtz.SixThreeCrux.false_of_planeWitness_of_shift_zero
+#print axioms Gtz.false_of_light_frame
+#print axioms Gtz.false_of_conic_frame
+#print axioms Gtz.SixThreeCrux.chart_diagonal_pos
+#print axioms Gtz.SixThreeCrux.exists_heavy_atom
+#print axioms Gtz.SixThreeCrux.exists_gram_defect
+#print axioms Gtz.SixThreeCrux.exists_gram_defect_ne
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -24076,6 +24083,26 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_saturated_lattice
 #print axioms Gtz.rankSixSharedPrivateClosed_of_saturated_lattice
 
+-- the set budget at every size, the shifted gap total and the two-set
+-- cover kill of the identical branch
+#print axioms Gtz.shiftedGap
+#print axioms Gtz.shiftedGap_apply_diag
+#print axioms Gtz.shiftedGap_apply_offDiag
+#print axioms Gtz.projection_eq_shiftedGap_add
+#print axioms Gtz.setProbe
+#print axioms Gtz.setProbe_mem
+#print axioms Gtz.setProbe_dotProduct
+#print axioms Gtz.setProbe_mulVec
+#print axioms Gtz.projection_set_contraction
+#print axioms Gtz.gapSet_saturation
+#print axioms Gtz.gapSet_shifted_sum_le_one
+#print axioms Gtz.shiftedGap_rankOne_of_gapBlockRankOne
+#print axioms Gtz.shiftedGapDiag_sum_eq
+#print axioms Gtz.rank_le_of_shiftedGap_rankOne_cover
+#print axioms Gtz.SharedPrivateData.shiftedGapDiag_sum
+#print axioms Gtz.SharedPrivateData.false_of_shiftedGap_rankOne_cover
+#print axioms Gtz.SharedPrivateData.false_of_identical_support_complement_rankOne
+
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
 -- module, enumerated from the ENVIRONMENT (not from this file's pin
@@ -24252,3 +24279,12 @@ run_cmd do
 #print axioms Gtz.rankFourSharedPrivateClosed_of_carrier_strata
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_carrier_strata
 #print axioms Gtz.rankSixSharedPrivateClosed_of_carrier_strata
+
+-- the co-parallel columns and the nonzero leak
+#print axioms Gtz.idem_entry_eq_column_dot
+#print axioms Gtz.column_smul_or_diag_eq_one
+#print axioms Gtz.false_of_coparallel_columns
+#print axioms Gtz.readCombination_of_pair
+#print axioms Gtz.leak_ne_zero_of_fixed_pair
+#print axioms Gtz.SharedPrivateData.exists_interior_dual_seers
+#print axioms Gtz.SharedPrivateData.false_of_unique_separator
