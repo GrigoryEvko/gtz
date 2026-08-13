@@ -54,6 +54,17 @@ stratum of the plane residue outright:
   budget of the kill is one less than the rank.
 * `Gtz.false_of_zero_scale_frame` — **THE ZERO-SCALE DEFLATION AT
   GENERAL RANK**, the rank-three form of the sharp plane case.
+* `Gtz.false_of_light_frame`, `Gtz.false_of_conic_frame` — the light and
+  conic strata at general rank.
+* `Gtz.SixThreeCrux.chart_diagonal_pos` — the chart diagonal of a crux is
+  positive at every atom.
+* `Gtz.SixThreeCrux.exists_heavy_atom` — **AN UNCONDITIONAL LAW OF EVERY
+  CRUX.**  Some atom carries a chart diagonal above three times its
+  shifted weight.
+* `Gtz.SixThreeCrux.exists_gram_defect`,
+  `Gtz.SixThreeCrux.exists_gram_defect_ne` — **A SECOND UNCONDITIONAL LAW
+  OF EVERY CRUX.**  At every atom some other slot beats the Gram test of
+  that atom.
 * `Gtz.AtomPlaneWitnessClosed`, `Gtz.atomPairGramClosed_of_planeWitness`
   — **THE RESIDUE IN DUAL FORM**, with seven real unknowns and no
   combinatorics.
@@ -257,14 +268,15 @@ theorem exists_plane_pair_of_witness {witnessCount : ℕ}
 the witness directions are the atoms themselves and the weights are
 nonnegative, the pair hypothesis turns the witness energy of one atom
 into a total over the whole slot set. -/
-theorem plane_atom_weight_dominates (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
-    (weight : Fin 6 → ℝ) (hweight : ∀ index, 0 ≤ weight index)
-    (hfail : ∀ slotOne slotTwo : Fin 6, slotOne ≠ slotTwo →
+theorem plane_atom_weight_dominates {slotCount rank : ℕ}
+    (atom : Fin slotCount → (Fin rank → ℝ)) (scale : Fin slotCount → ℝ)
+    (weight : Fin slotCount → ℝ) (hweight : ∀ index, 0 ≤ weight index)
+    (hfail : ∀ slotOne slotTwo : Fin slotCount, slotOne ≠ slotTwo →
       0 < atom slotOne ⬝ᵥ atom slotOne - scale slotOne →
       (atom slotOne ⬝ᵥ atom slotOne - scale slotOne)
           * (atom slotTwo ⬝ᵥ atom slotTwo - scale slotTwo)
         ≤ (atom slotOne ⬝ᵥ atom slotTwo) ^ 2)
-    (slot : Fin 6) (hpos : 0 < atom slot ⬝ᵥ atom slot - scale slot) :
+    (slot : Fin slotCount) (hpos : 0 < atom slot ⬝ᵥ atom slot - scale slot) :
     weight slot * (atom slot ⬝ᵥ atom slot) ^ 2
         + (atom slot ⬝ᵥ atom slot - scale slot)
           * ((∑ index, weight index * (atom index ⬝ᵥ atom index - scale index))
@@ -663,5 +675,169 @@ theorem SixThreeCrux.false_of_planeWitness_of_shift_zero (crux : SixThreeCrux)
     False :=
   crux.false_of_atomPairCeiling_of_shift_zero (atomPairCeilingClosed_of_planeWitness hwitness)
     hzero
+
+/-! ## Layer 8 — the light and conic strata at general rank -/
+
+/-- **THE LIGHT STRATUM AT GENERAL RANK.**  A tight frame with scales of
+total less than one carries an atom whose gap is more than the rank
+share of its energy.  The witness is the bulk term alone, and the pair
+hypothesis is not necessary. -/
+theorem false_of_light_frame {slotCount rank : ℕ} (hrank : 0 < rank)
+    (atom : Fin slotCount → (Fin rank → ℝ)) (scale : Fin slotCount → ℝ)
+    (hsmall : (∑ slot, scale slot) < 1)
+    (hframe : ∀ probe other : Fin rank → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ other)) = probe ⬝ᵥ other)
+    (hlight : ∀ slot, (rank : ℝ) * (atom slot ⬝ᵥ atom slot - scale slot)
+      ≤ ((rank : ℝ) - 1) * (atom slot ⬝ᵥ atom slot)) :
+    False := by
+  classical
+  have hcast : (0 : ℝ) < (rank : ℝ) := by exact_mod_cast hrank
+  refine false_of_frame_witness atom scale (fun _ : Fin 0 => 0) (fun _ => 0)
+    (((rank : ℝ) - 1) / (rank : ℝ)) hsmall hframe ?_ fun slot => ?_
+  · have hexact : (rank : ℝ) * (((rank : ℝ) - 1) / (rank : ℝ)) = (rank : ℝ) - 1 := by
+      field_simp
+    simp only [Finset.univ_eq_empty, Finset.sum_empty, add_zero]
+    rw [hexact]
+  · have hshape : ((rank : ℝ) - 1) / (rank : ℝ) * (atom slot ⬝ᵥ atom slot)
+        - (atom slot ⬝ᵥ atom slot - scale slot)
+      = (((rank : ℝ) - 1) * (atom slot ⬝ᵥ atom slot)
+          - (rank : ℝ) * (atom slot ⬝ᵥ atom slot - scale slot)) / (rank : ℝ) := by
+      field_simp
+    have hdiv := div_nonneg (by linarith [hlight slot] :
+      (0 : ℝ) ≤ ((rank : ℝ) - 1) * (atom slot ⬝ᵥ atom slot)
+        - (rank : ℝ) * (atom slot ⬝ᵥ atom slot - scale slot)) hcast.le
+    rw [← hshape] at hdiv
+    simp only [Finset.univ_eq_empty, Finset.sum_empty, add_zero]
+    linarith
+
+/-- **THE CONIC STRATUM AT GENERAL RANK.**  A positive combination of the
+atom directions whose budget stays one below the rank, and whose conic
+law dominates every atom of positive gap, kills the frame. -/
+theorem false_of_conic_frame {slotCount rank : ℕ}
+    (atom : Fin slotCount → (Fin rank → ℝ)) (scale : Fin slotCount → ℝ)
+    (weight : Fin slotCount → ℝ) (hweight : ∀ index, 0 ≤ weight index)
+    (hsmall : (∑ slot, scale slot) < 1)
+    (hframe : ∀ probe other : Fin rank → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ other)) = probe ⬝ᵥ other)
+    (hfail : ∀ slotOne slotTwo : Fin slotCount, slotOne ≠ slotTwo →
+      0 < atom slotOne ⬝ᵥ atom slotOne - scale slotOne →
+      (atom slotOne ⬝ᵥ atom slotOne - scale slotOne)
+          * (atom slotTwo ⬝ᵥ atom slotTwo - scale slotTwo)
+        ≤ (atom slotOne ⬝ᵥ atom slotTwo) ^ 2)
+    (hbudget : (∑ index, weight index * (atom index ⬝ᵥ atom index)) ≤ (rank : ℝ) - 1)
+    (hconic : ∀ slot, 0 < atom slot ⬝ᵥ atom slot - scale slot →
+      atom slot ⬝ᵥ atom slot - scale slot
+        ≤ weight slot * (atom slot ⬝ᵥ atom slot) ^ 2
+          + (atom slot ⬝ᵥ atom slot - scale slot)
+            * ((∑ index, weight index * (atom index ⬝ᵥ atom index - scale index))
+              - weight slot * (atom slot ⬝ᵥ atom slot - scale slot))) :
+    False := by
+  classical
+  refine false_of_frame_witness atom scale atom weight 0 hsmall hframe (by simpa using hbudget)
+    fun slot => ?_
+  rw [zero_mul, zero_add]
+  rcases le_or_gt (atom slot ⬝ᵥ atom slot - scale slot) 0 with hneg | hpos
+  · exact le_trans hneg (Finset.sum_nonneg fun index _ =>
+      mul_nonneg (hweight index) (sq_nonneg _))
+  · exact le_trans (hconic slot hpos)
+      (plane_atom_weight_dominates atom scale weight hweight hfail slot hpos)
+
+/-! ## Layer 9 — the unconditional laws of a crux -/
+
+/-- The chart diagonal of a crux is positive at every atom.  The gap
+diagonal is positive, the chart value is negative and the shifted weight
+is nonnegative, thus the plain weight is positive and the diagonal is
+above it. -/
+theorem SixThreeCrux.chart_diagonal_pos (crux : SixThreeCrux) (atomIndex : Fin 6) :
+    0 < (chartPointOfDesign crux.design).chart atomIndex atomIndex := by
+  have hgap := crux.gap_diagonal_pos_of_allHeavy atomIndex
+  have hentry : chartStationaryGap (chartPointOfDesign crux.design).chart
+      (chartPointOfDesign crux.design).weight atomIndex atomIndex
+      = (chartPointOfDesign crux.design).chart atomIndex atomIndex
+        - (chartPointOfDesign crux.design).weight atomIndex := by
+    rw [chartStationaryGap, Matrix.sub_apply, Matrix.diagonal_apply_eq]
+  rw [hentry] at hgap
+  have hneg := crux.hasNegativeChartValue
+  have hshift := crux.shifted_weight_nonneg atomIndex
+  linarith
+
+/-- **THE HEAVY ATOM OF A CRUX.**  Every crux carries an atom whose chart
+diagonal is more than three times its shifted weight.
+
+The law is unconditional.  It consumes the frame law of the chart, the
+nonnegativity of the shifted weights and the budget, and nothing else. -/
+theorem SixThreeCrux.exists_heavy_atom (crux : SixThreeCrux) :
+    ∃ atomIndex : Fin 6,
+      3 * (chartObjective (chartPointOfDesign crux.design)
+          + (chartPointOfDesign crux.design).weight atomIndex)
+        < (chartPointOfDesign crux.design).chart atomIndex atomIndex := by
+  classical
+  by_contra hnone
+  rw [not_exists] at hnone
+  obtain ⟨family, hnorm, horth, hsplit⟩ :=
+    exists_orthonormal_family_of_trace 3 (chartPointOfDesign crux.design).chart
+      (chartPointOfDesign crux.design).isSymmetric
+      (chartPointOfDesign crux.design).isIdempotent
+      (chartPointOfDesign crux.design).hasTraceRank
+  refine false_of_light_frame (rank := 3) (by norm_num) (atomVec family)
+    (fun atomIndex => chartObjective (chartPointOfDesign crux.design)
+      + (chartPointOfDesign crux.design).weight atomIndex)
+    crux.shifted_weight_sum_lt_one (atom_frame_law hnorm horth) fun slot => ?_
+  have hchart := atomVec_dot_eq_split_apply hsplit slot slot
+  have hbound := not_lt.mp (hnone slot)
+  rw [← hchart]
+  push_cast
+  linarith
+
+/-- **THE GRAM DEFECT AT EVERY ATOM OF A CRUX.**  At every atom of a crux
+some slot beats the Gram test of that atom: the squared chart entry of
+the pair is below the product of the shifted diagonal of the slot and the
+chart diagonal of the atom.
+
+The slot is never the atom itself, because the shifted weights are
+nonnegative.  The law is unconditional. -/
+theorem SixThreeCrux.exists_gram_defect (crux : SixThreeCrux) (pivot : Fin 6) :
+    ∃ slot : Fin 6,
+      (chartPointOfDesign crux.design).chart slot pivot ^ 2
+        < ((chartPointOfDesign crux.design).chart slot slot
+            - (chartObjective (chartPointOfDesign crux.design)
+              + (chartPointOfDesign crux.design).weight slot))
+          * (chartPointOfDesign crux.design).chart pivot pivot := by
+  classical
+  by_contra hnone
+  rw [not_exists] at hnone
+  obtain ⟨family, hnorm, horth, hsplit⟩ :=
+    exists_orthonormal_family_of_trace 3 (chartPointOfDesign crux.design).chart
+      (chartPointOfDesign crux.design).isSymmetric
+      (chartPointOfDesign crux.design).isIdempotent
+      (chartPointOfDesign crux.design).hasTraceRank
+  have henergy : (0 : ℝ) < atomVec family pivot ⬝ᵥ atomVec family pivot := by
+    rw [← atomVec_dot_eq_split_apply hsplit pivot pivot]
+    exact crux.chart_diagonal_pos pivot
+  refine false_of_zero_scale_frame (rank := 3) (by norm_num) (atomVec family)
+    (fun atomIndex => chartObjective (chartPointOfDesign crux.design)
+      + (chartPointOfDesign crux.design).weight atomIndex)
+    pivot crux.shifted_weight_sum_lt_one (atom_frame_law hnorm horth) henergy fun slot => ?_
+  have hbound := not_lt.mp (hnone slot)
+  rw [← atomVec_dot_eq_split_apply hsplit slot slot,
+    ← atomVec_dot_eq_split_apply hsplit pivot pivot,
+    ← atomVec_dot_eq_split_apply hsplit slot pivot]
+  linarith
+
+/-- The slot of the Gram defect is never the atom itself. -/
+theorem SixThreeCrux.exists_gram_defect_ne (crux : SixThreeCrux) (pivot : Fin 6) :
+    ∃ slot : Fin 6, slot ≠ pivot
+      ∧ (chartPointOfDesign crux.design).chart slot pivot ^ 2
+        < ((chartPointOfDesign crux.design).chart slot slot
+            - (chartObjective (chartPointOfDesign crux.design)
+              + (chartPointOfDesign crux.design).weight slot))
+          * (chartPointOfDesign crux.design).chart pivot pivot := by
+  obtain ⟨slot, hslot⟩ := crux.exists_gram_defect pivot
+  refine ⟨slot, ?_, hslot⟩
+  intro heq
+  subst heq
+  have hdiag := crux.chart_diagonal_pos slot
+  have hshift := crux.shifted_weight_nonneg slot
+  nlinarith [hslot, hdiag, hshift]
 
 end Gtz
