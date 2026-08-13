@@ -684,6 +684,8 @@ import Gtz.Wave.KFourEdgeCoordinates
 import Gtz.Wave.BothParallelKernelRigidity
 import Gtz.Wave.BothParallelTrichotomy
 import Gtz.Wave.BothParallelDiagonalCore
+import Gtz.Wave.SharedPairOuterReduction
+import Gtz.Wave.RankFiveNormalForm
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21985,6 +21987,31 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.effective_diagonal_read
 #print axioms Gtz.bothParallel_effective_cross_vanish
 #print axioms Gtz.bothParallel_effective_cross_commutation
+
+-- ==========================================================
+-- the shared-pair outer reduction.  The row reads, the entry
+-- Cauchy-Schwarz, the gap floor, the two inner kills, the
+-- narrowing window, and the refined closure-one bridge.
+-- ==========================================================
+
+#print axioms Gtz.mulVec_apply_of_single_support
+#print axioms Gtz.mulVec_apply_of_pair_support
+#print axioms Gtz.dotProduct_mulVec_nonneg_of_symm_idem
+#print axioms Gtz.sq_entry_le_diagonal_mul_of_symm_idem
+#print axioms Gtz.SixThreeCrux.gap_diagonal_pos_of_allHeavy
+#print axioms Gtz.false_of_singleton_tight_direction
+#print axioms Gtz.RankFourFrame.false_of_samePair_columns
+#print axioms Gtz.sharedPair_gap_offdiag_sq_lt
+#print axioms Gtz.sharedPair_capture_window
+#print axioms Gtz.sharedPair_compression_window
+#print axioms Gtz.rankFourSupportTwoClosed_of_outer_shared_kill
+
+-- ==========================================================
+-- the rank-five normal form.  Fourteen facts at every rank-five
+-- crux datum, with the captured-trace disjunction.
+-- ==========================================================
+
+#print axioms Gtz.SixThreeCrux.exists_rankFive_coefficient_normalForm
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

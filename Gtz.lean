@@ -2926,6 +2926,16 @@ import Gtz.Wave.BothParallelTrichotomy
 -- the entry reads, the zero cross entry, and the commutation pricing.
 import Gtz.Wave.BothParallelDiagonalCore
 
+-- the shared-pair outer reduction: the row reads, the entry
+-- Cauchy-Schwarz, the gap floor, the singleton kill, the same-pair
+-- kill, the narrowing window, and the refined closure-one bridge.
+import Gtz.Wave.SharedPairOuterReduction
+
+-- the rank-five normal form: the support-minimal reduction, the
+-- five-label basis, the coefficient coordinates, the H-form, the
+-- exchange law, and the captured-trace disjunction tr M = 2 or 3.
+import Gtz.Wave.RankFiveNormalForm
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
