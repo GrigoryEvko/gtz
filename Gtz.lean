@@ -2991,6 +2991,12 @@ import Gtz.Wave.CycleSeamReduction
 -- discharge at the identity slot pattern.
 import Gtz.Wave.KFourCertificateReduction
 
+-- the certificate corner backbone: the corner product law, the pair
+-- trace and det laws, the corner det sum, the two excess balances,
+-- the uncarried solves, and the Gamma factorization with the two
+-- positive semidefinite laws.
+import Gtz.Wave.CertificateCornerBackbone
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.

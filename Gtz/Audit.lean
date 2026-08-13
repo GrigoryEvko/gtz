@@ -700,6 +700,7 @@ import Gtz.Wave.BothParallelDiagonalKill
 import Gtz.Wave.BothParallelDischarge
 import Gtz.Wave.CycleSeamReduction
 import Gtz.Wave.KFourCertificateReduction
+import Gtz.Wave.CertificateCornerBackbone
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -22178,6 +22179,29 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- ==========================================================
 
 #print axioms Gtz.rankFourKFourClosed_of_certificate
+
+-- ==========================================================
+-- the certificate corner backbone.  The corner product law,
+-- the pair trace and det laws, the corner det sum, the two
+-- excess balances, the uncarried solves, and the Gamma
+-- factorization with the two PSD laws.
+-- ==========================================================
+
+#print axioms Gtz.corner_product_of_reads
+#print axioms Gtz.pair_trace_of_reads
+#print axioms Gtz.pair_det_of_reads
+#print axioms Gtz.esum_pairs_of_idempotent_trace
+#print axioms Gtz.offdiag_solve_zero_three
+#print axioms Gtz.offdiag_solve_three_zero
+#print axioms Gtz.offdiag_solve_one_two
+#print axioms Gtz.offdiag_solve_two_one
+#print axioms Gtz.kfour_corner_excess_sum
+#print axioms Gtz.seam_corner_excess_sum
+#print axioms Gtz.gramMul_conj_of_symm_idem
+#print axioms Gtz.gramMul_posSemidef_of_factor
+#print axioms Gtz.gramComplement_posSemidef_of_factor
+#print axioms Gtz.kfour_gram_factorization
+#print axioms Gtz.seam_gram_factorization
 
 -- ==========================================================
 -- the rank-six normal form.  Fifteen facts at every rank-six
