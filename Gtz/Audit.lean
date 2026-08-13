@@ -679,6 +679,7 @@ import Gtz.Wave.CoefficientEngineCore
 import Gtz.Wave.PencilNullFormLayer
 import Gtz.Wave.CycleIndependentClosure
 import Gtz.Wave.SupportTwoRayleighKill
+import Gtz.Wave.GramExchangeLayer
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21924,6 +21925,18 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.projection_mulVec_eq_zero_of_energy_eq_zero
 #print axioms Gtz.RankFourFrame.false_of_supportTwo_private_pair
 #print axioms Gtz.rankFourSupportTwoClosed_of_shared_pair_kill
+#print axioms Gtz.basisGram_posSemidef
+#print axioms Gtz.gram_exchange
+#print axioms Gtz.gram_exchange_posSemidef
+#print axioms Gtz.gram_complement_conj
+#print axioms Gtz.gram_complement_posSemidef
+#print axioms Gtz.gram_exchange_diag_read
+#print axioms Gtz.gram_energy_window_upper
+#print axioms Gtz.gram_exchange_read_of_support
+#print axioms Gtz.gram_exchange_entry_sq_le
+#print axioms Gtz.gram_complement_entry_sq_le_of_unit
+#print axioms Gtz.gram_exchange_trace_read
+#print axioms Gtz.gram_energy_sum_window_upper
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

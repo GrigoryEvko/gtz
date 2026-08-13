@@ -2900,6 +2900,11 @@ import Gtz.Wave.CycleIndependentClosure
 -- private-pair kill, and the closure bridge.
 import Gtz.Wave.SupportTwoRayleighKill
 
+-- the Gram exchange layer: the direction Gram, the second exchange law
+-- Gamma M = M^T Gamma M, the two positivity laws, the diagonal and
+-- support reads, the energy window, the minors, and the trace window.
+import Gtz.Wave.GramExchangeLayer
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
