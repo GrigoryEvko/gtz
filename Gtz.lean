@@ -2927,6 +2927,15 @@ import Gtz.Wave.BothParallelTrichotomy
 import Gtz.Wave.BothParallelDiagonalCore
 -- The collapse supply: the row-square masses of the diagonal core.
 import Gtz.Wave.BothParallelCollapseSupply
+-- The finale supply: the decomposition readers, the circuit class, the
+-- five-class core, the six-atom sums, the per-triple Schur test, and
+-- the four-triple finale.
+import Gtz.Wave.BothParallelEffectiveEntries
+import Gtz.Wave.BothParallelSchurFinale
+-- The branch-one kill and the discharge: closure five modulo the cross
+-- pin and the circuit closure.
+import Gtz.Wave.BothParallelDiagonalKill
+import Gtz.Wave.BothParallelDischarge
 
 -- the shared-pair outer reduction: the row reads, the entry
 -- Cauchy-Schwarz, the gap floor, the singleton kill, the same-pair

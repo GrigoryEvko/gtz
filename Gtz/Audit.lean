@@ -694,6 +694,10 @@ import Gtz.Wave.BothParallelCollapseSupply
 import Gtz.Wave.SharedPairCaptureNarrowing
 import Gtz.Wave.PairWedgeCalculus
 import Gtz.Wave.PairCouplingCalculus
+import Gtz.Wave.BothParallelEffectiveEntries
+import Gtz.Wave.BothParallelSchurFinale
+import Gtz.Wave.BothParallelDiagonalKill
+import Gtz.Wave.BothParallelDischarge
 import Gtz.Wave.CycleSeamReduction
 import Gtz.Wave.KFourCertificateReduction
 import Gtz.Wave.RankSixNormalForm
@@ -22276,3 +22280,16 @@ run_cmd do
 #print axioms Gtz.six_atom_trace_read
 #print axioms Gtz.triple_schur_step
 #print axioms Gtz.schur_sum_nonneg
+#print axioms Gtz.decomposition_diagonal_read
+#print axioms Gtz.decomposition_commutation_entry
+#print axioms Gtz.circuit_direction_parallel
+#print axioms Gtz.extraMass_pos_of_mem
+#print axioms Gtz.assembly_eq_effective_diagonal_with_extra
+#print axioms Gtz.extra_diagonal_read
+#print axioms Gtz.extra_commutation_entry
+#print axioms Gtz.six_sum_univ_eq
+#print axioms Gtz.six_sum_erase_eq
+#print axioms Gtz.SixThreeCrux.schur_test_of_cross_zero
+#print axioms Gtz.SixThreeCrux.false_of_bothParallel_finale
+#print axioms Gtz.SixThreeCrux.false_of_bothParallel_parallel_branch
+#print axioms Gtz.rankFourBothParallelClosed_of_pins
