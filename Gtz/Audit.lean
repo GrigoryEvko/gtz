@@ -4692,6 +4692,11 @@ import Gtz.Wave.DenseCeilingCollapse
 #print axioms Gtz.hingeHoldsAtSize_six_three_of_polarTilt
 #print axioms Gtz.thresholdArms_rank_three_of_polarTilt
 #print axioms Gtz.polarTilt_closes_every_arm
+#print axioms Gtz.not_rankSuccShrinks_of_isTie_of_reach
+#print axioms Gtz.not_rankSuccShrinks_six_three
+#print axioms Gtz.not_rankSuccShrinks_six_three_of_iff
+#print axioms Gtz.sixSplitDiamondDesign_separates_residuals
+#print axioms Gtz.polarTiltTieFree_forbids_only_primitive_ties
 #print axioms Gtz.PolarCouplingSelection
 #print axioms Gtz.hingeHoldsAtSize_of_polarCoupling
 #print axioms Gtz.not_polarTiltSelection_five_three
