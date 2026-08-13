@@ -2171,6 +2171,16 @@ import Gtz.Uniform.WindowInductionStep
 -- it always had.
 import Gtz.Reduction.MassGapDescent
 
+-- The polar cover descent: the Householder frame of a hyperplane is an
+-- orthonormal BASIS at every rank, every design carries an atom longer than the
+-- unit sphere, that atom is light, thus the design read against its own
+-- orthogonal hyperplane leaves a mass deficit and the conjecture one RANK down
+-- answers with a STRICT cover; the Schur core then turns the cover plus a tilt
+-- bound into a strictly dominating subset, and one selection residual closes
+-- the hinge, all three arms, the partial-support sub-arm, the repaired
+-- degenerate cover and both registry hinge obligations.
+import Gtz.Reduction.PolarCoverDescent
+
 -- The frame-priced descent: the design identity contracts against the inverse
 -- gap of every region, thus the pivot pigeonhole becomes an exact stage law and
 -- the first drop is free at every design of size above the rank plus one; the
@@ -3174,12 +3184,29 @@ import Gtz.Wave.SharedPrivateSlotEnergy
 import Gtz.Wave.SharedPrivateKernelChain
 import Gtz.Wave.SharedPrivateConfinement
 
+-- the leak energy of an interior read: the column calculus of a
+-- symmetric idempotent, the leak energy identity off the carrier, the
+-- co-carrier floor and the carrier floor, the solitary co-slot law, the
+-- kernel leak relation, the commutation term calculus with the unique
+-- separator leak law, the zero-leak line of two columns, the disjoint
+-- co-carrier kill of an interior triple, and the narrowed residue with
+-- its five dispatches.
+import Gtz.Wave.SharedPrivateLeakEnergy
+
 -- the circuit rank-one link: the corner rows of a tight direction on a
 -- triple, the wedge law, the rank-one shifted gap block of a shared
 -- triple, the triple kill that refuses three basis columns on one
 -- support, the basis independence reads, the split dichotomy with its
 -- label collapse and pair minor, and closure two on five residues.
 import Gtz.Wave.SharedPrivateCircuitRankOne
+
+-- the circuit saturation law: the sparse probe readings, the gap
+-- dictionary of a symmetric idempotent chart, the division-free budget
+-- cores, the pair and triple budgets of a singular shifted gap block,
+-- the row energy law with its cross energy ceiling, the dead-wedge
+-- support-two collapse with its parallel shared rows, and closure two
+-- on the two paid residues.
+import Gtz.Wave.SharedPrivateCircuitSaturation
 
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
