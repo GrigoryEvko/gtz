@@ -2094,6 +2094,13 @@ import Gtz.Reduction.BalancedStratumClosure
 -- obligations.
 import Gtz.Reduction.ThresholdCellHingeMap
 
+-- The degenerate hinge arm at general rank: the Householder frame of a
+-- hyperplane at every rank, the pole mass law that makes the Schur surplus
+-- free, the repair of the producer residual that a parallel-pair tie refutes,
+-- the mass gap priced over the labels a stress misses, and the two registry
+-- hinge obligations on a smaller residual list.
+import Gtz.Reduction.DegenerateHingeArm
+
 -- The one-frame gate system at a tie: the master gate extraction, the
 -- coupling floor, the equality law on the dominating stratum, the dual-conic
 -- polarity of the stress-free stratum, the gate trichotomy, and the
@@ -2155,6 +2162,14 @@ import Gtz.Uniform.SpectralWhitening
 -- branch is free from the previous cell, thus a window cell needs only its
 -- hinge, and the deciding cell of a rank follows from the three hinge arms.
 import Gtz.Uniform.WindowInductionStep
+
+-- The mass-gap descent and the tie-carrying recut of the deepest hinge arm: a
+-- strictly dominating set drops a label when that label's pivot value is less
+-- than one, the pivot values add up to the rank plus the inverse-gap trace, the
+-- mass gap prices both, three explicit atoms show the bare shrink route is
+-- false, and the deepest arm is restated with the tie and the primitive design
+-- it always had.
+import Gtz.Reduction.MassGapDescent
 
 -- The matroid stratification of the stress-free hinge: the plane-pair escape
 -- law empties four of the nine six-point classes, the hinge follows from
@@ -3148,6 +3163,14 @@ import Gtz.Wave.SharedPrivateSlotEnergy
 -- with the single-cover slot, the private-slot structure at trace two,
 -- and the narrowed basis-count-five residue with the five dispatches.
 import Gtz.Wave.SharedPrivateKernelChain
+import Gtz.Wave.SharedPrivateConfinement
+
+-- the circuit rank-one link: the corner rows of a tight direction on a
+-- triple, the wedge law, the rank-one shifted gap block of a shared
+-- triple, the triple kill that refuses three basis columns on one
+-- support, the basis independence reads, the split dichotomy with its
+-- label collapse and pair minor, and closure two on five residues.
+import Gtz.Wave.SharedPrivateCircuitRankOne
 
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
@@ -3237,6 +3260,13 @@ import Gtz.Wave.AtomGramSelection
 -- boundary law, and the narrowed rank-four residues.
 import Gtz.Wave.OuterComplementNullKill
 
+-- the boundary residue line: the capture frame and the capture
+-- residue, the trace-one parallel law of a low-trace idempotent, the
+-- boundary dichotomy at the atom axes, the boundary pair kill (at most
+-- one boundary atom), the proportional-row interior law, and the clone
+-- closure with no interiority.
+import Gtz.Wave.OuterBoundaryResidueLine
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.
@@ -3289,6 +3319,13 @@ import Gtz.Wave.DenseHeavyAtomReduction
 -- the assembly-rank capstone: the cell and the rank-three payoff
 -- modulo the eleven named closures of the three rungs.
 import Gtz.Wave.AssemblyRankCapstone
+
+-- the dense ceiling collapse: the increment that removes the interiority
+-- from the atom triple ceiling, the shifted weight floor that every crux
+-- carries, the `(6,3)` cell from one design-side residue, the six dense
+-- profile closures, the frame energy floor, and the plane pair residue
+-- with its deflation at a boundary atom.
+import Gtz.Wave.DenseCeilingCollapse
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
