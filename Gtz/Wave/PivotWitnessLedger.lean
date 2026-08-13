@@ -52,7 +52,13 @@ law SUBSUMES the two unconditional laws of every crux that the plane
 ledger supplies — the heavy atom is the constant share, and the Gram
 defect is the share of one slot.
 
-The last layer states the third rung in DUAL form.  `AtomPivotWitnessClosed`
+A LAUNCH PAD makes the deflated search self-starting.  At one and the
+same light pivot the deflated trace is positive, the deflated gap total
+beats the scale gap, and one slot outside the pivot carries a positive
+pivot minor.  Thus every hypothesis that the deflated ledger asks of a
+pivot holds unconditionally, and the residue may consume all four.
+
+The last layers state the third rung in DUAL form.  `AtomPivotWitnessClosed`
 asks, at a datum whose deflated pairs all fail, for one bulk value and
 six weights.  Its constraints are linear in those unknowns at fixed data,
 it carries no combinatorial search, no eigenvalue and no square root, and
@@ -92,6 +98,12 @@ it closes the `(6,3)` cell with no side hypothesis.
 * `Gtz.exists_deflated_heavy_slot`,
   `Gtz.exists_deflated_heavy_slot_of_light_pivot` — **THE HEAVY SLOT
   STRATUM**, tight at the regular tetrahedron.
+* `Gtz.atomPairMinor_pivot_total_pos`, `Gtz.exists_positive_pivot_minor`,
+  `Gtz.exists_light_pivot_launch`,
+  `Gtz.exists_dominating_pair_at_light_pivot` — **THE LAUNCH PAD**: at
+  one and the same light pivot the deflated trace is positive, the
+  deflated gap total beats the scale gap, and one slot outside carries a
+  positive pivot minor.  The deflated search never starts empty.
 * `Gtz.atomPivot_weight_dominates` — the deflated pair hypothesis priced
   on a deflated conic witness.
 * `Gtz.exists_pivotPair_of_deflated_rank_one` — **THE RANK-ONE STRATUM
@@ -118,6 +130,10 @@ it closes the `(6,3)` cell with no side hypothesis.
   two slots of positive diagonal are beaten together by ONE slot.  The
   ambient budget is one below the rank, thus a rank-one witness wastes a
   whole unit and this law spends it.
+* `Gtz.exists_weighted_gram_defect`, `Gtz.exists_region_gram_defect` —
+  **THE REGION GRAM DEFECT**: every region of positive diagonal mass is
+  beaten by ONE slot.  One slot returns the Gram defect and the whole
+  slot set returns the heavy slot, thus the region law carries both.
 * `Gtz.SixThreeCrux.exists_witness_defect` — **THE MASTER UNCONDITIONAL
   LAW OF EVERY CRUX.**
 * `Gtz.SixThreeCrux.exists_share_defect` — **THE SHARE DEFECT**, and
@@ -126,6 +142,8 @@ it closes the `(6,3)` cell with no side hypothesis.
   unconditional laws of a crux, both as corollaries of one share law.
 * `Gtz.SixThreeCrux.exists_two_pivot_gram_defect` — the two-pivot law of
   every crux.
+* `Gtz.SixThreeCrux.exists_region_gram_defect` — **THE REGION LAW OF
+  EVERY CRUX**, over all sixty three nonempty regions at once.
 * `Gtz.tetraFrame`, `Gtz.tetraFrameScale`, `Gtz.tetraFrame_frame_law`,
   `Gtz.tetraFrameScale_pos`, `Gtz.tetraFrameScale_sum`,
   `Gtz.tetraFrame_shiftedDiag_axis`, `Gtz.tetraFrame_tripleDet`,
@@ -149,6 +167,13 @@ it closes the `(6,3)` cell with no side hypothesis.
   `Gtz.rankFiveSupportTwoClosed_of_pivotWitness`,
   `Gtz.rankFourSupportTwoClosed_of_pivotWitness` — the dense branches and
   the support-two closures from the same residue.
+* `Gtz.AtomLightPivotWitnessClosed`,
+  `Gtz.atomPivotPairClosed_of_lightPivotWitness` — **THE RESIDUE AT THE
+  LIGHT PIVOT**, strictly smaller because the launch pad gives it four
+  more hypotheses at no cost, with
+  `Gtz.gtzWeighted_six_three_of_lightPivotWitness`,
+  `Gtz.gtzWeightedAll_three_of_lightPivotWitness` and the same seven
+  campaign consequences.
 
 ## Vacuity
 
@@ -706,6 +731,103 @@ theorem exists_deflated_heavy_slot_of_light_pivot {atom : Fin 6 → (Fin 3 → �
   have htrace := atomPivotTrace_pos_of_light hframe (hscale pivot) hsmall hmass hlight' hpivot
   exact ⟨pivot, hpivot, htrace, exists_deflated_heavy_slot hsmall htrace⟩
 
+/-- **THE DEFLATED GAP TOTAL IS POSITIVE AT A HEAVY PIVOT.**  At rank
+three a pivot whose shifted diagonal beats twice its own scale carries a
+deflated gap total above its own shifted diagonal against the scale gap.
+
+The light pivot of the deflation layer obeys that bound at no cost, thus
+the deflated pair search never starts empty. -/
+theorem atomPairMinor_pivot_total_pos {atom : Fin slotCount → (Fin 3 → ℝ)}
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    {scale : Fin slotCount → ℝ} {pivot : Fin slotCount}
+    (hscale : 0 < scale pivot)
+    (hheavy : 2 * scale pivot < atomShiftedDiag atom scale pivot) :
+    atomShiftedDiag atom scale pivot * (1 - ∑ slot, scale slot)
+      < ∑ slot ∈ Finset.univ.erase pivot, atomPairMinor atom scale pivot slot := by
+  rw [atomPairMinor_pivot_total atom scale pivot, atomPivotTrace_eq hframe scale pivot]
+  have hdiag : atomGram atom pivot pivot = atomShiftedDiag atom scale pivot + scale pivot := by
+    simp only [atomShiftedDiag]
+    ring
+  rw [hdiag]
+  push_cast
+  nlinarith [hscale, hheavy]
+
+/-- **THE DEFLATED PAIR SEARCH IS SELF-STARTING.**  A heavy pivot at a
+rank-three frame with scales of total less than one carries a slot of
+POSITIVE pivot minor, thus the pair `{pivot, slot}` already dominates its
+own carrier. -/
+theorem exists_positive_pivot_minor {atom : Fin slotCount → (Fin 3 → ℝ)}
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    {scale : Fin slotCount → ℝ} {pivot : Fin slotCount}
+    (hscale : 0 < scale pivot) (hsmall : (∑ slot, scale slot) < 1)
+    (hpivot : 0 < atomShiftedDiag atom scale pivot)
+    (hheavy : 2 * scale pivot < atomShiftedDiag atom scale pivot) :
+    ∃ slot, slot ≠ pivot ∧ 0 < atomPairMinor atom scale pivot slot := by
+  classical
+  by_contra hnone
+  have hnonpos : ∀ slot ∈ Finset.univ.erase pivot, atomPairMinor atom scale pivot slot ≤ 0 := by
+    intro slot hslot
+    by_contra hlt
+    exact hnone ⟨slot, (Finset.mem_erase.mp hslot).1, lt_of_not_ge hlt⟩
+  have hsum := Finset.sum_nonpos hnonpos
+  have hpos := atomPairMinor_pivot_total_pos hframe hscale hheavy
+  nlinarith [hsum, hpos, hpivot, hsmall]
+
+/-- **THE LAUNCH PAD OF THE DEFLATED SEARCH.**  A rank-three frame on six
+slots with positive scales of total less than one carries a pivot that is
+at the same time light, heavy against its own scale, of positive deflated
+trace, of positive deflated gap total, and paired with a slot of positive
+pivot minor.
+
+Thus every hypothesis that the deflated ledger asks of a pivot holds at
+one and the same pivot, and it holds unconditionally. -/
+theorem exists_light_pivot_launch {atom : Fin 6 → (Fin 3 → ℝ)}
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    {scale : Fin 6 → ℝ} (hscale : ∀ slot, 0 < scale slot)
+    (hsmall : (∑ slot, scale slot) < 1) :
+    ∃ pivot : Fin 6, 0 < atomShiftedDiag atom scale pivot
+      ∧ 2 * scale pivot < atomShiftedDiag atom scale pivot
+      ∧ 0 < atomPivotTrace atom scale pivot
+      ∧ atomShiftedDiag atom scale pivot * (1 - ∑ slot, scale slot)
+        < ∑ slot ∈ Finset.univ.erase pivot, atomPairMinor atom scale pivot slot
+      ∧ ∃ slot, slot ≠ pivot ∧ 0 < atomPairMinor atom scale pivot slot := by
+  classical
+  have hnonempty : (Finset.univ : Finset (Fin 6)).Nonempty := ⟨0, Finset.mem_univ 0⟩
+  have hmass : 0 < ∑ slot, scale slot := Finset.sum_pos (fun slot _ => hscale slot) hnonempty
+  obtain ⟨pivot, hlight, hpivot⟩ :=
+    exists_light_pivot hframe hscale hnonempty (by push_cast; linarith [hsmall])
+  have hlight' : scale pivot * (3 - ∑ slot, scale slot)
+      ≤ (∑ slot, scale slot) * atomShiftedDiag atom scale pivot := by
+    have hcast : ((3 : ℕ) : ℝ) = (3 : ℝ) := by norm_num
+    rw [hcast] at hlight
+    exact hlight
+  have hheavy : 2 * scale pivot < atomShiftedDiag atom scale pivot := by
+    nlinarith [hlight', hscale pivot, hmass, hsmall, hpivot]
+  exact ⟨pivot, hpivot, hheavy,
+    atomPivotTrace_pos_of_light hframe (hscale pivot) hsmall hmass hlight' hpivot,
+    atomPairMinor_pivot_total_pos hframe (hscale pivot) hheavy,
+    exists_positive_pivot_minor hframe (hscale pivot) hsmall hpivot hheavy⟩
+
+/-- **THE DOMINATING PAIR AT A LIGHT PIVOT.**  The selection theorem of
+the Gram layer supplies a dominating pair somewhere.  The launch pad
+supplies one whose FIRST slot is the light pivot itself, thus the pivot
+of the deflation and the pivot of the selection are the same slot. -/
+theorem exists_dominating_pair_at_light_pivot {atom : Fin 6 → (Fin 3 → ℝ)}
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    {scale : Fin 6 → ℝ} (hscale : ∀ slot, 0 < scale slot)
+    (hsmall : (∑ slot, scale slot) < 1) :
+    ∃ pivot slot : Fin 6, pivot ≠ slot
+      ∧ 2 * scale pivot < atomShiftedDiag atom scale pivot
+      ∧ 0 < atomShiftedDiag atom scale pivot
+      ∧ 0 < atomPairMinor atom scale pivot slot := by
+  obtain ⟨pivot, hpivot, hheavy, _, _, slot, hne, hminor⟩ :=
+    exists_light_pivot_launch hframe hscale hsmall
+  exact ⟨pivot, slot, Ne.symm hne, hheavy, hpivot, hminor⟩
+
 /-- **THE DEFLATED PAIR HYPOTHESIS PRICED ON A CONIC WITNESS.**  When the
 deflated witness directions are the deflated columns themselves and the
 weights are nonnegative, the failure of every deflated pair turns the
@@ -1195,6 +1317,75 @@ theorem exists_two_pivot_gram_defect {atom : Fin slotCount → (Fin rank → ℝ
   rw [hshape, lt_div_iff₀ (by positivity)] at hslot
   linarith [hslot]
 
+/-- **THE WEIGHTED GRAM DEFECT.**  At a tight frame with scales of total
+less than one, every nonnegative weight family of positive diagonal mass
+is beaten by ONE slot: the weighted square total of the Gram row of that
+slot beats its own scale against the diagonal mass.
+
+This is the trace-one law with the normalization cleared, thus it carries
+no division and it is the form that a certificate reads. -/
+theorem exists_weighted_gram_defect {atom : Fin slotCount → (Fin rank → ℝ)}
+    (scale weight : Fin slotCount → ℝ)
+    (hsmall : (∑ slot, scale slot) < 1)
+    (hframe : ∀ probe direction : Fin rank → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    (hmass : 0 < ∑ index, weight index * atomGram atom index index) :
+    ∃ slot, scale slot * (∑ index, weight index * atomGram atom index index)
+      < ∑ index, weight index * atomGram atom slot index ^ 2 := by
+  classical
+  set mass := ∑ index, weight index * atomGram atom index index with hmassDef
+  obtain ⟨slot, hslot⟩ := exists_share_defect_slot scale (fun index => mass⁻¹ * weight index)
+    hsmall hframe (by
+      have hshape : (∑ index, mass⁻¹ * weight index * atomGram atom index index)
+          = mass⁻¹ * ∑ index, weight index * atomGram atom index index := by
+        rw [Finset.mul_sum]
+        exact Finset.sum_congr rfl fun index _ => by ring
+      rw [hshape, ← hmassDef, inv_mul_cancel₀ (ne_of_gt hmass)])
+  refine ⟨slot, ?_⟩
+  have hshape : (∑ index, mass⁻¹ * weight index * atomGram atom slot index ^ 2)
+      = mass⁻¹ * ∑ index, weight index * atomGram atom slot index ^ 2 := by
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun index _ => by ring
+  rw [hshape, inv_mul_eq_div, lt_div_iff₀ hmass] at hslot
+  linarith [hslot]
+
+/-- **THE REGION GRAM DEFECT.**  At a tight frame with scales of total
+less than one, EVERY region of positive diagonal mass is beaten by ONE
+slot: the square total of the Gram row of that slot over the region beats
+its own scale against the diagonal mass of the region.
+
+The law subsumes the Gram defect of one slot and the heavy slot of the
+whole frame: a single slot returns the first, and the whole slot set
+returns the second through the row energy law. -/
+theorem exists_region_gram_defect {atom : Fin slotCount → (Fin rank → ℝ)}
+    (scale : Fin slotCount → ℝ) (region : Finset (Fin slotCount))
+    (hsmall : (∑ slot, scale slot) < 1)
+    (hframe : ∀ probe direction : Fin rank → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    (hmass : 0 < ∑ index ∈ region, atomGram atom index index) :
+    ∃ slot, scale slot * (∑ index ∈ region, atomGram atom index index)
+      < ∑ index ∈ region, atomGram atom slot index ^ 2 := by
+  classical
+  have hcell : ∀ (value : Fin slotCount → ℝ) (index : Fin slotCount),
+      (if index ∈ region then (1 : ℝ) else 0) * value index
+        = if index ∈ region then value index else 0 := by
+    intro value index
+    by_cases hmem : index ∈ region
+    · rw [if_pos hmem, if_pos hmem, one_mul]
+    · rw [if_neg hmem, if_neg hmem, zero_mul]
+  have hsum : ∀ value : Fin slotCount → ℝ,
+      (∑ index, (if index ∈ region then (1 : ℝ) else 0) * value index)
+        = ∑ index ∈ region, value index := by
+    intro value
+    rw [Finset.sum_congr rfl fun index _ => hcell value index, Finset.sum_ite_mem,
+      Finset.univ_inter]
+  obtain ⟨slot, hslot⟩ := exists_weighted_gram_defect scale
+    (fun index => if index ∈ region then (1 : ℝ) else 0) hsmall hframe
+    (by rw [hsum]; exact hmass)
+  refine ⟨slot, ?_⟩
+  rw [hsum, hsum] at hslot
+  exact hslot
+
 /-- **THE HEAVY SLOT IN THE ATOM LANE.**  Some slot of a tight frame with
 scales of total less than one carries a diagonal entry above the rank
 against its own scale.  The constant share returns it. -/
@@ -1414,6 +1605,43 @@ theorem SixThreeCrux.exists_two_pivot_gram_defect (crux : SixThreeCrux)
     (fun index => chartObjective (chartPointOfDesign crux.design)
       + (chartPointOfDesign crux.design).weight index)
     crux.shifted_weight_sum_lt_one (atom_frame_law hnorm horth) hne hfirst hsecond
+  refine ⟨atomIndex, ?_⟩
+  simp only [hentry] at hslot
+  exact hslot
+
+/-- **THE REGION GRAM DEFECT OF A CRUX.**  At every crux, EVERY nonempty
+region of atoms is beaten by ONE atom: the square total of the chart row
+of that atom over the region beats its own shifted weight against the
+chart diagonal mass of the region.
+
+The chart diagonal of a crux is positive at every atom, thus a nonempty
+region is the only hypothesis.  The law holds over all sixty three
+nonempty regions of the six atoms at once. -/
+theorem SixThreeCrux.exists_region_gram_defect (crux : SixThreeCrux)
+    (region : Finset (Fin 6)) (hregion : region.Nonempty) :
+    ∃ atomIndex : Fin 6,
+      (chartObjective (chartPointOfDesign crux.design)
+          + (chartPointOfDesign crux.design).weight atomIndex)
+        * (∑ index ∈ region, (chartPointOfDesign crux.design).chart index index)
+      < ∑ index ∈ region, (chartPointOfDesign crux.design).chart atomIndex index ^ 2 := by
+  classical
+  obtain ⟨family, hnorm, horth, hsplit⟩ :=
+    exists_orthonormal_family_of_trace 3 (chartPointOfDesign crux.design).chart
+      (chartPointOfDesign crux.design).isSymmetric
+      (chartPointOfDesign crux.design).isIdempotent
+      (chartPointOfDesign crux.design).hasTraceRank
+  have hentry : ∀ rowIndex colIndex : Fin 6,
+      atomGram (atomVec family) rowIndex colIndex
+        = (chartPointOfDesign crux.design).chart rowIndex colIndex :=
+    fun rowIndex colIndex => (atomVec_dot_eq_split_apply hsplit rowIndex colIndex).symm
+  have hmass : 0 < ∑ index ∈ region, atomGram (atomVec family) index index := by
+    refine Finset.sum_pos (fun index _ => ?_) hregion
+    rw [hentry]
+    exact crux.chart_diagonal_pos index
+  obtain ⟨atomIndex, hslot⟩ := _root_.Gtz.exists_region_gram_defect (atom := atomVec family)
+    (fun index => chartObjective (chartPointOfDesign crux.design)
+      + (chartPointOfDesign crux.design).weight index)
+    region crux.shifted_weight_sum_lt_one (atom_frame_law hnorm horth) hmass
   refine ⟨atomIndex, ?_⟩
   simp only [hentry] at hslot
   exact hslot
@@ -1657,5 +1885,118 @@ theorem rankFiveSupportTwoClosed_of_pivotWitness
 theorem rankFourSupportTwoClosed_of_pivotWitness
     (hresidue : AtomPivotWitnessClosed) : RankFourSupportTwoClosed :=
   rankFourSupportTwoClosed_of_pivotPair (atomPivotPairClosed_of_pivotWitness hresidue)
+
+/-! ## Layer 9 — the residue at the light pivot -/
+
+/-- **THE THIRD RUNG IN DUAL FORM AT THE LIGHT PIVOT.**  The launch pad
+makes four properties of the pivot free: the pivot is heavy against its
+own scale, its deflated trace is positive, its deflated gap total beats
+the scale gap, and one slot outside it carries a positive pivot minor.
+
+This residue may use all four, thus it is strictly smaller than
+`Gtz.AtomPivotWitnessClosed`, and it closes the same cell. -/
+def AtomLightPivotWitnessClosed : Prop :=
+  ∀ (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ) (pivot : Fin 6),
+    (∀ slot, 0 < scale slot) →
+    (∑ slot, scale slot) < 1 →
+    (∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction) →
+    0 < atomShiftedDiag atom scale pivot →
+    2 * scale pivot < atomShiftedDiag atom scale pivot →
+    0 < atomPivotTrace atom scale pivot →
+    (atomShiftedDiag atom scale pivot * (1 - ∑ slot, scale slot)
+      < ∑ slot ∈ Finset.univ.erase pivot, atomPairMinor atom scale pivot slot) →
+    (∃ heavy : Fin 6, heavy ≠ pivot ∧ 0 < atomPairMinor atom scale pivot heavy) →
+    (∀ slotOne slotTwo : Fin 6, slotOne ≠ pivot → slotTwo ≠ pivot → slotOne ≠ slotTwo →
+      0 < atomPairMinor atom scale pivot slotOne →
+      atomPairMinor atom scale pivot slotOne * atomPairMinor atom scale pivot slotTwo
+        ≤ atomPivotCross atom scale pivot slotOne slotTwo ^ 2) →
+    ∃ (weight : Fin 6 → ℝ) (bulk : ℝ),
+      (bulk * atomPivotTrace atom scale pivot
+          + (∑ index ∈ Finset.univ.erase pivot,
+              weight index
+                * (atomShiftedDiag atom scale pivot
+                    * atomPivotCross atom scale pivot index index
+                  + scale pivot * (1 - scale pivot) * atomGram atom pivot index ^ 2))
+        ≤ atomPivotTrace atom scale pivot
+          - atomShiftedDiag atom scale pivot * (1 - scale pivot))
+      ∧ ∀ slot, slot ≠ pivot →
+          atomPairMinor atom scale pivot slot
+            ≤ bulk * atomPivotCross atom scale pivot slot slot
+              + ∑ index ∈ Finset.univ.erase pivot,
+                  weight index * atomPivotCross atom scale pivot slot index ^ 2
+
+/-- **THE LIGHT-PIVOT RESIDUE IS THE PIVOT PAIR RESIDUE.**  The launch
+pad discharges the four extra hypotheses at no cost. -/
+theorem atomPivotPairClosed_of_lightPivotWitness
+    (hresidue : AtomLightPivotWitnessClosed) : AtomPivotPairClosed := by
+  classical
+  intro atom scale hpos hsmall hframe
+  by_contra hnone
+  obtain ⟨pivot, hpivot, hheavy, htrace, htotal, hminor⟩ :=
+    exists_light_pivot_launch hframe hpos hsmall
+  have hfail : ∀ slotOne slotTwo : Fin 6, slotOne ≠ pivot → slotTwo ≠ pivot → slotOne ≠ slotTwo →
+      0 < atomPairMinor atom scale pivot slotOne →
+      atomPairMinor atom scale pivot slotOne * atomPairMinor atom scale pivot slotTwo
+        ≤ atomPivotCross atom scale pivot slotOne slotTwo ^ 2 := by
+    intro slotOne slotTwo hone htwo hne hpair
+    by_contra hlt
+    exact hnone ⟨pivot, slotOne, slotTwo, Ne.symm hone, Ne.symm htwo, hne, hpivot, hpair,
+      lt_of_not_ge hlt⟩
+  obtain ⟨weight, bulk, hbudget, hdominate⟩ :=
+    hresidue atom scale pivot hpos hsmall hframe hpivot hheavy htrace htotal hminor hfail
+  exact false_of_pivot_witness hframe hsmall hpivot bulk weight hbudget
+    fun slot hslot => hdominate slot (Finset.mem_erase.mp hslot).1
+
+/-- The polynomial residue of the third rung, from the light-pivot
+residue. -/
+theorem atomTripleSylvesterClosed_of_lightPivotWitness
+    (hresidue : AtomLightPivotWitnessClosed) : AtomTripleSylvesterClosed :=
+  atomTripleSylvesterClosed_of_pivotPair (atomPivotPairClosed_of_lightPivotWitness hresidue)
+
+/-- The atom triple ceiling from the light-pivot residue. -/
+theorem atomTripleCeilingClosed_of_lightPivotWitness
+    (hresidue : AtomLightPivotWitnessClosed) : AtomTripleCeilingClosed :=
+  atomTripleCeilingClosed_of_pivotPair (atomPivotPairClosed_of_lightPivotWitness hresidue)
+
+/-- **THE `(6,3)` CELL FROM THE LIGHT-PIVOT RESIDUE.** -/
+theorem gtzWeighted_six_three_of_lightPivotWitness
+    (hresidue : AtomLightPivotWitnessClosed) : GtzWeighted 6 3 :=
+  gtzWeighted_six_three_of_pivotPair (atomPivotPairClosed_of_lightPivotWitness hresidue)
+
+/-- **ALL OF RANK THREE FROM THE LIGHT-PIVOT RESIDUE.** -/
+theorem gtzWeightedAll_three_of_lightPivotWitness
+    (hresidue : AtomLightPivotWitnessClosed) : GtzWeightedAll 3 :=
+  gtzWeightedAll_three_of_pivotPair (atomPivotPairClosed_of_lightPivotWitness hresidue)
+
+/-- The crux type is empty under the light-pivot residue. -/
+theorem isEmpty_sixThreeCrux_of_lightPivotWitness
+    (hresidue : AtomLightPivotWitnessClosed) : IsEmpty SixThreeCrux :=
+  isEmpty_sixThreeCrux_of_pivotPair (atomPivotPairClosed_of_lightPivotWitness hresidue)
+
+/-- The rank-five dense branch from the light-pivot residue. -/
+theorem rankFiveDenseClosed_of_lightPivotWitness
+    (hresidue : AtomLightPivotWitnessClosed) : RankFiveDenseClosed :=
+  rankFiveDenseClosed_of_pivotPair (atomPivotPairClosed_of_lightPivotWitness hresidue)
+
+/-- The rank-six dense branch from the light-pivot residue. -/
+theorem rankSixDenseClosed_of_lightPivotWitness
+    (hresidue : AtomLightPivotWitnessClosed) : RankSixDenseClosed :=
+  rankSixDenseClosed_of_pivotPair (atomPivotPairClosed_of_lightPivotWitness hresidue)
+
+/-- The rank-six support-two closure from the light-pivot residue. -/
+theorem rankSixSupportTwoClosed_of_lightPivotWitness
+    (hresidue : AtomLightPivotWitnessClosed) : RankSixSupportTwoClosed :=
+  rankSixSupportTwoClosed_of_pivotPair (atomPivotPairClosed_of_lightPivotWitness hresidue)
+
+/-- The rank-five support-two closure from the light-pivot residue. -/
+theorem rankFiveSupportTwoClosed_of_lightPivotWitness
+    (hresidue : AtomLightPivotWitnessClosed) : RankFiveSupportTwoClosed :=
+  rankFiveSupportTwoClosed_of_pivotPair (atomPivotPairClosed_of_lightPivotWitness hresidue)
+
+/-- The rank-four support-two closure from the light-pivot residue. -/
+theorem rankFourSupportTwoClosed_of_lightPivotWitness
+    (hresidue : AtomLightPivotWitnessClosed) : RankFourSupportTwoClosed :=
+  rankFourSupportTwoClosed_of_pivotPair (atomPivotPairClosed_of_lightPivotWitness hresidue)
 
 end Gtz
