@@ -22916,6 +22916,14 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFourSupportTwoClosed_of_narrowed_interior
 #print axioms Gtz.rankFiveSupportTwoClosed_of_narrowed_refined
 #print axioms Gtz.rankSixSupportTwoClosed_of_narrowed_lowProfile
+#print axioms Gtz.gap_rankOne_cross_ne_zero
+#print axioms Gtz.gap_rankOne_side_ne_zero
+#print axioms Gtz.gap_pair_tight_at_third_of_rankOne
+#print axioms Gtz.exists_pair_null_of_rankOne_block
+#print axioms Gtz.false_of_pair_null_independent
+#print axioms Gtz.RankFourOuterData.pair_column_tight_at_rankOne_atom
+#print axioms Gtz.RankFourOuterData.exists_pair_null_of_rankOne
+#print axioms Gtz.RankFourOuterData.false_of_rankOne_pair_independent
 
 -- The read intertwiner: the Gram quadratic forms, the PSD rigidity, the
 -- intertwiner calculus, the read frame with its weight matrix, the

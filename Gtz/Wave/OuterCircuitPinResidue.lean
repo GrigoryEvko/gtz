@@ -71,6 +71,15 @@ residue, where the shifted gap block is a rank-one square.
 * `Gtz.rankFiveSupportTwoClosed_of_narrowed_refined`,
   `Gtz.rankSixSupportTwoClosed_of_narrowed_lowProfile` — the two other
   discharges.
+* `Gtz.gap_rankOne_cross_ne_zero`, `Gtz.gap_rankOne_side_ne_zero` — the live
+  cross entries of a rank-one block.
+* `Gtz.gap_pair_tight_at_third_of_rankOne` — **THE FOUR-ATOM NULL LAW.**
+* `Gtz.exists_pair_null_of_rankOne_block` — **THE PAIR NULL FAMILY.**
+* `Gtz.false_of_pair_null_independent` — **THE PAIR NULL KILL.**
+* `Gtz.RankFourOuterData.pair_column_tight_at_rankOne_atom`,
+  `Gtz.RankFourOuterData.exists_pair_null_of_rankOne`,
+  `Gtz.RankFourOuterData.false_of_rankOne_pair_independent` — the rank-one
+  readings at the rank-four outer datum.
 
 ## Vacuity
 
@@ -1220,5 +1229,271 @@ theorem rankSixSupportTwoClosed_of_narrowed_lowProfile
     RankSixSupportTwoClosed :=
   rankSixSupportTwoClosed_of_circuit_and_lowProfile
     (rankSixOuterCircuitClosed_of_narrowed hoff hone) hlow
+
+/-! ## Layer 10 — the null family of a rank-one gap block -/
+
+section NullFamily
+
+variable {size rank : ℕ} {activeIndex : Type*}
+variable {projection : Matrix (Fin size) (Fin size) ℝ} {weight : Fin size → ℝ}
+variable {value : ℝ} {activeSet : Finset activeIndex}
+variable {activeSubset : activeIndex → Finset (Fin size)}
+variable {activeWeight : activeIndex → ℝ}
+variable {tightDir : activeIndex → (Fin size → ℝ)}
+
+/-- The left cross entry of a rank-one gap block is alive: its square is the
+product of two positive shifted diagonals. -/
+theorem gap_rankOne_cross_ne_zero
+    (hvalueNeg : value < 0) {atomU atomV atomS : Fin size}
+    (hfloorU : 0 < chartStationaryGap projection weight atomU atomU)
+    (hfloorV : 0 < chartStationaryGap projection weight atomV atomV)
+    (hshape : GapBlockRankOne projection weight value atomU atomV atomS) :
+    chartStationaryGap projection weight atomU atomV ≠ 0 := by
+  intro hzero
+  have hUV := hshape.1
+  rw [hzero] at hUV
+  nlinarith [hUV, hfloorU, hfloorV, hvalueNeg]
+
+/-- The right cross entry of a rank-one gap block is alive. -/
+theorem gap_rankOne_side_ne_zero
+    (hvalueNeg : value < 0) {atomU atomV atomS : Fin size}
+    (hfloorU : 0 < chartStationaryGap projection weight atomU atomU)
+    (hfloorS : 0 < chartStationaryGap projection weight atomS atomS)
+    (hshape : GapBlockRankOne projection weight value atomU atomV atomS) :
+    chartStationaryGap projection weight atomU atomS ≠ 0 := by
+  intro hzero
+  have hUS := hshape.2.1
+  rw [hzero] at hUS
+  nlinarith [hUS, hfloorU, hfloorS, hvalueNeg]
+
+/-- **THE FOUR-ATOM NULL LAW.**  Once the shifted gap block on three atoms is
+a rank-one square, a direction supported on the first pair is tight at the
+third atom as well, although that atom can sit outside its block.  The pair
+column of an outer datum thus carries one tight row more than its block
+supplies. -/
+theorem gap_pair_tight_at_third_of_rankOne
+    (hdata : IsChartStationaryData rank projection weight value activeSet
+      activeSubset activeWeight tightDir)
+    (hvalueNeg : value < 0) {atomU atomV atomS : Fin size}
+    (hUV : atomU ≠ atomV) (hSU : atomS ≠ atomU) (hSV : atomS ≠ atomV)
+    (hfloorU : 0 < chartStationaryGap projection weight atomU atomU)
+    (hfloorV : 0 < chartStationaryGap projection weight atomV atomV)
+    (hshape : GapBlockRankOne projection weight value atomU atomV atomS)
+    {label : activeIndex} (hmem : label ∈ activeSet)
+    (hUmem : atomU ∈ activeSubset label) (hVmem : atomV ∈ activeSubset label)
+    (hsupp : ∀ atomIndex, atomIndex ≠ atomU → atomIndex ≠ atomV →
+      tightDir label atomIndex = 0) :
+    (chartStationaryGap projection weight *ᵥ tightDir label) atomS
+      = value * tightDir label atomS := by
+  have hDne := gap_rankOne_cross_ne_zero hvalueNeg hfloorU hfloorV hshape
+  have hUUmin := hshape.2.2.2.1
+  have hVVmin := hshape.2.2.2.2.1
+  have hrowU := hdata.tightDir_isTight label hmem atomU hUmem
+  have hrowV := hdata.tightDir_isTight label hmem atomV hVmem
+  rw [mulVec_apply_of_pair_support _ hUV hsupp atomU] at hrowU
+  rw [mulVec_apply_of_pair_support _ hUV hsupp atomV] at hrowV
+  rw [chartStationaryGap_entry_symm hdata atomV atomU] at hrowV
+  have hzeroS : tightDir label atomS = 0 := hsupp atomS hSU hSV
+  rw [mulVec_apply_of_pair_support _ hUV hsupp atomS,
+    chartStationaryGap_entry_symm hdata atomS atomU,
+    chartStationaryGap_entry_symm hdata atomS atomV, hzeroS, mul_zero]
+  have hprod : chartStationaryGap projection weight atomU atomV
+      * (chartStationaryGap projection weight atomU atomS
+          * tightDir label atomU
+        + chartStationaryGap projection weight atomV atomS
+          * tightDir label atomV) = 0 := by
+    linear_combination (-(tightDir label atomU) / 2) * hUUmin
+      - (tightDir label atomV / 2) * hVVmin
+      + (chartStationaryGap projection weight atomV atomS / 2) * hrowU
+      + (chartStationaryGap projection weight atomU atomS / 2) * hrowV
+  exact (mul_eq_zero.mp hprod).resolve_left hDne
+
+/-- **THE PAIR NULL FAMILY.**  A rank-one shifted gap block carries an
+explicit null direction on the outer pair of its three atoms.  The direction
+is the cross entry at the left atom and the negative shifted diagonal at the
+third atom, it vanishes elsewhere, and it is tight at all three block
+atoms. -/
+theorem exists_pair_null_of_rankOne_block
+    (hdata : IsChartStationaryData rank projection weight value activeSet
+      activeSubset activeWeight tightDir)
+    (hvalueNeg : value < 0) {atomU atomV atomS : Fin size}
+    (hUV : atomU ≠ atomV) (hSU : atomS ≠ atomU) (hSV : atomS ≠ atomV)
+    (hfloorU : 0 < chartStationaryGap projection weight atomU atomU)
+    (hfloorS : 0 < chartStationaryGap projection weight atomS atomS)
+    (hshape : GapBlockRankOne projection weight value atomU atomV atomS) :
+    ∃ nullVec : Fin size → ℝ,
+      nullVec atomU = chartStationaryGap projection weight atomU atomS
+      ∧ nullVec atomS
+          = value - chartStationaryGap projection weight atomU atomU
+      ∧ nullVec atomU ≠ 0 ∧ nullVec atomS ≠ 0
+      ∧ (∀ atomIndex, atomIndex ≠ atomU → atomIndex ≠ atomS →
+          nullVec atomIndex = 0)
+      ∧ (chartStationaryGap projection weight *ᵥ nullVec) atomU
+          = value * nullVec atomU
+      ∧ (chartStationaryGap projection weight *ᵥ nullVec) atomV
+          = value * nullVec atomV
+      ∧ (chartStationaryGap projection weight *ᵥ nullVec) atomS
+          = value * nullVec atomS := by
+  classical
+  have hUSmin := hshape.2.1
+  have hUUmin := hshape.2.2.2.1
+  have hEne := gap_rankOne_side_ne_zero hvalueNeg hfloorU hfloorS hshape
+  obtain ⟨nullVec, hvalU, hvalS, hvalOther⟩ :
+      ∃ nullVec : Fin size → ℝ,
+        nullVec atomU = chartStationaryGap projection weight atomU atomS
+        ∧ nullVec atomS
+            = value - chartStationaryGap projection weight atomU atomU
+        ∧ ∀ atomIndex, atomIndex ≠ atomU → atomIndex ≠ atomS →
+            nullVec atomIndex = 0 :=
+    ⟨fun atomIndex =>
+      if atomIndex = atomU then chartStationaryGap projection weight atomU atomS
+      else if atomIndex = atomS then
+        value - chartStationaryGap projection weight atomU atomU
+      else 0, by simp, by simp [hSU], fun atomIndex hU hS => by simp [hU, hS]⟩
+  refine ⟨nullVec, hvalU, hvalS, ?_, ?_, hvalOther, ?_, ?_, ?_⟩
+  · rw [hvalU]
+    exact hEne
+  · rw [hvalS]
+    intro hzero
+    linarith
+  · rw [mulVec_apply_of_pair_support _ hSU.symm hvalOther atomU, hvalU, hvalS]
+    ring
+  · rw [mulVec_apply_of_pair_support _ hSU.symm hvalOther atomV, hvalU, hvalS,
+      hvalOther atomV hUV.symm hSV.symm,
+      chartStationaryGap_entry_symm hdata atomV atomU]
+    linear_combination -hUUmin
+  · rw [mulVec_apply_of_pair_support _ hSU.symm hvalOther atomS, hvalU, hvalS,
+      chartStationaryGap_entry_symm hdata atomS atomU]
+    linear_combination hUSmin
+
+/-- **THE PAIR NULL KILL.**  Two vectors supported inside one atom pair, each
+with a tight row at the left atom and with an independent pair restriction,
+force the gap diagonal at the left atom to the value, against the floor.  The
+law consumes no label, thus it applies to the null family. -/
+theorem false_of_pair_null_independent
+    (hvalueNeg : value < 0) {atomU atomV : Fin size} (hUV : atomU ≠ atomV)
+    {vecOne vecTwo : Fin size → ℝ}
+    (hsuppOne : ∀ atomIndex, atomIndex ≠ atomU → atomIndex ≠ atomV →
+      vecOne atomIndex = 0)
+    (hsuppTwo : ∀ atomIndex, atomIndex ≠ atomU → atomIndex ≠ atomV →
+      vecTwo atomIndex = 0)
+    (hrowOne : (chartStationaryGap projection weight *ᵥ vecOne) atomU
+      = value * vecOne atomU)
+    (hrowTwo : (chartStationaryGap projection weight *ᵥ vecTwo) atomU
+      = value * vecTwo atomU)
+    (hdet : vecOne atomU * vecTwo atomV - vecOne atomV * vecTwo atomU ≠ 0)
+    (hfloor : 0 < chartStationaryGap projection weight atomU atomU) :
+    False := by
+  rw [mulVec_apply_of_pair_support _ hUV hsuppOne atomU] at hrowOne
+  rw [mulVec_apply_of_pair_support _ hUV hsuppTwo atomU] at hrowTwo
+  have hcancel : (chartStationaryGap projection weight atomU atomU - value)
+      * (vecOne atomU * vecTwo atomV - vecOne atomV * vecTwo atomU) = 0 := by
+    linear_combination (vecTwo atomV) * hrowOne - (vecOne atomV) * hrowTwo
+  have hdiag := (mul_eq_zero.mp hcancel).resolve_right hdet
+  linarith
+
+end NullFamily
+
+/-! ## Layer 11 — the rank-one readings at the rank-four outer datum -/
+
+/-- **THE RANK-FOUR FOUR-ATOM NULL LAW.**  At a rank-four outer datum whose
+circuit label gives a rank-one shifted gap block, the pair column is tight at
+the circuit label's third block atom. -/
+theorem RankFourOuterData.pair_column_tight_at_rankOne_atom
+    {crux : SixThreeCrux} (data : RankFourOuterData crux) {atomS : Fin 6}
+    (hSU : atomS ≠ data.atomU) (hSV : atomS ≠ data.atomV)
+    (hshape : GapBlockRankOne (chartPointOfDesign crux.design).chart
+      (chartPointOfDesign crux.design).weight
+      (chartObjective (chartPointOfDesign crux.design))
+      data.atomU data.atomV atomS) :
+    (chartStationaryGap (chartPointOfDesign crux.design).chart
+        (chartPointOfDesign crux.design).weight
+      *ᵥ data.frame.tightDir (data.frame.basisLabel data.columnIndex)) atomS
+      = chartObjective (chartPointOfDesign crux.design)
+        * data.frame.tightDir (data.frame.basisLabel data.columnIndex)
+          atomS := by
+  have hUblock : data.atomU
+      ∈ data.frame.activeSubset (data.frame.basisLabel data.columnIndex) := by
+    by_contra hout
+    exact data.hneU (data.frame.hdata.tightDir_support _
+      (data.frame.hmemAll data.columnIndex) data.atomU hout)
+  have hVblock : data.atomV
+      ∈ data.frame.activeSubset (data.frame.basisLabel data.columnIndex) := by
+    by_contra hout
+    exact data.hneV (data.frame.hdata.tightDir_support _
+      (data.frame.hmemAll data.columnIndex) data.atomV hout)
+  exact gap_pair_tight_at_third_of_rankOne data.frame.hdata
+    data.frame.hvalueNeg data.hUV hSU hSV
+    (crux.gap_diagonal_pos_of_allHeavy data.atomU)
+    (crux.gap_diagonal_pos_of_allHeavy data.atomV) hshape
+    (data.frame.hmemAll data.columnIndex) hUblock hVblock data.hsupp
+
+/-- **THE RANK-FOUR NULL FAMILY.**  At a rank-four outer datum whose circuit
+label gives a rank-one shifted gap block, the block carries an explicit null
+direction on the outer pair. -/
+theorem RankFourOuterData.exists_pair_null_of_rankOne
+    {crux : SixThreeCrux} (data : RankFourOuterData crux) {atomS : Fin 6}
+    (hSU : atomS ≠ data.atomU) (hSV : atomS ≠ data.atomV)
+    (hshape : GapBlockRankOne (chartPointOfDesign crux.design).chart
+      (chartPointOfDesign crux.design).weight
+      (chartObjective (chartPointOfDesign crux.design))
+      data.atomU data.atomV atomS) :
+    ∃ nullVec : Fin 6 → ℝ,
+      nullVec data.atomU
+          = chartStationaryGap (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight data.atomU atomS
+      ∧ nullVec atomS = chartObjective (chartPointOfDesign crux.design)
+          - chartStationaryGap (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight data.atomU data.atomU
+      ∧ nullVec data.atomU ≠ 0 ∧ nullVec atomS ≠ 0
+      ∧ (∀ atomIndex, atomIndex ≠ data.atomU → atomIndex ≠ atomS →
+          nullVec atomIndex = 0)
+      ∧ (chartStationaryGap (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight *ᵥ nullVec) data.atomU
+          = chartObjective (chartPointOfDesign crux.design)
+            * nullVec data.atomU
+      ∧ (chartStationaryGap (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight *ᵥ nullVec) data.atomV
+          = chartObjective (chartPointOfDesign crux.design)
+            * nullVec data.atomV
+      ∧ (chartStationaryGap (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight *ᵥ nullVec) atomS
+          = chartObjective (chartPointOfDesign crux.design) * nullVec atomS :=
+  exists_pair_null_of_rankOne_block data.frame.hdata data.frame.hvalueNeg
+    data.hUV hSU hSV (crux.gap_diagonal_pos_of_allHeavy data.atomU)
+    (crux.gap_diagonal_pos_of_allHeavy atomS) hshape
+
+/-- **THE RANK-ONE PAIR RIGIDITY.**  Every direction supported inside the
+outer pair of a rank-one block, with a tight row at the left atom, is a
+multiple of the null direction of that pair.  A second independent direction
+dies at the gap floor. -/
+theorem RankFourOuterData.false_of_rankOne_pair_independent
+    {crux : SixThreeCrux} (data : RankFourOuterData crux) {atomS : Fin 6}
+    (hSU : atomS ≠ data.atomU) (hSV : atomS ≠ data.atomV)
+    (hshape : GapBlockRankOne (chartPointOfDesign crux.design).chart
+      (chartPointOfDesign crux.design).weight
+      (chartObjective (chartPointOfDesign crux.design))
+      data.atomU data.atomV atomS)
+    {vecOne : Fin 6 → ℝ}
+    (hsuppOne : ∀ atomIndex, atomIndex ≠ data.atomU → atomIndex ≠ atomS →
+      vecOne atomIndex = 0)
+    (hrowOne : (chartStationaryGap (chartPointOfDesign crux.design).chart
+        (chartPointOfDesign crux.design).weight *ᵥ vecOne) data.atomU
+      = chartObjective (chartPointOfDesign crux.design) * vecOne data.atomU)
+    (hdet : vecOne data.atomU
+          * (chartObjective (chartPointOfDesign crux.design)
+            - chartStationaryGap (chartPointOfDesign crux.design).chart
+              (chartPointOfDesign crux.design).weight data.atomU data.atomU)
+        - vecOne atomS
+          * chartStationaryGap (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight data.atomU atomS ≠ 0) :
+    False := by
+  obtain ⟨nullVec, hvalU, hvalS, _, _, hnullSupp, hrowU, _, _⟩ :=
+    data.exists_pair_null_of_rankOne hSU hSV hshape
+  refine false_of_pair_null_independent data.frame.hvalueNeg hSU.symm hsuppOne
+    hnullSupp hrowOne hrowU ?_
+    (crux.gap_diagonal_pos_of_allHeavy data.atomU)
+  rw [hvalU, hvalS]
+  exact hdet
 
 end Gtz
