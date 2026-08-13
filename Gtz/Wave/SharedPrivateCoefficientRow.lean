@@ -276,7 +276,30 @@ theorem captureDiag_triple_le_total (data : SharedPrivateData crux)
   exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
     fun atomIndex _ _ => data.captureDiag_nonneg atomIndex
 
-/-! ## Layer 4 — the private family trace kill -/
+/-! ## Layer 4 — the trace cover kills -/
+
+/-- **THE TRACE COVER KILL.**  Whenever the coefficient trace reads as a
+sum of captured diagonals over a set of distinct atoms, the datum dies:
+the total of all captured diagonals is less than one and the trace is at
+least two.  Every kill of this module runs through this one line. -/
+theorem false_of_trace_eq_captureSum (data : SharedPrivateData crux)
+    {atomSet : Finset (Fin 6)}
+    (htrace : Matrix.trace data.coeff
+      = ∑ atomIndex ∈ atomSet, (chartObjective (chartPointOfDesign crux.design)
+          + (chartPointOfDesign crux.design).weight atomIndex)) :
+    False := by
+  classical
+  have hbound : ∑ atomIndex ∈ atomSet,
+      (chartObjective (chartPointOfDesign crux.design)
+        + (chartPointOfDesign crux.design).weight atomIndex)
+      ≤ ∑ atomIndex : Fin 6, (chartObjective (chartPointOfDesign crux.design)
+          + (chartPointOfDesign crux.design).weight atomIndex) :=
+    Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
+      fun atomIndex _ _ => data.captureDiag_nonneg atomIndex
+  have hlow := data.two_le_trace_coeff
+  have hhigh := data.sum_captureDiag_lt_one
+  rw [htrace] at hlow
+  linarith
 
 /-- **THE PRIVATE FAMILY TRACE KILL.**  If every basis slot carries an
 atom of basis multiplicity one, the coefficient trace is a sum of
@@ -320,10 +343,7 @@ theorem false_of_private_atom_family (data : SharedPrivateData crux)
           + (chartPointOfDesign crux.design).weight atomIndex) :=
     Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
       fun atomIndex _ _ => data.captureDiag_nonneg atomIndex
-  have hlow := data.two_le_trace_coeff
-  have hhigh := data.sum_captureDiag_lt_one
-  rw [htrace, ← himage] at hlow
-  linarith
+  exact data.false_of_trace_eq_captureSum (htrace.trans himage.symm)
 
 /-! ## Layer 5 — the identical pair has pairwise independent value pairs -/
 
@@ -613,9 +633,245 @@ theorem exists_impure_atom_of_identical (data : SharedPrivateData crux)
   by_contra hlive
   exact hnot ⟨other, hOne, hTwo, atomIndex, hshared, mem_datumTightSupport.mpr hlive⟩
 
+/-! ## Layer 8 — the pure pair against a private family -/
+
+/-- The private atoms of a slot family are pairwise distinct and distinct
+from every atom of a foreign support: a private atom kills every foreign
+basis value. -/
+theorem privateAtom_notMem_foreign_support (data : SharedPrivateData crux)
+    {slot other : Fin data.basisCount} (hne : other ≠ slot) {atomIndex atomOther : Fin 6}
+    (hprivate : ∀ third : Fin data.basisCount, third ≠ slot →
+      data.tightDir (data.basisLabel third) atomIndex = 0)
+    (hforeign : atomOther ∈ datumTightSupport data.tightDir (data.basisLabel other)) :
+    atomIndex ≠ atomOther := by
+  intro hsame
+  refine data.basis_live_of_mem_support hforeign ?_
+  rw [← hsame]
+  exact hprivate other hne
+
+/-- **THE PURE PAIR AGAINST A PRIVATE FAMILY — A FULL KILL.**  Two slots
+with two shared pure atoms pin their corner trace, and every remaining
+slot with a private atom pins its own diagonal.  The coefficient trace
+then reads as a sum of captured diagonals over distinct atoms, which the
+trace cover kill refuses. -/
+theorem false_of_purePair_private_family (data : SharedPrivateData crux)
+    {slotOne slotTwo : Fin data.basisCount} (hne : slotOne ≠ slotTwo)
+    {atomY atomZ : Fin 6} (hYZ : atomY ≠ atomZ)
+    (hblockYone : atomY ∈ datumTightSupport data.tightDir (data.basisLabel slotOne))
+    (hblockYtwo : atomY ∈ datumTightSupport data.tightDir (data.basisLabel slotTwo))
+    (hblockZone : atomZ ∈ datumTightSupport data.tightDir (data.basisLabel slotOne))
+    (hblockZtwo : atomZ ∈ datumTightSupport data.tightDir (data.basisLabel slotTwo))
+    (hpureY : ∀ other : Fin data.basisCount, other ≠ slotOne → other ≠ slotTwo →
+      data.tightDir (data.basisLabel other) atomY = 0)
+    (hpureZ : ∀ other : Fin data.basisCount, other ≠ slotOne → other ≠ slotTwo →
+      data.tightDir (data.basisLabel other) atomZ = 0)
+    (hwedge : data.tightDir (data.basisLabel slotOne) atomY
+        * data.tightDir (data.basisLabel slotTwo) atomZ
+      - data.tightDir (data.basisLabel slotOne) atomZ
+        * data.tightDir (data.basisLabel slotTwo) atomY ≠ 0)
+    (hrest : ∀ slot : Fin data.basisCount, slot ≠ slotOne → slot ≠ slotTwo →
+      ∃ atomIndex : Fin 6,
+        atomIndex ∈ datumTightSupport data.tightDir (data.basisLabel slot)
+          ∧ ∀ other : Fin data.basisCount, other ≠ slot →
+            data.tightDir (data.basisLabel other) atomIndex = 0) :
+    False := by
+  classical
+  have hchoice : ∀ slot : Fin data.basisCount, ∃ atomIndex : Fin 6,
+      slot ≠ slotOne → slot ≠ slotTwo →
+        (atomIndex ∈ datumTightSupport data.tightDir (data.basisLabel slot)
+          ∧ ∀ other : Fin data.basisCount, other ≠ slot →
+            data.tightDir (data.basisLabel other) atomIndex = 0) := by
+    intro slot
+    by_cases hOne : slot = slotOne
+    · exact ⟨atomY, fun hcontra _ => absurd hOne hcontra⟩
+    by_cases hTwo : slot = slotTwo
+    · exact ⟨atomY, fun _ hcontra => absurd hTwo hcontra⟩
+    obtain ⟨atomIndex, hmem, hpriv⟩ := hrest slot hOne hTwo
+    exact ⟨atomIndex, fun _ _ => ⟨hmem, hpriv⟩⟩
+  choose privateAtom hprop using hchoice
+  set outside : Finset (Fin data.basisCount) :=
+    Finset.univ \ ({slotOne, slotTwo} : Finset (Fin data.basisCount)) with houtsideDef
+  have hmemOutside : ∀ slot : Fin data.basisCount,
+      slot ∈ outside → slot ≠ slotOne ∧ slot ≠ slotTwo := by
+    intro slot hslot
+    rw [houtsideDef, Finset.mem_sdiff] at hslot
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hslot
+    exact hslot.2
+  have hsplit : Matrix.trace data.coeff
+      = (data.coeff slotOne slotOne + data.coeff slotTwo slotTwo)
+        + ∑ slot ∈ outside, data.coeff slot slot := by
+    rw [data.trace_coeff_eq_sum, houtsideDef,
+      ← Finset.sum_sdiff (Finset.subset_univ ({slotOne, slotTwo} : Finset _)),
+      Finset.sum_pair hne]
+    ring
+  have hdiag : ∀ slot ∈ outside, data.coeff slot slot
+      = chartObjective (chartPointOfDesign crux.design)
+        + (chartPointOfDesign crux.design).weight (privateAtom slot) := by
+    intro slot hslot
+    obtain ⟨hOne, hTwo⟩ := hmemOutside slot hslot
+    obtain ⟨hmem, hpriv⟩ := hprop slot hOne hTwo
+    exact data.coeff_diag_of_private hmem hpriv
+  have hinjective : ∀ slotA ∈ outside, ∀ slotB ∈ outside,
+      privateAtom slotA = privateAtom slotB → slotA = slotB := by
+    intro slotA hA slotB hB hsame
+    by_contra hdiff
+    obtain ⟨hOneA, hTwoA⟩ := hmemOutside slotA hA
+    obtain ⟨hOneB, hTwoB⟩ := hmemOutside slotB hB
+    obtain ⟨hmemA, _⟩ := hprop slotA hOneA hTwoA
+    obtain ⟨_, hprivB⟩ := hprop slotB hOneB hTwoB
+    exact data.privateAtom_notMem_foreign_support hdiff hprivB hmemA hsame.symm
+  have hYnotImage : atomY ∉ Finset.image privateAtom outside := by
+    intro hmem
+    obtain ⟨slot, hslot, heq⟩ := Finset.mem_image.mp hmem
+    obtain ⟨hOne, hTwo⟩ := hmemOutside slot hslot
+    obtain ⟨_, hpriv⟩ := hprop slot hOne hTwo
+    exact data.privateAtom_notMem_foreign_support (fun heq' => hOne heq'.symm) hpriv
+      hblockYone heq
+  have hZnotImage : atomZ ∉ Finset.image privateAtom outside := by
+    intro hmem
+    obtain ⟨slot, hslot, heq⟩ := Finset.mem_image.mp hmem
+    obtain ⟨hOne, hTwo⟩ := hmemOutside slot hslot
+    obtain ⟨_, hpriv⟩ := hprop slot hOne hTwo
+    exact data.privateAtom_notMem_foreign_support (fun heq' => hOne heq'.symm) hpriv
+      hblockZone heq
+  have hYnot : atomY ∉ insert atomZ (Finset.image privateAtom outside) := by
+    simp only [Finset.mem_insert]
+    rintro (heq | himage)
+    · exact hYZ heq
+    · exact hYnotImage himage
+  have hcorner := data.purePair_corner_trace hne hblockYone hblockYtwo hblockZone
+    hblockZtwo hpureY hpureZ hwedge
+  refine data.false_of_trace_eq_captureSum
+    (atomSet := insert atomY (insert atomZ (Finset.image privateAtom outside))) ?_
+  rw [Finset.sum_insert hYnot, Finset.sum_insert hZnotImage,
+    Finset.sum_image hinjective, hsplit, hcorner, Finset.sum_congr rfl hdiag]
+  ring
+
+/-- **TWO PURE PAIRS EXHAUST THE TRACE — A FULL KILL.**  Two disjoint
+slot pairs, each with two shared pure atoms, that together carry every
+basis slot make the coefficient trace a sum of four captured diagonals
+over four distinct atoms. -/
+theorem false_of_two_purePairs (data : SharedPrivateData crux)
+    {slotOne slotTwo slotThree slotFour : Fin data.basisCount}
+    (hne : slotOne ≠ slotTwo) (hneOther : slotThree ≠ slotFour)
+    (hOneThree : slotOne ≠ slotThree) (hOneFour : slotOne ≠ slotFour)
+    (hTwoThree : slotTwo ≠ slotThree) (hTwoFour : slotTwo ≠ slotFour)
+    (hexhaust : ∀ slot : Fin data.basisCount,
+      slot = slotOne ∨ slot = slotTwo ∨ slot = slotThree ∨ slot = slotFour)
+    {atomY atomZ atomP atomQ : Fin 6} (hYZ : atomY ≠ atomZ) (hPQ : atomP ≠ atomQ)
+    (hblockYone : atomY ∈ datumTightSupport data.tightDir (data.basisLabel slotOne))
+    (hblockYtwo : atomY ∈ datumTightSupport data.tightDir (data.basisLabel slotTwo))
+    (hblockZone : atomZ ∈ datumTightSupport data.tightDir (data.basisLabel slotOne))
+    (hblockZtwo : atomZ ∈ datumTightSupport data.tightDir (data.basisLabel slotTwo))
+    (hblockPthree : atomP ∈ datumTightSupport data.tightDir (data.basisLabel slotThree))
+    (hblockPfour : atomP ∈ datumTightSupport data.tightDir (data.basisLabel slotFour))
+    (hblockQthree : atomQ ∈ datumTightSupport data.tightDir (data.basisLabel slotThree))
+    (hblockQfour : atomQ ∈ datumTightSupport data.tightDir (data.basisLabel slotFour))
+    (hpureY : ∀ other : Fin data.basisCount, other ≠ slotOne → other ≠ slotTwo →
+      data.tightDir (data.basisLabel other) atomY = 0)
+    (hpureZ : ∀ other : Fin data.basisCount, other ≠ slotOne → other ≠ slotTwo →
+      data.tightDir (data.basisLabel other) atomZ = 0)
+    (hpureP : ∀ other : Fin data.basisCount, other ≠ slotThree → other ≠ slotFour →
+      data.tightDir (data.basisLabel other) atomP = 0)
+    (hpureQ : ∀ other : Fin data.basisCount, other ≠ slotThree → other ≠ slotFour →
+      data.tightDir (data.basisLabel other) atomQ = 0)
+    (hwedgeOne : data.tightDir (data.basisLabel slotOne) atomY
+        * data.tightDir (data.basisLabel slotTwo) atomZ
+      - data.tightDir (data.basisLabel slotOne) atomZ
+        * data.tightDir (data.basisLabel slotTwo) atomY ≠ 0)
+    (hwedgeTwo : data.tightDir (data.basisLabel slotThree) atomP
+        * data.tightDir (data.basisLabel slotFour) atomQ
+      - data.tightDir (data.basisLabel slotThree) atomQ
+        * data.tightDir (data.basisLabel slotFour) atomP ≠ 0) :
+    False := by
+  classical
+  have hcornerOne := data.purePair_corner_trace hne hblockYone hblockYtwo hblockZone
+    hblockZtwo hpureY hpureZ hwedgeOne
+  have hcornerTwo := data.purePair_corner_trace hneOther hblockPthree hblockPfour
+    hblockQthree hblockQfour hpureP hpureQ hwedgeTwo
+  -- the four atoms are pairwise distinct
+  have hcross : ∀ atomFirst atomSecond : Fin 6,
+      (∀ other : Fin data.basisCount, other ≠ slotOne → other ≠ slotTwo →
+        data.tightDir (data.basisLabel other) atomFirst = 0) →
+      atomSecond ∈ datumTightSupport data.tightDir (data.basisLabel slotThree) →
+      atomFirst ≠ atomSecond := by
+    intro atomFirst atomSecond hpure hmem hsame
+    refine data.basis_live_of_mem_support hmem ?_
+    rw [← hsame]
+    exact hpure slotThree (Ne.symm hOneThree) (Ne.symm hTwoThree)
+  have hYP := hcross atomY atomP hpureY hblockPthree
+  have hYQ := hcross atomY atomQ hpureY hblockQthree
+  have hZP := hcross atomZ atomP hpureZ hblockPthree
+  have hZQ := hcross atomZ atomQ hpureZ hblockQthree
+  have huniv : (Finset.univ : Finset (Fin data.basisCount))
+      = {slotOne, slotTwo, slotThree, slotFour} := by
+    refine Finset.eq_of_subset_of_card_le ?_ (Finset.card_le_card (Finset.subset_univ _))
+    intro slot _
+    rcases hexhaust slot with rfl | rfl | rfl | rfl <;> simp
+  have hsplit : Matrix.trace data.coeff
+      = (data.coeff slotOne slotOne + data.coeff slotTwo slotTwo)
+        + (data.coeff slotThree slotThree + data.coeff slotFour slotFour) := by
+    rw [data.trace_coeff_eq_sum, huniv,
+      Finset.sum_insert (by simp [hne, hOneThree, hOneFour]),
+      Finset.sum_insert (by simp [hTwoThree, hTwoFour]),
+      Finset.sum_insert (by simp [hneOther]), Finset.sum_singleton]
+    ring
+  have hYnot : atomY ∉ ({atomZ, atomP, atomQ} : Finset (Fin 6)) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rintro (heq | heq | heq)
+    · exact hYZ heq
+    · exact hYP heq
+    · exact hYQ heq
+  have hZnot : atomZ ∉ ({atomP, atomQ} : Finset (Fin 6)) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rintro (heq | heq)
+    · exact hZP heq
+    · exact hZQ heq
+  refine data.false_of_trace_eq_captureSum
+    (atomSet := ({atomY, atomZ, atomP, atomQ} : Finset (Fin 6))) ?_
+  rw [Finset.sum_insert hYnot, Finset.sum_insert hZnot,
+    Finset.sum_insert (by simp [hPQ]), Finset.sum_singleton, hsplit, hcornerOne,
+    hcornerTwo]
+  ring
+
+/-- **THE IMPURE SLOT.**  Once two atoms of the shared triple carry only
+the identical pair, some further basis slot has NO atom of basis
+multiplicity one.  This is the contrapositive of the private family
+kill, and it is a new narrowing of the identical branch. -/
+theorem exists_impure_slot_of_purePair (data : SharedPrivateData crux)
+    {slotOne slotTwo : Fin data.basisCount} (hne : slotOne ≠ slotTwo)
+    {atomY atomZ : Fin 6} (hYZ : atomY ≠ atomZ)
+    (hblockYone : atomY ∈ datumTightSupport data.tightDir (data.basisLabel slotOne))
+    (hblockYtwo : atomY ∈ datumTightSupport data.tightDir (data.basisLabel slotTwo))
+    (hblockZone : atomZ ∈ datumTightSupport data.tightDir (data.basisLabel slotOne))
+    (hblockZtwo : atomZ ∈ datumTightSupport data.tightDir (data.basisLabel slotTwo))
+    (hpureY : ∀ other : Fin data.basisCount, other ≠ slotOne → other ≠ slotTwo →
+      data.tightDir (data.basisLabel other) atomY = 0)
+    (hpureZ : ∀ other : Fin data.basisCount, other ≠ slotOne → other ≠ slotTwo →
+      data.tightDir (data.basisLabel other) atomZ = 0)
+    (hwedge : data.tightDir (data.basisLabel slotOne) atomY
+        * data.tightDir (data.basisLabel slotTwo) atomZ
+      - data.tightDir (data.basisLabel slotOne) atomZ
+        * data.tightDir (data.basisLabel slotTwo) atomY ≠ 0) :
+    ∃ slot : Fin data.basisCount, slot ≠ slotOne ∧ slot ≠ slotTwo
+      ∧ ∀ atomIndex : Fin 6,
+          atomIndex ∈ datumTightSupport data.tightDir (data.basisLabel slot) →
+          ∃ other : Fin data.basisCount, other ≠ slot
+            ∧ data.tightDir (data.basisLabel other) atomIndex ≠ 0 := by
+  classical
+  by_contra hnot
+  refine data.false_of_purePair_private_family hne hYZ hblockYone hblockYtwo
+    hblockZone hblockZtwo hpureY hpureZ hwedge fun slot hOne hTwo => ?_
+  by_contra hslot
+  refine hnot ⟨slot, hOne, hTwo, fun atomIndex hmem => ?_⟩
+  by_contra hall
+  refine hslot ⟨atomIndex, hmem, fun other hother => ?_⟩
+  by_contra hlive
+  exact hall ⟨other, hother, hlive⟩
+
 end SharedPrivateData
 
-/-! ## Layer 8 — the identical residue on the coefficient lattice -/
+/-! ## Layer 9 — the identical residue on the coefficient lattice -/
 
 /-- **THE COEFFICIENT IDENTICAL RESIDUE.**  The identical-support branch
 carries every payment of the slot-split lattice AND the four label
@@ -749,6 +1005,19 @@ def SharedPrivateCircuitPairIdenticalCoeffClosed : Prop :=
         (∃ slotThree : Fin data.basisCount, slotThree ≠ slotOne ∧ slotThree ≠ slotTwo
           ∧ ∃ atomY ∈ ({atomU, atomV, atomS} : Finset (Fin 6)),
             atomY ∈ datumTightSupport data.tightDir (data.basisLabel slotThree)) →
+        -- two pure atoms of the shared triple force a slot with no private atom
+        (∀ atomY atomZ : Fin 6, atomY ∈ ({atomU, atomV, atomS} : Finset (Fin 6)) →
+          atomZ ∈ ({atomU, atomV, atomS} : Finset (Fin 6)) → atomY ≠ atomZ →
+          (∀ other : Fin data.basisCount, other ≠ slotOne → other ≠ slotTwo →
+            data.tightDir (data.basisLabel other) atomY = 0) →
+          (∀ other : Fin data.basisCount, other ≠ slotOne → other ≠ slotTwo →
+            data.tightDir (data.basisLabel other) atomZ = 0) →
+          ∃ slotThree : Fin data.basisCount, slotThree ≠ slotOne ∧ slotThree ≠ slotTwo
+            ∧ ∀ atomIndex : Fin 6,
+                atomIndex
+                  ∈ datumTightSupport data.tightDir (data.basisLabel slotThree) →
+                ∃ other : Fin data.basisCount, other ≠ slotThree
+                  ∧ data.tightDir (data.basisLabel other) atomIndex ≠ 0) →
         False
 
 /-- **THE COEFFICIENT PAYMENT BRIDGE.**  Every hypothesis that the
@@ -761,19 +1030,7 @@ theorem sharedPrivateCircuitPairIdenticalSlotClosed_of_coeff
   intro crux data label hmem hpos slotOne slotTwo hne hcoeffOne hcoeffTwo hpair
     atomU atomV atomS hUV hUS hVS hsupportOne hsupportTwo hshape hpin hbudget
     hcomplement hleak hnotRankOne hsingular hthird hnoPair hstraddle
-  refine hpaid crux data label hmem hpos slotOne slotTwo hne hcoeffOne hcoeffTwo hpair
-    atomU atomV atomS hUV hUS hVS hsupportOne hsupportTwo hshape hpin hbudget
-    hcomplement hleak hnotRankOne hsingular hthird hnoPair hstraddle
-    data.two_le_trace_coeff data.sum_captureDiag_lt_one
-    (fun slot atomIndex hblock hprivate =>
-      data.coeff_diag_of_private hblock hprivate)
-    (fun atomY atomZ hY hZ hYZ hpureY hpureZ => ?_)
-    (data.exists_impure_atom_of_identical hne hUV hUS hVS hsupportOne hsupportTwo)
-  refine data.purePair_corner_trace hne (by rw [hsupportOne]; exact hY)
-    (by rw [hsupportTwo]; exact hY) (by rw [hsupportOne]; exact hZ)
-    (by rw [hsupportTwo]; exact hZ) hpureY hpureZ ?_
-  -- the wedge of the two value pairs comes from the rank-one minors
-  simp only [Finset.mem_insert, Finset.mem_singleton] at hY hZ
+  -- the three free wedges of the shared triple, from the rank-one minors
   have hwedgeUV := data.identicalPair_wedge_ne_zero hne hUV hUS hVS hsupportOne
     hsupportTwo
   have hwedgeUS := data.identicalPair_wedge_ne_zero hne hUS hUV (Ne.symm hVS)
@@ -789,18 +1046,43 @@ theorem sharedPrivateCircuitPairIdenticalSlotClosed_of_coeff
         ext atomIndex
         simp only [Finset.mem_insert, Finset.mem_singleton]
         tauto)
-  rcases hY with rfl | rfl | rfl <;> rcases hZ with rfl | rfl | rfl
-  · exact absurd rfl hYZ
-  · exact hwedgeUV
-  · exact hwedgeUS
-  · intro hzero; exact hwedgeUV (by linarith)
-  · exact absurd rfl hYZ
-  · exact hwedgeVS
-  · intro hzero; exact hwedgeUS (by linarith)
-  · intro hzero; exact hwedgeVS (by linarith)
-  · exact absurd rfl hYZ
+  have hwedgeAll : ∀ atomY atomZ : Fin 6,
+      atomY ∈ ({atomU, atomV, atomS} : Finset (Fin 6)) →
+      atomZ ∈ ({atomU, atomV, atomS} : Finset (Fin 6)) → atomY ≠ atomZ →
+      data.tightDir (data.basisLabel slotOne) atomY
+          * data.tightDir (data.basisLabel slotTwo) atomZ
+        - data.tightDir (data.basisLabel slotOne) atomZ
+          * data.tightDir (data.basisLabel slotTwo) atomY ≠ 0 := by
+    intro atomY atomZ hY hZ hYZ
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hY hZ
+    rcases hY with rfl | rfl | rfl <;> rcases hZ with rfl | rfl | rfl
+    · exact absurd rfl hYZ
+    · exact hwedgeUV
+    · exact hwedgeUS
+    · intro hzero; exact hwedgeUV (by linarith)
+    · exact absurd rfl hYZ
+    · exact hwedgeVS
+    · intro hzero; exact hwedgeUS (by linarith)
+    · intro hzero; exact hwedgeVS (by linarith)
+    · exact absurd rfl hYZ
+  exact hpaid crux data label hmem hpos slotOne slotTwo hne hcoeffOne hcoeffTwo hpair
+    atomU atomV atomS hUV hUS hVS hsupportOne hsupportTwo hshape hpin hbudget
+    hcomplement hleak hnotRankOne hsingular hthird hnoPair hstraddle
+    data.two_le_trace_coeff data.sum_captureDiag_lt_one
+    (fun slot atomIndex hblock hprivate =>
+      data.coeff_diag_of_private hblock hprivate)
+    (fun atomY atomZ hY hZ hYZ hpureY hpureZ =>
+      data.purePair_corner_trace hne (by rw [hsupportOne]; exact hY)
+        (by rw [hsupportTwo]; exact hY) (by rw [hsupportOne]; exact hZ)
+        (by rw [hsupportTwo]; exact hZ) hpureY hpureZ (hwedgeAll atomY atomZ hY hZ hYZ))
+    (data.exists_impure_atom_of_identical hne hUV hUS hVS hsupportOne hsupportTwo)
+    fun atomY atomZ hY hZ hYZ hpureY hpureZ =>
+      data.exists_impure_slot_of_purePair hne hYZ (by rw [hsupportOne]; exact hY)
+        (by rw [hsupportTwo]; exact hY) (by rw [hsupportOne]; exact hZ)
+        (by rw [hsupportTwo]; exact hZ) hpureY hpureZ
+        (hwedgeAll atomY atomZ hY hZ hYZ)
 
-/-! ## Layer 9 — closure two on the coefficient lattice -/
+/-! ## Layer 10 — closure two on the coefficient lattice -/
 
 /-- **THE EXTRAS ON THE COEFFICIENT LATTICE.** -/
 theorem sharedPrivateExtrasClosed_of_coeffLattice
