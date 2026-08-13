@@ -35,6 +35,8 @@ plane orthogonal to that atom, because the shadow of the other atoms in
 that plane is again a tight frame and the shadow energy never exceeds the
 atom energy.  The rank-five heavy-five profile hands exactly this
 configuration, thus the whole profile A closes from the plane residue.
+The plane residue in turn reads as ONE polynomial inequality in the atom
+Gram over the fifteen pairs, with no eigenvalue and no square root.
 
 ## PROVED here (no `sorry`, no `axiom`, no `native_decide`)
 
@@ -72,6 +74,14 @@ configuration, thus the whole profile A closes from the plane residue.
 * `Gtz.rankFiveDenseHeavyFiveClosed_of_atomPairCeiling`,
   `Gtz.rankFiveDenseHeavyFiveDistinctClosed_of_atomPairCeiling` — **THE
   RANK-FIVE PROFILE A FROM THE PLANE RESIDUE.**
+* `Gtz.pair_form_pos` — the two-by-two Sylvester criterion.
+* `Gtz.AtomPairGramClosed` — **THE PLANE PAIR GRAM RESIDUE.**  The plane
+  residue as one polynomial inequality over fifteen pairs.
+* `Gtz.atomPairCeilingClosed_of_gram` — the pair criterion is the plane
+  residue.
+* `Gtz.rankFiveDenseHeavyFiveClosed_of_atomPairGram`,
+  `Gtz.forall_shifted_weight_pos_of_atomPairGram` — profile A and the
+  boundary stratum from the pair criterion.
 
 ## Vacuity
 
@@ -772,5 +782,140 @@ theorem rankFiveDenseHeavyFiveDistinctClosed_of_atomPairCeiling
     RankFiveDenseHeavyFiveDistinctClosed := by
   intro crux _frame heavyAtom _hthree _hfive _hdoubles _htrace hheavyZero _hdistinct
   exact crux.false_of_atomPairCeiling_of_shift_zero hpair hheavyZero
+
+/-! ## Layer 8 — the pair criterion of the plane residue -/
+
+/-- The reading of a two-term combination against itself. -/
+theorem dot_two_combination {rank : ℕ} (vecOne vecTwo : Fin rank → ℝ)
+    (coefOne coefTwo : ℝ) :
+    (fun index => coefOne * vecOne index + coefTwo * vecTwo index)
+        ⬝ᵥ (fun index => coefOne * vecOne index + coefTwo * vecTwo index)
+      = coefOne ^ 2 * (vecOne ⬝ᵥ vecOne)
+        + 2 * coefOne * coefTwo * (vecOne ⬝ᵥ vecTwo)
+        + coefTwo ^ 2 * (vecTwo ⬝ᵥ vecTwo) := by
+  simp only [dotProduct, Finset.mul_sum, ← Finset.sum_add_distrib]
+  exact Finset.sum_congr rfl fun index _ => by ring
+
+/-- **THE TWO-BY-TWO SYLVESTER CRITERION.**  A binary quadratic form with a
+positive first coefficient and a positive determinant is positive on every
+nonzero pair.  The completion of the square carries the whole proof. -/
+theorem pair_form_pos {gapOne gapTwo cross coefOne coefTwo : ℝ}
+    (hgap : 0 < gapOne) (hdet : cross ^ 2 < gapOne * gapTwo)
+    (hne : coefOne ≠ 0 ∨ coefTwo ≠ 0) :
+    0 < gapOne * coefOne ^ 2 + 2 * cross * coefOne * coefTwo
+      + gapTwo * coefTwo ^ 2 := by
+  have hsquare : gapOne * (gapOne * coefOne ^ 2 + 2 * cross * coefOne * coefTwo
+        + gapTwo * coefTwo ^ 2)
+      = (gapOne * coefOne + cross * coefTwo) ^ 2
+        + (gapOne * gapTwo - cross ^ 2) * coefTwo ^ 2 := by ring
+  rcases eq_or_ne coefTwo 0 with hzero | hpos
+  · have hfirst : coefOne ≠ 0 := by
+      rcases hne with hcase | hcase
+      · exact hcase
+      · exact absurd hzero hcase
+    have hsq : 0 < coefOne ^ 2 :=
+      lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hfirst))
+    rw [hzero]
+    nlinarith [hgap, hsq]
+  · have hsq : 0 < coefTwo ^ 2 :=
+      lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hpos))
+    nlinarith [hsquare, hgap, hsq, sq_nonneg (gapOne * coefOne + cross * coefTwo)]
+
+/-- **THE PLANE PAIR GRAM RESIDUE.**  The same data as the plane pair
+ceiling, with the conclusion in the ATOM GRAM: two slots whose shifted
+energies are positive and whose shifted product exceeds the square of
+their cross reading.
+
+This is the shape a certificate produces.  The search is finite — fifteen
+unordered pairs — and each test is one polynomial inequality in the atom
+Gram and the scales, with no eigenvalue, no square root and no
+compactness. -/
+def AtomPairGramClosed : Prop :=
+  ∀ (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ) (axis : Fin 3 → ℝ),
+    (0 : ℝ) < axis ⬝ᵥ axis →
+    (∀ slot, atom slot ⬝ᵥ axis = 0) →
+    (∀ slot, 0 ≤ scale slot) →
+    (∑ slot, scale slot) < 1 →
+    (∀ probe direction : Fin 3 → ℝ, probe ⬝ᵥ axis = 0 → direction ⬝ᵥ axis = 0 →
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction))
+        = probe ⬝ᵥ direction) →
+    ∃ slotOne slotTwo : Fin 6, slotOne ≠ slotTwo
+      ∧ 0 < atom slotOne ⬝ᵥ atom slotOne - scale slotOne
+      ∧ (atom slotOne ⬝ᵥ atom slotTwo) ^ 2
+          < (atom slotOne ⬝ᵥ atom slotOne - scale slotOne)
+            * (atom slotTwo ⬝ᵥ atom slotTwo - scale slotTwo)
+
+/-- **THE PAIR CRITERION IS THE PLANE RESIDUE.**  The Gram criterion at
+one pair dominates every nonzero probe supported on that pair: the probe
+energy of the pair is a binary quadratic form, and the criterion is its
+Sylvester test. -/
+theorem atomPairCeilingClosed_of_gram (hgram : AtomPairGramClosed) :
+    AtomPairCeilingClosed := by
+  classical
+  intro atom scale axis haxis hplane hnonneg hsmall hframe
+  obtain ⟨slotOne, slotTwo, hslotNe, hgapPos, hdet⟩ :=
+    hgram atom scale axis haxis hplane hnonneg hsmall hframe
+  refine ⟨{slotOne, slotTwo}, Finset.card_pair hslotNe, fun probe hvanish hne => ?_⟩
+  set coefOne := probe slotOne with hcoefOne
+  set coefTwo := probe slotTwo with hcoefTwo
+  have hrestrict : ∀ combine : Fin 6 → ℝ,
+      (∀ slot ∉ ({slotOne, slotTwo} : Finset (Fin 6)), combine slot = 0) →
+      (∑ slot, combine slot) = combine slotOne + combine slotTwo := by
+    intro combine hoff
+    rw [← Finset.sum_subset (Finset.subset_univ ({slotOne, slotTwo} : Finset (Fin 6)))
+      (fun slot _ hnot => hoff slot hnot), Finset.sum_pair hslotNe]
+  have hscaleSum : (∑ slot, scale slot * probe slot ^ 2)
+      = scale slotOne * coefOne ^ 2 + scale slotTwo * coefTwo ^ 2 := by
+    refine hrestrict (fun slot => scale slot * probe slot ^ 2) fun slot hnot => ?_
+    rw [hvanish slot hnot]
+    ring
+  have hblend : atomBlend atom probe
+      = fun index => coefOne * atom slotOne index + coefTwo * atom slotTwo index := by
+    funext index
+    rw [atomBlend_apply]
+    exact hrestrict (fun slot => probe slot * atom slot index) fun slot hnot => by
+      rw [hvanish slot hnot, zero_mul]
+  have hcoefNe : coefOne ≠ 0 ∨ coefTwo ≠ 0 := by
+    by_contra hboth
+    rw [not_or, not_not, not_not] at hboth
+    refine hne (funext fun slot => ?_)
+    by_cases hone : slot = slotOne
+    · rw [hone, ← hcoefOne, hboth.1]; rfl
+    by_cases htwo : slot = slotTwo
+    · rw [htwo, ← hcoefTwo, hboth.2]; rfl
+    rw [hvanish slot (fun hmem => by
+      rcases Finset.mem_insert.mp hmem with hcase | hcase
+      · exact hone hcase
+      · exact htwo (Finset.mem_singleton.mp hcase))]
+    rfl
+  have hform := pair_form_pos (gapOne := atom slotOne ⬝ᵥ atom slotOne - scale slotOne)
+    (gapTwo := atom slotTwo ⬝ᵥ atom slotTwo - scale slotTwo)
+    (cross := atom slotOne ⬝ᵥ atom slotTwo) (coefOne := coefOne) (coefTwo := coefTwo)
+    hgapPos hdet hcoefNe
+  rw [hscaleSum, hblend, dot_two_combination]
+  nlinarith [hform]
+
+/-- **THE RANK-FIVE PROFILE A FROM THE PAIR CRITERION.**  Profile A of the
+rank-five dense branch closes from one polynomial inequality in the atom
+Gram of the plane. -/
+theorem rankFiveDenseHeavyFiveClosed_of_atomPairGram
+    (hgram : AtomPairGramClosed) : RankFiveDenseHeavyFiveClosed :=
+  rankFiveDenseHeavyFiveClosed_of_atomPairCeiling
+    (atomPairCeilingClosed_of_gram hgram)
+
+/-- The residual cycle cell of profile A from the pair criterion. -/
+theorem rankFiveDenseHeavyFiveDistinctClosed_of_atomPairGram
+    (hgram : AtomPairGramClosed) : RankFiveDenseHeavyFiveDistinctClosed :=
+  rankFiveDenseHeavyFiveDistinctClosed_of_atomPairCeiling
+    (atomPairCeilingClosed_of_gram hgram)
+
+/-- The boundary stratum of the whole campaign, from the pair criterion:
+every crux is interior. -/
+theorem forall_shifted_weight_pos_of_atomPairGram (hgram : AtomPairGramClosed) :
+    ∀ (crux : SixThreeCrux) (atomIndex : Fin 6),
+      0 < chartObjective (chartPointOfDesign crux.design)
+        + (chartPointOfDesign crux.design).weight atomIndex :=
+  forall_shifted_weight_pos_of_atomPairCeiling
+    (atomPairCeilingClosed_of_gram hgram)
 
 end Gtz
