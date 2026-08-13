@@ -2941,6 +2941,11 @@ import Gtz.Wave.RankFiveNormalForm
 -- the pinned dispatch of the rank-five rung.
 import Gtz.Wave.SupportQuintupleCensus
 
+-- the rank-five rung assembly: the frame, the three named closures,
+-- the inline fully-private discharge, and the rung modulo the
+-- closures.
+import Gtz.Wave.RankFiveRungAssembly
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

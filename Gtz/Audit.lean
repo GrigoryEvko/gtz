@@ -687,6 +687,7 @@ import Gtz.Wave.BothParallelDiagonalCore
 import Gtz.Wave.SharedPairOuterReduction
 import Gtz.Wave.RankFiveNormalForm
 import Gtz.Wave.SupportQuintupleCensus
+import Gtz.Wave.RankFiveRungAssembly
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -22026,6 +22027,19 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.false_of_fully_private_quintuple
 #print axioms Gtz.basisSupport_quintuple_trichotomy
 #print axioms Gtz.SixThreeCrux.exists_rankFive_pinned_dispatch
+
+-- ==========================================================
+-- the rank-five rung assembly.  The frame, the derived
+-- independence, the branch-two discharge, and the rung modulo
+-- the three named closures.
+-- ==========================================================
+
+#print axioms Gtz.RankFiveFrame.hmemAll
+#print axioms Gtz.RankFiveFrame.hvalueNeg
+#print axioms Gtz.RankFiveFrame.hindep
+#print axioms Gtz.SixThreeCrux.exists_rankFiveFrame
+#print axioms Gtz.RankFiveFrame.false_of_multOne_branch
+#print axioms Gtz.isSixThreeAssemblyRankExcluded_five_of_closures
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
