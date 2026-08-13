@@ -707,6 +707,7 @@ import Gtz.Wave.SharedPrivateCertificateReduction
 import Gtz.Wave.SharedPrivateComplementTrace
 import Gtz.Wave.SharedPrivateStrataDispatch
 import Gtz.Wave.SharedPrivateKernelResidue
+import Gtz.Wave.SharedPrivateKernelGram
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -22456,6 +22457,22 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.columnGram_exchange_of_representation
 #print axioms Gtz.projection_residue_decomposition
 #print axioms Gtz.SharedPrivateData.exists_kernel_residue
+
+-- the shared-private kernel Gram
+#print axioms Gtz.read_fixed_energy
+#print axioms Gtz.read_fixed_self_energy
+#print axioms Gtz.kernel_part_energy
+#print axioms Gtz.kernel_cross_law
+#print axioms Gtz.disjoint_support_dot
+#print axioms Gtz.gram_kernel_free_of_bounded_cross
+#print axioms Gtz.trace_floor_of_fixed_family
+#print axioms Gtz.exists_gram_kernel_of_trace_lt
+#print axioms Gtz.SharedPrivateData.basisCount_le_six
+#print axioms Gtz.SharedPrivateData.support_eq_block
+#print axioms Gtz.SharedPrivateData.pin_only_slot
+#print axioms Gtz.SharedPrivateData.pin_disjoint_of_offSupport
+#print axioms Gtz.SharedPrivateData.exists_kernel_read_frame
+#print axioms Gtz.SharedPrivateData.false_of_disjoint_support_family
 
 -- the outer block-pin budget
 #print axioms Gtz.blockCarrier_mem

@@ -3026,6 +3026,12 @@ import Gtz.Wave.SharedPrivateStrataDispatch
 -- six laws, and the datum residue with the boundary heavy floor.
 import Gtz.Wave.SharedPrivateKernelResidue
 
+-- the shared-private kernel Gram: the split energies of a read against
+-- the coefficient idempotent, the cross laws, the kernel-free Gram
+-- bound, the trace floor of a fixed family, the read frame package
+-- with the boundary kernel law, and the disjoint-family kill.
+import Gtz.Wave.SharedPrivateKernelGram
+
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
 -- closure three.
