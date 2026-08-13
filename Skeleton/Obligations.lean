@@ -78,15 +78,16 @@ Two roots are in play.
   those two entries.
 * Root B, general rank: `forall rank, Gtz.GtzWeightedAll rank`, with no rank
   excluded because `Gtz.gtzWeighted_dim_zero` discharges rank zero.  Needs
-  exactly three, `obligationSubThresholdBandHinge`,
-  `obligationThresholdCellHingeRankFourAndUp` and
-  `obligationSharpWindowAnchorReachRankFourAndUp` -- the reach obligation's
-  rank-three half is DISCHARGED (`Gtz.icosaDesign`), and the original name
-  `obligationSharpWindowAnchorReach` survives as a theorem assembled from the
-  two halves.
+  exactly two, `obligationSubThresholdBandHinge` and
+  `obligationThresholdCellHingeRankFourAndUp` -- the two hinges.  The reach
+  obligation is CLOSED at every rank: the rank-three half by `Gtz.icosaDesign`
+  and the rank-four-and-up half by
+  `Gtz.GeneralRankReach.sharpWindowAnchorReachRankFourAndUp`, thus both
+  `obligationSharpWindowAnchorReachRankFourAndUp` and the assembled
+  `obligationSharpWindowAnchorReach` are theorems.
 
-The merged registry count is EIGHT, and the general capstone reaches all
-eight.  Before the 2026-08-08 rank split the threshold-cell hinge covered
+The merged registry count is SEVEN, and the general capstone reaches all
+seven.  Before the 2026-08-08 rank split the threshold-cell hinge covered
 `3 <= rank`, so its rank-three instance silently re-assumed the entire
 rank-three frontier in a strictly stronger wrapper; `obligationThresholdCellHinge`
 is now a THEOREM whose rank-three instance is discharged from the five class
@@ -462,18 +463,19 @@ theorem obligationSharpWindowAnchorReachRankThree :
     Gtz.parallelFreeReachesAnchor_six_three⟩
 
 /--
-STATUS: no kernel evidence at any rank in this range, but the anchor half's tail obligation is now a THEOREM: `Gtz.UniformPositionBridge.diagonalTailAtCell_of_two_le` discharges `DiagonalTailAtCell` at every `2 <= extra` and every `2 <= rank` (Gtz/Uniform/AnchorAssembly.lean, single-plane construction; FALSE at `extra = 1`, `not_diagonalTailAtCell_one`, so the guard is sharp -- and the window supplies `extra = size - rank >= rank` for free).
-CONSUMERS: `obligationSharpWindowAnchorReach`, which survives as a theorem so no capstone changed.
-WHY OPEN: the only `Gtz.ParallelFreeReachesAnchor` instance in the tree is the rank-three one, so nothing here has a single supporting instance.
-ATTACK: two pieces remain. (1) ASSEMBLY, mechanical: reindex the axis-aligned core (`sum_core_atomMatrix`) and the diagonal tail (`sum_tailRawWeight_atomMatrix`) along `Fin size = Fin rank (+) Fin (size - rank)`, balance Parseval with `coreTailBookkeeping_feasible`, and feed the weak dominator to `windowAnchorReachFree_of_weakWitness` with `exists_strictAnchor_of_weakDominator`. (2) TOPOLOGY, the real content: per-cell connectivity of the parallel-free locus -- generalize the (6,3) moment-curve walk of Gtz/Reduction/ParallelFreeReach.lean, whose schedule condition is exactly the window floor (`windowCell_meets_walkSchedule`).
-NOT-REFUTED: no census row targets any cell with `2 * rank <= size <= rank * (rank + 1) / 2` at rank four or above.
+STATUS: CLOSED. This is no longer an axiom. `Gtz.GeneralRankReach.sharpWindowAnchorReachRankFourAndUp` (Gtz/Uniform/SpectralWhitening.lean) carries this exact type, and its axiom pins are `[propext, Classical.choice, Quot.sound]`.
+CONSUMERS: `obligationSharpWindowAnchorReach`, which stays a theorem, thus no capstone changed.
+WHY CLOSED: the two residual Props of the reach assembly became theorems. `Gtz.GeneralRankReach.sharpWindowParallelFreeConnectivity_of_three_le` supplies the per-cell connectivity from the moment-hub schedule of Gtz/Uniform/MomentHubSchedule.lean, and `Gtz.GeneralRankReach.whiteningTransferAtRank_general` supplies the whitening from the continuous functional calculus, with no hypothesis.
+ATTACK: none is necessary.
+NOT-REFUTED: the rank-two refutations are not instances of this statement, because the sharp window is empty at rank two.
 -/
-axiom obligationSharpWindowAnchorReachRankFourAndUp :
+theorem obligationSharpWindowAnchorReachRankFourAndUp :
     ∀ rank : ℕ, 4 ≤ rank →
       ∀ size : ℕ, 2 * rank ≤ size → size ≤ rank * (rank + 1) / 2 →
         ∃ anchor : Gtz.WeightedDesign size rank,
           Gtz.HasStrictlyDominatingSubset anchor
-            ∧ Gtz.ParallelFreeReachesAnchor size rank anchor
+            ∧ Gtz.ParallelFreeReachesAnchor size rank anchor :=
+  Gtz.GeneralRankReach.sharpWindowAnchorReachRankFourAndUp
 
 /-- **Split, not weakened.**  Same name, same type as the axiom it replaces, so
 every downstream capstone compiles untouched. -/
@@ -531,7 +533,6 @@ def liveObligationNames : List Lean.Name :=
    `Skeleton.obligationChartTieFreeThreeLinesFundamentalDomain,
    `Skeleton.obligationKnifeBandRefinedKFour,
    `Skeleton.obligationSubThresholdBandHinge,
-   `Skeleton.obligationThresholdCellHingeRankFourAndUp,
-   `Skeleton.obligationSharpWindowAnchorReachRankFourAndUp]
+   `Skeleton.obligationThresholdCellHingeRankFourAndUp]
 
 end Skeleton

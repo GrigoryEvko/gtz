@@ -80,6 +80,17 @@ def retiredObligationNames : List Name :=
    -- 2026-08-07: introduced by the rank split and discharged in the same edit
    -- (Gtz.icosaDesign; the sharp window at rank three is the single cell six).
    `Skeleton.obligationSharpWindowAnchorReachRankThree,
+   -- 2026-08-13: DISCHARGED, the campaign's first general-rank retirement.
+   -- The two residual Props of the reach assembly became theorems in the same
+   -- edit.  `Gtz.GeneralRankReach.sharpWindowParallelFreeConnectivity_of_three_le`
+   -- supplies the per-cell connectivity from the moment-hub schedule (a
+   -- two-phase walk that moves the labels outside a spanning base first, then
+   -- the base labels through the placed moment points), and
+   -- `Gtz.GeneralRankReach.whiteningTransferAtRank_general` supplies the
+   -- whitening from the continuous functional calculus, with no hypothesis.
+   -- `Gtz.GeneralRankReach.sharpWindowAnchorReachRankFourAndUp` carries the
+   -- exact type, thus the name survives as a theorem and no capstone moved.
+   `Skeleton.obligationSharpWindowAnchorReachRankFourAndUp,
    -- 2026-08-08: the five class obligations SHARPENED one landed reduction
    -- each -- every class statement survives as a theorem discharged from the
    -- exact residual Prop the campaign attacks (refinement in the sufficient
@@ -314,7 +325,7 @@ obligation, or the gate reports dead weight.
 
 The CONDITIONAL general-rank capstone
 `Skeleton.GeneralRank.skeletonGtzWeightedAllEveryRank_ofSixThree` is printed
-here too, and it is deliberately NOT a gate root.  It spends three of the eight
+here too, and it is deliberately NOT a gate root.  It spends two of the seven
 obligations, so making it a root would let the five rank-three class residuals
 pass the dead-obligation check on its account rather than on the unconditional
 capstone's.  The gate stays over the two UNCONDITIONAL capstones, which is where

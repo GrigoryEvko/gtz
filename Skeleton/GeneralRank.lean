@@ -72,9 +72,11 @@ axiom.  The rank split removed that: `Skeleton.obligationThresholdCellHinge`
 is now a THEOREM whose rank-three instance is discharged from the five class
 residuals through the trichotomy assembly, and the axiom survives only as
 `Skeleton.obligationThresholdCellHingeRankFourAndUp`.  So
-`skeletonGtzWeightedAllEveryRank` now reaches ALL EIGHT registry obligations:
+`skeletonGtzWeightedAllEveryRank` now reaches ALL SEVEN registry obligations:
 the five sharpened class residuals (its rank-three price, identical to the
-rank-three capstone's) plus the three genuinely general-rank assumptions.
+rank-three capstone's) plus the two genuinely general-rank assumptions, which
+are the two hinges.  The reach obligation left the registry on 2026-08-13,
+discharged by `Gtz.GeneralRankReach.sharpWindowAnchorReachRankFourAndUp`.
 
 ## The five rank-three residuals are a hypothesis, not a fixture
 
@@ -447,12 +449,12 @@ The printed lists below are the whole point of the scaffold: the kernel's own
 answer to "what is still assumed", recomputed on every build.
 
 The three base-rank controls must each report ZERO obligations.  The two
-capstones must each report ALL EIGHT registry obligations: the five sharpened
+capstones must each report ALL SEVEN registry obligations: the five sharpened
 class residuals (the rank-three price, paid through the discharged rank-three
-instance of the threshold-cell hinge) plus the three genuinely general-rank
+instance of the threshold-cell hinge) plus the two genuinely general-rank
 assumptions.  Since the 2026-08-08 rank split there is no subsumption and no
 dead weight from either root alone: `Skeleton.RankThree` spends the five class
-residuals, this file spends all eight. -/
+residuals, this file spends all seven. -/
 
 #gtz_frontier gtzWeightedAllRankZero_ofCorankFloor
 

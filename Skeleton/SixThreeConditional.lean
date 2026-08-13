@@ -8,10 +8,10 @@ set_option maxHeartbeats 4000000
 /-!
 # The general-rank capstone under the `(6,3)` cell
 
-`Skeleton.GeneralRank.skeletonGtzWeightedAllEveryRank` uses all EIGHT registry
-obligations.  Five of the eight are the rank-three class residuals.  This module
+`Skeleton.GeneralRank.skeletonGtzWeightedAllEveryRank` uses all SEVEN registry
+obligations.  Five of the seven are the rank-three class residuals.  This module
 proves the SAME conclusion at every rank from `Gtz.GtzWeighted 6 3` together
-with the THREE general-rank obligations, and from nothing else.  The five class
+with the TWO general-rank obligations, and from nothing else.  The five class
 residuals leave the chain.
 
 ## Why the five leave
@@ -44,11 +44,11 @@ induction supplies it from the rank-three branch, which is the hypothesis cell
 again.  So the hypothesis pays for rank three exactly one time, and the ladder
 above rank three is unchanged.
 
-## The single cell decides the whole conjecture, modulo three obligations
+## The single cell decides the whole conjecture, modulo two obligations
 
 `everyRank_iff_sixThree` is the sharp reading.  The forward direction is
 unconditional and free -- `Gtz.GtzWeightedAll 3` at size six IS the cell.  The
-backward direction is this module.  So under the three general-rank obligations
+backward direction is this module.  So under the two general-rank obligations
 the whole rank-uniform statement and the single cell `(6,3)` are ONE statement,
 and the campaign that attacks that cell attacks every rank at the same time.
 
@@ -65,7 +65,7 @@ unconditional one:
 
 Section 8 kernel-checks the shape of that line against a local hypothesis of
 exactly that name and exactly that type, so the conversion cannot be wrong about
-the interface.  The registry then holds three obligations for the general-rank
+the interface.  The registry then holds two obligations for the general-rank
 root, and the five class residuals become dead weight that
 `Skeleton.Report`'s gate reports.
 -/
@@ -227,9 +227,9 @@ theorem closesCanonicalWindow_everyRank_ofSixThree (hcellSixThree : Gtz.GtzWeigh
     (rank : ℕ) : Gtz.InductionStep.ClosesCanonicalWindow rank :=
   fun size _ => skeletonGtzWeightedAllEveryRank_ofSixThree hcellSixThree rank size
 
-/-! ## 6. The whole conjecture is the single cell, modulo three obligations -/
+/-! ## 6. The whole conjecture is the single cell, modulo two obligations -/
 
-/-- **THE SHARP READING.**  Under the three general-rank obligations, weighted
+/-- **THE SHARP READING.**  Under the two general-rank obligations, weighted
 GTZ at EVERY rank and the single cell `(6,3)` are one statement.
 
 The forward direction is free and unconditional: `Gtz.GtzWeightedAll 3` at size
@@ -295,14 +295,15 @@ printed frontier is not enough: the whole finding here is a claim about which
 obligations are ABSENT, and an absence that only prints is an absence nobody
 notices when it returns. -/
 
-/-- The three general-rank obligations: what the conditional capstone must
-reach, and all it must reach. -/
+/-- The two general-rank obligations: what the conditional capstone must reach,
+and all it must reach.  Both are hinges.  The reach obligation left this list on
+2026-08-13, when `Gtz.GeneralRankReach.sharpWindowAnchorReachRankFourAndUp`
+discharged it. -/
 def generalRankObligationNames : List Lean.Name :=
   [`Skeleton.obligationSubThresholdBandHinge,
-   `Skeleton.obligationThresholdCellHingeRankFourAndUp,
-   `Skeleton.obligationSharpWindowAnchorReachRankFourAndUp]
+   `Skeleton.obligationThresholdCellHingeRankFourAndUp]
 
-/-- All eight registry obligations: what the UNCONDITIONAL capstone reaches.
+/-- All seven registry obligations: what the UNCONDITIONAL capstone reaches.
 The difference between this list and `generalRankObligationNames` is the five
 rank-three class residuals, which is the finding of this module. -/
 def everyObligationName : List Lean.Name :=
@@ -312,8 +313,7 @@ def everyObligationName : List Lean.Name :=
    `Skeleton.obligationChartTieFreeThreeLinesFundamentalDomain,
    `Skeleton.obligationKnifeBandRefinedKFour,
    `Skeleton.obligationSubThresholdBandHinge,
-   `Skeleton.obligationThresholdCellHingeRankFourAndUp,
-   `Skeleton.obligationSharpWindowAnchorReachRankFourAndUp]
+   `Skeleton.obligationThresholdCellHingeRankFourAndUp]
 
 /-- The empty frontier, for the roots that must reach no obligation at all. -/
 def noObligationName : List Lean.Name := []
