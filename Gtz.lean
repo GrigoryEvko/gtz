@@ -2905,6 +2905,22 @@ import Gtz.Wave.SupportTwoRayleighKill
 -- support reads, the energy window, the minors, and the trace window.
 import Gtz.Wave.GramExchangeLayer
 
+-- the K4 edge coordinates: the third-slot exclusion, the off-carrier
+-- vanish, the edge distinctness, the corner reads, the Gram edge
+-- entries, the unit norm in edge coordinates, and the four-term
+-- expansions of the exchange symmetry.
+import Gtz.Wave.KFourEdgeCoordinates
+
+-- the both-parallel kernel rigidity: the pair kernel annihilation, the
+-- left-inverse pullback, the division-free collapse, the projected
+-- kernel reads, the twin weights, and the equal pair diagonal.
+import Gtz.Wave.BothParallelKernelRigidity
+
+-- the both-parallel trichotomy: the span decomposition, the pair
+-- dichotomy, the counting kill, the pair refusal, the parallel
+-- promotion, the circuit laws, and the all-heavy gap floor.
+import Gtz.Wave.BothParallelTrichotomy
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

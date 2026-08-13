@@ -680,6 +680,9 @@ import Gtz.Wave.PencilNullFormLayer
 import Gtz.Wave.CycleIndependentClosure
 import Gtz.Wave.SupportTwoRayleighKill
 import Gtz.Wave.GramExchangeLayer
+import Gtz.Wave.KFourEdgeCoordinates
+import Gtz.Wave.BothParallelKernelRigidity
+import Gtz.Wave.BothParallelTrichotomy
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21937,6 +21940,38 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.gram_complement_entry_sq_le_of_unit
 #print axioms Gtz.gram_exchange_trace_read
 #print axioms Gtz.gram_energy_sum_window_upper
+#print axioms Gtz.not_mem_support_of_multiplicity_two
+#print axioms Gtz.tightDir_vanish_of_multiplicity_two
+#print axioms Gtz.edge_ne_of_third_slot
+#print axioms Gtz.kfour_corner_read_first
+#print axioms Gtz.kfour_corner_read_second
+#print axioms Gtz.kfour_gram_offdiag
+#print axioms Gtz.kfour_unit_norm_expand
+#print axioms Gtz.matrix_mul_apply_four
+#print axioms Gtz.kfour_exchange_symm_four
+#print axioms Gtz.kfour_diag_read_four
+#print axioms Gtz.basisColumns_transpose_dot
+#print axioms Gtz.triple_dot_collapse
+#print axioms Gtz.bothParallel_pairKernel_annihilated
+#print axioms Gtz.basisTranspose_zero_of_assembly_mulVec_zero
+#print axioms Gtz.bothParallel_annihilated_reads
+#print axioms Gtz.bothParallel_projected_kernel_reads
+#print axioms Gtz.pair_row_proportional_of_reads
+#print axioms Gtz.pair_balance_of_reads
+#print axioms Gtz.bothParallel_twin_weights
+#print axioms Gtz.bothParallel_pair_diag_eq
+#print axioms Gtz.bothParallel_kernel_rigidity
+#print axioms Gtz.exists_basis_coefficients_of_pos
+#print axioms Gtz.combination_apply_two
+#print axioms Gtz.pair_aligned_vanish_iff
+#print axioms Gtz.false_of_two_pairs_alive
+#print axioms Gtz.false_of_pair_supported_tight
+#print axioms Gtz.extra_pair_alive_parallel
+#print axioms Gtz.false_of_extra_singleton
+#print axioms Gtz.false_of_extra_zero
+#print axioms Gtz.extra_circuit_laws
+#print axioms Gtz.bothParallel_extra_label_trichotomy
+#print axioms Gtz.SixThreeCrux.chartGap_diagonal_pos
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
