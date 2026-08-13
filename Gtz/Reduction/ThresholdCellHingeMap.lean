@@ -10,6 +10,7 @@ import Gtz.Reduction.Crystallization
 import Gtz.Reduction.StressWalk
 import Gtz.Design.BalancedStratum
 import Gtz.Reduction.BalancedStratumClosure
+import Gtz.Quantitative.PhaseFreeNoGo
 import Gtz.Design.TwoPoleStratum
 
 set_option autoImplicit false
@@ -1284,6 +1285,284 @@ theorem thresholdDegenerateArm_three_of_poleSplit (hselection : TwoPoleStratumSe
     ThresholdDegenerateArm 3 :=
   degenerateArmAt_of_poleSplit 2 (degenerateArmBelowPoleCount_sixThree hselection)
     degenerateArmAbovePoleCount_sixThree
+
+/-! ### The subspace restriction at general rank, and the induction axis
+
+`Gtz.inPlaneRestriction` restricts a rank-three design to a plane and lands at
+rank two, where `Gtz.gtz_rank_two` is a THEOREM. That is why the rank-three
+degenerate arm closes. At rank `k` the same restriction lands at rank `k - 1`,
+which is the conjecture one rank down.
+
+The registry hinge obligations supply `Gtz.GtzWeighted (size - 1) rank` -- one
+SIZE down at the SAME rank. But the general-rank ladder
+(`Skeleton.GeneralRank.closesSharpWindow_ofClosures`) runs inside a RANK
+induction and carries `Gtz.GtzWeightedAll (rank - 1)` in scope, so a hinge arm
+that consumes the previous RANK still drives the same ladder and is a strictly
+weaker obligation. This section builds the restriction at general rank and the
+producer that consumes it. -/
+
+/-- The quadratic form of a subset sum, read atom by atom. -/
+theorem subsetSum_form (design : WeightedDesign size rank) (selected : Finset (Fin size))
+    (probe : Fin rank → ℝ) :
+    probe ⬝ᵥ (subsetSum design selected *ᵥ probe)
+      = ∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2 := by
+  rw [subsetSum, Matrix.sum_mulVec, dotProduct_sum]
+  exact Finset.sum_congr rfl fun c _ => atom_form_eq_sq _ _
+
+/-- **THE SUBSPACE RESTRICTION AT GENERAL RANK.**  Reading every atom against an
+orthonormal frame of any dimension gives a weighted design of THAT dimension,
+with the SAME weights: the Parseval entries are exactly the frame pairings.
+This is `Gtz.inPlaneRestriction` freed of rank three and of the plane, and it is
+what carries a hinge arm down the RANK axis. -/
+noncomputable def subspaceRestriction {frameDim : ℕ} (design : WeightedDesign size rank)
+    (frame : Fin frameDim → Fin rank → ℝ)
+    (horthonormal : ∀ i j, frame i ⬝ᵥ frame j = if i = j then 1 else 0) :
+    WeightedDesign size frameDim where
+  atom := fun label i => design.atom label ⬝ᵥ frame i
+  weight := design.weight
+  weight_pos := design.weight_pos
+  weight_sum_one := design.weight_sum_one
+  isParseval := by
+    ext rowIndex colIndex
+    rw [Matrix.sum_apply, Matrix.one_apply, ← horthonormal rowIndex colIndex,
+      dotProduct_eq_sum_weight_mul_pair design (frame rowIndex) (frame colIndex)]
+    exact Finset.sum_congr rfl fun c _ => by
+      simp only [Matrix.smul_apply, atomMatrix, Matrix.vecMulVec_apply, smul_eq_mul]
+
+/-- **THE RANK-DOWN DISPATCH.**  With the conjecture at the frame's dimension,
+every design carries a subset of that many atoms whose readings cover the whole
+subspace. At `frameDim = rank - 1` this is exactly what the degenerate branch
+wants, and the ladder has it in scope. -/
+theorem exists_subspace_dominating_subset {frameDim : ℕ}
+    (hpredecessor : GtzWeightedAll frameDim) (design : WeightedDesign size rank)
+    (frame : Fin frameDim → Fin rank → ℝ)
+    (horthonormal : ∀ i j, frame i ⬝ᵥ frame j = if i = j then 1 else 0) :
+    ∃ selected : Finset (Fin size), selected.card = frameDim
+      ∧ ∀ coeff : Fin frameDim → ℝ,
+        coeff ⬝ᵥ coeff
+          ≤ ∑ c ∈ selected, (design.atom c ⬝ᵥ (∑ i, coeff i • frame i)) ^ 2 := by
+  classical
+  obtain ⟨selected, hcard, hdominates⟩ :=
+    hpredecessor size (subspaceRestriction design frame horthonormal)
+  refine ⟨selected, hcard, fun coeff => ?_⟩
+  have hform := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdominates).2 coeff
+  rw [star_trivial, Matrix.sub_mulVec, dotProduct_sub, subsetSum_form,
+    Matrix.one_mulVec] at hform
+  have hread : ∀ c : Fin size,
+      (subspaceRestriction design frame horthonormal).atom c ⬝ᵥ coeff
+        = design.atom c ⬝ᵥ (∑ i, coeff i • frame i) := by
+    intro c
+    rw [dotProduct_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [dotProduct_smul, smul_eq_mul, mul_comm]
+    rfl
+  rw [Finset.sum_congr rfl fun c _ => congrArg (· ^ 2) (hread c)] at hform
+  linarith
+
+/-- **THE SCHUR PRODUCER AT GENERAL RANK.**  A subset that OVERSHOOTS along a
+unit normal and COVERS the normal's hyperplane strictly dominates. The shipped
+`Gtz.posDef_of_normalSurplus_planeCover` states this at rank three only; the
+completed square that proves it never reads the dimension.
+
+Decompose a probe as `alpha * unitNormal + orthogonal`. The gap form becomes
+`alpha ^ 2 * (surplus - 1) + 2 * alpha * coupling + cover`, a quadratic in
+`alpha` whose leading coefficient is the surplus and whose discriminant is the
+cover condition. -/
+theorem posDef_of_normalSurplus_hyperplaneCover (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (unitNormal : Fin rank → ℝ)
+    (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (hsurplus : 1 < ∑ c ∈ selected, (design.atom c ⬝ᵥ unitNormal) ^ 2)
+    (hcover : ∀ probe : Fin rank → ℝ, probe ⬝ᵥ unitNormal = 0 → probe ≠ 0 →
+      (∑ c ∈ selected, (design.atom c ⬝ᵥ probe) * (design.atom c ⬝ᵥ unitNormal)) ^ 2
+        < ((∑ c ∈ selected, (design.atom c ⬝ᵥ unitNormal) ^ 2) - 1)
+          * ((∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2) - probe ⬝ᵥ probe)) :
+    (subsetSum design selected - 1).PosDef := by
+  classical
+  have hsymm : (subsetSum design selected - 1)ᵀ = subsetSum design selected - 1 := by
+    rw [Matrix.transpose_sub, Matrix.transpose_one, transpose_subsetSum]
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr
+    ⟨isHermitian_of_transpose_eq hsymm, fun probe hprobeNe => ?_⟩
+  rw [star_trivial, Matrix.sub_mulVec, dotProduct_sub, subsetSum_form, Matrix.one_mulVec]
+  set axialPart : ℝ := probe ⬝ᵥ unitNormal with haxial
+  set flatPart : Fin rank → ℝ := probe - axialPart • unitNormal with hflat
+  have hflatNormal : flatPart ⬝ᵥ unitNormal = 0 := by
+    rw [hflat, sub_dotProduct, smul_dotProduct, smul_eq_mul, hunit, haxial]
+    ring
+  have hdecompose : probe = flatPart + axialPart • unitNormal := by
+    rw [hflat]; abel
+  have hread : ∀ c : Fin size, design.atom c ⬝ᵥ probe
+      = (design.atom c ⬝ᵥ flatPart) + axialPart * (design.atom c ⬝ᵥ unitNormal) := by
+    intro c
+    rw [hdecompose, dotProduct_add, dotProduct_smul, smul_eq_mul]
+  have hlength : probe ⬝ᵥ probe = flatPart ⬝ᵥ flatPart + axialPart ^ 2 := by
+    rw [hdecompose, add_dotProduct, dotProduct_add, dotProduct_add, smul_dotProduct,
+      dotProduct_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul,
+      smul_eq_mul, smul_eq_mul, hunit, hflatNormal, dotProduct_comm unitNormal flatPart,
+      hflatNormal]
+    ring
+  have hexpand : ∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2
+      = (∑ c ∈ selected, (design.atom c ⬝ᵥ flatPart) ^ 2)
+        + 2 * axialPart
+            * (∑ c ∈ selected,
+              (design.atom c ⬝ᵥ flatPart) * (design.atom c ⬝ᵥ unitNormal))
+        + axialPart ^ 2 * ∑ c ∈ selected, (design.atom c ⬝ᵥ unitNormal) ^ 2 := by
+    rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun c _ => by rw [hread c]; ring
+  rw [hexpand, hlength]
+  by_cases hflatZero : flatPart = 0
+  · have haxialNe : axialPart ≠ 0 := by
+      intro hzero
+      refine hprobeNe ?_
+      rw [hdecompose, hflatZero, hzero, zero_smul, add_zero]
+    have hflatDot : flatPart ⬝ᵥ flatPart = 0 := by rw [hflatZero]; simp
+    have hzeroSquares : ∑ c ∈ selected, (design.atom c ⬝ᵥ flatPart) ^ 2 = 0 :=
+      Finset.sum_eq_zero fun c _ => by rw [hflatZero]; simp
+    have hzeroCross : ∑ c ∈ selected,
+        (design.atom c ⬝ᵥ flatPart) * (design.atom c ⬝ᵥ unitNormal) = 0 :=
+      Finset.sum_eq_zero fun c _ => by rw [hflatZero]; simp
+    have haxialSq : 0 < axialPart ^ 2 := by positivity
+    rw [hzeroSquares, hzeroCross, hflatDot]
+    nlinarith [hsurplus, haxialSq]
+  · have hcoverFires := hcover flatPart hflatNormal hflatZero
+    nlinarith [hcoverFires, hsurplus,
+      sq_nonneg (((∑ c ∈ selected, (design.atom c ⬝ᵥ unitNormal) ^ 2) - 1) * axialPart
+        + ∑ c ∈ selected,
+            (design.atom c ⬝ᵥ flatPart) * (design.atom c ⬝ᵥ unitNormal))]
+
+/-- **THE GENERAL-RANK DEGENERATE RESIDUAL.**  On the degenerate branch, produce
+a card-`rank` subset that overshoots along the probe's unit normal and covers
+its hyperplane. `Gtz.posDef_of_normalSurplus_hyperplaneCover` then contradicts
+the tie outright. At rank three this is what the two-pole capstone does, with
+the pole bound doing the selecting. -/
+def DegenerateHyperplaneProducer (size rank : ℕ) : Prop :=
+  ∀ (design : WeightedDesign size rank) (stressCoeff : Fin size → ℝ)
+      (unitNormal : Fin rank → ℝ),
+    stressCoeff ≠ 0 → unitNormal ⬝ᵥ unitNormal = 1 →
+    (∑ c, stressCoeff c • atomMatrix (design.atom c)) = 0 →
+    (∀ c, stressCoeff c ≠ 0 → design.atom c ⬝ᵥ unitNormal = 0) →
+    ∃ selected : Finset (Fin size), selected.card = rank
+      ∧ 1 < ∑ c ∈ selected, (design.atom c ⬝ᵥ unitNormal) ^ 2
+      ∧ ∀ probe : Fin rank → ℝ, probe ⬝ᵥ unitNormal = 0 → probe ≠ 0 →
+        (∑ c ∈ selected, (design.atom c ⬝ᵥ probe) * (design.atom c ⬝ᵥ unitNormal)) ^ 2
+          < ((∑ c ∈ selected, (design.atom c ⬝ᵥ unitNormal) ^ 2) - 1)
+            * ((∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2) - probe ⬝ᵥ probe)
+
+/-- Normalizing a probe changes neither the hyperplane nor the branch data. -/
+theorem unit_of_ne_zero (probe : Fin rank → ℝ) (hprobeNe : probe ≠ 0) :
+    ((Real.sqrt (probe ⬝ᵥ probe))⁻¹ • probe) ⬝ᵥ ((Real.sqrt (probe ⬝ᵥ probe))⁻¹ • probe)
+      = 1 := by
+  have hpos : 0 < probe ⬝ᵥ probe := selfDotProduct_pos hprobeNe
+  have hsq : Real.sqrt (probe ⬝ᵥ probe) ^ 2 = probe ⬝ᵥ probe :=
+    Real.sq_sqrt hpos.le
+  have hsqrtPos : 0 < Real.sqrt (probe ⬝ᵥ probe) := Real.sqrt_pos.mpr hpos
+  rw [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul]
+  field_simp
+  nlinarith [hsq, hsqrtPos]
+
+/-- **ARM (iii) FROM THE HYPERPLANE PRODUCER.**  The producer's subset
+contradicts the tie, thus the arm holds vacuously on that branch. -/
+theorem degenerateArmAt_of_hyperplaneProducer
+    (hproducer : DegenerateHyperplaneProducer size rank) : DegenerateArmAt size rank := by
+  intro design stressCoeff probe hstressNe hprobeNe hstress hsupport htie
+  exfalso
+  have hpos : 0 < probe ⬝ᵥ probe := selfDotProduct_pos hprobeNe
+  have hsqrtPos : 0 < Real.sqrt (probe ⬝ᵥ probe) := Real.sqrt_pos.mpr hpos
+  have hscaled : ∀ c, stressCoeff c ≠ 0 →
+      design.atom c ⬝ᵥ ((Real.sqrt (probe ⬝ᵥ probe))⁻¹ • probe) = 0 := by
+    intro c hc
+    rw [dotProduct_smul, smul_eq_mul, hsupport c hc, mul_zero]
+  obtain ⟨selected, hcard, hsurplus, hcover⟩ := hproducer design stressCoeff _ hstressNe
+    (unit_of_ne_zero probe hprobeNe) hstress hscaled
+  exact htie.2 selected hcard
+    (posDef_of_normalSurplus_hyperplaneCover design selected _
+      (unit_of_ne_zero probe hprobeNe) hsurplus hcover)
+
+/-- An orthonormal frame of the hyperplane orthogonal to a unit normal. This is
+Gram-Schmidt and nothing else, but it is named rather than assumed silently, so
+the composition below states every input it takes. -/
+def HyperplaneFrameExists (rank : ℕ) : Prop :=
+  ∀ unitNormal : Fin rank → ℝ, unitNormal ⬝ᵥ unitNormal = 1 →
+    ∃ frame : Fin (rank - 1) → Fin rank → ℝ,
+      (∀ i j, frame i ⬝ᵥ frame j = if i = j then 1 else 0)
+        ∧ ∀ i, frame i ⬝ᵥ unitNormal = 0
+
+/-- **THE REAL CONTENT OF THE DEGENERATE ARM AT GENERAL RANK.**  The rank-down
+dispatch hands back a card-`rank - 1` subset that covers the hyperplane WEAKLY.
+What is missing is one POLE and the upgrade from a weak cover to the strict
+Schur pair: enough overshoot along the normal, and a strict cover inside the
+hyperplane. At rank three the pole bound does the selecting and the two-pole
+capstone closes it. -/
+def DegeneratePoleAugmentation (size rank : ℕ) : Prop :=
+  ∀ (design : WeightedDesign size rank) (unitNormal : Fin rank → ℝ)
+      (frame : Fin (rank - 1) → Fin rank → ℝ) (flatSubset : Finset (Fin size)),
+    unitNormal ⬝ᵥ unitNormal = 1 →
+    (∀ i j, frame i ⬝ᵥ frame j = if i = j then 1 else 0) →
+    (∀ i, frame i ⬝ᵥ unitNormal = 0) →
+    flatSubset.card = rank - 1 →
+    (∀ coeff : Fin (rank - 1) → ℝ, coeff ⬝ᵥ coeff
+      ≤ ∑ c ∈ flatSubset, (design.atom c ⬝ᵥ (∑ i, coeff i • frame i)) ^ 2) →
+    ∃ selected : Finset (Fin size), selected.card = rank
+      ∧ 1 < ∑ c ∈ selected, (design.atom c ⬝ᵥ unitNormal) ^ 2
+      ∧ ∀ probe : Fin rank → ℝ, probe ⬝ᵥ unitNormal = 0 → probe ≠ 0 →
+        (∑ c ∈ selected, (design.atom c ⬝ᵥ probe) * (design.atom c ⬝ᵥ unitNormal)) ^ 2
+          < ((∑ c ∈ selected, (design.atom c ⬝ᵥ unitNormal) ^ 2) - 1)
+            * ((∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2) - probe ⬝ᵥ probe)
+
+/-- **THE RANK-DOWN COMPOSITION.**  With the conjecture one RANK down, the
+hyperplane cover is free and the degenerate producer needs only the pole
+augmentation. -/
+theorem degenerateHyperplaneProducer_of_augmentation
+    (hpredecessor : GtzWeightedAll (rank - 1)) (hframe : HyperplaneFrameExists rank)
+    (haugment : DegeneratePoleAugmentation size rank) :
+    DegenerateHyperplaneProducer size rank := by
+  intro design stressCoeff unitNormal _hstressNe hunit _hstress _hsupport
+  obtain ⟨frame, horthonormal, hperpendicular⟩ := hframe unitNormal hunit
+  obtain ⟨flatSubset, hcard, hcover⟩ :=
+    exists_subspace_dominating_subset hpredecessor design frame horthonormal
+  exact haugment design unitNormal frame flatSubset hunit horthonormal hperpendicular
+    hcard hcover
+
+/-- **ARM (iii) FROM THE PREVIOUS RANK.**  The general-rank degenerate arm, with
+the induction hypothesis of the ladder spent. -/
+theorem degenerateArmAt_of_predecessorRank
+    (hpredecessor : GtzWeightedAll (rank - 1)) (hframe : HyperplaneFrameExists rank)
+    (haugment : DegeneratePoleAugmentation size rank) : DegenerateArmAt size rank :=
+  degenerateArmAt_of_hyperplaneProducer
+    (degenerateHyperplaneProducer_of_augmentation hpredecessor hframe haugment)
+
+/-- **THE THRESHOLD OBLIGATION UNDER THE LADDER'S OWN INDUCTION HYPOTHESIS.**
+`Skeleton.GeneralRank.closesSharpWindow_ofClosures` carries
+`Gtz.GtzWeightedAll (rank - 1)` in scope while it consumes the hinge, thus a
+hinge arm may spend it and the ladder is unchanged. Spending it replaces the
+whole degenerate arm by Gram-Schmidt plus the pole augmentation. This is the
+smallest residual list this map reaches:
+
+- `ThresholdStressFreeArm` -- the basis arm, the rank-three frontier one rank up
+- `MassGapSideIsRankSized` -- the positive side is too big at rank four and up
+- `BalancedStratumSelectionAtRank` -- the verbatim lift of the closed rank-three
+  selection
+- `BalancedPartialSupportArmAt` -- empty at rank three, new at rank four
+- `HyperplaneFrameExists` -- Gram-Schmidt
+- `DegeneratePoleAugmentation` -- one pole and the weak-to-strict cover. -/
+theorem thresholdCellHingeRankFourAndUp_of_residuals_withPredecessorRank
+    (hfreeArm : ∀ rank : ℕ, 4 ≤ rank → ThresholdStressFreeArm rank)
+    (hmassGap : ∀ rank : ℕ, 4 ≤ rank → MassGapSideIsRankSized (thresholdSize rank) rank)
+    (hselection : ∀ rank : ℕ, 4 ≤ rank →
+      BalancedStratumSelectionAtRank (thresholdSize rank) rank)
+    (hpartialArm : ∀ rank : ℕ, 4 ≤ rank →
+      BalancedPartialSupportArmAt (thresholdSize rank) rank)
+    (hframe : ∀ rank : ℕ, 4 ≤ rank → HyperplaneFrameExists rank)
+    (haugment : ∀ rank : ℕ, 4 ≤ rank →
+      DegeneratePoleAugmentation (thresholdSize rank) rank) :
+    ∀ rank : ℕ, 4 ≤ rank → GtzWeightedAll (rank - 1) →
+      ∀ design : WeightedDesign (rank * (rank + 1) / 2) rank,
+        IsTie design → HasParallelPair design := by
+  intro rank hrank hpredecessor design htie
+  refine thresholdCellHinge_of_arms rank (hfreeArm rank hrank) ?_ ?_ design htie
+  · exact balancedArmAt_of_residuals (hmassGap rank hrank) (hselection rank hrank)
+      (hpartialArm rank hrank)
+  · exact degenerateArmAt_of_predecessorRank hpredecessor (hframe rank hrank)
+      (haugment rank hrank)
 
 /-! ## Part 10: what a tie supplies at every rank
 
