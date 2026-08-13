@@ -3335,6 +3335,11 @@ import Gtz.Wave.AssemblyRankCapstone
 -- profile closures, the frame energy floor, and the plane pair residue
 -- with its deflation at a boundary atom.
 import Gtz.Wave.DenseCeilingCollapse
+-- The pivot deflation and the pair extension total: the Dodgson identity of
+-- the shifted Gram block, the closed form of the three-slot determinants of
+-- one pair, the trace certificate, the maximal volume triple at every scale
+-- mass below one quarter, and the refutation of the frame-constrained drop.
+import Gtz.Wave.AtomPivotDeflation
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
