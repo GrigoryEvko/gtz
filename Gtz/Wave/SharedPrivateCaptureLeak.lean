@@ -43,6 +43,27 @@ follows: **no atom sits in every basis support**.  At basis count six
 this removes the whole multiplicity-six profile class from the deficit
 residue.
 
+The pin kill.  The pin atom sits in one basis support only.  Thus the
+pin column of the capture reads the private slot alone, and one
+Cauchy-Schwarz over the other slots prices the private capture square
+against the leak at the pin.  The result is a cap at every atom:
+
+    the private mass times the private capture square at an atom
+      is at most the product of the two shifted weights, over six.
+
+Sum the cap over the atoms.  The left side is the capture energy of the
+private direction, which reads the shifted weight against the direction,
+and the pin term alone already carries the pin weight over six.  Thus
+**the shifted weights sum to at least one, and the chart value is not
+negative**.  A shared-private datum with a diagonal Gram core and an
+interior pin does not exist.
+
+That closes the whole trace-three deficit stratum: both of its interior
+residues carry the interior window as a hypothesis.  At a boundary pin
+the same core inequality collapses instead, and the chart annihilates
+the private direction, which puts the whole private block on the
+boundary.
+
 The circuits.  A pair circuit writes a positive label as a combination
 of two basis columns.  The two supports then differ inside one block of
 three atoms, thus **the two supports share at least two atoms** — the
@@ -89,6 +110,19 @@ the chart kills the other basis column.
   CIRCUITS SHARE TWO ATOMS.**
 * `Gtz.SharedPrivateData.pairCircuit_capture_eq_zero` — **THE PAIR
   CAPTURE KILL.**
+* `Gtz.SharedPrivateData.slot_sandwich_apply`,
+  `Gtz.SharedPrivateData.capture_pin_column`,
+  `Gtz.SharedPrivateData.pin_capture_core`,
+  `Gtz.SharedPrivateData.pin_capture_sq_le` — **THE PIN CAPTURE CAP.**
+* `Gtz.SharedPrivateData.false_of_interior_pin` — **THE INTERIOR PIN
+  KILL.**
+* `Gtz.SharedPrivateData.capture_privateSlot_eq_zero_of_boundary_pin`,
+  `Gtz.SharedPrivateData.block_boundary_of_boundary_pin` — the boundary
+  pin branch.
+* `Gtz.sharedPrivateDeficitSixInteriorClosed_holds`,
+  `Gtz.sharedPrivateDeficitComplementInteriorClosed_holds`,
+  `Gtz.sharedPrivateDeficitClosed_holds` — **THE DEFICIT STRATUM IS
+  CLOSED.**
 * `Gtz.SharedPrivateDeficitSixLowMultiplicityClosed`,
   `Gtz.sharedPrivateDeficitSixInteriorClosed_of_lowMultiplicity` — the
   narrowed six residue.
@@ -1059,9 +1093,352 @@ theorem pairCircuit_capture_eq_zero (data : SharedPrivateData crux)
     rw [hchartDef]; linarith
   exact (mul_eq_zero.mp hzero).resolve_left hcoeffTwo
 
+/-! ## Layer 7 — the interior pin kill -/
+
+/-- **THE SLOT SANDWICH.**  At a diagonal Gram core the sandwiched
+assembly reads the capture entry through the basis slots. -/
+theorem slot_sandwich_apply (data : SharedPrivateData crux)
+    {gramDiag : Fin data.basisCount → ℝ}
+    (hdiag : data.gram = Matrix.diagonal gramDiag) (rowAtom colAtom : Fin 6) :
+    ∑ slot : Fin data.basisCount, gramDiag slot
+        * (((chartPointOfDesign crux.design).chart
+              *ᵥ data.tightDir (data.basisLabel slot)) rowAtom
+          * ((chartPointOfDesign crux.design).chart
+              *ᵥ data.tightDir (data.basisLabel slot)) colAtom)
+      = ((chartPointOfDesign crux.design).chart
+          * chartMultiplierAssembly data.activeSet data.reducedWeight
+            data.tightDir) rowAtom colAtom := by
+  have hsandwich := projector_sandwich_eq_capture data.hdata.isIdempotent
+    data.hdata.assembly_commutes
+  calc ∑ slot : Fin data.basisCount, gramDiag slot
+        * (((chartPointOfDesign crux.design).chart
+              *ᵥ data.tightDir (data.basisLabel slot)) rowAtom
+          * ((chartPointOfDesign crux.design).chart
+              *ᵥ data.tightDir (data.basisLabel slot)) colAtom)
+      = ((chartPointOfDesign crux.design).chart
+          * (∑ slot : Fin data.basisCount, gramDiag slot
+              • atomMatrix (data.tightDir (data.basisLabel slot)))
+          * (chartPointOfDesign crux.design).chart) rowAtom colAtom :=
+        (sum_atomMatrix_sandwich_apply data.hdata.isSymmetric _ _ _ _ _).symm
+    _ = ((chartPointOfDesign crux.design).chart
+          * chartMultiplierAssembly data.activeSet data.reducedWeight
+            data.tightDir
+          * (chartPointOfDesign crux.design).chart) rowAtom colAtom := by
+        rw [← data.assembly_eq_slot_sum hdiag]
+    _ = ((chartPointOfDesign crux.design).chart
+          * chartMultiplierAssembly data.activeSet data.reducedWeight
+            data.tightDir) rowAtom colAtom := by rw [hsandwich]
+
+/-- **THE PIN COLUMN.**  The pin atom sits in one basis support only,
+thus the pin column of the capture reads the private slot alone. -/
+theorem capture_pin_column (data : SharedPrivateData crux)
+    {gramDiag : Fin data.basisCount → ℝ}
+    (hdiag : data.gram = Matrix.diagonal gramDiag) (rowAtom : Fin 6) :
+    ((chartPointOfDesign crux.design).chart
+        * chartMultiplierAssembly data.activeSet data.reducedWeight
+          data.tightDir) rowAtom data.pinAtom
+      = gramDiag data.privateSlot
+        * (((chartPointOfDesign crux.design).chart
+              *ᵥ data.tightDir (data.basisLabel data.privateSlot)) rowAtom
+          * data.tightDir (data.basisLabel data.privateSlot) data.pinAtom) := by
+  rw [data.assembly_eq_slot_sum hdiag, capture_apply_eq_sum]
+  refine Finset.sum_eq_single data.privateSlot (fun slot _ hne => ?_)
+    (fun habs => absurd (Finset.mem_univ _) habs)
+  rw [data.hprivate slot hne, mul_zero, mul_zero]
+
+/-- **THE PIN CAPTURE CORE.**  One Cauchy-Schwarz over the slots off the
+private one, priced by the pin column of the sandwich and by the leak at
+the pin.  The private capture square is squeezed between the two.  No
+window hypothesis enters. -/
+theorem pin_capture_core (data : SharedPrivateData crux)
+    {gramDiag : Fin data.basisCount → ℝ}
+    (hdiag : data.gram = Matrix.diagonal gramDiag) (atomIndex : Fin 6) :
+    gramDiag data.privateSlot
+        * (((chartPointOfDesign crux.design).chart
+            *ᵥ data.tightDir (data.basisLabel data.privateSlot)) atomIndex) ^ 2
+        * (1 - (chartObjective (chartPointOfDesign crux.design)
+            + (chartPointOfDesign crux.design).weight data.pinAtom))
+      ≤ ((chartObjective (chartPointOfDesign crux.design)
+              + (chartPointOfDesign crux.design).weight atomIndex)
+            * ((6 : ℕ) : ℝ)⁻¹
+          - gramDiag data.privateSlot
+            * (((chartPointOfDesign crux.design).chart
+                *ᵥ data.tightDir (data.basisLabel data.privateSlot))
+                  atomIndex) ^ 2)
+        * (chartObjective (chartPointOfDesign crux.design)
+            + (chartPointOfDesign crux.design).weight data.pinAtom) := by
+  classical
+  set chart := (chartPointOfDesign crux.design).chart with hchartDef
+  set capture : Fin data.basisCount → Fin 6 → ℝ := fun slot probe =>
+    (chart *ᵥ data.tightDir (data.basisLabel slot)) probe with hcaptureDef
+  set pinShift : ℝ := chartObjective (chartPointOfDesign crux.design)
+    + (chartPointOfDesign crux.design).weight data.pinAtom with hpinShiftDef
+  set rowShift : ℝ := chartObjective (chartPointOfDesign crux.design)
+    + (chartPointOfDesign crux.design).weight atomIndex with hrowShiftDef
+  set slotMass : ℝ := gramDiag data.privateSlot with hslotMassDef
+  set pinEntry : ℝ := data.tightDir (data.basisLabel data.privateSlot)
+    data.pinAtom with hpinEntryDef
+  -- the private slot reads the shifted weight at the pin atom
+  have hmemActive : data.basisLabel data.privateSlot ∈ data.activeSet := by
+    have hpos := data.hmem data.privateSlot
+    simp only [positiveActiveSet, Finset.mem_filter] at hpos
+    exact hpos.1
+  have hpinRead : capture data.privateSlot data.pinAtom = pinShift * pinEntry := by
+    rw [hcaptureDef, hchartDef]
+    exact projection_mulVec_tightDir_of_mem data.hdata hmemActive data.hpinMem
+  have hmass : slotMass * pinEntry ^ 2 = ((6 : ℕ) : ℝ)⁻¹ :=
+    data.private_mass_eq hdiag
+  -- the three sandwich readings
+  have hdiagRow : ∑ slot : Fin data.basisCount,
+      gramDiag slot * (capture slot atomIndex * capture slot atomIndex)
+      = rowShift * ((6 : ℕ) : ℝ)⁻¹ := by
+    rw [data.slot_sandwich_apply hdiag atomIndex atomIndex]
+    exact diagonal_projection_mul_multiplier_of_isChartStationaryData data.hdata
+      atomIndex
+  have hdiagPin : ∑ slot : Fin data.basisCount,
+      gramDiag slot * (capture slot data.pinAtom * capture slot data.pinAtom)
+      = pinShift * ((6 : ℕ) : ℝ)⁻¹ := by
+    rw [data.slot_sandwich_apply hdiag data.pinAtom data.pinAtom]
+    exact diagonal_projection_mul_multiplier_of_isChartStationaryData data.hdata
+      data.pinAtom
+  have hcrossPin : ∑ slot : Fin data.basisCount,
+      gramDiag slot * (capture slot atomIndex * capture slot data.pinAtom)
+      = slotMass * (capture data.privateSlot atomIndex * pinEntry) := by
+    rw [data.slot_sandwich_apply hdiag atomIndex data.pinAtom]
+    exact data.capture_pin_column hdiag atomIndex
+  -- peel the private slot off each reading
+  have hpeel : ∀ probeOne probeTwo : Fin 6,
+      (∑ slot ∈ Finset.univ.erase data.privateSlot,
+          gramDiag slot * (capture slot probeOne * capture slot probeTwo))
+        = (∑ slot : Fin data.basisCount,
+            gramDiag slot * (capture slot probeOne * capture slot probeTwo))
+          - slotMass * (capture data.privateSlot probeOne
+            * capture data.privateSlot probeTwo) := by
+    intro probeOne probeTwo
+    have hsplit := Finset.add_sum_erase Finset.univ
+      (fun slot : Fin data.basisCount =>
+        gramDiag slot * (capture slot probeOne * capture slot probeTwo))
+      (Finset.mem_univ data.privateSlot)
+    rw [← hsplit, hslotMassDef]
+    ring
+  -- Cauchy-Schwarz off the private slot
+  have hroot : ∀ slot : Fin data.basisCount,
+      Real.sqrt (gramDiag slot) * Real.sqrt (gramDiag slot) = gramDiag slot :=
+    fun slot => Real.mul_self_sqrt (data.gramDiag_pos hdiag slot).le
+  have hcs := Finset.sum_mul_sq_le_sq_mul_sq
+    (Finset.univ.erase data.privateSlot)
+    (fun slot => Real.sqrt (gramDiag slot) * capture slot atomIndex)
+    (fun slot => Real.sqrt (gramDiag slot) * capture slot data.pinAtom)
+  have hprod : ∀ slot : Fin data.basisCount,
+      (Real.sqrt (gramDiag slot) * capture slot atomIndex)
+        * (Real.sqrt (gramDiag slot) * capture slot data.pinAtom)
+      = gramDiag slot * (capture slot atomIndex * capture slot data.pinAtom) := by
+    intro slot
+    linear_combination (capture slot atomIndex * capture slot data.pinAtom)
+      * hroot slot
+  have hsqRow : ∀ slot : Fin data.basisCount,
+      (Real.sqrt (gramDiag slot) * capture slot atomIndex) ^ 2
+      = gramDiag slot * (capture slot atomIndex * capture slot atomIndex) := by
+    intro slot
+    linear_combination (capture slot atomIndex ^ 2) * hroot slot
+  have hsqPin : ∀ slot : Fin data.basisCount,
+      (Real.sqrt (gramDiag slot) * capture slot data.pinAtom) ^ 2
+      = gramDiag slot * (capture slot data.pinAtom * capture slot data.pinAtom) := by
+    intro slot
+    linear_combination (capture slot data.pinAtom ^ 2) * hroot slot
+  rw [Finset.sum_congr rfl fun slot _ => hprod slot,
+    Finset.sum_congr rfl fun slot _ => hsqRow slot,
+    Finset.sum_congr rfl fun slot _ => hsqPin slot,
+    hpeel atomIndex data.pinAtom, hpeel atomIndex atomIndex,
+    hpeel data.pinAtom data.pinAtom, hdiagRow, hdiagPin, hcrossPin,
+    hpinRead] at hcs
+  -- the squeeze, with the pin mass eliminating the direction entry
+  set privateSq : ℝ := slotMass * capture data.privateSlot atomIndex ^ 2
+    with hprivateSqDef
+  have hleft : (slotMass * (capture data.privateSlot atomIndex * pinEntry)
+        - slotMass * (capture data.privateSlot atomIndex
+          * (pinShift * pinEntry))) ^ 2
+      = privateSq * ((6 : ℕ) : ℝ)⁻¹ * (1 - pinShift) ^ 2 := by
+    rw [hprivateSqDef]
+    linear_combination (capture data.privateSlot atomIndex ^ 2
+      * (1 - pinShift) ^ 2 * slotMass) * hmass
+  have hrightPin : pinShift * ((6 : ℕ) : ℝ)⁻¹
+        - slotMass * (pinShift * pinEntry * (pinShift * pinEntry))
+      = pinShift * (1 - pinShift) * ((6 : ℕ) : ℝ)⁻¹ := by
+    linear_combination (- pinShift ^ 2) * hmass
+  have hrightRow : rowShift * ((6 : ℕ) : ℝ)⁻¹
+        - slotMass * (capture data.privateSlot atomIndex
+          * capture data.privateSlot atomIndex)
+      = rowShift * ((6 : ℕ) : ℝ)⁻¹ - privateSq := by
+    rw [hprivateSqDef]; ring
+  rw [hleft, hrightPin, hrightRow] at hcs
+  -- clear the sixth and the surviving factor of one minus the pin shift
+  have hsix : (0 : ℝ) < ((6 : ℕ) : ℝ)⁻¹ := by norm_num
+  have hgap : 0 < 1 - pinShift := by
+    have hlt := capture_diagonal_lt_one_of_negative_value data.hdata
+      data.hvalueNeg data.pinAtom
+    rw [← hpinShiftDef] at hlt
+    linarith
+  have hscaled : privateSq * (1 - pinShift) * (1 - pinShift)
+      ≤ (rowShift * ((6 : ℕ) : ℝ)⁻¹ - privateSq) * pinShift * (1 - pinShift) := by
+    nlinarith [hcs]
+  exact le_of_mul_le_mul_right (by linarith [hscaled] :
+    (privateSq * (1 - pinShift)) * (1 - pinShift)
+      ≤ ((rowShift * ((6 : ℕ) : ℝ)⁻¹ - privateSq) * pinShift) * (1 - pinShift))
+    hgap
+
+/-- **THE PIN CAPTURE CAP.**  The private capture square is capped at
+every atom by the product of the two shifted weights.  No window
+hypothesis enters: the core inequality is already linear in the private
+capture square. -/
+theorem pin_capture_sq_le (data : SharedPrivateData crux)
+    {gramDiag : Fin data.basisCount → ℝ}
+    (hdiag : data.gram = Matrix.diagonal gramDiag)
+    (atomIndex : Fin 6) :
+    gramDiag data.privateSlot
+        * (((chartPointOfDesign crux.design).chart
+            *ᵥ data.tightDir (data.basisLabel data.privateSlot)) atomIndex) ^ 2
+      ≤ (chartObjective (chartPointOfDesign crux.design)
+            + (chartPointOfDesign crux.design).weight data.pinAtom)
+        * (chartObjective (chartPointOfDesign crux.design)
+            + (chartPointOfDesign crux.design).weight atomIndex)
+        * ((6 : ℕ) : ℝ)⁻¹ := by
+  have hcore := data.pin_capture_core hdiag atomIndex
+  nlinarith [hcore]
+
+/-- **THE INTERIOR PIN KILL.**  A shared-private datum with a diagonal
+Gram core and an interior pin atom does not exist.
+
+The private capture square is capped at every atom by the product of the
+two shifted weights.  Summing over the atoms, the capture energy of the
+private direction is capped by the pin weight times the shifted-weight
+total.  But the capture energy reads the shifted weight against the
+direction, and the pin term alone already carries the pin weight over
+six, because the pin atom sits in one basis support only.  Thus the
+shifted-weight total is at least one, and the chart value is not
+negative. -/
+theorem false_of_interior_pin (data : SharedPrivateData crux)
+    {gramDiag : Fin data.basisCount → ℝ}
+    (hdiag : data.gram = Matrix.diagonal gramDiag)
+    (hpin : 0 < chartObjective (chartPointOfDesign crux.design)
+      + (chartPointOfDesign crux.design).weight data.pinAtom) : False := by
+  classical
+  set chart := (chartPointOfDesign crux.design).chart with hchartDef
+  set shift : Fin 6 → ℝ := fun probe =>
+    chartObjective (chartPointOfDesign crux.design)
+      + (chartPointOfDesign crux.design).weight probe with hshiftDef
+  set direction : Fin 6 → ℝ :=
+    data.tightDir (data.basisLabel data.privateSlot) with hdirectionDef
+  have hmemActive : data.basisLabel data.privateSlot ∈ data.activeSet := by
+    have hpos := data.hmem data.privateSlot
+    simp only [positiveActiveSet, Finset.mem_filter] at hpos
+    exact hpos.1
+  -- the capped total of the private capture squares
+  have hcapped : ∑ atomIndex : Fin 6, gramDiag data.privateSlot
+        * ((chart *ᵥ direction) atomIndex) ^ 2
+      ≤ ∑ atomIndex : Fin 6,
+          shift data.pinAtom * shift atomIndex * ((6 : ℕ) : ℝ)⁻¹ :=
+    Finset.sum_le_sum fun atomIndex _ =>
+      data.pin_capture_sq_le hdiag atomIndex
+  -- the capture energy reads the shifted weight against the direction
+  have henergy : ∑ atomIndex : Fin 6, ((chart *ᵥ direction) atomIndex) ^ 2
+      = ∑ atomIndex : Fin 6, shift atomIndex * direction atomIndex ^ 2 :=
+    capture_energy_eq data.hdata hmemActive
+  have hleft : ∑ atomIndex : Fin 6, gramDiag data.privateSlot
+        * ((chart *ᵥ direction) atomIndex) ^ 2
+      = gramDiag data.privateSlot
+        * ∑ atomIndex : Fin 6, shift atomIndex * direction atomIndex ^ 2 := by
+    rw [← Finset.mul_sum, henergy]
+  -- the pin term alone carries one sixth of the pin weight
+  have hterms : ∀ atomIndex ∈ (Finset.univ : Finset (Fin 6)),
+      0 ≤ gramDiag data.privateSlot
+        * (shift atomIndex * direction atomIndex ^ 2) := by
+    intro atomIndex _
+    exact mul_nonneg (data.gramDiag_pos hdiag data.privateSlot).le
+      (mul_nonneg (capture_diagonal_nonneg_of_isChartStationaryData data.hdata
+        atomIndex) (sq_nonneg _))
+  have hsingle := Finset.single_le_sum (f := fun atomIndex : Fin 6 =>
+      gramDiag data.privateSlot * (shift atomIndex * direction atomIndex ^ 2))
+    hterms (Finset.mem_univ data.pinAtom)
+  have hpinTerm : gramDiag data.privateSlot
+        * (shift data.pinAtom * direction data.pinAtom ^ 2)
+      = shift data.pinAtom * ((6 : ℕ) : ℝ)⁻¹ := by
+    have hmass := data.private_mass_eq hdiag
+    rw [hdirectionDef]
+    linear_combination shift data.pinAtom * hmass
+  -- the right side is the pin weight times the shifted-weight total
+  have hright : ∑ atomIndex : Fin 6,
+        shift data.pinAtom * shift atomIndex * ((6 : ℕ) : ℝ)⁻¹
+      = shift data.pinAtom * ((6 : ℝ) * chartObjective
+          (chartPointOfDesign crux.design) + 1) * ((6 : ℕ) : ℝ)⁻¹ := by
+    have hsum := capture_diagonal_sum_eq data.hdata
+    rw [hshiftDef]
+    push_cast
+    rw [← Finset.sum_mul, ← Finset.mul_sum, hsum]
+    push_cast
+    ring
+  have hscaled : gramDiag data.privateSlot
+        * ∑ atomIndex : Fin 6, shift atomIndex * direction atomIndex ^ 2
+      = ∑ atomIndex : Fin 6, gramDiag data.privateSlot
+          * (shift atomIndex * direction atomIndex ^ 2) := by
+    rw [Finset.mul_sum]
+  rw [hleft, hright, hscaled] at hcapped
+  rw [hpinTerm] at hsingle
+  -- the shifted-weight total is at least one, thus the value is not negative
+  have hsix : (0 : ℝ) < ((6 : ℕ) : ℝ)⁻¹ := by norm_num
+  have hvalue : chartObjective (chartPointOfDesign crux.design) < 0 :=
+    data.hvalueNeg
+  have hpinShift : 0 < shift data.pinAtom := hpin
+  nlinarith [hcapped, hsingle, hpinShift, hsix, hvalue]
+
+/-- **THE BOUNDARY PIN BRANCH.**  At a boundary pin the same core
+inequality collapses: the chart annihilates the private direction
+everywhere.  This is the only branch the interior pin kill leaves
+open. -/
+theorem capture_privateSlot_eq_zero_of_boundary_pin (data : SharedPrivateData crux)
+    {gramDiag : Fin data.basisCount → ℝ}
+    (hdiag : data.gram = Matrix.diagonal gramDiag)
+    (hboundary : chartObjective (chartPointOfDesign crux.design)
+      + (chartPointOfDesign crux.design).weight data.pinAtom = 0)
+    (atomIndex : Fin 6) :
+    ((chartPointOfDesign crux.design).chart
+      *ᵥ data.tightDir (data.basisLabel data.privateSlot)) atomIndex = 0 := by
+  have hcore := data.pin_capture_core hdiag atomIndex
+  rw [hboundary] at hcore
+  have hmassPos := data.gramDiag_pos hdiag data.privateSlot
+  have hsq : (((chartPointOfDesign crux.design).chart
+      *ᵥ data.tightDir (data.basisLabel data.privateSlot)) atomIndex) ^ 2 ≤ 0 := by
+    nlinarith [hcore, hmassPos, sq_nonneg (((chartPointOfDesign crux.design).chart
+      *ᵥ data.tightDir (data.basisLabel data.privateSlot)) atomIndex)]
+  exact pow_eq_zero_iff (n := 2) (by norm_num) |>.mp
+    (le_antisymm hsq (sq_nonneg _))
+
+/-- **THE BOUNDARY PIN BLOCK.**  A boundary pin puts the whole private
+block on the boundary: the chart image vanishes, thus every shifted
+weight of the private support vanishes with it. -/
+theorem block_boundary_of_boundary_pin (data : SharedPrivateData crux)
+    {gramDiag : Fin data.basisCount → ℝ}
+    (hdiag : data.gram = Matrix.diagonal gramDiag)
+    (hboundary : chartObjective (chartPointOfDesign crux.design)
+      + (chartPointOfDesign crux.design).weight data.pinAtom = 0)
+    {atomIndex : Fin 6}
+    (hmem : atomIndex ∈ datumTightSupport data.tightDir
+      (data.basisLabel data.privateSlot)) :
+    chartObjective (chartPointOfDesign crux.design)
+      + (chartPointOfDesign crux.design).weight atomIndex = 0 := by
+  have hmemActive : data.basisLabel data.privateSlot ∈ data.activeSet := by
+    have hpos := data.hmem data.privateSlot
+    simp only [positiveActiveSet, Finset.mem_filter] at hpos
+    exact hpos.1
+  have hblock := datumTightSupport_subset data.hdata hmemActive hmem
+  have hread := projection_mulVec_tightDir_of_mem data.hdata hmemActive hblock
+  rw [data.capture_privateSlot_eq_zero_of_boundary_pin hdiag hboundary
+    atomIndex] at hread
+  exact (mul_eq_zero.mp hread.symm).resolve_right (mem_datumTightSupport.mp hmem)
+
 end SharedPrivateData
 
-/-! ## Layer 7 — the narrowed residues and the dispatch -/
+/-! ## Layer 8 — the narrowed residues and the dispatch -/
 
 /-- **THE LOW-MULTIPLICITY SIX RESIDUE.**  The interior six residue with
 the multiplicity cap added.  The cap is free: the missing-slot law
@@ -1097,6 +1474,28 @@ theorem sharedPrivateDeficitSixInteriorClosed_of_lowMultiplicity
     hinterior hmass fun atomIndex => ?_
   have hlt := data.multiplicity_lt_basisCount hdiag (hinterior atomIndex)
   omega
+
+/-- **THE INTERIOR SIX RESIDUE IS CLOSED.**  The interior window of the
+residue supplies an interior pin, and the interior pin kill fires. -/
+theorem sharedPrivateDeficitSixInteriorClosed_holds :
+    SharedPrivateDeficitSixInteriorClosed := by
+  intro crux data gramDiag hdiag _htraceThree _hsix _hcardOne _hcardTwo
+    hinterior _hmass
+  exact data.false_of_interior_pin hdiag (hinterior data.pinAtom)
+
+/-- **THE INTERIOR COMPLEMENT RESIDUE IS CLOSED.**  The same kill. -/
+theorem sharedPrivateDeficitComplementInteriorClosed_holds :
+    SharedPrivateDeficitComplementInteriorClosed := by
+  intro crux data gramDiag hdiag _htraceThree _hfive hinterior _hmass
+    _slotOne _slotTwo _hne _hdisjoint _hcover _hprivate
+  exact data.false_of_interior_pin hdiag (hinterior data.pinAtom)
+
+/-- **THE DEFICIT STRATUM IS CLOSED.**  Both interior deficit residues
+hold, thus the whole trace-three deficit stratum dies. -/
+theorem sharedPrivateDeficitClosed_holds : SharedPrivateDeficitClosed :=
+  sharedPrivateDeficitClosed_of_interior_residues
+    sharedPrivateDeficitSixInteriorClosed_holds
+    sharedPrivateDeficitComplementInteriorClosed_holds
 
 /-- **THE SHARED PAIR RESIDUE.**  The pair circuit residue with the two
 geometric conclusions added: the two supports share at least two atoms,
@@ -1140,54 +1539,46 @@ theorem sharedPrivateCircuitPairClosed_of_shared
   exact data.pairCircuit_capture_eq_zero hmem hpos (Ne.symm hne) hcoeffTwo
     hcoeffOne (fun slot htwoNe honeNe => hpair slot honeNe htwoNe) hin hout
 
-/-- **THE LEAK STRATA DISPATCH.**  The narrowed pair residue, the wide
-circuit residue, the boundary residue, the narrowed six residue and the
-interior complement residue close the generic shared-private kill. -/
+/-- **THE LEAK STRATA DISPATCH.**  The deficit stratum is closed
+outright, thus the generic shared-private kill needs only the narrowed
+pair residue, the wide circuit residue and the boundary residue.  Two of
+the four shared-private residues are gone. -/
 theorem sharedPrivateKilled_of_leak_strata
     (hpair : SharedPrivateCircuitPairSharedClosed)
     (hwide : SharedPrivateCircuitWideClosed)
-    (hboundary : SharedPrivateBoundaryClosed)
-    (hsix : SharedPrivateDeficitSixLowMultiplicityClosed)
-    (hcomplement : SharedPrivateDeficitComplementInteriorClosed) :
+    (hboundary : SharedPrivateBoundaryClosed) :
     SharedPrivateKilled :=
-  sharedPrivateKilled_of_interior_strata
+  sharedPrivateKilled_of_strata
     (sharedPrivateExtrasClosed_of_width
       (sharedPrivateCircuitPairClosed_of_shared hpair) hwide)
     hboundary
-    (sharedPrivateDeficitSixInteriorClosed_of_lowMultiplicity hsix)
-    hcomplement
+    sharedPrivateDeficitClosed_holds
 
 /-- The rank-four bridge through the leak strata. -/
 theorem rankFourSharedPrivateClosed_of_leak_strata
     (hpair : SharedPrivateCircuitPairSharedClosed)
     (hwide : SharedPrivateCircuitWideClosed)
-    (hboundary : SharedPrivateBoundaryClosed)
-    (hsix : SharedPrivateDeficitSixLowMultiplicityClosed)
-    (hcomplement : SharedPrivateDeficitComplementInteriorClosed) :
+    (hboundary : SharedPrivateBoundaryClosed) :
     RankFourSharedPrivateClosed :=
   rankFourSharedPrivateClosed_of_killed
-    (sharedPrivateKilled_of_leak_strata hpair hwide hboundary hsix hcomplement)
+    (sharedPrivateKilled_of_leak_strata hpair hwide hboundary)
 
 /-- The rank-five bridge through the leak strata. -/
 theorem rankFiveSharedPrivateClosed_of_leak_strata
     (hpair : SharedPrivateCircuitPairSharedClosed)
     (hwide : SharedPrivateCircuitWideClosed)
-    (hboundary : SharedPrivateBoundaryClosed)
-    (hsix : SharedPrivateDeficitSixLowMultiplicityClosed)
-    (hcomplement : SharedPrivateDeficitComplementInteriorClosed) :
+    (hboundary : SharedPrivateBoundaryClosed) :
     RankFiveSharedPrivateClosed :=
   rankFiveSharedPrivateClosed_of_killed
-    (sharedPrivateKilled_of_leak_strata hpair hwide hboundary hsix hcomplement)
+    (sharedPrivateKilled_of_leak_strata hpair hwide hboundary)
 
 /-- The rank-six bridge through the leak strata. -/
 theorem rankSixSharedPrivateClosed_of_leak_strata
     (hpair : SharedPrivateCircuitPairSharedClosed)
     (hwide : SharedPrivateCircuitWideClosed)
-    (hboundary : SharedPrivateBoundaryClosed)
-    (hsix : SharedPrivateDeficitSixLowMultiplicityClosed)
-    (hcomplement : SharedPrivateDeficitComplementInteriorClosed) :
+    (hboundary : SharedPrivateBoundaryClosed) :
     RankSixSharedPrivateClosed :=
   rankSixSharedPrivateClosed_of_killed
-    (sharedPrivateKilled_of_leak_strata hpair hwide hboundary hsix hcomplement)
+    (sharedPrivateKilled_of_leak_strata hpair hwide hboundary)
 
 end Gtz
