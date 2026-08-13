@@ -701,6 +701,7 @@ import Gtz.Wave.BothParallelDischarge
 import Gtz.Wave.CycleSeamReduction
 import Gtz.Wave.KFourCertificateReduction
 import Gtz.Wave.CertificateCornerBackbone
+import Gtz.Wave.SharedPrivateCertificateReduction
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -22256,6 +22257,20 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 
 #print axioms Gtz.gtzWeighted_six_three_of_closures
 #print axioms Gtz.gtzWeightedAll_three_of_closures
+
+-- ==========================================================
+-- the shared-private certificate reduction.  The generic kill
+-- target, the captured-diagonal boundary laws, the strict weight
+-- floor, and the three closure bridges.
+-- ==========================================================
+
+#print axioms Gtz.capture_column_eq_zero_of_diagonal_zero
+#print axioms Gtz.assembly_mulVec_projection_single_of_diagonal_zero
+#print axioms Gtz.capture_diagonal_pos_of_kernel_free
+#print axioms Gtz.SharedPrivateData.hvalueNeg
+#print axioms Gtz.rankFourSharedPrivateClosed_of_killed
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_killed
+#print axioms Gtz.rankSixSharedPrivateClosed_of_killed
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

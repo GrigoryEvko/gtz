@@ -2997,6 +2997,12 @@ import Gtz.Wave.KFourCertificateReduction
 -- positive semidefinite laws.
 import Gtz.Wave.CertificateCornerBackbone
 
+-- the shared-private certificate reduction: the generic kill target
+-- over the basis count, the captured-diagonal boundary laws, the
+-- strict weight floor, and the three bridges that discharge the
+-- shared-private closures of ranks four, five, and six.
+import Gtz.Wave.SharedPrivateCertificateReduction
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.
