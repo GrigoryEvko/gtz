@@ -7,6 +7,7 @@ import Gtz.Reduction.DegenerateHingeArm
 import Gtz.Design.LeverageBound
 import Gtz.Reduction.Reductions
 import Gtz.Uniform.WindowInductionStep
+import Gtz.Reduction.FrameDropDescent
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -1332,5 +1333,63 @@ theorem gtzWeighted_aboveFloor_of_polarTilt (hrank : 3 ≤ rank)
   GeneralRankReach.gtzWeighted_aboveFloor_of_predecessorRank hrank hpredecessor
     (fun cellSize hcell =>
       hingeHoldsAtSize_of_polarTilt (by omega) hpredecessor (htilt cellSize hcell)) size hsize
+
+/-! ## Part 8: why the residual carries the TIE, and what happens when it does not
+
+A residual whose conclusion is a STRICTLY dominating card-`rank` subset, demanded
+at a design that may be a tie, is refuted by the ties the tree already carries: a
+tie has no strictly dominating card-`rank` subset at all. That is the trap, and
+it is the reason `Gtz.PolarTiltSelection` concludes a COVERING with a tilt bound
+rather than a dominator, and the reason its tie-free form still carries
+`Gtz.IsPrimitiveDesign`. -/
+
+/-- **THE TRAP, NAMED.**  A cell that carries a tie which reaches a strictly
+dominating set of card `rank + 1` refutes `Gtz.RankSuccShrinks` outright. This is
+`Gtz.not_isTie_of_rankSuccShrinks` read backwards. -/
+theorem not_rankSuccShrinks_of_isTie_of_reach (design : WeightedDesign size rank)
+    (htie : IsTie design) {base : Finset (Fin size)} (hcard : base.card = rank + 1)
+    (hposDef : (subsetSum design base - 1).PosDef) : ¬ RankSuccShrinks size rank :=
+  fun hshrink => not_isTie_of_rankSuccShrinks hshrink design hcard hposDef htie
+
+/-- **`Gtz.RankSuccShrinks 6 3` IS FALSE.**  Every `(6,3)` design reaches a
+strictly dominating quadruple (`Gtz.exists_card_four_posDef_six_three`), thus the
+last-stage Prop forbids `(6,3)` ties outright. The split diamond IS a `(6,3)`
+tie (`Gtz.sixSplitDiamondDesign_isTie`), thus the Prop is refuted at the deciding
+cell of rank three.
+
+Nothing in the frame-drop module is touched by this: the stage law, the free
+drops and the quadruple are unconditional theorems. What is refuted is the named
+last-stage target, and with it every reduction that consumes it. -/
+theorem not_rankSuccShrinks_six_three : ¬ RankSuccShrinks 6 3 := fun hshrink =>
+  not_isTie_six_three_of_rankSuccShrinks hshrink sixSplitDiamondDesign
+    sixSplitDiamondDesign_isTie
+
+/-- The same refutation through the shipped equivalence
+`Gtz.rankSuccShrinks_six_three_iff_noTie`: the Prop is EQUIVALENT to the absence
+of `(6,3)` ties, and one `(6,3)` tie is in the tree. -/
+theorem not_rankSuccShrinks_six_three_of_iff : ¬ RankSuccShrinks 6 3 := fun hshrink =>
+  rankSuccShrinks_six_three_iff_noTie.mp hshrink sixSplitDiamondDesign
+    sixSplitDiamondDesign_isTie
+
+/-- **THE DISCRIMINATOR.**  One and the same configuration refutes the last-stage
+Prop and says NOTHING about the polar residual, because the split diamond is not
+primitive. The hinge asks a tie to carry a parallel pair, and the split diamond
+carries one, thus a residual that forbids ties outright is strictly stronger than
+the hinge while `Gtz.PolarTiltSelection` is not. -/
+theorem sixSplitDiamondDesign_separates_residuals :
+    ¬ RankSuccShrinks 6 3 ∧ IsTie sixSplitDiamondDesign
+      ∧ HasParallelPair sixSplitDiamondDesign ∧ ¬ IsPrimitiveDesign sixSplitDiamondDesign :=
+  ⟨not_rankSuccShrinks_six_three, sixSplitDiamondDesign_isTie,
+    sixSplitDiamondDesign_hasParallelPair, not_isPrimitiveDesign_sixSplitDiamondDesign⟩
+
+/-- **THE POLAR RESIDUAL IS EXACTLY AS STRONG AS THE HINGE, NO STRONGER.**  Its
+tie-free form forbids only PRIMITIVE ties, and a primitive tie at a cell is
+exactly the failure of the hinge there. Thus no tie already in the tree refutes
+it at `(6,3)`, while the same ties refute every Prop that forbids ties
+outright. -/
+theorem polarTiltTieFree_forbids_only_primitive_ties (hrank : 2 ≤ rank)
+    (hpredecessor : GtzWeightedAll (rank - 1)) (htilt : PolarTiltSelectionTieFree size rank)
+    (design : WeightedDesign size rank) (htie : IsTie design) : HasParallelPair design :=
+  hingeHoldsAtSize_of_polarTiltTieFree hrank hpredecessor htilt design htie
 
 end Gtz
