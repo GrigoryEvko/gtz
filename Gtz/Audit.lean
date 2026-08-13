@@ -704,6 +704,7 @@ import Gtz.Wave.CertificateCornerBackbone
 import Gtz.Wave.SharedPrivateCertificateReduction
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
+import Gtz.Wave.OuterSharerDualScaffold
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -22292,6 +22293,25 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 
 #print axioms Gtz.cycleSeamCertificate_holds
 #print axioms Gtz.rankFourCycleIndependentClosed_holds
+
+-- ==========================================================
+-- the outer-sharer dual scaffold: the two certificate consumers,
+-- the priced coupling, the block quadratic reads, and the one-pair
+-- outside forms.
+-- ==========================================================
+
+#print axioms Gtz.dual_pairing_swap
+#print axioms Gtz.false_of_diagonal_certificate
+#print axioms Gtz.false_of_leak_certificate
+#print axioms Gtz.bothPair_coupling_collapse
+#print axioms Gtz.bothPair_coupling_square
+#print axioms Gtz.bothPair_coupling_priced
+#print axioms Gtz.bothPair_aligned_of_third_ne
+#print axioms Gtz.triple_support_unit_read
+#print axioms Gtz.triple_support_energy_read
+#print axioms Gtz.tight_triple_quadratic_read
+#print axioms Gtz.singlePair_outside_form_left
+#print axioms Gtz.singlePair_outside_form_right
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

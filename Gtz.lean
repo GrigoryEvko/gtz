@@ -3013,6 +3013,11 @@ import Gtz.Wave.KFourCertificateProof
 -- cone, and closure four holds.
 import Gtz.Wave.CycleSeamCertificateProof
 
+-- the outer-sharer dual scaffold: the diagonal and leak certificate
+-- consumers, the priced coupling of a both-pair sharer, the block
+-- quadratic reads, and the one-pair outside forms.
+import Gtz.Wave.OuterSharerDualScaffold
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.
