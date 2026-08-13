@@ -3061,6 +3061,16 @@ import Gtz.Wave.OuterResidueCollapse
 -- price the budget, and pinned atoms kill the three ranks.
 import Gtz.Wave.OuterBlockPinBudget
 
+-- the outer block-degree dispatch: the carrier census, the conjugated
+-- frame package, the refined generic kill, and the rank-four
+-- narrowing to the fully two-carrier dense branch.
+import Gtz.Wave.OuterBlockDegreeDispatch
+
+-- the outer parallel fold: parallel labels give the diagonal Gram,
+-- the circuit residues name the other arm, and the compositions
+-- narrow the outer data at the three ranks.
+import Gtz.Wave.OuterParallelFold
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.

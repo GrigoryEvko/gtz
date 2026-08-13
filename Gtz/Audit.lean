@@ -714,6 +714,8 @@ import Gtz.Wave.OuterCofactorReduction
 import Gtz.Wave.OuterCofactorSpanForm
 import Gtz.Wave.OuterResidueCollapse
 import Gtz.Wave.OuterBlockPinBudget
+import Gtz.Wave.OuterBlockDegreeDispatch
+import Gtz.Wave.OuterParallelFold
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -22444,6 +22446,28 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankFourFrame.false_of_diagonal_gram_block_pin
 #print axioms Gtz.RankFiveFrame.false_of_diagonal_gram_block_pin
 #print axioms Gtz.RankSixFrame.false_of_diagonal_gram_block_pin
+
+-- the outer block-degree dispatch
+#print axioms Gtz.blockCarrier_nonempty
+#print axioms Gtz.blockCarrier_fiber
+#print axioms Gtz.blockCarrier_incidence
+#print axioms Gtz.blockCarrier_double_count
+#print axioms Gtz.exists_diagonal_conjugated_frame
+#print axioms Gtz.false_of_diagonal_coefficient_refined
+#print axioms Gtz.RankFourFrame.blockPin_or_all_two
+#print axioms Gtz.RankFourFrame.dense_of_diagonal_gram
+#print axioms Gtz.RankFiveFrame.false_of_diagonal_gram_refined
+#print axioms Gtz.RankSixFrame.false_of_diagonal_gram_refined
+
+-- the outer parallel fold
+#print axioms Gtz.gram_offdiag_eq_zero_of_parallel
+#print axioms Gtz.exists_diagonal_gram_of_parallel
+#print axioms Gtz.RankFourOuterData.parallel_of_circuitClosed
+#print axioms Gtz.RankFiveOuterData.parallel_of_circuitClosed
+#print axioms Gtz.RankSixOuterData.parallel_of_circuitClosed
+#print axioms Gtz.RankFourOuterData.dense_of_circuitClosed_interior
+#print axioms Gtz.RankFiveOuterData.false_of_circuitClosed_refined
+#print axioms Gtz.RankSixOuterData.false_of_circuitClosed_refined
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
