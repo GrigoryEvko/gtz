@@ -55,7 +55,7 @@ while every column block carries three, thus the tight census stops at
 seventeen against the block census of eighteen.  Some atom therefore
 has a tight carrier strictly inside its block carrier.
 
-The last layer prices a PIN.  A pin atom carries one slot, thus its
+The sixth layer prices a PIN.  A pin atom carries one slot, thus its
 ambient row holds one live entry, and the two-sided inverse
 concentrates the inverse row of the pin slot on the pin atom.  Two pin
 atoms never share a pin slot, and the coefficient matrix reads the
@@ -63,6 +63,17 @@ shifted weight of the pin atom on the diagonal of the pin slot.  In the
 regular stratum no pin and no pair exists, thus the regular stratum
 carries profile mass zero and the split of the low-profile residue
 loses nothing.
+
+The last layer generalizes the degree dichotomy to every rank.  Six
+nonempty carriers need eighteen incidences to stay at card three, and a
+basis of `basisCount` slots supplies `3 basisCount` only.  A carrier of
+card one pays two of the deficit and a carrier of card two pays one,
+thus `18 ≤ 3 basisCount + 2 p + q`.  The floor is six at rank four,
+three at rank five, and zero at rank six.  At rank five with a diagonal
+Gram core and capture trace three the floor meets the refined kill, so
+the profile mass is EXACTLY three.  At rank six the same reading caps
+the mass at three, thus the low-profile residue is the whole rank-six
+diagonal-Gram branch.
 
 ## PROVED here (no `sorry`, no `axiom`, no `native_decide`)
 
@@ -117,6 +128,16 @@ loses nothing.
   stratum.
 * `Gtz.RankSixFrame.regular_profile_zero` — **THE FAITHFUL SPLIT.**
 * `Gtz.rankSixOuterRegularClosed_of_lowProfile` — the converse reading.
+* `Gtz.blockPinSet` / `Gtz.blockPairSet` — the profile sets of a basis.
+* `Gtz.blockPin_pair_disjoint`, `Gtz.blockPinSet_singleton`,
+  `Gtz.blockPairSet_pair` — their readings.
+* `Gtz.blockCarrier_profile_floor` — **THE PROFILE MASS FLOOR.**
+* `Gtz.RankFiveFrame.profile_mass_ge_three` — the rank-five floor.
+* `Gtz.RankFourFrame.profile_mass_ge_six` — the rank-four floor.
+* `Gtz.RankFiveFrame.profile_mass_eq_three_of_trace_three` — **THE
+  RANK-FIVE TRACE-THREE NARROWING.**
+* `Gtz.RankSixFrame.profile_mass_le_three_of_diagonal_gram` — **THE
+  RANK-SIX PROFILE CEILING.**
 
 ## Vacuity
 
@@ -984,5 +1005,181 @@ theorem rankSixOuterRegularClosed_of_lowProfile
   refine hlow crux data ?_
   rw [data.frame.regular_profile_zero hregular]
   omega
+
+/-! ## Layer 10 — the profile mass floor at every rank -/
+
+/-- The pin set of a basis: the atoms whose block carrier is one slot. -/
+def blockPinSet (activeSubset : activeIndex → Finset (Fin 6))
+    (basisLabel : Fin basisCount → activeIndex) : Finset (Fin 6) :=
+  Finset.univ.filter fun atomIndex =>
+    (blockCarrier activeSubset basisLabel atomIndex).card = 1
+
+/-- The pair set of a basis: the atoms whose block carrier is a slot
+pair. -/
+def blockPairSet (activeSubset : activeIndex → Finset (Fin 6))
+    (basisLabel : Fin basisCount → activeIndex) : Finset (Fin 6) :=
+  Finset.univ.filter fun atomIndex =>
+    (blockCarrier activeSubset basisLabel atomIndex).card = 2
+
+/-- The pin set and the pair set of a basis are disjoint. -/
+theorem blockPin_pair_disjoint {basisLabel : Fin basisCount → activeIndex} :
+    Disjoint (blockPinSet activeSubset basisLabel)
+      (blockPairSet activeSubset basisLabel) := by
+  classical
+  rw [Finset.disjoint_left]
+  intro atomIndex hpin hpair
+  rw [blockPinSet, Finset.mem_filter] at hpin
+  rw [blockPairSet, Finset.mem_filter] at hpair
+  omega
+
+/-- Every pin-set atom carries a singleton block carrier. -/
+theorem blockPinSet_singleton {basisLabel : Fin basisCount → activeIndex}
+    {atomIndex : Fin 6} (hmem : atomIndex ∈ blockPinSet activeSubset basisLabel) :
+    ∃ pinSlot, blockCarrier activeSubset basisLabel atomIndex = {pinSlot} := by
+  classical
+  rw [blockPinSet, Finset.mem_filter] at hmem
+  exact Finset.card_eq_one.mp hmem.2
+
+/-- Every pair-set atom carries a two-slot block carrier. -/
+theorem blockPairSet_pair {basisLabel : Fin basisCount → activeIndex}
+    {atomIndex : Fin 6} (hmem : atomIndex ∈ blockPairSet activeSubset basisLabel) :
+    ∃ slotOne slotTwo, slotOne ≠ slotTwo ∧
+      blockCarrier activeSubset basisLabel atomIndex = {slotOne, slotTwo} := by
+  classical
+  rw [blockPairSet, Finset.mem_filter] at hmem
+  obtain ⟨slotOne, slotTwo, hne, hset⟩ := Finset.card_eq_two.mp hmem.2
+  exact ⟨slotOne, slotTwo, hne, hset⟩
+
+/-- **THE PROFILE MASS FLOOR.**  Eighteen is the mass budget of six
+nonempty carriers: each carrier of card one pays two of the deficit and
+each carrier of card two pays one, thus `18 ≤ 3 basisCount + 2 p + q`.
+At rank four the floor is six, at rank five it is three, and at rank
+six it vanishes. -/
+theorem blockCarrier_profile_floor
+    (hdata : IsChartStationaryData 3 projection weight value activeSet
+      activeSubset activeWeight tightDir)
+    {basisLabel : Fin basisCount → activeIndex}
+    (hmemActive : ∀ slot, basisLabel slot ∈ activeSet)
+    (hspan : Submodule.span ℝ
+        (Set.range fun columnIndex => tightDir (basisLabel columnIndex))
+      = LinearMap.range (Matrix.toLin'
+          (chartMultiplierAssembly activeSet activeWeight tightDir)))
+    {leftInv : Matrix (Fin basisCount) (Fin 6) ℝ}
+    (hleft : leftInv * tightBasisColumns tightDir basisLabel = 1) :
+    18 ≤ 3 * basisCount
+      + 2 * (blockPinSet activeSubset basisLabel).card
+      + (blockPairSet activeSubset basisLabel).card := by
+  classical
+  have hcount : ∀ chosen : Finset (Fin 6),
+      (∑ atomIndex : Fin 6, if atomIndex ∈ chosen then 1 else 0) = chosen.card := by
+    intro chosen
+    rw [Finset.sum_ite_mem, Finset.univ_inter]
+    exact (Finset.card_eq_sum_ones chosen).symm
+  have hpoint : ∀ atomIndex : Fin 6,
+      3 ≤ (blockCarrier activeSubset basisLabel atomIndex).card
+        + 2 * (if atomIndex ∈ blockPinSet activeSubset basisLabel then 1 else 0)
+        + (if atomIndex ∈ blockPairSet activeSubset basisLabel then 1 else 0) := by
+    intro atomIndex
+    have hpos : 1 ≤ (blockCarrier activeSubset basisLabel atomIndex).card :=
+      Finset.card_pos.mpr
+        (blockCarrier_nonempty hdata hmemActive hspan hleft atomIndex)
+    by_cases hone : (blockCarrier activeSubset basisLabel atomIndex).card = 1
+    · have hmem : atomIndex ∈ blockPinSet activeSubset basisLabel := by
+        rw [blockPinSet, Finset.mem_filter]
+        exact ⟨Finset.mem_univ atomIndex, hone⟩
+      rw [if_pos hmem, hone]
+      omega
+    by_cases htwo : (blockCarrier activeSubset basisLabel atomIndex).card = 2
+    · have hmem : atomIndex ∈ blockPairSet activeSubset basisLabel := by
+        rw [blockPairSet, Finset.mem_filter]
+        exact ⟨Finset.mem_univ atomIndex, htwo⟩
+      have hnotPin : atomIndex ∉ blockPinSet activeSubset basisLabel := by
+        rw [blockPinSet, Finset.mem_filter]
+        rintro ⟨-, hcard⟩
+        omega
+      rw [if_pos hmem, if_neg hnotPin, htwo]
+    · omega
+  have hsumLe : (18 : ℕ)
+      ≤ ∑ atomIndex : Fin 6,
+        ((blockCarrier activeSubset basisLabel atomIndex).card
+          + 2 * (if atomIndex ∈ blockPinSet activeSubset basisLabel then 1 else 0)
+          + (if atomIndex ∈ blockPairSet activeSubset basisLabel then 1 else 0)) := by
+    have hconst : ∑ _atomIndex : Fin 6, 3 = 18 := by
+      rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin]
+      norm_num
+    rw [← hconst]
+    exact Finset.sum_le_sum fun atomIndex _ => hpoint atomIndex
+  have hsplit : ∑ atomIndex : Fin 6,
+        ((blockCarrier activeSubset basisLabel atomIndex).card
+          + 2 * (if atomIndex ∈ blockPinSet activeSubset basisLabel then 1 else 0)
+          + (if atomIndex ∈ blockPairSet activeSubset basisLabel then 1 else 0))
+      = (∑ atomIndex : Fin 6, (blockCarrier activeSubset basisLabel atomIndex).card)
+        + 2 * (blockPinSet activeSubset basisLabel).card
+        + (blockPairSet activeSubset basisLabel).card := by
+    rw [Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum,
+      hcount (blockPinSet activeSubset basisLabel),
+      hcount (blockPairSet activeSubset basisLabel)]
+  rw [hsplit, blockCarrier_double_count hdata hmemActive] at hsumLe
+  exact hsumLe
+
+/-- **THE RANK-FIVE PROFILE FLOOR.**  Fifteen incidences over six
+nonempty carriers force a profile mass of three at least. -/
+theorem RankFiveFrame.profile_mass_ge_three {crux : SixThreeCrux}
+    (frame : RankFiveFrame crux) :
+    3 ≤ 2 * (blockPinSet frame.activeSubset frame.basisLabel).card
+      + (blockPairSet frame.activeSubset frame.basisLabel).card := by
+  have h := blockCarrier_profile_floor frame.hdata frame.hmemAll frame.hspan
+    frame.hleft (basisLabel := frame.basisLabel)
+  omega
+
+/-- **THE RANK-FOUR PROFILE FLOOR.**  Twelve incidences over six
+nonempty carriers force a profile mass of six at least. -/
+theorem RankFourFrame.profile_mass_ge_six {crux : SixThreeCrux}
+    (frame : RankFourFrame crux) :
+    6 ≤ 2 * (blockPinSet frame.activeSubset frame.basisLabel).card
+      + (blockPairSet frame.activeSubset frame.basisLabel).card := by
+  have h := blockCarrier_profile_floor frame.hdata frame.hmemAll frame.hspan
+    frame.hleft (basisLabel := frame.basisLabel)
+  omega
+
+/-- **THE RANK-FIVE TRACE-THREE NARROWING.**  A rank-five frame with a
+diagonal Gram core and capture trace three carries profile mass EXACTLY
+three.  The floor gives three, the refined kill removes four and more,
+and the trace-three interior law supplies the interiority with no
+hypothesis. -/
+theorem RankFiveFrame.profile_mass_eq_three_of_trace_three {crux : SixThreeCrux}
+    (frame : RankFiveFrame crux) {gramDiag : Fin 5 → ℝ}
+    (hdiag : frame.gram = Matrix.diagonal gramDiag)
+    (htrace : Matrix.trace frame.coeff = 3) :
+    2 * (blockPinSet frame.activeSubset frame.basisLabel).card
+      + (blockPairSet frame.activeSubset frame.basisLabel).card = 3 := by
+  classical
+  have hfloor := frame.profile_mass_ge_three
+  by_contra hne
+  have hbig : 4 ≤ 2 * (blockPinSet frame.activeSubset frame.basisLabel).card
+      + (blockPairSet frame.activeSubset frame.basisLabel).card := by omega
+  refine frame.false_of_diagonal_gram_refined hdiag
+    (blockPinSet frame.activeSubset frame.basisLabel)
+    (blockPairSet frame.activeSubset frame.basisLabel)
+    blockPin_pair_disjoint (fun atom hmem => blockPinSet_singleton hmem)
+    (fun atom hmem => blockPairSet_pair hmem)
+    (fun atom _ _ => frame.shifted_weight_pos_of_trace_three htrace atom)
+    (fun htrace2 => absurd (htrace2 ▸ htrace) (by norm_num)) (fun _ => hbig)
+
+/-- **THE RANK-SIX PROFILE CEILING.**  A rank-six frame with a diagonal
+Gram core carries profile mass three or less: mass four fires the
+refined kill, and the rank-six interior law supplies the interiority.
+Thus the low-profile residue is the WHOLE rank-six diagonal-Gram
+branch. -/
+theorem RankSixFrame.profile_mass_le_three_of_diagonal_gram {crux : SixThreeCrux}
+    (frame : RankSixFrame crux) {gramDiag : Fin 6 → ℝ}
+    (hdiag : frame.gram = Matrix.diagonal gramDiag) :
+    2 * frame.pinSet.card + frame.pairSet.card ≤ 3 := by
+  classical
+  by_contra hne
+  refine frame.false_of_diagonal_gram_refined hdiag frame.pinSet frame.pairSet
+    frame.pin_pair_disjoint (fun atom hmem => frame.pinSet_singleton hmem)
+    (fun atom hmem => frame.pairSet_pair hmem)
+    (fun atom _ _ => frame.shifted_weight_pos atom) (by omega)
 
 end Gtz
