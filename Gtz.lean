@@ -2088,6 +2088,12 @@ import Gtz.Design.InsertPlaneCompletion
 -- stress-free hinge alone.
 import Gtz.Reduction.BalancedStratumClosure
 
+-- The threshold cell hinge at general rank: the deciding cell arithmetic, the
+-- symmetric basis a stress-free design carries there, the rank-uniform stress
+-- trichotomy, and the three named arms that reduce the two registry hinge
+-- obligations.
+import Gtz.Reduction.ThresholdCellHingeMap
+
 -- The one-frame gate system at a tie: the master gate extraction, the
 -- coupling floor, the equality law on the dominating stratum, the dual-conic
 -- polarity of the stress-free stratum, the gate trichotomy, and the
@@ -2132,6 +2138,18 @@ import Gtz.Uniform.AnchorReachAssembly
 -- hypothesis at every size and rank.  Also the general-rank moment curve, the
 -- normal to a pair of rows, and the single move inside the good tuples.
 import Gtz.Uniform.GeneralRankReachSkeleton
+
+-- The moment-hub schedule at general rank: a spanning family contains a
+-- spanning base of at most rank rows, and the window floor 2 * rank <= size
+-- lets the labels outside that base walk onto the moment curve first.  The
+-- tuple walk is a theorem at every window cell of every rank of three or more.
+import Gtz.Uniform.MomentHubSchedule
+
+-- The whitening at general rank, through the positive-definite square root of
+-- the continuous functional calculus, and the anchor-reach obligation as a
+-- theorem: the sharp-window statement at rank four and above needs no
+-- hypothesis, and route (b) keeps one topological input.
+import Gtz.Uniform.SpectralWhitening
 
 -- The matroid stratification of the stress-free hinge: the plane-pair escape
 -- law empties four of the nine six-point classes, the hinge follows from
@@ -3102,6 +3120,13 @@ import Gtz.Wave.SharedPrivateBoundaryComplement
 -- read Gram, the all-boundary kill through the span law, and the
 -- boundary propagation at a unique co-carrier atom.
 import Gtz.Wave.SharedPrivateGramCommutation
+
+-- the shared-private slot energy: the slot energy identity and its
+-- Cauchy-Schwarz cap, the multiplicity-one boundary law, the pin-slot
+-- propagation, the dead-slot law with the interior floor, the
+-- triangular triple kill, the closed rank-four complement residue, and
+-- the boundary residue narrowed to basis count five.
+import Gtz.Wave.SharedPrivateSlotEnergy
 
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and

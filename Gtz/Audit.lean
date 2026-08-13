@@ -423,6 +423,7 @@ import Gtz.Reduction.TwoVanishedBoundary
 import Gtz.Design.OnPlaneDropObstruction
 import Gtz.Design.InsertPlaneCompletion
 import Gtz.Reduction.BalancedStratumClosure
+import Gtz.Reduction.ThresholdCellHingeMap
 import Gtz.Design.TwoFamilyTightFrame
 import Gtz.Uniform.NaimarkCorankTwo
 import Gtz.Uniform.CorankTwoTransfer
@@ -434,6 +435,8 @@ import Gtz.Uniform.AnchorBookkeeping
 import Gtz.Uniform.AnchorAssembly
 import Gtz.Uniform.AnchorReachAssembly
 import Gtz.Uniform.GeneralRankReachSkeleton
+import Gtz.Uniform.MomentHubSchedule
+import Gtz.Uniform.SpectralWhitening
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
 import Gtz.Design.TieCensusCompletion
@@ -720,6 +723,7 @@ import Gtz.Wave.SharedPrivateCircuitGeometry
 import Gtz.Wave.SharedPrivateReadIntertwiner
 import Gtz.Wave.SharedPrivateBoundaryComplement
 import Gtz.Wave.SharedPrivateGramCommutation
+import Gtz.Wave.SharedPrivateSlotEnergy
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -12403,6 +12407,82 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.GeneralRankReach.goodTupleConnected_of_reachesMomentHub
 #print axioms Gtz.GeneralRankReach.sharpWindowAnchorReach_of_schedule
 
+-- the moment-hub schedule: the spanning base, the hybrid tuple, the two
+-- phases, and the tuple walk at every window cell
+#print axioms Gtz.GeneralRankReach.SpansOn
+#print axioms Gtz.GeneralRankReach.spansOn_univ_of_rowsSpan
+#print axioms Gtz.GeneralRankReach.rowsSpan_of_spansOn_univ
+#print axioms Gtz.GeneralRankReach.SpansOn.mono
+#print axioms Gtz.GeneralRankReach.exists_erase_spansOn
+#print axioms Gtz.GeneralRankReach.exists_spansOn_card_le
+#print axioms Gtz.GeneralRankReach.exists_spanning_base
+#print axioms Gtz.GeneralRankReach.hybridRows
+#print axioms Gtz.GeneralRankReach.hybridRows_of_mem
+#print axioms Gtz.GeneralRankReach.hybridRows_of_notMem
+#print axioms Gtz.GeneralRankReach.hybridRows_empty
+#print axioms Gtz.GeneralRankReach.hybridRows_univ
+#print axioms Gtz.GeneralRankReach.hybridRows_insert
+#print axioms Gtz.GeneralRankReach.hybridSpan_of_base
+#print axioms Gtz.GeneralRankReach.hybridSpan_of_hub
+#print axioms Gtz.GeneralRankReach.joinedIn_hybrid_insert
+#print axioms Gtz.GeneralRankReach.joinedIn_hybrid_union
+#print axioms Gtz.GeneralRankReach.goodTupleReachesMomentHub_of_window
+#print axioms Gtz.GeneralRankReach.goodTupleConnected_of_window
+#print axioms Gtz.GeneralRankReach.goodTupleConnected_of_canonicalWindow
+#print axioms Gtz.GeneralRankReach.sharpWindowAnchorReach_of_whitening
+#print axioms Gtz.GeneralRankReach.routeB_target_of_whitening
+#print axioms Gtz.GeneralRankReach.goodTupleConnected_six_three_ofSchedule
+#print axioms Gtz.GeneralRankReach.goodTupleConnected_seven_three
+#print axioms Gtz.GeneralRankReach.goodTupleConnected_eight_four
+#print axioms Gtz.GeneralRankReach.goodTupleConnected_eleven_four
+#print axioms Gtz.GeneralRankReach.goodTupleConnected_ten_five
+
+-- the path-connected packaging, and the sharpness of the window floor
+#print axioms Gtz.GeneralRankReach.isGoodTuple_diagonal
+#print axioms Gtz.GeneralRankReach.isGoodTuple_one
+#print axioms Gtz.GeneralRankReach.isGoodTuple_momentCurve
+#print axioms Gtz.GeneralRankReach.injective_labelParam
+#print axioms Gtz.GeneralRankReach.joinedIn_of_goodTupleConnected
+#print axioms Gtz.GeneralRankReach.isPathConnected_goodTupleSet
+#print axioms Gtz.GeneralRankReach.det_ne_zero_of_rowsSpan
+#print axioms Gtz.GeneralRankReach.not_goodTupleConnected_self
+
+-- the general-rank whitening, and the anchor-reach obligation as a theorem
+#print axioms Gtz.GeneralRankReach.gramOf_conj
+#print axioms Gtz.GeneralRankReach.gramOf_apply
+#print axioms Gtz.GeneralRankReach.gramRoot
+#print axioms Gtz.GeneralRankReach.isSelfAdjoint_gramRoot
+#print axioms Gtz.GeneralRankReach.transpose_gramRoot
+#print axioms Gtz.GeneralRankReach.gramRoot_mul_self
+#print axioms Gtz.GeneralRankReach.gramRoot_one
+#print axioms Gtz.GeneralRankReach.det_gramRoot_ne_zero
+#print axioms Gtz.GeneralRankReach.isUnit_det_gramRoot
+#print axioms Gtz.GeneralRankReach.det_inv_gramRoot_ne_zero
+#print axioms Gtz.GeneralRankReach.transpose_inv_gramRoot
+#print axioms Gtz.GeneralRankReach.conj_inv_gramRoot
+#print axioms Gtz.GeneralRankReach.continuous_gramRoot_entry
+#print axioms Gtz.GeneralRankReach.continuous_inv_gramRoot_entry
+#print axioms Gtz.GeneralRankReach.whiteningTransferAtRank_general
+#print axioms Gtz.GeneralRankReach.whiteningTransferAtRank_six_three_ofSpectral
+#print axioms Gtz.GeneralRankReach.parallelFreeReachesAnchor_of_window
+#print axioms Gtz.GeneralRankReach.canonicalWindowParallelFreeConnectivity_of_three_le
+#print axioms Gtz.GeneralRankReach.sharpWindowParallelFreeConnectivity_of_three_le
+#print axioms Gtz.GeneralRankReach.sharpWindowAnchorReach
+#print axioms Gtz.GeneralRankReach.sharpWindowAnchorReachRankFourAndUp
+#print axioms Gtz.GeneralRankReach.sharpWindowAnchorReachRankThree
+#print axioms Gtz.GeneralRankReach.routeB_target_of_windowTie
+#print axioms Gtz.GeneralRankReach.exists_anchorReach_eight_four
+#print axioms Gtz.GeneralRankReach.exists_anchorReach_ten_four
+#print axioms Gtz.GeneralRankReach.exists_anchorReach_ten_five
+#print axioms Gtz.GeneralRankReach.parallelFreeReachesAnchor_six_three_ofGeneral
+
+-- the route-(b) anchor Props and the connectedness route on two inputs
+#print axioms Gtz.GeneralRankReach.windowAnchorReachFree_of_three_le
+#print axioms Gtz.GeneralRankReach.windowAnchorReach_of_three_le
+#print axioms Gtz.GeneralRankReach.strictlyDominating_of_hinge_of_window
+#print axioms Gtz.GeneralRankReach.gtzWeighted_of_hinge_of_parallelBranch
+#print axioms Gtz.GeneralRankReach.gtzWeighted_six_three_of_hinge
+
 /-! ### The matroid stratification of the stress-free hinge -/
 
 #print axioms Gtz.isPlanePairCovered_comp_relabel
@@ -22691,6 +22771,24 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SharedPrivateData.boundary_of_unique_cocarrier
 #print axioms Gtz.SharedPrivateData.false_of_unique_cocarrier
 
+-- the shared-private slot energy
+#print axioms Gtz.gram_kernel_entry
+#print axioms Gtz.slot_fixed_energy_le
+#print axioms Gtz.SharedPrivateData.boundary_of_multiplicity_one
+#print axioms Gtz.SharedPrivateData.boundary_of_pin_cocarrier
+#print axioms Gtz.SharedPrivateData.pinAtom_boundary
+#print axioms Gtz.SharedPrivateData.boundary_of_private_support
+#print axioms Gtz.SharedPrivateData.two_le_interior_card
+#print axioms Gtz.SharedPrivateData.false_of_triangular_boundary_triple
+#print axioms Gtz.sharedPrivateComplementSlotClosed
+#print axioms Gtz.sharedPrivateBoundaryFourClosed
+#print axioms Gtz.sharedPrivateBoundaryHighClosed_of_five
+#print axioms Gtz.sharedPrivateBoundaryClosed_of_five
+#print axioms Gtz.sharedPrivateKilled_of_five_strata
+#print axioms Gtz.rankFourSharedPrivateClosed_of_five_strata
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_five_strata
+#print axioms Gtz.rankSixSharedPrivateClosed_of_five_strata
+
 -- the outer block-pin budget
 #print axioms Gtz.blockCarrier_mem
 #print axioms Gtz.false_of_diagonal_coefficient_block_pins
@@ -22975,6 +23073,83 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.sharedPrivateDeficitComplementClosed_of_interior
 #print axioms Gtz.sharedPrivateDeficitClosed_of_interior_residues
 #print axioms Gtz.sharedPrivateKilled_of_interior_strata
+
+-- The threshold cell hinge map at general rank: the deciding cell
+-- arithmetic and its three fan-out obstructions, the symmetric basis and the
+-- uniqueness of the Parseval coefficients, the rank-uniform stress
+-- trichotomy, the three arms with the two registry hinge reductions, the
+-- anatomy of the stressed arm, and the rank-three faithfulness certificates.
+#print axioms Gtz.two_mul_thresholdSize
+#print axioms Gtz.thresholdSize_le_two_mul_iff
+#print axioms Gtz.two_mul_le_thresholdSize
+#print axioms Gtz.two_mul_thresholdSplitWindow
+#print axioms Gtz.thresholdSplitWindow
+#print axioms Gtz.thresholdSplit_isPoint_iff
+#print axioms Gtz.lt_thresholdSize_sub_rank
+#print axioms Gtz.transpose_atomCombination
+#print axioms Gtz.injective_atomCoordMap_of_stressFree
+#print axioms Gtz.exists_atomCombination_of_transpose_eq
+#print axioms Gtz.exists_atomCombination_of_design
+#print axioms Gtz.existsUnique_atomCombination_of_design
+#print axioms Gtz.eq_weight_of_atomCombination_eq_one
+#print axioms Gtz.sideSum_add_sideSum
+#print axioms Gtz.posSideSum_eq_negSideSum
+#print axioms Gtz.pos_side_orthogonal_of_neg_side
+#print axioms Gtz.posDef_posSideSum_of_spans
+#print axioms Gtz.stress_fullSupport_of_sides_of_size_le
+#print axioms Gtz.design_stress_trichotomy
+#print axioms Gtz.balancedStratumSelectionAtRank_three
+#print axioms Gtz.twoPoleStratumSelectionAtRank_three
+#print axioms Gtz.hingeHoldsAtSize_of_arms
+#print axioms Gtz.thresholdCellHinge_of_arms
+#print axioms Gtz.hingeHoldsAtSize_thresholdCell_of_arms
+#print axioms Gtz.thresholdCellHingeRankFourAndUp_of_arms
+#print axioms Gtz.thresholdCellHingeRankFourAndUp_of_arms_predecessorFree
+#print axioms Gtz.subThresholdBandHinge_of_arms
+#print axioms Gtz.sharpWindowHinge_of_arms
+#print axioms Gtz.card_subThresholdBand
+#print axioms Gtz.card_sharpWindow
+#print axioms Gtz.subThresholdBand_empty_at_rank_three
+#print axioms Gtz.card_subThresholdBand_four
+#print axioms Gtz.isPrimitiveDesign_of_stressFree_general
+#print axioms Gtz.stressFreeArmAt_iff_no_stressFree_tie
+#print axioms Gtz.thresholdStressFreeArm_iff_no_stressFree_tie
+#print axioms Gtz.thresholdStressFreeArm_three_iff
+#print axioms Gtz.thresholdBalancedArm_three_of_capstone
+#print axioms Gtz.thresholdDegenerateArm_three_of_selection
+#print axioms Gtz.thresholdArms_rank_three_faithful
+#print axioms Gtz.not_thresholdSize_le_two_mul
+#print axioms Gtz.pos_thresholdSplitWindow
+#print axioms Gtz.thresholdSplit_fansOut
+#print axioms Gtz.probe_mass_on_unsupported
+#print axioms Gtz.rank_le_posSideCard_of_spans
+#print axioms Gtz.rank_le_negSideCard_of_spans
+#print axioms Gtz.balancedArmAt_of_split
+#print axioms Gtz.balancedPartialSupportArmAt_of_size_le
+#print axioms Gtz.balancedPartialSupportArm_sixThree
+#print axioms Gtz.posDef_gap_posSide_of_massGap
+#print axioms Gtz.massGapSideIsRankSized_of_posSideCard
+#print axioms Gtz.massGapSideIsRankSized_sixThree
+#print axioms Gtz.balancedFullSupportArmAt_of_selection
+#print axioms Gtz.balancedArmAt_of_residuals
+#print axioms Gtz.thresholdBalancedArm_three_of_residuals
+#print axioms Gtz.thresholdCellHingeRankFourAndUp_of_residuals
+#print axioms Gtz.nonempty_offHyperplane
+#print axioms Gtz.offHyperplane_subset_unsupported
+#print axioms Gtz.degenerateArmAt_of_poleSplit
+#print axioms Gtz.degenerateArmAbovePoleCount_sixThree
+#print axioms Gtz.degenerateArmBelowPoleCount_sixThree
+#print axioms Gtz.thresholdDegenerateArm_three_of_poleSplit
+#print axioms Gtz.sideCards_add_le
+#print axioms Gtz.thresholdCell_split_window
+#print axioms Gtz.card_admissibleSplits
+#print axioms Gtz.three_le_card_admissibleSplits
+#print axioms Gtz.tightDirection_mass_balance
+#print axioms Gtz.exists_tightDirection_mass_balance
+#print axioms Gtz.exists_offHyperplane_of_degenerate
+#print axioms Gtz.degenerateBranch_supported_in_hyperplane
+#print axioms Gtz.not_stressFree_of_thresholdSize_lt
+#print axioms Gtz.stressFree_only_at_or_below_thresholdSize
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
