@@ -3234,6 +3234,11 @@ import Gtz.Wave.SharedPrivateCircuitRankOne
 -- on the two paid residues.
 import Gtz.Wave.SharedPrivateCircuitSaturation
 
+-- the complement ledger: the cover budget at every family size, the
+-- dominated corner budget, the off-block leak law of a rank-one block,
+-- the tight leak identity, and closure two on the re-cut lattice.
+import Gtz.Wave.SharedPrivateComplementLedger
+
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
 -- closure three.

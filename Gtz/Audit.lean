@@ -738,6 +738,7 @@ import Gtz.Wave.SharedPrivateDualRead
 import Gtz.Wave.SharedPrivateCoparallelColumn
 import Gtz.Wave.SharedPrivateCircuitRankOne
 import Gtz.Wave.SharedPrivateCircuitSaturation
+import Gtz.Wave.SharedPrivateComplementLedger
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -24102,6 +24103,54 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SharedPrivateData.shiftedGapDiag_sum
 #print axioms Gtz.SharedPrivateData.false_of_shiftedGap_rankOne_cover
 #print axioms Gtz.SharedPrivateData.false_of_identical_support_complement_rankOne
+
+-- ==========================================================
+-- the complement ledger.  The cover budget at every family size, the
+-- exhaustion of the ledger at three members, and the refusal of a
+-- rank-one complement at the shared triple.
+#print axioms Gtz.sum_union_le_of_nonneg
+#print axioms Gtz.shiftedGapDiag_sum_biUnion_le
+#print axioms Gtz.rank_le_card_of_shiftedGap_rankOne_cover
+#print axioms Gtz.SharedPrivateData.three_le_card_of_shiftedGap_rankOne_cover
+#print axioms Gtz.SharedPrivateData.not_gapBlockRankOne_complement_of_identical_support
+#print axioms Gtz.SharedPrivateData.identical_support_complement_sum
+
+-- ==========================================================
+-- the dominated corner budget.  The shifted gap form at a set probe, the
+-- corner budget beyond a rank-one block, and the row energy cap.
+#print axioms Gtz.shiftedGap_set_form_le
+#print axioms Gtz.gapCorner_saturation
+#print axioms Gtz.gapCorner_dominates_of_rankOne
+#print axioms Gtz.gapCorner_row_energy_le
+
+-- ==========================================================
+-- the off-block leak law.  The off-diagonal square of a rank-one block,
+-- the exact energy that a block row sends out, the leak floor, and the
+-- contraction-free budget at an atom of zero capture.
+#print axioms Gtz.gapSet_offDiag_sq
+#print axioms Gtz.gapSet_offSet_energy
+#print axioms Gtz.gapSet_leak_floor
+#print axioms Gtz.gapSet_sum_le_one_of_zero_capture
+
+-- ==========================================================
+-- the tight leak identity.  The chart acts as the captured diagonal
+-- inside a block, and a block of zero capture annihilates its own tight
+-- direction.
+#print axioms Gtz.chart_mulVec_tightDir_apply
+#print axioms Gtz.chart_tightDir_energy
+#print axioms Gtz.chart_tightDir_offBlock_leak
+#print axioms Gtz.chart_mulVec_tightDir_eq_zero_of_zero_capture
+
+-- ==========================================================
+-- the re-cut identical residue and closure two on the ledger lattice.
+#print axioms Gtz.SharedPrivateData.identical_support_leak_floor
+#print axioms Gtz.SharedPrivateCircuitPairIdenticalLedgerClosed
+#print axioms Gtz.sharedPrivateCircuitPairIdenticalClosed_of_ledger
+#print axioms Gtz.sharedPrivateExtrasClosed_of_ledger_lattice
+#print axioms Gtz.sharedPrivateKilled_of_ledger_lattice
+#print axioms Gtz.rankFourSharedPrivateClosed_of_ledger_lattice
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_ledger_lattice
+#print axioms Gtz.rankSixSharedPrivateClosed_of_ledger_lattice
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
