@@ -2936,6 +2936,10 @@ import Gtz.Wave.BothParallelSchurFinale
 -- pin and the circuit closure.
 import Gtz.Wave.BothParallelDiagonalKill
 import Gtz.Wave.BothParallelDischarge
+-- The circuit kill: the scalar certificate chain and the datum module
+-- that discharge the circuit obligation of closure five.
+import Gtz.Wave.BothParallelCircuitCore
+import Gtz.Wave.BothParallelCircuitKill
 
 -- the shared-pair outer reduction: the row reads, the entry
 -- Cauchy-Schwarz, the gap floor, the singleton kill, the same-pair

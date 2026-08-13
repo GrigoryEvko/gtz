@@ -698,6 +698,8 @@ import Gtz.Wave.BothParallelEffectiveEntries
 import Gtz.Wave.BothParallelSchurFinale
 import Gtz.Wave.BothParallelDiagonalKill
 import Gtz.Wave.BothParallelDischarge
+import Gtz.Wave.BothParallelCircuitCore
+import Gtz.Wave.BothParallelCircuitKill
 import Gtz.Wave.CycleSeamReduction
 import Gtz.Wave.KFourCertificateReduction
 import Gtz.Wave.CertificateCornerBackbone
@@ -22433,3 +22435,18 @@ run_cmd do
 #print axioms Gtz.SixThreeCrux.false_of_bothParallel_finale
 #print axioms Gtz.SixThreeCrux.false_of_bothParallel_parallel_branch
 #print axioms Gtz.rankFourBothParallelClosed_of_pins
+#print axioms Gtz.circuit_cross_sq
+#print axioms Gtz.circuit_kappa
+#print axioms Gtz.circuit_gbd_ne_zero
+#print axioms Gtz.sign_of_sq_eq
+#print axioms Gtz.circuit_leak_price
+#print axioms Gtz.circuit_diag_window
+#print axioms Gtz.circuit_zero_leak
+#print axioms Gtz.circuit_claw
+#print axioms Gtz.circuit_aD_value
+#print axioms Gtz.circuit_cross_scalar
+#print axioms Gtz.circuit_spade_scalar
+#print axioms Gtz.circuit_newone_scalar
+#print axioms Gtz.circuit_weight_clash
+#print axioms Gtz.circuit_scalar_kill
+#print axioms Gtz.bothParallelCircuitClosed_holds
