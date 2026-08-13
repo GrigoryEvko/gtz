@@ -2953,6 +2953,10 @@ import Gtz.Wave.RankFiveRungAssembly
 -- outer-sharer bridge of closure one.
 import Gtz.Wave.RankFiveClosureSupply
 
+-- the rank-five dense structure: the support-block identity, the
+-- heavy-atom carrier triple, and the doubled-cover law.
+import Gtz.Wave.RankFiveDenseStructure
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03

@@ -689,6 +689,7 @@ import Gtz.Wave.RankFiveNormalForm
 import Gtz.Wave.SupportQuintupleCensus
 import Gtz.Wave.RankFiveRungAssembly
 import Gtz.Wave.RankFiveClosureSupply
+import Gtz.Wave.RankFiveDenseStructure
 import Gtz.Wave.BothParallelCollapseSupply
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -22058,6 +22059,15 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFiveSupportTwoClosed_of_shared_pair_kill
 #print axioms Gtz.RankFiveFrame.false_of_samePair_columns
 #print axioms Gtz.rankFiveSupportTwoClosed_of_outer_shared_kill
+
+-- ==========================================================
+-- the rank-five dense structure.  The support-block identity,
+-- the heavy-atom carrier triple, and the doubled-cover law.
+-- ==========================================================
+
+#print axioms Gtz.RankFiveFrame.dense_support_eq_block
+#print axioms Gtz.exists_three_carriers_of_heavy_atom
+#print axioms Gtz.RankFiveFrame.dense_doubled_covers
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
