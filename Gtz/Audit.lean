@@ -723,6 +723,7 @@ import Gtz.Wave.RankSixRungAssembly
 import Gtz.Wave.RankSixClosureSupply
 import Gtz.Wave.DenseFullCarrierQuantization
 import Gtz.Wave.DenseProfileDispatch
+import Gtz.Wave.DenseKernelLineDichotomy
 import Gtz.Wave.AssemblyRankCapstone
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -22424,6 +22425,21 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankSixFrame.dense_multiplicity_sum
 #print axioms Gtz.RankSixFrame.all_triples_of_max_three
 #print axioms Gtz.rankSixDenseClosed_of_profile_closures
+#print axioms Gtz.basisTransposePadded_castSucc
+#print axioms Gtz.basisTransposePadded_last
+#print axioms Gtz.exists_basisTranspose_kernel_vector
+#print axioms Gtz.extendedBasisColumns_mulVec_apply
+#print axioms Gtz.parallel_of_basisTranspose_zero
+#print axioms Gtz.extendedCoefficientScaled_castSucc_castSucc
+#print axioms Gtz.extendedCoefficientScaled_castSucc_last
+#print axioms Gtz.extendedCoefficientScaled_last_castSucc
+#print axioms Gtz.extendedCoefficientScaled_last_last
+#print axioms Gtz.extended_representation_scaled
+#print axioms Gtz.extended_trace_scaled
+#print axioms Gtz.RankFiveFrame.trace_sub_of_kernel_scale
+#print axioms Gtz.RankFiveFrame.kernel_line_dichotomy
+#print axioms Gtz.tight_leak_square_read
+#print axioms Gtz.RankFiveFrame.heavy_kernel_column
 #print axioms Gtz.pair_mulVec_apply
 #print axioms Gtz.pair_dotProduct
 #print axioms Gtz.two_carrier_trace_cap

@@ -3104,6 +3104,10 @@ import Gtz.Wave.DenseFullCarrierQuantization
 -- dense closure to three named profile closures.
 import Gtz.Wave.DenseProfileDispatch
 
+-- the dense kernel-line dichotomy: the kernel line, the scaled
+-- extension calculus, the leak square, and the heavy kernel column.
+import Gtz.Wave.DenseKernelLineDichotomy
+
 -- the assembly-rank capstone: the cell and the rank-three payoff
 -- modulo the eleven named closures of the three rungs.
 import Gtz.Wave.AssemblyRankCapstone
