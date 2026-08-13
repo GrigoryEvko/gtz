@@ -50,8 +50,10 @@ one, and the two sides cross.
 * `Gtz.kernelMinor_corner_one`, `Gtz.kernelMinor_corner_two`,
   `Gtz.kernelMinor_corner_three` — **THE CORNER MINOR IDENTITY.**
 * `Gtz.false_of_kernelMinor_budget` — **THE KERNEL-MINOR KILL.**
-* `Gtz.multiplicity_le_three_of_deficit` — the deficit profile at basis
-  count five.
+* `Gtz.profileDefect` with `Gtz.fifteen_le_sum_of_deficit` and
+  `Gtz.multiplicity_le_three_of_deficit` — the deficit profile: the
+  support total is at least fifteen, thus the basis count is five or
+  six, and at five every carrier is at most three slots wide.
 * `Gtz.SharedPrivateData.false_of_deficit_five` — **THE DEFICIT KILL AT
   BASIS COUNT FIVE.**
 * `Gtz.SharedPrivateDeficitSixClosed`,
@@ -638,6 +640,54 @@ theorem false_of_kernelMinor_budget {n : ℕ} {K : Matrix (Fin n) (Fin n) ℝ}
 
 /-! ## Layer 5 — the deficit profile at basis count five -/
 
+/-- The profile defect of a multiplicity: two units at multiplicity one
+and one unit at multiplicity two. -/
+def profileDefect (mult : Fin 6 → ℕ) (atomIndex : Fin 6) : ℕ :=
+  2 * (if mult atomIndex = 1 then 1 else 0)
+    + (if mult atomIndex = 2 then 1 else 0)
+
+/-- The defect total is the profile mass. -/
+theorem sum_profileDefect (mult : Fin 6 → ℕ) :
+    ∑ atomIndex, profileDefect mult atomIndex
+      = 2 * (Finset.univ.filter fun atomIndex => mult atomIndex = 1).card
+        + (Finset.univ.filter fun atomIndex => mult atomIndex = 2).card := by
+  classical
+  simp only [profileDefect]
+  rw [Finset.card_filter, Finset.card_filter, Finset.sum_add_distrib,
+    Finset.mul_sum]
+
+/-- The multiplicity and its defect total at least three. -/
+theorem three_le_add_profileDefect {mult : Fin 6 → ℕ}
+    (hpos : ∀ atomIndex, 1 ≤ mult atomIndex) (atomIndex : Fin 6) :
+    3 ≤ mult atomIndex + profileDefect mult atomIndex := by
+  have hone := hpos atomIndex
+  by_cases hcaseOne : mult atomIndex = 1
+  · have hval : profileDefect mult atomIndex = 2 := by
+      simp [profileDefect, hcaseOne]
+    omega
+  · by_cases hcaseTwo : mult atomIndex = 2
+    · have hval : profileDefect mult atomIndex = 1 := by
+        simp [profileDefect, hcaseTwo]
+      omega
+    · have hval : profileDefect mult atomIndex = 0 := by
+        simp [profileDefect, hcaseOne, hcaseTwo]
+      omega
+
+/-- **THE DEFICIT SUPPORT FLOOR.**  Six multiplicities, each at least
+one, with profile mass at most three, total at least fifteen. -/
+theorem fifteen_le_sum_of_deficit {mult : Fin 6 → ℕ}
+    (hpos : ∀ atomIndex, 1 ≤ mult atomIndex)
+    (hmass : 2 * (Finset.univ.filter fun atomIndex => mult atomIndex = 1).card
+        + (Finset.univ.filter fun atomIndex => mult atomIndex = 2).card ≤ 3) :
+    15 ≤ ∑ atomIndex, mult atomIndex := by
+  classical
+  have hle : ∑ _atomIndex : Fin 6, 3
+      ≤ ∑ atomIndex, (mult atomIndex + profileDefect mult atomIndex) :=
+    Finset.sum_le_sum fun atomIndex _ => three_le_add_profileDefect hpos atomIndex
+  rw [Finset.sum_add_distrib, sum_profileDefect, Finset.sum_const,
+    Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hle
+  omega
+
 /-- **THE DEFICIT PROFILE.**  Six multiplicities that total fifteen,
 each at least one, with profile mass at most three, are all at most
 three.  The mass counts two units for each multiplicity one and one for
@@ -649,36 +699,19 @@ theorem multiplicity_le_three_of_deficit {mult : Fin 6 → ℕ}
         + (Finset.univ.filter fun atomIndex => mult atomIndex = 2).card ≤ 3)
     (atomIndex : Fin 6) : mult atomIndex ≤ 3 := by
   classical
-  set defect : Fin 6 → ℕ := fun probe =>
-    2 * (if mult probe = 1 then 1 else 0) + (if mult probe = 2 then 1 else 0)
-    with hdefect
-  have hdefectSum : ∑ probe, defect probe
-      = 2 * (Finset.univ.filter fun probe => mult probe = 1).card
-        + (Finset.univ.filter fun probe => mult probe = 2).card := by
-    rw [Finset.card_filter, Finset.card_filter, hdefect, Finset.sum_add_distrib,
-      Finset.mul_sum]
-  have hge : ∀ probe, 3 ≤ mult probe + defect probe := by
-    intro probe
-    have hone := hpos probe
-    by_cases hcaseOne : mult probe = 1
-    · have hval : defect probe = 2 := by simp [hdefect, hcaseOne]
-      omega
-    · by_cases hcaseTwo : mult probe = 2
-      · have hval : defect probe = 1 := by simp [hdefect, hcaseTwo]
-        omega
-      · have hval : defect probe = 0 := by simp [hdefect, hcaseOne, hcaseTwo]
-        omega
   by_contra hbig
   push Not at hbig
-  have hstrict : 3 < mult atomIndex + defect atomIndex := by
+  have hstrict : 3 < mult atomIndex + profileDefect mult atomIndex := by
     have hcaseOne : mult atomIndex ≠ 1 := by omega
     have hcaseTwo : mult atomIndex ≠ 2 := by omega
-    have hval : defect atomIndex = 0 := by simp [hdefect, hcaseOne, hcaseTwo]
+    have hval : profileDefect mult atomIndex = 0 := by
+      simp [profileDefect, hcaseOne, hcaseTwo]
     omega
-  have hlt : ∑ _probe : Fin 6, 3 < ∑ probe, (mult probe + defect probe) :=
-    Finset.sum_lt_sum (fun probe _ => hge probe)
+  have hlt : ∑ _probe : Fin 6, 3
+      < ∑ probe, (mult probe + profileDefect mult probe) :=
+    Finset.sum_lt_sum (fun probe _ => three_le_add_profileDefect hpos probe)
       ⟨atomIndex, Finset.mem_univ _, hstrict⟩
-  rw [Finset.sum_add_distrib, htotal, hdefectSum, Finset.sum_const,
+  rw [Finset.sum_add_distrib, htotal, sum_profileDefect, Finset.sum_const,
     Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hlt
   omega
 
@@ -840,7 +873,7 @@ def SharedPrivateDeficitSixClosed : Prop :=
     (gramDiag : Fin data.basisCount → ℝ),
     data.gram = Matrix.diagonal gramDiag →
     Matrix.trace data.coeff = 3 →
-    data.basisCount ≠ 5 →
+    data.basisCount = 6 →
     2 * (Finset.univ.filter fun atomIndex =>
           basisSupportMultiplicity data.tightDir data.basisLabel atomIndex = 1).card
       + (Finset.univ.filter fun atomIndex =>
@@ -888,7 +921,26 @@ theorem sharedPrivateDeficitClosed_of_residues
       refine hsplit crux data gramDiag hdiag htraceThree hmass slotOne slotTwo hne
         fun atomIndex hone htwo => ?_
       exact hdisjoint atomIndex hone htwo
-  · exact hsix crux data gramDiag hdiag htraceThree hfive hmass
+  · refine hsix crux data gramDiag hdiag htraceThree ?_ hmass
+    have hmultPos : ∀ atomIndex : Fin 6,
+        1 ≤ basisSupportMultiplicity data.tightDir data.basisLabel atomIndex := by
+      intro atomIndex
+      obtain ⟨slot, hslot⟩ := exists_basisIndex_datumTightSupport data.hdata
+        data.basisLabel data.hspan data.leftInv data.hleft atomIndex
+      exact Finset.card_pos.mpr
+        ⟨slot, Finset.mem_filter.mpr ⟨Finset.mem_univ slot, hslot⟩⟩
+    have hmultTotal :
+        ∑ atomIndex : Fin 6,
+          basisSupportMultiplicity data.tightDir data.basisLabel atomIndex
+          = 3 * data.basisCount := by
+      rw [sum_basisSupportMultiplicity,
+        Finset.sum_congr rfl fun slot _ => data.hthree slot, Finset.sum_const,
+        Finset.card_univ, Fintype.card_fin, smul_eq_mul]
+      ring
+    have hfloor := fifteen_le_sum_of_deficit hmultPos hmass
+    rw [hmultTotal] at hfloor
+    have hupper := data.basisCount_le_six
+    omega
 
 /-- **THE SHARED-PRIVATE CIRCUIT RESIDUE.**  A positive label parallel
 to no basis column dies at every shared-private datum. -/
