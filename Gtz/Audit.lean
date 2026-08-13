@@ -740,6 +740,7 @@ import Gtz.Wave.OuterColumnGramFold
 import Gtz.Wave.OuterZeroProfileLattice
 import Gtz.Wave.OuterDenseCornerKill
 import Gtz.Wave.OuterCircuitPinResidue
+import Gtz.Wave.OuterComplementNullKill
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -23241,6 +23242,52 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.degenerateBranch_supported_in_hyperplane
 #print axioms Gtz.not_stressFree_of_thresholdSize_lt
 #print axioms Gtz.stressFree_only_at_or_below_thresholdSize
+
+-- ============================================================
+-- the complement null kill: the coverage law, the null constructor,
+-- the one-atom kill, the clone lattice and the narrowed residues
+-- ============================================================
+#print axioms Gtz.assembly_entry_of_gramForm
+#print axioms Gtz.exists_live_basis_slot
+#print axioms Gtz.assembly_mulVec_eq_zero_of_basis_dot
+#print axioms Gtz.dot_eq_zero_of_basis_dot_of_mem_positive
+#print axioms Gtz.exists_offSlot_coordinate_ne_zero
+#print axioms Gtz.exists_complement_null_of_two_slots
+#print axioms Gtz.exists_complement_null_of_pair_and_wide
+#print axioms Gtz.false_of_basis_null_singleton
+#print axioms Gtz.basis_row_pair_relation
+#print axioms Gtz.basis_row_clone_of_pair_null
+#print axioms Gtz.clone_scale_sq_eq_one
+#print axioms Gtz.clone_shifted_weight_eq
+#print axioms Gtz.clone_leak_vanishes_of_carrier
+#print axioms Gtz.clone_shifted_weight_eq_zero_of_full_carrier
+#print axioms Gtz.gap_rankOne_offdiag_product
+#print axioms Gtz.gap_rankOne_shifted_diagonal_pos
+#print axioms Gtz.gap_rankOne_offdiag_product_pos
+#print axioms Gtz.RankFourOuterData.exists_complement_null_of_circuit
+#print axioms Gtz.RankFourOuterData.exists_live_slot
+#print axioms Gtz.rankFourOuterComplementNullClosed_of_clone_triple
+#print axioms Gtz.rankFourOuterRankOneCircuitClosed_of_complementNull
+#print axioms Gtz.rankFourSupportTwoClosed_of_complement_interior
+#print axioms Gtz.rankFourSupportTwoClosed_of_clone_triple_interior
+#print axioms Gtz.RankFourOuterData.assembly_mulVec_eq_zero_of_null
+#print axioms Gtz.RankFourOuterData.positive_dot_eq_zero_of_null
+#print axioms Gtz.RankFourOuterData.clone_carrier_inter_nonempty
+#print axioms Gtz.RankFourOuterData.clone_big_carrier_of_full
+#print axioms Gtz.rankFourOuterCloneClosed_of_thin_interior
+#print axioms Gtz.rankFourSupportTwoClosed_of_thinClone_triple_interior
+#print axioms Gtz.shifted_null_row_relation
+#print axioms Gtz.assembly_cross_of_clone
+#print axioms Gtz.RankFourFrame.exists_live_slot
+#print axioms Gtz.RankFiveFrame.exists_live_slot
+#print axioms Gtz.RankSixFrame.exists_live_slot
+#print axioms Gtz.RankFiveFrame.false_of_basis_null_singleton
+#print axioms Gtz.RankSixFrame.false_of_basis_null_singleton
+#print axioms Gtz.RankFiveFrame.clone_boundary_of_full_carrier
+#print axioms Gtz.RankSixFrame.clone_boundary_of_full_carrier
+#print axioms Gtz.RankFourOuterData.exists_live_slot_ne_columnIndex
+#print axioms Gtz.RankFourOuterData.clone_live_slot_ne_columnIndex
+#print axioms Gtz.RankFourOuterData.clone_full_carrier_meets_pair_block
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

@@ -3209,6 +3209,12 @@ import Gtz.Wave.OuterDenseCornerKill
 -- the two narrowed circuit residues at each of the three rungs
 import Gtz.Wave.OuterCircuitPinResidue
 
+-- the complement null kill: the basis coverage law from the constant
+-- assembly diagonal, the null constructor on the complement of a
+-- circuit block, the one-atom kill, the clone lattice with its
+-- boundary law, and the narrowed rank-four residues.
+import Gtz.Wave.OuterComplementNullKill
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.
