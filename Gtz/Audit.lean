@@ -23827,8 +23827,9 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- contraction, the free first drop, the tie pivot mass, the sharpened
 -- mass-gap ledger, the two hinge obligations on the current arm list,
 -- the bare frame layer, two free drops at every cell of the sharp
--- window, the exact residue at the deciding cell of rank three, and
--- the arm-free route to that cell through the last stage alone
+-- window and at every six-atom frame of rank three, the exact residue
+-- at the deciding cell of rank three, and the arm-free route to that
+-- cell and to the atom triple ceiling through the last stage alone
 -- ============================================================
 #print axioms Gtz.dotProduct_mulVec_comm_of_symm
 #print axioms Gtz.inverseForm_comm
@@ -23916,59 +23917,12 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.hingeHoldsAtSize_of_rankSuccShrinks_of_reach
 #print axioms Gtz.reach_rankSucc_six_three
 #print axioms Gtz.rankSuccShrinks_six_three_of_insideDrop
-
--- the circuit saturation law: the budgets of a singular shifted gap
--- block, the row energy law, and the two paid circuit residues
-#print axioms Gtz.sum_of_pair_support
-#print axioms Gtz.sum_of_triple_support
-#print axioms Gtz.pairProbe
-#print axioms Gtz.tripleProbe
-#print axioms Gtz.pairProbe_left
-#print axioms Gtz.pairProbe_right
-#print axioms Gtz.pairProbe_off
-#print axioms Gtz.tripleProbe_first
-#print axioms Gtz.tripleProbe_second
-#print axioms Gtz.tripleProbe_third
-#print axioms Gtz.tripleProbe_off
-#print axioms Gtz.pairProbe_dotProduct
-#print axioms Gtz.pairProbe_mulVec
-#print axioms Gtz.tripleProbe_dotProduct
-#print axioms Gtz.tripleProbe_mulVec
-#print axioms Gtz.shiftedGapDiag
-#print axioms Gtz.projection_offDiag_eq_gap
-#print axioms Gtz.projection_diag_eq_shift
-#print axioms Gtz.projection_symm_entry
-#print axioms Gtz.projection_pair_contraction
-#print axioms Gtz.projection_triple_contraction
-#print axioms Gtz.pairBudget_core
-#print axioms Gtz.tripleBudget_core
-#print axioms Gtz.gapPairSingular_saturation
-#print axioms Gtz.gapPairSingular_shifted_sum_le_one
-#print axioms Gtz.gapBlockRankOne_saturation
-#print axioms Gtz.gapBlockRankOne_shifted_sum_le_one
-#print axioms Gtz.projection_row_energy
-#print axioms Gtz.gapBlockRankOne_cross_energy_le
-#print axioms Gtz.SharedPrivateData.captureDiag_lt_one
-#print axioms Gtz.SharedPrivateData.captureDiag_nonneg
-#print axioms Gtz.SharedPrivateData.shiftedGapDiag_pos
-#print axioms Gtz.SharedPrivateData.identical_support_saturation
-#print axioms Gtz.SharedPrivateData.identical_support_shifted_sum_le_one
-#print axioms Gtz.SharedPrivateData.identical_support_cross_energy_le
-#print axioms Gtz.SharedPrivateData.pairCircuit_reconstruction
-#print axioms Gtz.SharedPrivateData.splitCircuit_label_pair_support
-#print axioms Gtz.SharedPrivateData.pairCircuit_gap_row_of_shared
-#print axioms Gtz.SharedPrivateData.splitCircuit_foreign_rows_parallel
-#print axioms Gtz.SharedPrivateData.splitCircuit_deadWedge_saturation
-#print axioms Gtz.SharedPrivateData.splitCircuit_deadWedge_shifted_sum_le_one
-#print axioms Gtz.SharedPrivateCircuitPairIdenticalSaturatedClosed
-#print axioms Gtz.SharedPrivateCircuitSplitPairSaturatedClosed
-#print axioms Gtz.sharedPrivateCircuitPairIdenticalClosed_of_saturated
-#print axioms Gtz.sharedPrivateCircuitSplitPairClosed_of_saturated
-#print axioms Gtz.sharedPrivateExtrasClosed_of_saturated_lattice
-#print axioms Gtz.sharedPrivateKilled_of_saturated_lattice
-#print axioms Gtz.rankFourSharedPrivateClosed_of_saturated_lattice
-#print axioms Gtz.rankFiveSharedPrivateClosed_of_saturated_lattice
-#print axioms Gtz.rankSixSharedPrivateClosed_of_saturated_lattice
+#print axioms Gtz.frame_exists_pivot_univ_le_mediant
+#print axioms Gtz.frame_exists_pivot_lt_one_erase_of_leak
+#print axioms Gtz.frame_exists_two_erase_posDef_sharp
+#print axioms Gtz.frame_sharp_six_three
+#print axioms Gtz.frame_exists_card_four_posDef_six_three
+#print axioms Gtz.frame_exists_card_three_posDef_six_three
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

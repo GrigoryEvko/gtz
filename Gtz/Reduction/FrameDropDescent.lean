@@ -1983,4 +1983,218 @@ theorem rankSuccShrinks_six_three_of_insideDrop
   rw [Finset.card_erase_of_mem hmem, hcard]
 
 
+/-! ## Part 15: the sharp descent at a bare frame, and the ceiling reduction
+
+Everything of Parts 12 and 14 transports to a bare frame with a total scale below
+one, and it transports with ROOM TO SPARE, because the free excess of a bare
+frame is `atomCount - sigma` and not `atomCount - 1`.  At six atoms in rank three
+the conclusion is a strictly dominating QUADRUPLE at every total scale below one,
+thus the atom triple ceiling reduces to the last stage exactly as the deciding
+cell of rank three does. -/
+
+/-- **THE MEDIANT AT A BARE FRAME.** -/
+theorem frame_exists_pivot_univ_le_mediant {atomCount : ℕ}
+    (atomFamily : Fin atomCount → Fin rank → ℝ) (scale : Fin atomCount → ℝ)
+    (hframe : ∑ c, scale c • atomMatrix (atomFamily c) = 1) (hlt : ∀ c, scale c < 1)
+    (hne : 0 < atomCount) :
+    ∃ label : Fin atomCount,
+      framePivot atomFamily Finset.univ label * ((atomCount : ℝ) - ∑ c, scale c)
+        ≤ rank := by
+  classical
+  have hposDef := frame_posDef_gap_univ atomFamily scale hframe hlt
+  have hstage := frame_stage_law atomFamily scale hframe Finset.univ hposDef
+  rw [Finset.compl_univ, Finset.sum_empty, add_zero] at hstage
+  have hsum : ∑ c ∈ (Finset.univ : Finset (Fin atomCount)), (1 - scale c)
+      = (atomCount : ℝ) - ∑ c, scale c := by
+    rw [Finset.sum_sub_distrib]; simp
+  by_contra hnone
+  push Not at hnone
+  have hbig : ∑ c, (1 - scale c) * (rank : ℝ)
+      < ∑ c, (1 - scale c)
+        * (framePivot atomFamily Finset.univ c * ((atomCount : ℝ) - ∑ d, scale d)) := by
+    refine Finset.sum_lt_sum_of_nonempty ⟨⟨0, hne⟩, Finset.mem_univ _⟩ fun c _ => ?_
+    exact mul_lt_mul_of_pos_left (hnone c) (by linarith [hlt c])
+  rw [← Finset.sum_mul, hsum] at hbig
+  have hrewrite : ∑ c, (1 - scale c)
+      * (framePivot atomFamily Finset.univ c * ((atomCount : ℝ) - ∑ d, scale d))
+      = (∑ c, (1 - scale c) * framePivot atomFamily Finset.univ c)
+        * ((atomCount : ℝ) - ∑ d, scale d) := by
+    rw [Finset.sum_mul]
+    exact Finset.sum_congr rfl fun c _ => by ring
+  rw [hrewrite, hstage] at hbig
+  linarith
+
+/-- **THE SECOND DROP AT A BARE FRAME, PRICED EXACTLY.** -/
+theorem frame_exists_pivot_lt_one_erase_of_leak {atomCount : ℕ}
+    (atomFamily : Fin atomCount → Fin rank → ℝ) (scale : Fin atomCount → ℝ)
+    (hframe : ∑ c, scale c • atomMatrix (atomFamily c) = 1) (hlt : ∀ c, scale c < 1)
+    {label : Fin atomCount} (hlabel : framePivot atomFamily Finset.univ label < 1)
+    (hleak : scale label
+        * (framePivot atomFamily (Finset.univ.erase label) label - 1)
+      < (atomCount : ℝ) - 1 - (∑ c, scale c) - rank) :
+    ∃ second ∈ Finset.univ.erase label,
+      framePivot atomFamily (Finset.univ.erase label) second < 1 := by
+  classical
+  have hposDef := frame_posDef_gap_univ atomFamily scale hframe hlt
+  have herase : (Finset.univ : Finset (Fin atomCount)).erase label = Finset.univ \ {label} := by
+    ext c; simp [Finset.mem_erase, Finset.mem_sdiff, and_comm]
+  have hsingle : ∑ c ∈ ({label} : Finset (Fin atomCount)),
+      framePivot atomFamily Finset.univ c < 1 := by
+    simp only [Finset.sum_singleton]
+    exact hlabel
+  have hbasePosDef : (frameGap atomFamily (Finset.univ.erase label)).PosDef := by
+    rw [herase]
+    exact frame_posDef_sdiff_of_pivotSum_lt_one atomFamily (Finset.subset_univ _) hposDef hsingle
+  have hcompl : ((Finset.univ : Finset (Fin atomCount)).erase label)ᶜ = {label} := by
+    ext c; simp
+  have hcard : ((Finset.univ : Finset (Fin atomCount)).erase label).card = atomCount - 1 := by
+    rw [Finset.card_erase_of_mem (Finset.mem_univ label), Finset.card_univ, Fintype.card_fin]
+  have hone : 1 ≤ atomCount := Nat.one_le_iff_ne_zero.mpr (by
+    intro hzero
+    exact absurd (Finset.mem_univ label) (by simp [hzero] at label ⊢; exact label.elim0))
+  have hfree : ∑ c ∈ (Finset.univ : Finset (Fin atomCount)).erase label, (1 - scale c)
+      = ((atomCount : ℝ) - 1) - ((∑ c, scale c) - scale label) := by
+    have hsplit : scale label + ∑ c ∈ Finset.univ.erase label, scale c = ∑ c, scale c := by
+      rw [Finset.add_sum_erase _ _ (Finset.mem_univ label)]
+    rw [Finset.sum_sub_distrib]
+    simp only [Finset.sum_const, nsmul_eq_mul, mul_one, hcard]
+    have hcast : ((atomCount - 1 : ℕ) : ℝ) = (atomCount : ℝ) - 1 := by
+      push_cast [Nat.cast_sub hone]
+      ring
+    rw [hcast]
+    linarith
+  refine frame_exists_pivot_lt_one_of_leak atomFamily scale hframe hbasePosDef
+    (fun c => (hlt c).le) ?_
+  rw [hcompl, Finset.sum_singleton, hfree]
+  linarith
+
+/-- **TWO FREE DROPS AT A BARE FRAME.**  The sharp arithmetic condition is stated
+against the total scale, thus the free excess `atomCount - sigma` replaces the
+design's `size - 1` everywhere. -/
+theorem frame_exists_two_erase_posDef_sharp {atomCount : ℕ}
+    (atomFamily : Fin atomCount → Fin rank → ℝ) (scale : Fin atomCount → ℝ)
+    (hframe : ∑ c, scale c • atomMatrix (atomFamily c) = 1) (hpos : ∀ c, 0 < scale c)
+    (htotal : ∑ c, scale c < 1) (hbig : rank + 2 < atomCount)
+    (hsharp : (∑ c, scale c) * (2 * (rank : ℝ) - ((atomCount : ℝ) - ∑ c, scale c))
+      < ((atomCount : ℝ) - (∑ c, scale c) - 1 - rank)
+        * (((atomCount : ℝ) - ∑ c, scale c) - rank)) :
+    ∃ selected : Finset (Fin atomCount), selected.card = atomCount - 2
+      ∧ (frameGap atomFamily selected).PosDef := by
+  classical
+  have hlt : ∀ c, scale c < 1 := by
+    intro c
+    have hsingle : scale c ≤ ∑ d, scale d :=
+      Finset.single_le_sum (fun d _ => (hpos d).le) (Finset.mem_univ c)
+    linarith
+  have hposDef := frame_posDef_gap_univ atomFamily scale hframe hlt
+  have hcast : (rank : ℝ) + 2 < (atomCount : ℝ) := by exact_mod_cast hbig
+  have htotalPos : 0 < ∑ c, scale c := by
+    refine Finset.sum_pos (fun c _ => hpos c) ⟨⟨0, by omega⟩, Finset.mem_univ _⟩
+  obtain ⟨label, hlabel⟩ := frame_exists_pivot_univ_le_mediant atomFamily scale hframe hlt
+    (by omega)
+  set total : ℝ := ∑ c, scale c with htotalDef
+  set first : ℝ := framePivot atomFamily Finset.univ label with hfirst
+  have hfirstNonneg : 0 ≤ first := framePivot_nonneg atomFamily hposDef label
+  have hgapPos : (0 : ℝ) < (atomCount : ℝ) - total - rank := by linarith
+  have hfirstLt : first < 1 := by nlinarith [hlabel, hgapPos, hfirstNonneg, htotalPos]
+  have herase : (Finset.univ : Finset (Fin atomCount)).erase label = Finset.univ \ {label} := by
+    ext c; simp [Finset.mem_erase, Finset.mem_sdiff, and_comm]
+  have hsingle : ∑ c ∈ ({label} : Finset (Fin atomCount)),
+      framePivot atomFamily Finset.univ c < 1 := by
+    simp only [Finset.sum_singleton]
+    exact hfirstLt
+  have hbasePosDef : (frameGap atomFamily (Finset.univ.erase label)).PosDef := by
+    rw [herase]
+    exact frame_posDef_sdiff_of_pivotSum_lt_one atomFamily (Finset.subset_univ _) hposDef hsingle
+  have hupdate : first * (1 + framePivot atomFamily (Finset.univ.erase label) label)
+      = framePivot atomFamily (Finset.univ.erase label) label :=
+    framePivot_erase_eq atomFamily (Finset.mem_univ label) hbasePosDef
+  set second : ℝ := framePivot atomFamily (Finset.univ.erase label) label with hsecondDef
+  have hscaleLe : scale label ≤ total :=
+    Finset.single_le_sum (fun d _ => (hpos d).le) (Finset.mem_univ label)
+  have hslack : (0 : ℝ) < 1 - first := by linarith
+  have hcross : scale label * (2 * first - 1)
+      < ((atomCount : ℝ) - total - 1 - rank) * (1 - first) := by
+    have hkey : scale label * (2 * (rank : ℝ) - ((atomCount : ℝ) - total))
+        < ((atomCount : ℝ) - total - 1 - rank) * (((atomCount : ℝ) - total) - rank) := by
+      by_cases hsign : 0 ≤ 2 * (rank : ℝ) - ((atomCount : ℝ) - total)
+      · nlinarith [hsharp, hscaleLe, hsign]
+      · have hneg : 2 * (rank : ℝ) - ((atomCount : ℝ) - total) < 0 := not_le.mp hsign
+        nlinarith [hgapPos, hneg, hpos label, hcast, htotal]
+    nlinarith [hkey, hlabel, hfirstNonneg, hpos label, hgapPos, hslack, htotalPos]
+  have hleak : scale label * (second - 1) < (atomCount : ℝ) - 1 - total - rank := by
+    have hscaled : scale label * (second - 1) * (1 - first)
+        < ((atomCount : ℝ) - total - 1 - rank) * (1 - first) := by
+      have hrewrite : (second - 1) * (1 - first) = 2 * first - 1 := by nlinarith [hupdate]
+      nlinarith [hcross, hrewrite]
+    have hfinal : scale label * (second - 1) < (atomCount : ℝ) - total - 1 - rank :=
+      lt_of_mul_lt_mul_right (by nlinarith [hscaled]) hslack.le
+    linarith
+  obtain ⟨secondLabel, hsecondMem, hsecondLt⟩ :=
+    frame_exists_pivot_lt_one_erase_of_leak atomFamily scale hframe hlt hfirstLt hleak
+  have hsecondSingle : ∑ c ∈ ({secondLabel} : Finset (Fin atomCount)),
+      framePivot atomFamily (Finset.univ.erase label) c < 1 := by
+    simp only [Finset.sum_singleton]
+    exact hsecondLt
+  have hsecondErase : ((Finset.univ : Finset (Fin atomCount)).erase label).erase secondLabel
+      = ((Finset.univ : Finset (Fin atomCount)).erase label) \ {secondLabel} := by
+    ext c; simp [Finset.mem_erase, Finset.mem_sdiff, and_comm]
+  refine ⟨((Finset.univ : Finset (Fin atomCount)).erase label).erase secondLabel, ?_, ?_⟩
+  · rw [Finset.card_erase_of_mem hsecondMem,
+      Finset.card_erase_of_mem (Finset.mem_univ label), Finset.card_univ, Fintype.card_fin]
+    omega
+  · rw [hsecondErase]
+    exact frame_posDef_sdiff_of_pivotSum_lt_one atomFamily
+      (by simpa using hsecondMem) hbasePosDef hsecondSingle
+
+/-- The sharp arithmetic condition at six atoms in rank three, at every total
+scale below one. -/
+theorem frame_sharp_six_three (total : ℝ) (hpos : 0 < total) (hlt : total < 1) :
+    total * (2 * (3 : ℝ) - ((6 : ℝ) - total))
+      < ((6 : ℝ) - total - 1 - 3) * (((6 : ℝ) - total) - 3) := by
+  nlinarith [hpos, hlt]
+
+/-- **A STRICTLY DOMINATING QUADRUPLE AT EVERY SIX-ATOM FRAME OF RANK THREE.**
+This is the design-free twin of `Gtz.exists_card_four_posDef_six_three`, and it
+is the first two stages of the atom-ceiling descent, free at every total scale
+below one. -/
+theorem frame_exists_card_four_posDef_six_three
+    (atomFamily : Fin 6 → Fin 3 → ℝ) (scale : Fin 6 → ℝ)
+    (hframe : ∑ c, scale c • atomMatrix (atomFamily c) = 1) (hpos : ∀ c, 0 < scale c)
+    (htotal : ∑ c, scale c < 1) :
+    ∃ selected : Finset (Fin 6), selected.card = 4
+      ∧ (frameGap atomFamily selected).PosDef := by
+  have htotalPos : 0 < ∑ c, scale c :=
+    Finset.sum_pos (fun c _ => hpos c) ⟨0, Finset.mem_univ 0⟩
+  have hstep := frame_exists_two_erase_posDef_sharp atomFamily scale hframe hpos htotal
+    (by omega) (frame_sharp_six_three _ htotalPos htotal)
+  simpa using hstep
+
+/-- **THE LAST STAGE AT A BARE FRAME, NAMED.** -/
+def FrameRankSuccShrinks (atomCount rank : ℕ) : Prop :=
+  ∀ (atomFamily : Fin atomCount → Fin rank → ℝ) (scale : Fin atomCount → ℝ),
+    (∑ c, scale c • atomMatrix (atomFamily c)) = 1 → (∀ c, 0 < scale c) →
+    (∑ c, scale c) < 1 →
+    ∀ base : Finset (Fin atomCount), base.card = rank + 1 →
+      (frameGap atomFamily base).PosDef →
+        ∃ selected : Finset (Fin atomCount), selected.card = rank
+          ∧ (frameGap atomFamily selected).PosDef
+
+/-- **THE ATOM TRIPLE CEILING FROM THE LAST STAGE ALONE.**  Six atoms resolving
+the identity with positive scales of total below one carry a strictly dominating
+TRIPLE, provided the last stage of the descent is available.  The two stages
+above it are theorems, thus the whole ceiling is one statement about strictly
+dominating quadruples -- the same statement the deciding cell of rank three
+reduces to on the design side. -/
+theorem frame_exists_card_three_posDef_six_three (hshrink : FrameRankSuccShrinks 6 3)
+    (atomFamily : Fin 6 → Fin 3 → ℝ) (scale : Fin 6 → ℝ)
+    (hframe : ∑ c, scale c • atomMatrix (atomFamily c) = 1) (hpos : ∀ c, 0 < scale c)
+    (htotal : ∑ c, scale c < 1) :
+    ∃ selected : Finset (Fin 6), selected.card = 3
+      ∧ (frameGap atomFamily selected).PosDef := by
+  obtain ⟨quadruple, hcard, hposDef⟩ :=
+    frame_exists_card_four_posDef_six_three atomFamily scale hframe hpos htotal
+  exact hshrink atomFamily scale hframe hpos htotal quadruple (by omega) hposDef
+
+
 end Gtz
