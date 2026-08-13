@@ -688,6 +688,7 @@ import Gtz.Wave.SharedPairOuterReduction
 import Gtz.Wave.RankFiveNormalForm
 import Gtz.Wave.SupportQuintupleCensus
 import Gtz.Wave.RankFiveRungAssembly
+import Gtz.Wave.RankFiveClosureSupply
 import Gtz.Wave.BothParallelCollapseSupply
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -22041,6 +22042,22 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SixThreeCrux.exists_rankFiveFrame
 #print axioms Gtz.RankFiveFrame.false_of_multOne_branch
 #print axioms Gtz.isSixThreeAssemblyRankExcluded_five_of_closures
+
+-- ==========================================================
+-- the rank-five closure supply.  The combination calculus, the
+-- shared-block cap at the two rungs, the private-pair kill, the
+-- same-pair kill, and the outer-sharer bridge of closure one.
+-- ==========================================================
+
+#print axioms Gtz.mulVec_combination
+#print axioms Gtz.exists_combination_eq_single_of_supports
+#print axioms Gtz.false_of_spanning_tight_directions
+#print axioms Gtz.RankFiveFrame.false_of_three_slots_share_block
+#print axioms Gtz.RankFourFrame.false_of_three_slots_share_block
+#print axioms Gtz.RankFiveFrame.false_of_supportTwo_private_pair
+#print axioms Gtz.rankFiveSupportTwoClosed_of_shared_pair_kill
+#print axioms Gtz.RankFiveFrame.false_of_samePair_columns
+#print axioms Gtz.rankFiveSupportTwoClosed_of_outer_shared_kill
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

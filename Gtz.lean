@@ -2948,6 +2948,11 @@ import Gtz.Wave.SupportQuintupleCensus
 -- closures.
 import Gtz.Wave.RankFiveRungAssembly
 
+-- the rank-five closure supply: the shared-block cap at the two
+-- rungs, the private-pair kill, the same-pair kill, and the
+-- outer-sharer bridge of closure one.
+import Gtz.Wave.RankFiveClosureSupply
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
