@@ -87,7 +87,13 @@ no successor must look for it.
 * `Gtz.dropAtom`, `Gtz.dropScale`, `Gtz.dropCoeff`, `Gtz.dropRegion` —
   the refuting datum, with `Gtz.dropAtom_frame`, `Gtz.dropScale_sum`,
   `Gtz.dropRegion_dominates`.
-* `Gtz.not_atomFrameDropClosed` — **THE FRAME DROP IS FALSE.**
+* `Gtz.dropRegion_no_drop`, `Gtz.not_atomFrameDropClosed` — **THE FRAME
+  DROP IS FALSE.**
+* `Gtz.dropTriple_dominates`,
+  `Gtz.exists_frame_quadruple_without_dominating_subset` — **THE LAST
+  STAGE MUST BE ALLOWED TO LEAVE THE BASE**: the same datum carries a
+  dominating quadruple with no dominating subtriple, and a dominating
+  triple outside it.
 * `Gtz.atomGramMinor`, `Gtz.atomGramVolume` — the squared area of a pair
   and the squared volume of a triple, with
   `Gtz.atomGramMinor_eq_pairMinor`, `Gtz.atomGramVolume_eq_tripleDet`,
@@ -548,11 +554,10 @@ vector.
 Thus the descent from a dominating region of card four to a dominating
 triple does not exist at all, and no shrink route to the third rung can
 proceed one atom at a time. -/
-theorem not_atomFrameDropClosed : ¬ AtomFrameDropClosed := by
-  intro hdrop
-  obtain ⟨dropped, hmem, hkeep⟩ := hdrop dropAtom dropScale dropCoeff dropScale_pos
-    (by rw [dropScale_sum]; norm_num) dropCoeff_spec dropAtom_frame dropRegion
-    (by rw [dropRegion_card]; norm_num) dropRegion_dominates
+theorem dropRegion_no_drop : ∀ dropped ∈ dropRegion, ∃ direction : Fin 3 → ℝ,
+    direction ≠ 0 ∧ ¬ (direction ⬝ᵥ direction
+      < ∑ slot ∈ dropRegion.erase dropped,
+          dropCoeff slot * (dropAtom slot ⬝ᵥ direction) ^ 2) := by
   have hexpand : ∀ slot : Fin 6, slot ∈ dropRegion → ∀ direction : Fin 3 → ℝ,
       (∑ other ∈ dropRegion.erase slot,
           dropCoeff other * (dropAtom other ⬝ᵥ direction) ^ 2)
@@ -560,24 +565,105 @@ theorem not_atomFrameDropClosed : ¬ AtomFrameDropClosed := by
           - dropCoeff slot * (dropAtom slot ⬝ᵥ direction) ^ 2 := by
     intro slot hslot direction
     exact Finset.sum_erase_eq_sub hslot
+  intro dropped hmem
   simp only [dropRegion, Finset.mem_insert, Finset.mem_singleton] at hmem
   rcases hmem with rfl | rfl | rfl | rfl
-  · have hbad := hkeep ![3, 3, 7] (by intro hzero; simpa using congrFun hzero 0)
-    rw [hexpand 0 (by decide) ![3, 3, 7], dropRegion_sum] at hbad
-    simp [dropAtom, dropCoeff, dotProduct, Fin.sum_univ_three] at hbad
-    norm_num at hbad
-  · have hbad := hkeep ![3, -3, 7] (by intro hzero; simpa using congrFun hzero 0)
-    rw [hexpand 1 (by decide) ![3, -3, 7], dropRegion_sum] at hbad
-    simp [dropAtom, dropCoeff, dotProduct, Fin.sum_univ_three] at hbad
-    norm_num at hbad
-  · have hbad := hkeep ![3, 3, -7] (by intro hzero; simpa using congrFun hzero 0)
-    rw [hexpand 2 (by decide) ![3, 3, -7], dropRegion_sum] at hbad
-    simp [dropAtom, dropCoeff, dotProduct, Fin.sum_univ_three] at hbad
-    norm_num at hbad
-  · have hbad := hkeep ![3, -3, -7] (by intro hzero; simpa using congrFun hzero 0)
-    rw [hexpand 3 (by decide) ![3, -3, -7], dropRegion_sum] at hbad
-    simp [dropAtom, dropCoeff, dotProduct, Fin.sum_univ_three] at hbad
-    norm_num at hbad
+  · refine ⟨![3, 3, 7], by intro hzero; simpa using congrFun hzero 0, ?_⟩
+    rw [hexpand 0 (by decide) ![3, 3, 7], dropRegion_sum]
+    simp [dropAtom, dropCoeff, dotProduct, Fin.sum_univ_three]
+    norm_num
+  · refine ⟨![3, -3, 7], by intro hzero; simpa using congrFun hzero 0, ?_⟩
+    rw [hexpand 1 (by decide) ![3, -3, 7], dropRegion_sum]
+    simp [dropAtom, dropCoeff, dotProduct, Fin.sum_univ_three]
+    norm_num
+  · refine ⟨![3, 3, -7], by intro hzero; simpa using congrFun hzero 0, ?_⟩
+    rw [hexpand 2 (by decide) ![3, 3, -7], dropRegion_sum]
+    simp [dropAtom, dropCoeff, dotProduct, Fin.sum_univ_three]
+    norm_num
+  · refine ⟨![3, -3, -7], by intro hzero; simpa using congrFun hzero 0, ?_⟩
+    rw [hexpand 3 (by decide) ![3, -3, -7], dropRegion_sum]
+    simp [dropAtom, dropCoeff, dotProduct, Fin.sum_univ_three]
+    norm_num
+
+/-- **THE FRAME DROP IS FALSE.**  The frame-constrained drop — the rounding
+law that a shrink route to the third rung needs — does NOT hold.
+
+The refuting datum is explicit and rational: four atoms of a tight frame
+dominate the probe space against their reciprocal scales, the scale mass
+is nine tenths, and every one of the four single-atom drops loses a
+direction.  The four witnesses are the four sign patterns of one integer
+vector.
+
+Thus no shrink route to the third rung can proceed one atom at a time
+from an arbitrary dominating region. -/
+theorem not_atomFrameDropClosed : ¬ AtomFrameDropClosed := by
+  intro hdrop
+  obtain ⟨dropped, hmem, hkeep⟩ := hdrop dropAtom dropScale dropCoeff dropScale_pos
+    (by rw [dropScale_sum]; norm_num) dropCoeff_spec dropAtom_frame dropRegion
+    (by rw [dropRegion_card]; norm_num) dropRegion_dominates
+  obtain ⟨direction, hne, hbad⟩ := dropRegion_no_drop dropped hmem
+  exact hbad (hkeep direction hne)
+
+/-- The sum of a slot function over the escaping triple. -/
+theorem dropTriple_sum (value : Fin 6 → ℝ) :
+    (∑ slot ∈ ({0, 1, 4} : Finset (Fin 6)), value slot) = value 0 + value 1 + value 4 := by
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton]
+  ring
+
+/-- **THE ESCAPING TRIPLE DOMINATES.**  The refuting datum DOES carry a
+dominating triple.  That triple is not a subset of the refuting region: it
+keeps two atoms of the region and takes one atom from outside. -/
+theorem dropTriple_dominates : ∀ direction : Fin 3 → ℝ, direction ≠ 0 →
+    direction ⬝ᵥ direction
+      < ∑ slot ∈ ({0, 1, 4} : Finset (Fin 6)),
+          dropCoeff slot * (dropAtom slot ⬝ᵥ direction) ^ 2 := by
+  intro direction hne
+  have hnormPos : 0 < direction ⬝ᵥ direction := by
+    obtain ⟨index, hindex⟩ : ∃ index, direction index ≠ 0 := by
+      by_contra hnone
+      exact hne (funext fun index => not_not.mp fun hlt => hnone ⟨index, hlt⟩)
+    rw [dotProduct]
+    exact Finset.sum_pos' (fun _ _ => mul_self_nonneg _)
+      ⟨index, Finset.mem_univ _, mul_self_pos.mpr hindex⟩
+  simp only [dotProduct, Fin.sum_univ_three] at hnormPos
+  rw [dropTriple_sum]
+  simp [dropAtom, dropCoeff, dotProduct, Fin.sum_univ_three]
+  nlinarith [hnormPos, sq_nonneg (direction 0 + direction 2), sq_nonneg (direction 1),
+    sq_nonneg (direction 2), sq_nonneg (direction 0)]
+
+/-- **THE LAST STAGE OF A DESCENT MUST BE ALLOWED TO LEAVE THE BASE.**  One
+tight frame of six atoms with positive scales of total nine tenths carries
+at the same time:
+
+* a dominating region of card FOUR,
+* no dominating card-three SUBSET of that region,
+* a dominating card-three set that LEAVES the region.
+
+Thus the passage from card `rank + 1` to card `rank` is never a drop, and
+a shrink route must select the last carrier freely.  The named Props that
+quantify the last stage over subsets of the base are refuted by this
+datum, and the named Props that quantify it over all carriers are not. -/
+theorem exists_frame_quadruple_without_dominating_subset :
+    ∃ (atom : Fin 6 → (Fin 3 → ℝ)) (scale coeff : Fin 6 → ℝ) (region : Finset (Fin 6)),
+      (∀ slot, 0 < scale slot) ∧ (∑ slot, scale slot) < 1
+        ∧ (∀ slot, coeff slot * scale slot = 1)
+        ∧ (∀ probe direction : Fin 3 → ℝ,
+            (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+        ∧ region.card = 4
+        ∧ (∀ direction : Fin 3 → ℝ, direction ≠ 0 →
+            direction ⬝ᵥ direction
+              < ∑ slot ∈ region, coeff slot * (atom slot ⬝ᵥ direction) ^ 2)
+        ∧ (∀ dropped ∈ region, ∃ direction : Fin 3 → ℝ, direction ≠ 0
+            ∧ ¬ (direction ⬝ᵥ direction
+              < ∑ slot ∈ region.erase dropped, coeff slot * (atom slot ⬝ᵥ direction) ^ 2))
+        ∧ (∃ car : Finset (Fin 6), car.card = 3
+            ∧ ∀ direction : Fin 3 → ℝ, direction ≠ 0 →
+                direction ⬝ᵥ direction
+                  < ∑ slot ∈ car, coeff slot * (atom slot ⬝ᵥ direction) ^ 2) :=
+  ⟨dropAtom, dropScale, dropCoeff, dropRegion, dropScale_pos,
+    by rw [dropScale_sum]; norm_num, dropCoeff_spec, dropAtom_frame, dropRegion_card,
+    dropRegion_dominates, dropRegion_no_drop,
+    ⟨{0, 1, 4}, by decide, dropTriple_dominates⟩⟩
 
 /-! ## Layer 6 — the Gram volume and the coordinate Cauchy-Schwarz -/
 

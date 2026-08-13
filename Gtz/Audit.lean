@@ -23628,6 +23628,10 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.AtomPivotPairClosed
 #print axioms Gtz.atomTripleCeilingClosed_of_pivotPair
 #print axioms Gtz.atomTripleDet_deflate
+#print axioms Gtz.dropRegion_no_drop
+#print axioms Gtz.dropTriple_dominates
+#print axioms Gtz.dropTriple_sum
+#print axioms Gtz.exists_frame_quadruple_without_dominating_subset
 #print axioms Gtz.atomTripleDet_pair_region_total
 #print axioms Gtz.atomTripleDet_pair_region_total_three
 #print axioms Gtz.atomTripleDet_pos_of_deflated_pair
