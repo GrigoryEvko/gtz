@@ -499,7 +499,11 @@ theorem SharedPrivateData.exists_kernel_read_frame {crux : SixThreeCrux}
       ∧ (∀ atomIndex : Fin 6,
           chartObjective (chartPointOfDesign crux.design)
             + (chartPointOfDesign crux.design).weight atomIndex = 0 →
-          S *ᵥ readVecs atomIndex = 0) := by
+          S *ᵥ readVecs atomIndex = 0)
+      ∧ (∀ (atomIndex : Fin 6) (slot : Fin data.basisCount),
+          atomIndex ∈ datumTightSupport data.tightDir
+            (data.basisLabel slot) →
+          readVecs atomIndex slot ≠ 0) := by
   classical
   -- the positive diagonal of the Gram core
   have hpsd := data.hpsd
@@ -742,8 +746,15 @@ theorem SharedPrivateData.exists_kernel_read_frame {crux : SixThreeCrux}
     rw [hmul, Finset.sum_congr rfl fun colSlot _ => hterm colSlot,
       ← Finset.mul_sum, hrow, mul_zero]
     rfl
+  -- the carrier law: a read does not vanish on its own carrier
+  have hcarrierNz : ∀ (atomIndex : Fin 6) (slot : Fin data.basisCount),
+      atomIndex ∈ datumTightSupport data.tightDir (data.basisLabel slot) →
+      readVecs atomIndex slot ≠ 0 := by
+    intro atomIndex slot hmem
+    show sq slot * data.tightDir (data.basisLabel slot) atomIndex ≠ 0
+    exact mul_ne_zero (hsq slot).ne' (mem_datumTightSupport.mp hmem)
   exact ⟨S, readVecs, hSsymm, hSidem, hStrace, hsupp, hread, hnorm, hnz,
-    hboundary⟩
+    hboundary, hcarrierNz⟩
 
 set_option maxHeartbeats 1600000 in
 /-- **THE DISJOINT-FAMILY KILL.**  At a diagonal Gram core, a family
@@ -764,7 +775,7 @@ theorem SharedPrivateData.false_of_disjoint_support_family
       < Matrix.trace data.coeff + T.card) : False := by
   classical
   obtain ⟨S, readVecs, hSsymm, hSidem, hStrace, hsupp, hread, hnorm, hnz,
-    _hboundary⟩ :=
+    _hboundary, _hcarrierNz⟩ :=
     data.exists_kernel_read_frame hdiag
   set chartValue := chartObjective (chartPointOfDesign crux.design)
     with hchartValue
