@@ -3240,6 +3240,15 @@ import Gtz.Wave.SharedPrivateCoparallelColumn
 -- stratum and the whole trace-two boundary stratum become theorems.
 import Gtz.Wave.SharedPrivateResidualLine
 
+-- the diagonal kill: the trace-two boundary residue and the trace-three
+-- deficit residue are both theorems, thus a shared-private datum never
+-- has a diagonal Gram core; every datum carries a nonzero off-diagonal
+-- Gram entry, the extras residue and the generic kill are the same
+-- statement, and the circuit residue, the width pair, the fine circuit
+-- lattice, the saturated lattice and the ledger lattice each close the
+-- kill and the three rung closures with no boundary hypothesis.
+import Gtz.Wave.SharedPrivateDiagonalKill
+
 -- the circuit rank-one link: the corner rows of a tight direction on a
 -- triple, the wedge law, the rank-one shifted gap block of a shared
 -- triple, the triple kill that refuses three basis columns on one
@@ -3259,6 +3268,13 @@ import Gtz.Wave.SharedPrivateCircuitSaturation
 -- dominated corner budget, the off-block leak law of a rank-one block,
 -- the tight leak identity, and closure two on the re-cut lattice.
 import Gtz.Wave.SharedPrivateComplementLedger
+
+-- the slot case split: the defect Cauchy-Schwarz of a symmetric
+-- idempotent chart, the singular budget of every set that carries a
+-- kernel vector, the combination budget of two tight directions, the
+-- straddle rank-one extension, the refusal of a second identical pair on
+-- the complement triple, and closure two on the slot-split lattice.
+import Gtz.Wave.SharedPrivateSlotSplit
 
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and

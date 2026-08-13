@@ -738,9 +738,11 @@ import Gtz.Wave.SharedPrivateLeakEnergy
 import Gtz.Wave.SharedPrivateDualRead
 import Gtz.Wave.SharedPrivateCoparallelColumn
 import Gtz.Wave.SharedPrivateResidualLine
+import Gtz.Wave.SharedPrivateDiagonalKill
 import Gtz.Wave.SharedPrivateCircuitRankOne
 import Gtz.Wave.SharedPrivateCircuitSaturation
 import Gtz.Wave.SharedPrivateComplementLedger
+import Gtz.Wave.SharedPrivateSlotSplit
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -837,6 +839,11 @@ import Gtz.Wave.PivotWitnessLedger
 #print axioms Gtz.capPoint_of_light
 #print axioms Gtz.capPoint_of_cover
 #print axioms Gtz.exists_capPoint_of_pair
+#print axioms Gtz.planeHalf
+#print axioms Gtz.convex_planeHalf
+#print axioms Gtz.planeCap_zero_eq_disc
+#print axioms Gtz.exists_capPoint_of_two
+#print axioms Gtz.PlaneHalfTripleClosed
 #print axioms Gtz.atomPivotCross_comm
 #print axioms Gtz.atomPivotCross_self
 #print axioms Gtz.atomPivotCross_at_pivot_left
@@ -24445,6 +24452,57 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_ledger_lattice
 #print axioms Gtz.rankSixSharedPrivateClosed_of_ledger_lattice
 
+#print axioms Gtz.sq_le_of_quadratic_nonneg
+#print axioms Gtz.dotProduct_sq_le_self
+#print axioms Gtz.dotProduct_mulVec_comm
+#print axioms Gtz.chartDefect_quadratic
+#print axioms Gtz.chartDefect_cauchy_schwarz
+#print axioms Gtz.single_one_dotProduct
+#print axioms Gtz.chartDefect_row_bound
+#print axioms Gtz.gapSet_kernel_energy
+#print axioms Gtz.gapSet_kernel_row_budget
+#print axioms Gtz.gapSet_kernel_saturation
+#print axioms Gtz.chart_tightDir_saturation
+#print axioms Gtz.chart_tightDir_block_saturation
+#print axioms Gtz.chart_tightDir_support_saturation
+#print axioms Gtz.chart_tightDir_foreign_saturation
+#print axioms Gtz.chart_mulVec_capture_of_zero_row
+#print axioms Gtz.chart_pair_combination_saturation
+#print axioms Gtz.gapBlockRankOne_of_straddle
+#print axioms Gtz.chartStationaryGap_swap
+#print axioms Gtz.gapPairMinor_of_mem_rankOne_triple
+#print axioms Gtz.SharedPrivateData.basis_block_saturation
+#print axioms Gtz.SharedPrivateData.shiftedGapDiag_sum_le_of_ratio
+#print axioms Gtz.SharedPrivateData.basis_block_shifted_sum_le_two
+#print axioms Gtz.SharedPrivateData.basis_triple_shifted_sum_le_two
+#print axioms Gtz.SharedPrivateData.label_support_saturation
+#print axioms Gtz.SharedPrivateData.supportTwo_shifted_sum_le_one
+#print axioms Gtz.SharedPrivateData.foreign_quad_shifted_sum_le_three
+#print axioms Gtz.SharedPrivateData.liveWedge_triple_shifted_sum_le_two
+#print axioms Gtz.SharedPrivateData.privateSlot_notMem_identical_pair
+#print axioms Gtz.SharedPrivateData.privateSlot_support_ne_of_identical
+#print axioms Gtz.SharedPrivateData.support_eq_complement_of_disjoint
+#print axioms Gtz.SharedPrivateData.false_of_complement_identical_pair
+#print axioms Gtz.SharedPrivateData.gapBlockRankOne_of_straddle_slot
+#print axioms Gtz.SharedPrivateData.straddle_shifted_sum_le_one
+#print axioms Gtz.SharedPrivateData.straddle_shifted_sum_le_one_of_shared
+#print axioms Gtz.SharedPrivateData.exists_third_slot_of_identical_support
+#print axioms Gtz.SharedPrivateData.slot_straddle_or_complement
+#print axioms Gtz.SharedPrivateCircuitPairIdenticalSlotClosed
+#print axioms Gtz.sharedPrivateCircuitPairIdenticalLedgerClosed_of_slotSplit
+#print axioms Gtz.sharedPrivateExtrasClosed_of_slotSplit_lattice
+#print axioms Gtz.sharedPrivateKilled_of_slotSplit_lattice
+#print axioms Gtz.rankFourSharedPrivateClosed_of_slotSplit_lattice
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_slotSplit_lattice
+#print axioms Gtz.rankSixSharedPrivateClosed_of_slotSplit_lattice
+#print axioms Gtz.SharedPrivateCircuitSplitWedgeSlotClosed
+#print axioms Gtz.sharedPrivateCircuitSplitWedgeClosed_of_slotSplit
+#print axioms Gtz.sharedPrivateExtrasClosed_of_slotLattice
+#print axioms Gtz.sharedPrivateKilled_of_slotLattice
+#print axioms Gtz.rankFourSharedPrivateClosed_of_slotLattice
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_slotLattice
+#print axioms Gtz.rankSixSharedPrivateClosed_of_slotLattice
+
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
 -- module, enumerated from the ENVIRONMENT (not from this file's pin
@@ -24656,3 +24714,29 @@ run_cmd do
 #print axioms Gtz.rankFourSharedPrivateClosed_of_extras
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_extras
 #print axioms Gtz.rankSixSharedPrivateClosed_of_extras
+
+-- the diagonal kill and the boundary-free dispatches
+#print axioms Gtz.SharedPrivateData.false_of_diagonal_gram
+#print axioms Gtz.SharedPrivateData.exists_offDiagonal_gram
+#print axioms Gtz.sharedPrivateExtrasClosed_of_killed
+#print axioms Gtz.sharedPrivateKilled_iff_extrasClosed
+#print axioms Gtz.sharedPrivateKilled_of_circuitClosed
+#print axioms Gtz.rankFourSharedPrivateClosed_of_circuitClosed
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_circuitClosed
+#print axioms Gtz.rankSixSharedPrivateClosed_of_circuitClosed
+#print axioms Gtz.sharedPrivateKilled_of_widthPair
+#print axioms Gtz.rankFourSharedPrivateClosed_of_widthPair
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_widthPair
+#print axioms Gtz.rankSixSharedPrivateClosed_of_widthPair
+#print axioms Gtz.sharedPrivateKilled_of_fineCircuitLattice
+#print axioms Gtz.rankFourSharedPrivateClosed_of_fineCircuitLattice
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_fineCircuitLattice
+#print axioms Gtz.rankSixSharedPrivateClosed_of_fineCircuitLattice
+#print axioms Gtz.sharedPrivateKilled_of_saturatedLattice
+#print axioms Gtz.rankFourSharedPrivateClosed_of_saturatedLattice
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_saturatedLattice
+#print axioms Gtz.rankSixSharedPrivateClosed_of_saturatedLattice
+#print axioms Gtz.sharedPrivateKilled_of_ledgerLattice
+#print axioms Gtz.rankFourSharedPrivateClosed_of_ledgerLattice
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_ledgerLattice
+#print axioms Gtz.rankSixSharedPrivateClosed_of_ledgerLattice
