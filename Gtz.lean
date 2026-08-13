@@ -2121,6 +2121,12 @@ import Gtz.Uniform.RouteBProps
 import Gtz.Uniform.AnchorBookkeeping
 import Gtz.Uniform.AnchorAssembly
 
+-- The assembly itself: the core and tail families reindexed along the block
+-- split of the label set, Parseval balanced, and the anchor produced at every
+-- cell of corank two or more.  What is left of route (b)'s reach obligation is
+-- one connectivity statement about the parallel-free locus.
+import Gtz.Uniform.AnchorReachAssembly
+
 -- The matroid stratification of the stress-free hinge: the plane-pair escape
 -- law empties four of the nine six-point classes, the hinge follows from
 -- tie-freeness of the five named survivors, and the seam splits those five by

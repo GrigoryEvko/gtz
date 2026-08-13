@@ -432,6 +432,7 @@ import Gtz.Uniform.UniformPositionBridge
 import Gtz.Uniform.RouteBProps
 import Gtz.Uniform.AnchorBookkeeping
 import Gtz.Uniform.AnchorAssembly
+import Gtz.Uniform.AnchorReachAssembly
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
 import Gtz.Design.TieCensusCompletion
@@ -12291,6 +12292,45 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.UniformPositionBridge.tailAtomVec_ne_smul_axisVec
 #print axioms Gtz.UniformPositionBridge.diagonalTailAtCell_of_two_le
 #print axioms Gtz.UniformPositionBridge.not_diagonalTailAtCell_one
+
+/-! ### The anchor assembly, and the reach obligation reduced to connectivity -/
+
+#print axioms Gtz.UniformPositionBridge.eq_castAdd_or_natAdd
+#print axioms Gtz.UniformPositionBridge.castAdd_ne_natAdd
+#print axioms Gtz.UniformPositionBridge.tailProfile_nonneg
+#print axioms Gtz.UniformPositionBridge.tailProfile_const_smul
+#print axioms Gtz.UniformPositionBridge.sum_tail_atomMatrix_profile
+#print axioms Gtz.UniformPositionBridge.tailDiagonalProfile_eq_tailProfile
+#print axioms Gtz.UniformPositionBridge.diagonal_const_eq_smul_one
+#print axioms Gtz.UniformPositionBridge.sum_coreAtomMatrix_eq_smul_one
+#print axioms Gtz.UniformPositionBridge.coreAtomVec_ne_smul_tailAtomVec
+#print axioms Gtz.UniformPositionBridge.coreTailAtomFamily_castAdd
+#print axioms Gtz.UniformPositionBridge.coreTailAtomFamily_natAdd
+#print axioms Gtz.UniformPositionBridge.coreTailWeightFamily_castAdd
+#print axioms Gtz.UniformPositionBridge.coreTailWeightFamily_natAdd
+#print axioms Gtz.UniformPositionBridge.coreTailAtomFamily_noParallel
+#print axioms Gtz.UniformPositionBridge.card_coreLabels
+#print axioms Gtz.UniformPositionBridge.sum_coreLabels_atomMatrix
+#print axioms Gtz.UniformPositionBridge.coreTailDesign_atom
+#print axioms Gtz.UniformPositionBridge.exists_coreTailWitness
+#print axioms Gtz.UniformPositionBridge.exists_coreTailWitness_named
+#print axioms Gtz.UniformPositionBridge.exists_weakParallelFreeDominator
+#print axioms Gtz.UniformPositionBridge.exists_parallelFreeStrictAnchor
+#print axioms Gtz.UniformPositionBridge.exists_parallelFree_not_isTie
+#print axioms Gtz.UniformPositionBridge.windowCell_above_anchorFloor
+#print axioms Gtz.UniformPositionBridge.CanonicalWindowParallelFreeConnectivity
+#print axioms Gtz.UniformPositionBridge.SharpWindowParallelFreeConnectivity
+#print axioms Gtz.UniformPositionBridge.sharpWindowConnectivity_of_canonicalWindowConnectivity
+#print axioms Gtz.UniformPositionBridge.windowAnchorReachFree_of_connectivity
+#print axioms Gtz.UniformPositionBridge.windowAnchorReach_of_connectivity
+#print axioms Gtz.UniformPositionBridge.sharpWindowAnchorReach_of_connectivity
+#print axioms Gtz.UniformPositionBridge.sharpWindowAnchorReachRankFourAndUp_of_connectivity
+#print axioms Gtz.UniformPositionBridge.routeB_target_of_connectivity
+#print axioms Gtz.UniformPositionBridge.closesCanonicalWindow_of_relativeWindowTie_of_connectivity
+#print axioms Gtz.UniformPositionBridge.exists_parallelFreeStrictAnchor_sixThree
+#print axioms Gtz.UniformPositionBridge.exists_parallelFreeStrictAnchor_eightFour
+#print axioms Gtz.UniformPositionBridge.exists_parallelFreeStrictAnchor_corankTwoCell
+#print axioms Gtz.UniformPositionBridge.not_canonicalWindowParallelFreeConnectivity_two
 
 /-! ### The matroid stratification of the stress-free hinge -/
 
