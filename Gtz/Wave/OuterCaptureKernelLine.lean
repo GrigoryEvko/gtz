@@ -6,18 +6,32 @@ set_option relaxedAutoImplicit false
 set_option maxHeartbeats 1600000
 
 /-!
-# The capture kernel line — the chart minor of a clone pair
+# The capture kernel line — the rank-four rung from one residue
 
 A rank-four frame splits its chart into the capture frame and a capture
 residue of trace one.  A trace-one symmetric idempotent is a rank-one
-projector, thus every two-by-two minor of the residue vanishes.  This
-module reads that vanishing at an atom PAIR whose basis rows are
-proportional.
+projector, thus every two-by-two minor of the residue vanishes and the
+residue fixes ONE line.  This module reads that line.
 
-The reading is an identity.  Write `P` for the chart, `F` for the
-capture frame and `sigma` for the clone scale.  The capture frame kills
-the pair direction, thus `F` at the pair is the rank-one block of
-`F_{t1t1}` against `(1, sigma)`, and the vanishing residue minor gives
+**THE HEADLINE.  EVERY RANK-FOUR FRAME CARRIES A NONZERO DIRECTION THAT
+THE WHOLE BASIS AND THE CHART BOTH ANNIHILATE.**  Four basis rows, the
+residue line and one zero row fill a six-by-six square, thus the square
+is singular.  Its null direction dies at the capture frame because the
+basis dies on it, and it dies at the residue because the residue reads
+it through the line alone.  In design terms the direction is an ATOM
+DEPENDENCY inside the kernel of the assembly basis, and it is alive at
+three atoms at least.
+
+**Thus the whole rank-four rung collapses into ONE statement.**  The
+census trichotomy, the five named closures, the circuit lattice, the
+clone lattice, the triple lattice and the interiority obligation are all
+consequences of `Gtz.RankFourChartNullBasisNullClosed`.
+
+The same split reads an atom PAIR whose basis rows are proportional.
+Write `P` for the chart, `F` for the capture frame and `sigma` for the
+clone scale.  The capture frame kills the pair direction, thus `F` at
+the pair is the rank-one block of `F_{t1t1}` against `(1, sigma)`, and
+the vanishing residue minor gives
 
 **`P_{t1t1} P_{t2t2} - P_{t1t2}² = F_{t1t1} (P_{t2t2} - 2 sigma P_{t1t2}
 + sigma² P_{t1t1})`.**
@@ -27,53 +41,55 @@ the two right factors are nonnegative, thus BOTH are positive.  The
 first factor is the interiority of the clone atom.  The second is a new
 chart inequality of every clone pair.
 
-The same split carries a LINE.  The residue of trace one fixes a nonzero
-vector, that vector is a basis null direction, and the chart fixes it.
-Every clone pair thus splits: either the chart fixes the pair direction
-itself, or the pair direction minus its residue part is a nonzero
-direction that BOTH the basis and the chart annihilate.  A chart null
-direction is an atom dependency, thus it is alive at three atoms or
-more.  A chart fixed direction is a design coplanarity: one nonzero
-direction of the atom space annihilates every atom off the support.
-
 When the capture trace reaches the chart rank the residue is ZERO, thus
-every basis null direction is chart null, thus a clone pair is a
-parallel pair.  **EVERY CLONE PAIR OF A RANK-SIX FRAME IS DEAD, AND SO
-IS EVERY CLONE PAIR OF A RANK-FIVE FRAME OF CAPTURE TRACE THREE.**
+every basis null direction is chart null.  A clone pair direction is
+then a parallel pair, thus **EVERY CLONE PAIR OF A RANK-SIX FRAME IS
+DEAD, AND SO IS EVERY CLONE PAIR OF A RANK-FIVE FRAME OF CAPTURE TRACE
+THREE.**  At that trace a rank-five frame also carries a chart null
+basis null direction, thus its trace-three branch collapses into one
+statement too.
 
 ## PROVED here (no `sorry`, no `axiom`, no `native_decide`)
 
 * `Gtz.symmIdem_minor_eq_of_trace_lt_two` — **THE RANK-ONE MINOR LAW.**
 * `Gtz.eq_zero_of_symmIdem_trace_lt_one`,
-  `Gtz.exists_fixed_of_symmIdem_trace_pos` — the two trace ends.
+  `Gtz.exists_fixed_of_symmIdem_trace_pos`,
+  `Gtz.symmIdem_mulVec_single_eq_zero_of_diag_eq_zero` — the trace ends.
 * `Gtz.captureFrame_transpose`, `Gtz.captureFrame_mul_self`,
   `Gtz.chart_mul_captureFrame`, `Gtz.chart_mul_captureResidue` — the
   frame is a symmetric idempotent that the chart fixes.
-* `Gtz.captureFrame_pair_entries_of_clone` — the pair block of the
-  frame.
 * `Gtz.chart_pair_minor_eq_captureFrame_form` — **THE CHART PAIR MINOR
   IDENTITY.**
 * `Gtz.SixThreeCrux.chart_pair_minor_pos`,
-  `Gtz.SixThreeCrux.captureFrame_diag_pos_of_pair_null`,
-  `Gtz.SixThreeCrux.pair_null_form_pos` — the three positivities.
+  `Gtz.SixThreeCrux.chart_pair_form_pos`,
+  `Gtz.RankFourFrame.captureFrame_diag_pos_of_clone` — the three
+  positivities.
 * `Gtz.SixThreeCrux.false_of_chart_null_pair`,
-  `Gtz.SixThreeCrux.false_of_chart_null_singleton` — a chart null
+  `Gtz.SixThreeCrux.false_of_chart_null_singleton`,
+  `Gtz.SixThreeCrux.exists_three_live_of_chart_null` — a chart null
   direction is alive at three atoms or more.
 * `Gtz.SixThreeCrux.exists_orthogonal_of_chart_fixed` — **THE
   COPLANARITY READING.**
 * `Gtz.SixThreeCrux.false_of_pair_null_of_capture_trace_rank` — **THE
   ZERO RESIDUE KILL.**
-* `Gtz.RankFourFrame.exists_capture_line` — **THE RESIDUE LINE.**
-* `Gtz.RankFourFrame.clone_chart_dichotomy` — **THE CLONE SPLIT.**
+* `Gtz.RankFourFrame.exists_capture_line` — the residue line.
+* `Gtz.RankFourFrame.clone_chart_dichotomy` — the clone split.
+* `Gtz.exists_basis_null_orthogonal_row`,
+  `Gtz.RankFourFrame.exists_chart_null_basis_null`,
+  `Gtz.RankFourFrame.exists_atom_dependency_in_basis_kernel` — **THE
+  HEADLINE AND ITS DESIGN READING.**
+* `Gtz.isSixThreeAssemblyRankExcluded_four_of_chartNullBasisNull` —
+  **THE RANK-FOUR RUNG FROM ONE RESIDUE.**
 * `Gtz.RankFiveFrame.false_of_clone_pair_of_capture_trace_three`,
+  `Gtz.RankFiveFrame.capture_trace_eq_two_of_chartNullBasisNull`,
   `Gtz.RankSixFrame.false_of_clone_pair` — the two upper rungs.
 * `Gtz.rankFourOuterThinCloneClosed_of_fixed_split` and
   `Gtz.rankFourSupportTwoClosed_of_fixedSplit_triple_interior` — the
-  narrowed rank-four discharge.
+  narrowed rank-four discharge of closure one.
 
 ## Vacuity
 
-Layers one thru three hold at every symmetric idempotent and at every
+Layers one thru four hold at every symmetric idempotent and at every
 stationary datum with a chosen basis.  The crux-facing statements are
 vacuous if `Gtz.GtzWeighted 6 3` holds: no crux exists, thus no frame
 and no datum exists.
@@ -1192,6 +1208,324 @@ theorem rankFourSupportTwoClosed_of_fixedSplit_triple_interior
     (rankFourOuterThinCloneClosed_of_fixed_split hfixed hsplit) htriple hinterior
 
 end NarrowedResidues
+
+
+/-! ## Layer 14 — every rank-four frame carries a chart null basis null direction -/
+
+section ChartNullExistence
+
+/-- The symmetric transfer of a matrix across a dot product. -/
+theorem dotProduct_mulVec_of_transpose_eq {dim : ℕ}
+    {mat : Matrix (Fin dim) (Fin dim) ℝ} (hsymm : matᵀ = mat) (leftVec rightVec : Fin dim → ℝ) :
+    leftVec ⬝ᵥ (mat *ᵥ rightVec) = (mat *ᵥ leftVec) ⬝ᵥ rightVec := by
+  simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, Finset.sum_mul]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun colIndex _ => Finset.sum_congr rfl fun rowIndex _ => ?_
+  have hflip : mat colIndex rowIndex = mat rowIndex colIndex := by
+    conv_lhs => rw [← hsymm]
+    rfl
+  rw [hflip]
+  ring
+
+variable {activeIndex : Type*} {tightDir : activeIndex → (Fin 6 → ℝ)}
+
+/-- **THE ORTHOGONAL NULL CONSTRUCTOR.**  Four basis rows, one named
+row and one zero row fill a six-by-six square, thus the square is
+singular.  Its null direction dies at every basis column and at the
+named row. -/
+theorem exists_basis_null_orthogonal_row (basisLabel : Fin 4 → activeIndex)
+    (rowVec : Fin 6 → ℝ) :
+    ∃ nullVec : Fin 6 → ℝ, nullVec ≠ 0
+      ∧ (∀ slot : Fin 4, tightDir (basisLabel slot) ⬝ᵥ nullVec = 0)
+      ∧ rowVec ⬝ᵥ nullVec = 0 := by
+  classical
+  set square : Matrix (Fin 6) (Fin 6) ℝ := Matrix.of
+    ![fun colAtom => tightDir (basisLabel 0) colAtom,
+      fun colAtom => tightDir (basisLabel 1) colAtom,
+      fun colAtom => tightDir (basisLabel 2) colAtom,
+      fun colAtom => tightDir (basisLabel 3) colAtom,
+      fun colAtom => rowVec colAtom,
+      (0 : Fin 6 → ℝ)] with hsquare
+  have hdet : square.det = 0 :=
+    Matrix.det_eq_zero_of_row_eq_zero 5 fun colAtom => by
+      simp [hsquare]
+  obtain ⟨nullVec, hne, hkernel⟩ := Matrix.exists_mulVec_eq_zero_iff.mpr hdet
+  have hslotZero : tightDir (basisLabel 0) ⬝ᵥ nullVec = 0 := by
+    have hrow := congrFun hkernel 0
+    simpa [hsquare, Matrix.mulVec, dotProduct] using hrow
+  have hslotOne : tightDir (basisLabel 1) ⬝ᵥ nullVec = 0 := by
+    have hrow := congrFun hkernel 1
+    simpa [hsquare, Matrix.mulVec, dotProduct] using hrow
+  have hslotTwo : tightDir (basisLabel 2) ⬝ᵥ nullVec = 0 := by
+    have hrow := congrFun hkernel 2
+    simpa [hsquare, Matrix.mulVec, dotProduct] using hrow
+  have hslotThree : tightDir (basisLabel 3) ⬝ᵥ nullVec = 0 := by
+    have hrow := congrFun hkernel 3
+    simpa [hsquare, Matrix.mulVec, dotProduct] using hrow
+  refine ⟨nullVec, hne, ?_, ?_⟩
+  · intro slot
+    fin_cases slot
+    · exact hslotZero
+    · exact hslotOne
+    · exact hslotTwo
+    · exact hslotThree
+  · have hrow := congrFun hkernel 4
+    simpa [hsquare, Matrix.mulVec, dotProduct] using hrow
+
+variable {crux : SixThreeCrux}
+
+/-- **EVERY RANK-FOUR FRAME CARRIES A CHART NULL BASIS NULL
+DIRECTION.**  The residue is rank one, thus the chart reads every basis
+null direction through the residue line alone.  A direction that also
+dies at the residue line dies at the chart, and the null constructor
+supplies one. -/
+theorem RankFourFrame.exists_chart_null_basis_null (frame : RankFourFrame crux) :
+    ∃ nullVec : Fin 6 → ℝ, nullVec ≠ 0
+      ∧ (∀ slot : Fin 4, frame.tightDir (frame.basisLabel slot) ⬝ᵥ nullVec = 0)
+      ∧ (chartPointOfDesign crux.design).chart *ᵥ nullVec = 0 := by
+  classical
+  obtain ⟨lineVec, hlineNe, hlineFix, hlineBasis, _hlineChart⟩ := frame.exists_capture_line
+  obtain ⟨nullVec, hne, hbasis, hortho⟩ :=
+    exists_basis_null_orthogonal_row (tightDir := frame.tightDir) frame.basisLabel lineVec
+  refine ⟨nullVec, hne, hbasis, ?_⟩
+  have hresidueFixed : frame.lineResidue *ᵥ (frame.lineResidue *ᵥ nullVec)
+      = frame.lineResidue *ᵥ nullVec := by
+    rw [Matrix.mulVec_mulVec, frame.lineResidue_mul_self]
+  have hparallel := parallel_of_fixed_of_trace_lt_two frame.lineResidue_transpose
+    frame.lineResidue_mul_self (by rw [frame.lineResidue_trace]; norm_num)
+    hlineFix hresidueFixed hlineNe
+  have hlineDot : lineVec ⬝ᵥ (frame.lineResidue *ᵥ nullVec) = 0 := by
+    rw [dotProduct_mulVec_of_transpose_eq frame.lineResidue_transpose, hlineFix]
+    exact hortho
+  have hresidueZero : frame.lineResidue *ᵥ nullVec = 0 := by
+    rw [hparallel, hlineDot, zero_div, zero_smul]
+  have hframeZero : captureFrame (tightBasisColumns frame.tightDir frame.basisLabel)
+      frame.coeff *ᵥ nullVec = 0 :=
+    captureFrame_mulVec_eq_zero_of_basis_dot (transpose_basisColumns_mulVec_eq_zero hbasis)
+  rw [chart_mulVec_eq_captureFrame_add_captureResidue
+    (basisColumns := tightBasisColumns frame.tightDir frame.basisLabel)
+    (coeff := frame.coeff), hframeZero]
+  rw [show captureResidue (chartPointOfDesign crux.design).chart
+      (tightBasisColumns frame.tightDir frame.basisLabel) frame.coeff
+    = frame.lineResidue from rfl, hresidueZero, add_zero]
+
+/-- **THE DESIGN READING OF THE RANK-FOUR FRAME.**  The direction of the
+law above is an atom dependency that the whole basis annihilates, and it
+is alive at three atoms at least. -/
+theorem RankFourFrame.exists_atom_dependency_in_basis_kernel (frame : RankFourFrame crux) :
+    ∃ (dependency : Fin 6 → ℝ) (atomOne atomTwo atomThree : Fin 6),
+      atomOne ≠ atomTwo ∧ atomOne ≠ atomThree ∧ atomTwo ≠ atomThree
+      ∧ dependency atomOne ≠ 0 ∧ dependency atomTwo ≠ 0 ∧ dependency atomThree ≠ 0
+      ∧ (∀ slot : Fin 4, frame.tightDir (frame.basisLabel slot) ⬝ᵥ dependency = 0)
+      ∧ ∑ atomIndex : Fin 6,
+          (Real.sqrt (crux.design.weight atomIndex) * dependency atomIndex)
+            • crux.design.atom atomIndex = 0 := by
+  obtain ⟨nullVec, hne, hbasis, hchart⟩ := frame.exists_chart_null_basis_null
+  obtain ⟨atomOne, atomTwo, atomThree, hneOneTwo, hneOneThree, hneTwoThree,
+    hliveOne, hliveTwo, hliveThree⟩ := crux.exists_three_live_of_chart_null hne hchart
+  exact ⟨nullVec, atomOne, atomTwo, atomThree, hneOneTwo, hneOneThree, hneTwoThree,
+    hliveOne, hliveTwo, hliveThree, hbasis,
+    sum_smul_atom_eq_zero_of_projectionOfDesign_mulVec_eq_zero crux.design hchart⟩
+
+end ChartNullExistence
+
+/-! ## Layer 15 — the rank-four rung reduces to one residue -/
+
+section RungReduction
+
+/-- **THE CHART NULL BASIS NULL RESIDUE.**  A nonzero direction that the
+whole basis annihilates and that the chart kills dies.  In design terms:
+an atom dependency inside the kernel of the assembly basis dies. -/
+def RankFourChartNullBasisNullClosed : Prop :=
+  ∀ (crux : SixThreeCrux) (frame : RankFourFrame crux) (nullVec : Fin 6 → ℝ),
+    nullVec ≠ 0 →
+    (∀ slot : Fin 4, frame.tightDir (frame.basisLabel slot) ⬝ᵥ nullVec = 0) →
+    (chartPointOfDesign crux.design).chart *ᵥ nullVec = 0 →
+    False
+
+/-- **THE RESIDUE KILLS EVERY RANK-FOUR FRAME.** -/
+theorem RankFourFrame.false_of_chartNullBasisNull
+    (hclosed : RankFourChartNullBasisNullClosed) {crux : SixThreeCrux}
+    (frame : RankFourFrame crux) : False := by
+  obtain ⟨nullVec, hne, hbasis, hchart⟩ := frame.exists_chart_null_basis_null
+  exact hclosed crux frame nullVec hne hbasis hchart
+
+/-- Closure one from the single residue. -/
+theorem rankFourSupportTwoClosed_of_chartNullBasisNull
+    (hclosed : RankFourChartNullBasisNullClosed) : RankFourSupportTwoClosed := by
+  intro _crux frame
+  intros
+  exact frame.false_of_chartNullBasisNull hclosed
+
+/-- Closure two from the single residue. -/
+theorem rankFourSharedPrivateClosed_of_chartNullBasisNull
+    (hclosed : RankFourChartNullBasisNullClosed) : RankFourSharedPrivateClosed := by
+  intro _crux frame
+  intros
+  exact frame.false_of_chartNullBasisNull hclosed
+
+/-- Closure three from the single residue. -/
+theorem rankFourKFourClosed_of_chartNullBasisNull
+    (hclosed : RankFourChartNullBasisNullClosed) : RankFourKFourClosed := by
+  intro _crux frame
+  intros
+  exact frame.false_of_chartNullBasisNull hclosed
+
+/-- Closure four from the single residue. -/
+theorem rankFourCycleIndependentClosed_of_chartNullBasisNull
+    (hclosed : RankFourChartNullBasisNullClosed) : RankFourCycleIndependentClosed := by
+  intro _crux frame
+  intros
+  exact frame.false_of_chartNullBasisNull hclosed
+
+/-- Closure five from the single residue. -/
+theorem rankFourBothParallelClosed_of_chartNullBasisNull
+    (hclosed : RankFourChartNullBasisNullClosed) : RankFourBothParallelClosed := by
+  intro _crux frame
+  intros
+  exact frame.false_of_chartNullBasisNull hclosed
+
+/-- **THE RANK-FOUR RUNG FROM ONE RESIDUE.**  The five named closures,
+the census trichotomy, the circuit lattice, the clone lattice, the
+triple lattice and the interiority obligation all collapse into the
+single statement `Gtz.RankFourChartNullBasisNullClosed`. -/
+theorem isSixThreeAssemblyRankExcluded_four_of_chartNullBasisNull
+    (hclosed : RankFourChartNullBasisNullClosed) :
+    IsSixThreeAssemblyRankExcluded 4 := by
+  intro crux activeIndex activeSet activeSubset activeWeight tightDir hdata hrankFour
+  obtain ⟨frame, _htype, _htrichotomy⟩ := crux.exists_rankFourFrame hdata hrankFour
+  exact frame.false_of_chartNullBasisNull hclosed
+
+end RungReduction
+
+
+/-! ## Layer 16 — the five-slot constructor and the rank-five branch -/
+
+section RankFiveBranch
+
+variable {activeIndex : Type*} {tightDir : activeIndex → (Fin 6 → ℝ)}
+
+/-- **THE FIVE-SLOT NULL CONSTRUCTOR.**  Five basis rows and one zero
+row fill a six-by-six square, thus the square is singular. -/
+theorem exists_basis_null_five_slots (basisLabel : Fin 5 → activeIndex) :
+    ∃ nullVec : Fin 6 → ℝ, nullVec ≠ 0
+      ∧ ∀ slot : Fin 5, tightDir (basisLabel slot) ⬝ᵥ nullVec = 0 := by
+  classical
+  set square : Matrix (Fin 6) (Fin 6) ℝ := Matrix.of
+    ![fun colAtom => tightDir (basisLabel 0) colAtom,
+      fun colAtom => tightDir (basisLabel 1) colAtom,
+      fun colAtom => tightDir (basisLabel 2) colAtom,
+      fun colAtom => tightDir (basisLabel 3) colAtom,
+      fun colAtom => tightDir (basisLabel 4) colAtom,
+      (0 : Fin 6 → ℝ)] with hsquare
+  have hdet : square.det = 0 :=
+    Matrix.det_eq_zero_of_row_eq_zero 5 fun colAtom => by
+      simp [hsquare]
+  obtain ⟨nullVec, hne, hkernel⟩ := Matrix.exists_mulVec_eq_zero_iff.mpr hdet
+  have hslotZero : tightDir (basisLabel 0) ⬝ᵥ nullVec = 0 := by
+    have hrow := congrFun hkernel 0
+    simpa [hsquare, Matrix.mulVec, dotProduct] using hrow
+  have hslotOne : tightDir (basisLabel 1) ⬝ᵥ nullVec = 0 := by
+    have hrow := congrFun hkernel 1
+    simpa [hsquare, Matrix.mulVec, dotProduct] using hrow
+  have hslotTwo : tightDir (basisLabel 2) ⬝ᵥ nullVec = 0 := by
+    have hrow := congrFun hkernel 2
+    simpa [hsquare, Matrix.mulVec, dotProduct] using hrow
+  have hslotThree : tightDir (basisLabel 3) ⬝ᵥ nullVec = 0 := by
+    have hrow := congrFun hkernel 3
+    simpa [hsquare, Matrix.mulVec, dotProduct] using hrow
+  have hslotFour : tightDir (basisLabel 4) ⬝ᵥ nullVec = 0 := by
+    have hrow := congrFun hkernel 4
+    simpa [hsquare, Matrix.mulVec, dotProduct] using hrow
+  refine ⟨nullVec, hne, ?_⟩
+  intro slot
+  fin_cases slot
+  · exact hslotZero
+  · exact hslotOne
+  · exact hslotTwo
+  · exact hslotThree
+  · exact hslotFour
+
+variable {crux : SixThreeCrux}
+
+/-- **THE RANK-FIVE FRAME OF CAPTURE TRACE THREE CARRIES A CHART NULL
+BASIS NULL DIRECTION.**  The residue is zero at that trace, thus the
+five-slot null direction dies at the chart too. -/
+theorem RankFiveFrame.exists_chart_null_basis_null_of_capture_trace_three
+    (frame : RankFiveFrame crux) (htraceThree : Matrix.trace frame.coeff = 3) :
+    ∃ nullVec : Fin 6 → ℝ, nullVec ≠ 0
+      ∧ (∀ slot : Fin 5, frame.tightDir (frame.basisLabel slot) ⬝ᵥ nullVec = 0)
+      ∧ (chartPointOfDesign crux.design).chart *ᵥ nullVec = 0 := by
+  obtain ⟨nullVec, hne, hbasis⟩ :=
+    exists_basis_null_five_slots (tightDir := frame.tightDir) frame.basisLabel
+  exact ⟨nullVec, hne, hbasis,
+    crux.chart_mulVec_eq_zero_of_basis_null_of_capture_trace_rank frame.hrepresentation
+      frame.hleft (le_of_eq htraceThree.symm) hbasis⟩
+
+/-- **THE RANK-FIVE CHART NULL BASIS NULL RESIDUE.** -/
+def RankFiveChartNullBasisNullClosed : Prop :=
+  ∀ (crux : SixThreeCrux) (frame : RankFiveFrame crux) (nullVec : Fin 6 → ℝ),
+    nullVec ≠ 0 →
+    (∀ slot : Fin 5, frame.tightDir (frame.basisLabel slot) ⬝ᵥ nullVec = 0) →
+    (chartPointOfDesign crux.design).chart *ᵥ nullVec = 0 →
+    False
+
+/-- **THE TRACE-THREE BRANCH OF RANK FIVE REDUCES TO ONE RESIDUE.** -/
+theorem RankFiveFrame.false_of_chartNullBasisNull_of_capture_trace_three
+    (hclosed : RankFiveChartNullBasisNullClosed) {crux : SixThreeCrux}
+    (frame : RankFiveFrame crux) (htraceThree : Matrix.trace frame.coeff = 3) :
+    False := by
+  obtain ⟨nullVec, hne, hbasis, hchart⟩ :=
+    frame.exists_chart_null_basis_null_of_capture_trace_three htraceThree
+  exact hclosed crux frame nullVec hne hbasis hchart
+
+/-- **THE CAPTURE TRACE OF A RANK-FIVE FRAME IS TWO, MODULO THE
+RESIDUE.** -/
+theorem RankFiveFrame.capture_trace_eq_two_of_chartNullBasisNull
+    (hclosed : RankFiveChartNullBasisNullClosed) {crux : SixThreeCrux}
+    (frame : RankFiveFrame crux) : Matrix.trace frame.coeff = 2 :=
+  frame.htrace.resolve_right fun htraceThree =>
+    frame.false_of_chartNullBasisNull_of_capture_trace_three hclosed htraceThree
+
+end RankFiveBranch
+
+/-! ## Layer 17 — the block structure of a basis null direction -/
+
+section NullSupport
+
+variable {size basisCount : ℕ} {activeIndex : Type*}
+variable {tightDir : activeIndex → (Fin size → ℝ)}
+variable {basisLabel : Fin basisCount → activeIndex}
+
+/-- **THE SECOND LIVE ATOM OF A BLOCK.**  A basis null direction that is
+alive at an atom of a live basis column is alive at a second atom of
+that same column: the column sum has one nonzero term, thus it has
+another. -/
+theorem exists_second_live_of_basis_null {nullVec : Fin size → ℝ}
+    (hnull : ∀ slot : Fin basisCount, tightDir (basisLabel slot) ⬝ᵥ nullVec = 0)
+    {slot : Fin basisCount} {atomIndex : Fin size}
+    (hcolumnLive : tightDir (basisLabel slot) atomIndex ≠ 0)
+    (hnullLive : nullVec atomIndex ≠ 0) :
+    ∃ other : Fin size, other ≠ atomIndex
+      ∧ tightDir (basisLabel slot) other ≠ 0 ∧ nullVec other ≠ 0 := by
+  classical
+  by_contra hnone
+  push Not at hnone
+  have hsum := hnull slot
+  rw [dotProduct] at hsum
+  have hsingle : ∑ index : Fin size, tightDir (basisLabel slot) index * nullVec index
+      = tightDir (basisLabel slot) atomIndex * nullVec atomIndex := by
+    refine Finset.sum_eq_single atomIndex (fun index _ hne => ?_) (fun hcontra => ?_)
+    · rcases eq_or_ne (tightDir (basisLabel slot) index) 0 with hzero | hlive
+      · rw [hzero, zero_mul]
+      · rw [hnone index hne hlive, mul_zero]
+    · exact absurd (Finset.mem_univ atomIndex) hcontra
+  rw [hsingle] at hsum
+  rcases mul_eq_zero.mp hsum with hzero | hzero
+  · exact hcolumnLive hzero
+  · exact hnullLive hzero
+
+end NullSupport
 
 
 end Gtz
