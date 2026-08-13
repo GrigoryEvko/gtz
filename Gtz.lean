@@ -2181,6 +2181,16 @@ import Gtz.Reduction.MassGapDescent
 -- degenerate cover and both registry hinge obligations.
 import Gtz.Reduction.PolarCoverDescent
 
+-- The polar tilt ledger: Parseval read along the pole prices the whole tilt
+-- budget, thus that budget is at most HALF the pole's leverage and never the
+-- leverage itself; a pole that saturates the leverage cap is orthogonal to every
+-- other atom, thus the whole saturated stratum closes with no residual; a tie
+-- obeys a new weight law against the saturation deficit at every overshooting
+-- atom; and the residual narrowed by those two free facts still closes the
+-- hinge, the three arms, the sub-arm, the repaired cover, the three threshold
+-- arms and both registry hinge obligations.
+import Gtz.Reduction.PolarTiltLedger
+
 -- The frame-priced descent: the design identity contracts against the inverse
 -- gap of every region, thus the pivot pigeonhole becomes an exact stage law and
 -- the first drop is free at every design of size above the rank plus one; the
@@ -3193,6 +3203,15 @@ import Gtz.Wave.SharedPrivateConfinement
 -- its five dispatches.
 import Gtz.Wave.SharedPrivateLeakEnergy
 
+-- the dual read of a fixed vector: the read combination calculus, the
+-- commutant law that keeps a fixed combination fixed, the solitary dual
+-- read kill and the dual pair, the plane of a trace-two idempotent with
+-- its dual vector, the plane trace of two eigenvectors, the
+-- double-carrier trace identity, the full read frame, the interior
+-- triple, the shared carrier kill, and the narrowed residue with its six
+-- dispatches.
+import Gtz.Wave.SharedPrivateDualRead
+
 -- the circuit rank-one link: the corner rows of a tight direction on a
 -- triple, the wedge law, the rank-one shifted gap block of a shared
 -- triple, the triple kill that refuses three basis columns on one
@@ -3367,6 +3386,11 @@ import Gtz.Wave.DenseCeilingCollapse
 -- one pair, the trace certificate, the maximal volume triple at every scale
 -- mass below one quarter, and the refutation of the frame-constrained drop.
 import Gtz.Wave.AtomPivotDeflation
+-- The plane witness ledger: the trace law of a plane frame, the master
+-- identity of a witness, the kill at general rank, the four unconditional
+-- strata of the plane residue, and the plane residue in dual form with
+-- seven real unknowns and no combinatorial search.
+import Gtz.Wave.PlaneWitnessLedger
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02

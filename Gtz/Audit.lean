@@ -441,6 +441,7 @@ import Gtz.Uniform.SpectralWhitening
 import Gtz.Uniform.WindowInductionStep
 import Gtz.Reduction.MassGapDescent
 import Gtz.Reduction.PolarCoverDescent
+import Gtz.Reduction.PolarTiltLedger
 import Gtz.Reduction.FrameDropDescent
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
@@ -733,6 +734,7 @@ import Gtz.Wave.SharedPrivateSlotEnergy
 import Gtz.Wave.SharedPrivateKernelChain
 import Gtz.Wave.SharedPrivateConfinement
 import Gtz.Wave.SharedPrivateLeakEnergy
+import Gtz.Wave.SharedPrivateDualRead
 import Gtz.Wave.SharedPrivateCircuitRankOne
 import Gtz.Wave.SharedPrivateCircuitSaturation
 import Gtz.Wave.KFourCertificateProof
@@ -767,6 +769,33 @@ import Gtz.Wave.DenseSharedBlockRank
 import Gtz.Wave.DenseHeavyAtomReduction
 import Gtz.Wave.AssemblyRankCapstone
 import Gtz.Wave.DenseCeilingCollapse
+import Gtz.Wave.PlaneWitnessLedger
+#print axioms Gtz.unitVector
+#print axioms Gtz.unitVector_dot
+#print axioms Gtz.unitVector_dot_self
+#print axioms Gtz.dot_self_eq_sum_sq
+#print axioms Gtz.plane_total_energy_eq_two
+#print axioms Gtz.plane_witness_energy_total
+#print axioms Gtz.plane_witness_total_le_one
+#print axioms Gtz.false_of_plane_witness
+#print axioms Gtz.exists_plane_pair_of_witness
+#print axioms Gtz.plane_atom_weight_dominates
+#print axioms Gtz.exists_plane_pair_of_zero_scale
+#print axioms Gtz.exists_plane_pair_of_light
+#print axioms Gtz.exists_plane_pair_of_heavy
+#print axioms Gtz.exists_plane_pair_of_conic
+#print axioms Gtz.frame_total_energy_eq_rank
+#print axioms Gtz.frame_witness_energy_total
+#print axioms Gtz.false_of_frame_witness
+#print axioms Gtz.false_of_zero_scale_frame
+#print axioms Gtz.AtomPlaneWitnessClosed
+#print axioms Gtz.atomPairGramClosed_of_planeWitness
+#print axioms Gtz.atomPairCeilingClosed_of_planeWitness
+#print axioms Gtz.rankFiveDenseHeavyFiveClosed_of_planeWitness
+#print axioms Gtz.rankFiveDenseHeavyFiveDistinctClosed_of_planeWitness
+#print axioms Gtz.SixThreeCrux.shifted_weight_pos_of_planeWitness
+#print axioms Gtz.forall_shifted_weight_pos_of_planeWitness
+#print axioms Gtz.SixThreeCrux.false_of_planeWitness_of_shift_zero
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -4707,6 +4736,54 @@ import Gtz.Wave.DenseCeilingCollapse
 #print axioms Gtz.gtzWeightedAll_three_of_polarTilt
 #print axioms Gtz.gtzWeighted_six_three_of_polarCoupling
 #print axioms Gtz.gtzWeighted_aboveFloor_of_polarTilt
+
+-- Gtz/Reduction/PolarTiltLedger.lean
+#print axioms Gtz.sum_weight_polarPairing_sq
+#print axioms Gtz.sum_weight_polarPairing_sq_erase
+#print axioms Gtz.saturationDeficit_nonneg
+#print axioms Gtz.polarPairing_eq_zero_of_saturated
+#print axioms Gtz.weightFloor_mul_polarTilt_le
+#print axioms Gtz.exists_weight_floor
+#print axioms Gtz.exists_weight_floor_of_rank
+#print axioms Gtz.polarTilt_budget_le_half_leverage
+#print axioms Gtz.polarTilt_budget_lt_half_leverage
+#print axioms Gtz.exists_dominating_of_saturatedPole
+#print axioms Gtz.not_isTie_of_saturatedPole
+#print axioms Gtz.tie_weight_mul_leverage_lt_one
+#print axioms Gtz.not_isTie_of_saturatedPole_three
+#print axioms Gtz.exists_polarCover_margin_of_share
+#print axioms Gtz.exists_tilted_polarCover_of_share
+#print axioms Gtz.tie_weightFloor_saturation_of_share
+#print axioms Gtz.tie_weightFloor_saturation_sharp
+#print axioms Gtz.not_isTie_of_saturationGap
+#print axioms Gtz.tie_weightFloor_saturation_three
+#print axioms Gtz.not_isTie_of_saturationGap_three
+#print axioms Gtz.card_overshooting_ge_rank
+#print axioms Gtz.PolarSaturationBudget
+#print axioms Gtz.polarSaturationBudget_of_isTie
+#print axioms Gtz.PolarTiltSelectionUnsaturated
+#print axioms Gtz.polarTiltSelectionUnsaturated_of_polarTiltSelection
+#print axioms Gtz.hingeHoldsAtSize_of_polarTiltUnsaturated
+#print axioms Gtz.stressFreeArmAt_of_polarTiltUnsaturated
+#print axioms Gtz.balancedArmAt_of_polarTiltUnsaturated
+#print axioms Gtz.degenerateArmAt_of_polarTiltUnsaturated
+#print axioms Gtz.balancedPartialSupportArmAt_of_polarTiltUnsaturated
+#print axioms Gtz.balancedFullSupportArmAt_of_polarTiltUnsaturated
+#print axioms Gtz.degenerateHyperplaneCover_of_polarTiltUnsaturated
+#print axioms Gtz.thresholdCellHingeRankFourAndUp_of_polarTiltUnsaturated
+#print axioms Gtz.subThresholdBandHinge_of_polarTiltUnsaturated
+#print axioms Gtz.sharpWindowHinge_of_polarTiltUnsaturated
+#print axioms Gtz.thresholdStressFreeArm_of_polarTiltUnsaturated
+#print axioms Gtz.thresholdBalancedArm_of_polarTiltUnsaturated
+#print axioms Gtz.thresholdDegenerateArm_of_polarTiltUnsaturated
+#print axioms Gtz.polarTiltUnsaturated_closes_every_arm
+#print axioms Gtz.hingeHoldsAtSize_six_three_of_polarTiltUnsaturated
+#print axioms Gtz.thresholdArms_rank_three_of_polarTiltUnsaturated
+#print axioms Gtz.gtzWeighted_six_three_of_polarTiltUnsaturated
+#print axioms Gtz.gtzWeightedAll_three_of_polarTiltUnsaturated
+#print axioms Gtz.not_polarTiltSelectionUnsaturated_five_three
+#print axioms Gtz.polarTiltUnsaturated_forbids_only_primitive_ties
+#print axioms Gtz.sixSplitDiamondDesign_spares_polarTiltUnsaturated
 
 -- Coverage sweep: every `theorem`/`lemma` enumerated from `Gtz/` that was
 -- absent from the list above.  Gtz/Ties/DiamondTie.lean is deliberately
@@ -24135,3 +24212,32 @@ run_cmd do
 #print axioms Gtz.rankFourSharedPrivateClosed_of_leak_energy_strata
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_leak_energy_strata
 #print axioms Gtz.rankSixSharedPrivateClosed_of_leak_energy_strata
+
+-- the dual read of a fixed vector
+#print axioms Gtz.readCombination
+#print axioms Gtz.readCombination_apply
+#print axioms Gtz.readCombination_of_solitary
+#print axioms Gtz.readCombination_of_empty
+#print axioms Gtz.mulVec_smul_left
+#print axioms Gtz.readCombination_smul_left
+#print axioms Gtz.readCombination_fixed
+#print axioms Gtz.fixed_read_of_solitary_dual
+#print axioms Gtz.false_of_solitary_dual_read
+#print axioms Gtz.exists_dual_pair_of_fixed
+#print axioms Gtz.orthonormal_pair_entry
+#print axioms Gtz.orthonormal_pair_mulVec
+#print axioms Gtz.orthonormal_pair_fixed
+#print axioms Gtz.exists_dual_vector_of_trace_two
+#print axioms Gtz.trace_eq_of_eigen_pair
+#print axioms Gtz.coCarrier_diag_eq_of_shared_carrier
+#print axioms Gtz.carrier_diag_eq_of_shared_carrier
+#print axioms Gtz.SharedPrivateData.exists_full_read_frame
+#print axioms Gtz.SharedPrivateData.three_le_interior_card
+#print axioms Gtz.SharedPrivateData.false_of_shared_carrier_pair
+#print axioms Gtz.sharedPrivateBoundaryFiveLeakClosed_of_carrier
+#print axioms Gtz.sharedPrivateBoundaryFiveConfinedClosed_of_carrier
+#print axioms Gtz.sharedPrivateBoundaryClosed_of_carrier
+#print axioms Gtz.sharedPrivateKilled_of_carrier_strata
+#print axioms Gtz.rankFourSharedPrivateClosed_of_carrier_strata
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_carrier_strata
+#print axioms Gtz.rankSixSharedPrivateClosed_of_carrier_strata
