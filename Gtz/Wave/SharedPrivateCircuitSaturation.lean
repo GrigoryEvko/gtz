@@ -32,6 +32,13 @@ P y y (1 - P y y)` off the diagonal.  On a rank-one triple two of those
 squares are known products, thus the cross energy of the triple is capped
 by one quarter.
 
+The cover kill.  The whole shifted gap diagonal sums to `rank - 1 - size
+* value`.  Two rank-one sets that cover every atom pay only two units
+together, thus `rank <= 3 + size * value`, thus the chart value is
+nonnegative.  Every kill target has a negative value, thus the six atoms
+of a shared-private datum never carry two rank-one blocks that cover
+them.  The identical branch already supplies one such block.
+
 The readings.  The identical-support branch of a pair circuit carries a
 rank-one triple, thus it pays the triple budget.  The dead-wedge branch
 carries a support-two label on the two foreign atoms, thus it pays the
@@ -67,6 +74,20 @@ residues are restated with those payments in hand.
   `Gtz.SharedPrivateData.splitCircuit_deadWedge_saturation`,
   `Gtz.SharedPrivateData.splitCircuit_deadWedge_shifted_sum_le_one` — the
   dead-wedge branch payments.
+* `Gtz.shiftedGap`, `Gtz.shiftedGap_apply_diag`,
+  `Gtz.shiftedGap_apply_offDiag`, `Gtz.projection_eq_shiftedGap_add` — the
+  shifted gap matrix.
+* `Gtz.setProbe`, `Gtz.setProbe_dotProduct`, `Gtz.setProbe_mulVec`,
+  `Gtz.projection_set_contraction` — the contraction at a set probe.
+* `Gtz.gapSet_saturation`, `Gtz.gapSet_shifted_sum_le_one` — **THE SET
+  BUDGET AT EVERY SIZE.**
+* `Gtz.shiftedGap_rankOne_of_gapBlockRankOne` — the triple bridge.
+* `Gtz.shiftedGapDiag_sum_eq` — **THE SHIFTED GAP TOTAL.**
+* `Gtz.rank_le_of_shiftedGap_rankOne_cover` — **THE TWO-SET COVER KILL.**
+* `Gtz.SharedPrivateData.shiftedGapDiag_sum`,
+  `Gtz.SharedPrivateData.false_of_shiftedGap_rankOne_cover`,
+  `Gtz.SharedPrivateData.false_of_identical_support_complement_rankOne` —
+  **THE IDENTICAL BRANCH DIES AGAINST A RANK-ONE COMPLEMENT.**
 * `Gtz.SharedPrivateCircuitPairIdenticalSaturatedClosed`,
   `Gtz.SharedPrivateCircuitSplitPairSaturatedClosed` — the two paid
   residues.
@@ -1242,5 +1263,501 @@ theorem rankSixSharedPrivateClosed_of_saturated_lattice
   rankSixSharedPrivateClosed_of_sharedPrivate_lattice
     (sharedPrivateCircuitPairIdenticalClosed_of_saturated hidentical) hwedgeLive
     (sharedPrivateCircuitSplitPairClosed_of_saturated hwedgeDead) hwide hconfined
+
+/-! ## Layer 9 — the set budget at every size -/
+
+section SetBudget
+
+variable {size : ℕ} {projection : Matrix (Fin size) (Fin size) ℝ}
+variable {weight : Fin size → ℝ} {value : ℝ}
+
+/-- **THE SHIFTED GAP MATRIX.**  The chart minus the captured diagonal.
+Its diagonal is the shifted gap diagonal and its off-diagonal is the gap
+itself. -/
+noncomputable def shiftedGap (projection : Matrix (Fin size) (Fin size) ℝ)
+    (weight : Fin size → ℝ) (value : ℝ) : Matrix (Fin size) (Fin size) ℝ :=
+  projection - Matrix.diagonal (fun atomIndex => value + weight atomIndex)
+
+theorem shiftedGap_apply_diag (atomIndex : Fin size) :
+    shiftedGap projection weight value atomIndex atomIndex
+      = shiftedGapDiag projection weight value atomIndex := by
+  rw [shiftedGap, Matrix.sub_apply, Matrix.diagonal_apply_eq, shiftedGapDiag,
+    chartStationaryGap, Matrix.sub_apply, Matrix.diagonal_apply_eq]
+  ring
+
+theorem shiftedGap_apply_offDiag {rowIndex colIndex : Fin size}
+    (hne : rowIndex ≠ colIndex) :
+    shiftedGap projection weight value rowIndex colIndex
+      = chartStationaryGap projection weight rowIndex colIndex := by
+  rw [shiftedGap, Matrix.sub_apply, Matrix.diagonal_apply_ne _ hne, sub_zero,
+    chartStationaryGap, Matrix.sub_apply, Matrix.diagonal_apply_ne _ hne, sub_zero]
+
+/-- The chart entry through the shifted gap. -/
+theorem projection_eq_shiftedGap_add (rowIndex colIndex : Fin size) :
+    projection rowIndex colIndex
+      = shiftedGap projection weight value rowIndex colIndex
+        + (if rowIndex = colIndex then value + weight rowIndex else 0) := by
+  by_cases hne : rowIndex = colIndex
+  · subst hne
+    rw [shiftedGap_apply_diag, if_pos rfl, shiftedGapDiag, chartStationaryGap,
+      Matrix.sub_apply, Matrix.diagonal_apply_eq]
+    ring
+  · rw [shiftedGap_apply_offDiag hne, if_neg hne, add_zero,
+      projection_offDiag_eq_gap (projection := projection) (weight := weight) hne]
+
+/-- The probe supported on a finite set. -/
+noncomputable def setProbe (setS : Finset (Fin size)) (val : Fin size → ℝ) :
+    Fin size → ℝ :=
+  fun atomIndex => if atomIndex ∈ setS then val atomIndex else 0
+
+theorem setProbe_mem {setS : Finset (Fin size)} {val : Fin size → ℝ}
+    {atomIndex : Fin size} (hmem : atomIndex ∈ setS) :
+    setProbe setS val atomIndex = val atomIndex := by
+  rw [setProbe, if_pos hmem]
+
+theorem setProbe_dotProduct (setS : Finset (Fin size)) (val other : Fin size → ℝ) :
+    setProbe setS val ⬝ᵥ other = ∑ atomIndex ∈ setS, val atomIndex * other atomIndex := by
+  classical
+  rw [dotProduct]
+  refine (Finset.sum_subset (Finset.subset_univ setS) ?_).symm.trans ?_
+  · intro atomIndex _ hnot
+    rw [setProbe, if_neg hnot, zero_mul]
+  · exact Finset.sum_congr rfl fun atomIndex hmem => by rw [setProbe_mem hmem]
+
+theorem setProbe_mulVec (matrixA : Matrix (Fin size) (Fin size) ℝ)
+    (setS : Finset (Fin size)) (val : Fin size → ℝ) (rowIndex : Fin size) :
+    (matrixA *ᵥ setProbe setS val) rowIndex
+      = ∑ atomIndex ∈ setS, matrixA rowIndex atomIndex * val atomIndex := by
+  classical
+  rw [Matrix.mulVec, dotProduct]
+  refine (Finset.sum_subset (Finset.subset_univ setS) ?_).symm.trans ?_
+  · intro atomIndex _ hnot
+    rw [setProbe, if_neg hnot, mul_zero]
+  · exact Finset.sum_congr rfl fun atomIndex hmem => by rw [setProbe_mem hmem]
+
+/-- **THE SET CONTRACTION.**  The chart contracts every probe supported on
+a finite set, read as a double sum over the set. -/
+theorem projection_set_contraction (hsymm : projectionᵀ = projection)
+    (hidem : projection * projection = projection) (setS : Finset (Fin size))
+    (val : Fin size → ℝ) :
+    ∑ rowIndex ∈ setS, ∑ colIndex ∈ setS,
+        projection rowIndex colIndex * (val rowIndex * val colIndex)
+      ≤ ∑ atomIndex ∈ setS, val atomIndex * val atomIndex := by
+  classical
+  have hbase := dotProduct_mulVec_le_self_of_symmetricIdempotent hsymm hidem
+    (setProbe setS val)
+  have hleft : setProbe setS val ⬝ᵥ (projection *ᵥ setProbe setS val)
+      = ∑ rowIndex ∈ setS, ∑ colIndex ∈ setS,
+        projection rowIndex colIndex * (val rowIndex * val colIndex) := by
+    rw [setProbe_dotProduct]
+    refine Finset.sum_congr rfl fun rowIndex _ => ?_
+    rw [setProbe_mulVec, Finset.mul_sum]
+    exact Finset.sum_congr rfl fun colIndex _ => by ring
+  have hright : setProbe setS val ⬝ᵥ setProbe setS val
+      = ∑ atomIndex ∈ setS, val atomIndex * val atomIndex := by
+    rw [setProbe_dotProduct]
+    exact Finset.sum_congr rfl fun atomIndex hmem => by rw [setProbe_mem hmem]
+  rw [hleft, hright] at hbase
+  exact hbase
+
+/-- **THE SET BUDGET.**  A shifted gap block that is a rank-one square on a
+finite set pays a unit budget, at EVERY size of the set.  The pair and the
+triple budgets are the two smallest instances.
+
+The extremal probe is the corner column of the block divided by the
+captured defect.  The rank-one law folds the double sum into a square, and
+the contraction reads `W * W ≤ corner * W` with `W` positive. -/
+theorem gapSet_saturation (hsymm : projectionᵀ = projection)
+    (hidem : projection * projection = projection) {setS : Finset (Fin size)}
+    {atomU : Fin size} (hmemU : atomU ∈ setS)
+    (hcap : ∀ atomIndex ∈ setS, value + weight atomIndex < 1)
+    (hpos : ∀ atomIndex ∈ setS, 0 < shiftedGapDiag projection weight value atomIndex)
+    (hrankOne : ∀ rowIndex ∈ setS, ∀ colIndex ∈ setS,
+      shiftedGap projection weight value rowIndex colIndex
+          * shiftedGapDiag projection weight value atomU
+        = shiftedGap projection weight value atomU rowIndex
+          * shiftedGap projection weight value atomU colIndex) :
+    ∑ atomIndex ∈ setS, shiftedGapDiag projection weight value atomIndex
+        / (1 - (value + weight atomIndex))
+      ≤ 1 := by
+  classical
+  have hcorner : 0 < shiftedGapDiag projection weight value atomU := hpos atomU hmemU
+  set val : Fin size → ℝ := fun atomIndex =>
+    shiftedGap projection weight value atomU atomIndex
+      / (1 - (value + weight atomIndex)) with hval
+  have hvalApply : ∀ atomIndex : Fin size, val atomIndex
+      = shiftedGap projection weight value atomU atomIndex
+        / (1 - (value + weight atomIndex)) := fun _ => rfl
+  have hdef : ∀ atomIndex ∈ setS, (0 : ℝ) < 1 - (value + weight atomIndex) :=
+    fun atomIndex hmem => by linarith [hcap atomIndex hmem]
+  -- the square of a corner column entry is the corner times the diagonal
+  have hsquare : ∀ atomIndex ∈ setS,
+      shiftedGap projection weight value atomU atomIndex
+          * shiftedGap projection weight value atomU atomIndex
+        = shiftedGapDiag projection weight value atomIndex
+          * shiftedGapDiag projection weight value atomU := by
+    intro atomIndex hmem
+    have hinstance := hrankOne atomIndex hmem atomIndex hmem
+    rw [shiftedGap_apply_diag] at hinstance
+    exact hinstance.symm
+  -- the ratio sum and the folded total
+  have hratio : ∀ atomIndex ∈ setS,
+      shiftedGap projection weight value atomU atomIndex * val atomIndex
+        = shiftedGapDiag projection weight value atomU
+          * (shiftedGapDiag projection weight value atomIndex
+            / (1 - (value + weight atomIndex))) := by
+    intro atomIndex hmem
+    have hne : (1 : ℝ) - (value + weight atomIndex) ≠ 0 :=
+      ne_of_gt (hdef atomIndex hmem)
+    rw [hvalApply atomIndex]
+    field_simp
+    linear_combination hsquare atomIndex hmem
+  have hsumNonneg : ∀ atomIndex ∈ setS,
+      0 ≤ shiftedGapDiag projection weight value atomIndex
+        / (1 - (value + weight atomIndex)) :=
+    fun atomIndex hmem =>
+      le_of_lt (div_pos (hpos atomIndex hmem) (hdef atomIndex hmem))
+  have hsumPos : 0 < ∑ atomIndex ∈ setS,
+      shiftedGapDiag projection weight value atomIndex
+        / (1 - (value + weight atomIndex)) :=
+    Finset.sum_pos' hsumNonneg ⟨atomU, hmemU, div_pos hcorner (hdef atomU hmemU)⟩
+  set total := ∑ atomIndex ∈ setS,
+    shiftedGap projection weight value atomU atomIndex * val atomIndex with htotal
+  have htotalEq : total = shiftedGapDiag projection weight value atomU
+      * ∑ atomIndex ∈ setS, shiftedGapDiag projection weight value atomIndex
+        / (1 - (value + weight atomIndex)) := by
+    rw [htotal, Finset.mul_sum]
+    exact Finset.sum_congr rfl hratio
+  have htotalPos : 0 < total := by
+    rw [htotalEq]; exact mul_pos hcorner hsumPos
+  -- the contraction, split into the shifted gap form and the captured diagonal
+  have hcontract := projection_set_contraction hsymm hidem setS val
+  have hsplit : ∑ rowIndex ∈ setS, ∑ colIndex ∈ setS,
+        projection rowIndex colIndex * (val rowIndex * val colIndex)
+      = (∑ rowIndex ∈ setS, ∑ colIndex ∈ setS,
+          shiftedGap projection weight value rowIndex colIndex
+            * (val rowIndex * val colIndex))
+        + ∑ atomIndex ∈ setS,
+          (value + weight atomIndex) * (val atomIndex * val atomIndex) := by
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun rowIndex hrow => ?_
+    have hinner : ∑ colIndex ∈ setS,
+        projection rowIndex colIndex * (val rowIndex * val colIndex)
+        = (∑ colIndex ∈ setS, shiftedGap projection weight value rowIndex colIndex
+            * (val rowIndex * val colIndex))
+          + (value + weight rowIndex) * (val rowIndex * val rowIndex) := by
+      have hterm : ∀ colIndex ∈ setS,
+          projection rowIndex colIndex * (val rowIndex * val colIndex)
+          = shiftedGap projection weight value rowIndex colIndex
+              * (val rowIndex * val colIndex)
+            + (if rowIndex = colIndex then value + weight rowIndex else 0)
+              * (val rowIndex * val colIndex) := by
+        intro colIndex _
+        rw [projection_eq_shiftedGap_add (projection := projection) (weight := weight)
+          (value := value) rowIndex colIndex]
+        ring
+      rw [Finset.sum_congr rfl hterm, Finset.sum_add_distrib]
+      congr 1
+      rw [Finset.sum_eq_single rowIndex
+        (fun colIndex _ hne => by rw [if_neg (Ne.symm hne), zero_mul])
+        (fun hnot => absurd hrow hnot), if_pos rfl]
+    exact hinner
+  rw [hsplit] at hcontract
+  -- the defect side collapses to the total
+  have hdefectSide : ∑ atomIndex ∈ setS, val atomIndex * val atomIndex
+      - ∑ atomIndex ∈ setS, (value + weight atomIndex) * (val atomIndex * val atomIndex)
+      = total := by
+    rw [htotal, ← Finset.sum_sub_distrib]
+    refine Finset.sum_congr rfl fun atomIndex hmem => ?_
+    have hne : (1 : ℝ) - (value + weight atomIndex) ≠ 0 :=
+      ne_of_gt (hdef atomIndex hmem)
+    rw [hvalApply atomIndex]
+    field_simp
+  have hform : ∑ rowIndex ∈ setS, ∑ colIndex ∈ setS,
+      shiftedGap projection weight value rowIndex colIndex
+        * (val rowIndex * val colIndex) ≤ total := by
+    rw [← hdefectSide]; linarith [hcontract]
+  -- the rank-one law folds the double sum into a square
+  have hfold : shiftedGapDiag projection weight value atomU
+      * ∑ rowIndex ∈ setS, ∑ colIndex ∈ setS,
+        shiftedGap projection weight value rowIndex colIndex
+          * (val rowIndex * val colIndex)
+      = total * total := by
+    rw [Finset.mul_sum, htotal, Finset.sum_mul_sum]
+    refine Finset.sum_congr rfl fun rowIndex hrow => ?_
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun colIndex hcol => ?_
+    have hinstance := hrankOne rowIndex hrow colIndex hcol
+    linear_combination (val rowIndex * val colIndex) * hinstance
+  have hsq : total * total ≤ shiftedGapDiag projection weight value atomU * total := by
+    rw [← hfold]; exact mul_le_mul_of_nonneg_left hform (le_of_lt hcorner)
+  have hle : total ≤ shiftedGapDiag projection weight value atomU := by
+    by_contra hcontra
+    rw [not_le] at hcontra
+    nlinarith [hsq, htotalPos, hcontra]
+  rw [htotalEq] at hle
+  have hfinal : shiftedGapDiag projection weight value atomU
+      * ∑ atomIndex ∈ setS, shiftedGapDiag projection weight value atomIndex
+        / (1 - (value + weight atomIndex))
+      ≤ shiftedGapDiag projection weight value atomU * 1 := by
+    rw [mul_one]; exact hle
+  exact le_of_mul_le_mul_left hfinal hcorner
+
+/-- The plain set budget. -/
+theorem gapSet_shifted_sum_le_one (hsymm : projectionᵀ = projection)
+    (hidem : projection * projection = projection) {setS : Finset (Fin size)}
+    {atomU : Fin size} (hmemU : atomU ∈ setS)
+    (hfloor : ∀ atomIndex ∈ setS, 0 ≤ value + weight atomIndex)
+    (hcap : ∀ atomIndex ∈ setS, value + weight atomIndex < 1)
+    (hpos : ∀ atomIndex ∈ setS, 0 < shiftedGapDiag projection weight value atomIndex)
+    (hrankOne : ∀ rowIndex ∈ setS, ∀ colIndex ∈ setS,
+      shiftedGap projection weight value rowIndex colIndex
+          * shiftedGapDiag projection weight value atomU
+        = shiftedGap projection weight value atomU rowIndex
+          * shiftedGap projection weight value atomU colIndex) :
+    ∑ atomIndex ∈ setS, shiftedGapDiag projection weight value atomIndex ≤ 1 := by
+  refine le_trans (Finset.sum_le_sum ?_)
+    (gapSet_saturation hsymm hidem hmemU hcap hpos hrankOne)
+  intro atomIndex hmem
+  have hdef : (0 : ℝ) < 1 - (value + weight atomIndex) := by
+    linarith [hcap atomIndex hmem]
+  rw [le_div_iff₀ hdef]
+  nlinarith [hpos atomIndex hmem, hfloor atomIndex hmem]
+
+/-- **THE TRIPLE BRIDGE.**  The six vanishing minors of a rank-one gap
+block give the nine rank-one instances that the set budget wants. -/
+theorem shiftedGap_rankOne_of_gapBlockRankOne (hsymm : projectionᵀ = projection)
+    {atomU atomV atomS : Fin size} (hUV : atomU ≠ atomV) (hUS : atomU ≠ atomS)
+    (hVS : atomV ≠ atomS)
+    (hshape : GapBlockRankOne projection weight value atomU atomV atomS) :
+    ∀ rowIndex ∈ ({atomU, atomV, atomS} : Finset (Fin size)),
+      ∀ colIndex ∈ ({atomU, atomV, atomS} : Finset (Fin size)),
+        shiftedGap projection weight value rowIndex colIndex
+            * shiftedGapDiag projection weight value atomU
+          = shiftedGap projection weight value atomU rowIndex
+            * shiftedGap projection weight value atomU colIndex := by
+  classical
+  obtain ⟨hminorUV, hminorUS, _, hcross, _, _⟩ := hshape
+  have hgapSymm : ∀ rowIndex colIndex : Fin size,
+      chartStationaryGap projection weight colIndex rowIndex
+        = chartStationaryGap projection weight rowIndex colIndex := by
+    intro rowIndex colIndex
+    rw [chartStationaryGap, Matrix.sub_apply, Matrix.sub_apply,
+      projection_symm_entry hsymm rowIndex colIndex]
+    by_cases hne : rowIndex = colIndex
+    · subst hne; rfl
+    · rw [Matrix.diagonal_apply_ne _ (Ne.symm hne), Matrix.diagonal_apply_ne _ hne]
+  have hdiagU := shiftedGap_apply_diag (projection := projection) (weight := weight)
+    (value := value) atomU
+  have hdiagV := shiftedGap_apply_diag (projection := projection) (weight := weight)
+    (value := value) atomV
+  have hdiagS := shiftedGap_apply_diag (projection := projection) (weight := weight)
+    (value := value) atomS
+  have hoffUV := shiftedGap_apply_offDiag (projection := projection) (weight := weight)
+    (value := value) hUV
+  have hoffUS := shiftedGap_apply_offDiag (projection := projection) (weight := weight)
+    (value := value) hUS
+  have hoffVS := shiftedGap_apply_offDiag (projection := projection) (weight := weight)
+    (value := value) hVS
+  have hoffVU := shiftedGap_apply_offDiag (projection := projection) (weight := weight)
+    (value := value) (Ne.symm hUV)
+  have hoffSU := shiftedGap_apply_offDiag (projection := projection) (weight := weight)
+    (value := value) (Ne.symm hUS)
+  have hoffSV := shiftedGap_apply_offDiag (projection := projection) (weight := weight)
+    (value := value) (Ne.symm hVS)
+  intro rowIndex hrow colIndex hcol
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hrow hcol
+  rcases hrow with hrow | hrow | hrow <;> rcases hcol with hcol | hcol | hcol <;>
+    rw [hrow, hcol] <;>
+  simp only [hdiagU, hdiagV, hdiagS, hoffUV, hoffUS, hoffVS, hoffVU, hoffSU,
+    hoffSV, shiftedGapDiag]
+  · ring
+  · ring
+  · linear_combination (chartStationaryGap projection weight atomU atomU - value) * hgapSymm atomU atomV
+  · linear_combination -hminorUV
+  · linear_combination hcross
+  · linear_combination (chartStationaryGap projection weight atomU atomU - value) * hgapSymm atomU atomS
+  · linear_combination (chartStationaryGap projection weight atomU atomU - value) * hgapSymm atomV atomS + hcross
+  · linear_combination -hminorUS
+
+end SetBudget
+
+/-! ## Layer 10 — the total and the two-set cover kill -/
+
+section CoverKill
+
+variable {size rank : ℕ} {activeIndex : Type}
+variable {projection : Matrix (Fin size) (Fin size) ℝ} {weight : Fin size → ℝ}
+variable {value : ℝ} {activeSet : Finset activeIndex}
+variable {activeSubset : activeIndex → Finset (Fin size)}
+variable {activeWeight : activeIndex → ℝ} {tightDir : activeIndex → (Fin size → ℝ)}
+
+/-- **THE SHIFTED GAP TOTAL.**  The whole shifted gap diagonal sums to the
+rank minus one minus the value times the size.  The chart trace and the
+weight simplex are the only inputs. -/
+theorem shiftedGapDiag_sum_eq
+    (hdata : IsChartStationaryData rank projection weight value activeSet activeSubset
+      activeWeight tightDir) :
+    ∑ atomIndex : Fin size, shiftedGapDiag projection weight value atomIndex
+      = (rank : ℝ) - 1 - (size : ℝ) * value := by
+  classical
+  have hexpand : ∀ atomIndex : Fin size,
+      shiftedGapDiag projection weight value atomIndex
+        = projection atomIndex atomIndex - weight atomIndex - value := by
+    intro atomIndex
+    rw [shiftedGapDiag, chartStationaryGap, Matrix.sub_apply, Matrix.diagonal_apply_eq]
+  rw [Finset.sum_congr rfl fun atomIndex _ => hexpand atomIndex]
+  have hsplit : ∑ atomIndex : Fin size,
+      (projection atomIndex atomIndex - weight atomIndex - value)
+      = (∑ atomIndex : Fin size, projection atomIndex atomIndex)
+        - (∑ atomIndex : Fin size, weight atomIndex)
+        - ∑ _atomIndex : Fin size, value := by
+    rw [← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]
+  have htrace : ∑ atomIndex : Fin size, projection atomIndex atomIndex = (rank : ℝ) :=
+    hdata.hasTraceRank
+  rw [hsplit, htrace, hdata.weight_sum_one, Finset.sum_const, Finset.card_univ,
+    Fintype.card_fin, nsmul_eq_mul]
+
+/-- **THE TWO-SET COVER KILL.**  Two rank-one shifted gap blocks whose sets
+cover every atom pay two units together, thus the shifted gap total obeys
+`rank ≤ 3 + size * value`.  At rank three the chart value is therefore
+nonnegative, and every kill target has a negative value. -/
+theorem rank_le_of_shiftedGap_rankOne_cover
+    (hdata : IsChartStationaryData rank projection weight value activeSet activeSubset
+      activeWeight tightDir)
+    {setOne setTwo : Finset (Fin size)} {atomOne atomTwo : Fin size}
+    (hcover : setOne ∪ setTwo = Finset.univ)
+    (hmemOne : atomOne ∈ setOne) (hmemTwo : atomTwo ∈ setTwo)
+    (hpos : ∀ atomIndex : Fin size,
+      0 < shiftedGapDiag projection weight value atomIndex)
+    (hrankOneFirst : ∀ rowIndex ∈ setOne, ∀ colIndex ∈ setOne,
+      shiftedGap projection weight value rowIndex colIndex
+          * shiftedGapDiag projection weight value atomOne
+        = shiftedGap projection weight value atomOne rowIndex
+          * shiftedGap projection weight value atomOne colIndex)
+    (hrankOneSecond : ∀ rowIndex ∈ setTwo, ∀ colIndex ∈ setTwo,
+      shiftedGap projection weight value rowIndex colIndex
+          * shiftedGapDiag projection weight value atomTwo
+        = shiftedGap projection weight value atomTwo rowIndex
+          * shiftedGap projection weight value atomTwo colIndex)
+    (hvalue : value < 0) :
+    (rank : ℝ) ≤ 3 + (size : ℝ) * value := by
+  classical
+  have hfloor : ∀ atomIndex : Fin size, 0 ≤ value + weight atomIndex :=
+    fun atomIndex => capture_diagonal_nonneg_of_isChartStationaryData hdata atomIndex
+  have hcap : ∀ atomIndex : Fin size, value + weight atomIndex < 1 :=
+    fun atomIndex => capture_diagonal_lt_one_of_negative_value hdata hvalue atomIndex
+  have hfirst := gapSet_shifted_sum_le_one hdata.isSymmetric hdata.isIdempotent hmemOne
+    (fun atomIndex _ => hfloor atomIndex) (fun atomIndex _ => hcap atomIndex)
+    (fun atomIndex _ => hpos atomIndex) hrankOneFirst
+  have hsecond := gapSet_shifted_sum_le_one hdata.isSymmetric hdata.isIdempotent hmemTwo
+    (fun atomIndex _ => hfloor atomIndex) (fun atomIndex _ => hcap atomIndex)
+    (fun atomIndex _ => hpos atomIndex) hrankOneSecond
+  have hunion : ∑ atomIndex ∈ setOne ∪ setTwo,
+      shiftedGapDiag projection weight value atomIndex
+      ≤ (∑ atomIndex ∈ setOne, shiftedGapDiag projection weight value atomIndex)
+        + ∑ atomIndex ∈ setTwo, shiftedGapDiag projection weight value atomIndex := by
+    have hsplit : ∑ atomIndex ∈ setOne ∪ setTwo,
+        shiftedGapDiag projection weight value atomIndex
+        = (∑ atomIndex ∈ setOne, shiftedGapDiag projection weight value atomIndex)
+          + ∑ atomIndex ∈ setTwo \ setOne,
+            shiftedGapDiag projection weight value atomIndex := by
+      rw [← Finset.sum_union Finset.disjoint_sdiff, Finset.union_sdiff_self_eq_union]
+    have hrest : ∑ atomIndex ∈ setTwo \ setOne,
+        shiftedGapDiag projection weight value atomIndex
+        ≤ ∑ atomIndex ∈ setTwo, shiftedGapDiag projection weight value atomIndex :=
+      Finset.sum_le_sum_of_subset_of_nonneg (Finset.sdiff_subset)
+        (fun atomIndex _ _ => le_of_lt (hpos atomIndex))
+    rw [hsplit]; linarith
+  rw [hcover] at hunion
+  have htotal := shiftedGapDiag_sum_eq hdata
+  rw [htotal] at hunion
+  linarith
+
+end CoverKill
+
+namespace SharedPrivateData
+
+variable {crux : SixThreeCrux}
+
+/-- The shifted gap total of a shared-private datum. -/
+theorem shiftedGapDiag_sum (data : SharedPrivateData crux) :
+    ∑ atomIndex : Fin 6, shiftedGapDiag (chartPointOfDesign crux.design).chart
+        (chartPointOfDesign crux.design).weight
+        (chartObjective (chartPointOfDesign crux.design)) atomIndex
+      = 2 - 6 * chartObjective (chartPointOfDesign crux.design) := by
+  have hsum := shiftedGapDiag_sum_eq data.hdata
+  norm_num at hsum
+  linarith [hsum]
+
+/-- **THE COMPLEMENT KILL.**  Two rank-one shifted gap blocks whose atom
+sets cover the six atoms cannot both exist: the shifted gap total is
+`2 - 6 * value` and the two budgets pay only two.  The value is negative,
+thus the two never meet. -/
+theorem false_of_shiftedGap_rankOne_cover (data : SharedPrivateData crux)
+    {setOne setTwo : Finset (Fin 6)} {atomOne atomTwo : Fin 6}
+    (hcover : setOne ∪ setTwo = Finset.univ)
+    (hmemOne : atomOne ∈ setOne) (hmemTwo : atomTwo ∈ setTwo)
+    (hrankOneFirst : ∀ rowIndex ∈ setOne, ∀ colIndex ∈ setOne,
+      shiftedGap (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight
+            (chartObjective (chartPointOfDesign crux.design)) rowIndex colIndex
+          * shiftedGapDiag (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight
+            (chartObjective (chartPointOfDesign crux.design)) atomOne
+        = shiftedGap (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight
+            (chartObjective (chartPointOfDesign crux.design)) atomOne rowIndex
+          * shiftedGap (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight
+            (chartObjective (chartPointOfDesign crux.design)) atomOne colIndex)
+    (hrankOneSecond : ∀ rowIndex ∈ setTwo, ∀ colIndex ∈ setTwo,
+      shiftedGap (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight
+            (chartObjective (chartPointOfDesign crux.design)) rowIndex colIndex
+          * shiftedGapDiag (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight
+            (chartObjective (chartPointOfDesign crux.design)) atomTwo
+        = shiftedGap (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight
+            (chartObjective (chartPointOfDesign crux.design)) atomTwo rowIndex
+          * shiftedGap (chartPointOfDesign crux.design).chart
+            (chartPointOfDesign crux.design).weight
+            (chartObjective (chartPointOfDesign crux.design)) atomTwo colIndex) :
+    False := by
+  have hbound := rank_le_of_shiftedGap_rankOne_cover data.hdata hcover hmemOne hmemTwo
+    (fun atomIndex => data.shiftedGapDiag_pos atomIndex) hrankOneFirst hrankOneSecond
+    data.hvalueNeg
+  have hvalue := data.hvalueNeg
+  norm_num at hbound
+  linarith
+
+/-- **THE IDENTICAL BRANCH DIES AGAINST A RANK-ONE COMPLEMENT.**  The shared
+triple already pays one unit.  A rank-one shifted gap block on the other
+three atoms would pay the second, and the two payments are one unit short
+of the shifted gap total. -/
+theorem false_of_identical_support_complement_rankOne (data : SharedPrivateData crux)
+    {slotOne slotTwo : Fin data.basisCount} (hne : slotOne ≠ slotTwo)
+    {atomU atomV atomS atomP atomQ atomR : Fin 6}
+    (hUV : atomU ≠ atomV) (hUS : atomU ≠ atomS) (hVS : atomV ≠ atomS)
+    (hPQ : atomP ≠ atomQ) (hPR : atomP ≠ atomR) (hQR : atomQ ≠ atomR)
+    (hcover : ({atomU, atomV, atomS} : Finset (Fin 6)) ∪ {atomP, atomQ, atomR}
+      = Finset.univ)
+    (hsupportOne : datumTightSupport data.tightDir (data.basisLabel slotOne)
+      = {atomU, atomV, atomS})
+    (hsupportTwo : datumTightSupport data.tightDir (data.basisLabel slotTwo)
+      = {atomU, atomV, atomS})
+    (hcomplement : GapBlockRankOne (chartPointOfDesign crux.design).chart
+      (chartPointOfDesign crux.design).weight
+      (chartObjective (chartPointOfDesign crux.design)) atomP atomQ atomR) :
+    False :=
+  data.false_of_shiftedGap_rankOne_cover hcover (by simp) (by simp)
+    (shiftedGap_rankOne_of_gapBlockRankOne data.hdata.isSymmetric hUV hUS hVS
+      (data.gapBlockRankOne_of_identical_support hne hUV hUS hVS hsupportOne
+        hsupportTwo))
+    (shiftedGap_rankOne_of_gapBlockRankOne data.hdata.isSymmetric hPQ hPR hQR
+      hcomplement)
+
+end SharedPrivateData
 
 end Gtz
