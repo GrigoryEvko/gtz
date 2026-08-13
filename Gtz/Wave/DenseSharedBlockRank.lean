@@ -161,7 +161,7 @@ theorem shared_block_minor_and_cofactors
     (hsupportTwo : datumTightSupport tightDir (basisLabel slotTwo)
       = {atomA, atomB, atomC})
     (hdiagB : chartStationaryGap projection weight atomB atomB ≠ value)
-    (hdiagC : chartStationaryGap projection weight atomC atomC ≠ value) :
+    (_hdiagC : chartStationaryGap projection weight atomC atomC ≠ value) :
     (chartStationaryGap projection weight atomA atomA - value)
           * (chartStationaryGap projection weight atomB atomB - value)
         - chartStationaryGap projection weight atomA atomB
