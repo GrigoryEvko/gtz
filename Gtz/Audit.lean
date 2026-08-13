@@ -677,6 +677,7 @@ import Gtz.Wave.RankFourRungAssembly
 import Gtz.Wave.SupportTwoClosure
 import Gtz.Wave.CoefficientEngineCore
 import Gtz.Wave.PencilNullFormLayer
+import Gtz.Wave.CycleIndependentClosure
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21886,6 +21887,27 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankFourFrame.pair_pencil_det_nonpos
 #print axioms Gtz.RankFourFrame.doubled_pair_trace
 #print axioms Gtz.RankFourFrame.doubled_pair_det
+
+-- ==========================================================
+-- the cycle independent closure layers: the share vocabulary, the
+-- double-trace kill, the pair kernel calculus, the projected-kernel kill.
+#print axioms Gtz.shareSet_mem_left
+#print axioms Gtz.shareSet_mem_right
+#print axioms Gtz.shareSet_snd_mem_left
+#print axioms Gtz.shareSet_snd_mem_right
+#print axioms Gtz.atom_ne_of_exclusive_carriers
+#print axioms Gtz.slot_quadruple_eq_univ
+#print axioms Gtz.trace_eq_four_diag
+#print axioms Gtz.four_weight_sum_le_one
+#print axioms Gtz.false_of_double_trace_laws
+#print axioms Gtz.basis_transpose_mulVec_pairKernelVec
+#print axioms Gtz.assembly_mulVec_of_basis_transpose_zero
+#print axioms Gtz.assembly_quadratic_nonneg
+#print axioms Gtz.SixThreeCrux.false_of_projection_kernel_pair
+#print axioms Gtz.assembly_row_pairKernelVec
+#print axioms Gtz.pair_quadratic_expand
+#print axioms Gtz.pair_coordinate_squares_eq
+#print axioms Gtz.assembly_mulVec_projection_pairKernelVec
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

@@ -2890,6 +2890,11 @@ import Gtz.Wave.CoefficientEngineCore
 -- laws, and the frame lifts.
 import Gtz.Wave.PencilNullFormLayer
 
+-- the cycle independent closure layers: the share vocabulary, the
+-- double-trace kill, the pair kernel vector, the equal-squares law, the
+-- kernel invariance, and the projected-kernel kill.
+import Gtz.Wave.CycleIndependentClosure
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
