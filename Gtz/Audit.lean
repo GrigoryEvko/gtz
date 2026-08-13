@@ -23702,7 +23702,8 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- drop and the price of a stage, the exact stage law of the frame
 -- contraction, the free first drop, the tie pivot mass, the sharpened
 -- mass-gap ledger, the two hinge obligations on the current arm list,
--- the bare frame layer, and two free drops at the deciding cell
+-- the bare frame layer, two free drops at every cell of the sharp
+-- window, and the exact residue at the deciding cell of rank three
 -- ============================================================
 #print axioms Gtz.dotProduct_mulVec_comm_of_symm
 #print axioms Gtz.inverseForm_comm
@@ -23771,6 +23772,15 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.thresholdSize_gt_rank_add_two
 #print axioms Gtz.exists_two_erase_posDef_thresholdCell
 #print axioms Gtz.exists_card_eight_posDef_ten_four
+#print axioms Gtz.exists_pivot_lt_one_erase_of_leak
+#print axioms Gtz.exists_two_erase_posDef_sharp
+#print axioms Gtz.sharp_two_drop_arith
+#print axioms Gtz.exists_two_erase_posDef_window
+#print axioms Gtz.exists_card_four_posDef_six_three
+#print axioms Gtz.tie_stalls_below_card_sub_two
+#print axioms Gtz.tie_exists_outside_pivot_ge_one
+#print axioms Gtz.sixThree_tie_quadruple_residue
+#print axioms Gtz.not_isTie_of_no_quadruple_residue_six_three
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

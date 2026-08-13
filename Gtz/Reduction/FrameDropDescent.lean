@@ -1633,4 +1633,239 @@ theorem exists_card_eight_posDef_ten_four (design : WeightedDesign 10 4) :
   exists_two_erase_posDef design (by omega) (by omega)
 
 
+/-! ## Part 12: the sharp second drop, and the whole sharp window
+
+`Gtz.exists_pivot_lt_one_erase` asks the first pivot value to be at most one
+half, which the mediant supplies only when the size reaches `2 * rank + 1`.  The
+deciding cell of rank three misses that by one.  The leak of the stage law is a
+SINGLE term, thus the exact pivot update prices it without any rounding, and the
+sharp criterion reaches every cell of the sharp window at every rank three and
+up -- the deciding cell of rank three included. -/
+
+/-- **THE SECOND DROP, PRICED EXACTLY.**  The leak of the once-erased base is one
+term.  When that term stays under the free excess, the base spares a label. -/
+theorem exists_pivot_lt_one_erase_of_leak (design : WeightedDesign size rank)
+    (htwo : 2 ≤ size) {label : Fin size} (hlabel : pivot design Finset.univ label < 1)
+    (hleak : design.weight label * (pivot design (Finset.univ.erase label) label - 1)
+      < (size : ℝ) - 2 - rank) :
+    ∃ second ∈ Finset.univ.erase label,
+      pivot design (Finset.univ.erase label) second < 1 := by
+  classical
+  have hunivPosDef := posDef_gap_univ design htwo
+  have herase : (Finset.univ : Finset (Fin size)).erase label = Finset.univ \ {label} := by
+    ext c; simp [Finset.mem_erase, Finset.mem_sdiff, and_comm]
+  have hsmall : ∑ c ∈ ({label} : Finset (Fin size)), pivot design Finset.univ c < 1 := by
+    simp only [Finset.sum_singleton]
+    exact hlabel
+  have hbasePosDef : (subsetSum design (Finset.univ.erase label) - 1).PosDef := by
+    rw [herase]
+    exact posDef_sdiff_of_pivotSum_lt_one design (Finset.subset_univ _) hunivPosDef hsmall
+  have hcompl : ((Finset.univ : Finset (Fin size)).erase label)ᶜ = {label} := by
+    ext c; simp
+  have hcard : ((Finset.univ : Finset (Fin size)).erase label).card = size - 1 := by
+    rw [Finset.card_erase_of_mem (Finset.mem_univ label), Finset.card_univ, Fintype.card_fin]
+  have hfree : ∑ c ∈ (Finset.univ : Finset (Fin size)).erase label, (1 - design.weight c)
+      = ((size : ℝ) - 1) - (1 - design.weight label) := by
+    have hsplit : design.weight label
+        + ∑ c ∈ Finset.univ.erase label, design.weight c = 1 := by
+      rw [Finset.add_sum_erase _ _ (Finset.mem_univ label)]
+      exact design.weight_sum_one
+    rw [Finset.sum_sub_distrib]
+    simp only [Finset.sum_const, nsmul_eq_mul, mul_one, hcard]
+    have hcast : ((size - 1 : ℕ) : ℝ) = (size : ℝ) - 1 := by
+      have hone : 1 ≤ size := by omega
+      push_cast [Nat.cast_sub hone]
+      ring
+    rw [hcast]
+    linarith
+  refine exists_pivot_lt_one_of_leak design hbasePosDef ?_
+  rw [hcompl, Finset.sum_singleton, hfree]
+  linarith
+
+/-- **THE SHARP SECOND DROP.**  With the arithmetic side condition
+`2 * rank - (size - 1) < (size - 2 - rank) * (size - 1 - rank)` the second drop
+of a design is free.  The condition holds at every cell of the sharp window at
+every rank three and up, the deciding cell of rank three included, where the
+crude half-pivot criterion fails by exactly one label. -/
+theorem exists_two_erase_posDef_sharp (design : WeightedDesign size rank)
+    (hbig : rank + 2 < size)
+    (hsharp : 2 * (rank : ℝ) - ((size : ℝ) - 1)
+      < ((size : ℝ) - 2 - rank) * ((size : ℝ) - 1 - rank)) :
+    ∃ selected : Finset (Fin size), selected.card = size - 2
+      ∧ (subsetSum design selected - 1).PosDef := by
+  classical
+  have htwo : 2 ≤ size := by omega
+  have hcast : (rank : ℝ) + 2 < (size : ℝ) := by exact_mod_cast hbig
+  have hunivPosDef := posDef_gap_univ design htwo
+  obtain ⟨label, hlabel⟩ := exists_pivot_univ_le_mediant design htwo
+  set first : ℝ := pivot design Finset.univ label with hfirst
+  have hfirstNonneg : 0 ≤ first := pivot_nonneg design Finset.univ hunivPosDef label
+  have hgapPos : (0 : ℝ) < (size : ℝ) - 1 - rank := by linarith
+  have hfirstLt : first < 1 := by nlinarith [hlabel, hgapPos, hfirstNonneg]
+  have herase : (Finset.univ : Finset (Fin size)).erase label = Finset.univ \ {label} := by
+    ext c; simp [Finset.mem_erase, Finset.mem_sdiff, and_comm]
+  have hsingle : ∑ c ∈ ({label} : Finset (Fin size)), pivot design Finset.univ c < 1 := by
+    simp only [Finset.sum_singleton]
+    exact hfirstLt
+  have hbasePosDef : (subsetSum design (Finset.univ.erase label) - 1).PosDef := by
+    rw [herase]
+    exact posDef_sdiff_of_pivotSum_lt_one design (Finset.subset_univ _) hunivPosDef hsingle
+  have hframeErase : (frameGap design.atom (Finset.univ.erase label)).PosDef := hbasePosDef
+  have hupdate : first * (1 + pivot design (Finset.univ.erase label) label)
+      = pivot design (Finset.univ.erase label) label :=
+    framePivot_erase_eq design.atom (Finset.mem_univ label) hframeErase
+  set second : ℝ := pivot design (Finset.univ.erase label) label with hsecond
+  have hweightPos := design.weight_pos label
+  have hweightLe := weight_le_one design label
+  have hslack : (0 : ℝ) < 1 - first := by linarith
+  have hcross : design.weight label * (2 * first - 1)
+      < ((size : ℝ) - 2 - rank) * (1 - first) := by
+    have hkey : design.weight label * (2 * (rank : ℝ) - ((size : ℝ) - 1))
+        < ((size : ℝ) - 2 - rank) * (((size : ℝ) - 1) - rank) := by
+      by_cases hsign : 0 ≤ 2 * (rank : ℝ) - ((size : ℝ) - 1)
+      · nlinarith [hsharp, hweightLe, hsign]
+      · have hneg : 2 * (rank : ℝ) - ((size : ℝ) - 1) < 0 := not_le.mp hsign
+        nlinarith [hgapPos, hneg, hweightPos]
+    nlinarith [hkey, hlabel, hfirstNonneg, hweightPos, hgapPos, hslack]
+  have hleak : design.weight label * (second - 1) < (size : ℝ) - 2 - rank := by
+    have hscaled : design.weight label * (second - 1) * (1 - first)
+        < ((size : ℝ) - 2 - rank) * (1 - first) := by
+      have hrewrite : (second - 1) * (1 - first) = 2 * first - 1 := by nlinarith [hupdate]
+      nlinarith [hcross, hrewrite]
+    exact lt_of_mul_lt_mul_right (by nlinarith [hscaled]) hslack.le
+  obtain ⟨secondLabel, hsecondMem, hsecondLt⟩ :=
+    exists_pivot_lt_one_erase_of_leak design htwo hfirstLt hleak
+  refine ⟨((Finset.univ : Finset (Fin size)).erase label).erase secondLabel, ?_,
+    posDef_erase_of_pivot_lt_one design hsecondMem hbasePosDef hsecondLt⟩
+  rw [Finset.card_erase_of_mem hsecondMem,
+    Finset.card_erase_of_mem (Finset.mem_univ label), Finset.card_univ, Fintype.card_fin]
+  omega
+
+/-- The sharp arithmetic condition holds at every cell of the sharp window at
+rank three and up. -/
+theorem sharp_two_drop_arith (rank size : ℕ) (hrank : 3 ≤ rank) (hlow : 2 * rank ≤ size) :
+    2 * (rank : ℝ) - ((size : ℝ) - 1)
+      < ((size : ℝ) - 2 - rank) * ((size : ℝ) - 1 - rank) := by
+  have hrankCast : (3 : ℝ) ≤ (rank : ℝ) := by exact_mod_cast hrank
+  have hlowCast : 2 * (rank : ℝ) ≤ (size : ℝ) := by exact_mod_cast hlow
+  nlinarith [hrankCast, hlowCast]
+
+/-- **TWO FREE DROPS AT EVERY CELL OF THE SHARP WINDOW.**  Every design of a rank
+three or more, at a size of at least twice the rank, carries a strictly
+dominating subset of card two below its size.  No weight hypothesis, no stress,
+no predecessor cell.  At `(6,3)` the conclusion is a strictly dominating
+QUADRUPLE, one label above the triple the conjecture asks for. -/
+theorem exists_two_erase_posDef_window (design : WeightedDesign size rank)
+    (hrank : 3 ≤ rank) (hlow : 2 * rank ≤ size) :
+    ∃ selected : Finset (Fin size), selected.card = size - 2
+      ∧ (subsetSum design selected - 1).PosDef :=
+  exists_two_erase_posDef_sharp design (by omega) (sharp_two_drop_arith rank size hrank hlow)
+
+/-- **THE DECIDING CELL OF RANK THREE CARRIES A STRICTLY DOMINATING QUADRUPLE.**
+Every `(6,3)` design does, unconditionally.  The gap between this and weighted
+GTZ at `(6,3)` is exactly one more drop. -/
+theorem exists_card_four_posDef_six_three (design : WeightedDesign 6 3) :
+    ∃ selected : Finset (Fin 6), selected.card = 4
+      ∧ (subsetSum design selected - 1).PosDef :=
+  exists_two_erase_posDef_window design (by omega) (by omega)
+
+/-- **A TIE OF THE SHARP WINDOW STALLS ONLY AT THE LAST STAGE OR NEAR IT.**  The
+descent of a tie reaches card `size - 2` for free, thus every obstruction to the
+hinge lives strictly below that card. -/
+theorem tie_stalls_below_card_sub_two (design : WeightedDesign size rank)
+    (hrank : 3 ≤ rank) (hlow : 2 * rank ≤ size) (htie : IsTie design) :
+    ∃ selected : Finset (Fin size), selected.card = size - 2
+      ∧ (subsetSum design selected - 1).PosDef
+      ∧ ∀ dominating : Finset (Fin size), dominating.card = rank →
+          ¬ (subsetSum design dominating - 1).PosDef := by
+  obtain ⟨selected, hcard, hposDef⟩ := exists_two_erase_posDef_window design hrank hlow
+  exact ⟨selected, hcard, hposDef, htie.2⟩
+
+
+/-! ## Part 13: the residue the descent leaves at the deciding cell of rank three
+
+At rank three the deciding cell has six labels and the two free drops reach card
+four, which is exactly `rank + 1`.  The stage law at a region of card `rank + 1`
+is an identity with a leak of two terms, and a tie makes every pivot value inside
+the region at least one.  Thus the whole obstruction collapses to ONE scalar
+inequality at ONE label outside the region. -/
+
+/-- **A TIE PUTS THE WHOLE LEAK OUTSIDE.**  At a strictly dominating region of
+card `rank + 1` of a tied design, the outside labels carry pivot mass at least
+their own weight.  Hence some label outside the region has pivot value at least
+one against it. -/
+theorem tie_exists_outside_pivot_ge_one (design : WeightedDesign size rank)
+    (htie : IsTie design) {base : Finset (Fin size)} (hcard : base.card = rank + 1)
+    (hposDef : (subsetSum design base - 1).PosDef) (hne : baseᶜ.Nonempty) :
+    ∃ label ∈ baseᶜ, 1 ≤ pivot design base label := by
+  classical
+  by_contra hnone
+  push Not at hnone
+  have hinside : ∀ c ∈ base, 1 ≤ pivot design base c := by
+    intro c hc
+    by_contra hlt
+    push Not at hlt
+    refine htie.2 (base.erase c) ?_ (posDef_erase_of_pivot_lt_one design hc hposDef hlt)
+    rw [Finset.card_erase_of_mem hc, hcard]
+    omega
+  have hlower : ∑ c ∈ base, (1 - design.weight c)
+      ≤ ∑ c ∈ base, (1 - design.weight c) * pivot design base c := by
+    refine Finset.sum_le_sum fun c hc => ?_
+    have hfree : 0 ≤ 1 - design.weight c := by linarith [weight_le_one design c]
+    nlinarith [hinside c hc, hfree]
+  have hstage := sum_freeWeight_pivot_eq_rank_add_outside design base hposDef
+  have hleakSmall : ∑ c ∈ baseᶜ, design.weight c * pivot design base c
+      < ∑ c ∈ baseᶜ, design.weight c := by
+    refine Finset.sum_lt_sum_of_nonempty hne fun c hc => ?_
+    nlinarith [hnone c hc, design.weight_pos c]
+  have hsplit : ∑ c ∈ base, design.weight c + ∑ c ∈ baseᶜ, design.weight c = 1 := by
+    rw [Finset.sum_add_sum_compl]
+    exact design.weight_sum_one
+  have hfree : ∑ c ∈ base, (1 - design.weight c)
+      = (base.card : ℝ) - ∑ c ∈ base, design.weight c := by
+    rw [Finset.sum_sub_distrib]; simp
+  have hcardCast : (base.card : ℝ) = (rank : ℝ) + 1 := by
+    rw [hcard]; push_cast; ring
+  rw [hfree, hcardCast] at hlower
+  rw [hstage] at hlower
+  linarith
+
+/-- **THE EXACT RESIDUE AT THE DECIDING CELL OF RANK THREE.**  A `(6,3)` tie
+carries a strictly dominating QUADRUPLE, and one of the two labels outside that
+quadruple has pivot value at least one against it.  Everything else about the
+tie is discharged: the two drops that reach the quadruple are free, and the
+obstruction is this single scalar inequality.
+
+Weighted GTZ at `(6,3)` on the tie branch is therefore exactly the statement that
+this cannot happen. -/
+theorem sixThree_tie_quadruple_residue (design : WeightedDesign 6 3) (htie : IsTie design) :
+    ∃ (quadruple : Finset (Fin 6)) (outside : Fin 6),
+      quadruple.card = 4 ∧ (subsetSum design quadruple - 1).PosDef
+        ∧ outside ∉ quadruple ∧ 1 ≤ pivot design quadruple outside := by
+  classical
+  obtain ⟨quadruple, hcard, hposDef⟩ := exists_card_four_posDef_six_three design
+  have hcompl : quadrupleᶜ.card = 2 := by
+    rw [Finset.card_compl, hcard, Fintype.card_fin]
+  have hne : quadrupleᶜ.Nonempty := by
+    rw [← Finset.card_pos, hcompl]
+    omega
+  obtain ⟨outside, hmem, hpivot⟩ :=
+    tie_exists_outside_pivot_ge_one design htie (by omega) hposDef hne
+  exact ⟨quadruple, outside, hcard, hposDef, Finset.mem_compl.mp hmem, hpivot⟩
+
+/-- **THE SAME RESIDUE, AS A CLOSURE.**  If no `(6,3)` design carries a strictly
+dominating quadruple with an outside label of pivot value at least one, then
+weighted GTZ holds at `(6,3)` on the tie branch, and every `(6,3)` tie has a
+parallel pair for the trivial reason that no tie exists. -/
+theorem not_isTie_of_no_quadruple_residue_six_three
+    (hclosed : ∀ (design : WeightedDesign 6 3) (quadruple : Finset (Fin 6)) (outside : Fin 6),
+      quadruple.card = 4 → (subsetSum design quadruple - 1).PosDef → outside ∉ quadruple →
+        pivot design quadruple outside < 1)
+    (design : WeightedDesign 6 3) : ¬ IsTie design := by
+  intro htie
+  obtain ⟨quadruple, outside, hcard, hposDef, hnotMem, hpivot⟩ :=
+    sixThree_tie_quadruple_residue design htie
+  exact absurd (hclosed design quadruple outside hcard hposDef hnotMem) (not_lt.mpr hpivot)
+
+
 end Gtz
