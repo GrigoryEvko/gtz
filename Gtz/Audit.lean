@@ -683,6 +683,7 @@ import Gtz.Wave.GramExchangeLayer
 import Gtz.Wave.KFourEdgeCoordinates
 import Gtz.Wave.BothParallelKernelRigidity
 import Gtz.Wave.BothParallelTrichotomy
+import Gtz.Wave.BothParallelDiagonalCore
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -21972,6 +21973,18 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.extra_circuit_laws
 #print axioms Gtz.bothParallel_extra_label_trichotomy
 #print axioms Gtz.SixThreeCrux.chartGap_diagonal_pos
+#print axioms Gtz.parallel_scal_sq_one
+#print axioms Gtz.parallel_scal_ne_zero
+#print axioms Gtz.atomMatrix_eq_of_unit_parallel
+#print axioms Gtz.false_of_parallel_two_slots
+#print axioms Gtz.mem_parallelClass
+#print axioms Gtz.basisLabel_mem_parallelClass
+#print axioms Gtz.effectiveMultiplier_pos
+#print axioms Gtz.assembly_eq_effective_diagonal
+#print axioms Gtz.effective_diagonal_apply
+#print axioms Gtz.effective_diagonal_read
+#print axioms Gtz.bothParallel_effective_cross_vanish
+#print axioms Gtz.bothParallel_effective_cross_commutation
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

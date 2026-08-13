@@ -2921,6 +2921,11 @@ import Gtz.Wave.BothParallelKernelRigidity
 -- promotion, the circuit laws, and the all-heavy gap floor.
 import Gtz.Wave.BothParallelTrichotomy
 
+-- the both-parallel diagonal core: the unit atom collapse, the class
+-- separation, the effective multipliers, the diagonal-core identity,
+-- the entry reads, the zero cross entry, and the commutation pricing.
+import Gtz.Wave.BothParallelDiagonalCore
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
