@@ -702,6 +702,7 @@ import Gtz.Wave.CycleSeamReduction
 import Gtz.Wave.KFourCertificateReduction
 import Gtz.Wave.CertificateCornerBackbone
 import Gtz.Wave.SharedPrivateCertificateReduction
+import Gtz.Wave.SharedPrivateComplementTrace
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -22312,6 +22313,22 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.tight_triple_quadratic_read
 #print axioms Gtz.singlePair_outside_form_left
 #print axioms Gtz.singlePair_outside_form_right
+#print axioms Gtz.read_leak_apply_eq_zero
+#print axioms Gtz.read_leak_dotProduct_eq_zero
+#print axioms Gtz.mulVec_read_leak
+#print axioms Gtz.read_leak_ne_zero_of_open_interval
+#print axioms Gtz.read_leak_quadratic_eq
+#print axioms Gtz.posSemidef_of_transpose_eq_of_idem
+#print axioms Gtz.masked_quadratic_le_compl_trace
+#print axioms Gtz.compl_diag_floor_of_read
+#print axioms Gtz.carrier_diag_cap_of_read
+#print axioms Gtz.pin_diag_eq_of_read
+#print axioms Gtz.interior_carrier_budget
+#print axioms Gtz.false_of_interior_budget_trace_two
+#print axioms Gtz.false_of_interior_budget_trace_three
+#print axioms Gtz.projected_direction_read_zero_of_diagonal_zero
+#print axioms Gtz.basis_capture_column_zero_of_diagonal_zero
+#print axioms Gtz.SharedPrivateData.false_of_diagonal_gram_interior
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

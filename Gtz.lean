@@ -3003,6 +3003,13 @@ import Gtz.Wave.CertificateCornerBackbone
 -- shared-private closures of ranks four, five, and six.
 import Gtz.Wave.SharedPrivateCertificateReduction
 
+-- the complement-trace calculus: the leak calculus of a corner read,
+-- the masked trace floor, the carrier cap, the pin-set budget, the
+-- interior kills at trace two and trace three, the boundary upgrade
+-- at a zero captured diagonal, and the diagonal-Gram interior
+-- discharge of the shared-private kill target.
+import Gtz.Wave.SharedPrivateComplementTrace
+
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
 -- closure three.
