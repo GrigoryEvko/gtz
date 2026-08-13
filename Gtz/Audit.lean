@@ -710,6 +710,8 @@ import Gtz.Wave.SharedPrivateComplementTrace
 import Gtz.Wave.SharedPrivateStrataDispatch
 import Gtz.Wave.SharedPrivateKernelResidue
 import Gtz.Wave.SharedPrivateKernelGram
+import Gtz.Wave.SharedPrivateBoundaryDispatch
+import Gtz.Wave.SharedPrivateKernelMinor
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -720,6 +722,7 @@ import Gtz.Wave.OuterBlockPinBudget
 import Gtz.Wave.OuterBlockDegreeDispatch
 import Gtz.Wave.OuterParallelFold
 import Gtz.Wave.OuterTraceThreeInterior
+import Gtz.Wave.OuterDenseCornerKill
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -728,6 +731,7 @@ import Gtz.Wave.DenseFullCarrierQuantization
 import Gtz.Wave.DenseProfileDispatch
 import Gtz.Wave.DenseKernelLineDichotomy
 import Gtz.Wave.DenseBlockGeometry
+import Gtz.Wave.DenseHeavyFiveStructure
 import Gtz.Wave.AssemblyRankCapstone
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -22477,6 +22481,15 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankSixFrame.exists_carrier_pair_characteristic
 #print axioms Gtz.RankFiveFrame.shifted_weight_sum
 #print axioms Gtz.RankSixFrame.shifted_weight_sum
+#print axioms Gtz.carrier_pair_eq_of_multiplicity_two
+#print axioms Gtz.triple_insert_rotate
+#print axioms Gtz.RankFiveFrame.heavyFive_support_pair
+#print axioms Gtz.RankFiveFrame.heavyFive_crossDet_ne_zero
+#print axioms Gtz.RankFiveFrame.heavyFive_shared_corner_trace
+#print axioms Gtz.RankFiveFrame.heavyFive_shared_corner_determinant
+#print axioms Gtz.RankFiveFrame.heavyFive_shifted_weight_pair_le
+#print axioms Gtz.RankFiveFrame.heavyFive_shared_corner_lt_one
+#print axioms Gtz.RankFiveFrame.heavyFive_complement_trace_gt_one
 #print axioms Gtz.pair_mulVec_apply
 #print axioms Gtz.pair_dotProduct
 #print axioms Gtz.two_carrier_trace_cap
@@ -22509,6 +22522,29 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SharedPrivateData.pin_disjoint_of_offSupport
 #print axioms Gtz.SharedPrivateData.exists_kernel_read_frame
 #print axioms Gtz.SharedPrivateData.false_of_disjoint_support_family
+
+-- the shared-private boundary dispatch
+#print axioms Gtz.carrier_diag_le_trace
+#print axioms Gtz.carrier_budget_with_boundary
+#print axioms Gtz.pin_card_le_boundary_card_of_budget
+#print axioms Gtz.SharedPrivateData.multiplicity_pos
+#print axioms Gtz.SharedPrivateData.sum_multiplicity
+#print axioms Gtz.SharedPrivateData.pin_card_le_boundary_card
+#print axioms Gtz.SharedPrivateData.mem_boundarySet
+#print axioms Gtz.SharedPrivateData.pin_card_le_boundarySet_card
+#print axioms Gtz.SharedPrivateData.exists_boundary_atom
+#print axioms Gtz.SharedPrivateData.profile_arithmetic
+#print axioms Gtz.SharedPrivateData.four_le_basisCount_of_trace_two
+#print axioms Gtz.SharedPrivateData.boundary_rigid_of_basisCount_four
+#print axioms Gtz.gram_kernel_free_of_independent
+#print axioms Gtz.independent_of_private_slot
+#print axioms Gtz.SharedPrivateData.false_of_private_slot_boundary_family
+#print axioms Gtz.SharedPrivateData.cocarrier_offPrivate_of_basisCount_four
+#print axioms Gtz.sharedPrivateBoundaryClosed_of_split
+#print axioms Gtz.sharedPrivateKilled_of_strata_boundary
+#print axioms Gtz.rankFourSharedPrivateClosed_of_boundary_strata
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_boundary_strata
+#print axioms Gtz.rankSixSharedPrivateClosed_of_boundary_strata
 
 -- the outer block-pin budget
 #print axioms Gtz.blockCarrier_mem
@@ -22545,6 +22581,62 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankFiveFrame.shifted_weight_pos_of_trace_three
 #print axioms Gtz.RankSixOuterData.false_of_circuitClosed_profile
 #print axioms Gtz.RankFiveOuterData.false_of_circuitClosed_profile
+
+-- the outer dense corner kill
+#print axioms Gtz.corner_product_of_reads_alive
+#print axioms Gtz.idempotent_diagonal_quadruple
+#print axioms Gtz.trace_quadruple
+#print axioms Gtz.corner_dichotomy_quadruple
+#print axioms Gtz.esum_quadruple
+#print axioms Gtz.kfour_excess_quadruple
+#print axioms Gtz.false_of_quadruple_kfour_products
+#print axioms Gtz.exists_pair_partner
+#print axioms Gtz.exists_complement_slots
+#print axioms Gtz.exists_complement_pair_of_degree
+#print axioms Gtz.atom_ne_of_carrier_mem_notMem
+#print axioms Gtz.false_of_shifted_pair_sum_one
+#print axioms Gtz.false_of_parallel_pair_column_combination
+#print axioms Gtz.false_of_pair_supported_independent
+#print axioms Gtz.RankFourFrame.tightDir_eq_zero_of_notMem_carrier
+#print axioms Gtz.RankFourFrame.dense_alive
+#print axioms Gtz.RankFourFrame.dense_pair_read
+#print axioms Gtz.RankFourFrame.dense_corner_product
+#print axioms Gtz.RankFourFrame.false_of_independent_dense_pair
+#print axioms Gtz.RankFourFrame.false_of_dense_pair_column
+#print axioms Gtz.RankFourFrame.exists_block_third_atom
+#print axioms Gtz.RankFourFrame.false_of_pair_aligned_label
+#print axioms Gtz.RankFourFrame.circuit_cross_ne_zero
+#print axioms Gtz.RankFourFrame.pin_coeff_diagonal
+#print axioms Gtz.RankFourOuterData.false_of_dense
+#print axioms Gtz.RankFourOuterData.exists_block_pin
+#print axioms Gtz.rankFourOuterKilled_of_circuit_interior
+#print axioms Gtz.rankFourSupportTwoClosed_of_circuit_interior
+
+-- The kernel-minor budget: the minor calculus, the singular corner, the
+-- corner minor identity, the kernel-minor kill, the deficit profile, and
+-- the deficit dispatch with the extras fold.
+#print axioms Gtz.kernelColumn_fixed
+#print axioms Gtz.kernelColumn_dot
+#print axioms Gtz.kernelMinor_comm
+#print axioms Gtz.kernelMinor_self
+#print axioms Gtz.kernelMinor_nonneg
+#print axioms Gtz.kernelMinor_row_sum
+#print axioms Gtz.kernelMinor_total
+#print axioms Gtz.kernel_corner_read
+#print axioms Gtz.det_two_eq_zero_of_kernel
+#print axioms Gtz.det_three_eq_zero_of_kernel
+#print axioms Gtz.corner_det_eq_zero_of_trace_two
+#print axioms Gtz.kernelMinor_corner_one
+#print axioms Gtz.kernelMinor_corner_two
+#print axioms Gtz.kernelMinor_corner_three
+#print axioms Gtz.false_of_kernelMinor_budget
+#print axioms Gtz.sum_profileDefect
+#print axioms Gtz.three_le_add_profileDefect
+#print axioms Gtz.fifteen_le_sum_of_deficit
+#print axioms Gtz.multiplicity_le_three_of_deficit
+#print axioms Gtz.SharedPrivateData.false_of_deficit_five
+#print axioms Gtz.sharedPrivateDeficitClosed_of_residues
+#print axioms Gtz.sharedPrivateExtrasClosed_of_circuit
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

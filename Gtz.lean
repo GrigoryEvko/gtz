@@ -3040,6 +3040,20 @@ import Gtz.Wave.SharedPrivateKernelResidue
 -- with the boundary kernel law, and the disjoint-family kill.
 import Gtz.Wave.SharedPrivateKernelGram
 
+-- the shared-private boundary dispatch: the boundary carrier cap, the
+-- four-class budget, the pin-boundary count law, the multiplicity
+-- arithmetic that puts the basis count above three, the rank-four
+-- rigidity, the private-slot independence kill, the pin-complement
+-- law, and the two narrowed boundary residues.
+import Gtz.Wave.SharedPrivateBoundaryDispatch
+
+-- the kernel-minor budget: the minor calculus of a symmetric idempotent,
+-- the singular corner at kernel trace two, the corner minor identity at
+-- carriers of one, two and three slots, the kernel-minor kill, the
+-- deficit profile at basis count five, and the two deficit residues with
+-- the extras fold.
+import Gtz.Wave.SharedPrivateKernelMinor
+
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
 -- closure three.
@@ -3089,6 +3103,9 @@ import Gtz.Wave.OuterParallelFold
 -- the gap floor at captured rank three, thus the rank-six profile
 -- kill drops its interiority hypothesis.
 import Gtz.Wave.OuterTraceThreeInterior
+-- the outer dense corner kill: the two-carrier branch of the outer datum
+-- dies with no Gram hypothesis, and the circuit residue narrows
+import Gtz.Wave.OuterDenseCornerKill
 
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
@@ -3125,6 +3142,10 @@ import Gtz.Wave.DenseKernelLineDichotomy
 -- the dense block geometry: the block eigen system, the cofactor
 -- calculus, the shared-block kills, and the carrier corner equations.
 import Gtz.Wave.DenseBlockGeometry
+
+-- the dense heavy-five structure: the block shape of the heavy-five
+-- profile and the exact corner pins at a shared support.
+import Gtz.Wave.DenseHeavyFiveStructure
 
 -- the assembly-rank capstone: the cell and the rank-three payoff
 -- modulo the eleven named closures of the three rungs.
