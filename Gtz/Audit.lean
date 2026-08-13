@@ -710,6 +710,7 @@ import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
 import Gtz.Wave.OuterCofactorReduction
 import Gtz.Wave.OuterCofactorSpanForm
+import Gtz.Wave.OuterResidueCollapse
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -22374,6 +22375,19 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankFiveOuterData.crossPairing_self_eq_zero
 #print axioms Gtz.RankFiveOuterData.exists_basis_combination
 #print axioms Gtz.RankFiveOuterData.cap_cross_form
+
+-- the outer residue collapse
+#print axioms Gtz.RankFourOuterData.det_eq_zero_of_extrasCapped
+#print axioms Gtz.rankFourOuterExtrasCapped_iff_detVanishes
+#print axioms Gtz.rankFourOuterKilled_iff_residues
+#print axioms Gtz.rankFourOuterKilled_of_detVanishes
+#print axioms Gtz.rankFourSupportTwoClosed_of_outer_killed
+#print axioms Gtz.RankFiveOuterData.det_eq_zero_of_extrasCapped
+#print axioms Gtz.rankFiveOuterExtrasCapped_iff_detVanishes
+#print axioms Gtz.rankFiveOuterKilled_iff_residues
+#print axioms Gtz.rankFiveOuterKilled_of_detVanishes
+#print axioms Gtz.rankFiveSupportTwoClosed_of_outer_killed
+#print axioms Gtz.rankSixSupportTwoClosed_of_outer_killed
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

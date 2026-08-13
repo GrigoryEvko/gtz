@@ -3039,6 +3039,11 @@ import Gtz.Wave.OuterCofactorReduction
 -- quadratic in the cross pairings.
 import Gtz.Wave.OuterCofactorSpanForm
 
+-- the outer residue collapse: the extras residue is equivalent to the
+-- det-vanishing law, the residue pair is equivalent to the direct
+-- kill, and the rank-six outer datum joins the kill interface.
+import Gtz.Wave.OuterResidueCollapse
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.
