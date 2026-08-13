@@ -3115,6 +3115,14 @@ import Gtz.Wave.SharedPrivateReadIntertwiner
 -- into the pair circuits and the wide circuits.
 import Gtz.Wave.SharedPrivateCircuitGeometry
 
+-- the capture leak: the commuting sandwich read atom by atom, the leak
+-- law of every chart stationary datum with its off-block witness, the
+-- cross leak law of one atom pair, the per-label capture energy, the
+-- slot form at a diagonal Gram core with the missing-slot law and the
+-- slot mass lattice, the pair circuit geometry, and the two narrowed
+-- residues with the dispatch.
+import Gtz.Wave.SharedPrivateCaptureLeak
+
 -- the shared-private boundary complement: the carrier cap of the
 -- rank-four rigidity, the rank-four minor kill at shared slot pairs,
 -- the partition law of a disjoint support pair, the complement slot,

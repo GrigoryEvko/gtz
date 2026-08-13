@@ -722,6 +722,7 @@ import Gtz.Wave.SharedPrivateKernelFactor
 import Gtz.Wave.SharedPrivateSpectralSplit
 import Gtz.Wave.SharedPrivateCircuitGeometry
 import Gtz.Wave.SharedPrivateReadIntertwiner
+import Gtz.Wave.SharedPrivateCaptureLeak
 import Gtz.Wave.SharedPrivateBoundaryComplement
 import Gtz.Wave.SharedPrivateGramCommutation
 import Gtz.Wave.SharedPrivateSlotEnergy
@@ -23110,6 +23111,51 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.sharedPrivateDeficitComplementClosed_of_interior
 #print axioms Gtz.sharedPrivateDeficitClosed_of_interior_residues
 #print axioms Gtz.sharedPrivateKilled_of_interior_strata
+
+-- The capture leak: the sandwiched rank-one calculus, the commuting
+-- sandwich, the capture window, the leak law of every chart stationary
+-- datum with its off-block witness, the cross leak law, the per-label
+-- capture energy, the slot form at a diagonal Gram core with the
+-- missing-slot law, the slot mass lattice, the pair circuit geometry,
+-- and the two narrowed residues with the dispatch.
+#print axioms Gtz.atomMatrix_sandwich_apply
+#print axioms Gtz.atomMatrix_sandwich_diagonal
+#print axioms Gtz.sum_atomMatrix_sandwich_apply
+#print axioms Gtz.sum_atomMatrix_sandwich_diagonal
+#print axioms Gtz.capture_apply_eq_sum
+#print axioms Gtz.projector_sandwich_eq_capture
+#print axioms Gtz.projector_capture_complement_eq_zero
+#print axioms Gtz.capture_diagonal_sum_eq
+#print axioms Gtz.capture_diagonal_lt_one_of_negative_value
+#print axioms Gtz.blockHolders_assembly_diagonal
+#print axioms Gtz.capture_leak_identity
+#print axioms Gtz.capture_leak_pos_of_interior
+#print axioms Gtz.exists_offBlock_capture_of_interior
+#print axioms Gtz.capture_cross_leak_identity
+#print axioms Gtz.capture_energy_eq
+#print axioms Gtz.offBlock_capture_energy
+#print axioms Gtz.gram_diagonal_conjugate_eq_sum_atomMatrix
+#print axioms Gtz.SharedPrivateData.assembly_eq_slot_sum
+#print axioms Gtz.SharedPrivateData.slot_assembly_diagonal
+#print axioms Gtz.SharedPrivateData.gramDiag_pos
+#print axioms Gtz.SharedPrivateData.slot_leak_identity
+#print axioms Gtz.SharedPrivateData.slot_leak_term_le
+#print axioms Gtz.SharedPrivateData.exists_offSupport_slot
+#print axioms Gtz.SharedPrivateData.exists_offSupport_capture_slot
+#print axioms Gtz.SharedPrivateData.multiplicity_lt_basisCount
+#print axioms Gtz.SharedPrivateData.slot_mass_le_half
+#print axioms Gtz.SharedPrivateData.private_mass_eq
+#print axioms Gtz.SharedPrivateData.private_mass_ge
+#print axioms Gtz.SharedPrivateData.pair_reconstruction
+#print axioms Gtz.SharedPrivateData.pairCircuit_mem_support_of_sdiff
+#print axioms Gtz.SharedPrivateData.pairCircuit_two_le_inter_card
+#print axioms Gtz.SharedPrivateData.pairCircuit_capture_eq_zero
+#print axioms Gtz.sharedPrivateDeficitSixInteriorClosed_of_lowMultiplicity
+#print axioms Gtz.sharedPrivateCircuitPairClosed_of_shared
+#print axioms Gtz.sharedPrivateKilled_of_leak_strata
+#print axioms Gtz.rankFourSharedPrivateClosed_of_leak_strata
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_leak_strata
+#print axioms Gtz.rankSixSharedPrivateClosed_of_leak_strata
 
 -- The threshold cell hinge map at general rank: the deciding cell
 -- arithmetic and its three fan-out obstructions, the symmetric basis and the
