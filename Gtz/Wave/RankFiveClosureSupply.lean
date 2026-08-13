@@ -24,8 +24,8 @@ label carries a nonzero atom outside the pair.
 
 ## PROVED here (no `sorry`, no `axiom`, no `native_decide`)
 
-* `Gtz.mulVec_sum_smul` — the matrix action distributes on a coefficient
-  combination.
+* `Gtz.mulVec_combination` — the matrix action distributes on a
+  coefficient combination, at every rectangular shape.
 * `Gtz.exists_combination_eq_single_of_supports` — a full independent
   family on an atom set combines to every coordinate single.
 * `Gtz.false_of_spanning_tight_directions` — **THE SHARED-BLOCK CAP.**
@@ -59,7 +59,7 @@ variable {activeWeight : activeIndex → ℝ} {tightDir : activeIndex → (Fin s
 /-! ## The combination calculus -/
 
 /-- The matrix action distributes on a coefficient combination. -/
-theorem mulVec_sum_smul {rowCount colCount coeffCount : ℕ}
+theorem mulVec_combination {rowCount colCount coeffCount : ℕ}
     (form : Matrix (Fin rowCount) (Fin colCount) ℝ)
     (coeffVec : Fin coeffCount → ℝ) (family : Fin coeffCount → Fin colCount → ℝ) :
     form *ᵥ (∑ coeffIndex, coeffVec coeffIndex • family coeffIndex)
@@ -183,7 +183,7 @@ theorem false_of_spanning_tight_directions
       = (chartStationaryGap projection weight
           *ᵥ (Pi.single floorAtom 1 : Fin size → ℝ)) floorAtom := by
     rw [hcombination]
-  rw [mulVec_sum_smul, Finset.sum_apply] at happly
+  rw [mulVec_combination, Finset.sum_apply] at happly
   have hleft : ∑ directionIndex, (coeffVec directionIndex
         • (chartStationaryGap projection weight
           *ᵥ tightDir (labels directionIndex))) floorAtom
