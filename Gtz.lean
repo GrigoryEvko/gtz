@@ -3071,6 +3071,11 @@ import Gtz.Wave.OuterBlockDegreeDispatch
 -- narrow the outer data at the three ranks.
 import Gtz.Wave.OuterParallelFold
 
+-- the outer trace-three interior: a vanished shifted weight breaks
+-- the gap floor at captured rank three, thus the rank-six profile
+-- kill drops its interiority hypothesis.
+import Gtz.Wave.OuterTraceThreeInterior
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.

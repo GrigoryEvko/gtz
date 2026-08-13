@@ -716,6 +716,7 @@ import Gtz.Wave.OuterResidueCollapse
 import Gtz.Wave.OuterBlockPinBudget
 import Gtz.Wave.OuterBlockDegreeDispatch
 import Gtz.Wave.OuterParallelFold
+import Gtz.Wave.OuterTraceThreeInterior
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -22468,6 +22469,13 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankFourOuterData.dense_of_circuitClosed_interior
 #print axioms Gtz.RankFiveOuterData.false_of_circuitClosed_refined
 #print axioms Gtz.RankSixOuterData.false_of_circuitClosed_refined
+
+-- the outer trace-three interior
+#print axioms Gtz.SixThreeCrux.shifted_weight_pos_of_capture_trace_three
+#print axioms Gtz.RankSixFrame.shifted_weight_pos
+#print axioms Gtz.RankFiveFrame.shifted_weight_pos_of_trace_three
+#print axioms Gtz.RankSixOuterData.false_of_circuitClosed_profile
+#print axioms Gtz.RankFiveOuterData.false_of_circuitClosed_profile
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
