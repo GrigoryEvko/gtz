@@ -440,6 +440,7 @@ import Gtz.Uniform.MomentHubSchedule
 import Gtz.Uniform.SpectralWhitening
 import Gtz.Uniform.WindowInductionStep
 import Gtz.Reduction.MassGapDescent
+import Gtz.Reduction.FrameDropDescent
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
 import Gtz.Design.TieCensusCompletion
@@ -23695,6 +23696,81 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFourSharedPrivateClosed_of_sharedPrivate_lattice
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_sharedPrivate_lattice
 #print axioms Gtz.rankSixSharedPrivateClosed_of_sharedPrivate_lattice
+
+-- ============================================================
+-- the frame-priced descent: the inverse-gap inner product, the block
+-- drop and the price of a stage, the exact stage law of the frame
+-- contraction, the free first drop, the tie pivot mass, the sharpened
+-- mass-gap ledger, the two hinge obligations on the current arm list,
+-- the bare frame layer, and two free drops at the deciding cell
+-- ============================================================
+#print axioms Gtz.dotProduct_mulVec_comm_of_symm
+#print axioms Gtz.inverseForm_comm
+#print axioms Gtz.inverseForm_sq_le
+#print axioms Gtz.posDef_one_matrix
+#print axioms Gtz.gap_form_sdiff_ge_of_pivotSum
+#print axioms Gtz.posDef_sdiff_of_pivotSum_lt_one
+#print axioms Gtz.pivot_sdiff_le_of_pivotSum
+#print axioms Gtz.sum_weight_pivot_eq_trace_inv
+#print axioms Gtz.weight_le_one
+#print axioms Gtz.posDef_gap_univ
+#print axioms Gtz.sum_freeWeight_pivot_eq_rank_add_outside
+#print axioms Gtz.sum_freeWeight_pivot_univ_eq_rank
+#print axioms Gtz.exists_pivot_lt_one_of_leak
+#print axioms Gtz.exists_pivot_lt_one_univ
+#print axioms Gtz.exists_erase_posDef_univ
+#print axioms Gtz.exists_pivot_univ_le_mediant
+#print axioms Gtz.exists_pivot_lt_one_of_dropBudget
+#print axioms Gtz.exists_rankSized_posDef_of_dropBudget
+#print axioms Gtz.tie_dropBudget_blocked
+#print axioms Gtz.tie_pivotSum_ge_half
+#print axioms Gtz.not_isTie_of_pivotDropAtRank
+#print axioms Gtz.tieWitness_singleton_gap
+#print axioms Gtz.isTie_tieWitness
+#print axioms Gtz.not_pivotDropAtRank_two_one
+#print axioms Gtz.gap_univ_form_ge_of_maxWeight
+#print axioms Gtz.trace_inv_univ_le_of_maxWeight
+#print axioms Gtz.middleForm_ge_single
+#print axioms Gtz.inverseForm_scaled_le_one
+#print axioms Gtz.stressLeverage_le_one
+#print axioms Gtz.sum_coeff_inverseForm_eq_rank
+#print axioms Gtz.negSide_leverage_eq_one_of_card_eq_rank
+#print axioms Gtz.pivot_posSide_le_middleInverseForm
+#print axioms Gtz.middleInverseFormSum_ge_of_tie
+#print axioms Gtz.tieFreeMassGappedStress_of_middleFormDrop
+#print axioms Gtz.tieFreeMassGappedStress_ten_four_of_middleFormDrop
+#print axioms Gtz.thresholdCellHingeRankFourAndUp_of_currentList
+#print axioms Gtz.subThresholdBandHinge_of_currentList
+#print axioms Gtz.sharpWindowHinge_of_currentList
+#print axioms Gtz.gtzWeighted_six_three_of_currentList
+#print axioms Gtz.frameGap_design
+#print axioms Gtz.framePivot_design
+#print axioms Gtz.framePivot_eq_inverseForm
+#print axioms Gtz.framePivot_nonneg
+#print axioms Gtz.frame_sum_pivot_eq_rank_add_trace_inv
+#print axioms Gtz.frame_sum_scale_pivot_eq_trace_inv
+#print axioms Gtz.frame_stage_law
+#print axioms Gtz.frame_exists_pivot_lt_one_of_leak
+#print axioms Gtz.frame_exists_pivot_lt_one_univ
+#print axioms Gtz.frame_exists_pivot_lt_one_of_totalScale_lt_one
+#print axioms Gtz.transpose_frameGap
+#print axioms Gtz.frame_gap_form_sdiff_ge_of_pivotSum
+#print axioms Gtz.frame_posDef_sdiff_of_pivotSum_lt_one
+#print axioms Gtz.frame_pivot_sdiff_le_of_pivotSum
+#print axioms Gtz.frame_exists_pivot_lt_one_of_dropBudget
+#print axioms Gtz.inverseForm_add_atomMatrix
+#print axioms Gtz.framePivot_erase_eq
+#print axioms Gtz.framePivot_erase_le_one
+#print axioms Gtz.exists_pivot_lt_one_erase
+#print axioms Gtz.exists_two_erase_posDef
+#print axioms Gtz.thresholdSize_two_mul_le
+#print axioms Gtz.frame_atoms_span
+#print axioms Gtz.frame_posDef_gap_univ
+#print axioms Gtz.frame_exists_drop_of_subUnit
+#print axioms Gtz.frame_exists_rankSized_of_dropBudget
+#print axioms Gtz.thresholdSize_gt_rank_add_two
+#print axioms Gtz.exists_two_erase_posDef_thresholdCell
+#print axioms Gtz.exists_card_eight_posDef_ten_four
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

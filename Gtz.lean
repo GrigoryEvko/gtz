@@ -2171,6 +2171,15 @@ import Gtz.Uniform.WindowInductionStep
 -- it always had.
 import Gtz.Reduction.MassGapDescent
 
+-- The frame-priced descent: the design identity contracts against the inverse
+-- gap of every region, thus the pivot pigeonhole becomes an exact stage law and
+-- the first drop is free at every design of size above the rank plus one; the
+-- block drop and the price of a stage; the exact rank-one pivot update and two
+-- free drops at the deciding cell of rank four and up; the same laws for a bare
+-- frame with scales of total less than one; and the two hinge obligations on
+-- the current arm list.
+import Gtz.Reduction.FrameDropDescent
+
 -- The matroid stratification of the stress-free hinge: the plane-pair escape
 -- law empties four of the nine six-point classes, the hinge follows from
 -- tie-freeness of the five named survivors, and the seam splits those five by
