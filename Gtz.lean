@@ -2895,6 +2895,11 @@ import Gtz.Wave.PencilNullFormLayer
 -- kernel invariance, and the projected-kernel kill.
 import Gtz.Wave.CycleIndependentClosure
 
+-- the support-two Rayleigh kill: the pair reading calculus, the
+-- trace-Rayleigh bound, the capture caps, the arithmetic squeeze, the
+-- private-pair kill, and the closure bridge.
+import Gtz.Wave.SupportTwoRayleighKill
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
