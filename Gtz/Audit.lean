@@ -715,6 +715,8 @@ import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
 import Gtz.Wave.RankSixClosureSupply
+import Gtz.Wave.DenseFullCarrierQuantization
+import Gtz.Wave.DenseProfileDispatch
 import Gtz.Wave.AssemblyRankCapstone
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -22388,6 +22390,34 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFiveOuterKilled_of_detVanishes
 #print axioms Gtz.rankFiveSupportTwoClosed_of_outer_killed
 #print axioms Gtz.rankSixSupportTwoClosed_of_outer_killed
+#print axioms Gtz.eigenvalue_idempotent_of_left_row
+#print axioms Gtz.full_carrier_diagonal_zero
+#print axioms Gtz.RankSixFrame.false_of_full_carrier_atom
+#print axioms Gtz.RankSixFrame.basisSupportMultiplicity_le_five
+#print axioms Gtz.extendedBasisColumns_castSucc
+#print axioms Gtz.extendedBasisColumns_last
+#print axioms Gtz.extendedCoefficient_castSucc_castSucc
+#print axioms Gtz.extendedCoefficient_castSucc_last
+#print axioms Gtz.extendedCoefficient_last_castSucc
+#print axioms Gtz.extendedCoefficient_last_last
+#print axioms Gtz.extended_representation
+#print axioms Gtz.extended_kernel_free
+#print axioms Gtz.extended_trace
+#print axioms Gtz.RankFiveFrame.trace_eq_two_of_full_carrier_atom
+#print axioms Gtz.RankFiveFrame.false_of_full_carrier_atom_of_trace_three
+#print axioms Gtz.RankFiveFrame.trace_eq_two_of_multiplicity_five
+#print axioms Gtz.double_esum_of_idempotent
+#print axioms Gtz.forall_carrier_of_multiplicity_eq_card
+#print axioms Gtz.basisSupportMultiplicity_le_basisCount
+#print axioms Gtz.RankFiveFrame.dense_multiplicity_sum
+#print axioms Gtz.RankFiveFrame.doubles_of_multiplicity_five
+#print axioms Gtz.RankFiveFrame.le_three_of_multiplicity_four
+#print axioms Gtz.RankFiveFrame.exists_triple_of_multiplicity_four
+#print axioms Gtz.RankFiveFrame.exists_three_triples_of_max_three
+#print axioms Gtz.rankFiveDenseClosed_of_profile_closures
+#print axioms Gtz.RankSixFrame.dense_multiplicity_sum
+#print axioms Gtz.RankSixFrame.all_triples_of_max_three
+#print axioms Gtz.rankSixDenseClosed_of_profile_closures
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

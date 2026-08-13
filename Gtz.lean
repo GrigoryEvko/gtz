@@ -3064,6 +3064,14 @@ import Gtz.Wave.RankSixRungAssembly
 -- the doubled-pairs law of the dense branch.
 import Gtz.Wave.RankSixClosureSupply
 
+-- the dense full-carrier quantization: the heavy-atom eigenrow laws,
+-- the rank-six full-carrier kill, and the rank-five trace pin.
+import Gtz.Wave.DenseFullCarrierQuantization
+
+-- the dense profile dispatch: the multiplicity census reduces each
+-- dense closure to three named profile closures.
+import Gtz.Wave.DenseProfileDispatch
+
 -- the assembly-rank capstone: the cell and the rank-three payoff
 -- modulo the eleven named closures of the three rungs.
 import Gtz.Wave.AssemblyRankCapstone
