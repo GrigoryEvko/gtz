@@ -1,5 +1,6 @@
 import Skeleton.RankThree
 import Skeleton.GeneralRank
+import Skeleton.SixThreeConditional
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -309,10 +310,21 @@ breakdown, then the index check, then the gate.
 
 `Skeleton.skeletonGtzOriginalRankThree` is `Skeleton.RankThree`'s capstone;
 `Skeleton.GeneralRank.skeletonGtzWeightedAllEveryRank` is the general-rank one.  Between them they must spend every declared
-obligation, or the gate reports dead weight. -/
+obligation, or the gate reports dead weight.
+
+The CONDITIONAL general-rank capstone
+`Skeleton.GeneralRank.skeletonGtzWeightedAllEveryRank_ofSixThree` is printed
+here too, and it is deliberately NOT a gate root.  It spends three of the eight
+obligations, so making it a root would let the five rank-three class residuals
+pass the dead-obligation check on its account rather than on the unconditional
+capstone's.  The gate stays over the two UNCONDITIONAL capstones, which is where
+dead weight has to be caught.  `Skeleton.SixThreeConditional` runs its own
+stricter `#gtz_frontier_exactly` gates over the conditional chain. -/
 
 #gtz_frontier Skeleton.skeletonGtzOriginalRankThree
   Skeleton.GeneralRank.skeletonGtzWeightedAllEveryRank
+
+#gtz_frontier Skeleton.GeneralRank.skeletonGtzWeightedAllEveryRank_ofSixThree
 
 #gtz_frontier Skeleton.skeletonGtzOriginalRankThree
 

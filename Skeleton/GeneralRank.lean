@@ -75,6 +75,17 @@ residuals through the trichotomy assembly, and the axiom survives only as
 `skeletonGtzWeightedAllEveryRank` now reaches ALL EIGHT registry obligations:
 the five sharpened class residuals (its rank-three price, identical to the
 rank-three capstone's) plus the three genuinely general-rank assumptions.
+
+## The five rank-three residuals are a hypothesis, not a fixture
+
+They enter through ONE branch.  `uniformInductionStep` sends rank three into the
+ladder, the ladder calls `Skeleton.obligationThresholdCellHinge`, and that
+theorem contains its own rank-three instance in its proof term.  Supply
+`Gtz.GtzWeighted 6 3` instead and the branch never runs, so the five leave the
+whole chain: `Skeleton.SixThreeConditional` proves the same conclusion at every
+rank from that cell and the THREE general-rank obligations alone, kernel-checked
+by `#gtz_frontier_exactly`.  The cell is exactly what the `Gtz/Wave` campaign
+attacks, because `thresholdCell 3 = 6`.
 -/
 
 namespace Skeleton.GeneralRank
@@ -239,15 +250,21 @@ theorem anchorReachesAcrossSharpWindow_ofRegistry {rank : ℕ} (hrankAtLeastThre
 
 /-! ## 5. The ladder: window closure from the two obligations -/
 
-/-- **The rung engine.**  From the Naimark floor `2 * rank - 1`, supplied by the
-predecessor rank, climb one cell at a time to the top of the sharp window.  Each
-rung is `Gtz.UniformPositionBridge.gtzWeighted_succ_of_hinge_of_reach`, fed by
-the two closures. -/
-theorem closesSharpWindow_ofLargeRank {rank : ℕ} (hrankAtLeastThree : 3 ≤ rank)
+/-- **The rung engine, on the two closures alone.**  From the Naimark floor
+`2 * rank - 1`, supplied by the predecessor rank, climb one cell at a time to
+the top of the sharp window.  Each rung is
+`Gtz.UniformPositionBridge.gtzWeighted_succ_of_hinge_of_reach`, fed by the two
+closures.
+
+The closures are HYPOTHESES here and not registry calls.  That is what lets
+`Skeleton.SixThreeConditional` run the same ladder off the rank-four-and-up
+obligations alone, without the rank-three instance that
+`Skeleton.obligationThresholdCellHinge` contains in its proof term. -/
+theorem closesSharpWindow_ofClosures {rank : ℕ} (hrankAtLeastThree : 3 ≤ rank)
+    (hhinge : HingeHoldsAcrossSharpWindow rank)
+    (hreach : AnchorReachesAcrossSharpWindow rank)
     (hpredecessorRank : Gtz.GtzWeightedAll (rank - 1)) : ClosesSharpWindow rank := by
   have hfloorLeThreshold := twoRank_le_thresholdCell hrankAtLeastThree
-  have hhinge := hingeHoldsAcrossSharpWindow_ofRegistry hrankAtLeastThree
-  have hreach := anchorReachesAcrossSharpWindow_ofRegistry hrankAtLeastThree
   have hnaimarkFloor : Gtz.GtzWeighted (2 * rank - 1) rank :=
     Gtz.UniformPositionBridge.gtzWeighted_belowWindow_of_predecessor hrankAtLeastThree
       hpredecessorRank
@@ -284,6 +301,14 @@ theorem closesSharpWindow_ofLargeRank {rank : ℕ} (hrankAtLeastThree : 3 ≤ ra
   have hclimbed := hclimb (size - 2 * rank) (by omega)
   have hrecover : 2 * rank + (size - 2 * rank) = size := by omega
   rwa [hrecover] at hclimbed
+
+/-- The ladder driven by the registry closures, the form the unconditional
+capstone consumes. -/
+theorem closesSharpWindow_ofLargeRank {rank : ℕ} (hrankAtLeastThree : 3 ≤ rank)
+    (hpredecessorRank : Gtz.GtzWeightedAll (rank - 1)) : ClosesSharpWindow rank :=
+  closesSharpWindow_ofClosures hrankAtLeastThree
+    (hingeHoldsAcrossSharpWindow_ofRegistry hrankAtLeastThree)
+    (anchorReachesAcrossSharpWindow_ofRegistry hrankAtLeastThree) hpredecessorRank
 
 /-! ## 6. The threshold closure at every rank, in two uniform branches -/
 
