@@ -700,6 +700,7 @@ import Gtz.Wave.BothParallelDiagonalKill
 import Gtz.Wave.BothParallelDischarge
 import Gtz.Wave.BothParallelCircuitCore
 import Gtz.Wave.BothParallelCircuitKill
+import Gtz.Wave.BothParallelCrossPinCore
 import Gtz.Wave.CycleSeamReduction
 import Gtz.Wave.KFourCertificateReduction
 import Gtz.Wave.CertificateCornerBackbone
@@ -22585,3 +22586,6 @@ run_cmd do
 #print axioms Gtz.circuit_weight_clash
 #print axioms Gtz.circuit_scalar_kill
 #print axioms Gtz.bothParallelCircuitClosed_holds
+
+-- The cross-pin scalar certificate of closure five.
+#print axioms Gtz.crossPin_scalar_kill

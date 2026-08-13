@@ -2941,6 +2941,10 @@ import Gtz.Wave.BothParallelDischarge
 import Gtz.Wave.BothParallelCircuitCore
 import Gtz.Wave.BothParallelCircuitKill
 
+-- The cross pin: the staged scalar certificate that pins the gap entry
+-- of the two single atoms to zero at the all-parallel C4 datum.
+import Gtz.Wave.BothParallelCrossPinCore
+
 -- the shared-pair outer reduction: the row reads, the entry
 -- Cauchy-Schwarz, the gap floor, the singleton kill, the same-pair
 -- kill, the narrowing window, and the refined closure-one bridge.
