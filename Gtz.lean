@@ -3025,6 +3025,16 @@ import Gtz.Wave.CycleSeamCertificateProof
 -- quadratic reads, and the one-pair outside forms.
 import Gtz.Wave.OuterSharerDualScaffold
 
+-- the outer cofactor reduction: the adjugate certificate calculus,
+-- the det collapse, and the rank-four and rank-five outer-sharer
+-- kills modulo the extras cap and the det-zero stratum kill.
+import Gtz.Wave.OuterCofactorReduction
+
+-- the outer cofactor span form: the span membership of every positive
+-- label, the energy expansion, and the extras cap as a zero-diagonal
+-- quadratic in the cross pairings.
+import Gtz.Wave.OuterCofactorSpanForm
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.

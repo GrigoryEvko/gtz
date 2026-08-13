@@ -706,6 +706,8 @@ import Gtz.Wave.SharedPrivateComplementTrace
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
+import Gtz.Wave.OuterCofactorReduction
+import Gtz.Wave.OuterCofactorSpanForm
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -22329,6 +22331,47 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.projected_direction_read_zero_of_diagonal_zero
 #print axioms Gtz.basis_capture_column_zero_of_diagonal_zero
 #print axioms Gtz.SharedPrivateData.false_of_diagonal_gram_interior
+
+-- ==========================================================
+-- the outer cofactor reduction: the adjugate certificate calculus,
+-- the det collapse, and the two-residue reductions of the rank-four
+-- and rank-five outer-sharer kills.
+-- ==========================================================
+
+#print axioms Gtz.adjugate_row_pairing
+#print axioms Gtz.adjugate_row_annihilates
+#print axioms Gtz.adjugate_row_margin
+#print axioms Gtz.dual_pairing_balance
+#print axioms Gtz.det_eq_zero_of_capped_certificate
+#print axioms Gtz.RankFourOuterData.squareMatrix_ones
+#print axioms Gtz.RankFourOuterData.squareMatrix_basisColumn
+#print axioms Gtz.RankFourOuterData.squareMatrix_filler
+#print axioms Gtz.RankFourOuterData.dualRow_annihilates_basis
+#print axioms Gtz.RankFourOuterData.dualRow_pair_difference
+#print axioms Gtz.RankFourOuterData.dualRow_atomU_eq_zero
+#print axioms Gtz.RankFourOuterData.dualRow_atomV_eq_zero
+#print axioms Gtz.RankFourOuterData.killed_of_residues
+#print axioms Gtz.rankFourSupportTwoClosed_of_cofactor_residues
+#print axioms Gtz.RankFiveOuterData.squareMatrix_ones
+#print axioms Gtz.RankFiveOuterData.squareMatrix_basisColumn
+#print axioms Gtz.RankFiveOuterData.dualRow_annihilates_basis
+#print axioms Gtz.RankFiveOuterData.killed_of_residues
+#print axioms Gtz.rankFiveSupportTwoClosed_of_cofactor_residues
+
+-- ==========================================================
+-- the outer cofactor span form: the energy expansion, the zero
+-- diagonal, the span membership, and the cap cross forms.
+-- ==========================================================
+
+#print axioms Gtz.dual_energy_expansion
+#print axioms Gtz.RankFourOuterData.crossPairing_symm
+#print axioms Gtz.RankFourOuterData.crossPairing_self_eq_zero
+#print axioms Gtz.RankFourOuterData.exists_basis_combination
+#print axioms Gtz.RankFourOuterData.cap_cross_form
+#print axioms Gtz.RankFiveOuterData.crossPairing_symm
+#print axioms Gtz.RankFiveOuterData.crossPairing_self_eq_zero
+#print axioms Gtz.RankFiveOuterData.exists_basis_combination
+#print axioms Gtz.RankFiveOuterData.cap_cross_form
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
