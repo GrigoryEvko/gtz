@@ -437,6 +437,7 @@ import Gtz.Uniform.AnchorReachAssembly
 import Gtz.Uniform.GeneralRankReachSkeleton
 import Gtz.Uniform.MomentHubSchedule
 import Gtz.Uniform.SpectralWhitening
+import Gtz.Uniform.WindowInductionStep
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
 import Gtz.Design.TieCensusCompletion
@@ -748,6 +749,7 @@ import Gtz.Wave.DenseKernelLineDichotomy
 import Gtz.Wave.DenseBlockGeometry
 import Gtz.Wave.DenseHeavyFiveStructure
 import Gtz.Wave.DenseSharedBlockRank
+import Gtz.Wave.DenseHeavyAtomReduction
 import Gtz.Wave.AssemblyRankCapstone
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -12483,6 +12485,21 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.GeneralRankReach.gtzWeighted_of_hinge_of_parallelBranch
 #print axioms Gtz.GeneralRankReach.gtzWeighted_six_three_of_hinge
 
+-- the window induction step, the size chain and the deciding cell of a rank
+#print axioms Gtz.GeneralRankReach.parallelBranch_of_predecessor
+#print axioms Gtz.GeneralRankReach.gtzWeighted_of_hinge_of_predecessor
+#print axioms Gtz.GeneralRankReach.gtzWeighted_of_hinge_of_predecessor'
+#print axioms Gtz.GeneralRankReach.gtzWeighted_aboveFloor_of_hinges
+#print axioms Gtz.GeneralRankReach.gtzWeighted_aboveFloor_of_predecessorRank
+#print axioms Gtz.GeneralRankReach.closesCanonicalWindow_of_hinges
+#print axioms Gtz.GeneralRankReach.gtzWeighted_thresholdCell_of_arms
+#print axioms Gtz.GeneralRankReach.gtzWeighted_six_three_of_arms
+#print axioms Gtz.GeneralRankReach.gtzWeightedAll_three_of_arms
+#print axioms Gtz.GeneralRankReach.gtzWeighted_band_of_bandHinge
+#print axioms Gtz.GeneralRankReach.gtzWeighted_thresholdCell_of_band_of_hinge
+#print axioms Gtz.GeneralRankReach.thresholdCell_four_above_floor
+#print axioms Gtz.GeneralRankReach.gtzWeighted_ten_four_of_arms
+
 /-! ### The matroid stratification of the stress-free hinge -/
 
 #print axioms Gtz.isPlanePairCovered_comp_relabel
@@ -22694,6 +22711,26 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankSixFrame.shared_support_rank_one
 #print axioms Gtz.RankFiveFrame.shared_support_row_quarter
 #print axioms Gtz.RankSixFrame.shared_support_row_quarter
+#print axioms Gtz.chart_mulVec_dotProduct_self
+#print axioms Gtz.chart_quadratic_le_self
+#print axioms Gtz.chart_heavy_row_cauchy_schwarz
+#print axioms Gtz.heavyReducedEntry_symm
+#print axioms Gtz.heavyReducedEntry_heavy_row
+#print axioms Gtz.heavyReducedEntry_row_square
+#print axioms Gtz.heavyReducedEntry_row_pair_le
+#print axioms Gtz.heavyReducedEntry_trace
+#print axioms Gtz.heavyReducedEntry_triple_nonneg
+#print axioms Gtz.heavyReducedEntry_triple_le_self
+#print axioms Gtz.triple_swap_last
+#print axioms Gtz.heavy_block_reduced_row
+#print axioms Gtz.heavy_block_reduced_minor
+#print axioms Gtz.heavy_block_reduced_propagate
+#print axioms Gtz.heavy_doubled_block_corner_zero
+#print axioms Gtz.dense_triangle_trace_le_one
+#print axioms Gtz.RankFiveFrame.heavyFive_chart_diagonal_pos
+#print axioms Gtz.RankFiveFrame.heavyFive_exists_block_of_pair
+#print axioms Gtz.RankFiveFrame.heavyFive_doubled_cell_false
+#print axioms Gtz.rankFiveDenseHeavyFiveClosed_of_distinct
 #print axioms Gtz.pair_mulVec_apply
 #print axioms Gtz.pair_dotProduct
 #print axioms Gtz.two_carrier_trace_cap
@@ -23140,6 +23177,14 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.degenerateArmAbovePoleCount_sixThree
 #print axioms Gtz.degenerateArmBelowPoleCount_sixThree
 #print axioms Gtz.thresholdDegenerateArm_three_of_poleSplit
+#print axioms Gtz.subsetSum_form
+#print axioms Gtz.exists_subspace_dominating_subset
+#print axioms Gtz.posDef_of_normalSurplus_hyperplaneCover
+#print axioms Gtz.unit_of_ne_zero
+#print axioms Gtz.degenerateArmAt_of_hyperplaneProducer
+#print axioms Gtz.degenerateHyperplaneProducer_of_augmentation
+#print axioms Gtz.degenerateArmAt_of_predecessorRank
+#print axioms Gtz.thresholdCellHingeRankFourAndUp_of_residuals_withPredecessorRank
 #print axioms Gtz.sideCards_add_le
 #print axioms Gtz.thresholdCell_split_window
 #print axioms Gtz.card_admissibleSplits

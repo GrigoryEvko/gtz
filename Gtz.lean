@@ -2151,6 +2151,11 @@ import Gtz.Uniform.MomentHubSchedule
 -- hypothesis, and route (b) keeps one topological input.
 import Gtz.Uniform.SpectralWhitening
 
+-- The window induction step with the topological side discharged: the parallel
+-- branch is free from the previous cell, thus a window cell needs only its
+-- hinge, and the deciding cell of a rank follows from the three hinge arms.
+import Gtz.Uniform.WindowInductionStep
+
 -- The matroid stratification of the stress-free hinge: the plane-pair escape
 -- law empties four of the nine six-point classes, the hinge follows from
 -- tie-freeness of the five named survivors, and the seam splits those five by
@@ -3239,6 +3244,11 @@ import Gtz.Wave.DenseHeavyFiveStructure
 -- the dense shared-block rank: the rank-one gap block of a shared
 -- support, the sign law, and the row square budget.
 import Gtz.Wave.DenseSharedBlockRank
+
+-- the heavy-atom reduction: the deflated chart of a full-carrier atom, the
+-- collapsed block system, the triangle trace cap, and the death of the
+-- doubled cell of the rank-five heavy-five profile.
+import Gtz.Wave.DenseHeavyAtomReduction
 
 -- the assembly-rank capstone: the cell and the rank-three payoff
 -- modulo the eleven named closures of the three rungs.
