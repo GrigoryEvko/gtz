@@ -702,6 +702,8 @@ import Gtz.Wave.CycleSeamReduction
 import Gtz.Wave.KFourCertificateReduction
 import Gtz.Wave.CertificateCornerBackbone
 import Gtz.Wave.SharedPrivateCertificateReduction
+import Gtz.Wave.KFourCertificateProof
+import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -22271,6 +22273,25 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFourSharedPrivateClosed_of_killed
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_killed
 #print axioms Gtz.rankSixSharedPrivateClosed_of_killed
+
+-- ==========================================================
+-- the K4 certificate proof.  The three opposite-pair
+-- dichotomy laws, the certificate proof, and closure three.
+-- ==========================================================
+
+#print axioms Gtz.corner_dichotomy_zero_one
+#print axioms Gtz.corner_dichotomy_zero_two
+#print axioms Gtz.corner_dichotomy_zero_three
+#print axioms Gtz.kFourCertificate_holds
+#print axioms Gtz.rankFourKFourClosed_holds
+
+-- ==========================================================
+-- the cycle seam certificate proof.  The certificate proof
+-- through the dichotomy, and closure four.
+-- ==========================================================
+
+#print axioms Gtz.cycleSeamCertificate_holds
+#print axioms Gtz.rankFourCycleIndependentClosed_holds
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

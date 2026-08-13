@@ -3003,6 +3003,16 @@ import Gtz.Wave.CertificateCornerBackbone
 -- shared-private closures of ranks four, five, and six.
 import Gtz.Wave.SharedPrivateCertificateReduction
 
+-- the K4 certificate proof: the three opposite-pair dichotomy laws,
+-- the certificate proof through the corner excess balance, and
+-- closure three.
+import Gtz.Wave.KFourCertificateProof
+
+-- the cycle seam certificate proof: the pair trace law and two corner
+-- products feed the dichotomy, the two branches die on the weight
+-- cone, and closure four holds.
+import Gtz.Wave.CycleSeamCertificateProof
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.
