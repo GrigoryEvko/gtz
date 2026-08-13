@@ -42,6 +42,14 @@ DOMINATING PAIR.**  The pair is the first two links of a Sylvester
 chain, thus the atom triple ceiling now needs one link only, and that
 link is the determinant of one three by three block.
 
+The last layer prices that link.  The determinant of a three-slot block
+factors as the shifted diagonal of the third slot against the pair
+minor, minus the SCHUR LEAK of that slot.  The leak of a pair sums over
+all slots to one exact expression in five Gram entries, again by the row
+energy law and the idempotence law.  Thus a dominating pair extends as
+soon as the shifted diagonal mass of a region beats the leak of that
+region, and the residue of the third rung is one scalar margin.
+
 ## PROVED here (no `sorry`, no `axiom`, no `native_decide`)
 
 * `Gtz.probeUnit`, `Gtz.dotProduct_probeUnit`, `Gtz.probeUnit_energy` —
@@ -100,6 +108,19 @@ link is the determinant of one three by three block.
   `Gtz.rankFiveSupportTwoClosed_of_sylvester_of_interior`,
   `Gtz.rankFourSupportTwoClosed_of_sylvester_of_interior` — the rung
   from the polynomial residue.
+* `Gtz.atomSchurLeak`, `Gtz.atomTripleDet_schur` — **THE SCHUR
+  FACTORIZATION** of a three-slot determinant.
+* `Gtz.atomSchurLeak_total`, `Gtz.atomTripleDet_total` — the exact
+  averaged price of an extension of one pair.
+* `Gtz.exists_extending_slot`,
+  `Gtz.exists_sylvester_chain_of_extension` — **THE EXTENSION
+  CRITERION**: a region whose shifted diagonal mass beats its own Schur
+  leak against a dominating pair supplies a dominating triple.
+* `Gtz.atom_full_frame_dominates` — **THE FULL FRAME DOMINATES**, thus
+  the residue of the third rung is one ROUNDING law and not an
+  existence law.
+* `Gtz.AtomFrameDropClosed`, `Gtz.atom_univ_dominates` — the
+  frame-constrained drop and the start of its descent.
 
 ## Vacuity
 
@@ -1056,5 +1077,236 @@ theorem rankFourSupportTwoClosed_of_sylvester_of_interior
     RankFourSupportTwoClosed :=
   rankFourSupportTwoClosed_of_atomTripleCeiling_of_interior
     (atomTripleCeilingClosed_of_sylvester hresidue) hinterior
+
+/-! ## Layer 9 — the extension calculus -/
+
+/-- The SCHUR LEAK of a third slot against a pair: the part of the pair
+minor that the cross entries of the third slot spend. -/
+def atomSchurLeak {slotCount rank : ℕ} (atom : Fin slotCount → (Fin rank → ℝ))
+    (scale : Fin slotCount → ℝ) (slotOne slotTwo slotThree : Fin slotCount) : ℝ :=
+  atomShiftedDiag atom scale slotOne * atomGram atom slotTwo slotThree ^ 2
+    - 2 * atomGram atom slotOne slotTwo * atomGram atom slotOne slotThree
+        * atomGram atom slotTwo slotThree
+    + atomShiftedDiag atom scale slotTwo * atomGram atom slotOne slotThree ^ 2
+
+/-- **THE SCHUR FACTORIZATION.**  The determinant of a three-slot block
+is the shifted diagonal of the third slot against the pair minor, minus
+the Schur leak of that slot.  Thus a dominating pair extends exactly
+when one slot pays more than it leaks. -/
+theorem atomTripleDet_schur {slotCount rank : ℕ} (atom : Fin slotCount → (Fin rank → ℝ))
+    (scale : Fin slotCount → ℝ) (slotOne slotTwo slotThree : Fin slotCount) :
+    atomTripleDet atom scale slotOne slotTwo slotThree
+      = atomShiftedDiag atom scale slotThree * atomPairMinor atom scale slotOne slotTwo
+        - atomSchurLeak atom scale slotOne slotTwo slotThree := by
+  simp only [atomTripleDet, atomPairMinor, atomSchurLeak]
+  ring
+
+/-- **THE SCHUR LEAK TOTAL.**  The Schur leak of a pair sums over all
+slots to one exact expression in the two diagonal entries, the two
+shifted diagonal entries and the cross entry of that pair.  The proof is
+the row energy law at each slot of the pair and the idempotence law at
+the pair. -/
+theorem atomSchurLeak_total {slotCount rank : ℕ} {atom : Fin slotCount → (Fin rank → ℝ)}
+    (hframe : ∀ probe direction : Fin rank → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    (scale : Fin slotCount → ℝ) (slotOne slotTwo : Fin slotCount) :
+    (∑ slotThree, atomSchurLeak atom scale slotOne slotTwo slotThree)
+      = atomShiftedDiag atom scale slotOne * atomGram atom slotTwo slotTwo
+        - 2 * atomGram atom slotOne slotTwo ^ 2
+        + atomShiftedDiag atom scale slotTwo * atomGram atom slotOne slotOne := by
+  classical
+  have hcross : (∑ slotThree, atomGram atom slotOne slotThree * atomGram atom slotTwo slotThree)
+      = atomGram atom slotOne slotTwo := by
+    rw [← atomGram_idempotent hframe slotOne slotTwo]
+    exact Finset.sum_congr rfl fun slotThree _ => by
+      rw [atomGram_comm atom slotTwo slotThree]
+  have hsplit : ∀ slotThree : Fin slotCount,
+      atomSchurLeak atom scale slotOne slotTwo slotThree
+        = atomShiftedDiag atom scale slotOne * atomGram atom slotTwo slotThree ^ 2
+          - 2 * atomGram atom slotOne slotTwo
+              * (atomGram atom slotOne slotThree * atomGram atom slotTwo slotThree)
+          + atomShiftedDiag atom scale slotTwo * atomGram atom slotOne slotThree ^ 2 := by
+    intro slotThree
+    simp only [atomSchurLeak]
+    ring
+  rw [Finset.sum_congr rfl fun slotThree _ => hsplit slotThree, Finset.sum_add_distrib,
+    Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum,
+    hcross, atomGram_row_energy hframe slotTwo, atomGram_row_energy hframe slotOne]
+  ring
+
+/-- **THE DETERMINANT TOTAL OF A PAIR.**  The three-slot determinants of
+one pair sum over all slots to the shifted diagonal mass against the
+pair minor, minus the Schur leak total.  This is the exact averaged
+price of an extension. -/
+theorem atomTripleDet_total {slotCount rank : ℕ} {atom : Fin slotCount → (Fin rank → ℝ)}
+    (hframe : ∀ probe direction : Fin rank → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    (scale : Fin slotCount → ℝ) (slotOne slotTwo : Fin slotCount) :
+    (∑ slotThree, atomTripleDet atom scale slotOne slotTwo slotThree)
+      = ((rank : ℝ) - ∑ slot, scale slot) * atomPairMinor atom scale slotOne slotTwo
+        - (atomShiftedDiag atom scale slotOne * atomGram atom slotTwo slotTwo
+          - 2 * atomGram atom slotOne slotTwo ^ 2
+          + atomShiftedDiag atom scale slotTwo * atomGram atom slotOne slotOne) := by
+  classical
+  rw [Finset.sum_congr rfl fun slotThree _ =>
+      atomTripleDet_schur atom scale slotOne slotTwo slotThree,
+    Finset.sum_sub_distrib, ← Finset.sum_mul, atomShiftedDiag_total hframe scale,
+    atomSchurLeak_total hframe scale slotOne slotTwo]
+
+/-- **THE EXTENSION CRITERION.**  If the shifted diagonal mass of a
+region beats the Schur leak of that region against a pair, then one slot
+of the region extends the pair to a positive determinant. -/
+theorem exists_extending_slot {slotCount rank : ℕ} {atom : Fin slotCount → (Fin rank → ℝ)}
+    {scale : Fin slotCount → ℝ} {slotOne slotTwo : Fin slotCount}
+    {region : Finset (Fin slotCount)}
+    (hmargin : (∑ slotThree ∈ region, atomSchurLeak atom scale slotOne slotTwo slotThree)
+      < (∑ slotThree ∈ region, atomShiftedDiag atom scale slotThree)
+        * atomPairMinor atom scale slotOne slotTwo) :
+    ∃ slotThree ∈ region, 0 < atomTripleDet atom scale slotOne slotTwo slotThree := by
+  classical
+  by_contra hcontra
+  have hnone : ∀ slotThree ∈ region,
+      atomShiftedDiag atom scale slotThree * atomPairMinor atom scale slotOne slotTwo
+        ≤ atomSchurLeak atom scale slotOne slotTwo slotThree := by
+    intro slotThree hmem
+    have hle : atomTripleDet atom scale slotOne slotTwo slotThree ≤ 0 := by
+      by_contra hlt
+      exact hcontra ⟨slotThree, hmem, not_le.mp hlt⟩
+    rw [atomTripleDet_schur atom scale slotOne slotTwo slotThree] at hle
+    linarith [hle]
+  have hsum : (∑ slotThree ∈ region, atomShiftedDiag atom scale slotThree)
+      * atomPairMinor atom scale slotOne slotTwo
+      ≤ ∑ slotThree ∈ region, atomSchurLeak atom scale slotOne slotTwo slotThree := by
+    rw [Finset.sum_mul]
+    exact Finset.sum_le_sum hnone
+  exact absurd hsum (not_le.mpr hmargin)
+
+/-- **THE SYLVESTER CHAIN FROM AN EXTENSION MARGIN.**  A dominating pair
+together with a region that misses the pair and beats its Schur leak
+supplies the whole nested minor chain, thus a dominating triple. -/
+theorem exists_sylvester_chain_of_extension {slotCount rank : ℕ}
+    {atom : Fin slotCount → (Fin rank → ℝ)} {scale : Fin slotCount → ℝ}
+    {slotOne slotTwo : Fin slotCount} {region : Finset (Fin slotCount)}
+    (hscale : 0 < scale slotOne) (hdiag : 0 < atomShiftedDiag atom scale slotOne)
+    (hminor : 0 < atomPairMinor atom scale slotOne slotTwo)
+    (honeOff : slotOne ∉ region) (htwoOff : slotTwo ∉ region)
+    (hmargin : (∑ slotThree ∈ region, atomSchurLeak atom scale slotOne slotTwo slotThree)
+      < (∑ slotThree ∈ region, atomShiftedDiag atom scale slotThree)
+        * atomPairMinor atom scale slotOne slotTwo) :
+    ∃ slotThree : Fin slotCount, slotOne ≠ slotTwo ∧ slotOne ≠ slotThree
+      ∧ slotTwo ≠ slotThree
+      ∧ 0 < atomShiftedDiag atom scale slotOne
+      ∧ 0 < atomPairMinor atom scale slotOne slotTwo
+      ∧ 0 < atomTripleDet atom scale slotOne slotTwo slotThree := by
+  classical
+  obtain ⟨slotThree, hmem, hdet⟩ := exists_extending_slot hmargin
+  have honeTwo : slotOne ≠ slotTwo := by
+    intro hsame
+    rw [← hsame] at hminor
+    simp only [atomPairMinor, atomShiftedDiag] at hminor
+    simp only [atomShiftedDiag] at hdiag
+    nlinarith [hminor, hdiag, hscale, atomGram_diag_nonneg atom slotOne]
+  exact ⟨slotThree, honeTwo, fun hsame => honeOff (hsame ▸ hmem),
+    fun hsame => htwoOff (hsame ▸ hmem), hdiag, hminor, hdet⟩
+
+/-! ## Layer 10 — the descent start -/
+
+/-- **THE FULL FRAME DOMINATES.**  Read the reciprocal scales against the
+atom energies of any direction.  The whole slot set beats the ambient
+square norm at every nonzero direction, and the only inputs are the
+frame law and a scale total below one.
+
+This is the START of a descent.  The atom triple ceiling asks for a
+carrier of card `rank`, and the full slot set already dominates, thus
+the residue of the third rung is one ROUNDING law: shrink a dominating
+slot set to card `rank` and keep the domination.  The same rounding law
+is the open drop condition of the hinge arm, whose refutation of the
+bare shrink route (three atoms in two dimensions, a positive total and
+no positive pair) has scale total `7/4`, thus it does NOT refute the
+frame-constrained law that this layer starts. -/
+theorem atom_full_frame_dominates {slotCount rank : ℕ}
+    {atom : Fin slotCount → (Fin rank → ℝ)}
+    (hframe : ∀ probe direction : Fin rank → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    {scale : Fin slotCount → ℝ} (hscale : ∀ slot, 0 < scale slot)
+    (hsmall : (∑ slot, scale slot) < 1) (coeff : Fin slotCount → ℝ)
+    (hcoeff : ∀ slot, coeff slot * scale slot = 1)
+    {direction : Fin rank → ℝ} (hne : direction ≠ 0) :
+    direction ⬝ᵥ direction < ∑ slot, coeff slot * (atom slot ⬝ᵥ direction) ^ 2 := by
+  classical
+  have henergy : (∑ slot, (atom slot ⬝ᵥ direction) ^ 2) = direction ⬝ᵥ direction := by
+    simp only [sq]
+    exact hframe direction direction
+  have hnormPos : 0 < direction ⬝ᵥ direction := by
+    obtain ⟨index, hlive⟩ : ∃ index, direction index ≠ 0 := by
+      by_contra hnone
+      exact hne (funext fun index => not_not.mp fun hlt => hnone ⟨index, hlt⟩)
+    rw [dotProduct]
+    exact Finset.sum_pos' (fun _ _ => mul_self_nonneg _)
+      ⟨index, Finset.mem_univ _, mul_self_pos.mpr hlive⟩
+  have hnonempty : (Finset.univ : Finset (Fin slotCount)).Nonempty := by
+    rcases (Finset.univ : Finset (Fin slotCount)).eq_empty_or_nonempty with hempty | hsome
+    · exfalso
+      rw [← henergy, hempty, Finset.sum_empty] at hnormPos
+      exact absurd hnormPos (lt_irrefl 0)
+    · exact hsome
+  have htotalPos : 0 < ∑ slot, scale slot :=
+    Finset.sum_pos (fun slot _ => hscale slot) hnonempty
+  have hcap : ∀ slot : Fin slotCount, scale slot ≤ ∑ other, scale other :=
+    fun slot => Finset.single_le_sum (f := scale) (fun other _ => (hscale other).le)
+      (Finset.mem_univ slot)
+  have hcoeffPos : ∀ slot : Fin slotCount, 0 < coeff slot := by
+    intro slot
+    by_contra hnot
+    have hle : coeff slot ≤ 0 := not_lt.mp hnot
+    nlinarith [hcoeff slot, hscale slot, hle]
+  have hone : ∀ slot : Fin slotCount, 1 ≤ coeff slot * ∑ other, scale other := by
+    intro slot
+    have := mul_le_mul_of_nonneg_left (hcap slot) (hcoeffPos slot).le
+    rw [hcoeff slot] at this
+    exact this
+  have hbound : (∑ slot, (atom slot ⬝ᵥ direction) ^ 2)
+      ≤ (∑ other, scale other) * ∑ slot, coeff slot * (atom slot ⬝ᵥ direction) ^ 2 := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_le_sum fun slot _ => ?_
+    have hstep := mul_le_mul_of_nonneg_right (hone slot) (sq_nonneg (atom slot ⬝ᵥ direction))
+    calc (atom slot ⬝ᵥ direction) ^ 2
+        = 1 * (atom slot ⬝ᵥ direction) ^ 2 := by ring
+      _ ≤ (coeff slot * ∑ other, scale other) * (atom slot ⬝ᵥ direction) ^ 2 := hstep
+      _ = (∑ other, scale other) * (coeff slot * (atom slot ⬝ᵥ direction) ^ 2) := by ring
+  rw [henergy] at hbound
+  nlinarith [hbound, hsmall, hnormPos, htotalPos]
+
+/-- **THE FRAME-CONSTRAINED DROP.**  The rounding law that the descent
+needs: a dominating slot set of card more than three, at a frame with
+scales of total less than one, has a slot that the domination can spare.
+This is the design-constrained form of the hinge arm drop condition, and
+the two programs share it. -/
+def AtomFrameDropClosed : Prop :=
+  ∀ (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ) (coeff : Fin 6 → ℝ),
+    (∀ slot, 0 < scale slot) →
+    (∑ slot, scale slot) < 1 →
+    (∀ slot, coeff slot * scale slot = 1) →
+    (∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction) →
+    ∀ region : Finset (Fin 6), 3 < region.card →
+      (∀ direction : Fin 3 → ℝ, direction ≠ 0 →
+        direction ⬝ᵥ direction < ∑ slot ∈ region, coeff slot * (atom slot ⬝ᵥ direction) ^ 2) →
+      ∃ dropped ∈ region, ∀ direction : Fin 3 → ℝ, direction ≠ 0 →
+        direction ⬝ᵥ direction
+          < ∑ slot ∈ region.erase dropped, coeff slot * (atom slot ⬝ᵥ direction) ^ 2
+
+/-- The full slot set of a rank-three frame starts the descent: it is a
+dominating region of card six. -/
+theorem atom_univ_dominates {atom : Fin 6 → (Fin 3 → ℝ)}
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    {scale : Fin 6 → ℝ} (hscale : ∀ slot, 0 < scale slot)
+    (hsmall : (∑ slot, scale slot) < 1) (coeff : Fin 6 → ℝ)
+    (hcoeff : ∀ slot, coeff slot * scale slot = 1) :
+    ∀ direction : Fin 3 → ℝ, direction ≠ 0 →
+      direction ⬝ᵥ direction
+        < ∑ slot ∈ (Finset.univ : Finset (Fin 6)), coeff slot * (atom slot ⬝ᵥ direction) ^ 2 :=
+  fun _direction hne => atom_full_frame_dominates hframe hscale hsmall coeff hcoeff hne
 
 end Gtz

@@ -23426,6 +23426,15 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.gtzWeighted_six_three_of_sylvester_of_interior
 #print axioms Gtz.rankFiveSupportTwoClosed_of_sylvester_of_interior
 #print axioms Gtz.rankFourSupportTwoClosed_of_sylvester_of_interior
+#print axioms Gtz.atomSchurLeak
+#print axioms Gtz.atomTripleDet_schur
+#print axioms Gtz.atomSchurLeak_total
+#print axioms Gtz.atomTripleDet_total
+#print axioms Gtz.exists_extending_slot
+#print axioms Gtz.exists_sylvester_chain_of_extension
+#print axioms Gtz.atom_full_frame_dominates
+#print axioms Gtz.AtomFrameDropClosed
+#print axioms Gtz.atom_univ_dominates
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
