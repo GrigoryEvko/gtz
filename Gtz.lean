@@ -2945,6 +2945,10 @@ import Gtz.Wave.BothParallelCircuitKill
 -- of the two single atoms to zero at the all-parallel C4 datum.
 import Gtz.Wave.BothParallelCrossPinCore
 
+-- The cross-pin datum bridge: the folds, the entry readers, the branch
+-- dichotomy, and closure five without hypotheses.
+import Gtz.Wave.BothParallelCrossPin
+
 -- the shared-pair outer reduction: the row reads, the entry
 -- Cauchy-Schwarz, the gap floor, the singleton kill, the same-pair
 -- kill, the narrowing window, and the refined closure-one bridge.
@@ -3117,6 +3121,10 @@ import Gtz.Wave.DenseProfileDispatch
 -- the dense kernel-line dichotomy: the kernel line, the scaled
 -- extension calculus, the leak square, and the heavy kernel column.
 import Gtz.Wave.DenseKernelLineDichotomy
+
+-- the dense block geometry: the block eigen system, the cofactor
+-- calculus, the shared-block kills, and the carrier corner equations.
+import Gtz.Wave.DenseBlockGeometry
 
 -- the assembly-rank capstone: the cell and the rank-three payoff
 -- modulo the eleven named closures of the three rungs.

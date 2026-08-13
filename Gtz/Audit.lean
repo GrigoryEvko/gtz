@@ -701,6 +701,7 @@ import Gtz.Wave.BothParallelDischarge
 import Gtz.Wave.BothParallelCircuitCore
 import Gtz.Wave.BothParallelCircuitKill
 import Gtz.Wave.BothParallelCrossPinCore
+import Gtz.Wave.BothParallelCrossPin
 import Gtz.Wave.CycleSeamReduction
 import Gtz.Wave.KFourCertificateReduction
 import Gtz.Wave.CertificateCornerBackbone
@@ -726,6 +727,7 @@ import Gtz.Wave.RankSixClosureSupply
 import Gtz.Wave.DenseFullCarrierQuantization
 import Gtz.Wave.DenseProfileDispatch
 import Gtz.Wave.DenseKernelLineDichotomy
+import Gtz.Wave.DenseBlockGeometry
 import Gtz.Wave.AssemblyRankCapstone
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -22442,6 +22444,39 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankFiveFrame.kernel_line_dichotomy
 #print axioms Gtz.tight_leak_square_read
 #print axioms Gtz.RankFiveFrame.heavy_kernel_column
+#print axioms Gtz.datumTightSupport_eq_activeSubset_of_card
+#print axioms Gtz.exists_support_triple
+#print axioms Gtz.tightDir_eq_zero_of_support_triple
+#print axioms Gtz.tightDir_ne_zero_of_support_triple
+#print axioms Gtz.block_eigen_row
+#print axioms Gtz.block_cofactor_first
+#print axioms Gtz.block_cofactor_second
+#print axioms Gtz.block_cofactor_third
+#print axioms Gtz.block_minor_cross
+#print axioms Gtz.block_determinant_zero
+#print axioms Gtz.dense_block_shifted_determinant_zero
+#print axioms Gtz.leftInverse_read_pair_combination
+#print axioms Gtz.leftInverse_read_triple_combination
+#print axioms Gtz.false_of_shared_block_cross_zero
+#print axioms Gtz.false_of_three_shared_block_slots
+#print axioms Gtz.carrier_pair_characteristic
+#print axioms Gtz.shared_carrier_pair_trace
+#print axioms Gtz.shared_carrier_pair_determinant
+#print axioms Gtz.sum_collapse_three
+#print axioms Gtz.three_by_three_determinant_zero_of_kernel
+#print axioms Gtz.exists_carrier_triple_of_multiplicity_three
+#print axioms Gtz.carrier_triple_characteristic
+#print axioms Gtz.shifted_weight_sum
+#print axioms Gtz.shifted_weight_lt_one
+#print axioms Gtz.SixThreeCrux.gap_diagonal_ne_value
+#print axioms Gtz.RankFiveFrame.false_of_shared_support_cross_zero
+#print axioms Gtz.RankFiveFrame.false_of_three_shared_supports
+#print axioms Gtz.RankSixFrame.false_of_shared_support_cross_zero
+#print axioms Gtz.RankSixFrame.false_of_three_shared_supports
+#print axioms Gtz.RankFiveFrame.exists_carrier_pair_characteristic
+#print axioms Gtz.RankSixFrame.exists_carrier_pair_characteristic
+#print axioms Gtz.RankFiveFrame.shifted_weight_sum
+#print axioms Gtz.RankSixFrame.shifted_weight_sum
 #print axioms Gtz.pair_mulVec_apply
 #print axioms Gtz.pair_dotProduct
 #print axioms Gtz.two_carrier_trace_cap
@@ -22587,5 +22622,10 @@ run_cmd do
 #print axioms Gtz.circuit_scalar_kill
 #print axioms Gtz.bothParallelCircuitClosed_holds
 
--- The cross-pin scalar certificate of closure five.
+-- The cross-pin scalar certificate and the datum bridge of closure five.
 #print axioms Gtz.crossPin_scalar_kill
+#print axioms Gtz.mulVec_triple_read
+#print axioms Gtz.four_slot_sum_eq
+#print axioms Gtz.bothParallel_four_slot_commutation
+#print axioms Gtz.bothParallelCrossPinned_holds
+#print axioms Gtz.rankFourBothParallelClosed_holds
