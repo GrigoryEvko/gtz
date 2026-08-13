@@ -716,6 +716,8 @@ import Gtz.Wave.SharedPrivateBoundaryDispatch
 import Gtz.Wave.SharedPrivateKernelMinor
 import Gtz.Wave.SharedPrivateKernelFactor
 import Gtz.Wave.SharedPrivateSpectralSplit
+import Gtz.Wave.SharedPrivateCircuitGeometry
+import Gtz.Wave.SharedPrivateReadIntertwiner
 import Gtz.Wave.SharedPrivateBoundaryComplement
 import Gtz.Wave.SharedPrivateGramCommutation
 import Gtz.Wave.KFourCertificateProof
@@ -731,6 +733,7 @@ import Gtz.Wave.OuterTraceThreeInterior
 import Gtz.Wave.OuterColumnGramFold
 import Gtz.Wave.OuterZeroProfileLattice
 import Gtz.Wave.OuterDenseCornerKill
+import Gtz.Wave.OuterCircuitPinResidue
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -22868,6 +22871,102 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.carrierReading_ne_zero
 #print axioms Gtz.exists_carrier_energy_eigen
 #print axioms Gtz.SharedPrivateData.exists_kernel_spectral_split
+
+-- The circuit geometry of the extras residue.
+#print axioms Gtz.SharedPrivateData.reconstruction_apply
+#print axioms Gtz.SharedPrivateData.circuit_equation
+#print axioms Gtz.SharedPrivateData.parallel_of_labelCoeff_single
+#print axioms Gtz.SharedPrivateData.exists_two_slots_of_circuit
+#print axioms Gtz.SharedPrivateData.tightDir_pinAtom_eq
+#print axioms Gtz.SharedPrivateData.labelCoeff_privateSlot_eq_zero
+#print axioms Gtz.SharedPrivateData.outside_proportional_of_pair
+#print axioms Gtz.SharedPrivateData.false_of_pair_inside_pin
+#print axioms Gtz.SharedPrivateData.share_atom_of_pair_circuit
+#print axioms Gtz.sharedPrivateCircuitClosed_of_width
+#print axioms Gtz.sharedPrivateExtrasClosed_of_width
+
+-- The outer circuit residue: the coefficient row calculus of a general
+-- positive label, the pin dichotomy, the rank-one shifted gap block, and
+-- the two narrowed circuit residues at each of the three rungs.
+#print axioms Gtz.projection_mulVec_eq_basis_of_mem_positive
+#print axioms Gtz.coefficient_row_reading
+#print axioms Gtz.pin_coefficient_row_reading
+#print axioms Gtz.pin_coefficient_offdiag_sum_eq_zero
+#print axioms Gtz.pin_coefficient_dichotomy
+#print axioms Gtz.parallel_of_coefficient_support_le_one
+#print axioms Gtz.exists_two_live_coefficient_slots
+#print axioms Gtz.private_of_blockCarrier_singleton
+#print axioms Gtz.exists_block_third_atom_of_card_three
+#print axioms Gtz.cross_ne_zero_of_not_parallel_pair_column
+#print axioms Gtz.gap_rank_one_of_pair_and_wide
+#print axioms Gtz.gap_pair_minor_eq_zero_of_pair_supported
+#print axioms Gtz.gap_block_rank_one_of_pair_wide
+#print axioms Gtz.circuit_gap_rank_one_of_pair_column
+#print axioms Gtz.RankFourOuterData.gap_pair_minor
+#print axioms Gtz.RankFiveOuterData.gap_pair_minor
+#print axioms Gtz.RankSixOuterData.gap_pair_minor
+#print axioms Gtz.RankFourOuterData.circuit_gap_rank_one
+#print axioms Gtz.RankFiveOuterData.circuit_gap_rank_one
+#print axioms Gtz.RankSixOuterData.circuit_gap_rank_one
+#print axioms Gtz.RankFourOuterData.circuit_pin_dichotomy
+#print axioms Gtz.rankFourOuterCircuitClosed_of_narrowed
+#print axioms Gtz.rankFiveOuterCircuitClosed_of_narrowed
+#print axioms Gtz.rankSixOuterCircuitClosed_of_narrowed
+#print axioms Gtz.rankFourOuterKilled_of_narrowed_interior
+#print axioms Gtz.rankFourSupportTwoClosed_of_narrowed_interior
+#print axioms Gtz.rankFiveSupportTwoClosed_of_narrowed_refined
+#print axioms Gtz.rankSixSupportTwoClosed_of_narrowed_lowProfile
+
+-- The read intertwiner: the Gram quadratic forms, the PSD rigidity, the
+-- intertwiner calculus, the read frame with its weight matrix, the
+-- capture ledger, the faithful assembly at basis count six, and the two
+-- interior deficit residues.
+#print axioms Gtz.selfDot_nonneg
+#print axioms Gtz.eq_zero_of_selfDot_eq_zero
+#print axioms Gtz.gram_quadForm
+#print axioms Gtz.columnGram_quadForm
+#print axioms Gtz.rowGram_quadForm
+#print axioms Gtz.row_eq_zero_of_quadForm_nonneg_of_diag_zero
+#print axioms Gtz.intertwiner_transpose_law
+#print axioms Gtz.intertwiner_columnGram_commute
+#print axioms Gtz.intertwiner_complement
+#print axioms Gtz.intertwiner_capture_gram
+#print axioms Gtz.projector_capture_sandwich
+#print axioms Gtz.projector_capture_quadForm_nonneg
+#print axioms Gtz.projector_capture_transpose
+#print axioms Gtz.ReadIntertwiner.weightMat
+#print axioms Gtz.ReadIntertwiner.weightMat_transpose
+#print axioms Gtz.ReadIntertwiner.weightMat_commute
+#print axioms Gtz.ReadIntertwiner.weightMat_apply
+#print axioms Gtz.ReadIntertwiner.weightMat_diagonal
+#print axioms Gtz.ReadIntertwiner.trace_weightMat
+#print axioms Gtz.ReadIntertwiner.gramDiag_sum_one
+#print axioms Gtz.ReadIntertwiner.weightMat_quadForm_nonneg
+#print axioms Gtz.ReadIntertwiner.weightMat_kernelFree
+#print axioms Gtz.ReadIntertwiner.readMat_eq_zero_of_notMem
+#print axioms Gtz.ReadIntertwiner.readMat_ne_zero_of_mem
+#print axioms Gtz.ReadIntertwiner.complement_weightMat_commute
+#print axioms Gtz.ReadIntertwiner.capture_weightMat_transpose
+#print axioms Gtz.ReadIntertwiner.capture_weightMat_quadForm_nonneg
+#print axioms Gtz.ReadIntertwiner.capture_weightMat_diagonal
+#print axioms Gtz.ReadIntertwiner.trace_capture_weightMat
+#print axioms Gtz.ReadIntertwiner.trace_complement_weightMat
+#print axioms Gtz.ReadIntertwiner.tightDir_square_sum
+#print axioms Gtz.ReadIntertwiner.complement_weightMat_diagonal
+#print axioms Gtz.ReadIntertwiner.capture_weightMat_diagonal_pos
+#print axioms Gtz.ReadIntertwiner.complement_weightMat_diagonal_pos
+#print axioms Gtz.ReadIntertwiner.weightMat_eq_zero_of_disjoint_support
+#print axioms Gtz.SharedPrivateData.readIntertwiner
+#print axioms Gtz.SharedPrivateData.basisColumns_mul_leftInv_of_basisCount_six
+#print axioms Gtz.SharedPrivateData.trace_eq_three_of_basisCount_six
+#print axioms Gtz.SharedPrivateData.basisColumns_transpose_mulVec_eq_zero_of_assembly
+#print axioms Gtz.SharedPrivateData.assembly_kernelFree_of_basisCount_six
+#print axioms Gtz.SharedPrivateData.shifted_weight_pos_of_basisCount_six
+#print axioms Gtz.SharedPrivateData.deficit_profile_of_mass
+#print axioms Gtz.sharedPrivateDeficitSixClosed_of_interior
+#print axioms Gtz.sharedPrivateDeficitComplementClosed_of_interior
+#print axioms Gtz.sharedPrivateDeficitClosed_of_interior_residues
+#print axioms Gtz.sharedPrivateKilled_of_interior_strata
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

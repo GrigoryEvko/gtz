@@ -3079,6 +3079,19 @@ import Gtz.Wave.SharedPrivateKernelFactor
 -- shared-private datum at every kernel gap.
 import Gtz.Wave.SharedPrivateSpectralSplit
 
+-- the read intertwiner: the read matrix of a diagonal-Gram datum, the
+-- intertwiner law between the slot projection and the chart, the read
+-- weight matrix with its unit trace and its commutation, the faithful
+-- assembly at basis count six with the interior window, and the two
+-- interior deficit residues.
+import Gtz.Wave.SharedPrivateReadIntertwiner
+
+-- the circuit geometry: the coefficient frame of a positive label, the
+-- parallel criterion, the pin privacy law, the outside proportion law,
+-- the pair kill at the pin block, and the split of the circuit residue
+-- into the pair circuits and the wide circuits.
+import Gtz.Wave.SharedPrivateCircuitGeometry
+
 -- the shared-private boundary complement: the carrier cap of the
 -- rank-four rigidity, the rank-four minor kill at shared slot pairs,
 -- the partition law of a disjoint support pair, the complement slot,
@@ -3152,6 +3165,11 @@ import Gtz.Wave.OuterZeroProfileLattice
 -- the outer dense corner kill: the two-carrier branch of the outer datum
 -- dies with no Gram hypothesis, and the circuit residue narrows
 import Gtz.Wave.OuterDenseCornerKill
+
+-- the outer circuit residue: the coefficient row calculus of a general
+-- positive label, the pin dichotomy, the rank-one shifted gap block, and
+-- the two narrowed circuit residues at each of the three rungs
+import Gtz.Wave.OuterCircuitPinResidue
 
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
