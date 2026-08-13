@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import Mathlib
 import Gtz.Reduction.ThresholdCellHingeMap
+import Gtz.Design.TieCensusCompletion
+import Gtz.Design.CompanionConstruction
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -40,6 +42,14 @@ pair is exactly what the arm permits. `Gtz.DegenerateHyperplaneCover` is the
 repair. It carries the primitivity, the tie, the stress and the hyperplane, and
 its rank-three instance is a THEOREM off the closed two-pole capstone
 (`Gtz.degenerateHyperplaneCover_three_of_selection`).
+
+The refutation is UNCONDITIONAL. `Gtz.sixSplitDiamondDesign` is a `(6,3)` tie
+that carries a parallel pair, thus
+`Gtz.not_degenerateHyperplaneProducer_six_three` and
+`Gtz.not_degeneratePoleAugmentation_six_three` are theorems, while
+`Gtz.degenerateHyperplaneCover_six_three` proves the repaired residual at the
+SAME cell. `Gtz.degenerate_residual_verdict_six_three` records the four
+verdicts together.
 -/
 
 namespace Gtz
@@ -1042,5 +1052,62 @@ arm and the full-support arm both have closed rank-three instances. -/
 theorem partialSupportArm_bandWidth_reading (rank : ℕ) (hrank : 4 ≤ rank) :
     thresholdSize 3 - 2 * 3 = 0 ∧ 0 < thresholdSize rank - 2 * rank :=
   ⟨by rw [thresholdSize_three], pos_thresholdSplitWindow rank hrank⟩
+
+/-! ## Part 7: the refutation, unconditional
+
+The tree already carries the configuration that decides the two inherited
+degenerate residuals. `Gtz.sixSplitDiamondDesign` is the five-atom diamond with
+one atom split into two parallel copies. It is a TIE
+(`Gtz.sixSplitDiamondDesign_isTie`) and it CARRIES A PARALLEL PAIR
+(`Gtz.sixSplitDiamondDesign_hasParallelPair`). Both halves are kernel facts, and
+together they refute the producer at the rank-three deciding cell. -/
+
+/-- **THE INHERITED PRODUCER RESIDUAL IS FALSE AT THE RANK-THREE DECIDING
+CELL.**  `Gtz.DegenerateHyperplaneProducer 6 3` demands a strictly dominating
+triple at every `(6,3)` design whose stress lies in a plane. The split diamond
+is such a design, and it is a tie, thus it has no strictly dominating triple at
+all. -/
+theorem not_degenerateHyperplaneProducer_six_three : ¬ DegenerateHyperplaneProducer 6 3 :=
+  parallelPairTie_refutes_hyperplaneProducer (by norm_num) sixSplitDiamondDesign
+    sixSplitDiamondDesign_hasParallelPair sixSplitDiamondDesign_isTie
+
+/-- **THE INHERITED POLE AUGMENTATION IS FALSE AT THE SAME CELL.**  The rank-down
+composition `Gtz.degenerateHyperplaneProducer_of_augmentation` takes it to the
+producer, the frame is the theorem `Gtz.hyperplaneFrameExists`, and the
+predecessor rank is the theorem `Gtz.gtz_rank_two`. So nothing in the chain is
+assumed, and the augmentation itself is what is false. -/
+theorem not_degeneratePoleAugmentation_six_three : ¬ DegeneratePoleAugmentation 6 3 :=
+  parallelPairTie_refutes_poleAugmentation (by norm_num) gtz_rank_two sixSplitDiamondDesign
+    sixSplitDiamondDesign_hasParallelPair sixSplitDiamondDesign_isTie
+
+/-- The split diamond is not primitive, thus the repaired residual says nothing
+about it. This is why the same configuration does not touch
+`Gtz.DegenerateHyperplaneCover`. -/
+theorem not_isPrimitiveDesign_sixSplitDiamondDesign :
+    ¬ IsPrimitiveDesign sixSplitDiamondDesign :=
+  not_isPrimitiveDesign_of_hasParallelPair sixSplitDiamondDesign
+    sixSplitDiamondDesign_hasParallelPair
+
+/-- **THE REPAIRED RESIDUAL IS TRUE AT THE SAME CELL, UNCONDITIONALLY.**  The
+two-pole capstone is closed in the tree, thus the repaired cover holds at
+`(6,3)` with no hypothesis. Against
+`Gtz.not_degenerateHyperplaneProducer_six_three` this is the whole content of
+the repair: at one and the same cell the inherited residual is FALSE and the
+repaired one is a THEOREM. -/
+theorem degenerateHyperplaneCover_six_three : DegenerateHyperplaneCover 6 3 :=
+  degenerateHyperplaneCover_three_of_selection twoPoleStratumSelection_six_unconditional
+
+/-- The rank-three degenerate arm, unconditionally, through the repaired
+route. -/
+theorem thresholdDegenerateArm_three : ThresholdDegenerateArm 3 :=
+  degenerateArmAt_of_hyperplaneCover degenerateHyperplaneCover_six_three
+
+/-- **THE TWO VERDICTS SIDE BY SIDE.**  One kernel statement that records the
+whole finding of this module about the degenerate arm. -/
+theorem degenerate_residual_verdict_six_three :
+    ¬ DegenerateHyperplaneProducer 6 3 ∧ ¬ DegeneratePoleAugmentation 6 3
+      ∧ DegenerateHyperplaneCover 6 3 ∧ ThresholdDegenerateArm 3 :=
+  ⟨not_degenerateHyperplaneProducer_six_three, not_degeneratePoleAugmentation_six_three,
+    degenerateHyperplaneCover_six_three, thresholdDegenerateArm_three⟩
 
 end Gtz
