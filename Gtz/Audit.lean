@@ -24502,6 +24502,10 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFourSharedPrivateClosed_of_slotLattice
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_slotLattice
 #print axioms Gtz.rankSixSharedPrivateClosed_of_slotLattice
+#print axioms Gtz.sharedPrivateKilled_of_slotSplit_circuit
+#print axioms Gtz.rankFourSharedPrivateClosed_of_slotSplit_circuit
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_slotSplit_circuit
+#print axioms Gtz.rankSixSharedPrivateClosed_of_slotSplit_circuit
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

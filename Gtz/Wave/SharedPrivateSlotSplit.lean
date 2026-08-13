@@ -1,4 +1,5 @@
 import Gtz.Wave.SharedPrivateComplementLedger
+import Gtz.Wave.SharedPrivateDiagonalKill
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -1487,6 +1488,58 @@ theorem rankSixSharedPrivateClosed_of_slotSplit_lattice
     hwedgeDead hwide hconfined
 
 /-! ## Layer 9 — the fully paid slot lattice -/
+
+/-- **CLOSURE TWO FROM THE FOUR CIRCUIT RESIDUES ALONE.**  The trace-two
+boundary stratum is a theorem and a datum never has a diagonal Gram core,
+thus the extras residue IS the generic kill.  The four circuit residues
+on the slot-split lattice therefore discharge closure two with NO
+boundary hypothesis. -/
+theorem sharedPrivateKilled_of_slotSplit_circuit
+    (hidentical : SharedPrivateCircuitPairIdenticalSlotClosed)
+    (hwedgeLive : SharedPrivateCircuitSplitWedgeSlotClosed)
+    (hwedgeDead : SharedPrivateCircuitSplitPairSaturatedClosed)
+    (hwide : SharedPrivateCircuitWideDistinctClosed) :
+    SharedPrivateKilled :=
+  sharedPrivateKilled_of_extras
+    (sharedPrivateExtrasClosed_of_slotSplit_lattice hidentical
+      (sharedPrivateCircuitSplitWedgeClosed_of_slotSplit hwedgeLive) hwedgeDead hwide)
+
+/-- Closure two of the rank-four rung from the four circuit residues. -/
+theorem rankFourSharedPrivateClosed_of_slotSplit_circuit
+    (hidentical : SharedPrivateCircuitPairIdenticalSlotClosed)
+    (hwedgeLive : SharedPrivateCircuitSplitWedgeSlotClosed)
+    (hwedgeDead : SharedPrivateCircuitSplitPairSaturatedClosed)
+    (hwide : SharedPrivateCircuitWideDistinctClosed) :
+    RankFourSharedPrivateClosed :=
+  rankFourSharedPrivateClosed_of_extras
+    (sharedPrivateExtrasClosed_of_slotSplit_lattice hidentical
+      (sharedPrivateCircuitSplitWedgeClosed_of_slotSplit hwedgeLive) hwedgeDead hwide)
+
+/-- The shared-private closure of the rank-five rung from the four
+circuit residues.  The rank-five rung still carries this closure on its
+critical path. -/
+theorem rankFiveSharedPrivateClosed_of_slotSplit_circuit
+    (hidentical : SharedPrivateCircuitPairIdenticalSlotClosed)
+    (hwedgeLive : SharedPrivateCircuitSplitWedgeSlotClosed)
+    (hwedgeDead : SharedPrivateCircuitSplitPairSaturatedClosed)
+    (hwide : SharedPrivateCircuitWideDistinctClosed) :
+    RankFiveSharedPrivateClosed :=
+  rankFiveSharedPrivateClosed_of_extras
+    (sharedPrivateExtrasClosed_of_slotSplit_lattice hidentical
+      (sharedPrivateCircuitSplitWedgeClosed_of_slotSplit hwedgeLive) hwedgeDead hwide)
+
+/-- The shared-private closure of the rank-six rung from the four circuit
+residues. -/
+theorem rankSixSharedPrivateClosed_of_slotSplit_circuit
+    (hidentical : SharedPrivateCircuitPairIdenticalSlotClosed)
+    (hwedgeLive : SharedPrivateCircuitSplitWedgeSlotClosed)
+    (hwedgeDead : SharedPrivateCircuitSplitPairSaturatedClosed)
+    (hwide : SharedPrivateCircuitWideDistinctClosed) :
+    RankSixSharedPrivateClosed :=
+  rankSixSharedPrivateClosed_of_extras
+    (sharedPrivateExtrasClosed_of_slotSplit_lattice hidentical
+      (sharedPrivateCircuitSplitWedgeClosed_of_slotSplit hwedgeLive) hwedgeDead hwide)
+
 
 /-- **THE EXTRAS ON THE FULLY PAID SLOT LATTICE.**  Both the identical
 residue and the live-wedge residue carry their slot payments. -/
