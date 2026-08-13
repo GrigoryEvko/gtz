@@ -2191,6 +2191,17 @@ import Gtz.Reduction.PolarCoverDescent
 -- arms and both registry hinge obligations.
 import Gtz.Reduction.PolarTiltLedger
 
+-- The plane whitener and the deletion law: the whitener of a one-atom deletion
+-- is a RANK-ONE shear, thus it is elementary and no matrix square root is
+-- spent; a design with a dead atom admits the deletion of any unsaturated live
+-- atom; the pole of the polar construction IS the dead atom of the plane
+-- restriction, thus the covering set of the hyperplane can be chosen to avoid
+-- one named label; a tie carries no deletable label whose removal leaves every
+-- other label below the tilt budget; and the tilt residual narrowed by that
+-- free fact still closes the hinge, the three arms, the two sub-arms, the
+-- repaired cover, the three threshold arms and both registry hinge obligations.
+import Gtz.Reduction.PolarDeletionWhitening
+
 -- The frame-priced descent: the design identity contracts against the inverse
 -- gap of every region, thus the pivot pigeonhole becomes an exact stage law and
 -- the first drop is free at every design of size above the rank plus one; the
@@ -3219,6 +3230,16 @@ import Gtz.Wave.SharedPrivateDualRead
 -- seer, the interior dual seers, and the unique separator kill.
 import Gtz.Wave.SharedPrivateCoparallelColumn
 
+-- the residual line: the residuals of the three interior reads are
+-- multiples of one kernel line, the line is alive at every live slot,
+-- the fixed parts carry a plane dependency that each slot reads as one
+-- linear equation, the carrier mass law puts a slot with the whole
+-- triple, a second such slot degenerates the line, three singleton
+-- slots refuse the dependency, and the carrier residue, the leak
+-- residue, the confined residue, the core residue, the basis-count-five
+-- stratum and the whole trace-two boundary stratum become theorems.
+import Gtz.Wave.SharedPrivateResidualLine
+
 -- the circuit rank-one link: the corner rows of a tight direction on a
 -- triple, the wedge law, the rank-one shifted gap block of a shared
 -- triple, the triple kill that refuses three basis columns on one
@@ -3334,6 +3355,15 @@ import Gtz.Wave.OuterComplementNullKill
 -- closure with no interiority.
 import Gtz.Wave.OuterBoundaryResidueLine
 
+-- the capture kernel line: the rank-one minor law of a low-trace
+-- idempotent, the capture frame as a chart-fixed symmetric idempotent,
+-- the chart pair minor identity of a clone pair with its three
+-- positivities, the residue line and the clone split, the coplanarity
+-- reading of a chart fixed direction, the three live atoms of a chart
+-- null direction, the zero residue kill at a full capture trace, and
+-- the two narrowed thin clone residues
+import Gtz.Wave.OuterCaptureKernelLine
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.
@@ -3403,6 +3433,16 @@ import Gtz.Wave.AtomPivotDeflation
 -- strata of the plane residue, and the plane residue in dual form with
 -- seven real unknowns and no combinatorial search.
 import Gtz.Wave.PlaneWitnessLedger
+-- The cap reading of the plane residue: the orthonormal frame of a plane, the
+-- doubled reading that makes the pair law linear, the caps of the plane and
+-- their convexity, the Helly collapse of the residue to THREE atoms, the cap
+-- kill, and the two-atom cap law.
+import Gtz.Wave.PlaneCapHelly
+-- The pivot witness ledger: the deflated Gram calculus of one pivot with its
+-- exact rank-one defect, the deflated master identity and kill, four deflated
+-- strata of the third rung, the share defect of every crux, the regular
+-- tetrahedron as the tightness datum, and the third rung in dual form.
+import Gtz.Wave.PivotWitnessLedger
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
