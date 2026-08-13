@@ -3217,6 +3217,20 @@ import Gtz.Wave.OuterDenseCornerKill
 -- the two narrowed circuit residues at each of the three rungs
 import Gtz.Wave.OuterCircuitPinResidue
 
+-- the atom energy and the ceiling: the atom vector and the blend, the
+-- frame law, the blend identity, the escape law with its sharp ratio,
+-- the confinement at a read block, the outside escape, the ceiling in
+-- atom form at every triple, and the rank-six discharge from one
+-- design-side residue
+import Gtz.Wave.AtomEnergyCeiling
+
+-- the atom Gram and the dominating pair: the row energy law, the trace
+-- law, the idempotence law, the two nested minor certificates, the
+-- dominating pair theorem at a region and off one slot, the positive
+-- read space, the carrier discharge, and the polynomial residue of the
+-- third rung
+import Gtz.Wave.AtomGramSelection
+
 -- the complement null kill: the basis coverage law from the constant
 -- assembly diagonal, the null constructor on the complement of a
 -- circuit block, the one-atom kill, the clone lattice with its

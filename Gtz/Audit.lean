@@ -741,6 +741,8 @@ import Gtz.Wave.OuterColumnGramFold
 import Gtz.Wave.OuterZeroProfileLattice
 import Gtz.Wave.OuterDenseCornerKill
 import Gtz.Wave.OuterCircuitPinResidue
+import Gtz.Wave.AtomEnergyCeiling
+import Gtz.Wave.AtomGramSelection
 import Gtz.Wave.OuterComplementNullKill
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
@@ -23319,6 +23321,111 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankFourOuterData.exists_live_slot_ne_columnIndex
 #print axioms Gtz.RankFourOuterData.clone_live_slot_ne_columnIndex
 #print axioms Gtz.RankFourOuterData.clone_full_carrier_meets_pair_block
+
+-- the atom energy and the ceiling, and the atom Gram and the dominating
+-- pair: the design geometry of the third rung and its selection layer
+#print axioms Gtz.atomVec
+#print axioms Gtz.atomBlend
+#print axioms Gtz.atomVec_apply
+#print axioms Gtz.atomBlend_apply
+#print axioms Gtz.atomVec_dot_eq_split_apply
+#print axioms Gtz.atomBlend_dot
+#print axioms Gtz.atom_frame_law
+#print axioms Gtz.atom_frame_energy
+#print axioms Gtz.atom_frame_split
+#print axioms Gtz.mulVec_eq_atomVec_dot_atomBlend
+#print axioms Gtz.quadratic_eq_atomBlend_energy
+#print axioms Gtz.shifted_quadratic_eq
+#print axioms Gtz.exists_escape_atom
+#print axioms Gtz.exists_escape_atom_ratio
+#print axioms Gtz.block_blend_energy_eq
+#print axioms Gtz.block_blend_energy_pos
+#print axioms Gtz.block_atom_energy_le
+#print axioms Gtz.block_carrier_energy_le
+#print axioms Gtz.block_leak_energy_ge
+#print axioms Gtz.exists_escape_outside_block
+#print axioms Gtz.SixThreeCrux.exists_atom_system
+#print axioms Gtz.AtomTripleCeilingClosed
+#print axioms Gtz.sum_eq_sum_orderEmbOfFin
+#print axioms Gtz.carrierLift
+#print axioms Gtz.carrierLift_vanish
+#print axioms Gtz.carrierLift_apply
+#print axioms Gtz.SixThreeCrux.exists_ceiling_witness
+#print axioms Gtz.SixThreeCrux.false_of_atomTripleCeiling
+#print axioms Gtz.RankSixFrame.false_of_atomTripleCeiling
+#print axioms Gtz.RankSixFrame.exists_escape_outside_block
+#print axioms Gtz.rankSixOuterKilled_of_atomTripleCeiling
+#print axioms Gtz.rankSixSupportTwoClosed_of_atomTripleCeiling
+#print axioms Gtz.rankSixOuterCircuitClosed_of_atomTripleCeiling
+#print axioms Gtz.rankSixOuterOffPairCircuitClosed_of_atomTripleCeiling
+#print axioms Gtz.rankSixOuterRankOneCircuitClosed_of_atomTripleCeiling
+#print axioms Gtz.rankSixOuterRegularClosed_of_atomTripleCeiling
+#print axioms Gtz.rankSixOuterThinClosed_of_atomTripleCeiling
+#print axioms Gtz.rankSixOuterLowProfileClosed_of_atomTripleCeiling
+#print axioms Gtz.gtzWeighted_six_three_of_atomTripleCeiling_of_interior
+#print axioms Gtz.AtomTripleCeilingMarginClosed
+#print axioms Gtz.atomTripleCeilingClosed_of_margin
+#print axioms Gtz.RankFiveFrame.false_of_atomTripleCeiling_of_interior
+#print axioms Gtz.RankFourFrame.false_of_atomTripleCeiling_of_interior
+#print axioms Gtz.rankFiveOuterKilled_of_atomTripleCeiling_of_interior
+#print axioms Gtz.rankFiveSupportTwoClosed_of_atomTripleCeiling_of_interior
+#print axioms Gtz.rankFourOuterKilled_of_atomTripleCeiling_of_interior
+#print axioms Gtz.rankFourSupportTwoClosed_of_atomTripleCeiling_of_interior
+#print axioms Gtz.probeUnit
+#print axioms Gtz.dotProduct_probeUnit
+#print axioms Gtz.probeUnit_energy
+#print axioms Gtz.atomGram
+#print axioms Gtz.atomGram_comm
+#print axioms Gtz.atomGram_diag_nonneg
+#print axioms Gtz.atomGram_sq_le_diag_mul
+#print axioms Gtz.atomBlend_energy_eq_gram
+#print axioms Gtz.atomGram_row_energy
+#print axioms Gtz.atomGram_trace
+#print axioms Gtz.atomGram_idempotent
+#print axioms Gtz.atomGram_diag_le_one
+#print axioms Gtz.atomGram_square_total
+#print axioms Gtz.atomGram_region_square_le
+#print axioms Gtz.quadratic_pos_of_pair_minors
+#print axioms Gtz.quadratic_pos_of_triple_minors
+#print axioms Gtz.atomShiftedDiag
+#print axioms Gtz.atomPairMinor
+#print axioms Gtz.atomTripleDet
+#print axioms Gtz.atomNegDefect
+#print axioms Gtz.negDefect_nonneg
+#print axioms Gtz.negDefect_eq_zero
+#print axioms Gtz.negDefect_eq_neg
+#print axioms Gtz.negDefect_le_scale
+#print axioms Gtz.pairMinor_region_total
+#print axioms Gtz.pairMinor_le_negDefect_mul
+#print axioms Gtz.exists_dominating_pair_on
+#print axioms Gtz.exists_dominating_pair
+#print axioms Gtz.atomShiftedDiag_total
+#print axioms Gtz.atomShiftedDiag_lt_one
+#print axioms Gtz.exists_dominating_pair_off_slot
+#print axioms Gtz.atomRead
+#print axioms Gtz.atomBlend_atomRead
+#print axioms Gtz.atomRead_ne_zero
+#print axioms Gtz.shifted_form_pos_on_reads
+#print axioms Gtz.sum_over_pair_slots
+#print axioms Gtz.sum_over_triple_slots
+#print axioms Gtz.sum_eq_pair_of_support
+#print axioms Gtz.sum_eq_triple_of_support
+#print axioms Gtz.dominates_of_pair_minors
+#print axioms Gtz.dominates_of_triple_minors
+#print axioms Gtz.card_triple_slots
+#print axioms Gtz.AtomTripleSylvesterClosed
+#print axioms Gtz.atomTripleCeilingClosed_of_sylvester
+#print axioms Gtz.atomTripleSylvester_pair_free
+#print axioms Gtz.exists_dominating_pair_carrier
+#print axioms Gtz.RankSixFrame.exists_dominating_pair
+#print axioms Gtz.rankSixOuterKilled_of_sylvester
+#print axioms Gtz.rankSixSupportTwoClosed_of_sylvester
+#print axioms Gtz.rankSixOuterCircuitClosed_of_sylvester
+#print axioms Gtz.rankSixOuterRegularClosed_of_sylvester
+#print axioms Gtz.rankSixOuterThinClosed_of_sylvester
+#print axioms Gtz.gtzWeighted_six_three_of_sylvester_of_interior
+#print axioms Gtz.rankFiveSupportTwoClosed_of_sylvester_of_interior
+#print axioms Gtz.rankFourSupportTwoClosed_of_sylvester_of_interior
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
