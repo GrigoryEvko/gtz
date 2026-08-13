@@ -4784,6 +4784,17 @@ import Gtz.Wave.PlaneWitnessLedger
 #print axioms Gtz.not_polarTiltSelectionUnsaturated_five_three
 #print axioms Gtz.polarTiltUnsaturated_forbids_only_primitive_ties
 #print axioms Gtz.sixSplitDiamondDesign_spares_polarTiltUnsaturated
+#print axioms Gtz.uniformWeight_tie_leverage_bound
+#print axioms Gtz.not_isTie_of_uniformWeight_long_atom
+#print axioms Gtz.uniformWeight_tie_leverage_bound_three
+#print axioms Gtz.exists_two_tilted_labels_of_isTie_three
+#print axioms Gtz.two_label_tilt_mass_bound
+#print axioms Gtz.PolarCouplingSelectionUnsaturated
+#print axioms Gtz.polarCouplingSelectionUnsaturated_of_polarCouplingSelection
+#print axioms Gtz.hingeHoldsAtSize_of_polarCouplingUnsaturated
+#print axioms Gtz.gtzWeighted_six_three_of_polarCouplingUnsaturated
+#print axioms Gtz.not_polarCouplingSelectionUnsaturated_five_three
+#print axioms Gtz.sixThree_tie_polar_ledger
 
 -- Coverage sweep: every `theorem`/`lemma` enumerated from `Gtz/` that was
 -- absent from the list above.  Gtz/Ties/DiamondTie.lean is deliberately

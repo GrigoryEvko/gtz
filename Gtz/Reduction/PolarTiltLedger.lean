@@ -787,4 +787,221 @@ theorem sixSplitDiamondDesign_spares_polarTiltUnsaturated :
   ⟨not_rankSuccShrinks_six_three, sixSplitDiamondDesign_isTie,
     not_isPrimitiveDesign_sixSplitDiamondDesign, not_polarTiltSelectionUnsaturated_five_three⟩
 
+/-! ## Part 7: what the weight law says at named strata
+
+The weight law is one inequality between four numbers, thus it reads as an
+explicit leverage cap at every stratum where the weights are known.  At uniform
+weights it improves the leverage cap of the design by almost one whole unit. -/
+
+/-- **THE UNIFORM-WEIGHT TIE LEVERAGE CAP.**  Every design caps the leverage of
+an atom by the inverse of that atom's weight, thus a uniform design caps it by
+the size.  A TIE caps it by one unit less, up to the inverse of the size:
+
+  `size * leverage <= size^2 - size + 1`.
+
+At six labels of rank three this is `leverage <= 31/6`, against the design cap
+`leverage <= 6`. -/
+theorem uniformWeight_tie_leverage_bound (hrank : 2 ≤ rank)
+    (hpredecessor : GtzWeightedAll (rank - 1)) (design : WeightedDesign size rank)
+    (htie : IsTie design) (huniform : ∀ c, design.weight c = ((size : ℝ))⁻¹)
+    {pole : Fin size} (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole) :
+    (size : ℝ) * (design.atom pole ⬝ᵥ design.atom pole)
+      ≤ (size : ℝ) ^ 2 - (size : ℝ) + 1 := by
+  have hsize : 0 < size := lt_of_lt_of_le (by omega) (rank_le_of_design design)
+  have hsizeCast : (0 : ℝ) < (size : ℝ) := by exact_mod_cast hsize
+  have hsizeNe : (size : ℝ) ≠ 0 := ne_of_gt hsizeCast
+  have hfloorPos : (0 : ℝ) < ((size : ℝ))⁻¹ := inv_pos.mpr hsizeCast
+  have hlaw := tie_weightFloor_saturation_sharp hrank hpredecessor design htie hlong hfloorPos
+    (fun c => le_of_eq (huniform c).symm)
+  rw [huniform pole] at hlaw
+  have hscaled := mul_le_mul_of_nonneg_right hlaw (le_of_lt (by positivity : (0 : ℝ)
+    < (size : ℝ) ^ 2))
+  have hleft : ((size : ℝ))⁻¹ * ((size : ℝ))⁻¹
+      * (design.atom pole ⬝ᵥ design.atom pole - 1) * (size : ℝ) ^ 2
+      = design.atom pole ⬝ᵥ design.atom pole - 1 := by
+    field_simp
+  have hright : (1 - ((size : ℝ))⁻¹)
+      * (1 - ((size : ℝ))⁻¹ * (design.atom pole ⬝ᵥ design.atom pole)) * (size : ℝ) ^ 2
+      = (size : ℝ) ^ 2 - (size : ℝ) - (size : ℝ) * (design.atom pole ⬝ᵥ design.atom pole)
+        + (design.atom pole ⬝ᵥ design.atom pole) := by
+    field_simp
+    ring
+  rw [hleft, hright] at hscaled
+  linarith
+
+/-- **THE UNIFORM-WEIGHT CRITERION.**  A uniform design with one atom above the
+tie cap is not a tie. -/
+theorem not_isTie_of_uniformWeight_long_atom (hrank : 2 ≤ rank)
+    (hpredecessor : GtzWeightedAll (rank - 1)) (design : WeightedDesign size rank)
+    (huniform : ∀ c, design.weight c = ((size : ℝ))⁻¹)
+    {pole : Fin size} (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole)
+    (habove : (size : ℝ) ^ 2 - (size : ℝ) + 1
+      < (size : ℝ) * (design.atom pole ⬝ᵥ design.atom pole)) :
+    ¬ IsTie design := by
+  intro htie
+  exact absurd (uniformWeight_tie_leverage_bound hrank hpredecessor design htie huniform hlong)
+    (not_le.mpr habove)
+
+/-- The uniform tie cap at rank three, with the previous rank discharged. -/
+theorem uniformWeight_tie_leverage_bound_three (design : WeightedDesign size 3)
+    (htie : IsTie design) (huniform : ∀ c, design.weight c = ((size : ℝ))⁻¹)
+    {pole : Fin size} (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole) :
+    (size : ℝ) * (design.atom pole ⬝ᵥ design.atom pole)
+      ≤ (size : ℝ) ^ 2 - (size : ℝ) + 1 :=
+  uniformWeight_tie_leverage_bound (by norm_num) gtz_rank_two design htie huniform hlong
+
+/-! ### The residual is a TWO-LABEL statement at rank three
+
+At rank three the covering set has card two, thus the whole tilt residual reads
+against exactly two labels.  Extracting them makes the shape of a certificate
+explicit. -/
+
+/-- **THE TWO TILTED LABELS OF A RANK-THREE TIE.**  A tie of rank three hands
+back two distinct labels, neither of them the pole, whose squared pairings
+against the pole already spend the whole budget of the share. -/
+theorem exists_two_tilted_labels_of_isTie_three (design : WeightedDesign size 3)
+    (htie : IsTie design) {pole : Fin size}
+    (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole)
+    {share : ℝ} (hshare : 0 < share) (hshareLt : share < design.weight pole) :
+    ∃ first second : Fin size, first ≠ second ∧ first ≠ pole ∧ second ≠ pole
+      ∧ (design.weight pole - share) / (1 - design.weight pole)
+            * (design.atom pole ⬝ᵥ design.atom pole)
+            * (design.atom pole ⬝ᵥ design.atom pole - 1)
+          ≤ (design.atom first ⬝ᵥ design.atom pole) ^ 2
+            + (design.atom second ⬝ᵥ design.atom pole) ^ 2 := by
+  classical
+  obtain ⟨covering, hcard, hnotMem, htilt⟩ :=
+    exists_tilted_polarCover_of_share (rank := 3) (by norm_num) gtz_rank_two design htie hlong
+      hshare hshareLt
+  have hcardTwo : covering.card = 2 := by omega
+  obtain ⟨first, second, hne, hpair⟩ := Finset.card_eq_two.mp hcardTwo
+  subst hpair
+  have hfirst : first ≠ pole := fun heq => hnotMem (by rw [← heq]; exact Finset.mem_insert_self _ _)
+  have hsecond : second ≠ pole := fun heq => hnotMem (by
+    rw [← heq]
+    exact Finset.mem_insert_of_mem (Finset.mem_singleton_self _))
+  refine ⟨first, second, hne, hfirst, hsecond, ?_⟩
+  rwa [Finset.sum_pair hne] at htilt
+
+/-- **THE TWO LABELS ARE ALSO PRICED BY THE TILT MASS.**  The same pair obeys the
+weight floor bound of part 1, thus a rank-three tie is caught between two
+inequalities about exactly two of its labels. -/
+theorem two_label_tilt_mass_bound (design : WeightedDesign size rank) (pole : Fin size)
+    {first second : Fin size} (hne : first ≠ second)
+    (hfirst : first ≠ pole) (hsecond : second ≠ pole)
+    {weightFloor : ℝ} (hfloor : ∀ c, weightFloor ≤ design.weight c) :
+    weightFloor * ((design.atom first ⬝ᵥ design.atom pole) ^ 2
+        + (design.atom second ⬝ᵥ design.atom pole) ^ 2)
+      ≤ (design.atom pole ⬝ᵥ design.atom pole)
+        * (1 - design.weight pole * (design.atom pole ⬝ᵥ design.atom pole)) := by
+  classical
+  have hnotMem : pole ∉ ({first, second} : Finset (Fin size)) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rintro (heq | heq)
+    · exact hfirst heq.symm
+    · exact hsecond heq.symm
+  have hstep := weightFloor_mul_polarTilt_le design pole hnotMem hfloor
+  rwa [Finset.sum_pair hne] at hstep
+
+/-! ### The coupling residual, narrowed by the same free facts -/
+
+/-- **THE NARROWED COUPLING RESIDUAL.**  `Gtz.PolarCouplingSelection` with the
+free budget facts of a tie handed to it. -/
+def PolarCouplingSelectionUnsaturated (size rank : ℕ) : Prop :=
+  ∀ (design : WeightedDesign size rank) (pole : Fin size) (covering : Finset (Fin size))
+      (margin : ℝ),
+    IsPrimitiveDesign design →
+    IsTie design →
+    1 < design.atom pole ⬝ᵥ design.atom pole →
+    PolarSaturationBudget design pole →
+    0 < margin →
+    covering.card = rank - 1 → pole ∉ covering →
+    (∀ probe : Fin rank → ℝ, probe ⬝ᵥ design.atom pole = 0 →
+      (1 + margin) * (probe ⬝ᵥ probe)
+        ≤ ∑ label ∈ covering, (design.atom label ⬝ᵥ probe) ^ 2) →
+    ∃ (selected : Finset (Fin size)) (couplingBound : ℝ),
+      selected.card = rank - 1 ∧ pole ∉ selected
+      ∧ (∀ probe : Fin rank → ℝ, probe ⬝ᵥ design.atom pole = 0 →
+          (1 + margin) * (probe ⬝ᵥ probe)
+            ≤ ∑ label ∈ selected, (design.atom label ⬝ᵥ probe) ^ 2)
+      ∧ (∀ probe : Fin rank → ℝ, probe ⬝ᵥ design.atom pole = 0 →
+          (∑ label ∈ selected,
+              (design.atom label ⬝ᵥ probe) * (design.atom label ⬝ᵥ design.atom pole)) ^ 2
+            ≤ couplingBound * (probe ⬝ᵥ probe))
+      ∧ couplingBound < margin * (design.atom pole ⬝ᵥ design.atom pole)
+          * (design.atom pole ⬝ᵥ design.atom pole - 1)
+
+/-- The narrowed coupling residual is weaker than the shipped one. -/
+theorem polarCouplingSelectionUnsaturated_of_polarCouplingSelection
+    (hcoupling : PolarCouplingSelection size rank) :
+    PolarCouplingSelectionUnsaturated size rank :=
+  fun design pole covering margin hprimitive htie hlong _hbudget hmargin hcard hnotMem hcover =>
+    hcoupling design pole covering margin hprimitive htie hlong hmargin hcard hnotMem hcover
+
+/-- **THE HINGE FROM THE NARROWED COUPLING RESIDUAL.** -/
+theorem hingeHoldsAtSize_of_polarCouplingUnsaturated (hrank : 2 ≤ rank)
+    (hpredecessor : GtzWeightedAll (rank - 1))
+    (hcoupling : PolarCouplingSelectionUnsaturated size rank) : HingeHoldsAtSize size rank := by
+  classical
+  intro design htie
+  by_contra hnoPair
+  have hprimitive : IsPrimitiveDesign design :=
+    (isPrimitiveDesign_iff_not_hasParallelPair design).mpr hnoPair
+  obtain ⟨pole, hlong⟩ := exists_overshooting_atom design hrank
+  obtain ⟨covering, margin, hmarginPos, hcard, hnotMem, hcover⟩ :=
+    exists_polarCover_margin hrank hpredecessor design hlong
+  obtain ⟨selected, couplingBound, hselCard, hselNotMem, hselCover, hselCoupling, hselBound⟩ :=
+    hcoupling design pole covering margin hprimitive htie hlong
+      (polarSaturationBudget_of_isTie hrank hpredecessor design htie hlong)
+      hmarginPos hcard hnotMem hcover
+  have hposDef := posDef_insert_of_polarCoupling design hselNotMem hlong hmarginPos hselCover
+    hselCoupling hselBound
+  obtain ⟨dominating, hdomCard, hdomPosDef⟩ := exists_card_eq_posDef design
+    (by rw [Finset.card_insert_of_notMem hselNotMem, hselCard]; omega) hposDef
+  exact htie.2 dominating hdomCard hdomPosDef
+
+/-- The deciding cell of rank three from the narrowed coupling residual. -/
+theorem gtzWeighted_six_three_of_polarCouplingUnsaturated
+    (hcoupling : PolarCouplingSelectionUnsaturated 6 3) : GtzWeighted 6 3 := by
+  have hhinge := hingeHoldsAtSize_of_polarCouplingUnsaturated (rank := 3) (size := 6)
+    (by norm_num) gtz_rank_two hcoupling
+  exact GeneralRankReach.gtzWeighted_six_three_of_arms
+    (fun design _hfree htie => hhinge design htie)
+    (fun design _stressCoeff _hstressNe _hstress _hposSpans _hnegSpans htie => hhinge design htie)
+    (fun design _stressCoeff _probe _hstressNe _hprobeNe _hstress _hsupport htie =>
+      hhinge design htie)
+
+/-- The narrowed coupling residual is calibrated at the cell of size five. -/
+theorem not_polarCouplingSelectionUnsaturated_five_three :
+    ¬ PolarCouplingSelectionUnsaturated 5 3 :=
+  fun hcoupling => not_hingeHoldsAtSize_five_three
+    (hingeHoldsAtSize_of_polarCouplingUnsaturated (by norm_num) gtz_rank_two hcoupling)
+
+/-- **THE LEDGER OF A RANK-THREE TIE, IN ONE STATEMENT.**  At every overshooting
+atom of every rank-three tie: the leverage cap is strict, the weight law holds
+against every weight floor, and two named labels carry the whole budget. -/
+theorem sixThree_tie_polar_ledger (design : WeightedDesign 6 3) (htie : IsTie design)
+    {pole : Fin 6} (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole)
+    {weightFloor : ℝ} (hfloorPos : 0 < weightFloor)
+    (hfloor : ∀ c, weightFloor ≤ design.weight c) :
+    design.weight pole * (design.atom pole ⬝ᵥ design.atom pole) < 1
+      ∧ weightFloor * design.weight pole * (design.atom pole ⬝ᵥ design.atom pole - 1)
+          ≤ (1 - design.weight pole)
+            * (1 - design.weight pole * (design.atom pole ⬝ᵥ design.atom pole))
+      ∧ ∃ first second : Fin 6, first ≠ second ∧ first ≠ pole ∧ second ≠ pole
+          ∧ (design.weight pole / 2) / (1 - design.weight pole)
+                * (design.atom pole ⬝ᵥ design.atom pole)
+                * (design.atom pole ⬝ᵥ design.atom pole - 1)
+              ≤ (design.atom first ⬝ᵥ design.atom pole) ^ 2
+                + (design.atom second ⬝ᵥ design.atom pole) ^ 2 := by
+  have hweightPos := design.weight_pos pole
+  refine ⟨tie_weight_mul_leverage_lt_one (by norm_num) gtz_rank_two design htie hlong,
+    tie_weightFloor_saturation_three design htie hlong hfloorPos hfloor, ?_⟩
+  obtain ⟨first, second, hne, hfirst, hsecond, hbudget⟩ :=
+    exists_two_tilted_labels_of_isTie_three design htie hlong
+      (share := design.weight pole / 2) (by linarith) (by linarith)
+  refine ⟨first, second, hne, hfirst, hsecond, ?_⟩
+  have hrewrite : design.weight pole - design.weight pole / 2 = design.weight pole / 2 := by ring
+  rwa [hrewrite] at hbudget
+
 end Gtz
