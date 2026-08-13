@@ -3014,6 +3014,13 @@ import Gtz.Wave.SharedPrivateCertificateReduction
 -- discharge of the shared-private kill target.
 import Gtz.Wave.SharedPrivateComplementTrace
 
+-- the shared-private strata dispatch: the two-carrier corner cap, the
+-- refined three-class budget, the trace-split kill that makes every
+-- trace-three datum interior, the refined diagonal-Gram discharge,
+-- the three named residues, and the strata dispatch with the three
+-- rung compositions.
+import Gtz.Wave.SharedPrivateStrataDispatch
+
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
 -- closure three.

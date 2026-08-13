@@ -705,6 +705,7 @@ import Gtz.Wave.KFourCertificateReduction
 import Gtz.Wave.CertificateCornerBackbone
 import Gtz.Wave.SharedPrivateCertificateReduction
 import Gtz.Wave.SharedPrivateComplementTrace
+import Gtz.Wave.SharedPrivateStrataDispatch
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -22418,6 +22419,18 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankSixFrame.dense_multiplicity_sum
 #print axioms Gtz.RankSixFrame.all_triples_of_max_three
 #print axioms Gtz.rankSixDenseClosed_of_profile_closures
+#print axioms Gtz.pair_mulVec_apply
+#print axioms Gtz.pair_dotProduct
+#print axioms Gtz.two_carrier_trace_cap
+#print axioms Gtz.carrier_budget_with_pairs
+#print axioms Gtz.false_of_refined_budget_trace_two
+#print axioms Gtz.false_of_refined_budget_trace_three
+#print axioms Gtz.SharedPrivateData.shifted_weight_pos_of_trace_three
+#print axioms Gtz.SharedPrivateData.false_of_diagonal_gram_refined
+#print axioms Gtz.sharedPrivateKilled_of_strata
+#print axioms Gtz.rankFourSharedPrivateClosed_of_strata
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_strata
+#print axioms Gtz.rankSixSharedPrivateClosed_of_strata
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
