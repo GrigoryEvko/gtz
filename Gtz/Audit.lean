@@ -433,6 +433,7 @@ import Gtz.Uniform.RouteBProps
 import Gtz.Uniform.AnchorBookkeeping
 import Gtz.Uniform.AnchorAssembly
 import Gtz.Uniform.AnchorReachAssembly
+import Gtz.Uniform.GeneralRankReachSkeleton
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
 import Gtz.Design.TieCensusCompletion
@@ -713,6 +714,9 @@ import Gtz.Wave.SharedPrivateKernelResidue
 import Gtz.Wave.SharedPrivateKernelGram
 import Gtz.Wave.SharedPrivateBoundaryDispatch
 import Gtz.Wave.SharedPrivateKernelMinor
+import Gtz.Wave.SharedPrivateKernelFactor
+import Gtz.Wave.SharedPrivateBoundaryComplement
+import Gtz.Wave.SharedPrivateGramCommutation
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -733,6 +737,7 @@ import Gtz.Wave.DenseProfileDispatch
 import Gtz.Wave.DenseKernelLineDichotomy
 import Gtz.Wave.DenseBlockGeometry
 import Gtz.Wave.DenseHeavyFiveStructure
+import Gtz.Wave.DenseSharedBlockRank
 import Gtz.Wave.AssemblyRankCapstone
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
@@ -12332,6 +12337,66 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.UniformPositionBridge.exists_parallelFreeStrictAnchor_corankTwoCell
 #print axioms Gtz.UniformPositionBridge.not_canonicalWindowParallelFreeConnectivity_two
 
+/-! ### The reach statement at general rank: the tuple walk and the whitening -/
+
+#print axioms Gtz.GeneralRankReach.HasParallelRows
+#print axioms Gtz.GeneralRankReach.RowsSpan
+#print axioms Gtz.GeneralRankReach.IsGoodTuple
+#print axioms Gtz.GeneralRankReach.noRatio_of_isGoodTuple
+#print axioms Gtz.GeneralRankReach.row_ne_zero_of_isGoodTuple
+#print axioms Gtz.GeneralRankReach.gramOf
+#print axioms Gtz.GeneralRankReach.gramOf_form
+#print axioms Gtz.GeneralRankReach.posDef_gramOf_of_isGoodTuple
+#print axioms Gtz.GeneralRankReach.isGoodTuple_designRows
+#print axioms Gtz.GeneralRankReach.gramOf_designRows
+#print axioms Gtz.GeneralRankReach.weightBlend_pos
+#print axioms Gtz.GeneralRankReach.weightBlend_sum
+#print axioms Gtz.GeneralRankReach.weightBlend_zero
+#print axioms Gtz.GeneralRankReach.weightBlend_one
+#print axioms Gtz.GeneralRankReach.continuous_weightBlend_apply
+#print axioms Gtz.GeneralRankReach.mulVec_cancel
+#print axioms Gtz.GeneralRankReach.GoodTupleConnected
+#print axioms Gtz.GeneralRankReach.WhiteningTransferAtRank
+#print axioms Gtz.GeneralRankReach.parallelFreeReachesAnchor_of_tupleReach
+#print axioms Gtz.GeneralRankReach.canonicalWindowParallelFreeConnectivity_of_tupleReach
+#print axioms Gtz.GeneralRankReach.sharpWindowAnchorReach_of_tupleReach
+#print axioms Gtz.GeneralRankReach.routeB_target_of_tupleReach
+#print axioms Gtz.GeneralRankReach.goodTupleConnected_six_three
+#print axioms Gtz.GeneralRankReach.whiteningTransferAtRank_six_three
+#print axioms Gtz.GeneralRankReach.parallelFreeReachesAnchor_six_three_ofAnyAnchor
+#print axioms Gtz.GeneralRankReach.canonicalWindowParallelFreeConnectivity_six
+#print axioms Gtz.GeneralRankReach.exists_anchorReach_six_three
+#print axioms Gtz.GeneralRankReach.pairRowMatrix_first
+#print axioms Gtz.GeneralRankReach.pairRowMatrix_second
+#print axioms Gtz.GeneralRankReach.pairRowMatrix_other
+#print axioms Gtz.GeneralRankReach.exists_normal_of_pair
+#print axioms Gtz.GeneralRankReach.momentPoint_apply
+#print axioms Gtz.GeneralRankReach.momentPoint_apply_zero
+#print axioms Gtz.GeneralRankReach.momentPoint_apply_one
+#print axioms Gtz.GeneralRankReach.momentPoint_dotProduct
+#print axioms Gtz.GeneralRankReach.momentPoint_ne_zero
+#print axioms Gtz.GeneralRankReach.momentPoint_offLine
+#print axioms Gtz.GeneralRankReach.subsingleton_setOf_momentPoint_parallel
+#print axioms Gtz.GeneralRankReach.finite_setOf_momentPoint_parallel
+#print axioms Gtz.GeneralRankReach.eval_dotPolynomial
+#print axioms Gtz.GeneralRankReach.dotPolynomial_ne_zero
+#print axioms Gtz.GeneralRankReach.finite_setOf_momentPoint_dot_eq_zero
+#print axioms Gtz.GeneralRankReach.det_vandermonde_ne_zero
+#print axioms Gtz.GeneralRankReach.probe_eq_zero_of_momentPoints
+#print axioms Gtz.GeneralRankReach.probe_eq_zero_of_manyMomentPoints
+#print axioms Gtz.GeneralRankReach.segment_zero
+#print axioms Gtz.GeneralRankReach.segment_one
+#print axioms Gtz.GeneralRankReach.continuous_segment
+#print axioms Gtz.GeneralRankReach.segment_avoids_line
+#print axioms Gtz.GeneralRankReach.offLine_symm
+#print axioms Gtz.GeneralRankReach.isGoodTuple_update
+#print axioms Gtz.GeneralRankReach.joinedIn_update_segment
+#print axioms Gtz.GeneralRankReach.joinedIn_moveOne
+#print axioms Gtz.GeneralRankReach.goodTupleConnected_of_joinedIn
+#print axioms Gtz.GeneralRankReach.GoodTupleReachesMomentHub
+#print axioms Gtz.GeneralRankReach.goodTupleConnected_of_reachesMomentHub
+#print axioms Gtz.GeneralRankReach.sharpWindowAnchorReach_of_schedule
+
 /-! ### The matroid stratification of the stress-free hinge -/
 
 #print axioms Gtz.isPlanePairCovered_comp_relabel
@@ -22530,6 +22595,19 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankFiveFrame.heavyFive_shifted_weight_pair_le
 #print axioms Gtz.RankFiveFrame.heavyFive_shared_corner_lt_one
 #print axioms Gtz.RankFiveFrame.heavyFive_complement_trace_gt_one
+#print axioms Gtz.triple_insert_rotate_two
+#print axioms Gtz.shared_block_crossDet_ne_zero
+#print axioms Gtz.shared_block_crossDet_ne_zero_second
+#print axioms Gtz.shared_block_crossDet_ne_zero_third
+#print axioms Gtz.shared_block_minor_and_cofactors
+#print axioms Gtz.shared_block_rank_one
+#print axioms Gtz.shared_block_offdiag_product
+#print axioms Gtz.shared_block_row_budget
+#print axioms Gtz.SixThreeCrux.shared_block_row_quarter
+#print axioms Gtz.RankFiveFrame.shared_support_rank_one
+#print axioms Gtz.RankSixFrame.shared_support_rank_one
+#print axioms Gtz.RankFiveFrame.shared_support_row_quarter
+#print axioms Gtz.RankSixFrame.shared_support_row_quarter
 #print axioms Gtz.pair_mulVec_apply
 #print axioms Gtz.pair_dotProduct
 #print axioms Gtz.two_carrier_trace_cap
@@ -22585,6 +22663,27 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFourSharedPrivateClosed_of_boundary_strata
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_boundary_strata
 #print axioms Gtz.rankSixSharedPrivateClosed_of_boundary_strata
+
+-- the shared-private boundary complement
+#print axioms Gtz.SharedPrivateData.multiplicity_le_three_of_basisCount_four
+#print axioms Gtz.SharedPrivateData.false_of_basisCount_four_shared_slots
+#print axioms Gtz.SharedPrivateData.support_card_three
+#print axioms Gtz.SharedPrivateData.union_eq_univ_of_disjoint_supports
+#print axioms Gtz.SharedPrivateData.privateSlot_mem_of_disjoint_supports
+#print axioms Gtz.SharedPrivateData.exists_complement_slot_of_not_shared
+#print axioms Gtz.sharedPrivateBoundaryFourClosed_of_complementSlot
+#print axioms Gtz.sharedPrivateBoundaryClosed_of_complement
+#print axioms Gtz.sharedPrivateKilled_of_complement_strata
+#print axioms Gtz.rankFourSharedPrivateClosed_of_complement_strata
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_complement_strata
+#print axioms Gtz.rankSixSharedPrivateClosed_of_complement_strata
+
+-- the shared-private Gram commutation
+#print axioms Gtz.gram_kernel_invariant
+#print axioms Gtz.SharedPrivateData.false_of_all_boundary
+#print axioms Gtz.SharedPrivateData.exists_interior_atom
+#print axioms Gtz.SharedPrivateData.boundary_of_unique_cocarrier
+#print axioms Gtz.SharedPrivateData.false_of_unique_cocarrier
 
 -- the outer block-pin budget
 #print axioms Gtz.blockCarrier_mem
@@ -22677,6 +22776,25 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SharedPrivateData.false_of_deficit_five
 #print axioms Gtz.sharedPrivateDeficitClosed_of_residues
 #print axioms Gtz.sharedPrivateExtrasClosed_of_circuit
+
+-- The kernel factorization: the rank-two split, the width-free corner
+-- minor identity, the width-free kill, and the sharper deficit dispatch.
+#print axioms Gtz.eq_zero_of_symm_idem_trace_zero
+#print axioms Gtz.exists_unit_fixed_of_trace_ne_zero
+#print axioms Gtz.vecMulVec_self_transpose
+#print axioms Gtz.trace_vecMulVec_self
+#print axioms Gtz.mul_vecMulVec
+#print axioms Gtz.rankOne_mul_rankOne
+#print axioms Gtz.dotProduct_mulVec_symm
+#print axioms Gtz.deflate_symm_idem
+#print axioms Gtz.exists_orthonormal_pair_of_trace_two
+#print axioms Gtz.kernelMinor_eq_wedge_sq
+#print axioms Gtz.kernelMinor_corner_eq
+#print axioms Gtz.false_of_kernelMinor_budget_general
+#print axioms Gtz.SharedPrivateData.false_of_kernel_trace_two
+#print axioms Gtz.SharedPrivateData.false_of_deficit_five_general
+#print axioms Gtz.union_eq_univ_of_disjoint_card_three
+#print axioms Gtz.sharedPrivateDeficitClosed_of_complement_residues
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

@@ -2127,6 +2127,12 @@ import Gtz.Uniform.AnchorAssembly
 -- one connectivity statement about the parallel-free locus.
 import Gtz.Uniform.AnchorReachAssembly
 
+-- The reach statement at general rank: the tuple walk and the whitening
+-- interface, and the composition that turns the two of them into the reach
+-- hypothesis at every size and rank.  Also the general-rank moment curve, the
+-- normal to a pair of rows, and the single move inside the good tuples.
+import Gtz.Uniform.GeneralRankReachSkeleton
+
 -- The matroid stratification of the stress-free hinge: the plane-pair escape
 -- law empties four of the nine six-point classes, the hinge follows from
 -- tie-freeness of the five named survivors, and the seam splits those five by
@@ -3060,6 +3066,24 @@ import Gtz.Wave.SharedPrivateBoundaryDispatch
 -- the extras fold.
 import Gtz.Wave.SharedPrivateKernelMinor
 
+-- the kernel factorization: the trace-zero law, the rank-two split of a
+-- trace-two symmetric idempotent, the width-free corner minor identity,
+-- the width-free kernel-minor kill, the datum kill on the whole
+-- kernel-trace-two stratum, the complementary support law, and the
+-- sharper deficit dispatch.
+import Gtz.Wave.SharedPrivateKernelFactor
+
+-- the shared-private boundary complement: the carrier cap of the
+-- rank-four rigidity, the rank-four minor kill at shared slot pairs,
+-- the partition law of a disjoint support pair, the complement slot,
+-- and the narrowed rank-four residue with the four dispatches.
+import Gtz.Wave.SharedPrivateBoundaryComplement
+
+-- the shared-private Gram commutation: the kernel invariance of the
+-- read Gram, the all-boundary kill through the span law, and the
+-- boundary propagation at a unique co-carrier atom.
+import Gtz.Wave.SharedPrivateGramCommutation
+
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
 -- closure three.
@@ -3152,6 +3176,10 @@ import Gtz.Wave.DenseBlockGeometry
 -- the dense heavy-five structure: the block shape of the heavy-five
 -- profile and the exact corner pins at a shared support.
 import Gtz.Wave.DenseHeavyFiveStructure
+
+-- the dense shared-block rank: the rank-one gap block of a shared
+-- support, the sign law, and the row square budget.
+import Gtz.Wave.DenseSharedBlockRank
 
 -- the assembly-rank capstone: the cell and the rank-three payoff
 -- modulo the eleven named closures of the three rungs.
