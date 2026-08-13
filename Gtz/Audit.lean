@@ -715,6 +715,7 @@ import Gtz.Wave.SharedPrivateKernelGram
 import Gtz.Wave.SharedPrivateBoundaryDispatch
 import Gtz.Wave.SharedPrivateKernelMinor
 import Gtz.Wave.SharedPrivateKernelFactor
+import Gtz.Wave.SharedPrivateSpectralSplit
 import Gtz.Wave.SharedPrivateBoundaryComplement
 import Gtz.Wave.SharedPrivateGramCommutation
 import Gtz.Wave.KFourCertificateProof
@@ -22857,6 +22858,16 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SharedPrivateData.false_of_deficit_five_general
 #print axioms Gtz.union_eq_univ_of_disjoint_card_three
 #print axioms Gtz.sharedPrivateDeficitClosed_of_complement_residues
+
+-- The spectral split and the carrier energy matrix.
+#print axioms Gtz.vecMulVec_mulVec
+#print axioms Gtz.orthonormal_sum_mulVec
+#print axioms Gtz.exists_orthonormal_family_of_trace
+#print axioms Gtz.trace_carrierEnergy
+#print axioms Gtz.carrierEnergy_mulVec_eq
+#print axioms Gtz.carrierReading_ne_zero
+#print axioms Gtz.exists_carrier_energy_eigen
+#print axioms Gtz.SharedPrivateData.exists_kernel_spectral_split
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

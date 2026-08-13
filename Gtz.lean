@@ -3073,6 +3073,12 @@ import Gtz.Wave.SharedPrivateKernelMinor
 -- sharper deficit dispatch.
 import Gtz.Wave.SharedPrivateKernelFactor
 
+-- the spectral split: the rank-one action, the orthonormal rank-one sum
+-- of a symmetric idempotent at every natural trace, the carrier energy
+-- matrix with its trace and its eigenvalue law, and the split at the
+-- shared-private datum at every kernel gap.
+import Gtz.Wave.SharedPrivateSpectralSplit
+
 -- the shared-private boundary complement: the carrier cap of the
 -- rank-four rigidity, the rank-four minor kill at shared slot pairs,
 -- the partition law of a disjoint support pair, the complement slot,
