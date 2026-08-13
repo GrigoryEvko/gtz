@@ -691,6 +691,14 @@ import Gtz.Wave.RankFiveRungAssembly
 import Gtz.Wave.RankFiveClosureSupply
 import Gtz.Wave.RankFiveDenseStructure
 import Gtz.Wave.BothParallelCollapseSupply
+import Gtz.Wave.SharedPairCaptureNarrowing
+import Gtz.Wave.PairWedgeCalculus
+import Gtz.Wave.CycleSeamReduction
+import Gtz.Wave.KFourCertificateReduction
+import Gtz.Wave.RankSixNormalForm
+import Gtz.Wave.SupportSextupleCensus
+import Gtz.Wave.RankSixRungAssembly
+import Gtz.Wave.RankSixClosureSupply
 #print axioms Gtz.bhatiaDavis_telescope
 #print axioms Gtz.exists_pair_mul_le_neg_one
 #print axioms Gtz.posSemidef_atomMatrix
@@ -22068,6 +22076,124 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.RankFiveFrame.dense_support_eq_block
 #print axioms Gtz.exists_three_carriers_of_heavy_atom
 #print axioms Gtz.RankFiveFrame.dense_doubled_covers
+
+-- ==========================================================
+-- the shared-pair capture narrowing.  The positive entry
+-- Cauchy-Schwarz, the complement conjugation, the sign law,
+-- the squeeze supply, the zero propagation, and the positive
+-- closure-one bridge.
+-- ==========================================================
+
+#print axioms Gtz.sq_entry_le_diagonal_mul_of_posSemidef
+#print axioms Gtz.capture_transpose_of_isChartStationaryData
+#print axioms Gtz.assembly_sub_capture_eq_complement_conj
+#print axioms Gtz.capture_quadratic_le_assembly_quadratic
+#print axioms Gtz.pairKernel_quadratic_read
+#print axioms Gtz.assembly_pairKernel_quadratic_read
+#print axioms Gtz.pair_block_trace_sum
+#print axioms Gtz.shared_capture_cross_sign
+#print axioms Gtz.capture_pair_minor
+#print axioms Gtz.shared_pair_zero_propagation
+#print axioms Gtz.capture_pair_trace_read
+#print axioms Gtz.assembly_pair_offdiag_sq_le
+#print axioms Gtz.capture_pairKernel_le
+#print axioms Gtz.shared_pair_squeeze_inequality
+#print axioms Gtz.RankFourFrame.false_of_pair_shifted_weights_zero
+#print axioms Gtz.rankFourSupportTwoClosed_of_positive_shared_kill
+
+-- ==========================================================
+-- the pair wedge calculus.  The kernel row laws, the sharer
+-- wedge laws, the wedge energy window, the aligned-wedge
+-- kill, and the wedge closure-one bridge.
+-- ==========================================================
+
+#print axioms Gtz.chartStationaryGap_entry_symm
+#print axioms Gtz.pair_gap_kernel_row_first
+#print axioms Gtz.pair_gap_kernel_row_second
+#print axioms Gtz.mulVec_apply_of_triple_support
+#print axioms Gtz.bothPair_sharer_row_wedge
+#print axioms Gtz.bothPair_sharer_wedge_law
+#print axioms Gtz.singlePair_sharer_wedge_law
+#print axioms Gtz.pair_third_wedge_read
+#print axioms Gtz.pair_third_row_zero
+#print axioms Gtz.assembly_entry_symm
+#print axioms Gtz.assembly_pairKernel_wedge_sum
+#print axioms Gtz.wedge_energy_eq
+#print axioms Gtz.wedge_energy_le_third
+#print axioms Gtz.RankFourFrame.false_of_vanishing_basis_wedges
+#print axioms Gtz.rankFourSupportTwoClosed_of_wedge_outer_kill
+
+-- ==========================================================
+-- the cycle seam reduction.  The share calculus, the corner
+-- trace law, the parallel weight pin, the pattern transport,
+-- and the closure-four discharge to the seam certificate.
+-- ==========================================================
+
+#print axioms Gtz.mem_shareSet_of_coordinate_product
+#print axioms Gtz.basisGram_zero_of_share_empty
+#print axioms Gtz.basisGram_double_of_share_pair
+#print axioms Gtz.coordinate_zero_of_support_eq
+#print axioms Gtz.corner_trace_of_cross_det
+#print axioms Gtz.pair_weight_eq_of_parallel
+#print axioms Gtz.six_atoms_eq_univ
+#print axioms Gtz.sum_six_atoms
+#print axioms Gtz.sum_four_slots
+#print axioms Gtz.submatrix_four_mul
+#print axioms Gtz.RankFourFrame.false_of_cycle_first_independent
+#print axioms Gtz.rankFourCycleIndependentClosed_of_seam_certificate
+
+-- ==========================================================
+-- the K4 certificate reduction.  The closure-three discharge
+-- to the K4 certificate at the identity slot pattern.
+-- ==========================================================
+
+#print axioms Gtz.rankFourKFourClosed_of_certificate
+
+-- ==========================================================
+-- the rank-six normal form.  Fifteen facts at every rank-six
+-- crux datum, with the two-sided inverse and the exact
+-- captured trace.
+-- ==========================================================
+
+#print axioms Gtz.SixThreeCrux.exists_rankSix_coefficient_normalForm
+
+-- ==========================================================
+-- the support-sextuple census.  The fully private kill, the
+-- trichotomy with the heavy atom, and the pinned dispatch of
+-- the rank-six rung.
+-- ==========================================================
+
+#print axioms Gtz.false_of_fully_private_sextuple
+#print axioms Gtz.basisSupport_sextuple_trichotomy
+#print axioms Gtz.SixThreeCrux.exists_rankSix_pinned_dispatch
+
+-- ==========================================================
+-- the rank-six rung assembly.  The frame, the derived
+-- independence, the branch-two discharge, and the rung modulo
+-- the three named closures.
+-- ==========================================================
+
+#print axioms Gtz.RankSixFrame.hmemAll
+#print axioms Gtz.RankSixFrame.hvalueNeg
+#print axioms Gtz.RankSixFrame.hindep
+#print axioms Gtz.SixThreeCrux.exists_rankSixFrame
+#print axioms Gtz.RankSixFrame.false_of_multOne_branch
+#print axioms Gtz.isSixThreeAssemblyRankExcluded_six_of_closures
+
+-- ==========================================================
+-- the rank-six closure supply.  The block cap at the third
+-- rung, the private-pair kill, the same-pair kill, the
+-- outer-sharer bridge, and the dense doubled-pairs law.
+-- ==========================================================
+
+#print axioms Gtz.RankSixFrame.false_of_three_slots_share_block
+#print axioms Gtz.RankSixFrame.false_of_supportTwo_private_pair
+#print axioms Gtz.rankSixSupportTwoClosed_of_shared_pair_kill
+#print axioms Gtz.RankSixFrame.false_of_samePair_columns
+#print axioms Gtz.rankSixSupportTwoClosed_of_outer_shared_kill
+#print axioms Gtz.RankSixFrame.dense_support_eq_block
+#print axioms Gtz.RankSixFrame.false_of_three_supports_equal
+#print axioms Gtz.RankSixFrame.dense_two_doubled_pairs_cover
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

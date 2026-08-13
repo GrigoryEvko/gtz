@@ -2957,6 +2957,46 @@ import Gtz.Wave.RankFiveClosureSupply
 -- heavy-atom carrier triple, and the doubled-cover law.
 import Gtz.Wave.RankFiveDenseStructure
 
+-- the shared-pair capture narrowing: the positive entry Cauchy-Schwarz,
+-- the complement conjugation, the sign law, the squeeze supply, the
+-- zero propagation, and the positive closure-one bridge.
+import Gtz.Wave.SharedPairCaptureNarrowing
+
+-- the pair wedge calculus: the kernel row laws, the sharer wedge laws,
+-- the wedge energy window, the aligned-wedge kill, and the wedge
+-- closure-one bridge.
+import Gtz.Wave.PairWedgeCalculus
+
+-- the cycle seam reduction: the share calculus, the corner trace law,
+-- the parallel weight pin, the pattern transport, the seam
+-- certificate, and the closure-four discharge.
+import Gtz.Wave.CycleSeamReduction
+
+-- the K4 certificate reduction: the edge extraction from the unit
+-- pair shares, the support identification, and the closure-three
+-- discharge at the identity slot pattern.
+import Gtz.Wave.KFourCertificateReduction
+
+-- the rank-six normal form: the support-minimal reduction, the
+-- six-label basis, the two-sided inverse, the H-form, the exchange
+-- law, and the exact captured trace.
+import Gtz.Wave.RankSixNormalForm
+
+-- the support-sextuple census: the fully private kill through the
+-- independence cap, the sextuple trichotomy with the heavy atom, and
+-- the pinned dispatch of the rank-six rung.
+import Gtz.Wave.SupportSextupleCensus
+
+-- the rank-six rung assembly: the frame with the two-sided inverse,
+-- the three named closures, the inline fully-private discharge, and
+-- the rung modulo the closures.
+import Gtz.Wave.RankSixRungAssembly
+
+-- the rank-six closure supply: the block cap at the third rung, the
+-- private-pair kill, the same-pair kill, the outer-sharer bridge, and
+-- the doubled-pairs law of the dense branch.
+import Gtz.Wave.RankSixClosureSupply
+
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
 import Gtz.Certificates.CollarAtlas.ChartGroup03
