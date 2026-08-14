@@ -61,6 +61,22 @@ pairs.  The witness therefore separates the two term test from the four term
 test, and it does not refute the cell: the triple of slots zero, two and
 five is a nonnegative dual block, so the complementary triple covers.
 
+## The pivot passage
+
+The cell has a second face in the chart of one pivot slot.  Read a direction
+as a multiple of the pivot atom plus a POLAR part, which is a probe that the
+pivot atom reads as zero.  Against a polar probe the five other atoms resolve
+the probe exactly, by the frame law alone, so the plane of the pivot carries a
+free Parseval frame of five slots at scale total `1 - t_p`.  A triple through
+the pivot covers exactly when, at every polar probe, the plane reading of the
+pair beats the probe energy by the SCHUR MARGIN of the coupling.
+
+`Gtz.atomPivotSchur_cover` is that passage.  It is pure algebra and it
+consumes no frame law.  The isotropic relaxation, which bounds the coupling
+square by the Cauchy-Schwarz product of the pivot weight and the plane
+reading, is REFUTED at a margin of `-0.129`, so the DIRECTION of the coupling
+is load bearing.
+
 ## The cycle law of the Gram
 
 The realness of the field enters the drop through ONE quantity, the SIGNED
@@ -105,6 +121,11 @@ consequence.
 * `Gtz.atomGram_cycle_total`, `Gtz.atomGram_cycle_erase`,
   `Gtz.exists_pos_cycle_of_pair` — **THE CYCLE LAW**, the carrier of the
   field.
+* `Gtz.atomPivotPlaneRead`, `Gtz.atomPivotCouple`, `Gtz.atomPivotWeight`,
+  `Gtz.atomPivotPolar_parseval`, `Gtz.atomPivotSchur_cover` — **THE PIVOT
+  PASSAGE**, in ambient coordinates.  A pivot and a pair whose plane reading
+  beats the probe energy by the exact Schur margin give a covering triple, and
+  the five atoms off the pivot resolve every polar probe for free.
 
 ## Vacuity
 
@@ -853,5 +874,197 @@ theorem exists_pos_cycle_of_pair
   · exact (Finset.mem_erase.mp hmem).1
 
 end CycleLaw
+
+/-! ## Layer 6 — the pivot passage from the plane to the cover -/
+
+section PivotPassage
+
+variable (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
+
+/-- The PLANE READING of a pair at a polar probe: the scaled squared readings
+of the two slots off the pivot. -/
+noncomputable def atomPivotPlaneRead (slotOne slotTwo : Fin 6) (probe : Fin 3 → ℝ) : ℝ :=
+  (atom slotOne ⬝ᵥ probe) ^ 2 / scale slotOne
+    + (atom slotTwo ⬝ᵥ probe) ^ 2 / scale slotTwo
+
+/-- The COUPLING of a pair to the pivot at a polar probe.  This quantity is
+the whole obstruction: its MODULUS is what a Cauchy-Schwarz bound reads, and
+its DIRECTION is what the exact passage reads. -/
+noncomputable def atomPivotCouple (pivot slotOne slotTwo : Fin 6) (probe : Fin 3 → ℝ) : ℝ :=
+  atomGram atom pivot slotOne * (atom slotOne ⬝ᵥ probe) / scale slotOne
+    + atomGram atom pivot slotTwo * (atom slotTwo ⬝ᵥ probe) / scale slotTwo
+
+/-- The PIVOT WEIGHT of a pair: the scaled squared Gram entries to the pivot. -/
+noncomputable def atomPivotWeight (pivot slotOne slotTwo : Fin 6) : ℝ :=
+  atomGram atom pivot slotOne ^ 2 / scale slotOne
+    + atomGram atom pivot slotTwo ^ 2 / scale slotTwo
+
+variable {atom scale}
+
+/-- **THE PLANE PARSEVAL LAW IS FREE.**  Against a probe orthogonal to the
+pivot the five other atoms resolve the probe exactly, because the pivot reads
+zero.  No projection and no plane coordinates are needed. -/
+theorem atomPivotPolar_parseval
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    {pivot : Fin 6} {probe : Fin 3 → ℝ} (hpolar : atom pivot ⬝ᵥ probe = 0) :
+    (∑ slot ∈ Finset.univ.erase pivot, (atom slot ⬝ᵥ probe) ^ 2) = probe ⬝ᵥ probe := by
+  classical
+  have hall := hframe probe probe
+  have hsplit := Finset.add_sum_erase Finset.univ
+    (fun slot => (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ probe)) (Finset.mem_univ pivot)
+  simp only [hpolar, mul_zero, zero_add] at hsplit
+  have hsq : ∀ slot : Fin 6, (atom slot ⬝ᵥ probe) ^ 2
+      = (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ probe) := fun slot => sq _
+  rw [Finset.sum_congr rfl fun slot _ => hsq slot, hsplit, hall]
+
+/-- **THE PIVOT PASSAGE.**  A pivot whose diagonal beats its scale, together
+with a pair whose plane reading beats the probe energy by the exact Schur
+margin, gives a covering triple.
+
+The passage is an EQUIVALENCE in substance: the triple covers exactly when
+the displayed inequality holds at every polar probe.  The coupling enters
+through its square, and the pivot budget `G_pp (G_pp - t_p)` pays for it.  The
+passage is pure algebra and consumes no frame law.
+
+The isotropic relaxation of this passage, which replaces the coupling square
+by the Cauchy-Schwarz product of the pivot weight and the plane reading, is
+REFUTED.  An adversarial descent drives its margin to `-0.129` while the cell
+holds, so the DIRECTION of the coupling is load bearing and no modulus bound
+closes the passage. -/
+theorem atomPivotSchur_cover {pivot slotOne slotTwo : Fin 6}
+    (hpivotPos : 0 < scale pivot) (honePos : 0 < scale slotOne) (htwoPos : 0 < scale slotTwo)
+    (hgap : scale pivot < atomGram atom pivot pivot)
+    (hschur : ∀ probe : Fin 3 → ℝ, atom pivot ⬝ᵥ probe = 0 →
+      scale pivot * atomPivotCouple atom scale pivot slotOne slotTwo probe ^ 2
+        ≤ (scale pivot * atomPivotWeight atom scale pivot slotOne slotTwo
+            + atomGram atom pivot pivot
+              * (atomGram atom pivot pivot - scale pivot))
+          * (atomPivotPlaneRead atom scale slotOne slotTwo probe - probe ⬝ᵥ probe))
+    (direction : Fin 3 → ℝ) :
+    direction ⬝ᵥ direction
+      ≤ (atom pivot ⬝ᵥ direction) ^ 2 / scale pivot
+        + (atom slotOne ⬝ᵥ direction) ^ 2 / scale slotOne
+        + (atom slotTwo ⬝ᵥ direction) ^ 2 / scale slotTwo := by
+  classical
+  have hdiagPos : 0 < atomGram atom pivot pivot := lt_trans hpivotPos hgap
+  set lift : ℝ := (atom pivot ⬝ᵥ direction) / atomGram atom pivot pivot with hliftDef
+  set probe : Fin 3 → ℝ := direction - lift • atom pivot with hprobeDef
+  have hpolar : atom pivot ⬝ᵥ probe = 0 := by
+    rw [hprobeDef, dotProduct_sub, dotProduct_smul, smul_eq_mul, hliftDef]
+    have hgram : atom pivot ⬝ᵥ atom pivot = atomGram atom pivot pivot := rfl
+    rw [hgram]
+    field_simp
+    ring
+  have hread : ∀ slot : Fin 6,
+      atom slot ⬝ᵥ direction = atom slot ⬝ᵥ probe + lift * atomGram atom pivot slot := by
+    intro slot
+    rw [hprobeDef, dotProduct_sub, dotProduct_smul, smul_eq_mul]
+    have hgram : atom slot ⬝ᵥ atom pivot = atomGram atom pivot slot := by
+      rw [atomGram, dotProduct_comm]
+    rw [hgram]
+    ring
+  have henergy : direction ⬝ᵥ direction
+      = probe ⬝ᵥ probe + lift ^ 2 * atomGram atom pivot pivot := by
+    have hexpand : direction ⬝ᵥ direction
+        = probe ⬝ᵥ probe + 2 * lift * (atom pivot ⬝ᵥ probe)
+          + lift ^ 2 * (atom pivot ⬝ᵥ atom pivot) := by
+      rw [hprobeDef]
+      simp only [sub_dotProduct, dotProduct_sub, smul_dotProduct, dotProduct_smul,
+        smul_eq_mul, dotProduct_comm (atom pivot) direction]
+      ring
+    rw [hexpand, hpolar]
+    have hgram : atom pivot ⬝ᵥ atom pivot = atomGram atom pivot pivot := rfl
+    rw [hgram]
+    ring
+  have hpivotRead : atom pivot ⬝ᵥ direction = lift * atomGram atom pivot pivot := by
+    rw [hread pivot, hpolar, zero_add]
+  have hkey := hschur probe hpolar
+  have hbudget : 0 < scale pivot * atomPivotWeight atom scale pivot slotOne slotTwo
+      + atomGram atom pivot pivot * (atomGram atom pivot pivot - scale pivot) := by
+    have hweight : 0 ≤ atomPivotWeight atom scale pivot slotOne slotTwo := by
+      simp only [atomPivotWeight]
+      positivity
+    nlinarith [mul_pos hdiagPos (sub_pos.mpr hgap), mul_nonneg hpivotPos.le hweight]
+  have hcell : ∀ slot : Fin 6, 0 < scale slot →
+      (atom slot ⬝ᵥ direction) ^ 2 / scale slot
+        = (atom slot ⬝ᵥ probe) ^ 2 / scale slot
+          + 2 * lift * (atomGram atom pivot slot * (atom slot ⬝ᵥ probe) / scale slot)
+          + lift ^ 2 * (atomGram atom pivot slot ^ 2 / scale slot) := by
+    intro slot hslot
+    rw [hread slot]
+    field_simp
+    ring
+  rw [hcell slotOne honePos, hcell slotTwo htwoPos, henergy, hpivotRead]
+  have hpivotSq : (lift * atomGram atom pivot pivot) ^ 2 / scale pivot
+      = lift ^ 2 * atomGram atom pivot pivot ^ 2 / scale pivot := by ring
+  rw [hpivotSq]
+  have hsplit : lift ^ 2 * atomGram atom pivot pivot ^ 2 / scale pivot
+      = lift ^ 2 * atomGram atom pivot pivot
+        + lift ^ 2 * (atomGram atom pivot pivot
+          * (atomGram atom pivot pivot - scale pivot)) / scale pivot := by
+    field_simp
+    ring
+  rw [hsplit]
+  have hgoal : probe ⬝ᵥ probe
+      ≤ atomPivotPlaneRead atom scale slotOne slotTwo probe
+        + 2 * lift * atomPivotCouple atom scale pivot slotOne slotTwo probe
+        + lift ^ 2 * atomPivotWeight atom scale pivot slotOne slotTwo
+        + lift ^ 2 * (atomGram atom pivot pivot
+          * (atomGram atom pivot pivot - scale pivot)) / scale pivot := by
+    have hscaled : lift ^ 2 * (atomGram atom pivot pivot
+        * (atomGram atom pivot pivot - scale pivot)) / scale pivot * scale pivot
+        = lift ^ 2 * (atomGram atom pivot pivot
+          * (atomGram atom pivot pivot - scale pivot)) := by
+      field_simp
+    have hsquare : 0 ≤ (lift * (scale pivot * atomPivotWeight atom scale pivot slotOne slotTwo
+          + atomGram atom pivot pivot * (atomGram atom pivot pivot - scale pivot))
+        + scale pivot * atomPivotCouple atom scale pivot slotOne slotTwo probe) ^ 2 :=
+      sq_nonneg _
+    rw [← sub_nonneg]
+    have hmul : 0 ≤ (atomPivotPlaneRead atom scale slotOne slotTwo probe
+        + 2 * lift * atomPivotCouple atom scale pivot slotOne slotTwo probe
+        + lift ^ 2 * atomPivotWeight atom scale pivot slotOne slotTwo
+        + lift ^ 2 * (atomGram atom pivot pivot
+          * (atomGram atom pivot pivot - scale pivot)) / scale pivot
+        - probe ⬝ᵥ probe) * (scale pivot * (scale pivot
+          * atomPivotWeight atom scale pivot slotOne slotTwo
+          + atomGram atom pivot pivot
+            * (atomGram atom pivot pivot - scale pivot))) := by
+      have hexp : (atomPivotPlaneRead atom scale slotOne slotTwo probe
+          + 2 * lift * atomPivotCouple atom scale pivot slotOne slotTwo probe
+          + lift ^ 2 * atomPivotWeight atom scale pivot slotOne slotTwo
+          + lift ^ 2 * (atomGram atom pivot pivot
+            * (atomGram atom pivot pivot - scale pivot)) / scale pivot
+          - probe ⬝ᵥ probe) * (scale pivot * (scale pivot
+            * atomPivotWeight atom scale pivot slotOne slotTwo
+            + atomGram atom pivot pivot
+              * (atomGram atom pivot pivot - scale pivot)))
+          = (lift * (scale pivot * atomPivotWeight atom scale pivot slotOne slotTwo
+              + atomGram atom pivot pivot
+                * (atomGram atom pivot pivot - scale pivot))
+            + scale pivot * atomPivotCouple atom scale pivot slotOne slotTwo probe) ^ 2
+            + ((scale pivot * atomPivotWeight atom scale pivot slotOne slotTwo
+                + atomGram atom pivot pivot
+                  * (atomGram atom pivot pivot - scale pivot))
+              * (atomPivotPlaneRead atom scale slotOne slotTwo probe - probe ⬝ᵥ probe)
+              - scale pivot
+                * atomPivotCouple atom scale pivot slotOne slotTwo probe ^ 2)
+              * scale pivot := by
+        field_simp
+        ring
+      rw [hexp]
+      have hslack : 0 ≤ (scale pivot * atomPivotWeight atom scale pivot slotOne slotTwo
+          + atomGram atom pivot pivot
+            * (atomGram atom pivot pivot - scale pivot))
+        * (atomPivotPlaneRead atom scale slotOne slotTwo probe - probe ⬝ᵥ probe)
+        - scale pivot * atomPivotCouple atom scale pivot slotOne slotTwo probe ^ 2 := by
+        linarith [hkey]
+      nlinarith [hsquare, mul_nonneg hslack hpivotPos.le]
+    nlinarith [hmul, mul_pos hpivotPos hbudget]
+  simp only [atomPivotPlaneRead, atomPivotCouple, atomPivotWeight] at hgoal
+  linarith
+
+end PivotPassage
 
 end Gtz
