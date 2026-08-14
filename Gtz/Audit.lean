@@ -5501,6 +5501,19 @@ import Gtz.Wave.AtomDeepCutRigidity
 #print axioms Gtz.gtzWeightedAll_three_of_polarTiltCircular
 #print axioms Gtz.not_polarTiltSelectionCircular_five_three
 #print axioms Gtz.sixSplitDiamondDesign_spares_polarTiltCircular
+#print axioms Gtz.PolarShadowSchurSelection
+#print axioms Gtz.PolarWrapSelection
+#print axioms Gtz.polarShadowSchurSelection_of_polarWrapSelection
+#print axioms Gtz.hingeHoldsAtSize_of_polarShadowSchurSelection
+#print axioms Gtz.hingeHoldsAtSize_of_polarWrapSelection
+#print axioms Gtz.thresholdArms_rank_three_of_polarShadowSchurSelection
+#print axioms Gtz.gtzWeighted_six_three_of_polarShadowSchurSelection
+#print axioms Gtz.gtzWeightedAll_three_of_polarShadowSchurSelection
+#print axioms Gtz.gtzWeighted_six_three_of_polarWrapSelection
+#print axioms Gtz.gtzWeightedAll_three_of_polarWrapSelection
+#print axioms Gtz.not_polarShadowSchurSelection_five
+#print axioms Gtz.not_polarWrapSelection_five
+#print axioms Gtz.sixSplitDiamondDesign_spares_polarWrapSelection
 
 -- Coverage sweep: every `theorem`/`lemma` enumerated from `Gtz/` that was
 -- absent from the list above.  Gtz/Ties/DiamondTie.lean is deliberately

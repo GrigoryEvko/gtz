@@ -91,6 +91,15 @@ triples reaches `0.5306 / 0.1556 / 0.6090 / 0.1364` on four slices against
 `0.5666 / 0.1622 / 0.5639 / 0.1367` unrestricted, with no endpoint below `0.02`
 in either mode, and no pole of the 73830 adversarial poles lacks a wrapping
 triple.  The restriction is free.
+
+## 7. The kill route, named and calibrated
+
+`Gtz.PolarShadowSchurSelection` asks for a pole and a triple that clear the four
+polynomial bounds of the landed kill, and `Gtz.PolarWrapSelection` pins that
+triple to a wrapping triple of the circular order.  The second implies the
+first, both close the deciding cell and all of rank three on their own, and both
+are FALSE at size five, thus the calibration of the whole polar chain transports
+to this route unchanged.
 -/
 
 namespace Gtz
@@ -1507,5 +1516,163 @@ theorem sixSplitDiamondDesign_spares_polarTiltCircular :
     not_isPrimitiveDesign_sixSplitDiamondDesign, not_polarTiltSelectionCircular_five_three⟩
 
 end CircularSixThree
+
+/-! ## Part 8: the wrapping kill, a named and calibrated target
+
+The residual of Part 6 walks the pair-and-tilt route.  The kill of
+`Gtz.not_isTie_of_planeShadowSchur_rank_three` walks a second route directly:
+it asks for a pole and a TRIPLE whose shadow trace, plane Gram determinant,
+pole mass and shadow adjugate form clear four polynomial bounds.  This part
+names that target, and it names the strictly stronger version in which the
+triple is a WRAPPING triple of the circular order.
+
+The probes measure the two versions against each other.  On 3749 real near-tie
+endpoints the kill fires at a wrapping combination at 3749 of them, and the
+wrapping combinations carry the kill at 74.7 percent against 28.3 percent
+elsewhere.  Adversarially, minimising the worse of the tie gap and the kill
+margin RESTRICTED to wrapping triples reaches `0.5306 / 0.1556 / 0.6090 /
+0.1364` on four slices against `0.5666 / 0.1622 / 0.5639 / 0.1367`
+unrestricted, and no pole of the 73830 adversarial poles lacks a wrapping
+triple.  The restriction costs nothing, and it tells a prover where to look. -/
+
+section WrapKill
+
+variable {size : ℕ}
+
+/-- **THE ARITHMETIC SELECTION TARGET.**  At every primitive tie of rank three
+some pole of leverage above one and some triple of three labels avoiding it
+clear the two cover bounds, the pole surplus and the arithmetic test.  Every
+clause is a polynomial inequality in the leverage, the pole readings, the shadow
+energies and the shadow pairings. -/
+def PolarShadowSchurSelection (size : ℕ) : Prop :=
+  ∀ design : WeightedDesign size 3, IsPrimitiveDesign design → IsTie design →
+    ∃ (pole : Fin size) (selected : Finset (Fin size)) (excess : ℝ),
+      1 < design.atom pole ⬝ᵥ design.atom pole
+        ∧ selected.card = 3
+        ∧ 0 < excess
+        ∧ 2 * (1 + excess) ≤ ∑ c ∈ selected, planeShadowSq design pole c
+        ∧ (1 + excess) * (∑ c ∈ selected, planeShadowSq design pole c) - (1 + excess) ^ 2
+            ≤ polarPlaneGramDet design pole selected
+        ∧ design.atom pole ⬝ᵥ design.atom pole
+            < ∑ c ∈ selected, (design.atom c ⬝ᵥ design.atom pole) ^ 2
+        ∧ polarShadowAdjugate design pole selected
+            < polarPlaneDet design pole selected
+              * ((∑ c ∈ selected, (design.atom c ⬝ᵥ design.atom pole) ^ 2)
+                - design.atom pole ⬝ᵥ design.atom pole)
+
+/-- **THE WRAPPING KILL.**  The same target with the triple pinned to a WRAPPING
+triple of the circular order.  It is strictly stronger than
+`Gtz.PolarShadowSchurSelection`, and the probes show the restriction is free. -/
+def PolarWrapSelection (size : ℕ) : Prop :=
+  ∀ design : WeightedDesign size 3, IsPrimitiveDesign design → IsTie design →
+    ∃ (pole first second third : Fin size) (excess : ℝ),
+      1 < design.atom pole ⬝ᵥ design.atom pole
+        ∧ PolarWrapping design pole first second third
+        ∧ 0 < excess
+        ∧ 2 * (1 + excess)
+            ≤ ∑ c ∈ ({first, second, third} : Finset (Fin size)), planeShadowSq design pole c
+        ∧ (1 + excess)
+              * (∑ c ∈ ({first, second, third} : Finset (Fin size)),
+                  planeShadowSq design pole c)
+            - (1 + excess) ^ 2
+          ≤ polarPlaneGramDet design pole ({first, second, third} : Finset (Fin size))
+        ∧ design.atom pole ⬝ᵥ design.atom pole
+            < ∑ c ∈ ({first, second, third} : Finset (Fin size)),
+                (design.atom c ⬝ᵥ design.atom pole) ^ 2
+        ∧ polarShadowAdjugate design pole ({first, second, third} : Finset (Fin size))
+            < polarPlaneDet design pole ({first, second, third} : Finset (Fin size))
+              * ((∑ c ∈ ({first, second, third} : Finset (Fin size)),
+                    (design.atom c ⬝ᵥ design.atom pole) ^ 2)
+                - design.atom pole ⬝ᵥ design.atom pole)
+
+/-- The wrapping kill is the stronger of the two targets. -/
+theorem polarShadowSchurSelection_of_polarWrapSelection
+    (hwrap : PolarWrapSelection size) : PolarShadowSchurSelection size := by
+  intro design hprimitive htie
+  obtain ⟨pole, first, second, third, excess, hlong, hwrapping, hexcess, htrace, hgram,
+    hz, htest⟩ := hwrap design hprimitive htie
+  have hpole : 0 < design.atom pole ⬝ᵥ design.atom pole := lt_trans zero_lt_one hlong
+  exact ⟨pole, ({first, second, third} : Finset (Fin size)), excess, hlong,
+    polarWrapping_card_three design hpole hwrapping, hexcess, htrace, hgram, hz, htest⟩
+
+/-- **THE HINGE FROM THE ARITHMETIC SELECTION TARGET.**  The kill of
+`Gtz.not_isTie_of_planeShadowSchur_rank_three` closes the hinge at every size
+of rank three. -/
+theorem hingeHoldsAtSize_of_polarShadowSchurSelection
+    (hselect : PolarShadowSchurSelection size) : HingeHoldsAtSize size 3 := by
+  intro design htie
+  by_contra hnoPair
+  have hprimitive : IsPrimitiveDesign design :=
+    (isPrimitiveDesign_iff_not_hasParallelPair design).mpr hnoPair
+  obtain ⟨pole, selected, excess, hlong, hcard, hexcess, htrace, hgram, hz, htest⟩ :=
+    hselect design hprimitive htie
+  have hpole : 0 < design.atom pole ⬝ᵥ design.atom pole := lt_trans zero_lt_one hlong
+  exact not_isTie_of_planeShadowSchur_rank_three design hpole hcard hexcess htrace hgram
+    hz htest htie
+
+/-- The hinge from the wrapping kill. -/
+theorem hingeHoldsAtSize_of_polarWrapSelection (hwrap : PolarWrapSelection size) :
+    HingeHoldsAtSize size 3 :=
+  hingeHoldsAtSize_of_polarShadowSchurSelection
+    (polarShadowSchurSelection_of_polarWrapSelection hwrap)
+
+/-- The three rank-three arms from the arithmetic selection target. -/
+theorem thresholdArms_rank_three_of_polarShadowSchurSelection
+    (hselect : PolarShadowSchurSelection 6) :
+    ThresholdStressFreeArm 3 ∧ ThresholdBalancedArm 3 ∧ ThresholdDegenerateArm 3 := by
+  have hhinge := hingeHoldsAtSize_of_polarShadowSchurSelection hselect
+  exact ⟨fun design _hfree htie => hhinge design htie,
+    fun design _stressCoeff _hstressNe _hstress _hposSpans _hnegSpans htie => hhinge design htie,
+    fun design _stressCoeff _probe _hstressNe _hprobeNe _hstress _hsupport htie =>
+      hhinge design htie⟩
+
+/-- **THE DECIDING CELL FROM THE ARITHMETIC SELECTION TARGET ALONE.** -/
+theorem gtzWeighted_six_three_of_polarShadowSchurSelection
+    (hselect : PolarShadowSchurSelection 6) : GtzWeighted 6 3 := by
+  have harms := thresholdArms_rank_three_of_polarShadowSchurSelection hselect
+  exact GeneralRankReach.gtzWeighted_six_three_of_arms harms.1 harms.2.1 harms.2.2
+
+/-- **ALL OF RANK THREE FROM THE ARITHMETIC SELECTION TARGET ALONE.** -/
+theorem gtzWeightedAll_three_of_polarShadowSchurSelection
+    (hselect : PolarShadowSchurSelection 6) : GtzWeightedAll 3 := by
+  have harms := thresholdArms_rank_three_of_polarShadowSchurSelection hselect
+  exact GeneralRankReach.gtzWeightedAll_three_of_arms harms.1 harms.2.1 harms.2.2
+
+/-- **THE DECIDING CELL FROM THE WRAPPING KILL ALONE.** -/
+theorem gtzWeighted_six_three_of_polarWrapSelection (hwrap : PolarWrapSelection 6) :
+    GtzWeighted 6 3 :=
+  gtzWeighted_six_three_of_polarShadowSchurSelection
+    (polarShadowSchurSelection_of_polarWrapSelection hwrap)
+
+/-- **ALL OF RANK THREE FROM THE WRAPPING KILL ALONE.** -/
+theorem gtzWeightedAll_three_of_polarWrapSelection (hwrap : PolarWrapSelection 6) :
+    GtzWeightedAll 3 :=
+  gtzWeightedAll_three_of_polarShadowSchurSelection
+    (polarShadowSchurSelection_of_polarWrapSelection hwrap)
+
+/-- **THE ARITHMETIC SELECTION TARGET IS FALSE AT SIZE FIVE.**  The `(5,3)`
+diamond is a primitive tie that no pole and no triple can kill, thus the
+calibration of the whole polar chain transports to this route. -/
+theorem not_polarShadowSchurSelection_five : ¬ PolarShadowSchurSelection 5 :=
+  fun hselect => not_hingeHoldsAtSize_five_three
+    (hingeHoldsAtSize_of_polarShadowSchurSelection hselect)
+
+/-- The wrapping kill is false at size five. -/
+theorem not_polarWrapSelection_five : ¬ PolarWrapSelection 5 :=
+  fun hwrap => not_polarShadowSchurSelection_five
+    (polarShadowSchurSelection_of_polarWrapSelection hwrap)
+
+/-- **THE GUARDRAIL ON THE KILL ROUTE.**  The `(6,3)` tie in the tree is not
+primitive, thus it does not touch either target, and the size-five instance
+stays refuted. -/
+theorem sixSplitDiamondDesign_spares_polarWrapSelection :
+    ¬ RankSuccShrinks 6 3 ∧ IsTie sixSplitDiamondDesign
+      ∧ ¬ IsPrimitiveDesign sixSplitDiamondDesign
+      ∧ ¬ PolarShadowSchurSelection 5 ∧ ¬ PolarWrapSelection 5 :=
+  ⟨not_rankSuccShrinks_six_three, sixSplitDiamondDesign_isTie,
+    not_isPrimitiveDesign_sixSplitDiamondDesign, not_polarShadowSchurSelection_five,
+    not_polarWrapSelection_five⟩
+
+end WrapKill
 
 end Gtz
