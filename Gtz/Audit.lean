@@ -827,6 +827,7 @@ import Gtz.Wave.SpectralSupplyCell
 import Gtz.Wave.PluckerCertificate
 import Gtz.Wave.QuadCoverSelection
 import Gtz.Wave.QuadDropSign
+import Gtz.Wave.PluckerEnergySupply
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -26913,3 +26914,55 @@ run_cmd do
 #print axioms Gtz.atomPivotWeight
 #print axioms Gtz.atomPivotPolar_parseval
 #print axioms Gtz.atomPivotSchur_cover
+
+-- Gtz/Wave/PluckerEnergySupply.lean
+-- The determinantal energy: the two-slot marginal law, the determinantal
+-- moment law, the flatness identity and the spectral floor at one twelfth.
+#print axioms Gtz.atomBlockPairMinor
+#print axioms Gtz.atomBlockPairMinor_eq_wedge_energy
+#print axioms Gtz.atomBlockPairMinor_nonneg
+#print axioms Gtz.atomBlockSecond_eq_pairMinor_sum
+#print axioms Gtz.atomBlockDet_eq_wedge_reading
+#print axioms Gtz.atomBlockDet_rot
+#print axioms Gtz.atomBlockDet_swapLast
+#print axioms Gtz.atomBlockDet_dup_outer
+#print axioms Gtz.atomBlockDet_dup_inner
+#print axioms Gtz.atomBlockPairMinor_eq_blockDet_sum
+#print axioms Gtz.atomPairFamilySum
+#print axioms Gtz.atomMarginal_01
+#print axioms Gtz.atomMarginal_02
+#print axioms Gtz.atomMarginal_03
+#print axioms Gtz.atomMarginal_04
+#print axioms Gtz.atomMarginal_05
+#print axioms Gtz.atomMarginal_12
+#print axioms Gtz.atomMarginal_13
+#print axioms Gtz.atomMarginal_14
+#print axioms Gtz.atomMarginal_15
+#print axioms Gtz.atomMarginal_23
+#print axioms Gtz.atomMarginal_24
+#print axioms Gtz.atomMarginal_25
+#print axioms Gtz.atomMarginal_34
+#print axioms Gtz.atomMarginal_35
+#print axioms Gtz.atomMarginal_45
+#print axioms Gtz.atomPluckerEnergyTwo
+#print axioms Gtz.atomPluckerEnergyThree
+#print axioms Gtz.atomPluckerEnergyThree_nonneg
+#print axioms Gtz.atomPluckerEnergyTwo_nonneg
+#print axioms Gtz.atomBlockDet_mul_second_familySum
+#print axioms Gtz.atomFourFlatnessTerm
+#print axioms Gtz.atomFourFlatness
+#print axioms Gtz.atomFourCauchy
+#print axioms Gtz.atomPluckerSpread
+#print axioms Gtz.atomPluckerSpread_nonneg
+#print axioms Gtz.atomPluckerFlatnessGap_eq_spread
+#print axioms Gtz.atomPluckerEnergyTwo_le_twelve
+#print axioms Gtz.atomSupplyTriple_blend_floor_le
+#print axioms Gtz.atomDet_eq_zero_of_step
+#print axioms Gtz.exists_atomEnergyTriple
+#print axioms Gtz.atomSpectralSupply_of_energyBound
+#print axioms Gtz.atomSpectralSupply_twelfth
+#print axioms Gtz.AtomPluckerTenth
+#print axioms Gtz.atomPluckerTenth_iff_spread
+#print axioms Gtz.atomSpectralSupply_tenth_of_pluckerTenth
+#print axioms Gtz.exists_atomCarrier_of_pluckerTenth
+#print axioms Gtz.exists_atomCarrier_twelfth

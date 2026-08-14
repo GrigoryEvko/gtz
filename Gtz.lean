@@ -3661,3 +3661,8 @@ import Gtz.Wave.PluckerCertificate
 -- the rung, and the scalar criterion of the drop.
 import Gtz.Wave.QuadCoverSelection
 import Gtz.Wave.QuadDropSign
+
+-- The determinantal energy of the twenty triples: the two slot marginal, the
+-- moment law of the determinantal average, the flatness identity and the
+-- spectral floor at one twelfth.
+import Gtz.Wave.PluckerEnergySupply
