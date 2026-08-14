@@ -1,4 +1,5 @@
 import Gtz.Wave.AtomDeepCutRigidity
+import Gtz.Wave.WideSpectralAtomForm
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -39,9 +40,23 @@ the half-box cell of `Gtz/LinAlg/SignForcing.lean` stops at `1/√2`.
 Three more cells come from the same algebra: the half-box cell in raw
 scalars, the energy cell, and the orthogonal-apex cell.
 
+The coherent product cell is strictly wider than the two strata of
+`Gtz/Wave/WideParityStrata.lean`.  That module closes a sign-free stratum at
+shifted diagonal `2 * cross` and an EQUIANGULAR stratum at `cross`.  The cell
+here demands neither equiangularity nor a uniform bound: it reads each vertex
+against the product of its two incident edges divided by the opposite one, in
+division-free form, and on the equiangular line it reduces exactly to
+`cross`.
+
 Layer three consumes the landed sign forcing.  Six real atoms of rank three
 carry a triangle of nonnegative cycle, because `3 + 2 = 5` is the threshold
-of `Gtz.exists_pos_triangleProduct_of_card_ge` and six exceeds it.  Over the
+of `Gtz.exists_pos_triangleProduct_of_card_ge` and six exceeds it.  The
+prescribed-slot form `Gtz.exists_coherent_atomTriple_at` CONSUMES the wide
+lane's `Gtz.exists_positiveParity_triple` of
+`Gtz/Wave/WideSpectralAtomForm.lean`, whose proof is order plus dimension and
+carries no phase quantity.  Nothing here re-derives it, and the unprescribed
+form is a corollary of the prescribed one, so the parity engine has ONE
+source in the tree.  Over the
 complex field the same threshold is `2 * 3 + 2 = 8`, thus six atoms sit
 strictly inside the window where the real argument forces and the complex one
 does not.  Layer four turns the cells around: at a datum with no dominating
@@ -74,8 +89,9 @@ rule, and a residue must never be narrowed to the coherent triples.
   scalars, with no normalisation and no square root.
 * `Gtz.atomTripleDet_pos_of_coherentEnergy`,
   `Gtz.exists_deflated_pair_of_orthogonalApex` — the two cheap cells.
-* `Gtz.exists_coherent_atomTriple`, `Gtz.exists_pos_coherent_atomTriple` —
-  **THE PARITY SUPPLY** at six real atoms of rank three.
+* `Gtz.exists_coherent_atomTriple_at`, `Gtz.exists_coherent_atomTriple`,
+  `Gtz.exists_pos_coherent_atomTriple` — **THE PARITY SUPPLY** at six real
+  atoms of rank three, prescribed slot first.
 * `Gtz.six_lt_complexSignForcing_threshold` — the field door as a number.
 * `Gtz.exists_flat_coherent_triangle_of_no_dominating_triple`,
   `Gtz.exists_strong_edge_of_no_dominating_triple` — **THE COUNTEREXAMPLE
@@ -743,20 +759,37 @@ theorem atomTriangleCycle_eq_triangleProduct {slotCount rank : ℕ}
       = triangleProduct (atom slotOne) (atom slotTwo) (atom slotThree) := by
   simp only [atomTriangleCycle, triangleProduct, atomGram]
 
+/-- **THE PARITY SUPPLY AT A PRESCRIBED SLOT.**  Every slot of six real atoms
+of rank three lies on a coherent triangle.  This is strictly stronger than
+`Gtz.exists_coherent_atomTriple`, because the residue names its pivot first
+and the triangle is then supplied around that pivot.
+
+The argument switches at the prescribed slot, which makes every edge to it
+negative, and then reads the obtuse bound on the five remaining atoms: at
+most `3 + 1` vectors of rank three pair strictly negatively in pairs, thus
+some pair of the five does not, and the triangle through the prescribed slot
+carries a nonnegative cycle.  A vanishing edge at the prescribed slot
+short-circuits the argument, because it makes every cycle through that slot
+vanish, thus the degenerate branch is routed and not excluded. -/
+theorem exists_coherent_atomTriple_at (atom : Fin 6 → (Fin 3 → ℝ)) (base : Fin 6) :
+    ∃ slotOne slotTwo : Fin 6,
+      base ≠ slotOne ∧ base ≠ slotTwo ∧ slotOne ≠ slotTwo
+        ∧ 0 ≤ atomTriangleCycle atom base slotOne slotTwo := by
+  obtain ⟨slotOne, slotTwo, honeBase, htwoBase, honeTwo, hparity⟩ :=
+    exists_positiveParity_triple atom base
+  exact ⟨slotOne, slotTwo, Ne.symm honeBase, Ne.symm htwoBase, honeTwo,
+    by simpa only [atomTriangleCycle] using hparity⟩
+
 /-- **THE PARITY SUPPLY.**  Six real atoms of rank three carry a triangle of
-nonnegative cycle.  The threshold of the landed sign forcing is
-`rank + 2 = 5`, and six exceeds it.  This is the real-only ingredient of the
-module: the argument runs on the fact that a real vector has a sign. -/
+nonnegative cycle.  This is the prescribed-slot supply read at the first
+slot, thus the parity engine has one source and this is a corollary. -/
 theorem exists_coherent_atomTriple (atom : Fin 6 → (Fin 3 → ℝ)) :
     ∃ slotOne slotTwo slotThree : Fin 6,
       slotOne ≠ slotTwo ∧ slotOne ≠ slotThree ∧ slotTwo ≠ slotThree
         ∧ 0 ≤ atomTriangleCycle atom slotOne slotTwo slotThree := by
-  have hcard : Fintype.card (Fin 3) + 2 ≤ Fintype.card (Fin 6) := by simp
-  have hthree : 3 ≤ Fintype.card (Fin 6) := by simp
-  obtain ⟨slotOne, slotTwo, slotThree, honeTwo, honeThree, htwoThree, hproduct⟩ :=
-    exists_nonneg_triangleProduct_of_card_ge atom hcard hthree
-  exact ⟨slotOne, slotTwo, slotThree, honeTwo, honeThree, htwoThree, by
-    rw [atomTriangleCycle_eq_triangleProduct]; exact hproduct⟩
+  obtain ⟨slotTwo, slotThree, honeTwo, honeThree, htwoThree, hcycle⟩ :=
+    exists_coherent_atomTriple_at atom 0
+  exact ⟨0, slotTwo, slotThree, honeTwo, honeThree, htwoThree, hcycle⟩
 
 /-- **THE PARITY SUPPLY, STRICT FORM.**  When every pairwise Gram entry is
 nonzero the supplied triangle has a strictly positive cycle, which is what
@@ -791,74 +824,6 @@ theorem exists_coherent_atomTriple_of_pick (atom : Fin 6 → (Fin 3 → ℝ))
     fun heq => honeThree (hinjective heq), fun heq => htwoThree (hinjective heq), ?_⟩
   rw [atomTriangleCycle_eq_triangleProduct]
   exact hproduct
-
-/-- **THE PARITY SUPPLY AT A PRESCRIBED SLOT.**  Every slot of six real atoms
-of rank three lies on a coherent triangle.  This is strictly stronger than
-`Gtz.exists_coherent_atomTriple`, because the residue names its pivot first
-and the triangle is then supplied around that pivot.
-
-The argument switches at the prescribed slot, which makes every edge to it
-negative, and then reads the obtuse bound on the five remaining atoms: at
-most `3 + 1` vectors of rank three pair strictly negatively in pairs, thus
-some pair of the five does not, and the triangle through the prescribed slot
-carries a nonnegative cycle.  A vanishing edge at the prescribed slot
-short-circuits the argument, because it makes every cycle through that slot
-vanish, thus the degenerate branch is routed and not excluded. -/
-theorem exists_coherent_atomTriple_at (atom : Fin 6 → (Fin 3 → ℝ)) (base : Fin 6) :
-    ∃ slotOne slotTwo : Fin 6,
-      base ≠ slotOne ∧ base ≠ slotTwo ∧ slotOne ≠ slotTwo
-        ∧ 0 ≤ atomTriangleCycle atom base slotOne slotTwo := by
-  classical
-  by_cases hzero : ∃ other : Fin 6, other ≠ base ∧ atomGram atom base other = 0
-  · obtain ⟨other, hother, hgram⟩ := hzero
-    have hroom : (({base, other} : Finset (Fin 6))ᶜ).Nonempty := by
-      rw [← Finset.card_pos, Finset.card_compl, Fintype.card_fin]
-      have hpair : ({base, other} : Finset (Fin 6)).card ≤ 2 :=
-        (Finset.card_insert_le _ _).trans (by simp)
-      omega
-    obtain ⟨third, hthirdMem⟩ := hroom
-    simp only [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton,
-      not_or] at hthirdMem
-    refine ⟨other, third, Ne.symm hother, Ne.symm hthirdMem.1,
-      fun heq => hthirdMem.2 heq.symm, ?_⟩
-    simp only [atomTriangleCycle, hgram, zero_mul, le_refl]
-  · push Not at hzero
-    have hsq : ∀ slot : Fin 6, switchSign atom base slot ^ 2 = 1 :=
-      switchSign_sq_eq_one atom base
-    have hcard : Fintype.card {y : Fin 6 // y ≠ base} = 5 := by
-      have hcompl := Fintype.card_subtype_compl (fun y : Fin 6 => y = base)
-      rw [Fintype.card_subtype_eq base, Fintype.card_fin] at hcompl
-      exact hcompl
-    have hnotObtuse : ¬ IsPairwiseObtuse
-        (fun index : {y : Fin 6 // y ≠ base} =>
-          atomSwitch atom (switchSign atom base) index.val) := by
-      intro hobtuse
-      have hbound := card_le_succ_of_isPairwiseObtuse hobtuse
-      rw [hcard, Fintype.card_fin] at hbound
-      omega
-    simp only [IsPairwiseObtuse] at hnotObtuse
-    push Not at hnotObtuse
-    obtain ⟨first, second, hne, hdot⟩ := hnotObtuse
-    have hfirstNe : first.val ≠ base := first.property
-    have hsecondNe : second.val ≠ base := second.property
-    have hvalNe : first.val ≠ second.val := fun heq => hne (Subtype.ext heq)
-    have hbaseFirst : atomGram (atomSwitch atom (switchSign atom base)) base first.val
-        < 0 := by
-      rw [atomGram_atomSwitch, switchSign_base, one_mul]
-      exact switchSign_mul_basePairing_neg (hzero first.val hfirstNe) hfirstNe
-    have hbaseSecond : atomGram (atomSwitch atom (switchSign atom base)) base second.val
-        < 0 := by
-      rw [atomGram_atomSwitch, switchSign_base, one_mul]
-      exact switchSign_mul_basePairing_neg (hzero second.val hsecondNe) hsecondNe
-    have hcross : 0 ≤ atomGram (atomSwitch atom (switchSign atom base))
-        first.val second.val := hdot
-    have hswitched : 0 ≤ atomTriangleCycle (atomSwitch atom (switchSign atom base))
-        base first.val second.val := by
-      simp only [atomTriangleCycle]
-      exact mul_nonneg (mul_pos_of_neg_of_neg hbaseFirst hbaseSecond).le hcross
-    rw [atomTriangleCycle_atomSwitch atom (hsq base) (hsq first.val) (hsq second.val)]
-      at hswitched
-    exact ⟨first.val, second.val, Ne.symm hfirstNe, Ne.symm hsecondNe, hvalNe, hswitched⟩
 
 /-- **THE FIELD DOOR, AS A NUMBER.**  Six atoms sit strictly below the
 complex sign-forcing threshold `2 * rank + 2 = 8` of
