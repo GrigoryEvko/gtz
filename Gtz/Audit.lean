@@ -746,6 +746,7 @@ import Gtz.Wave.SharedPrivateCircuitSaturation
 import Gtz.Wave.SharedPrivateComplementLedger
 import Gtz.Wave.SharedPrivateSlotSplit
 import Gtz.Wave.SharedPrivateCoefficientRow
+import Gtz.Wave.SharedPrivateCornerDefect
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -786,6 +787,7 @@ import Gtz.Wave.PlaneWitnessLedger
 import Gtz.Wave.PlaneCapHelly
 import Gtz.Wave.PivotWitnessLedger
 import Gtz.Wave.PlaneCapTripleClosure
+import Gtz.Wave.AtomShadowTransfer
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -851,6 +853,36 @@ import Gtz.Wave.PlaneCapTripleClosure
 #print axioms Gtz.planeCap_zero_eq_disc
 #print axioms Gtz.exists_capPoint_of_two
 #print axioms Gtz.PlaneHalfTripleClosed
+#print axioms Gtz.planeShadow_self_eq_zero
+#print axioms Gtz.planeShadow_dot_shadow
+#print axioms Gtz.deflated_cross_nonneg
+#print axioms Gtz.transfer_pair_lt
+#print axioms Gtz.exists_deflated_pair_of_pivot_budget
+#print axioms Gtz.exists_pivotPair_of_pivot_budget
+#print axioms Gtz.exists_sylvester_of_pivot_budget
+#print axioms Gtz.exists_dominating_carrier_of_pivot_budget
+#print axioms Gtz.pivot_budget_of_heavy_slot
+#print axioms Gtz.exists_dominating_carrier_of_heavy_slot
+#print axioms Gtz.blocked_slot_light
+#print axioms Gtz.blocked_scale_cubic
+#print axioms Gtz.blocked_scale_lt
+#print axioms Gtz.exists_pivot_budget_of_scale_lt
+#print axioms Gtz.exists_dominating_triple_of_scale_lt_thirteen_twentieths
+#print axioms Gtz.AtomBlockedPivotClosed
+#print axioms Gtz.atomTripleCeilingClosed_of_blockedPivot
+#print axioms Gtz.gtzWeighted_six_three_of_blockedPivot
+#print axioms Gtz.gtzWeightedAll_three_of_blockedPivot
+#print axioms Gtz.isEmpty_sixThreeCrux_of_blockedPivot
+#print axioms Gtz.rankFiveDenseClosed_of_blockedPivot
+#print axioms Gtz.rankSixDenseClosed_of_blockedPivot
+#print axioms Gtz.rankFiveDenseHeavyFourClosed_of_blockedPivot
+#print axioms Gtz.rankFiveDenseThreeTriplesClosed_of_blockedPivot
+#print axioms Gtz.rankSixDenseHeavyFiveClosed_of_blockedPivot
+#print axioms Gtz.rankSixDenseHeavyFourClosed_of_blockedPivot
+#print axioms Gtz.rankSixDenseAllTriplesClosed_of_blockedPivot
+#print axioms Gtz.rankSixSupportTwoClosed_of_blockedPivot
+#print axioms Gtz.rankFiveSupportTwoClosed_of_blockedPivot
+#print axioms Gtz.rankFourSupportTwoClosed_of_blockedPivot
 #print axioms Gtz.atomPivotCross_comm
 #print axioms Gtz.atomPivotCross_self
 #print axioms Gtz.atomPivotCross_at_pivot_left
@@ -24678,6 +24710,18 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFourSharedPrivateClosed_of_coeff_circuit
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_coeff_circuit
 #print axioms Gtz.rankSixSharedPrivateClosed_of_coeff_circuit
+
+#print axioms Gtz.cornerDefect_pair_kill
+#print axioms Gtz.exists_triple_reorder
+#print axioms Gtz.SharedPrivateData.false_of_purePair_offTriple_link
+#print axioms Gtz.SharedPrivateData.false_of_purePair_of_basisCount_le_four
+#print axioms Gtz.SharedPrivateCircuitPairIdenticalCountClosed
+#print axioms Gtz.sharedPrivateCircuitPairIdenticalCoeffClosed_of_count
+#print axioms Gtz.sharedPrivateExtrasClosed_of_countLattice
+#print axioms Gtz.sharedPrivateKilled_of_count_circuit
+#print axioms Gtz.rankFourSharedPrivateClosed_of_count_circuit
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_count_circuit
+#print axioms Gtz.rankSixSharedPrivateClosed_of_count_circuit
 
 #print axioms Gtz.dotProduct_projectionOfDesign_mulVec_self
 #print axioms Gtz.sum_finset_eq_sum_orderEmbOfFin

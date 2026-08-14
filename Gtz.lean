@@ -3289,6 +3289,9 @@ import Gtz.Wave.SharedPrivateComplementLedger
 import Gtz.Wave.SharedPrivateSlotSplit
 -- The coefficient row law: the pair corner and the trace cover kills.
 import Gtz.Wave.SharedPrivateCoefficientRow
+-- The corner defect kill: the pure pair closes the identical branch at
+-- basis count four.
+import Gtz.Wave.SharedPrivateCornerDefect
 
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
@@ -3508,6 +3511,12 @@ import Gtz.Wave.PivotWitnessLedger
 -- the pair ceiling, profile A at rank five in both forms, campaign
 -- interiority, and the boundary crux kill.
 import Gtz.Wave.PlaneCapTripleClosure
+-- The shadow transfer: the deflated pair matrix at a pivot is the plain
+-- shadow pair matrix at inflated scales plus one rank-one square, thus the
+-- landed plane closure supplies the deflated pair at every budget pivot.
+-- The heavy stratum closes, the ceiling holds below scale mass `13/20`,
+-- and the residue narrows to the blocked stratum.
+import Gtz.Wave.AtomShadowTransfer
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
