@@ -88,6 +88,35 @@ for the two blocks of one cut, which share the second reading `1/2 + p + q`, was
 measured to hold with worst margin `0.0e0`, attained only at `p = q = 1/16`.  That
 is the one next target, and it is named in the module documentation only, because
 a measured margin is not a theorem.
+
+## The selector question, and the family this class cannot see
+
+A certificate can average the smallest eigenvalue against ANY probability measure
+on the twenty triples, not only the determinantal one, because every average is at
+most the largest reading.  `Gtz.not_atomTenthSelectorSixth` closes a whole family
+of candidates at once: at the tenth extremal the sixteen live blocks all read the
+SAME smallest eigenvalue `(2 - sqrt 2)/4`, so every selector that vanishes on a
+zero determinant averages to exactly `(2 - sqrt 2)/4`, which is below `1/6`.  That
+covers `p ^ alpha` for every positive `alpha`, `p * e2`, `p / e2`,
+`p * (10 e3 - e2)` cut at zero, `p * lambda_min`, every softmax against
+`lambda_min`, and the uniform measure on the triples of largest determinant.
+
+Over GENUINE balanced real Parseval frames those selectors separate.  The measured
+minima of the weighted average of the smallest eigenvalue are
+
+  `w = p`                    `0.16521556301725`   BELOW `1/6`, so capped
+  `w ~ p ^ 1.1`              `0.16611583796106`   BELOW `1/6`, so capped
+  `w ~ p * e2`               `0.16535109201005`   BELOW `1/6`, so capped
+  `w ~ p / e2`               `0.16401958486273`   BELOW `1/6`, so capped
+  `w` uniform on argmax `p`  `0.14644660941615`   BELOW `1/6`, so capped
+  `w ~ p ^ 2`                `0.16873921519357`   no frame below `1/6` was found
+  `w ~ p ^ 4`                `0.17006914649227`   no frame below `1/6` was found
+  `w ~ p * lambda_min`       `0.17407050467680`   no frame below `1/6` was found
+
+and the least eigenvalue reading of the whole cell, `min over balanced frames of
+max over triples of lambda_min`, was measured at `0.20610737385376`.  Only a
+measurement BELOW a bar is a conclusion.  The five capped rows are conclusions and
+the three others are evidence.
 -/
 
 namespace Gtz
@@ -573,5 +602,62 @@ theorem not_atomSharpTripleRung : ¬ AtomSharpTripleRung := by
     (by linarith) (by linarith) (by norm_num) (by norm_num) (by linarith) (by linarith)
     (by ring)
   nlinarith [key, hsq, hnn, hlo]
+
+/-! ## Layer 6 — no determinantal selector can certify one sixth from this class -/
+
+/-- **EVERY SELECTOR SUPPORTED ON THE LIVE TRIPLES READS `(2 - sqrt 2)/4` AT THE
+EXTREMAL.**  A selector is any reading of the twenty triples that a certificate
+uses to average the smallest eigenvalue.  If it vanishes wherever the determinant
+vanishes, it cannot tell the tenth extremal apart from the pure determinantal
+measure, because the sixteen live blocks all read the SAME smallest eigenvalue
+`(2 - sqrt 2)/4` there.
+
+This one identity kills a whole family at once.  Every selector the campaign has
+named vanishes on a zero determinant:
+
+* `w = p` itself, and `w` proportional to `p ^ alpha` for every `alpha > 0`,
+* `w` proportional to `p * e2` and to `p / e2`,
+* `w` proportional to `p * (10 e3 - e2)` cut at zero,
+* `w` proportional to `p * lambda_min` and to `p * exp(beta * lambda_min)`,
+* the uniform measure on the triples of largest determinant.
+
+So NO member of that family can be certified above `(2 - sqrt 2)/4` from the
+moment class and the tenth, and `(2 - sqrt 2)/4 < 1/6`.  Over GENUINE real frames
+some of those selectors may still average above `1/6` — the measured minima of
+`p ^ 2`, `p ^ 3` and `p ^ 4` over balanced real frames are `0.16874`, `0.16962`
+and `0.17007`.  The point is that the moment class plus the tenth CANNOT SEE the
+difference, so the search for a selector must leave this relaxation. -/
+theorem atomTenthExtremal_selectorCap {weightRead : Fin 6 → Fin 6 → Fin 6 → ℝ}
+    (hsupp : ∀ a b c : Fin 6, atomTenthNum a b c = 0 → weightRead a b c = 0) :
+    atomTripleFamilySum (fun a b c => weightRead a b c * atomTenthReading a b c)
+      = (2 - Real.sqrt 2) / 4 * atomTripleFamilySum weightRead := by
+  obtain ⟨n012, n013, n014, n015, n023, n024, n025, n034, n035, n045,
+    n123, n124, n125, n134, n135, n145, n234, n235, n245, n345⟩ := atomTenthNum_sorted
+  have d012 := hsupp 0 1 2 n012
+  have d013 := hsupp 0 1 3 n013
+  have d245 := hsupp 2 4 5 n245
+  have d345 := hsupp 3 4 5 n345
+  simp only [atomTripleFamilySum, atomTenthReading, n012, n013, n014, n015, n023, n024,
+    n025, n034, n035, n045, n123, n124, n125, n134, n135, n145, n234, n235, n245, n345,
+    d012, d013, d245, d345]
+  push_cast
+  ring
+
+/-- **NO SUCH SELECTOR REACHES ONE SIXTH IN THIS CLASS.**  The tenth extremal is a
+member of `Gtz.AtomTenthFeasible`, its reading is a spectral reading, and every
+selector that vanishes on a zero determinant averages the reading to
+`(2 - sqrt 2)/4`, which is strictly below `1/6`.  So a determinantal selector of
+that shape is CAPPED, and the search for a selector that reaches `1/6` must read
+something the moment class and the tenth do not carry. -/
+theorem not_atomTenthSelectorSixth {weightRead : Fin 6 → Fin 6 → Fin 6 → ℝ}
+    (hsupp : ∀ a b c : Fin 6, atomTenthNum a b c = 0 → weightRead a b c = 0)
+    (hmass : 0 < atomTripleFamilySum weightRead) :
+    atomTripleFamilySum (fun a b c => weightRead a b c * atomTenthReading a b c)
+      < (1 / 6) * atomTripleFamilySum weightRead := by
+  rw [atomTenthExtremal_selectorCap hsupp]
+  have h2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  have n2 : (0 : ℝ) ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
+  have hlt : (2 - Real.sqrt 2) / 4 < 1 / 6 := by nlinarith [h2, n2]
+  exact mul_lt_mul_of_pos_right hlt hmass
 
 end Gtz

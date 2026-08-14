@@ -27456,3 +27456,5 @@ run_cmd do
 #print axioms Gtz.atomTenthExtremal_average
 #print axioms Gtz.AtomSharpTripleRung
 #print axioms Gtz.not_atomSharpTripleRung
+#print axioms Gtz.atomTenthExtremal_selectorCap
+#print axioms Gtz.not_atomTenthSelectorSixth
