@@ -104,6 +104,17 @@ pole surplus from the other three clauses.  `Gtz.PolarGapCoreSelection` and
 a shadow trace above two, a positive plane determinant and a positive gap
 determinant.  Each closes the cell and all of rank three alone through
 `Gtz.not_isTie_of_polarGapDetCore`, and each is false at size five.
+
+## 8. The sharp form, and what it says about the route
+
+`Gtz.posDef_iff_planeGapCore`: at every pole of positive leverage a triple
+dominates strictly IF AND ONLY IF the three core clauses hold.  The core
+target is therefore the sharpest form at this interface, and the polar
+arithmetic residual is a faithful REFORMULATION of the deciding cell, not a
+weakening of it.  What the chain has bought is a change of vocabulary --
+from a spectral statement about a three by three matrix to three polynomial
+inequalities in the pairings -- and the remaining content is the SELECTION
+of the pole and the triple, which no bound can supply.
 -/
 
 namespace Gtz
@@ -1308,5 +1319,59 @@ theorem sixSplitDiamondDesign_spares_polarGapCore :
     not_polarWrapGapCoreSelection_five⟩
 
 end CoreSelection
+
+/-! ## Part 10: the sharp form
+
+The three core clauses are not merely sufficient for the kill: at every pole
+of positive leverage they CHARACTERIZE the strict dominator.  Thus no weaker
+true form of the core target exists at this interface, and the residual of
+the polar arithmetic route is a faithful reformulation of the cell rather
+than a narrowing of it. -/
+
+section SharpForm
+
+/-- **THE THREE CLAUSES BUILD THE DOMINATOR.**  The manufactured excess opens
+both cover bounds, the surplus is free and the frame identity supplies the
+arithmetic test. -/
+theorem posDef_of_planeGapCore (design : WeightedDesign m 3)
+    {pole : Fin m} (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (htrace : 2 < ∑ c ∈ ({x, y, z} : Finset (Fin m)), planeShadowSq design pole c)
+    (hdet : 0 < polarPlaneDet design pole ({x, y, z} : Finset (Fin m)))
+    (hgap : 0 < polarGapDet design x y z) :
+    (subsetSum design ({x, y, z} : Finset (Fin m)) - 1).PosDef := by
+  have hdetGram := hdet
+  rw [polarPlaneDet_eq] at hdetGram
+  obtain ⟨excess, hexcessPos, htraceCover, hgramCover⟩ :=
+    exists_excess_of_trace_planeDet htrace hdetGram
+  have hz := leverage_lt_of_gapCore design hpole hxy hxz hyz htrace hdet hgap
+  have hident := polarPlaneDet_mul_surplus_sub_adjugate design hpole hxy hxz hyz
+  have hmargin : 0 < (design.atom pole ⬝ᵥ design.atom pole)
+      * polarGapDet design x y z := mul_pos hpole hgap
+  exact posDef_of_planeShadowSchur design hpole
+    ({x, y, z} : Finset (Fin m)) hexcessPos htraceCover hgramCover hz
+    (by linarith)
+
+/-- **THE SHARP FORM.**  At every pole of positive leverage a triple of
+distinct labels dominates strictly IF AND ONLY IF its shadow trace passes
+two, its plane determinant is positive and its gap determinant is positive.
+The pole is a free parameter of the left side and appears in two clauses of
+the right side, thus the equivalence also proves the pole transport. -/
+theorem posDef_iff_planeGapCore (design : WeightedDesign m 3)
+    {pole : Fin m} (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) :
+    (subsetSum design ({x, y, z} : Finset (Fin m)) - 1).PosDef
+      ↔ (2 < ∑ c ∈ ({x, y, z} : Finset (Fin m)), planeShadowSq design pole c
+        ∧ 0 < polarPlaneDet design pole ({x, y, z} : Finset (Fin m))
+        ∧ 0 < polarGapDet design x y z) := by
+  constructor
+  · intro hposDef
+    obtain ⟨htrace, hdet, -, -⟩ :=
+      planeInvariants_of_posDef design hpole hxy hxz hyz hposDef
+    exact ⟨htrace, hdet, polarGapDet_pos_of_posDef design hxy hxz hyz hposDef⟩
+  · rintro ⟨htrace, hdet, hgap⟩
+    exact posDef_of_planeGapCore design hpole hxy hxz hyz htrace hdet hgap
+
+end SharpForm
 
 end Gtz
