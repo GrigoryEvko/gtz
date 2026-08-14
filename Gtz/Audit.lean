@@ -26908,3 +26908,8 @@ run_cmd do
 #print axioms Gtz.atomGram_cycle_total
 #print axioms Gtz.atomGram_cycle_erase
 #print axioms Gtz.exists_pos_cycle_of_pair
+#print axioms Gtz.atomPivotPlaneRead
+#print axioms Gtz.atomPivotCouple
+#print axioms Gtz.atomPivotWeight
+#print axioms Gtz.atomPivotPolar_parseval
+#print axioms Gtz.atomPivotSchur_cover
