@@ -448,6 +448,7 @@ import Gtz.Reduction.PolarPairSpread
 import Gtz.Reduction.PolarWitnessSchur
 import Gtz.Reduction.PolarCrossWitness
 import Gtz.Reduction.PolarPlaneTurn
+import Gtz.Reduction.PolarCircularOrder
 import Gtz.Reduction.FrameDropDescent
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
@@ -5414,6 +5415,92 @@ import Gtz.Wave.AtomDeepCutRigidity
 #print axioms Gtz.gtzWeightedAll_three_of_polarTiltPlane
 #print axioms Gtz.not_polarTiltSelectionPlane_five_three
 #print axioms Gtz.sixSplitDiamondDesign_spares_polarTiltPlane
+
+-- The circular order of the pole plane.
+#print axioms Gtz.polarSignedPair
+#print axioms Gtz.polarSignedSq
+#print axioms Gtz.polarSignedPair_comm
+#print axioms Gtz.polarSignedPair_self
+#print axioms Gtz.polarSignedSq_nonneg
+#print axioms Gtz.polarSignedSq_pole
+#print axioms Gtz.polarSignedPair_pole
+#print axioms Gtz.planeShadowSq_pos_of_primitive
+#print axioms Gtz.polarSignedSq_eq_zero_iff_of_primitive
+#print axioms Gtz.polarSignedWedge
+#print axioms Gtz.polarSignedWedge_antisymm
+#print axioms Gtz.polarSignedWedge_self
+#print axioms Gtz.polarSignedWedge_pole
+#print axioms Gtz.polarSignedWedge_sq_eq_signedGram
+#print axioms Gtz.polarSignedPair_sq_le
+#print axioms Gtz.polarSignedWedge_eq_zero_of_signedSq_eq_zero
+#print axioms Gtz.polarSignedPair_eq_zero_of_signedSq_eq_zero
+#print axioms Gtz.sum_weight_polarSignedWedge
+#print axioms Gtz.sum_weight_polarSignedWedge_row
+#print axioms Gtz.sum_weight_polarSignedPair
+#print axioms Gtz.polarSignedWedge_pluecker
+#print axioms Gtz.polarSignedSq_mul_polarSignedWedge
+#print axioms Gtz.sum_weight_reading_mul_shadow_read
+#print axioms Gtz.polarShadowRow_eq_zero_of_nonneg
+#print axioms Gtz.polarSignedVec
+#print axioms Gtz.polarSignedVec_dotProduct_pole
+#print axioms Gtz.polarSignedVec_dotProduct_pair
+#print axioms Gtz.polarSignedVec_dotProduct_self
+#print axioms Gtz.sum_weight_polarSignedVec
+#print axioms Gtz.tripleBracket_planeShadowVec
+#print axioms Gtz.polarSignedVec_cramer
+#print axioms Gtz.polarSignedVec_read_eq_zero_of_nonneg
+#print axioms Gtz.polarWrapCofactor
+#print axioms Gtz.PolarWrapping
+#print axioms Gtz.polarWrapCofactor_mul_leverage
+#print axioms Gtz.polarWrapCofactor_diag
+#print axioms Gtz.polarWrapping_of_signedWedge_cyclic
+#print axioms Gtz.polarSignedWedge_ne_zero_of_polarWrapping
+#print axioms Gtz.polarSignedWedge_cyclic_of_polarWrapping
+#print axioms Gtz.exists_pos_dependency_of_polarWrapping
+#print axioms Gtz.tripleBracket_ne_zero_of_polarWrapping
+#print axioms Gtz.polarWrapping_ne_first_second
+#print axioms Gtz.polarWrapping_ne_second_third
+#print axioms Gtz.polarWrapping_ne_first_third
+#print axioms Gtz.polarWrapping_notMem_pole
+#print axioms Gtz.polarWrapping_card_three
+#print axioms Gtz.polarPlaneGramDet_pos_of_polarWrapping
+#print axioms Gtz.PolarWrapping.cycle
+#print axioms Gtz.polarSignedSq_pos_of_polarWrapping
+#print axioms Gtz.polarSignedPair_neg_of_polarWrapping
+#print axioms Gtz.polarSignedPair_two_neg_of_polarWrapping
+#print axioms Gtz.exists_polarWrapping_or_degenerate
+#print axioms Gtz.not_isTie_of_orthogonal_complement
+#print axioms Gtz.polarCircularDichotomy_of_isTie
+#print axioms Gtz.exists_pos_dependency_of_antiparallel
+#print axioms Gtz.exists_pos_dependency_of_isTie
+#print axioms Gtz.PolarPlaneShadowBoundAt
+#print axioms Gtz.polarPlaneShadowBoundAt_of_isTie
+#print axioms Gtz.PolarCircularShadowBound
+#print axioms Gtz.polarCircularShadowBound_of_isTie
+#print axioms Gtz.PolarTiltSelectionCircular
+#print axioms Gtz.polarTiltSelectionCircular_of_polarTiltSelectionPlane
+#print axioms Gtz.polarTiltSelectionCircular_of_polarTiltSelectionWitness
+#print axioms Gtz.polarTiltSelectionCircular_of_polarTiltSelection
+#print axioms Gtz.hingeHoldsAtSize_of_polarTiltCircular
+#print axioms Gtz.stressFreeArmAt_of_polarTiltCircular
+#print axioms Gtz.balancedArmAt_of_polarTiltCircular
+#print axioms Gtz.degenerateArmAt_of_polarTiltCircular
+#print axioms Gtz.balancedPartialSupportArmAt_of_polarTiltCircular
+#print axioms Gtz.balancedFullSupportArmAt_of_polarTiltCircular
+#print axioms Gtz.degenerateHyperplaneCover_of_polarTiltCircular
+#print axioms Gtz.polarTiltCircular_closes_every_arm
+#print axioms Gtz.thresholdCellHingeRankFourAndUp_of_polarTiltCircular
+#print axioms Gtz.subThresholdBandHinge_of_polarTiltCircular
+#print axioms Gtz.sharpWindowHinge_of_polarTiltCircular
+#print axioms Gtz.thresholdStressFreeArm_of_polarTiltCircular
+#print axioms Gtz.thresholdBalancedArm_of_polarTiltCircular
+#print axioms Gtz.thresholdDegenerateArm_of_polarTiltCircular
+#print axioms Gtz.hingeHoldsAtSize_six_three_of_polarTiltCircular
+#print axioms Gtz.thresholdArms_rank_three_of_polarTiltCircular
+#print axioms Gtz.gtzWeighted_six_three_of_polarTiltCircular
+#print axioms Gtz.gtzWeightedAll_three_of_polarTiltCircular
+#print axioms Gtz.not_polarTiltSelectionCircular_five_three
+#print axioms Gtz.sixSplitDiamondDesign_spares_polarTiltCircular
 
 -- Coverage sweep: every `theorem`/`lemma` enumerated from `Gtz/` that was
 -- absent from the list above.  Gtz/Ties/DiamondTie.lean is deliberately

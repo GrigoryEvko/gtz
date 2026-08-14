@@ -2237,6 +2237,15 @@ import Gtz.Reduction.PolarCrossWitness
 -- law of the deciding cell becomes arithmetic.
 import Gtz.Reduction.PolarPlaneTurn
 
+-- The circular order of the pole plane: the signed shadow of a label is its
+-- pole reading times its plane component, and the anchor identity makes every
+-- row of signed wedges a positively weighted sum that vanishes.  Thus every
+-- pole of a primitive tie carries an antiparallel pair or a wrapping triple,
+-- the origin is a positive combination of at most three signed shadows, and
+-- the seventh bundle of the polar chain carries content that the complex field
+-- cannot supply.
+import Gtz.Reduction.PolarCircularOrder
+
 -- The frame-priced descent: the design identity contracts against the inverse
 -- gap of every region, thus the pivot pigeonhole becomes an exact stage law and
 -- the first drop is free at every design of size above the rank plus one; the
