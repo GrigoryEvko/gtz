@@ -69,6 +69,10 @@ already, and no field-agnostic argument can prove the residue.
   `Gtz.gtzWeighted_six_three_of_atomTripleBoundary` — **THE CONSUMER
   MIRROR**: the mass-one selection closes the pivot pair residue, the
   blocked residue and the cell.
+* `Gtz.atomTripleBoundaryClosed_of_blockedPair`,
+  `Gtz.atomBlockedPairClosed_iff_atomTripleBoundary` — **THE
+  REPARAMETRIZATION AS AN EQUIVALENCE**: the blocked residue below mass
+  one and the non-strict selection at mass exactly one are one statement.
 * `Gtz.blend_energy_eq_triple_of_support`,
   `Gtz.weak_values_of_weak_carrier` — the carrier calculus at the weak
   level.
@@ -247,6 +251,24 @@ theorem gtzWeighted_six_three_of_atomTripleBoundary
     (hboundary : AtomTripleBoundaryClosed) : GtzWeighted 6 3 :=
   gtzWeighted_six_three_of_blockedPair
     (atomBlockedPairClosed_of_atomTripleBoundary hboundary)
+
+/-- The blocked residue gives back the mass-one selection through the
+landed chain of the lane. -/
+theorem atomTripleBoundaryClosed_of_blockedPair
+    (hresidue : AtomBlockedPairClosed) : AtomTripleBoundaryClosed :=
+  atomTripleBoundaryClosed_of_atomTripleCeiling
+    (atomTripleCeilingClosed_of_sylvester
+      (atomTripleSylvesterClosed_of_pivotPair
+        (atomPivotPairClosed_of_blockedPair hresidue)))
+
+/-- **THE REPARAMETRIZATION, AS AN EQUIVALENCE.**  The blocked residue
+below mass one and the non-strict selection at mass exactly one are ONE
+statement of the kernel.  This is the machine form of the discovery that
+the adversarial floor of the lane is `(1 - m) / 6` at every mass. -/
+theorem atomBlockedPairClosed_iff_atomTripleBoundary :
+    AtomBlockedPairClosed ↔ AtomTripleBoundaryClosed :=
+  ⟨atomTripleBoundaryClosed_of_blockedPair,
+    atomBlockedPairClosed_of_atomTripleBoundary⟩
 
 /-! ## Layer 2 — the tie structure at the boundary witness -/
 
