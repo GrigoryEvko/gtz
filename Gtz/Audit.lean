@@ -444,6 +444,7 @@ import Gtz.Reduction.PolarCoverDescent
 import Gtz.Reduction.PolarTiltLedger
 import Gtz.Reduction.PolarDeletionWhitening
 import Gtz.Reduction.PolarIteratedDeletion
+import Gtz.Reduction.PolarPairSpread
 import Gtz.Reduction.FrameDropDescent
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
@@ -5105,6 +5106,57 @@ import Gtz.Wave.PlaneCapTripleClosure
 #print axioms Gtz.deletableSet_singleton_iff
 #print axioms Gtz.sixThree_debt_ledger
 #print axioms Gtz.sixThree_card_survivor_bound
+
+-- the pair spread and the survivor Schur kill
+#print axioms Gtz.pairReading_core
+#print axioms Gtz.pairReading_core_lt
+#print axioms Gtz.pairReading_le
+#print axioms Gtz.pairReading_lt
+#print axioms Gtz.planeShadowVec
+#print axioms Gtz.planeShadowVec_dotProduct_polar
+#print axioms Gtz.planeShadowVec_dotProduct_self
+#print axioms Gtz.planeShadowPairing
+#print axioms Gtz.planeShadowVec_dotProduct_pair
+#print axioms Gtz.planeShadowPairing_self
+#print axioms Gtz.pair_polarSpread_of_certificate
+#print axioms Gtz.exists_polarSetDeletionCover_spreadTotal
+#print axioms Gtz.not_isTie_of_polarSpreadTilt
+#print axioms Gtz.exists_heavy_survivor_of_isTie_spread
+#print axioms Gtz.not_isTie_of_pairSpreadCertificate
+#print axioms Gtz.PolarSpreadSurvivorHeavy
+#print axioms Gtz.polarSpreadSurvivorHeavy_of_isTie
+#print axioms Gtz.polarSetDeletionHeavy_of_polarSpreadSurvivorHeavy
+#print axioms Gtz.PolarTiltSelectionSpread
+#print axioms Gtz.polarTiltSelectionSpread_of_polarTiltSelectionSetDeletion
+#print axioms Gtz.polarTiltSelectionSpread_of_polarTiltSelectionDeletion
+#print axioms Gtz.polarTiltSelectionSpread_of_polarTiltSelection
+#print axioms Gtz.hingeHoldsAtSize_of_polarTiltSpread
+#print axioms Gtz.stressFreeArmAt_of_polarTiltSpread
+#print axioms Gtz.balancedArmAt_of_polarTiltSpread
+#print axioms Gtz.degenerateArmAt_of_polarTiltSpread
+#print axioms Gtz.balancedPartialSupportArmAt_of_polarTiltSpread
+#print axioms Gtz.balancedFullSupportArmAt_of_polarTiltSpread
+#print axioms Gtz.degenerateHyperplaneCover_of_polarTiltSpread
+#print axioms Gtz.polarTiltSpread_closes_every_arm
+#print axioms Gtz.thresholdCellHingeRankFourAndUp_of_polarTiltSpread
+#print axioms Gtz.subThresholdBandHinge_of_polarTiltSpread
+#print axioms Gtz.sharpWindowHinge_of_polarTiltSpread
+#print axioms Gtz.thresholdStressFreeArm_of_polarTiltSpread
+#print axioms Gtz.thresholdBalancedArm_of_polarTiltSpread
+#print axioms Gtz.thresholdDegenerateArm_of_polarTiltSpread
+#print axioms Gtz.polarCouplingVec
+#print axioms Gtz.polarCouplingVec_dotProduct
+#print axioms Gtz.posDef_of_polarSurplusSchur
+#print axioms Gtz.complementPair_polarCover
+#print axioms Gtz.not_isTie_of_survivorSchur_six_three
+#print axioms Gtz.tie_survivorSchur_six_three
+#print axioms Gtz.not_isTie_of_pairSpreadCertificate_three
+#print axioms Gtz.hingeHoldsAtSize_six_three_of_polarTiltSpread
+#print axioms Gtz.thresholdArms_rank_three_of_polarTiltSpread
+#print axioms Gtz.gtzWeighted_six_three_of_polarTiltSpread
+#print axioms Gtz.gtzWeightedAll_three_of_polarTiltSpread
+#print axioms Gtz.not_polarTiltSelectionSpread_five_three
+#print axioms Gtz.sixSplitDiamondDesign_spares_polarTiltSpread
 
 -- Coverage sweep: every `theorem`/`lemma` enumerated from `Gtz/` that was
 -- absent from the list above.  Gtz/Ties/DiamondTie.lean is deliberately

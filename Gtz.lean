@@ -2207,6 +2207,12 @@ import Gtz.Reduction.PolarDeletionWhitening
 -- pole's orthogonal hyperplane can be steered away from a whole named set.  The
 -- set is deletable exactly when its SURVIVORS carry debt above `rank - 2`.
 import Gtz.Reduction.PolarIteratedDeletion
+-- The pair spread and the survivor Schur kill: the division-free pair
+-- eigenvalue certificate, the spread cover under trace admissibility alone,
+-- the residual narrowed a fourth time, and the survivor Schur kill of the
+-- deciding cell.  The Schur kill reads the pole components of the survivors,
+-- needs no predecessor rank, and reaches the pentagon phantom.
+import Gtz.Reduction.PolarPairSpread
 
 -- The frame-priced descent: the design identity contracts against the inverse
 -- gap of every region, thus the pivot pigeonhole becomes an exact stage law and
