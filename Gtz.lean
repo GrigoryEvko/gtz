@@ -2228,6 +2228,14 @@ import Gtz.Reduction.PolarWitnessSchur
 -- the survivor plane equation at the scale `leverage * polarPlaneDet`, thus
 -- the sharp tie law becomes a polynomial law of the pairing data.
 import Gtz.Reduction.PolarCrossWitness
+-- The quarter turn of the pole plane and the arithmetic tie law: the cross
+-- product of the pole with an atom pairs through the Lagrange identity, the
+-- turned frame gives the five contraction laws of the pole plane, and the
+-- plane Cayley-Hamilton law turns the trace and the plane Gram determinant
+-- into a direct cover with no weight cap.  The coupling vector reads the
+-- closed cross witness as a polynomial in the shadow data, thus the sharp tie
+-- law of the deciding cell becomes arithmetic.
+import Gtz.Reduction.PolarPlaneTurn
 
 -- The frame-priced descent: the design identity contracts against the inverse
 -- gap of every region, thus the pivot pigeonhole becomes an exact stage law and
