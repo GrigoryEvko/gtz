@@ -3651,3 +3651,7 @@ import Gtz.Certificates.CollarAtlas.ChartGroup17
 import Gtz.Certificates.CollarAtlas.ChartGroup18
 import Gtz.Certificates.CollarAtlas.ChartGroup19
 import Gtz.Certificates.CollarAtlas.ChartGroup20
+
+-- The Plücker certificate: the spread law of the determinantal weights, and
+-- the dual face of the residue, which moves every scale to one side.
+import Gtz.Wave.PluckerCertificate
