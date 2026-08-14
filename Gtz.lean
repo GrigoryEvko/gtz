@@ -3628,6 +3628,7 @@ import Gtz.Wave.SignatureSelection
 -- and the pair completion law, whose four triple determinants add to an
 -- explicit polynomial in six readings of one pair.
 import Gtz.Wave.PivotSchurLift
+import Gtz.Wave.OrientedTriangleSign
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
