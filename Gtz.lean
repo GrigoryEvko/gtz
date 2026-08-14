@@ -2213,6 +2213,14 @@ import Gtz.Reduction.PolarIteratedDeletion
 -- deciding cell.  The Schur kill reads the pole components of the survivors,
 -- needs no predecessor rank, and reaches the pentagon phantom.
 import Gtz.Reduction.PolarPairSpread
+-- The witnessed Schur kill: the exact plane witness removes the coupling
+-- Cauchy-Schwarz loss, the sharp tie law of the deciding cell follows, and
+-- the residual narrows a fifth time.  The complex ties of the deciding cell
+-- saturate the witness law, thus the discharge of the residual must consume
+-- a real-only ingredient.  The bracket sign platform is that ingredient's
+-- vocabulary: the wedge square is the shadow Gram complement, and shared-slot
+-- wedge products are polynomial in the pairings.
+import Gtz.Reduction.PolarWitnessSchur
 
 -- The frame-priced descent: the design identity contracts against the inverse
 -- gap of every region, thus the pivot pigeonhole becomes an exact stage law and
@@ -3532,6 +3540,13 @@ import Gtz.Wave.PlaneCapTripleClosure
 -- The heavy stratum closes, the ceiling holds below scale mass `13/20`,
 -- and the residue narrows to the blocked stratum.
 import Gtz.Wave.AtomShadowTransfer
+-- The blocked residue in deflated pair form: the carrier conclusion and the
+-- deflated pair conclusion are one obligation, through the converse Sylvester
+-- extraction.  The single-budget window puts the doubly blocked stratum above
+-- scale mass `39/50`, and the reading moment is the orthogonality law of the
+-- pivot defect.  The scaled complex trine sits inside the blocked package,
+-- thus the residue needs a real-only proof.
+import Gtz.Wave.AtomBlockedDefect
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02

@@ -445,6 +445,7 @@ import Gtz.Reduction.PolarTiltLedger
 import Gtz.Reduction.PolarDeletionWhitening
 import Gtz.Reduction.PolarIteratedDeletion
 import Gtz.Reduction.PolarPairSpread
+import Gtz.Reduction.PolarWitnessSchur
 import Gtz.Reduction.FrameDropDescent
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
@@ -791,6 +792,7 @@ import Gtz.Wave.PlaneCapHelly
 import Gtz.Wave.PivotWitnessLedger
 import Gtz.Wave.PlaneCapTripleClosure
 import Gtz.Wave.AtomShadowTransfer
+import Gtz.Wave.AtomBlockedDefect
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -886,6 +888,42 @@ import Gtz.Wave.AtomShadowTransfer
 #print axioms Gtz.rankSixSupportTwoClosed_of_blockedPivot
 #print axioms Gtz.rankFiveSupportTwoClosed_of_blockedPivot
 #print axioms Gtz.rankFourSupportTwoClosed_of_blockedPivot
+#print axioms Gtz.planeShadow_reading_total
+#print axioms Gtz.carrierProbe
+#print axioms Gtz.carrierProbe_one
+#print axioms Gtz.carrierProbe_two
+#print axioms Gtz.carrierProbe_three
+#print axioms Gtz.carrierProbe_vanish
+#print axioms Gtz.carrierProbe_ne_zero
+#print axioms Gtz.triple_minors_of_quadratic_pos
+#print axioms Gtz.exists_pivotPair_of_dominating_carrier
+#print axioms Gtz.atomPairMinor_eq_shadow
+#print axioms Gtz.atomPivotCross_eq_shadow
+#print axioms Gtz.singleBudget_scale_cubic
+#print axioms Gtz.singleBudget_scale_lt
+#print axioms Gtz.exists_pivot_single_budget_of_scale_le
+#print axioms Gtz.AtomBlockedPairClosed
+#print axioms Gtz.atomPivotPairClosed_of_blockedPair
+#print axioms Gtz.atomPivotPairClosed_of_sylvester
+#print axioms Gtz.atomBlockedPairClosed_of_pivotPair
+#print axioms Gtz.atomBlockedPairClosed_of_blockedPivot
+#print axioms Gtz.atomBlockedPivotClosed_of_blockedPair
+#print axioms Gtz.atomBlockedPairClosed_iff_blockedPivot
+#print axioms Gtz.atomTripleSylvesterClosed_of_blockedPair
+#print axioms Gtz.atomTripleCeilingClosed_of_blockedPair
+#print axioms Gtz.gtzWeighted_six_three_of_blockedPair
+#print axioms Gtz.gtzWeightedAll_three_of_blockedPair
+#print axioms Gtz.isEmpty_sixThreeCrux_of_blockedPair
+#print axioms Gtz.rankFiveDenseClosed_of_blockedPair
+#print axioms Gtz.rankSixDenseClosed_of_blockedPair
+#print axioms Gtz.rankFiveDenseHeavyFourClosed_of_blockedPair
+#print axioms Gtz.rankFiveDenseThreeTriplesClosed_of_blockedPair
+#print axioms Gtz.rankSixDenseHeavyFiveClosed_of_blockedPair
+#print axioms Gtz.rankSixDenseHeavyFourClosed_of_blockedPair
+#print axioms Gtz.rankSixDenseAllTriplesClosed_of_blockedPair
+#print axioms Gtz.rankSixSupportTwoClosed_of_blockedPair
+#print axioms Gtz.rankFiveSupportTwoClosed_of_blockedPair
+#print axioms Gtz.rankFourSupportTwoClosed_of_blockedPair
 #print axioms Gtz.atomPivotCross_comm
 #print axioms Gtz.atomPivotCross_self
 #print axioms Gtz.atomPivotCross_at_pivot_left
