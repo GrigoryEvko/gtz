@@ -799,6 +799,7 @@ import Gtz.Wave.AtomDefectBandSplit
 import Gtz.Wave.AtomProductInflation
 import Gtz.Wave.AtomTrineCutBand
 import Gtz.Wave.AtomCutRigidity
+import Gtz.Wave.AtomDeepCutRigidity
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -25419,3 +25420,40 @@ run_cmd do
 #print axioms Gtz.gtzWeighted_six_three_of_sharpSplit
 #print axioms Gtz.gtzWeightedAll_three_of_sharpSplit
 #print axioms Gtz.isEmpty_sixThreeCrux_of_sharpSplit
+
+/-! ## The single-cut rigidity and the split of the deep stratum -/
+
+#print axioms Gtz.singleTangentGap
+#print axioms Gtz.singleTangentGap_split
+#print axioms Gtz.singleTangentGap_nonneg
+#print axioms Gtz.singleTangentGap_total_six
+#print axioms Gtz.singleTangentGap_total
+#print axioms Gtz.singleTangentGap_le_total
+#print axioms Gtz.singleFail_scale_deviation_le
+#print axioms Gtz.singleFail_slack_le
+#print axioms Gtz.blockedSlotExcess_sub_singleSlotExcess
+#print axioms Gtz.blockedSlotExcess_nonpos_of_single
+#print axioms Gtz.blocked_of_singleFail
+#print axioms Gtz.uniform_diagonal_half_iff_singleCut_zero
+#print axioms Gtz.AtomSingleBudgetDeepClosed
+#print axioms Gtz.AtomDoublyBlockedClosed
+#print axioms Gtz.atomBlockedDeepCutClosed_of_singleBudgetDeep_of_doublyBlocked
+#print axioms Gtz.atomSingleBudgetDeepClosed_of_deepCut
+#print axioms Gtz.atomDoublyBlockedClosed_of_deepCut
+#print axioms Gtz.atomBlockedDeepCutClosed_iff_singleBudgetDeep_and_doublyBlocked
+#print axioms Gtz.singleCut_nonpos_of_doublyBlocked
+#print axioms Gtz.AtomSingleBudgetDeepKill
+#print axioms Gtz.AtomDoublyBlockedKill
+#print axioms Gtz.atomSingleBudgetDeepClosed_of_kill
+#print axioms Gtz.atomSingleBudgetDeepKill_of_closed
+#print axioms Gtz.atomSingleBudgetDeepClosed_iff_kill
+#print axioms Gtz.atomDoublyBlockedClosed_of_kill
+#print axioms Gtz.atomDoublyBlockedKill_of_closed
+#print axioms Gtz.atomDoublyBlockedClosed_iff_kill
+#print axioms Gtz.atomBlockedPairClosed_of_three_parts
+#print axioms Gtz.atomBlockedPairClosed_iff_three_parts
+#print axioms Gtz.gtzWeighted_six_three_of_three_parts
+#print axioms Gtz.gtzWeightedAll_three_of_three_parts
+#print axioms Gtz.isEmpty_sixThreeCrux_of_three_parts
+#print axioms Gtz.gtzWeighted_six_three_of_three_kills
+#print axioms Gtz.gtzWeightedAll_three_of_three_kills

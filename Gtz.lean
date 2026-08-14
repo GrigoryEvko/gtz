@@ -3573,6 +3573,7 @@ import Gtz.Wave.AtomDefectBandSplit
 import Gtz.Wave.AtomProductInflation
 import Gtz.Wave.AtomTrineCutBand
 import Gtz.Wave.AtomCutRigidity
+import Gtz.Wave.AtomDeepCutRigidity
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
