@@ -114,7 +114,8 @@ Proved without hypothesis:
 Left as ONE named residue: `Gtz.AtomPentagonFloor`.  It is strictly smaller than
 `Gtz.AtomPluckerTenthUnbalanced`, because it closes the WHOLE tenth and not only
 the unbalanced part, it reads five vectors and not six, it has no frame law in
-it, and it has no case split.
+it, and it has no case split.  `Gtz.Wave.PentagonFloorProof` PROVES it, so
+`Gtz.atomPluckerTenth` and `Gtz.atomSpectralSupply_tenth` are unconditional.
 
 ## The measurement behind the residue
 
@@ -126,10 +127,9 @@ and got `4.4e-16` every time, which is the exact zero that
 `Gtz.atomPentagonReading_pentagon` proves.  The argmin carried the normalised
 readings `0.055279` five times and `0.144721` five times, which are
 `(5 - sqrt 5) / 50` and `(5 + sqrt 5) / 50`, the exact readings of that theorem.
-So the residue carries a failed refutation whose argmin is a proved equality
-case.  Section 5 rule 1 of the standing audit still applies: a small positive
-floor is evidence against a claim.  This floor is not small and not positive: it
-is zero, and the zero is a theorem.
+So the residue carried a failed refutation whose argmin is a proved equality
+case.  `Gtz.atomPentagonFloor` then proved it, and the measurement agrees with
+the theorem to fifteen digits.
 
 ## PROVED here (no `sorry`, no `axiom`, no `native_decide`)
 

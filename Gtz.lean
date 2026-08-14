@@ -3712,3 +3712,9 @@ import Gtz.Wave.PentagonFloorReduction
 -- field-agnostic ceiling, with and without the level-three energy floor, and that
 -- floor 3/50 is proved here and is sharp at the icosahedron.
 import Gtz.Wave.DeterminantalAverageCap
+
+-- The pentagon floor is a theorem. Five vectors of rank three carry a plane of
+-- dependencies, and the ten minors of that plane carry the margin, so the
+-- residue is rank two. The tenth and the spectral supply at one tenth are now
+-- unconditional.
+import Gtz.Wave.PentagonFloorProof

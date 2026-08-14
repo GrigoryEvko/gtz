@@ -836,6 +836,7 @@ import Gtz.Wave.ShiftedWedgeFloor
 import Gtz.Wave.DeterminantalWeightKill
 import Gtz.Wave.DeterminantalAverageCap
 import Gtz.Wave.PentagonFloorReduction
+import Gtz.Wave.PentagonFloorProof
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27344,3 +27345,33 @@ run_cmd do
 #print axioms Gtz.wedgeRungTwoLower_sandwich_cuboctahedron_win
 #print axioms Gtz.wedgeRungTwoLower_sandwich_cuboctahedron_near
 #print axioms Gtz.wedgeAverage_route_window
+#print axioms Gtz.atomFiveCauchy
+#print axioms Gtz.atomPlanarOperatorBound
+#print axioms Gtz.atomPlanarGapSquare
+#print axioms Gtz.atomPlanarQuintetFloor
+#print axioms Gtz.atomDualPlaneFloor
+#print axioms Gtz.atomVolumeSq_swapFirst
+#print axioms Gtz.atomVolumeSq_swapLast
+#print axioms Gtz.atomVolumeSq_swapOuter
+#print axioms Gtz.atomVolumeSq_rotateLeft
+#print axioms Gtz.atomVolumeSq_rotateRight
+#print axioms Gtz.atomVolumePluckerMid
+#print axioms Gtz.atomVolumePluckerLeft
+#print axioms Gtz.atomPentagonMargin_baseSquare
+#print axioms Gtz.atomPentagonMargin_nonneg_of_base
+#print axioms Gtz.atomPentagonMargin_permOneThree
+#print axioms Gtz.atomPentagonMargin_permOneFour
+#print axioms Gtz.atomPentagonMargin_permTwoThree
+#print axioms Gtz.atomPentagonMargin_permTwoFour
+#print axioms Gtz.atomPentagonMargin_permThreeFour
+#print axioms Gtz.atomPentagonMargin_permOneTwoThree
+#print axioms Gtz.atomPentagonMargin_permOneTwoFour
+#print axioms Gtz.atomPentagonMargin_permOneThreeFour
+#print axioms Gtz.atomPentagonMargin_permTwoThreeFour
+#print axioms Gtz.atomPentagonFloor
+#print axioms Gtz.atomPluckerTenth
+#print axioms Gtz.atomPluckerTenthUnbalanced
+#print axioms Gtz.atomSpectralSupply_tenth
+#print axioms Gtz.exists_atomCarrier_tenth
+#print axioms Gtz.atomPluckerSpread_ge_twice
+#print axioms Gtz.atomPluckerEnergyThree_ge
