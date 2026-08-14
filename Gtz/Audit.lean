@@ -26619,3 +26619,5 @@ run_cmd do
 #print axioms Gtz.atomGram_off_isolated
 #print axioms Gtz.planePair_atom_ne_zero
 #print axioms Gtz.exists_weakCarrier_of_isolated_slot
+#print axioms Gtz.dppPlucker_dominant
+#print axioms Gtz.heron_relation_dominant
