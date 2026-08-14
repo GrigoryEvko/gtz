@@ -41,6 +41,12 @@ The chain that feeds the read:
 * `Gtz.pair_commutation_endgame` — the scalar endgame.
 * `Gtz.rankFourCaptureLinePairFlooredClosed_holds` — **THE PAIR
   RESIDUE IS A THEOREM.**
+* `Gtz.stationary_leak_orthogonal`, `Gtz.stationary_leak_sq_sum` —
+  **THE STATIONARY LEAK LAW**: at every atom the multiplier-weighted
+  squared leaks total `s_y (1 - s_y) / size`, from the sandwiched
+  commutation `P Ξ P = Ξ P` alone.
+* `Gtz.SixThreeCrux.exists_pos_leak_off_block` — at a crux every atom
+  receives a leak from a positive label outside its block.
 * `Gtz.rankFourChartNullBasisNullFloored_of_wide`,
   `Gtz.isSixThreeAssemblyRankExcludedFloored_four_of_wide`,
   `Gtz.gtzWeighted_six_three_of_wideResidue_of_upperClosures`,
@@ -486,7 +492,216 @@ theorem rankFourCaptureLinePairFlooredClosed_holds :
 
 end PairKill
 
-/-! ## Layer 2 — the cell rests on the wide residue -/
+/-! ## Layer 2 — the stationary leak law -/
+
+section LeakLaw
+
+variable {size rank : ℕ} {activeIndex : Type*}
+variable {projection : Matrix (Fin size) (Fin size) ℝ} {weight : Fin size → ℝ} {value : ℝ}
+variable {activeSet : Finset activeIndex} {activeSubset : activeIndex → Finset (Fin size)}
+variable {activeWeight : activeIndex → ℝ} {tightDir : activeIndex → (Fin size → ℝ)}
+
+/-- **THE LEAK IS ORTHOGONAL TO ITS OWN LABEL.**  On the block the tight
+row reads the shifted weight, and off the block the coordinate is zero.
+Thus the leak of a label vanishes against its own coordinate at every
+atom. -/
+theorem stationary_leak_orthogonal
+    (hdata : IsChartStationaryData rank projection weight value activeSet activeSubset
+      activeWeight tightDir)
+    {L : activeIndex} (hL : L ∈ activeSet) (y : Fin size) :
+    tightDir L y
+      * ((projection *ᵥ tightDir L) y - (value + weight y) * tightDir L y) = 0 := by
+  by_cases hmem : y ∈ activeSubset L
+  · have htight := hdata.tightDir_isTight L hL y hmem
+    have hexpand : (chartStationaryGap projection weight *ᵥ tightDir L) y
+        = (projection *ᵥ tightDir L) y - weight y * tightDir L y := by
+      rw [chartStationaryGap, Matrix.sub_mulVec, Pi.sub_apply, Matrix.mulVec_diagonal]
+    rw [hexpand] at htight
+    have hrow : (projection *ᵥ tightDir L) y = (value + weight y) * tightDir L y := by
+      linear_combination htight
+    rw [hrow]
+    ring
+  · rw [hdata.tightDir_support L hL y hmem]
+    ring
+
+/-- **THE STATIONARY LEAK LAW.**  Sandwich the commutation between two
+charts: idempotence gives `P Ξ P = Ξ P`, and the diagonal entry at any
+atom prices the multiplier-weighted squared leaks exactly.  The leak of
+a label at an atom is the ambient chart row minus the shifted-weight
+read, and the law holds at EVERY atom with NO structural hypothesis:
+
+`Σ_L μ_L ℓ_L(y)² = s_y (1 - s_y) / size`.
+
+At an atom where every leak vanishes the law collapses to
+`s_y (1 - s_y) = 0` — the shape of the pair kill above. -/
+theorem stationary_leak_sq_sum
+    (hdata : IsChartStationaryData rank projection weight value activeSet activeSubset
+      activeWeight tightDir) (y : Fin size) :
+    ∑ L ∈ activeSet, activeWeight L
+        * ((projection *ᵥ tightDir L) y - (value + weight y) * tightDir L y) ^ 2
+      = (value + weight y) * (1 - (value + weight y)) * ((size : ℝ))⁻¹ := by
+  classical
+  have hsandwich : projection * chartMultiplierAssembly activeSet activeWeight tightDir
+        * projection
+      = chartMultiplierAssembly activeSet activeWeight tightDir * projection := by
+    rw [hdata.assembly_commutes, Matrix.mul_assoc, hdata.isIdempotent]
+  have hsym : ∀ a b : Fin size, projection a b = projection b a := by
+    intro a b
+    have hentry := congrFun (congrFun hdata.isSymmetric a) b
+    rw [Matrix.transpose_apply] at hentry
+    exact hentry.symm
+  have hmv : ∀ L : activeIndex,
+      (projection *ᵥ tightDir L) y = ∑ w, projection y w * tightDir L w :=
+    fun L => rfl
+  have hPXi : ∀ z : Fin size,
+      (projection * chartMultiplierAssembly activeSet activeWeight tightDir) y z
+        = ∑ L ∈ activeSet, activeWeight L
+            * ((projection *ᵥ tightDir L) y * tightDir L z) := by
+    intro z
+    rw [Matrix.mul_apply]
+    have hpoint : ∀ w : Fin size,
+        projection y w
+            * chartMultiplierAssembly activeSet activeWeight tightDir w z
+          = ∑ L ∈ activeSet, projection y w
+              * (activeWeight L * (tightDir L w * tightDir L z)) := by
+      intro w
+      rw [chartMultiplierAssembly_apply, Finset.mul_sum]
+    rw [Finset.sum_congr rfl fun w _ => hpoint w, Finset.sum_comm]
+    refine Finset.sum_congr rfl fun L _ => ?_
+    rw [hmv L]
+    simp only [Finset.mul_sum, Finset.sum_mul]
+    exact Finset.sum_congr rfl fun w _ => by ring
+  have hleft : (projection * chartMultiplierAssembly activeSet activeWeight tightDir
+        * projection) y y
+      = ∑ L ∈ activeSet, activeWeight L * ((projection *ᵥ tightDir L) y) ^ 2 := by
+    have hexp : ∀ z ∈ (Finset.univ : Finset (Fin size)),
+        (projection * chartMultiplierAssembly activeSet activeWeight tightDir) y z
+            * projection z y
+          = (∑ L ∈ activeSet, activeWeight L
+              * ((projection *ᵥ tightDir L) y * tightDir L z)) * projection z y :=
+      fun z _ => by rw [hPXi z]
+    rw [Matrix.mul_apply, Finset.sum_congr rfl hexp]
+    simp only [Finset.sum_mul]
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun L _ => ?_
+    have hcol : ∑ z, tightDir L z * projection z y = (projection *ᵥ tightDir L) y := by
+      rw [hmv L]
+      exact Finset.sum_congr rfl fun z _ => by rw [hsym z y]; ring
+    have hfactor : ∑ z, activeWeight L
+          * ((projection *ᵥ tightDir L) y * tightDir L z) * projection z y
+        = activeWeight L * ((projection *ᵥ tightDir L) y
+            * ∑ z, tightDir L z * projection z y) := by
+      conv_rhs => rw [Finset.mul_sum, Finset.mul_sum]
+      exact Finset.sum_congr rfl fun z _ => by ring
+    rw [hfactor, hcol]
+    ring
+  have hright : (chartMultiplierAssembly activeSet activeWeight tightDir
+        * projection) y y
+      = ∑ L ∈ activeSet, activeWeight L
+          * (tightDir L y * (projection *ᵥ tightDir L) y) := by
+    rw [Matrix.mul_apply]
+    have hpoint : ∀ z : Fin size,
+        chartMultiplierAssembly activeSet activeWeight tightDir y z * projection z y
+          = ∑ L ∈ activeSet, activeWeight L * (tightDir L y * tightDir L z)
+              * projection z y := by
+      intro z
+      rw [chartMultiplierAssembly_apply, Finset.sum_mul]
+    rw [Finset.sum_congr rfl fun z _ => hpoint z, Finset.sum_comm]
+    refine Finset.sum_congr rfl fun L _ => ?_
+    have hcol : ∑ z, tightDir L z * projection z y = (projection *ᵥ tightDir L) y := by
+      rw [hmv L]
+      exact Finset.sum_congr rfl fun z _ => by rw [hsym z y]; ring
+    have hfactor : ∑ z, activeWeight L * (tightDir L y * tightDir L z) * projection z y
+        = activeWeight L * (tightDir L y * ∑ z, tightDir L z * projection z y) := by
+      conv_rhs => rw [Finset.mul_sum, Finset.mul_sum]
+      exact Finset.sum_congr rfl fun z _ => by ring
+    rw [hfactor, hcol]
+  have hentry : (projection * chartMultiplierAssembly activeSet activeWeight tightDir
+        * projection) y y
+      = (chartMultiplierAssembly activeSet activeWeight tightDir * projection) y y := by
+    rw [hsandwich]
+  rw [hleft, hright] at hentry
+  have hdiagLabel : ∑ L ∈ activeSet, activeWeight L * tightDir L y ^ 2
+      = ((size : ℝ))⁻¹ :=
+    (chartMultiplierAssembly_diagonal activeSet activeWeight tightDir y).symm.trans
+      (hdata.assembly_diagonal y)
+  have hsplit : ∀ L ∈ activeSet,
+      activeWeight L
+          * ((projection *ᵥ tightDir L) y - (value + weight y) * tightDir L y) ^ 2
+        = activeWeight L * ((projection *ᵥ tightDir L) y) ^ 2
+            - activeWeight L * (tightDir L y * (projection *ᵥ tightDir L) y)
+          + (value + weight y) * (1 - (value + weight y))
+            * (activeWeight L * tightDir L y ^ 2) := by
+    intro L hL
+    linear_combination activeWeight L * (1 - 2 * (value + weight y))
+      * stationary_leak_orthogonal hdata hL y
+  rw [Finset.sum_congr rfl hsplit, Finset.sum_add_distrib, Finset.sum_sub_distrib,
+    ← Finset.mul_sum, hdiagLabel, hentry, sub_self, zero_add]
+
+/-- **EVERY ATOM RECEIVES A LEAK.**  At a crux every shifted weight
+sits strictly inside `(0, 1)`, thus the leak law is strictly positive
+at every atom: some positive label leaks into the atom from outside
+its block. -/
+theorem SixThreeCrux.exists_pos_leak_off_block (crux : SixThreeCrux)
+    {activeIndex : Type*} {activeSet : Finset activeIndex}
+    {activeSubset : activeIndex → Finset (Fin 6)} {activeWeight : activeIndex → ℝ}
+    {tightDir : activeIndex → (Fin 6 → ℝ)}
+    (hdata : IsChartStationaryData 3 (chartPointOfDesign crux.design).chart
+      (chartPointOfDesign crux.design).weight
+      (chartObjective (chartPointOfDesign crux.design))
+      activeSet activeSubset activeWeight tightDir)
+    (atomIndex : Fin 6) :
+    ∃ L ∈ activeSet, 0 < activeWeight L ∧ atomIndex ∉ activeSubset L
+      ∧ ((chartPointOfDesign crux.design).chart *ᵥ tightDir L) atomIndex
+          ≠ (chartObjective (chartPointOfDesign crux.design)
+              + (chartPointOfDesign crux.design).weight atomIndex)
+            * tightDir L atomIndex := by
+  classical
+  have hpos : 0 < chartObjective (chartPointOfDesign crux.design)
+      + (chartPointOfDesign crux.design).weight atomIndex :=
+    crux.shifted_weight_pos atomIndex
+  have hlt : chartObjective (chartPointOfDesign crux.design)
+      + (chartPointOfDesign crux.design).weight atomIndex < 1 := by
+    have hneg : chartObjective (chartPointOfDesign crux.design) < 0 :=
+      crux.hasNegativeChartValue
+    have hweight : (chartPointOfDesign crux.design).weight atomIndex < 1 :=
+      weight_lt_one crux.design (by norm_num) atomIndex
+    linarith
+  have hlaw := stationary_leak_sq_sum hdata atomIndex
+  have hsumPos : (0 : ℝ) < ∑ L ∈ activeSet, activeWeight L
+      * (((chartPointOfDesign crux.design).chart *ᵥ tightDir L) atomIndex
+        - (chartObjective (chartPointOfDesign crux.design)
+            + (chartPointOfDesign crux.design).weight atomIndex)
+          * tightDir L atomIndex) ^ 2 := by
+    rw [hlaw]
+    have hsix : (0 : ℝ) < (((6 : ℕ) : ℝ))⁻¹ := by norm_num
+    exact mul_pos (mul_pos hpos (by linarith)) hsix
+  obtain ⟨L, hL, hterm⟩ :=
+    Finset.exists_ne_zero_of_sum_ne_zero (ne_of_gt hsumPos)
+  rcases mul_ne_zero_iff.mp hterm with ⟨hweightNe, hsqNe⟩
+  have hleakNe : ((chartPointOfDesign crux.design).chart *ᵥ tightDir L) atomIndex
+      - (chartObjective (chartPointOfDesign crux.design)
+          + (chartPointOfDesign crux.design).weight atomIndex)
+        * tightDir L atomIndex ≠ 0 := by
+    intro hcontra
+    exact hsqNe (by rw [hcontra]; ring)
+  have hweightPos : 0 < activeWeight L :=
+    (hdata.activeWeight_nonneg L hL).lt_of_ne (Ne.symm hweightNe)
+  refine ⟨L, hL, hweightPos, ?_, sub_ne_zero.mp hleakNe⟩
+  intro hmem
+  have htight := hdata.tightDir_isTight L hL atomIndex hmem
+  have hexpand : (chartStationaryGap (chartPointOfDesign crux.design).chart
+        (chartPointOfDesign crux.design).weight *ᵥ tightDir L) atomIndex
+      = ((chartPointOfDesign crux.design).chart *ᵥ tightDir L) atomIndex
+        - (chartPointOfDesign crux.design).weight atomIndex
+          * tightDir L atomIndex := by
+    rw [chartStationaryGap, Matrix.sub_mulVec, Pi.sub_apply, Matrix.mulVec_diagonal]
+  rw [hexpand] at htight
+  exact hleakNe (by linear_combination htight)
+
+end LeakLaw
+
+/-! ## Layer 3 — the cell rests on the wide residue -/
 
 section WideSpine
 

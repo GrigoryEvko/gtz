@@ -24675,6 +24675,9 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.ne_of_mem_pair_compl
 #print axioms Gtz.pair_commutation_endgame
 #print axioms Gtz.rankFourCaptureLinePairFlooredClosed_holds
+#print axioms Gtz.stationary_leak_orthogonal
+#print axioms Gtz.stationary_leak_sq_sum
+#print axioms Gtz.SixThreeCrux.exists_pos_leak_off_block
 #print axioms Gtz.rankFourChartNullBasisNullFloored_of_wide
 #print axioms Gtz.isSixThreeAssemblyRankExcludedFloored_four_of_wide
 #print axioms Gtz.gtzWeighted_six_three_of_wideResidue_of_upperClosures
