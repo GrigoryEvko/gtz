@@ -104,6 +104,9 @@ pole surplus from the other three clauses.  `Gtz.PolarGapCoreSelection` and
 a shadow trace above two, a positive plane determinant and a positive gap
 determinant.  Each closes the cell and all of rank three alone through
 `Gtz.not_isTie_of_polarGapDetCore`, and each is false at size five.
+`Gtz.leverage_lt_sum_pairing_sq_of_mem` records the free reading: the target
+never asks the pole to avoid the triple, and an overshooting pole INSIDE the
+triple clears the surplus with no other input.
 
 ## 8. The sharp form, and what it says about the route
 
@@ -1201,6 +1204,26 @@ theorem leverage_lt_of_gapCore (design : WeightedDesign m 3)
   have hmargin : 0 < (design.atom pole ⬝ᵥ design.atom pole)
       * polarGapDet design x y z := mul_pos hpole hgap
   nlinarith [hident, hmargin, hadjNonneg, hdet]
+
+/-- **THE SURPLUS IS FREE WHEN THE POLE SITS INSIDE.**  The selection target
+never asks the pole to avoid the triple.  With the pole inside, its own
+reading contributes the squared leverage to the pole mass and nothing to the
+shadow side, thus an overshooting pole clears the surplus clause with no
+other input.  This is what dissolves the refusing poles: a pole refuses the
+outside-only census exactly when it sits inside every strictly dominating
+triple, and there the inside selection fires. -/
+theorem leverage_lt_sum_pairing_sq_of_mem (design : WeightedDesign m 3)
+    {pole : Fin m} (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole)
+    {selected : Finset (Fin m)} (hmem : pole ∈ selected) :
+    design.atom pole ⬝ᵥ design.atom pole
+      < ∑ c ∈ selected, (design.atom c ⬝ᵥ design.atom pole) ^ 2 := by
+  classical
+  have hown : (design.atom pole ⬝ᵥ design.atom pole) ^ 2
+      ≤ ∑ c ∈ selected, (design.atom c ⬝ᵥ design.atom pole) ^ 2 :=
+    Finset.single_le_sum
+      (f := fun c => (design.atom c ⬝ᵥ design.atom pole) ^ 2)
+      (fun c _ => sq_nonneg _) hmem
+  nlinarith [hown, hlong]
 
 /-- **THE THREE-CLAUSE KILL.**  A pole of positive leverage and a triple of
 distinct labels with a shadow trace above two, a positive plane determinant
