@@ -78,7 +78,7 @@ witness is the exact block spectrum
   `((2 - sqrt 2)/4, 11/20, 9/20 + sqrt 2/4)`,
 
 three readings in `[0,1]` that total `3/2`, at which the claim asks for
-`90 <= 58 sqrt 2 = 82.024`.  The defect is `(90 - 58 sqrt 2)/3200 = 2.4767e-3`.
+`90 <= 58 sqrt 2 = 82.024`.  The defect is `(90 - 58 sqrt 2)/3200 = 2.4924e-3`.
 So the sharp constant is NOT reachable per triple.  It IS reachable per
 COMPLEMENTARY PAIR: the inequality
 
@@ -627,7 +627,7 @@ All three readings lie in `[0,1]` and they total `3/2`.  The second and third
 symmetric functions are `(249 + 5 sqrt 2)/400` and `11 (8 + sqrt 2)/1600`, so the
 correction term reads `(90 sqrt 2 - 116)/1600`, which is POSITIVE.  The claim then
 asks for `180 <= 116 sqrt 2 = 164.05`, and the defect is
-`(180 - 116 sqrt 2)/6400 = 2.4923e-3`.
+`(180 - 116 sqrt 2)/6400 = 2.4924e-3`.
 
 So the sharp constant is NOT reachable by any per-triple reading of this shape.  It
 is reachable per COMPLEMENTARY PAIR, and that is the one next target. -/
