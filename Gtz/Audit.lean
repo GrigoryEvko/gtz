@@ -837,6 +837,7 @@ import Gtz.Wave.DeterminantalWeightKill
 import Gtz.Wave.DeterminantalAverageCap
 import Gtz.Wave.PentagonFloorReduction
 import Gtz.Wave.PentagonFloorProof
+import Gtz.Wave.SpreadWeightCap
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27375,3 +27376,51 @@ run_cmd do
 #print axioms Gtz.exists_atomCarrier_tenth
 #print axioms Gtz.atomPluckerSpread_ge_twice
 #print axioms Gtz.atomPluckerEnergyThree_ge
+#print axioms Gtz.atomBlockDet_eq_dppTripleWeight
+#print axioms Gtz.atomBlockDet_swap_left
+#print axioms Gtz.atomBlockDet_swap_right
+#print axioms Gtz.atomBlockDet_self_left
+#print axioms Gtz.AtomWeightSpread
+#print axioms Gtz.atomWeightSpread_blockDet
+#print axioms Gtz.AtomSpreadFeasible
+#print axioms Gtz.atomSpreadFeasible_blockDet
+#print axioms Gtz.AtomTripleEigenFloor
+#print axioms Gtz.atomEigenFloor_le_bar
+#print axioms Gtz.atomSpreadBit
+#print axioms Gtz.atomSpreadMask
+#print axioms Gtz.atomSpreadNum
+#print axioms Gtz.atomSpreadWeight
+#print axioms Gtz.atomSpreadSecond
+#print axioms Gtz.atomSpreadNum_le_two
+#print axioms Gtz.atomSpreadWeight_nonneg
+#print axioms Gtz.atomSpreadWeight_of_num_zero
+#print axioms Gtz.atomSpreadWeight_of_num_one
+#print axioms Gtz.atomSpreadWeight_of_num_two
+#print axioms Gtz.atomSpreadNum_swap_left
+#print axioms Gtz.atomSpreadNum_swap_right
+#print axioms Gtz.atomSpreadNum_self_left
+#print axioms Gtz.atomSpreadNum_pairSum_one
+#print axioms Gtz.atomSpreadNum_pairSum_two
+#print axioms Gtz.atomSpreadNum_marginal
+#print axioms Gtz.atomSpreadNum_core
+#print axioms Gtz.atomSpreadNum_sorted
+#print axioms Gtz.atomSpreadWeight_sum
+#print axioms Gtz.atomSpreadSecond_of_num_one
+#print axioms Gtz.atomSpreadSecond_of_num_two
+#print axioms Gtz.atomSpreadNum_ne_zero
+#print axioms Gtz.atomSpreadWeight_familySum
+#print axioms Gtz.atomSpreadFeasible_witness
+#print axioms Gtz.atomSpreadSign_light
+#print axioms Gtz.atomSpreadSign_heavy
+#print axioms Gtz.atomSpreadTerm_light
+#print axioms Gtz.atomSpreadTerm_heavy
+#print axioms Gtz.atomSpreadWitness_floorCap
+#print axioms Gtz.atomSpreadCap_lt_hermitianCeiling
+#print axioms Gtz.not_atomSpreadCap
+#print axioms Gtz.atomSpreadNum_pairs
+#print axioms Gtz.atomSpreadWitness_energyFails
+#print axioms Gtz.atomSpreadWitness_tenthFails
+#print axioms Gtz.atomSpreadWitness_reducedRung
+#print axioms Gtz.atomSpreadWitness_ladder
+#print axioms Gtz.atomSpreadSecond_complement
+#print axioms Gtz.atomSpreadFeasible_not_uniform

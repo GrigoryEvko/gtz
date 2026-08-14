@@ -3718,3 +3718,11 @@ import Gtz.Wave.DeterminantalAverageCap
 -- residue is rank two. The tenth and the spectral supply at one tenth are now
 -- unconditional.
 import Gtz.Wave.PentagonFloorProof
+
+-- The spread law is NOT the missing ingredient. The moment class, tightened by
+-- the pair-minor law, the six doubled slot marginals and the doubled spread law
+-- of the twenty determinants, still caps every per-triple floor at
+-- 2107/17000 = 0.1239412, below the field-agnostic ceiling (3 - sqrt 5)/6. The
+-- witness is the three-cut weight table, and it fails only the level-three
+-- energy floor and the tenth.
+import Gtz.Wave.SpreadWeightCap
