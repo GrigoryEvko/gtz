@@ -753,6 +753,7 @@ import Gtz.Wave.SharedPrivateCoefficientRow
 import Gtz.Wave.SharedPrivateCornerDefect
 import Gtz.Wave.SharedPrivateLeakBudget
 import Gtz.Wave.SharedPrivateWedgeCorner
+import Gtz.Wave.SharedPrivateComplementEigen
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -25067,6 +25068,41 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFourSharedPrivateClosed_of_doubleCount_circuit
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_doubleCount_circuit
 #print axioms Gtz.rankSixSharedPrivateClosed_of_doubleCount_circuit
+
+#print axioms Gtz.SharedPrivateData.captureDiag_finset_le_total
+#print axioms Gtz.SharedPrivateData.captureDiag_pair_le_total
+#print axioms Gtz.SharedPrivateData.captureDiag_quad_le_total
+#print axioms Gtz.SharedPrivateData.rowShadow_eq_captureDiag
+#print axioms Gtz.SharedPrivateData.rowShadow_idempotent
+#print axioms Gtz.SharedPrivateData.rowShadow_transfer
+#print axioms Gtz.SharedPrivateData.false_of_rowShadow_deadSet_eq_zero
+#print axioms Gtz.SharedPrivateData.false_of_saturated_atom
+#print axioms Gtz.SharedPrivateData.exists_dead_slot
+#print axioms Gtz.SharedPrivateData.basisMultiplicity_lt_basisCount
+#print axioms Gtz.SharedPrivateData.coeffDiag_eq_one_sub_of_dead_single
+#print axioms Gtz.SharedPrivateData.false_of_dead_only_at_privateSlot
+#print axioms Gtz.SharedPrivateData.charRoot_of_dead_pair
+#print axioms Gtz.SharedPrivateData.false_of_purePairComplement_atom
+#print axioms Gtz.SharedPrivateData.purePairAtom_charRoot
+#print axioms Gtz.SharedPrivateData.purePairAtom_corner_of_outerFull
+#print axioms Gtz.SharedPrivateData.captureDiag_eq_of_purePairAtom_of_two_outerFull
+#print axioms Gtz.SharedPrivateData.sum_outerMultiplicity
+#print axioms Gtz.SharedPrivateData.outerMultiplicity_eq_zero_of_pure
+#print axioms Gtz.SharedPrivateData.outerMultiplicity_le
+#print axioms Gtz.SharedPrivateData.outerMultiplicity_pinAtom_le_one
+#print axioms Gtz.SharedPrivateData.live_outer_of_outerMultiplicity_full
+#print axioms Gtz.SharedPrivateData.exists_two_outerFull_atoms
+#print axioms Gtz.SharedPrivateData.outerFull_dichotomy
+#print axioms Gtz.SharedPrivateData.false_of_pureSharedPair
+#print axioms Gtz.SharedPrivateCircuitPairIdenticalImpureClosed
+#print axioms Gtz.SharedPrivateCircuitSplitWedgeImpureClosed
+#print axioms Gtz.sharedPrivateCircuitPairIdenticalCountClosed_of_impure
+#print axioms Gtz.sharedPrivateCircuitSplitWedgeCountClosed_of_impure
+#print axioms Gtz.sharedPrivateExtrasClosed_of_impureLattice
+#print axioms Gtz.sharedPrivateKilled_of_impure_circuit
+#print axioms Gtz.rankFourSharedPrivateClosed_of_impure_circuit
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_impure_circuit
+#print axioms Gtz.rankSixSharedPrivateClosed_of_impure_circuit
 
 #print axioms Gtz.dotProduct_projectionOfDesign_mulVec_self
 #print axioms Gtz.sum_finset_eq_sum_orderEmbOfFin
