@@ -804,6 +804,9 @@ import Gtz.Wave.AtomProductInflation
 import Gtz.Wave.AtomTrineCutBand
 import Gtz.Wave.AtomCutRigidity
 import Gtz.Wave.AtomDeepCutRigidity
+import Gtz.Wave.AtomCoherentTriangle
+import Gtz.Wave.AtomIcosahedralWitness
+import Gtz.Wave.AtomTriangleEnergy
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -25662,3 +25665,95 @@ run_cmd do
 #print axioms Gtz.isEmpty_sixThreeCrux_of_three_parts
 #print axioms Gtz.gtzWeighted_six_three_of_three_kills
 #print axioms Gtz.gtzWeightedAll_three_of_three_kills
+
+-- the coherent triangle: the oriented sign as a domination certificate
+#print axioms Gtz.atomSwitch
+#print axioms Gtz.atomGram_atomSwitch
+#print axioms Gtz.sign_mul_self_of_sq_eq_one
+#print axioms Gtz.sign_pair_mul_sq
+#print axioms Gtz.sign_cycle_mul
+#print axioms Gtz.atomShiftedDiag_atomSwitch
+#print axioms Gtz.atomPairMinor_atomSwitch
+#print axioms Gtz.atomPivotCross_atomSwitch
+#print axioms Gtz.atomTripleDet_atomSwitch
+#print axioms Gtz.frame_atomSwitch
+#print axioms Gtz.atomTriangleCycle
+#print axioms Gtz.atomTriangleGap
+#print axioms Gtz.atomTriangleSlack
+#print axioms Gtz.atomTripleVolume
+#print axioms Gtz.atomTripleReading
+#print axioms Gtz.atomTriangleCycle_swap_left
+#print axioms Gtz.atomTriangleCycle_swap_right
+#print axioms Gtz.atomTriangleCycle_rotate
+#print axioms Gtz.atomTriangleCycle_atomSwitch
+#print axioms Gtz.atomTriangleGap_atomSwitch
+#print axioms Gtz.atomShiftedDiag_mul_edge_sq
+#print axioms Gtz.atomPairMinor_mul_edge_sq
+#print axioms Gtz.atomTripleDet_mul_cycle_sq
+#print axioms Gtz.atomTripleDet_eq_energy
+#print axioms Gtz.atomTripleVolume_sq_sub_cycle_sq
+#print axioms Gtz.atomTriangleHalfBox_split
+#print axioms Gtz.atomGram_ne_zero_of_cycle_pos
+#print axioms Gtz.atomTripleDet_pos_of_coherentGaps
+#print axioms Gtz.atomShiftedDiag_pos_of_coherentGap
+#print axioms Gtz.atomPairMinor_pos_of_coherentGaps
+#print axioms Gtz.deflated_pair_of_tripleDet_pos
+#print axioms Gtz.exists_deflated_pair_of_coherentGaps
+#print axioms Gtz.two_mul_cycle_lt_volume_of_halfBox
+#print axioms Gtz.atomTripleDet_pos_of_coherentHalfBox
+#print axioms Gtz.atomPairMinor_pos_of_slack_pos
+#print axioms Gtz.exists_deflated_pair_of_coherentHalfBox
+#print axioms Gtz.atomTripleDet_pos_of_coherentEnergy
+#print axioms Gtz.atomTripleDet_eq_of_orthogonalApex
+#print axioms Gtz.exists_deflated_pair_of_orthogonalApex
+#print axioms Gtz.atomTriangleCycle_eq_triangleProduct
+#print axioms Gtz.exists_coherent_atomTriple
+#print axioms Gtz.exists_pos_coherent_atomTriple
+#print axioms Gtz.exists_coherent_atomTriple_of_pick
+#print axioms Gtz.six_lt_complexSignForcing_threshold
+#print axioms Gtz.AtomTripleDeflates
+#print axioms Gtz.exists_flat_coherent_triangle_of_no_dominating_triple
+#print axioms Gtz.exists_strong_edge_of_no_dominating_triple
+#print axioms Gtz.atomPairMinor_neg_of_parallel
+#print axioms Gtz.coherentGaps_atomSwitch_iff
+
+-- the icosahedral witness: the real trine analogue and its death
+#print axioms Gtz.icosaFrameScale
+#print axioms Gtz.icosaFrameScale_pos
+#print axioms Gtz.icosaFrameScale_sq
+#print axioms Gtz.icosaFrameAtom
+#print axioms Gtz.icosaFrameAtom_gram
+#print axioms Gtz.icosaFrameAtom_gram_diag
+#print axioms Gtz.icosaFrameAtom_gram_sq_of_ne
+#print axioms Gtz.icosaAtom_frame_six
+#print axioms Gtz.icosaFrameAtom_isTightFrame
+#print axioms Gtz.icosaFrameScaleAt
+#print axioms Gtz.icosaFrameScaleAt_sum
+#print axioms Gtz.icosaFrameScaleAt_pos
+#print axioms Gtz.icosaFrameAtom_blockedSlotExcess
+#print axioms Gtz.icosaFrameAtom_shiftedDiag
+#print axioms Gtz.icosaFrameAtom_blocked_iff_trineCut
+#print axioms Gtz.icosaFrameAtom_gram_sameSign
+#print axioms Gtz.icosaFrameAtom_overlap_bounds
+#print axioms Gtz.icosaFrameAtom_shiftedDiag_eq
+#print axioms Gtz.icosaFrameAtom_cycle_coherent
+#print axioms Gtz.icosaFrameAtom_triangleGap_pos
+#print axioms Gtz.icosaFrameAtom_deflates
+#print axioms Gtz.icosaFrameAtom_spares_blockedPairClosed
+#print axioms Gtz.icosaFrameAtom_threshold_readings
+
+-- the triangle energy: the sharp selection and its icosahedral extremal
+#print axioms Gtz.atomGram_frobenius
+#print axioms Gtz.atomPairEnergy
+#print axioms Gtz.atomDiagEnergy
+#print axioms Gtz.atomTriangleEnergy
+#print axioms Gtz.atomPairEnergy_two_mul
+#print axioms Gtz.atomTriangleEnergy_total
+#print axioms Gtz.atomDiagEnergy_ge_three_halves
+#print axioms Gtz.exists_light_triangle
+#print axioms Gtz.exists_light_triangle_three
+#print axioms Gtz.icosaFrameAtom_triangleEnergy
+#print axioms Gtz.icosaFrameAtom_pairEnergy
+#print axioms Gtz.icosaFrameAtom_diagEnergy
+#print axioms Gtz.atomTripleDet_pos_of_lightCoherentTriangle
+#print axioms Gtz.exists_deflated_pair_of_lightCoherentTriangle

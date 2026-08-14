@@ -3588,6 +3588,9 @@ import Gtz.Wave.AtomProductInflation
 import Gtz.Wave.AtomTrineCutBand
 import Gtz.Wave.AtomCutRigidity
 import Gtz.Wave.AtomDeepCutRigidity
+import Gtz.Wave.AtomCoherentTriangle
+import Gtz.Wave.AtomIcosahedralWitness
+import Gtz.Wave.AtomTriangleEnergy
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
