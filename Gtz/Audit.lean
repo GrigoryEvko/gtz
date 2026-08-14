@@ -798,6 +798,7 @@ import Gtz.Wave.AtomBlockedDefect
 import Gtz.Wave.AtomDefectBandSplit
 import Gtz.Wave.AtomProductInflation
 import Gtz.Wave.AtomTrineCutBand
+import Gtz.Wave.AtomCutRigidity
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -25387,3 +25388,34 @@ run_cmd do
 #print axioms Gtz.gtzWeightedAll_three_of_windowKill_of_deepCutKill
 #print axioms Gtz.gtzWeighted_six_three_of_windowLiveKill_of_deepCutLiveKill
 #print axioms Gtz.gtzWeightedAll_three_of_windowLiveKill_of_deepCutLiveKill
+
+/-! ## The slot excess, the sharp thresholds and the rigidity law -/
+
+#print axioms Gtz.blockedSlotExcess
+#print axioms Gtz.singleSlotExcess
+#print axioms Gtz.blockedSlotExcess_eq_budget_gap
+#print axioms Gtz.singleSlotExcess_eq_budget_gap
+#print axioms Gtz.blockedSlotExcess_nonpos_of_blocked
+#print axioms Gtz.singleSlotExcess_nonpos_of_singleFail
+#print axioms Gtz.exists_deflated_pair_of_slot_excess
+#print axioms Gtz.exists_dominating_carrier_of_slot_excess
+#print axioms Gtz.exists_pivot_single_budget_of_single_excess
+#print axioms Gtz.blockedSlotExcess_of_heavy_slot
+#print axioms Gtz.exists_dominating_triple_of_scale_le_split
+#print axioms Gtz.exists_deflated_pair_of_scale_le_split
+#print axioms Gtz.exists_pivot_single_budget_of_scale_le_split
+#print axioms Gtz.blockedTangentGap
+#print axioms Gtz.blockedTangentGap_split
+#print axioms Gtz.blockedTangentGap_nonneg
+#print axioms Gtz.tangentGap_total_six
+#print axioms Gtz.blockedTangentGap_total
+#print axioms Gtz.blockedTangentGap_le_total
+#print axioms Gtz.blocked_scale_deviation_le
+#print axioms Gtz.blocked_slack_le
+#print axioms Gtz.atomBlockedDeepClosed_of_window_of_deepCut
+#print axioms Gtz.atomBlockedWindowClosed_of_band_of_deep
+#print axioms Gtz.atomBlockedDeepCutClosed_of_band_of_deep
+#print axioms Gtz.blockedSplit_iff_sharpSplit
+#print axioms Gtz.gtzWeighted_six_three_of_sharpSplit
+#print axioms Gtz.gtzWeightedAll_three_of_sharpSplit
+#print axioms Gtz.isEmpty_sixThreeCrux_of_sharpSplit

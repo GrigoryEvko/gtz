@@ -3572,6 +3572,7 @@ import Gtz.Wave.AtomDefectBandSplit
 -- instance and the discounted inflation opens a strictly larger stratum.
 import Gtz.Wave.AtomProductInflation
 import Gtz.Wave.AtomTrineCutBand
+import Gtz.Wave.AtomCutRigidity
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
