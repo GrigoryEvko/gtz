@@ -88,7 +88,22 @@ determinant `7`. So `Gtz.escapeBandAtom_escapes` and
 is POSITIVE and which fires NEITHER headline cell. The band between the two
 families is inhabited, and no comparison of the two can close the cell.
 
-## 6. The cubic and the determinant supply
+## 6. The sharp target
+
+`Gtz.AtomSpectralSupply floor` says that every frame carries a triple whose
+block never shortens a probe below `floor`. It reads NO scale.
+`Gtz.atomSpectralSupply_of_lt_twelfth` proves it strictly below one twelfth,
+and `Gtz.exists_atomCarrier_of_blendFloor` is the one bridge through which any
+such statement feeds the cell.
+
+`Gtz.AtomSpectralSupplySixth` is the sharp form. Its adversarial value is
+EXACTLY one sixth and it is attained, so it is the uniform-scale case of the
+cell, stated with no scale, no sign, no cycle and no minor. It is REAL-ONLY:
+over the Hermitian field the value drops to approximately `0.1274`, and the
+deficit `0.0393` is the complex trine margin the campaign already banked.
+`Gtz.exists_atomCarrier_of_spectralSupplySixth` spends it.
+
+## 7. The cubic and the determinant supply
 
 `Gtz.atomUniformCubic_factor` splits the universal cubic as
 `(1 - 2 w) (1 - 10 w + 10 w ^ 2)`, whose smallest root is `(5 - sqrt 15) / 10`.
@@ -1024,5 +1039,96 @@ theorem exists_escape_of_both_headline_cells :
         ∧ ¬ AtomCoherentEnergyCell atom scale slotOne slotTwo slotThree
         ∧ ¬ AtomModulusCell atom scale slotOne slotTwo slotThree :=
   ⟨escapeBandAtom, escapeBandScale, 0, 1, 2, escapeBandAtom_escapes⟩
+
+/-! ## Layer 10 — the spectral floor as a general bridge, and the sharp target -/
+
+/-- A SPECTRAL FLOOR at a triple: the blend energy never falls below the floor
+against the weight energy.  This is `lambda_min(block) >= floor` written with no
+eigenvalue and no square root. -/
+def AtomBlendFloor (atom : Fin 6 → (Fin 3 → ℝ)) (slotOne slotTwo slotThree : Fin 6)
+    (floor : ℝ) : Prop :=
+  ∀ weightOne weightTwo weightThree : ℝ,
+    floor * (weightOne ^ 2 + weightTwo ^ 2 + weightThree ^ 2)
+      ≤ atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
+        ⬝ᵥ atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
+
+/-- **THE SPECTRAL BRIDGE.**  A spectral floor at one triple, and a scale that
+never passes that floor, give the carrier the cell asks for.  Every spectral
+supply statement feeds the cell through this one lemma. -/
+theorem exists_atomCarrier_of_blendFloor (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
+    {slotOne slotTwo slotThree : Fin 6} {floor : ℝ}
+    (hone : slotOne ≠ slotTwo) (htwo : slotOne ≠ slotThree) (hthree : slotTwo ≠ slotThree)
+    (hfloor : AtomBlendFloor atom slotOne slotTwo slotThree floor)
+    (hlight : ∀ slot, scale slot ≤ floor) :
+    ∃ car : Finset (Fin 6), car.card = 3
+      ∧ ∀ probe : Fin 6 → ℝ, (∀ slot ∉ car, probe slot = 0) →
+          (∑ slot, scale slot * probe slot ^ 2)
+            ≤ atomBlend atom probe ⬝ᵥ atomBlend atom probe := by
+  classical
+  refine ⟨{slotOne, slotTwo, slotThree}, ?_, ?_⟩
+  · rw [Finset.card_insert_of_notMem (by simp [hone, htwo]),
+      Finset.card_insert_of_notMem (by simp [hthree]), Finset.card_singleton]
+  · intro probe hsupport
+    have hblend := atomBlend_of_support_three atom hone htwo hthree probe hsupport
+    have hstep := hfloor (probe slotOne) (probe slotTwo) (probe slotThree)
+    have hscaleSum : (∑ slot, scale slot * probe slot ^ 2)
+        = scale slotOne * probe slotOne ^ 2 + scale slotTwo * probe slotTwo ^ 2
+          + scale slotThree * probe slotThree ^ 2 :=
+      atomSum_of_support_three hone htwo hthree (fun slot => scale slot * probe slot ^ 2)
+        (fun slot hnot => by rw [hsupport slot hnot]; ring)
+    rw [hscaleSum, hblend]
+    nlinarith [hstep, hlight slotOne, hlight slotTwo, hlight slotThree,
+      sq_nonneg (probe slotOne), sq_nonneg (probe slotTwo), sq_nonneg (probe slotThree)]
+
+/-- The SPECTRAL SUPPLY of the six-slot rank-three frame at a given floor: every
+frame carries a triple whose block never shortens a probe below that floor.
+The frame law is the ONLY hypothesis, and no scale appears. -/
+def AtomSpectralSupply (floor : ℝ) : Prop :=
+  ∀ atom : Fin 6 → (Fin 3 → ℝ),
+    (∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction) →
+    ∃ slotOne slotTwo slotThree : Fin 6,
+      slotOne ≠ slotTwo ∧ slotOne ≠ slotThree ∧ slotTwo ≠ slotThree
+        ∧ AtomBlendFloor atom slotOne slotTwo slotThree floor
+
+/-- **THE SPECTRAL SUPPLY IS PROVED PAST TWELVE.**  The moment law and the wedge
+inequality give the supply at every floor strictly below one twelfth. -/
+theorem atomSpectralSupply_of_lt_twelfth {floor : ℝ} (hpos : 0 < floor)
+    (hfloor : floor * 12 < 1) : AtomSpectralSupply floor := by
+  intro atom hframe
+  have hratio : (12 : ℝ) < 1 / floor := by
+    rw [lt_div_iff₀ hpos]; linarith
+  obtain ⟨slotOne, slotTwo, slotThree, hone, htwo, hthree, hdet, hsecond⟩ :=
+    exists_atomSupplyTriple hframe hratio
+  refine ⟨slotOne, slotTwo, slotThree, hone, htwo, hthree, ?_⟩
+  intro weightOne weightTwo weightThree
+  have hstep := atomSupplyTriple_blend_floor atom hdet hsecond weightOne weightTwo weightThree
+  have hinv : (0 : ℝ) < 1 / floor := by positivity
+  rw [div_mul_eq_mul_div, le_div_iff₀ hpos] at hstep
+  nlinarith [hstep, hpos, atomDot_self_nonneg
+    (atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree)]
+
+/-- **THE SHARP TARGET.**  The adversarial value of the spectral supply of the
+six-slot rank-three frame is EXACTLY one sixth, and it is attained.  Over the
+Hermitian field the value drops to approximately `0.1274`, so this statement is
+REAL-ONLY: it is the uniform-scale case of the cell, and its complex failure is
+the complex trine.  `Gtz.atomSpectralSupply_of_lt_twelfth` proves it strictly
+below one twelfth, so exactly a factor of two is open. -/
+def AtomSpectralSupplySixth : Prop := AtomSpectralSupply (1 / 6)
+
+/-- **THE SHARP TARGET CLOSES EVERY SCALE BELOW ONE SIXTH.**  In particular the
+uniform scale of the mass-one interface, which is where the icosahedral frame
+and the doubled tetrahedron live. -/
+theorem exists_atomCarrier_of_spectralSupplySixth (hsupply : AtomSpectralSupplySixth)
+    (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    (hlight : ∀ slot, scale slot ≤ 1 / 6) :
+    ∃ car : Finset (Fin 6), car.card = 3
+      ∧ ∀ probe : Fin 6 → ℝ, (∀ slot ∉ car, probe slot = 0) →
+          (∑ slot, scale slot * probe slot ^ 2)
+            ≤ atomBlend atom probe ⬝ᵥ atomBlend atom probe := by
+  obtain ⟨slotOne, slotTwo, slotThree, hone, htwo, hthree, hfloor⟩ := hsupply atom hframe
+  exact exists_atomCarrier_of_blendFloor atom scale hone htwo hthree hfloor hlight
 
 end Gtz
