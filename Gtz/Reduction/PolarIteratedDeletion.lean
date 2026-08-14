@@ -607,9 +607,8 @@ theorem exists_setDeletionCover (hpredecessor : GtzWeightedAll dim) (hsize : 3 �
     ∃ covering : Finset (Fin size), covering.card = dim ∧ pole ∉ covering
       ∧ (∀ q ∈ deleted, q ∉ covering)
       ∧ ∀ probe : Fin dim → ℝ,
-          ((1 - ∑ q ∈ deleted, base.weight q * (base.atom q ⬝ᵥ base.atom q)) / cap)
-              * (probe ⬝ᵥ probe)
-            ≤ ∑ c ∈ covering, (base.atom c ⬝ᵥ probe) ^ 2 := by
+          probe ⬝ᵥ probe - ∑ q ∈ deleted, base.weight q * (base.atom q ⬝ᵥ probe) ^ 2
+            ≤ cap * ∑ c ∈ covering, (base.atom c ⬝ᵥ probe) ^ 2 := by
   classical
   obtain ⟨label, hlabel⟩ := hnonempty
   have hlabelPole : label ≠ pole := fun heq => hpole (heq ▸ hlabel)
@@ -674,32 +673,16 @@ theorem exists_setDeletionCover (hpredecessor : GtzWeightedAll dim) (hsize : 3 �
       ≤ ∑ c ∈ covering, (base.atom c ⬝ᵥ probe) ^ 2 :=
     Finset.sum_le_sum_of_subset_of_nonneg hcoverSup fun c _ _ => sq_nonneg _
   have hgainSq : 0 < data.gain ^ 2 := pow_pos data.gain_pos 2
-  have hfloor : (1 - ∑ q ∈ deleted, base.weight q * (base.atom q ⬝ᵥ base.atom q))
-      * (probe ⬝ᵥ probe) ≤ data.lift probe ⬝ᵥ data.lift probe := by
-    rw [data.length_law probe]
-    have hcauchy : ∑ q ∈ deleted, base.weight q * (base.atom q ⬝ᵥ probe) ^ 2
-        ≤ (∑ q ∈ deleted, base.weight q * (base.atom q ⬝ᵥ base.atom q)) * (probe ⬝ᵥ probe) := by
-      rw [Finset.sum_mul]
-      refine Finset.sum_le_sum fun q _ => ?_
-      have hstep := dotProduct_sq_le_mul_self (base.atom q) probe
-      have hweight := (base.weight_pos q).le
-      calc base.weight q * (base.atom q ⬝ᵥ probe) ^ 2
-          ≤ base.weight q * ((base.atom q ⬝ᵥ base.atom q) * (probe ⬝ᵥ probe)) :=
-            mul_le_mul_of_nonneg_left hstep hweight
-        _ = base.weight q * (base.atom q ⬝ᵥ base.atom q) * (probe ⬝ᵥ probe) := by ring
-    linarith
-  have hchain : (1 - ∑ q ∈ deleted, base.weight q * (base.atom q ⬝ᵥ base.atom q))
-      * (probe ⬝ᵥ probe)
-      ≤ data.gain ^ 2 * ∑ c ∈ covering, (base.atom c ⬝ᵥ probe) ^ 2 := by
-    have hstep := mul_le_mul_of_nonneg_left hgrow hgainSq.le
-    linarith [hform, hfloor]
   have hspreadNonneg : 0 ≤ ∑ c ∈ covering, (base.atom c ⬝ᵥ probe) ^ 2 :=
     Finset.sum_nonneg fun _ _ => sq_nonneg _
-  have hcapChain : data.gain ^ 2 * ∑ c ∈ covering, (base.atom c ⬝ᵥ probe) ^ 2
-      ≤ cap * ∑ c ∈ covering, (base.atom c ⬝ᵥ probe) ^ 2 :=
-    mul_le_mul_of_nonneg_right hgain hspreadNonneg
-  rw [div_mul_eq_mul_div, div_le_iff₀ hcapPos]
-  linarith
+  rw [← data.length_law probe]
+  calc data.lift probe ⬝ᵥ data.lift probe
+      ≤ data.gain ^ 2 * ∑ c ∈ rawCovering \ forbidden, (base.atom c ⬝ᵥ probe) ^ 2 := by
+        linarith [hform]
+    _ ≤ data.gain ^ 2 * ∑ c ∈ covering, (base.atom c ⬝ᵥ probe) ^ 2 :=
+        mul_le_mul_of_nonneg_left hgrow hgainSq.le
+    _ ≤ cap * ∑ c ∈ covering, (base.atom c ⬝ᵥ probe) ^ 2 :=
+        mul_le_mul_of_nonneg_right hgain hspreadNonneg
 
 end DeletionSet
 
@@ -735,9 +718,8 @@ theorem exists_polarSetDeletionCover (hrank : 2 ≤ rank)
     ∃ covering : Finset (Fin size), covering.card = rank - 1
       ∧ pole ∉ covering ∧ (∀ q ∈ deleted, q ∉ covering)
       ∧ ∀ probe : Fin rank → ℝ, probe ⬝ᵥ design.atom pole = 0 →
-          ((1 - ∑ q ∈ deleted, design.weight q * planeShadowSq design pole q) / cap)
-              * (probe ⬝ᵥ probe)
-            ≤ ∑ label ∈ covering, (design.atom label ⬝ᵥ probe) ^ 2 := by
+          probe ⬝ᵥ probe - ∑ q ∈ deleted, design.weight q * (design.atom q ⬝ᵥ probe) ^ 2
+            ≤ cap * ∑ label ∈ covering, (design.atom label ⬝ᵥ probe) ^ 2 := by
   classical
   have hpos : 0 < rank := by omega
   have hcardPos : 1 ≤ deleted.card := Finset.card_pos.mpr hnonempty
@@ -818,18 +800,52 @@ theorem exists_polarSetDeletionCover (hrank : 2 ≤ rank)
     rw [hexpand, sum_householderFrame_read_mul hpos hunit (design.atom label) probe,
       hprobeNormal, mul_zero, sub_zero]
   have hstep := hcover planeProbe
-  rw [hplaneLength, Finset.sum_congr rfl fun q _ => by rw [hweightRead q, hshadow q]] at hstep
-  calc ((1 - ∑ q ∈ deleted, design.weight q * planeShadowSq design pole q) / cap)
-        * (probe ⬝ᵥ probe)
-      ≤ ∑ label ∈ covering, (restricted.atom label ⬝ᵥ planeProbe) ^ 2 := hstep
-    _ = ∑ label ∈ covering, (design.atom label ⬝ᵥ probe) ^ 2 :=
-        Finset.sum_congr rfl fun label _ => by rw [hplaneRead label]
+  rw [hplaneLength, Finset.sum_congr rfl fun q _ => by rw [hweightRead q, hplaneRead q],
+    Finset.sum_congr rfl fun label (_ : label ∈ covering) => by rw [hplaneRead label]] at hstep
+  exact hstep
 
 /-! ## Part 6: the deletion debt, the set margin, and the sharp cover
 
 The whole set deletion is priced by ONE number: the DEBT of the deleted set.
 The cover beats the identity exactly when the debt stays below the pole's own
 weight, and the margin it achieves is any value below the sharp one. -/
+
+/-- **THE PLANE CAUCHY-SCHWARZ.**  At a probe orthogonal to the pole, an atom
+reads only through its PLANE SHADOW, thus the squared reading is capped by the
+shadow and not by the whole energy. -/
+theorem polarPairing_sq_le_planeShadowSq_mul (design : WeightedDesign size rank)
+    {pole : Fin size} (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole)
+    (label : Fin size) {probe : Fin rank → ℝ} (hprobe : probe ⬝ᵥ design.atom pole = 0) :
+    (design.atom label ⬝ᵥ probe) ^ 2
+      ≤ planeShadowSq design pole label * (probe ⬝ᵥ probe) := by
+  set shadowVec : Fin rank → ℝ := design.atom label
+    - ((design.atom label ⬝ᵥ design.atom pole) / (design.atom pole ⬝ᵥ design.atom pole))
+      • design.atom pole with hshadowVec
+  have hpoleProbe : design.atom pole ⬝ᵥ probe = 0 := by rw [dotProduct_comm]; exact hprobe
+  have hread : shadowVec ⬝ᵥ probe = design.atom label ⬝ᵥ probe := by
+    rw [hshadowVec, sub_dotProduct, smul_dotProduct, smul_eq_mul, hpoleProbe, mul_zero, sub_zero]
+  have hlength : shadowVec ⬝ᵥ shadowVec = planeShadowSq design pole label := by
+    rw [hshadowVec, planeShadowSq]
+    simp only [sub_dotProduct, dotProduct_sub, smul_dotProduct, dotProduct_smul, smul_eq_mul]
+    rw [dotProduct_comm (design.atom pole) (design.atom label)]
+    field_simp
+    ring
+  rw [← hread, ← hlength]
+  exact dotProduct_sq_le_mul_self shadowVec probe
+
+/-- **THE DELETED SET READS ONLY THROUGH ITS SHADOWS.** -/
+theorem sum_weight_polarPairing_sq_le (design : WeightedDesign size rank) {pole : Fin size}
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) (deleted : Finset (Fin size))
+    {probe : Fin rank → ℝ} (hprobe : probe ⬝ᵥ design.atom pole = 0) :
+    ∑ q ∈ deleted, design.weight q * (design.atom q ⬝ᵥ probe) ^ 2
+      ≤ (∑ q ∈ deleted, design.weight q * planeShadowSq design pole q) * (probe ⬝ᵥ probe) := by
+  rw [Finset.sum_mul]
+  refine Finset.sum_le_sum fun q _ => ?_
+  calc design.weight q * (design.atom q ⬝ᵥ probe) ^ 2
+      ≤ design.weight q * (planeShadowSq design pole q * (probe ⬝ᵥ probe)) :=
+        mul_le_mul_of_nonneg_left
+          (polarPairing_sq_le_planeShadowSq_mul design hpole q hprobe) (design.weight_pos q).le
+    _ = design.weight q * planeShadowSq design pole q * (probe ⬝ᵥ probe) := by ring
 
 /-- **THE DELETION DEBT OF A SET.**  The weighted plane shadows of the deleted
 labels, each measured against one unit. -/
@@ -851,6 +867,21 @@ noncomputable def setDeletionMargin (design : WeightedDesign size rank) (pole : 
     (deleted : Finset (Fin size)) : ℝ :=
   (1 - ∑ q ∈ deleted, design.weight q * planeShadowSq design pole q)
       / (1 - design.weight pole - ∑ q ∈ deleted, design.weight q) - 1
+
+/-- **THE SHARP SET MARGIN, AT A SPREAD BOUND.**  A caller who can bound the
+weighted squared readings of the deleted set by `spread` times the probe energy
+gets this margin.  The trace bound `Σ_T weight q * planeShadowSq` is one such
+bound, and it is the weakest one. -/
+noncomputable def spreadDeletionMargin (design : WeightedDesign size rank) (pole : Fin size)
+    (deleted : Finset (Fin size)) (spread : ℝ) : ℝ :=
+  (1 - spread) / (1 - design.weight pole - ∑ q ∈ deleted, design.weight q) - 1
+
+/-- The set margin is the spread margin at the trace bound. -/
+theorem setDeletionMargin_eq_spread (design : WeightedDesign size rank) (pole : Fin size)
+    (deleted : Finset (Fin size)) :
+    setDeletionMargin design pole deleted
+      = spreadDeletionMargin design pole deleted
+        (∑ q ∈ deleted, design.weight q * planeShadowSq design pole q) := rfl
 
 /-- **A DELETABLE SET NEVER SATURATES THE PLANE.**  The trace condition of the
 set deletion follows from the debt condition alone, because the pole and the
@@ -904,15 +935,19 @@ theorem setDeletionMargin_pos (design : WeightedDesign size rank) {pole : Fin si
 /-- **THE POLAR SET DELETION COVER, AT EVERY MARGIN BELOW THE SHARP ONE.**  The
 cap of the set deletion is chosen by the margin, thus the caller names the margin
 and never sees the shares. -/
-theorem exists_polarSetDeletionCover_margin (hrank : 2 ≤ rank)
+theorem exists_polarSetDeletionCover_spread (hrank : 2 ≤ rank)
     (hpredecessor : GtzWeightedAll (rank - 1))
     (design : WeightedDesign size rank) {pole : Fin size}
     (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole)
     {deleted : Finset (Fin size)} (hnonempty : deleted.Nonempty) (hpole : pole ∉ deleted)
     (hroom : rank + deleted.card ≤ size)
     (hdeletable : planeShadowDebt design pole deleted < design.weight pole)
+    {spread : ℝ}
+    (hspread : ∀ probe : Fin rank → ℝ, probe ⬝ᵥ design.atom pole = 0 →
+      ∑ q ∈ deleted, design.weight q * (design.atom q ⬝ᵥ probe) ^ 2
+        ≤ spread * (probe ⬝ᵥ probe))
     {margin : ℝ} (hmarginPos : 0 < margin)
-    (hmarginLt : margin < setDeletionMargin design pole deleted) :
+    (hmarginLt : margin < spreadDeletionMargin design pole deleted spread) :
     ∃ covering : Finset (Fin size), covering.card = rank - 1
       ∧ pole ∉ covering ∧ (∀ q ∈ deleted, q ∉ covering)
       ∧ ∀ probe : Fin rank → ℝ, probe ⬝ᵥ design.atom pole = 0 →
@@ -927,26 +962,54 @@ theorem exists_polarSetDeletionCover_margin (hrank : 2 ≤ rank)
   -- a surviving label exists, thus the surviving mass is positive
   have hfree : 0 < 1 - design.weight pole - ∑ q ∈ deleted, design.weight q :=
     setDeletion_free_mass_pos design hpole (by omega)
-  set cap : ℝ := (1 - ∑ q ∈ deleted, design.weight q * planeShadowSq design pole q) / (1 + margin)
-    with hcapDef
-  have hnumPos : (0 : ℝ)
-      < 1 - ∑ q ∈ deleted, design.weight q * planeShadowSq design pole q := by linarith
   have hmarginDen : (0 : ℝ) < 1 + margin := by linarith
+  have hnumPos : (0 : ℝ) < 1 - spread := by
+    rw [spreadDeletionMargin, lt_sub_iff_add_lt, lt_div_iff₀ hfree] at hmarginLt
+    nlinarith [hmarginLt, hfree, hmarginPos]
+  set cap : ℝ := (1 - spread) / (1 + margin) with hcapDef
   have hcapPos : 0 < cap := by rw [hcapDef]; exact div_pos hnumPos hmarginDen
   have hcapGt : 1 - design.weight pole - ∑ q ∈ deleted, design.weight q < cap := by
     rw [hcapDef, lt_div_iff₀ hmarginDen]
-    rw [setDeletionMargin, lt_sub_iff_add_lt, lt_div_iff₀ hfree] at hmarginLt
+    rw [spreadDeletionMargin, lt_sub_iff_add_lt, lt_div_iff₀ hfree] at hmarginLt
     nlinarith [hmarginLt]
   obtain ⟨covering, hcard, hpoleNotMem, hdeletedNotMem, hcover⟩ :=
     exists_polarSetDeletionCover hrank hpredecessor design hlong hnonempty hpole hroom htotal
       hcapPos hcapGt
   refine ⟨covering, hcard, hpoleNotMem, hdeletedNotMem, fun probe hprobe => ?_⟩
-  have hfactor : (1 - ∑ q ∈ deleted, design.weight q * planeShadowSq design pole q) / cap
-      = 1 + margin := by
-    rw [hcapDef, div_div_eq_mul_div, div_eq_iff (ne_of_gt hnumPos)]
-    ring
   have hstep := hcover probe hprobe
-  rwa [hfactor] at hstep
+  have hcauchy := hspread probe hprobe
+  have hbase : (1 - spread) * (probe ⬝ᵥ probe)
+      ≤ cap * ∑ label ∈ covering, (design.atom label ⬝ᵥ probe) ^ 2 := by nlinarith [hstep, hcauchy]
+  have hmul := mul_le_mul_of_nonneg_right hbase hmarginDen.le
+  have hcapMul : cap * (∑ label ∈ covering, (design.atom label ⬝ᵥ probe) ^ 2) * (1 + margin)
+      = (1 - spread) * ∑ label ∈ covering, (design.atom label ⬝ᵥ probe) ^ 2 := by
+    rw [hcapDef]; field_simp
+  have hshape : (1 - spread) * (probe ⬝ᵥ probe) * (1 + margin)
+      = (1 - spread) * ((1 + margin) * (probe ⬝ᵥ probe)) := by ring
+  rw [hcapMul, hshape] at hmul
+  exact le_of_mul_le_mul_left hmul hnumPos
+
+/-- **THE POLAR SET DELETION COVER, AT THE TRACE BOUND.**  The plane
+Cauchy-Schwarz supplies the spread, thus the sharp cover specializes to the
+shadow total. -/
+theorem exists_polarSetDeletionCover_margin (hrank : 2 ≤ rank)
+    (hpredecessor : GtzWeightedAll (rank - 1))
+    (design : WeightedDesign size rank) {pole : Fin size}
+    (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole)
+    {deleted : Finset (Fin size)} (hnonempty : deleted.Nonempty) (hpole : pole ∉ deleted)
+    (hroom : rank + deleted.card ≤ size)
+    (hdeletable : planeShadowDebt design pole deleted < design.weight pole)
+    {margin : ℝ} (hmarginPos : 0 < margin)
+    (hmarginLt : margin < setDeletionMargin design pole deleted) :
+    ∃ covering : Finset (Fin size), covering.card = rank - 1
+      ∧ pole ∉ covering ∧ (∀ q ∈ deleted, q ∉ covering)
+      ∧ ∀ probe : Fin rank → ℝ, probe ⬝ᵥ design.atom pole = 0 →
+          (1 + margin) * (probe ⬝ᵥ probe)
+            ≤ ∑ label ∈ covering, (design.atom label ⬝ᵥ probe) ^ 2 :=
+  exists_polarSetDeletionCover_spread hrank hpredecessor design hlong hnonempty hpole hroom
+    hdeletable
+    (fun _probe hprobe => sum_weight_polarPairing_sq_le design (by linarith) deleted hprobe)
+    hmarginPos (by rw [← setDeletionMargin_eq_spread]; exact hmarginLt)
 
 /-! ## Part 7: what the set deletion kills
 
@@ -1057,6 +1120,90 @@ theorem exists_dominating_of_deletableSetTilt (hrank : 2 ≤ rank)
   refine exists_card_eq_posDef design ?_ hposDef
   rw [Finset.card_insert_of_notMem hpoleNotMem, hcard]
   omega
+
+/-- **THE SHARP MARGIN IS POSITIVE WHEN THE SPREAD BEATS THE DELETED MASS.** -/
+theorem spreadDeletionMargin_pos (design : WeightedDesign size rank) {pole : Fin size}
+    {deleted : Finset (Fin size)} {spread : ℝ}
+    (hfree : 0 < 1 - design.weight pole - ∑ q ∈ deleted, design.weight q)
+    (hbeat : spread < design.weight pole + ∑ q ∈ deleted, design.weight q) :
+    0 < spreadDeletionMargin design pole deleted spread := by
+  rw [spreadDeletionMargin, sub_pos, lt_div_iff₀ hfree, one_mul]
+  linarith
+
+/-- **THE SHARP SET DELETION KILL.**  At a SPREAD bound on the deleted set the
+budget is priced by `1 - spread` and not by the shadow total.  The trace bound
+`Gtz.sum_weight_polarPairing_sq_le` is the weakest such bound, thus this kill is
+strictly stronger than `Gtz.not_isTie_of_deletableSetTilt`. -/
+theorem not_isTie_of_spreadDeletableSetTilt (hrank : 2 ≤ rank)
+    (hpredecessor : GtzWeightedAll (rank - 1))
+    (design : WeightedDesign size rank) {pole : Fin size}
+    (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole)
+    {deleted : Finset (Fin size)} (hnonempty : deleted.Nonempty) (hpole : pole ∉ deleted)
+    (hroom : rank + deleted.card ≤ size)
+    (hdeletable : planeShadowDebt design pole deleted < design.weight pole)
+    {spread : ℝ}
+    (hspread : ∀ probe : Fin rank → ℝ, probe ⬝ᵥ design.atom pole = 0 →
+      ∑ q ∈ deleted, design.weight q * (design.atom q ⬝ᵥ probe) ^ 2
+        ≤ spread * (probe ⬝ᵥ probe))
+    (hbeat : spread < design.weight pole + ∑ q ∈ deleted, design.weight q)
+    {tiltCap : ℝ}
+    (htilt : ∀ label : Fin size, label ≠ pole → label ∉ deleted →
+      (design.atom label ⬝ᵥ design.atom pole) ^ 2 ≤ tiltCap)
+    (hbudget : ((rank : ℝ) - 1) * tiltCap
+      < spreadDeletionMargin design pole deleted spread
+          * (design.atom pole ⬝ᵥ design.atom pole)
+          * (design.atom pole ⬝ᵥ design.atom pole - 1)) :
+    ¬ IsTie design := by
+  classical
+  intro htie
+  have hleveragePos : (0 : ℝ) < design.atom pole ⬝ᵥ design.atom pole := by linarith
+  have hgapPos : (0 : ℝ) < (design.atom pole ⬝ᵥ design.atom pole)
+      * (design.atom pole ⬝ᵥ design.atom pole - 1) := by nlinarith [hlong, hleveragePos]
+  have hfree : 0 < 1 - design.weight pole - ∑ q ∈ deleted, design.weight q :=
+    setDeletion_free_mass_pos design hpole (by omega)
+  have hsharpPos : 0 < spreadDeletionMargin design pole deleted spread :=
+    spreadDeletionMargin_pos design hfree hbeat
+  have hshape : spreadDeletionMargin design pole deleted spread
+        * (design.atom pole ⬝ᵥ design.atom pole)
+        * (design.atom pole ⬝ᵥ design.atom pole - 1)
+      = spreadDeletionMargin design pole deleted spread
+        * ((design.atom pole ⬝ᵥ design.atom pole)
+          * (design.atom pole ⬝ᵥ design.atom pole - 1)) := by ring
+  rw [hshape] at hbudget
+  obtain ⟨margin, hmarginPos, hmarginLt, hmarginBudget⟩ :=
+    exists_margin_below_sharp hsharpPos hgapPos hbudget
+  obtain ⟨covering, hcard, hpoleNotMem, hdeletedNotMem, hcover⟩ :=
+    exists_polarSetDeletionCover_spread hrank hpredecessor design hlong hnonempty hpole hroom
+      hdeletable hspread hmarginPos hmarginLt
+  have htiltSum : ∑ label ∈ covering, (design.atom label ⬝ᵥ design.atom pole) ^ 2
+      ≤ ((rank : ℝ) - 1) * tiltCap := by
+    have hbound : ∑ label ∈ covering, (design.atom label ⬝ᵥ design.atom pole) ^ 2
+        ≤ ∑ _label ∈ covering, tiltCap := by
+      refine Finset.sum_le_sum fun label hlabel => ?_
+      exact htilt label (fun heq => hpoleNotMem (heq ▸ hlabel))
+        (fun hmem => hdeletedNotMem label hmem hlabel)
+    have hcardCast : ((covering.card : ℕ) : ℝ) = (rank : ℝ) - 1 := by
+      rw [hcard]
+      have hone : (1 : ℕ) ≤ rank := by omega
+      push_cast [Nat.cast_sub hone]
+      ring
+    calc ∑ label ∈ covering, (design.atom label ⬝ᵥ design.atom pole) ^ 2
+        ≤ ∑ _label ∈ covering, tiltCap := hbound
+      _ = (covering.card : ℝ) * tiltCap := by rw [Finset.sum_const, nsmul_eq_mul]
+      _ = ((rank : ℝ) - 1) * tiltCap := by rw [hcardCast]
+  have htiltStrict : ∑ label ∈ covering, (design.atom label ⬝ᵥ design.atom pole) ^ 2
+      < margin * (design.atom pole ⬝ᵥ design.atom pole)
+          * (design.atom pole ⬝ᵥ design.atom pole - 1) := by
+    have hstep : margin * ((design.atom pole ⬝ᵥ design.atom pole)
+        * (design.atom pole ⬝ᵥ design.atom pole - 1))
+        = margin * (design.atom pole ⬝ᵥ design.atom pole)
+          * (design.atom pole ⬝ᵥ design.atom pole - 1) := by ring
+    rw [← hstep]
+    linarith [hmarginBudget]
+  have hposDef := posDef_insert_of_polarCover design hpoleNotMem hlong hmarginPos hcover htiltStrict
+  obtain ⟨dominating, hdomCard, hdomPosDef⟩ := exists_card_eq_posDef design
+    (by rw [Finset.card_insert_of_notMem hpoleNotMem, hcard]; omega) hposDef
+  exact htie.2 dominating hdomCard hdomPosDef
 
 /-- **THE SET DELETION KILL.**  No tie carries a deletable set whose survivors
 are all below the tilt budget. -/
