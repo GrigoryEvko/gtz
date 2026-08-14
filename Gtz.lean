@@ -1932,6 +1932,11 @@ import Gtz.Reduction.SignClashReduction
 import Gtz.Design.EraseSystem
 import Gtz.Reduction.ForcedSignForcing
 import Gtz.Reduction.SignClashCoverage
+
+-- The parity narrowing: at an exceptional design the strict forced-minus
+-- clause is free, thus the sign-clash route narrows to three positive
+-- conjuncts whose middle one is the landed positive parity triple.
+import Gtz.Reduction.SignClashParityNarrowing
 import Gtz.Design.ExceptionalWitnessDesign
 
 -- Residual threading (phase 4): the census bridges and the bordered-slack converse

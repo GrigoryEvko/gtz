@@ -354,6 +354,7 @@ import Gtz.Reduction.SignClashReduction
 import Gtz.Design.EraseSystem
 import Gtz.Reduction.ForcedSignForcing
 import Gtz.Reduction.SignClashCoverage
+import Gtz.Reduction.SignClashParityNarrowing
 import Gtz.Design.ExceptionalWitnessDesign
 import Gtz.Reduction.ResidualThreading
 import Gtz.Reduction.FarkasCapacity
@@ -26126,3 +26127,11 @@ run_cmd do
 #print axioms Gtz.planeTrineAtom_dot
 #print axioms Gtz.planeTrine_not_dominates
 #print axioms Gtz.planeTrine_scale_total
+
+-- The parity narrowing of the sign-clash route.
+#print axioms Gtz.isSignBlindGoodTriple_phaseFreeOfDesign_iff
+#print axioms Gtz.adverseTie_neg_of_isExceptional_of_traceLeg
+#print axioms Gtz.isForcedMinusTriple_of_isExceptional_of_parity
+#print axioms Gtz.TraceParityTieClash
+#print axioms Gtz.ownSignForcedClash_of_traceParityTieClash
+#print axioms Gtz.gtzWeighted_six_three_of_traceParityTieClash
