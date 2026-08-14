@@ -26145,3 +26145,17 @@ run_cmd do
 #print axioms Gtz.PlaneParseval.exists_pairDeterminant_ge_four
 #print axioms Gtz.massScale_pointwise
 #print axioms Gtz.PlaneParseval.massWeighted_dominates
+#print axioms Gtz.dot_fin_three
+#print axioms Gtz.BlochDominates
+#print axioms Gtz.blochSum_energy
+#print axioms Gtz.blochDominates_iff_planePairDominates
+#print axioms Gtz.exists_blochDominating_pair
+#print axioms Gtz.blochUnit
+#print axioms Gtz.blochUnit_sq
+#print axioms Gtz.blochTetraRead
+#print axioms Gtz.blochTetraRead_sum
+#print axioms Gtz.blochTetraRead_dot_self
+#print axioms Gtz.blochTetraRead_dot
+#print axioms Gtz.blochTetra_not_dominates
+#print axioms Gtz.blochTetra_mass_total
+#print axioms Gtz.blochTetra_scale_total
