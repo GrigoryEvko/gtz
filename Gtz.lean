@@ -3691,3 +3691,10 @@ import Gtz.Wave.PluckerSchurFloor
 -- time to the shifted block. It reads all three symmetric functions, and one
 -- step carries the per-triple half of the route past the Hermitian value.
 import Gtz.Wave.ShiftedWedgeFloor
+
+-- The determinantal weight is the wrong measure. The flat average of the
+-- twenty shifted triple determinants caps at (5 - sqrt 15)/10, below the
+-- Hermitian value; no nonnegative weight that reads the block determinant
+-- alone survives the cuboctahedron; and the Bargmann-signed repair does not
+-- survive the trine foil.
+import Gtz.Wave.DeterminantalWeightKill

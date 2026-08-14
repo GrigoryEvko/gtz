@@ -833,6 +833,7 @@ import Gtz.Wave.PlaneRouteFoil
 import Gtz.Wave.PlaneMarginTarget
 import Gtz.Wave.PluckerSchurFloor
 import Gtz.Wave.ShiftedWedgeFloor
+import Gtz.Wave.DeterminantalWeightKill
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27172,3 +27173,79 @@ run_cmd do
 #print axioms Gtz.atomBlendFloor_shift
 #print axioms Gtz.atomExtremalSpectrum
 #print axioms Gtz.atomShiftedWedge_passes_ceiling
+
+-- Gtz/Wave/DeterminantalWeightKill.lean
+-- The determinantal weight is the wrong measure, and the Bargmann sign is
+-- why: the flat average caps at (5 - sqrt 15)/10, no nonnegative weight that
+-- reads the block determinant alone survives the cuboctahedron, the repair
+-- that multiplies by the Bargmann invariant does not survive the trine foil,
+-- and a floor that reads only the trace and the determinant passes the
+-- Hermitian ceiling at the cuboctahedron.
+#print axioms Gtz.atomTripleBargmann
+#print axioms Gtz.atomTripleBargmann_sq
+#print axioms Gtz.atomBlockDet_eq_bargmann
+#print axioms Gtz.atomFlatDrop_factor
+#print axioms Gtz.atomFlatDropCeiling
+#print axioms Gtz.atomFlatDropCeiling_root
+#print axioms Gtz.atomFlatDropCeiling_bounds
+#print axioms Gtz.atomFlatDrop_neg_of_gt
+#print axioms Gtz.atomFlatDropCeiling_lt_hermitianCeiling
+#print axioms Gtz.atomSixthScale
+#print axioms Gtz.atomSixthScale_apply
+#print axioms Gtz.dropWitnessGram_diag_zero
+#print axioms Gtz.dropWitnessGram_zero_one
+#print axioms Gtz.dropWitnessGram_zero_two
+#print axioms Gtz.dropWitnessGram_zero_three
+#print axioms Gtz.dropWitnessGram_zero_four
+#print axioms Gtz.dropWitnessGram_zero_five
+#print axioms Gtz.dropWitnessGram_one_one
+#print axioms Gtz.dropWitnessGram_one_two
+#print axioms Gtz.dropWitnessGram_one_three
+#print axioms Gtz.dropWitnessGram_one_four
+#print axioms Gtz.dropWitnessGram_one_five
+#print axioms Gtz.dropWitnessGram_two_two
+#print axioms Gtz.dropWitnessGram_two_three
+#print axioms Gtz.dropWitnessGram_two_four
+#print axioms Gtz.dropWitnessGram_two_five
+#print axioms Gtz.dropWitnessGram_three_three
+#print axioms Gtz.dropWitnessGram_three_four
+#print axioms Gtz.dropWitnessGram_three_five
+#print axioms Gtz.dropWitnessGram_four_four
+#print axioms Gtz.dropWitnessGram_four_five
+#print axioms Gtz.dropWitnessGram_five_five
+#print axioms Gtz.dropWitnessBlockDet
+#print axioms Gtz.dropWitnessBargmann
+#print axioms Gtz.dropWitnessTripleDet
+#print axioms Gtz.dropWitnessBlockSecond
+#print axioms Gtz.AtomDeterminantalWeightSupply
+#print axioms Gtz.not_atomDeterminantalWeightSupply
+#print axioms Gtz.not_atomDeterminantalPowerSupply
+#print axioms Gtz.not_atomDeterminantalSupportSupply
+#print axioms Gtz.trineFoilAtom
+#print axioms Gtz.trineFoilAtom_isTightFrame
+#print axioms Gtz.trineFoilGram_zero_row
+#print axioms Gtz.trineFoilGram_two_row
+#print axioms Gtz.trineFoilGram_diag
+#print axioms Gtz.trineFoilGram_off
+#print axioms Gtz.trineFoilFace
+#print axioms Gtz.trineFoilBargmann_zero
+#print axioms Gtz.AtomBargmannWeightSupply
+#print axioms Gtz.not_atomBargmannWeightSupply
+#print axioms Gtz.amgm_le_of_root_bound
+#print axioms Gtz.amgmRoot_cuboctahedron
+#print axioms Gtz.amgmRoot_passes_ceiling
+#print axioms Gtz.wedgeRungTwo
+#print axioms Gtz.wedgeRungTwo_clear
+#print axioms Gtz.wedgeRungTwo_cuboctahedron_win
+#print axioms Gtz.wedgeRungTwo_cuboctahedron_near
+#print axioms Gtz.wedgeRungTwo_dropWitness_average
+#print axioms Gtz.wedgeRungTwo_dropWitness_passes_ceiling
+#print axioms Gtz.wedgeRungOne_dropWitness_average
+#print axioms Gtz.wedgeRungTwoLower
+#print axioms Gtz.wedgeRungTwoLower_cross
+#print axioms Gtz.wedgeRungTwoLower_le
+#print axioms Gtz.wedgeRungTwoLower_cuboctahedron_win
+#print axioms Gtz.wedgeRungTwoLower_cuboctahedron_near
+#print axioms Gtz.wedgeRungTwoLower_dropWitness_average
+#print axioms Gtz.wedgeRungTwoLower_dropWitness_passes_ceiling
+#print axioms Gtz.wedgeRung_dropWitness_ladder
