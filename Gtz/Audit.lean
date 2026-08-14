@@ -820,6 +820,7 @@ import Gtz.Wave.AtomVertexSelection
 import Gtz.Wave.AtomMarginalFoil
 import Gtz.Wave.AtomIntegralityGap
 import Gtz.Wave.SignatureSelection
+import Gtz.Wave.SignatureMoments
 import Gtz.Wave.PivotSchurLift
 import Gtz.Wave.OrientedTriangleSign
 #print axioms Gtz.unitVector
@@ -26586,3 +26587,35 @@ run_cmd do
 #print axioms Gtz.dppTripleWeight_eq_det3_sq
 #print axioms Gtz.exists_charNegative_of_moments_of_separator
 #print axioms Gtz.weighted_char_sum_neg
+#print axioms Gtz.orderedTriple_first
+#print axioms Gtz.orderedTriple_second
+#print axioms Gtz.orderedTriple_third
+#print axioms Gtz.orderedTriple_pairOneTwo
+#print axioms Gtz.orderedTriple_pairOneThree
+#print axioms Gtz.orderedTriple_pairTwoThree
+#print axioms Gtz.atomGram_cube_total
+#print axioms Gtz.atomFlatPairTotal_eq
+#print axioms Gtz.atomFlatMomentOne_eq
+#print axioms Gtz.atomFlatMomentTwo_eq
+#print axioms Gtz.atomFlatMomentThree_eq
+#print axioms Gtz.atomFlatChar_eq
+#print axioms Gtz.atomFlatChar_eq_of_mass_eq
+#print axioms Gtz.atomPairMinor_diagonal
+#print axioms Gtz.atomFlatOffPairTotal_eq
+#print axioms Gtz.scaleMarginal_pos
+#print axioms Gtz.atomFlatOffPairTotal_pos
+#print axioms Gtz.exists_distinct_pair_pos_minor
+#print axioms Gtz.atomFlatMomentThree_pos_of_mass_le
+#print axioms Gtz.exists_orderedTriple_pos_det
+#print axioms Gtz.atomFlatMomentThree_at_mass_one
+#print axioms Gtz.exists_orderedTriple_neg_det
+#print axioms Gtz.not_flatDeterminantAveraging
+#print axioms Gtz.atomCross_triple_product
+#print axioms Gtz.planeLift
+#print axioms Gtz.planeCoord
+#print axioms Gtz.planeCoord_dot_pair
+#print axioms Gtz.planeLift_dot
+#print axioms Gtz.planeCoord_dot
+#print axioms Gtz.atomGram_off_isolated
+#print axioms Gtz.planePair_atom_ne_zero
+#print axioms Gtz.exists_weakCarrier_of_isolated_slot
