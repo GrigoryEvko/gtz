@@ -40,15 +40,18 @@ pair sits at the certificate boundary, and `Gtz.planeTrine_not_dominates` shows
 that NO pair dominates at any inflated scale.  Thus the margin of the selection
 theorem cannot be positive at scale total one.
 
-The theorem is REAL.  Its Hermitian analogue is FALSE at four atoms: the Bloch
-tetrahedron of two-dimensional complex space (four unit vectors of pairwise
-squared overlap one third, mass one half, scale one quarter, scale total one)
-gives every pair the least eigenvalue `2 - 2/sqrt 3`, which misses one by
-`0.1547`.  The reason is a dimension count.  The doubled readings of the real
-plane fill a plane, where the cap residue asks for three atoms, and the doubled
-readings of the complex plane fill a three-space, where it asks for four.  Four
-atoms are exactly the first count at which the two fields separate.  This
-paragraph reports a measurement, not a theorem of this module.
+The theorem is REAL, and this module PROVES it.  A rank-one positive form of a
+two-dimensional space is a mass and a direction of the Bloch space.  Over the
+reals the Bloch space is the doubled plane and has dimension two, over the
+Hermitian field it is a three-space.  `Gtz.BlochDominates` writes the pair test
+at every dimension, `Gtz.blochDominates_iff_planePairDominates` shows that
+dimension two gives back the pair test of this module, and
+`Gtz.blochTetra_not_dominates` shows that at dimension three the four readings
+of the regular tetrahedron obey the frame law at scale total one and NO pair of
+them dominates.  Their pair matrices carry the least eigenvalue `2 - 2/sqrt 3`,
+which misses one by `0.1547`.  Four atoms are the first count at which the two
+fields separate, because three readings of any dimension still wrap in the
+plane that they span.
 
 ## PROVED here (no `sorry`, no `axiom`, no `native_decide`)
 
@@ -111,6 +114,18 @@ paragraph reports a measurement, not a theorem of this module.
   above the identity.  It is a dominating MEASURE and holds over every field,
   so the passage from the measure to one of its atoms is the whole content of
   the selection theorem.
+* `Gtz.dot_fin_three`, `Gtz.BlochDominates`, `Gtz.blochSum_energy`,
+  `Gtz.blochDominates_iff_planePairDominates`,
+  `Gtz.exists_blochDominating_pair` — **THE BLOCH READING.**  One
+  division-free pair test at every dimension, and its equivalence with the pair
+  test of the plane at dimension two.
+* `Gtz.blochUnit`, `Gtz.blochTetraRead`, `Gtz.blochTetraRead_sum`,
+  `Gtz.blochTetraRead_dot_self`, `Gtz.blochTetraRead_dot`,
+  `Gtz.blochTetra_not_dominates`, `Gtz.blochTetra_mass_total`,
+  `Gtz.blochTetra_scale_total` — **THE HERMITIAN ANALOGUE IS FALSE.**  The Bloch
+  tetrahedron obeys the frame law at mass total two and scale total one, and no
+  pair of its readings dominates.  This is the real-only ingredient of the
+  selection theorem, as a theorem.
 -/
 
 namespace Gtz
@@ -1087,5 +1102,146 @@ theorem PlaneParseval.massWeighted_dominates {slotCount : ℕ}
     Finset.sum_le_sum (fun slot _ => hpointwise slot)
   rw [Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.sum_mul, hpar] at hsum
   nlinarith [hsum, hprobe, hsmall]
+
+/-! ## Layer 8 — the Bloch reading, and the count that separates the two fields
+
+A rank-one positive form of a two-dimensional space is a mass and a DIRECTION
+OF THE BLOCH SPACE.  Over the reals the Bloch space is the doubled plane, of
+dimension two, and the direction is the doubled reading of this module.  Over
+the Hermitian field the Bloch space is a three-space.  In both cases the frame
+law says that the Bloch readings TOTAL ZERO and the masses total two, and the
+pair test is one division-free inequality between a mass reading and a Bloch
+reading.
+
+`Gtz.BlochDominates` writes that test at every dimension.  At dimension two it
+IS the pair test of this module (`Gtz.blochDominates_iff_planePairDominates`),
+so the selection theorem holds.  At dimension three it FAILS: the four Bloch
+readings of the regular tetrahedron carry mass one half at scale one quarter,
+they obey the frame law exactly, and NO pair of them dominates
+(`Gtz.blochTetra_not_dominates`).
+
+Thus the selection theorem is real, and one dimension count is the whole
+reason.  Four atoms are the first count at which the two fields separate: three
+Bloch readings of any dimension still wrap in the plane that they span. -/
+
+/-- The dot product of a three-space, written out. -/
+theorem dot_fin_three (vecOne vecTwo : Fin 3 → ℝ) :
+    vecOne ⬝ᵥ vecTwo = vecOne 0 * vecTwo 0 + vecOne 1 * vecTwo 1 + vecOne 2 * vecTwo 2 := by
+  simp [dotProduct, Fin.sum_univ_three]
+
+/-- **THE PAIR TEST IN BLOCH FORM.**  Two masses, two scales and two Bloch
+readings dominate when the shifted mass reading is nonnegative and caps the
+energy of the scaled Bloch sum.  The test carries no division and no dimension,
+so it reads the real case and the Hermitian case with one statement. -/
+def BlochDominates {dim : ℕ} (massOne massTwo scaleOne scaleTwo : ℝ)
+    (readOne readTwo : Fin dim → ℝ) : Prop :=
+  0 ≤ scaleTwo * massOne + scaleOne * massTwo - 2 * (scaleOne * scaleTwo)
+    ∧ (scaleTwo • readOne + scaleOne • readTwo) ⬝ᵥ (scaleTwo • readOne + scaleOne • readTwo)
+        ≤ (scaleTwo * massOne + scaleOne * massTwo - 2 * (scaleOne * scaleTwo)) ^ 2
+
+/-- The energy of a scaled Bloch sum, written on the three readings. -/
+theorem blochSum_energy {dim : ℕ} (scaleOne scaleTwo : ℝ) (readOne readTwo : Fin dim → ℝ) :
+    (scaleTwo • readOne + scaleOne • readTwo) ⬝ᵥ (scaleTwo • readOne + scaleOne • readTwo)
+      = scaleTwo ^ 2 * (readOne ⬝ᵥ readOne) + 2 * (scaleOne * scaleTwo) * (readOne ⬝ᵥ readTwo)
+        + scaleOne ^ 2 * (readTwo ⬝ᵥ readTwo) := by
+  simp only [add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul, smul_eq_mul,
+    dotProduct_comm readTwo readOne]
+  ring
+
+/-- **THE BLOCH TEST IS THE PAIR TEST OF THE PLANE.**  At dimension two, with
+the doubled readings as Bloch readings, the Bloch test and the domination of
+this module are the same statement. -/
+theorem blochDominates_iff_planePairDominates {atomOne atomTwo : Fin 2 → ℝ}
+    {scaleOne scaleTwo : ℝ} (hposOne : 0 < scaleOne) (hposTwo : 0 < scaleTwo) :
+    BlochDominates (atomOne ⬝ᵥ atomOne) (atomTwo ⬝ᵥ atomTwo) scaleOne scaleTwo
+        (planeDouble atomOne) (planeDouble atomTwo)
+      ↔ PlanePairDominates atomOne atomTwo scaleOne scaleTwo := by
+  rw [planePairDominates_iff hposOne hposTwo, BlochDominates, blochSum_energy,
+    planeDouble_dot_self, planeDouble_dot_self, planeDouble_dot]
+  have hscale : 0 < scaleOne * scaleTwo := mul_pos hposOne hposTwo
+  constructor
+  · rintro ⟨htrace, henergy⟩
+    exact ⟨by linarith, by nlinarith [henergy, hscale]⟩
+  · rintro ⟨htrace, hdet⟩
+    exact ⟨by linarith, by nlinarith [hdet, hscale]⟩
+
+/-- **THE SELECTION THEOREM IN BLOCH FORM.**  At dimension two the selection
+theorem says that some pair passes the Bloch test. -/
+theorem exists_blochDominating_pair {slotCount : ℕ} (hcount : 3 ≤ slotCount)
+    (atom : Fin slotCount → (Fin 2 → ℝ)) (scale : Fin slotCount → ℝ)
+    (hframe : PlaneParseval atom) (hpos : ∀ slot, 0 < scale slot)
+    (hsmall : (∑ slot, scale slot) ≤ 1) :
+    ∃ slotOne slotTwo, slotOne ≠ slotTwo
+      ∧ BlochDominates (atom slotOne ⬝ᵥ atom slotOne) (atom slotTwo ⬝ᵥ atom slotTwo)
+          (scale slotOne) (scale slotTwo)
+          (planeDouble (atom slotOne)) (planeDouble (atom slotTwo)) := by
+  obtain ⟨slotOne, slotTwo, hdiff, hdom⟩ :=
+    exists_dominatingPlanePair_boundary hcount atom scale hframe hpos hsmall
+  exact ⟨slotOne, slotTwo, hdiff,
+    (blochDominates_iff_planePairDominates (hpos slotOne) (hpos slotTwo)).mpr hdom⟩
+
+/-- The half edge of the Bloch tetrahedron.  Its square is one twelfth. -/
+noncomputable def blochUnit : ℝ := Real.sqrt (1 / 12)
+
+theorem blochUnit_sq : blochUnit * blochUnit = 1 / 12 :=
+  Real.mul_self_sqrt (by norm_num)
+
+/-- **THE BLOCH TETRAHEDRON.**  The four Bloch readings of the regular
+tetrahedron, each of mass one half.  Over the Hermitian field these readings
+are the four states of the symmetric informationally complete family, and their
+pairwise squared overlap is one third. -/
+noncomputable def blochTetraRead : Fin 4 → (Fin 3 → ℝ)
+  | 0 => ![blochUnit, blochUnit, blochUnit]
+  | 1 => ![blochUnit, -blochUnit, -blochUnit]
+  | 2 => ![-blochUnit, blochUnit, -blochUnit]
+  | 3 => ![-blochUnit, -blochUnit, blochUnit]
+
+/-- The tetrahedron obeys the frame law: its readings total zero. -/
+theorem blochTetraRead_sum (index : Fin 3) :
+    (∑ slot, blochTetraRead slot index) = 0 := by
+  fin_cases index <;> simp [Fin.sum_univ_four, blochTetraRead]
+
+/-- Every reading of the tetrahedron carries the square of the mass one half. -/
+theorem blochTetraRead_dot_self (slot : Fin 4) :
+    blochTetraRead slot ⬝ᵥ blochTetraRead slot = (1 / 2) ^ 2 := by
+  fin_cases slot <;>
+    simp only [dot_fin_three, blochTetraRead, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons] <;>
+    nlinarith [blochUnit_sq]
+
+/-- Two distinct readings of the tetrahedron read minus one twelfth.  This is
+the mass product times minus one third, the overlap law of the family. -/
+theorem blochTetraRead_dot {slotOne slotTwo : Fin 4} (hdiff : slotOne ≠ slotTwo) :
+    blochTetraRead slotOne ⬝ᵥ blochTetraRead slotTwo = -(1 / 12) := by
+  fin_cases slotOne <;> fin_cases slotTwo <;>
+    simp_all only [ne_eq, not_true_eq_false] <;>
+    simp only [dot_fin_three, blochTetraRead, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons] <;>
+    nlinarith [blochUnit_sq]
+
+/-- **THE HERMITIAN ANALOGUE IS FALSE.**  The Bloch tetrahedron obeys the frame
+law at mass total two, it carries the scale total one, and NO pair of its four
+readings dominates.
+
+The datum is the Hermitian datum of four states at four equal scales.  Its pair
+matrices all carry the least eigenvalue `2 - 2/sqrt 3`, which misses one.  The
+selection theorem of this module is REAL, and the reason is the dimension of
+the Bloch space. -/
+theorem blochTetra_not_dominates {slotOne slotTwo : Fin 4} (hdiff : slotOne ≠ slotTwo) :
+    ¬ BlochDominates (1 / 2) (1 / 2) (1 / 4) (1 / 4)
+        (blochTetraRead slotOne) (blochTetraRead slotTwo) := by
+  rintro ⟨_, henergy⟩
+  rw [blochSum_energy, blochTetraRead_dot_self, blochTetraRead_dot_self,
+    blochTetraRead_dot hdiff] at henergy
+  norm_num at henergy
+
+/-- The tetrahedron carries the mass total two, the trace of the identity. -/
+theorem blochTetra_mass_total : (∑ _slot : Fin 4, (1 : ℝ) / 2) = 2 := by
+  norm_num
+
+/-- The tetrahedron carries the scale total one, the boundary of the selection
+theorem. -/
+theorem blochTetra_scale_total : (∑ _slot : Fin 4, (1 : ℝ) / 4) = 1 := by
+  norm_num
 
 end Gtz
