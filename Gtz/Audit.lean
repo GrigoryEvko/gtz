@@ -830,6 +830,7 @@ import Gtz.Wave.QuadDropSign
 import Gtz.Wave.PluckerEnergySupply
 import Gtz.Wave.HeavyPivotFoil
 import Gtz.Wave.PlaneRouteFoil
+import Gtz.Wave.PlaneMarginTarget
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27077,3 +27078,14 @@ run_cmd do
 #print axioms Gtz.not_atomLivePivotPlaneCoverClosed
 #print axioms Gtz.not_atomHeavyPivotCoverClosed_second
 #print axioms Gtz.not_atomHeavyPivotPlaneCoverClosed_second
+
+/-! ## The plane test of the margin theorem -/
+
+#print axioms Gtz.AtomPairPlaneMarginDominates
+#print axioms Gtz.AtomLivePivotPlaneMarginCoverClosed
+#print axioms Gtz.atomPairPlaneMarginDominates_of_planeDominates
+#print axioms Gtz.atomLivePivotPlaneMarginCoverClosed_of_planeCover
+#print axioms Gtz.atomLivePivotCoverClosed_of_livePlaneMargin
+#print axioms Gtz.gtzWeighted_six_three_of_livePivotPlaneMarginCover
+#print axioms Gtz.heavyFoil_planeMargin_oneTwoFour
+#print axioms Gtz.planeFoil_planeMargin_threeFourFive

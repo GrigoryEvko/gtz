@@ -3676,3 +3676,8 @@ import Gtz.Wave.HeavyPivotFoil
 -- the square root of thirteen kills the plane half and the heavy half at one
 -- datum.
 import Gtz.Wave.PlaneRouteFoil
+
+-- The plane test that the margin theorem actually delivers, at the factor
+-- one plus half the pivot scale. Neither foil touches it, and it still
+-- carries the cell.
+import Gtz.Wave.PlaneMarginTarget
