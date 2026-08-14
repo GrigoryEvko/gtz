@@ -816,6 +816,7 @@ import Gtz.Wave.AtomTriangleEnergy
 import Gtz.Wave.AtomBoundaryWitness
 import Gtz.Wave.AtomMassOneLadder
 import Gtz.Wave.AtomVertexSelection
+import Gtz.Wave.AtomMarginalFoil
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -26234,3 +26235,29 @@ run_cmd do
 #print axioms Gtz.sum_weight_mul_weight_mul_pairMinor_erase
 #print axioms Gtz.sum_weight_mul_weight_erase
 #print axioms Gtz.exists_pairMinor_gt_one
+#print axioms Gtz.atomMarginalFoilAtom
+#print axioms Gtz.atomMarginalFoilScale
+#print axioms Gtz.atomMarginalFoilScale_pos
+#print axioms Gtz.atomMarginalFoilScale_sum
+#print axioms Gtz.atomMarginalFoilAtom_isTightFrame
+#print axioms Gtz.atomMarginalFoilGram_zero_zero
+#print axioms Gtz.atomMarginalFoilGram_one_one
+#print axioms Gtz.atomMarginalFoilGram_two_two
+#print axioms Gtz.atomMarginalFoilGram_three_three
+#print axioms Gtz.atomMarginalFoilGram_four_four
+#print axioms Gtz.atomMarginalFoilGram_five_five
+#print axioms Gtz.atomMarginalFoilGram_zero_one
+#print axioms Gtz.atomMarginalFoilGram_zero_two
+#print axioms Gtz.atomMarginalFoilGram_one_two
+#print axioms Gtz.atomMarginalFoilGram_zero_three
+#print axioms Gtz.atomMarginalFoilGram_one_three
+#print axioms Gtz.atomMarginalFoil_marginal_top
+#print axioms Gtz.atomMarginalFoil_marginal_total
+#print axioms Gtz.atomMarginalFoil_top_fails
+#print axioms Gtz.atomMarginalFoil_values
+#print axioms Gtz.atomMarginalFoil_carrier
+#print axioms Gtz.AtomMarginalOrderSelectionClosed
+#print axioms Gtz.not_atomMarginalOrderSelectionClosed
+#print axioms Gtz.AtomRatioOrderSelectionClosed
+#print axioms Gtz.not_atomRatioOrderSelectionClosed
+#print axioms Gtz.not_atomTriple_values_of_marginal_total_two
