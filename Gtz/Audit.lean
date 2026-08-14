@@ -26135,3 +26135,13 @@ run_cmd do
 #print axioms Gtz.TraceParityTieClash
 #print axioms Gtz.ownSignForcedClash_of_traceParityTieClash
 #print axioms Gtz.gtzWeighted_six_three_of_traceParityTieClash
+#print axioms Gtz.exists_step_of_not_dominates
+#print axioms Gtz.exists_dominatingPlanePair_boundary
+#print axioms Gtz.plane_dot_sq_le
+#print axioms Gtz.planeWedge_self
+#print axioms Gtz.PlaneParseval.sum_pairVolume
+#print axioms Gtz.PlaneParseval.exists_pairVolume_ge
+#print axioms Gtz.PlaneParseval.exists_pairVolume_ge_four
+#print axioms Gtz.PlaneParseval.exists_pairDeterminant_ge_four
+#print axioms Gtz.massScale_pointwise
+#print axioms Gtz.PlaneParseval.massWeighted_dominates
