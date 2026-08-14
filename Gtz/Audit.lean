@@ -27427,3 +27427,7 @@ run_cmd do
 #print axioms Gtz.atomSpreadConstantLadder
 #print axioms Gtz.atomTenthExtremal_spectrum
 #print axioms Gtz.atomTenthExtremal_flatSpectrum
+#print axioms Gtz.atomBlockSpectrum_disc_nonneg
+#print axioms Gtz.not_atomBlockSpectrum_splitHeavy
+#print axioms Gtz.atomSplitHeavy_disc
+#print axioms Gtz.not_atomBlockSpectrum_splitLight

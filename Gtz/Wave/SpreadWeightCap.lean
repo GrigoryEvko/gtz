@@ -760,4 +760,62 @@ theorem atomTenthExtremal_spectrum :
 theorem atomTenthExtremal_flatSpectrum : AtomBlockSpectrum (3 / 2) (1 / 2) 0 :=
   atomBlockSpectrum_half (product := 0) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
 
+/-! ## Layer 10 — why the split witness of the moment programme dies here -/
+
+/-- **THE DISCRIMINANT OF A BLOCK SPECTRUM IS NOT NEGATIVE.**  It is the square of
+the product of the three eigenvalue gaps, so a triple of readings whose
+discriminant is negative is not a real spectrum at all. -/
+theorem atomBlockSpectrum_disc_nonneg {first second third : ℝ}
+    (h : AtomBlockSpectrum first second third) :
+    0 ≤ 18 * first * second * third - 4 * first ^ 3 * third + first ^ 2 * second ^ 2
+      - 4 * second ^ 3 - 27 * third ^ 2 := by
+  obtain ⟨r1, r2, r3, -, -, -, -, -, -, h1, h2, h3⟩ := h
+  subst h1; subst h2; subst h3
+  nlinarith [sq_nonneg ((r1 - r2) * (r1 - r3) * (r2 - r3))]
+
+/-- **THE SPLIT WITNESS OF `Gtz.not_atomMomentCap_withEnergy` IS NOT IN THIS
+CLASS.**  Its ten heavy triples read the determinant `29/400`.  All fifteen of its
+pair minors read `1/5`, because every pair carries exactly two heavy triples and
+two light ones among the four triples through it.  The pair-minor law then forces
+the second reading `3 * (1/5) = 3/5` at EVERY triple, in place of the `129/200`
+that the witness declares.
+
+The forced reading `(3/2, 3/5, 29/400)` has discriminant `-27/160000`, so it is
+not a real spectrum.  The witness that capped the moment programme with the
+energy floor therefore does not survive the pair-minor law, and the class of this
+module is strictly smaller than the class of
+`Gtz.AtomMomentFeasible` intersected with the energy floor. -/
+theorem not_atomBlockSpectrum_splitHeavy : ¬ AtomBlockSpectrum (3 / 2) (3 / 5) (29 / 400) := by
+  intro h
+  have hd := atomBlockSpectrum_disc_nonneg h
+  have hv : 18 * (3 / 2 : ℝ) * (3 / 5) * (29 / 400) - 4 * (3 / 2) ^ 3 * (29 / 400)
+      + (3 / 2) ^ 2 * (3 / 5) ^ 2 - 4 * (3 / 5) ^ 3 - 27 * (29 / 400) ^ 2
+      = -(27 / 160000) := by norm_num
+  rw [hv] at hd
+  norm_num at hd
+
+/-- **BOTH CLASSES OF THE SPLIT WITNESS DIE, AND BY THE SAME MARGIN.**  With the
+second reading forced to `3/5`, the discriminant of `(3/2, 3/5, e)` is the
+downward parabola `27 * e * (1/10 - e) - 27 * e ^ 2 ... ` whose two roots are
+`(5 +- sqrt 5) / 100`, the icosahedral pair, and whose axis is `e = 1/20`, the flat
+point.  The two readings `29/400` and `11/400` sit symmetrically about `1/20` at a
+distance `9/400`, which is MORE than the icosahedral half-width `sqrt 5 / 100`, so
+both fall outside the two roots and both read `-27/160000`. -/
+theorem atomSplitHeavy_disc :
+    18 * (3 / 2 : ℝ) * (3 / 5) * (29 / 400) - 4 * (3 / 2) ^ 3 * (29 / 400)
+        + (3 / 2) ^ 2 * (3 / 5) ^ 2 - 4 * (3 / 5) ^ 3 - 27 * (29 / 400) ^ 2
+      = -(27 / 160000)
+      ∧ 18 * (3 / 2 : ℝ) * (3 / 5) * (11 / 400) - 4 * (3 / 2) ^ 3 * (11 / 400)
+        + (3 / 2) ^ 2 * (3 / 5) ^ 2 - 4 * (3 / 5) ^ 3 - 27 * (11 / 400) ^ 2
+      = -(27 / 160000) := by
+  constructor <;> norm_num
+
+/-- Neither reading of the split witness is a real spectrum once the pair-minor
+law has forced the second reading to `3/5`. -/
+theorem not_atomBlockSpectrum_splitLight : ¬ AtomBlockSpectrum (3 / 2) (3 / 5) (11 / 400) := by
+  intro h
+  have hd := atomBlockSpectrum_disc_nonneg h
+  rw [atomSplitHeavy_disc.2] at hd
+  norm_num at hd
+
 end Gtz
