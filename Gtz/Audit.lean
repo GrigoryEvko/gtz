@@ -800,6 +800,7 @@ import Gtz.Wave.PlaneWitnessLedger
 import Gtz.Wave.PlaneCapHelly
 import Gtz.Wave.PivotWitnessLedger
 import Gtz.Wave.PlaneCapTripleClosure
+import Gtz.Wave.PlanePairSelection
 import Gtz.Wave.AtomShadowTransfer
 import Gtz.Wave.AtomBlockedDefect
 import Gtz.Wave.AtomDefectBandSplit
@@ -26079,3 +26080,49 @@ run_cmd do
 #print axioms Gtz.SharedPrivateData.captureGram_diagonal_eq
 #print axioms Gtz.SharedPrivateData.deadLeak_orthogonal
 #print axioms Gtz.leverage_lt_sum_pairing_sq_of_mem
+#print axioms Gtz.planeDouble
+#print axioms Gtz.planeDouble_zero
+#print axioms Gtz.planeDouble_one
+#print axioms Gtz.plane_dot_self_nonneg
+#print axioms Gtz.dot_firstUnit
+#print axioms Gtz.dot_secondUnit
+#print axioms Gtz.planeDouble_dot
+#print axioms Gtz.planeDouble_dot_self
+#print axioms Gtz.dot_planeDouble
+#print axioms Gtz.PlaneParseval
+#print axioms Gtz.PlaneParseval.sum_first_sq
+#print axioms Gtz.PlaneParseval.sum_second_sq
+#print axioms Gtz.PlaneParseval.sum_cross
+#print axioms Gtz.planeParseval_of_entries
+#print axioms Gtz.PlaneParseval.sum_mass
+#print axioms Gtz.PlaneParseval.sum_dot_planeDouble
+#print axioms Gtz.PlaneParseval.rowEnergy
+#print axioms Gtz.PlaneParseval.mass_le_one
+#print axioms Gtz.PlaneParseval.exists_heavy_slot
+#print axioms Gtz.PlaneParseval.exists_nonpos_planeDouble_reading
+#print axioms Gtz.PlaneParseval.planeDouble_reading_eq_zero
+#print axioms Gtz.PlaneParseval.exists_separated_partner
+#print axioms Gtz.PlanePairDominates
+#print axioms Gtz.PlanePairDominates.symm
+#print axioms Gtz.PlanePairDominates.le_div
+#print axioms Gtz.planeForm_nonneg
+#print axioms Gtz.planePairDominates_of_certificate
+#print axioms Gtz.planePair_trace_of_dominates
+#print axioms Gtz.planePair_certificate_of_dominates
+#print axioms Gtz.planePairDominates_iff
+#print axioms Gtz.exists_dominatingPlanePair
+#print axioms Gtz.exists_dominatingPlanePair_margin
+#print axioms Gtz.exists_dominatingPlanePair_inflated
+#print axioms Gtz.exists_dominatingPlanePair_four
+#print axioms Gtz.exists_dominatingPlanePair_five
+#print axioms Gtz.exists_dominatingPlanePair_div
+#print axioms Gtz.planeTrineAtom
+#print axioms Gtz.planeTrineAtom_sq_first
+#print axioms Gtz.planeTrineAtom_sq_sixth
+#print axioms Gtz.planeTrineAtom_sq_half
+#print axioms Gtz.planeTrineAtom_mixed
+#print axioms Gtz.planeTrineAtom_parseval
+#print axioms Gtz.planeTrineAtom_mass
+#print axioms Gtz.planeTrineAtom_dot
+#print axioms Gtz.planeTrine_not_dominates
+#print axioms Gtz.planeTrine_scale_total

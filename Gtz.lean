@@ -3570,6 +3570,12 @@ import Gtz.Wave.PivotWitnessLedger
 -- the pair ceiling, profile A at rank five in both forms, campaign
 -- interiority, and the boundary crux kill.
 import Gtz.Wave.PlaneCapTripleClosure
+-- The plane pair selection theorem at rank two: a plane frame of at least
+-- three atoms, with positive scales of total less than one, carries a pair
+-- that dominates the identity of the plane, with the margin one plus half
+-- the scale slack.  The pair test is an equivalence, and the trine shows
+-- that no positive margin survives at scale total one.
+import Gtz.Wave.PlanePairSelection
 -- The shadow transfer: the deflated pair matrix at a pivot is the plain
 -- shadow pair matrix at inflated scales plus one rank-one square, thus the
 -- landed plane closure supplies the deflated pair at every budget pivot.
