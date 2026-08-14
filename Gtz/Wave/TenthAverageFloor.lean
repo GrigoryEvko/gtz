@@ -113,10 +113,49 @@ minima of the weighted average of the smallest eigenvalue are
   `w ~ p ^ 4`                `0.17006914649227`   no frame below `1/6` was found
   `w ~ p * lambda_min`       `0.17407050467680`   no frame below `1/6` was found
 
-and the least eigenvalue reading of the whole cell, `min over balanced frames of
-max over triples of lambda_min`, was measured at `0.20610737385376`.  Only a
-measurement BELOW a bar is a conclusion.  The five capped rows are conclusions and
-the three others are evidence.
+Only a measurement BELOW a bar is a conclusion.  The five capped rows are
+conclusions and the three others are evidence.
+
+## The balanced slice is NOT the extremal slice, and that is measured
+
+`Gtz.AtomBalanced` says that every leverage is one half, which is what makes the
+block trace `3/2` and what the whole class of this module reads.  Two measurements
+say that the slice is not where the cell is decided.
+
+  `min over BALANCED Parseval frames of max over triples of lambda_min`
+      `= 0.20610737385376`,
+   which is `(4 - sqrt (10 - 2 sqrt 5))/8` to sixteen digits, the pentagonal
+   constant `(1 - sin 36 degrees)/2`.  That is `23.7` percent ABOVE `1/6`.
+
+  `min over ALL Parseval frames of max over triples of lambda_min`
+      `= 0.166666666694887`,
+   which is `1/6` to ten digits.  The frame that reads it carries the leverages
+   `5/14, 5/14, 9/14, 5/14, 9/14, 9/14` and the determinants
+   `8/63, 5/56, 5/63, 25/504` and `0`, which total one exactly.  THIRTEEN of its
+   twenty triples read exactly `1/6` and the other SEVEN read zero.
+
+So the extremal of the cell is NOT balanced, and every determinantal selector was
+measured to be CAPPED over the class that carries the extremal:
+
+  `w = p`          `0.15892910894302`      `w ~ p ^ 2`   `0.16539847834390`
+  `w ~ p ^ 1.1`    `0.16030613721732`      `w ~ p ^ 3`   `0.16610635608334`
+  `w ~ p ^ 1.25`   `0.16183259379410`      `w ~ p ^ 4`   `0.16406179011129`
+  `w ~ p ^ 1.5`    `0.16353956854769`      `w ~ p ^ 8`   `0.15153126520828`
+  `w ~ p * e2`     `0.16339851346397`      argmax `p`    `0.10032789637122`
+
+Every one of those is below `1/6`.  A fine sweep of the exponent over the same
+class reads the family from underneath and never crosses:
+
+  `alpha`  `1.0`   `1.5`   `2.0`   `2.4`   `2.6`   `2.8`   `3.0`   `3.4`   `4.0`
+  `min `  `.15893 .16354 .16540 .16617 .16643 .16636 .16611 .16542 .16406`
+
+The largest reading of the family is `0.16642594372603` near `alpha = 2.6`, which
+is `2.41e-4` short of `1/6`, or `0.144` percent.  So NO member of the determinantal
+power family reaches `1/6`, and the selector search must leave that family.
+
+Every number in the two tables above is a MEASURED MINIMUM over frames, and a
+measured minimum below a bar is a conclusion because the frame that reads it is a
+witness.  A measured minimum above a bar would be evidence only.
 -/
 
 namespace Gtz
@@ -659,5 +698,39 @@ theorem not_atomTenthSelectorSixth {weightRead : Fin 6 → Fin 6 → Fin 6 → �
   have n2 : (0 : ℝ) ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
   have hlt : (2 - Real.sqrt 2) / 4 < 1 / 6 := by nlinarith [h2, n2]
   exact mul_lt_mul_of_pos_right hlt hmass
+
+/-! ## Layer 7 — the route has a cap of its own, and it is a theorem -/
+
+/-- **THE ROUTE CANNOT READ MORE THAN `(2 - sqrt 2)/4`.**  No statement of the
+shape of `Gtz.atomTenthAverage_ge` can carry a constant above `(2 - sqrt 2)/4`,
+because the tenth extremal is a member of the class, its reading is a spectral
+reading, and its determinantal average is exactly `(2 - sqrt 2)/4`.
+
+So the gap between the landed `141/1000` and the sharp `(2 - sqrt 2)/4` is
+`5.45e-3`, and the gap between the sharp constant and the truth `1/6` is
+`2.02e-2` and is NOT closable inside this class. -/
+theorem not_atomTenthAverage_gt {bar : ℝ} (hbar : (2 - Real.sqrt 2) / 4 < bar) :
+    ¬ (∀ weight second reading : Fin 6 → Fin 6 → Fin 6 → ℝ,
+        AtomTenthFeasible weight second → AtomSpectralReading weight second reading →
+        bar ≤ atomTripleFamilySum (fun a b c => weight a b c * reading a b c)) := by
+  intro h
+  have := h atomTenthWeight atomTenthSecond atomTenthReading
+    atomTenthExtremal_isFeasible atomTenthExtremal_isReading
+  rw [atomTenthExtremal_average] at this
+  linarith
+
+/-- **THE DETERMINANTAL AVERAGE UNDER THE TENTH CANNOT CERTIFY ONE SIXTH.**  The
+truth over the real field at the uniform scale is `1/6`, and the class of this
+module caps every reading of its shape at `(2 - sqrt 2)/4 = 0.146446609407`, which
+is `0.0202` short.  A certificate that reaches `1/6` must read something the
+moment class and the tenth do not carry. -/
+theorem not_atomTenthAverage_sixth :
+    ¬ (∀ weight second reading : Fin 6 → Fin 6 → Fin 6 → ℝ,
+        AtomTenthFeasible weight second → AtomSpectralReading weight second reading →
+        (1 : ℝ) / 6 ≤ atomTripleFamilySum (fun a b c => weight a b c * reading a b c)) := by
+  refine not_atomTenthAverage_gt ?_
+  have h2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  have n2 : (0 : ℝ) ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
+  nlinarith [h2, n2]
 
 end Gtz
