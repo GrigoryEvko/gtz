@@ -25852,3 +25852,20 @@ run_cmd do
 #print axioms Gtz.gtzWeightedAll_three_of_polarTiltFloor
 #print axioms Gtz.not_polarTiltSelectionFloor_five_three
 #print axioms Gtz.sixSplitDiamondDesign_spares_polarTiltFloor
+
+-- the cover converse: both cover bounds from the quarter-turn frame
+#print axioms Gtz.atom_dotProduct_polarFrameProbe
+#print axioms Gtz.exists_coverTriple_of_primitive
+#print axioms Gtz.polarFrameBracketSq
+#print axioms Gtz.polarFrameCross
+#print axioms Gtz.polarFrame_discriminant
+#print axioms Gtz.polarFrameForm_nonneg
+#print axioms Gtz.polarFrame_gram_identity
+#print axioms Gtz.polarFramePairSq
+#print axioms Gtz.polarFrameProbe
+#print axioms Gtz.polarFrameProbe_dotProduct_pole
+#print axioms Gtz.polarFrameProbe_dotProduct_self
+#print axioms Gtz.polarFrame_trace_identity
+#print axioms Gtz.polarPlaneGramDet_ge_of_polarCover
+#print axioms Gtz.sum_planeShadowSq_ge_of_polarCover
+#print axioms Gtz.sum_sq_mul_sub_sq_sum_mul
