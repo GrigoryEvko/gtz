@@ -91,6 +91,19 @@ triple clears all four clauses at some pole of every endpoint.  The
 weighted average of the gap determinant over the twenty triples is negative
 at every endpoint, thus no averaging selection can close the residual: the
 selection must consume the circular order.
+
+## 7. The surplus clause is free
+
+`Gtz.planeAdjugate_sos_law` writes the coupling adjugate times the coupling
+excess as the plane determinant times the squared probe energy plus one
+square, with the landed plane Cayley-Hamilton law as the only input.  Thus
+`Gtz.polarShadowAdjugate_nonneg_of_cover`: the adjugate form is nonnegative
+under any covered plane, and `Gtz.leverage_lt_of_gapCore` derives the strict
+pole surplus from the other three clauses.  `Gtz.PolarGapCoreSelection` and
+`Gtz.PolarWrapGapCoreSelection` are the residuals with THREE scalar clauses:
+a shadow trace above two, a positive plane determinant and a positive gap
+determinant.  Each closes the cell and all of rank three alone through
+`Gtz.not_isTie_of_polarGapDetCore`, and each is false at size five.
 -/
 
 namespace Gtz
@@ -1030,5 +1043,270 @@ theorem sixSplitDiamondDesign_spares_polarGapSelection :
     not_polarWrapGapSelection_five⟩
 
 end GapSelection
+
+/-! ## Part 8: the surplus clause is free
+
+The pole surplus of the gap targets follows from the other three clauses.
+The engine is one product law: the coupling adjugate times the coupling
+excess is the plane determinant times the squared coupling energy, plus one
+square.  The law is a scalar consequence of the landed plane Cayley-Hamilton
+identity and of the Lagrange identity of the cross product, thus the proof
+carries no new polynomial work. -/
+
+section SurplusFree
+
+/-- A plane probe reads the survivor plane form as its own squared atom
+readings. -/
+theorem planeReadVec_dotProduct_read (design : WeightedDesign m 3)
+    (pole : Fin m) (selected : Finset (Fin m)) {probe : Fin 3 → ℝ}
+    (hprobe : probe ⬝ᵥ design.atom pole = 0) :
+    probe ⬝ᵥ planeReadVec design pole selected probe
+      = ∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2 := by
+  rw [planeReadVec, dotProduct_sum]
+  refine Finset.sum_congr rfl fun d _ => ?_
+  rw [dotProduct_smul, smul_eq_mul,
+    dotProduct_comm probe (planeShadowVec design pole d),
+    planeShadowVec_dotProduct_polar design pole d hprobe]
+  ring
+
+/-- **THE ENERGY OF THE PLANE READ.**  The Cayley-Hamilton law of the
+survivor plane form read at the probe: the energy of the plane read is the
+shadow trace times the reading, minus the plane Gram determinant times the
+energy of the probe. -/
+theorem planeReadVec_norm_read (design : WeightedDesign m 3) {pole : Fin m}
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole)
+    (selected : Finset (Fin m)) {probe : Fin 3 → ℝ}
+    (hprobe : probe ⬝ᵥ design.atom pole = 0) :
+    planeReadVec design pole selected probe
+        ⬝ᵥ planeReadVec design pole selected probe
+      = (∑ c ∈ selected, planeShadowSq design pole c)
+          * (probe ⬝ᵥ planeReadVec design pole selected probe)
+        - polarPlaneGramDet design pole selected * (probe ⬝ᵥ probe) := by
+  have hreadPole : planeReadVec design pole selected probe ⬝ᵥ design.atom pole
+      = 0 := planeReadVec_dotProduct_pole design hpole selected probe
+  have hsymm := planeReadVec_dotProduct_symm design pole selected hprobe hreadPole
+  have hch := planeReadVec_planeReadVec design hpole selected hprobe
+  calc planeReadVec design pole selected probe
+        ⬝ᵥ planeReadVec design pole selected probe
+      = probe ⬝ᵥ planeReadVec design pole selected
+          (planeReadVec design pole selected probe) := by rw [← hsymm]
+    _ = probe ⬝ᵥ ((∑ c ∈ selected, planeShadowSq design pole c)
+            • planeReadVec design pole selected probe
+          - polarPlaneGramDet design pole selected • probe) := by rw [hch]
+    _ = (∑ c ∈ selected, planeShadowSq design pole c)
+          * (probe ⬝ᵥ planeReadVec design pole selected probe)
+        - polarPlaneGramDet design pole selected * (probe ⬝ᵥ probe) := by
+        rw [dotProduct_sub, dotProduct_smul, dotProduct_smul, smul_eq_mul,
+          smul_eq_mul]
+
+/-- **THE ADJUGATE PRODUCT LAW.**  The coupling adjugate times the coupling
+excess is the plane determinant times the squared probe energy, plus the
+squared cross product of the probe with its plane read.  This is the
+two-dimensional adjugate positivity, written with no eigenvalue. -/
+theorem planeAdjugate_sos_law (design : WeightedDesign m 3) {pole : Fin m}
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole)
+    (selected : Finset (Fin m)) {probe : Fin 3 → ℝ}
+    (hprobe : probe ⬝ᵥ design.atom pole = 0) :
+    (((∑ c ∈ selected, planeShadowSq design pole c) - 1) * (probe ⬝ᵥ probe)
+        - ∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2)
+      * ((∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2) - probe ⬝ᵥ probe)
+      = polarPlaneDet design pole selected * (probe ⬝ᵥ probe) ^ 2
+        + bracketNormal probe (planeReadVec design pole selected probe)
+          ⬝ᵥ bracketNormal probe (planeReadVec design pole selected probe) := by
+  have hread := planeReadVec_dotProduct_read design pole selected hprobe
+  have hnorm := planeReadVec_norm_read design hpole selected hprobe
+  have hlagrange := bracketNormal_lagrange probe
+    (planeReadVec design pole selected probe)
+    (planeReadVec design pole selected probe)
+  rw [hlagrange, hnorm, hread, polarPlaneDet_eq]
+  ring
+
+/-- **THE COUPLING ADJUGATE IS NONNEGATIVE UNDER A COVER.**  A plane cover
+with a positive excess makes the shadow adjugate form nonnegative: the
+product law supplies the sign and the cover keeps the excess factor
+positive. -/
+theorem polarShadowAdjugate_nonneg_of_cover (design : WeightedDesign m 3)
+    {pole : Fin m} (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole)
+    (selected : Finset (Fin m)) {excess : ℝ} (hexcessPos : 0 < excess)
+    (hcover : ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ design.atom pole = 0 →
+      (1 + excess) * (probe ⬝ᵥ probe)
+        ≤ ∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2)
+    (hdet : 0 < polarPlaneDet design pole selected) :
+    0 ≤ polarShadowAdjugate design pole selected := by
+  have hVpole : polarCouplingVec design pole selected ⬝ᵥ design.atom pole = 0 :=
+    polarCouplingVec_dotProduct_pole design hpole selected
+  have hsos := planeAdjugate_sos_law design hpole selected hVpole
+  have hcoverV := hcover (polarCouplingVec design pole selected) hVpole
+  have hadj := polarShadowAdjugate_eq_coupling design hpole selected
+  have hVnonneg : (0 : ℝ) ≤ polarCouplingVec design pole selected
+      ⬝ᵥ polarCouplingVec design pole selected :=
+    selfDotProduct_nonneg (polarCouplingVec design pole selected)
+  rcases eq_or_lt_of_le hVnonneg with hzero | hpos
+  · have hVzero : polarCouplingVec design pole selected = 0 :=
+      eq_zero_of_dotProduct_self_eq_zero hzero.symm
+    rw [hadj, hVzero]
+    simp
+  · have hgap : 0 < (∑ c ∈ selected,
+          (design.atom c ⬝ᵥ polarCouplingVec design pole selected) ^ 2)
+        - polarCouplingVec design pole selected
+            ⬝ᵥ polarCouplingVec design pole selected := by
+      nlinarith [hcoverV, hpos, hexcessPos]
+    have hsq := selfDotProduct_nonneg
+      (bracketNormal (polarCouplingVec design pole selected)
+        (planeReadVec design pole selected
+          (polarCouplingVec design pole selected)))
+    have hprod : 0 ≤ ((∑ c ∈ selected, planeShadowSq design pole c) - 1)
+          * (polarCouplingVec design pole selected
+              ⬝ᵥ polarCouplingVec design pole selected)
+        - ∑ c ∈ selected,
+            (design.atom c ⬝ᵥ polarCouplingVec design pole selected) ^ 2 := by
+      nlinarith [hsos, hsq, hdet, hpos, hgap]
+    rw [hadj]
+    linarith
+
+
+/-- **THE SURPLUS IS FREE.**  A shadow trace above two, a positive plane
+determinant and a positive gap determinant force the strict pole surplus:
+the frame identity writes the surplus as the gap determinant plus the
+adjugate over the plane determinant, and both are nonnegative. -/
+theorem leverage_lt_of_gapCore (design : WeightedDesign m 3)
+    {pole : Fin m} (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (htrace : 2 < ∑ c ∈ ({x, y, z} : Finset (Fin m)), planeShadowSq design pole c)
+    (hdet : 0 < polarPlaneDet design pole ({x, y, z} : Finset (Fin m)))
+    (hgap : 0 < polarGapDet design x y z) :
+    design.atom pole ⬝ᵥ design.atom pole
+      < ∑ c ∈ ({x, y, z} : Finset (Fin m)),
+          (design.atom c ⬝ᵥ design.atom pole) ^ 2 := by
+  have hdet' := hdet
+  rw [polarPlaneDet_eq] at hdet'
+  obtain ⟨excess, hexcessPos, htraceCover, hgramCover⟩ :=
+    exists_excess_of_trace_planeDet htrace hdet'
+  have hcover := polarPlaneCover_of_traceGramDet design hpole
+    ({x, y, z} : Finset (Fin m)) htraceCover hgramCover
+  have hadjNonneg := polarShadowAdjugate_nonneg_of_cover design hpole
+    ({x, y, z} : Finset (Fin m)) hexcessPos hcover hdet
+  have hident := polarPlaneDet_mul_surplus_sub_adjugate design hpole hxy hxz hyz
+  have hmargin : 0 < (design.atom pole ⬝ᵥ design.atom pole)
+      * polarGapDet design x y z := mul_pos hpole hgap
+  nlinarith [hident, hmargin, hadjNonneg, hdet]
+
+/-- **THE THREE-CLAUSE KILL.**  A pole of positive leverage and a triple of
+distinct labels with a shadow trace above two, a positive plane determinant
+and a positive gap determinant kill the tie.  The pole surplus is derived,
+not assumed. -/
+theorem not_isTie_of_polarGapDetCore (design : WeightedDesign m 3)
+    {pole : Fin m} (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (htrace : 2 < ∑ c ∈ ({x, y, z} : Finset (Fin m)), planeShadowSq design pole c)
+    (hdet : 0 < polarPlaneDet design pole ({x, y, z} : Finset (Fin m)))
+    (hgap : 0 < polarGapDet design x y z) :
+    ¬ IsTie design :=
+  not_isTie_of_polarGapDet design hpole hxy hxz hyz htrace hdet
+    (leverage_lt_of_gapCore design hpole hxy hxz hyz htrace hdet hgap) hgap
+
+end SurplusFree
+
+/-! ## Part 9: the core targets
+
+The surplus clause leaves the selection targets.  Three scalar clauses
+remain: the shadow trace, the plane determinant and the gap determinant. -/
+
+section CoreSelection
+
+variable {size : ℕ}
+
+/-- **THE CORE GAP TARGET.**  Three scalar clauses at a pole and a triple of
+distinct labels: a shadow trace above two, a positive plane determinant and
+a positive gap determinant. -/
+def PolarGapCoreSelection (size : ℕ) : Prop :=
+  ∀ design : WeightedDesign size 3, IsPrimitiveDesign design → IsTie design →
+    ∃ pole x y z : Fin size,
+      1 < design.atom pole ⬝ᵥ design.atom pole
+        ∧ x ≠ y ∧ x ≠ z ∧ y ≠ z
+        ∧ 2 < ∑ c ∈ ({x, y, z} : Finset (Fin size)), planeShadowSq design pole c
+        ∧ 0 < polarPlaneDet design pole ({x, y, z} : Finset (Fin size))
+        ∧ 0 < polarGapDet design x y z
+
+/-- **THE CORE WRAPPING TARGET.**  The core clauses at a wrapping triple of
+the circular order. -/
+def PolarWrapGapCoreSelection (size : ℕ) : Prop :=
+  ∀ design : WeightedDesign size 3, IsPrimitiveDesign design → IsTie design →
+    ∃ pole x y z : Fin size,
+      1 < design.atom pole ⬝ᵥ design.atom pole
+        ∧ PolarWrapping design pole x y z
+        ∧ 2 < ∑ c ∈ ({x, y, z} : Finset (Fin size)), planeShadowSq design pole c
+        ∧ 0 < polarPlaneDet design pole ({x, y, z} : Finset (Fin size))
+        ∧ 0 < polarGapDet design x y z
+
+/-- The core target implies the gap target: the surplus is derived. -/
+theorem polarGapSelection_of_polarGapCoreSelection
+    (hcore : PolarGapCoreSelection size) : PolarGapSelection size := by
+  intro design hprimitive htie
+  obtain ⟨pole, x, y, z, hlong, hxy, hxz, hyz, htrace, hdet, hgap⟩ :=
+    hcore design hprimitive htie
+  have hpole : 0 < design.atom pole ⬝ᵥ design.atom pole :=
+    lt_trans zero_lt_one hlong
+  exact ⟨pole, x, y, z, hlong, hxy, hxz, hyz, htrace, hdet,
+    leverage_lt_of_gapCore design hpole hxy hxz hyz htrace hdet hgap, hgap⟩
+
+/-- The core wrapping target implies the wrapping gap target. -/
+theorem polarWrapGapSelection_of_polarWrapGapCoreSelection
+    (hcore : PolarWrapGapCoreSelection size) : PolarWrapGapSelection size := by
+  intro design hprimitive htie
+  obtain ⟨pole, x, y, z, hlong, hwrapping, htrace, hdet, hgap⟩ :=
+    hcore design hprimitive htie
+  have hpole : 0 < design.atom pole ⬝ᵥ design.atom pole :=
+    lt_trans zero_lt_one hlong
+  have hxy := polarWrapping_ne_first_second design hpole hwrapping
+  have hxz := polarWrapping_ne_first_third design hpole hwrapping
+  have hyz := polarWrapping_ne_second_third design hpole hwrapping
+  exact ⟨pole, x, y, z, hlong, hwrapping, htrace, hdet,
+    leverage_lt_of_gapCore design hpole hxy hxz hyz htrace hdet hgap, hgap⟩
+
+/-- **THE DECIDING CELL FROM THE CORE TARGET ALONE.** -/
+theorem gtzWeighted_six_three_of_polarGapCoreSelection
+    (hcore : PolarGapCoreSelection 6) : GtzWeighted 6 3 :=
+  gtzWeighted_six_three_of_polarGapSelection
+    (polarGapSelection_of_polarGapCoreSelection hcore)
+
+/-- **ALL OF RANK THREE FROM THE CORE TARGET ALONE.** -/
+theorem gtzWeightedAll_three_of_polarGapCoreSelection
+    (hcore : PolarGapCoreSelection 6) : GtzWeightedAll 3 :=
+  gtzWeightedAll_three_of_polarGapSelection
+    (polarGapSelection_of_polarGapCoreSelection hcore)
+
+/-- **THE DECIDING CELL FROM THE CORE WRAPPING TARGET ALONE.** -/
+theorem gtzWeighted_six_three_of_polarWrapGapCoreSelection
+    (hcore : PolarWrapGapCoreSelection 6) : GtzWeighted 6 3 :=
+  gtzWeighted_six_three_of_polarWrapGapSelection
+    (polarWrapGapSelection_of_polarWrapGapCoreSelection hcore)
+
+/-- **ALL OF RANK THREE FROM THE CORE WRAPPING TARGET ALONE.** -/
+theorem gtzWeightedAll_three_of_polarWrapGapCoreSelection
+    (hcore : PolarWrapGapCoreSelection 6) : GtzWeightedAll 3 :=
+  gtzWeightedAll_three_of_polarWrapGapSelection
+    (polarWrapGapSelection_of_polarWrapGapCoreSelection hcore)
+
+/-- The core target is false at size five. -/
+theorem not_polarGapCoreSelection_five : ¬ PolarGapCoreSelection 5 :=
+  fun hcore => not_polarGapSelection_five
+    (polarGapSelection_of_polarGapCoreSelection hcore)
+
+/-- The core wrapping target is false at size five. -/
+theorem not_polarWrapGapCoreSelection_five : ¬ PolarWrapGapCoreSelection 5 :=
+  fun hcore => not_polarWrapGapSelection_five
+    (polarWrapGapSelection_of_polarWrapGapCoreSelection hcore)
+
+/-- **THE GUARDRAIL ON THE CORE ROUTES.** -/
+theorem sixSplitDiamondDesign_spares_polarGapCore :
+    ¬ RankSuccShrinks 6 3 ∧ IsTie sixSplitDiamondDesign
+      ∧ ¬ IsPrimitiveDesign sixSplitDiamondDesign
+      ∧ ¬ PolarGapCoreSelection 5 ∧ ¬ PolarWrapGapCoreSelection 5 :=
+  ⟨not_rankSuccShrinks_six_three, sixSplitDiamondDesign_isTie,
+    not_isPrimitiveDesign_sixSplitDiamondDesign, not_polarGapCoreSelection_five,
+    not_polarWrapGapCoreSelection_five⟩
+
+end CoreSelection
 
 end Gtz
