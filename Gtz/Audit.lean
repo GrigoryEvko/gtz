@@ -25088,6 +25088,12 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.SharedPrivateData.purePairAtom_charRoot
 #print axioms Gtz.SharedPrivateData.purePairAtom_corner_of_outerFull
 #print axioms Gtz.SharedPrivateData.captureDiag_eq_of_purePairAtom_of_two_outerFull
+#print axioms Gtz.SharedPrivateData.corner_of_two_outerFull
+#print axioms Gtz.SharedPrivateData.false_of_purePairAtom_of_outerFull_of_singleDead_pair
+#print axioms Gtz.vecMulVec_conj
+#print axioms Gtz.SharedPrivateData.gram_eq_labelCoeff_mixture
+#print axioms Gtz.SharedPrivateData.gram_apply_eq_labelCoeff_sum
+#print axioms Gtz.SharedPrivateData.gram_apply_eq_zero_of_pairSupported
 #print axioms Gtz.SharedPrivateData.sum_outerMultiplicity
 #print axioms Gtz.SharedPrivateData.outerMultiplicity_eq_zero_of_pure
 #print axioms Gtz.SharedPrivateData.outerMultiplicity_le

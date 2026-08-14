@@ -88,11 +88,31 @@ diagonals total two.
 * `Gtz.SharedPrivateData.exists_two_outerFull_atoms` — the census.
 * `Gtz.SharedPrivateData.false_of_pureSharedPair` — **TWO SHARED PURE
   ATOMS KILL EVERY BASIS COUNT.**
+* `Gtz.SharedPrivateData.corner_of_two_outerFull` — the corner reading of
+  the shape that survives at basis count six.
+* `Gtz.SharedPrivateData.false_of_purePairAtom_of_outerFull_of_singleDead_pair`
+  — the two corner readings against each other.
+* `Gtz.vecMulVec_conj` and
+  `Gtz.SharedPrivateData.gram_eq_labelCoeff_mixture` — **THE MIXTURE
+  FORM OF THE GRAM CORE**, with `gram_apply_eq_labelCoeff_sum` and
+  `gram_apply_eq_zero_of_pairSupported`.
 * `Gtz.SharedPrivateCircuitPairIdenticalImpureClosed`,
   `Gtz.SharedPrivateCircuitSplitWedgeImpureClosed` — the two circuit
   residues with the pure branch handed over as a hypothesis.
 * `Gtz.sharedPrivateKilled_of_impure_circuit` and the three rank
   bridges.
+
+## The mixture form
+
+The assembly is the weighted sum of the outer products of the tight
+directions. Every positive label reconstructs from the basis columns,
+thus the assembly is the basis conjugate of the mixture of the label
+coefficient vectors, and the left inverse strips the basis columns.
+Thus the Gram core IS that mixture. A label parallel to a basis column
+contributes a diagonal term, and a pair circuit on one named pair
+contributes a term inside that corner. Thus, when every positive label
+carries one of those two shapes, the Gram core is a two-by-two corner
+plus a diagonal.
 
 ## Vacuity
 
@@ -1118,7 +1138,119 @@ theorem false_of_pureSharedPair (data : SharedPrivateData crux)
 
 end SharedPrivateData
 
-/-! ## Layer 6 — the two circuit residues with the pure branch paid -/
+/-! ## Layer 6 — the mixture form of the Gram core -/
+
+/-- Conjugation carries a rank-one outer product to the outer product of
+the image. -/
+theorem vecMulVec_conj {rowCount colCount : ℕ}
+    (matrix : Matrix (Fin rowCount) (Fin colCount) ℝ) (vec : Fin colCount → ℝ) :
+    matrix * Matrix.vecMulVec vec vec * matrixᵀ
+      = Matrix.vecMulVec (matrix *ᵥ vec) (matrix *ᵥ vec) := by
+  ext rowIdx colIdx
+  simp only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.transpose_apply,
+    Matrix.mulVec, dotProduct, Finset.sum_mul, Finset.mul_sum]
+  exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
+
+namespace SharedPrivateData
+
+variable {crux : SixThreeCrux}
+
+/-- **THE MIXTURE FORM OF THE GRAM CORE.**  Every positive label
+reconstructs from the basis columns, thus the assembly is the basis
+conjugate of the mixture of the label coefficient vectors.  The basis
+columns carry a left inverse, thus the Gram core IS that mixture.
+
+This is the missing engine of the circuit lattice: the Gram core is a
+nonnegative combination of rank-one outer products, one for each
+positive label, and the label's own coefficient vector is the direction
+of its term. -/
+theorem gram_eq_labelCoeff_mixture (data : SharedPrivateData crux) :
+    data.gram = ∑ label ∈ positiveActiveSet data.activeSet data.reducedWeight,
+      data.reducedWeight label
+        • Matrix.vecMulVec (data.labelCoeff label) (data.labelCoeff label) := by
+  classical
+  set columns := tightBasisColumns data.tightDir data.basisLabel with hcolumns
+  set mixture := ∑ label ∈ positiveActiveSet data.activeSet data.reducedWeight,
+    data.reducedWeight label
+      • Matrix.vecMulVec (data.labelCoeff label) (data.labelCoeff label) with hmixture
+  have hterm : ∀ label ∈ positiveActiveSet data.activeSet data.reducedWeight,
+      columns * (data.reducedWeight label
+          • Matrix.vecMulVec (data.labelCoeff label) (data.labelCoeff label))
+        * columnsᵀ
+      = data.reducedWeight label • atomMatrix (data.tightDir label) := by
+    intro label hlabel
+    simp only [positiveActiveSet, Finset.mem_filter] at hlabel
+    rw [Matrix.mul_smul, Matrix.smul_mul, vecMulVec_conj]
+    congr 1
+    have hrecon : columns *ᵥ data.labelCoeff label = data.tightDir label := by
+      funext atomIndex
+      simp only [hcolumns, tightBasisColumns, Matrix.mulVec, dotProduct]
+      rw [data.reconstruction_apply hlabel.1 hlabel.2 atomIndex]
+      exact Finset.sum_congr rfl fun _ _ => mul_comm _ _
+    rw [hrecon]
+    rfl
+  have hconj : columns * mixture * columnsᵀ
+      = chartMultiplierAssembly data.activeSet data.reducedWeight data.tightDir := by
+    rw [hmixture, Matrix.mul_sum, Matrix.sum_mul, Finset.sum_congr rfl hterm]
+    exact chartMultiplierAssembly_positiveActiveSet data.hdata
+  have hform : columns * data.gram * columnsᵀ
+      = chartMultiplierAssembly data.activeSet data.reducedWeight data.tightDir :=
+    data.hHform
+  have hright : columnsᵀ * data.leftInvᵀ = 1 := by
+    rw [← Matrix.transpose_mul, hcolumns, data.hleft, Matrix.transpose_one]
+  have hstrip : ∀ core : Matrix (Fin data.basisCount) (Fin data.basisCount) ℝ,
+      data.leftInv * (columns * core * columnsᵀ) * data.leftInvᵀ = core := by
+    intro core
+    calc data.leftInv * (columns * core * columnsᵀ) * data.leftInvᵀ
+        = (data.leftInv * columns) * core * (columnsᵀ * data.leftInvᵀ) := by
+          simp only [Matrix.mul_assoc]
+      _ = core := by rw [hcolumns, data.hleft, hright, Matrix.one_mul, Matrix.mul_one]
+  calc data.gram = data.leftInv * (columns * data.gram * columnsᵀ) * data.leftInvᵀ :=
+        (hstrip data.gram).symm
+    _ = data.leftInv * (columns * mixture * columnsᵀ) * data.leftInvᵀ := by
+        rw [hform, hconj]
+    _ = mixture := hstrip mixture
+
+/-- The entry reading of the mixture form. -/
+theorem gram_apply_eq_labelCoeff_sum (data : SharedPrivateData crux)
+    (slotRow slotCol : Fin data.basisCount) :
+    data.gram slotRow slotCol
+      = ∑ label ∈ positiveActiveSet data.activeSet data.reducedWeight,
+          data.reducedWeight label
+            * (data.labelCoeff label slotRow * data.labelCoeff label slotCol) := by
+  rw [data.gram_eq_labelCoeff_mixture]
+  simp only [Matrix.sum_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul]
+
+/-- **THE CORNER AND DIAGONAL SHAPE.**  If every positive label either
+sits on one basis slot or on a named pair of slots, the Gram core is a
+two-by-two corner on that pair plus a diagonal: every entry with one
+index outside the pair and the two indices apart vanishes. -/
+theorem gram_apply_eq_zero_of_pairSupported (data : SharedPrivateData crux)
+    {slotOne slotTwo : Fin data.basisCount}
+    (hshape : ∀ label ∈ positiveActiveSet data.activeSet data.reducedWeight,
+      (∃ pivot : Fin data.basisCount, ∀ slot, slot ≠ pivot →
+          data.labelCoeff label slot = 0)
+        ∨ (∀ slot, slot ≠ slotOne → slot ≠ slotTwo →
+          data.labelCoeff label slot = 0))
+    {slotRow slotCol : Fin data.basisCount} (hne : slotRow ≠ slotCol)
+    (hout : (slotRow ≠ slotOne ∧ slotRow ≠ slotTwo)
+      ∨ (slotCol ≠ slotOne ∧ slotCol ≠ slotTwo)) :
+    data.gram slotRow slotCol = 0 := by
+  classical
+  rw [data.gram_apply_eq_labelCoeff_sum]
+  refine Finset.sum_eq_zero fun label hlabel => ?_
+  rcases hshape label hlabel with ⟨pivot, hsingle⟩ | hpair
+  · by_cases hrow : slotRow = pivot
+    · rw [hsingle slotCol (by rw [← hrow]; exact fun heq => hne heq.symm), mul_zero,
+        mul_zero]
+    · rw [hsingle slotRow hrow, zero_mul, mul_zero]
+  · rcases hout with ⟨hrowOne, hrowTwo⟩ | ⟨hcolOne, hcolTwo⟩
+    · rw [hpair slotRow hrowOne hrowTwo, zero_mul, mul_zero]
+    · rw [hpair slotCol hcolOne hcolTwo, mul_zero, mul_zero]
+
+end SharedPrivateData
+
+/-! ## Layer 7 — the two circuit residues with the pure branch paid -/
 
 /-- **THE IMPURE IDENTICAL RESIDUE.**  The counted identical residue with
 the five-slot payment replaced by the stronger fact that two pure atoms
@@ -1385,7 +1517,7 @@ theorem sharedPrivateCircuitSplitWedgeCountClosed_of_impure
     (by rw [hsupportOne]; simp) (by rw [hsupportTwo]; simp)
     hpureA hpureB hwedge
 
-/-! ## Layer 7 — closure two on the impure lattice -/
+/-! ## Layer 8 — closure two on the impure lattice -/
 
 /-- **THE EXTRAS ON THE IMPURE LATTICE.** -/
 theorem sharedPrivateExtrasClosed_of_impureLattice
