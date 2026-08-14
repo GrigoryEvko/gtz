@@ -2221,6 +2221,13 @@ import Gtz.Reduction.PolarPairSpread
 -- vocabulary: the wedge square is the shadow Gram complement, and shared-slot
 -- wedge products are polynomial in the pairings.
 import Gtz.Reduction.PolarWitnessSchur
+-- The plane Cramer calculus and the closed cross witness: the Cramer
+-- dependency laws couple brackets to pairings, the sine addition law
+-- transports shadow brackets, and the witnessed Schur kill of the deciding
+-- cell closes with an explicit witness.  The plane Cayley-Hamilton law solves
+-- the survivor plane equation at the scale `leverage * polarPlaneDet`, thus
+-- the sharp tie law becomes a polynomial law of the pairing data.
+import Gtz.Reduction.PolarCrossWitness
 
 -- The frame-priced descent: the design identity contracts against the inverse
 -- gap of every region, thus the pivot pigeonhole becomes an exact stage law and

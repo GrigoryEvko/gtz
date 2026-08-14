@@ -446,6 +446,7 @@ import Gtz.Reduction.PolarDeletionWhitening
 import Gtz.Reduction.PolarIteratedDeletion
 import Gtz.Reduction.PolarPairSpread
 import Gtz.Reduction.PolarWitnessSchur
+import Gtz.Reduction.PolarCrossWitness
 import Gtz.Reduction.FrameDropDescent
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
@@ -5300,6 +5301,29 @@ import Gtz.Wave.AtomDefectBandSplit
 #print axioms Gtz.planeShadowPairing_sq_le
 #print axioms Gtz.tripleBracket_sq_eq_planeShadow
 #print axioms Gtz.tripleBracket_mul_eq_planeShadow
+#print axioms Gtz.tripleBracket_cramer
+#print axioms Gtz.tripleBracket_cramer_dot
+#print axioms Gtz.tripleBracket_grassmannPluecker
+#print axioms Gtz.tripleBracket_reading_cycle
+#print axioms Gtz.tripleBracket_eq_zero_of_pole_orthogonal
+#print axioms Gtz.tripleBracket_pole_cramer
+#print axioms Gtz.tripleBracket_smul_bracketNormal
+#print axioms Gtz.gramDet_smul_decomp
+#print axioms Gtz.bracketNormal_dotProduct_left
+#print axioms Gtz.tripleBracket_shadow_transport
+#print axioms Gtz.planeShadowPairing_comm
+#print axioms Gtz.atom_dotProduct_planeShadowVec
+#print axioms Gtz.planeShadowVec_dotProduct_pole
+#print axioms Gtz.polarCouplingVec_dotProduct_pole
+#print axioms Gtz.polarCrossWitnessVec
+#print axioms Gtz.polarPlaneDet
+#print axioms Gtz.polarCrossWitnessVec_dotProduct_pole
+#print axioms Gtz.polarCrossWitnessVec_eq_adj
+#print axioms Gtz.sum_atom_dot_smul_planeShadowVec_cayleyHamilton
+#print axioms Gtz.polarCrossWitnessVec_witness
+#print axioms Gtz.posDef_of_polarWitnessSchur_scaled
+#print axioms Gtz.not_isTie_of_crossWitnessSchur_six_three
+#print axioms Gtz.tie_crossWitnessSchur_six_three
 
 -- Coverage sweep: every `theorem`/`lemma` enumerated from `Gtz/` that was
 -- absent from the list above.  Gtz/Ties/DiamondTie.lean is deliberately
