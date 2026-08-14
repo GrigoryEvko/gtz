@@ -772,6 +772,7 @@ import Gtz.Wave.OuterCaptureKernelLine
 import Gtz.Wave.ArgmaxBlockFloor
 import Gtz.Wave.CaptureLineTrichotomy
 import Gtz.Wave.CaptureLinePairKill
+import Gtz.Wave.CaptureLineWideKill
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -24805,6 +24806,21 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.isSixThreeAssemblyRankExcludedFloored_four_of_wide
 #print axioms Gtz.gtzWeighted_six_three_of_wideResidue_of_upperClosures
 #print axioms Gtz.gtzWeightedAll_three_of_wideResidue_of_upperClosures
+#print axioms Gtz.stationary_tight_energy
+#print axioms Gtz.stationary_leak_energy
+#print axioms Gtz.mul_assembly_mul_diag_eq_sum
+#print axioms Gtz.stationary_split_diag
+#print axioms Gtz.SixThreeCrux.false_of_stationary_fixed_kernel_line
+#print axioms Gtz.RankFourFrame.tightDir_dotProduct_eq_zero_of_basis_null
+#print axioms Gtz.RankFourFrame.assembly_mulVec_eq_zero_of_basis_null
+#print axioms Gtz.RankFourFrame.false_of_wideSpectralSelection
+#print axioms Gtz.rankFourCaptureLineWideFlooredClosed_of_wideSpectralSelection
+#print axioms Gtz.rankFourChartNullBasisNullClosed_of_wideSpectralSelection
+#print axioms Gtz.rankFourChartNullBasisNullFlooredClosed_of_wideSpectralSelection
+#print axioms Gtz.isSixThreeAssemblyRankExcluded_four_of_wideSpectralSelection
+#print axioms Gtz.isSixThreeAssemblyRankExcludedFloored_four_of_wideSpectralSelection
+#print axioms Gtz.gtzWeighted_six_three_of_wideSpectralSelection_of_upperClosures
+#print axioms Gtz.gtzWeightedAll_three_of_wideSpectralSelection_of_upperClosures
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

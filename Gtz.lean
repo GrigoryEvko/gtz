@@ -3430,6 +3430,16 @@ import Gtz.Wave.CaptureLineTrichotomy
 -- residue plus the six upper closures.
 import Gtz.Wave.CaptureLinePairKill
 
+-- the wide spectral kill: the split diagonal law prices the sandwich
+-- of the assembly at the shifted weight over the size; the capture
+-- line of a rank-four frame sits in the assembly kernel, thus the
+-- price matrix is a rank-two form with one free direction; the
+-- crux-free selection residue supplies a triple that dominates the
+-- shifted diagonal strictly, and the argmax field refuses it.  Every
+-- rank-four frame dies modulo the one residue, and the cell follows
+-- from the residue plus the six upper closures.
+import Gtz.Wave.CaptureLineWideKill
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.
