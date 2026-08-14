@@ -78,13 +78,39 @@ paragraph reports a measurement, not a theorem of this module.
 * `Gtz.exists_dominatingPlanePair` — **THE SELECTION THEOREM.**  Every plane
   frame of at least three slots, with positive scales of total less than one,
   carries a dominating pair.
-* `Gtz.exists_dominatingPlanePair_margin` — **THE QUANTITATIVE MARGIN.**  The
-  domination holds with the factor `1 + (1 - total)/2`.
+* `Gtz.exists_dominatingPlanePair_margin`,
+  `Gtz.exists_dominatingPlanePair_inflated` — **THE QUANTITATIVE MARGIN.**  The
+  domination holds with the factor `1 + (1 - total)/2`, in two shapes.
 * `Gtz.exists_dominatingPlanePair_four`,
-  `Gtz.exists_dominatingPlanePair_five` — the two counts the campaign consumes.
+  `Gtz.exists_dominatingPlanePair_five`,
+  `Gtz.exists_dominatingPlanePair_div` — the two counts the campaign consumes,
+  and the division form.
+* `Gtz.exists_step_of_not_dominates` — **THE SHRINK STEP.**  A failing pair
+  keeps its failure at every slightly smaller scale.
+* `Gtz.exists_dominatingPlanePair_boundary` — **THE BOUNDARY SELECTION
+  THEOREM.**  The domination survives at scale total exactly one.  One shrink
+  serves every pair at once, because the slot count is finite.
+* `Gtz.PlaneParseval.exists_nonpos_planeDouble_reading`,
+  `Gtz.PlaneParseval.planeDouble_reading_eq_zero`,
+  `Gtz.PlaneParseval.exists_separated_partner` — **THE WRAPPING.**  No open half
+  plane holds the doubled atoms, a closed one holds them on its boundary line,
+  and every slot has a partner at forty-five degrees or more.
 * `Gtz.planeTrineAtom`, `Gtz.planeTrineAtom_parseval`,
   `Gtz.planeTrineAtom_mass`, `Gtz.planeTrineAtom_dot`,
   `Gtz.planeTrine_not_dominates` — **THE SHARPNESS CALIBRATION.**
+* `Gtz.plane_dot_sq_le`, `Gtz.planeWedge_self`,
+  `Gtz.PlaneParseval.sum_pairVolume` — **THE VOLUME LAW.**  The squared wedges
+  of the ordered pairs total two.
+* `Gtz.PlaneParseval.exists_pairVolume_ge`,
+  `Gtz.PlaneParseval.exists_pairVolume_ge_four`,
+  `Gtz.PlaneParseval.exists_pairDeterminant_ge_four` — the volume pigeonhole and
+  the determinant floor `2/3` at four slots.  The volume of the selection
+  theorem has slack, so the fight is the angle.
+* `Gtz.massScale_pointwise`, `Gtz.PlaneParseval.massWeighted_dominates` — **THE
+  MASS-WEIGHTED AVERAGE.**  The frame weighted by the mass-to-scale ratios sits
+  above the identity.  It is a dominating MEASURE and holds over every field,
+  so the passage from the measure to one of its atoms is the whole content of
+  the selection theorem.
 -/
 
 namespace Gtz
@@ -690,7 +716,131 @@ theorem exists_dominatingPlanePair_div {slotCount : ℕ} (hcount : 3 ≤ slotCou
   exact ⟨slotOne, slotTwo, hne,
     fun probe => hdom.le_div (hpos slotOne) (hpos slotTwo) probe⟩
 
-/-! ## Layer 5 — the trine, and the sharpness of the margin -/
+/-! ## Layer 5 — the boundary, at scale total exactly one -/
+
+/-- **THE SHRINK STEP OF A FAILING PAIR.**  A pair that does not dominate keeps
+its failure at every slightly smaller scale.  The step is explicit: a quarter of
+the defect of the failing reading, divided by a bound of the two readings. -/
+theorem exists_step_of_not_dominates {atomOne atomTwo : Fin 2 → ℝ} {scaleOne scaleTwo : ℝ}
+    (hposOne : 0 < scaleOne) (hposTwo : 0 < scaleTwo)
+    (hfail : ¬ PlanePairDominates atomOne atomTwo scaleOne scaleTwo) :
+    ∃ step : ℝ, 0 < step ∧ ∀ factor : ℝ, 1 - step ≤ factor → factor ≤ 1 →
+      ¬ PlanePairDominates atomOne atomTwo (factor * scaleOne) (factor * scaleTwo) := by
+  classical
+  have hmassOne := plane_dot_self_nonneg atomOne
+  have hmassTwo := plane_dot_self_nonneg atomTwo
+  have hscalePos : 0 < scaleOne * scaleTwo := mul_pos hposOne hposTwo
+  rw [planePairDominates_iff hposOne hposTwo] at hfail
+  simp only [not_and_or, not_le] at hfail
+  obtain ⟨bound, hboundDef⟩ : ∃ value : ℝ, value
+      = scaleOne * (atomTwo ⬝ᵥ atomTwo) + scaleTwo * (atomOne ⬝ᵥ atomOne)
+        + 2 * (scaleOne * scaleTwo) := ⟨_, rfl⟩
+  have hboundPos : 0 < bound := by
+    rw [hboundDef]
+    nlinarith [hscalePos, mul_nonneg (le_of_lt hposOne) hmassTwo,
+      mul_nonneg (le_of_lt hposTwo) hmassOne]
+  rcases hfail with htrace | hdet
+  · obtain ⟨defect, hdefectDef⟩ : ∃ value : ℝ, value
+        = 2 * (scaleOne * scaleTwo)
+          - (scaleTwo * (atomOne ⬝ᵥ atomOne) + scaleOne * (atomTwo ⬝ᵥ atomTwo)) := ⟨_, rfl⟩
+    have hdefectPos : 0 < defect := by rw [hdefectDef]; linarith
+    refine ⟨min (defect / (4 * bound)) (1 / 2),
+      lt_min (div_pos hdefectPos (by linarith)) (by norm_num), ?_⟩
+    intro factor hlow hhigh hdom
+    have hstepLe : min (defect / (4 * bound)) (1 / 2) ≤ defect / (4 * bound) := min_le_left _ _
+    have hhalfLe : min (defect / (4 * bound)) (1 / 2) ≤ 1 / 2 := min_le_right _ _
+    have hfactorPos : 0 < factor := by linarith
+    have hshift : 0 ≤ 1 - factor := by linarith
+    have hshiftBound : (1 - factor) * (4 * bound) ≤ defect := by
+      have hstep : 1 - factor ≤ defect / (4 * bound) := by linarith
+      rwa [le_div_iff₀ (by linarith)] at hstep
+    have hcert := ((planePairDominates_iff (mul_pos hfactorPos hposOne)
+      (mul_pos hfactorPos hposTwo)).mp hdom).1
+    rw [hboundDef] at hshiftBound
+    have hdrop : (1 - factor) * (8 * (scaleOne * scaleTwo)) ≤ defect := by
+      nlinarith [hshiftBound, mul_nonneg hshift (mul_nonneg (le_of_lt hposOne) hmassTwo),
+        mul_nonneg hshift (mul_nonneg (le_of_lt hposTwo) hmassOne)]
+    have hgain : defect ≤ (1 - factor) * (2 * (scaleOne * scaleTwo)) := by
+      rw [hdefectDef]
+      nlinarith [hcert, hfactorPos, hscalePos]
+    nlinarith [hdrop, hgain, hdefectPos, hscalePos, hshift]
+  · obtain ⟨defect, hdefectDef⟩ : ∃ value : ℝ, value
+        = (atomOne ⬝ᵥ atomTwo) ^ 2
+          - (atomOne ⬝ᵥ atomOne - scaleOne) * (atomTwo ⬝ᵥ atomTwo - scaleTwo) := ⟨_, rfl⟩
+    have hdefectPos : 0 < defect := by rw [hdefectDef]; linarith
+    refine ⟨min (defect / (4 * bound)) (1 / 2),
+      lt_min (div_pos hdefectPos (by linarith)) (by norm_num), ?_⟩
+    intro factor hlow hhigh hdom
+    have hstepLe : min (defect / (4 * bound)) (1 / 2) ≤ defect / (4 * bound) := min_le_left _ _
+    have hhalfLe : min (defect / (4 * bound)) (1 / 2) ≤ 1 / 2 := min_le_right _ _
+    have hfactorPos : 0 < factor := by linarith
+    have hshift : 0 ≤ 1 - factor := by linarith
+    have hshiftBound : (1 - factor) * (4 * bound) ≤ defect := by
+      have hstep : 1 - factor ≤ defect / (4 * bound) := by linarith
+      rwa [le_div_iff₀ (by linarith)] at hstep
+    have hcert := ((planePairDominates_iff (mul_pos hfactorPos hposOne)
+      (mul_pos hfactorPos hposTwo)).mp hdom).2
+    rw [hboundDef] at hshiftBound
+    have hgain : defect ≤ (1 - factor)
+        * (scaleOne * (atomTwo ⬝ᵥ atomTwo) + scaleTwo * (atomOne ⬝ᵥ atomOne)) := by
+      rw [hdefectDef]
+      nlinarith [hcert, hshift, mul_nonneg hshift (le_of_lt hscalePos)]
+    nlinarith [hshiftBound, hgain, hdefectPos, hscalePos, hshift,
+      mul_nonneg hshift (le_of_lt hscalePos)]
+
+/-- **THE BOUNDARY SELECTION THEOREM.**  A plane frame of at least three slots,
+with positive scales of total at most one, carries a dominating pair.
+
+The scale total one is the true boundary of the theorem.  Every failing pair
+keeps its failure at a slightly smaller scale, the slot count is finite, so one
+shrink serves every pair at once.  The strict theorem then refuses the shrunken
+datum. -/
+theorem exists_dominatingPlanePair_boundary {slotCount : ℕ} (hcount : 3 ≤ slotCount)
+    (atom : Fin slotCount → (Fin 2 → ℝ)) (scale : Fin slotCount → ℝ)
+    (hframe : PlaneParseval atom) (hpos : ∀ slot, 0 < scale slot)
+    (hsmall : (∑ slot, scale slot) ≤ 1) :
+    ∃ slotOne slotTwo, slotOne ≠ slotTwo
+      ∧ PlanePairDominates (atom slotOne) (atom slotTwo) (scale slotOne) (scale slotTwo) := by
+  classical
+  by_contra hnone
+  simp only [not_exists, not_and] at hnone
+  haveI : Nonempty (Fin slotCount) := Fin.pos_iff_nonempty.mp (by omega)
+  have hall : ∀ pair : Fin slotCount × Fin slotCount, ∃ step : ℝ, 0 < step ∧
+      ∀ factor : ℝ, 1 - step ≤ factor → factor ≤ 1 → pair.1 ≠ pair.2 →
+        ¬ PlanePairDominates (atom pair.1) (atom pair.2)
+            (factor * scale pair.1) (factor * scale pair.2) := by
+    intro pair
+    by_cases hsame : pair.1 = pair.2
+    · exact ⟨1, one_pos, fun _ _ _ hdiff => absurd hsame hdiff⟩
+    · obtain ⟨step, hstepPos, hstepProp⟩ :=
+        exists_step_of_not_dominates (hpos pair.1) (hpos pair.2) (hnone pair.1 pair.2 hsame)
+      exact ⟨step, hstepPos, fun factor hlow hhigh _ => hstepProp factor hlow hhigh⟩
+  choose step hstepPos hstepProp using hall
+  have hnonempty : (Finset.univ : Finset (Fin slotCount × Fin slotCount)).Nonempty :=
+    Finset.univ_nonempty
+  obtain ⟨shrink, hshrinkDef⟩ : ∃ value : ℝ,
+      value = Finset.univ.inf' hnonempty (fun pair => min (step pair) (1 / 2)) := ⟨_, rfl⟩
+  have hshrinkPos : 0 < shrink := by
+    rw [hshrinkDef, Finset.lt_inf'_iff]
+    exact fun pair _ => lt_min (hstepPos pair) (by norm_num)
+  have hshrinkLe : ∀ pair : Fin slotCount × Fin slotCount,
+      shrink ≤ min (step pair) (1 / 2) := by
+    intro pair
+    rw [hshrinkDef]
+    exact Finset.inf'_le _ (Finset.mem_univ pair)
+  have hhalf : shrink ≤ 1 / 2 := le_trans (hshrinkLe (Classical.arbitrary _)) (min_le_right _ _)
+  have hfactorPos : (0 : ℝ) < 1 - shrink := by linarith
+  have hsumShrunk : (∑ slot, (1 - shrink) * scale slot) < 1 := by
+    rw [← Finset.mul_sum]
+    nlinarith [hsmall, hshrinkPos, hfactorPos]
+  obtain ⟨slotOne, slotTwo, hdiff, hdom⟩ :=
+    exists_dominatingPlanePair hcount atom (fun slot => (1 - shrink) * scale slot) hframe
+      (fun slot => mul_pos hfactorPos (hpos slot)) hsumShrunk
+  exact hstepProp (slotOne, slotTwo) (1 - shrink)
+    (by linarith [le_trans (hshrinkLe (slotOne, slotTwo)) (min_le_left (step (slotOne, slotTwo))
+      ((1 : ℝ) / 2))]) (by linarith) hdiff hdom
+
+/-! ## Layer 6 — the trine, and the sharpness of the margin -/
 
 /-- **THE TRINE.**  Three lines of the plane at sixty degrees, each of mass two
 thirds.  The trine is the extremal datum of the selection theorem. -/
@@ -756,5 +906,186 @@ theorem planeTrine_not_dominates {factor : ℝ} (hfactor : 1 < factor)
 /-- The trine sits at scale total exactly one. -/
 theorem planeTrine_scale_total : (∑ _slot : Fin 3, (1 : ℝ) / 3) = 1 := by
   norm_num
+
+/-! ## Layer 7 — the volume law, and the mass-weighted average
+
+The two free floors of the cell.  The VOLUME LAW is the Cauchy-Binet law of a
+plane frame: the squared wedges of the ordered pairs total two.  It gives a pair
+of large volume at every slot count, and it shows that the volume is NOT what
+the selection theorem must fight.  The MASS-WEIGHTED AVERAGE is a dominating
+measure: the mass-to-scale ratios weight the frame into a form above the
+identity.  Both laws hold over every field, and neither selects a pair. -/
+
+/-- The Cauchy-Schwarz law of the plane, read off the Lagrange identity. -/
+theorem plane_dot_sq_le (vecOne vecTwo : Fin 2 → ℝ) :
+    (vecOne ⬝ᵥ vecTwo) ^ 2 ≤ (vecOne ⬝ᵥ vecOne) * (vecTwo ⬝ᵥ vecTwo) := by
+  have hlagrange := planeWedge_sq_add_dot_sq vecOne vecTwo
+  nlinarith [sq_nonneg (planeWedge vecOne vecTwo)]
+
+/-- A vector wedges its own direction to zero. -/
+theorem planeWedge_self (vec : Fin 2 → ℝ) : planeWedge vec vec = 0 := by
+  simp only [planeWedge]
+  ring
+
+/-- **THE VOLUME LAW.**  The squared wedges of the ordered pairs of a plane
+frame total two.  The proof reads the Lagrange identity at every pair, then the
+mass law and the row energy law at every slot. -/
+theorem PlaneParseval.sum_pairVolume {slotCount : ℕ} {atom : Fin slotCount → (Fin 2 → ℝ)}
+    (hframe : PlaneParseval atom) :
+    (∑ pair : Fin slotCount × Fin slotCount,
+      planeWedge (atom pair.1) (atom pair.2) ^ 2) = 2 := by
+  have hrow : ∀ slot, (∑ other, (atom slot ⬝ᵥ atom other) ^ 2) = atom slot ⬝ᵥ atom slot := by
+    intro slot
+    rw [← hframe.rowEnergy slot]
+    refine Finset.sum_congr rfl (fun other _ => ?_)
+    rw [dotProduct_comm (atom slot) (atom other), pow_two]
+  have hexpand : ∀ pair : Fin slotCount × Fin slotCount,
+      planeWedge (atom pair.1) (atom pair.2) ^ 2
+        = (atom pair.1 ⬝ᵥ atom pair.1) * (atom pair.2 ⬝ᵥ atom pair.2)
+          - (atom pair.1 ⬝ᵥ atom pair.2) ^ 2 := by
+    intro pair
+    have hlagrange := planeWedge_sq_add_dot_sq (atom pair.1) (atom pair.2)
+    linarith
+  simp only [hexpand]
+  rw [Fintype.sum_prod_type]
+  have hstep : ∀ slot, (∑ other, ((atom slot ⬝ᵥ atom slot) * (atom other ⬝ᵥ atom other)
+      - (atom slot ⬝ᵥ atom other) ^ 2))
+      = (atom slot ⬝ᵥ atom slot) * 2 - atom slot ⬝ᵥ atom slot := by
+    intro slot
+    rw [Finset.sum_sub_distrib, ← Finset.mul_sum, hframe.sum_mass, hrow slot]
+  simp only [hstep]
+  rw [Finset.sum_sub_distrib, ← Finset.sum_mul, hframe.sum_mass]
+  norm_num
+
+/-- **THE VOLUME PIGEONHOLE.**  Some ordered pair of distinct slots carries a
+squared wedge of at least two divided by the number of ordered pairs. -/
+theorem PlaneParseval.exists_pairVolume_ge {slotCount : ℕ} {atom : Fin slotCount → (Fin 2 → ℝ)}
+    (hframe : PlaneParseval atom) (hcount : 2 ≤ slotCount) :
+    ∃ slotOne slotTwo, slotOne ≠ slotTwo
+      ∧ 2 ≤ ((slotCount : ℝ) ^ 2 - slotCount) * planeWedge (atom slotOne) (atom slotTwo) ^ 2 := by
+  classical
+  by_contra hnone
+  simp only [not_exists, not_and, not_le] at hnone
+  have hcountPos : (0 : ℝ) < (slotCount : ℝ) ^ 2 - slotCount := by
+    have hcast : (2 : ℝ) ≤ (slotCount : ℝ) := by exact_mod_cast hcount
+    nlinarith [hcast]
+  have hsplit : (∑ pair ∈ (Finset.univ : Finset (Fin slotCount)).offDiag,
+      planeWedge (atom pair.1) (atom pair.2) ^ 2)
+      = ∑ pair : Fin slotCount × Fin slotCount, planeWedge (atom pair.1) (atom pair.2) ^ 2 := by
+    refine Finset.sum_subset (Finset.subset_univ _) ?_
+    intro pair _ hout
+    rw [Finset.mem_offDiag] at hout
+    have hsame : pair.1 = pair.2 := by
+      by_contra hdiff
+      exact hout ⟨Finset.mem_univ _, Finset.mem_univ _, hdiff⟩
+    rw [hsame, planeWedge_self]
+    norm_num
+  have hcard : ((Finset.univ : Finset (Fin slotCount)).offDiag.card : ℝ)
+      = (slotCount : ℝ) ^ 2 - slotCount := by
+    rw [Finset.offDiag_card, Finset.card_univ, Fintype.card_fin,
+      Nat.cast_sub (Nat.le_mul_of_pos_left _ (by omega))]
+    push_cast
+    ring
+  have hne : ((Finset.univ : Finset (Fin slotCount)).offDiag).Nonempty := by
+    rw [← Finset.card_pos, ← Nat.cast_pos (α := ℝ), hcard]
+    exact hcountPos
+  have hstrict : (∑ pair ∈ (Finset.univ : Finset (Fin slotCount)).offDiag,
+      planeWedge (atom pair.1) (atom pair.2) ^ 2)
+      < ∑ _pair ∈ (Finset.univ : Finset (Fin slotCount)).offDiag,
+        2 / ((slotCount : ℝ) ^ 2 - slotCount) := by
+    refine Finset.sum_lt_sum_of_nonempty hne (fun pair hpair => ?_)
+    rw [Finset.mem_offDiag] at hpair
+    rw [lt_div_iff₀ hcountPos]
+    have hbound := hnone pair.1 pair.2 hpair.2.2
+    nlinarith [hbound]
+  rw [Finset.sum_const, nsmul_eq_mul, hcard, hsplit, hframe.sum_pairVolume] at hstrict
+  have hnonzero : ((slotCount : ℝ) ^ 2 - slotCount) ≠ 0 := ne_of_gt hcountPos
+  have hcollapse : ((slotCount : ℝ) ^ 2 - slotCount)
+      * (2 / ((slotCount : ℝ) ^ 2 - slotCount)) = 2 := by
+    rw [mul_comm, div_mul_cancel₀ _ hnonzero]
+  rw [hcollapse] at hstrict
+  exact lt_irrefl _ hstrict
+
+/-- **THE FOUR-SLOT VOLUME FLOOR.**  At four slots some pair carries a squared
+wedge of at least one sixth. -/
+theorem PlaneParseval.exists_pairVolume_ge_four {atom : Fin 4 → (Fin 2 → ℝ)}
+    (hframe : PlaneParseval atom) :
+    ∃ slotOne slotTwo, slotOne ≠ slotTwo
+      ∧ 1 / 6 ≤ planeWedge (atom slotOne) (atom slotTwo) ^ 2 := by
+  obtain ⟨slotOne, slotTwo, hdiff, hvolume⟩ := hframe.exists_pairVolume_ge (by norm_num)
+  refine ⟨slotOne, slotTwo, hdiff, ?_⟩
+  norm_num at hvolume
+  linarith
+
+/-- **THE FOUR-SLOT DETERMINANT FLOOR.**  At four slots, and at every scale of
+total at most one, some pair carries a shifted determinant of at least two
+thirds of the product of its two scales.  The volume of the selection theorem
+has slack: the fight is the angle, not the volume. -/
+theorem PlaneParseval.exists_pairDeterminant_ge_four {atom : Fin 4 → (Fin 2 → ℝ)}
+    (hframe : PlaneParseval atom) (scale : Fin 4 → ℝ) (hpos : ∀ slot, 0 < scale slot)
+    (hsmall : (∑ slot, scale slot) ≤ 1) :
+    ∃ slotOne slotTwo, slotOne ≠ slotTwo
+      ∧ 2 / 3 * (scale slotOne * scale slotTwo)
+        ≤ planeWedge (atom slotOne) (atom slotTwo) ^ 2 := by
+  obtain ⟨slotOne, slotTwo, hdiff, hvolume⟩ := hframe.exists_pairVolume_ge_four
+  refine ⟨slotOne, slotTwo, hdiff, ?_⟩
+  have hpair : scale slotOne + scale slotTwo ≤ 1 := by
+    have hsub : scale slotOne + scale slotTwo
+        ≤ ∑ slot, scale slot := by
+      have hsum : (∑ slot ∈ ({slotOne, slotTwo} : Finset (Fin 4)), scale slot)
+          ≤ ∑ slot, scale slot :=
+        Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
+          (fun slot _ _ => le_of_lt (hpos slot))
+      rwa [Finset.sum_pair hdiff] at hsum
+    linarith
+  nlinarith [hvolume, hpos slotOne, hpos slotTwo,
+    sq_nonneg (scale slotOne - scale slotTwo)]
+
+/-- **THE SCALAR CORE OF THE AVERAGE.**  A mass, a scale and an energy that obey
+the Cauchy-Schwarz cap price the doubled reading.  This is the arithmetic mean
+against the geometric mean, cleared of every square root. -/
+theorem massScale_pointwise {mass scale energy value : ℝ} (hmass : 0 ≤ mass)
+    (hscale : 0 < scale) (henergy : 0 ≤ energy) (hvalue : 0 ≤ value)
+    (hcap : value ≤ mass * energy) :
+    (2 * value - scale * energy) * scale ≤ mass * value := by
+  have hscaleSq : 0 ≤ scale * scale := mul_nonneg (le_of_lt hscale) (le_of_lt hscale)
+  rcases eq_or_lt_of_le hmass with hzero | hpos
+  · have hvalueZero : value = 0 := by nlinarith [hcap, hvalue]
+    rw [hvalueZero, ← hzero]
+    nlinarith [henergy, hscaleSq]
+  · have hcapScaled : scale ^ 2 * value ≤ scale ^ 2 * (mass * energy) :=
+      mul_le_mul_of_nonneg_left hcap (sq_nonneg scale)
+    nlinarith [mul_nonneg hvalue (sq_nonneg (mass - scale)), hcapScaled, hpos]
+
+/-- **THE MASS-WEIGHTED AVERAGE DOMINATES.**  At every scale of total at most
+one, the frame weighted by the mass-to-scale ratios sits above the identity of
+the plane.
+
+This is the average of the pair forms against the volume weights, and it holds
+over every field.  It gives a dominating MEASURE, not a dominating PAIR, so it
+does not close the cell: the whole content of the selection theorem is the
+passage from the measure to one of its atoms. -/
+theorem PlaneParseval.massWeighted_dominates {slotCount : ℕ}
+    {atom : Fin slotCount → (Fin 2 → ℝ)} (hframe : PlaneParseval atom)
+    (scale : Fin slotCount → ℝ) (hpos : ∀ slot, 0 < scale slot)
+    (hsmall : (∑ slot, scale slot) ≤ 1) (probe : Fin 2 → ℝ) :
+    probe ⬝ᵥ probe
+      ≤ ∑ slot, (atom slot ⬝ᵥ atom slot) * (atom slot ⬝ᵥ probe) ^ 2 / scale slot := by
+  have hprobe := plane_dot_self_nonneg probe
+  have hpar : (∑ slot, (atom slot ⬝ᵥ probe) ^ 2) = probe ⬝ᵥ probe := by
+    have hread := hframe probe probe
+    simp only [← pow_two] at hread
+    exact hread
+  have hpointwise : ∀ slot, 2 * (atom slot ⬝ᵥ probe) ^ 2 - scale slot * (probe ⬝ᵥ probe)
+      ≤ (atom slot ⬝ᵥ atom slot) * (atom slot ⬝ᵥ probe) ^ 2 / scale slot := by
+    intro slot
+    rw [le_div_iff₀ (hpos slot)]
+    exact massScale_pointwise (plane_dot_self_nonneg (atom slot)) (hpos slot) hprobe
+      (sq_nonneg _) (plane_dot_sq_le (atom slot) probe)
+  have hsum : (∑ slot, (2 * (atom slot ⬝ᵥ probe) ^ 2 - scale slot * (probe ⬝ᵥ probe)))
+      ≤ ∑ slot, (atom slot ⬝ᵥ atom slot) * (atom slot ⬝ᵥ probe) ^ 2 / scale slot :=
+    Finset.sum_le_sum (fun slot _ => hpointwise slot)
+  rw [Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.sum_mul, hpar] at hsum
+  nlinarith [hsum, hprobe, hsmall]
 
 end Gtz
