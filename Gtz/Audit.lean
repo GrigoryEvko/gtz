@@ -26621,3 +26621,16 @@ run_cmd do
 #print axioms Gtz.exists_weakCarrier_of_isolated_slot
 #print axioms Gtz.dppPlucker_dominant
 #print axioms Gtz.heron_relation_dominant
+
+-- The oriented triangle sign, layers seven and eight
+#print axioms Gtz.atomBoundaryAtom_not_modulusEnergy
+#print axioms Gtz.atomPairMinor_pos_of_modulusEnergy
+#print axioms Gtz.atomScalePairSum
+#print axioms Gtz.atomScaleTripleSum
+#print axioms Gtz.atomTripleModulus_congr
+#print axioms Gtz.exists_deflated_pair_of_liveModulusEnergy
+#print axioms Gtz.modulusEnergy_iff_both_orientations
+#print axioms Gtz.modulusEnergy_of_sound_modulusCriterion
+#print axioms Gtz.signFree_threshold_factor
+#print axioms Gtz.signFree_threshold_lt_half
+#print axioms Gtz.sum_atomTripleDet_scale_form
