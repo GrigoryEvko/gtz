@@ -3726,3 +3726,11 @@ import Gtz.Wave.PentagonFloorProof
 -- witness is the three-cut weight table, and it fails only the level-three
 -- energy floor and the tenth.
 import Gtz.Wave.SpreadWeightCap
+
+-- The tenth carries the determinantal average PAST the field-agnostic ceiling.
+-- Under the moment class augmented by E2 <= 10 E3 the determinantal average of
+-- the smallest eigenvalue is at least 141/1000 = 0.141, against the ceiling
+-- (3 - sqrt 5)/6 = 0.1273220. One polynomial inequality in the three eigenvalues
+-- of one block carries the whole proof. The sharp cap of the route is the exact
+-- (2 - sqrt 2)/4, read at a member of the class, so 1/6 is out of reach here.
+import Gtz.Wave.TenthAverageFloor

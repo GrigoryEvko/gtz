@@ -838,6 +838,7 @@ import Gtz.Wave.DeterminantalAverageCap
 import Gtz.Wave.PentagonFloorReduction
 import Gtz.Wave.PentagonFloorProof
 import Gtz.Wave.SpreadWeightCap
+import Gtz.Wave.TenthAverageFloor
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27431,3 +27432,27 @@ run_cmd do
 #print axioms Gtz.not_atomBlockSpectrum_splitHeavy
 #print axioms Gtz.atomSplitHeavy_disc
 #print axioms Gtz.not_atomBlockSpectrum_splitLight
+#print axioms Gtz.atomTenthRung
+#print axioms Gtz.atomTenthRung_le_root
+#print axioms Gtz.atomTenthRung_le_root'
+#print axioms Gtz.atomTenthRung_le_of_spectrum
+#print axioms Gtz.AtomTenthFeasible
+#print axioms Gtz.AtomSpectralReading
+#print axioms Gtz.atomTenthAverage_ge
+#print axioms Gtz.atomTenthFloor_gt_hermitianCeiling
+#print axioms Gtz.atomTenthFloor_ladder
+#print axioms Gtz.atomTenthKill
+#print axioms Gtz.exists_atomTenthReading_ge
+#print axioms Gtz.exists_atomTenthCarrier
+#print axioms Gtz.atomTenthNum
+#print axioms Gtz.atomTenthWeight
+#print axioms Gtz.atomTenthSecond
+#print axioms Gtz.atomTenthReading
+#print axioms Gtz.atomTenthNum_le_one
+#print axioms Gtz.atomTenthNum_sorted
+#print axioms Gtz.atomTenthExtremal_spectrumAt
+#print axioms Gtz.atomTenthExtremal_isFeasible
+#print axioms Gtz.atomTenthExtremal_isReading
+#print axioms Gtz.atomTenthExtremal_average
+#print axioms Gtz.AtomSharpTripleRung
+#print axioms Gtz.not_atomSharpTripleRung
