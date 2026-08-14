@@ -832,6 +832,7 @@ import Gtz.Wave.HeavyPivotFoil
 import Gtz.Wave.PlaneRouteFoil
 import Gtz.Wave.PlaneMarginTarget
 import Gtz.Wave.PluckerSchurFloor
+import Gtz.Wave.ShiftedWedgeFloor
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27143,3 +27144,30 @@ run_cmd do
 #print axioms Gtz.atomSpectralSupply_tenth_of_unbalanced
 #print axioms Gtz.atomBalanced_dropWitness
 #print axioms Gtz.atomPluckerTenth_dropWitness
+
+-- Gtz/Wave/ShiftedWedgeFloor.lean
+-- The shifted wedge: the Cayley identity of a symmetric block of order
+-- three, the trace domination, and the per-triple floor that reads all
+-- three symmetric functions.
+#print axioms Gtz.atomSymTrace
+#print axioms Gtz.atomSymSecond
+#print axioms Gtz.atomSymDet
+#print axioms Gtz.atomSymQuad
+#print axioms Gtz.atomSymPushOne
+#print axioms Gtz.atomSymPushTwo
+#print axioms Gtz.atomSymPushThree
+#print axioms Gtz.atomSymCayley
+#print axioms Gtz.atomSymPairBound
+#print axioms Gtz.atomSymTraceDominates
+#print axioms Gtz.atomSymWedge
+#print axioms Gtz.atomSlotBlend_dot_self
+#print axioms Gtz.atomBlendFloor_zero
+#print axioms Gtz.atomBlendFloor_le_diag
+#print axioms Gtz.atomBlendFloor_minor
+#print axioms Gtz.atomShiftSecond
+#print axioms Gtz.atomShiftDet
+#print axioms Gtz.atomShiftedWedgeStep
+#print axioms Gtz.atomShiftedWedgeStep_zero
+#print axioms Gtz.atomBlendFloor_shift
+#print axioms Gtz.atomExtremalSpectrum
+#print axioms Gtz.atomShiftedWedge_passes_ceiling

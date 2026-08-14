@@ -3686,3 +3686,8 @@ import Gtz.Wave.PlaneMarginTarget
 -- degree, summed over the ten triples of five slots, gives the tenth for every
 -- frame whose six leverages are one half, and it names what is left.
 import Gtz.Wave.PluckerSchurFloor
+
+-- The shifted wedge: the per-triple floor of the campaign, applied a second
+-- time to the shifted block. It reads all three symmetric functions, and one
+-- step carries the per-triple half of the route past the Hermitian value.
+import Gtz.Wave.ShiftedWedgeFloor
