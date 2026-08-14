@@ -3681,3 +3681,8 @@ import Gtz.Wave.PlaneRouteFoil
 -- one plus half the pivot scale. Neither foil touches it, and it still
 -- carries the cell.
 import Gtz.Wave.PlaneMarginTarget
+
+-- The Schur floor of the determinantal energy: Schur's inequality of the first
+-- degree, summed over the ten triples of five slots, gives the tenth for every
+-- frame whose six leverages are one half, and it names what is left.
+import Gtz.Wave.PluckerSchurFloor

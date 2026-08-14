@@ -831,6 +831,7 @@ import Gtz.Wave.PluckerEnergySupply
 import Gtz.Wave.HeavyPivotFoil
 import Gtz.Wave.PlaneRouteFoil
 import Gtz.Wave.PlaneMarginTarget
+import Gtz.Wave.PluckerSchurFloor
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27089,3 +27090,56 @@ run_cmd do
 #print axioms Gtz.gtzWeighted_six_three_of_livePivotPlaneMarginCover
 #print axioms Gtz.heavyFoil_planeMargin_oneTwoFour
 #print axioms Gtz.planeFoil_planeMargin_threeFourFive
+
+-- Gtz/Wave/PluckerSchurFloor.lean
+-- The Schur floor of the determinantal energy: Schur's inequality of the
+-- first degree over the ten triples of five slots, the homogeneous trace
+-- floor of a positive semidefinite matrix, and the tenth at balanced
+-- leverages.
+#print axioms Gtz.atomSchurForm
+#print axioms Gtz.atomSchurForm_sorted
+#print axioms Gtz.atomSchurForm_nonneg
+#print axioms Gtz.atomFiveCubic
+#print axioms Gtz.atomTenSchurSum
+#print axioms Gtz.atomFiveCubic_eq_schurSum
+#print axioms Gtz.atomFiveCubic_nonneg
+#print axioms Gtz.atomFiveCubic_equal
+#print axioms Gtz.atomFiveCubic_split
+#print axioms Gtz.atomQuintetElemTwo
+#print axioms Gtz.atomQuintetElemThree
+#print axioms Gtz.atomQuintetFloor
+#print axioms Gtz.atomQuintetFloor_elementary
+#print axioms Gtz.atomQuintetElem_floor
+#print axioms Gtz.atomQuintetLeg_refuted
+#print axioms Gtz.atomQuintetElem_witness
+#print axioms Gtz.atomFiveHomogeneous
+#print axioms Gtz.atomFiveHomogeneous_eq_schurSum
+#print axioms Gtz.atomFiveHomogeneous_nonneg
+#print axioms Gtz.atomHermitianTracePow
+#print axioms Gtz.atomRealTracePow
+#print axioms Gtz.atomSixHomogeneous_nonneg
+#print axioms Gtz.atomPsdCubicTraceFloor
+#print axioms Gtz.atomPsdTraceFloor
+#print axioms Gtz.AtomBalanced
+#print axioms Gtz.atomHeatMatrix
+#print axioms Gtz.atomShiftMatrix
+#print axioms Gtz.atomHeatMatrix_eq_gram
+#print axioms Gtz.atomHeatMatrix_posSemidef
+#print axioms Gtz.atomHeatTwo
+#print axioms Gtz.atomHeatThree
+#print axioms Gtz.atomOffRowSquare
+#print axioms Gtz.atomEraseLaw
+#print axioms Gtz.atomHeatMatrix_tracePowTwo
+#print axioms Gtz.atomHeatMatrix_tracePowThree
+#print axioms Gtz.atomEnergyGap_heat
+#print axioms Gtz.atomHeatMatrix_trace
+#print axioms Gtz.atomHeatMatrix_mulVec_ones
+#print axioms Gtz.atomHeatMatrix_det
+#print axioms Gtz.atomPluckerTenth_of_balanced
+#print axioms Gtz.atomBlendFloor_tenth_of_balanced
+#print axioms Gtz.exists_atomCarrier_tenth_of_balanced
+#print axioms Gtz.AtomPluckerTenthUnbalanced
+#print axioms Gtz.atomPluckerTenth_of_unbalanced
+#print axioms Gtz.atomSpectralSupply_tenth_of_unbalanced
+#print axioms Gtz.atomBalanced_dropWitness
+#print axioms Gtz.atomPluckerTenth_dropWitness
