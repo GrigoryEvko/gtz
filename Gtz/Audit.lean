@@ -25869,3 +25869,9 @@ run_cmd do
 #print axioms Gtz.polarPlaneGramDet_ge_of_polarCover
 #print axioms Gtz.sum_planeShadowSq_ge_of_polarCover
 #print axioms Gtz.sum_sq_mul_sub_sq_sum_mul
+
+-- the concentration threshold and the extremal survivor laws
+#print axioms Gtz.exists_survivor_planeShadowSq_ge
+#print axioms Gtz.exists_survivor_tilt_floor
+#print axioms Gtz.sum_erase_polarPairing_sq_ge_of_cap
+#print axioms Gtz.exists_massSurplusTriple
