@@ -3407,6 +3407,15 @@ import Gtz.Wave.ArgmaxBlockFloor
 -- residues plus the six upper closures.
 import Gtz.Wave.CaptureLineTrichotomy
 
+-- the pair kill: the commutation row at the first clone atom, read
+-- against the chart entries into the four coplanar atoms, evaluates
+-- to the shifted weight against the pair trace excess on one side and
+-- against the plane row energy on the other; equality forces the
+-- shifted weight to zero or one, and interiority refuses the pair.
+-- The pair residue is a theorem, and the cell rests on the wide
+-- residue plus the six upper closures.
+import Gtz.Wave.CaptureLinePairKill
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.

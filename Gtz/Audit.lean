@@ -767,6 +767,7 @@ import Gtz.Wave.OuterBoundaryResidueLine
 import Gtz.Wave.OuterCaptureKernelLine
 import Gtz.Wave.ArgmaxBlockFloor
 import Gtz.Wave.CaptureLineTrichotomy
+import Gtz.Wave.CaptureLinePairKill
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -24669,6 +24670,15 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.isSixThreeAssemblyRankExcludedFloored_four_of_pair_wide
 #print axioms Gtz.gtzWeighted_six_three_of_captureLine_residues
 #print axioms Gtz.gtzWeightedAll_three_of_captureLine_residues
+
+#print axioms Gtz.sum_eq_pair_add_compl
+#print axioms Gtz.ne_of_mem_pair_compl
+#print axioms Gtz.pair_commutation_endgame
+#print axioms Gtz.rankFourCaptureLinePairFlooredClosed_holds
+#print axioms Gtz.rankFourChartNullBasisNullFloored_of_wide
+#print axioms Gtz.isSixThreeAssemblyRankExcludedFloored_four_of_wide
+#print axioms Gtz.gtzWeighted_six_three_of_wideResidue_of_upperClosures
+#print axioms Gtz.gtzWeightedAll_three_of_wideResidue_of_upperClosures
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
