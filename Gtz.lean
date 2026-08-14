@@ -3666,3 +3666,8 @@ import Gtz.Wave.QuadDropSign
 -- moment law of the determinantal average, the flatness identity and the
 -- spectral floor at one twelfth.
 import Gtz.Wave.PluckerEnergySupply
+
+-- The heavy pivot is the false ingredient of the plane route: the foil in
+-- fifths, the refutation, and the gap between the plane test and the cover
+-- test at a pivot.
+import Gtz.Wave.HeavyPivotFoil

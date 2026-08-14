@@ -828,6 +828,7 @@ import Gtz.Wave.PluckerCertificate
 import Gtz.Wave.QuadCoverSelection
 import Gtz.Wave.QuadDropSign
 import Gtz.Wave.PluckerEnergySupply
+import Gtz.Wave.HeavyPivotFoil
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -26970,3 +26971,74 @@ run_cmd do
 #print axioms Gtz.dppLeg_le_high
 #print axioms Gtz.dppPlucker_spread_double
 #print axioms Gtz.dppPlucker_spread_four
+
+/-! ## The heavy pivot foil of the plane route -/
+
+#print axioms Gtz.foilCons3_2
+#print axioms Gtz.foilCons4_2
+#print axioms Gtz.foilCons4_3
+#print axioms Gtz.foilCons5_2
+#print axioms Gtz.foilCons5_3
+#print axioms Gtz.foilCons5_4
+#print axioms Gtz.foilCons6_2
+#print axioms Gtz.foilCons6_3
+#print axioms Gtz.foilCons6_4
+#print axioms Gtz.foilCons6_5
+#print axioms Gtz.atomTripleRead
+#print axioms Gtz.AtomTripleCovers
+#print axioms Gtz.AtomPairPlaneDominates
+#print axioms Gtz.AtomHeavyPivotCoverClosed
+#print axioms Gtz.AtomLivePivotCoverClosed
+#print axioms Gtz.AtomHeavyPivotPlaneCoverClosed
+#print axioms Gtz.AtomLivePivotPlaneCoverClosed
+#print axioms Gtz.atomHeavyPivotCoverClosed_of_heavyPlane
+#print axioms Gtz.atomLivePivotCoverClosed_of_livePlane
+#print axioms Gtz.atomLivePivotCoverClosed_of_heavyPivotCover
+#print axioms Gtz.atomVertexCoverClosed_of_livePivotCover
+#print axioms Gtz.atomVertexCoverClosed_of_heavyPivotCover
+#print axioms Gtz.gtzWeighted_six_three_of_livePivotCover
+#print axioms Gtz.gtzWeighted_six_three_of_livePivotPlaneCover
+#print axioms Gtz.heavyFoilAtom
+#print axioms Gtz.heavyFoilScale
+#print axioms Gtz.heavyFoilAtom_zero
+#print axioms Gtz.heavyFoilAtom_one
+#print axioms Gtz.heavyFoilAtom_two
+#print axioms Gtz.heavyFoilAtom_three
+#print axioms Gtz.heavyFoilAtom_four
+#print axioms Gtz.heavyFoilAtom_five
+#print axioms Gtz.heavyFoilScale_zero
+#print axioms Gtz.heavyFoilScale_one
+#print axioms Gtz.heavyFoilScale_two
+#print axioms Gtz.heavyFoilScale_three
+#print axioms Gtz.heavyFoilScale_four
+#print axioms Gtz.heavyFoilScale_five
+#print axioms Gtz.heavyFoilAtom_five_eq_zero
+#print axioms Gtz.heavyFoilAtom_three_eq_neg
+#print axioms Gtz.heavyFoilScale_pos
+#print axioms Gtz.heavyFoilScale_sum
+#print axioms Gtz.heavyFoilAtom_isTightFrame
+#print axioms Gtz.heavyFoilGram
+#print axioms Gtz.heavyFoilGram_eq
+#print axioms Gtz.heavyFoilGram_diag
+#print axioms Gtz.heavyFoil_heavy_iff
+#print axioms Gtz.heavyFoil_heavy_zero
+#print axioms Gtz.heavyFoil_heavy_three
+#print axioms Gtz.heavyFoil_heavy_five
+#print axioms Gtz.heavyFoil_heavy_margin
+#print axioms Gtz.heavyFoil_light_deficit
+#print axioms Gtz.heavyFoil_live
+#print axioms Gtz.heavyFoilProbe
+#print axioms Gtz.heavyFoilEnergy
+#print axioms Gtz.heavyFoilRead
+#print axioms Gtz.heavyFoilProbe_energy
+#print axioms Gtz.heavyFoilRead_eq
+#print axioms Gtz.heavyFoil_triple_fails
+#print axioms Gtz.heavyFoil_heavyTriple_not_covers
+#print axioms Gtz.not_atomHeavyPivotCoverClosed
+#print axioms Gtz.not_atomHeavyPivotPlaneCoverClosed
+#print axioms Gtz.heavyFoil_cover_oneTwoFour
+#print axioms Gtz.heavyFoilAtom_hasVertexCover
+#print axioms Gtz.heavyFoil_plane_oneTwoFour
+#print axioms Gtz.planeCoverGap
+#print axioms Gtz.planeCoverGap_polar
+#print axioms Gtz.planeCoverGap_polar_neg
