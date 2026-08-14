@@ -25980,3 +25980,5 @@ run_cmd do
 #print axioms Gtz.PolarWrapGapCoreSelection
 #print axioms Gtz.polarWrapGapSelection_of_polarWrapGapCoreSelection
 #print axioms Gtz.sixSplitDiamondDesign_spares_polarGapCore
+#print axioms Gtz.posDef_of_planeGapCore
+#print axioms Gtz.posDef_iff_planeGapCore
