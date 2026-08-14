@@ -3698,3 +3698,9 @@ import Gtz.Wave.ShiftedWedgeFloor
 -- alone survives the cuboctahedron; and the Bargmann-signed repair does not
 -- survive the trine foil.
 import Gtz.Wave.DeterminantalWeightKill
+
+-- The tenth is six copies of one rank-two statement. The gap of the tenth is
+-- the exact total of six local pentagon readings, one for each atom the family
+-- drops, and each reading has no frame law and no leverage in it. The residue
+-- is a polynomial inequality in fifteen free numbers, sharp at the pentagon.
+import Gtz.Wave.PentagonFloorReduction

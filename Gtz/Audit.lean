@@ -834,6 +834,7 @@ import Gtz.Wave.PlaneMarginTarget
 import Gtz.Wave.PluckerSchurFloor
 import Gtz.Wave.ShiftedWedgeFloor
 import Gtz.Wave.DeterminantalWeightKill
+import Gtz.Wave.PentagonFloorReduction
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27249,3 +27250,41 @@ run_cmd do
 #print axioms Gtz.wedgeRungTwoLower_dropWitness_average
 #print axioms Gtz.wedgeRungTwoLower_dropWitness_passes_ceiling
 #print axioms Gtz.wedgeRung_dropWitness_ladder
+#print axioms Gtz.atomSignedTriple_realLaw
+#print axioms Gtz.atomComplexTriple_defect
+#print axioms Gtz.atomComplexTriple_le
+#print axioms Gtz.atomVolumePlucker
+#print axioms Gtz.atomBlockDetRealLaw
+#print axioms Gtz.atomBlockDetRealLaw_forbids_flat
+#print axioms Gtz.atomPentagonReading
+#print axioms Gtz.atomPentagonReading_pentagon
+#print axioms Gtz.atomPentagonReading_single
+#print axioms Gtz.atomPentagonReading_ge_neg_quad
+#print axioms Gtz.atomDropMargin
+#print axioms Gtz.atomDropMargin_familySum
+#print axioms Gtz.atomPentagonMargin
+#print axioms Gtz.atomDropMargin_eq_pentagonMargin
+#print axioms Gtz.AtomPentagonFloor
+#print axioms Gtz.atomPluckerTenth_of_pentagonFloor
+#print axioms Gtz.atomPluckerTenthUnbalanced_of_pentagonFloor
+#print axioms Gtz.atomSpectralSupply_tenth_of_pentagonFloor
+#print axioms Gtz.atomPluckerEnergyTwo_le_twelve_of_pentagon
+#print axioms Gtz.atomQuadReading
+#print axioms Gtz.atomQuadMargin
+#print axioms Gtz.atomQuadMargin_familySum
+#print axioms Gtz.atomTetraFrame
+#print axioms Gtz.atomTetraFrame_isTightFrame
+#print axioms Gtz.atomTetraFrame_gram_diag
+#print axioms Gtz.atomTetraFrame_gram_live
+#print axioms Gtz.atomTetraFrame_gram_dead
+#print axioms Gtz.atomTetraFrame_blockDet
+#print axioms Gtz.atomQuadMargin_tetraFrame
+#print axioms Gtz.atomQuadReading_flat_refuted
+#print axioms Gtz.atomDropMargin_tetraFrame
+#print axioms Gtz.atomLeverageSpread
+#print axioms Gtz.atomPairBalanceGap
+#print axioms Gtz.atomBlockPairMinor_row
+#print axioms Gtz.atomPairSpread_identity
+#print axioms Gtz.atomPluckerEnergyTwo_spread_identity
+#print axioms Gtz.atomPluckerEnergyTwo_ge_spread
+#print axioms Gtz.atomPluckerEnergyThree_ge_of_pentagonFloor
