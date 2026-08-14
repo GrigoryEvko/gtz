@@ -87,6 +87,9 @@ coordinates `Gtz.atomQuintetElem_floor` reads
 The opposite convention `e1 * e2 ≥ 5 * e3` is FALSE, and
 `Gtz.atomQuintetLeg_refuted` gives the witness `(-1,-1,1,0,0)`, a permitted
 spectrum on which `e1 * e2 = 1` and `5 * e3 = 5`.
+`Gtz.atomQuintetLeg_refuted_realized` gives a witness that a FRAME of the cell
+carries: the doubled orthonormal basis, whose heat matrix is the perfect matching
+and whose non-Perron spectrum is `(1,1,-1,-1,-1)`.
 
 ## What this module does NOT reach
 
@@ -399,6 +402,33 @@ theorem atomFiveHomogeneous_nonneg {valueOne valueTwo valueThree valueFour value
   have s345 := atomSchurForm_nonneg valueThree valueFour valueFive hthree hfour hfive
   simp only [atomTenSchurSum]
   linarith
+
+/-- **THE OPPOSITE CONVENTION FAILS AT AN ACTUAL FRAME.**  The witness of
+`Gtz.atomQuintetLeg_refuted` is a permitted spectrum, but nothing above says that
+a frame carries it.  This one is carried by a frame of the cell.
+
+Take the DOUBLED ORTHONORMAL BASIS: three pairs of equal atoms, each atom of
+squared length one half.  It is a real Parseval frame of six atoms, every
+leverage is one half, and its Gram is three copies of the two-by-two block with
+every entry one half.  Its heat matrix is the PERFECT MATCHING, which is
+symmetric, doubly stochastic and zero on the diagonal.  The perfect matching has
+the spectrum `(1,1,1,-1,-1,-1)`, so the five non-Perron eigenvalues are
+`(1,1,-1,-1,-1)`, which total `-1` and sit in the box.
+
+There `e2 = -2` and `e3 = 2`.  The correct form reads `e2 + 5 * e3 = 8`, and the
+opposite reading gives `e1 * e2 = 2` against `5 * e3 = 10`.  So the opposite
+convention fails at a frame the cell actually contains, and not only at an
+abstract five-tuple. -/
+theorem atomQuintetLeg_refuted_realized :
+    atomQuintetElemTwo 1 1 (-1) (-1) (-1) = -2
+      ∧ atomQuintetElemThree 1 1 (-1) (-1) (-1) = 2
+      ∧ (1 + 1 + (-1) + (-1) + (-1) : ℝ) = -1
+      ∧ (1 + 1 + (-1) + (-1) + (-1) : ℝ) * atomQuintetElemTwo 1 1 (-1) (-1) (-1)
+          < 5 * atomQuintetElemThree 1 1 (-1) (-1) (-1)
+      ∧ 0 ≤ atomQuintetElemTwo 1 1 (-1) (-1) (-1)
+          + 5 * atomQuintetElemThree 1 1 (-1) (-1) (-1) := by
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;>
+    norm_num [atomQuintetElemTwo, atomQuintetElemThree]
 
 /-! ## Layer 3 — the trace floor of a positive semidefinite matrix -/
 

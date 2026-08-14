@@ -27112,6 +27112,7 @@ run_cmd do
 #print axioms Gtz.atomQuintetFloor_elementary
 #print axioms Gtz.atomQuintetElem_floor
 #print axioms Gtz.atomQuintetLeg_refuted
+#print axioms Gtz.atomQuintetLeg_refuted_realized
 #print axioms Gtz.atomQuintetElem_witness
 #print axioms Gtz.atomFiveHomogeneous
 #print axioms Gtz.atomFiveHomogeneous_eq_schurSum
