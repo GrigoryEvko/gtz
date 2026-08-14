@@ -3620,6 +3620,7 @@ import Gtz.Wave.AtomMassOneLadder
 import Gtz.Wave.AtomVertexSelection
 import Gtz.Wave.AtomMarginalFoil
 import Gtz.Wave.AtomIntegralityGap
+import Gtz.Wave.SignatureSelection
 -- The pivot lift of rank two to rank three: the shadow frame law, the shadow
 -- mass law and the charge law of one pivot, the survivor inflation engine
 -- whose product law only reads the pairs that the plane closure can return,
