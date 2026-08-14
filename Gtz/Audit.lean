@@ -809,6 +809,7 @@ import Gtz.Wave.AtomCoherentTriangle
 import Gtz.Wave.AtomIcosahedralWitness
 import Gtz.Wave.AtomTriangleEnergy
 import Gtz.Wave.AtomBoundaryWitness
+import Gtz.Wave.AtomMassOneLadder
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -25875,3 +25876,44 @@ run_cmd do
 #print axioms Gtz.exists_survivor_tilt_floor
 #print axioms Gtz.sum_erase_polarPairing_sq_ge_of_cap
 #print axioms Gtz.exists_massSurplusTriple
+
+-- the mass-one ladder: the sharp margin, the tie structure and the descent
+#print axioms Gtz.blend_energy_eq_triple_of_support
+#print axioms Gtz.weak_values_of_weak_carrier
+#print axioms Gtz.atomMarginWeight
+#print axioms Gtz.atomMarginWeight_sum
+#print axioms Gtz.atomMarginWeight_pos
+#print axioms Gtz.scale_energy_add_margin
+#print axioms Gtz.exists_margin_carrier_of_boundary
+#print axioms Gtz.atomPivotPairClosed_of_atomTripleBoundary
+#print axioms Gtz.atomBlockedPairClosed_of_atomTripleBoundary
+#print axioms Gtz.gtzWeighted_six_three_of_atomTripleBoundary
+#print axioms Gtz.atomBoundaryTieProbe
+#print axioms Gtz.atomBoundaryTieProbe_vanish
+#print axioms Gtz.atomBoundaryTieProbe_ne_zero
+#print axioms Gtz.atomBoundaryAtom_weak_carrier
+#print axioms Gtz.atomBoundaryAtom_tie
+#print axioms Gtz.atomBoundaryAtom_no_strict_carrier
+#print axioms Gtz.atomBoundaryScaleAt
+#print axioms Gtz.atomBoundaryScaleAt_sum
+#print axioms Gtz.atomBoundaryScaleAt_pos
+#print axioms Gtz.atomMarginWeight_boundaryScaleAt
+#print axioms Gtz.atomBoundaryScaleAt_no_margin_carrier
+#print axioms Gtz.not_weakCarrier_of_parallel_pair
+#print axioms Gtz.atomSplitSlot
+#print axioms Gtz.atomSplitFactor
+#print axioms Gtz.atomSplitBoost
+#print axioms Gtz.atomSplitAtom
+#print axioms Gtz.atomSplitScale
+#print axioms Gtz.atomSplitFactor_mul_boost
+#print axioms Gtz.atomSplitSlot_eq_iff
+#print axioms Gtz.atomGram_atomSplitAtom
+#print axioms Gtz.atomSplitScale_eq
+#print axioms Gtz.atomSplitScale_pos
+#print axioms Gtz.atomSplitScale_sum
+#print axioms Gtz.atomSplitAtom_frame
+#print axioms Gtz.atomSplitAtom_parallel
+#print axioms Gtz.atomSplitScale_boost
+#print axioms Gtz.atomSplitGram_boost
+#print axioms Gtz.AtomFiveTripleBoundaryClosed
+#print axioms Gtz.atomFiveTripleBoundaryClosed_of_atomTripleBoundary
