@@ -779,6 +779,7 @@ import Gtz.Wave.CaptureLineTrichotomy
 import Gtz.Wave.CaptureLinePairKill
 import Gtz.Wave.CaptureLineWideKill
 import Gtz.Wave.WideSpectralAtomForm
+import Gtz.Wave.WideParityStrata
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -25224,6 +25225,18 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_nonnegCross_triple
 #print axioms Gtz.exists_dominating_triple_of_pair_correction
 #print axioms Gtz.exists_weakCarrier_of_pair_correction
+
+-- Gtz/Wave/WideParityStrata.lean
+#print axioms Gtz.wideTripleGap
+#print axioms Gtz.cross_ge_of_abs_le
+#print axioms Gtz.dominates_of_small_cross
+#print axioms Gtz.dominates_of_rankOne_cross
+#print axioms Gtz.dominates_of_equiangular_cross
+#print axioms Gtz.atomTripleDet_parity_gain
+#print axioms Gtz.weakDominates_of_signFlip
+#print axioms Gtz.wide_shiftedDiag_nonneg
+#print axioms Gtz.exists_dominating_triple_of_small_cross
+#print axioms Gtz.exists_dominating_triple_of_equiangular
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz

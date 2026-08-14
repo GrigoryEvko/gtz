@@ -3475,6 +3475,7 @@ import Gtz.Wave.CaptureLinePairKill
 -- from the residue plus the six upper closures.
 import Gtz.Wave.CaptureLineWideKill
 import Gtz.Wave.WideSpectralAtomForm
+import Gtz.Wave.WideParityStrata
 
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
