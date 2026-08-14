@@ -3335,6 +3335,11 @@ import Gtz.Wave.SharedPrivateWedgeCorner
 -- identical branch and the live wedge at every basis count.
 import Gtz.Wave.SharedPrivateComplementEigen
 
+-- The pair fold: two basis slots with one support span a tight plane,
+-- the fold kills the corner of the Gram core, and the identical
+-- residue leaves the shared-private lattice.
+import Gtz.Wave.SharedPrivatePairFold
+
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
 -- closure three.

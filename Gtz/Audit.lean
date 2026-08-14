@@ -756,6 +756,7 @@ import Gtz.Wave.SharedPrivateCornerDefect
 import Gtz.Wave.SharedPrivateLeakBudget
 import Gtz.Wave.SharedPrivateWedgeCorner
 import Gtz.Wave.SharedPrivateComplementEigen
+import Gtz.Wave.SharedPrivatePairFold
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -25982,3 +25983,98 @@ run_cmd do
 #print axioms Gtz.sixSplitDiamondDesign_spares_polarGapCore
 #print axioms Gtz.posDef_of_planeGapCore
 #print axioms Gtz.posDef_iff_planeGapCore
+
+-- The pair fold: the identical branch dies by a change of basis.
+#print axioms Gtz.SharedPrivateData.gram_entry_symm
+#print axioms Gtz.SharedPrivateData.gram_quadratic_pos
+#print axioms Gtz.SharedPrivateData.twoPoint_row_read
+#print axioms Gtz.SharedPrivateData.gram_pair_energy_pos
+#print axioms Gtz.SharedPrivateData.pairedPartner
+#print axioms Gtz.SharedPrivateData.pairedPartner_spec
+#print axioms Gtz.SharedPrivateData.pairedPartner_eq_self
+#print axioms Gtz.SharedPrivateData.pairedPartner_eq_of
+#print axioms Gtz.SharedPrivateData.pairedPartner_ne_iff
+#print axioms Gtz.SharedPrivateData.pairedPartner_support
+#print axioms Gtz.SharedPrivateData.pairedPartner_involution
+#print axioms Gtz.SharedPrivateData.pairedPartner_privateSlot
+#print axioms Gtz.SharedPrivateData.pairedPartner_ne_privateSlot
+#print axioms Gtz.SharedPrivateData.foldDelta
+#print axioms Gtz.SharedPrivateData.foldDelta_pair
+#print axioms Gtz.SharedPrivateData.foldDelta_pos
+#print axioms Gtz.SharedPrivateData.foldMatrix
+#print axioms Gtz.SharedPrivateData.foldInverse
+#print axioms Gtz.SharedPrivateData.foldMatrix_eq_zero
+#print axioms Gtz.SharedPrivateData.foldInverse_eq_zero
+#print axioms Gtz.SharedPrivateData.foldMatrix_col_self
+#print axioms Gtz.SharedPrivateData.foldInverse_row_self
+#print axioms Gtz.SharedPrivateData.sum_foldMatrix_mul
+#print axioms Gtz.SharedPrivateData.sum_foldInverse_mul
+#print axioms Gtz.SharedPrivateData.foldMatrix_col_min
+#print axioms Gtz.SharedPrivateData.foldMatrix_col_max
+#print axioms Gtz.SharedPrivateData.foldInverse_row_min
+#print axioms Gtz.SharedPrivateData.foldInverse_row_max
+#print axioms Gtz.SharedPrivateData.foldDelta_min
+#print axioms Gtz.SharedPrivateData.foldMatrix_mul_foldInverse
+#print axioms Gtz.SharedPrivateData.foldInverse_mul_foldMatrix
+#print axioms Gtz.SharedPrivateData.pairedPartner_support_eq
+#print axioms Gtz.SharedPrivateData.foldGram
+#print axioms Gtz.SharedPrivateData.foldGram_transpose
+#print axioms Gtz.SharedPrivateData.foldGram_apply_eq_dot
+#print axioms Gtz.SharedPrivateData.foldInverse_row_ne_zero
+#print axioms Gtz.SharedPrivateData.foldGram_diag_pos
+#print axioms Gtz.SharedPrivateData.gram_eq_zero_of_class_ne
+#print axioms Gtz.SharedPrivateData.twoPoint_dot_read
+#print axioms Gtz.SharedPrivateData.foldGram_pair_min_eq_zero
+#print axioms Gtz.SharedPrivateData.foldGram_offDiag_eq_zero
+#print axioms Gtz.SharedPrivateData.foldColumns
+#print axioms Gtz.SharedPrivateData.foldColumns_self
+#print axioms Gtz.SharedPrivateData.foldColumns_min
+#print axioms Gtz.SharedPrivateData.foldColumns_max
+#print axioms Gtz.SharedPrivateData.exists_foldParameter
+#print axioms Gtz.SharedPrivateData.foldNormSq
+#print axioms Gtz.SharedPrivateData.foldScale
+#print axioms Gtz.SharedPrivateData.foldDir
+#print axioms Gtz.SharedPrivateData.foldColumns_eq_zero_of_notMem
+#print axioms Gtz.SharedPrivateData.foldNormSq_pos
+#print axioms Gtz.SharedPrivateData.foldScale_pos
+#print axioms Gtz.SharedPrivateData.foldScale_sq
+#print axioms Gtz.SharedPrivateData.foldDir_unit
+#print axioms Gtz.SharedPrivateData.foldDir_support_eq
+#print axioms Gtz.SharedPrivateData.foldScale_self
+#print axioms Gtz.SharedPrivateData.foldColumns_eq_mul
+#print axioms Gtz.SharedPrivateData.foldDir_columns_eq
+#print axioms Gtz.SharedPrivateData.foldColumns_isTight
+#print axioms Gtz.chartMultiplierAssembly_univ_eq_columns_diagonal
+#print axioms Gtz.SharedPrivateData.foldWeight
+#print axioms Gtz.SharedPrivateData.foldWeight_pos
+#print axioms Gtz.SharedPrivateData.foldWeight_diagonal_eq
+#print axioms Gtz.SharedPrivateData.foldAssembly_eq
+#print axioms Gtz.SharedPrivateData.foldDir_eq_self
+#print axioms Gtz.SharedPrivateData.foldScale_diag_mul_inv
+#print axioms Gtz.SharedPrivateData.foldCoeff
+#print axioms Gtz.SharedPrivateData.foldLeftInv
+#print axioms Gtz.SharedPrivateData.foldLeftInv_mul
+#print axioms Gtz.SharedPrivateData.foldCoeff_representation
+#print axioms Gtz.SharedPrivateData.foldCoeff_idempotent
+#print axioms Gtz.SharedPrivateData.foldCoeff_trace
+#print axioms Gtz.SharedPrivateData.foldCoeff_exchange
+#print axioms Gtz.SharedPrivateData.foldCoeff_apply_self
+#print axioms Gtz.SharedPrivateData.foldDir_smul
+#print axioms Gtz.SharedPrivateData.foldDir_isTight
+#print axioms Gtz.SharedPrivateData.foldDir_sq_sum
+#print axioms Gtz.SharedPrivateData.foldWeight_sum_one
+#print axioms Gtz.SharedPrivateData.pairFold_hdata
+#print axioms Gtz.SharedPrivateData.foldDir_min_comb
+#print axioms Gtz.SharedPrivateData.foldDir_max_comb
+#print axioms Gtz.SharedPrivateData.tightDir_min_comb
+#print axioms Gtz.SharedPrivateData.tightDir_max_comb
+#print axioms Gtz.SharedPrivateData.foldSpan_eq
+#print axioms Gtz.SharedPrivateData.false_of_supportPaired_gram
+#print axioms Gtz.SharedPrivateData.exists_label_of_gram_ne_zero
+#print axioms Gtz.SharedPrivateData.false_of_pair_label_of_support_ne
+#print axioms Gtz.sharedPrivateKilled_of_foldLattice
+#print axioms Gtz.rankFourSharedPrivateClosed_of_foldLattice
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_foldLattice
+#print axioms Gtz.rankSixSharedPrivateClosed_of_foldLattice
+#print axioms Gtz.SharedPrivateData.captureGram_diagonal_eq
+#print axioms Gtz.SharedPrivateData.deadLeak_orthogonal
