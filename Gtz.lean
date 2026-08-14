@@ -2245,6 +2245,7 @@ import Gtz.Reduction.PolarPlaneTurn
 -- the seventh bundle of the polar chain carries content that the complex field
 -- cannot supply.
 import Gtz.Reduction.PolarCircularOrder
+import Gtz.Reduction.PolarShadowFloor
 
 -- The frame-priced descent: the design identity contracts against the inverse
 -- gap of every region, thus the pivot pigeonhole becomes an exact stage law and
