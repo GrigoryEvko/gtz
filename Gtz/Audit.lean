@@ -747,6 +747,7 @@ import Gtz.Wave.SharedPrivateComplementLedger
 import Gtz.Wave.SharedPrivateSlotSplit
 import Gtz.Wave.SharedPrivateCoefficientRow
 import Gtz.Wave.SharedPrivateCornerDefect
+import Gtz.Wave.SharedPrivateLeakBudget
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -24722,6 +24723,16 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFourSharedPrivateClosed_of_count_circuit
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_count_circuit
 #print axioms Gtz.rankSixSharedPrivateClosed_of_count_circuit
+
+#print axioms Gtz.SharedPrivateData.leak_sq_sum
+#print axioms Gtz.SharedPrivateData.leak_term_nonneg
+#print axioms Gtz.SharedPrivateData.basis_family_leak_sq_le
+#print axioms Gtz.SharedPrivateData.basis_leak_sq_le
+#print axioms Gtz.SharedPrivateData.chart_mulVec_basis_eq_coeff_sum
+#print axioms Gtz.SharedPrivateData.coeffRow_leak_sq_le
+#print axioms Gtz.SharedPrivateData.coeff_sum_pinAtom_collapse
+#print axioms Gtz.SharedPrivateData.pinRow_coeff_sq_le
+#print axioms Gtz.SharedPrivateData.pinRow_family_sq_le
 
 #print axioms Gtz.dotProduct_projectionOfDesign_mulVec_self
 #print axioms Gtz.sum_finset_eq_sum_orderEmbOfFin

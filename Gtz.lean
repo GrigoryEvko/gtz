@@ -3292,6 +3292,8 @@ import Gtz.Wave.SharedPrivateCoefficientRow
 -- The corner defect kill: the pure pair closes the identical branch at
 -- basis count four.
 import Gtz.Wave.SharedPrivateCornerDefect
+-- The leak budget: the stationary leak law on the shared-private lattice.
+import Gtz.Wave.SharedPrivateLeakBudget
 
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
