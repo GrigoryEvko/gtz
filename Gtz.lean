@@ -3671,3 +3671,8 @@ import Gtz.Wave.PluckerEnergySupply
 -- fifths, the refutation, and the gap between the plane test and the cover
 -- test at a pivot.
 import Gtz.Wave.HeavyPivotFoil
+
+-- The plane test cannot be part of the selection: a second exact foil over
+-- the square root of thirteen kills the plane half and the heavy half at one
+-- datum.
+import Gtz.Wave.PlaneRouteFoil

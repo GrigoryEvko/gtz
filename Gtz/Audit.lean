@@ -829,6 +829,7 @@ import Gtz.Wave.QuadCoverSelection
 import Gtz.Wave.QuadDropSign
 import Gtz.Wave.PluckerEnergySupply
 import Gtz.Wave.HeavyPivotFoil
+import Gtz.Wave.PlaneRouteFoil
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27042,3 +27043,37 @@ run_cmd do
 #print axioms Gtz.planeCoverGap
 #print axioms Gtz.planeCoverGap_polar
 #print axioms Gtz.planeCoverGap_polar_neg
+
+/-! ## The plane route foil over the square root of thirteen -/
+
+#print axioms Gtz.planeFoilVec
+#print axioms Gtz.planeFoilAtom
+#print axioms Gtz.planeFoilScale
+#print axioms Gtz.planeFoilRoot_pos
+#print axioms Gtz.planeFoilRoot_sq
+#print axioms Gtz.planeFoilAtom_dot
+#print axioms Gtz.planeFoilAtom_dot_sq
+#print axioms Gtz.planeFoilAtom_gram
+#print axioms Gtz.planeFoilVec_frame
+#print axioms Gtz.planeFoilAtom_isTightFrame
+#print axioms Gtz.planeFoilScale_pos
+#print axioms Gtz.planeFoilScale_sum
+#print axioms Gtz.planeFoilGram_diag
+#print axioms Gtz.planeFoil_heavy_iff
+#print axioms Gtz.planeFoil_live
+#print axioms Gtz.planeFoilProbe
+#print axioms Gtz.planeFoilEnergy
+#print axioms Gtz.planeFoilRead
+#print axioms Gtz.planeFoilProbe_energy
+#print axioms Gtz.planeFoilRead_eq
+#print axioms Gtz.planeFoilPolar
+#print axioms Gtz.planeFoilPolarEnergy
+#print axioms Gtz.planeFoilPolarRead
+#print axioms Gtz.planeFoilPolar_energy
+#print axioms Gtz.planeFoilPolar_orth
+#print axioms Gtz.planeFoilPolarRead_eq
+#print axioms Gtz.planeFoil_cover_threeFourFive
+#print axioms Gtz.planeFoilAtom_hasVertexCover
+#print axioms Gtz.not_atomLivePivotPlaneCoverClosed
+#print axioms Gtz.not_atomHeavyPivotCoverClosed_second
+#print axioms Gtz.not_atomHeavyPivotPlaneCoverClosed_second
