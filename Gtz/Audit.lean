@@ -817,6 +817,7 @@ import Gtz.Wave.AtomBoundaryWitness
 import Gtz.Wave.AtomMassOneLadder
 import Gtz.Wave.AtomVertexSelection
 import Gtz.Wave.AtomMarginalFoil
+import Gtz.Wave.AtomIntegralityGap
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -26261,3 +26262,15 @@ run_cmd do
 #print axioms Gtz.AtomRatioOrderSelectionClosed
 #print axioms Gtz.not_atomRatioOrderSelectionClosed
 #print axioms Gtz.not_atomTriple_values_of_marginal_total_two
+#print axioms Gtz.sum_over_triple_finset
+#print axioms Gtz.atomCover_mono
+#print axioms Gtz.atomCover_mono_subset
+#print axioms Gtz.atomScaleCover_energy
+#print axioms Gtz.atomScaleCover_sum
+#print axioms Gtz.exists_atomFractionalCover_slack
+#print axioms Gtz.AtomVertexCoverClosed
+#print axioms Gtz.atomVertexCoverClosed_of_atomTripleOperator
+#print axioms Gtz.atomTripleOperatorClosed_of_atomVertexCover
+#print axioms Gtz.atomVertexCoverClosed_iff_atomTripleOperator
+#print axioms Gtz.atomVertexCoverClosed_iff_atomTripleBoundary
+#print axioms Gtz.gtzWeighted_six_three_of_atomVertexCover

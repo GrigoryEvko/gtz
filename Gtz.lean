@@ -3618,6 +3618,7 @@ import Gtz.Wave.AtomBoundaryWitness
 import Gtz.Wave.AtomMassOneLadder
 import Gtz.Wave.AtomVertexSelection
 import Gtz.Wave.AtomMarginalFoil
+import Gtz.Wave.AtomIntegralityGap
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
