@@ -5,19 +5,44 @@ set_option relaxedAutoImplicit false
 set_option maxHeartbeats 6400000
 
 /-!
-# The determinantal moment certificate, and why it cannot close the cell
+# The determinantal calculus of a tight frame, the Plücker law of realness, and
+the death of the averaging route
 
 The residue of the atom lane asks for a TRIPLE whose shifted Gram block is
 positive semidefinite.  The interlacing method of Marcus, Spielman and
 Srivastava, extended to negatively dependent samples by Anari and Oveis
 Gharan, converts an averaged statement into a statement about ONE member of a
-family: for a strongly Rayleigh measure on the triples, some triple's extreme
-root is at least as good as the extreme root of the AVERAGE characteristic
-polynomial.  That is the step the campaign has been missing, because the
-average is good and no individual member is.
+family.  That is the step the campaign has been missing, because the average is
+good and no individual member is.  This module builds the measure side of that
+method in full, refutes the inequality the method has to consume, and then
+explains WHY no repair of that inequality can work.
 
-This module builds the measure side of that method in full, and then refutes
-the inequality the method has to consume.
+## The headline: the Plücker law is the real-only ingredient
+
+`Gtz.dppHeron_plucker_eq_zero` — for every real rank-three family on six slots,
+every pivot slot and every four other slots, the three PAIRED PRODUCTS of
+determinantal weights through that pivot satisfy the Heron form EXACTLY:
+
+    Her(p_a12 * p_a34, p_a13 * p_a24, p_a14 * p_a23) = 0,
+    Her(U, V, W) := U^2 + V^2 + W^2 - 2 U V - 2 V W - 2 W U.
+
+`Her(a^2, b^2, c^2)` is minus sixteen times the squared area of the triangle
+with sides `a, b, c`, so the law says the three square roots of those products
+are the sides of a DEGENERATE triangle.  Over the complex numbers the same
+three determinant products still add to zero, because the Plücker relation is
+field-free, but they are complex, so their moduli are the sides of an ARBITRARY
+triangle and the Heron form is at most zero, strictly negative off the
+collinear locus.  `Gtz.dppHeron_sq_nonpos_of_triangle` and
+`Gtz.dppHeron_sq_eq_zero_iff` state the two halves of that contrast without
+leaving the reals.
+
+`Gtz.atomPairMinor_eq_minorForm` and `Gtz.atomTripleDet_eq_minorForm` close the
+circle: all three coefficients of a triple, and therefore whether that triple
+dominates, depend on the datum ONLY through the principal minors of the Gram
+and the scales.  A certificate assembled from those minors reads the same over
+both fields, while the cell is true over the reals and false over the
+complexes.  **Every such certificate must fail, and a proof of the cell has to
+consume the Plücker law.**  That is the standing verdict this module leaves.
 
 ## The measure
 
@@ -25,82 +50,85 @@ The Cauchy-Binet weights of a tight frame are the squared volumes of the
 triples.  They are the determinantal point process of the Gram, and its
 marginals are the geometry itself:
 
-* `Gtz.dppPairMarginal_eq` — the squared volumes of the triples through a
-  PAIR add to the squared wedge of that pair.  One line from the frame law,
-  applied to the cross product of the two atoms.
-* `Gtz.dppSlotMarginal_eq` — the squared wedges through a SLOT add to twice
-  the squared length of that slot.  The row energy law and the trace law.
-* `Gtz.dppTripleWeight_mass` — the squared volumes add to six over the
-  ordered triples, that is to one over the twenty unordered ones.  This is
-  Cauchy-Binet at a tight frame, and it needs no determinant theory.
+* `Gtz.dppPairMarginal_eq` — the squared volumes of the triples through a PAIR
+  add to the squared wedge of that pair.  One line from the frame law, applied
+  to the cross product of the two atoms.
+* `Gtz.dppSlotMarginal_eq` — the squared wedges through a SLOT add to twice the
+  squared length of that slot.  The row energy law and the trace law.
+* `Gtz.dppTripleWeight_mass` — the squared volumes add to six over the ordered
+  triples, that is to one over the twenty unordered ones.
 
 ## The moments
 
 Because the weights are a determinantal point process, the average of each
-coefficient of the triple collapses onto the corresponding minor sum:
+coefficient of the triple collapses onto the matching minor sum:
 
-* `Gtz.dppMomentOne_eq` — the average of the trace of the shifted block is
-  six times the squared-length-weighted sum of the shifted diagonals.
-* `Gtz.dppMomentTwo_eq` — the average of the second coefficient is three
-  times the squared-wedge-weighted sum of the pair minors.
-* `Gtz.dppMomentThree` — the third moment is the squared-volume-weighted sum
-  of the triple determinants, by definition.
+* `Gtz.dppMomentOne_eq` — the average of the trace of the shifted block is six
+  times the squared-length-weighted sum of the shifted diagonals.
+* `Gtz.dppMomentTwo_eq` — the average of the second coefficient is three times
+  the squared-wedge-weighted sum of the pair minors.
+* `Gtz.dppMomentThree` — the third moment is the squared-volume-weighted sum of
+  the triple determinants, by definition.
 
 ## The engine, and the residue of the method
 
-`Gtz.exists_triple_char_neg` is the free half of the interlacing argument:
-nonnegative weights of positive mass whose three averaged coefficients are
-nonnegative force, at EVERY negative argument, SOME weighted triple whose
-characteristic polynomial is negative there.  The engine is stated for
-arbitrary nonnegative weights, so it serves any strongly Rayleigh measure.
+`Gtz.weighted_char_sum_neg` and `Gtz.exists_triple_char_neg` are the free half
+of the interlacing argument: nonnegative weights of positive mass whose three
+averaged coefficients are nonnegative force, at EVERY negative argument, SOME
+weighted triple whose characteristic polynomial is negative there.  The cell
+asks for ONE triple that works at EVERY negative argument, and
+`Gtz.exists_charNegative_of_moments_of_separator` performs that exchange from a
+sign monotonicity hypothesis, which is the first-separator half of a common
+interlacing.  The engine takes arbitrary nonnegative weights, so it serves any
+strongly Rayleigh measure a successor may want.
 
-The cell asks for ONE triple whose characteristic polynomial is negative at
-EVERY negative argument.  `Gtz.TripleQuantifierExchange` names that exchange,
-and `Gtz.exists_charNegative_of_moments_of_exchange` composes the two halves.
-An interlacing family is exactly the device that performs the exchange.
-
-## The refutation
+## The refutation, and its three strata
 
 `Gtz.not_dppMomentCertificate` — **the determinantal moment certificate is
-FALSE.**  The witness is the LINE datum `Gtz.dppLineAtom`: four parallel
-atoms on the first axis with coefficients `4/5, 1/5, 2/5, 2/5`, and two unit
-atoms on the other two axes, with the scale mass `99/100` concentrated on the
-longest parallel atom.  Its third moment is exactly `-10496871/12500000`,
-while its first two moments stay positive, and the datum carries a strictly
-dominating triple, so the CELL HOLDS where the certificate fails.
+FALSE.**
 
+* The LINE datum `Gtz.dppLineAtom` has third moment `-10496871/12500000`.
+* `Gtz.dppLine_momentThree_at` gives the whole one-parameter family in closed
+  form, negative on the window `0 < g < 111/2175`, whose scale mass `1 - g`
+  reaches arbitrarily close to one.  The failure is not a boundary artifact.
+* The GENERIC datum `Gtz.dppGenericAtom` has every squared length at least
+  `17/36`, every squared wedge at least `49/324` and every squared volume at
+  least `1/81`, and its third moment is `-683729/3375000`.  No nondegeneracy
+  hypothesis rescues the certificate.
+
+`Gtz.dppMomentCertificate_fails_where_the_cell_holds` puts the verdict in one
+theorem: the generic datum carries a strictly dominating triple, every
+nondegeneracy reading is bounded away from zero, and the moment is negative.
 The adversarial floor of the third moment over the whole stratum is exactly
-`-3/16`, attained in the limit of the same line family at squared
-coefficients `5/8, 1/8, 1/8, 1/8` with the whole scale mass on the longest
-atom.  Blockedness does not rescue it: the adversarial floor on the blocked
-stratum is still negative.
+`-3/16`, attained in the limit of the line family at squared coefficients
+`5/8, 1/8, 1/8, 1/8`.
 
 ## The tightness, which is what makes the negative informative
 
-`Gtz.dppTie_momentThree_eq_zero` — at the boundary witness the third moment
-is EXACTLY ZERO.  The mechanism is exact: all twenty triple determinants of
-that datum are nonpositive, and the eight strictly negative ones are exactly
-the eight triples that repeat a direction, which carry squared volume zero.
-So the certificate is SHARP at the extremal of the cell and negative off it,
-which `Gtz.dppMomentThree_crosses_zero` states in one theorem.  The
-obstruction is not the choice of measure.
+`Gtz.dppTie_momentThree_eq_zero` — at the boundary witness the third moment is
+EXACTLY ZERO.  The mechanism is exact: all twenty triple determinants of that
+datum are nonpositive, and the eight strictly negative ones are exactly the
+eight triples that repeat a direction, which carry squared volume zero.  So the
+certificate is SHARP at the extremal of the cell and negative off it, which
+`Gtz.dppMomentThree_crosses_zero` states in one theorem.
 
 ## The converse, run before the route was proposed
 
 `Gtz.dppMoments_nonneg_of_dominating` — a dominating triple makes the POINT
 MASS on that triple satisfy all three moment inequalities.  A point mass is
 strongly Rayleigh, and it is a limit of tilts of the determinantal point
-process, so the SUPREMUM of the certificate over the admissible measures is
-the cell itself.  A measure chosen by search is therefore never a reduction:
-only a measure given by a FORMULA can be a proof, and the formula the
-geometry supplies is the one refuted here.
+process, so the SUPREMUM of the certificate over the admissible measures is the
+cell itself.  A measure chosen by search is never a reduction: only a measure
+given by a FORMULA can be a proof, and the formula the geometry supplies is the
+one refuted here.
 
 ## PROVED here (no `sorry`, no `axiom`, no `native_decide`)
 
-Every statement below is a theorem.  The marginal laws, the moment laws and
-the engine hold at every tight frame of rank three on six slots.  The
-refutation and the tightness are exact rational computations at two named
-configurations, and the refutation is a refutation, thus not vacuous.
+Every statement below is a theorem.  The Plücker law, the marginal laws, the
+moment laws, the minor coordinates and the engine hold at every tight frame of
+rank three on six slots.  The refutations and the tightness are exact rational
+computations at three named configurations, and each refutation is a
+refutation, thus none of them is vacuous.
 -/
 namespace Gtz
 
@@ -470,15 +498,13 @@ def atomTripleChar (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
         + atomPairMinor atom scale slotTwo slotThree) * arg
     - atomTripleDet atom scale slotOne slotTwo slotThree
 
-/-- **THE SELECTION ENGINE.**  Nonnegative weights of positive mass whose
-three averaged coefficients are all nonnegative force a weighted triple
-whose characteristic polynomial is NEGATIVE at every negative argument.
-This is the free half of the interlacing argument: the averaged statement
-descends to one member as soon as a common interlacing point is available,
-and the engine supplies the sign that the interlacing step consumes. -/
-theorem exists_triple_char_neg (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
+/-- **THE WEIGHTED SUM IS NEGATIVE ON THE NEGATIVE AXIS.**  Nonnegative
+weights of positive mass whose three averaged coefficients are all
+nonnegative make the weighted total of the characteristic polynomials
+negative at every negative argument.  Every sign in the proof is the sign of
+one moment, so the statement is the whole content of the moment hypothesis. -/
+theorem weighted_char_sum_neg (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
     (weight : Fin 6 → Fin 6 → Fin 6 → ℝ)
-    (hnonneg : ∀ slotOne slotTwo slotThree, 0 ≤ weight slotOne slotTwo slotThree)
     (hmass : 0 < ∑ slotOne, ∑ slotTwo, ∑ slotThree, weight slotOne slotTwo slotThree)
     (hone : 0 ≤ ∑ slotOne, ∑ slotTwo, ∑ slotThree,
       weight slotOne slotTwo slotThree
@@ -492,8 +518,9 @@ theorem exists_triple_char_neg (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6
     (hthree : 0 ≤ ∑ slotOne, ∑ slotTwo, ∑ slotThree,
       weight slotOne slotTwo slotThree * atomTripleDet atom scale slotOne slotTwo slotThree)
     (arg : ℝ) (harg : arg < 0) :
-    ∃ slotOne slotTwo slotThree, 0 < weight slotOne slotTwo slotThree
-      ∧ atomTripleChar atom scale slotOne slotTwo slotThree arg < 0 := by
+    (∑ slotOne, ∑ slotTwo, ∑ slotThree,
+      weight slotOne slotTwo slotThree
+        * atomTripleChar atom scale slotOne slotTwo slotThree arg) < 0 := by
   classical
   set massSum := ∑ slotOne, ∑ slotTwo, ∑ slotThree, weight slotOne slotTwo slotThree with hmassDef
   set oneSum := ∑ slotOne, ∑ slotTwo, ∑ slotThree,
@@ -518,15 +545,38 @@ theorem exists_triple_char_neg (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6
       Finset.sum_congr rfl fun c _ => by ring
   have hsqpos : 0 < arg ^ 2 := by nlinarith [mul_pos_of_neg_of_neg harg harg]
   have hcube : arg ^ 3 < 0 := by nlinarith [mul_neg_of_neg_of_pos harg hsqpos]
-  have hsq : 0 ≤ arg ^ 2 := sq_nonneg arg
-  have hneg : (∑ slotOne, ∑ slotTwo, ∑ slotThree,
+  rw [hexpand]
+  have hfirst : massSum * arg ^ 3 < 0 := mul_neg_of_pos_of_neg hmass hcube
+  have hsecond : 0 ≤ oneSum * arg ^ 2 := mul_nonneg hone hsqpos.le
+  have hthirdTerm : twoSum * arg ≤ 0 := mul_nonpos_of_nonneg_of_nonpos htwo harg.le
+  linarith
+
+/-- **THE SELECTION ENGINE.**  Nonnegative weights of positive mass whose
+three averaged coefficients are all nonnegative force a weighted triple whose
+characteristic polynomial is NEGATIVE at every negative argument.  This is
+the free half of the interlacing argument: the averaged statement descends to
+one member as soon as a common separator is available, and the engine
+supplies the sign that the separator step consumes. -/
+theorem exists_triple_char_neg (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
+    (weight : Fin 6 → Fin 6 → Fin 6 → ℝ)
+    (hnonneg : ∀ slotOne slotTwo slotThree, 0 ≤ weight slotOne slotTwo slotThree)
+    (hmass : 0 < ∑ slotOne, ∑ slotTwo, ∑ slotThree, weight slotOne slotTwo slotThree)
+    (hone : 0 ≤ ∑ slotOne, ∑ slotTwo, ∑ slotThree,
       weight slotOne slotTwo slotThree
-        * atomTripleChar atom scale slotOne slotTwo slotThree arg) < 0 := by
-    rw [hexpand]
-    have hfirst : massSum * arg ^ 3 < 0 := mul_neg_of_pos_of_neg hmass hcube
-    have hsecond : 0 ≤ oneSum * arg ^ 2 := mul_nonneg hone hsq
-    have hthirdTerm : twoSum * arg ≤ 0 := mul_nonpos_of_nonneg_of_nonpos htwo harg.le
-    linarith
+        * (atomShiftedDiag atom scale slotOne + atomShiftedDiag atom scale slotTwo
+            + atomShiftedDiag atom scale slotThree))
+    (htwo : 0 ≤ ∑ slotOne, ∑ slotTwo, ∑ slotThree,
+      weight slotOne slotTwo slotThree
+        * (atomPairMinor atom scale slotOne slotTwo
+            + atomPairMinor atom scale slotOne slotThree
+            + atomPairMinor atom scale slotTwo slotThree))
+    (hthree : 0 ≤ ∑ slotOne, ∑ slotTwo, ∑ slotThree,
+      weight slotOne slotTwo slotThree * atomTripleDet atom scale slotOne slotTwo slotThree)
+    (arg : ℝ) (harg : arg < 0) :
+    ∃ slotOne slotTwo slotThree, 0 < weight slotOne slotTwo slotThree
+      ∧ atomTripleChar atom scale slotOne slotTwo slotThree arg < 0 := by
+  classical
+  have hneg := weighted_char_sum_neg atom scale weight hmass hone htwo hthree arg harg
   by_contra hno
   simp only [not_exists, not_and, not_lt] at hno
   have hterm : ∀ slotOne slotTwo slotThree : Fin 6,
@@ -589,32 +639,46 @@ theorem atomTripleCharNegative_of_dominates (atom : Fin 6 → (Fin 3 → ℝ)) (
   simp only [atomTripleChar]
   linarith
 
-/-- **THE RESIDUE OF THE INTERLACING METHOD, STATED EXACTLY.**  The engine
-`Gtz.exists_triple_char_neg` delivers, for EACH negative argument, SOME
-weighted triple whose characteristic polynomial is negative there.  The cell
-asks for ONE triple that works at EVERY negative argument.  An interlacing
-family is precisely the device that exchanges those two quantifiers, and this
-proposition names the exchange. -/
-def TripleQuantifierExchange : Prop :=
-  ∀ (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
-    (weight : Fin 6 → Fin 6 → Fin 6 → ℝ),
-    (∀ slotOne slotTwo slotThree, 0 ≤ weight slotOne slotTwo slotThree) →
-    (0 < ∑ slotOne, ∑ slotTwo, ∑ slotThree, weight slotOne slotTwo slotThree) →
-    (∀ arg : ℝ, arg < 0 → ∃ slotOne slotTwo slotThree,
-      0 < weight slotOne slotTwo slotThree
-        ∧ atomTripleChar atom scale slotOne slotTwo slotThree arg < 0) →
-    ∃ slotOne slotTwo slotThree, 0 < weight slotOne slotTwo slotThree
-      ∧ AtomTripleCharNegative atom scale slotOne slotTwo slotThree
+/-- A triple is SIGN MONOTONE below zero when its characteristic polynomial,
+once nonnegative at a negative argument, stays nonnegative up to zero.  For a
+symmetric block that says exactly that the block has AT MOST ONE negative
+eigenvalue, which is the first-separator half of a common interlacing. -/
+def AtomTripleSignMonotone (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
+    (slotOne slotTwo slotThree : Fin 6) : Prop :=
+  ∀ lowArg highArg : ℝ, lowArg ≤ highArg → highArg ≤ 0 →
+    0 ≤ atomTripleChar atom scale slotOne slotTwo slotThree lowArg →
+    0 ≤ atomTripleChar atom scale slotOne slotTwo slotThree highArg
 
-/-- **THE COMPOSITION.**  The three moment inequalities plus the quantifier
-exchange give a triple that is characteristically negative, which is the
-positive semidefiniteness the residue asks for.  Both hypotheses are needed:
-this module refutes the first for the measure of the frame, and the second is
-the interlacing family, which the campaign has not built. -/
-theorem exists_charNegative_of_moments_of_exchange
-    (hexchange : TripleQuantifierExchange)
-    (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
-    (weight : Fin 6 → Fin 6 → Fin 6 → ℝ)
+/-- A characteristically negative triple is sign monotone for free, because
+its characteristic polynomial is never nonnegative below zero. -/
+theorem atomTripleSignMonotone_of_charNegative (atom : Fin 6 → (Fin 3 → ℝ))
+    (scale : Fin 6 → ℝ) (slotOne slotTwo slotThree : Fin 6)
+    (hneg : AtomTripleCharNegative atom scale slotOne slotTwo slotThree) :
+    AtomTripleSignMonotone atom scale slotOne slotTwo slotThree := by
+  intro lowArg highArg hle hzero hlow
+  rcases lt_or_ge lowArg 0 with hlt | hge
+  · exact absurd hlow (not_le.mpr (hneg lowArg hlt))
+  · have hlowZero : lowArg = 0 := le_antisymm (hle.trans hzero) hge
+    have hhighZero : highArg = 0 := le_antisymm hzero (hge.trans hle)
+    rw [hhighZero]
+    rw [hlowZero] at hlow
+    exact hlow
+
+/-- **THE COMPOSITION: MOMENTS PLUS A COMMON SEPARATOR GIVE ONE TRIPLE.**
+The engine says that at EVERY negative argument some weighted triple has a
+negative characteristic polynomial.  The cell asks for ONE triple that works
+at EVERY negative argument.  Sign monotonicity below zero is exactly the
+device that exchanges those two quantifiers: it makes the failure set of each
+triple an interval reaching up to zero, so the failure sets are nested and the
+largest failure point of the family exposes a triple that never fails.
+
+This is the finite, elementary form of the interlacing family lemma, and it
+needs no real stability theory.  The hypothesis is genuine: for the full
+determinantal support it FAILS, because three nearly parallel atoms give a
+block with two negative eigenvalues.  Recovering it on the conditioned
+subfamilies of a decision tree is the content the campaign has not built. -/
+theorem exists_charNegative_of_moments_of_separator (atom : Fin 6 → (Fin 3 → ℝ))
+    (scale : Fin 6 → ℝ) (weight : Fin 6 → Fin 6 → Fin 6 → ℝ)
     (hnonneg : ∀ slotOne slotTwo slotThree, 0 ≤ weight slotOne slotTwo slotThree)
     (hmass : 0 < ∑ slotOne, ∑ slotTwo, ∑ slotThree, weight slotOne slotTwo slotThree)
     (hone : 0 ≤ ∑ slotOne, ∑ slotTwo, ∑ slotThree,
@@ -627,12 +691,47 @@ theorem exists_charNegative_of_moments_of_exchange
             + atomPairMinor atom scale slotOne slotThree
             + atomPairMinor atom scale slotTwo slotThree))
     (hthree : 0 ≤ ∑ slotOne, ∑ slotTwo, ∑ slotThree,
-      weight slotOne slotTwo slotThree * atomTripleDet atom scale slotOne slotTwo slotThree) :
+      weight slotOne slotTwo slotThree * atomTripleDet atom scale slotOne slotTwo slotThree)
+    (hmono : ∀ slotOne slotTwo slotThree, 0 < weight slotOne slotTwo slotThree →
+      AtomTripleSignMonotone atom scale slotOne slotTwo slotThree) :
     ∃ slotOne slotTwo slotThree, 0 < weight slotOne slotTwo slotThree
-      ∧ AtomTripleCharNegative atom scale slotOne slotTwo slotThree :=
-  hexchange atom scale weight hnonneg hmass
-    (fun arg harg => exists_triple_char_neg atom scale weight hnonneg hmass hone htwo hthree
-      arg harg)
+      ∧ AtomTripleCharNegative atom scale slotOne slotTwo slotThree := by
+  classical
+  by_contra hno
+  simp only [not_exists, not_and] at hno
+  have hfail : ∀ triple : Fin 6 × Fin 6 × Fin 6,
+      ∃ badArg : ℝ, badArg < 0
+        ∧ (0 < weight triple.1 triple.2.1 triple.2.2 →
+            0 ≤ atomTripleChar atom scale triple.1 triple.2.1 triple.2.2 badArg) := by
+    rintro ⟨slotOne, slotTwo, slotThree⟩
+    rcases le_or_gt (weight slotOne slotTwo slotThree) 0 with hzero | hpos
+    · exact ⟨-1, by norm_num, fun hcontra => absurd hcontra (not_lt.mpr hzero)⟩
+    · have hnotneg := hno slotOne slotTwo slotThree hpos
+      simp only [AtomTripleCharNegative, not_forall, not_lt] at hnotneg
+      obtain ⟨badArg, hbad⟩ := hnotneg
+      obtain ⟨hlt, hge⟩ := hbad
+      exact ⟨badArg, hlt, fun _ => hge⟩
+  choose badArg hbadNeg hbadVal using hfail
+  obtain ⟨top, htop⟩ := Finite.exists_max badArg
+  have htopNeg : badArg top < 0 := hbadNeg top
+  have hall : ∀ slotOne slotTwo slotThree : Fin 6,
+      0 ≤ weight slotOne slotTwo slotThree
+        * atomTripleChar atom scale slotOne slotTwo slotThree (badArg top) := by
+    intro slotOne slotTwo slotThree
+    rcases (hnonneg slotOne slotTwo slotThree).lt_or_eq with hpos | hzero
+    · refine mul_nonneg (hnonneg _ _ _) ?_
+      exact hmono slotOne slotTwo slotThree hpos (badArg (slotOne, slotTwo, slotThree))
+        (badArg top) (htop (slotOne, slotTwo, slotThree)) htopNeg.le
+        (hbadVal (slotOne, slotTwo, slotThree) hpos)
+    · rw [← hzero, zero_mul]
+  have hsumNonneg : (0 : ℝ) ≤ ∑ slotOne, ∑ slotTwo, ∑ slotThree,
+      weight slotOne slotTwo slotThree
+        * atomTripleChar atom scale slotOne slotTwo slotThree (badArg top) :=
+    Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ =>
+      Finset.sum_nonneg fun c _ => hall a b c
+  have hneg := weighted_char_sum_neg atom scale weight hmass hone htwo hthree
+    (badArg top) htopNeg
+  linarith
 
 /-! ## Layer 5 — the converse: searching over the measure is not a reduction -/
 
@@ -945,5 +1044,370 @@ theorem dppMomentThree_crosses_zero :
   · rw [dppTie_momentTwo]; norm_num
   · rw [dppLine_momentOne]; norm_num
   · rw [dppLine_momentTwo]; norm_num
+
+/-! ## Layer 9 — the Plücker law, which is the real-only ingredient -/
+
+/-- The DETERMINANT of three rank-three vectors, as the reading of the third
+against the cross product of the first two. -/
+def dppDet3 (first second third : Fin 3 → ℝ) : ℝ := third ⬝ᵥ dppCross first second
+
+theorem dppTripleWeight_eq_det3_sq (atom : Fin 6 → (Fin 3 → ℝ))
+    (slotOne slotTwo slotThree : Fin 6) :
+    dppTripleWeight atom slotOne slotTwo slotThree
+      = dppDet3 (atom slotOne) (atom slotTwo) (atom slotThree) ^ 2 :=
+  dppTripleWeight_eq_sq atom slotOne slotTwo slotThree
+
+/-- **THE THREE TERM PLÜCKER RELATION.**  Five rank-three vectors, one of them
+a common pivot: the three products of complementary determinants through that
+pivot add to zero with alternating signs.  It is a polynomial identity in the
+fifteen coordinates and it needs no hypothesis. -/
+theorem dppDet3_plucker (pivot first second third fourth : Fin 3 → ℝ) :
+    dppDet3 pivot first second * dppDet3 pivot third fourth
+        - dppDet3 pivot first third * dppDet3 pivot second fourth
+        + dppDet3 pivot first fourth * dppDet3 pivot second third = 0 := by
+  simp only [dppDet3, dotProduct, Fin.sum_univ_three, dppCross_zero, dppCross_one,
+    dppCross_two]
+  ring
+
+/-- The HERON FORM of three numbers.  For three nonnegative reals `a, b, c` the
+value `dppHeron (a^2) (b^2) (c^2)` is minus sixteen times the squared area of
+the triangle with those side lengths. -/
+def dppHeron (first second third : ℝ) : ℝ :=
+  first ^ 2 + second ^ 2 + third ^ 2
+    - 2 * first * second - 2 * second * third - 2 * third * first
+
+/-- The Heron form on three squares factors into the four triangle brackets. -/
+theorem dppHeron_sq (first second third : ℝ) :
+    dppHeron (first ^ 2) (second ^ 2) (third ^ 2)
+      = -((first + second + third) * (-first + second + third)
+          * (first - second + third) * (first + second - third)) := by
+  simp only [dppHeron]
+  ring
+
+/-- **THE PLÜCKER LAW OF THE DETERMINANTAL WEIGHTS — THE REAL-ONLY
+INGREDIENT.**  For every real rank-three family on six slots, every pivot slot
+and every four other slots, the three PAIRED PRODUCTS of determinantal weights
+through that pivot satisfy the Heron form EXACTLY.
+
+Read geometrically: the three square roots of those products are the side
+lengths of a DEGENERATE triangle.  Over the complex numbers the same three
+determinant products still add to zero, but they are complex, so their moduli
+are the sides of an ARBITRARY triangle and the Heron form is at most zero,
+strictly negative off the collinear locus.
+
+This is the exact place where realness enters, and it is the reason every
+certificate assembled from the principal minors of the Gram alone must fail:
+such a certificate reads the same over both fields, while the cell is true over
+the reals and false over the complexes.  A proof of the cell has to consume
+this law. -/
+theorem dppHeron_plucker_eq_zero (atom : Fin 6 → (Fin 3 → ℝ))
+    (pivot slotOne slotTwo slotThree slotFour : Fin 6) :
+    dppHeron
+        (dppTripleWeight atom pivot slotOne slotTwo
+          * dppTripleWeight atom pivot slotThree slotFour)
+        (dppTripleWeight atom pivot slotOne slotThree
+          * dppTripleWeight atom pivot slotTwo slotFour)
+        (dppTripleWeight atom pivot slotOne slotFour
+          * dppTripleWeight atom pivot slotTwo slotThree) = 0 := by
+  set firstDet := dppDet3 (atom pivot) (atom slotOne) (atom slotTwo) with hfirstDet
+  set secondDet := dppDet3 (atom pivot) (atom slotThree) (atom slotFour) with hsecondDet
+  set thirdDet := dppDet3 (atom pivot) (atom slotOne) (atom slotThree) with hthirdDet
+  set fourthDet := dppDet3 (atom pivot) (atom slotTwo) (atom slotFour) with hfourthDet
+  set fifthDet := dppDet3 (atom pivot) (atom slotOne) (atom slotFour) with hfifthDet
+  set sixthDet := dppDet3 (atom pivot) (atom slotTwo) (atom slotThree) with hsixthDet
+  have hplucker : firstDet * secondDet - thirdDet * fourthDet + fifthDet * sixthDet = 0 :=
+    dppDet3_plucker (atom pivot) (atom slotOne) (atom slotTwo) (atom slotThree)
+      (atom slotFour)
+  have hone : dppTripleWeight atom pivot slotOne slotTwo
+      * dppTripleWeight atom pivot slotThree slotFour = (firstDet * secondDet) ^ 2 := by
+    rw [dppTripleWeight_eq_det3_sq, dppTripleWeight_eq_det3_sq, ← hfirstDet, ← hsecondDet]
+    ring
+  have htwo : dppTripleWeight atom pivot slotOne slotThree
+      * dppTripleWeight atom pivot slotTwo slotFour = (thirdDet * fourthDet) ^ 2 := by
+    rw [dppTripleWeight_eq_det3_sq, dppTripleWeight_eq_det3_sq, ← hthirdDet, ← hfourthDet]
+    ring
+  have hthree : dppTripleWeight atom pivot slotOne slotFour
+      * dppTripleWeight atom pivot slotTwo slotThree = (fifthDet * sixthDet) ^ 2 := by
+    rw [dppTripleWeight_eq_det3_sq, dppTripleWeight_eq_det3_sq, ← hfifthDet, ← hsixthDet]
+    ring
+  rw [hone, htwo, hthree, dppHeron_sq]
+  linear_combination (-((firstDet * secondDet + thirdDet * fourthDet + fifthDet * sixthDet)
+    * (-(firstDet * secondDet) + thirdDet * fourthDet + fifthDet * sixthDet)
+    * (firstDet * secondDet + thirdDet * fourthDet - fifthDet * sixthDet))) * hplucker
+
+/-- **THE COMPLEX SIDE OF THE SAME LAW.**  Three nonnegative reals that obey
+the three triangle inequalities have a NONPOSITIVE Heron form on their squares.
+Over the complex numbers the three determinant products are complex numbers
+adding to zero, so their moduli obey exactly these inequalities and nothing
+more.  The real law is the degenerate case of this one. -/
+theorem dppHeron_sq_nonpos_of_triangle {first second third : ℝ}
+    (hfirst : 0 ≤ first) (hsecond : 0 ≤ second) (hthird : 0 ≤ third)
+    (honeLe : first ≤ second + third) (htwoLe : second ≤ first + third)
+    (hthreeLe : third ≤ first + second) :
+    dppHeron (first ^ 2) (second ^ 2) (third ^ 2) ≤ 0 := by
+  rw [dppHeron_sq]
+  have hsum : 0 ≤ first + second + third := by linarith
+  have hone : 0 ≤ -first + second + third := by linarith
+  have htwo : 0 ≤ first - second + third := by linarith
+  have hthree : 0 ≤ first + second - third := by linarith
+  nlinarith [mul_nonneg (mul_nonneg (mul_nonneg hsum hone) htwo) hthree]
+
+/-- **THE DEGENERACY IS EXACTLY THE VANISHING.**  For nonnegative side lengths
+the Heron form on the squares vanishes precisely when the triangle is flat,
+that is when one side is the sum of the other two.  So the Plücker law says the
+three square roots of the paired weight products are COLLINEAR, and that single
+word is the whole difference between the two fields. -/
+theorem dppHeron_sq_eq_zero_iff {first second third : ℝ}
+    (hpos : 0 < first + second + third) :
+    dppHeron (first ^ 2) (second ^ 2) (third ^ 2) = 0
+      ↔ (first = second + third ∨ second = first + third ∨ third = first + second) := by
+  rw [dppHeron_sq]
+  constructor
+  · intro hzero
+    have hprod : (first + second + third) * ((-first + second + third)
+        * ((first - second + third) * (first + second - third))) = 0 := by
+      have : (first + second + third) * (-first + second + third)
+          * (first - second + third) * (first + second - third) = 0 := by linarith
+      linarith [this]
+    rcases mul_eq_zero.mp hprod with hsum | hrest
+    · exact absurd hsum (ne_of_gt hpos)
+    rcases mul_eq_zero.mp hrest with hone | hrest2
+    · exact Or.inl (by linarith)
+    rcases mul_eq_zero.mp hrest2 with htwo | hthree
+    · exact Or.inr (Or.inl (by linarith))
+    · exact Or.inr (Or.inr (by linarith))
+  · rintro (hone | htwo | hthree)
+    · rw [hone]; ring
+    · rw [htwo]; ring
+    · rw [hthree]; ring
+
+/-! ## Layer 10 — the minor coordinates of the residue -/
+
+/-- **THE PAIR MINOR IN MINOR COORDINATES.**  The shifted pair minor is the
+determinantal pair weight corrected by the scales against the squared lengths.
+No off-diagonal Gram entry survives. -/
+theorem atomPairMinor_eq_minorForm (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
+    (slotOne slotTwo : Fin 6) :
+    atomPairMinor atom scale slotOne slotTwo
+      = dppPairWeight atom slotOne slotTwo
+        - scale slotOne * atomGram atom slotTwo slotTwo
+        - scale slotTwo * atomGram atom slotOne slotOne
+        + scale slotOne * scale slotTwo := by
+  simp only [atomPairMinor, atomShiftedDiag, dppPairWeight]
+  ring
+
+/-- **THE TRIPLE DETERMINANT IN MINOR COORDINATES.**  The shifted triple
+determinant is the alternating sum of the determinantal weights of the faces of
+the triple against the scales.  Together with the previous law this says that
+ALL THREE coefficients of a triple — and hence whether that triple dominates —
+depend on the datum only through the principal minors of the Gram and the
+scales.  That is why the Plücker law of the previous layer is the only place
+realness can enter. -/
+theorem atomTripleDet_eq_minorForm (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
+    (slotOne slotTwo slotThree : Fin 6) :
+    atomTripleDet atom scale slotOne slotTwo slotThree
+      = dppTripleWeight atom slotOne slotTwo slotThree
+        - (dppPairWeight atom slotOne slotTwo * scale slotThree
+            + dppPairWeight atom slotOne slotThree * scale slotTwo
+            + dppPairWeight atom slotTwo slotThree * scale slotOne)
+        + (atomGram atom slotOne slotOne * scale slotTwo * scale slotThree
+            + atomGram atom slotTwo slotTwo * scale slotOne * scale slotThree
+            + atomGram atom slotThree slotThree * scale slotOne * scale slotTwo)
+        - scale slotOne * scale slotTwo * scale slotThree := by
+  simp only [atomTripleDet, atomShiftedDiag, dppTripleWeight, dppPairWeight]
+  ring
+
+/-! ## Layer 11 — the refutation is not a boundary artifact: a whole family -/
+
+/-- The line scale family with a free gap: mass `1 - 6 g` on the longest
+parallel atom and `g` on each of the other five, of total `1 - g`.  As the gap
+runs down to zero the scale mass runs up to one. -/
+noncomputable def dppLineScaleAt (gap : ℝ) : Fin 6 → ℝ := fun slot =>
+  if slot = 0 then 1 - 6 * gap else gap
+
+theorem dppLineScaleAt_sum (gap : ℝ) : (∑ slot, dppLineScaleAt gap slot) = 1 - gap := by
+  simp +decide only [Fin.sum_univ_six, dppLineScaleAt]
+  norm_num
+  ring
+
+theorem dppLineScaleAt_pos {gap : ℝ} (hlow : 0 < gap) (hhigh : gap < 1 / 6) (slot : Fin 6) :
+    0 < dppLineScaleAt gap slot := by
+  fin_cases slot <;> simp +decide only [dppLineScaleAt] <;> norm_num <;> linarith
+
+theorem dppLineScale_eq_at : dppLineScale = dppLineScaleAt (1 / 100) := by
+  funext slot
+  fin_cases slot <;> simp +decide only [dppLineScale, dppLineScaleAt] <;> norm_num
+
+/-- **THE THIRD MOMENT OF THE WHOLE LINE FAMILY, IN CLOSED FORM.**  It is a
+cubic in the gap that is negative on the whole window `0 < g < 111/2175`.  The
+scale mass on that window is `1 - g`, so the certificate fails at every scale
+mass in `(2064/2175, 1)`, and in particular at masses arbitrarily close to one.
+The failure is not an artifact of the boundary. -/
+theorem dppLine_momentThree_at (gap : ℝ) :
+    dppMomentThree dppLineAtom (dppLineScaleAt gap)
+      = 6 * (1 - gap) ^ 2 * (87 * gap / 25 - 111 / 625) := by
+  simp +decide only [dppMomentThree, Fin.sum_univ_six, dppTripleWeight, atomTripleDet,
+    atomShiftedDiag, dppLineAtom_gram, dppLineGram, dppLineCoefficient, dppLineScaleAt]
+  norm_num
+  ring
+
+theorem dppLine_momentThree_neg_at {gap : ℝ} (hhigh : gap < 111 / 2175)
+    (hone : gap < 1) : dppMomentThree dppLineAtom (dppLineScaleAt gap) < 0 := by
+  rw [dppLine_momentThree_at]
+  have hsq : 0 < (1 - gap) ^ 2 := by positivity
+  nlinarith [hsq]
+
+/-! ## Layer 12 — the NONDEGENERATE refutation -/
+
+/-- **THE GENERIC DATUM.**  A rational tight frame of six atoms whose twenty
+triples are ALL genuine bases: every squared volume is at least `1/81`, every
+squared wedge at least `49/324`, and every squared length at least `17/36`.
+Nothing about it is degenerate. -/
+noncomputable def dppGenericAtom : Fin 6 → (Fin 3 → ℝ) := fun slot index =>
+  if slot = 4 then (if index = 0 then 1 / 3 else if index = 1 then 2 / 3 else 0)
+  else if slot = 5 then (if index = 0 then 2 / 3 else if index = 1 then -(1 / 3) else 0)
+  else if index = 0 then 1 / 3
+  else if index = 1 then (if slot = 0 ∨ slot = 1 then 1 / 3 else -(1 / 3))
+  else (if slot = 0 ∨ slot = 2 then 1 / 2 else -(1 / 2))
+
+/-- The scale family of the generic datum: mass `94/100` on the fifth slot and
+`1/100` on each of the others, of total `99/100`. -/
+noncomputable def dppGenericScale : Fin 6 → ℝ := fun slot =>
+  if slot = 4 then 94 / 100 else 1 / 100
+
+theorem dppGenericScale_pos (slot : Fin 6) : 0 < dppGenericScale slot := by
+  fin_cases slot <;> simp +decide only [dppGenericScale] <;> norm_num
+
+theorem dppGenericScale_sum : (∑ slot, dppGenericScale slot) = 99 / 100 := by
+  simp +decide only [Fin.sum_univ_six, dppGenericScale]
+  norm_num
+
+theorem dppGenericScale_sum_lt_one : (∑ slot, dppGenericScale slot) < 1 := by
+  rw [dppGenericScale_sum]; norm_num
+
+/-- **THE GENERIC DATUM IS A TIGHT FRAME.** -/
+theorem dppGenericAtom_isTightFrame (probe direction : Fin 3 → ℝ) :
+    (∑ slot, (dppGenericAtom slot ⬝ᵥ probe) * (dppGenericAtom slot ⬝ᵥ direction))
+      = probe ⬝ᵥ direction := by
+  simp +decide only [Fin.sum_univ_six, dppGenericAtom, dotProduct, Fin.sum_univ_three]
+  norm_num
+  ring
+
+/-- Every squared length of the generic datum is at least `17/36`: no atom is
+thin. -/
+theorem dppGenericAtom_length_floor (slot : Fin 6) :
+    17 / 36 ≤ atomGram dppGenericAtom slot slot := by
+  fin_cases slot <;>
+    simp +decide only [atomGram, dppGenericAtom, dotProduct, Fin.sum_univ_three] <;>
+    norm_num
+
+/-- Every squared wedge of the generic datum is at least `49/324`: no pair is
+near parallel. -/
+theorem dppGenericAtom_wedge_floor {slotOne slotTwo : Fin 6} (hne : slotOne ≠ slotTwo) :
+    49 / 324 ≤ dppPairWeight dppGenericAtom slotOne slotTwo := by
+  fin_cases slotOne <;> fin_cases slotTwo <;>
+    first
+      | exact absurd rfl hne
+      | (simp +decide only [dppPairWeight, atomGram, dppGenericAtom, dotProduct,
+          Fin.sum_univ_three]
+         norm_num)
+
+/-- **EVERY TRIPLE OF THE GENERIC DATUM IS A GENUINE BASIS.**  Every squared
+volume is at least `1/81`.  Sixteen of the twenty triples of the line datum had
+squared volume zero, and this datum has none: the refutation below therefore
+owes nothing to degeneracy. -/
+theorem dppGenericAtom_volume_floor {slotOne slotTwo slotThree : Fin 6}
+    (honeTwo : slotOne ≠ slotTwo) (honeThree : slotOne ≠ slotThree)
+    (htwoThree : slotTwo ≠ slotThree) :
+    1 / 81 ≤ dppTripleWeight dppGenericAtom slotOne slotTwo slotThree := by
+  fin_cases slotOne <;> fin_cases slotTwo <;> fin_cases slotThree <;>
+    first
+      | exact absurd rfl honeTwo
+      | exact absurd rfl honeThree
+      | exact absurd rfl htwoThree
+      | (simp +decide only [dppTripleWeight, atomGram, dppGenericAtom, dotProduct,
+          Fin.sum_univ_three]
+         norm_num)
+
+/-- **THE THIRD MOMENT OF THE GENERIC DATUM IS NEGATIVE.**  Its exact value is
+`-683729/3375000`.  So the certificate fails with EVERY nondegeneracy reading
+bounded away from zero, and the failure of the line datum was not a failure of
+degeneracy. -/
+theorem dppGeneric_momentThree :
+    dppMomentThree dppGenericAtom dppGenericScale = -(683729 / 3375000) := by
+  simp +decide only [dppMomentThree, Fin.sum_univ_six, dppTripleWeight, atomTripleDet,
+    atomShiftedDiag, atomGram, dppGenericAtom, dppGenericScale, dotProduct,
+    Fin.sum_univ_three]
+  norm_num
+
+theorem dppGeneric_momentThree_neg :
+    dppMomentThree dppGenericAtom dppGenericScale < 0 := by
+  rw [dppGeneric_momentThree]; norm_num
+
+/-! ## Layer 13 — the cell holds at both witnesses, with a carrier -/
+
+theorem dppGeneric_nested_chain :
+    0 < atomShiftedDiag dppGenericAtom dppGenericScale 0
+      ∧ 0 < atomPairMinor dppGenericAtom dppGenericScale 0 1
+      ∧ 0 < atomTripleDet dppGenericAtom dppGenericScale 0 1 2 := by
+  refine ⟨?_, ?_, ?_⟩ <;>
+    simp +decide only [atomTripleDet, atomPairMinor, atomShiftedDiag, atomGram,
+      dppGenericAtom, dppGenericScale, dotProduct, Fin.sum_univ_three] <;>
+    norm_num
+
+/-- **THE GENERIC DATUM CARRIES A STRICTLY DOMINATING TRIPLE.**  Slots zero,
+one and two form a carrier: the conclusion of the residue HOLDS at the datum
+whose determinantal moment is negative. -/
+theorem dppGeneric_carrier :
+    ∃ car : Finset (Fin 6), car.card = 3
+      ∧ ∀ probe : Fin 6 → ℝ, (∀ slot ∉ car, probe slot = 0) → probe ≠ 0 →
+          (∑ slot, dppGenericScale slot * probe slot ^ 2)
+            < atomBlend dppGenericAtom probe ⬝ᵥ atomBlend dppGenericAtom probe := by
+  obtain ⟨hdiag, hminor, hdet⟩ := dppGeneric_nested_chain
+  refine ⟨({0, 1, 2} : Finset (Fin 6)), by decide, fun probe hvanish hprobe => ?_⟩
+  exact dominates_of_triple_minors (by decide) (by decide) (by decide) hdiag hminor hdet
+    hvanish hprobe
+
+theorem dppLine_nested_chain :
+    0 < atomShiftedDiag dppLineAtom dppLineScale 1
+      ∧ 0 < atomPairMinor dppLineAtom dppLineScale 1 2
+      ∧ 0 < atomTripleDet dppLineAtom dppLineScale 1 2 3 := by
+  refine ⟨?_, ?_, ?_⟩ <;>
+    simp +decide only [atomTripleDet, atomPairMinor, atomShiftedDiag, dppLineAtom_gram,
+      dppLineGram, dppLineCoefficient, dppLineScale] <;>
+    norm_num
+
+/-- **THE LINE DATUM CARRIES A STRICTLY DOMINATING TRIPLE TOO.** -/
+theorem dppLine_carrier :
+    ∃ car : Finset (Fin 6), car.card = 3
+      ∧ ∀ probe : Fin 6 → ℝ, (∀ slot ∉ car, probe slot = 0) → probe ≠ 0 →
+          (∑ slot, dppLineScale slot * probe slot ^ 2)
+            < atomBlend dppLineAtom probe ⬝ᵥ atomBlend dppLineAtom probe := by
+  obtain ⟨hdiag, hminor, hdet⟩ := dppLine_nested_chain
+  refine ⟨({1, 2, 3} : Finset (Fin 6)), by decide, fun probe hvanish hprobe => ?_⟩
+  exact dominates_of_triple_minors (by decide) (by decide) (by decide) hdiag hminor hdet
+    hvanish hprobe
+
+/-- **THE VERDICT.**  At the generic datum the conclusion of the residue holds
+with a carrier, every nondegeneracy reading is bounded away from zero, and the
+third determinantal moment is strictly negative.  So the determinantal moment
+certificate is refuted at a datum where the cell itself is comfortable, and no
+nondegeneracy hypothesis can rescue the certificate. -/
+theorem dppMomentCertificate_fails_where_the_cell_holds :
+    (∃ car : Finset (Fin 6), car.card = 3
+        ∧ ∀ probe : Fin 6 → ℝ, (∀ slot ∉ car, probe slot = 0) → probe ≠ 0 →
+            (∑ slot, dppGenericScale slot * probe slot ^ 2)
+              < atomBlend dppGenericAtom probe ⬝ᵥ atomBlend dppGenericAtom probe)
+      ∧ (∀ slot : Fin 6, 17 / 36 ≤ atomGram dppGenericAtom slot slot)
+      ∧ (∀ slotOne slotTwo : Fin 6, slotOne ≠ slotTwo →
+          49 / 324 ≤ dppPairWeight dppGenericAtom slotOne slotTwo)
+      ∧ (∀ slotOne slotTwo slotThree : Fin 6, slotOne ≠ slotTwo → slotOne ≠ slotThree →
+          slotTwo ≠ slotThree →
+          1 / 81 ≤ dppTripleWeight dppGenericAtom slotOne slotTwo slotThree)
+      ∧ dppMomentThree dppGenericAtom dppGenericScale < 0 :=
+  ⟨dppGeneric_carrier, dppGenericAtom_length_floor,
+    fun _ _ hne => dppGenericAtom_wedge_floor hne,
+    fun _ _ _ hone htwo hthree => dppGenericAtom_volume_floor hone htwo hthree,
+    dppGeneric_momentThree_neg⟩
 
 end Gtz
