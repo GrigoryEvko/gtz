@@ -62,16 +62,35 @@ slack of at least `5.91`, the cap `weight c * planeShadowSq ≤ 1` holds with a
 slack of at least `0.25`, and the worst of all ten triples carries a shadow
 trace of at least `2.99` against the required `2`.
 
-## 5. The second pigeonhole fails, and that is measured
+## 5. The second pigeonhole, priced and split by a threshold
 
-The same engine applied to the pole mass gives
-`leverage * (1 - weight pole * leverage) ^ 2 ≤ (1 - weight pole) * ∑ pairing ^ 2`,
-and the three-of-five step then asks for
-`3 * (1 - weight pole * leverage) ^ 2 > 5 * (1 - weight pole)`.  That quantity
-is NEGATIVE at every one of the 22494 poles, between `-4.20` and `-2.15`.  The
-pole masses are far from uniform, thus averaging cannot supply the pole
-surplus, although the surplus itself is at least `1.08` at every pole.  The
-second pigeonhole is priced and refuted as a free step.
+The Cauchy-Schwarz form of the mass floor asks for
+`3 * (1 - weight pole * leverage) ^ 2 > 5 * (1 - weight pole)`, and that
+quantity is NEGATIVE at every one of the 22494 measured poles, between `-4.20`
+and `-2.15`.  The averaging route through the weight total is dead.
+
+The WEIGHT CAP form survives.  Termwise `weight c * reading c ^ 2` is at most
+the cap times the squared reading, thus `Gtz.sum_erase_polarPairing_sq_ge_of_cap`
+turns the weighted pole mass into the unweighted floor
+`leverage * (1 - weight pole * leverage) / cap`, and the three-of-five step
+gives `Gtz.exists_massSurplusTriple`: a triple of STRICT pole surplus exists
+whenever `5 * cap < 3 * (1 - weight pole * leverage)`.  That inequality is the
+exact concentration threshold of the second pigeonhole.  The probes read it on
+the 22494 poles: the SPREAD regime holds at 7570 poles and at SOME pole of
+EVERY one of the 3749 endpoints, the promised floor holds there with a slack of
+at least `0.55`, and THE ARITHMETIC KILL FIRES AT 7570 OF THE 7570 SPREAD
+POLES.  All 32 poles where the kill refuses every triple are concentrated, with
+`weight pole * leverage` within `0.02` of `0.61`.  The spread threshold is a
+weight-side polynomial certificate of the kill.
+
+The extremal survivors calibrate the two floors.  Some survivor alone carries a
+shadow of `2 / (1 - weight pole)`, thus any triple through it clears the trace
+bound at the adaptive excess `weight pole / (1 - weight pole)`
+(`Gtz.exists_survivor_planeShadowSq_ge`, measured slack at least `0.21`).  The
+tilt twin WITHOUT the saturation deficit is REFUTED at 42 percent of the
+measured poles: the correct floor `Gtz.exists_survivor_tilt_floor` carries the
+deficit and sits strictly below the leverage at every overshooting pole, thus
+no extremal survivor supplies the pole surplus for free.
 
 ## 6. The arithmetic test in coupling form
 
@@ -433,6 +452,174 @@ theorem exists_heavyShadowTriple (design : WeightedDesign 6 3) {pole : Fin 6}
       linarith
     norm_num
     linarith [haverage, htotal]
+
+/-- **THE EXTREMAL SHADOW SURVIVOR.**  Some survivor alone carries a shadow of
+at least `2 / (1 - weight pole)`.  Any triple through it clears the trace bound
+of the kill at the ADAPTIVE excess `weight pole / (1 - weight pole)`, the same
+excess the complement cover carries. -/
+theorem exists_survivor_planeShadowSq_ge {size : ℕ} (design : WeightedDesign size 3)
+    {pole : Fin size} (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) :
+    ∃ label ∈ Finset.univ.erase pole,
+      2 ≤ (1 - design.weight pole) * planeShadowSq design pole label := by
+  classical
+  by_contra hcontra
+  push Not at hcontra
+  have hmoment := sum_weight_planeShadowSq_erase design pole hpole
+  have hbound : ∑ c ∈ Finset.univ.erase pole, design.weight c * planeShadowSq design pole c
+      < 2 := by
+    have hne : (Finset.univ.erase pole).Nonempty := by
+      by_contra hempty
+      rw [Finset.not_nonempty_iff_eq_empty] at hempty
+      rw [hempty, Finset.sum_empty] at hmoment
+      norm_num at hmoment
+    have hdeficit : 0 < 1 - design.weight pole := by
+      rw [← sum_erase_weight_eq design pole]
+      exact Finset.sum_pos (fun c _ => design.weight_pos c) hne
+    have hterm : ∀ c ∈ Finset.univ.erase pole,
+        design.weight c * planeShadowSq design pole c
+          < design.weight c * (2 / (1 - design.weight pole)) := by
+      intro c hc
+      have hlt := hcontra c hc
+      refine mul_lt_mul_of_pos_left ?_ (design.weight_pos c)
+      rw [lt_div_iff₀ hdeficit]
+      linarith [hlt]
+    calc ∑ c ∈ Finset.univ.erase pole, design.weight c * planeShadowSq design pole c
+        < ∑ c ∈ Finset.univ.erase pole, design.weight c * (2 / (1 - design.weight pole)) :=
+          Finset.sum_lt_sum_of_nonempty hne hterm
+      _ = (∑ c ∈ Finset.univ.erase pole, design.weight c) * (2 / (1 - design.weight pole)) := by
+          rw [Finset.sum_mul]
+      _ = 2 := by
+          rw [sum_erase_weight_eq design pole]
+          field_simp
+  rw [hmoment] at hbound
+  norm_num at hbound
+
+/-- **THE EXTREMAL TILT SURVIVOR, WITH THE CORRECTED FLOOR.**  Some survivor
+alone carries a squared reading of at least the leverage times the saturation
+deficit over the complement weight.  At an overshooting pole that floor sits
+STRICTLY BELOW the leverage, thus the extremal tilt survivor supplies no pole
+surplus: the deficit form of this floor with the deficit removed fails at 42
+percent of the measured poles.  The surplus needs the concentration threshold
+of `Gtz.exists_massSurplusTriple`. -/
+theorem exists_survivor_tilt_floor {size : ℕ} (design : WeightedDesign size 3)
+    {pole : Fin size} (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole)
+    (hleverage : design.weight pole * (design.atom pole ⬝ᵥ design.atom pole) < 1) :
+    ∃ label ∈ Finset.univ.erase pole,
+      (design.atom pole ⬝ᵥ design.atom pole)
+          * (1 - design.weight pole * (design.atom pole ⬝ᵥ design.atom pole))
+        ≤ (1 - design.weight pole) * (design.atom label ⬝ᵥ design.atom pole) ^ 2 := by
+  classical
+  by_contra hcontra
+  push Not at hcontra
+  have hmoment := sum_weight_polarPairing_sq_erase design pole
+  set target := (design.atom pole ⬝ᵥ design.atom pole)
+    * (1 - design.weight pole * (design.atom pole ⬝ᵥ design.atom pole)) with htarget
+  have htargetPos : 0 < target :=
+    mul_pos hpole (by linarith [hleverage])
+  have hne : (Finset.univ.erase pole).Nonempty := by
+    by_contra hempty
+    rw [Finset.not_nonempty_iff_eq_empty] at hempty
+    rw [hempty, Finset.sum_empty] at hmoment
+    rw [htarget] at htargetPos
+    linarith [hmoment, htargetPos]
+  have hdeficit : 0 < 1 - design.weight pole := by
+    rw [← sum_erase_weight_eq design pole]
+    exact Finset.sum_pos (fun c _ => design.weight_pos c) hne
+  have hterm : ∀ c ∈ Finset.univ.erase pole,
+      design.weight c * (design.atom c ⬝ᵥ design.atom pole) ^ 2
+        < design.weight c * (target / (1 - design.weight pole)) := by
+    intro c hc
+    have hlt := hcontra c hc
+    refine mul_lt_mul_of_pos_left ?_ (design.weight_pos c)
+    rw [lt_div_iff₀ hdeficit]
+    linarith [hlt]
+  have hbound : ∑ c ∈ Finset.univ.erase pole,
+      design.weight c * (design.atom c ⬝ᵥ design.atom pole) ^ 2 < target :=
+    calc ∑ c ∈ Finset.univ.erase pole,
+        design.weight c * (design.atom c ⬝ᵥ design.atom pole) ^ 2
+        < ∑ c ∈ Finset.univ.erase pole,
+            design.weight c * (target / (1 - design.weight pole)) :=
+          Finset.sum_lt_sum_of_nonempty hne hterm
+      _ = (∑ c ∈ Finset.univ.erase pole, design.weight c)
+            * (target / (1 - design.weight pole)) := by rw [Finset.sum_mul]
+      _ = target := by
+          rw [sum_erase_weight_eq design pole]
+          field_simp
+  rw [hmoment, htarget] at hbound
+  linarith [hbound]
+
+/-- **THE MASS FLOOR IN CAP FORM.**  The weighted pole mass of the complement
+is the leverage times the saturation deficit, and a cap on the weights turns it
+into an unweighted floor.  The Cauchy-Schwarz form of this floor is refuted at
+every measured pole, the cap form is the one that survives. -/
+theorem sum_erase_polarPairing_sq_ge_of_cap {size : ℕ} (design : WeightedDesign size 3)
+    (pole : Fin size) {cap : ℝ}
+    (hcap : ∀ c ∈ Finset.univ.erase pole, design.weight c ≤ cap) :
+    (design.atom pole ⬝ᵥ design.atom pole)
+        * (1 - design.weight pole * (design.atom pole ⬝ᵥ design.atom pole))
+      ≤ cap * ∑ c ∈ Finset.univ.erase pole, (design.atom c ⬝ᵥ design.atom pole) ^ 2 := by
+  classical
+  rw [← sum_weight_polarPairing_sq_erase design pole, Finset.mul_sum]
+  exact Finset.sum_le_sum fun c hc =>
+    mul_le_mul_of_nonneg_right (hcap c hc) (sq_nonneg _)
+
+/-- **THE SURPLUS TRIPLE OF THE SPREAD REGIME.**  Below the concentration
+threshold `5 * cap < 3 * (1 - weight pole * leverage)` some triple avoiding the
+pole carries a STRICT pole surplus.  This is the second pigeonhole, and the
+threshold is exact: the Cauchy-Schwarz route without the cap fails at every
+measured pole. -/
+theorem exists_massSurplusTriple (design : WeightedDesign 6 3) {pole : Fin 6}
+    (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole) {cap : ℝ}
+    (hcap : ∀ c ∈ Finset.univ.erase pole, design.weight c ≤ cap)
+    (hspread : 5 * cap
+      < 3 * (1 - design.weight pole * (design.atom pole ⬝ᵥ design.atom pole))) :
+    ∃ selected : Finset (Fin 6), selected.card = 3 ∧ pole ∉ selected
+      ∧ design.atom pole ⬝ᵥ design.atom pole
+          < ∑ c ∈ selected, (design.atom c ⬝ᵥ design.atom pole) ^ 2 := by
+  classical
+  have hpole : 0 < design.atom pole ⬝ᵥ design.atom pole := lt_trans zero_lt_one hlong
+  have hcardErase : (Finset.univ.erase pole).card = 5 := by
+    rw [Finset.card_erase_of_mem (Finset.mem_univ pole), Finset.card_univ, Fintype.card_fin]
+  have hneErase : (Finset.univ.erase pole).Nonempty := by
+    rw [← Finset.card_pos, hcardErase]; norm_num
+  obtain ⟨light, hlight⟩ := hneErase
+  have hcapPos : 0 < cap := lt_of_lt_of_le (design.weight_pos light) (hcap light hlight)
+  obtain ⟨small, hsmall, second, hsecond, haverage⟩ :=
+    exists_erase_pair_sum_ge (Finset.univ.erase pole)
+      (fun c => (design.atom c ⬝ᵥ design.atom pole) ^ 2) hcardErase
+  refine ⟨((Finset.univ.erase pole).erase small).erase second, ?_, ?_, ?_⟩
+  · rw [Finset.card_erase_of_mem hsecond, Finset.card_erase_of_mem hsmall, hcardErase]
+  · intro hmem
+    exact (Finset.notMem_erase pole Finset.univ)
+      (Finset.mem_of_mem_erase (Finset.mem_of_mem_erase hmem))
+  · have hfloor := sum_erase_polarPairing_sq_ge_of_cap design pole hcap
+    have htotal : 3 * ((design.atom pole ⬝ᵥ design.atom pole)
+          * (1 - design.weight pole * (design.atom pole ⬝ᵥ design.atom pole)))
+        ≤ 3 * (cap * ∑ c ∈ Finset.univ.erase pole,
+            (design.atom c ⬝ᵥ design.atom pole) ^ 2) := by linarith [hfloor]
+    have hstrict : 5 * (cap * (design.atom pole ⬝ᵥ design.atom pole))
+        < 3 * ((design.atom pole ⬝ᵥ design.atom pole)
+            * (1 - design.weight pole * (design.atom pole ⬝ᵥ design.atom pole))) := by
+      nlinarith [hspread, hpole]
+    have hchain : 5 * (cap * (design.atom pole ⬝ᵥ design.atom pole))
+        < cap * (5 * ∑ c ∈ ((Finset.univ.erase pole).erase small).erase second,
+            (design.atom c ⬝ᵥ design.atom pole) ^ 2) := by
+      calc 5 * (cap * (design.atom pole ⬝ᵥ design.atom pole))
+          < 3 * (cap * ∑ c ∈ Finset.univ.erase pole,
+              (design.atom c ⬝ᵥ design.atom pole) ^ 2) := lt_of_lt_of_le hstrict htotal
+        _ = cap * (3 * ∑ c ∈ Finset.univ.erase pole,
+              (design.atom c ⬝ᵥ design.atom pole) ^ 2) := by ring
+        _ ≤ cap * (5 * ∑ c ∈ ((Finset.univ.erase pole).erase small).erase second,
+              (design.atom c ⬝ᵥ design.atom pole) ^ 2) :=
+            mul_le_mul_of_nonneg_left haverage hcapPos.le
+    have hfive : 5 * (design.atom pole ⬝ᵥ design.atom pole)
+        < 5 * ∑ c ∈ ((Finset.univ.erase pole).erase small).erase second,
+            (design.atom c ⬝ᵥ design.atom pole) ^ 2 := by
+      have hrw : 5 * (cap * (design.atom pole ⬝ᵥ design.atom pole))
+          = cap * (5 * (design.atom pole ⬝ᵥ design.atom pole)) := by ring
+      rw [hrw] at hchain
+      exact lt_of_mul_lt_mul_left hchain hcapPos.le
+    linarith
 
 end HeavyTriple
 
@@ -941,7 +1128,8 @@ variable {size rank : ℕ}
 /-- **THE COMPLEMENT FLOOR BUNDLE.**  What Parseval alone supplies at an
 overshooting pole: the complement covers the pole plane with a strictly positive
 excess, the unweighted shadow trace and pole mass of the complement carry their
-floors, and a heavy triple exists whenever the complement has five labels. -/
+floors, a heavy triple exists whenever the complement has five labels, and below
+the concentration threshold a triple of strict pole surplus exists as well. -/
 def PolarComplementFloor (design : WeightedDesign size rank) (pole : Fin size) : Prop :=
   rank = 3 → 1 < design.atom pole ⬝ᵥ design.atom pole →
     (0 < 1 - design.weight pole
@@ -957,7 +1145,14 @@ def PolarComplementFloor (design : WeightedDesign size rank) (pole : Fin size) :
             * ∑ c ∈ Finset.univ.erase pole, (design.atom c ⬝ᵥ design.atom pole) ^ 2
       ∧ ((Finset.univ.erase pole).card = 5 →
           ∃ selected : Finset (Fin size), selected.card = 3 ∧ pole ∉ selected
-            ∧ 2 * (1 + 1 / 5) ≤ ∑ c ∈ selected, planeShadowSq design pole c))
+            ∧ 2 * (1 + 1 / 5) ≤ ∑ c ∈ selected, planeShadowSq design pole c)
+      ∧ (∀ cap : ℝ, (∀ c ∈ Finset.univ.erase pole, design.weight c ≤ cap) →
+          5 * cap
+              < 3 * (1 - design.weight pole * (design.atom pole ⬝ᵥ design.atom pole)) →
+          (Finset.univ.erase pole).card = 5 →
+          ∃ selected : Finset (Fin size), selected.card = 3 ∧ pole ∉ selected
+            ∧ design.atom pole ⬝ᵥ design.atom pole
+                < ∑ c ∈ selected, (design.atom c ⬝ᵥ design.atom pole) ^ 2))
 
 /-- **THE COMPLEMENT FLOOR BUNDLE IS FREE.**  No tie, no primitivity, no
 predecessor rank and no size guard. -/
@@ -969,13 +1164,16 @@ theorem polarComplementFloor_holds (design : WeightedDesign size rank) (pole : F
   have hpole : 0 < design.atom pole ⬝ᵥ design.atom pole := lt_trans zero_lt_one hlong
   refine ⟨sum_erase_weight_pos design hlong, fun probe hprobe =>
     sum_erase_read_sq_ge design pole hprobe, sum_erase_planeShadowSq_ge design hpole,
-    sum_erase_polarPairing_sq_ge design hpole, fun hcard => ?_⟩
-  have hsize : size = 6 := by
-    have := Finset.card_erase_of_mem (Finset.mem_univ pole)
-    rw [Finset.card_univ, Fintype.card_fin] at this
-    omega
-  subst hsize
-  exact exists_heavyShadowTriple design hlong
+    sum_erase_polarPairing_sq_ge design hpole, fun hcard => ?_,
+    fun cap hcap hspread hcard => ?_⟩
+  all_goals
+    have hsize : size = 6 := by
+      have := Finset.card_erase_of_mem (Finset.mem_univ pole)
+      rw [Finset.card_univ, Fintype.card_fin] at this
+      omega
+    subst hsize
+  · exact exists_heavyShadowTriple design hlong
+  · exact exists_massSurplusTriple design hlong hcap hspread
 
 /-- **THE NINE-BUNDLE TILT RESIDUAL.**  `Gtz.PolarTiltSelectionCircular` with the
 complement floor and the tie saturation handed to the prover as well.  Every
