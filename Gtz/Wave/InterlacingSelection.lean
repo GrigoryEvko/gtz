@@ -107,23 +107,23 @@ namespace Gtz
 /-! ## Layer 0 — the cross product and the determinantal weights -/
 
 /-- The CROSS PRODUCT of two rank-three vectors. -/
-def atomCross (leftVec rightVec : Fin 3 → ℝ) : Fin 3 → ℝ :=
+def dppCross (leftVec rightVec : Fin 3 → ℝ) : Fin 3 → ℝ :=
   fun index =>
     if index = 0 then leftVec 1 * rightVec 2 - leftVec 2 * rightVec 1
     else if index = 1 then leftVec 2 * rightVec 0 - leftVec 0 * rightVec 2
     else leftVec 0 * rightVec 1 - leftVec 1 * rightVec 0
 
-theorem atomCross_zero (leftVec rightVec : Fin 3 → ℝ) :
-    atomCross leftVec rightVec 0 = leftVec 1 * rightVec 2 - leftVec 2 * rightVec 1 := by
-  simp [atomCross]
+theorem dppCross_zero (leftVec rightVec : Fin 3 → ℝ) :
+    dppCross leftVec rightVec 0 = leftVec 1 * rightVec 2 - leftVec 2 * rightVec 1 := by
+  simp [dppCross]
 
-theorem atomCross_one (leftVec rightVec : Fin 3 → ℝ) :
-    atomCross leftVec rightVec 1 = leftVec 2 * rightVec 0 - leftVec 0 * rightVec 2 := by
-  norm_num [atomCross]
+theorem dppCross_one (leftVec rightVec : Fin 3 → ℝ) :
+    dppCross leftVec rightVec 1 = leftVec 2 * rightVec 0 - leftVec 0 * rightVec 2 := by
+  norm_num [dppCross]
 
-theorem atomCross_two (leftVec rightVec : Fin 3 → ℝ) :
-    atomCross leftVec rightVec 2 = leftVec 0 * rightVec 1 - leftVec 1 * rightVec 0 := by
-  simp only [atomCross, show ((2 : Fin 3) = 0) = False from by simp,
+theorem dppCross_two (leftVec rightVec : Fin 3 → ℝ) :
+    dppCross leftVec rightVec 2 = leftVec 0 * rightVec 1 - leftVec 1 * rightVec 0 := by
+  simp only [dppCross, show ((2 : Fin 3) = 0) = False from by simp,
     show ((2 : Fin 3) = 1) = False from by simp, if_false]
 
 /-- The PAIR WEIGHT of the determinantal point process: the two by two
@@ -168,9 +168,9 @@ three: the Cauchy-Schwarz defect of two atoms is the squared length of their
 cross product. -/
 theorem dppPairWeight_eq_crossEnergy (atom : Fin 6 → (Fin 3 → ℝ)) (rowSlot colSlot : Fin 6) :
     dppPairWeight atom rowSlot colSlot
-      = atomCross (atom rowSlot) (atom colSlot) ⬝ᵥ atomCross (atom rowSlot) (atom colSlot) := by
+      = dppCross (atom rowSlot) (atom colSlot) ⬝ᵥ dppCross (atom rowSlot) (atom colSlot) := by
   simp only [dppPairWeight, atomGram, dotProduct, Fin.sum_univ_three,
-    atomCross_zero, atomCross_one, atomCross_two]
+    dppCross_zero, dppCross_one, dppCross_two]
   ring
 
 /-- **THE TRIPLE WEIGHT IS THE SQUARED VOLUME.**  The three by three Gram
@@ -178,9 +178,9 @@ minor of three rank-three vectors is the square of their scalar triple
 product. -/
 theorem dppTripleWeight_eq_sq (atom : Fin 6 → (Fin 3 → ℝ)) (slotOne slotTwo slotThree : Fin 6) :
     dppTripleWeight atom slotOne slotTwo slotThree
-      = (atom slotThree ⬝ᵥ atomCross (atom slotOne) (atom slotTwo)) ^ 2 := by
+      = (atom slotThree ⬝ᵥ dppCross (atom slotOne) (atom slotTwo)) ^ 2 := by
   simp only [dppTripleWeight, atomGram, dotProduct, Fin.sum_univ_three,
-    atomCross_zero, atomCross_one, atomCross_two]
+    dppCross_zero, dppCross_one, dppCross_two]
   ring
 
 theorem dppTripleWeight_nonneg (atom : Fin 6 → (Fin 3 → ℝ)) (slotOne slotTwo slotThree : Fin 6) :
@@ -260,13 +260,13 @@ theorem dppPairMarginal_eq {atom : Fin 6 → (Fin 3 → ℝ)}
   classical
   have hcell : ∀ slot : Fin 6,
       dppTripleWeight atom rowSlot colSlot slot
-        = (atom slot ⬝ᵥ atomCross (atom rowSlot) (atom colSlot))
-          * (atom slot ⬝ᵥ atomCross (atom rowSlot) (atom colSlot)) := by
+        = (atom slot ⬝ᵥ dppCross (atom rowSlot) (atom colSlot))
+          * (atom slot ⬝ᵥ dppCross (atom rowSlot) (atom colSlot)) := by
     intro slot
     rw [dppTripleWeight_eq_sq]
     ring
   rw [Finset.sum_congr rfl fun slot _ => hcell slot,
-    hframe (atomCross (atom rowSlot) (atom colSlot)) (atomCross (atom rowSlot) (atom colSlot)),
+    hframe (dppCross (atom rowSlot) (atom colSlot)) (dppCross (atom rowSlot) (atom colSlot)),
     dppPairWeight_eq_crossEnergy]
 
 /-- **THE ONE POINT MARGINAL.**  The squared wedges through one slot add to

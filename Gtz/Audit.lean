@@ -26319,10 +26319,10 @@ run_cmd do
 #print axioms Gtz.atomBoundaryAtom_liftBlocked
 #print axioms Gtz.atomBoundaryAtom_completionBlocked
 #print axioms Gtz.atomBoundaryAtom_spares_liftResidue
-#print axioms Gtz.atomCross
-#print axioms Gtz.atomCross_zero
-#print axioms Gtz.atomCross_one
-#print axioms Gtz.atomCross_two
+#print axioms Gtz.dppCross
+#print axioms Gtz.dppCross_zero
+#print axioms Gtz.dppCross_one
+#print axioms Gtz.dppCross_two
 #print axioms Gtz.dppPairWeight
 #print axioms Gtz.dppTripleWeight
 #print axioms Gtz.dppPairWeight_comm
