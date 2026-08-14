@@ -2202,6 +2202,12 @@ import Gtz.Reduction.PolarTiltLedger
 -- repaired cover, the three threshold arms and both registry hinge obligations.
 import Gtz.Reduction.PolarDeletionWhitening
 
+-- The iterated deletion: the composed shear of a deleted SET removes exactly
+-- the deleted atoms, with the ORIGINAL weights, thus the covering set of the
+-- pole's orthogonal hyperplane can be steered away from a whole named set.  The
+-- set is deletable exactly when its SURVIVORS carry debt above `rank - 2`.
+import Gtz.Reduction.PolarIteratedDeletion
+
 -- The frame-priced descent: the design identity contracts against the inverse
 -- gap of every region, thus the pivot pigeonhole becomes an exact stage law and
 -- the first drop is free at every design of size above the rank plus one; the
@@ -3275,6 +3281,8 @@ import Gtz.Wave.SharedPrivateComplementLedger
 -- straddle rank-one extension, the refusal of a second identical pair on
 -- the complement triple, and closure two on the slot-split lattice.
 import Gtz.Wave.SharedPrivateSlotSplit
+-- The coefficient row law: the pair corner and the trace cover kills.
+import Gtz.Wave.SharedPrivateCoefficientRow
 
 -- the K4 certificate proof: the three opposite-pair dichotomy laws,
 -- the certificate proof through the corner excess balance, and
@@ -3380,6 +3388,25 @@ import Gtz.Wave.OuterBoundaryResidueLine
 -- the two narrowed thin clone residues
 import Gtz.Wave.OuterCaptureKernelLine
 
+-- the argmax block floor: the value is the bottom of every argmax
+-- block, thus the block gap dominates the value form on each supported
+-- probe; the floored block calculus with the dual domination, the atom
+-- independence and the chart entry law; the co-singleton kill of every
+-- chart-fixed singleton and the two live atoms of the capture line;
+-- the liveness of a chart-fixed direction on every floored block; the
+-- confinement kill of a chart-null direction inside one floored block
+-- at the three upper rungs; and the floored rank spine: the cell from
+-- one floored rank-four residue plus the six upper closures.
+import Gtz.Wave.ArgmaxBlockFloor
+
+-- the capture line trichotomy: the support of the capture line has
+-- one, two, or three-plus atoms; the singleton dies at the
+-- co-singleton field; the pair is a clone pair with both atoms
+-- interior and four coplanar atoms, handed to the pair residue; the
+-- wide branch is the second residue; and the cell follows from the two
+-- residues plus the six upper closures.
+import Gtz.Wave.CaptureLineTrichotomy
+
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange
 -- law, and the exact captured trace.
@@ -3459,6 +3486,13 @@ import Gtz.Wave.PlaneCapHelly
 -- strata of the third rung, the share defect of every crux, the regular
 -- tetrahedron as the tightness datum, and the third rung in dual form.
 import Gtz.Wave.PivotWitnessLedger
+-- The three-atom cap residue is a theorem: the half calculus of the doubled
+-- reading, the Farkas wedge bound with its two vertex evaluations, the vertex
+-- and line dispatch, the second Helly call over the disc and the three half
+-- planes, and the campaign chain with no hypothesis — the pair Gram residue,
+-- the pair ceiling, profile A at rank five in both forms, campaign
+-- interiority, and the boundary crux kill.
+import Gtz.Wave.PlaneCapTripleClosure
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02

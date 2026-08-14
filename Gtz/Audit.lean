@@ -443,6 +443,7 @@ import Gtz.Reduction.MassGapDescent
 import Gtz.Reduction.PolarCoverDescent
 import Gtz.Reduction.PolarTiltLedger
 import Gtz.Reduction.PolarDeletionWhitening
+import Gtz.Reduction.PolarIteratedDeletion
 import Gtz.Reduction.FrameDropDescent
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
@@ -743,6 +744,7 @@ import Gtz.Wave.SharedPrivateCircuitRankOne
 import Gtz.Wave.SharedPrivateCircuitSaturation
 import Gtz.Wave.SharedPrivateComplementLedger
 import Gtz.Wave.SharedPrivateSlotSplit
+import Gtz.Wave.SharedPrivateCoefficientRow
 import Gtz.Wave.KFourCertificateProof
 import Gtz.Wave.CycleSeamCertificateProof
 import Gtz.Wave.OuterSharerDualScaffold
@@ -763,6 +765,8 @@ import Gtz.Wave.AtomPivotDeflation
 import Gtz.Wave.OuterComplementNullKill
 import Gtz.Wave.OuterBoundaryResidueLine
 import Gtz.Wave.OuterCaptureKernelLine
+import Gtz.Wave.ArgmaxBlockFloor
+import Gtz.Wave.CaptureLineTrichotomy
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -779,6 +783,7 @@ import Gtz.Wave.DenseCeilingCollapse
 import Gtz.Wave.PlaneWitnessLedger
 import Gtz.Wave.PlaneCapHelly
 import Gtz.Wave.PivotWitnessLedger
+import Gtz.Wave.PlaneCapTripleClosure
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -5023,6 +5028,75 @@ import Gtz.Wave.PivotWitnessLedger
 #print axioms Gtz.exists_two_heavy_labels_of_isTie
 #print axioms Gtz.exists_heavy_label_of_isTie_three
 #print axioms Gtz.exists_two_heavy_labels_of_isTie_three
+
+#print axioms Gtz.selfDotProduct_nonneg
+#print axioms Gtz.exists_margin_below_sharp
+#print axioms Gtz.unwhiten_whiten
+#print axioms Gtz.DeletionData
+#print axioms Gtz.emptyDeletionData
+#print axioms Gtz.DeletionData.unsaturated
+#print axioms Gtz.deletePairDesign_weight_dead
+#print axioms Gtz.deletePairDesign_atom_of_eq_zero
+#print axioms Gtz.exists_deletionData_step
+#print axioms Gtz.weight_insert_le_one
+#print axioms Gtz.exists_deletionData
+#print axioms Gtz.exists_setDeletionCover
+#print axioms Gtz.exists_polarSetDeletionCover
+#print axioms Gtz.planeShadowDebt
+#print axioms Gtz.planeShadowDebt_eq
+#print axioms Gtz.setDeletionMargin
+#print axioms Gtz.setDeletion_total_lt_one
+#print axioms Gtz.setDeletion_free_mass_pos
+#print axioms Gtz.setDeletionMargin_pos
+#print axioms Gtz.exists_polarSetDeletionCover_margin
+#print axioms Gtz.exists_dominating_of_deletableSetTilt
+#print axioms Gtz.not_isTie_of_deletableSetTilt
+#print axioms Gtz.exists_heavy_survivor_of_isTie
+#print axioms Gtz.sum_weight_planeShadowDebt
+#print axioms Gtz.planeShadowDebt_add_survivors
+#print axioms Gtz.deletableSet_iff_survivor_debt
+#print axioms Gtz.not_deletableSet_erase_pole
+#print axioms Gtz.card_survivor_lower_bound_of_deletable
+#print axioms Gtz.deletableSet_of_planeShadowSq_le_one
+#print axioms Gtz.deletableSet_of_tilt_heavy
+#print axioms Gtz.PolarSetDeletionHeavy
+#print axioms Gtz.polarSetDeletionHeavy_of_isTie
+#print axioms Gtz.PolarTiltSelectionSetDeletion
+#print axioms Gtz.polarTiltSelectionSetDeletion_of_polarTiltSelectionDeletion
+#print axioms Gtz.polarTiltSelectionSetDeletion_of_polarTiltSelectionUnsaturated
+#print axioms Gtz.polarTiltSelectionSetDeletion_of_polarTiltSelection
+#print axioms Gtz.hingeHoldsAtSize_of_polarTiltSetDeletion
+#print axioms Gtz.stressFreeArmAt_of_polarTiltSetDeletion
+#print axioms Gtz.balancedArmAt_of_polarTiltSetDeletion
+#print axioms Gtz.degenerateArmAt_of_polarTiltSetDeletion
+#print axioms Gtz.balancedPartialSupportArmAt_of_polarTiltSetDeletion
+#print axioms Gtz.balancedFullSupportArmAt_of_polarTiltSetDeletion
+#print axioms Gtz.degenerateHyperplaneCover_of_polarTiltSetDeletion
+#print axioms Gtz.polarTiltSetDeletion_closes_every_arm
+#print axioms Gtz.exists_forcedCover_of_deleteComplement
+#print axioms Gtz.not_isTie_of_forcedCover
+#print axioms Gtz.exists_heavy_forcedCover_of_isTie
+#print axioms Gtz.not_isTie_of_orthogonalSurvivors
+#print axioms Gtz.thresholdCellHingeRankFourAndUp_of_polarTiltSetDeletion
+#print axioms Gtz.subThresholdBandHinge_of_polarTiltSetDeletion
+#print axioms Gtz.sharpWindowHinge_of_polarTiltSetDeletion
+#print axioms Gtz.thresholdStressFreeArm_of_polarTiltSetDeletion
+#print axioms Gtz.thresholdBalancedArm_of_polarTiltSetDeletion
+#print axioms Gtz.thresholdDegenerateArm_of_polarTiltSetDeletion
+#print axioms Gtz.exists_forcedPair_of_deleteThree
+#print axioms Gtz.not_isTie_of_forcedPair_six_three
+#print axioms Gtz.not_isTie_of_deletableSetTilt_three
+#print axioms Gtz.hingeHoldsAtSize_six_three_of_polarTiltSetDeletion
+#print axioms Gtz.thresholdArms_rank_three_of_polarTiltSetDeletion
+#print axioms Gtz.gtzWeighted_six_three_of_polarTiltSetDeletion
+#print axioms Gtz.gtzWeightedAll_three_of_polarTiltSetDeletion
+#print axioms Gtz.not_polarTiltSelectionSetDeletion_five_three
+#print axioms Gtz.sixSplitDiamondDesign_spares_polarTiltSetDeletion
+#print axioms Gtz.exists_heavy_survivor_pair_of_isTie_six_three
+#print axioms Gtz.planeShadowDebt_singleton
+#print axioms Gtz.deletableSet_singleton_iff
+#print axioms Gtz.sixThree_debt_ledger
+#print axioms Gtz.sixThree_card_survivor_bound
 
 -- Coverage sweep: every `theorem`/`lemma` enumerated from `Gtz/` that was
 -- absent from the list above.  Gtz/Ties/DiamondTie.lean is deliberately
@@ -24507,6 +24581,88 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_slotSplit_circuit
 #print axioms Gtz.rankSixSharedPrivateClosed_of_slotSplit_circuit
 
+-- The coefficient row law of the shared-private branch.
+#print axioms Gtz.basisRow_coeff_capture
+#print axioms Gtz.coeff_diag_of_private_atom
+#print axioms Gtz.pairRow_coeff_capture
+#print axioms Gtz.SharedPrivateData.basisRow_capture
+#print axioms Gtz.SharedPrivateData.coeff_diag_of_private
+#print axioms Gtz.SharedPrivateData.pairRow_capture
+#print axioms Gtz.SharedPrivateData.sum_captureDiag
+#print axioms Gtz.SharedPrivateData.sum_captureDiag_lt_one
+#print axioms Gtz.SharedPrivateData.two_le_trace_coeff
+#print axioms Gtz.SharedPrivateData.trace_coeff_eq_sum
+#print axioms Gtz.SharedPrivateData.captureDiag_triple_le_total
+#print axioms Gtz.SharedPrivateData.false_of_trace_eq_captureSum
+#print axioms Gtz.SharedPrivateData.false_of_private_atom_family
+#print axioms Gtz.SharedPrivateData.identicalPair_wedge_ne_zero
+#print axioms Gtz.SharedPrivateData.purePair_corner_trace
+#print axioms Gtz.SharedPrivateData.identicalPair_corner_trace
+#print axioms Gtz.SharedPrivateData.support_eq_complement_of_pure
+#print axioms Gtz.SharedPrivateData.false_of_pure_identical_triple
+#print axioms Gtz.SharedPrivateData.exists_impure_atom_of_identical
+#print axioms Gtz.SharedPrivateData.privateAtom_notMem_foreign_support
+#print axioms Gtz.SharedPrivateData.false_of_purePair_private_family
+#print axioms Gtz.SharedPrivateData.false_of_two_purePairs
+#print axioms Gtz.SharedPrivateData.exists_impure_slot_of_purePair
+#print axioms Gtz.SharedPrivateData.pinAtom_mem_privateSlot_support
+#print axioms Gtz.SharedPrivateData.exists_impure_slot_ne_privateSlot
+#print axioms Gtz.SharedPrivateData.purePair_remaining_trace_gt_one
+#print axioms Gtz.SharedPrivateData.purePair_corner_solved
+#print axioms Gtz.SharedPrivateData.purePair_corner_solved_second
+#print axioms Gtz.SharedPrivateData.purePair_corner_det
+#print axioms Gtz.SharedPrivateCircuitPairIdenticalCoeffClosed
+#print axioms Gtz.sharedPrivateCircuitPairIdenticalSlotClosed_of_coeff
+#print axioms Gtz.sharedPrivateExtrasClosed_of_coeffLattice
+#print axioms Gtz.sharedPrivateKilled_of_coeff_circuit
+#print axioms Gtz.rankFourSharedPrivateClosed_of_coeff_circuit
+#print axioms Gtz.rankFiveSharedPrivateClosed_of_coeff_circuit
+#print axioms Gtz.rankSixSharedPrivateClosed_of_coeff_circuit
+
+#print axioms Gtz.dotProduct_projectionOfDesign_mulVec_self
+#print axioms Gtz.sum_finset_eq_sum_orderEmbOfFin
+#print axioms Gtz.sum_univ_eq_sum_block
+#print axioms Gtz.le_lambdaMinMat_iff_forall
+#print axioms Gtz.dotProduct_chartStationaryGap_mulVec_self
+#print axioms Gtz.BlockFloor.shifted_le
+#print axioms Gtz.SixThreeCrux.blockFloor_of_mem_chartArgmaxFamily
+#print axioms Gtz.SixThreeCrux.blockFloor_of_canonical
+#print axioms Gtz.dotProduct_subsetSum_mulVec_self
+#print axioms Gtz.SixThreeCrux.false_of_orthogonal_off_singleton
+#print axioms Gtz.SixThreeCrux.false_of_chart_fixed_singleton
+#print axioms Gtz.SixThreeCrux.exists_second_live_of_chart_fixed
+#print axioms Gtz.RankFourFrame.exists_capture_line_two_live
+#print axioms Gtz.blockLift_off
+#print axioms Gtz.blockLift_apply
+#print axioms Gtz.transpose_scaledAtomRows_mulVec_blockLift
+#print axioms Gtz.SixThreeCrux.blockFloor_embedded
+#print axioms Gtz.SixThreeCrux.blockFloor_coeff_eq_zero
+#print axioms Gtz.SixThreeCrux.blockColumns_det_ne_zero
+#print axioms Gtz.SixThreeCrux.blockFloor_dual_form
+#print axioms Gtz.SixThreeCrux.blockFloor_chart_entry_le
+#print axioms Gtz.SixThreeCrux.chart_fixed_live_on_floored_block
+#print axioms Gtz.RankFourFrame.exists_capture_line_live_on_blocks
+#print axioms Gtz.SixThreeCrux.chart_null_shifted_block_le
+#print axioms Gtz.RankFourFrame.false_of_chart_null_subset_floored_block
+#print axioms Gtz.RankFiveFrame.false_of_chart_null_subset_floored_block
+#print axioms Gtz.RankSixFrame.false_of_chart_null_subset_floored_block
+#print axioms Gtz.rankFourChartNullBasisNullFlooredClosed_of_closed
+#print axioms Gtz.SixThreeCrux.exists_rankFourFrame_floored
+#print axioms Gtz.isSixThreeAssemblyRankExcludedFloored_of_excluded
+#print axioms Gtz.isSixThreeAssemblyRankExcludedFloored_four_of_chartNullBasisNullFloored
+#print axioms Gtz.false_of_sixThreeCrux_of_forall_isSixThreeAssemblyRankExcludedFloored
+#print axioms Gtz.gtzWeighted_six_three_of_forall_isSixThreeAssemblyRankExcludedFloored
+#print axioms Gtz.gtzWeighted_six_three_of_flooredResidue_of_upperClosures
+#print axioms Gtz.gtzWeightedAll_three_of_flooredResidue_of_upperClosures
+
+#print axioms Gtz.RankFourFrame.captureLine_pair_clone
+#print axioms Gtz.RankFourFrame.captureLine_pair_clone_swap
+#print axioms Gtz.RankFourFrame.captureLine_pair_interior
+#print axioms Gtz.rankFourChartNullBasisNullFloored_of_pair_wide
+#print axioms Gtz.isSixThreeAssemblyRankExcludedFloored_four_of_pair_wide
+#print axioms Gtz.gtzWeighted_six_three_of_captureLine_residues
+#print axioms Gtz.gtzWeightedAll_three_of_captureLine_residues
+
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
 -- module, enumerated from the ENVIRONMENT (not from this file's pin
@@ -24744,3 +24900,40 @@ run_cmd do
 #print axioms Gtz.rankFourSharedPrivateClosed_of_ledgerLattice
 #print axioms Gtz.rankFiveSharedPrivateClosed_of_ledgerLattice
 #print axioms Gtz.rankSixSharedPrivateClosed_of_ledgerLattice
+
+-- the three-atom cap closure and the campaign chain
+#print axioms Gtz.planeWedge
+#print axioms Gtz.planeWedge_sq_add_dot_sq
+#print axioms Gtz.planeWedge_mul_planeWedge
+#print axioms Gtz.planeReflect
+#print axioms Gtz.planeReflect_dot
+#print axioms Gtz.planeWedge_planeReflect
+#print axioms Gtz.eq_of_sq_eq_sq_of_nonneg
+#print axioms Gtz.le_of_sq_le_sq_of_nonneg
+#print axioms Gtz.halfCos
+#print axioms Gtz.halfSin
+#print axioms Gtz.halfCos_nonneg
+#print axioms Gtz.halfSin_nonneg
+#print axioms Gtz.halfCos_sq
+#print axioms Gtz.halfSin_sq
+#print axioms Gtz.halfSin_mul_halfCos
+#print axioms Gtz.halfSin_add_eq
+#print axioms Gtz.halfCos_diff_eq
+#print axioms Gtz.half_form_le_of_tight
+#print axioms Gtz.half_form_le_of_pivot
+#print axioms Gtz.half_wedge_form_nonpos
+#print axioms Gtz.planeWedge_form_nonpos_of_first_zero
+#print axioms Gtz.planeWedge_form_nonpos
+#print axioms Gtz.exists_point_of_vertex
+#print axioms Gtz.exists_point_of_collinear
+#print axioms Gtz.exists_point_of_unit_triple
+#print axioms Gtz.planeHalfTripleClosed_holds
+#print axioms Gtz.planeCapTripleClosed_of_halfTriple
+#print axioms Gtz.planeCapTripleClosed_holds
+#print axioms Gtz.atomPairGramClosed_holds
+#print axioms Gtz.atomPairCeilingClosed_holds
+#print axioms Gtz.rankFiveDenseHeavyFiveClosed_holds
+#print axioms Gtz.rankFiveDenseHeavyFiveDistinctClosed_holds
+#print axioms Gtz.forall_shifted_weight_pos
+#print axioms Gtz.SixThreeCrux.shifted_weight_pos
+#print axioms Gtz.SixThreeCrux.false_of_shift_zero
