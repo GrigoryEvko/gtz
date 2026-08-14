@@ -808,6 +808,7 @@ import Gtz.Wave.AtomDeepCutRigidity
 import Gtz.Wave.AtomCoherentTriangle
 import Gtz.Wave.AtomIcosahedralWitness
 import Gtz.Wave.AtomTriangleEnergy
+import Gtz.Wave.AtomBoundaryWitness
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -25761,6 +25762,22 @@ run_cmd do
 #print axioms Gtz.icosaFrameAtom_diagEnergy
 #print axioms Gtz.atomTripleDet_pos_of_lightCoherentTriangle
 #print axioms Gtz.exists_deflated_pair_of_lightCoherentTriangle
+
+-- the boundary witness: the strict scale mass bound is sharp
+#print axioms Gtz.atomBoundaryAtom
+#print axioms Gtz.atomBoundaryScale
+#print axioms Gtz.atomBoundaryGram
+#print axioms Gtz.atomBoundaryScale_pos
+#print axioms Gtz.atomBoundaryScale_sum
+#print axioms Gtz.atomBoundaryAtom_isTightFrame
+#print axioms Gtz.atomBoundaryAtom_gram
+#print axioms Gtz.atomBoundaryAtom_shiftedDiag_pos
+#print axioms Gtz.atomBoundaryAtom_blocked
+#print axioms Gtz.atomBoundaryAtom_tripleDet_nonpos
+#print axioms Gtz.atomBoundaryAtom_no_deflated_pair
+#print axioms Gtz.AtomBlockedPairClosedAtMassOne
+#print axioms Gtz.not_atomBlockedPairClosedAtMassOne
+#print axioms Gtz.atomBlockedPairClosed_of_atMassOne
 
 -- the shadow floor of the pole plane and the coupling budget
 #print axioms Gtz.sq_sum_weight_mul_le

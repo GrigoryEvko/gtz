@@ -3592,6 +3592,7 @@ import Gtz.Wave.AtomDeepCutRigidity
 import Gtz.Wave.AtomCoherentTriangle
 import Gtz.Wave.AtomIcosahedralWitness
 import Gtz.Wave.AtomTriangleEnergy
+import Gtz.Wave.AtomBoundaryWitness
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
