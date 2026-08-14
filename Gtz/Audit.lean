@@ -27490,3 +27490,14 @@ run_cmd do
 #print axioms Gtz.atomBalancedPathKill
 #print axioms Gtz.atomQuartetThird
 #print axioms Gtz.exists_pos_of_quartetThird_pos
+-- The involution block form, second wave: the row law, the mass cap, the
+-- triangle budget, the anti-clustering law and the heavy edge escape.
+#print axioms Gtz.atomBalancedRowSix
+#print axioms Gtz.atomBalancedRow
+#print axioms Gtz.atomBalancedMassCap
+#print axioms Gtz.atomBalancedTriangleBudget
+#print axioms Gtz.atomBalancedHeavyPairThird
+#print axioms Gtz.atomBalancedShiftTrace
+#print axioms Gtz.atomBalancedShiftSecond
+#print axioms Gtz.AtomBalancedDetWin
+#print axioms Gtz.atomHeavyEdgeEscape

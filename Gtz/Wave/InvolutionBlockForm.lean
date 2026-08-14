@@ -384,4 +384,250 @@ theorem exists_pos_of_quartetThird_pos (atom : Fin 6 → (Fin 3 → ℝ))
   rw [atomQuartetThird] at hpos
   linarith
 
+
+/-! ## 6. The row law, the mass cap and the triangle budget -/
+
+/-- **THE ROW LAW.**  At balance the six doubled correlations of one slot carry
+total square two: the diagonal unit plus one unit of off-diagonal weight. -/
+theorem atomBalancedRowSix (atom : Fin 6 → (Fin 3 → ℝ))
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    (hbal : ∀ y : Fin 6, atomGram atom y y = 1 / 2) (y : Fin 6) :
+    (∑ z, (2 * atomGram atom y z) ^ 2) = 2 := by
+  have hidem := atomGram_idempotent (atom := atom) hframe y y
+  have hsq : (∑ z, (2 * atomGram atom y z) ^ 2)
+      = 4 * ∑ z, atomGram atom y z * atomGram atom z y := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun z _ => ?_
+    rw [atomGram_comm atom z y]
+    ring
+  rw [hsq, hidem, hbal y]
+  norm_num
+
+/-- The off-diagonal row weight of one slot at balance: erase the slot and one
+unit remains. -/
+theorem atomBalancedRow (atom : Fin 6 → (Fin 3 → ℝ))
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    (hbal : ∀ y : Fin 6, atomGram atom y y = 1 / 2) (y : Fin 6) :
+    (∑ z ∈ Finset.univ.erase y, (2 * atomGram atom y z) ^ 2) = 1 := by
+  have hsix := atomBalancedRowSix atom hframe hbal y
+  have hsplit : (∑ z, (2 * atomGram atom y z) ^ 2)
+      = (2 * atomGram atom y y) ^ 2
+        + ∑ z ∈ Finset.univ.erase y, (2 * atomGram atom y z) ^ 2 := by
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ y)]
+  rw [hsplit, hbal y] at hsix
+  norm_num at hsix
+  linarith
+
+/-- **THE MASS CAP.**  At balance every block obeys `Q + 2 c ≤ 1` and
+`Q - 2 c ≤ 1`: the two determinants of the cut are nonnegative, so the squared
+weight of a block never passes one. -/
+theorem atomBalancedMassCap (atom : Fin 6 → (Fin 3 → ℝ))
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    (hbal : ∀ y : Fin 6, atomGram atom y y = 1 / 2) (σ : Equiv.Perm (Fin 6)) :
+    (2 * atomGram atom (σ 0) (σ 1)) ^ 2 + (2 * atomGram atom (σ 0) (σ 2)) ^ 2
+        + (2 * atomGram atom (σ 1) (σ 2)) ^ 2
+      + 2 * ((2 * atomGram atom (σ 0) (σ 1)) * (2 * atomGram atom (σ 0) (σ 2))
+          * (2 * atomGram atom (σ 1) (σ 2))) ≤ 1
+    ∧ (2 * atomGram atom (σ 0) (σ 1)) ^ 2 + (2 * atomGram atom (σ 0) (σ 2)) ^ 2
+        + (2 * atomGram atom (σ 1) (σ 2)) ^ 2
+      - 2 * ((2 * atomGram atom (σ 0) (σ 1)) * (2 * atomGram atom (σ 0) (σ 2))
+          * (2 * atomGram atom (σ 1) (σ 2))) ≤ 1 := by
+  have hone := atomBlockDet_balanced atom hbal (σ 0) (σ 1) (σ 2)
+  have htwo := atomBlockDet_balanced_twin atom hframe hbal σ
+  have hnn₁ := atomBlockDet_nonneg atom (σ 0) (σ 1) (σ 2)
+  have hnn₂ := atomBlockDet_nonneg atom (σ 3) (σ 4) (σ 5)
+  constructor
+  · nlinarith
+  · nlinarith
+
+/-- **THE TRIANGLE BUDGET.**  At balance, twice the modulus of one path product
+plus twice the closing weight plus the two path weights never passes two.  This
+is the polygon law spent against the row law: a heavy adjacent pair leaves no
+room for its closing edge. -/
+theorem atomBalancedTriangleBudget (atom : Fin 6 → (Fin 3 → ℝ))
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    (hbal : ∀ y : Fin 6, atomGram atom y y = 1 / 2)
+    (x y z : Fin 6) (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) :
+    2 * |(2 * atomGram atom x z) * (2 * atomGram atom z y)|
+        + 2 * (2 * atomGram atom x y) ^ 2
+        + (2 * atomGram atom x z) ^ 2 + (2 * atomGram atom y z) ^ 2 ≤ 2 := by
+  classical
+  have hkill := atomBalancedPathKill atom hframe hbal x y z hxy hxz hyz
+  have hy : y ∈ Finset.univ.erase x := by
+    simp [Finset.mem_erase, Ne.symm hxy]
+  have hz : z ∈ (Finset.univ.erase x).erase y := by
+    simp [Finset.mem_erase, Ne.symm hxz, Ne.symm hyz]
+  have hrowx : (∑ w ∈ ((Finset.univ.erase x).erase y).erase z,
+      (2 * atomGram atom x w) ^ 2)
+      = 1 - (2 * atomGram atom x y) ^ 2 - (2 * atomGram atom x z) ^ 2 := by
+    have hbase := atomBalancedRow atom hframe hbal x
+    have hsy : (∑ w ∈ Finset.univ.erase x, (2 * atomGram atom x w) ^ 2)
+        = (2 * atomGram atom x y) ^ 2
+          + ∑ w ∈ (Finset.univ.erase x).erase y, (2 * atomGram atom x w) ^ 2 := by
+      rw [← Finset.add_sum_erase _ _ hy]
+    have hsz : (∑ w ∈ (Finset.univ.erase x).erase y, (2 * atomGram atom x w) ^ 2)
+        = (2 * atomGram atom x z) ^ 2
+          + ∑ w ∈ ((Finset.univ.erase x).erase y).erase z,
+              (2 * atomGram atom x w) ^ 2 := by
+      rw [← Finset.add_sum_erase _ _ hz]
+    rw [hsy, hsz] at hbase
+    linarith
+  have hyx : x ∈ Finset.univ.erase y := by
+    simp [Finset.mem_erase, hxy]
+  have hzmem : z ∈ (Finset.univ.erase y).erase x := by
+    simp [Finset.mem_erase, Ne.symm hyz, Ne.symm hxz]
+  have hrowy : (∑ w ∈ ((Finset.univ.erase x).erase y).erase z,
+      (2 * atomGram atom y w) ^ 2)
+      = 1 - (2 * atomGram atom y x) ^ 2 - (2 * atomGram atom y z) ^ 2 := by
+    have hbase := atomBalancedRow atom hframe hbal y
+    have hsx : (∑ w ∈ Finset.univ.erase y, (2 * atomGram atom y w) ^ 2)
+        = (2 * atomGram atom y x) ^ 2
+          + ∑ w ∈ (Finset.univ.erase y).erase x, (2 * atomGram atom y w) ^ 2 := by
+      rw [← Finset.add_sum_erase _ _ hyx]
+    have hsz : (∑ w ∈ (Finset.univ.erase y).erase x, (2 * atomGram atom y w) ^ 2)
+        = (2 * atomGram atom y z) ^ 2
+          + ∑ w ∈ ((Finset.univ.erase y).erase x).erase z,
+              (2 * atomGram atom y w) ^ 2 := by
+      rw [← Finset.add_sum_erase _ _ hzmem]
+    have hswap : ((Finset.univ.erase y).erase x).erase z
+        = ((Finset.univ.erase x).erase y).erase z := by
+      rw [Finset.erase_right_comm (a := y) (b := x)]
+    rw [hsx, hsz, hswap] at hbase
+    linarith
+  have hhalf : (∑ w ∈ ((Finset.univ.erase x).erase y).erase z,
+      ((2 * atomGram atom x w) ^ 2 + (2 * atomGram atom y w) ^ 2) / 2)
+      = ((1 - (2 * atomGram atom x y) ^ 2 - (2 * atomGram atom x z) ^ 2)
+        + (1 - (2 * atomGram atom y x) ^ 2 - (2 * atomGram atom y z) ^ 2)) / 2 := by
+    rw [← hrowx, ← hrowy, ← Finset.sum_add_distrib, ← Finset.sum_div]
+  have hsym : atomGram atom y x = atomGram atom x y := atomGram_comm atom y x
+  rw [hhalf, hsym] at hkill
+  linarith
+
+/-- **THE ANTI-CLUSTERING LAW.**  Two doubled correlations of modulus at least
+`2/3` at a common slot force the closing squared correlation down to `1/9`:
+heavy edges never close into heavy triangles. -/
+theorem atomBalancedHeavyPairThird (atom : Fin 6 → (Fin 3 → ℝ))
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    (hbal : ∀ y : Fin 6, atomGram atom y y = 1 / 2)
+    (x y z : Fin 6) (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hone : 4 / 9 ≤ (2 * atomGram atom x z) ^ 2)
+    (htwo : 4 / 9 ≤ (2 * atomGram atom y z) ^ 2) :
+    (2 * atomGram atom x y) ^ 2 ≤ 1 / 9 := by
+  have hbudget := atomBalancedTriangleBudget atom hframe hbal x y z hxy hxz hyz
+  have habs : 4 / 9 ≤ |(2 * atomGram atom x z) * (2 * atomGram atom z y)| := by
+    rw [abs_mul, atomGram_comm atom z y]
+    have hax : (2 : ℝ) / 3 ≤ |2 * atomGram atom x z| := by
+      nlinarith [sq_abs (2 * atomGram atom x z), abs_nonneg (2 * atomGram atom x z)]
+    have hay : (2 : ℝ) / 3 ≤ |2 * atomGram atom y z| := by
+      nlinarith [sq_abs (2 * atomGram atom y z), abs_nonneg (2 * atomGram atom y z)]
+    nlinarith [abs_nonneg (2 * atomGram atom x z), abs_nonneg (2 * atomGram atom y z)]
+  linarith
+
+/-- The shifted trace at balance: the first symmetric function of
+`G_T - (1/6) 1` is one. -/
+theorem atomBalancedShiftTrace (atom : Fin 6 → (Fin 3 → ℝ))
+    (hbal : ∀ y : Fin 6, atomGram atom y y = 1 / 2) (a b c : Fin 6) :
+    (atomGram atom a a - 1 / 6) + (atomGram atom b b - 1 / 6)
+      + (atomGram atom c c - 1 / 6) = 1 := by
+  rw [hbal a, hbal b, hbal c]
+  norm_num
+
+/-- **THE FREE SECOND CONDITION.**  At balance the second symmetric function of
+the shifted block is at least `1/12`: the mass cap makes the middle test of
+the criterion free, and only the determinant arm decides. -/
+theorem atomBalancedShiftSecond (atom : Fin 6 → (Fin 3 → ℝ))
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    (hbal : ∀ y : Fin 6, atomGram atom y y = 1 / 2) (σ : Equiv.Perm (Fin 6)) :
+    1 / 12
+      ≤ ((atomGram atom (σ 0) (σ 0) - 1 / 6) * (atomGram atom (σ 1) (σ 1) - 1 / 6)
+            - atomGram atom (σ 0) (σ 1) ^ 2)
+        + ((atomGram atom (σ 0) (σ 0) - 1 / 6) * (atomGram atom (σ 2) (σ 2) - 1 / 6)
+            - atomGram atom (σ 0) (σ 2) ^ 2)
+        + ((atomGram atom (σ 1) (σ 1) - 1 / 6) * (atomGram atom (σ 2) (σ 2) - 1 / 6)
+            - atomGram atom (σ 1) (σ 2) ^ 2) := by
+  obtain ⟨hcapPlus, hcapMinus⟩ := atomBalancedMassCap atom hframe hbal σ
+  rw [hbal (σ 0), hbal (σ 1), hbal (σ 2)]
+  nlinarith
+
+/-- **THE BALANCED TRIANGLE TARGET.**  The determinant arm of balanced
+one-sixth supply: some triple of every balanced frame carries a nonnegative
+shifted determinant.  With `atomBalancedShiftTrace` and
+`atomBalancedShiftSecond` the other two symmetric functions of that block are
+free, so this Prop is the whole balanced criterion. -/
+def AtomBalancedDetWin : Prop :=
+  ∀ atom : Fin 6 → (Fin 3 → ℝ),
+    (∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction) →
+    (∀ y : Fin 6, atomGram atom y y = 1 / 2) →
+    ∃ slotOne slotTwo slotThree : Fin 6,
+      slotOne ≠ slotTwo ∧ slotOne ≠ slotThree ∧ slotTwo ≠ slotThree
+        ∧ 0 ≤ atomShiftBlockDet atom slotOne slotTwo slotThree
+
+/-- **THE HEAVY EDGE ESCAPE.**  A doubled correlation of squared modulus at
+least `2/3` hands a triple through its first slot whose squared block weight
+stays at or below `4/9`: the six opposite triples total `4 - 2 t`. -/
+theorem atomHeavyEdgeEscape (atom : Fin 6 → (Fin 3 → ℝ))
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction)
+    (hbal : ∀ y : Fin 6, atomGram atom y y = 1 / 2)
+    (σ : Equiv.Perm (Fin 6))
+    (hheavy : 2 / 3 ≤ (2 * atomGram atom (σ 0) (σ 1)) ^ 2) :
+    ∃ i j : Fin 6, i ≠ j ∧ σ 0 ≠ i ∧ σ 0 ≠ j ∧ σ 1 ≠ i ∧ σ 1 ≠ j
+      ∧ (2 * atomGram atom (σ 0) i) ^ 2 + (2 * atomGram atom (σ 0) j) ^ 2
+          + (2 * atomGram atom i j) ^ 2 ≤ 4 / 9 := by
+  classical
+  have hrow : ∀ y : Fin 6,
+      (2 * atomGram atom y (σ 0)) ^ 2 + (2 * atomGram atom y (σ 1)) ^ 2
+        + (2 * atomGram atom y (σ 2)) ^ 2 + (2 * atomGram atom y (σ 3)) ^ 2
+        + (2 * atomGram atom y (σ 4)) ^ 2 + (2 * atomGram atom y (σ 5)) ^ 2 = 2 := by
+    intro y
+    have hsix := atomBalancedRowSix atom hframe hbal y
+    have hperm : (∑ z, (2 * atomGram atom y z) ^ 2)
+        = ∑ k, (2 * atomGram atom y (σ k)) ^ 2 :=
+      (Equiv.sum_comp σ fun z => (2 * atomGram atom y z) ^ 2).symm
+    rw [hperm, Fin.sum_univ_six] at hsix
+    linarith
+  have hq : ∀ a b : Fin 6, (2 * atomGram atom a b) ^ 2 = (2 * atomGram atom b a) ^ 2 := by
+    intro a b
+    rw [atomGram_comm atom a b]
+  have hd : ∀ y : Fin 6, (2 * atomGram atom y y) ^ 2 = 1 := by
+    intro y
+    rw [hbal y]
+    norm_num
+  by_contra hcon
+  push Not at hcon
+  have hinj : Function.Injective σ := σ.injective
+  have hne : ∀ i j : Fin 6, i ≠ j → σ i ≠ σ j := fun i j hij h => hij (hinj h)
+  have hQ : ∀ i j : Fin 6, i ≠ j → 2 ≤ i → 2 ≤ j →
+      4 / 9 < (2 * atomGram atom (σ 0) (σ i)) ^ 2
+        + (2 * atomGram atom (σ 0) (σ j)) ^ 2
+        + (2 * atomGram atom (σ i) (σ j)) ^ 2 := by
+    intro i j hij hi hj
+    exact hcon (σ i) (σ j) (hne i j hij) (hne 0 i (by omega)) (hne 0 j (by omega))
+      (hne 1 i (by omega)) (hne 1 j (by omega))
+  have h23 := hQ 2 3 (by omega) (by omega) (by omega)
+  have h24 := hQ 2 4 (by omega) (by omega) (by omega)
+  have h25 := hQ 2 5 (by omega) (by omega) (by omega)
+  have h34 := hQ 3 4 (by omega) (by omega) (by omega)
+  have h35 := hQ 3 5 (by omega) (by omega) (by omega)
+  have h45 := hQ 4 5 (by omega) (by omega) (by omega)
+  have hrow0 := hrow (σ 0)
+  have hrow1 := hrow (σ 1)
+  have hrow2 := hrow (σ 2)
+  have hrow3 := hrow (σ 3)
+  have hrow4 := hrow (σ 4)
+  have hrow5 := hrow (σ 5)
+  linarith [h23, h24, h25, h34, h35, h45, hrow0, hrow1, hrow2, hrow3, hrow4, hrow5,
+    hd (σ 0), hd (σ 1), hd (σ 2), hd (σ 3), hd (σ 4), hd (σ 5), hheavy,
+    hq (σ 0) (σ 1), hq (σ 2) (σ 0), hq (σ 3) (σ 0), hq (σ 4) (σ 0), hq (σ 5) (σ 0),
+    hq (σ 2) (σ 1), hq (σ 3) (σ 1), hq (σ 4) (σ 1), hq (σ 5) (σ 1),
+    hq (σ 3) (σ 2), hq (σ 4) (σ 2), hq (σ 5) (σ 2), hq (σ 4) (σ 3),
+    hq (σ 5) (σ 3), hq (σ 5) (σ 4), hq (σ 1) (σ 0)]
+
 end Gtz
