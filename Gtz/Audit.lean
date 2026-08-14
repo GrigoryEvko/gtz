@@ -795,6 +795,7 @@ import Gtz.Wave.PlaneCapTripleClosure
 import Gtz.Wave.AtomShadowTransfer
 import Gtz.Wave.AtomBlockedDefect
 import Gtz.Wave.AtomDefectBandSplit
+import Gtz.Wave.AtomProductInflation
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -954,6 +955,19 @@ import Gtz.Wave.AtomDefectBandSplit
 #print axioms Gtz.isEmpty_sixThreeCrux_of_band_of_deep
 #print axioms Gtz.gtzWeighted_six_three_of_bandKill_of_deep
 #print axioms Gtz.gtzWeightedAll_three_of_bandKill_of_deep
+#print axioms Gtz.transfer_pair_of_product_inflation
+#print axioms Gtz.exists_deflated_pair_of_product_inflation
+#print axioms Gtz.exists_deflated_pair_of_uniform_inflation
+#print axioms Gtz.discountInflation
+#print axioms Gtz.discountInflation_pivot
+#print axioms Gtz.discountInflation_nonneg
+#print axioms Gtz.discountInflation_product
+#print axioms Gtz.exists_deflated_pair_of_discount_inflation
+#print axioms Gtz.AtomBlockedProductKill
+#print axioms Gtz.atomBlockedBandKill_of_productKill
+#print axioms Gtz.atomBlockedBandClosed_of_productKill
+#print axioms Gtz.gtzWeighted_six_three_of_productKill_of_deep
+#print axioms Gtz.gtzWeightedAll_three_of_productKill_of_deep
 #print axioms Gtz.atomPivotCross_comm
 #print axioms Gtz.atomPivotCross_self
 #print axioms Gtz.atomPivotCross_at_pivot_left

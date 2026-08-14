@@ -3559,6 +3559,10 @@ import Gtz.Wave.AtomBlockedDefect
 -- the defect wedge calculus with the single-budget engine and the slack
 -- pigeonhole arm the kill.  The deep part keeps the pivot selection open.
 import Gtz.Wave.AtomDefectBandSplit
+-- The product inflation engine: the transfer consumes only a product law on
+-- the extra inflation of a pair, thus the uniform double budget is one
+-- instance and the discounted inflation opens a strictly larger stratum.
+import Gtz.Wave.AtomProductInflation
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
