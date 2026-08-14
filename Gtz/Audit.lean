@@ -450,6 +450,7 @@ import Gtz.Reduction.PolarCrossWitness
 import Gtz.Reduction.PolarPlaneTurn
 import Gtz.Reduction.PolarCircularOrder
 import Gtz.Reduction.PolarShadowFloor
+import Gtz.Reduction.PolarGapDeterminant
 import Gtz.Reduction.FrameDropDescent
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
@@ -25917,3 +25918,46 @@ run_cmd do
 #print axioms Gtz.atomSplitGram_boost
 #print axioms Gtz.AtomFiveTripleBoundaryClosed
 #print axioms Gtz.atomFiveTripleBoundaryClosed_of_atomTripleBoundary
+
+#print axioms Gtz.card_triple_eq
+#print axioms Gtz.sum_triple_eq
+#print axioms Gtz.polarGapDet
+#print axioms Gtz.polarGapDet_cycle
+#print axioms Gtz.polarGapDet_swap
+#print axioms Gtz.subsetSum_triple_sub_one_det
+#print axioms Gtz.gramFour_read_vanishes
+#print axioms Gtz.polarSchur_margin_scalar
+#print axioms Gtz.polarPlaneDet_mul_surplus_sub_adjugate
+#print axioms Gtz.exists_excess_of_trace_planeDet
+#print axioms Gtz.not_isTie_of_planeInvariants
+#print axioms Gtz.not_isTie_of_polarGapDet
+#print axioms Gtz.subsetSum_sub_one_read
+#print axioms Gtz.posDef_of_planeShadowSchur
+#print axioms Gtz.exists_anchor_planeShadowSq_pos_of_posDef
+#print axioms Gtz.polarFrameForm_pos_of_posDef
+#print axioms Gtz.sum_planeShadowSq_gt_two_of_posDef
+#print axioms Gtz.polarPlaneDet_pos_of_posDef
+#print axioms Gtz.leverage_lt_sum_pairing_sq_of_posDef
+#print axioms Gtz.planeInvariants_of_posDef
+#print axioms Gtz.polarGapDet_pos_of_posDef
+#print axioms Gtz.polarShadowSchur_pole_transport
+#print axioms Gtz.exists_polarGapDet_eq_zero_of_isTie
+#print axioms Gtz.sum_weight_pairing_sq_total
+#print axioms Gtz.sum_weight_tripleBracket_sq_pair
+#print axioms Gtz.sum_weight_tripleBracket_sq_total
+#print axioms Gtz.sum_weight_gram_pair_total
+#print axioms Gtz.isTie_planeInvariants_alternative
+#print axioms Gtz.polarGapDet_nonpos_of_isTie
+#print axioms Gtz.PolarGapSelection
+#print axioms Gtz.PolarWrapGapSelection
+#print axioms Gtz.polarShadowSchurSelection_of_polarGapSelection
+#print axioms Gtz.polarWrapSelection_of_polarWrapGapSelection
+#print axioms Gtz.polarGapSelection_of_polarWrapGapSelection
+#print axioms Gtz.hingeHoldsAtSize_of_polarGapSelection
+#print axioms Gtz.gtzWeighted_six_three_of_polarGapSelection
+#print axioms Gtz.gtzWeightedAll_three_of_polarGapSelection
+#print axioms Gtz.gtzWeighted_six_three_of_polarWrapGapSelection
+#print axioms Gtz.gtzWeightedAll_three_of_polarWrapGapSelection
+#print axioms Gtz.not_polarGapSelection_five
+#print axioms Gtz.not_polarWrapGapSelection_five
+#print axioms Gtz.sixSplitDiamondDesign_spares_polarGapSelection

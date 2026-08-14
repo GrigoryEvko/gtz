@@ -2246,6 +2246,7 @@ import Gtz.Reduction.PolarPlaneTurn
 -- cannot supply.
 import Gtz.Reduction.PolarCircularOrder
 import Gtz.Reduction.PolarShadowFloor
+import Gtz.Reduction.PolarGapDeterminant
 
 -- The frame-priced descent: the design identity contracts against the inverse
 -- gap of every region, thus the pivot pigeonhole becomes an exact stage law and
