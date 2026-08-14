@@ -3630,6 +3630,7 @@ import Gtz.Wave.SignatureMoments
 -- explicit polynomial in six readings of one pair.
 import Gtz.Wave.PivotSchurLift
 import Gtz.Wave.OrientedTriangleSign
+import Gtz.Wave.SpectralSupplyCell
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02
