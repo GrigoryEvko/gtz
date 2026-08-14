@@ -824,6 +824,8 @@ import Gtz.Wave.SignatureMoments
 import Gtz.Wave.PivotSchurLift
 import Gtz.Wave.OrientedTriangleSign
 import Gtz.Wave.SpectralSupplyCell
+import Gtz.Wave.PluckerCertificate
+import Gtz.Wave.QuadCoverSelection
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
