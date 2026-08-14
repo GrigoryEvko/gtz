@@ -1,4 +1,5 @@
 import Gtz.Wave.AtomTriangleEnergy
+import Gtz.Wave.AtomBoundaryWitness
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -124,6 +125,23 @@ space carry no obtuse bound.  The count two is attained.
 * `Gtz.atomTriangleGap_eq_edge_mul_atomPivotCross`, `Gtz.atomChargeShadow`,
   `Gtz.atomChargeSign`, `Gtz.exists_nonneg_dot_of_orthogonal_four`,
   `Gtz.exists_two_nonneg_atomChargeSign` — **THE PIVOT CHARGE SUPPLY.**
+* `Gtz.atomPairMinorSum_eq`, `Gtz.two_mul_atomPairMinorSum`,
+  `Gtz.atomTripleDetSum_eq`, `Gtz.sum_atomTripleDet`,
+  `Gtz.sum_atomTripleDet_eq_of_same_diagonal`,
+  `Gtz.exists_tripleDet_pos_of_diagonalSum` — **THE MOMENT SUMS ARE DIAGONAL
+  DATA**, and the average characteristic polynomial is blind.
+* `Gtz.modulusEnergy_iff_both_orientations`,
+  `Gtz.modulusEnergy_of_sound_modulusCriterion` — **THE MODULUS CELL IS THE
+  SHARPEST CRITERION OF ITS CLASS.**
+* `Gtz.atomBoundaryAtom_not_modulusEnergy` — the guardrail: the cell is silent
+  at the sharp extremal, where no triple dominates strictly.
+* `Gtz.atomPairMinor_pos_of_modulusEnergy`,
+  `Gtz.exists_deflated_pair_of_liveModulusEnergy` — the cell supplies its own
+  pair minors, so the consumer needs three live slots and nothing else.
+* `Gtz.signFree_threshold_factor`, `Gtz.signFree_threshold_lt_half` — the
+  sign-free stratum stops at `1/2` and the cubic factors to prove it.
+* `Gtz.sum_atomTripleDet_scale_form` — the third moment sum in the elementary
+  symmetric functions of the scales.
 
 ## Vacuity
 
@@ -1487,5 +1505,231 @@ theorem exists_tripleDet_pos_of_diagonalSum {atom : Fin 6 → (Fin 3 → ℝ)}
     have h345 := hall 3 4 5 (by decide) (by decide) (by decide)
     linarith
   linarith [hlaw, hsum, hpositive]
+
+/-! ## Layer 7 — the modulus cell is the sharpest criterion of its class
+
+Layer two proves that no criterion reading only the shifted diagonal and the
+squared Gram can DECIDE the deflation test.  This layer proves the matching
+positive statement: the modulus cell already extracts everything that reading
+gives.  A sound modulus criterion cannot fire anywhere the modulus cell is
+silent, as soon as the opposite orientation of the same modulus data is
+realized by some atom family.
+
+The guardrail of the layer is the sharp extremal.  The doubled tetrahedron at
+scale mass exactly one carries twenty nonpositive triple determinants, so the
+modulus cell is silent at every one of its triples.  A cell of this lane that
+fired there would be false, and this theorem is the mechanized check. -/
+
+/-- The modulus part reads only the shifted diagonals and the squared Gram
+entries, so two families that share those two tables share it. -/
+theorem atomTripleModulus_congr {slotCount rank : ℕ}
+    {atomOne atomTwo : Fin slotCount → (Fin rank → ℝ)} {scale : Fin slotCount → ℝ}
+    {slotOne slotTwo slotThree : Fin slotCount}
+    (hrest : ∀ slot, atomShiftedDiag atomOne scale slot = atomShiftedDiag atomTwo scale slot)
+    (hsq : ∀ rowSlot colSlot, atomGram atomOne rowSlot colSlot ^ 2
+      = atomGram atomTwo rowSlot colSlot ^ 2) :
+    atomTripleModulus atomOne scale slotOne slotTwo slotThree
+      = atomTripleModulus atomTwo scale slotOne slotTwo slotThree := by
+  simp only [atomTripleModulus_eq, hrest, hsq]
+
+/-- **THE MODULUS CELL IS EXACTLY "POSITIVE AT BOTH ORIENTATIONS".**  The two
+endpoints of the orientation band are the determinants of the two orientations
+of the same modulus data, and the cell asks for both. -/
+theorem modulusEnergy_iff_both_orientations {slotCount rank : ℕ}
+    (atom : Fin slotCount → (Fin rank → ℝ)) (scale : Fin slotCount → ℝ)
+    (slotOne slotTwo slotThree : Fin slotCount) :
+    2 * |atomTriangleCycle atom slotOne slotTwo slotThree|
+        < atomTripleModulus atom scale slotOne slotTwo slotThree
+      ↔ (0 < atomTripleModulus atom scale slotOne slotTwo slotThree
+            + 2 * atomTriangleCycle atom slotOne slotTwo slotThree
+          ∧ 0 < atomTripleModulus atom scale slotOne slotTwo slotThree
+            - 2 * atomTriangleCycle atom slotOne slotTwo slotThree) := by
+  rcases le_or_gt 0 (atomTriangleCycle atom slotOne slotTwo slotThree) with hsign | hsign
+  · rw [abs_of_nonneg hsign]
+    constructor
+    · intro hstep; exact ⟨by linarith, by linarith⟩
+    · intro hstep; linarith [hstep.2]
+  · rw [abs_of_neg hsign]
+    constructor
+    · intro hstep; exact ⟨by linarith, by linarith⟩
+    · intro hstep; linarith [hstep.1]
+
+/-- **THE MODULUS CELL IS THE SHARPEST MODULUS CRITERION.**  A criterion whose
+inputs are the shifted diagonal table and the squared Gram table, and which is
+SOUND for a positive triple determinant, fires only where the modulus cell
+fires — as soon as the opposite orientation of that modulus data is realized.
+
+Together with `Gtz.no_modulusCriterion_decides_atomTripleDeflates` this closes
+the modulus question of the lane: the modulus data cannot decide, and the
+modulus cell extracts all of what it does give. -/
+theorem modulusEnergy_of_sound_modulusCriterion
+    (criterion : (Fin 3 → ℝ) → (Fin 3 → Fin 3 → ℝ) → Prop)
+    (hsound : ∀ (atom : Fin 3 → (Fin 3 → ℝ)) (scale : Fin 3 → ℝ),
+      criterion (fun slot => atomShiftedDiag atom scale slot)
+          (fun rowSlot colSlot => atomGram atom rowSlot colSlot ^ 2) →
+        0 < atomTripleDet atom scale 0 1 2)
+    {atomOne atomTwo : Fin 3 → (Fin 3 → ℝ)} {scale : Fin 3 → ℝ}
+    (hrest : ∀ slot, atomShiftedDiag atomOne scale slot = atomShiftedDiag atomTwo scale slot)
+    (hsq : ∀ rowSlot colSlot, atomGram atomOne rowSlot colSlot ^ 2
+      = atomGram atomTwo rowSlot colSlot ^ 2)
+    (hflip : atomTriangleCycle atomTwo 0 1 2 = -atomTriangleCycle atomOne 0 1 2)
+    (hfire : criterion (fun slot => atomShiftedDiag atomOne scale slot)
+      (fun rowSlot colSlot => atomGram atomOne rowSlot colSlot ^ 2)) :
+    2 * |atomTriangleCycle atomOne 0 1 2|
+      < atomTripleModulus atomOne scale 0 1 2 := by
+  have hone := hsound atomOne scale hfire
+  have hrestTable : (fun slot => atomShiftedDiag atomOne scale slot)
+      = (fun slot => atomShiftedDiag atomTwo scale slot) := funext hrest
+  have hsqTable : (fun rowSlot colSlot => atomGram atomOne rowSlot colSlot ^ 2)
+      = (fun rowSlot colSlot => atomGram atomTwo rowSlot colSlot ^ 2) :=
+    funext fun rowSlot => funext fun colSlot => hsq rowSlot colSlot
+  rw [hrestTable, hsqTable] at hfire
+  have htwo := hsound atomTwo scale hfire
+  rw [atomTripleDet_eq_modulus_add_cycle] at hone htwo
+  rw [hflip, ← atomTripleModulus_congr (slotOne := 0) (slotTwo := 1) (slotThree := 2)
+    hrest hsq] at htwo
+  rcases le_or_gt 0 (atomTriangleCycle atomOne 0 1 2) with hsign | hsign
+  · rw [abs_of_nonneg hsign]; linarith
+  · rw [abs_of_neg hsign]; linarith
+
+/-- **THE GUARDRAIL AT THE SHARP EXTREMAL.**  The doubled tetrahedron at scale
+mass exactly one has twenty nonpositive triple determinants, so the modulus
+cell is SILENT at every one of its triples.  Any cell of the lane that fired
+there would be false, because that datum carries no strictly dominating
+triple at all. -/
+theorem atomBoundaryAtom_not_modulusEnergy {slotOne slotTwo slotThree : Fin 6}
+    (honeTwo : slotOne ≠ slotTwo) (honeThree : slotOne ≠ slotThree)
+    (htwoThree : slotTwo ≠ slotThree) :
+    ¬ (2 * |atomTriangleCycle atomBoundaryAtom slotOne slotTwo slotThree|
+        < atomTripleModulus atomBoundaryAtom atomBoundaryScale slotOne slotTwo slotThree) := by
+  intro hcell
+  have hpos := atomTripleDet_pos_of_modulusEnergy hcell
+  have hnonpos := atomBoundaryAtom_tripleDet_nonpos honeTwo honeThree htwoThree
+  linarith
+
+/-- **THE MODULUS CELL SUPPLIES ITS OWN PAIR MINORS.**  Three live slots and
+the modulus energy force every pair minor of the triple to be positive, so the
+consumer of the residue needs no separate minor hypothesis.  The reading is
+one division by a positive shifted diagonal. -/
+theorem atomPairMinor_pos_of_modulusEnergy {slotCount rank : ℕ}
+    {atom : Fin slotCount → (Fin rank → ℝ)} {scale : Fin slotCount → ℝ}
+    {slotOne slotTwo slotThree : Fin slotCount}
+    (hone : 0 < atomShiftedDiag atom scale slotOne)
+    (htwo : 0 < atomShiftedDiag atom scale slotTwo)
+    (hthree : 0 < atomShiftedDiag atom scale slotThree)
+    (hmodulus : 2 * |atomTriangleCycle atom slotOne slotTwo slotThree|
+      < atomTripleModulus atom scale slotOne slotTwo slotThree) :
+    0 < atomPairMinor atom scale slotOne slotTwo := by
+  have habs : 0 ≤ 2 * |atomTriangleCycle atom slotOne slotTwo slotThree| := by positivity
+  have hmod : 0 < atomTripleModulus atom scale slotOne slotTwo slotThree := by linarith
+  rw [atomTripleModulus_eq] at hmod
+  have hleft : 0 ≤ atomShiftedDiag atom scale slotOne
+      * atomGram atom slotTwo slotThree ^ 2 := mul_nonneg hone.le (sq_nonneg _)
+  have hmid : 0 ≤ atomShiftedDiag atom scale slotTwo
+      * atomGram atom slotOne slotThree ^ 2 := mul_nonneg htwo.le (sq_nonneg _)
+  have hgap : atomShiftedDiag atom scale slotThree * atomGram atom slotOne slotTwo ^ 2
+      < atomShiftedDiag atom scale slotOne * atomShiftedDiag atom scale slotTwo
+        * atomShiftedDiag atom scale slotThree := by linarith
+  simp only [atomPairMinor]
+  nlinarith [hgap, hthree]
+
+/-- **THE MODULUS CELL, IN THE CHEAPEST CONSUMER SHAPE.**  Three live slots
+and the modulus energy supply the deflated pair of the blocked residue, with
+NO hypothesis on any pair minor. -/
+theorem exists_deflated_pair_of_liveModulusEnergy {atom : Fin 6 → (Fin 3 → ℝ)}
+    {scale : Fin 6 → ℝ} {slotOne slotTwo slotThree : Fin 6}
+    (honeTwo : slotOne ≠ slotTwo) (honeThree : slotOne ≠ slotThree)
+    (htwoThree : slotTwo ≠ slotThree)
+    (hone : 0 < atomShiftedDiag atom scale slotOne)
+    (htwo : 0 < atomShiftedDiag atom scale slotTwo)
+    (hthree : 0 < atomShiftedDiag atom scale slotThree)
+    (hmodulus : 2 * |atomTriangleCycle atom slotOne slotTwo slotThree|
+      < atomTripleModulus atom scale slotOne slotTwo slotThree) :
+    ∃ pivot firstSlot secondSlot : Fin 6,
+      pivot ≠ firstSlot ∧ pivot ≠ secondSlot ∧ firstSlot ≠ secondSlot
+        ∧ 0 < atomShiftedDiag atom scale pivot
+        ∧ 0 < atomPairMinor atom scale pivot firstSlot
+        ∧ atomPivotCross atom scale pivot firstSlot secondSlot ^ 2
+            < atomPairMinor atom scale pivot firstSlot
+              * atomPairMinor atom scale pivot secondSlot :=
+  exists_deflated_pair_of_modulusEnergy honeTwo honeThree htwoThree hone
+    (atomPairMinor_pos_of_modulusEnergy hone htwo hthree hmodulus) hmodulus
+
+/-- **THE SIGN-FREE THRESHOLD IS EXACTLY ONE HALF, AND THE FACTORIZATION
+PROVES IT.**  Three shifted correlations of modulus at most `m` clear the
+worst orientation when `2 m ^ 3 + 3 m ^ 2 < 1`, and that cubic factors as
+`(2 m - 1) (m + 1) ^ 2`.  So the sign-free stratum stops at `m = 1/2` and
+never at `1 / sqrt 2`, and the landed `Gtz.dominates_of_small_cross` at
+`2 * cross` is SHARP. -/
+theorem signFree_threshold_factor (bound : ℝ) :
+    2 * bound ^ 3 + 3 * bound ^ 2 - 1 = (2 * bound - 1) * (bound + 1) ^ 2 := by
+  ring
+
+/-- The sharpness of the sign-free threshold, read as a strict inequality. -/
+theorem signFree_threshold_lt_half {bound : ℝ}
+    (hcubic : 2 * bound ^ 3 + 3 * bound ^ 2 < 1) : bound < 1 / 2 := by
+  have hfactor := signFree_threshold_factor bound
+  nlinarith [hfactor, hcubic, sq_nonneg (bound + 1)]
+
+/-! ## Layer 8 — the third moment sum in the scales
+
+Layer six proves the third moment sum is diagonal data.  This layer writes it
+in the form a consumer wants: the elementary symmetric functions of the SCALES
+against the leverage pairing.  The passage is one trace law. -/
+
+/-- The sum of the fifteen products of two scales. -/
+def atomScalePairSum (scale : Fin 6 → ℝ) : ℝ :=
+  scale 0 * scale 1 + scale 0 * scale 2 + scale 0 * scale 3 + scale 0 * scale 4
+    + scale 0 * scale 5 + scale 1 * scale 2 + scale 1 * scale 3 + scale 1 * scale 4
+    + scale 1 * scale 5 + scale 2 * scale 3 + scale 2 * scale 4 + scale 2 * scale 5
+    + scale 3 * scale 4 + scale 3 * scale 5 + scale 4 * scale 5
+
+/-- The sum of the twenty products of three scales. -/
+def atomScaleTripleSum (scale : Fin 6 → ℝ) : ℝ :=
+  scale 0 * scale 1 * scale 2 + scale 0 * scale 1 * scale 3 + scale 0 * scale 1 * scale 4
+    + scale 0 * scale 1 * scale 5 + scale 0 * scale 2 * scale 3 + scale 0 * scale 2 * scale 4
+    + scale 0 * scale 2 * scale 5 + scale 0 * scale 3 * scale 4 + scale 0 * scale 3 * scale 5
+    + scale 0 * scale 4 * scale 5 + scale 1 * scale 2 * scale 3 + scale 1 * scale 2 * scale 4
+    + scale 1 * scale 2 * scale 5 + scale 1 * scale 3 * scale 4 + scale 1 * scale 3 * scale 5
+    + scale 1 * scale 4 * scale 5 + scale 2 * scale 3 * scale 4 + scale 2 * scale 3 * scale 5
+    + scale 2 * scale 4 * scale 5 + scale 3 * scale 4 * scale 5
+
+/-- **THE THIRD MOMENT SUM IN THE SCALES.**  The twenty shifted triple
+determinants total
+
+  `1 - 3 m + (2 - m) * (leverage pairing) + 3 * e2(scale) + (leverage against
+  the squared scales) - e3(scale)`
+
+with `m` the scale mass.  Every off-diagonal reading is gone and the shape is
+the minor expansion of the gap form against the determinantal marginals of the
+projection: `e3 = 1`, `e2 = 3`, and the slot marginal of a leverage is twice
+that leverage. -/
+theorem sum_atomTripleDet_scale_form {atom : Fin 6 → (Fin 3 → ℝ)} {scale : Fin 6 → ℝ}
+    (hframe : ∀ probe direction : Fin 3 → ℝ,
+      (∑ slot, (atom slot ⬝ᵥ probe) * (atom slot ⬝ᵥ direction)) = probe ⬝ᵥ direction) :
+    atomTripleDetSum atom scale
+      = 1 - 3 * (∑ slot, scale slot)
+        + (2 - ∑ slot, scale slot) * (∑ slot, scale slot * atomGram atom slot slot)
+        + 3 * atomScalePairSum scale
+        + (∑ slot, atomGram atom slot slot * scale slot ^ 2)
+        - atomScaleTripleSum scale := by
+  have hlaw := sum_atomTripleDet (scale := scale) hframe
+  have htrace : (∑ slot, atomGram atom slot slot) = (3 : ℝ) := by
+    have hstep := atomGram_trace (rank := 3) hframe
+    simpa using hstep
+  simp only [atomScalePairSum, atomScaleTripleSum, atomRestTripleSum, atomTripleVolume,
+    atomShiftedDiag, atomDiagEnergy] at hlaw ⊢
+  simp only [Fin.sum_univ_six] at hlaw htrace ⊢
+  linear_combination hlaw / 6 + ((atomGram atom 0 0 + atomGram atom 1 1 + atomGram atom 2 2 + atomGram atom 3 3 + atomGram atom 4 4 + atomGram atom 5 5) ^ 2
+      + 3 * atomGram atom 0 0 * (2 * scale 0 - (scale 0 + scale 1 + scale 2 + scale 3 + scale 4 + scale 5))
+      + 3 * atomGram atom 1 1 * (2 * scale 1 - (scale 0 + scale 1 + scale 2 + scale 3 + scale 4 + scale 5))
+      + 3 * atomGram atom 2 2 * (2 * scale 2 - (scale 0 + scale 1 + scale 2 + scale 3 + scale 4 + scale 5))
+      + 3 * atomGram atom 3 3 * (2 * scale 3 - (scale 0 + scale 1 + scale 2 + scale 3 + scale 4 + scale 5))
+      + 3 * atomGram atom 4 4 * (2 * scale 4 - (scale 0 + scale 1 + scale 2 + scale 3 + scale 4 + scale 5))
+      + 3 * atomGram atom 5 5 * (2 * scale 5 - (scale 0 + scale 1 + scale 2 + scale 3 + scale 4 + scale 5))
+      + 3 * (atomGram atom 0 0 + atomGram atom 1 1 + atomGram atom 2 2 + atomGram atom 3 3 + atomGram atom 4 4 + atomGram atom 5 5)
+      + 6 * (scale 0 * scale 1 + scale 0 * scale 2 + scale 0 * scale 3 + scale 0 * scale 4 + scale 0 * scale 5 + scale 1 * scale 2 + scale 1 * scale 3 + scale 1 * scale 4 + scale 1 * scale 5 + scale 2 * scale 3 + scale 2 * scale 4 + scale 2 * scale 5 + scale 3 * scale 4 + scale 3 * scale 5 + scale 4 * scale 5)
+      - 9 * (scale 0 + scale 1 + scale 2 + scale 3 + scale 4 + scale 5)
+      + 3) / 6 * htrace
 
 end Gtz
