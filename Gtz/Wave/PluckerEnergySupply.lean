@@ -1,4 +1,5 @@
 import Gtz.Wave.SpectralSupplyCell
+import Gtz.Wave.PluckerCertificate
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -845,6 +846,113 @@ theorem exists_atomCarrier_of_pluckerTenth (hresidue : AtomPluckerTenth)
   obtain ⟨slotOne, slotTwo, slotThree, hone, htwo, hthree, hfloor⟩ :=
     atomSpectralSupply_tenth_of_pluckerTenth hresidue atom hframe
   exact exists_atomCarrier_of_blendFloor atom scale hone htwo hthree hfloor hlight
+
+/-! ## Layer 6 — the spread law, doubled -/
+
+/-- A leg is at least the low bar of the two weights it carries. -/
+theorem dppLeg_ge_low (atom : Fin 6 → (Fin 3 → ℝ))
+    (pivot slotOne slotTwo slotThree slotFour : Fin 6) (low : ℝ) (hlow : 0 ≤ low)
+    (hone : low ≤ dppTripleWeight atom pivot slotOne slotTwo)
+    (htwo : low ≤ dppTripleWeight atom pivot slotThree slotFour) :
+    low ≤ dppLeg atom pivot slotOne slotTwo slotThree slotFour := by
+  have hsq := dppLeg_sq atom pivot slotOne slotTwo slotThree slotFour
+  have hleg := dppLeg_nonneg atom pivot slotOne slotTwo slotThree slotFour
+  nlinarith [hsq, hleg, hlow, hone, htwo,
+    mul_le_mul hone htwo hlow (le_trans hlow hone)]
+
+/-- A leg is at most the high bar of the two weights it carries. -/
+theorem dppLeg_le_high (atom : Fin 6 → (Fin 3 → ℝ))
+    (pivot slotOne slotTwo slotThree slotFour : Fin 6) (high : ℝ) (hhigh : 0 ≤ high)
+    (hone : dppTripleWeight atom pivot slotOne slotTwo ≤ high)
+    (htwo : dppTripleWeight atom pivot slotThree slotFour ≤ high) :
+    dppLeg atom pivot slotOne slotTwo slotThree slotFour ≤ high := by
+  have hsq := dppLeg_sq atom pivot slotOne slotTwo slotThree slotFour
+  have hleg := dppLeg_nonneg atom pivot slotOne slotTwo slotThree slotFour
+  have hnone := dppTripleWeight_nonneg atom pivot slotOne slotTwo
+  have hntwo := dppTripleWeight_nonneg atom pivot slotThree slotFour
+  nlinarith [hsq, hleg, hhigh, hone, htwo, hnone, hntwo,
+    mul_le_mul hone htwo hntwo hhigh]
+
+/-- **THE SPREAD LAW, DOUBLED.**  Fix one pivot slot and four other slots.  The
+six determinantal weights through that pivot obey
+
+  `2 * (the smallest) ≤ (the largest)`.
+
+The landed `Gtz.dppPlucker_spread` reads `2 * low ^ 2 ≤ high ^ 2`, which is
+`√2 * low ≤ high`.  This is the square of that, and it is sharp in the shape of
+the law: the degenerate triangle spends its longest leg on the SUM of the other
+two, and each of the other two is at least the low bar, so the longest leg is at
+least TWICE the low bar.  The landed proof drops the two square roots and keeps
+only `dominant ≥ sum of the other two`, which loses the factor.
+
+Over the Hermitian field the three legs obey only the triangle inequalities, and
+six EQUAL weights obey those, so no spread survives.  The constant `2` here is
+the same `2` that the real value of the cell carries, `1 / 6 = 1 / (3 * 2)`,
+while the Hermitian value carries the golden square, `1 / (3 * φ ^ 2)`. -/
+theorem dppPlucker_spread_double (atom : Fin 6 → (Fin 3 → ℝ))
+    (pivot slotOne slotTwo slotThree slotFour : Fin 6) (low high : ℝ)
+    (hlow : 0 ≤ low)
+    (hlowOneTwo : low ≤ dppTripleWeight atom pivot slotOne slotTwo)
+    (hlowOneThree : low ≤ dppTripleWeight atom pivot slotOne slotThree)
+    (hlowOneFour : low ≤ dppTripleWeight atom pivot slotOne slotFour)
+    (hlowTwoThree : low ≤ dppTripleWeight atom pivot slotTwo slotThree)
+    (hlowTwoFour : low ≤ dppTripleWeight atom pivot slotTwo slotFour)
+    (hlowThreeFour : low ≤ dppTripleWeight atom pivot slotThree slotFour)
+    (hhighOneTwo : dppTripleWeight atom pivot slotOne slotTwo ≤ high)
+    (hhighOneThree : dppTripleWeight atom pivot slotOne slotThree ≤ high)
+    (hhighOneFour : dppTripleWeight atom pivot slotOne slotFour ≤ high)
+    (hhighTwoThree : dppTripleWeight atom pivot slotTwo slotThree ≤ high)
+    (hhighTwoFour : dppTripleWeight atom pivot slotTwo slotFour ≤ high)
+    (hhighThreeFour : dppTripleWeight atom pivot slotThree slotFour ≤ high) :
+    2 * low ≤ high := by
+  have hhigh : 0 ≤ high := le_trans hlow (le_trans hlowOneTwo hhighOneTwo)
+  rcases dppPlucker_legSum atom pivot slotOne slotTwo slotThree slotFour with
+    hsum | hsum | hsum
+  · have hone := dppLeg_ge_low atom pivot slotOne slotTwo slotThree slotFour low hlow
+      hlowOneTwo hlowThreeFour
+    have htwo := dppLeg_ge_low atom pivot slotOne slotFour slotTwo slotThree low hlow
+      hlowOneFour hlowTwoThree
+    have hcap := dppLeg_le_high atom pivot slotOne slotThree slotTwo slotFour high hhigh
+      hhighOneThree hhighTwoFour
+    linarith
+  · have hone := dppLeg_ge_low atom pivot slotOne slotThree slotTwo slotFour low hlow
+      hlowOneThree hlowTwoFour
+    have htwo := dppLeg_ge_low atom pivot slotOne slotFour slotTwo slotThree low hlow
+      hlowOneFour hlowTwoThree
+    have hcap := dppLeg_le_high atom pivot slotOne slotTwo slotThree slotFour high hhigh
+      hhighOneTwo hhighThreeFour
+    linarith
+  · have hone := dppLeg_ge_low atom pivot slotOne slotTwo slotThree slotFour low hlow
+      hlowOneTwo hlowThreeFour
+    have htwo := dppLeg_ge_low atom pivot slotOne slotThree slotTwo slotFour low hlow
+      hlowOneThree hlowTwoFour
+    have hcap := dppLeg_le_high atom pivot slotOne slotFour slotTwo slotThree high hhigh
+      hhighOneFour hhighTwoThree
+    linarith
+
+/-- **THE SPREAD LAW, DOUBLED, IN THE SQUARED SHAPE.**  Four times the landed
+constant.  This is the form that a counting argument consumes. -/
+theorem dppPlucker_spread_four (atom : Fin 6 → (Fin 3 → ℝ))
+    (pivot slotOne slotTwo slotThree slotFour : Fin 6) (low high : ℝ)
+    (hlow : 0 ≤ low)
+    (hlowOneTwo : low ≤ dppTripleWeight atom pivot slotOne slotTwo)
+    (hlowOneThree : low ≤ dppTripleWeight atom pivot slotOne slotThree)
+    (hlowOneFour : low ≤ dppTripleWeight atom pivot slotOne slotFour)
+    (hlowTwoThree : low ≤ dppTripleWeight atom pivot slotTwo slotThree)
+    (hlowTwoFour : low ≤ dppTripleWeight atom pivot slotTwo slotFour)
+    (hlowThreeFour : low ≤ dppTripleWeight atom pivot slotThree slotFour)
+    (hhighOneTwo : dppTripleWeight atom pivot slotOne slotTwo ≤ high)
+    (hhighOneThree : dppTripleWeight atom pivot slotOne slotThree ≤ high)
+    (hhighOneFour : dppTripleWeight atom pivot slotOne slotFour ≤ high)
+    (hhighTwoThree : dppTripleWeight atom pivot slotTwo slotThree ≤ high)
+    (hhighTwoFour : dppTripleWeight atom pivot slotTwo slotFour ≤ high)
+    (hhighThreeFour : dppTripleWeight atom pivot slotThree slotFour ≤ high) :
+    4 * low ^ 2 ≤ high ^ 2 := by
+  have hstep := dppPlucker_spread_double atom pivot slotOne slotTwo slotThree slotFour
+    low high hlow hlowOneTwo hlowOneThree hlowOneFour hlowTwoThree hlowTwoFour
+    hlowThreeFour hhighOneTwo hhighOneThree hhighOneFour hhighTwoThree hhighTwoFour
+    hhighThreeFour
+  nlinarith [hstep, hlow]
 
 /-- **THE UNCONDITIONAL CARRIER AT ONE TWELFTH.**  The concrete form of the
 record. -/

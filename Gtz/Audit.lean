@@ -26966,3 +26966,7 @@ run_cmd do
 #print axioms Gtz.atomSpectralSupply_tenth_of_pluckerTenth
 #print axioms Gtz.exists_atomCarrier_of_pluckerTenth
 #print axioms Gtz.exists_atomCarrier_twelfth
+#print axioms Gtz.dppLeg_ge_low
+#print axioms Gtz.dppLeg_le_high
+#print axioms Gtz.dppPlucker_spread_double
+#print axioms Gtz.dppPlucker_spread_four
