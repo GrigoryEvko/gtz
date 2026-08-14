@@ -3611,6 +3611,7 @@ import Gtz.Wave.AtomIcosahedralWitness
 import Gtz.Wave.AtomTriangleEnergy
 import Gtz.Wave.AtomBoundaryWitness
 import Gtz.Wave.AtomMassOneLadder
+import Gtz.Wave.AtomVertexSelection
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02

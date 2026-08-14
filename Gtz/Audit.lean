@@ -814,6 +814,7 @@ import Gtz.Wave.AtomIcosahedralWitness
 import Gtz.Wave.AtomTriangleEnergy
 import Gtz.Wave.AtomBoundaryWitness
 import Gtz.Wave.AtomMassOneLadder
+import Gtz.Wave.AtomVertexSelection
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -26159,3 +26160,54 @@ run_cmd do
 #print axioms Gtz.blochTetra_not_dominates
 #print axioms Gtz.blochTetra_mass_total
 #print axioms Gtz.blochTetra_scale_total
+#print axioms Gtz.atomDot_self_nonneg
+#print axioms Gtz.atomDot_eq_zero_of_energy_nonpos
+#print axioms Gtz.atomDot_sq_le_energy
+#print axioms Gtz.atomReading_sum
+#print axioms Gtz.atomBlend_energy_le_probe_energy
+#print axioms Gtz.atomGramComp
+#print axioms Gtz.atomGramComp_comm
+#print axioms Gtz.atomGramComp_idempotent
+#print axioms Gtz.atomGramComp_row_energy
+#print axioms Gtz.atomGramComp_diag_nonneg
+#print axioms Gtz.atomGramComp_minor
+#print axioms Gtz.atomGramComp_trace
+#print axioms Gtz.atomGram_cross_total
+#print axioms Gtz.exists_slot_reading_ge
+#print axioms Gtz.exists_slot_scale_le_gram
+#print axioms Gtz.exists_triple_reading_of_direction
+#print axioms Gtz.atomMarginalCover_dominates
+#print axioms Gtz.atomMarginalCover_trace
+#print axioms Gtz.AtomFractionalCoverClosed
+#print axioms Gtz.atomFractionalCoverClosed_holds
+#print axioms Gtz.two_mul_ge_neg_abs_mul
+#print axioms Gtz.two_mul_le_of_sq_le
+#print axioms Gtz.atomTriple_values_of_diagonalDominance
+#print axioms Gtz.atomTriple_values_of_heavy
+#print axioms Gtz.exists_weakCarrier_of_values
+#print axioms Gtz.atomPool
+#print axioms Gtz.atomPool_mem_iff
+#print axioms Gtz.atomPool_of_weakCarrier
+#print axioms Gtz.atomPool_heavy
+#print axioms Gtz.atomPool_three_le_card
+#print axioms Gtz.exists_weakCarrier_of_thin_pool
+#print axioms Gtz.AtomThickPoolBoundaryClosed
+#print axioms Gtz.atomTripleBoundaryClosed_of_thickPool
+#print axioms Gtz.gtzWeighted_six_three_of_thickPool
+#print axioms Gtz.familyMatrix
+#print axioms Gtz.familyMatrix_mulVec
+#print axioms Gtz.familyMatrix_transpose_energy
+#print axioms Gtz.matrix_dual_lower
+#print axioms Gtz.dualEnergy_of_blendEnergy
+#print axioms Gtz.blendEnergy_of_dualEnergy
+#print axioms Gtz.atomScaledTriple
+#print axioms Gtz.tripleCombination_energy
+#print axioms Gtz.atomScaledTriple_reading
+#print axioms Gtz.atomScaledTriple_blend
+#print axioms Gtz.atomScaledTriple_scale_value
+#print axioms Gtz.atomTriple_operator_iff_values
+#print axioms Gtz.AtomTripleOperatorClosed
+#print axioms Gtz.atomTripleBoundaryClosed_of_atomTripleOperator
+#print axioms Gtz.atomTripleOperatorClosed_of_atomTripleBoundary
+#print axioms Gtz.atomTripleOperatorClosed_iff_atomTripleBoundary
+#print axioms Gtz.gtzWeighted_six_three_of_atomTripleOperator
