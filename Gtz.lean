@@ -3547,6 +3547,11 @@ import Gtz.Wave.AtomShadowTransfer
 -- pivot defect.  The scaled complex trine sits inside the blocked package,
 -- thus the residue needs a real-only proof.
 import Gtz.Wave.AtomBlockedDefect
+-- The band split of the blocked residue at scale mass `39/50`: the split is
+-- lossless, the band part follows from one kill at a single-budget pivot, and
+-- the defect wedge calculus with the single-budget engine and the slack
+-- pigeonhole arm the kill.  The deep part keeps the pivot selection open.
+import Gtz.Wave.AtomDefectBandSplit
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02

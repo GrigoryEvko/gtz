@@ -793,6 +793,7 @@ import Gtz.Wave.PivotWitnessLedger
 import Gtz.Wave.PlaneCapTripleClosure
 import Gtz.Wave.AtomShadowTransfer
 import Gtz.Wave.AtomBlockedDefect
+import Gtz.Wave.AtomDefectBandSplit
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -924,6 +925,34 @@ import Gtz.Wave.AtomBlockedDefect
 #print axioms Gtz.rankSixSupportTwoClosed_of_blockedPair
 #print axioms Gtz.rankFiveSupportTwoClosed_of_blockedPair
 #print axioms Gtz.rankFourSupportTwoClosed_of_blockedPair
+#print axioms Gtz.defectWedge
+#print axioms Gtz.defectWedge_dot_self
+#print axioms Gtz.planeDefectLagrange
+#print axioms Gtz.defectWedge_read_total
+#print axioms Gtz.defectWedge_sq_total
+#print axioms Gtz.planeWedge_sq_total
+#print axioms Gtz.defectWedge_shadow_total
+#print axioms Gtz.atomShadowCross
+#print axioms Gtz.atomShadowCross_eq_shadow
+#print axioms Gtz.atomGram_mul_atomPivotCross
+#print axioms Gtz.exists_plain_shadow_pair_of_single_budget
+#print axioms Gtz.broken_defect_certificate
+#print axioms Gtz.exists_deflated_or_broken_pair_of_single_budget
+#print axioms Gtz.slackBudget_scale_cubic
+#print axioms Gtz.exists_pivot_slack_budget
+#print axioms Gtz.AtomBlockedBandClosed
+#print axioms Gtz.AtomBlockedDeepClosed
+#print axioms Gtz.AtomBlockedBandKill
+#print axioms Gtz.atomBlockedPairClosed_of_band_of_deep
+#print axioms Gtz.atomBlockedBandClosed_of_blockedPair
+#print axioms Gtz.atomBlockedDeepClosed_of_blockedPair
+#print axioms Gtz.atomBlockedPairClosed_iff_band_and_deep
+#print axioms Gtz.atomBlockedBandClosed_of_bandKill
+#print axioms Gtz.gtzWeighted_six_three_of_band_of_deep
+#print axioms Gtz.gtzWeightedAll_three_of_band_of_deep
+#print axioms Gtz.isEmpty_sixThreeCrux_of_band_of_deep
+#print axioms Gtz.gtzWeighted_six_three_of_bandKill_of_deep
+#print axioms Gtz.gtzWeightedAll_three_of_bandKill_of_deep
 #print axioms Gtz.atomPivotCross_comm
 #print axioms Gtz.atomPivotCross_self
 #print axioms Gtz.atomPivotCross_at_pivot_left
