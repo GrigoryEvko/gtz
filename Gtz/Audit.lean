@@ -25918,6 +25918,8 @@ run_cmd do
 #print axioms Gtz.atomSplitGram_boost
 #print axioms Gtz.AtomFiveTripleBoundaryClosed
 #print axioms Gtz.atomFiveTripleBoundaryClosed_of_atomTripleBoundary
+#print axioms Gtz.atomTripleBoundaryClosed_of_blockedPair
+#print axioms Gtz.atomBlockedPairClosed_iff_atomTripleBoundary
 
 #print axioms Gtz.card_triple_eq
 #print axioms Gtz.sum_triple_eq
