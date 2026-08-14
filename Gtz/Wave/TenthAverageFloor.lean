@@ -156,6 +156,46 @@ power family reaches `1/6`, and the selector search must leave that family.
 Every number in the two tables above is a MEASURED MINIMUM over frames, and a
 measured minimum below a bar is a conclusion because the frame that reads it is a
 witness.  A measured minimum above a bar would be evidence only.
+
+## The exact balanced criterion, and the one law the class is missing
+
+`Gtz.atomBalancedSixth_iff` reads the sharp target off a balanced block in one
+line: with `p` the determinant of the triple and `q` the determinant of its
+COMPLEMENT,
+
+  `lambda_min(F_T) >= 1/6`   if and only if   `5 p - q >= 5/18`.
+
+The second reading is `1/2 + p + q` by the Jacobi block law
+`p of the complement = det (I - G of the triple)`, which holds at every Parseval
+frame and needs no marginal.  In cut coordinates `s = p + q`, `delta = p - q` the
+criterion is `2 s + 3 delta >= 5/18`, and the tenth is `4 sum s^2 + 5 sum
+delta^2 >= 1/2`.
+
+`Gtz.not_atomTenthCarrier_sixth` then says that the class cannot decide the target
+EVEN READING THE MAXIMUM.  At the tenth extremal every live block reads
+`5 p - q = 1/4` against the `5/18` the target asks, a deficit of exactly `1/36`,
+and every dead block reads `0`.  So swapping the average for the max buys nothing
+inside this class.
+
+What the class is missing is named exactly.  The tenth extremal violates EIGHT of
+the fifteen Grassmann-Plücker three-term relations.  At the slot pair `{0,2}` the
+relation `D(021)D(345) - D(023)D(145) + D(024)D(135) - D(025)D(134) = 0` has one
+term zero, because `{0,1,2}` and `{3,4,5}` are both dead, and THREE terms of equal
+magnitude `1/16`.  Three equal magnitudes cannot cancel with signs.  The same
+holds at `{0,3}`, `{1,2}`, `{1,3}`, `{2,4}`, `{2,5}`, `{3,4}`, `{3,5}`.  So the
+next law to add to this class is the Plücker relation, and the extremal that caps
+the class is exactly where it bites.
+
+## A correction to the unsigned graph reduction
+
+Write `H = 2 G - 1`, so a balanced frame is a symmetric orthogonal matrix with a
+zero diagonal, and a triple wins if and only if `Q - 3 c <= 4/9`, where `Q` is the
+total of the three squared entries of the block and `c` is their SIGNED product.
+`Gtz.not_atomUnsignedTriangle` shows that replacing `c` by
+`sqrt (q1 q2 q3) = |c|` is not sound: the block `(1/2, 1/2, -1/2)` occurs at the
+cuboctahedron, at a triple whose Gram determinant is zero, and it reads `3/8` in
+the unsigned form and `9/8` in the signed one.  The sign of `c` is a real
+invariant, because a flip of one atom changes exactly two of the three factors.
 -/
 
 namespace Gtz
@@ -732,5 +772,241 @@ theorem not_atomTenthAverage_sixth :
   have h2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
   have n2 : (0 : ℝ) ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
   nlinarith [h2, n2]
+
+/-! ## Layer 8 — the exact balanced criterion, and what the class cannot decide -/
+
+/-- **THE BALANCED CRITERION, EXACTLY.**  At balanced leverages a block reads
+`(3/2, 1/2 + p + q, p)`, where `q` is the determinant of the COMPLEMENTARY triple
+by the Jacobi block law `p of the complement = det (I - G of the triple)`.  Then
+
+  `lambda_min >= 1/6`   if and only if   `5 p - q >= 5/18`.
+
+The proof is one identity and one guard.  The identity is
+
+  `(1/6 - r1)(1/6 - r2)(1/6 - r3) = 5/108 - (5/6) p + q/6`,
+
+which is the characteristic polynomial read at `1/6`.  The guard is that the two
+larger readings are at least `1/4`: from `r1 <= r2` and `r3 <= 1` the total `3/2`
+forces `2 r2 >= 1/2`, and symmetrically for `r3`.  So the product of the last two
+factors is positive and the sign of the whole product is the sign of `1/6 - r1`.
+
+This turns the balanced form of the sharp target into ONE LINEAR inequality in the
+twenty determinants.  In cut coordinates `s = p + q` and `delta = p - q` it reads
+`2 s + 3 delta >= 5/18`. -/
+theorem atomBalancedSixth_iff {r1 r2 r3 p q : ℝ}
+    (h2' : r2 ≤ 1) (h3' : r3 ≤ 1)
+    (hle2 : r1 ≤ r2) (hle3 : r1 ≤ r3) (hsum : r1 + r2 + r3 = 3 / 2)
+    (he2 : r1 * r2 + r1 * r3 + r2 * r3 = 1 / 2 + p + q)
+    (he3 : r1 * r2 * r3 = p) :
+    1 / 6 ≤ r1 ↔ 5 / 18 ≤ 5 * p - q := by
+  have hr2 : (1 : ℝ) / 4 ≤ r2 := by linarith
+  have hr3 : (1 : ℝ) / 4 ≤ r3 := by linarith
+  have key : (1 / 6 - r1) * ((1 / 6 - r2) * (1 / 6 - r3))
+      = 5 / 108 - (5 / 6) * p + q / 6 := by
+    linear_combination (-1 / 36 : ℝ) * hsum + (1 / 6 : ℝ) * he2 - he3
+  constructor
+  · intro h
+    nlinarith [key, mul_nonneg (by linarith : (0 : ℝ) ≤ r2 - 1 / 6)
+      (by linarith : (0 : ℝ) ≤ r3 - 1 / 6), h, hr2, hr3]
+  · intro h
+    nlinarith [key, mul_pos (by linarith : (0 : ℝ) < r2 - 1 / 6)
+      (by linarith : (0 : ℝ) < r3 - 1 / 6), h]
+
+/-- **THE CLASS CANNOT DECIDE THE SHARP TARGET, EVEN READING THE MAXIMUM.**  The
+determinantal AVERAGE was already capped at `(2 - sqrt 2)/4` by
+`Gtz.not_atomTenthAverage_gt`.  This says more: at the tenth extremal EVERY one of
+the twenty blocks reads a smallest eigenvalue at most `(2 - sqrt 2)/4`, so the
+MAXIMUM is capped there too.  Reading the max in place of an average does not
+escape the class.
+
+In the criterion of `Gtz.atomBalancedSixth_iff` the extremal reads `5 p - q = 1/4`
+at each of its sixteen live blocks and `0` at the four dead ones, against the
+`5/18` the target asks for.  The deficit is exactly `1/36`, and the determinant
+reading `(5 p - q)/6 - 5/108` is exactly `-1/216`. -/
+theorem not_atomTenthCarrier_sixth :
+    ¬ (∀ weight second reading : Fin 6 → Fin 6 → Fin 6 → ℝ,
+        AtomTenthFeasible weight second → AtomSpectralReading weight second reading →
+        ∃ a b c : Fin 6, a ≠ b ∧ a ≠ c ∧ b ≠ c ∧ (1 : ℝ) / 6 ≤ reading a b c) := by
+  intro h
+  obtain ⟨a, b, c, -, -, -, hge⟩ := h atomTenthWeight atomTenthSecond atomTenthReading
+    atomTenthExtremal_isFeasible atomTenthExtremal_isReading
+  have hs : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  have hn : (0 : ℝ) ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
+  have hle : atomTenthReading a b c ≤ (2 - Real.sqrt 2) / 4 := by
+    have hnum : (atomTenthNum a b c : ℝ) ≤ 1 := by
+      exact_mod_cast atomTenthNum_le_one a b c
+    have hpos : (0 : ℝ) ≤ (2 - Real.sqrt 2) / 4 := by nlinarith [hs, hn]
+    simpa [atomTenthReading] using mul_le_of_le_one_left hpos hnum
+  nlinarith [hs, hn, hge, hle]
+
+/-- **THE UNSIGNED TRIANGLE CRITERION IS STRICTLY WEAKER, AND THE CUBOCTAHEDRON
+SHOWS IT.**  Write `H = 2 G - 1`, so that a balanced frame is a symmetric
+orthogonal matrix with a zero diagonal.  A triple reads `Q - 3 c <= 4/9`, where
+`Q` is the total of the three squared entries of the block and `c` is their signed
+PRODUCT.  Replacing `c` by `sqrt (q1 q2 q3) = |c|` drops the sign, and the sign is
+a real invariant: a flip of one atom changes exactly TWO of the three factors, so
+the sign of `c` is not a gauge choice.
+
+The block `(1/2, 1/2, -1/2)` occurs at the cuboctahedron, at the triple whose Gram
+determinant is zero.  Its unsigned reading is `3/8 <= 4/9`, which would declare a
+winner, and its signed reading is `9/8 > 4/9`, which is the truth.  So a proof of
+the unsigned graph inequality does NOT close the balanced target. -/
+theorem not_atomUnsignedTriangle :
+    ((1 : ℝ) / 2) ^ 2 + ((1 : ℝ) / 2) ^ 2 + (-(1 : ℝ) / 2) ^ 2
+        - 3 * Real.sqrt ((((1 : ℝ) / 2) ^ 2) * (((1 : ℝ) / 2) ^ 2) * ((-(1 : ℝ) / 2) ^ 2))
+        ≤ 4 / 9
+      ∧ ¬ (((1 : ℝ) / 2) ^ 2 + ((1 : ℝ) / 2) ^ 2 + (-(1 : ℝ) / 2) ^ 2
+        - 3 * (((1 : ℝ) / 2) * ((1 : ℝ) / 2) * (-(1 : ℝ) / 2)) ≤ 4 / 9) := by
+  have hsq : Real.sqrt ((((1 : ℝ) / 2) ^ 2) * (((1 : ℝ) / 2) ^ 2) * ((-(1 : ℝ) / 2) ^ 2))
+      = 1 / 8 := by
+    rw [show ((((1 : ℝ) / 2) ^ 2) * (((1 : ℝ) / 2) ^ 2) * ((-(1 : ℝ) / 2) ^ 2))
+      = ((1 : ℝ) / 8) ^ 2 from by norm_num]
+    exact Real.sqrt_sq (by norm_num)
+  constructor
+  · rw [hsq]; norm_num
+  · norm_num
+
+/-! ## Layer 9 — the complement law lifts the floor to `143/1000` -/
+
+/-- **THE RUNG THAT ALSO READS THE COMPLEMENT.**  The Jacobi block law
+`p of the complement = det (I - G of the triple)` makes the second reading of a
+balanced block equal `1/2 + p + q`, with `q` the determinant of the complementary
+triple.  So `2 e3 - e2 + 1/2` reads `p - q` at every triple, and its determinantal
+total is `E3 - Cpp`, which is the total of the ten squares `(p - q)^2` and is
+therefore not negative.  Adding that second nonnegative correction lifts the floor
+from `141/1000` to `143/1000`. -/
+noncomputable def atomTenthRungPair (second third : ℝ) : ℝ :=
+  143 / 1000 + (69 / 200) * (10 * third - second)
+    + (123 / 1000) * (2 * third - second + 1 / 2)
+
+set_option linter.unusedVariables false in
+/-- **THE PAIRED RUNG IS BELOW EVERY EIGENVALUE.**  The same two-branch argument as
+`Gtz.atomTenthRung_le_root`, at the split `39/308` in place of `1/10`.
+
+* Below `39/308` the residue is `(6456 (r1 - 307/3228)^2 + 977/1614)/2000`.
+* Above `39/308` the residue is
+  `((16904 - 7392 r1)(r1 - 1/6)^2 + 16 r1 + 4/9)/8000`.
+
+Both are sums of nonnegative parts on the unit box, and the second one is where
+the largest reading of this family sits: at `B = 69/200` and `K = 123/1000` the
+largest constant that survives is a measured `0.14330266`, so `143/1000` keeps a
+margin of `3.03e-4`. -/
+theorem atomTenthRungPair_le_root (r1 r2 r3 : ℝ)
+    (h1 : 0 ≤ r1) (h1' : r1 ≤ 1) (h2 : 0 ≤ r2) (h2' : r2 ≤ 1)
+    (h3 : 0 ≤ r3) (h3' : r3 ≤ 1) (hsum : r1 + r2 + r3 = 3 / 2) :
+    atomTenthRungPair (r1 * r2 + r1 * r3 + r2 * r3) (r1 * r2 * r3) ≤ r1 := by
+  have hr3 : r3 = 3 / 2 - r1 - r2 := by linarith
+  subst hr3
+  simp only [atomTenthRungPair]
+  rcases le_total r1 (39 / 308) with hc | hc
+  · nlinarith [mul_nonneg (mul_nonneg (by linarith : (0 : ℝ) ≤ 117 / 250 - (462 / 125) * r1)
+        (by linarith : (0 : ℝ) ≤ 1 - r2)) (by linarith : (0 : ℝ) ≤ 1 - (3 / 2 - r1 - r2)),
+      sq_nonneg (r1 - 307 / 3228), h1, h2, h3]
+  · nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ (462 / 125) * r1 - 117 / 250)
+        (sq_nonneg (r2 - (3 / 2 - r1 - r2))),
+      mul_nonneg (by linarith : (0 : ℝ) ≤ 16904 - 7392 * r1) (sq_nonneg (r1 - 1 / 6)),
+      h1, h2, h3]
+
+theorem atomTenthRungPair_le_root' (r1 r2 r3 second third : ℝ)
+    (h1 : 0 ≤ r1) (h1' : r1 ≤ 1) (h2 : 0 ≤ r2) (h2' : r2 ≤ 1)
+    (h3 : 0 ≤ r3) (h3' : r3 ≤ 1) (hsum : r1 + r2 + r3 = 3 / 2)
+    (he2 : second = r1 * r2 + r1 * r3 + r2 * r3) (he3 : third = r1 * r2 * r3) :
+    atomTenthRungPair second third ≤ r1 := by
+  subst he2; subst he3
+  exact atomTenthRungPair_le_root r1 r2 r3 h1 h1' h2 h2' h3 h3' hsum
+
+theorem atomTenthRungPair_le_of_spectrum {second third root : ℝ}
+    (hspec : AtomBlockSpectrum (3 / 2) second third)
+    (hroot : root ^ 3 - (3 / 2) * root ^ 2 + second * root - third = 0) :
+    atomTenthRungPair second third ≤ root := by
+  obtain ⟨r1, r2, r3, a1, b1, a2, b2, a3, b3, hs, he2, he3⟩ := hspec
+  have hsum : r1 + r2 + r3 = 3 / 2 := hs.symm
+  have hfac : (root - r1) * ((root - r2) * (root - r3)) = 0 := by
+    have : root ^ 3 - (r1 + r2 + r3) * root ^ 2
+        + (r1 * r2 + r1 * r3 + r2 * r3) * root - r1 * r2 * r3 = 0 := by
+      rw [← hs, ← he2, ← he3]; exact hroot
+    linear_combination this
+  rcases mul_eq_zero.mp hfac with h | h
+  · have : root = r1 := by linarith [sub_eq_zero.mp h]
+    subst this
+    exact atomTenthRungPair_le_root' root r2 r3 second third a1 b1 a2 b2 a3 b3 hsum he2 he3
+  rcases mul_eq_zero.mp h with h | h
+  · have : root = r2 := by linarith [sub_eq_zero.mp h]
+    subst this
+    exact atomTenthRungPair_le_root' root r1 r3 second third a2 b2 a1 b1 a3 b3 (by linarith)
+      (by rw [he2]; ring) (by rw [he3]; ring)
+  · have : root = r3 := by linarith [sub_eq_zero.mp h]
+    subst this
+    exact atomTenthRungPair_le_root' root r1 r2 second third a3 b3 a1 b1 a2 b2 (by linarith)
+      (by rw [he2]; ring) (by rw [he3]; ring)
+
+/-- **THE FLOOR AT `143/1000`, WITH THE COMPLEMENT LAW.**  The extra hypothesis is
+that the determinantal total of `2 e3 - e2 + 1/2` is not negative.  For a balanced
+real Parseval frame that total is `E3 - Cpp`, which the complement law turns into
+the total of the ten squares `(p of a triple - p of its complement)^2`.  The
+complement law itself is the Jacobi block law read at trace `3/2`, and it is also
+the pair-minor law read against the six slot marginals.
+
+`143/1000` is above the field-agnostic ceiling by `0.0157`, which is `12.3`
+percent, and it is `97.7` percent of the sharp cap `(2 - sqrt 2)/4` of the class. -/
+theorem atomTenthAverage_ge_pair {weight second reading : Fin 6 → Fin 6 → Fin 6 → ℝ}
+    (hclass : AtomTenthFeasible weight second)
+    (hread : AtomSpectralReading weight second reading)
+    (hpair : 0 ≤ atomTripleFamilySum
+      (fun a b c => weight a b c * (2 * weight a b c - second a b c + 1 / 2))) :
+    143 / 1000 ≤ atomTripleFamilySum (fun a b c => weight a b c * reading a b c) := by
+  obtain ⟨hnn, htot, hbox, htenth⟩ := hclass
+  have step : ∀ a b c : Fin 6, a ≠ b → a ≠ c → b ≠ c →
+      weight a b c * atomTenthRungPair (second a b c) (weight a b c)
+        ≤ weight a b c * reading a b c := fun a b c hab hac hbc =>
+    mul_le_mul_of_nonneg_left
+      (atomTenthRungPair_le_of_spectrum (hbox a b c hab hac hbc) (hread a b c hab hac hbc))
+      (hnn a b c)
+  have hlow : atomTripleFamilySum
+      (fun a b c => weight a b c * atomTenthRungPair (second a b c) (weight a b c))
+        ≤ atomTripleFamilySum (fun a b c => weight a b c * reading a b c) := by
+    simp only [atomTripleFamilySum]
+    have s012 := step 0 1 2 (by decide) (by decide) (by decide)
+    have s013 := step 0 1 3 (by decide) (by decide) (by decide)
+    have s014 := step 0 1 4 (by decide) (by decide) (by decide)
+    have s015 := step 0 1 5 (by decide) (by decide) (by decide)
+    have s023 := step 0 2 3 (by decide) (by decide) (by decide)
+    have s024 := step 0 2 4 (by decide) (by decide) (by decide)
+    have s025 := step 0 2 5 (by decide) (by decide) (by decide)
+    have s034 := step 0 3 4 (by decide) (by decide) (by decide)
+    have s035 := step 0 3 5 (by decide) (by decide) (by decide)
+    have s045 := step 0 4 5 (by decide) (by decide) (by decide)
+    have s123 := step 1 2 3 (by decide) (by decide) (by decide)
+    have s124 := step 1 2 4 (by decide) (by decide) (by decide)
+    have s125 := step 1 2 5 (by decide) (by decide) (by decide)
+    have s134 := step 1 3 4 (by decide) (by decide) (by decide)
+    have s135 := step 1 3 5 (by decide) (by decide) (by decide)
+    have s145 := step 1 4 5 (by decide) (by decide) (by decide)
+    have s234 := step 2 3 4 (by decide) (by decide) (by decide)
+    have s235 := step 2 3 5 (by decide) (by decide) (by decide)
+    have s245 := step 2 4 5 (by decide) (by decide) (by decide)
+    have s345 := step 3 4 5 (by decide) (by decide) (by decide)
+    linarith
+  have hexp : atomTripleFamilySum
+      (fun a b c => weight a b c * atomTenthRungPair (second a b c) (weight a b c))
+      = 143 / 1000 * atomTripleFamilySum weight
+        + (69 / 200) * (10 * atomTripleFamilySum (fun a b c => weight a b c ^ 2)
+            - atomTripleFamilySum (fun a b c => weight a b c * second a b c))
+        + (123 / 1000) * atomTripleFamilySum
+            (fun a b c => weight a b c * (2 * weight a b c - second a b c + 1 / 2)) := by
+    simp only [atomTripleFamilySum, atomTenthRungPair]; ring
+  rw [hexp, htot] at hlow
+  linarith
+
+/-- The paired floor is above the field-agnostic ceiling, and below the sharp cap
+of the class. -/
+theorem atomTenthPairFloor_ladder :
+    (3 - Real.sqrt 5) / 6 < 143 / 1000
+      ∧ (143 : ℝ) / 1000 < (2 - Real.sqrt 2) / 4 := by
+  have h5 : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+  have h2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  have n5 : (0 : ℝ) ≤ Real.sqrt 5 := Real.sqrt_nonneg 5
+  have n2 : (0 : ℝ) ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
+  exact ⟨by nlinarith [h5, n5], by nlinarith [h2, n2]⟩
 
 end Gtz

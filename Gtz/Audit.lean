@@ -27461,6 +27461,15 @@ run_cmd do
 #print axioms Gtz.not_atomTenthSelectorSixth
 #print axioms Gtz.not_atomTenthAverage_gt
 #print axioms Gtz.not_atomTenthAverage_sixth
+#print axioms Gtz.atomBalancedSixth_iff
+#print axioms Gtz.not_atomTenthCarrier_sixth
+#print axioms Gtz.not_atomUnsignedTriangle
+#print axioms Gtz.atomTenthRungPair
+#print axioms Gtz.atomTenthRungPair_le_root
+#print axioms Gtz.atomTenthRungPair_le_root'
+#print axioms Gtz.atomTenthRungPair_le_of_spectrum
+#print axioms Gtz.atomTenthAverage_ge_pair
+#print axioms Gtz.atomTenthPairFloor_ladder
 -- The involution block form: the Jacobi block law, the balanced cut
 -- dictionary, the triangle criterion, the path laws and the quartet interface.
 #print axioms Gtz.atomFrame_entry
