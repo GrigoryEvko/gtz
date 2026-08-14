@@ -5191,6 +5191,11 @@ import Gtz.Wave.AtomShadowTransfer
 #print axioms Gtz.gtzWeightedAll_three_of_polarTiltSpread
 #print axioms Gtz.not_polarTiltSelectionSpread_five_three
 #print axioms Gtz.sixSplitDiamondDesign_spares_polarTiltSpread
+#print axioms Gtz.sum_weight_read_smul_atom
+#print axioms Gtz.planeShadowVec_self_pole
+#print axioms Gtz.sum_weight_pairing_smul_planeShadowVec
+#print axioms Gtz.sum_erase_weight_pairing_smul_planeShadowVec
+#print axioms Gtz.sum_sdiff_weight_pairing_smul_planeShadowVec
 
 -- Coverage sweep: every `theorem`/`lemma` enumerated from `Gtz/` that was
 -- absent from the list above.  Gtz/Ties/DiamondTie.lean is deliberately

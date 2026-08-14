@@ -1151,4 +1151,101 @@ theorem sixSplitDiamondDesign_spares_polarTiltSpread :
 
 end SixThree
 
+/-! ## Part 7: the cross moment
+
+Parseval contracted once rebuilds any vector from its weighted readings.  Read
+along the pole it makes the pairing-weighted shadow vectors of ALL labels add
+to zero: the plane first moment of the pole readings vanishes.  This is the
+constraint that couples the shadow directions to the weights, and it pins the
+coupling of a survivor set to the data of its complement. -/
+
+section CrossMoment
+
+variable {size rank : ℕ}
+
+/-- **THE FRAME RECONSTRUCTION.**  The weighted read-and-rebuild of any vector
+is the vector itself.  Parseval contracted once, as a vector identity. -/
+theorem sum_weight_read_smul_atom (design : WeightedDesign size rank)
+    (vec : Fin rank → ℝ) :
+    ∑ c, (design.weight c * (design.atom c ⬝ᵥ vec)) • design.atom c = vec := by
+  funext coord
+  have hread := dotProduct_eq_sum_weight_mul_pair design (Pi.single coord 1) vec
+  rw [single_dotProduct, one_mul] at hread
+  rw [Finset.sum_apply]
+  simp only [Pi.smul_apply, smul_eq_mul]
+  rw [hread]
+  exact Finset.sum_congr rfl fun c _ => by rw [dotProduct_single, mul_one]; ring
+
+/-- The pole casts no shadow on its own plane. -/
+theorem planeShadowVec_self_pole (design : WeightedDesign size rank) {pole : Fin size}
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) :
+    planeShadowVec design pole pole = 0 := by
+  have hne : design.atom pole ⬝ᵥ design.atom pole ≠ 0 := ne_of_gt hpole
+  rw [planeShadowVec, div_self hne, one_smul, sub_self]
+
+/-- **THE CROSS MOMENT VANISHES.**  The pairing-weighted shadow vectors of all
+labels add to the zero vector.  This is the off-diagonal block of Parseval
+read along the pole. -/
+theorem sum_weight_pairing_smul_planeShadowVec (design : WeightedDesign size rank)
+    {pole : Fin size} (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) :
+    ∑ c, (design.weight c * (design.atom c ⬝ᵥ design.atom pole))
+        • planeShadowVec design pole c = 0 := by
+  have hne : design.atom pole ⬝ᵥ design.atom pole ≠ 0 := ne_of_gt hpole
+  have hrecon := sum_weight_read_smul_atom design (design.atom pole)
+  have hmass := sum_weight_polarPairing_sq design pole
+  calc ∑ c, (design.weight c * (design.atom c ⬝ᵥ design.atom pole))
+        • planeShadowVec design pole c
+      = (∑ c, (design.weight c * (design.atom c ⬝ᵥ design.atom pole)) • design.atom c)
+        - (∑ c, design.weight c * (design.atom c ⬝ᵥ design.atom pole)
+            * (design.atom c ⬝ᵥ design.atom pole / (design.atom pole ⬝ᵥ design.atom pole)))
+          • design.atom pole := by
+        rw [Finset.sum_smul, ← Finset.sum_sub_distrib]
+        exact Finset.sum_congr rfl fun c _ => by
+          rw [planeShadowVec, smul_sub, smul_smul]
+    _ = 0 := by
+        rw [hrecon]
+        have hsum : ∑ c, design.weight c * (design.atom c ⬝ᵥ design.atom pole)
+            * (design.atom c ⬝ᵥ design.atom pole / (design.atom pole ⬝ᵥ design.atom pole))
+            = 1 := by
+          have hshape : ∀ c, design.weight c * (design.atom c ⬝ᵥ design.atom pole)
+              * (design.atom c ⬝ᵥ design.atom pole / (design.atom pole ⬝ᵥ design.atom pole))
+              = design.weight c * (design.atom c ⬝ᵥ design.atom pole) ^ 2
+                / (design.atom pole ⬝ᵥ design.atom pole) := fun c => by ring
+          rw [Finset.sum_congr rfl fun c _ => hshape c, ← Finset.sum_div, hmass,
+            div_self hne]
+        rw [hsum, one_smul, sub_self]
+
+/-- The non-pole cross moment also vanishes, because the pole's own term is
+the zero vector. -/
+theorem sum_erase_weight_pairing_smul_planeShadowVec (design : WeightedDesign size rank)
+    {pole : Fin size} (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) :
+    ∑ c ∈ Finset.univ.erase pole,
+        (design.weight c * (design.atom c ⬝ᵥ design.atom pole))
+          • planeShadowVec design pole c = 0 := by
+  have hall := sum_weight_pairing_smul_planeShadowVec design hpole
+  have hpoleTerm : (design.weight pole * (design.atom pole ⬝ᵥ design.atom pole))
+      • planeShadowVec design pole pole = (0 : Fin rank → ℝ) := by
+    rw [planeShadowVec_self_pole design hpole, smul_zero]
+  rw [← Finset.add_sum_erase _ _ (Finset.mem_univ pole), hpoleTerm, zero_add] at hall
+  exact hall
+
+/-- **THE SURVIVORS READ THE DELETED SET.**  On every set of non-pole labels,
+the weighted coupling of the survivors is MINUS the weighted coupling of the
+set.  At the deciding cell this pins the coupling of the survivor triple to
+the deleted pair's own data. -/
+theorem sum_sdiff_weight_pairing_smul_planeShadowVec (design : WeightedDesign size rank)
+    {pole : Fin size} (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole)
+    {deleted : Finset (Fin size)} (hsub : deleted ⊆ Finset.univ.erase pole) :
+    ∑ c ∈ Finset.univ.erase pole \ deleted,
+        (design.weight c * (design.atom c ⬝ᵥ design.atom pole))
+          • planeShadowVec design pole c
+      = - ∑ c ∈ deleted,
+          (design.weight c * (design.atom c ⬝ᵥ design.atom pole))
+            • planeShadowVec design pole c := by
+  have herase := sum_erase_weight_pairing_smul_planeShadowVec design hpole
+  rw [← Finset.sum_sdiff hsub] at herase
+  exact eq_neg_of_add_eq_zero_left herase
+
+end CrossMoment
+
 end Gtz
