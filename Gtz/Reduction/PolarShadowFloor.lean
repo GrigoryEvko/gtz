@@ -226,6 +226,31 @@ theorem exists_erase_pair_sum_ge [DecidableEq ι] (s : Finset ι) (value : ι �
   rw [Finset.sum_erase_eq_sub hsecond, Finset.sum_erase_eq_sub hsmall] at *
   linarith
 
+/-- **THE LAGRANGE IDENTITY FOR SUMS.**  Twice the Cauchy-Schwarz defect of two
+families is the double sum of their squared crossed differences.  Division free,
+and the same expansion as the weighted Cauchy-Schwarz above. -/
+theorem sum_sq_mul_sub_sq_sum_mul (s : Finset ι) (left right : ι → ℝ) :
+    2 * ((∑ c ∈ s, left c ^ 2) * (∑ c ∈ s, right c ^ 2)
+        - (∑ c ∈ s, left c * right c) ^ 2)
+      = ∑ c ∈ s, ∑ d ∈ s, (left c * right d - left d * right c) ^ 2 := by
+  have hinner : ∀ c ∈ s, ∑ d ∈ s, (left c * right d - left d * right c) ^ 2
+      = (left c ^ 2) * (∑ d ∈ s, right d ^ 2)
+        - (left c * right c) * (2 * ∑ d ∈ s, left d * right d)
+        + (right c ^ 2) * (∑ d ∈ s, left d ^ 2) := by
+    intro c _
+    calc ∑ d ∈ s, (left c * right d - left d * right c) ^ 2
+        = ∑ d ∈ s, ((left c ^ 2) * (right d ^ 2)
+            - (left c * right c) * (2 * (left d * right d))
+            + (right c ^ 2) * (left d ^ 2)) := Finset.sum_congr rfl fun d _ => by ring
+      _ = (left c ^ 2) * (∑ d ∈ s, right d ^ 2)
+            - (left c * right c) * (2 * ∑ d ∈ s, left d * right d)
+            + (right c ^ 2) * (∑ d ∈ s, left d ^ 2) := by
+          rw [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum,
+            ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum]
+  rw [Finset.sum_congr rfl hinner, Finset.sum_add_distrib, Finset.sum_sub_distrib,
+    ← Finset.sum_mul, ← Finset.sum_mul, ← Finset.sum_mul]
+  ring
+
 end Pigeonhole
 
 /-! ## Part 2: the Parseval caps
@@ -1153,6 +1178,401 @@ theorem thresholdDegenerateArm_of_polarTiltFloor (rank : ℕ) (hrank : 2 ≤ ran
   degenerateArmAt_of_polarTiltFloor hrank hpredecessor hroom htilt
 
 end FloorBundle
+
+/-! ## Part 11: the cover bounds are free
+
+The direct plane cover of `Gtz.polarPlaneCover_of_traceGramDet` runs from the two
+arithmetic bounds to the cover.  This part runs the CONVERSE, and it needs no
+eigenvalue and no plane coordinates.  At an anchor of positive shadow the plane
+component and its quarter turn are an ORTHOGONAL frame of the pole plane, thus
+reading the cover at every combination of the two frame vectors gives a
+nonnegative quadratic form in two variables.  Its diagonal entries give the trace
+bound and its discriminant gives the plane Gram bound.
+
+Two identities carry the step.  The landed plane Lagrange law sums to
+`leverage * shadow anchor * shadow trace = leverage * A + C`, and the landed
+rotation law together with the Lagrange identity for sums gives
+`leverage * shadow anchor ^ 2 * gramDet = A * C - B ^ 2`, where `A`, `B` and `C`
+are the frame contractions of the survivor set.  Both are verified at residual
+zero in exact rational arithmetic over 60 designs, 6 poles and 10 triples.
+
+The consequence is `Gtz.exists_coverTriple_of_primitive`: at every primitive
+design with an overshooting pole SOME triple clears BOTH cover bounds with a
+strictly positive excess.  The landed polar covering of the predecessor rank has
+two labels, and a third one always exists.  Thus the arithmetic selection target
+keeps only the pole surplus and the arithmetic test as open clauses. -/
+
+section CoverConverse
+
+variable {m : ℕ}
+
+/-- **THE FRAME PROBE.**  A combination of the plane component of the anchor and
+of its quarter turn.  The two are orthogonal and they span the pole plane. -/
+noncomputable def polarFrameProbe (design : WeightedDesign m 3) (pole anchor : Fin m)
+    (alpha beta : ℝ) : Fin 3 → ℝ :=
+  alpha • planeShadowVec design pole anchor + beta • polarTurnVec design pole anchor
+
+/-- The frame probe is a polar probe. -/
+theorem polarFrameProbe_dotProduct_pole (design : WeightedDesign m 3) {pole : Fin m}
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) (anchor : Fin m) (alpha beta : ℝ) :
+    polarFrameProbe design pole anchor alpha beta ⬝ᵥ design.atom pole = 0 := by
+  rw [polarFrameProbe, add_dotProduct, smul_dotProduct, smul_dotProduct, smul_eq_mul,
+    smul_eq_mul, planeShadowVec_dotProduct_pole design hpole anchor,
+    polarTurnVec_dotProduct_pole design pole anchor, mul_zero, mul_zero, add_zero]
+
+/-- An atom reads the frame probe through the shadow pairing and the anchored
+bracket. -/
+theorem atom_dotProduct_polarFrameProbe (design : WeightedDesign m 3) (pole anchor label : Fin m)
+    (alpha beta : ℝ) :
+    design.atom label ⬝ᵥ polarFrameProbe design pole anchor alpha beta
+      = alpha * planeShadowPairing design pole anchor label
+        + beta * tripleBracket (design.atom pole) (design.atom anchor) (design.atom label) := by
+  rw [polarFrameProbe, dotProduct_add, dotProduct_smul, dotProduct_smul, smul_eq_mul,
+    smul_eq_mul, atom_dotProduct_planeShadowVec design pole label anchor,
+    planeShadowPairing_comm design pole label anchor,
+    dotProduct_comm (design.atom label) (polarTurnVec design pole anchor),
+    polarTurnVec_dotProduct_atom design pole anchor label]
+
+/-- The frame is orthogonal, thus the energy of the frame probe is the shadow of
+the anchor scaled by the two coefficients. -/
+theorem polarFrameProbe_dotProduct_self (design : WeightedDesign m 3) {pole : Fin m}
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) (anchor : Fin m) (alpha beta : ℝ) :
+    polarFrameProbe design pole anchor alpha beta
+        ⬝ᵥ polarFrameProbe design pole anchor alpha beta
+      = (alpha ^ 2 + beta ^ 2 * (design.atom pole ⬝ᵥ design.atom pole))
+        * planeShadowSq design pole anchor := by
+  have hturnPole : polarTurnVec design pole anchor ⬝ᵥ design.atom pole = 0 :=
+    polarTurnVec_dotProduct_pole design pole anchor
+  have hcross : planeShadowVec design pole anchor ⬝ᵥ polarTurnVec design pole anchor = 0 := by
+    rw [planeShadowVec_dotProduct_polar design pole anchor hturnPole,
+      dotProduct_comm (design.atom anchor) (polarTurnVec design pole anchor),
+      polarTurnVec_dotProduct_own design pole anchor]
+  have hcrossSymm : polarTurnVec design pole anchor ⬝ᵥ planeShadowVec design pole anchor = 0 := by
+    rw [dotProduct_comm]; exact hcross
+  have hturnSelf : polarTurnVec design pole anchor ⬝ᵥ polarTurnVec design pole anchor
+      = (design.atom pole ⬝ᵥ design.atom pole) * planeShadowSq design pole anchor := by
+    rw [polarTurnVec_dotProduct_pair design hpole anchor anchor, planeShadowPairing_self]
+  rw [polarFrameProbe]
+  simp only [add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul, smul_eq_mul]
+  rw [planeShadowVec_dotProduct_self design hpole anchor, hcross, hcrossSymm, hturnSelf]
+  ring
+
+/-- The frame contraction of the shadow pairings. -/
+noncomputable def polarFramePairSq (design : WeightedDesign m 3) (pole anchor : Fin m)
+    (selected : Finset (Fin m)) : ℝ :=
+  ∑ d ∈ selected, planeShadowPairing design pole anchor d ^ 2
+
+/-- The mixed frame contraction. -/
+noncomputable def polarFrameCross (design : WeightedDesign m 3) (pole anchor : Fin m)
+    (selected : Finset (Fin m)) : ℝ :=
+  ∑ d ∈ selected, planeShadowPairing design pole anchor d
+    * tripleBracket (design.atom pole) (design.atom anchor) (design.atom d)
+
+/-- The frame contraction of the anchored brackets. -/
+noncomputable def polarFrameBracketSq (design : WeightedDesign m 3) (pole anchor : Fin m)
+    (selected : Finset (Fin m)) : ℝ :=
+  ∑ d ∈ selected, tripleBracket (design.atom pole) (design.atom anchor) (design.atom d) ^ 2
+
+/-- **THE FRAME FORM IS NONNEGATIVE.**  The cover read at every frame probe is a
+nonnegative quadratic form in the two frame coefficients. -/
+theorem polarFrameForm_nonneg (design : WeightedDesign m 3) {pole : Fin m}
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) (anchor : Fin m)
+    (selected : Finset (Fin m)) {excess : ℝ}
+    (hcover : ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ design.atom pole = 0 →
+      (1 + excess) * (probe ⬝ᵥ probe) ≤ ∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2)
+    (alpha beta : ℝ) :
+    0 ≤ alpha ^ 2 * (polarFramePairSq design pole anchor selected
+          - (1 + excess) * planeShadowSq design pole anchor)
+        + 2 * alpha * beta * polarFrameCross design pole anchor selected
+      + beta ^ 2 * (polarFrameBracketSq design pole anchor selected
+          - (1 + excess) * (design.atom pole ⬝ᵥ design.atom pole)
+            * planeShadowSq design pole anchor) := by
+  have hread := hcover (polarFrameProbe design pole anchor alpha beta)
+    (polarFrameProbe_dotProduct_pole design hpole anchor alpha beta)
+  rw [polarFrameProbe_dotProduct_self design hpole anchor alpha beta] at hread
+  have hexpand : ∑ c ∈ selected,
+      (design.atom c ⬝ᵥ polarFrameProbe design pole anchor alpha beta) ^ 2
+      = alpha ^ 2 * polarFramePairSq design pole anchor selected
+        + 2 * alpha * beta * polarFrameCross design pole anchor selected
+        + beta ^ 2 * polarFrameBracketSq design pole anchor selected := by
+    rw [polarFramePairSq, polarFrameCross, polarFrameBracketSq, Finset.mul_sum,
+      Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun d _ => by
+      rw [atom_dotProduct_polarFrameProbe design pole anchor d alpha beta]
+      ring
+  rw [hexpand] at hread
+  linarith [hread]
+
+/-- **THE TRACE IDENTITY OF THE FRAME.**  The landed plane Lagrange law, summed
+over the survivors. -/
+theorem polarFrame_trace_identity (design : WeightedDesign m 3) {pole : Fin m}
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) (anchor : Fin m)
+    (selected : Finset (Fin m)) :
+    (design.atom pole ⬝ᵥ design.atom pole) * planeShadowSq design pole anchor
+        * (∑ c ∈ selected, planeShadowSq design pole c)
+      = (design.atom pole ⬝ᵥ design.atom pole) * polarFramePairSq design pole anchor selected
+        + polarFrameBracketSq design pole anchor selected := by
+  have hstep : ∀ d ∈ selected,
+      (design.atom pole ⬝ᵥ design.atom pole) * planeShadowSq design pole anchor
+          * planeShadowSq design pole d
+        = (design.atom pole ⬝ᵥ design.atom pole) * planeShadowPairing design pole anchor d ^ 2
+          + tripleBracket (design.atom pole) (design.atom anchor) (design.atom d) ^ 2 := by
+    intro d _
+    have hlag := tripleBracket_sq_eq_planeShadow design hpole anchor d
+    linarith [hlag]
+  calc (design.atom pole ⬝ᵥ design.atom pole) * planeShadowSq design pole anchor
+          * (∑ c ∈ selected, planeShadowSq design pole c)
+      = ∑ d ∈ selected, ((design.atom pole ⬝ᵥ design.atom pole)
+          * planeShadowSq design pole anchor * planeShadowSq design pole d) := by
+        rw [Finset.mul_sum]
+    _ = ∑ d ∈ selected, ((design.atom pole ⬝ᵥ design.atom pole)
+          * planeShadowPairing design pole anchor d ^ 2
+          + tripleBracket (design.atom pole) (design.atom anchor) (design.atom d) ^ 2) :=
+        Finset.sum_congr rfl hstep
+    _ = (design.atom pole ⬝ᵥ design.atom pole)
+          * polarFramePairSq design pole anchor selected
+        + polarFrameBracketSq design pole anchor selected := by
+        rw [Finset.sum_add_distrib, polarFramePairSq, polarFrameBracketSq, Finset.mul_sum]
+
+/-- **THE GRAM IDENTITY OF THE FRAME.**  The rotation law makes every crossed
+difference of the frame contractions the anchored bracket of the pair, scaled by
+the shadow of the anchor.  With the Lagrange identity for sums the plane Gram
+determinant appears. -/
+theorem polarFrame_gram_identity (design : WeightedDesign m 3) {pole : Fin m}
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) (anchor : Fin m)
+    (selected : Finset (Fin m)) :
+    (design.atom pole ⬝ᵥ design.atom pole) * planeShadowSq design pole anchor ^ 2
+        * polarPlaneGramDet design pole selected
+      = polarFramePairSq design pole anchor selected
+          * polarFrameBracketSq design pole anchor selected
+        - polarFrameCross design pole anchor selected ^ 2 := by
+  have hlagrange := sum_sq_mul_sub_sq_sum_mul selected
+    (fun d => planeShadowPairing design pole anchor d)
+    (fun d => tripleBracket (design.atom pole) (design.atom anchor) (design.atom d))
+  have hterm : ∀ c ∈ selected, ∀ d ∈ selected,
+      (planeShadowPairing design pole anchor c
+            * tripleBracket (design.atom pole) (design.atom anchor) (design.atom d)
+          - planeShadowPairing design pole anchor d
+            * tripleBracket (design.atom pole) (design.atom anchor) (design.atom c)) ^ 2
+        = planeShadowSq design pole anchor ^ 2
+          * ((design.atom pole ⬝ᵥ design.atom pole)
+            * (planeShadowSq design pole c * planeShadowSq design pole d
+              - planeShadowPairing design pole c d ^ 2)) := by
+    intro c _ d _
+    have hrot := tripleBracket_shadow_transport design hpole c anchor d
+    have hcomm : planeShadowPairing design pole c anchor
+        = planeShadowPairing design pole anchor c :=
+      planeShadowPairing_comm design pole c anchor
+    have hswap : tripleBracket (design.atom pole) (design.atom c) (design.atom anchor)
+        = -tripleBracket (design.atom pole) (design.atom anchor) (design.atom c) :=
+      tripleBracket_swapRight _ _ _
+    rw [hcomm, hswap] at hrot
+    have hcomm2 : planeShadowPairing design pole anchor d
+        = planeShadowPairing design pole d anchor :=
+      planeShadowPairing_comm design pole anchor d
+    have hlag := tripleBracket_sq_eq_planeShadow design hpole c d
+    have hstep : planeShadowPairing design pole anchor c
+          * tripleBracket (design.atom pole) (design.atom anchor) (design.atom d)
+        - planeShadowPairing design pole anchor d
+          * tripleBracket (design.atom pole) (design.atom anchor) (design.atom c)
+      = tripleBracket (design.atom pole) (design.atom c) (design.atom d)
+        * planeShadowSq design pole anchor := by
+      rw [hcomm2] at hrot ⊢
+      linarith [hrot]
+    rw [hstep, ← hlag]
+    ring
+  rw [polarPlaneGramDet, polarFramePairSq, polarFrameBracketSq, polarFrameCross]
+  have hdouble : ∑ c ∈ selected, ∑ d ∈ selected,
+      (planeShadowPairing design pole anchor c
+            * tripleBracket (design.atom pole) (design.atom anchor) (design.atom d)
+          - planeShadowPairing design pole anchor d
+            * tripleBracket (design.atom pole) (design.atom anchor) (design.atom c)) ^ 2
+      = ∑ c ∈ selected, ∑ d ∈ selected,
+          (planeShadowSq design pole anchor ^ 2 * (design.atom pole ⬝ᵥ design.atom pole))
+            * (planeShadowSq design pole c * planeShadowSq design pole d
+              - planeShadowPairing design pole c d ^ 2) :=
+    Finset.sum_congr rfl fun c hc => Finset.sum_congr rfl fun d hd => by
+      rw [hterm c hc d hd]; ring
+  have hpull : ∑ c ∈ selected, ∑ d ∈ selected,
+      (planeShadowSq design pole anchor ^ 2 * (design.atom pole ⬝ᵥ design.atom pole))
+          * (planeShadowSq design pole c * planeShadowSq design pole d
+            - planeShadowPairing design pole c d ^ 2)
+      = (planeShadowSq design pole anchor ^ 2 * (design.atom pole ⬝ᵥ design.atom pole))
+        * ∑ c ∈ selected, ∑ d ∈ selected,
+            (planeShadowSq design pole c * planeShadowSq design pole d
+              - planeShadowPairing design pole c d ^ 2) := by
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun c _ => by rw [Finset.mul_sum]
+  rw [hdouble, hpull] at hlagrange
+  linarith [hlagrange]
+
+/-- **THE DISCRIMINANT OF THE FRAME FORM.**  A nonnegative quadratic form in two
+variables has a nonpositive discriminant.  The degenerate case is handled by
+driving the linear coefficient. -/
+theorem polarFrame_discriminant (design : WeightedDesign m 3) {pole : Fin m}
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) (anchor : Fin m)
+    (selected : Finset (Fin m)) {excess : ℝ}
+    (hcover : ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ design.atom pole = 0 →
+      (1 + excess) * (probe ⬝ᵥ probe) ≤ ∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2) :
+    polarFrameCross design pole anchor selected ^ 2
+      ≤ (polarFramePairSq design pole anchor selected
+            - (1 + excess) * planeShadowSq design pole anchor)
+        * (polarFrameBracketSq design pole anchor selected
+            - (1 + excess) * (design.atom pole ⬝ᵥ design.atom pole)
+              * planeShadowSq design pole anchor) := by
+  set diagOne := polarFramePairSq design pole anchor selected
+    - (1 + excess) * planeShadowSq design pole anchor with hdiagOne
+  set diagTwo := polarFrameBracketSq design pole anchor selected
+    - (1 + excess) * (design.atom pole ⬝ᵥ design.atom pole)
+      * planeShadowSq design pole anchor with hdiagTwo
+  set cross := polarFrameCross design pole anchor selected with hcross
+  have hform := polarFrameForm_nonneg design hpole anchor selected hcover
+  have hone : 0 ≤ diagOne := by have := hform 1 0; nlinarith [this]
+  rcases eq_or_lt_of_le hone with hzero | hposOne
+  · have hcrossZero : cross = 0 := by
+      by_contra hne
+      have hbad := hform (-(diagTwo + 1) / (2 * cross)) 1
+      have hstep : (-(diagTwo + 1) / (2 * cross)) ^ 2 * diagOne = 0 := by
+        rw [← hzero]; ring
+      rw [hstep] at hbad
+      have hsimp : 2 * (-(diagTwo + 1) / (2 * cross)) * 1 * cross = -(diagTwo + 1) := by
+        field_simp
+      rw [hsimp] at hbad
+      nlinarith [hbad]
+    rw [hcrossZero, ← hzero]
+    norm_num
+  · have hkey := hform (-cross) diagOne
+    nlinarith [hkey, hposOne]
+
+/-- **THE TRACE BOUND IS FREE UNDER A COVER.**  Reading the cover at the two
+frame vectors and adding gives the shadow trace bound of the arithmetic kill. -/
+theorem sum_planeShadowSq_ge_of_polarCover (design : WeightedDesign m 3) {pole : Fin m}
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) {anchor : Fin m}
+    (hanchor : 0 < planeShadowSq design pole anchor) (selected : Finset (Fin m)) {excess : ℝ}
+    (hcover : ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ design.atom pole = 0 →
+      (1 + excess) * (probe ⬝ᵥ probe) ≤ ∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2) :
+    2 * (1 + excess) ≤ ∑ c ∈ selected, planeShadowSq design pole c := by
+  have hform := polarFrameForm_nonneg design hpole anchor selected hcover
+  have hone : 0 ≤ polarFramePairSq design pole anchor selected
+      - (1 + excess) * planeShadowSq design pole anchor := by
+    have := hform 1 0; nlinarith [this]
+  have htwo : 0 ≤ polarFrameBracketSq design pole anchor selected
+      - (1 + excess) * (design.atom pole ⬝ᵥ design.atom pole)
+        * planeShadowSq design pole anchor := by
+    have := hform 0 1; nlinarith [this]
+  have hid := polarFrame_trace_identity design hpole anchor selected
+  have hLsh : 0 < (design.atom pole ⬝ᵥ design.atom pole) * planeShadowSq design pole anchor :=
+    mul_pos hpole hanchor
+  have hAscaled : (design.atom pole ⬝ᵥ design.atom pole)
+        * ((1 + excess) * planeShadowSq design pole anchor)
+      ≤ (design.atom pole ⬝ᵥ design.atom pole)
+        * polarFramePairSq design pole anchor selected :=
+    mul_le_mul_of_nonneg_left (by linarith [hone]) hpole.le
+  have hchain : 2 * (1 + excess) * ((design.atom pole ⬝ᵥ design.atom pole)
+        * planeShadowSq design pole anchor)
+      ≤ (∑ c ∈ selected, planeShadowSq design pole c)
+        * ((design.atom pole ⬝ᵥ design.atom pole) * planeShadowSq design pole anchor) := by
+    have hrw : (∑ c ∈ selected, planeShadowSq design pole c)
+        * ((design.atom pole ⬝ᵥ design.atom pole) * planeShadowSq design pole anchor)
+        = (design.atom pole ⬝ᵥ design.atom pole) * planeShadowSq design pole anchor
+          * (∑ c ∈ selected, planeShadowSq design pole c) := by ring
+    rw [hrw, hid]
+    linarith [hAscaled, htwo]
+  exact le_of_mul_le_mul_right hchain hLsh
+
+/-- **THE PLANE GRAM BOUND IS FREE UNDER A COVER.**  The discriminant of the
+frame form is the plane Gram bound of the arithmetic kill. -/
+theorem polarPlaneGramDet_ge_of_polarCover (design : WeightedDesign m 3) {pole : Fin m}
+    (hpole : 0 < design.atom pole ⬝ᵥ design.atom pole) {anchor : Fin m}
+    (hanchor : 0 < planeShadowSq design pole anchor) (selected : Finset (Fin m)) {excess : ℝ}
+    (hcover : ∀ probe : Fin 3 → ℝ, probe ⬝ᵥ design.atom pole = 0 →
+      (1 + excess) * (probe ⬝ᵥ probe) ≤ ∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2) :
+    (1 + excess) * (∑ c ∈ selected, planeShadowSq design pole c) - (1 + excess) ^ 2
+      ≤ polarPlaneGramDet design pole selected := by
+  have hdisc := polarFrame_discriminant design hpole anchor selected hcover
+  have htrace := polarFrame_trace_identity design hpole anchor selected
+  have hgram := polarFrame_gram_identity design hpole anchor selected
+  have hscale : 0 < (design.atom pole ⬝ᵥ design.atom pole)
+      * planeShadowSq design pole anchor ^ 2 := by positivity
+  have hident : ((design.atom pole ⬝ᵥ design.atom pole) * planeShadowSq design pole anchor ^ 2)
+      * (polarPlaneGramDet design pole selected
+          - (1 + excess) * (∑ c ∈ selected, planeShadowSq design pole c) + (1 + excess) ^ 2)
+      = (polarFramePairSq design pole anchor selected
+            - (1 + excess) * planeShadowSq design pole anchor)
+          * (polarFrameBracketSq design pole anchor selected
+            - (1 + excess) * (design.atom pole ⬝ᵥ design.atom pole)
+              * planeShadowSq design pole anchor)
+        - polarFrameCross design pole anchor selected ^ 2 := by
+    linear_combination hgram - (1 + excess) * planeShadowSq design pole anchor * htrace
+  have hnonneg : 0 ≤ ((design.atom pole ⬝ᵥ design.atom pole)
+        * planeShadowSq design pole anchor ^ 2)
+      * (polarPlaneGramDet design pole selected
+          - (1 + excess) * (∑ c ∈ selected, planeShadowSq design pole c) + (1 + excess) ^ 2) := by
+    rw [hident]
+    linarith [hdisc]
+  rcases le_or_gt 0 (polarPlaneGramDet design pole selected
+      - (1 + excess) * (∑ c ∈ selected, planeShadowSq design pole c) + (1 + excess) ^ 2) with
+    hgoal | hgoal
+  · linarith
+  · exact absurd hnonneg (not_le.mpr (mul_neg_of_pos_of_neg hscale hgoal))
+
+end CoverConverse
+
+/-! ## Part 12: the covering triple, and the two open clauses
+
+The landed polar covering of the predecessor rank has `rank - 1` labels.  At
+rank three a third label always exists, and adding it keeps the cover.  With
+Part 11 the resulting triple clears BOTH cover bounds, thus the arithmetic
+selection target keeps only the pole surplus and the arithmetic test. -/
+
+section CoverTriple
+
+/-- **A COVERING TRIPLE EXISTS AND IT CLEARS BOTH COVER BOUNDS.**  No tie is
+spent, only primitivity, an overshooting pole and the predecessor rank. -/
+theorem exists_coverTriple_of_primitive (design : WeightedDesign 6 3)
+    (hprimitive : IsPrimitiveDesign design) {pole : Fin 6}
+    (hlong : 1 < design.atom pole ⬝ᵥ design.atom pole) :
+    ∃ (selected : Finset (Fin 6)) (excess : ℝ), selected.card = 3 ∧ pole ∉ selected
+      ∧ 0 < excess
+      ∧ (∀ probe : Fin 3 → ℝ, probe ⬝ᵥ design.atom pole = 0 →
+          (1 + excess) * (probe ⬝ᵥ probe) ≤ ∑ c ∈ selected, (design.atom c ⬝ᵥ probe) ^ 2)
+      ∧ 2 * (1 + excess) ≤ ∑ c ∈ selected, planeShadowSq design pole c
+      ∧ (1 + excess) * (∑ c ∈ selected, planeShadowSq design pole c) - (1 + excess) ^ 2
+          ≤ polarPlaneGramDet design pole selected := by
+  classical
+  have hpole : 0 < design.atom pole ⬝ᵥ design.atom pole := lt_trans zero_lt_one hlong
+  obtain ⟨covering, margin, hmarginPos, hcard, hnotMem, hcover⟩ :=
+    exists_polarCover_margin (by norm_num) gtz_rank_two design hlong
+  have hcardInsert : (insert pole covering).card = 3 := by
+    rw [Finset.card_insert_of_notMem hnotMem, hcard]
+  have hfree : ((insert pole covering) : Finset (Fin 6))ᶜ.Nonempty := by
+    rw [← Finset.card_pos, Finset.card_compl, hcardInsert]
+    simp
+  obtain ⟨third, hthird⟩ := hfree
+  rw [Finset.mem_compl, Finset.mem_insert, not_or] at hthird
+  refine ⟨insert third covering, margin, ?_, ?_, hmarginPos, ?_, ?_, ?_⟩
+  · rw [Finset.card_insert_of_notMem hthird.2, hcard]
+  · rw [Finset.mem_insert, not_or]
+    exact ⟨fun heq => hthird.1 heq.symm, hnotMem⟩
+  all_goals
+    have hsub : covering ⊆ insert third covering := Finset.subset_insert third covering
+  · intro probe hprobe
+    refine le_trans (hcover probe hprobe) ?_
+    exact Finset.sum_le_sum_of_subset_of_nonneg hsub fun c _ _ => sq_nonneg _
+  · refine sum_planeShadowSq_ge_of_polarCover design hpole
+      (planeShadowSq_pos_of_primitive design hprimitive hpole hthird.1)
+      (insert third covering) (excess := margin) ?_
+    intro probe hprobe
+    refine le_trans (hcover probe hprobe) ?_
+    exact Finset.sum_le_sum_of_subset_of_nonneg hsub fun c _ _ => sq_nonneg _
+  · refine polarPlaneGramDet_ge_of_polarCover design hpole
+      (planeShadowSq_pos_of_primitive design hprimitive hpole hthird.1)
+      (insert third covering) (excess := margin) ?_
+    intro probe hprobe
+    refine le_trans (hcover probe hprobe) ?_
+    exact Finset.sum_le_sum_of_subset_of_nonneg hsub fun c _ _ => sq_nonneg _
+
+end CoverTriple
 
 /-! ## Part 11: the deciding cell and the calibration of the ninth narrowing -/
 
