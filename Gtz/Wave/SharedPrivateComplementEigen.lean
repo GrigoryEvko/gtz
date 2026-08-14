@@ -675,6 +675,103 @@ theorem captureDiag_eq_of_purePairAtom_of_two_outerFull
   rw [hP] at hQ
   linarith
 
+/-- **THE CORNER FROM TWO OUTER ATOMS.**  Two atoms live exactly outside
+the pair, with different captured diagonals, read the corner's trace and
+determinant with NO pure atom at all.  This is the law of the surviving
+identical shape at basis count six. -/
+theorem corner_of_two_outerFull (data : SharedPrivateData crux)
+    {slotOne slotTwo : Fin data.basisCount} (hne : slotOne ≠ slotTwo)
+    {atomP atomQ : Fin 6}
+    (hcapture : (chartObjective (chartPointOfDesign crux.design)
+        + (chartPointOfDesign crux.design).weight atomP)
+      ≠ chartObjective (chartPointOfDesign crux.design)
+        + (chartPointOfDesign crux.design).weight atomQ)
+    (hdeadPone : data.tightDir (data.basisLabel slotOne) atomP = 0)
+    (hdeadPtwo : data.tightDir (data.basisLabel slotTwo) atomP = 0)
+    (hlivePfull : ∀ slot : Fin data.basisCount, slot ≠ slotOne → slot ≠ slotTwo →
+      atomP ∈ datumTightSupport data.tightDir (data.basisLabel slot))
+    (hdeadQone : data.tightDir (data.basisLabel slotOne) atomQ = 0)
+    (hdeadQtwo : data.tightDir (data.basisLabel slotTwo) atomQ = 0)
+    (hliveQfull : ∀ slot : Fin data.basisCount, slot ≠ slotOne → slot ≠ slotTwo →
+      atomQ ∈ datumTightSupport data.tightDir (data.basisLabel slot))
+    {slotFree : Fin data.basisCount} (hfreeOne : slotFree ≠ slotOne)
+    (hfreeTwo : slotFree ≠ slotTwo) :
+    data.coeff slotOne slotOne + data.coeff slotTwo slotTwo
+        = (1 - (chartObjective (chartPointOfDesign crux.design)
+            + (chartPointOfDesign crux.design).weight atomP))
+          + (1 - (chartObjective (chartPointOfDesign crux.design)
+            + (chartPointOfDesign crux.design).weight atomQ))
+      ∧ data.coeff slotOne slotOne * data.coeff slotTwo slotTwo
+          - data.coeff slotOne slotTwo * data.coeff slotTwo slotOne
+        = (1 - (chartObjective (chartPointOfDesign crux.design)
+            + (chartPointOfDesign crux.design).weight atomP))
+          * (1 - (chartObjective (chartPointOfDesign crux.design)
+            + (chartPointOfDesign crux.design).weight atomQ)) := by
+  have hrootP := data.charRoot_of_dead_pair hne hdeadPone hdeadPtwo hlivePfull
+    hfreeOne hfreeTwo
+  have hrootQ := data.charRoot_of_dead_pair hne hdeadQone hdeadQtwo hliveQfull
+    hfreeOne hfreeTwo
+  have hsep : (1 - (chartObjective (chartPointOfDesign crux.design)
+        + (chartPointOfDesign crux.design).weight atomP))
+      - (1 - (chartObjective (chartPointOfDesign crux.design)
+        + (chartPointOfDesign crux.design).weight atomQ)) ≠ 0 := by
+    intro hzero
+    exact hcapture (by linarith)
+  have hdiff : ((1 - (chartObjective (chartPointOfDesign crux.design)
+          + (chartPointOfDesign crux.design).weight atomP))
+        - (1 - (chartObjective (chartPointOfDesign crux.design)
+          + (chartPointOfDesign crux.design).weight atomQ)))
+      * ((1 - (chartObjective (chartPointOfDesign crux.design)
+            + (chartPointOfDesign crux.design).weight atomP))
+          + (1 - (chartObjective (chartPointOfDesign crux.design)
+            + (chartPointOfDesign crux.design).weight atomQ))
+        - (data.coeff slotOne slotOne + data.coeff slotTwo slotTwo)) = 0 := by
+    linear_combination hrootP - hrootQ
+  have htrace : data.coeff slotOne slotOne + data.coeff slotTwo slotTwo
+      = (1 - (chartObjective (chartPointOfDesign crux.design)
+          + (chartPointOfDesign crux.design).weight atomP))
+        + (1 - (chartObjective (chartPointOfDesign crux.design)
+          + (chartPointOfDesign crux.design).weight atomQ)) := by
+    have := (mul_eq_zero.mp hdiff).resolve_left hsep
+    linarith
+  refine ⟨htrace, ?_⟩
+  linear_combination hrootP + (1 - (chartObjective (chartPointOfDesign crux.design)
+    + (chartPointOfDesign crux.design).weight atomP)) * htrace
+
+/-- **THE SINGLE DEAD PAIR AGAINST A PURE ATOM AND AN OUTER ATOM.**  Two
+atoms dead at one slot of the pair each read the two corner diagonals as
+`1 - d`, thus the trace is `2 - dR1 - dR2`.  A pure atom and an outer
+atom read the same trace as `dW + 1 - dQ`.  The two readings put three
+captured diagonals above one. -/
+theorem false_of_purePairAtom_of_outerFull_of_singleDead_pair
+    (data : SharedPrivateData crux)
+    {slotOne slotTwo : Fin data.basisCount} (hne : slotOne ≠ slotTwo)
+    {atomW atomQ atomR atomT : Fin 6} (hWQ : atomW ≠ atomQ)
+    (hWR : atomW ≠ atomR) (hWT : atomW ≠ atomT) (hRT : atomR ≠ atomT)
+    (hblockOne : atomW ∈ datumTightSupport data.tightDir (data.basisLabel slotOne))
+    (hblockTwo : atomW ∈ datumTightSupport data.tightDir (data.basisLabel slotTwo))
+    (hpure : ∀ other : Fin data.basisCount, other ≠ slotOne → other ≠ slotTwo →
+      data.tightDir (data.basisLabel other) atomW = 0)
+    (hdeadQone : data.tightDir (data.basisLabel slotOne) atomQ = 0)
+    (hdeadQtwo : data.tightDir (data.basisLabel slotTwo) atomQ = 0)
+    (hliveQfull : ∀ slot : Fin data.basisCount, slot ≠ slotOne → slot ≠ slotTwo →
+      atomQ ∈ datumTightSupport data.tightDir (data.basisLabel slot))
+    (hdiagOne : data.coeff slotOne slotOne
+      = 1 - (chartObjective (chartPointOfDesign crux.design)
+        + (chartPointOfDesign crux.design).weight atomR))
+    (hdiagTwo : data.coeff slotTwo slotTwo
+      = 1 - (chartObjective (chartPointOfDesign crux.design)
+        + (chartPointOfDesign crux.design).weight atomT))
+    {slotFree : Fin data.basisCount} (hfreeOne : slotFree ≠ slotOne)
+    (hfreeTwo : slotFree ≠ slotTwo) : False := by
+  have htrace := (data.purePairAtom_corner_of_outerFull hne hWQ hblockOne hblockTwo
+    hpure hdeadQone hdeadQtwo hliveQfull hfreeOne hfreeTwo).1
+  rw [hdiagOne, hdiagTwo] at htrace
+  have htriple := data.captureDiag_triple_le_total hWR hWT hRT
+  have htotal := data.sum_captureDiag_lt_one
+  have hQnonneg := data.captureDiag_nonneg atomQ
+  linarith
+
 /-! ## Layer 4 — the census of a pure pair -/
 
 /-- The multiplicity of an atom among the basis slots outside a named
