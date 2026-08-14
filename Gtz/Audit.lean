@@ -26078,3 +26078,4 @@ run_cmd do
 #print axioms Gtz.rankSixSharedPrivateClosed_of_foldLattice
 #print axioms Gtz.SharedPrivateData.captureGram_diagonal_eq
 #print axioms Gtz.SharedPrivateData.deadLeak_orthogonal
+#print axioms Gtz.leverage_lt_sum_pairing_sq_of_mem
