@@ -453,7 +453,7 @@ theorem exists_atomTripleDet_neg_uniform_sixth
 /-! ## Layer 4 — the wedge inequality -/
 
 /-- The BLEND of three slots against three weights. -/
-def atomTripleBlend (atom : Fin 6 → (Fin 3 → ℝ)) (slotOne slotTwo slotThree : Fin 6)
+def atomSlotBlend (atom : Fin 6 → (Fin 3 → ℝ)) (slotOne slotTwo slotThree : Fin 6)
     (weightOne weightTwo weightThree : ℝ) : Fin 3 → ℝ :=
   fun index => weightOne * atom slotOne index + weightTwo * atom slotTwo index
     + weightThree * atom slotThree index
@@ -461,48 +461,48 @@ def atomTripleBlend (atom : Fin 6 → (Fin 3 → ℝ)) (slotOne slotTwo slotThre
 /-- **THE BLEND AGAINST A WEDGE READS ONE WEIGHT.**  Two of the three atoms are
 orthogonal to the wedge of the other two, so only the third weight survives,
 and it carries the volume. -/
-theorem atomTripleBlend_dot_wedge (atom : Fin 6 → (Fin 3 → ℝ))
+theorem atomSlotBlend_dot_wedge (atom : Fin 6 → (Fin 3 → ℝ))
     (slotOne slotTwo slotThree : Fin 6) (weightOne weightTwo weightThree : ℝ) :
-    atomTripleBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
+    atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
         ⬝ᵥ atomWedge (atom slotTwo) (atom slotThree)
       = weightOne * atomVolume (atom slotOne) (atom slotTwo) (atom slotThree) := by
-  simp only [atomTripleBlend, atomVolume, dotProduct, Fin.sum_univ_three, atomWedge,
+  simp only [atomSlotBlend, atomVolume, dotProduct, Fin.sum_univ_three, atomWedge,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two,
     Matrix.tail_cons]
   ring
 
-theorem atomTripleBlend_dot_wedge_second (atom : Fin 6 → (Fin 3 → ℝ))
+theorem atomSlotBlend_dot_wedge_second (atom : Fin 6 → (Fin 3 → ℝ))
     (slotOne slotTwo slotThree : Fin 6) (weightOne weightTwo weightThree : ℝ) :
-    atomTripleBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
+    atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
         ⬝ᵥ atomWedge (atom slotOne) (atom slotThree)
       = -(weightTwo * atomVolume (atom slotOne) (atom slotTwo) (atom slotThree)) := by
-  simp only [atomTripleBlend, atomVolume, dotProduct, Fin.sum_univ_three, atomWedge,
+  simp only [atomSlotBlend, atomVolume, dotProduct, Fin.sum_univ_three, atomWedge,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two,
     Matrix.tail_cons]
   ring
 
-theorem atomTripleBlend_dot_wedge_third (atom : Fin 6 → (Fin 3 → ℝ))
+theorem atomSlotBlend_dot_wedge_third (atom : Fin 6 → (Fin 3 → ℝ))
     (slotOne slotTwo slotThree : Fin 6) (weightOne weightTwo weightThree : ℝ) :
-    atomTripleBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
+    atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
         ⬝ᵥ atomWedge (atom slotOne) (atom slotTwo)
       = weightThree * atomVolume (atom slotOne) (atom slotTwo) (atom slotThree) := by
-  simp only [atomTripleBlend, atomVolume, dotProduct, Fin.sum_univ_three, atomWedge,
+  simp only [atomSlotBlend, atomVolume, dotProduct, Fin.sum_univ_three, atomWedge,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two,
     Matrix.tail_cons]
   ring
 
 /-- The blend energy is the quadratic form of the unshifted Gram block. -/
-theorem atomTripleBlend_energy (atom : Fin 6 → (Fin 3 → ℝ))
+theorem atomSlotBlend_energy (atom : Fin 6 → (Fin 3 → ℝ))
     (slotOne slotTwo slotThree : Fin 6) (weightOne weightTwo weightThree : ℝ) :
-    atomTripleBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
-        ⬝ᵥ atomTripleBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
+    atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
+        ⬝ᵥ atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
       = atomGram atom slotOne slotOne * weightOne ^ 2
         + atomGram atom slotTwo slotTwo * weightTwo ^ 2
         + atomGram atom slotThree slotThree * weightThree ^ 2
         + 2 * atomGram atom slotOne slotTwo * weightOne * weightTwo
         + 2 * atomGram atom slotOne slotThree * weightOne * weightThree
         + 2 * atomGram atom slotTwo slotThree * weightTwo * weightThree := by
-  simp only [atomTripleBlend, atomGram, dotProduct, Fin.sum_univ_three]
+  simp only [atomSlotBlend, atomGram, dotProduct, Fin.sum_univ_three]
   ring
 
 /-- **THE WEDGE INEQUALITY.**  The block determinant against the weight energy
@@ -515,21 +515,21 @@ theorem atomBlockDet_mul_le_atomBlockSecond_mul (atom : Fin 6 → (Fin 3 → ℝ
     atomBlockDet atom slotOne slotTwo slotThree
         * (weightOne ^ 2 + weightTwo ^ 2 + weightThree ^ 2)
       ≤ atomBlockSecond atom slotOne slotTwo slotThree
-        * (atomTripleBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
-          ⬝ᵥ atomTripleBlend atom slotOne slotTwo slotThree
+        * (atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
+          ⬝ᵥ atomSlotBlend atom slotOne slotTwo slotThree
             weightOne weightTwo weightThree) := by
   have hone := atomDot_sq_le
-    (atomTripleBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree)
+    (atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree)
     (atomWedge (atom slotTwo) (atom slotThree))
   have htwo := atomDot_sq_le
-    (atomTripleBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree)
+    (atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree)
     (atomWedge (atom slotOne) (atom slotThree))
   have hthree := atomDot_sq_le
-    (atomTripleBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree)
+    (atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree)
     (atomWedge (atom slotOne) (atom slotTwo))
-  rw [atomTripleBlend_dot_wedge, atomWedge_energy] at hone
-  rw [atomTripleBlend_dot_wedge_second, atomWedge_energy] at htwo
-  rw [atomTripleBlend_dot_wedge_third, atomWedge_energy] at hthree
+  rw [atomSlotBlend_dot_wedge, atomWedge_energy] at hone
+  rw [atomSlotBlend_dot_wedge_second, atomWedge_energy] at htwo
+  rw [atomSlotBlend_dot_wedge_third, atomWedge_energy] at hthree
   rw [atomBlockDet_eq_volume_sq]
   simp only [atomBlockSecond, atomGram]
   nlinarith [hone, htwo, hthree]
@@ -597,15 +597,15 @@ theorem atomSupplyTriple_blend_floor (atom : Fin 6 → (Fin 3 → ℝ))
       < ratio * atomBlockDet atom slotOne slotTwo slotThree)
     (weightOne weightTwo weightThree : ℝ) :
     weightOne ^ 2 + weightTwo ^ 2 + weightThree ^ 2
-      ≤ ratio * (atomTripleBlend atom slotOne slotTwo slotThree
+      ≤ ratio * (atomSlotBlend atom slotOne slotTwo slotThree
           weightOne weightTwo weightThree
-        ⬝ᵥ atomTripleBlend atom slotOne slotTwo slotThree
+        ⬝ᵥ atomSlotBlend atom slotOne slotTwo slotThree
           weightOne weightTwo weightThree) := by
   have hwedge := atomBlockDet_mul_le_atomBlockSecond_mul atom slotOne slotTwo slotThree
     weightOne weightTwo weightThree
-  have hblendNonneg : 0 ≤ atomTripleBlend atom slotOne slotTwo slotThree
+  have hblendNonneg : 0 ≤ atomSlotBlend atom slotOne slotTwo slotThree
       weightOne weightTwo weightThree
-      ⬝ᵥ atomTripleBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree :=
+      ⬝ᵥ atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree :=
     atomDot_self_nonneg _
   nlinarith [hwedge, hdet, hsecond, hblendNonneg,
     sq_nonneg weightOne, sq_nonneg weightTwo, sq_nonneg weightThree]
@@ -633,10 +633,10 @@ theorem atomBlend_of_support_three (atom : Fin 6 → (Fin 3 → ℝ))
     (probe : Fin 6 → ℝ)
     (hzero : ∀ slot ∉ ({slotOne, slotTwo, slotThree} : Finset (Fin 6)), probe slot = 0) :
     atomBlend atom probe
-      = atomTripleBlend atom slotOne slotTwo slotThree
+      = atomSlotBlend atom slotOne slotTwo slotThree
         (probe slotOne) (probe slotTwo) (probe slotThree) := by
   funext index
-  simp only [atomBlend, atomTripleBlend]
+  simp only [atomBlend, atomSlotBlend]
   exact atomSum_of_support_three hone htwo hthree (fun slot => probe slot * atom slot index)
     (fun slot hnot => by rw [hzero slot hnot]; ring)
 
@@ -674,9 +674,9 @@ theorem exists_atomLightCarrier (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 
     rw [hscaleSum, hblend]
     have hkey : ratio * (scale slotOne * probe slotOne ^ 2 + scale slotTwo * probe slotTwo ^ 2
         + scale slotThree * probe slotThree ^ 2)
-        ≤ ratio * (atomTripleBlend atom slotOne slotTwo slotThree
+        ≤ ratio * (atomSlotBlend atom slotOne slotTwo slotThree
             (probe slotOne) (probe slotTwo) (probe slotThree)
-          ⬝ᵥ atomTripleBlend atom slotOne slotTwo slotThree
+          ⬝ᵥ atomSlotBlend atom slotOne slotTwo slotThree
             (probe slotOne) (probe slotTwo) (probe slotThree)) := by
       nlinarith [hfloor, hcapOne, hcapTwo, hcapThree, sq_nonneg (probe slotOne),
         sq_nonneg (probe slotTwo), sq_nonneg (probe slotThree)]
@@ -768,8 +768,8 @@ theorem atomTriple_values_of_spectralFloor (atom : Fin 6 → (Fin 3 → ℝ))
     (hthree : scale slotThree ≤ floor)
     (hfloor : ∀ weightOne weightTwo weightThree : ℝ,
       floor * (weightOne ^ 2 + weightTwo ^ 2 + weightThree ^ 2)
-        ≤ atomTripleBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
-          ⬝ᵥ atomTripleBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree)
+        ≤ atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree
+          ⬝ᵥ atomSlotBlend atom slotOne slotTwo slotThree weightOne weightTwo weightThree)
     (valueOne valueTwo valueThree : ℝ) :
     scale slotOne * valueOne ^ 2 + scale slotTwo * valueTwo ^ 2
         + scale slotThree * valueThree ^ 2
@@ -780,7 +780,7 @@ theorem atomTriple_values_of_spectralFloor (atom : Fin 6 → (Fin 3 → ℝ))
         + 2 * atomGram atom slotOne slotThree * valueOne * valueThree
         + 2 * atomGram atom slotTwo slotThree * valueTwo * valueThree := by
   have hstep := hfloor valueOne valueTwo valueThree
-  rw [atomTripleBlend_energy] at hstep
+  rw [atomSlotBlend_energy] at hstep
   nlinarith [hstep, hone, htwo, hthree, sq_nonneg valueOne, sq_nonneg valueTwo,
     sq_nonneg valueThree]
 
