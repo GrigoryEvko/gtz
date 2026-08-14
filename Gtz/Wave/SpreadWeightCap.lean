@@ -697,4 +697,67 @@ theorem atomSpreadFeasible_not_uniform {weight second : Fin 6 → Fin 6 → Fin 
     huniform 3 4 5 (by decide) (by decide) (by decide), hzero] at htot
   norm_num at htot
 
+/-! ## Layer 9 — the four constants of the determinantal-average route -/
+
+/-- **THE CONSTANT LADDER OF THE ROUTE, IN ORDER.**  Four exact numbers bound the
+determinantal average of the SMALLEST EIGENVALUE, which is the sharpest objective
+the route can carry, because every per-triple floor is at most that eigenvalue.
+
+  `(5 - sqrt 15) / 10 = 0.112701665379`  the flat point, and the cap of the
+      moment class with NO real-only law.  It is also the flat-average ceiling
+      `Gtz.atomFlatDrop_factor` and the measured quaternionic constant, three
+      readings of one number.
+  `(3 - sqrt 5) / 6   = 0.127322003750`  the field-agnostic ceiling, the bar.
+  `(2 - sqrt 2) / 4   = 0.146446609407`  the reading of the point that the
+      REAL-ONLY TENTH `Gtz.atomPluckerTenth` drives the class to: two of the ten
+      splittings of the six slots carry no determinant and the other eight carry
+      `1/16`, every block then reads `(3/2, 5/8, 1/16)`, and its smallest
+      eigenvalue is `(2 - sqrt 2) / 4`.  The tenth is exactly tight there, at
+      `E2 = 10 * E3 = 5/8`.
+  `1 / 6              = 0.166666666667`  the truth over the real field.
+
+The witness of this module reads `2107 / 17000 = 0.123941176471` and sits BELOW
+the bar, which is the refutation.  Every point that survives the tenth that the
+search of this module found sits above the bar.  So the tenth carries the realness
+that the spread law does not.
+
+Two measurements name the remaining room, and they are measurements and not
+theorems.  Minimised over the class of this module the sharp average reads
+`0.1204` with the spread law and `0.1464` with the tenth.  Minimised over GENUINE
+balanced real Parseval frames it reads `0.1652156`, which is BELOW `1/6`.  So even
+a perfect per-triple floor cannot certify the truth through a determinantal
+average: the route has a ceiling of its own, near `0.16522`, and it is one percent
+short.  The frame that reads it carries eight determinants at exactly `1/16` and
+twelve others in four classes. -/
+theorem atomSpreadConstantLadder :
+    (5 - Real.sqrt 15) / 10 < (3 - Real.sqrt 5) / 6
+      ∧ (3 - Real.sqrt 5) / 6 < (2 - Real.sqrt 2) / 4
+      ∧ (2 - Real.sqrt 2) / 4 < 1 / 6 := by
+  have h15 : Real.sqrt 15 ^ 2 = 15 := Real.sq_sqrt (by norm_num)
+  have h5 : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+  have h2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  have n15 : (0 : ℝ) ≤ Real.sqrt 15 := Real.sqrt_nonneg 15
+  have n5 : (0 : ℝ) ≤ Real.sqrt 5 := Real.sqrt_nonneg 5
+  have n2 : (0 : ℝ) ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
+  refine ⟨by nlinarith [h15, h5, n15, n5], by nlinarith [h5, h2, n5, n2],
+    by nlinarith [h2, n2]⟩
+
+/-- **THE READING OF THE TENTH EXTREMAL, EXACTLY.**  A block with the readings
+`(3/2, 5/8, 1/16)` has the spectrum `(1/2, (2 - sqrt 2)/4, (2 + sqrt 2)/4)`, so its
+smallest eigenvalue is `(2 - sqrt 2)/4`.  Sixteen such blocks carrying the whole
+determinantal mass average to that same number. -/
+theorem atomTenthExtremal_spectrum :
+    AtomBlockSpectrum (3 / 2) (5 / 8) (1 / 16)
+      ∧ ((2 - Real.sqrt 2) / 4) ^ 3 - (3 / 2) * ((2 - Real.sqrt 2) / 4) ^ 2
+          + (5 / 8) * ((2 - Real.sqrt 2) / 4) - 1 / 16 = 0 := by
+  have h2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  refine ⟨atomBlockSpectrum_half (product := 1 / 8) (by norm_num) (by norm_num)
+    (by norm_num) (by norm_num), ?_⟩
+  nlinarith [h2]
+
+/-- The block of a triple that carries NO determinant, in the same extremal, reads
+`(3/2, 1/2, 0)` and has the spectrum `(0, 1/2, 1)`. -/
+theorem atomTenthExtremal_flatSpectrum : AtomBlockSpectrum (3 / 2) (1 / 2) 0 :=
+  atomBlockSpectrum_half (product := 0) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+
 end Gtz
