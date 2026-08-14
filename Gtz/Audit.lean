@@ -826,6 +826,7 @@ import Gtz.Wave.OrientedTriangleSign
 import Gtz.Wave.SpectralSupplyCell
 import Gtz.Wave.PluckerCertificate
 import Gtz.Wave.QuadCoverSelection
+import Gtz.Wave.QuadDropSign
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -26850,3 +26851,60 @@ run_cmd do
 #print axioms Gtz.atomBoundary_dualGram_zeroTwo
 #print axioms Gtz.atomBoundary_dropScalar_tight
 #print axioms Gtz.atomBoundary_dualTripleDet_total_zero
+
+/-! ## The two term drop dichotomy is false, and the four term one repairs it -/
+
+#print axioms Gtz.quadComplSum
+#print axioms Gtz.quadPairSum
+#print axioms Gtz.quadFourSign_iff
+#print axioms Gtz.exists_nonneg_of_fourSigns
+#print axioms Gtz.AtomQuadDropFourSignClosed
+#print axioms Gtz.atomVertexCoverClosed_of_dropFourSign
+#print axioms Gtz.gtzWeighted_six_three_of_dropFourSign
+#print axioms Gtz.atomQuadDropFourSignClosed_of_dropSign
+#print axioms Gtz.dropWitnessAtom
+#print axioms Gtz.dropWitnessScale
+#print axioms Gtz.dropWitnessDual
+#print axioms Gtz.dropWitnessAtom_zero
+#print axioms Gtz.dropWitnessAtom_one
+#print axioms Gtz.dropWitnessAtom_two
+#print axioms Gtz.dropWitnessAtom_three
+#print axioms Gtz.dropWitnessAtom_four
+#print axioms Gtz.dropWitnessAtom_five
+#print axioms Gtz.dropWitnessScale_zero
+#print axioms Gtz.dropWitnessScale_one
+#print axioms Gtz.dropWitnessScale_two
+#print axioms Gtz.dropWitnessScale_three
+#print axioms Gtz.dropWitnessScale_four
+#print axioms Gtz.dropWitnessScale_five
+#print axioms Gtz.dropWitnessDual_zero
+#print axioms Gtz.dropWitnessDual_one
+#print axioms Gtz.dropWitnessDual_two
+#print axioms Gtz.dropWitnessDual_three
+#print axioms Gtz.dropWitnessDual_four
+#print axioms Gtz.dropWitnessDual_five
+#print axioms Gtz.dropVecTwo
+#print axioms Gtz.dropVecThree
+#print axioms Gtz.dropVecFour
+#print axioms Gtz.dropVecFive
+#print axioms Gtz.dropWitnessScale_pos
+#print axioms Gtz.dropWitnessScale_sum
+#print axioms Gtz.dropWitnessAtom_isTightFrame
+#print axioms Gtz.dropWitnessGapCoef
+#print axioms Gtz.dropWitnessGapRow_zero
+#print axioms Gtz.dropWitnessGapRow_one
+#print axioms Gtz.dropWitnessGapRow_two
+#print axioms Gtz.dropWitnessGapDet
+#print axioms Gtz.dropWitnessSymAdj
+#print axioms Gtz.dropWitnessDualVec
+#print axioms Gtz.dropWitnessDualGram
+#print axioms Gtz.dropWitness_pair_fails
+#print axioms Gtz.not_atomQuadDropSignClosed
+#print axioms Gtz.not_atomQuadDropScalarClosed
+#print axioms Gtz.dropWitness_diag
+#print axioms Gtz.dropWitness_minor_zeroTwo
+#print axioms Gtz.dropWitness_dualTripleDet_pos
+#print axioms Gtz.dropWitnessAtom_hasVertexCover
+#print axioms Gtz.atomGram_cycle_total
+#print axioms Gtz.atomGram_cycle_erase
+#print axioms Gtz.exists_pos_cycle_of_pair

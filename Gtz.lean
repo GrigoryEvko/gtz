@@ -3660,3 +3660,4 @@ import Gtz.Wave.PluckerCertificate
 -- The four slot rung: the dual Gram of the gap form, the count that proves
 -- the rung, and the scalar criterion of the drop.
 import Gtz.Wave.QuadCoverSelection
+import Gtz.Wave.QuadDropSign
