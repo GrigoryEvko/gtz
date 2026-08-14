@@ -3619,6 +3619,13 @@ import Gtz.Wave.AtomMassOneLadder
 import Gtz.Wave.AtomVertexSelection
 import Gtz.Wave.AtomMarginalFoil
 import Gtz.Wave.AtomIntegralityGap
+-- The pivot lift of rank two to rank three: the shadow frame law, the shadow
+-- mass law and the charge law of one pivot, the survivor inflation engine
+-- whose product law only reads the pairs that the plane closure can return,
+-- the drop set consumer that buys the death of a slot for one pair minor,
+-- and the pair completion law, whose four triple determinants add to an
+-- explicit polynomial in six readings of one pair.
+import Gtz.Wave.PivotSchurLift
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02

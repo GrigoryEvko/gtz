@@ -818,6 +818,7 @@ import Gtz.Wave.AtomMassOneLadder
 import Gtz.Wave.AtomVertexSelection
 import Gtz.Wave.AtomMarginalFoil
 import Gtz.Wave.AtomIntegralityGap
+import Gtz.Wave.PivotSchurLift
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -26274,3 +26275,46 @@ run_cmd do
 #print axioms Gtz.atomVertexCoverClosed_iff_atomTripleOperator
 #print axioms Gtz.atomVertexCoverClosed_iff_atomTripleBoundary
 #print axioms Gtz.gtzWeighted_six_three_of_atomVertexCover
+
+/-! ## The pivot lift of rank two to rank three -/
+
+#print axioms Gtz.atomGram_row_cross
+#print axioms Gtz.sum_read_smul_atom
+#print axioms Gtz.shadow_frame_law
+#print axioms Gtz.sum_shadow_energy
+#print axioms Gtz.sum_charge_smul_shadow
+#print axioms Gtz.exists_heavy_leverage_slot
+#print axioms Gtz.exists_live_heavy_pivot
+#print axioms Gtz.sum_charge_sq_off_pivot
+#print axioms Gtz.atomPairMinor_pos_iff_shadow_gap
+#print axioms Gtz.atomTripleDet_pos_iff_deflated_pair
+#print axioms Gtz.AtomSlotSurvives
+#print axioms Gtz.atomPairMinor_pos_of_survives
+#print axioms Gtz.survivorProduct_of_liveProduct
+#print axioms Gtz.exists_deflated_pair_of_survivor_inflation
+#print axioms Gtz.exists_pivotPair_of_survivor_inflation
+#print axioms Gtz.exists_sylvester_of_survivor_inflation
+#print axioms Gtz.deadSlotInflation
+#print axioms Gtz.deadSlotInflation_nonneg
+#print axioms Gtz.deadSlotInflation_kills
+#print axioms Gtz.exists_deflated_pair_of_dropSet
+#print axioms Gtz.exists_deflated_pair_of_uniform_dropSet
+#print axioms Gtz.sum_erase_pair
+#print axioms Gtz.atomPairCompletion
+#print axioms Gtz.sum_atomTripleDet_eq_pairCompletion
+#print axioms Gtz.exists_tripleDet_pos_of_pairCompletion
+#print axioms Gtz.exists_sylvester_of_pairCompletion
+#print axioms Gtz.exists_deflated_pair_of_pairCompletion
+#print axioms Gtz.AtomLiftBlocked
+#print axioms Gtz.AtomCompletionBlocked
+#print axioms Gtz.AtomLiftResidueClosed
+#print axioms Gtz.atomPivotPairClosed_of_liftResidue
+#print axioms Gtz.atomTripleCeilingClosed_of_liftResidue
+#print axioms Gtz.gtzWeighted_six_three_of_liftResidue
+#print axioms Gtz.gtzWeightedAll_three_of_liftResidue
+#print axioms Gtz.isEmpty_sixThreeCrux_of_liftResidue
+#print axioms Gtz.atomLiftResidueClosed_of_atomPivotPair
+#print axioms Gtz.atomLiftResidueClosed_iff_atomPivotPair
+#print axioms Gtz.atomBoundaryAtom_liftBlocked
+#print axioms Gtz.atomBoundaryAtom_completionBlocked
+#print axioms Gtz.atomBoundaryAtom_spares_liftResidue
