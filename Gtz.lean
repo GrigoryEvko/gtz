@@ -3734,3 +3734,7 @@ import Gtz.Wave.SpreadWeightCap
 -- of one block carries the whole proof. The sharp cap of the route is the exact
 -- (2 - sqrt 2)/4, read at a member of the class, so 1/6 is out of reach here.
 import Gtz.Wave.TenthAverageFloor
+-- The involution block form: the Jacobi block law at every leverage profile,
+-- the balanced cut dictionary, the triangle criterion, the path and polygon
+-- laws, and the quartet pigeonhole.
+import Gtz.Wave.InvolutionBlockForm

@@ -839,6 +839,7 @@ import Gtz.Wave.PentagonFloorReduction
 import Gtz.Wave.PentagonFloorProof
 import Gtz.Wave.SpreadWeightCap
 import Gtz.Wave.TenthAverageFloor
+import Gtz.Wave.InvolutionBlockForm
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27460,3 +27461,23 @@ run_cmd do
 #print axioms Gtz.not_atomTenthSelectorSixth
 #print axioms Gtz.not_atomTenthAverage_gt
 #print axioms Gtz.not_atomTenthAverage_sixth
+-- The involution block form: the Jacobi block law, the balanced cut
+-- dictionary, the triangle criterion, the path laws and the quartet interface.
+#print axioms Gtz.atomFrame_entry
+#print axioms Gtz.atomTripleRows
+#print axioms Gtz.atomTripleRows_mul_transpose
+#print axioms Gtz.atomTripleRows_transpose_mul
+#print axioms Gtz.atomBlockDet_complement
+#print axioms Gtz.atomBlockDet_balanced
+#print axioms Gtz.atomBlockDet_balanced_twin
+#print axioms Gtz.atomBalancedCut_mass
+#print axioms Gtz.atomBalancedCut_gap
+#print axioms Gtz.atomShiftBlockDet
+#print axioms Gtz.atomShiftBlockDet_balanced
+#print axioms Gtz.atomShiftBlockDet_balanced_nonneg_iff
+#print axioms Gtz.atomEquilateralCubic
+#print axioms Gtz.atomInvolutionPath
+#print axioms Gtz.atomBalancedPolygon
+#print axioms Gtz.atomBalancedPathKill
+#print axioms Gtz.atomQuartetThird
+#print axioms Gtz.exists_pos_of_quartetThird_pos
