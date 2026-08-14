@@ -3704,3 +3704,11 @@ import Gtz.Wave.DeterminantalWeightKill
 -- drops, and each reading has no frame law and no leverage in it. The residue
 -- is a polynomial inequality in fifteen free numbers, sharp at the pentagon.
 import Gtz.Wave.PentagonFloorReduction
+
+-- The determinantal average of the reduced second rung, and the cap on every
+-- certificate that reads only the moments of the twenty triples. The icosahedron
+-- reads 1637/12015, which is ABOVE the cuboctahedron, so the extremal moves along
+-- the ladder. Two exact witnesses cap the moment programme below the
+-- field-agnostic ceiling, with and without the level-three energy floor, and that
+-- floor 3/50 is proved here and is sharp at the icosahedron.
+import Gtz.Wave.DeterminantalAverageCap

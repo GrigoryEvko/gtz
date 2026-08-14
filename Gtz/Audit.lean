@@ -834,6 +834,7 @@ import Gtz.Wave.PlaneMarginTarget
 import Gtz.Wave.PluckerSchurFloor
 import Gtz.Wave.ShiftedWedgeFloor
 import Gtz.Wave.DeterminantalWeightKill
+import Gtz.Wave.DeterminantalAverageCap
 import Gtz.Wave.PentagonFloorReduction
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
@@ -27288,3 +27289,58 @@ run_cmd do
 #print axioms Gtz.atomPluckerEnergyTwo_spread_identity
 #print axioms Gtz.atomPluckerEnergyTwo_ge_spread
 #print axioms Gtz.atomPluckerEnergyThree_ge_of_pentagonFloor
+#print axioms Gtz.wedgeAverageTerm
+#print axioms Gtz.wedgeAverageTerm_eq
+#print axioms Gtz.wedgeAverageTerm_uniform
+#print axioms Gtz.wedgeAverageTerm_heavy
+#print axioms Gtz.wedgeAverageTerm_light
+#print axioms Gtz.AtomBlockSpectrum
+#print axioms Gtz.atomBlockSpectrum_half
+#print axioms Gtz.atomBlockSpectrum_uniform
+#print axioms Gtz.atomBlockSpectrum_heavy
+#print axioms Gtz.atomBlockSpectrum_light
+#print axioms Gtz.atomSlotMarginalZero
+#print axioms Gtz.atomSlotMarginalOne
+#print axioms Gtz.atomSlotMarginalTwo
+#print axioms Gtz.atomSlotMarginalThree
+#print axioms Gtz.atomSlotMarginalFour
+#print axioms Gtz.atomSlotMarginalFive
+#print axioms Gtz.AtomMomentFeasible
+#print axioms Gtz.atomMomentAverage
+#print axioms Gtz.atomUniformFirst
+#print axioms Gtz.atomUniformSecond
+#print axioms Gtz.atomUniformThird
+#print axioms Gtz.atomMomentFeasible_uniform
+#print axioms Gtz.atomMomentAverage_uniform
+#print axioms Gtz.atomEighth_lt_hermitianCeiling
+#print axioms Gtz.not_atomMomentCap
+#print axioms Gtz.atomMomentEnergy_uniform
+#print axioms Gtz.atomSplitMark
+#print axioms Gtz.atomSplitMark_cases
+#print axioms Gtz.atomSplitFirst
+#print axioms Gtz.atomSplitSecond
+#print axioms Gtz.atomSplitThird
+#print axioms Gtz.atomMomentFeasible_split
+#print axioms Gtz.atomMomentEnergy_split
+#print axioms Gtz.atomMomentAverage_split
+#print axioms Gtz.not_atomMomentCap_withEnergy
+#print axioms Gtz.atomPairMinor_familySum
+#print axioms Gtz.atomBlockSecond_eq_four_pairMinor
+#print axioms Gtz.atomFrameMomentTotals
+#print axioms Gtz.atomPairVector
+#print axioms Gtz.atomPairFamilySum_sq_le
+#print axioms Gtz.atomPluckerEnergyTwo_floor
+#print axioms Gtz.atomPluckerEnergyThree_floor
+#print axioms Gtz.atomPluckerEnergyThree_dropWitness
+#print axioms Gtz.atomPluckerEnergyThree_floor_dropWitness
+#print axioms Gtz.wedgeAverage_conjugatePair
+#print axioms Gtz.wedgeAverage_icosahedral
+#print axioms Gtz.pluckerAverage_icosahedral
+#print axioms Gtz.wedgeAverage_icosahedral_ladder
+#print axioms Gtz.wedgeAverage_icosahedral_gain
+#print axioms Gtz.wedgeRungTwoLower_ge_wedge
+#print axioms Gtz.wedgeRungTwoLower_le_three_halves
+#print axioms Gtz.wedgeRungTwoLower_sandwich
+#print axioms Gtz.wedgeRungTwoLower_sandwich_cuboctahedron_win
+#print axioms Gtz.wedgeRungTwoLower_sandwich_cuboctahedron_near
+#print axioms Gtz.wedgeAverage_route_window
