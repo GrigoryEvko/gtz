@@ -26740,6 +26740,12 @@ run_cmd do
 #print axioms Gtz.atomWedge_dot_left
 #print axioms Gtz.atomWedge_dot_right
 #print axioms Gtz.atomWedge_energy
+#print axioms Gtz.AtomBlendFloor
+#print axioms Gtz.AtomSpectralSupply
+#print axioms Gtz.atomSpectralSupply_of_lt_twelfth
+#print axioms Gtz.AtomSpectralSupplySixth
+#print axioms Gtz.exists_atomCarrier_of_blendFloor
+#print axioms Gtz.exists_atomCarrier_of_spectralSupplySixth
 #print axioms Gtz.escapeBandAtom
 #print axioms Gtz.escapeBandAtom_cycle
 #print axioms Gtz.escapeBandAtom_escapes
