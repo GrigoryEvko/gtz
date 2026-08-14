@@ -3571,6 +3571,7 @@ import Gtz.Wave.AtomDefectBandSplit
 -- the extra inflation of a pair, thus the uniform double budget is one
 -- instance and the discounted inflation opens a strictly larger stratum.
 import Gtz.Wave.AtomProductInflation
+import Gtz.Wave.AtomTrineCutBand
 
 import Gtz.Certificates.CollarAtlas.ChartGroup01
 import Gtz.Certificates.CollarAtlas.ChartGroup02

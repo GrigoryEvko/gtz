@@ -797,6 +797,7 @@ import Gtz.Wave.AtomShadowTransfer
 import Gtz.Wave.AtomBlockedDefect
 import Gtz.Wave.AtomDefectBandSplit
 import Gtz.Wave.AtomProductInflation
+import Gtz.Wave.AtomTrineCutBand
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -25310,3 +25311,79 @@ run_cmd do
 #print axioms Gtz.forall_shifted_weight_pos
 #print axioms Gtz.SixThreeCrux.shifted_weight_pos
 #print axioms Gtz.SixThreeCrux.false_of_shift_zero
+
+/-! ## The two trine cuts and the sharp split of the blocked residue -/
+
+#print axioms Gtz.trineCut
+#print axioms Gtz.trineCut_factor_split
+#print axioms Gtz.trineCut_factor_band
+#print axioms Gtz.trineCut_pos_of_le_split
+#print axioms Gtz.trineCut_onset
+#print axioms Gtz.scale_lt_band_of_trineCut_pos
+#print axioms Gtz.trineCut_band_boundary
+#print axioms Gtz.blocked_slot_tangent
+#print axioms Gtz.trineCut_nonpos_of_six_tangents
+#print axioms Gtz.blocked_trineCut_nonpos
+#print axioms Gtz.trineCut_pos_of_le_thirteen_twentieths
+#print axioms Gtz.thirteen_twentieths_lt_of_blocked
+#print axioms Gtz.exists_deflated_pair_of_trineCut_pos
+#print axioms Gtz.exists_dominating_triple_of_trineCut_pos
+#print axioms Gtz.singleCut
+#print axioms Gtz.singleCut_factor_split
+#print axioms Gtz.singleCut_pos_of_le_split
+#print axioms Gtz.singleCut_onset
+#print axioms Gtz.singleCut_band_boundary
+#print axioms Gtz.singleCut_pos_of_le_band
+#print axioms Gtz.single_slot_tangent
+#print axioms Gtz.singleCut_nonpos_of_six_tangents
+#print axioms Gtz.singleFail_singleCut_nonpos
+#print axioms Gtz.exists_pivot_single_budget_of_singleCut_pos
+#print axioms Gtz.exists_deflated_pair_of_live_product_inflation
+#print axioms Gtz.liveSlots
+#print axioms Gtz.mem_liveSlots
+#print axioms Gtz.pivot_not_mem_liveSlots
+#print axioms Gtz.liveReadingEnergy
+#print axioms Gtz.liveReadingEnergy_nonneg
+#print axioms Gtz.liveReadingEnergy_le_row
+#print axioms Gtz.liveInflation
+#print axioms Gtz.liveInflation_of_not_mem
+#print axioms Gtz.liveInflation_pivot
+#print axioms Gtz.liveInflation_nonneg
+#print axioms Gtz.liveInflation_product
+#print axioms Gtz.liveInflation_sum
+#print axioms Gtz.exists_deflated_pair_of_live_inflation
+#print axioms Gtz.exists_deflated_pair_of_live_budget
+#print axioms Gtz.discount_room_lt
+#print axioms Gtz.exists_deflated_pair_of_discount_criterion
+#print axioms Gtz.AtomBlockedCutClosed
+#print axioms Gtz.atomBlockedCutClosed_holds
+#print axioms Gtz.AtomBlockedWindowClosed
+#print axioms Gtz.AtomBlockedDeepCutClosed
+#print axioms Gtz.atomBlockedPairClosed_of_window_of_deepCut
+#print axioms Gtz.atomBlockedWindowClosed_of_blockedPair
+#print axioms Gtz.atomBlockedDeepCutClosed_of_blockedPair
+#print axioms Gtz.atomBlockedPairClosed_iff_window_and_deepCut
+#print axioms Gtz.atomBlockedBandClosed_of_windowClosed
+#print axioms Gtz.atomBlockedDeepCutClosed_of_deepClosed
+#print axioms Gtz.not_blocked_of_le_split
+#print axioms Gtz.AtomBlockedWindowKill
+#print axioms Gtz.AtomBlockedDeepCutKill
+#print axioms Gtz.atomBlockedWindowClosed_of_windowKill
+#print axioms Gtz.atomBlockedWindowKill_of_windowClosed
+#print axioms Gtz.atomBlockedWindowClosed_iff_windowKill
+#print axioms Gtz.atomBlockedDeepCutClosed_of_deepCutKill
+#print axioms Gtz.atomBlockedDeepCutKill_of_deepCutClosed
+#print axioms Gtz.atomBlockedDeepCutClosed_iff_deepCutKill
+#print axioms Gtz.AtomBlockedWindowLiveKill
+#print axioms Gtz.AtomBlockedDeepCutLiveKill
+#print axioms Gtz.atomBlockedWindowKill_of_windowLiveKill
+#print axioms Gtz.atomBlockedDeepCutKill_of_deepCutLiveKill
+#print axioms Gtz.atomBlockedWindowClosed_of_windowLiveKill
+#print axioms Gtz.atomBlockedDeepCutClosed_of_deepCutLiveKill
+#print axioms Gtz.gtzWeighted_six_three_of_window_of_deepCut
+#print axioms Gtz.gtzWeightedAll_three_of_window_of_deepCut
+#print axioms Gtz.isEmpty_sixThreeCrux_of_window_of_deepCut
+#print axioms Gtz.gtzWeighted_six_three_of_windowKill_of_deepCutKill
+#print axioms Gtz.gtzWeightedAll_three_of_windowKill_of_deepCutKill
+#print axioms Gtz.gtzWeighted_six_three_of_windowLiveKill_of_deepCutLiveKill
+#print axioms Gtz.gtzWeightedAll_three_of_windowLiveKill_of_deepCutLiveKill
