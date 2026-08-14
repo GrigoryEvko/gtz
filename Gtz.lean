@@ -3656,3 +3656,7 @@ import Gtz.Certificates.CollarAtlas.ChartGroup20
 -- The Plücker certificate: the spread law of the determinantal weights, and
 -- the dual face of the residue, which moves every scale to one side.
 import Gtz.Wave.PluckerCertificate
+
+-- The four slot rung: the dual Gram of the gap form, the count that proves
+-- the rung, and the scalar criterion of the drop.
+import Gtz.Wave.QuadCoverSelection
