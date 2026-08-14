@@ -5235,6 +5235,42 @@ import Gtz.Wave.AtomBlockedDefect
 #print axioms Gtz.sum_weight_pairing_smul_planeShadowVec
 #print axioms Gtz.sum_erase_weight_pairing_smul_planeShadowVec
 #print axioms Gtz.sum_sdiff_weight_pairing_smul_planeShadowVec
+#print axioms Gtz.posDef_of_polarWitnessSchur
+#print axioms Gtz.not_isTie_of_witnessSchur
+#print axioms Gtz.not_isTie_of_witnessSchur_six_three
+#print axioms Gtz.tie_witnessSchur_six_three
+#print axioms Gtz.PolarWitnessSchurBound
+#print axioms Gtz.polarWitnessSchurBound_of_isTie
+#print axioms Gtz.PolarTiltSelectionWitness
+#print axioms Gtz.polarTiltSelectionWitness_of_polarTiltSelectionSpread
+#print axioms Gtz.polarTiltSelectionWitness_of_polarTiltSelectionSetDeletion
+#print axioms Gtz.polarTiltSelectionWitness_of_polarTiltSelectionDeletion
+#print axioms Gtz.polarTiltSelectionWitness_of_polarTiltSelection
+#print axioms Gtz.hingeHoldsAtSize_of_polarTiltWitness
+#print axioms Gtz.stressFreeArmAt_of_polarTiltWitness
+#print axioms Gtz.balancedArmAt_of_polarTiltWitness
+#print axioms Gtz.degenerateArmAt_of_polarTiltWitness
+#print axioms Gtz.balancedPartialSupportArmAt_of_polarTiltWitness
+#print axioms Gtz.balancedFullSupportArmAt_of_polarTiltWitness
+#print axioms Gtz.degenerateHyperplaneCover_of_polarTiltWitness
+#print axioms Gtz.polarTiltWitness_closes_every_arm
+#print axioms Gtz.thresholdCellHingeRankFourAndUp_of_polarTiltWitness
+#print axioms Gtz.subThresholdBandHinge_of_polarTiltWitness
+#print axioms Gtz.sharpWindowHinge_of_polarTiltWitness
+#print axioms Gtz.thresholdStressFreeArm_of_polarTiltWitness
+#print axioms Gtz.thresholdBalancedArm_of_polarTiltWitness
+#print axioms Gtz.thresholdDegenerateArm_of_polarTiltWitness
+#print axioms Gtz.hingeHoldsAtSize_six_three_of_polarTiltWitness
+#print axioms Gtz.thresholdArms_rank_three_of_polarTiltWitness
+#print axioms Gtz.gtzWeighted_six_three_of_polarTiltWitness
+#print axioms Gtz.gtzWeightedAll_three_of_polarTiltWitness
+#print axioms Gtz.not_polarTiltSelectionWitness_five_three
+#print axioms Gtz.sixSplitDiamondDesign_spares_polarTiltWitness
+#print axioms Gtz.tripleBracket_sq_eq_gramDet
+#print axioms Gtz.tripleBracket_mul_sharedLeft
+#print axioms Gtz.planeShadowPairing_sq_le
+#print axioms Gtz.tripleBracket_sq_eq_planeShadow
+#print axioms Gtz.tripleBracket_mul_eq_planeShadow
 
 -- Coverage sweep: every `theorem`/`lemma` enumerated from `Gtz/` that was
 -- absent from the list above.  Gtz/Ties/DiamondTie.lean is deliberately
