@@ -3474,6 +3474,7 @@ import Gtz.Wave.CaptureLinePairKill
 -- rank-four frame dies modulo the one residue, and the cell follows
 -- from the residue plus the six upper closures.
 import Gtz.Wave.CaptureLineWideKill
+import Gtz.Wave.WideSpectralAtomForm
 
 -- the rank-six normal form: the support-minimal reduction, the
 -- six-label basis, the two-sided inverse, the H-form, the exchange

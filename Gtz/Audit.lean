@@ -778,6 +778,7 @@ import Gtz.Wave.ArgmaxBlockFloor
 import Gtz.Wave.CaptureLineTrichotomy
 import Gtz.Wave.CaptureLinePairKill
 import Gtz.Wave.CaptureLineWideKill
+import Gtz.Wave.WideSpectralAtomForm
 import Gtz.Wave.RankSixNormalForm
 import Gtz.Wave.SupportSextupleCensus
 import Gtz.Wave.RankSixRungAssembly
@@ -25174,6 +25175,55 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.isSixThreeAssemblyRankExcludedFloored_four_of_wideSpectralSelection
 #print axioms Gtz.gtzWeighted_six_three_of_wideSpectralSelection_of_upperClosures
 #print axioms Gtz.gtzWeightedAll_three_of_wideSpectralSelection_of_upperClosures
+
+-- Gtz/Wave/WideSpectralAtomForm.lean
+#print axioms Gtz.wideFrameAtom
+#print axioms Gtz.wideFrameAtom_apply
+#print axioms Gtz.wideFrameAtom_dot
+#print axioms Gtz.wideFrameAtom_gram
+#print axioms Gtz.wideFrameAtom_frameLaw
+#print axioms Gtz.wideFrameAtom_blend_energy
+#print axioms Gtz.mulVec_oneHot_apply
+#print axioms Gtz.oneHot_quadratic
+#print axioms Gtz.entry_sq_le_diag_mul_diag
+#print axioms Gtz.two_cross_le_diag_pair
+#print axioms Gtz.quadratic_le_trace_mul_energy
+#print axioms Gtz.price_quadratic_le_trace_mul_shift
+#print axioms Gtz.WideAtomSelectionClosed
+#print axioms Gtz.wideSpectralSelectionClosed_of_wideAtomSelection
+#print axioms Gtz.exists_weakCarrier_of_scaled_strict
+#print axioms Gtz.AtomTripleBoundaryClosed
+#print axioms Gtz.atomTripleBoundaryClosed_of_atomTripleCeiling
+#print axioms Gtz.atomTripleCeilingClosed_of_atomTripleBoundary
+#print axioms Gtz.atomTripleCeilingClosed_iff_boundary
+#print axioms Gtz.wideAtomSelectionClosed_of_atomTripleBoundary
+#print axioms Gtz.wideSpectralSelectionClosed_of_atomTripleCeiling
+#print axioms Gtz.rankFourCaptureLineWideFlooredClosed_of_atomTripleCeiling
+#print axioms Gtz.rankFourChartNullBasisNullClosed_of_atomTripleCeiling
+#print axioms Gtz.rankFourChartNullBasisNullFlooredClosed_of_atomTripleCeiling
+#print axioms Gtz.isSixThreeAssemblyRankExcluded_four_of_atomTripleCeiling
+#print axioms Gtz.isSixThreeAssemblyRankExcludedFloored_four_of_atomTripleCeiling
+#print axioms Gtz.gtzWeighted_six_three_of_atomTripleCeiling_of_upperClosures
+#print axioms Gtz.wideShadow
+#print axioms Gtz.wideShadow_dot_axis
+#print axioms Gtz.wideShadow_dot_plane
+#print axioms Gtz.wideShadow_frameLaw
+#print axioms Gtz.wideShadow_blend_le
+#print axioms Gtz.exists_dominating_pair_of_boundary
+#print axioms Gtz.sum_free_read_sq
+#print axioms Gtz.exists_freePivot
+#print axioms Gtz.exists_freePivot_shiftedDiag
+#print axioms Gtz.wideSignFlip
+#print axioms Gtz.wideSignFlip_gram
+#print axioms Gtz.wideSignFlip_gram_diag
+#print axioms Gtz.wideSignFlip_frameLaw
+#print axioms Gtz.wideSignFlip_blend
+#print axioms Gtz.wideSignFlip_scale_energy
+#print axioms Gtz.exists_nonneg_dot_off_pivot
+#print axioms Gtz.exists_positiveParity_triple
+#print axioms Gtz.exists_nonnegCross_triple
+#print axioms Gtz.exists_dominating_triple_of_pair_correction
+#print axioms Gtz.exists_weakCarrier_of_pair_correction
 
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
