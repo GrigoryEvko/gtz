@@ -36,6 +36,11 @@ collinear locus.  `Gtz.dppHeron_sq_nonpos_of_triangle` and
 `Gtz.dppHeron_sq_eq_zero_iff` state the two halves of that contrast without
 leaving the reals.
 
+`Gtz.dppPlucker_dominant` turns the law into an inequality a counting argument
+can consume: ONE of the three paired products is at least the sum of the other
+two, and at most twice that sum.  Over the complex numbers only the triangle
+inequalities survive and that dominance fails.
+
 `Gtz.atomPairMinor_eq_minorForm` and `Gtz.atomTripleDet_eq_minorForm` close the
 circle: all three coefficients of a triple, and therefore whether that triple
 dominates, depend on the datum ONLY through the principal minors of the Gram
@@ -1180,6 +1185,89 @@ theorem dppHeron_sq_eq_zero_iff {first second third : ℝ}
     · rw [hone]; ring
     · rw [htwo]; ring
     · rw [hthree]; ring
+
+/-- **THE DEGENERATE TRIANGLE, IN USABLE FORM.**  Three reals in a three term
+relation have squares in which ONE dominates the sum of the other two, and
+never by more than a factor two.  This is the collinearity of the law above,
+written as an inequality that a counting argument can consume. -/
+theorem heron_relation_dominant {first second third : ℝ}
+    (hrel : first - second + third = 0) :
+    (second ^ 2 + third ^ 2 ≤ first ^ 2 ∧ first ^ 2 ≤ 2 * (second ^ 2 + third ^ 2))
+      ∨ (first ^ 2 + third ^ 2 ≤ second ^ 2
+          ∧ second ^ 2 ≤ 2 * (first ^ 2 + third ^ 2))
+      ∨ (first ^ 2 + second ^ 2 ≤ third ^ 2
+          ∧ third ^ 2 ≤ 2 * (first ^ 2 + second ^ 2)) := by
+  have hsecond : second = first + third := by linarith
+  subst hsecond
+  rcases le_or_gt 0 (first * third) with hsign | hsign
+  · exact Or.inr (Or.inl ⟨by nlinarith, by nlinarith [sq_nonneg (first - third)]⟩)
+  · rcases le_or_gt (third * (first + third)) 0 with hbranch | hbranch
+    · exact Or.inl ⟨by nlinarith, by nlinarith [sq_nonneg (first + 2 * third)]⟩
+    · exact Or.inr (Or.inr ⟨by nlinarith, by nlinarith [sq_nonneg (2 * first + third)]⟩)
+
+/-- **THE PLÜCKER DOMINANCE OF THE DETERMINANTAL WEIGHTS.**  For every pivot
+slot and every four other slots, ONE of the three paired products of
+determinantal weights is at least the sum of the other two, and at most twice
+that sum.  Over the complex numbers only the triangle inequalities survive and
+this dominance FAILS, so the statement is a real-only law of the weights that a
+pigeonhole can use directly. -/
+theorem dppPlucker_dominant (atom : Fin 6 → (Fin 3 → ℝ))
+    (pivot slotOne slotTwo slotThree slotFour : Fin 6) :
+    (dppTripleWeight atom pivot slotOne slotThree
+          * dppTripleWeight atom pivot slotTwo slotFour
+        + dppTripleWeight atom pivot slotOne slotFour
+          * dppTripleWeight atom pivot slotTwo slotThree
+        ≤ dppTripleWeight atom pivot slotOne slotTwo
+          * dppTripleWeight atom pivot slotThree slotFour
+      ∧ dppTripleWeight atom pivot slotOne slotTwo
+          * dppTripleWeight atom pivot slotThree slotFour
+        ≤ 2 * (dppTripleWeight atom pivot slotOne slotThree
+            * dppTripleWeight atom pivot slotTwo slotFour
+          + dppTripleWeight atom pivot slotOne slotFour
+            * dppTripleWeight atom pivot slotTwo slotThree))
+    ∨ (dppTripleWeight atom pivot slotOne slotTwo
+          * dppTripleWeight atom pivot slotThree slotFour
+        + dppTripleWeight atom pivot slotOne slotFour
+          * dppTripleWeight atom pivot slotTwo slotThree
+        ≤ dppTripleWeight atom pivot slotOne slotThree
+          * dppTripleWeight atom pivot slotTwo slotFour
+      ∧ dppTripleWeight atom pivot slotOne slotThree
+          * dppTripleWeight atom pivot slotTwo slotFour
+        ≤ 2 * (dppTripleWeight atom pivot slotOne slotTwo
+            * dppTripleWeight atom pivot slotThree slotFour
+          + dppTripleWeight atom pivot slotOne slotFour
+            * dppTripleWeight atom pivot slotTwo slotThree))
+    ∨ (dppTripleWeight atom pivot slotOne slotTwo
+          * dppTripleWeight atom pivot slotThree slotFour
+        + dppTripleWeight atom pivot slotOne slotThree
+          * dppTripleWeight atom pivot slotTwo slotFour
+        ≤ dppTripleWeight atom pivot slotOne slotFour
+          * dppTripleWeight atom pivot slotTwo slotThree
+      ∧ dppTripleWeight atom pivot slotOne slotFour
+          * dppTripleWeight atom pivot slotTwo slotThree
+        ≤ 2 * (dppTripleWeight atom pivot slotOne slotTwo
+            * dppTripleWeight atom pivot slotThree slotFour
+          + dppTripleWeight atom pivot slotOne slotThree
+            * dppTripleWeight atom pivot slotTwo slotFour)) := by
+  have hone : dppTripleWeight atom pivot slotOne slotTwo
+      * dppTripleWeight atom pivot slotThree slotFour
+      = (dppDet3 (atom pivot) (atom slotOne) (atom slotTwo)
+          * dppDet3 (atom pivot) (atom slotThree) (atom slotFour)) ^ 2 := by
+    rw [dppTripleWeight_eq_det3_sq, dppTripleWeight_eq_det3_sq]; ring
+  have htwo : dppTripleWeight atom pivot slotOne slotThree
+      * dppTripleWeight atom pivot slotTwo slotFour
+      = (dppDet3 (atom pivot) (atom slotOne) (atom slotThree)
+          * dppDet3 (atom pivot) (atom slotTwo) (atom slotFour)) ^ 2 := by
+    rw [dppTripleWeight_eq_det3_sq, dppTripleWeight_eq_det3_sq]; ring
+  have hthree : dppTripleWeight atom pivot slotOne slotFour
+      * dppTripleWeight atom pivot slotTwo slotThree
+      = (dppDet3 (atom pivot) (atom slotOne) (atom slotFour)
+          * dppDet3 (atom pivot) (atom slotTwo) (atom slotThree)) ^ 2 := by
+    rw [dppTripleWeight_eq_det3_sq, dppTripleWeight_eq_det3_sq]; ring
+  rw [hone, htwo, hthree]
+  exact heron_relation_dominant
+    (dppDet3_plucker (atom pivot) (atom slotOne) (atom slotTwo) (atom slotThree)
+      (atom slotFour))
 
 /-! ## Layer 10 — the minor coordinates of the residue -/
 
