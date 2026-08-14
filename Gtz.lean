@@ -1937,6 +1937,11 @@ import Gtz.Reduction.SignClashCoverage
 -- clause is free, thus the sign-clash route narrows to three positive
 -- conjuncts whose middle one is the landed positive parity triple.
 import Gtz.Reduction.SignClashParityNarrowing
+
+-- The faithfulness verdict: the five open propositions of the sign-clash
+-- route are each equivalent to the weighted cell, so the lattice is a
+-- restatement and not a reduction.
+import Gtz.Reduction.SignClashFaithfulness
 import Gtz.Design.ExceptionalWitnessDesign
 
 -- Residual threading (phase 4): the census bridges and the bordered-slack converse

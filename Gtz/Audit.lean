@@ -355,6 +355,7 @@ import Gtz.Design.EraseSystem
 import Gtz.Reduction.ForcedSignForcing
 import Gtz.Reduction.SignClashCoverage
 import Gtz.Reduction.SignClashParityNarrowing
+import Gtz.Reduction.SignClashFaithfulness
 import Gtz.Design.ExceptionalWitnessDesign
 import Gtz.Reduction.ResidualThreading
 import Gtz.Reduction.FarkasCapacity
@@ -26211,3 +26212,25 @@ run_cmd do
 #print axioms Gtz.atomTripleOperatorClosed_of_atomTripleBoundary
 #print axioms Gtz.atomTripleOperatorClosed_iff_atomTripleBoundary
 #print axioms Gtz.gtzWeighted_six_three_of_atomTripleOperator
+
+-- The sign-clash lattice is a faithful restatement of the cell.
+#print axioms Gtz.nonneg_atomPairingProduct_of_isExceptional_of_dominates
+#print axioms Gtz.isForcedMinusTriple_of_isExceptional_of_dominates
+#print axioms Gtz.isSignClashTriple_of_isExceptional_of_dominates
+#print axioms Gtz.dominates_iff_traceParityTie_of_isExceptional
+#print axioms Gtz.exists_ordered_dominates_of_gtzWeighted_six_three
+#print axioms Gtz.traceParityTieClash_of_gtzWeighted_six_three
+#print axioms Gtz.ownSignForcedClash_of_gtzWeighted_six_three
+#print axioms Gtz.ownSignForcedClashOnClean_of_gtzWeighted_six_three
+#print axioms Gtz.eraseConsistentForcedClashOnClean_of_gtzWeighted_six_three
+#print axioms Gtz.genericExceptionalSignClash_of_gtzWeighted_six_three
+#print axioms Gtz.traceParityTieClash_iff_gtzWeighted_six_three
+#print axioms Gtz.ownSignForcedClash_iff_gtzWeighted_six_three
+#print axioms Gtz.ownSignForcedClashOnClean_iff_gtzWeighted_six_three
+#print axioms Gtz.eraseConsistentForcedClashOnClean_iff_gtzWeighted_six_three
+#print axioms Gtz.genericExceptionalSignClash_iff_gtzWeighted_six_three
+#print axioms Gtz.signClashLattice_iff
+#print axioms Gtz.deficitFreeResidue_iff_gtzWeighted_six_three
+#print axioms Gtz.sum_weight_mul_weight_mul_pairMinor_erase
+#print axioms Gtz.sum_weight_mul_weight_erase
+#print axioms Gtz.exists_pairMinor_gt_one
