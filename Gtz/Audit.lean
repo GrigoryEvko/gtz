@@ -814,6 +814,7 @@ import Gtz.Wave.AtomCoherentTriangle
 import Gtz.Wave.AtomIcosahedralWitness
 import Gtz.Wave.AtomTriangleEnergy
 import Gtz.Wave.AtomBoundaryWitness
+import Gtz.Wave.InterlacingSelection
 import Gtz.Wave.AtomMassOneLadder
 import Gtz.Wave.AtomVertexSelection
 import Gtz.Wave.AtomMarginalFoil
