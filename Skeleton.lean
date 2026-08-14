@@ -1,11 +1,15 @@
 import Skeleton.Report
+import Skeleton.Assembly
 
 /-!
 # `Skeleton` -- the GTZ obligation scaffold
 
 Library root.  `Skeleton.Report` transitively imports everything else, and
 elaborating it prints the current frontier and runs the anti-drift gate, so
-building this target IS the frontier check.
+building this target IS the frontier check.  `Skeleton.Assembly` carries the
+endgame composition map and its own exact-frontier gates, so building this
+target also checks that every banked composition still reaches exactly the
+obligations it claims.
 
 This library is deliberately NOT under module root `Gtz`.  `Gtz/Audit.lean` ends
 with a sweep that enumerates every theorem whose module root is `Gtz` and fails
