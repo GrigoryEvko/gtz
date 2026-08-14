@@ -792,6 +792,74 @@ theorem exists_coherent_atomTriple_of_pick (atom : Fin 6 → (Fin 3 → ℝ))
   rw [atomTriangleCycle_eq_triangleProduct]
   exact hproduct
 
+/-- **THE PARITY SUPPLY AT A PRESCRIBED SLOT.**  Every slot of six real atoms
+of rank three lies on a coherent triangle.  This is strictly stronger than
+`Gtz.exists_coherent_atomTriple`, because the residue names its pivot first
+and the triangle is then supplied around that pivot.
+
+The argument switches at the prescribed slot, which makes every edge to it
+negative, and then reads the obtuse bound on the five remaining atoms: at
+most `3 + 1` vectors of rank three pair strictly negatively in pairs, thus
+some pair of the five does not, and the triangle through the prescribed slot
+carries a nonnegative cycle.  A vanishing edge at the prescribed slot
+short-circuits the argument, because it makes every cycle through that slot
+vanish, thus the degenerate branch is routed and not excluded. -/
+theorem exists_coherent_atomTriple_at (atom : Fin 6 → (Fin 3 → ℝ)) (base : Fin 6) :
+    ∃ slotOne slotTwo : Fin 6,
+      base ≠ slotOne ∧ base ≠ slotTwo ∧ slotOne ≠ slotTwo
+        ∧ 0 ≤ atomTriangleCycle atom base slotOne slotTwo := by
+  classical
+  by_cases hzero : ∃ other : Fin 6, other ≠ base ∧ atomGram atom base other = 0
+  · obtain ⟨other, hother, hgram⟩ := hzero
+    have hroom : (({base, other} : Finset (Fin 6))ᶜ).Nonempty := by
+      rw [← Finset.card_pos, Finset.card_compl, Fintype.card_fin]
+      have hpair : ({base, other} : Finset (Fin 6)).card ≤ 2 :=
+        (Finset.card_insert_le _ _).trans (by simp)
+      omega
+    obtain ⟨third, hthirdMem⟩ := hroom
+    simp only [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton,
+      not_or] at hthirdMem
+    refine ⟨other, third, Ne.symm hother, Ne.symm hthirdMem.1,
+      fun heq => hthirdMem.2 heq.symm, ?_⟩
+    simp only [atomTriangleCycle, hgram, zero_mul, le_refl]
+  · push Not at hzero
+    have hsq : ∀ slot : Fin 6, switchSign atom base slot ^ 2 = 1 :=
+      switchSign_sq_eq_one atom base
+    have hcard : Fintype.card {y : Fin 6 // y ≠ base} = 5 := by
+      have hcompl := Fintype.card_subtype_compl (fun y : Fin 6 => y = base)
+      rw [Fintype.card_subtype_eq base, Fintype.card_fin] at hcompl
+      exact hcompl
+    have hnotObtuse : ¬ IsPairwiseObtuse
+        (fun index : {y : Fin 6 // y ≠ base} =>
+          atomSwitch atom (switchSign atom base) index.val) := by
+      intro hobtuse
+      have hbound := card_le_succ_of_isPairwiseObtuse hobtuse
+      rw [hcard, Fintype.card_fin] at hbound
+      omega
+    simp only [IsPairwiseObtuse] at hnotObtuse
+    push Not at hnotObtuse
+    obtain ⟨first, second, hne, hdot⟩ := hnotObtuse
+    have hfirstNe : first.val ≠ base := first.property
+    have hsecondNe : second.val ≠ base := second.property
+    have hvalNe : first.val ≠ second.val := fun heq => hne (Subtype.ext heq)
+    have hbaseFirst : atomGram (atomSwitch atom (switchSign atom base)) base first.val
+        < 0 := by
+      rw [atomGram_atomSwitch, switchSign_base, one_mul]
+      exact switchSign_mul_basePairing_neg (hzero first.val hfirstNe) hfirstNe
+    have hbaseSecond : atomGram (atomSwitch atom (switchSign atom base)) base second.val
+        < 0 := by
+      rw [atomGram_atomSwitch, switchSign_base, one_mul]
+      exact switchSign_mul_basePairing_neg (hzero second.val hsecondNe) hsecondNe
+    have hcross : 0 ≤ atomGram (atomSwitch atom (switchSign atom base))
+        first.val second.val := hdot
+    have hswitched : 0 ≤ atomTriangleCycle (atomSwitch atom (switchSign atom base))
+        base first.val second.val := by
+      simp only [atomTriangleCycle]
+      exact mul_nonneg (mul_pos_of_neg_of_neg hbaseFirst hbaseSecond).le hcross
+    rw [atomTriangleCycle_atomSwitch atom (hsq base) (hsq first.val) (hsq second.val)]
+      at hswitched
+    exact ⟨first.val, second.val, Ne.symm hfirstNe, Ne.symm hsecondNe, hvalNe, hswitched⟩
+
 /-- **THE FIELD DOOR, AS A NUMBER.**  Six atoms sit strictly below the
 complex sign-forcing threshold `2 * rank + 2 = 8` of
 `Gtz.exists_pos_realTriangleProduct_of_complex_card_ge`, while they sit above
@@ -869,6 +937,66 @@ theorem exists_strong_edge_of_no_dominating_triple
       (hlive slotOne) (hlive slotTwo) (hlive slotThree)
       (hcontra slotOne slotTwo honeTwo) (hcontra slotOne slotThree honeThree)
       (hcontra slotTwo slotThree htwoThree)
+  exact hfail pivot firstSlot secondSlot hpivotFirst hpivotSecond hfirstSecond
+    ⟨hdiag, hminor, hcross⟩
+
+/-- **THE COUNTEREXAMPLE CARRIES A FLAT COHERENT TRIANGLE AT EVERY SLOT.**  The
+prescribed-slot supply upgrades the single constraint of
+`Gtz.exists_flat_coherent_triangle_of_no_dominating_triple` to six of them, one
+through each slot, and each one is available with no hypothesis on the
+scales. -/
+theorem exists_flat_coherent_triangle_at_of_no_dominating_triple
+    (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ) (base : Fin 6)
+    (hfail : ∀ pivot slotOne slotTwo : Fin 6, pivot ≠ slotOne → pivot ≠ slotTwo →
+      slotOne ≠ slotTwo → ¬ AtomTripleDeflates atom scale pivot slotOne slotTwo) :
+    ∃ slotOne slotTwo : Fin 6,
+      base ≠ slotOne ∧ base ≠ slotTwo ∧ slotOne ≠ slotTwo
+        ∧ 0 ≤ atomTriangleCycle atom base slotOne slotTwo
+        ∧ (atomTriangleCycle atom base slotOne slotTwo = 0
+            ∨ atomTriangleGap atom scale base slotOne slotTwo ≤ 0
+            ∨ atomTriangleGap atom scale slotOne base slotTwo ≤ 0
+            ∨ atomTriangleGap atom scale slotTwo base slotOne ≤ 0) := by
+  obtain ⟨slotOne, slotTwo, honeBase, htwoBase, honeTwo, hcycle⟩ :=
+    exists_coherent_atomTriple_at atom base
+  refine ⟨slotOne, slotTwo, honeBase, htwoBase, honeTwo, hcycle, ?_⟩
+  by_contra hcontra
+  push Not at hcontra
+  obtain ⟨hcycleNe, hone, htwo, hthree⟩ := hcontra
+  have hcyclePos : 0 < atomTriangleCycle atom base slotOne slotTwo :=
+    lt_of_le_of_ne hcycle (Ne.symm hcycleNe)
+  obtain ⟨pivot, firstSlot, secondSlot, hpivotFirst, hpivotSecond, hfirstSecond,
+    hdiag, hminor, hcross⟩ :=
+    exists_deflated_pair_of_coherentGaps honeBase htwoBase honeTwo hcyclePos
+      hone htwo hthree
+  exact hfail pivot firstSlot secondSlot hpivotFirst hpivotSecond hfirstSecond
+    ⟨hdiag, hminor, hcross⟩
+
+/-- **THE COUNTEREXAMPLE CARRIES A STRONG EDGE IN EVERY COHERENT TRIANGLE.**
+At a datum whose triples never deflate and whose every slot is live, the
+coherent triangle supplied at EACH slot carries an edge that fails the
+half-box.  Six such triangles are available, one through each slot, so the
+strong edges cannot all hide in one corner of the configuration. -/
+theorem exists_strong_edge_in_coherent_triangle_of_no_dominating_triple
+    (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ) (base : Fin 6)
+    (hlive : ∀ slot : Fin 6, 0 < atomShiftedDiag atom scale slot)
+    (hfail : ∀ pivot slotOne slotTwo : Fin 6, pivot ≠ slotOne → pivot ≠ slotTwo →
+      slotOne ≠ slotTwo → ¬ AtomTripleDeflates atom scale pivot slotOne slotTwo) :
+    ∃ slotOne slotTwo : Fin 6,
+      base ≠ slotOne ∧ base ≠ slotTwo ∧ slotOne ≠ slotTwo
+        ∧ 0 ≤ atomTriangleCycle atom base slotOne slotTwo
+        ∧ (atomTriangleSlack atom scale base slotOne ≤ 0
+            ∨ atomTriangleSlack atom scale base slotTwo ≤ 0
+            ∨ atomTriangleSlack atom scale slotOne slotTwo ≤ 0) := by
+  obtain ⟨slotOne, slotTwo, honeBase, htwoBase, honeTwo, hcycle⟩ :=
+    exists_coherent_atomTriple_at atom base
+  refine ⟨slotOne, slotTwo, honeBase, htwoBase, honeTwo, hcycle, ?_⟩
+  by_contra hcontra
+  push Not at hcontra
+  obtain ⟨hbaseOne, hbaseTwo, hfar⟩ := hcontra
+  obtain ⟨pivot, firstSlot, secondSlot, hpivotFirst, hpivotSecond, hfirstSecond,
+    hdiag, hminor, hcross⟩ :=
+    exists_deflated_pair_of_coherentHalfBox honeBase htwoBase honeTwo hcycle
+      (hlive base) (hlive slotOne) (hlive slotTwo) hbaseOne hbaseTwo hfar
   exact hfail pivot firstSlot secondSlot hpivotFirst hpivotSecond hfirstSecond
     ⟨hdiag, hminor, hcross⟩
 

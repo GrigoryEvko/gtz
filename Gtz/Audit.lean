@@ -449,6 +449,7 @@ import Gtz.Reduction.PolarWitnessSchur
 import Gtz.Reduction.PolarCrossWitness
 import Gtz.Reduction.PolarPlaneTurn
 import Gtz.Reduction.PolarCircularOrder
+import Gtz.Reduction.PolarShadowFloor
 import Gtz.Reduction.FrameDropDescent
 import Gtz.Design.StressFreeMatroidStratification
 import Gtz.Design.StressFreeClassSplit
@@ -25710,10 +25711,13 @@ run_cmd do
 #print axioms Gtz.exists_coherent_atomTriple
 #print axioms Gtz.exists_pos_coherent_atomTriple
 #print axioms Gtz.exists_coherent_atomTriple_of_pick
+#print axioms Gtz.exists_coherent_atomTriple_at
 #print axioms Gtz.six_lt_complexSignForcing_threshold
 #print axioms Gtz.AtomTripleDeflates
 #print axioms Gtz.exists_flat_coherent_triangle_of_no_dominating_triple
 #print axioms Gtz.exists_strong_edge_of_no_dominating_triple
+#print axioms Gtz.exists_flat_coherent_triangle_at_of_no_dominating_triple
+#print axioms Gtz.exists_strong_edge_in_coherent_triangle_of_no_dominating_triple
 #print axioms Gtz.atomPairMinor_neg_of_parallel
 #print axioms Gtz.coherentGaps_atomSwitch_iff
 
@@ -25757,3 +25761,77 @@ run_cmd do
 #print axioms Gtz.icosaFrameAtom_diagEnergy
 #print axioms Gtz.atomTripleDet_pos_of_lightCoherentTriangle
 #print axioms Gtz.exists_deflated_pair_of_lightCoherentTriangle
+
+-- the shadow floor of the pole plane and the coupling budget
+#print axioms Gtz.sq_sum_weight_mul_le
+#print axioms Gtz.sq_sum_weight_le_of_cap
+#print axioms Gtz.exists_erase_pair_sum_ge
+#print axioms Gtz.weight_mul_read_sq_le
+#print axioms Gtz.sum_erase_weight_eq
+#print axioms Gtz.sum_erase_weight_pos
+#print axioms Gtz.sum_erase_planeShadowSq_ge
+#print axioms Gtz.sum_erase_polarPairing_sq_ge
+#print axioms Gtz.sum_erase_read_sq_ge
+#print axioms Gtz.polarComplementCover
+#print axioms Gtz.polarComplementMargin_pos
+#print axioms Gtz.exists_heavyShadowTriple
+#print axioms Gtz.polarShadowAdjugate_eq_coupling
+#print axioms Gtz.polarShadowAdjugate_le_of_cover
+#print axioms Gtz.polarPlaneDet_ge_of_traceGram
+#print axioms Gtz.polarShadowAdjugate_lt_of_polarCouplingBudget
+#print axioms Gtz.not_isTie_of_polarCouplingBudget
+#print axioms Gtz.polarCouplingVec_dotProduct_self_eq_signedPair
+#print axioms Gtz.polarCouplingSq_triple
+#print axioms Gtz.two_mul_polarSignedPair_le
+#print axioms Gtz.polarCouplingSq_lt_of_polarWrapping
+#print axioms Gtz.exists_saturating_subset_of_isTie
+#print axioms Gtz.exists_saturating_subset_polarCover_of_isTie
+#print axioms Gtz.not_posDef_saturating_subset_of_isTie
+#print axioms Gtz.PolarTieSaturationBound
+#print axioms Gtz.polarTieSaturationBound_of_isTie
+#print axioms Gtz.PolarHeavyShadowSelection
+#print axioms Gtz.polarShadowSchurSelection_of_polarHeavyShadowSelection
+#print axioms Gtz.hingeHoldsAtSize_of_polarHeavyShadowSelection
+#print axioms Gtz.thresholdArms_rank_three_of_polarHeavyShadowSelection
+#print axioms Gtz.gtzWeighted_six_three_of_polarHeavyShadowSelection
+#print axioms Gtz.gtzWeightedAll_three_of_polarHeavyShadowSelection
+#print axioms Gtz.not_polarHeavyShadowSelection_five
+#print axioms Gtz.PolarShadowBudgetSelection
+#print axioms Gtz.polarShadowSchurSelection_of_polarShadowBudgetSelection
+#print axioms Gtz.hingeHoldsAtSize_of_polarShadowBudgetSelection
+#print axioms Gtz.thresholdArms_rank_three_of_polarShadowBudgetSelection
+#print axioms Gtz.gtzWeighted_six_three_of_polarShadowBudgetSelection
+#print axioms Gtz.gtzWeightedAll_three_of_polarShadowBudgetSelection
+#print axioms Gtz.not_polarShadowBudgetSelection_five
+#print axioms Gtz.PolarWrapBudgetSelection
+#print axioms Gtz.polarWrapSelection_of_polarWrapBudgetSelection
+#print axioms Gtz.polarShadowBudgetSelection_of_polarWrapBudgetSelection
+#print axioms Gtz.gtzWeighted_six_three_of_polarWrapBudgetSelection
+#print axioms Gtz.gtzWeightedAll_three_of_polarWrapBudgetSelection
+#print axioms Gtz.not_polarWrapBudgetSelection_five
+#print axioms Gtz.sixSplitDiamondDesign_spares_polarShadowFloor
+#print axioms Gtz.PolarComplementFloor
+#print axioms Gtz.polarComplementFloor_holds
+#print axioms Gtz.PolarTiltSelectionFloor
+#print axioms Gtz.polarTiltSelectionFloor_of_polarTiltSelectionCircular
+#print axioms Gtz.polarTiltSelectionFloor_of_polarTiltSelection
+#print axioms Gtz.hingeHoldsAtSize_of_polarTiltFloor
+#print axioms Gtz.stressFreeArmAt_of_polarTiltFloor
+#print axioms Gtz.balancedArmAt_of_polarTiltFloor
+#print axioms Gtz.degenerateArmAt_of_polarTiltFloor
+#print axioms Gtz.balancedPartialSupportArmAt_of_polarTiltFloor
+#print axioms Gtz.balancedFullSupportArmAt_of_polarTiltFloor
+#print axioms Gtz.degenerateHyperplaneCover_of_polarTiltFloor
+#print axioms Gtz.polarTiltFloor_closes_every_arm
+#print axioms Gtz.thresholdCellHingeRankFourAndUp_of_polarTiltFloor
+#print axioms Gtz.subThresholdBandHinge_of_polarTiltFloor
+#print axioms Gtz.sharpWindowHinge_of_polarTiltFloor
+#print axioms Gtz.thresholdStressFreeArm_of_polarTiltFloor
+#print axioms Gtz.thresholdBalancedArm_of_polarTiltFloor
+#print axioms Gtz.thresholdDegenerateArm_of_polarTiltFloor
+#print axioms Gtz.hingeHoldsAtSize_six_three_of_polarTiltFloor
+#print axioms Gtz.thresholdArms_rank_three_of_polarTiltFloor
+#print axioms Gtz.gtzWeighted_six_three_of_polarTiltFloor
+#print axioms Gtz.gtzWeightedAll_three_of_polarTiltFloor
+#print axioms Gtz.not_polarTiltSelectionFloor_five_three
+#print axioms Gtz.sixSplitDiamondDesign_spares_polarTiltFloor
