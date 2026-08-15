@@ -573,6 +573,7 @@ import Gtz.Design.AllHeavyNegativeAggregate
 import Gtz.Design.BarycentricOpenCellWitness
 import Gtz.Design.KFourLeverageRefuter
 import Gtz.Design.KFourBandLiveness
+import Gtz.Design.ChartReadingLaw
 import Gtz.Design.KFourTightLocus
 import Gtz.Design.FreeMassBudgetDischarge
 import Gtz.Design.KFourDescentLadder
@@ -27783,3 +27784,17 @@ run_cmd do
 #print axioms Gtz.heavyPairRefuter_gap_oneTwoFive_det_pos
 #print axioms Gtz.heavyPairRefuter_gap_oneTwoFive_not_posDef
 #print axioms Gtz.posDef_of_pencilGate_det_ge
+-- The chart reading law: the weighted-mean reading bound, the pointwise
+-- strictness law, and the covering criterion, with the three-lines instance.
+#print axioms Gtz.dotProduct_directionChartGap_mulVec_eq
+#print axioms Gtz.massReading_eq_weight_mul_kappaReading
+#print axioms Gtz.massReading_le_kappaReading
+#print axioms Gtz.exists_kappaReading_ge_massReading
+#print axioms Gtz.kappaReading_flat_of_massReading_eq
+#print axioms Gtz.dotProduct_directionChartGap_nonneg_of_max_mem
+#print axioms Gtz.dotProduct_directionChartGap_pos_of_max_mem
+#print axioms Gtz.posDef_directionChartGap_of_readingCover
+#print axioms Gtz.threeLinesDirection_span
+#print axioms Gtz.posDef_directionChartGap_threeLines_of_readingCover
+#print axioms Gtz.directionChartHasStrictTriple_threeLines_of_cover
+#print axioms Gtz.exists_selection_nonneg_reading

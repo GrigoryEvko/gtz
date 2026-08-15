@@ -488,6 +488,13 @@ import Gtz.Quantitative.SwitchingTwoGraph
 --   THE REALNESS INEQUALITY Gtz.two_mul_abs_atomPairingProduct_le_of_incoherent IS SLACK.  It
 --     is an equality EXACTLY on the coplanar locus and nowhere else -- at the tetrahedron it
 --     reads 2 <= 18 and at the icosahedron 54/(5*sqrt 5) <= 54/5.  A true constraint, NOT a
+-- The chart reading law and the covering criterion. The total mass reading is
+-- a weighted mean of the kappa readings, so no probe is negative for every
+-- selection, a maximal selection of two or more labels is pointwise strict,
+-- and a selection that reaches the maximal kappa reading at every probe is
+-- positive definite outright. The three-lines instance reduces the chart
+-- obligation to a covering selection about six explicit quadratic forms.
+import Gtz.Design.ChartReadingLaw
 --     finished lever.
 --   NOTHING OVER THE COMPLEX NUMBERS IS FORMALISED.  The prose records that the same expansion
 --     carries 2*Re(p_ab p_bc p_ca) over C, so the two-valuedness of a real Gram determinant is
