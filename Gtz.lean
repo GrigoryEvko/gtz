@@ -3840,3 +3840,10 @@ import Gtz.Wave.OneLineSurvivorWiring
 -- doubly uncovered K4 knife band.  Both sharpenings are kernel-equivalent to
 -- their former public statements.
 import Gtz.Wave.TenthLightChartWiring
+-- The budget cover criterion. An allocated Cauchy-Schwarz step converts each
+-- outside label's mass demand into loads on the selected triple, and strict
+-- load-below-budget bounds give positive definiteness outright. The two
+-- canonical three-lines cells land with exact rational kernel witnesses, and
+-- the consumer joint reduces the committed A2 obligation to a per-point
+-- strict triple on the tenth-heavy fundamental domain.
+import Gtz.Design.BudgetCoverCriterion

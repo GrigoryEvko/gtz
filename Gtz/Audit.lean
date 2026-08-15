@@ -853,6 +853,7 @@ import Gtz.Wave.TenthLightPatternWiring
 import Gtz.Wave.TenthHeavyLineResidualWiring
 import Gtz.Wave.OneLineSurvivorWiring
 import Gtz.Wave.TenthLightChartWiring
+import Gtz.Design.BudgetCoverCriterion
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27827,3 +27828,24 @@ run_cmd do
 #print axioms Gtz.posDef_directionChartGap_threeLines_of_readingCover
 #print axioms Gtz.directionChartHasStrictTriple_threeLines_of_cover
 #print axioms Gtz.exists_selection_nonneg_reading
+-- The budget cover criterion: the allocated Cauchy-Schwarz core, the
+-- certificate, the six three-lines expansions, the two cells, the two exact
+-- rational witnesses, and the registry joint.
+#print axioms Gtz.allocated_readingSq_le
+#print axioms Gtz.outsideDemand_le_allocation
+#print axioms Gtz.posDef_directionChartGap_of_budgetCertificate
+#print axioms Gtz.threeLines_expansion_insertTwo
+#print axioms Gtz.threeLines_expansion_insertFour
+#print axioms Gtz.threeLines_expansion_insertFive
+#print axioms Gtz.threeLines_expansion_vertexZero
+#print axioms Gtz.threeLines_expansion_vertexOne
+#print axioms Gtz.threeLines_expansion_vertexThree
+#print axioms Gtz.posDef_threeLines_vertexCell
+#print axioms Gtz.posDef_threeLines_freeCell
+#print axioms Gtz.freeCellWitnessMass
+#print axioms Gtz.uniformWitnessWeight
+#print axioms Gtz.freeCell_certificate_witness
+#print axioms Gtz.vertexCellWitnessWeight
+#print axioms Gtz.uniformWitnessMass
+#print axioms Gtz.vertexCell_certificate_witness
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavy_of_heavyStrictTriple
