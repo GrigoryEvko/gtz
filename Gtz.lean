@@ -3957,6 +3957,11 @@ import Gtz.Design.GershgorinWashout
 -- weak path supplies a nonzero kernel direction of the actual gap.  The exact
 -- A3 registry formula consumes the resulting conditional saturation ledger.
 import Gtz.Wave.KFourDualSaturation
+-- Saturate the five earlier K4 paths as well: the band tree and four pendants.
+-- Joined to the seven-path ledger above, all twelve path trees now carry exact
+-- nonnegative Z-kernels pulled back to actual chart-gap kernel directions.  The
+-- four vertex stars are the remaining sign-frustrated tree type.
+import Gtz.Wave.KFourPriorPathDualSaturation
 -- The chart gap is antitone in each selected weight, so strictness moves down
 -- in weight and a covering of the chart slice covers the full cone of weight
 -- sum at most one. The probe behind the module: the K4 covering fails on the

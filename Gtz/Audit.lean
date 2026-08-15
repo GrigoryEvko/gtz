@@ -872,6 +872,7 @@ import Gtz.Wave.KFourAllTreeZMatrixWiring
 import Gtz.Wave.KFourFamilySelectionWiring
 import Gtz.Design.GershgorinWashout
 import Gtz.Wave.KFourDualSaturation
+import Gtz.Wave.KFourPriorPathDualSaturation
 import Gtz.Design.ChartWeightMonotone
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
@@ -28490,3 +28491,40 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedMissingPathSaturated_iff_allTreeZObstructed
 #print axioms Gtz.kFourKnifeBandRefinedMissingPathSaturated_iff
 #print axioms Gtz.kFourFamilySelection_iff_missingPathSaturated
+-- Exact pullbacks for the five prior K4 paths.
+#print axioms Gtz.kFourBand134ZMatrix
+#print axioms Gtz.kFourBand134Probe
+#print axioms Gtz.dotProduct_kFourBand134Gap_probe_eq_zMatrix
+#print axioms Gtz.kFourBand134Probe_ne_zero_of_ne_zero
+#print axioms Gtz.kFourBand134DualTightData_of_blind_of_weak
+#print axioms Gtz.kFourPendant023ZMatrix
+#print axioms Gtz.kFourPendant023Probe
+#print axioms Gtz.dotProduct_kFourPendant023Gap_probe_eq_zMatrix
+#print axioms Gtz.kFourPendant023Probe_ne_zero_of_ne_zero
+#print axioms Gtz.kFourPendant023DualTightData_of_blind_of_weak
+#print axioms Gtz.kFourPendant123ZMatrix
+#print axioms Gtz.kFourPendant123Probe
+#print axioms Gtz.dotProduct_kFourPendant123Gap_probe_eq_zMatrix
+#print axioms Gtz.kFourPendant123Probe_ne_zero_of_ne_zero
+#print axioms Gtz.kFourPendant123DualTightData_of_blind_of_weak
+#print axioms Gtz.kFourPendant234ZMatrix
+#print axioms Gtz.kFourPendant234Probe
+#print axioms Gtz.dotProduct_kFourPendant234Gap_probe_eq_zMatrix
+#print axioms Gtz.kFourPendant234Probe_ne_zero_of_ne_zero
+#print axioms Gtz.kFourPendant234DualTightData_of_blind_of_weak
+#print axioms Gtz.kFourPendant235ZMatrix
+#print axioms Gtz.kFourPendant235Probe
+#print axioms Gtz.dotProduct_kFourPendant235Gap_probe_eq_zMatrix
+#print axioms Gtz.kFourPendant235Probe_ne_zero_of_ne_zero
+#print axioms Gtz.kFourPendant235DualTightData_of_blind_of_weak
+-- The complete twelve-path ledger and exact all-path A3 formula.
+#print axioms Gtz.KFourPriorPathDualSaturationLedger
+#print axioms Gtz.kFourPriorPathDualSaturationLedger_of_allTreeBlind
+#print axioms Gtz.KFourAllPathDualSaturationLedger
+#print axioms Gtz.kFourAllPathDualSaturationLedger_of_allTreeBlind
+#print axioms Gtz.KFourKnifeBandRefinedAllPathSaturatedWeakToStrict
+#print axioms Gtz.allPathSaturatedKFourKnifeBandRefined_of_missingPathSaturated
+#print axioms Gtz.missingPathSaturatedKFourKnifeBandRefined_of_allPathSaturated
+#print axioms Gtz.kFourKnifeBandRefinedAllPathSaturated_iff_missingPathSaturated
+#print axioms Gtz.kFourKnifeBandRefinedAllPathSaturated_iff
+#print axioms Gtz.kFourFamilySelection_iff_allPathSaturated
