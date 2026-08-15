@@ -999,6 +999,7 @@ import Gtz.LinAlg.ProjectionDiagonalDominance
 import Gtz.Design.PivotThirdDominance
 import Gtz.Wave.ThreeLinesPivotThirdWiring
 import Gtz.Wave.TransversalLoadLedger
+import Gtz.Design.NoStrictPivotLedger
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30405,3 +30406,13 @@ run_cmd do
 #print axioms Gtz.chartTieFreeThreeLines_pivotThirdBlind_iff
 #print axioms Gtz.exists_pivot_ge_third_of_not_pivotThirdCellFires
 #print axioms Gtz.three_le_card_fullPivot_lt_one_threeLines
+
+-- The pivot ledger of a no-strict design: the small-pivot set, its membership
+-- reading, the ledger with the cap and the threshold free, the quarter-cap
+-- ledger, the triple reading, and the projection counting.
+#print axioms Gtz.lowPivotSelection
+#print axioms Gtz.mem_lowPivotSelection
+#print axioms Gtz.card_lowPivot_le_two_of_noStrict_general
+#print axioms Gtz.card_lowPivot_le_two_of_noStrict
+#print axioms Gtz.exists_pivot_gt_quarter_of_noStrict
+#print axioms Gtz.card_highLeverage_le_of_noCovering

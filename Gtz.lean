@@ -4770,3 +4770,10 @@ import Gtz.LinAlg.ProjectionDiagonalDominance
 import Gtz.Wave.TransversalLoadLedger
 import Gtz.Design.PivotThirdDominance
 import Gtz.Wave.ThreeLinesPivotThirdWiring
+
+-- What a counterexample must look like.  The quarter-cap cell says three labels
+-- of small pivot leave a strictly dominating selection, so a design with no
+-- strictly dominating card-three subset carries at most two such labels.  Four
+-- of its six labels then hold pivot above a quarter, and every triple of it
+-- holds one.  The same counting runs at the projection.
+import Gtz.Design.NoStrictPivotLedger
