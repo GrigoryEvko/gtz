@@ -4045,6 +4045,11 @@ import Gtz.Design.StarOnlyLaw
 -- star positive at both kernel directions. The vacuity target names the
 -- closure route against the atlas silence of the antecedent stack.
 import Gtz.Design.StarCorankClosure
+-- The star-wall family coordinates and the balanced case of the vacuity
+-- target.  The six wall equations pin the triangle masses and the tree boost
+-- identities by a positive axis, and the balanced case fires the vertex-a
+-- star cell of the minor atlas with a determinant slack factor near three.
+import Gtz.Design.StarWallVacuity
 -- Wire the two final K4 walls to their strongest landed interfaces.  The
 -- positive-definite window now carries all four large pivots; the singular
 -- vertex star carries a nonnegative rank-one gap and two distinct repair

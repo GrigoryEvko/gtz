@@ -884,6 +884,7 @@ import Gtz.Wave.KFourTreeWindowResidual
 import Gtz.Design.WallCollapse
 import Gtz.Design.StarOnlyLaw
 import Gtz.Design.StarCorankClosure
+import Gtz.Design.StarWallVacuity
 import Gtz.Wave.KFourTreeWindowCorankReduction
 import Gtz.Wave.KFourPathCorankCollapse
 import Gtz.Wave.KFourStarWallWiring
@@ -28803,3 +28804,8 @@ run_cmd do
 #print axioms Gtz.corankTwo_star_candidate_readings
 #print axioms Gtz.KFourStarWallAtlasFires
 #print axioms Gtz.kFourStarWall_empty_of_atlasFires
+-- The star-wall family coordinates and the balanced vacuity case.
+#print axioms Gtz.kFourGaugeStarWall_positive_axis
+#print axioms Gtz.kFourGaugeStarWall_family
+#print axioms Gtz.kFourStarACell_fires_of_wall_balanced
+#print axioms Gtz.kFourAtlas_fires_of_wall_balanced
