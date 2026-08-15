@@ -29117,3 +29117,5 @@ run_cmd do
 #print axioms Gtz.chartLadderPivot_univ_lt_one_of_notMem
 #print axioms Gtz.exists_mem_pivot_univ_lt_one_of_card_four
 #print axioms Gtz.kFourMatching_insert_mem_spanningTreeList
+#print axioms Gtz.transversalStrict_iff_invariants
+#print axioms Gtz.twoMeetingLinesTransversalStrict_iff_invariants

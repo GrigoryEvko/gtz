@@ -196,4 +196,63 @@ theorem allTransversalsFail_prices_four (design : WeightedDesign 6 3) {cap : ℝ
     transversalFailure_prices_twoThreeFive design hcap h235,
     transversalFailure_prices_twoFourFive design hcap h245⟩
 
+/-! ## The four transversal conditions, made explicit -/
+
+/-- The three coordinate-free invariants of a transversal's gap: the leverage
+sum, the pair-area sum, and the bracket.  Strict domination of the transversal
+is three polynomial inequalities in exactly these. -/
+theorem transversalStrict_iff_invariants (design : WeightedDesign 6 3)
+    {firstLabel secondLabel thirdLabel : Fin 6}
+    (hfs : firstLabel ≠ secondLabel) (hft : firstLabel ≠ thirdLabel)
+    (hst : secondLabel ≠ thirdLabel) :
+    (subsetSum design ({firstLabel, secondLabel, thirdLabel} : Finset (Fin 6)) - 1).PosDef
+      ↔ 0 < tripleLeverageSum (design.atom firstLabel) (design.atom secondLabel)
+              (design.atom thirdLabel) - 3
+        ∧ 0 < triplePairAreaSum (design.atom firstLabel) (design.atom secondLabel)
+                (design.atom thirdLabel)
+              - 2 * tripleLeverageSum (design.atom firstLabel) (design.atom secondLabel)
+                (design.atom thirdLabel) + 3
+        ∧ 0 < atomBracket design firstLabel secondLabel thirdLabel ^ 2
+              - triplePairAreaSum (design.atom firstLabel) (design.atom secondLabel)
+                (design.atom thirdLabel)
+              + tripleLeverageSum (design.atom firstLabel) (design.atom secondLabel)
+                (design.atom thirdLabel) - 1 :=
+  subsetSum_posDef_iff_tripleInvariants design firstLabel secondLabel thirdLabel
+    hfs hft hst
+
+/-- **THE FOUR CONDITIONS.**  The two-meeting-lines conclusion, spelled out: the
+residual asks that one of four explicit polynomial triples holds, in the
+leverages, pair areas and brackets of the four transversals. -/
+theorem twoMeetingLinesTransversalStrict_iff_invariants (design : WeightedDesign 6 3) :
+    TwoMeetingLinesTransversalStrict design ↔
+      ((0 < tripleLeverageSum (design.atom 1) (design.atom 3) (design.atom 5) - 3
+        ∧ 0 < triplePairAreaSum (design.atom 1) (design.atom 3) (design.atom 5)
+            - 2 * tripleLeverageSum (design.atom 1) (design.atom 3) (design.atom 5) + 3
+        ∧ 0 < atomBracket design 1 3 5 ^ 2
+            - triplePairAreaSum (design.atom 1) (design.atom 3) (design.atom 5)
+            + tripleLeverageSum (design.atom 1) (design.atom 3) (design.atom 5) - 1)
+      ∨ (0 < tripleLeverageSum (design.atom 1) (design.atom 4) (design.atom 5) - 3
+        ∧ 0 < triplePairAreaSum (design.atom 1) (design.atom 4) (design.atom 5)
+            - 2 * tripleLeverageSum (design.atom 1) (design.atom 4) (design.atom 5) + 3
+        ∧ 0 < atomBracket design 1 4 5 ^ 2
+            - triplePairAreaSum (design.atom 1) (design.atom 4) (design.atom 5)
+            + tripleLeverageSum (design.atom 1) (design.atom 4) (design.atom 5) - 1)
+      ∨ (0 < tripleLeverageSum (design.atom 2) (design.atom 3) (design.atom 5) - 3
+        ∧ 0 < triplePairAreaSum (design.atom 2) (design.atom 3) (design.atom 5)
+            - 2 * tripleLeverageSum (design.atom 2) (design.atom 3) (design.atom 5) + 3
+        ∧ 0 < atomBracket design 2 3 5 ^ 2
+            - triplePairAreaSum (design.atom 2) (design.atom 3) (design.atom 5)
+            + tripleLeverageSum (design.atom 2) (design.atom 3) (design.atom 5) - 1)
+      ∨ (0 < tripleLeverageSum (design.atom 2) (design.atom 4) (design.atom 5) - 3
+        ∧ 0 < triplePairAreaSum (design.atom 2) (design.atom 4) (design.atom 5)
+            - 2 * tripleLeverageSum (design.atom 2) (design.atom 4) (design.atom 5) + 3
+        ∧ 0 < atomBracket design 2 4 5 ^ 2
+            - triplePairAreaSum (design.atom 2) (design.atom 4) (design.atom 5)
+            + tripleLeverageSum (design.atom 2) (design.atom 4) (design.atom 5) - 1)) := by
+  unfold TwoMeetingLinesTransversalStrict
+  rw [transversalStrict_iff_invariants design (by decide) (by decide) (by decide),
+    transversalStrict_iff_invariants design (by decide) (by decide) (by decide),
+    transversalStrict_iff_invariants design (by decide) (by decide) (by decide),
+    transversalStrict_iff_invariants design (by decide) (by decide) (by decide)]
+
 end Gtz
