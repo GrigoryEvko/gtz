@@ -4827,4 +4827,12 @@ import Gtz.Design.UniformWitnessRefutation
 import Gtz.Design.KFourOwnMonomial
 import Gtz.Design.KFourAbsPolynomialCell
 import Gtz.Design.FrobeniusSpreadCell
+
+-- The one-line chart of entry `#2`, at three parameters, and its covering.
+-- The frame `0,1,3,4` is normalized by PGL(3), atom `2` slides along the line
+-- and atom `5` is free in two directions.  Nine bracket coefficients and six
+-- off-pattern identities put every realization on the chart, so the entry `#2`
+-- obligation becomes tie-freeness of a three-parameter chart.
+import Gtz.Design.OneLineChart
+import Gtz.Design.OneLineCovering
 import Gtz.Design.SharpSpreadCell

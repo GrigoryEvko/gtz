@@ -1021,6 +1021,7 @@ import Gtz.Design.UniformWitnessRefutation
 import Gtz.Design.KFourOwnMonomial
 import Gtz.Design.KFourAbsPolynomialCell
 import Gtz.Design.FrobeniusSpreadCell
+import Gtz.Design.OneLineCovering
 import Gtz.Design.SharpSpreadCell
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
@@ -30880,3 +30881,37 @@ run_cmd do
 #print axioms Gtz.SharpSpreadCovers
 #print axioms Gtz.exists_posDef_compl_triple_of_sharpSpreadCovers
 #print axioms Gtz.sharpSpreadCovers_of_frobeniusSpreadCovers
+
+-- The one-line chart: the three-parameter directions, the nine admissibility
+-- exclusions, the bracket table, the three Cramer expansions, the six covering
+-- identities, the per-atom scales, the realization, the covering, the stratum
+-- reduction, and the first chart-level cell at this entry.
+#print axioms Gtz.oneLineDirection
+#print axioms Gtz.oneLineDirection_zero
+#print axioms Gtz.oneLineDirection_one
+#print axioms Gtz.oneLineDirection_two
+#print axioms Gtz.oneLineDirection_three
+#print axioms Gtz.oneLineDirection_four
+#print axioms Gtz.oneLineDirection_five
+#print axioms Gtz.IsAdmissibleOneLineParameter
+#print axioms Gtz.oneLineFamily
+#print axioms Gtz.tripleBracket_oneLineDirection_eq_zero_iff
+#print axioms Gtz.smul_oneLine_two_expansion
+#print axioms Gtz.smul_oneLine_four_expansion
+#print axioms Gtz.smul_oneLine_five_expansion
+#print axioms Gtz.exists_oneLineCoordinates
+#print axioms Gtz.tripleBracket_twoThreeFour_of_oneLineExpansions
+#print axioms Gtz.tripleBracket_twoThreeFive_of_oneLineExpansions
+#print axioms Gtz.tripleBracket_zeroFourFive_of_oneLineExpansions
+#print axioms Gtz.tripleBracket_oneFourFive_of_oneLineExpansions
+#print axioms Gtz.tripleBracket_threeFourFive_of_oneLineExpansions
+#print axioms Gtz.tripleBracket_twoFourFive_of_oneLineExpansions
+#print axioms Gtz.oneLineScale
+#print axioms Gtz.exists_oneLineRealization_of_brackets
+#print axioms Gtz.parameterizedChartCovers_oneLineDirection
+#print axioms Gtz.stressFreeStratumIsTieFree_oneLine_of_chart
+#print axioms Gtz.oneLineFamily_mem_stressFreeResidualFamiliesSix
+#print axioms Gtz.oneLineSelected
+#print axioms Gtz.oneLineCoeff
+#print axioms Gtz.readsThrough_oneLineDirection
+#print axioms Gtz.posDef_directionChartGap_oneLine_of_coverCell
