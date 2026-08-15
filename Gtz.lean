@@ -4184,3 +4184,10 @@ import Gtz.Design.StallTypeSplit
 -- from a tight direction to a nonpositive one, which is what a failure of
 -- positive definiteness supplies.
 import Gtz.Design.TwoMeetingLinesNeedle
+-- The complement-leverage criterion and the one-line free triple. The
+-- universal needle prices a failing selection from below and Cauchy-Schwarz
+-- caps the same complement readings from above, so a selection whose
+-- complement carries leverage sum below (1 - cap) / cap dominates strictly.
+-- The one-line instance closes the ten-candidate residual through its free
+-- triple whenever the three line atoms stay light.
+import Gtz.Design.OneLineComplementCap

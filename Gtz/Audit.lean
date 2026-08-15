@@ -918,6 +918,7 @@ import Gtz.Design.PivotArmClosure
 import Gtz.Design.CardFourStallEquivalence
 import Gtz.Design.StallTypeSplit
 import Gtz.Design.TwoMeetingLinesNeedle
+import Gtz.Design.OneLineComplementCap
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29185,3 +29186,13 @@ run_cmd do
 #print axioms Gtz.posDef_insert_of_posDef
 #print axioms Gtz.chartLadderPivot_insert_ge_half_of_cardFour_stall
 #print axioms Gtz.kFourCardFour_matchingCompl_or_triangle
+-- The complement-leverage criterion: the needle's lower price against the
+-- Cauchy-Schwarz upper cap, and the one-line free triple it closes.
+#print axioms Gtz.sq_dotProduct_le_leverage_mul
+#print axioms Gtz.sum_compl_sq_le_leverageSum_mul
+#print axioms Gtz.dotProduct_self_pos_of_ne_zero
+#print axioms Gtz.posDef_of_cap_mul_complLeverageSum_lt
+#print axioms Gtz.compl_freeTriple_eq_lineTriple
+#print axioms Gtz.sum_compl_freeTriple_leverage
+#print axioms Gtz.planeBranchTenCandidate_of_lineLeverageSum_lt
+#print axioms Gtz.oneLineResidual_of_lineLeverageSum_lt
