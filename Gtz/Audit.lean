@@ -859,6 +859,7 @@ import Gtz.Design.UnsignedCycleCells
 import Gtz.Design.UnsignedTraceCell
 import Gtz.Design.CoverageRefuters
 import Gtz.Design.RowCertificateAtlas
+import Gtz.Design.ZMatrixAlternative
 import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.KFourUnsignedTraceWiring
 import Gtz.Wave.KFourPendantAtlasWiring
@@ -28198,3 +28199,14 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedAllTreeBlind_iff
 #print axioms Gtz.pathCell015WitnessPoint
 #print axioms Gtz.pathCell015WitnessPoint_fires
+-- The Z-matrix alternative: the adjugate certificate, the dual witnesses,
+-- and the Gershgorin necessity.
+#print axioms Gtz.zThree_diag_pos
+#print axioms Gtz.zThree_cofactorOne_pos
+#print axioms Gtz.zThree_cofactorTwo_pos
+#print axioms Gtz.zThreeRowCertificate_of_minors
+#print axioms Gtz.zThreeDualWitness_of_corner
+#print axioms Gtz.zThreeDualWitness_of_minorTwo
+#print axioms Gtz.zThreeDualWitness_of_det
+#print axioms Gtz.zThreeDualWitness_of_not_minors
+#print axioms Gtz.zThree_gershgorin_of_dualWitness

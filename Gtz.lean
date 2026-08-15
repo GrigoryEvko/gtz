@@ -3898,6 +3898,12 @@ import Gtz.Design.CoverageRefuters
 -- corollary with the second coverage refuter as its witness at the vector
 -- (8, 5, 1), and the subset pigeonhole for chart weights.
 import Gtz.Design.RowCertificateAtlas
+-- The Z-matrix alternative at the atlas cell shape. Three positive minors
+-- give the explicit adjugate row certificate, each minor failure gives an
+-- explicit dual witness, and a dual witness forces a diagonally non-dominant
+-- row. The forward and reverse directions of the row bridge are now one
+-- equivalence.
+import Gtz.Design.ZMatrixAlternative
 -- Spend the gauge trace criterion and the three newly available vertex-star
 -- cells in the exact K4 residual.  The live formula is now outside all six
 -- unsigned certificate cells and remains equivalent to the public knife band.
