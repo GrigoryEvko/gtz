@@ -3852,3 +3852,6 @@ import Gtz.Design.BudgetCoverCriterion
 -- budget certificates; IFF theorems recover both the prior tenth-heavy form
 -- and the original public chart statement.
 import Gtz.Wave.ThreeLinesBudgetWiring
+-- The max-reading cover cell is spent after the two allocated cells, again
+-- with an exact IFF back to the public three-lines obligation.
+import Gtz.Wave.ThreeLinesReadingCoverWiring

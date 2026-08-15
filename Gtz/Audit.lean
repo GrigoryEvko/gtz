@@ -855,6 +855,7 @@ import Gtz.Wave.OneLineSurvivorWiring
 import Gtz.Wave.TenthLightChartWiring
 import Gtz.Design.BudgetCoverCriterion
 import Gtz.Wave.ThreeLinesBudgetWiring
+import Gtz.Wave.ThreeLinesReadingCoverWiring
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27866,3 +27867,14 @@ run_cmd do
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomain_of_budgetBlind
 #print axioms Gtz.budgetBlindThreeLinesFundamentalDomain_of_chartTieFree
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetBlind_iff
+-- The max-reading covering certificate is now spent after the two allocated
+-- cells.  The cell producer and both exact equivalence chains are pinned here.
+#print axioms Gtz.ThreeLinesReadingCoverCellFires
+#print axioms Gtz.exists_posDef_threeLines_of_readingCoverCellFires
+#print axioms Gtz.ChartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetReadingBlind
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetBlind_of_budgetReadingBlind
+#print axioms Gtz.budgetReadingBlindThreeLinesFundamentalDomain_of_budgetBlind
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetReadingBlind_iff_budgetBlind
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomain_of_budgetReadingBlind
+#print axioms Gtz.budgetReadingBlindThreeLinesFundamentalDomain_of_chartTieFree
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetReadingBlind_iff
