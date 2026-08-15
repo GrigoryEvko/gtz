@@ -886,6 +886,7 @@ import Gtz.Design.StarOnlyLaw
 import Gtz.Design.StarCorankClosure
 import Gtz.Design.StarWallVacuity
 import Gtz.Design.StarWallMirrors
+import Gtz.Design.StarWallTransport
 import Gtz.Wave.KFourTreeWindowCorankReduction
 import Gtz.Wave.KFourPathCorankCollapse
 import Gtz.Wave.KFourStarWallWiring
@@ -28860,3 +28861,38 @@ run_cmd do
 #print axioms Gtz.kFourStarCCell_fires_of_wall_balanced
 #print axioms Gtz.kFourAtlas_fires_of_wall_balancedB
 #print axioms Gtz.kFourAtlas_fires_of_wall_balancedC
+-- The star-wall transport: the four-cycle congruence and the wall reduction.
+#print axioms Gtz.kFourEdgeCycle
+#print axioms Gtz.kFourEdgeCycleInv
+#print axioms Gtz.kFourEdgeCycleEquiv
+#print axioms Gtz.kFourEdgeCycleInv_comp
+#print axioms Gtz.kFourEdgeCycle_comp
+#print axioms Gtz.kFourEdgeCycle_injective
+#print axioms Gtz.kFourEdgeCycle_mem_image_iff
+#print axioms Gtz.kFourEdgeCycle_image_image
+#print axioms Gtz.kFourCycleMatrix
+#print axioms Gtz.kFourCycleInv
+#print axioms Gtz.kFourCycleInv_mul
+#print axioms Gtz.kFourCycleMatrix_mul_inv
+#print axioms Gtz.kFourCycleMatrixT_mul_invT
+#print axioms Gtz.kFourCycleMatrixT_det
+#print axioms Gtz.isUnit_kFourCycleMatrixT_det
+#print axioms Gtz.kFourCycle_dir_zero
+#print axioms Gtz.kFourCycle_dir_one
+#print axioms Gtz.kFourCycle_dir_two
+#print axioms Gtz.kFourCycle_dir_three
+#print axioms Gtz.kFourCycle_dir_four
+#print axioms Gtz.kFourCycle_dir_five
+#print axioms Gtz.atomMatrix_mulVec_conj
+#print axioms Gtz.atomMatrix_direction_image
+#print axioms Gtz.kFourChartGap_image
+#print axioms Gtz.kFourRelabelPoint
+#print axioms Gtz.kFourChartGap_relabel
+#print axioms Gtz.kFourGap_relabel_posSemidef_iff
+#print axioms Gtz.kFourGap_relabel_posDef_iff
+#print axioms Gtz.kFourCycleInvT_cancel
+#print axioms Gtz.kFourCycle_pairing
+#print axioms Gtz.kFourCorankData_image
+#print axioms Gtz.kFourTreeList_image_inv
+#print axioms Gtz.kFourStrict_pullback
+#print axioms Gtz.kFourStarWall_strictTree_of_gauge

@@ -4053,6 +4053,12 @@ import Gtz.Design.StarWallVacuity
 -- The two balanced mirrors: the vertex-b and vertex-c stars fire when their
 -- axis coordinate is maximal and their four weights are at most one sixth.
 import Gtz.Design.StarWallMirrors
+-- The star-wall transport: the vertex four-cycle lifts to a unimodular chart
+-- congruence, the corank-two wall data transports along it, and the four star
+-- walls cycle onto the gauge wall. A strict-tree law at the gauge wall alone
+-- covers every star wall; per-family case work at the other stars is not
+-- necessary.
+import Gtz.Design.StarWallTransport
 -- Wire the two final K4 walls to their strongest landed interfaces.  The
 -- positive-definite window now carries all four large pivots; the singular
 -- vertex star carries a nonnegative rank-one gap and two distinct repair
