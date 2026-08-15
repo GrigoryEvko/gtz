@@ -4359,3 +4359,8 @@ import Gtz.Wave.ExchangeDeterminantPotential
 -- window is a vertex star plus a chord, hence contains a triangle.  The complete
 -- pivot wall is therefore equivalent to the contextual triangle-stall closure.
 import Gtz.Wave.KFourPivotTriangleClosure
+
+-- The final A3 composition has two mathematical inputs: close all triangle
+-- stalls, and supply one exchange from a type-A stall on the gauge wall.
+-- Together they close both terminal walls and the registry-facing selector.
+import Gtz.Wave.KFourTriangleEndgame

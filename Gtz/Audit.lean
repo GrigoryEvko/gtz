@@ -947,6 +947,7 @@ import Gtz.Design.GlobalTraceFloor
 import Gtz.Design.TypeAExchangeReduction
 import Gtz.Wave.ExchangeDeterminantPotential
 import Gtz.Wave.KFourPivotTriangleClosure
+import Gtz.Wave.KFourTriangleEndgame
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29519,3 +29520,10 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefined_of_gaugeTriangleClosure
 #print axioms Gtz.kFourFamilySelection_of_gaugeTriangleClosure
 #print axioms Gtz.kFourEveryPointHasStrictTree_of_gaugeTriangleClosure
+-- The two-input A3 endgame: global triangle stalls and the gauge type-A
+-- exchange imply both terminal walls and every public K4 consumer.
+#print axioms Gtz.kFourGaugeStarCorankWallClosure_of_triangleStallClosure_of_typeAExchange
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_of_triangleEndgame
+#print axioms Gtz.kFourKnifeBandRefined_of_triangleEndgame
+#print axioms Gtz.kFourFamilySelection_of_triangleEndgame
+#print axioms Gtz.kFourEveryPointHasStrictTree_of_triangleEndgame
