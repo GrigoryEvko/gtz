@@ -22,6 +22,30 @@ namespace Gtz
 
 open Matrix Finset
 
+/-! ## The global no-strict consumer -/
+
+/-- Every `(6,3)` design with no strictly dominating triple has a tenth-heavy
+label.  This is the contrapositive form of the projection dictionary's light
+region, packaged for crux and tie consumers. -/
+theorem exists_weight_ge_tenth_of_no_strict_triple
+    (design : WeightedDesign 6 3)
+    (hnoStrict : ∀ selected : Finset (Fin 6), selected.card = 3 →
+      ¬ (subsetSum design selected - 1).PosDef) :
+    ∃ label : Fin 6, 1 / 10 ≤ design.weight label := by
+  by_contra hheavy
+  push Not at hheavy
+  obtain ⟨selected, hcard, hposDef⟩ :=
+    exists_posDef_triple_of_weights_lt_tenth design hheavy
+  exact hnoStrict selected hcard hposDef
+
+/-- In particular, every `(6,3)` tie has a tenth-heavy label. -/
+theorem exists_weight_ge_tenth_of_isTie (design : WeightedDesign 6 3)
+    (htie : IsTie design) :
+    ∃ label : Fin 6, 1 / 10 ≤ design.weight label :=
+  exists_weight_ge_tenth_of_no_strict_triple design htie.2
+
+/-! ## The A1 consumer -/
+
 /-- The surviving A1 branch after spending the complement residual, all twenty
 balance certificates, and the strict tenth-light theorem. -/
 def BaseTripleTightLineFreeOffConicSeparatedHeavyResidual : Prop :=

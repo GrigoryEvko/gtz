@@ -3803,5 +3803,6 @@ import Gtz.Wave.ProjectionDictionary
 -- consumer.  A square-transpose floor closes every design with all weights
 -- below `1/10`; composed with the separated weak-direction and twenty-triple
 -- balance reductions, A1 is equivalently narrowed to a tenth-heavy residual
--- carrying every previously landed pin.
+-- carrying every previously landed pin.  The same closure is exported once
+-- for every no-strict configuration and every tie.
 import Gtz.Wave.TenthLightA1Wiring

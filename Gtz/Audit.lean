@@ -27738,6 +27738,8 @@ run_cmd do
 -- The tenth-light A1 consumer: the exact equivalence between A1 and its fully
 -- pinned, tenth-heavy, no-light-triple residual after the projection producer
 -- and the separated/balance reductions have fired.
+#print axioms Gtz.exists_weight_ge_tenth_of_no_strict_triple
+#print axioms Gtz.exists_weight_ge_tenth_of_isTie
 #print axioms Gtz.BaseTripleTightLineFreeOffConicSeparatedHeavyResidual
 #print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_separatedHeavyResidual
 #print axioms Gtz.separatedHeavyResidual_of_baseTripleTightLineFreeOffConicWeakToStrict
