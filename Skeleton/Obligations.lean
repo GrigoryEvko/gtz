@@ -44,10 +44,11 @@ Two roots are in play.
     this is kernel-equivalent to the former A1 statement);
   - `obligationHeavyWeakToStrictOneLine` and
     `obligationHeavyWeakToStrictTwoMeetingLines` =
-    `Gtz.PatternHeavyWeakToStrictTenthHeavy` at the two chartless patterns --
-    leverage heaviness and a weak dominator are retained, while the all-light
-    raw-weight region is discharged and the residual receives a label of
-    weight at least `1/10`;
+    the fully wired tenth-heavy line residuals.  The one-line formula retains
+    only the joint pair-cap/line-normal blind spot; the two-meeting-lines
+    formula retains only the joint cap/two-normal blind spot and asks for one
+    of four explicit transversal triples.  Both are kernel-equivalent to the
+    former pattern statement;
   - `obligationChartTieFreeThreeLinesFundamentalDomain` =
     `Gtz.DirectionChartTenthHeavyWeakToStrict` on HALF the parameter line only
     (`1 <= |slide|`) and only at chart points with some weight at least `1/10`;
@@ -173,7 +174,7 @@ theorem obligationTieFreeUThreeSix :
   Gtz.stressFreeStratumIsTieFree_lineFree_of_weakToStrict obligationWeakToStrictUThreeSix
 
 /--
-STATUS: open -- the one-line residual is `Gtz.PatternHeavyWeakToStrictTenthHeavy` at the one-line pattern: every LEVERAGE-HEAVY design of the stratum that carries SOME weakly dominating card-3 subset and a label of RAW WEIGHT at least `1/10` carries a STRICTLY dominating one. The raw-weight distinction is load-bearing: leverage heaviness alone does not supply it. The all-light branch is now a theorem, `Gtz.exists_posDef_triple_of_weights_lt_tenth`, and `Gtz.patternHeavyWeakToStrictTenthHeavy_iff` proves this formula equivalent to the former `Gtz.PatternHeavyWeakToStrict`. No unit normal, no plane-cover quantifier, no tight direction -- all three are provably content-free. The unit-normal existential collapses because the landed uniform Schur producer and its landed converse make "surplus and plane cover at SOME unit normal", "at EVERY unit normal" and "the gap is positive definite" one statement (`Gtz.existsProducerNormal_iff_posDef`); the tight direction collapses because `Gtz.isTie_yields_tightDirection` manufactures it on demand. `Gtz.patternTightDominatedCoverProperty_iff_heavyWeakToStrict` proves the remaining collapse is an EQUIVALENCE. Everything between this Prop and the class statement is a theorem: `Gtz.stratumIsTieFree_of_tightDominatedCoverProperty` spends the heavy narrowing `Gtz.stratumIsTieFree_of_amongHeavy_sixThree`, the tie's own weak dominator, and the KKT extraction `Gtz.isTie_yields_tightDirection`, then applies the producer against the tie's second component; the relabel bridge lifts it to the class. The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_oneThreePointLine`, Gtz/Reduction/TrichotomyLedger.lean:485), so no stress-freeness hypothesis survives anywhere in the chain, and the surplus half is automatic at the free triple against the line normal (`Gtz.oneLine_exists_freeAtom_overcovers_normal`) -- the genuinely open half is the plane cover.
+STATUS: open -- the one-line residual is `Gtz.OneLineTenthHeavyJointBlindWeakToStrict`: every LEVERAGE-HEAVY design of the stratum that carries SOME weakly dominating card-3 subset, a label of RAW WEIGHT at least `1/10`, and lies simultaneously in `Gtz.IsCapBlindSpot` and `Gtz.IsOneLineNormalBlindSpot`, carries a STRICTLY dominating triple. Three landed engines have already fired before the axiom: the all-light theorem, the pair-cap engine, and the line-normal lift criterion. `Gtz.oneLineTenthHeavyJointBlindWeakToStrict_iff` proves this formula equivalent to the former `Gtz.PatternHeavyWeakToStrict`; it is not a stronger sufficient condition. No plane-cover quantifier and no tight direction survive. The remaining class chain is unchanged: `Gtz.patternTightDominatedCoverProperty_iff_heavyWeakToStrict`, `Gtz.stratumIsTieFree_of_tightDominatedCoverProperty`, and the relabel bridge recover class tie-freeness. The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_oneThreePointLine`, Gtz/Reduction/TrichotomyLedger.lean:485).
 CORRECTION (2026-08-08, round 3): the round-2 entry `obligationReducedCoverOneLine` (`Gtz.PatternReducedCoverProperty`) was a STRENGTHENING sold as a sharpening and has been RETIRED OUTRIGHT -- it does not survive as a theorem, because the tight-dominated form does not imply it. Unconditioned on ties, the reduced cover property forces a STRICTLY dominating card-3 subset at EVERY design of the stratum (`Gtz.hasStrictDominator_of_reducedCoverProperty`), i.e. the stratum-restricted strict half of the very conclusion the campaign is proving, on top of tie-freeness. The replacement is kernel-EQUIVALENT to the class statement (`Gtz.patternTightDominatedCoverProperty_iff_stratumIsTieFree`, using the new converse of the producer `Gtz.normalSurplus_planeCover_of_posDef`), so it asserts nothing beyond it. No partial work is lost: the stage-4 RCP attack was developed against the unconditioned form, and adding antecedents only hands a prover more.
 CONSUMERS: `obligationStratumTieFreeOneLine` (now a theorem), hence `obligationTieFreeOneLine`, `obligationStressFreeHingeSixThree`, and the rank-three capstone.
 WHY OPEN: of the six producers of `Gtz.StressFreeStratumIsTieFree` in the tree, three are chart instances at other patterns, the plane-pair filter is provably anti-aligned (the residual list IS the not-plane-pair-covered list, Gtz/Design/StressFreeMatroidStratification.lean:303), and the two generic chart forms need a chart nobody has built for this pattern.
@@ -181,14 +182,13 @@ ATTACK: build the chart following the shipped precedent -- Gtz/Design/RigidityBr
 NOT-REFUTED: no census row targets it. The stress-forcing filter door is CLOSED, not just unused: the pattern forces stress-freeNESS uniformly (`Gtz.stratumIsStressFree_oneThreePointLine`, TrichotomyLedger.lean:485), so a filter asserting a forced nonzero stress is refutable at any design of the stratum, and the residual list is already exactly the not-plane-pair-covered list (StressFreeMatroidStratification.lean:303). Only direct tie obstructions remain admissible here.
 -/
 axiom obligationHeavyWeakToStrictOneLine :
-    Gtz.PatternHeavyWeakToStrictTenthHeavy
-      (Gtz.lineFamilyPattern [[(0 : Fin 6), 1, 2]])
+    Gtz.OneLineTenthHeavyJointBlindWeakToStrict
 
-/-- The tenth-heavy one-line axiom reconstructs the former chartless residual
-by spending the all-light theorem. -/
+/-- The wired one-line axiom reconstructs the former chartless residual by
+spending the all-light, pair-cap and line-normal lift theorems. -/
 theorem obligationHeavyWeakToStrictOneLine_full :
     Gtz.PatternHeavyWeakToStrict (Gtz.lineFamilyPattern [[(0 : Fin 6), 1, 2]]) :=
-  Gtz.patternHeavyWeakToStrict_oneLine_of_tenthHeavy
+  Gtz.patternHeavyWeakToStrict_oneLine_of_tenthHeavyJointBlind
     obligationHeavyWeakToStrictOneLine
 
 /-- **Discharged from the sharpened axiom.**  Same name, same statement:
@@ -225,7 +225,7 @@ theorem obligationTieFreeOneLine :
   Gtz.stressFreeStratumIsTieFree_of_stratumIsTieFree _ obligationStratumTieFreeOneLine
 
 /--
-STATUS: open -- the two-meeting-lines residual is `Gtz.PatternHeavyWeakToStrictTenthHeavy` at the two-meeting-lines pattern, the SAME pattern-generic Prop as the one-line residual because both the all-light closure and the remaining collapse (`Gtz.existsProducerNormal_iff_posDef` plus `Gtz.isTie_yields_tightDirection`) are pattern-generic and consume this class verbatim. The residual carries leverage heaviness, a weak dominator and an explicit raw weight at least `1/10`; `Gtz.patternHeavyWeakToStrictTenthHeavy_iff` reconstructs the former statement. Everything between that former Prop and the class statement is a theorem (`Gtz.stratumIsTieFree_of_tightDominatedCoverProperty` + the relabel bridge), so the new formula asserts nothing beyond it. This class is diamond-CARRYING, so any candidate proof must survive the weight-zero diamond boundary where margins die linearly -- sign-only, one strict seed per line (a tie's weak dominator avoids BOTH lines, the two normals are provably non-parallel). The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_twoMeetingLines`, Gtz/Reduction/TrichotomyLedger.lean:491).
+STATUS: open -- the two-meeting-lines residual is `Gtz.TwoMeetingLinesTenthHeavyJointBlindTransversal`. It retains leverage heaviness, a weak dominator and a raw weight at least `1/10`, assumes the pair-cap engine and both line-normal lift criteria are blind, and asks only that one of `{1,3,5}`, `{1,4,5}`, `{2,3,5}`, `{2,4,5}` dominate strictly. Every other triple has already been excluded by the exact matroid/flat-pair theorem. `Gtz.twoMeetingLinesTenthHeavyJointBlindTransversal_iff` proves this formula equivalent to the former pattern statement. This class is diamond-CARRYING, so the residual remains genuinely boundary-sensitive; the stratum is uniformly stress-free (`Gtz.stratumIsStressFree_twoMeetingLines`, Gtz/Reduction/TrichotomyLedger.lean:491).
 CORRECTION (2026-08-08, round 3): as at the one-line pattern, the round-2 entry `obligationReducedCoverTwoMeetingLines` was a STRENGTHENING and is RETIRED OUTRIGHT, not demoted -- see the one-line entry for the kernel evidence.
 CONSUMERS: `obligationStratumTieFreeTwoMeetingLines` (now a theorem), hence `obligationTieFreeTwoMeetingLines`, `obligationStressFreeHingeSixThree`, and the rank-three capstone.
 WHY OPEN: same producer situation as the one-line class -- no chart exists for this pattern and the plane-pair filter is structurally inapplicable. Two concurrent lines are the closest residual pattern to the plane-pair boundary: the two line planes cover five of the six atoms, and it is exactly the sixth that escapes the escape law.
@@ -233,15 +233,14 @@ ATTACK: same chart-building precedent as the one-line class (RigidityBridge.lean
 NOT-REFUTED: no census row targets it. The stress-forcing filter door is CLOSED, not just unused: the pattern forces stress-freeNESS uniformly (`Gtz.stratumIsStressFree_twoMeetingLines`, TrichotomyLedger.lean:491), the opposite polarity to any stress-forcing mechanism, and the plane-pair law already consumed every coverable class (StressFreeMatroidStratification.lean:303). Only direct tie obstructions remain admissible here.
 -/
 axiom obligationHeavyWeakToStrictTwoMeetingLines :
-    Gtz.PatternHeavyWeakToStrictTenthHeavy
-      (Gtz.lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]])
+    Gtz.TwoMeetingLinesTenthHeavyJointBlindTransversal
 
-/-- The tenth-heavy two-meeting-lines axiom reconstructs the former chartless
-residual by spending the all-light theorem. -/
+/-- The wired two-meeting-lines axiom reconstructs the former chartless
+residual by spending the all-light, pair-cap and two-normal lift theorems. -/
 theorem obligationHeavyWeakToStrictTwoMeetingLines_full :
     Gtz.PatternHeavyWeakToStrict
       (Gtz.lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]]) :=
-  Gtz.patternHeavyWeakToStrict_twoMeetingLines_of_tenthHeavy
+  Gtz.patternHeavyWeakToStrict_twoMeetingLines_of_tenthHeavyJointBlindTransversal
     obligationHeavyWeakToStrictTwoMeetingLines
 
 /-- **Discharged from the sharpened axiom.**  Same name, same statement; the

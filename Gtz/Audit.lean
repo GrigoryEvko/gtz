@@ -850,6 +850,7 @@ import Gtz.Wave.DescentWeld
 import Gtz.Wave.ProjectionDictionary
 import Gtz.Wave.TenthLightA1Wiring
 import Gtz.Wave.TenthLightPatternWiring
+import Gtz.Wave.TenthHeavyLineResidualWiring
 import Gtz.Wave.TenthLightChartWiring
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
@@ -27756,6 +27757,19 @@ run_cmd do
 #print axioms Gtz.patternHeavyWeakToStrictTenthHeavy_iff
 #print axioms Gtz.patternHeavyWeakToStrict_oneLine_of_tenthHeavy
 #print axioms Gtz.patternHeavyWeakToStrict_twoMeetingLines_of_tenthHeavy
+-- The tenth-heavy chartless formulas after the pair-cap and line-normal lift
+-- producers are also spent.  Both are kernel-equivalent to the former pattern
+-- obligations; the two-meeting-lines endpoint has only four transversals.
+#print axioms Gtz.OneLineTenthHeavyJointBlindWeakToStrict
+#print axioms Gtz.patternHeavyWeakToStrict_oneLine_of_tenthHeavyJointBlind
+#print axioms Gtz.tenthHeavyJointBlind_oneLine_of_patternHeavyWeakToStrict
+#print axioms Gtz.oneLineTenthHeavyJointBlindWeakToStrict_iff
+#print axioms Gtz.oneLineTenthHeavyJointBlindWeakToStrict_iff_tenthHeavy
+#print axioms Gtz.TwoMeetingLinesTenthHeavyJointBlindTransversal
+#print axioms Gtz.patternHeavyWeakToStrict_twoMeetingLines_of_tenthHeavyJointBlindTransversal
+#print axioms Gtz.tenthHeavyJointBlindTransversal_twoMeetingLines_of_patternHeavyWeakToStrict
+#print axioms Gtz.twoMeetingLinesTenthHeavyJointBlindTransversal_iff
+#print axioms Gtz.twoMeetingLinesTenthHeavyJointBlindTransversal_iff_tenthHeavy
 -- The chart-side tenth-light wiring.  The generic theorem whitens a positive-
 -- moment chart point, spends the strict design floor, and pulls the selected
 -- gap back.  The A2 and A3 IFFs certify that their new tenth-heavy residuals

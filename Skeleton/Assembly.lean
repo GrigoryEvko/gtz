@@ -375,15 +375,15 @@ theorem patternHeavyWeakToStrict_ofLivePairCompletion (pattern : Gtz.LinePattern
       fun pivotLabel pairFirst hdistinct hlive =>
         hcomplete design hheavy hweak pivotLabel pairFirst hdistinct hlive
 
-/-- The one-line class residual, off the shared criterion.  Same statement as
-`Skeleton.obligationHeavyWeakToStrictOneLine`. -/
+/-- The former one-line class statement, off the shared criterion.  The
+registry now stores an equivalent, more deeply wired residual. -/
 theorem heavyWeakToStrictOneLine_ofLivePairCompletion
     (hcomplete : LivePairCompletesOnHeavyWeak) :
     Gtz.PatternHeavyWeakToStrict (Gtz.lineFamilyPattern [[(0 : Fin 6), 1, 2]]) :=
   patternHeavyWeakToStrict_ofLivePairCompletion _ hcomplete
 
-/-- The two-meeting-lines class residual, off the SAME criterion.  Same
-statement as `Skeleton.obligationHeavyWeakToStrictTwoMeetingLines`. -/
+/-- The former two-meeting-lines class statement, off the SAME criterion.  The
+registry now stores an equivalent four-transversal residual. -/
 theorem heavyWeakToStrictTwoMeetingLines_ofLivePairCompletion
     (hcomplete : LivePairCompletesOnHeavyWeak) :
     Gtz.PatternHeavyWeakToStrict
