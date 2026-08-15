@@ -3847,3 +3847,8 @@ import Gtz.Wave.TenthLightChartWiring
 -- the consumer joint reduces the committed A2 obligation to a per-point
 -- strict triple on the tenth-heavy fundamental domain.
 import Gtz.Design.BudgetCoverCriterion
+-- Spend both allocated three-lines cells in the A2 registry chain.  The live
+-- residual is now tenth-heavy and simultaneously outside the vertex and free
+-- budget certificates; IFF theorems recover both the prior tenth-heavy form
+-- and the original public chart statement.
+import Gtz.Wave.ThreeLinesBudgetWiring

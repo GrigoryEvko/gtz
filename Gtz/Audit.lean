@@ -854,6 +854,7 @@ import Gtz.Wave.TenthHeavyLineResidualWiring
 import Gtz.Wave.OneLineSurvivorWiring
 import Gtz.Wave.TenthLightChartWiring
 import Gtz.Design.BudgetCoverCriterion
+import Gtz.Wave.ThreeLinesBudgetWiring
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27849,3 +27850,19 @@ run_cmd do
 #print axioms Gtz.uniformWitnessMass
 #print axioms Gtz.vertexCell_certificate_witness
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavy_of_heavyStrictTriple
+-- The two allocated cells are now spent in the live A2 formula.  The cell
+-- introductions and both equivalence chains are pinned here.
+#print axioms Gtz.ThreeLinesPositiveAllocation
+#print axioms Gtz.ThreeLinesVertexBudgetCellFires
+#print axioms Gtz.ThreeLinesFreeBudgetCellFires
+#print axioms Gtz.ThreeLinesBudgetCellFires
+#print axioms Gtz.posDef_threeLines_vertexCell_of_fires
+#print axioms Gtz.posDef_threeLines_freeCell_of_fires
+#print axioms Gtz.exists_posDef_threeLines_of_budgetCellFires
+#print axioms Gtz.ChartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetBlind
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavy_of_budgetBlind
+#print axioms Gtz.budgetBlindThreeLinesFundamentalDomain_of_tenthHeavy
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetBlind_iff_tenthHeavy
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomain_of_budgetBlind
+#print axioms Gtz.budgetBlindThreeLinesFundamentalDomain_of_chartTieFree
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetBlind_iff
