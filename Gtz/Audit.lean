@@ -890,6 +890,7 @@ import Gtz.Wave.KFourPathCorankCollapse
 import Gtz.Wave.KFourStarWallWiring
 import Gtz.Wave.KFourStarAmplifiedWallWiring
 import Gtz.Wave.KFourStarExchangeTreeWiring
+import Gtz.Wave.KFourStarSingleExchangeRefusal
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28791,6 +28792,23 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedTreeStarSpanningExchangeWall_iff_starWall
 #print axioms Gtz.kFourKnifeBandRefinedTreeStarSpanningExchangeWall_iff
 #print axioms Gtz.kFourFamilySelection_iff_treeStarSpanningExchangeWall
+-- Refuse every one-slot repair at the corank-two wall and carry that theorem
+-- into the exact A3 residual.  Positive reading on one kernel probe is not
+-- positive definiteness when the original gap kills a plane.
+#print axioms Gtz.exists_nonzero_kernel_orthogonal_of_kFourTreeGapCorankTwo
+#print axioms Gtz.not_posDef_exchange_of_kFourTreeGapCorankTwo
+#print axioms Gtz.KFourTreeAmplifiedRefusedExchangeData
+#print axioms Gtz.kFourTreeAmplifiedRefusedExchangeData_of_spanning
+#print axioms Gtz.kFourTreeAmplifiedSpanningExchangeData_of_refused
+#print axioms Gtz.KFourTreeStarRefusedExchangeWallData
+#print axioms Gtz.KFourWeakTreeStarRefusedExchangeWallResidual
+#print axioms Gtz.kFourWeakTreeStarRefusedExchangeWallResidual_of_spanningExchangeResidual
+#print axioms Gtz.kFourWeakTreeStarSpanningExchangeWallResidual_of_refusedExchangeResidual
+#print axioms Gtz.kFourWeakTreeStarRefusedExchangeWallResidual_iff_spanningExchangeResidual
+#print axioms Gtz.KFourKnifeBandRefinedTreeStarRefusedExchangeWallWeakToStrict
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarRefusedExchangeWall_iff_spanningExchange
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarRefusedExchangeWall_iff
+#print axioms Gtz.kFourFamilySelection_iff_treeStarRefusedExchangeWall
 #print axioms Gtz.kFourWeakTreeGapCorankResidual_refine_star
 -- The star-corank closure platform: the singleton collapse, the exchange
 -- bookkeeping, the gauge-star normal form, the double-pointer package, and

@@ -4065,3 +4065,8 @@ import Gtz.Wave.KFourStarAmplifiedWallWiring
 -- selections are among the sixteen K4 spanning trees.  This avoids treating a
 -- positive reading on a possibly dependent card-three set as a tree witness.
 import Gtz.Wave.KFourStarExchangeTreeWiring
+-- Correct the last amplified-star interpretation at the corank-two wall.
+-- Every one-slot repair remains non-positive-definite: the original kernel
+-- plane always contains a nonzero vector orthogonal to the incoming direction.
+-- The positive exchange reading is therefore a stratifier, not a selector.
+import Gtz.Wave.KFourStarSingleExchangeRefusal
