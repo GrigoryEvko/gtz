@@ -861,6 +861,7 @@ import Gtz.Design.CoverageRefuters
 import Gtz.Design.RowCertificateAtlas
 import Gtz.Design.ZMatrixAlternative
 import Gtz.Design.ChartDesignWhitening
+import Gtz.Design.StratumSqueeze
 import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.KFourUnsignedTraceWiring
 import Gtz.Wave.KFourPendantAtlasWiring
@@ -28281,3 +28282,20 @@ run_cmd do
 #print axioms Gtz.mem_kFourSpanningTreeList_of_card_three
 #print axioms Gtz.kFourStrictTree_of_designSelection
 #print axioms Gtz.kFourKnifeBandRefinedTenthHeavy_of_designSelection
+-- The stratum squeeze: the family weld, the complement dichotomy, the star
+-- obstruction, and the no-strict squeeze producers.
+#print axioms Gtz.KFourFamilySelection
+#print axioms Gtz.kFourFamilySelection_of_designSelection
+#print axioms Gtz.kFourStrictTree_of_familySelection
+#print axioms Gtz.kFourKnifeBandRefinedTenthHeavy_of_familySelection
+#print axioms Gtz.kFourStarList
+#print axioms Gtz.kFourStarList_subset_treeList
+#print axioms Gtz.kFourTree_compl_triangle_iff_star
+#print axioms Gtz.kFourTree_compl_tree_of_not_star
+#print axioms Gtz.kFourStar_compl_triangle
+#print axioms Gtz.kFourStar_compl_gap_not_posDef
+#print axioms Gtz.whitenedDesign_star_compl_not_posDef
+#print axioms Gtz.one_le_squeeze_budget_of_noStrict
+#print axioms Gtz.one_le_squeeze_budget_of_noStrict_card
+#print axioms Gtz.exists_heavy_of_noStrict_of_floor
+#print axioms Gtz.exists_heavy_of_noStrict_of_floor_card

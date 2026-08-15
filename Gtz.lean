@@ -3910,6 +3910,14 @@ import Gtz.Design.ZMatrixAlternative
 -- never strict, and a design-level strict selection at mass one discharges
 -- the committed A3 axiom verbatim.
 import Gtz.Design.ChartDesignWhitening
+-- The stratum squeeze. The corrected weld quantifies the strict selection
+-- over the whitened family only, because the global form is false at the
+-- sharp extremal. The complement dichotomy makes the star obstruction a
+-- theorem: a star's complement is its opposite triangle and is never strict.
+-- The squeeze producers read no tie hypothesis: a no-strict design pays the
+-- jaw budget at every three-slot complement, and a weighted energy floor on
+-- a non-strict subset forces a heavy weight inside the subset.
+import Gtz.Design.StratumSqueeze
 -- Spend the gauge trace criterion and the three newly available vertex-star
 -- cells in the exact K4 residual.  The live formula is now outside all six
 -- unsigned certificate cells and remains equivalent to the public knife band.
