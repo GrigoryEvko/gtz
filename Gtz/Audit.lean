@@ -943,6 +943,9 @@ import Gtz.Wave.TwoOutsideMomentLaw
 import Gtz.Wave.TwoOutsideRefusalLaw
 import Gtz.Design.BlindSpotArithmetic
 import Gtz.Wave.ExchangeDeterminantPotential
+import Gtz.Design.DiscountedExcess
+import Gtz.Design.GlobalTraceFloor
+import Gtz.Design.TypeAExchangeReduction
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29483,3 +29486,18 @@ run_cmd do
 #print axioms Gtz.chartExchangeMultiplier_pos_of_posDef_exchange
 #print axioms Gtz.chartExchangeMultiplier_eq_one_or_forward_gt_one_or_reverse_gt_one
 #print axioms Gtz.chartExchangeMultiplier_eq_one_iff_det_exchange_eq
+#print axioms Gtz.selected_discounted_crossEnergy_eq_pivot_add_outside
+#print axioms Gtz.pivot_add_outside_le_discountedExcess_of_no_exchange
+#print axioms Gtz.exists_posDef_exchange_of_pivot_add_outside_gt
+#print axioms Gtz.outside_crossEnergy_pair
+#print axioms Gtz.exists_posDef_exchange_of_pair_outside_gt
+#print axioms Gtz.exists_weighted_sum_le
+#print axioms Gtz.trace_directionChartGap
+#print axioms Gtz.exists_star_trace_pos
+#print axioms Gtz.leverageOf_kFourDirection_pos
+#print axioms Gtz.exists_star_trace_pos_kFour
+#print axioms Gtz.kFourExchange_card
+#print axioms Gtz.kFourTypeAStall_tree_or_triangleStall
+#print axioms Gtz.kFourTypeAStall_tree_of_exchange_of_triangleClosure
+#print axioms Gtz.KFourGaugeWallTypeAExchange
+#print axioms Gtz.kFourGaugeWallTypeAStall_tree_of_exchange_of_triangleClosure
