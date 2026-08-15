@@ -29357,3 +29357,11 @@ run_cmd do
 #print axioms Gtz.kFourPivotWallPricedContractedEndpointClosure_iff_starEndpointClosure
 #print axioms Gtz.kFourWindowAllPivotWallClosure_iff_starPropagation
 #print axioms Gtz.kFourKnifeBandRefined_of_gaugeStarAtlasFires_of_pivotAtlasFires
+-- The adjacent-four-set reduction of the recurrent pivot arm.  Type A cannot
+-- persist across the exchange, so a contextual triangle-stall theorem closes
+-- recurrence and composes with the classified star endpoint into A3.
+#print axioms Gtz.kFour_exchange_window_or_result_contains_triangle
+#print axioms Gtz.KFourPivotWallRecurrentStallData.strictTree_or_exists_triangle_stall
+#print axioms Gtz.kFourPivotWallRecurrentStallClosure_of_triangleStallClosure
+#print axioms Gtz.kFourWindowAllPivotWallClosure_of_triangleStarClosure
+#print axioms Gtz.kFourFamilySelection_of_triangleStall_starEndpoint_gauge

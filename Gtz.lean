@@ -4260,3 +4260,8 @@ import Gtz.Design.WeightedFormCriterion
 import Gtz.Design.ExcessThreshold
 
 import Gtz.Wave.KFourPivotEndpointStarWiring
+-- The recurrent pivot package carries two adjacent positive-definite four-sets.
+-- They cannot both have perfect-matching complements, so the recurrent type-A
+-- branch reduces to a triangle stall.  The resulting contextual triangle law,
+-- classified star endpoint, and gauge wall wire directly into A3.
+import Gtz.Wave.KFourPivotRecurrentTriangleWiring
