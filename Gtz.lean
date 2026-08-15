@@ -3922,6 +3922,10 @@ import Gtz.Wave.KFourPendantAtlasWiring
 -- union attaches a moduli-only certificate to every one of the sixteen K4
 -- spanning trees and remains exactly equivalent to the public knife band.
 import Gtz.Wave.KFourRowCertificateWiring
+-- Convert failure of the seven path cells into explicit nonnegative adjugate
+-- witnesses and Gershgorin bad-row alternatives, and expose that finite ledger
+-- in the exact K4 residual.
+import Gtz.Wave.KFourZMatrixWiring
 -- Spend the generic unsigned trace theorem at the two landed three-lines
 -- expansions.  The exact A2 residual is now outside both minor cells and both
 -- one-inequality trace cells.

@@ -865,6 +865,7 @@ import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.KFourUnsignedTraceWiring
 import Gtz.Wave.KFourPendantAtlasWiring
 import Gtz.Wave.KFourRowCertificateWiring
+import Gtz.Wave.KFourZMatrixWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Wave.ThreeLinesBudgetWiring
@@ -28211,6 +28212,62 @@ run_cmd do
 #print axioms Gtz.zThreeDualWitness_of_det
 #print axioms Gtz.zThreeDualWitness_of_not_minors
 #print axioms Gtz.zThree_gershgorin_of_dualWitness
+-- Wire the Z-matrix alternative into all seven missing K4 path cells.
+#print axioms Gtz.directionChartExactFloor
+#print axioms Gtz.directionChartExactFloor_mul_weight
+#print axioms Gtz.directionChart_budget_le_of_exactFloor_le
+#print axioms Gtz.ZThreeDualWitness
+#print axioms Gtz.zThreeDualWitness_of_not_floorCell
+#print axioms Gtz.KFourPath015DualWitness
+#print axioms Gtz.kFourPath015DualWitness_of_not_fires
+#print axioms Gtz.KFourPath025DualWitness
+#print axioms Gtz.kFourPath025DualWitness_of_not_fires
+#print axioms Gtz.KFourPath035DualWitness
+#print axioms Gtz.kFourPath035DualWitness_of_not_fires
+#print axioms Gtz.KFourPath045DualWitness
+#print axioms Gtz.kFourPath045DualWitness_of_not_fires
+#print axioms Gtz.KFourPath014DualWitness
+#print axioms Gtz.kFourPath014DualWitness_of_not_fires
+#print axioms Gtz.KFourPath124DualWitness
+#print axioms Gtz.kFourPath124DualWitness_of_not_fires
+#print axioms Gtz.KFourPath145DualWitness
+#print axioms Gtz.kFourPath145DualWitness_of_not_fires
+#print axioms Gtz.KFourMissingPathDualWitnessLedger
+#print axioms Gtz.kFourMissingPathDualWitnessLedger_of_not_fires
+#print axioms Gtz.ZThreeBadRow
+#print axioms Gtz.ZThreeDualWitness.badRow
+#print axioms Gtz.KFourPath015BadRow
+#print axioms Gtz.KFourPath025BadRow
+#print axioms Gtz.KFourPath035BadRow
+#print axioms Gtz.KFourPath045BadRow
+#print axioms Gtz.KFourPath014BadRow
+#print axioms Gtz.KFourPath124BadRow
+#print axioms Gtz.KFourPath145BadRow
+#print axioms Gtz.KFourMissingPathBadRowLedger
+#print axioms Gtz.kFourMissingPathBadRowLedger_of_dualWitnessLedger
+#print axioms Gtz.KFourPath015BadBudget
+#print axioms Gtz.KFourPath025BadBudget
+#print axioms Gtz.KFourPath035BadBudget
+#print axioms Gtz.KFourPath045BadBudget
+#print axioms Gtz.KFourPath014BadBudget
+#print axioms Gtz.KFourPath124BadBudget
+#print axioms Gtz.KFourPath145BadBudget
+#print axioms Gtz.kFourPath015BadBudget_of_badRow
+#print axioms Gtz.kFourPath025BadBudget_of_badRow
+#print axioms Gtz.kFourPath035BadBudget_of_badRow
+#print axioms Gtz.kFourPath045BadBudget_of_badRow
+#print axioms Gtz.kFourPath014BadBudget_of_badRow
+#print axioms Gtz.kFourPath124BadBudget_of_badRow
+#print axioms Gtz.kFourPath145BadBudget_of_badRow
+#print axioms Gtz.KFourMissingPathBadBudgetLedger
+#print axioms Gtz.kFourMissingPathBadBudgetLedger_of_badRowLedger
+#print axioms Gtz.KFourMissingPathObstructionLedger
+#print axioms Gtz.kFourMissingPathObstructionLedger_of_allTreeBlind
+#print axioms Gtz.KFourKnifeBandRefinedZObstructedWeakToStrict
+#print axioms Gtz.allTreeBlindKFourKnifeBandRefined_of_zObstructed
+#print axioms Gtz.zObstructedKFourKnifeBandRefined_of_allTreeBlind
+#print axioms Gtz.kFourKnifeBandRefinedZObstructed_iff_allTreeBlind
+#print axioms Gtz.kFourKnifeBandRefinedZObstructed_iff
 -- The chart-design whitening: the moment matrix, the whitened design, the
 -- triangle refuters, and the weld to the design-level strict selection.
 #print axioms Gtz.atomMatrix_transpose_mulVec
