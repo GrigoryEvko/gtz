@@ -983,6 +983,7 @@ import Gtz.Design.ComplementDeterminantLaw
 import Gtz.Design.CrossLeverageBudget
 import Gtz.Wave.PivotLoadScoreReduction
 import Gtz.Design.OneLineCandidateExcess
+import Gtz.Wave.LineResidualPivotLoadWiring
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30101,3 +30102,17 @@ run_cmd do
 #print axioms Gtz.oneLine_insert_sdiff_line
 #print axioms Gtz.oneLine_remaining_excess_shared
 #print axioms Gtz.oneLine_remaining_posDef_iff_planeInequality
+-- Exact OL/TML failure equivalences and their common pivot-load ledger.
+#print axioms Gtz.hasNoStrictPivotLoadLedger_of_noStrict
+#print axioms Gtz.noStrict_of_hasNoStrictPivotLoadLedger
+#print axioms Gtz.triple_pivotLoadScore_mem_Ioo_of_ledger
+#print axioms Gtz.triple_scaledResidualDiag_mem_Ioo_of_ledger
+#print axioms Gtz.exists_posDef_cardThree_iff_planeBranchTenCandidate_of_oneLineNormalBlind
+#print axioms Gtz.noStrict_iff_not_planeBranchTenCandidate_of_oneLineNormalBlind
+#print axioms Gtz.hasNoStrictPivotLoadLedger_of_oneLine_candidateFailure
+#print axioms Gtz.planeBranchTenCandidate_of_oneLine_pivotLoadScore_sum_ge_three
+#print axioms Gtz.exists_posDef_cardThree_of_twoMeetingLinesTransversalStrict
+#print axioms Gtz.exists_posDef_cardThree_iff_twoMeetingLinesTransversalStrict_of_blind
+#print axioms Gtz.noStrict_iff_not_twoMeetingLinesTransversalStrict_of_blind
+#print axioms Gtz.hasNoStrictPivotLoadLedger_of_twoMeetingLines_candidateFailure
+#print axioms Gtz.twoMeetingLinesTransversalStrict_of_pivotLoadScore_sum_ge_three

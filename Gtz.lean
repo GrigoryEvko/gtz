@@ -4667,3 +4667,11 @@ import Gtz.Wave.PivotLoadScoreReduction
 -- line atom, so their three excess conditions are literally the same sum.
 -- Either all three clear the excess or none do.
 import Gtz.Design.OneLineCandidateExcess
+
+-- Exact pivot-load wiring for the line residuals.  In either normal blind
+-- spot, failure of the named finite candidate family is equivalent to failure
+-- of all twenty triples.  Thus OL and TML inherit the same no-strict load
+-- window, residual-trace window, and high/low pivot census.  Conversely, any
+-- card-three set carrying aggregate load at least three fires the appropriate
+-- ten-candidate or four-transversal conclusion directly.
+import Gtz.Wave.LineResidualPivotLoadWiring
