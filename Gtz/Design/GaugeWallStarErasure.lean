@@ -12,6 +12,25 @@ set_option maxHeartbeats 1600000
 /-!
 # The matching-star form of the gauge-wall type-A exchange
 
+## OBSOLETE: the target of this module is REFUTED
+
+`KFourGaugeWallTypeAExchange` is **false**, and a full-antecedent rational
+refuter is landed in `Gtz.Design.GaugeWallTypeAExchangeRefutation`.  Its point
+carries the axis `(1, 72, 72) / 145`, the weight `17747 / 18000` at label `3`
+and the weight `1 / 18000` at labels `2`, `4` and `5`.  The selection
+`{0, 1, 4, 5}` is positive definite and stalled, the star gap is rank one, and
+**all eight one-label exchanges fail**.
+
+Every theorem below is therefore sound but its hypothesis is unreachable:
+`KFourGaugeWallMatchingStarEscape` implies a false statement, so it is itself
+false.  The module is retained only to record the narrowing that was measured,
+and no successor should attempt to prove its residual.
+
+The measurement below missed the refuter because the sampler bounded the weight
+ratio at `24 : 1` while the refuter needs `17747 : 1`.  That is the
+positive-floor law paying out again: a hunt that cannot reach the extremal
+corner reports agreement it has not earned.
+
 A type-A selection on the gauge wall is the complement of a matching, and the
 three `K4` matchings are `{0, 5}`, `{1, 4}` and `{2, 3}` — each one triangle
 label together with one star label.  So a type-A selection is `{i, j}ᶜ` with `i`
