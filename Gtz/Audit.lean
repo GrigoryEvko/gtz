@@ -860,6 +860,7 @@ import Gtz.Design.UnsignedTraceCell
 import Gtz.Design.CoverageRefuters
 import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.KFourUnsignedTraceWiring
+import Gtz.Wave.KFourPendantAtlasWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Wave.ThreeLinesBudgetWiring
@@ -28107,3 +28108,22 @@ run_cmd do
 #print axioms Gtz.coverageRefuterTwo_starC_not_posDef
 #print axioms Gtz.coverageRefuterTwo_starD_not_posDef
 #print axioms Gtz.coverageRefuterTwo_pendant_posDef
+-- Spend all four pendant cells in the exact K4 registry residual.
+#print axioms Gtz.KFourPendantCell023Fires
+#print axioms Gtz.KFourPendantCell123Fires
+#print axioms Gtz.KFourPendantCell234Fires
+#print axioms Gtz.KFourPendantCell235Fires
+#print axioms Gtz.KFourPendantAtlasCellFires
+#print axioms Gtz.KFourFullMinorAtlasCellFires
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_pendantCell023
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_pendantCell123
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_pendantCell234
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_pendantCell235
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_pendantAtlasCell
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_fullMinorAtlasCell
+#print axioms Gtz.KFourKnifeBandRefinedPendantBlindWeakToStrict
+#print axioms Gtz.kFourKnifeBandRefinedTraceBlind_of_pendantBlind
+#print axioms Gtz.pendantBlindKFourKnifeBandRefined_of_traceBlind
+#print axioms Gtz.kFourKnifeBandRefinedPendantBlind_iff_traceBlind
+#print axioms Gtz.kFourKnifeBandRefinedPendantBlind_iff
+#print axioms Gtz.coverageRefuterTwo_pendantCell123Fires

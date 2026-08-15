@@ -3894,6 +3894,10 @@ import Gtz.Design.CoverageRefuters
 -- cells in the exact K4 residual.  The live formula is now outside all six
 -- unsigned certificate cells and remains equivalent to the public knife band.
 import Gtz.Wave.KFourUnsignedTraceWiring
+-- Spend all four pendant cells around the `{2, 3}` matching.  Together with
+-- the six previous unsigned cells this is the full ten-cell minor atlas; the
+-- second coverage refuter inhabits the newly removed region exactly.
+import Gtz.Wave.KFourPendantAtlasWiring
 -- Spend the generic unsigned trace theorem at the two landed three-lines
 -- expansions.  The exact A2 residual is now outside both minor cells and both
 -- one-inequality trace cells.
