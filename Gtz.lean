@@ -4392,3 +4392,11 @@ import Gtz.Design.ThreeLinesCircuitSpine
 -- BOTH complement labels -- so the complement-restricted count is equivalent to
 -- the chart statement, not a reduction of it.
 import Gtz.Design.StallComplementCounting
+
+-- The complement-pair escape.  A stall is minimal, so every strict triple leaves
+-- it and meets the two-label complement; extending by a complement label reaches
+-- a non-stalled positive definite four-set holding BOTH complement labels.  The
+-- equivalence reformulates the stall branch over SIX selections instead of
+-- twenty, generically in the direction family, so the K4 chart, the three-lines
+-- chart and the trivial chart of a design all consume it.
+import Gtz.Design.ComplementPairEscape

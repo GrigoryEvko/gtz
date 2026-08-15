@@ -952,6 +952,7 @@ import Gtz.Design.DesignDescentPort
 import Gtz.Design.TieStallReduction
 import Gtz.Design.ThreeLinesCircuitSpine
 import Gtz.Design.StallComplementCounting
+import Gtz.Design.ComplementPairEscape
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29564,3 +29565,13 @@ run_cmd do
 #print axioms Gtz.not_subset_of_posDef_of_stall
 #print axioms Gtz.posDef_cardThree_meets_compl_of_cardFour_stall
 #print axioms Gtz.exists_nonStalled_cardFour_supset_compl_of_stall
+-- The complement-pair escape: the generic escape, the erase step, the
+-- equivalence over six selections, the design-level consumers, and the two
+-- live chart instances.
+#print axioms Gtz.exists_nonStalled_supset_compl_of_stall
+#print axioms Gtz.exists_posDef_erase_of_pivot_lt_one
+#print axioms Gtz.exists_posDef_smaller_iff_exists_nonStalled_supset_compl
+#print axioms Gtz.exists_posDef_cardThree_of_complPair_escape
+#print axioms Gtz.exists_dominates_cardThree_of_complPair_escape
+#print axioms Gtz.kFour_exists_nonStalled_supset_compl_of_stall
+#print axioms Gtz.threeLines_exists_nonStalled_supset_compl_of_stall
