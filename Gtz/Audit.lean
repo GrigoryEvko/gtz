@@ -29255,3 +29255,19 @@ run_cmd do
 #print axioms Gtz.kFourAtlas_fires_of_rowCertificate124
 #print axioms Gtz.kFourAtlas_fires_of_rowCertificate023
 #print axioms Gtz.kFourAtlas_fires_of_rowCertificate123
+-- The Parseval complement criterion: the exact complement identity, the
+-- weighted needle, the criterion and its trace form, and the strict gap a
+-- degenerate selection hands its complement.
+#print axioms Gtz.sum_compl_weighted_sq_eq
+#print axioms Gtz.nonempty_label_of_design
+#print axioms Gtz.sum_compl_weighted_sq_ge_of_nonpos
+#print axioms Gtz.sum_compl_weighted_sq_ge_of_not_posDef
+#print axioms Gtz.posDef_of_weightedComplLeverage_lt
+#print axioms Gtz.sum_weight_mul_leverage_eq_rank
+#print axioms Gtz.posDef_of_selectedWeightedLeverage_gt
+#print axioms Gtz.weightedComplLeverage_le_cap_mul
+#print axioms Gtz.cap_mul_complGap_ge_of_orthogonal
+#print axioms Gtz.sum_compl_freeTriple_weightedLeverage
+#print axioms Gtz.planeBranchTenCandidate_of_weightedLineLeverage_lt
+#print axioms Gtz.oneLineResidual_of_weightedLineLeverage_lt
+#print axioms Gtz.cap_mul_freeTripleGap_ge_at_lineNormal

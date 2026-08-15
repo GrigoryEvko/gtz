@@ -4214,3 +4214,11 @@ import Gtz.Design.ExchangeCriterion
 -- cell matrix is a symmetric Z-matrix, so one positive vector and three linear
 -- row readings replace the three minors at each of the six trees.
 import Gtz.Design.StarWallResidualRows
+
+-- The Parseval complement criterion.  The leverage criterion bounds the
+-- complement's squared readings by its leverage sum, which discards the
+-- weights; Parseval computes the same quantity exactly, so the complement's
+-- WEIGHTED leverage is what has to stay small.  The cap is then spent once,
+-- on the selection's own side, and the criterion fires where the leverage
+-- criterion is provably silent.
+import Gtz.Design.ParsevalComplementCriterion
