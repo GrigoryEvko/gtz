@@ -986,6 +986,7 @@ import Gtz.Design.OneLineCandidateExcess
 import Gtz.Wave.LineResidualPivotLoadWiring
 import Gtz.Wave.ComplementPivotTraceLedger
 import Gtz.Design.DirectionBudget
+import Gtz.Design.KFourTreeMinorGoals
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30148,3 +30149,20 @@ run_cmd do
 #print axioms Gtz.sum_sq_reading_lt_two_mul_deficiency
 #print axioms Gtz.not_both_overload_of_weight_lt_half
 #print axioms Gtz.exists_not_overload_of_weight_lt_half
+-- The A3 leaf as named scalar goals: the generic chart-gap entry reading, the
+-- three leading minors of a symmetric matrix, the Sylvester equivalence in
+-- named minors, the three named goals of a K4 tree, the nine-tree containment,
+-- and the lossless equivalence between the leaf conclusion and the named goals.
+#print axioms Gtz.directionChartGap_entry
+#print axioms Gtz.leadingMinorOne
+#print axioms Gtz.leadingMinorTwo
+#print axioms Gtz.leadingMinorThree
+#print axioms Gtz.posDef_iff_leadingMinors
+#print axioms Gtz.kFourTreeMinorOne
+#print axioms Gtz.kFourTreeMinorTwo
+#print axioms Gtz.kFourTreeMinorThree
+#print axioms Gtz.kFourTree_posDef_iff
+#print axioms Gtz.kFourGaugeWallTreeShortList_subset
+#print axioms Gtz.kFourLeafConclusion_of_shortListMinors
+#print axioms Gtz.shortListMinors_of_kFourLeafConclusion
+#print axioms Gtz.kFourLeaf_iff_shortListMinors

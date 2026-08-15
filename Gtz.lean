@@ -4695,3 +4695,16 @@ import Gtz.Wave.ComplementPivotTraceLedger
 -- half.  So below half weight at most ONE of any complementary pair fails at a
 -- direction, and the twenty triples of (6,3) pair into ten.
 import Gtz.Design.DirectionBudget
+
+-- The A3 leaf as named scalar goals.  The leaf concludes one existential over
+-- sixteen spanning trees.  No tactic makes progress in that existential,
+-- because it holds no smaller named thing.  The gauge-wall reduction takes the
+-- sixteen trees to nine.  Sylvester then decides each tree by three leading
+-- minors.  The leaf becomes twenty-seven named scalar inequalities, three for
+-- each of the nine trees.
+--
+-- The split is lossless.  On the wall the leaf conclusion and the named goals
+-- are equivalent, because Sylvester is an equivalence and the nine-tree
+-- reduction is necessary.  The entry reading is generic in the size and in the
+-- direction family, so the other strata read their own gaps through it.
+import Gtz.Design.KFourTreeMinorGoals
