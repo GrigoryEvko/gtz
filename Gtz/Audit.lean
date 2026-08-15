@@ -998,6 +998,7 @@ import Gtz.Design.PivotOnlyDominance
 import Gtz.LinAlg.ProjectionDiagonalDominance
 import Gtz.Design.PivotThirdDominance
 import Gtz.Wave.ThreeLinesPivotThirdWiring
+import Gtz.Wave.TransversalLoadLedger
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
