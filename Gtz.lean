@@ -4097,3 +4097,8 @@ import Gtz.Wave.KFourStarAllMaxHeavyWiring
 -- atlas silence once their vacuity laws hold, so the two laws together
 -- discharge the registered A3 proposition and the family selection.
 import Gtz.Design.PivotWallVacuity
+-- The pivot balance law: at a strict gap the coefficient-weighted inverse
+-- readings sum to three.  The full selection is always strict, its pivots
+-- average three fifths, and the descent to a strict tree stalls only at a
+-- priced five-edge or four-edge wall — the descent trichotomy.
+import Gtz.Design.PivotBalanceLaw

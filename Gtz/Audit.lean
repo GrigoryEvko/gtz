@@ -897,6 +897,7 @@ import Gtz.Wave.KFourStarBalancedVacuityWiring
 import Gtz.Wave.KFourStarMirrorVacuityWiring
 import Gtz.Wave.KFourStarAllMaxHeavyWiring
 import Gtz.Design.PivotWallVacuity
+import Gtz.Design.PivotBalanceLaw
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28932,3 +28933,12 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefined_of_bothWallsAtlasFire
 #print axioms Gtz.kFourKnifeBandRefinedAllMaxHeavy_of_bothWallsAtlasFire
 #print axioms Gtz.kFourFamilySelection_of_bothWallsAtlasFire
+-- The pivot balance law, the full-selection descent, and the trichotomy.
+#print axioms Gtz.chartCoeff_inv_balance
+#print axioms Gtz.pivot_balance
+#print axioms Gtz.posDef_directionChartGap_univ
+#print axioms Gtz.exists_univ_pivot_lt_one
+#print axioms Gtz.exists_posDef_erase_univ
+#print axioms Gtz.card_five_stall
+#print axioms Gtz.pivotWall_exists_outside_pivot_ge_one
+#print axioms Gtz.kFour_descent_trichotomy
