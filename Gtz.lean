@@ -4675,3 +4675,10 @@ import Gtz.Design.OneLineCandidateExcess
 -- card-three set carrying aggregate load at least three fires the appropriate
 -- ten-candidate or four-transversal conclusion directly.
 import Gtz.Wave.LineResidualPivotLoadWiring
+
+-- The full-set block drop read in complement notation.  On a no-strict
+-- `(6,3)` branch every omitted triple therefore costs pivot trace at least one,
+-- at most two labels lie below pivot `1/3`, at least two lie in `[1/3,1)`, and
+-- every subunit omitted pair names a specific stalled card-four complement.
+-- The exact OL/TML failure localizations expose this whole ledger directly.
+import Gtz.Wave.ComplementPivotTraceLedger

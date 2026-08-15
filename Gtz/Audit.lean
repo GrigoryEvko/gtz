@@ -984,6 +984,7 @@ import Gtz.Design.CrossLeverageBudget
 import Gtz.Wave.PivotLoadScoreReduction
 import Gtz.Design.OneLineCandidateExcess
 import Gtz.Wave.LineResidualPivotLoadWiring
+import Gtz.Wave.ComplementPivotTraceLedger
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30116,3 +30117,24 @@ run_cmd do
 #print axioms Gtz.noStrict_iff_not_twoMeetingLinesTransversalStrict_of_blind
 #print axioms Gtz.hasNoStrictPivotLoadLedger_of_twoMeetingLines_candidateFailure
 #print axioms Gtz.twoMeetingLinesTransversalStrict_of_pivotLoadScore_sum_ge_three
+-- The complement-pivot trace ledger: the full-set block drop in complement
+-- notation, the no-strict triple barrier, the one-third and middle-pivot
+-- census, the low-pair card-four stall, and the exact OL/TML producers.
+#print axioms Gtz.posDef_compl_of_sum_pivot_univ_lt_one
+#print axioms Gtz.one_le_sum_pivot_univ_of_not_posDef_compl
+#print axioms Gtz.one_le_sum_pivot_univ_of_noStrict
+#print axioms Gtz.one_le_sum_pivot_univ_compl_of_noStrict
+#print axioms Gtz.subThirdPivotLabels
+#print axioms Gtz.thirdPivotLabels
+#print axioms Gtz.middlePivotLabels
+#print axioms Gtz.subThirdPivotLabels_eq_compl_thirdPivotLabels
+#print axioms Gtz.card_subThirdPivotLabels_le_two_of_noStrict
+#print axioms Gtz.four_le_card_thirdPivotLabels_of_noStrict
+#print axioms Gtz.highPivotLabels_subset_thirdPivotLabels
+#print axioms Gtz.middlePivotLabels_eq_thirdPivotLabels_sdiff_highPivotLabels
+#print axioms Gtz.two_le_card_middlePivotLabels_of_noStrict
+#print axioms Gtz.cardFour_stall_of_pair_pivotSum_lt_one_of_noStrict
+#print axioms Gtz.HasNoStrictComplementPivotLedger
+#print axioms Gtz.hasNoStrictComplementPivotLedger_of_noStrict
+#print axioms Gtz.hasNoStrictComplementPivotLedger_of_oneLine_candidateFailure
+#print axioms Gtz.hasNoStrictComplementPivotLedger_of_twoMeetingLines_candidateFailure
