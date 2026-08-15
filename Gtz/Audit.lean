@@ -885,6 +885,7 @@ import Gtz.Design.WallCollapse
 import Gtz.Design.StarOnlyLaw
 import Gtz.Design.StarCorankClosure
 import Gtz.Design.StarWallVacuity
+import Gtz.Design.StarWallHeavyCap
 import Gtz.Design.StarWallMirrors
 import Gtz.Design.StarWallTransport
 import Gtz.Wave.KFourTreeWindowCorankReduction
@@ -28965,3 +28966,7 @@ run_cmd do
 #print axioms Gtz.kFourEveryPointHasStrictTree_of_gaugeAndPivot
 #print axioms Gtz.kFourKnifeBandRefinedAllMaxHeavy_of_gaugeStarAndPivotAtlasFires
 #print axioms Gtz.kFourFamilySelection_of_gaugeStarAndPivotAtlasFires
+-- The heavy weight cap of the gauge star wall: the vertex-a cell fires at a
+-- sensitive weight cap of three sixteenths, above the landed one sixth.
+#print axioms Gtz.kFourStarACell_fires_of_wall_heavyCap
+#print axioms Gtz.kFourAtlas_fires_of_wall_heavyCap

@@ -4050,6 +4050,11 @@ import Gtz.Design.StarCorankClosure
 -- identities by a positive axis, and the balanced case fires the vertex-a
 -- star cell of the minor atlas with a determinant slack factor near three.
 import Gtz.Design.StarWallVacuity
+-- The heavy weight cap of the gauge star wall.  The landed balanced case
+-- asks every sensitive weight to be at most one sixth.  That bound is not
+-- sharp: the same term-bound architecture reaches three sixteenths, and the
+-- exact wall threshold is (3 - sqrt 3) / 6 at the symmetric axis.
+import Gtz.Design.StarWallHeavyCap
 -- The two balanced mirrors: the vertex-b and vertex-c stars fire when their
 -- axis coordinate is maximal and their four weights are at most one sixth.
 import Gtz.Design.StarWallMirrors
