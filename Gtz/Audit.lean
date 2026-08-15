@@ -1014,6 +1014,7 @@ import Gtz.Design.ChartEntrySumRung
 import Gtz.Design.DeflatedPairCriterion
 import Gtz.Design.ChartHighPivotCap
 import Gtz.Design.GeneralCoverCell
+import Gtz.Design.TwoMeetingLinesChart
 import Gtz.Design.UniformWitnessRefutation
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
@@ -30704,3 +30705,22 @@ run_cmd do
 #print axioms Gtz.lightSum_le_card_mul
 #print axioms Gtz.lightSum_refutation_needs
 #print axioms Gtz.uniformWitnessDesign_subsetSum_univ
+
+-- The two-meeting-lines chart: the directions and their readings, the
+-- admissible region, the family, the stratum theorem, the three-term Cramer
+-- expansion and the seven coordinates of an arbitrary realization.
+#print axioms Gtz.twoMeetingLinesDirection
+#print axioms Gtz.twoMeetingLinesDirection_zero
+#print axioms Gtz.twoMeetingLinesDirection_one
+#print axioms Gtz.twoMeetingLinesDirection_two
+#print axioms Gtz.twoMeetingLinesDirection_three
+#print axioms Gtz.twoMeetingLinesDirection_four
+#print axioms Gtz.twoMeetingLinesDirection_five
+#print axioms Gtz.IsAdmissibleTwoMeetingLinesParameter
+#print axioms Gtz.twoMeetingLinesFamily
+#print axioms Gtz.tripleBracket_twoMeetingLinesDirection_eq_zero_iff
+#print axioms Gtz.smul_eq_three_term_expansion
+#print axioms Gtz.smul_five_expansion
+#print axioms Gtz.smul_two_expansion
+#print axioms Gtz.smul_four_expansion
+#print axioms Gtz.exists_twoMeetingLinesCoordinates

@@ -4810,4 +4810,10 @@ import Gtz.Design.ChartEntrySumRung
 import Gtz.Design.DeflatedPairCriterion
 import Gtz.Design.ChartHighPivotCap
 import Gtz.Design.GeneralCoverCell
+
+-- The two-meeting-lines chart of entry #3.  The frame 0, 1, 3, 5 is normalized,
+-- atom 2 slides along the first line and atom 4 along the second, so the cell
+-- carries exactly two parameters.  The five excluded loci are two parallel
+-- pairs, two third lines through atom 5, and the three-line interface.
+import Gtz.Design.TwoMeetingLinesChart
 import Gtz.Design.UniformWitnessRefutation
