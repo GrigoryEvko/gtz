@@ -3738,3 +3738,15 @@ import Gtz.Wave.TenthAverageFloor
 -- the balanced cut dictionary, the triangle criterion, the path and polygon
 -- laws, and the quartet pigeonhole.
 import Gtz.Wave.InvolutionBlockForm
+
+-- The complement jaw window and the needle law of the two terminal tie
+-- charts. The quadratic-cap jaw closes a subset from the budget
+-- tin * kappa + tout < 1, the rank-one instantiation is the C3 foil law,
+-- and the engine contrapositive turns every light-weight tie into a
+-- needle: the gap form reads at least (1 - 2 tau) / tau along some
+-- direction, which is 8 at tau = 1/10 — the lower window edge of the
+-- needle chart as a theorem. The rank-two jaw prices the needle at the
+-- sharp cap 1 + s1 through Bessel, the weld rivet turns every carrier
+-- floor into a strictness certificate on its light region, and the
+-- light-atom pigeonhole makes a needle eat its own carrier's weight.
+import Gtz.Ties.ComplementJawWindow
