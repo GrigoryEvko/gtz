@@ -4407,3 +4407,11 @@ import Gtz.Design.ComplementPairEscape
 -- above weight one half and the sum is generically positive definite: two
 -- complementary selections then never fail at the same probe.
 import Gtz.Design.ComplementarySumLaw
+
+-- The inverse-trace escape.  The landed trace identity multiplies the Parseval
+-- split of the gap by its own inverse, so every consequence carries a weight.
+-- Dropping Parseval reads the inverse alone: the unweighted pivot sum over a
+-- base set is the rank plus the trace of the inverse gap.  A stall prices that
+-- trace from below by the excess cardinality, and the contrapositive is a
+-- division-free producer of a dominating subset.
+import Gtz.Design.InverseTraceEscape

@@ -954,6 +954,7 @@ import Gtz.Design.ThreeLinesCircuitSpine
 import Gtz.Design.StallComplementCounting
 import Gtz.Design.ComplementPairEscape
 import Gtz.Design.ComplementarySumLaw
+import Gtz.Design.InverseTraceEscape
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29589,3 +29590,13 @@ run_cmd do
 #print axioms Gtz.posDef_compl_of_nonpos_reading
 #print axioms Gtz.threeLines_vertexTriple_compl
 #print axioms Gtz.threeLines_vertexTriple_add_freeTriple
+-- The inverse-trace escape: the unweighted companion of the trace identity,
+-- the stall price on the inverse trace, and the division-free producer.
+#print axioms Gtz.pivot_sum_eq_rank_add_trace_inv
+#print axioms Gtz.card_sub_rank_le_trace_inv_of_stall
+#print axioms Gtz.exists_erase_dominates_of_trace_inv_lt
+#print axioms Gtz.trace_inv_lt_iff_adjugateTrace_lt
+#print axioms Gtz.exists_erase_dominates_of_adjugateTrace_lt
+#print axioms Gtz.exists_dominates_card_rank_of_adjugateTrace_lt_det
+#print axioms Gtz.exists_dominates_cardThree_of_adjugateTrace_lt_det
+#print axioms Gtz.det_le_adjugateTrace_of_cardFour_stall
