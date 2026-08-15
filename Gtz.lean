@@ -4191,6 +4191,13 @@ import Gtz.Design.TwoMeetingLinesNeedle
 -- The one-line instance closes the ten-candidate residual through its free
 -- triple whenever the three line atoms stay light.
 import Gtz.Design.OneLineComplementCap
+-- The complement-leverage criterion at two meeting lines, and the normal
+-- needle. Only one of the four transversal complements need be light, so the
+-- effective leverage sum is the shared atom plus the lighter private atom of
+-- each line. At a line normal the whole universal floor falls on the
+-- complement, so the criterion never fires at a line and each normal picks a
+-- private atom of the other line.
+import Gtz.Design.TwoMeetingLinesComplementCap
 -- The joint firing region at the two remaining vertex stars.  The two clearing
 -- identities are stated on opaque scalars, so the vertex-a reading holds at the
 -- other two axis slots with the centre moved and the pinned floor moved with it.

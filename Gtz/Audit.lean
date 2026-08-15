@@ -920,6 +920,7 @@ import Gtz.Design.CardFourStallEquivalence
 import Gtz.Design.StallTypeSplit
 import Gtz.Design.TwoMeetingLinesNeedle
 import Gtz.Design.OneLineComplementCap
+import Gtz.Design.TwoMeetingLinesComplementCap
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29206,3 +29207,24 @@ run_cmd do
 #print axioms Gtz.kFourAtlas_fires_of_wall_jointConditionB
 #print axioms Gtz.kFourStarCCell_fires_of_wall_jointCondition
 #print axioms Gtz.kFourAtlas_fires_of_wall_jointConditionC
+-- The two-meeting-lines complement cap: the four-complement criterion, the
+-- normal needle, and the private-atom split at each line normal.
+#print axioms Gtz.one_le_cap_mul_sum_compl_sq_of_lineNormal
+#print axioms Gtz.one_le_cap_mul_sum_compl_leverage_of_lineNormal
+#print axioms Gtz.not_cap_mul_sum_compl_leverage_lt_of_lineNormal
+#print axioms Gtz.sum_compl_transversal_oneThreeFive_leverage
+#print axioms Gtz.sum_compl_transversal_oneFourFive_leverage
+#print axioms Gtz.sum_compl_transversal_twoThreeFive_leverage
+#print axioms Gtz.sum_compl_transversal_twoFourFive_leverage
+#print axioms Gtz.twoMeetingLinesTransversalStrict_of_oneThreeFive_light
+#print axioms Gtz.twoMeetingLinesTransversalStrict_of_oneFourFive_light
+#print axioms Gtz.twoMeetingLinesTransversalStrict_of_twoThreeFive_light
+#print axioms Gtz.twoMeetingLinesTransversalStrict_of_twoFourFive_light
+#print axioms Gtz.twoMeetingLinesTransversalStrict_of_min_complLeverage_lt
+#print axioms Gtz.twoMeetingLinesResidual_of_min_complLeverage_lt
+#print axioms Gtz.transversal_oneThreeFive_gap_at_lineOneNormal
+#print axioms Gtz.transversal_oneFourFive_gap_at_lineOneNormal
+#print axioms Gtz.exists_transversal_gap_pos_at_lineOneNormal
+#print axioms Gtz.transversal_oneThreeFive_gap_at_lineTwoNormal
+#print axioms Gtz.transversal_twoThreeFive_gap_at_lineTwoNormal
+#print axioms Gtz.exists_transversal_gap_pos_at_lineTwoNormal
