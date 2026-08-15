@@ -904,6 +904,7 @@ import Gtz.Wave.KFourStarAllMaxHeavyWiring
 import Gtz.Design.PivotWallVacuity
 import Gtz.Design.PivotBalanceLaw
 import Gtz.Design.ThreeLinesDescentPort
+import Gtz.Design.ThreeLinesWallArchitecture
 import Gtz.Wave.KFourGaugeStarTransportWiring
 import Gtz.Wave.KFourPivotStallPropagationWiring
 import Gtz.Wave.KFourPivotEndpointOrthogonalityWiring
