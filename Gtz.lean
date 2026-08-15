@@ -3882,3 +3882,7 @@ import Gtz.Wave.ThreeLinesUnsignedCycleWiring
 -- The unsigned trace cell: one cleared inequality per tree, the three
 -- missing star cells, and the gauge-star trace corollary.
 import Gtz.Design.UnsignedTraceCell
+-- Spend the gauge trace criterion and the three newly available vertex-star
+-- cells in the exact K4 residual.  The live formula is now outside all six
+-- unsigned certificate cells and remains equivalent to the public knife band.
+import Gtz.Wave.KFourUnsignedTraceWiring

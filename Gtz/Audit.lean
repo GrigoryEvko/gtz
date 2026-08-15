@@ -858,6 +858,7 @@ import Gtz.Design.BudgetCoverCriterion
 import Gtz.Design.UnsignedCycleCells
 import Gtz.Design.UnsignedTraceCell
 import Gtz.Wave.KFourUnsignedCycleWiring
+import Gtz.Wave.KFourUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesBudgetWiring
 import Gtz.Wave.ThreeLinesReadingCoverWiring
 import Gtz.Wave.ThreeLinesOffLinesWiring
@@ -27964,6 +27965,24 @@ run_cmd do
 #print axioms Gtz.starTreeB_mem_kFourSpanningTreeList
 #print axioms Gtz.starTreeC_mem_kFourSpanningTreeList
 #print axioms Gtz.posDef_kFour_starTrace
+-- Spend the gauge trace cell and the three missing stars in the K4 residual.
+#print axioms Gtz.KFourUnsignedStarTraceCellFires
+#print axioms Gtz.KFourUnsignedStarACellFires
+#print axioms Gtz.KFourUnsignedStarBCellFires
+#print axioms Gtz.KFourUnsignedStarCCellFires
+#print axioms Gtz.KFourUnsignedTraceAtlasCellFires
+#print axioms Gtz.KFourExpandedUnsignedCellFires
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_unsignedStarTraceCell
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_unsignedStarACell
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_unsignedStarBCell
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_unsignedStarCCell
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_unsignedTraceAtlasCell
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_expandedUnsignedCell
+#print axioms Gtz.KFourKnifeBandRefinedTraceBlindWeakToStrict
+#print axioms Gtz.kFourKnifeBandRefinedUnsignedBlind_of_traceBlind
+#print axioms Gtz.traceBlindKFourKnifeBandRefined_of_unsignedBlind
+#print axioms Gtz.kFourKnifeBandRefinedTraceBlind_iff_unsignedBlind
+#print axioms Gtz.kFourKnifeBandRefinedTraceBlind_iff
 -- Spend the complement-jaw needle law in the exact A1 counterexample.
 #print axioms Gtz.weight_le_baseComplementMaxWeight
 #print axioms Gtz.baseComplementMaxWeight_pos
