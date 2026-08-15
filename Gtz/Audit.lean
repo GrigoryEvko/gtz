@@ -922,19 +922,14 @@ import Gtz.Design.StallTypeSplit
 import Gtz.Design.TwoMeetingLinesNeedle
 import Gtz.Design.OneLineComplementCap
 import Gtz.Design.TwoMeetingLinesComplementCap
-import Gtz.Design.ParsevalComplementCriterion
-import Gtz.Design.TwoMeetingLinesParsevalCap
-import Gtz.Design.WeightedFormCriterion
 import Gtz.Design.ExchangeCriterion
 import Gtz.Design.CrossEnergyLaw
 import Gtz.Design.StarWallResidualRows
 import Gtz.Design.TriangleNormalReading
 import Gtz.Design.ExcessThreshold
 import Gtz.Design.TightBaseRigidity
-import Gtz.Design.TypeAExchangeObstruction
 import Gtz.Design.TwoMeetingLinesRigidity
-import Gtz.Wave.KFourPivotRecurrentTriangleWiring
-import Gtz.Wave.ThreeLinesStallEscapeWiring
+import Gtz.Design.GaugeWallAtlasEquivalence
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29420,3 +29415,16 @@ run_cmd do
 #print axioms Gtz.twoMeetingLines_firstPrivates_le_sin_sq
 #print axioms Gtz.twoMeetingLines_sharedAtom_crossProduct_kill
 #print axioms Gtz.twoMeetingLines_sharedAtom_eq_smul_crossProduct
+#print axioms Gtz.exists_kernel_dotProduct_zero
+#print axioms Gtz.kFourGaugeWall_quadForm_nonpos
+#print axioms Gtz.kFourGaugeWall_not_posDef_of_triangle_card_le_one
+#print axioms Gtz.kFourGaugeWall_two_le_triangle_card_of_posDef
+#print axioms Gtz.kFourGaugeWall_two_le_triangle_card_of_corank
+#print axioms Gtz.kFourGaugeAtlasList
+#print axioms Gtz.kFourGaugeAtlasList_subset_treeList
+#print axioms Gtz.kFourTree_mem_gaugeAtlasList_of_triangle_card
+#print axioms Gtz.kFourGaugeWall_posDef_tree_mem_atlas
+#print axioms Gtz.kFourGaugeWall_not_posDef_of_notMem_atlas
+#print axioms Gtz.KFourShapedCardFourStallClosure
+#print axioms Gtz.kFourGaugeStarCorankWallClosure_of_shapedStallClosure
+#print axioms Gtz.kFourGaugeStarCorankWallClosure_of_cardFourStallClosure

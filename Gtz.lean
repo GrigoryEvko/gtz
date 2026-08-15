@@ -4291,3 +4291,10 @@ import Gtz.Design.TypeAExchangeObstruction
 -- The open label carries the angle between the two planes, and the cross
 -- product of the normals pins the shared label up to a single scalar.
 import Gtz.Design.TwoMeetingLinesRigidity
+
+-- The gauge wall admits only the atlas.  Two non-collinear kernel vectors of
+-- the corank-two star gap leave a nonzero probe orthogonal to one more
+-- direction, and that probe reads every selection with at most one triangle
+-- label nonpositively.  The nine atlas cells are exactly the spanning trees
+-- that survive, and the wall consumes a shaped card-four stall escape.
+import Gtz.Design.GaugeWallAtlasEquivalence
