@@ -4709,6 +4709,7 @@ import Gtz.Design.DirectionBudget
 -- direction family, so the other strata read their own gaps through it.
 import Gtz.Design.KFourTreeMinorGoals
 import Gtz.Design.KFourTreeInvariantGoals
+import Gtz.Design.KFourTraceRung
 
 -- The line pattern pays for its own non-degeneracy.  A design with two parallel
 -- atoms makes every bracket through that pair vanish, so the pattern has to put

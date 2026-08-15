@@ -988,6 +988,7 @@ import Gtz.Wave.ComplementPivotTraceLedger
 import Gtz.Design.DirectionBudget
 import Gtz.Design.KFourTreeMinorGoals
 import Gtz.Design.KFourTreeInvariantGoals
+import Gtz.Design.KFourTraceRung
 import Gtz.Design.LinePatternPrimitivity
 import Gtz.Wave.ConsolidatedStrictTriple
 import Gtz.Design.ComplementDiagonalDominance
@@ -30255,3 +30256,14 @@ run_cmd do
 #print axioms Gtz.posDef_subsetSum_of_pivotBudget
 #print axioms Gtz.posDef_subsetSum_of_quarterPivotQuarter
 #print axioms Gtz.dominates_of_quarterPivotQuarter
+
+-- The trace rung of a K4 tree as a necessary condition: the trace of a positive
+-- definite three-by-three, the rung itself, the two named traces, the rung in
+-- named form, the short list filter, and the leaf reading.
+#print axioms Gtz.trace_pos_of_posDef_three
+#print axioms Gtz.kFourTrace_pos_of_posDef
+#print axioms Gtz.kFourTreeBoostedTrace
+#print axioms Gtz.kFourAmbientTrace
+#print axioms Gtz.kFourAmbientTrace_lt_of_posDef
+#print axioms Gtz.shortList_not_posDef_of_trace_le
+#print axioms Gtz.exists_shortList_trace_gt_of_exists_posDef
