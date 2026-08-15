@@ -4038,3 +4038,9 @@ import Gtz.Design.WallCollapse
 -- is empty over the twelve path trees, and the corank branch of the gap
 -- residual always carries a star.
 import Gtz.Design.StarOnlyLaw
+-- Wire the two final K4 walls to their strongest landed interfaces.  The
+-- positive-definite window now carries all four large pivots; the singular
+-- vertex star carries a nonnegative rank-one gap and two distinct repair
+-- pointers.  The resulting A3 formula is exactly equivalent to the star-only
+-- residual.
+import Gtz.Wave.KFourStarWallWiring

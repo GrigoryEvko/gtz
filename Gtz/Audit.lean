@@ -885,6 +885,7 @@ import Gtz.Design.WallCollapse
 import Gtz.Design.StarOnlyLaw
 import Gtz.Wave.KFourTreeWindowCorankReduction
 import Gtz.Wave.KFourPathCorankCollapse
+import Gtz.Wave.KFourStarWallWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28731,4 +28732,24 @@ run_cmd do
 #print axioms Gtz.kFourCoeff_eq_of_rankOne
 #print axioms Gtz.kFourCorankTwo_tree_mem_starList
 #print axioms Gtz.kFourCorankTwo_not_path
+-- Expose both final walls at their strongest landed interfaces: four window
+-- pivots, or a rank-one vertex-star gap with two distinct repair pointers.
+#print axioms Gtz.KFourTreeWindowAllPivotWallData
+#print axioms Gtz.not_posDef_of_kFourTreeWindowData
+#print axioms Gtz.kFourTreeWindowAllPivotWallData_of_pivotWall
+#print axioms Gtz.kFourTreeWindowPivotWallData_of_allPivotWall
+#print axioms Gtz.KFourTreeRankOneGapData
+#print axioms Gtz.KFourTreeSecondPointerData
+#print axioms Gtz.kFourTreeRankOneGapData_of_gapCorankTwo
+#print axioms Gtz.kFourTreeSecondPointerData_of_gapCorankTwo
+#print axioms Gtz.KFourTreeStarCorankWallData
+#print axioms Gtz.kFourTreeStarCorankWallData_of_gapCorankTwo
+#print axioms Gtz.KFourWeakTreeStarWallResidual
+#print axioms Gtz.kFourWeakTreeStarWallResidual_of_starCorankResidual
+#print axioms Gtz.kFourWeakTreeGapStarCorankResidual_of_starWallResidual
+#print axioms Gtz.kFourWeakTreeStarWallResidual_iff_starCorankResidual
+#print axioms Gtz.KFourKnifeBandRefinedTreeStarWallWeakToStrict
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarWall_iff_starCorankResidual
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarWall_iff
+#print axioms Gtz.kFourFamilySelection_iff_treeStarWall
 #print axioms Gtz.kFourWeakTreeGapCorankResidual_refine_star
