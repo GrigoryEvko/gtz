@@ -4786,3 +4786,10 @@ import Gtz.Wave.ThreeLinesPivotThirdWiring
 -- of its six labels then hold pivot above a quarter, and every triple of it
 -- holds one.  The same counting runs at the projection.
 import Gtz.Design.NoStrictPivotLedger
+
+-- The entry-sum rung of the K4 chart gap.  The first invariant pencil
+-- coefficient is linear, every K4 atom prices at one, and the rung is the
+-- mass-to-weight surplus of the selection.  The second coefficient reads the
+-- K4 edge-pair structure and the third is the spanning-tree polynomial, so
+-- the leaf becomes three polynomials in six selection values.
+import Gtz.Design.KFourEntrySumRung

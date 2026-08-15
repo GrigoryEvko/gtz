@@ -1009,6 +1009,7 @@ import Gtz.Design.PivotThirdDominance
 import Gtz.Wave.ThreeLinesPivotThirdWiring
 import Gtz.Wave.TransversalLoadLedger
 import Gtz.Design.NoStrictPivotLedger
+import Gtz.Design.KFourEntrySumRung
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30498,3 +30499,53 @@ run_cmd do
 #print axioms Gtz.keptPair_weight_product_le
 #print axioms Gtz.producer_threshold_or_no_light_label
 #print axioms Gtz.exists_weight_le_sixth
+
+-- The entry-sum rung: linearity of the first invariant coefficient, the atom
+-- entry sum, the uniform chart law and its transport, the closed form, the
+-- rung and its kill, the greedy family law, the explicit K4 dictionary, the
+-- sign law of the selection vector, the edge-pair form, the Matrix-Tree
+-- identity, the matrix-free leaf, and the heavy-pair determinant witness.
+#print axioms Gtz.invariantOne_add
+#print axioms Gtz.invariantOne_sub
+#print axioms Gtz.invariantOne_smul
+#print axioms Gtz.invariantOne_zero
+#print axioms Gtz.invariantOne_sum
+#print axioms Gtz.invariantOne_atomMatrix
+#print axioms Gtz.two_mul_invariantOne_atomMatrix
+#print axioms Gtz.invariantOne_atomMatrix_nonneg
+#print axioms Gtz.kFourDirection_invariantOne
+#print axioms Gtz.invariantOne_directionChartGap
+#print axioms Gtz.kFourInvariantOne_eq
+#print axioms Gtz.kFourTreeInvariantOne_eq
+#print axioms Gtz.kFourRatioSum
+#print axioms Gtz.kFourTotalMass
+#print axioms Gtz.kFourTreeInvariantOne_eq_ratioSum
+#print axioms Gtz.kFourTreeInvariantOne_pos_iff
+#print axioms Gtz.kFourRatioSum_gt_of_posDef
+#print axioms Gtz.kFourTree_not_posDef_of_ratioSum_le
+#print axioms Gtz.kFourTreeInvariantOne_le_iff
+#print axioms Gtz.kFourFamily_no_posDef_of_max_ratioSum_le
+#print axioms Gtz.kFourFamily_max_ratioSum_gt_of_exists_posDef
+#print axioms Gtz.selectionValue
+#print axioms Gtz.directionChartGap_entry_selection
+#print axioms Gtz.kFourGap_zero_zero
+#print axioms Gtz.kFourGap_one_one
+#print axioms Gtz.kFourGap_two_two
+#print axioms Gtz.kFourGap_zero_one
+#print axioms Gtz.kFourGap_zero_two
+#print axioms Gtz.kFourGap_one_two
+#print axioms Gtz.kFourInvariantOne_eq_sum_selectionValue
+#print axioms Gtz.invariantOne_directionChartGap_of_uniform
+#print axioms Gtz.invariantOne_pos_iff_of_uniform
+#print axioms Gtz.kFourDirection_uniform
+#print axioms Gtz.selectionValue_pos_of_mem
+#print axioms Gtz.selectionValue_neg_of_not_mem
+#print axioms Gtz.selectionValue_pos_iff_mem
+#print axioms Gtz.kFourPairForm
+#print axioms Gtz.kFourTreePolynomial
+#print axioms Gtz.kFourInvariantTwo_eq
+#print axioms Gtz.kFourInvariantThree_eq
+#print axioms Gtz.kFourTree_posDef_iff_polynomial
+#print axioms Gtz.heavyPairRefuter_totalMass
+#print axioms Gtz.heavyPairRefuter_ratioSum_detArgmax
+#print axioms Gtz.heavyPairRefuter_detArgmax_not_posDef
