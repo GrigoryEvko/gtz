@@ -1014,6 +1014,7 @@ import Gtz.Design.ChartEntrySumRung
 import Gtz.Design.DeflatedPairCriterion
 import Gtz.Design.ChartHighPivotCap
 import Gtz.Design.GeneralCoverCell
+import Gtz.Design.UniformWitnessRefutation
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30683,3 +30684,23 @@ run_cmd do
 #print axioms Gtz.kFourRatioSum_not_monotone_posDef
 #print axioms Gtz.KFourRatioSumArgmaxHostsStrictTree
 #print axioms Gtz.not_kFourRatioSumArgmaxHostsStrictTree
+
+-- The uniform witness of the line-free off-conic cell: its atoms, the design,
+-- the line pattern, the conic condition, the two refutations of the plane-margin
+-- producer, the bound the repaired route now carries, the sharpness of one sixth,
+-- and the reach of the light-set form.
+#print axioms Gtz.uniformWitnessAtom
+#print axioms Gtz.uniformWitnessDesign
+#print axioms Gtz.uniformWitnessDesign_weight
+#print axioms Gtz.uniformWitnessDesign_hasLinePattern
+#print axioms Gtz.uniformWitnessDesign_hasNoCommonQuadric
+#print axioms Gtz.not_planeMarginProducerAtLightLabel_of_sixth_le
+#print axioms Gtz.not_planeMarginProducer_of_lightSum_gt
+#print axioms Gtz.producer_lightSum_lt_one
+#print axioms Gtz.weightAwareRoute_threshold_lt_sixth
+#print axioms Gtz.exists_sixth_le_weight
+#print axioms Gtz.not_all_weights_le_of_lt_sixth
+#print axioms Gtz.lightSet_ne_univ_of_lt_sixth
+#print axioms Gtz.lightSum_le_card_mul
+#print axioms Gtz.lightSum_refutation_needs
+#print axioms Gtz.uniformWitnessDesign_subsetSum_univ
