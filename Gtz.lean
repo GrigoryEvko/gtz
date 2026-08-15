@@ -4626,3 +4626,13 @@ import Gtz.Design.FlatCrossBudget
 -- into a bound on the inverse form.  The residual is one weight comparison.
 -- No square root, no spectral theorem, no chart, generic in size and rank.
 import Gtz.Design.LoadBearingTriple
+
+-- The complement determinant law.  The complement matrix on a set of omitted
+-- labels factors as the boost diagonal times one minus the boost-conjugated
+-- frame sandwich, so Sylvester's identity moves the frame across the inverse of
+-- the full gap and the inverse factors out of the difference.  The determinant
+-- of every complement minor is therefore the determinant of the gap of the
+-- selection that omits exactly those labels, scaled by the product of the
+-- omitted boosts over the determinant of the full gap.  No positivity is used
+-- and the law is generic in the size and in the number of omitted labels.
+import Gtz.Design.ComplementDeterminantLaw

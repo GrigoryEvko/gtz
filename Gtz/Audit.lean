@@ -979,6 +979,7 @@ import Gtz.Wave.ComplementTripleCriterion
 import Gtz.Design.SharedAtomPivotExclusion
 import Gtz.Design.FlatCrossBudget
 import Gtz.Design.LoadBearingTriple
+import Gtz.Design.ComplementDeterminantLaw
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30031,3 +30032,16 @@ run_cmd do
 #print axioms Gtz.posDef_subsetSum_of_cardThree_pivot_univ_ge_one
 #print axioms Gtz.exists_cardThree_posDef_of_cardThree_pivot_ge_one
 #print axioms Gtz.exists_pivot_lt_one_or_posDef
+-- The complement determinant law: the omitted frame and boost diagonal, the
+-- frame sandwich reading of the inverse form, the boost factorization of the
+-- complement matrix, the determinant law, and the gap of the complementary
+-- selection.
+#print axioms Gtz.omittedFrame
+#print axioms Gtz.omittedBoost
+#print axioms Gtz.omittedComplementMatrix
+#print axioms Gtz.omittedFrame_mul_boost_mul_transpose
+#print axioms Gtz.transpose_omittedFrame_mul_inv_mul_omittedFrame
+#print axioms Gtz.omittedComplementMatrix_eq_boost_sub
+#print axioms Gtz.det_omittedComplementMatrix_mul_det
+#print axioms Gtz.directionChartGap_univ_sub_boostSum
+#print axioms Gtz.det_omittedComplementMatrix_mul_det_eq_det_gap_compl
