@@ -849,12 +849,14 @@ import Gtz.Ties.ComplementJawWindow
 import Gtz.Wave.DescentWeld
 import Gtz.Wave.ProjectionDictionary
 import Gtz.Wave.TenthLightA1Wiring
+import Gtz.Wave.A1NeedleWiring
 import Gtz.Wave.TenthLightPatternWiring
 import Gtz.Wave.TenthHeavyLineResidualWiring
 import Gtz.Wave.OneLineSurvivorWiring
 import Gtz.Wave.TenthLightChartWiring
 import Gtz.Design.BudgetCoverCriterion
 import Gtz.Design.UnsignedCycleCells
+import Gtz.Design.UnsignedTraceCell
 import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.ThreeLinesBudgetWiring
 import Gtz.Wave.ThreeLinesReadingCoverWiring
@@ -27941,7 +27943,6 @@ run_cmd do
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingUnsignedBlindOffLines_iff_offLines
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingUnsignedBlindOffLines_iff
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomain_of_unsignedBlind
-import Gtz.Design.UnsignedTraceCell
 -- The unsigned trace cell, the weighted Lagrange support, and the star atlas.
 #print axioms Gtz.weighted_lagrange_identity
 #print axioms Gtz.weighted_cauchySchwarz_sq
@@ -27963,3 +27964,14 @@ import Gtz.Design.UnsignedTraceCell
 #print axioms Gtz.starTreeB_mem_kFourSpanningTreeList
 #print axioms Gtz.starTreeC_mem_kFourSpanningTreeList
 #print axioms Gtz.posDef_kFour_starTrace
+-- Spend the complement-jaw needle law in the exact A1 counterexample.
+#print axioms Gtz.weight_le_baseComplementMaxWeight
+#print axioms Gtz.baseComplementMaxWeight_pos
+#print axioms Gtz.exists_eq_baseComplementMaxWeight
+#print axioms Gtz.baseComplementMaxWeight_lt_one
+#print axioms Gtz.tenth_le_baseComplementMaxWeight_of_exists_heavy
+#print axioms Gtz.BaseTripleTightLineFreeOffConicHeavyNeedleResidual
+#print axioms Gtz.separatedHeavyResidual_of_heavyNeedleResidual
+#print axioms Gtz.heavyNeedleResidual_of_separatedHeavyResidual
+#print axioms Gtz.baseTripleTightLineFreeOffConicHeavyNeedleResidual_iff
+#print axioms Gtz.stressFreeStratumIsTieFree_lineFree_of_heavyNeedleResidual

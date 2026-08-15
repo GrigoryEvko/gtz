@@ -3818,6 +3818,12 @@ import Gtz.Wave.ProjectionDictionary
 -- carrying every previously landed pin.  The same closure is exported once
 -- for every no-strict configuration and every tie.
 import Gtz.Wave.TenthLightA1Wiring
+-- Spend the general complement-jaw theorem in that A1 residual as well.  The
+-- two pinned triple maxima give an attained positive global cap; under the
+-- hypothetical no-strict ledger the base weak triple is an actual tie, so
+-- every triple now carries the corresponding nonzero gap needle.  The new
+-- counterexample formula is exactly equivalent to A1.
+import Gtz.Wave.A1NeedleWiring
 -- Leverage heaviness does not imply a large raw weight.  The same light
 -- theorem therefore removes an additional region from both chartless pattern
 -- obligations: their surviving residuals retain leverage heaviness and gain
