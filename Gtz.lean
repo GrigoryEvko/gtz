@@ -4087,3 +4087,8 @@ import Gtz.Wave.KFourStarBalancedVacuityWiring
 -- maximal positive axis coordinate to a heavy weight in its exact four-slot
 -- vertex-star cover, while remaining equivalent to the registered A3 formula.
 import Gtz.Wave.KFourStarMirrorVacuityWiring
+-- Retain the three maximal-axis certificates simultaneously instead of
+-- selecting one branch.  Tied maximal axes now force either two distinct
+-- weights above one sixth or a heavy label on the exact opposite edge; the
+-- fully symmetric axis always forces two distinct heavy labels.
+import Gtz.Wave.KFourStarAllMaxHeavyWiring

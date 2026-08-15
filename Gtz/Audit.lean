@@ -895,6 +895,7 @@ import Gtz.Wave.KFourStarExchangeTreeWiring
 import Gtz.Wave.KFourStarSingleExchangeRefusal
 import Gtz.Wave.KFourStarBalancedVacuityWiring
 import Gtz.Wave.KFourStarMirrorVacuityWiring
+import Gtz.Wave.KFourStarAllMaxHeavyWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28896,3 +28897,31 @@ run_cmd do
 #print axioms Gtz.kFourTreeList_image_inv
 #print axioms Gtz.kFourStrict_pullback
 #print axioms Gtz.kFourStarWall_strictTree_of_gauge
+-- Retain all three maximal-axis certificates over one star-wall witness.  The
+-- tied-axis consequences and the exact replacement of the live A3 residual
+-- are pinned individually.
+#print axioms Gtz.KFourWeightHeavy
+#print axioms Gtz.kFourStarAHeavyCover
+#print axioms Gtz.kFourStarBHeavyCover
+#print axioms Gtz.kFourStarCHeavyCover
+#print axioms Gtz.kFourStarABOppositeCover
+#print axioms Gtz.kFourStarACOppositeCover
+#print axioms Gtz.kFourStarBCOppositeCover
+#print axioms Gtz.KFourHasTwoDistinctHeavyWeights
+#print axioms Gtz.KFourGaugeStarWallAllMaxHeavyWitness
+#print axioms Gtz.KFourGaugeStarWallAllMaxHeavyData
+#print axioms Gtz.kFourGaugeStarWallAllMaxHeavyWitness
+#print axioms Gtz.kFourGaugeStarWallAllMaxHeavyData_of_atlasSilent
+#print axioms Gtz.kFourGaugeStarWallMaxHeavyData_of_allMaxHeavyData
+#print axioms Gtz.oppositeABHeavy_or_twoDistinct_of_equalMax
+#print axioms Gtz.oppositeACHeavy_or_twoDistinct_of_equalMax
+#print axioms Gtz.oppositeBCHeavy_or_twoDistinct_of_equalMax
+#print axioms Gtz.exists_twoDistinctHeavy_of_equalAxes
+#print axioms Gtz.KFourTreeStarRefusedAllMaxHeavyWallData
+#print axioms Gtz.KFourWeakTreeStarRefusedAllMaxHeavyWallResidual
+#print axioms Gtz.kFourWeakTreeStarRefusedAllMaxHeavyWallResidual_of_maxHeavyResidual
+#print axioms Gtz.kFourWeakTreeStarRefusedMaxHeavyWallResidual_of_allMaxHeavyResidual
+#print axioms Gtz.KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWall_iff_maxHeavy
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWall_iff
+#print axioms Gtz.kFourFamilySelection_iff_treeStarRefusedAllMaxHeavyWall
