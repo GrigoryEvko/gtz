@@ -350,6 +350,25 @@ NOT-REFUTED: no census row targets it. The relaxed-weight refutation needs `0 <=
 axiom obligationKnifeBandRefinedKFour :
     Gtz.KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict
 
+/-- A component-level route to the registered A3 formula.  It is enough to
+close the four-pivot window wall and the single canonical gauge-star corank
+wall; exact chart transport supplies the other three vertex stars.  This is a
+strictly sufficient route and does not replace the registry axiom until both
+component propositions are proved. -/
+theorem obligationKnifeBandRefinedKFour_of_gaugeAndPivot
+    (hclose : Gtz.KFourGaugeAndPivotWallClosure) :
+    Gtz.KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict :=
+  Gtz.kFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWall_of_gaugeAndPivot hclose
+
+/-- The stronger atlas-facing component route.  It asks for atlas firing only
+at the canonical gauge star, not at all four relabeled chart points; exact
+strict-tree transport supplies the other stars.  The independent pivot-wall
+atlas law supplies the positive-definite-window branch. -/
+theorem obligationKnifeBandRefinedKFour_of_gaugeStarAndPivotAtlasFires
+    (hfire : Gtz.KFourGaugeStarAndPivotWallAtlasFires) :
+    Gtz.KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict :=
+  Gtz.kFourKnifeBandRefinedAllMaxHeavy_of_gaugeStarAndPivotAtlasFires hfire
+
 /-- The registered chart residual recovers the exact design-side whitening
 family selector.  This is an equivalence, not an additional obligation. -/
 theorem obligationKFourFamilySelection : Gtz.KFourFamilySelection :=

@@ -4102,3 +4102,8 @@ import Gtz.Design.PivotWallVacuity
 -- average three fifths, and the descent to a strict tree stalls only at a
 -- priced five-edge or four-edge wall — the descent trichotomy.
 import Gtz.Design.PivotBalanceLaw
+-- Split the final K4 residual into two callable components.  Exact four-cycle
+-- transport identifies all four corank-two vertex-star walls with the one
+-- gauge-star wall; solving that canonical wall together with the four-pivot
+-- window wall discharges A3 and the design-side K4 family selector.
+import Gtz.Wave.KFourGaugeStarTransportWiring

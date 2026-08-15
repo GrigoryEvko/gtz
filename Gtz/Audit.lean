@@ -898,6 +898,7 @@ import Gtz.Wave.KFourStarMirrorVacuityWiring
 import Gtz.Wave.KFourStarAllMaxHeavyWiring
 import Gtz.Design.PivotWallVacuity
 import Gtz.Design.PivotBalanceLaw
+import Gtz.Wave.KFourGaugeStarTransportWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28942,3 +28943,25 @@ run_cmd do
 #print axioms Gtz.card_five_stall
 #print axioms Gtz.pivotWall_exists_outside_pivot_ge_one
 #print axioms Gtz.kFour_descent_trichotomy
+-- Reduce all four K4 star walls to the canonical gauge wall, keep the
+-- four-pivot wall as the independent companion component, and pin the complete
+-- route from those two closures to A3 and the design-side selector.
+#print axioms Gtz.KFourGaugeStarWallAtlasFires
+#print axioms Gtz.KFourGaugeStarCorankWallClosure
+#print axioms Gtz.KFourAllStarCorankWallClosure
+#print axioms Gtz.kFourAllStarCorankWallClosure_of_gauge
+#print axioms Gtz.kFourGaugeStarCorankWallClosure_of_all
+#print axioms Gtz.kFourAllStarCorankWallClosure_iff_gauge
+#print axioms Gtz.kFourGaugeStarCorankWallClosure_of_atlasFires
+#print axioms Gtz.kFourAllStarCorankWallClosure_of_gaugeAtlasFires
+#print axioms Gtz.KFourWindowAllPivotWallClosure
+#print axioms Gtz.KFourGaugeAndPivotWallClosure
+#print axioms Gtz.KFourGaugeStarAndPivotWallAtlasFires
+#print axioms Gtz.kFourWindowAllPivotWallClosure_of_atlasFires
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_of_atlasFires
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWall_of_gaugeAndPivot
+#print axioms Gtz.kFourKnifeBandRefined_of_gaugeAndPivot
+#print axioms Gtz.kFourFamilySelection_of_gaugeAndPivot
+#print axioms Gtz.kFourEveryPointHasStrictTree_of_gaugeAndPivot
+#print axioms Gtz.kFourKnifeBandRefinedAllMaxHeavy_of_gaugeStarAndPivotAtlasFires
+#print axioms Gtz.kFourFamilySelection_of_gaugeStarAndPivotAtlasFires
