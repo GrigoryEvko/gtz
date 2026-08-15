@@ -4710,6 +4710,7 @@ import Gtz.Design.DirectionBudget
 import Gtz.Design.KFourTreeMinorGoals
 import Gtz.Design.KFourTreeInvariantGoals
 import Gtz.Design.KFourTraceRung
+import Gtz.LinAlg.RankOneForm
 
 -- The line pattern pays for its own non-degeneracy.  A design with two parallel
 -- atoms makes every bracket through that pair vanish, so the pattern has to put

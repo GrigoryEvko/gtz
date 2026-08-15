@@ -989,6 +989,7 @@ import Gtz.Design.DirectionBudget
 import Gtz.Design.KFourTreeMinorGoals
 import Gtz.Design.KFourTreeInvariantGoals
 import Gtz.Design.KFourTraceRung
+import Gtz.LinAlg.RankOneForm
 import Gtz.Design.LinePatternPrimitivity
 import Gtz.Wave.ConsolidatedStrictTriple
 import Gtz.Design.ComplementDiagonalDominance
@@ -30280,3 +30281,25 @@ run_cmd do
 #print axioms Gtz.sq_absOffRow_le_card_mul_energy
 #print axioms Gtz.projectionCovering_of_leverageBudget
 #print axioms Gtz.projectionCovering_sixThree_of_sevenNinths
+
+-- The rank-one form of a positive semidefinite matrix, produced at every size:
+-- the quadratic form and its symmetry, the two-basis plumbing, Cauchy-Schwarz on
+-- the entries, the zero-diagonal collapse, the vanishing minor predicate, the
+-- rank-one engine, the producer, the classification, the scale-free form, and
+-- the bridge to the size-three two-kernel law.
+#print axioms Gtz.quadForm_nonneg_of_posSemidef
+#print axioms Gtz.symm_of_posSemidef
+#print axioms Gtz.single_pair_dotProduct_mulVec
+#print axioms Gtz.quadForm_pair
+#print axioms Gtz.posSemidef_offDiag_sq_le
+#print axioms Gtz.posSemidef_offDiag_eq_zero_of_diag_eq_zero
+#print axioms Gtz.eq_zero_of_posSemidef_of_diag_eq_zero
+#print axioms Gtz.MinorVanishes
+#print axioms Gtz.eq_smul_atomMatrix_of_minorVanishes
+#print axioms Gtz.exists_rankOne_of_posSemidef_of_minorVanishes
+#print axioms Gtz.minorVanishes_smul_atomMatrix
+#print axioms Gtz.posSemidef_smul_atomMatrix
+#print axioms Gtz.posSemidef_minorVanishes_iff
+#print axioms Gtz.exists_atomMatrix_of_posSemidef_of_minorVanishes
+#print axioms Gtz.minorVanishes_of_eq_smul_atomMatrix
+#print axioms Gtz.minorVanishes_of_symm_twoKernel
