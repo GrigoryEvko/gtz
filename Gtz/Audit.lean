@@ -964,6 +964,7 @@ import Gtz.Design.ChartInverseTrace
 import Gtz.Design.ThreeLinesAxisLaw
 import Gtz.Design.ComplementFormLaw
 import Gtz.Design.GaugeWallStarErasure
+import Gtz.Design.ComplementLeverageLaw
 import Gtz.Design.ResidualPairingLaw
 import Gtz.Design.GaugeWallTriangleStarDescent
 import Gtz.Wave.KFourTriangleStarStallEndgame
@@ -29866,3 +29867,27 @@ run_cmd do
 #print axioms Gtz.crossPivot_eq_fullPivotGram
 #print axioms Gtz.residualPairing_diag_ge
 #print axioms Gtz.three_le_card_residualPairing_diag_pos
+-- The complement leverage law at the design level: the master bracket, the
+-- variational bound, the exact dual-probe formula, the two directions of the
+-- equivalence, and the pivot budget that always leaves three candidate labels.
+#print axioms Gtz.isHermitian_atomMatrix
+#print axioms Gtz.isHermitian_designGap
+#print axioms Gtz.design_weight_lt_one
+#print axioms Gtz.deficiency_pos
+#print axioms Gtz.sum_deficiency
+#print axioms Gtz.univGap_eq_deficiencySum
+#print axioms Gtz.complementCombination
+#print axioms Gtz.dotProduct_complementCombination
+#print axioms Gtz.complementBracket
+#print axioms Gtz.designInverseForm_ge_probe
+#print axioms Gtz.designInverseForm_eq_dual
+#print axioms Gtz.designComplementForm
+#print axioms Gtz.designComplementForm_eq_squares_add_gap
+#print axioms Gtz.designComplementForm_pos_of_posDef_complementGap
+#print axioms Gtz.posDef_complementGap_of_designComplementForm_pos
+#print axioms Gtz.posDef_complementGap_iff_designComplementForm_pos
+#print axioms Gtz.designComplementForm_single
+#print axioms Gtz.sum_deficiency_mul_pivot_univ
+#print axioms Gtz.pivot_univ_nonneg
+#print axioms Gtz.card_le_rank_of_forall_pivot_univ_ge_one
+#print axioms Gtz.three_le_card_pivot_univ_lt_one

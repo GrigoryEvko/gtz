@@ -4533,3 +4533,13 @@ import Gtz.Design.ComplementPairCriterion
 -- every full-selection pivot at the reciprocal of its co-weight.  The cap is
 -- rigid: an atom that attains it has every cross pivot zero.
 import Gtz.Design.PivotGramIdempotent
+
+-- The complement leverage law, at the design level.  A selection's gap is
+-- positive definite exactly when the complement form is positive at every
+-- coefficient vector supported on the labels the selection OMITS.  The content
+-- is one algebraic bracket, true at every probe with no positivity and no
+-- inverse, evaluated at the dual probe.  No chart, no whitening, no square
+-- root, generic in the size and the rank.  The diagonal of the form is the
+-- full-selection pivot, and the trace identity at univ caps the labels of pivot
+-- one or more by the rank, so at (6,3) three labels always sit below one.
+import Gtz.Design.ComplementLeverageLaw
