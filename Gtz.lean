@@ -4592,3 +4592,13 @@ import Gtz.Design.NormalLeverageFloor
 -- closing the wall is exactly equivalent to a finite scalar cover by the nine
 -- remaining pair-minor/determinant tests.
 import Gtz.Wave.ComplementTripleCriterion
+
+-- The omitted-label pivot exclusion and the shared atom of two meeting lines.
+-- The complement leverage law reads a selection's gap on the labels it OMITS,
+-- and at a single omitted label the complement form is one minus that label's
+-- full-selection pivot.  Supporting the coefficient vector at one label kills
+-- the quantifier: a positive definite selection forces EVERY label it omits
+-- below unit pivot.  All four two-meeting-lines transversals omit the shared
+-- atom, so a strict transversal forces the shared atom below unit pivot, and a
+-- design whose shared atom carries unit pivot or more admits no transversal.
+import Gtz.Design.SharedAtomPivotExclusion

@@ -976,6 +976,7 @@ import Gtz.Wave.GaugeWallTriangleTreeReduction
 import Gtz.Design.FlatNormalBudget
 import Gtz.Design.NormalLeverageFloor
 import Gtz.Wave.ComplementTripleCriterion
+import Gtz.Design.SharedAtomPivotExclusion
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29989,3 +29990,14 @@ run_cmd do
 #print axioms Gtz.kFourFamilySelection_of_complementMinorEndgame
 #print axioms Gtz.kFourEveryPointHasStrictTree_of_complementMinorEndgame
 #print axioms Gtz.kFourFamilySelection_of_pivotTriangle_of_complementMinorCover
+-- The omitted-label pivot exclusion: the indicator readings, the complement
+-- form at one label, the exclusion itself, the low-pivot containment, and the
+-- two-meeting-lines shared-atom consequences.
+#print axioms Gtz.complementCombination_indicator
+#print axioms Gtz.sum_sq_indicator
+#print axioms Gtz.designComplementForm_indicator
+#print axioms Gtz.pivot_univ_lt_one_of_posDef_of_mem_compl
+#print axioms Gtz.compl_subset_lowPivot_of_posDef
+#print axioms Gtz.twoMeetingLines_shared_pivot_lt_one
+#print axioms Gtz.not_twoMeetingLinesTransversalStrict_of_shared_pivot_ge_one
+#print axioms Gtz.twoMeetingLines_privates_pivot_lt_one
