@@ -2444,6 +2444,7 @@ import Gtz.Quantitative.ChartStationaryDesignFreeWindow
 -- margin floor 1/4.  With it the sharp division-free collar in the weight
 -- chart.  Buys back the rectangle's ground and nothing more.
 import Gtz.Design.WeightAwareClearance
+import Gtz.Design.DustWeightCollar
 -- The universal needle of a weighted design.  A cap on the weights is a
 -- floor on the FULL gap form at EVERY probe, division-free, with the
 -- constant 1 - cap beating the per-triple 1 - 2*cap of the A1 residual.

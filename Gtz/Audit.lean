@@ -591,6 +591,7 @@ import Gtz.Quantitative.ChartFloorAtomSpan
 import Gtz.Quantitative.ZeroLeakCollinearClosure
 import Gtz.Quantitative.ChartStationaryDesignFreeWindow
 import Gtz.Design.WeightAwareClearance
+import Gtz.Design.DustWeightCollar
 import Gtz.Design.UniversalNeedle
 import Gtz.Quantitative.SixThreeIndexLadderSpine
 import Gtz.Quantitative.ZeroLeakDependency
@@ -30341,3 +30342,36 @@ run_cmd do
 #print axioms Gtz.sum_ledgerEscapeProfile
 #print axioms Gtz.ledgerEscapeProfile_triple_mem_Ioo
 #print axioms Gtz.ledger_counting_admits_unit_shared_load
+
+-- The dust-weight collar of the line-free off-conic cell: the plane budget at a
+-- label, the strict over-reader whose excess is the dust weight, the leverage
+-- gate with no cross term, the explicit dust threshold, the exact collar split
+-- and the named plane-margin residual.
+#print axioms Gtz.sum_weight_erase
+#print axioms Gtz.complementWeight_pos
+#print axioms Gtz.planeBudget_at_label
+#print axioms Gtz.exists_planeOverReader
+#print axioms Gtz.exists_planeOverReader_excess
+#print axioms Gtz.PlaneMarginAt
+#print axioms Gtz.PlaneMarginAt
+#print axioms Gtz.coupling_le_leverageSum_mul
+#print axioms Gtz.posDef_insert_of_leverageGap
+#print axioms Gtz.massOf
+#print axioms Gtz.massOf_nonneg
+#print axioms Gtz.posDef_insert_of_dustWeight
+#print axioms Gtz.posDef_insert_of_dust_of_massFloor
+#print axioms Gtz.dustThreshold_pos
+#print axioms Gtz.dust_product_lt_of_lt_threshold
+#print axioms Gtz.DustWeightCollarExcludesTies
+#print axioms Gtz.boundaryCollarExcludesTies_weightAware_of_split
+#print axioms Gtz.PlaneMarginProducerAtLightLabel
+#print axioms Gtz.exists_label_weight_eq_rawWeightClearance
+#print axioms Gtz.card_insert_triple
+#print axioms Gtz.dustWeightCollarExcludesTies_of_producer
+#print axioms Gtz.boundaryCollarExcludesTies_weightAware_of_producer
+#print axioms Gtz.lineFreeOffConic_noTie_of_weightAware_of_producer
+#print axioms Gtz.planeMarginAt_zero_iff
+#print axioms Gtz.not_leverageGap_of_zero_margin
+#print axioms Gtz.leverageGap_of_margin_ge
+#print axioms Gtz.leverage_ge_of_massFloor_of_light
+#print axioms Gtz.posDef_insert_of_vanishing_margin
