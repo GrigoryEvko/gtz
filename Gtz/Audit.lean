@@ -881,6 +881,7 @@ import Gtz.Design.KernelPointer
 import Gtz.Design.StarSignRigidity
 import Gtz.Design.StarAmplifiedExchange
 import Gtz.Wave.KFourTreeWindowResidual
+import Gtz.Wave.KFourTreeWindowCorankReduction
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28631,6 +28632,22 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedTreeWindowResidual_iff_pathWindowResidualOrStar
 #print axioms Gtz.kFourKnifeBandRefinedTreeWindowResidual_iff
 #print axioms Gtz.kFourFamilySelection_iff_treeWindowResidual
+-- Pull the singular pointer-window kernel back to the original PSD tree gap.
+-- The public A3 formula is unchanged, but its corank branch now supplies two
+-- independent original-gap kernels and pointer orthogonality.
+#print axioms Gtz.treeGap_kernel_and_pointer_orthogonal_of_window_kernel
+#print axioms Gtz.KFourTreeGapCorankTwoData
+#print axioms Gtz.kFourTreeGapCorankTwoData_of_windowCorankTwo
+#print axioms Gtz.windowCorankTwo_of_kFourTreeGapCorankTwoData
+#print axioms Gtz.kFourTreeWindowCorankTwoData_iff_gapCorankTwo
+#print axioms Gtz.KFourWeakTreeGapCorankResidual
+#print axioms Gtz.kFourWeakTreeGapCorankResidual_of_windowResidual
+#print axioms Gtz.kFourWeakTreeWindowResidual_of_gapCorankResidual
+#print axioms Gtz.kFourWeakTreeGapCorankResidual_iff_windowResidual
+#print axioms Gtz.KFourKnifeBandRefinedTreeGapCorankResidualWeakToStrict
+#print axioms Gtz.kFourKnifeBandRefinedTreeGapCorankResidual_iff_treeWindowResidual
+#print axioms Gtz.kFourKnifeBandRefinedTreeGapCorankResidual_iff
+#print axioms Gtz.kFourFamilySelection_iff_treeGapCorankResidual
 -- The star amplified exchange: the amplification core, the four bundle
 -- translations, the four star amplified-triangle theorems, the kernel-probe
 -- exchange reading, and the assembled gauge-star conditional package.

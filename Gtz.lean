@@ -3999,6 +3999,10 @@ import Gtz.Design.StarSignRigidity
 -- A3. Every weak K4 tree is either already strict or reaches the same exact
 -- pointer-window pivot wall or corank-two wall.
 import Gtz.Wave.KFourTreeWindowResidual
+-- Pull a singular pointer-window kernel back through its positive rank-one
+-- update.  The A3 corank wall now exposes two independent kernels of the
+-- original PSD tree gap, and the incoming pointer is orthogonal to the second.
+import Gtz.Wave.KFourTreeWindowCorankReduction
 -- Spend the generic unsigned trace theorem at the two landed three-lines
 -- expansions.  The exact A2 residual is now outside both minor cells and both
 -- one-inequality trace cells.

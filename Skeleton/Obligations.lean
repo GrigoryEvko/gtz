@@ -59,14 +59,15 @@ Two roots are in play.
     the seventeen off-line triples.  The chart-heavy gate is gone because it
     is automatic;
   - `obligationKnifeBandRefinedKFour` =
-    `Gtz.KFourKnifeBandRefinedTreeWindowResidualWeakToStrict`, strictness demanded
+    `Gtz.KFourKnifeBandRefinedTreeGapCorankResidualWeakToStrict`, strictness demanded
     ONLY off Layer A, the exchange star, and the seventeen-cell all-tree minor
     atlas, with explicit nonnegative adjugate witnesses, Gershgorin bad-row
     alternatives, and cleared division-free polynomial edge budgets for every
     one of the sixteen spanning trees.  Every weak non-strict tree, including
     every vertex star, now supplies a nonzero gap kernel and outside pointer.
     Spending the pointer leaves only the positive-definite window pivot wall or
-    a window with an independent second kernel direction.  The exact washout
+    two independent kernels of the original tree gap, with the pointer
+    orthogonal to the second direction.  The exact washout
     witness shows that the bad-row layer alone cannot decide coverage.  Both
     quantifiers are restricted to the sixteen spanning trees.  The chart-heavy
     gate is gone because six positive chart weights sum to one and therefore
@@ -324,7 +325,7 @@ theorem obligationTieFreeThreeLines :
   Gtz.stressFreeStratumIsTieFree_threeLines_of_chart obligationChartTieFreeThreeLines
 
 /--
-CURRENT STATUS: the open formula is `Gtz.KFourKnifeBandRefinedTreeWindowResidualWeakToStrict`. It is restricted to spanning trees and lies outside Layer A, the exchange star, and the seventeen-cell all-tree unsigned minor atlas. Every one of the sixteen spanning trees carries a moduli-only cell. Atlas blindness at its canonical maximal floors gives an explicit nonzero nonnegative adjugate witness, a named diagonally non-dominant row, and one of three division-free polynomial bad-edge budgets for every tree. The path/star split is now gone. For any weak non-strict spanning tree, positive semidefiniteness supplies a nonzero gap kernel, the generic K4 kernel theorem supplies an outside repair pointer, and adding that pointer produces a positive-semidefinite four-edge window which reads strictly positively on the old kernel. Every positive-definite window with some old-edge pivot below one is discharged by the exact deletion rung and dependent-triple exclusion. The axiom therefore sees only two orbit-free alternatives: a positive-definite tree window whose three deletion pivots are all at least one, or a tree window with a second kernel direction not collinear with the old one. The four star sign lemmas remain available as additional signed data but no longer define a separate obligation branch. `Gtz.kFourKnifeBandRefinedTreeWindowResidual_iff` proves exact equivalence with the public refined knife band. The exact rational Gershgorin washout point satisfies a bad row for all sixteen trees while possessing strict trees, so the bad-row or bad-budget system alone is not the remaining theorem. The chart-heavy gate is absent because it is automatic. No inhabitant of the sharpened residual is currently proved. The following long STATUS paragraph is retained as a historical pre-unsigned-cell snapshot and is superseded by this line.
+CURRENT STATUS: the open formula is `Gtz.KFourKnifeBandRefinedTreeGapCorankResidualWeakToStrict`. It is restricted to spanning trees and lies outside Layer A, the exchange star, and the seventeen-cell all-tree unsigned minor atlas. Every one of the sixteen spanning trees carries a moduli-only cell. Atlas blindness at its canonical maximal floors gives an explicit nonzero nonnegative adjugate witness, a named diagonally non-dominant row, and one of three division-free polynomial bad-edge budgets for every tree. The path/star split is now gone. For any weak non-strict spanning tree, positive semidefiniteness supplies a nonzero gap kernel, the generic K4 kernel theorem supplies an outside repair pointer, and adding that pointer produces a positive-semidefinite four-edge window which reads strictly positively on the old kernel. Every positive-definite window with some old-edge pivot below one is discharged by the exact deletion rung and dependent-triple exclusion. In the singular branch, nonnegativity of the original gap and positivity of the pointer boost force the second window kernel to be a second kernel of the original tree gap and force its pointer reading to vanish. The axiom therefore sees only two orbit-free alternatives: a positive-definite tree window whose three deletion pivots are all at least one, or an original PSD tree gap with two independent kernel directions and an outside pointer orthogonal to the second. The four star sign lemmas and amplified exchanges remain available as additional signed data but no longer define a separate obligation branch. `Gtz.kFourKnifeBandRefinedTreeGapCorankResidual_iff` proves exact equivalence with the public refined knife band. The exact rational Gershgorin washout point satisfies a bad row for all sixteen trees while possessing strict trees, so the bad-row or bad-budget system alone is not the remaining theorem. The chart-heavy gate is absent because it is automatic. No inhabitant of the sharpened residual is currently proved. The following long STATUS paragraph is retained as a historical pre-unsigned-cell snapshot and is superseded by this line.
 STATUS: the most rigid class; covering half PROVED (`Gtz.directionChartCoversPrimitiveStratum_kFourDirection`, Gtz/Design/RigidityBridge.lean:796), direct class consumer `Gtz.stressFreeStratumIsTieFree_graphicKFour_of_chart` (:834). The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_graphicKFour`, Gtz/Reduction/TrichotomyLedger.lean:505). NOT VACUOUS: the stage-four audit's coordinate-diagonal design (the regular tetrahedron's six edge directions) realizes exactly this pattern. Open: `Gtz.KFourKnifeBandRefinedTenthHeavyWeakToStrict` -- a strictly dominating SPANNING TREE demanded ONLY at a tenth-heavy weakly dominated chart point where NEITHER covered region fires: Layer A (the twenty landed cells, named `Gtz.KFourLayerACellFires`, spent as `Gtz.kFourAtlas_hasStrictTriple_of_layerAFires`) nor the exchange star (`Gtz.KFourExchangeStarCellFires`, spent as `Gtz.kFourAtlas_hasStrictTree_of_exchangeStarCell`). Both quantifiers range over the sixteen spanning trees rather than the twenty card-3 subsets, which is sound because a weak dominator is never a dependent triple (`Gtz.kFourWeakAntecedent_yieldsSpanningTree` over the dichotomy `Gtz.cardThreeSubset_isSpanningTreeOrDependentTriple`). The all-light branch is discharged by the chart whitening, `Gtz.posDef_massMoment_kFourDirection`, and the strict tenth floor; `Gtz.kFourKnifeBandRefinedTenthHeavy_iff` proves this is equivalent to the former refined band. `Gtz.kFourKnifeBandWeakToStrict_of_refined` then recovers the round-2 band, and the boundary split `Gtz.directionChartIsTieFree_kFour_of_knifeBandWeakToStrict` closes the chart. CANONICAL BAND INHABITANT: `Gtz.bandResidualWitnessPoint` (mass (3,16,1,5,3,2), weight (3,1,1,1,3,1)/10; kernel-witnessed outside BOTH regions) -- NOT `Gtz.heavyPairRefuterPoint`, which the exchange star now COVERS (`Gtz.heavyPairRefuterPoint_exchangeStarCellFires`). Eleven positive reals against six FIXED rational chart vectors, sixteen trees, no design, no whitener, no square root in the residual statement.
 CONSUMERS: `obligationChartTieFreeKFour` (now a theorem), hence `obligationTieFreeKFour`, `obligationStressFreeHingeSixThree`, and the rank-three capstone.
 WHY OPEN: the only DIRECTION-GENERIC producer of `Gtz.DirectionChartIsTieFree` is `Gtz.directionChartIsTieFree_of_hasStrictTriple` (:176) -- the eight others are either K4-specific (the four selection bridges and the knife-band split in KFourChartClosure) or transport-only (`Gtz.directionChartIsTieFree_of_reindex` and its three-lines instances move a certificate between charts and cannot manufacture the first one) -- and its premise `Gtz.DirectionChartHasStrictTriple` is kernel-FALSE at a degenerate DIRECTION (a non-spanning family -- no refutation exists at any valid `kFourDirection` chart point, and ~19000 exact-rational adjudications found none); the antecedent-free form is still never landed as a named global. The class-level sibling `stressFreeStratumIsTieFree_graphicKFour_of_strictTriple` (:841) stays forbidden as a route.
@@ -332,22 +333,22 @@ ATTACK: DECIDED (spike, 2026-08-07): the DIRECT road; collar weld rejected (thre
 NOT-REFUTED: no census row targets it. The relaxed-weight refutation needs `0 <= weight`; chart points carry strict positivity. No stress-forcing filter can apply (TrichotomyLedger.lean:505 plus the tetrahedron inhabitant).
 -/
 axiom obligationKnifeBandRefinedKFour :
-    Gtz.KFourKnifeBandRefinedTreeWindowResidualWeakToStrict
+    Gtz.KFourKnifeBandRefinedTreeGapCorankResidualWeakToStrict
 
 /-- The registered chart residual recovers the exact design-side whitening
 family selector.  This is an equivalence, not an additional obligation. -/
 theorem obligationKFourFamilySelection : Gtz.KFourFamilySelection :=
-  Gtz.kFourFamilySelection_iff_treeWindowResidual.mpr
+  Gtz.kFourFamilySelection_iff_treeGapCorankResidual.mpr
     obligationKnifeBandRefinedKFour
 
-/-- The orbit-free tree-window A3 axiom reconstructs the former refined knife band
+/-- The orbit-free original-gap A3 axiom reconstructs the former refined knife band
 by spending all seventeen cells, the full sixteen-tree obstruction ledger, the
 twelve exact path-kernel couplings, the exhaustive path/star classifier, every
 tree's nonzero kernel and outside repair pointer, the four-edge window
 dichotomy, the exact deletion pivot rung, and the automatic chart-heavy law. -/
 theorem obligationKnifeBandRefinedKFour_full :
     Gtz.KFourKnifeBandRefinedWeakToStrict :=
-  Gtz.kFourKnifeBandRefinedTreeWindowResidual_iff.mp
+  Gtz.kFourKnifeBandRefinedTreeGapCorankResidual_iff.mp
     obligationKnifeBandRefinedKFour
 
 /-- **Discharged from the sharpened axiom.**  Same name, same statement.  Three
