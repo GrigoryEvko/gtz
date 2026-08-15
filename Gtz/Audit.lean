@@ -27941,3 +27941,25 @@ run_cmd do
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingUnsignedBlindOffLines_iff_offLines
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingUnsignedBlindOffLines_iff
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomain_of_unsignedBlind
+import Gtz.Design.UnsignedTraceCell
+-- The unsigned trace cell, the weighted Lagrange support, and the star atlas.
+#print axioms Gtz.weighted_lagrange_identity
+#print axioms Gtz.weighted_cauchySchwarz_sq
+#print axioms Gtz.quadForm_nonneg_of_psd_pair
+#print axioms Gtz.posDef_directionChartGap_of_unsignedCycleTrace
+#print axioms Gtz.kFour_expansion_starA_two
+#print axioms Gtz.kFour_expansion_starA_four
+#print axioms Gtz.kFour_expansion_starA_five
+#print axioms Gtz.kFour_expansion_starB_one
+#print axioms Gtz.kFour_expansion_starB_three
+#print axioms Gtz.kFour_expansion_starB_five
+#print axioms Gtz.kFour_expansion_starC_zero
+#print axioms Gtz.kFour_expansion_starC_three
+#print axioms Gtz.kFour_expansion_starC_four
+#print axioms Gtz.posDef_kFour_starCellA
+#print axioms Gtz.posDef_kFour_starCellB
+#print axioms Gtz.posDef_kFour_starCellC
+#print axioms Gtz.starTreeA_mem_kFourSpanningTreeList
+#print axioms Gtz.starTreeB_mem_kFourSpanningTreeList
+#print axioms Gtz.starTreeC_mem_kFourSpanningTreeList
+#print axioms Gtz.posDef_kFour_starTrace

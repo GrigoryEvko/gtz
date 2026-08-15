@@ -3873,3 +3873,6 @@ import Gtz.Wave.ThreeLinesOffLinesWiring
 -- Spend the allocation-free vertex/free cycle cells in A2 and remove the
 -- redundant chart-heavy antecedent from the final off-lines residual.
 import Gtz.Wave.ThreeLinesUnsignedCycleWiring
+-- The unsigned trace cell: one cleared inequality per tree, the three
+-- missing star cells, and the gauge-star trace corollary.
+import Gtz.Design.UnsignedTraceCell
