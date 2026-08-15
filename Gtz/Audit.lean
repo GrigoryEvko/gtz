@@ -996,6 +996,8 @@ import Gtz.Wave.ConsolidatedStrictTriple
 import Gtz.Design.ComplementDiagonalDominance
 import Gtz.Design.PivotOnlyDominance
 import Gtz.LinAlg.ProjectionDiagonalDominance
+import Gtz.Design.PivotThirdDominance
+import Gtz.Wave.ThreeLinesPivotThirdWiring
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30375,3 +30377,30 @@ run_cmd do
 #print axioms Gtz.leverageGap_of_margin_ge
 #print axioms Gtz.leverage_ge_of_massFloor_of_light
 #print axioms Gtz.posDef_insert_of_vanishing_margin
+-- The pivot-third dominance law: the resolvent symmetry, its Cauchy-Schwarz,
+-- the pivot pairing bound at the reciprocal square-root scale, and the law.
+#print axioms Gtz.transpose_univGap_inv
+#print axioms Gtz.resolvent_pairing_comm
+#print axioms Gtz.resolvent_quadForm_nonneg
+#print axioms Gtz.sq_fullInverseForm_le_mul
+#print axioms Gtz.fullPivot_nonneg_of_boost
+#print axioms Gtz.abs_fullInverseForm_le_sqrt
+#print axioms Gtz.scaledEntry_le_sqrt_pivot_mul
+#print axioms Gtz.posDef_directionChartGap_of_pivotThird
+-- The pivot-third cell of the three-lines chart: the deficiency-weighted pivot
+-- identity, the cell, its strict triple, the concentration law, the narrowed A2
+-- residual and its equivalence with public A2.
+#print axioms Gtz.sum_deficiency_mul_fullPivot_eq_three
+#print axioms Gtz.deficiency_le_one
+#print axioms Gtz.deficiency_nonneg_of_sum_one
+#print axioms Gtz.ThreeLinesPivotThirdCellFires
+#print axioms Gtz.card_compl_of_card_three
+#print axioms Gtz.exists_posDef_threeLines_of_pivotThirdCellFires
+#print axioms Gtz.two_lt_sum_selected_deficiency_mul_pivot
+#print axioms Gtz.ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitPivotThirdBlindOffLines
+#print axioms Gtz.pivotThirdBlind_of_sevenOrbitBlind
+#print axioms Gtz.sevenOrbitBlind_of_pivotThirdBlind
+#print axioms Gtz.chartTieFreeThreeLines_pivotThirdBlind_iff_sevenOrbitBlind
+#print axioms Gtz.chartTieFreeThreeLines_pivotThirdBlind_iff
+#print axioms Gtz.exists_pivot_ge_third_of_not_pivotThirdCellFires
+#print axioms Gtz.three_le_card_fullPivot_lt_one_threeLines

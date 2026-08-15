@@ -4768,3 +4768,5 @@ import Gtz.LinAlg.ProjectionDiagonalDominance
 -- the open label and one private label of each line gives one too, and the open
 -- content of the obligation is the band between one and three.
 import Gtz.Wave.TransversalLoadLedger
+import Gtz.Design.PivotThirdDominance
+import Gtz.Wave.ThreeLinesPivotThirdWiring
