@@ -4438,3 +4438,11 @@ import Gtz.Design.StallLocus
 -- whole-line selection needs its single free atom to beat the probe energy --
 -- while the unit law caps the same reading, so the pin yields only weight < 1.
 import Gtz.Design.LineStrataCardFourSplit
+
+-- The chart inverse-trace law.  A chart gap subtracts the MASS matrix, not the
+-- identity, so the design-level law does not transport verbatim: the chart
+-- pivot sum is the rank plus the trace of the inverse gap against the mass
+-- matrix.  A stalled selection prices that trace by its excess cardinality, and
+-- the adjugate clears the division.  At the trivial chart the mass matrix is
+-- Parseval's identity and the design-level law returns.
+import Gtz.Design.ChartInverseTrace

@@ -958,6 +958,7 @@ import Gtz.Design.InverseTraceEscape
 import Gtz.Design.GaugeWallKernelLaw
 import Gtz.Design.StallLocus
 import Gtz.Design.LineStrataCardFourSplit
+import Gtz.Design.ChartInverseTrace
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29656,3 +29657,14 @@ run_cmd do
 #print axioms Gtz.twoMeetingLines_cardFour_not_both_lines
 #print axioms Gtz.twoMeetingLines_secondLine_cardFour_eq
 #print axioms Gtz.oneLine_wholeLine_posDef_weight_lt_one
+-- The chart inverse-trace law: the mass matrix correction, the chart pivot sum,
+-- the chart stall price, and the division-free chart criterion with its vacuity
+-- at a stall.
+#print axioms Gtz.chartMassMatrix
+#print axioms Gtz.selectedPart_eq_gap_add_massMatrix
+#print axioms Gtz.trace_mul_smul_atomMatrix
+#print axioms Gtz.chartPivot_sum_eq_rank_add_trace_inv_mul_mass
+#print axioms Gtz.card_sub_rank_le_trace_inv_mul_mass_of_chart_stall
+#print axioms Gtz.trace_inv_mul_lt_iff_trace_adjugate_mul_lt
+#print axioms Gtz.exists_chartPivot_lt_one_of_trace_adjugate_mul_mass_lt
+#print axioms Gtz.not_trace_adjugate_mul_mass_lt_of_chart_stall
