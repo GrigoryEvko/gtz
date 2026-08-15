@@ -871,6 +871,7 @@ import Gtz.Wave.KFourPolynomialBudgetCells
 import Gtz.Wave.KFourAllTreeZMatrixWiring
 import Gtz.Wave.KFourFamilySelectionWiring
 import Gtz.Design.GershgorinWashout
+import Gtz.Wave.KFourDualSaturation
 import Gtz.Design.ChartWeightMonotone
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
@@ -28434,3 +28435,14 @@ run_cmd do
 #print axioms Gtz.subOneWeightLift_sum
 #print axioms Gtz.subOneChartPoint
 #print axioms Gtz.exists_posDef_of_coveredChart_of_weight_sum_le
+-- The canonical K4 path dual saturation and the resulting tight direction.
+#print axioms Gtz.zThreeMatrix
+#print axioms Gtz.zThreeMatrix_transpose
+#print axioms Gtz.exists_nonnegative_kernel_of_zThreeDualWitness_of_posSemidef
+#print axioms Gtz.kFourPath015ZMatrix
+#print axioms Gtz.kFourPath015Probe
+#print axioms Gtz.dotProduct_kFourPath015Gap_probe_eq_zMatrix
+#print axioms Gtz.kFourPath015Probe_ne_zero_of_ne_zero
+#print axioms Gtz.kFourPath015ZMatrix_posSemidef_of_gap
+#print axioms Gtz.exists_path015_nonnegative_kernel_of_blind_of_weak
+#print axioms Gtz.exists_path015_nonnegative_tightDirection_of_blind_of_weak

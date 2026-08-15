@@ -3951,6 +3951,11 @@ import Gtz.Wave.KFourFamilySelectionWiring
 -- dominating.  The sixteen-row necessary system cannot decide coverage, so
 -- a covering proof must consume more of each dual witness than its row.
 import Gtz.Design.GershgorinWashout
+-- Recover the information discarded by the Gershgorin projection on the
+-- canonical K4 path.  Alternating path signs identify the unsigned Z-form
+-- exactly with a pullback of the chart gap, so a full dual witness at a weak
+-- path supplies a nonzero kernel direction of the actual gap.
+import Gtz.Wave.KFourDualSaturation
 -- The chart gap is antitone in each selected weight, so strictness moves down
 -- in weight and a covering of the chart slice covers the full cone of weight
 -- sum at most one. The probe behind the module: the K4 covering fails on the
