@@ -4135,6 +4135,12 @@ import Gtz.Wave.KFourPivotStallPropagationWiring
 -- kernel in the exchanged four-set; the narrowed endpoint closure remains
 -- exactly equivalent to the former pivot propagation route.
 import Gtz.Wave.KFourPivotEndpointOrthogonalityWiring
+-- Classify the endpoint's zero-voltage locus completely.  A second zero edge
+-- is adjacent (hence a forbidden zero triangle) or opposite (hence an
+-- alternating checkerboard whose pointer window has negative determinant).
+-- Therefore the inserted edge is uniquely orthogonal, and the live pivot/A3
+-- residual is exactly a one-edge contraction plus the recurrent four-stall.
+import Gtz.Wave.KFourPivotEndpointContractionWiring
 -- The three-lines wall architecture.  The chart is a triangle: three
 -- coordinate labels and three join labels.  At a rank-one wall the six chart
 -- coefficients are pinned by the axis, the three join coefficients are the

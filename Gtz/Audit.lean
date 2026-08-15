@@ -904,6 +904,7 @@ import Gtz.Design.PivotBalanceLaw
 import Gtz.Wave.KFourGaugeStarTransportWiring
 import Gtz.Wave.KFourPivotStallPropagationWiring
 import Gtz.Wave.KFourPivotEndpointOrthogonalityWiring
+import Gtz.Wave.KFourPivotEndpointContractionWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -29064,6 +29065,46 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedAllMaxHeavy_of_gaugeAndPivotOrthogonalPropagation
 #print axioms Gtz.kFourKnifeBandRefined_of_gaugeAndPivotOrthogonalPropagation
 #print axioms Gtz.kFourFamilySelection_of_gaugeAndPivotOrthogonalPropagation
+-- Classify the K4 zero-voltage locus and eliminate both multi-edge endpoint
+-- branches.  The finite voltage classifier, triangle exclusion, opposite-pair
+-- checkerboard, negative window factor, exact contraction producer, and every
+-- live closure replacement are pinned separately.
+#print axioms Gtz.kFourOppositeEdge
+#print axioms Gtz.kFourOppositeEdge_involutive
+#print axioms Gtz.kFourOppositeEdge_ne
+#print axioms Gtz.kFourDirection_readings
+#print axioms Gtz.KFourZeroTriangle
+#print axioms Gtz.kFour_second_zero_is_opposite_or_triangle
+#print axioms Gtz.kFour_coeffSum_kernel_equations
+#print axioms Gtz.kFour_no_zero_triangle_of_coeffSum_kernel
+#print axioms Gtz.KFourOppositeCheckerboard
+#print axioms Gtz.kFour_opposite_checkerboard_of_coeffSum_kernel
+#print axioms Gtz.kFourPointerWindowCoefficient
+#print axioms Gtz.det_kFour_pointerWindowCoefficient_neg
+#print axioms Gtz.kFour_opposite_coefficient_pos_of_checkerboard
+#print axioms Gtz.chartCoeff_insert_swap_eq_pointerWindowCoefficient
+#print axioms Gtz.KFourPivotWallPricedOrthogonalEndpointData.added_coeff_ne
+#print axioms Gtz.KFourPivotWallPricedOrthogonalEndpointData.second_orthogonal_eq_opposite
+#print axioms Gtz.KFourPivotWallPricedOrthogonalEndpointData.opposite_not_orthogonal
+#print axioms Gtz.KFourPivotWallPricedOrthogonalEndpointData.orthogonal_iff_eq_added
+#print axioms Gtz.KFourPivotWallPricedContractedEndpointData
+#print axioms Gtz.kFourPivotWall_pricedContractedEndpointData
+#print axioms Gtz.kFourPivotWall_pricedContractedEndpointData_of_priced
+#print axioms Gtz.KFourPivotWallPricedContractedEndpointClosure
+#print axioms Gtz.kFourPivotWallPricedContractedEndpointClosure_of_orthogonalEndpointClosure
+#print axioms Gtz.kFourPivotWallPricedOrthogonalEndpointClosure_of_contractedEndpointClosure
+#print axioms Gtz.kFourPivotWallPricedOrthogonalEndpointClosure_iff_contractedEndpointClosure
+#print axioms Gtz.kFourPivotWallPricedEndpointClosure_iff_contractedEndpointClosure
+#print axioms Gtz.KFourPivotWallContractedPropagationClosure
+#print axioms Gtz.kFourPivotWallOrthogonalPropagationClosure_iff_contractedPropagation
+#print axioms Gtz.kFourPivotWallPropagationClosure_iff_contractedPropagation
+#print axioms Gtz.kFourWindowAllPivotWallClosure_iff_contractedPropagation
+#print axioms Gtz.KFourGaugeAndPivotContractedPropagationClosure
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_iff_contractedPropagation
+#print axioms Gtz.kFourKnifeBandRefinedAllMaxHeavy_of_gaugeAndPivotContractedPropagation
+#print axioms Gtz.kFourKnifeBandRefined_of_gaugeAndPivotContractedPropagation
+#print axioms Gtz.kFourFamilySelection_of_gaugeAndPivotContractedPropagation
+#print axioms Gtz.kFourEveryPointHasStrictTree_of_gaugeAndPivotContractedPropagation
 #print axioms Gtz.kFourEveryPointHasStrictTree_of_gaugeAndPivotOrthogonalPropagation
 -- The sharp weight cap of the gauge star wall.  The joint bound of the negative
 -- block reaches the exact wall threshold, which the term bound cannot.
