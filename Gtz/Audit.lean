@@ -875,6 +875,7 @@ import Gtz.Wave.KFourDualSaturation
 import Gtz.Wave.KFourPriorPathDualSaturation
 import Gtz.Wave.KFourPathStarResidual
 import Gtz.Wave.KFourPathPointerResidual
+import Gtz.Wave.KFourPathWindowDichotomy
 import Gtz.Design.ChartWeightMonotone
 import Gtz.Design.KernelPointer
 import Gtz.Design.StarSignRigidity
@@ -28565,6 +28566,38 @@ run_cmd do
 #print axioms Gtz.exists_pointer_of_not_posDef
 #print axioms Gtz.pointer_exchange_pos_reading
 #print axioms Gtz.exists_kFourPointer_of_not_posDef
+-- Spend a saturated path pointer on the four-edge window.  The capstone is the
+-- exact trichotomy: strict tree, final-rung pivot wall, or an independent
+-- second window-kernel direction.
+#print axioms Gtz.directionChartGap_insert
+#print axioms Gtz.KFourPathWindowData
+#print axioms Gtz.kFourPathWindowData_of_pointerData
+#print axioms Gtz.kFourPathWindow_exchange_posDef_iff_pivot_lt_one
+#print axioms Gtz.exists_strictTree_of_kFourPathWindow_pivot_lt_one
+#print axioms Gtz.KFourPathWindowPivotWallData
+#print axioms Gtz.KFourPathWindowCorankTwoData
+#print axioms Gtz.exists_strictTree_or_windowPivotWall_or_corankTwo
+#print axioms Gtz.KFourWeakPathWindowWitness
+#print axioms Gtz.KFourWeakPathWindowOrStar
+#print axioms Gtz.kFourPathPointerData_of_windowData
+#print axioms Gtz.kFourWeakPathWindowOrStar_of_pointerOrStar
+#print axioms Gtz.kFourWeakPathPointerOrStar_of_windowOrStar
+#print axioms Gtz.KFourKnifeBandRefinedPathWindowOrStarWeakToStrict
+#print axioms Gtz.pathWindowOrStarKFourKnifeBandRefined_of_pathPointerOrStar
+#print axioms Gtz.pathPointerOrStarKFourKnifeBandRefined_of_pathWindowOrStar
+#print axioms Gtz.kFourKnifeBandRefinedPathWindowOrStar_iff_pathPointerOrStar
+#print axioms Gtz.kFourKnifeBandRefinedPathWindowOrStar_iff
+#print axioms Gtz.kFourFamilySelection_iff_pathWindowOrStar
+#print axioms Gtz.KFourWeakPathWindowResidualWitness
+#print axioms Gtz.KFourWeakPathWindowResidualOrStar
+#print axioms Gtz.exists_strictTree_or_kFourWeakPathWindowResidualOrStar
+#print axioms Gtz.kFourWeakPathWindowOrStar_of_residualOrStar
+#print axioms Gtz.KFourKnifeBandRefinedPathWindowResidualOrStarWeakToStrict
+#print axioms Gtz.pathWindowResidualOrStarKFourKnifeBandRefined_of_pathWindowOrStar
+#print axioms Gtz.pathWindowOrStarKFourKnifeBandRefined_of_pathWindowResidualOrStar
+#print axioms Gtz.kFourKnifeBandRefinedPathWindowResidualOrStar_iff_pathWindowOrStar
+#print axioms Gtz.kFourKnifeBandRefinedPathWindowResidualOrStar_iff
+#print axioms Gtz.kFourFamilySelection_iff_pathWindowResidualOrStar
 -- The star sign rigidity: the sign lemma, the copositivity upgrade, the
 -- dual-system transport, the four star instances, and the kernel pointer.
 #print axioms Gtz.quadForm_add_smul

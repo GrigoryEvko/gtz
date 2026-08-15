@@ -3970,6 +3970,11 @@ import Gtz.Wave.KFourPathStarResidual
 -- branch now names an outside repair label whose every host selection reads
 -- strictly positively on the original path's null direction.
 import Gtz.Wave.KFourPathPointerResidual
+-- Spend the pointer on its four-edge window.  Every saturated weak path now
+-- yields a strict tree, the exact final-rung pivot wall, or two independent
+-- window-kernel directions; successful deletions are removed before the
+-- resulting residual formula reaches the registered A3 joint.
+import Gtz.Wave.KFourPathWindowDichotomy
 -- The chart gap is antitone in each selected weight, so strictness moves down
 -- in weight and a covering of the chart slice covers the full cone of weight
 -- sum at most one. The probe behind the module: the K4 covering fails on the
