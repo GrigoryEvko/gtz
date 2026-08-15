@@ -968,6 +968,7 @@ import Gtz.Design.ResidualPairingLaw
 import Gtz.Design.GaugeWallTriangleStarDescent
 import Gtz.Wave.KFourTriangleStarStallEndgame
 import Gtz.Design.WholeLineMarginCriterion
+import Gtz.Design.ComplementPairCriterion
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29820,3 +29821,27 @@ run_cmd do
 #print axioms Gtz.strictTrineVec_triple_strict
 #print axioms Gtz.strictTrineVec_pair_fails
 #print axioms Gtz.strictlyHeavy_planar_dropOne_false
+-- The complement form at one label and at a pair: the pivot exclusion, the
+-- binary quadratic form of a pair, the two-by-two card-four criterion, the
+-- complement matrix at an arbitrary omitted set, and the leverage count that
+-- keeps at least three labels below unit pivot.
+#print axioms Gtz.fullInverseForm
+#print axioms Gtz.fullPivot
+#print axioms Gtz.dotProduct_mulVec_comm_of_transpose
+#print axioms Gtz.fullInverseForm_comm
+#print axioms Gtz.complementForm_single
+#print axioms Gtz.fullPivot_lt_one_of_posDef_compl
+#print axioms Gtz.pairFormDiag
+#print axioms Gtz.pairFormCross
+#print axioms Gtz.complementForm_pair
+#print axioms Gtz.binaryQuadratic_pos_iff
+#print axioms Gtz.posDef_directionChartGap_compl_pair_iff
+#print axioms Gtz.posDef_directionChartGap_compl_pair_pivot
+#print axioms Gtz.complementMatrixEntry
+#print axioms Gtz.complementForm_eq_sum
+#print axioms Gtz.fullInverseForm_self_nonneg
+#print axioms Gtz.chartLeverage
+#print axioms Gtz.sum_chartLeverage_eq_three
+#print axioms Gtz.chartLeverage_eq_one_sub_weight_mul_fullPivot
+#print axioms Gtz.fullPivot_lt_one_iff_leverage_add_weight
+#print axioms Gtz.three_le_card_fullPivot_lt_one

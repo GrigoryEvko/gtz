@@ -4516,3 +4516,12 @@ import Gtz.Design.ResidualPairingLaw
 -- identity of the plane while no pair of it dominates even weakly, so heaviness
 -- does not weld the flat atoms to rank-two GTZ.
 import Gtz.Design.WholeLineMarginCriterion
+
+-- The complement form at one label and at a pair.  Taking the coefficient
+-- vector at a single omitted label kills the quantifier outright: every label a
+-- positive definite selection omits carries full pivot below one.  At a pair the
+-- complement form is a binary quadratic form, so a card-four selection is two
+-- polynomial inequalities.  The leverages of the slack Laplacian total the rank
+-- three and the weights total one, so at least three labels always survive the
+-- pivot exclusion and the omitted triple of a card-three selection exists.
+import Gtz.Design.ComplementPairCriterion
