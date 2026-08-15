@@ -3886,3 +3886,7 @@ import Gtz.Design.UnsignedTraceCell
 -- cells in the exact K4 residual.  The live formula is now outside all six
 -- unsigned certificate cells and remains equivalent to the public knife band.
 import Gtz.Wave.KFourUnsignedTraceWiring
+-- Spend the generic unsigned trace theorem at the two landed three-lines
+-- expansions.  The exact A2 residual is now outside both minor cells and both
+-- one-inequality trace cells.
+import Gtz.Wave.ThreeLinesUnsignedTraceWiring

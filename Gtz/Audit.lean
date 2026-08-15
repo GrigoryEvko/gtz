@@ -859,6 +859,7 @@ import Gtz.Design.UnsignedCycleCells
 import Gtz.Design.UnsignedTraceCell
 import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.KFourUnsignedTraceWiring
+import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesBudgetWiring
 import Gtz.Wave.ThreeLinesReadingCoverWiring
 import Gtz.Wave.ThreeLinesOffLinesWiring
@@ -27983,6 +27984,20 @@ run_cmd do
 #print axioms Gtz.traceBlindKFourKnifeBandRefined_of_unsignedBlind
 #print axioms Gtz.kFourKnifeBandRefinedTraceBlind_iff_unsignedBlind
 #print axioms Gtz.kFourKnifeBandRefinedTraceBlind_iff
+-- Spend the generic trace theorem at both three-lines chart triples.
+#print axioms Gtz.ThreeLinesUnsignedVertexTraceCellFires
+#print axioms Gtz.ThreeLinesUnsignedFreeTraceCellFires
+#print axioms Gtz.ThreeLinesUnsignedTraceCellFires
+#print axioms Gtz.ThreeLinesExpandedUnsignedCellFires
+#print axioms Gtz.posDef_threeLines_vertexCell_of_unsignedTraceFires
+#print axioms Gtz.posDef_threeLines_freeCell_of_unsignedTraceFires
+#print axioms Gtz.exists_posDef_threeLines_of_unsignedTraceCellFires
+#print axioms Gtz.exists_posDef_threeLines_of_expandedUnsignedCellFires
+#print axioms Gtz.ChartTieFreeThreeLinesFundamentalDomainBudgetReadingTraceBlindOffLines
+#print axioms Gtz.chartTieFreeThreeLinesUnsignedBlindOffLines_of_traceBlind
+#print axioms Gtz.traceBlindThreeLinesFundamentalDomain_of_unsignedBlind
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingTraceBlindOffLines_iff_unsignedBlind
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingTraceBlindOffLines_iff
 -- Spend the complement-jaw needle law in the exact A1 counterexample.
 #print axioms Gtz.weight_le_baseComplementMaxWeight
 #print axioms Gtz.baseComplementMaxWeight_pos
