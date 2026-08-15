@@ -4112,3 +4112,10 @@ import Gtz.Design.PivotBalanceLaw
 -- gauge-star wall; solving that canonical wall together with the four-pivot
 -- window wall discharges A3 and the design-side K4 family selector.
 import Gtz.Wave.KFourGaugeStarTransportWiring
+-- The three-lines wall architecture.  The chart is a triangle: three
+-- coordinate labels and three join labels.  At a rank-one wall the six chart
+-- coefficients are pinned by the axis, the three join coefficients are the
+-- pairwise axis products, and their product against the slide is a square.
+-- The parity of the selected join labels is therefore forced by the sign of
+-- the slide, which excludes half of the twenty triples at every slide.
+import Gtz.Design.ThreeLinesWallArchitecture

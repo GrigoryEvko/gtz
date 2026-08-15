@@ -28970,3 +28970,15 @@ run_cmd do
 -- sensitive weight cap of three sixteenths, above the landed one sixth.
 #print axioms Gtz.kFourStarACell_fires_of_wall_heavyCap
 #print axioms Gtz.kFourAtlas_fires_of_wall_heavyCap
+-- The three-lines wall architecture: the slide-parametric closed form of a
+-- rank-one gap, the join parity identity, and the four parity exclusions.
+#print axioms Gtz.threeLinesCoeff_eq_of_rankOne
+#print axioms Gtz.threeLinesRankOne_join_parity
+#print axioms Gtz.threeLinesRankOne_join_parity_nonneg
+#print axioms Gtz.threeLinesRankOne_not_zeroJoins_of_slide_pos
+#print axioms Gtz.threeLinesRankOne_not_twoJoins_of_slide_pos
+#print axioms Gtz.threeLinesRankOne_not_threeJoins_of_slide_neg
+#print axioms Gtz.threeLinesRankOne_not_oneJoin_of_slide_neg
+#print axioms Gtz.chartCoeff_eq_neg_mass_of_not_mem
+#print axioms Gtz.mass_mul_one_sub_weight_eq_of_mem
+#print axioms Gtz.threeLinesWall_join_family
