@@ -192,6 +192,34 @@ theorem excess_gt_of_no_exchange {size : ℕ}
   rw [Finset.mul_sum]
   linarith
 
+/-- **THE SMALL-EXCESS EXCHANGE.**  A selection whose total pivot excess does
+not reach `pivot entering / (1 + pivot entering)` admits a positive definite
+exchange into `entering`.
+
+This is the consumable form of the two laws: it names a region of a stall where
+an exchange is forced outright, with no case analysis and no geometry left to
+supply.  The excess of a stall is what the pivot balance controls, so the
+hypothesis is exactly the shape the balance can deliver. -/
+theorem exists_posDef_exchange_of_excess_le {size : ℕ}
+    (direction : Fin size → (Fin 3 → ℝ)) (mass weight : Fin size → ℝ)
+    (hmass : ∀ label, 0 < mass label) (hweight : ∀ label, 0 < weight label)
+    (selected : Finset (Fin size)) {entering : Fin size}
+    (hentering : entering ∉ selected)
+    (hpd : (directionChartGap direction mass weight selected).PosDef)
+    (hmoment : (∑ label, mass label • atomMatrix (direction label)).PosDef)
+    (hne : direction entering ≠ 0)
+    (hsmall : (1 + chartLadderPivot direction mass weight selected entering)
+        * ∑ leaving ∈ selected,
+          (chartLadderPivot direction mass weight selected leaving - 1)
+      ≤ chartLadderPivot direction mass weight selected entering) :
+    ∃ leaving ∈ selected, (directionChartGap direction mass weight
+      (insert entering (selected.erase leaving))).PosDef := by
+  by_contra hno
+  push Not at hno
+  have hbig := excess_gt_of_no_exchange direction mass weight hmass hweight
+    selected hentering hpd hmoment hne hno
+  linarith
+
 /-! ## The K4 circuits and their non-degeneracy -/
 
 /-- The triangle circuit at the grounded vertex: the bc edge is the difference

@@ -29294,3 +29294,4 @@ run_cmd do
 #print axioms Gtz.kFourCircuit_one
 #print axioms Gtz.kFourCircuit_triangle
 #print axioms Gtz.exists_cross_ne_zero
+#print axioms Gtz.exists_posDef_exchange_of_excess_le
