@@ -29343,3 +29343,10 @@ run_cmd do
 #print axioms Gtz.pivot_add_moment_le_excess_of_no_exchange
 #print axioms Gtz.exists_posDef_exchange_of_pivot_add_moment_gt
 #print axioms Gtz.cardFour_stall_weightedPivotSum_gt_of_no_exchange
+
+#print axioms Gtz.kFour_tree_star_of_addedFive
+#print axioms Gtz.KFourSignedKernelEndpointData.classify
+#print axioms Gtz.KFourPivotWallPricedContractedEndpointData.tree_star_and_opposite_mem
+#print axioms Gtz.kFourPivotWallPricedContractedEndpointClosure_iff_starEndpointClosure
+#print axioms Gtz.kFourWindowAllPivotWallClosure_iff_starPropagation
+#print axioms Gtz.kFourKnifeBandRefined_of_gaugeStarAtlasFires_of_pivotAtlasFires

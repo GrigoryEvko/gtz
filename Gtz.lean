@@ -4258,3 +4258,5 @@ import Gtz.Design.WeightedFormCriterion
 -- refused exchange price from the entering pivot alone to that pivot plus its
 -- moment form.
 import Gtz.Design.ExcessThreshold
+
+import Gtz.Wave.KFourPivotEndpointStarWiring
