@@ -64,10 +64,42 @@ integer perturbations:
 | **both, `r` a star other than `j`** | **4** | **100%** | **100%** |
 | all six surviving exchanges | 6 | 100% | 100% |
 
-So the four-way disjunction is total where the six-way one is, and **neither
-two-element subset is sufficient** — the first fails at more than half of all
-stalls.  The stall hypothesis is also unnecessary: the disjunction already holds
-at every positive definite type-A selection.
+The measurement read this as: the four-way disjunction is total where the
+six-way one is, and **neither two-element subset is sufficient** — the first
+fails at more than half of all stalls.
+
+## CORRECTION: the four-way narrowing is REFUTED
+
+**The reading above is false.**  The narrowing from six exchanges to four does
+not hold.  A triangle-leaving exchange fires at wall points where all four of
+`{i, r}ᶜ` and `{j, r}ᶜ` fail, so the leaving label may **not** always be taken
+to be a star label.
+
+Exact rational witness, on the gauge wall at axis `a = (2, 57, 56)`:
+
+* masses `(114, 112, 3192, 4600, 1089/1000, 81/200)`
+* weights `(236437165301858800/24949822035421059021,
+  945748661207435200/24949822035421059021,
+  187693010369959/24949822035421059021, 20/21, 363/2185363, 81/1288081)`
+
+The weights are positive and sum to one, the masses are positive, and the star
+gap on `{3, 4, 5}` is exactly `a aᵀ`, so this is a genuine wall point.  At the
+matching `{2, 3}` the type-A selection `{0, 1, 4, 5}` is positive definite, all
+four of `{2,4}ᶜ`, `{2,5}ᶜ`, `{3,4}ᶜ`, `{3,5}ᶜ` FAIL, and the triangle-leaving
+exchange `{1,3}ᶜ` is positive definite.  A second witness sits at
+`a = (4, 28, 26)`, masses `(112, 104, 728, 1177, 217/2500, 167/10)`.
+
+The measurement missed this for a reason distinct from the one recorded above.
+The overall weight ratio is not the blind spot here: the violations appear
+already at a mass box of `10⁴`.  The blind spot is the **split of the residual
+weight among the three triangle labels**.  Both witnesses drive one triangle
+weight far below the other two — `w₁/w₂` exceeds `5·10³` at the first — and a
+sampler that splits the residual weight evenly never reaches them.
+
+What survives: **neither two-element subset is sufficient** is an EXISTENTIAL
+claim, and it stands.  Each half fails at tens of thousands of exact wall points
+across mass boxes from `10²` to `10¹⁰`.  A bounded box establishes an existence
+claim; it cannot establish a universal one, and the narrowing was universal.
 -/
 
 namespace Gtz
