@@ -29919,6 +29919,7 @@ run_cmd do
 #print axioms Gtz.oneLine_freeTriple_posDef_iff_planeInequality
 #print axioms Gtz.oneLine_freePair_excess
 #print axioms Gtz.twoMeetingLines_transversal_excess
+#print axioms Gtz.exists_complementAtom_pair_excess
 -- The gauge-wall tree reduction: the complement matrix symmetry, the two-label
 -- support reading, the rank-one triangle block, the two-triangle kill at every
 -- omitted cardinality, and the nine surviving spanning trees.
