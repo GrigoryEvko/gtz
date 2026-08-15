@@ -28,6 +28,7 @@ two conclusions select one transversal that clears the excess at each normal.
 import Mathlib
 import Gtz.Core.Basic
 import Gtz.Design.UniversalNeedle
+import Gtz.Design.LineClassObstructions
 import Gtz.Design.ComplementLeverageLaw
 import Gtz.Design.WholeLineMarginCriterion
 
@@ -173,6 +174,38 @@ theorem exists_partner_excess_gt_one (design : WeightedDesign size rank)
     · have hxeq : readX = 0 := le_antisymm hxzero hxNonneg
       have hyPosStrict : 0 < readY := by rw [hxeq] at hsumPos; linarith
       nlinarith
+
+/-! ## The sharp excess already in kernel
+
+`Gtz.exists_complementAtom_overcovers_normal` supplies a SINGLE free atom whose
+squared normal reading exceeds the probe energy.  That is strictly stronger than
+the counting argument above: every pair holding that atom clears the excess, and
+the designated label is free to be anything.  Prefer this route.  The counting
+argument is retained because it is generic in the size, the rank and the flat
+set, while the pointwise seed is stated at `(6,3)` for a line triple. -/
+
+/-- **The sharp pair excess.**  One free atom alone beats the probe energy, so
+every pair holding it clears the excess whatever the partner is. -/
+theorem exists_complementAtom_pair_excess (design : WeightedDesign 6 3)
+    (lineTriple : Finset (Fin 6)) (normalVec : Fin 3 → ℝ)
+    (hlineNonempty : lineTriple.Nonempty)
+    (hunit : normalVec ⬝ᵥ normalVec = 1)
+    (horthogonal : ∀ lineLabel ∈ lineTriple,
+      design.atom lineLabel ⬝ᵥ normalVec = 0)
+    (partner : Fin 6) :
+    ∃ freeLabel ∈ lineTripleᶜ,
+      1 < (design.atom freeLabel ⬝ᵥ normalVec) ^ 2
+        + (design.atom partner ⬝ᵥ normalVec) ^ 2 := by
+  have hnormalNe : normalVec ≠ 0 := by
+    intro hzero
+    rw [hzero] at hunit
+    simp at hunit
+  obtain ⟨freeLabel, hmem, hover⟩ :=
+    exists_complementAtom_overcovers_normal design lineTriple normalVec
+      hlineNonempty hnormalNe horthogonal
+  refine ⟨freeLabel, hmem, ?_⟩
+  rw [hunit] at hover
+  nlinarith [sq_nonneg (design.atom partner ⬝ᵥ normalVec)]
 
 /-! ## The reduction to the plane inequality -/
 
