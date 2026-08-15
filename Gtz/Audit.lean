@@ -922,13 +922,19 @@ import Gtz.Design.StallTypeSplit
 import Gtz.Design.TwoMeetingLinesNeedle
 import Gtz.Design.OneLineComplementCap
 import Gtz.Design.TwoMeetingLinesComplementCap
+import Gtz.Design.ParsevalComplementCriterion
+import Gtz.Design.TwoMeetingLinesParsevalCap
+import Gtz.Design.WeightedFormCriterion
 import Gtz.Design.ExchangeCriterion
 import Gtz.Design.CrossEnergyLaw
 import Gtz.Design.StarWallResidualRows
 import Gtz.Design.TriangleNormalReading
 import Gtz.Design.ExcessThreshold
 import Gtz.Design.TightBaseRigidity
+import Gtz.Design.TypeAExchangeObstruction
 import Gtz.Design.TwoMeetingLinesRigidity
+import Gtz.Wave.KFourPivotRecurrentTriangleWiring
+import Gtz.Wave.ThreeLinesStallEscapeWiring
 import Gtz.Design.GaugeWallAtlasEquivalence
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
