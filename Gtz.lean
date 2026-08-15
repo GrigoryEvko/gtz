@@ -3738,7 +3738,12 @@ import Gtz.Wave.TenthAverageFloor
 -- the balanced cut dictionary, the triangle criterion, the path and polygon
 -- laws, and the quartet pigeonhole.
 import Gtz.Wave.InvolutionBlockForm
-
+-- The full spectral-parameter Jacobi law and its first selection payoff. A cut
+-- of square mass at most 4/9 has a winning side, so the landed heavy-edge
+-- escape closes every balanced frame with an edge of square at least 2/3.
+-- The only balanced determinant residue is the strict subcritical edge region,
+-- and the module connects its determinant target to the actual 1/6 carrier.
+import Gtz.Wave.BalancedCutSelection
 -- The complement jaw window and the needle law of the two terminal tie
 -- charts. The quadratic-cap jaw closes a subset from the budget
 -- tin * kappa + tout < 1, the rank-one instantiation is the C3 foil law,
@@ -3756,3 +3761,8 @@ import Gtz.Ties.ComplementJawWindow
 -- every plane frame carries a sixty-degree pair — sharp at the trine, real
 -- only by the Bloch tetrahedron.
 import Gtz.Wave.PlanePairCriterion
+-- The descent weld spends all three preceding layers. Balanced heavy edges
+-- produce the actual carrier or leave a strict subcritical frame; light ties
+-- carry an eight-needle on every triple and die against one strict gap cap;
+-- the plane endpoint is strict or tied at sixty degrees and nonparallel.
+import Gtz.Wave.DescentWeld

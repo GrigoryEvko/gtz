@@ -840,8 +840,10 @@ import Gtz.Wave.PentagonFloorProof
 import Gtz.Wave.SpreadWeightCap
 import Gtz.Wave.TenthAverageFloor
 import Gtz.Wave.InvolutionBlockForm
+import Gtz.Wave.BalancedCutSelection
 import Gtz.Wave.PlanePairCriterion
 import Gtz.Ties.ComplementJawWindow
+import Gtz.Wave.DescentWeld
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27541,6 +27543,33 @@ run_cmd do
 #print axioms Gtz.atomBalancedShiftSecond
 #print axioms Gtz.AtomBalancedDetWin
 #print axioms Gtz.atomHeavyEdgeEscape
+-- The full Jacobi cut law and the heavy-edge closure of the balanced cell.
+#print axioms Gtz.det_mul_sub_scalar_comm_fin_three
+#print axioms Gtz.det_scalar_sub_mul_comm_fin_three
+#print axioms Gtz.atomTripleRows_cut_split
+#print axioms Gtz.atomTripleRows_shiftDet
+#print axioms Gtz.atomTripleDet_uniform_complement
+#print axioms Gtz.atomShiftBlockDet_eq_atomTripleDet
+#print axioms Gtz.atomShiftBlockDet_balanced_twin
+#print axioms Gtz.atomBalancedCutDetWin_iff
+#print axioms Gtz.atomBalancedCutDetWin_of_sqSum_le
+#print axioms Gtz.exists_triplePerm
+#print axioms Gtz.exists_atomBalancedDetWin_of_heavyEdge
+#print axioms Gtz.exists_pairPermOfDistinct
+#print axioms Gtz.exists_atomBalancedDetWin_of_heavyPair
+#print axioms Gtz.AtomBalancedSubcriticalDetWin
+#print axioms Gtz.atomBalancedDetWin_of_subcritical
+#print axioms Gtz.atomShiftBlockMatrix
+#print axioms Gtz.atomShiftBlockMatrix_apply
+#print axioms Gtz.atomShiftBlockMatrix_symmetric
+#print axioms Gtz.atomShiftBlockMatrix_first_balanced
+#print axioms Gtz.atomShiftBlockMatrix_second_balanced
+#print axioms Gtz.atomShiftBlockMatrix_det
+#print axioms Gtz.atomShiftBlockMatrix_posSemidef_of_balanced_det_nonneg
+#print axioms Gtz.atomBlendFloor_sixth_of_balanced_det_nonneg
+#print axioms Gtz.exists_atomBlendFloor_sixth_of_balancedDetWin
+#print axioms Gtz.exists_atomBlendFloor_sixth_of_balanced_heavyEdge
+#print axioms Gtz.exists_atomCarrier_of_balanced_heavyEdge
 -- The exact pair criterion, the strictness engine, and the isotropy spread:
 -- the strict pair test with its two-gap and budget equivalences, the active
 -- budget strict selection, the sixty-degree spread pair with its trine
@@ -27585,3 +27614,9 @@ run_cmd do
 #print axioms Gtz.PlaneParseval.mass_eq_of_equal
 #print axioms Gtz.exists_dominatingPlanePair_uniform
 #print axioms Gtz.exists_strictDominatingPlanePair_uniform
+-- The descent weld: balanced interior elimination, the exact eight-needle
+-- chart exit, and the strict-or-tied-nonparallel plane endpoint.
+#print axioms Gtz.exists_atomCarrier_or_balancedSubcritical
+#print axioms Gtz.exists_gapNeedle_eight_of_isTie_six_three
+#print axioms Gtz.not_isTie_of_tenth_of_gap_lt_eight
+#print axioms Gtz.PlaneParseval.strict_or_tied_nonparallel_pair_uniform
