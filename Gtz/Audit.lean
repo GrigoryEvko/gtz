@@ -903,6 +903,7 @@ import Gtz.Design.PivotWallVacuity
 import Gtz.Design.PivotBalanceLaw
 import Gtz.Wave.KFourGaugeStarTransportWiring
 import Gtz.Wave.KFourPivotStallPropagationWiring
+import Gtz.Wave.KFourPivotEndpointOrthogonalityWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -29037,6 +29038,31 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefined_of_gaugeAndPivotPropagation
 #print axioms Gtz.kFourFamilySelection_of_gaugeAndPivotPropagation
 #print axioms Gtz.kFourEveryPointHasStrictTree_of_gaugeAndPivotPropagation
+-- Collapse the priced endpoint to inverse-form orthogonality and preserve the
+-- original tight direction through the inserted edge.  The narrowed endpoint
+-- and propagation closures remain exact replacements of their predecessors.
+#print axioms Gtz.inverseForm_lift_pairing_mul_kernel_pairing
+#print axioms Gtz.inverseForm_lift_cross_eq_zero_iff_kernel_orthogonal
+#print axioms Gtz.direction_dot_kernel_ne_zero_of_insert_posDef
+#print axioms Gtz.chartLadderCross_eq_zero_iff_direction_dot_kernel_eq_zero
+#print axioms Gtz.KFourPivotWallPricedEndpointData.window_posDef
+#print axioms Gtz.KFourPivotWallPricedEndpointData.pointer_pivot_eq_one_after
+#print axioms Gtz.KFourPivotWallPricedEndpointData.pointer_cross_eq_zero
+#print axioms Gtz.KFourPivotWallPricedOrthogonalEndpointData
+#print axioms Gtz.kFourPivotWall_pricedOrthogonalEndpointData
+#print axioms Gtz.KFourPivotWallPricedOrthogonalEndpointClosure
+#print axioms Gtz.kFourPivotWallPricedOrthogonalEndpointClosure_of_pricedEndpointClosure
+#print axioms Gtz.kFourPivotWallPricedEndpointClosure_of_orthogonalEndpointClosure
+#print axioms Gtz.kFourPivotWallPricedEndpointClosure_iff_orthogonalEndpointClosure
+#print axioms Gtz.KFourPivotWallOrthogonalPropagationClosure
+#print axioms Gtz.kFourPivotWallPropagationClosure_iff_orthogonalPropagation
+#print axioms Gtz.kFourWindowAllPivotWallClosure_iff_orthogonalPropagation
+#print axioms Gtz.KFourGaugeAndPivotOrthogonalPropagationClosure
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_iff_orthogonalPropagation
+#print axioms Gtz.kFourKnifeBandRefinedAllMaxHeavy_of_gaugeAndPivotOrthogonalPropagation
+#print axioms Gtz.kFourKnifeBandRefined_of_gaugeAndPivotOrthogonalPropagation
+#print axioms Gtz.kFourFamilySelection_of_gaugeAndPivotOrthogonalPropagation
+#print axioms Gtz.kFourEveryPointHasStrictTree_of_gaugeAndPivotOrthogonalPropagation
 -- The sharp weight cap of the gauge star wall.  The joint bound of the negative
 -- block reaches the exact wall threshold, which the term bound cannot.
 #print axioms Gtz.starWall_sharp_gaps

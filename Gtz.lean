@@ -4130,6 +4130,11 @@ import Gtz.Wave.KFourGaugeStarTransportWiring
 -- conjunction of a recurrent exchanged-four-set closure and a strict
 -- half-priced five-set endpoint closure, wired through A3 to family selection.
 import Gtz.Wave.KFourPivotStallPropagationWiring
+-- Collapse the priced five-set endpoint onto its exact zero-cross locus.  The
+-- inserted edge is orthogonal to the original tree kernel and preserves that
+-- kernel in the exchanged four-set; the narrowed endpoint closure remains
+-- exactly equivalent to the former pivot propagation route.
+import Gtz.Wave.KFourPivotEndpointOrthogonalityWiring
 -- The three-lines wall architecture.  The chart is a triangle: three
 -- coordinate labels and three join labels.  At a rank-one wall the six chart
 -- coefficients are pinned by the axis, the three join coefficients are the
