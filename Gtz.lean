@@ -4021,3 +4021,9 @@ import Gtz.Design.ThreeLinesFamilyWeld
 -- reading, and the amplified exchange reads positively at the probe when the
 -- incoming boost quotient is at least the outgoing one.
 import Gtz.Design.StarAmplifiedExchange
+-- The wall collapse. At the corank-two wall the window kernel collapses into
+-- the tree kernel orthogonal to the pointer, so the tree gap kills a plane and
+-- a distinct second outside pointer arrives. At the pivot wall the pointer's
+-- own deletion pivot joins the three wall pivots at one. The mixed-only plane
+-- classification identifies the strictly one-signed normals.
+import Gtz.Design.WallCollapse

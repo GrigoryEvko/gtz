@@ -881,6 +881,7 @@ import Gtz.Design.KernelPointer
 import Gtz.Design.StarSignRigidity
 import Gtz.Design.StarAmplifiedExchange
 import Gtz.Wave.KFourTreeWindowResidual
+import Gtz.Design.WallCollapse
 import Gtz.Wave.KFourTreeWindowCorankReduction
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
@@ -28665,3 +28666,14 @@ run_cmd do
 #print axioms Gtz.exchangeGap_pos_at_kernel_of_le
 #print axioms Gtz.exists_kernel_pointer_of_posSemidef_not_posDef
 #print axioms Gtz.kFourStarGauge_exists_conditional_exchange
+-- The wall collapse: the corank-two kernel split, the second pointer, the
+-- four-pivot sharpening, and the mixed-only plane classification.
+#print axioms Gtz.kernel_split_of_bump_kernel
+#print axioms Gtz.mulVec_combination_eq_zero
+#print axioms Gtz.corankTwo_kernel_split
+#print axioms Gtz.singleton_gap_reading_neg
+#print axioms Gtz.corankTwo_exists_second_pointer
+#print axioms Gtz.pivotWall_pointer_pivot_ge_one
+#print axioms Gtz.pivotWall_all_pivots_ge_one
+#print axioms Gtz.exists_neg_entry_of_pos_normal_of_orth
+#print axioms Gtz.mixedOnly_orthPlane_iff
