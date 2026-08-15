@@ -29271,3 +29271,15 @@ run_cmd do
 #print axioms Gtz.planeBranchTenCandidate_of_weightedLineLeverage_lt
 #print axioms Gtz.oneLineResidual_of_weightedLineLeverage_lt
 #print axioms Gtz.cap_mul_freeTripleGap_ge_at_lineNormal
+-- The Parseval criterion at the two meeting lines: the four weighted
+-- complement sums, the four instances, and the min-of-four form.
+#print axioms Gtz.sum_compl_transversal_oneThreeFive_weightedLeverage
+#print axioms Gtz.sum_compl_transversal_oneFourFive_weightedLeverage
+#print axioms Gtz.sum_compl_transversal_twoThreeFive_weightedLeverage
+#print axioms Gtz.sum_compl_transversal_twoFourFive_weightedLeverage
+#print axioms Gtz.twoMeetingLinesTransversalStrict_of_oneThreeFive_weightedLight
+#print axioms Gtz.twoMeetingLinesTransversalStrict_of_oneFourFive_weightedLight
+#print axioms Gtz.twoMeetingLinesTransversalStrict_of_twoThreeFive_weightedLight
+#print axioms Gtz.twoMeetingLinesTransversalStrict_of_twoFourFive_weightedLight
+#print axioms Gtz.twoMeetingLinesTransversalStrict_of_min_weightedCompl_lt
+#print axioms Gtz.twoMeetingLinesResidual_of_min_weightedCompl_lt

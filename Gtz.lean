@@ -4222,3 +4222,10 @@ import Gtz.Design.StarWallResidualRows
 -- on the selection's own side, and the criterion fires where the leverage
 -- criterion is provably silent.
 import Gtz.Design.ParsevalComplementCriterion
+
+-- The Parseval criterion at the two meeting lines.  Each of the four
+-- transversal complements is the shared atom with the two unused private
+-- atoms, and the conclusion is a disjunction, so one light complement closes
+-- the residual.  The weakest hypothesis takes the lighter private of each
+-- line, and the two lines choose independently.
+import Gtz.Design.TwoMeetingLinesParsevalCap
