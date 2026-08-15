@@ -921,6 +921,7 @@ import Gtz.Design.StallTypeSplit
 import Gtz.Design.TwoMeetingLinesNeedle
 import Gtz.Design.OneLineComplementCap
 import Gtz.Design.TwoMeetingLinesComplementCap
+import Gtz.Design.ExchangeCriterion
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29228,3 +29229,15 @@ run_cmd do
 #print axioms Gtz.transversal_oneThreeFive_gap_at_lineTwoNormal
 #print axioms Gtz.transversal_twoThreeFive_gap_at_lineTwoNormal
 #print axioms Gtz.exists_transversal_gap_pos_at_lineTwoNormal
+-- The exchange criterion: an exchange is an erasure at the five-edge base, and
+-- the refused exchange prices the other outside label through the balance.
+#print axioms Gtz.insert_erase_comm_of_ne
+#print axioms Gtz.posDef_exchange_iff_pivot_insert_lt_one
+#print axioms Gtz.exists_posDef_exchange_iff
+#print axioms Gtz.stall_insert_of_no_exchange
+#print axioms Gtz.no_exchange_outside_price
+#print axioms Gtz.one_lt_pivot_insert_of_no_exchange
+#print axioms Gtz.half_price_of_no_exchange
+#print axioms Gtz.both_outside_pivots_gt_one_of_no_exchange
+#print axioms Gtz.kFourTypeB_leftover_compl_eq_star
+#print axioms Gtz.kFourStarThree_mem_spanningTreeList

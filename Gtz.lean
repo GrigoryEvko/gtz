@@ -4202,3 +4202,9 @@ import Gtz.Design.TwoMeetingLinesComplementCap
 -- identities are stated on opaque scalars, so the vertex-a reading holds at the
 -- other two axis slots with the centre moved and the pinned floor moved with it.
 import Gtz.Design.StarWallJointMirrors
+-- The exchange criterion and the price of a refused exchange.  Dropping a
+-- selected label and adding an outside one is an erasure at the base which
+-- holds both, so the ladder rung decides every exchange.  A four-edge selection
+-- refusing all its exchanges into one outside label pays for it at the other,
+-- and refusing them at both puts both outside pivots above one.
+import Gtz.Design.ExchangeCriterion
