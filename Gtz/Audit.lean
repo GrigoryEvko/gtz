@@ -1010,6 +1010,7 @@ import Gtz.Wave.ThreeLinesPivotThirdWiring
 import Gtz.Wave.TransversalLoadLedger
 import Gtz.Design.NoStrictPivotLedger
 import Gtz.Design.KFourEntrySumRung
+import Gtz.Design.DeflatedPairCriterion
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30549,3 +30550,31 @@ run_cmd do
 #print axioms Gtz.heavyPairRefuter_totalMass
 #print axioms Gtz.heavyPairRefuter_ratioSum_detArgmax
 #print axioms Gtz.heavyPairRefuter_detArgmax_not_posDef
+
+
+-- The deflated pair criterion: the threshold, its two readings, the boosted
+-- squared reading bound, the pair combination and its inverse form, the
+-- square-root-free cross identity, the core pair bound, the law, the
+-- total-pivot corollary, the three deflated readings of an omitted triple,
+-- and the design readings.
+#print axioms Gtz.deflationThreshold
+#print axioms Gtz.deflationThreshold_empty
+#print axioms Gtz.deflationThreshold_insert
+#print axioms Gtz.deflationThreshold_le_one
+#print axioms Gtz.boost_sq_reading_le_fullPivot_mul_form
+#print axioms Gtz.sum_boost_sq_reading_le_sum_fullPivot_mul_form
+#print axioms Gtz.pairReadingCombination
+#print axioms Gtz.pairReadingCombination_dotProduct
+#print axioms Gtz.inverseForm_add_left
+#print axioms Gtz.pairReadingCombination_inverseForm
+#print axioms Gtz.pairBoostedCrossSq
+#print axioms Gtz.sq_pair_cross_term
+#print axioms Gtz.pair_reading_lt_threshold_mul_form
+#print axioms Gtz.posDef_directionChartGap_compl_of_deflatedPair
+#print axioms Gtz.posDef_directionChartGap_compl_of_sum_fullPivot_lt_one
+#print axioms Gtz.posDef_directionChartGap_compl_triple_of_deflatedPair
+#print axioms Gtz.posDef_subsetSum_compl_of_deflatedPair
+#print axioms Gtz.deflatedTriple_rotate
+#print axioms Gtz.posDef_directionChartGap_compl_triple_of_exists_deflator
+#print axioms Gtz.posDef_directionChartGap_compl_triple_of_pivotThird
+#print axioms Gtz.posDef_subsetSum_compl_triple_of_pivotThird

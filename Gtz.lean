@@ -4793,3 +4793,11 @@ import Gtz.Design.NoStrictPivotLedger
 -- K4 edge-pair structure and the third is the spanning-tree polynomial, so
 -- the leaf becomes three polynomials in six selection values.
 import Gtz.Design.KFourEntrySumRung
+
+
+-- The deflated pair criterion.  The omitted-pair law survives at every
+-- omitted cardinality, with the threshold one lowered by the total pivot of
+-- the labels outside the pair.  Two omitted labels are decided exactly and
+-- the rest are paid for by their pivots, so the total-pivot cells are
+-- corollaries rather than independent facts.
+import Gtz.Design.DeflatedPairCriterion
