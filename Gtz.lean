@@ -4328,3 +4328,10 @@ import Gtz.Wave.TwoOutsideRefusalLaw
 -- determinant and the whole lift margin factors through it.  The blind spot's
 -- negated conjunction then becomes one inequality on the design's invariants.
 import Gtz.Design.BlindSpotArithmetic
+
+-- The weight-discounted excess.  Splitting the exact cross-energy law over the
+-- selection and its complement moves the selected part of the weighted moment
+-- to the left, so the price of a refused exchange reads against the discounted
+-- excess.  The discounted excess is strictly smaller than the plain excess, and
+-- the criterion is incomparable to the moment-form one.
+import Gtz.Design.DiscountedExcess

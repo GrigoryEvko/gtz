@@ -942,6 +942,7 @@ import Gtz.Wave.KFourOutsideDecomposition
 import Gtz.Wave.TwoOutsideMomentLaw
 import Gtz.Wave.TwoOutsideRefusalLaw
 import Gtz.Design.BlindSpotArithmetic
+import Gtz.Design.DiscountedExcess
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29473,3 +29474,10 @@ run_cmd do
 #print axioms Gtz.liftMargin_of_flatPair
 #print axioms Gtz.liftLeverage_ge_of_liftMargin_nonpos_of_flatPair
 #print axioms Gtz.oneLine_liftLeverage_ge_of_normalBlindSpot
+-- The weight-discounted excess: the discounted cross-energy identity, the
+-- discounted price of a refused exchange, and the two-label complement form.
+#print axioms Gtz.selected_discounted_crossEnergy_eq_pivot_add_outside
+#print axioms Gtz.pivot_add_outside_le_discountedExcess_of_no_exchange
+#print axioms Gtz.exists_posDef_exchange_of_pivot_add_outside_gt
+#print axioms Gtz.outside_crossEnergy_pair
+#print axioms Gtz.exists_posDef_exchange_of_pair_outside_gt
