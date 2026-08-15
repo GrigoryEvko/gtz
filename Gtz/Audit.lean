@@ -993,6 +993,7 @@ import Gtz.Design.LinePatternPrimitivity
 import Gtz.Wave.ConsolidatedStrictTriple
 import Gtz.Design.ComplementDiagonalDominance
 import Gtz.Design.PivotOnlyDominance
+import Gtz.LinAlg.ProjectionDiagonalDominance
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30267,3 +30268,15 @@ run_cmd do
 #print axioms Gtz.kFourAmbientTrace_lt_of_posDef
 #print axioms Gtz.shortList_not_posDef_of_trace_le
 #print axioms Gtz.exists_shortList_trace_gt_of_exists_posDef
+
+-- Diagonal dominance at the projection: the erased-sum bookkeeping, the general
+-- positive definiteness lemma, the landed row law written with squares, the
+-- dominance cell for the covering, Cauchy-Schwarz on the picked row, the
+-- leverage budget, and the six-three reading.
+#print axioms Gtz.sum_ite_zero_eq_sum_erase
+#print axioms Gtz.posDef_of_diagonallyDominant
+#print axioms Gtz.projection_offDiag_sq_energy
+#print axioms Gtz.projectionCovering_of_rowDominance
+#print axioms Gtz.sq_absOffRow_le_card_mul_energy
+#print axioms Gtz.projectionCovering_of_leverageBudget
+#print axioms Gtz.projectionCovering_sixThree_of_sevenNinths

@@ -4747,3 +4747,13 @@ import Gtz.Design.ComplementDiagonalDominance
 -- spot.  A cap below one over the size is contradictory, so the cell is stated
 -- at a cap that size six can meet.
 import Gtz.Design.PivotOnlyDominance
+
+-- Diagonal dominance at the projection.  Classical GTZ IS the frame covering
+-- statement, and every route to the covering in the corpus expands leading
+-- minors of the picked block.  A completion of squares replaces the expansion,
+-- and the landed row law of a symmetric idempotent then removes the
+-- off-diagonal entries entirely.  What remains is one inequality in the
+-- diagonal of the projection, at general size and rank.  At six and three it
+-- closes at leverage seven ninths, where the governing quadratic takes the
+-- value one.
+import Gtz.LinAlg.ProjectionDiagonalDominance
