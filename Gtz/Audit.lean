@@ -1016,6 +1016,7 @@ import Gtz.Design.ChartHighPivotCap
 import Gtz.Design.GeneralCoverCell
 import Gtz.Design.TwoMeetingLinesChart
 import Gtz.Design.UniformWitnessRefutation
+import Gtz.Design.KFourOwnMonomial
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30724,3 +30725,36 @@ run_cmd do
 #print axioms Gtz.smul_two_expansion
 #print axioms Gtz.smul_four_expansion
 #print axioms Gtz.exists_twoMeetingLinesCoordinates
+
+-- The own monomial of a K4 chart tree: the boost of a label, the monomial
+-- and its multiplicative law, its positivity, the refutation of the greedy
+-- maximum designation with its exact witness, and the absolute reading of
+-- the spanning-tree polynomial.
+#print axioms Gtz.treeBoost
+#print axioms Gtz.kFourOwnMonomial
+#print axioms Gtz.kFourOwnMonomial_empty
+#print axioms Gtz.kFourOwnMonomial_insert
+#print axioms Gtz.treeBoost_pos
+#print axioms Gtz.kFourOwnMonomial_pos
+#print axioms Gtz.selectionValue_eq_treeBoost_of_mem
+#print axioms Gtz.kFourOwnMonomial_eq_prod_selectionValue
+#print axioms Gtz.KFourOwnMonomialArgmaxHostsStrictTree
+#print axioms Gtz.ownMonomialRefuterMass
+#print axioms Gtz.ownMonomialRefuterWeight
+#print axioms Gtz.ownMonomialRefuterPoint
+#print axioms Gtz.ownMonomialRefuterPoint_mass_eq
+#print axioms Gtz.ownMonomialRefuterPoint_weight_eq
+#print axioms Gtz.ownMonomialRefuter_treeBoost
+#print axioms Gtz.ownMonomialRefuter_own_zeroTwoThree
+#print axioms Gtz.ownMonomialRefuter_own_zeroOneThree
+#print axioms Gtz.ownMonomialRefuter_selectionValue_zeroTwoThree
+#print axioms Gtz.ownMonomialRefuter_invariantThree_zeroTwoThree
+#print axioms Gtz.ownMonomialRefuter_zeroTwoThree_not_posDef
+#print axioms Gtz.ownMonomialRefuter_treeBoost_le_eight
+#print axioms Gtz.ownMonomialRefuter_treeBoost_pos
+#print axioms Gtz.ownMonomialRefuter_zeroTwoThree_maximal
+#print axioms Gtz.not_kFourOwnMonomialArgmaxHostsStrictTree
+#print axioms Gtz.absSelectionValue
+#print axioms Gtz.abs_selectionValue_eq
+#print axioms Gtz.absSelectionValue_nonneg
+#print axioms Gtz.abs_kFourTreePolynomial_le

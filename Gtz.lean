@@ -4817,3 +4817,9 @@ import Gtz.Design.GeneralCoverCell
 -- pairs, two third lines through atom 5, and the three-line interface.
 import Gtz.Design.TwoMeetingLinesChart
 import Gtz.Design.UniformWitnessRefutation
+
+-- The own monomial of a K4 chart tree: the product of its members' boosts.
+-- It is the tree's own term in the spanning-tree polynomial, it is always
+-- positive, and its maximum is a greedy matroid maximum.  The designation
+-- that takes that maximum is refuted here by an exact rational witness.
+import Gtz.Design.KFourOwnMonomial
