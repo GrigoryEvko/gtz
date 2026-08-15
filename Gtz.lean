@@ -4270,3 +4270,8 @@ import Gtz.Wave.KFourPivotEndpointStarWiring
 -- branch reduces to a triangle stall.  The resulting contextual triangle law,
 -- classified star endpoint, and gauge wall wire directly into A3.
 import Gtz.Wave.KFourPivotRecurrentTriangleWiring
+
+-- The tight base triple: kernel rigidity and the exact energy transfer.
+-- A weakly dominating selection annihilates its tight directions, and Parseval
+-- turns a tight reading into an exact energy identity against the complement.
+import Gtz.Design.TightBaseRigidity

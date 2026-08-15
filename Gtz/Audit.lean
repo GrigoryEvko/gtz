@@ -29382,3 +29382,14 @@ run_cmd do
 -- chart theorem; it is a common producer shape, not a logical reduction.
 #print axioms Gtz.kFourCardFourStallEscape_iff_everyPointHasStrictTree
 #print axioms Gtz.kFourFamilySelection_of_cardFourStallEscape
+
+import Gtz.Design.TightBaseRigidity
+
+#print axioms Gtz.sum_sq_eq_dotProduct_self_of_tight
+#print axioms Gtz.tight_complement_energy_eq
+#print axioms Gtz.tight_baseTriple_complement_energy_eq
+#print axioms Gtz.tight_mulVec_eq_zero
+#print axioms Gtz.subsetSum_mulVec_eq_self_of_tight
+#print axioms Gtz.tightBase_mulVec_eq_zero
+#print axioms Gtz.dotProduct_baseResidual_eq_complement_energy
+#print axioms Gtz.exists_mem_lt_one_sub_of_tight_separated
