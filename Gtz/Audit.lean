@@ -882,6 +882,7 @@ import Gtz.Design.StarSignRigidity
 import Gtz.Design.StarAmplifiedExchange
 import Gtz.Wave.KFourTreeWindowResidual
 import Gtz.Design.WallCollapse
+import Gtz.Design.StarOnlyLaw
 import Gtz.Wave.KFourTreeWindowCorankReduction
 import Gtz.Wave.KFourPathCorankCollapse
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
@@ -28717,3 +28718,17 @@ run_cmd do
 #print axioms Gtz.pivotWall_all_pivots_ge_one
 #print axioms Gtz.exists_neg_entry_of_pos_normal_of_orth
 #print axioms Gtz.mixedOnly_orthPlane_iff
+-- The star-only law: the rank-one collapse, the coefficient closed form,
+-- and the emptiness of the corank-two wall over the path trees.
+#print axioms Gtz.column_dot_eq_of_transpose
+#print axioms Gtz.exists_rankOne_of_symm_twoKernel
+#print axioms Gtz.scale_nonneg_of_posSemidef_smul_atom
+#print axioms Gtz.chartCoeff
+#print axioms Gtz.directionChartGap_eq_coeff_sum
+#print axioms Gtz.directionChartPoint_weight_lt_one
+#print axioms Gtz.chartCoeff_pos_of_mem
+#print axioms Gtz.chartCoeff_neg_of_not_mem
+#print axioms Gtz.kFourCoeff_eq_of_rankOne
+#print axioms Gtz.kFourCorankTwo_tree_mem_starList
+#print axioms Gtz.kFourCorankTwo_not_path
+#print axioms Gtz.kFourWeakTreeGapCorankResidual_refine_star

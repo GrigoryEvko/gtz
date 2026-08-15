@@ -4031,3 +4031,10 @@ import Gtz.Design.StarAmplifiedExchange
 -- own deletion pivot joins the three wall pivots at one. The mixed-only plane
 -- classification identifies the strictly one-signed normals.
 import Gtz.Design.WallCollapse
+-- The star-only law of the corank-two wall. The two-kernel rank collapse
+-- makes the tree gap a nonnegative rank-one atom, the six chart coefficients
+-- take the closed form (-z0z1, -z0z2, -z1z2, z0s, z1s, z2s), and the chart
+-- signs admit that form only at the four vertex stars. The corank-two wall
+-- is empty over the twelve path trees, and the corank branch of the gap
+-- residual always carries a star.
+import Gtz.Design.StarOnlyLaw
