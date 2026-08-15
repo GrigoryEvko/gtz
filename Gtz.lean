@@ -4801,3 +4801,4 @@ import Gtz.Design.KFourEntrySumRung
 -- the rest are paid for by their pivots, so the total-pivot cells are
 -- corollaries rather than independent facts.
 import Gtz.Design.DeflatedPairCriterion
+import Gtz.Design.ChartHighPivotCap

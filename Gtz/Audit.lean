@@ -1011,6 +1011,7 @@ import Gtz.Wave.TransversalLoadLedger
 import Gtz.Design.NoStrictPivotLedger
 import Gtz.Design.KFourEntrySumRung
 import Gtz.Design.DeflatedPairCriterion
+import Gtz.Design.ChartHighPivotCap
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30578,3 +30579,23 @@ run_cmd do
 #print axioms Gtz.posDef_directionChartGap_compl_triple_of_exists_deflator
 #print axioms Gtz.posDef_directionChartGap_compl_triple_of_pivotThird
 #print axioms Gtz.posDef_subsetSum_compl_triple_of_pivotThird
+
+
+-- The high-pivot cap at a chart point: the deficiency budget of a label set,
+-- the cap of three, the containment of the high set in every positive
+-- definite selection, and the budget left to the labels that are not high.
+#print axioms Gtz.chartHighPivotLabels
+#print axioms Gtz.mem_chartHighPivotLabels_iff
+#print axioms Gtz.chartDeficiency_pos
+#print axioms Gtz.chartBoost_nonneg
+#print axioms Gtz.chartFullPivot_nonneg
+#print axioms Gtz.chartDeficiencyTerm_nonneg
+#print axioms Gtz.sum_subset_deficiency_mul_fullPivot_le_three
+#print axioms Gtz.sum_high_deficiency_le
+#print axioms Gtz.sum_weight_le_one
+#print axioms Gtz.sum_weight_lt_one_of_ne_univ
+#print axioms Gtz.card_chartHighPivotLabels_le_three
+#print axioms Gtz.chartHigh_subset_of_posDef_compl
+#print axioms Gtz.chartHigh_subset_of_posDef
+#print axioms Gtz.card_chartHigh_le_card_of_posDef
+#print axioms Gtz.sum_low_deficiency_mul_fullPivot_le
