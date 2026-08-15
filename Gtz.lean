@@ -3951,10 +3951,11 @@ import Gtz.Wave.KFourFamilySelectionWiring
 -- dominating.  The sixteen-row necessary system cannot decide coverage, so
 -- a covering proof must consume more of each dual witness than its row.
 import Gtz.Design.GershgorinWashout
--- Recover the information discarded by the Gershgorin projection on the
--- canonical K4 path.  Alternating path signs identify the unsigned Z-form
--- exactly with a pullback of the chart gap, so a full dual witness at a weak
--- path supplies a nonzero kernel direction of the actual gap.
+-- Recover the information discarded by the Gershgorin projection on all seven
+-- paths in the row atlas.  Alternating path signs identify each unsigned
+-- Z-form exactly with a pullback of the chart gap, so a full dual witness at a
+-- weak path supplies a nonzero kernel direction of the actual gap.  The exact
+-- A3 registry formula consumes the resulting conditional saturation ledger.
 import Gtz.Wave.KFourDualSaturation
 -- The chart gap is antitone in each selected weight, so strictness moves down
 -- in weight and a covering of the chart slice covers the full cone of weight

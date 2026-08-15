@@ -59,13 +59,15 @@ Two roots are in play.
     the seventeen off-line triples.  The chart-heavy gate is gone because it
     is automatic;
   - `obligationKnifeBandRefinedKFour` =
-    `Gtz.KFourKnifeBandRefinedAllTreeZObstructedWeakToStrict`, strictness demanded
+    `Gtz.KFourKnifeBandRefinedMissingPathSaturatedWeakToStrict`, strictness demanded
     ONLY off Layer A, the exchange star, and the seventeen-cell all-tree minor
     atlas, with explicit nonnegative adjugate witnesses, Gershgorin bad-row
     alternatives, and cleared division-free polynomial edge budgets for every
-    one of the sixteen spanning trees.  The exact washout witness shows that
-    the bad-row layer alone cannot decide coverage, so the residual deliberately
-    retains the full dual vectors.  Both quantifiers are
+    one of the sixteen spanning trees.  On each of the seven paths added by the
+    row atlas, the full dual vector is coupled through an exact signed pullback
+    to a nonzero kernel direction of the actual weak chart gap.  The exact
+    washout witness shows that the bad-row layer alone cannot decide coverage,
+    so the residual deliberately retains the full dual vectors.  Both quantifiers are
     restricted to the sixteen spanning trees.  The chart-heavy gate is gone
     because six positive chart weights sum to one and therefore always contain
     a label of weight at least `1/10`.
@@ -322,7 +324,7 @@ theorem obligationTieFreeThreeLines :
   Gtz.stressFreeStratumIsTieFree_threeLines_of_chart obligationChartTieFreeThreeLines
 
 /--
-CURRENT STATUS: the open formula is `Gtz.KFourKnifeBandRefinedAllTreeZObstructedWeakToStrict`. It is restricted to spanning trees and lies outside Layer A, the exchange star, and the seventeen-cell all-tree unsigned minor atlas. Every one of the sixteen spanning trees now carries a moduli-only cell. Atlas blindness at its canonical maximal floors gives an explicit nonzero nonnegative adjugate witness, a named diagonally non-dominant row, and one of three division-free polynomial bad-edge budgets for every tree: the nine prior cells and the seven paths added by the row atlas. `Gtz.kFourKnifeBandRefinedAllTreeZObstructed_iff` proves exact equivalence with the public refined knife band. The exact rational Gershgorin washout point satisfies a bad row for all sixteen trees while possessing strict trees, so the bad-row or bad-budget system alone is not the remaining theorem; the registered formula retains all three coordinates of every dual witness together with the actual weak PSD tree. The chart-heavy gate is absent because it is automatic. No inhabitant of the sharpened residual is currently proved. The following long STATUS paragraph is retained as a historical pre-unsigned-cell snapshot and is superseded by this line.
+CURRENT STATUS: the open formula is `Gtz.KFourKnifeBandRefinedMissingPathSaturatedWeakToStrict`. It is restricted to spanning trees and lies outside Layer A, the exchange star, and the seventeen-cell all-tree unsigned minor atlas. Every one of the sixteen spanning trees carries a moduli-only cell. Atlas blindness at its canonical maximal floors gives an explicit nonzero nonnegative adjugate witness, a named diagonally non-dominant row, and one of three division-free polynomial bad-edge budgets for every tree. For each of the seven paths added by the row atlas, alternating path signs identify the unsigned Z-form exactly with a pullback of the chart gap; a weak PSD path therefore upgrades its full nonnegative dual witness to a nonzero kernel direction of the actual gap. `Gtz.kFourKnifeBandRefinedMissingPathSaturated_iff` proves exact equivalence with the public refined knife band. The exact rational Gershgorin washout point satisfies a bad row for all sixteen trees while possessing strict trees, so the bad-row or bad-budget system alone is not the remaining theorem. The chart-heavy gate is absent because it is automatic. No inhabitant of the sharpened residual is currently proved. The following long STATUS paragraph is retained as a historical pre-unsigned-cell snapshot and is superseded by this line.
 STATUS: the most rigid class; covering half PROVED (`Gtz.directionChartCoversPrimitiveStratum_kFourDirection`, Gtz/Design/RigidityBridge.lean:796), direct class consumer `Gtz.stressFreeStratumIsTieFree_graphicKFour_of_chart` (:834). The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_graphicKFour`, Gtz/Reduction/TrichotomyLedger.lean:505). NOT VACUOUS: the stage-four audit's coordinate-diagonal design (the regular tetrahedron's six edge directions) realizes exactly this pattern. Open: `Gtz.KFourKnifeBandRefinedTenthHeavyWeakToStrict` -- a strictly dominating SPANNING TREE demanded ONLY at a tenth-heavy weakly dominated chart point where NEITHER covered region fires: Layer A (the twenty landed cells, named `Gtz.KFourLayerACellFires`, spent as `Gtz.kFourAtlas_hasStrictTriple_of_layerAFires`) nor the exchange star (`Gtz.KFourExchangeStarCellFires`, spent as `Gtz.kFourAtlas_hasStrictTree_of_exchangeStarCell`). Both quantifiers range over the sixteen spanning trees rather than the twenty card-3 subsets, which is sound because a weak dominator is never a dependent triple (`Gtz.kFourWeakAntecedent_yieldsSpanningTree` over the dichotomy `Gtz.cardThreeSubset_isSpanningTreeOrDependentTriple`). The all-light branch is discharged by the chart whitening, `Gtz.posDef_massMoment_kFourDirection`, and the strict tenth floor; `Gtz.kFourKnifeBandRefinedTenthHeavy_iff` proves this is equivalent to the former refined band. `Gtz.kFourKnifeBandWeakToStrict_of_refined` then recovers the round-2 band, and the boundary split `Gtz.directionChartIsTieFree_kFour_of_knifeBandWeakToStrict` closes the chart. CANONICAL BAND INHABITANT: `Gtz.bandResidualWitnessPoint` (mass (3,16,1,5,3,2), weight (3,1,1,1,3,1)/10; kernel-witnessed outside BOTH regions) -- NOT `Gtz.heavyPairRefuterPoint`, which the exchange star now COVERS (`Gtz.heavyPairRefuterPoint_exchangeStarCellFires`). Eleven positive reals against six FIXED rational chart vectors, sixteen trees, no design, no whitener, no square root in the residual statement.
 CONSUMERS: `obligationChartTieFreeKFour` (now a theorem), hence `obligationTieFreeKFour`, `obligationStressFreeHingeSixThree`, and the rank-three capstone.
 WHY OPEN: the only DIRECTION-GENERIC producer of `Gtz.DirectionChartIsTieFree` is `Gtz.directionChartIsTieFree_of_hasStrictTriple` (:176) -- the eight others are either K4-specific (the four selection bridges and the knife-band split in KFourChartClosure) or transport-only (`Gtz.directionChartIsTieFree_of_reindex` and its three-lines instances move a certificate between charts and cannot manufacture the first one) -- and its premise `Gtz.DirectionChartHasStrictTriple` is kernel-FALSE at a degenerate DIRECTION (a non-spanning family -- no refutation exists at any valid `kFourDirection` chart point, and ~19000 exact-rational adjudications found none); the antecedent-free form is still never landed as a named global. The class-level sibling `stressFreeStratumIsTieFree_graphicKFour_of_strictTriple` (:841) stays forbidden as a route.
@@ -330,12 +332,12 @@ ATTACK: DECIDED (spike, 2026-08-07): the DIRECT road; collar weld rejected (thre
 NOT-REFUTED: no census row targets it. The relaxed-weight refutation needs `0 <= weight`; chart points carry strict positivity. No stress-forcing filter can apply (TrichotomyLedger.lean:505 plus the tetrahedron inhabitant).
 -/
 axiom obligationKnifeBandRefinedKFour :
-    Gtz.KFourKnifeBandRefinedAllTreeZObstructedWeakToStrict
+    Gtz.KFourKnifeBandRefinedMissingPathSaturatedWeakToStrict
 
 /-- The registered chart residual recovers the exact design-side whitening
 family selector.  This is an equivalence, not an additional obligation. -/
 theorem obligationKFourFamilySelection : Gtz.KFourFamilySelection :=
-  Gtz.kFourFamilySelection_of_allTreeZObstructed
+  Gtz.kFourFamilySelection_iff_missingPathSaturated.mpr
     obligationKnifeBandRefinedKFour
 
 /-- The all-tree Z-obstructed A3 axiom reconstructs the former refined knife
@@ -343,7 +345,7 @@ band by spending all seventeen cells, the full sixteen-tree dual/Gershgorin/
 budget ledger, and the automatic chart-heavy law. -/
 theorem obligationKnifeBandRefinedKFour_full :
     Gtz.KFourKnifeBandRefinedWeakToStrict :=
-  Gtz.kFourKnifeBandRefinedAllTreeZObstructed_iff.mp
+  Gtz.kFourKnifeBandRefinedMissingPathSaturated_iff.mp
     obligationKnifeBandRefinedKFour
 
 /-- **Discharged from the sharpened axiom.**  Same name, same statement.  Three
