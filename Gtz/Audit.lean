@@ -967,6 +967,7 @@ import Gtz.Design.GaugeWallStarErasure
 import Gtz.Design.ResidualPairingLaw
 import Gtz.Design.GaugeWallTriangleStarDescent
 import Gtz.Wave.KFourTriangleStarStallEndgame
+import Gtz.Design.WholeLineMarginCriterion
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29791,3 +29792,22 @@ run_cmd do
 #print axioms Gtz.posDef_subsetSum_cardFour_iff_pairMinor
 #print axioms Gtz.noStrict_iff_no_tripleMinor
 #print axioms Gtz.false_of_noStrict_of_pairingEscape
+-- The flat-split criterion of the line strata: the vanishing-summand
+-- restriction, the normal and cross sums, the general equivalence, the free-pair
+-- class, the whole-flat margin, its erasure, the planar-drop reduction, and the
+-- trine refutation at exactly unit atoms.
+#print axioms Gtz.sum_eq_sum_sdiff_of_vanishing
+#print axioms Gtz.flatSplit_normalSum
+#print axioms Gtz.flatSplit_crossSum
+#print axioms Gtz.flatSplit_posDef_iff
+#print axioms Gtz.flatSplit_pair_posDef_iff
+#print axioms Gtz.insert_sdiff_self
+#print axioms Gtz.wholeFlat_posDef_iff_margin
+#print axioms Gtz.wholeFlat_erase_posDef_iff_margin
+#print axioms Gtz.wholeFlat_escape_iff_planarDrop
+#print axioms Gtz.trineVec
+#print axioms Gtz.trineVec_unit
+#print axioms Gtz.trineVec_sum_reading
+#print axioms Gtz.trineVec_triple_strict
+#print axioms Gtz.trineVec_pair_fails
+#print axioms Gtz.heavy_planar_dropOne_false

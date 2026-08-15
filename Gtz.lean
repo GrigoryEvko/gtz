@@ -4504,3 +4504,15 @@ import Gtz.Wave.KFourTriangleStarStallEndgame
 -- the no-strict ledger says no principal three-by-three minor is positive
 -- definite.  The diagonal is the full-selection pivot gap.
 import Gtz.Design.ResidualPairingLaw
+
+-- The flat-split criterion, the whole-line margin, and the refutation of the
+-- rank-two weld.  At a unit normal killed by every flat atom, a selection's gap
+-- is positive definite exactly when the selected labels OUTSIDE the flat set
+-- carry more than one unit of squared height and their cross reading is beaten
+-- by the excess times the plane reading.  One equivalence reads every class of
+-- both line strata.  A single outside label gives the exact whole-line margin,
+-- and the escape there is a planar DROP of one rank-one term.  That drop
+-- statement is FALSE at exactly unit atoms: the trine strictly dominates the
+-- identity of the plane while no pair of it dominates even weakly, so heaviness
+-- does not weld the flat atoms to rank-two GTZ.
+import Gtz.Design.WholeLineMarginCriterion
