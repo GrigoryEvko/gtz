@@ -175,7 +175,7 @@ diagonally dominant against the shift `1 / n` witnesses the covering.  The block
 is `PosDef`, which is stronger than the `PosSemidef` the statement asks for. -/
 theorem projectionCovering_of_rowDominance {size rank : ℕ}
     (proj : Matrix (Fin size) (Fin size) ℝ) (hsymm : projᵀ = proj)
-    (rowPick : Fin rank → Fin size) (hinj : Function.Injective rowPick)
+    (rowPick : Fin rank → Fin size) (_hinj : Function.Injective rowPick)
     (hdom : ∀ a : Fin rank,
       ∑ b ∈ Finset.univ.erase a, |proj (rowPick a) (rowPick b)|
         < proj (rowPick a) (rowPick a) - (size : ℝ)⁻¹) :
@@ -198,12 +198,11 @@ theorem projectionCovering_of_rowDominance {size rank : ℕ}
           = |proj (rowPick a) (rowPick b)| := by
       intro b hb
       have hba : ¬ a = b := fun h => (Finset.mem_erase.mp hb).1 h.symm
-      simp [Matrix.sub_apply, Matrix.submatrix_apply, Matrix.smul_apply, Matrix.one_apply,
-        hba]
+      simp [Matrix.sub_apply, Matrix.submatrix_apply, Matrix.smul_apply, hba]
     rw [Finset.sum_congr rfl hoff]
     have hdiag : (proj.submatrix rowPick rowPick - (size : ℝ)⁻¹ • 1) a a
         = proj (rowPick a) (rowPick a) - (size : ℝ)⁻¹ := by
-      simp [Matrix.sub_apply, Matrix.submatrix_apply, Matrix.smul_apply, Matrix.one_apply]
+      simp [Matrix.sub_apply, Matrix.submatrix_apply, Matrix.smul_apply]
     rw [hdiag]
     exact hdom a
 

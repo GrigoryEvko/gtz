@@ -85,7 +85,7 @@ theorem complementMatrixEntry_diag (direction : Fin size → (Fin 3 → ℝ))
     (mass weight : Fin size → ℝ) (a : Fin size) :
     complementMatrixEntry direction mass weight a a
       = (mass a / weight a) * (1 - fullPivot direction mass weight a) := by
-  simp only [complementMatrixEntry, fullPivot, eq_self_iff_true, if_true]
+  simp only [complementMatrixEntry, fullPivot, if_true]
   ring
 
 /-- The off-diagonal complement-matrix entry is minus the product of the two
@@ -176,7 +176,7 @@ theorem complementForm_pos_of_rowSlack_pos (direction : Fin size → (Fin 3 → 
     refine Finset.sum_congr rfl fun a _ => ?_
     rw [complementRowOff, Finset.mul_sum]
     refine Finset.sum_congr rfl fun b _ => ?_
-    by_cases hba : b = a <;> simp [hba] <;> ring
+    by_cases hba : b = a <;> (simp [hba]; try ring)
   have hcol : ∑ a ∈ omitted, ∑ b ∈ omitted,
       (if b = a then 0 else |N a b| * coeff b ^ 2 / 2)
         = ∑ b ∈ omitted, coeff b ^ 2 / 2 * complementRowOff direction mass weight omitted b := by
@@ -206,7 +206,7 @@ theorem complementForm_pos_of_rowSlack_pos (direction : Fin size → (Fin 3 → 
               - (if b = a then 0 else |N a b| * coeff a ^ 2 / 2)
               - (if b = a then 0 else |N a b| * coeff b ^ 2 / 2) := by
       intro a b
-      by_cases hba : b = a <;> simp [hba] <;> ring
+      by_cases hba : b = a <;> (simp [hba]; try ring)
     simp only [hsplit, Finset.sum_sub_distrib]
     rw [hdiag, hrow, hcol]
     rw [← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]
