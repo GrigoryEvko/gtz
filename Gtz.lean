@@ -3882,6 +3882,14 @@ import Gtz.Wave.ThreeLinesUnsignedCycleWiring
 -- The unsigned trace cell: one cleared inequality per tree, the three
 -- missing star cells, and the gauge-star trace corollary.
 import Gtz.Design.UnsignedTraceCell
+-- The coverage refuters and the pendant-family cells.  Two exact chart points
+-- kill the two candidate selection dichotomies: at the first, no star
+-- row-dominates and every cleared trace sits at or past its floor, but the
+-- gauge-star cell fires; at the second, no star selection is positive
+-- definite at all, but the pendant cell at the matching `{2, 3}` fires.  The
+-- knife-band residual is the full minor atlas, and the four pendant cells of
+-- that matching are landed in the master format.
+import Gtz.Design.CoverageRefuters
 -- Spend the gauge trace criterion and the three newly available vertex-star
 -- cells in the exact K4 residual.  The live formula is now outside all six
 -- unsigned certificate cells and remains equivalent to the public knife band.

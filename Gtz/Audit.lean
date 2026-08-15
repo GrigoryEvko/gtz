@@ -857,6 +857,7 @@ import Gtz.Wave.TenthLightChartWiring
 import Gtz.Design.BudgetCoverCriterion
 import Gtz.Design.UnsignedCycleCells
 import Gtz.Design.UnsignedTraceCell
+import Gtz.Design.CoverageRefuters
 import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.KFourUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
@@ -28009,3 +28010,38 @@ run_cmd do
 #print axioms Gtz.heavyNeedleResidual_of_separatedHeavyResidual
 #print axioms Gtz.baseTripleTightLineFreeOffConicHeavyNeedleResidual_iff
 #print axioms Gtz.stressFreeStratumIsTieFree_lineFree_of_heavyNeedleResidual
+-- The coverage refuters: the pendant-family expansions and cells, and the two
+-- exact chart points that kill the row-dominance and the star-or-trace
+-- selection dichotomies while the minor atlas covers both.
+#print axioms Gtz.kFour_expansion_zeroTwoThree_one
+#print axioms Gtz.kFour_expansion_zeroTwoThree_four
+#print axioms Gtz.kFour_expansion_zeroTwoThree_five
+#print axioms Gtz.kFour_expansion_oneTwoThree_zero
+#print axioms Gtz.kFour_expansion_oneTwoThree_four
+#print axioms Gtz.kFour_expansion_oneTwoThree_five
+#print axioms Gtz.kFour_expansion_twoThreeFour_zero
+#print axioms Gtz.kFour_expansion_twoThreeFour_one
+#print axioms Gtz.kFour_expansion_twoThreeFour_five
+#print axioms Gtz.kFour_expansion_twoThreeFive_zero
+#print axioms Gtz.kFour_expansion_twoThreeFive_one
+#print axioms Gtz.kFour_expansion_twoThreeFive_four
+#print axioms Gtz.posDef_kFour_pendantCell_zeroTwoThree
+#print axioms Gtz.posDef_kFour_pendantCell_oneTwoThree
+#print axioms Gtz.posDef_kFour_pendantCell_twoThreeFour
+#print axioms Gtz.posDef_kFour_pendantCell_twoThreeFive
+#print axioms Gtz.pendantTrees_mem_kFourSpanningTreeList
+#print axioms Gtz.coverageRefuterOneMass
+#print axioms Gtz.coverageRefuterOneWeight
+#print axioms Gtz.coverageRefuterOneWeight_sum
+#print axioms Gtz.coverageRefuterOne_matchingRow_capped
+#print axioms Gtz.coverageRefuterOne_traceBoundary
+#print axioms Gtz.coverageRefuterOne_gaugeStar_posDef
+#print axioms Gtz.coverageRefuterTwoMass
+#print axioms Gtz.coverageRefuterTwoWeight
+#print axioms Gtz.coverageRefuterTwoWeight_sum
+#print axioms Gtz.coverageRefuterTwo_reading
+#print axioms Gtz.coverageRefuterTwo_starA_not_posDef
+#print axioms Gtz.coverageRefuterTwo_starB_not_posDef
+#print axioms Gtz.coverageRefuterTwo_starC_not_posDef
+#print axioms Gtz.coverageRefuterTwo_starD_not_posDef
+#print axioms Gtz.coverageRefuterTwo_pendant_posDef
