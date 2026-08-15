@@ -922,6 +922,7 @@ import Gtz.Design.TwoMeetingLinesNeedle
 import Gtz.Design.OneLineComplementCap
 import Gtz.Design.TwoMeetingLinesComplementCap
 import Gtz.Design.ExchangeCriterion
+import Gtz.Design.CrossEnergyLaw
 import Gtz.Design.StarWallResidualRows
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
@@ -29283,3 +29284,13 @@ run_cmd do
 #print axioms Gtz.twoMeetingLinesTransversalStrict_of_twoFourFive_weightedLight
 #print axioms Gtz.twoMeetingLinesTransversalStrict_of_min_weightedCompl_lt
 #print axioms Gtz.twoMeetingLinesResidual_of_min_weightedCompl_lt
+-- The cross-energy law and the master exchange formula.
+#print axioms Gtz.directionChartGap_eq_ladderSum_sub_moment
+#print axioms Gtz.posDef_exchange_iff_cross_sq_gt
+#print axioms Gtz.crossEnergy_gt_pivot
+#print axioms Gtz.excess_gt_of_no_exchange
+#print axioms Gtz.kFourCircuit_two
+#print axioms Gtz.kFourCircuit_zero
+#print axioms Gtz.kFourCircuit_one
+#print axioms Gtz.kFourCircuit_triangle
+#print axioms Gtz.exists_cross_ne_zero

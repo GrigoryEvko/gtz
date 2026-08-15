@@ -4229,3 +4229,10 @@ import Gtz.Design.ParsevalComplementCriterion
 -- the residual.  The weakest hypothesis takes the lighter private of each
 -- line, and the two lines choose independently.
 import Gtz.Design.TwoMeetingLinesParsevalCap
+-- The cross-energy law and the master exchange formula.  A swap is one
+-- inequality between an inverse cross term and two pivots, and the squared
+-- cross terms of any label into a selection exceed that label's own pivot.
+-- The pivot balance is an identity and cannot bound an inside pivot from
+-- above; the strict gain here is geometric and enters through the mass
+-- moment matrix.
+import Gtz.Design.CrossEnergyLaw
