@@ -861,12 +861,12 @@ import Gtz.Design.CoverageRefuters
 import Gtz.Design.RowCertificateAtlas
 import Gtz.Design.ZMatrixAlternative
 import Gtz.Design.ChartDesignWhitening
-import Gtz.Design.StratumSqueeze
 import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.KFourUnsignedTraceWiring
 import Gtz.Wave.KFourPendantAtlasWiring
 import Gtz.Wave.KFourRowCertificateWiring
 import Gtz.Wave.KFourZMatrixWiring
+import Gtz.Wave.KFourPolynomialBudgetCells
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Wave.ThreeLinesBudgetWiring
@@ -28269,6 +28269,33 @@ run_cmd do
 #print axioms Gtz.zObstructedKFourKnifeBandRefined_of_allTreeBlind
 #print axioms Gtz.kFourKnifeBandRefinedZObstructed_iff_allTreeBlind
 #print axioms Gtz.kFourKnifeBandRefinedZObstructed_iff
+-- Spend the Z-obstruction contrapositive as seven polynomial entry cells.
+#print axioms Gtz.kFourPath015BadBudget_of_not_fires
+#print axioms Gtz.kFourPath025BadBudget_of_not_fires
+#print axioms Gtz.kFourPath035BadBudget_of_not_fires
+#print axioms Gtz.kFourPath045BadBudget_of_not_fires
+#print axioms Gtz.kFourPath014BadBudget_of_not_fires
+#print axioms Gtz.kFourPath124BadBudget_of_not_fires
+#print axioms Gtz.kFourPath145BadBudget_of_not_fires
+#print axioms Gtz.KFourPath015PolynomialCellFires
+#print axioms Gtz.KFourPath025PolynomialCellFires
+#print axioms Gtz.KFourPath035PolynomialCellFires
+#print axioms Gtz.KFourPath045PolynomialCellFires
+#print axioms Gtz.KFourPath014PolynomialCellFires
+#print axioms Gtz.KFourPath124PolynomialCellFires
+#print axioms Gtz.KFourPath145PolynomialCellFires
+#print axioms Gtz.kFourPath015CellFires_of_polynomial
+#print axioms Gtz.kFourPath025CellFires_of_polynomial
+#print axioms Gtz.kFourPath035CellFires_of_polynomial
+#print axioms Gtz.kFourPath045CellFires_of_polynomial
+#print axioms Gtz.kFourPath014CellFires_of_polynomial
+#print axioms Gtz.kFourPath124CellFires_of_polynomial
+#print axioms Gtz.kFourPath145CellFires_of_polynomial
+#print axioms Gtz.KFourMissingPathPolynomialAtlasCellFires
+#print axioms Gtz.kFourMissingPathMinorAtlasCellFires_of_polynomialAtlas
+#print axioms Gtz.kFourAllTreeMinorAtlasCellFires_of_polynomialAtlas
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_polynomialAtlas
+#print axioms Gtz.not_polynomialAtlas_of_allTreeBlind
 -- The chart-design whitening: the moment matrix, the whitened design, the
 -- triangle refuters, and the weld to the design-level strict selection.
 #print axioms Gtz.atomMatrix_transpose_mulVec
@@ -28282,20 +28309,3 @@ run_cmd do
 #print axioms Gtz.mem_kFourSpanningTreeList_of_card_three
 #print axioms Gtz.kFourStrictTree_of_designSelection
 #print axioms Gtz.kFourKnifeBandRefinedTenthHeavy_of_designSelection
--- The stratum squeeze: the family weld, the complement dichotomy, the star
--- obstruction, and the no-strict squeeze producers.
-#print axioms Gtz.KFourFamilySelection
-#print axioms Gtz.kFourFamilySelection_of_designSelection
-#print axioms Gtz.kFourStrictTree_of_familySelection
-#print axioms Gtz.kFourKnifeBandRefinedTenthHeavy_of_familySelection
-#print axioms Gtz.kFourStarList
-#print axioms Gtz.kFourStarList_subset_treeList
-#print axioms Gtz.kFourTree_compl_triangle_iff_star
-#print axioms Gtz.kFourTree_compl_tree_of_not_star
-#print axioms Gtz.kFourStar_compl_triangle
-#print axioms Gtz.kFourStar_compl_gap_not_posDef
-#print axioms Gtz.whitenedDesign_star_compl_not_posDef
-#print axioms Gtz.one_le_squeeze_budget_of_noStrict
-#print axioms Gtz.one_le_squeeze_budget_of_noStrict_card
-#print axioms Gtz.exists_heavy_of_noStrict_of_floor
-#print axioms Gtz.exists_heavy_of_noStrict_of_floor_card
