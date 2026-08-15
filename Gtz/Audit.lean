@@ -972,6 +972,7 @@ import Gtz.Design.WholeLineMarginCriterion
 import Gtz.Design.ComplementPairCriterion
 import Gtz.Design.PivotGramIdempotent
 import Gtz.Wave.GaugeWallTriangleComplementBlock
+import Gtz.Wave.GaugeWallTriangleTreeReduction
 import Gtz.Design.FlatNormalBudget
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
@@ -29917,4 +29918,18 @@ run_cmd do
 #print axioms Gtz.oneLine_freeTriple_posDef_iff_planeInequality
 #print axioms Gtz.oneLine_freePair_excess
 #print axioms Gtz.twoMeetingLines_transversal_excess
-#print axioms Gtz.exists_complementAtom_pair_excess
+-- The gauge-wall tree reduction: the complement matrix symmetry, the two-label
+-- support reading, the rank-one triangle block, the two-triangle kill at every
+-- omitted cardinality, and the nine surviving spanning trees.
+#print axioms Gtz.complementMatrixEntry_symm
+#print axioms Gtz.complementForm_support_pair
+#print axioms Gtz.kFourTriangleSign
+#print axioms Gtz.kFourTriangleSign_sq_of_mem
+#print axioms Gtz.kFourGaugeWall_triangle_block_rankOne
+#print axioms Gtz.kFourGaugeWall_not_posDef_of_two_triangle_omitted
+#print axioms Gtz.kFourGaugeWall_posDef_compl_triangle_card_le_one
+#print axioms Gtz.kFourGaugeWall_posDef_selection_compl_triangle_card_le_one
+#print axioms Gtz.kFourGaugeWallTreeShortList
+#print axioms Gtz.kFourGaugeWall_posDef_spanningTree_mem_nine
+#print axioms Gtz.kFourGaugeWallTreeShortList_shape
+#print axioms Gtz.kFourGaugeWallTreeShortList_eq_filter
