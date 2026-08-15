@@ -4191,3 +4191,7 @@ import Gtz.Design.TwoMeetingLinesNeedle
 -- The one-line instance closes the ten-candidate residual through its free
 -- triple whenever the three line atoms stay light.
 import Gtz.Design.OneLineComplementCap
+-- The joint firing region at the two remaining vertex stars.  The two clearing
+-- identities are stated on opaque scalars, so the vertex-a reading holds at the
+-- other two axis slots with the centre moved and the pinned floor moved with it.
+import Gtz.Design.StarWallJointMirrors

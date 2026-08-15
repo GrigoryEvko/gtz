@@ -889,6 +889,7 @@ import Gtz.Design.StarWallVacuity
 import Gtz.Design.StarWallHeavyCap
 import Gtz.Design.StarWallSharpCap
 import Gtz.Design.StarWallJointRegion
+import Gtz.Design.StarWallJointMirrors
 import Gtz.Design.StarWallMirrors
 import Gtz.Design.StarWallTransport
 import Gtz.Wave.KFourTreeWindowCorankReduction
@@ -29196,3 +29197,12 @@ run_cmd do
 #print axioms Gtz.sum_compl_freeTriple_leverage
 #print axioms Gtz.planeBranchTenCandidate_of_lineLeverageSum_lt
 #print axioms Gtz.oneLineResidual_of_lineLeverageSum_lt
+-- The joint firing region at the vertex-b and vertex-c stars.  The same two
+-- clearing identities read the cell at each axis slot: the centre moves, the two
+-- remaining slots supply the axis product, and the pinned wall floor moves to the
+-- label of the centre.  Together with the vertex-a instance these are the
+-- symmetric core of the gauge star wall.
+#print axioms Gtz.kFourStarBCell_fires_of_wall_jointCondition
+#print axioms Gtz.kFourAtlas_fires_of_wall_jointConditionB
+#print axioms Gtz.kFourStarCCell_fires_of_wall_jointCondition
+#print axioms Gtz.kFourAtlas_fires_of_wall_jointConditionC
