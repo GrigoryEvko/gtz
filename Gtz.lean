@@ -4208,3 +4208,9 @@ import Gtz.Design.StarWallJointMirrors
 -- refusing all its exchanges into one outside label pays for it at the other,
 -- and refusing them at both puts both outside pivots above one.
 import Gtz.Design.ExchangeCriterion
+-- The row certificates of the six residual cells.  The three vertex stars miss
+-- a thin region, and what carries it is one orbit of the wall's own symmetry:
+-- the symmetric group on the three vertices other than the wall centre.  Every
+-- cell matrix is a symmetric Z-matrix, so one positive vector and three linear
+-- row readings replace the three minors at each of the six trees.
+import Gtz.Design.StarWallResidualRows

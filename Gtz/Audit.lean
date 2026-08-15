@@ -922,6 +922,7 @@ import Gtz.Design.TwoMeetingLinesNeedle
 import Gtz.Design.OneLineComplementCap
 import Gtz.Design.TwoMeetingLinesComplementCap
 import Gtz.Design.ExchangeCriterion
+import Gtz.Design.StarWallResidualRows
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29241,3 +29242,16 @@ run_cmd do
 #print axioms Gtz.both_outside_pivots_gt_one_of_no_exchange
 #print axioms Gtz.kFourTypeB_leftover_compl_eq_star
 #print axioms Gtz.kFourStarThree_mem_spanningTreeList
+-- The six residual row certificates of the gauge star wall.
+#print axioms Gtz.kFourPathCell015_fires_of_rowCertificate
+#print axioms Gtz.kFourPathCell025_fires_of_rowCertificate
+#print axioms Gtz.kFourPathCell014_fires_of_rowCertificate
+#print axioms Gtz.kFourPathCell124_fires_of_rowCertificate
+#print axioms Gtz.kFourPendantCell023_fires_of_rowCertificate
+#print axioms Gtz.kFourPendantCell123_fires_of_rowCertificate
+#print axioms Gtz.kFourAtlas_fires_of_rowCertificate015
+#print axioms Gtz.kFourAtlas_fires_of_rowCertificate025
+#print axioms Gtz.kFourAtlas_fires_of_rowCertificate014
+#print axioms Gtz.kFourAtlas_fires_of_rowCertificate124
+#print axioms Gtz.kFourAtlas_fires_of_rowCertificate023
+#print axioms Gtz.kFourAtlas_fires_of_rowCertificate123
