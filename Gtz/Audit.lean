@@ -879,6 +879,7 @@ import Gtz.Wave.KFourPathWindowDichotomy
 import Gtz.Design.ChartWeightMonotone
 import Gtz.Design.KernelPointer
 import Gtz.Design.StarSignRigidity
+import Gtz.Design.StarAmplifiedExchange
 import Gtz.Wave.KFourTreeWindowResidual
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
@@ -28630,3 +28631,20 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedTreeWindowResidual_iff_pathWindowResidualOrStar
 #print axioms Gtz.kFourKnifeBandRefinedTreeWindowResidual_iff
 #print axioms Gtz.kFourFamilySelection_iff_treeWindowResidual
+-- The star amplified exchange: the amplification core, the four bundle
+-- translations, the four star amplified-triangle theorems, the kernel-probe
+-- exchange reading, and the assembled gauge-star conditional package.
+#print axioms Gtz.sq_lt_sq_sub_of_pos_of_neg
+#print axioms Gtz.exists_amplified_pair_of_signMixed
+#print axioms Gtz.kFourStarGauge_bundle_translate
+#print axioms Gtz.kFourStarA_bundle_translate
+#print axioms Gtz.kFourStarB_bundle_translate
+#print axioms Gtz.kFourStarC_bundle_translate
+#print axioms Gtz.kFourStarGauge_exists_amplified_triangle
+#print axioms Gtz.kFourStarA_exists_amplified_triangle
+#print axioms Gtz.kFourStarB_exists_amplified_triangle
+#print axioms Gtz.kFourStarC_exists_amplified_triangle
+#print axioms Gtz.dotProduct_exchangeGap_at_kernel
+#print axioms Gtz.exchangeGap_pos_at_kernel_of_le
+#print axioms Gtz.exists_kernel_pointer_of_posSemidef_not_posDef
+#print axioms Gtz.kFourStarGauge_exists_conditional_exchange

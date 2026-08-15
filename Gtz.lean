@@ -4012,3 +4012,8 @@ import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 -- A2 axiom, and every dominator of a realizing design is off the three
 -- dependent lines.
 import Gtz.Design.ThreeLinesFamilyWeld
+-- The star amplified exchange: a weak-not-strict star hands a kernel probe
+-- whose amplifying triangle label strictly beats two star labels in squared
+-- reading, and the amplified exchange reads positively at the probe when the
+-- incoming boost quotient is at least the outgoing one.
+import Gtz.Design.StarAmplifiedExchange
