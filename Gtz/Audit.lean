@@ -960,6 +960,7 @@ import Gtz.Design.StallLocus
 import Gtz.Design.LineStrataCardFourSplit
 import Gtz.Design.ChartInverseTrace
 import Gtz.Design.ThreeLinesAxisLaw
+import Gtz.Design.ComplementFormLaw
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29691,3 +29692,18 @@ run_cmd do
 #print axioms Gtz.threeLines_axisSum_pos_of_posDef
 #print axioms Gtz.threeLines_vertexTriple_axis_conditions
 #print axioms Gtz.threeLines_freeTriple_axis_conditions
+-- The complement form law: the completed square, the variational bound for the
+-- inverse form, and the two directions of the equivalence.
+#print axioms Gtz.omittedBoostSum
+#print axioms Gtz.directionChartGap_compl_eq
+#print axioms Gtz.quadForm_omittedBoostSum
+#print axioms Gtz.omittedCombination
+#print axioms Gtz.dotProduct_omittedCombination
+#print axioms Gtz.complementForm
+#print axioms Gtz.complementForm_bracket
+#print axioms Gtz.inverseForm_ge_probe
+#print axioms Gtz.inverseForm_eq_dual
+#print axioms Gtz.posDef_directionChartGap_compl_of_complementForm_pos
+#print axioms Gtz.complementForm_pos_of_posDef_directionChartGap_compl
+#print axioms Gtz.posDef_directionChartGap_compl_iff
+#print axioms Gtz.posDef_directionChartGap_iff_complementForm

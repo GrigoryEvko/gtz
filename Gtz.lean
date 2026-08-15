@@ -4455,3 +4455,11 @@ import Gtz.Design.ChartInverseTrace
 -- two labels and the vertex triple in one, which is the structural reason the
 -- free triple dominates far more often.
 import Gtz.Design.ThreeLinesAxisLaw
+
+-- The complement form law.  A selection's gap is positive definite exactly when
+-- the complement form is positive at every coefficient vector supported on the
+-- labels the selection OMITS.  The content is one completed square: at every
+-- probe the bracket splits into a residual sum over the omitted labels and the
+-- complement gap form.  Generic in the size, in the direction family and in the
+-- omitted set, so it serves every chart and the trivial chart of a design.
+import Gtz.Design.ComplementFormLaw
