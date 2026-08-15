@@ -4571,3 +4571,15 @@ import Gtz.Design.FlatNormalBudget
 -- the sixteen spanning trees this leaves exactly the nine that carry two
 -- triangle edges, and excludes the wall itself together with six others.
 import Gtz.Wave.GaugeWallTriangleTreeReduction
+
+-- The normal leverage floor and the line cap.  The full-selection gap is the
+-- slack Laplacian, so its energy at a probe is the slack-weighted sum of
+-- squared readings and every label the probe kills drops out.  Cauchy-Schwarz
+-- through the resolvent prices each surviving square by that label's own
+-- inverse form times the same energy, and the energy divides out: the labels
+-- the probe sees carry at least one unit of leverage.  Subtracting from the
+-- rank caps a flat set at two.  A three-point line has a common normal, so no
+-- line can fill the complement of the low-pivot set -- filling it costs three
+-- units of leverage plus weight and a line has less than three.  Some triple of
+-- low-pivot labels therefore leaves an independent selection.
+import Gtz.Design.NormalLeverageFloor

@@ -974,6 +974,7 @@ import Gtz.Design.PivotGramIdempotent
 import Gtz.Wave.GaugeWallTriangleComplementBlock
 import Gtz.Wave.GaugeWallTriangleTreeReduction
 import Gtz.Design.FlatNormalBudget
+import Gtz.Design.NormalLeverageFloor
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29933,3 +29934,24 @@ run_cmd do
 #print axioms Gtz.kFourGaugeWall_posDef_spanningTree_mem_nine
 #print axioms Gtz.kFourGaugeWallTreeShortList_shape
 #print axioms Gtz.kFourGaugeWallTreeShortList_eq_filter
+-- The normal leverage floor and the line cap: the energy of the full gap, the
+-- floor on the labels a probe sees, the cap on a flat set, the pivot escape at
+-- a flat set, the three line readings, and the line theorem.
+#print axioms Gtz.quadForm_directionChartGap_univ
+#print axioms Gtz.quadForm_directionChartGap_univ_pos
+#print axioms Gtz.one_le_sum_chartLeverage_of_flat_outside
+#print axioms Gtz.sum_chartLeverage_le_two_of_flat
+#print axioms Gtz.exists_fullPivot_lt_one_of_flat
+#print axioms Gtz.threeLines_firstLine_flat
+#print axioms Gtz.threeLines_secondLine_flat
+#print axioms Gtz.threeLines_thirdLine_flat
+#print axioms Gtz.threeLines_line_leverage_le_two
+#print axioms Gtz.threeLines_exists_fullPivot_lt_one_of_line
+#print axioms Gtz.threeLines_firstLine_exists_fullPivot_lt_one
+#print axioms Gtz.threeLines_secondLine_exists_fullPivot_lt_one
+#print axioms Gtz.threeLines_thirdLine_exists_fullPivot_lt_one
+#print axioms Gtz.lowPivotSet
+#print axioms Gtz.mem_lowPivotSet_iff
+#print axioms Gtz.threeLinesDependentOmitted
+#print axioms Gtz.lowPivotSet_not_dependentOmitted
+#print axioms Gtz.threeLines_exists_admissible_omitted_triple
