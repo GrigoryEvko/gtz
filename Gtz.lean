@@ -4125,6 +4125,11 @@ import Gtz.Design.PivotWallVacuity
 -- average three fifths, and the descent to a strict tree stalls only at a
 -- priced five-edge or four-edge wall — the descent trichotomy.
 import Gtz.Design.PivotBalanceLaw
+-- The descent port: the full-selection descent needs only that the six
+-- directions span, so every spanning chart inherits it.  The three-lines
+-- chart does span, and its descent lands a card-three strict selection or a
+-- stalled card-four selection — the A2 conclusion under one stall branch.
+import Gtz.Design.ThreeLinesDescentPort
 -- Split the final K4 residual into two callable components.  Exact four-cycle
 -- transport identifies all four corank-two vertex-star walls with the one
 -- gauge-star wall; solving that canonical wall together with the four-pivot

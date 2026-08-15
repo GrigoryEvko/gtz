@@ -903,6 +903,7 @@ import Gtz.Wave.KFourStarMirrorVacuityWiring
 import Gtz.Wave.KFourStarAllMaxHeavyWiring
 import Gtz.Design.PivotWallVacuity
 import Gtz.Design.PivotBalanceLaw
+import Gtz.Design.ThreeLinesDescentPort
 import Gtz.Wave.KFourGaugeStarTransportWiring
 import Gtz.Wave.KFourPivotStallPropagationWiring
 import Gtz.Wave.KFourPivotEndpointOrthogonalityWiring
@@ -27897,6 +27898,16 @@ run_cmd do
 #print axioms Gtz.dotProduct_directionChartGap_pos_of_max_mem
 #print axioms Gtz.posDef_directionChartGap_of_readingCover
 #print axioms Gtz.threeLinesDirection_span
+#print axioms Gtz.posDef_directionChartGap_univ_of_span
+#print axioms Gtz.exists_posDef_erase_univ_of_span
+#print axioms Gtz.descent_trichotomy_of_span
+#print axioms Gtz.exists_posDef_erase_univ_not_stall_of_span
+#print axioms Gtz.cardThree_or_cardFour_stall_of_span
+#print axioms Gtz.posDef_directionChartGap_univ_threeLines
+#print axioms Gtz.exists_posDef_erase_univ_threeLines
+#print axioms Gtz.threeLines_cardThree_or_stall
+#print axioms Gtz.exists_posDef_erase_univ_not_stall_threeLines
+#print axioms Gtz.threeLines_cardThree_or_cardFour_stall
 #print axioms Gtz.posDef_directionChartGap_threeLines_of_readingCover
 #print axioms Gtz.directionChartHasStrictTriple_threeLines_of_cover
 #print axioms Gtz.exists_selection_nonneg_reading
@@ -29367,7 +29378,3 @@ run_cmd do
 #print axioms Gtz.kFourFamilySelection_of_triangleStall_starEndpoint_gauge
 #print axioms Gtz.kFourPivotWallTriangleStallClosure_of_escapeClosure
 #print axioms Gtz.kFourFamilySelection_of_triangleEscape_starEndpoint_gauge
--- The unrestricted stall-escape interface is exactly the antecedent-free K4
--- chart theorem; it is a common producer shape, not a logical reduction.
-#print axioms Gtz.kFourCardFourStallEscape_iff_everyPointHasStrictTree
-#print axioms Gtz.kFourFamilySelection_of_cardFourStallEscape
