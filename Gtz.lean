@@ -4851,3 +4851,8 @@ import Gtz.Wave.EquivariantDesignationRefuter
 -- widest of the five cells and the last one the campaign charts.
 import Gtz.Design.LineFreeChart
 import Gtz.Design.LineFreeCovering
+
+-- The set-valued designation, and why the relaxation buys nothing.  The bridge
+-- from equivariance to invariance at the symmetric witness is proved rather than
+-- assumed, and every diagonal-monotone maximizer returns the failing orbit.
+import Gtz.Wave.OrbitDesignationRefuter
