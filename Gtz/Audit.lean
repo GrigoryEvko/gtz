@@ -1008,6 +1008,7 @@ import Gtz.LinAlg.ProjectionDiagonalDominance
 import Gtz.Design.PivotThirdDominance
 import Gtz.Wave.ThreeLinesPivotThirdWiring
 import Gtz.Wave.TransversalLoadLedger
+import Gtz.Wave.ConsolidatedMinorForm
 import Gtz.Design.NoStrictPivotLedger
 import Gtz.Design.KFourEntrySumRung
 import Gtz.Design.ChartEntrySumRung
@@ -30805,3 +30806,22 @@ run_cmd do
 #print axioms Gtz.twoMeetingLinesCoeff
 #print axioms Gtz.readsThrough_twoMeetingLinesDirection
 #print axioms Gtz.posDef_directionChartGap_twoMeetingLines_of_coverCell
+
+-- The consolidated statement in minor form: the three leading minors of the
+-- complement matrix of a triple, the equivalence with the consolidated
+-- statement, and the sufficient cells as instances of it.
+#print axioms Gtz.ChartComplementMinors
+#print axioms Gtz.posDef_compl_triple_iff_chartComplementMinors
+#print axioms Gtz.card_sdiff_eq_three_of_card_eq_three
+#print axioms Gtz.sdiff_sdiff_univ_self
+#print axioms Gtz.exists_triple_compl_eq_of_card_eq_three
+#print axioms Gtz.card_sdiff_triple_eq_three
+#print axioms Gtz.chartPoint_boost_pos
+#print axioms Gtz.consolidatedStrictTriple_iff_complementMinors
+#print axioms Gtz.chartComplementMinors_of_deflatedPair
+#print axioms Gtz.chartComplementMinors_of_sum_fullPivot_lt_one
+#print axioms Gtz.chartComplementMinors_of_pivotThird
+#print axioms Gtz.compl_sdiff_triple
+#print axioms Gtz.chartComplementMinors_of_rowSlack
+#print axioms Gtz.consolidatedStrictTriple_of_deflatedPair_designation
+#print axioms Gtz.consolidatedStrictTriple_of_totalPivot_designation

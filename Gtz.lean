@@ -4779,6 +4779,7 @@ import Gtz.LinAlg.ProjectionDiagonalDominance
 import Gtz.Wave.TransversalLoadLedger
 import Gtz.Design.PivotThirdDominance
 import Gtz.Wave.ThreeLinesPivotThirdWiring
+import Gtz.Wave.ConsolidatedMinorForm
 
 -- What a counterexample must look like.  The quarter-cap cell says three labels
 -- of small pivot leave a strictly dominating selection, so a design with no
