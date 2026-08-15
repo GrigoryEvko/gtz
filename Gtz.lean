@@ -3951,6 +3951,13 @@ import Gtz.Wave.KFourFamilySelectionWiring
 -- dominating.  The sixteen-row necessary system cannot decide coverage, so
 -- a covering proof must consume more of each dual witness than its row.
 import Gtz.Design.GershgorinWashout
+-- The chart gap is antitone in each selected weight, so strictness moves down
+-- in weight and a covering of the chart slice covers the full cone of weight
+-- sum at most one. The probe behind the module: the K4 covering fails on the
+-- open orthant from weight sum 6/5 on the symmetric ray, but adversarial
+-- descent over uncovered points stalls at weight sum 1.0805 — the chart slice
+-- carries interior slack, and certificates below that loss are admissible.
+import Gtz.Design.ChartWeightMonotone
 -- Spend the generic unsigned trace theorem at the two landed three-lines
 -- expansions.  The exact A2 residual is now outside both minor cells and both
 -- one-inequality trace cells.

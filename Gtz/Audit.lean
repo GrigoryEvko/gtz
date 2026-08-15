@@ -871,6 +871,7 @@ import Gtz.Wave.KFourPolynomialBudgetCells
 import Gtz.Wave.KFourAllTreeZMatrixWiring
 import Gtz.Wave.KFourFamilySelectionWiring
 import Gtz.Design.GershgorinWashout
+import Gtz.Design.ChartWeightMonotone
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28424,3 +28425,12 @@ run_cmd do
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines_of_familySelection
 #print axioms Gtz.whitenedThreeLines_lineTriple_not_dominates
 #print axioms Gtz.whitenedThreeLines_dominator_offLines
+-- The chart weight antitone law and the conical transfer.
+#print axioms Gtz.directionChartGap_reading_antitone
+#print axioms Gtz.posDef_directionChartGap_antitone_weight
+#print axioms Gtz.subOneWeightLift
+#print axioms Gtz.subOneWeightLift_le
+#print axioms Gtz.subOneWeightLift_pos
+#print axioms Gtz.subOneWeightLift_sum
+#print axioms Gtz.subOneChartPoint
+#print axioms Gtz.exists_posDef_of_coveredChart_of_weight_sum_le
