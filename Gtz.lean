@@ -4495,3 +4495,12 @@ import Gtz.Design.GaugeWallTriangleStarDescent
 -- package is equivalent to the former gauge-plus-pivot closure and feeds the
 -- public knife band, family selector and every-point strict-tree consumers.
 import Gtz.Wave.KFourTriangleStarStallEndgame
+
+-- The residual pairing law.  At the trivial chart of a design the complement
+-- form collapses onto a fixed symmetric six-by-six pairing read off the FULL
+-- selection alone, the identity less the inverse Gram of the atoms against the
+-- full gap.  One inverse then decides every selection by a principal minor: a
+-- card-four selection omits a pair and reduces to two scalar inequalities, and
+-- the no-strict ledger says no principal three-by-three minor is positive
+-- definite.  The diagonal is the full-selection pivot gap.
+import Gtz.Design.ResidualPairingLaw

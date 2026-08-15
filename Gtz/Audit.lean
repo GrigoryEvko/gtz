@@ -964,6 +964,7 @@ import Gtz.Design.ChartInverseTrace
 import Gtz.Design.ThreeLinesAxisLaw
 import Gtz.Design.ComplementFormLaw
 import Gtz.Design.GaugeWallStarErasure
+import Gtz.Design.ResidualPairingLaw
 import Gtz.Design.GaugeWallTriangleStarDescent
 import Gtz.Wave.KFourTriangleStarStallEndgame
 #print axioms Gtz.unitVector
@@ -29766,3 +29767,27 @@ run_cmd do
 #print axioms Gtz.kFourFamilySelection_of_triangleStarStallEndgame
 #print axioms Gtz.kFourEveryPointHasStrictTree_of_triangleStarStallEndgame
 #print axioms Gtz.kFourFamilySelection_of_pivotTriangle_of_gaugeTriangleStarStall
+-- The residual pairing law: the binary form criterion, the symmetric
+-- pairing off one inverse, its diagonal as the full-selection pivot gap,
+-- the collapse of the complement form, the selection law, the card-four
+-- pair minor, and the no-strict ledger as a minor statement.
+#print axioms Gtz.binaryForm_pos_iff
+#print axioms Gtz.fullGap
+#print axioms Gtz.posDef_fullGap
+#print axioms Gtz.crossPivot
+#print axioms Gtz.residualPairing
+#print axioms Gtz.fullGap_transpose
+#print axioms Gtz.fullGap_inv_transpose
+#print axioms Gtz.dotProduct_mulVec_comm_of_transpose
+#print axioms Gtz.crossPivot_comm
+#print axioms Gtz.residualPairing_comm
+#print axioms Gtz.residualPairing_diag
+#print axioms Gtz.sum_residualPairing_diag
+#print axioms Gtz.designChartPoint_ratio
+#print axioms Gtz.directionChartGap_univ_designChartPoint
+#print axioms Gtz.omittedCombination_designChartPoint
+#print axioms Gtz.complementForm_designChartPoint
+#print axioms Gtz.posDef_subsetSum_iff_residualPairing
+#print axioms Gtz.posDef_subsetSum_cardFour_iff_pairMinor
+#print axioms Gtz.noStrict_iff_no_tripleMinor
+#print axioms Gtz.false_of_noStrict_of_pairingEscape
