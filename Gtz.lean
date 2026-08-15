@@ -4446,3 +4446,12 @@ import Gtz.Design.LineStrataCardFourSplit
 -- the adjugate clears the division.  At the trivial chart the mass matrix is
 -- Parseval's identity and the design-level law returns.
 import Gtz.Design.ChartInverseTrace
+
+-- The axis law of the three-lines chart.  The three dependent lines are the
+-- three coordinate planes, so their normals are the coordinate axes.  Reading
+-- the gap there collapses the six-term form to three terms, each line dies at
+-- its own axis, and the corner minor of the landed Sylvester criterion is
+-- revealed to be one of those readings.  The free triple meets every axis in
+-- two labels and the vertex triple in one, which is the structural reason the
+-- free triple dominates far more often.
+import Gtz.Design.ThreeLinesAxisLaw

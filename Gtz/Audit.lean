@@ -959,6 +959,7 @@ import Gtz.Design.GaugeWallKernelLaw
 import Gtz.Design.StallLocus
 import Gtz.Design.LineStrataCardFourSplit
 import Gtz.Design.ChartInverseTrace
+import Gtz.Design.ThreeLinesAxisLaw
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29668,3 +29669,25 @@ run_cmd do
 #print axioms Gtz.trace_inv_mul_lt_iff_trace_adjugate_mul_lt
 #print axioms Gtz.exists_chartPivot_lt_one_of_trace_adjugate_mul_mass_lt
 #print axioms Gtz.not_trace_adjugate_mul_mass_lt_of_chart_stall
+-- The axis law of the three-lines chart: the three coordinate readings, the
+-- line exclusions they give uniformly, the full-selection surplus, the bridge
+-- to the corner minor, and the vertex-versus-free incidence.
+#print axioms Gtz.threeLines_verticalReading
+#print axioms Gtz.threeLines_secondAxisReading
+#print axioms Gtz.threeLines_firstAxisReading
+#print axioms Gtz.verticalProbe_ne_zero
+#print axioms Gtz.secondAxisProbe_ne_zero
+#print axioms Gtz.firstAxisProbe_ne_zero
+#print axioms Gtz.threeLines_verticalAxis_pos_of_posDef
+#print axioms Gtz.threeLines_secondAxis_pos_of_posDef
+#print axioms Gtz.threeLines_firstAxis_pos_of_posDef
+#print axioms Gtz.threeLines_firstLine_verticalReading
+#print axioms Gtz.threeLines_secondLine_secondAxisReading
+#print axioms Gtz.threeLines_thirdLine_firstAxisReading
+#print axioms Gtz.threeLines_univ_verticalAxis_pos
+#print axioms Gtz.threeLines_univ_secondAxis_pos
+#print axioms Gtz.threeLines_univ_firstAxis_pos
+#print axioms Gtz.threeLinesCornerMinor_eq_firstAxisReading
+#print axioms Gtz.threeLines_axisSum_pos_of_posDef
+#print axioms Gtz.threeLines_vertexTriple_axis_conditions
+#print axioms Gtz.threeLines_freeTriple_axis_conditions
