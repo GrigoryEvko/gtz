@@ -4856,3 +4856,9 @@ import Gtz.Design.LineFreeCovering
 -- from equivariance to invariance at the symmetric witness is proved rather than
 -- assumed, and every diagonal-monotone maximizer returns the failing orbit.
 import Gtz.Wave.OrbitDesignationRefuter
+
+-- The invariant expansion of the complement determinant.  The triple cross is
+-- the only term no pair of labels reads, and its square is the product of the
+-- three boosted crosses, so the pair data pins its magnitude and leaves only
+-- its sign free.  Two root-free cells follow, and the constant four is sharp.
+import Gtz.Wave.ComplementInvariantCell
