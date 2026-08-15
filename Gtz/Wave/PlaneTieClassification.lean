@@ -75,6 +75,15 @@ scalar ladder forces `w = v` slot by slot.
 * `Gtz.plane_w_engine` — **THE W ENGINE, at every slot count.**  At mass one
   an active set with positive budgets, an inert complement and no strict pair
   obeys `Σ (2 l t - t^2) ≤ Σ l - 1` over the active slots.
+* `Gtz.plane_plucker_first`, `Gtz.plane_plucker_second`,
+  `Gtz.plane_plucker_third` — **THE PLANE PLÜCKER IDENTITIES.**  The three
+  perfect matchings of four plane vectors differ by products of wedges.
+* `Gtz.plane_four_allTied_parallel`,
+  `Gtz.plane_four_allTied_exists_parallel` — **THE FOUR-ATOM KILL.**  Four
+  atoms of positive budget are never all tied without a parallel pair, so an
+  all-tied family never carries four distinct lines.
+* `Gtz.planeTie_allTied_reading` — the three-atom family IS all tied, so the
+  four-atom kill is sharp at exactly three lines.
 
 The tie set of a three-atom plane frame in the open weight simplex is
 therefore EMPTY when some mass sits at one half or less, and it is EXACTLY
@@ -915,5 +924,137 @@ theorem plane_w_engine {slotCount : ℕ} {atom : Fin slotCount → (Fin 2 → �
     intro slot _
     ring
   linarith [hcore, hdouble, hcompare, hiteSum, hwSq, htrace, hterms]
+
+/-! ## Layer 8 — the four-atom kill, and the exact line count of an all-tied
+family
+
+A design is ALL TIED when every pair sits at the certificate boundary,
+`(b_x ⬝ᵥ b_y)^2 = w_x w_y` with `w_y = l_y - t_y` the budget mass.  The
+three-atom family of Layer 3 is all tied.  This layer proves that FOUR atoms
+of positive budget can never be all tied unless two of them are PARALLEL.
+
+The engine is the Plücker identity of the plane.  For any four plane vectors
+the three pair products of dots differ by products of wedges, and the three
+differences use the three perfect matchings of the four slots.  An all-tied
+quadruple gives all three products the same square, namely `w_1 w_2 w_3 w_4`.
+If no pair is parallel, every wedge product is nonzero, so each of the three
+SUMS of products vanishes, which forces every product to vanish — against the
+positive budget.
+
+The consequence is the line count.  Parallel atoms carry the same line, so an
+all-tied family of positive budgets occupies at most THREE distinct lines, and
+Layer 3 realizes exactly three.  The Mercedes trine is the equilateral point of
+that family. -/
+
+/-- **THE PLANE PLÜCKER IDENTITY, FIRST MATCHING.**  A universal polynomial
+identity of four plane vectors: no frame law, no normalization. -/
+theorem plane_plucker_first (b0 b1 b2 b3 : Fin 2 → ℝ) :
+    (b0 ⬝ᵥ b1) * (b2 ⬝ᵥ b3) - (b0 ⬝ᵥ b2) * (b1 ⬝ᵥ b3)
+      = planeWedge b0 b3 * planeWedge b1 b2 := by
+  simp only [dot_fin_two, planeWedge]
+  ring
+
+/-- **THE PLANE PLÜCKER IDENTITY, SECOND MATCHING.** -/
+theorem plane_plucker_second (b0 b1 b2 b3 : Fin 2 → ℝ) :
+    (b0 ⬝ᵥ b1) * (b2 ⬝ᵥ b3) - (b0 ⬝ᵥ b3) * (b1 ⬝ᵥ b2)
+      = planeWedge b0 b2 * planeWedge b1 b3 := by
+  simp only [dot_fin_two, planeWedge]
+  ring
+
+/-- **THE PLANE PLÜCKER IDENTITY, THIRD MATCHING.** -/
+theorem plane_plucker_third (b0 b1 b2 b3 : Fin 2 → ℝ) :
+    (b0 ⬝ᵥ b2) * (b1 ⬝ᵥ b3) - (b0 ⬝ᵥ b3) * (b1 ⬝ᵥ b2)
+      = planeWedge b0 b1 * planeWedge b2 b3 := by
+  simp only [dot_fin_two, planeWedge]
+  ring
+
+/-- **THE FOUR-ATOM KILL.**  Four plane atoms of positive budget mass cannot
+have every pair at the certificate boundary unless two of them are parallel.
+
+The hypothesis is the boundary reading `(b_x ⬝ᵥ b_y)^2 = w_x w_y` at all six
+pairs.  No frame law is used, and no isotropy: the statement is pure plane
+algebra. -/
+theorem plane_four_allTied_parallel {b0 b1 b2 b3 : Fin 2 → ℝ} {w0 w1 w2 w3 : ℝ}
+    (hw0 : 0 < w0) (hw1 : 0 < w1) (hw2 : 0 < w2) (hw3 : 0 < w3)
+    (h01 : (b0 ⬝ᵥ b1) ^ 2 = w0 * w1) (h02 : (b0 ⬝ᵥ b2) ^ 2 = w0 * w2)
+    (h03 : (b0 ⬝ᵥ b3) ^ 2 = w0 * w3) (h12 : (b1 ⬝ᵥ b2) ^ 2 = w1 * w2)
+    (h13 : (b1 ⬝ᵥ b3) ^ 2 = w1 * w3) (h23 : (b2 ⬝ᵥ b3) ^ 2 = w2 * w3) :
+    planeWedge b0 b1 = 0 ∨ planeWedge b0 b2 = 0 ∨ planeWedge b0 b3 = 0
+      ∨ planeWedge b1 b2 = 0 ∨ planeWedge b1 b3 = 0 ∨ planeWedge b2 b3 = 0 := by
+  by_contra hall
+  simp only [not_or] at hall
+  obtain ⟨n01, n02, n03, n12, n13, n23⟩ := hall
+  -- The three matching products carry one common square.
+  have hcommon : 0 < w0 * w1 * (w2 * w3) := by positivity
+  have hsqOne : ((b0 ⬝ᵥ b1) * (b2 ⬝ᵥ b3)) ^ 2 = w0 * w1 * (w2 * w3) := by
+    rw [mul_pow, h01, h23]
+  have hsqTwo : ((b0 ⬝ᵥ b2) * (b1 ⬝ᵥ b3)) ^ 2 = w0 * w1 * (w2 * w3) := by
+    rw [mul_pow, h02, h13]; ring
+  have hsqThree : ((b0 ⬝ᵥ b3) * (b1 ⬝ᵥ b2)) ^ 2 = w0 * w1 * (w2 * w3) := by
+    rw [mul_pow, h03, h12]; ring
+  -- Each difference of products is a nonzero product of wedges.
+  have hdiffOne : (b0 ⬝ᵥ b1) * (b2 ⬝ᵥ b3) - (b0 ⬝ᵥ b2) * (b1 ⬝ᵥ b3) ≠ 0 := by
+    rw [plane_plucker_first]
+    exact mul_ne_zero n03 n12
+  have hdiffTwo : (b0 ⬝ᵥ b1) * (b2 ⬝ᵥ b3) - (b0 ⬝ᵥ b3) * (b1 ⬝ᵥ b2) ≠ 0 := by
+    rw [plane_plucker_second]
+    exact mul_ne_zero n02 n13
+  have hdiffThree : (b0 ⬝ᵥ b2) * (b1 ⬝ᵥ b3) - (b0 ⬝ᵥ b3) * (b1 ⬝ᵥ b2) ≠ 0 := by
+    rw [plane_plucker_third]
+    exact mul_ne_zero n01 n23
+  -- Equal squares with a nonzero difference force the SUM to vanish.
+  have hsumOne : (b0 ⬝ᵥ b1) * (b2 ⬝ᵥ b3) + (b0 ⬝ᵥ b2) * (b1 ⬝ᵥ b3) = 0 := by
+    rcases mul_eq_zero.mp (show ((b0 ⬝ᵥ b1) * (b2 ⬝ᵥ b3) - (b0 ⬝ᵥ b2) * (b1 ⬝ᵥ b3))
+        * ((b0 ⬝ᵥ b1) * (b2 ⬝ᵥ b3) + (b0 ⬝ᵥ b2) * (b1 ⬝ᵥ b3)) = 0 by
+      have := hsqOne.trans hsqTwo.symm
+      nlinarith [this]) with h | h
+    · exact absurd h hdiffOne
+    · exact h
+  have hsumTwo : (b0 ⬝ᵥ b1) * (b2 ⬝ᵥ b3) + (b0 ⬝ᵥ b3) * (b1 ⬝ᵥ b2) = 0 := by
+    rcases mul_eq_zero.mp (show ((b0 ⬝ᵥ b1) * (b2 ⬝ᵥ b3) - (b0 ⬝ᵥ b3) * (b1 ⬝ᵥ b2))
+        * ((b0 ⬝ᵥ b1) * (b2 ⬝ᵥ b3) + (b0 ⬝ᵥ b3) * (b1 ⬝ᵥ b2)) = 0 by
+      have := hsqOne.trans hsqThree.symm
+      nlinarith [this]) with h | h
+    · exact absurd h hdiffTwo
+    · exact h
+  have hsumThree : (b0 ⬝ᵥ b2) * (b1 ⬝ᵥ b3) + (b0 ⬝ᵥ b3) * (b1 ⬝ᵥ b2) = 0 := by
+    rcases mul_eq_zero.mp (show ((b0 ⬝ᵥ b2) * (b1 ⬝ᵥ b3) - (b0 ⬝ᵥ b3) * (b1 ⬝ᵥ b2))
+        * ((b0 ⬝ᵥ b2) * (b1 ⬝ᵥ b3) + (b0 ⬝ᵥ b3) * (b1 ⬝ᵥ b2)) = 0 by
+      have := hsqTwo.trans hsqThree.symm
+      nlinarith [this]) with h | h
+    · exact absurd h hdiffThree
+    · exact h
+  -- The three sums vanish, so every product vanishes, against the budget.
+  have hzero : (b0 ⬝ᵥ b1) * (b2 ⬝ᵥ b3) = 0 := by linarith
+  rw [hzero] at hsqOne
+  nlinarith [hsqOne, hcommon]
+
+/-- **THE ALL-TIED FAMILY OCCUPIES THREE LINES.**  Stated at a family indexed
+by `Fin 4`: some pair is parallel, hence an all-tied family of positive
+budgets never carries four distinct lines. -/
+theorem plane_four_allTied_exists_parallel {b : Fin 4 → (Fin 2 → ℝ)} {w : Fin 4 → ℝ}
+    (hw : ∀ slot, 0 < w slot)
+    (htied : ∀ x y : Fin 4, x ≠ y → (b x ⬝ᵥ b y) ^ 2 = w x * w y) :
+    ∃ x y : Fin 4, x ≠ y ∧ planeWedge (b x) (b y) = 0 := by
+  rcases plane_four_allTied_parallel (hw 0) (hw 1) (hw 2) (hw 3)
+    (htied 0 1 (by decide)) (htied 0 2 (by decide)) (htied 0 3 (by decide))
+    (htied 1 2 (by decide)) (htied 1 3 (by decide)) (htied 2 3 (by decide)) with
+    h | h | h | h | h | h
+  · exact ⟨0, 1, by decide, h⟩
+  · exact ⟨0, 2, by decide, h⟩
+  · exact ⟨0, 3, by decide, h⟩
+  · exact ⟨1, 2, by decide, h⟩
+  · exact ⟨1, 3, by decide, h⟩
+  · exact ⟨2, 3, by decide, h⟩
+
+/-- The three-atom family of Layer 3 IS all tied in the budget reading, so the
+four-atom kill is sharp: three atoms of positive budget are all tied, four are
+never all tied without a parallel pair. -/
+theorem planeTie_allTied_reading {atom : Fin 3 → (Fin 2 → ℝ)} (hframe : PlaneParseval atom)
+    {x y : Fin 3} (hxy : x ≠ y) :
+    (atom x ⬝ᵥ atom y) ^ 2
+      = ((atom x ⬝ᵥ atom x) - planeTieWeight atom x)
+        * ((atom y ⬝ᵥ atom y) - planeTieWeight atom y) :=
+  planeTie_pair_det_eq hframe hxy
 
 end Gtz

@@ -27654,6 +27654,12 @@ run_cmd do
 #print axioms Gtz.planeTrine_tieWeight
 #print axioms Gtz.quarter_trace_core
 #print axioms Gtz.plane_w_engine
+#print axioms Gtz.plane_plucker_first
+#print axioms Gtz.plane_plucker_second
+#print axioms Gtz.plane_plucker_third
+#print axioms Gtz.plane_four_allTied_parallel
+#print axioms Gtz.plane_four_allTied_exists_parallel
+#print axioms Gtz.planeTie_allTied_reading
 -- The descent weld: balanced interior elimination, the exact eight-needle
 -- chart exit, and the strict-or-tied-nonparallel plane endpoint.
 #print axioms Gtz.exists_atomCarrier_or_balancedSubcritical
