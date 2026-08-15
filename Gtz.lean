@@ -4836,3 +4836,9 @@ import Gtz.Design.FrobeniusSpreadCell
 import Gtz.Design.OneLineChart
 import Gtz.Design.OneLineCovering
 import Gtz.Design.SharpSpreadCell
+
+-- No relabelling-equivariant rule can designate.  Whitening sends the selection
+-- gap to one minus the Gram of the omitted labels, so a chart point whose
+-- relabelling symmetry fixes only failing triples defeats every label-free rule
+-- at once.  The witness is two orbits of the cyclic coordinate shift.
+import Gtz.Wave.EquivariantDesignationRefuter

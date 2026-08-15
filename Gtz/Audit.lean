@@ -1023,6 +1023,7 @@ import Gtz.Design.KFourAbsPolynomialCell
 import Gtz.Design.FrobeniusSpreadCell
 import Gtz.Design.OneLineCovering
 import Gtz.Design.SharpSpreadCell
+import Gtz.Wave.EquivariantDesignationRefuter
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30915,3 +30916,34 @@ run_cmd do
 #print axioms Gtz.oneLineCoeff
 #print axioms Gtz.readsThrough_oneLineDirection
 #print axioms Gtz.posDef_directionChartGap_oneLine_of_coverCell
+
+-- The equivariant designation refuter: the witness chart point, its full gap
+-- equal to the identity, its complement matrix, the relabelling and its
+-- invariance, the two invariant triples that fail, a triple that works, and the
+-- refutation of every equivariant rule.
+#print axioms Gtz.witnessDirection
+#print axioms Gtz.witnessWeight
+#print axioms Gtz.witnessMass
+#print axioms Gtz.witnessWeight_pos
+#print axioms Gtz.witnessMass_pos
+#print axioms Gtz.witnessWeight_sum_one
+#print axioms Gtz.witnessBoost
+#print axioms Gtz.witnessBoost_pos
+#print axioms Gtz.witnessPoint
+#print axioms Gtz.witnessGapUniv
+#print axioms Gtz.witnessGapUniv_inv
+#print axioms Gtz.witnessGapUniv_posDef
+#print axioms Gtz.witnessInverseForm
+#print axioms Gtz.witnessEntry
+#print axioms Gtz.witnessComplementEntry
+#print axioms Gtz.minors_iff_posDef
+#print axioms Gtz.sigmaLabel
+#print axioms Gtz.witnessEntry_sigma
+#print axioms Gtz.chartComplementMinors_sigma
+#print axioms Gtz.sigmaLabel_invariant_card_three
+#print axioms Gtz.not_minors_zeroOneTwo
+#print axioms Gtz.not_minors_threeFourFive
+#print axioms Gtz.minors_zeroThreeFive
+#print axioms Gtz.no_working_invariant_triple
+#print axioms Gtz.no_equivariant_designation
+#print axioms Gtz.witness_hasWorkingSelection
