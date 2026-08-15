@@ -4077,3 +4077,7 @@ import Gtz.Wave.KFourStarSingleExchangeRefusal
 -- antecedent.  The surviving family now has a nonmaximal first axis coordinate
 -- or a strictly heavy weight in one of the four vertex-a slots.
 import Gtz.Wave.KFourStarBalancedVacuityWiring
+-- Spend all three balanced star-wall mirrors.  Atlas silence now couples the
+-- maximal positive axis coordinate to a heavy weight in its exact four-slot
+-- vertex-star cover, while remaining equivalent to the registered A3 formula.
+import Gtz.Wave.KFourStarMirrorVacuityWiring
