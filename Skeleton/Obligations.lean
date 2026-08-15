@@ -332,6 +332,12 @@ NOT-REFUTED: no census row targets it. The relaxed-weight refutation needs `0 <=
 axiom obligationKnifeBandRefinedKFour :
     Gtz.KFourKnifeBandRefinedAllTreeZObstructedWeakToStrict
 
+/-- The registered chart residual recovers the exact design-side whitening
+family selector.  This is an equivalence, not an additional obligation. -/
+theorem obligationKFourFamilySelection : Gtz.KFourFamilySelection :=
+  Gtz.kFourFamilySelection_of_allTreeZObstructed
+    obligationKnifeBandRefinedKFour
+
 /-- The all-tree Z-obstructed A3 axiom reconstructs the former refined knife
 band by spending all seventeen cells, the full sixteen-tree dual/Gershgorin/
 budget ledger, and the automatic chart-heavy law. -/

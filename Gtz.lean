@@ -3943,6 +3943,9 @@ import Gtz.Wave.KFourPolynomialBudgetCells
 -- nonnegative dual witness, bad row, and cleared budget for every spanning
 -- tree, rather than only for the seven paths added by the row atlas.
 import Gtz.Wave.KFourAllTreeZMatrixWiring
+-- Identify the design-side whitening-family selector with both strict chart
+-- coverage and the exact all-tree Z-obstructed A3 residual.
+import Gtz.Wave.KFourFamilySelectionWiring
 -- The Gershgorin washout: one rational chart point satisfies the bad-row
 -- condition of all sixteen spanning trees while nine trees are strictly
 -- dominating.  The sixteen-row necessary system cannot decide coverage, so
