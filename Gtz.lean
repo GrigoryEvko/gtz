@@ -4068,6 +4068,11 @@ import Gtz.Design.StarWallHeavyCap
 -- quotient clears two plus the square root of three.  The named caps are one
 -- fifth and four nineteenths.
 import Gtz.Design.StarWallSharpCap
+-- The joint firing region of the gauge star wall.  The two inside boost
+-- quotients and the two outside dust fractions move independently, so the
+-- three minors read as one joint gap.  Every landed cap is the diagonal
+-- slice, and the two named instances lie strictly outside the sharp box.
+import Gtz.Design.StarWallJointRegion
 -- The two balanced mirrors: the vertex-b and vertex-c stars fire when their
 -- axis coordinate is maximal and their four weights are at most one sixth.
 import Gtz.Design.StarWallMirrors

@@ -888,6 +888,7 @@ import Gtz.Design.StarCorankClosure
 import Gtz.Design.StarWallVacuity
 import Gtz.Design.StarWallHeavyCap
 import Gtz.Design.StarWallSharpCap
+import Gtz.Design.StarWallJointRegion
 import Gtz.Design.StarWallMirrors
 import Gtz.Design.StarWallTransport
 import Gtz.Wave.KFourTreeWindowCorankReduction
@@ -29160,3 +29161,18 @@ run_cmd do
 #print axioms Gtz.kFourMatching_insert_mem_spanningTreeList
 #print axioms Gtz.transversalStrict_iff_invariants
 #print axioms Gtz.twoMeetingLinesTransversalStrict_iff_invariants
+-- The joint firing region of the gauge star wall.  The second minor and the
+-- determinant clear to the axis product times one joint gap, in which the two
+-- inside boost quotients and the two outside dust fractions are independent.
+-- The two axis keys carry the gap bounds, and the two named instances put the
+-- inside weights at a quarter and at three tenths, both above the sharp box.
+#print axioms Gtz.starWall_joint_minorTwo
+#print axioms Gtz.starWall_joint_det
+#print axioms Gtz.starWall_joint_gap_of_bounds
+#print axioms Gtz.starWall_joint_key_quarter
+#print axioms Gtz.starWall_joint_key_threeTenth
+#print axioms Gtz.kFourStarACell_fires_of_wall_jointCondition
+#print axioms Gtz.kFourAtlas_fires_of_wall_jointCondition
+#print axioms Gtz.wall_dust_of_weight_cap
+#print axioms Gtz.kFourAtlas_fires_of_wall_quarterEighth
+#print axioms Gtz.kFourAtlas_fires_of_wall_threeTenthTwentyFirst
