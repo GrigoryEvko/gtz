@@ -1019,6 +1019,7 @@ import Gtz.Design.TwoMeetingLinesChart
 import Gtz.Design.TwoMeetingLinesCovering
 import Gtz.Design.UniformWitnessRefutation
 import Gtz.Design.KFourOwnMonomial
+import Gtz.Design.KFourAbsPolynomialCell
 import Gtz.Design.FrobeniusSpreadCell
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
@@ -30825,3 +30826,22 @@ run_cmd do
 #print axioms Gtz.chartComplementMinors_of_rowSlack
 #print axioms Gtz.consolidatedStrictTriple_of_deflatedPair_designation
 #print axioms Gtz.consolidatedStrictTriple_of_totalPivot_designation
+
+-- The first sufficient cell for the third invariant of a K4 chart tree: the
+-- one-term sandwich, the absolute polynomial and its two bounds, the chart
+-- sandwich, the cell, its ratio reading, the positive definiteness form, the
+-- card-three witness, the named condition, and the band the cell sits in.
+#print axioms Gtz.kFourTreePolynomial_two_mul_prod_le
+#print axioms Gtz.kFourAbsPolynomial
+#print axioms Gtz.kFourAbsPolynomial_eq
+#print axioms Gtz.kFourAbsPolynomial_nonneg
+#print axioms Gtz.two_mul_kFourOwnMonomial_sub_le
+#print axioms Gtz.kFourTreePolynomial_pos_of_absPolynomial_lt
+#print axioms Gtz.kFourAbsPolynomial_lt_iff_ratio_lt_two
+#print axioms Gtz.posDef_kFourTree_of_absPolynomial_cell
+#print axioms Gtz.card_eq_three_of_mem_kFourSpanningTreeList
+#print axioms Gtz.exists_posDef_of_kFourAbsPolynomialCell
+#print axioms Gtz.KFourAbsPolynomialCellFires
+#print axioms Gtz.exists_posDef_of_kFourAbsPolynomialCellFires
+#print axioms Gtz.two_mul_kFourOwnMonomial_gt_of_cell
+#print axioms Gtz.kFourOwnMonomial_le_kFourAbsPolynomial

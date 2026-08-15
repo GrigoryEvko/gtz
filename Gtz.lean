@@ -4825,4 +4825,5 @@ import Gtz.Design.UniformWitnessRefutation
 -- positive, and its maximum is a greedy matroid maximum.  The designation
 -- that takes that maximum is refuted here by an exact rational witness.
 import Gtz.Design.KFourOwnMonomial
+import Gtz.Design.KFourAbsPolynomialCell
 import Gtz.Design.FrobeniusSpreadCell
