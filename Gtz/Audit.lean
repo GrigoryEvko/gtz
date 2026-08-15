@@ -574,6 +574,14 @@ import Gtz.Design.BarycentricOpenCellWitness
 import Gtz.Design.KFourLeverageRefuter
 import Gtz.Design.KFourBandLiveness
 import Gtz.Design.ChartReadingLaw
+
+-- The vertex cover cell.  The covering criterion asks a selection to hold a
+-- maximal reading at every probe.  A join label bounded by a nonnegative
+-- combination of two selected labels, and paid at complementary shares, never
+-- beats the larger of the two.  Six scalar inequalities then force the vertex
+-- triple of the three-lines chart and the star triple of the K4 chart, and the
+-- axis probes plus the diagonal probe say exactly where the criterion is blind.
+import Gtz.Design.ThreeLinesVertexCover
 import Gtz.Design.KFourTightLocus
 import Gtz.Design.FreeMassBudgetDischarge
 import Gtz.Design.KFourDescentLadder
@@ -30416,3 +30424,48 @@ run_cmd do
 #print axioms Gtz.card_lowPivot_le_two_of_noStrict
 #print axioms Gtz.exists_pivot_gt_quarter_of_noStrict
 #print axioms Gtz.card_highLeverage_le_of_noCovering
+
+
+-- The vertex cover cell.  The covering criterion asks a selection to hold a
+-- maximal reading at every probe.  A join label bounded by a nonnegative
+-- combination of two selected labels, and paid at complementary shares, never
+-- beats the larger of the two.  Six scalar inequalities then force the vertex
+-- triple of the three-lines chart and the star triple of the K4 chart, and the
+-- axis probes plus the diagonal probe say exactly where the criterion is blind.
+#print axioms Gtz.reading_le_max_of_weightedPairDomination
+#print axioms Gtz.reading_le_max_of_pairDomination
+#print axioms Gtz.le_max_three_left
+#print axioms Gtz.le_max_three_mid
+#print axioms Gtz.le_max_three_right
+#print axioms Gtz.max_three_eq
+#print axioms Gtz.threeLinesDirection_dotProduct
+#print axioms Gtz.sq_add_le_two_mul
+#print axioms Gtz.sq_add_smul_le_two_mul
+#print axioms Gtz.ThreeLinesVertexCoverCellFires
+#print axioms Gtz.readingCover_vertexTriple_of_cellFires
+#print axioms Gtz.posDef_threeLines_vertexTriple_of_cellFires
+#print axioms Gtz.exists_posDef_threeLines_of_vertexCoverCellFires
+#print axioms Gtz.diagonalProbe
+#print axioms Gtz.diagonalProbe_ne_zero
+#print axioms Gtz.not_readingCover_vertexTriple_of_join_heavy
+#print axioms Gtz.mem_of_readingCover_of_strict_max
+#print axioms Gtz.sq_add_le_split
+#print axioms Gtz.sq_add_smul_le_split
+#print axioms Gtz.sq_sub_le_split
+#print axioms Gtz.kFourDirection_span
+#print axioms Gtz.kFourDirection_dotProduct
+#print axioms Gtz.KFourStarCoverCellFires
+#print axioms Gtz.readingCover_starTriple_of_kFourCellFires
+#print axioms Gtz.posDef_kFour_starTriple_of_cellFires
+#print axioms Gtz.exists_posDef_kFour_of_starCoverCellFires
+#print axioms Gtz.antiDiagonalProbe
+#print axioms Gtz.not_readingCover_starTriple_of_difference_heavy
+#print axioms Gtz.ThreeLinesSplitCoverCellFires
+#print axioms Gtz.readingCover_vertexTriple_of_splitCellFires
+#print axioms Gtz.posDef_threeLines_vertexTriple_of_splitCellFires
+#print axioms Gtz.splitCellFires_of_cellFires
+#print axioms Gtz.firstAxis_forces_vertexZero
+#print axioms Gtz.secondAxis_forces_vertexOne
+#print axioms Gtz.verticalAxis_forces_vertexThree
+#print axioms Gtz.readingCover_eq_vertexTriple_of_axisStrict
+#print axioms Gtz.not_exists_readingCover_of_axisStrict_of_join_heavy

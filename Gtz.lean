@@ -495,6 +495,14 @@ import Gtz.Quantitative.SwitchingTwoGraph
 -- positive definite outright. The three-lines instance reduces the chart
 -- obligation to a covering selection about six explicit quadratic forms.
 import Gtz.Design.ChartReadingLaw
+
+-- The vertex cover cell.  The covering criterion asks a selection to hold a
+-- maximal reading at every probe.  A join label bounded by a nonnegative
+-- combination of two selected labels, and paid at complementary shares, never
+-- beats the larger of the two.  Six scalar inequalities then force the vertex
+-- triple of the three-lines chart and the star triple of the K4 chart, and the
+-- axis probes plus the diagonal probe say exactly where the criterion is blind.
+import Gtz.Design.ThreeLinesVertexCover
 --     finished lever.
 --   NOTHING OVER THE COMPLEX NUMBERS IS FORMALISED.  The prose records that the same expansion
 --     carries 2*Re(p_ab p_bc p_ca) over C, so the two-valuedness of a real Gram determinant is
