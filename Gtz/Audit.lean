@@ -927,6 +927,8 @@ import Gtz.Design.CrossEnergyLaw
 import Gtz.Design.StarWallResidualRows
 import Gtz.Design.TriangleNormalReading
 import Gtz.Design.ExcessThreshold
+import Gtz.Design.TightBaseRigidity
+import Gtz.Design.TwoMeetingLinesRigidity
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29383,7 +29385,6 @@ run_cmd do
 #print axioms Gtz.kFourCardFourStallEscape_iff_everyPointHasStrictTree
 #print axioms Gtz.kFourFamilySelection_of_cardFourStallEscape
 
-import Gtz.Design.TightBaseRigidity
 
 #print axioms Gtz.sum_sq_eq_dotProduct_self_of_tight
 #print axioms Gtz.tight_complement_energy_eq
@@ -29397,3 +29398,13 @@ import Gtz.Design.TightBaseRigidity
 #print axioms Gtz.kFourMatchingCompl_exchange_containsTriangle
 #print axioms Gtz.kFourMatchingCompl_exchange_not_compl_subset
 #print axioms Gtz.kFourMatchingCompl_compl_subset_ne_exchange
+
+#print axioms Gtz.twoMeetingLines_meeting_identity
+#print axioms Gtz.twoMeetingLines_firstNormal_unitLaw
+#print axioms Gtz.twoMeetingLines_secondNormal_unitLaw
+#print axioms Gtz.twoMeetingLines_angle_identity
+#print axioms Gtz.twoMeetingLines_openAtom_readings_ne_zero
+#print axioms Gtz.twoMeetingLines_secondPrivates_le_sin_sq
+#print axioms Gtz.twoMeetingLines_firstPrivates_le_sin_sq
+#print axioms Gtz.twoMeetingLines_sharedAtom_crossProduct_kill
+#print axioms Gtz.twoMeetingLines_sharedAtom_eq_smul_crossProduct

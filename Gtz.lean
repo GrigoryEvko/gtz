@@ -4281,3 +4281,8 @@ import Gtz.Design.TightBaseRigidity
 -- found type-A stalls where no exchange is positive definite, and every escape
 -- there held both complement labels.
 import Gtz.Design.TypeAExchangeObstruction
+
+-- Parseval read as a bilinear form at the two line normals leaves one term.
+-- The open label carries the angle between the two planes, and the cross
+-- product of the normals pins the shared label up to a single scalar.
+import Gtz.Design.TwoMeetingLinesRigidity
