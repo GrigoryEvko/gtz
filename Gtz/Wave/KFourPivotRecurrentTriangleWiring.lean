@@ -160,6 +160,55 @@ theorem KFourPivotWallRecurrentStallData.strictTree_or_exists_triangle_stall
 
 /-! ## Minimal closure targets and the A3 composition -/
 
+/-- **THE GLOBAL STALL ESCAPE.**  Every stalled positive-definite four-set is
+accompanied by some non-stalled positive-definite four-set. -/
+def KFourCardFourStallEscape : Prop :=
+  ∀ (point : DirectionChartPoint 6) (selected : Finset (Fin 6)),
+    selected.card = 4 →
+    (directionChartGap kFourDirection point.mass point.weight
+      selected).PosDef →
+    (∀ label ∈ selected,
+      1 ≤ chartLadderPivot kFourDirection point.mass point.weight
+        selected label) →
+    ∃ escaped : Finset (Fin 6), escaped.card = 4 ∧
+      (directionChartGap kFourDirection point.mass point.weight escaped).PosDef ∧
+      ∃ label ∈ escaped,
+        chartLadderPivot kFourDirection point.mass point.weight
+          escaped label < 1
+
+/-- Global stall escape gives a strict tree at every chart point by the landed
+descent dichotomy and card-four equivalence. -/
+theorem kFourEveryPointHasStrictTree_of_cardFourStallEscape
+    (hescape : KFourCardFourStallEscape) : KFourEveryPointHasStrictTree := by
+  intro point
+  rcases kFour_strictTree_or_cardFour_stall point with hstrict |
+    ⟨selected, hcard, hpd, hstall⟩
+  · exact hstrict
+  · exact (strictTree_iff_exists_nonStalledCardFour point).mpr
+      (hescape point selected hcard hpd hstall)
+
+/-- Conversely, an every-point strict-tree theorem supplies a non-stalled
+four-set independently of the given stall. -/
+theorem kFourCardFourStallEscape_of_everyPointHasStrictTree
+    (hstrict : KFourEveryPointHasStrictTree) : KFourCardFourStallEscape := by
+  intro point _selected _hcard _hpd _hstall
+  exact (strictTree_iff_exists_nonStalledCardFour point).mp (hstrict point)
+
+/-- **SCOPE AUDIT.**  The unrestricted global stall-escape statement is exactly
+equivalent to the antecedent-free K4 chart theorem.  It is a useful common
+interface, but not by itself a reduction in logical strength. -/
+theorem kFourCardFourStallEscape_iff_everyPointHasStrictTree :
+    KFourCardFourStallEscape ↔ KFourEveryPointHasStrictTree :=
+  ⟨kFourEveryPointHasStrictTree_of_cardFourStallEscape,
+    kFourCardFourStallEscape_of_everyPointHasStrictTree⟩
+
+/-- The global escape interface reaches the registry-facing K4 family selector
+without passing through either wall atlas. -/
+theorem kFourFamilySelection_of_cardFourStallEscape
+    (hescape : KFourCardFourStallEscape) : KFourFamilySelection :=
+  kFourFamilySelection_iff_everyPointHasStrictTree.mpr
+    (kFourEveryPointHasStrictTree_of_cardFourStallEscape hescape)
+
 /-- A global closure theorem for triangle-containing card-four stalls. -/
 def KFourTriangleStallClosure : Prop :=
   ∀ (point : DirectionChartPoint 6) (selected : Finset (Fin 6)),
@@ -218,6 +267,15 @@ def KFourPivotWallTriangleEscapeClosure : Prop :=
         ∃ label ∈ escaped,
           chartLadderPivot kFourDirection point.mass point.weight
             escaped label < 1
+
+/-- The global stall-escape interface implies the contextual triangle escape
+used by pivot recurrence. -/
+theorem kFourPivotWallTriangleEscapeClosure_of_cardFourStallEscape
+    (hescape : KFourCardFourStallEscape) :
+    KFourPivotWallTriangleEscapeClosure := by
+  intro point _tree _htree _hgap _hwindow _hwall selected hcard hpd hstall
+    _htriangle
+  exact hescape point selected hcard hpd hstall
 
 /-- The global triangle-stall law implies the exact contextual target. -/
 theorem kFourPivotWallTriangleStallClosure_of_triangleStallClosure
