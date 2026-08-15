@@ -877,6 +877,7 @@ import Gtz.Wave.KFourPathStarResidual
 import Gtz.Wave.KFourPathPointerResidual
 import Gtz.Design.ChartWeightMonotone
 import Gtz.Design.KernelPointer
+import Gtz.Design.StarSignRigidity
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28564,3 +28565,18 @@ run_cmd do
 #print axioms Gtz.exists_pointer_of_not_posDef
 #print axioms Gtz.pointer_exchange_pos_reading
 #print axioms Gtz.exists_kFourPointer_of_not_posDef
+-- The star sign rigidity: the sign lemma, the copositivity upgrade, the
+-- dual-system transport, the four star instances, and the kernel pointer.
+#print axioms Gtz.quadForm_add_smul
+#print axioms Gtz.mulVec_eq_zero_of_quadForm_eq_zero
+#print axioms Gtz.exists_kernelVec_of_posSemidef_not_posDef
+#print axioms Gtz.kernelVec_not_nonneg_of_offDiag_pos
+#print axioms Gtz.kernelVec_signMixed_of_offDiag_pos
+#print axioms Gtz.quadForm_pos_on_nonneg_of_offDiag_pos
+#print axioms Gtz.kernel_readings_signMixed_of_dualSystem
+#print axioms Gtz.dotProduct_directionChartGap_mulVec_pair
+#print axioms Gtz.kFourStarGauge_kernel_readings_signMixed
+#print axioms Gtz.kFourStarA_kernel_readings_signMixed
+#print axioms Gtz.kFourStarB_kernel_readings_signMixed
+#print axioms Gtz.kFourStarC_kernel_readings_signMixed
+#print axioms Gtz.kFour_pointer_of_kernel

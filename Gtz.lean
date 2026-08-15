@@ -3983,6 +3983,13 @@ import Gtz.Design.ChartWeightMonotone
 -- probe. The pointer is the repair step of the weak-to-strict obligations;
 -- the directed probe refuted the hosting conjecture, so it is not a selector.
 import Gtz.Design.KernelPointer
+-- The star sign rigidity. In the balanced gauge every star gap pairs into a
+-- matrix with strictly positive off-diagonals, so a weak-not-strict star has
+-- a kernel probe whose tree readings carry both signs, and the star gap is
+-- strictly positive on the nonnegative reading orthant. The four instances
+-- carry explicit basis and dual vectors, and every kernel probe hands the
+-- landed outside pointer.
+import Gtz.Design.StarSignRigidity
 -- Spend the generic unsigned trace theorem at the two landed three-lines
 -- expansions.  The exact A2 residual is now outside both minor cells and both
 -- one-inequality trace cells.
