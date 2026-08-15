@@ -925,6 +925,7 @@ import Gtz.Design.ExchangeCriterion
 import Gtz.Design.CrossEnergyLaw
 import Gtz.Design.StarWallResidualRows
 import Gtz.Design.TriangleNormalReading
+import Gtz.Design.ExcessThreshold
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29333,3 +29334,12 @@ run_cmd do
 #print axioms Gtz.sum_lineWeightedLeverage_le_two
 #print axioms Gtz.planeBranchTenCandidate_of_weightedLineLeverage_lt_freeMax
 #print axioms Gtz.oneLineResidual_of_weightedLineLeverage_lt_freeMax
+-- The excess threshold of a four-edge stall and the exact cross energy law.
+#print axioms Gtz.kFourDirection_ne_zero
+#print axioms Gtz.cardFour_excess_eq_weightedPivotSum_sub_one
+#print axioms Gtz.exists_posDef_exchange_of_cardFour_stall_excess_le_half
+#print axioms Gtz.exists_posDef_exchange_of_cardFour_stall_weightedPivotSum_le
+#print axioms Gtz.crossEnergy_eq_pivot_add_moment
+#print axioms Gtz.pivot_add_moment_le_excess_of_no_exchange
+#print axioms Gtz.exists_posDef_exchange_of_pivot_add_moment_gt
+#print axioms Gtz.cardFour_stall_weightedPivotSum_gt_of_no_exchange

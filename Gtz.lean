@@ -4251,3 +4251,10 @@ import Gtz.Design.TriangleNormalReading
 -- triple of the one-line stratum carries weighted leverage at least one and the
 -- line carries at most two.
 import Gtz.Design.WeightedFormCriterion
+-- The excess threshold of a four-edge stall.  The pivot balance turns the total
+-- inside excess into the weight-weighted pivot sum of all labels, and the small
+-- excess exchange then fires below three halves.  The exact cross energy law
+-- keeps the mass moment term the landed inequality discards, which sharpens the
+-- refused exchange price from the entering pivot alone to that pivot plus its
+-- moment form.
+import Gtz.Design.ExcessThreshold
