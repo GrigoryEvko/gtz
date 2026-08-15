@@ -988,6 +988,8 @@ import Gtz.Wave.ComplementPivotTraceLedger
 import Gtz.Design.DirectionBudget
 import Gtz.Design.KFourTreeMinorGoals
 import Gtz.Design.KFourTreeInvariantGoals
+import Gtz.Design.LinePatternPrimitivity
+import Gtz.Wave.ConsolidatedStrictTriple
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30185,3 +30187,35 @@ run_cmd do
 #print axioms Gtz.kFourTrace_eq
 #print axioms Gtz.kFourDirection_normSq
 #print axioms Gtz.kFourTrace_eq_explicit
+
+-- The line pattern forces primitivity: the pair-thin predicate, the generic
+-- bridge, its parallel-pair phrasing, the five line families and the five
+-- stratum readings.
+#print axioms Gtz.LineListIsPairThin
+#print axioms Gtz.isPrimitiveDesign_of_hasLinePattern_lineFamily
+#print axioms Gtz.not_hasParallelPair_of_hasLinePattern_lineFamily
+#print axioms Gtz.lineListIsPairThin_empty
+#print axioms Gtz.lineListIsPairThin_oneLine
+#print axioms Gtz.lineListIsPairThin_twoMeetingLines
+#print axioms Gtz.lineListIsPairThin_threeLines
+#print axioms Gtz.lineListIsPairThin_kFour
+#print axioms Gtz.isPrimitiveDesign_of_emptyPattern
+#print axioms Gtz.isPrimitiveDesign_of_oneLinePattern
+#print axioms Gtz.isPrimitiveDesign_of_twoMeetingLinesPattern
+#print axioms Gtz.isPrimitiveDesign_of_threeLinesPattern
+#print axioms Gtz.isPrimitiveDesign_of_kFourPattern
+-- The consolidated strict card-three selection: the pair-independence
+-- predicate, the chart statement, its design reading, the specialization, the
+-- pair independence of the two chart families, and the five wirings.
+#print axioms Gtz.DirectionsArePairIndependent
+#print axioms Gtz.ConsolidatedStrictTriple
+#print axioms Gtz.ConsolidatedStrictTripleDesign
+#print axioms Gtz.consolidatedStrictTripleDesign_of_consolidatedStrictTriple
+#print axioms Gtz.directionsArePairIndependent_kFourDirection
+#print axioms Gtz.threeLinesDirection_pairwise_independent
+#print axioms Gtz.baseTripleTightLineFreeOffConicHeavyNeedleResidual_of_consolidatedStrictTriple
+#print axioms Gtz.oneLineTenthHeavyJointBlindLineSparse_of_consolidatedStrictTriple
+#print axioms Gtz.twoMeetingLinesTenthHeavyJointBlindTransversal_of_consolidatedStrictTriple
+#print axioms Gtz.chartTieFreeThreeLines_of_consolidatedStrictTriple
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWall_of_consolidatedStrictTriple
+

@@ -4709,3 +4709,23 @@ import Gtz.Design.DirectionBudget
 -- direction family, so the other strata read their own gaps through it.
 import Gtz.Design.KFourTreeMinorGoals
 import Gtz.Design.KFourTreeInvariantGoals
+
+-- The line pattern pays for its own non-degeneracy.  A design with two parallel
+-- atoms makes every bracket through that pair vanish, so the pattern has to put
+-- all four remaining labels on a line through the pair.  A three-point line
+-- supplies one label, and two distinct listed lines meet in at most one point,
+-- so four labels compete for one slot.  Each of the five on-path line families
+-- closes the count by `decide`, and the bracket step is the landed parallel
+-- determinant lemma.  The consumer is any consolidated statement that assumes
+-- primitivity: at every design stratum the assumption is now free.
+import Gtz.Design.LinePatternPrimitivity
+
+-- One statement for the five on-path obligations.  Every chart point of a
+-- spanning, pair-independent direction family carries a strictly dominating
+-- card-three selection.  A1 reads it against its no-strict ledger, the one-line
+-- and two-meeting-lines strata read it through their landed candidate
+-- restrictions, and A2 and A3 read it directly at their own direction families.
+-- The statement is measured and not proved, so nothing here is wired into the
+-- registry and the obligation count is unchanged.
+import Gtz.Wave.ConsolidatedStrictTriple
+
