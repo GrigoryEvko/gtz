@@ -883,6 +883,7 @@ import Gtz.Design.StarAmplifiedExchange
 import Gtz.Wave.KFourTreeWindowResidual
 import Gtz.Design.WallCollapse
 import Gtz.Design.StarOnlyLaw
+import Gtz.Design.StarCorankClosure
 import Gtz.Wave.KFourTreeWindowCorankReduction
 import Gtz.Wave.KFourPathCorankCollapse
 import Gtz.Wave.KFourStarWallWiring
@@ -28753,3 +28754,15 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedTreeStarWall_iff
 #print axioms Gtz.kFourFamilySelection_iff_treeStarWall
 #print axioms Gtz.kFourWeakTreeGapCorankResidual_refine_star
+-- The star-corank closure platform: the singleton collapse, the exchange
+-- bookkeeping, the gauge-star normal form, the double-pointer package, and
+-- the vacuity target with its discharge.
+#print axioms Gtz.pointer_swaps_iff_singleton
+#print axioms Gtz.boostSum_reading
+#print axioms Gtz.directionChartGap_sdiff
+#print axioms Gtz.quadForm_on_kernel_of_sdiff
+#print axioms Gtz.kFourGaugeStar_corankTwo_normalForm
+#print axioms Gtz.kFourStar_two_outside_mem_star
+#print axioms Gtz.corankTwo_star_candidate_readings
+#print axioms Gtz.KFourStarWallAtlasFires
+#print axioms Gtz.kFourStarWall_empty_of_atlasFires

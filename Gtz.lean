@@ -4038,6 +4038,13 @@ import Gtz.Design.WallCollapse
 -- is empty over the twelve path trees, and the corank branch of the gap
 -- residual always carries a star.
 import Gtz.Design.StarOnlyLaw
+-- The star-corank closure platform. The swap quantifier collapses to one
+-- singleton inequality, the exchange bookkeeping reads any selection at a
+-- kernel probe as incoming minus outgoing boosts, the gauge-star wall gets
+-- its one-signed normal form, and the double-pointer package hands a second
+-- star positive at both kernel directions. The vacuity target names the
+-- closure route against the atlas silence of the antecedent stack.
+import Gtz.Design.StarCorankClosure
 -- Wire the two final K4 walls to their strongest landed interfaces.  The
 -- positive-definite window now carries all four large pivots; the singular
 -- vertex star carries a nonnegative rank-one gap and two distinct repair
