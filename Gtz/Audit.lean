@@ -941,6 +941,7 @@ import Gtz.Wave.ThreeLinesRankOneWitnessClassification
 import Gtz.Wave.KFourOutsideDecomposition
 import Gtz.Wave.TwoOutsideMomentLaw
 import Gtz.Wave.TwoOutsideRefusalLaw
+import Gtz.Design.BlindSpotArithmetic
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29467,3 +29468,8 @@ run_cmd do
 #print axioms Gtz.kFour_exists_exchange_of_twoOutside_cross_failure
 #print axioms Gtz.kFour_exists_complPair_of_cardFour
 #print axioms Gtz.kFour_exists_posDef_exchange_of_cardFour_cross_failure
+#print axioms Gtz.liftDemand_of_flatPair
+#print axioms Gtz.liftReading_of_flatPair
+#print axioms Gtz.liftMargin_of_flatPair
+#print axioms Gtz.liftLeverage_ge_of_liftMargin_nonpos_of_flatPair
+#print axioms Gtz.oneLine_liftLeverage_ge_of_normalBlindSpot

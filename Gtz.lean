@@ -4322,3 +4322,9 @@ import Gtz.Wave.TwoOutsideMomentLaw
 -- explicit positive-definite exchange, and the card-four wrapper extracts its
 -- two outside labels automatically.
 import Gtz.Wave.TwoOutsideRefusalLaw
+
+-- The arithmetic content of the line-normal blind spot.  At a pair the normal
+-- is flat against, both heights vanish, so the lift demand is the shadow-gap
+-- determinant and the whole lift margin factors through it.  The blind spot's
+-- negated conjunction then becomes one inequality on the design's invariants.
+import Gtz.Design.BlindSpotArithmetic
