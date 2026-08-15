@@ -862,6 +862,7 @@ import Gtz.Design.RowCertificateAtlas
 import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.KFourUnsignedTraceWiring
 import Gtz.Wave.KFourPendantAtlasWiring
+import Gtz.Wave.KFourRowCertificateWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Wave.ThreeLinesBudgetWiring
@@ -28171,3 +28172,29 @@ run_cmd do
 #print axioms Gtz.pathTree_zeroOneFour_mem
 #print axioms Gtz.pathTree_oneTwoFour_mem
 #print axioms Gtz.pathTree_oneFourFive_mem
+-- Spend the seven missing K4 path cells in the exact all-tree residual.
+#print axioms Gtz.KFourPathCell015Fires
+#print axioms Gtz.KFourPathCell025Fires
+#print axioms Gtz.KFourPathCell035Fires
+#print axioms Gtz.KFourPathCell045Fires
+#print axioms Gtz.KFourPathCell014Fires
+#print axioms Gtz.KFourPathCell124Fires
+#print axioms Gtz.KFourPathCell145Fires
+#print axioms Gtz.KFourMissingPathMinorAtlasCellFires
+#print axioms Gtz.KFourAllTreeMinorAtlasCellFires
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_pathCell015
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_pathCell025
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_pathCell035
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_pathCell045
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_pathCell014
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_pathCell124
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_pathCell145
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_missingPathMinorAtlasCell
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_allTreeMinorAtlasCell
+#print axioms Gtz.KFourKnifeBandRefinedAllTreeBlindWeakToStrict
+#print axioms Gtz.kFourKnifeBandRefinedPendantBlind_of_allTreeBlind
+#print axioms Gtz.allTreeBlindKFourKnifeBandRefined_of_pendantBlind
+#print axioms Gtz.kFourKnifeBandRefinedAllTreeBlind_iff_pendantBlind
+#print axioms Gtz.kFourKnifeBandRefinedAllTreeBlind_iff
+#print axioms Gtz.pathCell015WitnessPoint
+#print axioms Gtz.pathCell015WitnessPoint_fires

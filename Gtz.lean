@@ -3906,6 +3906,10 @@ import Gtz.Wave.KFourUnsignedTraceWiring
 -- the six previous unsigned cells this is the full ten-cell minor atlas; the
 -- second coverage refuter inhabits the newly removed region exactly.
 import Gtz.Wave.KFourPendantAtlasWiring
+-- Spend the seven remaining path-tree cells.  The resulting seventeen-cell
+-- union attaches a moduli-only certificate to every one of the sixteen K4
+-- spanning trees and remains exactly equivalent to the public knife band.
+import Gtz.Wave.KFourRowCertificateWiring
 -- Spend the generic unsigned trace theorem at the two landed three-lines
 -- expansions.  The exact A2 residual is now outside both minor cells and both
 -- one-inequality trace cells.
