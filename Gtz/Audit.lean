@@ -1024,6 +1024,8 @@ import Gtz.Design.FrobeniusSpreadCell
 import Gtz.Design.OneLineCovering
 import Gtz.Design.SharpSpreadCell
 import Gtz.Wave.EquivariantDesignationRefuter
+import Gtz.Design.LineFreeChart
+import Gtz.Design.LineFreeCovering
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30947,3 +30949,43 @@ run_cmd do
 #print axioms Gtz.no_working_invariant_triple
 #print axioms Gtz.no_equivariant_designation
 #print axioms Gtz.witness_hasWorkingSelection
+
+-- The line-free chart: the four-parameter directions, the fourteen
+-- admissibility exclusions, the twenty-bracket table, the three Cramer
+-- expansions, the ten covering identities, the per-atom scales, the
+-- realization, the covering, the stratum reduction, and the first chart-level
+-- cell at this entry.  Every one of the twenty triples is nonvanishing here,
+-- because the empty pattern forbids all of them to vanish.
+#print axioms Gtz.lineFreeDirection
+#print axioms Gtz.lineFreeDirection_zero
+#print axioms Gtz.lineFreeDirection_one
+#print axioms Gtz.lineFreeDirection_two
+#print axioms Gtz.lineFreeDirection_three
+#print axioms Gtz.lineFreeDirection_four
+#print axioms Gtz.lineFreeDirection_five
+#print axioms Gtz.IsAdmissibleLineFreeParameter
+#print axioms Gtz.lineFreeFamily
+#print axioms Gtz.tripleBracket_lineFreeDirection_eq_zero_iff
+#print axioms Gtz.smul_lineFree_three_expansion
+#print axioms Gtz.smul_lineFree_four_expansion
+#print axioms Gtz.smul_lineFree_five_expansion
+#print axioms Gtz.exists_lineFreeCoordinates
+#print axioms Gtz.tripleBracket_zeroThreeFour_of_lineFreeExpansions
+#print axioms Gtz.tripleBracket_zeroThreeFive_of_lineFreeExpansions
+#print axioms Gtz.tripleBracket_zeroFourFive_of_lineFreeExpansions
+#print axioms Gtz.tripleBracket_oneThreeFour_of_lineFreeExpansions
+#print axioms Gtz.tripleBracket_oneThreeFive_of_lineFreeExpansions
+#print axioms Gtz.tripleBracket_oneFourFive_of_lineFreeExpansions
+#print axioms Gtz.tripleBracket_twoThreeFour_of_lineFreeExpansions
+#print axioms Gtz.tripleBracket_twoThreeFive_of_lineFreeExpansions
+#print axioms Gtz.tripleBracket_twoFourFive_of_lineFreeExpansions
+#print axioms Gtz.tripleBracket_threeFourFive_of_lineFreeExpansions
+#print axioms Gtz.lineFreeScale
+#print axioms Gtz.exists_lineFreeRealization_of_brackets
+#print axioms Gtz.parameterizedChartCovers_lineFreeDirection
+#print axioms Gtz.stressFreeStratumIsTieFree_lineFree_of_chart
+#print axioms Gtz.lineFreeFamily_mem_stressFreeResidualFamiliesSix
+#print axioms Gtz.lineFreeSelected
+#print axioms Gtz.lineFreeCoeff
+#print axioms Gtz.readsThrough_lineFreeDirection
+#print axioms Gtz.posDef_directionChartGap_lineFree_of_coverCell

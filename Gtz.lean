@@ -4842,3 +4842,12 @@ import Gtz.Design.SharpSpreadCell
 -- relabelling symmetry fixes only failing triples defeats every label-free rule
 -- at once.  The witness is two orbits of the cyclic coordinate shift.
 import Gtz.Wave.EquivariantDesignationRefuter
+
+-- The line-free chart of entry `#1`, at four parameters, and its covering.
+-- No line at all, so the frame `0,1,2,3` is normalized by PGL(3) and atoms
+-- `4` and `5` are free in two directions each.  Ten bracket coefficients and
+-- ten off-pattern identities put every realization on the chart, so the entry
+-- `#1` obligation becomes tie-freeness of a four-parameter chart.  This is the
+-- widest of the five cells and the last one the campaign charts.
+import Gtz.Design.LineFreeChart
+import Gtz.Design.LineFreeCovering
