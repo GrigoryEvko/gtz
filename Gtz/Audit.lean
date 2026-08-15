@@ -955,6 +955,7 @@ import Gtz.Design.StallComplementCounting
 import Gtz.Design.ComplementPairEscape
 import Gtz.Design.ComplementarySumLaw
 import Gtz.Design.InverseTraceEscape
+import Gtz.Design.GaugeWallKernelLaw
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29600,3 +29601,23 @@ run_cmd do
 #print axioms Gtz.exists_dominates_card_rank_of_adjugateTrace_lt_det
 #print axioms Gtz.exists_dominates_cardThree_of_adjugateTrace_lt_det
 #print axioms Gtz.det_le_adjugateTrace_of_cardFour_stall
+-- The kernel law of the gauge star wall: the pinned axis reading,
+-- the triangle pivot sum law, and the two-star law it forces.
+#print axioms Gtz.kFourTriangleLabels
+#print axioms Gtz.kFourStarLabels
+#print axioms Gtz.sum_kFourTriangleLabels
+#print axioms Gtz.sum_kFourStarLabels
+#print axioms Gtz.kFourGaugeWall_univ_eq
+#print axioms Gtz.kFourGaugeWall_univ_mulVec_allOnes
+#print axioms Gtz.kFourGaugeWall_inv_mulVec_axis
+#print axioms Gtz.kFourGaugeWall_axis_inv_quadForm
+#print axioms Gtz.kFourGaugeWall_triangle_pivot_sum
+#print axioms Gtz.kFourGaugeWall_triangle_deficiency_sum
+#print axioms Gtz.posDef_three_atoms
+#print axioms Gtz.kFourGaugeWall_span_of_pair
+#print axioms Gtz.kFourGaugeWall_univ_weighted_pivot_sum
+#print axioms Gtz.kFourGaugeWall_star_deficiency_eq
+#print axioms Gtz.kFourGaugeWall_posDef_erase_triangle
+#print axioms Gtz.kFourGaugeWall_triangle_pivot_lt_one
+#print axioms Gtz.kFourGaugeWall_star_deficiency_gt_one
+#print axioms Gtz.kFourGaugeWall_two_star_pivots_lt_one

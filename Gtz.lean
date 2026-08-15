@@ -4415,3 +4415,10 @@ import Gtz.Design.ComplementarySumLaw
 -- trace from below by the excess cardinality, and the contrapositive is a
 -- division-free producer of a dominating subset.
 import Gtz.Design.InverseTraceEscape
+
+-- The kernel law of the gauge star wall.  The three triangle directions read
+-- zero at the all-ones probe, so the full-selection gap carries that probe to a
+-- multiple of the axis alone.  The inverse axis reading is then pinned at one,
+-- the three triangle pivots sum to exactly two, and the weighted star deficiency
+-- exceeds one, which puts at least two star pivots below one.
+import Gtz.Design.GaugeWallKernelLaw
