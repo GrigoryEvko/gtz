@@ -29811,3 +29811,12 @@ run_cmd do
 #print axioms Gtz.trineVec_triple_strict
 #print axioms Gtz.trineVec_pair_fails
 #print axioms Gtz.heavy_planar_dropOne_false
+-- The planar drop refutation at STRICTLY heavy atoms: the trine scaled by
+-- 21/20, its leverage floor, its reading, its strict triple domination and its
+-- three failing pairs.
+#print axioms Gtz.strictTrineVec
+#print axioms Gtz.strictTrineVec_strictly_heavy
+#print axioms Gtz.strictTrineVec_sum_reading
+#print axioms Gtz.strictTrineVec_triple_strict
+#print axioms Gtz.strictTrineVec_pair_fails
+#print axioms Gtz.strictlyHeavy_planar_dropOne_false

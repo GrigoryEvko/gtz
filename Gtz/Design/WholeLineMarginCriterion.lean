@@ -360,4 +360,81 @@ theorem heavy_planar_dropOne_false :
             < probe ⬝ᵥ probe) :=
   ⟨trineVec, trineVec_unit, trineVec_triple_strict, trineVec_pair_fails⟩
 
+/-! ## 5. The refutation survives STRICT heaviness
+
+`Gtz.one_lt_leverage_of_mem_of_posDef` says every member of a strict dominator
+is STRICTLY heavy, so a refutation at leverage exactly one could be dismissed as
+living where no strict dominator reaches.  It cannot.  Scaling the trine by
+`21/20` keeps every conclusion and lifts every leverage to `441/400 > 1`. -/
+
+/-- The trine scaled by `21/20`: leverage `441/400`, strictly heavy. -/
+noncomputable def strictTrineVec : Fin 3 → (Fin 2 → ℝ)
+  | 0 => ![21/20, 0]
+  | 1 => ![-63/100, 21/25]
+  | 2 => ![-63/100, -21/25]
+
+/-- Every scaled trine vector has leverage `441/400`, strictly above one. -/
+theorem strictTrineVec_strictly_heavy (index : Fin 3) :
+    1 < strictTrineVec index ⬝ᵥ strictTrineVec index := by
+  fin_cases index <;>
+    norm_num [strictTrineVec, dotProduct, Fin.sum_univ_two]
+
+/-- The scaled trine reads any probe with energy `(18963x² + 14112y²)/10000`. -/
+theorem strictTrineVec_sum_reading (probe : Fin 2 → ℝ) :
+    ∑ index : Fin 3, (strictTrineVec index ⬝ᵥ probe) ^ 2
+      = (18963 * probe 0 ^ 2 + 14112 * probe 1 ^ 2) / 10000 := by
+  rw [Fin.sum_univ_three]
+  simp only [strictTrineVec, dotProduct, Fin.sum_univ_two, Matrix.cons_val_zero,
+    Matrix.cons_val_one]
+  ring
+
+/-- The scaled trine still strictly dominates the identity of the plane. -/
+theorem strictTrineVec_triple_strict (probe : Fin 2 → ℝ) (hprobe : probe ≠ 0) :
+    probe ⬝ᵥ probe < ∑ index : Fin 3, (strictTrineVec index ⬝ᵥ probe) ^ 2 := by
+  have hcoord : probe 0 ≠ 0 ∨ probe 1 ≠ 0 := by
+    by_contra hall
+    push Not at hall
+    exact hprobe (by funext coordIndex; fin_cases coordIndex <;> simp [hall.1, hall.2])
+  rw [strictTrineVec_sum_reading]
+  have henergy : probe ⬝ᵥ probe = probe 0 ^ 2 + probe 1 ^ 2 := by
+    simp only [dotProduct, Fin.sum_univ_two]; ring
+  rw [henergy]
+  rcases hcoord with hfirst | hsecond
+  · have hpos : 0 < probe 0 ^ 2 := by positivity
+    nlinarith [sq_nonneg (probe 1)]
+  · have hpos : 0 < probe 1 ^ 2 := by positivity
+    nlinarith [sq_nonneg (probe 0)]
+
+/-- No pair of the scaled trine dominates the identity, even weakly. -/
+theorem strictTrineVec_pair_fails (index : Fin 3) :
+    ∃ probe : Fin 2 → ℝ,
+      ∑ other ∈ Finset.univ.erase index, (strictTrineVec other ⬝ᵥ probe) ^ 2
+        < probe ⬝ᵥ probe := by
+  refine ⟨if index = 0 then ![1, 0] else ![0, 1], ?_⟩
+  rw [Finset.sum_erase_eq_sub (Finset.mem_univ index), Fin.sum_univ_three]
+  fin_cases index <;>
+    norm_num [strictTrineVec, dotProduct, Fin.sum_univ_two]
+
+/-- **THE PLANAR DROP STATEMENT IS FALSE AT STRICTLY HEAVY ATOMS.**
+
+The sharp form of `heavy_planar_dropOne_false`.  Every atom carries leverage
+strictly above one, so `Gtz.one_lt_leverage_of_mem_of_posDef` cannot exclude the
+configuration, and the triple still strictly dominates the identity of the plane
+while no pair of it dominates even weakly.
+
+The route from `Gtz.flat_dominates_on_free_orthogonal` to `Gtz.gtz_rank_two` is
+therefore dead for a reason no leverage hypothesis can repair.  Rank-two GTZ
+returns a dominating pair only because it consumes Parseval, and the flat atoms
+of a line stratum carry Parseval only jointly with the free shadows. -/
+theorem strictlyHeavy_planar_dropOne_false :
+    ∃ vec : Fin 3 → (Fin 2 → ℝ),
+      (∀ index : Fin 3, 1 < vec index ⬝ᵥ vec index)
+      ∧ (∀ probe : Fin 2 → ℝ, probe ≠ 0 →
+          probe ⬝ᵥ probe < ∑ index : Fin 3, (vec index ⬝ᵥ probe) ^ 2)
+      ∧ (∀ index : Fin 3, ∃ probe : Fin 2 → ℝ,
+          ∑ other ∈ Finset.univ.erase index, (vec other ⬝ᵥ probe) ^ 2
+            < probe ⬝ᵥ probe) :=
+  ⟨strictTrineVec, strictTrineVec_strictly_heavy, strictTrineVec_triple_strict,
+    strictTrineVec_pair_fails⟩
+
 end Gtz
