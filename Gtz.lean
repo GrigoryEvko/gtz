@@ -4050,6 +4050,9 @@ import Gtz.Design.StarCorankClosure
 -- identities by a positive axis, and the balanced case fires the vertex-a
 -- star cell of the minor atlas with a determinant slack factor near three.
 import Gtz.Design.StarWallVacuity
+-- The two balanced mirrors: the vertex-b and vertex-c stars fire when their
+-- axis coordinate is maximal and their four weights are at most one sixth.
+import Gtz.Design.StarWallMirrors
 -- Wire the two final K4 walls to their strongest landed interfaces.  The
 -- positive-definite window now carries all four large pivots; the singular
 -- vertex star carries a nonnegative rank-one gap and two distinct repair

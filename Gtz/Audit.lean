@@ -885,6 +885,7 @@ import Gtz.Design.WallCollapse
 import Gtz.Design.StarOnlyLaw
 import Gtz.Design.StarCorankClosure
 import Gtz.Design.StarWallVacuity
+import Gtz.Design.StarWallMirrors
 import Gtz.Wave.KFourTreeWindowCorankReduction
 import Gtz.Wave.KFourPathCorankCollapse
 import Gtz.Wave.KFourStarWallWiring
@@ -28840,3 +28841,8 @@ run_cmd do
 #print axioms Gtz.kFourGaugeStarWall_family
 #print axioms Gtz.kFourStarACell_fires_of_wall_balanced
 #print axioms Gtz.kFourAtlas_fires_of_wall_balanced
+-- The two balanced mirrors of the star-wall vacuity case.
+#print axioms Gtz.kFourStarBCell_fires_of_wall_balanced
+#print axioms Gtz.kFourStarCCell_fires_of_wall_balanced
+#print axioms Gtz.kFourAtlas_fires_of_wall_balancedB
+#print axioms Gtz.kFourAtlas_fires_of_wall_balancedC
