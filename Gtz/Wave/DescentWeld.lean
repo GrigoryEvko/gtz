@@ -1,5 +1,5 @@
 import Gtz.Ties.ComplementJawWindow
-import Gtz.Wave.BalancedCutSelection
+import Gtz.Wave.BalancedDesignClosure
 import Gtz.Wave.PlaneTieDesignBridge
 
 set_option autoImplicit false
@@ -12,10 +12,12 @@ set_option maxHeartbeats 3200000
 This module connects the quantitative interior, the tie boundary, and the
 rank-two terminal face of the real `(6,3)` campaign.
 
-* `exists_atomCarrier_or_balancedSubcritical` removes the entire balanced
-  heavy-edge region.  A balanced frame at scales at most `1/6` either already
-  has the carrier consumed by the cell, or every distinct doubled correlation
-  has square strictly below `2/3`.
+* `exists_atomCarrier_of_balanced_sixth` removes the entire balanced region at
+  scales at most `1/6`.  The older heavy-edge/subcritical split is retained as
+  a compatibility interface, but its carrier arm is now unconditional.
+* `exists_flatProjectionTriple_of_uniformShare` exports that same certificate
+  in the weighted design's canonical projection coordinates, ready for the
+  true weight diagonal comparison.
 * `exists_gapNeedle_eight_of_isTie_six_three` is the exact numeric boundary
   law at the landed tenth floor: every triple of a light tie has a direction
   on which its gap reaches eight.
@@ -42,15 +44,11 @@ namespace Gtz
 
 open Matrix
 
-/-! ## 1. The balanced interior: heavy edge or strict subcriticality -/
+/-! ## 1. The balanced interior is closed -/
 
-/-- **THE BALANCED HEAVY-EDGE ELIMINATION.**  At scales bounded by `1/6`, a
-balanced six-vector Parseval frame either supplies the actual three-slot
-carrier or lies in the strict subcritical edge region.
-
-This packages the heavy-edge theorem as a useful disjunction.  The right arm
-is therefore a real narrowing: every failure of it produces an edge of square
-at least `2/3`, which the complementary cut law turns into the left arm. -/
+/-- Compatibility form of the former heavy-edge split.  The abstract U6
+closure now supplies the carrier for every balanced frame, so the left arm is
+unconditional and the subcritical alternative is no longer a residue. -/
 theorem exists_atomCarrier_or_balancedSubcritical
     (atom : Fin 6 → (Fin 3 → ℝ)) (scale : Fin 6 → ℝ)
     (hframe : ∀ probe direction : Fin 3 → ℝ,
@@ -62,17 +60,8 @@ theorem exists_atomCarrier_or_balancedSubcritical
           (∑ slot, scale slot * probe slot ^ 2)
             ≤ atomBlend atom probe ⬝ᵥ atomBlend atom probe)
       ∨ (∀ slotOne slotTwo : Fin 6, slotOne ≠ slotTwo →
-          (2 * atomGram atom slotOne slotTwo) ^ 2 < 2 / 3) := by
-  by_cases hsubcritical : ∀ slotOne slotTwo : Fin 6, slotOne ≠ slotTwo →
-      (2 * atomGram atom slotOne slotTwo) ^ 2 < 2 / 3
-  · exact Or.inr hsubcritical
-  · left
-    push Not at hsubcritical
-    obtain ⟨slotOne, slotTwo, hne, hheavy⟩ := hsubcritical
-    obtain ⟨σ, hσzero, hσone⟩ := exists_pairPermOfDistinct hne
-    have hheavy' : 2 / 3 ≤ (2 * atomGram atom (σ 0) (σ 1)) ^ 2 := by
-      rwa [hσzero, hσone]
-    exact exists_atomCarrier_of_balanced_heavyEdge atom scale hframe hbal hscale σ hheavy'
+          (2 * atomGram atom slotOne slotTwo) ^ 2 < 2 / 3) :=
+  Or.inl (exists_atomCarrier_of_balanced_sixth atom scale hframe hbal hscale)
 
 /-! ## 2. The tie boundary: the exact eight-needle interface -/
 

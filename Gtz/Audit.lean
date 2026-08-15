@@ -27571,6 +27571,29 @@ run_cmd do
 #print axioms Gtz.exists_atomBlendFloor_sixth_of_balancedDetWin
 #print axioms Gtz.exists_atomBlendFloor_sixth_of_balanced_heavyEdge
 #print axioms Gtz.exists_atomCarrier_of_balanced_heavyEdge
+-- The abstract U6 theorem and the Wave balanced target are the same block
+-- inequality.  These adapters close the determinant target, its former
+-- subcritical residue, the sharp one-sixth blend floor, and the carrier.
+#print axioms Gtz.balancedAtomGramMatrix
+#print axioms Gtz.balancedAtomGramMatrix_apply
+#print axioms Gtz.balancedAtomGramMatrix_mul_self
+#print axioms Gtz.balancedAtomInvolution
+#print axioms Gtz.balancedAtomInvolution_apply
+#print axioms Gtz.isHollowInvolution_balancedAtomInvolution
+#print axioms Gtz.twoThirds_one_add_balancedAtomInvolution_submatrix
+#print axioms Gtz.exists_atomShiftBlockMatrix_posSemidef_of_balanced
+#print axioms Gtz.atomBalancedDetWin_holds
+#print axioms Gtz.atomBalancedSubcriticalDetWin_holds
+#print axioms Gtz.exists_atomBlendFloor_sixth_of_balanced
+#print axioms Gtz.exists_atomCarrier_of_balanced_sixth
+-- The design-coordinate consumer: scaled design rows obey the Wave frame law,
+-- their Gram is `projectionOfDesign`, and uniform share therefore supplies a
+-- selected flat `1/6` projection block.  The final theorem performs the true
+-- weight-diagonal comparison.
+#print axioms Gtz.scaledAtomRows_frameLaw
+#print axioms Gtz.atomGram_scaledAtomRows
+#print axioms Gtz.exists_flatProjectionTriple_of_uniformShare
+#print axioms Gtz.exists_dominates_of_uniformShare_of_weight_le_sixth
 -- The exact pair criterion, the strictness engine, and the isotropy spread:
 -- the strict pair test with its two-gap and budget equivalences, the active
 -- budget strict selection, the sixty-degree spread pair with its trine

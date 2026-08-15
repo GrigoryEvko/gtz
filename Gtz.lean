@@ -3744,6 +3744,18 @@ import Gtz.Wave.InvolutionBlockForm
 -- The only balanced determinant residue is the strict subcritical edge region,
 -- and the module connects its determinant target to the actual 1/6 carrier.
 import Gtz.Wave.BalancedCutSelection
+-- The older abstract U6 theorem closes the Wave target outright.  For a
+-- balanced frame, `H = 2G - I` is a hollow symmetric involution and its
+-- unconditional `2/3` PSD block is exactly twice the Wave `1/6` shifted Gram
+-- block.  This yields the determinant win, the sharp blend floor, and the
+-- final carrier for every balanced scale at most `1/6`; the former strict
+-- subcritical residue is empty.
+import Gtz.Wave.BalancedInvolutionClosure
+-- In weighted-design coordinates the same result selects a principal block of
+-- `projectionOfDesign` above the flat `1/6` diagonal.  This is valid for every
+-- uniform-share design; comparing the selected flat diagonal with the true
+-- weights recovers an actual dominating triple.
+import Gtz.Wave.BalancedDesignClosure
 -- The complement jaw window and the needle law of the two terminal tie
 -- charts. The quadratic-cap jaw closes a subset from the budget
 -- tin * kappa + tout < 1, the rank-one instantiation is the C3 foil law,
@@ -3773,8 +3785,8 @@ import Gtz.Wave.PlaneTieClassification
 -- weighted `(3,2)` design.  Each tied pair is exported with its PSD singular
 -- gap, determinant zero, nonparallel bracket, and an actual nonzero kernel.
 import Gtz.Wave.PlaneTieDesignBridge
--- The descent weld spends all three preceding layers. Balanced heavy edges
--- produce the actual carrier or leave a strict subcritical frame; light ties
+-- The descent weld spends all three preceding layers. Every balanced frame at
+-- scale at most `1/6` now produces the actual carrier unconditionally; light ties
 -- carry an eight-needle on every triple and die against one strict gap cap;
 -- the nonuniform three-atom plane endpoint is now completely decided by the
 -- weights.  Off `2 * mass - 1` a strict pair exists; at that one weight vector
