@@ -977,6 +977,7 @@ import Gtz.Design.FlatNormalBudget
 import Gtz.Design.NormalLeverageFloor
 import Gtz.Wave.ComplementTripleCriterion
 import Gtz.Design.SharedAtomPivotExclusion
+import Gtz.Design.FlatCrossBudget
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30001,3 +30002,20 @@ run_cmd do
 #print axioms Gtz.twoMeetingLines_shared_pivot_lt_one
 #print axioms Gtz.not_twoMeetingLinesTransversalStrict_of_shared_pivot_ge_one
 #print axioms Gtz.twoMeetingLines_privates_pivot_lt_one
+-- The cross budget of a flat set: Parseval off the diagonal, the cross budget
+-- itself, the deficiency form of the cross reading, the plane surplus, the exact
+-- overshoot of Cauchy-Schwarz, and the stage-4 closed-door witness.
+#print axioms Gtz.sum_weight_mul_dotProduct_mul_dotProduct
+#print axioms Gtz.flat_crossBudget
+#print axioms Gtz.flat_cross_eq_deficiencyCross
+#print axioms Gtz.flat_planeSurplus_eq
+#print axioms Gtz.flat_cauchySchwarz_overshoot
+#print axioms Gtz.flat_planeSurplus_le_deficiencyEnergy
+#print axioms Gtz.flat_readings_zero_of_deficiencyEnergy_le_planeSurplus
+#print axioms Gtz.lineInPlaneForm
+#print axioms Gtz.closedDoorLine
+#print axioms Gtz.closedDoorMass
+#print axioms Gtz.closedDoor_lineInPlaneForm_eq
+#print axioms Gtz.closedDoor_constant_mem_band
+#print axioms Gtz.closedDoorNormalizedMass
+#print axioms Gtz.closedDoor_normalized_not_isotropic

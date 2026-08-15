@@ -4602,3 +4602,15 @@ import Gtz.Wave.ComplementTripleCriterion
 -- atom, so a strict transversal forces the shared atom below unit pivot, and a
 -- design whose shared atom carries unit pivot or more admits no transversal.
 import Gtz.Design.SharedAtomPivotExclusion
+
+-- The cross budget of a flat set.  Parseval has an off-diagonal block, and at a
+-- plane probe orthogonal to a normal that every flat atom kills, the weighted
+-- MIXED readings of the complement sum to zero.  The cross reading of the plane
+-- inequality therefore equals its own deficiency-weighted form, exactly as the
+-- excess does.  Cauchy-Schwarz against those weights is then the obvious route
+-- and it is dead: its majorant exceeds the plane surplus by exactly the flat
+-- set's own weighted plane energy, so the route closes only at probes the flat
+-- set already kills.  The second section verifies the one fully specified datum
+-- of the stage-4 record, whose in-plane line form is isotropic at 11/20 under
+-- unnormalized line directions and is not isotropic under normalized ones.
+import Gtz.Design.FlatCrossBudget
