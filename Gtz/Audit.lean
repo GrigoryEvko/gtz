@@ -859,6 +859,7 @@ import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.ThreeLinesBudgetWiring
 import Gtz.Wave.ThreeLinesReadingCoverWiring
 import Gtz.Wave.ThreeLinesOffLinesWiring
+import Gtz.Wave.ThreeLinesUnsignedCycleWiring
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27927,3 +27928,16 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedUnsignedBlind_iff
 #print axioms Gtz.bandResidualWitnessPoint_unsignedBandTreeCellFires
 #print axioms Gtz.bandResidualWitnessPoint_unsignedCycleCellFires
+-- Spend the unsigned three-lines cells in the registry residual.
+#print axioms Gtz.ThreeLinesUnsignedVertexCellFires
+#print axioms Gtz.ThreeLinesUnsignedFreeCellFires
+#print axioms Gtz.ThreeLinesUnsignedCycleCellFires
+#print axioms Gtz.posDef_threeLines_vertexCell_of_unsignedFires
+#print axioms Gtz.posDef_threeLines_freeCell_of_unsignedFires
+#print axioms Gtz.exists_posDef_threeLines_of_unsignedCycleCellFires
+#print axioms Gtz.ChartTieFreeThreeLinesFundamentalDomainBudgetReadingUnsignedBlindOffLines
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetReadingBlindOffLines_of_unsignedBlind
+#print axioms Gtz.unsignedBlindThreeLinesFundamentalDomain_of_offLines
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingUnsignedBlindOffLines_iff_offLines
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingUnsignedBlindOffLines_iff
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomain_of_unsignedBlind
