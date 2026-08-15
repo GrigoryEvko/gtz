@@ -3962,6 +3962,10 @@ import Gtz.Wave.KFourDualSaturation
 -- nonnegative Z-kernels pulled back to actual chart-gap kernel directions.  The
 -- four vertex stars are the remaining sign-frustrated tree type.
 import Gtz.Wave.KFourPriorPathDualSaturation
+-- Classify the realized weak K4 tree after all twelve path saturations.  A
+-- weak path now arrives with its actual pulled-back nonzero kernel direction;
+-- the only alternative is one of the four sign-frustrated vertex stars.
+import Gtz.Wave.KFourPathStarResidual
 -- The chart gap is antitone in each selected weight, so strictness moves down
 -- in weight and a covering of the chart slice covers the full cone of weight
 -- sum at most one. The probe behind the module: the K4 covering fails on the

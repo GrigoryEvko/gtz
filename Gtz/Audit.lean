@@ -873,6 +873,7 @@ import Gtz.Wave.KFourFamilySelectionWiring
 import Gtz.Design.GershgorinWashout
 import Gtz.Wave.KFourDualSaturation
 import Gtz.Wave.KFourPriorPathDualSaturation
+import Gtz.Wave.KFourPathStarResidual
 import Gtz.Design.ChartWeightMonotone
 import Gtz.Design.KernelPointer
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
@@ -28529,6 +28530,18 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedAllPathSaturated_iff_missingPathSaturated
 #print axioms Gtz.kFourKnifeBandRefinedAllPathSaturated_iff
 #print axioms Gtz.kFourFamilySelection_iff_allPathSaturated
+-- Classify the actual weak K4 witness as a saturated path or a vertex star.
+#print axioms Gtz.KFourWeakPathKernelWitness
+#print axioms Gtz.KFourWeakStarWitness
+#print axioms Gtz.KFourWeakPathKernelOrStar
+#print axioms Gtz.kFourWeakPathKernelOrStar_of_allPathLedger
+#print axioms Gtz.exists_weakTree_of_kFourWeakPathKernelOrStar
+#print axioms Gtz.KFourKnifeBandRefinedPathKernelOrStarWeakToStrict
+#print axioms Gtz.pathKernelOrStarKFourKnifeBandRefined_of_allPathSaturated
+#print axioms Gtz.allPathSaturatedKFourKnifeBandRefined_of_pathKernelOrStar
+#print axioms Gtz.kFourKnifeBandRefinedPathKernelOrStar_iff_allPathSaturated
+#print axioms Gtz.kFourKnifeBandRefinedPathKernelOrStar_iff
+#print axioms Gtz.kFourFamilySelection_iff_pathKernelOrStar
 -- The kernel pointer: the chart exchange identity, the pointer theorem, the
 -- witness package from a failed strictness test, and the K4 instance.
 #print axioms Gtz.directionChartGap_exchange
