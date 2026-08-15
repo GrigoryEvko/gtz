@@ -3767,8 +3767,16 @@ import Gtz.Wave.PlanePairCriterion
 -- probe.  The same module supplies the arbitrary-cardinality active-set W
 -- engine used by the terminal descent charts.
 import Gtz.Wave.PlaneTieClassification
+-- The design-level adapter for the exact plane boundary.  On scaled atom rows,
+-- plane strictness is core `PosDef`, weak plane domination is core
+-- `PosSemidef`, and the closed-form weight equation is exactly `IsTie` for a
+-- weighted `(3,2)` design.  Each tied pair is exported with its PSD singular
+-- gap, determinant zero, nonparallel bracket, and an actual nonzero kernel.
+import Gtz.Wave.PlaneTieDesignBridge
 -- The descent weld spends all three preceding layers. Balanced heavy edges
 -- produce the actual carrier or leave a strict subcritical frame; light ties
 -- carry an eight-needle on every triple and die against one strict gap cap;
--- the plane endpoint is strict or tied at sixty degrees and nonparallel.
+-- the nonuniform three-atom plane endpoint is now completely decided by the
+-- weights.  Off `2 * mass - 1` a strict pair exists; at that one weight vector
+-- every pair is weakly tied, nonparallel, and carries an explicit kernel probe.
 import Gtz.Wave.DescentWeld

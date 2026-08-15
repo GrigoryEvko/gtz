@@ -27660,3 +27660,17 @@ run_cmd do
 #print axioms Gtz.exists_gapNeedle_eight_of_isTie_six_three
 #print axioms Gtz.not_isTie_of_tenth_of_gap_lt_eight
 #print axioms Gtz.PlaneParseval.strict_or_tied_nonparallel_pair_uniform
+#print axioms Gtz.PlaneParseval.exact_boundary_of_no_strict_pair_three
+#print axioms Gtz.PlaneParseval.exists_strict_pair_three_iff_weight_ne
+#print axioms Gtz.PlaneParseval.strict_or_exact_boundary_three
+#print axioms Gtz.scaledAtomRows_planeParseval
+#print axioms Gtz.scaledAtomRows_dotProduct
+#print axioms Gtz.scaledAtomRows_mass
+#print axioms Gtz.planeTieWeight_scaledAtomRows
+#print axioms Gtz.quadForm_pairGap_rankTwo
+#print axioms Gtz.planePairDominates_scaledAtomRows_iff_posSemidef
+#print axioms Gtz.planePairDominatesStrict_scaledAtomRows_iff_posDef
+#print axioms Gtz.isTie_iff_no_strict_scaledPlanePair
+#print axioms Gtz.isTie_iff_planeTieWeight_scaledAtomRows
+#print axioms Gtz.isTie_iff_rankTwo_planeLeverageIdentity
+#print axioms Gtz.isTie_rankTwo_three_pair_boundary
