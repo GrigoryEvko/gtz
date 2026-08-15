@@ -29365,3 +29365,5 @@ run_cmd do
 #print axioms Gtz.kFourPivotWallRecurrentStallClosure_of_triangleStallClosure
 #print axioms Gtz.kFourWindowAllPivotWallClosure_of_triangleStarClosure
 #print axioms Gtz.kFourFamilySelection_of_triangleStall_starEndpoint_gauge
+#print axioms Gtz.kFourPivotWallTriangleStallClosure_of_escapeClosure
+#print axioms Gtz.kFourFamilySelection_of_triangleEscape_starEndpoint_gauge
