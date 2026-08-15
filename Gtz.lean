@@ -4173,6 +4173,10 @@ import Gtz.Design.PivotArmClosure
 -- rather than reducing it.  Every four labels hold one droppable from the
 -- full selection, and a matching plus any edge is a spanning tree.
 import Gtz.Design.CardFourStallEquivalence
+-- The type split of a stalled four-edge selection.  A stall is a minimal
+-- positive definite set, it carries an outside label priced at pivot one,
+-- and its complement is a perfect matching or it contains a triangle.
+import Gtz.Design.StallTypeSplit
 -- The two-meeting-lines transversals price their complements.  Each of the four
 -- transversal complements is the shared atom together with the two unused
 -- private atoms, so a failing transversal hands the universal needle to a set

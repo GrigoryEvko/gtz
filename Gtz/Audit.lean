@@ -916,6 +916,7 @@ import Gtz.Wave.ThreeLinesUnsignedCycleWiring
 import Gtz.Design.StallConfinement
 import Gtz.Design.PivotArmClosure
 import Gtz.Design.CardFourStallEquivalence
+import Gtz.Design.StallTypeSplit
 import Gtz.Design.TwoMeetingLinesNeedle
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
@@ -29176,3 +29177,11 @@ run_cmd do
 #print axioms Gtz.wall_dust_of_weight_cap
 #print axioms Gtz.kFourAtlas_fires_of_wall_quarterEighth
 #print axioms Gtz.kFourAtlas_fires_of_wall_threeTenthTwentyFirst
+-- The type split of a stalled four-edge selection: minimality, the priced
+-- outside label, and the matching-or-triangle dichotomy.
+#print axioms Gtz.stall_iff_no_posDef_erase
+#print axioms Gtz.stall_iff_minimal_posDef
+#print axioms Gtz.exists_outside_pivot_ge_one_of_cardFour_stall
+#print axioms Gtz.posDef_insert_of_posDef
+#print axioms Gtz.chartLadderPivot_insert_ge_half_of_cardFour_stall
+#print axioms Gtz.kFourCardFour_matchingCompl_or_triangle
