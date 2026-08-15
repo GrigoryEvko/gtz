@@ -4794,6 +4794,13 @@ import Gtz.Design.NoStrictPivotLedger
 -- the leaf becomes three polynomials in six selection values.
 import Gtz.Design.KFourEntrySumRung
 
+-- The entry-sum rung at every chart family, and the refutation of its argmax.
+-- The rung is a modular set function at every direction family, so the greedy
+-- law follows from modularity alone and the three-lines chart inherits it with
+-- non-uniform prices.  The tree of largest rung is not the positive definite
+-- one, so no designation reading only the rung can close the class.
+import Gtz.Design.ChartEntrySumRung
+
 
 -- The deflated pair criterion.  The omitted-pair law survives at every
 -- omitted cardinality, with the threshold one lowered by the total pivot of

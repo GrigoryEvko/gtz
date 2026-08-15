@@ -1010,6 +1010,7 @@ import Gtz.Wave.ThreeLinesPivotThirdWiring
 import Gtz.Wave.TransversalLoadLedger
 import Gtz.Design.NoStrictPivotLedger
 import Gtz.Design.KFourEntrySumRung
+import Gtz.Design.ChartEntrySumRung
 import Gtz.Design.DeflatedPairCriterion
 import Gtz.Design.ChartHighPivotCap
 import Gtz.Design.GeneralCoverCell
@@ -30624,3 +30625,61 @@ run_cmd do
 #print axioms Gtz.generalCost_le_one_of_quarter
 #print axioms Gtz.coverCost_triple
 #print axioms Gtz.generalCost_le_one_of_ninth
+
+-- The entry-sum rung at every chart family: the per-label price, the modular
+-- rung and its identity, the generic kill and greedy law, the non-uniform
+-- three-lines prices, and the refutation of the rung argmax.
+#print axioms Gtz.chartAtomWeight
+#print axioms Gtz.chartAtomWeight_nonneg
+#print axioms Gtz.chartRatioSum
+#print axioms Gtz.chartMassTotal
+#print axioms Gtz.invariantOne_eq_chartRatioSum_sub
+#print axioms Gtz.chartRatioSum_empty
+#print axioms Gtz.chartRatioSum_insert
+#print axioms Gtz.chartRatioSum_union_add_inter
+#print axioms Gtz.chartRatioSum_le_of_subset
+#print axioms Gtz.chartRatioSum_gt_of_posDef
+#print axioms Gtz.chartTree_not_posDef_of_ratioSum_le
+#print axioms Gtz.chartFamily_no_posDef_of_max_ratioSum_le
+#print axioms Gtz.chartFamily_max_ratioSum_gt_of_exists_posDef
+#print axioms Gtz.kFourDirection_chartAtomWeight
+#print axioms Gtz.kFour_chartRatioSum_eq
+#print axioms Gtz.kFour_chartMassTotal_eq
+#print axioms Gtz.threeLinesDirection_chartAtomWeight_zero
+#print axioms Gtz.threeLinesDirection_chartAtomWeight_one
+#print axioms Gtz.threeLinesDirection_chartAtomWeight_two
+#print axioms Gtz.threeLinesDirection_chartAtomWeight_three
+#print axioms Gtz.threeLinesDirection_chartAtomWeight_four
+#print axioms Gtz.threeLinesDirection_chartAtomWeight_five
+#print axioms Gtz.threeLinesDirection_not_uniform
+#print axioms Gtz.threeLines_chartRatioSum_eq
+#print axioms Gtz.kFour_mass_lt_ratio
+#print axioms Gtz.kFour_univ_ratioSum_gt
+#print axioms Gtz.selectionValue_prod_pos
+#print axioms Gtz.ratioRefuterMass
+#print axioms Gtz.ratioRefuterWeight
+#print axioms Gtz.ratioRefuterMass_pos
+#print axioms Gtz.ratioRefuterWeight_pos
+#print axioms Gtz.ratioRefuterWeight_sum
+#print axioms Gtz.ratioRefuterPoint
+#print axioms Gtz.ratioRefuter_totalMass
+#print axioms Gtz.ratioRefuter_ratioSum_argmax
+#print axioms Gtz.ratioRefuter_ratioSum_winner
+#print axioms Gtz.ratioRefuter_rung_strict
+#print axioms Gtz.ratioRefuter_sv_argmax_zero
+#print axioms Gtz.ratioRefuter_sv_argmax_one
+#print axioms Gtz.ratioRefuter_sv_argmax_two
+#print axioms Gtz.ratioRefuter_sv_argmax_three
+#print axioms Gtz.ratioRefuter_sv_argmax_four
+#print axioms Gtz.ratioRefuter_sv_argmax_five
+#print axioms Gtz.ratioRefuter_sv_winner_zero
+#print axioms Gtz.ratioRefuter_sv_winner_one
+#print axioms Gtz.ratioRefuter_sv_winner_two
+#print axioms Gtz.ratioRefuter_sv_winner_three
+#print axioms Gtz.ratioRefuter_sv_winner_four
+#print axioms Gtz.ratioRefuter_sv_winner_five
+#print axioms Gtz.ratioRefuter_argmax_not_posDef
+#print axioms Gtz.ratioRefuter_winner_posDef
+#print axioms Gtz.kFourRatioSum_not_monotone_posDef
+#print axioms Gtz.KFourRatioSumArgmaxHostsStrictTree
+#print axioms Gtz.not_kFourRatioSumArgmaxHostsStrictTree
