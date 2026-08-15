@@ -29393,3 +29393,7 @@ import Gtz.Design.TightBaseRigidity
 #print axioms Gtz.tightBase_mulVec_eq_zero
 #print axioms Gtz.dotProduct_baseResidual_eq_complement_energy
 #print axioms Gtz.exists_mem_lt_one_sub_of_tight_separated
+#print axioms Gtz.kFourMatchingCompl_exchange_compl_ne_matching
+#print axioms Gtz.kFourMatchingCompl_exchange_containsTriangle
+#print axioms Gtz.kFourMatchingCompl_exchange_not_compl_subset
+#print axioms Gtz.kFourMatchingCompl_compl_subset_ne_exchange

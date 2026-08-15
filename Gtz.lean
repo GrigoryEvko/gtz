@@ -4275,3 +4275,9 @@ import Gtz.Wave.KFourPivotRecurrentTriangleWiring
 -- A weakly dominating selection annihilates its tight directions, and Parseval
 -- turns a tight reading into an exact energy identity against the complement.
 import Gtz.Design.TightBaseRigidity
+
+-- The type-A exchange obstruction.  An exchange out of a four-cycle always
+-- lands on a triangle, and it never holds both complement labels.  A probe
+-- found type-A stalls where no exchange is positive definite, and every escape
+-- there held both complement labels.
+import Gtz.Design.TypeAExchangeObstruction
