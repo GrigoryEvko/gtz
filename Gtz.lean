@@ -4636,3 +4636,15 @@ import Gtz.Design.LoadBearingTriple
 -- omitted boosts over the determinant of the full gap.  No positivity is used
 -- and the law is generic in the size and in the number of omitted labels.
 import Gtz.Design.ComplementDeterminantLaw
+
+-- The cross-leverage budget.  The full-selection gap is the slack Laplacian, so
+-- inserting it between the two inverses of a squared inverse form entry cancels
+-- one inverse: the slack-weighted energy of a label's whole row of cross entries
+-- is its own diagonal entry, and removing the diagonal term leaves the slack of
+-- the leverage cap.  That is a ceiling on the cross entries of a row.  A pair of
+-- labels fails its two-by-two complement minor only when its cross entry is
+-- large, so the ceiling caps the total pivot slack a label can fail against, and
+-- a pair whose slacks beat the leverage budget is certified with no cross entry
+-- at all.  At six labels the leverages total three, so the whole cross budget is
+-- at most three halves.
+import Gtz.Design.CrossLeverageBudget

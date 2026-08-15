@@ -980,6 +980,7 @@ import Gtz.Design.SharedAtomPivotExclusion
 import Gtz.Design.FlatCrossBudget
 import Gtz.Design.LoadBearingTriple
 import Gtz.Design.ComplementDeterminantLaw
+import Gtz.Design.CrossLeverageBudget
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30045,3 +30046,17 @@ run_cmd do
 #print axioms Gtz.det_omittedComplementMatrix_mul_det
 #print axioms Gtz.directionChartGap_univ_sub_boostSum
 #print axioms Gtz.det_omittedComplementMatrix_mul_det_eq_det_gap_compl
+-- The cross-leverage budget: the chart row energy law, the off-diagonal energy,
+-- the leverage cap, the pivot slack, the failing-partner budget, the scalar pair
+-- certificate, and the totals at six labels.
+#print axioms Gtz.sum_chartSlack_mul_fullInverseForm_sq
+#print axioms Gtz.sum_erase_chartSlack_mul_fullInverseForm_sq
+#print axioms Gtz.chartLeverage_le_one
+#print axioms Gtz.chartPivotSlack
+#print axioms Gtz.chartPivotSlack_eq_sub_leverage
+#print axioms Gtz.one_sub_weight_mul_boost
+#print axioms Gtz.chartPivotSlack_mul_sum_le_leverage_slack
+#print axioms Gtz.pair_minor_pos_of_leverage_slack
+#print axioms Gtz.sum_chartLeverage_mul_one_sub_le
+#print axioms Gtz.sum_chartLeverage_compl_le
+#print axioms Gtz.sum_chartPivotSlack_eq_two
