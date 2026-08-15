@@ -3956,3 +3956,8 @@ import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 -- Certificates are checked on transformed chart masses and transported back;
 -- the exact A2 residual is outside all seven orbit cells.
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
+-- The three-lines family weld: the dischargeable A2 joint.  Strict selection
+-- over the whitened fundamental-domain family alone discharges the committed
+-- A2 axiom, and every dominator of a realizing design is off the three
+-- dependent lines.
+import Gtz.Design.ThreeLinesFamilyWeld
