@@ -4335,3 +4335,11 @@ import Gtz.Design.BlindSpotArithmetic
 -- excess.  The discounted excess is strictly smaller than the plain excess, and
 -- the criterion is incomparable to the moment-form one.
 import Gtz.Design.DiscountedExcess
+
+-- The global trace floor.  Every landed reading of the chart gap fixes one
+-- selection; this one reads all labels at once.  The weights are a probability
+-- vector, so a weighted average of the trace ratios cannot exceed the largest
+-- of them, and the label attaining it sits in a positive-trace selection.  The
+-- trace is the only one of the three triple invariants that is linear in the
+-- selection, which is why the same average does not reach the other two.
+import Gtz.Design.GlobalTraceFloor

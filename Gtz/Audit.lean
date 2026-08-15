@@ -943,6 +943,7 @@ import Gtz.Wave.TwoOutsideMomentLaw
 import Gtz.Wave.TwoOutsideRefusalLaw
 import Gtz.Design.BlindSpotArithmetic
 import Gtz.Design.DiscountedExcess
+import Gtz.Design.GlobalTraceFloor
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29481,3 +29482,11 @@ run_cmd do
 #print axioms Gtz.exists_posDef_exchange_of_pivot_add_outside_gt
 #print axioms Gtz.outside_crossEnergy_pair
 #print axioms Gtz.exists_posDef_exchange_of_pair_outside_gt
+-- The global trace floor: the probability-vector pigeonhole, the linear trace
+-- reading of the chart gap, and the label whose ratio dominates the whole mass
+-- sum at every chart point.
+#print axioms Gtz.exists_weighted_sum_le
+#print axioms Gtz.trace_directionChartGap
+#print axioms Gtz.exists_star_trace_pos
+#print axioms Gtz.leverageOf_kFourDirection_pos
+#print axioms Gtz.exists_star_trace_pos_kFour
