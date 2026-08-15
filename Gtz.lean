@@ -3966,6 +3966,10 @@ import Gtz.Wave.KFourPriorPathDualSaturation
 -- weak path now arrives with its actual pulled-back nonzero kernel direction;
 -- the only alternative is one of the four sign-frustrated vertex stars.
 import Gtz.Wave.KFourPathStarResidual
+-- Compose every realized path kernel with the chart pointer theorem.  The path
+-- branch now names an outside repair label whose every host selection reads
+-- strictly positively on the original path's null direction.
+import Gtz.Wave.KFourPathPointerResidual
 -- The chart gap is antitone in each selected weight, so strictness moves down
 -- in weight and a covering of the chart slice covers the full cone of weight
 -- sum at most one. The probe behind the module: the K4 covering fails on the

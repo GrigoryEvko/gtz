@@ -874,6 +874,7 @@ import Gtz.Design.GershgorinWashout
 import Gtz.Wave.KFourDualSaturation
 import Gtz.Wave.KFourPriorPathDualSaturation
 import Gtz.Wave.KFourPathStarResidual
+import Gtz.Wave.KFourPathPointerResidual
 import Gtz.Design.ChartWeightMonotone
 import Gtz.Design.KernelPointer
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
@@ -28542,6 +28543,19 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedPathKernelOrStar_iff_allPathSaturated
 #print axioms Gtz.kFourKnifeBandRefinedPathKernelOrStar_iff
 #print axioms Gtz.kFourFamilySelection_iff_pathKernelOrStar
+-- Compose a saturated path's null direction with its outside repair pointer.
+#print axioms Gtz.KFourPathPointerData
+#print axioms Gtz.kFourPathPointerData_of_dualTightData
+#print axioms Gtz.KFourWeakPathPointerWitness
+#print axioms Gtz.KFourWeakPathPointerOrStar
+#print axioms Gtz.kFourWeakPathPointerOrStar_of_kernelOrStar
+#print axioms Gtz.exists_weakTree_of_kFourWeakPathPointerOrStar
+#print axioms Gtz.KFourKnifeBandRefinedPathPointerOrStarWeakToStrict
+#print axioms Gtz.pathPointerOrStarKFourKnifeBandRefined_of_pathKernelOrStar
+#print axioms Gtz.pathKernelOrStarKFourKnifeBandRefined_of_pathPointerOrStar
+#print axioms Gtz.kFourKnifeBandRefinedPathPointerOrStar_iff_pathKernelOrStar
+#print axioms Gtz.kFourKnifeBandRefinedPathPointerOrStar_iff
+#print axioms Gtz.kFourFamilySelection_iff_pathPointerOrStar
 -- The kernel pointer: the chart exchange identity, the pointer theorem, the
 -- witness package from a failed strictness test, and the K4 instance.
 #print axioms Gtz.directionChartGap_exchange
