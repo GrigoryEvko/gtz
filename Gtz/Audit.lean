@@ -953,6 +953,7 @@ import Gtz.Design.TieStallReduction
 import Gtz.Design.ThreeLinesCircuitSpine
 import Gtz.Design.StallComplementCounting
 import Gtz.Design.ComplementPairEscape
+import Gtz.Design.ComplementarySumLaw
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29575,3 +29576,16 @@ run_cmd do
 #print axioms Gtz.exists_dominates_cardThree_of_complPair_escape
 #print axioms Gtz.kFour_exists_nonStalled_supset_compl_of_stall
 #print axioms Gtz.threeLines_exists_nonStalled_supset_compl_of_stall
+-- The complementary sum law, the half-weight test, and the canonical pair of
+-- the three-lines chart.
+#print axioms Gtz.chartComplementCoefficient
+#print axioms Gtz.chartComplementCoefficient_pos_of_weight_lt_half
+#print axioms Gtz.directionChartGap_add_compl
+#print axioms Gtz.dotProduct_directionChartGap_add_compl
+#print axioms Gtz.directionChartPoint_weight_add_le_one
+#print axioms Gtz.directionChartPoint_not_both_gt_half
+#print axioms Gtz.posDef_chartComplementSum_of_weights_lt_half
+#print axioms Gtz.exists_pos_reading_of_complementary
+#print axioms Gtz.posDef_compl_of_nonpos_reading
+#print axioms Gtz.threeLines_vertexTriple_compl
+#print axioms Gtz.threeLines_vertexTriple_add_freeTriple

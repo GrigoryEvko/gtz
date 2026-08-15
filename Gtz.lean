@@ -4400,3 +4400,10 @@ import Gtz.Design.StallComplementCounting
 -- twenty, generically in the direction family, so the K4 chart, the three-lines
 -- chart and the trivial chart of a design all consume it.
 import Gtz.Design.ComplementPairEscape
+
+-- The complementary sum law.  The chart gap of a selection and the gap of its
+-- complement add to a matrix that does not mention the selection, with
+-- coefficient m (1 - 2 w) / w.  Weights sum to one, so at most one label sits
+-- above weight one half and the sum is generically positive definite: two
+-- complementary selections then never fail at the same probe.
+import Gtz.Design.ComplementarySumLaw
