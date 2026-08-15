@@ -591,6 +591,7 @@ import Gtz.Quantitative.ChartFloorAtomSpan
 import Gtz.Quantitative.ZeroLeakCollinearClosure
 import Gtz.Quantitative.ChartStationaryDesignFreeWindow
 import Gtz.Design.WeightAwareClearance
+import Gtz.Design.UniversalNeedle
 import Gtz.Quantitative.SixThreeIndexLadderSpine
 import Gtz.Quantitative.ZeroLeakDependency
 import Gtz.Reduction.LadderRungHasNoBase
@@ -29049,3 +29050,13 @@ run_cmd do
 #print axioms Gtz.kFourAtlas_fires_of_wall_sharpCap
 #print axioms Gtz.kFourAtlas_fires_of_wall_fifthCap
 #print axioms Gtz.kFourAtlas_fires_of_wall_nineteenthCap
+-- The universal needle and the free heavy label.
+#print axioms Gtz.sum_weight_mul_sq_dotProduct
+#print axioms Gtz.quadForm_subsetSum_univ_sub_one
+#print axioms Gtz.universal_needle
+#print axioms Gtz.pos_of_weight_le
+#print axioms Gtz.quadForm_subsetSum_univ_sub_one_pos
+#print axioms Gtz.exists_weight_ge_inv_card
+#print axioms Gtz.exists_weight_ge_tenth
+#print axioms Gtz.sum_compl_sq_ge_of_tight
+#print axioms Gtz.sum_compl_sq_ge_of_tight_baseTriple

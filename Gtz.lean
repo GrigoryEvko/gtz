@@ -2444,6 +2444,12 @@ import Gtz.Quantitative.ChartStationaryDesignFreeWindow
 -- margin floor 1/4.  With it the sharp division-free collar in the weight
 -- chart.  Buys back the rectangle's ground and nothing more.
 import Gtz.Design.WeightAwareClearance
+-- The universal needle of a weighted design.  A cap on the weights is a
+-- floor on the FULL gap form at EVERY probe, division-free, with the
+-- constant 1 - cap beating the per-triple 1 - 2*cap of the A1 residual.
+-- The heavy-label audit lands here: every (6,3) design carries a weight
+-- of at least 1/6, so the tenth-heavy narrowing of A1 is free.
+import Gtz.Design.UniversalNeedle
 
 
 -- THE (6,3) INDEX-LADDER SPINE: the chart argmax family is a filter of the
