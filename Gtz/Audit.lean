@@ -879,6 +879,7 @@ import Gtz.Wave.KFourPathWindowDichotomy
 import Gtz.Design.ChartWeightMonotone
 import Gtz.Design.KernelPointer
 import Gtz.Design.StarSignRigidity
+import Gtz.Wave.KFourTreeWindowResidual
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28613,3 +28614,19 @@ run_cmd do
 #print axioms Gtz.kFourStarB_kernel_readings_signMixed
 #print axioms Gtz.kFourStarC_kernel_readings_signMixed
 #print axioms Gtz.kFour_pointer_of_kernel
+-- Remove the path/star split entirely. Any weak non-strict K4 tree supplies a
+-- kernel pointer, and the same window trichotomy leaves only its two walls.
+#print axioms Gtz.KFourTreeWindowData
+#print axioms Gtz.KFourTreeWindowPivotWallData
+#print axioms Gtz.KFourTreeWindowCorankTwoData
+#print axioms Gtz.kFourTreeWindowData_of_posSemidef_not_posDef
+#print axioms Gtz.KFourWeakTreeWindowResidual
+#print axioms Gtz.exists_strictTree_or_kFourWeakTreeWindowResidual
+#print axioms Gtz.exists_weakTree_of_kFourWeakTreeWindowResidual
+#print axioms Gtz.kFourWeakPathWindowResidualOrStar_of_treeWindowResidual
+#print axioms Gtz.KFourKnifeBandRefinedTreeWindowResidualWeakToStrict
+#print axioms Gtz.treeWindowResidualKFourKnifeBandRefined_of_pathWindowResidualOrStar
+#print axioms Gtz.pathWindowResidualOrStarKFourKnifeBandRefined_of_treeWindowResidual
+#print axioms Gtz.kFourKnifeBandRefinedTreeWindowResidual_iff_pathWindowResidualOrStar
+#print axioms Gtz.kFourKnifeBandRefinedTreeWindowResidual_iff
+#print axioms Gtz.kFourFamilySelection_iff_treeWindowResidual

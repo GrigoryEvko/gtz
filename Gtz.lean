@@ -3995,6 +3995,10 @@ import Gtz.Design.KernelPointer
 -- carry explicit basis and dual vectors, and every kernel probe hands the
 -- landed outside pointer.
 import Gtz.Design.StarSignRigidity
+-- The star kernel and generic pointer remove the path/star distinction from
+-- A3. Every weak K4 tree is either already strict or reaches the same exact
+-- pointer-window pivot wall or corank-two wall.
+import Gtz.Wave.KFourTreeWindowResidual
 -- Spend the generic unsigned trace theorem at the two landed three-lines
 -- expansions.  The exact A2 residual is now outside both minor cells and both
 -- one-inequality trace cells.
