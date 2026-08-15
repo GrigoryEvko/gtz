@@ -963,6 +963,7 @@ import Gtz.Design.LineStrataCardFourSplit
 import Gtz.Design.ChartInverseTrace
 import Gtz.Design.ThreeLinesAxisLaw
 import Gtz.Design.ComplementFormLaw
+import Gtz.Design.GaugeWallStarErasure
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29736,3 +29737,8 @@ run_cmd do
 #print axioms Gtz.complementForm_pos_of_posDef_directionChartGap_compl
 #print axioms Gtz.posDef_directionChartGap_compl_iff
 #print axioms Gtz.posDef_directionChartGap_iff_complementForm
+-- The matching-star narrowing of the gauge-wall type-A exchange: four
+-- selections instead of six, with the leaving label always a star.
+#print axioms Gtz.KFourGaugeWallMatchingStarEscape
+#print axioms Gtz.kFourGaugeWallTypeAExchange_of_matchingStarEscape
+#print axioms Gtz.kFourGaugeWallTypeAStall_tree_of_matchingStar_of_triangleClosure

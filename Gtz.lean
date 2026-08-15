@@ -4475,3 +4475,10 @@ import Gtz.Design.ThreeLinesAxisLaw
 -- complement gap form.  Generic in the size, in the direction family and in the
 -- omitted set, so it serves every chart and the trivial chart of a design.
 import Gtz.Design.ComplementFormLaw
+
+-- The matching-star form of the gauge-wall type-A exchange.  A type-A selection
+-- on the wall is the complement of a matching, one triangle label with one star
+-- label.  The leaving label may always be taken to be a star label other than
+-- the matching's own, and the entering label is then the other member of the
+-- matching, so the six surviving exchanges narrow to four.
+import Gtz.Design.GaugeWallStarErasure
