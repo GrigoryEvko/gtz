@@ -4583,3 +4583,12 @@ import Gtz.Wave.GaugeWallTriangleTreeReduction
 -- units of leverage plus weight and a line has less than three.  Some triple of
 -- low-pivot labels therefore leaves an independent selection.
 import Gtz.Design.NormalLeverageFloor
+
+-- The three-label complement criterion.  Restricting the complement form to
+-- three omitted labels gives an explicit ternary quadratic form, so positive
+-- definiteness is equivalent to one positive corner, one pair minor, and one
+-- determinant.  On the gauge wall the triangle corner is automatic and the
+-- rank-one triangle block has already cut the tree census to nine; consequently
+-- closing the wall is exactly equivalent to a finite scalar cover by the nine
+-- remaining pair-minor/determinant tests.
+import Gtz.Wave.ComplementTripleCriterion

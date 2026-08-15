@@ -975,6 +975,7 @@ import Gtz.Wave.GaugeWallTriangleComplementBlock
 import Gtz.Wave.GaugeWallTriangleTreeReduction
 import Gtz.Design.FlatNormalBudget
 import Gtz.Design.NormalLeverageFloor
+import Gtz.Wave.ComplementTripleCriterion
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29956,3 +29957,35 @@ run_cmd do
 #print axioms Gtz.threeLinesDependentOmitted
 #print axioms Gtz.lowPivotSet_not_dependentOmitted
 #print axioms Gtz.threeLines_exists_admissible_omitted_triple
+-- The ternary complement criterion and the exact scalarization of the gauge
+-- wall.  The final equivalence is bidirectional: no matrix or tree-list content
+-- has been discarded from the remaining nine-test cover.
+#print axioms Gtz.ternaryQuadraticForm
+#print axioms Gtz.ternaryDeterminant
+#print axioms Gtz.dotProduct_ternaryMatrix_mulVec
+#print axioms Gtz.ternaryQuadraticForm_pos_iff
+#print axioms Gtz.complementTripleDeterminant
+#print axioms Gtz.complementForm_triple
+#print axioms Gtz.exists_ne_zero_mem_triple_iff
+#print axioms Gtz.tripleCoefficient
+#print axioms Gtz.tripleCoefficient_first
+#print axioms Gtz.tripleCoefficient_second
+#print axioms Gtz.tripleCoefficient_third
+#print axioms Gtz.posDef_directionChartGap_compl_triple_iff
+#print axioms Gtz.posDef_compl_pair_leadingMinors
+#print axioms Gtz.posDef_compl_triple_iff_determinant_of_posDef_compl_pair
+#print axioms Gtz.kFourTriangle_ne_star
+#print axioms Gtz.kFourGaugeWall_tree_posDef_iff_complementMinors
+#print axioms Gtz.kFour_compl_triangle_twoStars_mem_spanningTreeList
+#print axioms Gtz.KFourGaugeWallComplementMinorCover
+#print axioms Gtz.kFourGaugeStarCorankWallClosure_of_complementMinorCover
+#print axioms Gtz.kFourGaugeWallComplementMinorCover_of_gaugeStarCorankWallClosure
+#print axioms Gtz.kFourGaugeStarCorankWallClosure_iff_complementMinorCover
+#print axioms Gtz.KFourComplementMinorEndgameClosure
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_of_complementMinorEndgame
+#print axioms Gtz.kFourComplementMinorEndgameClosure_of_gaugeAndPivotWallClosure
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_iff_complementMinorEndgame
+#print axioms Gtz.kFourKnifeBandRefined_of_complementMinorEndgame
+#print axioms Gtz.kFourFamilySelection_of_complementMinorEndgame
+#print axioms Gtz.kFourEveryPointHasStrictTree_of_complementMinorEndgame
+#print axioms Gtz.kFourFamilySelection_of_pivotTriangle_of_complementMinorCover
