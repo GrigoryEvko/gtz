@@ -4364,3 +4364,12 @@ import Gtz.Wave.KFourPivotTriangleClosure
 -- stalls, and supply one exchange from a type-A stall on the gauge wall.
 -- Together they close both terminal walls and the registry-facing selector.
 import Gtz.Wave.KFourTriangleEndgame
+
+-- The descent port at every design.  A weighted design is already a chart
+-- point of its own atom family, with the mass equal to the weight, so the
+-- chart gap is the design's own gap and Parseval discharges the span
+-- hypothesis.  The full-selection descent therefore holds at EVERY design of
+-- EVERY stratum, with no chart construction and no pattern hypothesis.  Under
+-- the two-meeting-lines blind spots the card-three branch lands the four-way
+-- transversal disjunction outright.
+import Gtz.Design.DesignDescentPort

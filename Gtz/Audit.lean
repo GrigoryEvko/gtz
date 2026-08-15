@@ -948,6 +948,7 @@ import Gtz.Design.TypeAExchangeReduction
 import Gtz.Wave.ExchangeDeterminantPotential
 import Gtz.Wave.KFourPivotTriangleClosure
 import Gtz.Wave.KFourTriangleEndgame
+import Gtz.Design.DesignDescentPort
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29527,3 +29528,13 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefined_of_triangleEndgame
 #print axioms Gtz.kFourFamilySelection_of_triangleEndgame
 #print axioms Gtz.kFourEveryPointHasStrictTree_of_triangleEndgame
+-- The descent port at every design: the trivial chart, the gap dictionary,
+-- the free span hypothesis, the dichotomy, and the two-meeting-lines reroute.
+#print axioms Gtz.designChartPoint
+#print axioms Gtz.directionChartGap_designChartPoint
+#print axioms Gtz.designAtom_span
+#print axioms Gtz.posDef_directionChartGap_univ_designChartPoint
+#print axioms Gtz.design_cardThree_or_cardFour_stall
+#print axioms Gtz.exists_posDef_cardThree_of_no_cardFour_stall
+#print axioms Gtz.exists_dominates_cardThree_of_no_cardFour_stall
+#print axioms Gtz.twoMeetingLines_transversalStrict_of_no_cardFour_stall
