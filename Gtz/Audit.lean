@@ -600,6 +600,7 @@ import Gtz.Quantitative.ZeroLeakCollinearClosure
 import Gtz.Quantitative.ChartStationaryDesignFreeWindow
 import Gtz.Design.WeightAwareClearance
 import Gtz.Design.DustWeightCollar
+import Gtz.Design.PlaneMarginFloor
 import Gtz.Design.UniversalNeedle
 import Gtz.Quantitative.SixThreeIndexLadderSpine
 import Gtz.Quantitative.ZeroLeakDependency
@@ -30469,3 +30470,31 @@ run_cmd do
 #print axioms Gtz.verticalAxis_forces_vertexThree
 #print axioms Gtz.readingCover_eq_vertexTriple_of_axisStrict
 #print axioms Gtz.not_exists_readingCover_of_axisStrict_of_join_heavy
+
+-- The plane-margin floor: the three plane probes, the Lagrange reading, the
+-- kept-leverage floor, the insert-leverage floor, the weight ceiling, the bulk
+-- bound, and the refutations of the light-label producer.
+#print axioms Gtz.planeProbeZero
+#print axioms Gtz.planeProbeOne
+#print axioms Gtz.planeProbeTwo
+#print axioms Gtz.planeProbeZero_orth
+#print axioms Gtz.planeProbeOne_orth
+#print axioms Gtz.planeProbeTwo_orth
+#print axioms Gtz.sum_planeProbe_leverage
+#print axioms Gtz.sum_sq_dot_planeProbe
+#print axioms Gtz.lagrange_gap_le
+#print axioms Gtz.planeMargin_kept_leverage_floor
+#print axioms Gtz.one_lt_insert_leverage_of_gate
+#print axioms Gtz.planeMarginGate_insert_leverage_gt
+#print axioms Gtz.weight_ceiling_of_planeMarginGate
+#print axioms Gtz.producer_forces_leverage_floor
+#print axioms Gtz.producer_forces_weight_ceiling
+#print axioms Gtz.producer_light_weight_sum_le
+#print axioms Gtz.not_planeMarginProducer_of_weight_band
+#print axioms Gtz.not_planeMarginProducer_of_bounded_light_leverage
+#print axioms Gtz.producer_forces_heavy_label
+#print axioms Gtz.not_planeMarginProducer_of_all_weights_le
+#print axioms Gtz.not_exists_planeMarginGate_of_bounded_leverage
+#print axioms Gtz.keptPair_weight_product_le
+#print axioms Gtz.producer_threshold_or_no_light_label
+#print axioms Gtz.exists_weight_le_sixth
