@@ -4156,3 +4156,10 @@ import Gtz.Design.StallConfinement
 -- branch of the descent trichotomy: every chart point carries a strict
 -- spanning tree or a stalled four-edge selection.
 import Gtz.Design.PivotArmClosure
+-- The two-meeting-lines transversals price their complements.  Each of the four
+-- transversal complements is the shared atom together with the two unused
+-- private atoms, so a failing transversal hands the universal needle to a set
+-- containing the shared atom.  The needle's complement law is weakened here
+-- from a tight direction to a nonpositive one, which is what a failure of
+-- positive definiteness supplies.
+import Gtz.Design.TwoMeetingLinesNeedle

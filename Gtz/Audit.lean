@@ -913,6 +913,7 @@ import Gtz.Wave.ThreeLinesOffLinesWiring
 import Gtz.Wave.ThreeLinesUnsignedCycleWiring
 import Gtz.Design.StallConfinement
 import Gtz.Design.PivotArmClosure
+import Gtz.Design.TwoMeetingLinesNeedle
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29093,3 +29094,18 @@ run_cmd do
 #print axioms Gtz.card_four_stall
 #print axioms Gtz.exists_posDef_erase_univ_not_stall
 #print axioms Gtz.kFour_strictTree_or_cardFour_stall
+-- The two-meeting-lines needle: the nonpositive-direction complement law, the
+-- four transversal complements, and the four-fold price at a total failure.
+#print axioms Gtz.sum_compl_sq_ge_of_nonpos
+#print axioms Gtz.exists_probe_nonpos_of_not_posDef
+#print axioms Gtz.sum_compl_sq_ge_of_not_posDef
+#print axioms Gtz.compl_transversal_oneThreeFive
+#print axioms Gtz.compl_transversal_oneFourFive
+#print axioms Gtz.compl_transversal_twoThreeFive
+#print axioms Gtz.compl_transversal_twoFourFive
+#print axioms Gtz.sharedAtom_mem_every_transversal_compl
+#print axioms Gtz.transversalFailure_prices_oneThreeFive
+#print axioms Gtz.transversalFailure_prices_oneFourFive
+#print axioms Gtz.transversalFailure_prices_twoThreeFive
+#print axioms Gtz.transversalFailure_prices_twoFourFive
+#print axioms Gtz.allTransversalsFail_prices_four
