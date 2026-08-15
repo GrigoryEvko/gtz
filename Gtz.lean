@@ -4354,3 +4354,8 @@ import Gtz.Design.TypeAExchangeReduction
 -- Forward and reverse positive exchanges have reciprocal multipliers, giving
 -- the finite card-four exchange graph a multiplicative potential.
 import Gtz.Wave.ExchangeDeterminantPotential
+
+-- The priced pivot endpoint is not independent: its positive-definite pointer
+-- window is a vertex star plus a chord, hence contains a triangle.  The complete
+-- pivot wall is therefore equivalent to the contextual triangle-stall closure.
+import Gtz.Wave.KFourPivotTriangleClosure

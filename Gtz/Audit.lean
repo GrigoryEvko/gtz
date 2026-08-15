@@ -946,6 +946,7 @@ import Gtz.Design.DiscountedExcess
 import Gtz.Design.GlobalTraceFloor
 import Gtz.Design.TypeAExchangeReduction
 import Gtz.Wave.ExchangeDeterminantPotential
+import Gtz.Wave.KFourPivotTriangleClosure
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29506,3 +29507,15 @@ run_cmd do
 #print axioms Gtz.chartExchangeMultiplier_pos_of_posDef_exchange
 #print axioms Gtz.chartExchangeMultiplier_eq_one_or_forward_gt_one_or_reverse_gt_one
 #print axioms Gtz.chartExchangeMultiplier_eq_one_iff_det_exchange_eq
+-- The priced endpoint collapses into the triangle-stall branch, so the whole
+-- pivot wall is exactly its contextual triangle closure.
+#print axioms Gtz.kFour_star_insert_containsTriangle
+#print axioms Gtz.kFourPivotWallPricedStarEndpointClosure_of_triangleStallClosure
+#print axioms Gtz.kFourPivotWallStarPropagationClosure_of_triangleStallClosure
+#print axioms Gtz.kFourWindowAllPivotWallClosure_of_triangleStallClosure
+#print axioms Gtz.kFourPivotWallTriangleStallClosure_of_windowAllPivotWallClosure
+#print axioms Gtz.kFourWindowAllPivotWallClosure_iff_triangleStallClosure
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_iff_gaugeTriangleClosure
+#print axioms Gtz.kFourKnifeBandRefined_of_gaugeTriangleClosure
+#print axioms Gtz.kFourFamilySelection_of_gaugeTriangleClosure
+#print axioms Gtz.kFourEveryPointHasStrictTree_of_gaugeTriangleClosure
