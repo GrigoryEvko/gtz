@@ -924,6 +924,7 @@ import Gtz.Design.TwoMeetingLinesComplementCap
 import Gtz.Design.ExchangeCriterion
 import Gtz.Design.CrossEnergyLaw
 import Gtz.Design.StarWallResidualRows
+import Gtz.Design.TriangleNormalReading
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29295,3 +29296,25 @@ run_cmd do
 #print axioms Gtz.kFourCircuit_triangle
 #print axioms Gtz.exists_cross_ne_zero
 #print axioms Gtz.exists_posDef_exchange_of_excess_le
+-- The triangle-normal readings: the four triangles of K4 each give a probe
+-- on which the triangle labels read zero, so a positive definite selection
+-- carries selected boost above the complementary mass.  The single-star-edge
+-- form prunes the atlas with no wall hypothesis.
+#print axioms Gtz.kFourAllOnes
+#print axioms Gtz.kFourAllOnes_ne_zero
+#print axioms Gtz.kFourDirection_dot_allOnes_zero
+#print axioms Gtz.kFourDirection_dot_allOnes_one
+#print axioms Gtz.kFourDirection_dot_allOnes_two
+#print axioms Gtz.kFourDirection_dot_allOnes_three
+#print axioms Gtz.kFourDirection_dot_allOnes_four
+#print axioms Gtz.kFourDirection_dot_allOnes_five
+#print axioms Gtz.kFourAllOnes_reading
+#print axioms Gtz.kFourStarBoost_gt_of_posDef
+#print axioms Gtz.kFourSingleStarEdge_boost_gt_of_posDef
+#print axioms Gtz.kFourCoordOne
+#print axioms Gtz.kFourCoordOne_ne_zero
+#print axioms Gtz.kFourDirection_dot_coordOne_two
+#print axioms Gtz.kFourDirection_dot_coordOne_four
+#print axioms Gtz.kFourDirection_dot_coordOne_five
+#print axioms Gtz.kFourCoordOne_reading
+#print axioms Gtz.kFourCoordOneBoost_gt_of_posDef

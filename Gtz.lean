@@ -4236,3 +4236,11 @@ import Gtz.Design.TwoMeetingLinesParsevalCap
 -- above; the strict gain here is geometric and enters through the mass
 -- moment matrix.
 import Gtz.Design.CrossEnergyLaw
+
+-- The triangle-normal readings of the K4 chart.  Each of the four triangles
+-- has a normal on which its three labels read zero, so the gap reads one
+-- boost sum against one mass sum.  A positive definite selection therefore
+-- carries selected boost above the complementary mass, and a spanning tree
+-- meeting the star in one label needs that label's boost above the whole
+-- star mass.  No wall hypothesis is used.
+import Gtz.Design.TriangleNormalReading
