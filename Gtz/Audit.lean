@@ -957,6 +957,7 @@ import Gtz.Design.ComplementarySumLaw
 import Gtz.Design.InverseTraceEscape
 import Gtz.Design.GaugeWallKernelLaw
 import Gtz.Design.StallLocus
+import Gtz.Design.LineStrataCardFourSplit
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29640,3 +29641,18 @@ run_cmd do
 #print axioms Gtz.selectedFrame_mul_transpose
 #print axioms Gtz.transpose_mul_selectedFrame
 #print axioms Gtz.det_gap_eq_sign_mul_det_gram_sub_one
+-- The line strata card-four split: the flat-probe reading, the whole-line
+-- single-atom reading, the orthogonal-complement domination, the three splits
+-- by decision, and the exact (vacuous) strength of the normal pin.
+#print axioms Gtz.gap_quadForm_at_flat_probe
+#print axioms Gtz.not_posDef_gap_of_subset_flat
+#print axioms Gtz.gap_quadForm_insert_flat
+#print axioms Gtz.energy_lt_reading_of_posDef_insert_flat
+#print axioms Gtz.flat_dominates_on_free_orthogonal
+#print axioms Gtz.oneLine_cardFour_lineCount
+#print axioms Gtz.oneLine_wholeLine_cardFour_eq
+#print axioms Gtz.oneLine_wholeLine_cardFour_card
+#print axioms Gtz.oneLine_twoLine_cardFour_card
+#print axioms Gtz.twoMeetingLines_cardFour_not_both_lines
+#print axioms Gtz.twoMeetingLines_secondLine_cardFour_eq
+#print axioms Gtz.oneLine_wholeLine_posDef_weight_lt_one

@@ -4430,3 +4430,11 @@ import Gtz.Design.GaugeWallKernelLaw
 -- returns the inverse-trace price with no inverse anywhere, and Sylvester puts
 -- the whole locus in the Gram matrix of the selected labels.
 import Gtz.Design.StallLocus
+
+-- The card-four split of the line strata and the exact normal reading.  At a
+-- probe every line atom reads zero on, the gap of any selection reads its free
+-- atoms alone.  The fifteen card-four selections split three, nine and three by
+-- line atoms held, no card-four selection holds both meeting lines, and a
+-- whole-line selection needs its single free atom to beat the probe energy --
+-- while the unit law caps the same reading, so the pin yields only weight < 1.
+import Gtz.Design.LineStrataCardFourSplit
