@@ -1021,6 +1021,7 @@ import Gtz.Design.UniformWitnessRefutation
 import Gtz.Design.KFourOwnMonomial
 import Gtz.Design.KFourAbsPolynomialCell
 import Gtz.Design.FrobeniusSpreadCell
+import Gtz.Design.SharpSpreadCell
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30845,3 +30846,37 @@ run_cmd do
 #print axioms Gtz.exists_posDef_of_kFourAbsPolynomialCellFires
 #print axioms Gtz.two_mul_kFourOwnMonomial_gt_of_cell
 #print axioms Gtz.kFourOwnMonomial_le_kFourAbsPolynomial
+
+-- The sharp spread cell: the six-coordinate weighted Lagrange identity and its
+-- Cauchy-Schwarz, the three identities that centre the Gram form, the centred
+-- Frobenius bound, the sharp threshold and its arithmetic, the root-free
+-- endgame, the pivot trace, the cell, both subsumptions, the strictness
+-- scalars, the design reading and the cover.
+#print axioms Gtz.six_weighted_lagrange_identity
+#print axioms Gtz.sq_six_weighted_inner_le
+#print axioms Gtz.centeredGramForm_eq_pairing
+#print axioms Gtz.centeredSpread_eq_sq_pairing
+#print axioms Gtz.sq_probe_pairing_eq
+#print axioms Gtz.sq_centeredGramForm_le_centeredSpread
+#print axioms Gtz.sharpThreshold
+#print axioms Gtz.sharpThreshold_eq_shifted_sq
+#print axioms Gtz.two_le_sharpThreshold
+#print axioms Gtz.two_lt_sharpThreshold_of_ne_one
+#print axioms Gtz.sharpThreshold_pos
+#print axioms Gtz.lt_of_centered_of_sharpThreshold
+#print axioms Gtz.pivotTrace
+#print axioms Gtz.pivotTrace_nonneg
+#print axioms Gtz.sq_pivotTrace_le_three_mul_frobeniusSpread
+#print axioms Gtz.posDef_directionChartGap_compl_triple_of_sharpSpread
+#print axioms Gtz.sharpSpreadFires_of_frobeniusSpread_lt_one
+#print axioms Gtz.posDef_compl_triple_of_frobeniusSpread_via_sharp
+#print axioms Gtz.sharpSpreadFires_of_sum_fullPivot_lt_one
+#print axioms Gtz.posDef_compl_triple_of_sum_fullPivot_via_sharp
+#print axioms Gtz.posDef_compl_triple_of_pivotThird_via_sharp
+#print axioms Gtz.sharp_fires_where_parents_are_silent
+#print axioms Gtz.one_le_sharpThreshold_div_two
+#print axioms Gtz.one_lt_sharpThreshold_div_two_of_ne_one
+#print axioms Gtz.posDef_subsetSum_compl_triple_of_sharpSpread
+#print axioms Gtz.SharpSpreadCovers
+#print axioms Gtz.exists_posDef_compl_triple_of_sharpSpreadCovers
+#print axioms Gtz.sharpSpreadCovers_of_frobeniusSpreadCovers

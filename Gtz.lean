@@ -4827,3 +4827,4 @@ import Gtz.Design.UniformWitnessRefutation
 import Gtz.Design.KFourOwnMonomial
 import Gtz.Design.KFourAbsPolynomialCell
 import Gtz.Design.FrobeniusSpreadCell
+import Gtz.Design.SharpSpreadCell
