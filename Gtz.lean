@@ -4657,3 +4657,13 @@ import Gtz.Design.CrossLeverageBudget
 -- two labels of pivot at least one, and at least four strictly droppable labels.
 -- This is the common scalar residue shared by every rank-three stratum.
 import Gtz.Wave.PivotLoadScoreReduction
+
+-- The excess classification of the ten plane-branch candidates.  One free atom
+-- alone reads above the probe energy at the line normal, and a selection's
+-- excess reads only the labels it holds OUTSIDE the line, every term a square.
+-- So every candidate holding that one atom clears the excess whatever else it
+-- holds: seven of the ten, counted by decision.  The three that miss it pair a
+-- line atom with the two other free atoms, and the set difference removes the
+-- line atom, so their three excess conditions are literally the same sum.
+-- Either all three clear the excess or none do.
+import Gtz.Design.OneLineCandidateExcess

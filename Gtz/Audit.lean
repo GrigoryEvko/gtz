@@ -982,6 +982,7 @@ import Gtz.Design.LoadBearingTriple
 import Gtz.Design.ComplementDeterminantLaw
 import Gtz.Design.CrossLeverageBudget
 import Gtz.Wave.PivotLoadScoreReduction
+import Gtz.Design.OneLineCandidateExcess
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30085,3 +30086,18 @@ run_cmd do
 #print axioms Gtz.four_le_card_lowPivotLabels_of_noStrict
 #print axioms Gtz.highPivotLabels_subset_of_posDef
 #print axioms Gtz.compl_subset_lowPivotLabels_of_posDef
+-- The excess classification of the ten plane-branch candidates: the generic
+-- one-label engine, the over-covering free atom, the seven-of-ten discharge,
+-- the counted split, and the shared excess of the three that remain.
+#print axioms Gtz.excess_of_mem_sdiff_of_one_lt_sq
+#print axioms Gtz.oneLine_free_not_mem_line
+#print axioms Gtz.oneLine_exists_free_one_lt_sq
+#print axioms Gtz.oneLine_seven_of_ten_excess
+#print axioms Gtz.oneLine_posDef_iff_planeInequality_of_mem
+#print axioms Gtz.planeBranchTenList
+#print axioms Gtz.planeBranchTenList_length
+#print axioms Gtz.planeBranchTenList_filter_mem_length
+#print axioms Gtz.planeBranchTenList_filter_not_mem_length
+#print axioms Gtz.oneLine_insert_sdiff_line
+#print axioms Gtz.oneLine_remaining_excess_shared
+#print axioms Gtz.oneLine_remaining_posDef_iff_planeInequality
