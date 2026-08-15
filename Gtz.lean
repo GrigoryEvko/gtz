@@ -4350,6 +4350,12 @@ import Gtz.Design.GlobalTraceFloor
 -- hypothesis is false on the general chart and measured true on the gauge wall.
 import Gtz.Design.TypeAExchangeReduction
 
+-- The measured gauge-wall exchange is false even under the complete corank
+-- package.  An exact rational point has a positive-definite stalled four-cycle,
+-- rejects all eight adjacent exchanges, and still carries two nonlocal strict
+-- trees.  The refutation identifies the correct type-A producer as nonlocal.
+import Gtz.Design.GaugeWallTypeAExchangeRefutation
+
 -- The exchange master inequality is also the exact determinant multiplier.
 -- Forward and reverse positive exchanges have reciprocal multipliers, giving
 -- the finite card-four exchange graph a multiplicative potential.
@@ -4364,6 +4370,12 @@ import Gtz.Wave.KFourPivotTriangleClosure
 -- stalls, and supply one exchange from a type-A stall on the gauge wall.
 -- Together they close both terminal walls and the registry-facing selector.
 import Gtz.Wave.KFourTriangleEndgame
+
+-- The repaired A3 endgame.  It replaces the refuted exchange producer by a
+-- direct type-A wall closure, proves the exact gauge/type-A equivalence once
+-- triangle stalls are closed, and wires the honest pair through every public
+-- K4 consumer while retaining a compatibility map from the obsolete route.
+import Gtz.Wave.KFourTypeANonlocalEndgame
 
 -- The descent port at every design.  A weighted design is already a chart
 -- point of its own atom family, with the mass equal to the weight, so the

@@ -5,10 +5,9 @@ set_option autoImplicit false
 set_option relaxedAutoImplicit false
 
 /-!
-# The two-input K4 triangle endgame
+# The obsolete exchange-based K4 triangle endgame
 
-After the priced endpoint collapses into the triangle branch, the whole A3
-chart needs only two mathematical producers:
+This module records the original two-input composition:
 
 1. a global closure theorem for triangle-containing card-four stalls; and
 2. one positive exchange from every type-A stall on the canonical gauge wall.
@@ -18,8 +17,11 @@ card-four type split is exhaustive.  A type-B stall is already a triangle
 stall.  A type-A stall uses the second input once; the exchange either descends
 to a strict tree or becomes a triangle stall, by the landed type-A reduction.
 
-This module contains only composition.  It gives the shortest current path
-from the two residual mathematical statements to the public A3 consumer.
+The second producer is false, by the exact rational gauge-wall point in
+`Gtz.Design.GaugeWallTypeAExchangeRefutation`.  Consequently this file is now a
+compatibility layer, not a viable endgame.  The repaired composition is
+`Gtz.Wave.KFourTypeANonlocalEndgame`: it replaces the adjacent-exchange claim by
+a direct nonlocal type-A wall closure and retains maps from every theorem below.
 -/
 
 namespace Gtz
@@ -43,8 +45,8 @@ theorem kFourGaugeStarCorankWallClosure_of_triangleStallClosure_of_typeAExchange
         selected hcard hmatching leaving hleaving entering hentering hexchange
     · exact htriangle point selected hcard hpd hstall hcontains
 
-/-- The exact pair of residual mathematical statements after all structural
-reductions. -/
+/-- The obsolete pair of residual statements.  Its second conjunct is false;
+the definition is retained to preserve the old conditional API. -/
 def KFourTriangleEndgameClosure : Prop :=
   KFourTriangleStallClosure ∧ KFourGaugeWallTypeAExchange
 

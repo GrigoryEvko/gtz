@@ -945,9 +945,11 @@ import Gtz.Design.BlindSpotArithmetic
 import Gtz.Design.DiscountedExcess
 import Gtz.Design.GlobalTraceFloor
 import Gtz.Design.TypeAExchangeReduction
+import Gtz.Design.GaugeWallTypeAExchangeRefutation
 import Gtz.Wave.ExchangeDeterminantPotential
 import Gtz.Wave.KFourPivotTriangleClosure
 import Gtz.Wave.KFourTriangleEndgame
+import Gtz.Wave.KFourTypeANonlocalEndgame
 import Gtz.Design.DesignDescentPort
 import Gtz.Design.TieStallReduction
 import Gtz.Design.ThreeLinesCircuitSpine
@@ -29512,6 +29514,19 @@ run_cmd do
 #print axioms Gtz.kFourTypeAStall_tree_of_exchange_of_triangleClosure
 #print axioms Gtz.KFourGaugeWallTypeAExchange
 #print axioms Gtz.kFourGaugeWallTypeAStall_tree_of_exchange_of_triangleClosure
+-- The exact full-antecedent gauge-wall refuter: rank-one wall, independent
+-- kernels, universal pointer reading, stalled four-cycle, eight refused
+-- exchanges, and two nonlocal winning trees.
+#print axioms Gtz.gaugeTypeAExchangeRefuter_wall_gap_eq
+#print axioms Gtz.gaugeTypeAExchangeRefuter_wall_posSemidef
+#print axioms Gtz.gaugeTypeAExchangeRefuter_corankTwoData
+#print axioms Gtz.gaugeTypeAExchangeRefuter_selection_posDef
+#print axioms Gtz.gaugeTypeAExchangeRefuter_selection_stall
+#print axioms Gtz.gaugeTypeAExchangeRefuter_no_posDef_exchange
+#print axioms Gtz.gaugeTypeAExchangeRefuter_tree_zeroTwoThree_posDef
+#print axioms Gtz.gaugeTypeAExchangeRefuter_tree_oneTwoThree_posDef
+#print axioms Gtz.gaugeTypeAExchangeRefuter_hasStrictTree
+#print axioms Gtz.not_kFourGaugeWallTypeAExchange
 -- The determinant potential and reciprocal exchange law.
 #print axioms Gtz.chartExchangeMultiplier_eq_insert_erase_factor
 #print axioms Gtz.det_directionChartGap_exchange_eq_mul_multiplier
@@ -29540,6 +29555,20 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefined_of_triangleEndgame
 #print axioms Gtz.kFourFamilySelection_of_triangleEndgame
 #print axioms Gtz.kFourEveryPointHasStrictTree_of_triangleEndgame
+-- The repaired nonlocal type-A endgame and its complete public consumer chain.
+#print axioms Gtz.KFourGaugeWallTypeAStallClosure
+#print axioms Gtz.kFourGaugeWallTypeAStallClosure_of_gaugeStarClosure
+#print axioms Gtz.kFourGaugeWallTypeAStallClosure_of_exchange_of_triangleClosure
+#print axioms Gtz.kFourGaugeStarCorankWallClosure_of_triangleStallClosure_of_typeAStallClosure
+#print axioms Gtz.kFourGaugeStarCorankWallClosure_iff_typeAStallClosure
+#print axioms Gtz.KFourNonlocalTypeAEndgameClosure
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_of_nonlocalTypeAEndgame
+#print axioms Gtz.kFourKnifeBandRefined_of_nonlocalTypeAEndgame
+#print axioms Gtz.kFourFamilySelection_of_nonlocalTypeAEndgame
+#print axioms Gtz.kFourEveryPointHasStrictTree_of_nonlocalTypeAEndgame
+#print axioms Gtz.kFourNonlocalTypeAEndgameClosure_of_triangleEndgame
+#print axioms Gtz.not_kFourTriangleEndgameClosure
+#print axioms Gtz.gaugeTypeAExchangeRefuter_nonlocal_separation
 -- The descent port at every design: the trivial chart, the gap dictionary,
 -- the free span hypothesis, the dichotomy, and the two-meeting-lines reroute.
 #print axioms Gtz.designChartPoint

@@ -21,11 +21,15 @@ it contains a triangle, so the triangle-stall closure receives it.
 The reduction consumes no wall data and no chart geometry.  It is stated for an
 arbitrary chart point.
 
-## The measured status of the exchange hypothesis
+## The status of the exchange hypothesis
 
-The hypothesis "some one-label exchange is positive definite" is **false in
-general and true on the canonical gauge wall**.  Both halves are measurements,
-in exact rational arithmetic:
+The hypothesis "some one-label exchange is positive definite" is **false both
+in general and on the canonical gauge wall**.  The reduction below remains a
+valid conditional theorem, but the named wall hypothesis is retained only as a
+compatibility boundary.  The exact gauge-wall refutation is mechanized in
+`Gtz.Design.GaugeWallTypeAExchangeRefutation`.
+
+The historical measurements were:
 
 * On the general chart a probe found 2610 type-A stalls at which no one-label
   exchange is positive definite.  One witness, in the weights
@@ -33,14 +37,16 @@ in exact rational arithmetic:
   `(5/7, 3/4, 9/2, 9/2, 1, 12/11)`, has the type-A stall `{0, 1, 4, 5}` with all
   eight exchanges failing.  This is why
   `Gtz.kFourMatchingCompl_exchange_not_compl_subset` records an obstruction.
-* On the canonical gauge wall, where the star `{3, 4, 5}` carries a rank-one
-  gap, a probe over 2132430 exact type-A stalls found a positive definite
-  one-label exchange at **every one of them**, with zero failures across five
-  weight and axis regimes.  A directed hunt of 24000 seeds by 3000 bounded
-  moves never drove the positive definite spanning tree count below one.
+* On the canonical gauge wall, a probe over 2132430 sampled type-A stalls found
+  an exchange at every sampled point.  That empirical statement missed a thin
+  exact stratum.  The refuter has the complete corank-two wall package, a
+  positive-definite stalled four-cycle, and all eight adjacent exchanges
+  non-positive-definite.  It nevertheless has two nonlocal strict spanning
+  trees, so it refutes the exchange route rather than the K4 conclusion.
 
 The wall hypothesis is therefore named here as `Gtz.KFourGaugeWallTypeAExchange`
-and left open.  Nothing in this module assumes it.
+for compatibility with the conditional reduction.  It is inconsistent, and
+nothing in this module assumes it.
 -/
 
 namespace Gtz
@@ -129,13 +135,13 @@ theorem kFourTypeAStall_tree_of_exchange_of_triangleClosure
 
 /-! ## The named gauge-wall hypothesis -/
 
-/-- **THE GAUGE-WALL TYPE-A EXCHANGE.**  At a type-A stall on the canonical
-gauge wall some one-label exchange is positive definite.
+/-- **THE OBSOLETE GAUGE-WALL TYPE-A EXCHANGE.**  At a type-A stall on the
+canonical gauge wall some one-label exchange is positive definite.
 
-This statement is **false on the general chart** and **measured true on the
-wall**.  Refer to the module docstring for both measurements.  It is stated here
-so a successor has the exact residual, and it is not used by any theorem in this
-module. -/
+This statement is false.  `Gtz.not_kFourGaugeWallTypeAExchange` gives an exact
+rational refutation satisfying the full wall antecedent.  The proposition stays
+named because the conditional exchange reduction remains useful and existing
+consumers can be mapped into the repaired nonlocal interface. -/
 def KFourGaugeWallTypeAExchange : Prop :=
   ∀ (point : DirectionChartPoint 6) (selected : Finset (Fin 6)),
     selected.card = 4 →
