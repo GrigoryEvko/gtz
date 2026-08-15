@@ -3890,6 +3890,14 @@ import Gtz.Design.UnsignedTraceCell
 -- knife-band residual is the full minor atlas, and the four pendant cells of
 -- that matching are landed in the master format.
 import Gtz.Design.CoverageRefuters
+-- The row certificate atlas.  Every unsigned cell matrix is a symmetric
+-- Z-matrix, so one positive vector with three strict LINEAR row inequalities
+-- gives all three minors through the matrix-tree forest identity.  The module
+-- lands the scalar bridge, the row master, the seven missing path cells (all
+-- sixteen spanning trees now carry moduli-only cells), the pendant row
+-- corollary with the second coverage refuter as its witness at the vector
+-- (8, 5, 1), and the subset pigeonhole for chart weights.
+import Gtz.Design.RowCertificateAtlas
 -- Spend the gauge trace criterion and the three newly available vertex-star
 -- cells in the exact K4 residual.  The live formula is now outside all six
 -- unsigned certificate cells and remains equivalent to the public knife band.

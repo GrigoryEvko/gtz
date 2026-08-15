@@ -858,6 +858,7 @@ import Gtz.Design.BudgetCoverCriterion
 import Gtz.Design.UnsignedCycleCells
 import Gtz.Design.UnsignedTraceCell
 import Gtz.Design.CoverageRefuters
+import Gtz.Design.RowCertificateAtlas
 import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.KFourUnsignedTraceWiring
 import Gtz.Wave.KFourPendantAtlasWiring
@@ -28127,3 +28128,46 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedPendantBlind_iff_traceBlind
 #print axioms Gtz.kFourKnifeBandRefinedPendantBlind_iff
 #print axioms Gtz.coverageRefuterTwo_pendantCell123Fires
+-- The row certificate atlas: the scalar bridge, the row master, the seven
+-- missing path cells, the pendant row corollary with its refuter witness,
+-- the subset pigeonhole, and the membership lemmas.
+#print axioms Gtz.unsignedMinors_of_rowCertificate
+#print axioms Gtz.posDef_directionChartGap_of_unsignedCycleRows
+#print axioms Gtz.kFour_expansion_zeroOneFive_two
+#print axioms Gtz.kFour_expansion_zeroOneFive_three
+#print axioms Gtz.kFour_expansion_zeroOneFive_four
+#print axioms Gtz.kFour_expansion_zeroTwoFive_one
+#print axioms Gtz.kFour_expansion_zeroTwoFive_three
+#print axioms Gtz.kFour_expansion_zeroTwoFive_four
+#print axioms Gtz.kFour_expansion_zeroThreeFive_one
+#print axioms Gtz.kFour_expansion_zeroThreeFive_two
+#print axioms Gtz.kFour_expansion_zeroThreeFive_four
+#print axioms Gtz.kFour_expansion_zeroFourFive_one
+#print axioms Gtz.kFour_expansion_zeroFourFive_two
+#print axioms Gtz.kFour_expansion_zeroFourFive_three
+#print axioms Gtz.kFour_expansion_zeroOneFour_two
+#print axioms Gtz.kFour_expansion_zeroOneFour_three
+#print axioms Gtz.kFour_expansion_zeroOneFour_five
+#print axioms Gtz.kFour_expansion_oneTwoFour_zero
+#print axioms Gtz.kFour_expansion_oneTwoFour_three
+#print axioms Gtz.kFour_expansion_oneTwoFour_five
+#print axioms Gtz.kFour_expansion_oneFourFive_zero
+#print axioms Gtz.kFour_expansion_oneFourFive_two
+#print axioms Gtz.kFour_expansion_oneFourFive_three
+#print axioms Gtz.posDef_kFour_pathCell_zeroOneFive
+#print axioms Gtz.posDef_kFour_pathCell_zeroTwoFive
+#print axioms Gtz.posDef_kFour_pathCell_zeroThreeFive
+#print axioms Gtz.posDef_kFour_pathCell_zeroFourFive
+#print axioms Gtz.posDef_kFour_pathCell_zeroOneFour
+#print axioms Gtz.posDef_kFour_pathCell_oneTwoFour
+#print axioms Gtz.posDef_kFour_pathCell_oneFourFive
+#print axioms Gtz.posDef_kFour_pendantCell_oneTwoThree_ofRows
+#print axioms Gtz.coverageRefuterTwo_pendant_rowCertificate
+#print axioms Gtz.directionChartPoint_exists_subset_light
+#print axioms Gtz.pathTree_zeroOneFive_mem
+#print axioms Gtz.pathTree_zeroTwoFive_mem
+#print axioms Gtz.pathTree_zeroThreeFive_mem
+#print axioms Gtz.pathTree_zeroFourFive_mem
+#print axioms Gtz.pathTree_zeroOneFour_mem
+#print axioms Gtz.pathTree_oneTwoFour_mem
+#print axioms Gtz.pathTree_oneFourFive_mem
