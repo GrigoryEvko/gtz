@@ -4316,3 +4316,9 @@ import Gtz.Wave.KFourOutsideDecomposition
 -- and the two pivots, has strictly positive determinant; this retains the
 -- mixed term discarded by the scalar refusal estimate.
 import Gtz.Wave.TwoOutsideMomentLaw
+
+-- Compose the two scalar refusal prices with the strict mixed-moment
+-- determinant.  Failure of the resulting two-label envelope produces an
+-- explicit positive-definite exchange, and the card-four wrapper extracts its
+-- two outside labels automatically.
+import Gtz.Wave.TwoOutsideRefusalLaw

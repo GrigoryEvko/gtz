@@ -940,6 +940,7 @@ import Gtz.Design.GaugeWallAtlasEquivalence
 import Gtz.Wave.ThreeLinesRankOneWitnessClassification
 import Gtz.Wave.KFourOutsideDecomposition
 import Gtz.Wave.TwoOutsideMomentLaw
+import Gtz.Wave.TwoOutsideRefusalLaw
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29458,3 +29459,11 @@ run_cmd do
 #print axioms Gtz.kFour_chartMomentCross_sq_lt_self_mul_self
 #print axioms Gtz.crossEnergy_pair_eq_cross_add_moment
 #print axioms Gtz.kFour_twoOutside_crossEnergy_determinant_pos
+-- The strict two-outside refusal envelope and its exchange contrapositives.
+#print axioms Gtz.chartMomentCross_self_pos_of_dual_ne
+#print axioms Gtz.kFour_twoOutside_refusal_envelope
+#print axioms Gtz.kFour_twoOutside_weightedCross_refusal_envelope
+#print axioms Gtz.kFour_exists_exchange_of_twoOutside_envelope_failure
+#print axioms Gtz.kFour_exists_exchange_of_twoOutside_cross_failure
+#print axioms Gtz.kFour_exists_complPair_of_cardFour
+#print axioms Gtz.kFour_exists_posDef_exchange_of_cardFour_cross_failure
