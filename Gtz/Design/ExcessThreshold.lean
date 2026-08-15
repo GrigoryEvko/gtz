@@ -25,6 +25,24 @@ least one, so the two combine into a threshold on the excess alone.
 
 The residual of the four-edge stall statement is therefore the single region
 where the weighted pivot sum exceeds three halves.
+
+The landed cross-energy law bounds the cross energy of an outside label below by
+its pivot, and it discards a mass moment term to do so.  That term is the
+dominant one.  This module keeps it:
+
+* `crossEnergy_eq_pivot_add_moment` — **the exact law**.  The cross energy of a
+  target equals its pivot plus the mass moment form of its whitened direction.
+  The landed law is this identity with the second term discarded.
+* `momentEnergy_eq_weighted_cross_sq` — the moment form is the weight-weighted
+  sum of the squared cross terms of every label against the target.  The mass
+  moment is the weighted moment of the scaled atoms.
+* `crossEnergy_ge_pivot_add_weight_mul_pivot_sq` — **the one-term bound**.  The
+  target's own term of that sum is its weight times its pivot squared, so the
+  cross energy reads below in pivot and weight data alone.
+* `exists_posDef_exchange_of_cardFour_stall_excess_lt_half_add_weight` — **the
+  weighted threshold**.  A four-edge stall of excess strictly below
+  `(1 + weight) / 2` at every complement label admits an exchange.  The landed
+  threshold is this statement read at weight zero, which no chart point reaches.
 -/
 
 namespace Gtz
@@ -274,6 +292,212 @@ theorem exists_posDef_exchange_of_pivot_add_moment_gt {size : ℕ}
   have hprice := pivot_add_moment_le_excess_of_no_exchange direction mass weight
     hmass hweight selected hentering hpd hno
   linarith
+
+/-! ## The moment form in cross coordinates -/
+
+/-- The cross term of a label against itself is its pivot. -/
+theorem chartLadderCross_self {size : ℕ}
+    (direction : Fin size → (Fin 3 → ℝ)) (mass weight : Fin size → ℝ)
+    (hmass : ∀ label, 0 < mass label) (hweight : ∀ label, 0 < weight label)
+    (base : Finset (Fin size)) (label : Fin size) :
+    chartLadderCross direction mass weight base label label
+      = chartLadderPivot direction mass weight base label := by
+  rw [chartLadderCross]
+  exact chartLadderVector_inv_quad direction mass weight hmass hweight base label
+
+/-- **THE MOMENT FORM IS A WEIGHTED SUM OF CROSS SQUARES.**  The mass moment,
+read at the whitened direction of one label, is the weight-weighted sum of the
+squared cross terms of every label against that label.
+
+The mass moment carries the mass of each label against the bare direction.  The
+scaled ladder vector carries the mass over the weight.  One factor of the weight
+therefore separates, and the moment is the weighted moment of the scaled atoms.
+Each term of the result is a square with a positive coefficient, so the sum
+admits a lower bound by any single term. -/
+theorem momentEnergy_eq_weighted_cross_sq {size : ℕ}
+    (direction : Fin size → (Fin 3 → ℝ)) (mass weight : Fin size → ℝ)
+    (hmass : ∀ label, 0 < mass label) (hweight : ∀ label, 0 < weight label)
+    (base : Finset (Fin size)) (target : Fin size) :
+    ((directionChartGap direction mass weight base)⁻¹
+          *ᵥ chartLadderVector direction mass weight target) ⬝ᵥ
+        ((∑ label, mass label • atomMatrix (direction label))
+          *ᵥ ((directionChartGap direction mass weight base)⁻¹
+            *ᵥ chartLadderVector direction mass weight target))
+      = ∑ label, weight label
+        * chartLadderCross direction mass weight base label target ^ 2 := by
+  set dual := (directionChartGap direction mass weight base)⁻¹
+    *ᵥ chartLadderVector direction mass weight target with hdual
+  rw [Matrix.sum_mulVec, dotProduct_sum]
+  refine Finset.sum_congr rfl fun label _ => ?_
+  rw [atomMatrix_smul_form]
+  have hne : weight label ≠ 0 := (hweight label).ne'
+  have hcross : chartLadderCross direction mass weight base label target
+      = Real.sqrt (mass label / weight label) * (direction label ⬝ᵥ dual) := by
+    rw [chartLadderCross, ← hdual, chartLadderVector, smul_dotProduct,
+      smul_eq_mul]
+  rw [hcross, mul_pow,
+    Real.sq_sqrt (div_nonneg (hmass label).le (hweight label).le)]
+  field_simp
+
+/-- **THE EXACT CROSS-ENERGY LAW, MATRIX FREE.**  The cross energy of a target
+against its base equals the target pivot plus the weight-weighted sum of the
+squared cross terms of every label against the target.
+
+This is the landed exact law with the moment matrix eliminated.  Every quantity
+in the statement is a pivot or a cross term of the same chart, so the law reads
+inside the ladder alone. -/
+theorem crossEnergy_eq_pivot_add_weighted_cross_sq {size : ℕ}
+    (direction : Fin size → (Fin 3 → ℝ)) (mass weight : Fin size → ℝ)
+    (hmass : ∀ label, 0 < mass label) (hweight : ∀ label, 0 < weight label)
+    (base : Finset (Fin size))
+    (hpd : (directionChartGap direction mass weight base).PosDef)
+    (target : Fin size) :
+    ∑ source ∈ base,
+        chartLadderCross direction mass weight base source target ^ 2
+      = chartLadderPivot direction mass weight base target
+        + ∑ label, weight label
+          * chartLadderCross direction mass weight base label target ^ 2 := by
+  rw [crossEnergy_eq_pivot_add_moment direction mass weight hmass hweight base
+    hpd target,
+    momentEnergy_eq_weighted_cross_sq direction mass weight hmass hweight base
+      target]
+
+/-- **THE ONE-TERM LOWER BOUND ON THE CROSS ENERGY.**  The cross energy of a
+target is at least its pivot plus its own weight times its pivot squared.
+
+Only the target's own term of the weighted moment sum survives.  The other terms
+are squares with positive weights.  The bound reads in pivot and weight data
+alone, which is what the pivot balance controls. -/
+theorem crossEnergy_ge_pivot_add_weight_mul_pivot_sq {size : ℕ}
+    (direction : Fin size → (Fin 3 → ℝ)) (mass weight : Fin size → ℝ)
+    (hmass : ∀ label, 0 < mass label) (hweight : ∀ label, 0 < weight label)
+    (base : Finset (Fin size))
+    (hpd : (directionChartGap direction mass weight base).PosDef)
+    (target : Fin size) :
+    chartLadderPivot direction mass weight base target
+        + weight target
+          * chartLadderPivot direction mass weight base target ^ 2
+      ≤ ∑ source ∈ base,
+        chartLadderCross direction mass weight base source target ^ 2 := by
+  rw [crossEnergy_eq_pivot_add_weighted_cross_sq direction mass weight hmass
+    hweight base hpd target]
+  have hterm : weight target
+      * chartLadderCross direction mass weight base target target ^ 2
+      ≤ ∑ label, weight label
+        * chartLadderCross direction mass weight base label target ^ 2 :=
+    Finset.single_le_sum
+      (f := fun label => weight label
+        * chartLadderCross direction mass weight base label target ^ 2)
+      (fun label _ => mul_nonneg (hweight label).le (sq_nonneg _))
+      (Finset.mem_univ target)
+  rw [chartLadderCross_self direction mass weight hmass hweight base target]
+    at hterm
+  linarith
+
+/-! ## The weighted price of a refused exchange -/
+
+/-- **THE WEIGHTED PRICE OF A REFUSED EXCHANGE.**  A selection refusing every
+exchange into `entering` pays the entering pivot AND the entering weight times
+that pivot squared, against the excess.
+
+The landed price drops the moment term outright.  This price keeps the one term
+of it that reads in pivot and weight data alone. -/
+theorem pivot_add_weightPivotSq_le_excess_of_no_exchange {size : ℕ}
+    (direction : Fin size → (Fin 3 → ℝ)) (mass weight : Fin size → ℝ)
+    (hmass : ∀ label, 0 < mass label) (hweight : ∀ label, 0 < weight label)
+    (selected : Finset (Fin size)) {entering : Fin size}
+    (hentering : entering ∉ selected)
+    (hpd : (directionChartGap direction mass weight selected).PosDef)
+    (hno : ∀ leaving ∈ selected, ¬ (directionChartGap direction mass weight
+      (insert entering (selected.erase leaving))).PosDef) :
+    chartLadderPivot direction mass weight selected entering
+        + weight entering
+          * chartLadderPivot direction mass weight selected entering ^ 2
+      ≤ (1 + chartLadderPivot direction mass weight selected entering)
+        * ∑ leaving ∈ selected,
+          (chartLadderPivot direction mass weight selected leaving - 1) := by
+  have hpos : 0 ≤ chartLadderPivot direction mass weight selected entering :=
+    chartLadderPivot_nonneg_of_posDef direction mass weight hmass hweight
+      selected hpd entering
+  have hbound : ∑ leaving ∈ selected,
+        chartLadderCross direction mass weight selected leaving entering ^ 2
+      ≤ ∑ leaving ∈ selected,
+        (1 + chartLadderPivot direction mass weight selected entering)
+          * (chartLadderPivot direction mass weight selected leaving - 1) := by
+    refine Finset.sum_le_sum fun leaving hmem => ?_
+    have hfail := hno leaving hmem
+    rw [posDef_exchange_iff_cross_sq_gt direction mass weight hmass hweight
+      selected hmem hentering hpd] at hfail
+    push Not at hfail
+    nlinarith
+  have hlow := crossEnergy_ge_pivot_add_weight_mul_pivot_sq direction mass weight
+    hmass hweight selected hpd entering
+  rw [Finset.mul_sum]
+  linarith
+
+/-- **THE WEIGHTED EXCHANGE.**  If the entering pivot together with the entering
+weight times that pivot squared beats the excess price, some exchange into that
+label is positive definite. -/
+theorem exists_posDef_exchange_of_pivot_add_weightPivotSq_gt {size : ℕ}
+    (direction : Fin size → (Fin 3 → ℝ)) (mass weight : Fin size → ℝ)
+    (hmass : ∀ label, 0 < mass label) (hweight : ∀ label, 0 < weight label)
+    (selected : Finset (Fin size)) {entering : Fin size}
+    (hentering : entering ∉ selected)
+    (hpd : (directionChartGap direction mass weight selected).PosDef)
+    (hbig : (1 + chartLadderPivot direction mass weight selected entering)
+        * ∑ leaving ∈ selected,
+          (chartLadderPivot direction mass weight selected leaving - 1)
+      < chartLadderPivot direction mass weight selected entering
+        + weight entering
+          * chartLadderPivot direction mass weight selected entering ^ 2) :
+    ∃ leaving ∈ selected, (directionChartGap direction mass weight
+      (insert entering (selected.erase leaving))).PosDef := by
+  by_contra hno
+  push Not at hno
+  have hprice := pivot_add_weightPivotSq_le_excess_of_no_exchange direction mass
+    weight hmass hweight selected hentering hpd hno
+  linarith
+
+/-! ## The weighted threshold at the K4 chart -/
+
+/-- **THE WEIGHTED FOUR-EDGE THRESHOLD.**  A four-edge stall whose excess stays
+strictly below half of one plus every complement weight admits a positive
+definite exchange.
+
+The landed threshold `excess ≤ 1 / 2` is the reading of this statement at
+complement weight zero, which a chart point never reaches.  The gain is exactly
+the entering weight, and it comes from the one moment term the landed price
+discards.  The priced outside label carries pivot at least one, and the bound
+`pivot * (1 + weight * pivot) / (1 + pivot)` increases in the pivot, so pivot
+one is the worst case. -/
+theorem exists_posDef_exchange_of_cardFour_stall_excess_lt_half_add_weight
+    (point : DirectionChartPoint 6) (selected : Finset (Fin 6))
+    (hcard : selected.card = 4)
+    (hpd : (directionChartGap kFourDirection point.mass point.weight
+      selected).PosDef)
+    (hstall : ∀ label ∈ selected,
+      1 ≤ chartLadderPivot kFourDirection point.mass point.weight selected label)
+    (hexcess : ∀ entering ∈ selectedᶜ,
+      ∑ label ∈ selected,
+          (chartLadderPivot kFourDirection point.mass point.weight selected label
+            - 1)
+        < (1 + point.weight entering) / 2) :
+    ∃ entering ∈ selectedᶜ, ∃ leaving ∈ selected,
+      (directionChartGap kFourDirection point.mass point.weight
+        (insert entering (selected.erase leaving))).PosDef := by
+  obtain ⟨entering, hmem, hpivot⟩ :=
+    exists_outside_pivot_ge_one_of_cardFour_stall kFourDirection point selected
+      hcard hpd hstall
+  refine ⟨entering, hmem, ?_⟩
+  have hweight : 0 < point.weight entering := point.weight_pos entering
+  have hsmall := hexcess entering hmem
+  refine exists_posDef_exchange_of_pivot_add_weightPivotSq_gt kFourDirection
+    point.mass point.weight point.mass_pos point.weight_pos selected
+    (Finset.mem_compl.mp hmem) hpd ?_
+  nlinarith [mul_nonneg (sub_nonneg.mpr hpivot)
+    (by positivity : (0 : ℝ) ≤ 1 + point.weight entering
+      * (2 * chartLadderPivot kFourDirection point.mass point.weight selected
+          entering + 1))]
 
 /-! ## The residual -/
 

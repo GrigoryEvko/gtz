@@ -29343,6 +29343,13 @@ run_cmd do
 #print axioms Gtz.pivot_add_moment_le_excess_of_no_exchange
 #print axioms Gtz.exists_posDef_exchange_of_pivot_add_moment_gt
 #print axioms Gtz.cardFour_stall_weightedPivotSum_gt_of_no_exchange
+#print axioms Gtz.chartLadderCross_self
+#print axioms Gtz.momentEnergy_eq_weighted_cross_sq
+#print axioms Gtz.crossEnergy_eq_pivot_add_weighted_cross_sq
+#print axioms Gtz.crossEnergy_ge_pivot_add_weight_mul_pivot_sq
+#print axioms Gtz.pivot_add_weightPivotSq_le_excess_of_no_exchange
+#print axioms Gtz.exists_posDef_exchange_of_pivot_add_weightPivotSq_gt
+#print axioms Gtz.exists_posDef_exchange_of_cardFour_stall_excess_lt_half_add_weight
 
 #print axioms Gtz.kFour_tree_star_of_addedFive
 #print axioms Gtz.KFourSignedKernelEndpointData.classify
