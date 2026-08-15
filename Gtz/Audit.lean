@@ -896,6 +896,7 @@ import Gtz.Wave.KFourStarSingleExchangeRefusal
 import Gtz.Wave.KFourStarBalancedVacuityWiring
 import Gtz.Wave.KFourStarMirrorVacuityWiring
 import Gtz.Wave.KFourStarAllMaxHeavyWiring
+import Gtz.Design.PivotWallVacuity
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28925,3 +28926,9 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWall_iff_maxHeavy
 #print axioms Gtz.kFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWall_iff
 #print axioms Gtz.kFourFamilySelection_iff_treeStarRefusedAllMaxHeavyWall
+-- The pivot-wall vacuity target and the two-wall reduction of A3.
+#print axioms Gtz.KFourPivotWallAtlasFires
+#print axioms Gtz.kFourPivotWall_empty_of_atlasFires
+#print axioms Gtz.kFourKnifeBandRefined_of_bothWallsAtlasFire
+#print axioms Gtz.kFourKnifeBandRefinedAllMaxHeavy_of_bothWallsAtlasFire
+#print axioms Gtz.kFourFamilySelection_of_bothWallsAtlasFire

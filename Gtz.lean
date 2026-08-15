@@ -4092,3 +4092,8 @@ import Gtz.Wave.KFourStarMirrorVacuityWiring
 -- weights above one sixth or a heavy label on the exact opposite edge; the
 -- fully symmetric axis always forces two distinct heavy labels.
 import Gtz.Wave.KFourStarAllMaxHeavyWiring
+-- The pivot-wall vacuity target and the two-wall reduction. The pivot
+-- branch and the star branch of the registered residual each die against
+-- atlas silence once their vacuity laws hold, so the two laws together
+-- discharge the registered A3 proposition and the family selection.
+import Gtz.Design.PivotWallVacuity
