@@ -913,6 +913,7 @@ import Gtz.Wave.ThreeLinesOffLinesWiring
 import Gtz.Wave.ThreeLinesUnsignedCycleWiring
 import Gtz.Design.StallConfinement
 import Gtz.Design.PivotArmClosure
+import Gtz.Design.CardFourStallEquivalence
 import Gtz.Design.TwoMeetingLinesNeedle
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
@@ -29109,3 +29110,10 @@ run_cmd do
 #print axioms Gtz.transversalFailure_prices_twoThreeFive
 #print axioms Gtz.transversalFailure_prices_twoFourFive
 #print axioms Gtz.allTransversalsFail_prices_four
+-- The card-four equivalence, the univ-descent law and the matching shape.
+#print axioms Gtz.exists_nonStalledCardFour_of_strictTree
+#print axioms Gtz.exists_strictTree_of_nonStalledCardFour
+#print axioms Gtz.strictTree_iff_exists_nonStalledCardFour
+#print axioms Gtz.chartLadderPivot_univ_lt_one_of_notMem
+#print axioms Gtz.exists_mem_pivot_univ_lt_one_of_card_four
+#print axioms Gtz.kFourMatching_insert_mem_spanningTreeList

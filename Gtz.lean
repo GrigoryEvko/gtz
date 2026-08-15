@@ -4156,6 +4156,12 @@ import Gtz.Design.StallConfinement
 -- branch of the descent trichotomy: every chart point carries a strict
 -- spanning tree or a stalled four-edge selection.
 import Gtz.Design.PivotArmClosure
+-- The card-four equivalence and the univ-descent law.  A strict spanning
+-- tree exists exactly when a non-stalled positive definite four-edge
+-- selection exists, so the stalled branch repackages the chart statement
+-- rather than reducing it.  Every four labels hold one droppable from the
+-- full selection, and a matching plus any edge is a spanning tree.
+import Gtz.Design.CardFourStallEquivalence
 -- The two-meeting-lines transversals price their complements.  Each of the four
 -- transversal complements is the shared atom together with the two unused
 -- private atoms, so a failing transversal hands the universal needle to a set
