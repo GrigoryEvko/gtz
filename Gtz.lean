@@ -3792,3 +3792,10 @@ import Gtz.Wave.PlaneTieDesignBridge
 -- weights.  Off `2 * mass - 1` a strict pair exists; at that one weight vector
 -- every pair is weakly tied, nonparallel, and carries an explicit kernel probe.
 import Gtz.Wave.DescentWeld
+-- The projection dictionary and its first payoffs. Domination of a picked
+-- triple is the synthesis floor of the atom blends and the weighted Gram
+-- reading, the block determinant is the Gram block determinant, the uniform
+-- (4,2) cell holds, weights below one tenth force a strict triple at (6,3),
+-- and four pairwise-nonparallel active plane slots push the no-strict budget
+-- strictly below the active mass minus one.
+import Gtz.Wave.ProjectionDictionary

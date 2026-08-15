@@ -845,6 +845,7 @@ import Gtz.Wave.PlanePairCriterion
 import Gtz.Wave.PlaneTieClassification
 import Gtz.Ties.ComplementJawWindow
 import Gtz.Wave.DescentWeld
+import Gtz.Wave.ProjectionDictionary
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27703,3 +27704,33 @@ run_cmd do
 #print axioms Gtz.isTie_iff_planeTieWeight_scaledAtomRows
 #print axioms Gtz.isTie_iff_rankTwo_planeLeverageIdentity
 #print axioms Gtz.isTie_rankTwo_three_pair_boundary
+-- The projection dictionary: the leveled transpose laws, the triple
+-- dictionary with the weighted Gram reading, the block determinant law, the
+-- uniform (4,2) cell, the light region of (6,3), and the strict engine at
+-- four nonparallel lines.
+#print axioms Gtz.dot_self_nonneg
+#print axioms Gtz.eq_zero_of_dot_self_eq_zero
+#print axioms Gtz.dot_self_pos
+#print axioms Gtz.dot_sq_le_dot_mul_dot
+#print axioms Gtz.mulVec_floor_transpose
+#print axioms Gtz.mulVec_floor_transpose_strict
+#print axioms Gtz.analysis_floor_of_synthesis_floor
+#print axioms Gtz.synthesis_floor_of_analysis_floor
+#print axioms Gtz.analysis_strict_of_synthesis_strict
+#print axioms Gtz.synthesis_strict_of_analysis_strict
+#print axioms Gtz.quadForm_pickGap
+#print axioms Gtz.dominates_pick_iff_synthesis
+#print axioms Gtz.posDef_pick_iff_synthesis
+#print axioms Gtz.posDef_pick_iff_weightGram
+#print axioms Gtz.det_subsetSum_pick_sub_one
+#print axioms Gtz.quadForm_pairGap
+#print axioms Gtz.pairDominates_scaledAtomRows_iff_posSemidef
+#print axioms Gtz.exists_dominatingPair_uniform_fourTwo
+#print axioms Gtz.scaledAtomRows_frame
+#print axioms Gtz.exists_posDef_triple_of_light_weights
+#print axioms Gtz.exists_posDef_triple_of_weights_lt_tenth
+#print axioms Gtz.planePairDominatesStrict_mono_scales
+#print axioms Gtz.planePairDominatesStrict_of_ray
+#print axioms Gtz.plane_budget_lt_of_slack_pair
+#print axioms Gtz.plane_fourNonparallel_budget_lt
+#print axioms Gtz.exists_strictDominatingPlanePair_of_fourNonparallel
