@@ -900,6 +900,7 @@ import Gtz.Wave.KFourStarAllMaxHeavyWiring
 import Gtz.Design.PivotWallVacuity
 import Gtz.Design.PivotBalanceLaw
 import Gtz.Wave.KFourGaugeStarTransportWiring
+import Gtz.Wave.KFourPivotStallPropagationWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28991,3 +28992,45 @@ run_cmd do
 #print axioms Gtz.not_posDef_directionChartGap_of_subset_of_stall
 #print axioms Gtz.exists_notMem_of_posDef_of_stall
 #print axioms Gtz.kFourPivotWall_winner_escapes_window
+-- Propagate the four-pivot wall through one exact insertion.  Nonstalled
+-- exchanges already descend to a strict tree; the old wall closure is exactly
+-- the conjunction of the recurrent four-set and half-priced endpoint closures.
+#print axioms Gtz.atomMatrix_chartLadderVector
+#print axioms Gtz.chartLadderVector_inv_quad
+#print axioms Gtz.chartLadderPivot_nonneg_of_posDef
+#print axioms Gtz.inverseForm_add_atomMatrix_cross_update
+#print axioms Gtz.chartLadderCross
+#print axioms Gtz.chartLadderPivot_insert_cross_update
+#print axioms Gtz.chartLadderPivot_insert_le
+#print axioms Gtz.chartLadderPivot_insert_lt_iff_cross_ne_zero
+#print axioms Gtz.chartLadderPivot_insert_eq_iff_cross_eq_zero
+#print axioms Gtz.det_directionChartGap_insert_eq_det_mul_one_add_pivot
+#print axioms Gtz.det_directionChartGap_erase_eq_det_mul_one_sub_pivot
+#print axioms Gtz.chartLadderPivot_eq_one_of_erase_posSemidef_not_posDef
+#print axioms Gtz.chartLadderPivot_insert_self_product
+#print axioms Gtz.chartLadderPivot_insert_self
+#print axioms Gtz.chartLadderPivot_insert_self_mem_Ico
+#print axioms Gtz.pivot_centered_balance
+#print axioms Gtz.card_four_stall_exists_outside_pivot_ge_one
+#print axioms Gtz.card_four_stall_exchange_or_priced_endpoint
+#print axioms Gtz.kFourPivotWall_exchange_or_priced_endpoint
+#print axioms Gtz.KFourPivotWallPointerCrossData
+#print axioms Gtz.kFourPivotWall_pointerCrossData
+#print axioms Gtz.KFourPivotWallExchangeData
+#print axioms Gtz.KFourPivotWallPricedEndpointData
+#print axioms Gtz.kFourPivotWall_exchangeData_or_pricedEndpointData
+#print axioms Gtz.exists_strictTree_or_cardFour_stall_of_posDef
+#print axioms Gtz.KFourPivotWallRecurrentStallData
+#print axioms Gtz.kFourPivotWall_strictTree_or_recurrentStall_or_pricedEndpoint
+#print axioms Gtz.KFourPivotWallRecurrentStallClosure
+#print axioms Gtz.KFourPivotWallPricedEndpointClosure
+#print axioms Gtz.KFourPivotWallPropagationClosure
+#print axioms Gtz.kFourPivotWallPropagationClosure_of_windowClosure
+#print axioms Gtz.kFourWindowAllPivotWallClosure_of_propagation
+#print axioms Gtz.kFourWindowAllPivotWallClosure_iff_propagation
+#print axioms Gtz.KFourGaugeAndPivotPropagationClosure
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_iff_propagation
+#print axioms Gtz.kFourKnifeBandRefinedAllMaxHeavy_of_gaugeAndPivotPropagation
+#print axioms Gtz.kFourKnifeBandRefined_of_gaugeAndPivotPropagation
+#print axioms Gtz.kFourFamilySelection_of_gaugeAndPivotPropagation
+#print axioms Gtz.kFourEveryPointHasStrictTree_of_gaugeAndPivotPropagation

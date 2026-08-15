@@ -4112,6 +4112,11 @@ import Gtz.Design.PivotBalanceLaw
 -- gauge-star wall; solving that canonical wall together with the four-pivot
 -- window wall discharges A3 and the design-side K4 family selector.
 import Gtz.Wave.KFourGaugeStarTransportWiring
+-- Spend the centered four-set balance and exact self-pivot update at the
+-- independent pivot wall.  The former direct wall closure is now exactly the
+-- conjunction of a recurrent exchanged-four-set closure and a strict
+-- half-priced five-set endpoint closure, wired through A3 to family selection.
+import Gtz.Wave.KFourPivotStallPropagationWiring
 -- The three-lines wall architecture.  The chart is a triangle: three
 -- coordinate labels and three join labels.  At a rank-one wall the six chart
 -- coefficients are pinned by the axis, the three join coefficients are the
