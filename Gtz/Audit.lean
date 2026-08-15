@@ -840,7 +840,7 @@ import Gtz.Wave.PentagonFloorProof
 import Gtz.Wave.SpreadWeightCap
 import Gtz.Wave.TenthAverageFloor
 import Gtz.Wave.InvolutionBlockForm
-import Gtz.Ties.ComplementJawWindow
+import Gtz.Wave.PlanePairCriterion
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -25281,44 +25281,6 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.exists_dominating_triple_of_small_cross
 #print axioms Gtz.exists_dominating_triple_of_equiangular
 
--- Gtz/Ties/ComplementJawWindow.lean
--- The jaw window of the two terminal tie charts.  The engine contrapositive
--- hands every non-strict subset a direction that carries the offside mass.
--- Forward, a quadratic cap kappa on the offside atoms closes the subset from
--- the budget tin * kappa + tout < 1; the rank-one gap gives kappa = 1 + lam
--- by one Cauchy-Schwarz step, and the rank-two needle gap gives the sharp
--- kappa = 1 + s1 by Bessel on the orthonormal gap frame.  Backward, at a tie
--- no subset is strict, so light weights force the needle: the gap form reads
--- at least (1 - 2 tau) / tau along some direction, the value 8 at
--- tau = 1/10 — the lower window edge of the needle chart.  The budget
--- readings price the two charts: a rank-one tie pays
--- 1 <= tin * (1 + lam) + tout, a needle tie pays the same with s1, and a
--- gap cap Lam forces the weight floor 1 <= tau * (2 + Lam).  The weld rivet
--- turns a carrier floor strictly above the own weights into strict
--- domination with no Parseval read, and the light-atom pigeonhole reads
--- Parseval at the gap axis: a needle of size lam forces a tied-set weight
--- at most 1 / (1 + lam).  No eigenvalue and no square root anywhere.
-#print axioms Gtz.exists_offside_mass_of_not_posDef
-#print axioms Gtz.posDef_subsetSum_of_offside_quadCap
-#print axioms Gtz.sum_sq_le_of_rankOneGap
-#print axioms Gtz.posDef_compl_of_rankOneGap_jaw
-#print axioms Gtz.one_le_jaw_budget_of_isTie_of_rankOneGap
-#print axioms Gtz.exists_needle_direction_of_isTie
-#print axioms Gtz.exists_gapNeedle_of_isTie
-#print axioms Gtz.one_le_weight_budget_of_isTie_of_gapCap
-#print axioms Gtz.sq_add_sq_le_of_orthonormal_pair
-#print axioms Gtz.sum_sq_le_of_needleGap
-#print axioms Gtz.posDef_compl_of_needleGap_jaw
-#print axioms Gtz.one_le_jaw_budget_of_isTie_of_needleGap
-#print axioms Gtz.posDef_subsetSum_of_weighted_floor
-#print axioms Gtz.posDef_subsetSum_of_floor_gt_weights
-#print axioms Gtz.exists_weight_mul_le_of_direction_mass
-#print axioms Gtz.exists_light_weight_of_rankOneGap
-#print axioms Gtz.exists_light_weight_of_needleGap
-#print axioms Gtz.card_compl_three_of_card_three
-#print axioms Gtz.exists_gapNeedle_of_isTie_six_three
-#print axioms Gtz.one_le_jaw_budget_of_isTie_of_rankOneGap_six_three
-
 -- ============================================================
 -- the drift-proof axiom sweep: every theorem constant from every Gtz
 -- module, enumerated from the ENVIRONMENT (not from this file's pin
@@ -27540,3 +27502,47 @@ run_cmd do
 #print axioms Gtz.atomBalancedShiftSecond
 #print axioms Gtz.AtomBalancedDetWin
 #print axioms Gtz.atomHeavyEdgeEscape
+-- The exact pair criterion, the strictness engine, and the isotropy spread:
+-- the strict pair test with its two-gap and budget equivalences, the active
+-- budget strict selection, the sixty-degree spread pair with its trine
+-- sharpness and its Bloch tetrahedron field separation, and the half-mass and
+-- uniform consumers.
+#print axioms Gtz.PlanePairDominatesStrict
+#print axioms Gtz.planeProbe_ne_zero_of_first
+#print axioms Gtz.planeProbe_ne_zero_of_second
+#print axioms Gtz.planeProbe_energy_pos
+#print axioms Gtz.PlanePairDominatesStrict.symm
+#print axioms Gtz.PlanePairDominatesStrict.dominates
+#print axioms Gtz.PlanePairDominatesStrict.lt_div
+#print axioms Gtz.planeForm_pos
+#print axioms Gtz.planeForm_pos_converse
+#print axioms Gtz.planePairDominatesStrict_of_certificate
+#print axioms Gtz.planePair_strictGaps_of_dominates
+#print axioms Gtz.planePairDominatesStrict_iff
+#print axioms Gtz.planePairDominatesStrict_iff_budget
+#print axioms Gtz.planePairDominates_of_gaps
+#print axioms Gtz.planePairDominates_iff_gaps
+#print axioms Gtz.planeActiveSet
+#print axioms Gtz.mem_planeActiveSet
+#print axioms Gtz.PlaneParseval.one_le_sum_active_gap
+#print axioms Gtz.exists_strictDominatingPlanePair
+#print axioms Gtz.exists_strictDominatingPlanePair_of_active
+#print axioms Gtz.planeTripleGram_eq
+#print axioms Gtz.planeSpread_kernel
+#print axioms Gtz.exists_wide_unit_pair
+#print axioms Gtz.PlaneParseval.exists_spread_pair
+#print axioms Gtz.planeTrine_spread_tight
+#print axioms Gtz.planeTrine_energy
+#print axioms Gtz.planeTrine_no_strictPair
+#print axioms Gtz.planeTrine_pair_tied
+#print axioms Gtz.planeTrine_not_parallel
+#print axioms Gtz.PlaneParseval.strict_or_tied_pair_uniform
+#print axioms Gtz.blochTetraUnit_dot_self
+#print axioms Gtz.blochTetraUnit_balance
+#print axioms Gtz.blochTetra_no_widePair
+#print axioms Gtz.PlaneParseval.exists_halfMass_pair
+#print axioms Gtz.PlaneParseval.exists_subHalf_strictPair
+#print axioms Gtz.PlaneParseval.exists_halfMass_strictPair
+#print axioms Gtz.PlaneParseval.mass_eq_of_equal
+#print axioms Gtz.exists_dominatingPlanePair_uniform
+#print axioms Gtz.exists_strictDominatingPlanePair_uniform
