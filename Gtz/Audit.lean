@@ -949,6 +949,7 @@ import Gtz.Wave.ExchangeDeterminantPotential
 import Gtz.Wave.KFourPivotTriangleClosure
 import Gtz.Wave.KFourTriangleEndgame
 import Gtz.Design.DesignDescentPort
+import Gtz.Design.TieStallReduction
 import Gtz.Design.ThreeLinesCircuitSpine
 import Gtz.Design.StallComplementCounting
 #print axioms Gtz.unitVector
@@ -29540,6 +29541,13 @@ run_cmd do
 #print axioms Gtz.exists_posDef_cardThree_of_no_cardFour_stall
 #print axioms Gtz.exists_dominates_cardThree_of_no_cardFour_stall
 #print axioms Gtz.twoMeetingLines_transversalStrict_of_no_cardFour_stall
+-- The no-strict ledger forces a card-four stall, so every tie carries one and
+-- a stall escape is exactly tie-freeness at a design.
+#print axioms Gtz.DesignCardFourStallEscape
+#print axioms Gtz.exists_cardFour_stall_of_noStrict
+#print axioms Gtz.exists_cardFour_stall_of_isTie
+#print axioms Gtz.false_of_noStrict_of_stallEscape
+#print axioms Gtz.not_isTie_of_stallEscape
 -- The three-lines circuits, the packaged line exclusion, and the card-four
 -- type split of the three-lines chart.
 #print axioms Gtz.threeLinesCircuit_two

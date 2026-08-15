@@ -4373,6 +4373,11 @@ import Gtz.Wave.KFourTriangleEndgame
 -- the two-meeting-lines blind spots the card-three branch lands the four-way
 -- transversal disjunction outright.
 import Gtz.Design.DesignDescentPort
+-- The no-strict ledger forces a card-four stall.  Several registry residuals
+-- assume outright that no card-three subset dominates strictly.  That ledger
+-- denies the descent's first branch, so it forces the second, and a tie is
+-- exactly such a design.  A stall escape therefore proves tie-freeness.
+import Gtz.Design.TieStallReduction
 
 -- The combinatorial spine of the three-lines chart.  Each dependent triple is an
 -- explicit circuit, the coordinate labels lie on two circuits and the joins on
