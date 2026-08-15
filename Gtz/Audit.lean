@@ -950,6 +950,7 @@ import Gtz.Wave.KFourPivotTriangleClosure
 import Gtz.Wave.KFourTriangleEndgame
 import Gtz.Design.DesignDescentPort
 import Gtz.Design.ThreeLinesCircuitSpine
+import Gtz.Design.StallComplementCounting
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29548,3 +29549,10 @@ run_cmd do
 #print axioms Gtz.threeLinesCardFour_at_most_one_line
 #print axioms Gtz.threeLinesCircuitFreeCardFour
 #print axioms Gtz.threeLinesCardFour_line_or_circuitFree
+-- Counting at a card-four stall: the extension step, the counting floor, stall
+-- minimality, and the complement-pair escape that makes the count equivalent.
+#print axioms Gtz.posDef_insert_pivot_lt_one
+#print axioms Gtz.nonStalled_cardFour_of_posDef_cardThree
+#print axioms Gtz.not_subset_of_posDef_of_stall
+#print axioms Gtz.posDef_cardThree_meets_compl_of_cardFour_stall
+#print axioms Gtz.exists_nonStalled_cardFour_supset_compl_of_stall

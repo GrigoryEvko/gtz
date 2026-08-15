@@ -4379,3 +4379,11 @@ import Gtz.Design.DesignDescentPort
 -- one, and a card-four selection holds at most one line -- so the fifteen split
 -- as nine and six, not as the three and twelve of the K4 chart.
 import Gtz.Design.ThreeLinesCircuitSpine
+
+-- Counting positive definite sets at a card-four stall.  A strict triple already
+-- supplies three non-stalled four-sets, so the observed floor of three is the
+-- image of the floor of one.  At a stall every strict triple leaves the stall,
+-- and extending it by a complement label reaches a non-stalled four-set holding
+-- BOTH complement labels -- so the complement-restricted count is equivalent to
+-- the chart statement, not a reduction of it.
+import Gtz.Design.StallComplementCounting
