@@ -990,6 +990,8 @@ import Gtz.Design.KFourTreeMinorGoals
 import Gtz.Design.KFourTreeInvariantGoals
 import Gtz.Design.LinePatternPrimitivity
 import Gtz.Wave.ConsolidatedStrictTriple
+import Gtz.Design.ComplementDiagonalDominance
+import Gtz.Design.PivotOnlyDominance
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30219,3 +30221,37 @@ run_cmd do
 #print axioms Gtz.chartTieFreeThreeLines_of_consolidatedStrictTriple
 #print axioms Gtz.kFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWall_of_consolidatedStrictTriple
 
+-- The diagonal-dominance kill: the row weight and margin, the two entry
+-- readings, the margin in pivot coordinates, the kill itself, the chart and
+-- cross-pivot phrasings, the small cardinalities, and the design readings.
+#print axioms Gtz.complementRowOff
+#print axioms Gtz.complementRowSlack
+#print axioms Gtz.complementMatrixEntry_diag
+#print axioms Gtz.complementMatrixEntry_off
+#print axioms Gtz.complementRowSlack_eq_boost_mul
+#print axioms Gtz.complementForm_pos_of_rowSlack_pos
+#print axioms Gtz.posDef_directionChartGap_of_rowSlack_pos
+#print axioms Gtz.posDef_directionChartGap_of_crossPivotSlack
+#print axioms Gtz.complementScaledRowOff
+#print axioms Gtz.complementForm_pos_of_scaledRowSlack_pos
+#print axioms Gtz.posDef_directionChartGap_of_scaledRowSlack_pos
+#print axioms Gtz.complementScaledRowOff_one
+#print axioms Gtz.pairScale
+#print axioms Gtz.posDef_directionChartGap_of_pairCriterion
+#print axioms Gtz.complementRowOff_singleton
+#print axioms Gtz.complementRowOff_pair
+#print axioms Gtz.pairCriterion_of_rowSlack_pos
+#print axioms Gtz.directionChartGap_design
+#print axioms Gtz.directionChartGap_univ_design
+#print axioms Gtz.fullInverseForm_design
+#print axioms Gtz.fullPivot_design
+#print axioms Gtz.posDef_subsetSum_of_crossPivotSlack
+#print axioms Gtz.dominates_of_crossPivotSlack
+-- The pivot budget: the erased-sum bookkeeping, Cauchy-Schwarz on the absolute
+-- row, the energy transfer, the budget, and the all-light card-three cell.
+#print axioms Gtz.sum_ite_eq_sum_erase
+#print axioms Gtz.sq_absRowOff_le_card_mul_energy
+#print axioms Gtz.weightCap_mul_sum_erase_sq_le_pivotDefect
+#print axioms Gtz.posDef_subsetSum_of_pivotBudget
+#print axioms Gtz.posDef_subsetSum_of_quarterPivotQuarter
+#print axioms Gtz.dominates_of_quarterPivotQuarter

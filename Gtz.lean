@@ -4729,3 +4729,20 @@ import Gtz.Design.LinePatternPrimitivity
 -- registry and the obligation count is unchanged.
 import Gtz.Wave.ConsolidatedStrictTriple
 
+-- Strict domination without a determinant.  A selection is strictly dominating
+-- when every omitted label beats its own off-diagonal row of the complement
+-- matrix, which is `k` scalar inequalities at omitted count `k` instead of a
+-- `k` by `k` determinant.  The criterion is one-sided and monotone: at omitted
+-- count one it IS the landed pivot law, and at count two it implies the landed
+-- exact pair law.  Every stratum can spend it, at every cardinality.
+import Gtz.Design.ComplementDiagonalDominance
+
+-- The pivot budget.  The landed idempotent law reads the whole off-diagonal row
+-- energy of a label as its own pivot defect, so Cauchy-Schwarz removes the cross
+-- pivots from the dominance criterion and leaves an inequality in the pivot, the
+-- weight and the omitted count.  On the light branch of the tenth-heavy
+-- weights the cell is a single threshold: at cap one quarter, three omitted
+-- labels of pivot at most one quarter dominate, with no pattern and no blind
+-- spot.  A cap below one over the size is contradictory, so the cell is stated
+-- at a cap that size six can meet.
+import Gtz.Design.PivotOnlyDominance
