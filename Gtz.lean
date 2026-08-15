@@ -4144,3 +4144,10 @@ import Gtz.Design.ThreeLinesWallArchitecture
 -- four label stall, and the law confines every positive definite spanning tree
 -- out of that window: the winner always meets the two label complement.
 import Gtz.Design.StallConfinement
+-- The unified stall law and the five-stall elimination.  A stalled selection
+-- of k labels prices its complement by k - 4, so the full selection never
+-- stalls, the five-edge price is the k = 5 instance, and the four-edge law is
+-- the k = 4 instance.  The landed insertion law then deletes the five-edge
+-- branch of the descent trichotomy: every chart point carries a strict
+-- spanning tree or a stalled four-edge selection.
+import Gtz.Design.PivotArmClosure

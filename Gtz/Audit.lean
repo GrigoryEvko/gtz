@@ -911,6 +911,7 @@ import Gtz.Wave.ThreeLinesReadingCoverWiring
 import Gtz.Wave.ThreeLinesOffLinesWiring
 import Gtz.Wave.ThreeLinesUnsignedCycleWiring
 import Gtz.Design.StallConfinement
+import Gtz.Design.PivotArmClosure
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29060,3 +29061,9 @@ run_cmd do
 #print axioms Gtz.exists_weight_ge_tenth
 #print axioms Gtz.sum_compl_sq_ge_of_tight
 #print axioms Gtz.sum_compl_sq_ge_of_tight_baseTriple
+-- The unified stall law, the four-edge instance, the five-stall elimination
+-- and the descent dichotomy.
+#print axioms Gtz.stall_outside_price
+#print axioms Gtz.card_four_stall
+#print axioms Gtz.exists_posDef_erase_univ_not_stall
+#print axioms Gtz.kFour_strictTree_or_cardFour_stall
