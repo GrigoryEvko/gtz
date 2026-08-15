@@ -29318,3 +29318,18 @@ run_cmd do
 #print axioms Gtz.kFourDirection_dot_coordOne_five
 #print axioms Gtz.kFourCoordOne_reading
 #print axioms Gtz.kFourCoordOneBoost_gt_of_posDef
+-- The selected-maximum weight criterion, its matrix interface, and the exact
+-- orthogonal identity with its unit and two laws at the one-line stratum.
+#print axioms Gtz.dotProduct_gapForm_eq_readings_sub_energy
+#print axioms Gtz.posDef_of_selectedWeightedForm_gt
+#print axioms Gtz.posDef_of_complWeightedForm_lt
+#print axioms Gtz.posDef_of_complWeightedLeverage_lt_selectedMax
+#print axioms Gtz.posDef_of_complWeightedMatrix
+#print axioms Gtz.sum_compl_weighted_sq_eq_energy_of_orthogonal
+#print axioms Gtz.one_le_sum_compl_weightedLeverage_of_orthogonal
+#print axioms Gtz.compl_lineTriple_eq_freeTriple
+#print axioms Gtz.sum_freeTriple_weightedLeverage
+#print axioms Gtz.one_le_freeTriple_weightedLeverage
+#print axioms Gtz.sum_lineWeightedLeverage_le_two
+#print axioms Gtz.planeBranchTenCandidate_of_weightedLineLeverage_lt_freeMax
+#print axioms Gtz.oneLineResidual_of_weightedLineLeverage_lt_freeMax

@@ -4244,3 +4244,10 @@ import Gtz.Design.CrossEnergyLaw
 -- meeting the star in one label needs that label's boost above the whole
 -- star mass.  No wall hypothesis is used.
 import Gtz.Design.TriangleNormalReading
+-- The selected-maximum weight criterion.  Only the weights INSIDE a selection
+-- are used, so the global cap is replaced by the selection's own maximum, and
+-- the criterion fires wherever the capped one does and beyond.  Parseval makes
+-- the complement's weighted readings exact at an orthogonal probe, so the free
+-- triple of the one-line stratum carries weighted leverage at least one and the
+-- line carries at most two.
+import Gtz.Design.WeightedFormCriterion
