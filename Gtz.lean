@@ -4551,3 +4551,13 @@ import Gtz.Design.ComplementLeverageLaw
 -- candidates each reduce to one strict pair-minor inequality, while omitting
 -- two triangle labels is impossible.
 import Gtz.Wave.GaugeWallTriangleComplementBlock
+
+-- The normal budget of a flat set.  At a unit normal that every flat atom
+-- kills, Parseval carries the whole probe energy to the labels OUTSIDE the flat
+-- set, so the unweighted sum of the same squared readings exceeds one and the
+-- complement always clears the excess condition of the flat split.  When the
+-- complement carries three labels the sharper statement holds: fix any one of
+-- them and one of the two pairs containing it already clears the excess, priced
+-- by the two remaining co-weights.  The excess discharged, the criterion
+-- collapses to its plane inequality alone.
+import Gtz.Design.FlatNormalBudget

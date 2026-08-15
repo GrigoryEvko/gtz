@@ -972,6 +972,7 @@ import Gtz.Design.WholeLineMarginCriterion
 import Gtz.Design.ComplementPairCriterion
 import Gtz.Design.PivotGramIdempotent
 import Gtz.Wave.GaugeWallTriangleComplementBlock
+import Gtz.Design.FlatNormalBudget
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29902,3 +29903,17 @@ run_cmd do
 #print axioms Gtz.kFourGaugeWall_posDef_compl_triangle_star_iff
 #print axioms Gtz.kFourGaugeWall_triangle_complement_pair_minors
 #print axioms Gtz.kFourGaugeWall_not_posDef_compl_triangle_pair
+-- The normal budget of a flat set: the Parseval transfer to the complement, the
+-- unweighted excess, the three-label weight bound, the designated-pair excess,
+-- the collapse to the plane inequality, and the one-line and two-meeting-lines
+-- readings.
+#print axioms Gtz.flat_normalBudget
+#print axioms Gtz.sum_sq_normalReading_compl_sub_one
+#print axioms Gtz.one_lt_sum_sq_normalReading_compl
+#print axioms Gtz.sum_three_weight_le_one
+#print axioms Gtz.exists_partner_excess_gt_one
+#print axioms Gtz.flatSplit_posDef_iff_planeInequality
+#print axioms Gtz.oneLine_freeTriple_excess
+#print axioms Gtz.oneLine_freeTriple_posDef_iff_planeInequality
+#print axioms Gtz.oneLine_freePair_excess
+#print axioms Gtz.twoMeetingLines_transversal_excess
