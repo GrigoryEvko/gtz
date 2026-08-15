@@ -981,6 +981,7 @@ import Gtz.Design.FlatCrossBudget
 import Gtz.Design.LoadBearingTriple
 import Gtz.Design.ComplementDeterminantLaw
 import Gtz.Design.CrossLeverageBudget
+import Gtz.Wave.PivotLoadScoreReduction
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30060,3 +30061,27 @@ run_cmd do
 #print axioms Gtz.sum_chartLeverage_mul_one_sub_le
 #print axioms Gtz.sum_chartLeverage_compl_le
 #print axioms Gtz.sum_chartPivotSlack_eq_two
+-- The aggregate pivot-load reduction: conservation, the aggregate
+-- load-bearing theorem, the exact no-strict load/residual trace windows, and
+-- the high/low pivot census inherited by every rank-three residual.
+#print axioms Gtz.pivotLoadScore
+#print axioms Gtz.sum_pivotLoadScore
+#print axioms Gtz.scaledResidualDiag
+#print axioms Gtz.pivotLoadScore_add_scaledResidualDiag
+#print axioms Gtz.scaledResidualDiag_eq_coweight_mul_residualPairing_diag
+#print axioms Gtz.sum_scaledResidualDiag_eq_two
+#print axioms Gtz.sum_deficiency_mul_pivot_compl_le_of_loadScore
+#print axioms Gtz.posDef_subsetSum_of_pivotLoadScore_sum_ge_rank
+#print axioms Gtz.posDef_subsetSum_of_pivot_ge_one_via_loadScore
+#print axioms Gtz.sum_pivotLoadScore_lt_three_of_noStrict
+#print axioms Gtz.one_lt_sum_pivotLoadScore_of_noStrict
+#print axioms Gtz.triple_pivotLoadScore_mem_Ioo_of_noStrict
+#print axioms Gtz.sum_scaledResidualDiag_eq_three_sub_load
+#print axioms Gtz.triple_scaledResidualDiag_mem_Ioo_of_noStrict
+#print axioms Gtz.highPivotLabels
+#print axioms Gtz.lowPivotLabels
+#print axioms Gtz.lowPivotLabels_eq_compl_highPivotLabels
+#print axioms Gtz.card_highPivotLabels_le_two_of_noStrict
+#print axioms Gtz.four_le_card_lowPivotLabels_of_noStrict
+#print axioms Gtz.highPivotLabels_subset_of_posDef
+#print axioms Gtz.compl_subset_lowPivotLabels_of_posDef

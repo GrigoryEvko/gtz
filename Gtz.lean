@@ -4648,3 +4648,12 @@ import Gtz.Design.ComplementDeterminantLaw
 -- at all.  At six labels the leverages total three, so the whole cross budget is
 -- at most three halves.
 import Gtz.Design.CrossLeverageBudget
+
+-- The aggregate pivot-load reduction.  A rank-sized selection need not carry
+-- unit pivot pointwise: it is already positive definite when the SUM of
+-- `(1-weight)*pivot + weight` over the selection reaches the rank.  These loads
+-- total rank plus one.  Consequently an unresolved (6,3) design has every
+-- triple load in (1,3), every scaled residual diagonal trace in (0,2), at most
+-- two labels of pivot at least one, and at least four strictly droppable labels.
+-- This is the common scalar residue shared by every rank-three stratum.
+import Gtz.Wave.PivotLoadScoreReduction
