@@ -30303,3 +30303,41 @@ run_cmd do
 #print axioms Gtz.exists_atomMatrix_of_posSemidef_of_minorVanishes
 #print axioms Gtz.minorVanishes_of_eq_smul_atomMatrix
 #print axioms Gtz.minorVanishes_of_symm_twoKernel
+
+-- The transversal load ledger: the unit dictionary between load and pivot, the
+-- balance identity, the deficit and its partition, the criterion, the selection
+-- rule, the squeeze law, the band from the landed load interval, the universal
+-- wall, the dichotomy, and the counting profile that keeps the shared atom at
+-- unit load.
+#print axioms Gtz.pivotLoadScore_sub_one
+#print axioms Gtz.pivotLoadScore_lt_one_iff
+#print axioms Gtz.one_le_pivotLoadScore_iff
+#print axioms Gtz.pivotLoadScore_pos
+#print axioms Gtz.sum_pivotLoadScore_sub_one
+#print axioms Gtz.sum_deficiency_mul_pivot_sub_one
+#print axioms Gtz.sum_pivotLoadScore_sub_one_sixThree
+#print axioms Gtz.transversalDeficit
+#print axioms Gtz.sum_pivotLoadScore_sixThree
+#print axioms Gtz.transversalDeficit_add_max
+#print axioms Gtz.transversalDeficit_pos
+#print axioms Gtz.twoMeetingLinesTransversalStrict_of_transversalDeficit_le_one
+#print axioms Gtz.one_lt_transversalDeficit_of_not_transversalStrict
+#print axioms Gtz.twoMeetingLinesTransversalStrict_of_private_pivots_ge_one
+#print axioms Gtz.shared_pivotLoadScore_lt_one_of_transversalStrict
+#print axioms Gtz.private_min_pivotLoadScore_lt_one_of_transversalStrict
+#print axioms Gtz.transversalDeficit_lt_three_of_transversalStrict
+#print axioms Gtz.one_lt_transversalDeficit_of_shared_pivot_ge_one
+#print axioms Gtz.transversalDeficit_mem_Ioo_of_not_transversalStrict
+#print axioms Gtz.pivotLoadScore_le_max_pivot_one
+#print axioms Gtz.min_pivot_one_le_pivotLoadScore
+#print axioms Gtz.transversalDeficit_mem_Ioo_of_noStrict
+#print axioms Gtz.transversalDeficit_lt_three
+#print axioms Gtz.transversalStrict_or_deficit_mem_Ioo
+#print axioms Gtz.maxTransversalLoad_mem_Ioo_of_noStrict
+#print axioms Gtz.ledgerEscapeProfile
+#print axioms Gtz.ledgerEscapeProfile_shared
+#print axioms Gtz.ledgerEscapeProfile_eq_add
+#print axioms Gtz.ledgerEscapeProfile_pos
+#print axioms Gtz.sum_ledgerEscapeProfile
+#print axioms Gtz.ledgerEscapeProfile_triple_mem_Ioo
+#print axioms Gtz.ledger_counting_admits_unit_shared_load

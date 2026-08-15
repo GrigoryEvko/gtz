@@ -4758,3 +4758,12 @@ import Gtz.Design.PivotOnlyDominance
 -- closes at leverage seven ninths, where the governing quadratic takes the
 -- value one.
 import Gtz.LinAlg.ProjectionDiagonalDominance
+
+-- The transversal load ledger of the two meeting lines.  The landed load
+-- theorem decides a strict transversal from a card-three set handed to it.  The
+-- deficit reads the four transversals as ONE scalar of the design: the load the
+-- transversals cannot reach, at the shared label and the lighter private label
+-- of each line.  Deficit at most one gives a strict transversal, unit pivot at
+-- the open label and one private label of each line gives one too, and the open
+-- content of the obligation is the band between one and three.
+import Gtz.Wave.TransversalLoadLedger
