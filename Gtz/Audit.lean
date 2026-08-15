@@ -888,6 +888,7 @@ import Gtz.Wave.KFourTreeWindowCorankReduction
 import Gtz.Wave.KFourPathCorankCollapse
 import Gtz.Wave.KFourStarWallWiring
 import Gtz.Wave.KFourStarAmplifiedWallWiring
+import Gtz.Wave.KFourStarExchangeTreeWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28771,6 +28772,24 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedTreeStarAmplifiedWall_iff_starWall
 #print axioms Gtz.kFourKnifeBandRefinedTreeStarAmplifiedWall_iff
 #print axioms Gtz.kFourFamilySelection_iff_treeStarAmplifiedWall
+-- Preserve the exact finite witness relation hidden by the first amplified
+-- interface: both amplified repairs are K4 spanning trees.
+#print axioms Gtz.kFourStarGauge_bundle_translate_spanning
+#print axioms Gtz.kFourStarA_bundle_translate_spanning
+#print axioms Gtz.kFourStarB_bundle_translate_spanning
+#print axioms Gtz.kFourStarC_bundle_translate_spanning
+#print axioms Gtz.KFourTreeAmplifiedSpanningExchangeData
+#print axioms Gtz.kFourTreeAmplifiedSpanningExchangeData_of_star
+#print axioms Gtz.kFourTreeAmplifiedExchangeData_of_spanning
+#print axioms Gtz.KFourTreeStarSpanningExchangeWallData
+#print axioms Gtz.KFourWeakTreeStarSpanningExchangeWallResidual
+#print axioms Gtz.kFourWeakTreeStarSpanningExchangeWallResidual_of_starWallResidual
+#print axioms Gtz.kFourWeakTreeStarWallResidual_of_spanningExchangeWallResidual
+#print axioms Gtz.kFourWeakTreeStarSpanningExchangeWallResidual_iff_starWallResidual
+#print axioms Gtz.KFourKnifeBandRefinedTreeStarSpanningExchangeWallWeakToStrict
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarSpanningExchangeWall_iff_starWall
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarSpanningExchangeWall_iff
+#print axioms Gtz.kFourFamilySelection_iff_treeStarSpanningExchangeWall
 #print axioms Gtz.kFourWeakTreeGapCorankResidual_refine_star
 -- The star-corank closure platform: the singleton collapse, the exchange
 -- bookkeeping, the gauge-star normal form, the double-pointer package, and

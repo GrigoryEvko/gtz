@@ -4056,3 +4056,7 @@ import Gtz.Wave.KFourStarWallWiring
 -- alternative: a positive exchange reading, or a strict two-sided boost-ratio
 -- reversal.
 import Gtz.Wave.KFourStarAmplifiedWallWiring
+-- Retain the combinatorial content of the star amplification: both repaired
+-- selections are among the sixteen K4 spanning trees.  This avoids treating a
+-- positive reading on a possibly dependent card-three set as a tree witness.
+import Gtz.Wave.KFourStarExchangeTreeWiring
