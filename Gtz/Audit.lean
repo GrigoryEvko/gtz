@@ -886,6 +886,7 @@ import Gtz.Design.StarOnlyLaw
 import Gtz.Design.StarCorankClosure
 import Gtz.Design.StarWallVacuity
 import Gtz.Design.StarWallHeavyCap
+import Gtz.Design.StarWallSharpCap
 import Gtz.Design.StarWallMirrors
 import Gtz.Design.StarWallTransport
 import Gtz.Wave.KFourTreeWindowCorankReduction
@@ -29034,3 +29035,17 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefined_of_gaugeAndPivotPropagation
 #print axioms Gtz.kFourFamilySelection_of_gaugeAndPivotPropagation
 #print axioms Gtz.kFourEveryPointHasStrictTree_of_gaugeAndPivotPropagation
+-- The sharp weight cap of the gauge star wall.  The joint bound of the negative
+-- block reaches the exact wall threshold, which the term bound cannot.
+#print axioms Gtz.starWall_sharp_gaps
+#print axioms Gtz.starWall_sharp_sides
+#print axioms Gtz.starWall_sharp_poly
+#print axioms Gtz.starWall_sharp_corner
+#print axioms Gtz.starWall_sharp_gt_three
+#print axioms Gtz.starWall_sharp_minorTwo
+#print axioms Gtz.starWall_sharp_identity
+#print axioms Gtz.starWall_sharp_det
+#print axioms Gtz.kFourStarACell_fires_of_wall_sharpCap
+#print axioms Gtz.kFourAtlas_fires_of_wall_sharpCap
+#print axioms Gtz.kFourAtlas_fires_of_wall_fifthCap
+#print axioms Gtz.kFourAtlas_fires_of_wall_nineteenthCap

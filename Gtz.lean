@@ -4055,6 +4055,13 @@ import Gtz.Design.StarWallVacuity
 -- sharp: the same term-bound architecture reaches three sixteenths, and the
 -- exact wall threshold is (3 - sqrt 3) / 6 at the symmetric axis.
 import Gtz.Design.StarWallHeavyCap
+-- The sharp weight cap of the gauge star wall.  The joint bound replaces the
+-- term bound and reaches the exact threshold: the worst-demand determinant is
+-- the sharp wall polynomial times the two triangle axes and the axis sum, and
+-- every coefficient of that polynomial is positive exactly when the boost
+-- quotient clears two plus the square root of three.  The named caps are one
+-- fifth and four nineteenths.
+import Gtz.Design.StarWallSharpCap
 -- The two balanced mirrors: the vertex-b and vertex-c stars fire when their
 -- axis coordinate is maximal and their four weights are at most one sixth.
 import Gtz.Design.StarWallMirrors
