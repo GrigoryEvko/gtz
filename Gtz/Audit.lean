@@ -887,6 +887,7 @@ import Gtz.Design.StarCorankClosure
 import Gtz.Wave.KFourTreeWindowCorankReduction
 import Gtz.Wave.KFourPathCorankCollapse
 import Gtz.Wave.KFourStarWallWiring
+import Gtz.Wave.KFourStarAmplifiedWallWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28753,6 +28754,23 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedTreeStarWall_iff_starCorankResidual
 #print axioms Gtz.kFourKnifeBandRefinedTreeStarWall_iff
 #print axioms Gtz.kFourFamilySelection_iff_treeStarWall
+-- Spend the amplified exchange uniformly on all four surviving stars and pin
+-- the exact exchange readings, quotient-wall split, and registry joints.
+#print axioms Gtz.KFourTreeAmplifiedTriangleData
+#print axioms Gtz.kFourTreeAmplifiedTriangleData_of_star
+#print axioms Gtz.KFourTreeAmplifiedExchangeData
+#print axioms Gtz.kFourTreeAmplifiedExchangeData_of_triangle
+#print axioms Gtz.kFourTreeAmplifiedExchangeData_of_star
+#print axioms Gtz.KFourTreeStarAmplifiedWallData
+#print axioms Gtz.kFourTreeStarAmplifiedWallData_of_starWall
+#print axioms Gtz.KFourWeakTreeStarAmplifiedWallResidual
+#print axioms Gtz.kFourWeakTreeStarAmplifiedWallResidual_of_starWallResidual
+#print axioms Gtz.kFourWeakTreeStarWallResidual_of_amplifiedWallResidual
+#print axioms Gtz.kFourWeakTreeStarAmplifiedWallResidual_iff_starWallResidual
+#print axioms Gtz.KFourKnifeBandRefinedTreeStarAmplifiedWallWeakToStrict
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarAmplifiedWall_iff_starWall
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarAmplifiedWall_iff
+#print axioms Gtz.kFourFamilySelection_iff_treeStarAmplifiedWall
 #print axioms Gtz.kFourWeakTreeGapCorankResidual_refine_star
 -- The star-corank closure platform: the singleton collapse, the exchange
 -- bookkeeping, the gauge-star normal form, the double-pointer package, and

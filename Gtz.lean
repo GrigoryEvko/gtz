@@ -4051,3 +4051,8 @@ import Gtz.Design.StarCorankClosure
 -- pointers.  The resulting A3 formula is exactly equivalent to the star-only
 -- residual.
 import Gtz.Wave.KFourStarWallWiring
+-- Spend the landed amplified exchange on every surviving vertex star.  The
+-- singular wall now carries both exact exchange readings and the exhaustive
+-- alternative: a positive exchange reading, or a strict two-sided boost-ratio
+-- reversal.
+import Gtz.Wave.KFourStarAmplifiedWallWiring
