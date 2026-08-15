@@ -964,6 +964,8 @@ import Gtz.Design.ChartInverseTrace
 import Gtz.Design.ThreeLinesAxisLaw
 import Gtz.Design.ComplementFormLaw
 import Gtz.Design.GaugeWallStarErasure
+import Gtz.Design.GaugeWallTriangleStarDescent
+import Gtz.Wave.KFourTriangleStarStallEndgame
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29742,3 +29744,25 @@ run_cmd do
 #print axioms Gtz.KFourGaugeWallMatchingStarEscape
 #print axioms Gtz.kFourGaugeWallTypeAExchange_of_matchingStarEscape
 #print axioms Gtz.kFourGaugeWallTypeAStall_tree_of_matchingStar_of_triangleClosure
+-- The exact replacement for the false local gauge exchange.  The triangle
+-- pivot sum forces a descending five-set, the rank obstruction shapes its
+-- second deletion, and the resulting nine-pair stall target is equivalent to
+-- the full canonical gauge wall.
+#print axioms Gtz.fullPivot_gt_twoThirds_of_erasedFive_stall
+#print axioms Gtz.kFourGaugeWall_exists_triangle_erase_nonStalled
+#print axioms Gtz.kFourGaugeWall_exists_triangleStar_cardFour
+#print axioms Gtz.KFourGaugeWallTriangleStarStallClosure
+#print axioms Gtz.kFourGaugeStarCorankWallClosure_of_triangleStarStallClosure
+#print axioms Gtz.kFourGaugeWallTriangleStarStallClosure_of_gaugeStarCorankWallClosure
+#print axioms Gtz.kFourGaugeStarCorankWallClosure_iff_triangleStarStallClosure
+-- The registry-facing two-wall composition of the exact pivot and gauge
+-- residuals.
+#print axioms Gtz.KFourTriangleStarStallEndgameClosure
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_of_triangleStarStallEndgame
+#print axioms Gtz.kFourTriangleStarStallEndgameClosure_of_gaugeAndPivotWallClosure
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_iff_triangleStarStallEndgame
+#print axioms Gtz.kFourGaugeTriangleClosure_iff_triangleStarStallEndgame
+#print axioms Gtz.kFourKnifeBandRefined_of_triangleStarStallEndgame
+#print axioms Gtz.kFourFamilySelection_of_triangleStarStallEndgame
+#print axioms Gtz.kFourEveryPointHasStrictTree_of_triangleStarStallEndgame
+#print axioms Gtz.kFourFamilySelection_of_pivotTriangle_of_gaugeTriangleStarStall

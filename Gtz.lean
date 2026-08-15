@@ -4476,9 +4476,22 @@ import Gtz.Design.ThreeLinesAxisLaw
 -- omitted set, so it serves every chart and the trivial chart of a design.
 import Gtz.Design.ComplementFormLaw
 
--- The matching-star form of the gauge-wall type-A exchange.  A type-A selection
--- on the wall is the complement of a matching, one triangle label with one star
--- label.  The leaving label may always be taken to be a star label other than
--- the matching's own, and the entering label is then the other member of the
--- matching, so the six surviving exchanges narrow to four.
+-- The obsolete matching-star exchange interface.  The exact rational refuter
+-- proves that the proposed four adjacent exchanges can all fail while nonlocal
+-- strict trees exist, so this import is retained only as a negative API and a
+-- guard against reviving the false local route.
 import Gtz.Design.GaugeWallStarErasure
+
+-- The gauge-wall triangle-star descent.  Five-set stall pricing raises each
+-- stalled triangle erasure above the full-pivot threshold 2/3, while the three
+-- triangle pivots sum to exactly two.  Hence one triangle erasure descends; the
+-- gauge rank obstruction forces its second omitted label to be a star.  The
+-- resulting nine shaped stalls are proved exactly equivalent to canonical
+-- gauge-wall closure.
+import Gtz.Design.GaugeWallTriangleStarDescent
+
+-- The exact two-wall A3 endgame: contextual triangle stalls on the pivot wall
+-- plus the nine triangle-star complementary stalls on the gauge wall.  This
+-- package is equivalent to the former gauge-plus-pivot closure and feeds the
+-- public knife band, family selector and every-point strict-tree consumers.
+import Gtz.Wave.KFourTriangleStarStallEndgame
