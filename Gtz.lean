@@ -3969,6 +3969,12 @@ import Gtz.Wave.KFourPriorPathDualSaturation
 -- descent over uncovered points stalls at weight sum 1.0805 — the chart slice
 -- carries interior slack, and certificates below that loss are admissible.
 import Gtz.Design.ChartWeightMonotone
+-- The kernel pointer and the chart exchange identity. A selection that reads
+-- nonpositively at a nonzero probe names an outside kappa-argmax pointer, and
+-- every selection through the pointer reads strictly positively at the same
+-- probe. The pointer is the repair step of the weak-to-strict obligations;
+-- the directed probe refuted the hosting conjecture, so it is not a selector.
+import Gtz.Design.KernelPointer
 -- Spend the generic unsigned trace theorem at the two landed three-lines
 -- expansions.  The exact A2 residual is now outside both minor cells and both
 -- one-inequality trace cells.

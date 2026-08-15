@@ -874,6 +874,7 @@ import Gtz.Design.GershgorinWashout
 import Gtz.Wave.KFourDualSaturation
 import Gtz.Wave.KFourPriorPathDualSaturation
 import Gtz.Design.ChartWeightMonotone
+import Gtz.Design.KernelPointer
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28528,3 +28529,11 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedAllPathSaturated_iff_missingPathSaturated
 #print axioms Gtz.kFourKnifeBandRefinedAllPathSaturated_iff
 #print axioms Gtz.kFourFamilySelection_iff_allPathSaturated
+-- The kernel pointer: the chart exchange identity, the pointer theorem, the
+-- witness package from a failed strictness test, and the K4 instance.
+#print axioms Gtz.directionChartGap_exchange
+#print axioms Gtz.directionChartGap_exchange_card
+#print axioms Gtz.exists_outside_pointer_of_nonpos_reading
+#print axioms Gtz.exists_pointer_of_not_posDef
+#print axioms Gtz.pointer_exchange_pos_reading
+#print axioms Gtz.exists_kFourPointer_of_not_posDef
