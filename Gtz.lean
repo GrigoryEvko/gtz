@@ -4614,3 +4614,15 @@ import Gtz.Design.SharedAtomPivotExclusion
 -- of the stage-4 record, whose in-plane line form is isotropic at 11/20 under
 -- unnormalized line directions and is not isotropic under normalized ones.
 import Gtz.Design.FlatCrossBudget
+
+-- The load-bearing triple.  The candidate count caps the labels of
+-- full-selection pivot one or more by the rank; AT the cap the selection those
+-- labels form is positive definite.  A label of pivot one or more cannot be
+-- erased from the full selection, so the labels you cannot erase are exactly
+-- the ones you keep.  The deficiency budget prices the outside pivot mass by
+-- the weight the cap holds, Cauchy-Schwarz through the resolvent prices every
+-- outside reading by that mass, weighted Cauchy-Schwarz collapses the omitted
+-- combination against it, and the dual probe turns the uniform square bound
+-- into a bound on the inverse form.  The residual is one weight comparison.
+-- No square root, no spectral theorem, no chart, generic in size and rank.
+import Gtz.Design.LoadBearingTriple

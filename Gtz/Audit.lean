@@ -978,6 +978,7 @@ import Gtz.Design.NormalLeverageFloor
 import Gtz.Wave.ComplementTripleCriterion
 import Gtz.Design.SharedAtomPivotExclusion
 import Gtz.Design.FlatCrossBudget
+import Gtz.Design.LoadBearingTriple
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30019,3 +30020,14 @@ run_cmd do
 #print axioms Gtz.closedDoor_constant_mem_band
 #print axioms Gtz.closedDoorNormalizedMass
 #print axioms Gtz.closedDoor_normalized_not_isotropic
+-- The load-bearing triple: weighted Cauchy-Schwarz, the outside energy bound,
+-- the outside budget, the dual-probe cap on the inverse form, and the theorem
+-- with its rank-three instance and dichotomy.
+#print axioms Gtz.sq_sum_mul_le_weighted
+#print axioms Gtz.sum_deficiency_mul_sq_reading_le
+#print axioms Gtz.sum_deficiency_mul_pivot_compl_le
+#print axioms Gtz.inverseForm_le_of_forall_sq_le
+#print axioms Gtz.posDef_subsetSum_of_card_pivot_univ_ge_one
+#print axioms Gtz.posDef_subsetSum_of_cardThree_pivot_univ_ge_one
+#print axioms Gtz.exists_cardThree_posDef_of_cardThree_pivot_ge_one
+#print axioms Gtz.exists_pivot_lt_one_or_posDef
