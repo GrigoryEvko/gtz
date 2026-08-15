@@ -873,6 +873,7 @@ import Gtz.Wave.KFourFamilySelectionWiring
 import Gtz.Design.GershgorinWashout
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
+import Gtz.Design.ThreeLinesFamilyWeld
 import Gtz.Wave.ThreeLinesBudgetWiring
 import Gtz.Wave.ThreeLinesReadingCoverWiring
 import Gtz.Wave.ThreeLinesOffLinesWiring
@@ -28414,3 +28415,12 @@ run_cmd do
 #print axioms Gtz.one_le_squeeze_budget_of_noStrict_card
 #print axioms Gtz.exists_heavy_of_noStrict_of_floor
 #print axioms Gtz.exists_heavy_of_noStrict_of_floor_card
+-- The three-lines family weld: the dischargeable A2 joint and the off-lines
+-- law of the whitened family.
+#print axioms Gtz.ThreeLinesFamilySelection
+#print axioms Gtz.threeLinesFamilySelection_of_designSelection
+#print axioms Gtz.directionChartIsTieFree_threeLines_of_familySelection
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomain_of_familySelection
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines_of_familySelection
+#print axioms Gtz.whitenedThreeLines_lineTriple_not_dominates
+#print axioms Gtz.whitenedThreeLines_dominator_offLines
