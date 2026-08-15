@@ -27910,6 +27910,12 @@ run_cmd do
 #print axioms Gtz.threeLines_cardThree_or_stall
 #print axioms Gtz.exists_posDef_erase_univ_not_stall_threeLines
 #print axioms Gtz.threeLines_cardThree_or_cardFour_stall
+-- The generic non-stalled-card-four equivalence, its exact weak-antecedent
+-- stall-escape identification, and the A2 registry consumer.
+#print axioms Gtz.exists_cardThree_posDef_iff_exists_nonStalledCardFour
+#print axioms Gtz.directionChartCardFourStallEscape_iff_isTieFree_of_span
+#print axioms Gtz.threeLinesFundamentalStallEscape_iff_registryResidual
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines_of_stallEscape
 #print axioms Gtz.posDef_directionChartGap_threeLines_of_readingCover
 #print axioms Gtz.directionChartHasStrictTriple_threeLines_of_cover
 #print axioms Gtz.exists_selection_nonneg_reading

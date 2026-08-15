@@ -4130,6 +4130,11 @@ import Gtz.Design.PivotBalanceLaw
 -- chart does span, and its descent lands a card-three strict selection or a
 -- stalled card-four selection — the A2 conclusion under one stall branch.
 import Gtz.Design.ThreeLinesDescentPort
+-- Identify the exact object-level closure of that remaining branch.  On the
+-- fundamental three-lines domain, weak-to-strict tie-freeness is equivalent to
+-- escaping every stalled positive card-four set, and the escape feeds both the
+-- family weld and the exact registered A2 residual.
+import Gtz.Wave.ThreeLinesStallEscapeWiring
 -- Split the final K4 residual into two callable components.  Exact four-cycle
 -- transport identifies all four corank-two vertex-star walls with the one
 -- gauge-star wall; solving that canonical wall together with the four-pivot
