@@ -29378,3 +29378,7 @@ run_cmd do
 #print axioms Gtz.kFourFamilySelection_of_triangleStall_starEndpoint_gauge
 #print axioms Gtz.kFourPivotWallTriangleStallClosure_of_escapeClosure
 #print axioms Gtz.kFourFamilySelection_of_triangleEscape_starEndpoint_gauge
+-- The unrestricted stall-escape interface is exactly the antecedent-free K4
+-- chart theorem; it is a common producer shape, not a logical reduction.
+#print axioms Gtz.kFourCardFourStallEscape_iff_everyPointHasStrictTree
+#print axioms Gtz.kFourFamilySelection_of_cardFourStallEscape
