@@ -4070,3 +4070,7 @@ import Gtz.Wave.KFourStarExchangeTreeWiring
 -- plane always contains a nonzero vector orthogonal to the incoming direction.
 -- The positive exchange reading is therefore a stratifier, not a selector.
 import Gtz.Wave.KFourStarSingleExchangeRefusal
+-- Spend the balanced gauge-star vacuity theorem under the atlas-silence
+-- antecedent.  The surviving family now has a nonmaximal first axis coordinate
+-- or a strictly heavy weight in one of the four vertex-a slots.
+import Gtz.Wave.KFourStarBalancedVacuityWiring

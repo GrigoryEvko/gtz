@@ -891,6 +891,7 @@ import Gtz.Wave.KFourStarWallWiring
 import Gtz.Wave.KFourStarAmplifiedWallWiring
 import Gtz.Wave.KFourStarExchangeTreeWiring
 import Gtz.Wave.KFourStarSingleExchangeRefusal
+import Gtz.Wave.KFourStarBalancedVacuityWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28809,6 +28810,18 @@ run_cmd do
 #print axioms Gtz.kFourKnifeBandRefinedTreeStarRefusedExchangeWall_iff_spanningExchange
 #print axioms Gtz.kFourKnifeBandRefinedTreeStarRefusedExchangeWall_iff
 #print axioms Gtz.kFourFamilySelection_iff_treeStarRefusedExchangeWall
+-- Spend the balanced gauge-star theorem inside the atlas-silent A3 consumer.
+#print axioms Gtz.KFourGaugeStarWallFamilyData
+#print axioms Gtz.KFourGaugeStarWallAtlasBlindData
+#print axioms Gtz.kFourGaugeStarWallAtlasBlindData_of_atlasSilent
+#print axioms Gtz.KFourTreeStarRefusedAtlasBlindWallData
+#print axioms Gtz.KFourWeakTreeStarRefusedAtlasBlindWallResidual
+#print axioms Gtz.kFourWeakTreeStarRefusedAtlasBlindWallResidual_of_refusedExchangeResidual
+#print axioms Gtz.kFourWeakTreeStarRefusedExchangeWallResidual_of_atlasBlindResidual
+#print axioms Gtz.KFourKnifeBandRefinedTreeStarRefusedAtlasBlindWallWeakToStrict
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarRefusedAtlasBlindWall_iff_refusedExchange
+#print axioms Gtz.kFourKnifeBandRefinedTreeStarRefusedAtlasBlindWall_iff
+#print axioms Gtz.kFourFamilySelection_iff_treeStarRefusedAtlasBlindWall
 #print axioms Gtz.kFourWeakTreeGapCorankResidual_refine_star
 -- The star-corank closure platform: the singleton collapse, the exchange
 -- bookkeeping, the gauge-star normal form, the double-pointer package, and

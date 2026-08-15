@@ -59,7 +59,7 @@ Two roots are in play.
     the seventeen off-line triples.  The chart-heavy gate is gone because it
     is automatic;
   - `obligationKnifeBandRefinedKFour` =
-    `Gtz.KFourKnifeBandRefinedTreeStarRefusedExchangeWallWeakToStrict`, strictness demanded
+    `Gtz.KFourKnifeBandRefinedTreeStarRefusedAtlasBlindWallWeakToStrict`, strictness demanded
     ONLY off Layer A, the exchange star, and the seventeen-cell all-tree minor
     atlas, with explicit nonnegative adjugate witnesses, Gershgorin bad-row
     alternatives, and cleared division-free polynomial edge budgets for every
@@ -78,7 +78,11 @@ Two roots are in play.
     kernel plane always contains a nonzero direction orthogonal to the incoming
     chart vector, where the repair has nonpositive reading.  Thus the positive
     exchange-reading branch is retained only as a stratifier, alongside the
-    strict two-sided boost-ratio reversal.  The exact washout
+    strict two-sided boost-ratio reversal.  On the gauge star, the full six
+    wall-family equations are retained and atlas silence now removes the
+    landed balanced region: either the first positive axis coordinate is not
+    maximal, or one of the four vertex-a weights is strictly above `1/6`.
+    The exact washout
     witness shows that the bad-row layer alone cannot decide coverage.  Both
     quantifiers are restricted to the sixteen spanning trees.  The chart-heavy
     gate is gone because six positive chart weights sum to one and therefore
@@ -336,7 +340,7 @@ theorem obligationTieFreeThreeLines :
   Gtz.stressFreeStratumIsTieFree_threeLines_of_chart obligationChartTieFreeThreeLines
 
 /--
-CURRENT STATUS: the open formula is `Gtz.KFourKnifeBandRefinedTreeStarRefusedExchangeWallWeakToStrict`. It is restricted to spanning trees and lies outside Layer A, the exchange star, and the seventeen-cell all-tree unsigned minor atlas. The pointer-window descent is fully spent before the axiom. Its positive-definite branch exposes a four-edge window whose pivot is at least one at every one of its four labels, including the incoming pointer. Its singular branch is restricted to the four vertex stars; the original PSD tree gap has two independent kernel directions, is a nonnegative scalar multiple of their cross-product atom, and the directions carry two distinct outside repair pointers with transverse strict-reading guarantees. The amplified-exchange producer now fires uniformly on all four stars: one opposite-triangle label strictly beats two distinct outgoing star labels in squared kernel reading, both repaired selections lie in the sixteen-tree family, and both quadratic readings are evaluated exactly. The new universal refusal theorem proves that neither one-slot repair is positive definite: inside the original two-dimensional kernel there is always a nonzero vector orthogonal to the incoming direction, and the repaired gap reads there as minus the outgoing boost square. Consequently a positive reading on the amplified probe is a stratifier rather than the missing strict selector; the exhaustive branch still retains that reading and the strict inequality placing the incoming boost quotient below both outgoing quotients. The path-corank branch is empty by two independent landed proofs: the twelve irreducible-Z pullbacks and the rank-one chart-coefficient sign law. `Gtz.kFourKnifeBandRefinedTreeStarRefusedExchangeWall_iff` proves exact equivalence with the public refined knife band, so this is a formula sharpening rather than a new assumption. The exact rational Gershgorin washout point still shows that the bad-row or bad-budget system alone cannot decide coverage. No inhabitant of the fully exposed residual is currently proved. The following long STATUS paragraph is retained as a historical pre-unsigned-cell snapshot and is superseded by this line.
+CURRENT STATUS: the open formula is `Gtz.KFourKnifeBandRefinedTreeStarRefusedAtlasBlindWallWeakToStrict`. It is restricted to spanning trees and lies outside Layer A, the exchange star, and the seventeen-cell all-tree unsigned minor atlas. The pointer-window descent is fully spent before the axiom. Its positive-definite branch exposes a four-edge window whose pivot is at least one at every one of its four labels, including the incoming pointer. Its singular branch is restricted to the four vertex stars; the original PSD tree gap has two independent kernel directions, is a nonnegative scalar multiple of their cross-product atom, and the directions carry two distinct outside repair pointers with transverse strict-reading guarantees. The amplified-exchange producer now fires uniformly on all four stars: one opposite-triangle label strictly beats two distinct outgoing star labels in squared kernel reading, both repaired selections lie in the sixteen-tree family, and both quadratic readings are evaluated exactly. The universal refusal theorem proves that neither one-slot repair is positive definite: inside the original two-dimensional kernel there is always a nonzero vector orthogonal to the incoming direction, and the repaired gap reads there as minus the outgoing boost square. Consequently a positive reading on the amplified probe is a stratifier rather than the missing strict selector; the exhaustive branch still retains that reading and the strict inequality placing the incoming boost quotient below both outgoing quotients. The gauge-star branch now also retains its positive-axis wall coordinates and six division-free equations. Atlas silence excludes the landed balanced certificate region, so either its first axis coordinate is not maximal or one of weights `0,1,4,5` is strictly above `1/6`. The path-corank branch is empty by two independent landed proofs: the twelve irreducible-Z pullbacks and the rank-one chart-coefficient sign law. `Gtz.kFourKnifeBandRefinedTreeStarRefusedAtlasBlindWall_iff` proves exact equivalence with the public refined knife band, so this is a formula sharpening rather than a new assumption. The exact rational Gershgorin washout point still shows that the bad-row or bad-budget system alone cannot decide coverage. No inhabitant of the fully exposed residual is currently proved. The following long STATUS paragraph is retained as a historical pre-unsigned-cell snapshot and is superseded by this line.
 STATUS: the most rigid class; covering half PROVED (`Gtz.directionChartCoversPrimitiveStratum_kFourDirection`, Gtz/Design/RigidityBridge.lean:796), direct class consumer `Gtz.stressFreeStratumIsTieFree_graphicKFour_of_chart` (:834). The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_graphicKFour`, Gtz/Reduction/TrichotomyLedger.lean:505). NOT VACUOUS: the stage-four audit's coordinate-diagonal design (the regular tetrahedron's six edge directions) realizes exactly this pattern. Open: `Gtz.KFourKnifeBandRefinedTenthHeavyWeakToStrict` -- a strictly dominating SPANNING TREE demanded ONLY at a tenth-heavy weakly dominated chart point where NEITHER covered region fires: Layer A (the twenty landed cells, named `Gtz.KFourLayerACellFires`, spent as `Gtz.kFourAtlas_hasStrictTriple_of_layerAFires`) nor the exchange star (`Gtz.KFourExchangeStarCellFires`, spent as `Gtz.kFourAtlas_hasStrictTree_of_exchangeStarCell`). Both quantifiers range over the sixteen spanning trees rather than the twenty card-3 subsets, which is sound because a weak dominator is never a dependent triple (`Gtz.kFourWeakAntecedent_yieldsSpanningTree` over the dichotomy `Gtz.cardThreeSubset_isSpanningTreeOrDependentTriple`). The all-light branch is discharged by the chart whitening, `Gtz.posDef_massMoment_kFourDirection`, and the strict tenth floor; `Gtz.kFourKnifeBandRefinedTenthHeavy_iff` proves this is equivalent to the former refined band. `Gtz.kFourKnifeBandWeakToStrict_of_refined` then recovers the round-2 band, and the boundary split `Gtz.directionChartIsTieFree_kFour_of_knifeBandWeakToStrict` closes the chart. CANONICAL BAND INHABITANT: `Gtz.bandResidualWitnessPoint` (mass (3,16,1,5,3,2), weight (3,1,1,1,3,1)/10; kernel-witnessed outside BOTH regions) -- NOT `Gtz.heavyPairRefuterPoint`, which the exchange star now COVERS (`Gtz.heavyPairRefuterPoint_exchangeStarCellFires`). Eleven positive reals against six FIXED rational chart vectors, sixteen trees, no design, no whitener, no square root in the residual statement.
 CONSUMERS: `obligationChartTieFreeKFour` (now a theorem), hence `obligationTieFreeKFour`, `obligationStressFreeHingeSixThree`, and the rank-three capstone.
 WHY OPEN: the only DIRECTION-GENERIC producer of `Gtz.DirectionChartIsTieFree` is `Gtz.directionChartIsTieFree_of_hasStrictTriple` (:176) -- the eight others are either K4-specific (the four selection bridges and the knife-band split in KFourChartClosure) or transport-only (`Gtz.directionChartIsTieFree_of_reindex` and its three-lines instances move a certificate between charts and cannot manufacture the first one) -- and its premise `Gtz.DirectionChartHasStrictTriple` is kernel-FALSE at a degenerate DIRECTION (a non-spanning family -- no refutation exists at any valid `kFourDirection` chart point, and ~19000 exact-rational adjudications found none); the antecedent-free form is still never landed as a named global. The class-level sibling `stressFreeStratumIsTieFree_graphicKFour_of_strictTriple` (:841) stays forbidden as a route.
@@ -344,12 +348,12 @@ ATTACK: DECIDED (spike, 2026-08-07): the DIRECT road; collar weld rejected (thre
 NOT-REFUTED: no census row targets it. The relaxed-weight refutation needs `0 <= weight`; chart points carry strict positivity. No stress-forcing filter can apply (TrichotomyLedger.lean:505 plus the tetrahedron inhabitant).
 -/
 axiom obligationKnifeBandRefinedKFour :
-    Gtz.KFourKnifeBandRefinedTreeStarRefusedExchangeWallWeakToStrict
+    Gtz.KFourKnifeBandRefinedTreeStarRefusedAtlasBlindWallWeakToStrict
 
 /-- The registered chart residual recovers the exact design-side whitening
 family selector.  This is an equivalence, not an additional obligation. -/
 theorem obligationKFourFamilySelection : Gtz.KFourFamilySelection :=
-  Gtz.kFourFamilySelection_iff_treeStarRefusedExchangeWall.mpr
+  Gtz.kFourFamilySelection_iff_treeStarRefusedAtlasBlindWall.mpr
     obligationKnifeBandRefinedKFour
 
 /-- The fully exposed K4 wall axiom reconstructs the former refined knife band
@@ -360,7 +364,7 @@ dichotomy, the four-pivot sharpening, the star rank-one collapse, the second
 pointer theorem, and the automatic chart-heavy law. -/
 theorem obligationKnifeBandRefinedKFour_full :
     Gtz.KFourKnifeBandRefinedWeakToStrict :=
-  Gtz.kFourKnifeBandRefinedTreeStarRefusedExchangeWall_iff.mp
+  Gtz.kFourKnifeBandRefinedTreeStarRefusedAtlasBlindWall_iff.mp
     obligationKnifeBandRefinedKFour
 
 /-- **Discharged from the sharpened axiom.**  Same name, same statement.  Three
