@@ -868,6 +868,7 @@ import Gtz.Wave.KFourPendantAtlasWiring
 import Gtz.Wave.KFourRowCertificateWiring
 import Gtz.Wave.KFourZMatrixWiring
 import Gtz.Wave.KFourPolynomialBudgetCells
+import Gtz.Wave.KFourAllTreeZMatrixWiring
 import Gtz.Design.GershgorinWashout
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
@@ -28298,6 +28299,70 @@ run_cmd do
 #print axioms Gtz.kFourAllTreeMinorAtlasCellFires_of_polynomialAtlas
 #print axioms Gtz.kFourAtlas_hasStrictTree_of_polynomialAtlas
 #print axioms Gtz.not_polynomialAtlas_of_allTreeBlind
+-- Complete the Z-matrix obstruction ledger on all sixteen spanning trees.
+#print axioms Gtz.KFourStar345DualWitness
+#print axioms Gtz.kFourStar345DualWitness_of_not_fires
+#print axioms Gtz.KFourBand134DualWitness
+#print axioms Gtz.kFourBand134DualWitness_of_not_fires
+#print axioms Gtz.KFourStar013DualWitness
+#print axioms Gtz.kFourStar013DualWitness_of_not_fires
+#print axioms Gtz.KFourStar024DualWitness
+#print axioms Gtz.kFourStar024DualWitness_of_not_fires
+#print axioms Gtz.KFourStar125DualWitness
+#print axioms Gtz.kFourStar125DualWitness_of_not_fires
+#print axioms Gtz.KFourPendant023DualWitness
+#print axioms Gtz.kFourPendant023DualWitness_of_not_fires
+#print axioms Gtz.KFourPendant123DualWitness
+#print axioms Gtz.kFourPendant123DualWitness_of_not_fires
+#print axioms Gtz.KFourPendant234DualWitness
+#print axioms Gtz.kFourPendant234DualWitness_of_not_fires
+#print axioms Gtz.KFourPendant235DualWitness
+#print axioms Gtz.kFourPendant235DualWitness_of_not_fires
+#print axioms Gtz.KFourPriorTreeDualWitnessLedger
+#print axioms Gtz.kFourPriorTreeDualWitnessLedger_of_not_fullMinorAtlas
+#print axioms Gtz.KFourStar345BadRow
+#print axioms Gtz.KFourBand134BadRow
+#print axioms Gtz.KFourStar013BadRow
+#print axioms Gtz.KFourStar024BadRow
+#print axioms Gtz.KFourStar125BadRow
+#print axioms Gtz.KFourPendant023BadRow
+#print axioms Gtz.KFourPendant123BadRow
+#print axioms Gtz.KFourPendant234BadRow
+#print axioms Gtz.KFourPendant235BadRow
+#print axioms Gtz.KFourPriorTreeBadRowLedger
+#print axioms Gtz.kFourPriorTreeBadRowLedger_of_dualWitnessLedger
+#print axioms Gtz.KFourStar345BadBudget
+#print axioms Gtz.KFourBand134BadBudget
+#print axioms Gtz.KFourStar013BadBudget
+#print axioms Gtz.KFourStar024BadBudget
+#print axioms Gtz.KFourStar125BadBudget
+#print axioms Gtz.KFourPendant023BadBudget
+#print axioms Gtz.KFourPendant123BadBudget
+#print axioms Gtz.KFourPendant234BadBudget
+#print axioms Gtz.KFourPendant235BadBudget
+#print axioms Gtz.kFourStar345BadBudget_of_badRow
+#print axioms Gtz.kFourBand134BadBudget_of_badRow
+#print axioms Gtz.kFourStar013BadBudget_of_badRow
+#print axioms Gtz.kFourStar024BadBudget_of_badRow
+#print axioms Gtz.kFourStar125BadBudget_of_badRow
+#print axioms Gtz.kFourPendant023BadBudget_of_badRow
+#print axioms Gtz.kFourPendant123BadBudget_of_badRow
+#print axioms Gtz.kFourPendant234BadBudget_of_badRow
+#print axioms Gtz.kFourPendant235BadBudget_of_badRow
+#print axioms Gtz.KFourPriorTreeBadBudgetLedger
+#print axioms Gtz.kFourPriorTreeBadBudgetLedger_of_badRowLedger
+#print axioms Gtz.KFourPriorTreeObstructionLedger
+#print axioms Gtz.kFourPriorTreeObstructionLedger_of_not_fullMinorAtlas
+#print axioms Gtz.KFourAllTreeDualWitnessLedger
+#print axioms Gtz.KFourAllTreeBadRowLedger
+#print axioms Gtz.KFourAllTreeBadBudgetLedger
+#print axioms Gtz.KFourAllTreeObstructionLedger
+#print axioms Gtz.kFourAllTreeObstructionLedger_of_allTreeBlind
+#print axioms Gtz.KFourKnifeBandRefinedAllTreeZObstructedWeakToStrict
+#print axioms Gtz.zObstructedKFourKnifeBandRefined_of_allTreeZObstructed
+#print axioms Gtz.allTreeZObstructedKFourKnifeBandRefined_of_zObstructed
+#print axioms Gtz.kFourKnifeBandRefinedAllTreeZObstructed_iff_zObstructed
+#print axioms Gtz.kFourKnifeBandRefinedAllTreeZObstructed_iff
 -- The Gershgorin washout: the sixteen-row necessary system and a strict
 -- spanning tree hold at one rational chart point.
 #print axioms Gtz.gershgorinWashoutMass

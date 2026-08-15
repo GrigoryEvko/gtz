@@ -3938,6 +3938,11 @@ import Gtz.Wave.KFourZMatrixWiring
 -- Any one of these three-inequality cells recovers its path minor certificate
 -- and therefore dispatches a strict K4 spanning tree directly.
 import Gtz.Wave.KFourPolynomialBudgetCells
+-- Complete the Z-matrix ledger for the nine earlier minor cells and join it
+-- to the seven missing paths.  The exact A3 residual now carries a full
+-- nonnegative dual witness, bad row, and cleared budget for every spanning
+-- tree, rather than only for the seven paths added by the row atlas.
+import Gtz.Wave.KFourAllTreeZMatrixWiring
 -- The Gershgorin washout: one rational chart point satisfies the bad-row
 -- condition of all sixteen spanning trees while nine trees are strictly
 -- dominating.  The sixteen-row necessary system cannot decide coverage, so
