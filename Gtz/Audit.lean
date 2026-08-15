@@ -854,6 +854,7 @@ import Gtz.Wave.TenthHeavyLineResidualWiring
 import Gtz.Wave.OneLineSurvivorWiring
 import Gtz.Wave.TenthLightChartWiring
 import Gtz.Design.BudgetCoverCriterion
+import Gtz.Design.UnsignedCycleCells
 import Gtz.Wave.ThreeLinesBudgetWiring
 import Gtz.Wave.ThreeLinesReadingCoverWiring
 import Gtz.Wave.ThreeLinesOffLinesWiring
@@ -27891,3 +27892,23 @@ run_cmd do
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomain_of_offLines
 #print axioms Gtz.offLinesThreeLinesFundamentalDomain_of_chartTieFree
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetReadingBlindOffLines_iff
+-- The unsigned cycle cells: the allocation-free criterion, the K4 transport,
+-- the band witness at integer minors, and the K4 registry joint.
+#print axioms Gtz.kFourDirection_span
+#print axioms Gtz.directionChartPoint_exists_tenthHeavy
+#print axioms Gtz.kFour_expansion_star_zero
+#print axioms Gtz.kFour_expansion_star_one
+#print axioms Gtz.kFour_expansion_star_two
+#print axioms Gtz.kFour_expansion_band_zero
+#print axioms Gtz.kFour_expansion_band_two
+#print axioms Gtz.kFour_expansion_band_five
+#print axioms Gtz.explicit_quadForm_eval
+#print axioms Gtz.posDef_directionChartGap_of_unsignedCycleMinors
+#print axioms Gtz.posDef_kFour_starCell
+#print axioms Gtz.posDef_kFour_bandTreeCell
+#print axioms Gtz.bandResidual_unsignedCell_oneThreeFour
+#print axioms Gtz.posDef_threeLines_vertexCellMinors
+#print axioms Gtz.posDef_threeLines_freeCellMinors
+#print axioms Gtz.starTree_mem_kFourSpanningTreeList
+#print axioms Gtz.bandTree_mem_kFourSpanningTreeList
+#print axioms Gtz.kFourKnifeBandRefinedTenthHeavy_of_strictTree

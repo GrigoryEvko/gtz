@@ -3847,6 +3847,14 @@ import Gtz.Wave.TenthLightChartWiring
 -- the consumer joint reduces the committed A2 obligation to a per-point
 -- strict triple on the tenth-heavy fundamental domain.
 import Gtz.Design.BudgetCoverCriterion
+-- The unsigned cycle cells: the allocation-free upgrade of the budget
+-- certificate.  For any probe the chart gap dominates the unsigned cycle form
+-- at the absolute selected readings, so a cell is three leading-minor
+-- inequalities in the moduli alone.  The module carries the K4 transport (the
+-- gauge tree and the band tree with the fundamental-cycle expansions), the
+-- exact band witness at integer minors, the two three-lines cells in the same
+-- format, the heavy-label law, and the K4 registry joint.
+import Gtz.Design.UnsignedCycleCells
 -- Spend both allocated three-lines cells in the A2 registry chain.  The live
 -- residual is now tenth-heavy and simultaneously outside the vertex and free
 -- budget certificates; IFF theorems recover both the prior tenth-heavy form
