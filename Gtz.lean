@@ -3855,3 +3855,6 @@ import Gtz.Wave.ThreeLinesBudgetWiring
 -- The max-reading cover cell is spent after the two allocated cells, again
 -- with an exact IFF back to the public three-lines obligation.
 import Gtz.Wave.ThreeLinesReadingCoverWiring
+-- The three dependent chart lines cannot even supply the weak antecedent; the
+-- final A2 residual therefore ranges over the seventeen off-line triples.
+import Gtz.Wave.ThreeLinesOffLinesWiring

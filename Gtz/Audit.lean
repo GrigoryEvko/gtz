@@ -856,6 +856,7 @@ import Gtz.Wave.TenthLightChartWiring
 import Gtz.Design.BudgetCoverCriterion
 import Gtz.Wave.ThreeLinesBudgetWiring
 import Gtz.Wave.ThreeLinesReadingCoverWiring
+import Gtz.Wave.ThreeLinesOffLinesWiring
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27878,3 +27879,15 @@ run_cmd do
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomain_of_budgetReadingBlind
 #print axioms Gtz.budgetReadingBlindThreeLinesFundamentalDomain_of_chartTieFree
 #print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetReadingBlind_iff
+-- The three dependent line triples are impossible weak witnesses.  Their
+-- elimination and both exact equivalence chains are pinned here.
+#print axioms Gtz.ThreeLinesOffLinesWeakTriple
+#print axioms Gtz.exists_threeLinesOffLinesWeakTriple_of_exists_weak
+#print axioms Gtz.exists_weak_of_exists_threeLinesOffLinesWeakTriple
+#print axioms Gtz.ChartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetReadingBlindOffLines
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetReadingBlind_of_offLines
+#print axioms Gtz.offLinesThreeLinesFundamentalDomain_of_budgetReadingBlind
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetReadingBlindOffLines_iff_combined
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomain_of_offLines
+#print axioms Gtz.offLinesThreeLinesFundamentalDomain_of_chartTieFree
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetReadingBlindOffLines_iff
