@@ -4343,3 +4343,9 @@ import Gtz.Design.DiscountedExcess
 -- trace is the only one of the three triple invariants that is linear in the
 -- selection, which is why the same average does not reach the other two.
 import Gtz.Design.GlobalTraceFloor
+
+-- The type-A exchange reduction.  One positive definite one-label exchange out
+-- of a four-cycle stall finishes the type-A case: the exchange drops to a strict
+-- spanning tree, or it is itself a stall containing a triangle.  The exchange
+-- hypothesis is false on the general chart and measured true on the gauge wall.
+import Gtz.Design.TypeAExchangeReduction

@@ -944,6 +944,7 @@ import Gtz.Wave.TwoOutsideRefusalLaw
 import Gtz.Design.BlindSpotArithmetic
 import Gtz.Design.DiscountedExcess
 import Gtz.Design.GlobalTraceFloor
+import Gtz.Design.TypeAExchangeReduction
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29490,3 +29491,8 @@ run_cmd do
 #print axioms Gtz.exists_star_trace_pos
 #print axioms Gtz.leverageOf_kFourDirection_pos
 #print axioms Gtz.exists_star_trace_pos_kFour
+#print axioms Gtz.kFourExchange_card
+#print axioms Gtz.kFourTypeAStall_tree_or_triangleStall
+#print axioms Gtz.kFourTypeAStall_tree_of_exchange_of_triangleClosure
+#print axioms Gtz.KFourGaugeWallTypeAExchange
+#print axioms Gtz.kFourGaugeWallTypeAStall_tree_of_exchange_of_triangleClosure
