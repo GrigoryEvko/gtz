@@ -1017,6 +1017,7 @@ import Gtz.Design.GeneralCoverCell
 import Gtz.Design.TwoMeetingLinesChart
 import Gtz.Design.UniformWitnessRefutation
 import Gtz.Design.KFourOwnMonomial
+import Gtz.Design.FrobeniusSpreadCell
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30758,3 +30759,32 @@ run_cmd do
 #print axioms Gtz.abs_selectionValue_eq
 #print axioms Gtz.absSelectionValue_nonneg
 #print axioms Gtz.abs_kFourTreePolynomial_le
+
+-- The Frobenius spread cell: the quartic closing chain, the boost root, the Gram
+-- entry of the omitted labels, the triple reading combination, the spread
+-- threshold, the cell, its subsumption of the trace bound, and the cover.
+#print axioms Gtz.sq_tripleGramForm_le_frobenius_mul_sq
+#print axioms Gtz.lt_of_resolvent_of_spread
+#print axioms Gtz.boostRoot
+#print axioms Gtz.boostRoot_sq
+#print axioms Gtz.boostRoot_nonneg
+#print axioms Gtz.boostedGram
+#print axioms Gtz.boostedGram_diag
+#print axioms Gtz.sq_boostedGram
+#print axioms Gtz.boostedReading
+#print axioms Gtz.sq_boostedReading
+#print axioms Gtz.tripleReadingCombination
+#print axioms Gtz.tripleReadingCombination_dotProduct
+#print axioms Gtz.chartCrossTerm
+#print axioms Gtz.boostedGram_mul_readings
+#print axioms Gtz.tripleReadingCombination_inverseForm
+#print axioms Gtz.frobeniusSpread
+#print axioms Gtz.frobeniusSpread_nonneg
+#print axioms Gtz.posDef_directionChartGap_compl_triple_of_frobeniusSpread
+#print axioms Gtz.frobeniusSpread_le_sq_sum_fullPivot
+#print axioms Gtz.posDef_directionChartGap_compl_triple_of_sum_fullPivot_lt_one'
+#print axioms Gtz.posDef_directionChartGap_compl_triple_of_pivotThird'
+#print axioms Gtz.frobeniusSpread_lt_one_of_concentrated
+#print axioms Gtz.posDef_subsetSum_compl_triple_of_frobeniusSpread
+#print axioms Gtz.FrobeniusSpreadCovers
+#print axioms Gtz.exists_posDef_compl_triple_of_frobeniusSpreadCovers
