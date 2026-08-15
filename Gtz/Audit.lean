@@ -956,6 +956,7 @@ import Gtz.Design.ComplementPairEscape
 import Gtz.Design.ComplementarySumLaw
 import Gtz.Design.InverseTraceEscape
 import Gtz.Design.GaugeWallKernelLaw
+import Gtz.Design.StallLocus
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29621,3 +29622,21 @@ run_cmd do
 #print axioms Gtz.kFourGaugeWall_triangle_pivot_lt_one
 #print axioms Gtz.kFourGaugeWall_star_deficiency_gt_one
 #print axioms Gtz.kFourGaugeWall_two_star_pivots_lt_one
+-- The division-free stall locus: the adjugate reading, the rank-one Schur step
+-- without an inverse, the reading identity, the stall characterisation, the
+-- generic stall price, and the Gram form through Sylvester.
+#print axioms Gtz.adjugateReading
+#print axioms Gtz.trace_mul_subsetSum_eq_sum_quadForm
+#print axioms Gtz.pivot_mul_det_eq_adjugateReading
+#print axioms Gtz.one_le_pivot_iff_det_le_adjugateReading
+#print axioms Gtz.erase_dominates_iff_adjugateReading_le_det
+#print axioms Gtz.sum_adjugateReading_eq
+#print axioms Gtz.stall_iff_forall_det_le_adjugateReading
+#print axioms Gtz.exists_erase_dominates_of_adjugateReading_lt
+#print axioms Gtz.card_sub_rank_mul_det_le_adjugateTrace_of_stall
+#print axioms Gtz.not_adjugateTrace_lt_of_stall
+#print axioms Gtz.selectedGram
+#print axioms Gtz.selectedFrame
+#print axioms Gtz.selectedFrame_mul_transpose
+#print axioms Gtz.transpose_mul_selectedFrame
+#print axioms Gtz.det_gap_eq_sign_mul_det_gram_sub_one

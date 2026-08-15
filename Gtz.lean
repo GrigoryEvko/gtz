@@ -4422,3 +4422,11 @@ import Gtz.Design.InverseTraceEscape
 -- the three triangle pivots sum to exactly two, and the weighted star deficiency
 -- exceeds one, which puts at least two star pivots below one.
 import Gtz.Design.GaugeWallKernelLaw
+
+-- The division-free stall locus.  The inverse-trace law is the trace of a
+-- vector statement: clearing the pivot of its division makes the adjugate
+-- reading of a label a polynomial in the selected atoms, and a base set stalls
+-- exactly when every reading clears the determinant.  Summing the readings
+-- returns the inverse-trace price with no inverse anywhere, and Sylvester puts
+-- the whole locus in the Gram matrix of the selected labels.
+import Gtz.Design.StallLocus
