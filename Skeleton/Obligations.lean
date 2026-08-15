@@ -52,10 +52,10 @@ Two roots are in play.
     of four explicit transversal triples.  Both are kernel-equivalent to the
     former pattern statement;
   - `obligationChartTieFreeThreeLinesFundamentalDomain` =
-    `Gtz.ChartTieFreeThreeLinesFundamentalDomainBudgetReadingTraceBlindOffLines`
+    `Gtz.ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines`
     on HALF the parameter line (`1 <= |slide|`), outside the allocated budget,
-    max-reading, both allocation-free unsigned-minor cells, and both
-    one-inequality unsigned-trace cells, with the weak witness restricted to
+    max-reading, the two fixed unsigned cells, and the one-inequality trace
+    cells on all five moved `Z/3` orbits.  The weak witness is restricted to
     the seventeen off-line triples.  The chart-heavy gate is gone because it
     is automatic;
   - `obligationKnifeBandRefinedKFour` =
@@ -274,7 +274,7 @@ theorem obligationTieFreeTwoMeetingLines :
   Gtz.stressFreeStratumIsTieFree_of_stratumIsTieFree _ obligationStratumTieFreeTwoMeetingLines
 
 /--
-CURRENT STATUS: the open formula is `Gtz.ChartTieFreeThreeLinesFundamentalDomainBudgetReadingTraceBlindOffLines`. It lies on the fundamental domain, outside the allocated budget cells, the max-reading cover, both allocation-free unsigned-minor cells, and the new one-inequality unsigned-trace cells at `{0,1,3}` and `{2,4,5}`. Its weak witness is one of the seventeen off-line triples, and no chart-heavy premise remains. `Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingTraceBlindOffLines_iff` proves exact equivalence with public A2. No inhabitant of this final complement is currently proved. The following STATUS paragraph is retained as a historical pre-unsigned-cell snapshot and is superseded by this line.
+CURRENT STATUS: the open formula is `Gtz.ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines`. It lies on the fundamental domain, outside the allocated budget cells, the max-reading cover, the two fixed unsigned cells, and five additional one-inequality trace cells evaluated over every member of their exact `Z/3` mass orbit. The five representative triples are `{0,1,4}`, `{0,1,5}`, `{0,2,4}`, `{0,2,5}`, and `{0,4,5}`; with the two rotation-fixed triples they exhaust the seven independent orbit types. Its weak witness is one of the seventeen off-line triples, and no chart-heavy premise remains. `Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines_iff` proves exact equivalence with public A2. The former two-fixed-cell formula is now a theorem reconstructed by dispatching the moved atlas. No inhabitant of this final complement is currently proved. The following STATUS paragraph is retained as a historical pre-unsigned-cell snapshot and is superseded by this line.
 STATUS: chart-covered, analytic half open. The covering half is the unconditional `Gtz.parameterizedChartCovers_threeLinesDirection` (Gtz/Design/RigidityBridge.lean:1098) with consumer `Gtz.stressFreeStratumIsTieFree_threeLines_of_chart` (:1135); the stratum is uniformly stress-free (`Gtz.stratumIsStressFree_threeLines`, Gtz/Reduction/TrichotomyLedger.lean:497). What is open is the off-lines, budget-and-reading-blind tenth-heavy residual `Gtz.ChartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetReadingBlindOffLines` on HALF the admissible parameter line, the fundamental domain `1 <= |slide|`. Five landed engines have fired before the axiom. First, the chart at `slide` is realized over the chart at `1/slide`, so only the fundamental domain remains. Second, `Gtz.exists_design_of_chartPoint` and the unconditional strict tenth floor remove every all-light point. Third, the allocated Cauchy--Schwarz certificate removes both canonical semialgebraic cells: the vertex triple `{0,1,3}` and the free triple `{2,4,5}`. Fourth, `Gtz.posDef_directionChartGap_threeLines_of_readingCover` removes any point admitting a card-three set that contains a maximal kappa reading at every probe. Fifth, the normal-axis exclusions prove that none of the three dependent lines `{0,1,2}`, `{0,3,4}`, `{1,3,5}` can even supply the weak antecedent. The live point is therefore tenth-heavy, lies outside all three strictness cells, and carries a weak witness among exactly the seventeen off-line triples. `Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavyBudgetReadingBlindOffLines_iff` proves the narrowed formula equivalent to the former A2 statement; it is not a stronger sufficient condition.
 CONSUMERS: `obligationStressFreeHingeSixThree` (the split parent, now a theorem), hence the rank-three capstone.
 WHY OPEN: the budget inequalities and the reading-cover condition are sufficient cells, not an exhaustive cover. The two exact rational witnesses prove both budget cells are inhabited, but no theorem says every tenth-heavy weak point enters a budget cell or admits one fixed card-three max-reading cover. Removing the three dependent witnesses narrows the finite search but does not select a strict triple among the seventeen survivors. The strict-triple producer `Gtz.directionChartIsTieFree_of_hasStrictTriple` remains false at a degenerate direction, and the reindexing producer only moves a certificate from one slide to another.
@@ -282,13 +282,13 @@ ATTACK: cover the complement of the two explicit allocation cells and the max-re
 NOT-REFUTED: no census row targets it. The strict-triple refutation kills only that producer's premise at a degenerate direction, not this statement. No stress-forcing filter can apply (TrichotomyLedger.lean:497).
 -/
 axiom obligationChartTieFreeThreeLinesFundamentalDomain :
-    Gtz.ChartTieFreeThreeLinesFundamentalDomainBudgetReadingTraceBlindOffLines
+    Gtz.ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines
 
-/-- The trace-blind A2 axiom reconstructs the former fundamental-domain
-statement by spending all four unsigned cells and the automatic heavy law. -/
+/-- The seven-orbit-trace-blind A2 axiom reconstructs the former
+fundamental-domain statement by spending the complete unsigned atlas. -/
 theorem obligationChartTieFreeThreeLinesFundamentalDomain_full :
     Gtz.ChartTieFreeThreeLinesFundamentalDomain :=
-  Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingTraceBlindOffLines_iff.mp
+  Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines_iff.mp
     obligationChartTieFreeThreeLinesFundamentalDomain
 
 /-- **Discharged from the sharpened axiom.**  Same name, same statement: half

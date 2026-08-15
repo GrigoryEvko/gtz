@@ -861,6 +861,7 @@ import Gtz.Design.CoverageRefuters
 import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.KFourUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
+import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Wave.ThreeLinesBudgetWiring
 import Gtz.Wave.ThreeLinesReadingCoverWiring
 import Gtz.Wave.ThreeLinesOffLinesWiring
@@ -28010,6 +28011,67 @@ run_cmd do
 #print axioms Gtz.heavyNeedleResidual_of_separatedHeavyResidual
 #print axioms Gtz.baseTripleTightLineFreeOffConicHeavyNeedleResidual_iff
 #print axioms Gtz.stressFreeStratumIsTieFree_lineFree_of_heavyNeedleResidual
+-- Spend the unsigned trace engine on all five moved three-lines orbits.
+#print axioms Gtz.threeLines_expansion_014_two
+#print axioms Gtz.threeLines_expansion_014_three
+#print axioms Gtz.threeLines_expansion_014_five
+#print axioms Gtz.threeLines_expansion_015_two
+#print axioms Gtz.threeLines_expansion_015_three
+#print axioms Gtz.threeLines_expansion_015_four
+#print axioms Gtz.threeLines_expansion_024_one
+#print axioms Gtz.threeLines_expansion_024_three
+#print axioms Gtz.threeLines_expansion_024_five
+#print axioms Gtz.threeLines_expansion_025_one
+#print axioms Gtz.threeLines_expansion_025_three
+#print axioms Gtz.threeLines_expansion_025_four
+#print axioms Gtz.threeLines_expansion_045_one
+#print axioms Gtz.threeLines_expansion_045_two
+#print axioms Gtz.threeLines_expansion_045_three
+#print axioms Gtz.ThreeLinesTraceCell014
+#print axioms Gtz.ThreeLinesTraceCell015
+#print axioms Gtz.ThreeLinesTraceCell024
+#print axioms Gtz.ThreeLinesTraceCell025
+#print axioms Gtz.ThreeLinesTraceCell045
+#print axioms Gtz.posDef_threeLines_014_of_traceCell
+#print axioms Gtz.posDef_threeLines_015_of_traceCell
+#print axioms Gtz.posDef_threeLines_024_of_traceCell
+#print axioms Gtz.posDef_threeLines_025_of_traceCell
+#print axioms Gtz.posDef_threeLines_045_of_traceCell
+#print axioms Gtz.canonicalPairFailure_traceCell015
+#print axioms Gtz.threeLinesRotation_map_zeroOneFour
+#print axioms Gtz.threeLinesRotation_map_oneTwoThree
+#print axioms Gtz.threeLinesRotation_map_zeroThreeFive
+#print axioms Gtz.threeLinesRotation_map_zeroTwoFour
+#print axioms Gtz.threeLinesRotation_map_oneTwoFive
+#print axioms Gtz.threeLinesRotation_map_threeFourFive
+#print axioms Gtz.threeLinesRotation_map_zeroTwoFive
+#print axioms Gtz.threeLinesRotation_map_oneFourFive
+#print axioms Gtz.threeLinesRotation_map_twoThreeFour
+#print axioms Gtz.threeLinesRotation_map_zeroFourFive
+#print axioms Gtz.threeLinesRotation_map_oneTwoFour
+#print axioms Gtz.threeLinesRotation_map_twoThreeFive
+#print axioms Gtz.twiceRotatedThreeLinesChartPoint
+#print axioms Gtz.ThreeLinesRotatedTraceOrbitCell
+#print axioms Gtz.exists_posDef_threeLines_of_rotatedTraceOrbitCell
+#print axioms Gtz.ThreeLinesTraceOrbit014
+#print axioms Gtz.ThreeLinesTraceOrbit015
+#print axioms Gtz.ThreeLinesTraceOrbit024
+#print axioms Gtz.ThreeLinesTraceOrbit025
+#print axioms Gtz.ThreeLinesTraceOrbit045
+#print axioms Gtz.ThreeLinesMovedTraceOrbitCellFires
+#print axioms Gtz.exists_posDef_threeLines_of_traceOrbit014
+#print axioms Gtz.exists_posDef_threeLines_of_traceOrbit015
+#print axioms Gtz.exists_posDef_threeLines_of_traceOrbit024
+#print axioms Gtz.exists_posDef_threeLines_of_traceOrbit025
+#print axioms Gtz.exists_posDef_threeLines_of_traceOrbit045
+#print axioms Gtz.exists_posDef_threeLines_of_movedTraceOrbitCellFires
+#print axioms Gtz.ThreeLinesSevenOrbitTraceAtlasCellFires
+#print axioms Gtz.exists_posDef_threeLines_of_sevenOrbitTraceAtlasCellFires
+#print axioms Gtz.ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines
+#print axioms Gtz.traceBlindThreeLinesFundamentalDomain_of_sevenOrbitTraceBlind
+#print axioms Gtz.sevenOrbitTraceBlindThreeLinesFundamentalDomain_of_traceBlind
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines_iff_traceBlind
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines_iff
 -- The coverage refuters: the pendant-family expansions and cells, and the two
 -- exact chart points that kill the row-dominance and the star-or-trace
 -- selection dichotomies while the minor atlas covers both.

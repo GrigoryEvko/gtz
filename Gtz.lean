@@ -3898,3 +3898,7 @@ import Gtz.Wave.KFourUnsignedTraceWiring
 -- expansions.  The exact A2 residual is now outside both minor cells and both
 -- one-inequality trace cells.
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
+-- The five moved `Z/3` orbits now carry the same one-inequality trace engine.
+-- Certificates are checked on transformed chart masses and transported back;
+-- the exact A2 residual is outside all seven orbit cells.
+import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
