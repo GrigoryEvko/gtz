@@ -1026,6 +1026,8 @@ import Gtz.Design.SharpSpreadCell
 import Gtz.Wave.EquivariantDesignationRefuter
 import Gtz.Design.LineFreeChart
 import Gtz.Design.LineFreeCovering
+import Gtz.Design.LineFreeModuli
+import Gtz.Design.ChartProgrammeAssembly
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30970,16 +30972,11 @@ run_cmd do
 #print axioms Gtz.smul_lineFree_four_expansion
 #print axioms Gtz.smul_lineFree_five_expansion
 #print axioms Gtz.exists_lineFreeCoordinates
-#print axioms Gtz.tripleBracket_zeroThreeFour_of_lineFreeExpansions
-#print axioms Gtz.tripleBracket_zeroThreeFive_of_lineFreeExpansions
-#print axioms Gtz.tripleBracket_zeroFourFive_of_lineFreeExpansions
-#print axioms Gtz.tripleBracket_oneThreeFour_of_lineFreeExpansions
-#print axioms Gtz.tripleBracket_oneThreeFive_of_lineFreeExpansions
-#print axioms Gtz.tripleBracket_oneFourFive_of_lineFreeExpansions
-#print axioms Gtz.tripleBracket_twoThreeFour_of_lineFreeExpansions
-#print axioms Gtz.tripleBracket_twoThreeFive_of_lineFreeExpansions
-#print axioms Gtz.tripleBracket_twoFourFive_of_lineFreeExpansions
-#print axioms Gtz.tripleBracket_threeFourFive_of_lineFreeExpansions
+#print axioms Gtz.tripleBracket_columnMatrix_mulVec
+#print axioms Gtz.tripleBracket_firstSlot_of_expansions
+#print axioms Gtz.tripleBracket_secondSlot_of_expansions
+#print axioms Gtz.tripleBracket_thirdSlot_of_expansions
+#print axioms Gtz.tripleBracket_of_three_expansions
 #print axioms Gtz.lineFreeScale
 #print axioms Gtz.exists_lineFreeRealization_of_brackets
 #print axioms Gtz.parameterizedChartCovers_lineFreeDirection
@@ -31057,3 +31054,46 @@ run_cmd do
 #print axioms Gtz.hadamardBudget_imp_det_pos
 #print axioms Gtz.PairBudgetCovers
 #print axioms Gtz.exists_posDef_compl_triple_of_pairBudgetCovers
+
+-- The line-free moduli: the free spanning triple, the ten frame brackets of the
+-- chart, the fourteen walls and the exactness of the admissible region, the
+-- bracket law under a frame change and a per-atom scaling, the invariance of a
+-- balanced bracket ratio, injectivity of the chart, and the two controls.
+#print axioms Gtz.lineFreeDirection_span
+#print axioms Gtz.lineFreeChartCoefficients
+#print axioms Gtz.isAdmissibleLineFreeParameter_of_brackets
+#print axioms Gtz.isAdmissibleLineFreeParameter_iff_brackets
+#print axioms Gtz.tripleBracket_of_basisChange_smul
+#print axioms Gtz.bracketRatio_invariant_of_balanced
+#print axioms Gtz.lineFreeDirection_param_injective
+#print axioms Gtz.isAdmissibleLineFreeParameter_two_three_five_seven
+#print axioms Gtz.not_isAdmissibleLineFreeParameter_one_three_five_seven
+
+-- The assembled chart programme: the five-chart residual, the hinge from five
+-- charts, the atlas and its moduli ladder, the hinge from one atlas statement,
+-- the mass moment on every piece, and the hinge from one design-level upgrade
+-- and from one determinant sign.
+#print axioms Gtz.stressFreeResidualFamiliesSix_tieFree_of_charts
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_fiveCharts
+#print axioms Gtz.StressFreeChartPoint
+#print axioms Gtz.StressFreeChartPoint.direction
+#print axioms Gtz.StressFreeChartPoint.IsAdmissible
+#print axioms Gtz.StressFreeChartPoint.moduli
+#print axioms Gtz.StressFreeChartPoint.lineCount
+#print axioms Gtz.StressFreeChartPoint.moduli_add_lineCount
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_atlas
+#print axioms Gtz.stressFreeResidualFamiliesSix_tieFree_of_atlas
+#print axioms Gtz.stressFreeResidualFamiliesSix_eq_five
+#print axioms Gtz.StressFreeChartPoint.moduli_pairwise_ne
+#print axioms Gtz.StressFreeChartPoint.graphicKFour_isAdmissible
+#print axioms Gtz.posDef_massMoment_lineFreeDirection
+#print axioms Gtz.posDef_massMoment_oneLineDirection
+#print axioms Gtz.posDef_massMoment_twoMeetingLinesDirection
+#print axioms Gtz.posDef_massMoment_atlas
+#print axioms Gtz.directionChartIsTieFree_atlas_of_designUpgrade
+#print axioms Gtz.directionChartIsTieFree_lineFree_of_designUpgrade
+#print axioms Gtz.directionChartIsTieFree_oneLine_of_designUpgrade
+#print axioms Gtz.directionChartIsTieFree_twoMeetingLines_of_designUpgrade
+#print axioms Gtz.stressFreeResidualFamiliesSix_tieFree_of_designUpgrade
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_designUpgrade
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_livePairTie

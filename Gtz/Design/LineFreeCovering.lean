@@ -8,7 +8,7 @@ realizing the empty pattern is a chart point at some admissible parameter.  With
 becomes tie-freeness of a four-parameter chart — the shape the campaign already
 carries at entries `#2`, `#3`, `#4` and `#5`, and this is the last of the five.
 
-## The ten bracket identities
+## Four expansion laws, not ten identities
 
 Write `bigDelta = [012]` and read the nine expansion coefficients of
 `Gtz.exists_lineFreeCoordinates` in the basis `{0,1,2}`:
@@ -17,23 +17,20 @@ Write `bigDelta = [012]` and read the nine expansion coefficients of
   `bigDelta . v4 = D . v0 + E . v1 + F . v2`,
   `bigDelta . v5 = G . v0 + H . v1 + K . v2`.
 
-Multilinearity of the bracket then pins the ten triples carrying two or three
-off-basis atoms, each of them a triple the empty pattern forbids to vanish:
+Ten triples carry two or three off-basis atoms, and the empty pattern forbids
+each of them to vanish.  All ten follow from FOUR laws, and all four follow from
+the frame transform law `Gtz.tripleBracket_transpose_mulVec`, which the corpus
+already carries.  Three laws take two expansions and read the bracket against
+one frame vector, and the fourth takes three expansions:
 
-  `bigDelta ^ 2 * [034] = (B F - C E) * bigDelta`,
-  `bigDelta ^ 2 * [035] = (B K - C H) * bigDelta`,
-  `bigDelta ^ 2 * [045] = (E K - F H) * bigDelta`,
-  `bigDelta ^ 2 * [134] = (C D - A F) * bigDelta`,
-  `bigDelta ^ 2 * [135] = (C G - A K) * bigDelta`,
-  `bigDelta ^ 2 * [145] = (F G - D K) * bigDelta`,
-  `bigDelta ^ 2 * [234] = (A E - B D) * bigDelta`,
-  `bigDelta ^ 2 * [235] = (A H - B G) * bigDelta`,
-  `bigDelta ^ 2 * [245] = (D H - E G) * bigDelta`,
-  `bigDelta ^ 3 * [345] = (A (E K - F H) - B (D K - F G) + C (D H - E G)) * bigDelta`.
+  `bigDelta ^ 2 * [P X Y] = (x2 y3 - x3 y2) * [P Q R]`,
+  `bigDelta ^ 2 * [Q X Y] = (x3 y1 - x1 y3) * [P Q R]`,
+  `bigDelta ^ 2 * [R X Y] = (x1 y2 - x2 y1) * [P Q R]`,
+  `bigDelta ^ 3 * [X Y Z] = det (x, y, z) * [P Q R]`.
 
-Each is one `linear_combination` after rewriting the expansions into a bracket.
-The last is the only one that spends all three off-basis atoms at once, so it
-carries `bigDelta` cubed.
+The minor is the Cramer cofactor of the omitted frame slot.  The ten uses are
+`P, Q, R = v0, v1, v2` against the three pairs from `{v3, v4, v5}`, plus the
+three-expansion law once.
 
 ## The parameters and the frame
 
@@ -58,202 +55,137 @@ follows from a bracket the pattern forbids to vanish.
 -/
 import Gtz.Design.LineFreeChart
 import Gtz.Design.GeneralCoverCell
+import Gtz.Design.LineBranchLineFreeCoordinates
 
 namespace Gtz
 
 open Matrix
 
-/-! ## The ten bracket identities -/
+/-! ## The four expansion laws -/
 
-/-- The `{0,3,4}` bracket in the basis `{0,1,2}`: the first basis vector kills
-both `v0` columns, leaving a two-by-two minor. -/
-theorem tripleBracket_zeroThreeFour_of_lineFreeExpansions
-    (vecZero vecOne vecTwo vecThree vecFour : Fin 3 → ℝ)
-    (bigDelta coefA coefB coefC coefD coefE coefF : ℝ)
-    (hexpandThree : bigDelta • vecThree
-      = coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-    (hexpandFour : bigDelta • vecFour
-      = coefD • vecZero + coefE • vecOne + coefF • vecTwo) :
-    bigDelta ^ 2 * tripleBracket vecZero vecThree vecFour
-      = (coefB * coefF - coefC * coefE) * tripleBracket vecZero vecOne vecTwo := by
-  have hkey : tripleBracket vecZero (bigDelta • vecThree) (bigDelta • vecFour)
-      = tripleBracket vecZero (coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-          (coefD • vecZero + coefE • vecOne + coefF • vecTwo) := by
-    rw [hexpandThree, hexpandFour]
-  simp only [tripleBracket_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at hkey
-  simp only [tripleBracket_eq]
-  linear_combination hkey
+/-- **The frame law.**  Three coordinate vectors read through a frame carry the
+bracket of the coordinates times the bracket of the frame.  This is the corpus
+transform law `Gtz.tripleBracket_transpose_mulVec` in column form. -/
+theorem tripleBracket_columnMatrix_mulVec
+    (colFirst colMid colLast xcoord ycoord zcoord : Fin 3 → ℝ) :
+    tripleBracket (columnMatrix colFirst colMid colLast *ᵥ xcoord)
+        (columnMatrix colFirst colMid colLast *ᵥ ycoord)
+        (columnMatrix colFirst colMid colLast *ᵥ zcoord)
+      = tripleBracket xcoord ycoord zcoord
+        * tripleBracket colFirst colMid colLast := by
+  have hkey := tripleBracket_transpose_mulVec
+    (columnMatrix colFirst colMid colLast)ᵀ xcoord ycoord zcoord
+  rw [Matrix.transpose_transpose, Matrix.det_transpose, det_columnMatrix] at hkey
+  exact hkey
 
-/-- The `{0,3,5}` bracket, the same shape with atom `5` in place of atom `4`. -/
-theorem tripleBracket_zeroThreeFive_of_lineFreeExpansions
-    (vecZero vecOne vecTwo vecThree vecFive : Fin 3 → ℝ)
-    (bigDelta coefA coefB coefC coefG coefH coefK : ℝ)
-    (hexpandThree : bigDelta • vecThree
-      = coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-    (hexpandFive : bigDelta • vecFive
-      = coefG • vecZero + coefH • vecOne + coefK • vecTwo) :
-    bigDelta ^ 2 * tripleBracket vecZero vecThree vecFive
-      = (coefB * coefK - coefC * coefH) * tripleBracket vecZero vecOne vecTwo := by
-  have hkey : tripleBracket vecZero (bigDelta • vecThree) (bigDelta • vecFive)
-      = tripleBracket vecZero (coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-          (coefG • vecZero + coefH • vecOne + coefK • vecTwo) := by
-    rw [hexpandThree, hexpandFive]
-  simp only [tripleBracket_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at hkey
-  simp only [tripleBracket_eq]
-  linear_combination hkey
+/-- **The first slot.**  Two expansions against the first frame vector give the
+Cramer cofactor of the first column. -/
+theorem tripleBracket_firstSlot_of_expansions
+    (baseFirst baseMid baseLast probeLeft probeRight : Fin 3 → ℝ)
+    (bigDelta leftFirst leftMid leftLast rightFirst rightMid rightLast : ℝ)
+    (hleft : bigDelta • probeLeft
+      = leftFirst • baseFirst + leftMid • baseMid + leftLast • baseLast)
+    (hright : bigDelta • probeRight
+      = rightFirst • baseFirst + rightMid • baseMid + rightLast • baseLast) :
+    bigDelta ^ 2 * tripleBracket baseFirst probeLeft probeRight
+      = (leftMid * rightLast - leftLast * rightMid)
+        * tripleBracket baseFirst baseMid baseLast := by
+  have hframe := tripleBracket_columnMatrix_mulVec baseFirst baseMid baseLast
+    ![1, 0, 0] ![leftFirst, leftMid, leftLast] ![rightFirst, rightMid, rightLast]
+  rw [columnMatrix_mulVec, columnMatrix_mulVec, columnMatrix_mulVec] at hframe
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons, one_smul, zero_smul, add_zero] at hframe
+  rw [← hleft, ← hright] at hframe
+  have hscale : tripleBracket baseFirst (bigDelta • probeLeft) (bigDelta • probeRight)
+      = bigDelta ^ 2 * tripleBracket baseFirst probeLeft probeRight := by
+    simp only [tripleBracket_eq, Pi.smul_apply, smul_eq_mul]; ring
+  rw [hscale] at hframe
+  rw [hframe]
+  simp only [tripleBracket_eq, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+  ring
 
-/-- The `{0,4,5}` bracket: the two free atoms against the first basis vector. -/
-theorem tripleBracket_zeroFourFive_of_lineFreeExpansions
-    (vecZero vecOne vecTwo vecFour vecFive : Fin 3 → ℝ)
-    (bigDelta coefD coefE coefF coefG coefH coefK : ℝ)
-    (hexpandFour : bigDelta • vecFour
-      = coefD • vecZero + coefE • vecOne + coefF • vecTwo)
-    (hexpandFive : bigDelta • vecFive
-      = coefG • vecZero + coefH • vecOne + coefK • vecTwo) :
-    bigDelta ^ 2 * tripleBracket vecZero vecFour vecFive
-      = (coefE * coefK - coefF * coefH) * tripleBracket vecZero vecOne vecTwo := by
-  have hkey : tripleBracket vecZero (bigDelta • vecFour) (bigDelta • vecFive)
-      = tripleBracket vecZero (coefD • vecZero + coefE • vecOne + coefF • vecTwo)
-          (coefG • vecZero + coefH • vecOne + coefK • vecTwo) := by
-    rw [hexpandFour, hexpandFive]
-  simp only [tripleBracket_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at hkey
-  simp only [tripleBracket_eq]
-  linear_combination hkey
+/-- **The second slot.**  The Cramer cofactor of the second column. -/
+theorem tripleBracket_secondSlot_of_expansions
+    (baseFirst baseMid baseLast probeLeft probeRight : Fin 3 → ℝ)
+    (bigDelta leftFirst leftMid leftLast rightFirst rightMid rightLast : ℝ)
+    (hleft : bigDelta • probeLeft
+      = leftFirst • baseFirst + leftMid • baseMid + leftLast • baseLast)
+    (hright : bigDelta • probeRight
+      = rightFirst • baseFirst + rightMid • baseMid + rightLast • baseLast) :
+    bigDelta ^ 2 * tripleBracket baseMid probeLeft probeRight
+      = (leftLast * rightFirst - leftFirst * rightLast)
+        * tripleBracket baseFirst baseMid baseLast := by
+  have hframe := tripleBracket_columnMatrix_mulVec baseFirst baseMid baseLast
+    ![0, 1, 0] ![leftFirst, leftMid, leftLast] ![rightFirst, rightMid, rightLast]
+  rw [columnMatrix_mulVec, columnMatrix_mulVec, columnMatrix_mulVec] at hframe
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons, one_smul, zero_smul, add_zero,
+    zero_add] at hframe
+  rw [← hleft, ← hright] at hframe
+  have hscale : tripleBracket baseMid (bigDelta • probeLeft) (bigDelta • probeRight)
+      = bigDelta ^ 2 * tripleBracket baseMid probeLeft probeRight := by
+    simp only [tripleBracket_eq, Pi.smul_apply, smul_eq_mul]; ring
+  rw [hscale] at hframe
+  rw [hframe]
+  simp only [tripleBracket_eq, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+  ring
 
-/-- The `{1,3,4}` bracket: the second basis vector kills both `v1` columns. -/
-theorem tripleBracket_oneThreeFour_of_lineFreeExpansions
-    (vecZero vecOne vecTwo vecThree vecFour : Fin 3 → ℝ)
-    (bigDelta coefA coefB coefC coefD coefE coefF : ℝ)
-    (hexpandThree : bigDelta • vecThree
-      = coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-    (hexpandFour : bigDelta • vecFour
-      = coefD • vecZero + coefE • vecOne + coefF • vecTwo) :
-    bigDelta ^ 2 * tripleBracket vecOne vecThree vecFour
-      = (coefC * coefD - coefA * coefF) * tripleBracket vecZero vecOne vecTwo := by
-  have hkey : tripleBracket vecOne (bigDelta • vecThree) (bigDelta • vecFour)
-      = tripleBracket vecOne (coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-          (coefD • vecZero + coefE • vecOne + coefF • vecTwo) := by
-    rw [hexpandThree, hexpandFour]
-  simp only [tripleBracket_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at hkey
-  simp only [tripleBracket_eq]
-  linear_combination hkey
+/-- **The third slot.**  The Cramer cofactor of the third column. -/
+theorem tripleBracket_thirdSlot_of_expansions
+    (baseFirst baseMid baseLast probeLeft probeRight : Fin 3 → ℝ)
+    (bigDelta leftFirst leftMid leftLast rightFirst rightMid rightLast : ℝ)
+    (hleft : bigDelta • probeLeft
+      = leftFirst • baseFirst + leftMid • baseMid + leftLast • baseLast)
+    (hright : bigDelta • probeRight
+      = rightFirst • baseFirst + rightMid • baseMid + rightLast • baseLast) :
+    bigDelta ^ 2 * tripleBracket baseLast probeLeft probeRight
+      = (leftFirst * rightMid - leftMid * rightFirst)
+        * tripleBracket baseFirst baseMid baseLast := by
+  have hframe := tripleBracket_columnMatrix_mulVec baseFirst baseMid baseLast
+    ![0, 0, 1] ![leftFirst, leftMid, leftLast] ![rightFirst, rightMid, rightLast]
+  rw [columnMatrix_mulVec, columnMatrix_mulVec, columnMatrix_mulVec] at hframe
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons, one_smul, zero_smul, add_zero,
+    zero_add] at hframe
+  rw [← hleft, ← hright] at hframe
+  have hscale : tripleBracket baseLast (bigDelta • probeLeft) (bigDelta • probeRight)
+      = bigDelta ^ 2 * tripleBracket baseLast probeLeft probeRight := by
+    simp only [tripleBracket_eq, Pi.smul_apply, smul_eq_mul]; ring
+  rw [hscale] at hframe
+  rw [hframe]
+  simp only [tripleBracket_eq, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+  ring
 
-/-- The `{1,3,5}` bracket. -/
-theorem tripleBracket_oneThreeFive_of_lineFreeExpansions
-    (vecZero vecOne vecTwo vecThree vecFive : Fin 3 → ℝ)
-    (bigDelta coefA coefB coefC coefG coefH coefK : ℝ)
-    (hexpandThree : bigDelta • vecThree
-      = coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-    (hexpandFive : bigDelta • vecFive
-      = coefG • vecZero + coefH • vecOne + coefK • vecTwo) :
-    bigDelta ^ 2 * tripleBracket vecOne vecThree vecFive
-      = (coefC * coefG - coefA * coefK) * tripleBracket vecZero vecOne vecTwo := by
-  have hkey : tripleBracket vecOne (bigDelta • vecThree) (bigDelta • vecFive)
-      = tripleBracket vecOne (coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-          (coefG • vecZero + coefH • vecOne + coefK • vecTwo) := by
-    rw [hexpandThree, hexpandFive]
-  simp only [tripleBracket_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at hkey
-  simp only [tripleBracket_eq]
-  linear_combination hkey
-
-/-- The `{1,4,5}` bracket: the two free atoms against the second basis vector. -/
-theorem tripleBracket_oneFourFive_of_lineFreeExpansions
-    (vecZero vecOne vecTwo vecFour vecFive : Fin 3 → ℝ)
-    (bigDelta coefD coefE coefF coefG coefH coefK : ℝ)
-    (hexpandFour : bigDelta • vecFour
-      = coefD • vecZero + coefE • vecOne + coefF • vecTwo)
-    (hexpandFive : bigDelta • vecFive
-      = coefG • vecZero + coefH • vecOne + coefK • vecTwo) :
-    bigDelta ^ 2 * tripleBracket vecOne vecFour vecFive
-      = (coefF * coefG - coefD * coefK) * tripleBracket vecZero vecOne vecTwo := by
-  have hkey : tripleBracket vecOne (bigDelta • vecFour) (bigDelta • vecFive)
-      = tripleBracket vecOne (coefD • vecZero + coefE • vecOne + coefF • vecTwo)
-          (coefG • vecZero + coefH • vecOne + coefK • vecTwo) := by
-    rw [hexpandFour, hexpandFive]
-  simp only [tripleBracket_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at hkey
-  simp only [tripleBracket_eq]
-  linear_combination hkey
-
-/-- The `{2,3,4}` bracket: the third basis vector kills both `v2` columns. -/
-theorem tripleBracket_twoThreeFour_of_lineFreeExpansions
-    (vecZero vecOne vecTwo vecThree vecFour : Fin 3 → ℝ)
-    (bigDelta coefA coefB coefC coefD coefE coefF : ℝ)
-    (hexpandThree : bigDelta • vecThree
-      = coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-    (hexpandFour : bigDelta • vecFour
-      = coefD • vecZero + coefE • vecOne + coefF • vecTwo) :
-    bigDelta ^ 2 * tripleBracket vecTwo vecThree vecFour
-      = (coefA * coefE - coefB * coefD) * tripleBracket vecZero vecOne vecTwo := by
-  have hkey : tripleBracket vecTwo (bigDelta • vecThree) (bigDelta • vecFour)
-      = tripleBracket vecTwo (coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-          (coefD • vecZero + coefE • vecOne + coefF • vecTwo) := by
-    rw [hexpandThree, hexpandFour]
-  simp only [tripleBracket_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at hkey
-  simp only [tripleBracket_eq]
-  linear_combination hkey
-
-/-- The `{2,3,5}` bracket. -/
-theorem tripleBracket_twoThreeFive_of_lineFreeExpansions
-    (vecZero vecOne vecTwo vecThree vecFive : Fin 3 → ℝ)
-    (bigDelta coefA coefB coefC coefG coefH coefK : ℝ)
-    (hexpandThree : bigDelta • vecThree
-      = coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-    (hexpandFive : bigDelta • vecFive
-      = coefG • vecZero + coefH • vecOne + coefK • vecTwo) :
-    bigDelta ^ 2 * tripleBracket vecTwo vecThree vecFive
-      = (coefA * coefH - coefB * coefG) * tripleBracket vecZero vecOne vecTwo := by
-  have hkey : tripleBracket vecTwo (bigDelta • vecThree) (bigDelta • vecFive)
-      = tripleBracket vecTwo (coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-          (coefG • vecZero + coefH • vecOne + coefK • vecTwo) := by
-    rw [hexpandThree, hexpandFive]
-  simp only [tripleBracket_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at hkey
-  simp only [tripleBracket_eq]
-  linear_combination hkey
-
-/-- The `{2,4,5}` bracket: the two free atoms against the third basis vector. -/
-theorem tripleBracket_twoFourFive_of_lineFreeExpansions
-    (vecZero vecOne vecTwo vecFour vecFive : Fin 3 → ℝ)
-    (bigDelta coefD coefE coefF coefG coefH coefK : ℝ)
-    (hexpandFour : bigDelta • vecFour
-      = coefD • vecZero + coefE • vecOne + coefF • vecTwo)
-    (hexpandFive : bigDelta • vecFive
-      = coefG • vecZero + coefH • vecOne + coefK • vecTwo) :
-    bigDelta ^ 2 * tripleBracket vecTwo vecFour vecFive
-      = (coefD * coefH - coefE * coefG) * tripleBracket vecZero vecOne vecTwo := by
-  have hkey : tripleBracket vecTwo (bigDelta • vecFour) (bigDelta • vecFive)
-      = tripleBracket vecTwo (coefD • vecZero + coefE • vecOne + coefF • vecTwo)
-          (coefG • vecZero + coefH • vecOne + coefK • vecTwo) := by
-    rw [hexpandFour, hexpandFive]
-  simp only [tripleBracket_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at hkey
-  simp only [tripleBracket_eq]
-  linear_combination hkey
-
-/-- The `{3,4,5}` bracket, the last triple of the twenty.  All three off-basis
-atoms spend their coefficients at once, so the identity carries `bigDelta`
-cubed and the minor is the full three-by-three determinant. -/
-theorem tripleBracket_threeFourFive_of_lineFreeExpansions
-    (vecZero vecOne vecTwo vecThree vecFour vecFive : Fin 3 → ℝ)
-    (bigDelta coefA coefB coefC coefD coefE coefF coefG coefH coefK : ℝ)
-    (hexpandThree : bigDelta • vecThree
-      = coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-    (hexpandFour : bigDelta • vecFour
-      = coefD • vecZero + coefE • vecOne + coefF • vecTwo)
-    (hexpandFive : bigDelta • vecFive
-      = coefG • vecZero + coefH • vecOne + coefK • vecTwo) :
-    bigDelta ^ 3 * tripleBracket vecThree vecFour vecFive
-      = (coefA * (coefE * coefK - coefF * coefH)
-          - coefB * (coefD * coefK - coefF * coefG)
-          + coefC * (coefD * coefH - coefE * coefG))
-        * tripleBracket vecZero vecOne vecTwo := by
-  have hkey : tripleBracket (bigDelta • vecThree) (bigDelta • vecFour)
-        (bigDelta • vecFive)
-      = tripleBracket (coefA • vecZero + coefB • vecOne + coefC • vecTwo)
-          (coefD • vecZero + coefE • vecOne + coefF • vecTwo)
-          (coefG • vecZero + coefH • vecOne + coefK • vecTwo) := by
-    rw [hexpandThree, hexpandFour, hexpandFive]
-  simp only [tripleBracket_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at hkey
-  simp only [tripleBracket_eq]
-  linear_combination hkey
+/-- **The three-expansion law.**  All three off-frame atoms at once, so the
+bracket carries `bigDelta` cubed and the minor is the full determinant. -/
+theorem tripleBracket_of_three_expansions
+    (baseFirst baseMid baseLast probeOne probeTwo probeThree : Fin 3 → ℝ)
+    (bigDelta oneFirst oneMid oneLast twoFirst twoMid twoLast
+      threeFirst threeMid threeLast : ℝ)
+    (hone : bigDelta • probeOne
+      = oneFirst • baseFirst + oneMid • baseMid + oneLast • baseLast)
+    (htwo : bigDelta • probeTwo
+      = twoFirst • baseFirst + twoMid • baseMid + twoLast • baseLast)
+    (hthree : bigDelta • probeThree
+      = threeFirst • baseFirst + threeMid • baseMid + threeLast • baseLast) :
+    bigDelta ^ 3 * tripleBracket probeOne probeTwo probeThree
+      = (oneFirst * (twoMid * threeLast - twoLast * threeMid)
+          - oneMid * (twoFirst * threeLast - twoLast * threeFirst)
+          + oneLast * (twoFirst * threeMid - twoMid * threeFirst))
+        * tripleBracket baseFirst baseMid baseLast := by
+  have hframe := tripleBracket_columnMatrix_mulVec baseFirst baseMid baseLast
+    ![oneFirst, oneMid, oneLast] ![twoFirst, twoMid, twoLast]
+    ![threeFirst, threeMid, threeLast]
+  rw [columnMatrix_mulVec, columnMatrix_mulVec, columnMatrix_mulVec] at hframe
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons] at hframe
+  rw [← hone, ← htwo, ← hthree, tripleBracket_smul_slots] at hframe
+  rw [show bigDelta ^ 3 = bigDelta * bigDelta * bigDelta by ring, hframe]
+  simp only [tripleBracket_eq, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
 
 /-! ## The per-atom scales -/
 
@@ -332,35 +264,35 @@ theorem exists_lineFreeRealization_of_brackets (vec : Fin 6 → (Fin 3 → ℝ))
       ∃ fiveLast : ℝ, fiveLast * (coefG * coefC) = coefK * coefA :=
     ⟨coefK * coefA / (coefG * coefC), by field_simp⟩
   -- The ten off-basis brackets become the ten nondegeneracy facts.
-  have hbrZeroThreeFour := tripleBracket_zeroThreeFour_of_lineFreeExpansions (vec 0)
-    (vec 1) (vec 2) (vec 3) (vec 4) bigDelta coefA coefB coefC coefD coefE coefF
+  have hbrZeroThreeFour := tripleBracket_firstSlot_of_expansions (vec 0) (vec 1)
+    (vec 2) (vec 3) (vec 4) bigDelta coefA coefB coefC coefD coefE coefF
     hexpandThree hexpandFour
-  have hbrZeroThreeFive := tripleBracket_zeroThreeFive_of_lineFreeExpansions (vec 0)
-    (vec 1) (vec 2) (vec 3) (vec 5) bigDelta coefA coefB coefC coefG coefH coefK
+  have hbrZeroThreeFive := tripleBracket_firstSlot_of_expansions (vec 0) (vec 1)
+    (vec 2) (vec 3) (vec 5) bigDelta coefA coefB coefC coefG coefH coefK
     hexpandThree hexpandFive
-  have hbrZeroFourFive := tripleBracket_zeroFourFive_of_lineFreeExpansions (vec 0)
-    (vec 1) (vec 2) (vec 4) (vec 5) bigDelta coefD coefE coefF coefG coefH coefK
+  have hbrZeroFourFive := tripleBracket_firstSlot_of_expansions (vec 0) (vec 1)
+    (vec 2) (vec 4) (vec 5) bigDelta coefD coefE coefF coefG coefH coefK
     hexpandFour hexpandFive
-  have hbrOneThreeFour := tripleBracket_oneThreeFour_of_lineFreeExpansions (vec 0)
-    (vec 1) (vec 2) (vec 3) (vec 4) bigDelta coefA coefB coefC coefD coefE coefF
+  have hbrOneThreeFour := tripleBracket_secondSlot_of_expansions (vec 0) (vec 1)
+    (vec 2) (vec 3) (vec 4) bigDelta coefA coefB coefC coefD coefE coefF
     hexpandThree hexpandFour
-  have hbrOneThreeFive := tripleBracket_oneThreeFive_of_lineFreeExpansions (vec 0)
-    (vec 1) (vec 2) (vec 3) (vec 5) bigDelta coefA coefB coefC coefG coefH coefK
+  have hbrOneThreeFive := tripleBracket_secondSlot_of_expansions (vec 0) (vec 1)
+    (vec 2) (vec 3) (vec 5) bigDelta coefA coefB coefC coefG coefH coefK
     hexpandThree hexpandFive
-  have hbrOneFourFive := tripleBracket_oneFourFive_of_lineFreeExpansions (vec 0)
-    (vec 1) (vec 2) (vec 4) (vec 5) bigDelta coefD coefE coefF coefG coefH coefK
+  have hbrOneFourFive := tripleBracket_secondSlot_of_expansions (vec 0) (vec 1)
+    (vec 2) (vec 4) (vec 5) bigDelta coefD coefE coefF coefG coefH coefK
     hexpandFour hexpandFive
-  have hbrTwoThreeFour := tripleBracket_twoThreeFour_of_lineFreeExpansions (vec 0)
-    (vec 1) (vec 2) (vec 3) (vec 4) bigDelta coefA coefB coefC coefD coefE coefF
+  have hbrTwoThreeFour := tripleBracket_thirdSlot_of_expansions (vec 0) (vec 1)
+    (vec 2) (vec 3) (vec 4) bigDelta coefA coefB coefC coefD coefE coefF
     hexpandThree hexpandFour
-  have hbrTwoThreeFive := tripleBracket_twoThreeFive_of_lineFreeExpansions (vec 0)
-    (vec 1) (vec 2) (vec 3) (vec 5) bigDelta coefA coefB coefC coefG coefH coefK
+  have hbrTwoThreeFive := tripleBracket_thirdSlot_of_expansions (vec 0) (vec 1)
+    (vec 2) (vec 3) (vec 5) bigDelta coefA coefB coefC coefG coefH coefK
     hexpandThree hexpandFive
-  have hbrTwoFourFive := tripleBracket_twoFourFive_of_lineFreeExpansions (vec 0)
-    (vec 1) (vec 2) (vec 4) (vec 5) bigDelta coefD coefE coefF coefG coefH coefK
+  have hbrTwoFourFive := tripleBracket_thirdSlot_of_expansions (vec 0) (vec 1)
+    (vec 2) (vec 4) (vec 5) bigDelta coefD coefE coefF coefG coefH coefK
     hexpandFour hexpandFive
-  have hbrThreeFourFive := tripleBracket_threeFourFive_of_lineFreeExpansions (vec 0)
-    (vec 1) (vec 2) (vec 3) (vec 4) (vec 5) bigDelta coefA coefB coefC coefD coefE
+  have hbrThreeFourFive := tripleBracket_of_three_expansions (vec 0) (vec 1)
+    (vec 2) (vec 3) (vec 4) (vec 5) bigDelta coefA coefB coefC coefD coefE
     coefF coefG coefH coefK hexpandThree hexpandFour hexpandFive
   have hsquareNe : bigDelta ^ 2 ≠ 0 := pow_ne_zero 2 hbasisNe
   have hcubeNe : bigDelta ^ 3 ≠ 0 := pow_ne_zero 3 hbasisNe

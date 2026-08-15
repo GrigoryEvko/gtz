@@ -4862,3 +4862,12 @@ import Gtz.Wave.OrbitDesignationRefuter
 -- three boosted crosses, so the pair data pins its magnitude and leaves only
 -- its sign free.  Two root-free cells follow, and the constant four is sharp.
 import Gtz.Wave.ComplementInvariantCell
+
+-- The line-free moduli, and the assembled chart programme.  The fourteen walls
+-- make the admissible region exactly the cell, and each of the four parameters
+-- is a balanced bracket ratio, hence an absolute invariant, so the chart has no
+-- redundancy.  With all five cells charted the residual list closes at once,
+-- and the mass moment is positive definite on every piece, so the whole atlas
+-- reduces to one design-level upgrade and then to one determinant sign.
+import Gtz.Design.LineFreeModuli
+import Gtz.Design.ChartProgrammeAssembly
