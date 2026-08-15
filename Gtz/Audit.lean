@@ -937,6 +937,8 @@ import Gtz.Design.TwoMeetingLinesRigidity
 import Gtz.Wave.KFourPivotRecurrentTriangleWiring
 import Gtz.Wave.ThreeLinesStallEscapeWiring
 import Gtz.Design.GaugeWallAtlasEquivalence
+import Gtz.Wave.ThreeLinesRankOneWitnessClassification
+import Gtz.Wave.KFourOutsideDecomposition
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29435,3 +29437,14 @@ run_cmd do
 #print axioms Gtz.KFourShapedCardFourStallClosure
 #print axioms Gtz.kFourGaugeStarCorankWallClosure_of_shapedStallClosure
 #print axioms Gtz.kFourGaugeStarCorankWallClosure_of_cardFourStallClosure
+-- The slide-sign census is conditional on a nonnegative rank-one gap.  The K4
+-- circuit layer closes every outside inverse-cross row and column through two
+-- selected columns, uniformly across both card-four stall shapes.
+#print axioms Gtz.threeLinesRankOne_oddJoins_of_slide_pos
+#print axioms Gtz.threeLinesRankOne_evenJoins_of_slide_neg
+#print axioms Gtz.threeLinesPositiveRankOneTripleFamily_of_wall
+#print axioms Gtz.threeLinesNegativeRankOneTripleFamily_of_wall
+#print axioms Gtz.kFour_exists_signedPairDecomposition_of_cardFour
+#print axioms Gtz.chartLadderVector_eq_pair_of_direction_eq
+#print axioms Gtz.kFour_exists_ladderPairDecomposition_of_cardFour
+#print axioms Gtz.kFour_exists_crossPairDecomposition_of_cardFour

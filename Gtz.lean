@@ -4298,3 +4298,15 @@ import Gtz.Design.TwoMeetingLinesRigidity
 -- label nonpositively.  The nine atlas cells are exactly the spanning trees
 -- that survive, and the wall consumes a shaped card-four stall escape.
 import Gtz.Design.GaugeWallAtlasEquivalence
+
+-- Conditional rank-one witnesses in the three-lines chart.  This is not a
+-- global 7/10 split: under an explicit nonnegative rank-one gap hypothesis,
+-- the wall product law fixes join parity and leaves seven positive-slide or
+-- ten negative-slide off-line triples.
+import Gtz.Wave.ThreeLinesRankOneWitnessClassification
+
+-- Every direction outside a card-four K4 selection is a signed sum of two
+-- selected directions.  Scaling transports the circuit identity into both
+-- slots of the inverse-cross matrix, so the type-A and type-B refusal systems
+-- have no free outside cross terms.
+import Gtz.Wave.KFourOutsideDecomposition
