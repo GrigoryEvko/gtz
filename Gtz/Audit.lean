@@ -942,10 +942,10 @@ import Gtz.Wave.KFourOutsideDecomposition
 import Gtz.Wave.TwoOutsideMomentLaw
 import Gtz.Wave.TwoOutsideRefusalLaw
 import Gtz.Design.BlindSpotArithmetic
-import Gtz.Wave.ExchangeDeterminantPotential
 import Gtz.Design.DiscountedExcess
 import Gtz.Design.GlobalTraceFloor
 import Gtz.Design.TypeAExchangeReduction
+import Gtz.Wave.ExchangeDeterminantPotential
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29477,20 +29477,16 @@ run_cmd do
 #print axioms Gtz.liftMargin_of_flatPair
 #print axioms Gtz.liftLeverage_ge_of_liftMargin_nonpos_of_flatPair
 #print axioms Gtz.oneLine_liftLeverage_ge_of_normalBlindSpot
--- The determinant potential and reciprocal exchange law.
-#print axioms Gtz.chartExchangeMultiplier_eq_insert_erase_factor
-#print axioms Gtz.det_directionChartGap_exchange_eq_mul_multiplier
-#print axioms Gtz.posDef_exchange_iff_multiplier_pos
-#print axioms Gtz.reverse_exchange_eq
-#print axioms Gtz.chartExchangeMultiplier_mul_reverse_eq_one
-#print axioms Gtz.chartExchangeMultiplier_pos_of_posDef_exchange
-#print axioms Gtz.chartExchangeMultiplier_eq_one_or_forward_gt_one_or_reverse_gt_one
-#print axioms Gtz.chartExchangeMultiplier_eq_one_iff_det_exchange_eq
+-- The weight-discounted excess: the discounted cross-energy identity, the
+-- discounted price of a refused exchange, and the two-label complement form.
 #print axioms Gtz.selected_discounted_crossEnergy_eq_pivot_add_outside
 #print axioms Gtz.pivot_add_outside_le_discountedExcess_of_no_exchange
 #print axioms Gtz.exists_posDef_exchange_of_pivot_add_outside_gt
 #print axioms Gtz.outside_crossEnergy_pair
 #print axioms Gtz.exists_posDef_exchange_of_pair_outside_gt
+-- The global trace floor: the probability-vector pigeonhole, the linear trace
+-- reading of the chart gap, and the label whose ratio dominates the whole mass
+-- sum at every chart point.
 #print axioms Gtz.exists_weighted_sum_le
 #print axioms Gtz.trace_directionChartGap
 #print axioms Gtz.exists_star_trace_pos
@@ -29501,3 +29497,12 @@ run_cmd do
 #print axioms Gtz.kFourTypeAStall_tree_of_exchange_of_triangleClosure
 #print axioms Gtz.KFourGaugeWallTypeAExchange
 #print axioms Gtz.kFourGaugeWallTypeAStall_tree_of_exchange_of_triangleClosure
+-- The determinant potential and reciprocal exchange law.
+#print axioms Gtz.chartExchangeMultiplier_eq_insert_erase_factor
+#print axioms Gtz.det_directionChartGap_exchange_eq_mul_multiplier
+#print axioms Gtz.posDef_exchange_iff_multiplier_pos
+#print axioms Gtz.reverse_exchange_eq
+#print axioms Gtz.chartExchangeMultiplier_mul_reverse_eq_one
+#print axioms Gtz.chartExchangeMultiplier_pos_of_posDef_exchange
+#print axioms Gtz.chartExchangeMultiplier_eq_one_or_forward_gt_one_or_reverse_gt_one
+#print axioms Gtz.chartExchangeMultiplier_eq_one_iff_det_exchange_eq
