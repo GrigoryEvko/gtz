@@ -971,6 +971,7 @@ import Gtz.Wave.KFourTriangleStarStallEndgame
 import Gtz.Design.WholeLineMarginCriterion
 import Gtz.Design.ComplementPairCriterion
 import Gtz.Design.PivotGramIdempotent
+import Gtz.Wave.GaugeWallTriangleComplementBlock
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29891,3 +29892,13 @@ run_cmd do
 #print axioms Gtz.pivot_univ_nonneg
 #print axioms Gtz.card_le_rank_of_forall_pivot_univ_ge_one
 #print axioms Gtz.three_le_card_pivot_univ_lt_one
+-- The exact gauge-wall triangle inverse and complement blocks, their positive
+-- diagonal, the nine one-minor triangle-star criteria, and the triangle-pair
+-- exclusion.
+#print axioms Gtz.kFourGaugeWall_triangle_inverse_form_zero
+#print axioms Gtz.kFourGaugeWall_triangle_inverse_block
+#print axioms Gtz.kFourGaugeWall_triangle_complement_block_scaled
+#print axioms Gtz.kFourGaugeWall_triangle_complement_diag_pos
+#print axioms Gtz.kFourGaugeWall_posDef_compl_triangle_star_iff
+#print axioms Gtz.kFourGaugeWall_triangle_complement_pair_minors
+#print axioms Gtz.kFourGaugeWall_not_posDef_compl_triangle_pair

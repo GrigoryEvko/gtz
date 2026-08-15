@@ -66,20 +66,6 @@ noncomputable def fullPivot (direction : Fin size → (Fin 3 → ℝ))
     (mass weight : Fin size → ℝ) (i : Fin size) : ℝ :=
   (mass i / weight i) * fullInverseForm direction mass weight i i
 
-/-- A symmetric matrix reads the same on a pair of vectors in either order. -/
-theorem dotProduct_mulVec_comm_of_transpose {matA : Matrix (Fin 3) (Fin 3) ℝ}
-    (hsymm : matAᵀ = matA) (x y : Fin 3 → ℝ) :
-    x ⬝ᵥ (matA *ᵥ y) = y ⬝ᵥ (matA *ᵥ x) := by
-  have hentry : ∀ a b, matA b a = matA a b := by
-    intro a b
-    have := congrFun (congrFun hsymm a) b
-    simpa [Matrix.transpose_apply] using this
-  simp only [dotProduct, Matrix.mulVec, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
-  rw [hentry a b]
-  ring
-
 /-- The inverse form of the full-selection gap is symmetric. -/
 theorem fullInverseForm_comm (direction : Fin size → (Fin 3 → ℝ))
     (mass weight : Fin size → ℝ)
@@ -94,7 +80,7 @@ theorem fullInverseForm_comm (direction : Fin size → (Fin 3 → ℝ))
   have hinv : ((directionChartGap direction mass weight Finset.univ)⁻¹)ᵀ
       = (directionChartGap direction mass weight Finset.univ)⁻¹ := by
     rw [Matrix.transpose_nonsing_inv, hgap]
-  exact dotProduct_mulVec_comm_of_transpose hinv _ _
+  exact dotProduct_mulVec_comm_of_transpose_eq hinv _ _
 
 /-! ## 2. One omitted label: the pivot is below one -/
 
@@ -186,7 +172,7 @@ theorem complementForm_pair (direction : Fin size → (Fin 3 → ℝ))
       directionChartGap_transpose direction mass weight Finset.univ
     have hinv : matMᵀ = matM := by
       rw [hmatM, Matrix.transpose_nonsing_inv, hgap]
-    exact dotProduct_mulVec_comm_of_transpose hinv _ _
+    exact dotProduct_mulVec_comm_of_transpose_eq hinv _ _
   rw [complementForm, hsum, hcomb, ← hmatM]
   rw [Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, dotProduct_add,
     add_dotProduct, add_dotProduct, dotProduct_smul, dotProduct_smul, dotProduct_smul,

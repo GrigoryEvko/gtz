@@ -4543,3 +4543,11 @@ import Gtz.Design.PivotGramIdempotent
 -- full-selection pivot, and the trace identity at univ caps the labels of pivot
 -- one or more by the rank, so at (6,3) three labels always sit below one.
 import Gtz.Design.ComplementLeverageLaw
+
+-- The gauge-wall complement block.  The rank-one wall kills the axis component
+-- of every triangle direction, leaving an exactly solvable weighted triangle
+-- Laplacian.  Its inverse form gives a positive signed rank-one triangle block
+-- in the complement matrix.  Consequently the nine triangle-star card-four
+-- candidates each reduce to one strict pair-minor inequality, while omitting
+-- two triangle labels is impossible.
+import Gtz.Wave.GaugeWallTriangleComplementBlock
