@@ -907,6 +907,7 @@ import Gtz.Wave.ThreeLinesBudgetWiring
 import Gtz.Wave.ThreeLinesReadingCoverWiring
 import Gtz.Wave.ThreeLinesOffLinesWiring
 import Gtz.Wave.ThreeLinesUnsignedCycleWiring
+import Gtz.Design.StallConfinement
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -28982,3 +28983,11 @@ run_cmd do
 #print axioms Gtz.chartCoeff_eq_neg_mass_of_not_mem
 #print axioms Gtz.mass_mul_one_sub_weight_eq_of_mem
 #print axioms Gtz.threeLinesWall_join_family
+-- Stall confinement: no deletion from a stalled label keeps positive
+-- definiteness, a subset one label smaller than a stall is never positive
+-- definite, and at a K4 pivot wall every positive definite spanning tree
+-- carries a label outside the pointer window.
+#print axioms Gtz.not_posDef_directionChartGap_erase_of_pivot_ge_one
+#print axioms Gtz.not_posDef_directionChartGap_of_subset_of_stall
+#print axioms Gtz.exists_notMem_of_posDef_of_stall
+#print axioms Gtz.kFourPivotWall_winner_escapes_window

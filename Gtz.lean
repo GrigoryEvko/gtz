@@ -4119,3 +4119,10 @@ import Gtz.Wave.KFourGaugeStarTransportWiring
 -- The parity of the selected join labels is therefore forced by the sign of
 -- the slide, which excludes half of the twenty triples at every slide.
 import Gtz.Design.ThreeLinesWallArchitecture
+
+-- Stall confinement.  A stall is a positive definite selection every label of
+-- which carries chart ladder pivot at least one, so no single deletion keeps
+-- positive definiteness.  The pointer window of a K4 pivot wall is exactly a
+-- four label stall, and the law confines every positive definite spanning tree
+-- out of that window: the winner always meets the two label complement.
+import Gtz.Design.StallConfinement
