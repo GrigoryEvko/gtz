@@ -868,6 +868,7 @@ import Gtz.Wave.KFourPendantAtlasWiring
 import Gtz.Wave.KFourRowCertificateWiring
 import Gtz.Wave.KFourZMatrixWiring
 import Gtz.Wave.KFourPolynomialBudgetCells
+import Gtz.Design.GershgorinWashout
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Wave.ThreeLinesBudgetWiring
@@ -28297,6 +28298,19 @@ run_cmd do
 #print axioms Gtz.kFourAllTreeMinorAtlasCellFires_of_polynomialAtlas
 #print axioms Gtz.kFourAtlas_hasStrictTree_of_polynomialAtlas
 #print axioms Gtz.not_polynomialAtlas_of_allTreeBlind
+-- The Gershgorin washout: the sixteen-row necessary system and a strict
+-- spanning tree hold at one rational chart point.
+#print axioms Gtz.gershgorinWashoutMass
+#print axioms Gtz.gershgorinWashoutWeight
+#print axioms Gtz.gershgorinWashoutPoint
+#print axioms Gtz.gershgorinWashoutPoint_mass_eq
+#print axioms Gtz.gershgorinWashoutPoint_weight_eq
+#print axioms Gtz.KFourGershgorinRowSystem
+#print axioms Gtz.gershgorinWashoutPoint_rowSystem
+#print axioms Gtz.gershgorinWashoutPoint_pathCell025Fires
+#print axioms Gtz.gershgorinWashoutPoint_hasStrictTree
+#print axioms Gtz.kFourGershgorinRow_washout
+#print axioms Gtz.kFourGershgorinRowSystem_not_forces_noStrict
 -- The chart-design whitening: the moment matrix, the whitened design, the
 -- triangle refuters, and the weld to the design-level strict selection.
 #print axioms Gtz.atomMatrix_transpose_mulVec

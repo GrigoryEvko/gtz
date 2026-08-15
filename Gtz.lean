@@ -3938,6 +3938,11 @@ import Gtz.Wave.KFourZMatrixWiring
 -- Any one of these three-inequality cells recovers its path minor certificate
 -- and therefore dispatches a strict K4 spanning tree directly.
 import Gtz.Wave.KFourPolynomialBudgetCells
+-- The Gershgorin washout: one rational chart point satisfies the bad-row
+-- condition of all sixteen spanning trees while nine trees are strictly
+-- dominating.  The sixteen-row necessary system cannot decide coverage, so
+-- a covering proof must consume more of each dual witness than its row.
+import Gtz.Design.GershgorinWashout
 -- Spend the generic unsigned trace theorem at the two landed three-lines
 -- expansions.  The exact A2 residual is now outside both minor cells and both
 -- one-inequality trace cells.
