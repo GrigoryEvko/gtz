@@ -3811,3 +3811,16 @@ import Gtz.Wave.ProjectionDictionary
 -- carrying every previously landed pin.  The same closure is exported once
 -- for every no-strict configuration and every tie.
 import Gtz.Wave.TenthLightA1Wiring
+-- Leverage heaviness does not imply a large raw weight.  The same light
+-- theorem therefore removes an additional region from both chartless pattern
+-- obligations: their surviving residuals retain leverage heaviness and gain
+-- an explicit label of weight at least `1/10`, with a generic IFF back to the
+-- former pattern statement.
+import Gtz.Wave.TenthLightPatternWiring
+-- The same tenth-light theorem now crosses the square-root-free chart
+-- whitening dictionary.  It removes the all-light region from both remaining
+-- chart obligations: A2 survives only at a tenth-heavy point in the
+-- three-lines fundamental domain, and A3 only at a tenth-heavy point in the
+-- doubly uncovered K4 knife band.  Both sharpenings are kernel-equivalent to
+-- their former public statements.
+import Gtz.Wave.TenthLightChartWiring

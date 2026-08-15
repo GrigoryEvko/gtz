@@ -848,6 +848,8 @@ import Gtz.Ties.ComplementJawWindow
 import Gtz.Wave.DescentWeld
 import Gtz.Wave.ProjectionDictionary
 import Gtz.Wave.TenthLightA1Wiring
+import Gtz.Wave.TenthLightPatternWiring
+import Gtz.Wave.TenthLightChartWiring
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27746,6 +27748,33 @@ run_cmd do
 #print axioms Gtz.separatedHeavyResidual_of_baseTripleTightLineFreeOffConicWeakToStrict
 #print axioms Gtz.baseTripleTightLineFreeOffConicSeparatedHeavyResidual_iff
 #print axioms Gtz.stressFreeStratumIsTieFree_lineFree_of_separatedHeavyResidual
+-- The chartless pattern consumers of the same strict tenth-light theorem.
+#print axioms Gtz.PatternHeavyWeakToStrictTenthHeavy
+#print axioms Gtz.patternHeavyWeakToStrict_of_tenthHeavy
+#print axioms Gtz.tenthHeavy_of_patternHeavyWeakToStrict
+#print axioms Gtz.patternHeavyWeakToStrictTenthHeavy_iff
+#print axioms Gtz.patternHeavyWeakToStrict_oneLine_of_tenthHeavy
+#print axioms Gtz.patternHeavyWeakToStrict_twoMeetingLines_of_tenthHeavy
+-- The chart-side tenth-light wiring.  The generic theorem whitens a positive-
+-- moment chart point, spends the strict design floor, and pulls the selected
+-- gap back.  The A2 and A3 IFFs certify that their new tenth-heavy residuals
+-- are formula sharpenings rather than stronger assumptions.
+#print axioms Gtz.exists_posDef_directionChartGap_of_weights_lt_tenth
+#print axioms Gtz.exists_chartWeight_ge_tenth_of_no_strictTriple
+#print axioms Gtz.DirectionChartTenthHeavyWeakToStrict
+#print axioms Gtz.directionChartIsTieFree_of_tenthHeavyWeakToStrict
+#print axioms Gtz.tenthHeavyWeakToStrict_of_directionChartIsTieFree
+#print axioms Gtz.directionChartTenthHeavyWeakToStrict_iff
+#print axioms Gtz.ChartTieFreeThreeLinesFundamentalDomainTenthHeavy
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomain_of_tenthHeavy
+#print axioms Gtz.tenthHeavyThreeLinesFundamentalDomain_of_chartTieFree
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainTenthHeavy_iff
+#print axioms Gtz.KFourKnifeBandRefinedTenthHeavyWeakToStrict
+#print axioms Gtz.kFourKnifeBandRefined_of_tenthHeavy
+#print axioms Gtz.tenthHeavyKFourKnifeBandRefined_of_refined
+#print axioms Gtz.kFourKnifeBandRefinedTenthHeavy_iff
+#print axioms Gtz.bandResidualWitnessPoint_tenthHeavy
+#print axioms Gtz.bandResidualWitnessPoint_in_tenthHeavyKnifeBand
 -- The knife-band liveness layer: the band inhabitant's strict tree, the
 -- exact det-positive-not-definite witness, and the pencil-gate collapse.
 #print axioms Gtz.bandResidual_gap_oneThreeFour_eq
