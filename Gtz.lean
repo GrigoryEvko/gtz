@@ -2323,6 +2323,11 @@ import Gtz.Design.KFourChartClosure
 -- selection dies at an exact chart point, and the tie-freeness of the K4
 -- direction chart is reduced to emptiness of one tight-but-not-strict locus
 import Gtz.Design.KFourLeverageRefuter
+-- The knife-band liveness layer: the canonical band inhabitant carries a
+-- strict tree in kernel, the det-positive-not-definite witness is exact,
+-- and the pencil-gate collapse shows a gated determinant argmax is the
+-- bare existence statement and can never produce it.
+import Gtz.Design.KFourBandLiveness
 import Gtz.Design.KFourTightLocus
 
 -- the K4 forced-edge law and the descent ladder it sits at the top of: the

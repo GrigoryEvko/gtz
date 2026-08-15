@@ -572,6 +572,7 @@ import Gtz.Quantitative.ProjectionGapQuadratic
 import Gtz.Design.AllHeavyNegativeAggregate
 import Gtz.Design.BarycentricOpenCellWitness
 import Gtz.Design.KFourLeverageRefuter
+import Gtz.Design.KFourBandLiveness
 import Gtz.Design.KFourTightLocus
 import Gtz.Design.FreeMassBudgetDischarge
 import Gtz.Design.KFourDescentLadder
@@ -27745,3 +27746,11 @@ run_cmd do
 #print axioms Gtz.separatedHeavyResidual_of_baseTripleTightLineFreeOffConicWeakToStrict
 #print axioms Gtz.baseTripleTightLineFreeOffConicSeparatedHeavyResidual_iff
 #print axioms Gtz.stressFreeStratumIsTieFree_lineFree_of_separatedHeavyResidual
+-- The knife-band liveness layer: the band inhabitant's strict tree, the
+-- exact det-positive-not-definite witness, and the pencil-gate collapse.
+#print axioms Gtz.bandResidual_gap_oneThreeFour_eq
+#print axioms Gtz.bandResidualWitnessPoint_hasStrictTree
+#print axioms Gtz.heavyPairRefuter_gap_oneTwoFive_eq
+#print axioms Gtz.heavyPairRefuter_gap_oneTwoFive_det_pos
+#print axioms Gtz.heavyPairRefuter_gap_oneTwoFive_not_posDef
+#print axioms Gtz.posDef_of_pencilGate_det_ge
