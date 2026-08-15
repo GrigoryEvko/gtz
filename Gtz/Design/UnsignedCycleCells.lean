@@ -369,7 +369,7 @@ theorem posDef_directionChartGap_of_unsignedCycleMinors
     rw [hentryAA, hentryBB, hentryCC, hentryAB, hentryAC, hentryBC,
       ← sq_abs (direction selA ⬝ᵥ probe), ← sq_abs (direction selB ⬝ᵥ probe),
       ← sq_abs (direction selC ⬝ᵥ probe)]
-    ring
+    ring_nf
   rw [hbridge] at hquad
   rw [hselSum, hunivSum]
   linarith only [hquad, houtA, houtB, houtC, hfloorTermA, hfloorTermB, hfloorTermC]
