@@ -61,8 +61,16 @@ theorem kFourDirection_readings (probe : Fin 3 → ℝ) :
     kFourDirection 3 ⬝ᵥ probe = probe 0 ∧
     kFourDirection 4 ⬝ᵥ probe = probe 1 ∧
     kFourDirection 5 ⬝ᵥ probe = probe 2 := by
-  simp [kFourDirection, dotProduct, Fin.sum_univ_three]
-  ring
+  simp only [kFourDirection, dotProduct, Fin.sum_univ_three,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
+  constructor
+  · ring
+  constructor
+  · ring
+  constructor
+  · ring
+  simp
 
 /-! ## Finite zero-voltage classification -/
 
@@ -84,15 +92,18 @@ def KFourZeroTriangle (probe : Fin 3 → ℝ) : Prop :=
 /-- Once one K4 edge has zero voltage, any additional zero-voltage edge is
 either its opposite or belongs with it to one of the four K4 triangles. -/
 theorem kFour_second_zero_is_opposite_or_triangle (probe : Fin 3 → ℝ)
-    (hprobe : probe ≠ 0) (edge other : Fin 6)
+    (_hprobe : probe ≠ 0) (edge other : Fin 6)
     (hedge : kFourDirection edge ⬝ᵥ probe = 0)
     (hother : kFourDirection other ⬝ᵥ probe = 0)
     (hne : other ≠ edge) :
     other = kFourOppositeEdge edge ∨ KFourZeroTriangle probe := by
   rcases fin_six_cases edge with rfl | rfl | rfl | rfl | rfl | rfl <;>
     rcases fin_six_cases other with rfl | rfl | rfl | rfl | rfl | rfl <;>
-    simp [KFourZeroTriangle, kFourDirection, dotProduct,
-      Fin.sum_univ_three] at hedge hother hne ⊢ <;> aesop
+    simp [KFourZeroTriangle, kFourOppositeEdge, kFourDirection, dotProduct,
+      Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+      at hedge hother hne ⊢
+  all_goals aesop (add safe (by linarith))
 
 /-! ## A zero-voltage triangle is impossible -/
 
@@ -133,42 +144,46 @@ theorem kFour_no_zero_triangle_of_coeffSum_kernel
   simp [KFourZeroTriangle, kFourDirection, dotProduct,
     Fin.sum_univ_three] at hzero
   rcases hzero with hzero | hzero | hzero | hzero
-  · have hp0 : probe 0 = 0 := by
-      by_contra hp0
-      have hproduct : coefficient 3 * probe 0 = 0 := by linarith [heq.1]
-      exact hcoefficient 3 ((mul_eq_zero.mp hproduct).resolve_right hp0)
-    have hp1 : probe 1 = 0 := by linarith [hzero.1]
-    have hp2 : probe 2 = 0 := by linarith [hzero.2.1]
+  · have hp1 : probe 1 = probe 0 := by linarith [hzero.1]
+    have hp2 : probe 2 = probe 0 := by linarith [hzero.2.1]
+    rw [hp1, hp2] at heq
+    have hproduct : coefficient 3 * probe 0 = 0 := by
+      nlinarith [heq.1]
+    have hp0 : probe 0 = 0 :=
+      (mul_eq_zero.mp hproduct).resolve_left (hcoefficient 3)
     apply hprobe
     funext index
-    rcases fin_three_cases index with rfl | rfl | rfl <;> assumption
-  · have hp2 : probe 2 = 0 := by
-      by_contra hp2
-      have hproduct : coefficient 5 * probe 2 = 0 := by linarith [heq.2.2]
-      exact hcoefficient 5 ((mul_eq_zero.mp hproduct).resolve_right hp2)
-    have hp0 : probe 0 = 0 := hzero.2.1
+    rcases fin_three_cases index with rfl | rfl | rfl <;> simp [hp0, hp1, hp2]
+  · have hp0 : probe 0 = 0 := hzero.2.1
     have hp1 : probe 1 = 0 := hzero.2.2
+    rw [hp0, hp1] at heq
+    have hproduct : coefficient 1 * probe 2 = 0 := by
+      nlinarith [heq.1]
+    have hp2 : probe 2 = 0 :=
+      (mul_eq_zero.mp hproduct).resolve_left (hcoefficient 1)
     apply hprobe
     funext index
-    rcases fin_three_cases index with rfl | rfl | rfl <;> assumption
-  · have hp1 : probe 1 = 0 := by
-      by_contra hp1
-      have hproduct : coefficient 4 * probe 1 = 0 := by linarith [heq.2.1]
-      exact hcoefficient 4 ((mul_eq_zero.mp hproduct).resolve_right hp1)
-    have hp0 : probe 0 = 0 := hzero.2.1
+    rcases fin_three_cases index with rfl | rfl | rfl <;> simp [hp0, hp1, hp2]
+  · have hp0 : probe 0 = 0 := hzero.2.1
     have hp2 : probe 2 = 0 := hzero.2.2
+    rw [hp0, hp2] at heq
+    have hproduct : coefficient 0 * probe 1 = 0 := by
+      nlinarith [heq.1]
+    have hp1 : probe 1 = 0 :=
+      (mul_eq_zero.mp hproduct).resolve_left (hcoefficient 0)
     apply hprobe
     funext index
-    rcases fin_three_cases index with rfl | rfl | rfl <;> assumption
-  · have hp0 : probe 0 = 0 := by
-      by_contra hp0
-      have hproduct : coefficient 3 * probe 0 = 0 := by linarith [heq.1]
-      exact hcoefficient 3 ((mul_eq_zero.mp hproduct).resolve_right hp0)
-    have hp1 : probe 1 = 0 := hzero.2.1
+    rcases fin_three_cases index with rfl | rfl | rfl <;> simp [hp0, hp1, hp2]
+  · have hp1 : probe 1 = 0 := hzero.2.1
     have hp2 : probe 2 = 0 := hzero.2.2
+    rw [hp1, hp2] at heq
+    have hproduct : coefficient 0 * probe 0 = 0 := by
+      nlinarith [heq.2.1]
+    have hp0 : probe 0 = 0 :=
+      (mul_eq_zero.mp hproduct).resolve_left (hcoefficient 0)
     apply hprobe
     funext index
-    rcases fin_three_cases index with rfl | rfl | rfl <;> assumption
+    rcases fin_three_cases index with rfl | rfl | rfl <;> simp [hp0, hp1, hp2]
 
 /-! ## The opposite-pair checkerboard -/
 
@@ -200,13 +215,19 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
     (hopposite : kFourDirection (kFourOppositeEdge edge) ⬝ᵥ probe = 0) :
     KFourOppositeCheckerboard coefficient edge := by
   have heq := kFour_coeffSum_kernel_equations coefficient probe hkernel
+  have probe_eq_zero (h0 : probe 0 = 0) (h1 : probe 1 = 0)
+      (h2 : probe 2 = 0) : probe = 0 := by
+    funext index
+    rcases fin_three_cases index with rfl | rfl | rfl <;> simp_all
   rcases fin_six_cases edge with rfl | rfl | rfl | rfl | rfl | rfl <;>
-    simp [kFourDirection, dotProduct, Fin.sum_univ_three] at hedge hopposite
+    simp [kFourOppositeEdge, kFourDirection, dotProduct,
+      Fin.sum_univ_three] at hedge hopposite
   · have hp : probe 0 ≠ 0 := by
       intro hp
       apply hprobe
-      funext index
-      rcases fin_three_cases index with rfl | rfl | rfl <;> linarith
+      apply probe_eq_zero <;> linarith only [hp, hedge, hopposite]
+    have hy : probe 1 = probe 0 := by linarith [hedge]
+    have hz : probe 2 = 0 := hopposite
     have h13 : coefficient 1 + coefficient 3 = 0 := by
       apply (mul_eq_zero.mp (show
         (coefficient 1 + coefficient 3) * probe 0 = 0 by
@@ -214,7 +235,7 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 1 + coefficient 3) * probe 0
                 = coefficient 0 * (probe 0 - probe 1)
                     + coefficient 1 * (probe 0 - probe 2)
-                    + coefficient 3 * probe 0 := by rw [hopposite]; ring
+                    + coefficient 3 * probe 0 := by rw [hy, hz]; ring
             _ = 0 := heq.1)).resolve_right hp
     have h24 : coefficient 2 + coefficient 4 = 0 := by
       apply (mul_eq_zero.mp (show
@@ -223,7 +244,7 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 2 + coefficient 4) * probe 0
                 = -(coefficient 0 * (probe 0 - probe 1))
                     + coefficient 2 * (probe 1 - probe 2)
-                    + coefficient 4 * probe 1 := by rw [hopposite]; ring
+                    + coefficient 4 * probe 1 := by rw [hy, hz]; ring
             _ = 0 := heq.2.1)).resolve_right hp
     have h12 : coefficient 1 + coefficient 2 = 0 := by
       apply (mul_eq_zero.mp (show
@@ -232,14 +253,15 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 1 + coefficient 2) * probe 0
                 = -(-(coefficient 1 * (probe 0 - probe 2))
                     - coefficient 2 * (probe 1 - probe 2)
-                    + coefficient 5 * probe 2) := by rw [hopposite]; ring
+                    + coefficient 5 * probe 2) := by rw [hy, hz]; ring
             _ = 0 := by rw [heq.2.2]; ring)).resolve_right hp
     exact Or.inl ⟨Or.inl rfl, by linarith, by linarith, by linarith⟩
   · have hp : probe 0 ≠ 0 := by
       intro hp
       apply hprobe
-      funext index
-      rcases fin_three_cases index with rfl | rfl | rfl <;> linarith
+      apply probe_eq_zero <;> linarith only [hp, hedge, hopposite]
+    have hz : probe 2 = probe 0 := by linarith [hedge]
+    have hy : probe 1 = 0 := hopposite
     have h03 : coefficient 0 + coefficient 3 = 0 := by
       apply (mul_eq_zero.mp (show
         (coefficient 0 + coefficient 3) * probe 0 = 0 by
@@ -247,7 +269,7 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 0 + coefficient 3) * probe 0
                 = coefficient 0 * (probe 0 - probe 1)
                     + coefficient 1 * (probe 0 - probe 2)
-                    + coefficient 3 * probe 0 := by rw [hopposite]; ring
+                    + coefficient 3 * probe 0 := by rw [hy, hz]; ring
             _ = 0 := heq.1)).resolve_right hp
     have h02 : coefficient 0 + coefficient 2 = 0 := by
       apply (mul_eq_zero.mp (show
@@ -256,7 +278,7 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 0 + coefficient 2) * probe 0
                 = -(-(coefficient 0 * (probe 0 - probe 1))
                     + coefficient 2 * (probe 1 - probe 2)
-                    + coefficient 4 * probe 1) := by rw [hopposite]; ring
+                    + coefficient 4 * probe 1) := by rw [hy, hz]; ring
             _ = 0 := by rw [heq.2.1]; ring)).resolve_right hp
     have h25 : coefficient 2 + coefficient 5 = 0 := by
       apply (mul_eq_zero.mp (show
@@ -265,15 +287,16 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 2 + coefficient 5) * probe 0
                 = -(coefficient 1 * (probe 0 - probe 2))
                     - coefficient 2 * (probe 1 - probe 2)
-                    + coefficient 5 * probe 2 := by rw [hopposite]; ring
+                    + coefficient 5 * probe 2 := by rw [hy, hz]; ring
             _ = 0 := heq.2.2)).resolve_right hp
     exact Or.inr (Or.inl
       ⟨Or.inl rfl, by linarith, by linarith, by linarith⟩)
   · have hp : probe 1 ≠ 0 := by
       intro hp
       apply hprobe
-      funext index
-      rcases fin_three_cases index with rfl | rfl | rfl <;> linarith
+      apply probe_eq_zero <;> linarith only [hp, hedge, hopposite]
+    have hz : probe 2 = probe 1 := by linarith [hedge]
+    have hx : probe 0 = 0 := hopposite
     have h01 : coefficient 0 + coefficient 1 = 0 := by
       apply (mul_eq_zero.mp (show
         (coefficient 0 + coefficient 1) * probe 1 = 0 by
@@ -281,7 +304,7 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 0 + coefficient 1) * probe 1
                 = -(coefficient 0 * (probe 0 - probe 1)
                     + coefficient 1 * (probe 0 - probe 2)
-                    + coefficient 3 * probe 0) := by rw [hopposite]; ring
+                    + coefficient 3 * probe 0) := by rw [hx, hz]; ring
             _ = 0 := by rw [heq.1]; ring)).resolve_right hp
     have h04 : coefficient 0 + coefficient 4 = 0 := by
       apply (mul_eq_zero.mp (show
@@ -290,7 +313,7 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 0 + coefficient 4) * probe 1
                 = -(coefficient 0 * (probe 0 - probe 1))
                     + coefficient 2 * (probe 1 - probe 2)
-                    + coefficient 4 * probe 1 := by rw [hopposite]; ring
+                    + coefficient 4 * probe 1 := by rw [hx, hz]; ring
             _ = 0 := heq.2.1)).resolve_right hp
     have h15 : coefficient 1 + coefficient 5 = 0 := by
       apply (mul_eq_zero.mp (show
@@ -299,49 +322,51 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 1 + coefficient 5) * probe 1
                 = -(coefficient 1 * (probe 0 - probe 2))
                     - coefficient 2 * (probe 1 - probe 2)
-                    + coefficient 5 * probe 2 := by rw [hopposite]; ring
+                    + coefficient 5 * probe 2 := by rw [hx, hz]; ring
             _ = 0 := heq.2.2)).resolve_right hp
     exact Or.inr (Or.inr
       ⟨Or.inl rfl, by linarith, by linarith, by linarith⟩)
-  · have hp : probe 0 ≠ 0 := by
+  · have hp : probe 1 ≠ 0 := by
       intro hp
       apply hprobe
-      funext index
-      rcases fin_three_cases index with rfl | rfl | rfl <;> linarith
+      apply probe_eq_zero <;> linarith only [hp, hedge, hopposite]
+    have hx : probe 0 = 0 := hedge
+    have hz : probe 2 = probe 1 := by linarith [hopposite]
     have h01 : coefficient 0 + coefficient 1 = 0 := by
       apply (mul_eq_zero.mp (show
-        (coefficient 0 + coefficient 1) * probe 0 = 0 by
+        (coefficient 0 + coefficient 1) * probe 1 = 0 by
           calc
-            (coefficient 0 + coefficient 1) * probe 0
-                = coefficient 0 * (probe 0 - probe 1)
+            (coefficient 0 + coefficient 1) * probe 1
+                = -(coefficient 0 * (probe 0 - probe 1)
                     + coefficient 1 * (probe 0 - probe 2)
-                    + coefficient 3 * probe 0 := by rw [hopposite]; ring
-            _ = 0 := heq.1)).resolve_right hp
+                    + coefficient 3 * probe 0) := by rw [hx, hz]; ring
+            _ = 0 := by rw [heq.1]; ring)).resolve_right hp
     have h04 : coefficient 0 + coefficient 4 = 0 := by
       apply (mul_eq_zero.mp (show
-        (coefficient 0 + coefficient 4) * probe 0 = 0 by
+        (coefficient 0 + coefficient 4) * probe 1 = 0 by
           calc
-            (coefficient 0 + coefficient 4) * probe 0
+            (coefficient 0 + coefficient 4) * probe 1
                 = -(coefficient 0 * (probe 0 - probe 1))
                     + coefficient 2 * (probe 1 - probe 2)
-                    + coefficient 4 * probe 1 := by rw [hopposite]; ring
+                    + coefficient 4 * probe 1 := by rw [hx, hz]; ring
             _ = 0 := heq.2.1)).resolve_right hp
     have h15 : coefficient 1 + coefficient 5 = 0 := by
       apply (mul_eq_zero.mp (show
-        (coefficient 1 + coefficient 5) * probe 0 = 0 by
+        (coefficient 1 + coefficient 5) * probe 1 = 0 by
           calc
-            (coefficient 1 + coefficient 5) * probe 0
+            (coefficient 1 + coefficient 5) * probe 1
                 = -(coefficient 1 * (probe 0 - probe 2))
                     - coefficient 2 * (probe 1 - probe 2)
-                    + coefficient 5 * probe 2 := by rw [hopposite]; ring
+                    + coefficient 5 * probe 2 := by rw [hx, hz]; ring
             _ = 0 := heq.2.2)).resolve_right hp
     exact Or.inr (Or.inr
       ⟨Or.inr rfl, by linarith, by linarith, by linarith⟩)
   · have hp : probe 0 ≠ 0 := by
       intro hp
       apply hprobe
-      funext index
-      rcases fin_three_cases index with rfl | rfl | rfl <;> linarith
+      apply probe_eq_zero <;> linarith only [hp, hedge, hopposite]
+    have hy : probe 1 = 0 := hedge
+    have hz : probe 2 = probe 0 := by linarith [hopposite]
     have h03 : coefficient 0 + coefficient 3 = 0 := by
       apply (mul_eq_zero.mp (show
         (coefficient 0 + coefficient 3) * probe 0 = 0 by
@@ -349,7 +374,7 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 0 + coefficient 3) * probe 0
                 = coefficient 0 * (probe 0 - probe 1)
                     + coefficient 1 * (probe 0 - probe 2)
-                    + coefficient 3 * probe 0 := by rw [hopposite]; ring
+                    + coefficient 3 * probe 0 := by rw [hy, hz]; ring
             _ = 0 := heq.1)).resolve_right hp
     have h02 : coefficient 0 + coefficient 2 = 0 := by
       apply (mul_eq_zero.mp (show
@@ -358,7 +383,7 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 0 + coefficient 2) * probe 0
                 = -(-(coefficient 0 * (probe 0 - probe 1))
                     + coefficient 2 * (probe 1 - probe 2)
-                    + coefficient 4 * probe 1) := by rw [hopposite]; ring
+                    + coefficient 4 * probe 1) := by rw [hy, hz]; ring
             _ = 0 := by rw [heq.2.1]; ring)).resolve_right hp
     have h25 : coefficient 2 + coefficient 5 = 0 := by
       apply (mul_eq_zero.mp (show
@@ -367,15 +392,16 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 2 + coefficient 5) * probe 0
                 = -(coefficient 1 * (probe 0 - probe 2))
                     - coefficient 2 * (probe 1 - probe 2)
-                    + coefficient 5 * probe 2 := by rw [hopposite]; ring
+                    + coefficient 5 * probe 2 := by rw [hy, hz]; ring
             _ = 0 := heq.2.2)).resolve_right hp
     exact Or.inr (Or.inl
       ⟨Or.inr rfl, by linarith, by linarith, by linarith⟩)
   · have hp : probe 0 ≠ 0 := by
       intro hp
       apply hprobe
-      funext index
-      rcases fin_three_cases index with rfl | rfl | rfl <;> linarith
+      apply probe_eq_zero <;> linarith only [hp, hedge, hopposite]
+    have hz : probe 2 = 0 := hedge
+    have hy : probe 1 = probe 0 := by linarith [hopposite]
     have h13 : coefficient 1 + coefficient 3 = 0 := by
       apply (mul_eq_zero.mp (show
         (coefficient 1 + coefficient 3) * probe 0 = 0 by
@@ -383,7 +409,7 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 1 + coefficient 3) * probe 0
                 = coefficient 0 * (probe 0 - probe 1)
                     + coefficient 1 * (probe 0 - probe 2)
-                    + coefficient 3 * probe 0 := by rw [hopposite]; ring
+                    + coefficient 3 * probe 0 := by rw [hy, hz]; ring
             _ = 0 := heq.1)).resolve_right hp
     have h24 : coefficient 2 + coefficient 4 = 0 := by
       apply (mul_eq_zero.mp (show
@@ -392,7 +418,7 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 2 + coefficient 4) * probe 0
                 = -(coefficient 0 * (probe 0 - probe 1))
                     + coefficient 2 * (probe 1 - probe 2)
-                    + coefficient 4 * probe 1 := by rw [hopposite]; ring
+                    + coefficient 4 * probe 1 := by rw [hy, hz]; ring
             _ = 0 := heq.2.1)).resolve_right hp
     have h12 : coefficient 1 + coefficient 2 = 0 := by
       apply (mul_eq_zero.mp (show
@@ -401,7 +427,7 @@ theorem kFour_opposite_checkerboard_of_coeffSum_kernel
             (coefficient 1 + coefficient 2) * probe 0
                 = -(-(coefficient 1 * (probe 0 - probe 2))
                     - coefficient 2 * (probe 1 - probe 2)
-                    + coefficient 5 * probe 2) := by rw [hopposite]; ring
+                    + coefficient 5 * probe 2) := by rw [hy, hz]; ring
             _ = 0 := by rw [heq.2.2]; ring)).resolve_right hp
     exact Or.inl ⟨Or.inr rfl, by linarith, by linarith, by linarith⟩
 
@@ -438,37 +464,50 @@ theorem det_kFour_pointerWindowCoefficient_neg
     (hopposite : 0 < coefficient (kFourOppositeEdge contracted)) :
     (∑ label, kFourPointerWindowCoefficient coefficient contracted pointer
       removedMass pointerCoefficient label • atomMatrix (kFourDirection label)).det < 0 := by
-  rcases hchecker with h05 | h14 | h23
-  · rcases h05.1 with rfl | rfl
+  rcases hchecker with ⟨h05, h14, h23, h12⟩ |
+      ⟨h14, h05, h23, h02⟩ | ⟨h23, h05, h14, h01⟩
+  · have hc1 : coefficient 1 = -coefficient 2 := h12
+    have hc3 : coefficient 3 = coefficient 2 := h23.symm
+    have hc4 : coefficient 4 = -coefficient 2 := by linarith [h14, h12]
+    rcases h05 with rfl | rfl
     all_goals
       rcases fin_six_cases pointer with rfl | rfl | rfl | rfl | rfl | rfl <;>
-      simp at hpointerContracted hpointerOpposite
+      simp [kFourOppositeEdge] at hpointerContracted hpointerOpposite hopposite
     all_goals
       simp [kFourPointerWindowCoefficient, Fin.sum_univ_six, atomMatrix,
-        Matrix.det_fin_three, kFourDirection] <;>
+        Matrix.det_fin_three, kFourDirection, hc1, hc3, hc4];
       nlinarith [sq_nonneg (coefficient 0), sq_nonneg (coefficient 1),
         sq_nonneg (coefficient 2), sq_nonneg (coefficient 3),
-        sq_nonneg (coefficient 4), sq_nonneg (coefficient 5)]
-  · rcases h14.1 with rfl | rfl
+        sq_nonneg (coefficient 4), sq_nonneg (coefficient 5),
+        mul_pos hremoved hopposite]
+  · have hc0 : coefficient 0 = -coefficient 2 := h02
+    have hc3 : coefficient 3 = coefficient 2 := h23.symm
+    have hc5 : coefficient 5 = -coefficient 2 := by linarith [h05, h02]
+    rcases h14 with rfl | rfl
     all_goals
       rcases fin_six_cases pointer with rfl | rfl | rfl | rfl | rfl | rfl <;>
-      simp at hpointerContracted hpointerOpposite
+      simp [kFourOppositeEdge] at hpointerContracted hpointerOpposite hopposite
     all_goals
       simp [kFourPointerWindowCoefficient, Fin.sum_univ_six, atomMatrix,
-        Matrix.det_fin_three, kFourDirection] <;>
+        Matrix.det_fin_three, kFourDirection, hc0, hc3, hc5];
       nlinarith [sq_nonneg (coefficient 0), sq_nonneg (coefficient 1),
         sq_nonneg (coefficient 2), sq_nonneg (coefficient 3),
-        sq_nonneg (coefficient 4), sq_nonneg (coefficient 5)]
-  · rcases h23.1 with rfl | rfl
+        sq_nonneg (coefficient 4), sq_nonneg (coefficient 5),
+        mul_pos hremoved hopposite]
+  · have hc0 : coefficient 0 = -coefficient 1 := h01
+    have hc4 : coefficient 4 = coefficient 1 := h14.symm
+    have hc5 : coefficient 5 = -coefficient 1 := by linarith [h05, h01]
+    rcases h23 with rfl | rfl
     all_goals
       rcases fin_six_cases pointer with rfl | rfl | rfl | rfl | rfl | rfl <;>
-      simp at hpointerContracted hpointerOpposite
+      simp [kFourOppositeEdge] at hpointerContracted hpointerOpposite hopposite
     all_goals
       simp [kFourPointerWindowCoefficient, Fin.sum_univ_six, atomMatrix,
-        Matrix.det_fin_three, kFourDirection] <;>
+        Matrix.det_fin_three, kFourDirection, hc0, hc4, hc5];
       nlinarith [sq_nonneg (coefficient 0), sq_nonneg (coefficient 1),
         sq_nonneg (coefficient 2), sq_nonneg (coefficient 3),
-        sq_nonneg (coefficient 4), sq_nonneg (coefficient 5)]
+        sq_nonneg (coefficient 4), sq_nonneg (coefficient 5),
+        mul_pos hremoved hopposite]
 
 /-- On a positive-semidefinite checkerboard the coefficient of the other
 zero-voltage edge is strictly positive.  The relevant quadratic form is a
@@ -489,39 +528,47 @@ theorem kFour_opposite_coefficient_pos_of_checkerboard
     · have hnonneg := hform ![0, 0, 1]
       simp [Fin.sum_univ_six, atomMatrix, kFourDirection, Matrix.mulVec,
         dotProduct, Fin.sum_univ_three] at hnonneg
-      exact lt_of_le_of_ne hnonneg (Ne.symm (hcoefficient 5))
+      have : 0 ≤ coefficient 5 := by
+        nlinarith [hnonneg, h05.2.1, h05.2.2.1, h05.2.2.2]
+      simpa [kFourOppositeEdge] using
+        (lt_of_le_of_ne this (Ne.symm (hcoefficient 5)))
     · have hnonneg := hform ![1, -1, 0]
       simp [Fin.sum_univ_six, atomMatrix, kFourDirection, Matrix.mulVec,
         dotProduct, Fin.sum_univ_three] at hnonneg
       have : 0 ≤ coefficient 0 := by nlinarith [h05.2.1, h05.2.2.1,
         h05.2.2.2]
-      exact lt_of_le_of_ne this (Ne.symm (hcoefficient 0))
+      simpa [kFourOppositeEdge] using
+        (lt_of_le_of_ne this (Ne.symm (hcoefficient 0)))
   · rcases h14.1 with rfl | rfl
     · have hnonneg := hform ![0, 1, 0]
       simp [Fin.sum_univ_six, atomMatrix, kFourDirection, Matrix.mulVec,
         dotProduct, Fin.sum_univ_three] at hnonneg
       have : 0 ≤ coefficient 4 := by nlinarith [h14.2.1, h14.2.2.1,
         h14.2.2.2]
-      exact lt_of_le_of_ne this (Ne.symm (hcoefficient 4))
+      simpa [kFourOppositeEdge] using
+        (lt_of_le_of_ne this (Ne.symm (hcoefficient 4)))
     · have hnonneg := hform ![1, 0, -1]
       simp [Fin.sum_univ_six, atomMatrix, kFourDirection, Matrix.mulVec,
         dotProduct, Fin.sum_univ_three] at hnonneg
       have : 0 ≤ coefficient 1 := by nlinarith [h14.2.1, h14.2.2.1,
         h14.2.2.2]
-      exact lt_of_le_of_ne this (Ne.symm (hcoefficient 1))
+      simpa [kFourOppositeEdge] using
+        (lt_of_le_of_ne this (Ne.symm (hcoefficient 1)))
   · rcases h23.1 with rfl | rfl
     · have hnonneg := hform ![1, 0, 0]
       simp [Fin.sum_univ_six, atomMatrix, kFourDirection, Matrix.mulVec,
         dotProduct, Fin.sum_univ_three] at hnonneg
       have : 0 ≤ coefficient 3 := by nlinarith [h23.2.1, h23.2.2.1,
         h23.2.2.2]
-      exact lt_of_le_of_ne this (Ne.symm (hcoefficient 3))
+      simpa [kFourOppositeEdge] using
+        (lt_of_le_of_ne this (Ne.symm (hcoefficient 3)))
     · have hnonneg := hform ![0, 1, -1]
       simp [Fin.sum_univ_six, atomMatrix, kFourDirection, Matrix.mulVec,
         dotProduct, Fin.sum_univ_three] at hnonneg
       have : 0 ≤ coefficient 2 := by nlinarith [h23.2.1, h23.2.2.1,
         h23.2.2.2]
-      exact lt_of_le_of_ne this (Ne.symm (hcoefficient 2))
+      simpa [kFourOppositeEdge] using
+        (lt_of_le_of_ne this (Ne.symm (hcoefficient 2)))
 
 /-! ## Chart selection exchange -/
 
@@ -530,7 +577,7 @@ replacement used by `kFourPointerWindowCoefficient`. -/
 theorem chartCoeff_insert_swap_eq_pointerWindowCoefficient {size : ℕ}
     (mass weight : Fin size → ℝ) (tree : Finset (Fin size))
     (removed inserted : Fin size) (hremoved : removed ∉ tree)
-    (hinserted : inserted ∉ tree) (hne : inserted ≠ removed) :
+    (_hinserted : inserted ∉ tree) (hne : inserted ≠ removed) :
     chartCoeff mass weight (insert inserted tree)
       = fun label =>
           if label = removed then -mass removed
@@ -541,7 +588,7 @@ theorem chartCoeff_insert_swap_eq_pointerWindowCoefficient {size : ℕ}
   unfold chartCoeff
   by_cases hr : label = removed
   · subst label
-    simp [hremoved, hinserted, hne]
+    simp [hremoved, Ne.symm hne]
   by_cases hi : label = inserted
   · subst label
     simp [hne]
@@ -616,7 +663,7 @@ theorem KFourPivotWallPricedOrthogonalEndpointData.opposite_not_orthogonal
     exact hoppositeOrthogonal
   have hpointerOld : coefficient data.endpoint.pointer < 0 := by
     apply chartCoeff_neg_of_not_mem point
-    simp [coefficient, data.endpoint.pointer_notMem, hpointerNeAdded]
+    simp [data.endpoint.pointer_notMem, hpointerNeAdded]
   have hpointerNew : 0 < chartCoeff point.mass point.weight
       (insert data.endpoint.pointer tree) data.endpoint.pointer :=
     chartCoeff_pos_of_mem point (Finset.mem_insert_self _ _)
@@ -637,7 +684,10 @@ theorem KFourPivotWallPricedOrthogonalEndpointData.opposite_not_orthogonal
             (chartCoeff point.mass point.weight (insert data.endpoint.pointer tree)
               data.endpoint.pointer) label • atomMatrix (kFourDirection label) := by
     rw [directionChartGap_eq_coeff_sum, hcoeffSwap]
-    rfl
+    apply Finset.sum_congr rfl
+    intro label _
+    congr 1
+    simp [kFourPointerWindowCoefficient, coefficient, hpointerNeAdded]
   have hdetPos := data.endpoint.window_posDef.det_pos
   rw [hgapWindow] at hdetPos
   linarith
