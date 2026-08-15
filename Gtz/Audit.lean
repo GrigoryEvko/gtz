@@ -1015,6 +1015,7 @@ import Gtz.Design.DeflatedPairCriterion
 import Gtz.Design.ChartHighPivotCap
 import Gtz.Design.GeneralCoverCell
 import Gtz.Design.TwoMeetingLinesChart
+import Gtz.Design.TwoMeetingLinesCovering
 import Gtz.Design.UniformWitnessRefutation
 import Gtz.Design.KFourOwnMonomial
 import Gtz.Design.FrobeniusSpreadCell
@@ -30788,3 +30789,19 @@ run_cmd do
 #print axioms Gtz.posDef_subsetSum_compl_triple_of_frobeniusSpread
 #print axioms Gtz.FrobeniusSpreadCovers
 #print axioms Gtz.exists_posDef_compl_triple_of_frobeniusSpreadCovers
+
+-- The two-meeting-lines covering: the three bracket identities that decide
+-- admissibility, the per-atom scales, the realization on bare vectors, the
+-- covering theorem, the stratum obligation, and the first chart-level cell.
+#print axioms Gtz.tripleBracket_twoThreeFive_of_expansions
+#print axioms Gtz.tripleBracket_oneFourFive_of_expansions
+#print axioms Gtz.tripleBracket_twoFourFive_of_expansions
+#print axioms Gtz.twoMeetingLinesScale
+#print axioms Gtz.exists_twoMeetingLinesRealization_of_brackets
+#print axioms Gtz.parameterizedChartCovers_twoMeetingLinesDirection
+#print axioms Gtz.stressFreeStratumIsTieFree_twoMeetingLines_of_chart
+#print axioms Gtz.twoMeetingLinesFamily_mem_stressFreeResidualFamiliesSix
+#print axioms Gtz.twoMeetingLinesSelected
+#print axioms Gtz.twoMeetingLinesCoeff
+#print axioms Gtz.readsThrough_twoMeetingLinesDirection
+#print axioms Gtz.posDef_directionChartGap_twoMeetingLines_of_coverCell

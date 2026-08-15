@@ -4816,6 +4816,7 @@ import Gtz.Design.GeneralCoverCell
 -- carries exactly two parameters.  The five excluded loci are two parallel
 -- pairs, two third lines through atom 5, and the three-line interface.
 import Gtz.Design.TwoMeetingLinesChart
+import Gtz.Design.TwoMeetingLinesCovering
 import Gtz.Design.UniformWitnessRefutation
 
 -- The own monomial of a K4 chart tree: the product of its members' boosts.
