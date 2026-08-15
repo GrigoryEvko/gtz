@@ -987,6 +987,7 @@ import Gtz.Wave.LineResidualPivotLoadWiring
 import Gtz.Wave.ComplementPivotTraceLedger
 import Gtz.Design.DirectionBudget
 import Gtz.Design.KFourTreeMinorGoals
+import Gtz.Design.KFourTreeInvariantGoals
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30166,3 +30167,21 @@ run_cmd do
 #print axioms Gtz.kFourLeafConclusion_of_shortListMinors
 #print axioms Gtz.shortListMinors_of_kFourLeafConclusion
 #print axioms Gtz.kFourLeaf_iff_shortListMinors
+-- The frame-free tree goals of the A3 leaf: the three invariant pencil
+-- coefficients as named goals, the criterion on a symmetric form, the three
+-- goals of a tree, the tree equivalence, the two halves of the leaf, the
+-- lossless frame-free split, and the trace rung.
+#print axioms Gtz.invariantOne
+#print axioms Gtz.invariantTwo
+#print axioms Gtz.invariantThree
+#print axioms Gtz.posDef_iff_invariantTriple
+#print axioms Gtz.kFourTreeInvariantOne
+#print axioms Gtz.kFourTreeInvariantTwo
+#print axioms Gtz.kFourTreeInvariantThree
+#print axioms Gtz.kFourTree_posDef_iff_invariant
+#print axioms Gtz.kFourLeafConclusion_of_shortListInvariants
+#print axioms Gtz.shortListInvariants_of_kFourLeafConclusion
+#print axioms Gtz.kFourLeaf_iff_shortListInvariants
+#print axioms Gtz.kFourTrace_eq
+#print axioms Gtz.kFourDirection_normSq
+#print axioms Gtz.kFourTrace_eq_explicit

@@ -4708,3 +4708,4 @@ import Gtz.Design.DirectionBudget
 -- reduction is necessary.  The entry reading is generic in the size and in the
 -- direction family, so the other strata read their own gaps through it.
 import Gtz.Design.KFourTreeMinorGoals
+import Gtz.Design.KFourTreeInvariantGoals
