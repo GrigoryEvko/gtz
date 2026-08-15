@@ -3761,6 +3761,12 @@ import Gtz.Ties.ComplementJawWindow
 -- every plane frame carries a sixty-degree pair — sharp at the trine, real
 -- only by the Bloch tetrahedron.
 import Gtz.Wave.PlanePairCriterion
+-- The complete three-atom plane tie classification.  The open tie simplex is
+-- inhabited exactly when every atom mass exceeds one half, then its weight is
+-- uniquely `2 * mass - 1`; every pair is weakly tied with an explicit kernel
+-- probe.  The same module supplies the arbitrary-cardinality active-set W
+-- engine used by the terminal descent charts.
+import Gtz.Wave.PlaneTieClassification
 -- The descent weld spends all three preceding layers. Balanced heavy edges
 -- produce the actual carrier or leave a strict subcritical frame; light ties
 -- carry an eight-needle on every triple and die against one strict gap cap;

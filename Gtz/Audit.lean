@@ -842,6 +842,7 @@ import Gtz.Wave.TenthAverageFloor
 import Gtz.Wave.InvolutionBlockForm
 import Gtz.Wave.BalancedCutSelection
 import Gtz.Wave.PlanePairCriterion
+import Gtz.Wave.PlaneTieClassification
 import Gtz.Ties.ComplementJawWindow
 import Gtz.Wave.DescentWeld
 #print axioms Gtz.unitVector
@@ -27614,6 +27615,45 @@ run_cmd do
 #print axioms Gtz.PlaneParseval.mass_eq_of_equal
 #print axioms Gtz.exists_dominatingPlanePair_uniform
 #print axioms Gtz.exists_strictDominatingPlanePair_uniform
+-- The exact three-atom plane tie locus and the general W engine.
+#print axioms Gtz.plane_dot_self_pos
+#print axioms Gtz.planePairStrict_of_certificate
+#print axioms Gtz.scalar_of_not_planePairStrict
+#print axioms Gtz.pair_det_core
+#print axioms Gtz.wedge_core
+#print axioms Gtz.plane_three_pair_det_first
+#print axioms Gtz.plane_three_pair_det_second
+#print axioms Gtz.plane_three_pair_det_third
+#print axioms Gtz.plane_three_pair_det
+#print axioms Gtz.plane_three_wedge_sq
+#print axioms Gtz.planeTieWeight
+#print axioms Gtz.planeTieWeight_sum
+#print axioms Gtz.planeTieWeight_pos
+#print axioms Gtz.plane_three_mass_lt_one
+#print axioms Gtz.planeTieWeight_lt_one
+#print axioms Gtz.planeTie_pair_det_eq
+#print axioms Gtz.planeTie_pair_dominates
+#print axioms Gtz.planeTie_pair_independent
+#print axioms Gtz.planeTieProbe
+#print axioms Gtz.planeTieProbe_read_left
+#print axioms Gtz.planeTieProbe_read_right
+#print axioms Gtz.planeTieProbe_energy
+#print axioms Gtz.planeTieProbe_certificate
+#print axioms Gtz.planeTieProbe_ne_zero
+#print axioms Gtz.planeTie_pair_not_strict
+#print axioms Gtz.tie_scalar_leverage_lt_one
+#print axioms Gtz.tie_scalar_weight_pos
+#print axioms Gtz.tie_scalar_slot_le
+#print axioms Gtz.tie_scalar_classification
+#print axioms Gtz.plane_three_classification
+#print axioms Gtz.plane_three_tie_iff
+#print axioms Gtz.exists_plane_three_tie_iff
+#print axioms Gtz.plane_three_tie_unique
+#print axioms Gtz.plane_three_pair_dominates_of_tie
+#print axioms Gtz.planeTie_w_identity
+#print axioms Gtz.planeTrine_tieWeight
+#print axioms Gtz.quarter_trace_core
+#print axioms Gtz.plane_w_engine
 -- The descent weld: balanced interior elimination, the exact eight-needle
 -- chart exit, and the strict-or-tied-nonparallel plane endpoint.
 #print axioms Gtz.exists_atomCarrier_or_balancedSubcritical
