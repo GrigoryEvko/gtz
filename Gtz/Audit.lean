@@ -860,6 +860,7 @@ import Gtz.Design.UnsignedTraceCell
 import Gtz.Design.CoverageRefuters
 import Gtz.Design.RowCertificateAtlas
 import Gtz.Design.ZMatrixAlternative
+import Gtz.Design.ChartDesignWhitening
 import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.KFourUnsignedTraceWiring
 import Gtz.Wave.KFourPendantAtlasWiring
@@ -28210,3 +28211,16 @@ run_cmd do
 #print axioms Gtz.zThreeDualWitness_of_det
 #print axioms Gtz.zThreeDualWitness_of_not_minors
 #print axioms Gtz.zThree_gershgorin_of_dualWitness
+-- The chart-design whitening: the moment matrix, the whitened design, the
+-- triangle refuters, and the weld to the design-level strict selection.
+#print axioms Gtz.atomMatrix_transpose_mulVec
+#print axioms Gtz.kFourMomentMatrix
+#print axioms Gtz.kFourMomentMatrix_transpose
+#print axioms Gtz.dotProduct_kFourMomentMatrix_mulVec
+#print axioms Gtz.kFourMomentMatrix_posDef
+#print axioms Gtz.exists_kFourWhitenedDesign
+#print axioms Gtz.kFourTriangle_gap_not_posDef_of_normal
+#print axioms Gtz.kFourTriangle_gap_not_posDef
+#print axioms Gtz.mem_kFourSpanningTreeList_of_card_three
+#print axioms Gtz.kFourStrictTree_of_designSelection
+#print axioms Gtz.kFourKnifeBandRefinedTenthHeavy_of_designSelection

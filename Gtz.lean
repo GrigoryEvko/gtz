@@ -3904,6 +3904,12 @@ import Gtz.Design.RowCertificateAtlas
 -- row. The forward and reverse directions of the row bridge are now one
 -- equivalence.
 import Gtz.Design.ZMatrixAlternative
+-- The chart-design whitening: the K4 chart is the complete-quadrilateral
+-- stratum of the design problem. The moment matrix whitens through the landed
+-- congruence, domination transfers as an equivalence, the four triangles are
+-- never strict, and a design-level strict selection at mass one discharges
+-- the committed A3 axiom verbatim.
+import Gtz.Design.ChartDesignWhitening
 -- Spend the gauge trace criterion and the three newly available vertex-star
 -- cells in the exact K4 residual.  The live formula is now outside all six
 -- unsigned certificate cells and remains equivalent to the public knife band.
