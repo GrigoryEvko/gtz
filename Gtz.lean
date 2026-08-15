@@ -4373,3 +4373,9 @@ import Gtz.Wave.KFourTriangleEndgame
 -- the two-meeting-lines blind spots the card-three branch lands the four-way
 -- transversal disjunction outright.
 import Gtz.Design.DesignDescentPort
+
+-- The combinatorial spine of the three-lines chart.  Each dependent triple is an
+-- explicit circuit, the coordinate labels lie on two circuits and the joins on
+-- one, and a card-four selection holds at most one line -- so the fifteen split
+-- as nine and six, not as the three and twelve of the K4 chart.
+import Gtz.Design.ThreeLinesCircuitSpine

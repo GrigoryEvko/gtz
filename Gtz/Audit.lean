@@ -949,6 +949,7 @@ import Gtz.Wave.ExchangeDeterminantPotential
 import Gtz.Wave.KFourPivotTriangleClosure
 import Gtz.Wave.KFourTriangleEndgame
 import Gtz.Design.DesignDescentPort
+import Gtz.Design.ThreeLinesCircuitSpine
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29538,3 +29539,12 @@ run_cmd do
 #print axioms Gtz.exists_posDef_cardThree_of_no_cardFour_stall
 #print axioms Gtz.exists_dominates_cardThree_of_no_cardFour_stall
 #print axioms Gtz.twoMeetingLines_transversalStrict_of_no_cardFour_stall
+-- The three-lines circuits, the packaged line exclusion, and the card-four
+-- type split of the three-lines chart.
+#print axioms Gtz.threeLinesCircuit_two
+#print axioms Gtz.threeLinesCircuit_four
+#print axioms Gtz.threeLinesCircuit_five
+#print axioms Gtz.threeLines_posDef_cardThree_ne_line
+#print axioms Gtz.threeLinesCardFour_at_most_one_line
+#print axioms Gtz.threeLinesCircuitFreeCardFour
+#print axioms Gtz.threeLinesCardFour_line_or_circuitFree
