@@ -855,6 +855,7 @@ import Gtz.Wave.OneLineSurvivorWiring
 import Gtz.Wave.TenthLightChartWiring
 import Gtz.Design.BudgetCoverCriterion
 import Gtz.Design.UnsignedCycleCells
+import Gtz.Wave.KFourUnsignedCycleWiring
 import Gtz.Wave.ThreeLinesBudgetWiring
 import Gtz.Wave.ThreeLinesReadingCoverWiring
 import Gtz.Wave.ThreeLinesOffLinesWiring
@@ -27912,3 +27913,17 @@ run_cmd do
 #print axioms Gtz.starTree_mem_kFourSpanningTreeList
 #print axioms Gtz.bandTree_mem_kFourSpanningTreeList
 #print axioms Gtz.kFourKnifeBandRefinedTenthHeavy_of_strictTree
+-- Spend the unsigned K4 cells in the registry residual.
+#print axioms Gtz.KFourUnsignedStarCellFires
+#print axioms Gtz.KFourUnsignedBandTreeCellFires
+#print axioms Gtz.KFourUnsignedCycleCellFires
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_unsignedStarCell
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_unsignedBandTreeCell
+#print axioms Gtz.kFourAtlas_hasStrictTree_of_unsignedCycleCell
+#print axioms Gtz.KFourKnifeBandRefinedUnsignedBlindWeakToStrict
+#print axioms Gtz.kFourKnifeBandRefinedTenthHeavy_of_unsignedBlind
+#print axioms Gtz.unsignedBlindKFourKnifeBandRefined_of_tenthHeavy
+#print axioms Gtz.kFourKnifeBandRefinedUnsignedBlind_iff_tenthHeavy
+#print axioms Gtz.kFourKnifeBandRefinedUnsignedBlind_iff
+#print axioms Gtz.bandResidualWitnessPoint_unsignedBandTreeCellFires
+#print axioms Gtz.bandResidualWitnessPoint_unsignedCycleCellFires

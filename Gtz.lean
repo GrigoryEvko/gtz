@@ -3855,6 +3855,10 @@ import Gtz.Design.BudgetCoverCriterion
 -- exact band witness at integer minors, the two three-lines cells in the same
 -- format, the heavy-label law, and the K4 registry joint.
 import Gtz.Design.UnsignedCycleCells
+-- Spend both allocation-free K4 cycle cells in A3.  The exact residual is now
+-- outside Layer A, the exchange star, and the unsigned star/band cells; its
+-- chart-heavy antecedent is removed because it is automatic.
+import Gtz.Wave.KFourUnsignedCycleWiring
 -- Spend both allocated three-lines cells in the A2 registry chain.  The live
 -- residual is now tenth-heavy and simultaneously outside the vertex and free
 -- budget certificates; IFF theorems recover both the prior tenth-heavy form
