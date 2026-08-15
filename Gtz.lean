@@ -4310,3 +4310,9 @@ import Gtz.Wave.ThreeLinesRankOneWitnessClassification
 -- slots of the inverse-cross matrix, so the type-A and type-B refusal systems
 -- have no free outside cross terms.
 import Gtz.Wave.KFourOutsideDecomposition
+
+-- Polarise the K4 cross-energy law across both labels outside a card-four
+-- selection.  The selected cross Gram, after subtracting the inverse cross
+-- and the two pivots, has strictly positive determinant; this retains the
+-- mixed term discarded by the scalar refusal estimate.
+import Gtz.Wave.TwoOutsideMomentLaw

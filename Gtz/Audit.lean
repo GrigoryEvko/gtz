@@ -939,6 +939,7 @@ import Gtz.Wave.ThreeLinesStallEscapeWiring
 import Gtz.Design.GaugeWallAtlasEquivalence
 import Gtz.Wave.ThreeLinesRankOneWitnessClassification
 import Gtz.Wave.KFourOutsideDecomposition
+import Gtz.Wave.TwoOutsideMomentLaw
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29448,3 +29449,12 @@ run_cmd do
 #print axioms Gtz.chartLadderVector_eq_pair_of_direction_eq
 #print axioms Gtz.kFour_exists_ladderPairDecomposition_of_cardFour
 #print axioms Gtz.kFour_exists_crossPairDecomposition_of_cardFour
+-- The polarised two-outside moment law and its strict K4 determinant arm.
+#print axioms Gtz.chartLadderDual_pair_independent_of_ladderVector_pair_independent
+#print axioms Gtz.kFourDirection_pair_independent
+#print axioms Gtz.kFour_chartLadderVector_pair_independent
+#print axioms Gtz.chartMomentCross_eq_weighted_cross_mul
+#print axioms Gtz.form_cross_sq_lt_self_mul_of_posDef_of_pair_independent
+#print axioms Gtz.kFour_chartMomentCross_sq_lt_self_mul_self
+#print axioms Gtz.crossEnergy_pair_eq_cross_add_moment
+#print axioms Gtz.kFour_twoOutside_crossEnergy_determinant_pos
