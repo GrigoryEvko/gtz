@@ -851,6 +851,7 @@ import Gtz.Wave.ProjectionDictionary
 import Gtz.Wave.TenthLightA1Wiring
 import Gtz.Wave.TenthLightPatternWiring
 import Gtz.Wave.TenthHeavyLineResidualWiring
+import Gtz.Wave.OneLineSurvivorWiring
 import Gtz.Wave.TenthLightChartWiring
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
@@ -27770,6 +27771,20 @@ run_cmd do
 #print axioms Gtz.tenthHeavyJointBlindTransversal_twoMeetingLines_of_patternHeavyWeakToStrict
 #print axioms Gtz.twoMeetingLinesTenthHeavyJointBlindTransversal_iff
 #print axioms Gtz.twoMeetingLinesTenthHeavyJointBlindTransversal_iff_tenthHeavy
+-- The one-line blind spot and the generic U(3,6) plane branch now share one
+-- exact ten-candidate selector.  The localization and both equivalence
+-- directions are kernel checked here.
+#print axioms Gtz.finSix_cardThree_nonLineSparse_contains_linePair
+#print axioms Gtz.oneLine_strictTriple_eq_lineSparse_of_normalBlind
+#print axioms Gtz.exists_posDef_cardThree_of_planeBranchTenCandidate
+#print axioms Gtz.planeBranchTenCandidate_of_oneLine_strictTriple_of_normalBlind
+#print axioms Gtz.OneLineTenthHeavyJointBlindLineSparse
+#print axioms Gtz.tenthHeavyJointBlind_oneLine_of_lineSparse
+#print axioms Gtz.lineSparse_oneLine_of_tenthHeavyJointBlind
+#print axioms Gtz.oneLineTenthHeavyJointBlindLineSparse_iff_jointBlind
+#print axioms Gtz.patternHeavyWeakToStrict_oneLine_of_tenthHeavyJointBlindLineSparse
+#print axioms Gtz.tenthHeavyJointBlindLineSparse_oneLine_of_patternHeavyWeakToStrict
+#print axioms Gtz.oneLineTenthHeavyJointBlindLineSparse_iff
 -- The chart-side tenth-light wiring.  The generic theorem whitens a positive-
 -- moment chart point, spends the strict design floor, and pulls the selected
 -- gap back.  The A2 and A3 IFFs certify that their new tenth-heavy residuals

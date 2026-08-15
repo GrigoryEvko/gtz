@@ -3828,6 +3828,11 @@ import Gtz.Wave.TenthLightPatternWiring
 -- one line survives only in the tenth-heavy joint cap/normal blind spot, while
 -- two meeting lines survive only there and at four explicit transversals.
 import Gtz.Wave.TenthHeavyLineResidualWiring
+-- In the one-line blind spot, every strict winner contains at most one line
+-- atom.  The remaining ten triples are exactly the existing
+-- `PlaneBranchTenCandidate` selector from the line-free U(3,6) plane branch,
+-- so both residuals now consume one shared finite endpoint.
+import Gtz.Wave.OneLineSurvivorWiring
 -- The same tenth-light theorem now crosses the square-root-free chart
 -- whitening dictionary.  It removes the all-light region from both remaining
 -- chart obligations: A2 survives only at a tenth-heavy point in the

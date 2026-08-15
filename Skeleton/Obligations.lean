@@ -174,7 +174,7 @@ theorem obligationTieFreeUThreeSix :
   Gtz.stressFreeStratumIsTieFree_lineFree_of_weakToStrict obligationWeakToStrictUThreeSix
 
 /--
-STATUS: open -- the one-line residual is `Gtz.OneLineTenthHeavyJointBlindWeakToStrict`: every LEVERAGE-HEAVY design of the stratum that carries SOME weakly dominating card-3 subset, a label of RAW WEIGHT at least `1/10`, and lies simultaneously in `Gtz.IsCapBlindSpot` and `Gtz.IsOneLineNormalBlindSpot`, carries a STRICTLY dominating triple. Three landed engines have already fired before the axiom: the all-light theorem, the pair-cap engine, and the line-normal lift criterion. `Gtz.oneLineTenthHeavyJointBlindWeakToStrict_iff` proves this formula equivalent to the former `Gtz.PatternHeavyWeakToStrict`; it is not a stronger sufficient condition. No plane-cover quantifier and no tight direction survive. The remaining class chain is unchanged: `Gtz.patternTightDominatedCoverProperty_iff_heavyWeakToStrict`, `Gtz.stratumIsTieFree_of_tightDominatedCoverProperty`, and the relabel bridge recover class tie-freeness. The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_oneThreePointLine`, Gtz/Reduction/TrichotomyLedger.lean:485).
+STATUS: open -- the one-line residual is `Gtz.OneLineTenthHeavyJointBlindLineSparse`: every LEVERAGE-HEAVY design of the stratum that carries SOME weakly dominating card-3 subset, a label of RAW WEIGHT at least `1/10`, and lies simultaneously in `Gtz.IsCapBlindSpot` and `Gtz.IsOneLineNormalBlindSpot`, satisfies the existing ten-way `Gtz.PlaneBranchTenCandidate` selector. Four landed engines have already fired before the axiom: the all-light theorem, the pair-cap engine, the line-normal lift criterion, and the exact localization excluding every strict triple with two atoms from `{0,1,2}`. The endpoint is deliberately shared with the line-free U(3,6) plane branch rather than duplicated. `Gtz.oneLineTenthHeavyJointBlindLineSparse_iff` proves this formula equivalent to the former `Gtz.PatternHeavyWeakToStrict`; it is not a stronger sufficient condition. No plane-cover quantifier and no tight direction survive. The remaining class chain is unchanged: `Gtz.patternTightDominatedCoverProperty_iff_heavyWeakToStrict`, `Gtz.stratumIsTieFree_of_tightDominatedCoverProperty`, and the relabel bridge recover class tie-freeness. The stratum is uniformly stress-free (`Gtz.stratumIsStressFree_oneThreePointLine`, Gtz/Reduction/TrichotomyLedger.lean:485).
 CORRECTION (2026-08-08, round 3): the round-2 entry `obligationReducedCoverOneLine` (`Gtz.PatternReducedCoverProperty`) was a STRENGTHENING sold as a sharpening and has been RETIRED OUTRIGHT -- it does not survive as a theorem, because the tight-dominated form does not imply it. Unconditioned on ties, the reduced cover property forces a STRICTLY dominating card-3 subset at EVERY design of the stratum (`Gtz.hasStrictDominator_of_reducedCoverProperty`), i.e. the stratum-restricted strict half of the very conclusion the campaign is proving, on top of tie-freeness. The replacement is kernel-EQUIVALENT to the class statement (`Gtz.patternTightDominatedCoverProperty_iff_stratumIsTieFree`, using the new converse of the producer `Gtz.normalSurplus_planeCover_of_posDef`), so it asserts nothing beyond it. No partial work is lost: the stage-4 RCP attack was developed against the unconditioned form, and adding antecedents only hands a prover more.
 CONSUMERS: `obligationStratumTieFreeOneLine` (now a theorem), hence `obligationTieFreeOneLine`, `obligationStressFreeHingeSixThree`, and the rank-three capstone.
 WHY OPEN: of the six producers of `Gtz.StressFreeStratumIsTieFree` in the tree, three are chart instances at other patterns, the plane-pair filter is provably anti-aligned (the residual list IS the not-plane-pair-covered list, Gtz/Design/StressFreeMatroidStratification.lean:303), and the two generic chart forms need a chart nobody has built for this pattern.
@@ -182,13 +182,14 @@ ATTACK: build the chart following the shipped precedent -- Gtz/Design/RigidityBr
 NOT-REFUTED: no census row targets it. The stress-forcing filter door is CLOSED, not just unused: the pattern forces stress-freeNESS uniformly (`Gtz.stratumIsStressFree_oneThreePointLine`, TrichotomyLedger.lean:485), so a filter asserting a forced nonzero stress is refutable at any design of the stratum, and the residual list is already exactly the not-plane-pair-covered list (StressFreeMatroidStratification.lean:303). Only direct tie obstructions remain admissible here.
 -/
 axiom obligationHeavyWeakToStrictOneLine :
-    Gtz.OneLineTenthHeavyJointBlindWeakToStrict
+    Gtz.OneLineTenthHeavyJointBlindLineSparse
 
 /-- The wired one-line axiom reconstructs the former chartless residual by
-spending the all-light, pair-cap and line-normal lift theorems. -/
+spending the all-light, pair-cap, line-normal lift, and ten-candidate
+localization theorems. -/
 theorem obligationHeavyWeakToStrictOneLine_full :
     Gtz.PatternHeavyWeakToStrict (Gtz.lineFamilyPattern [[(0 : Fin 6), 1, 2]]) :=
-  Gtz.patternHeavyWeakToStrict_oneLine_of_tenthHeavyJointBlind
+  Gtz.patternHeavyWeakToStrict_oneLine_of_tenthHeavyJointBlindLineSparse
     obligationHeavyWeakToStrictOneLine
 
 /-- **Discharged from the sharpened axiom.**  Same name, same statement:
