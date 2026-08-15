@@ -969,6 +969,7 @@ import Gtz.Design.GaugeWallTriangleStarDescent
 import Gtz.Wave.KFourTriangleStarStallEndgame
 import Gtz.Design.WholeLineMarginCriterion
 import Gtz.Design.ComplementPairCriterion
+import Gtz.Design.PivotGramIdempotent
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -29845,3 +29846,23 @@ run_cmd do
 #print axioms Gtz.chartLeverage_eq_one_sub_weight_mul_fullPivot
 #print axioms Gtz.fullPivot_lt_one_iff_leverage_add_weight
 #print axioms Gtz.three_le_card_fullPivot_lt_one
+-- The co-weighted idempotent law of the full-selection pivot Gram: the row
+-- energy reading, the pivot cap and its rigidity, the Frobenius reading, the
+-- strict droppable count, and the free candidate triple at (6,3).
+#print axioms Gtz.fullPivotGram
+#print axioms Gtz.fullPivotGram_diag
+#print axioms Gtz.fullExcess_transpose
+#print axioms Gtz.fullExcess_inv_transpose
+#print axioms Gtz.fullPivotGram_comm
+#print axioms Gtz.atomMatrix_mulVec
+#print axioms Gtz.sum_coweight_mul_fullPivotGram_mul
+#print axioms Gtz.sum_coweight_mul_fullPivotGram_sq
+#print axioms Gtz.coweight_mul_pivot_univ_le_one
+#print axioms Gtz.pivot_univ_le_inv_coweight
+#print axioms Gtz.sum_erase_coweight_mul_fullPivotGram_sq
+#print axioms Gtz.fullPivotGram_eq_zero_of_pivot_eq_cap
+#print axioms Gtz.sum_sum_coweight_mul_fullPivotGram_sq
+#print axioms Gtz.card_pivot_lt_one_ge
+#print axioms Gtz.crossPivot_eq_fullPivotGram
+#print axioms Gtz.residualPairing_diag_ge
+#print axioms Gtz.three_le_card_residualPairing_diag_pos

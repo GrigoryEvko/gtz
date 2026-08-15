@@ -4525,3 +4525,11 @@ import Gtz.Design.WholeLineMarginCriterion
 -- three and the weights total one, so at least three labels always survive the
 -- pivot exclusion and the omitted triple of a card-three selection exists.
 import Gtz.Design.ComplementPairCriterion
+
+-- The full-selection pivot Gram is a co-weighted idempotent.  Parseval reads the
+-- full gap as the co-weighted atom sum, so inserting it between two inverses
+-- collapses one of them and the Gram squares to itself under the co-weights.
+-- The diagonal of that law prices a pivot by its own row energy, which caps
+-- every full-selection pivot at the reciprocal of its co-weight.  The cap is
+-- rigid: an atom that attains it has every cross pivot zero.
+import Gtz.Design.PivotGramIdempotent
