@@ -193,12 +193,48 @@ def KFourPivotWallTriangleStallClosure : Prop :=
       ∃ winner ∈ kFourSpanningTreeList,
         (directionChartGap kFourDirection point.mass point.weight winner).PosDef
 
+/-- The object-level version of the contextual target.  Instead of returning a
+tree, it returns exactly the non-stalled positive-definite four-set appearing
+in `strictTree_iff_exists_nonStalledCardFour`.  This is the natural consumer for
+a global stall-escape theorem. -/
+def KFourPivotWallTriangleEscapeClosure : Prop :=
+  ∀ (point : DirectionChartPoint 6) (tree : Finset (Fin 6)),
+    tree ∈ kFourSpanningTreeList →
+    (directionChartGap kFourDirection point.mass point.weight
+      tree).PosSemidef →
+    KFourTreeWindowData point tree →
+    KFourTreeWindowAllPivotWallData point tree →
+    ∀ selected : Finset (Fin 6),
+      selected.card = 4 →
+      (directionChartGap kFourDirection point.mass point.weight
+        selected).PosDef →
+      (∀ label ∈ selected,
+        1 ≤ chartLadderPivot kFourDirection point.mass point.weight
+          selected label) →
+      KFourContainsTriangle selected →
+      ∃ escaped : Finset (Fin 6), escaped.card = 4 ∧
+        (directionChartGap kFourDirection point.mass point.weight
+          escaped).PosDef ∧
+        ∃ label ∈ escaped,
+          chartLadderPivot kFourDirection point.mass point.weight
+            escaped label < 1
+
 /-- The global triangle-stall law implies the exact contextual target. -/
 theorem kFourPivotWallTriangleStallClosure_of_triangleStallClosure
     (hclose : KFourTriangleStallClosure) :
     KFourPivotWallTriangleStallClosure := by
   intro point tree _htree _hgap _hwindow _hwall selected
   exact hclose point selected
+
+/-- The object-level escape target implies the contextual strict-tree target by
+the landed card-four equivalence. -/
+theorem kFourPivotWallTriangleStallClosure_of_escapeClosure
+    (hclose : KFourPivotWallTriangleEscapeClosure) :
+    KFourPivotWallTriangleStallClosure := by
+  intro point tree htree hgap hwindow hwall selected hcard hpd hstall htriangle
+  exact (strictTree_iff_exists_nonStalledCardFour point).mpr
+    (hclose point tree htree hgap hwindow hwall selected hcard hpd hstall
+      htriangle)
 
 /-- A contextual triangle-stall closure closes the entire recurrent arm.  No
 independent matching-complement/type-A closure remains in that arm. -/
@@ -259,5 +295,16 @@ theorem kFourFamilySelection_of_triangleStall_starEndpoint_gauge
     (hgauge : KFourGaugeStarCorankWallClosure) : KFourFamilySelection :=
   kFourFamilySelection_of_gaugeTriangleStarClosure
     ⟨⟨htriangle, hendpoint⟩, hgauge⟩
+
+/-- Flip-ready form for the unified stall-escape plan: an object-level escape
+at triangle stalls, the classified endpoint, and the gauge wall suffice for the
+K4 family selector. -/
+theorem kFourFamilySelection_of_triangleEscape_starEndpoint_gauge
+    (htriangle : KFourPivotWallTriangleEscapeClosure)
+    (hendpoint : KFourPivotWallPricedStarEndpointClosure)
+    (hgauge : KFourGaugeStarCorankWallClosure) : KFourFamilySelection :=
+  kFourFamilySelection_of_triangleStall_starEndpoint_gauge
+    (kFourPivotWallTriangleStallClosure_of_escapeClosure htriangle) hendpoint
+      hgauge
 
 end Gtz
