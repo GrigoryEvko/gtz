@@ -3799,3 +3799,9 @@ import Gtz.Wave.DescentWeld
 -- and four pairwise-nonparallel active plane slots push the no-strict budget
 -- strictly below the active mass minus one.
 import Gtz.Wave.ProjectionDictionary
+-- The unconditional tenth spectral supply now reaches the A1 registry
+-- consumer.  A square-transpose floor closes every design with all weights
+-- below `1/10`; composed with the separated weak-direction and twenty-triple
+-- balance reductions, A1 is equivalently narrowed to a tenth-heavy residual
+-- carrying every previously landed pin.
+import Gtz.Wave.TenthLightA1Wiring

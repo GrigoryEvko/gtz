@@ -846,6 +846,7 @@ import Gtz.Wave.PlaneTieClassification
 import Gtz.Ties.ComplementJawWindow
 import Gtz.Wave.DescentWeld
 import Gtz.Wave.ProjectionDictionary
+import Gtz.Wave.TenthLightA1Wiring
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -27734,3 +27735,11 @@ run_cmd do
 #print axioms Gtz.plane_budget_lt_of_slack_pair
 #print axioms Gtz.plane_fourNonparallel_budget_lt
 #print axioms Gtz.exists_strictDominatingPlanePair_of_fourNonparallel
+-- The tenth-light A1 consumer: the exact equivalence between A1 and its fully
+-- pinned, tenth-heavy, no-light-triple residual after the projection producer
+-- and the separated/balance reductions have fired.
+#print axioms Gtz.BaseTripleTightLineFreeOffConicSeparatedHeavyResidual
+#print axioms Gtz.baseTripleTightLineFreeOffConicWeakToStrict_of_separatedHeavyResidual
+#print axioms Gtz.separatedHeavyResidual_of_baseTripleTightLineFreeOffConicWeakToStrict
+#print axioms Gtz.baseTripleTightLineFreeOffConicSeparatedHeavyResidual_iff
+#print axioms Gtz.stressFreeStratumIsTieFree_lineFree_of_separatedHeavyResidual
