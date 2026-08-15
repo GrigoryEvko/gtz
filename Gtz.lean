@@ -4682,3 +4682,16 @@ import Gtz.Wave.LineResidualPivotLoadWiring
 -- every subunit omitted pair names a specific stalled card-four complement.
 -- The exact OL/TML failure localizations expose this whole ledger directly.
 import Gtz.Wave.ComplementPivotTraceLedger
+
+-- The per-direction budget and the complementary-pair exclusion.  Every earlier
+-- tool aimed at the selection problem is isotropic -- the trace identity, the
+-- pivot budget, the leverage cap and the bad-edge count are rotation-invariant
+-- scalars -- while the obstruction is directional: a selection fails because one
+-- direction overloads it, and different selections are overloaded in different
+-- directions.  Read at a probe, Parseval gives the weighted squared readings as
+-- the probe energy and the full gap as the deficiency-weighted reading.  If a
+-- label set and its complement both overload one probe, the unweighted readings
+-- dominate twice the deficiency budget, which forces some weight to reach one
+-- half.  So below half weight at most ONE of any complementary pair fails at a
+-- direction, and the twenty triples of (6,3) pair into ten.
+import Gtz.Design.DirectionBudget

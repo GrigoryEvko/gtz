@@ -985,6 +985,7 @@ import Gtz.Wave.PivotLoadScoreReduction
 import Gtz.Design.OneLineCandidateExcess
 import Gtz.Wave.LineResidualPivotLoadWiring
 import Gtz.Wave.ComplementPivotTraceLedger
+import Gtz.Design.DirectionBudget
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30138,3 +30139,12 @@ run_cmd do
 #print axioms Gtz.hasNoStrictComplementPivotLedger_of_noStrict
 #print axioms Gtz.hasNoStrictComplementPivotLedger_of_oneLine_candidateFailure
 #print axioms Gtz.hasNoStrictComplementPivotLedger_of_twoMeetingLines_candidateFailure
+-- The per-direction budget: Parseval at a probe, the deficiency reading of the
+-- full gap, positivity of the unweighted readings, the half-weight surplus, and
+-- the complementary-pair exclusion with its common-direction corollary.
+#print axioms Gtz.sum_weight_mul_sq_reading
+#print axioms Gtz.quadForm_univGap_eq_sum
+#print axioms Gtz.sum_sq_reading_pos
+#print axioms Gtz.sum_sq_reading_lt_two_mul_deficiency
+#print axioms Gtz.not_both_overload_of_weight_lt_half
+#print axioms Gtz.exists_not_overload_of_weight_lt_half
