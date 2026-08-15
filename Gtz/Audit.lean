@@ -883,6 +883,7 @@ import Gtz.Design.StarAmplifiedExchange
 import Gtz.Wave.KFourTreeWindowResidual
 import Gtz.Design.WallCollapse
 import Gtz.Wave.KFourTreeWindowCorankReduction
+import Gtz.Wave.KFourPathCorankCollapse
 import Gtz.Wave.ThreeLinesUnsignedTraceWiring
 import Gtz.Wave.ThreeLinesMovedOrbitTraceWiring
 import Gtz.Design.ThreeLinesFamilyWeld
@@ -28648,6 +28649,45 @@ run_cmd do
 #print axioms Gtz.KFourKnifeBandRefinedTreeGapCorankResidualWeakToStrict
 #print axioms Gtz.kFourKnifeBandRefinedTreeGapCorankResidual_iff_treeWindowResidual
 #print axioms Gtz.kFourKnifeBandRefinedTreeGapCorankResidual_iff
+-- Eliminate every path from the original-gap corank-two wall.  The generic
+-- Z-matrix theorem, all twelve exact pullback instances, the finite tree
+-- classifier, and the exact star-only A3 replacement are pinned separately.
+#print axioms Gtz.false_of_zThreeMatrix_posSemidef_of_two_noncollinear_kernels
+#print axioms Gtz.probe_surjective_of_ne_zero
+#print axioms Gtz.false_of_gapCorankTwo_of_irreducible_zThree_pullback
+#print axioms Gtz.kFourPath015ProbeLinear
+#print axioms Gtz.kFourPath025ProbeLinear
+#print axioms Gtz.kFourPath035ProbeLinear
+#print axioms Gtz.kFourPath045ProbeLinear
+#print axioms Gtz.kFourPath014ProbeLinear
+#print axioms Gtz.kFourPath124ProbeLinear
+#print axioms Gtz.kFourPath145ProbeLinear
+#print axioms Gtz.kFourBand134ProbeLinear
+#print axioms Gtz.kFourPendant023ProbeLinear
+#print axioms Gtz.kFourPendant123ProbeLinear
+#print axioms Gtz.kFourPendant234ProbeLinear
+#print axioms Gtz.kFourPendant235ProbeLinear
+#print axioms Gtz.false_of_kFourPath015_gapCorankTwo
+#print axioms Gtz.false_of_kFourPath025_gapCorankTwo
+#print axioms Gtz.false_of_kFourPath035_gapCorankTwo
+#print axioms Gtz.false_of_kFourPath045_gapCorankTwo
+#print axioms Gtz.false_of_kFourPath014_gapCorankTwo
+#print axioms Gtz.false_of_kFourPath124_gapCorankTwo
+#print axioms Gtz.false_of_kFourPath145_gapCorankTwo
+#print axioms Gtz.false_of_kFourBand134_gapCorankTwo
+#print axioms Gtz.false_of_kFourPendant023_gapCorankTwo
+#print axioms Gtz.false_of_kFourPendant123_gapCorankTwo
+#print axioms Gtz.false_of_kFourPendant234_gapCorankTwo
+#print axioms Gtz.false_of_kFourPendant235_gapCorankTwo
+#print axioms Gtz.mem_kFourStarList_of_gapCorankTwo
+#print axioms Gtz.KFourWeakTreeGapStarCorankResidual
+#print axioms Gtz.kFourWeakTreeGapStarCorankResidual_of_gapCorankResidual
+#print axioms Gtz.kFourWeakTreeGapCorankResidual_of_starCorankResidual
+#print axioms Gtz.kFourWeakTreeGapStarCorankResidual_iff_gapCorankResidual
+#print axioms Gtz.KFourKnifeBandRefinedTreeGapStarCorankResidualWeakToStrict
+#print axioms Gtz.kFourKnifeBandRefinedTreeGapStarCorankResidual_iff_gapCorankResidual
+#print axioms Gtz.kFourKnifeBandRefinedTreeGapStarCorankResidual_iff
+#print axioms Gtz.kFourFamilySelection_iff_treeGapStarCorankResidual
 #print axioms Gtz.kFourFamilySelection_iff_treeGapCorankResidual
 -- The star amplified exchange: the amplification core, the four bundle
 -- translations, the four star amplified-triangle theorems, the kernel-probe

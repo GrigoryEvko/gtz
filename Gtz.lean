@@ -4003,6 +4003,10 @@ import Gtz.Wave.KFourTreeWindowResidual
 -- update.  The A3 corank wall now exposes two independent kernels of the
 -- original PSD tree gap, and the incoming pointer is orthogonal to the second.
 import Gtz.Wave.KFourTreeWindowCorankReduction
+-- Eliminate the corank-two wall on all twelve K4 path trees.  Their exact
+-- injective pullbacks are irreducible PSD Z-matrices, whose kernels cannot
+-- contain two noncollinear vectors.  The singular A3 branch is now star-only.
+import Gtz.Wave.KFourPathCorankCollapse
 -- Spend the generic unsigned trace theorem at the two landed three-lines
 -- expansions.  The exact A2 residual is now outside both minor cells and both
 -- one-inequality trace cells.
