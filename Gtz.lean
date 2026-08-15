@@ -4802,3 +4802,4 @@ import Gtz.Design.KFourEntrySumRung
 -- corollaries rather than independent facts.
 import Gtz.Design.DeflatedPairCriterion
 import Gtz.Design.ChartHighPivotCap
+import Gtz.Design.GeneralCoverCell

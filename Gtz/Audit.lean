@@ -1012,6 +1012,7 @@ import Gtz.Design.NoStrictPivotLedger
 import Gtz.Design.KFourEntrySumRung
 import Gtz.Design.DeflatedPairCriterion
 import Gtz.Design.ChartHighPivotCap
+import Gtz.Design.GeneralCoverCell
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -30599,3 +30600,27 @@ run_cmd do
 #print axioms Gtz.chartHigh_subset_of_posDef
 #print axioms Gtz.card_chartHigh_le_card_of_posDef
 #print axioms Gtz.sum_low_deficiency_mul_fullPivot_le
+
+-- The general covering cell: the combination data, the cost of a label, the
+-- weighted Cauchy-Schwarz step, the maximum step, the covering theorem, its
+-- chart consumer, the Cramer reading identity, the coplanar blindness, and
+-- the pair and triple factors.
+#print axioms Gtz.ReadsThrough
+#print axioms Gtz.combinationMass
+#print axioms Gtz.combinationPrice
+#print axioms Gtz.coverCost
+#print axioms Gtz.GeneralCoverCellFires
+#print axioms Gtz.sq_sum_le_mass_mul_weighted
+#print axioms Gtz.weighted_le_price_mul_max
+#print axioms Gtz.readingCover_of_generalCoverCellFires
+#print axioms Gtz.posDef_directionChartGap_of_generalCoverCell
+#print axioms Gtz.tripleDet
+#print axioms Gtz.tripleDet_smul_reading
+#print axioms Gtz.reading_eq_cramer
+#print axioms Gtz.commonOrthogonal
+#print axioms Gtz.coplanar_triple_blind
+#print axioms Gtz.not_readingCover_of_blind_probe
+#print axioms Gtz.coverCost_pair
+#print axioms Gtz.generalCost_le_one_of_quarter
+#print axioms Gtz.coverCost_triple
+#print axioms Gtz.generalCost_le_one_of_ninth
