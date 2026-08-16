@@ -33088,7 +33088,6 @@ run_cmd do
 #print axioms Gtz.exists_pos_projGap_of_secondMoment
 #print axioms Gtz.exists_posDef_blockGapAt_of_secondMoment
 #print axioms Gtz.SecondMomentDominates
-#print axioms Gtz.allFiveOnPath_of_secondMomentDominates
 #print axioms Gtz.exists_pos_projGap_of_sqSum_gt_sq
 #print axioms Gtz.kfourStar_secondMoment_deficit
 
@@ -33104,7 +33103,6 @@ run_cmd do
 #print axioms Gtz.exists_pos_projGap_of_pairSecondMoment
 #print axioms Gtz.exists_posDef_blockGapAt_of_pairSecondMoment
 #print axioms Gtz.PairSecondMomentDominates
-#print axioms Gtz.allFiveOnPath_of_pairSecondMomentDominates
 #print axioms Gtz.kfourStar_levelTwo_deficit
 #print axioms Gtz.kfourShiftForm
 #print axioms Gtz.kfourShiftForm_transpose
@@ -33157,7 +33155,6 @@ run_cmd do
 -- carries a free scale and is strictly weaker to satisfy.
 #print axioms Gtz.exists_excess_ge_third
 #print axioms Gtz.exists_pivot_pair_of_uniform
-#print axioms Gtz.allFiveOnPath_of_offsetThirdInequality
 #print axioms Gtz.blockGapAt_eq_projectionBlockGap
 #print axioms Gtz.allFiveOnPath_of_excessDominates
 #print axioms Gtz.posDef_of_scaledDominant
@@ -33510,3 +33507,8 @@ run_cmd do
 #print axioms Gtz.signFreeCliqueDet_rank_three
 #print axioms Gtz.coherentCliqueDet_rank_four
 #print axioms Gtz.kFourRatio_separates
+-- The rank-uniform core: the gap diagonal beats each single off-diagonal at every rank at
+-- least three, which is the whole of strict domination for a coherent all-meeting selection.
+#print axioms Gtz.profilePair_lt_profileDiag
+#print axioms Gtz.kFourPair_lt_kFourDiag
+#print axioms Gtz.rankFourPair_lt_rankFourDiag

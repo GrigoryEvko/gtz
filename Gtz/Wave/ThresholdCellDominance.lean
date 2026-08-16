@@ -677,8 +677,10 @@ theorem coherentCliqueDet_rank_three : coherentCliqueDet 3 = 5 / 864 := by
 theorem signFreeCliqueDet_rank_three : signFreeCliqueDet 3 = -49 / 864 := by
   unfold signFreeCliqueDet profileDiag profilePair; norm_num
 
-/-- The rank-four reading: the threshold cell `(10, 4)` has ratio `3 / 2`, diagonal
-`3 / 10` and off-diagonal `1 / 5`, and its coherent selection reads `7 / 1000`. -/
+/-- The value of the SAME rank-three shaped polynomial at the rank-four profile constants,
+`7 / 1000`.  It is recorded for comparison only.  **It is NOT the determinant of the
+rank-four threshold cell's gap block**, which is a four by four matrix — section 11 handles
+every rank without a determinant at all. -/
 theorem coherentCliqueDet_rank_four : coherentCliqueDet 4 = 7 / 1000 := by
   unfold coherentCliqueDet profileDiag profilePair; norm_num
 
@@ -691,5 +693,40 @@ theorem kFourRatio_separates :
       ∧ 1 < profileRatio 3 := by
   unfold profileRatio
   norm_num
+
+/-! ## 11. The rank-uniform core, with no determinant
+
+Section 10 reads a three by three determinant, so it speaks for rank three.  At rank `n`
+the selection carries `n` slots and the determinant changes shape.  The content that does
+NOT change shape is one inequality: the gap diagonal beats each single off-diagonal entry.
+
+On the complete-graph profile a coherent all-meeting selection is the constant block, `d`
+on the diagonal and `a` off it, whose quadratic form is
+`(d - a) * ‖x‖ ^ 2 + a * (∑ x) ^ 2`.  Both terms are then nonnegative and the first is
+strictly positive away from the origin, so `a < d` alone forces strict domination at EVERY
+selection size.  That inequality is exactly `1 < Gtz.profileRatio`, which holds from rank
+three.  The rank-three determinant `5 / 864` is one value of a fact that never needed it. -/
+
+/-- **THE RANK-UNIFORM CORE.**  On the complete-graph profile the gap diagonal strictly
+exceeds each single off-diagonal entry, at every rank at least three.  For the coherent
+all-meeting selection this is the whole of strict domination, because the quadratic form of
+a constant block is `(diagonal - offDiagonal)` times the squared norm plus `offDiagonal`
+times the squared total, and both terms are then favourable at every selection size. -/
+theorem profilePair_lt_profileDiag {rank : ℝ} (hrank : 3 ≤ rank) :
+    profilePair rank < profileDiag rank := by
+  have hpos : (0 : ℝ) < rank := by linarith
+  have hsucc : (0 : ℝ) < rank + 1 := by linarith
+  have hpairPos : 0 < profilePair rank := by unfold profilePair; positivity
+  rw [profileDiag_eq_ratio_mul_pair hpos]
+  have hratio : 1 < profileRatio rank := one_lt_profileRatio hrank
+  nlinarith [hpairPos, hratio]
+
+/-- The rank-three reading: `1 / 4 < 1 / 3`, the `K4` chart's own two constants. -/
+theorem kFourPair_lt_kFourDiag : profilePair 3 < profileDiag 3 := by
+  unfold profilePair profileDiag; norm_num
+
+/-- The rank-four reading at the threshold cell `(10, 4)`: `1 / 5 < 3 / 10`. -/
+theorem rankFourPair_lt_rankFourDiag : profilePair 4 < profileDiag 4 := by
+  unfold profilePair profileDiag; norm_num
 
 end Gtz
