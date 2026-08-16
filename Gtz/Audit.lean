@@ -34048,6 +34048,10 @@ run_cmd do
 #print axioms Gtz.eq_zero_of_kFourDirection_erase_blind
 #print axioms Gtz.posDef_kFourPuncturedMoment
 #print axioms Gtz.chartFosterShare_kFour_lt_one
+#print axioms Gtz.kFour_exists_deflatedSubset
+#print axioms Gtz.kFour_hasStrictTree_of_cardThree_posDef
+#print axioms Gtz.kFour_hasStrictTree_of_deflatedSubsetDet
+#print axioms Gtz.kFour_deflatedSubset_chartDet
 
 -- Wave/MixedTripleBalance: the sharp balance as one wedge total of the split
 -- measure, the one-sign nonnegativity law, the plane determinant of the balance,
@@ -34128,3 +34132,12 @@ run_cmd do
 #print axioms Gtz.selfReading_kFour_star
 #print axioms Gtz.kFour_star_price
 #print axioms Gtz.kFour_census
+#print axioms Gtz.tripleFrame_apply
+#print axioms Gtz.tripleGram_diag
+#print axioms Gtz.tripleGram_off
+#print axioms Gtz.kFourEdge_zero
+#print axioms Gtz.kFourEdge_one
+#print axioms Gtz.kFourEdge_two
+#print axioms Gtz.kFourEdge_three
+#print axioms Gtz.kFourEdge_four
+#print axioms Gtz.kFourEdge_five
