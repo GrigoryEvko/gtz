@@ -33631,25 +33631,12 @@ run_cmd do
 #print axioms Gtz.isotropicShift_reads_sum_and_discriminant
 #print axioms Gtz.laplacianDiscriminant_le_sq_sum
 
--- The deflation gap floor and the leverage floor of a tie.  The floor is the
--- congruence summand the landed light-atom theorem discards, the strict engine
--- turns it into a strict dominator, and at (6,3) the predecessor is landed so
--- every tie is heavy with no hypothesis.
-#print axioms Gtz.posSemidef_one_sub_atomMatrix
-#print axioms Gtz.posDef_one_sub_atomMatrix
-#print axioms Gtz.posDef_smul_of_pos
-#print axioms Gtz.atomMatrix_quadratic
-#print axioms Gtz.exists_deflationGapFloor
-#print axioms Gtz.exists_posDef_subsetSum_of_light_atom
-#print axioms Gtz.one_le_leverage_of_isTie
-#print axioms Gtz.not_isTie_of_light_atom
-#print axioms Gtz.forall_one_le_leverage_of_isTie
-#print axioms Gtz.one_le_leverage_of_isTie_sixThree
-#print axioms Gtz.one_le_leverage_of_isTie_of_size_le_six
-#print axioms Gtz.exists_posDef_subsetSum_sixThree_of_light
-#print axioms Gtz.exists_deflationGapFloor_sixThree
-#print axioms Gtz.tight_cone_of_floor
-#print axioms Gtz.leverage_ge_one_of_tight_cone
+-- The landed leverage floor of a tie, spent on the two off-path registry axioms.
+-- The floor itself is `Gtz.leverage_one_le_of_isTie` and is consumed, not
+-- restated.  What is new is that both hinges now have a producer that spends the
+-- predecessor cell instead of asking for excess dominance, whose hypothesis is
+-- refuted at six labels and at rank four.
+#print axioms Gtz.forall_leverage_one_le_of_isTie
 #print axioms Gtz.obligationThresholdCellHingeRankFourAndUp_of_heavyTie
 #print axioms Gtz.obligationSubThresholdBandHinge_of_heavyTie
 #print axioms Gtz.hingeConclusion_sixThree_of_heavyTie
@@ -33678,3 +33665,12 @@ run_cmd do
 #print axioms Gtz.blindSubset_reading_eq
 #print axioms Gtz.blindSubset_spread_bound
 #print axioms Gtz.kFourTriangleSelection_spread
+
+-- The blind law at the design level.  A line of the residual patterns is a
+-- coplanar triple, hence a blind set at the line normal, so these reach every
+-- on-path class with no pattern hypothesis.
+#print axioms Gtz.blindSubset_design_reading
+#print axioms Gtz.blindSubset_dominates_overcovers
+#print axioms Gtz.not_dominates_of_fully_blind
+#print axioms Gtz.single_survivor_overcovers
+#print axioms Gtz.not_dominates_of_coplanar_triple
