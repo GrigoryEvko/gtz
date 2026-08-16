@@ -1128,4 +1128,77 @@ theorem exists_posDef_blockGapAt_of_kfour (design : WeightedDesign 6 3)
       (by decide : (2 : Fin 6) ≠ 0) (by decide : (2 : Fin 6) ≠ 1), hshift]
   exact kfourStar_posDef_tripleBlock
 
+/-! ### 12. THE HINGE, FROM THREE SCALAR INEQUALITIES
+
+The two frontier axioms of the registry read `IsTie design → HasParallelPair design`.  A tie
+asks for TWO things: a dominating subset of the right size, and NO subset of that size whose
+gap is positive definite.  A positive definite gap block therefore refutes the tie outright,
+and the hinge implication holds vacuously at that design.
+
+The landed bridge `Gtz.dominates_image_of_posDef_blockGapAt` carries a positive definite gap
+block onto a positive definite subset gap, and it is SIZE-uniform at rank three.  So the
+three scalar inequalities of section 5 produce the frontier's own conclusion at any size,
+and the graphic point of `K4` produces it unconditionally. -/
+
+/-- **A POSITIVE DEFINITE GAP BLOCK REFUTES THE TIE.**  A tie forbids every subset gap of
+the right size from being positive definite, and the landed bridge exhibits one. -/
+theorem not_isTie_of_posDef_blockGapAt {size : ℕ} (design : WeightedDesign size 3)
+    {pick : Fin 3 → Fin size} (hinj : Function.Injective pick)
+    (hposDef : (blockGapAt (projectionOfDesign design) design.weight pick).PosDef) :
+    ¬ IsTie design := fun htie =>
+  htie.2 (Finset.image pick Finset.univ) (card_image_pick hinj)
+    (dominates_image_of_posDef_blockGapAt design hinj hposDef)
+
+/-- **THE THREE INEQUALITIES REFUTE THE TIE.**  Size-uniform at rank three: a pivot of
+positive excess, one positive pair minor, and one ordered partner pair whose squared offset
+falls below the minor product. -/
+theorem not_isTie_of_offsetDominatesAt {size : ℕ} (design : WeightedDesign size 3)
+    {first second third : Fin size} (hfirstSecond : first ≠ second)
+    (hthirdFirst : third ≠ first) (hthirdSecond : third ≠ second)
+    (hexcess : 0 < diagonalShiftForm design first first)
+    (hminor : 0 < pairMinorAt (diagonalShiftForm design) first second)
+    (hsq : shiftOffsetAt design first second third ^ 2
+      < pairMinorAt (diagonalShiftForm design) first second
+        * pairMinorAt (diagonalShiftForm design) first third) :
+    ¬ IsTie design := by
+  refine not_isTie_of_posDef_blockGapAt design
+    (injective_triplePick hfirstSecond hthirdFirst hthirdSecond) ?_
+  rw [← tripleBlock_diagonalShift_eq_blockGapAt design hfirstSecond hthirdFirst hthirdSecond]
+  exact posDef_tripleBlock_of_offsetAt_sq_lt (diagonalShiftForm design)
+    (diagonalShiftForm_transpose design) hexcess hminor hsq
+
+/-- **THE FRONTIER'S CONCLUSION, FROM THREE POLYNOMIAL INEQUALITIES.**  The registry's two
+frontier axioms conclude `IsTie design → HasParallelPair design`.  At any size and rank
+three the three scalar inequalities give that conclusion, vacuously, because they leave no
+tie to hold. -/
+theorem hasParallelPair_of_isTie_of_offsetDominatesAt {size : ℕ}
+    (design : WeightedDesign size 3)
+    {first second third : Fin size} (hfirstSecond : first ≠ second)
+    (hthirdFirst : third ≠ first) (hthirdSecond : third ≠ second)
+    (hexcess : 0 < diagonalShiftForm design first first)
+    (hminor : 0 < pairMinorAt (diagonalShiftForm design) first second)
+    (hsq : shiftOffsetAt design first second third ^ 2
+      < pairMinorAt (diagonalShiftForm design) first second
+        * pairMinorAt (diagonalShiftForm design) first third) :
+    IsTie design → HasParallelPair design := fun htie =>
+  absurd htie (not_isTie_of_offsetDominatesAt design hfirstSecond hthirdFirst hthirdSecond
+    hexcess hminor hsq)
+
+/-- **THE GRAPHIC POINT OF `K4` IS NOT A TIE.**  Unconditional, from the explicit block of
+section 11. -/
+theorem not_isTie_of_kfour (design : WeightedDesign 6 3)
+    (hpoint : projectionOfDesign design = kfourEdgeProjection)
+    (huniform : ∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹) :
+    ¬ IsTie design := by
+  obtain ⟨pick, hinj, hposDef⟩ := exists_posDef_blockGapAt_of_kfour design hpoint huniform
+  exact not_isTie_of_posDef_blockGapAt design hinj hposDef
+
+/-- **THE FRONTIER'S CONCLUSION AT THE RIGID STRATUM.**  Every design carried by the graphic
+point of `K4` at uniform weight satisfies the hinge implication, unconditionally. -/
+theorem hasParallelPair_of_isTie_of_kfour (design : WeightedDesign 6 3)
+    (hpoint : projectionOfDesign design = kfourEdgeProjection)
+    (huniform : ∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹) :
+    IsTie design → HasParallelPair design := fun htie =>
+  absurd htie (not_isTie_of_kfour design hpoint huniform)
+
 end Gtz

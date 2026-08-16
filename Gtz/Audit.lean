@@ -33057,3 +33057,14 @@ run_cmd do
 #print axioms Gtz.kfourStar_posDef_tripleBlock
 #print axioms Gtz.kfourStar_projGap_eq
 #print axioms Gtz.exists_posDef_blockGapAt_of_kfour
+
+-- The hinge, from three scalar inequalities.  A tie forbids every subset gap of the
+-- right size from being positive definite, so one positive definite gap block refutes
+-- the tie outright and the frontier's own conclusion holds vacuously.  The landed
+-- bridge is SIZE-uniform at rank three, so the three inequalities give that conclusion
+-- at any size, and the graphic point of K4 gives it with no hypothesis at all.
+#print axioms Gtz.not_isTie_of_posDef_blockGapAt
+#print axioms Gtz.not_isTie_of_offsetDominatesAt
+#print axioms Gtz.hasParallelPair_of_isTie_of_offsetDominatesAt
+#print axioms Gtz.not_isTie_of_kfour
+#print axioms Gtz.hasParallelPair_of_isTie_of_kfour
