@@ -1082,6 +1082,7 @@ import Gtz.Wave.MassMomentClosure
 import Gtz.Wave.NuCoveringBand
 import Gtz.Wave.OffsetMinorProduct
 import Gtz.Wave.OffsetUpperBound
+import Gtz.Wave.ThirdLabelSelection
 import Gtz.Wave.OrbitDesignationRefuter
 import Gtz.Wave.OrbitFourAlignedExchange
 import Gtz.Wave.OrbitFourAlignedFrame
@@ -1123,6 +1124,7 @@ import Gtz.Wave.ThreeLinesSlideQuadratic
 import Gtz.Wave.ThreeLinesStarBracketCover
 import Gtz.Wave.ThreeRowAmbientWrapper
 import Gtz.Wave.ThreeRowCapturedDichotomy
+import Gtz.Wave.ThresholdCellDominance
 import Gtz.Wave.ThresholdEnergyClosure
 import Gtz.Wave.ThresholdSpread
 import Gtz.Wave.TightGramSixLaws
@@ -33008,6 +33010,27 @@ run_cmd do
 #print axioms Gtz.OffsetDominatesSomewhere
 #print axioms Gtz.blockGapAt_posDef_of_offsetDominatesSomewhere
 #print axioms Gtz.allFiveOnPath_of_offsetDominatesSomewhere
+-- The third-label selection at general weight: the pivot floor, the corrected door,
+-- the offset second moment and the two-local partial gap.
+#print axioms Gtz.projectionOfDesign_diag_nonneg
+#print axioms Gtz.projectionOfDesign_diag_mul_one_sub_le_quarter
+#print axioms Gtz.excess_lt_projectionDiagonal
+#print axioms Gtz.excess_le_one
+#print axioms Gtz.rowMinorTotal_ge_of_excess_ge_third
+#print axioms Gtz.exists_pivot_row_ge
+#print axioms Gtz.exists_pivot_partner_ge_eleven_oneEightyth
+#print axioms Gtz.exists_pivot_pair_general
+#print axioms Gtz.allFiveOnPath_of_thirdInequality
+#print axioms Gtz.sum_offDiagProduct_erase_pair
+#print axioms Gtz.sum_sq_projectionRow_erase_pair
+#print axioms Gtz.erase_pair_comm
+#print axioms Gtz.sum_sq_shiftOffsetAt_erase_pair
+#print axioms Gtz.pairPartialGap
+#print axioms Gtz.excess_mul_sum_det_eq_pairPartialGap
+#print axioms Gtz.exists_third_of_pairPartialGap_pos
+#print axioms Gtz.PairPartialGapSomewhere
+#print axioms Gtz.allFiveOnPath_of_pairPartialGap
+#print axioms Gtz.consolidatedStrictTriple_of_pairPartialGap
 #print axioms Gtz.consolidatedStrictTriple_of_offsetDominatesSomewhere
 #print axioms Gtz.allFiveOnPath_of_offsetDominates_proj
 #print axioms Gtz.sum_pairMinorAt_diagonalShift_product_erase
@@ -33419,3 +33442,35 @@ run_cmd do
 #print axioms Gtz.sylvesterMargin_not_redundant
 #print axioms Gtz.not_forall_pairMinorForm_pos_of_det_pos_of_cap
 #print axioms Gtz.sylvesterMargin_not_redundant_leverage_sum
+-- The threshold cell against excess dominance: the frontier producer's hypothesis is
+-- tie-emptiness, the repair asks only on the primitive stratum, and the complete-graph
+-- profile refutes both at every threshold cell.  The rank-three member is the K4 chart.
+#print axioms Gtz.tieEmpty_of_forallExcessDominates
+#print axioms Gtz.hingeConclusion_of_tieEmpty
+#print axioms Gtz.hingeConclusion_of_forallExcessDominates
+#print axioms Gtz.hingeConclusion_of_primitiveExcessDominates
+#print axioms Gtz.primitiveExcessDominates_of_forallExcessDominates
+#print axioms Gtz.obligationThresholdCellHingeRankFourAndUp_of_primitiveExcessDominates
+#print axioms Gtz.obligationSubThresholdBandHinge_of_primitiveExcessDominates
+#print axioms Gtz.exists_excess_ge_of_size
+#print axioms Gtz.exists_excess_ge_thresholdCell
+#print axioms Gtz.exists_excess_ge_three_tenths
+#print axioms Gtz.two_le_sum_of_two_members
+#print axioms Gtz.not_excessDominates_of_two_heavy_partners
+#print axioms Gtz.CompleteGraphProfile
+#print axioms Gtz.excess_completeGraphProfile
+#print axioms Gtz.excess_lt_two_heavy_completeGraphProfile
+#print axioms Gtz.not_excessDominates_of_crowded_slot
+#print axioms Gtz.not_exists_excessDominates_of_crowded
+#print axioms Gtz.not_forall_excessDominates_of_crowded_witness
+#print axioms Gtz.not_forall_primitiveExcessDominates_of_crowded_witness
+#print axioms Gtz.allFiveOnPath_of_primitiveExcessDominates
+#print axioms Gtz.kFourMeets
+#print axioms Gtz.decidableKFourMeets
+#print axioms Gtz.kFourMeets_crowded_triple
+#print axioms Gtz.kFourMeets_crowded
+#print axioms Gtz.not_forall_primitiveExcessDominates_sixThree
+#print axioms Gtz.not_forall_excessDominates_sixThree
+#print axioms Gtz.kFourProfile_excess_eq
+#print axioms Gtz.completeGraphProfile_deficit_eq
+#print axioms Gtz.kFourProfile_deficit_eq

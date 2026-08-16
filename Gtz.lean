@@ -5036,8 +5036,12 @@ import Gtz.Wave.OffsetMinorProduct
 -- negative at every label of positive excess, and the pigeonhole floor falls short by
 -- `329/20736` at the graphic point of `K4`.
 import Gtz.Wave.OffsetUpperBound
+import Gtz.Wave.ThirdLabelSelection
 import Gtz.Wave.ThresholdEnergyClosure
 import Gtz.Wave.CrossEnergyFloor
+-- The frontier producer's hypothesis is tie-emptiness, and the complete-graph profile
+-- refutes it at every threshold cell.  The rank-three member is the `K4` chart.
+import Gtz.Wave.ThresholdCellDominance
 -- The chart gap is the reduced Laplacian of ONE signed edge vector, so Kirchhoff's
 -- theorem reads every selection determinant as a sixteen-term spanning-tree sum.  The
 -- corank-two gauge wall of the registered `K4` component is then a rational variety
