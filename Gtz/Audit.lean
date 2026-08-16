@@ -1028,6 +1028,7 @@ import Gtz.Design.LineFreeChart
 import Gtz.Design.LineFreeCovering
 import Gtz.Design.LineFreeModuli
 import Gtz.Design.ChartProgrammeAssembly
+import Gtz.Wave.ChartProgrammeHeavyResidual
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -31158,3 +31159,14 @@ run_cmd do
 #print axioms Gtz.threeLinesStarFive_offLine
 #print axioms Gtz.threeLinesStarFive_fires_boostWitness
 #print axioms Gtz.threeLinesStarFive_not_mem_three
+
+-- The chart programme against the tenth floor: the atlas and the residual list
+-- from the heavy upgrade, the hinge from the heavy upgrade and from one
+-- determinant sign on the heavy region, the free sixth floor, and the proof
+-- that the tenth floor is vacuous at six labels.
+#print axioms Gtz.directionChartIsTieFree_atlas_of_heavyDesignUpgrade
+#print axioms Gtz.stressFreeResidualFamiliesSix_tieFree_of_heavyDesignUpgrade
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_heavyDesignUpgrade
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_heavyLivePairTie
+#print axioms Gtz.exists_weight_one_sixth_le
+#print axioms Gtz.not_forall_weight_lt_tenth

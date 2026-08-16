@@ -4872,3 +4872,9 @@ import Gtz.Wave.ComplementInvariantCell
 import Gtz.Design.LineFreeModuli
 import Gtz.Design.ChartProgrammeAssembly
 import Gtz.Wave.ThreeLinesBoostDesignationRefuter
+
+-- The chart programme against the tenth floor.  The atlas takes the upgrade on
+-- the heavy region alone, but the tenth floor is vacuous at six labels: the
+-- weights are a probability vector, so the largest is at least one sixth.  The
+-- narrowing is formal, and the honest residual keeps no weight condition.
+import Gtz.Wave.ChartProgrammeHeavyResidual
