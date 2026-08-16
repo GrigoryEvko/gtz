@@ -1164,6 +1164,7 @@ import Gtz.Wave.OneLineCombinedSharpDeterminant
 import Gtz.Wave.A1NeedleCollapse
 import Gtz.Wave.A1NeedleTieDegeneracy
 import Gtz.Wave.A1NeedleCramerFloor
+import Gtz.Wave.TieAtomRepeatRefutation
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -34595,3 +34596,31 @@ run_cmd do
 #print axioms Gtz.kFourGaugeAndPivotWallClosure_of_forestTripleTotal
 #print axioms Gtz.kFourKnifeBandRefinedAllMaxHeavyWall_of_forestTripleTotal
 #print axioms Gtz.forestTriple_of_pencilCell
+-- The repeated-atom hypothesis at (6,3) is false, and the route is repaired.
+#print axioms Gtz.subsetSum_negateAtom
+#print axioms Gtz.dominates_negateAtom_iff
+#print axioms Gtz.isTie_negateAtom_iff
+#print axioms Gtz.crossMinor_slot_eq_zero_of_atomMatrix_eq
+#print axioms Gtz.crossMinor_eq_zero_of_atomMatrix_eq
+#print axioms Gtz.hasParallelPair_of_atomMatrix_eq
+#print axioms Gtz.tripleBracket_eq_zero_of_atomMatrix_eq_outer
+#print axioms Gtz.not_hasLinePattern_lineFree_of_atomMatrix_eq
+#print axioms Gtz.not_hasLinePattern_lineFree_of_hasParallelPair
+#print axioms Gtz.antipodalTetraDesign_atom_one
+#print axioms Gtz.antipodalTetraDesign_atom_three
+#print axioms Gtz.antipodalTetraDesign_atom_injective
+#print axioms Gtz.antipodalTetraDesign_dominates
+#print axioms Gtz.antipodalTetraDesign_tight_direction
+#print axioms Gtz.antipodalTetraDesign_not_posDef_cardThree
+#print axioms Gtz.antipodalTetraDesign_isTie
+#print axioms Gtz.exists_isTie_sixThree_atom_injective
+#print axioms Gtz.not_forall_sixThree_isTie_repeats_an_atom
+#print axioms Gtz.exists_isTie_atom_ne_of_isTie_of_atom_eq
+#print axioms Gtz.not_forall_isTie_hasParallelPair_fourThree
+#print axioms Gtz.not_forall_isTie_hasCloneMatrixPair_fourThree
+#print axioms Gtz.heavyNeedleResidual_of_tie_hasCloneMatrixPair
+#print axioms Gtz.heavyNeedleResidual_of_tie_hasParallelPair
+#print axioms Gtz.antipodalTetraDesign_hasParallelPair
+#print axioms Gtz.antipodalTetraDesign_hasCloneMatrixPair
+#print axioms Gtz.not_lineFree_antipodalTetraDesign
+#print axioms Gtz.not_isStressFree_antipodalTetraDesign

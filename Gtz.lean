@@ -5536,7 +5536,10 @@ import Gtz.Wave.OneLineCombinedSharpDeterminant
 --   fourteen near-hits below 1e-11 turned STRICTLY POSITIVE in 34-digit arithmetic.
 --   `Gtz.heavyNeedleResidual_of_tie_repeats_an_atom` turns that regularity into a route:
 --   if a tie always repeats an atom, the registry axiom follows at once.  THE
---   IMPLICATION IS PROVED AND THE HYPOTHESIS IS NOT.
+--   IMPLICATION IS PROVED AND THE HYPOTHESIS IS FALSE -- refuted in kernel by
+--   `Gtz.not_forall_sixThree_isTie_repeats_an_atom` below.  READ THAT BLOCK BEFORE
+--   YOU USE THIS ROUTE.  The census regularity is real, but it is a statement about
+--   DIRECTIONS, and the equal-atom reading of it is not.
 import Gtz.Wave.A1NeedleTieDegeneracy
 -- ## THE CRAMER FLOOR AND CEILING FOR THE SMALLEST TRIPLE EIGENVALUE
 -- THE IDENTITY.  `Gtz.tripleBracket_smul_eq_wedgeExpansion` is the Cramer expansion of a
@@ -5603,3 +5606,66 @@ import Gtz.Wave.A1NeedleCramerFloor
 --   still dominate strictly.  A uniform record of four thousand chart points and
 --   fourteen thousand seven hundred gauge-wall points did not see it.
 import Gtz.Wave.KirchhoffSignTower
+-- ## THE REPEATED-ATOM HYPOTHESIS AT (6,3) IS FALSE, AND THE ROUTE IS REPAIRED
+-- THE REFUTATION.  `Gtz.heavyNeedleResidual_of_tie_repeats_an_atom` asks that every
+--   (6,3) tie carry two distinct labels with EQUAL atom vectors.
+--   `Gtz.not_forall_sixThree_isTie_repeats_an_atom` refutes that hypothesis in kernel.
+--   The implication stands and the door cannot open.
+-- WHY IT HAD TO FAIL.  `Gtz.atomMatrix` is `Matrix.vecMulVec g g`, so it is blind to
+--   the sign of the atom, and Parseval, `Gtz.subsetSum`, `Gtz.Dominates` and
+--   `Gtz.IsTie` read the atoms ONLY through it.  `Gtz.isTie_negateAtom_iff` proves the
+--   transfer the landed `Gtz.negateAtom` never carried: a sign flip at one label fixes
+--   every subset sum, hence fixes the tie predicate.  Atom equality is not invariant
+--   under that action.  A hypothesis that is not invariant under a symmetry of its own
+--   conclusion is the wrong hypothesis.  `Gtz.exists_isTie_atom_ne_of_isTie_of_atom_eq`
+--   is the general form: every tie with a repeated nonzero atom yields a second tie in
+--   which that same pair is distinct, at every size and every rank.
+-- THE WITNESS.  `Gtz.antipodalTetraDesign` is the regular tetrahedron tie with two of
+--   its four directions split into ANTIPODAL pairs.  Its six atoms are six of the eight
+--   vectors of the cube, its weights are one eighth four times and one quarter twice.
+--   Twelve triples read three distinct directions and have gap `3 - a aᵀ` at the missing
+--   direction, positive semidefinite by Cauchy-Schwarz and singular at `a`.  Eight
+--   triples read a direction twice and are rank deficient.  `Gtz.antipodalTetraDesign_isTie`
+--   and `Gtz.antipodalTetraDesign_atom_injective` are both in kernel, on the three
+--   standard axioms.  `Gtz.doubledTetrahedronDesign` is the same shape with EQUAL
+--   duplicates and was never proved a tie anywhere in the tree.
+-- THE REPAIR, AND IT MERGES TWO CAMPAIGN THREADS.  Two bridges reach the same registry
+--   axiom.  `Gtz.heavyNeedleResidual_of_tie_hasCloneMatrixPair` takes equal atom
+--   MATRICES, the sign-flip closure of the refuted hypothesis.
+--   `Gtz.heavyNeedleResidual_of_tie_hasParallelPair` takes `Gtz.HasParallelPair`, which
+--   is weaker still and is EXACTLY the conclusion that
+--   `Gtz.sixThree_hasParallelPair_of_isTie_of_coplanarStress_unconditional` already
+--   delivers on the coplanar-stress branch.  So A1 and the (6,3) hinge now ask for ONE
+--   statement.  The mechanism is `Gtz.tripleBracket_eq_zero_of_atomMatrix_eq_outer`: two
+--   atoms with one rank-one matrix have all three two-by-two minors at zero.
+--   `Gtz.crossMinor_slot_eq_zero_of_atomMatrix_eq` proves that at EVERY slot pair with no
+--   case split, and `Gtz.hasParallelPair_of_atomMatrix_eq` reads it as a parallel pair.
+--   So the clone form IMPLIES the parallel form, and the parallel bridge subsumes the
+--   clone bridge.  Prove ONE statement.
+-- WHAT A PROOF MUST CONSUME, AND THIS IS NOT A MEASUREMENT.  The repaired hypothesis is
+--   FALSE one size down.  `Gtz.not_forall_isTie_hasParallelPair_fourThree` is two landed
+--   theorems put together: `Gtz.tetraDesign_isTie` and
+--   `Gtz.tetraDesign_not_hasParallelPair`.  The regular tetrahedron is a (4,3) tie with
+--   NO parallel pair.  `Gtz.not_forall_isTie_hasCloneMatrixPair_fourThree` says the same
+--   of the clone form.  So NO size-generic argument reaches either hypothesis, and any
+--   proof must consume `m = 6`.  The tetrahedron is the exact obstruction.
+-- FIELD, TESTED NOT ASSERTED.  The minor-vanishing core is FIELD-GENERIC: the same
+--   `linear_combination` closes it over an arbitrary field and over the complex numbers.
+--   The order step of the witness is genuinely real -- `positivity` on the gap's sum of
+--   squares over the complex numbers fails at `failed to synthesize instance of type
+--   class LE ℂ`.  RANK: the sign-flip transfer is generic in size and rank; the bracket
+--   lemmas and both bridges are rank three.
+-- THE WITNESS DOES NOT TOUCH THE REGISTRY AXIOM.  It has a parallel pair at ratio minus
+--   one, so `Gtz.not_lineFree_antipodalTetraDesign` and
+--   `Gtz.not_isStressFree_antipodalTetraDesign` keep it out of the antecedent region.
+-- SIX DISTINCT DIRECTIONS, STILL OPEN, AND NO MARGIN EXISTS.  MEASURED, 2026-08-16, C
+--   with OpenMP at 200 threads, calibrated against the landed
+--   `Gtz.nonUniformLeverageTieDesign` which reads the objective at exactly one.  Uniform
+--   sampling saw 0 of 110767 valid primitive draws within 1e-3 of one, and 0 of 16
+--   million below one.  A directed anneal reached 1 + 9.3e-13 but only by sending a
+--   length ratio to `e^17` and three weights to 1e-17.  With a length cap the route
+--   switches to a leverage at 2.5e-5.  With BOTH floors the margin stalls near 5e-4.
+--   Every near hit was STRICTLY positive in 34-digit arithmetic.  READING: the primitive
+--   infimum appears to BE one, so NO uniform margin bound can prove the parallel-pair
+--   conjecture, and any proof must be a boundary or rigidity argument.
+import Gtz.Wave.TieAtomRepeatRefutation
