@@ -5151,3 +5151,18 @@ import Gtz.Wave.OneLineWedgeFlatSplit
 -- determinant, because the second-invariant layer total has the opposite sign to
 -- the determinant layer total.
 import Gtz.Wave.WedgeBalanceAdjugate
+
+-- The all-heavy residual of both off-path hinges, reduced to one determinant
+-- sign.  The strictly light branch is closed, so the residual is the all-heavy
+-- region, and there the deflation still runs because its hypothesis is the share
+-- and not the leverage.  The deflated gap bound holds the whole hyperplane
+-- orthogonal to the dropped atom at a positive margin, at every leverage, and
+-- the landed lemma announces that margin and delivers only the sign.  A
+-- symmetric form positive definite on a hyperplane has at most one non-positive
+-- eigenvalue, so the determinant decides the last one and strict domination
+-- becomes ONE determinant sign at every rank.  At leverage exactly one the
+-- criterion loses its coupling term, a tie carries the dropped atom in the
+-- kernel of the gap, and the subset reads that atom exactly at one.  The trace
+-- identity pins the boundary: all leverages one forces rank one, and above rank
+-- one every design carries a strictly heavy atom.
+import Gtz.Wave.AllHeavyHingeSchur

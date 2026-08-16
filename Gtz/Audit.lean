@@ -1150,6 +1150,7 @@ import Gtz.Wave.ThreeLinesHeavyReadingCoverRefuter
 import Gtz.Wave.ThreeLinesHeavyExcessFloor
 import Gtz.Wave.OneLineWedgeFlatSplit
 import Gtz.Wave.WedgeBalanceAdjugate
+import Gtz.Wave.AllHeavyHingeSchur
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -33911,3 +33912,69 @@ run_cmd do
 #print axioms Gtz.sum_powersetCard_vertexDirection_pair
 #print axioms Gtz.sum_powersetCard_secondInvariant_pos
 #print axioms Gtz.exists_triple_secondInvariant_pos
+
+-- The all-heavy residual of both off-path hinges, reduced to one determinant
+-- sign.  Section 1 is rank-generic linear algebra: the pivot coset equivalence,
+-- one square-root-free scalar sufficient test, and the LOSSLESS determinant
+-- equivalence on the hyperplane-positive region.  Sections 2 and 3 spend the
+-- landed deflated gap bound, whose margin is extracted here for the first time.
+-- Section 5 decides the unit-leverage boundary.  Section 6 answers what an
+-- all-leverage-one design is.  The three scalar producers are annotated at the
+-- site with their exact-rational refutation, and the determinant producers
+-- subsume them.
+#print axioms Gtz.dotProduct_mulVec_smul_self
+#print axioms Gtz.dotProduct_mulVec_pivot_expansion
+#print axioms Gtz.posDef_iff_pivotCoset
+#print axioms Gtz.pivotNorm_mul_sq_dotProduct_le_of_orthogonal
+#print axioms Gtz.cosetValue_pos_of_scalars
+#print axioms Gtz.posDef_of_pivotMargin_of_pivotSurplus
+#print axioms Gtz.dotProduct_ofLp
+#print axioms Gtz.posDef_of_planePosDef_of_det_pos
+#print axioms Gtz.posDef_iff_det_pos_of_planePosDef
+#print axioms Gtz.not_posDef_of_pivotValue_nonpos
+#print axioms Gtz.deflatedGapBound_orthogonal_margin
+#print axioms Gtz.deflatedGapBound_pivot_reading
+#print axioms Gtz.transpose_subsetSum_sub_one_eq
+#print axioms Gtz.atom_ne_zero_of_one_le_leverage
+#print axioms Gtz.PivotSurplusAt
+#print axioms Gtz.DeflatedGapBoundAt
+#print axioms Gtz.atom_ne_zero_of_pivotSurplus
+#print axioms Gtz.posDef_of_deflatedGapBound_of_pivotSurplus
+#print axioms Gtz.GapDetPositiveAt
+#print axioms Gtz.planePosDef_of_deflatedGapBound
+#print axioms Gtz.posDef_iff_gapDet_pos_of_deflatedGapBound
+#print axioms Gtz.not_isTie_of_detWitness
+#print axioms Gtz.gapDet_nonpos_of_isTie
+#print axioms Gtz.gapDet_pos_of_pivotSurplus_of_deflatedGapBound
+#print axioms Gtz.weight_mul_leverage_lt_one_of_exists_partner
+#print axioms Gtz.not_isTie_of_pivotWitness
+#print axioms Gtz.exists_deflatedGapBoundAt
+#print axioms Gtz.exists_posDef_of_pivotWitness
+#print axioms Gtz.not_pivotSurplus_of_isTie
+#print axioms Gtz.exists_pivotRefusal_of_isTie
+#print axioms Gtz.exists_cosetRefusal_of_isTie
+#print axioms Gtz.hasParallelPair_of_isTie_of_pivotWitness
+#print axioms Gtz.HasPivotWitness
+#print axioms Gtz.obligationThresholdCellHingeRankFourAndUp_of_pivotWitness
+#print axioms Gtz.obligationSubThresholdBandHinge_of_pivotWitness
+#print axioms Gtz.hingeConclusion_sixThree_of_pivotWitness
+#print axioms Gtz.HasDetWitness
+#print axioms Gtz.hasParallelPair_of_isTie_of_detWitness
+#print axioms Gtz.obligationThresholdCellHingeRankFourAndUp_of_detWitness
+#print axioms Gtz.obligationSubThresholdBandHinge_of_detWitness
+#print axioms Gtz.hingeConclusion_sixThree_of_detWitness
+#print axioms Gtz.hasDetWitness_of_hasPivotWitness
+#print axioms Gtz.exists_boundHalf_of_pivotWitness
+#print axioms Gtz.unitLeverage_coset_floor
+#print axioms Gtz.posDef_iff_pivotValue_pos_of_unitLeverage
+#print axioms Gtz.exists_kernel_atom_of_isTie_of_unitLeverage
+#print axioms Gtz.exists_kernel_atom_of_isTie_of_unitLeverage_sixThree
+#print axioms Gtz.rank_eq_one_of_forall_leverage_eq_one
+#print axioms Gtz.exists_one_lt_leverage_of_two_le_rank
+#print axioms Gtz.forall_leverage_eq_one_of_rank_one_of_heavy
+#print axioms Gtz.not_forall_leverage_eq_one_of_two_le_rank
+#print axioms Gtz.pivotValue_eq_reading_sub_leverage
+#print axioms Gtz.leverage_lt_reading_of_posDef
+#print axioms Gtz.reading_eq_one_of_isTie_of_unitLeverage
+#print axioms Gtz.reading_eq_one_of_isTie_of_unitLeverage_sixThree
+#print axioms Gtz.posDef_iff_one_lt_reading_of_unitLeverage
