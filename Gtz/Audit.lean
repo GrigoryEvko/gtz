@@ -34489,7 +34489,6 @@ run_cmd do
 #print axioms Gtz.not_lineFree_nonUniformLeverageTieDesign
 #print axioms Gtz.not_isStressFree_nonUniformLeverageTieDesign
 #print axioms Gtz.not_lineFree_splitTetraDesign
-#print axioms Gtz.heavyNeedleResidual_of_tie_repeats_an_atom
 #print axioms Gtz.not_counterexample_of_atom_eq
 -- The Cramer floor and ceiling for the smallest triple eigenvalue.
 #print axioms Gtz.tripleBracket_smul_eq_wedgeExpansion

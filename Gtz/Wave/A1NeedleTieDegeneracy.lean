@@ -129,22 +129,26 @@ theorem not_lineFree_splitTetraDesign (splitA splitB : ℝ) (hAPos : 0 < splitA)
 
 /-! ## The route the census names -/
 
-/-- **THE FOUR-DIRECTION ROUTE TO A1.**  Every `(6,3)` tie in the tree repeats an
-atom, and the exhaustive census finds no tie anywhere with six pairwise distinct
-directions.  If that regularity is a theorem, the registry axiom follows at once:
-a repeated atom is not line-free, so no tie meets the stratum.
+/-- **DELETED, 2026-08-16: `heavyNeedleResidual_of_tie_repeats_an_atom` WAS A DOOR
+THAT COULD NOT OPEN.**  It asked that every `(6,3)` tie repeat an atom, and that
+hypothesis is KERNEL-FALSE.  `Gtz.not_forall_sixThree_isTie_repeats_an_atom`
+(Gtz/Wave/TieAtomRepeatRefutation.lean:426) refutes it with
+`Gtz.antipodalTetraDesign`, the regular tetrahedron tie with two directions split
+into ANTIPODAL pairs, whose six atoms are pairwise distinct.
 
-This states the route and nothing more.  The hypothesis is NOT proved here, and
-the evidence for it is a census plus a directed search, not a proof. -/
-theorem heavyNeedleResidual_of_tie_repeats_an_atom
-    (hrepeat : ∀ design : WeightedDesign 6 3, IsTie design →
-      ∃ firstLabel secondLabel : Fin 6,
-        firstLabel ≠ secondLabel ∧ design.atom firstLabel = design.atom secondLabel) :
-    BaseTripleTightLineFreeOffConicHeavyNeedleResidual := by
-  refine heavyNeedleResidual_of_pinnedStratumTieFree ?_
-  intro design hlineFree _hoffConic htie
-  obtain ⟨firstLabel, secondLabel, hdistinct, hatomEq⟩ := hrepeat design htie
-  exact not_hasLinePattern_lineFree_of_atom_eq design hdistinct hatomEq hlineFree
+THE STRUCTURAL REASON, and it kills the whole shape: `Gtz.atomMatrix` is
+`Matrix.vecMulVec g g`, which does not see the sign of `g`.  Parseval,
+`Gtz.subsetSum`, `Gtz.Dominates` and `Gtz.IsTie` read the atoms ONLY through it,
+so `Gtz.isTie_negateAtom_iff` makes a tie invariant under a sign flip at any
+label.  ATOM equality is not invariant under that group.  So no statement of the
+form "a tie repeats an ATOM" can follow from `Gtz.IsTie` at any size or rank.
+
+THE REPAIR IS LANDED: `Gtz.heavyNeedleResidual_of_tie_hasParallelPair` reaches
+this same registry axiom from `Gtz.IsTie` to `Gtz.HasParallelPair` at six labels.
+The census that motivated the deleted door reads repeated DIRECTION, which is the
+parallel form, and the tree already said so at Gtz/Reduction/TrichotomyLedger.lean:703.
+An unsatisfiable antecedent is a trap and not a graveyard entry, so the theorem is
+deleted rather than annotated in place. -/
 
 /-! ## The reading for the registry axiom -/
 
