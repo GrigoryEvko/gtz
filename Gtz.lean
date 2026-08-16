@@ -4926,3 +4926,11 @@ import Gtz.Wave.PluckerMassFloor
 -- minimum of the two, so the sign-blind class was reading the worse side of
 -- this involution all along.  The lane reaches all five on-path obligations.
 import Gtz.Wave.ComplementDualLane
+
+-- The threshold side of the objective, and its marginals.  The third minor is the
+-- squared Plucker coordinate minus a sign-free threshold, and that threshold is
+-- additively two-local: three pair minors, three diagonal entries, a constant.  So
+-- every marginal of it is closed-form.  The one-point gap marginal is at most -20
+-- and can never certify; the two-point one can, and in the heavy-pair corner it
+-- reads the leverage diagonal alone and reaches full positive definiteness.
+import Gtz.Wave.ThresholdSpread
