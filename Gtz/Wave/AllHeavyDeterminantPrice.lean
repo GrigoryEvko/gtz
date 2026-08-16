@@ -92,7 +92,9 @@ import Gtz.Core.Basic
 import Gtz.Core.Sanity
 import Gtz.Design.ComplementFrame
 import Gtz.Quantitative.ChartHadamard
+import Gtz.Quantitative.DiscriminantSystem
 import Gtz.Quantitative.SevenThreeRigidity
+import Gtz.Ties.CorankOneTieCriterion
 import Gtz.Quantitative.SubsetDeterminantBound
 import Gtz.Reduction.BranchTransferConstants
 import Gtz.Wave.AllHeavyHingeSchur
@@ -1076,5 +1078,58 @@ theorem hingeConclusion_sixThree_of_bracketWitness
     (hbracket design) htie
 
 end BracketProducers
+
+/-! ## 13. The share ceiling is exact at a corank-one tie
+
+Section 8 caps the share of a tie's weak dominator by the rank minus one plus the
+largest selected weight.  At corank one the landed criterion
+`Gtz.isTie_iff_leverage_identity` pins every share exactly, and the cap is then
+the rank minus one plus the MEAN of the selected weights.  So the ceiling is
+attained on the whole equal-weight corank-one tie family, and the tetrahedron is
+the calibration point. -/
+
+section CorankOneSharpness
+
+/-- **THE SELECTED SHARE OF A CORANK-ONE TIE, EXACTLY.**  The rank minus one plus
+the mean of the selected weights, written division free. -/
+theorem corankOne_tie_selected_share {rankValue : ℕ} (hrank : 1 ≤ rankValue)
+    (design : WeightedDesign (rankValue + 1) rankValue) (htie : IsTie design)
+    (pick : Fin rankValue → Fin (rankValue + 1)) :
+    (rankValue : ℝ) * (∑ slotIndex, atomShare design (pick slotIndex))
+      = (rankValue : ℝ) * ((rankValue : ℝ) - 1)
+        + ∑ slotIndex, design.weight (pick slotIndex) := by
+  have hidentity := (isTie_iff_leverage_identity hrank design).mp htie
+  have hterm : ∀ slotIndex : Fin rankValue,
+      (rankValue : ℝ) * atomShare design (pick slotIndex)
+        = ((rankValue : ℝ) - 1) + design.weight (pick slotIndex) := fun slotIndex => by
+    have hslot := hidentity (pick slotIndex)
+    rw [atomShare]
+    linarith [hslot]
+  calc (rankValue : ℝ) * (∑ slotIndex, atomShare design (pick slotIndex))
+      = ∑ slotIndex, (rankValue : ℝ) * atomShare design (pick slotIndex) := by
+        rw [Finset.mul_sum]
+    _ = ∑ slotIndex, (((rankValue : ℝ) - 1) + design.weight (pick slotIndex)) :=
+        Finset.sum_congr rfl fun slotIndex _ => hterm slotIndex
+    _ = (rankValue : ℝ) * ((rankValue : ℝ) - 1)
+          + ∑ slotIndex, design.weight (pick slotIndex) := by
+        rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+          nsmul_eq_mul]
+
+/-- **THE CEILING IS ATTAINED AT THE TETRAHEDRON TIE.**  Every selected share is
+three quarters, so the selected total is nine quarters, which is exactly the rank
+minus one plus the largest selected weight.  The section-8 ceiling therefore
+cannot be improved. -/
+theorem tetraDesign_share_ceiling_attained (pick : Fin 3 → Fin 4) :
+    ∑ slotIndex : Fin 3, atomShare tetraDesign (pick slotIndex)
+      = (3 : ℝ) - 1 + tetraDesign.weight (pick 0) := by
+  have hterm : ∀ slotIndex : Fin 3, atomShare tetraDesign (pick slotIndex) = 3 / 4 :=
+    fun slotIndex => by
+      rw [atomShare, tetraDesign_leverage]
+      norm_num [tetraDesign]
+  rw [Finset.sum_congr rfl fun slotIndex _ => hterm slotIndex, Finset.sum_const,
+    Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  norm_num [tetraDesign]
+
+end CorankOneSharpness
 
 end Gtz

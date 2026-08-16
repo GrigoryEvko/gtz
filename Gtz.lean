@@ -5355,4 +5355,9 @@ import Gtz.Wave.GapDeterminantSignComplement
 --   NEITHER IS TOTAL, so neither closes an obligation.  And the miss set is NOT
 --   the tie boundary: at (15,5) every missed all-heavy design has a subset
 --   dominating with least eigenvalue at least one.
+-- SHARPNESS.  Gtz.corankOne_tie_selected_share pins the selected share of a
+--   corank-one tie at the rank minus one plus the MEAN of the selected weights,
+--   and Gtz.tetraDesign_share_ceiling_attained reads nine quarters at the
+--   tetrahedron, which is the ceiling on the nose.  The share ceiling of the
+--   module cannot be improved.
 import Gtz.Wave.AllHeavyDeterminantPrice

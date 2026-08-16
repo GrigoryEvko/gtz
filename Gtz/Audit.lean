@@ -34273,3 +34273,5 @@ run_cmd do
 #print axioms Gtz.obligationThresholdCellHingeRankFourAndUp_of_bracketWitness
 #print axioms Gtz.obligationSubThresholdBandHinge_of_bracketWitness
 #print axioms Gtz.hingeConclusion_sixThree_of_bracketWitness
+#print axioms Gtz.corankOne_tie_selected_share
+#print axioms Gtz.tetraDesign_share_ceiling_attained
