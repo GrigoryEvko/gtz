@@ -651,6 +651,7 @@ import Gtz.Wave.FullRowCrossVanishing
 import Gtz.Wave.FullRowTriangleKill
 import Gtz.Wave.TetrahedronFamilyClosure
 import Gtz.Wave.WeightedColumnSupportBridge
+import Gtz.Wave.WeightedHalfPlane
 import Gtz.Wave.TriangleEdgeFamilyClosure
 import Gtz.Wave.PendantForkFamilyClosure
 import Gtz.Wave.PendantSplitFamilyClosure
@@ -33544,3 +33545,21 @@ run_cmd do
 #print axioms Gtz.completeGraphProfile_graphicKFour
 #print axioms Gtz.not_forall_excessDominates_sixThree_unconditional
 #print axioms Gtz.not_exists_excessDominates_graphicKFour
+-- The weighted half-plane floor: the telescope, the orthogonality form of the
+-- Bhatia-Davis cap, its two-valued equality locus, polarized Parseval, and the
+-- line-energy floor the one-line stratum hands it.
+#print axioms Gtz.weightedHalfPlane_telescope
+#print axioms Gtz.sandwich_nonneg_of_between
+#print axioms Gtz.sum_sq_le_of_orthogonal_of_sandwich
+#print axioms Gtz.neg_one_le_mul_of_sum_sq_ge
+#print axioms Gtz.two_valued_of_orthogonal_of_sandwich_eq
+#print axioms Gtz.sum_sq_lt_of_orthogonal_of_sandwich_of_off_rays
+#print axioms Gtz.dotProduct_atomMatrix_mulVec_cross
+#print axioms Gtz.dotProduct_eq_sum_weight_mul_dotProduct
+#print axioms Gtz.oneLineNormal_orthogonality
+#print axioms Gtz.normalShadow
+#print axioms Gtz.normalShadow_mul
+#print axioms Gtz.normalShadow_sq
+#print axioms Gtz.oneLine_freeShadow_energy
+#print axioms Gtz.oneLine_freeShadow_orthogonal
+#print axioms Gtz.oneLine_lineEnergy_ge_of_sandwich

@@ -2818,6 +2818,7 @@ import Gtz.Wave.FullRowCrossVanishing
 import Gtz.Wave.FullRowTriangleKill
 import Gtz.Wave.TetrahedronFamilyClosure
 import Gtz.Wave.WeightedColumnSupportBridge
+import Gtz.Wave.WeightedHalfPlane
 import Gtz.Wave.TriangleEdgeFamilyClosure
 import Gtz.Wave.PendantForkFamilyClosure
 import Gtz.Wave.PendantSplitFamilyClosure
