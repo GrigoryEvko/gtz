@@ -1270,4 +1270,84 @@ theorem oneLine_dominator_freePair_normal_sum (design : WeightedDesign 6 3)
     hunit] at hcover
   exact hcover
 
+/-! ## 15.  The free triple, and the exact locus of the leak obstruction
+
+The free triple is the ONLY card-three subset of a one-line design whose
+complement lies in the line.  Section 9 says that is exactly where the lead is
+minus the leak.  Reading the split there reproduces the landed section-four
+criterion, which certifies the split against a statement proved another way. -/
+
+/-- At size six the line's complement is the free triple. -/
+theorem oneLine_lineSet_compl : (({0, 1, 2} : Finset (Fin 6)))ᶜ = ({3, 4, 5} : Finset (Fin 6)) := by
+  decide
+
+/-- The flat leak of the line is the complement leak of the free triple. -/
+theorem oneLine_flatLeak_eq_complementLeak (design : WeightedDesign 6 3)
+    (probeVec : Fin 3 → ℝ) :
+    flatLeak design ({0, 1, 2} : Finset (Fin 6)) probeVec
+      = complementLeak design ({3, 4, 5} : Finset (Fin 6)) probeVec := by
+  unfold flatLeak
+  rw [oneLine_lineSet_compl]
+
+/-- **THE FREE TRIPLE IS THE WHOLE OBSTRUCTION LOCUS.**  A card-three subset of a
+one-line design whose complement lies inside the line IS the free triple.  So the
+landed `Gtz.not_wedgeBeatsLeak_of_full_leak` has exactly one card-three
+customer. -/
+theorem oneLine_eq_freeTriple_of_compl_subset {selected : Finset (Fin 6)}
+    (hcard : selected.card = 3)
+    (hsubset : (({0, 1, 2} : Finset (Fin 6)))ᶜ ⊆ selected) :
+    selected = ({3, 4, 5} : Finset (Fin 6)) := by
+  have hcompl : (({0, 1, 2} : Finset (Fin 6)))ᶜ.card = 3 := by decide
+  have heq := eq_compl_of_compl_subset_of_card hsubset (by rw [hcard, hcompl])
+  rw [heq, oneLine_lineSet_compl]
+
+/-- **THE FREE TRIPLE, READ THROUGH THE SPLIT.**  Its lead is minus the leak and
+its sharp balance is one wedge total, so the split reproduces the landed
+`Gtz.planeCover_iff_wedgeTotal_gt_surplus_mul_leak` exactly.  This is a check of
+the split against a criterion proved by a different route. -/
+theorem oneLine_freeTriple_flatSplit (design : WeightedDesign 6 3)
+    (unitNormal probeVec : Fin 3 → ℝ)
+    (hlineFlat : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ unitNormal = 0) :
+    wedgeBalanceValue design ({3, 4, 5} : Finset (Fin 6)) unitNormal probeVec
+      = wedgeTotal design (weightDeficit design) ({3, 4, 5} : Finset (Fin 6))
+            unitNormal probeVec
+        - complementLeak design ({3, 4, 5} : Finset (Fin 6)) probeVec
+          * ((∑ label ∈ ({3, 4, 5} : Finset (Fin 6)),
+                (design.atom label ⬝ᵥ unitNormal) ^ 2) - unitNormal ⬝ᵥ unitNormal) := by
+  have hdisjoint : ({3, 4, 5} : Finset (Fin 6)) ∩ ({0, 1, 2} : Finset (Fin 6)) = ∅ := by decide
+  have hsharpInside : ({3, 4, 5} : Finset (Fin 6)) \ ({0, 1, 2} : Finset (Fin 6))
+      = ({3, 4, 5} : Finset (Fin 6)) := by decide
+  have hsharpOutside : (({3, 4, 5} : Finset (Fin 6)))ᶜ \ ({0, 1, 2} : Finset (Fin 6)) = ∅ := by
+    decide
+  rw [wedgeBalanceValue_flatSplit_reading design ({3, 4, 5} : Finset (Fin 6))
+    ({0, 1, 2} : Finset (Fin 6)) unitNormal probeVec hlineFlat,
+    flatSplitLead_eq_neg_flatLeak_of_disjoint design hdisjoint probeVec,
+    oneLine_flatLeak_eq_complementLeak design probeVec]
+  unfold sharpBalanceValue
+  rw [hsharpInside, hsharpOutside, wedgeTotal_empty, crossWedgeTotal_empty_right]
+  ring
+
+/-- **THE MIXED TRIPLES ARE NOT OBSTRUCTED.**  A card-three subset holding a line
+atom has a lead with no sign, so a full leak refuses nothing there.  Under a
+positive normal surplus and a nonnegative sharp balance, one line atom reading
+the probe above the leak is enough. -/
+theorem oneLine_wedgeBalanceAt_of_lineReading_gt_leak (design : WeightedDesign 6 3)
+    (selected : Finset (Fin 6)) (unitNormal probeVec : Fin 3 → ℝ)
+    (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (hlineFlat : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ unitNormal = 0)
+    {lineLabel : Fin 6}
+    (hinter : selected ∩ ({0, 1, 2} : Finset (Fin 6)) = {lineLabel})
+    (hsurplus : 1 < ∑ label ∈ selected, (design.atom label ⬝ᵥ unitNormal) ^ 2)
+    (hreading : flatLeak design ({0, 1, 2} : Finset (Fin 6)) probeVec
+      < (design.atom lineLabel ⬝ᵥ probeVec) ^ 2)
+    (hsharp : 0 ≤ sharpBalanceValue design selected ({0, 1, 2} : Finset (Fin 6))
+      unitNormal probeVec) :
+    WedgeBalanceAt design selected unitNormal probeVec := by
+  refine wedgeBalanceAt_of_flatSplitLead_pos design selected ({0, 1, 2} : Finset (Fin 6))
+    unitNormal probeVec hunit hlineFlat hsurplus ?_ hsharp
+  rw [flatSplitLead_of_inter_singleton design hinter probeVec]
+  linarith [hreading]
+
 end Gtz

@@ -33978,3 +33978,8 @@ run_cmd do
 #print axioms Gtz.reading_eq_one_of_isTie_of_unitLeverage
 #print axioms Gtz.reading_eq_one_of_isTie_of_unitLeverage_sixThree
 #print axioms Gtz.posDef_iff_one_lt_reading_of_unitLeverage
+#print axioms Gtz.oneLine_lineSet_compl
+#print axioms Gtz.oneLine_flatLeak_eq_complementLeak
+#print axioms Gtz.oneLine_eq_freeTriple_of_compl_subset
+#print axioms Gtz.oneLine_freeTriple_flatSplit
+#print axioms Gtz.oneLine_wedgeBalanceAt_of_lineReading_gt_leak
