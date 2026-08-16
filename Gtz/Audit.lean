@@ -1081,6 +1081,7 @@ import Gtz.Wave.MarginFloorAssembly
 import Gtz.Wave.MassMomentClosure
 import Gtz.Wave.NuCoveringBand
 import Gtz.Wave.OffsetMinorProduct
+import Gtz.Wave.OffsetUpperBound
 import Gtz.Wave.OrbitDesignationRefuter
 import Gtz.Wave.OrbitFourAlignedExchange
 import Gtz.Wave.OrbitFourAlignedFrame
@@ -32927,3 +32928,49 @@ run_cmd do
 #print axioms Gtz.massSecondMoment_eq_closed
 #print axioms Gtz.gapSecondMoment_eq_closed
 #print axioms Gtz.massSecondMoment_ge_closed
+
+-- Wave/OffsetUpperBound, the fifth door.  The pivot Schur identity reads the
+-- criterion's two sides as ONE determinant, so the split is the objective and not a
+-- relaxation.  Sylvester at `Fin 3` then turns three scalar inequalities at one pivot
+-- into a positive definite gap block, the shifted triple block IS the landed
+-- `blockGapAt` along the pick, and all five on-path obligations follow from
+-- `OffsetDominatesSomewhere` alone.  The offset's second moment closes on the shifted
+-- row total, that row's energy and the landed label marginal.  Read the other way that
+-- marginal is negative at every label of positive excess, so the averaged programme is
+-- dead and every door instance must select its partner pair.  The pigeonhole floor
+-- selects but falls short by `329/20736` at the graphic point of `K4`.
+#print axioms Gtz.offsetAt
+#print axioms Gtz.offsetAt_apply
+#print axioms Gtz.form_flip_of_transpose
+#print axioms Gtz.offsetAt_swap
+#print axioms Gtz.pairMinorAt_mul_sub_offsetAt_sq
+#print axioms Gtz.offsetAt_sq_lt_iff_det_pos
+#print axioms Gtz.tripleBlock_eq_entries
+#print axioms Gtz.posDef_tripleBlock_of_offsetAt_sq_lt
+#print axioms Gtz.shiftOffsetAt
+#print axioms Gtz.shiftOffsetAt_apply
+#print axioms Gtz.pairMinorAt_diagonalShift_mul_sub_sq
+#print axioms Gtz.tripleBlock_diagonalShift_eq_blockGapAt
+#print axioms Gtz.det_tripleBlock_diagonalShift_uniform
+#print axioms Gtz.OffsetDominatesSomewhere
+#print axioms Gtz.blockGapAt_posDef_of_offsetDominatesSomewhere
+#print axioms Gtz.allFiveOnPath_of_offsetDominatesSomewhere
+#print axioms Gtz.consolidatedStrictTriple_of_offsetDominatesSomewhere
+#print axioms Gtz.allFiveOnPath_of_offsetDominates_proj
+#print axioms Gtz.sum_pairMinorAt_diagonalShift_product_erase
+#print axioms Gtz.sum_pairMinorProduct_sub_sq_shiftOffset_erase_det
+#print axioms Gtz.sum_pairMinorProduct_sub_sq_shiftOffset_erase
+#print axioms Gtz.sum_pairMinorProduct_sub_sq_shiftOffset_neg
+#print axioms Gtz.sum_sq_shiftOffsetAt_erase
+#print axioms Gtz.exists_offset_sq_gt_pairMinor_product
+#print axioms Gtz.exists_pos_projGap_of_uniform_offset_bound
+#print axioms Gtz.exists_posDef_blockGapAt_of_uniform_offset_bound
+#print axioms Gtz.kfourStar_excess
+#print axioms Gtz.kfourStar_pairMinor_zero
+#print axioms Gtz.kfourStar_pairMinor_quarter
+#print axioms Gtz.kfourStar_rowTotal
+#print axioms Gtz.kfourStar_maxOffsetSq
+#print axioms Gtz.kfourStar_floor_zero
+#print axioms Gtz.kfourStar_floor_quarter
+#print axioms Gtz.kfourStar_bestFloor_lt_maxOffsetSq
+#print axioms Gtz.kfourStar_floor_deficit

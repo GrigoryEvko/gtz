@@ -5017,4 +5017,13 @@ import Gtz.Wave.KFourBoostProductRefuter
 -- landed level-two total rather than repeating it.  And the minor product
 -- ceiling is a refuter, not a producer, by direction.
 import Gtz.Wave.OffsetMinorProduct
+
+-- Wave/OffsetUpperBound.  The pivot Schur identity makes the criterion's two sides one
+-- determinant, so bounding them independently cannot gain.  Sylvester at `Fin 3` turns
+-- three scalar inequalities at one pivot into a positive definite gap block, and the
+-- shifted triple block IS the landed `blockGapAt`, so a fifth door retires all five
+-- on-path obligations.  The offset's second moment closes, its averaged split is
+-- negative at every label of positive excess, and the pigeonhole floor falls short by
+-- `329/20736` at the graphic point of `K4`.
+import Gtz.Wave.OffsetUpperBound
 import Gtz.Wave.ThresholdEnergyClosure
