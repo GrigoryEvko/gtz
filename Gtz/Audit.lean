@@ -32928,6 +32928,36 @@ run_cmd do
 #print axioms Gtz.massSecondMoment_eq_closed
 #print axioms Gtz.gapSecondMoment_eq_closed
 #print axioms Gtz.massSecondMoment_ge_closed
+#print axioms Gtz.massWeightedGap
+#print axioms Gtz.massWeightedGap_eq_split
+#print axioms Gtz.massWeightedGap_eq_gapEnergy
+#print axioms Gtz.massWeightedGap_eq_closed
+#print axioms Gtz.massWeightedGap_ge_twoLocal
+#print axioms Gtz.exists_pos_projGap_of_weighted
+#print axioms Gtz.exists_pos_projGap_of_massWeightedGap
+#print axioms Gtz.exists_pos_projGap_of_twoLocal
+#print axioms Gtz.exists_pos_projGap_of_massSecondMoment
+#print axioms Gtz.gapSecondMoment_ge_pigeon
+#print axioms Gtz.gapSecondMoment_pos
+#print axioms Gtz.massSecondMoment_gt_closed
+#print axioms Gtz.massWeightedGap_ge_refined
+#print axioms Gtz.exists_pos_projGap_of_twoLocal_refined
+#print axioms Gtz.pairMarginalEnergy_le_four_mul_gapSecondMoment
+#print axioms Gtz.gapSecondMoment_ge_marginal
+#print axioms Gtz.massWeightedGap_ge_marginal
+#print axioms Gtz.massSecondMoment_ge_marginal
+#print axioms Gtz.exists_pos_projGap_of_twoLocal_sharp
+#print axioms Gtz.massThirdMoment
+#print axioms Gtz.massSquaredCrossMoment
+#print axioms Gtz.massSquaredWeightedGap
+#print axioms Gtz.massSquaredWeightedGap_eq_split
+#print axioms Gtz.exists_pos_projGap_of_massSquaredWeightedGap
+#print axioms Gtz.MassSquaredGapPositive
+#print axioms Gtz.jointMassBeatsThreshold_of_massSquaredGapPositive
+#print axioms Gtz.jointMassBeatsThreshold_of_massThirdMoment
+#print axioms Gtz.jointMassBeatsThreshold_of_twoLocal_sharp
+#print axioms Gtz.jointMassBeatsThreshold_of_twoLocal
+#print axioms Gtz.jointMassBeatsThreshold_of_massSecondMoment
 
 -- Wave/OffsetUpperBound, the fifth door.  The pivot Schur identity reads the
 -- criterion's two sides as ONE determinant, so the split is the objective and not a
@@ -32983,3 +33013,18 @@ run_cmd do
 #print axioms Gtz.posDef_tripleBlock_iff_offsetAt_sq_lt
 #print axioms Gtz.offsetDominatesSomewhere_iff_blockGapSelects
 #print axioms Gtz.projGapAt_pos_iff_offsetAt_sq_lt
+
+-- The second-moment door.  The first moment of the gap is negative and landed, so no
+-- averaging argument can produce a positive triple.  A second moment can.  The gap total
+-- over ALL ordered distinct triples is the universal constant -336, and a family bounded
+-- below by -M with a squared total above M times the magnitude of its total must own a
+-- strictly positive member.  The excess gives the corner minor, the pair minors give the
+-- two-by-two, and the second moment gives the determinant.
+#print axioms Gtz.exists_pos_of_sq_sum_gt
+#print axioms Gtz.sum_projGap_all_eq_neg
+#print axioms Gtz.exists_pos_projGap_of_secondMoment
+#print axioms Gtz.exists_posDef_blockGapAt_of_secondMoment
+#print axioms Gtz.SecondMomentDominates
+#print axioms Gtz.allFiveOnPath_of_secondMomentDominates
+#print axioms Gtz.exists_pos_projGap_of_sqSum_gt_sq
+#print axioms Gtz.kfourStar_secondMoment_deficit
