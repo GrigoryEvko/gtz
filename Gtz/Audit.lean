@@ -1156,7 +1156,6 @@ import Gtz.Wave.TriangleStallClosureDeflation
 import Gtz.Wave.DeflatedCellTotal
 import Gtz.Wave.MixedTripleBalance
 import Gtz.Wave.GapDeterminantSignComplement
-import Gtz.Wave.AllHeavyDeterminantPrice
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
