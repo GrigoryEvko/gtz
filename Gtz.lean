@@ -3893,6 +3893,7 @@ import Gtz.Wave.ThreeLinesReadingCoverWiring
 -- The three dependent chart lines cannot even supply the weak antecedent; the
 -- final A2 residual therefore ranges over the seventeen off-line triples.
 import Gtz.Wave.ThreeLinesOffLinesWiring
+import Gtz.Wave.ThreeLinesStarBracketCover
 -- Spend the allocation-free vertex/free cycle cells in A2 and remove the
 -- redundant chart-heavy antecedent from the final off-lines residual.
 import Gtz.Wave.ThreeLinesUnsignedCycleWiring
