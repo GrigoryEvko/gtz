@@ -4892,3 +4892,4 @@ import Gtz.Wave.ChartTransferIdempotent
 import Gtz.Wave.ThreeLinesSlideQuadratic
 import Gtz.Wave.ProjectionBlockObjective
 import Gtz.Wave.TripleDeterminantCells
+import Gtz.Wave.TripleDeterminantSharp
