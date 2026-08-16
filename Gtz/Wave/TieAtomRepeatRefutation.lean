@@ -1,5 +1,8 @@
 import Gtz.Wave.A1NeedleTieDegeneracy
 import Gtz.Reduction.ConnectednessRouteCalibration
+import Gtz.Reduction.TrichotomyLedger
+import Gtz.Design.SphereExistence
+import Gtz.Ties.TetrahedronCertifiedTie
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -116,27 +119,57 @@ theorem isTie_negateAtom_iff (D : WeightedDesign m k) (flipLabel : Fin m) :
 
 /-! ## Equal atom matrices kill every bracket -/
 
-/-- **Two atoms with the same rank-one matrix have vanishing `2 x 2` minors.**
-Each minor squared is an exact combination of three entry identities, so each
-minor is zero.  This is the sign-blind replacement for atom equality. -/
+/-- **TWO ATOMS WITH THE SAME RANK-ONE MATRIX HAVE VANISHING `2 x 2` MINORS**,
+at EVERY slot pair.  The minor squared is an exact combination of three entry
+identities, so the minor is zero.  This is the sign-blind replacement for atom
+equality, and it needs no case split on the slots.
+
+The combination is `v_b² (u_a u_a - v_a v_a) + v_a² (u_b u_b - v_b v_b)
+- 2 v_a v_b (u_a u_b - v_a v_b)`, which is `(u_a v_b - u_b v_a)²` on the nose. -/
+theorem crossMinor_slot_eq_zero_of_atomMatrix_eq (leftVec rightVec : Fin 3 → ℝ)
+    (hclone : atomMatrix leftVec = atomMatrix rightVec) (leftSlot rightSlot : Fin 3) :
+    leftVec leftSlot * rightVec rightSlot - leftVec rightSlot * rightVec leftSlot = 0 := by
+  have hentry : ∀ i j : Fin 3, leftVec i * leftVec j = rightVec i * rightVec j := by
+    intro i j
+    simpa [atomMatrix, Matrix.vecMulVec_apply] using congrFun (congrFun hclone i) j
+  refine sq_eq_zero_iff.mp ?_
+  linear_combination (rightVec rightSlot) ^ 2 * hentry leftSlot leftSlot
+    + (rightVec leftSlot) ^ 2 * hentry rightSlot rightSlot
+    - 2 * rightVec leftSlot * rightVec rightSlot * hentry leftSlot rightSlot
+
+/-- The three minors of a clone pair, named. -/
 theorem crossMinor_eq_zero_of_atomMatrix_eq (leftVec rightVec : Fin 3 → ℝ)
     (hclone : atomMatrix leftVec = atomMatrix rightVec) :
     leftVec 0 * rightVec 1 - leftVec 1 * rightVec 0 = 0
       ∧ leftVec 0 * rightVec 2 - leftVec 2 * rightVec 0 = 0
-      ∧ leftVec 1 * rightVec 2 - leftVec 2 * rightVec 1 = 0 := by
-  have hentry : ∀ i j : Fin 3, leftVec i * leftVec j = rightVec i * rightVec j := by
-    intro i j
-    simpa [atomMatrix, Matrix.vecMulVec_apply] using congrFun (congrFun hclone i) j
-  refine ⟨?_, ?_, ?_⟩
-  · refine sq_eq_zero_iff.mp ?_
-    linear_combination (rightVec 1) ^ 2 * hentry 0 0 + (rightVec 0) ^ 2 * hentry 1 1
-      - 2 * rightVec 0 * rightVec 1 * hentry 0 1
-  · refine sq_eq_zero_iff.mp ?_
-    linear_combination (rightVec 2) ^ 2 * hentry 0 0 + (rightVec 0) ^ 2 * hentry 2 2
-      - 2 * rightVec 0 * rightVec 2 * hentry 0 2
-  · refine sq_eq_zero_iff.mp ?_
-    linear_combination (rightVec 2) ^ 2 * hentry 1 1 + (rightVec 1) ^ 2 * hentry 2 2
-      - 2 * rightVec 1 * rightVec 2 * hentry 1 2
+      ∧ leftVec 1 * rightVec 2 - leftVec 2 * rightVec 1 = 0 :=
+  ⟨crossMinor_slot_eq_zero_of_atomMatrix_eq leftVec rightVec hclone 0 1,
+    crossMinor_slot_eq_zero_of_atomMatrix_eq leftVec rightVec hclone 0 2,
+    crossMinor_slot_eq_zero_of_atomMatrix_eq leftVec rightVec hclone 1 2⟩
+
+/-- **A CLONE PAIR IS A PARALLEL PAIR.**  So the clone-matrix hypothesis implies
+the parallel-pair hypothesis, and
+`Gtz.heavyNeedleResidual_of_tie_hasParallelPair` subsumes
+`Gtz.heavyNeedleResidual_of_tie_hasCloneMatrixPair`.  The campaign has ONE
+statement to prove, not two. -/
+theorem hasParallelPair_of_atomMatrix_eq {D : WeightedDesign m 3}
+    {firstLabel secondLabel : Fin m} (hdistinct : firstLabel ≠ secondLabel)
+    (hclone : atomMatrix (D.atom firstLabel) = atomMatrix (D.atom secondLabel)) :
+    HasParallelPair D := by
+  by_cases hzero : D.atom secondLabel = 0
+  · exact ⟨firstLabel, secondLabel, 0, hdistinct, by rw [hzero]; module⟩
+  · obtain ⟨pivotSlot, hpivot⟩ : ∃ slot : Fin 3, D.atom secondLabel slot ≠ 0 := by
+      by_contra hall
+      push Not at hall
+      exact hzero (funext fun slot => hall slot)
+    refine ⟨secondLabel, firstLabel,
+      D.atom firstLabel pivotSlot / D.atom secondLabel pivotSlot, hdistinct.symm, ?_⟩
+    funext slot
+    have hminor := crossMinor_slot_eq_zero_of_atomMatrix_eq _ _ hclone slot pivotSlot
+    show D.atom firstLabel slot
+      = D.atom firstLabel pivotSlot / D.atom secondLabel pivotSlot * D.atom secondLabel slot
+    rw [div_mul_eq_mul_div, eq_div_iff hpivot]
+    linarith [hminor]
 
 /-- **Clones in the two OUTER slots kill the bracket.**  This is the slot
 arrangement `Gtz.atomBracket_ne_zero_of_lineFree` presents. -/
@@ -161,19 +194,13 @@ theorem not_hasLinePattern_lineFree_of_atomMatrix_eq (design : WeightedDesign 6 
   exact tripleBracket_eq_zero_of_atomMatrix_eq_outer _ _ _ hclone
 
 /-- **A parallel pair is a line-degeneracy.**  The weakest of the three forms,
-and the one the `(6,3)` hinge already concludes. -/
+and the one the `(6,3)` hinge already concludes.  This is the landed
+`Gtz.not_hasLinePattern_of_hasParallelPair` at the empty line family, which is
+the first entry of `Gtz.lineFamiliesSix`. -/
 theorem not_hasLinePattern_lineFree_of_hasParallelPair (design : WeightedDesign 6 3)
     (hparallel : HasParallelPair design) :
-    ¬ HasLinePattern design (lineFamilyPattern ([] : List (List (Fin 6)))) := by
-  intro hlineFree
-  obtain ⟨keptLabel, dropLabel, ratio, hdistinct, hratio⟩ := hparallel
-  obtain ⟨thirdLabel, hthirdFirst, hthirdSecond⟩ :=
-    exists_thirdLabel_off_pair keptLabel dropLabel hdistinct
-  refine atomBracket_ne_zero_of_lineFree design hlineFree hthirdFirst hdistinct
-    hthirdSecond ?_
-  rw [atomBracket, tripleBracket_swapRight]
-  rw [tripleBracket_eq_zero_of_parallel (design.atom keptLabel) (design.atom thirdLabel)
-    ratio hratio, neg_zero]
+    ¬ HasLinePattern design (lineFamilyPattern ([] : List (List (Fin 6)))) :=
+  not_hasLinePattern_of_hasParallelPair (by decide) design hparallel
 
 /-! ## The witness: a `(6,3)` tie with six pairwise distinct atoms -/
 
@@ -449,6 +476,31 @@ theorem heavyNeedleResidual_of_tie_hasParallelPair
   refine heavyNeedleResidual_of_pinnedStratumTieFree ?_
   intro design hlineFree _hoffConic htie
   exact not_hasLinePattern_lineFree_of_hasParallelPair design (hparallel design htie) hlineFree
+
+/-! ## What a proof of the repaired hypothesis must consume
+
+The repaired hypothesis is FALSE one size down, so no size-generic argument can
+reach it.  This is not a measurement.  It is two landed theorems put together. -/
+
+/-- **THE PARALLEL-PAIR HYPOTHESIS FAILS AT SIZE FOUR.**  `Gtz.tetraDesign` is a
+certified tie (`Gtz.tetraDesign_isTie`) with no parallel pair
+(`Gtz.tetraDesign_not_hasParallelPair`).  So any proof of the hypothesis of
+`Gtz.heavyNeedleResidual_of_tie_hasParallelPair` must consume `m = 6`, and the
+tetrahedron is the exact obstruction to a size-generic argument. -/
+theorem not_forall_isTie_hasParallelPair_fourThree :
+    ¬ (∀ design : WeightedDesign 4 3, IsTie design → HasParallelPair design) := fun hhinge =>
+  tetraDesign_not_hasParallelPair (hhinge tetraDesign tetraDesign_isTie)
+
+/-- **THE CLONE-MATRIX HYPOTHESIS FAILS AT SIZE FOUR TOO**, because a clone pair
+is a parallel pair. -/
+theorem not_forall_isTie_hasCloneMatrixPair_fourThree :
+    ¬ (∀ design : WeightedDesign 4 3, IsTie design →
+        ∃ firstLabel secondLabel : Fin 4, firstLabel ≠ secondLabel ∧
+          atomMatrix (design.atom firstLabel) = atomMatrix (design.atom secondLabel)) := by
+  intro hclone
+  refine not_forall_isTie_hasParallelPair_fourThree fun design htie => ?_
+  obtain ⟨firstLabel, secondLabel, hdistinct, hEq⟩ := hclone design htie
+  exact hasParallelPair_of_atomMatrix_eq hdistinct hEq
 
 /-! ## The witness against the two repaired hypotheses -/
 
