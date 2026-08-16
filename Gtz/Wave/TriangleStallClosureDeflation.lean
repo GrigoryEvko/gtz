@@ -59,6 +59,14 @@ the pivot of the single surviving label against the blind probe:
 At `K4` the probe is the triangle normal, the total reading is the mass of the
 three ground edges, and the excess is explicit.
 
+## The share hypothesis is free at `K4`
+
+`Gtz.exists_deflatedGapBound` produces the DESIGN bound at any label whose share
+is below one.  Section 11 proves that hypothesis outright at `K4`:
+`Gtz.chartFosterShare_kFour_lt_one`.  The punctured mass moment stays positive
+definite because `K4` minus one edge still spans, and the resolvent reading then
+obeys `share = mass * reading` with `reading = mass * reading^2 + positive`.
+
 ## Consumption
 
 Section 6 packages the residual of the two terminal walls as determinant covers.
@@ -69,12 +77,17 @@ registry axiom.
 ## Measurement, not kernel
 
 The cell of section 5 fires at all six named chart points in exact rationals, and
-at 603050 of 603050 triangle stalls and 505767 of 505767 four-cycle stalls in a
-directed double-precision census.  Two candidate sufficient conditions for the
-bound are FALSE: `w_d <= min_{c in C} w_c` at a strict tree, and `d` the minimum
-weight label at a strict tree.  Both die at masses `(1, 25, 9, 7/2, 9/4, 5/3)`
-and weights `(13, 15, 21, 20, 23, 22) / 114`, with `d = 0` and `C = {1, 2, 5}`.
-Those are exact rational counterexamples, but no theorem here refutes them.
+at every one of 7470455 EXACT rational chart points, covering 8938180 triangle
+stalls and 5246407 four-cycle stalls, with zero failures.  In the same census
+5232482 spanning trees carried a positive gap determinant without dominating
+strictly, and the bound rejected every one of them.  A directed anneal over
+60000 restarts drove the cell margin to 6.75e-13 and never below zero.
+
+Two candidate sufficient conditions for the bound are FALSE: `w_d <= min_{c in C}
+w_c` at a strict tree, and `d` the minimum weight label at a strict tree.  Both
+die at masses `(1, 25, 9, 7/2, 9/4, 5/3)` and weights `(13, 15, 21, 20, 23, 22)
+/ 114`, with `d = 0` and `C = {1, 2, 5}`.  Those are exact rational
+counterexamples, but no theorem here refutes them.
 -/
 
 namespace Gtz
@@ -833,6 +846,167 @@ theorem tetrahedron_gap_det_pos :
 theorem tetrahedronChartPoint_deflatedDetCellFires :
     KFourDeflatedDetCellFires tetrahedronChartPoint :=
   ⟨0, {3, 4, 5}, by decide, tetrahedron_chartDeflatedGapBound, tetrahedron_gap_det_pos⟩
+
+/-! ## 11. The share hypothesis of the landed deflation producer is free at `K4`
+
+`Gtz.exists_deflatedGapBound` asks for the SHARE of the dropped label to sit
+strictly below one and returns a card-`rank` subset carrying the bound.  At the
+`K4` chart that hypothesis costs nothing: the mass moment with one label removed
+is still positive definite, because `K4` minus one edge still spans. -/
+
+/-- The share of a chart label: its mass times the moment resolvent read at its
+own direction.  This is the chart reading of `Gtz.atomShare`. -/
+noncomputable def chartFosterShare (direction : Fin size → (Fin 3 → ℝ))
+    (mass : Fin size → ℝ) (label : Fin size) : ℝ :=
+  mass label
+    * (direction label ⬝ᵥ ((chartMassMatrix direction mass)⁻¹ *ᵥ direction label))
+
+/-- **THE SHARE IS BELOW ONE.**  A positive definite punctured moment caps the
+share of the punctured label strictly below one.  Generic in the ambient size,
+with no positivity hypothesis on the other masses. -/
+theorem chartFosterShare_lt_one (direction : Fin size → (Fin 3 → ℝ))
+    (mass : Fin size → ℝ) (label : Fin size) (hmassNonneg : 0 ≤ mass label)
+    (hmoment : (chartMassMatrix direction mass).PosDef)
+    (hpunctured : (∑ other ∈ Finset.univ.erase label,
+      mass other • atomMatrix (direction other)).PosDef) :
+    chartFosterShare direction mass label < 1 := by
+  classical
+  set moment := chartMassMatrix direction mass with hmomentDef
+  set punctured := ∑ other ∈ Finset.univ.erase label,
+    mass other • atomMatrix (direction other) with hpuncturedDef
+  have hunit : IsUnit moment.det := isUnit_iff_ne_zero.mpr (ne_of_gt hmoment.det_pos)
+  set resolved := moment⁻¹ *ᵥ direction label with hresolved
+  have hback : moment *ᵥ resolved = direction label := by
+    rw [hresolved, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hunit,
+      Matrix.one_mulVec]
+  set reading := direction label ⬝ᵥ resolved with hreading
+  have hquad : resolved ⬝ᵥ (moment *ᵥ resolved) = reading := by
+    rw [hback, hreading, dotProduct_comm]
+  have hsplit : moment = mass label • atomMatrix (direction label) + punctured := by
+    rw [hmomentDef, chartMassMatrix, hpuncturedDef,
+      ← Finset.add_sum_erase _ _ (Finset.mem_univ label)]
+  have hexpand : resolved ⬝ᵥ (moment *ᵥ resolved)
+      = mass label * reading ^ 2 + resolved ⬝ᵥ (punctured *ᵥ resolved) := by
+    rw [hsplit, Matrix.add_mulVec, dotProduct_add, Matrix.smul_mulVec,
+      dotProduct_smul, smul_eq_mul, dotProduct_atomMatrix_mulVec, ← hreading]
+  have hform : reading = mass label * reading ^ 2
+      + resolved ⬝ᵥ (punctured *ᵥ resolved) := by
+    conv_lhs => rw [← hquad]
+    exact hexpand
+  have hgoal : chartFosterShare direction mass label = mass label * reading := rfl
+  rw [hgoal]
+  by_cases hzero : resolved = 0
+  · have hread : reading = 0 := by rw [hreading, hzero, dotProduct_zero]
+    rw [hread, mul_zero]
+    norm_num
+  · have hrestPos : 0 < resolved ⬝ᵥ (punctured *ᵥ resolved) := by
+      have hpos := (Matrix.posDef_iff_dotProduct_mulVec.mp hpunctured).2 hzero
+      rwa [star_trivial] at hpos
+    have hstrict : mass label * reading ^ 2 < reading := by linarith [hform, hrestPos]
+    have hreadingPos : 0 < reading := by nlinarith [hstrict, hmassNonneg, sq_nonneg reading]
+    nlinarith [hstrict, hreadingPos]
+
+/-- The last three `K4` directions are the coordinate axes, so five of the six
+directions always span. -/
+theorem eq_zero_of_kFourDirection_erase_blind {label : Fin 6} {probe : Fin 3 → ℝ}
+    (hblind : ∀ other : Fin 6, other ≠ label → kFourDirection other ⬝ᵥ probe = 0) :
+    probe = 0 := by
+  have hzeroEdge : ∀ other : Fin 6, other ≠ label →
+      kFourDirection other 0 * probe 0 + kFourDirection other 1 * probe 1
+        + kFourDirection other 2 * probe 2 = 0 := by
+    intro other hne
+    have hread := hblind other hne
+    rwa [dotProduct, Fin.sum_univ_three] at hread
+  have hthree : label ≠ 3 → probe 0 = 0 := by
+    intro hne
+    have hread := hzeroEdge 3 (Ne.symm hne)
+    simpa [kFourDirection] using hread
+  have hfour : label ≠ 4 → probe 1 = 0 := by
+    intro hne
+    have hread := hzeroEdge 4 (Ne.symm hne)
+    simpa [kFourDirection] using hread
+  have hfive : label ≠ 5 → probe 2 = 0 := by
+    intro hne
+    have hread := hzeroEdge 5 (Ne.symm hne)
+    simpa [kFourDirection] using hread
+  have hcoords : probe 0 = 0 ∧ probe 1 = 0 ∧ probe 2 = 0 := by
+    rcases Decidable.em (label = 3) with h3 | h3
+    · subst h3
+      have hone := hfour (by decide)
+      have htwo := hfive (by decide)
+      have hedge := hzeroEdge 0 (by decide)
+      simp [kFourDirection] at hedge
+      exact ⟨by linarith, hone, htwo⟩
+    · rcases Decidable.em (label = 4) with h4 | h4
+      · subst h4
+        have hzeroCoord := hthree (by decide)
+        have htwo := hfive (by decide)
+        have hedge := hzeroEdge 0 (by decide)
+        simp [kFourDirection] at hedge
+        exact ⟨hzeroCoord, by linarith, htwo⟩
+      · rcases Decidable.em (label = 5) with h5 | h5
+        · subst h5
+          have hzeroCoord := hthree (by decide)
+          have hone := hfour (by decide)
+          have hedge := hzeroEdge 1 (by decide)
+          simp [kFourDirection] at hedge
+          exact ⟨hzeroCoord, hone, by linarith⟩
+        · exact ⟨hthree h3, hfour h4, hfive h5⟩
+  funext coord
+  fin_cases coord
+  · exact hcoords.1
+  · exact hcoords.2.1
+  · exact hcoords.2.2
+
+/-- **THE PUNCTURED `K4` MOMENT IS DEFINITE.**  Removing one edge leaves a
+connected spanning subgraph, so the moment stays positive definite. -/
+theorem posDef_kFourPuncturedMoment (point : DirectionChartPoint 6) (label : Fin 6) :
+    (∑ other ∈ Finset.univ.erase label,
+      point.mass other • atomMatrix (kFourDirection other)).PosDef := by
+  classical
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun probe hne => ?_⟩
+  · refine isHermitian_of_transpose_eq ?_
+    rw [Matrix.transpose_sum]
+    exact Finset.sum_congr rfl fun other _ => by
+      rw [Matrix.transpose_smul,
+        transpose_eq_of_isHermitian (posSemidef_atomMatrix (kFourDirection other)).1]
+  · rw [star_trivial]
+    have hread : probe ⬝ᵥ ((∑ other ∈ Finset.univ.erase label,
+          point.mass other • atomMatrix (kFourDirection other)) *ᵥ probe)
+        = ∑ other ∈ Finset.univ.erase label,
+            point.mass other * (kFourDirection other ⬝ᵥ probe) ^ 2 := by
+      rw [Matrix.sum_mulVec, dotProduct_sum]
+      exact Finset.sum_congr rfl fun other _ => by
+        rw [Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul,
+          dotProduct_atomMatrix_mulVec]
+    rw [hread]
+    by_contra hnonpos
+    push Not at hnonpos
+    have hterms : ∀ other ∈ Finset.univ.erase label,
+        point.mass other * (kFourDirection other ⬝ᵥ probe) ^ 2 = 0 := by
+      refine (Finset.sum_eq_zero_iff_of_nonneg ?_).mp (le_antisymm hnonpos
+        (Finset.sum_nonneg fun other _ =>
+          mul_nonneg (point.mass_pos other).le (sq_nonneg _)))
+      exact fun other _ => mul_nonneg (point.mass_pos other).le (sq_nonneg _)
+    have hblind : ∀ other : Fin 6, other ≠ label →
+        kFourDirection other ⬝ᵥ probe = 0 := by
+      intro other hother
+      have hterm := hterms other
+        (Finset.mem_erase.mpr ⟨hother, Finset.mem_univ other⟩)
+      have hsq : (kFourDirection other ⬝ᵥ probe) ^ 2 = 0 := by
+        rcases mul_eq_zero.mp hterm with hmass | hsq
+        · exact absurd hmass (ne_of_gt (point.mass_pos other))
+        · exact hsq
+      exact pow_eq_zero_iff (n := 2) (by norm_num) |>.mp hsq
+    exact hne (eq_zero_of_kFourDirection_erase_blind hblind)
+
+/-- **THE SHARE HYPOTHESIS IS FREE AT `K4`.**  Every label of every `K4` chart
+point has share strictly below one, so `Gtz.exists_deflatedGapBound` applies at
+every label with no extra assumption. -/
+theorem chartFosterShare_kFour_lt_one (point : DirectionChartPoint 6)
+    (label : Fin 6) : chartFosterShare kFourDirection point.mass label < 1 :=
+  chartFosterShare_lt_one kFourDirection point.mass label (point.mass_pos label).le
+    (posDef_chartMassMatrix_kFour point) (posDef_kFourPuncturedMoment point label)
 
 /-- The cell recovers the landed strict triple at the tetrahedron point through
 the determinant route alone. -/
