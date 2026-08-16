@@ -5204,6 +5204,11 @@ import Gtz.Wave.AllHeavyHingeSchur
 -- makes the free pivot of a triangle STRICT and the stall price strict with it.
 -- The two determinant covers close both terminal K4 walls, and the tetrahedron
 -- chart point fires the cell.
+-- The deflation itself then runs at K4 with no hypothesis at all: the whitening
+-- weld reports the atom leverages, the share of every K4 label is below one
+-- because K4 minus one edge still spans, and the predecessor rung is a theorem.
+-- At every chart point and every label the deflation returns a card-three subset
+-- avoiding that label whose strict domination IS one determinant sign.
 import Gtz.Wave.TriangleStallClosureDeflation
 
 -- The sharp balance of the flat split, read as ONE wedge total of a SIGNED
