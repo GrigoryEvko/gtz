@@ -5553,3 +5553,27 @@ import Gtz.Wave.A1NeedleTieDegeneracy
 --   there.  Neither end dominates a leverage-based floor `4*bracket^2 / leverageSum^2`,
 --   which is not landed because it needs the spectral theorem.
 import Gtz.Wave.A1NeedleCramerFloor
+
+-- ## The Kirchhoff sign tower, and the shifted Frobenius cell
+-- WHY THIS IS HERE.  Every determinantal reading at the K4 stratum is closed, every
+--   per-label selector is kernel-refuted, and a positive gap determinant alone is
+--   worthless because a `(+,-,-)` signature carries one too.  What was missing is a
+--   test that reads the WHOLE pencil rather than its determinant.
+-- THE POLARIZATION LAW.  `Gtz.kFourMassTreeSum_polarization` reads the sixteen-term
+--   tree sum on a pencil as a cubic whose two middle coefficients pair one vector
+--   against the eight-term contraction polynomial of the other.  One `ring` step.
+--   `Gtz.trace_adjugate_kFourLaplacian_mul` is its matrix twin, and
+--   `Gtz.det_add_smul_fin_three` supplies the general mixed determinant.
+-- TWO EXCLUSION LAWS.  `Gtz.kFourGapInvariantOne_pos_of_posDef` and
+--   `Gtz.kFourGapInvariantTwo_pos_of_posDef` are one trace of two definite matrices
+--   each.  The second excludes a selection whose gap determinant is positive while
+--   its gap is indefinite, which no Loewner comparison reaches.
+-- THE CELL.  `Gtz.posDef_sub_of_shifted_trace_adjugate` proves strict domination from
+--   ONE trace inequality at any shift below one, with no eigenvalue and no square
+--   root.  At the optimal rational shift `Gtz.KFourPencilCellFires` is three
+--   polynomial inequalities in the four forest coefficients.
+-- WHAT IT CLOSES.  `Gtz.directionChartIsTieFree_kFour_of_universalStrictTree` closes
+--   the WHOLE registered chart obligation from "some listed tree dominates strictly at
+--   every chart point", and `Gtz.kFourGaugeAndPivotWallClosure_of_universalStrictTree`
+--   closes the A3 component route.  The cell fires at all five named points.
+import Gtz.Wave.KirchhoffSignTower

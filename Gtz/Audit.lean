@@ -1143,6 +1143,7 @@ import Gtz.Wave.TypeNineAlignedOrthogonalExit
 import Gtz.Wave.ZeroLeakPair
 import Gtz.Wave.CrossEnergyFloor
 import Gtz.Wave.KFourSignedTreeLaplacian
+import Gtz.Wave.KirchhoffSignTower
 import Gtz.Wave.KFourGaugeWallPencil
 import Gtz.Wave.KFourIsotropicStar
 import Gtz.Wave.WedgeLeakCriterion
@@ -34503,3 +34504,74 @@ run_cmd do
 #print axioms Gtz.heavyNeedleResidual_of_bracketDominantCell
 #print axioms Gtz.sq_atomBracket_le_triplePairAreaSum_of_lineFreeOffConicTie
 #print axioms Gtz.isTie_of_dominates_of_forall_pairArea_beats_sq_atomBracket
+#print axioms Gtz.det_add_smul_fin_three
+#print axioms Gtz.trace_sq_fin_three
+#print axioms Gtz.adjugate_adjugate_fin_three
+#print axioms Gtz.kFourMassTreeSum_polarization
+#print axioms Gtz.kFourMassTreeSum_neg
+#print axioms Gtz.kFourContractionTreePolynomial_neg
+#print axioms Gtz.kFourLaplacian
+#print axioms Gtz.kFourLaplacian_transpose
+#print axioms Gtz.det_kFourLaplacian
+#print axioms Gtz.posSemidef_kFourLaplacian
+#print axioms Gtz.kFourLaplacian_add
+#print axioms Gtz.kFourLaplacian_smul
+#print axioms Gtz.trace_mul_atomMatrix_kFour
+#print axioms Gtz.trace_adjugate_kFourLaplacian_mul
+#print axioms Gtz.posDef_kFourLaplacian_of_det_pos
+#print axioms Gtz.posDef_adjugate_fin_three
+#print axioms Gtz.trace_mul_pos_of_posDef
+#print axioms Gtz.kFourGapConductance
+#print axioms Gtz.chartMassMatrix_kFour_eq_kFourLaplacian
+#print axioms Gtz.signedGapWeight_eq_conductance_sub
+#print axioms Gtz.directionChartGap_eq_kFourLaplacian_sub
+#print axioms Gtz.kFourGapConductance_nonneg
+#print axioms Gtz.kFourPencilLead
+#print axioms Gtz.kFourPencilSecond
+#print axioms Gtz.kFourPencilThird
+#print axioms Gtz.det_directionChartGap_eq_pencil
+#print axioms Gtz.kFourGapInvariantOne
+#print axioms Gtz.kFourGapInvariantTwo
+#print axioms Gtz.directionChartGap_eq_signedLaplacian'
+#print axioms Gtz.kFourGapInvariantOne_eq_forestSum
+#print axioms Gtz.kFourGapInvariantTwo_eq_forestSum
+#print axioms Gtz.det_directionChartGap_add_smul_mass
+#print axioms Gtz.kFourGapInvariantOne_pos_of_posDef
+#print axioms Gtz.kFourGapInvariantTwo_pos_of_posDef
+#print axioms Gtz.not_posDef_of_kFourGapInvariantOne_nonpos
+#print axioms Gtz.not_posDef_of_kFourGapInvariantTwo_nonpos
+#print axioms Gtz.frobeniusEnergy
+#print axioms Gtz.frobeniusEnergy_eq_trace_sq
+#print axioms Gtz.quadForm_sq_le_frobeniusEnergy
+#print axioms Gtz.posDef_one_sub_of_shifted_frobeniusEnergy
+#print axioms Gtz.posDef_one_sub_of_frobeniusEnergy_lt_one
+#print axioms Gtz.posDef_sub_of_shifted_trace_adjugate
+#print axioms Gtz.kFourPencilEnergy
+#print axioms Gtz.trace_adjugate_conductance_mul_mass
+#print axioms Gtz.trace_adjugate_mass_mul_conductance
+#print axioms Gtz.kFourPencilEnergy_eq_pencil
+#print axioms Gtz.KFourPencilCellFires
+#print axioms Gtz.posDef_directionChartGap_of_pencilCell
+#print axioms Gtz.KFourPencilCellTotal
+#print axioms Gtz.card_eq_three_of_mem_kFourSpanningTreeList'
+#print axioms Gtz.KFourUniversalStrictTree
+#print axioms Gtz.kFourUniversalStrictTree_of_pencilCellTotal
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_of_universalStrictTree
+#print axioms Gtz.directionChartHasStrictTriple_kFour_of_universalStrictTree
+#print axioms Gtz.directionChartIsTieFree_kFour_of_universalStrictTree
+#print axioms Gtz.directionChartIsTieFree_kFour_of_pencilCellTotal
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_of_pencilCellTotal
+#print axioms Gtz.kFourKnifeBandRefinedAllMaxHeavyWall_of_pencilCellTotal
+#print axioms Gtz.pencilCellFires_of_values
+#print axioms Gtz.kFourGapConductance_mem
+#print axioms Gtz.kFourGapConductance_not_mem
+#print axioms Gtz.tetrahedronChartPoint_pencilCellFires
+#print axioms Gtz.bandResidualWitnessPoint_pencilCellFires
+#print axioms Gtz.kFourGaugeWallPoint_pencilCellFires
+#print axioms Gtz.maxEdgeRefuterPoint_pencilCellFires
+#print axioms Gtz.heavyPairRefuterPoint_pencilCellFires
+#print axioms Gtz.tetrahedronChartPoint_pencilStrictTree
+#print axioms Gtz.bandResidualWitnessPoint_pencilStrictTree
+#print axioms Gtz.kFourGaugeWallPoint_pencilStrictTree
+#print axioms Gtz.maxEdgeRefuterPoint_pencilStrictTree
+#print axioms Gtz.heavyPairRefuterPoint_pencilStrictTree
