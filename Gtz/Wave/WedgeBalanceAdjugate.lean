@@ -941,4 +941,225 @@ theorem secondInvariantOfThree_gap_eq_signed_pairTotal {size : ℕ}
     exact Finset.sum_congr rfl fun leftLabel _ => hmerge leftLabel
   linarith [houter]
 
+
+/-! ## 9. The twenty-triple layer of the second invariant is positive
+
+The campaign's determinant layer total at `(6, 3)` is NEGATIVE: the landed
+Cauchy-Binet value floor is `-3/20`, so no averaging argument over the twenty
+gap determinants can produce a positive one.  The second invariant behaves in
+the opposite way.  Its layer total is a positive combination of the fifteen
+wedge energies of the design, each of which is strictly positive exactly when
+the two atoms are not parallel.  So on a primitive design with spread weights
+some triple always carries a positive second invariant, and the whole
+obstruction at `(6, 3)` sits in the determinant alone. -/
+
+/-- The twenty triples of six labels. -/
+theorem card_powersetCard_three_six :
+    ((Finset.univ : Finset (Fin 6)).powersetCard 3).card = 20 := by decide
+
+/-- Ten of the twenty triples carry a fixed label. -/
+theorem card_powersetCard_three_six_mem (label : Fin 6) :
+    (((Finset.univ : Finset (Fin 6)).powersetCard 3).filter (fun block => label ∈ block)).card
+      = 10 := by
+  fin_cases label <;> decide
+
+/-- Four of the twenty triples carry a fixed pair of distinct labels. -/
+theorem card_powersetCard_three_six_pair {first second : Fin 6} (hne : first ≠ second) :
+    (((Finset.univ : Finset (Fin 6)).powersetCard 3).filter
+        (fun block => first ∈ block ∧ second ∈ block)).card = 4 := by
+  fin_cases first <;> fin_cases second <;> simp_all <;> decide
+
+/-- **PRIMITIVITY IS THE NONVANISHING OF EVERY PAIR WEDGE.**  Two atoms of a
+primitive design are never parallel, so their wedge is a nonzero vector and its
+energy — the pair minor `leverage * leverage - pairing squared` — is strictly
+positive. -/
+theorem atomWedge_ne_zero_of_primitive {size : ℕ} (design : WeightedDesign size 3)
+    (hprimitive : IsPrimitiveDesign design) {leftLabel rightLabel : Fin size}
+    (hne : leftLabel ≠ rightLabel) :
+    atomWedge (design.atom leftLabel) (design.atom rightLabel) ≠ 0 := by
+  intro hzero
+  have hslotZero : design.atom leftLabel 1 * design.atom rightLabel 2
+      - design.atom leftLabel 2 * design.atom rightLabel 1 = 0 := congrFun hzero 0
+  have hslotOne : design.atom leftLabel 2 * design.atom rightLabel 0
+      - design.atom leftLabel 0 * design.atom rightLabel 2 = 0 := congrFun hzero 1
+  have hslotTwo : design.atom leftLabel 0 * design.atom rightLabel 1
+      - design.atom leftLabel 1 * design.atom rightLabel 0 = 0 := congrFun hzero 2
+  by_cases hleftZero : design.atom leftLabel = 0
+  · exact hprimitive rightLabel leftLabel 0 (Ne.symm hne) (by rw [hleftZero, zero_smul])
+  · have hcoord : design.atom leftLabel 0 ≠ 0 ∨ design.atom leftLabel 1 ≠ 0
+        ∨ design.atom leftLabel 2 ≠ 0 := by
+      by_contra hall
+      push Not at hall
+      refine hleftZero (funext fun slot => ?_)
+      fin_cases slot
+      · exact hall.1
+      · exact hall.2.1
+      · exact hall.2.2
+    rcases hcoord with hpivot | hpivot | hpivot
+    · refine hprimitive leftLabel rightLabel
+        (design.atom rightLabel 0 / design.atom leftLabel 0) hne (funext fun slot => ?_)
+      fin_cases slot <;>
+        simp only [Fin.zero_eta, Fin.mk_one, Fin.reduceFinMk, Fin.isValue, Pi.smul_apply,
+          smul_eq_mul] <;> field_simp <;> linarith
+    · refine hprimitive leftLabel rightLabel
+        (design.atom rightLabel 1 / design.atom leftLabel 1) hne (funext fun slot => ?_)
+      fin_cases slot <;>
+        simp only [Fin.zero_eta, Fin.mk_one, Fin.reduceFinMk, Fin.isValue, Pi.smul_apply,
+          smul_eq_mul] <;> field_simp <;> linarith
+    · refine hprimitive leftLabel rightLabel
+        (design.atom rightLabel 2 / design.atom leftLabel 2) hne (funext fun slot => ?_)
+      fin_cases slot <;>
+        simp only [Fin.zero_eta, Fin.mk_one, Fin.reduceFinMk, Fin.isValue, Pi.smul_apply,
+          smul_eq_mul] <;> field_simp <;> linarith
+
+/-- **THE SIGNED PAIR COEFFICIENT OF THE TWENTY-TRIPLE LAYER.**  Summing the
+product of the two signed measures over the twenty triples gives one closed
+expression in the two weights. -/
+theorem sum_powersetCard_vertexDirection_pair (design : WeightedDesign 6 3)
+    {first second : Fin 6} (hne : first ≠ second) :
+    ∑ block ∈ (Finset.univ : Finset (Fin 6)).powersetCard 3,
+        hypersimplexVertexDirection design block first
+          * hypersimplexVertexDirection design block second
+      = 4 - 10 * (design.weight first + design.weight second)
+        + 20 * (design.weight first * design.weight second) := by
+  classical
+  have hexpand : ∀ block : Finset (Fin 6),
+      hypersimplexVertexDirection design block first
+          * hypersimplexVertexDirection design block second
+        = (if first ∈ block ∧ second ∈ block then (1 : ℝ) else 0)
+          - design.weight second * (if first ∈ block then (1 : ℝ) else 0)
+          - design.weight first * (if second ∈ block then (1 : ℝ) else 0)
+          + design.weight first * design.weight second := by
+    intro block
+    unfold hypersimplexVertexDirection
+    by_cases hfirst : first ∈ block <;> by_cases hsecond : second ∈ block <;>
+      simp [hfirst, hsecond] <;> ring
+  rw [Finset.sum_congr rfl fun block _ => hexpand block]
+  rw [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_sub_distrib,
+    ← Finset.mul_sum, ← Finset.mul_sum, Finset.sum_const, card_powersetCard_three_six,
+    Finset.sum_boole, Finset.sum_boole, Finset.sum_boole,
+    card_powersetCard_three_six_pair hne, card_powersetCard_three_six_mem first,
+    card_powersetCard_three_six_mem second]
+  push_cast
+  ring
+
+/-- **THE TWENTY-TRIPLE SECOND-INVARIANT TOTAL IS STRICTLY POSITIVE.**  Every
+pair of a primitive design has a strictly positive wedge energy, and at spread
+weights every one of the fifteen layer coefficients is strictly positive.  This
+is the exact opposite of the determinant layer, whose total at `(6, 3)` is
+negative. -/
+theorem sum_powersetCard_secondInvariant_pos (design : WeightedDesign 6 3)
+    (hprimitive : IsPrimitiveDesign design)
+    (hspread : ∀ label : Fin 6, design.weight label < 1 / 5) :
+    0 < ∑ block ∈ (Finset.univ : Finset (Fin 6)).powersetCard 3,
+      secondInvariantOfThree (subsetSum design block - 1) := by
+  classical
+  set energy : Fin 6 → Fin 6 → ℝ := fun leftLabel rightLabel =>
+    leverageOf (design.atom leftLabel) * leverageOf (design.atom rightLabel)
+      - (design.atom leftLabel ⬝ᵥ design.atom rightLabel) ^ 2 with henergy
+  have hdiagonal : ∀ label : Fin 6, energy label label = 0 := by
+    intro label
+    have hlev : leverageOf (design.atom label) = design.atom label ⬝ᵥ design.atom label :=
+      leverageOf_eq_dotProduct (design.atom label)
+    simp only [henergy, hlev]
+    ring
+  have hoffDiagonal : ∀ leftLabel rightLabel : Fin 6, leftLabel ≠ rightLabel →
+      0 < energy leftLabel rightLabel := by
+    intro leftLabel rightLabel hne
+    have hwedgeNe : atomWedge (design.atom leftLabel) (design.atom rightLabel) ≠ 0 := by
+      intro hzero
+      exact atomWedge_ne_zero_of_primitive design hprimitive hne hzero
+    have hpositive : 0 < atomWedge (design.atom leftLabel) (design.atom rightLabel)
+        ⬝ᵥ atomWedge (design.atom leftLabel) (design.atom rightLabel) :=
+      dotProduct_self_pos hwedgeNe
+    rw [atomWedge_energy] at hpositive
+    have hleft : leverageOf (design.atom leftLabel)
+        = design.atom leftLabel ⬝ᵥ design.atom leftLabel :=
+      leverageOf_eq_dotProduct (design.atom leftLabel)
+    have hright : leverageOf (design.atom rightLabel)
+        = design.atom rightLabel ⬝ᵥ design.atom rightLabel :=
+      leverageOf_eq_dotProduct (design.atom rightLabel)
+    simp only [henergy, hleft, hright]
+    linarith [hpositive]
+  have hcoefficient : ∀ leftLabel rightLabel : Fin 6, leftLabel ≠ rightLabel →
+      0 < 4 - 10 * (design.weight leftLabel + design.weight rightLabel)
+        + 20 * (design.weight leftLabel * design.weight rightLabel) := by
+    intro leftLabel rightLabel _
+    have hleft := hspread leftLabel
+    have hright := hspread rightLabel
+    have hleftPos := design.weight_pos leftLabel
+    have hrightPos := design.weight_pos rightLabel
+    nlinarith [hleft, hright, hleftPos, hrightPos]
+  have hlayer : ∑ block ∈ (Finset.univ : Finset (Fin 6)).powersetCard 3,
+      secondInvariantOfThree (subsetSum design block - 1)
+      = (∑ leftLabel : Fin 6, ∑ rightLabel : Fin 6,
+          (∑ block ∈ (Finset.univ : Finset (Fin 6)).powersetCard 3,
+              hypersimplexVertexDirection design block leftLabel
+                * hypersimplexVertexDirection design block rightLabel)
+            * energy leftLabel rightLabel) / 2 := by
+    have hpointwise : ∀ block : Finset (Fin 6),
+        secondInvariantOfThree (subsetSum design block - 1)
+          = (∑ leftLabel : Fin 6, ∑ rightLabel : Fin 6,
+              hypersimplexVertexDirection design block leftLabel
+                * hypersimplexVertexDirection design block rightLabel
+                * energy leftLabel rightLabel) / 2 := fun block =>
+      secondInvariantOfThree_gap_eq_signed_pairTotal design block
+    rw [Finset.sum_congr rfl fun block _ => hpointwise block, ← Finset.sum_div]
+    congr 1
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun leftLabel _ => ?_
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun rightLabel _ => ?_
+    rw [Finset.sum_mul]
+  rw [hlayer]
+  have hslice : ∀ leftLabel : Fin 6, 0 ≤ ∑ rightLabel : Fin 6,
+      (∑ block ∈ (Finset.univ : Finset (Fin 6)).powersetCard 3,
+          hypersimplexVertexDirection design block leftLabel
+            * hypersimplexVertexDirection design block rightLabel)
+        * energy leftLabel rightLabel := by
+    intro leftLabel
+    refine Finset.sum_nonneg fun rightLabel _ => ?_
+    by_cases hne : leftLabel = rightLabel
+    · rw [hne, hdiagonal rightLabel, mul_zero]
+    · rw [sum_powersetCard_vertexDirection_pair design hne]
+      exact (mul_pos (hcoefficient leftLabel rightLabel hne)
+        (hoffDiagonal leftLabel rightLabel hne)).le
+  have hwitness : 0 < ∑ rightLabel : Fin 6,
+      (∑ block ∈ (Finset.univ : Finset (Fin 6)).powersetCard 3,
+          hypersimplexVertexDirection design block 0
+            * hypersimplexVertexDirection design block rightLabel)
+        * energy 0 rightLabel := by
+    refine Finset.sum_pos' (fun rightLabel _ => ?_) ⟨1, Finset.mem_univ 1, ?_⟩
+    · by_cases hne : (0 : Fin 6) = rightLabel
+      · rw [← hne, hdiagonal 0, mul_zero]
+      · rw [sum_powersetCard_vertexDirection_pair design hne]
+        exact (mul_pos (hcoefficient 0 rightLabel hne)
+          (hoffDiagonal 0 rightLabel hne)).le
+    · rw [sum_powersetCard_vertexDirection_pair design (by decide : (0 : Fin 6) ≠ 1)]
+      exact mul_pos (hcoefficient 0 1 (by decide)) (hoffDiagonal 0 1 (by decide))
+  have htotal : 0 < ∑ leftLabel : Fin 6, ∑ rightLabel : Fin 6,
+      (∑ block ∈ (Finset.univ : Finset (Fin 6)).powersetCard 3,
+          hypersimplexVertexDirection design block leftLabel
+            * hypersimplexVertexDirection design block rightLabel)
+        * energy leftLabel rightLabel :=
+    Finset.sum_pos' (fun leftLabel _ => hslice leftLabel) ⟨0, Finset.mem_univ 0, hwitness⟩
+  linarith [htotal]
+
+/-- **SOME TRIPLE HAS A POSITIVE SECOND INVARIANT.**  The layer law, read as an
+existence statement.  It removes one of the three tests of the inertia bridge
+`Gtz.posDef_of_trace_pos_of_secondInvariant_pos_of_det_pos` at one triple. -/
+theorem exists_triple_secondInvariant_pos (design : WeightedDesign 6 3)
+    (hprimitive : IsPrimitiveDesign design)
+    (hspread : ∀ label : Fin 6, design.weight label < 1 / 5) :
+    ∃ selected : Finset (Fin 6), selected.card = 3
+      ∧ 0 < secondInvariantOfThree (subsetSum design selected - 1) := by
+  classical
+  by_contra hnone
+  push Not at hnone
+  have hnonpositive : ∑ block ∈ (Finset.univ : Finset (Fin 6)).powersetCard 3,
+      secondInvariantOfThree (subsetSum design block - 1) ≤ 0 :=
+    Finset.sum_nonpos fun block hmember =>
+      hnone block (Finset.mem_powersetCard.mp hmember).2
+  linarith [sum_powersetCard_secondInvariant_pos design hprimitive hspread]
+
 end Gtz
