@@ -1138,6 +1138,7 @@ import Gtz.Wave.TypeNineAlignedOrthogonalExit
 import Gtz.Wave.ZeroLeakPair
 import Gtz.Wave.CrossEnergyFloor
 import Gtz.Wave.KFourSignedTreeLaplacian
+import Gtz.Wave.KFourGaugeWallPencil
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -33417,6 +33418,22 @@ run_cmd do
 #print axioms Gtz.posSemidef_sum_smul_atomMatrix
 #print axioms Gtz.not_posDef_directionChartGap_of_blindProbe
 #print axioms Gtz.not_posDef_directionChartGap_of_coplanar
+
+-- Gtz/Wave/KFourGaugeWallPencil.lean -- the two factors of a one-gauge-edge tree
+#print axioms Gtz.posDef_sum_three_smul_atomMatrix
+#print axioms Gtz.kFourConductance_eq_heavyMass_div
+#print axioms Gtz.kFourConductance_eq_heavyMass_add
+#print axioms Gtz.signedGapWeight_sub_signedGapWeight
+#print axioms Gtz.directionChartGap_sub_eq_pencil
+#print axioms Gtz.independent_wallAxis_dropTwo
+#print axioms Gtz.independent_wallAxis_dropOne
+#print axioms Gtz.independent_wallAxis_dropZero
+#print axioms Gtz.posDef_wallPositivePart_dropTwo
+#print axioms Gtz.posDef_wallPositivePart_dropOne
+#print axioms Gtz.posDef_wallPositivePart_dropZero
+#print axioms Gtz.kFourGaugeStarGap_eq_smul_atomMatrix_of_wall
+#print axioms Gtz.posDef_sub_of_posSemidef_sub
+#print axioms Gtz.posDef_sub_gaugeDrop_of_le
 
 -- Gtz/Wave/SylvesterReduction.lean -- the gap determinant as the only obstruction
 #print axioms Gtz.sylvesterLeverageCap

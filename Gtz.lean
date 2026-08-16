@@ -5049,3 +5049,8 @@ import Gtz.Wave.ThresholdCellDominance
 -- cut out by three division-free equations, and only nine of the sixteen trees can
 -- survive on it.
 import Gtz.Wave.KFourSignedTreeLaplacian
+-- The nine trees that survive on that wall carry a two-factor pencil.  The positive
+-- factor sees only which triangle label is dropped and is positive definite at every
+-- wall point.  The negative factor sees only which gauge label is kept and is
+-- monotone in the two excluded conductances.
+import Gtz.Wave.KFourGaugeWallPencil
