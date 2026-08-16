@@ -1153,6 +1153,7 @@ import Gtz.Wave.WedgeBalanceAdjugate
 import Gtz.Wave.WedgeSumRuleLayerLaw
 import Gtz.Wave.AllHeavyHingeSchur
 import Gtz.Wave.TriangleStallClosureDeflation
+import Gtz.Wave.DeflatedCellTotal
 import Gtz.Wave.MixedTripleBalance
 import Gtz.Wave.GapDeterminantSignComplement
 #print axioms Gtz.unitVector
@@ -34052,6 +34053,53 @@ run_cmd do
 #print axioms Gtz.kFour_hasStrictTree_of_cardThree_posDef
 #print axioms Gtz.kFour_hasStrictTree_of_deflatedSubsetDet
 #print axioms Gtz.kFour_deflatedSubset_chartDet
+
+-- Wave/DeflatedCellTotal: the punctured normal form of the chart deflated
+-- bound, the spanning tree it forces on every card-three carrier, the whitening
+-- congruence that identifies the design bound with the chart bound, the chart
+-- deflation producer, Foster's law in the chart, and the light-label cell.
+#print axioms Gtz.chartSelectedConductance
+#print axioms Gtz.chartPuncturedMoment
+#print axioms Gtz.directionChartGap_eq_selected_sub_moment
+#print axioms Gtz.chartMassMatrix_eq_atom_add_punctured
+#print axioms Gtz.chartSelectedConductance_reading
+#print axioms Gtz.chartSelectedConductance_transpose
+#print axioms Gtz.chartPuncturedMoment_transpose
+#print axioms Gtz.chartDeflatedForm_eq_puncturedForm
+#print axioms Gtz.chartDeflatedGapBound_iff_punctured
+#print axioms Gtz.posDef_chartSelectedConductance_of_chartDeflatedGapBound
+#print axioms Gtz.posDef_chartPuncturedMoment_kFour
+#print axioms Gtz.posDef_chartSelectedConductance_kFour
+#print axioms Gtz.not_posDef_chartSelectedConductance_kFourTriangle
+#print axioms Gtz.kFour_mem_spanningTreeList_of_chartDeflatedGapBound
+#print axioms Gtz.kFourDeflatedDetCellFires_of_cardThree
+#print axioms Gtz.card_eq_three_of_mem_kFourSpanningTreeList
+#print axioms Gtz.kFourDeflatedDetCellTotal_iff_cardThreeDet
+#print axioms Gtz.posDef_subsetSum_of_deflatedGapBound
+#print axioms Gtz.share_lt_one_of_posDef_one_sub_smul_atomMatrix
+#print axioms Gtz.exists_kFourChartCongruence
+#print axioms Gtz.congr_smul_sub_smul
+#print axioms Gtz.deflatedForm_eq_congr_chartDeflatedForm
+#print axioms Gtz.deflatedGapBoundAt_iff_chartDeflatedGapBound
+#print axioms Gtz.one_sub_smul_atomMatrix_eq_congr_punctured
+#print axioms Gtz.kFour_exists_chartDeflatedTree
+#print axioms Gtz.kFourDeflatedDetCellFires_of_producedTreeDet
+#print axioms Gtz.sum_chartFosterShare_eq_three
+#print axioms Gtz.exists_three_mul_weight_le_chartFosterShare
+#print axioms Gtz.not_forall_chartFosterShare_lt_weight
+#print axioms Gtz.mass_mul_reading_sq_le_chartFosterShare_mul
+#print axioms Gtz.posDef_weight_smul_moment_sub_atom_of_share_lt_weight
+#print axioms Gtz.posDef_directionChartGap_of_share_lt_weight
+#print axioms Gtz.kFourDeflatedDetCellFires_of_share_lt_weight
+#print axioms Gtz.kFour_hasStrictTree_of_share_lt_weight
+#print axioms Gtz.lightLabelChartPoint
+#print axioms Gtz.lightLabelChartPoint_mass_zero
+#print axioms Gtz.lightLabelChartPoint_weight_zero
+#print axioms Gtz.lightLabelChartPoint_moment_eq
+#print axioms Gtz.lightLabelChartPoint_resolvent
+#print axioms Gtz.lightLabelChartPoint_share_eq
+#print axioms Gtz.lightLabelChartPoint_share_lt_weight
+#print axioms Gtz.lightLabelChartPoint_deflatedDetCellFires
 
 -- Wave/MixedTripleBalance: the sharp balance as one wedge total of the split
 -- measure, the one-sign nonnegativity law, the plane determinant of the balance,

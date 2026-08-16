@@ -5211,6 +5211,29 @@ import Gtz.Wave.AllHeavyHingeSchur
 -- avoiding that label whose strict domination IS one determinant sign.
 import Gtz.Wave.TriangleStallClosureDeflation
 
+-- The produced subset of that deflation is a SPANNING TREE, and its determinant
+-- is a CHART determinant.  Read the chart deflated form a third way: the
+-- discounted selected conductance, minus the moment of everything except the
+-- dropped label.  No membership hypothesis enters that reading.  The punctured
+-- K4 moment is positive definite at every chart point, so the bound alone makes
+-- the SELECTED conductance positive definite.  A card-three selection with a
+-- definite conductance has three independent directions, and a dependent triple
+-- of K4 is a triangle, so every card-three carrier of the bound lies on the
+-- sixteen-tree list.  The spanning-tree quantifier of the cell is free.
+-- The whitening keeps its congruence matrix here instead of discarding it, and
+-- the atom identity carries the DESIGN deflated form onto the CHART deflated
+-- form.  The two bounds are one bound.  So at every chart point and every label
+-- the deflation returns a spanning tree that avoids the label and carries the
+-- chart bound, and strict domination there is the sign of that tree's own chart
+-- gap determinant.  The registered cell total becomes one determinant sign for
+-- each chart point.
+-- Foster's law in the chart sums the six shares to the rank.  A label whose
+-- share falls below its own weight makes the whole gap strict, and one chart
+-- point with mass one tenth at label zero fires that cell in kernel.  Foster's
+-- law also forbids that condition at every label at one time, so the Loewner
+-- content of the deflation is real and is far from total.
+import Gtz.Wave.DeflatedCellTotal
+
 -- The sharp balance of the flat split, read as ONE wedge total of a SIGNED
 -- measure, and refuted at every mixed triple.  Give the sharp labels the split
 -- measure: the weight deficit inside the selection, minus the weight outside it.
