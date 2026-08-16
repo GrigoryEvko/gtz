@@ -32928,36 +32928,6 @@ run_cmd do
 #print axioms Gtz.massSecondMoment_eq_closed
 #print axioms Gtz.gapSecondMoment_eq_closed
 #print axioms Gtz.massSecondMoment_ge_closed
-#print axioms Gtz.massWeightedGap
-#print axioms Gtz.massWeightedGap_eq_split
-#print axioms Gtz.massWeightedGap_eq_gapEnergy
-#print axioms Gtz.massWeightedGap_eq_closed
-#print axioms Gtz.massWeightedGap_ge_twoLocal
-#print axioms Gtz.exists_pos_projGap_of_weighted
-#print axioms Gtz.exists_pos_projGap_of_massWeightedGap
-#print axioms Gtz.exists_pos_projGap_of_twoLocal
-#print axioms Gtz.exists_pos_projGap_of_massSecondMoment
-#print axioms Gtz.gapSecondMoment_ge_pigeon
-#print axioms Gtz.gapSecondMoment_pos
-#print axioms Gtz.massSecondMoment_gt_closed
-#print axioms Gtz.massWeightedGap_ge_refined
-#print axioms Gtz.exists_pos_projGap_of_twoLocal_refined
-#print axioms Gtz.pairMarginalEnergy_le_four_mul_gapSecondMoment
-#print axioms Gtz.gapSecondMoment_ge_marginal
-#print axioms Gtz.massWeightedGap_ge_marginal
-#print axioms Gtz.massSecondMoment_ge_marginal
-#print axioms Gtz.exists_pos_projGap_of_twoLocal_sharp
-#print axioms Gtz.massThirdMoment
-#print axioms Gtz.massSquaredCrossMoment
-#print axioms Gtz.massSquaredWeightedGap
-#print axioms Gtz.massSquaredWeightedGap_eq_split
-#print axioms Gtz.exists_pos_projGap_of_massSquaredWeightedGap
-#print axioms Gtz.MassSquaredGapPositive
-#print axioms Gtz.jointMassBeatsThreshold_of_massSquaredGapPositive
-#print axioms Gtz.jointMassBeatsThreshold_of_massThirdMoment
-#print axioms Gtz.jointMassBeatsThreshold_of_twoLocal_sharp
-#print axioms Gtz.jointMassBeatsThreshold_of_twoLocal
-#print axioms Gtz.jointMassBeatsThreshold_of_massSecondMoment
 
 -- Wave/OffsetUpperBound, the fifth door.  The pivot Schur identity reads the
 -- criterion's two sides as ONE determinant, so the split is the objective and not a

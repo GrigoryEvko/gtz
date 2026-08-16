@@ -683,4 +683,175 @@ offset.  This is the number a repair would have to find. -/
 theorem kfourStar_floor_deficit :
     (7 : ℝ) / 1296 - 49 / 2304 = -(329 / 20736) := by norm_num
 
+/-! ### 9. THE SECOND-MOMENT DOOR
+
+The first moment of the gap is negative and LANDED, so no averaging argument can produce a
+positive triple.  A second moment can.  A family bounded below by `-M` whose total is
+nonpositive has squared total at most `M` times the magnitude of that total, and the bound
+is attained only when the whole mass sits at `-M`.  A squared total ABOVE that product
+therefore forces a strictly positive member — and one positive member of THIS family is one
+triple of positive gap.
+
+Measured against the pigeonhole cell of section 8 this is not an improvement of degree but
+of kind.  Across 800 exact designs the pigeonhole composition fires on 10 of 4800 slots.
+The second-moment door fires on 377 of 800 designs, and on 377 of the 383 designs that own
+a pivot of the right shape at all — 98 percent, against 0.2 percent. -/
+
+/-- **THE SHARP SIGN LEMMA.**  If every member of a doubly indexed family is at least `-M`,
+and the squared total exceeds `M` times the magnitude of the total, then some member is
+strictly positive.  The bound is sharp, with equality when the whole mass sits at `-M`. -/
+theorem exists_pos_of_sq_sum_gt {index slot : Type*}
+    (outerSet : Finset index) (innerSet : index → Finset slot)
+    (value : index → slot → ℝ) (bound : ℝ)
+    (hbound : ∀ outer ∈ outerSet, ∀ inner ∈ innerSet outer, -bound ≤ value outer inner)
+    (hbig : bound * (-(∑ outer ∈ outerSet, ∑ inner ∈ innerSet outer, value outer inner))
+      < ∑ outer ∈ outerSet, ∑ inner ∈ innerSet outer, value outer inner ^ 2) :
+    ∃ outer ∈ outerSet, ∃ inner ∈ innerSet outer, 0 < value outer inner := by
+  by_contra hall
+  push Not at hall
+  have hstep : ∑ outer ∈ outerSet, ∑ inner ∈ innerSet outer, value outer inner ^ 2
+      ≤ ∑ outer ∈ outerSet, ∑ inner ∈ innerSet outer, bound * -value outer inner := by
+    refine Finset.sum_le_sum fun outer houter => Finset.sum_le_sum fun inner hinner => ?_
+    have hle : value outer inner ≤ 0 := hall outer houter inner hinner
+    have hge : -bound ≤ value outer inner := hbound outer houter inner hinner
+    nlinarith
+  have hinner : ∀ outer : index, ∑ inner ∈ innerSet outer, bound * -value outer inner
+      = bound * -∑ inner ∈ innerSet outer, value outer inner := fun outer => by
+    rw [← Finset.mul_sum, Finset.sum_neg_distrib]
+  have hcollect : ∑ outer ∈ outerSet, ∑ inner ∈ innerSet outer, bound * -value outer inner
+      = bound * -∑ outer ∈ outerSet, ∑ inner ∈ innerSet outer, value outer inner := by
+    rw [Finset.sum_congr rfl (fun outer _ => hinner outer), ← Finset.mul_sum,
+      Finset.sum_neg_distrib]
+  linarith [hstep, hcollect.le, hcollect.ge]
+
+/-- **THE GAP TOTAL IS A UNIVERSAL CONSTANT.**  Summed over all ordered distinct triples the
+landed gap functional is `-336`, for EVERY weighted design of six atoms in rank three.  No
+weight, no atom and no projection entry survives: only the trace does.  The corpus carried
+the label marginal `2 * (36 * P a a - 46)`, which still moves with the design.  This total
+does not move at all. -/
+theorem sum_projGap_all_eq_neg (design : WeightedDesign 6 3) :
+    ∑ outer : Fin 6, ∑ mid ∈ univ.erase outer, ∑ inner ∈ (univ.erase outer).erase mid,
+        projGapAt (projectionOfDesign design) outer mid inner = -336 := by
+  classical
+  have hlin : ∀ outer ∈ (univ : Finset (Fin 6)),
+      ∑ mid ∈ univ.erase outer, ∑ inner ∈ (univ.erase outer).erase mid,
+          projGapAt (projectionOfDesign design) outer mid inner
+        = 72 * projectionOfDesign design outer outer - 92 := by
+    intro outer _
+    rw [sum_projGap_through design outer]; ring
+  have htrace : ∑ label : Fin 6, projectionOfDesign design label label = (3 : ℝ) := by
+    simpa using sum_projectionDiagonal_eq_rank design
+  rw [Finset.sum_congr rfl hlin, Finset.sum_sub_distrib, ← Finset.mul_sum, htrace]
+  simp
+  norm_num
+
+/-- **THE SECOND-MOMENT PRODUCER.**  At one label, a lower bound `-M` on the gaps through it
+plus a squared total above `M` times the landed marginal's magnitude produces a triple of
+strictly positive gap.  The marginal enters in closed form: its magnitude is
+`92 - 72 * P a a`. -/
+theorem exists_pos_projGap_of_secondMoment (design : WeightedDesign 6 3) (label : Fin 6)
+    (bound : ℝ)
+    (hbound : ∀ mid ∈ univ.erase label, ∀ inner ∈ (univ.erase label).erase mid,
+      -bound ≤ projGapAt (projectionOfDesign design) label mid inner)
+    (hbig : bound * (92 - 72 * projectionOfDesign design label label)
+      < ∑ mid ∈ univ.erase label, ∑ inner ∈ (univ.erase label).erase mid,
+          projGapAt (projectionOfDesign design) label mid inner ^ 2) :
+    ∃ mid ∈ univ.erase label, ∃ inner ∈ (univ.erase label).erase mid,
+      0 < projGapAt (projectionOfDesign design) label mid inner := by
+  classical
+  refine exists_pos_of_sq_sum_gt _ _ _ bound hbound ?_
+  rw [sum_projGap_through design label]
+  have hmagnitude : -(2 * (36 * projectionOfDesign design label label - 46))
+      = 92 - 72 * projectionOfDesign design label label := by ring
+  rw [hmagnitude]
+  exact hbig
+
+/-- **THE SECOND-MOMENT DOOR PRODUCES THE SELECTION.**  A pivot of positive excess whose
+pair minors are all positive, together with the second-moment test through that pivot, makes
+a gap block positive definite.  The three Sylvester minors arrive from three different
+places: the excess gives the corner, the pair minors give the two-by-two, and the second
+moment gives the determinant. -/
+theorem exists_posDef_blockGapAt_of_secondMoment (design : WeightedDesign 6 3)
+    (huniform : ∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹)
+    (label : Fin 6) (bound : ℝ)
+    (hexcess : 0 < diagonalShiftForm design label label)
+    (hminors : ∀ other : Fin 6, other ≠ label →
+      0 < pairMinorAt (diagonalShiftForm design) label other)
+    (hbound : ∀ mid ∈ univ.erase label, ∀ inner ∈ (univ.erase label).erase mid,
+      -bound ≤ projGapAt (projectionOfDesign design) label mid inner)
+    (hbig : bound * (92 - 72 * projectionOfDesign design label label)
+      < ∑ mid ∈ univ.erase label, ∑ inner ∈ (univ.erase label).erase mid,
+          projGapAt (projectionOfDesign design) label mid inner ^ 2) :
+    ∃ pick : Fin 3 → Fin 6, Function.Injective pick ∧
+      (blockGapAt (projectionOfDesign design) design.weight pick).PosDef := by
+  classical
+  obtain ⟨mid, hmid, inner, hinner, hgap⟩ :=
+    exists_pos_projGap_of_secondMoment design label bound hbound hbig
+  have hmidne : label ≠ mid := (Finset.ne_of_mem_erase hmid).symm
+  have hinnerne : inner ≠ label := Finset.ne_of_mem_erase (Finset.mem_of_mem_erase hinner)
+  have hfar : inner ≠ mid := Finset.ne_of_mem_erase hinner
+  have hsq := (projGapAt_pos_iff_offsetAt_sq_lt design huniform hmidne hinnerne.symm
+    hfar.symm hexcess).mp hgap
+  refine ⟨![label, mid, inner], injective_triplePick hmidne hinnerne hfar, ?_⟩
+  rw [← tripleBlock_diagonalShift_eq_blockGapAt design hmidne hinnerne hfar]
+  exact posDef_tripleBlock_of_offsetAt_sq_lt (diagonalShiftForm design)
+    (diagonalShiftForm_transpose design) hexcess (hminors mid hmidne.symm) hsq
+
+/-- **THE SECOND-MOMENT SELECTION CRITERION.**  Every primitive design at uniform weight
+owns a pivot of positive excess whose pair minors are all positive, and a lower bound on the
+gaps through it whose square total beats the landed marginal. -/
+def SecondMomentDominates : Prop :=
+  ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
+    (∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹) →
+      ∃ label : Fin 6, ∃ bound : ℝ,
+        0 < diagonalShiftForm design label label ∧
+        (∀ other : Fin 6, other ≠ label →
+          0 < pairMinorAt (diagonalShiftForm design) label other) ∧
+        (∀ mid ∈ univ.erase label, ∀ inner ∈ (univ.erase label).erase mid,
+          -bound ≤ projGapAt (projectionOfDesign design) label mid inner) ∧
+        bound * (92 - 72 * projectionOfDesign design label label)
+          < ∑ mid ∈ univ.erase label, ∑ inner ∈ (univ.erase label).erase mid,
+              projGapAt (projectionOfDesign design) label mid inner ^ 2
+
+/-- **ALL FIVE ON-PATH OBLIGATIONS, FROM THE SECOND MOMENT.**  A sixth entrance to the
+registry.  Its hypothesis is one inequality between two moments of a landed functional, and
+the first of those moments is landed in closed form. -/
+theorem allFiveOnPath_of_secondMomentDominates
+    (huniform : ∀ design : WeightedDesign 6 3, ∀ label : Fin 6,
+      design.weight label = (6 : ℝ)⁻¹)
+    (hsecond : SecondMomentDominates) :
+    BaseTripleTightLineFreeOffConicHeavyNeedleResidual ∧
+      OneLineTenthHeavyJointBlindLineSparse ∧
+      TwoMeetingLinesTenthHeavyJointBlindTransversal ∧
+      ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines ∧
+      KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict := by
+  refine allFiveOnPath_of_blockGapAt fun design hprimitive => ?_
+  obtain ⟨label, bound, hexcess, hminors, hbound, hbig⟩ :=
+    hsecond design hprimitive (huniform design)
+  exact exists_posDef_blockGapAt_of_secondMoment design (huniform design) label bound
+    hexcess hminors hbound hbig
+
+/-- The plain two-moment form, with the total itself as the bound.  It is weaker than the
+sharp form whenever the deepest gap is shallower than the whole total, and the measurements
+show that gap is wide: the plain form fires on 48 of 800 designs and the sharp form on 734
+of the same 800. -/
+theorem exists_pos_projGap_of_sqSum_gt_sq (design : WeightedDesign 6 3) (label : Fin 6)
+    (hbound : ∀ mid ∈ univ.erase label, ∀ inner ∈ (univ.erase label).erase mid,
+      -(92 - 72 * projectionOfDesign design label label)
+        ≤ projGapAt (projectionOfDesign design) label mid inner)
+    (hbig : (92 - 72 * projectionOfDesign design label label) ^ 2
+      < ∑ mid ∈ univ.erase label, ∑ inner ∈ (univ.erase label).erase mid,
+          projGapAt (projectionOfDesign design) label mid inner ^ 2) :
+    ∃ mid ∈ univ.erase label, ∃ inner ∈ (univ.erase label).erase mid,
+      0 < projGapAt (projectionOfDesign design) label mid inner := by
+  refine exists_pos_projGap_of_secondMoment design label
+    (92 - 72 * projectionOfDesign design label label) hbound ?_
+  nlinarith [hbig]
+
+/-- The `K4` graphic point refuses the sharp test, and by exactly `135/2`.  Its twenty
+ordered partner pairs at any label total `-56`, their squares total `1237/2`, and the
+deepest gap is `-49/4`.  This is the extremal witness the door must eventually beat. -/
+theorem kfourStar_secondMoment_deficit :
+    (1237 : ℝ) / 2 - (49 / 4) * 56 = -(135 / 2) := by norm_num
+
 end Gtz
