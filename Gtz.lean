@@ -4884,3 +4884,4 @@ import Gtz.Wave.ThreeLinesBoostDesignationRefuter
 import Gtz.Wave.ChartProgrammeHeavyResidual
 import Gtz.Wave.LivePairTieRefuter
 import Gtz.Wave.LivePairTieIdentification
+import Gtz.Wave.BracketTransferLaws
