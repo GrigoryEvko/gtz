@@ -4879,3 +4879,4 @@ import Gtz.Wave.ThreeLinesBoostDesignationRefuter
 -- weights are a probability vector, so the largest is at least one sixth.  The
 -- narrowing is formal, and the honest residual keeps no weight condition.
 import Gtz.Wave.ChartProgrammeHeavyResidual
+import Gtz.Wave.LivePairTieRefuter
