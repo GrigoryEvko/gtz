@@ -1100,7 +1100,124 @@ theorem exists_pos_projGap_of_massSquaredWeightedGap
 
 end SquaredMass
 
-/-! ## 13. The criterion reaches the objective's own form
+/-! ## 13. The flat locus, where the registry lives
+
+Uniform weight forces a flat leverage, and a flat leverage is exactly the minimum
+of the leverage energy.  The whole criterion collapses there onto ONE threshold on
+the pair-minor energy, and the pair marginals collapse onto one formula.  That
+formula is negative by a margin of four at every pair, so no pair-level
+certificate can ever fire on the flat locus.  This section proves both. -/
+
+section FlatLocus
+
+variable (design : WeightedDesign 6 3)
+
+/-- **THE LEVERAGE ENERGY IS AT LEAST THREE HALVES**, because six diagonal entries
+total three.  Equality is the flat locus. -/
+theorem levSecondMoment_ge_three_halves : (3 : ℝ) / 2 ≤ levSecondMoment design := by
+  have hbase := sq_sum_le_card_mul_sum_sq (univ : Finset (Fin 6))
+    (fun label => projectionOfDesign design label label)
+  rw [Finset.card_univ, Fintype.card_fin, sum_projectionDiagonal design] at hbase
+  norm_num at hbase
+  simpa only [levSecondMoment] using by linarith [hbase]
+
+/-- **THE FLAT LOCUS IS THE EQUALITY CASE.**  A leverage energy of three halves
+forces every diagonal entry to one half. -/
+theorem projectionDiagonal_eq_half_of_flat
+    (hflat : levSecondMoment design = 3 / 2) (label : Fin 6) :
+    projectionOfDesign design label label = 1 / 2 := by
+  classical
+  have hsq : ∑ other : Fin 6,
+      (projectionOfDesign design other other - 1 / 2) ^ 2 = 0 := by
+    have hexpand : ∀ other : Fin 6,
+        (projectionOfDesign design other other - 1 / 2) ^ 2
+          = projectionOfDesign design other other ^ 2
+            - projectionOfDesign design other other + 1 / 4 := by
+      intro other; ring
+    rw [Finset.sum_congr rfl fun other _ => hexpand other]
+    rw [Finset.sum_add_distrib, Finset.sum_sub_distrib, sum_projectionDiagonal design]
+    have hlev : ∑ other : Fin 6, projectionOfDesign design other other ^ 2 = 3 / 2 := hflat
+    rw [hlev]
+    norm_num
+  have hzero := (Finset.sum_eq_zero_iff_of_nonneg
+    (fun other _ => sq_nonneg (projectionOfDesign design other other - 1 / 2))).mp hsq
+  have := hzero label (Finset.mem_univ label)
+  have hsub : projectionOfDesign design label label - 1 / 2 = 0 := by
+    exact pow_eq_zero_iff (n := 2) (by norm_num) |>.mp this
+  linarith
+
+/-- **EVERY PAIR MARGINAL IS AT MOST MINUS FOUR ON THE FLAT LOCUS.**  No weight on
+the thirty pairs is nonnegative and beats this, so a pair-level certificate cannot
+fire on the flat locus at all.  The deficit grows with the off-diagonal entry. -/
+theorem pairMarginal_eq_of_flat (hflat : levSecondMoment design = 3 / 2)
+    (first second : Fin 6) :
+    pairMarginal design first second
+      = -4 - 144 * projectionOfDesign design first second ^ 2 := by
+  rw [pairMarginal_apply, pairMinorAt,
+    projectionDiagonal_eq_half_of_flat design hflat first,
+    projectionDiagonal_eq_half_of_flat design hflat second]
+  ring
+
+theorem pairMarginal_le_neg_four_of_flat (hflat : levSecondMoment design = 3 / 2)
+    (first second : Fin 6) : pairMarginal design first second ≤ -4 := by
+  rw [pairMarginal_eq_of_flat design hflat first second]
+  nlinarith [sq_nonneg (projectionOfDesign design first second)]
+
+/-- **THE CRITERION ON THE FLAT LOCUS.**  One threshold on the pair-minor energy,
+with every other quantity fixed by flatness. -/
+theorem exists_pos_projGap_of_flat
+    (hflat : levSecondMoment design = 3 / 2)
+    (hcert : 11 / 8 < pairSecondMoment design) :
+    ∃ outer : Fin 6, ∃ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      ∃ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        0 < projGapAt (projectionOfDesign design) outer mid inner := by
+  refine exists_pos_projGap_of_twoLocal_sharp design ?_
+  rw [hflat]; linarith
+
+/-- **THE GAP IN CLOSED FORM ON THE FLAT LOCUS.**  Every leverage is one half, so
+the whole gap functional collapses onto the three off-diagonal entries of the
+triple.  `S` is their squared total and `Q` is their product. -/
+theorem projGapAt_eq_of_flat (hflat : levSecondMoment design = 3 / 2)
+    (first second third : Fin 6) :
+    projGapAt (projectionOfDesign design) first second third
+      = 8 - 72 * (projectionOfDesign design first second ^ 2
+            + projectionOfDesign design first third ^ 2
+            + projectionOfDesign design second third ^ 2)
+        + 432 * (projectionOfDesign design first second
+            * projectionOfDesign design first third
+            * projectionOfDesign design second third) := by
+  have hone := projectionDiagonal_eq_half_of_flat design hflat first
+  have htwo := projectionDiagonal_eq_half_of_flat design hflat second
+  have hthree := projectionDiagonal_eq_half_of_flat design hflat third
+  rw [projGapAt, det_tripleBlock (projectionOfDesign design)
+      (projectionOfDesign_transpose design) first second third]
+  simp only [projThresholdAt, pairMinorAt, hone, htwo, hthree]
+  ring
+
+/-- **THE OBJECTIVE ON THE FLAT LOCUS IS A SIGN CONDITION.**  A good triple is one
+whose three off-diagonal entries have a product large enough to beat their squared
+total.  Nothing else survives flatness. -/
+theorem exists_pos_projGap_of_flat_triple_product
+    (hflat : levSecondMoment design = 3 / 2)
+    (hbeat : ∃ outer : Fin 6, ∃ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      ∃ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        72 * (projectionOfDesign design outer mid ^ 2
+            + projectionOfDesign design outer inner ^ 2
+            + projectionOfDesign design mid inner ^ 2)
+          < 8 + 432 * (projectionOfDesign design outer mid
+              * projectionOfDesign design outer inner
+              * projectionOfDesign design mid inner)) :
+    ∃ outer : Fin 6, ∃ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      ∃ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        0 < projGapAt (projectionOfDesign design) outer mid inner := by
+  obtain ⟨outer, mid, hmid, inner, hinner, hlt⟩ := hbeat
+  refine ⟨outer, mid, hmid, inner, hinner, ?_⟩
+  rw [projGapAt_eq_of_flat design hflat outer mid inner]
+  linarith
+
+end FlatLocus
+
+/-! ## 14. The criterion reaches the objective's own form
 
 `Gtz.JointMassBeatsThreshold` is the objective's third Sylvester minor, stated in
 the corpus's joint form.  The two remaining minors are the corner and the pair

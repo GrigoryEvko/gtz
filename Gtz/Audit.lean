@@ -32958,6 +32958,13 @@ run_cmd do
 #print axioms Gtz.jointMassBeatsThreshold_of_twoLocal_sharp
 #print axioms Gtz.jointMassBeatsThreshold_of_twoLocal
 #print axioms Gtz.jointMassBeatsThreshold_of_massSecondMoment
+#print axioms Gtz.levSecondMoment_ge_three_halves
+#print axioms Gtz.projectionDiagonal_eq_half_of_flat
+#print axioms Gtz.pairMarginal_eq_of_flat
+#print axioms Gtz.pairMarginal_le_neg_four_of_flat
+#print axioms Gtz.exists_pos_projGap_of_flat
+#print axioms Gtz.projGapAt_eq_of_flat
+#print axioms Gtz.exists_pos_projGap_of_flat_triple_product
 
 -- Wave/OffsetUpperBound, the fifth door.  The pivot Schur identity reads the
 -- criterion's two sides as ONE determinant, so the split is the objective and not a
