@@ -9,6 +9,9 @@ import Gtz.Design.ChartInverseTrace
 import Gtz.Design.ChartReadingLaw
 import Gtz.Design.OneDeterminantReduction
 import Gtz.Design.KFourChartSample
+import Gtz.Design.ChartDesignWhitening
+import Gtz.Wave.ThreeLinesHeavyLeverageFloor
+import Gtz.Reduction.Reductions
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -66,6 +69,17 @@ is below one.  Section 11 proves that hypothesis outright at `K4`:
 `Gtz.chartFosterShare_kFour_lt_one`.  The punctured mass moment stays positive
 definite because `K4` minus one edge still spans, and the resolvent reading then
 obeys `share = mass * reading` with `reading = mass * reading^2 + positive`.
+
+## The deflation itself runs, with no hypothesis
+
+Section 12 spends the share bound.  `Gtz.exists_design_of_chartPoint_withLeverage`
+welds a chart point to a design and reports the atom leverages, section 11
+supplies the share, and `Gtz.gtzWeighted_of_le_five` supplies the predecessor
+rung.  `Gtz.kFour_exists_deflatedSubset` is the outcome: at EVERY `K4` chart
+point and EVERY label, the deflation returns a card-three subset avoiding that
+label whose strict domination in the chart IS the positivity of one determinant.
+There is no stall hypothesis, no wall, no heaviness and no leverage floor in
+that statement.
 
 ## Consumption
 
@@ -1007,6 +1021,97 @@ theorem chartFosterShare_kFour_lt_one (point : DirectionChartPoint 6)
     (label : Fin 6) : chartFosterShare kFourDirection point.mass label < 1 :=
   chartFosterShare_lt_one kFourDirection point.mass label (point.mass_pos label).le
     (posDef_chartMassMatrix_kFour point) (posDef_kFourPuncturedMoment point label)
+
+/-! ## 12. The deflation runs unconditionally at the `K4` chart
+
+Three landed pieces meet here.  `Gtz.exists_design_of_chartPoint_withLeverage`
+welds a chart point to a design AND reports the atom leverages.  Section 11 makes
+the share hypothesis free at `K4`.  `Gtz.gtzWeighted_of_le_five` is the
+predecessor rung.  So `Gtz.exists_deflatedGapBound` fires at EVERY label of EVERY
+`K4` chart point, and `Gtz.posDef_iff_gapDet_pos_of_deflatedGapBound` turns the
+subset it returns into ONE determinant sign, with no hypothesis at all. -/
+
+/-- **THE PRODUCED SUBSET IS DECIDED BY ONE DETERMINANT.**  At every `K4` chart
+point and every label, the deflation returns a card-three subset avoiding that
+label whose strict domination in the chart is exactly the positivity of its
+design gap determinant.  No stall, no wall, no heaviness, no leverage floor. -/
+theorem kFour_exists_deflatedSubset (point : DirectionChartPoint 6)
+    (dropLabel : Fin 6) :
+    ∃ (design : WeightedDesign 6 3) (selected : Finset (Fin 6)),
+      design.weight = point.weight ∧ selected.card = 3 ∧ dropLabel ∉ selected ∧
+      DeflatedGapBoundAt design dropLabel selected ∧
+      ((directionChartGap kFourDirection point.mass point.weight selected).PosDef
+        ↔ 0 < (subsetSum design selected - 1).det) := by
+  obtain ⟨design, hweight, htransfer, hleverage⟩ :=
+    exists_design_of_chartPoint_withLeverage kFourDirection point
+      (posDef_massMoment_kFourDirection point)
+  have hweightNe : point.weight dropLabel ≠ 0 := ne_of_gt (point.weight_pos dropLabel)
+  have hshare : design.weight dropLabel * leverageOf (design.atom dropLabel) < 1 := by
+    have hfoster := chartFosterShare_kFour_lt_one point dropLabel
+    rw [chartFosterShare, chartMassMatrix] at hfoster
+    rw [hweight, hleverage dropLabel]
+    have hclear : point.weight dropLabel
+        * (point.mass dropLabel / point.weight dropLabel
+            * (kFourDirection dropLabel ⬝ᵥ
+                ((∑ l, point.mass l • atomMatrix (kFourDirection l))⁻¹
+                  *ᵥ kFourDirection dropLabel)))
+        = point.mass dropLabel
+            * (kFourDirection dropLabel ⬝ᵥ
+                ((∑ l, point.mass l • atomMatrix (kFourDirection l))⁻¹
+                  *ᵥ kFourDirection dropLabel)) := by
+      field_simp
+    rw [hclear]
+    exact hfoster
+  obtain ⟨selected, hcard, hnotMem, hbound⟩ :=
+    exists_deflatedGapBound (m := 5) (k := 3) design (by norm_num)
+      (gtzWeighted_of_le_five 5 3 (by norm_num) (by norm_num)) dropLabel hshare
+  refine ⟨design, selected, hweight, hcard, hnotMem, hbound, ?_⟩
+  rw [← (htransfer selected).1]
+  exact posDef_iff_gapDet_pos_of_deflatedGapBound design (by norm_num) dropLabel
+    selected hbound
+
+/-- A positive determinant at a card-three subset lands a strict spanning tree:
+a card-three subset is a spanning tree or a triangle, and a triangle is never
+strict. -/
+theorem kFour_hasStrictTree_of_cardThree_posDef (point : DirectionChartPoint 6)
+    {selected : Finset (Fin 6)} (hcard : selected.card = 3)
+    (hpd : (directionChartGap kFourDirection point.mass point.weight
+      selected).PosDef) :
+    ∃ tree ∈ kFourSpanningTreeList,
+      (directionChartGap kFourDirection point.mass point.weight tree).PosDef := by
+  refine ⟨selected, mem_kFourSpanningTreeList_of_card_three selected hcard ?_, hpd⟩
+  intro htriangle
+  exact kFourTriangle_gap_not_posDef point selected htriangle hpd
+
+/-- **THE RESIDUAL AS A DETERMINANT SIGN AT A PRODUCED SUBSET.**  The whole
+conclusion of the registered `K4` axiom follows from one positive determinant at
+the subset the deflation returns. -/
+theorem kFour_hasStrictTree_of_deflatedSubsetDet (point : DirectionChartPoint 6)
+    {design : WeightedDesign 6 3} {selected : Finset (Fin 6)}
+    (hcard : selected.card = 3)
+    (hiff : (directionChartGap kFourDirection point.mass point.weight selected).PosDef
+      ↔ 0 < (subsetSum design selected - 1).det)
+    (hdet : 0 < (subsetSum design selected - 1).det) :
+    ∃ tree ∈ kFourSpanningTreeList,
+      (directionChartGap kFourDirection point.mass point.weight tree).PosDef :=
+  kFour_hasStrictTree_of_cardThree_posDef point hcard (hiff.mpr hdet)
+
+/-- The deflated subset carries the chart determinant equivalence as well, once
+its own chart deflated bound is in hand.  This is the bridge between the design
+determinant of `Gtz.kFour_exists_deflatedSubset` and the chart determinant of
+the cell of section 5. -/
+theorem kFour_deflatedSubset_chartDet (point : DirectionChartPoint 6)
+    {dropLabel : Fin 6} {selected : Finset (Fin 6)}
+    (hchartBound : ChartDeflatedGapBound kFourDirection point.mass point.weight
+      dropLabel selected)
+    (hcard : selected.card = 3)
+    (hdet : 0 < (directionChartGap kFourDirection point.mass point.weight
+      selected).det) :
+    ∃ tree ∈ kFourSpanningTreeList,
+      (directionChartGap kFourDirection point.mass point.weight tree).PosDef :=
+  kFour_hasStrictTree_of_cardThree_posDef point hcard
+    ((posDef_directionChartGap_kFour_iff_det_pos_of_chartDeflatedGapBound point
+      dropLabel selected hchartBound).mpr hdet)
 
 /-- The cell recovers the landed strict triple at the tetrahedron point through
 the determinant route alone. -/
