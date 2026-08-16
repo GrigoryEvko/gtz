@@ -32033,3 +32033,12 @@ run_cmd do
 #print axioms Gtz.det_pickBlockGap_eq_weightProd_mul_gramDet
 #print axioms Gtz.weightProd_pos
 #print axioms Gtz.marginReaches_of_lt_weightProd_mul_gramDet
+#print axioms Gtz.selectedAtomRows_mul_transpose_eq_tripleGram
+#print axioms Gtz.det_pickBlockGap_eq_weightProd_mul_tripleGapDet
+#print axioms Gtz.det_pickBlockGap_eq_weightProd_mul_tripleDetForm
+#print axioms Gtz.marginReaches_of_lt_weightProd_mul_signFreeMargin
+#print axioms Gtz.sum_weighted_pairMinor_eq
+#print axioms Gtz.shiftLeverage_le_one
+#print axioms Gtz.linearMass_le_and_two_mul_shiftLeverage
+#print axioms Gtz.sum_excess_sixThree
+#print axioms Gtz.one_le_excessSum_or_compl
