@@ -5700,3 +5700,41 @@ import Gtz.Wave.TieAtomRepeatRefutation
 --   second moment over the ATOMS, and `Gtz.sum_weightProduct_mul_det_subsetSum` fuses the
 --   volume-sampling identity into one statement.
 import Gtz.Wave.TieParallelPairWeightRegular
+
+-- Phase 8 (mv-capfoil): the weight cap does NOT decide branch (i), and three order laws.
+-- THE REFUTATION.  `Gtz.exists_stressFree_sixThree_beyond_weightCap` gives an explicit
+--   (6,3) design, `Gtz.capFoilDesign`, with INTEGER atoms
+--   ![[1,1,2],[-1,0,1],[-1,-1,-1],[2,0,1],[1,-1,0],[0,2,-1]] and weights
+--   ![1/14, 8/21, 1/7, 1/21, 3/14, 1/7].  It is stress-free
+--   (`Gtz.capFoilDesign_isStressFree`), so it has no parallel pair
+--   (`Gtz.capFoilDesign_not_hasParallelPair`), and the triple {0,1,5} dominates STRICTLY
+--   (`Gtz.capFoilDesign_posDef_gapTriple`), so it is not a tie.  And
+--   `Gtz.capFoilDesign_not_posDef_projectionBlock` proves that NO injective selection and
+--   NO admissible cap satisfies the floor of `Gtz.not_isTie_of_projectionBlock_gt_weightCap`.
+--   The engine is sound, but it cannot by itself empty the stress-free stratum of ties, so
+--   it cannot close branch (i) of `Gtz.sixThree_stress_trichotomy` alone.
+-- WHY THE CAP LOSES.  `Gtz.weightCap_lt_projectionDiagonal_of_posDef` says a firing cap sits
+--   below every selected diagonal entry, and `Gtz.sq_projection_lt_pairGap_of_posDef` says
+--   its two-label minor sits below the squared off-diagonal entry.  Both readings are
+--   size-generic and rank-generic.  `Gtz.not_posDef_projectionBlock_of_pairFloor` turns the
+--   pair reading into the refutation, and it reads a THIRD selected label.  It has to:
+--   `Gtz.exists_open_pair_rankThree` proves that at rank three every design carries two
+--   labels whose two-by-two Gram gap is open, so no two-label rule closes at every pair.
+--   The obstruction is the second moment `Gtz.sum_pair_weight_mul_sq_dotProduct` against
+--   `Gtz.sum_sq_weight_lt_one`.
+-- THREE ORDER LAWS.  `Gtz.posDef_transpose_mul_sub_smul_one_comm` and
+--   `Gtz.posDef_smul_one_sub_transpose_comm` are the strict transpose flips at a SCALAR
+--   level, which the tree had only for `PosSemidef` or only at level one.  The lower side
+--   needs a square matrix, the upper side does not.
+--   `Gtz.posDef_projectionBlock_sub_smul_one_iff_complement` reads a complementary block of
+--   the projection form in the LOEWNER order at size twice the rank:
+--   `P_C > t*1` exactly when `P_Cc < (1-t)*1`.  The tree carried only the determinant
+--   shadow `Gtz.det_submatrix_eq_det_one_sub_complement`.  The proof factors the block as a
+--   SQUARE matrix, which is the step that (4,3) and (5,3) do not have.
+-- MEASURED, 2026-08-16, C with OpenMP at 200 threads, exact rationals in Julia.  Over two
+--   million random (6,3) designs the strict cap fails on 6.2 percent of the STRESS-FREE
+--   ones at generic weights, and a directed hunt reaches a cap margin of -0.137 at a
+--   Hadamard ratio of 0.4, far from the stressed boundary.  Every uniform hit was rechecked
+--   in exact rationals.  At the shipped foil the cap margin is -0.0208 and the true strict
+--   margin is +0.1608.
+import Gtz.Wave.StressFreeCapRefutation

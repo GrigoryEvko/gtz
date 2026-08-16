@@ -1166,6 +1166,7 @@ import Gtz.Wave.A1NeedleTieDegeneracy
 import Gtz.Wave.A1NeedleCramerFloor
 import Gtz.Wave.TieAtomRepeatRefutation
 import Gtz.Wave.TieParallelPairWeightRegular
+import Gtz.Wave.StressFreeCapRefutation
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -34651,3 +34652,52 @@ run_cmd do
 #print axioms Gtz.sum_pair_weight_mul_sq_dotProduct
 #print axioms Gtz.sum_pair_weight_mul_pairGram
 #print axioms Gtz.sum_weightProduct_mul_det_subsetSum
+
+-- Gtz/Wave/StressFreeCapRefutation.lean
+#print axioms Gtz.posDef_smul_iff
+#print axioms Gtz.posDef_transpose_mul_sub_smul_one_comm
+#print axioms Gtz.posDef_smul_one_sub_transpose_comm
+#print axioms Gtz.transpose_mul_add_transpose_mul_scaledRows
+#print axioms Gtz.posDef_projectionBlock_sub_smul_one_iff_complement
+#print axioms Gtz.weightCap_lt_projectionDiagonal_of_posDef
+#print axioms Gtz.sq_projection_lt_pairGap_of_posDef
+#print axioms Gtz.not_posDef_projectionBlock_of_pairFloor
+#print axioms Gtz.dotProduct_self_eq_leverageOf
+#print axioms Gtz.weight_lt_one_of_two_le
+#print axioms Gtz.sum_sq_weight_lt_one
+#print axioms Gtz.exists_open_pair_rankThree
+#print axioms Gtz.foilAtom
+#print axioms Gtz.foilAtom_zero
+#print axioms Gtz.foilAtom_one
+#print axioms Gtz.foilAtom_two
+#print axioms Gtz.foilAtom_three
+#print axioms Gtz.foilAtom_four
+#print axioms Gtz.foilAtom_five
+#print axioms Gtz.foilWeight
+#print axioms Gtz.foilWeight_zero
+#print axioms Gtz.foilWeight_one
+#print axioms Gtz.foilWeight_two
+#print axioms Gtz.foilWeight_three
+#print axioms Gtz.foilWeight_four
+#print axioms Gtz.foilWeight_five
+#print axioms Gtz.capFoilDesign
+#print axioms Gtz.capFoilDesign_atom
+#print axioms Gtz.capFoilDesign_weight
+#print axioms Gtz.capFoilDesign_isStressFree
+#print axioms Gtz.capFoilDesign_gapTriple
+#print axioms Gtz.capFoilDesign_posDef_gapTriple
+#print axioms Gtz.capFoilDesign_not_isTie
+#print axioms Gtz.capFoilDesign_not_hasParallelPair
+#print axioms Gtz.foilAtomZ
+#print axioms Gtz.foilWeightZ
+#print axioms Gtz.foilAtom_eq_cast
+#print axioms Gtz.foilWeight_eq_cast
+#print axioms Gtz.foilGramZ
+#print axioms Gtz.foilLevelZ
+#print axioms Gtz.foilSquareZ
+#print axioms Gtz.foilGram_eq_cast
+#print axioms Gtz.foilProjectionDiagonal
+#print axioms Gtz.foilProjectionSquare
+#print axioms Gtz.foil_pairCertificate
+#print axioms Gtz.capFoilDesign_not_posDef_projectionBlock
+#print axioms Gtz.exists_stressFree_sixThree_beyond_weightCap
