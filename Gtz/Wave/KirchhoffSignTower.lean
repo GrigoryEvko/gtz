@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import Gtz.Wave.KFourSignedTreeLaplacian
 import Gtz.Wave.TriangleStallClosureDeflation
+import Gtz.Quantitative.WindowPolarity
 import Gtz.LinAlg.PsdKit
 
 set_option autoImplicit false
@@ -28,13 +29,36 @@ determinant into four nonnegative blocks with alternating signs
 `Gtz.kFourGapInvariantOne` and `Gtz.kFourGapInvariantTwo` become mixed forest
 sums as well.
 
-**Two exclusion laws.**  A strictly dominating selection has both invariants
-strictly positive (`Gtz.kFourGapInvariantOne_pos_of_posDef` and
+**The complete forest criterion.**  A strictly dominating selection has both
+invariants strictly positive (`Gtz.kFourGapInvariantOne_pos_of_posDef` and
 `Gtz.kFourGapInvariantTwo_pos_of_posDef`).  Each proof is one trace of two
 positive definite matrices, so neither is a Loewner comparison, a margin or an
 average.  The second law is the one that kills a selection whose gap
 determinant is positive while its gap is indefinite, the exact failure mode
-that makes a determinant sign worthless on its own.
+that makes a determinant sign worthless on its own.  Those two laws are also
+SUFFICIENT with the determinant sign: `Gtz.posDef_directionChartGap_of_invariantTriple`
+congruates the gap by the mass whitener and reads a Descartes sign rule off the
+characteristic cubic through the landed inertia bridge.  The outcome is
+`Gtz.posDef_directionChartGap_iff_forestTriple`:
+
+  strict domination  IS  `0 < sum_c s_c Q_c(m)`, `0 < sum_c m_c Q_c(s)`,
+  `0 < T(s)`
+
+with `s` the signed gap weight, `Q` the eight-term contraction polynomial and
+`T` the sixteen-term tree sum.  Three spanning-forest sums, no matrix.
+
+**The whole chart obligation, as one polynomial statement.**
+`Gtz.KFourForestTripleTotal` says that some listed tree makes those three sums
+positive at every chart point, and
+`Gtz.kFourUniversalStrictTree_iff_forestTripleTotal` proves it EQUIVALENT to
+`Gtz.KFourUniversalStrictTree`.  So
+`Gtz.directionChartIsTieFree_kFour_of_forestTripleTotal` closes the registered
+chart obligation `Gtz.DirectionChartIsTieFree Gtz.kFourDirection` from a
+statement with no matrix, no whitener, no square root, no deflation bound, no
+corank hypothesis and no weak antecedent, and
+`Gtz.kFourGaugeAndPivotWallClosure_of_forestTripleTotal` closes the registered
+`A3` component route from the same statement.  Being an equivalence it cannot
+be refuted by a hunt.
 
 **The shifted Frobenius cell, and what it closes.**  For any real shift below
 one, `Gtz.posDef_sub_of_shifted_trace_adjugate` proves a strict Loewner
@@ -46,21 +70,32 @@ forest coefficients, and `Gtz.KFourPencilCellFires` names them:
   `0 < P3`,  `P2 < 3 * P3`,  `P2 ^ 2 + 2 * P2 * P3 < 3 * P3 ^ 2 + 4 * P3 * P1`.
 
 `Gtz.posDef_directionChartGap_of_pencilCell` turns the cell into a strictly
-dominating selection.  The consequence is the reduction the class has been
-missing: `Gtz.directionChartIsTieFree_kFour_of_pencilCellTotal` closes the WHOLE
-registered `K4` chart obligation `Gtz.DirectionChartIsTieFree Gtz.kFourDirection`
-from the single statement "at every chart point some listed spanning tree fires
-the cell".  No matrix, no whitener, no deflation bound, no determinant sign, no
-corank hypothesis and no weak antecedent survive in that statement.  The same
-cell also closes the registered `A3` component route through
-`Gtz.kFourGaugeAndPivotWallClosure_of_pencilCellTotal`.
+dominating selection.
 
-**The cell is live at every mandatory point.**  It fires at
+**The whole chart obligation is one strict tree.**
+`Gtz.directionChartIsTieFree_kFour_of_universalStrictTree` closes the registered
+`K4` chart obligation `Gtz.DirectionChartIsTieFree Gtz.kFourDirection` from
+`Gtz.KFourUniversalStrictTree`, and
+`Gtz.kFourGaugeAndPivotWallClosure_of_universalStrictTree` closes the registered
+`A3` component route from the same statement.  Both discard every wall
+hypothesis and the weak antecedent pointwise.
+
+**The cell is live at every mandatory point, and it is NOT total.**  It fires at
 `Gtz.tetrahedronChartPoint`, at `Gtz.maxEdgeRefuterPoint`, at
 `Gtz.heavyPairRefuterPoint`, at `Gtz.bandResidualWitnessPoint` (the registry's
 canonical band inhabitant, uncovered by both landed regions) and at
 `Gtz.kFourGaugeWallPoint` on the corank-two gauge wall, where the landed
-isotropic cell can never fire.  Totality is NOT proved here and is not claimed.
+isotropic cell can never fire.  It also fires at four thousand exact chart
+points of five regimes and at fourteen thousand seven hundred exact points of
+the gauge wall variety.  **That record is not an adjudication.**
+`Gtz.kFourPencilCell_not_total` refutes totality in kernel at
+`Gtz.pencilCellRefuterPoint`, the exact rational landing point of a directed
+hunt of four hundred thousand restarts.  All sixteen trees fail the cell there
+while two of them still dominate strictly
+(`Gtz.pencilCellRefuterPoint_hasStrictTree`), so the obligation is intact and
+only the cell is refuted.  The failure mode is a strictly weaker one than a
+Loewner comparison: the Frobenius bound caps the largest pencil eigenvalue by
+the whole spread, and at the refuter that spread is wide.
 -/
 
 namespace Gtz
@@ -462,7 +497,148 @@ theorem not_posDef_of_kFourGapInvariantTwo_nonpos (point : DirectionChartPoint 6
     (fun label _ => (point.weight_pos label).ne')] at hpos
   linarith
 
-/-! ## 8. The Frobenius energy of a three-by-three form -/
+/-! ## 8. The tower is COMPLETE: three forest sums decide strict domination
+
+The two exclusion laws are necessary.  They are also SUFFICIENT together with the
+determinant sign, and the proof spends the mass whitener once.  Congruating the
+gap by the whitener turns the three invariants into the three coefficients of
+the characteristic cubic of a symmetric matrix, and the landed inertia bridge
+`Gtz.posDef_of_trace_pos_of_secondInvariant_pos_of_det_pos` reads a Descartes
+sign rule off that cubic.  Nothing here is a Sylvester minor of the gap, and
+nothing needs a basis adapted to the selection. -/
+
+/-- The trace of a three-by-three adjugate IS the second characteristic
+invariant. -/
+theorem trace_adjugate_eq_secondInvariant (mat : Matrix (Fin 3) (Fin 3) ℝ) :
+    Matrix.trace mat.adjugate = secondInvariantOfThree mat := by
+  simp only [Matrix.adjugate_fin_three, Matrix.trace_fin_three, secondInvariantOfThree,
+    Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const,
+    Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- The adjugate of a three-by-three inverse. -/
+theorem adjugate_nonsing_inv_fin_three {mat : Matrix (Fin 3) (Fin 3) ℝ}
+    (hdet : mat.det ≠ 0) : (mat⁻¹).adjugate = (mat.det)⁻¹ • mat := by
+  have hinv : mat⁻¹ = (mat.det)⁻¹ • mat.adjugate := by
+    rw [Matrix.inv_def, Ring.inverse_eq_inv']
+  rw [hinv, Matrix.adjugate_smul]
+  have hcard : Fintype.card (Fin 3) - 1 = 2 := by decide
+  rw [hcard, adjugate_adjugate_fin_three, smul_smul]
+  congr 1
+  field_simp
+
+/-- **THE INVARIANT TRIPLE IS SUFFICIENT.**  Both exclusion laws together with a
+positive gap determinant force strict domination.  With the two landed
+converses this makes the tower an EQUIVALENCE. -/
+theorem posDef_directionChartGap_of_invariantTriple (point : DirectionChartPoint 6)
+    (selected : Finset (Fin 6))
+    (hone : 0 < kFourGapInvariantOne point.mass point.weight selected)
+    (htwo : 0 < kFourGapInvariantTwo point.mass point.weight selected)
+    (hdet : 0 < (directionChartGap kFourDirection point.mass point.weight selected).det) :
+    (directionChartGap kFourDirection point.mass point.weight selected).PosDef := by
+  set gap := directionChartGap kFourDirection point.mass point.weight selected with hgapDef
+  set moment := kFourLaplacian point.mass with hmomentDef
+  have hmomentPd : moment.PosDef := posDef_chartMassMatrix_kFour point
+  have hmomentDet : 0 < moment.det := hmomentPd.det_pos
+  obtain ⟨whitener, hunit, hone'⟩ := exists_congruence_to_one hmomentPd
+  have hunitT : IsUnit (whitenerᵀ).det := by rwa [Matrix.det_transpose]
+  have hsquare : whitener.det ^ 2 * moment.det = 1 := by
+    have := congrArg Matrix.det hone'
+    rw [Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_one] at this
+    linarith [this, sq (whitener.det)]
+  have hdetNe : whitener.det ≠ 0 := isUnit_iff_ne_zero.mp hunit
+  have hsquarePos : 0 < whitener.det ^ 2 :=
+    lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hdetNe))
+  have hright : moment * (whitener * whitenerᵀ) = 1 := by
+    have hstep : (whitenerᵀ)⁻¹ = moment * whitener :=
+      Matrix.inv_eq_right_inv (by rw [← Matrix.mul_assoc]; exact hone')
+    rw [← Matrix.mul_assoc, ← hstep, Matrix.nonsing_inv_mul _ hunitT]
+  have hkernel : whitener * whitenerᵀ = moment⁻¹ :=
+    (Matrix.inv_eq_right_inv hright).symm
+  set whitened : Matrix (Fin 3) (Fin 3) ℝ := whitenerᵀ * gap * whitener with hwhitened
+  have hgapSymm : gapᵀ = gap := directionChartGap_transpose _ _ _ _
+  have hwhitenedSymm : whitenedᵀ = whitened := by
+    rw [hwhitened, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose,
+      hgapSymm, Matrix.mul_assoc]
+  have hdetWhitened : whitened.det = whitener.det ^ 2 * gap.det := by
+    rw [hwhitened, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]
+    ring
+  have htraceWhitened : Matrix.trace whitened = whitener.det ^ 2
+      * kFourGapInvariantOne point.mass point.weight selected := by
+    have hcyc : Matrix.trace whitened
+        = Matrix.trace (gap * (whitener * whitenerᵀ)) := by
+      rw [hwhitened, Matrix.mul_assoc,
+        Matrix.trace_mul_comm whitenerᵀ (gap * whitener), Matrix.mul_assoc]
+    have hinvForm : moment⁻¹ = (moment.det)⁻¹ • moment.adjugate := by
+      rw [Matrix.inv_def, Ring.inverse_eq_inv']
+    have hscale : (moment.det)⁻¹ = whitener.det ^ 2 :=
+      inv_eq_of_mul_eq_one_left hsquare
+    rw [hcyc, hkernel, hinvForm, hscale, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul,
+      kFourGapInvariantOne, ← hmomentDef, Matrix.trace_mul_comm]
+  have hsecondWhitened : secondInvariantOfThree whitened = whitener.det ^ 2
+      * kFourGapInvariantTwo point.mass point.weight selected := by
+    have hadjWhitened : whitened.adjugate
+        = whitener.adjugate * gap.adjugate * (whitener.adjugate)ᵀ := by
+      rw [hwhitened, Matrix.adjugate_mul_distrib, Matrix.adjugate_mul_distrib,
+        Matrix.adjugate_transpose]
+      noncomm_ring
+    have hpair : (whitener.adjugate)ᵀ * whitener.adjugate
+        = (moment.det)⁻¹ • moment := by
+      rw [Matrix.adjugate_transpose, ← Matrix.adjugate_mul_distrib, hkernel,
+        adjugate_nonsing_inv_fin_three (ne_of_gt hmomentDet)]
+    have hscale : (moment.det)⁻¹ = whitener.det ^ 2 :=
+      inv_eq_of_mul_eq_one_left hsquare
+    rw [← trace_adjugate_eq_secondInvariant, hadjWhitened, Matrix.mul_assoc,
+      Matrix.trace_mul_comm whitener.adjugate (gap.adjugate * (whitener.adjugate)ᵀ),
+      Matrix.mul_assoc, hpair, hscale, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul,
+      kFourGapInvariantTwo, ← hmomentDef, ← hgapDef]
+  have hcontract : whitened.PosDef := by
+    refine posDef_of_trace_pos_of_secondInvariant_pos_of_det_pos
+      (isHermitian_of_transpose_eq hwhitenedSymm) ?_ ?_ ?_
+    · rw [htraceWhitened]; positivity
+    · rw [hsecondWhitened]; positivity
+    · rw [hdetWhitened]; positivity
+  exact (posDef_congr_right hgapSymm hunit).mpr hcontract
+
+/-- **THE COMPLETE INVARIANT CRITERION.**  Strict domination of a chart
+selection IS the positivity of the two adjugate-trace invariants together with
+the gap determinant. -/
+theorem posDef_directionChartGap_iff_invariantTriple (point : DirectionChartPoint 6)
+    (selected : Finset (Fin 6)) :
+    (directionChartGap kFourDirection point.mass point.weight selected).PosDef
+      ↔ (0 < kFourGapInvariantOne point.mass point.weight selected
+        ∧ 0 < kFourGapInvariantTwo point.mass point.weight selected
+        ∧ 0 < (directionChartGap kFourDirection point.mass point.weight
+            selected).det) := by
+  constructor
+  · intro hpd
+    exact ⟨kFourGapInvariantOne_pos_of_posDef point selected hpd,
+      kFourGapInvariantTwo_pos_of_posDef point selected hpd, hpd.det_pos⟩
+  · rintro ⟨hone, htwo, hdet⟩
+    exact posDef_directionChartGap_of_invariantTriple point selected hone htwo hdet
+
+/-- **THE COMPLETE FOREST CRITERION.**  Strict domination of a chart selection is
+THREE spanning-forest sums of the signed gap weight, and no matrix appears
+anywhere in the statement: the signed weights against the mass forest, the
+masses against the signed forest, and the sixteen-term signed tree sum. -/
+theorem posDef_directionChartGap_iff_forestTriple (point : DirectionChartPoint 6)
+    (selected : Finset (Fin 6)) :
+    (directionChartGap kFourDirection point.mass point.weight selected).PosDef
+      ↔ (0 < ∑ label, signedGapWeight point.mass point.weight selected label
+              * kFourContractionTreePolynomial point.mass label
+        ∧ 0 < ∑ label, point.mass label
+              * kFourContractionTreePolynomial
+                  (signedGapWeight point.mass point.weight selected) label
+        ∧ 0 < kFourMassTreeSum (signedGapWeight point.mass point.weight selected)) := by
+  have hweight : ∀ label ∈ selected, point.weight label ≠ 0 :=
+    fun label _ => (point.weight_pos label).ne'
+  rw [posDef_directionChartGap_iff_invariantTriple,
+    kFourGapInvariantOne_eq_forestSum point.mass point.weight hweight,
+    kFourGapInvariantTwo_eq_forestSum point.mass point.weight hweight,
+    det_directionChartGap_eq_kFourMassTreeSum point.mass point.weight selected hweight]
+
+/-! ## 9. The Frobenius energy of a three-by-three form -/
 
 /-- The sum of the squares of every entry. -/
 noncomputable def frobeniusEnergy (mat : Matrix (Fin 3) (Fin 3) ℝ) : ℝ :=
@@ -760,12 +936,6 @@ theorem posDef_directionChartGap_of_pencilCell (point : DirectionChartPoint 6)
   rw [hexpand, hright]
   nlinarith [hcrit]
 
-/-- Every chart point at which SOME listed spanning tree fires the cell carries a
-strictly dominating card-three selection. -/
-def KFourPencilCellTotal : Prop :=
-  ∀ point : DirectionChartPoint 6, ∃ tree ∈ kFourSpanningTreeList,
-    KFourPencilCellFires point tree
-
 theorem card_eq_three_of_mem_kFourSpanningTreeList' {tree : Finset (Fin 6)}
     (hmem : tree ∈ kFourSpanningTreeList) : tree.card = 3 := by
   revert hmem
@@ -777,12 +947,6 @@ at every chart point. -/
 def KFourUniversalStrictTree : Prop :=
   ∀ point : DirectionChartPoint 6, ∃ tree ∈ kFourSpanningTreeList,
     (directionChartGap kFourDirection point.mass point.weight tree).PosDef
-
-theorem kFourUniversalStrictTree_of_pencilCellTotal (htotal : KFourPencilCellTotal) :
-    KFourUniversalStrictTree := by
-  intro point
-  obtain ⟨tree, hmem, hcell⟩ := htotal point
-  exact ⟨tree, hmem, posDef_directionChartGap_of_pencilCell point tree hcell⟩
 
 /-- **THE UNIVERSAL STRICT TREE CLOSES BOTH TERMINAL WALLS.**  Each wall
 conclusion is a strictly dominating listed tree, so every wall hypothesis is
@@ -807,25 +971,71 @@ theorem directionChartIsTieFree_kFour_of_universalStrictTree
   directionChartIsTieFree_of_hasStrictTriple
     (directionChartHasStrictTriple_kFour_of_universalStrictTree hstrict)
 
-/-- **THE FULL REDUCTION.**  One polynomial cell, quantified over the sixteen
-listed trees, closes the entire `K4` chart obligation. -/
-theorem directionChartIsTieFree_kFour_of_pencilCellTotal
-    (htotal : KFourPencilCellTotal) : DirectionChartIsTieFree kFourDirection :=
-  directionChartIsTieFree_kFour_of_universalStrictTree
-    (kFourUniversalStrictTree_of_pencilCellTotal htotal)
-
-/-- The same cell also closes the registered `A3` component route. -/
-theorem kFourGaugeAndPivotWallClosure_of_pencilCellTotal
-    (htotal : KFourPencilCellTotal) : KFourGaugeAndPivotWallClosure :=
-  kFourGaugeAndPivotWallClosure_of_universalStrictTree
-    (kFourUniversalStrictTree_of_pencilCellTotal htotal)
-
-/-- The registered `A3` formula from the pencil cell. -/
-theorem kFourKnifeBandRefinedAllMaxHeavyWall_of_pencilCellTotal
-    (htotal : KFourPencilCellTotal) :
+/-- The registered `A3` formula from the universal strict tree. -/
+theorem kFourKnifeBandRefinedAllMaxHeavyWall_of_universalStrictTree
+    (hstrict : KFourUniversalStrictTree) :
     KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict :=
   kFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWall_of_gaugeAndPivot
-    (kFourGaugeAndPivotWallClosure_of_pencilCellTotal htotal)
+    (kFourGaugeAndPivotWallClosure_of_universalStrictTree hstrict)
+
+/-- **THE WHOLE `K4` CHART OBLIGATION AS THREE FOREST SUMS PER TREE.**  At every
+chart point some listed spanning tree makes three spanning-forest sums of its
+own signed gap weight positive.  No matrix, no whitener, no square root, no
+determinant of a design, no deflation bound, no corank hypothesis and no weak
+antecedent occur anywhere in this statement. -/
+def KFourForestTripleTotal : Prop :=
+  ∀ point : DirectionChartPoint 6, ∃ tree ∈ kFourSpanningTreeList,
+    0 < ∑ label, signedGapWeight point.mass point.weight tree label
+          * kFourContractionTreePolynomial point.mass label
+      ∧ 0 < ∑ label, point.mass label
+          * kFourContractionTreePolynomial
+              (signedGapWeight point.mass point.weight tree) label
+      ∧ 0 < kFourMassTreeSum (signedGapWeight point.mass point.weight tree)
+
+/-- **THE REDUCTION IS AN EQUIVALENCE.**  The forest triple total is not a
+sufficient condition that a hunt can refute.  It IS the universal strict
+tree. -/
+theorem kFourUniversalStrictTree_iff_forestTripleTotal :
+    KFourUniversalStrictTree ↔ KFourForestTripleTotal := by
+  constructor
+  · intro hstrict point
+    obtain ⟨tree, hmem, hpd⟩ := hstrict point
+    exact ⟨tree, hmem, (posDef_directionChartGap_iff_forestTriple point tree).mp hpd⟩
+  · intro htotal point
+    obtain ⟨tree, hmem, htriple⟩ := htotal point
+    exact ⟨tree, hmem, (posDef_directionChartGap_iff_forestTriple point tree).mpr htriple⟩
+
+/-- **THE WHOLE `K4` CHART OBLIGATION FROM THE FOREST TRIPLE.** -/
+theorem directionChartIsTieFree_kFour_of_forestTripleTotal
+    (htotal : KFourForestTripleTotal) : DirectionChartIsTieFree kFourDirection :=
+  directionChartIsTieFree_kFour_of_universalStrictTree
+    (kFourUniversalStrictTree_iff_forestTripleTotal.mpr htotal)
+
+/-- The registered `A3` component route from the forest triple. -/
+theorem kFourGaugeAndPivotWallClosure_of_forestTripleTotal
+    (htotal : KFourForestTripleTotal) : KFourGaugeAndPivotWallClosure :=
+  kFourGaugeAndPivotWallClosure_of_universalStrictTree
+    (kFourUniversalStrictTree_iff_forestTripleTotal.mpr htotal)
+
+/-- The registered `A3` formula from the forest triple. -/
+theorem kFourKnifeBandRefinedAllMaxHeavyWall_of_forestTripleTotal
+    (htotal : KFourForestTripleTotal) :
+    KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict :=
+  kFourKnifeBandRefinedAllMaxHeavyWall_of_universalStrictTree
+    (kFourUniversalStrictTree_iff_forestTripleTotal.mpr htotal)
+
+/-- Every firing of the pencil cell is a firing of the forest triple, so the
+cell is a strictly weaker producer and the triple is what survives. -/
+theorem forestTriple_of_pencilCell (point : DirectionChartPoint 6)
+    (selected : Finset (Fin 6)) (hcell : KFourPencilCellFires point selected) :
+    0 < ∑ label, signedGapWeight point.mass point.weight selected label
+          * kFourContractionTreePolynomial point.mass label
+      ∧ 0 < ∑ label, point.mass label
+          * kFourContractionTreePolynomial
+              (signedGapWeight point.mass point.weight selected) label
+      ∧ 0 < kFourMassTreeSum (signedGapWeight point.mass point.weight selected) :=
+  (posDef_directionChartGap_iff_forestTriple point selected).mp
+    (posDef_directionChartGap_of_pencilCell point selected hcell)
 
 /-! ## 12. The cell at the five named chart points -/
 
@@ -1013,5 +1223,96 @@ theorem heavyPairRefuterPoint_pencilStrictTree :
     (directionChartGap kFourDirection heavyPairRefuterPoint.mass
       heavyPairRefuterPoint.weight ({3, 4, 5} : Finset (Fin 6))).PosDef :=
   posDef_directionChartGap_of_pencilCell _ _ heavyPairRefuterPoint_pencilCellFires
+
+/-! ## 13. The cell is NOT total, and the witness
+
+A uniform census is not an adjudication.  The cell fires at every one of four
+thousand exact chart points drawn from five regimes, at all five named points,
+and at fourteen thousand seven hundred exact points of the corank-two gauge
+wall.  A directed hunt of four hundred thousand restarts, maximizing the worst
+cell margin over the sixteen trees, walks out of that region in one climb.  The
+witness below is the exact rational landing point of that climb.  Sixteen trees,
+sixteen failures, and TWO of the sixteen are still strictly dominating: the
+chart obligation is intact there and only the cell is refuted.
+-/
+
+/-- Masses of the point that refutes totality of the pencil cell. -/
+noncomputable def pencilCellRefuterMass : Fin 6 → ℝ
+  | 0 => 34
+  | 1 => 8727
+  | 2 => 24109
+  | 3 => 3
+  | 4 => 25102
+  | 5 => 29115
+
+/-- Weights of the point that refutes totality of the pencil cell. -/
+noncomputable def pencilCellRefuterWeight : Fin 6 → ℝ
+  | 0 => 1 / 500
+  | 1 => 1 / 500
+  | 2 => 291 / 1000
+  | 3 => 1 / 500
+  | 4 => 319 / 1000
+  | 5 => 48 / 125
+
+/-- The refuter is a genuine chart point. -/
+noncomputable def pencilCellRefuterPoint : DirectionChartPoint 6 where
+  mass := pencilCellRefuterMass
+  weight := pencilCellRefuterWeight
+  mass_pos := by intro label; fin_cases label <;> norm_num [pencilCellRefuterMass]
+  weight_pos := by intro label; fin_cases label <;> norm_num [pencilCellRefuterWeight]
+  weight_sum_one := by rw [Fin.sum_univ_six]; norm_num [pencilCellRefuterWeight]
+
+/-- **NO LISTED TREE FIRES THE CELL AT THE REFUTER.**  Ten of the sixteen fail
+the spread inequality and six fail the shifted Frobenius inequality. -/
+theorem pencilCellRefuterPoint_no_cell (tree : Finset (Fin 6))
+    (hmem : tree ∈ kFourSpanningTreeList) :
+    ¬ KFourPencilCellFires pencilCellRefuterPoint tree := by
+  rintro ⟨-, hspread, hcell⟩
+  revert hspread hcell
+  simp only [kFourSpanningTreeList, List.mem_cons, List.not_mem_nil, or_false] at hmem
+  rcases hmem with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+    | rfl | rfl | rfl | rfl <;>
+    simp only [kFourPencilLead, kFourPencilSecond, kFourPencilThird, kFourMassTreeSum,
+      Fin.sum_univ_six, kFourContractionTreePolynomial_zero,
+      kFourContractionTreePolynomial_one, kFourContractionTreePolynomial_two,
+      kFourContractionTreePolynomial_three, kFourContractionTreePolynomial_four,
+      kFourContractionTreePolynomial_five, kFourGapConductance] <;>
+    norm_num [pencilCellRefuterPoint, pencilCellRefuterMass, pencilCellRefuterWeight,
+      Finset.mem_insert, Finset.mem_singleton, Fin.ext_iff]
+
+/-- **THE PENCIL CELL IS NOT TOTAL.**  Stated inline, with no named proposition:
+an unsatisfiable antecedent must not be left standing as an asset. -/
+theorem kFourPencilCell_not_total :
+    ¬ (∀ point : DirectionChartPoint 6, ∃ tree ∈ kFourSpanningTreeList,
+        KFourPencilCellFires point tree) := by
+  intro htotal
+  obtain ⟨tree, hmem, hcell⟩ := htotal pencilCellRefuterPoint
+  exact pencilCellRefuterPoint_no_cell tree hmem hcell
+
+/-- The gap of the tree `{1, 2, 5}` at the refuter, entry by entry. -/
+theorem pencilCellRefuter_gap_oneTwoFive :
+    directionChartGap kFourDirection pencilCellRefuterPoint.mass
+        pencilCellRefuterPoint.weight ({1, 2, 5} : Finset (Fin 6))
+      = !![(4354736 : ℝ), 34, -4354773;
+           34, 9778705/291, -17093281/291;
+           -4354773, -17093281/291, 20766775519/4656] := by
+  rw [directionChartGap_eq_signedLaplacian _ _ _
+    (fun label _ => (pencilCellRefuterPoint.weight_pos label).ne')]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    norm_num [signedGapWeight, pencilCellRefuterPoint, pencilCellRefuterMass,
+      pencilCellRefuterWeight, Finset.mem_insert, Finset.mem_singleton, Fin.ext_iff]
+
+/-- **THE OBLIGATION IS INTACT AT THE REFUTER.**  The tree `{1, 2, 5}` dominates
+strictly, with Sylvester triple `(4354736, 42583678360484/291,
+485308413794182921/1164)`.  So the refutation is about the CELL and never about
+the chart obligation. -/
+theorem pencilCellRefuterPoint_hasStrictTree :
+    ∃ tree ∈ kFourSpanningTreeList,
+      (directionChartGap kFourDirection pencilCellRefuterPoint.mass
+        pencilCellRefuterPoint.weight tree).PosDef := by
+  refine ⟨{1, 2, 5}, by decide, ?_⟩
+  rw [pencilCellRefuter_gap_oneTwoFive, leadingMinors_pos_iff_posDef_fin_three]
+  norm_num
 
 end Gtz
