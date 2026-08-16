@@ -53,9 +53,11 @@ strict selection must use an omitted label.  At `K4` that is
 ## A refuted rule, with its witness
 
 The natural dispatch at a triangle stall nominates the vertex star at the shared
-vertex of the two omitted edges.  `kFourTriangleStall_starRule_refuted` refutes
-it with an exact rational chart point.  A census over 5208 triangle stalls fires
-that rule at 3663 of them.
+vertex of the two omitted edges.  A census over 5208 triangle stalls fires that
+rule at 3663 of them, and 1545 refuse it.  Three exact rational witnesses carry
+the refusal.  NOT IN KERNEL: no theorem in this file refutes the rule, because
+the explicit chart point literals are not built.  Treat the refutation as
+measurement, not as a landed witness.
 -/
 
 namespace Gtz
