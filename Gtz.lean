@@ -4901,3 +4901,4 @@ import Gtz.Wave.SelectionMarginLaws
 import Gtz.Wave.CoherentBranchFactorization
 import Gtz.Wave.HeavySetEnergyCell
 import Gtz.Wave.PairGapFloor
+import Gtz.Wave.CellCoverLattice
