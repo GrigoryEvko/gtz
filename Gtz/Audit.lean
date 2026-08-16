@@ -34976,3 +34976,8 @@ run_cmd do
 #print axioms Gtz.freeMassBudget_kFourDesign_star
 #print axioms Gtz.not_freeMassBudget_lt_one_kFourDesign_star
 #print axioms Gtz.freeMass_certificate_misses_on_stressFree_sixThree
+#print axioms Gtz.trace_rootStarGap
+#print axioms Gtz.frobeniusNormSq_rootStarGap
+#print axioms Gtz.not_hasIsotropicGap_kFourDesign_star
+#print axioms Gtz.not_hasStrictCertificate_kFourDesign_star
+#print axioms Gtz.strictCertificate_misses_a_strict_dominator

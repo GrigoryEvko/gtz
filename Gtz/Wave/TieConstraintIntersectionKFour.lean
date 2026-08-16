@@ -23,7 +23,10 @@ calibration matrix, so the witness is anchored to landed content.
 * `Gtz.subsetSum_kFourDesign_star_sub_one` — the star gap is `Gtz.rootStarGap`.
 * `Gtz.posDef_gap_kFourDesign_star` — the star dominates strictly.
 * `Gtz.freeMassBudget_kFourDesign_star` — the free mass it spends is `6/5`.
-* `Gtz.not_freeMassBudget_lt_one_kFourDesign_star` — so the certificate is blind.
+* `Gtz.not_freeMassBudget_lt_one_kFourDesign_star` — the free-mass arm is blind.
+* `Gtz.not_hasIsotropicGap_kFourDesign_star` — the isotropy arm is blind too.
+* `Gtz.not_hasStrictCertificate_kFourDesign_star` — so the whole strict certificate
+  misses a triple that dominates strictly.
 
 ## Scope
 
@@ -284,5 +287,50 @@ theorem freeMass_certificate_misses_on_stressFree_sixThree :
             *ᵥ kFourDesign.atom label)) < 1) :=
   ⟨kFourDesign_stressFree, by decide, posDef_gap_kFourDesign_star,
     not_freeMassBudget_lt_one_kFourDesign_star⟩
+
+/-! ## Part 5: the isotropy arm fails too, so the whole certificate fails -/
+
+theorem trace_rootStarGap : Matrix.trace rootStarGap = 6 := by
+  rw [rootStarGap, Matrix.trace_fin_three]
+  simp [Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const, Matrix.cons_val_two, Matrix.tail_cons, Matrix.of_apply]
+  norm_num
+
+theorem frobeniusNormSq_rootStarGap : frobeniusNormSq rootStarGap = 51 / 2 := by
+  rw [rootStarGap, frobeniusNormSq]
+  simp [frobeniusInner, Fin.sum_univ_three, Matrix.trace_fin_three, Matrix.mul_apply,
+    Matrix.transpose_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const, Matrix.cons_val_two, Matrix.tail_cons, Matrix.of_apply]
+  norm_num
+
+/-- **THE ISOTROPY ARM FAILS AT THE K4 STAR.**  The star gap has trace `6` and
+Frobenius square `51/2`, and `51 > 36`. -/
+theorem not_hasIsotropicGap_kFourDesign_star :
+    ¬ HasIsotropicGap kFourDesign ({0, 2, 4} : Finset (Fin 6)) := by
+  rintro ⟨-, hisotropy⟩
+  rw [subsetSum_kFourDesign_star_sub_one, frobeniusNormSq_rootStarGap,
+    trace_rootStarGap] at hisotropy
+  norm_num at hisotropy
+
+/-- **THE WHOLE STRICT CERTIFICATE FAILS AT THE K4 STAR, WHICH DOMINATES STRICTLY.**
+Both arms of `Gtz.HasStrictCertificate` are false at a triple whose gap is positive
+definite, on a stress-free `(6,3)` design at uniform weight.  The certificate is not
+necessary for strict domination, and the case split of
+`Gtz.sixThree_exists_posDef_triple_of_stressFree` is empty here. -/
+theorem not_hasStrictCertificate_kFourDesign_star :
+    ¬ HasStrictCertificate kFourDesign ({0, 2, 4} : Finset (Fin 6)) := by
+  rintro (hisotropy | ⟨-, hbudget⟩)
+  · exact not_hasIsotropicGap_kFourDesign_star hisotropy
+  · exact not_freeMassBudget_lt_one_kFourDesign_star hbudget
+
+/-- The refutation, packaged: stress-free, the triple dominates strictly, and no arm
+of the strict certificate reaches it. -/
+theorem strictCertificate_misses_a_strict_dominator :
+    (∀ stressCoeff : Fin 6 → ℝ,
+        (∑ atomIndex, stressCoeff atomIndex • atomMatrix (kFourDesign.atom atomIndex)) = 0 →
+          stressCoeff = 0)
+      ∧ ({0, 2, 4} : Finset (Fin 6)).card = 3
+      ∧ (subsetSum kFourDesign ({0, 2, 4} : Finset (Fin 6)) - 1).PosDef
+      ∧ ¬ HasStrictCertificate kFourDesign ({0, 2, 4} : Finset (Fin 6)) :=
+  ⟨kFourDesign_stressFree, by decide, posDef_gap_kFourDesign_star,
+    not_hasStrictCertificate_kFourDesign_star⟩
 
 end Gtz

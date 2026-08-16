@@ -6008,4 +6008,6 @@ import Gtz.Wave.TieConstraintIntersectionCorankOne
 --   certificate branch of `Gtz.sixThree_exists_posDef_triple_of_stressFree` is empty
 --   on an open region and not only at ties.  The balance law fires there, so adding
 --   a balance arm to `Gtz.HasStrictCertificate` is the indicated repair.
+--   `Gtz.not_hasStrictCertificate_kFourDesign_star` lands one instance of that miss
+--   in kernel: at the K4 star BOTH arms are false and the gap is positive definite.
 import Gtz.Wave.TieConstraintIntersectionKFour
