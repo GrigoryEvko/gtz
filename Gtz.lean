@@ -5918,6 +5918,23 @@ import Gtz.Wave.VeroneseWeightElimination
 -- HONEST SCOPE.  Nothing here decides branch (i).  The share cap on ties is strict but this
 --   wave proves no floor for it, and a quantitative share cap would need a weight floor that
 --   the descent removes.
+-- FIELD.  The statement of `Gtz.exists_posDef_triple_of_atomShare_eq_one` typechecks over
+--   the complex numbers under `open ComplexOrder`, so the separation is not a scoped-instance
+--   artifact.  The PROOF is real, and it is real at one named step: it consumes the SHARP
+--   rank-two constant one from `Gtz.gtz_rank_two`.  Over the complex numbers that constant is
+--   `alpha_2`, which the tree bounds by `1/2 <= alpha_2 <= 2 - 2/sqrt 3` with the upper end
+--   witnessed by the `ℂ²` SIC.  With the shipped deflation at half the weight, the covering
+--   pair beats the identity only when the share-one label carries weight above
+--   `2 * (1 - alpha_2) / (2 - alpha_2)`, which lies between 0.268 and 2/3.  So the complex
+--   theorem holds for a heavy share-one label and is open for a light one.
+-- RANK.  The frame kit and part eight are rank three, because the cross product and the
+--   three-dimensional Cauchy-Schwarz are.  The deflation of part three is rank two and any
+--   size.  The heavy floor is rank three through
+--   `Gtz.posDef_subsetSum_compl_of_baseShare_lt`, whose trace step reads the rank.
+-- SIGN.  `Gtz.planeFirst` and `Gtz.planeSecond` see the sign of their direction, but no
+--   conclusion mentions them.  Every headline statement reads only `Gtz.atomShare`,
+--   `Gtz.leverageOf`, `Gtz.subsetSum` and squared pairings, so all of them are invariant
+--   under the per-label sign group that `Gtz.IsTie` is invariant under.
 -- MEASURED, 2026-08-16, C with OpenMP at 200 threads.  CALIBRATION FIRST: the probe
 --   reproduces `Gtz.tiltedWeights`, `Gtz.atomShare_tiltedDesign_zero` and the hand value
 --   `det (veroneseGrid (tiltedAtoms tilt)) = -3072 * z^2 * tilt^2` to fifteen digits at four

@@ -23,7 +23,7 @@ has a consequent that is never true.  `atomShare_lt_one_of_stressFree` already
 refutes it on the stratum, and `atomShare_lt_one_of_isTie` refutes it again from
 the tie alone.  An implication whose consequent is always false is exactly the
 negation of its antecedent, so the forcing statement IS branch (i), letter for
-letter (`shareOneForcing_iff_no_stressFree_tie`).  It is a restatement of the
+letter (`shareOneForcing_iff_stressFreeSixThreeTieFree`).  It is a restatement of the
 target and not a route to it.
 
 ## The heavy floor
