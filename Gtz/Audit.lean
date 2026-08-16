@@ -34100,6 +34100,23 @@ run_cmd do
 #print axioms Gtz.lightLabelChartPoint_share_eq
 #print axioms Gtz.lightLabelChartPoint_share_lt_weight
 #print axioms Gtz.lightLabelChartPoint_deflatedDetCellFires
+#print axioms Gtz.reading_sq_le_resolvent_mul_reading
+#print axioms Gtz.posDef_smul_sub_smul_atomMatrix_of_resolvent_price
+#print axioms Gtz.directionChartGap_eq_conductanceDeflation_add_chartDeflatedForm
+#print axioms Gtz.posDef_directionChartGap_of_selectedResolvent_price
+#print axioms Gtz.kFourDeflatedDetCellFires_of_selectedResolvent_price
+#print axioms Gtz.kFour_exists_chartDeflatedTree_priced
+#print axioms Gtz.chartSelectedConductance_gaugeStar_eq
+#print axioms Gtz.isUnit_det_chartSelectedConductance_gaugeStar
+#print axioms Gtz.gaugeStarResolvent_apply
+#print axioms Gtz.gaugeStarPrice_zero
+#print axioms Gtz.gaugeStarPrice_one
+#print axioms Gtz.gaugeStarPrice_two
+#print axioms Gtz.kFourDeflatedDetCellFires_of_gaugeStarPrice_zero
+#print axioms Gtz.kFourDeflatedDetCellFires_of_gaugeStarPrice_one
+#print axioms Gtz.kFourDeflatedDetCellFires_of_gaugeStarPrice_two
+#print axioms Gtz.tetrahedron_gaugeStarPrice_not_lt_weight
+#print axioms Gtz.tetrahedron_gaugeStar_posDef_with_failing_price
 
 -- Wave/MixedTripleBalance: the sharp balance as one wedge total of the split
 -- measure, the one-sign nonnegativity law, the plane determinant of the balance,

@@ -5232,6 +5232,19 @@ import Gtz.Wave.TriangleStallClosureDeflation
 -- point with mass one tenth at label zero fires that cell in kernel.  Foster's
 -- law also forbids that condition at every label at one time, so the Loewner
 -- content of the deflation is real and is far from total.
+-- The sharp form pays no factor at all.  The punctured moment is capped by the
+-- DISCOUNTED conductance, so the gap dominates the conductance deflation
+-- directly.  The conductance is definite under the same bound, and a definite
+-- form stays definite after one scaled atom leaves it exactly when the atom
+-- reading of that form's resolvent is priced below the scale.  So the residual
+-- of the chart deflation is ONE scalar in which the mass moment never appears.
+-- At the canonical gauge star that scalar is division only, because the star is
+-- the three coordinate axes and its conductance is diagonal.  And the tetrahedron
+-- point REFUTES the scalar as a necessary condition in kernel: the bound holds
+-- at the label zero and the star, the star gap is positive definite, and the
+-- price reads one third against a weight of one sixth.  So no Loewner comparison
+-- inside the deflation reaches the residual, and the residual stays a
+-- determinant sign.
 import Gtz.Wave.DeflatedCellTotal
 
 -- The sharp balance of the flat split, read as ONE wedge total of a SIGNED
