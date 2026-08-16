@@ -31352,3 +31352,12 @@ run_cmd do
 #print axioms Gtz.not_exists_threeLinesDominates_uniformSix
 #print axioms Gtz.ThreeLinesDominanceCovers
 #print axioms Gtz.not_threeLinesDominanceCovers_of_witness
+#print axioms Gtz.posDef_massMoment_of_span
+#print axioms Gtz.isPrimitiveDesign_whitenedFamilyDesign
+#print axioms Gtz.chartAtomFamily_pair_independent
+#print axioms Gtz.exists_primitive_design_of_chartPoint
+#print axioms Gtz.consolidatedStrictTriple_of_consolidatedStrictTripleDesign
+#print axioms Gtz.consolidatedStrictTriple_iff_consolidatedStrictTripleDesign
+#print axioms Gtz.chartTieFreeThreeLines_of_consolidatedStrictTripleDesign
+#print axioms Gtz.kFourKnifeBandRefined_of_consolidatedStrictTripleDesign
+#print axioms Gtz.allFiveOnPath_of_consolidatedStrictTripleDesign
