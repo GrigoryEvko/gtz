@@ -5027,3 +5027,4 @@ import Gtz.Wave.OffsetMinorProduct
 -- `329/20736` at the graphic point of `K4`.
 import Gtz.Wave.OffsetUpperBound
 import Gtz.Wave.ThresholdEnergyClosure
+import Gtz.Wave.CrossEnergyFloor
