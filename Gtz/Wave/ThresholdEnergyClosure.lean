@@ -1,4 +1,6 @@
 import Gtz.Wave.MassMomentClosure
+import Gtz.Wave.ComplementDualLane
+import Gtz.Design.KFourChartClosure
 
 /-!
 # The threshold energy in closed form
@@ -1213,6 +1215,169 @@ theorem exists_pos_projGap_of_flat_triple_product
   obtain ⟨outer, mid, hmid, inner, hinner, hlt⟩ := hbeat
   refine ⟨outer, mid, hmid, inner, hinner, ?_⟩
   rw [projGapAt_eq_of_flat design hflat outer mid inner]
+  linarith
+
+/-! ### The block gap on the flat locus, and the registry
+
+At uniform weight the block gap of a triple has one third on every diagonal entry
+and the projection entries off it.  Its three leading minors are then explicit.
+The corner is one third and needs nothing.  The second is a single square against
+one ninth.  The third is the gap functional, already closed above.  So the whole
+positive definiteness the registry wants reduces to TWO scalar inequalities. -/
+
+theorem blockGapAt_diagonal_of_flat_uniform
+    (hflat : levSecondMoment design = 3 / 2)
+    (huniform : ∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹) (label : Fin 6) :
+    projectionOfDesign design label label - design.weight label = 1 / 3 := by
+  rw [projectionDiagonal_eq_half_of_flat design hflat label, huniform label]; norm_num
+
+/-- **THE BLOCK GAP IS POSITIVE DEFINITE FROM TWO SCALARS.**  On the flat locus at
+uniform weight, one square below one ninth and a positive gap give the positive
+definiteness that `Gtz.allFiveOnPath_of_blockGapAt` consumes. -/
+theorem posDef_blockGapAt_of_flat_uniform
+    (hflat : levSecondMoment design = 3 / 2)
+    (huniform : ∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹)
+    (outer mid inner : Fin 6)
+    (hminor : projectionOfDesign design outer mid ^ 2 < 1 / 9)
+    (hgap : 0 < projGapAt (projectionOfDesign design) outer mid inner) :
+    (blockGapAt (projectionOfDesign design) design.weight ![outer, mid, inner]).PosDef := by
+  classical
+  have hsymm := projectionOfDesign_transpose design
+  have hflip : ∀ left right : Fin 6,
+      projectionOfDesign design right left = projectionOfDesign design left right := by
+    intro left right
+    simpa only [Matrix.transpose_apply] using congrFun (congrFun hsymm left) right
+  have hmat : blockGapAt (projectionOfDesign design) design.weight ![outer, mid, inner]
+      = !![1 / 3, projectionOfDesign design outer mid, projectionOfDesign design outer inner;
+          projectionOfDesign design outer mid, 1 / 3, projectionOfDesign design mid inner;
+          projectionOfDesign design outer inner, projectionOfDesign design mid inner, 1 / 3] := by
+    have hdiag := blockGapAt_diagonal_of_flat_uniform design hflat huniform
+    ext left right
+    rcases eq_or_ne left right with rfl | hne
+    · rw [blockGapAt_apply_diag]
+      fin_cases left <;> simp [hdiag]
+    · rw [blockGapAt_apply_offDiag _ _ _ hne]
+      fin_cases left <;> fin_cases right <;> simp_all
+  rw [hmat]
+  refine posDef_of_leadingMinors_fin_three _ _ _ _ _ _ (by norm_num) (by nlinarith [hminor]) ?_
+  have hclosed := projGapAt_eq_of_flat design hflat outer mid inner
+  rw [hclosed] at hgap
+  nlinarith [hgap]
+
+/-- **THE FLAT LOCUS REACHES ALL FIVE ON-PATH OBLIGATIONS.**  A certificate that
+every primitive design is flat at uniform weight and carries one triple with a
+small first entry and a positive gap retires the whole on-path registry, the base
+triple obligation included. -/
+theorem allFiveOnPath_of_flat_uniform_selection
+    (hcert : ∀ D : WeightedDesign 6 3, IsPrimitiveDesign D →
+      levSecondMoment D = 3 / 2 ∧ (∀ label : Fin 6, D.weight label = (6 : ℝ)⁻¹) ∧
+        ∃ outer mid inner : Fin 6, outer ≠ mid ∧ outer ≠ inner ∧ mid ≠ inner ∧
+          projectionOfDesign D outer mid ^ 2 < 1 / 9 ∧
+          0 < projGapAt (projectionOfDesign D) outer mid inner) :
+    BaseTripleTightLineFreeOffConicHeavyNeedleResidual ∧
+      OneLineTenthHeavyJointBlindLineSparse ∧
+      TwoMeetingLinesTenthHeavyJointBlindTransversal ∧
+      ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines ∧
+      KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict := by
+  refine allFiveOnPath_of_blockGapAt ?_
+  intro D hprim
+  obtain ⟨hflat, huniform, outer, mid, inner, hom, hoi, hmi, hminor, hgap⟩ := hcert D hprim
+  refine ⟨![outer, mid, inner], ?_,
+    posDef_blockGapAt_of_flat_uniform D hflat huniform outer mid inner hminor hgap⟩
+  intro left right hlr
+  fin_cases left <;> fin_cases right <;> simp_all
+
+/-- The off-diagonal squares along a row total one quarter on the flat locus. -/
+theorem sum_offDiagonal_sq_row_of_flat (hflat : levSecondMoment design = 3 / 2)
+    (first : Fin 6) :
+    ∑ second ∈ (univ : Finset (Fin 6)).erase first,
+      projectionOfDesign design first second ^ 2 = 1 / 4 := by
+  classical
+  have hrow := sum_pairMinor_erase design first
+  rw [projectionDiagonal_eq_half_of_flat design hflat first] at hrow
+  have hentry : ∀ second ∈ (univ : Finset (Fin 6)).erase first,
+      pairMinorAt (projectionOfDesign design) first second
+        = 1 / 4 - projectionOfDesign design first second ^ 2 := by
+    intro second _
+    rw [pairMinorAt, projectionDiagonal_eq_half_of_flat design hflat first,
+      projectionDiagonal_eq_half_of_flat design hflat second]
+    ring
+  rw [Finset.sum_congr rfl hentry, Finset.sum_sub_distrib, Finset.sum_const,
+    card_erase_univ_six first, nsmul_eq_mul] at hrow
+  push_cast at hrow
+  linarith
+
+/-- The off-diagonal squares total three halves on the flat locus. -/
+theorem sum_offDiagonal_sq_of_flat (hflat : levSecondMoment design = 3 / 2) :
+    ∑ first : Fin 6, ∑ second ∈ (univ : Finset (Fin 6)).erase first,
+      projectionOfDesign design first second ^ 2 = 3 / 2 := by
+  rw [Finset.sum_congr rfl fun first _ => sum_offDiagonal_sq_row_of_flat design hflat first]
+  rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  norm_num
+
+/-- The pair-minor energy on the flat locus is nine eighths plus the fourth power
+total of the off-diagonal entries. -/
+theorem pairSecondMoment_eq_of_flat (hflat : levSecondMoment design = 3 / 2) :
+    pairSecondMoment design
+      = 9 / 8 + ∑ first : Fin 6, ∑ second ∈ (univ : Finset (Fin 6)).erase first,
+        projectionOfDesign design first second ^ 4 := by
+  classical
+  have hrow : ∀ first : Fin 6,
+      ∑ second ∈ (univ : Finset (Fin 6)).erase first,
+          pairMinorAt (projectionOfDesign design) first second ^ 2
+        = 3 / 16 + ∑ second ∈ (univ : Finset (Fin 6)).erase first,
+            projectionOfDesign design first second ^ 4 := by
+    intro first
+    have hentry : ∀ second ∈ (univ : Finset (Fin 6)).erase first,
+        pairMinorAt (projectionOfDesign design) first second ^ 2
+          = 1 / 16 - projectionOfDesign design first second ^ 2 / 2
+            + projectionOfDesign design first second ^ 4 := by
+      intro second _
+      rw [pairMinorAt, projectionDiagonal_eq_half_of_flat design hflat first,
+        projectionDiagonal_eq_half_of_flat design hflat second]
+      ring
+    rw [Finset.sum_congr rfl hentry, Finset.sum_add_distrib, Finset.sum_sub_distrib,
+      Finset.sum_const, card_erase_univ_six first, nsmul_eq_mul,
+      ← Finset.sum_div, sum_offDiagonal_sq_row_of_flat design hflat first]
+    push_cast
+    ring
+  simp only [pairSecondMoment]
+  rw [Finset.sum_congr rfl fun first _ => hrow first, Finset.sum_add_distrib,
+    Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  push_cast
+  ring
+
+/-- **THE TWO ROUTES ARE INCOMPATIBLE ON THE FLAT LOCUS.**  A pair-minor energy
+beyond eleven eighths FORCES an off-diagonal square of at least one sixth, which
+is already past the one ninth that the second leading minor needs.  So the
+two-local energy criterion and a small first entry can never hold together, and
+the frontier cell they would cut out is empty. -/
+theorem exists_large_offDiagonal_of_flat_of_energy
+    (hflat : levSecondMoment design = 3 / 2)
+    (hEnergy : 11 / 8 < pairSecondMoment design) :
+    ∃ first : Fin 6, ∃ second ∈ (univ : Finset (Fin 6)).erase first,
+      1 / 6 ≤ projectionOfDesign design first second ^ 2 := by
+  classical
+  by_contra hraw
+  have hsmall : ∀ first : Fin 6, ∀ second ∈ (univ : Finset (Fin 6)).erase first,
+      projectionOfDesign design first second ^ 2 < 1 / 6 := by
+    intro first second hsecond
+    by_contra hbig
+    exact hraw ⟨first, second, hsecond, not_lt.mp hbig⟩
+  have hquart : ∑ first : Fin 6, ∑ second ∈ (univ : Finset (Fin 6)).erase first,
+      projectionOfDesign design first second ^ 4
+      ≤ ∑ first : Fin 6, ∑ second ∈ (univ : Finset (Fin 6)).erase first,
+        projectionOfDesign design first second ^ 2 / 6 := by
+    refine Finset.sum_le_sum fun first _ => Finset.sum_le_sum fun second hsecond => ?_
+    have hle := le_of_lt (hsmall first second hsecond)
+    nlinarith [sq_nonneg (projectionOfDesign design first second)]
+  have hdiv : ∑ first : Fin 6, ∑ second ∈ (univ : Finset (Fin 6)).erase first,
+      projectionOfDesign design first second ^ 2 / 6 = 1 / 4 := by
+    rw [Finset.sum_congr rfl fun first _ => (Finset.sum_div _ _ _).symm, ← Finset.sum_div,
+      sum_offDiagonal_sq_of_flat design hflat]
+    norm_num
+  rw [hdiv] at hquart
+  have hclosed := pairSecondMoment_eq_of_flat design hflat
   linarith
 
 end FlatLocus
