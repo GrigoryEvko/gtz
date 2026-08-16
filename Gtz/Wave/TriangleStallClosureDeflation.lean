@@ -21,11 +21,16 @@ set_option maxHeartbeats 1600000
 # The deflated gap bound in the chart, and one determinant sign per tree
 
 `Gtz.DeflatedGapBoundAt` and `Gtz.posDef_iff_gapDet_pos_of_deflatedGapBound` live
-on the DESIGN side.  The only bridge from a `K4` chart point to a design,
-`Gtz.exists_kFourWhitenedDesign`, hides the atoms behind an existential and
-exports positive definiteness alone, so the design-side equivalence cannot be
-transported to the chart.  This file proves the chart analogue directly.  It
-needs no whitener, no matrix square root and no design.
+on the DESIGN side.  `Gtz.exists_kFourWhitenedDesign` hides the atoms behind an
+existential and exports positive definiteness alone, so it cannot carry the
+design-side equivalence to the chart.  This file proves the chart analogue
+directly, and it needs no whitener, no matrix square root and no design.
+
+CORRECTION, 2026-08-16: this text said that the design-side equivalence CANNOT
+be transported.  That claim is false.  `Gtz.exists_kFourChartCongruence`
+(Gtz/Wave/DeflatedCellTotal.lean) keeps the whitener, the moment identity, the
+ATOM identity and the gap identity, and `Gtz.deflatedGapBoundAt_iff_chartDeflatedGapBound`
+makes the two bounds equivalent.  The atom identity is the load-bearing half.
 
 ## The bound
 
