@@ -1145,6 +1145,11 @@ import Gtz.Wave.KFourSignedTreeLaplacian
 import Gtz.Wave.KFourGaugeWallPencil
 import Gtz.Wave.KFourIsotropicStar
 import Gtz.Wave.WedgeLeakCriterion
+import Gtz.Wave.ThreeLinesHeavyLeverageFloor
+import Gtz.Wave.ThreeLinesHeavyReadingCoverRefuter
+import Gtz.Wave.ThreeLinesHeavyExcessFloor
+import Gtz.Wave.OneLineWedgeFlatSplit
+import Gtz.Wave.WedgeBalanceAdjugate
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -33744,3 +33749,165 @@ run_cmd do
 #print axioms Gtz.hasParallelPair_of_isTie_of_strictly_light_atom
 #print axioms Gtz.forall_one_le_leverage_of_isTie
 #print axioms Gtz.hinge_of_predecessor_on_strictlyLightBranch
+#print axioms Gtz.mul_transpose_eq_inv_of_congruence_to_one
+#print axioms Gtz.leverageOf_transpose_mulVec
+#print axioms Gtz.exists_design_of_chartPoint_withLeverage
+#print axioms Gtz.chartLeverageNumerator
+#print axioms Gtz.ChartLeverageFloor
+#print axioms Gtz.dotProduct_inv_mulVec_eq
+#print axioms Gtz.chartLeverageFloor_of_no_posDef_triple
+#print axioms Gtz.sum_chartLeverageNumerator
+#print axioms Gtz.sum_leverage_slack_eq_two_det
+#print axioms Gtz.ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLinesLeverage
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines_of_leverage
+#print axioms Gtz.leverageThreeLinesFundamentalDomain_of_sevenOrbitTraceBlind
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLinesLeverage_iff_blind
+#print axioms Gtz.chartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLinesLeverage_iff
+#print axioms Gtz.not_readingCoverCell_of_owners
+#print axioms Gtz.not_threeLinesReadingCoverCellFires_of_owners
+#print axioms Gtz.readingCoverRefuterMass
+#print axioms Gtz.readingCoverRefuterWeight
+#print axioms Gtz.readingCoverRefuterProbe
+#print axioms Gtz.readingCoverRefuterPoint
+#print axioms Gtz.readingCoverRefuterPoint_owners
+#print axioms Gtz.readingCoverCell_refuted
+#print axioms Gtz.halfAllocation
+#print axioms Gtz.readingCoverRefuterPoint_vertexBudgetCellFires
+#print axioms Gtz.readingCoverRefuterPoint_vertexTriple_posDef
+#print axioms Gtz.readingCoverRefuterPoint_exists_posDef
+#print axioms Gtz.chartLeverageNumerator_le_det
+#print axioms Gtz.chartLeverageNumerator_pos_of_floor
+#print axioms Gtz.chartExcess_mul_leverageNumerator_ge
+#print axioms Gtz.chartLoad_of_massOnlyLoad
+#print axioms Gtz.threeLinesMomentDet
+#print axioms Gtz.threeLinesLeverage
+#print axioms Gtz.ThreeLinesMassOnlyVertexCellFires
+#print axioms Gtz.ThreeLinesMassOnlyFreeCellFires
+#print axioms Gtz.threeLinesVertexBudgetCellFires_of_massOnly
+#print axioms Gtz.threeLinesFreeBudgetCellFires_of_massOnly
+#print axioms Gtz.exists_posDef_threeLines_of_massOnlyCellFires
+#print axioms Gtz.leverageFloorFailureMass
+#print axioms Gtz.leverageFloorFailureWeight
+#print axioms Gtz.leverageFloorFailurePoint
+#print axioms Gtz.leverageFloorFailure_moment
+#print axioms Gtz.leverageFloorFailurePoint_not_chartLeverageFloor
+
+-- Wave/OneLineWedgeFlatSplit: the wedge balance, split at the flat labels.
+-- Section 1 names the wedge total on two supports and two measures, which the
+-- landed Lagrange pair identity already evaluates.  Section 2 kills the wedge of
+-- two flat labels and collapses the wedge of one.  Sections 3 and 4 give the
+-- master split: the balance is a product of a probe difference and a normal
+-- difference, plus the balance of the sharp labels, at every rank and every
+-- size, with no positivity.  Sections 5 and 6 read the two factors as the plain
+-- normal surplus and as the SELECTED flat reading minus the flat leak.  Section
+-- 8 proves the averaging law of the leak.  Section 9 locates the landed
+-- full-leak obstruction exactly at the subsets that hold no flat label.
+-- Sections 10 and 11 run the flat-pair plane law and the pair minor from a WEAK
+-- dominator, which no landed statement of that shape does.  Sections 12 thru 14
+-- read the mixed shape and open both residual line axioms through one selector.
+#print axioms Gtz.crossWedgeTotal
+#print axioms Gtz.wedgeTotal_eq_crossWedgeTotal
+#print axioms Gtz.mixedWedgeTotal_eq_crossWedgeTotal
+#print axioms Gtz.wedgeTotal_pair
+#print axioms Gtz.crossWedgeTotal_singleton_right
+#print axioms Gtz.wedgeShadow_eq_zero_of_flat_flat
+#print axioms Gtz.wedgeShadow_sq_of_left_flat
+#print axioms Gtz.wedgeShadow_sq_of_right_flat
+#print axioms Gtz.crossWedgeTotal_eq_zero_of_flat
+#print axioms Gtz.crossWedgeTotal_of_left_flat
+#print axioms Gtz.crossWedgeTotal_of_right_flat
+#print axioms Gtz.crossWedgeTotal_split_left
+#print axioms Gtz.crossWedgeTotal_split_right
+#print axioms Gtz.wedgeTotal_flatSplit
+#print axioms Gtz.mixedWedgeTotal_flatSplit
+#print axioms Gtz.wedgeBalanceValue
+#print axioms Gtz.wedgeBalanceAt_iff_pos_wedgeBalanceValue
+#print axioms Gtz.sharpBalanceValue
+#print axioms Gtz.wedgeBalanceValue_flatSplit
+#print axioms Gtz.sum_sdiff_flat_normalSq
+#print axioms Gtz.sharpNormalGap_eq_normalSurplus
+#print axioms Gtz.flatLeak
+#print axioms Gtz.flatLeak_eq_sum
+#print axioms Gtz.flatProbeGap_eq_reading_sub_flatLeak
+#print axioms Gtz.flatSplitLead
+#print axioms Gtz.wedgeBalanceValue_flatSplit_reading
+#print axioms Gtz.posDef_iff_flatSplitBalance
+#print axioms Gtz.sum_weight_lt_one_of_notMem
+#print axioms Gtz.sum_weight_mul_flatReading_sub_flatLeak
+#print axioms Gtz.exists_flatLabel_flatLeak_lt
+#print axioms Gtz.flatSplitLead_eq_neg_flatLeak_of_disjoint
+#print axioms Gtz.flatSplitLead_nonpos_of_disjoint
+#print axioms Gtz.eq_compl_of_compl_subset_of_card
+#print axioms Gtz.sharpBalanceValue_eq_of_compl_subset
+#print axioms Gtz.sharpBalanceValue_nonneg_of_compl_subset
+#print axioms Gtz.wedgeBalanceAt_of_flatSplitLead_pos
+#print axioms Gtz.planePair_sq_of_dominates
+#print axioms Gtz.one_le_freeNormalSq_of_dominates
+#print axioms Gtz.planePair_dominates_inPlane_of_dominates
+#print axioms Gtz.nonneg_det_of_nonneg_binaryForm
+#print axioms Gtz.gramDet_mul_pairGapExcess_nonneg_of_dominates
+#print axioms Gtz.pairGapExcessOf_nonneg_of_dominates_flatPair
+#print axioms Gtz.flatSplitLead_of_inter_singleton
+#print axioms Gtz.sharpBalanceValue_of_pair_singleton
+#print axioms Gtz.posDef_iff_mixedFlatSplit
+#print axioms Gtz.LineFlatSplitSelectorAt
+#print axioms Gtz.exists_posDef_cardThree_of_lineFlatSplitSelectorAt
+#print axioms Gtz.lineFlatSplitSelectorAt_of_exists_posDef_cardThree
+#print axioms Gtz.OneLineFlatSplitResidual
+#print axioms Gtz.oneLineTenthHeavyJointBlindLineSparse_of_flatSplitResidual
+#print axioms Gtz.flatSplitResidual_of_oneLineTenthHeavyJointBlindLineSparse
+#print axioms Gtz.oneLineFlatSplitResidual_iff
+#print axioms Gtz.exists_posDef_cardThree_of_twoMeetingLinesTransversalStrict
+#print axioms Gtz.TwoMeetingLinesFlatSplitResidual
+#print axioms Gtz.twoMeetingLinesTenthHeavyJointBlindTransversal_of_flatSplitResidual
+#print axioms Gtz.flatSplitResidual_of_twoMeetingLinesTenthHeavyJointBlindTransversal
+#print axioms Gtz.twoMeetingLinesFlatSplitResidual_iff
+#print axioms Gtz.oneLine_and_twoMeetingLines_of_lineFlatSplitSelector
+#print axioms Gtz.sdiff_singleton_of_triple
+#print axioms Gtz.oneLine_dominator_lineCount_le_two
+#print axioms Gtz.oneLine_dominator_linePair_covers_plane
+#print axioms Gtz.oneLine_dominator_linePair_gapExcess_nonneg
+#print axioms Gtz.oneLine_dominator_freePair_normal_sum
+
+-- Wave/WedgeBalanceAdjugate: the adjugate reading of the wedge balance, the
+-- normal-freedom theorem, the trace-and-balance selector, and the twenty-triple
+-- second-invariant layer law.
+#print axioms Gtz.sum_sum_pairMinor_symmetrize
+#print axioms Gtz.sum_smul_atomMatrix_entry
+#print axioms Gtz.halfWedgeSum_apply
+#print axioms Gtz.sum_sum_wedgeProduct_eq
+#print axioms Gtz.adjugate_sum_smul_atomMatrix
+#print axioms Gtz.wedgeShadow_eq_atomWedge_dotProduct
+#print axioms Gtz.dotProduct_pairSum_smul_atomMatrix_mulVec
+#print axioms Gtz.wedgeTotal_eq_dotProduct_adjugate_mulVec
+#print axioms Gtz.wedgeTotal_vertexDirection_eq_dotProduct_gapAdjugate
+#print axioms Gtz.dotProduct_adjugate_atomWedge_mulVec
+#print axioms Gtz.dotProduct_subsetSum_sub_one_mulVec_cross
+#print axioms Gtz.wedgeBalanceTotal_eq_wedgeTotal_vertexDirection
+#print axioms Gtz.wedgeBalanceAt_iff_wedgeTotal_vertexDirection_pos
+#print axioms Gtz.wedgeBalanceAt_iff_dotProduct_gapAdjugate_pos
+#print axioms Gtz.dotProduct_mulVec_comm_of_transpose
+#print axioms Gtz.dotProduct_mulVec_pivot_split
+#print axioms Gtz.posDef_of_pivotForm_pos_of_borderMinors
+#print axioms Gtz.borderMinors_of_posDef
+#print axioms Gtz.exists_orthogonal_ne_zero_of_unit
+#print axioms Gtz.gapBorderMinor_iff
+#print axioms Gtz.forall_wedgeBalanceAt_iff_definite
+#print axioms Gtz.forall_wedgeBalanceAt_normal_free
+#print axioms Gtz.dotProduct_single_gap_eq
+#print axioms Gtz.sum_axis_sq_eq_sum_leverage
+#print axioms Gtz.three_lt_sum_leverage_of_posDef
+#print axioms Gtz.sum_leverage_lt_three_of_posDef_neg
+#print axioms Gtz.posDef_iff_traceTest_and_wedgeBalance
+#print axioms Gtz.TraceWedgeSelector
+#print axioms Gtz.traceWedgeSelector_iff_wedgeBalanceSelector
+#print axioms Gtz.allFiveOnPath_of_traceWedgeSelector
+#print axioms Gtz.not_isTie_of_traceTest_and_wedgeBalance
+#print axioms Gtz.secondInvariantOfThree_gap_eq_signed_pairTotal
+#print axioms Gtz.card_powersetCard_three_six
+#print axioms Gtz.card_powersetCard_three_six_mem
+#print axioms Gtz.card_powersetCard_three_six_pair
+#print axioms Gtz.atomWedge_ne_zero_of_primitive
+#print axioms Gtz.sum_powersetCard_vertexDirection_pair
+#print axioms Gtz.sum_powersetCard_secondInvariant_pos
+#print axioms Gtz.exists_triple_secondInvariant_pos

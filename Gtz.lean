@@ -5094,3 +5094,60 @@ import Gtz.Wave.KFourIsotropicStar
 -- selector, which is a new entrance to all five on-path obligations, and the
 -- equivalence certifies that the entrance is not vacuous.
 import Gtz.Wave.WedgeLeakCriterion
+
+-- FORK-182.  The chart leverage floor.  A whitener that sends the mass moment
+-- to the identity has R times R transpose equal to the inverse moment, so the
+-- whitened atom of a label carries the statistical leverage score of its chart
+-- direction.  The design-side floor of `Gtz.leverage_one_le_of_isTie_sixThree`
+-- therefore reads on the chart as six division-free polynomial inequalities,
+-- and A2 with those six added is EQUIVALENT to A2.  The earlier tenth-heavy
+-- premise was vacuous by pigeonhole; this one is not.
+import Gtz.Wave.ThreeLinesHeavyLeverageFloor
+-- FORK-182.  The reading-cover cell is REFUTED.  A label that strictly
+-- maximizes the conductance reading at some probe must lie in every card-three
+-- reading cover, so four such labels refute the cell.  The witness is exact and
+-- rational at the slide one.  The vertex budget cell fires at the same point,
+-- so this removes a covering claim and exhibits no residual point.
+import Gtz.Wave.ThreeLinesHeavyReadingCoverRefuter
+-- FORK-182.  The weight-free excess floor.  The leverage floor is equivalent to
+-- a lower bound on the chart excess in the masses alone, which eliminates every
+-- weight from the load half of both budget cells.  The mass-only cells are
+-- sufficient conditions for the budget cells, not new blind atoms.
+import Gtz.Wave.ThreeLinesHeavyExcessFloor
+
+-- FORK-181.  The wedge balance, split at the flat labels.  A wedge shadow of two
+-- labels flat at the normal vanishes, so the three totals of the balance factor
+-- into a product of a probe difference and a normal difference plus the balance
+-- of the sharp labels.  Weighted Parseval makes the normal factor the plain
+-- normal surplus, and the weight deficit makes the probe factor the reading of
+-- the SELECTED flat labels minus the weighted leak of ALL flat labels.  The
+-- section-seven leak obstruction therefore bites only where the selected subset
+-- holds no flat label, and the averaging law shows some flat label reads every
+-- probe above the whole leak.  A weak card-three dominator with a flat pair
+-- covers the plane and has nonnegative pair gap excess at an independent pair,
+-- which the landed statements of that shape only reach from a positive definite
+-- gap.  One selector formula opens the one-line residual and the
+-- two-meeting-lines residual, and each door is an equivalence.
+import Gtz.Wave.OneLineWedgeFlatSplit
+
+-- Wave/WedgeBalanceAdjugate: the wedge balance of `Gtz/Wave/WedgeLeakCriterion.lean`
+-- read as the adjugate of the gap, and the normal removed from it.  Section 1
+-- proves the second-compound identity at rank three: the adjugate of an atom sum
+-- against an ARBITRARY REAL MEASURE is the halved pair total of the atom wedges.
+-- The measure may take either sign, which is what lets the gap `S_C - 1` enter as
+-- the atom sum of the signed measure `1_C - w`.  Sections 2 thru 3 turn the wedge
+-- shadow into a Plucker pairing and collapse inside plus outside minus crossing
+-- into ONE Lagrange form.  Section 4 gives the border criterion for an arbitrary
+-- symmetric matrix, which the landed design-level pair does not cover because the
+-- negative branch is not a design gap.  Section 5 is the headline: a border minor
+-- positive on a whole plane forces the gap to be DEFINITE, so the wedge balance at
+-- one unit normal is the balance at every unit normal.  Section 6 replaces the
+-- normal surplus by the normal-free trace test, and section 7 assembles
+-- `Gtz.TraceWedgeSelector`, EQUIVALENT to `Gtz.WedgeBalanceSelector` and with one
+-- quantifier fewer.  Sections 8 and 9 total the second invariant over the twenty
+-- triples and floor it away from zero on a primitive design of spread weight.
+-- ROUTE STATUS: the entrance to the five on-path obligations now needs no normal
+-- and no surplus, and the layer laws put the whole `(6, 3)` obstruction in the
+-- determinant, because the second-invariant layer total has the opposite sign to
+-- the determinant layer total.
+import Gtz.Wave.WedgeBalanceAdjugate
