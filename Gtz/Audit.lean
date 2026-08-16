@@ -31783,3 +31783,8 @@ run_cmd do
 #print axioms Gtz.tripleDetForm_pos_of_nonneg_cross_of_incoherent_pos
 #print axioms Gtz.exists_third_ne
 #print axioms Gtz.exists_nonneg_atomPairingProduct_sixThree
+#print axioms Gtz.not_forall_pos_tripleDetForm_of_nonneg_cross_of_pairMinors
+#print axioms Gtz.tripleDetForm_coherent_negative_witness
+#print axioms Gtz.not_forall_nonpos_tripleDetForm_of_neg_cross
+#print axioms Gtz.tripleDetForm_incoherent_positive_witness
+#print axioms Gtz.coherence_neither_sufficient_nor_necessary

@@ -336,4 +336,68 @@ theorem exists_nonneg_atomPairingProduct_sixThree (D : WeightedDesign 6 3) :
     rw [hzero]
     simp
 
+/-! ## 6. What coherence does NOT buy
+
+Section 2 shows a coherent triple with positive pair minors is positive definite
+ON THE EQUILATERAL LOCUS.  Neither the equilateral hypothesis nor the conclusion
+survives without it, and both failures are exhibited here at exact rational
+points.  These bound the results above from the other side, and they refute the
+selection rule that section 5 might otherwise suggest. -/
+
+/-- **THE EQUILATERAL HYPOTHESIS IS NOT REMOVABLE.**  A coherent triple whose
+three pair minors are all strictly positive can still have a negative third
+minor.  So coherence plus the triangle does NOT decide a triple in general, and
+`Gtz.tripleDetForm_equilateral_coherent_pos_of_triangle` is sharp in its
+hypothesis rather than merely convenient. -/
+theorem not_forall_pos_tripleDetForm_of_nonneg_cross_of_pairMinors :
+    ¬ ∀ p q r u v w : ℝ, 0 < p → 0 < q → 0 < r → 0 ≤ u * v * w →
+      0 < p * q - u ^ 2 → 0 < p * r - v ^ 2 → 0 < q * r - w ^ 2 →
+        0 < tripleDetForm p q r u v w := by
+  intro hall
+  have hcontra := hall 1 1 1 (9/10) (9/10) (1/10) (by norm_num) (by norm_num) (by norm_num)
+    (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  rw [tripleDetForm] at hcontra
+  norm_num at hcontra
+
+/-- The same witness, read as a value: the third minor is `-117/250` there while
+every pair minor is positive and the oriented product is `81/1000 > 0`. -/
+theorem tripleDetForm_coherent_negative_witness :
+    tripleDetForm 1 1 1 (9/10 : ℝ) (9/10) (1/10) = -(117/250) ∧
+      0 < (9/10 : ℝ) * (9/10) * (1/10) := by
+  constructor
+  · rw [tripleDetForm]; norm_num
+  · norm_num
+
+/-- **INCOHERENCE DOES NOT PRECLUDE DOMINATION.**  An incoherent triple can have
+a strictly positive third minor, so a selection rule cannot discard the
+incoherent triples either. -/
+theorem not_forall_nonpos_tripleDetForm_of_neg_cross :
+    ¬ ∀ p q r u v w : ℝ, u * v * w < 0 → tripleDetForm p q r u v w ≤ 0 := by
+  intro hall
+  have hcontra := hall 1 1 1 (1/4) (1/4) (-(1/4)) (by norm_num)
+  rw [tripleDetForm] at hcontra
+  norm_num at hcontra
+
+/-- The incoherent witness as a value: `25/32 > 0` at oriented product
+`-(1/64) < 0`. -/
+theorem tripleDetForm_incoherent_positive_witness :
+    tripleDetForm 1 1 1 (1/4 : ℝ) (1/4) (-(1/4)) = 25/32 ∧
+      (1/4 : ℝ) * (1/4) * (-(1/4)) < 0 := by
+  constructor
+  · rw [tripleDetForm]; norm_num
+  · norm_num
+
+/-- **THE COHERENT SELECTION RULE IS REFUTED AT THE SCALAR LEVEL.**  Coherence is
+neither sufficient for a positive third minor nor necessary for one.  Taken with
+`Gtz.tripleDetForm_le_abs`, which says the coherent orientation is the best case
+at fixed magnitudes, the picture is exact: reading the sign tells you which of two
+values the minor takes, and it does not tell you the sign of either value. -/
+theorem coherence_neither_sufficient_nor_necessary :
+    (¬ ∀ p q r u v w : ℝ, 0 < p → 0 < q → 0 < r → 0 ≤ u * v * w →
+        0 < p * q - u ^ 2 → 0 < p * r - v ^ 2 → 0 < q * r - w ^ 2 →
+          0 < tripleDetForm p q r u v w) ∧
+      (¬ ∀ p q r u v w : ℝ, u * v * w < 0 → tripleDetForm p q r u v w ≤ 0) :=
+  ⟨not_forall_pos_tripleDetForm_of_nonneg_cross_of_pairMinors,
+    not_forall_nonpos_tripleDetForm_of_neg_cross⟩
+
 end Gtz
