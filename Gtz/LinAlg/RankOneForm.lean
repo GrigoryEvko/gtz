@@ -44,7 +44,7 @@ reading and the standard basis plumbing, which is the step that makes the
 Cauchy-Schwarz bound below cheap. -/
 
 /-- The quadratic form of a positive semidefinite matrix is nonnegative. -/
-theorem quadForm_nonneg_of_posSemidef {mat : Matrix (Fin size) (Fin size) ℝ}
+theorem quadForm_nonneg_of_posSemidef_rankOne {mat : Matrix (Fin size) (Fin size) ℝ}
     (hpsd : mat.PosSemidef) (probe : Fin size → ℝ) :
     0 ≤ probe ⬝ᵥ (mat *ᵥ probe) := by
   have h := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hpsd).2 probe
@@ -95,7 +95,7 @@ theorem posSemidef_offDiag_sq_le {mat : Matrix (Fin size) (Fin size) ℝ}
   have hquad : ∀ step : ℝ,
       0 ≤ mat row row * (step * step) + (2 * mat row col) * step + mat col col := by
     intro step
-    have h := quadForm_nonneg_of_posSemidef hpsd
+    have h := quadForm_nonneg_of_posSemidef_rankOne hpsd
       (Pi.single row step + Pi.single col (1 : ℝ))
     rw [quadForm_pair] at h
     rw [hsymm] at h

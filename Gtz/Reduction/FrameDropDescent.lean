@@ -712,7 +712,7 @@ theorem sum_coeff_inverseForm_eq_rank {atomCount : ℕ}
       coeff c * (atomFamily c ⬝ᵥ (middleMat⁻¹ *ᵥ atomFamily c))
         = Matrix.trace (middleMat⁻¹ * (coeff c • atomMatrix (atomFamily c))) := by
     intro c _
-    rw [Matrix.mul_smul, Matrix.trace_smul, trace_mul_atomMatrix, smul_eq_mul]
+    rw [Matrix.mul_smul, Matrix.trace_smul, trace_mul_atomMatrix_massGap, smul_eq_mul]
   rw [Finset.sum_congr rfl hterm, ← Matrix.trace_sum, ← Matrix.mul_sum, ← hmiddleMat,
     Matrix.nonsing_inv_mul middleMat hunit, Matrix.trace_one, Fintype.card_fin]
 
@@ -1008,7 +1008,7 @@ theorem framePivot_eq_inverseForm {atomCount : ℕ} (atomFamily : Fin atomCount 
     (base : Finset (Fin atomCount)) (label : Fin atomCount) :
     framePivot atomFamily base label
       = atomFamily label ⬝ᵥ ((frameGap atomFamily base)⁻¹ *ᵥ atomFamily label) :=
-  trace_mul_atomMatrix _ _
+  trace_mul_atomMatrix_massGap _ _
 
 /-- The frame pivot against a strictly dominating base is nonnegative. -/
 theorem framePivot_nonneg {atomCount : ℕ} (atomFamily : Fin atomCount → Fin rank → ℝ)

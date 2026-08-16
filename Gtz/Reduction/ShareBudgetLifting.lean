@@ -162,7 +162,7 @@ theorem sum_mul_sq_le_budget_mul {size : ℕ} (selection : Finset (Fin size))
 design against any probe resolve the probe's squared norm.  Specialised at a
 scaled atom this is the row law `∑_c t_c β_c² = 1` the budget accounting
 consumes. -/
-theorem sum_weight_mul_sq_dotProduct {m k : ℕ} (D : WeightedDesign m k)
+theorem sum_weight_mul_sq_dotProduct_shareBudget {m k : ℕ} (D : WeightedDesign m k)
     (probe : Fin k → ℝ) :
     ∑ atomIndex, D.weight atomIndex * (D.atom atomIndex ⬝ᵥ probe) ^ 2
       = probe ⬝ᵥ probe := by
@@ -308,7 +308,7 @@ theorem exists_dominating_insert_of_share_budget {m k : ℕ}
           = (D.atom atomIndex ⬝ᵥ (scale • D.atom pivot)) ^ 2 := fun atomIndex => by
       rw [dotProduct_comm]
     rw [Finset.sum_congr rfl fun atomIndex _ => by rw [hflip]]
-    rw [sum_weight_mul_sq_dotProduct D (scale • D.atom pivot)]
+    rw [sum_weight_mul_sq_dotProduct_shareBudget D (scale • D.atom pivot)]
     exact hunitNorm
   have hsurvivorOverlapSum : ∑ survivor : Fin m,
       D.weight (pivot.succAbove survivor)

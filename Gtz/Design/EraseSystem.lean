@@ -168,7 +168,7 @@ theorem sum_erasePair_weight_mul_edgeTripleValue (D : WeightedDesign sizeIndex 3
 /-- **THE DIAGONAL BUDGET** (general size and rank): the weighted squared
 pairings of the other atoms through one atom resolve its leverage times one
 minus its share.  This is the shipped Parseval row law
-`Gtz.sum_weight_mul_sq_dotProduct` probed at the atom itself, with the
+`Gtz.sum_weight_mul_sq_dotProduct_shareBudget` probed at the atom itself, with the
 diagonal term peeled off — the per-atom capacity every erase-magnitude
 argument prices against. -/
 theorem sum_erase_weight_mul_sq_dotProduct (D : WeightedDesign sizeIndex rank)
@@ -176,7 +176,7 @@ theorem sum_erase_weight_mul_sq_dotProduct (D : WeightedDesign sizeIndex rank)
     ∑ other ∈ Finset.univ.erase atomIndex,
         D.weight other * (D.atom other ⬝ᵥ D.atom atomIndex) ^ 2
       = leverageOf (D.atom atomIndex) * (1 - atomShare D atomIndex) := by
-  have hfull := sum_weight_mul_sq_dotProduct D (D.atom atomIndex)
+  have hfull := sum_weight_mul_sq_dotProduct_shareBudget D (D.atom atomIndex)
   have hself : D.atom atomIndex ⬝ᵥ D.atom atomIndex
       = leverageOf (D.atom atomIndex) := dotProduct_self_eq_sum_sq _
   have hsplit := Finset.add_sum_erase (Finset.univ : Finset (Fin sizeIndex))

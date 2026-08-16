@@ -2924,6 +2924,8 @@ import Gtz.Wave.ZeroLeakPair
 #print axioms Gtz.boxGoodTriangleCovering_of_le
 #print axioms Gtz.icosaDesign_leverage
 #print axioms Gtz.icosaDesign_allHeavy
+#print axioms Gtz.icosaDesign_leverage_goodTriple
+#print axioms Gtz.icosaDesign_allHeavy_goodTriple
 #print axioms Gtz.icosaDesign_heavyExcess
 #print axioms Gtz.icosaDesign_atomPairing_sq_of_ne
 #print axioms Gtz.icosaDesign_boxSlack_of_ne
@@ -8623,7 +8625,7 @@ import Gtz.Wave.ZeroLeakPair
 #print axioms Gtz.IsHollowInvolution.det_one_add_submatrix_three_eq_hollowTripleBracket
 #print axioms Gtz.symmetricMatrixFour
 #print axioms Gtz.det_symmetricMatrixFour
-#print axioms Gtz.injective_four_of_ne
+#print axioms Gtz.injective_four_of_ne_minorSum
 #print axioms Gtz.isHollowInvolution_correlationInvolution_of_uniformShare
 #print axioms Gtz.hollowTripleSigma_correlationInvolution_eq
 #print axioms Gtz.hollowTripleProduct_correlationInvolution_eq
@@ -11764,7 +11766,7 @@ import Gtz.Wave.ZeroLeakPair
 #print axioms Gtz.exists_mem_support_le_trace_gap
 #print axioms Gtz.isBalancedSubsetMultiplier_compl
 #print axioms Gtz.hypersimplexRelaxationWeight
-#print axioms Gtz.weight_le_one
+#print axioms Gtz.weight_le_one_balanced
 #print axioms Gtz.hypersimplexRelaxationWeight_sub_weight_nonneg
 #print axioms Gtz.hypersimplexRelaxationWeight_mem
 #print axioms Gtz.posSemidef_hypersimplexRelaxation
@@ -12236,7 +12238,7 @@ closed unconditionally. -/
 #print axioms Gtz.exceptionalDesignsDominate_of_forall_not_isExceptional
 #print axioms Gtz.two_mul_le_add_of_sq_le_mul
 #print axioms Gtz.sum_mul_sq_le_budget_mul
-#print axioms Gtz.sum_weight_mul_sq_dotProduct
+#print axioms Gtz.sum_weight_mul_sq_dotProduct_shareBudget
 #print axioms Gtz.boostedPlaneDesign
 #print axioms Gtz.exists_dominating_insert_of_share_budget
 #print axioms Gtz.exists_dominating_triple_of_share_budget
@@ -18889,7 +18891,7 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.kFourEveryPointHasStrictTree_of_livePairCompletes
 #print axioms Gtz.kFourKnifeBandRefined_of_livePairCompletes
 #print axioms Gtz.bandResidualWitnessPoint_starGap
-#print axioms Gtz.bandResidualWitnessPoint_hasStrictTree
+#print axioms Gtz.bandResidualWitnessPoint_hasStrictTree_atlas
 #print axioms Gtz.bandResidualWitnessPoint_offBothCoveredRegions_hasStrictTree
 
 -- Design/ThreeLinesAtlas, the three-lines chart at its sharpest.  One
@@ -24569,9 +24571,9 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 -- the mass-gap descent: the pivot drop, the pivot budget, the two mass-gap
 -- firings, the exact obstruction, and the tie-carrying recut of the arm
 -- ============================================================
-#print axioms Gtz.trace_mul_atomMatrix
+#print axioms Gtz.trace_mul_atomMatrix_massGap
 #print axioms Gtz.pivot_eq_inverseForm
-#print axioms Gtz.subsetSum_erase
+#print axioms Gtz.subsetSum_erase_massGap
 #print axioms Gtz.posDef_sub_atomMatrix_of_inverseForm_lt_one
 #print axioms Gtz.posDef_erase_of_pivot_lt_one
 #print axioms Gtz.sum_pivot_eq_rank_add_trace_inv
@@ -30423,7 +30425,7 @@ run_cmd do
 -- the entries, the zero-diagonal collapse, the vanishing minor predicate, the
 -- rank-one engine, the producer, the classification, the scale-free form, and
 -- the bridge to the size-three two-kernel law.
-#print axioms Gtz.quadForm_nonneg_of_posSemidef
+#print axioms Gtz.quadForm_nonneg_of_posSemidef_rankOne
 #print axioms Gtz.symm_of_posSemidef
 #print axioms Gtz.single_pair_dotProduct_mulVec
 #print axioms Gtz.quadForm_pair
@@ -30575,7 +30577,7 @@ run_cmd do
 #print axioms Gtz.sq_add_le_split
 #print axioms Gtz.sq_add_smul_le_split
 #print axioms Gtz.sq_sub_le_split
-#print axioms Gtz.kFourDirection_span
+#print axioms Gtz.kFourDirection_span_vertexCover
 #print axioms Gtz.kFourDirection_dotProduct
 #print axioms Gtz.KFourStarCoverCellFires
 #print axioms Gtz.readingCover_starTriple_of_kFourCellFires

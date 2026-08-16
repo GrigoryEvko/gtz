@@ -552,7 +552,7 @@ only because the tree currently re-derives it inline at
 and the balanced layer needs it twice more.  It is a one-line consumption, not a
 second proof.  (The field-generic analogue is `Gtz.fieldWeight_le_one`, which lives on
 `FieldWeightedDesign` and so does not apply here.) -/
-theorem weight_le_one (design : WeightedDesign size rank) (atomIndex : Fin size) :
+theorem weight_le_one_balanced (design : WeightedDesign size rank) (atomIndex : Fin size) :
     design.weight atomIndex ≤ 1 :=
   weight_le_one_of_sum_one design.weight_sum_one
     (fun other => (design.weight_pos other).le) atomIndex
@@ -571,7 +571,7 @@ theorem hypersimplexRelaxationWeight_sub_weight_nonneg (design : WeightedDesign 
     have : (1 : ℝ) ≤ (rank : ℝ) := by exact_mod_cast hrank
     positivity
   have hgap : (0 : ℝ) ≤ 1 - design.weight atomIndex := by
-    linarith [weight_le_one design atomIndex]
+    linarith [weight_le_one_balanced design atomIndex]
   rw [hypersimplexRelaxationWeight]
   nlinarith [mul_nonneg hratio hgap]
 
@@ -591,7 +591,7 @@ theorem hypersimplexRelaxationWeight_mem (design : WeightedDesign size rank) (hs
   · have := hypersimplexRelaxationWeight_sub_weight_nonneg design hsize hrank atomIndex
     linarith [(design.weight_pos atomIndex).le]
   · have hgap : (0 : ℝ) ≤ 1 - design.weight atomIndex := by
-      linarith [weight_le_one design atomIndex]
+      linarith [weight_le_one_balanced design atomIndex]
     have hbound : ((rank : ℝ) - 1) / ((size : ℝ) - 1) * (1 - design.weight atomIndex)
         ≤ 1 * (1 - design.weight atomIndex) := mul_le_mul_of_nonneg_right hratiole hgap
     rw [hypersimplexRelaxationWeight]; linarith

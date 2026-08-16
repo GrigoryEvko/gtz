@@ -760,20 +760,20 @@ theorem boxGoodTriangleCovering_of_le {size larger : ℕ} (hle : size ≤ larger
 
 /-! ### The refutation: the maximal real equiangular design has an EMPTY box graph -/
 
-theorem icosaDesign_leverage (atomIndex : Fin 6) :
+theorem icosaDesign_leverage_goodTriple (atomIndex : Fin 6) :
     leverageOf (icosaDesign.atom atomIndex) = 3 := by
   rw [icosaDesign_atom, leverageOf, ← dotProduct_self_eq_sum_sq]
   exact icosaAtom_leverage atomIndex
 
-theorem icosaDesign_allHeavy : AllHeavy icosaDesign := by
+theorem icosaDesign_allHeavy_goodTriple : AllHeavy icosaDesign := by
   intro atomIndex
-  rw [icosaDesign_leverage]
+  rw [icosaDesign_leverage_goodTriple]
   norm_num
 
 /-- Every icosahedral atom has heavy excess exactly `2`. -/
 theorem icosaDesign_heavyExcess (atomIndex : Fin 6) :
     heavyExcess icosaDesign atomIndex = 2 := by
-  rw [heavyExcess, icosaDesign_leverage]
+  rw [heavyExcess, icosaDesign_leverage_goodTriple]
   norm_num
 
 /-- Every distinct icosahedral pair has squared pairing exactly `9/5` — squared
@@ -798,7 +798,7 @@ theorem icosaDesign_boxSlack_of_ne {atomFirst atomSecond : Fin 6}
 condition on the two indices. -/
 theorem icosaDesign_boxSlack_self (atomIndex : Fin 6) :
     boxSlack icosaDesign atomIndex atomIndex = -32 := by
-  rw [boxSlack, icosaDesign_heavyExcess, atomPairing_self, icosaDesign_leverage]
+  rw [boxSlack, icosaDesign_heavyExcess, atomPairing_self, icosaDesign_leverage_goodTriple]
   norm_num
 
 /-- **THE BOX-GOOD GRAPH OF THE MAXIMAL REAL EQUIANGULAR DESIGN IS EMPTY.** All
@@ -819,7 +819,7 @@ dominates STRICTLY (`icosaDesign_strictly_dominates`), with margin `2 − 3/√5
 what the emptiness refutes is the certificate family, not the conjecture. -/
 theorem not_boxGoodTriangleCovering_six : ¬ BoxGoodTriangleCovering 6 := by
   intro hcover
-  obtain ⟨first, second, _, _, _, _, hbox, _, _⟩ := hcover icosaDesign icosaDesign_allHeavy
+  obtain ⟨first, second, _, _, _, _, hbox, _, _⟩ := hcover icosaDesign icosaDesign_allHeavy_goodTriple
   exact icosaDesign_no_isBoxGoodPair first second hbox
 
 /-- **The box form is false at every size from six upward**, by size monotonicity —
@@ -837,7 +837,7 @@ and the two copies are joined by no box edge either. -/
 noncomputable def icosaSevenDesign : WeightedDesign 7 3 := replicatedDesign icosaDesign 0
 
 theorem icosaSevenDesign_allHeavy : AllHeavy icosaSevenDesign :=
-  replicatedDesign_allHeavy icosaDesign 0 icosaDesign_allHeavy
+  replicatedDesign_allHeavy icosaDesign 0 icosaDesign_allHeavy_goodTriple
 
 /-- **All `21` pairs of the seven-atom icosahedral witness are box-bad.** Against
 the `9` the Turán–Mantel counting needed: the attack fails by a factor `21/9`. -/
@@ -1149,7 +1149,7 @@ diagonal and `9` on it, so the bound needs no side condition on the two indices.
 theorem icosaDesign_atomPairing_sq_ge (atomFirst atomSecond : Fin 6) :
     9 / 5 ≤ atomPairing icosaDesign atomFirst atomSecond ^ 2 := by
   rcases eq_or_ne atomFirst atomSecond with hsame | hne
-  · rw [hsame, atomPairing_self, icosaDesign_leverage]
+  · rw [hsame, atomPairing_self, icosaDesign_leverage_goodTriple]
     norm_num
   · exact le_of_eq (icosaDesign_atomPairing_sq_of_ne hne).symm
 
@@ -1189,7 +1189,7 @@ theorem icosaDesign_no_isSignBlindGoodTriple (first second third : Fin 6) :
 theorem not_signBlindGoodTripleCovering_six : ¬ SignBlindGoodTripleCovering 6 := by
   intro hcover
   obtain ⟨first, second, third, _, _, _, hsignBlind⟩ :=
-    hcover icosaDesign icosaDesign_allHeavy
+    hcover icosaDesign icosaDesign_allHeavy_goodTriple
   exact icosaDesign_no_isSignBlindGoodTriple first second third hsignBlind
 
 /-- The box refutation is a COROLLARY of the sign-blind one, since the box body is
@@ -1370,7 +1370,7 @@ theorem icosaDesign_dominates_iff_pairingProduct {first second third : Fin 6}
         (icosaDesign_heavyExcess_pos third),
       icosaDesign_elliptopeBracket_of_distinct hfirstSecond hfirstThird hsecondThird]
     constructor <;> intro hbound <;> linarith
-  rw [dominates_triple_iff_isElliptopeGoodTriangle icosaDesign_allHeavy hfirstSecond
+  rw [dominates_triple_iff_isElliptopeGoodTriangle icosaDesign_allHeavy_goodTriple hfirstSecond
       hfirstThird hsecondThird, IsElliptopeGoodTriangle]
   constructor
   · intro hgood

@@ -1079,7 +1079,7 @@ theorem det_symmetricMatrixFour
 
 /-- Four pairwise distinct values enumerate injectively — the size-four twin of
 `Gtz.injective_three_of_ne`. -/
-theorem injective_four_of_ne {carrier : Type*}
+theorem injective_four_of_ne_minorSum {carrier : Type*}
     {firstValue secondValue thirdValue fourthValue : carrier}
     (hfirstSecond : firstValue ≠ secondValue) (hfirstThird : firstValue ≠ thirdValue)
     (hfirstFourth : firstValue ≠ fourthValue) (hsecondThird : secondValue ≠ thirdValue)
@@ -1165,7 +1165,7 @@ theorem det_smul_one_sub_submatrix_four (hinvol : IsHollowInvolution invol)
         - invol.submatrix ![first, second, third, fourth] ![first, second, third, fourth]).det
       = (probeValue ^ 2 - 1) * (probeValue ^ 2 - invol fifth sixth ^ 2) := by
   have hinjective : Function.Injective ![first, second, third, fourth] :=
-    injective_four_of_ne (ne_of_bijective_six hbijective (by decide : (0 : Fin 6) ≠ 1))
+    injective_four_of_ne_minorSum (ne_of_bijective_six hbijective (by decide : (0 : Fin 6) ≠ 1))
       (ne_of_bijective_six hbijective (by decide : (0 : Fin 6) ≠ 2))
       (ne_of_bijective_six hbijective (by decide : (0 : Fin 6) ≠ 3))
       (ne_of_bijective_six hbijective (by decide : (1 : Fin 6) ≠ 2))

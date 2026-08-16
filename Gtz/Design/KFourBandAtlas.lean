@@ -1199,7 +1199,7 @@ theorem bandResidualWitnessPoint_starGap :
 /-- **The canonical band inhabitant is not a counterexample.**  The chart point
 that fires no Layer-A cell and no exchange star still carries a strictly
 dominating spanning tree, namely the star `{0,1,3}` at node one. -/
-theorem bandResidualWitnessPoint_hasStrictTree :
+theorem bandResidualWitnessPoint_hasStrictTree_atlas :
     ∃ tree ∈ kFourSpanningTreeList,
       (directionChartGap kFourDirection bandResidualWitnessPoint.mass
         bandResidualWitnessPoint.weight tree).PosDef := by
@@ -1219,6 +1219,6 @@ theorem bandResidualWitnessPoint_offBothCoveredRegions_hasStrictTree :
             bandResidualWitnessPoint.weight tree).PosDef :=
   ⟨bandResidualWitnessPoint_notLayerACellFires,
     bandResidualWitnessPoint_notExchangeStarCellFires,
-    bandResidualWitnessPoint_hasStrictTree⟩
+    bandResidualWitnessPoint_hasStrictTree_atlas⟩
 
 end Gtz

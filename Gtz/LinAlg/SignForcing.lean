@@ -929,7 +929,7 @@ theorem icosaDesign_dominates_of_coherentPairings {first second third : Fin 6}
     intro atomFirst atomSecond hne
     rw [icosaDesign_atomPairing_sq_of_ne hne, icosaDesign_heavyExcess, icosaDesign_heavyExcess]
     norm_num
-  exact dominates_of_coherentHalfBoxTriangle icosaDesign_allHeavy hfirstSecond hfirstThird
+  exact dominates_of_coherentHalfBoxTriangle icosaDesign_allHeavy_goodTriple hfirstSecond hfirstThird
     hsecondThird hcoherent (hedge _ _ hfirstSecond) (hedge _ _ hfirstThird)
     (hedge _ _ hsecondThird)
 

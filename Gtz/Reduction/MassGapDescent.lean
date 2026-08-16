@@ -78,7 +78,7 @@ variable {size rank : ℕ}
 /-- The trace pairing of a matrix against an atom is the atom's form in that
 matrix.  This is the dictionary entry that turns `Gtz.pivot`, which is stated
 through the trace, into a quadratic form. -/
-theorem trace_mul_atomMatrix (gramMat : Matrix (Fin rank) (Fin rank) ℝ)
+theorem trace_mul_atomMatrix_massGap (gramMat : Matrix (Fin rank) (Fin rank) ℝ)
     (atomVec : Fin rank → ℝ) :
     Matrix.trace (gramMat * atomMatrix atomVec) = atomVec ⬝ᵥ (gramMat *ᵥ atomVec) := by
   rw [Matrix.trace]
@@ -92,10 +92,10 @@ theorem pivot_eq_inverseForm (design : WeightedDesign size rank)
     (base : Finset (Fin size)) (label : Fin size) :
     pivot design base label
       = design.atom label ⬝ᵥ ((subsetSum design base - 1)⁻¹ *ᵥ design.atom label) :=
-  trace_mul_atomMatrix _ _
+  trace_mul_atomMatrix_massGap _ _
 
 /-- Erasing a label from a subset removes exactly that label's atom. -/
-theorem subsetSum_erase (design : WeightedDesign size rank)
+theorem subsetSum_erase_massGap (design : WeightedDesign size rank)
     {selected : Finset (Fin size)} {label : Fin size} (hmem : label ∈ selected) :
     subsetSum design (selected.erase label)
       = subsetSum design selected - atomMatrix (design.atom label) := by
@@ -135,7 +135,7 @@ theorem posDef_erase_of_pivot_lt_one (design : WeightedDesign size rank)
     (subsetSum design (selected.erase label) - 1).PosDef := by
   have hstep := posDef_sub_atomMatrix_of_inverseForm_lt_one hposDef
     (source := design.atom label) (by rwa [← pivot_eq_inverseForm])
-  rw [subsetSum_erase design hmem]
+  rw [subsetSum_erase_massGap design hmem]
   have hrearrange : subsetSum design selected - atomMatrix (design.atom label) - 1
       = subsetSum design selected - 1 - atomMatrix (design.atom label) := by
     abel
@@ -454,7 +454,7 @@ theorem sum_stress_middleInverseForm_eq_rank (design : WeightedDesign size rank)
       stressCoeff c * (design.atom c ⬝ᵥ (middleMat⁻¹ *ᵥ design.atom c))
         = Matrix.trace (middleMat⁻¹ * (stressCoeff c • atomMatrix (design.atom c))) := by
     intro c _
-    rw [Matrix.mul_smul, Matrix.trace_smul, trace_mul_atomMatrix, smul_eq_mul]
+    rw [Matrix.mul_smul, Matrix.trace_smul, trace_mul_atomMatrix_massGap, smul_eq_mul]
   rw [Finset.sum_congr rfl hterm, ← Matrix.trace_sum, ← Matrix.mul_sum, ← hmiddleMat,
     Matrix.nonsing_inv_mul middleMat hunit, Matrix.trace_one, Fintype.card_fin]
 

@@ -808,7 +808,7 @@ theorem icosaDesign_dominates_iff_tripleParity {first second third : Fin 6}
     abs_nonneg _
   have hgap := icosaDesign_excessGap hfirstSecond hfirstThird hsecondThird
   have hbridge := discriminantTie_eq_excessGap_add_parity icosaDesign first second third
-  rw [dominates_triple_iff_isElliptopeGoodTriangle icosaDesign_allHeavy hfirstSecond
+  rw [dominates_triple_iff_isElliptopeGoodTriangle icosaDesign_allHeavy_goodTriple hfirstSecond
     hfirstThird hsecondThird]
   constructor
   · rintro ⟨-, htie⟩

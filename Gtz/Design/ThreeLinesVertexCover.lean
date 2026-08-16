@@ -355,7 +355,7 @@ triple.  That triple is one of the nine surviving spanning trees, so the cell
 produces exactly what the knife band asks for. -/
 
 /-- The K4 chart directions span: the last three are the coordinate axes. -/
-theorem kFourDirection_span (probe : Fin 3 → ℝ)
+theorem kFourDirection_span_vertexCover (probe : Fin 3 → ℝ)
     (hzero : ∀ label, kFourDirection label ⬝ᵥ probe = 0) : probe = 0 := by
   have hthree := hzero 3
   have hfour := hzero 4
@@ -453,7 +453,7 @@ theorem posDef_kFour_starTriple_of_cellFires (point : DirectionChartPoint 6)
     (directionChartGap kFourDirection point.mass point.weight
       ({3, 4, 5} : Finset (Fin 6))).PosDef :=
   posDef_directionChartGap_of_readingCover kFourDirection point.mass point.weight
-    point.mass_pos point.weight_pos point.weight_sum_one kFourDirection_span
+    point.mass_pos point.weight_pos point.weight_sum_one kFourDirection_span_vertexCover
     (by decide) (readingCover_starTriple_of_kFourCellFires point hcell)
 
 /-- **The strict tree from the K4 star cell.** -/
