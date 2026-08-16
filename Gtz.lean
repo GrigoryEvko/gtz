@@ -4865,6 +4865,7 @@ import Gtz.Wave.OrbitDesignationRefuter
 -- three boosted crosses, so the pair data pins its magnitude and leaves only
 -- its sign free.  Two root-free cells follow, and the constant four is sharp.
 import Gtz.Wave.ComplementInvariantCell
+import Gtz.Wave.LeverageRowCell
 
 -- The line-free moduli, and the assembled chart programme.  The fourteen walls
 -- make the admissible region exactly the cell, and each of the four parameters
