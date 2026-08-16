@@ -51,23 +51,61 @@ unit normal, no flat set, no orthogonal probe.
 
 * `Gtz.sharpBalance_determinant` — the sharp determinant law, at any card-three
   flat complement.  Parseval enters here and only here.
-* `Gtz.exists_mixedProbe_sharpBalanceValue_nonpos` — a sign criterion that replaces
-  the landed pair-wedge refutation.  A negative sharp determinant supplies an
-  explicit in-plane probe where the sharp balance is not positive.
+* `Gtz.exists_mixedProbe_sharpBalanceValue_nonpos` — a sign criterion that
+  replaces the landed pair-wedge refutation.  A negative sharp determinant
+  supplies an explicit in-plane probe where the sharp balance is not positive.
 * `Gtz.flatSplit_determinant` — the factorization of the combined determinant.
 * `Gtz.exists_sharp_selection_surplus_pos` — the SURPLUS FLOOR.  Every design
   with a nonempty flat set carries a sharp label whose height square is more than
   one, so every selection through that label has a positive normal surplus.
-* `Gtz.flatSplitMinor_determinant` — the INTRINSIC form.  The whole determinant
-  is one number times the square of the plane bracket of the two probes, so the
-  test does not depend on which probe pair reads it.
-* `Gtz.lineFlatSplitSelectorAt_of_combinedMinor_pos` — a producer of the target
-  selector from one probe value and one number.
+
+## The plane form, and the general criterion
+
+Sections 7 thru 11 drop the flat set.  A PLANE FORM is a measure-weighted sum of
+squared readings of directions that are flat against the normal.  Its determinant
+at a pair of probes is one number, the MINOR, times the square of the plane
+bracket of the probes (`Gtz.planeForm_determinant`).  The whole wedge balance is
+one plane form indexed by ordered label pairs, so:
+
+* `Gtz.wedgeMinor` — one number per subset and per unit normal, built from the
+  split measure and the brackets of the design's own shadow directions.
+* `Gtz.posDef_iff_surplus_and_wedgeMinor` — STRICT DOMINATION at rank three is
+  decided by a normal surplus, a wedge minor and ONE probe reading.  Any size,
+  any subset, any unit normal.
+* `Gtz.gtzWeighted_rank_three_of_wedgeMinorSelector` — the objective itself, at
+  every size, from three strict inequalities per design.
+* `Gtz.wedgeMinorSelector_iff_exists_strictTriple` — that selector is EXACTLY the
+  strict half of rank-three GTZ, so it is neither a strengthening nor a weakening
+  of it.
+
+## The one-line lane
+
+* `Gtz.wedgeMinor_eq_surplus_mul_flatSplitReduced` — at a flat set of complement
+  size three the wedge minor FACTORS, and the normal surplus is one factor.  So
+  the surplus divides the minor and the two selector ingredients are not
+  independent.
+* `Gtz.exists_tallFree_lineFlatSplitSelector_producer` — the one-line residual
+  with the surplus discharged.  One free label supplies the surplus for every
+  selection through it, and what remains is one polynomial inequality on
+  `Gtz.flatSplitReduced` plus one probe sign.
+* `Gtz.oneLine_and_twoMeetingLines_of_wedgeMinorSelector` — both line
+  obligations from one minor condition.
 
 ## Rank
 
-Sections 1 thru 4 and section 6 consume rank three, because `Gtz.tripleBracket`
-and `Gtz.crossProduct` live there.  Section 5 is rank generic.
+Every section that names `Gtz.tripleBracket` or `Gtz.crossProduct` consumes rank
+three.  Section 5, the surplus floor, is rank generic, and so are
+`Gtz.splitMeasure_normalSq_triple_eq_surplus`, `Gtz.wedgeDirection` and
+`Gtz.wedgeBalanceValue_eq_wedgeTotal_splitMeasure`.
+
+## Field
+
+Every statement here is an order statement over the reals except the bracket
+identities of section 1, `Gtz.planeForm_determinant`, `Gtz.planeForm_crossDeterminant`
+and the two determinant laws, which are ring identities.  A ring identity compiles
+over any commutative ring, so those carry no field content.  The criteria of
+sections 11 thru 14 read strict inequalities, and `Matrix.PosDef` over `ℝ`, so they
+do not.
 -/
 
 namespace Gtz
@@ -1053,8 +1091,7 @@ theorem sharpPairDirection_perp {size rank : ℕ} (design : WeightedDesign size 
     (pairIndex : Fin 3) :
     sharpPairDirection design normalVec sharpOne sharpTwo sharpThree pairIndex ⬝ᵥ normalVec = 0 := by
   fin_cases pairIndex <;>
-    simp only [sharpPairDirection, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-      Matrix.cons_val_two, Matrix.tail_cons, Matrix.cons_val_fin_one] <;>
+    simp only [sharpPairDirection] <;>
     exact wedgeDirection_dotProduct_normal design normalVec _ _
 
 /-- The sharp balance is a plane form on the three sharp pairs. -/
@@ -1192,3 +1229,696 @@ theorem planeFormMinor_sharpPair_eq {size : ℕ} (design : WeightedDesign size 3
   rw [hzeroOne, hzeroTwo, hzeroThree]
   rw [← hsurplus]
   ring
+
+/-! ## 10.  The general wedge minor, at any design, any subset and any unit normal
+
+Section 9 read the flat split.  This section drops the flat set.  The whole wedge
+balance is ONE wedge total under the split measure over all the labels, so it is
+a plane form indexed by ordered label pairs, and section 7 decides it.  The
+outcome is a probe-free criterion for STRICT DOMINATION at rank three, written in
+the design's own bracket data. -/
+
+theorem tripleBracket_smul_left (scale : ℝ) (leftVec midVec rightVec : Fin 3 → ℝ) :
+    tripleBracket (scale • leftVec) midVec rightVec
+      = scale * tripleBracket leftVec midVec rightVec := by
+  simp only [tripleBracket_eq, Pi.smul_apply, smul_eq_mul]
+  ring
+
+theorem tripleBracket_smul_mid (scale : ℝ) (leftVec midVec rightVec : Fin 3 → ℝ) :
+    tripleBracket leftVec (scale • midVec) rightVec
+      = scale * tripleBracket leftVec midVec rightVec := by
+  simp only [tripleBracket_eq, Pi.smul_apply, smul_eq_mul]
+  ring
+
+/-- A nonzero normal at rank three always carries a nonzero flat probe. -/
+theorem exists_inPlane_probe_ne_zero {normalVec : Fin 3 → ℝ} (_hnormalNe : normalVec ≠ 0) :
+    ∃ probeVec : Fin 3 → ℝ, probeVec ⬝ᵥ normalVec = 0 ∧ probeVec ≠ 0 := by
+  by_cases hfirst : normalVec 0 = 0 ∧ normalVec 1 = 0
+  · refine ⟨![1, 0, 0], ?_, ?_⟩
+    · simp only [dotProduct, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+      rw [hfirst.1]; ring
+    · intro hzero
+      have hone : (![1, 0, 0] : Fin 3 → ℝ) 0 = (0 : Fin 3 → ℝ) 0 := by rw [hzero]
+      simp only [Matrix.cons_val_zero, Pi.zero_apply] at hone
+      exact one_ne_zero hone
+  · refine ⟨![-normalVec 1, normalVec 0, 0], ?_, ?_⟩
+    · simp only [dotProduct, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+      ring
+    · intro hzero
+      have hzeroth : (![-normalVec 1, normalVec 0, 0] : Fin 3 → ℝ) 0 = (0 : Fin 3 → ℝ) 0 := by
+        rw [hzero]
+      have hfirstEntry : (![-normalVec 1, normalVec 0, 0] : Fin 3 → ℝ) 1 = (0 : Fin 3 → ℝ) 1 := by
+        rw [hzero]
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Pi.zero_apply] at hzeroth hfirstEntry
+      exact hfirst ⟨hfirstEntry, by linarith [hzeroth]⟩
+
+/-- **THE WEDGE BALANCE IS ONE WEDGE TOTAL.**  Under the split measure, over all
+the labels.  This is the flat split at an EMPTY flat set. -/
+theorem wedgeBalanceValue_eq_wedgeTotal_splitMeasure {size rank : ℕ}
+    (design : WeightedDesign size rank) (selected : Finset (Fin size))
+    (normalVec probeVec : Fin rank → ℝ) :
+    wedgeBalanceValue design selected normalVec probeVec
+      = wedgeTotal design (splitMeasure design selected) Finset.univ normalVec probeVec := by
+  classical
+  have hsharp := sharpBalanceValue_eq_wedgeTotal_splitMeasure design selected ∅ normalVec probeVec
+  rw [Finset.compl_empty] at hsharp
+  rw [← hsharp]
+  unfold sharpBalanceValue wedgeBalanceValue
+  rw [Finset.sdiff_empty, Finset.sdiff_empty, mixedWedgeTotal_eq_crossWedgeTotal]
+
+/-- The measure a wedge total puts on an ordered pair of labels. -/
+noncomputable def wedgePairMeasure {size : ℕ} (measure : Fin size → ℝ)
+    (labelPair : Fin size × Fin size) : ℝ :=
+  measure labelPair.1 * measure labelPair.2 / 2
+
+/-- The direction a wedge total reads at an ordered pair of labels. -/
+noncomputable def wedgePairDirection {size rank : ℕ} (design : WeightedDesign size rank)
+    (normalVec : Fin rank → ℝ) (labelPair : Fin size × Fin size) : Fin rank → ℝ :=
+  wedgeDirection design normalVec labelPair.1 labelPair.2
+
+theorem wedgePairDirection_perp {size rank : ℕ} (design : WeightedDesign size rank)
+    (normalVec : Fin rank → ℝ) (labelPair : Fin size × Fin size) :
+    wedgePairDirection design normalVec labelPair ⬝ᵥ normalVec = 0 :=
+  wedgeDirection_dotProduct_normal design normalVec labelPair.1 labelPair.2
+
+/-- **THE WEDGE TOTAL IS A PLANE FORM.**  Indexed by ordered label pairs. -/
+theorem wedgeTotal_eq_planeFormValue {size : ℕ} (design : WeightedDesign size 3)
+    (measure : Fin size → ℝ) (support : Finset (Fin size)) (normalVec probeVec : Fin 3 → ℝ) :
+    wedgeTotal design measure support normalVec probeVec
+      = planeFormValue (support ×ˢ support) (wedgePairMeasure measure)
+          (wedgePairDirection design normalVec) probeVec := by
+  unfold wedgeTotal planeFormValue wedgePairMeasure wedgePairDirection
+  rw [Finset.sum_product, Finset.sum_div]
+  refine Finset.sum_congr rfl fun leftLabel _ => ?_
+  rw [Finset.sum_div]
+  exact Finset.sum_congr rfl fun rightLabel _ => by
+    rw [wedgeShadow_eq_wedgeDirection_dotProduct]; ring
+
+/-- The polarization of the wedge balance at a pair of probes. -/
+noncomputable def wedgeBalancePairing {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) (normalVec probeOne probeTwo : Fin 3 → ℝ) : ℝ :=
+  planeFormPairing (Finset.univ ×ˢ Finset.univ)
+    (wedgePairMeasure (splitMeasure design selected)) (wedgePairDirection design normalVec)
+    probeOne probeTwo
+
+/-- **THE WEDGE MINOR.**  One number, built from the split measure and the
+brackets of the design's own shadow directions.  It carries the whole probe
+content of strict domination at a unit normal. -/
+noncomputable def wedgeMinor {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) (normalVec : Fin 3 → ℝ) : ℝ :=
+  planeFormMinor (Finset.univ ×ˢ Finset.univ)
+    (wedgePairMeasure (splitMeasure design selected)) (wedgePairDirection design normalVec)
+    normalVec
+
+theorem wedgeBalanceValue_eq_planeFormValue {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) (normalVec probeVec : Fin 3 → ℝ) :
+    wedgeBalanceValue design selected normalVec probeVec
+      = planeFormValue (Finset.univ ×ˢ Finset.univ)
+          (wedgePairMeasure (splitMeasure design selected))
+          (wedgePairDirection design normalVec) probeVec := by
+  rw [wedgeBalanceValue_eq_wedgeTotal_splitMeasure design selected normalVec probeVec,
+    wedgeTotal_eq_planeFormValue design (splitMeasure design selected) Finset.univ normalVec
+      probeVec]
+
+/-- **THE WEDGE BALANCE DETERMINANT.**  At any design, any subset, any unit
+normal and any pair of probes.  The probe pair enters only as the square of its
+plane bracket. -/
+theorem wedgeBalanceValue_determinant {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) (normalVec probeOne probeTwo : Fin 3 → ℝ)
+    (hunit : normalVec ⬝ᵥ normalVec = 1) :
+    wedgeBalanceValue design selected normalVec probeOne
+        * wedgeBalanceValue design selected normalVec probeTwo
+      - wedgeBalancePairing design selected normalVec probeOne probeTwo ^ 2
+      = wedgeMinor design selected normalVec * tripleBracket probeOne probeTwo normalVec ^ 2 := by
+  rw [wedgeBalanceValue_eq_planeFormValue design selected normalVec probeOne,
+    wedgeBalanceValue_eq_planeFormValue design selected normalVec probeTwo]
+  exact planeForm_determinant (Finset.univ ×ˢ Finset.univ)
+    (wedgePairMeasure (splitMeasure design selected)) (wedgePairDirection design normalVec)
+    normalVec probeOne probeTwo hunit
+    (fun labelPair _ => wedgePairDirection_perp design normalVec labelPair)
+
+/-- A plane form is a quadratic form in the probe. -/
+theorem planeFormValue_add_probe {index : Type*} (support : Finset index) (measure : index → ℝ)
+    (direction : index → (Fin 3 → ℝ)) (weightOne weightTwo : ℝ)
+    (probeOne probeTwo : Fin 3 → ℝ) :
+    planeFormValue support measure direction (weightOne • probeOne + weightTwo • probeTwo)
+      = weightOne ^ 2 * planeFormValue support measure direction probeOne
+        + 2 * weightOne * weightTwo
+          * planeFormPairing support measure direction probeOne probeTwo
+        + weightTwo ^ 2 * planeFormValue support measure direction probeTwo := by
+  unfold planeFormValue planeFormPairing
+  have hexpand : ∀ label : index, measure label
+      * (direction label ⬝ᵥ (weightOne • probeOne + weightTwo • probeTwo)) ^ 2
+      = weightOne ^ 2 * (measure label * (direction label ⬝ᵥ probeOne) ^ 2)
+        + 2 * weightOne * weightTwo
+          * (measure label
+            * ((direction label ⬝ᵥ probeOne) * (direction label ⬝ᵥ probeTwo)))
+        + weightTwo ^ 2 * (measure label * (direction label ⬝ᵥ probeTwo) ^ 2) := by
+    intro label
+    rw [dotProduct_add, dotProduct_smul, dotProduct_smul, smul_eq_mul, smul_eq_mul]
+    ring
+  rw [Finset.sum_congr rfl (fun label _ => hexpand label), Finset.sum_add_distrib,
+    Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum]
+
+theorem wedgeBalanceValue_add_probe {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) (normalVec probeOne probeTwo : Fin 3 → ℝ)
+    (weightOne weightTwo : ℝ) :
+    wedgeBalanceValue design selected normalVec (weightOne • probeOne + weightTwo • probeTwo)
+      = weightOne ^ 2 * wedgeBalanceValue design selected normalVec probeOne
+        + 2 * weightOne * weightTwo
+          * wedgeBalancePairing design selected normalVec probeOne probeTwo
+        + weightTwo ^ 2 * wedgeBalanceValue design selected normalVec probeTwo := by
+  rw [wedgeBalanceValue_eq_planeFormValue design selected normalVec
+      (weightOne • probeOne + weightTwo • probeTwo),
+    wedgeBalanceValue_eq_planeFormValue design selected normalVec probeOne,
+    wedgeBalanceValue_eq_planeFormValue design selected normalVec probeTwo]
+  exact planeFormValue_add_probe (Finset.univ ×ˢ Finset.univ)
+    (wedgePairMeasure (splitMeasure design selected)) (wedgePairDirection design normalVec)
+    weightOne weightTwo probeOne probeTwo
+
+theorem wedgeBalanceValue_smul_probe {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) (normalVec probeVec : Fin 3 → ℝ) (scale : ℝ) :
+    wedgeBalanceValue design selected normalVec (scale • probeVec)
+      = scale ^ 2 * wedgeBalanceValue design selected normalVec probeVec := by
+  rw [wedgeBalanceValue_eq_planeFormValue design selected normalVec (scale • probeVec),
+    wedgeBalanceValue_eq_planeFormValue design selected normalVec probeVec]
+  exact planeFormValue_smul_probe (Finset.univ ×ˢ Finset.univ)
+    (wedgePairMeasure (splitMeasure design selected)) (wedgePairDirection design normalVec)
+    scale probeVec
+
+/-- A vanishing plane bracket at two flat probes makes them proportional. -/
+theorem exists_smul_of_tripleBracket_eq_zero {baseVec probeVec normalVec : Fin 3 → ℝ}
+    (hunit : normalVec ⬝ᵥ normalVec = 1) (hbasePerp : baseVec ⬝ᵥ normalVec = 0)
+    (hprobePerp : probeVec ⬝ᵥ normalVec = 0) (hbaseNe : baseVec ≠ 0)
+    (hbracket : tripleBracket baseVec probeVec normalVec = 0) :
+    ∃ ratio : ℝ, probeVec = ratio • baseVec := by
+  refine eq_smul_of_crossProduct_eq_zero hbaseNe ?_
+  have hreduce := tripleBracket_of_perp_pair hbasePerp hprobePerp
+    (crossProduct baseVec probeVec)
+  rw [hbracket, zero_mul, hunit, one_mul] at hreduce
+  have hself : crossProduct baseVec probeVec ⬝ᵥ crossProduct baseVec probeVec = 0 := by
+    rw [← tripleBracket_eq_crossProduct_dotProduct]
+    exact hreduce.symm
+  exact dotProduct_self_eq_zero.mp hself
+
+/-- Two flat probes with a nonzero plane bracket span the plane. -/
+theorem ne_zero_of_tripleBracket_ne_zero {baseVec companionVec normalVec : Fin 3 → ℝ}
+    (hbracket : tripleBracket baseVec companionVec normalVec ≠ 0) {weightOne weightTwo : ℝ}
+    (hnotBoth : weightOne ≠ 0 ∨ weightTwo ≠ 0) :
+    weightOne • baseVec + weightTwo • companionVec ≠ 0 := by
+  intro hzero
+  have hbase : weightOne • baseVec = -(weightTwo • companionVec) := by
+    have := hzero
+    rw [add_eq_zero_iff_eq_neg] at this
+    exact this
+  have hfirst : weightOne * tripleBracket baseVec companionVec normalVec = 0 := by
+    rw [← tripleBracket_smul_left, hbase, ← neg_smul, tripleBracket_smul_left,
+      tripleBracket_self_left]
+    ring
+  have hcompanion : weightTwo • companionVec = -(weightOne • baseVec) := by
+    rw [hbase]; abel
+  have hsecond : weightTwo * tripleBracket baseVec companionVec normalVec = 0 := by
+    rw [← tripleBracket_smul_mid, hcompanion, ← neg_smul, tripleBracket_smul_mid]
+    have hzeroMid : tripleBracket baseVec baseVec normalVec = 0 :=
+      tripleBracket_self_left baseVec normalVec
+    rw [hzeroMid]
+    ring
+  rcases hnotBoth with hone | htwo
+  · exact hone ((mul_eq_zero.mp hfirst).resolve_right hbracket)
+  · exact htwo ((mul_eq_zero.mp hsecond).resolve_right hbracket)
+
+/-! ## 11.  The probe-free criterion for strict domination -/
+
+/-- **THE FRAME CRITERION.**  One positive probe value and one positive wedge
+minor force the wedge balance positive at EVERY flat probe.  The probe quantifier
+is discharged by the determinant, not by a search. -/
+theorem forall_inPlane_wedgeBalanceValue_pos {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) {normalVec baseProbe : Fin 3 → ℝ}
+    (hunit : normalVec ⬝ᵥ normalVec = 1) (hbasePerp : baseProbe ⬝ᵥ normalVec = 0)
+    (hbaseNe : baseProbe ≠ 0)
+    (hbasePos : 0 < wedgeBalanceValue design selected normalVec baseProbe)
+    (hminor : 0 < wedgeMinor design selected normalVec) :
+    ∀ probeVec : Fin 3 → ℝ, probeVec ⬝ᵥ normalVec = 0 → probeVec ≠ 0 →
+      0 < wedgeBalanceValue design selected normalVec probeVec := by
+  intro probeVec hperp hne
+  by_cases hbracket : tripleBracket baseProbe probeVec normalVec = 0
+  · obtain ⟨ratio, hratio⟩ := exists_smul_of_tripleBracket_eq_zero hunit hbasePerp hperp hbaseNe
+      hbracket
+    have hratioNe : ratio ≠ 0 := by
+      intro hzero
+      rw [hzero, zero_smul] at hratio
+      exact hne hratio
+    have hratioSq : 0 < ratio ^ 2 := by
+      rcases lt_or_gt_of_ne hratioNe with hneg | hpos <;> nlinarith
+    rw [hratio, wedgeBalanceValue_smul_probe]
+    exact mul_pos hratioSq hbasePos
+  · have hdet := wedgeBalanceValue_determinant design selected normalVec baseProbe probeVec hunit
+    have hbracketSq : 0 < tripleBracket baseProbe probeVec normalVec ^ 2 := by
+      rcases lt_or_gt_of_ne hbracket with hneg | hpos <;> nlinarith
+    nlinarith [hdet, mul_pos hminor hbracketSq, hbasePos,
+      sq_nonneg (wedgeBalancePairing design selected normalVec baseProbe probeVec)]
+
+/-- **STRICT DOMINATION FROM THREE NUMBERS.**  A positive normal surplus, a
+positive wedge minor and one positive probe reading make the subset gap
+positive definite.  No probe quantifier anywhere. -/
+theorem posDef_of_surplus_and_wedgeMinor {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) {normalVec baseProbe : Fin 3 → ℝ}
+    (hunit : normalVec ⬝ᵥ normalVec = 1) (hbasePerp : baseProbe ⬝ᵥ normalVec = 0)
+    (hbaseNe : baseProbe ≠ 0)
+    (hsurplus : 1 < ∑ label ∈ selected, (design.atom label ⬝ᵥ normalVec) ^ 2)
+    (hbasePos : 0 < wedgeBalanceValue design selected normalVec baseProbe)
+    (hminor : 0 < wedgeMinor design selected normalVec) :
+    (subsetSum design selected - 1).PosDef := by
+  refine (posDef_iff_normalSurplus_and_wedgeBalance design selected normalVec hunit).mpr
+    ⟨hsurplus, fun probeVec hperp hne => ?_⟩
+  exact (wedgeBalanceAt_iff_pos_wedgeBalanceValue design selected normalVec probeVec).mpr
+    (forall_inPlane_wedgeBalanceValue_pos design selected hunit hbasePerp hbaseNe hbasePos hminor
+      probeVec hperp hne)
+
+/-- The companion probe of a flat base probe. -/
+theorem tripleBracket_frame_pos {baseVec normalVec : Fin 3 → ℝ}
+    (hunit : normalVec ⬝ᵥ normalVec = 1) (hperp : baseVec ⬝ᵥ normalVec = 0) (hne : baseVec ≠ 0) :
+    0 < tripleBracket baseVec (crossProduct normalVec baseVec) normalVec := by
+  rw [tripleBracket_frame, hunit, hperp, mul_one]
+  have hself : 0 < baseVec ⬝ᵥ baseVec := by
+    rcases (dotProduct_self_nonneg baseVec).lt_or_eq with hpos | hzero
+    · exact hpos
+    · exact absurd (dotProduct_self_eq_zero.mp hzero.symm) hne
+  linarith [hself]
+
+/-- **THE WEDGE MINOR IS POSITIVE AT EVERY STRICT DOMINATOR.**  So the criterion
+of `Gtz.posDef_of_surplus_and_wedgeMinor` is not vacuous, and the three numbers
+decide strict domination exactly. -/
+theorem wedgeMinor_pos_of_posDef {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) {normalVec : Fin 3 → ℝ} (hunit : normalVec ⬝ᵥ normalVec = 1)
+    (hposDef : (subsetSum design selected - 1).PosDef) :
+    0 < wedgeMinor design selected normalVec := by
+  have hnormalNe : normalVec ≠ 0 := by
+    intro hzero
+    rw [hzero] at hunit
+    simp only [dotProduct, Pi.zero_apply, mul_zero, Finset.sum_const_zero] at hunit
+    exact zero_ne_one hunit
+  obtain ⟨baseProbe, hbasePerp, hbaseNe⟩ := exists_inPlane_probe_ne_zero hnormalNe
+  obtain ⟨hsurplus, hbalance⟩ :=
+    (posDef_iff_normalSurplus_and_wedgeBalance design selected normalVec hunit).mp hposDef
+  have hvalue : ∀ probeVec : Fin 3 → ℝ, probeVec ⬝ᵥ normalVec = 0 → probeVec ≠ 0 →
+      0 < wedgeBalanceValue design selected normalVec probeVec := fun probeVec hperp hne =>
+    (wedgeBalanceAt_iff_pos_wedgeBalanceValue design selected normalVec probeVec).mp
+      (hbalance probeVec hperp hne)
+  set companion := crossProduct normalVec baseProbe with hcompanion
+  have hcompanionPerp : companion ⬝ᵥ normalVec = 0 :=
+    dotProduct_crossProduct_left_self normalVec baseProbe
+  have hbracketPos : 0 < tripleBracket baseProbe companion normalVec :=
+    tripleBracket_frame_pos hunit hbasePerp hbaseNe
+  have hbracketNe : tripleBracket baseProbe companion normalVec ≠ 0 := ne_of_gt hbracketPos
+  have hcompanionNe : companion ≠ 0 := by
+    intro hzero
+    rw [hzero] at hbracketPos
+    simp only [tripleBracket_eq, Pi.zero_apply, mul_zero, zero_mul, add_zero,
+      sub_self] at hbracketPos
+    exact absurd hbracketPos (lt_irrefl 0)
+  have hbaseValue := hvalue baseProbe hbasePerp hbaseNe
+  set valueBase := wedgeBalanceValue design selected normalVec baseProbe with hvalueBase
+  set valueCompanion := wedgeBalanceValue design selected normalVec companion with hvalueCompanion
+  set pairing := wedgeBalancePairing design selected normalVec baseProbe companion with hpairing
+  have hcombination : 0 < wedgeBalanceValue design selected normalVec
+      ((-pairing) • baseProbe + valueBase • companion) := by
+    refine hvalue _ ?_ ?_
+    · rw [add_dotProduct, smul_dotProduct, smul_dotProduct, hbasePerp, hcompanionPerp]
+      simp
+    · exact ne_zero_of_tripleBracket_ne_zero hbracketNe (Or.inr (ne_of_gt hbaseValue))
+  rw [wedgeBalanceValue_add_probe design selected normalVec baseProbe companion (-pairing)
+    valueBase] at hcombination
+  have hgap : 0 < valueBase * valueCompanion - pairing ^ 2 := by nlinarith [hcombination,
+    hbaseValue]
+  have hdet := wedgeBalanceValue_determinant design selected normalVec baseProbe companion hunit
+  have hbracketSq : 0 < tripleBracket baseProbe companion normalVec ^ 2 := by nlinarith
+  nlinarith [hdet, hgap, hbracketSq]
+
+/-- **THE DECISION.**  Strict domination at rank three, decided by a normal
+surplus, a wedge minor and one probe reading. -/
+theorem posDef_iff_surplus_and_wedgeMinor {size : ℕ} (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) {normalVec : Fin 3 → ℝ} (hunit : normalVec ⬝ᵥ normalVec = 1) :
+    (subsetSum design selected - 1).PosDef
+      ↔ (1 < ∑ label ∈ selected, (design.atom label ⬝ᵥ normalVec) ^ 2)
+        ∧ 0 < wedgeMinor design selected normalVec
+        ∧ ∃ probeVec : Fin 3 → ℝ, probeVec ⬝ᵥ normalVec = 0 ∧ probeVec ≠ 0
+            ∧ 0 < wedgeBalanceValue design selected normalVec probeVec := by
+  constructor
+  · intro hposDef
+    have hnormalNe : normalVec ≠ 0 := by
+      intro hzero
+      rw [hzero] at hunit
+      simp only [dotProduct, Pi.zero_apply, mul_zero, Finset.sum_const_zero] at hunit
+      exact zero_ne_one hunit
+    obtain ⟨baseProbe, hbasePerp, hbaseNe⟩ := exists_inPlane_probe_ne_zero hnormalNe
+    obtain ⟨hsurplus, hbalance⟩ :=
+      (posDef_iff_normalSurplus_and_wedgeBalance design selected normalVec hunit).mp hposDef
+    exact ⟨hsurplus, wedgeMinor_pos_of_posDef design selected hunit hposDef,
+      baseProbe, hbasePerp, hbaseNe,
+      (wedgeBalanceAt_iff_pos_wedgeBalanceValue design selected normalVec baseProbe).mp
+        (hbalance baseProbe hbasePerp hbaseNe)⟩
+  · rintro ⟨hsurplus, hminor, baseProbe, hbasePerp, hbaseNe, hbasePos⟩
+    exact posDef_of_surplus_and_wedgeMinor design selected hunit hbasePerp hbaseNe hsurplus
+      hbasePos hminor
+
+/-! ## 12.  The wedge minor of a flat split carries the surplus as a factor -/
+
+/-- The combined value is the sum of two plane forms: the scaled flat form and
+the sharp form. -/
+theorem wedgeBalanceValue_eq_flat_add_sharp {size : ℕ} (design : WeightedDesign size 3)
+    (selected flatSet : Finset (Fin size)) {sharpOne sharpTwo sharpThree : Fin size}
+    (hOneTwo : sharpOne ≠ sharpTwo) (hOneThree : sharpOne ≠ sharpThree)
+    (hTwoThree : sharpTwo ≠ sharpThree)
+    (hsharp : flatSetᶜ = {sharpOne, sharpTwo, sharpThree}) (normalVec probeVec : Fin 3 → ℝ)
+    (hflat : ∀ label ∈ flatSet, design.atom label ⬝ᵥ normalVec = 0) :
+    wedgeBalanceValue design selected normalVec probeVec
+      = planeFormValue flatSet
+          (fun label => ((∑ other ∈ selected, (design.atom other ⬝ᵥ normalVec) ^ 2)
+              - normalVec ⬝ᵥ normalVec) * leadMeasure design selected label)
+          design.atom probeVec
+        + planeFormValue Finset.univ
+            (sharpPairMeasure design selected sharpOne sharpTwo sharpThree)
+            (sharpPairDirection design normalVec sharpOne sharpTwo sharpThree) probeVec := by
+  rw [wedgeBalanceValue_flatSplit_reading design selected flatSet normalVec probeVec hflat,
+    planeFormValue_smul_measure flatSet (leadMeasure design selected) design.atom
+      ((∑ other ∈ selected, (design.atom other ⬝ᵥ normalVec) ^ 2) - normalVec ⬝ᵥ normalVec)
+      probeVec,
+    ← flatSplitLead_eq_planeFormValue design selected flatSet probeVec,
+    sharpBalanceValue_eq_tripleWedgeValue design selected flatSet hOneTwo hOneThree hTwoThree
+      hsharp normalVec probeVec,
+    tripleWedgeValue_eq_planeFormValue design selected sharpOne sharpTwo sharpThree normalVec
+      probeVec]
+  ring
+
+/-- The pairing of the pair-indexed form and the pairing of the two-form split
+agree, because both polarize the same quadratic form. -/
+theorem wedgeBalancePairing_eq_flat_add_sharp {size : ℕ} (design : WeightedDesign size 3)
+    (selected flatSet : Finset (Fin size)) {sharpOne sharpTwo sharpThree : Fin size}
+    (hOneTwo : sharpOne ≠ sharpTwo) (hOneThree : sharpOne ≠ sharpThree)
+    (hTwoThree : sharpTwo ≠ sharpThree)
+    (hsharp : flatSetᶜ = {sharpOne, sharpTwo, sharpThree})
+    (normalVec probeOne probeTwo : Fin 3 → ℝ)
+    (hflat : ∀ label ∈ flatSet, design.atom label ⬝ᵥ normalVec = 0) :
+    wedgeBalancePairing design selected normalVec probeOne probeTwo
+      = planeFormPairing flatSet
+          (fun label => ((∑ other ∈ selected, (design.atom other ⬝ᵥ normalVec) ^ 2)
+              - normalVec ⬝ᵥ normalVec) * leadMeasure design selected label)
+          design.atom probeOne probeTwo
+        + planeFormPairing Finset.univ
+            (sharpPairMeasure design selected sharpOne sharpTwo sharpThree)
+            (sharpPairDirection design normalVec sharpOne sharpTwo sharpThree) probeOne
+            probeTwo := by
+  have hsum : (1 : ℝ) • probeOne + (1 : ℝ) • probeTwo = probeOne + probeTwo := by
+    rw [one_smul, one_smul]
+  have hpair := wedgeBalanceValue_add_probe design selected normalVec probeOne probeTwo 1 1
+  rw [hsum] at hpair
+  have hflatSide := planeFormValue_add_probe flatSet
+    (fun label => ((∑ other ∈ selected, (design.atom other ⬝ᵥ normalVec) ^ 2)
+      - normalVec ⬝ᵥ normalVec) * leadMeasure design selected label)
+    design.atom 1 1 probeOne probeTwo
+  rw [hsum] at hflatSide
+  have hsharpSide := planeFormValue_add_probe (Finset.univ : Finset (Fin 3))
+    (sharpPairMeasure design selected sharpOne sharpTwo sharpThree)
+    (sharpPairDirection design normalVec sharpOne sharpTwo sharpThree) 1 1 probeOne probeTwo
+  rw [hsum] at hsharpSide
+  have hsplitSum := wedgeBalanceValue_eq_flat_add_sharp design selected flatSet hOneTwo hOneThree
+    hTwoThree hsharp normalVec (probeOne + probeTwo) hflat
+  have hsplitOne := wedgeBalanceValue_eq_flat_add_sharp design selected flatSet hOneTwo hOneThree
+    hTwoThree hsharp normalVec probeOne hflat
+  have hsplitTwo := wedgeBalanceValue_eq_flat_add_sharp design selected flatSet hOneTwo hOneThree
+    hTwoThree hsharp normalVec probeTwo hflat
+  rw [hsplitSum, hflatSide, hsharpSide, hsplitOne, hsplitTwo] at hpair
+  linarith [hpair]
+
+/-- **THE WEDGE MINOR OF A FLAT SPLIT.**  At every design with a flat set of
+complement size three, the wedge minor of every subset factors, and the NORMAL
+SURPLUS is one of the two factors.  So the two ingredients that the flat-split
+selector asks for are not independent: the surplus divides the minor.
+
+The remaining factor is linear in the surplus, and its constant term is the
+product of the three split measures times the square of the sharp atom bracket.
+That constant term is positive at every selection that holds exactly one sharp
+label, and negative at every selection that holds exactly two. -/
+theorem wedgeMinor_eq_surplus_mul_reduced {size : ℕ} (design : WeightedDesign size 3)
+    (selected flatSet : Finset (Fin size)) {sharpOne sharpTwo sharpThree : Fin size}
+    (hOneTwo : sharpOne ≠ sharpTwo) (hOneThree : sharpOne ≠ sharpThree)
+    (hTwoThree : sharpTwo ≠ sharpThree)
+    (hsharp : flatSetᶜ = {sharpOne, sharpTwo, sharpThree}) (normalVec : Fin 3 → ℝ)
+    (hunit : normalVec ⬝ᵥ normalVec = 1)
+    (hflat : ∀ label ∈ flatSet, design.atom label ⬝ᵥ normalVec = 0) :
+    wedgeMinor design selected normalVec
+      = ((∑ label ∈ selected, (design.atom label ⬝ᵥ normalVec) ^ 2) - normalVec ⬝ᵥ normalVec)
+        * (((∑ label ∈ selected, (design.atom label ⬝ᵥ normalVec) ^ 2) - normalVec ⬝ᵥ normalVec)
+              * planeFormMinor flatSet (leadMeasure design selected) design.atom normalVec
+            + planeFormCrossMinor flatSet Finset.univ (leadMeasure design selected)
+                (sharpPairMeasure design selected sharpOne sharpTwo sharpThree) design.atom
+                (sharpPairDirection design normalVec sharpOne sharpTwo sharpThree) normalVec
+            + splitMeasure design selected sharpOne * splitMeasure design selected sharpTwo
+                * splitMeasure design selected sharpThree
+                * atomBracket design sharpOne sharpTwo sharpThree ^ 2) := by
+  have hnormalNe : normalVec ≠ 0 := by
+    intro hzero
+    rw [hzero] at hunit
+    simp only [dotProduct, Pi.zero_apply, mul_zero, Finset.sum_const_zero] at hunit
+    exact zero_ne_one hunit
+  obtain ⟨baseProbe, hbasePerp, hbaseNe⟩ := exists_inPlane_probe_ne_zero hnormalNe
+  set companion := crossProduct normalVec baseProbe with hcompanionDef
+  have hcompanionPerp : companion ⬝ᵥ normalVec = 0 :=
+    dotProduct_crossProduct_left_self normalVec baseProbe
+  have hbracketPos : 0 < tripleBracket baseProbe companion normalVec :=
+    tripleBracket_frame_pos hunit hbasePerp hbaseNe
+  set surplus := (∑ label ∈ selected, (design.atom label ⬝ᵥ normalVec) ^ 2) - normalVec ⬝ᵥ normalVec
+    with hsurplusDef
+  set flatMeasure := fun label => surplus * leadMeasure design selected label with hflatMeasure
+  set sharpMeasure := sharpPairMeasure design selected sharpOne sharpTwo sharpThree
+    with hsharpMeasure
+  set sharpDirectionFamily := sharpPairDirection design normalVec sharpOne sharpTwo sharpThree
+    with hsharpDirection
+  have hflatDet := planeForm_determinant flatSet flatMeasure design.atom normalVec baseProbe
+    companion hunit hflat
+  have hsharpDet := planeForm_determinant (Finset.univ : Finset (Fin 3)) sharpMeasure
+    sharpDirectionFamily normalVec baseProbe companion hunit
+    (fun pairIndex _ => sharpPairDirection_perp design normalVec sharpOne sharpTwo sharpThree
+      pairIndex)
+  have hcrossDet := planeForm_crossDeterminant flatSet (Finset.univ : Finset (Fin 3)) flatMeasure
+    sharpMeasure design.atom sharpDirectionFamily normalVec baseProbe companion hunit hflat
+    (fun pairIndex _ => sharpPairDirection_perp design normalVec sharpOne sharpTwo sharpThree
+      pairIndex)
+  have hwedgeDet := wedgeBalanceValue_determinant design selected normalVec baseProbe companion
+    hunit
+  have hvalueBase := wedgeBalanceValue_eq_flat_add_sharp design selected flatSet hOneTwo hOneThree
+    hTwoThree hsharp normalVec baseProbe hflat
+  have hvalueCompanion := wedgeBalanceValue_eq_flat_add_sharp design selected flatSet hOneTwo
+    hOneThree hTwoThree hsharp normalVec companion hflat
+  have hpairing := wedgeBalancePairing_eq_flat_add_sharp design selected flatSet hOneTwo hOneThree
+    hTwoThree hsharp normalVec baseProbe companion hflat
+  rw [hvalueBase, hvalueCompanion, hpairing] at hwedgeDet
+  have hsharpMinor := planeFormMinor_sharpPair_eq design selected flatSet hOneTwo hOneThree
+    hTwoThree hsharp normalVec hunit hflat
+  have hflatScale := planeFormMinor_smul_measure flatSet (leadMeasure design selected) design.atom
+    surplus normalVec
+  have hcrossScale := planeFormCrossMinor_smul_left flatSet (Finset.univ : Finset (Fin 3))
+    (leadMeasure design selected) sharpMeasure design.atom sharpDirectionFamily surplus normalVec
+  have hbracketSq : 0 < tripleBracket baseProbe companion normalVec ^ 2 := by nlinarith
+  have hcombine : wedgeMinor design selected normalVec
+        * tripleBracket baseProbe companion normalVec ^ 2
+      = (surplus * (surplus
+            * planeFormMinor flatSet (leadMeasure design selected) design.atom normalVec
+          + planeFormCrossMinor flatSet Finset.univ (leadMeasure design selected) sharpMeasure
+              design.atom sharpDirectionFamily normalVec
+          + splitMeasure design selected sharpOne * splitMeasure design selected sharpTwo
+              * splitMeasure design selected sharpThree
+              * atomBracket design sharpOne sharpTwo sharpThree ^ 2))
+        * tripleBracket baseProbe companion normalVec ^ 2 := by
+    rw [← hwedgeDet]
+    rw [← hflatMeasure] at hflatScale hcrossScale
+    rw [hflatScale] at hflatDet
+    rw [hcrossScale] at hcrossDet
+    rw [hsharpMinor] at hsharpDet
+    nlinarith [hflatDet, hsharpDet, hcrossDet]
+  exact mul_right_cancel₀ (ne_of_gt hbracketSq) hcombine
+
+/-! ## 13.  Producers
+
+The criterion of section 11 is a producer of strict domination, so it is a
+producer of the objective and of the two line obligations. -/
+
+/-- The residual of the objective, written in wedge minor data.  Three strict
+inequalities at one subset, one unit normal and one probe. -/
+def WedgeMinorSelector (size : ℕ) : Prop :=
+  ∀ design : WeightedDesign size 3, ∃ unitNormal : Fin 3 → ℝ,
+    unitNormal ⬝ᵥ unitNormal = 1 ∧ ∃ selected : Finset (Fin size), selected.card = 3
+      ∧ (1 < ∑ label ∈ selected, (design.atom label ⬝ᵥ unitNormal) ^ 2)
+      ∧ 0 < wedgeMinor design selected unitNormal
+      ∧ ∃ probeVec : Fin 3 → ℝ, probeVec ⬝ᵥ unitNormal = 0 ∧ probeVec ≠ 0
+          ∧ 0 < wedgeBalanceValue design selected unitNormal probeVec
+
+theorem dotProduct_self_firstAxis : (![1, 0, 0] : Fin 3 → ℝ) ⬝ᵥ ![1, 0, 0] = 1 := by
+  simp only [dotProduct, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- **THE OBJECTIVE, FROM THE WEDGE MINOR SELECTOR.**  Weighted GTZ at rank
+three, at every size, from three strict inequalities per design.  No probe
+quantifier, no matrix inverse and no eigenvalue. -/
+theorem gtzWeighted_rank_three_of_wedgeMinorSelector {size : ℕ}
+    (hselector : WedgeMinorSelector size) : GtzWeighted size 3 := by
+  intro design
+  obtain ⟨unitNormal, hunit, selected, hcard, hsurplus, hminor, probeVec, hperp, hprobeNe,
+    hpos⟩ := hselector design
+  exact ⟨selected, hcard,
+    Matrix.PosDef.posSemidef
+      (posDef_of_surplus_and_wedgeMinor design selected hunit hperp hprobeNe hsurplus hpos
+        hminor)⟩
+
+/-- **THE SELECTOR IS EXACTLY THE STRICT HALF.**  It is not a strengthening
+beyond strict domination, and it is not a weakening of it. -/
+theorem wedgeMinorSelector_iff_exists_strictTriple {size : ℕ} :
+    WedgeMinorSelector size
+      ↔ ∀ design : WeightedDesign size 3, ∃ selected : Finset (Fin size), selected.card = 3
+          ∧ (subsetSum design selected - 1).PosDef := by
+  constructor
+  · intro hselector design
+    obtain ⟨unitNormal, hunit, selected, hcard, hsurplus, hminor, probeVec, hperp, hprobeNe,
+      hpos⟩ := hselector design
+    exact ⟨selected, hcard, posDef_of_surplus_and_wedgeMinor design selected hunit hperp hprobeNe
+      hsurplus hpos hminor⟩
+  · intro hstrict design
+    obtain ⟨selected, hcard, hposDef⟩ := hstrict design
+    obtain ⟨hsurplus, hminor, probeData⟩ :=
+      (posDef_iff_surplus_and_wedgeMinor design selected dotProduct_self_firstAxis).mp hposDef
+    exact ⟨![1, 0, 0], dotProduct_self_firstAxis, selected, hcard, hsurplus, hminor, probeData⟩
+
+/-- The flat-split selector of the one-line class, from the wedge minor. -/
+theorem lineFlatSplitSelectorAt_of_wedgeMinor (design : WeightedDesign 6 3)
+    {unitNormal : Fin 3 → ℝ} (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (hlineFlat : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ unitNormal = 0)
+    {selected : Finset (Fin 6)} (hcard : selected.card = 3)
+    (hsurplus : 1 < ∑ label ∈ selected, (design.atom label ⬝ᵥ unitNormal) ^ 2)
+    (hminor : 0 < wedgeMinor design selected unitNormal)
+    {baseProbe : Fin 3 → ℝ} (hbasePerp : baseProbe ⬝ᵥ unitNormal = 0) (hbaseNe : baseProbe ≠ 0)
+    (hbasePos : 0 < wedgeBalanceValue design selected unitNormal baseProbe) :
+    LineFlatSplitSelectorAt design unitNormal :=
+  lineFlatSplitSelectorAt_of_exists_posDef_cardThree design hunit hlineFlat
+    ⟨selected, hcard, posDef_of_surplus_and_wedgeMinor design selected hunit hbasePerp hbaseNe
+      hsurplus hbasePos hminor⟩
+
+/-- **BOTH LINE OBLIGATIONS FROM ONE MINOR CONDITION.**  A design-level choice of
+a card-three subset with a positive surplus, a positive wedge minor and one
+positive probe reading retires the one-line residual and the two-meeting-lines
+residual at the same time. -/
+theorem oneLine_and_twoMeetingLines_of_wedgeMinorSelector
+    (hselector : ∀ design : WeightedDesign 6 3, ∀ unitNormal : Fin 3 → ℝ,
+      unitNormal ⬝ᵥ unitNormal = 1 →
+      (∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+        design.atom lineLabel ⬝ᵥ unitNormal = 0) →
+      (∀ label : Fin 6, 1 ≤ leverageOf (design.atom label)) →
+      IsCapBlindSpot design →
+      (∃ dominator : Finset (Fin 6), dominator.card = 3 ∧ Dominates design dominator) →
+      ∃ selected : Finset (Fin 6), selected.card = 3
+        ∧ (1 < ∑ label ∈ selected, (design.atom label ⬝ᵥ unitNormal) ^ 2)
+        ∧ 0 < wedgeMinor design selected unitNormal
+        ∧ ∃ probeVec : Fin 3 → ℝ, probeVec ⬝ᵥ unitNormal = 0 ∧ probeVec ≠ 0
+            ∧ 0 < wedgeBalanceValue design selected unitNormal probeVec) :
+    OneLineTenthHeavyJointBlindLineSparse
+      ∧ TwoMeetingLinesTenthHeavyJointBlindTransversal := by
+  refine oneLine_and_twoMeetingLines_of_lineFlatSplitSelector ?_
+  intro design unitNormal hunit hlineFlat hheavy hcapBlind hweak
+  obtain ⟨selected, hcard, hsurplus, hminor, probeVec, hperp, hprobeNe, hpos⟩ :=
+    hselector design unitNormal hunit hlineFlat hheavy hcapBlind hweak
+  exact lineFlatSplitSelectorAt_of_wedgeMinor design hunit hlineFlat hcard hsurplus hminor hperp
+    hprobeNe hpos
+
+/-! ## 14.  The one-line lane, with the surplus discharged
+
+Section 5 supplies a sharp label whose height square is more than one, so every
+selection through it has a positive normal surplus.  Section 12 factors the wedge
+minor through that same surplus.  Together they leave ONE polynomial inequality
+and one probe sign. -/
+
+/-- The REDUCED quantity of a flat split: the second factor of the wedge minor. -/
+noncomputable def flatSplitReduced {size : ℕ} (design : WeightedDesign size 3)
+    (selected flatSet : Finset (Fin size)) (sharpOne sharpTwo sharpThree : Fin size)
+    (normalVec : Fin 3 → ℝ) : ℝ :=
+  ((∑ label ∈ selected, (design.atom label ⬝ᵥ normalVec) ^ 2) - normalVec ⬝ᵥ normalVec)
+      * planeFormMinor flatSet (leadMeasure design selected) design.atom normalVec
+    + planeFormCrossMinor flatSet Finset.univ (leadMeasure design selected)
+        (sharpPairMeasure design selected sharpOne sharpTwo sharpThree) design.atom
+        (sharpPairDirection design normalVec sharpOne sharpTwo sharpThree) normalVec
+    + splitMeasure design selected sharpOne * splitMeasure design selected sharpTwo
+        * splitMeasure design selected sharpThree
+        * atomBracket design sharpOne sharpTwo sharpThree ^ 2
+
+theorem wedgeMinor_eq_surplus_mul_flatSplitReduced {size : ℕ} (design : WeightedDesign size 3)
+    (selected flatSet : Finset (Fin size)) {sharpOne sharpTwo sharpThree : Fin size}
+    (hOneTwo : sharpOne ≠ sharpTwo) (hOneThree : sharpOne ≠ sharpThree)
+    (hTwoThree : sharpTwo ≠ sharpThree)
+    (hsharp : flatSetᶜ = {sharpOne, sharpTwo, sharpThree}) (normalVec : Fin 3 → ℝ)
+    (hunit : normalVec ⬝ᵥ normalVec = 1)
+    (hflat : ∀ label ∈ flatSet, design.atom label ⬝ᵥ normalVec = 0) :
+    wedgeMinor design selected normalVec
+      = ((∑ label ∈ selected, (design.atom label ⬝ᵥ normalVec) ^ 2) - normalVec ⬝ᵥ normalVec)
+        * flatSplitReduced design selected flatSet sharpOne sharpTwo sharpThree normalVec :=
+  wedgeMinor_eq_surplus_mul_reduced design selected flatSet hOneTwo hOneThree hTwoThree hsharp
+    normalVec hunit hflat
+
+/-- **THE MINOR TEST IS THE REDUCED TEST, ONCE THE SURPLUS IS POSITIVE.** -/
+theorem wedgeMinor_pos_iff_flatSplitReduced_pos {size : ℕ} (design : WeightedDesign size 3)
+    (selected flatSet : Finset (Fin size)) {sharpOne sharpTwo sharpThree : Fin size}
+    (hOneTwo : sharpOne ≠ sharpTwo) (hOneThree : sharpOne ≠ sharpThree)
+    (hTwoThree : sharpTwo ≠ sharpThree)
+    (hsharp : flatSetᶜ = {sharpOne, sharpTwo, sharpThree}) (normalVec : Fin 3 → ℝ)
+    (hunit : normalVec ⬝ᵥ normalVec = 1)
+    (hflat : ∀ label ∈ flatSet, design.atom label ⬝ᵥ normalVec = 0)
+    (hsurplus : 1 < ∑ label ∈ selected, (design.atom label ⬝ᵥ normalVec) ^ 2) :
+    0 < wedgeMinor design selected normalVec
+      ↔ 0 < flatSplitReduced design selected flatSet sharpOne sharpTwo sharpThree normalVec := by
+  rw [wedgeMinor_eq_surplus_mul_flatSplitReduced design selected flatSet hOneTwo hOneThree
+    hTwoThree hsharp normalVec hunit hflat, hunit]
+  have hpos : 0 < (∑ label ∈ selected, (design.atom label ⬝ᵥ normalVec) ^ 2) - 1 := by linarith
+  constructor
+  · intro hproduct
+    nlinarith [hproduct, hpos]
+  · intro hreduced
+    exact mul_pos hpos hreduced
+
+/-- The line of the one-line class has the free triple as its complement. -/
+theorem oneLine_flat_compl : ({0, 1, 2} : Finset (Fin 6))ᶜ = ({3, 4, 5} : Finset (Fin 6)) := by
+  decide
+
+/-- **THE ONE-LINE RESIDUAL, WITH THE SURPLUS DISCHARGED.**  At every one-line
+design and its own line normal there is a FREE label whose presence alone
+supplies the normal surplus.  Every card-three selection through it then needs
+only the reduced inequality and one positive probe reading, and either line
+obligation follows. -/
+theorem exists_tallFree_lineFlatSplitSelector_producer (design : WeightedDesign 6 3)
+    {unitNormal : Fin 3 → ℝ} (hunit : unitNormal ⬝ᵥ unitNormal = 1)
+    (hlineFlat : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ unitNormal = 0) :
+    ∃ tallLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+      ∀ selected : Finset (Fin 6), selected.card = 3 → tallLabel ∈ selected →
+        0 < flatSplitReduced design selected ({0, 1, 2} : Finset (Fin 6)) 3 4 5 unitNormal →
+        (∃ probeVec : Fin 3 → ℝ, probeVec ⬝ᵥ unitNormal = 0 ∧ probeVec ≠ 0
+            ∧ 0 < wedgeBalanceValue design selected unitNormal probeVec) →
+        LineFlatSplitSelectorAt design unitNormal := by
+  classical
+  have hflatNonempty : ({0, 1, 2} : Finset (Fin 6)).Nonempty := ⟨0, by decide⟩
+  have hsharpNonempty : ({0, 1, 2} : Finset (Fin 6))ᶜ.Nonempty := ⟨3, by decide⟩
+  obtain ⟨tallLabel, hmem, hfloor⟩ := exists_sharp_selection_surplus_pos design unitNormal hunit
+    hlineFlat hflatNonempty hsharpNonempty
+  refine ⟨tallLabel, by rw [← oneLine_flat_compl]; exact hmem, ?_⟩
+  intro selected hcard htall hreduced ⟨probeVec, hperp, hprobeNe, hpos⟩
+  have hsurplus : 1 < ∑ label ∈ selected, (design.atom label ⬝ᵥ unitNormal) ^ 2 :=
+    hfloor selected htall
+  have hminor : 0 < wedgeMinor design selected unitNormal :=
+    (wedgeMinor_pos_iff_flatSplitReduced_pos design selected ({0, 1, 2} : Finset (Fin 6))
+      (by decide) (by decide) (by decide) oneLine_flat_compl unitNormal hunit hlineFlat
+      hsurplus).mpr hreduced
+  exact lineFlatSplitSelectorAt_of_wedgeMinor design hunit hlineFlat hcard hsurplus hminor hperp
+    hprobeNe hpos
+
+end Gtz
