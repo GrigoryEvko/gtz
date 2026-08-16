@@ -871,23 +871,24 @@ def SecondMomentDominates : Prop :=
           < ∑ mid ∈ univ.erase label, ∑ inner ∈ (univ.erase label).erase mid,
               projGapAt (projectionOfDesign design) label mid inner ^ 2
 
-/-- **ALL FIVE ON-PATH OBLIGATIONS, FROM THE SECOND MOMENT.**  A sixth entrance to the
-registry.  Its hypothesis is one inequality between two moments of a landed functional, and
-the first of those moments is landed in closed form. -/
-theorem allFiveOnPath_of_secondMomentDominates
-    (huniform : ∀ design : WeightedDesign 6 3, ∀ label : Fin 6,
-      design.weight label = (6 : ℝ)⁻¹)
-    (hsecond : SecondMomentDominates) :
-    BaseTripleTightLineFreeOffConicHeavyNeedleResidual ∧
-      OneLineTenthHeavyJointBlindLineSparse ∧
-      TwoMeetingLinesTenthHeavyJointBlindTransversal ∧
-      ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines ∧
-      KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict := by
-  refine allFiveOnPath_of_blockGapAt fun design hprimitive => ?_
-  obtain ⟨label, bound, hexcess, hminors, hbound, hbig⟩ :=
-    hsecond design hprimitive (huniform design)
-  exact exists_posDef_blockGapAt_of_secondMoment design (huniform design) label bound
-    hexcess hminors hbound hbig
+/-! ### DEAD END: the registry door from the second moment
+
+`Gtz.SecondMomentDominates` is sound, and `Gtz.exists_posDef_blockGapAt_of_secondMoment`
+consumes it one design at a time.  A door to the five on-path obligations does NOT follow,
+and this file carried one until it was deleted here.
+
+The obligations quantify over every design.  The criterion speaks only about a design of
+uniform weight.  A theorem that bridges the two must take
+
+  `∀ design : WeightedDesign 6 3, ∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹`
+
+and that statement is FALSE.  `Gtz.nonUniformLeverageTieDesign` carries the weights
+`1/9, 1/9, 1/9, 2/9, 1/9, 2/9`, so the antecedent is unsatisfiable and the door cannot
+open.  A door that cannot open costs a later reader one cycle, so deletion beats a warning.
+
+The ledger of `Skeleton.obligationBaseTripleTightUThreeSix` already records weight-uniform
+threshold certificates as a refuted method, with margin infimum zero.  This entry meets that
+refutation a second time, from the moment side. -/
 
 /-- The plain two-moment form, with the total itself as the bound.  It is weaker than the
 sharp form whenever the deepest gap is shallower than the whole total, and the measurements
@@ -1035,23 +1036,18 @@ def PairSecondMomentDominates : Prop :=
           < ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
               projGapAt (projectionOfDesign design) outer mid inner ^ 2
 
-/-- **ALL FIVE ON-PATH OBLIGATIONS, FROM ONE PIVOT PAIR.**  The strongest entrance in this
-file.  Measured, its hypothesis holds at every one of the 800 exact designs sampled, while
-the landed pigeonhole cell holds at 10 of 4800 slots. -/
-theorem allFiveOnPath_of_pairSecondMomentDominates
-    (huniform : ∀ design : WeightedDesign 6 3, ∀ label : Fin 6,
-      design.weight label = (6 : ℝ)⁻¹)
-    (hpair : PairSecondMomentDominates) :
-    BaseTripleTightLineFreeOffConicHeavyNeedleResidual ∧
-      OneLineTenthHeavyJointBlindLineSparse ∧
-      TwoMeetingLinesTenthHeavyJointBlindTransversal ∧
-      ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines ∧
-      KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict := by
-  refine allFiveOnPath_of_blockGapAt fun design hprimitive => ?_
-  obtain ⟨outer, mid, bound, hmid, hexcess, hminor, hbound, hbig⟩ :=
-    hpair design hprimitive (huniform design)
-  exact exists_posDef_blockGapAt_of_pairSecondMoment design (huniform design) outer mid hmid
-    hexcess hminor bound hbound hbig
+/-! ### DEAD END: the registry door from one pivot pair
+
+`Gtz.PairSecondMomentDominates` is the strongest criterion in this file, and
+`Gtz.exists_posDef_blockGapAt_of_pairSecondMoment` consumes it one design at a time.  The
+measurement is real: the criterion holds at every one of the 800 exact designs sampled,
+against 10 of 4800 slots for the landed pigeonhole cell.
+
+A door to the five on-path obligations still does NOT follow, for the reason given at the
+second-moment entry above.  The criterion speaks only about a design of uniform weight, and
+the bridge to every design is the FALSE statement refuted by
+`Gtz.nonUniformLeverageTieDesign`.  A high measurement on the uniform stratum is not
+evidence about the obligations, because the obligations quantify over the whole stratum. -/
 
 /-- The exact shortfall at the graphic point of `K4`.  At a pivot pair the four gaps are
 `5/4`, `-49/4`, `-1` and `-1`.  They total `-13`, their squares total `1229/8`, and the
@@ -1298,8 +1294,10 @@ member.  Every design therefore hands over a pivot and a partner with no hypothe
 (`Gtz.exists_pivot_pair_of_uniform`).
 
 What remains of the whole rank-four rung is the THIRD inequality alone
-(`Gtz.allFiveOnPath_of_offsetThirdInequality`): at that pivot and partner, one further
-label whose squared offset falls below the product of the two minors. -/
+(`Gtz.allFiveOnPath_of_thirdInequality`, in `Gtz/Wave/ThirdLabelSelection.lean`): at that
+pivot and partner, one further label whose squared offset falls below the product of the two
+minors.  That door takes no weight hypothesis.  The uniform-weight door this file once
+carried is deleted, and the entry below records why. -/
 
 /-- **SOME EXCESS REACHES A THIRD, UNCONDITIONALLY.**  The landed excess total is
 `rank - 1 = 2`, and six excesses totalling `2` cannot all fall below `1/3`.  No weight
@@ -1334,33 +1332,18 @@ theorem exists_pivot_pair_of_uniform (design : WeightedDesign 6 3)
   obtain ⟨partner, hpartner, hpos⟩ := exists_pos_of_sum_pos _ _ hrow
   exact ⟨label, partner, Finset.ne_of_mem_erase hpartner, hexcess, hpos⟩
 
-/-- **THE WHOLE RUNG IS ONE INEQUALITY.**  Every on-path obligation follows from the THIRD
-inequality alone, asked at a pivot and partner that every design already carries.  The
-corner minor and the two-by-two minor are discharged by
-`Gtz.exists_pivot_pair_of_uniform`, so nothing else is left to assume. -/
-theorem allFiveOnPath_of_offsetThirdInequality
-    (huniform : ∀ design : WeightedDesign 6 3, ∀ label : Fin 6,
-      design.weight label = (6 : ℝ)⁻¹)
-    (hthird : ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
-      ∀ label partner : Fin 6, partner ≠ label →
-        (1 : ℝ) / 3 ≤ diagonalShiftForm design label label →
-        0 < pairMinorAt (diagonalShiftForm design) label partner →
-        ∃ third : Fin 6, third ≠ label ∧ third ≠ partner ∧
-          shiftOffsetAt design label partner third ^ 2
-            < pairMinorAt (diagonalShiftForm design) label partner
-              * pairMinorAt (diagonalShiftForm design) label third) :
-    BaseTripleTightLineFreeOffConicHeavyNeedleResidual ∧
-      OneLineTenthHeavyJointBlindLineSparse ∧
-      TwoMeetingLinesTenthHeavyJointBlindTransversal ∧
-      ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines ∧
-      KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict := by
-  refine allFiveOnPath_of_offsetDominatesSomewhere fun design hprimitive => ?_
-  obtain ⟨label, partner, hne, hexcess, hminor⟩ :=
-    exists_pivot_pair_of_uniform design (huniform design)
-  obtain ⟨third, hthirdLabel, hthirdPartner⟩ :=
-    hthird design hprimitive label partner hne hexcess hminor
-  exact ⟨label, partner, third, hne.symm, hthirdLabel, hthirdPartner.1,
-    by linarith [hexcess], hminor, hthirdPartner.2⟩
+/-! ### SUPERSEDED: the one-inequality door, at general weight instead
+
+This file once carried `allFiveOnPath_of_offsetThirdInequality`, which reached the five
+on-path obligations from the third inequality alone.  It spent
+`Gtz.exists_pivot_pair_of_uniform` for the corner and the two-by-two minor, and it paid for
+that with the FALSE hypothesis refuted by `Gtz.nonUniformLeverageTieDesign`.
+
+`Gtz.allFiveOnPath_of_thirdInequality` (`Gtz/Wave/ThirdLabelSelection.lean`) carries the
+SAME `hthird` hypothesis, word for word, and takes no weight hypothesis at all.  It rests on
+`Gtz.exists_pivot_pair_general`, the general-weight pivot floor.  The successor is strictly
+stronger, so this file keeps only the two unconditional halves below and cites the successor
+for the door. -/
 
 /-! ### 13. THE FRONTIER PRODUCER, AT EVERY RANK AND EVERY SIZE
 

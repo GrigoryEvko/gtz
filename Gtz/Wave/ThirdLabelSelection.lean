@@ -173,10 +173,11 @@ theorem exists_pivot_pair_general (design : WeightedDesign 6 3) :
 
 /-! ### 3. THE RUNG, AS ONE INEQUALITY, WITH NO FALSE ANTECEDENT
 
-`Gtz.allFiveOnPath_of_offsetThirdInequality` carries the antecedent
-`∀ design, ∀ label, design.weight label = 1/6`, which asserts that EVERY design is
-uniformly weighted and is therefore unsatisfiable.  The theorem below asks the third
-inequality alone. -/
+`Gtz/Wave/OffsetUpperBound.lean` once carried `allFiveOnPath_of_offsetThirdInequality`, with
+the antecedent `∀ design, ∀ label, design.weight label = 1/6`.  That antecedent asserts that
+EVERY design is uniformly weighted, so it is unsatisfiable and the door could not open.
+`Gtz.nonUniformLeverageTieDesign` refutes it outright.  That theorem is now deleted, and the
+theorem below is its successor: the same third inequality, and no weight hypothesis. -/
 
 /-- **ALL FIVE ON-PATH OBLIGATIONS FROM THE THIRD INEQUALITY ALONE.**  The pivot excess and
 the partner pair minor are supplied by `Gtz.exists_pivot_pair_general`, at general weight,
