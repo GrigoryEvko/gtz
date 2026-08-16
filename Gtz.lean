@@ -4988,3 +4988,11 @@ import Gtz.Wave.KFourTreeLaplacian
 -- it gives the shipped root layer its first consumer outside its own file.  The
 -- margin ceiling is the matching upper bound to every landed cell's lower bound.
 import Gtz.Wave.ElliptopeGapBridge
+
+-- The second-moment theory of the objective, closed onto the mass energy.  The
+-- block determinant vanishes whenever two slots agree, so every determinant-
+-- weighted sum is a full sum and the landed marginals apply with no index
+-- matching.  The cross term is then closed form in two invariants, and the mass
+-- energy is the single remaining unknown.  The tail bridge turns that energy into
+-- a lower bound on the largest block determinant.
+import Gtz.Wave.MassMomentClosure
