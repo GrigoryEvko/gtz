@@ -5987,3 +5987,25 @@ import Gtz.Wave.ShareOneForcing
 --   the branch.
 import Gtz.Wave.TieConstraintIntersection
 import Gtz.Wave.TieConstraintIntersectionCorankOne
+
+-- FORK-200 (continued).  THE FREE-MASS ARM DOES NOT COVER BRANCH (i).
+--   `Gtz.kFourDesign` is the K4 edge design at uniform weight: six atoms, every
+--   weight `1/6`, every share `1/2`, every leverage `3`, and stress-free by
+--   `Gtz.kFourDesign_stressFree`.  Its vertex star `{0,2,4}` dominates STRICTLY, and
+--   `Gtz.subsetSum_kFourDesign_star_sub_one` identifies the star gap with the landed
+--   `Gtz.rootStarGap`.  Yet `Gtz.freeMassBudget_kFourDesign_star` is `6/5`, so the
+--   budget hypothesis of `Gtz.posDef_gap_of_freeMassBudget` is FALSE there.
+--   `Gtz.freeMass_certificate_misses_on_stressFree_sixThree` packages the miss.
+--   READING.  The free-mass arm and the balance law are COMPLEMENTARY, not nested.
+--   At the K4 star the balance law fires and the budget does not.  At the deepest
+--   measured near-ties the budget fires and the balance law does not.  Neither arm
+--   alone can be the covering criterion for the stratum.
+--   MEASURED, NOT KERNEL.  On one million uniform stress-free `(6,3)` samples the
+--   free-mass arm fires at 100.0000 per cent and the isotropy arm at 33.27 per cent,
+--   yet a directed hunt reaches a NON-DEGENERATE design where BOTH arms of
+--   `Gtz.HasStrictCertificate` fail on all twenty triples, at minimum weight 0.110,
+--   Veronese determinant 0.680 and smallest quadruple defect 1.280.  So the
+--   certificate branch of `Gtz.sixThree_exists_posDef_triple_of_stressFree` is empty
+--   on an open region and not only at ties.  The balance law fires there, so adding
+--   a balance arm to `Gtz.HasStrictCertificate` is the indicated repair.
+import Gtz.Wave.TieConstraintIntersectionKFour

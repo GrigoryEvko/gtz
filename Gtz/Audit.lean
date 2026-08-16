@@ -1174,6 +1174,7 @@ import Gtz.Wave.ShareOneForcingWitness
 import Gtz.Wave.ShareOneForcing
 import Gtz.Wave.TieConstraintIntersection
 import Gtz.Wave.TieConstraintIntersectionCorankOne
+import Gtz.Wave.TieConstraintIntersectionKFour
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -34951,3 +34952,27 @@ run_cmd do
 #print axioms Gtz.corankOne_isTie_iff_forall_sum_coLeverageRatio_eq_one
 #print axioms Gtz.coLeverageRatio_eq_inv_rank_of_isTie
 #print axioms Gtz.sum_coLeverageRatio_eq_one_of_isTie_viaLeverageIdentity
+
+-- Gtz/Wave/TieConstraintIntersectionKFour.lean
+#print axioms Gtz.kFourRootEdge
+#print axioms Gtz.kFourRootScale
+#print axioms Gtz.kFourRootScale_sq
+#print axioms Gtz.kFourAtom
+#print axioms Gtz.atomMatrix_kFourAtom
+#print axioms Gtz.sum_atomMatrix_kFourRootEdge
+#print axioms Gtz.kFourDesign
+#print axioms Gtz.kFourDesign_atom
+#print axioms Gtz.kFourDesign_weight
+#print axioms Gtz.subsetSum_kFourDesign_eq
+#print axioms Gtz.baseDeficit_kFourDesign_eq
+#print axioms Gtz.dotProduct_kFourAtom_mulVec
+#print axioms Gtz.sum_atomMatrix_kFourRootEdge_star
+#print axioms Gtz.kFourDesign_stressFree
+#print axioms Gtz.subsetSum_kFourDesign_star
+#print axioms Gtz.subsetSum_kFourDesign_star_sub_one
+#print axioms Gtz.posDef_gap_kFourDesign_star
+#print axioms Gtz.baseDeficit_kFourDesign_star
+#print axioms Gtz.baseDeficit_kFourDesign_star_inv
+#print axioms Gtz.freeMassBudget_kFourDesign_star
+#print axioms Gtz.not_freeMassBudget_lt_one_kFourDesign_star
+#print axioms Gtz.freeMass_certificate_misses_on_stressFree_sixThree
