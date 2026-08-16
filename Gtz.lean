@@ -5028,3 +5028,9 @@ import Gtz.Wave.OffsetMinorProduct
 import Gtz.Wave.OffsetUpperBound
 import Gtz.Wave.ThresholdEnergyClosure
 import Gtz.Wave.CrossEnergyFloor
+-- The chart gap is the reduced Laplacian of ONE signed edge vector, so Kirchhoff's
+-- theorem reads every selection determinant as a sixteen-term spanning-tree sum.  The
+-- corank-two gauge wall of the registered `K4` component is then a rational variety
+-- cut out by three division-free equations, and only nine of the sixteen trees can
+-- survive on it.
+import Gtz.Wave.KFourSignedTreeLaplacian
