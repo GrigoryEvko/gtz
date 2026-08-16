@@ -391,6 +391,74 @@ theorem sq_atomBracket_le_triplePairAreaSum_of_lineFreeOffConicTie
   sq_atomBracket_le_triplePairAreaSum_of_noStrictTriple design htie.2 hfirstSecond
     hfirstThird hsecondThird
 
+/-! ## The floor cell is inhabited
+
+An open condition needs a witness before anyone spends a fork on it.  The
+design below is exact in rationals: three coordinate directions at length two,
+each shadowed by the same direction at length one, with weights `2/9` and `1/9`.
+Parseval is exact because `(2/9)*4 + (1/9)*1 = 1` on each axis.  The long triple
+reads bracket squared `64` against pair-area sum `48`, so the floor fires and
+the triple dominates strictly.
+
+The witness has parallel atoms, so it is NOT line-free.  It shows the CELL is
+inhabited, not that the cell meets the line-free stratum.  The criterion is an
+open condition on the atoms, so a generic perturbation stays in the cell, but no
+such perturbation is landed here.
+-/
+
+/-- Three coordinate directions at length two, each shadowed at length one. -/
+noncomputable def cramerCellAtom : Fin 6 → Fin 3 → ℝ
+  | 0 => ![2, 0, 0]
+  | 1 => ![1, 0, 0]
+  | 2 => ![0, 2, 0]
+  | 3 => ![0, 1, 0]
+  | 4 => ![0, 0, 2]
+  | 5 => ![0, 0, 1]
+
+/-- Weight `2/9` on each long atom and `1/9` on each shadow. -/
+noncomputable def cramerCellWeight : Fin 6 → ℝ
+  | 0 => 2 / 9
+  | 1 => 1 / 9
+  | 2 => 2 / 9
+  | 3 => 1 / 9
+  | 4 => 2 / 9
+  | 5 => 1 / 9
+
+/-- The non-vacuity witness of the floor cell. -/
+noncomputable def cramerCellDesign : WeightedDesign 6 3 where
+  atom := cramerCellAtom
+  weight := cramerCellWeight
+  weight_pos := by intro label; fin_cases label <;> norm_num [cramerCellWeight]
+  weight_sum_one := by rw [Fin.sum_univ_six]; norm_num [cramerCellWeight]
+  isParseval := by
+    rw [Fin.sum_univ_six]
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp [cramerCellAtom, cramerCellWeight, atomMatrix, Matrix.cons_val_two] <;> norm_num
+
+/-- **THE FLOOR CELL IS INHABITED.**  The long triple beats its pair-area sum by
+sixteen. -/
+theorem cramerCellDesign_bracketDominant :
+    triplePairAreaSum (cramerCellDesign.atom 0) (cramerCellDesign.atom 2)
+        (cramerCellDesign.atom 4)
+      < atomBracket cramerCellDesign 0 2 4 ^ 2 := by
+  simp only [atomBracket, tripleBracket, triplePairAreaSum, crossNormSq, bracketNormal,
+    cramerCellDesign, cramerCellAtom, Matrix.det_fin_three, dotProduct, Fin.sum_univ_three,
+    Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
+  norm_num
+
+/-- The floor fires at the witness, with no Sylvester chain read. -/
+theorem cramerCellDesign_posDef_longTriple :
+    (subsetSum cramerCellDesign ({0, 2, 4} : Finset (Fin 6)) - 1).PosDef :=
+  posDef_subsetSum_of_pairAreaSum_lt_sq_atomBracket cramerCellDesign (by decide) (by decide)
+    (by decide) cramerCellDesign_bracketDominant
+
+/-- The witness is not a tie. -/
+theorem cramerCellDesign_not_isTie : ¬ IsTie cramerCellDesign :=
+  not_isTie_of_pairAreaSum_lt_sq_atomBracket cramerCellDesign (by decide) (by decide)
+    (by decide) cramerCellDesign_bracketDominant
+
 /-! ## The tie construction criterion -/
 
 /-- **A CHEAP SUFFICIENT CONDITION FOR BEING A TIE.**  A design with one weakly
