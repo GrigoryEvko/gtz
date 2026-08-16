@@ -97,6 +97,12 @@ stalls and 5246407 four-cycle stalls, with zero failures.  In the same census
 strictly, and the bound rejected every one of them.  A directed anneal over
 60000 restarts drove the cell margin to 6.75e-13 and never below zero.
 
+ON THE WALL, which no uniform census reaches: 2992 exact rational points built
+from the landed parametrisation of `Gtz.kFourGaugeStarWall_family`, every one
+with a rank-one gauge-star gap.  The cell fires at all 2992, at all 2746
+triangle stalls there and at all 4721 four-cycle stalls there.  Four of those
+points carry exactly one strict tree.
+
 Two candidate sufficient conditions for the bound are FALSE: `w_d <= min_{c in C}
 w_c` at a strict tree, and `d` the minimum weight label at a strict tree.  Both
 die at masses `(1, 25, 9, 7/2, 9/4, 5/3)` and weights `(13, 15, 21, 20, 23, 22)
