@@ -5,11 +5,19 @@ defaultTargets = ["Gtz", "Skeleton"]
 [[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4"
-rev = "v4.32.0"
+rev = "v4.34.0-rc1"
 
 [leanOptions]
 autoImplicit = false
 relaxedAutoImplicit = false
+# MIGRATION DEBT, v4.32.0 -> v4.34.0-rc1.  Lean v4.33 turned this option on by
+# default (lean4#13895).  Under it a `Matrix` no longer unfolds to its function
+# type at `implicit` transparency, so `rw` and `simp` steps that matched through
+# that unfolding stop to fire.  The documented symptom is a lemma that silently
+# stops to apply.  A value of false here restores the v4.32 behavior tree-wide
+# while the real fixes land declaration by declaration.
+# TODO(gtz): narrow this to the declarations that need it, then delete it.
+backward.isDefEq.respectTransparency.types = false
 
 [[lean_lib]]
 name = "Gtz"

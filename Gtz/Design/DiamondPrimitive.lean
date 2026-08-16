@@ -100,8 +100,11 @@ theorem diamondDrop_eq_grounded (edge : Fin 5) (potential : Fin 3 → ℝ) :
     diamondDrop edge potential
       = groundedPotential potential (diamondData.graph.edgeTail edge)
         - groundedPotential potential (diamondData.graph.edgeHead edge) := by
+  -- Lean v4.34 leaves `potential 2 = potential (Fin.castPred 2 _)` on two of the
+  -- five edges. The two sides are definitionally equal, and `rfl` closes them.
   fin_cases edge <;>
-    simp [diamondDrop, diamondData, diamondGraph, groundedPotential, Fin.snoc]
+    simp [diamondDrop, diamondData, diamondGraph, groundedPotential, Fin.snoc] <;>
+    rfl
 
 /-- **The gap form, selected minus full.** -/
 theorem diamondGap_form (edgeSet : Finset (Fin 5)) (potential : Fin 3 → ℝ) :
