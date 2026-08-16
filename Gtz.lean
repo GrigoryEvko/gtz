@@ -5669,3 +5669,34 @@ import Gtz.Wave.KirchhoffSignTower
 --   infimum appears to BE one, so NO uniform margin bound can prove the parallel-pair
 --   conjecture, and any proof must be a boundary or rigidity argument.
 import Gtz.Wave.TieAtomRepeatRefutation
+
+-- Phase 8 (mv-weightregular): a domination engine whose every reading is bounded,
+-- plus three laws the tree did not carry.
+-- THE ENGINE.  `Gtz.dominates_iff_posSemidef_projectionBlock` decides domination by
+--   `P_C >= diag t_C`.  `Gtz.posDef_gap_iff_posDef_projectionBlock` is its strict twin,
+--   and `Gtz.dominates_of_projectionBlock_ge_weightCap` replaces the weight diagonal by
+--   ONE scalar cap.  `Gtz.not_isTie_of_projectionBlock_gt_weightCap` turns a strict cap
+--   into a tie exclusion.
+-- WHY THE CAP.  `Gtz.weightCap_le_one_of_projectionBlock_ge` proves a firing cap is at
+--   most one, and the tree already proves `0 <= P <= 1`.  So the engine reads only
+--   numbers in the closed unit interval, while `Dominates` reads atoms `g_c = h_c/sqrt(t_c)`
+--   that grow without bound as a weight goes to zero.  The dust-weight channel, which the
+--   ledger names as the escape that defeats every margin mechanism, is a REGULAR limit here.
+-- THE COST IS THE SPREAD, AND NOTHING ELSE.
+--   `Gtz.posDef_gap_iff_projectionBlock_gt_weightCap_of_constant` is an equivalence on the
+--   constant-weight locus.  NOT VACUOUS: `Gtz.exists_projectionBlock_gt_weightCap_icosaDesign`
+--   fires it at the tree's own (6,3) anchor, whose weights are all 1/6.
+-- MEASURED, 2026-08-16, C with OpenMP at 200 threads, and this is a measurement.  Over
+--   random (6,3) designs the strict cap is SOUND at every one of about 100000 firings, it
+--   excludes 95 percent of designs as ties at generic weights, and 98 percent in the dust
+--   channel -- coverage RISES as the weights degenerate.  At the two shipped (6,3) ties
+--   the cap margin is at most zero, so the engine is tight exactly where it must be.
+-- THREE LAWS.  `Gtz.stress_support_orthogonal_iff_pos_side` reads a stress two-sidedly,
+--   where the tree had only one direction.  `Gtz.hasParallelAtomPair_of_card_stressSupport_le_three`
+--   gives a parallel pair from at most three live labels, at every size and every rank, with
+--   NO uniqueness and NO tie hypothesis -- the tree had this for supports one and two only,
+--   and only inside a (7,3) taxonomy that assumes the stress space is a line.
+--   `Gtz.sum_pair_weight_mul_pairGram` and `Gtz.sum_pair_weight_mul_sq_dotProduct` state the
+--   second moment over the ATOMS, and `Gtz.sum_weightProduct_mul_det_subsetSum` fuses the
+--   volume-sampling identity into one statement.
+import Gtz.Wave.TieParallelPairWeightRegular

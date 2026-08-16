@@ -1165,6 +1165,7 @@ import Gtz.Wave.A1NeedleCollapse
 import Gtz.Wave.A1NeedleTieDegeneracy
 import Gtz.Wave.A1NeedleCramerFloor
 import Gtz.Wave.TieAtomRepeatRefutation
+import Gtz.Wave.TieParallelPairWeightRegular
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -34623,3 +34624,30 @@ run_cmd do
 #print axioms Gtz.antipodalTetraDesign_hasCloneMatrixPair
 #print axioms Gtz.not_lineFree_antipodalTetraDesign
 #print axioms Gtz.not_isStressFree_antipodalTetraDesign
+
+#print axioms Gtz.posDef_projectionBlock_iff
+#print axioms Gtz.posDef_gap_iff_posDef_projectionBlock
+#print axioms Gtz.smul_one_sub_weightDiagonal
+#print axioms Gtz.posSemidef_smul_one_sub_weightDiagonal
+#print axioms Gtz.projectionBlock_sub_weightDiagonal_split
+#print axioms Gtz.dominates_of_projectionBlock_ge_weightCap
+#print axioms Gtz.posDef_gap_of_projectionBlock_gt_weightCap
+#print axioms Gtz.card_image_of_injective_univ
+#print axioms Gtz.not_isTie_of_projectionBlock_gt_weightCap
+#print axioms Gtz.posDef_gap_iff_projectionBlock_gt_weightCap_of_constant
+#print axioms Gtz.weightCap_le_one_of_projectionBlock_ge
+#print axioms Gtz.exists_projectionBlock_gt_weightCap_of_uniform
+#print axioms Gtz.exists_projectionBlock_gt_weightCap_icosaDesign
+#print axioms Gtz.neg_stress
+#print axioms Gtz.stress_pos_side_orthogonal_iff_neg_side
+#print axioms Gtz.stress_support_orthogonal_iff_pos_side
+#print axioms Gtz.exists_zero_atom_of_nonneg_stress
+#print axioms Gtz.hasParallelAtomPair_of_atom_eq_zero
+#print axioms Gtz.card_stressSupport_eq_add
+#print axioms Gtz.hasParallelAtomPair_of_card_stressSupport_le_three
+#print axioms Gtz.hasParallelPair_of_card_stressSupport_le_three
+#print axioms Gtz.hasParallelPair_sixThree_of_card_stressSupport_le_three
+#print axioms Gtz.trace_atomMatrix_mul_atomMatrix
+#print axioms Gtz.sum_pair_weight_mul_sq_dotProduct
+#print axioms Gtz.sum_pair_weight_mul_pairGram
+#print axioms Gtz.sum_weightProduct_mul_det_subsetSum
