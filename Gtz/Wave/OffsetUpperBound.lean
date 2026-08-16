@@ -1193,6 +1193,33 @@ theorem not_isTie_of_kfour (design : WeightedDesign 6 3)
   obtain ⟨pick, hinj, hposDef⟩ := exists_posDef_blockGapAt_of_kfour design hpoint huniform
   exact not_isTie_of_posDef_blockGapAt design hinj hposDef
 
+/-! #### Why the dominance lane cannot be the whole answer
+
+The comparison determinant of a triple is the gap determinant less `2 * u * v * w` and less
+`2 * |u| * |v| * |w|`, so it is the gap read at the worst sign pattern the three pairings
+could carry.  At the graphic point the pairings all read `1/4` and the excesses all read
+`1/3`, so the signs are as favourable as they get and the comparison test still refuses.
+
+Two triple types occur at `K4`, because the three pairings that vanish are a perfect
+matching and a triple meets at most one of them.  Both types fail, at `-49/864` and at
+`-1/216`.  The gap itself is `+5/4` at the first type, so the loss is entirely the sign
+blindness of the criterion.  A dominance argument therefore cannot close the rigid stratum,
+and `Gtz.exists_posDef_blockGapAt_of_kfour` closes it by Sylvester instead. -/
+
+/-- The comparison determinant at a meeting triple of the graphic point is `-49/864`, while
+the true gap determinant there is `+5/864`.  The whole difference is the sign blindness. -/
+theorem kfourStar_comparison_meeting_neg :
+    ((1 : ℝ) / 3) ^ 3 - (1 / 3) * (3 * (1 / 4) ^ 2) - 2 * (1 / 4) ^ 3 = -(49 / 864)
+      ∧ ((1 : ℝ) / 3) ^ 3 + 2 * (1 / 4) ^ 3 - (1 / 3) * (3 * (1 / 4) ^ 2) = 5 / 864 := by
+  refine ⟨by norm_num, by norm_num⟩
+
+/-- The comparison determinant at the other triple type of the graphic point, the one whose
+first pairing vanishes, is `-1/216`.  It refuses too. -/
+theorem kfourStar_comparison_matching_neg :
+    (1 : ℝ) / 3 * ((1 / 3) * (1 / 3) - (1 / 4) ^ 2)
+        - (1 / 4) * ((1 / 3) * (1 / 4)) = -(1 / 216) := by
+  norm_num
+
 /-- **THE FRONTIER'S CONCLUSION AT THE RIGID STRATUM.**  Every design carried by the graphic
 point of `K4` at uniform weight satisfies the hinge implication, unconditionally. -/
 theorem hasParallelPair_of_isTie_of_kfour (design : WeightedDesign 6 3)

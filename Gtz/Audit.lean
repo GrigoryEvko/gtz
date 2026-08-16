@@ -33136,3 +33136,11 @@ run_cmd do
 #print axioms Gtz.not_isTie_of_comparison
 #print axioms Gtz.hasParallelPair_of_isTie_of_comparison
 #print axioms Gtz.allFiveOnPath_of_comparison
+
+-- Why the dominance lane cannot close the rigid stratum.  The comparison determinant
+-- is the gap determinant read at the worst sign pattern the three pairings could carry.
+-- At the graphic point the signs are as favourable as they get and the test still
+-- refuses, at -49/864 on a meeting triple whose true gap is +5/864, and at -1/216 on the
+-- other type.  Sylvester closes that stratum instead.
+#print axioms Gtz.kfourStar_comparison_meeting_neg
+#print axioms Gtz.kfourStar_comparison_matching_neg
