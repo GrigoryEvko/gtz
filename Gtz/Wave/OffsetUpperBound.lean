@@ -1201,4 +1201,128 @@ theorem hasParallelPair_of_isTie_of_kfour (design : WeightedDesign 6 3)
     IsTie design → HasParallelPair design := fun htie =>
   absurd htie (not_isTie_of_kfour design hpoint huniform)
 
+/-! ### 13. THE FRONTIER PRODUCER, AT EVERY RANK AND EVERY SIZE
+
+Everything above rank three rests on Sylvester at `Fin 3`, and Sylvester does not generalize
+cheaply.  It does not have to.  Two landed facts are already rank-uniform:
+
+* `Gtz.posDef_of_diagonallyDominant` at `Fin rank`, and
+* `Gtz.posDef_subsetSum_iff_projectionBlockGap` at `(size, rank)`.
+
+Chaining them gives a producer for the frontier's own conclusion at EVERY rank and EVERY
+size, with no determinant, no Sylvester and no rank-three coincidence.  The criterion reads
+entirely in campaign vocabulary: inside the chosen block, every excess beats the sum of the
+absolute pairings in its own row.
+
+That is the shape the two frontier axioms ask for.  `obligationSubThresholdBandHinge` and
+`obligationThresholdCellHingeRankFourAndUp` both conclude `IsTie design → HasParallelPair
+design`, and `Gtz.hasParallelPair_of_isTie_of_excessDominates` delivers exactly that
+conclusion from one inequality per selected slot, uniformly in the rank. -/
+
+/-- The gap block of a selection is symmetric, at any rank. -/
+theorem projectionBlockGap_transpose (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank) :
+    (projectionBlockGap design selected hcard)ᵀ = projectionBlockGap design selected hcard := by
+  rw [projectionBlockGap, Matrix.transpose_sub, Matrix.diagonal_transpose,
+    Matrix.transpose_submatrix, projectionOfDesign_transpose]
+
+/-- Off the diagonal the gap block is a plain projection pairing. -/
+theorem projectionBlockGap_offDiag (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank)
+    {slot other : Fin rank} (hne : slot ≠ other) :
+    projectionBlockGap design selected hcard slot other
+      = projectionOfDesign design (selected.orderEmbOfFin hcard slot)
+          (selected.orderEmbOfFin hcard other) := by
+  rw [projectionBlockGap, Matrix.sub_apply, Matrix.submatrix_apply,
+    Matrix.diagonal_apply_ne _ hne, sub_zero]
+
+/-- **THE EXCESS DOMINANCE CRITERION.**  Inside the chosen block every excess beats the sum
+of the absolute pairings in its own row.  One inequality per selected slot, no determinant,
+no rank-three coincidence. -/
+def ExcessDominatesBlock (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank) : Prop :=
+  ∀ slot : Fin rank,
+    ∑ other ∈ Finset.univ.erase slot,
+        |projectionOfDesign design (selected.orderEmbOfFin hcard slot)
+          (selected.orderEmbOfFin hcard other)|
+      < projectionOfDesign design (selected.orderEmbOfFin hcard slot)
+          (selected.orderEmbOfFin hcard slot)
+        - design.weight (selected.orderEmbOfFin hcard slot)
+
+/-- **EXCESS DOMINANCE MAKES THE GAP BLOCK POSITIVE DEFINITE, AT EVERY RANK.** -/
+theorem posDef_projectionBlockGap_of_excessDominates (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank)
+    (hdominates : ExcessDominatesBlock design selected hcard) :
+    (projectionBlockGap design selected hcard).PosDef := by
+  classical
+  refine posDef_of_diagonallyDominant _ (projectionBlockGap_transpose design selected hcard)
+    fun slot => ?_
+  have hrow : ∑ other ∈ Finset.univ.erase slot,
+      |projectionBlockGap design selected hcard slot other|
+      = ∑ other ∈ Finset.univ.erase slot,
+          |projectionOfDesign design (selected.orderEmbOfFin hcard slot)
+            (selected.orderEmbOfFin hcard other)| :=
+    Finset.sum_congr rfl fun other hother => by
+      rw [projectionBlockGap_offDiag design selected hcard
+        (Finset.ne_of_mem_erase hother).symm]
+  rw [hrow, projectionBlockGap_diag]
+  exact hdominates slot
+
+/-- **THE SUBSET GAP IS POSITIVE DEFINITE, AT EVERY RANK.**  The landed bridge carries the
+block onto the subset. -/
+theorem posDef_subsetSum_of_excessDominates (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank)
+    (hdominates : ExcessDominatesBlock design selected hcard) :
+    (subsetSum design selected - 1).PosDef :=
+  (posDef_subsetSum_iff_projectionBlockGap design selected hcard).mpr
+    (posDef_projectionBlockGap_of_excessDominates design selected hcard hdominates)
+
+/-- **EXCESS DOMINANCE REFUTES THE TIE, AT EVERY RANK.**  A tie forbids every subset gap of
+the right size from being positive definite. -/
+theorem not_isTie_of_excessDominates (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank)
+    (hdominates : ExcessDominatesBlock design selected hcard) :
+    ¬ IsTie design := fun htie =>
+  htie.2 selected hcard (posDef_subsetSum_of_excessDominates design selected hcard hdominates)
+
+/-- **THE FRONTIER PRODUCER.**  Both frontier axioms of the registry conclude
+`IsTie design → HasParallelPair design`.  This theorem delivers that conclusion at EVERY
+rank and EVERY size, from one inequality per selected slot.  It is the rank-uniform
+currency the frontier's own attack notes call for, and it needs no Sylvester criterion, no
+determinant and no rank-three coincidence. -/
+theorem hasParallelPair_of_isTie_of_excessDominates (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank)
+    (hdominates : ExcessDominatesBlock design selected hcard) :
+    IsTie design → HasParallelPair design := fun htie =>
+  absurd htie (not_isTie_of_excessDominates design selected hcard hdominates)
+
+/-- **THE SUB-THRESHOLD BAND HINGE, ON THE DOMINATED STRATUM.**  The registry's first
+frontier axiom quantifies over every rank at least three and every size in the band.  On the
+stratum where some selection is excess dominated, its conclusion is a theorem. -/
+theorem obligationSubThresholdBandHinge_of_excessDominates
+    (hdominated : ∀ rank : ℕ, 3 ≤ rank → ∀ size : ℕ, 2 * rank ≤ size →
+      size < rank * (rank + 1) / 2 → ∀ design : WeightedDesign size rank,
+        ∃ selected : Finset (Fin size), ∃ hcard : selected.card = rank,
+          ExcessDominatesBlock design selected hcard) :
+    ∀ rank : ℕ, 3 ≤ rank → ∀ size : ℕ, 2 * rank ≤ size → size < rank * (rank + 1) / 2 →
+      GtzWeighted (size - 1) rank →
+        ∀ design : WeightedDesign size rank, IsTie design → HasParallelPair design := by
+  intro rank hrank size hlow hhigh _ design
+  obtain ⟨selected, hcard, hdom⟩ := hdominated rank hrank size hlow hhigh design
+  exact hasParallelPair_of_isTie_of_excessDominates design selected hcard hdom
+
+/-- **THE THRESHOLD-CELL HINGE AT RANK FOUR AND UP, ON THE DOMINATED STRATUM.**  The
+registry's second frontier axiom, with its conclusion produced the same way. -/
+theorem obligationThresholdCellHingeRankFourAndUp_of_excessDominates
+    (hdominated : ∀ rank : ℕ, 4 ≤ rank →
+      ∀ design : WeightedDesign (rank * (rank + 1) / 2) rank,
+        ∃ selected : Finset (Fin (rank * (rank + 1) / 2)), ∃ hcard : selected.card = rank,
+          ExcessDominatesBlock design selected hcard) :
+    ∀ rank : ℕ, 4 ≤ rank → GtzWeighted (rank * (rank + 1) / 2 - 1) rank →
+      ∀ design : WeightedDesign (rank * (rank + 1) / 2) rank,
+        IsTie design → HasParallelPair design := by
+  intro rank hrank _ design
+  obtain ⟨selected, hcard, hdom⟩ := hdominated rank hrank design
+  exact hasParallelPair_of_isTie_of_excessDominates design selected hcard hdom
+
 end Gtz

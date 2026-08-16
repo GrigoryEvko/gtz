@@ -33075,3 +33075,19 @@ run_cmd do
 #print axioms Gtz.hasParallelPair_of_isTie_of_offsetDominatesAt
 #print axioms Gtz.not_isTie_of_kfour
 #print axioms Gtz.hasParallelPair_of_isTie_of_kfour
+
+-- The frontier producer, at every rank and every size.  Sylvester does not generalize
+-- cheaply, and it does not have to.  Diagonal dominance at Fin rank and the subset-gap
+-- bridge at (size, rank) are BOTH already rank-uniform, so chaining them gives the
+-- frontier's own conclusion with no determinant and no rank-three coincidence.  The
+-- criterion reads in campaign vocabulary: inside the chosen block every excess beats the
+-- sum of the absolute pairings in its own row.
+#print axioms Gtz.projectionBlockGap_transpose
+#print axioms Gtz.projectionBlockGap_offDiag
+#print axioms Gtz.ExcessDominatesBlock
+#print axioms Gtz.posDef_projectionBlockGap_of_excessDominates
+#print axioms Gtz.posDef_subsetSum_of_excessDominates
+#print axioms Gtz.not_isTie_of_excessDominates
+#print axioms Gtz.hasParallelPair_of_isTie_of_excessDominates
+#print axioms Gtz.obligationSubThresholdBandHinge_of_excessDominates
+#print axioms Gtz.obligationThresholdCellHingeRankFourAndUp_of_excessDominates
