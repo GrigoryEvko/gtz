@@ -4837,6 +4837,7 @@ import Gtz.Design.FrobeniusSpreadCell
 import Gtz.Design.OneLineChart
 import Gtz.Design.OneLineCovering
 import Gtz.Design.SharpSpreadCell
+import Gtz.Design.TripleGramSylvester
 
 -- No relabelling-equivariant rule can designate.  Whitening sends the selection
 -- gap to one minus the Gram of the omitted labels, so a chart point whose
