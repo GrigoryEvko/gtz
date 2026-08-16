@@ -31297,3 +31297,13 @@ run_cmd do
 #print axioms Gtz.pairBudget_deficit_eq
 #print axioms Gtz.tripleBoostedCross_neg_of_budget_nonpos_of_det_pos
 #print axioms Gtz.not_pairBudget_cell_of_budget_nonpos
+#print axioms Gtz.gapExcessOf_pos_of_pairGapExcessOf_pos
+#print axioms Gtz.heavyExcess_pos_of_pairGapExcessOf_pos
+#print axioms Gtz.isLivePair_iff_corner_and_minor
+#print axioms Gtz.hasLivePairPositiveTie_iff_livePairTieWitness
+#print axioms Gtz.livePairTieWitness_iff_exists_posDef_cardThree
+#print axioms Gtz.existsLivePairTieDesign_iff_forall_exists_posDef
+#print axioms Gtz.ExistsLivePairTiePrimitiveDesign
+#print axioms Gtz.existsLivePairTiePrimitiveDesign_iff_consolidatedStrictTripleDesign
+#print axioms Gtz.existsLivePairTiePrimitiveDesign_of_existsLivePairTieDesign
+#print axioms Gtz.livePairTie_is_not_a_reduction

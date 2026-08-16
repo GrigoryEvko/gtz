@@ -4883,3 +4883,4 @@ import Gtz.Wave.ThreeLinesBoostDesignationRefuter
 -- narrowing is formal, and the honest residual keeps no weight condition.
 import Gtz.Wave.ChartProgrammeHeavyResidual
 import Gtz.Wave.LivePairTieRefuter
+import Gtz.Wave.LivePairTieIdentification
