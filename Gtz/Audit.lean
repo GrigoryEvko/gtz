@@ -33474,3 +33474,22 @@ run_cmd do
 #print axioms Gtz.kFourProfile_excess_eq
 #print axioms Gtz.completeGraphProfile_deficit_eq
 #print axioms Gtz.kFourProfile_deficit_eq
+-- One ratio governs the profile.  Diagonal dominance asks two, the sign-free cell asks the
+-- square root of three, Sylvester with coherence asks one.  The ratio is two minus two over
+-- rank, so only the last is met, and the coherent determinant factors as a square.
+#print axioms Gtz.profileDiag
+#print axioms Gtz.profilePair
+#print axioms Gtz.profileRatio
+#print axioms Gtz.profileDiag_eq_ratio_mul_pair
+#print axioms Gtz.profileRatio_lt_two
+#print axioms Gtz.one_lt_profileRatio
+#print axioms Gtz.coherentCliqueDet
+#print axioms Gtz.coherentCliqueDet_eq
+#print axioms Gtz.coherentCliqueDet_pos
+#print axioms Gtz.profileRatio_sq_lt_three_of_rank_three
+#print axioms Gtz.signFreeCliqueDet
+#print axioms Gtz.coherentCliqueDet_sub_signFree
+#print axioms Gtz.coherentCliqueDet_rank_three
+#print axioms Gtz.signFreeCliqueDet_rank_three
+#print axioms Gtz.coherentCliqueDet_rank_four
+#print axioms Gtz.kFourRatio_separates

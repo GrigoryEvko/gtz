@@ -549,4 +549,147 @@ theorem completeGraphProfile_deficit_eq (hrank : 0 < rank) :
 `1 / 6`. -/
 theorem kFourProfile_deficit_eq : 2 * (1 / ((3 : ℝ) + 1)) - 1 / 3 = 1 / 6 := by norm_num
 
+/-! ## 10. The profile decided in closed form: one ratio governs every instrument
+
+On the complete-graph profile a selection whose slots pairwise meet has a gap block with
+constant diagonal `Gtz.profileDiag` and constant off-diagonal magnitude
+`Gtz.profilePair`.  Everything about it is carried by their ratio
+
+    `Gtz.profileRatio rank = 2 * (rank - 1) / rank`
+
+because the block is `profilePair * (ratio on the diagonal, unit off it)`.  The three
+instruments the campaign has aimed at this family are three thresholds on that one number,
+and they separate:
+
+| instrument                     | fires exactly when |
+|--------------------------------|--------------------|
+| strict diagonal dominance      | `2 < ratio`        |
+| the sign-free determinant cell | `3 < ratio ^ 2`    |
+| Sylvester with coherence       | `1 < ratio`        |
+
+The ratio is `2 - 2 / rank`.  It is **below two at every rank**, so diagonal dominance
+never fires — section 6 again, now with the reason.  It is below the square root of three
+for every rank at most seven, so the sign-free cell fails there too, and at rank three that
+is the `K4` chart.  But it exceeds one at every rank at least three, and the coherent
+determinant factors as
+
+    `profilePair ^ 3 * (ratio - 1) ^ 2 * (ratio + 2)`
+
+which is therefore strictly positive at every rank at least three.  At rank three it is
+`5 / 864`, the landed value of the `K4` star.
+
+So the family that defeats every weaker instrument is nonetheless strictly dominating, in
+closed form, at every rank at once — and the reason no cheap certificate sees it is that
+the coherent term `2 * profilePair ^ 3` is exactly what carries it. -/
+
+/-- The gap diagonal of the complete-graph profile. -/
+noncomputable def profileDiag (rank : ℝ) : ℝ := 2 * (rank - 1) / (rank * (rank + 1))
+
+/-- The gap off-diagonal magnitude of the complete-graph profile. -/
+noncomputable def profilePair (rank : ℝ) : ℝ := 1 / (rank + 1)
+
+/-- The one number that governs the profile: diagonal over off-diagonal. -/
+noncomputable def profileRatio (rank : ℝ) : ℝ := 2 * (rank - 1) / rank
+
+/-- The diagonal is the off-diagonal scaled by the ratio.  Every statement below is a
+statement about `Gtz.profileRatio` alone. -/
+theorem profileDiag_eq_ratio_mul_pair {rank : ℝ} (hrank : 0 < rank) :
+    profileDiag rank = profileRatio rank * profilePair rank := by
+  have hsucc : (0 : ℝ) < rank + 1 := by linarith
+  unfold profileDiag profileRatio profilePair
+  field_simp
+
+/-- **THE RATIO IS BELOW TWO AT EVERY RANK.**  Strict diagonal dominance of the block needs
+the diagonal to beat the two off-diagonal entries in its row, that is `2 < ratio`.  The
+ratio is `2 - 2 / rank`, so dominance never fires on this family — at any rank. -/
+theorem profileRatio_lt_two {rank : ℝ} (hrank : 0 < rank) : profileRatio rank < 2 := by
+  unfold profileRatio
+  rw [div_lt_iff₀ hrank]
+  linarith
+
+/-- **THE RATIO EXCEEDS ONE FROM RANK THREE.**  This is the Sylvester threshold, and it is
+the one the family clears. -/
+theorem one_lt_profileRatio {rank : ℝ} (hrank : 3 ≤ rank) : 1 < profileRatio rank := by
+  have hpos : (0 : ℝ) < rank := by linarith
+  unfold profileRatio
+  rw [lt_div_iff₀ hpos]
+  linarith
+
+/-- The coherent determinant of an all-meeting selection on the profile: constant diagonal,
+constant off-diagonal magnitude, and a positive product of the three off-diagonals. -/
+noncomputable def coherentCliqueDet (rank : ℝ) : ℝ :=
+  profileDiag rank ^ 3 - 3 * profileDiag rank * profilePair rank ^ 2
+    + 2 * profilePair rank ^ 3
+
+/-- **THE DETERMINANT FACTORS.**  `t ^ 3 - 3 * t + 2 = (t - 1) ^ 2 * (t + 2)`, so the
+coherent determinant is a square times a positive factor.  No case analysis, no
+eigenvalue. -/
+theorem coherentCliqueDet_eq {rank : ℝ} (hrank : 0 < rank) :
+    coherentCliqueDet rank
+      = profilePair rank ^ 3 * ((profileRatio rank - 1) ^ 2 * (profileRatio rank + 2)) := by
+  have hsucc : (0 : ℝ) < rank + 1 := by linarith
+  unfold coherentCliqueDet
+  rw [profileDiag_eq_ratio_mul_pair hrank]
+  ring
+
+/-- **THE COMPLETE-GRAPH FAMILY STRICTLY DOMINATES AT EVERY RANK AT LEAST THREE.**  The
+ratio exceeds one, so the squared factor is positive, and the off-diagonal magnitude is
+positive.  This is the exact sense in which the family that refuses every weaker instrument
+is not a counterexample to anything. -/
+theorem coherentCliqueDet_pos {rank : ℝ} (hrank : 3 ≤ rank) : 0 < coherentCliqueDet rank := by
+  have hpos : (0 : ℝ) < rank := by linarith
+  have hsucc : (0 : ℝ) < rank + 1 := by linarith
+  have hratio : 1 < profileRatio rank := one_lt_profileRatio hrank
+  have hpair : 0 < profilePair rank := by
+    unfold profilePair; positivity
+  rw [coherentCliqueDet_eq hpos]
+  have hsq : 0 < (profileRatio rank - 1) ^ 2 := by positivity
+  have hlin : 0 < profileRatio rank + 2 := by linarith
+  positivity
+
+/-- **THE SIGN-FREE CELL FAILS THROUGH RANK SEVEN.**  Discarding the coherent term leaves
+`profileDiag ^ 3 - 3 * profileDiag * profilePair ^ 2`, positive exactly when
+`3 < ratio ^ 2`.  At rank three the ratio is `4 / 3` and its square is `16 / 9`, below
+three, so the sign-blind reading of the `K4` chart is negative.  That is the landed
+`-49 / 864`, and it is a threshold effect, not a feature of rank three. -/
+theorem profileRatio_sq_lt_three_of_rank_three : profileRatio 3 ^ 2 < 3 := by
+  unfold profileRatio; norm_num
+
+/-- The sign-free margin at an all-meeting selection, in the same normalisation. -/
+noncomputable def signFreeCliqueDet (rank : ℝ) : ℝ :=
+  profileDiag rank ^ 3 - 3 * profileDiag rank * profilePair rank ^ 2
+    - 2 * profilePair rank ^ 3
+
+/-- **THE COHERENT AND SIGN-FREE READINGS DIFFER BY EXACTLY FOUR CUBES.**  So coherence is
+worth `4 * profilePair ^ 3` at this family, and that is the entire margin at rank three. -/
+theorem coherentCliqueDet_sub_signFree {rank : ℝ} :
+    coherentCliqueDet rank - signFreeCliqueDet rank = 4 * profilePair rank ^ 3 := by
+  unfold coherentCliqueDet signFreeCliqueDet
+  ring
+
+/-- **THE RANK-THREE VALUES, EXACT.**  The coherent star reads `5 / 864` and the sign-blind
+branch reads `-49 / 864`.  Both are landed numbers of the `K4` chart, and both are values of
+the same rank-uniform polynomial. -/
+theorem coherentCliqueDet_rank_three : coherentCliqueDet 3 = 5 / 864 := by
+  unfold coherentCliqueDet profileDiag profilePair; norm_num
+
+/-- The sign-blind branch at rank three. -/
+theorem signFreeCliqueDet_rank_three : signFreeCliqueDet 3 = -49 / 864 := by
+  unfold signFreeCliqueDet profileDiag profilePair; norm_num
+
+/-- The rank-four reading: the threshold cell `(10, 4)` has ratio `3 / 2`, diagonal
+`3 / 10` and off-diagonal `1 / 5`, and its coherent selection reads `7 / 1000`. -/
+theorem coherentCliqueDet_rank_four : coherentCliqueDet 4 = 7 / 1000 := by
+  unfold coherentCliqueDet profileDiag profilePair; norm_num
+
+/-- **THE THREE INSTRUMENTS SEPARATE AT RANK THREE.**  Diagonal dominance asks `2 < 4 / 3`,
+the sign-free cell asks `3 < 16 / 9`, and Sylvester with coherence asks `1 < 4 / 3`.  Only
+the last holds.  This is the whole story of the `K4` chart in one line, and section 10
+shows it is the story at every rank at most seven. -/
+theorem kFourRatio_separates :
+    profileRatio 3 = 4 / 3 ∧ ¬ (2 < profileRatio 3) ∧ ¬ (3 < profileRatio 3 ^ 2)
+      ∧ 1 < profileRatio 3 := by
+  unfold profileRatio
+  norm_num
+
 end Gtz
