@@ -5961,3 +5961,29 @@ import Gtz.Wave.VeroneseWeightElimination
 import Gtz.Wave.ShareOneForcingConic
 import Gtz.Wave.ShareOneForcingWitness
 import Gtz.Wave.ShareOneForcing
+
+-- FORK-200.  THE BALANCE LAW IS SHARPER THAN ITS TRACE, AND CORANK ONE IS AN
+--   EQUIVALENCE.  `Gtz.posDef_subsetSum_compl_of_baseShare_lt` reaches the residual
+--   engine through `Gtz.trace_sub_two_le_dotProduct_of_quadForm_le_self`, which drops
+--   two eigenvalues.  `Gtz.posDef_subsetSum_compl_of_residual_invariants` reaches the
+--   same engine through the three elementary symmetric functions of
+--   `Gtz.residualShift`, which decide positive definiteness exactly at rank three.
+--   `Gtz.sharp_law_strictly_improves_trace_law` exhibits one `(6,3)` design and one
+--   base set where the trace hypothesis is FALSE and the sharp one is TRUE, so the
+--   improvement is strict and not a restatement.
+--   `Gtz.not_posDef_residualShift_tetraDesign` calibrates it: at the tetrahedron tie
+--   the shifted residual carries the dropped atom as a null vector, so the law fails
+--   there exactly, as it must.
+--   `Gtz.corankOne_dominates_iff_sum_coLeverageRatio_le_one` closes the converse that
+--   `Gtz.dominates_of_sum_coLeverageRatio_le_one` records as open: at `m = k + 1` the
+--   complementary projection is symmetric, idempotent and of trace one, so
+--   `Gtz.exists_orthonormalFrame_of_symmetric_idempotent` factors it through one
+--   column.  `Gtz.corankOne_posDef_gap_iff_sum_coLeverageRatio_lt_one` is the strict
+--   twin and `Gtz.corankOne_isTie_iff_forall_sum_coLeverageRatio_eq_one` the tie
+--   reading, cross-checked against `Gtz.isTie_iff_leverage_identity` by
+--   `Gtz.sum_coLeverageRatio_eq_one_of_isTie_viaLeverageIdentity`.
+--   MEASURED, NOT KERNEL: on branch (i) the deepest near-tie reached carries every
+--   landed necessary condition slack by order one, so intersecting them cannot close
+--   the branch.
+import Gtz.Wave.TieConstraintIntersection
+import Gtz.Wave.TieConstraintIntersectionCorankOne

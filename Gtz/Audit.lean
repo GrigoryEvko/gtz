@@ -1172,6 +1172,8 @@ import Gtz.Wave.VeroneseWeightElimination
 import Gtz.Wave.ShareOneForcingConic
 import Gtz.Wave.ShareOneForcingWitness
 import Gtz.Wave.ShareOneForcing
+import Gtz.Wave.TieConstraintIntersection
+import Gtz.Wave.TieConstraintIntersectionCorankOne
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -34908,3 +34910,44 @@ run_cmd do
 #print axioms Gtz.atomShare_eq_one_of_forall_dotProduct_normal_eq_zero
 #print axioms Gtz.not_isTie_of_forall_dotProduct_normal_eq_zero
 #print axioms Gtz.not_isTie_and_hasStress_of_five_coplanar
+
+-- Gtz/Wave/TieConstraintIntersection.lean
+#print axioms Gtz.posDef_smul_one
+#print axioms Gtz.residualShift
+#print axioms Gtz.transpose_baseResidual
+#print axioms Gtz.transpose_residualShift
+#print axioms Gtz.dotProduct_residualShift_mulVec
+#print axioms Gtz.residualExceedsLevel_of_posDef_residualShift
+#print axioms Gtz.posDef_subsetSum_compl_of_posDef_residualShift
+#print axioms Gtz.trace_residualShift
+#print axioms Gtz.trace_eq_diagonal_sum
+#print axioms Gtz.residualShift_diagonal
+#print axioms Gtz.residualShift_offDiagonal
+#print axioms Gtz.secondInvariantThree_residualShift
+#print axioms Gtz.det_residualShift
+#print axioms Gtz.posDef_subsetSum_compl_of_residual_invariants
+#print axioms Gtz.residual_invariant_fails_of_isTie
+#print axioms Gtz.sum_complementShare_ge_of_posDef_residualShift
+#print axioms Gtz.residualShift_singleton_mulVec
+#print axioms Gtz.not_posDef_residualShift_singleton
+#print axioms Gtz.not_posDef_residualShift_tetraDesign
+#print axioms Gtz.twinAxisAtom
+#print axioms Gtz.twinAxisWeight
+#print axioms Gtz.twinAxisDesign
+#print axioms Gtz.twinAxisDesign_baseResidual
+#print axioms Gtz.twinAxisDesign_complement
+#print axioms Gtz.twinAxisDesign_maxWeight
+#print axioms Gtz.twinAxisDesign_trace_law_misses
+#print axioms Gtz.twinAxisDesign_sharp_law_fires
+#print axioms Gtz.sharp_law_strictly_improves_trace_law
+
+-- Gtz/Wave/TieConstraintIntersectionCorankOne.lean
+#print axioms Gtz.trace_complementProjection
+#print axioms Gtz.exists_coVector_corankOne
+#print axioms Gtz.coLeverageScore_eq_sq_coVector
+#print axioms Gtz.sum_coLeverageRatio_le_one_of_dominates
+#print axioms Gtz.corankOne_dominates_iff_sum_coLeverageRatio_le_one
+#print axioms Gtz.corankOne_posDef_gap_iff_sum_coLeverageRatio_lt_one
+#print axioms Gtz.corankOne_isTie_iff_forall_sum_coLeverageRatio_eq_one
+#print axioms Gtz.coLeverageRatio_eq_inv_rank_of_isTie
+#print axioms Gtz.sum_coLeverageRatio_eq_one_of_isTie_viaLeverageIdentity
