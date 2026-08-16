@@ -4908,3 +4908,12 @@ import Gtz.Wave.GramCrossFloor
 import Gtz.Wave.TightGramSixLaws
 import Gtz.Wave.ComplementFourBlock
 import Gtz.Wave.SubsetMassDuality
+
+-- The Plucker mass floor.  The twenty three-minors of the projection are a
+-- probability measure, and the block determinant is that measure minus a
+-- sign-free threshold.  The free pigeonhole gives one twentieth, the landed
+-- spread law pushes past it, and the graphic point of K4 caps the whole lane
+-- at one sixteenth.  Sixteen of its twenty triples carry the identical weight
+-- while only four dominate, so the determinantal measure cannot select, and
+-- the support cut narrows the objective for free.
+import Gtz.Wave.PluckerMassFloor
