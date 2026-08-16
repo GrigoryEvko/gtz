@@ -1030,6 +1030,7 @@ import Gtz.Design.LineFreeModuli
 import Gtz.Design.ChartProgrammeAssembly
 import Gtz.Wave.ChartProgrammeHeavyResidual
 import Gtz.Wave.ThreeLinesDominanceNoGo
+import Gtz.Wave.CoherentBranchFactorization
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -31763,3 +31764,22 @@ run_cmd do
 #print axioms Gtz.not_forall_primitive_exists_quarterSlackTriangle
 #print axioms Gtz.icosaDesign_independent
 #print axioms Gtz.icosaDesign_gram_ratio
+#print axioms Gtz.tripleDetForm_equilateral_coherent
+#print axioms Gtz.tripleDetForm_equilateral_coherent_nonneg
+#print axioms Gtz.tripleDetForm_equilateral_coherent_eq_zero_iff
+#print axioms Gtz.tripleDetForm_equilateral_coherent_pos_iff
+#print axioms Gtz.tripleDetForm_equilateral_coherent_pos_of_triangle
+#print axioms Gtz.tripleDetForm_equilateral_incoherent_pos_iff_half
+#print axioms Gtz.coherent_pos_and_incoherent_nonpos_of_mem_window
+#print axioms Gtz.tripleDetForm_equalMagnitude
+#print axioms Gtz.tripleDetForm_equalMagnitude_coherent
+#print axioms Gtz.equilateral_sumCondition_iff
+#print axioms Gtz.tripleDetForm_coherent_gap_witness
+#print axioms Gtz.coherent_pos_and_sumCondition_fails
+#print axioms Gtz.tripleDetForm_le_abs
+#print axioms Gtz.tripleDetForm_eq_abs_of_nonneg_cross
+#print axioms Gtz.tripleDetForm_coherent_sub_incoherent
+#print axioms Gtz.tripleDetForm_signBlind_deficit
+#print axioms Gtz.tripleDetForm_pos_of_nonneg_cross_of_incoherent_pos
+#print axioms Gtz.exists_third_ne
+#print axioms Gtz.exists_nonneg_atomPairingProduct_sixThree
