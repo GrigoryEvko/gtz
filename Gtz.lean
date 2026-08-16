@@ -4890,3 +4890,4 @@ import Gtz.Wave.ThreeLinesDominanceNoGo
 import Gtz.Wave.ChartDesignGauge
 import Gtz.Wave.ChartTransferIdempotent
 import Gtz.Wave.ThreeLinesSlideQuadratic
+import Gtz.Wave.ProjectionBlockObjective
