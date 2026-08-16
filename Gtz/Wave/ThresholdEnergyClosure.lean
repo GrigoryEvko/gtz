@@ -641,4 +641,542 @@ theorem massSecondMoment_ge_closed :
 
 end Closure
 
+/-! ## 8. The Plucker mass as a nonnegative weight
+
+The second-moment criterion compares the gap energy against the SQUARE of the gap
+total, and it needs a spread of about eleven times the mean.  A linear criterion
+needs no spread at all.  If every gap were nonpositive then every sum of gaps
+against a NONNEGATIVE weight would be nonpositive, so a single positive weighted
+sum forces a positive gap.
+
+The block determinant is such a weight: `Gtz.det_tripleBlock_nonneg` holds because
+the projection is positive semidefinite.  Weighting by it is what removes the
+mass energy, because the weighted gap is the mass energy minus the cross term and
+those two share their leading behaviour. -/
+
+section MassWeighted
+
+variable (design : WeightedDesign 6 3)
+
+/-- The gap summed against its own Plucker mass, over ordered distinct triples. -/
+noncomputable def massWeightedGap : ℝ :=
+  ∑ outer : Fin 6, ∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+    ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+      (216 * (tripleBlock (projectionOfDesign design) outer mid inner).det)
+        * projGapAt (projectionOfDesign design) outer mid inner
+
+/-- The weighted gap is the mass energy minus the cross term. -/
+theorem massWeightedGap_eq_split :
+    massWeightedGap design = massSecondMoment design - jointCrossMoment design := by
+  classical
+  have key : ∀ outer mid inner : Fin 6,
+      (216 * (tripleBlock (projectionOfDesign design) outer mid inner).det)
+          * projGapAt (projectionOfDesign design) outer mid inner
+        = (216 * (tripleBlock (projectionOfDesign design) outer mid inner).det) ^ 2
+          - (216 * (tripleBlock (projectionOfDesign design) outer mid inner).det)
+            * projThresholdAt (projectionOfDesign design) outer mid inner := by
+    intro outer mid inner; rw [projGapAt]; ring
+  simp only [massWeightedGap, massSecondMoment, jointCrossMoment]
+  simp only [key, Finset.sum_sub_distrib]
+
+/-- **THE MASS ENERGY CANCELS.**  The weighted gap is the gap energy plus a
+polynomial in the two invariants.  The mass energy, the one quantity in the
+second-moment theory that is not closed form, does not appear. -/
+theorem massWeightedGap_eq_gapEnergy :
+    massWeightedGap design
+      = gapSecondMoment design
+        + 15552 * pairSecondMoment design
+        - 24624 * levSecondMoment design
+        + 13704 := by
+  rw [massWeightedGap_eq_split design, massSecondMoment_eq design,
+    jointCrossMoment_eq design, thresholdSecondMoment_eq design]
+  ring
+
+/-- The weighted gap read against the mass energy. -/
+theorem massWeightedGap_eq_closed :
+    massWeightedGap design
+      = massSecondMoment design
+        - 23328 * pairSecondMoment design
+        + 7776 * levSecondMoment design
+        - 1296 := by
+  rw [massWeightedGap_eq_split design, jointCrossMoment_eq design]; ring
+
+/-- **A TWO-LOCAL FLOOR ON THE WEIGHTED GAP**, because the gap energy is a sum of
+squares.  Every quantity here reads only the pair minors and the leverages. -/
+theorem massWeightedGap_ge_twoLocal :
+    15552 * pairSecondMoment design - 24624 * levSecondMoment design + 13704
+      ≤ massWeightedGap design := by
+  have hgap := gapSecondMoment_nonneg design
+  have hclosed := massWeightedGap_eq_gapEnergy design
+  linarith
+
+end MassWeighted
+
+/-! ## 9. The sign producer
+
+A positive weighted gap forces a positive gap, by a sign argument alone.  No
+Cauchy-Schwarz, no spread hypothesis, and no appeal to the size of the mass
+energy. -/
+
+section SignProducer
+
+variable (design : WeightedDesign 6 3)
+
+/-- **THE GENERAL WEIGHTED SIGN PRODUCER.**  Against ANY nonnegative weight, a
+positive weighted gap exhibits an ordered distinct triple whose Plucker mass beats
+its own threshold.  Every criterion in this file is an instance, and any future
+weight plugs in here without repeating the argument. -/
+theorem exists_pos_projGap_of_weighted (weight : Fin 6 → Fin 6 → Fin 6 → ℝ)
+    (hnonneg : ∀ outer mid inner : Fin 6, 0 ≤ weight outer mid inner)
+    (hpos : 0 < ∑ outer : Fin 6, ∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        weight outer mid inner
+          * projGapAt (projectionOfDesign design) outer mid inner) :
+    ∃ outer : Fin 6, ∃ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      ∃ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        0 < projGapAt (projectionOfDesign design) outer mid inner := by
+  classical
+  by_contra hraw
+  have hsigns : ∀ outer : Fin 6, ∀ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      ∀ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        projGapAt (projectionOfDesign design) outer mid inner ≤ 0 := by
+    intro outer mid hmid inner hinner
+    by_contra hgood
+    exact hraw ⟨outer, mid, hmid, inner, hinner, not_le.mp hgood⟩
+  have hle : ∑ outer : Fin 6, ∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        weight outer mid inner
+          * projGapAt (projectionOfDesign design) outer mid inner ≤ 0 := by
+    refine Finset.sum_nonpos fun outer _ => Finset.sum_nonpos fun mid hmid =>
+      Finset.sum_nonpos fun inner hinner => ?_
+    nlinarith [hnonneg outer mid inner, hsigns outer mid hmid inner hinner]
+  linarith
+
+/-- The Plucker mass is a legal weight, because it is a principal minor of a
+positive semidefinite form. -/
+theorem exists_pos_projGap_of_massWeightedGap (hpos : 0 < massWeightedGap design) :
+    ∃ outer : Fin 6, ∃ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      ∃ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        0 < projGapAt (projectionOfDesign design) outer mid inner := by
+  refine exists_pos_projGap_of_weighted design
+    (fun outer mid inner =>
+      216 * (tripleBlock (projectionOfDesign design) outer mid inner).det)
+    (fun outer mid inner => by
+      have := det_tripleBlock_nonneg design outer mid inner; linarith) ?_
+  simpa only [massWeightedGap] using hpos
+
+/-- **THE MASS-FREE CRITERION.**  A single inequality between the two invariants
+forces a good triple.  This is the first sufficient condition for the objective's
+third minor that reads NO unclosed quantity. -/
+theorem exists_pos_projGap_of_twoLocal
+    (hcert : 24624 * levSecondMoment design
+      < 15552 * pairSecondMoment design + 13704) :
+    ∃ outer : Fin 6, ∃ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      ∃ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        0 < projGapAt (projectionOfDesign design) outer mid inner := by
+  refine exists_pos_projGap_of_massWeightedGap design ?_
+  have hfloor := massWeightedGap_ge_twoLocal design
+  linarith
+
+/-- The same criterion read against the mass energy, for a caller that already
+controls the Plucker energy. -/
+theorem exists_pos_projGap_of_massSecondMoment
+    (hcert : 23328 * pairSecondMoment design - 7776 * levSecondMoment design + 1296
+      < massSecondMoment design) :
+    ∃ outer : Fin 6, ∃ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      ∃ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        0 < projGapAt (projectionOfDesign design) outer mid inner := by
+  refine exists_pos_projGap_of_massWeightedGap design ?_
+  have hclosed := massWeightedGap_eq_closed design
+  linarith
+
+end SignProducer
+
+/-! ## 10. The gap energy is bounded below, and the floor is strict
+
+The gap total is `-336` over 120 ordered distinct triples.  Cauchy-Schwarz against
+the constant one then floors the gap energy at `336 ^ 2 / 120`.  The index set is
+a triple nest of erased universes, so the bound applies once for each level with
+cardinalities 6, 5 and 4. -/
+
+section Pigeon
+
+/-- Cauchy-Schwarz against the constant one, self contained. -/
+private theorem sq_sum_le_card_mul_sum_sq {ι : Type*} [DecidableEq ι]
+    (labels : Finset ι) (value : ι → ℝ) :
+    (∑ i ∈ labels, value i) ^ 2 ≤ labels.card * ∑ i ∈ labels, value i ^ 2 := by
+  classical
+  induction labels using Finset.induction_on with
+  | empty => simp
+  | @insert head rest hnot ih =>
+      rw [Finset.sum_insert hnot, Finset.sum_insert hnot,
+        Finset.card_insert_of_notMem hnot]
+      have hrest : (0 : ℝ) ≤ ∑ i ∈ rest, value i ^ 2 :=
+        Finset.sum_nonneg fun _ _ => sq_nonneg _
+      rcases Nat.eq_zero_or_pos rest.card with hzero | hposcard
+      · rw [hzero] at ih ⊢
+        have hflat : ∑ i ∈ rest, value i = 0 := by
+          have hsq : (∑ i ∈ rest, value i) ^ 2 ≤ 0 := by simpa using ih
+          nlinarith [sq_nonneg (∑ i ∈ rest, value i)]
+        rw [hflat]
+        push_cast
+        nlinarith [hrest]
+      · have hcardpos : (0 : ℝ) < (rest.card : ℝ) := by exact_mod_cast hposcard
+        push_cast
+        have hprod : (0 : ℝ)
+            ≤ (rest.card : ℝ)
+              * ((rest.card : ℝ) * (∑ i ∈ rest, value i ^ 2) - (∑ i ∈ rest, value i) ^ 2) :=
+          mul_nonneg (le_of_lt hcardpos) (sub_nonneg.mpr ih)
+        nlinarith [ih, hrest, hcardpos, hprod,
+          sq_nonneg ((rest.card : ℝ) * value head - ∑ i ∈ rest, value i)]
+
+private theorem card_erase_univ_six (outer : Fin 6) :
+    ((univ : Finset (Fin 6)).erase outer).card = 5 := by
+  rw [Finset.card_erase_of_mem (Finset.mem_univ outer), Finset.card_univ, Fintype.card_fin]
+
+private theorem card_erase_erase_univ_six {outer mid : Fin 6}
+    (hmid : mid ∈ (univ : Finset (Fin 6)).erase outer) :
+    (((univ : Finset (Fin 6)).erase outer).erase mid).card = 4 := by
+  rw [Finset.card_erase_of_mem hmid, card_erase_univ_six outer]
+
+variable (design : WeightedDesign 6 3)
+
+/-- **THE GAP ENERGY HAS A UNIVERSAL FLOOR.**  The gap total is `-336` over 120
+ordered distinct triples, so the energy is at least `336 ^ 2 / 120`. -/
+theorem gapSecondMoment_ge_pigeon : (4704 : ℝ) / 5 ≤ gapSecondMoment design := by
+  classical
+  have hinner : ∀ outer : Fin 6, ∀ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      (∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+          projGapAt (projectionOfDesign design) outer mid inner) ^ 2
+        ≤ 4 * ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+            projGapAt (projectionOfDesign design) outer mid inner ^ 2 := by
+    intro outer mid hmid
+    have hbase := sq_sum_le_card_mul_sum_sq
+      (((univ : Finset (Fin 6)).erase outer).erase mid)
+      (fun inner => projGapAt (projectionOfDesign design) outer mid inner)
+    rw [card_erase_erase_univ_six hmid] at hbase
+    exact_mod_cast hbase
+  have hmidlevel : ∀ outer : Fin 6,
+      (∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+          ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+            projGapAt (projectionOfDesign design) outer mid inner) ^ 2
+        ≤ 5 * ∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+            (∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+              projGapAt (projectionOfDesign design) outer mid inner) ^ 2 := by
+    intro outer
+    have hbase := sq_sum_le_card_mul_sum_sq ((univ : Finset (Fin 6)).erase outer)
+      (fun mid => ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        projGapAt (projectionOfDesign design) outer mid inner)
+    rw [card_erase_univ_six outer] at hbase
+    exact_mod_cast hbase
+  have houter :
+      (∑ outer : Fin 6, ∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+          ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+            projGapAt (projectionOfDesign design) outer mid inner) ^ 2
+        ≤ 6 * ∑ outer : Fin 6,
+            (∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+              ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+                projGapAt (projectionOfDesign design) outer mid inner) ^ 2 := by
+    have hbase := sq_sum_le_card_mul_sum_sq (univ : Finset (Fin 6))
+      (fun outer => ∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+        ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+          projGapAt (projectionOfDesign design) outer mid inner)
+    rw [Finset.card_univ, Fintype.card_fin] at hbase
+    exact_mod_cast hbase
+  have hchain : ∑ outer : Fin 6,
+      (∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+        ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+          projGapAt (projectionOfDesign design) outer mid inner) ^ 2
+      ≤ 20 * gapSecondMoment design := by
+    have hstep : ∀ outer ∈ (univ : Finset (Fin 6)),
+        (∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+          ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+            projGapAt (projectionOfDesign design) outer mid inner) ^ 2
+        ≤ 20 * ∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+            ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+              projGapAt (projectionOfDesign design) outer mid inner ^ 2 := by
+      intro outer _
+      have hlift : ∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+          (∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+            projGapAt (projectionOfDesign design) outer mid inner) ^ 2
+          ≤ ∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+              4 * ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+                projGapAt (projectionOfDesign design) outer mid inner ^ 2 :=
+        Finset.sum_le_sum fun mid hmid => hinner outer mid hmid
+      rw [← Finset.mul_sum] at hlift
+      have := hmidlevel outer
+      linarith
+    have hsum := Finset.sum_le_sum hstep
+    rw [← Finset.mul_sum] at hsum
+    simpa only [gapSecondMoment] using hsum
+  have htotal := sum_projGap design
+  rw [htotal] at houter
+  have hsquare : ((-336 : ℝ)) ^ 2 = 112896 := by norm_num
+  rw [hsquare] at houter
+  linarith
+
+/-- **THE GAP ENERGY IS STRICTLY POSITIVE.**  No design has every gap equal to
+zero, because the gap total is not zero. -/
+theorem gapSecondMoment_pos : 0 < gapSecondMoment design := by
+  have := gapSecondMoment_ge_pigeon design; linarith
+
+/-- **A STRICT REFINEMENT OF THE MASS FLOOR.**  The landed two-local bound on the
+Plucker energy is never attained, and the deficit is at least `336 ^ 2 / 120`. -/
+theorem massSecondMoment_gt_closed :
+    38880 * pairSecondMoment design - 32400 * levSecondMoment design
+        + 15000 + 4704 / 5
+      ≤ massSecondMoment design := by
+  have hpigeon := gapSecondMoment_ge_pigeon design
+  have hclosed := massSecondMoment_eq_closed design
+  linarith
+
+/-- The refined two-local floor on the weighted gap. -/
+theorem massWeightedGap_ge_refined :
+    15552 * pairSecondMoment design - 24624 * levSecondMoment design + 73224 / 5
+      ≤ massWeightedGap design := by
+  have hpigeon := gapSecondMoment_ge_pigeon design
+  have hclosed := massWeightedGap_eq_gapEnergy design
+  linarith
+
+/-- **THE REFINED MASS-FREE CRITERION.**  The universal gap floor widens the
+region of the two invariants on which a good triple is forced.  The constant
+grows from `13704` to `73224 / 5`, which is `14644.8`. -/
+theorem exists_pos_projGap_of_twoLocal_refined
+    (hcert : 24624 * levSecondMoment design
+      < 15552 * pairSecondMoment design + 73224 / 5) :
+    ∃ outer : Fin 6, ∃ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      ∃ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        0 < projGapAt (projectionOfDesign design) outer mid inner := by
+  refine exists_pos_projGap_of_massWeightedGap design ?_
+  have hfloor := massWeightedGap_ge_refined design
+  have hpigeon := gapSecondMoment_ge_pigeon design
+  have hclosed := massWeightedGap_eq_gapEnergy design
+  linarith
+
+end Pigeon
+
+/-! ## 11. The marginal floor, and the sharp criterion
+
+The pigeonhole floor spends the gap total as ONE number.  The thirty pair
+marginals are each closed form, and each is a sum of four gaps, so Cauchy-Schwarz
+applies once for each pair instead of once overall.  The resulting floor is
+quadratic in the two invariants rather than constant, and it is what carries the
+criterion from half of the design space to three quarters of it. -/
+
+section MarginalFloor
+
+variable (design : WeightedDesign 6 3)
+
+/-- Each pair marginal is a sum of four gaps, so the marginal energy is at most
+four times the gap energy. -/
+theorem pairMarginalEnergy_le_four_mul_gapSecondMoment :
+    pairMarginalEnergy design ≤ 4 * gapSecondMoment design := by
+  classical
+  have hstep : ∀ first ∈ (univ : Finset (Fin 6)),
+      ∑ second ∈ (univ : Finset (Fin 6)).erase first, pairMarginal design first second ^ 2
+        ≤ 4 * ∑ second ∈ (univ : Finset (Fin 6)).erase first,
+            ∑ inner ∈ ((univ : Finset (Fin 6)).erase first).erase second,
+              projGapAt (projectionOfDesign design) first second inner ^ 2 := by
+    intro first _
+    have hinner : ∀ second ∈ (univ : Finset (Fin 6)).erase first,
+        pairMarginal design first second ^ 2
+          ≤ 4 * ∑ inner ∈ ((univ : Finset (Fin 6)).erase first).erase second,
+              projGapAt (projectionOfDesign design) first second inner ^ 2 := by
+      intro second hsecond
+      have hbase := sq_sum_le_card_mul_sum_sq
+        (((univ : Finset (Fin 6)).erase first).erase second)
+        (fun inner => projGapAt (projectionOfDesign design) first second inner)
+      rw [sum_projGap_eq_pairMarginal design first second hsecond,
+        card_erase_erase_univ_six hsecond] at hbase
+      exact_mod_cast hbase
+    have hlift := Finset.sum_le_sum hinner
+    rwa [← Finset.mul_sum] at hlift
+  have hsum := Finset.sum_le_sum hstep
+  rw [← Finset.mul_sum] at hsum
+  simpa only [pairMarginalEnergy, gapSecondMoment] using hsum
+
+/-- **THE MARGINAL FLOOR ON THE GAP ENERGY.**  Two-local and quadratic, and it
+dominates the pigeonhole floor at every design. -/
+theorem gapSecondMoment_ge_marginal :
+    5184 * pairSecondMoment design - 9720 * levSecondMoment design + 9300
+      ≤ gapSecondMoment design := by
+  have hcs := pairMarginalEnergy_le_four_mul_gapSecondMoment design
+  have heq := pairMarginalEnergy_eq design
+  linarith
+
+/-- The weighted gap under the marginal floor. -/
+theorem massWeightedGap_ge_marginal :
+    20736 * pairSecondMoment design - 34344 * levSecondMoment design + 23004
+      ≤ massWeightedGap design := by
+  have hfloor := gapSecondMoment_ge_marginal design
+  have hclosed := massWeightedGap_eq_gapEnergy design
+  linarith
+
+/-- The Plucker energy under the marginal floor, sharper than the landed bound. -/
+theorem massSecondMoment_ge_marginal :
+    44064 * pairSecondMoment design - 42120 * levSecondMoment design + 24300
+      ≤ massSecondMoment design := by
+  have hfloor := gapSecondMoment_ge_marginal design
+  have hclosed := massSecondMoment_eq_closed design
+  linarith
+
+/-- **THE SHARP MASS-FREE CRITERION.**  One inequality between the pair-minor
+energy and the leverage energy forces a triple whose Plucker mass beats its own
+threshold.  Nothing here reads the Plucker energy. -/
+theorem exists_pos_projGap_of_twoLocal_sharp
+    (hcert : 34344 * levSecondMoment design
+      < 20736 * pairSecondMoment design + 23004) :
+    ∃ outer : Fin 6, ∃ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      ∃ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        0 < projGapAt (projectionOfDesign design) outer mid inner := by
+  refine exists_pos_projGap_of_massWeightedGap design ?_
+  have hfloor := massWeightedGap_ge_marginal design
+  linarith
+
+end MarginalFloor
+
+/-! ## 12. The squared mass, and the objective as one scalar inequality
+
+The Plucker mass is a legal weight, but the criterion it carries is not universal.
+A numerical sweep puts the mass weight at zero percent ON the icosahedron and
+throughout a neighbourhood of it, so that weight is blind exactly where the
+objective is hardest.  The SQUARED mass is a legal weight too, and it concentrates
+the sum onto the triples that carry the objective.  It fires at the icosahedron
+and it reaches about one failure in sixty thousand, but it is NOT universal
+either.  Refer to the warning on `Gtz.MassSquaredGapPositive`. -/
+
+section SquaredMass
+
+variable (design : WeightedDesign 6 3)
+
+/-- The third moment of the Plucker mass over ordered distinct triples. -/
+noncomputable def massThirdMoment : ℝ :=
+  ∑ outer : Fin 6, ∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+    ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+      (216 * (tripleBlock (projectionOfDesign design) outer mid inner).det) ^ 3
+
+/-- The squared Plucker mass against the threshold. -/
+noncomputable def massSquaredCrossMoment : ℝ :=
+  ∑ outer : Fin 6, ∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+    ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+      (216 * (tripleBlock (projectionOfDesign design) outer mid inner).det) ^ 2
+        * projThresholdAt (projectionOfDesign design) outer mid inner
+
+/-- The gap summed against the SQUARED Plucker mass. -/
+noncomputable def massSquaredWeightedGap : ℝ :=
+  ∑ outer : Fin 6, ∑ mid ∈ (univ : Finset (Fin 6)).erase outer,
+    ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+      (216 * (tripleBlock (projectionOfDesign design) outer mid inner).det) ^ 2
+        * projGapAt (projectionOfDesign design) outer mid inner
+
+/-- **THE RESIDUAL, NAMED.**  The squared-mass weighted gap is the third moment of
+the Plucker measure minus its squared cross term. -/
+theorem massSquaredWeightedGap_eq_split :
+    massSquaredWeightedGap design
+      = massThirdMoment design - massSquaredCrossMoment design := by
+  classical
+  have key : ∀ outer mid inner : Fin 6,
+      (216 * (tripleBlock (projectionOfDesign design) outer mid inner).det) ^ 2
+          * projGapAt (projectionOfDesign design) outer mid inner
+        = (216 * (tripleBlock (projectionOfDesign design) outer mid inner).det) ^ 3
+          - (216 * (tripleBlock (projectionOfDesign design) outer mid inner).det) ^ 2
+            * projThresholdAt (projectionOfDesign design) outer mid inner := by
+    intro outer mid inner; rw [projGapAt]; ring
+  simp only [massSquaredWeightedGap, massThirdMoment, massSquaredCrossMoment]
+  simp only [key, Finset.sum_sub_distrib]
+
+/-- **THE SQUARED MASS IS A LEGAL WEIGHT.**  A square is nonnegative, so this
+needs no appeal to positive semidefiniteness at all. -/
+theorem exists_pos_projGap_of_massSquaredWeightedGap
+    (hpos : 0 < massSquaredWeightedGap design) :
+    ∃ outer : Fin 6, ∃ mid ∈ (univ : Finset (Fin 6)).erase outer,
+      ∃ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+        0 < projGapAt (projectionOfDesign design) outer mid inner := by
+  refine exists_pos_projGap_of_weighted design
+    (fun outer mid inner =>
+      (216 * (tripleBlock (projectionOfDesign design) outer mid inner).det) ^ 2)
+    (fun _ _ _ => sq_nonneg _) ?_
+  simpa only [massSquaredWeightedGap] using hpos
+
+end SquaredMass
+
+/-! ## 13. The criterion reaches the objective's own form
+
+`Gtz.JointMassBeatsThreshold` is the objective's third Sylvester minor, stated in
+the corpus's joint form.  The two remaining minors are the corner and the pair
+minor of the block gap, and they are NOT supplied here. -/
+
+section Door
+
+/-- **THE DOOR.**  A two-local inequality between the pair-minor energy and the
+leverage energy, holding on every primitive design, gives the objective in joint
+form.  The criterion reads no unclosed quantity. -/
+theorem jointMassBeatsThreshold_of_twoLocal
+    (hcert : ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
+      24624 * levSecondMoment design
+        < 15552 * pairSecondMoment design + 73224 / 5) :
+    JointMassBeatsThreshold := by
+  rw [jointMassBeatsThreshold_iff_projGap]
+  intro design hprim
+  exact exists_pos_projGap_of_twoLocal_refined design (hcert design hprim)
+
+/-- **THE OBJECTIVE AS ONE SCALAR INEQUALITY.**  A single positivity, one number
+for each design, with no selection and no case analysis.
+
+WARNING, and it is the reason this stays a hypothesis.  A numerical sweep of
+200000 designs, over five families, found counterexamples to this positivity at a
+rate near one in sixty thousand among designs of low leverage energy.  Do NOT
+spend a cycle on a proof of it.  The same sweep refutes every fixed power of the
+Plucker mass as a universal weight, and it refutes the statement that the triple
+of maximum Plucker mass is always a good triple.  The weighted method reaches
+each of these rates and no more, so the residual is structural and not a missing
+constant.  `Gtz.exists_pos_projGap_of_twoLocal_sharp` is the unconditional part
+of this file, and it carries about three quarters of the design space. -/
+def MassSquaredGapPositive : Prop :=
+  ∀ candidate : WeightedDesign 6 3, IsPrimitiveDesign candidate →
+    0 < massSquaredWeightedGap candidate
+
+/-- The squared-mass positivity gives the objective in joint form outright.  The
+weight is a square, so its legality is free.  Refer to the warning on
+`Gtz.MassSquaredGapPositive` before you try to discharge the hypothesis. -/
+theorem jointMassBeatsThreshold_of_massSquaredGapPositive
+    (hcert : MassSquaredGapPositive) : JointMassBeatsThreshold := by
+  rw [jointMassBeatsThreshold_iff_projGap]
+  intro design hprim
+  exact exists_pos_projGap_of_massSquaredWeightedGap design (hcert design hprim)
+
+/-- The same door, stated against the named third-moment residual. -/
+theorem jointMassBeatsThreshold_of_massThirdMoment
+    (hcert : ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
+      massSquaredCrossMoment design < massThirdMoment design) :
+    JointMassBeatsThreshold := by
+  refine jointMassBeatsThreshold_of_massSquaredGapPositive ?_
+  intro design hprim
+  have hsplit := massSquaredWeightedGap_eq_split design
+  have := hcert design hprim
+  linarith
+
+/-- **THE SHARP DOOR.**  The marginal floor carries the criterion, and it is the
+widest of the three this file supplies. -/
+theorem jointMassBeatsThreshold_of_twoLocal_sharp
+    (hcert : ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
+      34344 * levSecondMoment design
+        < 20736 * pairSecondMoment design + 23004) :
+    JointMassBeatsThreshold := by
+  rw [jointMassBeatsThreshold_iff_projGap]
+  intro design hprim
+  exact exists_pos_projGap_of_twoLocal_sharp design (hcert design hprim)
+
+/-- The same door, driven by the Plucker energy instead of the two invariants. -/
+theorem jointMassBeatsThreshold_of_massSecondMoment
+    (hcert : ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
+      23328 * pairSecondMoment design - 7776 * levSecondMoment design + 1296
+        < massSecondMoment design) :
+    JointMassBeatsThreshold := by
+  rw [jointMassBeatsThreshold_iff_projGap]
+  intro design hprim
+  exact exists_pos_projGap_of_massSecondMoment design (hcert design hprim)
+
+end Door
+
 end Gtz
