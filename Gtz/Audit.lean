@@ -33048,6 +33048,14 @@ run_cmd do
 #print axioms Gtz.not_det_pos_of_tripleCap_le_sum_sq
 #print axioms Gtz.sum_sq_pairing_lt_of_pivot_of_det_pos
 #print axioms Gtz.not_det_pos_of_pivot_pairing_reaches
+-- Hadamard on the complement, the sandwich, and the first lower bound on a triple
+-- determinant, with its door to the on-path obligations.
+#print axioms Gtz.det_form_le_prod_diag
+#print axioms Gtz.sq_pairing_le_one_sub_excess_mul
+#print axioms Gtz.det_tripleBlock_one_sub_le_prod_diag
+#print axioms Gtz.excessProduct_sub_sum_sq_le_det_tripleBlock
+#print axioms Gtz.det_tripleBlock_pos_of_excessProduct_gt_sum_sq
+#print axioms Gtz.allFiveOnPath_of_excessProduct_beats_pairings
 #print axioms Gtz.consolidatedStrictTriple_of_offsetDominatesSomewhere
 #print axioms Gtz.allFiveOnPath_of_offsetDominates_proj
 #print axioms Gtz.sum_pairMinorAt_diagonalShift_product_erase

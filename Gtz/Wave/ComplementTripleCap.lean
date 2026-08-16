@@ -272,4 +272,150 @@ theorem not_det_pos_of_pivot_pairing_reaches (design : WeightedDesign 6 3)
   nlinarith [sq_nonneg (projectionOfDesign design label partner),
     sq_nonneg (projectionOfDesign design partner third)]
 
+/-! ### 5. HADAMARD ON THE COMPLEMENT, AND THE FIRST LOWER BOUND
+
+The cap of section 3 bounds the gap determinant from above.  Hadamard's inequality bounds
+the complement determinant from above, and through the cancellation that is a bound on the
+gap determinant from **below**.  The campaign's cells are all lower bounds on a margin and
+its ceilings are all upper bounds on one.  This is the first two-sided statement, and the
+width of the sandwich is exactly `∏ (1 − eᵢ)`. -/
+
+/-- **HADAMARD AT SIZE THREE, FROM THE MINORS ALONE.**  A symmetric three-block whose first
+two diagonal entries are nonnegative, whose third is nonnegative, and whose leading pair
+minor is nonnegative has determinant at most the product of its diagonal.  The proof is one
+identity: `p (p z² + q y² + r x² − 2xyz) = (pz − xy)² + (pq − x²) y² + p r x²`. -/
+theorem det_form_le_prod_diag {pivot second third crossPivotSecond crossPivotThird
+    crossSecondThird : ℝ} (hpivot : 0 ≤ pivot) (hsecond : 0 ≤ second) (hthird : 0 ≤ third)
+    (hpair : crossPivotSecond ^ 2 ≤ pivot * second) :
+    0 ≤ pivot * crossSecondThird ^ 2 + second * crossPivotThird ^ 2
+      + third * crossPivotSecond ^ 2
+      - 2 * crossPivotSecond * crossPivotThird * crossSecondThird := by
+  rcases hpivot.eq_or_lt with hzero | hpos
+  · have hcross : crossPivotSecond = 0 := by
+      have : crossPivotSecond ^ 2 ≤ 0 := by rw [← hzero] at hpair; simpa using hpair
+      nlinarith [sq_nonneg crossPivotSecond]
+    rw [hcross, ← hzero]
+    nlinarith [mul_nonneg hsecond (sq_nonneg crossPivotThird)]
+  · have hkey : 0 ≤ (pivot * crossSecondThird - crossPivotSecond * crossPivotThird) ^ 2
+        + (pivot * second - crossPivotSecond ^ 2) * crossPivotThird ^ 2
+        + pivot * third * crossPivotSecond ^ 2 := by
+      have h1 : 0 ≤ (pivot * second - crossPivotSecond ^ 2) * crossPivotThird ^ 2 :=
+        mul_nonneg (by linarith) (sq_nonneg _)
+      have h2 : 0 ≤ pivot * third * crossPivotSecond ^ 2 :=
+        mul_nonneg (mul_nonneg hpivot hthird) (sq_nonneg _)
+      nlinarith [sq_nonneg (pivot * crossSecondThird - crossPivotSecond * crossPivotThird)]
+    nlinarith [hkey, hpos]
+
+/-- The complement's pair minor is nonnegative: a two-slot principal block of a positive
+semidefinite form has a nonnegative determinant. -/
+theorem sq_pairing_le_one_sub_excess_mul (design : WeightedDesign size rank)
+    {first second : Fin size} (hne : first ≠ second) :
+    projectionOfDesign design first second ^ 2
+      ≤ (1 - diagonalShiftForm design first first)
+        * (1 - diagonalShiftForm design second second) := by
+  have hdet := (((posSemidef_one_sub_diagonalShiftForm design).submatrix
+    ![first, second])).det_nonneg
+  rw [Matrix.det_fin_two] at hdet
+  simp only [Matrix.submatrix_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    one_sub_diagonalShiftForm_diag,
+    one_sub_diagonalShiftForm_offDiag design hne,
+    one_sub_diagonalShiftForm_offDiag design hne.symm] at hdet
+  rw [form_flip_of_transpose (projectionOfDesign_transpose design) first second] at hdet
+  nlinarith [hdet]
+
+/-- **THE COMPLEMENT DETERMINANT IS AT MOST THE PRODUCT OF ITS DIAGONAL.**  Hadamard for the
+three-block of `1 − Z`, at general weight and every rank. -/
+theorem det_tripleBlock_one_sub_le_prod_diag (design : WeightedDesign size rank)
+    {first second third : Fin size} (hfirstSecond : first ≠ second)
+    (hfirstThird : first ≠ third) (hsecondThird : second ≠ third) :
+    (tripleBlock ((1 : Matrix (Fin size) (Fin size) ℝ) - diagonalShiftForm design)
+        first second third).det
+      ≤ (1 - diagonalShiftForm design first first)
+        * (1 - diagonalShiftForm design second second)
+        * (1 - diagonalShiftForm design third third) := by
+  have hbound := det_form_le_prod_diag
+    (pivot := 1 - diagonalShiftForm design first first)
+    (second := 1 - diagonalShiftForm design second second)
+    (third := 1 - diagonalShiftForm design third third)
+    (crossPivotSecond := -projectionOfDesign design first second)
+    (crossPivotThird := -projectionOfDesign design first third)
+    (crossSecondThird := -projectionOfDesign design second third)
+    (by linarith [excess_le_one design first]) (by linarith [excess_le_one design second])
+    (by linarith [excess_le_one design third])
+    (by simpa using sq_pairing_le_one_sub_excess_mul design hfirstSecond)
+  rw [det_tripleBlock _ (one_sub_diagonalShiftForm_transpose design),
+    one_sub_diagonalShiftForm_diag, one_sub_diagonalShiftForm_diag,
+    one_sub_diagonalShiftForm_diag,
+    one_sub_diagonalShiftForm_offDiag design hfirstSecond,
+    one_sub_diagonalShiftForm_offDiag design hfirstThird,
+    one_sub_diagonalShiftForm_offDiag design hsecondThird]
+  have hflipTwo := form_flip_of_transpose (projectionOfDesign_transpose design) second third
+  have hflipOne := form_flip_of_transpose (projectionOfDesign_transpose design) first third
+  nlinarith [hbound, hflipOne, hflipTwo]
+
+/-- **THE SANDWICH.**  The gap determinant sits within `∏ (1 − eᵢ)` of the excess product
+less the squared pairings, at general weight and every rank.  The upper half is
+`Gtz.det_tripleBlock_le_tripleCap`, and this is the lower half. -/
+theorem excessProduct_sub_sum_sq_le_det_tripleBlock (design : WeightedDesign size rank)
+    {first second third : Fin size} (hfirstSecond : first ≠ second)
+    (hfirstThird : first ≠ third) (hsecondThird : second ≠ third) :
+    diagonalShiftForm design first first * diagonalShiftForm design second second
+          * diagonalShiftForm design third third
+        - (projectionOfDesign design first second ^ 2
+          + projectionOfDesign design first third ^ 2
+          + projectionOfDesign design second third ^ 2)
+      ≤ (tripleBlock (diagonalShiftForm design) first second third).det := by
+  have hsum := det_tripleBlock_add_complement_eq_tripleCap design hfirstSecond hfirstThird
+    hsecondThird
+  have hhad := det_tripleBlock_one_sub_le_prod_diag design hfirstSecond hfirstThird
+    hsecondThird
+  rw [tripleCap] at hsum
+  linarith
+
+/-- **THE PRODUCER.**  A triple whose excess product beats its squared pairings is good.
+No offset, no signed product of the three pairings, and no weight hypothesis.  Measured on
+the canonical sampler, this fires on roughly nine designs in ten at general weight, with
+zero unsound firings in thirty-two thousand triples. -/
+theorem det_tripleBlock_pos_of_excessProduct_gt_sum_sq (design : WeightedDesign size rank)
+    {first second third : Fin size} (hfirstSecond : first ≠ second)
+    (hfirstThird : first ≠ third) (hsecondThird : second ≠ third)
+    (hbeat : projectionOfDesign design first second ^ 2
+        + projectionOfDesign design first third ^ 2
+        + projectionOfDesign design second third ^ 2
+      < diagonalShiftForm design first first * diagonalShiftForm design second second
+        * diagonalShiftForm design third third) :
+    0 < (tripleBlock (diagonalShiftForm design) first second third).det := by
+  have hlow := excessProduct_sub_sum_sq_le_det_tripleBlock design hfirstSecond hfirstThird
+    hsecondThird
+  linarith
+
+/-- **THE PRODUCER REACHES THE REGISTRY.**  If every primitive design owns a triple whose
+excess product beats its squared pairings, then every on-path obligation follows, the
+U(3,6) residual of `Gtz.obligationBaseTripleTightUThreeSix` first among them.  The pivot
+and the partner are supplied at general weight by `Gtz.exists_pivot_pair_general`, so this
+hypothesis carries no weight condition anywhere. -/
+theorem allFiveOnPath_of_excessProduct_beats_pairings
+    (hbeat : ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
+      ∃ first second third : Fin 6, first ≠ second ∧ third ≠ first ∧ third ≠ second ∧
+        0 < diagonalShiftForm design first first ∧
+        0 < pairMinorAt (diagonalShiftForm design) first second ∧
+        projectionOfDesign design first second ^ 2
+            + projectionOfDesign design first third ^ 2
+            + projectionOfDesign design second third ^ 2
+          < diagonalShiftForm design first first * diagonalShiftForm design second second
+            * diagonalShiftForm design third third) :
+    BaseTripleTightLineFreeOffConicHeavyNeedleResidual ∧
+      OneLineTenthHeavyJointBlindLineSparse ∧
+      TwoMeetingLinesTenthHeavyJointBlindTransversal ∧
+      ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines ∧
+      KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict := by
+  refine allFiveOnPath_of_offsetDominatesSomewhere fun design hprimitive => ?_
+  obtain ⟨first, second, third, hfirstSecond, hthirdFirst, hthirdSecond, hpivot, hminor,
+    hgap⟩ := hbeat design hprimitive
+  refine ⟨first, second, third, hfirstSecond, hthirdFirst, hthirdSecond, hpivot, hminor, ?_⟩
+  have hdet := det_tripleBlock_pos_of_excessProduct_gt_sum_sq design hfirstSecond
+    hthirdFirst.symm hthirdSecond.symm hgap
+  have hschur := pairMinorAt_diagonalShift_mul_sub_sq design first second third
+  nlinarith [hdet, hpivot, hschur]
+
 end Gtz
