@@ -33091,3 +33091,23 @@ run_cmd do
 #print axioms Gtz.hasParallelPair_of_isTie_of_excessDominates
 #print axioms Gtz.obligationSubThresholdBandHinge_of_excessDominates
 #print axioms Gtz.obligationThresholdCellHingeRankFourAndUp_of_excessDominates
+
+-- The (6,3) rung narrowed to ONE inequality, and dominance made scale free.  The
+-- excesses total rank minus one, so some label carries at least a third with no weight
+-- hypothesis at all.  At such a label the landed row law makes the shifted pair minors
+-- total at least 11/36, and a positive total owns a positive member.  Two of the door's
+-- three inequalities therefore cost nothing, and the whole rung is the third alone.
+-- Congruence by a positive diagonal preserves definiteness, so the dominance criterion
+-- carries a free scale and is strictly weaker to satisfy.
+#print axioms Gtz.exists_excess_ge_third
+#print axioms Gtz.exists_pivot_pair_of_uniform
+#print axioms Gtz.allFiveOnPath_of_offsetThirdInequality
+#print axioms Gtz.blockGapAt_eq_projectionBlockGap
+#print axioms Gtz.allFiveOnPath_of_excessDominates
+#print axioms Gtz.posDef_of_scaledDominant
+#print axioms Gtz.ScaledExcessDominatesBlock
+#print axioms Gtz.scaledExcessDominatesBlock_of_excessDominates
+#print axioms Gtz.posDef_projectionBlockGap_of_scaledExcessDominates
+#print axioms Gtz.not_isTie_of_scaledExcessDominates
+#print axioms Gtz.hasParallelPair_of_isTie_of_scaledExcessDominates
+#print axioms Gtz.allFiveOnPath_of_scaledExcessDominates

@@ -1201,6 +1201,82 @@ theorem hasParallelPair_of_isTie_of_kfour (design : WeightedDesign 6 3)
     IsTie design → HasParallelPair design := fun htie =>
   absurd htie (not_isTie_of_kfour design hpoint huniform)
 
+/-! ### 12b. THE `(6,3)` FRONTIER, NARROWED TO ONE INEQUALITY
+
+The door of section 5 asks for three scalar inequalities.  At `(6, 3)` and uniform weight
+TWO of the three are free, unconditionally.
+
+The excesses total `rank - 1 = 2` over six labels, so some label carries at least `1/3`.  At
+such a label the landed row law reads the shifted pair minors as `4 * P a a / 3 - 13/36`,
+which is at least `11/36` and so strictly positive, and a positive total owns a positive
+member.  Every design therefore hands over a pivot and a partner with no hypothesis at all
+(`Gtz.exists_pivot_pair_of_uniform`).
+
+What remains of the whole rank-four rung is the THIRD inequality alone
+(`Gtz.allFiveOnPath_of_offsetThirdInequality`): at that pivot and partner, one further
+label whose squared offset falls below the product of the two minors. -/
+
+/-- **SOME EXCESS REACHES A THIRD, UNCONDITIONALLY.**  The landed excess total is
+`rank - 1 = 2`, and six excesses totalling `2` cannot all fall below `1/3`.  No weight
+hypothesis enters. -/
+theorem exists_excess_ge_third (design : WeightedDesign 6 3) :
+    ∃ label : Fin 6, (1 : ℝ) / 3 ≤ diagonalShiftForm design label label := by
+  by_contra hall
+  push Not at hall
+  have hlt : ∑ label : Fin 6, diagonalShiftForm design label label
+      < ∑ _label : Fin 6, (1 : ℝ) / 3 :=
+    Finset.sum_lt_sum_of_nonempty ⟨0, Finset.mem_univ 0⟩ fun label _ => hall label
+  rw [sum_diagonalShiftForm_diag design] at hlt
+  simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at hlt
+  norm_num at hlt
+
+/-- **THE PIVOT AND THE PARTNER ARE FREE.**  Every design at uniform weight owns a label of
+excess at least `1/3` and a partner whose shifted pair minor is strictly positive.  Two of
+the door's three inequalities therefore cost nothing. -/
+theorem exists_pivot_pair_of_uniform (design : WeightedDesign 6 3)
+    (huniform : ∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹) :
+    ∃ label partner : Fin 6, partner ≠ label ∧
+      (1 : ℝ) / 3 ≤ diagonalShiftForm design label label ∧
+      0 < pairMinorAt (diagonalShiftForm design) label partner := by
+  classical
+  obtain ⟨label, hexcess⟩ := exists_excess_ge_third design
+  have hdiag : (1 : ℝ) / 2 ≤ projectionOfDesign design label label := by
+    rw [diagonalShiftForm_diag, huniform] at hexcess; linarith
+  have hrow : 0 < ∑ other ∈ univ.erase label,
+      pairMinorAt (diagonalShiftForm design) label other := by
+    rw [sum_pairMinorAt_diagonalShift_erase_uniform design huniform label]
+    linarith
+  obtain ⟨partner, hpartner, hpos⟩ := exists_pos_of_sum_pos _ _ hrow
+  exact ⟨label, partner, Finset.ne_of_mem_erase hpartner, hexcess, hpos⟩
+
+/-- **THE WHOLE RUNG IS ONE INEQUALITY.**  Every on-path obligation follows from the THIRD
+inequality alone, asked at a pivot and partner that every design already carries.  The
+corner minor and the two-by-two minor are discharged by
+`Gtz.exists_pivot_pair_of_uniform`, so nothing else is left to assume. -/
+theorem allFiveOnPath_of_offsetThirdInequality
+    (huniform : ∀ design : WeightedDesign 6 3, ∀ label : Fin 6,
+      design.weight label = (6 : ℝ)⁻¹)
+    (hthird : ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
+      ∀ label partner : Fin 6, partner ≠ label →
+        (1 : ℝ) / 3 ≤ diagonalShiftForm design label label →
+        0 < pairMinorAt (diagonalShiftForm design) label partner →
+        ∃ third : Fin 6, third ≠ label ∧ third ≠ partner ∧
+          shiftOffsetAt design label partner third ^ 2
+            < pairMinorAt (diagonalShiftForm design) label partner
+              * pairMinorAt (diagonalShiftForm design) label third) :
+    BaseTripleTightLineFreeOffConicHeavyNeedleResidual ∧
+      OneLineTenthHeavyJointBlindLineSparse ∧
+      TwoMeetingLinesTenthHeavyJointBlindTransversal ∧
+      ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines ∧
+      KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict := by
+  refine allFiveOnPath_of_offsetDominatesSomewhere fun design hprimitive => ?_
+  obtain ⟨label, partner, hne, hexcess, hminor⟩ :=
+    exists_pivot_pair_of_uniform design (huniform design)
+  obtain ⟨third, hthirdLabel, hthirdPartner⟩ :=
+    hthird design hprimitive label partner hne hexcess hminor
+  exact ⟨label, partner, third, hne.symm, hthirdLabel, hthirdPartner.1,
+    by linarith [hexcess], hminor, hthirdPartner.2⟩
+
 /-! ### 13. THE FRONTIER PRODUCER, AT EVERY RANK AND EVERY SIZE
 
 Everything above rank three rests on Sylvester at `Fin 3`, and Sylvester does not generalize
@@ -1310,6 +1386,155 @@ theorem obligationSubThresholdBandHinge_of_excessDominates
   intro rank hrank size hlow hhigh _ design
   obtain ⟨selected, hcard, hdom⟩ := hdominated rank hrank size hlow hhigh design
   exact hasParallelPair_of_isTie_of_excessDominates design selected hcard hdom
+
+/-- The gap block along an ordered selection IS the landed selection gap block. -/
+theorem blockGapAt_eq_projectionBlockGap (design : WeightedDesign size 3)
+    (selected : Finset (Fin size)) (hcard : selected.card = 3) :
+    blockGapAt (projectionOfDesign design) design.weight
+        ((selected.orderEmbOfFin hcard : Fin 3 ↪o Fin size) : Fin 3 → Fin size)
+      = projectionBlockGap design selected hcard := rfl
+
+/-- **A SEVENTH ENTRANCE TO THE REGISTRY, FROM ONE INEQUALITY PER SLOT.**  Excess dominance
+at `(6, 3)` reaches every on-path obligation, the first of them included.  It is the only
+entrance in this file whose hypothesis mentions neither a determinant nor an offset, and it
+is the same criterion that produces the frontier conclusion at every rank. -/
+theorem allFiveOnPath_of_excessDominates
+    (hdominated : ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
+      ∃ selected : Finset (Fin 6), ∃ hcard : selected.card = 3,
+        ExcessDominatesBlock design selected hcard) :
+    BaseTripleTightLineFreeOffConicHeavyNeedleResidual ∧
+      OneLineTenthHeavyJointBlindLineSparse ∧
+      TwoMeetingLinesTenthHeavyJointBlindTransversal ∧
+      ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines ∧
+      KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict := by
+  refine allFiveOnPath_of_blockGapAt fun design hprimitive => ?_
+  obtain ⟨selected, hcard, hdom⟩ := hdominated design hprimitive
+  refine ⟨((selected.orderEmbOfFin hcard : Fin 3 ↪o Fin 6) : Fin 3 → Fin 6),
+    (selected.orderEmbOfFin hcard).injective, ?_⟩
+  rw [blockGapAt_eq_projectionBlockGap]
+  exact posDef_projectionBlockGap_of_excessDominates design selected hcard hdom
+
+/-! #### Scaled dominance, strictly weaker to ask for
+
+Plain dominance forces EVERY excess to beat its own row.  A design can fail that on one slot
+and still be far from a tie, because a congruence by a positive diagonal rescales the rows
+and the columns at once and leaves definiteness alone.  Choosing the scale is free, so the
+criterion below is strictly weaker to satisfy and produces the same conclusion. -/
+
+/-- **SCALED DOMINANCE IMPLIES POSITIVE DEFINITENESS, AT EVERY RANK.**  Congruence by a
+positive diagonal is definiteness preserving, and it turns the scaled test into the plain
+one. -/
+theorem posDef_of_scaledDominant {order : ℕ} (mat : Matrix (Fin order) (Fin order) ℝ)
+    (hsymmetric : matᵀ = mat) (scale : Fin order → ℝ) (hscale : ∀ slot, 0 < scale slot)
+    (hdominates : ∀ slot : Fin order,
+      ∑ other ∈ Finset.univ.erase slot, scale other * |mat slot other|
+        < scale slot * mat slot slot) :
+    mat.PosDef := by
+  classical
+  have hentry : ∀ leftSlot rightSlot : Fin order,
+      ((Matrix.diagonal scale)ᵀ * mat * Matrix.diagonal scale) leftSlot rightSlot
+        = scale leftSlot * mat leftSlot rightSlot * scale rightSlot := by
+    intro leftSlot rightSlot
+    simp [Matrix.diagonal_transpose, Matrix.mul_diagonal, Matrix.diagonal_mul]
+  have hunit : IsUnit (Matrix.diagonal scale).det := by
+    rw [Matrix.det_diagonal]
+    exact (isUnit_iff_ne_zero).mpr (ne_of_gt (Finset.prod_pos fun slot _ => hscale slot))
+  refine (posDef_congruence_iff hunit).mp ?_
+  refine posDef_of_diagonallyDominant _ ?_ fun slot => ?_
+  · ext leftSlot rightSlot
+    rw [Matrix.transpose_apply, hentry, hentry,
+      show mat rightSlot leftSlot = mat leftSlot rightSlot from
+        form_flip_of_transpose hsymmetric leftSlot rightSlot]
+    ring
+  · have hrow : ∑ other ∈ Finset.univ.erase slot,
+        |((Matrix.diagonal scale)ᵀ * mat * Matrix.diagonal scale) slot other|
+        = scale slot * ∑ other ∈ Finset.univ.erase slot, scale other * |mat slot other| := by
+      rw [Finset.mul_sum]
+      refine Finset.sum_congr rfl fun other _ => ?_
+      rw [hentry, abs_mul, abs_mul, abs_of_pos (hscale slot), abs_of_pos (hscale other)]
+      ring
+    rw [hrow, hentry]
+    have hpivot := hscale slot
+    nlinarith [hdominates slot]
+
+/-- **THE SCALED EXCESS DOMINANCE CRITERION.**  A positive scale on the selected slots, and
+inside the chosen block every scaled excess beats the scaled row of absolute pairings. -/
+def ScaledExcessDominatesBlock (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank)
+    (scale : Fin rank → ℝ) : Prop :=
+  (∀ slot : Fin rank, 0 < scale slot) ∧
+  ∀ slot : Fin rank,
+    ∑ other ∈ Finset.univ.erase slot,
+        scale other * |projectionOfDesign design (selected.orderEmbOfFin hcard slot)
+          (selected.orderEmbOfFin hcard other)|
+      < scale slot * (projectionOfDesign design (selected.orderEmbOfFin hcard slot)
+            (selected.orderEmbOfFin hcard slot)
+          - design.weight (selected.orderEmbOfFin hcard slot))
+
+/-- Plain dominance is the scaled criterion at the constant scale one. -/
+theorem scaledExcessDominatesBlock_of_excessDominates (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank)
+    (hdominates : ExcessDominatesBlock design selected hcard) :
+    ScaledExcessDominatesBlock design selected hcard (fun _ => 1) := by
+  refine ⟨fun _ => one_pos, fun slot => ?_⟩
+  have hrow := hdominates slot
+  simpa using hrow
+
+/-- **SCALED DOMINANCE MAKES THE GAP BLOCK POSITIVE DEFINITE, AT EVERY RANK.** -/
+theorem posDef_projectionBlockGap_of_scaledExcessDominates (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank) (scale : Fin rank → ℝ)
+    (hdominates : ScaledExcessDominatesBlock design selected hcard scale) :
+    (projectionBlockGap design selected hcard).PosDef := by
+  classical
+  obtain ⟨hscale, hrows⟩ := hdominates
+  refine posDef_of_scaledDominant _ (projectionBlockGap_transpose design selected hcard)
+    scale hscale fun slot => ?_
+  have hrow : ∑ other ∈ Finset.univ.erase slot,
+      scale other * |projectionBlockGap design selected hcard slot other|
+      = ∑ other ∈ Finset.univ.erase slot,
+          scale other * |projectionOfDesign design (selected.orderEmbOfFin hcard slot)
+            (selected.orderEmbOfFin hcard other)| :=
+    Finset.sum_congr rfl fun other hother => by
+      rw [projectionBlockGap_offDiag design selected hcard
+        (Finset.ne_of_mem_erase hother).symm]
+  rw [hrow, projectionBlockGap_diag]
+  exact hrows slot
+
+/-- **SCALED DOMINANCE REFUTES THE TIE, AT EVERY RANK.** -/
+theorem not_isTie_of_scaledExcessDominates (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank) (scale : Fin rank → ℝ)
+    (hdominates : ScaledExcessDominatesBlock design selected hcard scale) :
+    ¬ IsTie design := fun htie =>
+  htie.2 selected hcard
+    ((posDef_subsetSum_iff_projectionBlockGap design selected hcard).mpr
+      (posDef_projectionBlockGap_of_scaledExcessDominates design selected hcard scale hdominates))
+
+/-- **THE FRONTIER PRODUCER, IN ITS WEAKEST FORM.**  Same conclusion as
+`Gtz.hasParallelPair_of_isTie_of_excessDominates`, from a strictly weaker hypothesis: the
+scale is free to choose. -/
+theorem hasParallelPair_of_isTie_of_scaledExcessDominates (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank) (scale : Fin rank → ℝ)
+    (hdominates : ScaledExcessDominatesBlock design selected hcard scale) :
+    IsTie design → HasParallelPair design := fun htie =>
+  absurd htie (not_isTie_of_scaledExcessDominates design selected hcard scale hdominates)
+
+/-- **THE SEVENTH ENTRANCE, IN ITS WEAKEST FORM.**  Scaled dominance at `(6, 3)` reaches
+every on-path obligation. -/
+theorem allFiveOnPath_of_scaledExcessDominates
+    (hdominated : ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
+      ∃ selected : Finset (Fin 6), ∃ hcard : selected.card = 3, ∃ scale : Fin 3 → ℝ,
+        ScaledExcessDominatesBlock design selected hcard scale) :
+    BaseTripleTightLineFreeOffConicHeavyNeedleResidual ∧
+      OneLineTenthHeavyJointBlindLineSparse ∧
+      TwoMeetingLinesTenthHeavyJointBlindTransversal ∧
+      ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines ∧
+      KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict := by
+  refine allFiveOnPath_of_blockGapAt fun design hprimitive => ?_
+  obtain ⟨selected, hcard, scale, hdom⟩ := hdominated design hprimitive
+  refine ⟨((selected.orderEmbOfFin hcard : Fin 3 ↪o Fin 6) : Fin 3 → Fin 6),
+    (selected.orderEmbOfFin hcard).injective, ?_⟩
+  rw [blockGapAt_eq_projectionBlockGap]
+  exact posDef_projectionBlockGap_of_scaledExcessDominates design selected hcard scale hdom
 
 /-- **THE THRESHOLD-CELL HINGE AT RANK FOUR AND UP, ON THE DOMINATED STRATUM.**  The
 registry's second frontier axiom, with its conclusion produced the same way. -/
