@@ -77,6 +77,20 @@ at once, and in fact `Gtz.exists_three_mul_weight_le_chartFosterShare` names a
 label whose share is at least three times its weight.  So this sufficient
 condition is real and is far from total, which is the honest measure of what the
 Loewner content of the deflation can and cannot buy.
+
+## The sharp form, with no division
+
+The punctured form gives a better floor than the moment comparison above, and
+gives it for free:
+
+  `gap  >=  w_d * Sel(C)  -  m_d * atom_d` .
+
+The right side is a rank-one deflation of a matrix that the bound already makes
+definite, so its definiteness is ONE scalar.
+`Gtz.posDef_directionChartGap_of_selectedResolvent_price` reads that scalar as
+the dropped label's reading of the SELECTED resolvent against its own weight.
+The moment never appears and no factor `1 - w_d` is paid.  The two hypotheses
+are not compared in kernel here.
 -/
 
 namespace Gtz
@@ -831,5 +845,151 @@ theorem lightLabelChartPoint_deflatedDetCellFires :
     KFourDeflatedDetCellFires lightLabelChartPoint :=
   kFourDeflatedDetCellFires_of_share_lt_weight lightLabelChartPoint 0
     lightLabelChartPoint_share_lt_weight
+
+/-! ## 11. The gap dominates the selected conductance, with no division
+
+Section 9 prices the gap against the MOMENT and pays a factor `1 - w_d` for it.
+The punctured form pays nothing.  The punctured moment is capped by the
+DISCOUNTED conductance, so the gap is capped from below by the conductance
+itself:
+
+  `gap  >=  w_d * Sel(C)  -  m_d * atom_d` .
+
+The conductance is positive definite under the same bound, so the right side is
+a rank-one deflation of a definite matrix.  Its definiteness is ONE scalar: the
+dropped label's reading of the SELECTED resolvent, priced against its own
+weight.  The moment never appears. -/
+
+/-- **CAUCHY-SCHWARZ THROUGH ANY DEFINITE RESOLVENT.**  Division free, no
+symmetry hypothesis beyond definiteness, at every rank. -/
+theorem reading_sq_le_resolvent_mul_reading {rank : ℕ}
+    {form : Matrix (Fin rank) (Fin rank) ℝ} (hpd : form.PosDef)
+    (vec probe : Fin rank → ℝ) :
+    (vec ⬝ᵥ probe) ^ 2
+      ≤ (vec ⬝ᵥ (form⁻¹ *ᵥ vec)) * (probe ⬝ᵥ (form *ᵥ probe)) := by
+  have hunit : IsUnit form.det := isUnit_iff_ne_zero.mpr (ne_of_gt hpd.det_pos)
+  set resolved := form⁻¹ *ᵥ vec with hresolved
+  have hback : form *ᵥ resolved = vec := by
+    rw [hresolved, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hunit,
+      Matrix.one_mulVec]
+  have hsymm : formᵀ = form := transpose_eq_of_isHermitian hpd.1
+  have hpivot : resolved ⬝ᵥ (form *ᵥ resolved) = vec ⬝ᵥ (form⁻¹ *ᵥ vec) := by
+    rw [hback, hresolved, dotProduct_comm]
+  have hcross : resolved ⬝ᵥ (form *ᵥ probe) = vec ⬝ᵥ probe := by
+    rw [← dotProduct_mulVec_transpose form resolved probe, hsymm, hback, dotProduct_comm]
+  by_cases hzero : probe = 0
+  · subst hzero
+    simp
+  · have hprobePos : 0 < probe ⬝ᵥ (form *ᵥ probe) := by
+      have hform := (Matrix.posDef_iff_dotProduct_mulVec.mp hpd).2 hzero
+      rwa [star_trivial] at hform
+    have hcs := quadForm_cross_sq_le hpd.posSemidef resolved probe hprobePos
+    rwa [hcross, hpivot] at hcs
+
+/-- **THE RANK-ONE DEFLATION OF A DEFINITE FORM.**  A scaled definite form stays
+definite after a scaled atom leaves it, as soon as the atom's own resolvent
+reading is priced below the scale. -/
+theorem posDef_smul_sub_smul_atomMatrix_of_resolvent_price {rank : ℕ}
+    {form : Matrix (Fin rank) (Fin rank) ℝ} (hpd : form.PosDef)
+    (scale atomWeight : ℝ) (vec : Fin rank → ℝ) (hatomWeight : 0 ≤ atomWeight)
+    (hprice : atomWeight * (vec ⬝ᵥ (form⁻¹ *ᵥ vec)) < scale) :
+    (scale • form - atomWeight • atomMatrix vec).PosDef := by
+  have hsymm : formᵀ = form := transpose_eq_of_isHermitian hpd.1
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr
+    ⟨isHermitian_of_transpose_eq ?_, fun probe hne => ?_⟩
+  · rw [Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_smul, hsymm,
+      transpose_eq_of_isHermitian (posSemidef_atomMatrix vec).1]
+  · rw [star_trivial, Matrix.sub_mulVec, dotProduct_sub, Matrix.smul_mulVec,
+      dotProduct_smul, smul_eq_mul, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul,
+      dotProduct_atomMatrix_mulVec]
+    have hcs := reading_sq_le_resolvent_mul_reading hpd vec probe
+    have hpos : 0 < probe ⬝ᵥ (form *ᵥ probe) := by
+      have hform := (Matrix.posDef_iff_dotProduct_mulVec.mp hpd).2 hne
+      rwa [star_trivial] at hform
+    nlinarith [hcs, hpos, hatomWeight]
+
+/-- **THE GAP DOMINATES THE SELECTED CONDUCTANCE.**  The bound splits the gap as
+the conductance deflation plus the deflated form itself.  No division, no
+scaling, no membership hypothesis. -/
+theorem directionChartGap_eq_conductanceDeflation_add_chartDeflatedForm
+    (direction : Fin size → (Fin 3 → ℝ)) (mass weight : Fin size → ℝ)
+    {dropLabel : Fin size} (hweightNe : weight dropLabel ≠ 0)
+    (selected : Finset (Fin size)) :
+    directionChartGap direction mass weight selected
+      = (weight dropLabel • chartSelectedConductance direction mass weight selected
+          - mass dropLabel • atomMatrix (direction dropLabel))
+        + chartDeflatedForm direction mass weight dropLabel selected := by
+  rw [chartDeflatedForm_eq_puncturedForm direction mass weight hweightNe selected,
+    directionChartGap_eq_selected_sub_moment,
+    chartMassMatrix_eq_atom_add_punctured direction mass dropLabel]
+  module
+
+/-- **THE SELECTED-RESOLVENT CELL.**  A selection carrying the chart deflated
+bound at a label whose reading of the SELECTED resolvent is priced below its own
+weight dominates strictly.  The moment does not appear, the selection is
+arbitrary, and no factor `1 - w_d` is paid. -/
+theorem posDef_directionChartGap_of_selectedResolvent_price
+    (direction : Fin size → (Fin 3 → ℝ)) (mass weight : Fin size → ℝ)
+    {dropLabel : Fin size} {selected : Finset (Fin size)}
+    (hmassNonneg : 0 ≤ mass dropLabel) (hweightPos : 0 < weight dropLabel)
+    (hweightLt : weight dropLabel < 1)
+    (hpunctured : (chartPuncturedMoment direction mass dropLabel).PosDef)
+    (hbound : ChartDeflatedGapBound direction mass weight dropLabel selected)
+    (hprice : mass dropLabel
+        * (direction dropLabel ⬝ᵥ
+            ((chartSelectedConductance direction mass weight selected)⁻¹
+              *ᵥ direction dropLabel))
+      < weight dropLabel) :
+    (directionChartGap direction mass weight selected).PosDef := by
+  have hselected : (chartSelectedConductance direction mass weight selected).PosDef :=
+    posDef_chartSelectedConductance_of_chartDeflatedGapBound direction mass weight
+      hweightPos hweightLt hpunctured hbound
+  have hdeflation : (weight dropLabel
+      • chartSelectedConductance direction mass weight selected
+      - mass dropLabel • atomMatrix (direction dropLabel)).PosDef :=
+    posDef_smul_sub_smul_atomMatrix_of_resolvent_price hselected (weight dropLabel)
+      (mass dropLabel) (direction dropLabel) hmassNonneg hprice
+  rw [directionChartGap_eq_conductanceDeflation_add_chartDeflatedForm direction mass
+    weight (ne_of_gt hweightPos) selected]
+  exact hdeflation.add_posSemidef hbound
+
+/-- **THE SELECTED-RESOLVENT CELL AT `K4`.**  The produced tree of a label whose
+selected resolvent price falls below its weight is strict, and the cell fires. -/
+theorem kFourDeflatedDetCellFires_of_selectedResolvent_price
+    (point : DirectionChartPoint 6) (dropLabel : Fin 6) {tree : Finset (Fin 6)}
+    (hbound : ChartDeflatedGapBound kFourDirection point.mass point.weight
+      dropLabel tree) (hcard : tree.card = 3)
+    (hprice : point.mass dropLabel
+        * (kFourDirection dropLabel ⬝ᵥ
+            ((chartSelectedConductance kFourDirection point.mass point.weight tree)⁻¹
+              *ᵥ kFourDirection dropLabel))
+      < point.weight dropLabel) :
+    KFourDeflatedDetCellFires point := by
+  have hpd : (directionChartGap kFourDirection point.mass point.weight tree).PosDef :=
+    posDef_directionChartGap_of_selectedResolvent_price kFourDirection point.mass
+      point.weight (point.mass_pos dropLabel).le (point.weight_pos dropLabel)
+      (chartPoint_weight_lt_one point dropLabel)
+      (posDef_chartPuncturedMoment_kFour point dropLabel) hbound hprice
+  exact kFourDeflatedDetCellFires_of_cardThree point dropLabel hcard hbound hpd.det_pos
+
+/-- The produced tree of the chart deflation, with the selected-resolvent price
+as the only remaining hypothesis.  This is the sharpest form of the residual that
+the Loewner content of the deflation supplies. -/
+theorem kFour_exists_chartDeflatedTree_priced (point : DirectionChartPoint 6)
+    (dropLabel : Fin 6) :
+    ∃ tree ∈ kFourSpanningTreeList, dropLabel ∉ tree ∧
+      ChartDeflatedGapBound kFourDirection point.mass point.weight dropLabel tree ∧
+      (point.mass dropLabel
+          * (kFourDirection dropLabel ⬝ᵥ
+              ((chartSelectedConductance kFourDirection point.mass point.weight tree)⁻¹
+                *ᵥ kFourDirection dropLabel))
+        < point.weight dropLabel →
+        (directionChartGap kFourDirection point.mass point.weight tree).PosDef) := by
+  obtain ⟨tree, hmem, hnotMem, hbound, _⟩ := kFour_exists_chartDeflatedTree point dropLabel
+  refine ⟨tree, hmem, hnotMem, hbound, fun hprice => ?_⟩
+  exact posDef_directionChartGap_of_selectedResolvent_price kFourDirection point.mass
+    point.weight (point.mass_pos dropLabel).le (point.weight_pos dropLabel)
+    (chartPoint_weight_lt_one point dropLabel)
+    (posDef_chartPuncturedMoment_kFour point dropLabel) hbound hprice
 
 end Gtz
