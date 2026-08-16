@@ -569,22 +569,17 @@ def GapDetPositiveAt {size rank : ℕ} (design : WeightedDesign size rank)
     (selected : Finset (Fin size)) : Prop :=
   0 < (subsetSum design selected - 1).det
 
-/-- **THE DEFLATED BOUND SUPPLIES THE HYPERPLANE HALF.**  Factored out of the
-margin: off the dropped atom the gap is strictly positive, at every leverage. -/
+/-- **THE DEFLATED BOUND SUPPLIES THE HYPERPLANE HALF.**  This is the landed
+`Gtz.posDef_on_orthogonal_of_deflatedGapBound`, which had no consumer anywhere in
+the tree, read in the argument order the pivot criterion wants.  Nothing is
+proved here. -/
 theorem planePosDef_of_deflatedGapBound (D : WeightedDesign (m + 1) k) (hsize : 1 ≤ m)
     (dropLabel : Fin (m + 1)) (selected : Finset (Fin (m + 1)))
     (hbound : DeflatedGapBoundAt D dropLabel selected) :
     ∀ flatVec : Fin k → ℝ, flatVec ⬝ᵥ D.atom dropLabel = 0 → flatVec ≠ 0 →
-      0 < flatVec ⬝ᵥ ((subsetSum D selected - 1) *ᵥ flatVec) := by
-  intro flatVec hflat hflatNe
-  have hweightPos := D.weight_pos dropLabel
-  have hweightLtOne : D.weight dropLabel < 1 := weight_lt_one D (by omega) dropLabel
-  have hsurvivingMass : (0 : ℝ) < 1 - D.weight dropLabel := by linarith
-  have horthogonal : D.atom dropLabel ⬝ᵥ flatVec = 0 := by
-    rw [dotProduct_comm]; exact hflat
-  have hmargin := deflatedGapBound_orthogonal_margin D dropLabel selected hbound flatVec
-    horthogonal
-  nlinarith [hmargin, mul_pos hweightPos (dotProduct_self_pos hflatNe), hsurvivingMass]
+      0 < flatVec ⬝ᵥ ((subsetSum D selected - 1) *ᵥ flatVec) := fun flatVec hflat hflatNe =>
+  posDef_on_orthogonal_of_deflatedGapBound D dropLabel selected hbound hsize flatVec hflatNe
+    (by rw [dotProduct_comm]; exact hflat)
 
 /-- **THE ALL-HEAVY RESIDUAL IS ONE DETERMINANT SIGN.**  With the deflated gap
 bound in hand at ANY label, the subset dominates STRICTLY exactly when its gap
@@ -740,14 +735,7 @@ theorem exists_cosetRefusal_of_isTie (D : WeightedDesign (m + 1) k) (hsize : 1 �
   have hweightPos := D.weight_pos dropLabel
   have hweightLtOne : D.weight dropLabel < 1 := weight_lt_one D (by omega) dropLabel
   have hsurvivingMass : (0 : ℝ) < 1 - D.weight dropLabel := by linarith
-  have hplanePos : ∀ flatVec : Fin k → ℝ, flatVec ⬝ᵥ D.atom dropLabel = 0 → flatVec ≠ 0 →
-      0 < flatVec ⬝ᵥ ((subsetSum D selected - 1) *ᵥ flatVec) := by
-    intro flatVec hflat hflatNe
-    have horthogonal : D.atom dropLabel ⬝ᵥ flatVec = 0 := by
-      rw [dotProduct_comm]; exact hflat
-    have hmargin := deflatedGapBound_orthogonal_margin D dropLabel selected hbound flatVec
-      horthogonal
-    nlinarith [hmargin, mul_pos hweightPos (dotProduct_self_pos hflatNe), hsurvivingMass]
+  have hplanePos := planePosDef_of_deflatedGapBound D hsize dropLabel selected hbound
   refine ⟨selected, hcard, hnotMem, ?_⟩
   by_contra hall
   push Not at hall
@@ -1018,14 +1006,7 @@ theorem posDef_iff_pivotValue_pos_of_unitLeverage (D : WeightedDesign (m + 1) k)
   have hsurvivingMass : (0 : ℝ) < 1 - D.weight dropLabel := by linarith
   have hatomNe : D.atom dropLabel ≠ 0 :=
     atom_ne_zero_of_one_le_leverage D dropLabel (le_of_eq hunit.symm)
-  have hplanePos : ∀ flatVec : Fin k → ℝ, flatVec ⬝ᵥ D.atom dropLabel = 0 → flatVec ≠ 0 →
-      0 < flatVec ⬝ᵥ ((subsetSum D selected - 1) *ᵥ flatVec) := by
-    intro flatVec hflat hflatNe
-    have horthogonal : D.atom dropLabel ⬝ᵥ flatVec = 0 := by
-      rw [dotProduct_comm]; exact hflat
-    have hmargin := deflatedGapBound_orthogonal_margin D dropLabel selected hbound flatVec
-      horthogonal
-    nlinarith [hmargin, mul_pos hweightPos (dotProduct_self_pos hflatNe), hsurvivingMass]
+  have hplanePos := planePosDef_of_deflatedGapBound D hsize dropLabel selected hbound
   rw [posDef_iff_pivotCoset (transpose_subsetSum_sub_one_eq D selected) hatomNe hplanePos]
   constructor
   · intro hcoset
