@@ -24,8 +24,9 @@ design data.  The result is a strictly stronger criterion with the same conclusi
   and every base set, one of the three invariants fails.
 * `Gtz.twinAxisDesign` — a `(6,3)` design at which the trace law does NOT fire and
   the sharp law DOES.  The improvement is strict.
-* `Gtz.det_residualShift_tetraDesign_eq_zero` — the calibration: at the tetrahedron
-  tie the first two invariants are positive and the determinant is exactly zero.
+* `Gtz.not_posDef_residualShift_tetraDesign` — the calibration: at the tetrahedron
+  tie the shifted residual carries the dropped atom as a null vector, so the law
+  fails there exactly, as it must.
 
 ## Scope
 
