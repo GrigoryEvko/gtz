@@ -370,4 +370,118 @@ theorem kFourTriangleSelection_spread (point : DirectionChartPoint 6)
   rw [hgread, mul_one] at hbound
   exact hbound
 
+/-! ## 8.  The blind law at the DESIGN level, and the on-path classes
+
+Sections 6 and 7 read a blind subset inside a CHART selection.  The same reading
+works verbatim on a design, and there it constrains every on-path class at once.
+
+A LINE of the residual patterns is a coplanar triple of atoms, so it is a blind
+set with the line normal as probe.  A design with no line still has a blind PAIR
+for every pair of atoms, namely the normal of the plane they span.  So the law
+below applies at `U(3,6)`, at the one-line class, at the two-meeting-lines class,
+at the three-lines class and at the graphic class, with no pattern hypothesis. -/
+
+/-- The design reading of a selection at a probe drops its blind labels. -/
+theorem blindSubset_design_reading {size rank : ℕ} (design : WeightedDesign size rank)
+    {selected blind : Finset (Fin size)} (hsub : blind ⊆ selected)
+    (probe : Fin rank → ℝ)
+    (hblind : ∀ label ∈ blind, design.atom label ⬝ᵥ probe = 0) :
+    probe ⬝ᵥ (subsetSum design selected *ᵥ probe)
+      = ∑ label ∈ selected \ blind, (design.atom label ⬝ᵥ probe) ^ 2 := by
+  classical
+  have hreading : probe ⬝ᵥ (subsetSum design selected *ᵥ probe)
+      = ∑ label ∈ selected, (design.atom label ⬝ᵥ probe) ^ 2 := by
+    rw [subsetSum, Matrix.sum_mulVec, dotProduct_sum]
+    exact Finset.sum_congr rfl fun label _ => dotProduct_atomMatrix_mulVec _ _
+  rw [hreading, ← Finset.sum_sdiff hsub]
+  have hzero : ∑ label ∈ blind, (design.atom label ⬝ᵥ probe) ^ 2 = 0 :=
+    Finset.sum_eq_zero fun label hmem => by rw [hblind label hmem]; ring
+  rw [hzero, add_zero]
+
+/-- **THE BLIND LAW ON DESIGNS.**  A dominating selection carrying a blind subset
+must overcover the probe with its NON-BLIND labels alone.  The blind labels are
+dead weight in that direction. -/
+theorem blindSubset_dominates_overcovers {size rank : ℕ}
+    (design : WeightedDesign size rank)
+    {selected blind : Finset (Fin size)} (hsub : blind ⊆ selected)
+    (probe : Fin rank → ℝ)
+    (hblind : ∀ label ∈ blind, design.atom label ⬝ᵥ probe = 0)
+    (hdom : Dominates design selected) :
+    probe ⬝ᵥ probe
+      ≤ ∑ label ∈ selected \ blind, (design.atom label ⬝ᵥ probe) ^ 2 := by
+  have hread := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdom).2 probe
+  rw [star_trivial, Matrix.sub_mulVec, dotProduct_sub, Matrix.one_mulVec,
+    blindSubset_design_reading design hsub probe hblind] at hread
+  linarith
+
+/-- **A DOMINATING SELECTION IS NEVER FULLY BLIND.**  The design-level companion
+of the chart blind-probe law, with no cardinality bound and no pattern. -/
+theorem not_dominates_of_fully_blind {size rank : ℕ}
+    (design : WeightedDesign size rank) {selected : Finset (Fin size)}
+    (probe : Fin rank → ℝ) (hne : probe ≠ 0)
+    (hblind : ∀ label ∈ selected, design.atom label ⬝ᵥ probe = 0) :
+    ¬ Dominates design selected := by
+  intro hdom
+  have hbound := blindSubset_dominates_overcovers design (Finset.Subset.refl selected)
+    probe hblind hdom
+  rw [Finset.sdiff_self] at hbound
+  simp only [Finset.sum_empty] at hbound
+  exact absurd hbound (not_le.mpr (dotProduct_self_pos hne))
+
+/-- **THE SURVIVING LABEL CARRIES THE WHOLE NORMAL.**  If a dominating selection
+is blind to a probe at every label but one, that single label must overcover the
+probe by itself.
+
+At the one-line and two-meeting-lines classes the probe is a line normal and the
+blind set is two line atoms, so a dominating triple that keeps two atoms of a
+line forces its third atom past the normal.  At the line-free class every PAIR of
+atoms spans a plane, so the law reads: in every dominating triple, the third atom
+sticks out of the plane of the other two by more than unit length. -/
+theorem single_survivor_overcovers {size rank : ℕ}
+    (design : WeightedDesign size rank)
+    {selected : Finset (Fin size)} {survivor : Fin size}
+    (hmem : survivor ∈ selected)
+    (probe : Fin rank → ℝ)
+    (hblind : ∀ label ∈ selected, label ≠ survivor →
+      design.atom label ⬝ᵥ probe = 0)
+    (hdom : Dominates design selected) :
+    probe ⬝ᵥ probe ≤ (design.atom survivor ⬝ᵥ probe) ^ 2 := by
+  classical
+  have hsub : selected.erase survivor ⊆ selected := Finset.erase_subset _ _
+  have hblindErase : ∀ label ∈ selected.erase survivor,
+      design.atom label ⬝ᵥ probe = 0 := by
+    intro label hlab
+    exact hblind label (Finset.mem_of_mem_erase hlab)
+      (Finset.ne_of_mem_erase hlab)
+  have hbound := blindSubset_dominates_overcovers design hsub probe hblindErase hdom
+  have hdiff : selected \ selected.erase survivor = {survivor} := by
+    ext x
+    constructor
+    · intro hx
+      rw [Finset.mem_sdiff, Finset.mem_erase] at hx
+      rw [Finset.mem_singleton]
+      by_contra hxne
+      exact hx.2 ⟨hxne, hx.1⟩
+    · intro hx
+      rw [Finset.mem_singleton] at hx
+      subst hx
+      rw [Finset.mem_sdiff, Finset.mem_erase]
+      exact ⟨hmem, fun hcon => hcon.1 rfl⟩
+  rw [hdiff, Finset.sum_singleton] at hbound
+  exact hbound
+
+/-- **THE LINE LAW.**  A dominating selection never contains a whole coplanar
+triple.  This is the pattern-generic obstruction the residual line classes use:
+a strict dominator must avoid each line, so at the one-line pattern it is one of
+the nineteen basis triples. -/
+theorem not_dominates_of_coplanar_triple {size rank : ℕ}
+    (design : WeightedDesign size rank) {selected line : Finset (Fin size)}
+    (hsub : line ⊆ selected) (hcard : selected.card ≤ line.card)
+    (probe : Fin rank → ℝ) (hne : probe ≠ 0)
+    (hblind : ∀ label ∈ line, design.atom label ⬝ᵥ probe = 0) :
+    ¬ Dominates design selected := by
+  have heq : line = selected := Finset.eq_of_subset_of_card_le hsub hcard
+  subst heq
+  exact not_dominates_of_fully_blind design probe hne hblind
+
 end Gtz
