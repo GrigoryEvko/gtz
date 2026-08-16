@@ -27,6 +27,13 @@ all lie in `[-1, 1]`.
   block on the complementary labels differ by the rank minus twice the block
   diagonal.  The cross mass cancels between the two cuts, so no eigenvalue and no
   size hypothesis enters.
+* `Gtz.projectionGap_isotropy_signFlipDesign_iff` — the criterion is SIGN-BLIND,
+  in the tree's established sense of that term.
+  `Gtz.atomMatrix` does not read the sign of an atom, so `Gtz.IsTie` is invariant
+  when each atom is multiplied by its own scalar of square one
+  (`Gtz.isTie_signFlipDesign_iff`).  The criterion reads the weights, the leverage
+  shares and the SQUARED Gram entries, and all three are invariant too.  So the
+  engine cannot separate two designs that `Gtz.IsTie` cannot separate.
 
 ## The two readings are incomparable, at the campaign's own foil
 
@@ -630,6 +637,121 @@ theorem not_isTie_of_complementBlockSquareMass (D : WeightedDesign m 3) (pick : 
   refine not_isTie_of_projectionGap_isotropy D pick hinj htrace ?_
   rw [frobeniusNormSq_projectionGap_complementBlockForm D pick hinj]
   exact_mod_cast hcomplement
+
+/-! ## 4c. The sign-flip group
+
+`Gtz.atomMatrix` is `Matrix.vecMulVec g g`, so it does not read the sign of `g`.
+Every statement that follows from `Gtz.IsTie` must therefore be invariant when
+each atom is multiplied by its own sign.  The block criterion is: it reads the
+weights, the leverage shares and the SQUARED Gram entries, and all three are
+invariant.  Nothing below assumes the signs are `1` or `-1` beyond the square
+being one. -/
+
+/-- **The sign flip of a design.**  Each atom is multiplied by a scalar of square
+one.  Parseval survives because `Gtz.atomMatrix_smul` squares the scalar. -/
+noncomputable def signFlipDesign (D : WeightedDesign m k) (sign : Fin m → ℝ)
+    (hsign : ∀ atomLabel, sign atomLabel ^ 2 = 1) : WeightedDesign m k where
+  atom := fun atomLabel => sign atomLabel • D.atom atomLabel
+  weight := D.weight
+  weight_pos := D.weight_pos
+  weight_sum_one := D.weight_sum_one
+  isParseval := by
+    rw [← D.isParseval]
+    exact Finset.sum_congr rfl fun atomLabel _ => by
+      rw [atomMatrix_smul, hsign atomLabel, one_smul]
+
+@[simp] theorem signFlipDesign_weight (D : WeightedDesign m k) (sign : Fin m → ℝ)
+    (hsign : ∀ atomLabel, sign atomLabel ^ 2 = 1) :
+    (signFlipDesign D sign hsign).weight = D.weight := rfl
+
+/-- The atom matrices are untouched by a sign flip. -/
+theorem atomMatrix_signFlipDesign (D : WeightedDesign m k) (sign : Fin m → ℝ)
+    (hsign : ∀ atomLabel, sign atomLabel ^ 2 = 1) (atomLabel : Fin m) :
+    atomMatrix ((signFlipDesign D sign hsign).atom atomLabel)
+      = atomMatrix (D.atom atomLabel) := by
+  show atomMatrix (sign atomLabel • D.atom atomLabel) = atomMatrix (D.atom atomLabel)
+  rw [atomMatrix_smul, hsign atomLabel, one_smul]
+
+/-- Every subset sum, and hence every domination question, is untouched. -/
+theorem subsetSum_signFlipDesign (D : WeightedDesign m k) (sign : Fin m → ℝ)
+    (hsign : ∀ atomLabel, sign atomLabel ^ 2 = 1) (selected : Finset (Fin m)) :
+    subsetSum (signFlipDesign D sign hsign) selected = subsetSum D selected :=
+  Finset.sum_congr rfl fun atomLabel _ => atomMatrix_signFlipDesign D sign hsign atomLabel
+
+/-- **`Gtz.IsTie` IS INVARIANT UNDER THE SIGN-FLIP GROUP.** -/
+theorem isTie_signFlipDesign_iff (D : WeightedDesign m k) (sign : Fin m → ℝ)
+    (hsign : ∀ atomLabel, sign atomLabel ^ 2 = 1) :
+    IsTie (signFlipDesign D sign hsign) ↔ IsTie D := by
+  constructor
+  · rintro ⟨⟨selected, hcard, hdom⟩, hnostrict⟩
+    refine ⟨⟨selected, hcard, ?_⟩, fun other hother => ?_⟩
+    · rwa [Dominates, ← subsetSum_signFlipDesign D sign hsign selected]
+    · rw [← subsetSum_signFlipDesign D sign hsign other]
+      exact hnostrict other hother
+  · rintro ⟨⟨selected, hcard, hdom⟩, hnostrict⟩
+    refine ⟨⟨selected, hcard, ?_⟩, fun other hother => ?_⟩
+    · rwa [Dominates, subsetSum_signFlipDesign D sign hsign selected]
+    · rw [subsetSum_signFlipDesign D sign hsign other]
+      exact hnostrict other hother
+
+/-- The leverage of an atom is untouched by a sign flip. -/
+theorem leverageOf_signFlipDesign (D : WeightedDesign m k) (sign : Fin m → ℝ)
+    (hsign : ∀ atomLabel, sign atomLabel ^ 2 = 1) (atomLabel : Fin m) :
+    leverageOf ((signFlipDesign D sign hsign).atom atomLabel)
+      = leverageOf (D.atom atomLabel) := by
+  show leverageOf (sign atomLabel • D.atom atomLabel) = leverageOf (D.atom atomLabel)
+  rw [leverageOf_smul, hsign atomLabel, one_mul]
+
+/-- The SQUARED Gram entries are untouched by a sign flip. -/
+theorem sq_dotProduct_signFlipDesign (D : WeightedDesign m k) (sign : Fin m → ℝ)
+    (hsign : ∀ atomLabel, sign atomLabel ^ 2 = 1) (leftLabel rightLabel : Fin m) :
+    ((signFlipDesign D sign hsign).atom leftLabel
+        ⬝ᵥ (signFlipDesign D sign hsign).atom rightLabel) ^ 2
+      = (D.atom leftLabel ⬝ᵥ D.atom rightLabel) ^ 2 := by
+  show ((sign leftLabel • D.atom leftLabel) ⬝ᵥ (sign rightLabel • D.atom rightLabel)) ^ 2
+    = (D.atom leftLabel ⬝ᵥ D.atom rightLabel) ^ 2
+  rw [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, mul_pow, mul_pow,
+    hsign leftLabel, hsign rightLabel, one_mul, one_mul]
+
+/-- **THE BLOCK TRACE IS SIGN-BLIND.** -/
+theorem trace_projectionGap_signFlipDesign (D : WeightedDesign m k) (sign : Fin m → ℝ)
+    (hsign : ∀ atomLabel, sign atomLabel ^ 2 = 1) {size : ℕ} (pick : Fin size → Fin m) :
+    Matrix.trace (projectionGap (signFlipDesign D sign hsign) pick)
+      = Matrix.trace (projectionGap D pick) := by
+  rw [trace_projectionGap, trace_projectionGap]
+  exact Finset.sum_congr rfl fun selectedIndex _ => by
+    rw [leverageOf_signFlipDesign D sign hsign (pick selectedIndex)]
+    rfl
+
+/-- **THE BLOCK FROBENIUS MASS IS SIGN-BLIND.**  The criterion reads only the
+squared Gram entries, which the flip conjugates away. -/
+theorem frobeniusNormSq_projectionGap_signFlipDesign (D : WeightedDesign m k)
+    (sign : Fin m → ℝ) (hsign : ∀ atomLabel, sign atomLabel ^ 2 = 1) {size : ℕ}
+    (pick : Fin size → Fin m) :
+    frobeniusNormSq (projectionGap (signFlipDesign D sign hsign) pick)
+      = frobeniusNormSq (projectionGap D pick) := by
+  rw [frobeniusNormSq_projectionGap_gramForm, frobeniusNormSq_projectionGap_gramForm]
+  congr 1
+  · congr 1
+    · refine Finset.sum_congr rfl fun leftIndex _ => Finset.sum_congr rfl fun rightIndex _ => ?_
+      rw [sq_dotProduct_signFlipDesign D sign hsign (pick leftIndex) (pick rightIndex)]
+      rfl
+    · congr 1
+      exact Finset.sum_congr rfl fun selectedIndex _ => by
+        rw [leverageOf_signFlipDesign D sign hsign (pick selectedIndex)]
+        rfl
+
+/-- **THE ENGINE RESPECTS THE SIGN-FLIP GROUP.**  A selection that fires on a
+design fires on every sign flip of it, and the two designs are ties together.  So
+the engine cannot separate points that `Gtz.IsTie` cannot separate. -/
+theorem projectionGap_isotropy_signFlipDesign_iff (D : WeightedDesign m k) (sign : Fin m → ℝ)
+    (hsign : ∀ atomLabel, sign atomLabel ^ 2 = 1) {size : ℕ} (pick : Fin size → Fin m) :
+    (2 * frobeniusNormSq (projectionGap (signFlipDesign D sign hsign) pick)
+        < Matrix.trace (projectionGap (signFlipDesign D sign hsign) pick) ^ 2)
+      ↔ (2 * frobeniusNormSq (projectionGap D pick)
+        < Matrix.trace (projectionGap D pick) ^ 2) := by
+  rw [frobeniusNormSq_projectionGap_signFlipDesign D sign hsign pick,
+    trace_projectionGap_signFlipDesign D sign hsign pick]
 
 /-! ## 5. The foil
 

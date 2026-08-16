@@ -5760,6 +5760,13 @@ import Gtz.Wave.StressFreeCapRefutation
 --   and `Gtz.not_isTie_of_complementBlockSquareMass` is the engine read there.
 --   `Gtz.crossBlockMass_le_of_isTie` is the budget: at a tie every selection carries a cross
 --   mass under a ceiling that the selection alone supplies.
+-- THE CRITERION IS SIGN-BLIND, in the tree's established sense.  `Gtz.atomMatrix` is
+--   `Matrix.vecMulVec g g`, so it does not read the sign of an atom.
+--   `Gtz.signFlipDesign` multiplies each atom by its own scalar of
+--   square one, `Gtz.isTie_signFlipDesign_iff` says `Gtz.IsTie` does not change, and
+--   `Gtz.projectionGap_isotropy_signFlipDesign_iff` says the criterion does not change either.
+--   The engine therefore cannot separate two designs that `Gtz.IsTie` cannot separate, which
+--   is the symmetry test every candidate instrument on this branch has to meet.
 -- THE TWO TESTS DO NOT CONTAIN EACH OTHER.  `Gtz.capFoil_isotropy_tests_incomparable` proves
 --   both directions at `Gtz.capFoilDesign`, the design at which no scalar cap fires anywhere.
 --   The triple {0,3,5} has block trace 47/42 and block Frobenius mass 1081/1764, so the block

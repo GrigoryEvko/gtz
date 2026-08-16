@@ -34734,6 +34734,16 @@ run_cmd do
 #print axioms Gtz.blockSquareMass_eq_of_injective
 #print axioms Gtz.frobeniusNormSq_projectionGap_complementBlockForm
 #print axioms Gtz.not_isTie_of_complementBlockSquareMass
+#print axioms Gtz.signFlipDesign
+#print axioms Gtz.signFlipDesign_weight
+#print axioms Gtz.atomMatrix_signFlipDesign
+#print axioms Gtz.subsetSum_signFlipDesign
+#print axioms Gtz.isTie_signFlipDesign_iff
+#print axioms Gtz.leverageOf_signFlipDesign
+#print axioms Gtz.sq_dotProduct_signFlipDesign
+#print axioms Gtz.trace_projectionGap_signFlipDesign
+#print axioms Gtz.frobeniusNormSq_projectionGap_signFlipDesign
+#print axioms Gtz.projectionGap_isotropy_signFlipDesign_iff
 #print axioms Gtz.foilPickLeft
 #print axioms Gtz.foilPickMiddle
 #print axioms Gtz.foilPickRight
