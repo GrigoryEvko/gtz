@@ -33144,3 +33144,16 @@ run_cmd do
 -- other type.  Sylvester closes that stratum instead.
 #print axioms Gtz.kfourStar_comparison_meeting_neg
 #print axioms Gtz.kfourStar_comparison_matching_neg
+
+-- The root identity.  At uniform weight the shifted form is the projection less a
+-- fixed scalar matrix, and idempotence makes it satisfy ONE quadratic that carries no
+-- design data at all.  The minimal polynomial is the same for every design, the spectrum
+-- is 5/6 three times and -1/6 three times, and every constant in this module is an
+-- elementary symmetric function of that one spectrum: the excess total 2, the pair minor
+-- total 11/12, and the triple gap total -7/27 which the gap normalization turns into
+-- -336.  The constants are neither coincidences nor independent.
+#print axioms Gtz.diagonalShiftForm_uniform_eq
+#print axioms Gtz.diagonalShiftForm_sq_uniform
+#print axioms Gtz.excess_total_eq_spectral
+#print axioms Gtz.pairMinor_total_eq_spectral
+#print axioms Gtz.projGap_total_eq_spectral

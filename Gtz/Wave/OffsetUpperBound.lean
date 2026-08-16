@@ -745,6 +745,64 @@ theorem sum_projGap_all_eq_neg (design : WeightedDesign 6 3) :
   simp
   norm_num
 
+/-! #### The root: the shifted form satisfies ONE fixed quadratic
+
+Every constant in this file has the same source.  At uniform weight the shifted form is
+`P - (1/6) * 1`, and `P` is idempotent, so
+
+    F * F = (2/3) * F + (5/36) * 1
+
+for EVERY design.  No design data survives.  The minimal polynomial is therefore
+`(t - 5/6) * (t + 1/6)` for all of them, the spectrum is `5/6` three times and `-1/6` three
+times, and every symmetric function of that spectrum is a constant.
+
+That is where the numbers come from.  The sum of the principal one-by-one minors is the
+excess total `2`.  The sum of the principal two-by-two minors is `11/12`, which is the
+landed row law summed over the labels.  The sum of the principal three-by-three minors is
+`-7/27`, and multiplied by the `216` of the gap normalization that is exactly the `-336` of
+`Gtz.sum_projGap_all_eq_neg`.  The constants are not coincidences and they are not
+independent — they are the elementary symmetric functions of one fixed spectrum. -/
+
+/-- At uniform weight the diagonal shift is the projection less a fixed scalar matrix. -/
+theorem diagonalShiftForm_uniform_eq (design : WeightedDesign 6 3)
+    (huniform : ∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹) :
+    diagonalShiftForm design = projectionOfDesign design - (6 : ℝ)⁻¹ • (1 : Matrix (Fin 6) (Fin 6) ℝ) := by
+  rw [diagonalShiftForm]
+  congr 1
+  ext leftLabel rightLabel
+  by_cases hlabels : leftLabel = rightLabel
+  · subst hlabels; simp [huniform]
+  · simp [Matrix.diagonal_apply_ne _ hlabels, Matrix.one_apply_ne hlabels]
+
+/-- **THE ROOT IDENTITY.**  Every shifted form of every design at uniform weight satisfies
+the SAME quadratic.  Idempotence of the projection is the only input, and no design data
+survives on either side. -/
+theorem diagonalShiftForm_sq_uniform (design : WeightedDesign 6 3)
+    (huniform : ∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹) :
+    diagonalShiftForm design * diagonalShiftForm design
+      = (2 / 3 : ℝ) • diagonalShiftForm design
+        + (5 / 36 : ℝ) • (1 : Matrix (Fin 6) (Fin 6) ℝ) := by
+  rw [diagonalShiftForm_uniform_eq design huniform]
+  simp only [Matrix.sub_mul, Matrix.mul_sub, projectionOfDesign_mul_self design,
+    Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one]
+  match_scalars <;> norm_num
+
+/-- The excess total is the first elementary symmetric function of that fixed spectrum. -/
+theorem excess_total_eq_spectral :
+    3 * ((5 : ℝ) / 6) + 3 * (-(1 / 6)) = 2 := by norm_num
+
+/-- The pair minor total is the second elementary symmetric function of it. -/
+theorem pairMinor_total_eq_spectral :
+    3 * ((5 : ℝ) / 6) ^ 2 + 9 * ((5 / 6) * (-(1 / 6))) + 3 * (-(1 / 6)) ^ 2 = 11 / 12 := by
+  norm_num
+
+/-- The triple gap total is the third, and `216` times it is the landed `-336`. -/
+theorem projGap_total_eq_spectral :
+    ((5 : ℝ) / 6) ^ 3 + 9 * ((5 / 6) ^ 2 * (-(1 / 6))) + 9 * ((5 / 6) * (1 / 6) ^ 2)
+        + (-(1 / 6)) ^ 3 = -(7 / 27)
+      ∧ (216 : ℝ) * (-(7 / 27)) = -56 := by
+  refine ⟨by norm_num, by norm_num⟩
+
 /-- **THE SECOND-MOMENT PRODUCER.**  At one label, a lower bound `-M` on the gaps through it
 plus a squared total above `M` times the landed marginal's magnitude produces a triple of
 strictly positive gap.  The marginal enters in closed form: its magnitude is
