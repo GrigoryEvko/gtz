@@ -31755,3 +31755,9 @@ run_cmd do
 #print axioms Gtz.kfourEdgeProjection_isProjection
 #print axioms Gtz.kfourEdgeProjection_diagonalCap_not_sharp
 #print axioms Gtz.kfourEdgeProjection_diagonal_channel_open
+#print axioms Gtz.exists_distinct_pair_ne
+#print axioms Gtz.exists_nonneg_triple_through_of_diag_nonneg
+#print axioms Gtz.exists_nonneg_triple_through_of_forall_half
+#print axioms Gtz.exists_nonneg_triple_through_of_row_bound
+#print axioms Gtz.exists_nonneg_triple_through_of_leverage_half
+#print axioms Gtz.exists_nonneg_triple_of_sum_leverageCubic_nonneg

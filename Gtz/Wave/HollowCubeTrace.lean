@@ -807,4 +807,201 @@ theorem hollowPart_cube_diag_projection_eq_zero_of_forall_half
 
 end VertexDesign
 
+section NonnegTriangle
+
+variable {size : ℕ}
+
+/-- At three or more labels every vertex has two further distinct companions. -/
+theorem exists_distinct_pair_ne (hsize : 3 ≤ size) (vertex : Fin size) :
+    ∃ second third : Fin size, vertex ≠ second ∧ second ≠ third ∧ third ≠ vertex := by
+  classical
+  have hcard : 1 < (Finset.univ.erase vertex).card := by
+    rw [Finset.card_erase_of_mem (Finset.mem_univ vertex), Finset.card_univ, Fintype.card_fin]
+    omega
+  obtain ⟨first, hfirst, second, hsecond, hne⟩ := Finset.one_lt_card.mp hcard
+  exact ⟨first, second, (Finset.ne_of_mem_erase hfirst).symm, hne,
+    Finset.ne_of_mem_erase hsecond⟩
+
+/-- **THE NON-NEGATIVE TRIANGLE AT A VERTEX.**  A hollow cube diagonal that is
+merely NON-NEGATIVE already forces a triangle through the vertex whose three
+pairings multiply non-negatively.
+
+Strict positivity is not needed.  This is the form that reaches the equal-share
+profile, where the diagonal is exactly zero. -/
+theorem exists_nonneg_triple_through_of_diag_nonneg (form : Matrix (Fin size) (Fin size) ℝ)
+    (hsize : 3 ≤ size) {vertex : Fin size}
+    (hnonneg : 0 ≤ (hollowPart form * hollowPart form * hollowPart form) vertex vertex) :
+    ∃ second third : Fin size, vertex ≠ second ∧ second ≠ third ∧ third ≠ vertex ∧
+      0 ≤ form vertex second * form second third * form third vertex := by
+  classical
+  by_contra hnone
+  push Not at hnone
+  obtain ⟨witnessSecond, witnessThird, hvs, hst, htv⟩ := exists_distinct_pair_ne hsize vertex
+  have hterm : ∀ third second : Fin size,
+      hollowPart form vertex second * hollowPart form second third
+        * hollowPart form third vertex ≤ 0 := by
+    intro third second
+    by_cases hone : vertex = second
+    · exact le_of_eq (hollowPart_orderedTerm_eq_zero_of_not_distinct form (Or.inl hone))
+    by_cases htwo : second = third
+    · exact le_of_eq (hollowPart_orderedTerm_eq_zero_of_not_distinct form (Or.inr (Or.inl htwo)))
+    by_cases hthree : third = vertex
+    · exact le_of_eq
+        (hollowPart_orderedTerm_eq_zero_of_not_distinct form (Or.inr (Or.inr hthree)))
+    rw [hollowPart_off form hone, hollowPart_off form htwo, hollowPart_off form hthree]
+    exact (hnone second third hone htwo hthree).le
+  have hstrictTerm : hollowPart form vertex witnessSecond
+      * hollowPart form witnessSecond witnessThird
+      * hollowPart form witnessThird vertex < 0 := by
+    rw [hollowPart_off form hvs, hollowPart_off form hst, hollowPart_off form htv]
+    exact hnone witnessSecond witnessThird hvs hst htv
+  have hinnerStrict : (∑ second, hollowPart form vertex second
+      * hollowPart form second witnessThird * hollowPart form witnessThird vertex) < 0 := by
+    have hstep := Finset.sum_lt_sum (s := (Finset.univ : Finset (Fin size)))
+      (f := fun second => hollowPart form vertex second
+        * hollowPart form second witnessThird * hollowPart form witnessThird vertex)
+      (g := fun _ => (0 : ℝ))
+      (fun second _ => hterm witnessThird second)
+      ⟨witnessSecond, Finset.mem_univ witnessSecond, hstrictTerm⟩
+    simpa using hstep
+  have houter : (hollowPart form * hollowPart form * hollowPart form) vertex vertex < 0 := by
+    rw [hollowPart_cube_diag_eq_orderedSum]
+    have hstep := Finset.sum_lt_sum (s := (Finset.univ : Finset (Fin size)))
+      (f := fun third => ∑ second, hollowPart form vertex second
+        * hollowPart form second third * hollowPart form third vertex)
+      (g := fun _ => (0 : ℝ))
+      (fun third _ => Finset.sum_nonpos fun second _ => hterm third second)
+      ⟨witnessThird, Finset.mem_univ witnessThird, hinnerStrict⟩
+    simpa using hstep
+  linarith
+
+/-- **THE EQUAL-SHARE RESOLUTION.**  At a leverage profile constant at one half
+EVERY vertex hosts a triangle whose three pairings multiply non-negatively.
+
+The per-vertex law makes the diagonal vanish exactly there, and a vanishing
+diagonal is non-negative.  So the sign obstruction cannot bite at any vertex of
+the equiangular configuration, and the triple product cannot be negative all the
+way round. -/
+theorem exists_nonneg_triple_through_of_forall_half (form : Matrix (Fin size) (Fin size) ℝ)
+    (hsymm : formᵀ = form) (hidem : form * form = form) (hsize : 3 ≤ size)
+    (hhalf : ∀ index, form index index = 1 / 2) (vertex : Fin size) :
+    ∃ second third : Fin size, vertex ≠ second ∧ second ≠ third ∧ third ≠ vertex ∧
+      0 ≤ form vertex second * form second third * form third vertex := by
+  refine exists_nonneg_triple_through_of_diag_nonneg form hsize ?_
+  rw [hollowPart_cube_diag_eq_zero_of_forall_half form hsymm hidem hhalf vertex]
+
+/-- **THE DIAGONAL-ONLY FORM.**  A non-negative per-vertex law reads only the
+leverage of the vertex and the weighted row energy of its row. -/
+theorem exists_nonneg_triple_through_of_row_bound (form : Matrix (Fin size) (Fin size) ℝ)
+    (hsymm : formᵀ = form) (hidem : form * form = form) (hsize : 3 ≤ size)
+    {vertex : Fin size}
+    (hrow : ∑ other ∈ Finset.univ.erase vertex, form other other * form vertex other ^ 2
+      ≤ form vertex vertex * (1 - form vertex vertex) ^ 2) :
+    ∃ second third : Fin size, vertex ≠ second ∧ second ≠ third ∧ third ≠ vertex ∧
+      0 ≤ form vertex second * form second third * form third vertex := by
+  refine exists_nonneg_triple_through_of_diag_nonneg form hsize ?_
+  rw [hollowPart_cube_diag_eq form hsymm hidem vertex]
+  linarith
+
+end NonnegTriangle
+
+section NonnegTriangleDesign
+
+variable {size rank : ℕ}
+
+/-- **THE DESIGN-LEVEL EQUAL-SHARE RESOLUTION.**  Every label of a design whose
+leverages are all one half hosts a non-negative triangle.
+
+This is the configuration two landed magnitude certificates go silent at, and the
+one the campaign names as the crux.  The sign question there is settled: the
+twenty triple products cannot all be negative, at any vertex. -/
+theorem exists_nonneg_triple_through_of_leverage_half (design : WeightedDesign size rank)
+    (hsize : 3 ≤ size)
+    (hhalf : ∀ index, projectionOfDesign design index index = 1 / 2) (vertex : Fin size) :
+    ∃ second third : Fin size, vertex ≠ second ∧ second ≠ third ∧ third ≠ vertex ∧
+      0 ≤ projectionOfDesign design vertex second * projectionOfDesign design second third
+        * projectionOfDesign design third vertex :=
+  exists_nonneg_triple_through_of_forall_half (projectionOfDesign design)
+    (projectionOfDesign_transpose design) (projectionOfDesign_mul_self design) hsize hhalf vertex
+
+/-- The aggregate reading: a non-negative cubic total forces a non-negative
+triangle somewhere. -/
+theorem exists_nonneg_triple_of_sum_leverageCubic_nonneg (design : WeightedDesign size rank)
+    (hsize : 3 ≤ size)
+    (hprofile : 0 ≤ ∑ index, leverageCubic (projectionOfDesign design index index)) :
+    ∃ first second third : Fin size, first ≠ second ∧ second ≠ third ∧ third ≠ first ∧
+      0 ≤ projectionOfDesign design first second * projectionOfDesign design second third
+        * projectionOfDesign design third first := by
+  classical
+  by_contra hnone
+  push Not at hnone
+  have hneg : (hollowPart (projectionOfDesign design)
+      * hollowPart (projectionOfDesign design)
+      * hollowPart (projectionOfDesign design)).trace < 0 := by
+    obtain ⟨second, third, hvs, hst, htv⟩ :=
+      exists_distinct_pair_ne hsize (⟨0, by omega⟩ : Fin size)
+    have hterm : ∀ first third second : Fin size,
+        hollowPart (projectionOfDesign design) first second
+          * hollowPart (projectionOfDesign design) second third
+          * hollowPart (projectionOfDesign design) third first ≤ 0 := by
+      intro first third second
+      by_cases hone : first = second
+      · exact le_of_eq (hollowPart_orderedTerm_eq_zero_of_not_distinct _ (Or.inl hone))
+      by_cases htwo : second = third
+      · exact le_of_eq (hollowPart_orderedTerm_eq_zero_of_not_distinct _ (Or.inr (Or.inl htwo)))
+      by_cases hthree : third = first
+      · exact le_of_eq (hollowPart_orderedTerm_eq_zero_of_not_distinct _ (Or.inr (Or.inr hthree)))
+      rw [hollowPart_off _ hone, hollowPart_off _ htwo, hollowPart_off _ hthree]
+      exact (hnone first second third hone htwo hthree).le
+    have hstrictTerm : hollowPart (projectionOfDesign design) ⟨0, by omega⟩ second
+        * hollowPart (projectionOfDesign design) second third
+        * hollowPart (projectionOfDesign design) third ⟨0, by omega⟩ < 0 := by
+      rw [hollowPart_off _ hvs, hollowPart_off _ hst, hollowPart_off _ htv]
+      exact hnone _ second third hvs hst htv
+    rw [trace_hollowPart_cube_eq_orderedSum]
+    have hinner : (∑ second', hollowPart (projectionOfDesign design) ⟨0, by omega⟩ second'
+        * hollowPart (projectionOfDesign design) second' third
+        * hollowPart (projectionOfDesign design) third ⟨0, by omega⟩) < 0 := by
+      have hstep := Finset.sum_lt_sum (s := (Finset.univ : Finset (Fin size)))
+        (f := fun second' => hollowPart (projectionOfDesign design) ⟨0, by omega⟩ second'
+          * hollowPart (projectionOfDesign design) second' third
+          * hollowPart (projectionOfDesign design) third ⟨0, by omega⟩)
+        (g := fun _ => (0 : ℝ))
+        (fun second' _ => hterm _ third second')
+        ⟨second, Finset.mem_univ second, hstrictTerm⟩
+      simpa using hstep
+    have houterInner : ∀ first : Fin size,
+        (∑ third', ∑ second', hollowPart (projectionOfDesign design) first second'
+          * hollowPart (projectionOfDesign design) second' third'
+          * hollowPart (projectionOfDesign design) third' first) ≤ 0 := by
+      intro first
+      exact Finset.sum_nonpos fun third' _ =>
+        Finset.sum_nonpos fun second' _ => hterm first third' second'
+    have hrowStrict : (∑ third', ∑ second',
+        hollowPart (projectionOfDesign design) ⟨0, by omega⟩ second'
+          * hollowPart (projectionOfDesign design) second' third'
+          * hollowPart (projectionOfDesign design) third' ⟨0, by omega⟩) < 0 := by
+      have hstep := Finset.sum_lt_sum (s := (Finset.univ : Finset (Fin size)))
+        (f := fun third' => ∑ second',
+          hollowPart (projectionOfDesign design) ⟨0, by omega⟩ second'
+            * hollowPart (projectionOfDesign design) second' third'
+            * hollowPart (projectionOfDesign design) third' ⟨0, by omega⟩)
+        (g := fun _ => (0 : ℝ))
+        (fun third' _ => Finset.sum_nonpos fun second' _ => hterm _ third' second')
+        ⟨third, Finset.mem_univ third, hinner⟩
+      simpa using hstep
+    have hstep := Finset.sum_lt_sum (s := (Finset.univ : Finset (Fin size)))
+      (f := fun first => ∑ third', ∑ second',
+        hollowPart (projectionOfDesign design) first second'
+          * hollowPart (projectionOfDesign design) second' third'
+          * hollowPart (projectionOfDesign design) third' first)
+      (g := fun _ => (0 : ℝ))
+      (fun first _ => houterInner first)
+      ⟨⟨0, by omega⟩, Finset.mem_univ _, hrowStrict⟩
+    simpa using hstep
+  rw [trace_hollowPart_projection_eq_sum_leverageCubic design] at hneg
+  linarith
+
+end NonnegTriangleDesign
+
 end Gtz
