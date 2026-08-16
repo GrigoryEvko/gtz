@@ -5005,3 +5005,15 @@ import Gtz.Wave.MassMomentClosure
 -- minor with the three off-tree masses as its pairings, hence with a strictly
 -- positive cross term: the canonical star never enters the incoherent branch.
 import Gtz.Wave.KFourBoostProductRefuter
+-- The offset against the pivot minor product.  The criterion
+-- `Gtz.tripleDetForm_pos_iff_sq_lt` reads domination as one square beaten by the
+-- product of the pivot's two pair minors, and this file settles the three
+-- questions that shape raises.  The offset is NOT two-local -- its mixed second
+-- difference in the pivot surplus and the far pairing is the product of the two
+-- increments -- while the threshold's vanishes, so the marginal machinery does
+-- not reach the offset as written.  What does close is the SHIFTED row law:
+-- the pair minors of `Gtz.diagonalShiftForm` along one row total
+-- `excess * ((rank - 1) - excess) - P c c * (1 - P c c)`, which refines the
+-- landed level-two total rather than repeating it.  And the minor product
+-- ceiling is a refuter, not a producer, by direction.
+import Gtz.Wave.OffsetMinorProduct
