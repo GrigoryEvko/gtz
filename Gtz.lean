@@ -2747,6 +2747,7 @@ import Gtz.Quantitative.FifteenFamilyDispatch
 -- ============================================================
 import Gtz.Wave.AdmissiblePairGraph
 import Gtz.Wave.DesignConsolidationLane
+import Gtz.Wave.QuarterSlackGraph
 import Gtz.Wave.TypeNineAlignedOperatorExit
 import Gtz.Wave.Index46CFreeExit
 import Gtz.Wave.FourRowCoefficientProjection
