@@ -4942,3 +4942,13 @@ import Gtz.Wave.ThresholdSpread
 -- nu-covering collapses to e_3 of the capacities minus twice their total, and the
 -- sign drops out of the covering criterion entirely.
 import Gtz.Wave.NuCoveringBand
+
+-- The two-sided sandwich on the flat stratum.  The sign-free margin of a triple is
+-- the minimum of the two gap determinants of the complementation involution, so a
+-- sign-blind certificate fires only where BOTH sides are positive definite.  That
+-- region is INHABITED: `orthoPairProjection` is a primitive flat point whose first
+-- three atoms are pairwise orthogonal, and both gap determinants there are `1/27`,
+-- the universal cap.  The decision is exact and division free --
+-- `216 * det = 8 - 72 * energy + 432 * cross` -- and complementation of the form is
+-- complementation of the TRIPLE, so the twenty triples pair into ten.
+import Gtz.Wave.TwoSidedFlatSandwich
