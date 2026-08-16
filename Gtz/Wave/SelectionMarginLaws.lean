@@ -581,4 +581,150 @@ theorem kfourEdgeProjection_diagonal_channel_open {floorValue : ℝ}
   rw [uniformSixWeight_apply]
   linarith
 
+/-! ## 5. A second exactly-computed margin, and what the diagonal cannot see -/
+
+/-- Twice the projection entry of the three-parallel-class configuration: three
+classes `{0,1}`, `{2,3}`, `{4,5}`, each a doubled direction. -/
+def parallelClassInt (leftLabel rightLabel : Fin 6) : ℤ :=
+  if leftLabel.val / 2 = rightLabel.val / 2 then 1 else 0
+
+theorem parallelClassInt_symm (leftLabel rightLabel : Fin 6) :
+    parallelClassInt leftLabel rightLabel = parallelClassInt rightLabel leftLabel := by
+  fin_cases leftLabel <;> fin_cases rightLabel <;> decide
+
+theorem parallelClassInt_diag (label : Fin 6) : parallelClassInt label label = 1 := by
+  fin_cases label <;> decide
+
+theorem parallelClassInt_mul_self (leftLabel rightLabel : Fin 6) :
+    (∑ middle, parallelClassInt leftLabel middle * parallelClassInt middle rightLabel)
+      = 2 * parallelClassInt leftLabel rightLabel := by
+  fin_cases leftLabel <;> fin_cases rightLabel <;> decide
+
+/-- **THE PARALLEL-CLASS POINT.**  A rank-three projection on six labels whose
+leverages are all a half, exactly as at the graphic point, but whose margin is
+four times larger.  It is NOT primitive: each class is a doubled direction. -/
+noncomputable def parallelClassProjection : Matrix (Fin 6) (Fin 6) ℝ :=
+  Matrix.of fun leftLabel rightLabel => (parallelClassInt leftLabel rightLabel : ℝ) / 2
+
+theorem parallelClassProjection_apply (leftLabel rightLabel : Fin 6) :
+    parallelClassProjection leftLabel rightLabel
+      = (parallelClassInt leftLabel rightLabel : ℝ) / 2 := rfl
+
+theorem parallelClassProjection_symm :
+    parallelClassProjectionᵀ = parallelClassProjection := by
+  ext leftLabel rightLabel
+  rw [Matrix.transpose_apply, parallelClassProjection_apply, parallelClassProjection_apply,
+    parallelClassInt_symm]
+
+theorem parallelClassProjection_idempotent :
+    parallelClassProjection * parallelClassProjection = parallelClassProjection := by
+  ext leftLabel rightLabel
+  rw [Matrix.mul_apply, parallelClassProjection_apply]
+  have hcore := parallelClassInt_mul_self leftLabel rightLabel
+  have hcast :
+      (∑ middle, (parallelClassInt leftLabel middle : ℝ) * (parallelClassInt middle rightLabel : ℝ))
+      = ((∑ middle, parallelClassInt leftLabel middle * parallelClassInt middle rightLabel : ℤ)
+          : ℝ) := by
+    push_cast
+    ring
+  simp only [parallelClassProjection_apply]
+  rw [show (∑ middle, (parallelClassInt leftLabel middle : ℝ) / 2
+        * ((parallelClassInt middle rightLabel : ℝ) / 2))
+      = (∑ middle, (parallelClassInt leftLabel middle : ℝ)
+        * (parallelClassInt middle rightLabel : ℝ)) / 4 by
+    rw [Finset.sum_div]
+    refine Finset.sum_congr rfl fun middle _ => by ring]
+  rw [hcast, hcore]
+  push_cast
+  ring
+
+theorem parallelClassProjection_diag (label : Fin 6) :
+    parallelClassProjection label label = 1 / 2 := by
+  rw [parallelClassProjection_apply, parallelClassInt_diag]
+  norm_num
+
+theorem parallelClassProjection_trace : Matrix.trace parallelClassProjection = 3 := by
+  rw [Matrix.trace]
+  simp only [Matrix.diag_apply, parallelClassProjection_diag, Fin.sum_univ_six]
+  norm_num
+
+/-- One label from each parallel class. -/
+def parallelTransversalPick : Fin 3 → Fin 6 := fun slot => ⟨2 * slot.val, by omega⟩
+
+theorem parallelTransversalPick_injective : Function.Injective parallelTransversalPick := by
+  intro leftSlot rightSlot heq
+  have hval : 2 * leftSlot.val = 2 * rightSlot.val := congrArg Fin.val heq
+  exact Fin.ext (by omega)
+
+theorem parallelTransversalPick_gram (leftSlot rightSlot : Fin 3) :
+    parallelClassInt (parallelTransversalPick leftSlot) (parallelTransversalPick rightSlot)
+      = if leftSlot = rightSlot then 1 else 0 := by
+  fin_cases leftSlot <;> fin_cases rightSlot <;> decide
+
+/-- **THE TRANSVERSAL REACHES ONE THIRD.**  One label from each parallel class
+gives a block equal to half the identity, so the gap is scalar and the margin is
+the diagonal gap itself. -/
+theorem marginReaches_parallelClassProjection {floorValue : ℝ} (hfloor : floorValue < 1 / 3) :
+    MarginReaches parallelClassProjection uniformSixWeight 3 floorValue := by
+  refine ⟨parallelTransversalPick, parallelTransversalPick_injective, ?_⟩
+  have hdiag : ∀ slot : Fin 3,
+      blockMarginGap parallelClassProjection uniformSixWeight parallelTransversalPick
+        floorValue slot slot = 1 / 3 - floorValue := by
+    intro slot
+    rw [blockMarginGap_diag, parallelClassProjection_diag, uniformSixWeight_apply]
+    linarith
+  have hoff : ∀ leftSlot rightSlot : Fin 3, leftSlot ≠ rightSlot →
+      blockMarginGap parallelClassProjection uniformSixWeight parallelTransversalPick
+        floorValue leftSlot rightSlot = 0 := by
+    intro leftSlot rightSlot hne
+    rw [blockMarginGap_offDiag _ _ _ _ hne, parallelClassProjection_apply,
+      parallelTransversalPick_gram, if_neg hne]
+    norm_num
+  refine (posDef_finThree_iff_leadingMinors _ ?_).mpr ?_
+  · ext leftSlot rightSlot
+    rw [Matrix.transpose_apply]
+    rcases eq_or_ne leftSlot rightSlot with rfl | hne
+    · rfl
+    · rw [hoff _ _ hne, hoff _ _ hne.symm]
+  · rw [hdiag 0, hdiag 1, hdiag 2, hoff 0 1 (by decide), hoff 0 2 (by decide),
+      hoff 1 2 (by decide)]
+    have hpos : (0 : ℝ) < 1 / 3 - floorValue := by linarith
+    refine ⟨by linarith, by nlinarith, by nlinarith [mul_pos (mul_pos hpos hpos) hpos]⟩
+
+/-- **THE PARALLEL-CLASS MARGIN IS EXACTLY ONE THIRD.**  Its refusal costs only
+the DIAGONAL cap, because every leverage is a half and every weight a sixth. -/
+theorem not_marginReaches_parallelClassProjection {floorValue : ℝ} (hfloor : 1 / 3 ≤ floorValue) :
+    ¬ MarginReaches parallelClassProjection uniformSixWeight 3 floorValue := by
+  rintro ⟨pick, _, hposDef⟩
+  have hcap := diag_lt_of_posDef_blockMarginGap parallelClassProjection uniformSixWeight
+    hposDef 0
+  rw [parallelClassProjection_diag, uniformSixWeight_apply] at hcap
+  linarith
+
+theorem marginReaches_parallelClassProjection_iff (floorValue : ℝ) :
+    MarginReaches parallelClassProjection uniformSixWeight 3 floorValue ↔ floorValue < 1 / 3 :=
+  ⟨fun hmargin => by
+    by_contra hcontra
+    push Not at hcontra
+    exact not_marginReaches_parallelClassProjection hcontra hmargin,
+   marginReaches_parallelClassProjection⟩
+
+/-- **THE LEVERAGE DIAGONAL DOES NOT DETERMINE THE MARGIN.**  Two rank-three
+projections on six labels with the SAME leverage diagonal -- a half at every
+label -- have margins `1/12` and `1/3` at uniform weight.  A factor of four.
+
+So no function of the leverages alone can compute, bound below, or certify the
+selection margin.  Every sharp certificate must read off-diagonal data, which is
+exactly what `Gtz.pair_cap_of_posDef_blockMarginGap` does and what
+`Gtz.diag_lt_of_posDef_blockMarginGap` cannot.  At the parallel-class point the
+diagonal cap is SHARP, and at the graphic point it overshoots fourfold. -/
+theorem margin_not_determined_by_leverage_diagonal :
+    (∀ label : Fin 6, kfourEdgeProjection label label
+      = parallelClassProjection label label)
+    ∧ MarginReaches parallelClassProjection uniformSixWeight 3 (1 / 4)
+    ∧ ¬ MarginReaches kfourEdgeProjection uniformSixWeight 3 (1 / 4) := by
+  refine ⟨fun label => ?_, marginReaches_parallelClassProjection (by norm_num),
+    not_marginReaches_kfourEdgeProjection (by norm_num)⟩
+  rw [kfourEdgeProjection_diag, parallelClassProjection_diag]
+
 end Gtz
