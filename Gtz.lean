@@ -4964,3 +4964,16 @@ import Gtz.Wave.TwoSidedFlatSandwich
 -- an energy beyond `336 ^ 2` certifies a positive third minor with no bracket
 -- read anywhere.  The mass energy is the single remaining unknown.
 import Gtz.Wave.JointMassThreshold
+
+-- The K4 chart as a weighted graph.  The six edge vectors are totally
+-- unimodular, so the bracket squares to zero or one and the determinantal
+-- measure on this stratum is a plain product over the bases.  The mass moment's
+-- determinant is Kirchhoff's spanning-tree sum, sixteen terms, returning Cayley's
+-- count at unit masses.  At the canonical star the chart gap is congruent, by an
+-- integer matrix of determinant one, to a diagonal of heavy tree masses minus the
+-- Laplacian of a triangle whose weights are the three off-tree masses -- so the
+-- star branch is one explicit 3x3 positivity with no frame and no square root.
+-- The basis congruence and its heaviness condition are stratum-independent.
+-- The minimum-threshold designation is refuted at two of the four mandatory
+-- points, and the mechanism is that the threshold is a determinant reading.
+import Gtz.Wave.KFourTreeLaplacian
