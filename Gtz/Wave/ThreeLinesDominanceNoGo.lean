@@ -277,28 +277,28 @@ theorem not_exists_threeLinesDominates_of_slide_large (slide : ℝ)
 noncomputable def uniformSixMass : Fin 6 → ℝ := fun _ => 1
 
 /-- The uniform weights, a probability vector on six labels. -/
-noncomputable def uniformSixWeight : Fin 6 → ℝ := fun _ => 1 / 6
+noncomputable def threeLinesUniformWeight : Fin 6 → ℝ := fun _ => 1 / 6
 
 theorem uniformSixMass_pos (label : Fin 6) : 0 < uniformSixMass label := by
   norm_num [uniformSixMass]
 
-theorem uniformSixWeight_pos (label : Fin 6) : 0 < uniformSixWeight label := by
-  norm_num [uniformSixWeight]
+theorem threeLinesUniformWeight_pos (label : Fin 6) : 0 < threeLinesUniformWeight label := by
+  norm_num [threeLinesUniformWeight]
 
-theorem uniformSixWeight_sum : ∑ label, uniformSixWeight label = 1 := by
-  simp [uniformSixWeight]
+theorem threeLinesUniformWeight_sum : ∑ label, threeLinesUniformWeight label = 1 := by
+  simp [threeLinesUniformWeight]
 
 /-- Every uniform excess is five. -/
 theorem chartExcess_uniformSix (label : Fin 6) :
-    chartExcess uniformSixMass uniformSixWeight label = 5 := by
-  rw [chartExcess, uniformSixMass, uniformSixWeight]; norm_num
+    chartExcess uniformSixMass threeLinesUniformWeight label = 5 := by
+  rw [chartExcess, uniformSixMass, threeLinesUniformWeight]; norm_num
 
 /-- **The no-go bites at an explicit point.**  At the uniform chart point and
 slide three, no card-three selection satisfies the dominance cell. -/
 theorem not_exists_threeLinesDominates_uniformSix :
     ¬ ∃ selected : Finset (Fin 6), selected.card = 3 ∧
-        ThreeLinesDominates 3 uniformSixMass uniformSixWeight selected := by
-  refine not_exists_threeLinesDominates_of_slide_large 3 uniformSixMass uniformSixWeight
+        ThreeLinesDominates 3 uniformSixMass threeLinesUniformWeight selected := by
+  refine not_exists_threeLinesDominates_of_slide_large 3 uniformSixMass threeLinesUniformWeight
     (by rw [abs_of_nonneg]; norm_num; norm_num) uniformSixMass_pos ?_ ?_ ?_
   · rw [chartExcess_uniformSix]; norm_num
   · rw [chartExcess_uniformSix, uniformSixMass]; norm_num

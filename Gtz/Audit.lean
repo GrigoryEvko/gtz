@@ -1031,6 +1031,102 @@ import Gtz.Design.ChartProgrammeAssembly
 import Gtz.Wave.ChartProgrammeHeavyResidual
 import Gtz.Wave.ThreeLinesDominanceNoGo
 import Gtz.Wave.CoherentBranchFactorization
+import Gtz.Core.Basic
+import Gtz.Design.OneLineChart
+import Gtz.Design.TripleGramSylvester
+import Gtz.LinAlg.TwoByTwo
+import Gtz.Reduction.Deflation
+import Gtz.Reduction.RankTwo
+import Gtz.Wave.ActiveBlockKernelPromotion
+import Gtz.Wave.ActiveKernelExchange
+import Gtz.Wave.AdmissiblePairGraph
+import Gtz.Wave.BalancedDesignClosure
+import Gtz.Wave.BalancedInvolutionClosure
+import Gtz.Wave.BracketTransferLaws
+import Gtz.Wave.CanonicalSharedEdgeClosure
+import Gtz.Wave.CapturedAmbientTraceGap
+import Gtz.Wave.CapturedRankTraceGap
+import Gtz.Wave.CellCoverLattice
+import Gtz.Wave.ChartDesignGauge
+import Gtz.Wave.ChartTransferIdempotent
+import Gtz.Wave.ComplementCrossCruxExit
+import Gtz.Wave.ComplementDualLane
+import Gtz.Wave.ComplementFourBlock
+import Gtz.Wave.ComplementInvariantCell
+import Gtz.Wave.ComplementRankOneCapture
+import Gtz.Wave.CriticalBridge
+import Gtz.Wave.DesignConsolidationLane
+import Gtz.Wave.ElliptopeGapBridge
+import Gtz.Wave.FourActivePositiveMultipliers
+import Gtz.Wave.FourActiveRankSplit
+import Gtz.Wave.FourActiveSpine
+import Gtz.Wave.FourFamilyTypeEightExit
+import Gtz.Wave.FourRowCoefficientProjection
+import Gtz.Wave.GlobalZeroLeakFloor
+import Gtz.Wave.GramCrossFloor
+import Gtz.Wave.GtzEFourRowSpan
+import Gtz.Wave.HeavySetEnergyCell
+import Gtz.Wave.HollowCubeTrace
+import Gtz.Wave.Index46CFreeExit
+import Gtz.Wave.Index46CruxExit
+import Gtz.Wave.Index46EndpointTrace
+import Gtz.Wave.JointMassThreshold
+import Gtz.Wave.KFourPivotEndpointStarWiring
+import Gtz.Wave.KFourTreeLaplacian
+import Gtz.Wave.LeverageRowCell
+import Gtz.Wave.LivePairTieIdentification
+import Gtz.Wave.LivePairTieRefuter
+import Gtz.Wave.MarginFloorAssembly
+import Gtz.Wave.NuCoveringBand
+import Gtz.Wave.OrbitDesignationRefuter
+import Gtz.Wave.OrbitFourAlignedExchange
+import Gtz.Wave.OrbitFourAlignedFrame
+import Gtz.Wave.OrbitFourAlignedFullRankExit
+import Gtz.Wave.OrbitFourAlignedSelfAdjoint
+import Gtz.Wave.OrbitFourAlignedSimilarity
+import Gtz.Wave.OrbitFourAlignedZeroDetExit
+import Gtz.Wave.OrbitFourCoefficientBridge
+import Gtz.Wave.OrbitFourTypeNineSupportExit
+import Gtz.Wave.PairGapFloor
+import Gtz.Wave.PlaneTieDesignBridge
+import Gtz.Wave.PluckerMassFloor
+import Gtz.Wave.PosDefFourActiveExit
+import Gtz.Wave.PositiveRowSpanRankFloor
+import Gtz.Wave.PositiveSupportTwoBlockExit
+import Gtz.Wave.PrivateMultiplierFloor
+import Gtz.Wave.ProjectionBlockObjective
+import Gtz.Wave.ProjectionMinorShift
+import Gtz.Wave.QuantitativeMarginBounds
+import Gtz.Wave.QuarterSlackGraph
+import Gtz.Wave.RankOneCaptureBridge
+import Gtz.Wave.RankOneCapturedRangeFloor
+import Gtz.Wave.SelectionMarginLaws
+import Gtz.Wave.SharedEdgeAmbientWrapper
+import Gtz.Wave.SharedEdgePathSpectrum
+import Gtz.Wave.SharedEdgeSpectralSeparation
+import Gtz.Wave.SharedEdgeSpectralTraceGap
+import Gtz.Wave.SignBlindCeiling
+import Gtz.Wave.StationaryFinThreeReindex
+import Gtz.Wave.StationaryPositiveSupport
+import Gtz.Wave.SubsetMassDuality
+import Gtz.Wave.SupportThreeNonzero
+import Gtz.Wave.SupportThreePositiveCollapse
+import Gtz.Wave.SupportTypeEightTraceFloor
+import Gtz.Wave.ThreeBlockStationaryClosure
+import Gtz.Wave.ThreeLinesBoostDesignationRefuter
+import Gtz.Wave.ThreeLinesSlideQuadratic
+import Gtz.Wave.ThreeLinesStarBracketCover
+import Gtz.Wave.ThreeRowAmbientWrapper
+import Gtz.Wave.ThreeRowCapturedDichotomy
+import Gtz.Wave.ThresholdSpread
+import Gtz.Wave.TightGramSixLaws
+import Gtz.Wave.TripleDeterminantCells
+import Gtz.Wave.TripleDeterminantSharp
+import Gtz.Wave.TwoSidedFlatSandwich
+import Gtz.Wave.TypeEightProjectionTraceFloor
+import Gtz.Wave.TypeNineAlignedOperatorExit
+import Gtz.Wave.TypeNineAlignedOrthogonalExit
+import Gtz.Wave.ZeroLeakPair
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -16557,8 +16653,9 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.pivotLeverage_le_tolerance_of_hasApproxTetrahedralPivot
 #print axioms Gtz.not_isAllTied_of_hasApproxTetrahedralPivot
 #print axioms Gtz.atomMatrix_apply_entry
-#print axioms Gtz.witnessWeight_pos
-#print axioms Gtz.witnessWeight_sum
+#print axioms Gtz.tetraWitnessWeight
+#print axioms Gtz.tetraWitnessWeight_pos
+#print axioms Gtz.tetraWitnessWeight_sum
 #print axioms Gtz.witnessParseval
 #print axioms Gtz.witnessCoreEntry
 #print axioms Gtz.witnessCornerEntry
@@ -31345,10 +31442,10 @@ run_cmd do
 #print axioms Gtz.not_threeLinesDominates_zeroOneFive_of_excessOne_le
 #print axioms Gtz.not_exists_threeLinesDominates_of_slide_large
 #print axioms Gtz.uniformSixMass
-#print axioms Gtz.uniformSixWeight
+#print axioms Gtz.threeLinesUniformWeight
 #print axioms Gtz.uniformSixMass_pos
-#print axioms Gtz.uniformSixWeight_pos
-#print axioms Gtz.uniformSixWeight_sum
+#print axioms Gtz.threeLinesUniformWeight_pos
+#print axioms Gtz.threeLinesUniformWeight_sum
 #print axioms Gtz.chartExcess_uniformSix
 #print axioms Gtz.not_exists_threeLinesDominates_uniformSix
 #print axioms Gtz.ThreeLinesDominanceCovers
@@ -31943,7 +32040,7 @@ run_cmd do
 #print axioms Gtz.sum_sum_sum_det_tripleBlock
 #print axioms Gtz.sum_sum_sum_det_tripleBlock_sixThree
 #print axioms Gtz.sum_det_tripleBlock_erase
-#print axioms Gtz.card_erase_pair
+#print axioms Gtz.card_erase_pair_off
 #print axioms Gtz.exists_det_tripleBlock_ge
 #print axioms Gtz.injective_triplePick
 #print axioms Gtz.exists_posDef_subsetSum_of_pairMinor_gt_weights
@@ -32099,7 +32196,7 @@ run_cmd do
 #print axioms Gtz.IsTightGramSix.row_energy_five
 #print axioms Gtz.IsTightGramSix
 #print axioms Gtz.offDiagEnergy
-#print axioms Gtz.tripleEnergy
+#print axioms Gtz.tightTripleEnergy
 #print axioms Gtz.IsTightGramSix.offDiagEnergy_eq_three
 #print axioms Gtz.totalTripleEnergy
 #print axioms Gtz.sum_tripleEnergy_eq_four_mul_offDiagEnergy
@@ -32417,11 +32514,11 @@ run_cmd do
 #print axioms Gtz.IsHollowInvolution.pair_045
 #print axioms Gtz.IsHollowInvolution.totalTripleEdgeProduct_eq_zero
 #print axioms Gtz.elemSymmThreeSix
-#print axioms Gtz.weightedPairEnergy
+#print axioms Gtz.capWeightedPairEnergy
 #print axioms Gtz.totalShiftedTripleDet
 #print axioms Gtz.totalShiftedTripleDet_split
 #print axioms Gtz.IsHollowInvolution.pairEnergyTotal_eq_three
-#print axioms Gtz.IsHollowInvolution.weightedPairEnergy_eq
+#print axioms Gtz.IsHollowInvolution.capWeightedPairEnergy_eq
 #print axioms Gtz.IsHollowInvolution.totalShiftedTripleDet_eq
 #print axioms Gtz.IsHollowInvolution.totalShiftedTripleDet_uniform
 #print axioms Gtz.IsTightGramSix.isHollowInvolution_sub_one
@@ -32562,7 +32659,7 @@ run_cmd do
 #print axioms Gtz.directionChartGap_kFour_eq
 #print axioms Gtz.kFourChartThreshold
 #print axioms Gtz.det_directionChartGap_eq_sub_threshold
-#print axioms Gtz.atomMatrix_mulVec
+#print axioms Gtz.atomMatrix_mulVec_tree
 #print axioms Gtz.directionChartGap_congr_basis
 #print axioms Gtz.posDef_congr_of_inverse
 #print axioms Gtz.heaviness_of_posDef_congr

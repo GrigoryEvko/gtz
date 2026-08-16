@@ -205,7 +205,7 @@ theorem image_pick_eq_erase_pair {pick : Fin 4 → Fin 6} (hinj : Function.Injec
   have hcardImage : (Finset.image pick Finset.univ).card = 4 := by
     rw [Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fin]
   have hcardTarget : ((Finset.univ.erase first).erase second).card = 4 := by
-    have hcard := card_erase_pair (size := 6) hne
+    have hcard := card_erase_pair_off (size := 6) hne
     simpa using hcard
   exact Finset.eq_of_subset_of_card_le hsubset (by rw [hcardImage, hcardTarget])
 

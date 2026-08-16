@@ -482,7 +482,7 @@ theorem sum_det_tripleBlock_erase (design : WeightedDesign size 3)
   exact pairMinorAt_eq_sum_det_tripleBlock design first second
 
 /-- The off-pair slot set has `size - 2` members. -/
-theorem card_erase_pair {first second : Fin size} (hne : first ≠ second) :
+theorem card_erase_pair_off {first second : Fin size} (hne : first ≠ second) :
     ((Finset.univ.erase first).erase second).card = size - 2 := by
   classical
   rw [Finset.card_erase_of_mem (Finset.mem_erase.mpr ⟨hne.symm, Finset.mem_univ second⟩),
@@ -500,7 +500,7 @@ theorem exists_det_tripleBlock_ge (design : WeightedDesign size 3)
         ≤ (tripleBlock (projectionOfDesign design) first second third).det := by
   classical
   set slots := (Finset.univ.erase first).erase second with hslots
-  have hcard : slots.card = size - 2 := card_erase_pair hne
+  have hcard : slots.card = size - 2 := card_erase_pair_off hne
   have hnonempty : slots.Nonempty := by
     rw [← Finset.card_pos, hcard]
     omega

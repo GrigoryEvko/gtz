@@ -591,18 +591,18 @@ noncomputable def tetraWitnessAtom : Fin 6 → (Fin 3 → ℝ) := fun atomIndex 
   else 0
 
 /-- The strictly positive weight: `2500/10201` on the core, `201/20402` on the padding. -/
-noncomputable def witnessWeight : Fin 6 → ℝ := fun atomIndex =>
+noncomputable def tetraWitnessWeight : Fin 6 → ℝ := fun atomIndex =>
   if atomIndex = 4 ∨ atomIndex = 5 then 201 / 20402 else 2500 / 10201
 
 theorem atomMatrix_apply_entry {rank : ℕ} (vector : Fin rank → ℝ) (rowIndex colIndex : Fin rank) :
     atomMatrix vector rowIndex colIndex = vector rowIndex * vector colIndex := rfl
 
-theorem witnessWeight_pos (atomIndex : Fin 6) : 0 < witnessWeight atomIndex := by
-  fin_cases atomIndex <;> simp [witnessWeight]
+theorem tetraWitnessWeight_pos (atomIndex : Fin 6) : 0 < tetraWitnessWeight atomIndex := by
+  fin_cases atomIndex <;> simp [tetraWitnessWeight]
 
-theorem witnessWeight_sum : ∑ atomIndex, witnessWeight atomIndex = 1 := by
+theorem tetraWitnessWeight_sum : ∑ atomIndex, tetraWitnessWeight atomIndex = 1 := by
   simp only [Fin.sum_univ_six]
-  simp only [witnessWeight]
+  simp only [tetraWitnessWeight]
   norm_num [show ¬((0 : Fin 6) = 4 ∨ (0 : Fin 6) = 5) from by decide,
     show ¬((1 : Fin 6) = 4 ∨ (1 : Fin 6) = 5) from by decide,
     show ¬((2 : Fin 6) = 4 ∨ (2 : Fin 6) = 5) from by decide,
@@ -611,17 +611,17 @@ theorem witnessWeight_sum : ∑ atomIndex, witnessWeight atomIndex = 1 := by
     show ((5 : Fin 6) = 4 ∨ (5 : Fin 6) = 5) from by decide]
 
 theorem witnessParseval :
-    ∑ atomIndex, witnessWeight atomIndex • atomMatrix (tetraWitnessAtom atomIndex) = 1 := by
+    ∑ atomIndex, tetraWitnessWeight atomIndex • atomMatrix (tetraWitnessAtom atomIndex) = 1 := by
   ext rowIndex colIndex
   fin_cases rowIndex <;> fin_cases colIndex <;>
-    simp [Fin.sum_univ_six, atomMatrix_apply_entry, tetraWitnessAtom, witnessWeight] <;> norm_num
+    simp [Fin.sum_univ_six, atomMatrix_apply_entry, tetraWitnessAtom, tetraWitnessWeight] <;> norm_num
 
 /-- An honest `(6,3)` design sitting on the padded tetrahedron. -/
 noncomputable def tetraWitnessDesign : WeightedDesign 6 3 where
   atom := tetraWitnessAtom
-  weight := witnessWeight
-  weight_pos := witnessWeight_pos
-  weight_sum_one := witnessWeight_sum
+  weight := tetraWitnessWeight
+  weight_pos := tetraWitnessWeight_pos
+  weight_sum_one := tetraWitnessWeight_sum
   isParseval := witnessParseval
 
 /-- The four core slots. -/
@@ -629,12 +629,12 @@ def witnessCorner : Fin 4 → Fin 6 := ![0, 1, 2, 3]
 
 /-- Core atoms share one weight, so the two square roots collapse to it. -/
 theorem witnessCoreEntry (leftIndex rightIndex : Fin 6)
-    (hleft : witnessWeight leftIndex = 2500 / 10201)
-    (hright : witnessWeight rightIndex = 2500 / 10201) :
+    (hleft : tetraWitnessWeight leftIndex = 2500 / 10201)
+    (hright : tetraWitnessWeight rightIndex = 2500 / 10201) :
     projectionOfDesign tetraWitnessDesign leftIndex rightIndex
       = 2500 / 10201 * (tetraWitnessAtom leftIndex ⬝ᵥ tetraWitnessAtom rightIndex) := by
   rw [projectionOfDesign_apply]
-  show Real.sqrt (witnessWeight leftIndex) * Real.sqrt (witnessWeight rightIndex)
+  show Real.sqrt (tetraWitnessWeight leftIndex) * Real.sqrt (tetraWitnessWeight rightIndex)
       * (tetraWitnessAtom leftIndex ⬝ᵥ tetraWitnessAtom rightIndex) = _
   rw [hleft, hright, Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 2500 / 10201)]
 
@@ -643,8 +643,8 @@ theorem witnessCornerEntry (leftSlot rightSlot : Fin 4) :
     projectionOfDesign tetraWitnessDesign (witnessCorner leftSlot) (witnessCorner rightSlot)
       = if leftSlot = rightSlot then 3 / 4 else -(1 / 4) := by
   fin_cases leftSlot <;> fin_cases rightSlot <;>
-    · rw [witnessCoreEntry _ _ (by simp [witnessCorner, witnessWeight])
-        (by simp [witnessCorner, witnessWeight])]
+    · rw [witnessCoreEntry _ _ (by simp [witnessCorner, tetraWitnessWeight])
+        (by simp [witnessCorner, tetraWitnessWeight])]
       simp [witnessCorner, tetraWitnessAtom, dotProduct, Fin.sum_univ_three]
       norm_num
 
@@ -652,7 +652,7 @@ theorem witnessCornerEntry (leftSlot rightSlot : Fin 4) :
 theorem witnessPivotColumn (atomIndex : Fin 6) :
     projectionOfDesign tetraWitnessDesign atomIndex 5 = 0 := by
   rw [projectionOfDesign_apply]
-  show Real.sqrt (witnessWeight atomIndex) * Real.sqrt (witnessWeight 5)
+  show Real.sqrt (tetraWitnessWeight atomIndex) * Real.sqrt (tetraWitnessWeight 5)
       * (tetraWitnessAtom atomIndex ⬝ᵥ tetraWitnessAtom 5) = 0
   have hzero : tetraWitnessAtom 5 = fun _ => (0 : ℝ) := by
     funext coord
@@ -662,7 +662,7 @@ theorem witnessPivotColumn (atomIndex : Fin 6) :
 
 theorem witnessCornerWeight (slot : Fin 4) :
     tetraWitnessDesign.weight (witnessCorner slot) = 2500 / 10201 := by
-  fin_cases slot <;> simp [witnessCorner, tetraWitnessDesign, witnessWeight]
+  fin_cases slot <;> simp [witnessCorner, tetraWitnessDesign, tetraWitnessWeight]
 
 /-- **An honest positive-weight design in the stratum.**  The gap diagonals sit at
 `3/4 − 2500/10201`, off `1/2` by `201/40804 < 1/100`; the off-diagonals are exactly

@@ -251,19 +251,19 @@ theorem offDiag_expand (hinvol : IsHollowInvolution invol) {rowIndex colIndex : 
 
 /-- **THE FRONT SPLIT.**  Three row budgets against the partition: `2 E_front + X = 3`. -/
 theorem two_mul_tripleEnergy_front_add_crossEnergy (hinvol : IsHollowInvolution invol) :
-    2 * tripleEnergy invol 0 1 2 + crossEnergyPartition invol = 3 := by
+    2 * tightTripleEnergy invol 0 1 2 + crossEnergyPartition invol = 3 := by
   have hzero := hinvol.row_sq_expand 0
   have hone := hinvol.row_sq_expand 1
   have htwo := hinvol.row_sq_expand 2
   rw [hinvol.diagonal_eq_zero 0] at hzero
   rw [hinvol.diagonal_eq_zero 1, hinvol.apply_comm 0 1] at hone
   rw [hinvol.diagonal_eq_zero 2, hinvol.apply_comm 0 2, hinvol.apply_comm 1 2] at htwo
-  simp only [tripleEnergy, crossEnergyPartition]
+  simp only [tightTripleEnergy, crossEnergyPartition]
   linarith [hzero, hone, htwo]
 
 /-- **THE BACK SPLIT**, the same computation on the other triple. -/
 theorem two_mul_tripleEnergy_back_add_crossEnergy (hinvol : IsHollowInvolution invol) :
-    2 * tripleEnergy invol 3 4 5 + crossEnergyPartition invol = 3 := by
+    2 * tightTripleEnergy invol 3 4 5 + crossEnergyPartition invol = 3 := by
   have hthree := hinvol.row_sq_expand 3
   have hfour := hinvol.row_sq_expand 4
   have hfive := hinvol.row_sq_expand 5
@@ -273,19 +273,19 @@ theorem two_mul_tripleEnergy_back_add_crossEnergy (hinvol : IsHollowInvolution i
     hinvol.apply_comm 2 4, hinvol.apply_comm 3 4] at hfour
   rw [hinvol.diagonal_eq_zero 5, hinvol.apply_comm 0 5, hinvol.apply_comm 1 5,
     hinvol.apply_comm 2 5, hinvol.apply_comm 3 5, hinvol.apply_comm 4 5] at hfive
-  simp only [tripleEnergy, crossEnergyPartition]
+  simp only [tightTripleEnergy, crossEnergyPartition]
   linarith [hthree, hfour, hfive]
 
 /-- **THE ENERGY COMPLEMENT LAW, standard partition.**  The two triples of a
 partition carry the SAME energy. -/
 theorem tripleEnergy_front_eq_back (hinvol : IsHollowInvolution invol) :
-    tripleEnergy invol 0 1 2 = tripleEnergy invol 3 4 5 := by
+    tightTripleEnergy invol 0 1 2 = tightTripleEnergy invol 3 4 5 := by
   linarith [hinvol.two_mul_tripleEnergy_front_add_crossEnergy,
     hinvol.two_mul_tripleEnergy_back_add_crossEnergy]
 
 /-- **AND THE CROSS ENERGY IS DETERMINED**: `X = 3 - 2 E`. -/
 theorem crossEnergyPartition_eq (hinvol : IsHollowInvolution invol) :
-    crossEnergyPartition invol = 3 - 2 * tripleEnergy invol 0 1 2 := by
+    crossEnergyPartition invol = 3 - 2 * tightTripleEnergy invol 0 1 2 := by
   linarith [hinvol.two_mul_tripleEnergy_front_add_crossEnergy]
 
 /-! ### The intertwining
@@ -465,7 +465,7 @@ theorem tripleEdgeProduct_front_add_back (hinvol : IsHollowInvolution invol) :
     Matrix.mul_one, Matrix.add_apply, Matrix.smul_apply, Matrix.neg_apply, smul_eq_mul] at hentry
   simp only [Matrix.neg_apply] at hstepEntry
   have henergy := hinvol.tripleEnergy_front_eq_back
-  simp only [tripleEnergy] at henergy
+  simp only [tightTripleEnergy] at henergy
   rw [hstepEntry, ← henergy] at hentry
   have hfactor : (tripleEdgeProduct invol 0 1 2 + tripleEdgeProduct invol 3 4 5)
       * (2 * crossBlock invol rowIndex colIndex) = 0 := by
@@ -495,10 +495,10 @@ theorem submatrix_perm (hinvol : IsHollowInvolution invol) (relabel : Equiv.Perm
 
 /-- **THE ENERGY COMPLEMENT LAW, every partition.** -/
 theorem tripleEnergy_perm_eq (hinvol : IsHollowInvolution invol) (relabel : Equiv.Perm (Fin 6)) :
-    tripleEnergy invol (relabel 0) (relabel 1) (relabel 2)
-      = tripleEnergy invol (relabel 3) (relabel 4) (relabel 5) := by
+    tightTripleEnergy invol (relabel 0) (relabel 1) (relabel 2)
+      = tightTripleEnergy invol (relabel 3) (relabel 4) (relabel 5) := by
   have htransported := (hinvol.submatrix_perm relabel).tripleEnergy_front_eq_back
-  simpa [tripleEnergy, Matrix.submatrix_apply] using htransported
+  simpa [tightTripleEnergy, Matrix.submatrix_apply] using htransported
 
 /-- **THE PRODUCT COMPLEMENT LAW, every partition.**  For every splitting of the six
 labels into two triples, the two edge products are negatives of one another. -/
@@ -693,7 +693,7 @@ noncomputable def elemSymmThreeSix (cap : Fin 6 → ℝ) : ℝ :=
     + cap 2 * cap 4 * cap 5 + cap 3 * cap 4 * cap 5
 
 /-- The pair energies, each weighted by the capacity total OUTSIDE its own pair. -/
-noncomputable def weightedPairEnergy (gram : Matrix (Fin 6) (Fin 6) ℝ)
+noncomputable def capWeightedPairEnergy (gram : Matrix (Fin 6) (Fin 6) ℝ)
     (cap : Fin 6 → ℝ) (capTotal : ℝ) : ℝ :=
   gram 0 1 ^ 2 * (capTotal - cap 0 - cap 1) + gram 0 2 ^ 2 * (capTotal - cap 0 - cap 2)
     + gram 0 3 ^ 2 * (capTotal - cap 0 - cap 3) + gram 0 4 ^ 2 * (capTotal - cap 0 - cap 4)
@@ -733,9 +733,9 @@ four triples, so the weighted energies regroup by pair. -/
 theorem totalShiftedTripleDet_split (gram : Matrix (Fin 6) (Fin 6) ℝ) (cap : Fin 6 → ℝ) :
     totalShiftedTripleDet gram cap
       = elemSymmThreeSix cap
-        - weightedPairEnergy gram cap (cap 0 + cap 1 + cap 2 + cap 3 + cap 4 + cap 5)
+        - capWeightedPairEnergy gram cap (cap 0 + cap 1 + cap 2 + cap 3 + cap 4 + cap 5)
         + 2 * totalTripleEdgeProduct gram := by
-  simp only [totalShiftedTripleDet, elemSymmThreeSix, weightedPairEnergy,
+  simp only [totalShiftedTripleDet, elemSymmThreeSix, capWeightedPairEnergy,
     totalTripleEdgeProduct, tripleEdgeProduct, slackDeterminantThree]
   ring
 
@@ -764,8 +764,8 @@ theorem pairEnergyTotal_eq_three (hinvol : IsHollowInvolution invol) :
 /-- **THE WEIGHTED PAIR ENERGY COLLAPSES.**  Each pair energy weighted by the capacity
 outside it totals exactly twice the capacity total — a statement about the row law
 alone, with no reference to the capacities beyond their sum. -/
-theorem weightedPairEnergy_eq (hinvol : IsHollowInvolution invol) (cap : Fin 6 → ℝ) :
-    weightedPairEnergy invol cap (cap 0 + cap 1 + cap 2 + cap 3 + cap 4 + cap 5) = 2 * (cap 0 + cap 1 + cap 2 + cap 3 + cap 4 + cap 5) := by
+theorem capWeightedPairEnergy_eq (hinvol : IsHollowInvolution invol) (cap : Fin 6 → ℝ) :
+    capWeightedPairEnergy invol cap (cap 0 + cap 1 + cap 2 + cap 3 + cap 4 + cap 5) = 2 * (cap 0 + cap 1 + cap 2 + cap 3 + cap 4 + cap 5) := by
   have hpairTotal := hinvol.pairEnergyTotal_eq_three
   have hrow0 := hinvol.row_sq_expand 0
   rw [hinvol.diagonal_eq_zero 0] at hrow0
@@ -785,7 +785,7 @@ theorem weightedPairEnergy_eq (hinvol : IsHollowInvolution invol) (cap : Fin 6 �
   have hnorm3 : invol 0 3 ^ 2 + invol 1 3 ^ 2 + invol 2 3 ^ 2 + invol 3 4 ^ 2 + invol 3 5 ^ 2 = 1 := by linarith [hrow3]
   have hnorm4 : invol 0 4 ^ 2 + invol 1 4 ^ 2 + invol 2 4 ^ 2 + invol 3 4 ^ 2 + invol 4 5 ^ 2 = 1 := by linarith [hrow4]
   have hnorm5 : invol 0 5 ^ 2 + invol 1 5 ^ 2 + invol 2 5 ^ 2 + invol 3 5 ^ 2 + invol 4 5 ^ 2 = 1 := by linarith [hrow5]
-  simp only [weightedPairEnergy]
+  simp only [capWeightedPairEnergy]
   linear_combination (cap 0 + cap 1 + cap 2 + cap 3 + cap 4 + cap 5) * hpairTotal - cap 0 * hnorm0 - cap 1 * hnorm1 - cap 2 * hnorm2 - cap 3 * hnorm3 - cap 4 * hnorm4 - cap 5 * hnorm5
 
 /-- **THE AVERAGING NO-GO.**  The twenty shifted determinants total
@@ -794,7 +794,7 @@ weighted energies collapse by the row law, so the average cell determinant reads
 the capacities.  Nothing about the frame survives. -/
 theorem totalShiftedTripleDet_eq (hinvol : IsHollowInvolution invol) (cap : Fin 6 → ℝ) :
     totalShiftedTripleDet invol cap = elemSymmThreeSix cap - 2 * (cap 0 + cap 1 + cap 2 + cap 3 + cap 4 + cap 5) := by
-  rw [totalShiftedTripleDet_split, hinvol.weightedPairEnergy_eq,
+  rw [totalShiftedTripleDet_split, hinvol.capWeightedPairEnergy_eq,
     hinvol.totalTripleEdgeProduct_eq_zero]
   ring
 
@@ -853,10 +853,10 @@ theorem IsTightGramSix.submatrix_eq_one_add_hollow {gram : Matrix (Fin 6) (Fin 6
 theorem IsTightGramSix.det_gramBlock {gram : Matrix (Fin 6) (Fin 6) ℝ}
     (hgram : IsTightGramSix gram) (first second third : Fin 6) :
     (gram.submatrix ![first, second, third] ![first, second, third]).det
-      = 1 - tripleEnergy gram first second third
+      = 1 - tightTripleEnergy gram first second third
         + 2 * tripleEdgeProduct gram first second third := by
   rw [hgram.submatrix_eq_one_add_hollow, det_one_add_hollowMatrixThree]
-  simp only [tripleEnergy, tripleEdgeProduct]
+  simp only [tightTripleEnergy, tripleEdgeProduct]
 
 /-- **THE CO-BLOCK DETERMINANT**: `det (2 . 1 - Gamma)[T] = 1 - E_T - 2 P_T`. -/
 theorem IsTightGramSix.det_coGramBlock {gram : Matrix (Fin 6) (Fin 6) ℝ}
@@ -864,7 +864,7 @@ theorem IsTightGramSix.det_coGramBlock {gram : Matrix (Fin 6) (Fin 6) ℝ}
     (hfirstThird : first ≠ third) (hsecondThird : second ≠ third) :
     (((2 : ℝ) • (1 : Matrix (Fin 6) (Fin 6) ℝ) - gram).submatrix
         ![first, second, third] ![first, second, third]).det
-      = 1 - tripleEnergy gram first second third
+      = 1 - tightTripleEnergy gram first second third
         - 2 * tripleEdgeProduct gram first second third := by
   have hshape : ((2 : ℝ) • (1 : Matrix (Fin 6) (Fin 6) ℝ) - gram).submatrix
         ![first, second, third] ![first, second, third]
@@ -876,7 +876,7 @@ theorem IsTightGramSix.det_coGramBlock {gram : Matrix (Fin 6) (Fin 6) ℝ}
         hfirstSecond, hfirstThird, hsecondThird, Ne.symm hfirstSecond, Ne.symm hfirstThird,
         Ne.symm hsecondThird] <;> norm_num
   rw [hshape, det_one_sub_hollowMatrixThree]
-  simp only [tripleEnergy, tripleEdgeProduct]
+  simp only [tightTripleEnergy, tripleEdgeProduct]
 
 /-- **THE COMPLEMENTARY MINOR IDENTITY, standard partition**, derived from the two
 complement laws rather than assumed: the Gram minor at a triple equals the co-Gram
@@ -890,7 +890,7 @@ theorem IsTightGramSix.det_gramBlock_eq_det_coGramBlock_compl
   have hinvol := hgram.isHollowInvolution_sub_one
   have henergy := hinvol.tripleEnergy_front_eq_back
   have hproduct := hinvol.tripleEdgeProduct_front_add_back
-  simp only [tripleEnergy, tripleEdgeProduct,
+  simp only [tightTripleEnergy, tripleEdgeProduct,
     IsTightGramSix.sub_one_apply_of_ne (gram := gram) (by decide : (0 : Fin 6) ≠ 1),
     IsTightGramSix.sub_one_apply_of_ne (gram := gram) (by decide : (0 : Fin 6) ≠ 2),
     IsTightGramSix.sub_one_apply_of_ne (gram := gram) (by decide : (1 : Fin 6) ≠ 2),
@@ -898,7 +898,7 @@ theorem IsTightGramSix.det_gramBlock_eq_det_coGramBlock_compl
     IsTightGramSix.sub_one_apply_of_ne (gram := gram) (by decide : (3 : Fin 6) ≠ 5),
     IsTightGramSix.sub_one_apply_of_ne (gram := gram) (by decide : (4 : Fin 6) ≠ 5)] at henergy hproduct
   rw [hgram.det_gramBlock, hgram.det_coGramBlock (by decide) (by decide) (by decide)]
-  simp only [tripleEnergy, tripleEdgeProduct]
+  simp only [tightTripleEnergy, tripleEdgeProduct]
   linarith [henergy, hproduct]
 
 /-- **THE COMPLEMENT SUM OF THE TWO BLOCK DETERMINANTS**, sign-free: the edge products
@@ -906,11 +906,11 @@ cancel, so the pair total reads only the shared energy. -/
 theorem IsTightGramSix.det_gramBlock_add_compl {gram : Matrix (Fin 6) (Fin 6) ℝ}
     (hgram : IsTightGramSix gram) :
     (gram.submatrix ![0, 1, 2] ![0, 1, 2]).det + (gram.submatrix ![3, 4, 5] ![3, 4, 5]).det
-      = 2 * (1 - tripleEnergy gram 0 1 2) := by
+      = 2 * (1 - tightTripleEnergy gram 0 1 2) := by
   have hinvol := hgram.isHollowInvolution_sub_one
   have henergy := hinvol.tripleEnergy_front_eq_back
   have hproduct := hinvol.tripleEdgeProduct_front_add_back
-  simp only [tripleEnergy, tripleEdgeProduct,
+  simp only [tightTripleEnergy, tripleEdgeProduct,
     IsTightGramSix.sub_one_apply_of_ne (gram := gram) (by decide : (0 : Fin 6) ≠ 1),
     IsTightGramSix.sub_one_apply_of_ne (gram := gram) (by decide : (0 : Fin 6) ≠ 2),
     IsTightGramSix.sub_one_apply_of_ne (gram := gram) (by decide : (1 : Fin 6) ≠ 2),
@@ -918,7 +918,7 @@ theorem IsTightGramSix.det_gramBlock_add_compl {gram : Matrix (Fin 6) (Fin 6) �
     IsTightGramSix.sub_one_apply_of_ne (gram := gram) (by decide : (3 : Fin 6) ≠ 5),
     IsTightGramSix.sub_one_apply_of_ne (gram := gram) (by decide : (4 : Fin 6) ≠ 5)] at henergy hproduct
   rw [hgram.det_gramBlock, hgram.det_gramBlock]
-  simp only [tripleEnergy, tripleEdgeProduct]
+  simp only [tightTripleEnergy, tripleEdgeProduct]
   linarith [henergy, hproduct]
 
 /-! ### The sign-aware cell -/
@@ -1079,29 +1079,29 @@ The energy is symmetric in the three labels of its triple once the matrix is, so
 transported partitions come back in increasing order. -/
 
 theorem tripleEnergy_swap_left (hinvol : IsHollowInvolution invol) (first second third : Fin 6) :
-    tripleEnergy invol first second third = tripleEnergy invol second first third := by
-  simp only [tripleEnergy]
+    tightTripleEnergy invol first second third = tightTripleEnergy invol second first third := by
+  simp only [tightTripleEnergy]
   rw [hinvol.apply_comm first second, hinvol.apply_comm third second,
     hinvol.apply_comm third first]
   ring
 
 theorem tripleEnergy_swap_right (hinvol : IsHollowInvolution invol) (first second third : Fin 6) :
-    tripleEnergy invol first second third = tripleEnergy invol first third second := by
-  simp only [tripleEnergy]
+    tightTripleEnergy invol first second third = tightTripleEnergy invol first third second := by
+  simp only [tightTripleEnergy]
   rw [hinvol.apply_comm second third]
   ring
 
 theorem tripleEnergy_swap_outer (hinvol : IsHollowInvolution invol) (first second third : Fin 6) :
-    tripleEnergy invol first second third = tripleEnergy invol third second first := by
+    tightTripleEnergy invol first second third = tightTripleEnergy invol third second first := by
   rw [hinvol.tripleEnergy_swap_left, hinvol.tripleEnergy_swap_right,
     hinvol.tripleEnergy_swap_left]
 
 theorem energyPair_012 (hinvol : IsHollowInvolution invol) :
-    tripleEnergy invol 0 1 2 = tripleEnergy invol 3 4 5 :=
+    tightTripleEnergy invol 0 1 2 = tightTripleEnergy invol 3 4 5 :=
   hinvol.tripleEnergy_front_eq_back
 
 theorem energyPair_013 (hinvol : IsHollowInvolution invol) :
-    tripleEnergy invol 0 1 3 = tripleEnergy invol 2 4 5 := by
+    tightTripleEnergy invol 0 1 3 = tightTripleEnergy invol 2 4 5 := by
   have hpair := hinvol.tripleEnergy_perm_eq (Equiv.swap (2 : Fin 6) 3)
   norm_num [show (Equiv.swap (2 : Fin 6) 3) 0 = 0 from by decide,
     show (Equiv.swap (2 : Fin 6) 3) 1 = 1 from by decide,
@@ -1112,7 +1112,7 @@ theorem energyPair_013 (hinvol : IsHollowInvolution invol) :
   exact hpair
 
 theorem energyPair_014 (hinvol : IsHollowInvolution invol) :
-    tripleEnergy invol 0 1 4 = tripleEnergy invol 2 3 5 := by
+    tightTripleEnergy invol 0 1 4 = tightTripleEnergy invol 2 3 5 := by
   have hpair := hinvol.tripleEnergy_perm_eq (Equiv.swap (2 : Fin 6) 4)
   norm_num [show (Equiv.swap (2 : Fin 6) 4) 0 = 0 from by decide,
     show (Equiv.swap (2 : Fin 6) 4) 1 = 1 from by decide,
@@ -1124,7 +1124,7 @@ theorem energyPair_014 (hinvol : IsHollowInvolution invol) :
   exact hpair
 
 theorem energyPair_015 (hinvol : IsHollowInvolution invol) :
-    tripleEnergy invol 0 1 5 = tripleEnergy invol 2 3 4 := by
+    tightTripleEnergy invol 0 1 5 = tightTripleEnergy invol 2 3 4 := by
   have hpair := hinvol.tripleEnergy_perm_eq (Equiv.swap (2 : Fin 6) 5)
   norm_num [show (Equiv.swap (2 : Fin 6) 5) 0 = 0 from by decide,
     show (Equiv.swap (2 : Fin 6) 5) 1 = 1 from by decide,
@@ -1137,7 +1137,7 @@ theorem energyPair_015 (hinvol : IsHollowInvolution invol) :
   exact hpair
 
 theorem energyPair_023 (hinvol : IsHollowInvolution invol) :
-    tripleEnergy invol 0 2 3 = tripleEnergy invol 1 4 5 := by
+    tightTripleEnergy invol 0 2 3 = tightTripleEnergy invol 1 4 5 := by
   have hpair := hinvol.tripleEnergy_perm_eq (Equiv.swap (1 : Fin 6) 3)
   norm_num [show (Equiv.swap (1 : Fin 6) 3) 0 = 0 from by decide,
     show (Equiv.swap (1 : Fin 6) 3) 1 = 3 from by decide,
@@ -1149,7 +1149,7 @@ theorem energyPair_023 (hinvol : IsHollowInvolution invol) :
   exact hpair
 
 theorem energyPair_024 (hinvol : IsHollowInvolution invol) :
-    tripleEnergy invol 0 2 4 = tripleEnergy invol 1 3 5 := by
+    tightTripleEnergy invol 0 2 4 = tightTripleEnergy invol 1 3 5 := by
   have hpair := hinvol.tripleEnergy_perm_eq (Equiv.swap (1 : Fin 6) 4)
   norm_num [show (Equiv.swap (1 : Fin 6) 4) 0 = 0 from by decide,
     show (Equiv.swap (1 : Fin 6) 4) 1 = 4 from by decide,
@@ -1162,7 +1162,7 @@ theorem energyPair_024 (hinvol : IsHollowInvolution invol) :
   exact hpair
 
 theorem energyPair_025 (hinvol : IsHollowInvolution invol) :
-    tripleEnergy invol 0 2 5 = tripleEnergy invol 1 3 4 := by
+    tightTripleEnergy invol 0 2 5 = tightTripleEnergy invol 1 3 4 := by
   have hpair := hinvol.tripleEnergy_perm_eq (Equiv.swap (1 : Fin 6) 5)
   norm_num [show (Equiv.swap (1 : Fin 6) 5) 0 = 0 from by decide,
     show (Equiv.swap (1 : Fin 6) 5) 1 = 5 from by decide,
@@ -1176,7 +1176,7 @@ theorem energyPair_025 (hinvol : IsHollowInvolution invol) :
   exact hpair
 
 theorem energyPair_034 (hinvol : IsHollowInvolution invol) :
-    tripleEnergy invol 0 3 4 = tripleEnergy invol 1 2 5 := by
+    tightTripleEnergy invol 0 3 4 = tightTripleEnergy invol 1 2 5 := by
   have hpair := hinvol.tripleEnergy_perm_eq ((Equiv.swap (1 : Fin 6) 3 * Equiv.swap 2 4 : Equiv.Perm (Fin 6)))
   norm_num [show ((Equiv.swap (1 : Fin 6) 3 * Equiv.swap 2 4 : Equiv.Perm (Fin 6))) 0 = 0 from by decide,
     show ((Equiv.swap (1 : Fin 6) 3 * Equiv.swap 2 4 : Equiv.Perm (Fin 6))) 1 = 3 from by decide,
@@ -1187,7 +1187,7 @@ theorem energyPair_034 (hinvol : IsHollowInvolution invol) :
   exact hpair
 
 theorem energyPair_035 (hinvol : IsHollowInvolution invol) :
-    tripleEnergy invol 0 3 5 = tripleEnergy invol 1 2 4 := by
+    tightTripleEnergy invol 0 3 5 = tightTripleEnergy invol 1 2 4 := by
   have hpair := hinvol.tripleEnergy_perm_eq ((Equiv.swap (1 : Fin 6) 3 * Equiv.swap 2 5 : Equiv.Perm (Fin 6)))
   norm_num [show ((Equiv.swap (1 : Fin 6) 3 * Equiv.swap 2 5 : Equiv.Perm (Fin 6))) 0 = 0 from by decide,
     show ((Equiv.swap (1 : Fin 6) 3 * Equiv.swap 2 5 : Equiv.Perm (Fin 6))) 1 = 3 from by decide,
@@ -1199,7 +1199,7 @@ theorem energyPair_035 (hinvol : IsHollowInvolution invol) :
   exact hpair
 
 theorem energyPair_045 (hinvol : IsHollowInvolution invol) :
-    tripleEnergy invol 0 4 5 = tripleEnergy invol 1 2 3 := by
+    tightTripleEnergy invol 0 4 5 = tightTripleEnergy invol 1 2 3 := by
   have hpair := hinvol.tripleEnergy_perm_eq ((Equiv.swap (1 : Fin 6) 4 * Equiv.swap 2 5 : Equiv.Perm (Fin 6)))
   norm_num [show ((Equiv.swap (1 : Fin 6) 4 * Equiv.swap 2 5 : Equiv.Perm (Fin 6))) 0 = 0 from by decide,
     show ((Equiv.swap (1 : Fin 6) 4 * Equiv.swap 2 5 : Equiv.Perm (Fin 6))) 1 = 4 from by decide,
@@ -1217,8 +1217,8 @@ end IsHollowInvolution
 theorem IsTightGramSix.tripleEnergy_sub_one {gram : Matrix (Fin 6) (Fin 6) ℝ}
     (first second third : Fin 6) (hfirstSecond : first ≠ second) (hfirstThird : first ≠ third)
     (hsecondThird : second ≠ third) :
-    tripleEnergy (gram - 1) first second third = tripleEnergy gram first second third := by
-  simp only [tripleEnergy, IsTightGramSix.sub_one_apply_of_ne hfirstSecond,
+    tightTripleEnergy (gram - 1) first second third = tightTripleEnergy gram first second third := by
+  simp only [tightTripleEnergy, IsTightGramSix.sub_one_apply_of_ne hfirstSecond,
     IsTightGramSix.sub_one_apply_of_ne hfirstThird,
     IsTightGramSix.sub_one_apply_of_ne hsecondThird]
 
@@ -1237,21 +1237,21 @@ theorem IsTightGramSix.exists_nonneg_product_tripleEnergy_le_three_fifths
     {gram : Matrix (Fin 6) (Fin 6) ℝ} (hgram : IsTightGramSix gram) :
     ∃ first second third : Fin 6, first ≠ second ∧ first ≠ third ∧ second ≠ third
       ∧ 0 ≤ tripleEdgeProduct gram first second third
-      ∧ tripleEnergy gram first second third ≤ 3 / 5 := by
+      ∧ tightTripleEnergy gram first second third ≤ 3 / 5 := by
   by_contra hcontra
   push Not at hcontra
   have hinvol := hgram.isHollowInvolution_sub_one
   have hEbridge : ∀ first second third : Fin 6, first ≠ second → first ≠ third → second ≠ third →
-      tripleEnergy (gram - 1) first second third = tripleEnergy gram first second third :=
+      tightTripleEnergy (gram - 1) first second third = tightTripleEnergy gram first second third :=
     fun first second third h1 h2 h3 => IsTightGramSix.tripleEnergy_sub_one first second third h1 h2 h3
   have hpairBound : ∀ frontOne frontTwo frontThree backOne backTwo backThree : Fin 6,
       frontOne ≠ frontTwo → frontOne ≠ frontThree → frontTwo ≠ frontThree →
       backOne ≠ backTwo → backOne ≠ backThree → backTwo ≠ backThree →
       tripleEdgeProduct gram frontOne frontTwo frontThree
           + tripleEdgeProduct gram backOne backTwo backThree = 0 →
-      tripleEnergy gram frontOne frontTwo frontThree
-          = tripleEnergy gram backOne backTwo backThree →
-      3 / 5 < tripleEnergy gram frontOne frontTwo frontThree := by
+      tightTripleEnergy gram frontOne frontTwo frontThree
+          = tightTripleEnergy gram backOne backTwo backThree →
+      3 / 5 < tightTripleEnergy gram frontOne frontTwo frontThree := by
     intro frontOne frontTwo frontThree backOne backTwo backThree hf1 hf2 hf3 hb1 hb2 hb3
       hproduct henergy
     by_cases hcoherent : 0 ≤ tripleEdgeProduct gram frontOne frontTwo frontThree

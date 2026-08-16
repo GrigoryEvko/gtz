@@ -120,7 +120,7 @@ off-selection coordinate vectors.  The congruence needs no inverse in its
 statement: it takes the coordinates as given data and checks them forward. -/
 
 /-- Pushing a vector through a matrix conjugates its atom. -/
-theorem atomMatrix_mulVec (transform : Matrix (Fin 3) (Fin 3) ℝ) (vecArg : Fin 3 → ℝ) :
+theorem atomMatrix_mulVec_tree (transform : Matrix (Fin 3) (Fin 3) ℝ) (vecArg : Fin 3 → ℝ) :
     atomMatrix (transform *ᵥ vecArg)
       = transform * atomMatrix vecArg * transformᵀ := by
   ext rowIndex colIndex
@@ -148,7 +148,7 @@ theorem directionChartGap_congr_basis {size : ℕ}
             - ∑ label ∈ selectedᶜ, mass label • atomMatrix (coord label)) * basisᵀ := by
   have hatom : ∀ label, atomMatrix (direction label)
       = basis * atomMatrix (coord label) * basisᵀ := by
-    intro label; rw [← hcoord label, atomMatrix_mulVec]
+    intro label; rw [← hcoord label, atomMatrix_mulVec_tree]
   have hpush : ∀ (scale : Fin size → ℝ) (part : Finset (Fin size)),
       basis * (∑ label ∈ part, scale label • atomMatrix (coord label)) * basisᵀ
         = ∑ label ∈ part, scale label • atomMatrix (direction label) := by

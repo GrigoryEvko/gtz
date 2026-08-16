@@ -278,7 +278,7 @@ noncomputable def offDiagEnergy (gram : Matrix (Fin 6) (Fin 6) ℝ) : ℝ :=
     + (gram 3 4) ^ 2 + (gram 3 5) ^ 2 + (gram 4 5) ^ 2
 
 /-- The three squared correlations of a triple. -/
-noncomputable def tripleEnergy (gram : Matrix (Fin 6) (Fin 6) ℝ)
+noncomputable def tightTripleEnergy (gram : Matrix (Fin 6) (Fin 6) ℝ)
     (first second third : Fin 6) : ℝ :=
   (gram first second) ^ 2 + (gram first third) ^ 2 + (gram second third) ^ 2
 
@@ -297,13 +297,13 @@ theorem IsTightGramSix.offDiagEnergy_eq_three {gram : Matrix (Fin 6) (Fin 6) ℝ
 
 /-- The twenty triple energies of a six-atom Gram, in increasing index order. -/
 noncomputable def totalTripleEnergy (gram : Matrix (Fin 6) (Fin 6) ℝ) : ℝ :=
-  tripleEnergy gram 0 1 2 + tripleEnergy gram 0 1 3 + tripleEnergy gram 0 1 4
-    + tripleEnergy gram 0 1 5 + tripleEnergy gram 0 2 3 + tripleEnergy gram 0 2 4
-    + tripleEnergy gram 0 2 5 + tripleEnergy gram 0 3 4 + tripleEnergy gram 0 3 5
-    + tripleEnergy gram 0 4 5 + tripleEnergy gram 1 2 3 + tripleEnergy gram 1 2 4
-    + tripleEnergy gram 1 2 5 + tripleEnergy gram 1 3 4 + tripleEnergy gram 1 3 5
-    + tripleEnergy gram 1 4 5 + tripleEnergy gram 2 3 4 + tripleEnergy gram 2 3 5
-    + tripleEnergy gram 2 4 5 + tripleEnergy gram 3 4 5
+  tightTripleEnergy gram 0 1 2 + tightTripleEnergy gram 0 1 3 + tightTripleEnergy gram 0 1 4
+    + tightTripleEnergy gram 0 1 5 + tightTripleEnergy gram 0 2 3 + tightTripleEnergy gram 0 2 4
+    + tightTripleEnergy gram 0 2 5 + tightTripleEnergy gram 0 3 4 + tightTripleEnergy gram 0 3 5
+    + tightTripleEnergy gram 0 4 5 + tightTripleEnergy gram 1 2 3 + tightTripleEnergy gram 1 2 4
+    + tightTripleEnergy gram 1 2 5 + tightTripleEnergy gram 1 3 4 + tightTripleEnergy gram 1 3 5
+    + tightTripleEnergy gram 1 4 5 + tightTripleEnergy gram 2 3 4 + tightTripleEnergy gram 2 3 5
+    + tightTripleEnergy gram 2 4 5 + tightTripleEnergy gram 3 4 5
 
 /-- **THE COUNTING IDENTITY.**  Each of the fifteen pairs lies in exactly four of
 the twenty triples, so the twenty triple energies total four times the pair
@@ -312,7 +312,7 @@ hypothesis on the Gram at all. -/
 theorem sum_tripleEnergy_eq_four_mul_offDiagEnergy (gram : Matrix (Fin 6) (Fin 6) ℝ) :
     totalTripleEnergy gram = 4 * offDiagEnergy gram := by
   rw [totalTripleEnergy, offDiagEnergy]
-  simp only [tripleEnergy]
+  simp only [tightTripleEnergy]
   ring
 
 /-- **THE FIRST MOMENT.**  At a tight Gram the twenty triple energies total
@@ -328,7 +328,7 @@ cannot all exceed the mean. -/
 theorem IsTightGramSix.exists_tripleEnergy_le_three_fifths {gram : Matrix (Fin 6) (Fin 6) ℝ}
     (htight : IsTightGramSix gram) :
     ∃ first second third : Fin 6, first ≠ second ∧ first ≠ third ∧ second ≠ third ∧
-      tripleEnergy gram first second third ≤ 3 / 5 := by
+      tightTripleEnergy gram first second third ≤ 3 / 5 := by
   by_contra hcontra
   push Not at hcontra
   have htotal := htight.totalTripleEnergy_eq_twelve
@@ -364,8 +364,8 @@ theorem tripleEnergy_eq_three_fifths_of_equicorrelated {gram : Matrix (Fin 6) (F
       (gram leftIndex rightIndex) ^ 2 = 1 / 5)
     {first second third : Fin 6} (hfirstSecond : first ≠ second)
     (hfirstThird : first ≠ third) (hsecondThird : second ≠ third) :
-    tripleEnergy gram first second third = 3 / 5 := by
-  rw [tripleEnergy, hequi first second hfirstSecond, hequi first third hfirstThird,
+    tightTripleEnergy gram first second third = 3 / 5 := by
+  rw [tightTripleEnergy, hequi first second hfirstSecond, hequi first third hfirstThird,
     hequi second third hsecondThird]
   norm_num
 
@@ -375,12 +375,12 @@ theorem IsTightGramSix.tripleEnergy_le_three_halves {gram : Matrix (Fin 6) (Fin 
     (htight : IsTightGramSix gram) {first second third : Fin 6}
     (hfirstSecond : first ≠ second) (hfirstThird : first ≠ third)
     (hsecondThird : second ≠ third) :
-    tripleEnergy gram first second third ≤ 3 / 2 := by
+    tightTripleEnergy gram first second third ≤ 3 / 2 := by
   have hfirstRow := htight.sq_add_sq_le_one (Ne.symm hfirstSecond) (Ne.symm hfirstThird)
     hsecondThird
   have hsecondRow := htight.sq_add_sq_le_one hfirstSecond (Ne.symm hsecondThird) hfirstThird
   have hthirdRow := htight.sq_add_sq_le_one hfirstThird hsecondThird hfirstSecond
-  rw [tripleEnergy]
+  rw [tightTripleEnergy]
   have hswapFirst : gram second first = gram first second := htight.comm first second
   have hswapSecond : gram third first = gram first third := htight.comm first third
   have hswapThird : gram third second = gram second third := htight.comm second third
@@ -493,7 +493,7 @@ theorem exists_weak_triple_frame {frame : Matrix (Fin 6) (Fin 3) ℝ}
 theorem exists_tripleEnergy_le_three_fifths_frame {frame : Matrix (Fin 6) (Fin 3) ℝ}
     (hframe : IsUnitTightFrameSix frame) :
     ∃ first second third : Fin 6, first ≠ second ∧ first ≠ third ∧ second ≠ third ∧
-      tripleEnergy (frame * frameᵀ) first second third ≤ 3 / 5 :=
+      tightTripleEnergy (frame * frameᵀ) first second third ≤ 3 / 5 :=
   IsTightGramSix.exists_tripleEnergy_le_three_fifths (isTightGramSix_frameGram hframe)
 
 /-- The total pair energy of a unit tight frame's Gram is three. -/
