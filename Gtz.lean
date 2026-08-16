@@ -5188,3 +5188,81 @@ import Gtz.Wave.WedgeSumRuleLayerLaw
 -- identity pins the boundary: all leverages one forces rank one, and above rank
 -- one every design carries a strictly heavy atom.
 import Gtz.Wave.AllHeavyHingeSchur
+
+-- The deflated gap bound, read in the chart instead of the design.  The design
+-- bound needs a whitener, and the K4 whitening bridge exports positive
+-- definiteness alone with the atoms hidden behind an existential, so the design
+-- equivalence cannot reach the chart.  The chart form needs no square root: the
+-- bound off the dropped atom says that the discounted selected reading already
+-- covers the whole mass reading, and the gap reading is then at least the
+-- dropped weight times the selected conductance reading.  The mass moment is
+-- positive definite at every chart point, so the margin is strict with no
+-- spanning hypothesis, and strict domination becomes ONE determinant sign.  The
+-- complement form deletes the dropped label from both sides at once, which
+-- leaves a K4 spanning tree with two load atoms rather than three.  Cauchy
+-- Schwarz through the resolvent prices any label from below, so a blind probe
+-- makes the free pivot of a triangle STRICT and the stall price strict with it.
+-- The two determinant covers close both terminal K4 walls, and the tetrahedron
+-- chart point fires the cell.
+import Gtz.Wave.TriangleStallClosureDeflation
+
+-- The sharp balance of the flat split, read as ONE wedge total of a SIGNED
+-- measure, and refuted at every mixed triple.  Give the sharp labels the split
+-- measure: the weight deficit inside the selection, minus the weight outside it.
+-- Then the two wedge totals and the crossing total collapse into a single wedge
+-- total over the sharp labels, because the crossing measure product is the only
+-- one that carries a single minus sign.  A wedge total reads its measure only
+-- through the products of pairs, so the balance is nonnegative whenever the
+-- split measure keeps one sign, which at a one-line design covers the free
+-- triple and the line triple.  At a MIXED triple the measure changes sign and
+-- exactly one of the three pair products stays positive.  At rank three a probe
+-- that kills that pair always exists, and it leaves a nonpositive total, so the
+-- balance is never positive definite on the plane.  The quantitative form is the
+-- plane determinant: the balance is the adjugate form of the split measure's own
+-- atom sum at the cross product of the normal and the probe, the adjugate of the
+-- adjugate is the determinant times the matrix, and the split sum reads its own
+-- normal as exactly the normal surplus.  So the two by two determinant of the
+-- balance is the bracket squared, times the determinant of the split sum, times
+-- the surplus.  A nonvanishing split determinant then forces the form to be
+-- definite, which the killing probe refuses.  The producer
+-- Gtz.wedgeBalanceAt_of_flatSplitLead_pos asks for a nonnegative sharp balance
+-- at every in-plane probe, and that hypothesis is FALSE at all eighteen mixed
+-- triples of the six three cell whose three free atoms are independent.
+import Gtz.Wave.MixedTripleBalance
+
+-- The gap determinant of a triple, priced against the VOLUME OF ITS COMPLEMENT.
+-- The weighted atom sum of three labels factors as frame, weight diagonal,
+-- transposed frame.  The isotropy of a six three design splits the identity into
+-- the weighted sum of a triple and the weighted sum of the three labels it
+-- omits, so Sylvester's determinant law moves the frame across and turns a
+-- coordinate determinant into a LABEL determinant on the omitted side:
+-- Gtz.tripleVolume_eq_det_one_sub_weightDiag_mul_gram, no positivity and no
+-- genericity.  Three laws come out of it.  Gtz.tripleVolume_add_tripleVolume
+-- totals the two volumes to one minus a split total, where a split total is the
+-- weighted leverage sum minus the weighted pair energy sum.  The left side is
+-- symmetric, so Gtz.splitTotal_eq_splitTotal_complement says a triple and its
+-- complement carry the SAME split total -- one polynomial identity in the twelve
+-- readings of the two triples, the exchange law.  And
+-- Gtz.weightProduct_mul_det_tripleGram_sub_one prices the object the campaign
+-- wants: the weighted gap determinant of a triple is its own self reading MINUS
+-- the volume of the complement.  Every term of the self reading is a weight, a
+-- leverage or a pairing of the triple itself, so the omitted labels enter through
+-- ONE non-negative number.
+-- Gtz.det_gap_pos_iff_complementVolume_lt_selfReading is the design-level
+-- criterion, and Gtz.det_gap_pos_of_degenerate_complement is the branch where the
+-- price is zero.
+-- At uniform weight and leverage three the whole stratum is one line:
+-- Gtz.det_gap_uniform_eq gives the gap determinant as 35, minus five times the
+-- squared pairing total of the triple, minus the Gram determinant of the three
+-- labels it omits.
+-- Read three things before citing any of it.
+--   IT PRODUCES NO POSITIVE DETERMINANT ON ITS OWN.  It prices one, and the
+--     price is zero only at a degenerate complement.
+--   THE K4 CENSUS IS NOW A KERNEL CALIBRATION, NOT PROSE.  Gtz.kFour_census
+--     lands the star at 5/4, the triangle at -49/4 and a matching triple at -1,
+--     with the star's complement bracket EXACTLY zero, so Gtz.kFour_star_price
+--     shows the price is attained there and the criterion cannot be weakened.
+--   THE ICOSAHEDRON IS NOT DEGENERATE ANYWHERE.  Its twenty complements are all
+--     non-degenerate, so the degenerate branch is silent at that design and the
+--     general criterion is the only reading available.
+import Gtz.Wave.GapDeterminantSignComplement

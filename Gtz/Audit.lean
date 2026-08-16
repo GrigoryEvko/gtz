@@ -1152,6 +1152,9 @@ import Gtz.Wave.OneLineWedgeFlatSplit
 import Gtz.Wave.WedgeBalanceAdjugate
 import Gtz.Wave.WedgeSumRuleLayerLaw
 import Gtz.Wave.AllHeavyHingeSchur
+import Gtz.Wave.TriangleStallClosureDeflation
+import Gtz.Wave.MixedTripleBalance
+import Gtz.Wave.GapDeterminantSignComplement
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -34002,3 +34005,126 @@ run_cmd do
 #print axioms Gtz.stretchedMoment_sub_one_eq
 #print axioms Gtz.not_moment_test_stretchedMoment
 #print axioms Gtz.sum_secondInvariant_add_sum_det_sixThree
+
+-- Wave/TriangleStallClosureDeflation: the chart reading of the deflated gap
+-- bound, the determinant equivalence it buys, the strict free pivot of a
+-- triangle, and the two covers that close both terminal K4 walls.
+#print axioms Gtz.chartMassMatrix_reading
+#print axioms Gtz.chartDeflatedForm_transpose
+#print axioms Gtz.chartDeflatedForm_reading
+#print axioms Gtz.chartMassReading_le_of_chartDeflatedGapBound
+#print axioms Gtz.chartGap_reading_ge_of_chartDeflatedGapBound
+#print axioms Gtz.chartGap_pos_on_orthogonal_of_chartDeflatedGapBound
+#print axioms Gtz.posDef_directionChartGap_iff_det_pos_of_chartDeflatedGapBound
+#print axioms Gtz.chartDeflatedForm_eq_complementForm
+#print axioms Gtz.chartDeflatedGapBound_iff_complementForm
+#print axioms Gtz.chartDeflatedGapBound_of_loewner
+#print axioms Gtz.quadForm_smul_add_smul
+#print axioms Gtz.quadForm_cross_sq_le
+#print axioms Gtz.chartReading_sq_le_chartLadderPivot_mul
+#print axioms Gtz.chartMassReading_le_chartLadderPivot_sub_one_mul_of_blindProbe
+#print axioms Gtz.one_lt_chartLadderPivot_of_blindProbe
+#print axioms Gtz.posDef_directionChartGap_kFour_iff_det_pos_of_chartDeflatedGapBound
+#print axioms Gtz.kFour_hasStrictTree_of_deflatedDetCellFires
+#print axioms Gtz.kFourTriangleNormal_ne_zero
+#print axioms Gtz.kFourDirection_dot_triangleNormal
+#print axioms Gtz.one_lt_chartLadderPivot_of_kFourTriangle
+#print axioms Gtz.kFourTriangle_massReading_le_pivot_sub_one_mul
+#print axioms Gtz.kFourTriangleStallClosureSharp_of_deflatedDetCover
+#print axioms Gtz.kFourGaugeWallTypeAStallClosure_of_deflatedDetCover
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_of_deflatedDetCovers
+#print axioms Gtz.kFourKnifeBandRefinedAllMaxHeavyWall_of_deflatedDetCovers
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_of_deflatedDetCellTotal
+#print axioms Gtz.kFourDeflatedLoad_card
+#print axioms Gtz.exists_kFourTriangle_ground
+#print axioms Gtz.one_lt_trace_inv_mul_mass_of_kFourTriangleStall
+#print axioms Gtz.lt_trace_inv_mul_iff_lt_trace_adjugate_mul
+#print axioms Gtz.det_lt_trace_adjugate_mul_mass_of_kFourTriangleStall
+#print axioms Gtz.tetrahedron_chartDeflatedForm_eq
+#print axioms Gtz.tetrahedron_chartDeflatedGapBound
+#print axioms Gtz.tetrahedronChartPoint_deflatedDetCellFires
+#print axioms Gtz.tetrahedronChartPoint_hasStrictTree_of_cell
+#print axioms Gtz.chartFosterShare_lt_one
+#print axioms Gtz.eq_zero_of_kFourDirection_erase_blind
+#print axioms Gtz.posDef_kFourPuncturedMoment
+#print axioms Gtz.chartFosterShare_kFour_lt_one
+
+-- Wave/MixedTripleBalance: the sharp balance as one wedge total of the split
+-- measure, the one-sign nonnegativity law, the plane determinant of the balance,
+-- and the refutation of the producer's third hypothesis at every mixed triple.
+#print axioms Gtz.splitMeasure
+#print axioms Gtz.wedgeTotal_union
+#print axioms Gtz.sharpBalanceValue_eq_wedgeTotal_splitMeasure
+#print axioms Gtz.wedgeTotal_nonneg_of_nonpos
+#print axioms Gtz.sharpBalanceValue_nonneg_of_sharp_disjoint
+#print axioms Gtz.sharpBalanceValue_of_sharp_triple
+#print axioms Gtz.sharpBalanceValue_nonpos_of_pair_wedge_zero
+#print axioms Gtz.exists_nonzero_orthogonal_rankThree
+#print axioms Gtz.exists_inPlane_probe_wedgeShadow_eq_zero
+#print axioms Gtz.exists_probe_sharpBalanceValue_nonpos
+#print axioms Gtz.not_forall_sharpBalanceValue_pos
+#print axioms Gtz.splitSum
+#print axioms Gtz.sharpBalanceValue_eq_dotProduct_adjugate_splitSum
+#print axioms Gtz.dotProduct_splitSum_mulVec_normal_eq_surplus
+#print axioms Gtz.sharpBalance_planeDeterminant
+#print axioms Gtz.sharpBalanceValue_combination
+#print axioms Gtz.not_forall_sharpBalanceValue_nonneg_of_splitSum_det_ne_zero
+#print axioms Gtz.det_splitSum_of_triple
+#print axioms Gtz.oneLine_det_splitSum_ne_zero
+#print axioms Gtz.oneLine_not_forall_sharpBalanceValue_nonneg
+#print axioms Gtz.oneLine_countOne_not_forall_sharpBalanceValue_nonneg
+#print axioms Gtz.oneLine_countTwo_not_forall_sharpBalanceValue_nonneg
+#print axioms Gtz.oneLine_sharpBalanceValue_nonneg_of_lineTriple
+#print axioms Gtz.tripleFrame
+#print axioms Gtz.tripleWeightDiag
+#print axioms Gtz.weightedTripleSum
+#print axioms Gtz.transpose_tripleFrame_mul_self
+#print axioms Gtz.tripleFrame_mul_weightDiag_mul_transpose
+#print axioms Gtz.det_tripleWeightDiag
+#print axioms Gtz.sq_det_tripleFrame
+#print axioms Gtz.det_weightedTripleSum
+#print axioms Gtz.det_one_sub_weightedTripleSum
+#print axioms Gtz.tripleVolume
+#print axioms Gtz.tripleVolume_eq_det_one_sub_weightDiag_mul_gram
+#print axioms Gtz.pairEnergy
+#print axioms Gtz.splitTotal
+#print axioms Gtz.det_tripleGram_eq
+#print axioms Gtz.det_one_sub_weightDiag_mul_gram
+#print axioms Gtz.tripleVolume_add_tripleVolume
+#print axioms Gtz.splitTotal_eq_splitTotal_complement
+#print axioms Gtz.tripleVolume_add_tripleVolume_inside
+#print axioms Gtz.leverageSum
+#print axioms Gtz.pairEnergySum
+#print axioms Gtz.det_tripleGram_sub_one_eq
+#print axioms Gtz.selfReading
+#print axioms Gtz.weightProduct_mul_det_tripleGram_sub_one
+#print axioms Gtz.det_tripleGram_sub_one_pos_iff
+#print axioms Gtz.weightProduct_mul_det_tripleGram_sub_one_of_degenerate
+#print axioms Gtz.det_tripleGram_sub_one_pos_of_degenerate_of_selfReading_pos
+#print axioms Gtz.sum_triple_weight_smul_atomMatrix
+#print axioms Gtz.weightedTripleSum_add_weightedTripleSum_of_partition
+#print axioms Gtz.det_subsetSum_triple_sub_one_eq_det_tripleGram_sub_one
+#print axioms Gtz.weightProduct_mul_det_gap_eq_selfReading_sub_complementVolume
+#print axioms Gtz.tripleWeightProduct_pos
+#print axioms Gtz.det_gap_pos_iff_complementVolume_lt_selfReading
+#print axioms Gtz.splitTotal_eq_splitTotal_complement_design
+#print axioms Gtz.det_gap_pos_of_degenerate_complement
+#print axioms Gtz.pairingEnergy
+#print axioms Gtz.selfReading_uniform
+#print axioms Gtz.det_gap_uniform_eq
+#print axioms Gtz.det_gap_pos_iff_uniform
+#print axioms Gtz.kFourEdge
+#print axioms Gtz.kFourScaledEdge
+#print axioms Gtz.kFourScaledEdge_dot
+#print axioms Gtz.kFourEdge_normSq
+#print axioms Gtz.leverageOf_kFourScaledEdge
+#print axioms Gtz.kFourEdge_dot_starPairs
+#print axioms Gtz.kFourEdge_dot_trianglePairs
+#print axioms Gtz.kFourEdge_dot_matchingPairs
+#print axioms Gtz.det_tripleGram_kFour_triangle
+#print axioms Gtz.det_tripleGram_kFour_star_sub_one
+#print axioms Gtz.det_tripleGram_kFour_triangle_sub_one
+#print axioms Gtz.det_tripleGram_kFour_matching_sub_one
+#print axioms Gtz.selfReading_kFour_star
+#print axioms Gtz.kFour_star_price
+#print axioms Gtz.kFour_census
