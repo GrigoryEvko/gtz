@@ -5152,6 +5152,28 @@ import Gtz.Wave.OneLineWedgeFlatSplit
 -- the determinant layer total.
 import Gtz.Wave.WedgeBalanceAdjugate
 
+-- Wave/WedgeSumRuleLayerLaw: the second-invariant layer of the twenty triples,
+-- read off the unweighted moment `N = sum_c a_c a_c^T` alone.  Section 1 bridges
+-- `Gtz.secondInvariantOfThree` to `Gtz.principalMinorTotal _ 2` at rank three and
+-- shifts it by the identity.  Section 2 is the law: the twenty second invariants
+-- of the gaps total `4 e2(N) - 20 tr N + 60`.  The right side names NO weight, so
+-- the fifteen weight-dependent pair coefficients of
+-- `Gtz.sum_powersetCard_secondInvariant_pos` contract to a weight-free number.
+-- Section 3 turns the positivity into the sharp scalar test `5 tr N < e2(N) + 15`,
+-- an EQUIVALENCE that asks for neither primitivity nor a weight bound, and records
+-- that two designs with one moment carry one layer total.  Section 4 shows the
+-- test has content at a moment that dominates the identity.
+-- CORRECTION: the section-9 reading of `Gtz/Wave/WedgeBalanceAdjugate.lean`, that
+-- the second invariant "behaves in the opposite way" to the determinant, is true
+-- about the SIGN and false about the CONTENT.  Both layers are weight-free affine
+-- functions of the invariants of one three by three matrix.
+-- ROUTE STATUS: this CLOSES the twenty-triple second-invariant lane rather than
+-- opening it.  `Gtz/Quantitative/WindowCofactorBridge.lean` records that a layer
+-- identity with no design hypothesis cannot separate a tie from a non-tie, and the
+-- law below puts the second invariant under exactly that no-go.  What survives is
+-- the deletion of the weight hypothesis from the landed positivity.
+import Gtz.Wave.WedgeSumRuleLayerLaw
+
 -- The all-heavy residual of both off-path hinges, reduced to one determinant
 -- sign.  The strictly light branch is closed, so the residual is the all-heavy
 -- region, and there the deflation still runs because its hypothesis is the share

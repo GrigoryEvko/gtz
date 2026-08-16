@@ -1150,6 +1150,7 @@ import Gtz.Wave.ThreeLinesHeavyReadingCoverRefuter
 import Gtz.Wave.ThreeLinesHeavyExcessFloor
 import Gtz.Wave.OneLineWedgeFlatSplit
 import Gtz.Wave.WedgeBalanceAdjugate
+import Gtz.Wave.WedgeSumRuleLayerLaw
 import Gtz.Wave.AllHeavyHingeSchur
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
@@ -33983,3 +33984,21 @@ run_cmd do
 #print axioms Gtz.oneLine_eq_freeTriple_of_compl_subset
 #print axioms Gtz.oneLine_freeTriple_flatSplit
 #print axioms Gtz.oneLine_wedgeBalanceAt_of_lineReading_gt_leak
+
+-- Wave/WedgeSumRuleLayerLaw: the twenty-triple second-invariant total, read off
+-- the unweighted moment alone.  The layer law names no weight on its right side,
+-- the positivity test is an equivalence, and the layer is blind to the weights.
+#print axioms Gtz.sub_one_apply_fin_three
+#print axioms Gtz.det_sub_one_eq_secondInvariantOfThree
+#print axioms Gtz.principalMinorTotal_two_eq_secondInvariantOfThree
+#print axioms Gtz.secondInvariantOfThree_sub_one
+#print axioms Gtz.sum_secondInvariantOfThree_subsetSum_sub_one_sixThree
+#print axioms Gtz.sum_secondInvariantOfThree_subsetSum_sub_one_pos_iff
+#print axioms Gtz.trace_lt_secondInvariantOfThree_of_spread
+#print axioms Gtz.sum_secondInvariantOfThree_subsetSum_sub_one_pos_of_moment
+#print axioms Gtz.sum_secondInvariantOfThree_congr_of_subsetSum_univ_eq
+#print axioms Gtz.subsetSum_univ_sub_one_posSemidef
+#print axioms Gtz.stretchedMoment
+#print axioms Gtz.stretchedMoment_sub_one_eq
+#print axioms Gtz.not_moment_test_stretchedMoment
+#print axioms Gtz.sum_secondInvariant_add_sum_det_sixThree
