@@ -5525,6 +5525,18 @@ import Gtz.Wave.OneLineCombinedSharpDeterminant
 -- THE READING IS A WARNING, NOT A PROOF.  A line-degenerate tie family says nothing
 --   about the line-free stratum.  What it does say is that the tree has never exhibited
 --   a design in the antecedent region, so no measurement there has ever been calibrated.
+-- THE FOUR-DIRECTION ROUTE.  `Gtz.not_lineFree_splitTetraDesign` retires the third
+--   family the same way.  MEASURED, 2026-08-16, exact rationals plus a directed C search
+--   at 200 threads: NINE families of concrete `(6,3)` designs are proved `IsTie`, every
+--   one repeats an atom, and the maximum number of DISTINCT directions over all of them
+--   is four.  Under directed minimization the margin reaches 1e-12 only as a weight
+--   falls to 1e-118, and the limit object is four weight-carrying atoms plus two
+--   zero-weight phantoms -- not a `(6,3)` design at all.  With a raw-weight floor of
+--   1e-3 the margin stalls near 1e-4 and does not move with line-freeness.  All
+--   fourteen near-hits below 1e-11 turned STRICTLY POSITIVE in 34-digit arithmetic.
+--   `Gtz.heavyNeedleResidual_of_tie_repeats_an_atom` turns that regularity into a route:
+--   if a tie always repeats an atom, the registry axiom follows at once.  THE
+--   IMPLICATION IS PROVED AND THE HYPOTHESIS IS NOT.
 import Gtz.Wave.A1NeedleTieDegeneracy
 -- ## THE CRAMER FLOOR AND CEILING FOR THE SMALLEST TRIPLE EIGENVALUE
 -- THE IDENTITY.  `Gtz.tripleBracket_smul_eq_wedgeExpansion` is the Cramer expansion of a
@@ -5572,8 +5584,22 @@ import Gtz.Wave.A1NeedleCramerFloor
 --   ONE trace inequality at any shift below one, with no eigenvalue and no square
 --   root.  At the optimal rational shift `Gtz.KFourPencilCellFires` is three
 --   polynomial inequalities in the four forest coefficients.
--- WHAT IT CLOSES.  `Gtz.directionChartIsTieFree_kFour_of_universalStrictTree` closes
---   the WHOLE registered chart obligation from "some listed tree dominates strictly at
---   every chart point", and `Gtz.kFourGaugeAndPivotWallClosure_of_universalStrictTree`
---   closes the A3 component route.  The cell fires at all five named points.
+-- THE COMPLETE FOREST CRITERION.  The two invariants are also SUFFICIENT with the
+--   determinant sign: `Gtz.posDef_directionChartGap_of_invariantTriple` congruates by
+--   the mass whitener and reads Descartes off the characteristic cubic through the
+--   landed inertia bridge.  `Gtz.posDef_directionChartGap_iff_forestTriple` is the
+--   outcome -- strict domination IS three spanning-forest sums of the signed gap
+--   weight, with no matrix in the statement.
+-- WHAT IT CLOSES.  `Gtz.KFourForestTripleTotal` is EQUIVALENT to
+--   `Gtz.KFourUniversalStrictTree` (`Gtz.kFourUniversalStrictTree_iff_forestTripleTotal`),
+--   so `Gtz.directionChartIsTieFree_kFour_of_forestTripleTotal` closes the WHOLE
+--   registered chart obligation and `Gtz.kFourGaugeAndPivotWallClosure_of_forestTripleTotal`
+--   closes the A3 component route, both from one polynomial statement over sixteen
+--   explicit trees.  Being an equivalence it cannot be refuted by a hunt.
+-- WHERE THE CELL'S LIMIT IS.  The shifted Frobenius cell is a STRICTLY WEAKER producer
+--   and it is NOT total.  `Gtz.kFourPencilCell_not_total` refutes totality in kernel at
+--   `Gtz.pencilCellRefuterPoint`, the exact landing point of a directed hunt of four
+--   hundred thousand restarts, where all sixteen trees fail the cell and two of them
+--   still dominate strictly.  A uniform record of four thousand chart points and
+--   fourteen thousand seven hundred gauge-wall points did not see it.
 import Gtz.Wave.KirchhoffSignTower
