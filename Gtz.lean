@@ -5916,9 +5916,31 @@ import Gtz.Wave.VeroneseWeightElimination
 --   `Gtz.not_coplanar_quadruple_of_stressFree`: NO FOUR atoms of a stress-free `(6,3)` design
 --   are coplanar, and `Gtz.not_five_coplanar_of_stressFree` for five.
 -- HONEST SCOPE.  Nothing here decides branch (i).  The share cap on ties is strict but this
---   wave proves no floor for it, and the previous wave's directed descent reports the
---   smallest weight falling from 1.5e-2 to 5.9e-5 exactly where the largest share rises, so
---   a quantitative share cap would need a weight floor that the descent removes.
+--   wave proves no floor for it, and a quantitative share cap would need a weight floor that
+--   the descent removes.
+-- MEASURED, 2026-08-16, C with OpenMP at 200 threads.  CALIBRATION FIRST: the probe
+--   reproduces `Gtz.tiltedWeights`, `Gtz.atomShare_tiltedDesign_zero` and the hand value
+--   `det (veroneseGrid (tiltedAtoms tilt)) = -3072 * z^2 * tilt^2` to fifteen digits at four
+--   tilts, so the solve, the share and the margin path all read landed theorems correctly.
+--   UNIFORM: 200 million Gaussian direction draws give 5.5 million designs with all six
+--   weights positive.  The smallest margin is 1.76e-2 and the smallest share defect is
+--   1.46e-4.  Uniform sampling never approaches a tie.
+--   DIRECTED: 40000 restarts of 300000 steps reach margin 1.43e-11, five decades below the
+--   previous wave's 4.2055e-6, with the smallest weight at 3.74e-12.  So the margin infimum
+--   on the stratum is zero and the collapse channel is a weight that starves.
+--   THE SHARE DEFECT DOES NOT FOLLOW THE MARGIN.  Binned by margin, the geometric mean of
+--   `1 - max share` falls only from 2.0e-1 at margin 1e-0.5 to 3.2e-2 at margin 1e-7, a
+--   fitted exponent near 0.13.  More to the point, the per-bin MAXIMUM of `1 - max share`
+--   stays between 0.34 and 0.44 in EVERY bin down to margin 1e-7.5.  There are near-ties of
+--   margin below 1e-7 whose largest share is about 0.64.  The previous wave's reading, a
+--   fitted exponent 0.65 with `1 - max share` at 2.0e-3 by margin 1e-3.5, is NOT reproduced
+--   here: this run reads 9.3e-2 in that bin.  The two runs use different parameterizations
+--   and different descents, and only this one is calibrated against landed theorems.  The
+--   claim that the largest share runs to one as the margin runs to zero is measurement that
+--   this wave does not confirm.
+--   THE SHARE-ONE APPROACH IS NOT THE TIE APPROACH.  `Gtz.tiltedDesign` reaches share
+--   `1 - tilt^2/3` at margin 0.49 for every tilt below 0.1.  So the closure of branch (i)
+--   meets the share-one locus far away from any tie.  That is measurement, not kernel.
 import Gtz.Wave.ShareOneForcingConic
 import Gtz.Wave.ShareOneForcingWitness
 import Gtz.Wave.ShareOneForcing
