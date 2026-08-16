@@ -1121,6 +1121,7 @@ import Gtz.Wave.ThreeLinesSlideQuadratic
 import Gtz.Wave.ThreeLinesStarBracketCover
 import Gtz.Wave.ThreeRowAmbientWrapper
 import Gtz.Wave.ThreeRowCapturedDichotomy
+import Gtz.Wave.ThresholdEnergyClosure
 import Gtz.Wave.ThresholdSpread
 import Gtz.Wave.TightGramSixLaws
 import Gtz.Wave.TripleDeterminantCells
@@ -32890,3 +32891,39 @@ run_cmd do
 #print axioms Gtz.sum_sum_pairMinorAt_diagonalShift_erase_uniform
 #print axioms Gtz.exists_pos_sum_pairMinorAt_diagonalShift_uniform
 #print axioms Gtz.sum_pairMinorAt_diagonalShift_ge_of_half
+-- The threshold energy in closed form: the pair-form decomposition, the three
+-- scalars, the full index cube, the two degenerate diagonals, and the closure
+-- that leaves the mass energy as the only quantity not in the two invariants.
+#print axioms Gtz.pairMinorAt_comm
+#print axioms Gtz.thresholdPairForm
+#print axioms Gtz.thresholdPairForm_comm
+#print axioms Gtz.projThresholdAt_eq_pairForm
+#print axioms Gtz.sum_thresholdPairForm_row
+#print axioms Gtz.sum_thresholdPairForm_double
+#print axioms Gtz.sum_sq_diag_second_double
+#print axioms Gtz.sum_sq_diag_first_double
+#print axioms Gtz.sum_diag_mul_diag_full
+#print axioms Gtz.sum_pairMinor_mul_diag_first
+#print axioms Gtz.sum_pairMinor_mul_diag_second
+#print axioms Gtz.sum_sq_thresholdPairForm
+#print axioms Gtz.sum_sq_row_thresholdPairForm
+#print axioms Gtz.sum_diag_mul_row_thresholdPairForm
+#print axioms Gtz.cube_sum_pair_first_second
+#print axioms Gtz.cube_sum_pair_first_third
+#print axioms Gtz.cube_sum_pair_second_third
+#print axioms Gtz.cube_sum_sq_first_second
+#print axioms Gtz.cube_sum_sq_first_third
+#print axioms Gtz.cube_sum_sq_second_third
+#print axioms Gtz.cube_prod_share_first
+#print axioms Gtz.cube_prod_share_second
+#print axioms Gtz.cube_prod_share_third
+#print axioms Gtz.sum_sq_projThreshold_cube
+#print axioms Gtz.sum_sq_projThreshold_diagPair
+#print axioms Gtz.sum_sq_projThreshold_diagTriple
+#print axioms Gtz.projThresholdAt_swap_second_third
+#print axioms Gtz.projThresholdAt_swap_first_third
+#print axioms Gtz.thresholdSecondMoment_eq_cube_sub
+#print axioms Gtz.thresholdSecondMoment_eq
+#print axioms Gtz.massSecondMoment_eq_closed
+#print axioms Gtz.gapSecondMoment_eq_closed
+#print axioms Gtz.massSecondMoment_ge_closed

@@ -5017,3 +5017,4 @@ import Gtz.Wave.KFourBoostProductRefuter
 -- landed level-two total rather than repeating it.  And the minor product
 -- ceiling is a refuter, not a producer, by direction.
 import Gtz.Wave.OffsetMinorProduct
+import Gtz.Wave.ThresholdEnergyClosure
