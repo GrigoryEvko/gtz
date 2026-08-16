@@ -4871,3 +4871,4 @@ import Gtz.Wave.ComplementInvariantCell
 -- reduces to one design-level upgrade and then to one determinant sign.
 import Gtz.Design.LineFreeModuli
 import Gtz.Design.ChartProgrammeAssembly
+import Gtz.Wave.ThreeLinesBoostDesignationRefuter
