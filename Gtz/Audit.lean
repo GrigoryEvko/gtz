@@ -1116,6 +1116,7 @@ import Gtz.Wave.SubsetMassDuality
 import Gtz.Wave.SupportThreeNonzero
 import Gtz.Wave.SupportThreePositiveCollapse
 import Gtz.Wave.SupportTypeEightTraceFloor
+import Gtz.Wave.SylvesterReduction
 import Gtz.Wave.ThreeBlockStationaryClosure
 import Gtz.Wave.ThreeLinesBoostDesignationRefuter
 import Gtz.Wave.ThreeLinesSlideQuadratic
@@ -33371,3 +33372,50 @@ run_cmd do
 #print axioms Gtz.posSemidef_sum_smul_atomMatrix
 #print axioms Gtz.not_posDef_directionChartGap_of_blindProbe
 #print axioms Gtz.not_posDef_directionChartGap_of_coplanar
+
+-- Gtz/Wave/SylvesterReduction.lean -- the gap determinant as the only obstruction
+#print axioms Gtz.sylvesterLeverageCap
+#print axioms Gtz.sylvesterPairTotal
+#print axioms Gtz.sylvesterMargin
+#print axioms Gtz.sylvesterLeverageCap_apply
+#print axioms Gtz.sylvesterPairTotal_apply
+#print axioms Gtz.sylvesterLeverageCap_swap_second_third
+#print axioms Gtz.sylvesterLeverageCap_rotate
+#print axioms Gtz.sylvesterPairTotal_swap_second_third
+#print axioms Gtz.sylvesterPairTotal_rotate
+#print axioms Gtz.tripleDetForm_add_complement
+#print axioms Gtz.sq_sum_le_sylvesterLeverageCap
+#print axioms Gtz.tripleDetForm_swap_last_two
+#print axioms Gtz.tripleDetForm_rotate_slots
+#print axioms Gtz.pairMinorForm_mul_pos_of_det_pos
+#print axioms Gtz.pairMinorForm_mul_pos_of_det_pos_second
+#print axioms Gtz.pairMinorForm_mul_pos_of_det_pos_third
+#print axioms Gtz.pairMinorForm_all_pos_or_all_neg
+#print axioms Gtz.pairMinorForm_pos_of_pairTotal_ge
+#print axioms Gtz.pairMinorForm_second_pos_of_pairTotal_ge
+#print axioms Gtz.pairMinorForm_third_pos_of_pairTotal_ge
+#print axioms Gtz.det_eq_tripleDetForm_of_symm
+#print axioms Gtz.sq_sum_le_leverageCap_of_posSemidef_pair
+#print axioms Gtz.posDef_of_det_pos_of_pairTotal_ge
+#print axioms Gtz.posDef_iff_det_pos_of_pairTotal_ge
+#print axioms Gtz.sq_sum_le_leverageCap_projection
+#print axioms Gtz.posDef_blockGapAt_of_det_pos_of_margin
+#print axioms Gtz.posDef_blockGapAt_iff_det_pos_of_margin
+#print axioms Gtz.sylvesterMargin_sixth
+#print axioms Gtz.sylvesterMargin_sixth_nonneg_iff
+#print axioms Gtz.sylvesterMargin_sixth_nonneg_of_complementary
+#print axioms Gtz.sum_diag_projectionOfDesign_six
+#print axioms Gtz.sylvesterMargin_sixth_nonneg_of_half
+#print axioms Gtz.sylvesterMargin_flat
+#print axioms Gtz.posDef_blockGapAt_iff_det_pos_of_flat
+#print axioms Gtz.sq_offDiag_lt_ninth_of_det_pos_of_flat
+#print axioms Gtz.flatPairEnergy_le_quarter
+#print axioms Gtz.det_submatrix_sub_det_blockGapAt_ge_of_flat
+#print axioms Gtz.leverage_sum_lt_of_det_pos_of_not_posDef
+#print axioms Gtz.projectionBlockSelects_of_det_pos_of_margin
+#print axioms Gtz.allFiveOnPath_of_det_pos_of_margin
+#print axioms Gtz.baseTripleTight_of_det_pos_of_margin
+#print axioms Gtz.kFourKnifeBand_of_det_pos_of_margin
+#print axioms Gtz.sylvesterMargin_not_redundant
+#print axioms Gtz.not_forall_pairMinorForm_pos_of_det_pos_of_cap
+#print axioms Gtz.sylvesterMargin_not_redundant_leverage_sum

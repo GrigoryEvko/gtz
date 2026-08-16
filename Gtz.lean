@@ -4953,6 +4953,16 @@ import Gtz.Wave.NuCoveringBand
 -- complementation of the TRIPLE, so the twenty triples pair into ten.
 import Gtz.Wave.TwoSidedFlatSandwich
 
+-- When the gap determinant is the ONLY obstruction to strict domination.  A
+-- principal block of a projection and its complement both have a nonnegative
+-- determinant, and the two add to the leverage cap minus the pairing energy.  The
+-- three pivot readings of the same cubic then force the three two-by-two minors to
+-- share one sign, and the cap kills the all-negative branch as soon as the
+-- pair-minor total reaches it.  At uniform weight that criterion collapses to one
+-- LINEAR inequality on the leverage sum of the triple, with the constant `11/8`, and
+-- at least ten of the twenty triples clear it at every design.
+import Gtz.Wave.SylvesterReduction
+
 -- The joint law of determinantal mass against sign-free threshold.  The
 -- threshold is two-local, so its joint second moment with the mass collapses
 -- onto the landed one- and two-point determinantal marginals.  The pair-minor
