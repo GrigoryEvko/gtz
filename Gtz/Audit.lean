@@ -1144,6 +1144,7 @@ import Gtz.Wave.CrossEnergyFloor
 import Gtz.Wave.KFourSignedTreeLaplacian
 import Gtz.Wave.KFourGaugeWallPencil
 import Gtz.Wave.KFourIsotropicStar
+import Gtz.Wave.WedgeLeakCriterion
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -33674,3 +33675,65 @@ run_cmd do
 #print axioms Gtz.not_dominates_of_fully_blind
 #print axioms Gtz.single_survivor_overcovers
 #print axioms Gtz.not_dominates_of_coplanar_triple
+
+-- Wave/WedgeLeakCriterion: the border minor of a subset gap, collapsed to a
+-- balance of wedge totals.  Section 1 is the Lagrange identity with two
+-- supports and two measures.  Sections 2 thru 8 read it at a blind complement,
+-- which at rank three and card three is exactly the one-line class seen from
+-- the free triple.  Section 9 drops blindness and gives the master identity.
+-- Sections 10 and 11 prove the border criterion rank-uniform and characterise
+-- strict domination by the wedge balance at every rank.  Section 11 also
+-- carries the new entrance to the five on-path obligations.
+#print axioms Gtz.sum_sum_wedgeSq_eq_lagrange_pair
+#print axioms Gtz.sum_sum_wedgeSq_eq_lagrange
+#print axioms Gtz.wedgeShadow
+#print axioms Gtz.wedgeShadow_self
+#print axioms Gtz.wedgeShadow_swap
+#print axioms Gtz.wedgeTotal
+#print axioms Gtz.wedgeTotal_eq_defect
+#print axioms Gtz.wedgeTotal_nonneg
+#print axioms Gtz.ratio_mul_wedgeTotal_le
+#print axioms Gtz.complementLeak
+#print axioms Gtz.complementLeak_nonneg
+#print axioms Gtz.weightDeficit
+#print axioms Gtz.weightDeficit_pos
+#print axioms Gtz.sum_weight_normalSq_of_blind
+#print axioms Gtz.sum_weight_cross_of_blind
+#print axioms Gtz.sum_weight_probeSq_add_leak
+#print axioms Gtz.normalSurplus_eq_deficitEnergy
+#print axioms Gtz.cross_eq_deficitCross
+#print axioms Gtz.probeSurplus_eq_deficitEnergy_sub_leak
+#print axioms Gtz.planeCover_iff_wedgeTotal_gt_surplus_mul_leak
+#print axioms Gtz.weightWedgeTotal_eq_of_blind
+#print axioms Gtz.wedgeTotal_gt_surplus_mul_leak_of_weightSlack
+#print axioms Gtz.complementLeak_le_leverageBudget
+#print axioms Gtz.posDef_of_blindComplement_of_wedgeBeatsLeak
+#print axioms Gtz.posDef_of_blindComplement_of_weightSlack
+#print axioms Gtz.posDef_of_blindComplement_of_leverageBudget
+#print axioms Gtz.posDef_iff_wedgeBeatsLeak
+#print axioms Gtz.wedgeRefusal_of_not_posDef
+#print axioms Gtz.not_wedgeBeatsLeak_of_full_leak
+#print axioms Gtz.oneLine_compl_freeTriple
+#print axioms Gtz.oneLine_freeTriple_posDef_of_lightLine
+#print axioms Gtz.oneLine_freeTriple_posDef_of_lineLeverageBudget
+#print axioms Gtz.oneLine_freeTriple_card
+#print axioms Gtz.oneLine_not_isTie_of_lineLeverageBudget
+#print axioms Gtz.oneLine_exists_unitNormal
+#print axioms Gtz.complementCross
+#print axioms Gtz.mixedWedgeTotal
+#print axioms Gtz.mixedWedgeTotal_nonneg
+#print axioms Gtz.mixedWedgeTotal_eq_defect
+#print axioms Gtz.crossGap_eq_deficitCross_sub_complementCross
+#print axioms Gtz.gapDiscriminant_eq_wedgeBalance
+#print axioms Gtz.dotProduct_subsetSum_sub_one_mulVec_eq_sumSq
+#print axioms Gtz.gapForm_pivot_expansion
+#print axioms Gtz.posDef_of_normalSurplus_borderMinors
+#print axioms Gtz.normalSurplus_borderMinors_of_posDef
+#print axioms Gtz.WedgeBalanceAt
+#print axioms Gtz.planeCover_iff_wedgeBalanceAt
+#print axioms Gtz.posDef_iff_normalSurplus_and_wedgeBalance
+#print axioms Gtz.not_isTie_of_wedgeBalance
+#print axioms Gtz.dotProduct_firstAxis
+#print axioms Gtz.WedgeBalanceSelector
+#print axioms Gtz.consolidatedStrictTripleDesign_iff_wedgeBalanceSelector
+#print axioms Gtz.allFiveOnPath_of_wedgeBalanceSelector

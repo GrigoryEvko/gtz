@@ -5083,3 +5083,14 @@ import Gtz.Wave.KFourGaugeWallPencil
 -- total off-tree mass there.  This module has no registry consumer, and the
 -- graveyard law keeps machinery after its route dies.
 import Gtz.Wave.KFourIsotropicStar
+
+-- The wedge-leak criterion.  The Lagrange identity in double-sum form turns the
+-- border minor of a subset gap into a balance of three wedge totals: the inside
+-- one on the weight deficit, the outside one on the weight, and the crossing one
+-- on both.  The identity is an identity, at every rank and every subset, with no
+-- hypothesis.  The border criterion itself is proved rank-uniform here, so the
+-- rank-three plane cover and its converse both lift.  ROUTE STATUS: the
+-- consolidated strict-triple statement becomes EQUIVALENT to a wedge-balance
+-- selector, which is a new entrance to all five on-path obligations, and the
+-- equivalence certifies that the entrance is not vacuous.
+import Gtz.Wave.WedgeLeakCriterion
