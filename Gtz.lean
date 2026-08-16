@@ -4917,3 +4917,12 @@ import Gtz.Wave.SubsetMassDuality
 -- while only four dominate, so the determinantal measure cannot select, and
 -- the support cut narrows the objective for free.
 import Gtz.Wave.PluckerMassFloor
+
+-- The complementary projection lane.  At (6,3) the rank is half the label
+-- count, so P and 1 - P are both rank-three projections on six labels.  The two
+-- gap blocks always carry opposite off-diagonal entries, and their diagonals
+-- agree exactly on the flat locus, where the dual gap determinant is therefore
+-- the even part MINUS twice the cross term.  The sign-free margin is the
+-- minimum of the two, so the sign-blind class was reading the worse side of
+-- this involution all along.  The lane reaches all five on-path obligations.
+import Gtz.Wave.ComplementDualLane
