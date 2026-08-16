@@ -5346,7 +5346,7 @@ import Gtz.Wave.GapDeterminantSignComplement
 --   inequality in the selected deficiency weights, leverages and bracket against
 --   the omitted labels' shares, with the bracket capped by
 --   Gtz.weightProduct_mul_sq_bracket_le_one.
--- MEASURED, 2026-08-16, 39,000,000 label-and-subset pairs, seven cells, three
+-- MEASURED, 2026-08-16, 54,111,000 label-and-subset pairs, seven cells, three
 --   weight skews, zero soundness violations, calibrated at the (4,3) tetrahedron
 --   tie where neither criterion fires.  The MASS criterion fires at 97 percent
 --   of all-heavy (6,3) designs, 94 percent at the rank-four threshold cell and

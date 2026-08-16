@@ -65,7 +65,7 @@ criterion does not close the cell and the report says so.
 
 ## MEASURED, 2026-08-16
 
-A C probe with OpenMP at 200 threads, 39,000,000 label-and-subset pairs across
+A C probe with OpenMP at 200 threads, 54,111,000 label-and-subset pairs across
 seven cells and three weight skews, with the whitened Parseval residual checked
 below `1e-9` at every design.  The calibration anchor is the `(4,3)` tetrahedron
 tie, at which neither criterion fires, as neither must.
