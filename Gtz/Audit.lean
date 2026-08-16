@@ -1029,6 +1029,7 @@ import Gtz.Design.LineFreeCovering
 import Gtz.Design.LineFreeModuli
 import Gtz.Design.ChartProgrammeAssembly
 import Gtz.Wave.ChartProgrammeHeavyResidual
+import Gtz.Wave.ThreeLinesDominanceNoGo
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -31325,3 +31326,29 @@ run_cmd do
 #print axioms Gtz.BracketBudgetCovers
 #print axioms Gtz.exists_posDef_compl_triple_of_bracketBudgetCovers
 #print axioms Gtz.bracketBudgetCovers_of_pairBudgetCovers
+#print axioms Gtz.threeLinesCoeff
+#print axioms Gtz.threeLinesCoeff_of_mem
+#print axioms Gtz.threeLinesCoeff_of_notMem
+#print axioms Gtz.ThreeLinesDominates
+#print axioms Gtz.posDef_threeLines_of_dominates
+#print axioms Gtz.not_threeLinesDominates_of_notMem_three_of_notMem_five
+#print axioms Gtz.mem_of_threeLinesCoeff_pos
+#print axioms Gtz.mem_zero_of_threeLinesDominates
+#print axioms Gtz.mem_one_of_threeLinesDominates
+#print axioms Gtz.eq_of_card_three_of_mem_zero_of_mem_one
+#print axioms Gtz.threeLinesDominates_eq_vertex_or_zeroOneFive
+#print axioms Gtz.threeLinesDominates_vertex_iff
+#print axioms Gtz.threeLinesDominates_zeroOneFive_iff
+#print axioms Gtz.not_threeLinesDominates_zeroOneFive_of_abs_slide_le_one
+#print axioms Gtz.not_threeLinesDominates_vertex_of_excessThree_le
+#print axioms Gtz.not_threeLinesDominates_zeroOneFive_of_excessOne_le
+#print axioms Gtz.not_exists_threeLinesDominates_of_slide_large
+#print axioms Gtz.uniformSixMass
+#print axioms Gtz.uniformSixWeight
+#print axioms Gtz.uniformSixMass_pos
+#print axioms Gtz.uniformSixWeight_pos
+#print axioms Gtz.uniformSixWeight_sum
+#print axioms Gtz.chartExcess_uniformSix
+#print axioms Gtz.not_exists_threeLinesDominates_uniformSix
+#print axioms Gtz.ThreeLinesDominanceCovers
+#print axioms Gtz.not_threeLinesDominanceCovers_of_witness
