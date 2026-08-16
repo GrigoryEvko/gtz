@@ -41,6 +41,7 @@ behaviour is load-bearing — not exhaustively.
 Update this file in the same commit that completes a proof.
 -/
 import Gtz.Design.BhatiaDavis
+import Gtz.Wave.AllHeavyDeterminantPrice
 import Gtz.Core.Sanity
 import Gtz.LinAlg.SchurRankOne
 import Gtz.Design.CorankThreeHinge
@@ -34206,3 +34207,69 @@ run_cmd do
 #print axioms Gtz.kFourEdge_three
 #print axioms Gtz.kFourEdge_four
 #print axioms Gtz.kFourEdge_five
+
+-- Gtz.Wave.AllHeavyDeterminantPrice
+#print axioms Gtz.slotColumns
+#print axioms Gtz.slotColumns_apply
+#print axioms Gtz.slotColumns_mul_diagonal_mul_transpose
+#print axioms Gtz.det_scaledOuterSum
+#print axioms Gtz.slotColumns_mul_transpose
+#print axioms Gtz.slotGram
+#print axioms Gtz.slotGram_apply
+#print axioms Gtz.det_slotGram
+#print axioms Gtz.det_outerSum_sub_one_eq_det_slotGram_sub_one
+#print axioms Gtz.pickAtoms
+#print axioms Gtz.slotColumns_pickAtoms
+#print axioms Gtz.card_image_pick_rank
+#print axioms Gtz.subsetSum_image_pick
+#print axioms Gtz.weightedSum_image_pick
+#print axioms Gtz.deficiencyMass
+#print axioms Gtz.gap_add_baseResidual_eq_deficiencyMass
+#print axioms Gtz.gap_eq_deficiencyMass_sub_baseResidual
+#print axioms Gtz.det_deficiencyMass
+#print axioms Gtz.one_sub_weight_pos
+#print axioms Gtz.prod_one_sub_weight_pos
+#print axioms Gtz.posSemidef_deficiencyMass
+#print axioms Gtz.posDef_deficiencyMass_iff
+#print axioms Gtz.dotProduct_deficiencyMass_mulVec
+#print axioms Gtz.det_sub_eq_det_mul_det_one_sub_inv_mul
+#print axioms Gtz.det_gap_eq_deficiency_mul_complementFactor
+#print axioms Gtz.det_gap_pos_iff_complementFactor_pos
+#print axioms Gtz.labelGram
+#print axioms Gtz.labelColumns
+#print axioms Gtz.labelGram_eq_transpose_mul_self
+#print axioms Gtz.det_labelGram_eq_zero_of_rank_lt
+#print axioms Gtz.rank_lt_thresholdCell_complement_card
+#print axioms Gtz.complement_card_eq_rank_iff_double
+#print axioms Gtz.dotProduct_baseResidual_mulVec_le
+#print axioms Gtz.sum_compl_atomShare_eq
+#print axioms Gtz.posDef_gap_of_deficiency_beats_complementShare
+#print axioms Gtz.posDef_gap_of_readings_beat_complementShare
+#print axioms Gtz.HasMassWitness
+#print axioms Gtz.not_isTie_of_hasMassWitness
+#print axioms Gtz.hasParallelPair_of_isTie_of_hasMassWitness
+#print axioms Gtz.obligationThresholdCellHingeRankFourAndUp_of_massWitness
+#print axioms Gtz.obligationSubThresholdBandHinge_of_massWitness
+#print axioms Gtz.hingeConclusion_sixThree_of_massWitness
+#print axioms Gtz.dotProduct_deficiencyMass_ge_of_tight
+#print axioms Gtz.sum_atomShare_le_of_tight
+#print axioms Gtz.exists_tightDirection_share_ceiling
+#print axioms Gtz.baseResidual_det_eq_complementVolume
+#print axioms Gtz.baseResidual_det_nonneg
+#print axioms Gtz.det_gap_calibration
+#print axioms Gtz.trace_deficiencyMass
+#print axioms Gtz.trace_baseResidual
+#print axioms Gtz.trace_deficiencyMass_sub_complementShare
+#print axioms Gtz.complementShare_le_trace_deficiencyMass_of_allHeavy
+#print axioms Gtz.posDef_gap_of_detTraceFloor
+#print axioms Gtz.posDef_gap_of_bracket_beats_share
+#print axioms Gtz.det_le_one_of_posSemidef_of_one_sub_posSemidef
+#print axioms Gtz.posSemidef_baseResidual
+#print axioms Gtz.weightProduct_mul_sq_bracket_le_one
+#print axioms Gtz.HasBracketWitness
+#print axioms Gtz.not_isTie_of_hasBracketWitness
+#print axioms Gtz.hasParallelPair_of_isTie_of_hasBracketWitness
+#print axioms Gtz.hasMassWitness_of_hasBracketWitness
+#print axioms Gtz.obligationThresholdCellHingeRankFourAndUp_of_bracketWitness
+#print axioms Gtz.obligationSubThresholdBandHinge_of_bracketWitness
+#print axioms Gtz.hingeConclusion_sixThree_of_bracketWitness

@@ -5307,3 +5307,52 @@ import Gtz.Wave.MixedTripleBalance
 --     non-degenerate, so the degenerate branch is silent at that design and the
 --     general criterion is the only reading available.
 import Gtz.Wave.GapDeterminantSignComplement
+
+-- ============================================================================
+-- Gtz.Wave.AllHeavyDeterminantPrice -- the gap determinant priced at every size
+--   and every rank, and a criterion that spends no deflation.
+-- ============================================================================
+-- The triple law Gtz.weightProduct_mul_det_gap_eq_selfReading_sub_complementVolume
+-- prices a (6,3) gap determinant against ONE number, the volume of the three
+-- omitted labels.  That reading needs the omitted labels to be as many as the
+-- rank, so it needs size = 2 * rank.  Both off-path cells are off that locus
+-- above rank three, and this module settles what transports.
+-- THE FRAME HALF TRANSPORTS.  Only the selection's cardinality is used.
+--   Gtz.det_scaledOuterSum reads the determinant of a scaled outer sum at
+--   ARBITRARY real scales with no square root, which the landed
+--   Gtz.det_pickSum_eq_prod_weight_mul_det_sq cannot do, and
+--   Gtz.det_outerSum_sub_one_eq_det_slotGram_sub_one is the rank-generic form of
+--   the triple bridge.
+-- THE COMPLEMENT HALF DOES NOT.  Gtz.det_labelGram_eq_zero_of_rank_lt: the Gram
+--   of more labels than the rank is singular, and
+--   Gtz.rank_lt_thresholdCell_complement_card puts the threshold cell inside
+--   that range from rank four.  So the triple law's complement volume is
+--   IDENTICALLY ZERO there.  It is not a different number.  It carries nothing.
+-- THE RIGHT COMPLEMENT OBJECT is the omitted labels' weighted mass, a rank by
+--   rank positive semidefinite matrix, and the price becomes multiplicative:
+--   Gtz.det_gap_eq_deficiency_mul_complementFactor.
+-- THE NEW CRITERION SPENDS NO DEFLATION.  Cauchy-Schwarz caps the complement
+--   mass by its total share (Gtz.dotProduct_baseResidual_mulVec_le), so
+--   Gtz.posDef_gap_of_deficiency_beats_complementShare is a strict dominator
+--   with no predecessor cell, no deflated bound and no leverage floor.  Its
+--   producers are Gtz.obligationThresholdCellHingeRankFourAndUp_of_massWitness
+--   and Gtz.obligationSubThresholdBandHinge_of_massWitness.
+-- ITS TRACE SHADOW IS AN IDENTITY.  Gtz.trace_deficiencyMass_sub_complementShare
+--   makes the surplus exactly the selected atoms' total excess leverage, so
+--   Gtz.complementShare_le_trace_deficiencyMass_of_allHeavy holds at EVERY
+--   card-rank selection of EVERY all-heavy design.  The whole open content is
+--   the spread of the deficiency spectrum.
+-- THE CLOSED FORM IS Gtz.posDef_gap_of_bracket_beats_share, one polynomial
+--   inequality in the selected deficiency weights, leverages and bracket against
+--   the omitted labels' shares, with the bracket capped by
+--   Gtz.weightProduct_mul_sq_bracket_le_one.
+-- MEASURED, 2026-08-16, 39,000,000 label-and-subset pairs, seven cells, three
+--   weight skews, zero soundness violations, calibrated at the (4,3) tetrahedron
+--   tie where neither criterion fires.  The MASS criterion fires at 97 percent
+--   of all-heavy (6,3) designs, 94 percent at the rank-four threshold cell and
+--   78 percent at the rank-five threshold cell.  The CLOSED FORM falls to 61,
+--   23 and 3 percent, so the determinant-trace step is what costs the lane.
+--   NEITHER IS TOTAL, so neither closes an obligation.  And the miss set is NOT
+--   the tie boundary: at (15,5) every missed all-heavy design has a subset
+--   dominating with least eigenvalue at least one.
+import Gtz.Wave.AllHeavyDeterminantPrice
