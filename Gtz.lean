@@ -4996,3 +4996,12 @@ import Gtz.Wave.ElliptopeGapBridge
 -- energy is the single remaining unknown.  The tail bridge turns that energy into
 -- a lower bound on the largest block determinant.
 import Gtz.Wave.MassMomentClosure
+
+-- The boost-product designation at the graphic stratum, refuted, and the star as a
+-- permanently coherent third minor.  Total unimodularity makes the boost product the
+-- chart's determinantal weight on this stratum, so it was the last determinantal
+-- reading the registry ledger did not already refute.  It fails at an integer-mass
+-- chart point.  What survives is the star's gap read as the campaign's scalar third
+-- minor with the three off-tree masses as its pairings, hence with a strictly
+-- positive cross term: the canonical star never enters the incoherent branch.
+import Gtz.Wave.KFourBoostProductRefuter
