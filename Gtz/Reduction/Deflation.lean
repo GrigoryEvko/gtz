@@ -78,12 +78,17 @@ noncomputable def deflatedDesign (D : WeightedDesign (m + 1) k)
       exact hsplit.symm
     rw [hconj, hPsum, hRPR]
 
-/-- **Light-atom deflation.** If an atom has leverage ≤ 1 and weighted GTZ
-holds one size down, this design has a dominating k-subset. -/
-theorem dominating_of_light_atom (D : WeightedDesign (m + 1) k)
+/-- **THE DEFLATED GAP.** If an atom has leverage at most one and weighted GTZ
+holds one size down, some k-subset beats the light atom's OWN Parseval block,
+not merely the identity.  This is strictly more than weak domination, and it is
+what the pullback needs.  The two theorems after it read this one gap against
+the light atom's rank-one defect. -/
+theorem exists_deflatedGap_of_light_atom (D : WeightedDesign (m + 1) k)
     (hm : 1 ≤ m) (hrec : GtzWeighted m k) (d : Fin (m + 1))
     (hlight : leverageOf (D.atom d) ≤ 1) :
-    ∃ C : Finset (Fin (m + 1)), C.card = k ∧ Dominates D C := by
+    ∃ C : Finset (Fin (m + 1)), C.card = k ∧
+      ((((1 : ℝ) - D.weight d) • subsetSum D C)
+        - (1 - D.weight d • atomMatrix (D.atom d))).PosSemidef := by
   have htd : D.weight d < 1 := weight_lt_one D (by omega) d
   have htdpos := D.weight_pos d
   have hs : (0 : ℝ) < 1 - D.weight d := by linarith
@@ -147,28 +152,75 @@ theorem dominating_of_light_atom (D : WeightedDesign (m + 1) k)
         rw [Matrix.mul_sub, Matrix.sub_mul, hRPR, ← hSdef]
       rw [hexpand]
       exact hdom
-    -- the light atom's own contribution is PSD
-    have hlightpsd : (1 - atomMatrix (D.atom d)).PosSemidef :=
-      (posSemidef_sub_vecMulVec_iff 1 Matrix.PosDef.one (D.atom d)).mpr
-        (by rw [inv_one, Matrix.one_mulVec, dotProduct_self_eq_sum_sq]
-            exact hlight)
-    -- reassemble
-    show (subsetSum D (Cdef.image d.succAbove) - 1).PosSemidef
-    have hfinal : subsetSum D (Cdef.image d.succAbove) - 1
-        = ((1 : ℝ) - D.weight d)⁻¹
-          • (((((1 : ℝ) - D.weight d)
-              • subsetSum D (Cdef.image d.succAbove))
+    exact hkey
+
+/-- **THE PULLBACK, AS AN IDENTITY.**  The gap of ANY subset is the deflated gap
+against the light atom's Parseval block, plus the light atom's own rank-one
+defect, rescaled.  No leverage hypothesis and no domination hypothesis: only the
+weight of the deleted atom is used, and only through its positivity. -/
+theorem subsetSum_sub_one_eq_deflatedGap_combination (D : WeightedDesign (m + 1) k)
+    (d : Fin (m + 1)) (C : Finset (Fin (m + 1))) (hs : (0 : ℝ) < 1 - D.weight d) :
+    subsetSum D C - 1
+      = ((1 : ℝ) - D.weight d)⁻¹
+        • (((((1 : ℝ) - D.weight d) • subsetSum D C)
               - (1 - D.weight d • atomMatrix (D.atom d)))
-            + D.weight d • (1 - atomMatrix (D.atom d))) := by
-      have hinner : ((((1 : ℝ) - D.weight d)
-            • subsetSum D (Cdef.image d.succAbove))
-            - (1 - D.weight d • atomMatrix (D.atom d)))
-            + D.weight d • (1 - atomMatrix (D.atom d))
-          = ((1 : ℝ) - D.weight d)
-            • (subsetSum D (Cdef.image d.succAbove) - 1) := by
-        module
-      rw [hinner, smul_smul, inv_mul_cancel₀ hs.ne', one_smul]
-    rw [hfinal]
-    exact (hkey.add (hlightpsd.smul htdpos.le)).smul (inv_nonneg.mpr hs.le)
+          + D.weight d • (1 - atomMatrix (D.atom d))) := by
+  have hinner : ((((1 : ℝ) - D.weight d) • subsetSum D C)
+        - (1 - D.weight d • atomMatrix (D.atom d)))
+        + D.weight d • (1 - atomMatrix (D.atom d))
+      = ((1 : ℝ) - D.weight d) • (subsetSum D C - 1) := by
+    module
+  rw [hinner, smul_smul, inv_mul_cancel₀ hs.ne', one_smul]
+
+/-- **Light-atom deflation.** If an atom has leverage ≤ 1 and weighted GTZ
+holds one size down, this design has a dominating k-subset. -/
+theorem dominating_of_light_atom (D : WeightedDesign (m + 1) k)
+    (hm : 1 ≤ m) (hrec : GtzWeighted m k) (d : Fin (m + 1))
+    (hlight : leverageOf (D.atom d) ≤ 1) :
+    ∃ C : Finset (Fin (m + 1)), C.card = k ∧ Dominates D C := by
+  have htdpos := D.weight_pos d
+  have hs : (0 : ℝ) < 1 - D.weight d := by
+    have htd : D.weight d < 1 := weight_lt_one D (by omega) d
+    linarith
+  obtain ⟨C, hcard, hkey⟩ := exists_deflatedGap_of_light_atom D hm hrec d hlight
+  have hlightpsd : (1 - atomMatrix (D.atom d)).PosSemidef :=
+    (posSemidef_sub_vecMulVec_iff 1 Matrix.PosDef.one (D.atom d)).mpr
+      (by rw [inv_one, Matrix.one_mulVec, dotProduct_self_eq_sum_sq]
+          exact hlight)
+  refine ⟨C, hcard, ?_⟩
+  show (subsetSum D C - 1).PosSemidef
+  rw [subsetSum_sub_one_eq_deflatedGap_combination D d C hs]
+  exact (hkey.add (hlightpsd.smul htdpos.le)).smul (inv_nonneg.mpr hs.le)
+
+/-- **A STRICTLY LIGHT ATOM GIVES A STRICT DOMINATOR.**  The light atom's own
+defect `1 - g gᵀ` is positive definite exactly when its leverage is strictly
+below one, and the deflated gap is positive semidefinite, so the sum is positive
+DEFINITE.  Weak domination one size down therefore returns STRICT domination
+here.
+
+This is the strictness the predecessor cell was never asked for.  Both general
+rank hinge obligations conclude a parallel pair out of a tie, and a tie owns a
+weak dominator already, so `Gtz.dominating_of_light_atom` tells them nothing.
+This theorem does: a design with any atom of leverage strictly below one is not
+a tie, so the hinge holds on that whole branch and the residual is the all-heavy
+region `1 ≤ leverageOf` at every atom. -/
+theorem posDef_of_strictly_light_atom (D : WeightedDesign (m + 1) k)
+    (hm : 1 ≤ m) (hrec : GtzWeighted m k) (d : Fin (m + 1))
+    (hlight : leverageOf (D.atom d) < 1) :
+    ∃ C : Finset (Fin (m + 1)), C.card = k ∧ (subsetSum D C - 1).PosDef := by
+  have htdpos := D.weight_pos d
+  have hs : (0 : ℝ) < 1 - D.weight d := by
+    have htd : D.weight d < 1 := weight_lt_one D (by omega) d
+    linarith
+  obtain ⟨C, hcard, hkey⟩ := exists_deflatedGap_of_light_atom D hm hrec d hlight.le
+  have hlightpd : (1 - atomMatrix (D.atom d)).PosDef :=
+    (posDef_sub_vecMulVec_iff 1 Matrix.PosDef.one (D.atom d)).mpr
+      (by rw [inv_one, Matrix.one_mulVec, dotProduct_self_eq_sum_sq]
+          exact hlight)
+  refine ⟨C, hcard, ?_⟩
+  rw [subsetSum_sub_one_eq_deflatedGap_combination D d C hs]
+  refine Matrix.PosDef.smul ?_ (inv_pos.mpr hs)
+  rw [add_comm]
+  exact Matrix.PosDef.add_posSemidef (Matrix.PosDef.smul hlightpd htdpos) hkey
 
 end Gtz

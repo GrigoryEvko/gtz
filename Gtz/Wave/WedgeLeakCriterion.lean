@@ -60,6 +60,7 @@ import Gtz.LinAlg.PsdKit
 import Gtz.Wave.WeightedHalfPlane
 import Gtz.Wave.ConsolidatedStrictTriple
 import Gtz.Wave.ChartDesignGauge
+import Gtz.Reduction.Deflation
 
 namespace Gtz
 
@@ -1286,5 +1287,74 @@ theorem allFiveOnPath_of_wedgeBalanceSelector (hselector : WedgeBalanceSelector)
       KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict :=
   allFiveOnPath_of_consolidatedStrictTripleDesign
     (consolidatedStrictTripleDesign_iff_wedgeBalanceSelector.mpr hselector)
+
+/-! ## 12. The general-rank hinge, on the strictly light branch
+
+`Skeleton.obligationSubThresholdBandHinge` and
+`Skeleton.obligationThresholdCellHingeRankFourAndUp` both take the predecessor
+cell `Gtz.GtzWeighted (size - 1) rank` as a HYPOTHESIS and conclude a parallel
+pair out of a tie.  `Gtz.GtzWeighted` is a WEAK statement, and a tie owns a weak
+dominator by definition, so the landed `Gtz.dominating_of_light_atom` returns
+nothing a tie does not already have.  That is why the predecessor hypothesis has
+never produced anything.
+
+`Gtz.posDef_of_strictly_light_atom` repairs exactly that.  The pullback carries
+the deleted atom's own defect `1 - g gᵀ`, which is positive DEFINITE when the
+leverage is strictly below one, so weak domination one size down returns STRICT
+domination here.  Both hinge obligations therefore hold on the whole strictly
+light branch, and their residual is the all-heavy region. -/
+
+/-- **THE HINGE HOLDS ON THE STRICTLY LIGHT BRANCH, AT EVERY RANK.**  A design
+with one atom of leverage strictly below one is not a tie, given the predecessor
+cell. -/
+theorem not_isTie_of_strictly_light_atom {predSize rank : ℕ}
+    (design : WeightedDesign (predSize + 1) rank) (hpred : 1 ≤ predSize)
+    (hrecursion : GtzWeighted predSize rank) (lightLabel : Fin (predSize + 1))
+    (hlight : leverageOf (design.atom lightLabel) < 1) :
+    ¬ IsTie design := by
+  obtain ⟨selected, hcard, hposDef⟩ :=
+    posDef_of_strictly_light_atom design hpred hrecursion lightLabel hlight
+  exact fun htie => htie.2 selected hcard hposDef
+
+/-- **THE HINGE, ON THE STRICTLY LIGHT BRANCH.**  The exact shape both general
+rank hinge obligations ask for, discharged whenever one atom is strictly light.
+The conclusion is reached without ever looking for a parallel pair. -/
+theorem hasParallelPair_of_isTie_of_strictly_light_atom {predSize rank : ℕ}
+    (design : WeightedDesign (predSize + 1) rank) (hpred : 1 ≤ predSize)
+    (hrecursion : GtzWeighted predSize rank) (lightLabel : Fin (predSize + 1))
+    (hlight : leverageOf (design.atom lightLabel) < 1)
+    (htie : IsTie design) : HasParallelPair design :=
+  absurd htie (not_isTie_of_strictly_light_atom design hpred hrecursion lightLabel hlight)
+
+/-- **THE RESIDUAL OF THE HINGE IS THE ALL-HEAVY REGION.**  A tie that survives
+the predecessor cell has every atom at leverage at least one.  This is the exact
+complement of the branch above, and it names what a general-rank producer must
+still cover. -/
+theorem forall_one_le_leverage_of_isTie {predSize rank : ℕ}
+    (design : WeightedDesign (predSize + 1) rank) (hpred : 1 ≤ predSize)
+    (hrecursion : GtzWeighted predSize rank) (htie : IsTie design) :
+    ∀ label : Fin (predSize + 1), 1 ≤ leverageOf (design.atom label) := by
+  intro label
+  by_contra hbelow
+  push Not at hbelow
+  exact not_isTie_of_strictly_light_atom design hpred hrecursion label hbelow htie
+
+/-- **THE HINGE OBLIGATION'S OWN SHAPE, ON THE STRICTLY LIGHT BRANCH.**  Stated
+with the size and rank bounds and the predecessor cell exactly as
+`Skeleton.obligationSubThresholdBandHinge` carries them.  The threshold bound on
+the size is not used, so the same statement covers
+`Skeleton.obligationThresholdCellHingeRankFourAndUp` on its own strictly light
+branch.  What is left of both is a tie whose every atom has leverage at least
+one. -/
+theorem hinge_of_predecessor_on_strictlyLightBranch {size rank : ℕ} (hsize : 2 ≤ size)
+    (hpredecessor : GtzWeighted (size - 1) rank) (design : WeightedDesign size rank)
+    (hlight : ∃ lightLabel : Fin size, leverageOf (design.atom lightLabel) < 1)
+    (htie : IsTie design) : HasParallelPair design := by
+  obtain ⟨lightLabel, hlabel⟩ := hlight
+  obtain ⟨predSize, hsplit⟩ : ∃ predSize : ℕ, size = predSize + 1 := ⟨size - 1, by omega⟩
+  subst hsplit
+  rw [Nat.add_sub_cancel] at hpredecessor
+  exact hasParallelPair_of_isTie_of_strictly_light_atom design (by omega) hpredecessor
+    lightLabel hlabel htie
 
 end Gtz

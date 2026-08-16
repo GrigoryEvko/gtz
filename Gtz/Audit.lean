@@ -1471,7 +1471,10 @@ import Gtz.Wave.WedgeLeakCriterion
 #print axioms Gtz.posSemidef_two_iff
 #print axioms Gtz.posSemidef_two_iff_of_trace_pos
 #print axioms Gtz.subsetSum_transpose
+#print axioms Gtz.exists_deflatedGap_of_light_atom
+#print axioms Gtz.subsetSum_sub_one_eq_deflatedGap_combination
 #print axioms Gtz.dominating_of_light_atom
+#print axioms Gtz.posDef_of_strictly_light_atom
 #print axioms Gtz.exists_dominating_pair_of_heavy
 #print axioms Gtz.gtz_rank_two
 #print axioms Gtz.gtz_original_rank_one
@@ -33737,3 +33740,7 @@ run_cmd do
 #print axioms Gtz.WedgeBalanceSelector
 #print axioms Gtz.consolidatedStrictTripleDesign_iff_wedgeBalanceSelector
 #print axioms Gtz.allFiveOnPath_of_wedgeBalanceSelector
+#print axioms Gtz.not_isTie_of_strictly_light_atom
+#print axioms Gtz.hasParallelPair_of_isTie_of_strictly_light_atom
+#print axioms Gtz.forall_one_le_leverage_of_isTie
+#print axioms Gtz.hinge_of_predecessor_on_strictlyLightBranch
