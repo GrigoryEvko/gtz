@@ -4905,3 +4905,4 @@ import Gtz.Wave.CellCoverLattice
 import Gtz.Wave.QuantitativeMarginBounds
 import Gtz.Wave.MarginFloorAssembly
 import Gtz.Wave.GramCrossFloor
+import Gtz.Wave.TightGramSixLaws
