@@ -1,6 +1,7 @@
 import Gtz.Wave.MassMomentClosure
 import Gtz.Wave.ComplementDualLane
 import Gtz.Design.KFourChartClosure
+import Gtz.Quantitative.CauchyBinetValueFloor
 
 /-!
 # The threshold energy in closed form
@@ -1264,28 +1265,18 @@ theorem posDef_blockGapAt_of_flat_uniform
   rw [hclosed] at hgap
   nlinarith [hgap]
 
-/-- **THE FLAT LOCUS REACHES ALL FIVE ON-PATH OBLIGATIONS.**  A certificate that
-every primitive design is flat at uniform weight and carries one triple with a
-small first entry and a positive gap retires the whole on-path registry, the base
-triple obligation included. -/
-theorem allFiveOnPath_of_flat_uniform_selection
-    (hcert : ∀ D : WeightedDesign 6 3, IsPrimitiveDesign D →
-      levSecondMoment D = 3 / 2 ∧ (∀ label : Fin 6, D.weight label = (6 : ℝ)⁻¹) ∧
-        ∃ outer mid inner : Fin 6, outer ≠ mid ∧ outer ≠ inner ∧ mid ≠ inner ∧
-          projectionOfDesign D outer mid ^ 2 < 1 / 9 ∧
-          0 < projGapAt (projectionOfDesign D) outer mid inner) :
-    BaseTripleTightLineFreeOffConicHeavyNeedleResidual ∧
-      OneLineTenthHeavyJointBlindLineSparse ∧
-      TwoMeetingLinesTenthHeavyJointBlindTransversal ∧
-      ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines ∧
-      KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict := by
-  refine allFiveOnPath_of_blockGapAt ?_
-  intro D hprim
-  obtain ⟨hflat, huniform, outer, mid, inner, hom, hoi, hmi, hminor, hgap⟩ := hcert D hprim
-  refine ⟨![outer, mid, inner], ?_,
-    posDef_blockGapAt_of_flat_uniform D hflat huniform outer mid inner hminor hgap⟩
-  intro left right hlr
-  fin_cases left <;> fin_cases right <;> simp_all
+/-! ### A dead end, recorded on purpose
+
+An earlier revision of this file carried `allFiveOnPath_of_flat_uniform_selection`,
+which asked every primitive design to be flat AND to carry the uniform weight.
+`Gtz.IsPrimitiveDesign` constrains no weight at all, so that antecedent is
+UNSATISFIABLE and the statement was a door that cannot open.  It is deleted.  The
+ledger of `obligationBaseTripleTightUThreeSix` already records weight-uniform
+threshold certificates as refuted, with margin infimum zero.
+
+Everything below stays per design.  A caller supplies flatness and the uniform
+weight FOR ONE design and receives positive definiteness for that design.  No
+statement here quantifies flatness or uniformity over all primitive designs. -/
 
 /-- The off-diagonal squares along a row total one quarter on the flat locus. -/
 theorem sum_offDiagonal_sq_row_of_flat (hflat : levSecondMoment design = 3 / 2)
@@ -1379,6 +1370,147 @@ theorem exists_large_offDiagonal_of_flat_of_energy
   rw [hdiv] at hquart
   have hclosed := pairSecondMoment_eq_of_flat design hflat
   linarith
+
+/-! ### The complement kills the second minor obstruction
+
+The projection is a contraction, so `1 - P` is positive semidefinite and every one
+of its principal blocks has a nonnegative determinant.  On the flat locus that
+determinant is `1/8 - S/2 - 2Q`, which caps the product `Q` against the squared
+total `S`.  Feeding the cap into the gap formula gives `g <= 35 - 180 S`.  A
+positive gap therefore forces `S < 7/36`, and three squares that each reach one
+ninth would total at least `1/3`.  So EVERY good triple carries a small pair, and
+the second leading minor costs nothing after a reordering. -/
+
+private theorem injective_triple_pick {outer mid inner : Fin 6}
+    (hom : outer ≠ mid) (hoi : outer ≠ inner) (hmi : mid ≠ inner) :
+    Function.Injective ![outer, mid, inner] := by
+  intro left right hlr
+  fin_cases left <;> fin_cases right <;> simp_all
+
+/-- The complement block of a triple has a nonnegative determinant. -/
+theorem det_one_sub_tripleBlock_nonneg (outer mid inner : Fin 6)
+    (hinj : Function.Injective ![outer, mid, inner]) :
+    0 ≤ ((1 : Matrix (Fin 3) (Fin 3) ℝ)
+      - tripleBlock (projectionOfDesign design) outer mid inner).det := by
+  have hcomplement := (posSemidef_one_sub_projectionOfDesign design).submatrix
+    ![outer, mid, inner]
+  have hsplit : ((1 : Matrix (Fin 6) (Fin 6) ℝ) - projectionOfDesign design).submatrix
+        ![outer, mid, inner] ![outer, mid, inner]
+      = (1 : Matrix (Fin 6) (Fin 6) ℝ).submatrix ![outer, mid, inner] ![outer, mid, inner]
+        - tripleBlock (projectionOfDesign design) outer mid inner := rfl
+  rw [hsplit, Matrix.submatrix_one _ hinj] at hcomplement
+  exact hcomplement.det_nonneg
+
+/-- The complement block determinant on the flat locus. -/
+theorem det_one_sub_tripleBlock_eq_of_flat (hflat : levSecondMoment design = 3 / 2)
+    (outer mid inner : Fin 6) :
+    ((1 : Matrix (Fin 3) (Fin 3) ℝ)
+        - tripleBlock (projectionOfDesign design) outer mid inner).det
+      = 1 / 8
+        - (projectionOfDesign design outer mid ^ 2
+            + projectionOfDesign design outer inner ^ 2
+            + projectionOfDesign design mid inner ^ 2) / 2
+        - 2 * (projectionOfDesign design outer mid
+            * projectionOfDesign design outer inner
+            * projectionOfDesign design mid inner) := by
+  have hsymm := projectionOfDesign_transpose design
+  have hflip : ∀ left right : Fin 6,
+      projectionOfDesign design right left = projectionOfDesign design left right := by
+    intro left right
+    simpa only [Matrix.transpose_apply] using congrFun (congrFun hsymm left) right
+  have hdiag := projectionDiagonal_eq_half_of_flat design hflat
+  have hentry : ∀ left right : Fin 3,
+      ((1 : Matrix (Fin 3) (Fin 3) ℝ)
+          - tripleBlock (projectionOfDesign design) outer mid inner) left right
+        = (if left = right then (1 : ℝ) else 0)
+          - projectionOfDesign design (![outer, mid, inner] left)
+              (![outer, mid, inner] right) := by
+    intro left right
+    rw [Matrix.sub_apply, Matrix.one_apply]
+    simp only [tripleBlock, Matrix.submatrix_apply]
+  rw [Matrix.det_fin_three]
+  simp only [hentry]
+  simp [hdiag, hflip]
+  ring
+
+/-- **A POSITIVE GAP CAPS THE SQUARED TOTAL.**  The complement cap and the gap
+formula together force the three off-diagonal squares below seven thirty-sixths. -/
+theorem sum_sq_lt_of_flat_of_gap (hflat : levSecondMoment design = 3 / 2)
+    {outer mid inner : Fin 6} (hinj : Function.Injective ![outer, mid, inner])
+    (hgap : 0 < projGapAt (projectionOfDesign design) outer mid inner) :
+    projectionOfDesign design outer mid ^ 2
+        + projectionOfDesign design outer inner ^ 2
+        + projectionOfDesign design mid inner ^ 2 < 7 / 36 := by
+  have hcap := det_one_sub_tripleBlock_nonneg design outer mid inner hinj
+  rw [det_one_sub_tripleBlock_eq_of_flat design hflat outer mid inner] at hcap
+  rw [projGapAt_eq_of_flat design hflat outer mid inner] at hgap
+  linarith
+
+/-- **EVERY GOOD TRIPLE CARRIES A SMALL PAIR.**  Three squares that each reach one
+ninth would total at least one third, and a positive gap caps the total at seven
+thirty-sixths. -/
+theorem exists_small_pair_of_flat_of_gap (hflat : levSecondMoment design = 3 / 2)
+    {outer mid inner : Fin 6} (hinj : Function.Injective ![outer, mid, inner])
+    (hgap : 0 < projGapAt (projectionOfDesign design) outer mid inner) :
+    projectionOfDesign design outer mid ^ 2 < 1 / 9
+      ∨ projectionOfDesign design outer inner ^ 2 < 1 / 9
+      ∨ projectionOfDesign design mid inner ^ 2 < 1 / 9 := by
+  by_contra hraw
+  have hone : ¬ projectionOfDesign design outer mid ^ 2 < 1 / 9 := fun h => hraw (Or.inl h)
+  have htwo : ¬ projectionOfDesign design outer inner ^ 2 < 1 / 9 :=
+    fun h => hraw (Or.inr (Or.inl h))
+  have hthree : ¬ projectionOfDesign design mid inner ^ 2 < 1 / 9 :=
+    fun h => hraw (Or.inr (Or.inr h))
+  have htotal := sum_sq_lt_of_flat_of_gap design hflat hinj hgap
+  linarith [not_lt.mp hone, not_lt.mp htwo, not_lt.mp hthree]
+
+/-- The gap on the flat locus is symmetric, because its closed form is. -/
+theorem projGapAt_swap_of_flat (hflat : levSecondMoment design = 3 / 2)
+    (outer mid inner : Fin 6) :
+    projGapAt (projectionOfDesign design) outer inner mid
+      = projGapAt (projectionOfDesign design) outer mid inner := by
+  have hsymm := projectionOfDesign_transpose design
+  have hflip : ∀ left right : Fin 6,
+      projectionOfDesign design right left = projectionOfDesign design left right := by
+    intro left right
+    simpa only [Matrix.transpose_apply] using congrFun (congrFun hsymm left) right
+  rw [projGapAt_eq_of_flat design hflat, projGapAt_eq_of_flat design hflat, hflip inner mid]
+  ring
+
+theorem projGapAt_rotate_of_flat (hflat : levSecondMoment design = 3 / 2)
+    (outer mid inner : Fin 6) :
+    projGapAt (projectionOfDesign design) mid inner outer
+      = projGapAt (projectionOfDesign design) outer mid inner := by
+  have hsymm := projectionOfDesign_transpose design
+  have hflip : ∀ left right : Fin 6,
+      projectionOfDesign design right left = projectionOfDesign design left right := by
+    intro left right
+    simpa only [Matrix.transpose_apply] using congrFun (congrFun hsymm left) right
+  rw [projGapAt_eq_of_flat design hflat, projGapAt_eq_of_flat design hflat,
+    hflip mid outer, hflip inner outer]
+  ring
+
+/-- **THE SECOND MINOR IS FREE.**  A positive gap alone gives the whole positive
+definiteness the registry wants, after the triple is ordered so that its small
+pair comes first. -/
+theorem exists_posDef_blockGapAt_of_flat_uniform_of_gap
+    (hflat : levSecondMoment design = 3 / 2)
+    (huniform : ∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹)
+    {outer mid inner : Fin 6}
+    (hom : outer ≠ mid) (hoi : outer ≠ inner) (hmi : mid ≠ inner)
+    (hgap : 0 < projGapAt (projectionOfDesign design) outer mid inner) :
+    ∃ pick : Fin 3 → Fin 6, Function.Injective pick ∧
+      (blockGapAt (projectionOfDesign design) design.weight pick).PosDef := by
+  have hinj := injective_triple_pick hom hoi hmi
+  rcases exists_small_pair_of_flat_of_gap design hflat hinj hgap with hsmall | hsmall | hsmall
+  · exact ⟨![outer, mid, inner], hinj,
+      posDef_blockGapAt_of_flat_uniform design hflat huniform outer mid inner hsmall hgap⟩
+  · refine ⟨![outer, inner, mid], injective_triple_pick hoi hom hmi.symm,
+      posDef_blockGapAt_of_flat_uniform design hflat huniform outer inner mid hsmall ?_⟩
+    rw [projGapAt_swap_of_flat design hflat]; exact hgap
+  · refine ⟨![mid, inner, outer], injective_triple_pick hmi hom.symm hoi.symm,
+      posDef_blockGapAt_of_flat_uniform design hflat huniform mid inner outer hsmall ?_⟩
+    rw [projGapAt_rotate_of_flat design hflat]; exact hgap
 
 end FlatLocus
 

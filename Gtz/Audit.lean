@@ -32968,7 +32968,13 @@ run_cmd do
 #print axioms Gtz.exists_pos_projGap_of_flat_triple_product
 #print axioms Gtz.blockGapAt_diagonal_of_flat_uniform
 #print axioms Gtz.posDef_blockGapAt_of_flat_uniform
-#print axioms Gtz.allFiveOnPath_of_flat_uniform_selection
+#print axioms Gtz.det_one_sub_tripleBlock_nonneg
+#print axioms Gtz.det_one_sub_tripleBlock_eq_of_flat
+#print axioms Gtz.sum_sq_lt_of_flat_of_gap
+#print axioms Gtz.exists_small_pair_of_flat_of_gap
+#print axioms Gtz.projGapAt_swap_of_flat
+#print axioms Gtz.projGapAt_rotate_of_flat
+#print axioms Gtz.exists_posDef_blockGapAt_of_flat_uniform_of_gap
 #print axioms Gtz.sum_offDiagonal_sq_row_of_flat
 #print axioms Gtz.sum_offDiagonal_sq_of_flat
 #print axioms Gtz.pairSecondMoment_eq_of_flat
