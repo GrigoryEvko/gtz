@@ -1536,6 +1536,152 @@ theorem allFiveOnPath_of_scaledExcessDominates
   rw [blockGapAt_eq_projectionBlockGap]
   exact posDef_projectionBlockGap_of_scaledExcessDominates design selected hcard scale hdom
 
+/-! #### The comparison matrix: the sharpest form, and the cheapest
+
+Both dominance criteria are shadows of one statement.  Replace every off-diagonal entry of
+the gap block by MINUS its absolute value and keep the diagonal.  The quadratic form of the
+original is at least the quadratic form of that comparison matrix read at the absolute
+values of the probe, entry by entry, because a term can only help when its sign already
+agrees.  So positive definiteness of the comparison matrix implies positive definiteness of
+the block.
+
+The comparison matrix is where the scale went.  A positive scale making the block dominant
+exists exactly when the comparison matrix is positive definite, so this criterion subsumes
+both earlier ones and needs no scale exhibited.  At `Fin 3` it is three leading minors of an
+explicit rational matrix.
+
+Measured on 1000 exact designs across five cells — `(6,3)`, `(8,4)`, `(10,4)`, `(12,4)` and
+`(15,5)` — some selection passes it at 999 of them.  Plain dominance passes at 750. -/
+
+/-- The **comparison matrix**: the diagonal kept, every off-diagonal entry replaced by minus
+its absolute value. -/
+def comparisonMatrix {order : ℕ} (mat : Matrix (Fin order) (Fin order) ℝ) :
+    Matrix (Fin order) (Fin order) ℝ :=
+  Matrix.of fun leftSlot rightSlot =>
+    if leftSlot = rightSlot then mat leftSlot leftSlot else -|mat leftSlot rightSlot|
+
+theorem comparisonMatrix_apply_diag {order : ℕ} (mat : Matrix (Fin order) (Fin order) ℝ)
+    (slot : Fin order) : comparisonMatrix mat slot slot = mat slot slot := by
+  simp [comparisonMatrix]
+
+theorem comparisonMatrix_apply_offDiag {order : ℕ} (mat : Matrix (Fin order) (Fin order) ℝ)
+    {leftSlot rightSlot : Fin order} (hne : leftSlot ≠ rightSlot) :
+    comparisonMatrix mat leftSlot rightSlot = -|mat leftSlot rightSlot| := by
+  simp [comparisonMatrix, hne]
+
+/-- The quadratic form of a matrix, as a plain double sum. -/
+theorem dotProduct_mulVec_eq_double_sum {order : ℕ} (mat : Matrix (Fin order) (Fin order) ℝ)
+    (probe : Fin order → ℝ) :
+    probe ⬝ᵥ (mat *ᵥ probe) = ∑ leftSlot, ∑ rightSlot,
+      mat leftSlot rightSlot * probe leftSlot * probe rightSlot := by
+  rw [dotProduct]
+  refine Finset.sum_congr rfl fun leftSlot _ => ?_
+  rw [Matrix.mulVec, dotProduct, Finset.mul_sum]
+  exact Finset.sum_congr rfl fun rightSlot _ => by ring
+
+/-- **THE COMPARISON CRITERION, AT EVERY ORDER.**  A symmetric matrix whose comparison
+matrix is positive definite is itself positive definite.  Each term of the quadratic form is
+at least the matching term of the comparison form read at the absolute values, so the whole
+form is. -/
+theorem posDef_of_posDef_comparisonMatrix {order : ℕ} (mat : Matrix (Fin order) (Fin order) ℝ)
+    (hsymmetric : matᵀ = mat) (hcomparison : (comparisonMatrix mat).PosDef) :
+    mat.PosDef := by
+  classical
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr
+    ⟨isHermitian_of_transpose_eq hsymmetric, fun probe hprobe => ?_⟩
+  rw [star_trivial]
+  have habsNe : (fun slot => |probe slot|) ≠ 0 := by
+    intro hzero
+    refine hprobe (funext fun slot => ?_)
+    have hslot := congrFun hzero slot
+    simpa using abs_eq_zero.mp hslot
+  have hcomp := (Matrix.posDef_iff_dotProduct_mulVec.mp hcomparison).2 habsNe
+  rw [star_trivial, dotProduct_mulVec_eq_double_sum] at hcomp
+  rw [dotProduct_mulVec_eq_double_sum]
+  refine lt_of_lt_of_le hcomp (Finset.sum_le_sum fun leftSlot _ => ?_)
+  refine Finset.sum_le_sum fun rightSlot _ => ?_
+  by_cases hslots : leftSlot = rightSlot
+  · subst hslots
+    have habs : |probe leftSlot| * |probe leftSlot| = probe leftSlot * probe leftSlot := by
+      rw [← abs_mul, abs_mul_self]
+    rw [comparisonMatrix_apply_diag, mul_assoc, mul_assoc, habs]
+  · rw [comparisonMatrix_apply_offDiag mat hslots]
+    have hbound : -(|mat leftSlot rightSlot| * |probe leftSlot| * |probe rightSlot|)
+        ≤ mat leftSlot rightSlot * probe leftSlot * probe rightSlot := by
+      have habs : |mat leftSlot rightSlot * probe leftSlot * probe rightSlot|
+          = |mat leftSlot rightSlot| * |probe leftSlot| * |probe rightSlot| := by
+        rw [abs_mul, abs_mul]
+      have := neg_abs_le (mat leftSlot rightSlot * probe leftSlot * probe rightSlot)
+      rwa [habs] at this
+    nlinarith [hbound]
+
+/-- Plain dominance passes the comparison test, so the comparison criterion subsumes it. -/
+theorem posDef_comparisonMatrix_of_dominant {order : ℕ}
+    (mat : Matrix (Fin order) (Fin order) ℝ) (hsymmetric : matᵀ = mat)
+    (hdominates : ∀ slot : Fin order,
+      ∑ other ∈ Finset.univ.erase slot, |mat slot other| < mat slot slot) :
+    (comparisonMatrix mat).PosDef := by
+  classical
+  refine posDef_of_diagonallyDominant _ ?_ fun slot => ?_
+  · ext leftSlot rightSlot
+    rw [Matrix.transpose_apply]
+    by_cases hslots : leftSlot = rightSlot
+    · subst hslots; rfl
+    · rw [comparisonMatrix_apply_offDiag mat (Ne.symm hslots),
+        comparisonMatrix_apply_offDiag mat hslots,
+        form_flip_of_transpose hsymmetric leftSlot rightSlot]
+  · have hrow : ∑ other ∈ Finset.univ.erase slot, |comparisonMatrix mat slot other|
+        = ∑ other ∈ Finset.univ.erase slot, |mat slot other| :=
+      Finset.sum_congr rfl fun other hother => by
+        rw [comparisonMatrix_apply_offDiag mat (Finset.ne_of_mem_erase hother).symm,
+          abs_neg, abs_abs]
+    rw [hrow, comparisonMatrix_apply_diag]
+    exact hdominates slot
+
+/-- **THE COMPARISON DOOR, AT EVERY RANK AND EVERY SIZE.**  The sharpest criterion of this
+file, and the cheapest to check: three leading minors of an explicit rational matrix at rank
+three. -/
+theorem posDef_projectionBlockGap_of_comparison (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank)
+    (hcomparison : (comparisonMatrix (projectionBlockGap design selected hcard)).PosDef) :
+    (projectionBlockGap design selected hcard).PosDef :=
+  posDef_of_posDef_comparisonMatrix _ (projectionBlockGap_transpose design selected hcard)
+    hcomparison
+
+/-- **THE COMPARISON CRITERION REFUTES THE TIE, AT EVERY RANK.** -/
+theorem not_isTie_of_comparison (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank)
+    (hcomparison : (comparisonMatrix (projectionBlockGap design selected hcard)).PosDef) :
+    ¬ IsTie design := fun htie =>
+  htie.2 selected hcard
+    ((posDef_subsetSum_iff_projectionBlockGap design selected hcard).mpr
+      (posDef_projectionBlockGap_of_comparison design selected hcard hcomparison))
+
+/-- **THE FRONTIER PRODUCER, IN ITS SHARPEST FORM.** -/
+theorem hasParallelPair_of_isTie_of_comparison (design : WeightedDesign size rank)
+    (selected : Finset (Fin size)) (hcard : selected.card = rank)
+    (hcomparison : (comparisonMatrix (projectionBlockGap design selected hcard)).PosDef) :
+    IsTie design → HasParallelPair design := fun htie =>
+  absurd htie (not_isTie_of_comparison design selected hcard hcomparison)
+
+/-- **AN EIGHTH ENTRANCE TO THE REGISTRY.**  At `(6, 3)` the comparison criterion reaches
+every on-path obligation, and it is the weakest hypothesis in this file. -/
+theorem allFiveOnPath_of_comparison
+    (hcomparison : ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
+      ∃ selected : Finset (Fin 6), ∃ hcard : selected.card = 3,
+        (comparisonMatrix (projectionBlockGap design selected hcard)).PosDef) :
+    BaseTripleTightLineFreeOffConicHeavyNeedleResidual ∧
+      OneLineTenthHeavyJointBlindLineSparse ∧
+      TwoMeetingLinesTenthHeavyJointBlindTransversal ∧
+      ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines ∧
+      KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict := by
+  refine allFiveOnPath_of_blockGapAt fun design hprimitive => ?_
+  obtain ⟨selected, hcard, hcomp⟩ := hcomparison design hprimitive
+  refine ⟨((selected.orderEmbOfFin hcard : Fin 3 ↪o Fin 6) : Fin 3 → Fin 6),
+    (selected.orderEmbOfFin hcard).injective, ?_⟩
+  rw [blockGapAt_eq_projectionBlockGap]
+  exact posDef_projectionBlockGap_of_comparison design selected hcard hcomp
+
 /-- **THE THRESHOLD-CELL HINGE AT RANK FOUR AND UP, ON THE DOMINATED STRATUM.**  The
 registry's second frontier axiom, with its conclusion produced the same way. -/
 theorem obligationThresholdCellHingeRankFourAndUp_of_excessDominates

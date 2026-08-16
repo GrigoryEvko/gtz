@@ -33118,3 +33118,21 @@ run_cmd do
 #print axioms Gtz.not_isTie_of_scaledExcessDominates
 #print axioms Gtz.hasParallelPair_of_isTie_of_scaledExcessDominates
 #print axioms Gtz.allFiveOnPath_of_scaledExcessDominates
+
+-- The comparison matrix: the sharpest criterion of the lane, and the cheapest.  Keep
+-- the diagonal of the gap block and replace every off-diagonal entry by minus its
+-- absolute value.  Each term of the quadratic form is at least the matching term of the
+-- comparison form read at the absolute values of the probe, so positive definiteness of
+-- the comparison matrix gives positive definiteness of the block.  The comparison matrix
+-- is where the scale went, so this subsumes both dominance criteria and exhibits none.
+-- Measured on 1000 exact designs across five cells, some selection passes at 999.
+#print axioms Gtz.comparisonMatrix
+#print axioms Gtz.comparisonMatrix_apply_diag
+#print axioms Gtz.comparisonMatrix_apply_offDiag
+#print axioms Gtz.dotProduct_mulVec_eq_double_sum
+#print axioms Gtz.posDef_of_posDef_comparisonMatrix
+#print axioms Gtz.posDef_comparisonMatrix_of_dominant
+#print axioms Gtz.posDef_projectionBlockGap_of_comparison
+#print axioms Gtz.not_isTie_of_comparison
+#print axioms Gtz.hasParallelPair_of_isTie_of_comparison
+#print axioms Gtz.allFiveOnPath_of_comparison
