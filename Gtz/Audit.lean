@@ -34504,6 +34504,10 @@ run_cmd do
 #print axioms Gtz.heavyNeedleResidual_of_bracketDominantCell
 #print axioms Gtz.sq_atomBracket_le_triplePairAreaSum_of_lineFreeOffConicTie
 #print axioms Gtz.isTie_of_dominates_of_forall_pairArea_beats_sq_atomBracket
+#print axioms Gtz.cramerCellDesign
+#print axioms Gtz.cramerCellDesign_bracketDominant
+#print axioms Gtz.cramerCellDesign_posDef_longTriple
+#print axioms Gtz.cramerCellDesign_not_isTie
 #print axioms Gtz.det_add_smul_fin_three
 #print axioms Gtz.trace_sq_fin_three
 #print axioms Gtz.adjugate_adjugate_fin_three
