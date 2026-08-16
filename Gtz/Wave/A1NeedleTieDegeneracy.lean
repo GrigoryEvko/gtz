@@ -116,6 +116,36 @@ theorem not_isStressFree_nonUniformLeverageTieDesign :
   rw [Fin.sum_univ_six]
   simp [hatomEq]
 
+/-! ## The split-tetrahedron family -/
+
+/-- **THE SPLIT-TETRAHEDRON TIE IS LINE-DEGENERATE.**  Its six atoms carry the
+four tetrahedron directions through `![0, 1, 2, 2, 3, 3]`, so labels two and
+three read the same direction. -/
+theorem not_lineFree_splitTetraDesign (splitA splitB : ℝ) (hAPos : 0 < splitA)
+    (hALt : splitA < 1 / 4) (hBPos : 0 < splitB) (hBLt : splitB < 1 / 4) :
+    ¬ HasLinePattern (splitTetraDesign splitA splitB hAPos hALt hBPos hBLt)
+        (lineFamilyPattern ([] : List (List (Fin 6)))) :=
+  not_hasLinePattern_lineFree_of_atom_eq _ (by decide : (2 : Fin 6) ≠ 3) rfl
+
+/-! ## The route the census names -/
+
+/-- **THE FOUR-DIRECTION ROUTE TO A1.**  Every `(6,3)` tie in the tree repeats an
+atom, and the exhaustive census finds no tie anywhere with six pairwise distinct
+directions.  If that regularity is a theorem, the registry axiom follows at once:
+a repeated atom is not line-free, so no tie meets the stratum.
+
+This states the route and nothing more.  The hypothesis is NOT proved here, and
+the evidence for it is a census plus a directed search, not a proof. -/
+theorem heavyNeedleResidual_of_tie_repeats_an_atom
+    (hrepeat : ∀ design : WeightedDesign 6 3, IsTie design →
+      ∃ firstLabel secondLabel : Fin 6,
+        firstLabel ≠ secondLabel ∧ design.atom firstLabel = design.atom secondLabel) :
+    BaseTripleTightLineFreeOffConicHeavyNeedleResidual := by
+  refine heavyNeedleResidual_of_pinnedStratumTieFree ?_
+  intro design hlineFree _hoffConic htie
+  obtain ⟨firstLabel, secondLabel, hdistinct, hatomEq⟩ := hrepeat design htie
+  exact not_hasLinePattern_lineFree_of_atom_eq design hdistinct hatomEq hlineFree
+
 /-! ## The reading for the registry axiom -/
 
 /-- **No landed `(6,3)` tie enters the antecedent region.**  A design with two
