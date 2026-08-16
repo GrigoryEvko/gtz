@@ -5738,3 +5738,47 @@ import Gtz.Wave.TieParallelPairWeightRegular
 --   in exact rationals.  At the shipped foil the cap margin is -0.0208 and the true strict
 --   margin is +0.1608.
 import Gtz.Wave.StressFreeCapRefutation
+
+-- Phase 8 (mv-blockaniso): the anisotropy criterion, read on the projection block.
+-- THE BOUNDED READING.  `Gtz.posDef_three_of_trace_nonneg_of_two_mul_frobeniusNormSq_lt`
+--   decides strict domination from the trace and the Frobenius norm of the GAP matrix
+--   `S_C - 1`.  That matrix carries raw Gram entries, which increase without limit when a
+--   weight becomes small.  `Gtz.projectionGap` is the same question on the block
+--   `P_C - diag t_C`, whose entries all sit in the unit interval, and
+--   `Gtz.not_isTie_of_projectionGap_isotropy` is the engine: ONE selection with nonnegative
+--   block trace and block Frobenius mass under half the squared block trace already refutes
+--   `Gtz.IsTie`.  `Gtz.trace_projectionGap_le_rank` and `Gtz.sum_sq_projectionBlock_le_rank`
+--   put both quantities below the rank, and `Gtz.weight_mul_leverage_mem_unitInterval` puts
+--   every leverage share in `[0, 1]`.  `Gtz.frobeniusNormSq_projectionGap_gramForm` clears
+--   both weight roots, so the whole hypothesis is a polynomial in weights and Gram entries.
+-- THE COMPLEMENTARY READING.  `Gtz.blockSquareMass_add_crossMass` cuts idempotency along a
+--   subset: block mass plus cross mass is the block diagonal.  `Gtz.crossMass_compl` says the
+--   two sides of one cut read the SAME cross pairs, so the cross mass cancels and
+--   `Gtz.blockSquareMass_compl` compares a block with the block on the COMPLEMENTARY labels,
+--   with no eigenvalue and no size hypothesis.
+--   `Gtz.frobeniusNormSq_projectionGap_complementBlockForm` puts the criterion in that shape
+--   and `Gtz.not_isTie_of_complementBlockSquareMass` is the engine read there.
+--   `Gtz.crossBlockMass_le_of_isTie` is the budget: at a tie every selection carries a cross
+--   mass under a ceiling that the selection alone supplies.
+-- THE TWO TESTS DO NOT CONTAIN EACH OTHER.  `Gtz.capFoil_isotropy_tests_incomparable` proves
+--   both directions at `Gtz.capFoilDesign`, the design at which no scalar cap fires anywhere.
+--   The triple {0,3,5} has block trace 47/42 and block Frobenius mass 1081/1764, so the block
+--   test fires, while its gap has trace 13 and Frobenius mass 91, so the gap test does not.
+--   The triple {1,3,5} does the opposite.  `Gtz.capFoil_not_isTie_of_projectionGap` refutes
+--   the tie through the bounded engine alone.
+-- THE THRESHOLD IS EXACT AT SIZE FOUR.  `Gtz.tetraDesign_projectionGap_boundary`: every
+--   injective triple of `Gtz.tetraDesign` has block trace 3/2 and block Frobenius mass 9/8,
+--   so the squared trace is EXACTLY twice the mass.  The engine is silent at (4,3) by zero
+--   margin, which is what a size-six statement must do.
+-- HONEST SCOPE.  The criterion is sufficient and not necessary.  It reads two of the three
+--   invariants of a 3x3 spectrum, so it does not decide the anisotropic positive definite
+--   blocks.  It does NOT close branch (i) of `Gtz.sixThree_stress_trichotomy`, and its margin
+--   still falls to zero at the tie boundary.  What changes is the channel.
+-- MEASURED, 2026-08-16, exact rationals in Julia, `Rational{BigInt}` throughout.  Over 3000
+--   random stress-free (6,3) designs the block test covers 99.0 percent and the gap test 93.2
+--   percent, and together they cover 99.6 percent.  On 300 dust rays, where one atom is
+--   scaled by up to one million and its weight becomes small in inverse square proportion,
+--   the gap test stops on 155 rays and the block test on 8.  On the dust ray of the foil the
+--   gap test stops at scale two and the block test still fires at scale ten to the ninth,
+--   where the smallest weight is 1.7e-13 and the largest leverage is 4.3e18.
+import Gtz.Wave.ComplementBlockBudget

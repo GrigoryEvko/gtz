@@ -1167,6 +1167,7 @@ import Gtz.Wave.A1NeedleCramerFloor
 import Gtz.Wave.TieAtomRepeatRefutation
 import Gtz.Wave.TieParallelPairWeightRegular
 import Gtz.Wave.StressFreeCapRefutation
+import Gtz.Wave.ComplementBlockBudget
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -34701,3 +34702,73 @@ run_cmd do
 #print axioms Gtz.foil_pairCertificate
 #print axioms Gtz.capFoilDesign_not_posDef_projectionBlock
 #print axioms Gtz.exists_stressFree_sixThree_beyond_weightCap
+
+-- Gtz/Wave/ComplementBlockBudget.lean
+#print axioms Gtz.projectionGap
+#print axioms Gtz.projectionGap_apply
+#print axioms Gtz.projectionGap_transpose
+#print axioms Gtz.trace_projectionGap
+#print axioms Gtz.frobeniusNormSq_projectionGap
+#print axioms Gtz.frobeniusNormSq_projectionGap_gramForm
+#print axioms Gtz.posDef_projectionGap_of_isotropy
+#print axioms Gtz.posDef_gap_of_projectionGap_isotropy
+#print axioms Gtz.not_isTie_of_projectionGap_isotropy
+#print axioms Gtz.sq_trace_projectionGap_le_of_isTie
+#print axioms Gtz.weight_mul_leverage_mem_unitInterval
+#print axioms Gtz.trace_projectionGap_le_rank
+#print axioms Gtz.sum_sq_projectionBlock_le_rank
+#print axioms Gtz.crossBlockMass
+#print axioms Gtz.crossBlockMass_nonneg
+#print axioms Gtz.blockSquareMass_add_crossBlockMass
+#print axioms Gtz.frobeniusNormSq_projectionGap_complementForm
+#print axioms Gtz.not_isTie_of_crossBlockMass
+#print axioms Gtz.crossBlockMass_le_of_isTie
+#print axioms Gtz.sum_sq_offDiagonal_projection
+#print axioms Gtz.blockSquareMass
+#print axioms Gtz.crossMass
+#print axioms Gtz.blockSquareMass_add_crossMass
+#print axioms Gtz.crossMass_compl
+#print axioms Gtz.sum_diagonal_compl
+#print axioms Gtz.blockSquareMass_compl
+#print axioms Gtz.crossBlockMass_eq_crossMass
+#print axioms Gtz.blockSquareMass_eq_of_injective
+#print axioms Gtz.frobeniusNormSq_projectionGap_complementBlockForm
+#print axioms Gtz.not_isTie_of_complementBlockSquareMass
+#print axioms Gtz.foilPickLeft
+#print axioms Gtz.foilPickMiddle
+#print axioms Gtz.foilPickRight
+#print axioms Gtz.foilPickLeft_injective
+#print axioms Gtz.foilPickMiddle_injective
+#print axioms Gtz.foilPickRight_injective
+#print axioms Gtz.consSix_apply_three
+#print axioms Gtz.consSix_apply_four
+#print axioms Gtz.consSix_apply_five
+#print axioms Gtz.foilPickLeft_zero
+#print axioms Gtz.foilPickLeft_one
+#print axioms Gtz.foilPickLeft_two
+#print axioms Gtz.foilPickMiddle_zero
+#print axioms Gtz.foilPickMiddle_one
+#print axioms Gtz.foilPickMiddle_two
+#print axioms Gtz.foilPickRight_zero
+#print axioms Gtz.foilPickRight_one
+#print axioms Gtz.foilPickRight_two
+#print axioms Gtz.capFoil_atom_weight_unfold
+#print axioms Gtz.trace_projectionGap_capFoil_left
+#print axioms Gtz.frobeniusNormSq_projectionGap_capFoil_left
+#print axioms Gtz.capFoil_projectionGap_isotropy_left
+#print axioms Gtz.capFoil_not_isTie_of_projectionGap
+#print axioms Gtz.trace_projectionGap_capFoil_middle
+#print axioms Gtz.frobeniusNormSq_projectionGap_capFoil_middle
+#print axioms Gtz.capFoil_projectionGap_isotropy_middle
+#print axioms Gtz.capFoil_gapMatrix_middle
+#print axioms Gtz.capFoil_gap_not_isotropy_middle
+#print axioms Gtz.trace_projectionGap_capFoil_right
+#print axioms Gtz.frobeniusNormSq_projectionGap_capFoil_right
+#print axioms Gtz.capFoil_projectionGap_not_isotropy_right
+#print axioms Gtz.capFoil_gapMatrix_right
+#print axioms Gtz.capFoil_gap_isotropy_right
+#print axioms Gtz.capFoil_isotropy_tests_incomparable
+#print axioms Gtz.tetraDesign_leverageOf
+#print axioms Gtz.trace_projectionGap_tetraDesign
+#print axioms Gtz.frobeniusNormSq_projectionGap_tetraDesign
+#print axioms Gtz.tetraDesign_projectionGap_boundary
