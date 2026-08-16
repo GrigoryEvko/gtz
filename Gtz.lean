@@ -4888,3 +4888,4 @@ import Gtz.Wave.LivePairTieIdentification
 import Gtz.Wave.BracketTransferLaws
 import Gtz.Wave.ThreeLinesDominanceNoGo
 import Gtz.Wave.ChartDesignGauge
+import Gtz.Wave.ChartTransferIdempotent
