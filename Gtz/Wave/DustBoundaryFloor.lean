@@ -746,6 +746,34 @@ theorem splitTetraDesign_gap_det_nonpos (splitA splitB : ℝ) (hAPos : 0 < split
   rw [hset, subsetSum_eq_rawSubsetSum, rawSubsetSum_triple _ hab hac hbc]
   exact tetraGap_det_nonpos _ _ _ (splitTetraDirIndex_not_all_eq hab hac hbc)
 
+/-- **THE INFIMUM IS ATTAINED.**  On the split tetrahedron the largest of the
+twenty gap determinants is EXACTLY zero: the census caps it at zero and the
+dominating triple has a positive semidefinite gap, whose determinant is
+non-negative.  The weights are bounded away from zero throughout the open
+two-parameter family, so this is not a boundary phenomenon. -/
+theorem splitTetraDesign_gap_det_zero (splitA splitB : ℝ) (hAPos : 0 < splitA)
+    (hALt : splitA < 1 / 4) (hBPos : 0 < splitB) (hBLt : splitB < 1 / 4) :
+    (subsetSum (splitTetraDesign splitA splitB hAPos hALt hBPos hBLt) {0, 1, 2} - 1).det = 0 :=
+  le_antisymm
+    (splitTetraDesign_gap_det_nonpos splitA splitB hAPos hALt hBPos hBLt (by decide))
+    (splitTetraDesign_dominates splitA splitB hAPos hALt hBPos hBLt).det_nonneg
+
+/-- **THE INFIMUM OF THE LARGEST GAP DETERMINANT OVER `(6,3)` DESIGNS IS ZERO,
+AND IT IS ATTAINED.**  A whole open two-parameter family sits on it.  So the
+objective is NOT the statement that the largest gap determinant is positive, and
+the boundary of section 6 is not the only route to zero -- it is the only route
+to zero among designs with pairwise non-parallel atoms. -/
+theorem exists_design_gapDet_max_eq_zero :
+    ∃ (design : WeightedDesign 6 3) (C : Finset (Fin 6)),
+      (∀ triple : Finset (Fin 6), triple.card = 3
+          → (subsetSum design triple - 1).det ≤ 0)
+        ∧ C.card = 3 ∧ (subsetSum design C - 1).det = 0 ∧ Dominates design C :=
+  ⟨splitTetraDesign (1 / 8) (1 / 8) (by norm_num) (by norm_num) (by norm_num) (by norm_num),
+    {0, 1, 2},
+    fun _ hcard => splitTetraDesign_gap_det_nonpos _ _ _ _ _ _ hcard, by decide,
+    splitTetraDesign_gap_det_zero _ _ _ _ _ _,
+    splitTetraDesign_dominates _ _ _ _ _ _⟩
+
 /-- **THE FIRST CORRECTION.**  It is FALSE that every `(6,3)` design carries a
 triple of strictly positive gap determinant.  The split tetrahedron refutes it
 with strictly positive weights, on an open two-parameter family, and it

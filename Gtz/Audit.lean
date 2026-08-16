@@ -1158,6 +1158,7 @@ import Gtz.Wave.DeflatedCellTotal
 import Gtz.Wave.MixedTripleBalance
 import Gtz.Wave.GapDeterminantSignComplement
 import Gtz.Wave.DustBoundaryFloor
+import Gtz.Wave.OneLineBlindSpotInhabited
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -34344,6 +34345,8 @@ run_cmd do
 #print axioms Gtz.tetraGap_det_nonpos
 #print axioms Gtz.splitTetraDirIndex_not_all_eq
 #print axioms Gtz.splitTetraDesign_gap_det_nonpos
+#print axioms Gtz.splitTetraDesign_gap_det_zero
+#print axioms Gtz.exists_design_gapDet_max_eq_zero
 #print axioms Gtz.not_forall_exists_posDet_triple
 #print axioms Gtz.exists_design_gapDet_nonpos_and_dominates
 #print axioms Gtz.flatVec
@@ -34366,3 +34369,28 @@ run_cmd do
 #print axioms Gtz.gapDet_neither_necessary_nor_sufficient
 #print axioms Gtz.corankOne_tie_selected_share
 #print axioms Gtz.tetraDesign_share_ceiling_attained
+#print axioms Gtz.jointBlindAtom
+#print axioms Gtz.jointBlindWeight
+#print axioms Gtz.jointBlindDesign
+#print axioms Gtz.jointBlindDesign_atom
+#print axioms Gtz.jointBlindDesign_weight
+#print axioms Gtz.jointBlindDesign_hasLinePattern
+#print axioms Gtz.jointBlindDesign_allHeavy
+#print axioms Gtz.jointBlindDesign_tenthHeavy
+#print axioms Gtz.jointBlindDesign_isCapBlindSpot
+#print axioms Gtz.jointBlind_dominatorGap_form
+#print axioms Gtz.jointBlind_posDef_zeroThreeFour
+#print axioms Gtz.jointBlindDesign_hasWeakDominator
+#print axioms Gtz.jointBlindDesign_planeBranchTenCandidate
+#print axioms Gtz.jointBlindDesign_normal_coordinates
+#print axioms Gtz.jointBlindDesign_shadowPairing_eq
+#print axioms Gtz.jointBlindDesign_shadowGapDeterminant_nonpos_or_zeroTwo
+#print axioms Gtz.jointBlind_zeroTwoOne_gap
+#print axioms Gtz.jointBlind_zeroTwoThree_gap
+#print axioms Gtz.jointBlind_zeroTwoFour_gap
+#print axioms Gtz.jointBlind_zeroTwoFive_gap
+#print axioms Gtz.jointBlind_not_posDef_through_zeroTwo
+#print axioms Gtz.jointBlindDesign_isOneLineNormalBlindSpot
+#print axioms Gtz.exists_oneLine_tenthHeavy_jointBlind_weaklyDominated
+#print axioms Gtz.jointBlind_witness_meets_conclusion
+#print axioms Gtz.exists_oneLine_capBlindSpot

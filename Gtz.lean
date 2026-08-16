@@ -5416,8 +5416,48 @@ import Gtz.Wave.AllHeavyDeterminantPrice
 --     has positive determinant.  Hence Gtz.posDet_does_not_imply_dominates.
 --   MEASURED, 2026-08-16: of 58481 primitive rational (6,3) frames drawn at
 --     random, 45301 carry such a triple, so the second failure is GENERIC.
+--   ATTAINED, NOT APPROACHED.  Gtz.exists_design_gapDet_max_eq_zero: on the
+--     split-tetrahedron family the largest gap determinant is EXACTLY zero, with
+--     weights bounded away from zero.  So the infimum of the largest gap
+--     determinant over (6,3) designs is zero AND IS ATTAINED, and the vanishing
+--     dust weight of section 6 is the only route to zero among designs whose
+--     atoms are pairwise non-parallel, not the only route at all.
 -- WHAT THIS DOES NOT DO.  It does not prove and does not refute
 --   Gtz.GtzWeighted 6 3.  The dust family satisfies the conjecture at every
 --   parameter in range.  What dies is any argument that needs a margin constant
 --   independent of the design.
 import Gtz.Wave.DustBoundaryFloor
+
+-- FORK-188.  THE ONE-LINE JOINT BLIND SPOT IS INHABITED, so the open obligation
+--   Skeleton.obligationHeavyWeakToStrictOneLine is NOT a door that cannot open.
+--   Its antecedent asks for six conditions at the same time: the one-line
+--   pattern, leverage heaviness at every label, a label of raw weight at least
+--   1/10, a weakly dominating card-three subset, Gtz.IsCapBlindSpot and
+--   Gtz.IsOneLineNormalBlindSpot.  Before this module no design was known to
+--   meet all six, and an axiom with an empty antecedent type-checks and reads
+--   as an asset.
+-- THE WITNESS is Gtz.jointBlindDesign, with exact rational atoms
+--   (1, 184/5, 0), (-1, -2/5, 0), (1, -11/18, 0), (-1, 0, -17/4),
+--   (-1, -8/15, 2), (-1, -2/3, -11/4) and exact rational weights.  Parseval
+--   holds on the nose.  Gtz.exists_oneLine_tenthHeavy_jointBlind_weaklyDominated
+--   is the headline, and Gtz.exists_oneLine_capBlindSpot pins the cap half.
+-- IT SUPPORTS THE OBLIGATION.  Gtz.jointBlindDesign_planeBranchTenCandidate:
+--   the witness meets the CONCLUSION through the strict triple {0,3,4}.
+-- WHY THE CRITERION IS SILENT.  The first two line atoms span the plane z = 0,
+--   so Gtz.jointBlindDesign_normal_coordinates pins every flat unit normal to
+--   plus or minus the third axis, with no square root and no sign choice.  At
+--   that normal Gtz.jointBlindDesign_shadowGapDeterminant_nonpos_or_zeroTwo
+--   leaves exactly one live pair, {0,2}, and each of the four triples through
+--   that pair reads negative at an explicit probe.  The strict triples are
+--   {0,3,4} and {0,4,5}, and neither contains the pair {0,2}.  A strict triple
+--   is visible at a normal only when one of its OWN pairs strictly dominates
+--   the plane orthogonal to that normal, and that is the whole mechanism.
+-- MEASURED, 2026-08-16, exact rationals, two independent generators.  Under
+--   UNIFORM sampling the line-normal blind spot appears in 0 of 2483 one-line
+--   designs, which is why earlier passes read it as empty.  Under DIRECTED
+--   search it appears at once, and the joint blind spot with it.  The cap blind
+--   spot alone appears in 2.8 percent and 4.8 percent of the two uniform
+--   samples, so it never had the same problem.
+-- THE TENTH-HEAVY HYPOTHESIS IS FREE.  Six positive weights sum to one, so some
+--   weight is at least 1/6.  That clause excludes no design at all.
+import Gtz.Wave.OneLineBlindSpotInhabited
