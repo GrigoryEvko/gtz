@@ -4934,3 +4934,11 @@ import Gtz.Wave.ComplementDualLane
 -- and can never certify; the two-point one can, and in the heavy-pair corner it
 -- reads the leverage diagonal alone and reaches full positive definiteness.
 import Gtz.Wave.ThresholdSpread
+
+-- The complement laws of a hollow involution.  The twenty triples of six labels are
+-- ten complementary pairs; the two sides of a pair carry the SAME energy and
+-- OPPOSITE edge products, so exactly one side of each pair is coherent.  The
+-- products therefore cancel over the twenty triples, the averaging statistic of the
+-- nu-covering collapses to e_3 of the capacities minus twice their total, and the
+-- sign drops out of the covering criterion entirely.
+import Gtz.Wave.NuCoveringBand
