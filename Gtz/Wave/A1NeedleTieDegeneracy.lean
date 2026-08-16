@@ -129,7 +129,7 @@ theorem not_lineFree_splitTetraDesign (splitA splitB : ℝ) (hAPos : 0 < splitA)
 
 /-! ## The route the census names -/
 
-/-- **DELETED, 2026-08-16: `heavyNeedleResidual_of_tie_repeats_an_atom` WAS A DOOR
+/-! **DELETED, 2026-08-16: `heavyNeedleResidual_of_tie_repeats_an_atom` WAS A DOOR
 THAT COULD NOT OPEN.**  It asked that every `(6,3)` tie repeat an atom, and that
 hypothesis is KERNEL-FALSE.  `Gtz.not_forall_sixThree_isTie_repeats_an_atom`
 (Gtz/Wave/TieAtomRepeatRefutation.lean:426) refutes it with
