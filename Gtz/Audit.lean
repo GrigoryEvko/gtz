@@ -33520,3 +33520,10 @@ run_cmd do
 #print axioms Gtz.profilePair_lt_profileDiag
 #print axioms Gtz.kFourPair_lt_kFourDiag
 #print axioms Gtz.rankFourPair_lt_rankFourDiag
+-- The profile is inhabited by the landed K4 graphic design, so the refutation of the
+-- excess-dominance lane at the rank-three threshold cell carries no hypothesis.
+#print axioms Gtz.projectionOfDesign_graphicKFour
+#print axioms Gtz.abs_projectionOfDesign_graphicKFour
+#print axioms Gtz.completeGraphProfile_graphicKFour
+#print axioms Gtz.not_forall_excessDominates_sixThree_unconditional
+#print axioms Gtz.not_exists_excessDominates_graphicKFour

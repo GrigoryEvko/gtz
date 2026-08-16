@@ -68,6 +68,7 @@ import Mathlib
 import Gtz.Core.Basic
 import Gtz.Wave.ProjectionMinorShift
 import Gtz.Wave.OffsetUpperBound
+import Gtz.Quantitative.DecisionAtlasCellsSevenThree
 
 open Finset
 
@@ -449,10 +450,11 @@ theorem allFiveOnPath_of_primitiveExcessDominates
 
 /-! ## 9. The rank-three member of the family, and the decision
 
-Label the six edges of the complete graph on four vertices so that complementary edges sum
-to five: `{0,1}` against `{2,3}`, `{0,2}` against `{1,3}`, `{0,3}` against `{1,2}`.  Two
-distinct edges meet exactly when they are NOT complementary, so the non-meeting relation is
-a perfect matching on the six labels.
+Label the six edges of the complete graph on four vertices in the order the landed
+`Gtz.graphicKFourDesign` uses, so that the three disjoint pairs are `{0,1}`, `{2,3}` and
+`{4,5}` — the three perfect matchings of `K4`, and exactly the three vanishing pairings of
+that design.  Two distinct edges meet exactly when they are NOT paired, so the non-meeting
+relation is a perfect matching on the six labels, and `first / 2` names the pair.
 
 Every label therefore has exactly one non-neighbour.  In a triple, at most one
 complementary pair fits, so the remaining label meets both of the others.  That is
@@ -462,10 +464,11 @@ The profile of section 6 at `rank = 3` reads: diagonal `1 / 2`, uniform weight `
 pairing magnitude `1 / 4` on meeting edges — exactly the landed `K4` chart numbers.  The
 free excess is `1 / 3`, and two meeting partners contribute `1 / 2`. -/
 
-/-- **THE MEETING RELATION OF THE COMPLETE GRAPH ON FOUR VERTICES**, in the labelling that
-sends complementary edges to labels summing to five. -/
+/-- **THE MEETING RELATION OF THE COMPLETE GRAPH ON FOUR VERTICES**, in the labelling of
+`Gtz.graphicKFourDesign`: the disjoint pairs are `{0,1}`, `{2,3}` and `{4,5}`, so two
+labels fail to meet exactly when they share the value of `first / 2`. -/
 def kFourMeets (first second : Fin 6) : Prop :=
-  first ≠ second ∧ (first : ℕ) + (second : ℕ) ≠ 5
+  first ≠ second ∧ (first : ℕ) / 2 ≠ (second : ℕ) / 2
 
 instance decidableKFourMeets (first second : Fin 6) : Decidable (kFourMeets first second) := by
   unfold kFourMeets; infer_instance
@@ -728,5 +731,74 @@ theorem kFourPair_lt_kFourDiag : profilePair 3 < profileDiag 3 := by
 /-- The rank-four reading at the threshold cell `(10, 4)`: `1 / 5 < 3 / 10`. -/
 theorem rankFourPair_lt_rankFourDiag : profilePair 4 < profileDiag 4 := by
   unfold profilePair profileDiag; norm_num
+
+/-! ## 12. The profile is INHABITED, so the refutation is unconditional
+
+Everything above is conditional on a design carrying `Gtz.CompleteGraphProfile`.  The
+landed `Gtz.graphicKFourDesign` carries it.  That design has six atoms
+`sqrt 6 / 2` times the `K4` edge vectors, uniform weight `1 / 6`, every leverage exactly
+`3`, and a Gram off-diagonal in `{0, ±3/2}` whose three zeros sit on the three perfect
+matchings `{0,1}`, `{2,3}`, `{4,5}` — exactly `Gtz.kFourMeets`.
+
+At uniform weight `1 / 6` the projection entry is `(1/6)` times the pairing, so the
+diagonal reads `(1/6) * 3 = 1/2 = 2 / (rank + 1)` and a meeting pair reads
+`(1/6) * (3/2) = 1/4 = 1 / (rank + 1)`.  All three fields hold on the nose. -/
+
+/-- The projection of the landed `K4` graphic design, in edge-vector coordinates. -/
+theorem projectionOfDesign_graphicKFour (first second : Fin 6) :
+    projectionOfDesign graphicKFourDesign first second
+      = 1 / 4 * ∑ coord, kFourEdgeVector first coord * kFourEdgeVector second coord := by
+  have hweight : ∀ edge : Fin 6, graphicKFourDesign.weight edge = 1 / 6 := fun _ => rfl
+  have hsqrt : Real.sqrt (1 / 6 : ℝ) * Real.sqrt (1 / 6 : ℝ) = 1 / 6 :=
+    Real.mul_self_sqrt (by norm_num)
+  rw [projectionOfDesign_apply, hweight, hweight, hsqrt]
+  have hpair : graphicKFourDesign.atom first ⬝ᵥ graphicKFourDesign.atom second
+      = 3 / 2 * ∑ coord, kFourEdgeVector first coord * kFourEdgeVector second coord :=
+    graphicKFourDesign_atomPairing first second
+  rw [hpair]; ring
+
+/-- **A MEETING PAIR READS EXACTLY ONE QUARTER.**  The three vanishing pairings of the
+landed design sit on the three perfect matchings, and every other pairing is `±3/2`, so the
+projection entry is `±1/4`. -/
+theorem abs_projectionOfDesign_graphicKFour (first second : Fin 6)
+    (hpair : (first : ℕ) / 2 ≠ (second : ℕ) / 2) :
+    |projectionOfDesign graphicKFourDesign first second| = 1 / 4 := by
+  rw [projectionOfDesign_graphicKFour]
+  revert hpair
+  fin_cases first <;> fin_cases second <;>
+    simp [kFourEdgeVector, Fin.sum_univ_three]
+
+/-- **THE PROFILE IS INHABITED.**  The landed `K4` graphic design carries the
+complete-graph profile at rank three, with the meeting relation of section 9.  So every
+conditional statement of sections 6, 7 and 9 becomes unconditional. -/
+theorem completeGraphProfile_graphicKFour :
+    CompleteGraphProfile graphicKFourDesign kFourMeets where
+  diag := by
+    intro label
+    rw [projectionOfDesign_graphicKFour]
+    fin_cases label <;> simp [kFourEdgeVector, Fin.sum_univ_three] <;> norm_num
+  weight := by
+    intro label
+    norm_num [graphicKFourDesign]
+  heavy := by
+    intro first second _ hmeet
+    rw [abs_projectionOfDesign_graphicKFour first second hmeet.2]
+    norm_num
+
+/-- **THE LANDED HYPOTHESIS OF THE FRONTIER PRODUCER IS FALSE AT `(6, 3)`, WITH NO
+HYPOTHESIS LEFT.**  The `K4` graphic design admits no excess dominated selection. -/
+theorem not_forall_excessDominates_sixThree_unconditional :
+    ¬ ∀ design : WeightedDesign 6 3,
+        ∃ selected : Finset (Fin 6), ∃ hcard : selected.card = 3,
+          ExcessDominatesBlock design selected hcard :=
+  not_forall_excessDominates_sixThree completeGraphProfile_graphicKFour
+
+/-- **AND NO SELECTION OF THE `K4` GRAPHIC DESIGN IS EXCESS DOMINATED.**  The sharp form:
+every one of its twenty triples fails, by the deficit `1 / 6` of section 9. -/
+theorem not_exists_excessDominates_graphicKFour :
+    ¬ ∃ selected : Finset (Fin 6), ∃ hcard : selected.card = 3,
+        ExcessDominatesBlock graphicKFourDesign selected hcard :=
+  not_exists_excessDominates_of_crowded completeGraphProfile_graphicKFour (by norm_num)
+    (fun selected hcard => kFourMeets_crowded selected hcard)
 
 end Gtz
