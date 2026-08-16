@@ -32974,3 +32974,12 @@ run_cmd do
 #print axioms Gtz.kfourStar_floor_quarter
 #print axioms Gtz.kfourStar_bestFloor_lt_maxOffsetSq
 #print axioms Gtz.kfourStar_floor_deficit
+
+-- The door loses nothing.  Sylvester at `Fin 3` runs backwards and the pivot Schur
+-- identity is an identity, so the three inequalities ARE positive definiteness of the
+-- block, and the offset criterion is EQUIVALENT to the landed block-gap selection.
+-- The rank-four rung is therefore exactly three polynomial inequalities at one pivot.
+#print axioms Gtz.triplePick_eta
+#print axioms Gtz.posDef_tripleBlock_iff_offsetAt_sq_lt
+#print axioms Gtz.offsetDominatesSomewhere_iff_blockGapSelects
+#print axioms Gtz.projGapAt_pos_iff_offsetAt_sq_lt

@@ -38,6 +38,15 @@ retires all five on-path obligations from `Gtz.OffsetDominatesSomewhere` alone. 
 the four landed entrances, and it is the first one stated with no determinant, no root and
 no division — three polynomial inequalities in the projection entries and the weights.
 
+Sylvester at `Fin 3` also runs backwards, and the pivot Schur identity is an identity, so
+the door LOSES NOTHING.  `Gtz.posDef_tripleBlock_iff_offsetAt_sq_lt` makes the three
+inequalities equivalent to positive definiteness of the block, and
+`Gtz.offsetDominatesSomewhere_iff_blockGapSelects` lifts that to the door hypothesis
+itself.  The offset criterion is therefore a faithful restatement of the landed block-gap
+selection, not a strengthening of it: the whole rank-four rung reduces to three polynomial
+inequalities at one pivot of one design, and a producer may work in offset coordinates
+with no loss.
+
 ## 3. The offset's second moment, in closed form
 
 Summing the pivot identity over the twenty ordered partner pairs gives the second moment of
@@ -341,7 +350,77 @@ theorem allFiveOnPath_of_offsetDominates_proj
       hminorSecond, hminorThird]
     exact hsq
 
-/-! ### 6. The row second moment of the offset -/
+/-! ### 6. THE DOOR LOSES NOTHING -/
+
+/-- A three-slot pick is its own explicit triple. -/
+theorem triplePick_eta (pick : Fin 3 → Fin size) : ![pick 0, pick 1, pick 2] = pick := by
+  funext slot; fin_cases slot <;> rfl
+
+/-- **THE THREE INEQUALITIES ARE POSITIVE DEFINITENESS.**  Sylvester at `Fin 3` runs in
+both directions, and the pivot Schur identity is an identity, so the offset reading of the
+criterion is EXACT.  Nothing is weakened and nothing is strengthened. -/
+theorem posDef_tripleBlock_iff_offsetAt_sq_lt (form : Matrix (Fin size) (Fin size) ℝ)
+    (hsymmetric : formᵀ = form) (first second third : Fin size) :
+    (tripleBlock form first second third).PosDef
+      ↔ 0 < form first first ∧ 0 < pairMinorAt form first second ∧
+        offsetAt form first second third ^ 2
+          < pairMinorAt form first second * pairMinorAt form first third := by
+  constructor
+  · intro hposDef
+    rw [tripleBlock_eq_entries form hsymmetric, leadingMinors_pos_iff_posDef_fin_three]
+      at hposDef
+    obtain ⟨hcorner, hblock, hdet⟩ := hposDef
+    refine ⟨hcorner, by simpa [pairMinorAt] using hblock, ?_⟩
+    refine (offsetAt_sq_lt_iff_det_pos form hsymmetric hcorner second third).mpr ?_
+    rw [det_tripleBlock form hsymmetric]
+    nlinarith [hdet]
+  · rintro ⟨hcorner, hminor, hsq⟩
+    have hdet := (offsetAt_sq_lt_iff_det_pos form hsymmetric hcorner second third).mp hsq
+    rw [det_tripleBlock form hsymmetric] at hdet
+    rw [tripleBlock_eq_entries form hsymmetric, leadingMinors_pos_iff_posDef_fin_three]
+    exact ⟨hcorner, by simpa [pairMinorAt] using hminor, by nlinarith [hdet]⟩
+
+/-- **THE FIFTH DOOR IS FAITHFUL.**  The offset criterion is not merely sufficient for the
+landed block-gap selection — it is EQUIVALENT to it.  So the whole rank-four rung is
+exactly three polynomial inequalities at one pivot of one design, and a producer that works
+in offset coordinates gives up nothing. -/
+theorem offsetDominatesSomewhere_iff_blockGapSelects :
+    OffsetDominatesSomewhere ↔
+      ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
+        ∃ pick : Fin 3 → Fin 6, Function.Injective pick ∧
+          (blockGapAt (projectionOfDesign design) design.weight pick).PosDef := by
+  refine ⟨blockGapAt_posDef_of_offsetDominatesSomewhere, fun hselect design hprimitive => ?_⟩
+  obtain ⟨pick, hinj, hposDef⟩ := hselect design hprimitive
+  have hfirstSecond : pick 0 ≠ pick 1 := fun heq => absurd (hinj heq) (by decide)
+  have hthirdFirst : pick 2 ≠ pick 0 := fun heq => absurd (hinj heq) (by decide)
+  have hthirdSecond : pick 2 ≠ pick 1 := fun heq => absurd (hinj heq) (by decide)
+  have hblock : (tripleBlock (diagonalShiftForm design) (pick 0) (pick 1) (pick 2)).PosDef := by
+    rw [tripleBlock_diagonalShift_eq_blockGapAt design hfirstSecond hthirdFirst hthirdSecond,
+      triplePick_eta]
+    exact hposDef
+  obtain ⟨hcorner, hminor, hsq⟩ :=
+    (posDef_tripleBlock_iff_offsetAt_sq_lt (diagonalShiftForm design)
+      (diagonalShiftForm_transpose design) (pick 0) (pick 1) (pick 2)).mp hblock
+  exact ⟨pick 0, pick 1, pick 2, hfirstSecond, hthirdFirst, hthirdSecond,
+    hcorner, hminor, hsq⟩
+
+/-- The same equivalence read on the gap functional at uniform weight: a positive landed
+gap at a triple is exactly the three offset inequalities at its first slot. -/
+theorem projGapAt_pos_iff_offsetAt_sq_lt (design : WeightedDesign 6 3)
+    (huniform : ∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹)
+    {first second third : Fin 6} (hsecond : first ≠ second) (hthird : first ≠ third)
+    (hfar : second ≠ third) (hpivot : 0 < diagonalShiftForm design first first) :
+    0 < projGapAt (projectionOfDesign design) first second third
+      ↔ shiftOffsetAt design first second third ^ 2
+        < pairMinorAt (diagonalShiftForm design) first second
+          * pairMinorAt (diagonalShiftForm design) first third := by
+  simp only [shiftOffsetAt]
+  rw [offsetAt_sq_lt_iff_det_pos (diagonalShiftForm design)
+      (diagonalShiftForm_transpose design) hpivot second third,
+    det_tripleBlock_diagonalShift_uniform design huniform hsecond hthird hfar]
+  constructor <;> intro hgap <;> linarith
+
+/-! ### 7. The row second moment of the offset -/
 
 /-- The ordered product sum of a row of shifted pair minors is the squared row total less
 the row energy.  This is the landed `Finset` identity read at the shifted pair minors. -/
