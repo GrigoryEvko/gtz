@@ -1169,6 +1169,9 @@ import Gtz.Wave.TieParallelPairWeightRegular
 import Gtz.Wave.StressFreeCapRefutation
 import Gtz.Wave.ComplementBlockBudget
 import Gtz.Wave.VeroneseWeightElimination
+import Gtz.Wave.ShareOneForcingConic
+import Gtz.Wave.ShareOneForcingWitness
+import Gtz.Wave.ShareOneForcing
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -34834,3 +34837,74 @@ run_cmd do
 #print axioms Gtz.sum_weight_mul_sq_dotProduct_probe
 #print axioms Gtz.exists_overshoot_of_forall_dotProduct_eq_zero
 #print axioms Gtz.exists_third_label_normal_gap_pos
+
+-- Gtz/Wave/ShareOneForcingConic.lean
+#print axioms Gtz.exists_commonPerp
+#print axioms Gtz.orthogonalPairConic_ne_zero_of_ne_zero
+#print axioms Gtz.exists_conic_of_common_normal_off_pair
+#print axioms Gtz.not_common_normal_off_pair_of_stressFree
+#print axioms Gtz.not_five_coplanar_of_stressFree
+#print axioms Gtz.exists_pair_off_quadruple
+#print axioms Gtz.not_coplanar_quadruple_of_stressFree_atoms
+#print axioms Gtz.not_coplanar_quadruple_of_stressFree
+
+-- Gtz/Wave/ShareOneForcingWitness.lean
+#print axioms Gtz.tiltHeight
+#print axioms Gtz.tiltHeight_sq
+#print axioms Gtz.tiltHeight_ne_zero
+#print axioms Gtz.tiltedAtoms
+#print axioms Gtz.tiltedWeights
+#print axioms Gtz.tiltedWeights_pos
+#print axioms Gtz.sum_tiltedWeights
+#print axioms Gtz.tiltedAtoms_isParseval
+#print axioms Gtz.tiltedDesign
+#print axioms Gtz.tiltedDesign_atom
+#print axioms Gtz.tiltedDesign_weight
+#print axioms Gtz.tiltedAtoms_stressFree
+#print axioms Gtz.tiltedDesign_stressFree
+#print axioms Gtz.atomShare_tiltedDesign_zero
+#print axioms Gtz.not_uniform_atomShare_cap_of_stressFree
+
+-- Gtz/Wave/ShareOneForcing.lean
+#print axioms Gtz.unitize
+#print axioms Gtz.unitize_dotProduct_self
+#print axioms Gtz.dotProduct_unitize
+#print axioms Gtz.smul_unitize_dotProduct
+#print axioms Gtz.unitize_ne_zero
+#print axioms Gtz.planeFirst
+#print axioms Gtz.planeSecond
+#print axioms Gtz.cross_ne_zero_of_ne_zero
+#print axioms Gtz.planeFirst_dotProduct_self
+#print axioms Gtz.planeSecond_dotProduct_self
+#print axioms Gtz.base_dotProduct_planeFirst
+#print axioms Gtz.base_dotProduct_planeSecond
+#print axioms Gtz.planeFirst_dotProduct_planeSecond
+#print axioms Gtz.smul_eq_orthogonalTriple_expansion
+#print axioms Gtz.cross_dotProduct_self_of_perpWitness
+#print axioms Gtz.frame_expansion
+#print axioms Gtz.dotProduct_frame_expansion
+#print axioms Gtz.frame_parseval
+#print axioms Gtz.frame_inPlane_pairing
+#print axioms Gtz.deflationScale
+#print axioms Gtz.deflationScale_pos
+#print axioms Gtz.deflationScale_lt_one
+#print axioms Gtz.deflateAtZeroAtom
+#print axioms Gtz.dotProduct_self_le_deflationScale_mul_sum
+#print axioms Gtz.leverageOf_pos_of_atomShare_eq_one
+#print axioms Gtz.one_lt_leverageOf_of_atomShare_eq_one
+#print axioms Gtz.exists_posDef_triple_of_atomShare_eq_one
+#print axioms Gtz.not_isTie_of_atomShare_eq_one
+#print axioms Gtz.atomShare_lt_one_of_isTie
+#print axioms Gtz.not_exists_atomShare_eq_one_of_isTie
+#print axioms Gtz.sum_weight_mul_sq_dotProduct_pos_of_isTie
+#print axioms Gtz.exists_ne_dotProduct_ne_zero_of_isTie
+#print axioms Gtz.ShareOneForcing
+#print axioms Gtz.StressFreeSixThreeTieFree
+#print axioms Gtz.shareOneForcing_iff_stressFreeSixThreeTieFree
+#print axioms Gtz.shareOneForcing_of_stressFreeSixThreeTieFree_tieOnly
+#print axioms Gtz.posDef_subsetSum_of_forall_leverage_le_one
+#print axioms Gtz.leverageOf_le_one_of_notMem_heavySet
+#print axioms Gtz.four_le_card_heavySet_of_isTie
+#print axioms Gtz.atomShare_eq_one_of_forall_dotProduct_normal_eq_zero
+#print axioms Gtz.not_isTie_of_forall_dotProduct_normal_eq_zero
+#print axioms Gtz.not_isTie_and_hasStress_of_five_coplanar

@@ -5861,3 +5861,64 @@ import Gtz.Wave.ComplementBlockBudget
 --   to the SHARE-ONE boundary, which is the boundary this module proves branch (i) does not
 --   contain.  That is measurement, not kernel.
 import Gtz.Wave.VeroneseWeightElimination
+
+-- ================================================================================
+-- Gtz/Wave/ShareOneForcingConic.lean, Gtz/Wave/ShareOneForcingWitness.lean and
+-- Gtz/Wave/ShareOneForcing.lean, 2026-08-16.  THE SHARE-ONE BOUNDARY, READ FROM THE TIE
+-- SIDE.  The wave above caps every share of a branch-(i) design strictly below one.  These
+-- three modules answer the two questions that cap raises: is the cap uniform, and does the
+-- share-one locus force anything.
+-- THE FORCING STATEMENT IS THE TARGET.  `Gtz.ShareOneForcing` says a stress-free `(6,3)` tie
+--   carries a share of one.  Its consequent is false at every design of the stratum by
+--   `Gtz.atomShare_lt_one_of_stressFree`, so `Gtz.shareOneForcing_iff_stressFreeSixThreeTieFree`
+--   makes it the SAME PROPOSITION as branch (i).  An implication with an always-false
+--   consequent is the negation of its antecedent.  A proof of the forcing statement is a
+--   proof of branch (i) and nothing less, so the forcing is a restatement and not a route.
+-- THE CAP NEEDS NO STRESS.  `Gtz.exists_posDef_triple_of_atomShare_eq_one`: at rank three and
+--   every size, a design with a share of one carries a STRICTLY dominating triple.  The share
+--   of one makes the atom orthogonal to all the others, so the others live in its orthogonal
+--   plane.  Rank-two GTZ (`Gtz.gtz_rank_two`, a theorem) covers that plane with a pair, and
+--   `Gtz.deflateAtZeroAtom` re-normalizes the plane design after removing half of the
+--   share-one label's weight, which turns the weak covering into a strict one.  Hence
+--   `Gtz.atomShare_lt_one_of_isTie`, the tie twin of the stratum cap, with the stress
+--   hypothesis dropped.  `Gtz.shareOneForcing_of_stressFreeSixThreeTieFree_tieOnly` records
+--   that the collapse of the forcing needs only the tie.
+-- THE HYPERPLANE NO-GO.  `Gtz.atomShare_eq_one_of_forall_dotProduct_normal_eq_zero`: an atom
+--   that alone reads a direction has share exactly one, because Parseval spends the whole of
+--   that direction on it and Cauchy-Schwarz is then tight.  So
+--   `Gtz.not_isTie_of_forall_dotProduct_normal_eq_zero`: a rank-three design whose atoms lie
+--   in ONE PLANE apart from a single label is never a tie.  At `(6,3)` the same configuration
+--   also carries a stress (`Gtz.not_isTie_and_hasStress_of_five_coplanar`).
+-- THE HEAVY FLOOR IS FOUR.  `Gtz.posDef_subsetSum_of_forall_leverage_le_one`: a set of two or
+--   more labels whose complement is all light strictly dominates.  The landed balance law
+--   `Gtz.posDef_subsetSum_compl_of_baseShare_lt` supplies it, because a light label's share
+--   never exceeds its weight and the selected weights beat their own maximum.  Hence
+--   `Gtz.four_le_card_heavySet_of_isTie`: a rank-three tie carries at least FOUR labels of
+--   leverage above one, one more than the unconditional three of `Gtz.three_le_card_heavySet`.
+--   The regular tetrahedron has exactly four, so the floor is sharp.
+-- THE FRAME KIT.  `Gtz.smul_eq_orthogonalTriple_expansion` is a division-free orthogonal
+--   basis identity in three-space whose only hypothesis is one orthogonality.  It gives
+--   `Gtz.frame_parseval` and `Gtz.frame_inPlane_pairing`, which read every probe against the
+--   plane of a direction with no eigenvalue and no spectral theorem.
+-- THE CAP IS NOT UNIFORM ON THE STRATUM.  `Gtz.tiltedDesign` is an explicit rational family:
+--   one pole `(0,0,z)` with weight `2/3` and five planar directions `(2,0)`, `(0,2)`,
+--   `(-2,-2)`, `(2,-2)`, `(-2,2)` lifted by a tilt, with weights `1/12, 1/12, 1/12, 1/24,
+--   1/24`.  The five lifted points sit on a conic that misses the pole, so the family is
+--   stress-free for every nonzero tilt, and `Gtz.atomShare_tiltedDesign_zero` reads the pole
+--   share as `1 - tilt^2/3`.  `Gtz.not_uniform_atomShare_cap_of_stressFree`: the stress-free
+--   stratum carries shares arbitrarily near one.  So the CLOSURE of branch (i) meets the
+--   share-one locus, the strict cap is NOT a positive-distance separation, and no uniform
+--   share margin exists on the stratum.  The family is not a tie.
+-- THE COPLANARITY RIGIDITY.  `Gtz.exists_commonPerp` builds a common perpendicular of two
+--   vectors from a singular three-by-three matrix.  With it,
+--   `Gtz.exists_conic_of_common_normal_off_pair`: a nonzero normal that annihilates every
+--   atom except two named ones gives a nonzero conic through all six directions.  Hence
+--   `Gtz.not_coplanar_quadruple_of_stressFree`: NO FOUR atoms of a stress-free `(6,3)` design
+--   are coplanar, and `Gtz.not_five_coplanar_of_stressFree` for five.
+-- HONEST SCOPE.  Nothing here decides branch (i).  The share cap on ties is strict but this
+--   wave proves no floor for it, and the previous wave's directed descent reports the
+--   smallest weight falling from 1.5e-2 to 5.9e-5 exactly where the largest share rises, so
+--   a quantitative share cap would need a weight floor that the descent removes.
+import Gtz.Wave.ShareOneForcingConic
+import Gtz.Wave.ShareOneForcingWitness
+import Gtz.Wave.ShareOneForcing
