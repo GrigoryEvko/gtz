@@ -32608,3 +32608,56 @@ run_cmd do
 #print axioms Gtz.heavyPair_detPos_notHost
 #print axioms Gtz.KFourMinThresholdHostsStrictTree
 #print axioms Gtz.kFourMinThresholdHostsStrictTree_refuted
+
+-- Gtz/Wave/ElliptopeGapBridge.lean: the pivot Schur identity, the root-free exact
+-- criterion, the named endpoints, the general elliptope bridge, the shipped root
+-- interval transported to the gap, the margin ceiling, and the refutation showing the
+-- edge conditions are not consequences of a positive determinant at positive surpluses.
+#print axioms Gtz.pairMinorForm
+#print axioms Gtz.pairMinorForm_apply
+#print axioms Gtz.pairMinorForm_comm
+#print axioms Gtz.pairMinorForm_neg
+#print axioms Gtz.pairMinorForm_mul_sub_sq
+#print axioms Gtz.pairMinorForm_mul_sub_sq_second
+#print axioms Gtz.pairMinorForm_mul_sub_sq_third
+#print axioms Gtz.gapWidth_sq_eq
+#print axioms Gtz.tripleDetForm_pos_iff_sq_lt
+#print axioms Gtz.tripleDetForm_nonneg_iff_sq_le
+#print axioms Gtz.tripleDetForm_pos_iff_sq_lt_second
+#print axioms Gtz.tripleDetForm_pos_iff_sq_lt_third
+#print axioms Gtz.pairMinorForm_pos_of_pos_of_tripleDetForm_pos
+#print axioms Gtz.pairMinorForm_mul_pos_of_tripleDetForm_pos
+#print axioms Gtz.not_forall_pairMinorForm_pos_of_tripleDetForm_pos
+#print axioms Gtz.witness_tripleDetForm_pos
+#print axioms Gtz.witness_pairMinorForm_neg
+#print axioms Gtz.gapRootUpper
+#print axioms Gtz.gapRootLower
+#print axioms Gtz.gapRoot_add
+#print axioms Gtz.gapRoot_mul
+#print axioms Gtz.gapRoot_sub
+#print axioms Gtz.gapRootLower_le_gapRootUpper
+#print axioms Gtz.tripleDetForm_pos_iff_mem_openGapInterval
+#print axioms Gtz.tripleDetForm_nonneg_iff_mem_gapInterval
+#print axioms Gtz.tripleDetForm_pos_iff_mem_openGapInterval_of_pairMinors
+#print axioms Gtz.tripleDetForm_eq_mul_elliptopeBracket
+#print axioms Gtz.pairMinorForm_nonneg_iff_sq_le_one
+#print axioms Gtz.tripleDetForm_pos_iff_rootInterval
+#print axioms Gtz.tripleDetForm_nonneg_iff_rootInterval
+#print axioms Gtz.rootInterval_subset_compatible
+#print axioms Gtz.quarterSlack_pairMinorForm_pos
+#print axioms Gtz.quarterSlack_minorProduct_pos
+#print axioms Gtz.sq_lt_of_tripleDetForm_pos
+#print axioms Gtz.residual_eq_pivot_mul
+#print axioms Gtz.gapOffset
+#print axioms Gtz.gapOffset_apply
+#print axioms Gtz.gapOffset_eq_zero_iff
+#print axioms Gtz.tripleDetForm_le_minorProduct_div
+#print axioms Gtz.tripleDetForm_centre
+#print axioms Gtz.tripleDetForm_eq_ceiling_iff
+#print axioms Gtz.sq_halfWidth_eq
+#print axioms Gtz.gapRoot_sub_sq
+#print axioms Gtz.pivot_criteria_agree
+#print axioms Gtz.pivot_criteria_agree_third
+#print axioms Gtz.tripleGapDet_pos_iff_sq_lt
+#print axioms Gtz.tripleGapDet_le_minorProduct_div
+#print axioms Gtz.tripleGapDet_pos_iff_mem_openGapInterval

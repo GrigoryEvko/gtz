@@ -4977,3 +4977,14 @@ import Gtz.Wave.JointMassThreshold
 -- The minimum-threshold designation is refuted at two of the four mandatory
 -- points, and the mechanism is that the threshold is a determinant reading.
 import Gtz.Wave.KFourTreeLaplacian
+
+-- The elliptope gap bridge: domination as membership of a named interval, and the
+-- root-free criterion underneath it.  Eliminating the pivot slot writes the third
+-- minor as the product of the pivot's two PAIR MINORS minus one square, so the sign
+-- question is exact, polynomial and division free.  Reading the same identity as a
+-- quadratic in the far pairing names the two endpoints, with one square root of a
+-- product of pair minors and the pivot's own scale cancelled.  The general bridge to
+-- the shipped elliptope bracket holds off the flat locus and off uniform weight, and
+-- it gives the shipped root layer its first consumer outside its own file.  The
+-- margin ceiling is the matching upper bound to every landed cell's lower bound.
+import Gtz.Wave.ElliptopeGapBridge
