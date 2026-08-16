@@ -4907,3 +4907,4 @@ import Gtz.Wave.MarginFloorAssembly
 import Gtz.Wave.GramCrossFloor
 import Gtz.Wave.TightGramSixLaws
 import Gtz.Wave.ComplementFourBlock
+import Gtz.Wave.SubsetMassDuality

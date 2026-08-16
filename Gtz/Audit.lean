@@ -32161,3 +32161,17 @@ run_cmd do
 #print axioms Gtz.weight_le_third_of_le_two
 #print axioms Gtz.not_complementMean_reaches_weight_floor
 #print axioms Gtz.complementMean_lt_weight_floor_gap
+#print axioms Gtz.sum_outer_partition
+#print axioms Gtz.transpose_mul_submatrix_eq_sum_outer
+#print axioms Gtz.principalMinorTotal_submatrix_eq_det_one_sub_block
+#print axioms Gtz.submatrix_one_of_injective
+#print axioms Gtz.principalMinorTotal_eq_one_sub_diagonal
+#print axioms Gtz.principalMinorTotal_eq_pair_slack_det
+#print axioms Gtz.det_submatrix_eq_det_one_sub_complement
+#print axioms Gtz.det_submatrix_eq_det_complementProjection
+#print axioms Gtz.det_one_sub_submatrix_eq_det_complement
+#print axioms Gtz.pairMinorAt_sub_diagonal_product
+#print axioms Gtz.pairMinorAt_le_diagonal_product
+#print axioms Gtz.pairMinorAt_one_sub_sub_pairMinorAt
+#print axioms Gtz.posDef_projectionBlock_of_weights_lt_complement_det
+#print axioms Gtz.det_submatrix_le_one_sub_of_complement
