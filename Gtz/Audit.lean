@@ -1159,6 +1159,7 @@ import Gtz.Wave.MixedTripleBalance
 import Gtz.Wave.GapDeterminantSignComplement
 import Gtz.Wave.DustBoundaryFloor
 import Gtz.Wave.OneLineBlindSpotInhabited
+import Gtz.Wave.A1NeedleCollapse
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -34394,3 +34395,13 @@ run_cmd do
 #print axioms Gtz.exists_oneLine_tenthHeavy_jointBlind_weaklyDominated
 #print axioms Gtz.jointBlind_witness_meets_conclusion
 #print axioms Gtz.exists_oneLine_capBlindSpot
+-- The A1 needle antecedent collapses onto the class statement.
+#print axioms Gtz.exists_weakDirection_of_not_posDef_complementTriple
+#print axioms Gtz.lightTripleBalance_of_noStrictTriple
+#print axioms Gtz.not_heavyNeedleResidual_of_lineFreeOffConicBaseTie
+#print axioms Gtz.heavyNeedleResidual_of_pinnedStratumTieFree
+#print axioms Gtz.lineFreeOffConicTieFree_iff_stressFreeStratumIsTieFree
+#print axioms Gtz.heavyNeedleResidual_iff_lineFreeOffConicTieFree
+#print axioms Gtz.heavyNeedleResidual_iff_stressFreeStratumIsTieFree
+#print axioms Gtz.exists_lineFreeOffConicTie_of_not_heavyNeedleResidual
+#print axioms Gtz.not_heavyNeedleResidual_iff_exists_lineFreeOffConicTie

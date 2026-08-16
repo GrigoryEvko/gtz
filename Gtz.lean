@@ -5461,3 +5461,24 @@ import Gtz.Wave.DustBoundaryFloor
 -- THE TENTH-HEAVY HYPOTHESIS IS FREE.  Six positive weights sum to one, so some
 --   weight is at least 1/6.  That clause excludes no design at all.
 import Gtz.Wave.OneLineBlindSpotInhabited
+-- THE A1 NEEDLE ANTECEDENT COLLAPSES.  `Gtz.BaseTripleTightLineFreeOffConicHeavyNeedleResidual`
+--   carries nineteen hypotheses.  Four of them name the stratum, the pinned base
+--   triple and its weak domination.  The other fifteen are FREE: each follows
+--   from those four together with the no-strict ledger.
+-- THE FIVE PRODUCERS, all landed before this module and never assembled.  The weak
+--   direction comes from Family One, because no weak direction makes `{3,4,5}`
+--   strict.  The twenty-triple balance family comes from
+--   `Gtz.exists_posDef_cardThree_of_lightTriple`, because one light triple makes its
+--   complement strict.  The strict separation, the two share sandwiches and the zero
+--   discriminant are landed consequences of the tight direction alone.  The positive
+--   base residual is landed from line-freeness alone.  The gap needle is the landed
+--   complement-jaw law at a tie.
+-- THE CONSEQUENCE IS AN EQUIVALENCE.  `Gtz.heavyNeedleResidual_iff_stressFreeStratumIsTieFree`
+--   proves the registry axiom EQUAL to the class statement at the empty line family.
+--   The four producer layers between the axiom and the class carry no content.  Read
+--   the other way, `Gtz.not_heavyNeedleResidual_iff_exists_lineFreeOffConicTie` shows
+--   that one line-free off-conic `(6,3)` tie is the ONLY counterexample shape.
+-- WHAT THIS RETIRES.  Any future sharpening that adds a hypothesis derivable from the
+--   four naming ones is equally empty.  A sharpening is real only when it removes
+--   designs, and the removal must be exhibited at a design.
+import Gtz.Wave.A1NeedleCollapse
