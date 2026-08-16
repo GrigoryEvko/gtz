@@ -5361,3 +5361,63 @@ import Gtz.Wave.GapDeterminantSignComplement
 --   tetrahedron, which is the ceiling on the nose.  The share ceiling of the
 --   module cannot be improved.
 import Gtz.Wave.AllHeavyDeterminantPrice
+
+-- ============================================================================
+-- Gtz.Wave.DustBoundaryFloor -- no uniform positive floor at (6,3), and the two
+--   corrections to the determinant reading of the objective.
+-- ============================================================================
+-- THE TRANSPORT IS THE ENGINE.  A RAW FRAME is vectors and positive weights of
+--   total one whose moment matrix F = sum w_c b_c b_c^T is positive definite.
+--   Gtz.RawFrame.exists_whitened turns any raw frame into a Gtz.WeightedDesign
+--   with the SAME weights, and Gtz.subsetSum_whitenedDesign_sub_one makes the
+--   subset gap a congruence image of the raw gap B_C - F.  So
+--   Gtz.det_gap_mul_det_moment reads det(S_C - 1) * det F = det(B_C - F),
+--   Gtz.posDef_gap_iff and Gtz.posSemidef_gap_iff transfer both positivity
+--   notions in both directions, and Gtz.isPrimitiveDesign_of_rawNotParallel
+--   carries primitivity across.  No square root, and the whole of GL(3) acts
+--   trivially on the left side, so a search on raw data runs on the quotient.
+--   This generalizes the K4-only whitening of Gtz/Design/ChartDesignWhitening.
+-- THE DUST FAMILY.  Four tetrahedron vertices at weight (1-2e)/4 and the two
+--   coordinate directions e_1, e_2 at weight e.  Gtz.rawMoment_dust puts the
+--   moment at diagonal (1-e, 1-e, 1-2e).  The twenty raw gap determinants fall
+--   into FIVE ORBITS OF FOUR:
+--     tetrahedron triple       2e^3 + 10e^2 + 12e  = 2e(e+2)(e+3)
+--     two vertices, far dust   2e^3 +  7e^2 +  3e - 6
+--     two vertices, near dust  2e^3 +  7e^2 +  3e - 2
+--     two vertices, flat dust  2e^3 +  7e^2 -   e - 2
+--     one vertex, both dust    2e^3 +  4e^2 -  2e
+--   Gtz.dustGapMatrix_det_le lands the tetrahedron orbit as the largest for
+--   EVERY non-negative e, in one inequality over all twenty triples: the five
+--   differences are 0, 3(e+1)(e+2), 3e^2+9e+2, 3e^2+13e+2 and 2e(3e+7).
+-- THE MARGIN IS 12e.  Gtz.dustMargin_eq_linear_add_quadratic is the exact
+--   identity margin = 12e + 2e^2 (12e^2 - 29e + 29) / ((1-e)^2 (1-2e)), whose
+--   bracket has negative discriminant.  Gtz.twelve_mul_le_dustMargin and
+--   Gtz.dustMargin_le_linear_add give 12e <= margin <= 12e + 60e^2 for
+--   e <= 1/100, and Gtz.tendsto_dustMargin_div is the analytic form.  The four
+--   exact rationals the campaign measured are kernel:
+--   Gtz.dustMargin_tenth 217/108, Gtz.dustMargin_hundredth 2881/22869,
+--   Gtz.dustMargin_thousandth 2001667/166000833 and Gtz.dustMargin_millionth.
+-- THE HEADLINE.  Gtz.exists_primitiveDesign_all_gapDet_lt: for EVERY positive
+--   constant there is a PRIMITIVE (6,3) design that dominates STRICTLY and
+--   whose twenty gap determinants are all below the constant.  Equivalently
+--   Gtz.not_exists_uniform_gapDet_floor.  The tetrahedron gap carries the sum of
+--   squares (x0-x1)^2 + (x0+x2)^2 + (x1+x2)^2 + e (x0^2 + x1^2 + 2 x2^2)
+--   (Gtz.dotProduct_dustGapMatrix_tetra_mulVec), so the (4,3) tie is exactly the
+--   vanishing of the e term.  NO UNIFORM POSITIVE FLOOR EXISTS AT (6,3).
+-- THE TWO CORRECTIONS, Gtz.gapDet_neither_necessary_nor_sufficient.
+--   NOT NECESSARY.  Gtz.splitTetraDesign_gap_det_nonpos: on the WHOLE open
+--     two-parameter split-tetrahedron family all twenty gap determinants are at
+--     most zero, twelve at zero and eight at -8, and Gtz.splitTetraDesign_dominates
+--     still holds.  So Gtz.not_forall_exists_posDet_triple -- "every (6,3) design
+--     carries a triple of strictly positive gap determinant" is FALSE.
+--   NOT SUFFICIENT.  Gtz.exists_primitiveDesign_posDet_not_dominates: a
+--     PRIMITIVE design whose triple {0,1,2} reads 85/29 > 0 and whose gap is NOT
+--     positive semidefinite, because a real symmetric 3x3 of signature (+,-,-)
+--     has positive determinant.  Hence Gtz.posDet_does_not_imply_dominates.
+--   MEASURED, 2026-08-16: of 58481 primitive rational (6,3) frames drawn at
+--     random, 45301 carry such a triple, so the second failure is GENERIC.
+-- WHAT THIS DOES NOT DO.  It does not prove and does not refute
+--   Gtz.GtzWeighted 6 3.  The dust family satisfies the conjecture at every
+--   parameter in range.  What dies is any argument that needs a margin constant
+--   independent of the design.
+import Gtz.Wave.DustBoundaryFloor

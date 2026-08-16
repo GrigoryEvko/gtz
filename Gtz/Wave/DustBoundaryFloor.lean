@@ -104,7 +104,7 @@ def rawMoment (vec : Fin m → Fin k → ℝ) (weight : Fin m → ℝ) : Matrix 
 def rawSubsetSum (vec : Fin m → Fin k → ℝ) (C : Finset (Fin m)) : Matrix (Fin k) (Fin k) ℝ :=
   ∑ c ∈ C, atomMatrix (vec c)
 
-theorem atomMatrix_transpose (g : Fin k → ℝ) : (atomMatrix g)ᵀ = atomMatrix g := by
+theorem rawAtomMatrix_transpose (g : Fin k → ℝ) : (atomMatrix g)ᵀ = atomMatrix g := by
   ext i j
   simp only [atomMatrix, Matrix.transpose_apply, Matrix.vecMulVec_apply]
   ring
@@ -120,7 +120,7 @@ theorem rawMoment_transpose (vec : Fin m → Fin k → ℝ) (weight : Fin m → 
     (rawMoment vec weight)ᵀ = rawMoment vec weight := by
   rw [rawMoment, Matrix.transpose_sum]
   exact Finset.sum_congr rfl fun c _ => by
-    rw [Matrix.transpose_smul, atomMatrix_transpose]
+    rw [Matrix.transpose_smul, rawAtomMatrix_transpose]
 
 /-- The quadratic form of a raw moment is the weighted energy of the pairings. -/
 theorem dotProduct_rawMoment_mulVec (vec : Fin m → Fin k → ℝ) (weight : Fin m → ℝ)
@@ -268,7 +268,7 @@ theorem posDef_gap_iff (frame : RawFrame m k)
     rw [RawFrame.gap, Matrix.transpose_sub, rawSubsetSum, Matrix.transpose_sum,
       RawFrame.moment, rawMoment_transpose]
     exact congrArg (· - rawMoment frame.vec frame.weight)
-      (Finset.sum_congr rfl fun c _ => atomMatrix_transpose (frame.vec c))
+      (Finset.sum_congr rfl fun c _ => rawAtomMatrix_transpose (frame.vec c))
   rw [hcongr C]
   exact (posDef_congr_right hsym hunit).symm
 
@@ -283,7 +283,7 @@ theorem posSemidef_gap_iff (frame : RawFrame m k)
     rw [RawFrame.gap, Matrix.transpose_sub, rawSubsetSum, Matrix.transpose_sum,
       RawFrame.moment, rawMoment_transpose]
     exact congrArg (· - rawMoment frame.vec frame.weight)
-      (Finset.sum_congr rfl fun c _ => atomMatrix_transpose (frame.vec c))
+      (Finset.sum_congr rfl fun c _ => rawAtomMatrix_transpose (frame.vec c))
   rw [hcongr C]
   exact (posSemidef_congr_right hsym hunit).symm
 
@@ -435,7 +435,7 @@ theorem dustFrame_gap_det_le {eps : ℝ} (hlow : 0 < eps) (hhigh : eps < 1 / 2)
 theorem dustGapMatrix_transpose (eps : ℝ) (a b c : Fin 6) :
     (dustGapMatrix eps a b c)ᵀ = dustGapMatrix eps a b c := by
   rw [dustGapMatrix, Matrix.transpose_sub, Matrix.transpose_add, Matrix.transpose_add,
-    atomMatrix_transpose, atomMatrix_transpose, atomMatrix_transpose, dustMomentMatrix,
+    rawAtomMatrix_transpose, rawAtomMatrix_transpose, rawAtomMatrix_transpose, dustMomentMatrix,
     Matrix.diagonal_transpose]
 
 /-- **THE TETRAHEDRON GAP IN CLOSED FORM.**  The Gram of three tetrahedron
