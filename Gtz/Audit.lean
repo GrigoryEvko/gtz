@@ -1135,6 +1135,7 @@ import Gtz.Wave.TightGramSixLaws
 import Gtz.Wave.TripleDeterminantCells
 import Gtz.Wave.TripleDeterminantSharp
 import Gtz.Wave.TwoSidedFlatSandwich
+import Gtz.Wave.FlatSeidelSpectrum
 import Gtz.Wave.TypeEightProjectionTraceFloor
 import Gtz.Wave.TypeNineAlignedOperatorExit
 import Gtz.Wave.TypeNineAlignedOrthogonalExit
@@ -32581,6 +32582,20 @@ run_cmd do
 #print axioms Gtz.min_det_of_flat_le_one_twentySeventh
 #print axioms Gtz.flatPairEnergy_eq_zero_of_min_det_eq
 #print axioms Gtz.flatTripleCross_eq_zero_of_min_det_eq
+-- The quartic total of a hollow involution, from squaring the landed row law, and
+-- the sufficient half of the eligibility band.
+#print axioms Gtz.seidelQuartic
+#print axioms Gtz.seidelAdjacent
+#print axioms Gtz.sq_sum_sq_row_split
+#print axioms Gtz.seidelQuartic_add_seidelAdjacent
+#print axioms Gtz.seidelAdjacent_nonneg
+#print axioms Gtz.seidelQuartic_le
+#print axioms Gtz.sq_sum_sq_le_card_mul_sum_quartic
+#print axioms Gtz.one_le_seidelQuartic
+#print axioms Gtz.six_fifths_le_seidelQuartic
+#print axioms Gtz.posDef_blockGapAt_of_flatPairEnergy_lt
+#print axioms Gtz.posDef_blockGapAt_of_decoupled
+#print axioms Gtz.flat_band_bracket
 #print axioms Gtz.twentySeven_mul_det_blockGapAt_eq_elliptopeBracket
 #print axioms Gtz.det_blockGapAt_nonneg_of_abs_le_sixth
 #print axioms Gtz.elliptopeBracket_half_eq_zero

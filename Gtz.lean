@@ -4967,6 +4967,12 @@ import Gtz.Wave.NuCoveringBand
 -- `216 * det = 8 - 72 * energy + 432 * cross` -- and complementation of the form is
 -- complementation of the TRIPLE, so the twenty triples pair into ten.
 import Gtz.Wave.TwoSidedFlatSandwich
+-- Squaring the landed row law of the hollow involution splits the label count into
+-- a QUARTIC total and an ADJACENT total.  The quartic is trapped in `[6/5, 6]`, the
+-- floor at the equiangular profile and the ceiling exactly on the parallel-pair
+-- boundary.  Also the SUFFICIENT half of the eligibility band, against the landed
+-- necessary half.
+import Gtz.Wave.FlatSeidelSpectrum
 
 -- When the gap determinant is the ONLY obstruction to strict domination.  A
 -- principal block of a projection and its complement both have a nonnegative
