@@ -5037,6 +5037,7 @@ import Gtz.Wave.OffsetMinorProduct
 -- `329/20736` at the graphic point of `K4`.
 import Gtz.Wave.OffsetUpperBound
 import Gtz.Wave.ThirdLabelSelection
+import Gtz.Wave.ComplementTripleCap
 import Gtz.Wave.ThresholdEnergyClosure
 import Gtz.Wave.CrossEnergyFloor
 -- The frontier producer's hypothesis is tie-emptiness, and the complete-graph profile

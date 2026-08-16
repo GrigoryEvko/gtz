@@ -1083,6 +1083,7 @@ import Gtz.Wave.NuCoveringBand
 import Gtz.Wave.OffsetMinorProduct
 import Gtz.Wave.OffsetUpperBound
 import Gtz.Wave.ThirdLabelSelection
+import Gtz.Wave.ComplementTripleCap
 import Gtz.Wave.OrbitDesignationRefuter
 import Gtz.Wave.OrbitFourAlignedExchange
 import Gtz.Wave.OrbitFourAlignedFrame
@@ -33031,6 +33032,22 @@ run_cmd do
 #print axioms Gtz.PairPartialGapSomewhere
 #print axioms Gtz.allFiveOnPath_of_pairPartialGap
 #print axioms Gtz.consolidatedStrictTriple_of_pairPartialGap
+-- The complement cap on a triple, at general weight: the contraction, the cancellation
+-- of the three-local monomial, the small pair and the refuter.
+#print axioms Gtz.one_sub_diagonalShiftForm_eq
+#print axioms Gtz.posSemidef_one_sub_diagonalShiftForm
+#print axioms Gtz.det_tripleBlock_one_sub_nonneg
+#print axioms Gtz.one_sub_diagonalShiftForm_diag
+#print axioms Gtz.one_sub_diagonalShiftForm_offDiag
+#print axioms Gtz.one_sub_diagonalShiftForm_transpose
+#print axioms Gtz.tripleCap
+#print axioms Gtz.det_tripleBlock_add_complement_eq_tripleCap
+#print axioms Gtz.det_tripleBlock_le_tripleCap
+#print axioms Gtz.sum_sq_pairing_lt_of_det_pos
+#print axioms Gtz.exists_small_pairing_of_det_pos
+#print axioms Gtz.not_det_pos_of_tripleCap_le_sum_sq
+#print axioms Gtz.sum_sq_pairing_lt_of_pivot_of_det_pos
+#print axioms Gtz.not_det_pos_of_pivot_pairing_reaches
 #print axioms Gtz.consolidatedStrictTriple_of_offsetDominatesSomewhere
 #print axioms Gtz.allFiveOnPath_of_offsetDominates_proj
 #print axioms Gtz.sum_pairMinorAt_diagonalShift_product_erase
