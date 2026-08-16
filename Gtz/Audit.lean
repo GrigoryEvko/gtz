@@ -1168,6 +1168,7 @@ import Gtz.Wave.TieAtomRepeatRefutation
 import Gtz.Wave.TieParallelPairWeightRegular
 import Gtz.Wave.StressFreeCapRefutation
 import Gtz.Wave.ComplementBlockBudget
+import Gtz.Wave.VeroneseWeightElimination
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -34782,3 +34783,54 @@ run_cmd do
 #print axioms Gtz.trace_projectionGap_tetraDesign
 #print axioms Gtz.frobeniusNormSq_projectionGap_tetraDesign
 #print axioms Gtz.tetraDesign_projectionGap_boundary
+
+-- Gtz/Wave/VeroneseWeightElimination.lean
+#print axioms Gtz.veroneseIdentityRow
+#print axioms Gtz.veroneseWeightMinor
+#print axioms Gtz.veroneseWeightMinor_eq_vecMul_adjugate
+#print axioms Gtz.veroneseWeightMinor_vecMul_veroneseGrid
+#print axioms Gtz.weight_mul_det_veroneseGrid
+#print axioms Gtz.veroneseWeightMinor_ne_zero_of_stressFree
+#print axioms Gtz.det_mul_veroneseWeightMinor_nonneg
+#print axioms Gtz.det_mul_veroneseWeightMinor_pos
+#print axioms Gtz.sum_veroneseWeightMinor
+#print axioms Gtz.veroneseCoords_smul
+#print axioms Gtz.veroneseGrid_smul_atoms
+#print axioms Gtz.veroneseGrid_smul_atoms_of_sq_eq_one
+#print axioms Gtz.det_veroneseGrid_smul_atoms
+#print axioms Gtz.updateRow_diagonal_mul
+#print axioms Gtz.veroneseWeightMinor_smul_atoms
+#print axioms Gtz.veroneseShareForm
+#print axioms Gtz.atomShare_mul_det_veroneseGrid
+#print axioms Gtz.atomShare_eq_veroneseShareForm_div
+#print axioms Gtz.veroneseShareForm_smul_atoms
+#print axioms Gtz.atomShare_eq_of_atom_smul_of_stressFree
+#print axioms Gtz.atomShare_eq_of_atom_smul_of_stressFree'
+#print axioms Gtz.sum_weight_mul_sq_dotProduct_self
+#print axioms Gtz.leverage_mul_one_sub_atomShare
+#print axioms Gtz.atomShare_eq_one_iff_forall_dotProduct_eq_zero
+#print axioms Gtz.perpWitness
+#print axioms Gtz.perpWitness_dotProduct
+#print axioms Gtz.perpWitness_ne_zero
+#print axioms Gtz.vecMulVec_mulVec_real
+#print axioms Gtz.orthogonalPairConic
+#print axioms Gtz.orthogonalPairConic_symm
+#print axioms Gtz.orthogonalPairConic_form
+#print axioms Gtz.orthogonalPairConic_ne_zero
+#print axioms Gtz.exists_conic_of_atomShare_eq_one
+#print axioms Gtz.leverageOf_pos_of_stressFree
+#print axioms Gtz.atomShare_lt_one_of_stressFree
+#print axioms Gtz.veroneseShareForm_lt_sq_det_of_stressFree
+#print axioms Gtz.sum_veroneseShareForm
+#print axioms Gtz.sixThree_stressFree_atom_conditions
+#print axioms Gtz.sixThree_isTie_atom_condition
+#print axioms Gtz.sum_smul_atomMatrix_eq_one_iff_veronese
+#print axioms Gtz.veroneseWeight
+#print axioms Gtz.veroneseWeight_eq_weight
+#print axioms Gtz.sum_veroneseWeight_smul_atomMatrix
+#print axioms Gtz.stressFreeDesignOfAtoms
+#print axioms Gtz.stressFreeDesignOfAtoms_atom
+#print axioms Gtz.exists_stressFree_design_iff_veronese_conditions
+#print axioms Gtz.sum_weight_mul_sq_dotProduct_probe
+#print axioms Gtz.exists_overshoot_of_forall_dotProduct_eq_zero
+#print axioms Gtz.exists_third_label_normal_gap_pos

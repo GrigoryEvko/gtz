@@ -5789,3 +5789,75 @@ import Gtz.Wave.StressFreeCapRefutation
 --   gap test stops at scale two and the block test still fires at scale ten to the ninth,
 --   where the smallest weight is 1.7e-13 and the largest leverage is 4.3e18.
 import Gtz.Wave.ComplementBlockBudget
+
+-- THE WEIGHT ELIMINATION ON BRANCH (i), AND THE RECOGNITION OF THE BRANCH FROM ATOM DATA.
+-- THE CRAMER LAW.  `Gtz.weight_mul_det_veroneseGrid`:
+--   `weight c * det (veroneseGrid atom) = veroneseWeightMinor atom c`, where the minor is
+--   the determinant of the grid with row `c` exchanged for `![1,1,1,0,0,0]`.  The tree
+--   carried only `Gtz.weight_eq_veroneseGrid_inv_of_stressFree`, which needs an inverse and
+--   needs stress-freeness.  This form is polynomial in the atoms, needs neither, and holds at
+--   every `(6,3)` design.  Rows of the grid are the functionals `Q |-> g_c^T Q g_c` and the
+--   replacement row is the TRACE functional, so a weight is a determinant of six linear
+--   functionals with one of them exchanged for the trace.
+-- THE CORE IS RING-GENERIC.  The Cramer step is `Matrix.cramer_apply` against
+--   `Matrix.mul_adjugate` and it typechecks over any commutative ring at any finite index
+--   type.  NO FIELD SEPARATION IS CLAIMED.  Over the complex field the sign clauses fail to
+--   elaborate only for want of the scoped instance `LT ℂ`, and with `open ComplexOrder` they
+--   elaborate.  What needs an order is the positivity, not the algebra.
+-- THE ELIMINATION IS AN EQUIVALENCE.  `Gtz.exists_stressFree_design_iff_veronese_conditions`:
+--   an atom family carries a stress-free `(6,3)` design EXACTLY when its Veronese determinant
+--   is nonzero, its six weight minors share that determinant's sign, and they total it.  The
+--   forward reading turns `weight_pos` into six polynomial inequalities in the eighteen atom
+--   coordinates and `weight_sum_one` into one polynomial identity.  The converse builds the
+--   design back, through `Gtz.stressFreeDesignOfAtoms` and the two-way Parseval reading
+--   `Gtz.sum_smul_atomMatrix_eq_one_iff_veronese`, the identity companion of the shipped
+--   `Gtz.sum_smul_atomMatrix_eq_zero_iff_veronese`.  Branch (i) is the semialgebraic set that
+--   three polynomial conditions cut out.
+-- THE GAUGE IS EXACT AND THE SIGN LAW IS INHERITED, NOT PROVED.  `veroneseCoords` is
+--   homogeneous of degree two, so `Gtz.veroneseGrid_smul_atoms` says a per-label rescaling
+--   multiplies row `c` by `scale c ^ 2` and touches nothing else.  The determinant picks up
+--   the product of the squares and the `c`-th minor picks up the same product with the `c`-th
+--   factor DELETED.  `Gtz.veroneseGrid_smul_atoms_of_sq_eq_one` therefore leaves the grid
+--   EQUAL under a per-label sign flip, not equal up to sign, so every determinant in the
+--   module is invariant under the group that `Gtz.IsTie` is invariant under by
+--   `Gtz.isTie_signFlipDesign_iff`.
+-- THE SHARES ARE PROJECTIVE.  `Gtz.veroneseShareForm` multiplies the leverage into the minor
+--   and scales exactly like the determinant, so `Gtz.atomShare` is a ratio of two forms of
+--   equal weight.  `Gtz.atomShare_eq_of_atom_smul_of_stressFree`: two stress-free `(6,3)`
+--   designs whose atoms are proportional label by label carry the SAME shares.  The primed
+--   sibling proves the same fact from uniqueness of the stress-free weights in five lines,
+--   and it is kept to record that the FACT is cheaper than the FORMULA.
+-- THE SHARE CAP IS STRICT ON BRANCH (i).  `Gtz.leverage_mul_one_sub_atomShare` is exact at
+--   every size and rank: `l_c (1 - share_c)` is the weighted mean square correlation of atom
+--   `c` with the OTHER atoms.  So `share_c = 1` says atom `c` is orthogonal to all the
+--   others, and then `Gtz.orthogonalPairConic` is an EXPLICIT nonzero conic through all six
+--   directions.  `Gtz.stressFree_iff_no_conic_sixThree` forbids that, whence
+--   `Gtz.atomShare_lt_one_of_stressFree`.  The shipped `Gtz.atomShare_le_one_ofAnyRank` is
+--   not strict and this is, and the weight-free reading is
+--   `Gtz.veroneseShareForm_lt_sq_det_of_stressFree`.
+-- THE NORMAL OVERFLOW LAW.  `Gtz.exists_overshoot_of_forall_dotProduct_eq_zero`: let a
+--   NONEMPTY set of labels read zero against a nonzero probe.  Then some label OUTSIDE that
+--   set overshoots the probe, `leverageOf probe < (g_x . probe)^2`.  Parseval spends the whole
+--   probe leverage on the complement and the complement carries strictly less than the total
+--   weight, so one term must overshoot.  Any size, any rank.  At rank three
+--   `Gtz.exists_third_label_normal_gap_pos` reads it on the plane two atoms span: a THIRD
+--   label makes that triple's gap strictly positive ALONG the normal, which is the one
+--   direction in which a heavy pair contributes nothing.  This is a third-label selector of
+--   the kind `Gtz.exists_open_pair_rankThree` says every branch-(i) argument must have.
+-- HONEST SCOPE.  Nothing here decides branch (i).  It moves every branch-(i) hypothesis off
+--   the weight vector and onto the atoms, and it adds ONE new strict constraint, the share
+--   cap.  The normal overflow gives one of three directions and not the other two.
+-- MEASURED, 2026-08-16.  C with OpenMP at 200 threads in the tight-frame chart, rechecked in
+--   __float128 with a Jacobi eigensolver.  UNIFORM: 40 million random designs, minimum margin
+--   2.71e-3, zero below 1e-3, zero negative.  DIRECTED: 60000 restarts of 60000 steps reach
+--   margin 4.2055e-6, which is 331 times below the campaign's previous record.  The share
+--   formula `atomShare c = det (grid with row c replaced) / det grid` on the UNIT directions
+--   agrees with the design's share to 30 digits at that point.  Binned by margin over all
+--   60000 local minima, the geometric mean of `1 - max share` falls from 1.8e-1 at margin
+--   1e-0.5 to 2.0e-3 at margin 1e-3.5, the normalized Veronese determinant falls from 4.0e-2
+--   to 6.4e-4, the largest leverage rises from 33 to 1.2e4 and the smallest weight falls from
+--   1.5e-2 to 5.9e-5.  Every one of the four degenerates together, at a common rate near the
+--   square root of the margin.  So the measured approach to a stress-free tie is an approach
+--   to the SHARE-ONE boundary, which is the boundary this module proves branch (i) does not
+--   contain.  That is measurement, not kernel.
+import Gtz.Wave.VeroneseWeightElimination
