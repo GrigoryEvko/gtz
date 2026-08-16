@@ -44,6 +44,8 @@ no cell of this shape with a constant below `20/9` can be sound.
 import Gtz.Wave.TripleDeterminantCells
 import Gtz.Wave.ProjectionBlockObjective
 import Gtz.Wave.ThreeLinesDominanceNoGo
+import Gtz.Quantitative.RealnessEngine
+import Gtz.Design.LeverageBound
 
 set_option maxHeartbeats 1600000
 set_option maxRecDepth 8000
@@ -430,180 +432,101 @@ theorem exists_quarterSlackTriangle_or_independent (design : WeightedDesign 6 3)
 
 /-! ## 6. The equiangular blind spot -/
 
-/-- The quadratic-residue character of `ℤ/5`, read on a natural residue.  The
-residues are `1` and `4`, the non-residues `2` and `3`. -/
-def residueSign (residue : ℕ) : ℝ :=
-  if residue = 0 then 0 else if residue = 1 ∨ residue = 4 then 1 else -1
+/-- **THE GRAPH IS EMPTY AT THE EQUIANGULAR DESIGN.**  `Gtz.icosaDesign` is the
+six icosahedral diameters at uniform weight, whose two-graph is the order-six
+Paley conference matrix.  Every leverage is `3` and every squared pairing is
+`9/5`, so the pair test asks `36/5 < 4` and fails at EVERY pair, the diagonal
+included.  The margin is not narrow: the test misses by a factor `9/5`.
 
-/-- The symmetric conference matrix of order six, the Paley matrix at `q = 5`,
-given by its arithmetic rather than as a literal.  Row and column zero form the
-border, and the remaining five-by-five core is the circulant of the character.
-
-Presenting it arithmetically is what keeps the identity `C * C = 5 • 1`
-mechanical: a matrix literal does not reduce at an index of two or more, which
-is a reduction failure two earlier modules of this campaign also hit. -/
-def conferenceCore : Matrix (Fin 6) (Fin 6) ℝ := Matrix.of fun rowIndex colIndex =>
-  if rowIndex.val = 0 ∧ colIndex.val = 0 then 0
-  else if rowIndex.val = 0 ∨ colIndex.val = 0 then 1
-  else residueSign ((colIndex.val + 5 - rowIndex.val) % 5)
-
-theorem conferenceCore_transpose : conferenceCoreᵀ = conferenceCore := by
-  ext rowIndex colIndex
-  fin_cases rowIndex <;> fin_cases colIndex <;>
-    norm_num [conferenceCore, residueSign, Matrix.transpose_apply]
-
-theorem conferenceCore_diagonal (rowIndex : Fin 6) : conferenceCore rowIndex rowIndex = 0 := by
-  fin_cases rowIndex <;> norm_num [conferenceCore, residueSign]
-
-theorem conferenceCore_offDiagonal_sq (rowIndex colIndex : Fin 6) (hne : rowIndex ≠ colIndex) :
-    conferenceCore rowIndex colIndex ^ 2 = 1 := by
-  fin_cases rowIndex <;> fin_cases colIndex <;>
-    first | (exact absurd rfl hne) | norm_num [conferenceCore, residueSign]
-
-/-- **The conference identity.**  `C * C = 5 • 1`, the defining property, and the
-only place the arithmetic of `ℤ/5` is spent. -/
-theorem conferenceCore_mul_self :
-    conferenceCore * conferenceCore = (5 : ℝ) • (1 : Matrix (Fin 6) (Fin 6) ℝ) := by
-  ext rowIndex colIndex
-  fin_cases rowIndex <;> fin_cases colIndex <;>
-    simp +decide [Matrix.mul_apply, conferenceCore, residueSign, Fin.sum_univ_six,
-      Matrix.smul_apply] <;> norm_num
-
-/-- The projection onto the span of six equiangular lines in `ℝ³`, presented
-through its conference core.  These are the icosahedral diameters. -/
-noncomputable def conferenceProjection : Matrix (Fin 6) (Fin 6) ℝ :=
-  (2 : ℝ)⁻¹ • ((1 : Matrix (Fin 6) (Fin 6) ℝ) + (Real.sqrt 5)⁻¹ • conferenceCore)
-
-theorem sqrt_five_pos : (0 : ℝ) < Real.sqrt 5 := Real.sqrt_pos.mpr (by norm_num)
-
-theorem inv_sqrt_five_sq : (Real.sqrt 5)⁻¹ * (Real.sqrt 5)⁻¹ = (5 : ℝ)⁻¹ := by
-  rw [← mul_inv, Real.mul_self_sqrt (by norm_num : (0:ℝ) ≤ 5)]
-
-theorem conferenceProjection_transpose : conferenceProjectionᵀ = conferenceProjection := by
-  rw [conferenceProjection, Matrix.transpose_smul, Matrix.transpose_add, Matrix.transpose_smul,
-    conferenceCore_transpose, Matrix.transpose_one]
-
-theorem conferenceProjection_mul_self :
-    conferenceProjection * conferenceProjection = conferenceProjection := by
-  set core : Matrix (Fin 6) (Fin 6) ℝ := (Real.sqrt 5)⁻¹ • conferenceCore with hcore
-  have hsquare : core * core = 1 := by
-    rw [hcore, Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_sqrt_five_sq,
-      conferenceCore_mul_self, smul_smul]
-    norm_num
-  rw [conferenceProjection, ← hcore, Matrix.smul_mul, Matrix.mul_smul, smul_smul,
-    Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one,
-    Matrix.one_mul, hsquare]
-  ext rowIndex colIndex
-  simp only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul]
-  ring
-
-theorem conferenceProjection_diagonal (rowIndex : Fin 6) :
-    conferenceProjection rowIndex rowIndex = 1 / 2 := by
-  rw [conferenceProjection]
-  simp only [Matrix.smul_apply, Matrix.add_apply, Matrix.one_apply_eq, smul_eq_mul]
-  rw [conferenceCore_diagonal]
-  ring
-
-theorem conferenceProjection_offDiagonal_sq (rowIndex colIndex : Fin 6)
-    (hne : rowIndex ≠ colIndex) :
-    conferenceProjection rowIndex colIndex ^ 2 = 1 / 20 := by
-  rw [conferenceProjection]
-  simp only [Matrix.smul_apply, Matrix.add_apply, Matrix.one_apply_ne hne, smul_eq_mul]
-  have hcore := conferenceCore_offDiagonal_sq rowIndex colIndex hne
-  have hexpand : ((2:ℝ)⁻¹ * (0 + (Real.sqrt 5)⁻¹ * conferenceCore rowIndex colIndex)) ^ 2
-      = (2:ℝ)⁻¹ * (2:ℝ)⁻¹ * ((Real.sqrt 5)⁻¹ * (Real.sqrt 5)⁻¹)
-        * conferenceCore rowIndex colIndex ^ 2 := by ring
-  rw [hexpand, inv_sqrt_five_sq, hcore]
-  norm_num
-
-theorem conferenceProjection_trace : Matrix.trace conferenceProjection = (3 : ℝ) := by
-  simp only [Matrix.trace, Matrix.diag_apply]
-  rw [Finset.sum_congr rfl fun rowIndex _ => conferenceProjection_diagonal rowIndex]
-  norm_num
-
-/-- **THE BLIND SPOT, as a design.**  There is a weighted design of six labels
-and rank three whose projection is the equiangular one and whose weights are
-uniform. -/
-theorem exists_conferenceDesign :
-    ∃ design : WeightedDesign 6 3,
-      projectionOfDesign design = conferenceProjection ∧ design.weight = uniformSixWeight := by
-  obtain ⟨frame, hortho, hframe⟩ :=
-    exists_orthonormalFrame_of_symmetric_idempotent conferenceProjection
-      conferenceProjection_transpose conferenceProjection_mul_self conferenceProjection_trace
-  refine ⟨designOfOrthonormalFrame frame hortho uniformSixWeight uniformSixWeight_pos
-    uniformSixWeight_sum, ?_, rfl⟩
-  rw [projectionOfDesign_designOfOrthonormalFrame, hframe]
-
-/-- Every excess of the equiangular design is `1/3`. -/
-theorem conferenceDesign_excess {design : WeightedDesign 6 3}
-    (hchart : projectionOfDesign design = conferenceProjection)
-    (hweight : design.weight = uniformSixWeight) (atomIndex : Fin 6) :
-    projectionExcess design atomIndex = 1 / 3 := by
-  rw [projectionExcess, hchart, hweight, conferenceProjection_diagonal, uniformSixWeight]
-  norm_num
-
-/-- **THE GRAPH IS EMPTY AT THE EQUIANGULAR POINT.**  Every pair has excess
-product `1/9` against `4 P_cd ^ 2 = 1/5`, so no pair passes the quarter-slack
-test.  The margin is not narrow: the test fails by a factor `20/9`. -/
-theorem conferenceDesign_no_quarterSlack {design : WeightedDesign 6 3}
-    (hchart : projectionOfDesign design = conferenceProjection)
-    (hweight : design.weight = uniformSixWeight) (first second : Fin 6) :
-    ¬ QuarterSlack design first second := by
-  rw [QuarterSlack, conferenceDesign_excess hchart hweight,
-    conferenceDesign_excess hchart hweight, hchart]
+The weight-free bridge is what makes this one line of arithmetic.  Without it
+the test would have to be read on the projection, where the entries carry square
+roots of the weights. -/
+theorem icosaDesign_no_quarterSlack (first second : Fin 6) :
+    ¬ QuarterSlack icosaDesign first second := by
+  rw [quarterSlack_iff_gram]
+  have hleverageFirst : leverageOf (icosaDesign.atom first) = 3 := by
+    rw [leverageOf_eq_dotProduct]; exact icosaAtom_leverage first
+  have hleverageSecond : leverageOf (icosaDesign.atom second) = 3 := by
+    rw [leverageOf_eq_dotProduct]; exact icosaAtom_leverage second
+  rw [hleverageFirst, hleverageSecond]
   by_cases hne : first = second
   · subst hne
-    rw [conferenceProjection_diagonal]
-    norm_num
-  · rw [conferenceProjection_offDiagonal_sq first second hne]
+    have hself : (icosaDesign.atom first ⬝ᵥ icosaDesign.atom first) ^ 2 = 9 := by
+      rw [show icosaDesign.atom first = icosaAtom first from rfl, icosaAtom_leverage]
+      norm_num
+    rw [hself]; norm_num
+  · rw [show icosaDesign.atom first = icosaAtom first from rfl,
+      show icosaDesign.atom second = icosaAtom second from rfl,
+      icosaAtom_dot_sq_of_ne hne]
     norm_num
 
-/-- No triangle exists at the equiangular point, because no edge does. -/
-theorem conferenceDesign_no_triangle {design : WeightedDesign 6 3}
-    (hchart : projectionOfDesign design = conferenceProjection)
-    (hweight : design.weight = uniformSixWeight) (x y z : Fin 6) :
-    ¬ QuarterSlackTriangle design x y z := by
+/-- No triangle exists at the equiangular design, because no edge does. -/
+theorem icosaDesign_no_quarterSlackTriangle (x y z : Fin 6) :
+    ¬ QuarterSlackTriangle icosaDesign x y z := by
   rintro ⟨_, _, _, _, _, _, hslack, _, _⟩
-  exact conferenceDesign_no_quarterSlack hchart hweight x y hslack
+  exact icosaDesign_no_quarterSlack x y hslack
 
-/-- **THE GRAPH ROUTE DOES NOT COVER.**  Some design of six labels and rank
-three carries no quarter-slack triangle at all.  So the hypothesis of
-`Gtz.consolidatedStrictTripleDesign_of_forall_quarterSlackTriangle` is false, and
+/-- **THE GRAPH ROUTE DOES NOT COVER.**  `Gtz.icosaDesign` carries no
+quarter-slack triangle at all, so the hypothesis of
+`Gtz.consolidatedStrictTripleDesign_of_forall_quarterSlackTriangle` is false and
 the triangle certificate cannot be the whole argument.
 
-The objective still holds at that design — ten of its twenty triples strictly
-dominate — so this refutes the ROUTE and not the statement. -/
+The objective HOLDS at that design — `Gtz.icosaDesign_strictly_dominates` names
+the triple `{0, 2, 4}` and pins its margin at `2 - 3/√5`.  So this refutes the
+ROUTE and not the statement, and it does so at a point the corpus already
+carries rather than at a constructed one. -/
 theorem not_forall_exists_quarterSlackTriangle :
     ¬ ∀ design : WeightedDesign 6 3, ∃ x y z : Fin 6, QuarterSlackTriangle design x y z := by
   intro hforall
-  obtain ⟨design, hchart, hweight⟩ := exists_conferenceDesign
-  obtain ⟨x, y, z, htriangle⟩ := hforall design
-  exact conferenceDesign_no_triangle hchart hweight x y z htriangle
+  obtain ⟨x, y, z, htriangle⟩ := hforall icosaDesign
+  exact icosaDesign_no_quarterSlackTriangle x y z htriangle
 
-/-- The equiangular point also defeats the independent-triple half: it carries
-three labels pairwise failing the test, which is where the dichotomy lands. -/
-theorem conferenceDesign_independent {design : WeightedDesign 6 3}
-    (hchart : projectionOfDesign design = conferenceProjection)
-    (hweight : design.weight = uniformSixWeight) :
+/-- The route is not saved by restricting to primitive designs: the equiangular
+design is primitive, since its six diameters span six distinct lines. -/
+theorem not_forall_primitive_exists_quarterSlackTriangle :
+    ¬ ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
+      ∃ x y z : Fin 6, QuarterSlackTriangle design x y z := by
+  intro hforall
+  have hprimitive : IsPrimitiveDesign icosaDesign := by
+    intro keptLabel dropLabel ratio hne hparallel
+    have hkept : icosaAtom keptLabel ⬝ᵥ icosaAtom keptLabel = 3 := icosaAtom_leverage keptLabel
+    have hdrop : icosaAtom dropLabel ⬝ᵥ icosaAtom dropLabel = 3 := icosaAtom_leverage dropLabel
+    have hcross : (icosaAtom keptLabel ⬝ᵥ icosaAtom dropLabel) ^ 2 = 9 / 5 :=
+      icosaAtom_dot_sq_of_ne hne
+    have hatom : icosaAtom dropLabel = ratio • icosaAtom keptLabel := hparallel
+    rw [hatom] at hdrop hcross
+    simp only [dotProduct_smul, smul_dotProduct, smul_eq_mul] at hdrop hcross
+    rw [hkept] at hdrop hcross
+    nlinarith [hdrop, hcross]
+  obtain ⟨x, y, z, htriangle⟩ := hforall icosaDesign hprimitive
+  exact icosaDesign_no_quarterSlackTriangle x y z htriangle
+
+/-- The equiangular design also lands on the independent-triple half of the
+dichotomy, which is where every design with no triangle must land. -/
+theorem icosaDesign_independent :
     ∃ x y z : Fin 6, x ≠ y ∧ x ≠ z ∧ y ≠ z
-      ∧ ¬ HeavyQuarterSlack design x y ∧ ¬ HeavyQuarterSlack design x z
-      ∧ ¬ HeavyQuarterSlack design y z := by
+      ∧ ¬ HeavyQuarterSlack icosaDesign x y ∧ ¬ HeavyQuarterSlack icosaDesign x z
+      ∧ ¬ HeavyQuarterSlack icosaDesign y z := by
   refine ⟨0, 1, 2, by decide, by decide, by decide, ?_, ?_, ?_⟩ <;>
     rintro ⟨_, _, hslack⟩ <;>
-    exact conferenceDesign_no_quarterSlack hchart hweight _ _ hslack
+    exact icosaDesign_no_quarterSlack _ _ hslack
 
-/-- **THE PRICE OF THE CONSTANT.**  At the equiangular point the excess product
-beats the off-diagonal square by exactly `20/9`.  A cell of this shape with a
-constant strictly below `20/9` would fire at every pair there, including the
-pairs of a triple that does not dominate, so no such cell is sound. -/
-theorem conferenceDesign_ratio {design : WeightedDesign 6 3}
-    (hchart : projectionOfDesign design = conferenceProjection)
-    (hweight : design.weight = uniformSixWeight) (first second : Fin 6)
-    (hne : first ≠ second) :
-    9 * (projectionExcess design first * projectionExcess design second)
-      = 20 * projectionOfDesign design first second ^ 2 := by
-  rw [conferenceDesign_excess hchart hweight, conferenceDesign_excess hchart hweight, hchart,
-    conferenceProjection_offDiagonal_sq first second hne]
+/-- **THE PRICE OF THE CONSTANT.**  At the equiangular design the squared pairing
+beats the leverage surplus product by exactly `9/5`.  A cell of this shape needs
+its constant strictly below `5/9` of the landed four to fire there, and the
+landed cell is sharp on the equilateral locus, so no constant serves both. -/
+theorem icosaDesign_gram_ratio {first second : Fin 6} (hne : first ≠ second) :
+    5 * (icosaDesign.atom first ⬝ᵥ icosaDesign.atom second) ^ 2
+      = 9 * ((leverageOf (icosaDesign.atom first) - 1)
+          * (leverageOf (icosaDesign.atom second) - 1)) / 4 := by
+  have hleverageFirst : leverageOf (icosaDesign.atom first) = 3 := by
+    rw [leverageOf_eq_dotProduct]; exact icosaAtom_leverage first
+  have hleverageSecond : leverageOf (icosaDesign.atom second) = 3 := by
+    rw [leverageOf_eq_dotProduct]; exact icosaAtom_leverage second
+  rw [hleverageFirst, hleverageSecond,
+    show icosaDesign.atom first = icosaAtom first from rfl,
+    show icosaDesign.atom second = icosaAtom second from rfl,
+    icosaAtom_dot_sq_of_ne hne]
   norm_num
 
 end Gtz
