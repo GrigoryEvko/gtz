@@ -1159,7 +1159,10 @@ import Gtz.Wave.MixedTripleBalance
 import Gtz.Wave.GapDeterminantSignComplement
 import Gtz.Wave.DustBoundaryFloor
 import Gtz.Wave.OneLineBlindSpotInhabited
+import Gtz.Wave.OneLineCombinedSharpDeterminant
 import Gtz.Wave.A1NeedleCollapse
+import Gtz.Wave.A1NeedleTieDegeneracy
+import Gtz.Wave.A1NeedleCramerFloor
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -34405,3 +34408,98 @@ run_cmd do
 #print axioms Gtz.heavyNeedleResidual_iff_stressFreeStratumIsTieFree
 #print axioms Gtz.exists_lineFreeOffConicTie_of_not_heavyNeedleResidual
 #print axioms Gtz.not_heavyNeedleResidual_iff_exists_lineFreeOffConicTie
+-- The wedge minor decides strict domination at rank three.
+#print axioms Gtz.tripleBracket_mul_dotProduct
+#print axioms Gtz.tripleBracket_shadowPair
+#print axioms Gtz.dotProduct_pair_sub_eq_tripleBracket
+#print axioms Gtz.tripleBracket_of_perp_pair
+#print axioms Gtz.tripleBracket_frame
+#print axioms Gtz.wedgeShadow_pair_bracket
+#print axioms Gtz.tripleWedgeValue
+#print axioms Gtz.tripleWedgePairing
+#print axioms Gtz.tripleWedge_determinant
+#print axioms Gtz.splitMeasure_normalSq_triple_eq_surplus
+#print axioms Gtz.sharpBalanceValue_eq_tripleWedgeValue
+#print axioms Gtz.sharpBalance_determinant
+#print axioms Gtz.sharpBalanceValue_mul_pos
+#print axioms Gtz.tripleWedgeValue_add_probe
+#print axioms Gtz.exists_mixedProbe_sharpBalanceValue_nonpos
+#print axioms Gtz.sum_sharp_weight_normalSq
+#print axioms Gtz.sum_sharp_weight_lt_one
+#print axioms Gtz.exists_sharp_normalSq_gt_one
+#print axioms Gtz.exists_sharp_selection_surplus_pos
+#print axioms Gtz.flatSplitLeadPairing
+#print axioms Gtz.flatSplitPairing
+#print axioms Gtz.flatSplitPairing_self
+#print axioms Gtz.flatSplit_determinant
+#print axioms Gtz.planeFormValue
+#print axioms Gtz.planeFormPairing
+#print axioms Gtz.planeFormMinor
+#print axioms Gtz.perpPair_minor
+#print axioms Gtz.planeForm_determinant
+#print axioms Gtz.sum_sum_crossWedgeSq_eq_lagrange
+#print axioms Gtz.planeFormCrossMinor
+#print axioms Gtz.planeForm_crossDeterminant
+#print axioms Gtz.wedgeDirection
+#print axioms Gtz.wedgeShadow_eq_wedgeDirection_dotProduct
+#print axioms Gtz.tripleBracket_wedgeDirection_pair
+#print axioms Gtz.leadMeasure
+#print axioms Gtz.flatSplitLead_eq_planeFormValue
+#print axioms Gtz.sharpPairDirection
+#print axioms Gtz.sharpPairMeasure
+#print axioms Gtz.tripleWedgeValue_eq_planeFormValue
+#print axioms Gtz.planeFormMinor_smul_measure
+#print axioms Gtz.planeFormCrossMinor_smul_left
+#print axioms Gtz.planeFormMinor_sharpPair_eq
+#print axioms Gtz.exists_inPlane_probe_ne_zero
+#print axioms Gtz.wedgeBalanceValue_eq_wedgeTotal_splitMeasure
+#print axioms Gtz.wedgeTotal_eq_planeFormValue
+#print axioms Gtz.wedgeBalancePairing
+#print axioms Gtz.wedgeMinor
+#print axioms Gtz.wedgeBalanceValue_determinant
+#print axioms Gtz.planeFormValue_add_probe
+#print axioms Gtz.wedgeBalanceValue_add_probe
+#print axioms Gtz.wedgeBalanceValue_smul_probe
+#print axioms Gtz.exists_smul_of_tripleBracket_eq_zero
+#print axioms Gtz.ne_zero_of_tripleBracket_ne_zero
+#print axioms Gtz.forall_inPlane_wedgeBalanceValue_pos
+#print axioms Gtz.posDef_of_surplus_and_wedgeMinor
+#print axioms Gtz.wedgeMinor_pos_of_posDef
+#print axioms Gtz.posDef_iff_surplus_and_wedgeMinor
+#print axioms Gtz.wedgeBalanceValue_eq_flat_add_sharp
+#print axioms Gtz.wedgeBalancePairing_eq_flat_add_sharp
+#print axioms Gtz.wedgeMinor_eq_surplus_mul_reduced
+#print axioms Gtz.WedgeMinorSelector
+#print axioms Gtz.gtzWeighted_rank_three_of_wedgeMinorSelector
+#print axioms Gtz.wedgeMinorSelector_iff_exists_strictTriple
+#print axioms Gtz.lineFlatSplitSelectorAt_of_wedgeMinor
+#print axioms Gtz.oneLine_and_twoMeetingLines_of_wedgeMinorSelector
+#print axioms Gtz.flatSplitReduced
+#print axioms Gtz.wedgeMinor_eq_surplus_mul_flatSplitReduced
+#print axioms Gtz.wedgeMinor_pos_iff_flatSplitReduced_pos
+#print axioms Gtz.exists_tallFree_lineFlatSplitSelector_producer
+-- Every landed (6,3) tie is line-degenerate.
+#print axioms Gtz.exists_thirdLabel_off_pair
+#print axioms Gtz.not_hasLinePattern_lineFree_of_atom_eq
+#print axioms Gtz.atom_injective_of_lineFree
+#print axioms Gtz.exists_sameClass_pair
+#print axioms Gtz.not_lineFree_splitClassDesign_six
+#print axioms Gtz.not_lineFree_nonUniformLeverageTieDesign
+#print axioms Gtz.not_isStressFree_nonUniformLeverageTieDesign
+#print axioms Gtz.not_counterexample_of_atom_eq
+-- The Cramer floor and ceiling for the smallest triple eigenvalue.
+#print axioms Gtz.tripleBracket_smul_eq_wedgeExpansion
+#print axioms Gtz.crossNormSq_comm
+#print axioms Gtz.triplePairAreaSum_eq_slotSum
+#print axioms Gtz.triplePairAreaSum_nonneg
+#print axioms Gtz.sq_tripleBracket_mul_normSq_le_pairAreaSum_mul_form
+#print axioms Gtz.subsetSum_triple_form
+#print axioms Gtz.posDef_subsetSum_of_pairAreaSum_lt_sq_atomBracket
+#print axioms Gtz.posSemidef_subsetSum_sub_cramerRatio_smul_one
+#print axioms Gtz.subsetSum_triple_form_at_wedge
+#print axioms Gtz.not_posDef_subsetSum_of_sq_atomBracket_lt_crossNormSq
+#print axioms Gtz.sq_atomBracket_le_triplePairAreaSum_of_noStrictTriple
+#print axioms Gtz.not_isTie_of_pairAreaSum_lt_sq_atomBracket
+#print axioms Gtz.heavyNeedleResidual_of_bracketDominantCell
+#print axioms Gtz.sq_atomBracket_le_triplePairAreaSum_of_lineFreeOffConicTie
+#print axioms Gtz.isTie_of_dominates_of_forall_pairArea_beats_sq_atomBracket

@@ -5482,3 +5482,74 @@ import Gtz.Wave.OneLineBlindSpotInhabited
 --   four naming ones is equally empty.  A sharpening is real only when it removes
 --   designs, and the removal must be exhibited at a design.
 import Gtz.Wave.A1NeedleCollapse
+
+-- ## The wedge minor decides strict domination at rank three
+-- WHY THIS IS HERE.  `Gtz.LineFlatSplitSelectorAt` asks for `lead * surplus + sharp`
+--   positive at every in-plane probe.  The landed `Gtz.not_forall_sharpBalanceValue_pos`
+--   refutes the sharp part alone and the landed flat split factors the value, but
+--   nothing related the two parts.  A quadratic form on a plane is a trace and a
+--   DETERMINANT, so the relation is a determinant law.
+-- THE SHARP DETERMINANT LAW.  `Gtz.sharpBalance_determinant` reads the determinant of
+--   the sharp form as the product of the three split measures, the square of the sharp
+--   atom bracket and the NORMAL SURPLUS.  The two ingredients of the selector are one
+--   object read two ways.  Three hypothesis-free bracket identities of rank three carry
+--   it: Cramer, the shadow bracket, and Binet and Cauchy.
+-- THE PLANE FORM.  `Gtz.planeForm_determinant` decides any measure-weighted sum of
+--   squared readings of directions flat against the normal.  Its determinant at a probe
+--   pair is one number, the MINOR, times the square of the plane bracket of the probes.
+-- THE GENERAL CRITERION.  The whole wedge balance is one plane form indexed by ordered
+--   label pairs, so `Gtz.posDef_iff_surplus_and_wedgeMinor` decides STRICT DOMINATION at
+--   rank three by a normal surplus, a wedge minor and ONE probe reading.  Any size, any
+--   subset, any unit normal.
+-- THE OBJECTIVE.  `Gtz.gtzWeighted_rank_three_of_wedgeMinorSelector` produces weighted
+--   GTZ at rank three from three strict inequalities per design, and
+--   `Gtz.wedgeMinorSelector_iff_exists_strictTriple` proves that selector EQUAL to the
+--   strict half, so it is neither a strengthening nor a weakening.
+-- THE ONE-LINE LANE.  `Gtz.wedgeMinor_eq_surplus_mul_flatSplitReduced` factors the wedge
+--   minor at a flat set of complement size three, with the surplus as one factor, and
+--   `Gtz.exists_sharp_selection_surplus_pos` supplies that surplus from one free label.
+--   `Gtz.exists_tallFree_lineFlatSplitSelector_producer` leaves one polynomial
+--   inequality and one probe sign.
+import Gtz.Wave.OneLineCombinedSharpDeterminant
+-- EVERY LANDED (6,3) TIE IS LINE-DEGENERATE.  A repeated atom kills a bracket at
+--   every third label, so `Gtz.not_hasLinePattern_lineFree_of_atom_eq` kills
+--   line-freeness outright, and `Gtz.atom_injective_of_lineFree` reads the
+--   counterexample shape as six DISTINCT atoms.
+-- THE TWO LANDED FAMILIES BOTH REPEAT.  `Gtz.not_lineFree_splitClassDesign_six` sends
+--   six labels into four classes, so two atoms are equal at EVERY weight vector and
+--   EVERY class map -- that covers the whole family behind `Gtz.exists_isTie_six_three`.
+--   `Gtz.not_lineFree_nonUniformLeverageTieDesign` and
+--   `Gtz.not_isStressFree_nonUniformLeverageTieDesign` retire the named fixture on both
+--   counts.  `Gtz.tetraDesign` is size FOUR and `Gtz.diamondTieDesign` is size FIVE, so
+--   neither is a `(6,3)` object at all.
+-- THE READING IS A WARNING, NOT A PROOF.  A line-degenerate tie family says nothing
+--   about the line-free stratum.  What it does say is that the tree has never exhibited
+--   a design in the antecedent region, so no measurement there has ever been calibrated.
+import Gtz.Wave.A1NeedleTieDegeneracy
+-- ## THE CRAMER FLOOR AND CEILING FOR THE SMALLEST TRIPLE EIGENVALUE
+-- THE IDENTITY.  `Gtz.tripleBracket_smul_eq_wedgeExpansion` is the Cramer expansion of a
+--   probe in the wedge dual basis, componentwise, with no independence hypothesis.  One
+--   Cauchy-Schwarz per coordinate turns it into
+--   `Gtz.sq_tripleBracket_mul_normSq_le_pairAreaSum_mul_form`, and
+--   `Gtz.posSemidef_subsetSum_sub_cramerRatio_smul_one` states the Loewner form:
+--   `S_C >= (bracket^2 / pairAreaSum) * I`.
+-- THE FLOOR IS A STRICT DOMINATION PRODUCER.  `Gtz.posDef_subsetSum_of_pairAreaSum_lt_sq_atomBracket`
+--   decides `S_C - I` positive definite from ONE polynomial comparison.  The Sylvester
+--   chain of `Gtz.subsetSum_posDef_iff_tripleInvariants` is not read, line-freeness is
+--   not read, and NO WEIGHT IS READ.  That last point matters: every refuted clearance
+--   route died on the dust-weight channel, and this functional cannot see it.
+-- THE CEILING IS A NON-DOMINATION WITNESS.  `Gtz.not_posDef_subsetSum_of_sq_atomBracket_lt_crossNormSq`
+--   refutes strict domination from one pair whose area beats the squared bracket, and
+--   the refuting direction is that pair's own wedge, written down.  The two ends differ
+--   by at most a factor of three, because the pair-area sum has three terms.
+-- WHAT IT BUYS ON A1.  `Gtz.heavyNeedleResidual_of_bracketDominantCell` closes a new
+--   cell of the registry axiom, and
+--   `Gtz.sq_atomBracket_le_triplePairAreaSum_of_lineFreeOffConicTie` confines every
+--   possible counterexample to the semialgebraic set where all twenty triples are
+--   area-dominant.  `Gtz.isTie_of_dominates_of_forall_pairArea_beats_sq_atomBracket` is
+--   the first cheap sufficient condition in the tree for BEING a tie.
+-- MEASURED LIMIT, stated plainly.  At an isotropic triple `S_C = 3*I` the floor reads 1
+--   and the truth is 3, so the floor cell does not exhaust A1.  The ceiling is TIGHT
+--   there.  Neither end dominates a leverage-based floor `4*bracket^2 / leverageSum^2`,
+--   which is not landed because it needs the spectral theorem.
+import Gtz.Wave.A1NeedleCramerFloor
