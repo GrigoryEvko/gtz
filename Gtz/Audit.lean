@@ -31170,3 +31170,8 @@ run_cmd do
 #print axioms Gtz.stressFreeHingeHoldsSixThree_of_heavyLivePairTie
 #print axioms Gtz.exists_weight_one_sixth_le
 #print axioms Gtz.not_forall_weight_lt_tenth
+#print axioms Gtz.baseTripleTightLineFreeOffConicHeavyNeedleResidual_of_consolidatedStrictTripleDesign
+#print axioms Gtz.oneLineTenthHeavyJointBlindLineSparse_of_consolidatedStrictTripleDesign
+#print axioms Gtz.twoMeetingLinesTenthHeavyJointBlindTransversal_of_consolidatedStrictTripleDesign
+#print axioms Gtz.designLane_of_consolidatedStrictTripleDesign
+#print axioms Gtz.designLane_of_consolidatedStrictTriple

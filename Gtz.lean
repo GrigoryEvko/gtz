@@ -2745,6 +2745,7 @@ import Gtz.Quantitative.FifteenFamilyDispatch
 -- StrongStationarityIndexFloor); three files are slimmed to their
 -- non-superseded remainder.
 -- ============================================================
+import Gtz.Wave.DesignConsolidationLane
 import Gtz.Wave.TypeNineAlignedOperatorExit
 import Gtz.Wave.Index46CFreeExit
 import Gtz.Wave.FourRowCoefficientProjection
