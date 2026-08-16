@@ -4952,3 +4952,15 @@ import Gtz.Wave.NuCoveringBand
 -- `216 * det = 8 - 72 * energy + 432 * cross` -- and complementation of the form is
 -- complementation of the TRIPLE, so the twenty triples pair into ten.
 import Gtz.Wave.TwoSidedFlatSandwich
+
+-- The joint law of determinantal mass against sign-free threshold.  The
+-- threshold is two-local, so its joint second moment with the mass collapses
+-- onto the landed one- and two-point determinantal marginals.  The pair-minor
+-- deviations along a row total twice the leverage deviation, so Cauchy--Schwarz
+-- forces the covariance NON-NEGATIVE at every design, with slack a positive
+-- multiple of the deviation from equal share -- an anti-correlation argument is
+-- refuted by theorem.  The pair-marginal energy is closed form in two
+-- invariants, and a non-positive family has energy below its squared total, so
+-- an energy beyond `336 ^ 2` certifies a positive third minor with no bracket
+-- read anywhere.  The mass energy is the single remaining unknown.
+import Gtz.Wave.JointMassThreshold
