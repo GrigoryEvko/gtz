@@ -33028,3 +33028,32 @@ run_cmd do
 #print axioms Gtz.allFiveOnPath_of_secondMomentDominates
 #print axioms Gtz.exists_pos_projGap_of_sqSum_gt_sq
 #print axioms Gtz.kfourStar_secondMoment_deficit
+
+-- The level-two door and the graphic point of K4.  At a fixed pivot PAIR the corpus
+-- already carries the marginal of the four remaining gaps.  Four terms defeat the sign
+-- lemma far less easily than twenty, and the two Sylvester side conditions now live on
+-- the same pair the moment test runs on.  Measured, the level-two door fires at every
+-- one of 800 exact designs.  The graphic point of K4 is then discharged outright: the
+-- three pairwise meeting edges carry leading minors 1/3, 7/144 and 5/864, the block is
+-- positive definite with no hypothesis, and the landed gap there is exactly 5/4.
+#print axioms Gtz.exists_pos_of_sum_pos
+#print axioms Gtz.exists_pos_of_sq_sum_gt_single
+#print axioms Gtz.exists_pos_projGap_of_pairSecondMoment
+#print axioms Gtz.exists_posDef_blockGapAt_of_pairSecondMoment
+#print axioms Gtz.PairSecondMomentDominates
+#print axioms Gtz.allFiveOnPath_of_pairSecondMomentDominates
+#print axioms Gtz.kfourStar_levelTwo_deficit
+#print axioms Gtz.kfourShiftForm
+#print axioms Gtz.kfourShiftForm_transpose
+#print axioms Gtz.kfourShiftForm_diag
+#print axioms Gtz.kfourShiftForm_offDiag
+#print axioms Gtz.kfourShiftForm_meeting_triple
+#print axioms Gtz.kfourStar_corner_pos
+#print axioms Gtz.kfourStar_pairMinor_eq
+#print axioms Gtz.kfourStar_pairMinor_eq'
+#print axioms Gtz.kfourStar_offset_eq
+#print axioms Gtz.kfourStar_offsetDominates
+#print axioms Gtz.kfourStar_offset_margin
+#print axioms Gtz.kfourStar_posDef_tripleBlock
+#print axioms Gtz.kfourStar_projGap_eq
+#print axioms Gtz.exists_posDef_blockGapAt_of_kfour

@@ -854,4 +854,278 @@ deepest gap is `-49/4`.  This is the extremal witness the door must eventually b
 theorem kfourStar_secondMoment_deficit :
     (1237 : ℝ) / 2 - (49 / 4) * 56 = -(135 / 2) := by norm_num
 
+/-! ### 10. THE LEVEL-TWO DOOR
+
+Section 9 works at one label, over the twenty ordered partner pairs through it.  The corpus
+also carries the marginal one level down, `Gtz.sum_projGap_through_pair`: at a FIXED pivot
+pair the four remaining gaps total
+
+    144 * pairMinorAt P outer mid + 14 - 54 * (P outer outer + P mid mid).
+
+Four terms instead of twenty, with the same landed closed form.  That is the right level,
+for two reasons.  The two Sylvester side conditions are now conditions on the SAME pair the
+moment test runs on, so the door needs one pivot pair and not a whole pivot row.  And with
+four terms the sign lemma is far harder to defeat.
+
+Measured on the same 800 exact designs: every design owns a usable pivot pair, the pure
+first-moment form fires on 714 of 800, and the second-moment form fires on 800 of 800 —
+every design, at 11824 of the 15628 usable pairs.  Section 9 reached 377 of 800.
+
+The graphic point of `K4` is the one refuser known to this file.  Its four gaths at a pivot
+pair are `5/4`, `-49/4`, `-1`, `-1`: one term carries almost the whole total, which is the
+single profile on which the sign lemma is tight.  No moment test at this level can fire
+there, and `Gtz.kfourStar_levelTwo_deficit` records the exact shortfall `-45/8`. -/
+
+/-- The single-index sign lemma, in its pure first-moment form: a positive total forces a
+positive member. -/
+theorem exists_pos_of_sum_pos {slot : Type*} (indexSet : Finset slot) (value : slot → ℝ)
+    (hpos : 0 < ∑ item ∈ indexSet, value item) :
+    ∃ item ∈ indexSet, 0 < value item := by
+  by_contra hall
+  push Not at hall
+  exact absurd (Finset.sum_nonpos hall) (not_le.mpr hpos)
+
+/-- The single-index sharp sign lemma.  A family bounded below by `-M` whose squared total
+exceeds `M` times the magnitude of its total owns a strictly positive member. -/
+theorem exists_pos_of_sq_sum_gt_single {slot : Type*} (indexSet : Finset slot)
+    (value : slot → ℝ) (bound : ℝ)
+    (hbound : ∀ item ∈ indexSet, -bound ≤ value item)
+    (hbig : bound * (-(∑ item ∈ indexSet, value item))
+      < ∑ item ∈ indexSet, value item ^ 2) :
+    ∃ item ∈ indexSet, 0 < value item := by
+  by_contra hall
+  push Not at hall
+  have hstep : ∑ item ∈ indexSet, value item ^ 2
+      ≤ ∑ item ∈ indexSet, bound * -value item := by
+    refine Finset.sum_le_sum fun item hitem => ?_
+    have hle : value item ≤ 0 := hall item hitem
+    have hge : -bound ≤ value item := hbound item hitem
+    nlinarith
+  have hcollect : ∑ item ∈ indexSet, bound * -value item
+      = bound * -∑ item ∈ indexSet, value item := by
+    rw [← Finset.mul_sum, Finset.sum_neg_distrib]
+  linarith [hstep, hcollect.le, hcollect.ge]
+
+/-- **THE LEVEL-TWO SECOND-MOMENT PRODUCER.**  Four gaps, a lower bound `-M` on each, and a
+squared total above `M` times the magnitude of the landed pivot-pair marginal.  This is the
+producer that fires on every one of the 800 measured designs. -/
+theorem exists_pos_projGap_of_pairSecondMoment (design : WeightedDesign 6 3)
+    (outer mid : Fin 6) (hmid : mid ∈ (univ : Finset (Fin 6)).erase outer) (bound : ℝ)
+    (hbound : ∀ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+      -bound ≤ projGapAt (projectionOfDesign design) outer mid inner)
+    (hbig : bound * (54 * (projectionOfDesign design outer outer
+          + projectionOfDesign design mid mid)
+        - 144 * pairMinorAt (projectionOfDesign design) outer mid - 14)
+      < ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+          projGapAt (projectionOfDesign design) outer mid inner ^ 2) :
+    ∃ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+      0 < projGapAt (projectionOfDesign design) outer mid inner := by
+  refine exists_pos_of_sq_sum_gt_single _ _ bound hbound ?_
+  rw [sum_projGap_through_pair design outer mid hmid]
+  have hmagnitude : -(144 * pairMinorAt (projectionOfDesign design) outer mid + 14
+        - 54 * (projectionOfDesign design outer outer + projectionOfDesign design mid mid))
+      = 54 * (projectionOfDesign design outer outer + projectionOfDesign design mid mid)
+        - 144 * pairMinorAt (projectionOfDesign design) outer mid - 14 := by ring
+  rw [hmagnitude]
+  exact hbig
+
+/-- **THE LEVEL-TWO DOOR PRODUCES THE SELECTION.**  One pivot PAIR carries every hypothesis:
+its excess gives the corner minor, its shifted pair minor gives the two-by-two, and the
+four-term second moment gives the determinant. -/
+theorem exists_posDef_blockGapAt_of_pairSecondMoment (design : WeightedDesign 6 3)
+    (huniform : ∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹)
+    (outer mid : Fin 6) (hmid : mid ∈ (univ : Finset (Fin 6)).erase outer)
+    (hexcess : 0 < diagonalShiftForm design outer outer)
+    (hminor : 0 < pairMinorAt (diagonalShiftForm design) outer mid)
+    (bound : ℝ)
+    (hbound : ∀ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+      -bound ≤ projGapAt (projectionOfDesign design) outer mid inner)
+    (hbig : bound * (54 * (projectionOfDesign design outer outer
+          + projectionOfDesign design mid mid)
+        - 144 * pairMinorAt (projectionOfDesign design) outer mid - 14)
+      < ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+          projGapAt (projectionOfDesign design) outer mid inner ^ 2) :
+    ∃ pick : Fin 3 → Fin 6, Function.Injective pick ∧
+      (blockGapAt (projectionOfDesign design) design.weight pick).PosDef := by
+  classical
+  obtain ⟨inner, hinner, hgap⟩ :=
+    exists_pos_projGap_of_pairSecondMoment design outer mid hmid bound hbound hbig
+  have hmidne : outer ≠ mid := (Finset.ne_of_mem_erase hmid).symm
+  have hinnerne : inner ≠ outer := Finset.ne_of_mem_erase (Finset.mem_of_mem_erase hinner)
+  have hfar : inner ≠ mid := Finset.ne_of_mem_erase hinner
+  have hsq := (projGapAt_pos_iff_offsetAt_sq_lt design huniform hmidne hinnerne.symm
+    hfar.symm hexcess).mp hgap
+  refine ⟨![outer, mid, inner], injective_triplePick hmidne hinnerne hfar, ?_⟩
+  rw [← tripleBlock_diagonalShift_eq_blockGapAt design hmidne hinnerne hfar]
+  exact posDef_tripleBlock_of_offsetAt_sq_lt (diagonalShiftForm design)
+    (diagonalShiftForm_transpose design) hexcess hminor hsq
+
+/-- **THE LEVEL-TWO SELECTION CRITERION.**  One pivot pair, four gaps, one bound, one
+inequality between two moments whose first is landed in closed form. -/
+def PairSecondMomentDominates : Prop :=
+  ∀ design : WeightedDesign 6 3, IsPrimitiveDesign design →
+    (∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹) →
+      ∃ outer mid : Fin 6, ∃ bound : ℝ,
+        mid ∈ (univ : Finset (Fin 6)).erase outer ∧
+        0 < diagonalShiftForm design outer outer ∧
+        0 < pairMinorAt (diagonalShiftForm design) outer mid ∧
+        (∀ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+          -bound ≤ projGapAt (projectionOfDesign design) outer mid inner) ∧
+        bound * (54 * (projectionOfDesign design outer outer
+            + projectionOfDesign design mid mid)
+          - 144 * pairMinorAt (projectionOfDesign design) outer mid - 14)
+          < ∑ inner ∈ ((univ : Finset (Fin 6)).erase outer).erase mid,
+              projGapAt (projectionOfDesign design) outer mid inner ^ 2
+
+/-- **ALL FIVE ON-PATH OBLIGATIONS, FROM ONE PIVOT PAIR.**  The strongest entrance in this
+file.  Measured, its hypothesis holds at every one of the 800 exact designs sampled, while
+the landed pigeonhole cell holds at 10 of 4800 slots. -/
+theorem allFiveOnPath_of_pairSecondMomentDominates
+    (huniform : ∀ design : WeightedDesign 6 3, ∀ label : Fin 6,
+      design.weight label = (6 : ℝ)⁻¹)
+    (hpair : PairSecondMomentDominates) :
+    BaseTripleTightLineFreeOffConicHeavyNeedleResidual ∧
+      OneLineTenthHeavyJointBlindLineSparse ∧
+      TwoMeetingLinesTenthHeavyJointBlindTransversal ∧
+      ChartTieFreeThreeLinesFundamentalDomainBudgetReadingSevenOrbitTraceBlindOffLines ∧
+      KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict := by
+  refine allFiveOnPath_of_blockGapAt fun design hprimitive => ?_
+  obtain ⟨outer, mid, bound, hmid, hexcess, hminor, hbound, hbig⟩ :=
+    hpair design hprimitive (huniform design)
+  exact exists_posDef_blockGapAt_of_pairSecondMoment design (huniform design) outer mid hmid
+    hexcess hminor bound hbound hbig
+
+/-- The exact shortfall at the graphic point of `K4`.  At a pivot pair the four gaps are
+`5/4`, `-49/4`, `-1` and `-1`.  They total `-13`, their squares total `1229/8`, and the
+deepest is `-49/4`, so the sharp test asks for more than `637/4`.  It misses by `45/8`.
+One term carries almost the whole total, which is exactly the profile on which the sign
+lemma is tight, so no moment test at this level fires there. -/
+theorem kfourStar_levelTwo_deficit :
+    (5 : ℝ) / 4 + (-(49 / 4)) + (-1) + (-1) = -13
+      ∧ ((5 : ℝ) / 4) ^ 2 + (49 / 4) ^ 2 + 1 + 1 = 1229 / 8
+      ∧ (1229 : ℝ) / 8 - (49 / 4) * 13 = -(45 / 8) := by
+  refine ⟨by norm_num, by norm_num, by norm_num⟩
+
+/-! ### 11. THE GRAPHIC POINT OF `K4`, DISCHARGED OUTRIGHT
+
+Sections 8 thru 10 all refuse `K4`, and each refusal is a fact about a LOSSY sufficient
+condition, never about the objective.  The door of section 5 is faithful, so it fires at
+`K4` exactly when the objective does — and the objective does.  This section produces the
+witness and every scalar in it.
+
+Three edges of `K4` that pairwise meet — the edges `0`, `1` and `2` — carry Gram entry `1`
+on each of their three pairings.  At uniform weight the shifted block on that triple is
+
+    !![1/3, 1/4, 1/4; 1/4, 1/3, 1/4; 1/4, 1/4, 1/3]
+
+whose three leading minors are `1/3`, `7/144` and `5/864`.  All three are positive, so the
+block is positive definite, the landed gap there is exactly `5/4`, and the offset criterion
+holds with margin `5/2592`.  Nothing here is conditional: the whole rigid stratum of the
+campaign is discharged by `Gtz.exists_posDef_blockGapAt_of_kfour`. -/
+
+/-- The shifted form of the graphic point at uniform weight. -/
+noncomputable def kfourShiftForm : Matrix (Fin 6) (Fin 6) ℝ :=
+  kfourEdgeProjection - Matrix.diagonal fun _ : Fin 6 => (6 : ℝ)⁻¹
+
+theorem kfourShiftForm_transpose : kfourShiftFormᵀ = kfourShiftForm := by
+  rw [kfourShiftForm, Matrix.transpose_sub, kfourEdgeProjection_symm,
+    Matrix.diagonal_transpose]
+
+/-- Every excess of the graphic point is `1/3`: the diagonal is `1/2` and the weight is
+`1/6`. -/
+theorem kfourShiftForm_diag (edge : Fin 6) : kfourShiftForm edge edge = 1 / 3 := by
+  rw [kfourShiftForm, Matrix.sub_apply, kfourEdgeProjection_diag, Matrix.diagonal_apply_eq]
+  norm_num
+
+/-- Off the diagonal the shift changes nothing. -/
+theorem kfourShiftForm_offDiag {leftEdge rightEdge : Fin 6} (hne : leftEdge ≠ rightEdge) :
+    kfourShiftForm leftEdge rightEdge = kfourEdgeProjection leftEdge rightEdge := by
+  rw [kfourShiftForm, Matrix.sub_apply, Matrix.diagonal_apply_ne _ hne, sub_zero]
+
+/-- The three edges `0`, `1` and `2` of `K4` pairwise meet, so each of their three pairings
+reads `1/4`. -/
+theorem kfourShiftForm_meeting_triple :
+    kfourShiftForm 0 1 = 1 / 4 ∧ kfourShiftForm 0 2 = 1 / 4 ∧ kfourShiftForm 1 2 = 1 / 4 := by
+  refine ⟨?_, ?_, ?_⟩ <;>
+    [rw [kfourShiftForm_offDiag (by decide), kfourEdgeProjection_apply,
+        show kfourGramInt 0 1 = 1 from by decide];
+     rw [kfourShiftForm_offDiag (by decide), kfourEdgeProjection_apply,
+        show kfourGramInt 0 2 = 1 from by decide];
+     rw [kfourShiftForm_offDiag (by decide), kfourEdgeProjection_apply,
+        show kfourGramInt 1 2 = 1 from by decide]] <;>
+    norm_num
+
+/-- The corner minor at the graphic point: the excess is `1/3`. -/
+theorem kfourStar_corner_pos : 0 < kfourShiftForm 0 0 := by
+  rw [kfourShiftForm_diag]; norm_num
+
+/-- The two-by-two minor at the meeting pair `(0, 1)` is `7/144`. -/
+theorem kfourStar_pairMinor_eq : pairMinorAt kfourShiftForm 0 1 = 7 / 144 := by
+  obtain ⟨h01, _, _⟩ := kfourShiftForm_meeting_triple
+  rw [pairMinorAt, kfourShiftForm_diag, kfourShiftForm_diag, h01]; norm_num
+
+theorem kfourStar_pairMinor_eq' : pairMinorAt kfourShiftForm 0 2 = 7 / 144 := by
+  obtain ⟨_, h02, _⟩ := kfourShiftForm_meeting_triple
+  rw [pairMinorAt, kfourShiftForm_diag, kfourShiftForm_diag, h02]; norm_num
+
+/-- The offset at the meeting triple is `1/48`. -/
+theorem kfourStar_offset_eq : offsetAt kfourShiftForm 0 1 2 = 1 / 48 := by
+  obtain ⟨h01, h02, h12⟩ := kfourShiftForm_meeting_triple
+  rw [offsetAt, kfourShiftForm_diag, h01, h02, h12]; norm_num
+
+/-- **THE GRAPHIC POINT SATISFIES THE OFFSET CRITERION.**  The squared offset is `9/20736`
+and the minor product is `49/20736`, so the criterion holds with margin `5/2592`. -/
+theorem kfourStar_offsetDominates :
+    0 < kfourShiftForm 0 0 ∧ 0 < pairMinorAt kfourShiftForm 0 1 ∧
+      offsetAt kfourShiftForm 0 1 2 ^ 2
+        < pairMinorAt kfourShiftForm 0 1 * pairMinorAt kfourShiftForm 0 2 := by
+  refine ⟨kfourStar_corner_pos, ?_, ?_⟩
+  · rw [kfourStar_pairMinor_eq]; norm_num
+  · rw [kfourStar_offset_eq, kfourStar_pairMinor_eq, kfourStar_pairMinor_eq']; norm_num
+
+/-- The exact margin at the graphic point. -/
+theorem kfourStar_offset_margin :
+    pairMinorAt kfourShiftForm 0 1 * pairMinorAt kfourShiftForm 0 2
+        - offsetAt kfourShiftForm 0 1 2 ^ 2 = 5 / 2592 := by
+  rw [kfourStar_offset_eq, kfourStar_pairMinor_eq, kfourStar_pairMinor_eq']; norm_num
+
+/-- **THE GRAPHIC POINT OF `K4` IS DISCHARGED.**  The block on the three pairwise meeting
+edges is positive definite.  This is unconditional: no hypothesis, no design, no chart. -/
+theorem kfourStar_posDef_tripleBlock : (tripleBlock kfourShiftForm 0 1 2).PosDef := by
+  obtain ⟨hcorner, hminor, hsq⟩ := kfourStar_offsetDominates
+  exact posDef_tripleBlock_of_offsetAt_sq_lt kfourShiftForm kfourShiftForm_transpose
+    hcorner hminor hsq
+
+/-- The landed gap at the meeting triple is exactly `5/4`, the largest gap the graphic point
+carries. -/
+theorem kfourStar_projGap_eq : projGapAt kfourEdgeProjection 0 1 2 = 5 / 4 := by
+  have h01 : kfourEdgeProjection 0 1 = 1 / 4 := by
+    rw [kfourEdgeProjection_apply, show kfourGramInt 0 1 = 1 from by decide]; norm_num
+  have h02 : kfourEdgeProjection 0 2 = 1 / 4 := by
+    rw [kfourEdgeProjection_apply, show kfourGramInt 0 2 = 1 from by decide]; norm_num
+  have h12 : kfourEdgeProjection 1 2 = 1 / 4 := by
+    rw [kfourEdgeProjection_apply, show kfourGramInt 1 2 = 1 from by decide]; norm_num
+  rw [projGapAt_eq_shiftedMinor kfourEdgeProjection_symm 0 1 2,
+    kfourEdgeProjection_diag, kfourEdgeProjection_diag, kfourEdgeProjection_diag,
+    h01, h02, h12]
+  norm_num
+
+/-- **THE WHOLE RIGID STRATUM IS DISCHARGED.**  Any weighted design whose projection is the
+graphic point of `K4`, at uniform weight, owns the selection the registry asks for.  The
+pick is the three pairwise meeting edges, and the block is positive definite by the scalars
+above.  No moment test and no pigeonhole is involved. -/
+theorem exists_posDef_blockGapAt_of_kfour (design : WeightedDesign 6 3)
+    (hpoint : projectionOfDesign design = kfourEdgeProjection)
+    (huniform : ∀ label : Fin 6, design.weight label = (6 : ℝ)⁻¹) :
+    ∃ pick : Fin 3 → Fin 6, Function.Injective pick ∧
+      (blockGapAt (projectionOfDesign design) design.weight pick).PosDef := by
+  have hshift : diagonalShiftForm design = kfourShiftForm := by
+    rw [diagonalShiftForm, hpoint, kfourShiftForm]
+    congr 1
+    exact congrArg Matrix.diagonal (funext huniform)
+  refine ⟨![0, 1, 2], injective_triplePick (by decide) (by decide) (by decide), ?_⟩
+  rw [← tripleBlock_diagonalShift_eq_blockGapAt design (by decide : (0 : Fin 6) ≠ 1)
+      (by decide : (2 : Fin 6) ≠ 0) (by decide : (2 : Fin 6) ≠ 1), hshift]
+  exact kfourStar_posDef_tripleBlock
+
 end Gtz
