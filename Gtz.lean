@@ -4393,6 +4393,13 @@ import Gtz.Wave.KFourTriangleEndgame
 -- K4 consumer while retaining a compatibility map from the obsolete route.
 import Gtz.Wave.KFourTypeANonlocalEndgame
 
+-- The triangle stall carries one free pivot.  A four-edge selection holds at
+-- most one triangle, so erasing its single non-triangle label returns the
+-- triangle, which is never strict.  The ladder equivalence then forces that
+-- label's pivot to reach one from positive definiteness alone, and the shared
+-- bottleneck of both terminal walls needs only three pivot conditions.
+import Gtz.Wave.KFourTriangleStallSharpening
+
 -- The descent port at every design.  A weighted design is already a chart
 -- point of its own atom family, with the mass equal to the weight, so the
 -- chart gap is the design's own gap and Parseval discharges the span
@@ -4871,6 +4878,13 @@ import Gtz.Wave.OrbitDesignationRefuter
 import Gtz.Wave.ComplementInvariantCell
 import Gtz.Wave.LeverageRowCell
 
+-- The deflation gap floor, and the leverage floor of a tie.  Weighted GTZ one
+-- size down bounds every deflation subset's gap below by a rank-one defect, so a
+-- label under unit leverage yields a STRICTLY dominating subset and no tie can
+-- carry one.  At (6,3) the predecessor is landed, so heaviness is a property of
+-- every tie there rather than a hypothesis on a design.
+import Gtz.Wave.LightAtomTieFloor
+
 -- The line-free moduli, and the assembled chart programme.  The fourteen walls
 -- make the admissible region exactly the cell, and each of the four parameters
 -- is a balanced bracket ratio, hence an absolute invariant, so the chart has no
@@ -5055,3 +5069,11 @@ import Gtz.Wave.KFourSignedTreeLaplacian
 -- wall point.  The negative factor sees only which gauge label is kept and is
 -- monotone in the two excluded conductances.
 import Gtz.Wave.KFourGaugeWallPencil
+-- The canonical star's chart gap is a diagonal of heavy tree masses less a triangle
+-- Laplacian.  A shift by the least heavy mass makes the positivity test root free.
+-- The test asks for a positive slack whose square is more than the Laplacian
+-- discriminant, and it is an equivalence.  ROUTE STATUS: the A3 ledger closes this
+-- cell on the corank-two gauge wall.  The least heavy mass is never more than the
+-- total off-tree mass there.  This module has no registry consumer, and the
+-- graveyard law keeps machinery after its route dies.
+import Gtz.Wave.KFourIsotropicStar

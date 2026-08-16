@@ -961,6 +961,7 @@ import Gtz.Wave.ExchangeDeterminantPotential
 import Gtz.Wave.KFourPivotTriangleClosure
 import Gtz.Wave.KFourTriangleEndgame
 import Gtz.Wave.KFourTypeANonlocalEndgame
+import Gtz.Wave.KFourTriangleStallSharpening
 import Gtz.Design.DesignDescentPort
 import Gtz.Design.TieStallReduction
 import Gtz.Design.ThreeLinesCircuitSpine
@@ -1076,6 +1077,7 @@ import Gtz.Wave.KFourBoostProductRefuter
 import Gtz.Wave.KFourPivotEndpointStarWiring
 import Gtz.Wave.KFourTreeLaplacian
 import Gtz.Wave.LeverageRowCell
+import Gtz.Wave.LightAtomTieFloor
 import Gtz.Wave.LivePairTieIdentification
 import Gtz.Wave.LivePairTieRefuter
 import Gtz.Wave.MarginFloorAssembly
@@ -1140,6 +1142,7 @@ import Gtz.Wave.ZeroLeakPair
 import Gtz.Wave.CrossEnergyFloor
 import Gtz.Wave.KFourSignedTreeLaplacian
 import Gtz.Wave.KFourGaugeWallPencil
+import Gtz.Wave.KFourIsotropicStar
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -33563,3 +33566,100 @@ run_cmd do
 #print axioms Gtz.oneLine_freeShadow_energy
 #print axioms Gtz.oneLine_freeShadow_orthogonal
 #print axioms Gtz.oneLine_lineEnergy_ge_of_sandwich
+
+-- Gtz/Wave/KFourIsotropicStar.lean -- the root-free spectral shift at the canonical star
+#print axioms Gtz.laplacianDiscriminant
+#print axioms Gtz.laplacianDiscriminant_eq
+#print axioms Gtz.two_mul_laplacianDiscriminant
+#print axioms Gtz.laplacianDiscriminant_nonneg
+#print axioms Gtz.laplacianDiscriminant_eq_zero_iff
+#print axioms Gtz.laplacianDiscriminant_rotate
+#print axioms Gtz.laplacianDiscriminant_swap
+#print axioms Gtz.discriminant_mul_sq_sub_sq
+#print axioms Gtz.isotropicShiftMatrix
+#print axioms Gtz.isotropicShiftMatrix_zero_zero
+#print axioms Gtz.isotropicShiftMatrix_zero_one
+#print axioms Gtz.isotropicShiftMatrix_zero_two
+#print axioms Gtz.isotropicShiftMatrix_one_one
+#print axioms Gtz.isotropicShiftMatrix_one_two
+#print axioms Gtz.isotropicShiftMatrix_two_two
+#print axioms Gtz.isotropicShiftMatrix_symm
+#print axioms Gtz.det_isotropicShiftMatrix_eq_tripleDetForm
+#print axioms Gtz.det_isotropicShiftMatrix
+#print axioms Gtz.isotropicShift_thirdMinor_eq
+#print axioms Gtz.isotropicShift_minorTwo_split
+#print axioms Gtz.isotropicShift_residual_nonneg
+#print axioms Gtz.isotropicShift_minorZeroTwo_split
+#print axioms Gtz.isotropicShift_minorOneTwo_split
+#print axioms Gtz.isotropicShift_minorZeroTwo_pos
+#print axioms Gtz.isotropicShift_minorOneTwo_pos
+#print axioms Gtz.posDef_isotropicShiftMatrix
+#print axioms Gtz.laplacianDiscriminant_lt_sq_of_posDef
+#print axioms Gtz.pos_slack_of_leadingMinors
+#print axioms Gtz.posDef_isotropicShiftMatrix_iff
+#print axioms Gtz.posDef_of_isotropicShift_le
+#print axioms Gtz.starIsotropicSlack
+#print axioms Gtz.starIsotropicSlack_le_zero
+#print axioms Gtz.starIsotropicSlack_le_one
+#print axioms Gtz.starIsotropicSlack_le_three
+#print axioms Gtz.tripleDetForm_star_of_isotropic
+#print axioms Gtz.starMinorTwo_of_isotropic
+#print axioms Gtz.posDef_kFourStarGap_of_isotropic
+#print axioms Gtz.posDef_directionChartGap_star_of_isotropic
+#print axioms Gtz.laplacianDiscriminant_one
+#print axioms Gtz.isotropicShift_equilateral_iff
+#print axioms Gtz.det_isotropicShift_equilateral
+#print axioms Gtz.exists_isotropic_not_dominant
+#print axioms Gtz.isotropic_witness_tripleDetForm_pos
+#print axioms Gtz.exists_dominant_not_isotropic
+#print axioms Gtz.dominant_witness_tripleDetForm_pos
+#print axioms Gtz.isotropicShift_reads_sum_and_discriminant
+#print axioms Gtz.laplacianDiscriminant_le_sq_sum
+
+-- The deflation gap floor and the leverage floor of a tie.  The floor is the
+-- congruence summand the landed light-atom theorem discards, the strict engine
+-- turns it into a strict dominator, and at (6,3) the predecessor is landed so
+-- every tie is heavy with no hypothesis.
+#print axioms Gtz.posSemidef_one_sub_atomMatrix
+#print axioms Gtz.posDef_one_sub_atomMatrix
+#print axioms Gtz.posDef_smul_of_pos
+#print axioms Gtz.atomMatrix_quadratic
+#print axioms Gtz.exists_deflationGapFloor
+#print axioms Gtz.exists_posDef_subsetSum_of_light_atom
+#print axioms Gtz.one_le_leverage_of_isTie
+#print axioms Gtz.not_isTie_of_light_atom
+#print axioms Gtz.forall_one_le_leverage_of_isTie
+#print axioms Gtz.one_le_leverage_of_isTie_sixThree
+#print axioms Gtz.one_le_leverage_of_isTie_of_size_le_six
+#print axioms Gtz.exists_posDef_subsetSum_sixThree_of_light
+#print axioms Gtz.exists_deflationGapFloor_sixThree
+#print axioms Gtz.tight_cone_of_floor
+#print axioms Gtz.leverage_ge_one_of_tight_cone
+#print axioms Gtz.obligationThresholdCellHingeRankFourAndUp_of_heavyTie
+#print axioms Gtz.obligationSubThresholdBandHinge_of_heavyTie
+#print axioms Gtz.hingeConclusion_sixThree_of_heavyTie
+
+-- The triangle stall carries one free pivot: the shared bottleneck of both
+-- terminal K4 walls needs only three pivot conditions, not four.
+#print axioms Gtz.IsKFourTriangle
+#print axioms Gtz.isKFourTriangle_card
+#print axioms Gtz.containsTriangle_iff_exists
+#print axioms Gtz.kFourCardFour_triangle_unique
+#print axioms Gtz.kFourCardFour_containsTriangle_iff_compl_meets
+#print axioms Gtz.kFourCardFour_triangle_count
+#print axioms Gtz.kFourCardFour_typeA_count
+#print axioms Gtz.erase_eq_of_triangle_subset
+#print axioms Gtz.chartLadderPivot_ge_one_of_triangle_of_posDef
+#print axioms Gtz.exists_free_pivot_of_containsTriangle
+#print axioms Gtz.KFourTriangleStallClosureSharp
+#print axioms Gtz.kFourTriangleStallClosure_of_sharp
+#print axioms Gtz.kFourTriangleStallClosureSharp_of_closure
+#print axioms Gtz.kFourTriangleStallClosure_iff_sharp
+#print axioms Gtz.kFourWindowAllPivotWallClosure_of_sharp
+#print axioms Gtz.kFourGaugeStarCorankWallClosure_iff_typeA_of_sharp
+#print axioms Gtz.kFourGaugeAndPivotWallClosure_of_sharp_of_typeA
+#print axioms Gtz.not_posDef_of_subset_of_stall
+#print axioms Gtz.kFourTriangleStall_winner_meets_compl
+#print axioms Gtz.blindSubset_reading_eq
+#print axioms Gtz.blindSubset_spread_bound
+#print axioms Gtz.kFourTriangleSelection_spread
