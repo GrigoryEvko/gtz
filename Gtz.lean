@@ -4896,3 +4896,4 @@ import Gtz.Wave.TripleDeterminantCells
 import Gtz.Wave.TripleDeterminantSharp
 import Gtz.Wave.ProjectionMinorShift
 import Gtz.Wave.HollowCubeTrace
+import Gtz.Wave.SelectionMarginLaws
