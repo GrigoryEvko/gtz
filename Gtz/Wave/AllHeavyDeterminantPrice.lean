@@ -92,6 +92,7 @@ import Gtz.Core.Basic
 import Gtz.Core.Sanity
 import Gtz.Design.ComplementFrame
 import Gtz.Quantitative.ChartHadamard
+import Gtz.Quantitative.SevenThreeRigidity
 import Gtz.Quantitative.SubsetDeterminantBound
 import Gtz.Reduction.BranchTransferConstants
 import Gtz.Wave.AllHeavyHingeSchur
@@ -197,7 +198,7 @@ theorem slotColumns_pickAtoms (design : WeightedDesign size rank) (pick : Fin ra
     slotColumns (pickAtoms design pick) = atomColumnsOfPick design pick := rfl
 
 /-- The image of an injective pick has exactly `rank` labels. -/
-theorem card_image_pick (pick : Fin rank → Fin size) (hinjective : Function.Injective pick) :
+theorem card_image_pick_rank (pick : Fin rank → Fin size) (hinjective : Function.Injective pick) :
     (Finset.image pick Finset.univ).card = rank := by
   classical
   rw [Finset.card_image_of_injective _ hinjective, Finset.card_univ, Fintype.card_fin]
@@ -408,24 +409,6 @@ the number carries nothing. -/
 
 section ComplementCollapse
 
-/-- **A GRAM OF MORE VECTORS THAN THE DIMENSION IS SINGULAR.**  Pure linear
-algebra, at every pair of dimensions. -/
-theorem det_transpose_mul_self_eq_zero_of_lt {rowCount colCount : ℕ}
-    (hlt : rowCount < colCount) (frameMat : Matrix (Fin rowCount) (Fin colCount) ℝ) :
-    (frameMatᵀ * frameMat).det = 0 := by
-  by_contra hne
-  have hinjective : Function.Injective (Matrix.mulVecLin frameMat) := by
-    rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
-    intro probe hprobe
-    have hzero : (frameMatᵀ * frameMat) *ᵥ probe = 0 := by
-      rw [← Matrix.mulVec_mulVec]
-      have hstep : frameMat *ᵥ probe = 0 := hprobe
-      rw [hstep, Matrix.mulVec_zero]
-    exact Matrix.eq_zero_of_mulVec_eq_zero hne hzero
-  have hdim := LinearMap.finrank_le_finrank_of_injective hinjective
-  simp only [Module.finrank_fin_fun] at hdim
-  omega
-
 variable {size rank : ℕ}
 
 /-- The Gram of an arbitrary list of design labels, as a square matrix on the
@@ -457,7 +440,7 @@ theorem det_labelGram_eq_zero_of_rank_lt (design : WeightedDesign size rank) {li
     (hlt : rank < listCount) (list : Fin listCount → Fin size) :
     (labelGram design list).det = 0 := by
   rw [labelGram_eq_transpose_mul_self]
-  exact det_transpose_mul_self_eq_zero_of_lt hlt (labelColumns design list)
+  exact det_transpose_mul_self_eq_zero_of_lt (labelColumns design list) hlt
 
 /-- The omitted-label count at the threshold cell exceeds the rank from rank four
 onward, so the collapse above is not vacuous there. -/
@@ -584,7 +567,7 @@ theorem not_isTie_of_hasMassWitness (design : WeightedDesign size rank)
   classical
   obtain ⟨pick, hinjective, hbeat⟩ := hwitness
   intro htie
-  exact htie.2 (Finset.image pick Finset.univ) (card_image_pick pick hinjective)
+  exact htie.2 (Finset.image pick Finset.univ) (card_image_pick_rank pick hinjective)
     (posDef_gap_of_deficiency_beats_complementShare design pick hinjective hbeat)
 
 /-- The hinge conclusion from one mass witness. -/
@@ -1021,7 +1004,7 @@ theorem not_isTie_of_hasBracketWitness (design : WeightedDesign size rank) (hsiz
   classical
   obtain ⟨pick, hinjective, htracePos, hfire⟩ := hwitness
   intro htie
-  exact htie.2 (Finset.image pick Finset.univ) (card_image_pick pick hinjective)
+  exact htie.2 (Finset.image pick Finset.univ) (card_image_pick_rank pick hinjective)
     (posDef_gap_of_bracket_beats_share design hsize pick hinjective htracePos hfire)
 
 /-- The hinge conclusion from one closed-form witness. -/
