@@ -91,6 +91,21 @@ definite, so its definiteness is ONE scalar.
 the dropped label's reading of the SELECTED resolvent against its own weight.
 The moment never appears and no factor `1 - w_d` is paid.  The two hypotheses
 are not compared in kernel here.
+
+## The price at the gauge star, and its refutation as a necessary condition
+
+The canonical gauge star `{3, 4, 5}` is the three coordinate axes, so its
+conductance is diagonal.  `Gtz.gaugeStarPrice_zero` and its two companions read
+the price there as one division-only inequality:
+
+  `m_0 * (w_3 / m_3 + w_4 / m_4)  <  w_0` .
+
+`Gtz.tetrahedron_gaugeStar_posDef_with_failing_price` refutes that inequality as
+a NECESSARY condition, in kernel.  At the tetrahedron point the bound holds at
+the label `0` and the star, the star gap IS positive definite, and the price
+reads `1/3` against a weight of `1/6`.  So the Loewner content of the deflation
+is sufficient and never total, and the residual of the registered cell is a
+determinant sign that no Loewner comparison reaches.
 -/
 
 namespace Gtz
@@ -991,5 +1006,186 @@ theorem kFour_exists_chartDeflatedTree_priced (point : DirectionChartPoint 6)
     point.weight (point.mass_pos dropLabel).le (point.weight_pos dropLabel)
     (chartPoint_weight_lt_one point dropLabel)
     (posDef_chartPuncturedMoment_kFour point dropLabel) hbound hprice
+
+/-! ## 12. The price at the canonical gauge star, in closed form
+
+The gauge star `{3, 4, 5}` is the three coordinate axes, so its conductance is
+diagonal and its resolvent is explicit.  The price of section 11 becomes one
+division-only inequality between the dropped label's mass and the conductances
+of the two star edges of its fundamental cycle.
+
+The same closed form REFUTES the price as a necessary condition.  At the
+tetrahedron chart point the bound holds at the label `0` and the star, the gap
+IS positive definite there, and the price reads `1/3` against a weight of
+`1/6`. -/
+
+/-- The conductance of the gauge star is diagonal. -/
+theorem chartSelectedConductance_gaugeStar_eq (mass weight : Fin 6 → ℝ) :
+    chartSelectedConductance kFourDirection mass weight ({3, 4, 5} : Finset (Fin 6))
+      = Matrix.of ![![mass 3 / weight 3, 0, 0], ![0, mass 4 / weight 4, 0],
+          ![0, 0, mass 5 / weight 5]] := by
+  rw [chartSelectedConductance, Finset.sum_insert (by decide),
+    Finset.sum_insert (by decide), Finset.sum_singleton]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [kFourDirection, atomMatrix, Matrix.add_apply]
+
+/-- The gauge star conductance is invertible at every chart point. -/
+theorem isUnit_det_chartSelectedConductance_gaugeStar (point : DirectionChartPoint 6) :
+    IsUnit (chartSelectedConductance kFourDirection point.mass point.weight
+      ({3, 4, 5} : Finset (Fin 6))).det := by
+  have hdet : (chartSelectedConductance kFourDirection point.mass point.weight
+      ({3, 4, 5} : Finset (Fin 6))).det
+      = point.mass 3 / point.weight 3 * (point.mass 4 / point.weight 4)
+        * (point.mass 5 / point.weight 5) := by
+    rw [chartSelectedConductance_gaugeStar_eq, Matrix.det_fin_three]
+    simp
+  rw [hdet]
+  refine isUnit_iff_ne_zero.mpr (ne_of_gt ?_)
+  exact mul_pos (mul_pos (div_pos (point.mass_pos 3) (point.weight_pos 3))
+    (div_pos (point.mass_pos 4) (point.weight_pos 4)))
+    (div_pos (point.mass_pos 5) (point.weight_pos 5))
+
+/-- The gauge star resolvent, read at a label of the ground triangle. -/
+theorem gaugeStarResolvent_apply (point : DirectionChartPoint 6)
+    (dropLabel : Fin 6) (target : Fin 3 → ℝ)
+    (hsolve : chartSelectedConductance kFourDirection point.mass point.weight
+      ({3, 4, 5} : Finset (Fin 6)) *ᵥ target = kFourDirection dropLabel) :
+    (chartSelectedConductance kFourDirection point.mass point.weight
+      ({3, 4, 5} : Finset (Fin 6)))⁻¹ *ᵥ kFourDirection dropLabel = target := by
+  rw [← hsolve, Matrix.mulVec_mulVec,
+    Matrix.nonsing_inv_mul _ (isUnit_det_chartSelectedConductance_gaugeStar point),
+    Matrix.one_mulVec]
+
+/-- **THE GAUGE STAR PRICE AT LABEL ZERO.**  Division only, no matrix. -/
+theorem gaugeStarPrice_zero (point : DirectionChartPoint 6) :
+    point.mass 0
+        * (kFourDirection 0 ⬝ᵥ
+            ((chartSelectedConductance kFourDirection point.mass point.weight
+              ({3, 4, 5} : Finset (Fin 6)))⁻¹ *ᵥ kFourDirection 0))
+      = point.mass 0
+        * (point.weight 3 / point.mass 3 + point.weight 4 / point.mass 4) := by
+  have hsolve : chartSelectedConductance kFourDirection point.mass point.weight
+      ({3, 4, 5} : Finset (Fin 6))
+      *ᵥ ![point.weight 3 / point.mass 3, -(point.weight 4 / point.mass 4), 0]
+      = kFourDirection 0 := by
+    rw [chartSelectedConductance_gaugeStar_eq]
+    ext coord
+    fin_cases coord <;>
+      simp [kFourDirection, Matrix.mulVec, dotProduct, Fin.sum_univ_three] <;>
+      field_simp [(point.mass_pos 3).ne', (point.weight_pos 3).ne',
+        (point.mass_pos 4).ne', (point.weight_pos 4).ne',
+        (point.mass_pos 5).ne', (point.weight_pos 5).ne']
+  rw [gaugeStarResolvent_apply point 0 _ hsolve, kFourDirection_zero]
+  norm_num [dotProduct, Fin.sum_univ_three, Matrix.cons_val_two, Matrix.tail_cons]
+
+/-- **THE GAUGE STAR PRICE AT LABEL ONE.** -/
+theorem gaugeStarPrice_one (point : DirectionChartPoint 6) :
+    point.mass 1
+        * (kFourDirection 1 ⬝ᵥ
+            ((chartSelectedConductance kFourDirection point.mass point.weight
+              ({3, 4, 5} : Finset (Fin 6)))⁻¹ *ᵥ kFourDirection 1))
+      = point.mass 1
+        * (point.weight 3 / point.mass 3 + point.weight 5 / point.mass 5) := by
+  have hsolve : chartSelectedConductance kFourDirection point.mass point.weight
+      ({3, 4, 5} : Finset (Fin 6))
+      *ᵥ ![point.weight 3 / point.mass 3, 0, -(point.weight 5 / point.mass 5)]
+      = kFourDirection 1 := by
+    rw [chartSelectedConductance_gaugeStar_eq]
+    ext coord
+    fin_cases coord <;>
+      simp [kFourDirection, Matrix.mulVec, dotProduct, Fin.sum_univ_three] <;>
+      field_simp [(point.mass_pos 3).ne', (point.weight_pos 3).ne',
+        (point.mass_pos 4).ne', (point.weight_pos 4).ne',
+        (point.mass_pos 5).ne', (point.weight_pos 5).ne']
+  rw [gaugeStarResolvent_apply point 1 _ hsolve, kFourDirection_one]
+  norm_num [dotProduct, Fin.sum_univ_three, Matrix.cons_val_two, Matrix.tail_cons]
+
+/-- **THE GAUGE STAR PRICE AT LABEL TWO.** -/
+theorem gaugeStarPrice_two (point : DirectionChartPoint 6) :
+    point.mass 2
+        * (kFourDirection 2 ⬝ᵥ
+            ((chartSelectedConductance kFourDirection point.mass point.weight
+              ({3, 4, 5} : Finset (Fin 6)))⁻¹ *ᵥ kFourDirection 2))
+      = point.mass 2
+        * (point.weight 4 / point.mass 4 + point.weight 5 / point.mass 5) := by
+  have hsolve : chartSelectedConductance kFourDirection point.mass point.weight
+      ({3, 4, 5} : Finset (Fin 6))
+      *ᵥ ![0, point.weight 4 / point.mass 4, -(point.weight 5 / point.mass 5)]
+      = kFourDirection 2 := by
+    rw [chartSelectedConductance_gaugeStar_eq]
+    ext coord
+    fin_cases coord <;>
+      simp [kFourDirection, Matrix.mulVec, dotProduct, Fin.sum_univ_three] <;>
+      field_simp [(point.mass_pos 3).ne', (point.weight_pos 3).ne',
+        (point.mass_pos 4).ne', (point.weight_pos 4).ne',
+        (point.mass_pos 5).ne', (point.weight_pos 5).ne']
+  rw [gaugeStarResolvent_apply point 2 _ hsolve, kFourDirection_two]
+  norm_num [dotProduct, Fin.sum_univ_three, Matrix.cons_val_two, Matrix.tail_cons]
+
+/-- **THE GAUGE STAR CELL AT LABEL ZERO.**  One division-only inequality between
+the dropped mass and the two star conductances of its fundamental cycle. -/
+theorem kFourDeflatedDetCellFires_of_gaugeStarPrice_zero (point : DirectionChartPoint 6)
+    (hbound : ChartDeflatedGapBound kFourDirection point.mass point.weight 0
+      ({3, 4, 5} : Finset (Fin 6)))
+    (hprice : point.mass 0
+        * (point.weight 3 / point.mass 3 + point.weight 4 / point.mass 4)
+      < point.weight 0) :
+    KFourDeflatedDetCellFires point :=
+  kFourDeflatedDetCellFires_of_selectedResolvent_price point 0 hbound (by decide)
+    (by rw [gaugeStarPrice_zero point]; exact hprice)
+
+/-- **THE GAUGE STAR CELL AT LABEL ONE.** -/
+theorem kFourDeflatedDetCellFires_of_gaugeStarPrice_one (point : DirectionChartPoint 6)
+    (hbound : ChartDeflatedGapBound kFourDirection point.mass point.weight 1
+      ({3, 4, 5} : Finset (Fin 6)))
+    (hprice : point.mass 1
+        * (point.weight 3 / point.mass 3 + point.weight 5 / point.mass 5)
+      < point.weight 1) :
+    KFourDeflatedDetCellFires point :=
+  kFourDeflatedDetCellFires_of_selectedResolvent_price point 1 hbound (by decide)
+    (by rw [gaugeStarPrice_one point]; exact hprice)
+
+/-- **THE GAUGE STAR CELL AT LABEL TWO.** -/
+theorem kFourDeflatedDetCellFires_of_gaugeStarPrice_two (point : DirectionChartPoint 6)
+    (hbound : ChartDeflatedGapBound kFourDirection point.mass point.weight 2
+      ({3, 4, 5} : Finset (Fin 6)))
+    (hprice : point.mass 2
+        * (point.weight 4 / point.mass 4 + point.weight 5 / point.mass 5)
+      < point.weight 2) :
+    KFourDeflatedDetCellFires point :=
+  kFourDeflatedDetCellFires_of_selectedResolvent_price point 2 hbound (by decide)
+    (by rw [gaugeStarPrice_two point]; exact hprice)
+
+/-- **THE PRICE IS NOT NECESSARY.**  At the tetrahedron point the bound holds at
+the label `0` and the gauge star, and the gap there IS positive definite, but the
+price reads `1/3` against a weight of `1/6`.  So the sharp Loewner cell of
+section 11 is strictly sufficient and never total. -/
+theorem tetrahedron_gaugeStarPrice_not_lt_weight :
+    ¬ (tetrahedronChartPoint.mass 0
+        * (kFourDirection 0 ⬝ᵥ
+            ((chartSelectedConductance kFourDirection tetrahedronChartPoint.mass
+              tetrahedronChartPoint.weight ({3, 4, 5} : Finset (Fin 6)))⁻¹
+                *ᵥ kFourDirection 0))
+      < tetrahedronChartPoint.weight 0) := by
+  rw [gaugeStarPrice_zero tetrahedronChartPoint]
+  show ¬ ((1/4 : ℝ) * ((1/6) / (1/4) + (1/6) / (1/4)) < 1/6)
+  norm_num
+
+/-- The tetrahedron point still carries the bound and a strictly dominating star,
+so the refutation is of the price and not of the cell. -/
+theorem tetrahedron_gaugeStar_posDef_with_failing_price :
+    ChartDeflatedGapBound kFourDirection tetrahedronChartPoint.mass
+        tetrahedronChartPoint.weight 0 ({3, 4, 5} : Finset (Fin 6)) ∧
+      (directionChartGap kFourDirection tetrahedronChartPoint.mass
+        tetrahedronChartPoint.weight ({3, 4, 5} : Finset (Fin 6))).PosDef ∧
+      ¬ (tetrahedronChartPoint.mass 0
+          * (kFourDirection 0 ⬝ᵥ
+              ((chartSelectedConductance kFourDirection tetrahedronChartPoint.mass
+                tetrahedronChartPoint.weight ({3, 4, 5} : Finset (Fin 6)))⁻¹
+                  *ᵥ kFourDirection 0))
+        < tetrahedronChartPoint.weight 0) :=
+  ⟨tetrahedron_chartDeflatedGapBound, tetrahedron_gap_posDef,
+    tetrahedron_gaugeStarPrice_not_lt_weight⟩
 
 end Gtz
