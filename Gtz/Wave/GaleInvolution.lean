@@ -163,8 +163,13 @@ products carry the same shifted determinant at every level:
 
 At `level = 0` this is `Matrix.det_mul_comm`; at every other level it is the
 Weinstein-Aronszajn identity after a scalar rescaling.  Read on eigenvalues it is the
-statement that `M Mᵀ` and `Mᵀ M` are cospectral. -/
-theorem det_mul_transpose_sub_smul_one_comm {dimension : ℕ}
+statement that `M Mᵀ` and `Mᵀ M` are cospectral.
+
+**#DUPLICATION — the rank-three twin is `Gtz.det_mul_transpose_sub_smul_one_comm`**
+(Gtz/Wave/CrossEnergyFloor.lean:1305).  That one fixes `Fin 3`.  This one holds at
+every dimension, so it subsumes the twin.  The two collided in the umbrella under
+one name, and the suffix here repairs the collision. -/
+theorem det_mul_transpose_sub_smul_one_comm_anyDim {dimension : ℕ}
     (square : Matrix (Fin dimension) (Fin dimension) ℝ) (level : ℝ) :
     (square * squareᵀ - level • 1).det = (squareᵀ * square - level • 1).det := by
   rcases eq_or_ne level 0 with rfl | hlevel
@@ -186,12 +191,12 @@ theorem det_mul_transpose_sub_smul_one_comm {dimension : ℕ}
 
 /-- The strict twin of `Gtz.posSemidef_transpose_mul_sub_smul_one_comm`.  A positive
 semidefinite matrix is definite exactly when its determinant does not vanish, and the
-shifted determinants agree by `Gtz.det_mul_transpose_sub_smul_one_comm`. -/
+shifted determinants agree by `Gtz.det_mul_transpose_sub_smul_one_comm_anyDim`. -/
 theorem posDef_transpose_mul_sub_smul_one_comm {dimension : ℕ}
     (square : Matrix (Fin dimension) (Fin dimension) ℝ) {level : ℝ} (hlevel : 0 < level) :
     (squareᵀ * square - level • 1).PosDef ↔ (square * squareᵀ - level • 1).PosDef := by
   have hsemi := posSemidef_transpose_mul_sub_smul_one_comm square hlevel
-  have hdet := det_mul_transpose_sub_smul_one_comm square level
+  have hdet := det_mul_transpose_sub_smul_one_comm_anyDim square level
   constructor
   · intro hpos
     have hother : (square * squareᵀ - level • 1).PosSemidef := hsemi.mp hpos.posSemidef
@@ -296,7 +301,7 @@ theorem det_projectionBlock_sub_smul_one_eq_weightedMoment (design : WeightedDes
       = (weightedMomentOn design selected - level • 1).det := by
   rw [← scaledSelectedRows_mul_transpose design (selected.orderEmbOfFin hcard),
     weightedMomentOn_eq_transpose_mul design hcard]
-  exact det_mul_transpose_sub_smul_one_comm _ _
+  exact det_mul_transpose_sub_smul_one_comm_anyDim _ _
 
 /-- The Loewner twin at a POSITIVE level. -/
 theorem posSemidef_projectionBlock_sub_smul_one_iff_weightedMoment
