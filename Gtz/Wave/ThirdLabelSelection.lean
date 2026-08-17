@@ -30,6 +30,15 @@ nothing is lost by dropping the hypothesis.  It is also attained: the row law is
 `e(2 − e) − p(1 − p)`, which at `e = 1/3` and `p = 1/2` reads `5/9 − 1/4 = 11/36`.
 
 **2. The rung is one inequality, with no false antecedent.**
+
+**#BOGUS — THE ANTECEDENT IS FALSE, AND THIS CLAIM IS REFUTED.**
+`Gtz.not_forall_thirdInequality` (Gtz/Wave/WiringJointEntrance.lean) refutes it.
+The door quantifies over EVERY qualified pivot pair, and the three matching pairs
+of the `K4` graphic point qualify and fail at all four third labels, at `9/1296`
+against `7/1296`.  `Gtz.PairPartialGapSomewhere` dies to the same witness through
+`Gtz.not_pairPartialGapSomewhere`, so `Gtz.allFiveOnPath_of_pairPartialGap` and
+`Gtz.consolidatedStrictTriple_of_pairPartialGap` cannot open either.
+`Gtz.unopenableJointDoors` records the pair.
 `Gtz.allFiveOnPath_of_thirdInequality` reaches all five on-path obligations from the third
 inequality alone, at a pivot and partner that every design already carries.
 

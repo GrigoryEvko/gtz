@@ -95,6 +95,7 @@ field.  `Gtz.StressFreeHingeHoldsSixThree` is OPEN.
 -/
 import Gtz.Wave.WiringAllFiveOnPath
 import Gtz.Wave.WiringDoorLedger
+import Gtz.Wave.WiringJointEntrance
 import Gtz.Design.ChartProgrammeAssembly
 import Gtz.Wave.LivePairTieRefuter
 
@@ -169,6 +170,49 @@ theorem unopenableLivePairDoors :
           ∃ pairSecond : Fin 6, pivotLabel ≠ pairSecond ∧ pairFirst ≠ pairSecond
             ∧ 0 < discriminantTie design pivotLabel pairFirst pairSecond) :=
   ⟨not_livePairTieResidual, not_heavyLivePairTieResidual⟩
+
+/-! ### ROUTE A AND ROUTE B ARE ONE ROUTE
+
+The ledger of this campaign prices two routes to `Gtz.StressFreeHingeHoldsSixThree`.
+Route A pays five separate closures, one per matroid class, and arrives through
+`Gtz.stressFreeHingeHoldsSixThree_of_residualFamilies`.  Route B pays one
+statement, `Gtz.NoStressResidual 6`, and arrives through
+`Gtz.stressFreeHingeHoldsSixThree_of_noStressResidual`.
+
+**The two prices are equal.**  The theorem below closes the loop in kernel.  The
+other two arms of the trichotomy are already spent inside both routes, by
+`Gtz.twoPoleStratumSelection_six_unconditional` and
+`Gtz.balancedStratumSelection_six_holds`, so neither route carries them as cost. -/
+
+/-- **ROUTE A EQUALS ROUTE B.**  The conjunction of the five on-path registry
+Props and the single Prop of the second route are one statement.  Route B is not
+a cheaper target, and route A is not five independent targets. -/
+theorem allFiveOnPath_iff_noStressResidual_six :
+    AllFiveOnPath ↔ NoStressResidual 6 :=
+  ⟨noStressResidual_six_of_allFiveOnPath,
+    fun hresidual =>
+      allFiveOnPath_iff_hingeHoldsAtSize_six_three.mpr
+        (hingeHoldsAtSize_sixThree_of_stressFreeHinge
+          twoPoleStratumSelection_six_unconditional
+          (balancedStratumCapstone_of_balancedStratumSelection
+            balancedStratumSelection_six_holds)
+          (noStressResidual_six_iff_stressFreeHingeHoldsSixThree.mp hresidual))⟩
+
+/-- **THE WHOLE LEDGER, AS ONE EQUIVALENCE CLASS.**  Route A, route B, the hinge
+at the deciding cell, and the emptiness of the stress-free tie locus. -/
+theorem routeA_iff_routeB_iff_hinge :
+    (AllFiveOnPath ↔ NoStressResidual 6)
+      ∧ (NoStressResidual 6 ↔ StressFreeHingeHoldsSixThree)
+        ∧ (AllFiveOnPath ↔ HingeHoldsAtSize 6 3)
+          ∧ (NoStressResidual 6 ↔
+              ∀ design : WeightedDesign 6 3,
+                (∀ stress : Fin 6 → ℝ,
+                  (∑ c, stress c • atomMatrix (design.atom c)) = 0 → stress = 0) →
+                  ¬ IsTie design) :=
+  ⟨allFiveOnPath_iff_noStressResidual_six,
+    noStressResidual_six_iff_stressFreeHingeHoldsSixThree,
+      allFiveOnPath_iff_hingeHoldsAtSize_six_three,
+        noStressResidual_six_iff_no_stressFree_tie⟩
 
 /-! ### The three shapes of the answer are one shape -/
 
