@@ -1183,6 +1183,7 @@ import Gtz.Wave.CertificateFreeMomentLaws
 import Gtz.Wave.AllHeavyWedgeCollapse
 import Gtz.Wave.ShareRigidity
 import Gtz.Wave.CorankDecomposition
+import Gtz.Wave.TieStratumClassification
 import Gtz.Wave.TripleInvariantLedger
 import Gtz.Wave.WiringKFourWalls
 import Gtz.Wave.WiringLineChartRoads
@@ -35329,3 +35330,19 @@ run_cmd do
 #print axioms Gtz.sq_projectionOfDesign_of_parallel
 #print axioms Gtz.allFiveOnPath_iff_noStressResidual_six
 #print axioms Gtz.routeA_iff_routeB_iff_hinge
+
+-- Gtz/Wave/TieStratumClassification.lean
+#print axioms Gtz.sixThree_hasParallelPair_of_isTie_of_stress
+#print axioms Gtz.isStressFreeDesign_of_isPrimitiveDesign_of_isTie
+#print axioms Gtz.hasNoCommonQuadric_of_isPrimitiveDesign_of_isTie
+#print axioms Gtz.exists_commonQuadric_five
+#print axioms Gtz.exists_stress_seven
+#print axioms Gtz.sizeGap_at_rank_three
+#print axioms Gtz.wedgeParseval
+#print axioms Gtz.volumeParseval
+#print axioms Gtz.cauchyBinetLadder
+#print axioms Gtz.sum_inv_leverage_lt_four_of_isTie_sixThree
+#print axioms Gtz.three_le_card_strictlyHeavy_of_isTie_sixThree
+#print axioms Gtz.shareArithmetic_is_consistent
+#print axioms Gtz.exists_tripleBracket_sq_ge_six
+#print axioms Gtz.card_coplanar_le_three_of_isPrimitiveDesign_of_isTie

@@ -6278,6 +6278,7 @@ import Gtz.Wave.WiringJointEntrance
 --   exactly this reason.
 import Gtz.Wave.ShareRigidity
 import Gtz.Wave.CorankDecomposition
+import Gtz.Wave.TieStratumClassification
 import Gtz.Wave.TripleInvariantLedger
 import Gtz.Wave.WiringKFourWalls
 import Gtz.Wave.WiringLineChartRoads
