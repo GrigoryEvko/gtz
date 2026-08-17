@@ -735,6 +735,66 @@ theorem subsetSum_sub_one_eq_sum_smul_dualAtom (design : WeightedDesign 6 3)
   conv_lhs => rw [eq_sum_smul_dualAtom design hstressFree _ hsymmetric]
   exact Finset.sum_congr rfl fun label _ => by rw [hcoefficient label]
 
+/-! ### The covering defect, named
+
+The coefficients of the gap in the dual basis deserve a name, because they carry
+no weight and the domination test reads them directly. -/
+
+/-- **THE COVERING DEFECT** of a subset at a label: the squared pairings of the
+subset's atoms against that label, minus that label's leverage.  It is the
+coefficient of `Gtz.dualAtom` at that label in the gap of the subset, and it is
+a polynomial in the atom coordinates with no weight in it. -/
+def coveringDefect (design : WeightedDesign m k) (selected : Finset (Fin m))
+    (label : Fin m) : ℝ :=
+  (∑ other ∈ selected, (design.atom other ⬝ᵥ design.atom label) ^ 2)
+    - leverageOf (design.atom label)
+
+/-- The gap in the dual basis, with the coefficients named. -/
+theorem subsetSum_sub_one_eq_sum_coveringDefect_smul_dualAtom (design : WeightedDesign 6 3)
+    (hstressFree : IsStressFreeDesign design) (selected : Finset (Fin 6)) :
+    subsetSum design selected - 1
+      = ∑ label, coveringDefect design selected label • dualAtom design label :=
+  subsetSum_sub_one_eq_sum_smul_dualAtom design hstressFree selected
+
+/-- A dominating subset has nonnegative covering defect at every label. -/
+theorem coveringDefect_nonneg_of_dominates (design : WeightedDesign m k)
+    {selected : Finset (Fin m)} (hdominates : Dominates design selected) (label : Fin m) :
+    0 ≤ coveringDefect design selected label :=
+  sub_nonneg.mpr (leverage_le_sum_sq_dotProduct_of_dominates design hdominates label)
+
+/-- **A DOMINATING SUBSET STRICTLY OVERCOVERS SOMEWHERE.**  On the stress-free
+stratum the covering defects of a dominating subset are not all zero, because a
+vanishing defect vector would make the gap vanish, and no gap of a stress-free
+design vanishes.  With the covering law this promotes one of the six
+inequalities to a STRICT one, at a label the theorem does not name.
+
+This is the weight-free form of the fact that a dominating subset can never sit
+exactly on the identity. -/
+theorem exists_coveringDefect_pos_of_dominates (design : WeightedDesign 6 3)
+    (hstressFree : IsStressFreeDesign design) {selected : Finset (Fin 6)}
+    (hdominates : Dominates design selected) :
+    ∃ label, 0 < coveringDefect design selected label := by
+  by_contra hall
+  push_neg at hall
+  refine subsetSum_sub_one_ne_zero_of_stressFree design hstressFree selected ?_
+  rw [subsetSum_sub_one_eq_sum_coveringDefect_smul_dualAtom design hstressFree selected]
+  refine Finset.sum_eq_zero fun label _ => ?_
+  rw [le_antisymm (hall label) (coveringDefect_nonneg_of_dominates design hdominates label),
+    zero_smul]
+
+/-- **THE TRACE BRIDGE.**  The trace of a gap is the covering defect vector
+paired with the weight vector, because the dual forms have the weights as their
+traces.  This is the one place a weight re-enters the weight-free normal
+form. -/
+theorem trace_subsetSum_sub_one_eq_sum_coveringDefect_mul_weight (design : WeightedDesign 6 3)
+    (hstressFree : IsStressFreeDesign design) (selected : Finset (Fin 6)) :
+    Matrix.trace (subsetSum design selected - 1)
+      = ∑ label, coveringDefect design selected label * design.weight label := by
+  rw [subsetSum_sub_one_eq_sum_coveringDefect_smul_dualAtom design hstressFree selected,
+    Matrix.trace_sum]
+  exact Finset.sum_congr rfl fun label _ => by
+    rw [Matrix.trace_smul, smul_eq_mul, trace_dualAtom_eq_weight design hstressFree label]
+
 /-! ## 8. The rescaling fiber
 
 The GTZ question reads only the atoms, and the atoms carry two kinds of data:
