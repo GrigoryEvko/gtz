@@ -6281,6 +6281,10 @@ import Gtz.Wave.CorankDecomposition
 import Gtz.Wave.TieStratumClassification
 import Gtz.Wave.TripleInvariantLedger
 import Gtz.Wave.InvariantBranchCut
+import Gtz.Wave.CorankOneNormalForm
+import Gtz.Wave.ThreeLinesSlideElimination
+import Gtz.Wave.PairingEnergyBudget
+import Gtz.Wave.KFourTreeSumSign
 import Gtz.Wave.WiringKFourWalls
 import Gtz.Wave.WiringLineChartRoads
 import Gtz.Wave.WiringChartGenericRoads

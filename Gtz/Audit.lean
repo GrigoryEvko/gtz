@@ -1186,6 +1186,10 @@ import Gtz.Wave.CorankDecomposition
 import Gtz.Wave.TieStratumClassification
 import Gtz.Wave.TripleInvariantLedger
 import Gtz.Wave.InvariantBranchCut
+import Gtz.Wave.CorankOneNormalForm
+import Gtz.Wave.ThreeLinesSlideElimination
+import Gtz.Wave.PairingEnergyBudget
+import Gtz.Wave.KFourTreeSumSign
 import Gtz.Wave.WiringKFourWalls
 import Gtz.Wave.WiringLineChartRoads
 import Gtz.Wave.WiringChartGenericRoads
@@ -31106,6 +31110,17 @@ run_cmd do
 -- exclusions, the bracket table, the three Cramer expansions, the six covering
 -- identities, the per-atom scales, the realization, the covering, the stratum
 -- reduction, and the first chart-level cell at this entry.
+-- #BOGUS (2026-08-17, verified by read): "the bracket table" OVERSTATES the
+-- kernel content.  NO bracket table exists.  The block below pins twenty-nine
+-- declarations and not one of them evaluates a bracket of `Gtz.oneLineDirection`.
+-- The only bracket statement about this chart is
+-- `Gtz.tripleBracket_oneLineDirection_eq_zero_iff`
+-- (Gtz/Design/OneLineChart.lean:102), a VANISHING criterion whose right side is
+-- a `Prop`, not a polynomial.  The twenty polynomials live in PROSE only, in the
+-- module docstring at Gtz/Design/OneLineChart.lean:27-33.  A number in a
+-- docstring is not a result.  The six `_of_oneLineExpansions` lemmas pinned at
+-- :31123-:31128 run design-to-chart, the INVERSE direction, and they mention
+-- `Gtz.oneLineDirection` nowhere.  Delete this clause or land the table.
 #print axioms Gtz.oneLineDirection
 #print axioms Gtz.oneLineDirection_zero
 #print axioms Gtz.oneLineDirection_one
