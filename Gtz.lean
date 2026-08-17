@@ -6247,3 +6247,14 @@ import Gtz.Wave.CellAssemblyAudit
 --   `Gtz.kFour_exists_deflatedSubset_chartWitness` fires it at EVERY `K4` chart point: strict
 --   domination of the produced subset in the chart refutes the tie of the welded design.
 import Gtz.Wave.LandedWireClosure
+
+-- FORK: THE TWO JOINT ENTRANCES, PRICED.
+-- `Gtz.offsetDominatesSomewhere_iff_hingeHoldsAtSize_six_three` prices the offset door: the
+--   five on-path registry axioms and three polynomial inequalities at one pivot of one design
+--   are ONE statement.  `Gtz.allFiveOnPath_iff_hingeHoldsAtSize_six_three` closes the loop.
+-- `Gtz.not_pairPartialGapSomewhere` REFUTES the pair door outright at `Gtz.graphicKFourDesign`,
+--   which is primitive and reads label load `5/6` everywhere.  `Gtz.not_forall_thirdInequality`
+--   refutes a third door whose own module claimed it had no false antecedent.
+-- `Gtz.pairPartialGap_eq_weightedForm` is the two-local law: every quartic term cancels.
+--   `Gtz.sum_labelLoad_eq_five` reads the six label loads as exactly five, at EVERY design.
+import Gtz.Wave.WiringJointEntrance

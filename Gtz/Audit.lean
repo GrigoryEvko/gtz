@@ -1181,6 +1181,7 @@ import Gtz.Wave.OnPathRegistryCollapse
 import Gtz.Wave.DeadDoorRefutations
 import Gtz.Wave.CertificateFreeMomentLaws
 import Gtz.Wave.AllHeavyWedgeCollapse
+import Gtz.Wave.WiringJointEntrance
 import Gtz.Wave.WiringResidualEquivalence
 import Gtz.Wave.WiringDoorLedger
 import Gtz.Wave.WiringAllFiveOnPath
@@ -35302,3 +35303,20 @@ run_cmd do
 #print axioms Gtz.not_heavyLivePairTieResidual
 #print axioms Gtz.unopenableLivePairDoors
 #print axioms Gtz.gtzWeightedAll_three_of_anyRoute
+
+-- Gtz/Wave/WiringJointEntrance.lean
+#print axioms Gtz.offsetDominatesSomewhere_iff_hingeHoldsAtSize_six_three
+#print axioms Gtz.allFiveOnPath_iff_hingeHoldsAtSize_six_three
+#print axioms Gtz.allFiveOnPath_iff_offsetDominatesSomewhere
+#print axioms Gtz.consolidatedStrictTripleDesign_iff_offsetDominatesSomewhere
+#print axioms Gtz.gtzWeightedAll_three_of_offsetDominatesSomewhere
+#print axioms Gtz.gtzWeightedAll_three_of_pairPartialGap
+#print axioms Gtz.pairPartialGap_eq_weightedForm
+#print axioms Gtz.sum_labelLoad_eq_five
+#print axioms Gtz.not_pairPartialGapSomewhere
+#print axioms Gtz.not_forall_thirdInequality
+#print axioms Gtz.unopenableJointDoors
+#print axioms Gtz.isPrimitiveDesign_of_sq_projection_lt
+#print axioms Gtz.sq_projectionOfDesign_of_parallel
+#print axioms Gtz.allFiveOnPath_iff_noStressResidual_six
+#print axioms Gtz.routeA_iff_routeB_iff_hinge
