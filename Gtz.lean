@@ -6089,3 +6089,141 @@ import Gtz.Wave.NoStressResidualSwapBrackets
 --   cent of uniform draws while missing both -- so no coverage figure on this stratum is
 --   evidence about the obligation.
 import Gtz.Wave.NoStressResidualTraceDetCell
+
+-- THE ON-PATH REGISTRY COLLAPSES ONTO THE HINGE.  `Gtz.onPathRegistryCollapse` proves that
+--   the five class statements, `Gtz.StressFreeHingeHoldsSixThree`,
+--   `Gtz.ConsolidatedStrictTripleDesign` and `Gtz.ConsolidatedStrictTriple` are ONE Prop, and
+--   that it is `Gtz.HingeHoldsAtSize 6 3`.  The tree carried every forward arrow and no
+--   backward arrow.  The load-bearing new one is
+--   `Gtz.consolidatedStrictTripleDesign_of_hinge`: the hinge supplies weak domination through
+--   `Gtz.gtzWeighted_six_three_of_hinge`, and a primitive design with a weak dominator and no
+--   strict one IS a tie.  So the eighteen `Gtz.allFiveOnPath_of_*` doors, the five registry
+--   Props and the class list are all priced at the whole rank-three conjecture, and no
+--   rewriting between them can make one cheaper than another.
+-- THE FRONTIER IS ONE EMPTINESS.  `Gtz.hingeHoldsAtSize_six_three_iff_no_stressFree_tie` and
+--   `Gtz.gtzWeightedAll_three_of_no_stressFree_tie` reduce rank three at EVERY size to the
+--   non-existence of a single object, a stress-free `(6,3)` tie.  No chart, no selector, no
+--   pattern list and no residual vocabulary appears in that hypothesis.
+-- THE VACUITY LAW.  `Gtz.elim_primitive_isTie_of_hinge`: under the hinge `IsPrimitiveDesign`
+--   and `IsTie` are contradictory, so every Prop of the shape
+--   `forall design, IsPrimitiveDesign design -> IsTie design -> ...` is implied by the hinge.
+--   Forty named Props have that shape, twenty of them in `Gtz/Reduction/Polar*.lean`, each
+--   shipped with a `hingeHoldsAtSize_of_*` producer.  `Gtz.polarTiltSelection_of_hinge` closes
+--   the first, and `Gtz.polarTiltSelection_iff_hingeHoldsAtSize` shows the polar lane is a
+--   renaming rather than a reduction.
+import Gtz.Wave.OnPathRegistryCollapse
+
+-- FOUR DOORS THAT CANNOT OPEN, CLOSED.  `Gtz.isPrimitiveDesign_graphicKFourDesign` is the fact
+--   the registry's strike-out at Skeleton/Obligations.lean:489 assumed was landed and was not;
+--   with it `Gtz.not_forall_primitiveExcessDominates_sixThree_unconditional` kills the
+--   primitive excess-dominance hypothesis, hence both
+--   `Gtz.allFiveOnPath_of_primitiveExcessDominates` and its unflagged twin
+--   `Gtz.allFiveOnPath_of_excessDominates`, which carry the same hypothesis.
+-- `Gtz.not_existsLivePairTieDesign` refutes the live-pair "repair" outright, through the
+--   landed `Gtz.existsLivePairTieDesign_iff_forall_exists_posDef` and any `(6,3)` tie.
+-- `Gtz.not_forall_hasMassWitness_sixThree` and `Gtz.not_forall_hasBracketWitness_sixThree`
+--   refute the two all-heavy witness antecedents: each witness refutes `Gtz.IsTie` on the nose,
+--   so demanding one everywhere asserts that `(6,3)` holds no tie.
+import Gtz.Wave.DeadDoorRefutations
+
+-- THE ALL-HEAVY WEDGE COLLAPSE.  `Gtz.posDef_of_three_le_sum_leverage_of_wedgeBalance` decides
+--   strict domination from the wedge balance and a NON-STRICT leverage total, where the landed
+--   `Gtz.posDef_iff_traceTest_and_wedgeBalance` asked for a strict one.  That single relaxation
+--   discharges the surplus conjunct of every wedge selector, because a card-three subset of an
+--   all-heavy design totals at least three on the nose, and because a WEAK dominator does too
+--   (`Gtz.three_le_sum_leverage_of_dominates`, the rank-three reading of the landed trace test).
+-- THE WEAK-TO-STRICT ENGINE.  `Gtz.posDef_of_dominates_of_wedgeBalance`: a weak dominator whose
+--   wedge balance holds at every in-plane probe is a STRICT dominator.  Four of the five on-path
+--   obligations hand over exactly a weak dominator, so this is the shape they ask for.
+-- THE STRICT-HEAVINESS COUNT.  `Gtz.rank_le_card_strictlyHeavySet`: every weighted design of rank
+--   at least two has at least `rank` atoms of leverage STRICTLY above one -- no primitivity, no
+--   all-heavy, no pattern.  A strict dominator lives inside that set, so at exactly three strictly
+--   heavy atoms the selection disappears and `(6,3)` becomes ONE wedge balance.
+-- THE LIGHT BRANCH IS PAID.  `Gtz.gtzWeighted_five_three` is unconditional, so
+--   `Gtz.allHeavy_or_exists_posDef_cardThree` splits `(6,3)` with no hypothesis and
+--   `Gtz.forall_one_le_leverage_of_isTie_sixThree` makes every `(6,3)` tie all-heavy outright.
+-- THE CAPSTONE.  `Gtz.AllHeavyWedgeSelector` and `Gtz.TieDominatorBalanceResidual` are each
+--   EQUIVALENT to `Gtz.HingeHoldsAtSize 6 3`, and each reaches
+--   `Gtz.forall_gtzOriginal_rank_three_of_*`, the 1997 statement at rank three and every size.
+import Gtz.Wave.AllHeavyWedgeCollapse
+-- THE PARSEVAL MOMENT LADDER, AND WHY NO MOMENT OF THE STRICT CERTIFICATE CAN DECIDE
+--   BRANCH (i).  `Gtz.sum_weight_mul_pairBracketSq` is the one-point marginal of the pair
+--   Gram determinant, `Sum_e t_e <d,e> = 2 l_d`, and above it
+--   `Gtz.sum_weight_triple_mul_sq_tripleBracket` reaches Cauchy-Binet at Parseval WITHOUT
+--   Cauchy-Binet.  Integrating either arm of `Gtz.HasStrictCertificate` against that ladder
+--   produces an inequality that `Gtz.weight_add_weight_mul_pairBracketSq_le` and
+--   `Gtz.swapLeverageMoment_le` prove UNCONDITIONALLY from the Parseval leverage cap, so
+--   both aggregates are empty (`Gtz.certificateMomentRoute_isClosed`).  The cause is that the
+--   one-point marginal carries no angle, so every Parseval moment of the certificate family
+--   is angle-blind and cannot separate a certificate-free tie from `Gtz.kFourDesign`.
+import Gtz.Wave.CertificateFreeMomentLaws
+
+-- Phase (flatpair-seed): the weak dominator of the two line residuals, READ.
+-- THE MATROID SPLIT.  `Gtz.twoMeetingLines_cardThree_split` decides that a card-three subset of
+--   `Fin 6` holds a flat pair on one of the two meeting lines, or IS one of the four
+--   transversals -- ten, six and four of the twenty.  `Gtz.oneLine_cardThree_split` is the
+--   four-way count on one line.  Both registry residuals hand over a card-three WEAK dominator
+--   and, until this phase, spent it on nothing.
+-- INDEPENDENCE IS FREE.  `Gtz.pairGramDet_pos_of_hasLinePattern_of_open`: an open label lying on
+--   no line makes every pair Gram determinant strictly positive, through the new bracket cap
+--   `Gtz.sq_tripleBracket_le_pairGramDet_mul_leverage` (Lagrange plus Cauchy-Schwarz).  That was
+--   the only side condition of the landed weak flat-pair producer, and the pattern pays it.
+-- THE PINCH.  `Gtz.pairGapExcessOf_le_of_capBlindSpot` reads `Gtz.IsCapBlindSpot` as a CEILING on
+--   the pair gap minor, in the Gram vocabulary.  With the weak floor it becomes an explicit
+--   interval, `Gtz.PairGapExcessPinch`.
+-- THE TRICHOTOMY.  `Gtz.FlatPairTrichotomy` splits the flat pair three ways and every leg is
+--   rigid.  LIVE: a positive minor makes both corners strictly heavy
+--   (`Gtz.pos_heavyExcess_of_pos_pairGapExcessOf`) and `Gtz.IsLinePairLiftBlindAt` then pays one
+--   polynomial inequality at EVERY label.  PINNED: a degenerate minor with a heavy corner puts
+--   the third atom on the pair's first-touch plane, which already holds the line normal
+--   (`Gtz.freeAtom_on_firstTouchPlane_of_boundary`).  UNIT: a light corner sits at unit leverage
+--   with an orthogonal partner and joins NO strict dominator
+--   (`Gtz.not_posDef_of_mem_of_leverage_eq_one`).
+-- THE TRANSVERSAL ARM CLOSES.  `Gtz.twoMeetingLinesTransversalStrict_of_weakTransversal`: a weakly
+--   dominating transversal with a nonzero gap determinant IS the strict transversal the residual
+--   asks for, so that whole arm is one polynomial sign.
+-- THE DOORS ARE EXACT.  `Gtz.twoMeetingLinesSeededTransversal_iff` and
+--   `Gtz.oneLineSeededLineSparse_iff` prove the seeded residuals EQUIVALENT to the registry
+--   formulas, so the sharpening adds nothing and hands a prover the whole pinch for free.
+import Gtz.Wave.FlatPairWeakSeed
+
+-- Phase (k4-wedge): the `K4` adjugate law and the forest triple, joined.
+-- THE WEDGE LAW AT `K4`.  `Gtz.kFourLaplacian` is a signed atom sum over the six directions, so
+--   the arbitrary-measure `Gtz.adjugate_sum_smul_atomMatrix` applies verbatim
+--   (`Gtz.adjugate_kFourLaplacian`).  Neither module imported the other.
+-- THE TREE POLYNOMIAL IN CLOSED FORM.  `Gtz.kFourContractionTreePolynomial_eq_halfSum_sq_bracket`:
+--   `P_e(s) = (1/2) sum_c sum_d s_c s_d [g_c, g_d, g_e]^2`.  The eight-term case definition gives
+--   no sign information; this form gives all of it, and
+--   `Gtz.kFourContractionTreePolynomial_nonneg_of_nonneg` is immediate.
+-- THE FOREST TRIPLE COLLAPSES.  `Gtz.kFour_exists_tree_posDef_iff_massTreeSum`: at every chart
+--   point and every label the deflation returns a spanning tree whose strict domination is ONE
+--   signed tree sum, so the three forest sums of `Gtz.posDef_directionChartGap_iff_forestTriple`
+--   become one on the produced tree.
+import Gtz.Wave.KFourWedgeForestBridge
+
+-- THE WIRING SWEEP.  The corpus was disconnected, not wrong.
+-- MEASURED: of 800 modules in Wave, Design and Reduction, 147 had ZERO outward
+--   consumers, and forks 170 thru 201 reached `Skeleton` at no declaration at all.
+--   The bridge layer is `Gtz/Wave/*Wiring*.lean`, and thirty-one forks never wrote into it.
+-- `Gtz.noStressResidual_six_of_stressFreeHinge` is the converse nobody composed.  The
+--   second route and the stress-free arm of the hinge are ONE Prop, so the "strictly
+--   stronger" claim of Gtz/Reduction/RankThreeFromStressFreeResidual.lean is false.
+-- `Gtz.AllFiveOnPath` names the five-Prop conjunction that eighteen `allFiveOnPath_of_*`
+--   theorems concluded anonymously.  `Gtz.gtzWeightedAll_three_of_allFiveOnPath` carries
+--   it to rank three at every size, so all eighteen orphaned doors reach the capstone.
+-- `Gtz.gtzWeightedAll_three_of_consolidatedStrictTripleDesign` is the level-one law: a
+--   selector door is not a reduction of the cell, it is the whole rank-three conjecture.
+-- `Gtz.unopenableAtomDoors` and `Gtz.unopenableLivePairDoors` record four doors whose
+--   hypothesis this tree already refutes.  `Gtz.not_heavyLivePairTieResidual` is new: the
+--   tenth-heavy filter does not rescue the live-pair door, because the landed refuter
+--   carries weight `23/96` at label zero.
+-- `Gtz/Wave/WiringSynonymClass.lean` indexes fifteen spellings of one open statement and
+--   carries the `#VACUITY`, `#DUPLICATION` and `#BOGUS` tables.
+import Gtz.Wave.WiringResidualEquivalence
+import Gtz.Wave.WiringDoorLedger
+import Gtz.Wave.WiringAllFiveOnPath
+import Gtz.Wave.WiringSynonymClass
+
+-- THE DARK AUDIT.  `Gtz/Wave/CellAssemblyAudit.lean` was committed at 509ba56 and imported
+--   by NOTHING.  The campaign's own finish-line audit had never been compiled.  It compiles.
+import Gtz.Wave.CellAssemblyAudit

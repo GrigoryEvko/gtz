@@ -1177,6 +1177,54 @@ import Gtz.Wave.TieConstraintIntersectionCorankOne
 import Gtz.Wave.TieConstraintIntersectionKFour
 import Gtz.Wave.NoStressResidualSwapBrackets
 import Gtz.Wave.NoStressResidualTraceDetCell
+import Gtz.Wave.OnPathRegistryCollapse
+import Gtz.Wave.DeadDoorRefutations
+import Gtz.Wave.CertificateFreeMomentLaws
+import Gtz.Wave.AllHeavyWedgeCollapse
+import Gtz.Wave.WiringResidualEquivalence
+import Gtz.Wave.WiringDoorLedger
+import Gtz.Wave.WiringAllFiveOnPath
+import Gtz.Wave.WiringSynonymClass
+import Gtz.Wave.CellAssemblyAudit
+-- The on-path registry collapse: the five class statements, the stress-free hinge, the
+-- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
+#print axioms Gtz.elim_primitive_isTie_of_hinge
+#print axioms Gtz.not_isTie_of_isPrimitiveDesign_of_hinge
+#print axioms Gtz.polarTiltSelection_of_hinge
+#print axioms Gtz.polarTiltSelection_iff_hingeHoldsAtSize
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_hinge
+#print axioms Gtz.hingeHoldsAtSize_six_three_of_stressFreeHinge
+#print axioms Gtz.stressFreeHingeHoldsSixThree_iff_hingeHoldsAtSize_six_three
+#print axioms Gtz.StressFreeResidualFamiliesTieFree
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_residualFamiliesTieFree
+#print axioms Gtz.stressFreeStratumIsTieFree_of_hinge
+#print axioms Gtz.residualFamiliesTieFree_of_hinge
+#print axioms Gtz.residualFamiliesTieFree_iff_hingeHoldsAtSize_six_three
+#print axioms Gtz.consolidatedStrictTripleDesign_of_hinge
+#print axioms Gtz.consolidatedStrictTripleDesign_iff_hingeHoldsAtSize_six_three
+#print axioms Gtz.consolidatedStrictTriple_iff_hingeHoldsAtSize_six_three
+#print axioms Gtz.OnPathRegistryConjunction
+#print axioms Gtz.onPathRegistryConjunction_of_hinge
+#print axioms Gtz.baseTripleTightHeavyNeedleResidual_of_hinge
+#print axioms Gtz.lineFreeOffConic_tieFree_of_hinge
+#print axioms Gtz.onPathRegistryCollapse
+#print axioms Gtz.gtzWeightedAll_three_of_residualFamiliesTieFree
+#print axioms Gtz.gtzWeightedAll_three_of_consolidated
+#print axioms Gtz.hingeHoldsAtSize_six_three_iff_no_stressFree_tie
+#print axioms Gtz.gtzWeightedAll_three_of_no_stressFree_tie
+#print axioms Gtz.rankThreeFrontier_is_one_emptiness
+-- Four doors that cannot open, closed.  The `K4` primitivity fact is the one the registry
+-- strike-out assumed was landed and was not.
+#print axioms Gtz.graphicKFourScale_ne_zero
+#print axioms Gtz.kFourEdgeVector_not_parallel
+#print axioms Gtz.isPrimitiveDesign_graphicKFourDesign
+#print axioms Gtz.not_forall_primitiveExcessDominates_sixThree_unconditional
+#print axioms Gtz.excessDominanceLane_is_closed_onPath
+#print axioms Gtz.not_existsLivePairTieDesign
+#print axioms Gtz.livePairRepair_is_false
+#print axioms Gtz.not_forall_hasMassWitness_sixThree
+#print axioms Gtz.not_forall_hasBracketWitness_sixThree
+#print axioms Gtz.allHeavyWitnessLane_is_closed
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -35057,3 +35105,200 @@ run_cmd do
 #print axioms Gtz.noStressResidual_of_offCell
 #print axioms Gtz.noStressResidual_six_of_offCell
 #print axioms Gtz.four_mul_secondMoment_le_det_of_isTie_sixThree
+
+-- Gtz/Wave/AllHeavyWedgeCollapse.lean
+#print axioms Gtz.posDef_of_three_le_sum_leverage_of_wedgeBalance
+#print axioms Gtz.three_le_sum_leverage_of_allHeavy
+#print axioms Gtz.posDef_iff_wedgeBalance_of_allHeavy
+#print axioms Gtz.not_isTie_of_allHeavy_of_wedgeBalance
+#print axioms Gtz.not_forall_wedgeBalanceAt_of_leverage_eq_one
+#print axioms Gtz.strictlyHeavySet
+#print axioms Gtz.mem_strictlyHeavySet_iff
+#print axioms Gtz.sum_weight_mul_gapExcess
+#print axioms Gtz.weight_mul_gapExcess_le_one_sub_weight
+#print axioms Gtz.rank_sub_one_le_card_strictlyHeavySet_sub_weight
+#print axioms Gtz.rank_le_card_strictlyHeavySet
+#print axioms Gtz.three_le_card_strictlyHeavySet_sixThree
+#print axioms Gtz.subset_strictlyHeavySet_of_posDef
+#print axioms Gtz.eq_strictlyHeavySet_of_posDef_of_card_eq_three
+#print axioms Gtz.exists_posDef_cardThree_iff_posDef_strictlyHeavySet
+#print axioms Gtz.one_le_leverage_of_mem_strictlyHeavySet
+#print axioms Gtz.exists_posDef_cardThree_iff_wedgeBalance_strictlyHeavySet
+#print axioms Gtz.gtzWeighted_five_three
+#print axioms Gtz.exists_posDef_cardThree_of_light
+#print axioms Gtz.allHeavy_or_exists_posDef_cardThree
+#print axioms Gtz.AllHeavyWedgeSelector
+#print axioms Gtz.allHeavyWedgeSelector_iff_consolidatedStrictTripleDesign
+#print axioms Gtz.allFiveOnPath_of_allHeavyWedgeSelector
+#print axioms Gtz.allHeavyWedgeSelector_of_strictlyHeavyBalance
+#print axioms Gtz.AllHeavyHingeResidual
+#print axioms Gtz.hasParallelPair_of_isTie_of_allHeavyHingeResidual
+#print axioms Gtz.subThresholdBandHinge_of_allHeavyHingeResidual
+#print axioms Gtz.thresholdCellHingeRankFourAndUp_of_allHeavyHingeResidual
+#print axioms Gtz.pairGapExcessOf_eq_heavyExcess_minor
+#print axioms Gtz.gapExcess_pos_of_pairGapExcessOf_nonneg
+#print axioms Gtz.flatPair_mem_strictlyHeavySet_of_dominates
+#print axioms Gtz.lineFlatSplitSelectorAt_of_allHeavy_of_wedgeBalance
+#print axioms Gtz.oneLine_and_twoMeetingLines_of_allHeavyLineBalance
+#print axioms Gtz.three_le_sum_leverage_of_dominates
+#print axioms Gtz.posDef_of_dominates_of_wedgeBalance
+#print axioms Gtz.posDef_iff_wedgeBalance_of_dominates
+#print axioms Gtz.not_isTie_of_dominates_of_wedgeBalance
+#print axioms Gtz.forall_one_le_leverage_of_isTie_sixThree
+#print axioms Gtz.not_forall_wedgeBalanceAt_of_isTie_sixThree
+#print axioms Gtz.three_le_card_strictlyHeavySet_of_isTie
+#print axioms Gtz.TieDominatorBalanceResidual
+#print axioms Gtz.hingeHoldsAtSize_six_three_of_tieDominatorBalanceResidual
+#print axioms Gtz.tieDominatorBalanceResidual_of_hinge
+#print axioms Gtz.tieDominatorBalanceResidual_iff_hingeHoldsAtSize_six_three
+#print axioms Gtz.gtzWeighted_six_three_of_tieDominatorBalanceResidual
+#print axioms Gtz.gtzWeightedAll_three_of_tieDominatorBalanceResidual
+#print axioms Gtz.forall_gtzOriginal_rank_three_of_tieDominatorBalanceResidual
+#print axioms Gtz.hingeHoldsAtSize_six_three_of_allHeavyWedgeSelector
+#print axioms Gtz.allHeavyWedgeSelector_iff_hingeHoldsAtSize_six_three
+#print axioms Gtz.gtzWeighted_six_three_of_allHeavyWedgeSelector
+#print axioms Gtz.gtzWeightedAll_three_of_allHeavyWedgeSelector
+#print axioms Gtz.forall_gtzOriginal_rank_three_of_allHeavyWedgeSelector
+#print axioms Gtz.allHeavyWedgeSelector_iff_tieDominatorBalanceResidual
+#print axioms Gtz.baseTripleTightLineFreeOffConicHeavyNeedleResidual_of_baseTripleWedgeBalance
+#print axioms Gtz.oneLine_and_twoMeetingLines_of_dominatorWedgeBalance
+#print axioms Gtz.pairGramDet_pos_of_primitive
+#print axioms Gtz.pairGapExcessOf_nonneg_of_dominates_flatPair_of_primitive
+#print axioms Gtz.flatPair_strictlyHeavy_of_dominates_of_primitive
+#print axioms Gtz.not_dominates_of_flat_unitAtom_of_primitive
+#print axioms Gtz.pairGapExcessOf_eq_heavyExcess_pairMinor
+#print axioms Gtz.pairGapExcessOf_sandwich_of_dominates_flatPair
+
+
+-- Wave/CertificateFreeMomentLaws, THE PARSEVAL MOMENT LADDER AND THE TWO AGGREGATION
+-- NO-GOES FOR THE STRICT CERTIFICATE.
+-- THE LADDER.  `Gtz.sum_weight_mul_sq_tripleBracket` is the two-point marginal of the
+-- squared bracket.  Three more integrations against the weights collapse it completely.
+-- `Gtz.sum_weight_mul_pairBracketSq` is the ONE-POINT marginal of the pair Gram
+-- determinant, `Sum_e t_e <d,e> = 2 l_d`, and it is the step the tree did not carry.
+-- `Gtz.sum_weight_pair_mul_pairBracketSq` gives the pair energy `Sum_{d,e} t_d t_e <d,e> = 6`,
+-- `Gtz.sum_weight_pair_mul_sq_tripleBracket` gives `Sum_{l,r} t_l t_r [p,l,r]^2 = 2 l_p`, and
+-- `Gtz.sum_weight_triple_mul_sq_tripleBracket` gives `Sum_{p,l,r} t_p t_l t_r [p,l,r]^2 = 6`.
+-- That last one is CAUCHY-BINET AT PARSEVAL reached WITHOUT Cauchy-Binet, from the marginals
+-- and the trace identity alone, with no cardinality bookkeeping anywhere.
+-- NO-GO 1, THE WEIGHT-FREE ARM.  Integrating the contrapositive of
+-- `Gtz.posDef_gap_of_sum_pairBracketSq_lt` over the third label gives exactly
+-- `(t_l + t_r) <l,r> <= l_l + l_r`
+-- (`Gtz.weight_add_weight_mul_pairBracketSq_le_of_noStrictTriple`).
+-- `Gtz.weight_add_weight_mul_pairBracketSq_le` proves the SAME inequality for EVERY design
+-- from the Parseval leverage cap `t_c l_c <= 1` alone, in four lines, with no domination
+-- hypothesis.  `Gtz.pairAggregate_of_noStrictTriple_isVacuous` records the collapse.
+-- NO-GO 2, THE SHARP ARM.  `Gtz.pairSwapMass_eq_divisionFree` removes all three
+-- denominators of the swap mass at once: with `s_c = t_c / (1 - t_c)` the swap mass is
+-- `Sum_c (1 + s_c) <C - c> - (Sum_c s_c) [C]^2`, a polynomial.
+-- `Gtz.sharp_swapLaw_of_noStrictTriple` then carries the test to EVERY label triple with NO
+-- distinctness hypothesis, which is what makes it summable over the full index.  The
+-- aggregate is `Gtz.swapLeverageMoment_le_of_noStrictTriple`: `P <= 3 Q + 2` for the two
+-- swap moments `Q = Sum_c t_c s_c` and `P = Sum_c t_c s_c l_c`.
+-- `Gtz.swapLeverageMoment_le` proves the same bound UNCONDITIONALLY and pointwise, because
+-- the leverage cap gives `t l (5 t - 2) <= 9 t^2` whenever `9 t^2 - 5 t + 2` has negative
+-- discriminant, which it does.  `Gtz.sharpAggregate_of_noStrictTriple_isVacuous` and
+-- `Gtz.certificateMomentRoute_isClosed` close the route at both arms.
+-- THE CAUSE, and it is structural, not an artifact of these two tests.  The one-point
+-- marginal `Sum_e t_e <d,e> = 2 l_d` carries NO ANGLE, so every moment of the certificate
+-- family against the Parseval weights is ANGLE-BLIND.  A certificate-free tie would carry
+-- the same weight-and-leverage profile as `Gtz.kFourDesign`, which is certificate-free and
+-- dominates strictly (`Gtz.strictCertificate_misses_a_strict_dominator`), and no angle-blind
+-- functional separates them.  A future certificate must be read at a SINGLE triple, or
+-- integrated against a measure that is not the Parseval measure.
+-- CALIBRATION IN KERNEL.  `Gtz.leverageOf_coordinateDiagonalDesign` gives leverage exactly
+-- three at every atom of the root design, `Gtz.swapMoment_coordinateDiagonalDesign` gives
+-- `Q = 1/5` and `Gtz.swapLeverageMoment_coordinateDiagonalDesign` gives `P = 3/5`, so the
+-- sharp aggregate reads `3/5 <= 13/5` there, with slack two.
+-- SCOPE.  The equivalence of `Gtz.NoStressResidual 6` with the hinge arm is
+-- Gtz/Wave/WiringResidualEquivalence and is NOT restated here.
+#print axioms Gtz.sum_weight_mul_sq_dotProduct_atom
+#print axioms Gtz.sum_weight_mul_pairBracketSq
+#print axioms Gtz.sum_weight_pair_mul_pairBracketSq
+#print axioms Gtz.sum_weight_pair_mul_sq_tripleBracket
+#print axioms Gtz.sum_weight_triple_mul_sq_tripleBracket
+#print axioms Gtz.sum_pair_sq_tripleBracket_mid
+#print axioms Gtz.sum_pair_sq_tripleBracket_last
+#print axioms Gtz.sq_tripleBracket_rotate
+#print axioms Gtz.pairBracketSq_comm
+#print axioms Gtz.pairBracketSq_self
+#print axioms Gtz.pairBracketSq_le_mul_leverage
+#print axioms Gtz.NoStrictTriple
+#print axioms Gtz.noStrictTriple_of_isTie
+#print axioms Gtz.not_hasStrictCertificate_of_noStrictTriple
+#print axioms Gtz.sq_tripleBracket_le_sum_pairBracketSq_of_noStrictTriple
+#print axioms Gtz.sum_compl_pair_eq
+#print axioms Gtz.sum_compl_pair_weight_mul_sq_tripleBracket
+#print axioms Gtz.sum_compl_pair_weight_mul_pairBracketSq
+#print axioms Gtz.sum_compl_pair_weight
+#print axioms Gtz.weight_add_weight_mul_pairBracketSq_le_of_noStrictTriple
+#print axioms Gtz.weight_add_weight_mul_pairBracketSq_le
+#print axioms Gtz.pairAggregate_of_noStrictTriple_isVacuous
+#print axioms Gtz.swapWeight
+#print axioms Gtz.swapWeight_nonneg
+#print axioms Gtz.one_add_swapWeight_mul
+#print axioms Gtz.swapWeight_mul_one_sub_weight
+#print axioms Gtz.pairSwapMass_eq_divisionFree
+#print axioms Gtz.sharp_swapLaw_of_noStrictTriple
+#print axioms Gtz.swapMoment
+#print axioms Gtz.swapLeverageMoment
+#print axioms Gtz.swapLeverageMoment_le_sum_swapWeight
+#print axioms Gtz.swapMoment_nonneg
+#print axioms Gtz.swapLeverageMoment_nonneg
+#print axioms Gtz.leverageOf_coordinateDiagonalDesign
+#print axioms Gtz.swapWeight_coordinateDiagonalDesign
+#print axioms Gtz.swapMoment_coordinateDiagonalDesign
+#print axioms Gtz.swapLeverageMoment_coordinateDiagonalDesign
+#print axioms Gtz.sum_weight_pair_mul_pairBracketSq_coordinateDiagonalDesign
+#print axioms Gtz.sum_weight_mul_one_add_swapWeight
+#print axioms Gtz.sum_triple_swapPivot
+#print axioms Gtz.sum_triple_swapMid
+#print axioms Gtz.sum_triple_swapLast
+#print axioms Gtz.sum_triple_energyPivot
+#print axioms Gtz.sum_triple_energyMid
+#print axioms Gtz.sum_triple_energyLast
+#print axioms Gtz.sum_triple_sharpLeft
+#print axioms Gtz.sum_triple_sharpRight
+#print axioms Gtz.swapLeverageMoment_le_of_noStrictTriple
+#print axioms Gtz.swapLeverageMoment_le
+#print axioms Gtz.sharpAggregate_of_noStrictTriple_isVacuous
+#print axioms Gtz.certificateMomentRoute_isClosed
+
+-- Gtz/Wave/WiringResidualEquivalence.lean
+#print axioms Gtz.gtzWeighted_six_three_of_stressFreeHinge
+#print axioms Gtz.exists_posDef_triple_of_stressFreeHinge
+#print axioms Gtz.noStressResidual_six_of_stressFreeHinge
+#print axioms Gtz.noStressResidual_six_iff_stressFreeHingeHoldsSixThree
+#print axioms Gtz.noStressResidual_six_iff_residualFamiliesTieFree
+#print axioms Gtz.noStressResidual_six_iff_no_stressFree_tie
+#print axioms Gtz.exists_dominating_of_stressFreeHinge
+#print axioms Gtz.baseTripleTightLineFreeOffConicHeavyNeedleResidual_of_noStressResidual
+#print axioms Gtz.heavyTie_hingeConclusion_iff_hingeHoldsAtSize_six_three
+
+-- Gtz/Wave/WiringDoorLedger.lean
+#print axioms Gtz.hingeHoldsAtSize_six_three_of_consolidatedStrictTripleDesign
+#print axioms Gtz.gtzWeightedAll_three_of_consolidatedStrictTripleDesign
+#print axioms Gtz.unopenableAtomDoors
+#print axioms Gtz.lightAtomFloors_agree
+#print axioms Gtz.hingeHoldsAtSize_of_heavyBranch
+
+-- Gtz/Wave/WiringAllFiveOnPath.lean
+#print axioms Gtz.AllFiveOnPath
+#print axioms Gtz.stressFreeStratumIsTieFree_lineFree_of_onPath
+#print axioms Gtz.stressFreeStratumIsTieFree_oneLine_of_onPath
+#print axioms Gtz.stressFreeStratumIsTieFree_twoMeetingLines_of_onPath
+#print axioms Gtz.stressFreeStratumIsTieFree_threeLines_of_onPath
+#print axioms Gtz.stressFreeStratumIsTieFree_graphicKFour_of_onPath
+#print axioms Gtz.residualFamiliesTieFree_of_allFiveOnPath
+#print axioms Gtz.stressFreeHingeHoldsSixThree_of_allFiveOnPath
+#print axioms Gtz.gtzWeighted_six_three_of_allFiveOnPath
+#print axioms Gtz.gtzWeightedAll_three_of_allFiveOnPath
+#print axioms Gtz.noStressResidual_six_of_allFiveOnPath
+#print axioms Gtz.baseTripleTight_of_noStressResidual
+
+-- Gtz/Wave/WiringSynonymClass.lean
+#print axioms Gtz.oneLineOnPath_iff_stratumIsTieFree
+#print axioms Gtz.twoMeetingLinesOnPath_iff_stratumIsTieFree
+#print axioms Gtz.not_heavyLivePairTieResidual
+#print axioms Gtz.unopenableLivePairDoors
+#print axioms Gtz.gtzWeightedAll_three_of_anyRoute
