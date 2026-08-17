@@ -2,6 +2,7 @@
 Copyright (c) 2026 Grigory Evko. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
+import Gtz.Wave.OneLineBacklog
 import Gtz.Wave.ThreeLinesSlideElimination
 import Gtz.Wave.WiringLineChartRoads
 import Gtz.Wave.FlatPairWeakSeed
@@ -1070,7 +1071,103 @@ theorem twoMeetingLines_transversalGap_at_sharedAtom (design : WeightedDesign 6 
   congr 1
   simp [leverageOf, dotProduct, pow_two]
 
+/-! ## 7.  The flat-pair collapse, tested against this class
+
+`Gtz.oneLine_posDef_linePair_iff` collapses a card-three subset that holds two
+atoms of one line.  Its only structural input is that the two share a normal, so
+it transfers to every pattern that supplies a flat pair.  This class supplies
+SIX, three on each line, against the two line patterns of the one-line class.
+
+The first line of this class IS the finset `{0,1,2}`, so the collapse applies
+here verbatim.  The instantiation is below.
+
+THE DECISIVE TEST IS NEGATIVE, AND IT IS DECIDABLE.  A card-three subset of six
+labels avoids every flat pair of this class exactly when it is one of the four
+transversals.  So the six flat pairs and the four surviving triples partition the
+twenty subsets, and they do not overlap at all.  The collapse describes the
+SIXTEEN subsets this class already excluded, and it says nothing about the four
+that remain.  No over-determination arises, because the residual was defined by
+avoiding flat pairs in the first place. -/
+
+/-- **THE COLLAPSE AT THE FIRST LINE OF THIS CLASS.**  The first line of the
+two-meeting-lines pattern is the same finset as the line of the one-line class,
+so `Gtz.oneLine_posDef_linePair_iff` fires here with no change.  The free member
+enters only through its height and one undivided square. -/
+theorem twoMeetingLines_posDef_firstLinePair_iff (design : WeightedDesign 6 3)
+    {normalFirst : Fin 3 → ℝ} (hunitFirst : normalFirst ⬝ᵥ normalFirst = 1)
+    (horthFirst : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalFirst = 0)
+    {lineFirst lineSecond freeLabel : Fin 6}
+    (hfirstMem : lineFirst ∈ ({0, 1, 2} : Finset (Fin 6)))
+    (hsecondMem : lineSecond ∈ ({0, 1, 2} : Finset (Fin 6)))
+    (hfirstSecond : lineFirst ≠ lineSecond) (hfirstFree : lineFirst ≠ freeLabel)
+    (hsecondFree : lineSecond ≠ freeLabel) :
+    (subsetSum design ({lineFirst, lineSecond, freeLabel} : Finset (Fin 6)) - 1).PosDef
+      ↔ (1 < (design.atom freeLabel ⬝ᵥ normalFirst) ^ 2
+        ∧ ∀ probeVec : Fin 3 → ℝ, probeVec ⬝ᵥ normalFirst = 0 → probeVec ≠ 0 →
+            (design.atom freeLabel ⬝ᵥ probeVec) ^ 2
+              < ((design.atom freeLabel ⬝ᵥ normalFirst) ^ 2 - 1)
+                * ((design.atom lineFirst ⬝ᵥ probeVec) ^ 2
+                    + (design.atom lineSecond ⬝ᵥ probeVec) ^ 2 - probeVec ⬝ᵥ probeVec)) :=
+  oneLine_posDef_linePair_iff design hunitFirst horthFirst hfirstMem hsecondMem
+    hfirstSecond hfirstFree hsecondFree
+
+/-- **THE HEIGHT OF EVERY FREE MEMBER IS NONZERO AT THE FIRST NORMAL.**  The
+collapse asks for a height above one.  The pattern gives a height away from zero
+for each of the three labels off the first line, and no more. -/
+theorem twoMeetingLines_firstLinePair_heights_ne_zero (design : WeightedDesign 6 3)
+    (hpattern : HasLinePattern design
+      (lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]]))
+    (normalFirst : Fin 3 → ℝ) (hunitFirst : normalFirst ⬝ᵥ normalFirst = 1)
+    (horthFirst : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalFirst = 0) :
+    ∀ freeLabel ∈ ({3, 4, 5} : Finset (Fin 6)),
+      design.atom freeLabel ⬝ᵥ normalFirst ≠ 0 := by
+  obtain ⟨hthree, hfour, hfive⟩ := twoMeetingLines_firstNormal_readings_ne_zero design
+    hpattern normalFirst hunitFirst horthFirst
+  intro freeLabel hmem
+  have hcases : freeLabel = 3 ∨ freeLabel = 4 ∨ freeLabel = 5 := by
+    simpa [Finset.mem_insert, Finset.mem_singleton] using hmem
+  rcases hcases with rfl | rfl | rfl
+  · exact hthree
+  · exact hfour
+  · exact hfive
+
+/-- **THE DECISIVE TEST, IN KERNEL.**  A card-three subset of the six labels holds
+no flat pair of this class exactly when it is one of the four transversals.  A
+flat pair on the first line means two labels in `{0,1,2}`, and a flat pair on the
+second line means two labels in `{0,3,4}`. -/
+theorem twoMeetingLines_flatPairFree_eq_transversals :
+    (Finset.univ.filter (fun selected : Finset (Fin 6) =>
+        selected.card = 3
+        ∧ (selected ∩ ({0, 1, 2} : Finset (Fin 6))).card ≤ 1
+        ∧ (selected ∩ ({0, 3, 4} : Finset (Fin 6))).card ≤ 1))
+      = ({{1, 3, 5}, {1, 4, 5}, {2, 3, 5}, {2, 4, 5}} : Finset (Finset (Fin 6))) := by
+  decide
+
+/-- **THE COLLAPSE AND THE RESIDUAL DO NOT MEET.**  Each of the four surviving
+transversals holds at most one label of each line, so no flat pair sits inside
+it, and the collapse never applies to it. -/
+theorem twoMeetingLines_transversals_hold_no_flatPair :
+    ∀ selected ∈ ({{1, 3, 5}, {1, 4, 5}, {2, 3, 5}, {2, 4, 5}}
+        : Finset (Finset (Fin 6))),
+      (selected ∩ ({0, 1, 2} : Finset (Fin 6))).card ≤ 1
+        ∧ (selected ∩ ({0, 3, 4} : Finset (Fin 6))).card ≤ 1 := by
+  decide
+
+/-- **THE COUNT.**  Sixteen of the twenty card-three subsets hold a flat pair, and
+the collapse governs exactly those sixteen.  The four that remain are the
+residual of this class. -/
+theorem twoMeetingLines_flatPair_subset_count :
+    (Finset.univ.filter (fun selected : Finset (Fin 6) => selected.card = 3)).card = 20
+      ∧ (Finset.univ.filter (fun selected : Finset (Fin 6) =>
+          selected.card = 3
+          ∧ (2 ≤ (selected ∩ ({0, 1, 2} : Finset (Fin 6))).card
+            ∨ 2 ≤ (selected ∩ ({0, 3, 4} : Finset (Fin 6))).card))).card = 16 := by
+  constructor <;> decide
+
 end Gtz
+
 
 
 
