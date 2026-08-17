@@ -1185,6 +1185,7 @@ import Gtz.Wave.ShareRigidity
 import Gtz.Wave.CorankDecomposition
 import Gtz.Wave.TieStratumClassification
 import Gtz.Wave.TripleInvariantLedger
+import Gtz.Wave.InvariantBranchCut
 import Gtz.Wave.WiringKFourWalls
 import Gtz.Wave.WiringLineChartRoads
 import Gtz.Wave.WiringChartGenericRoads
@@ -35346,3 +35347,15 @@ run_cmd do
 #print axioms Gtz.shareArithmetic_is_consistent
 #print axioms Gtz.exists_tripleBracket_sq_ge_six
 #print axioms Gtz.card_coplanar_le_three_of_isPrimitiveDesign_of_isTie
+
+-- Gtz/Wave/InvariantBranchCut.lean
+#print axioms Gtz.exists_eigenvalue_le_one_of_not_posDef_sub_one
+#print axioms Gtz.det_subsetSum_le_secondInvariantOfThree_of_isTie
+#print axioms Gtz.four_mul_det_subsetSum_le_sq_of_isTie_sixThree
+#print axioms Gtz.det_moment_le_of_isTie_rankThree
+#print axioms Gtz.det_moment_le_four_mul_secondInvariant_of_isTie_sixThree
+#print axioms Gtz.det_moment_le_three_mul_secondInvariant_of_isTie_fiveThree
+#print axioms Gtz.two_mul_card_branch_le_of_isTie_sixThree
+#print axioms Gtz.card_traceZeroBranch_le_ten
+#print axioms Gtz.not_forall_leverage_eq_one_sixThree
+#print axioms Gtz.isTie_sixThree_inhabited
