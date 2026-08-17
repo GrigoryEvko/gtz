@@ -1181,6 +1181,15 @@ import Gtz.Wave.OnPathRegistryCollapse
 import Gtz.Wave.DeadDoorRefutations
 import Gtz.Wave.CertificateFreeMomentLaws
 import Gtz.Wave.AllHeavyWedgeCollapse
+import Gtz.Wave.ShareRigidity
+import Gtz.Wave.CorankDecomposition
+import Gtz.Wave.TripleInvariantLedger
+import Gtz.Wave.WiringKFourWalls
+import Gtz.Wave.WiringLineChartRoads
+import Gtz.Wave.WiringChartGenericRoads
+import Gtz.Wave.WiringWitnessFamily
+import Gtz.Wave.WiringSixThreeNoGo
+import Gtz.Wave.GaleInvolution
 import Gtz.Wave.WiringJointEntrance
 import Gtz.Wave.WiringResidualEquivalence
 import Gtz.Wave.WiringDoorLedger

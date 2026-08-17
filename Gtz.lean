@@ -6258,3 +6258,30 @@ import Gtz.Wave.LandedWireClosure
 -- `Gtz.pairPartialGap_eq_weightedForm` is the two-local law: every quartic term cancels.
 --   `Gtz.sum_labelLoad_eq_five` reads the six label loads as exactly five, at EVERY design.
 import Gtz.Wave.WiringJointEntrance
+
+-- THE DECOMPOSITION WAVE.  Three orthogonal cuts of the deciding cell.
+-- CUT ONE, by moduli.  The five matroid classes carry 4, 3, 2, 1 and 0 direction
+--   parameters.  `Gtz/Wave/WiringKFourWalls.lean` collapses the zero-parameter cell to one
+--   polynomial sign.  `Gtz/Wave/WiringLineChartRoads.lean` corrects the registry, which said
+--   two of these classes had no chart.
+-- CUT TWO, by the corank of the gap.  `Gtz.subsetSum_ne_one_of_isTie_sixThree` closes the
+--   corank-three stratum UNCONDITIONALLY.  The tree owned it only under `HasNoCommonQuadric`.
+--   The new ingredient is `Gtz.exists_splitWeightCaps_add_lt_one`: the inner and outer weight
+--   maxima sit at distinct labels, so their sum is below one at EVERY design.
+-- CUT THREE, by the invariant branch.  `Gtz/Wave/TripleInvariantLedger.lean`.
+-- THE COORDINATE SYSTEM.  `Gtz.subsetSum_sub_one_eq_sum_coveringDefect_smul_dualAtom` expands
+--   every gap in the six dual conics, with coefficients that carry NO weight.
+-- WHY RANK THREE IS THE DECIDING RANK.  At rank three, and at no other rank, the two
+--   thresholds coincide: `2 * rank = 6 = rank * (rank + 1) / 2`.  The complement of a triple
+--   is itself a triple, so it competes, and the six atom matrices span the symmetric space,
+--   so Parseval determines the shares.  The sub-threshold band is empty at rank three for
+--   exactly this reason.
+import Gtz.Wave.ShareRigidity
+import Gtz.Wave.CorankDecomposition
+import Gtz.Wave.TripleInvariantLedger
+import Gtz.Wave.WiringKFourWalls
+import Gtz.Wave.WiringLineChartRoads
+import Gtz.Wave.WiringChartGenericRoads
+import Gtz.Wave.WiringWitnessFamily
+import Gtz.Wave.WiringSixThreeNoGo
+import Gtz.Wave.GaleInvolution
