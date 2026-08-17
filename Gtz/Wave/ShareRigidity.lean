@@ -653,7 +653,89 @@ theorem not_posSemidef_and_not_posSemidef_neg_dualAtom (design : WeightedDesign 
   ⟨not_posSemidef_dualAtom design hstressFree label,
     not_posSemidef_neg_dualAtom design hstressFree label⟩
 
-/-! ## 7. The rescaling fiber
+/-! ## 7. Six directions off a conic interpolate every quadratic form
+
+The dual forms are a basis, and the coordinates of a symmetric form in that
+basis are its own six values at the six directions.  So a quadratic form on
+three-space is determined by what it reads at the six atoms of a stress-free
+design, and the reconstruction is explicit.
+
+The consequence for the campaign is the last theorem of this part: the gap of a
+subset is an explicit combination of the six dual conics whose coefficients
+carry NO WEIGHT.  They are the covering defects of the subset, which are
+polynomials in the eighteen atom coordinates. -/
+
+/-- The dual forms are linearly independent: a combination reads its own
+coefficient at each atom. -/
+theorem sum_smul_dualAtom_eq_zero_iff (design : WeightedDesign 6 3)
+    (hstressFree : IsStressFreeDesign design) (value : Fin 6 → ℝ) :
+    (∑ label, value label • dualAtom design label) = 0 ↔ value = 0 := by
+  constructor
+  · intro hzero
+    funext other
+    have hvalue := dotProduct_sum_smul_dualAtom_mulVec design hstressFree value other
+    rw [hzero, Matrix.zero_mulVec, dotProduct_zero] at hvalue
+    exact hvalue.symm
+  · intro hzero
+    rw [hzero]
+    simp
+
+/-- **THE SIX-POINT INTERPOLATION OF A QUADRATIC FORM.**  Every symmetric `3x3`
+form is the combination of the six dual conics whose coefficients are the form's
+own values at the six atoms.  Six directions off a conic therefore determine a
+quadratic form completely, and this is the formula.
+
+Together with `Gtz.sum_smul_dualAtom_eq_zero_iff` it says the dual forms are a
+basis of the symmetric forms, dual to the atom matrices. -/
+theorem eq_sum_smul_dualAtom (design : WeightedDesign 6 3)
+    (hstressFree : IsStressFreeDesign design) (form : Matrix (Fin 3) (Fin 3) ℝ)
+    (hsymmetric : formᵀ = form) :
+    form = ∑ label, (design.atom label ⬝ᵥ (form *ᵥ design.atom label))
+        • dualAtom design label := by
+  have hdifference : form
+      - ∑ label, (design.atom label ⬝ᵥ (form *ᵥ design.atom label))
+          • dualAtom design label = 0 := by
+    refine hasNoCommonQuadric_of_stressFree design hstressFree _ ?_ ?_
+    · rw [Matrix.transpose_sub, hsymmetric, Matrix.transpose_sum]
+      congr 1
+      exact Finset.sum_congr rfl fun label _ => by
+        rw [Matrix.transpose_smul, transpose_dualAtom design label]
+    · intro other
+      rw [Matrix.sub_mulVec, dotProduct_sub,
+        dotProduct_sum_smul_dualAtom_mulVec design hstressFree
+          (fun label => design.atom label ⬝ᵥ (form *ᵥ design.atom label)) other,
+        sub_self]
+  exact sub_eq_zero.mp hdifference
+
+/-- **THE WEIGHT-FREE NORMAL FORM OF EVERY GAP.**  The gap of a subset is the
+combination of the six dual conics whose coefficients are that subset's covering
+defects — the squared pairings of the subset against a label, minus that label's
+leverage.  No weight occurs on either side.
+
+`Gtz.leverage_le_sum_sq_dotProduct_of_dominates` says every coefficient of a
+DOMINATING subset is nonnegative.  So domination forces the gap into the
+nonnegative cone of this fixed basis, and the whole test is six polynomials in
+the eighteen atom coordinates. -/
+theorem subsetSum_sub_one_eq_sum_smul_dualAtom (design : WeightedDesign 6 3)
+    (hstressFree : IsStressFreeDesign design) (selected : Finset (Fin 6)) :
+    subsetSum design selected - 1
+      = ∑ label, ((∑ other ∈ selected, (design.atom other ⬝ᵥ design.atom label) ^ 2)
+          - leverageOf (design.atom label)) • dualAtom design label := by
+  have hsymmetric : (subsetSum design selected - 1)ᵀ = subsetSum design selected - 1 := by
+    rw [Matrix.transpose_sub, Matrix.transpose_one, subsetSum, Matrix.transpose_sum]
+    congr 1
+    exact Finset.sum_congr rfl fun other _ => transpose_atomMatrix_self _
+  have hcoefficient : ∀ label : Fin 6,
+      design.atom label ⬝ᵥ ((subsetSum design selected - 1) *ᵥ design.atom label)
+        = (∑ other ∈ selected, (design.atom other ⬝ᵥ design.atom label) ^ 2)
+          - leverageOf (design.atom label) := by
+    intro label
+    rw [Matrix.sub_mulVec, dotProduct_sub, Matrix.one_mulVec,
+      dotProduct_subsetSum_mulVec_of_finset, ← leverageOf_eq_dotProduct_self]
+  conv_lhs => rw [eq_sum_smul_dualAtom design hstressFree _ hsymmetric]
+  exact Finset.sum_congr rfl fun label _ => by rw [hcoefficient label]
+
+/-! ## 8. The rescaling fiber
 
 The GTZ question reads only the atoms, and the atoms carry two kinds of data:
 the six points of the projective plane, and the six lengths.  This part measures
