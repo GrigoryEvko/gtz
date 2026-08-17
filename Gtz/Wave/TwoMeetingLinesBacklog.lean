@@ -619,5 +619,401 @@ theorem twoMeetingLines_perpendicular_forces_defect (design : WeightedDesign 6 3
   · left; linarith
   · right; linarith
 
+/-! ## 6.  NEW MATHEMATICS: the transversal gap is positive definite on the
+shared-atom plane
+
+Everything before this section is composition.  This section is new.
+
+The shared atom `0` lies on both lines, so it is orthogonal to both line normals.
+The two normals therefore span the plane orthogonal to the shared atom.  The
+theorem below says that ONE named transversal has a strictly positive gap form on
+that WHOLE plane, at every design of the stratum.  No weight cap, no heaviness, no
+weak dominator and no chart are used.  Only the line pattern and the two normals
+enter.
+
+The mechanism is a two-by-two determinant.  Write the gap of the transversal in
+the basis of the two normals.  Its two diagonal entries are the two Parseval
+defects, and each one is strictly positive because the maximal private reading
+carries more than its own weighted share.  Its off-diagonal entry is EXACTLY
+`(1 - w5)` times the product of the two open readings, because the meeting
+identity eliminates the angle.  The discriminant then factors, and every leftover
+term carries a reading that the line pattern forbids to vanish.
+
+WHAT THIS LEAVES.  A symmetric three-by-three form that is positive definite on a
+plane has at most one nonpositive eigenvalue.  So the whole class residual is now
+ONE scalar: the determinant of the same named gap.  That is the sharpest reduction
+this class carries. -/
+
+/-- A reading that vanishes at a line normal makes a forbidden triple dependent.
+The line pattern then refutes it.  This is the source of every nonvanishing fact
+in this section. -/
+theorem twoMeetingLines_reading_ne_zero_of_pattern (design : WeightedDesign 6 3)
+    (hpattern : HasLinePattern design
+      (lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]]))
+    (normal : Fin 3 → ℝ) (hnormalNe : normal ≠ 0)
+    (lineLeft lineRight target : Fin 6)
+    (hleftRight : lineLeft ≠ lineRight) (hleftTarget : lineLeft ≠ target)
+    (hrightTarget : lineRight ≠ target)
+    (hforbidden : ¬ lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]]
+      lineLeft lineRight target)
+    (hleftOrth : design.atom lineLeft ⬝ᵥ normal = 0)
+    (hrightOrth : design.atom lineRight ⬝ᵥ normal = 0) :
+    design.atom target ⬝ᵥ normal ≠ 0 := by
+  intro hzero
+  refine hforbidden ((hpattern lineLeft lineRight target hleftRight hleftTarget
+    hrightTarget).mp ?_)
+  simpa [atomBracket] using
+    tripleBracket_eq_zero_of_commonOrthogonal hnormalNe hleftOrth hrightOrth hzero
+
+/-- The scalar core of the plane positivity.  A binary quadratic form with a
+positive leading entry and a negative discriminant is positive away from the
+origin. -/
+theorem quadratic_form_pos_of_disc {diagFirst diagSecond offDiag first second : ℝ}
+    (hdiagPos : 0 < diagFirst) (hdisc : offDiag ^ 2 < diagFirst * diagSecond)
+    (hnonzero : first ≠ 0 ∨ second ≠ 0) :
+    0 < first ^ 2 * diagFirst + second ^ 2 * diagSecond + 2 * first * second * offDiag := by
+  rcases eq_or_ne second 0 with rfl | hsecond
+  · have hfirst : first ≠ 0 := by
+      rcases hnonzero with h | h
+      · exact h
+      · exact absurd rfl h
+    have hsq : 0 < first ^ 2 := lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hfirst))
+    nlinarith [hdiagPos, hsq]
+  · have hsq : 0 < second ^ 2 := lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hsecond))
+    nlinarith [sq_nonneg (diagFirst * first + offDiag * second), hdiagPos,
+      mul_pos (sub_pos.mpr hdisc) hsq]
+
+/-- **THE FIRST NORMAL SEES ALL THREE OFF-LINE ATOMS.**  At a normal of the first
+line the two private atoms of the second line and the open atom all read nonzero.
+The pattern alone forces it. -/
+theorem twoMeetingLines_firstNormal_readings_ne_zero (design : WeightedDesign 6 3)
+    (hpattern : HasLinePattern design
+      (lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]]))
+    (normalFirst : Fin 3 → ℝ) (hunitFirst : normalFirst ⬝ᵥ normalFirst = 1)
+    (horthFirst : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalFirst = 0) :
+    design.atom 3 ⬝ᵥ normalFirst ≠ 0 ∧ design.atom 4 ⬝ᵥ normalFirst ≠ 0
+      ∧ design.atom 5 ⬝ᵥ normalFirst ≠ 0 := by
+  have hne := ne_zero_of_dotProduct_self_eq_one hunitFirst
+  have hzero := horthFirst 0 (by decide)
+  have hone := horthFirst 1 (by decide)
+  refine ⟨?_, ?_, ?_⟩ <;>
+    exact twoMeetingLines_reading_ne_zero_of_pattern design hpattern normalFirst hne
+      0 1 _ (by decide) (by decide) (by decide) (by decide) hzero hone
+
+/-- **THE SECOND NORMAL SEES ALL THREE OFF-LINE ATOMS.**  The mirror statement at
+a normal of the second line. -/
+theorem twoMeetingLines_secondNormal_readings_ne_zero (design : WeightedDesign 6 3)
+    (hpattern : HasLinePattern design
+      (lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]]))
+    (normalSecond : Fin 3 → ℝ) (hunitSecond : normalSecond ⬝ᵥ normalSecond = 1)
+    (horthSecond : ∀ lineLabel ∈ ({0, 3, 4} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalSecond = 0) :
+    design.atom 1 ⬝ᵥ normalSecond ≠ 0 ∧ design.atom 2 ⬝ᵥ normalSecond ≠ 0
+      ∧ design.atom 5 ⬝ᵥ normalSecond ≠ 0 := by
+  have hne := ne_zero_of_dotProduct_self_eq_one hunitSecond
+  have hzero := horthSecond 0 (by decide)
+  have hthree := horthSecond 3 (by decide)
+  refine ⟨?_, ?_, ?_⟩ <;>
+    exact twoMeetingLines_reading_ne_zero_of_pattern design hpattern normalSecond hne
+      0 3 _ (by decide) (by decide) (by decide) (by decide) hzero hthree
+
+/-- **THE TWO LINE PLANES ARE NEVER PERPENDICULAR.**  The meeting identity turns
+the two nonvanishing open readings into a nonzero angle.  So the deficit product
+of `Gtz.twoMeetingLines_angle_identity` is strictly positive on the whole
+stratum. -/
+theorem twoMeetingLines_normals_not_perpendicular (design : WeightedDesign 6 3)
+    (hpattern : HasLinePattern design
+      (lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]]))
+    (normalFirst normalSecond : Fin 3 → ℝ)
+    (hunitFirst : normalFirst ⬝ᵥ normalFirst = 1)
+    (hunitSecond : normalSecond ⬝ᵥ normalSecond = 1)
+    (horthFirst : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalFirst = 0)
+    (horthSecond : ∀ lineLabel ∈ ({0, 3, 4} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalSecond = 0) :
+    normalFirst ⬝ᵥ normalSecond ≠ 0 := by
+  obtain ⟨-, -, hopenFirst⟩ := twoMeetingLines_firstNormal_readings_ne_zero design hpattern
+    normalFirst hunitFirst horthFirst
+  obtain ⟨-, -, hopenSecond⟩ := twoMeetingLines_secondNormal_readings_ne_zero design hpattern
+    normalSecond hunitSecond horthSecond
+  rw [← twoMeetingLines_meeting_identity design normalFirst normalSecond horthFirst horthSecond]
+  exact mul_ne_zero (ne_of_gt (design.weight_pos 5)) (mul_ne_zero hopenFirst hopenSecond)
+
+/-! ### The gap form of a transversal on the plane of the two normals -/
+
+/-- The gap form of the transversal `{first, second, 5}` at a combination of the
+two normals, written out.  The first label dies at the first normal and the
+second label dies at the second normal, so only three squares survive. -/
+theorem twoMeetingLines_transversal_planeForm (design : WeightedDesign 6 3)
+    (normalFirst normalSecond : Fin 3 → ℝ)
+    (hunitFirst : normalFirst ⬝ᵥ normalFirst = 1)
+    (hunitSecond : normalSecond ⬝ᵥ normalSecond = 1)
+    (firstLabel secondLabel : Fin 6)
+    (hfirstSecond : firstLabel ≠ secondLabel) (hfirstOpen : firstLabel ≠ 5)
+    (hsecondOpen : secondLabel ≠ 5)
+    (hfirstOrth : design.atom firstLabel ⬝ᵥ normalFirst = 0)
+    (hsecondOrth : design.atom secondLabel ⬝ᵥ normalSecond = 0)
+    (weightFirst weightSecond : ℝ) :
+    (weightFirst • normalFirst + weightSecond • normalSecond)
+        ⬝ᵥ ((subsetSum design ({firstLabel, secondLabel, 5} : Finset (Fin 6)) - 1)
+          *ᵥ (weightFirst • normalFirst + weightSecond • normalSecond))
+      = weightFirst ^ 2 * ((design.atom secondLabel ⬝ᵥ normalFirst) ^ 2
+            + (design.atom 5 ⬝ᵥ normalFirst) ^ 2 - 1)
+        + weightSecond ^ 2 * ((design.atom firstLabel ⬝ᵥ normalSecond) ^ 2
+            + (design.atom 5 ⬝ᵥ normalSecond) ^ 2 - 1)
+        + 2 * weightFirst * weightSecond
+            * ((design.atom 5 ⬝ᵥ normalFirst) * (design.atom 5 ⬝ᵥ normalSecond)
+              - normalFirst ⬝ᵥ normalSecond) := by
+  classical
+  set probe := weightFirst • normalFirst + weightSecond • normalSecond with hprobe
+  have hread : ∀ label : Fin 6, design.atom label ⬝ᵥ probe
+      = weightFirst * (design.atom label ⬝ᵥ normalFirst)
+        + weightSecond * (design.atom label ⬝ᵥ normalSecond) := by
+    intro label
+    rw [hprobe, dotProduct_add, dotProduct_smul, dotProduct_smul, smul_eq_mul, smul_eq_mul]
+  have hcross : normalSecond ⬝ᵥ normalFirst = normalFirst ⬝ᵥ normalSecond :=
+    dotProduct_comm _ _
+  have hself : probe ⬝ᵥ probe = weightFirst ^ 2 + weightSecond ^ 2
+      + 2 * weightFirst * weightSecond * (normalFirst ⬝ᵥ normalSecond) := by
+    rw [hprobe]
+    simp only [add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul, smul_eq_mul,
+      hunitFirst, hunitSecond, hcross]
+    ring
+  have hnotMemFirst : firstLabel ∉ ({secondLabel, 5} : Finset (Fin 6)) := by
+    simp [hfirstSecond, hfirstOpen]
+  have hnotMemSecond : secondLabel ∉ ({(5 : Fin 6)} : Finset (Fin 6)) := by
+    simp [hsecondOpen]
+  have hsum : (∑ label ∈ ({firstLabel, secondLabel, 5} : Finset (Fin 6)),
+        (design.atom label ⬝ᵥ probe) ^ 2)
+      = (design.atom firstLabel ⬝ᵥ probe) ^ 2 + (design.atom secondLabel ⬝ᵥ probe) ^ 2
+        + (design.atom 5 ⬝ᵥ probe) ^ 2 := by
+    rw [Finset.sum_insert hnotMemFirst, Finset.sum_insert hnotMemSecond,
+      Finset.sum_singleton, add_assoc]
+  rw [Matrix.sub_mulVec, dotProduct_sub, dotProduct_subsetSum_mulVec_of_finset,
+    Matrix.one_mulVec, hsum, hself, hread firstLabel, hread secondLabel, hread 5,
+    hfirstOrth, hsecondOrth]
+  ring
+
+/-- **THE DIAGONAL ENTRIES ARE STRICTLY POSITIVE.**  At the first normal the whole
+Parseval energy sits on the second line's privates and the open atom.  The maximal
+private reading beats its own weighted share, so the transversal that carries it
+has a strictly positive gap there.  NO weight cap is used, which is what
+separates this from `Gtz.exists_transversal_gap_pos_at_lineOneNormal`. -/
+theorem twoMeetingLines_firstDefect_pos (design : WeightedDesign 6 3)
+    (normalFirst : Fin 3 → ℝ) (hunitFirst : normalFirst ⬝ᵥ normalFirst = 1)
+    (horthFirst : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalFirst = 0)
+    (secondLabel : Fin 6)
+    (hthreeMax : (design.atom 3 ⬝ᵥ normalFirst) ^ 2
+      ≤ (design.atom secondLabel ⬝ᵥ normalFirst) ^ 2)
+    (hfourMax : (design.atom 4 ⬝ᵥ normalFirst) ^ 2
+      ≤ (design.atom secondLabel ⬝ᵥ normalFirst) ^ 2)
+    (hsecondNe : design.atom secondLabel ⬝ᵥ normalFirst ≠ 0) :
+    (1 - design.weight 3 - design.weight 4) * (design.atom secondLabel ⬝ᵥ normalFirst) ^ 2
+        + (1 - design.weight 5) * (design.atom 5 ⬝ᵥ normalFirst) ^ 2
+      ≤ (design.atom secondLabel ⬝ᵥ normalFirst) ^ 2
+        + (design.atom 5 ⬝ᵥ normalFirst) ^ 2 - 1 := by
+  have hlaw := twoMeetingLines_firstNormal_unitLaw design normalFirst horthFirst
+  rw [hunitFirst] at hlaw
+  have hthreePos := design.weight_pos 3
+  have hfourPos := design.weight_pos 4
+  nlinarith [hlaw, mul_le_mul_of_nonneg_left hthreeMax hthreePos.le,
+    mul_le_mul_of_nonneg_left hfourMax hfourPos.le]
+
+/-- The mirror bound at the second normal. -/
+theorem twoMeetingLines_secondDefect_pos (design : WeightedDesign 6 3)
+    (normalSecond : Fin 3 → ℝ) (hunitSecond : normalSecond ⬝ᵥ normalSecond = 1)
+    (horthSecond : ∀ lineLabel ∈ ({0, 3, 4} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalSecond = 0)
+    (firstLabel : Fin 6)
+    (honeMax : (design.atom 1 ⬝ᵥ normalSecond) ^ 2
+      ≤ (design.atom firstLabel ⬝ᵥ normalSecond) ^ 2)
+    (htwoMax : (design.atom 2 ⬝ᵥ normalSecond) ^ 2
+      ≤ (design.atom firstLabel ⬝ᵥ normalSecond) ^ 2)
+    (hfirstNe : design.atom firstLabel ⬝ᵥ normalSecond ≠ 0) :
+    (1 - design.weight 1 - design.weight 2) * (design.atom firstLabel ⬝ᵥ normalSecond) ^ 2
+        + (1 - design.weight 5) * (design.atom 5 ⬝ᵥ normalSecond) ^ 2
+      ≤ (design.atom firstLabel ⬝ᵥ normalSecond) ^ 2
+        + (design.atom 5 ⬝ᵥ normalSecond) ^ 2 - 1 := by
+  have hlaw := twoMeetingLines_secondNormal_unitLaw design normalSecond horthSecond
+  rw [hunitSecond] at hlaw
+  have honePos := design.weight_pos 1
+  have htwoPos := design.weight_pos 2
+  nlinarith [hlaw, mul_le_mul_of_nonneg_left honeMax honePos.le,
+    mul_le_mul_of_nonneg_left htwoMax htwoPos.le]
+
+/-- The three weight complements that drive the discriminant are strictly
+positive, because six positive weights sum to one. -/
+theorem twoMeetingLines_weightComplements_pos (design : WeightedDesign 6 3) :
+    0 < 1 - design.weight 3 - design.weight 4
+      ∧ 0 < 1 - design.weight 1 - design.weight 2
+      ∧ 0 < 1 - design.weight 5 := by
+  have hone : ∑ label : Fin 6, design.weight label = 1 := design.weight_sum_one
+  rw [Fin.sum_univ_six] at hone
+  have h0 := design.weight_pos 0
+  have h1 := design.weight_pos 1
+  have h2 := design.weight_pos 2
+  have h3 := design.weight_pos 3
+  have h4 := design.weight_pos 4
+  have h5 := design.weight_pos 5
+  exact ⟨by linarith, by linarith, by linarith⟩
+
+/-- **THE HEADLINE.  THE MAXIMAL TRANSVERSAL GAP IS POSITIVE DEFINITE ON THE PLANE
+OF THE TWO NORMALS.**
+
+That plane is the plane orthogonal to the shared atom, because the shared atom
+lies on both lines.  The statement carries NO weight cap, NO heaviness, NO weak
+dominator and NO chart.  It holds at every design of the stratum, at every pair
+of unit line normals, and at every nonzero combination of them.
+
+The proof is a two-by-two discriminant.  The two diagonal defects are bounded
+below by the maximal private readings, the off-diagonal entry is exactly the
+open-reading product scaled by `1 - w5` after the meeting identity eliminates the
+angle, and the leftover of the discriminant is a sum of three products of
+readings that the line pattern forbids to vanish. -/
+theorem twoMeetingLines_transversalGap_pos_on_normalPlane (design : WeightedDesign 6 3)
+    (hpattern : HasLinePattern design
+      (lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]]))
+    (normalFirst normalSecond : Fin 3 → ℝ)
+    (hunitFirst : normalFirst ⬝ᵥ normalFirst = 1)
+    (hunitSecond : normalSecond ⬝ᵥ normalSecond = 1)
+    (horthFirst : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalFirst = 0)
+    (horthSecond : ∀ lineLabel ∈ ({0, 3, 4} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalSecond = 0)
+    (firstLabel secondLabel : Fin 6)
+    (hfirstMem : firstLabel = 1 ∨ firstLabel = 2)
+    (hsecondMem : secondLabel = 3 ∨ secondLabel = 4)
+    (honeMax : (design.atom 1 ⬝ᵥ normalSecond) ^ 2
+      ≤ (design.atom firstLabel ⬝ᵥ normalSecond) ^ 2)
+    (htwoMax : (design.atom 2 ⬝ᵥ normalSecond) ^ 2
+      ≤ (design.atom firstLabel ⬝ᵥ normalSecond) ^ 2)
+    (hthreeMax : (design.atom 3 ⬝ᵥ normalFirst) ^ 2
+      ≤ (design.atom secondLabel ⬝ᵥ normalFirst) ^ 2)
+    (hfourMax : (design.atom 4 ⬝ᵥ normalFirst) ^ 2
+      ≤ (design.atom secondLabel ⬝ᵥ normalFirst) ^ 2)
+    (coeffFirst coeffSecond : ℝ) (hnonzero : coeffFirst ≠ 0 ∨ coeffSecond ≠ 0) :
+    0 < (coeffFirst • normalFirst + coeffSecond • normalSecond)
+      ⬝ᵥ ((subsetSum design ({firstLabel, secondLabel, 5} : Finset (Fin 6)) - 1)
+        *ᵥ (coeffFirst • normalFirst + coeffSecond • normalSecond)) := by
+  obtain ⟨hthreeNe, hfourNe, hopenFirstNe⟩ :=
+    twoMeetingLines_firstNormal_readings_ne_zero design hpattern normalFirst hunitFirst horthFirst
+  obtain ⟨honeNe, htwoNe, hopenSecondNe⟩ :=
+    twoMeetingLines_secondNormal_readings_ne_zero design hpattern normalSecond hunitSecond
+      horthSecond
+  obtain ⟨hcompFirst, hcompSecond, hcompOpen⟩ := twoMeetingLines_weightComplements_pos design
+  -- the two selected readings are nonzero, and the two selected labels are legal
+  have hsecondNe : design.atom secondLabel ⬝ᵥ normalFirst ≠ 0 := by
+    rcases hsecondMem with rfl | rfl
+    · exact hthreeNe
+    · exact hfourNe
+  have hfirstNe : design.atom firstLabel ⬝ᵥ normalSecond ≠ 0 := by
+    rcases hfirstMem with rfl | rfl
+    · exact honeNe
+    · exact htwoNe
+  have hfirstOrth : design.atom firstLabel ⬝ᵥ normalFirst = 0 := by
+    rcases hfirstMem with rfl | rfl
+    · exact horthFirst 1 (by decide)
+    · exact horthFirst 2 (by decide)
+  have hsecondOrth : design.atom secondLabel ⬝ᵥ normalSecond = 0 := by
+    rcases hsecondMem with rfl | rfl
+    · exact horthSecond 3 (by decide)
+    · exact horthSecond 4 (by decide)
+  have hfirstSecond : firstLabel ≠ secondLabel := by
+    rcases hfirstMem with rfl | rfl <;> rcases hsecondMem with rfl | rfl <;> decide
+  have hfirstOpen : firstLabel ≠ 5 := by rcases hfirstMem with rfl | rfl <;> decide
+  have hsecondOpen : secondLabel ≠ 5 := by rcases hsecondMem with rfl | rfl <;> decide
+  -- the four squared readings are strictly positive
+  have hsqA : 0 < (design.atom secondLabel ⬝ᵥ normalFirst) ^ 2 :=
+    lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hsecondNe))
+  have hsqB : 0 < (design.atom firstLabel ⬝ᵥ normalSecond) ^ 2 :=
+    lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hfirstNe))
+  have hsqOpenA : 0 < (design.atom 5 ⬝ᵥ normalFirst) ^ 2 :=
+    lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hopenFirstNe))
+  have hsqOpenB : 0 < (design.atom 5 ⬝ᵥ normalSecond) ^ 2 :=
+    lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hopenSecondNe))
+  -- the two diagonal lower bounds, and their strict positivity
+  have hlowFirst := twoMeetingLines_firstDefect_pos design normalFirst hunitFirst horthFirst
+    secondLabel hthreeMax hfourMax hsecondNe
+  have hlowSecond := twoMeetingLines_secondDefect_pos design normalSecond hunitSecond
+    horthSecond firstLabel honeMax htwoMax hfirstNe
+  have hboundFirstPos : 0 < (1 - design.weight 3 - design.weight 4)
+        * (design.atom secondLabel ⬝ᵥ normalFirst) ^ 2
+      + (1 - design.weight 5) * (design.atom 5 ⬝ᵥ normalFirst) ^ 2 :=
+    add_pos (mul_pos hcompFirst hsqA) (mul_pos hcompOpen hsqOpenA)
+  have hboundSecondPos : 0 < (1 - design.weight 1 - design.weight 2)
+        * (design.atom firstLabel ⬝ᵥ normalSecond) ^ 2
+      + (1 - design.weight 5) * (design.atom 5 ⬝ᵥ normalSecond) ^ 2 :=
+    add_pos (mul_pos hcompSecond hsqB) (mul_pos hcompOpen hsqOpenB)
+  have hdiagFirstPos : 0 < (design.atom secondLabel ⬝ᵥ normalFirst) ^ 2
+      + (design.atom 5 ⬝ᵥ normalFirst) ^ 2 - 1 := lt_of_lt_of_le hboundFirstPos hlowFirst
+  -- the meeting identity turns the off-diagonal entry into a pure reading product
+  have hmeet := twoMeetingLines_meeting_identity design normalFirst normalSecond
+    horthFirst horthSecond
+  have hoff : (design.atom 5 ⬝ᵥ normalFirst) * (design.atom 5 ⬝ᵥ normalSecond)
+        - normalFirst ⬝ᵥ normalSecond
+      = (1 - design.weight 5)
+        * ((design.atom 5 ⬝ᵥ normalFirst) * (design.atom 5 ⬝ᵥ normalSecond)) := by
+    rw [← hmeet]; ring
+  -- the discriminant, with its three surviving reading products
+  have hdisc : ((design.atom 5 ⬝ᵥ normalFirst) * (design.atom 5 ⬝ᵥ normalSecond)
+        - normalFirst ⬝ᵥ normalSecond) ^ 2
+      < ((design.atom secondLabel ⬝ᵥ normalFirst) ^ 2
+          + (design.atom 5 ⬝ᵥ normalFirst) ^ 2 - 1)
+        * ((design.atom firstLabel ⬝ᵥ normalSecond) ^ 2
+          + (design.atom 5 ⬝ᵥ normalSecond) ^ 2 - 1) := by
+    rw [hoff]
+    have hprod := mul_le_mul hlowFirst hlowSecond hboundSecondPos.le hdiagFirstPos.le
+    nlinarith [hprod, hcompFirst, hcompSecond, hcompOpen, hsqA, hsqB, hsqOpenA, hsqOpenB,
+      mul_pos (mul_pos hcompFirst hcompSecond) (mul_pos hsqA hsqB),
+      mul_pos (mul_pos hcompFirst hcompOpen) (mul_pos hsqA hsqOpenB),
+      mul_pos (mul_pos hcompOpen hcompSecond) (mul_pos hsqOpenA hsqB)]
+  rw [twoMeetingLines_transversal_planeForm design normalFirst normalSecond hunitFirst
+    hunitSecond firstLabel secondLabel hfirstSecond hfirstOpen hsecondOpen hfirstOrth
+    hsecondOrth coeffFirst coeffSecond]
+  exact quadratic_form_pos_of_disc hdiagFirstPos hdisc hnonzero
+
+/-- **THE MAXIMAL TRANSVERSAL EXISTS.**  Choosing each label by its maximal
+reading at the opposite normal gives one of the four transversals of the class,
+and its gap is positive definite on the plane of the two normals. -/
+theorem exists_twoMeetingLines_transversal_pos_on_normalPlane (design : WeightedDesign 6 3)
+    (hpattern : HasLinePattern design
+      (lineFamilyPattern [[(0 : Fin 6), 1, 2], [0, 3, 4]]))
+    (normalFirst normalSecond : Fin 3 → ℝ)
+    (hunitFirst : normalFirst ⬝ᵥ normalFirst = 1)
+    (hunitSecond : normalSecond ⬝ᵥ normalSecond = 1)
+    (horthFirst : ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalFirst = 0)
+    (horthSecond : ∀ lineLabel ∈ ({0, 3, 4} : Finset (Fin 6)),
+      design.atom lineLabel ⬝ᵥ normalSecond = 0) :
+    ∃ firstLabel secondLabel : Fin 6,
+      (firstLabel = 1 ∨ firstLabel = 2) ∧ (secondLabel = 3 ∨ secondLabel = 4) ∧
+      ∀ coeffFirst coeffSecond : ℝ, coeffFirst ≠ 0 ∨ coeffSecond ≠ 0 →
+        0 < (coeffFirst • normalFirst + coeffSecond • normalSecond)
+          ⬝ᵥ ((subsetSum design ({firstLabel, secondLabel, 5} : Finset (Fin 6)) - 1)
+            *ᵥ (coeffFirst • normalFirst + coeffSecond • normalSecond)) := by
+  rcases le_total ((design.atom 1 ⬝ᵥ normalSecond) ^ 2)
+      ((design.atom 2 ⬝ᵥ normalSecond) ^ 2) with hfirstPick | hfirstPick <;>
+    rcases le_total ((design.atom 3 ⬝ᵥ normalFirst) ^ 2)
+      ((design.atom 4 ⬝ᵥ normalFirst) ^ 2) with hsecondPick | hsecondPick
+  · exact ⟨2, 4, Or.inr rfl, Or.inr rfl, fun cf cs hne =>
+      twoMeetingLines_transversalGap_pos_on_normalPlane design hpattern normalFirst normalSecond
+        hunitFirst hunitSecond horthFirst horthSecond 2 4 (Or.inr rfl) (Or.inr rfl)
+        hfirstPick le_rfl hsecondPick le_rfl cf cs hne⟩
+  · exact ⟨2, 3, Or.inr rfl, Or.inl rfl, fun cf cs hne =>
+      twoMeetingLines_transversalGap_pos_on_normalPlane design hpattern normalFirst normalSecond
+        hunitFirst hunitSecond horthFirst horthSecond 2 3 (Or.inr rfl) (Or.inl rfl)
+        hfirstPick le_rfl le_rfl hsecondPick cf cs hne⟩
+  · exact ⟨1, 4, Or.inl rfl, Or.inr rfl, fun cf cs hne =>
+      twoMeetingLines_transversalGap_pos_on_normalPlane design hpattern normalFirst normalSecond
+        hunitFirst hunitSecond horthFirst horthSecond 1 4 (Or.inl rfl) (Or.inr rfl)
+        le_rfl hfirstPick hsecondPick le_rfl cf cs hne⟩
+  · exact ⟨1, 3, Or.inl rfl, Or.inl rfl, fun cf cs hne =>
+      twoMeetingLines_transversalGap_pos_on_normalPlane design hpattern normalFirst normalSecond
+        hunitFirst hunitSecond horthFirst horthSecond 1 3 (Or.inl rfl) (Or.inl rfl)
+        le_rfl hfirstPick le_rfl hsecondPick cf cs hne⟩
+
 end Gtz
+
 
