@@ -1,5 +1,6 @@
 import Skeleton.Report
 import Skeleton.Assembly
+import Skeleton.Structure
 
 /-!
 # `Skeleton` -- the GTZ obligation scaffold
