@@ -48,6 +48,10 @@ Three consequences follow.
   exactly at the orthonormal design.
 * `Gtz.sum_pair_crossAxisBudget_eq` — the exact pair total
   `sum over c, sum over d of t_c t_d (l_c l_d - <a_c, a_d>^2) = rank^2 - rank`.
+* `Gtz.sum_pairGapExcessOf_eq` — the same for the GAP minors,
+  `sum over c, sum over d of t_c t_d pairGapExcessOf c d = (rank - 1)^2 - rank`.
+  At rank three the value is one, and `Gtz.exists_pairGapExcessOf_pos` reads off
+  that every rank-three design has a pair with a positive gap minor.
 
 Reading the wedge law at each atom and averaging closes the ladder at
 `Gtz.volumeParseval`:
@@ -755,6 +759,65 @@ theorem cauchyBinetLadder (D : WeightedDesign m 3) (probe : Fin 3 → ℝ) :
               * tripleBracket (D.atom leftLabel) (D.atom rightLabel) (D.atom probeLabel) ^ 2)
         = 6 :=
   ⟨sum_weight_mul_dotProduct_sq D probe, wedgeParseval D probe, volumeParseval D⟩
+
+/-! ### The pair gap minor total
+
+The same two contractions price the GAP minors rather than the Gram minors, and
+the answer is again exact and design-free. -/
+
+/-- **THE GAP EXCESS TOTAL.**  The weighted total of the gap excesses is
+`rank - 1`, at every design. -/
+theorem sum_weight_mul_gapExcess (D : WeightedDesign m k) :
+    (∑ label, D.weight label * (leverageOf (D.atom label) - 1)) = (k : ℝ) - 1 := by
+  have hstep : ∀ label : Fin m, D.weight label * (leverageOf (D.atom label) - 1)
+      = D.weight label * leverageOf (D.atom label) - D.weight label := fun _ => by ring
+  rw [Finset.sum_congr rfl fun label _ => hstep label, Finset.sum_sub_distrib,
+    sum_weighted_leverage D, D.weight_sum_one]
+
+/-- **THE PAIR GAP MINOR TOTAL.**  At every rank and every size,
+
+    sum over c, sum over d of t_c t_d * pairGapExcessOf c d  =  (rank - 1)^2 - rank.
+
+At rank three the value is one, and it is POSITIVE.  The diagonal terms are
+`1 - 2 l_c`, which every heavy design makes at most minus one, so the positive
+total is carried entirely by the off-diagonal pairs. -/
+theorem sum_pairGapExcessOf_eq (D : WeightedDesign m k) :
+    (∑ leftLabel, ∑ rightLabel, D.weight leftLabel * D.weight rightLabel
+        * pairGapExcessOf D leftLabel rightLabel) = ((k : ℝ) - 1) ^ 2 - (k : ℝ) := by
+  have hsplit : ∀ leftLabel : Fin m,
+      (∑ rightLabel, D.weight leftLabel * D.weight rightLabel
+          * pairGapExcessOf D leftLabel rightLabel)
+        = (D.weight leftLabel * (leverageOf (D.atom leftLabel) - 1))
+              * (∑ rightLabel, D.weight rightLabel * (leverageOf (D.atom rightLabel) - 1))
+          - ∑ rightLabel, D.weight leftLabel * D.weight rightLabel
+              * (D.atom leftLabel ⬝ᵥ D.atom rightLabel) ^ 2 := by
+    intro leftLabel
+    rw [Finset.mul_sum, ← Finset.sum_sub_distrib]
+    refine Finset.sum_congr rfl fun rightLabel _ => ?_
+    simp only [pairGapExcessOf, gapExcessOf, gapPairingOf]
+    ring
+  rw [Finset.sum_congr rfl fun leftLabel _ => hsplit leftLabel, Finset.sum_sub_distrib,
+    ← Finset.sum_mul, sum_weight_mul_gapExcess D, sum_weight_mul_pairing_sq D]
+  ring
+
+/-- **EVERY RANK-THREE DESIGN HAS A LIVE PAIR MINOR.**  Unconditional, at every
+size.  The pair gap minor total is exactly one at rank three, so it cannot be
+carried by nonpositive terms alone.
+
+At a `(6,3)` tie the diagonal minors are all at most minus one, so the pair the
+theorem produces has two DISTINCT labels. -/
+theorem exists_pairGapExcessOf_pos (D : WeightedDesign m 3) :
+    ∃ leftLabel rightLabel : Fin m, 0 < pairGapExcessOf D leftLabel rightLabel := by
+  by_contra hall
+  push_neg at hall
+  have hnonpos : (∑ leftLabel, ∑ rightLabel, D.weight leftLabel * D.weight rightLabel
+      * pairGapExcessOf D leftLabel rightLabel) ≤ 0 := by
+    refine Finset.sum_nonpos fun leftLabel _ => Finset.sum_nonpos fun rightLabel _ => ?_
+    exact mul_nonpos_of_nonneg_of_nonpos
+      (mul_nonneg (D.weight_pos leftLabel).le (D.weight_pos rightLabel).le)
+      (hall leftLabel rightLabel)
+  rw [sum_pairGapExcessOf_eq D] at hnonpos
+  norm_num at hnonpos
 
 /-! ## 6. Why six differs from five, and from seven
 
