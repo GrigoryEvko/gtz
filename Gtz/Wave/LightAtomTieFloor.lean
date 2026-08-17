@@ -123,7 +123,13 @@ theorem obligationSubThresholdBandHinge_of_heavyTie
 /-- **AT `(6,3)` A DECISION ON THE ALL-HEAVY STRATUM CLOSES THE HINGE
 OUTRIGHT.**  No predecessor hypothesis appears, because the landed
 `Gtz.leverage_one_le_of_isTie_sixThree` already supplies it from
-`Gtz.gtzWeighted_of_le_five`. -/
+`Gtz.gtzWeighted_of_le_five`.
+
+**#VACUITY — THIS RECORDS NO PROGRESS.**  The heaviness is FREE at `(6,3)`, by
+the very theorem this docstring names.  So the hypothesis is equivalent to the
+conclusion, and `Gtz.heavyTie_hingeConclusion_iff_hingeHoldsAtSize_six_three`
+(Gtz/Wave/WiringResidualEquivalence.lean) proves the equivalence.  The theorem
+is a convenience for a prover, not a reduction. -/
 theorem hingeConclusion_sixThree_of_heavyTie
     (hheavy : ∀ design : WeightedDesign 6 3,
       (∀ label, 1 ≤ leverageOf (design.atom label)) →

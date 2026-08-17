@@ -293,7 +293,13 @@ theorem gtzWeighted_six_three_of_livePivotCover
     (hlive : AtomLivePivotCoverClosed) : GtzWeighted 6 3 :=
   gtzWeighted_six_three_of_atomVertexCover (atomVertexCoverClosed_of_livePivotCover hlive)
 
-/-- **THE CELL FROM THE REPAIRED PLANE ROUTE.** -/
+/-- **THE CELL FROM THE REPAIRED PLANE ROUTE.**
+
+**#BOGUS — THIS DOOR CANNOT OPEN.**  `Gtz.not_atomLivePivotPlaneCoverClosed`
+(Gtz/Wave/PlaneRouteFoil.lean:348) refutes the hypothesis, with no hypothesis of
+its own.  `Gtz.unopenableAtomDoors` (Gtz/Wave/WiringDoorLedger.lean) records the
+pair.  Read the index in Gtz/Wave/WiringSynonymClass.lean before you spend a
+cycle here. -/
 theorem gtzWeighted_six_three_of_livePivotPlaneCover
     (hroute : AtomLivePivotPlaneCoverClosed) : GtzWeighted 6 3 :=
   gtzWeighted_six_three_of_livePivotCover (atomLivePivotCoverClosed_of_livePlane hroute)

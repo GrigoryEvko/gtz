@@ -1329,7 +1329,16 @@ theorem hasParallelPair_of_isTie_of_strictly_light_atom {predSize rank : ℕ}
 /-- **THE RESIDUAL OF THE HINGE IS THE ALL-HEAVY REGION.**  A tie that survives
 the predecessor cell has every atom at leverage at least one.  This is the exact
 complement of the branch above, and it names what a general-rank producer must
-still cover. -/
+still cover.
+
+**#DUPLICATION — TWIN OF `Gtz.leverage_one_le_of_isTie`**
+(Gtz/Design/StratumEmptinessLedger.lean:557).  The same statement, landed twice
+under names that do not collide.  The re-derivation runs three layers deep:
+`Gtz.not_isTie_of_strictly_light_atom` (:1310) twins
+`Gtz.not_isTie_of_lightAtom` (:544), and `Gtz.posDef_of_strictly_light_atom`
+(Gtz/Reduction/Deflation.lean:207) twins `Gtz.exists_posDef_of_lightAtom` (:509),
+which is strictly stronger because it also returns `dropLabel ∉ selected`.
+`Gtz.lightAtomFloors_agree` (Gtz/Wave/WiringDoorLedger.lean) records the pair. -/
 theorem forall_one_le_leverage_of_isTie {predSize rank : ℕ}
     (design : WeightedDesign (predSize + 1) rank) (hpred : 1 ≤ predSize)
     (hrecursion : GtzWeighted predSize rank) (htie : IsTie design) :
@@ -1345,7 +1354,13 @@ with the size and rank bounds and the predecessor cell exactly as
 the size is not used, so the same statement covers
 `Skeleton.obligationThresholdCellHingeRankFourAndUp` on its own strictly light
 branch.  What is left of both is a tie whose every atom has leverage at least
-one. -/
+one.
+
+**#DUPLICATION — TWIN OF `Gtz.obligationSubThresholdBandHinge_of_heavyTie`**
+(Gtz/Wave/LightAtomTieFloor.lean:108).  The two forks split ONE dichotomy and
+neither cites the other.  This theorem closes the light branch, and that one
+reduces to the heavy branch.  `Gtz.hingeHoldsAtSize_of_heavyBranch`
+(Gtz/Wave/WiringDoorLedger.lean) joins the two halves into one statement. -/
 theorem hinge_of_predecessor_on_strictlyLightBranch {size rank : ℕ} (hsize : 2 ≤ size)
     (hpredecessor : GtzWeighted (size - 1) rank) (design : WeightedDesign size rank)
     (hlight : ∃ lightLabel : Fin size, leverageOf (design.atom lightLabel) < 1)

@@ -26,6 +26,24 @@ Composing them with `Gtz.gtzWeightedAll_three_of_hinge` gives
 
 rank-three GTZ at every size from ONE Prop.
 
+## #VACUITY — THE STRICTNESS CLAIM BELOW IS FALSE, AND THE KERNEL REFUTES IT
+
+The paragraph that follows claims `Gtz.NoStressResidual 6` is STRICTLY STRONGER
+than the five class obligations.  It is not.
+`Gtz.noStressResidual_six_iff_stressFreeHingeHoldsSixThree`
+(Gtz/Wave/WiringResidualEquivalence.lean) proves the residual EQUIVALENT to
+`Gtz.StressFreeHingeHoldsSixThree`, the arm it reduces.  The converse
+`Gtz.noStressResidual_six_of_stressFreeHinge` spends neither the primitivity
+hypothesis nor the certificate hypothesis, so both are free weight.
+
+The argument below rests on `Gtz.exists_dominating_of_noStressResidual`, whose
+conclusion is `Gtz.Dominates`, the WEAK form.  The hinge already delivers that
+everywhere through `Gtz.GtzWeighted 6 3`, and
+`Gtz.exists_dominating_of_stressFreeHinge` proves the same conclusion with the
+residual dropped.  The theorem exhibits no gap.
+
+Refer to the index in Gtz/Wave/WiringSynonymClass.lean, entry 3.
+
 ## This is a repackaging, not a reduction, and the file proves it
 
 `gtzWeightedAll_three_of_noStressResidual` is not a cheaper target than the

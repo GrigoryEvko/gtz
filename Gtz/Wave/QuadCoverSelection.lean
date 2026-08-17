@@ -1500,7 +1500,13 @@ theorem atomVertexCoverClosed_of_dropScalar (hdrop : AtomQuadDropScalarClosed) :
     AtomVertexCoverClosed :=
   atomVertexCoverClosed_of_dropSign (atomQuadDropSignClosed_of_scalar hdrop)
 
-/-- **THE CELL FROM THE SCALAR DROP CRITERION.** -/
+/-- **THE CELL FROM THE SCALAR DROP CRITERION.**
+
+**#BOGUS — THIS DOOR CANNOT OPEN.**  `Gtz.not_atomQuadDropScalarClosed`
+(Gtz/Wave/QuadDropSign.lean:710) refutes the hypothesis, with no hypothesis of
+its own.  `Gtz.unopenableAtomDoors` (Gtz/Wave/WiringDoorLedger.lean) records the
+pair.  Read the index in Gtz/Wave/WiringSynonymClass.lean before you spend a
+cycle here. -/
 theorem gtzWeighted_six_three_of_dropScalar (hdrop : AtomQuadDropScalarClosed) :
     GtzWeighted 6 3 :=
   gtzWeighted_six_three_of_atomVertexCover (atomVertexCoverClosed_of_dropScalar hdrop)

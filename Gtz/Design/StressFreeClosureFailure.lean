@@ -608,7 +608,15 @@ theorem diamondDesign_atomMatrices_linearIndependent :
 
 /-- **THE INSTANCE, PREMISE-FREE.**  The relaxed branch-(i) statement is
 false, unconditionally: the diamond is a kernel-checked tie and its atoms are
-independent by the theorem above. -/
+independent by the theorem above.
+
+**#BOGUS-READING — THIS DOES NOT KILL THE HINGE AT `(6,3)`.**  The weight clause
+below is `0 <= weight`, NOT `0 < weight`.  The witness is the `(5,3)` diamond
+padded with a sixth atom of weight zero, and `Gtz.WeightedDesign` carries
+`weight_pos` as a structure field.  The padded witness is therefore not a
+`Gtz.WeightedDesign 6 3` at all.  `Gtz.StressFreeHingeHoldsSixThree`
+(Gtz/Reduction/TrichotomyLedger.lean:629) is OPEN.  Refer to the index in
+Gtz/Wave/WiringSynonymClass.lean. -/
 theorem not_relaxedStressFreeHinge_of_diamond :
     ¬ ∀ (atom : Fin 6 → Fin 3 → ℝ) (weight : Fin 6 → ℝ),
         (∀ label, 0 ≤ weight label) →

@@ -350,7 +350,15 @@ theorem stressFreeHingeHoldsSixThree_of_designUpgrade
 /-- **THE RANK-THREE HINGE FROM ONE DETERMINANT SIGN.**  The sharpest form: at
 every weakly dominated design, every live pair completes to a strictly positive
 tie leg.  This spends the whole chart programme, the five coverings and the
-moment discharge together, and leaves one sign of one discriminant. -/
+moment discharge together, and leaves one sign of one discriminant.
+
+**#BOGUS — THIS DOOR CANNOT OPEN.**  `Gtz.not_livePairTieResidual`
+(Gtz/Wave/LivePairTieRefuter.lean:183) refutes the residual verbatim, at an exact
+rational design that is itself strictly dominated.  Its heavy twin
+`Gtz.stressFreeHingeHoldsSixThree_of_heavyLivePairTie`
+(Gtz/Wave/ChartProgrammeHeavyResidual.lean:91) dies to the same witness, because
+that witness carries weight `23/96` at label zero.
+`Gtz.unopenableLivePairDoors` (Gtz/Wave/WiringSynonymClass.lean) records both. -/
 theorem stressFreeHingeHoldsSixThree_of_livePairTie
     (hcomplete : LinearSpaceListIsComplete 6 linePatternListSix)
     (hresidual : ∀ design : WeightedDesign 6 3,

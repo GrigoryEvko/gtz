@@ -87,7 +87,14 @@ theorem stressFreeHingeHoldsSixThree_of_heavyDesignUpgrade
 sharpest statement of the rank-three residual the tree carries at this commit:
 at every weakly dominated design that reaches the tenth floor, every live pair
 completes to a strictly positive tie leg.  The whole chart programme, the five
-coverings, the moment discharge and the tenth floor are spent together. -/
+coverings, the moment discharge and the tenth floor are spent together.
+
+**#BOGUS — THIS DOOR CANNOT OPEN.**  `Gtz.not_heavyLivePairTieResidual`
+(Gtz/Wave/WiringSynonymClass.lean) refutes the residual.  The tenth floor does
+not rescue the door, because the landed witness
+`Gtz.livePairTieRefuterDesign` carries weight `23/96` at label zero.  This is a
+**#DUPLICATION** of `Gtz.stressFreeHingeHoldsSixThree_of_livePairTie`
+(Gtz/Design/ChartProgrammeAssembly.lean:354), which dies to the same witness. -/
 theorem stressFreeHingeHoldsSixThree_of_heavyLivePairTie
     (hcomplete : LinearSpaceListIsComplete 6 linePatternListSix)
     (hresidual : ∀ design : WeightedDesign 6 3,
