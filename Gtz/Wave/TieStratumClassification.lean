@@ -993,6 +993,19 @@ theorem sum_inv_leverage_lt_four_of_isTie_sixThree (D : WeightedDesign 6 3) (hti
 the harmonic law: the reciprocals of the light atoms are exactly one, so the
 strictly heavy atoms alone must absorb a total excess above two, and each of them
 absorbs less than one. -/
+-- #DUPLICATION (2026-08-17, verified by read): this theorem is the WEAK copy of
+-- `Gtz.rank_le_card_strictlyHeavySet` (Gtz/Wave/AllHeavyWedgeCollapse.lean:294).
+-- The strong law gives the same count at EVERY rank and EVERY size with NO
+-- hypothesis, in fourteen lines of Parseval bookkeeping.  This copy spends
+-- `Gtz.IsTie` and forty-nine lines of harmonic bookkeeping for the (6,3) case
+-- alone.  The `IsTie` hypothesis is INERT.
+-- BRIDGE: `Gtz.three_le_card_strictlyHeavy_of_isTie_sixThree_of_rankLaw`
+-- (Gtz/Wave/LineFreeBacklog.lean) derives this statement from the strong law, and
+-- `Gtz.strictlyHeavySet_eq_filter` proves the two spellings of the heavy set are
+-- the same Finset by `rfl`.
+-- KEPT: this copy is consumed in this module by
+-- `Gtz.sixThree_primitiveTie_normalForm`, so it is not deleted.  Cite the strong
+-- law in new work.
 theorem three_le_card_strictlyHeavy_of_isTie_sixThree (D : WeightedDesign 6 3) (htie : IsTie D) :
     3 ≤ (Finset.univ.filter fun label => 1 < leverageOf (D.atom label)).card := by
   classical
