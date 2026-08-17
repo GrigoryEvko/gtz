@@ -6011,3 +6011,81 @@ import Gtz.Wave.TieConstraintIntersectionCorankOne
 --   `Gtz.not_hasStrictCertificate_kFourDesign_star` lands one instance of that miss
 --   in kernel: at the K4 star BOTH arms are false and the gap is positive definite.
 import Gtz.Wave.TieConstraintIntersectionKFour
+
+-- FORK-201.  THE FREE-MASS BUDGET, IN BRACKETS -- and the certificate-free hypothesis spent.
+-- THE IDENTITY.  `Gtz.freeMassBudget_eq_pairSwapMass` removes the matrix inverse from the
+--   budget of `Gtz.posDef_gap_of_freeMassBudget`.  At rank three, for a spanning triple,
+--   the budget is `Gtz.pairSwapMass` over the squared bracket, where the swap mass reads
+--   the three pair Gram determinants of the triple against the triple's own bracket, each
+--   discounted by the free weight of the opposite label.  The route is three elementary
+--   steps: `Gtz.det_smul_atomMatrix_four` (the four-atom bracket expansion, a polynomial
+--   identity in twelve coordinates), `Gtz.det_add_atomMatrix` (the matrix determinant
+--   lemma, already in the tree), and `Gtz.sum_weight_mul_sq_tripleBracket` (the two-point
+--   marginal in brackets, Parseval against the cross product then Lagrange).
+--   `Gtz.tripleSwapMass_nonneg` reads each numerator as the mass of the three exchange
+--   neighbours in that slot, so every term of the swap mass is nonnegative.
+-- WHAT IT BUYS.  `Gtz.le_pairSwapMass_of_not_hasStrictCertificate` is the free-mass half
+--   of the hypothesis of `Gtz.NoStressResidual`, with no inverse and no eigenvalue left in
+--   it -- the first form of that hypothesis a proof can spend.
+--   `Gtz.posDef_gap_of_sum_pairBracketSq_lt` is the WEIGHT-FREE corollary: a spanning
+--   triple whose three pair Gram determinants total less than its squared bracket
+--   dominates strictly, whatever the weights are.  Its contrapositive
+--   `Gtz.sq_tripleBracket_le_sum_pairBracketSq_of_not_hasStrictCertificate` is a necessary
+--   condition on the certificate-free stratum in the atom directions alone.
+-- THE TWO CALIBRATION OBJECTS ARE ONE OBJECT.  `Gtz.coordinateDiagonalDesign_eq_kFourDesign`
+--   is `rfl`: `Gtz.diagonalPattern` and `Gtz.kFourRootEdge` are the same six-row table and
+--   `Gtz.diagonalScale` and `Gtz.kFourRootScale` are the same square root.  So branch (i)
+--   has ONE known certificate-free witness in kernel, not two.
+--   `Gtz.freeMassBudget_coordinateDiagonalDesign_star` re-derives the landed `6/5` through
+--   the bracket route, and `Gtz.freeMassBudget_kFourDesign_offStar` lands the missing twin
+--   `7/5`.  The two values differ by exactly one orthogonal pair inside the triple.
+-- MEASURED, NOT KERNEL, 2026-08-17, Julia at 96 threads, every design rebuilt from a
+--   rank-three projection and a weight vector so that no reading is unbounded.
+--   The weight-free test fires on 98.30 per cent of 400000 uniform primitive stress-free
+--   draws, and the swap test on 100.0000 per cent of them, matching the landed reading
+--   that the free-mass arm covers the uniform measure.  Of two million uniform draws NONE
+--   is certificate-free (best minimum budget 0.9844).  A directed hunt maximising the
+--   minimum budget reaches 1.2225, so the certificate-free region is open and is NOT a
+--   neighbourhood of the root design, whose value is 1.2.  The icosahedral anchor
+--   `Gtz.icosaDesign` is a SECOND certificate-free witness, not isometric to the root
+--   design: its twenty budgets are exactly `(12 - 3*sqrt 5)/5` and `(12 + 3*sqrt 5)/5`,
+--   the roots of `25 x^2 - 120 x + 99`, ten of each, and the smaller exceeds one by
+--   `(7 - 3*sqrt 5)/5`.  Minimising the margin over the certificate-free region drives
+--   the Hadamard square of the projection and the smallest pair minor to zero together,
+--   so the region's margin infimum is approached only at the stressed and parallel
+--   boundary -- no margin bound can close branch (i).
+import Gtz.Wave.NoStressResidualSwapBrackets
+
+-- FORK-201 (continued).  THE TRACE-DETERMINANT CELL: one polynomial in the unweighted
+--   moment closes a fifth of the rank-three stratum, at EVERY size.
+-- THE CERTIFICATE.  `Gtz.det_sub_one_sub_trace_sub_two` is a polynomial identity in nine
+--   coordinates: the gap determinant less the gap trace less two IS the triple's squared
+--   bracket less its three pair Gram determinants, which in Gram invariants is `e3 - e2`.
+--   So `Gtz.posDef_gap_of_trace_add_two_lt_det` decides strict domination from the TRACE
+--   and the DETERMINANT of the gap alone.  `Gtz.no_two_invariant_domination_test` refutes
+--   the trace-and-second-invariant chart; this certificate lives in the OTHER two-invariant
+--   chart, which that no-go does not touch.
+-- THE AGGREGATE AND THE CELL.  `Gtz.sum_traceDetDefect_rankThree` sums the certificate's
+--   defect over all `C(m,3)` triples and gets `det N - (m-2) * e2(N)` with `N` the
+--   UNWEIGHTED second moment: the three `C(m,3)` layers cancel to nothing and the two
+--   `C(m-1,2) tr N` layers cancel each other, so the size enters ONLY as the coefficient.
+--   `Gtz.exists_posDef_gap_of_secondMoment_lt_det` is the cell, and
+--   `Gtz.secondMoment_le_det_of_isTie` its contrapositive -- the first aggregate obstruction
+--   the tie locus carries in the unweighted moment alone, with no weight, no primitivity and
+--   no stress-freeness.  `(6,3)` reads the coefficient four and `(7,3)` reads five, so both
+--   open cells receive it and the second costs nothing.
+-- THE RESIDUAL IS NARROWED.  `Gtz.noStressResidual_six_of_offCell` proves
+--   `Gtz.NoStressResidual 6` from `Gtz.NoStressResidualOffCell 6`, its restriction to
+--   `det N <= 4 e2(N)`.  Everything outside that region is now closed unconditionally, so
+--   the open obligation quantifies over a strictly smaller stratum than before.
+-- CALIBRATION.  `Gtz.sum_traceDetDefect_coordinateDiagonalDesign` is `-216`: at the root
+--   design `N = 6 * 1`, so `det N = 216` and `4 e2(N) = 432`.  The cell misses the campaign's
+--   calibration object by `216`, exactly as the free-mass arm misses it by `1/5` per triple.
+-- MEASURED, NOT KERNEL, 2026-08-17, Julia at 48 threads.  The aggregate identity holds to a
+--   worst relative error of 5.0e-10 on 199946 uniform primitive stress-free draws, and the
+--   cell fires on 18.62 per cent of them; 20.63 per cent at `(7,3)`, 22.68 at `(8,3)` and
+--   26.68 at `(10,3)`, so the cell GROWS with the size.  READ WHAT IT MISSES: the root design
+--   and the icosahedral anchor are both outside it, and the free-mass arm covers 100.0000 per
+--   cent of uniform draws while missing both -- so no coverage figure on this stratum is
+--   evidence about the obligation.
+import Gtz.Wave.NoStressResidualTraceDetCell

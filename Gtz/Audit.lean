@@ -1175,6 +1175,8 @@ import Gtz.Wave.ShareOneForcing
 import Gtz.Wave.TieConstraintIntersection
 import Gtz.Wave.TieConstraintIntersectionCorankOne
 import Gtz.Wave.TieConstraintIntersectionKFour
+import Gtz.Wave.NoStressResidualSwapBrackets
+import Gtz.Wave.NoStressResidualTraceDetCell
 #print axioms Gtz.unitVector
 #print axioms Gtz.unitVector_dot
 #print axioms Gtz.unitVector_dot_self
@@ -34981,3 +34983,77 @@ run_cmd do
 #print axioms Gtz.not_hasIsotropicGap_kFourDesign_star
 #print axioms Gtz.not_hasStrictCertificate_kFourDesign_star
 #print axioms Gtz.strictCertificate_misses_a_strict_dominator
+
+-- Gtz/Wave/NoStressResidualSwapBrackets.lean
+#print axioms Gtz.pairBracketSq
+#print axioms Gtz.pairBracketSq_eq_bracketNormal
+#print axioms Gtz.pairBracketSq_nonneg
+#print axioms Gtz.tripleBracket_repeat_first
+#print axioms Gtz.tripleBracket_repeat_second
+#print axioms Gtz.tripleBracket_cycle
+#print axioms Gtz.tripleBracket_swap_left
+#print axioms Gtz.tripleBracket_mul_dotProduct_self
+#print axioms Gtz.eq_zero_of_tripleBracket_ne_zero
+#print axioms Gtz.det_smul_atomMatrix_three
+#print axioms Gtz.det_smul_atomMatrix_four
+#print axioms Gtz.posDef_smul_atomMatrix_three
+#print axioms Gtz.det_mul_inverseForm_eq_bracket_sum
+#print axioms Gtz.sum_weight_mul_sq_tripleBracket
+#print axioms Gtz.sum_compl_weight_mul_sq_tripleBracket
+#print axioms Gtz.freeMassTriple
+#print axioms Gtz.freeMassTriple_eq
+#print axioms Gtz.one_sub_weight_pos_of_two_labels
+#print axioms Gtz.posDef_freeMassTriple
+#print axioms Gtz.det_freeMassTriple
+#print axioms Gtz.det_freeMassTriple_mul_inverseForm
+#print axioms Gtz.pairSwapMass
+#print axioms Gtz.tripleSwapMass_nonneg
+#print axioms Gtz.freeMassBudget_eq_pairSwapMass
+#print axioms Gtz.posDef_gap_of_pairSwapMass_lt
+#print axioms Gtz.le_pairSwapMass_of_not_hasStrictCertificate
+#print axioms Gtz.posDef_gap_of_sum_pairBracketSq_lt
+#print axioms Gtz.sq_tripleBracket_le_sum_pairBracketSq_of_not_hasStrictCertificate
+#print axioms Gtz.coordinateDiagonalDesign_atom_apply
+#print axioms Gtz.diagonalScale_pow_two
+#print axioms Gtz.diagonalScale_pow_six
+#print axioms Gtz.coordinateDiagonalDesign_dotProduct
+#print axioms Gtz.coordinateDiagonalDesign_sq_tripleBracket
+#print axioms Gtz.coordinateDiagonalDesign_pairBracketSq
+#print axioms Gtz.coordinateDiagonalDesign_weight_apply
+#print axioms Gtz.pairSwapMass_coordinateDiagonalDesign_star
+#print axioms Gtz.pairSwapMass_coordinateDiagonalDesign_offStar
+#print axioms Gtz.coordinateDiagonalDesign_tripleBracket_star_ne_zero
+#print axioms Gtz.coordinateDiagonalDesign_tripleBracket_offStar_ne_zero
+#print axioms Gtz.freeMassBudget_coordinateDiagonalDesign_star
+#print axioms Gtz.freeMassBudget_coordinateDiagonalDesign_offStar
+#print axioms Gtz.one_le_freeMassBudget_coordinateDiagonalDesign_star
+#print axioms Gtz.diagonalPattern_eq_kFourRootEdge
+#print axioms Gtz.diagonalScale_eq_kFourRootScale
+#print axioms Gtz.coordinateDiagonalDesign_atom_eq
+#print axioms Gtz.coordinateDiagonalDesign_weight_eq
+#print axioms Gtz.coordinateDiagonalDesign_eq_kFourDesign
+#print axioms Gtz.freeMassBudget_kFourDesign_offStar
+#print axioms Gtz.one_le_freeMassBudget_coordinateDiagonalDesign_offStar
+
+-- Gtz/Wave/NoStressResidualTraceDetCell.lean
+#print axioms Gtz.det_sub_one_sub_trace_sub_two
+#print axioms Gtz.subsetSum_of_three_labels
+#print axioms Gtz.posDef_gap_of_trace_add_two_lt_det
+#print axioms Gtz.posDef_gap_of_trace_add_two_lt_det_finset
+#print axioms Gtz.sum_traceDetDefect_rankThree
+#print axioms Gtz.exists_posDef_gap_of_secondMoment_lt_det
+#print axioms Gtz.not_isTie_of_secondMoment_lt_det
+#print axioms Gtz.secondMoment_le_det_of_isTie
+#print axioms Gtz.dominates_of_secondMoment_lt_det
+#print axioms Gtz.exists_posDef_gap_of_four_mul_secondMoment_lt_det
+#print axioms Gtz.four_mul_secondMoment_le_det_of_isTie
+#print axioms Gtz.exists_posDef_gap_of_five_mul_secondMoment_lt_det
+#print axioms Gtz.five_mul_secondMoment_le_det_of_isTie
+#print axioms Gtz.sum_traceDetDefect_sixThree
+#print axioms Gtz.subsetSum_univ_coordinateDiagonalDesign
+#print axioms Gtz.sum_traceDetDefect_coordinateDiagonalDesign
+#print axioms Gtz.not_four_mul_secondMoment_lt_det_coordinateDiagonalDesign
+#print axioms Gtz.NoStressResidualOffCell
+#print axioms Gtz.noStressResidual_of_offCell
+#print axioms Gtz.noStressResidual_six_of_offCell
+#print axioms Gtz.four_mul_secondMoment_le_det_of_isTie_sixThree
