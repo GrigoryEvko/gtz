@@ -6227,3 +6227,23 @@ import Gtz.Wave.WiringSynonymClass
 -- THE DARK AUDIT.  `Gtz/Wave/CellAssemblyAudit.lean` was committed at 509ba56 and imported
 --   by NOTHING.  The campaign's own finish-line audit had never been compiled.  It compiles.
 import Gtz.Wave.CellAssemblyAudit
+
+-- Phase (wire-closure): four landed pairs that spoke the same mathematics twice, joined.
+-- THE POLARIZED GAP READING.  Every reading of the gap form in the corpus was DIAGONAL, so the
+--   master identity `Gtz.gapDiscriminant_eq_wedgeBalance` was written longhand and never
+--   recognised as a minor law.  `Gtz.dotProduct_subsetSum_sub_one_mulVec_polarized` supplies the
+--   cross term, `Gtz.gapMinor_eq_wedgeBalanceValue` reads the identity as the two by two Gram
+--   minor of the gap, and `Gtz.wedgeBalanceAt_iff_pos_gapMinor` turns `Gtz.WedgeBalanceAt` into a
+--   MINOR SIGN at every rank and every subset, with no hypothesis.
+-- THE WEAK PROJECTION BRIDGE.  `Gtz.dominates_iff_posSemidef_blockGapAt` is the weak half of
+--   `Gtz.posDef_blockGapAt_iff_subsetSum`, one `rfl` away through
+--   `Gtz.blockGapAt_eq_projectionBlockGap` and never taken.
+-- THE DISCARDED MARGIN.  `Gtz.posDef_on_orthogonal_of_deflatedGapBound` reached a quantitative
+--   bound and spent it on a sign.  `Gtz.quadForm_margin_of_deflatedGapBoundAt` keeps the bound:
+--   on every direction orthogonal to the dropped atom the gap form clears the dropped weight
+--   against the probe energy.  Division free, no positivity, no size hypothesis.
+-- THE TIE WITNESS AT `K4`.  `Gtz.not_isTie_of_detWitness` refutes a tie from one deflated bound
+--   and one determinant sign at every rank, and had no consumer.
+--   `Gtz.kFour_exists_deflatedSubset_chartWitness` fires it at EVERY `K4` chart point: strict
+--   domination of the produced subset in the chart refutes the tie of the welded design.
+import Gtz.Wave.LandedWireClosure
