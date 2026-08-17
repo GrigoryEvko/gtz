@@ -661,6 +661,67 @@ theorem kFourLevelShiftTotal_closes_all (htotal : KFourLevelShiftTotal) :
       ∧ KFourKnifeBandRefinedWeakToStrict :=
   kFourStrictTree_closes_all (kFourUniversalStrictTree_iff_levelShiftTotal.mpr htotal)
 
+/-! ## 6c. The pivot member, and how far the schema can be relaxed
+
+The scalar member of section 6 replaces ALL THREE selected weights by one
+level.  The pivot member below keeps one selected weight exact and replaces the
+other two by one level, so it relaxes at most ONE weight of the selection.  It
+is strictly stronger than the scalar member.
+
+An exact-rational census records how far each member reaches.  Over 300000
+random chart points the scalar member fires at 97.72 percent and the pivot
+member at 300000 of 300000.  A directed hunt of 260 restarts then refutes the
+pivot member: at the masses `(1, 696, 456, 314, 332, 1)` and the weights
+`(1, 467, 251, 1, 79, 1) / 800` the only dominating tree is `{2, 3, 4}`, and all
+forty-eight pivot members fail, forty-three of them on the determinant and five
+on the second sign.  So no member that relaxes one weight is total, and the
+schema reaches the whole chart only at `level = point.weight`, where
+`Gtz.kFourUniversalStrictTree_iff_levelShiftTotal` shows it IS the chart
+obligation. -/
+
+/-- **THE PIVOT LEVEL VECTOR.**  One designated selected label keeps its own
+weight, and every other label takes a common level. -/
+noncomputable def kFourPivotLevel (weight : Fin 6 → ℝ) (pivot : Fin 6) (level : ℝ) :
+    Fin 6 → ℝ :=
+  fun label => if label = pivot then weight label else level
+
+theorem kFourPivotLevel_self (weight : Fin 6 → ℝ) (pivot : Fin 6) (level : ℝ) :
+    kFourPivotLevel weight pivot level pivot = weight pivot := by
+  simp only [kFourPivotLevel, if_true, eq_self_iff_true]
+
+theorem kFourPivotLevel_ne (weight : Fin 6 → ℝ) {pivot label : Fin 6} (hne : label ≠ pivot)
+    (level : ℝ) : kFourPivotLevel weight pivot level label = level := by
+  simp only [kFourPivotLevel, if_neg hne]
+
+/-- **THE PIVOT CELL.**  Keep the weight of one selected label and raise every
+other selected weight to a common level.  If the three raw signs of the
+resulting level shift vector are positive, the selection dominates strictly. -/
+theorem posDef_directionChartGap_of_pivotShift (point : DirectionChartPoint 6)
+    (tree : Finset (Fin 6)) (pivot : Fin 6) {level : ℝ} (hlevel : 0 < level)
+    (hle : ∀ label ∈ tree, label ≠ pivot → point.weight label ≤ level)
+    (htrace : 0 < kFourTraceSum (kFourLevelShiftVector point.mass tree
+      (kFourPivotLevel point.weight pivot level)))
+    (hsecond : 0 < kFourSecondForestSum (kFourLevelShiftVector point.mass tree
+      (kFourPivotLevel point.weight pivot level)))
+    (hdet : 0 < kFourMassTreeSum (kFourLevelShiftVector point.mass tree
+      (kFourPivotLevel point.weight pivot level))) :
+    (directionChartGap kFourDirection point.mass point.weight tree).PosDef := by
+  refine posDef_directionChartGap_of_levelShift point tree
+    (kFourPivotLevel point.weight pivot level) ?_ ?_ htrace hsecond hdet
+  · intro label _
+    by_cases hpivot : label = pivot
+    · subst hpivot
+      rw [kFourPivotLevel_self]
+      exact point.weight_pos label
+    · rw [kFourPivotLevel_ne point.weight hpivot]
+      exact hlevel
+  · intro label hlabel
+    by_cases hpivot : label = pivot
+    · subst hpivot
+      rw [kFourPivotLevel_self]
+    · rw [kFourPivotLevel_ne point.weight hpivot]
+      exact hle label hlabel hpivot
+
 /-! ## 7. The cell is inhabited at the two mandatory points -/
 
 /-- **THE CELL FIRES AT THE TETRAHEDRON.**  The canonical gauge star `{3, 4, 5}`
@@ -810,6 +871,125 @@ theorem traceRefuterPoint_blockAdmissibleDet :
         traceRefuterPoint.weight _)
       traceRefuterPoint_posDef_zeroOneThree
   · exact traceRefuterPoint_massTreeSum_pos_count.1
+
+/-! ## 8b. The designated edge does NOT host a dominating tree
+
+Section 5 designates one edge for the FIRST raw sign.  The obvious next reading
+is that the same edge hosts a strictly dominating tree.  That reading is FALSE,
+and this section kills it with an exact rational witness.  A census of 200000
+random chart points found the reading alive at 199999 of them, which is the
+exact profile the campaign warns about.
+
+At the masses `(1, 4, 1, 100, 6, 189)` and the weights
+`(1, 3, 14, 53, 25, 144) / 240` the six trace boosts are
+`480`, `640`, `240/7`, `24000/53`, `288/5` and `315`, so edge `1` is the unique
+maximum.  All eight listed trees through edge `1` carry a strictly negative
+signed tree sum.  The chart obligation stays INTACT there: the star `{3, 4, 5}`
+dominates strictly.
+
+The trace floor `Gtz.kFourTraceSum_pos_of_maximalBoost` is untouched.  It claims
+the first raw sign and nothing else, and every one of those eight trees does
+carry a strictly positive first sign. -/
+
+/-- Masses of the point that refutes the designated-edge hosting reading. -/
+noncomputable def kFourBoostRefuterMass : Fin 6 → ℝ
+  | 0 => 1
+  | 1 => 4
+  | 2 => 1
+  | 3 => 100
+  | 4 => 6
+  | 5 => 189
+
+/-- Weights of the point that refutes the designated-edge hosting reading. -/
+noncomputable def kFourBoostRefuterWeight : Fin 6 → ℝ
+  | 0 => 1 / 240
+  | 1 => 1 / 80
+  | 2 => 7 / 120
+  | 3 => 53 / 240
+  | 4 => 5 / 48
+  | 5 => 3 / 5
+
+/-- The refuter is a genuine chart point. -/
+noncomputable def kFourBoostRefuterPoint : DirectionChartPoint 6 where
+  mass := kFourBoostRefuterMass
+  weight := kFourBoostRefuterWeight
+  mass_pos := by intro label; fin_cases label <;> norm_num [kFourBoostRefuterMass]
+  weight_pos := by intro label; fin_cases label <;> norm_num [kFourBoostRefuterWeight]
+  weight_sum_one := by rw [Fin.sum_univ_six]; norm_num [kFourBoostRefuterWeight]
+
+/-- **EDGE ONE IS THE MAXIMAL TRACE BOOST AT THE REFUTER.** -/
+theorem kFourBoostRefuterPoint_boost_maximal (label : Fin 6) :
+    kFourTraceBoost kFourBoostRefuterPoint.mass kFourBoostRefuterPoint.weight label
+      ≤ kFourTraceBoost kFourBoostRefuterPoint.mass kFourBoostRefuterPoint.weight 1 := by
+  rcases fin_six_cases label with rfl | rfl | rfl | rfl | rfl | rfl <;>
+    norm_num [kFourTraceBoost, kFourTraceAtomWeight_zero, kFourTraceAtomWeight_one,
+      kFourTraceAtomWeight_two, kFourTraceAtomWeight_three, kFourTraceAtomWeight_four,
+      kFourTraceAtomWeight_five, kFourBoostRefuterPoint, kFourBoostRefuterMass,
+      kFourBoostRefuterWeight]
+
+/-- **EVERY LISTED TREE THROUGH THE DESIGNATED EDGE FAILS ON THE DETERMINANT.**
+All eight of them carry a strictly negative signed tree sum. -/
+theorem kFourBoostRefuterPoint_massTreeSum_neg (tree : Finset (Fin 6))
+    (hmem : tree ∈ kFourSpanningTreeList) (hstar : (1 : Fin 6) ∈ tree) :
+    kFourMassTreeSum (signedGapWeight kFourBoostRefuterPoint.mass
+      kFourBoostRefuterPoint.weight tree) < 0 := by
+  simp only [kFourSpanningTreeList, List.mem_cons, List.not_mem_nil, or_false] at hmem
+  rcases hmem with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+    | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    first
+      | exact absurd hstar (by decide)
+      | norm_num [kFourMassTreeSum, signedGapWeight, kFourBoostRefuterPoint,
+          kFourBoostRefuterMass, kFourBoostRefuterWeight, Finset.mem_insert,
+          Finset.mem_singleton, Fin.ext_iff]
+
+/-- **THE CHART OBLIGATION IS INTACT AT THE REFUTER.**  The canonical gauge star
+dominates strictly, so the refutation is about the DESIGNATION and never about
+the chart. -/
+theorem kFourBoostRefuterPoint_posDef_threeFourFive :
+    (directionChartGap kFourDirection kFourBoostRefuterPoint.mass
+      kFourBoostRefuterPoint.weight ({3, 4, 5} : Finset (Fin 6))).PosDef := by
+  refine (posDef_directionChartGap_iff_rawTriple kFourBoostRefuterPoint
+    ({3, 4, 5} : Finset (Fin 6))).mpr ⟨?_, ?_, ?_⟩
+  · norm_num [kFourTraceSum, signedGapWeight, kFourBoostRefuterPoint,
+      kFourBoostRefuterMass, kFourBoostRefuterWeight, Finset.mem_insert,
+      Finset.mem_singleton, Fin.ext_iff]
+  · norm_num [kFourSecondForestSum_eq, signedGapWeight, kFourBoostRefuterPoint,
+      kFourBoostRefuterMass, kFourBoostRefuterWeight, Finset.mem_insert,
+      Finset.mem_singleton, Fin.ext_iff]
+  · norm_num [kFourMassTreeSum, signedGapWeight, kFourBoostRefuterPoint,
+      kFourBoostRefuterMass, kFourBoostRefuterWeight, Finset.mem_insert,
+      Finset.mem_singleton, Fin.ext_iff]
+
+/-- **THE DESIGNATED-EDGE HOSTING READING.**  An edge of maximal trace boost
+lies in a strictly dominating listed tree. -/
+def KFourMaxTraceBoostEdgeHostsStrictTree : Prop :=
+  ∀ (point : DirectionChartPoint 6) (star : Fin 6),
+    (∀ label, kFourTraceBoost point.mass point.weight label
+      ≤ kFourTraceBoost point.mass point.weight star) →
+    ∃ tree ∈ kFourSpanningTreeList, star ∈ tree
+      ∧ (directionChartGap kFourDirection point.mass point.weight tree).PosDef
+
+/-- **THE DESIGNATED-EDGE HOSTING READING IS FALSE.**  Do not reopen it. -/
+theorem not_kFourMaxTraceBoostEdgeHostsStrictTree :
+    ¬ KFourMaxTraceBoostEdgeHostsStrictTree := by
+  intro hrule
+  obtain ⟨tree, hmem, hstar, hposDef⟩ := hrule kFourBoostRefuterPoint 1
+    kFourBoostRefuterPoint_boost_maximal
+  have htriple := (posDef_directionChartGap_iff_rawTriple kFourBoostRefuterPoint tree).mp
+    hposDef
+  exact absurd htriple.2.2
+    (not_lt.mpr (kFourBoostRefuterPoint_massTreeSum_neg tree hmem hstar).le)
+
+/-- **THE FIRST SIGN IS STILL PAID AT THE REFUTER.**  Every listed tree through
+the designated edge carries a strictly positive first raw sign, so the landed
+trace floor and the refutation above agree. -/
+theorem kFourBoostRefuterPoint_traceSum_pos (tree : Finset (Fin 6))
+    (hmem : tree ∈ kFourSpanningTreeList) (hstar : (1 : Fin 6) ∈ tree) :
+    0 < kFourTraceSum (signedGapWeight kFourBoostRefuterPoint.mass
+      kFourBoostRefuterPoint.weight tree) :=
+  kFourTraceSum_pos_of_maximalBoost kFourBoostRefuterPoint tree
+    (by rw [card_eq_three_of_mem_kFourSpanningTreeList' hmem]; norm_num) 1 hstar
+    kFourBoostRefuterPoint_boost_maximal
 
 /-! ## 9. The raw residual, and the registered consumers -/
 
