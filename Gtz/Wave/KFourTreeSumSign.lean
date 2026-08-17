@@ -17,6 +17,24 @@ route to it passes through `Gtz.KFourUniversalStrictTree`: at every chart point
 some listed spanning tree dominates strictly.  This module supplies three new
 unconditional laws and one new certificate cell.
 
+## 0. What is direction generic, and what is not
+
+Two laws carry the module and NEITHER mentions `K4`.  Both fix the rank at three
+and leave the size of the family free, so both transport verbatim to `(7, 3)`
+and to each of the five registered chart classes.
+
+* `Gtz.posDef_directionChartGap_of_dominatingWeight` — the domination engine.
+  Any pointwise LOWER bound on the signed gap weight whose moment is positive
+  definite certifies strict domination.  Every cell in this module is an
+  instance, and the proof is Loewner monotonicity of the moment
+  (`Gtz.posDef_sum_smul_atomMatrix_of_le`).
+* `Gtz.trace_directionChartGap_pos_of_maximalBoost` — the trace floor.  The
+  trace of the chart gap is strictly positive at EVERY selection of two or more
+  atoms that holds an atom of maximal leverage boost.
+
+The `K4` material below is the forest reading of these two laws.
+`Gtz.kFourTraceSum_pos_of_maximalBoost` is proved as the instance and not again.
+
 ## 1. The raw triple
 
 `Gtz.posDef_kFourLaplacian_iff_rawTriple` reads positive definiteness of the
@@ -60,9 +78,17 @@ shift vector `Gtz.kFourShiftVector` are positive, the tree dominates strictly.
 The cell is division free, matrix free and eigenvalue free.  It fires at the
 tetrahedron (all four stars, level `1/6`) and at `Gtz.traceRefuterPoint` (the
 tree `{0, 1, 3}`, level `1/8`), the point that kills every single-tree rule of
-`Gtz/Wave/WiringKFourWalls.lean`.  An exact-rational census of 120000 random
-chart points fires it at 95.78 percent of them, so the cell is a large but
-proper piece of the chart and is NOT offered as a total.
+`Gtz/Wave/WiringKFourWalls.lean`.
+
+MEASURED, AND NOT A THEOREM.  An exact-rational census of 20000 random chart
+points with rational masses and rational weights fires the cell at 92.55
+percent of them.  On the SAME 20000 points the landed cell
+`Gtz.KFourPencilCellFires` fires at 20000, it fires at all 1490 points that the
+scalar cell misses, and the scalar cell fires at NO point that the pencil cell
+misses.  So this cell does not enlarge the certificate atlas on that sample, and
+its value is the SHAPE and the direction-generic engine, not new coverage.
+Neither cell is total: `Gtz.kFourPencilCell_not_total` refutes the pencil cell,
+and section 6c refutes the scalar cell.
 
 ## 4. The sixteen-row table at the refuter
 
@@ -86,6 +112,186 @@ scalar shift cell is inhabited twice, at `Gtz.tetrahedronChartPoint` and at
 namespace Gtz
 
 open Finset Matrix
+
+/-! ## 0. The direction-generic laws
+
+Nothing in this section mentions `K4`.  The size of the family is free and only
+the rank is fixed at three, so every statement transports verbatim to `(7, 3)`
+and to each of the five registered chart classes.  The `K4` sections that follow
+are the forest coordinates of these laws and never a separate argument.
+
+Two laws carry the whole module.
+
+* `Gtz.posDef_directionChartGap_of_dominatingWeight` — **the domination
+  engine.**  Any pointwise LOWER bound on the signed gap weight whose moment is
+  positive definite certifies strict domination.  The proof is one line of
+  Loewner monotonicity and it has no case split, no basis and no determinant.
+* `Gtz.trace_directionChartGap_pos_of_maximalBoost` — **the trace floor.**  The
+  trace of the chart gap is strictly positive at EVERY selection of two or more
+  atoms that holds an atom of maximal leverage boost.  The proof is that the
+  weights are a probability vector, so the boost average never passes the boost
+  maximum, while a selection of two or more atoms strictly passes it. -/
+
+/-- **THE LEVERAGE BOOST OF AN ATOM.**  Its leverage times its mass over its
+weight.  This is the quantity the trace of the chart gap reads. -/
+noncomputable def chartTraceBoost {size : ℕ} (direction : Fin size → (Fin 3 → ℝ))
+    (mass weight : Fin size → ℝ) (label : Fin size) : ℝ :=
+  leverageOf (direction label) * mass label / weight label
+
+/-- **THE TRACE OF A CHART GAP.**  The selected boosted leverages against the
+total leverage share.  Direction generic. -/
+theorem trace_directionChartGap {size : ℕ} (direction : Fin size → (Fin 3 → ℝ))
+    (mass weight : Fin size → ℝ) (selected : Finset (Fin size)) :
+    Matrix.trace (directionChartGap direction mass weight selected)
+      = (∑ label ∈ selected, mass label / weight label * leverageOf (direction label))
+        - ∑ label, mass label * leverageOf (direction label) := by
+  rw [directionChartGap, Matrix.trace_sub, Matrix.trace_sum, Matrix.trace_sum]
+  congr 1
+  · exact Finset.sum_congr rfl fun label _ => by
+      rw [Matrix.trace_smul, smul_eq_mul, trace_atomMatrix]
+  · exact Finset.sum_congr rfl fun label _ => by
+      rw [Matrix.trace_smul, smul_eq_mul, trace_atomMatrix]
+
+/-- The boost of an atom times its weight is its leverage share. -/
+theorem chartTraceBoost_mul_weight {size : ℕ} (direction : Fin size → (Fin 3 → ℝ))
+    (point : DirectionChartPoint size) (label : Fin size) :
+    chartTraceBoost direction point.mass point.weight label * point.weight label
+      = point.mass label * leverageOf (direction label) := by
+  rw [chartTraceBoost, div_mul_cancel₀ _ (point.weight_pos label).ne']
+  ring
+
+/-- A selected boost is the boosted leverage that the trace reads. -/
+theorem chartTraceBoost_eq_selectedTerm {size : ℕ} (direction : Fin size → (Fin 3 → ℝ))
+    (point : DirectionChartPoint size) (label : Fin size) :
+    chartTraceBoost direction point.mass point.weight label
+      = point.mass label / point.weight label * leverageOf (direction label) := by
+  rw [chartTraceBoost]
+  field_simp
+
+theorem chartTraceBoost_pos {size : ℕ} (direction : Fin size → (Fin 3 → ℝ))
+    (point : DirectionChartPoint size)
+    (hlev : ∀ label, 0 < leverageOf (direction label)) (label : Fin size) :
+    0 < chartTraceBoost direction point.mass point.weight label := by
+  rw [chartTraceBoost]
+  exact div_pos (mul_pos (hlev label) (point.mass_pos label)) (point.weight_pos label)
+
+/-- **THE BOOST AVERAGE NEVER PASSES THE BOOST MAXIMUM.**  The weights are a
+probability vector, so the total leverage share is a convex average of the six
+boosts. -/
+theorem chartLeverageShare_le_maximalBoost {size : ℕ}
+    (direction : Fin size → (Fin 3 → ℝ)) (point : DirectionChartPoint size)
+    (star : Fin size)
+    (hmax : ∀ label, chartTraceBoost direction point.mass point.weight label
+      ≤ chartTraceBoost direction point.mass point.weight star) :
+    ∑ label, point.mass label * leverageOf (direction label)
+      ≤ chartTraceBoost direction point.mass point.weight star := by
+  calc ∑ label, point.mass label * leverageOf (direction label)
+      = ∑ label, chartTraceBoost direction point.mass point.weight label
+          * point.weight label :=
+        Finset.sum_congr rfl fun label _ =>
+          (chartTraceBoost_mul_weight direction point label).symm
+    _ ≤ ∑ label, chartTraceBoost direction point.mass point.weight star
+          * point.weight label :=
+        Finset.sum_le_sum fun label _ =>
+          mul_le_mul_of_nonneg_right (hmax label) (point.weight_pos label).le
+    _ = chartTraceBoost direction point.mass point.weight star
+          * ∑ label, point.weight label := by rw [Finset.mul_sum]
+    _ = chartTraceBoost direction point.mass point.weight star := by
+        rw [point.weight_sum_one, mul_one]
+
+/-- **A SELECTION OF TWO OR MORE STRICTLY PASSES THE BOOST MAXIMUM.** -/
+theorem maximalBoost_lt_selectedBoostSum {size : ℕ}
+    (direction : Fin size → (Fin 3 → ℝ)) (point : DirectionChartPoint size)
+    (hlev : ∀ label, 0 < leverageOf (direction label))
+    (selected : Finset (Fin size)) (hcard : 2 ≤ selected.card)
+    (star : Fin size) (hstar : star ∈ selected) :
+    chartTraceBoost direction point.mass point.weight star
+      < ∑ label ∈ selected, chartTraceBoost direction point.mass point.weight label := by
+  have hsub : ({star} : Finset (Fin size)) ⊆ selected := Finset.singleton_subset_iff.mpr hstar
+  have hne : ({star} : Finset (Fin size)) ≠ selected := by
+    intro heq
+    rw [← heq, Finset.card_singleton] at hcard
+    norm_num at hcard
+  obtain ⟨other, hother, hnotmem⟩ := Finset.exists_of_ssubset (lt_of_le_of_ne hsub hne)
+  have hlt := Finset.sum_lt_sum_of_subset hsub hother hnotmem
+    (chartTraceBoost_pos direction point hlev other)
+    (fun label _ _ => (chartTraceBoost_pos direction point hlev label).le)
+  rwa [Finset.sum_singleton] at hlt
+
+/-- **THE TRACE FLOOR, DIRECTION GENERIC.**  At every chart point of every
+direction family whose atoms are nonzero, the trace of the chart gap is strictly
+positive at EVERY selection of two or more atoms that holds an atom of maximal
+leverage boost.  The statement carries no hypothesis on the family beyond
+nonzero atoms, and no cardinality bound other than two.
+
+This designates one atom for one necessary sign at every stratum.  It claims
+NOTHING about strict domination, and `Gtz.not_kFourMaxTraceBoostEdgeHostsStrictTree`
+records that the hosting reading of this designation is false. -/
+theorem trace_directionChartGap_pos_of_maximalBoost {size : ℕ}
+    (direction : Fin size → (Fin 3 → ℝ)) (point : DirectionChartPoint size)
+    (hlev : ∀ label, 0 < leverageOf (direction label))
+    (selected : Finset (Fin size)) (hcard : 2 ≤ selected.card)
+    (star : Fin size) (hstar : star ∈ selected)
+    (hmax : ∀ label, chartTraceBoost direction point.mass point.weight label
+      ≤ chartTraceBoost direction point.mass point.weight star) :
+    0 < Matrix.trace (directionChartGap direction point.mass point.weight selected) := by
+  rw [trace_directionChartGap]
+  have hselected : ∑ label ∈ selected, point.mass label / point.weight label
+        * leverageOf (direction label)
+      = ∑ label ∈ selected, chartTraceBoost direction point.mass point.weight label :=
+    Finset.sum_congr rfl fun label _ =>
+      (chartTraceBoost_eq_selectedTerm direction point label).symm
+  rw [hselected]
+  have hceil := chartLeverageShare_le_maximalBoost direction point star hmax
+  have hfloor := maximalBoost_lt_selectedBoostSum direction point hlev selected hcard star hstar
+  linarith
+
+/-- **A NONPOSITIVE TRACE KILLS DOMINATION.**  Direction generic. -/
+theorem not_posDef_directionChartGap_of_trace_nonpos {size : ℕ}
+    (direction : Fin size → (Fin 3 → ℝ)) (mass weight : Fin size → ℝ)
+    (selected : Finset (Fin size))
+    (htrace : Matrix.trace (directionChartGap direction mass weight selected) ≤ 0) :
+    ¬ (directionChartGap direction mass weight selected).PosDef :=
+  fun hposDef => absurd hposDef.trace_pos (not_lt.mpr htrace)
+
+/-- **THE MOMENT IS MONOTONE IN ITS SCALES.**  Raising any scale keeps positive
+definiteness, because the increment is a nonnegative moment.  Direction
+generic. -/
+theorem posDef_sum_smul_atomMatrix_of_le {size : ℕ} (direction : Fin size → (Fin 3 → ℝ))
+    {small big : Fin size → ℝ} (hle : ∀ label, small label ≤ big label)
+    (hsmall : (∑ label, small label • atomMatrix (direction label)).PosDef) :
+    (∑ label, big label • atomMatrix (direction label)).PosDef := by
+  have hsplit : ∑ label, big label • atomMatrix (direction label)
+      = (∑ label, small label • atomMatrix (direction label))
+        + ∑ label, (big label - small label) • atomMatrix (direction label) := by
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun label _ => ?_
+    rw [← add_smul]
+    congr 1
+    ring
+  rw [hsplit]
+  exact hsmall.add_posSemidef (posSemidef_sum_smul_atomMatrix direction _
+    fun label => by linarith [hle label])
+
+/-- **THE DOMINATION ENGINE, DIRECTION GENERIC.**  Any pointwise LOWER bound on
+the signed gap weight whose moment is positive definite certifies strict
+domination of the selection.  Every certificate cell in this module is an
+instance of this one theorem, and the theorem needs no basis, no determinant, no
+eigenvalue and no whitener.
+
+The bound is free: at `lower = signedGapWeight` the hypothesis IS the
+conclusion, so the schema is complete and carries no information by itself.  A
+cell is exactly a CHOICE of lower bound that is easier to test than the signed
+gap weight. -/
+theorem posDef_directionChartGap_of_dominatingWeight {size : ℕ}
+    (direction : Fin size → (Fin 3 → ℝ)) (point : DirectionChartPoint size)
+    (selected : Finset (Fin size)) (lower : Fin size → ℝ)
+    (hle : ∀ label, lower label ≤ signedGapWeight point.mass point.weight selected label)
+    (hlower : (∑ label, lower label • atomMatrix (direction label)).PosDef) :
+    (directionChartGap direction point.mass point.weight selected).PosDef := by
+  rw [directionChartGap_eq_sum_signedGapWeight direction point.mass point.weight selected
+    (fun label _ => (point.weight_pos label).ne')]
+  exact posDef_sum_smul_atomMatrix_of_le direction hle hlower
 
 /-! ## 1. The unit conductance of `K4` -/
 
@@ -343,61 +549,53 @@ theorem kFourTraceSum_signedGapWeight (point : DirectionChartPoint 6)
   rw [hinside, houtside]
   linarith [hwhole]
 
-/-- The total atom leverage share is the weight average of the six boosts. -/
-theorem kFourTraceAtomShare_eq_boostAverage (point : DirectionChartPoint 6) :
-    ∑ label, kFourTraceAtomWeight label * point.mass label
-      = ∑ label, kFourTraceBoost point.mass point.weight label * point.weight label :=
-  (Finset.sum_congr rfl fun label _ => (kFourTraceBoost_mul_weight point label).symm)
+/-- **THE `K4` ATOM LEVERAGE.**  The three edges that miss the grounded vertex
+have leverage two and the three at it have leverage one. -/
+theorem leverageOf_kFourDirection (label : Fin 6) :
+    leverageOf (kFourDirection label) = kFourTraceAtomWeight label := by
+  rcases fin_six_cases label with rfl | rfl | rfl | rfl | rfl | rfl <;>
+    simp only [leverageOf, Fin.sum_univ_three, kFourDirection_zero, kFourDirection_one,
+      kFourDirection_two, kFourDirection_three, kFourDirection_four, kFourDirection_five,
+      kFourTraceAtomWeight_zero, kFourTraceAtomWeight_one, kFourTraceAtomWeight_two,
+      kFourTraceAtomWeight_three, kFourTraceAtomWeight_four, kFourTraceAtomWeight_five,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two,
+      Matrix.tail_cons] <;>
+    norm_num
 
-/-- **THE BOOST AVERAGE NEVER PASSES THE BOOST MAXIMUM.**  The weights are a
-probability vector, so this is one line. -/
-theorem kFourTraceAtomShare_le_maximalBoost (point : DirectionChartPoint 6)
-    (star : Fin 6)
-    (hmax : ∀ label, kFourTraceBoost point.mass point.weight label
-      ≤ kFourTraceBoost point.mass point.weight star) :
-    ∑ label, kFourTraceAtomWeight label * point.mass label
-      ≤ kFourTraceBoost point.mass point.weight star := by
-  rw [kFourTraceAtomShare_eq_boostAverage point]
-  calc ∑ label, kFourTraceBoost point.mass point.weight label * point.weight label
-      ≤ ∑ label, kFourTraceBoost point.mass point.weight star * point.weight label :=
-        Finset.sum_le_sum fun label _ =>
-          mul_le_mul_of_nonneg_right (hmax label) (point.weight_pos label).le
-    _ = kFourTraceBoost point.mass point.weight star * ∑ label, point.weight label := by
-        rw [Finset.mul_sum]
-    _ = kFourTraceBoost point.mass point.weight star := by
-        rw [point.weight_sum_one, mul_one]
+/-- The `K4` trace boost IS the direction-generic leverage boost. -/
+theorem kFourTraceBoost_eq_chartTraceBoost (mass weight : Fin 6 → ℝ) (label : Fin 6) :
+    kFourTraceBoost mass weight label = chartTraceBoost kFourDirection mass weight label := by
+  rw [kFourTraceBoost, chartTraceBoost, leverageOf_kFourDirection]
 
-/-- **THE MAXIMAL BOOST SITS STRICTLY BELOW ANY TREE THAT HOLDS IT.**  A tree
-has three labels and every boost is strictly positive. -/
-theorem maximalBoost_lt_treeBoostSum (point : DirectionChartPoint 6)
-    (tree : Finset (Fin 6)) (hcard : 2 ≤ tree.card) (star : Fin 6) (hstar : star ∈ tree) :
-    kFourTraceBoost point.mass point.weight star
-      < ∑ label ∈ tree, kFourTraceBoost point.mass point.weight label := by
-  have hsub : ({star} : Finset (Fin 6)) ⊆ tree := Finset.singleton_subset_iff.mpr hstar
-  have hne : ({star} : Finset (Fin 6)) ≠ tree := by
-    intro heq
-    rw [← heq, Finset.card_singleton] at hcard
-    norm_num at hcard
-  have hssub : ({star} : Finset (Fin 6)) ⊂ tree := lt_of_le_of_ne hsub hne
-  obtain ⟨other, hother, hnotmem⟩ := Finset.exists_of_ssubset hssub
-  have hlt := Finset.sum_lt_sum_of_subset hsub hother hnotmem
-    (kFourTraceBoost_pos point other) (fun label _ _ => (kFourTraceBoost_pos point label).le)
-  rwa [Finset.sum_singleton] at hlt
+/-- The first raw invariant IS the trace of the chart gap. -/
+theorem trace_directionChartGap_kFour (point : DirectionChartPoint 6)
+    (tree : Finset (Fin 6)) :
+    Matrix.trace (directionChartGap kFourDirection point.mass point.weight tree)
+      = kFourTraceSum (signedGapWeight point.mass point.weight tree) := by
+  rw [directionChartGap_eq_kFourLaplacian_signed point.mass point.weight tree
+      (fun label _ => (point.weight_pos label).ne'),
+    trace_kFourLaplacian_eq_traceSum]
 
-/-- **THE SHARP TRACE FLOOR, AS A SELECTION LAW.**  At every chart point, EVERY
-listed tree through an edge of maximal trace boost makes the first raw sign
-strictly positive.  The statement carries no hypothesis on the point.  It
-designates nothing about the second and third signs, and it makes no claim of
-strict domination. -/
+/-- **THE TRACE FLOOR IN `K4` FOREST COORDINATES.**  This is the instance of
+`Gtz.trace_directionChartGap_pos_of_maximalBoost` at the `K4` chart, and it is
+not a separate argument.  EVERY listed tree through an edge of maximal trace
+boost makes the first raw sign strictly positive, at every chart point, with no
+hypothesis.  It designates nothing about the second and third signs, and it
+makes no claim of strict domination. -/
 theorem kFourTraceSum_pos_of_maximalBoost (point : DirectionChartPoint 6)
     (tree : Finset (Fin 6)) (hcard : 2 ≤ tree.card) (star : Fin 6) (hstar : star ∈ tree)
     (hmax : ∀ label, kFourTraceBoost point.mass point.weight label
       ≤ kFourTraceBoost point.mass point.weight star) :
     0 < kFourTraceSum (signedGapWeight point.mass point.weight tree) := by
-  rw [kFourTraceSum_signedGapWeight point tree]
-  have hceil := kFourTraceAtomShare_le_maximalBoost point star hmax
-  have hfloor := maximalBoost_lt_treeBoostSum point tree hcard star hstar
-  linarith
+  rw [← trace_directionChartGap_kFour point tree]
+  refine trace_directionChartGap_pos_of_maximalBoost kFourDirection point ?_ tree hcard
+    star hstar ?_
+  · intro label
+    rw [leverageOf_kFourDirection]
+    exact kFourTraceAtomWeight_pos label
+  · intro label
+    rw [← kFourTraceBoost_eq_chartTraceBoost, ← kFourTraceBoost_eq_chartTraceBoost]
+    exact hmax label
 
 /-- Every label sits in a listed spanning tree of at least two labels. -/
 theorem exists_kFourSpanningTree_mem (label : Fin 6) :
@@ -552,8 +750,8 @@ scalar is the whole loss: a level VECTOR loses nothing.  This section states the
 cell for a free level vector and proves the family COMPLETE — the member at
 `level = point.weight` is the chart obligation itself.  So the certificate
 schema covers the whole chart, and the scalar member is the computable part of
-it.  An exact-rational census of 120000 random chart points fires the scalar
-member at 95.78 percent of them. -/
+it.  MEASURED, AND NOT A THEOREM: an exact-rational census of 20000 random
+chart points fires the scalar member at 92.55 percent of them. -/
 
 /-- **THE LEVEL SHIFT VECTOR.**  Each selected label carries its mass against a
 free level instead of against its own weight.  Each other label carries minus
@@ -668,16 +866,20 @@ level.  The pivot member below keeps one selected weight exact and replaces the
 other two by one level, so it relaxes at most ONE weight of the selection.  It
 is strictly stronger than the scalar member.
 
-An exact-rational census records how far each member reaches.  Over 300000
-random chart points the scalar member fires at 97.72 percent and the pivot
-member at 300000 of 300000.  A directed hunt of 260 restarts then refutes the
-pivot member: at the masses `(1, 696, 456, 314, 332, 1)` and the weights
-`(1, 467, 251, 1, 79, 1) / 800` the only dominating tree is `{2, 3, 4}`, and all
-forty-eight pivot members fail, forty-three of them on the determinant and five
-on the second sign.  So no member that relaxes one weight is total, and the
-schema reaches the whole chart only at `level = point.weight`, where
+MEASURED, AND NOT A THEOREM.  A floating-point census of 300000 random chart
+points fires the scalar member at 97.72 percent and the pivot member at 300000
+of 300000.  Uniform sampling is not evidence here.  A directed hunt of 260
+restarts refutes the pivot member: at the masses `(1, 696, 456, 314, 332, 1)`
+and the weights `(1, 467, 251, 1, 79, 1) / 800` the only dominating tree is
+`{2, 3, 4}`, and all forty-eight pivot members fail, forty-three of them on the
+determinant and five on the second sign.  The exact-rational census of 20000
+points also fires the landed `Gtz.KFourPencilCellFires` at every point where the
+pivot member fires, so neither new member enlarges the atlas on that sample.
+
+So no member that relaxes one weight is total, and the schema reaches the whole
+chart only at `level = point.weight`, where
 `Gtz.kFourUniversalStrictTree_iff_levelShiftTotal` shows it IS the chart
-obligation. -/
+obligation.  That equivalence is a restatement and never progress. -/
 
 /-- **THE PIVOT LEVEL VECTOR.**  One designated selected label keeps its own
 weight, and every other label takes a common level. -/
@@ -876,9 +1078,9 @@ theorem traceRefuterPoint_blockAdmissibleDet :
 
 Section 5 designates one edge for the FIRST raw sign.  The obvious next reading
 is that the same edge hosts a strictly dominating tree.  That reading is FALSE,
-and this section kills it with an exact rational witness.  A census of 200000
-random chart points found the reading alive at 199999 of them, which is the
-exact profile the campaign warns about.
+and this section kills it with an exact rational witness.  A floating-point
+census of 200000 random chart points found the reading alive at 199999 of them,
+which is the exact profile the campaign warns about.
 
 At the masses `(1, 4, 1, 100, 6, 189)` and the weights
 `(1, 3, 14, 53, 25, 144) / 240` the six trace boosts are
