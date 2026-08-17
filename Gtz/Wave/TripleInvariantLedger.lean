@@ -2,6 +2,7 @@ import Gtz.Wave.CertificateFreeMomentLaws
 import Gtz.Quantitative.WindowPolarity
 import Gtz.Design.StratumEmptinessLedger
 import Gtz.Reduction.PolarGapDeterminant
+import Gtz.Quantitative.RealnessEngine
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -88,6 +89,22 @@ The determinant moment does NOT close the same way, and this file says so.  The 
 expansion `Σ_r t_r ([p,l,r]² − ⟨p,l⟩)² ≥ 0` gives `p₂ ≤ b₄`
 (`Gtz.pairGramSecondMoment_le_bracketFourthMoment`), which points the wrong way for
 `b₄ − 3 p₂ + 6 m − 6`.  The determinant layer is not sign-forced.
+
+## 4. The witness that the two measures differ
+
+`Gtz.icosaDesign` and `Gtz.coordinateDiagonalDesign` are both landed `(6,3)` designs at
+uniform weight `1/6` and uniform leverage `3`.  Their weight profiles agree label by label
+and their leverage profiles agree label by label, so no functional of the profile alone can
+tell them apart.  Their second pair moments are `216/5` and `351/8`
+(`Gtz.pairGramSecondMoment_icosaDesign`, `Gtz.pairGramSecondMoment_coordinateDiagonalDesign`),
+because the icosahedron is equiangular at squared cosine `1/5` while the tetrahedral edge
+directions carry two different squared cosines, `0` and `1/4`.
+
+So the product-measure gap second moment is `3` at both
+(`Gtz.productLayer_gapSecond_agrees_at_the_witness`) while the volume-measure gap second
+moment is `198/5` at one and `333/8` at the other
+(`Gtz.volumeLayer_gapSecond_differs_at_the_witness`).  That is the exact sense in which the
+volume measure reads an angle and the product measure does not.
 -/
 
 namespace Gtz
@@ -1318,5 +1335,144 @@ theorem secondInvariant_neg_or_det_nonpos_of_isTie_subset (design : WeightedDesi
   · right
     rw [det_subsetSum_triple_sub_one_eq_gapDetAt design hpl hpr hlr]
     exact hdet
+
+/-! ## 7. The witness: two designs with one profile and two pair moments -/
+
+/-- Every weight of the icosahedral design is `1/6`. -/
+theorem icosaDesign_weight_apply (atomLabel : Fin 6) : icosaDesign.weight atomLabel = 1 / 6 :=
+  rfl
+
+/-- Every atom of the icosahedral design has leverage three. -/
+theorem leverageOf_icosaDesign (atomLabel : Fin 6) :
+    leverageOf (icosaDesign.atom atomLabel) = 3 := by
+  rw [leverageOf_eq_dotProduct_self, icosaDesign_atom, icosaAtom_leverage]
+
+/-- The pair Gram determinant of the icosahedral design: zero on the diagonal and `36/5`
+off it.  Equiangularity at squared cosine `1/5` makes the table two-valued. -/
+theorem icosaDesign_pairBracketSq (firstLabel secondLabel : Fin 6) :
+    pairBracketSq (icosaDesign.atom firstLabel) (icosaDesign.atom secondLabel)
+      = if firstLabel = secondLabel then 0 else 36 / 5 := by
+  by_cases hsame : firstLabel = secondLabel
+  · rw [hsame, if_pos rfl, pairBracketSq_self]
+  · rw [if_neg hsame, pairBracketSq, leverageOf_eq_dotProduct_self,
+      leverageOf_eq_dotProduct_self, icosaDesign_atom, icosaAtom_leverage,
+      icosaAtom_leverage, icosaAtom_dot_sq_of_ne hsame]
+    norm_num
+
+/-- **THE SECOND PAIR MOMENT OF THE ICOSAHEDRAL DESIGN.**  Thirty ordered distinct pairs at
+`36/5`, and six diagonal terms at zero. -/
+theorem pairGramSecondMoment_icosaDesign :
+    pairGramSecondMoment icosaDesign = 216 / 5 := by
+  have hterm : ∀ firstLabel secondLabel : Fin 6,
+      icosaDesign.weight firstLabel * icosaDesign.weight secondLabel
+          * pairBracketSq (icosaDesign.atom firstLabel) (icosaDesign.atom secondLabel) ^ 2
+        = 1 / 36 * (if firstLabel = secondLabel then 0 else 36 / 5) ^ 2 := by
+    intro firstLabel secondLabel
+    rw [icosaDesign_weight_apply, icosaDesign_weight_apply, icosaDesign_pairBracketSq]
+    ring
+  rw [pairGramSecondMoment, Finset.sum_congr rfl fun firstLabel _ =>
+    Finset.sum_congr rfl fun secondLabel _ => hterm firstLabel secondLabel]
+  simp only [Fin.sum_univ_six]
+  norm_num [Fin.ext_iff]
+
+/-- **THE SECOND PAIR MOMENT OF THE ROOT DESIGN.**  The tetrahedral edge directions carry
+TWO squared cosines, so the table is three-valued: zero on the diagonal, `9` at the three
+orthogonal partners, and `27/4` at the remaining twenty-four ordered pairs. -/
+theorem pairGramSecondMoment_coordinateDiagonalDesign :
+    pairGramSecondMoment coordinateDiagonalDesign = 351 / 8 := by
+  have hterm : ∀ firstLabel secondLabel : Fin 6,
+      coordinateDiagonalDesign.weight firstLabel * coordinateDiagonalDesign.weight secondLabel
+          * pairBracketSq (coordinateDiagonalDesign.atom firstLabel)
+            (coordinateDiagonalDesign.atom secondLabel) ^ 2
+        = 1 / 36 * (3 / 2 * (diagonalPattern firstLabel ⬝ᵥ diagonalPattern firstLabel)
+            * (3 / 2 * (diagonalPattern secondLabel ⬝ᵥ diagonalPattern secondLabel))
+          - (3 / 2 * (diagonalPattern firstLabel ⬝ᵥ diagonalPattern secondLabel)) ^ 2) ^ 2 := by
+    intro firstLabel secondLabel
+    rw [coordinateDiagonalDesign_weight_apply, coordinateDiagonalDesign_weight_apply,
+      coordinateDiagonalDesign_pairBracketSq]
+    ring
+  rw [pairGramSecondMoment, Finset.sum_congr rfl fun firstLabel _ =>
+    Finset.sum_congr rfl fun secondLabel _ => hterm firstLabel secondLabel]
+  simp only [Fin.sum_univ_six]
+  norm_num [diagonalPattern_zero, diagonalPattern_one, diagonalPattern_two,
+    diagonalPattern_three, diagonalPattern_four, diagonalPattern_five, dotProduct,
+    Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+    Matrix.head_cons, Matrix.tail_cons]
+
+/-- The second leverage moment of a `(6,3)` design at uniform weight `1/6` and uniform
+leverage `3` is nine, the floor of `Gtz.nine_le_leverageSquareMoment`. -/
+theorem leverageSquareMoment_icosaDesign : leverageSquareMoment icosaDesign = 9 := by
+  have hterm : ∀ atomLabel : Fin 6,
+      icosaDesign.weight atomLabel * leverageOf (icosaDesign.atom atomLabel) ^ 2
+        = 3 / 2 := by
+    intro atomLabel
+    rw [icosaDesign_weight_apply, leverageOf_icosaDesign]
+    norm_num
+  rw [leverageSquareMoment, Finset.sum_congr rfl fun atomLabel _ => hterm atomLabel]
+  simp only [Fin.sum_univ_six]
+  norm_num
+
+/-- The same at the root design. -/
+theorem leverageSquareMoment_coordinateDiagonalDesign :
+    leverageSquareMoment coordinateDiagonalDesign = 9 := by
+  have hterm : ∀ atomLabel : Fin 6,
+      coordinateDiagonalDesign.weight atomLabel
+          * leverageOf (coordinateDiagonalDesign.atom atomLabel) ^ 2 = 3 / 2 := by
+    intro atomLabel
+    rw [coordinateDiagonalDesign_weight_apply, leverageOf_coordinateDiagonalDesign]
+    norm_num
+  rw [leverageSquareMoment, Finset.sum_congr rfl fun atomLabel _ => hterm atomLabel]
+  simp only [Fin.sum_univ_six]
+  norm_num
+
+/-- **THE TWO DESIGNS CARRY ONE PROFILE.**  Equal weights label by label, and equal
+leverages label by label. -/
+theorem icosaDesign_coordinateDiagonalDesign_same_profile :
+    (∀ atomLabel : Fin 6,
+        icosaDesign.weight atomLabel = coordinateDiagonalDesign.weight atomLabel)
+      ∧ ∀ atomLabel : Fin 6, leverageOf (icosaDesign.atom atomLabel)
+          = leverageOf (coordinateDiagonalDesign.atom atomLabel) := by
+  refine ⟨fun atomLabel => ?_, fun atomLabel => ?_⟩
+  · rw [icosaDesign_weight_apply, coordinateDiagonalDesign_weight_apply]
+  · rw [leverageOf_icosaDesign, leverageOf_coordinateDiagonalDesign]
+
+/-- **THE SECOND PAIR MOMENT IS NOT A FUNCTION OF THE PROFILE.**  One weight profile, one
+leverage profile, two values. -/
+theorem pairGramSecondMoment_not_determined_by_profile :
+    pairGramSecondMoment icosaDesign ≠ pairGramSecondMoment coordinateDiagonalDesign := by
+  rw [pairGramSecondMoment_icosaDesign, pairGramSecondMoment_coordinateDiagonalDesign]
+  norm_num
+
+/-- **THE PRODUCT MEASURE CANNOT TELL THE WITNESS PAIR APART.**  Both values are the
+universal constant three. -/
+theorem productLayer_gapSecond_agrees_at_the_witness :
+    productLayer icosaDesign (gapSecondAt icosaDesign)
+      = productLayer coordinateDiagonalDesign (gapSecondAt coordinateDiagonalDesign) := by
+  rw [productLayer_gapSecond, productLayer_gapSecond]
+
+/-- The volume-measure gap second moment of the icosahedral design. -/
+theorem volumeLayer_gapSecond_icosaDesign :
+    volumeLayer icosaDesign (gapSecondAt icosaDesign) = 198 / 5 := by
+  rw [volumeLayer_gapSecond, pairGramSecondMoment_icosaDesign,
+    leverageSquareMoment_icosaDesign]
+  norm_num
+
+/-- The volume-measure gap second moment of the root design. -/
+theorem volumeLayer_gapSecond_coordinateDiagonalDesign :
+    volumeLayer coordinateDiagonalDesign (gapSecondAt coordinateDiagonalDesign) = 333 / 8 := by
+  rw [volumeLayer_gapSecond, pairGramSecondMoment_coordinateDiagonalDesign,
+    leverageSquareMoment_coordinateDiagonalDesign]
+  norm_num
+
+/-- **THE VOLUME MEASURE TELLS THE WITNESS PAIR APART.**  The two designs share a weight
+profile and a leverage profile, and the product-measure moment is the same constant at both,
+but the volume-measure moment is `198/5` at one and `333/8` at the other.  So the volume
+layer reads something that no functional of the weight-and-leverage profile can read, and the
+angle-blindness that closes the product family does not close this one. -/
+theorem volumeLayer_gapSecond_differs_at_the_witness :
+    volumeLayer icosaDesign (gapSecondAt icosaDesign)
+      ≠ volumeLayer coordinateDiagonalDesign (gapSecondAt coordinateDiagonalDesign) := by
+  rw [volumeLayer_gapSecond_icosaDesign, volumeLayer_gapSecond_coordinateDiagonalDesign]
+  norm_num
 
 end Gtz
