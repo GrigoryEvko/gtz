@@ -7,12 +7,13 @@ import Gtz.Wave.KFourWedgeForestBridge
 import Gtz.Wave.ThreeLinesSlideElimination
 import Gtz.Wave.KFourTreeLaplacian
 import Gtz.Wave.TriangleStallClosureDeflation
+import Gtz.Design.KFourChartSample
 import Gtz.Quantitative.CauchyBinetValueFloor
 import Gtz.Reduction.ExchangeInvariant
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
-set_option maxHeartbeats 1000000
+set_option maxHeartbeats 4000000
 
 /-!
 # The `M(K4)` backlog, wired
@@ -354,5 +355,244 @@ theorem kFourMassTreeSum_pos_iff_smul_mass {scale : ℝ} (hscale : 0 < scale)
     nlinarith
   · intro hpos
     exact mul_pos hpow hpos
+
+/-! ## 6.  The over-levered set contains a spanning tree
+
+The veto says that a strictly dominating tree lies inside the over-levered set.
+The counting law says the over-levered set holds at least three labels.  Neither
+law says that the candidate list is ever usable, because a three-element
+candidate set that is one of the four triangles carries no spanning tree at all.
+
+This section closes that hole.  The dependent-triple cap of
+`Gtz/Wave/ThreeLinesSlideElimination.lean` gives each triangle a leverage total
+of at most two, and the leverages total three, so the three labels off a triangle
+carry leverage total at least one.  Their weights total less than one, because
+the three triangle weights are strictly positive.  So every triangle has an
+over-levered label outside it.  A three-element set of `K4` edges that meets the
+complement of every triangle covers every vertex, and a vertex cover of three
+edges is a spanning tree. -/
+
+/-- The leverage cap of the triangle `{0, 1, 2}`. -/
+theorem kFour_leverage_cap_zeroOneTwo (point : DirectionChartPoint 6) :
+    chartMassLeverage kFourDirection point.mass 0
+      + chartMassLeverage kFourDirection point.mass 1
+      + chartMassLeverage kFourDirection point.mass 2 ≤ 2 := by
+  refine sum_leverage_le_two_of_dependent kFourDirection point.mass point.mass_pos
+    (posDef_chartMassMoment_kFour point) 0 1 2 (by decide) (by decide) (by decide)
+    1 (-1) 1 (Or.inl one_ne_zero) ?_
+  funext idx
+  fin_cases idx <;>
+    simp [kFourDirection_zero, kFourDirection_one, kFourDirection_two] <;> norm_num
+
+/-- The leverage cap of the triangle `{0, 3, 4}`. -/
+theorem kFour_leverage_cap_zeroThreeFour (point : DirectionChartPoint 6) :
+    chartMassLeverage kFourDirection point.mass 0
+      + chartMassLeverage kFourDirection point.mass 3
+      + chartMassLeverage kFourDirection point.mass 4 ≤ 2 := by
+  refine sum_leverage_le_two_of_dependent kFourDirection point.mass point.mass_pos
+    (posDef_chartMassMoment_kFour point) 0 3 4 (by decide) (by decide) (by decide)
+    1 (-1) 1 (Or.inl one_ne_zero) ?_
+  funext idx
+  fin_cases idx <;>
+    simp [kFourDirection_zero, kFourDirection_three, kFourDirection_four] <;> norm_num
+
+/-- The leverage cap of the triangle `{1, 3, 5}`. -/
+theorem kFour_leverage_cap_oneThreeFive (point : DirectionChartPoint 6) :
+    chartMassLeverage kFourDirection point.mass 1
+      + chartMassLeverage kFourDirection point.mass 3
+      + chartMassLeverage kFourDirection point.mass 5 ≤ 2 := by
+  refine sum_leverage_le_two_of_dependent kFourDirection point.mass point.mass_pos
+    (posDef_chartMassMoment_kFour point) 1 3 5 (by decide) (by decide) (by decide)
+    1 (-1) 1 (Or.inl one_ne_zero) ?_
+  funext idx
+  fin_cases idx <;>
+    simp [kFourDirection_one, kFourDirection_three, kFourDirection_five] <;> norm_num
+
+/-- The leverage cap of the triangle `{2, 4, 5}`. -/
+theorem kFour_leverage_cap_twoFourFive (point : DirectionChartPoint 6) :
+    chartMassLeverage kFourDirection point.mass 2
+      + chartMassLeverage kFourDirection point.mass 4
+      + chartMassLeverage kFourDirection point.mass 5 ≤ 2 := by
+  refine sum_leverage_le_two_of_dependent kFourDirection point.mass point.mass_pos
+    (posDef_chartMassMoment_kFour point) 2 4 5 (by decide) (by decide) (by decide)
+    1 (-1) 1 (Or.inl one_ne_zero) ?_
+  funext idx
+  fin_cases idx <;>
+    simp [kFourDirection_two, kFourDirection_four, kFourDirection_five] <;> norm_num
+
+/-- **EVERY TRIANGLE HAS AN OVER-LEVERED LABEL OUTSIDE IT.**  The four triangles
+are the four dependent triples of the `K4` chart.  Each one caps at leverage two,
+the six leverages total three, and the six weights total one with every weight
+strictly positive. -/
+theorem kFour_exists_overLevered_outside_dependentTriple (point : DirectionChartPoint 6)
+    (triple : Finset (Fin 6)) (htriple : triple ∈ kFourDependentTripleList) :
+    ∃ label, label ∉ triple
+      ∧ point.weight label < chartMassLeverage kFourDirection point.mass label := by
+  have hlever : chartMassLeverage kFourDirection point.mass 0
+      + chartMassLeverage kFourDirection point.mass 1
+      + chartMassLeverage kFourDirection point.mass 2
+      + chartMassLeverage kFourDirection point.mass 3
+      + chartMassLeverage kFourDirection point.mass 4
+      + chartMassLeverage kFourDirection point.mass 5 = 3 := by
+    have := sum_chartMassLeverage_kFour point
+    rwa [Fin.sum_univ_six] at this
+  have hweight : point.weight 0 + point.weight 1 + point.weight 2
+      + point.weight 3 + point.weight 4 + point.weight 5 = 1 := by
+    have := point.weight_sum_one
+    rwa [Fin.sum_univ_six] at this
+  have hp0 := point.weight_pos 0
+  have hp1 := point.weight_pos 1
+  have hp2 := point.weight_pos 2
+  have hp3 := point.weight_pos 3
+  have hp4 := point.weight_pos 4
+  have hp5 := point.weight_pos 5
+  simp only [kFourDependentTripleList, List.mem_cons, List.not_mem_nil, or_false] at htriple
+  rcases htriple with rfl | rfl | rfl | rfl
+  · by_contra hcon
+    push_neg at hcon
+    have h3 := hcon 3 (by decide)
+    have h4 := hcon 4 (by decide)
+    have h5 := hcon 5 (by decide)
+    have hcap := kFour_leverage_cap_zeroOneTwo point
+    linarith
+  · by_contra hcon
+    push_neg at hcon
+    have h1 := hcon 1 (by decide)
+    have h2 := hcon 2 (by decide)
+    have h5 := hcon 5 (by decide)
+    have hcap := kFour_leverage_cap_zeroThreeFour point
+    linarith
+  · by_contra hcon
+    push_neg at hcon
+    have h0 := hcon 0 (by decide)
+    have h2 := hcon 2 (by decide)
+    have h4 := hcon 4 (by decide)
+    have hcap := kFour_leverage_cap_oneThreeFive point
+    linarith
+  · by_contra hcon
+    push_neg at hcon
+    have h0 := hcon 0 (by decide)
+    have h1 := hcon 1 (by decide)
+    have h3 := hcon 3 (by decide)
+    have hcap := kFour_leverage_cap_twoFourFive point
+    linarith
+
+set_option maxRecDepth 40000 in
+/-- **THE COMBINATORIAL HALF.**  A set of `K4` edges with three or more members
+that meets the complement of every triangle contains a spanning tree.  The four
+triangle complements are the four vertex stars, so the hypothesis says that the
+set covers every vertex. -/
+theorem kFour_exists_tree_subset_of_meets_dependentTriples (candidate : Finset (Fin 6))
+    (hcard : 3 ≤ candidate.card)
+    (hmeet : ∀ triple ∈ kFourDependentTripleList,
+      ∃ label ∈ candidate, label ∉ triple) :
+    ∃ tree ∈ kFourSpanningTreeList, tree ⊆ candidate := by
+  revert hcard hmeet
+  revert candidate
+  decide
+
+/-- **THE OVER-LEVERED SET CONTAINS A SPANNING TREE.**  At every `K4` chart
+point some listed spanning tree has all three of its labels over-levered.
+
+The veto `Gtz.weight_lt_chartMassLeverage_kFour` says that a strictly dominating
+tree has this property, so the candidate list of the class is exactly the set of
+trees inside the over-levered set.  This theorem proves that the candidate list
+is never empty, and that no chart point pushes it onto the four triangles, where
+it would carry no tree at all. -/
+theorem kFour_exists_overLevered_spanningTree (point : DirectionChartPoint 6) :
+    ∃ tree ∈ kFourSpanningTreeList, ∀ label ∈ tree,
+      point.weight label < chartMassLeverage kFourDirection point.mass label := by
+  classical
+  set candidate := Finset.univ.filter
+    (fun label => point.weight label
+      < chartMassLeverage kFourDirection point.mass label) with hcandidate
+  have hcard : 3 ≤ candidate.card := three_le_card_overLevered_kFour point
+  have hmeet : ∀ triple ∈ kFourDependentTripleList,
+      ∃ label ∈ candidate, label ∉ triple := by
+    intro triple htriple
+    obtain ⟨label, hout, hover⟩ :=
+      kFour_exists_overLevered_outside_dependentTriple point triple htriple
+    exact ⟨label, by simp [hcandidate, hover], hout⟩
+  obtain ⟨tree, hmem, hsubset⟩ :=
+    kFour_exists_tree_subset_of_meets_dependentTriples candidate hcard hmeet
+  refine ⟨tree, hmem, fun label hlabel => ?_⟩
+  have := hsubset hlabel
+  simpa [hcandidate] using this
+
+/-! ## 7.  The mass-weighted tree total, and its refutation
+
+A pigeonhole over the sixteen trees would discharge the determinant conjunct of
+`Gtz.KFourBlockAdmissibleDetTotal` with no selection rule.  Give each tree the
+product of its three masses, total the sixteen signed tree sums against those
+coefficients, and a positive total forces one positive signed tree sum.
+
+The total is NOT positive.  It is `-7/256` at `Gtz.tetrahedronChartPoint`, which
+is the campaign's own canonical fixture.  Section 7 lands that value in kernel.
+
+METHOD WARNING, and this is the fourth occurrence in this campaign.  Before the
+refuter was found, this total scored ZERO failures at 20,000,000 double-precision
+chart points and ZERO failures at 332,000 exact-rational chart points sampled
+over twenty decades (MEASURED).  Every one of those samples drew the six masses
+and the six weights independently over a wide range, so it never produced nearly
+equal masses together with nearly uniform weights.  The refuter is the most
+symmetric point in the whole campaign.  A wide-range independent sample is not
+evidence about a symmetric locus. -/
+
+/-- The mass product of a selection. -/
+noncomputable def kFourTreeMassProduct (mass : Fin 6 → ℝ) (tree : Finset (Fin 6)) : ℝ :=
+  ∏ label ∈ tree, mass label
+
+/-- The mass-weighted total of the sixteen signed tree sums. -/
+noncomputable def kFourMassWeightedTreeTotal (point : DirectionChartPoint 6) : ℝ :=
+  (kFourSpanningTreeList.map fun tree =>
+    kFourTreeMassProduct point.mass tree
+      * kFourMassTreeSum (signedGapWeight point.mass point.weight tree)).sum
+
+/-- A list of nonpositive reals totals at most zero. -/
+theorem list_sum_nonpos {entries : List ℝ} (hentry : ∀ entry ∈ entries, entry ≤ 0) :
+    entries.sum ≤ 0 := by
+  induction entries with
+  | nil => simp
+  | cons head tail ih =>
+    rw [List.sum_cons]
+    exact add_nonpos (hentry head (by simp)) (ih fun entry hmem => hentry entry (by simp [hmem]))
+
+/-- **WHAT THE PIGEONHOLE WOULD HAVE BOUGHT.**  A positive mass-weighted total
+forces one listed tree to carry a positive signed tree sum, with no selection
+rule and no block condition. -/
+theorem kFour_exists_massTreeSum_pos_of_total (point : DirectionChartPoint 6)
+    (htotal : 0 < kFourMassWeightedTreeTotal point) :
+    ∃ tree ∈ kFourSpanningTreeList,
+      0 < kFourMassTreeSum (signedGapWeight point.mass point.weight tree) := by
+  by_contra hcon
+  push_neg at hcon
+  have hnonpos : ∀ entry ∈ (kFourSpanningTreeList.map fun tree =>
+      kFourTreeMassProduct point.mass tree
+        * kFourMassTreeSum (signedGapWeight point.mass point.weight tree)), entry ≤ 0 := by
+    intro entry hmem
+    obtain ⟨tree, htree, rfl⟩ := List.mem_map.mp hmem
+    have hprod : 0 ≤ kFourTreeMassProduct point.mass tree :=
+      Finset.prod_nonneg fun label _ => (point.mass_pos label).le
+    exact mul_nonpos_of_nonneg_of_nonpos hprod (hcon tree htree)
+  exact absurd htotal (not_lt.mpr (list_sum_nonpos hnonpos))
+
+/-- **THE MASS-WEIGHTED TOTAL AT THE TETRAHEDRON.**  Four stars each carry
+`20/4096` and twelve paths each carry `-16/4096`, so the total is `-7/256`. -/
+theorem tetrahedron_kFourMassWeightedTreeTotal :
+    kFourMassWeightedTreeTotal tetrahedronChartPoint = -7/256 := by
+  rw [kFourMassWeightedTreeTotal, kFourSpanningTreeList]
+  simp only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil,
+    kFourTreeMassProduct, kFourMassTreeSum, signedGapWeight, tetrahedronChartPoint]
+  norm_num +decide [Finset.prod_const, Finset.mem_insert, Finset.mem_singleton]
+
+/-- **THE MASS-WEIGHTED PIGEONHOLE IS REFUTED, IN KERNEL.**  Do not reopen it.
+The refuter is `Gtz.tetrahedronChartPoint`, and the class is untouched there:
+the four vertex stars all dominate strictly at that point. -/
+theorem kFourMassWeightedTreeTotal_not_always_pos :
+    ¬ (∀ point : DirectionChartPoint 6, 0 < kFourMassWeightedTreeTotal point) := by
+  intro htotal
+  have hvalue := htotal tetrahedronChartPoint
+  rw [tetrahedron_kFourMassWeightedTreeTotal] at hvalue
+  norm_num at hvalue
 
 end Gtz
