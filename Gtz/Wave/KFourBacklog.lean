@@ -595,4 +595,41 @@ theorem kFourMassWeightedTreeTotal_not_always_pos :
   rw [tetrahedron_kFourMassWeightedTreeTotal] at hvalue
   norm_num at hvalue
 
+/-! ## 8.  The flat-pair census of the `K4` chart
+
+A FLAT PAIR is two labels that lie on one line of the pattern.  The line pattern
+of `Gtz.kFourDirection` is the four triangles, which are the four dependent
+triples.  Two `K4` edges lie on a common triangle unless they are opposite edges,
+and the three opposite pairs are `{0, 5}`, `{1, 4}` and `{2, 3}`.
+
+Three labels can never be pairwise opposite, because the opposite relation is a
+perfect matching of the six labels.  So EVERY card-three subset of the `K4` chart
+holds a flat pair, and the flat-pair-free residual is EMPTY.  At the four other
+registered chart classes that residual is not empty. -/
+
+/-- Two distinct `K4` labels lie on a common triangle, unless they are one of the
+three opposite pairs. -/
+theorem kFour_pair_on_dependentTriple_or_opposite (first second : Fin 6)
+    (hne : first ≠ second) :
+    (∃ triple ∈ kFourDependentTripleList, first ∈ triple ∧ second ∈ triple)
+      ∨ (first = 0 ∧ second = 5) ∨ (first = 5 ∧ second = 0)
+      ∨ (first = 1 ∧ second = 4) ∨ (first = 4 ∧ second = 1)
+      ∨ (first = 2 ∧ second = 3) ∨ (first = 3 ∧ second = 2) := by
+  revert hne
+  revert first second
+  decide
+
+set_option maxRecDepth 40000 in
+/-- **THE FLAT-PAIR-FREE RESIDUAL OF THE `K4` CHART IS EMPTY.**  Every one of the
+twenty card-three subsets holds two labels on a common triangle.  A criterion
+that reads a flat pair therefore reaches every selection of this chart, and no
+selection escapes it. -/
+theorem kFour_cardThree_holds_flatPair (selected : Finset (Fin 6))
+    (hcard : selected.card = 3) :
+    ∃ triple ∈ kFourDependentTripleList, ∃ first ∈ selected, ∃ second ∈ selected,
+      first ≠ second ∧ first ∈ triple ∧ second ∈ triple := by
+  revert hcard
+  revert selected
+  decide
+
 end Gtz
