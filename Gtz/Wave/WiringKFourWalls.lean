@@ -855,4 +855,182 @@ theorem traceRefuterPoint_hasTraceAdmissibleTree :
       0 < kFourGapInvariantOne traceRefuterPoint.mass traceRefuterPoint.weight tree :=
   exists_kFourSpanningTree_gapInvariantOne_pos traceRefuterPoint
 
+/-! ## 11. The Schur collapse, with no deflated bound
+
+`Gtz.kFourContractionHasWinner` is unconditional and had ZERO consumers.  At
+every chart point it returns a spanning tree through edge `5` whose leading
+two-by-two gap block is positive definite.  That block is the first TWO leading
+minors, and `Gtz.det_directionChartGap_eq_kFourMassTreeSum` reads the third one
+as the signed sixteen-term tree sum.  `Gtz.sylvesterLift` joins them.
+
+The outcome is a collapse that costs NOTHING: at a tree whose block is
+admissible, strict domination IS one polynomial sign.  Section 5 reaches the
+same collapse through the deflated bound, and this section reaches it through
+the contracted block instead.
+
+The edge-five list carries the BLOCK and never the sign, so
+`Gtz.KFourBlockAdmissibleDetTotal` quantifies over all sixteen listed trees. -/
+
+/-- A symmetric three-by-three matrix in its own upper entries. -/
+theorem eta_symm_fin_three {mat : Matrix (Fin 3) (Fin 3) ℝ} (hsymm : mat.transpose = mat) :
+    mat = !![mat 0 0, mat 0 1, mat 0 2;
+             mat 0 1, mat 1 1, mat 1 2;
+             mat 0 2, mat 1 2, mat 2 2] := by
+  have hone : mat 1 0 = mat 0 1 := by
+    have hentry := congrFun (congrFun hsymm 0) 1
+    simpa [Matrix.transpose_apply] using hentry
+  have htwo : mat 2 0 = mat 0 2 := by
+    have hentry := congrFun (congrFun hsymm 0) 2
+    simpa [Matrix.transpose_apply] using hentry
+  have hthree : mat 2 1 = mat 1 2 := by
+    have hentry := congrFun (congrFun hsymm 1) 2
+    simpa [Matrix.transpose_apply] using hentry
+  conv_lhs => rw [Matrix.eta_fin_three mat]
+  rw [hone, htwo, hthree]
+
+/-- The leading two-by-two block of a symmetric matrix, in its own entries. -/
+theorem leadingTwoBlock_symm {mat : Matrix (Fin 3) (Fin 3) ℝ} (hsymm : mat.transpose = mat) :
+    leadingTwoBlock mat = !![mat 0 0, mat 0 1; mat 0 1, mat 1 1] := by
+  have hone : mat 1 0 = mat 0 1 := by
+    have hentry := congrFun (congrFun hsymm 0) 1
+    simpa [Matrix.transpose_apply] using hentry
+  rw [leadingTwoBlock, hone]
+
+/-- **THE SCHUR LIFT ON AN ABSTRACT SYMMETRIC MATRIX.**  A positive definite
+leading block and a positive determinant give positive definiteness. -/
+theorem posDef_of_leadingTwoBlock_of_det_pos {mat : Matrix (Fin 3) (Fin 3) ℝ}
+    (hsymm : mat.transpose = mat) (hblock : (leadingTwoBlock mat).PosDef)
+    (hdet : 0 < mat.det) : mat.PosDef := by
+  have heta := eta_symm_fin_three hsymm
+  have hblockRw := leadingTwoBlock_symm hsymm
+  rw [hblockRw] at hblock
+  have hdetRw : 0 < (!![mat 0 0, mat 0 1, mat 0 2;
+      mat 0 1, mat 1 1, mat 1 2;
+      mat 0 2, mat 1 2, mat 2 2] : Matrix (Fin 3) (Fin 3) ℝ).det := by
+    rw [← heta]
+    exact hdet
+  rw [heta]
+  exact sylvesterLift (mat 0 0) (mat 0 1) (mat 0 2) (mat 1 1) (mat 1 2)
+    (mat 2 2) hblock hdetRw
+
+/-- The leading block of a positive definite symmetric matrix is positive
+definite. -/
+theorem leadingTwoBlock_posDef_of_posDef {mat : Matrix (Fin 3) (Fin 3) ℝ}
+    (hsymm : mat.transpose = mat) (hposDef : mat.PosDef) : (leadingTwoBlock mat).PosDef := by
+  have heta := eta_symm_fin_three hsymm
+  rw [heta] at hposDef
+  obtain ⟨hcorner, hminor, -⟩ :=
+    (leadingMinors_pos_iff_posDef_fin_three (mat 0 0) (mat 0 1) (mat 0 2)
+      (mat 1 1) (mat 1 2) (mat 2 2)).mp hposDef
+  rw [leadingTwoBlock_symm hsymm]
+  exact posDef_of_leadingMinors_fin_two (mat 0 0) (mat 0 1) (mat 1 1) hcorner hminor
+
+/-- **THE SCHUR COLLAPSE.**  At a listed selection whose leading gap block is
+positive definite, strict domination IS the sign of the signed sixteen-term
+tree sum.  No deflated bound, no whitener and no square root occur. -/
+theorem posDef_directionChartGap_iff_massTreeSum_of_leadingTwoBlock
+    (point : DirectionChartPoint 6) (tree : Finset (Fin 6))
+    (hblock : (leadingTwoBlock (directionChartGap kFourDirection point.mass
+      point.weight tree)).PosDef) :
+    (directionChartGap kFourDirection point.mass point.weight tree).PosDef
+      ↔ 0 < kFourMassTreeSum (signedGapWeight point.mass point.weight tree) := by
+  rw [← det_directionChartGap_eq_kFourMassTreeSum point.mass point.weight tree
+    (fun label _ => (point.weight_pos label).ne')]
+  exact ⟨fun hposDef => hposDef.det_pos,
+    fun hdet => posDef_of_leadingTwoBlock_of_det_pos
+      (directionChartGap_transpose kFourDirection point.mass point.weight tree)
+      hblock hdet⟩
+
+/-- **THE COLLAPSE RUNS AT EVERY CHART POINT, WITH NO HYPOTHESIS.**  The
+contracted winner supplies the block, and the collapse supplies the sign
+reading.  This is the first consumer of `Gtz.kFourContractionHasWinner`. -/
+theorem exists_kFourTreeThroughEdgeFive_posDef_iff_massTreeSum
+    (point : DirectionChartPoint 6) :
+    ∃ tree ∈ kFourTreesThroughEdgeFive,
+      (leadingTwoBlock (directionChartGap kFourDirection point.mass
+        point.weight tree)).PosDef
+        ∧ ((directionChartGap kFourDirection point.mass point.weight tree).PosDef
+          ↔ 0 < kFourMassTreeSum (signedGapWeight point.mass point.weight tree)) := by
+  obtain ⟨tree, hmem, hblock⟩ := kFourContractionHasWinner point
+  exact ⟨tree, hmem, hblock,
+    posDef_directionChartGap_iff_massTreeSum_of_leadingTwoBlock point tree hblock⟩
+
+/-- **THE RESIDUAL OF THE SCHUR COLLAPSE.**  At every chart point some listed
+tree carries an admissible block AND a positive signed tree sum.  This
+proposition IS equivalent to `Gtz.KFourUniversalStrictTree`, and the next
+theorem says so.  Its value is the SHAPE: two conditions, one of which is
+unconditionally satisfiable over the eight trees through edge five. -/
+def KFourBlockAdmissibleDetTotal : Prop :=
+  ∀ point : DirectionChartPoint 6, ∃ tree ∈ kFourSpanningTreeList,
+    (leadingTwoBlock (directionChartGap kFourDirection point.mass
+      point.weight tree)).PosDef
+      ∧ 0 < kFourMassTreeSum (signedGapWeight point.mass point.weight tree)
+
+/-- **THE SCHUR RESIDUAL IS AN EQUIVALENCE, AND THIS THEOREM SAYS SO.** -/
+theorem kFourUniversalStrictTree_iff_blockAdmissibleDetTotal :
+    KFourUniversalStrictTree ↔ KFourBlockAdmissibleDetTotal := by
+  constructor
+  · intro hstrict point
+    obtain ⟨tree, hmem, hposDef⟩ := hstrict point
+    refine ⟨tree, hmem, leadingTwoBlock_posDef_of_posDef
+      (directionChartGap_transpose kFourDirection point.mass point.weight tree)
+      hposDef, ?_⟩
+    rw [← det_directionChartGap_eq_kFourMassTreeSum point.mass point.weight tree
+      (fun label _ => (point.weight_pos label).ne')]
+    exact hposDef.det_pos
+  · intro htotal point
+    obtain ⟨tree, hmem, hblock, hdet⟩ := htotal point
+    exact ⟨tree, hmem,
+      (posDef_directionChartGap_iff_massTreeSum_of_leadingTwoBlock point tree
+        hblock).mpr hdet⟩
+
+/-- The Schur residual closes all four registered consumers. -/
+theorem kFourBlockAdmissibleDetTotal_closes_all
+    (htotal : KFourBlockAdmissibleDetTotal) :
+    KFourKnifeBandRefinedTreeStarRefusedAllMaxHeavyWallWeakToStrict
+      ∧ DirectionChartIsTieFree kFourDirection
+      ∧ KFourFamilySelection
+      ∧ KFourKnifeBandRefinedWeakToStrict :=
+  kFourStrictTree_closes_all
+    (kFourUniversalStrictTree_iff_blockAdmissibleDetTotal.mpr htotal)
+
+/-! ## 12. The block alone is not the sign -/
+
+/-- The leading gap block of the tree `{1, 2, 3}` at the refuter. -/
+theorem traceRefuterPoint_leadingTwoBlock_oneTwoThree :
+    leadingTwoBlock (directionChartGap kFourDirection traceRefuterPoint.mass
+        traceRefuterPoint.weight ({1, 2, 3} : Finset (Fin 6)))
+      = !![(13 : ℝ), 1; 1, 11] := by
+  rw [directionChartGap_eq_signedLaplacian _ _ _
+    (fun label _ => (traceRefuterPoint.weight_pos label).ne')]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    norm_num [leadingTwoBlock, signedGapWeight, traceRefuterPoint, traceRefuterMass,
+      traceRefuterWeight, Finset.mem_insert, Finset.mem_singleton, Fin.ext_iff]
+
+/-- **THE BLOCK IS ADMISSIBLE AT THE REFUTER, AND THE TREE STILL FAILS.**  The
+leading block of `{1, 2, 3}` has corner `13` and minor `142`, and the signed
+tree sum is `-51`.  So the block condition of the Schur collapse never carries
+the sign, and the residual of section 11 is genuine. -/
+theorem traceRefuterPoint_leadingTwoBlock_posDef_oneTwoThree :
+    (leadingTwoBlock (directionChartGap kFourDirection traceRefuterPoint.mass
+      traceRefuterPoint.weight ({1, 2, 3} : Finset (Fin 6)))).PosDef := by
+  rw [traceRefuterPoint_leadingTwoBlock_oneTwoThree]
+  exact posDef_of_leadingMinors_fin_two 13 1 11 (by norm_num) (by norm_num)
+
+/-- **THE THIRD FALSE RULE.**  A tree with an admissible leading block
+dominates strictly. -/
+def KFourBlockAdmissibleTreeStrict : Prop :=
+  ∀ (point : DirectionChartPoint 6) (tree : Finset (Fin 6)),
+    tree ∈ kFourSpanningTreeList →
+    (leadingTwoBlock (directionChartGap kFourDirection point.mass
+      point.weight tree)).PosDef →
+    (directionChartGap kFourDirection point.mass point.weight tree).PosDef
+
+/-- **THE THIRD RULE IS FALSE.** -/
+theorem not_kFourBlockAdmissibleTreeStrict : ¬ KFourBlockAdmissibleTreeStrict :=
+  fun hrule => traceRefuterPoint_not_posDef_oneTwoThree
+    (hrule traceRefuterPoint ({1, 2, 3} : Finset (Fin 6)) (by decide)
+      traceRefuterPoint_leadingTwoBlock_posDef_oneTwoThree)
+
 end Gtz
