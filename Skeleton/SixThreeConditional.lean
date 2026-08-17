@@ -308,8 +308,8 @@ The difference between this list and `generalRankObligationNames` is the five
 rank-three class residuals, which is the finding of this module. -/
 def everyObligationName : List Lean.Name :=
   [`Skeleton.obligationBaseTripleTightUThreeSix,
-   `Skeleton.obligationHeavyWeakToStrictOneLine,
-   `Skeleton.obligationHeavyWeakToStrictTwoMeetingLines,
+   `Skeleton.obligationSeededLineSparseOneLine,
+   `Skeleton.obligationSeededTransversalTwoMeetingLines,
    `Skeleton.obligationChartTieFreeThreeLinesFundamentalDomain,
    `Skeleton.obligationKnifeBandRefinedKFour,
    `Skeleton.obligationSubThresholdBandHinge,

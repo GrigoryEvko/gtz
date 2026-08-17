@@ -208,8 +208,28 @@ WHY OPEN: of the six producers of `Gtz.StressFreeStratumIsTieFree` in the tree, 
 ATTACK: build the chart following the shipped precedent -- Gtz/Design/RigidityBridge.lean:1-60 (PGL(3) simply transitive on four general lines, made rational, plus the per-atom scaling group) and the structure of `Gtz.directionChartCoversPrimitiveStratum_kFourDirection`. The pattern pins only three atoms projectively, so the chart carries genuine moduli and the analytic half is a parametric family. BUILD THIS CLASS FIRST of the two chartless ones: its boundary is diamond-FREE, so uniform-in-parameter arguments should survive. Corpora triage complete (2026-08-07): /tmp/gtz-p38/rigidity2 and /tmp/gtz-p35/zerochart are empty/dead; the w2 lane targeted the K4 tube route, nothing shortcuts the chart build. Direct-route levers: a tie's weak dominator avoids the line (`Gtz.not_dominates_of_atomBracket_eq_zero`), hence is one of the NINETEEN basis triples; the line's common orthogonal is the lever -- Parseval transfers the whole normal direction to the three free atoms, and positivity of the line weights makes the free triple exceed the identity STRICTLY along the normal, a strict seed present on every design of the stratum. Exact-rational non-vacuity sample with two strictly dominating triples now IN KERNEL: `Gtz.oneLineSampleDesign` (Gtz/Design/LineClassObstructions.lean) with `Gtz.oneLineSampleDesign_not_isTie`; the census ladder G1-G3/O1-O7 is landed in the same module (the relabel bridge `Gtz.stressFreeStratumIsTieFree_of_stratumIsTieFree` closes this obligation from any identity-labelled tie-freeness proof). STAGE-3 UPDATE (2026-08-08): the producer layer is LANDED -- the pointwise normal seed `Gtz.exists_complementAtom_overcovers_normal` (one complement atom alone beats the squared normal), the uniform Schur producer `Gtz.posDef_of_normalSurplus_planeCover` (normal surplus + plane cover => PosDef gap, one completed square, direction-generic), and the tie-side `Gtz.isTie_yields_planeCover_failure`. The class residual is ONE statement, RCP: some card-3 subset satisfies both producer hypotheses. Constraints on any RCP proof (exact witnesses in the campaign record): the argmax-normal-conductance selection is refuted at the matched-normal knife, and NO uniform margin floor exists on the stratum (an explicit rational family collapses the margin like 1/N at the line-starved normal-matched weight corner) -- the proof must be sign-only; recommended attack is rank-2 slack in the plane with per-atom penalty deflations, worked at that corner first. STAGE-4 UPDATE (2026-08-08): the corner reduces to a dichotomy on min_i eps_i vs 1/2; leg B (all eps in the closed half [0, 1/2], including the E = I/2 knife) rests on the Half-Plane Lemma (Bhatia-Davis range bound x_min x_max <= -V with a matroid equality-kill). **CORRECTION 2026-08-16: THAT LEMMA IS IN KERNEL AND HAS BEEN SINCE 2026-07-25.** `Gtz/Design/BhatiaDavis.lean` is sorry-free and imported by both umbrellas: `Gtz.bhatiaDavis_telescope` is the telescope identity, `Gtz.exists_extremal_pair` gives the argmax and argmin with product at most minus one, `Gtz.exists_pair_mul_le_neg_one` is the covering inequality, and `Gtz.tie_two_valued` is the equality locus, which IS the matroid equality-kill. All four are pinned. This field previously read NOT yet in kernel, and a fork was sent to mechanize it a second time. **Read the module before you brief anyone on this leg.** WHAT IS ACTUALLY MISSING is the NORMALIZATION, not the lemma. Every landed statement and every consumer in `Gtz/Corner/` works on the mean-zero sphere, and this stratum presents no mean-zero family. It presents an ORTHOGONALITY: polarized Parseval on an in-plane probe against the line normal gives `sum w (a.p)(a.n) = p.n = 0`, and the three line atoms drop out because they read zero against the normal. `Gtz/Wave/WeightedHalfPlane.lean` (2026-08-16) generalizes the telescope to two families and two rays with no hypothesis, recovers the landed lemma as the constant-x case, transports the equality locus, which had zero consumers anywhere, and lands polarized Parseval, of which the corpus carried only the diagonal reading. Its output is the line-energy floor `p.p + bigM * smallM <= sum over the line of w (a.p)^2`, sharp at 227 of 19635 exact designs with zero violations. **THE ONE REMAINING STEP on this leg is the weighted-to-unweighted bridge**: the floor bounds the line atoms' in-plane energy with the design weights, while the plane-cover condition reads UNWEIGHTED sums over a selected triple; leg C is reduced with zero slack (gamma-elimination + von Neumann duality) to RCP-C1: all eps_i > 1/2 implies an admissible vertex dual y with VERT_k below mu_k (401 strict exact confirmations, zero violations, max cValue -23/799); plus the RCP-LIFT seam (corner-to-interior: A-triples are corner-redundant but NOT interior-redundant, 9/360). CLOSED DOOR: b-averaged and ALL line-data-only C-engines are provably insufficient -- they die on the isotropic band E = cI (exact witness: lines (1,0), (4,7), (-4,7), masses (363/980, 11/1960, 11/1960), c = 11/20; band (1/2, 4/7]); any C-certificate must read shadow data. STAGE-6 UPDATE (2026-08-08, round 4 landings): the residual is now QUANTIFIER-FREE and two thirds discharged. `Gtz.subsetSum_posDef_iff_tripleInvariants` decides strict domination by three coordinate-free polynomial inequalities in the atoms' leverages, pair cross-norms and bracket (Cauchy-Binet plus a hand-rolled Sylvester -- Mathlib has none), and `Gtz.subsetSum_posDef_of_heavy_of_minorSum_of_det` discharges the FIRST of the three from heaviness outright, so the open content is exactly TWO polynomial inequalities at a card-3 subset containing one strictly heavy atom. Two independent quantifier eliminations are landed: the anatomy-free pair-difference form (`Gtz.planeCover_iff_pairDifferenceExcess`, of which LLF/LFF/FFF are the three specializations, each an Iff with its producer and its blind-probe kill) and the frame-minor form (`Gtz.posDef_iff_surplus_and_frameMinors`, three scalars against any orthonormal plane frame). The TIE SIDE is collapsed to three two-dimensional refusals (`Gtz.noStrictDominator_yields_overReaderRefusals`), the surplus premise of each discharged by weighted Parseval. The IN-PLANE half is an instance of a THEOREM: the restriction to an orthonormal plane frame is a genuine rank-two WeightedDesign (`Gtz.inPlaneRestriction`) so `Gtz.gtz_rank_two` hands back a covering pair (`Gtz.exists_inPlane_dominating_pair`). ANATOMY IS DEAD, and now dead IN SCOPE: `Gtz.not_oneLineLlfSelectorAtTightAntecedent` refutes two-line-plus-one-free INSIDE this obligation's own antecedent region (`Gtz.tightLlfDesign` fires pattern, heaviness, the weak dominator {0,1,3} and its tight direction (0,8,-3)); `Gtz.refutes_uniform_llf_rule` and `Gtz.refutes_uniform_fff_rule` kill both uniform anatomies at heavy designs; `Gtz.not_complementSelectorRule` and `Gtz.not_freeTripleSelectorRule` kill the two remaining named selectors. The mechanism is the LEVERAGE FLOOR: every member of a strict dominator is STRICTLY heavy (`Gtz.one_lt_leverage_of_mem_of_posDef`) while heaviness supplies only `1 <= leverageOf`, so a floor atom poisons all ten subsets containing it. CONSEQUENCE: `Gtz.oneLine_planeCover_of_inPlaneExcess` is a DEAD ROUTE with zero consumers, retained only as the exact statement of what fails. The margin question is settled two-sided: `Gtz.margin_cap_and_its_floor` shows the cap at a line normal is at least lineWeight/complementWeight, so ONLY starving the line weight can drive the margin to zero -- no in-plane angle and no single free weight can. PRIOR ART, checked: restricted invertibility (Bourgain-Tzafriri, Vershynin, BSS, MSS) is VACUOUS at k = d, which is exactly this cell; nothing published discharges it. METHOD WARNING: exact-rational sampling is NOT adversarial for strict-inequality conjectures here -- a 1500/1500-supported conjecture was false on a tangency locus rational sampling cannot reach.
 NOT-REFUTED: no census row targets it. The stress-forcing filter door is CLOSED, not just unused: the pattern forces stress-freeNESS uniformly (`Gtz.stratumIsStressFree_oneThreePointLine`, TrichotomyLedger.lean:485), so a filter asserting a forced nonzero stress is refutable at any design of the stratum, and the residual list is already exactly the not-plane-pair-covered list (StressFreeMatroidStratification.lean:303). Only direct tie obstructions remain admissible here.
 -/
-axiom obligationHeavyWeakToStrictOneLine :
-    Gtz.OneLineTenthHeavyJointBlindLineSparse
+axiom obligationSeededLineSparseOneLine :
+    Gtz.OneLineSeededLineSparse
+
+/-- **Discharged from the sharpened axiom.**  Same name, same statement:
+`Gtz.oneLineTenthHeavyJointBlindLineSparse_of_seeded` derives the seed from the
+antecedent's own weak dominator and hands it back.  Equivalence, not weakening --
+the two Props are interderivable by `Gtz.oneLineSeededLineSparse_iff`.
+
+What the swap buys is the SEED, and until this edit the weak-dominator
+antecedent had no consumer at all.  `Gtz.oneLine_cardThree_split` decides that a
+card-three weak dominator is the line itself, a flat pair with one free label, one
+line label with a free pair, or the free triple.  The line is refused outright by
+`Gtz.oneLine_dominator_ne_lineSet`.  The flat pair returns the PINCHED minor of
+`Gtz.PairGapExcessPinch` -- the weak floor of
+`Gtz.pairGapExcessOf_nonneg_of_dominates_flatPair` against the cap ceiling of
+`Gtz.pairGapExcessOf_le_of_capBlindSpot`, whose independence side condition the
+line pattern itself pays through `Gtz.pairGramDet_pos_of_hasLinePattern_of_open`.
+The free pair returns the whole squared normal.  A prover of the seeded form
+receives all of it. -/
+theorem obligationHeavyWeakToStrictOneLine :
+    Gtz.OneLineTenthHeavyJointBlindLineSparse :=
+  Gtz.oneLineTenthHeavyJointBlindLineSparse_of_seeded obligationSeededLineSparseOneLine
 
 /-- The wired one-line axiom reconstructs the former chartless residual by
 spending the all-light, pair-cap, line-normal lift, and ten-candidate
@@ -260,8 +280,33 @@ WHY OPEN: same producer situation as the one-line class -- no chart exists for t
 ATTACK: same chart-building precedent as the one-line class (RigidityBridge.lean:1-60 plus the :796 covering structure); the pattern pins five atoms up to the two line moduli, so the chart is SMALLER than the one-line chart -- but build it SECOND: this class is diamond-CARRYING (`Gtz.diamondCarryingResidualFamiliesSix`, StressFreeMatroidStratification.lean:580), a positive-dimensional (5,3) tie family through `Gtz.diamondDesign` sits on its weight-zero boundary, margins die linearly there and no uniform-in-weights certificate exists; the boundary leg must route the diamond shadow through the proved five-label exclusions, with the open-atom lift identity as the skeleton. Direct-route levers: a tie's weak dominator avoids BOTH lines, leaving EIGHTEEN basis triples; the two normals are provably non-parallel and the shared atom is pinned projectively to the plane intersection -- the class's rigidity kernel; Parseval gives one strict seed per line. STAGE-6 UPDATE (2026-08-08, round 4 landings): everything recorded at the one-line entry applies verbatim (the three-invariant criterion, the heaviness discharge of the trace invariant, both quantifier eliminations, the tie-side collapse, the rank-two in-plane dispatch, the leverage floor, the two-sided margin cap) -- the whole layer is pattern-generic. TWIN-SPECIFIC: the shared atom, this class's rigidity kernel and the obvious thing for a selector to reach for, is UNUSABLE at unit leverage -- all TEN card-3 subsets containing it fail (`Gtz.sharedAtomUnit_every_subset_with_shared_atom_fails`), because each pairs it with a partner on one of the two lines and that pair is flat against that line's normal. The line complement is not a selector either (`Gtz.mixedSurvivor_lineComplement_not_posDef`); at that witness the survivors are MIXED triples taking one atom from each line. And the second line never covers at the first normal: the shared atom together with the second line's private pair is pair-difference BLIND along the second normal's in-plane component, for EVERY choice of the first normal (`Gtz.twoMeetingLines_secondLine_planeCover_fails`), which is the two-meeting-lines rigidity in reading form.
 NOT-REFUTED: no census row targets it. The stress-forcing filter door is CLOSED, not just unused: the pattern forces stress-freeNESS uniformly (`Gtz.stratumIsStressFree_twoMeetingLines`, TrichotomyLedger.lean:491), the opposite polarity to any stress-forcing mechanism, and the plane-pair law already consumed every coverable class (StressFreeMatroidStratification.lean:303). Only direct tie obstructions remain admissible here.
 -/
-axiom obligationHeavyWeakToStrictTwoMeetingLines :
-    Gtz.TwoMeetingLinesTenthHeavyJointBlindTransversal
+axiom obligationSeededTransversalTwoMeetingLines :
+    Gtz.TwoMeetingLinesSeededTransversal
+
+/-- **Discharged from the sharpened axiom.**  Same name, same statement:
+`Gtz.twoMeetingLinesTenthHeavyJointBlindTransversal_of_seeded` derives the seed
+from the antecedent's own weak dominator.  Equivalence, not weakening -- the two
+Props are interderivable by `Gtz.twoMeetingLinesSeededTransversal_iff`.
+
+The seed is the matroid split of the weak dominator, and at two meeting lines it
+is EXACT.  `Gtz.twoMeetingLines_cardThree_split` decides that a card-three subset
+holds a flat pair on the first line, or a flat pair on the second, or IS one of
+the four transversals -- ten, six and four of the twenty, with nothing left over.
+So the residual's own conclusion set is precisely the flat-pair-free set.
+
+Each arm pays.  The transversal arm closes on ONE polynomial sign, by
+`Gtz.twoMeetingLinesTransversalStrict_of_weakTransversal`: a weakly dominating
+transversal with a nonvanishing gap determinant IS the strict transversal asked
+for.  The two flat-pair arms carry `Gtz.FlatPairTrichotomy`, whose three legs are
+each rigid -- a LIVE minor makes both corners strictly heavy and forces
+`Gtz.IsLinePairLiftBlindAt` to pay one polynomial inequality at EVERY label, a
+PINNED minor puts the third atom on the pair's first-touch plane which already
+holds the line normal, and a UNIT corner sits at leverage one and joins no strict
+card-three dominator anywhere. -/
+theorem obligationHeavyWeakToStrictTwoMeetingLines :
+    Gtz.TwoMeetingLinesTenthHeavyJointBlindTransversal :=
+  Gtz.twoMeetingLinesTenthHeavyJointBlindTransversal_of_seeded
+    obligationSeededTransversalTwoMeetingLines
 
 /-- The wired two-meeting-lines axiom reconstructs the former chartless
 residual by spending the all-light, pair-cap and two-normal lift theorems. -/
@@ -626,8 +671,8 @@ every axiom declared in this namespace, so it cannot silently drift.
 Kept honest by `#gtz_registry_check` in `Skeleton.Frontier`. -/
 def liveObligationNames : List Lean.Name :=
   [`Skeleton.obligationBaseTripleTightUThreeSix,
-   `Skeleton.obligationHeavyWeakToStrictOneLine,
-   `Skeleton.obligationHeavyWeakToStrictTwoMeetingLines,
+   `Skeleton.obligationSeededLineSparseOneLine,
+   `Skeleton.obligationSeededTransversalTwoMeetingLines,
    `Skeleton.obligationChartTieFreeThreeLinesFundamentalDomain,
    `Skeleton.obligationKnifeBandRefinedKFour,
    `Skeleton.obligationSubThresholdBandHinge,

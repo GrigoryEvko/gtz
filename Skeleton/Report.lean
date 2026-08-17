@@ -150,7 +150,19 @@ def retiredObligationNames : List Name :=
    -- weak-to-strict upgrade.  Both survive as theorems of exactly their old
    -- types.
    `Skeleton.obligationTightDominatedCoverOneLine,
-   `Skeleton.obligationTightDominatedCoverTwoMeetingLines]
+   `Skeleton.obligationTightDominatedCoverTwoMeetingLines,
+   -- 2026-08-17, the seed round: the two chartless residuals hand over a
+   -- card-three WEAK dominator and, until this edit, spent it on nothing.
+   -- `Gtz.oneLine_cardThree_split` and `Gtz.twoMeetingLines_cardThree_split`
+   -- decide the matroid split of that dominator, and at two meeting lines the
+   -- split is EXACT: the flat-pair-free subsets are precisely the four
+   -- transversals the residual concludes with.  Each arm now carries the
+   -- pinched pair minor (`Gtz.PairGapExcessPinch`) and the three rigid legs of
+   -- `Gtz.FlatPairTrichotomy`.  Both survive as theorems of exactly their old
+   -- types, by `Gtz.oneLineSeededLineSparse_iff` and
+   -- `Gtz.twoMeetingLinesSeededTransversal_iff`.
+   `Skeleton.obligationHeavyWeakToStrictOneLine,
+   `Skeleton.obligationHeavyWeakToStrictTwoMeetingLines]
 
 /-- Obligations added since the baseline.  Each name must be a declared axiom;
 the gate checks that.  Adding to this list with `retiredObligationNames` still
@@ -217,7 +229,14 @@ def introducedObligationNames : List Name :=
    -- the mechanism is the leverage floor.  The margin question is settled
    -- two-sided by `Gtz.margin_cap_and_its_floor`.
    `Skeleton.obligationHeavyWeakToStrictOneLine,
-   `Skeleton.obligationHeavyWeakToStrictTwoMeetingLines]
+   `Skeleton.obligationHeavyWeakToStrictTwoMeetingLines,
+   -- 2026-08-17, the seed round: the same two Props with the SEED attached to
+   -- the antecedent -- the matroid split of the weak dominator, the pinched
+   -- pair minor between the weak floor and the pair-cap ceiling, and the
+   -- flat-pair trichotomy.  Interderivable with the entries they replace, so
+   -- this is a change of ANTECEDENT CONTENT, never of strength.
+   `Skeleton.obligationSeededLineSparseOneLine,
+   `Skeleton.obligationSeededTransversalTwoMeetingLines]
 
 /-! ### The gate -/
 
