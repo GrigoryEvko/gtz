@@ -927,4 +927,504 @@ theorem exists_posDef_threeLines_of_leverageDominanceCellFires (slide : ℝ)
       point.weight point.mass_pos point.weight_pos (posDef_chartMassMoment_threeLines slide point)
       first second third hfs hft hst hbracket hone htwo hthree
 
+/-! ## 12.  The Legendre upper bound and the cross-leverage bound -/
+
+section LeverageTrace
+
+variable {size : ℕ}
+
+/-- **The Legendre upper bound.**  The inverse-moment form of a combination of
+the directions never exceeds the sum of the squared coefficients over the
+masses.  With one label this is the leverage cap, with two it is the cross
+bound, and with three it is the trace bound. -/
+theorem dotProduct_inv_le_sum_sq_div_mass
+    (direction : Fin size → (Fin 3 → ℝ)) (mass : Fin size → ℝ)
+    (hmassPos : ∀ label, 0 < mass label)
+    (hmoment : (chartMassMoment direction mass).PosDef)
+    (selected : Finset (Fin size)) (coefficient : Fin size → ℝ) :
+    (∑ label ∈ selected, coefficient label • direction label) ⬝ᵥ
+        ((chartMassMoment direction mass)⁻¹ *ᵥ
+          (∑ label ∈ selected, coefficient label • direction label))
+      ≤ ∑ label ∈ selected, coefficient label ^ 2 / mass label := by
+  classical
+  set moment := chartMassMoment direction mass with hmomentDef
+  set target := ∑ label ∈ selected, coefficient label • direction label with htarget
+  set probe := moment⁻¹ *ᵥ target with hprobe
+  have hback : moment *ᵥ probe = target := by
+    rw [hprobe, hmomentDef]
+    exact chartMassMoment_mulVec_inv_mulVec direction mass hmoment target
+  have hvalue : target ⬝ᵥ probe = 2 * (target ⬝ᵥ probe) - probe ⬝ᵥ (moment *ᵥ probe) := by
+    rw [hback, dotProduct_comm probe target]
+    ring
+  have hexpandProbe : probe ⬝ᵥ (moment *ᵥ probe)
+      = ∑ label, mass label * (direction label ⬝ᵥ probe) ^ 2 := by
+    rw [hmomentDef, chartMassMoment_eq]
+    exact dotProduct_sumAtom_mulVec direction mass Finset.univ probe
+  have hexpandTarget : target ⬝ᵥ probe
+      = ∑ label ∈ selected, coefficient label * (direction label ⬝ᵥ probe) := by
+    rw [htarget, sum_dotProduct]
+    exact Finset.sum_congr rfl fun label _ => by rw [smul_dotProduct, smul_eq_mul]
+  have hselectedLe : ∑ label ∈ selected, mass label * (direction label ⬝ᵥ probe) ^ 2
+      ≤ ∑ label, mass label * (direction label ⬝ᵥ probe) ^ 2 :=
+    Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ selected)
+      (fun label _ _ => mul_nonneg (le_of_lt (hmassPos label)) (sq_nonneg _))
+  have hterm : ∀ label ∈ selected,
+      2 * (coefficient label * (direction label ⬝ᵥ probe))
+        - mass label * (direction label ⬝ᵥ probe) ^ 2
+      ≤ coefficient label ^ 2 / mass label := by
+    intro label _
+    have hm := hmassPos label
+    have hidentity : coefficient label ^ 2 / mass label
+        - (2 * (coefficient label * (direction label ⬝ᵥ probe))
+          - mass label * (direction label ⬝ᵥ probe) ^ 2)
+        = (mass label * (direction label ⬝ᵥ probe) - coefficient label) ^ 2 / mass label := by
+      field_simp
+      ring
+    have hnonneg : 0 ≤ (mass label * (direction label ⬝ᵥ probe) - coefficient label) ^ 2
+        / mass label := div_nonneg (sq_nonneg _) (le_of_lt hm)
+    rw [← hidentity] at hnonneg
+    linarith
+  have hsum := Finset.sum_le_sum hterm
+  rw [Finset.sum_sub_distrib, ← Finset.mul_sum] at hsum
+  rw [hvalue, hexpandProbe, hexpandTarget]
+  linarith
+
+/-- The inverse-moment form of a pair, written out. -/
+private theorem dual_form_pair (direction : Fin size → (Fin 3 → ℝ)) (mass : Fin size → ℝ)
+    (leftLabel rightLabel : Fin size) (scale : ℝ) :
+    (scale • direction leftLabel + direction rightLabel) ⬝ᵥ
+        ((chartMassMoment direction mass)⁻¹ *ᵥ
+          (scale • direction leftLabel + direction rightLabel))
+      = scale ^ 2 * chartMassPivot direction mass leftLabel leftLabel
+        + 2 * scale * chartMassPivot direction mass leftLabel rightLabel
+        + chartMassPivot direction mass rightLabel rightLabel := by
+  have hsymm : direction rightLabel
+      ⬝ᵥ ((chartMassMoment direction mass)⁻¹ *ᵥ direction leftLabel)
+      = direction leftLabel ⬝ᵥ ((chartMassMoment direction mass)⁻¹ *ᵥ direction rightLabel) :=
+    dotProduct_symmetric_mulVec (chartMassMomentInv_transpose direction mass) _ _
+  simp only [chartMassPivot, Matrix.mulVec_add, Matrix.mulVec_smul, add_dotProduct,
+    dotProduct_add, smul_dotProduct, dotProduct_smul, smul_eq_mul]
+  linear_combination scale * hsymm
+
+/-- **THE CROSS-LEVERAGE BOUND.**  The squared cross pivot of two labels, scaled
+by the two masses, never exceeds the product of the two leverage deficits.  This
+is the two-by-two minor of the leverage projection. -/
+theorem crossLeverage_sq_le (direction : Fin size → (Fin 3 → ℝ)) (mass : Fin size → ℝ)
+    (hmassPos : ∀ label, 0 < mass label)
+    (hmoment : (chartMassMoment direction mass).PosDef)
+    {leftLabel rightLabel : Fin size} (hne : leftLabel ≠ rightLabel) :
+    mass leftLabel * mass rightLabel
+        * chartMassPivot direction mass leftLabel rightLabel ^ 2
+      ≤ (1 - chartMassLeverage direction mass leftLabel)
+        * (1 - chartMassLeverage direction mass rightLabel) := by
+  classical
+  have hleft := hmassPos leftLabel
+  have hright := hmassPos rightLabel
+  set deficitLeft := (1 - chartMassLeverage direction mass leftLabel) / mass leftLabel
+    with hdeficitLeft
+  set deficitRight := (1 - chartMassLeverage direction mass rightLabel) / mass rightLabel
+    with hdeficitRight
+  have hquadratic : ∀ scale : ℝ,
+      0 ≤ deficitLeft * (scale * scale)
+        + (-2 * chartMassPivot direction mass leftLabel rightLabel) * scale + deficitRight := by
+    intro scale
+    have hbound := dotProduct_inv_le_sum_sq_div_mass direction mass hmassPos hmoment
+      ({leftLabel, rightLabel} : Finset (Fin size))
+      (fun label => if label = leftLabel then scale else 1)
+    rw [Finset.sum_pair hne, Finset.sum_pair hne, if_pos rfl, if_neg (Ne.symm hne)] at hbound
+    rw [one_smul, dual_form_pair direction mass leftLabel rightLabel scale] at hbound
+    have hleverageLeft : chartMassPivot direction mass leftLabel leftLabel
+        = chartMassLeverage direction mass leftLabel / mass leftLabel := by
+      rw [chartMassLeverage]
+      field_simp
+    have hleverageRight : chartMassPivot direction mass rightLabel rightLabel
+        = chartMassLeverage direction mass rightLabel / mass rightLabel := by
+      rw [chartMassLeverage]
+      field_simp
+    rw [hleverageLeft, hleverageRight] at hbound
+    have hne1 := ne_of_gt hleft
+    have hne2 := ne_of_gt hright
+    have hidentity : deficitLeft * (scale * scale)
+        + (-2 * chartMassPivot direction mass leftLabel rightLabel) * scale + deficitRight
+        = (scale ^ 2 / mass leftLabel + 1 ^ 2 / mass rightLabel)
+          - (scale ^ 2 * (chartMassLeverage direction mass leftLabel / mass leftLabel)
+            + 2 * scale * chartMassPivot direction mass leftLabel rightLabel
+            + chartMassLeverage direction mass rightLabel / mass rightLabel) := by
+      rw [hdeficitLeft, hdeficitRight]
+      field_simp
+      ring
+    rw [hidentity]
+    linarith
+  have hdiscrim := discrim_le_zero hquadratic
+  simp only [discrim] at hdiscrim
+  have hdeficitLeftEq : deficitLeft * mass leftLabel
+      = 1 - chartMassLeverage direction mass leftLabel := by
+    rw [hdeficitLeft]
+    field_simp
+  have hdeficitRightEq : deficitRight * mass rightLabel
+      = 1 - chartMassLeverage direction mass rightLabel := by
+    rw [hdeficitRight]
+    field_simp
+  rw [← hdeficitLeftEq, ← hdeficitRightEq]
+  nlinarith [hdiscrim, hleft, hright, mul_pos hleft hright,
+    sq_nonneg (chartMassPivot direction mass leftLabel rightLabel)]
+
+/-- Two nonnegative weights and a bounded cross term make a nonnegative pair
+form. -/
+private theorem pair_form_nonneg (leftWeight rightWeight cross leftCoord rightCoord : ℝ)
+    (hleft : 0 ≤ leftWeight) (hright : 0 ≤ rightWeight)
+    (hcross : cross ^ 2 ≤ leftWeight * rightWeight) :
+    0 ≤ leftWeight * leftCoord ^ 2 + rightWeight * rightCoord ^ 2
+      + 2 * cross * (leftCoord * rightCoord) := by
+  rcases eq_or_lt_of_le hleft with hzero | hpos
+  · have hcrossZero : cross = 0 := by nlinarith [sq_nonneg cross]
+    rw [hcrossZero, ← hzero]
+    nlinarith [sq_nonneg rightCoord, hright]
+  · nlinarith [sq_nonneg (leftWeight * leftCoord + cross * rightCoord),
+      mul_nonneg (le_of_lt hpos) (sq_nonneg rightCoord), hpos]
+
+/-- **THE TRACE BOUND.**  The inverse-moment form of a triple dominates the
+leverage total minus two, against the coefficient energy.  This is the statement
+that the leverage projection of a triple has smallest eigenvalue at least its
+trace minus two, written with no eigenvalue and no square root. -/
+theorem sum_leverage_sub_two_mul_le_dual_form
+    (direction : Fin size → (Fin 3 → ℝ)) (mass : Fin size → ℝ)
+    (hmassPos : ∀ label, 0 < mass label)
+    (hmoment : (chartMassMoment direction mass).PosDef)
+    (first second third : Fin size)
+    (hfirstSecond : first ≠ second) (hfirstThird : first ≠ third) (hsecondThird : second ≠ third)
+    (firstCoord midCoord rightCoord : ℝ) :
+    (chartMassLeverage direction mass first + chartMassLeverage direction mass second
+        + chartMassLeverage direction mass third - 2)
+      * (firstCoord ^ 2 / mass first + midCoord ^ 2 / mass second
+        + rightCoord ^ 2 / mass third)
+      ≤ (firstCoord • direction first + midCoord • direction second
+          + rightCoord • direction third)
+        ⬝ᵥ ((chartMassMoment direction mass)⁻¹ *ᵥ
+          (firstCoord • direction first + midCoord • direction second
+            + rightCoord • direction third)) := by
+  have hmassFirst := hmassPos first
+  have hmassSecond := hmassPos second
+  have hmassThird := hmassPos third
+  have hcapFirst := chartMassLeverage_le_one direction mass hmassPos hmoment first
+  have hcapSecond := chartMassLeverage_le_one direction mass hmassPos hmoment second
+  have hcapThird := chartMassLeverage_le_one direction mass hmassPos hmoment third
+  have hcrossOne := crossLeverage_sq_le direction mass hmassPos hmoment hfirstSecond
+  have hcrossTwo := crossLeverage_sq_le direction mass hmassPos hmoment hfirstThird
+  have hcrossThree := crossLeverage_sq_le direction mass hmassPos hmoment hsecondThird
+  have hpairOne := pair_form_nonneg
+    ((1 - chartMassLeverage direction mass second) / mass first)
+    ((1 - chartMassLeverage direction mass first) / mass second)
+    (chartMassPivot direction mass first second) firstCoord midCoord
+    (by positivity) (by positivity)
+    (by rw [div_mul_div_comm]; rw [le_div_iff₀ (by positivity)]; nlinarith [hcrossOne])
+  have hpairTwo := pair_form_nonneg
+    ((1 - chartMassLeverage direction mass third) / mass first)
+    ((1 - chartMassLeverage direction mass first) / mass third)
+    (chartMassPivot direction mass first third) firstCoord rightCoord
+    (by positivity) (by positivity)
+    (by rw [div_mul_div_comm]; rw [le_div_iff₀ (by positivity)]; nlinarith [hcrossTwo])
+  have hpairThree := pair_form_nonneg
+    ((1 - chartMassLeverage direction mass third) / mass second)
+    ((1 - chartMassLeverage direction mass second) / mass third)
+    (chartMassPivot direction mass second third) midCoord rightCoord
+    (by positivity) (by positivity)
+    (by rw [div_mul_div_comm]; rw [le_div_iff₀ (by positivity)]; nlinarith [hcrossThree])
+  rw [dual_form_triple direction mass first second third firstCoord midCoord rightCoord]
+  have hleverageFirst : chartMassPivot direction mass first first
+      = chartMassLeverage direction mass first / mass first := by
+    rw [chartMassLeverage]; field_simp
+  have hleverageSecond : chartMassPivot direction mass second second
+      = chartMassLeverage direction mass second / mass second := by
+    rw [chartMassLeverage]; field_simp
+  have hleverageThird : chartMassPivot direction mass third third
+      = chartMassLeverage direction mass third / mass third := by
+    rw [chartMassLeverage]; field_simp
+  rw [hleverageFirst, hleverageSecond, hleverageThird]
+  have hne1 := ne_of_gt hmassFirst
+  have hne2 := ne_of_gt hmassSecond
+  have hne3 := ne_of_gt hmassThird
+  have hidentity :
+      (firstCoord ^ 2 * (chartMassLeverage direction mass first / mass first)
+        + midCoord ^ 2 * (chartMassLeverage direction mass second / mass second)
+        + rightCoord ^ 2 * (chartMassLeverage direction mass third / mass third)
+        + 2 * (firstCoord * midCoord) * chartMassPivot direction mass first second
+        + 2 * (firstCoord * rightCoord) * chartMassPivot direction mass first third
+        + 2 * (midCoord * rightCoord) * chartMassPivot direction mass second third)
+      - (chartMassLeverage direction mass first + chartMassLeverage direction mass second
+          + chartMassLeverage direction mass third - 2)
+        * (firstCoord ^ 2 / mass first + midCoord ^ 2 / mass second
+          + rightCoord ^ 2 / mass third)
+      = ((1 - chartMassLeverage direction mass second) / mass first * firstCoord ^ 2
+          + (1 - chartMassLeverage direction mass first) / mass second * midCoord ^ 2
+          + 2 * chartMassPivot direction mass first second * (firstCoord * midCoord))
+        + ((1 - chartMassLeverage direction mass third) / mass first * firstCoord ^ 2
+          + (1 - chartMassLeverage direction mass first) / mass third * rightCoord ^ 2
+          + 2 * chartMassPivot direction mass first third * (firstCoord * rightCoord))
+        + ((1 - chartMassLeverage direction mass third) / mass second * midCoord ^ 2
+          + (1 - chartMassLeverage direction mass second) / mass third * rightCoord ^ 2
+          + 2 * chartMassPivot direction mass second third * (midCoord * rightCoord)) := by
+    field_simp
+    ring
+  linarith [hpairOne, hpairTwo, hpairThree]
+
+end LeverageTrace
+
+/-! ## 13.  The leverage trace cell, and the over-levered stratum -/
+
+section LeverageStratum
+
+variable {size : ℕ}
+
+/-- **A DEPENDENT TRIPLE IS UNDER-LEVERED.**  Three directions that carry a
+nontrivial vanishing combination have leverage total at most two.  The three
+lines of the chart are therefore invisible to every leverage trace cell. -/
+theorem sum_leverage_le_two_of_dependent
+    (direction : Fin size → (Fin 3 → ℝ)) (mass : Fin size → ℝ)
+    (hmassPos : ∀ label, 0 < mass label)
+    (hmoment : (chartMassMoment direction mass).PosDef)
+    (first second third : Fin size)
+    (hfirstSecond : first ≠ second) (hfirstThird : first ≠ third) (hsecondThird : second ≠ third)
+    (firstCoord midCoord rightCoord : ℝ)
+    (hnontrivial : firstCoord ≠ 0 ∨ midCoord ≠ 0 ∨ rightCoord ≠ 0)
+    (hdependent : firstCoord • direction first + midCoord • direction second
+      + rightCoord • direction third = 0) :
+    chartMassLeverage direction mass first + chartMassLeverage direction mass second
+      + chartMassLeverage direction mass third ≤ 2 := by
+  have hmassFirst := hmassPos first
+  have hmassSecond := hmassPos second
+  have hmassThird := hmassPos third
+  have htrace := sum_leverage_sub_two_mul_le_dual_form direction mass hmassPos hmoment
+    first second third hfirstSecond hfirstThird hsecondThird firstCoord midCoord rightCoord
+  rw [hdependent, Matrix.mulVec_zero, dotProduct_zero] at htrace
+  have henergyPos : 0 < firstCoord ^ 2 / mass first + midCoord ^ 2 / mass second
+      + rightCoord ^ 2 / mass third := by
+    have hone : 0 ≤ firstCoord ^ 2 / mass first :=
+      div_nonneg (sq_nonneg _) (le_of_lt hmassFirst)
+    have htwo : 0 ≤ midCoord ^ 2 / mass second := div_nonneg (sq_nonneg _) (le_of_lt hmassSecond)
+    have hthree : 0 ≤ rightCoord ^ 2 / mass third :=
+      div_nonneg (sq_nonneg _) (le_of_lt hmassThird)
+    rcases hnontrivial with hne | hne | hne
+    · have : 0 < firstCoord ^ 2 / mass first :=
+        div_pos (by positivity) hmassFirst
+      linarith
+    · have : 0 < midCoord ^ 2 / mass second := div_pos (by positivity) hmassSecond
+      linarith
+    · have : 0 < rightCoord ^ 2 / mass third := div_pos (by positivity) hmassThird
+      linarith
+  nlinarith [htrace, henergyPos]
+
+/-- **THE LEVERAGE TRACE CELL, discharged.**  If the leverage total of a triple
+beats two plus each of the three weights, the triple strictly dominates.
+
+The trace bound `Gtz.sum_leverage_sub_two_mul_le_dual_form` supplies the floor,
+and the three weights sit strictly below it.  Unlike the dominance cell this cell
+reads no cross pivot at all: only the three leverages and the three weights. -/
+theorem posDef_directionChartGap_of_leverageTrace
+    (direction : Fin size → (Fin 3 → ℝ)) (mass weight : Fin size → ℝ)
+    (hmassPos : ∀ label, 0 < mass label) (hweightPos : ∀ label, 0 < weight label)
+    (hmoment : (chartMassMoment direction mass).PosDef)
+    (first second third : Fin size)
+    (hfirstSecond : first ≠ second) (hfirstThird : first ≠ third) (hsecondThird : second ≠ third)
+    (hbracket : tripleBracket (direction first) (direction second) (direction third) ≠ 0)
+    (hfirst : 2 + weight first < chartMassLeverage direction mass first
+      + chartMassLeverage direction mass second + chartMassLeverage direction mass third)
+    (hsecond : 2 + weight second < chartMassLeverage direction mass first
+      + chartMassLeverage direction mass second + chartMassLeverage direction mass third)
+    (hthird : 2 + weight third < chartMassLeverage direction mass first
+      + chartMassLeverage direction mass second + chartMassLeverage direction mass third) :
+    (directionChartGap direction mass weight
+      ({first, second, third} : Finset (Fin size))).PosDef := by
+  classical
+  have hmassFirst := hmassPos first
+  have hmassSecond := hmassPos second
+  have hmassThird := hmassPos third
+  have hnotMemFirst : first ∉ ({second, third} : Finset (Fin size)) := by
+    simp [hfirstSecond, hfirstThird]
+  have hnotMemSecond : second ∉ ({third} : Finset (Fin size)) := by simp [hsecondThird]
+  have hsumTriple : ∀ f : Fin size → ℝ,
+      ∑ label ∈ ({first, second, third} : Finset (Fin size)), f label
+        = f first + f second + f third := by
+    intro f
+    rw [Finset.sum_insert hnotMemFirst, Finset.sum_insert hnotMemSecond, Finset.sum_singleton,
+      add_assoc]
+  have hsumTripleVec : ∀ f : Fin size → ℝ,
+      ∑ label ∈ ({first, second, third} : Finset (Fin size)), f label • direction label
+        = f first • direction first + f second • direction second + f third • direction third := by
+    intro f
+    rw [Finset.sum_insert hnotMemFirst, Finset.sum_insert hnotMemSecond, Finset.sum_singleton,
+      add_assoc]
+  refine posDef_directionChartGap_of_dualStrict direction mass weight hmassPos hweightPos hmoment
+    ({first, second, third} : Finset (Fin size)) ?_ ?_
+  · intro target
+    obtain ⟨firstCoord, midCoord, rightCoord, hcoord⟩ :=
+      exists_coordinates_of_tripleBracket_ne_zero (direction first) (direction second)
+        (direction third) target hbracket
+    refine ⟨fun label => if label = first then firstCoord
+      else if label = second then midCoord else rightCoord, ?_⟩
+    rw [hsumTripleVec]
+    rw [if_pos rfl, if_neg (Ne.symm hfirstSecond), if_pos rfl, if_neg (Ne.symm hfirstThird),
+      if_neg (Ne.symm hsecondThird)]
+    exact hcoord
+  · intro coefficient hne
+    rw [hsumTripleVec] at hne ⊢
+    rw [hsumTriple]
+    have htrace := sum_leverage_sub_two_mul_le_dual_form direction mass hmassPos hmoment
+      first second third hfirstSecond hfirstThird hsecondThird
+      (coefficient first) (coefficient second) (coefficient third)
+    set total := chartMassLeverage direction mass first + chartMassLeverage direction mass second
+      + chartMassLeverage direction mass third with htotal
+    have hnontrivial : coefficient first ≠ 0 ∨ coefficient second ≠ 0 ∨ coefficient third ≠ 0 := by
+      by_contra hall
+      push_neg at hall
+      obtain ⟨hzeroFirst, hzeroSecond, hzeroThird⟩ := hall
+      exact hne (by rw [hzeroFirst, hzeroSecond, hzeroThird, zero_smul, zero_smul, zero_smul,
+        add_zero, add_zero])
+    have hgapFirst : 0 < total - 2 - weight first := by linarith
+    have hgapSecond : 0 < total - 2 - weight second := by linarith
+    have hgapThird : 0 < total - 2 - weight third := by linarith
+    have hidentity : (total - 2) * (coefficient first ^ 2 / mass first
+          + coefficient second ^ 2 / mass second + coefficient third ^ 2 / mass third)
+        - (weight first / mass first * coefficient first ^ 2
+          + weight second / mass second * coefficient second ^ 2
+          + weight third / mass third * coefficient third ^ 2)
+        = (total - 2 - weight first) * coefficient first ^ 2 / mass first
+          + (total - 2 - weight second) * coefficient second ^ 2 / mass second
+          + (total - 2 - weight third) * coefficient third ^ 2 / mass third := by
+      field_simp
+      ring
+    have hnonnegFirst : 0 ≤ (total - 2 - weight first) * coefficient first ^ 2 / mass first :=
+      div_nonneg (mul_nonneg (le_of_lt hgapFirst) (sq_nonneg _)) (le_of_lt hmassFirst)
+    have hnonnegSecond : 0 ≤ (total - 2 - weight second) * coefficient second ^ 2 / mass second :=
+      div_nonneg (mul_nonneg (le_of_lt hgapSecond) (sq_nonneg _)) (le_of_lt hmassSecond)
+    have hnonnegThird : 0 ≤ (total - 2 - weight third) * coefficient third ^ 2 / mass third :=
+      div_nonneg (mul_nonneg (le_of_lt hgapThird) (sq_nonneg _)) (le_of_lt hmassThird)
+    have hstrict : 0 < (total - 2) * (coefficient first ^ 2 / mass first
+          + coefficient second ^ 2 / mass second + coefficient third ^ 2 / mass third)
+        - (weight first / mass first * coefficient first ^ 2
+          + weight second / mass second * coefficient second ^ 2
+          + weight third / mass third * coefficient third ^ 2) := by
+      rw [hidentity]
+      rcases hnontrivial with hnz | hnz | hnz
+      · have : 0 < (total - 2 - weight first) * coefficient first ^ 2 / mass first :=
+          div_pos (mul_pos hgapFirst (by positivity)) hmassFirst
+        linarith
+      · have : 0 < (total - 2 - weight second) * coefficient second ^ 2 / mass second :=
+          div_pos (mul_pos hgapSecond (by positivity)) hmassSecond
+        linarith
+      · have : 0 < (total - 2 - weight third) * coefficient third ^ 2 / mass third :=
+          div_pos (mul_pos hgapThird (by positivity)) hmassThird
+        linarith
+    linarith [htrace, hstrict]
+
+/-- **THE OVER-LEVERED STRATUM.**  When exactly three labels are over-levered,
+their leverage total beats two plus each of their weights.
+
+By `Gtz.three_le_card_overLevered` the over-levered set is never smaller than
+three, so this stratum is the smallest one.  By
+`Gtz.weight_lt_chartMassLeverage_of_posDef_gap` no other triple can dominate
+there, so the three over-levered labels are the only candidate. -/
+theorem two_add_weight_lt_sum_leverage_of_overLevered_triple
+    (direction : Fin size → (Fin 3 → ℝ)) (point : DirectionChartPoint size)
+    (hmoment : (chartMassMoment direction point.mass).PosDef)
+    (first second third : Fin size)
+    (hfirstSecond : first ≠ second) (hfirstThird : first ≠ third) (hsecondThird : second ≠ third)
+    (hfilter : Finset.univ.filter (fun label => point.weight label
+        < chartMassLeverage direction point.mass label) = {first, second, third})
+    (target : Fin size) (hmem : target ∈ ({first, second, third} : Finset (Fin size))) :
+    2 + point.weight target
+      < chartMassLeverage direction point.mass first
+        + chartMassLeverage direction point.mass second
+        + chartMassLeverage direction point.mass third := by
+  classical
+  have hnotMemFirst : first ∉ ({second, third} : Finset (Fin size)) := by
+    simp [hfirstSecond, hfirstThird]
+  have hnotMemSecond : second ∉ ({third} : Finset (Fin size)) := by simp [hsecondThird]
+  have hsumTriple : ∀ f : Fin size → ℝ,
+      ∑ label ∈ ({first, second, third} : Finset (Fin size)), f label
+        = f first + f second + f third := by
+    intro f
+    rw [Finset.sum_insert hnotMemFirst, Finset.sum_insert hnotMemSecond, Finset.sum_singleton,
+      add_assoc]
+  have hleverageSplit := Finset.sum_filter_add_sum_filter_not Finset.univ
+    (fun label => point.weight label < chartMassLeverage direction point.mass label)
+    (chartMassLeverage direction point.mass)
+  have hweightSplit := Finset.sum_filter_add_sum_filter_not Finset.univ
+    (fun label => point.weight label < chartMassLeverage direction point.mass label)
+    point.weight
+  rw [hfilter, hsumTriple, sum_chartMassLeverage_eq_three direction point.mass hmoment]
+    at hleverageSplit
+  rw [hfilter, hsumTriple, point.weight_sum_one] at hweightSplit
+  have hoff : ∑ label ∈ Finset.univ.filter (fun label => ¬ (point.weight label
+        < chartMassLeverage direction point.mass label)),
+      chartMassLeverage direction point.mass label
+      ≤ ∑ label ∈ Finset.univ.filter (fun label => ¬ (point.weight label
+        < chartMassLeverage direction point.mass label)), point.weight label := by
+    refine Finset.sum_le_sum fun label hmemOff => ?_
+    exact not_lt.mp (Finset.mem_filter.mp hmemOff).2
+  have hweightFirst := point.weight_pos first
+  have hweightSecond := point.weight_pos second
+  have hweightThird := point.weight_pos third
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+  rcases hmem with rfl | rfl | rfl <;> linarith
+
+end LeverageStratum
+
+/-! ## 14.  The two leverage cells at the three-lines chart -/
+
+/-- **The leverage trace cell of the three-lines chart.** -/
+def ThreeLinesLeverageTraceCellFires (slide : ℝ) (point : DirectionChartPoint 6) : Prop :=
+  ∃ first second third : Fin 6,
+    first ≠ second ∧ first ≠ third ∧ second ≠ third ∧
+    tripleBracket (threeLinesDirection slide first) (threeLinesDirection slide second)
+      (threeLinesDirection slide third) ≠ 0 ∧
+    ∀ target ∈ ({first, second, third} : Finset (Fin 6)),
+      2 + point.weight target
+        < chartMassLeverage (threeLinesDirection slide) point.mass first
+          + chartMassLeverage (threeLinesDirection slide) point.mass second
+          + chartMassLeverage (threeLinesDirection slide) point.mass third
+
+/-- **The trace cell supplies a strict triple.** -/
+theorem exists_posDef_threeLines_of_leverageTraceCellFires (slide : ℝ)
+    (point : DirectionChartPoint 6)
+    (hcell : ThreeLinesLeverageTraceCellFires slide point) :
+    ∃ selected : Finset (Fin 6), selected.card = 3 ∧
+      (directionChartGap (threeLinesDirection slide) point.mass point.weight
+        selected).PosDef := by
+  classical
+  obtain ⟨first, second, third, hfs, hft, hst, hbracket, hall⟩ := hcell
+  refine ⟨{first, second, third}, ?_, ?_⟩
+  · rw [Finset.card_insert_of_notMem (by simp [hfs, hft]),
+      Finset.card_insert_of_notMem (by simp [hst]), Finset.card_singleton]
+  · exact posDef_directionChartGap_of_leverageTrace (threeLinesDirection slide) point.mass
+      point.weight point.mass_pos point.weight_pos (posDef_chartMassMoment_threeLines slide point)
+      first second third hfs hft hst hbracket
+      (hall first (by simp)) (hall second (by simp)) (hall third (by simp))
+
+/-- **THE OVER-LEVERED STRATUM CLOSES.**  If exactly three labels of a
+three-lines chart point are over-levered, and those three are independent, then
+that triple is strictly dominating.  Nothing else has to be checked: the veto
+says no other triple can dominate, and the counting law says the stratum is the
+smallest one the chart can reach. -/
+theorem exists_posDef_threeLines_of_overLevered_triple (slide : ℝ)
+    (point : DirectionChartPoint 6) (first second third : Fin 6)
+    (hfirstSecond : first ≠ second) (hfirstThird : first ≠ third) (hsecondThird : second ≠ third)
+    (hbracket : tripleBracket (threeLinesDirection slide first) (threeLinesDirection slide second)
+      (threeLinesDirection slide third) ≠ 0)
+    (hfilter : Finset.univ.filter (fun label => point.weight label
+        < chartMassLeverage (threeLinesDirection slide) point.mass label)
+      = {first, second, third}) :
+    (directionChartGap (threeLinesDirection slide) point.mass point.weight
+      ({first, second, third} : Finset (Fin 6))).PosDef := by
+  have hmoment := posDef_chartMassMoment_threeLines slide point
+  exact posDef_directionChartGap_of_leverageTrace (threeLinesDirection slide) point.mass
+    point.weight point.mass_pos point.weight_pos hmoment first second third
+    hfirstSecond hfirstThird hsecondThird hbracket
+    (two_add_weight_lt_sum_leverage_of_overLevered_triple (threeLinesDirection slide) point
+      hmoment first second third hfirstSecond hfirstThird hsecondThird hfilter first (by simp))
+    (two_add_weight_lt_sum_leverage_of_overLevered_triple (threeLinesDirection slide) point
+      hmoment first second third hfirstSecond hfirstThird hsecondThird hfilter second (by simp))
+    (two_add_weight_lt_sum_leverage_of_overLevered_triple (threeLinesDirection slide) point
+      hmoment first second third hfirstSecond hfirstThird hsecondThird hfilter third (by simp))
+
 end Gtz
