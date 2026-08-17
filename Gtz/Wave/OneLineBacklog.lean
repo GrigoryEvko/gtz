@@ -1029,4 +1029,60 @@ theorem oneLine_not_isTie_of_linePairMargin_of_pattern (design : WeightedDesign 
     (oneLine_posDef_linePair_of_margin design hunit hlineFlat hFirstMem hSecondMem hFirstSecond
       hFirstFree hSecondFree margin hmargin hheight hbudget)
 
+/-! ## 13.  The two-line branch is inhabited in kernel
+
+`Gtz.oneLineSampleDesign` carries a weak dominator that MISSES the line, so it
+inhabits the zero-count branch only.  The two-line branch needs a different
+witness, and the tree already owns one.
+
+`Gtz.tightLlfDesign` realizes the one-line pattern, is all-heavy, and weakly
+dominates at `{0, 1, 3}`, which holds the line labels zero and one together with
+the free label three.  Its line normal is the third axis.  So every hypothesis
+of sections 2, 10, 11 and 12 outside the margin comparison is satisfiable. -/
+
+/-- The third axis is a unit vector. -/
+theorem thirdAxis_unit : (![0, 0, 1] : Fin 3 → ℝ) ⬝ᵥ ![0, 0, 1] = 1 := by
+  norm_num [dotProduct, Fin.sum_univ_three, Matrix.cons_val_two, Matrix.tail_cons]
+
+/-- The tight witness reads the third axis as zero along its line. -/
+theorem tightLlf_lineFlat :
+    ∀ lineLabel ∈ ({0, 1, 2} : Finset (Fin 6)),
+      tightLlfDesign.atom lineLabel ⬝ᵥ (![0, 0, 1] : Fin 3 → ℝ) = 0 := by
+  intro lineLabel hmem
+  fin_cases lineLabel <;>
+    first
+      | exact absurd hmem (by decide)
+      | norm_num [tightLlfDesign, tightLlfAtom, dotProduct, Fin.sum_univ_three,
+          Matrix.cons_val_two, Matrix.tail_cons]
+
+/-- **THE TWO-LINE BRANCH IS NOT VACUOUS.**  One design carries the pattern,
+all-heavy leverages and a card-three WEAK dominator that holds two line labels
+and one free label. -/
+theorem tightLlf_inhabits_twoLineBranch :
+    HasLinePattern tightLlfDesign (lineFamilyPattern [[(0 : Fin 6), 1, 2]])
+      ∧ (∀ label : Fin 6, 1 ≤ leverageOf (tightLlfDesign.atom label))
+      ∧ Dominates tightLlfDesign {0, 1, 3}
+      ∧ ({0, 1, 3} : Finset (Fin 6)) ∩ ({0, 1, 2} : Finset (Fin 6)) = {0, 1} :=
+  ⟨tightLlfDesign_hasLinePattern, tightLlfDesign_isHeavy, tightLlfDesign_dominates, by decide⟩
+
+/-- **THE WEAK-DOMINATOR BRIDGE FIRES AT THE TIGHT WITNESS.**  Section 2 is not
+vacuous: both line members of the weak dominator are strictly heavy. -/
+theorem tightLlf_linePair_strictlyHeavy :
+    1 < leverageOf (tightLlfDesign.atom 0) ∧ 1 < leverageOf (tightLlfDesign.atom 1) :=
+  oneLine_linePair_strictlyHeavy_of_pattern tightLlfDesign tightLlfDesign_hasLinePattern
+    (by decide) (by decide) (by decide) (by decide) (by decide) tightLlfDesign_isHeavy
+    (by norm_num [leverageOf, gapPairingOf, tightLlfDesign, tightLlfAtom, dotProduct,
+      Fin.sum_univ_three, Matrix.cons_val_two, Matrix.tail_cons])
+    (by norm_num [tightLlfDesign, tightLlfAtom, dotProduct, Fin.sum_univ_three,
+      Matrix.cons_val_two, Matrix.tail_cons])
+    tightLlfDesign_dominates
+
+/-- The tight witness clears unit height at its free member, so the height
+hypothesis of sections 11 and 12 is satisfiable.  Its third atom reads the line
+normal at three. -/
+theorem tightLlf_freeHeight :
+    1 < (tightLlfDesign.atom 3 ⬝ᵥ (![0, 0, 1] : Fin 3 → ℝ)) ^ 2 := by
+  norm_num [tightLlfDesign, tightLlfAtom, dotProduct, Fin.sum_univ_three,
+    Matrix.cons_val_two, Matrix.tail_cons]
+
 end Gtz
