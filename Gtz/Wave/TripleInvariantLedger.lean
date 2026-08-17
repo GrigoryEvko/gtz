@@ -90,6 +90,27 @@ expansion `Σ_r t_r ([p,l,r]² − ⟨p,l⟩)² ≥ 0` gives `p₂ ≤ b₄`
 (`Gtz.pairGramSecondMoment_le_bracketFourthMoment`), which points the wrong way for
 `b₄ − 3 p₂ + 6 m − 6`.  The determinant layer is not sign-forced.
 
+## 4. The volume density turns a landed law into a criterion
+
+`Gtz.sq_tripleBracket_le_sum_pairBracketSq_of_noStrictTriple` is the landed pointwise law:
+with no strictly dominating triple, `[p,l,r]² ≤ ⟨l,r⟩ + ⟨p,r⟩ + ⟨p,l⟩` at EVERY ordered index
+triple.  A sibling integrated it against the PRODUCT density and got nothing.  The reason is
+now exact: against that density the law reads `6 ≤ 18`, two universal constants with no
+design on either side.  Against the VOLUME density it reads
+
+    `b₄ ≤ 3 p₂`   (`Gtz.bracketFourthMoment_le_three_mul_pairGramSecondMoment_of_noStrictTriple`)
+
+and both sides carry design data.  The contrapositive is a criterion:
+
+    `3 p₂ < b₄  ⟹  some triple dominates STRICTLY`
+
+(`Gtz.exists_posDef_gap_of_three_mul_pairGramSecondMoment_lt`), at rank three, at every atom
+count, with no primitivity and no leverage floor.  `Gtz.splitAxisDesign` inhabits the
+antecedent in exact rational arithmetic at `(6,3)`, with `p₂ = 294` and `b₄ = 2058`, so the
+criterion is not vacuous.  It does NOT fire at `Gtz.icosaDesign` or at
+`Gtz.coordinateDiagonalDesign`, whose `b₄` are `77.76` and `81` against `3 p₂` of `129.6` and
+`131.625`, and it cannot fire at a tie.
+
 ## 4. The witness that the two measures differ
 
 `Gtz.icosaDesign` and `Gtz.coordinateDiagonalDesign` are both landed `(6,3)` designs at
@@ -1336,7 +1357,85 @@ theorem secondInvariant_neg_or_det_nonpos_of_isTie_subset (design : WeightedDesi
     rw [det_subsetSum_triple_sub_one_eq_gapDetAt design hpl hpr hlr]
     exact hdet
 
-/-! ## 7. The witness: two designs with one profile and two pair moments -/
+/-! ## 7. The weight-free law, integrated against the volume density
+
+`Gtz.sq_tripleBracket_le_sum_pairBracketSq_of_noStrictTriple` is the landed pointwise law:
+with no strictly dominating triple, `[p,l,r]² ≤ ⟨l,r⟩ + ⟨p,r⟩ + ⟨p,l⟩` at EVERY ordered index
+triple, degenerate ones included.  A sibling integrated it against the PRODUCT density and
+found nothing, and the reason is now visible: against that density the law reads
+
+    `Σ t_p t_l t_r [p,l,r]² ≤ Σ t_p t_l t_r (⟨p,l⟩ + ⟨p,r⟩ + ⟨l,r⟩)` ,  that is  `6 ≤ 18` ,
+
+two universal constants (`Gtz.productLayer_bracketSq`, `Gtz.productLayer_pairSum`).  No
+design appears on either side.
+
+Against the VOLUME density the two sides carry design data, and the law becomes a genuine
+constraint. -/
+
+/-- **THE VOLUME INTEGRAL OF THE WEIGHT-FREE LAW.**  A rank-three design with no strictly
+dominating triple obeys `b₄ ≤ 3 p₂`: the fourth moment of the bracket is at most three times
+the second moment of the pair Gram determinant.
+
+Every ingredient is landed.  The pointwise law needs no distinctness, the volume density is
+nonnegative at every ordered triple, and the two integrated sides are
+`Gtz.volumeLayer_bracketSq` and `Gtz.volumeLayer_pairSum`. -/
+theorem bracketFourthMoment_le_three_mul_pairGramSecondMoment_of_noStrictTriple
+    (design : WeightedDesign size 3) (hno : NoStrictTriple design) :
+    bracketFourthMoment design ≤ 3 * pairGramSecondMoment design := by
+  have hleft := volumeLayer_bracketSq design
+  have hright := volumeLayer_pairSum design
+  rw [← hleft, ← hright]
+  unfold volumeLayer
+  refine Finset.sum_le_sum fun pivot _ => ?_
+  refine Finset.sum_le_sum fun left _ => ?_
+  refine Finset.sum_le_sum fun right _ => ?_
+  have hdensity : 0 ≤ design.weight pivot * design.weight left * design.weight right
+      * tripleBracket (design.atom pivot) (design.atom left) (design.atom right) ^ 2 :=
+    mul_nonneg (mul_nonneg (mul_nonneg (design.weight_pos pivot).le (design.weight_pos left).le)
+      (design.weight_pos right).le) (sq_nonneg _)
+  have hpoint := sq_tripleBracket_le_sum_pairBracketSq_of_noStrictTriple design hno
+    pivot left right
+  have hreorder : pairBracketSq (design.atom left) (design.atom right)
+      + pairBracketSq (design.atom pivot) (design.atom right)
+      + pairBracketSq (design.atom pivot) (design.atom left)
+        = pairBracketSq (design.atom pivot) (design.atom left)
+          + pairBracketSq (design.atom pivot) (design.atom right)
+          + pairBracketSq (design.atom left) (design.atom right) := by ring
+  rw [hreorder] at hpoint
+  exact mul_le_mul_of_nonneg_left hpoint hdensity
+
+/-- **A NEW SUFFICIENT CONDITION FOR STRICT DOMINATION.**  If three times the second pair
+moment falls below the fourth bracket moment, the design carries a strictly dominating
+triple.  No size hypothesis, no primitivity, no leverage floor: this holds at rank three at
+every atom count. -/
+theorem exists_posDef_gap_of_three_mul_pairGramSecondMoment_lt (design : WeightedDesign size 3)
+    (hgap : 3 * pairGramSecondMoment design < bracketFourthMoment design) :
+    ∃ selected : Finset (Fin size), selected.card = 3
+      ∧ (subsetSum design selected - 1).PosDef := by
+  by_contra hnone
+  push Not at hnone
+  have hno : NoStrictTriple design := fun selected hcard => hnone selected hcard
+  have hbound := bracketFourthMoment_le_three_mul_pairGramSecondMoment_of_noStrictTriple
+    design hno
+  linarith
+
+/-- The same criterion, read as a domination statement. -/
+theorem exists_dominates_of_three_mul_pairGramSecondMoment_lt (design : WeightedDesign size 3)
+    (hgap : 3 * pairGramSecondMoment design < bracketFourthMoment design) :
+    ∃ selected : Finset (Fin size), selected.card = 3 ∧ Dominates design selected := by
+  obtain ⟨selected, hcard, hposDef⟩ :=
+    exists_posDef_gap_of_three_mul_pairGramSecondMoment_lt design hgap
+  exact ⟨selected, hcard, hposDef.posSemidef⟩
+
+/-- The same criterion, read as a tie refutation. -/
+theorem not_isTie_of_three_mul_pairGramSecondMoment_lt (design : WeightedDesign size 3)
+    (hgap : 3 * pairGramSecondMoment design < bracketFourthMoment design) :
+    ¬ IsTie design := fun htie => by
+  obtain ⟨selected, hcard, hposDef⟩ :=
+    exists_posDef_gap_of_three_mul_pairGramSecondMoment_lt design hgap
+  exact htie.2 selected hcard hposDef
+
+/-! ## 8. The witness: two designs with one profile and two pair moments -/
 
 /-- Every weight of the icosahedral design is `1/6`. -/
 theorem icosaDesign_weight_apply (atomLabel : Fin 6) : icosaDesign.weight atomLabel = 1 / 6 :=
@@ -1474,5 +1573,104 @@ theorem volumeLayer_gapSecond_differs_at_the_witness :
       ≠ volumeLayer coordinateDiagonalDesign (gapSecondAt coordinateDiagonalDesign) := by
   rw [volumeLayer_gapSecond_icosaDesign, volumeLayer_gapSecond_coordinateDiagonalDesign]
   norm_num
+
+/-! ## 9. The criterion is not vacuous
+
+A `(6,3)` design at which `3 p₂ < b₄` holds, in exact rational arithmetic.  The three
+coordinate axes carry two atoms each, one at leverage one and one at leverage nine.  The
+shares are `1/2` on each atom, so Parseval is exact, and the two moments are `294` and
+`2058`. -/
+
+/-- The atoms of the split-axis witness. -/
+def splitAxisAtom : Fin 6 → Fin 3 → ℝ :=
+  ![![1, 0, 0], ![0, 1, 0], ![0, 0, 1], ![3, 0, 0], ![0, 3, 0], ![0, 0, 3]]
+
+/-! Per-label evaluation.  Without these the outer `Fin 6` index survives the eta expansion
+of the vector literal and the scalar equations never become numeric. -/
+
+theorem splitAxisAtom_zero : splitAxisAtom 0 = ![1, 0, 0] := rfl
+theorem splitAxisAtom_one : splitAxisAtom 1 = ![0, 1, 0] := rfl
+theorem splitAxisAtom_two : splitAxisAtom 2 = ![0, 0, 1] := rfl
+theorem splitAxisAtom_three : splitAxisAtom 3 = ![3, 0, 0] := rfl
+theorem splitAxisAtom_four : splitAxisAtom 4 = ![0, 3, 0] := rfl
+theorem splitAxisAtom_five : splitAxisAtom 5 = ![0, 0, 3] := rfl
+
+/-- The weights of the split-axis witness. -/
+noncomputable def splitAxisWeight : Fin 6 → ℝ :=
+  ![1 / 4, 1 / 4, 1 / 4, 1 / 12, 1 / 12, 1 / 12]
+
+theorem splitAxisWeight_zero : splitAxisWeight 0 = 1 / 4 := rfl
+theorem splitAxisWeight_one : splitAxisWeight 1 = 1 / 4 := rfl
+theorem splitAxisWeight_two : splitAxisWeight 2 = 1 / 4 := rfl
+theorem splitAxisWeight_three : splitAxisWeight 3 = 1 / 12 := rfl
+theorem splitAxisWeight_four : splitAxisWeight 4 = 1 / 12 := rfl
+theorem splitAxisWeight_five : splitAxisWeight 5 = 1 / 12 := rfl
+
+/-- **THE SPLIT-AXIS WITNESS.**  Each coordinate axis carries a unit atom of weight `1/4`
+and a triple-length atom of weight `1/12`, so each axis receives share `1/4 + 3/4 = 1`. -/
+noncomputable def splitAxisDesign : WeightedDesign 6 3 where
+  atom := splitAxisAtom
+  weight := splitAxisWeight
+  weight_pos := by intro label; fin_cases label <;> norm_num [splitAxisWeight]
+  weight_sum_one := by
+    rw [Fin.sum_univ_six]
+    norm_num [splitAxisWeight_zero, splitAxisWeight_one, splitAxisWeight_two,
+      splitAxisWeight_three, splitAxisWeight_four, splitAxisWeight_five]
+  isParseval := by
+    ext rowIndex colIndex
+    simp only [Matrix.sum_apply, Matrix.smul_apply, atomMatrix, Matrix.vecMulVec_apply,
+      Fin.sum_univ_six, smul_eq_mul]
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      norm_num [splitAxisAtom_zero, splitAxisAtom_one, splitAxisAtom_two, splitAxisAtom_three,
+    splitAxisAtom_four, splitAxisAtom_five, splitAxisWeight_zero, splitAxisWeight_one,
+    splitAxisWeight_two, splitAxisWeight_three, splitAxisWeight_four, splitAxisWeight_five,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons,
+    Matrix.tail_cons, Matrix.one_apply]
+
+theorem splitAxisDesign_atom : splitAxisDesign.atom = splitAxisAtom := rfl
+
+theorem splitAxisDesign_weight : splitAxisDesign.weight = splitAxisWeight := rfl
+
+/-- The second pair moment of the witness. -/
+theorem pairGramSecondMoment_splitAxisDesign :
+    pairGramSecondMoment splitAxisDesign = 294 := by
+  simp only [pairGramSecondMoment, splitAxisDesign_atom, splitAxisDesign_weight,
+    pairBracketSq, leverageOf, dotProduct, Fin.sum_univ_six, Fin.sum_univ_three]
+  norm_num [splitAxisAtom_zero, splitAxisAtom_one, splitAxisAtom_two, splitAxisAtom_three,
+    splitAxisAtom_four, splitAxisAtom_five, splitAxisWeight_zero, splitAxisWeight_one,
+    splitAxisWeight_two, splitAxisWeight_three, splitAxisWeight_four, splitAxisWeight_five,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons,
+    Matrix.tail_cons]
+
+/-- The fourth bracket moment of the witness. -/
+theorem bracketFourthMoment_splitAxisDesign :
+    bracketFourthMoment splitAxisDesign = 2058 := by
+  simp only [bracketFourthMoment, splitAxisDesign_atom, splitAxisDesign_weight,
+    tripleBracket_eq, Fin.sum_univ_six]
+  norm_num [splitAxisAtom_zero, splitAxisAtom_one, splitAxisAtom_two, splitAxisAtom_three,
+    splitAxisAtom_four, splitAxisAtom_five, splitAxisWeight_zero, splitAxisWeight_one,
+    splitAxisWeight_two, splitAxisWeight_three, splitAxisWeight_four, splitAxisWeight_five,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons,
+    Matrix.tail_cons]
+
+/-- **THE CRITERION FIRES AT THE WITNESS.**  `3 * 294 = 882 < 2058`, so the antecedent of
+`Gtz.exists_posDef_gap_of_three_mul_pairGramSecondMoment_lt` is inhabited and the criterion
+is not vacuous. -/
+theorem splitAxisDesign_three_mul_pairGramSecondMoment_lt :
+    3 * pairGramSecondMoment splitAxisDesign < bracketFourthMoment splitAxisDesign := by
+  rw [pairGramSecondMoment_splitAxisDesign, bracketFourthMoment_splitAxisDesign]
+  norm_num
+
+/-- **THE WITNESS CARRIES A STRICTLY DOMINATING TRIPLE**, produced by the criterion alone. -/
+theorem splitAxisDesign_exists_posDef_gap :
+    ∃ selected : Finset (Fin 6), selected.card = 3
+      ∧ (subsetSum splitAxisDesign selected - 1).PosDef :=
+  exists_posDef_gap_of_three_mul_pairGramSecondMoment_lt splitAxisDesign
+    splitAxisDesign_three_mul_pairGramSecondMoment_lt
+
+/-- **THE WITNESS IS NOT A TIE**, by the criterion alone. -/
+theorem splitAxisDesign_not_isTie : ¬ IsTie splitAxisDesign :=
+  not_isTie_of_three_mul_pairGramSecondMoment_lt splitAxisDesign
+    splitAxisDesign_three_mul_pairGramSecondMoment_lt
 
 end Gtz
