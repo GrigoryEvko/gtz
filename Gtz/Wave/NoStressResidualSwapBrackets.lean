@@ -1,5 +1,6 @@
 import Gtz.Design.StressFreeStratum
 import Gtz.Design.StressFreeClassSplit
+import Gtz.Wave.TieConstraintIntersectionKFour
 import Gtz.Design.CapSlack
 import Gtz.Design.PairDifferenceCover
 import Gtz.Wave.VeroneseWeightElimination
@@ -64,16 +65,23 @@ Three ingredients, each elementary.
   This is the bracket twin of the projection-form marginal
   `Gtz.pairMinorAt_eq_sum_det_tripleBlock`, and it is what turns form (I) into (II).
 
-## Calibration
+## Calibration, and one identification
 
 At the `(6,3)` root design `Gtz.coordinateDiagonalDesign` every atom has leverage
-three, every pair Gram determinant is `27/4` except the three orthogonal pairs where
+three, every pair Gram determinant is `27/4` except at the three orthogonal pairs where
 it is `9`, and every spanning triple has bracket square `27/2`.  Form (II) then gives
 `6/5` on the four triples with no orthogonal pair and `7/5` on the twelve with exactly
-one.  Those are the two numbers the audit records as MEASURED at the `K4` star; here
-they are arithmetic.  So the free-mass budget of a triple counts that triple's
-orthogonal pairs, and the campaign's calibration object misses the certificate by the
-exact amount `1/5` per non-orthogonal pair.
+one.  So the free-mass budget of a triple counts that triple's orthogonal pairs, and the
+calibration object misses the certificate by exactly `1/5` per non-orthogonal pair.
+
+`6/5` is NOT new: `Gtz.freeMassBudget_kFourDesign_star` already carries it.  It is the
+same number at a second presentation, through a route that never inverts a matrix.
+`7/5` is new in kernel, and the reason both live in one file is
+`Gtz.coordinateDiagonalDesign_eq_kFourDesign`: the campaign's two calibration objects are
+ONE object.  `Gtz.diagonalPattern` and `Gtz.kFourRootEdge` are the same six-row table and
+`Gtz.diagonalScale` and `Gtz.kFourRootScale` are the same real number, so the two designs
+are equal, not merely isometric.  Every statement about either transports to the other by
+`rfl`.
 -/
 
 namespace Gtz
@@ -105,12 +113,12 @@ theorem pairBracketSq_nonneg (leftVec rightVec : Fin 3 → ℝ) :
   exact dotProduct_self_nonneg _
 
 /-- A repeated slot kills the bracket. -/
-theorem tripleBracket_self_left (leftVec rightVec : Fin 3 → ℝ) :
+theorem tripleBracket_repeat_first (leftVec rightVec : Fin 3 → ℝ) :
     tripleBracket leftVec rightVec leftVec = 0 := by
   simp only [tripleBracket_eq]; ring
 
 /-- A repeated slot kills the bracket, second shape. -/
-theorem tripleBracket_self_right (leftVec rightVec : Fin 3 → ℝ) :
+theorem tripleBracket_repeat_second (leftVec rightVec : Fin 3 → ℝ) :
     tripleBracket leftVec rightVec rightVec = 0 := by
   simp only [tripleBracket_eq]; ring
 
@@ -322,7 +330,7 @@ theorem sum_compl_weight_mul_sq_tripleBracket (design : WeightedDesign size 3)
             (design.atom pivot) ^ 2 := by
     rw [Finset.sum_insert (by simp [hpivotLeft, hpivotRight]),
       Finset.sum_insert (by simp [hleftRight]), Finset.sum_singleton,
-      tripleBracket_self_left, tripleBracket_self_right]
+      tripleBracket_repeat_first, tripleBracket_repeat_second]
     ring
   rw [hinner, sum_weight_mul_sq_tripleBracket] at hsplit
   linarith [hsplit]
@@ -349,7 +357,7 @@ theorem freeMassTriple_eq (design : WeightedDesign size 3) {pivot leftLabel righ
 
 /-- Every weight is strictly below one at two labels or more, so every free-mass
 coefficient is strictly positive. -/
-theorem one_sub_weight_pos (design : WeightedDesign size 3) {first second : Fin size}
+theorem one_sub_weight_pos_of_two_labels (design : WeightedDesign size 3) {first second : Fin size}
     (hne : first ≠ second) (label : Fin size) : 0 < 1 - design.weight label := by
   classical
   have hsub : design.weight first + design.weight second
@@ -392,9 +400,9 @@ theorem posDef_freeMassTriple (design : WeightedDesign size 3) {pivot leftLabel 
     (freeMassTriple design pivot leftLabel rightLabel).PosDef := by
   rw [freeMassTriple_eq design hpivotLeft hpivotRight hleftRight]
   exact posDef_smul_atomMatrix_three _ _ _
-    (one_sub_weight_pos design hpivotLeft pivot)
-    (one_sub_weight_pos design hpivotLeft leftLabel)
-    (one_sub_weight_pos design hpivotLeft rightLabel) hbracket
+    (one_sub_weight_pos_of_two_labels design hpivotLeft pivot)
+    (one_sub_weight_pos_of_two_labels design hpivotLeft leftLabel)
+    (one_sub_weight_pos_of_two_labels design hpivotLeft rightLabel) hbracket
 
 /-- The determinant of the free-mass matrix of a spanning triple. -/
 theorem det_freeMassTriple (design : WeightedDesign size 3) {pivot leftLabel rightLabel : Fin size}
@@ -490,9 +498,9 @@ theorem freeMassBudget_eq_pairSwapMass (design : WeightedDesign size 3)
   set freeMass := freeMassTriple design pivot leftLabel rightLabel with hfreeMass
   set bracket := tripleBracket (design.atom pivot) (design.atom leftLabel)
     (design.atom rightLabel) with hbracketDef
-  have hpivotPos := one_sub_weight_pos design hpivotLeft pivot
-  have hleftPos := one_sub_weight_pos design hpivotLeft leftLabel
-  have hrightPos := one_sub_weight_pos design hpivotLeft rightLabel
+  have hpivotPos := one_sub_weight_pos_of_two_labels design hpivotLeft pivot
+  have hleftPos := one_sub_weight_pos_of_two_labels design hpivotLeft leftLabel
+  have hrightPos := one_sub_weight_pos_of_two_labels design hpivotLeft rightLabel
   have hbracketSq : 0 < bracket ^ 2 := by positivity
   have hdet : freeMass.det
       = (1 - design.weight pivot) * (1 - design.weight leftLabel)
@@ -641,9 +649,9 @@ theorem posDef_gap_of_sum_pairBracketSq_lt (design : WeightedDesign size 3)
           (design.atom rightLabel) ^ 2) :
     (subsetSum design ({pivot, leftLabel, rightLabel} : Finset (Fin size)) - 1).PosDef := by
   refine posDef_gap_of_pairSwapMass_lt design hpivotLeft hpivotRight hleftRight hbracket ?_
-  have hpivotPos := one_sub_weight_pos design hpivotLeft pivot
-  have hleftPos := one_sub_weight_pos design hpivotLeft leftLabel
-  have hrightPos := one_sub_weight_pos design hpivotLeft rightLabel
+  have hpivotPos := one_sub_weight_pos_of_two_labels design hpivotLeft pivot
+  have hleftPos := one_sub_weight_pos_of_two_labels design hpivotLeft leftLabel
+  have hrightPos := one_sub_weight_pos_of_two_labels design hpivotLeft rightLabel
   have hsq := sq_nonneg (tripleBracket (design.atom pivot) (design.atom leftLabel)
     (design.atom rightLabel))
   have hone := pairBracketSq_nonneg (design.atom leftLabel) (design.atom rightLabel)
@@ -699,9 +707,9 @@ theorem sq_tripleBracket_le_sum_pairBracketSq_of_not_hasStrictCertificate
   have hswap : pairSwapMass design pivot leftLabel rightLabel
       < tripleBracket (design.atom pivot) (design.atom leftLabel)
           (design.atom rightLabel) ^ 2 := by
-    have hpivotPos := one_sub_weight_pos design hpivotLeft pivot
-    have hleftPos := one_sub_weight_pos design hpivotLeft leftLabel
-    have hrightPos := one_sub_weight_pos design hpivotLeft rightLabel
+    have hpivotPos := one_sub_weight_pos_of_two_labels design hpivotLeft pivot
+    have hleftPos := one_sub_weight_pos_of_two_labels design hpivotLeft leftLabel
+    have hrightPos := one_sub_weight_pos_of_two_labels design hpivotLeft rightLabel
     have hone := pairBracketSq_nonneg (design.atom leftLabel) (design.atom rightLabel)
     have htwo := pairBracketSq_nonneg (design.atom pivot) (design.atom rightLabel)
     have hthree := pairBracketSq_nonneg (design.atom pivot) (design.atom leftLabel)
@@ -892,6 +900,37 @@ theorem one_le_freeMassBudget_coordinateDiagonalDesign_star :
                   • atomMatrix (coordinateDiagonalDesign.atom d))⁻¹
               *ᵥ coordinateDiagonalDesign.atom c)) := by
   rw [freeMassBudget_coordinateDiagonalDesign_star]; norm_num
+
+/-- **THE TWO CALIBRATION OBJECTS ARE ONE OBJECT.**  `Gtz.diagonalPattern` and
+`Gtz.kFourRootEdge` are the same table of six sign patterns. -/
+theorem diagonalPattern_eq_kFourRootEdge : diagonalPattern = kFourRootEdge := rfl
+
+/-- The two scales are the same square root. -/
+theorem diagonalScale_eq_kFourRootScale : diagonalScale = kFourRootScale := rfl
+
+/-- Hence the two designs have the same atoms. -/
+theorem coordinateDiagonalDesign_atom_eq : coordinateDiagonalDesign.atom = kFourDesign.atom :=
+  rfl
+
+/-- And the same weights. -/
+theorem coordinateDiagonalDesign_weight_eq :
+    coordinateDiagonalDesign.weight = kFourDesign.weight := rfl
+
+/-- So they are the same design.  Proof irrelevance closes the three proof fields and
+the two data fields are equal by `rfl`. -/
+theorem coordinateDiagonalDesign_eq_kFourDesign :
+    coordinateDiagonalDesign = kFourDesign := rfl
+
+/-- **The off-star budget of the `K4` edge design is `7/5`.**  The star value `6/5` is
+`Gtz.freeMassBudget_kFourDesign_star`; this is its missing twin, and the two together
+say that the free-mass arm misses `K4` at every one of its sixteen spanning triples. -/
+theorem freeMassBudget_kFourDesign_offStar :
+    ∑ c ∈ ({0, 1, 2} : Finset (Fin 6))ᶜ, kFourDesign.weight c
+        * (kFourDesign.atom c
+            ⬝ᵥ ((∑ d ∈ ({0, 1, 2} : Finset (Fin 6)),
+                (1 - kFourDesign.weight d) • atomMatrix (kFourDesign.atom d))⁻¹
+              *ᵥ kFourDesign.atom c))
+      = 7 / 5 := freeMassBudget_coordinateDiagonalDesign_offStar
 
 /-- The same off the star. -/
 theorem one_le_freeMassBudget_coordinateDiagonalDesign_offStar :
