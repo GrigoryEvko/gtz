@@ -1187,6 +1187,10 @@ import Gtz.Wave.TieStratumClassification
 import Gtz.Wave.TripleInvariantLedger
 import Gtz.Wave.InvariantBranchCut
 import Gtz.Wave.LineFreeBacklog
+import Gtz.Wave.KFourBacklog
+import Gtz.Wave.OneLineBacklog
+import Gtz.Wave.ThreeLinesBacklog
+import Gtz.Wave.TwoMeetingLinesBacklog
 import Gtz.Wave.CorankOneNormalForm
 import Gtz.Wave.ThreeLinesSlideElimination
 import Gtz.Wave.PairingEnergyBudget

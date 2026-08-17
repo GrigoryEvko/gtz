@@ -145,8 +145,13 @@ of the three members of a card-three WEAK dominator read as zero.  At the
 one-line pattern the line normal is exactly such a vector, and
 `Gtz.oneLine_exists_unitNormal` supplies it from the pattern alone. -/
 
-/-- The unit line normal is nonzero. -/
-theorem ne_zero_of_dotProduct_self_eq_one {vec : Fin 3 → ℝ} (hunit : vec ⬝ᵥ vec = 1) :
+/-- The unit line normal is nonzero.
+
+**#DUPLICATION — the general twin is `Gtz.ne_zero_of_dotProduct_self_eq_one`**
+in `Gtz/Wave/FlatPairWeakSeed.lean`.  That one holds at every rank and its proof
+is character-identical.  This copy fixes the rank at three.  The two collided in
+the umbrella under one name, and the suffix here repairs the collision. -/
+theorem ne_zero_of_dotProduct_self_eq_one_rankThree {vec : Fin 3 → ℝ} (hunit : vec ⬝ᵥ vec = 1) :
     vec ≠ 0 := by
   intro hzero
   rw [hzero] at hunit
@@ -239,7 +244,7 @@ theorem oneLine_dominator_lineCount_le_two_of_pattern (design : WeightedDesign 6
     (hdominates : Dominates design dominator) :
     (dominator ∩ ({0, 1, 2} : Finset (Fin 6))).card ≤ 2 := by
   obtain ⟨unitNormal, hunit, hlineFlat⟩ := oneLine_exists_unitNormal design hpattern
-  exact oneLine_dominator_lineCount_le_two design (ne_zero_of_dotProduct_self_eq_one hunit)
+  exact oneLine_dominator_lineCount_le_two design (ne_zero_of_dotProduct_self_eq_one_rankThree hunit)
     hlineFlat hcard hdominates
 
 /-- A card-three subset of `Fin 6` that misses the line IS the free triple.  Pure
@@ -678,7 +683,7 @@ theorem oneLine_exists_inPlane_dominating_pair (design : WeightedDesign 6 3)
   obtain ⟨lineNormal, hunit, hlineFlat⟩ := oneLine_exists_unitNormal design hpattern
   obtain ⟨plane, unitNormal, _unitScale, hframe, hparallel, _hscaleNe, hunitSq,
     _hkills, _hresolve⟩ :=
-    exists_planeFrame_of_ne_zero lineNormal (ne_zero_of_dotProduct_self_eq_one hunit)
+    exists_planeFrame_of_ne_zero lineNormal (ne_zero_of_dotProduct_self_eq_one_rankThree hunit)
   obtain ⟨hfirstUnit, hsecondUnit, horth⟩ := planeFrame_rows_orthonormal hframe
   refine ⟨unitNormal, plane 0, plane 1, hunitSq, ?_, hfirstUnit, hsecondUnit, horth,
     exists_inPlane_dominating_pair design (plane 0) (plane 1) hfirstUnit hsecondUnit horth⟩
