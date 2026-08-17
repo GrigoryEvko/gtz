@@ -1014,6 +1014,63 @@ theorem exists_twoMeetingLines_transversal_pos_on_normalPlane (design : Weighted
         hunitFirst hunitSecond horthFirst horthSecond 1 3 (Or.inl rfl) (Or.inl rfl)
         le_rfl hfirstPick le_rfl hsecondPick cf cs hne⟩
 
+/-! ### What the plane positivity leaves: the shared-atom direction alone
+
+The two normals are never parallel.  `Gtz.twoMeetingLines_normals_not_parallel`
+proves it, and `Gtz.twoMeetingLines_normals_not_perpendicular` above adds that
+they are never orthogonal either.  The shared atom is orthogonal to both.  So the
+three vectors form a basis, and the plane theorem above covers a genuine
+two-dimensional complement of the shared atom.
+
+The reading below is the only scalar the plane theorem does not reach.  It is the
+gap of the same named transversal at the shared atom itself, and the transversal
+excludes the shared atom by construction.  That is the exact place where the
+registry's diamond warning bites: the shared atom carries energy that no
+transversal collects. -/
+
+/-- The gap of a transversal at an arbitrary probe, written out.  With the probe
+equal to the shared atom this is the one scalar the plane theorem leaves open. -/
+theorem twoMeetingLines_transversal_gap_at (design : WeightedDesign 6 3)
+    (firstLabel secondLabel : Fin 6)
+    (hfirstSecond : firstLabel ≠ secondLabel) (hfirstOpen : firstLabel ≠ 5)
+    (hsecondOpen : secondLabel ≠ 5) (probe : Fin 3 → ℝ) :
+    probe ⬝ᵥ ((subsetSum design ({firstLabel, secondLabel, 5} : Finset (Fin 6)) - 1) *ᵥ probe)
+      = (design.atom firstLabel ⬝ᵥ probe) ^ 2 + (design.atom secondLabel ⬝ᵥ probe) ^ 2
+        + (design.atom 5 ⬝ᵥ probe) ^ 2 - probe ⬝ᵥ probe := by
+  classical
+  have hnotMemFirst : firstLabel ∉ ({secondLabel, 5} : Finset (Fin 6)) := by
+    simp [hfirstSecond, hfirstOpen]
+  have hnotMemSecond : secondLabel ∉ ({(5 : Fin 6)} : Finset (Fin 6)) := by
+    simp [hsecondOpen]
+  have hsum : (∑ label ∈ ({firstLabel, secondLabel, 5} : Finset (Fin 6)),
+        (design.atom label ⬝ᵥ probe) ^ 2)
+      = (design.atom firstLabel ⬝ᵥ probe) ^ 2 + (design.atom secondLabel ⬝ᵥ probe) ^ 2
+        + (design.atom 5 ⬝ᵥ probe) ^ 2 := by
+    rw [Finset.sum_insert hnotMemFirst, Finset.sum_insert hnotMemSecond,
+      Finset.sum_singleton, add_assoc]
+  rw [Matrix.sub_mulVec, dotProduct_sub, dotProduct_subsetSum_mulVec_of_finset,
+    Matrix.one_mulVec, hsum]
+
+/-- **THE RESIDUAL IS ONE READING AT THE SHARED ATOM.**  The plane theorem gives
+the maximal transversal a strictly positive gap on the whole plane of the two
+normals.  What no unconditional argument reaches is the reading at the shared
+atom, and the transversal never collects the shared atom's own energy. -/
+theorem twoMeetingLines_transversalGap_at_sharedAtom (design : WeightedDesign 6 3)
+    (firstLabel secondLabel : Fin 6)
+    (hfirstSecond : firstLabel ≠ secondLabel) (hfirstOpen : firstLabel ≠ 5)
+    (hsecondOpen : secondLabel ≠ 5) :
+    design.atom 0
+        ⬝ᵥ ((subsetSum design ({firstLabel, secondLabel, 5} : Finset (Fin 6)) - 1)
+          *ᵥ design.atom 0)
+      = (design.atom firstLabel ⬝ᵥ design.atom 0) ^ 2
+        + (design.atom secondLabel ⬝ᵥ design.atom 0) ^ 2
+        + (design.atom 5 ⬝ᵥ design.atom 0) ^ 2 - leverageOf (design.atom 0) := by
+  rw [twoMeetingLines_transversal_gap_at design firstLabel secondLabel hfirstSecond
+    hfirstOpen hsecondOpen (design.atom 0)]
+  congr 1
+  simp [leverageOf, dotProduct, pow_two]
+
 end Gtz
+
 
 
