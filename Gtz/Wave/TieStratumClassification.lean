@@ -77,6 +77,22 @@ cannot reach six.
 
 The open `(6,3)` cell is that single stratum, and it has no counterpart at five.
 
+## The finite cut on the twenty triples
+
+`Gtz.subsetSum_posDef_iff_tripleInvariants` decides strict domination by three
+polynomial invariants of a triple.  The leverage floor discharges the first one
+for free at a `(6,3)` tie, so the tie's refusal is a TWO-valued label on the
+triples: `Gtz.invariantDichotomy_of_isTie_sixThree`.  Two identities put that
+label in the campaign's own vocabulary — the second invariant is the total of
+the three pair gap minors, and the third IS `Gtz.discriminantTie`.
+
+`Gtz.sharpenedDichotomy_of_isTie_sixThree` then weaves this module with
+`Gtz/Design/FirstTouch.lean`.  Every MIXED configuration of pair minors falls to
+the tree's landed `Gtz.discriminantTie_nonpos_of_pairGapExcessOf_nonpos`, because
+two pairs of a triple always share a label and that label is the anchor the
+tree's theorem asks for.  What survives is one branch: all three pair minors of
+the triple are nonpositive at once, or the tie discriminant is nonpositive.
+
 ## The leverage arithmetic, and where it stops
 
 `Gtz.sum_inv_leverage_lt_four_of_isTie_sixThree` is the sharp harmonic law
@@ -93,6 +109,7 @@ import Gtz.Design.LineFreeConicBridge
 import Gtz.Quantitative.HingeStressNarrowing
 import Gtz.Design.StratumTieFreeClasses
 import Gtz.Design.DepthCapAxisParseval
+import Gtz.Design.FirstTouch
 import Gtz.Ties.RankTwoMassCircuit
 import Gtz.Reduction.PolarPlaneTurn
 import Gtz.Reduction.PolarCrossWitness
@@ -1054,6 +1071,177 @@ theorem invariantDichotomy_of_isTie_sixThree (design : WeightedDesign 6 3) (htie
     rw [Finset.card_insert_of_notMem hnotFirst, Finset.card_insert_of_notMem hnotSecond,
       Finset.card_singleton]
   exact htie.2 _ hcard hposDef
+
+/-! ### The dichotomy in the campaign's own vocabulary
+
+The two invariants of the dichotomy already have names in the tree.  The second
+invariant of the gap is the TOTAL OF THE THREE PAIR GAP MINORS, and the gap
+determinant is `Gtz.discriminantTie`.  The two identities below make the
+dichotomy consumable by `Gtz/Design/FirstTouch.lean`, which prices
+`Gtz.discriminantTie` from one pair minor at a time. -/
+
+/-- The squared cross axis of two atoms is the pair's axis budget. -/
+theorem crossNormSq_atom_eq_crossAxisBudget (D : WeightedDesign m 3)
+    (firstLabel secondLabel : Fin m) :
+    crossNormSq (D.atom firstLabel) (D.atom secondLabel)
+      = crossAxisBudget D firstLabel secondLabel := by
+  simpa only [crossNormSq, crossAxis] using crossAxis_dotProduct_self D firstLabel secondLabel
+
+/-- **THE SECOND GAP INVARIANT IS THE PAIR MINOR TOTAL.**  A polynomial identity,
+at every rank-three design. -/
+theorem gapSecondInvariant_eq_pairGapExcessSum (D : WeightedDesign m 3)
+    (firstLabel secondLabel thirdLabel : Fin m) :
+    triplePairAreaSum (D.atom firstLabel) (D.atom secondLabel) (D.atom thirdLabel)
+        - 2 * tripleLeverageSum (D.atom firstLabel) (D.atom secondLabel)
+            (D.atom thirdLabel) + 3
+      = pairGapExcessOf D firstLabel secondLabel + pairGapExcessOf D firstLabel thirdLabel
+        + pairGapExcessOf D secondLabel thirdLabel := by
+  simp only [triplePairAreaSum, crossNormSq_atom_eq_crossAxisBudget, crossAxisBudget,
+    tripleLeverageSum, pairGapExcessOf, gapExcessOf, gapPairingOf, atomPairing]
+  ring
+
+/-- **THE GAP DETERMINANT IS THE TIE DISCRIMINANT.**  A polynomial identity, at
+every rank-three design.  `Gtz.discriminantTie` was never identified with the
+third invariant of the gap. -/
+theorem gapDetInvariant_eq_discriminantTie (D : WeightedDesign m 3)
+    (firstLabel secondLabel thirdLabel : Fin m) :
+    atomBracket D firstLabel secondLabel thirdLabel ^ 2
+        - triplePairAreaSum (D.atom firstLabel) (D.atom secondLabel) (D.atom thirdLabel)
+        + tripleLeverageSum (D.atom firstLabel) (D.atom secondLabel) (D.atom thirdLabel) - 1
+      = discriminantTie D firstLabel secondLabel thirdLabel := by
+  simp only [atomBracket_sq, triplePairAreaSum, crossNormSq_atom_eq_crossAxisBudget,
+    crossAxisBudget, tripleLeverageSum, discriminantTie, heavyExcess]
+  ring
+
+/-- The tie discriminant is a determinant, so it does not read the slot order.
+Three of the six permutations, which is what the case split below consumes. -/
+theorem discriminantTie_perm_eq (D : WeightedDesign m 3)
+    (firstLabel secondLabel thirdLabel : Fin m) :
+    discriminantTie D firstLabel secondLabel thirdLabel
+        = discriminantTie D secondLabel firstLabel thirdLabel
+      ∧ discriminantTie D firstLabel secondLabel thirdLabel
+        = discriminantTie D thirdLabel firstLabel secondLabel
+      ∧ discriminantTie D firstLabel secondLabel thirdLabel
+        = discriminantTie D thirdLabel secondLabel firstLabel := by
+  refine ⟨?_, ?_, ?_⟩ <;>
+    (simp only [discriminantTie, heavyExcess, atomPairing, leverageOf, dotProduct,
+      Fin.sum_univ_three]; ring)
+
+/-- The pair gap minor does not read the slot order either. -/
+theorem pairGapExcessOf_comm (D : WeightedDesign m k) (firstLabel secondLabel : Fin m) :
+    pairGapExcessOf D firstLabel secondLabel = pairGapExcessOf D secondLabel firstLabel := by
+  simp only [pairGapExcessOf, gapExcessOf, gapPairingOf]
+  rw [dotProduct_comm]
+  ring
+
+/-- **THE DICHOTOMY, IN THE CAMPAIGN'S VOCABULARY.**  At every triple of a
+`(6,3)` tie carrying a strictly heavy atom, the total of the three pair gap
+minors is nonpositive, or the tie discriminant is nonpositive. -/
+theorem pairMinorSum_nonpos_or_discriminantTie_nonpos_of_isTie_sixThree
+    (design : WeightedDesign 6 3) (htie : IsTie design)
+    (firstLabel secondLabel thirdLabel : Fin 6)
+    (hfirstSecond : firstLabel ≠ secondLabel) (hfirstThird : firstLabel ≠ thirdLabel)
+    (hsecondThird : secondLabel ≠ thirdLabel)
+    (hstrictlyHeavy : 1 < leverageOf (design.atom firstLabel)
+      ∨ 1 < leverageOf (design.atom secondLabel)
+      ∨ 1 < leverageOf (design.atom thirdLabel)) :
+    pairGapExcessOf design firstLabel secondLabel
+          + pairGapExcessOf design firstLabel thirdLabel
+          + pairGapExcessOf design secondLabel thirdLabel ≤ 0
+      ∨ discriminantTie design firstLabel secondLabel thirdLabel ≤ 0 := by
+  rcases invariantDichotomy_of_isTie_sixThree design htie firstLabel secondLabel thirdLabel
+    hfirstSecond hfirstThird hsecondThird hstrictlyHeavy with hsecond | hdeterminant
+  · refine Or.inl ?_
+    rw [← gapSecondInvariant_eq_pairGapExcessSum]
+    exact hsecond
+  · refine Or.inr ?_
+    rw [← gapDetInvariant_eq_discriminantTie]
+    exact hdeterminant
+
+/-- **THREE LIVE PAIRS FORCE A NONPOSITIVE TIE DISCRIMINANT.**  At a `(6,3)` tie,
+a triple whose three pair gap minors are all positive has nonpositive tie
+discriminant.  This is the complement of `Gtz.discriminantTie_nonpos_of_pairGapExcessOf_nonpos`,
+which prices the same scalar from a NONPOSITIVE pair minor. -/
+theorem discriminantTie_nonpos_of_isTie_of_livePairs (design : WeightedDesign 6 3)
+    (htie : IsTie design) (firstLabel secondLabel thirdLabel : Fin 6)
+    (hfirstSecond : firstLabel ≠ secondLabel) (hfirstThird : firstLabel ≠ thirdLabel)
+    (hsecondThird : secondLabel ≠ thirdLabel)
+    (hstrictlyHeavy : 1 < leverageOf (design.atom firstLabel)
+      ∨ 1 < leverageOf (design.atom secondLabel)
+      ∨ 1 < leverageOf (design.atom thirdLabel))
+    (hliveOne : 0 < pairGapExcessOf design firstLabel secondLabel)
+    (hliveTwo : 0 < pairGapExcessOf design firstLabel thirdLabel)
+    (hliveThree : 0 < pairGapExcessOf design secondLabel thirdLabel) :
+    discriminantTie design firstLabel secondLabel thirdLabel ≤ 0 := by
+  rcases pairMinorSum_nonpos_or_discriminantTie_nonpos_of_isTie_sixThree design htie
+    firstLabel secondLabel thirdLabel hfirstSecond hfirstThird hsecondThird
+    hstrictlyHeavy with hsum | hdeterminant
+  · linarith
+  · exact hdeterminant
+
+/-- **THE SHARPENED DICHOTOMY.**  At a `(6,3)` tie, at every triple whose three
+atoms are ALL strictly heavy, either ALL THREE pair gap minors are nonpositive,
+or the tie discriminant is nonpositive.
+
+This is strictly stronger than `Gtz.pairMinorSum_nonpos_or_discriminantTie_nonpos_of_isTie_sixThree`,
+whose left branch asks only that the three minors TOTAL at most zero.  The
+strengthening weaves two lanes: the all-positive configuration falls to this
+module's dichotomy, and every mixed configuration falls to the tree's landed
+`Gtz.discriminantTie_nonpos_of_pairGapExcessOf_nonpos`, because two pairs of a
+triple always share a label and that label is the anchor the tree's theorem
+needs.
+
+The surviving branch is a strong geometric condition: all three pairs of the
+triple sit at or past the boundary of liveness at once. -/
+theorem sharpenedDichotomy_of_isTie_sixThree (design : WeightedDesign 6 3) (htie : IsTie design)
+    (firstLabel secondLabel thirdLabel : Fin 6)
+    (hfirstSecond : firstLabel ≠ secondLabel) (hfirstThird : firstLabel ≠ thirdLabel)
+    (hsecondThird : secondLabel ≠ thirdLabel)
+    (hheavyFirst : 1 < leverageOf (design.atom firstLabel))
+    (hheavySecond : 1 < leverageOf (design.atom secondLabel))
+    (hheavyThird : 1 < leverageOf (design.atom thirdLabel)) :
+    (pairGapExcessOf design firstLabel secondLabel ≤ 0
+        ∧ pairGapExcessOf design firstLabel thirdLabel ≤ 0
+        ∧ pairGapExcessOf design secondLabel thirdLabel ≤ 0)
+      ∨ discriminantTie design firstLabel secondLabel thirdLabel ≤ 0 := by
+  have hexcessFirst : 0 < heavyExcess design firstLabel := by
+    simp only [heavyExcess]; linarith
+  have hexcessSecond : 0 < heavyExcess design secondLabel := by
+    simp only [heavyExcess]; linarith
+  obtain ⟨hswapLeft, hcycle, hswapOuter⟩ :=
+    discriminantTie_perm_eq design firstLabel secondLabel thirdLabel
+  by_cases hpairOne : pairGapExcessOf design firstLabel secondLabel ≤ 0
+  · by_cases hpairTwo : pairGapExcessOf design firstLabel thirdLabel ≤ 0
+    · by_cases hpairThree : pairGapExcessOf design secondLabel thirdLabel ≤ 0
+      · exact Or.inl ⟨hpairOne, hpairTwo, hpairThree⟩
+      · refine Or.inr ?_
+        rw [hswapOuter]
+        have hanchor : pairGapExcessOf design secondLabel firstLabel ≤ 0 := by
+          rw [pairGapExcessOf_comm]
+          exact hpairOne
+        have hcross : 0 ≤ pairGapExcessOf design secondLabel thirdLabel :=
+          le_of_lt (not_le.mp hpairThree)
+        exact discriminantTie_nonpos_of_pairGapExcessOf_nonpos design hexcessSecond hanchor
+          thirdLabel hcross
+    · refine Or.inr ?_
+      rw [hcycle]
+      exact discriminantTie_nonpos_of_pairGapExcessOf_nonpos design hexcessFirst hpairOne
+        thirdLabel (le_of_lt (not_le.mp hpairTwo))
+  · by_cases hpairTwo : pairGapExcessOf design firstLabel thirdLabel ≤ 0
+    · refine Or.inr ?_
+      rw [hswapLeft]
+      exact discriminantTie_nonpos_of_pairGapExcessOf_nonpos design hexcessFirst hpairTwo
+        secondLabel (le_of_lt (not_le.mp hpairOne))
+    · by_cases hpairThree : pairGapExcessOf design secondLabel thirdLabel ≤ 0
+      · refine Or.inr ?_
+        have hcross : 0 ≤ pairGapExcessOf design secondLabel firstLabel := by
+          rw [pairGapExcessOf_comm]
+          exact le_of_lt (not_le.mp hpairOne)
+        exact discriminantTie_nonpos_of_pairGapExcessOf_nonpos design hexcessSecond hpairThree
+          firstLabel hcross
+      · exact Or.inr (discriminantTie_nonpos_of_isTie_of_livePairs design htie firstLabel
+          secondLabel thirdLabel hfirstSecond hfirstThird hsecondThird (Or.inl hheavyFirst)
+          (not_le.mp hpairOne) (not_le.mp hpairTwo) (not_le.mp hpairThree))
 
 /-! ## 9. The ledger of this module -/
 
