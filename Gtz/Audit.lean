@@ -1211,6 +1211,8 @@ import Gtz.Wave.WiringDoorLedger
 import Gtz.Wave.WiringAllFiveOnPath
 import Gtz.Wave.WiringSynonymClass
 import Gtz.Wave.CellAssemblyAudit
+import Gtz.Wave.DiamondConicStress
+import Gtz.Wave.AdjacentDominatorStress
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35413,3 +35415,30 @@ run_cmd do
 #print axioms Gtz.solved_ne_zero_of_reading_eq_one
 #print axioms Gtz.exchange_reading_eq_one_iff_swap_dominates
 #print axioms Gtz.swap_dominates_with_null_of_reading_eq_one
+
+-- Gtz/Wave/DiamondConicStress.lean
+#print axioms Gtz.diamondGraph_edgeVector_eq
+#print axioms Gtz.eq_zero_of_conj_eq_zero
+#print axioms Gtz.diamondDesign_stressFree
+#print axioms Gtz.diamondEdgeVec_conicNull
+#print axioms Gtz.diamondDesign_on_conic
+
+-- Gtz/Wave/AdjacentDominatorStress.lean
+#print axioms Gtz.exchangeAnchor_eq_insert
+#print axioms Gtz.exchangeAnchor_swap
+#print axioms Gtz.erase_gap_eq
+#print axioms Gtz.removal_dominates_iff_reading_le_one
+#print axioms Gtz.removal_posDef_iff_reading_lt_one
+#print axioms Gtz.one_le_removal_reading_of_isTie
+#print axioms Gtz.removal_reading_eq_one_of_isTie_of_dominates
+#print axioms Gtz.weighted_reading_trace
+#print axioms Gtz.fourSet_reading_sum
+#print axioms Gtz.anchor_budget_identity
+#print axioms Gtz.three_le_freeReading_of_isTie
+#print axioms Gtz.anchor_downdate_kernel
+#print axioms Gtz.gapNullLine_swap_of_reading_eq_one
+#print axioms Gtz.nullDir_eq_smul_anchorInv
+#print axioms Gtz.transported_parseval
+#print axioms Gtz.outside_weighted_floor_of_isTie
+#print axioms Gtz.allOnes_subset_unique
+#print axioms Gtz.coveringDefect_dual_null_orthogonality

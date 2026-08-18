@@ -6300,3 +6300,5 @@ import Gtz.Wave.WiringChartGenericRoads
 import Gtz.Wave.WiringWitnessFamily
 import Gtz.Wave.WiringSixThreeNoGo
 import Gtz.Wave.GaleInvolution
+import Gtz.Wave.DiamondConicStress
+import Gtz.Wave.AdjacentDominatorStress
