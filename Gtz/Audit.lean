@@ -1192,6 +1192,10 @@ import Gtz.Wave.OneLineBacklog
 import Gtz.Wave.ThreeLinesBacklog
 import Gtz.Wave.TwoMeetingLinesBacklog
 import Gtz.Wave.CorankOneNormalForm
+import Gtz.Wave.CorankOneExchange
+import Gtz.Wave.CorankOnePlanePair
+import Gtz.Wave.CorankOneAssembly
+import Gtz.Wave.CorankOnePropagation
 import Gtz.Wave.ThreeLinesSlideElimination
 import Gtz.Wave.PairingEnergyBudget
 import Gtz.Wave.KFourTreeSumSign
@@ -35379,3 +35383,33 @@ run_cmd do
 #print axioms Gtz.card_traceZeroBranch_le_ten
 #print axioms Gtz.not_forall_leverage_eq_one_sixThree
 #print axioms Gtz.isTie_sixThree_inhabited
+
+-- Gtz/Wave/CorankOneExchange.lean
+#print axioms Gtz.mulVec_eq_zero_of_form_eq_zero
+#print axioms Gtz.transpose_exchangeAnchor
+#print axioms Gtz.exchangeAnchor_form
+#print axioms Gtz.exchangeAnchor_posDef
+#print axioms Gtz.subsetSum_swap_sub_one
+#print axioms Gtz.one_le_exchange_reading_of_isTie
+#print axioms Gtz.anchor_selfReading_eq_one
+#print axioms Gtz.sum_readings_eq_trace
+#print axioms Gtz.one_le_trace_anchorInv_of_isTie
+#print axioms Gtz.selfReading_le_exchange_reading_of_isTie
+
+-- Gtz/Wave/CorankOnePlanePair.lean
+#print axioms Gtz.exists_plane_covering_pair
+#print axioms Gtz.exists_nullPlane_covering_pair
+
+-- Gtz/Wave/CorankOneAssembly.lean
+#print axioms Gtz.dominator_resolves_nullDir
+#print axioms Gtz.subsetSum_univ_split
+#print axioms Gtz.fullMoment_sub_one_posDef
+#print axioms Gtz.outside_refusal_cascade
+#print axioms Gtz.wedge_budget
+#print axioms Gtz.exists_cross_eq_zero_of_hasParallelPair
+
+-- Gtz/Wave/CorankOnePropagation.lean
+#print axioms Gtz.sub_vecMulVec_mulVec_solved_eq_zero
+#print axioms Gtz.solved_ne_zero_of_reading_eq_one
+#print axioms Gtz.exchange_reading_eq_one_iff_swap_dominates
+#print axioms Gtz.swap_dominates_with_null_of_reading_eq_one
