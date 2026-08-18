@@ -51,6 +51,7 @@ import Gtz.Core.Basic
 import Gtz.Certificates.ResidueDissolution
 import Gtz.Reduction.RayleighCertificate
 import Gtz.Quantitative.DesignQuadraticFloors
+import Gtz.Reduction.RealVolumeFloor
 import Gtz.LinAlg.SchurRankOne
 import Gtz.LinAlg.DepthTwoDowndate
 
@@ -332,5 +333,41 @@ theorem erased_two_not_posDef_iff_gram (D : WeightedDesign m k)
   rw [gap_erase_two D F hx hy hxy]
   exact not_posDef_sub_two_vecMulVec_iff (subsetSum D F - 1) hF
     (D.atom x) (D.atom y)
+
+/-! ## 6. The planar corner forces a heavy inside atom -/
+
+/-- **Planar outside forces a heavy inside atom.**  When every atom off `C`
+reads zero against the unit direction `u`, the directional Parseval
+`Σ_c t_c (g_c·u)² = 1` is carried entirely by `C`, whose total weight is
+strictly below one.  Some atom of `C` must read above one.  This is the
+structural driver of the planar-outside corner: the heavy atom's one-shared
+triples are the ones the refusals must fight. -/
+theorem exists_heavy_inside_of_planarOutside (D : WeightedDesign m k)
+    (C : Finset (Fin m)) (hne : Cᶜ.Nonempty) {u : Fin k → ℝ}
+    (hunit : u ⬝ᵥ u = 1) (houtside : ∀ d ∈ Cᶜ, D.atom d ⬝ᵥ u = 0) :
+    ∃ e ∈ C, 1 < (D.atom e ⬝ᵥ u) ^ 2 := by
+  classical
+  by_contra hcon
+  push_neg at hcon
+  have htotal := dotProduct_self_eq_sum_weight_mul_sq D u
+  rw [hunit] at htotal
+  have hsplit : ∑ c, D.weight c * (D.atom c ⬝ᵥ u) ^ 2
+      = ∑ c ∈ C, D.weight c * (D.atom c ⬝ᵥ u) ^ 2
+        + ∑ c ∈ Cᶜ, D.weight c * (D.atom c ⬝ᵥ u) ^ 2 :=
+    (Finset.sum_add_sum_compl C _).symm
+  have houtzero : ∑ c ∈ Cᶜ, D.weight c * (D.atom c ⬝ᵥ u) ^ 2 = 0 :=
+    Finset.sum_eq_zero fun d hd => by rw [houtside d hd]; ring
+  have hinside_le : ∑ c ∈ C, D.weight c * (D.atom c ⬝ᵥ u) ^ 2
+      ≤ ∑ c ∈ C, D.weight c := by
+    refine Finset.sum_le_sum fun e he => ?_
+    nlinarith [hcon e he, le_of_lt (D.weight_pos e), sq_nonneg (D.atom e ⬝ᵥ u)]
+  have hweightC : ∑ c ∈ C, D.weight c < 1 := by
+    have hall : ∑ c ∈ C, D.weight c + ∑ c ∈ Cᶜ, D.weight c = 1 := by
+      rw [Finset.sum_add_sum_compl]
+      exact D.weight_sum_one
+    have hpos : 0 < ∑ c ∈ Cᶜ, D.weight c :=
+      Finset.sum_pos (fun c _ => D.weight_pos c) hne
+    linarith
+  linarith [htotal, hsplit, houtzero, hinside_le, hweightC]
 
 end Gtz

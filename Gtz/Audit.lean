@@ -35478,3 +35478,4 @@ run_cmd do
 #print axioms Gtz.corankTwoPlanar_complement_refused
 #print axioms Gtz.corankTwoPlanar_oneShared_strict
 #print axioms Gtz.corankTwoPlanar_not_isTie
+#print axioms Gtz.exists_heavy_inside_of_planarOutside
