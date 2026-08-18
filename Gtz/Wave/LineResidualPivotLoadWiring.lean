@@ -154,6 +154,12 @@ theorem planeBranchTenCandidate_of_oneLine_pivotLoadScore_sum_ge_three
 
 /-- The four-transversal disjunction directly packages a strict card-three
 witness. -/
+-- **#DUPLICATE (tagged 2026-08-17, verified by read).**  The twin of this
+-- declaration is `Gtz.exists_posDef_cardThree_of_twoMeetingLinesTransversalStrict`
+-- at Gtz/Wave/OneLineWedgeFlatSplit.lean:1070 — same name, same statement, same
+-- proof shape.  Neither module imports the other, and no module imports both,
+-- so the clash is latent and today's build passes.  The first module that
+-- imports both fails to compile.  KEEP ONE.
 theorem exists_posDef_cardThree_of_twoMeetingLinesTransversalStrict
     (design : WeightedDesign 6 3)
     (htransversal : TwoMeetingLinesTransversalStrict design) :

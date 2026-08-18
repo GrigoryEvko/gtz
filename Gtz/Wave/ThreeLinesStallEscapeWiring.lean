@@ -144,6 +144,18 @@ def ThreeLinesFundamentalStallEscape : Prop :=
   ∀ slide : ℝ, IsAdmissibleThreeLinesParameter slide → 1 ≤ |slide| →
     DirectionChartCardFourStallEscape (threeLinesDirection slide)
 
+-- AUDIT-ORPHAN (2026-08-17): ZERO consumers tree-wide, and this is a genuine
+-- `Iff` with the public target `Gtz.ChartTieFreeThreeLinesFundamentalDomain`
+-- (Gtz/Design/RigidityBridge.lean:1405), with no hypothesis at all.  The whole
+-- class goal is therefore already restated as a card-FOUR repair obligation and
+-- nothing consumes the restatement.
+-- WHY IT MATTERS: the card-four form is the only landed handle on the residue
+-- the leverage route cannot reach, namely four or more over-levered labels
+-- (`Gtz.three_le_card_overLevered`, Gtz/Wave/ThreeLinesSlideElimination.lean:283,
+-- proves at least three, and `Gtz.exists_posDef_threeLines_of_overLevered_triple`
+-- (:1409) closes only the exactly-three stratum).
+-- The antecedent is far richer than the card-three search it replaces: it hands
+-- the prover a positive definite four-set plus four ladder-pivot inequalities.
 /-- Fundamental-domain stall escape is exactly public A2. -/
 theorem threeLinesFundamentalStallEscape_iff_chartTieFree :
     ThreeLinesFundamentalStallEscape ↔

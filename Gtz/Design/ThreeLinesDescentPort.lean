@@ -361,6 +361,17 @@ theorem exists_posDef_erase_univ_not_stall_threeLines (slide : ℝ)
   exists_posDef_erase_univ_not_stall_of_span _ point
     (threeLinesDirection_span slide)
 
+-- AUDIT-ORPHAN (2026-08-17): ZERO consumers tree-wide.  Measured by name search
+-- over `Gtz/` and `Skeleton/`, minus the `Gtz/Audit.lean` pin registry.  This is
+-- the cleanest reduction in the three-lines lane and nothing reads it.  It is
+-- UNCONDITIONAL: no admissibility, no fundamental domain, no cell hypothesis.
+-- Its sole input `Gtz.threeLinesDirection_span` (Gtz/Design/ChartReadingLaw.lean:243)
+-- is slide-free, because labels 0, 1 and 3 are the standard basis.
+-- It composes with `Gtz.exists_cardThree_posDef_iff_exists_nonStalledCardFour`
+-- (Gtz/Wave/ThreeLinesStallEscapeWiring.lean:80) and with
+-- `Gtz.threeLinesFundamentalStallEscape_iff_chartTieFree` (:148).  All three are
+-- orphans, and together they say the ENTIRE A2 residual is one statement:
+-- no stalled positive definite card-four selection exists.
 /-- **THE A2 DICHOTOMY.**  Every three-lines chart point carries a card-three
 positive definite selection or a stalled positive definite four-label
 selection.

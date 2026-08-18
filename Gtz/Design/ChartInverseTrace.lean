@@ -34,6 +34,21 @@ open Matrix
 
 variable {size : ℕ}
 
+-- AUDIT-DUPLICATE (2026-08-17): ONE matrix carries FOUR names in this repo.
+-- Byte-identical bodies: `Gtz.chartMassMoment`
+-- (Gtz/Wave/ThreeLinesSlideElimination.lean), and once the direction is fixed
+-- to `kFourDirection`, `Gtz.kFourLaplacian` (Gtz/Wave/KirchhoffSignTower.lean)
+-- and `Gtz.kFourMassMoment` (Gtz/Wave/KFourTreeLaplacian.lean).
+-- Exactly ONE bridge exists, `Gtz.chartMassMatrix_kFour_eq_kFourLaplacian`,
+-- proved by `rfl`.  The two missing bridges are also `rfl`.
+-- COST: the leverage toolkit of ThreeLinesSlideElimination.lean (the veto
+-- `Gtz.weight_lt_chartMassLeverage_of_posDef_gap`, the counting law
+-- `Gtz.three_le_card_overLevered`, the criterion
+-- `Gtz.posDef_directionChartGap_of_dualStrict`) cannot reach any lane that
+-- speaks `chartMassMatrix`, although
+-- `Gtz.posDef_chartMassMatrix_kFour`
+-- (Gtz/Wave/TriangleStallClosureDeflation.lean) already supplies its
+-- positive-definiteness hypothesis unconditionally at every K4 chart point.
 /-- The total mass matrix of a chart point: the term the chart gap subtracts. -/
 noncomputable def chartMassMatrix (direction : Fin size → (Fin 3 → ℝ))
     (mass : Fin size → ℝ) : Matrix (Fin 3) (Fin 3) ℝ :=

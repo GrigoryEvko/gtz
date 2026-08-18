@@ -78,6 +78,19 @@ theorem threeLinesStarFamily_not_line (selected : Finset (Fin 6))
       selected ≠ ({1, 3, 5} : Finset (Fin 6)) := by
   fin_cases hmem <;> exact ⟨by decide, by decide, by decide⟩
 
+-- AUDIT-BOGUS-DOC (2026-08-17, MEASURED): the docstring names a "determinant
+-- law", and no such law exists.  This definition has exactly three occurrences in
+-- the tree: the definition here, the theorem at :88, and the rewrite inside that
+-- proof.  Nothing connects it to `Gtz.threeLinesBasisDeterminant`
+-- (Gtz/Design/ThreeLinesAtlas.lean:174), to `Gtz.det_threeLinesCoefficientMatrix`
+-- (:209), or to Cauchy-Binet.  It is a free-standing `if` with no proof
+-- obligation attached.  Either land the bridge or drop the claim.
+-- AUDIT-BOGUS-DOC (2026-08-17): the module header claims that on the fundamental
+-- domain EVERY star weight reaches one.  The theorem at :88 excludes `{2,4,5}`
+-- through its `hne` hypothesis, and the header states no exclusion.  At
+-- `slide = -1` the excluded weight `(1 + slide) ^ 2` is zero, so the header claim
+-- fails for the fifth member.  `Gtz.IsAdmissibleThreeLinesParameter` rules that
+-- slide out, which repairs the mathematics and not the sentence.
 /-- The squared bracket the determinant law attaches to a star triple. -/
 noncomputable def threeLinesStarWeight (slide : ℝ) (selected : Finset (Fin 6)) : ℝ :=
   if selected = ({2, 4, 5} : Finset (Fin 6)) then (1 + slide) ^ 2 else slide ^ 2

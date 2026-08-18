@@ -21,6 +21,17 @@ vocabularies and were never joined.
   and the triple collapses to its third component alone.
 
 Nothing in the two source modules imports the other.  This module is the join.
+
+AUDIT-UNCONSUMED (2026-08-17): NO module imports this file except the `Gtz.lean`
+umbrella.  Real consumer count is ZERO.  That is a mis-shelving, not a shortage
+of content: `Gtz.kFour_exists_tree_posDef_iff_massTreeSum` is the SHARPEST
+landed reduction of the whole `M(K4)` class.  It is UNCONDITIONAL, and it carries
+NO block conjunct, so it strictly dominates
+`Gtz.KFourBlockAdmissibleDetTotal` (Gtz/Wave/WiringKFourWalls.lean), which
+still pays for a `leadingTwoBlock` positive definiteness side condition.
+Read against it, `Gtz.KFourUniversalStrictTree` becomes: at every chart point,
+for SOME drop label, the produced tree has a positive signed tree sum.  ONE
+polynomial inequality, no matrix.
 -/
 
 namespace Gtz

@@ -56,6 +56,32 @@ pattern does NOT contain.  The parameters come out as
 
 and the basis change is the rescaled frame `coefE . v0`, `coefF . v1`,
 `coefG . v3`, which carries atom `5` to `(1,1,1)` by construction.
+
+## #MISSING — the twenty brackets are PROSE here, not lemmas
+
+The bracket list at the top of this docstring is a comment.  No declaration in
+the corpus evaluates `tripleBracket (twoMeetingLinesDirection param i) ...` to a
+polynomial in `(p, q)`.  The only landed bracket fact at this chart is
+`Gtz.tripleBracket_twoMeetingLinesDirection_eq_zero_iff`, which decides
+VANISHING and nothing else.  Compare `Gtz.tripleBracket_threeLinesDirection_vertexTriple`,
+`Gtz.tripleBracket_threeLinesDirection_freeTriple` and
+`Gtz.tripleBracket_threeLinesDirection_oneTwoFive`
+(Gtz/Design/ThreeLinesAtlas.lean:267, :274, :283), which give VALUES at the
+one-parameter chart.  A two-parameter table is the first brick of this lane.
+
+## #MISSING — the over-levered closure is not instantiated here
+
+`Gtz.posDef_directionChartGap_of_leverageTrace`,
+`Gtz.two_add_weight_lt_sum_leverage_of_overLevered_triple`,
+`Gtz.three_le_card_overLevered`, `Gtz.weight_lt_chartMassLeverage_of_posDef_gap`
+and `Gtz.sum_leverage_le_two_of_dependent`
+(Gtz/Wave/ThreeLinesSlideElimination.lean) are DIRECTION-GENERIC.  The three-lines
+chart instantiates them at `Gtz.exists_posDef_threeLines_of_overLevered_triple`
+(:1409), whose only chart-specific input is
+`Gtz.posDef_chartMassMoment_threeLines` (:864), itself one term.  The twin input
+at this chart is landed: `Gtz.posDef_massMoment_twoMeetingLinesDirection`
+(Gtz/Design/ChartProgrammeAssembly.lean:254), and `Gtz.chartMassMoment_eq` is
+`rfl`.  The two-meeting-lines instantiation does not exist.
 -/
 import Gtz.Design.RigidityBridge
 

@@ -124,6 +124,22 @@ theorem chartLadderPivot_univ_lt_one_of_notMem (point : DirectionChartPoint 6)
     point.weight point.mass_pos point.weight_pos Finset.univ
     (Finset.mem_univ label) (posDef_directionChartGap_univ point)).mp hpdErase
 
+-- AUDIT-PORTABLE (2026-08-17): the proof below is DIRECTION-GENERIC but the
+-- statement is hard-coded to `kFourDirection`.  Measured: the three inputs are
+-- `Gtz.pivot_balance` (Gtz/Design/PivotBalanceLaw.lean:86, takes `direction` as
+-- an argument), `Gtz.directionChartPoint_weight_lt_one`
+-- (Gtz/Design/StarOnlyLaw.lean:140, no direction at all) and
+-- `Gtz.posDef_directionChartGap_univ` (Gtz/Design/PivotBalanceLaw.lean:134, the
+-- ONLY K4-specific input).  The three-lines analogue of that last input is
+-- landed and unconditional at every slide:
+-- `Gtz.posDef_directionChartGap_univ_threeLines`
+-- (Gtz/Design/ThreeLinesDescentPort.lean:312).
+-- A three-lines copy is therefore a two-symbol substitution, not new
+-- mathematics.  The docstring below already asserts the genericity in prose
+-- ("applies to ... any four labels at all") while the signature denies it.
+-- The same remark applies to `Gtz.chartLadderPivot_univ_lt_one_of_notMem` (:108)
+-- and to the K4 wrappers in Gtz/Design/StallComplementCounting.lean at :70,
+-- :108 and :136, whose generic engines at :50 and :88 already take `direction`.
 /-- **THE UNIV-DESCENT LAW.**  Every four-element set of labels holds a label
 which is droppable from the full selection.
 

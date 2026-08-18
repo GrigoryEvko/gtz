@@ -42,6 +42,29 @@ PRIMITIVITY IS NOT USED.  The `#4` covering needs a non-parallel hypothesis to
 exclude its degenerate parameters; here every exclusion already follows from a
 bracket the pattern forbids to vanish, so the covering holds on the bracket
 hypotheses alone.
+
+## #REGISTRY-STALE — the ATTACK field of the axiom denies this file exists
+
+`Skeleton.obligationSeededTransversalTwoMeetingLines`
+(Skeleton/Obligations.lean:283) carries a WHY-OPEN field that reads "no chart
+exists for this pattern".  That is FALSE.
+`Gtz.parameterizedChartCovers_twoMeetingLinesDirection` (:283 of this file) is
+unconditional and sorry-free, `Gtz.stressFreeStratumIsTieFree_twoMeetingLines_of_chart`
+(:336) consumes it, and `Gtz.twoMeetingLinesOnPath_of_chart`
+(Gtz/Wave/WiringLineChartRoads.lean:164) carries the road all the way to the
+registry Prop.  Do not brief a fork from that field.
+
+## #ZERO-CONSUMER
+
+Outside this file and the two umbrellas, nothing cites
+`Gtz.exists_twoMeetingLinesRealization_of_brackets`,
+`Gtz.tripleBracket_twoThreeFive_of_expansions`,
+`Gtz.tripleBracket_oneFourFive_of_expansions`,
+`Gtz.tripleBracket_twoFourFive_of_expansions`, `Gtz.twoMeetingLinesScale`,
+`Gtz.twoMeetingLinesSelected`, `Gtz.twoMeetingLinesCoeff`,
+`Gtz.readsThrough_twoMeetingLinesDirection`,
+`Gtz.posDef_directionChartGap_twoMeetingLines_of_coverCell` or
+`Gtz.twoMeetingLinesFamily_mem_stressFreeResidualFamiliesSix`.
 -/
 import Gtz.Design.TwoMeetingLinesChart
 import Gtz.Design.GeneralCoverCell
@@ -377,7 +400,13 @@ theorem readsThrough_twoMeetingLinesDirection (param : ℝ × ℝ) :
 /-- **The general covering cell at entry `#3`.**  If every label's cover cost
 against the basis triple is at most one, the basis triple is strictly
 dominating.  This is the first chart-level cell available at this entry, and it
-exists only because the chart does. -/
+exists only because the chart does.
+
+#UNFED-HYPOTHESIS.  The `hspan` argument is not open: labels `0`, `1` and `3` of
+this chart are the coordinate axes, which is the same fact
+`Gtz.posDef_massMoment_twoMeetingLinesDirection`
+(Gtz/Design/ChartProgrammeAssembly.lean:254) already proves.  A caller must
+still supply it by hand, and no caller exists. -/
 theorem posDef_directionChartGap_twoMeetingLines_of_coverCell (param : ℝ × ℝ)
     (mass weight : Fin 6 → ℝ) (hmass : ∀ label, 0 < mass label)
     (hweight : ∀ label, 0 < weight label) (hsum : ∑ label, weight label = 1)

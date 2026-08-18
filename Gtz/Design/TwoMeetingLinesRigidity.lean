@@ -63,6 +63,15 @@ The cross product and the real orthogonal complement are real constructions.
 Over `ℂ` a nonzero vector can be isotropic, so a nonzero cross product no longer
 forces a one-dimensional annihilator, and the meeting identity loses its sign
 content because a squared reading may be negative.
+
+## #ZERO-CONSUMER — every declaration in this module
+
+Outside this file and the two umbrellas, nothing cites any of the nine theorems
+here.  The residual `Gtz.TwoMeetingLinesSeededTransversal`
+(Gtz/Wave/FlatPairWeakSeed.lean:651) hands over exactly the hypotheses these
+theorems consume: two unit normals with both orthogonality relations.  The
+angle identity, the two sine caps and the shared-atom pinning are therefore
+free inside the residual and are spent nowhere.
 -/
 
 namespace TwoMeetingLinesRigidity

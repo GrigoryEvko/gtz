@@ -32,6 +32,19 @@ namespace Gtz
 
 open Matrix
 
+-- AUDIT-NO-PRODUCER (2026-08-17): NO theorem in the repo concludes this Prop.
+-- Every one of its 8 occurrences takes it as a HYPOTHESIS.  Consumers that
+-- wait on it: `Gtz.kFourPivotWall_empty_of_atlasFires`,
+-- `Gtz.kFourKnifeBandRefined_of_bothWallsAtlasFire`,
+-- `Gtz.kFourKnifeBandRefinedAllMaxHeavy_of_bothWallsAtlasFire` and
+-- `Gtz.kFourFamilySelection_of_bothWallsAtlasFire` (all in this file), plus
+-- `Gtz.kFourFamilySelection_of_pivotWallAtlasFires` and its neighbours in
+-- Gtz/Wave/KFourPivotEndpointStarWiring.lean, and
+-- Gtz/Wave/KFourGaugeStarTransportWiring.lean.  These are doors with no key.
+-- The paired Prop `Gtz.KFourStarWallAtlasFires`
+-- (Gtz/Design/StarCorankClosure.lean) has no producer either, so the two-wall
+-- reduction `Gtz.kFourKnifeBandRefined_of_bothWallsAtlasFire` cannot fire from
+-- either side.
 /-- **THE PIVOT-WALL VACUITY TARGET.**  At every chart point with a weak
 spanning tree that carries the pointer window and the four-pivot wall, the
 unsigned minor atlas fires. -/

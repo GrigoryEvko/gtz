@@ -30,6 +30,23 @@ Two consequences.  The criterion can never fire at a line, which is the
 consistency check a sufficient criterion owes a family of degenerate triples.
 And at the normal of one line the two private atoms of the OTHER line split the
 floor, so one of them alone carries a positive transversal gap there.
+
+## #ZERO-CONSUMER — every declaration in this module
+
+Nothing outside this file and the two umbrellas cites any theorem here.
+`Gtz.twoMeetingLinesResidual_of_min_complLeverage_lt` (:204) already discharges
+the registry residual on a named slab and consumes none of the residual's own
+hypotheses, and it is wired to nothing.
+
+## #LIVE, not refuted
+
+The criterion hypothesis is `cap * (l0 + min(l1,l2) + min(l3,l4)) < 1 - cap`.
+The needle floor of this same module gives `cap * (l3 + l4 + l5) >= 1 - cap` and
+`cap * (l1 + l2 + l5) >= 1 - cap` at the two line normals.  The three label sets
+differ, so the floors do not refute the criterion.  Heaviness alone puts the
+criterion sum at three or more, so the criterion is silent once the cap reaches
+a quarter.  The Parseval form in Gtz/Design/TwoMeetingLinesParsevalCap.lean is
+the answer to that, and it is also unconsumed.
 -/
 
 variable {size rank : ℕ}

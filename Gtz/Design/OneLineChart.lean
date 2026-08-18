@@ -30,9 +30,30 @@ The twenty triple brackets of the chart are, in the order `012 013 014 015 023
   `0, 1, 1, w, s, s, s w, -1, -m, w-m, -1, -1, -w, 1, 1, 1-w, s-1, s-m,
    s + w - m - s w, m-1`,
 
-writing `s` for `slide`, `m` for `freeMid` and `w` for `freeLast`.  So the
-vanishing set is exactly the one listed line precisely when NINE conditions
-hold, and each is a degeneration OFF this stratum rather than a gap in it:
+writing `s` for `slide`, `m` for `freeMid` and `w` for `freeLast`.
+
+**#UNLANDED (tagged 2026-08-17, MEASURED).**  The twenty polynomials above are
+PROSE ONLY.  No declaration in the tree states any one of them.  A search for
+`tripleBracket (oneLineDirection` returns only the vanishing criterion
+`Gtz.tripleBracket_oneLineDirection_eq_zero_iff` below, whose right side is a
+`Prop` and never exposes a value.  Its proof runs 216 cases through `simp` and
+discards every polynomial it computes.  The six `_of_oneLineExpansions` lemmas
+in `Gtz.OneLineCovering` are the INVERSE direction, design-to-chart, and they
+mention `oneLineDirection` nowhere.  I recomputed the table by hand against the
+six atoms at :66-:72 and every entry is CORRECT, so the work is a transcription
+and not a derivation.
+
+Why the table is worth landing.  EIGHT of the twenty brackets are CONSTANT:
+`013 = 1`, `014 = 1`, `034 = -1`, `123 = -1`, `124 = -1`, `134 = 1`, `135 = 1`,
+and `012 = 0`.  Seven brackets are therefore nonzero at EVERY parameter, with no
+admissibility side condition at all.  Any cell that carries a hypothesis
+`tripleBracket ... ≠ 0` reads those seven for free.  One such cell is
+`Gtz.posDef_directionChartGap_of_leverageTrace`
+(Gtz/Wave/ThreeLinesSlideElimination.lean:1223), which is direction-generic.
+
+So the vanishing set is exactly the one listed line precisely when NINE
+conditions hold, and each is a degeneration OFF this stratum rather than a gap
+in it:
 
 * `s = 0` sends atom `2` onto atom `0`, a parallel pair.
 * `w = 0` puts atom `5` on the plane `z = 0`, joining the line and making it a

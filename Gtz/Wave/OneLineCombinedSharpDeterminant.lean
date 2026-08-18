@@ -1775,7 +1775,37 @@ theorem gtzWeighted_rank_three_of_wedgeMinorSelector {size : ℕ}
         hminor)⟩
 
 /-- **THE SELECTOR IS EXACTLY THE STRICT HALF.**  It is not a strengthening
-beyond strict domination, and it is not a weakening of it. -/
+beyond strict domination, and it is not a weakening of it.
+
+**#CIRCULAR — READ THIS BEFORE YOU QUOTE `Gtz.WedgeMinorSelector` AS PROGRESS
+(tagged 2026-08-17).**  This equivalence is the file's own honest verdict, and it
+says that the selector RELOCATES the open problem rather than shrinks it.
+`Gtz.gtzWeighted_rank_three_of_wedgeMinorSelector` (:1767) derives rank-three
+GTZ from the selector, and this theorem proves the selector equal to the strict
+half of that same statement.  So the pair discharges nothing.
+
+The circularity repeats one level down.  The only producer of the hypothesis
+`0 < wedgeMinor design selected normalVec` is `Gtz.wedgeMinor_pos_of_posDef`
+(:1514), whose own hypothesis is `(subsetSum design selected - 1).PosDef`, which
+is the conclusion the minor was introduced to reach.
+
+MEASURED, not prose.  The name `Gtz.WedgeMinorSelector` occurs in NO other file.
+The name `Gtz.flatSplitReduced` occurs in NO other file.  The whole outward
+footprint of this 1924-line module is four reference lines in two files, and all
+four cite the same three-line helper `Gtz.tripleBracket_self_left` (:988).  No
+headline result of this module reaches anything.
+
+WHAT IS ACTUALLY UNSPENT HERE, and is NOT circular:
+* `Gtz.exists_sharp_selection_surplus_pos` (:609) — rank-generic and
+  size-generic, and all four of its hypotheses are free at a line normal.  It
+  discharges the surplus conjunct outright.  It has ONE call site, at :1898, in
+  this file.
+* `Gtz.exists_tallFree_lineFlatSplitSelector_producer` (:1898) — the one-line
+  residual with the surplus already paid.  Its two hypotheses are free.  ZERO
+  call sites.
+* `Gtz.wedgeBalanceValue_determinant` (:1348) and
+  `Gtz.planeForm_determinant` (:822) — identities whose only hypothesis is unit
+  normalization, the second generic over the index type.  ZERO external users. -/
 theorem wedgeMinorSelector_iff_exists_strictTriple {size : ℕ} :
     WedgeMinorSelector size
       ↔ ∀ design : WeightedDesign size 3, ∃ selected : Finset (Fin size), selected.card = 3

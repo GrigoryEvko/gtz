@@ -26,6 +26,14 @@ complement's own weights are free to keep small however large the cap is.
   form, whose hypothesis is the weakest of the four;
 * `twoMeetingLinesResidual_of_min_weightedCompl_lt`, stated against the
   residual's own hypotheses, consuming none of them.
+
+## #ZERO-CONSUMER — every declaration in this module
+
+Nothing outside this file and the two umbrellas cites any theorem here.
+Weighted Parseval fixes the total of the six weighted leverages at three, so the
+hypothesis of `Gtz.twoMeetingLinesTransversalStrict_of_min_weightedCompl_lt` is
+a statement about how that fixed total splits.  The criterion is LIVE, and it is
+wired to nothing.
 -/
 
 /-! ## The four weighted complement sums -/

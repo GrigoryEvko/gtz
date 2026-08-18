@@ -437,6 +437,16 @@ theorem pivot_centered_balance (direction : Fin 6 → (Fin 3 → ℝ))
 
 /-! ## Four-set propagation -/
 
+-- AUDIT-UNUSED-GENERIC (2026-08-17): this theorem and its successor at :484 take
+-- `direction` as an argument, so they hold at EVERY six-label chart.  Measured
+-- call sites instantiate `kFourDirection` only (:724).  Neither is ever applied
+-- to `Gtz.threeLinesDirection`, although the three-lines lane carries the exact
+-- residual they address: `Gtz.threeLines_cardThree_or_cardFour_stall`
+-- (Gtz/Design/ThreeLinesDescentPort.lean:372) reduces the whole A2 obligation to
+-- ruling out a stalled positive definite card-four selection, and
+-- `Gtz.ThreeLinesFundamentalStallEscape`
+-- (Gtz/Wave/ThreeLinesStallEscapeWiring.lean:143) is `Iff`-equal to the target.
+-- Applying these two laws at `threeLinesDirection slide` costs one line each.
 /-- A stalled positive-definite four-set has an outside pivot at least one. -/
 theorem card_four_stall_exists_outside_pivot_ge_one
     (direction : Fin 6 → (Fin 3 → ℝ)) (point : DirectionChartPoint 6)

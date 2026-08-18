@@ -11,6 +11,65 @@ set_option maxHeartbeats 1000000
 /-!
 # The mass leverage of a chart label, and the dual reading of domination
 
+**#UNAUDITED #ORPHAN — READ THIS FIRST (re-measured 2026-08-17).**
+
+AUDIT-BOGUS (2026-08-17): the `#UNWIRED` claim that stood here was FALSE, and
+the paragraph that carried it is deleted.  This module IS imported, twice:
+`Gtz.lean:6285` and `Gtz/Audit.lean:1190`.  The `rg` that returned "zero hits"
+was mis-scoped.  The default build DOES compile this file.
+
+AUDIT-UNPINNED (2026-08-17): the audit half of the old claim SURVIVES, by a
+different mechanism.  `Gtz/Audit.lean` imports this module but writes no
+`#print axioms` line for any declaration in it.  Measured: `chartMassMoment`,
+`chartMassPivot`, `chartMassLeverage`, `sum_chartMassLeverage_eq_three`,
+`three_le_card_overLevered`, `posDef_directionChartGap_of_dualStrict`,
+`threeLinesBracket_zeroOneTwo` and
+`exists_posDef_threeLines_of_overLevered_triple` all score zero pins, while
+sibling `ThreeLinesSlideQuadratic.lean` declarations score one each.  The
+tree-wide zero-axiom guarantee therefore does NOT cover this file.  The fix is
+additive: append the pin lines to `Gtz/Audit.lean`.
+
+AUDIT-ORPHAN (2026-08-17): zero outward consumers.  All 61 declarations are
+referenced only inside this file and inside the `Gtz/Audit.lean` import line.
+1430 lines, no `sorry`, committed at 66bf219.
+
+THE STAKE IS HIGH.  Sections 1 thru 14 hold the sharpest structural handle in
+the campaign.  The theorems `Gtz.sum_chartMassLeverage_eq_three`,
+`Gtz.three_le_card_overLevered`, `Gtz.weight_lt_chartMassLeverage_of_posDef_gap`,
+`Gtz.posDef_directionChartGap_of_dualStrict`,
+`Gtz.sum_leverage_le_two_of_dependent`,
+`Gtz.posDef_directionChartGap_of_leverageTrace` and
+`Gtz.exists_posDef_threeLines_of_overLevered_triple` have no second copy.
+
+AUDIT-BOGUS (2026-08-17): the claim that "no second copy exists anywhere in the
+tree" covered the DEFINITIONS too, and for them it is FALSE.  Two copies exist.
+
+* `Gtz.chartMassMoment` (:63) is byte-identical to `Gtz.chartMassMatrix`
+  (Gtz/Design/ChartInverseTrace.lean:46).  Same body, same signature, two names,
+  no bridging lemma.  That file already carries its own AUDIT-DUPLICATE tag.
+* The leverage LAWS have a design-coordinate twin in
+  Gtz/Wave/AllHeavyWedgeCollapse.lean: `Gtz.rank_le_card_strictlyHeavySet` (:285),
+  `Gtz.subset_strictlyHeavySet_of_posDef` and
+  `Gtz.eq_strictlyHeavySet_of_posDef_of_card_eq_three`.  Same structure, other
+  coordinate system, and no bridge between `strictlyHeavySet` and the
+  over-levered filter.  That module scores one outward consumer in 1027 lines.
+
+AUDIT-BOGUS (2026-08-17): the REPAIR paragraph that stood here told the reader to
+add an import that ALREADY EXISTS, and it is deleted.  The true repair is
+narrower: append one `#print axioms` line per declaration to `Gtz/Audit.lean`.
+The row `scratchpad/wiring/modules.txt:186` records 877 lines and zero consumers.
+That row is STALE on the line count, which is 1430 today, and correct on the
+consumer count.
+
+## What is generic here, and what is not
+
+Sections 1 thru 13 bind `{size : ℕ}` and a FREE `direction`, so every result
+there applies to EVERY chart family, not only to `Gtz.threeLinesDirection`.  The
+sole structural hypothesis is `(chartMassMoment direction mass).PosDef`.  Section
+14 instantiates at the three-lines chart alone.  The one-line chart and the
+two-meeting-lines chart have NO instantiation, and each missing twin is a
+one-term transcription of section 14.
+
 Every landed cell for `Gtz.ChartTieFreeThreeLinesFundamentalDomain` compares the
 selected excesses against the outside masses DIRECTLY.  That comparison has no
 scale: the excess `m (1 - w) / w` and the mass `m` run over many orders of
@@ -58,6 +117,18 @@ variable {size : ℕ}
 
 /-! ## 1.  The mass moment, the pivot and the leverage -/
 
+-- AUDIT-DUPLICATE (2026-08-17): this definition is byte-identical to
+-- `Gtz.chartMassMatrix` (Gtz/Design/ChartInverseTrace.lean).  Same body, same
+-- signature, and NO bridging lemma exists in the repo.  Two more copies live at
+-- fixed direction: `Gtz.kFourLaplacian` (Gtz/Wave/KirchhoffSignTower.lean) and
+-- `Gtz.kFourMassMoment` (Gtz/Wave/KFourTreeLaplacian.lean).  Four names.
+-- COST: every theorem in this file demands `(chartMassMoment ..).PosDef`,
+-- while the K4 lane already proves `(chartMassMatrix kFourDirection ..).PosDef`
+-- unconditionally in `Gtz.posDef_chartMassMatrix_kFour`
+-- (Gtz/Wave/TriangleStallClosureDeflation.lean).  One `rfl` lemma joins them
+-- and unlocks this whole file for the K4 chart.  Compare
+-- `Gtz.chartMassMatrix_kFour_eq_kFourLaplacian`
+-- (Gtz/Wave/KirchhoffSignTower.lean), which is itself proved by `rfl`.
 /-- **The mass moment of a chart point.**  The Gram matrix of the directions
 weighted by the masses. -/
 noncomputable def chartMassMoment (direction : Fin size → (Fin 3 → ℝ))
@@ -734,6 +805,18 @@ section BracketTable
 
 variable (slide : ℝ)
 
+-- AUDIT-DUPLICATE (2026-08-17): the twenty theorems below re-derive data that
+-- `Gtz.threeLinesBasisDeterminant` (Gtz/Design/ThreeLinesAtlas.lean:174) already
+-- carries in SQUARED form.  That definition assigns `1` to twelve triples,
+-- `slide ^ 2` to `{0,1,5} {0,2,5} {1,2,5} {1,4,5}`, and `(1 + slide) ^ 2` to
+-- `{2,4,5}`, and it omits the three dependent lines outright.  The table below
+-- agrees entry for entry, and adds only the SIGNS, which the squared form loses.
+-- NO bridging lemma connects the two, and nothing outside this file reads the
+-- twenty theorems.
+-- A third partial table exists at
+-- Gtz/Wave/ThreeLinesStarBracketCover.lean:163 onward, but it is a different
+-- object: nine gap DETERMINANTS at one fixed witness point and `slide = 1`, not
+-- brackets of the direction family.
 theorem threeLinesBracket_zeroOneTwo :
     tripleBracket (threeLinesDirection slide 0) (threeLinesDirection slide 1)
       (threeLinesDirection slide 2) = 0 := by
@@ -889,6 +972,26 @@ theorem weight_lt_chartMassLeverage_threeLines (slide : ℝ) (point : DirectionC
     point.mass_pos point.weight_pos (posDef_chartMassMoment_threeLines slide point) selected
     pivotLabel hmem probe hblind hlive hgap
 
+-- AUDIT-DEAD-CELL (2026-08-17, MEASURED): this cell has NO inhabitant anywhere.
+-- A tree-wide name search returns exactly two hits, the definition here and the
+-- hypothesis of `Gtz.exists_posDef_threeLines_of_leverageDominanceCellFires`
+-- below.  No theorem proves it fires at any chart point, at any slide, and no
+-- theorem proves it covers.  The sibling `ThreeLinesLeverageTraceCellFires`
+-- scores the same two hits.
+-- CONSEQUENCE: the headline consumer is CONDITIONAL on an undischarged Prop, and
+-- the registry axiom did not move.  Reach figures quoted for either cell
+-- elsewhere are SAMPLED over rational points, never kernel.
+-- WHAT IS ACTUALLY CLOSED: only the extremal stratum, by
+-- `Gtz.exists_posDef_threeLines_of_overLevered_triple` at the end of this file,
+-- whose `hfilter` demands EXACTLY three over-levered labels.
+-- `Gtz.three_le_card_overLevered` (:283 region) proves at least three, so the
+-- open residue is four, five or six over-levered labels.  Nothing in this file
+-- discriminates among four or more.  The landed handle on that residue is the
+-- card-four route: `Gtz.threeLines_cardThree_or_cardFour_stall`
+-- (Gtz/Design/ThreeLinesDescentPort.lean:372, UNCONDITIONAL) and
+-- `Gtz.card_four_stall_exists_outside_pivot_ge_one`
+-- (Gtz/Design/PivotStallPropagation.lean:441, direction-generic, never applied
+-- to `threeLinesDirection`).
 /-- **The leverage dominance cell of the three-lines chart.** -/
 def ThreeLinesLeverageDominanceCellFires (slide : ℝ) (point : DirectionChartPoint 6) : Prop :=
   ∃ first second third : Fin 6,

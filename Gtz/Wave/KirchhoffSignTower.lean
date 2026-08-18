@@ -604,6 +604,12 @@ theorem posDef_directionChartGap_of_invariantTriple (point : DirectionChartPoint
 /-- **THE COMPLETE INVARIANT CRITERION.**  Strict domination of a chart
 selection IS the positivity of the two adjugate-trace invariants together with
 the gap determinant. -/
+-- AUDIT-DUPLICATE (2026-08-17): this equivalence has ZERO consumers, while its
+-- rewrite-twin `Gtz.posDef_directionChartGap_iff_forestTriple` (same file) has
+-- two, and that twin is proved BY calling this one.  A third copy of the same
+-- criterion sits in `Gtz.posDef_directionChartGap_iff_rawTriple`
+-- (Gtz/Wave/KFourTreeSumSign.lean), which routes through the Descartes
+-- criterion instead of the adjugate.  Three names, one theorem.
 theorem posDef_directionChartGap_iff_invariantTriple (point : DirectionChartPoint 6)
     (selected : Finset (Fin 6)) :
     (directionChartGap kFourDirection point.mass point.weight selected).PosDef
@@ -727,6 +733,24 @@ theorem posDef_one_sub_of_frobeniusEnergy_lt_one {mat : Matrix (Fin 3) (Fin 3) �
   simpa using hsmall
 
 /-! ## 9. The Frobenius cell, in adjugate form -/
+
+-- AUDIT-UNCONSUMED (2026-08-17): sections 8 and 9 hold the only generic Loewner
+-- domination tools in the `M(K4)` lane, and ALL THREE have zero consumers:
+-- `Gtz.posDef_one_sub_of_shifted_frobeniusEnergy`,
+-- `Gtz.posDef_one_sub_of_frobeniusEnergy_lt_one` and
+-- `Gtz.posDef_sub_of_shifted_trace_adjugate`.  The second is the shift-zero
+-- corollary of the first, so it is also SUPERSEDED.
+-- AUDIT-BOGUS-PREMISE (2026-08-17): the lane record states that closing this
+-- class needs spectral input that the repo does not have, and cites
+-- `0 ≺ Q ⪯ I ⇒ Q ⪰ (det Q) • 1` as FALSE.  That implication is TRUE, and the
+-- repo proves it: `Gtz.det_le_eigenvalue_of_posSemidef_of_posSemidef_one_sub`
+-- (Gtz/Quantitative/CauchyBinetValueFloor.lean), because every eigenvalue of a
+-- contraction lies in `[0,1]`, so factoring one out leaves a product below one.
+-- The Loewner form follows from `Gtz.posSemidef_sub_smul_one_of_eigenvalue_ge`
+-- (Gtz/Reduction/ExchangeInvariant.lean).  The quoted counterexample at
+-- invariants `(2, 1.95, 0.95)` is not a contraction: a symmetric `3x3` with
+-- every eigenvalue at most one and trace two has determinant at most `8/27`.
+-- No workaround is necessary.
 
 /-- **THE SHIFTED FROBENIUS CELL, GENERIC.**  A positive definite matrix
 strictly dominates a symmetric one as soon as one shifted adjugate trace test

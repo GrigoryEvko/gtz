@@ -301,7 +301,17 @@ theorem oneLine_freePair_excess (design : WeightedDesign 6 3)
 second line's normal selects a partner in `{1,2}`.  The transversal built from
 the two partners is one of the four members of
 `Gtz.TwoMeetingLinesTransversalStrict`, and it clears the excess condition of
-`Gtz.flatSplit_pair_posDef_iff` at each of the two normals. -/
+`Gtz.flatSplit_pair_posDef_iff` at each of the two normals.
+
+#ZERO-CONSUMER, and it is UNCONDITIONAL apart from the two normals, which the
+registry axiom `Skeleton.obligationSeededTransversalTwoMeetingLines` hands over.
+It is the closest landed statement to the first of the three invariant
+inequalities of `Gtz.twoMeetingLinesTransversalStrict_iff_invariants`
+(Gtz/Design/TwoMeetingLinesNeedle.lean:226).  The two disjunctions DO name one
+transversal `{i, j, 5}` with `i` in `{1,2}` and `j` in `{3,4}`.  What the
+statement does NOT give is a condition on that transversal as a whole: the first
+excess reads the PAIR `{5, j}` at the first normal, the second reads the PAIR
+`{5, i}` at the second normal, and neither reads all three members. -/
 theorem twoMeetingLines_transversal_excess (design : WeightedDesign 6 3)
     (normalFirst normalSecond : Fin 3 → ℝ)
     (hunitFirst : normalFirst ⬝ᵥ normalFirst = 1)

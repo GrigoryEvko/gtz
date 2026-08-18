@@ -1067,6 +1067,18 @@ character for character.  So `Gtz.LineFlatSplitSelectorAt` at the FIRST normal
 serves both classes, and the only class-specific work is the endpoint bridge. -/
 
 /-- The four transversals are card-three strict witnesses. -/
+-- **#DUPLICATE (tagged 2026-08-17, verified by read).**  `Gtz` carries this
+-- declaration TWICE, under the SAME name, with the SAME statement and the same
+-- four-way `rcases` proof.  The second copy is
+-- `Gtz.exists_posDef_cardThree_of_twoMeetingLinesTransversalStrict` at
+-- Gtz/Wave/LineResidualPivotLoadWiring.lean:157.  Neither module imports the
+-- other, and no module imports both, so the clash stays latent and the build
+-- passes today.  The first module that imports both fails to compile.
+-- Both copies spend only `Gtz.TwoMeetingLinesTransversalStrict`
+-- (Gtz/Design/TwoMeetingLinesTransversal.lean:92), which both files already
+-- reach.  KEEP ONE.  The copy in LineResidualPivotLoadWiring.lean has the
+-- larger consumer surface, so delete this one and import that module, or move
+-- the single survivor down beside the definition it consumes.
 theorem exists_posDef_cardThree_of_twoMeetingLinesTransversalStrict
     (design : WeightedDesign 6 3) (hstrict : TwoMeetingLinesTransversalStrict design) :
     ∃ selected : Finset (Fin 6), selected.card = 3

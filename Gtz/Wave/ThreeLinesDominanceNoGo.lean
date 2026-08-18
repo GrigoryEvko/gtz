@@ -311,6 +311,19 @@ def ThreeLinesDominanceCovers : Prop :=
     ∃ selected : Finset (Fin 6), selected.card = 3 ∧
       ThreeLinesDominates slide point.mass point.weight selected
 
+-- AUDIT-ONE-STEP-SHORT (2026-08-17, MEASURED): `¬ ThreeLinesDominanceCovers` is
+-- NOT proved anywhere, and it is one structure instance away.  This theorem still
+-- demands a `DirectionChartPoint 6` plus four inequalities.  The file already owns
+-- the numbers that satisfy every one of them, at `Gtz.uniformSixMass` (:277) and
+-- `Gtz.threeLinesUniformWeight` (:280), together with `Gtz.uniformSixMass_pos`,
+-- `Gtz.threeLinesUniformWeight_pos` and `Gtz.threeLinesUniformWeight_sum` at
+-- :282, :285 and :288 — exactly the three fields of `DirectionChartPoint 6`.
+-- Measured: those five names never appear in a `DirectionChartPoint` constructor
+-- anywhere in the tree, so the uniform point is never packaged.
+-- The missing step is a five-line `where` block plus one application at
+-- `slide = 3`, where `Gtz.not_exists_threeLinesDominates_uniformSix` (:298)
+-- already closes the same statement UNCONDITIONALLY for the bare mass and weight.
+-- This is the cheapest unlanded item in the three-lines lane.
 /-- **The route is refuted as a cover.**  Any chart point with a positive
 excess at `5` supplies a slide that defeats it. -/
 theorem not_threeLinesDominanceCovers_of_witness (point : DirectionChartPoint 6)

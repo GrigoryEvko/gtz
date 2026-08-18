@@ -916,6 +916,26 @@ theorem posDef_directionChartGap_iff_hasPositiveThreeLinesMinors (slide : ℝ)
   posDef_directionChartGap_threeLines_iff slide point.mass point.weight
     (fun label => ne_of_gt (point.weight_pos label)) selected
 
+-- AUDIT-KEY (2026-08-17): this is the real-algebraic ENTRY POINT of the lane,
+-- and it is unconditional in both directions.  It turns the whole class target
+-- into a SIGN QUESTION about three explicit polynomials, through
+-- `Gtz.det_threeLinesCoefficientMatrix` (:209) and
+-- `Gtz.posDef_threeLinesCoefficientMatrix_iff` (:219).  `Gtz.threeLinesBasisDeterminant`
+-- (:174) is degree TWO in `slide` over seventeen independent triples, so the
+-- residual is a one-parameter semialgebraic decision, in principle decidable.
+--
+-- AUDIT-MISSING-TOOLING (2026-08-17, MEASURED tree-wide): the repository owns NO
+-- real-algebraic decision machinery to spend on it.  Zero Sturm sequences, zero
+-- sign-change counts, zero uses of `Polynomial.roots`, zero resultants, zero
+-- Sylvester matrices, zero general discriminants, zero `polyrith`.  Mathlib's
+-- quadratic `discrim` is used only through `discrim_le_zero`, always at 2x2.
+-- `interval_cases` fires on naturals only, never on a real interval.
+-- The ONE generic interval-positivity engine in the tree,
+-- `Gtz.bernstein_coeff_floor` and `Gtz.bernstein_coeff_pos`
+-- (Gtz/LinAlg/BernsteinPositivity.lean:43 and :134), has ZERO consumers.
+-- Every polynomial sign fact in the tree is instead proved ad hoc, by an
+-- explicit `ring` factorisation into sign-known linear factors followed by
+-- `linarith`, `nlinarith` or `positivity`.
 /-- **THE REDUCTION.**  The target obligation is EQUIVALENT to: at every
 admissible slide of the fundamental domain and every chart point carrying a
 weakly dominating triple, some card-three subset has all three closed-form minors

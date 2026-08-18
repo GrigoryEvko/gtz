@@ -60,6 +60,20 @@ noncomputable def fullInverseForm (direction : Fin size → (Fin 3 → ℝ))
     (mass weight : Fin size → ℝ) (i j : Fin size) : ℝ :=
   direction i ⬝ᵥ ((directionChartGap direction mass weight Finset.univ)⁻¹ *ᵥ direction j)
 
+-- AUDIT-DUPLICATE (2026-08-17): this unfolds to the SAME term as
+-- `Gtz.chartLadderPivot direction mass weight Finset.univ i`
+-- (Gtz/Design/KFourDescentLadder.lean:617).  Both are
+-- `(mass i / weight i) * (direction i ⬝ᵥ (gap univ)⁻¹ *ᵥ direction i)`.
+-- NO bridging lemma exists in the repo, and the two names never meet: a name
+-- search for the pair in one statement returns zero hits.
+-- CONSEQUENCE, and it is load-bearing.  `Gtz.three_le_card_fullPivot_lt_one`
+-- (:391) proves at least three labels carry sub-one pivot at the FULL selection,
+-- while the card-four stall residual
+-- (`Gtz.threeLines_cardThree_or_cardFour_stall`,
+-- Gtz/Design/ThreeLinesDescentPort.lean:372) speaks `chartLadderPivot` at a
+-- card-four base.  The two counts cannot be compared until the `rfl` bridge
+-- lands.  A third copy of the same count exists in design coordinates as
+-- `Gtz.three_le_card_pivot_univ_lt_one` (Gtz/Design/ComplementLeverageLaw.lean:369).
 /-- The full pivot of a label: its boost against the inverse form of the
 full-selection gap. -/
 noncomputable def fullPivot (direction : Fin size → (Fin 3 → ℝ))

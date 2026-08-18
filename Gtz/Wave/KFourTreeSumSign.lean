@@ -9,6 +9,27 @@ set_option relaxedAutoImplicit false
 set_option maxHeartbeats 3200000
 
 /-!
+AUDIT-UNWIRED (2026-08-17): this module is absent from the `Gtz.lean` umbrella
+and NO module imports it.  Real consumer count is ZERO.  It nonetheless holds
+the richest criterion set in the `M(K4)` lane, including
+`Gtz.posDef_kFourLaplacian_iff_rawTriple`, the unconditional trace floor
+`Gtz.exists_kFourSpanningTree_traceSum_pos`, the Loewner monotonicity
+`Gtz.posDef_kFourLaplacian_of_le` and the reduced residual
+`Gtz.KFourRawSecondAndDetTotal`.  Wire it before anyone writes a new line.
+
+AUDIT-DUPLICATE (2026-08-17): `Gtz.KFourRawTripleTotal` is the FIFTH Prop proved
+equivalent to `Gtz.KFourUniversalStrictTree`.  The others are
+`Gtz.KFourForestTripleTotal` (Gtz/Wave/KirchhoffSignTower.lean),
+`Gtz.KFourBlockAdmissibleDetTotal` (Gtz/Wave/WiringKFourWalls.lean),
+`Gtz.KFourLevelShiftTotal` and `Gtz.KFourRawSecondAndDetTotal` (this file).
+Each carries its own `_closes_all` bridge, so the four consumers are discharged
+five times over.  Pick ONE residual and retire the rest, or the next fork
+proves a sixth.
+
+AUDIT-NOTE ON LINE NUMBERS (2026-08-17): these blocks cite DECLARATION NAMES
+only, never line numbers.  Comment-only edits in this lane already invalidated
+one round of line references within a single session.  Cite names and grep.
+
 # The raw invariant triple of the `K4` signed Laplacian, and the scalar shift cell
 
 The registered `A3` proposition is

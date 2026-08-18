@@ -237,7 +237,51 @@ theorem posDef_massMoment_lineFreeDirection (param : ℝ × ℝ × ℝ × ℝ)
   exact eq_zero_of_coordinates_eq_zero (by linarith) (by linarith) (by linarith)
 
 /-- The one-line chart's moment matrix is positive definite at every chart point
-and every parameter: its labels zero, one and three are the coordinate axes. -/
+and every parameter: its labels zero, one and three are the coordinate axes.
+
+**#UNSPENT-KEY (tagged 2026-08-17, MEASURED).**  This lemma is the free
+adapter that carries the whole mass-leverage handle onto the one-line chart, and
+nobody has spent it that way.
+
+`Gtz.chartMassMoment direction mass = ∑ label, mass label • atomMatrix
+(direction label)` holds by `rfl` (`Gtz.chartMassMoment_eq`,
+Gtz/Wave/ThreeLinesSlideElimination.lean:67).  So this theorem IS a proof of
+`(chartMassMoment (oneLineDirection param) point.mass).PosDef`, with no glue and
+no admissibility hypothesis.  That is the SOLE structural hypothesis of every
+direction-generic leverage result:
+
+* `Gtz.three_le_card_overLevered` (ThreeLinesSlideElimination.lean:283) — at
+  least three labels are over-levered, at every chart point.
+* `Gtz.weight_lt_chartMassLeverage_of_posDef_gap` (:341) — every label of a
+  strictly dominating triple is over-levered.
+* `Gtz.posDef_directionChartGap_of_dualStrict` (:428) — domination from one
+  inequality, one completed square for each label.
+* `Gtz.posDef_directionChartGap_of_leverageTrace` (:1223) — a triple whose
+  leverage total beats two plus each of its three weights dominates strictly.
+* `Gtz.sum_leverage_le_two_of_dependent` (:1182) — a dependent triple caps at
+  two, which makes the line `{0,1,2}` invisible to the trace cell.
+
+The three-lines chart spends all five through the one-term bridge
+`Gtz.posDef_chartMassMoment_threeLines` (:864), which is literally
+`posDef_massMoment_threeLinesDirection slide point`.  The one-line twin of that
+bridge, and of the closure `Gtz.exists_posDef_threeLines_of_overLevered_triple`
+(:1409), do NOT exist.  Each is a transcription with `threeLinesDirection slide`
+replaced by `oneLineDirection param`.
+
+TWO CAVEATS BEFORE ANYONE SPENDS THIS.  First,
+`Gtz/Wave/ThreeLinesSlideElimination.lean` carries NO axiom pin in
+`Gtz/Audit.lean`, although that file imports it at :1190.  So the module DOES
+build, and the tree-wide zero-axiom guarantee still does not cover it.  Read its
+header tag.  (SELF-CORRECTION, 2026-08-17: an earlier revision of this paragraph
+said the module "is imported by NOTHING" and called it unbuilt.  That was FALSE.
+The import sits in `Gtz.lean:6285` and in `Gtz/Audit.lean:1190`, committed at
+2fbdf5d.  The false reading came from `rg` calls that ran outside the repository
+root with `2>/dev/null` set, which turned three path errors into three silent
+"zero hits".  Never measure a consumer count with stderr suppressed.)  Second,
+that module cannot reach
+`Gtz.oneLineDirection` through its own imports, so the composition belongs in a
+NEW module that imports both.  No cycle results, because nothing imports the
+leverage module today. -/
 theorem posDef_massMoment_oneLineDirection (param : ℝ × ℝ × ℝ)
     (point : DirectionChartPoint 6) :
     (∑ label, point.mass label • atomMatrix (oneLineDirection param label)).PosDef := by

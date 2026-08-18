@@ -26,6 +26,16 @@ the complement of each transversal.
 
 The shared atom carries every one of the four prices, because it lies in every
 one of the four complements.
+
+## #ZERO-CONSUMER — the two headline theorems
+
+`Gtz.allTransversalsFail_prices_four` and
+`Gtz.twoMeetingLinesTransversalStrict_iff_invariants` have no consumer outside
+this file and the two umbrellas.  The second is the whole conclusion of the
+registry axiom written as twelve polynomial inequalities in
+`Gtz.tripleLeverageSum`, `Gtz.triplePairAreaSum` and `Gtz.atomBracket`, so it is
+the natural meeting point with a chart bracket table.  No such table exists.
+Refer to the `#MISSING` note in Gtz/Design/TwoMeetingLinesChart.lean.
 -/
 
 variable {size rank : ℕ}

@@ -159,7 +159,31 @@ theorem oneLine_lineTriple_not_dominates (design : WeightedDesign 6 3)
     ((hpattern 0 1 2 (by decide) (by decide) (by decide)).mpr (by decide))
 
 /-- A tie's weak dominator on the one-line stratum avoids the line, hence is
-one of the nineteen basis triples and contains at least one free atom. -/
+one of the nineteen basis triples and contains at least one free atom.
+
+**#PROSE-COUNT (tagged 2026-08-17).**  The conclusion is the inequality
+`dominator ≠ {0,1,2}`.  The number nineteen appears in this docstring only.  No
+`Finset` of nineteen triples exists anywhere in the tree.  Read the count as a
+comment and not as a kernel object.
+
+**#MISSING-TWIN (tagged 2026-08-17).**  This is the DESIGN-side 20-to-19
+reduction, and it is landed.  The CHART-side twin, which would kill the triple
+`{0,1,2}` for `Gtz.directionChartGap (Gtz.oneLineDirection param)`, does NOT
+exist.  Both sibling charts carry theirs, so the shape is precedented and the
+omission is real:
+`Gtz.directionChartGap_threeLines_firstLine_not_posSemidef`
+(Gtz/Design/ThreeLinesAtlas.lean:852) with its two neighbours at :867 and :882,
+and `Gtz.kFourGap_triangleZeroOneTwo_not_posSemidef`
+(Gtz/Design/KFourChartClosure.lean:893) with
+`Gtz.kFourDependentTriple_gap_not_posSemidef` (:945).  A direction-generic route
+to the same conclusion already exists at
+`Gtz.sum_leverage_le_two_of_dependent`
+(Gtz/Wave/ThreeLinesSlideElimination.lean:1182), which caps the leverage total
+of a dependent triple at two.  That module builds, but it carries no axiom pin
+in `Gtz/Audit.lean` and it has zero outward consumers, so read its own header
+tag before you spend it.  (SELF-CORRECTION, 2026-08-17: an earlier revision of
+this sentence called that module UNWIRED.  That was FALSE — `Gtz.lean:6285` and
+`Gtz/Audit.lean:1190` import it, committed at 2fbdf5d.) -/
 theorem oneLine_tieDominator_avoids_line (design : WeightedDesign 6 3)
     (hpattern : HasLinePattern design (lineFamilyPattern [[(0 : Fin 6), 1, 2]]))
     (htie : IsTie design) :

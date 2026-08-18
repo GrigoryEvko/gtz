@@ -243,6 +243,12 @@ theorem corankTwo_star_candidate_readings (point : DirectionChartPoint 6)
 point the unsigned minor atlas FIRES (4000 of 4000; a directed attack on the
 firing count reaches one cell and never zero).  This Prop names the closure
 route: the star wall forces the atlas. -/
+-- AUDIT-NO-PRODUCER (2026-08-17): NO theorem in the repo concludes this Prop.
+-- All 5 occurrences take it as a HYPOTHESIS.  The 4000-of-4000 firing record
+-- quoted above is NUMERICAL, not a proof, and the campaign record warns that a
+-- uniform sample of this shape already missed a directed refuter once
+-- (`Gtz.kFourLeverageEdgeHostsStrictTree_refuted`).  Treat the record as
+-- evidence, never as an antecedent.
 def KFourStarWallAtlasFires : Prop :=
   ∀ (point : DirectionChartPoint 6) (tree : Finset (Fin 6)),
     tree ∈ kFourStarList →

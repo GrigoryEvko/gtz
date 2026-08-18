@@ -37,6 +37,21 @@ theorem bernstein_sum_eval (n : ℕ) (x : ℝ) :
   have hsum := congrArg (Polynomial.eval x) (bernsteinPolynomial.sum ℝ n)
   rwa [eval_finsetSum, eval_one] at hsum
 
+-- AUDIT-ORPHAN (2026-08-17): ZERO consumers tree-wide.  Measured: the only
+-- references to any name in this module outside the module itself are the
+-- `Gtz.lean` import line and the `Gtz/Audit.lean` axiom pins.  No proof calls it.
+-- AUDIT-MISSING-CONSUMER (2026-08-17): this is the ONLY generic interval
+-- positivity engine in the repository.  The tree owns no Sturm sequence, no
+-- sign-change count, no `Polynomial.roots`, no resultant and no general
+-- discriminant, so nothing else can decide the sign of a polynomial on an
+-- interval at general degree.
+-- THE OPEN CUSTOMER: `Gtz.chartTieFreeThreeLinesFundamentalDomain_iff_minorSigns`
+-- (Gtz/Design/ThreeLinesAtlas.lean:923) reduces a registry axiom to positivity of
+-- three explicit polynomials, one of which
+-- (`Gtz.threeLinesBasisDeterminant`, Gtz/Design/ThreeLinesAtlas.lean:174) is
+-- degree two in one real parameter `slide` on the domain `1 ≤ |slide|`.
+-- The domain is a half line and this engine covers `[0,1]`, so a substitution
+-- such as `slide = 1 / u` is needed first.  That substitution is not landed.
 /-- **Coefficient floors are function floors**: if every Bernstein
 coefficient is at least `floor`, the polynomial is at least `floor` on
 `[0,1]`. The one-line mathematics of every positivity certificate. -/

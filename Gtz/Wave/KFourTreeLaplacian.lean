@@ -82,6 +82,15 @@ noncomputable def kFourSelectedMoment (mass weight : Fin 6 → ℝ)
     (selected : Finset (Fin 6)) : Matrix (Fin 3) (Fin 3) ℝ :=
   ∑ label ∈ selected, (mass label / weight label) • atomMatrix (kFourDirection label)
 
+-- AUDIT-DUPLICATE (2026-08-17): FOURTH name for one matrix.  The body is
+-- byte-identical to `Gtz.kFourLaplacian` (Gtz/Wave/KirchhoffSignTower.lean),
+-- and to `Gtz.chartMassMatrix kFourDirection` (Gtz/Design/ChartInverseTrace.lean)
+-- and `Gtz.chartMassMoment kFourDirection` (Gtz/Wave/ThreeLinesSlideElimination.lean)
+-- once the direction is fixed.  ONE bridge exists in the repo,
+-- `Gtz.chartMassMatrix_kFour_eq_kFourLaplacian`, and it is proved by `rfl`.
+-- NOTHING bridges this name, so section 4 of this file re-proves on
+-- `kFourMassMoment` what KirchhoffSignTower already proves on `kFourLaplacian`.
+-- Add `kFourMassMoment_eq_kFourLaplacian ... := rfl` and retire one name.
 /-- The full mass moment of the K4 chart: the second half of the chart gap. -/
 noncomputable def kFourMassMoment (mass : Fin 6 → ℝ) : Matrix (Fin 3) (Fin 3) ℝ :=
   ∑ label, mass label • atomMatrix (kFourDirection label)
@@ -447,6 +456,19 @@ theorem starHeaviness_of_posDef_congr (mass weight : Fin 6 → ℝ)
 the sum over the sixteen spanning trees of the product of that tree's masses.
 This is Kirchhoff's theorem, and it identifies the campaign's Cauchy-Binet mass law
 with a spanning-tree count on the graphic stratum. -/
+-- AUDIT-UNCONSUMED (2026-08-17): zero consumers.  This is the fully expanded,
+-- UNCONDITIONAL Kirchhoff identity of the lane, and nothing reads it.
+-- AUDIT-DUPLICATE (2026-08-17): the same law lands twice more in compact form,
+-- as `Gtz.det_kFourLaplacian` (Gtz/Wave/KirchhoffSignTower.lean) and as its
+-- base `Gtz.det_sum_smul_atomMatrix_kFourDirection`
+-- (Gtz/Design/KFourDescentLadder.lean).  Only 2 of the 51 declarations in THIS
+-- file reach outside code at all, namely `Gtz.kFourStarGap` and
+-- `Gtz.posDef_directionChartGap_star_iff`.  Treat the file as a shelf.
+-- AUDIT-SCOPE (2026-08-17): this is NOT a general matrix-tree theorem.
+-- `Gtz.kFourMassTreeSum` is a hand-written sixteen-term polynomial and the
+-- proof is a `Matrix.det_fin_three` expansion closed by `ring`.  No
+-- Cauchy-Binet step and no general graph appear.  It holds at `K4` and rank
+-- three only.  Do not cite it as Kirchhoff in general.
 theorem det_kFourMassMoment_eq_treeSum (mass : Fin 6 → ℝ) :
     (kFourMassMoment mass).det
       = mass 0 * mass 1 * mass 3 + mass 0 * mass 1 * mass 4 + mass 0 * mass 1 * mass 5

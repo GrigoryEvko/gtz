@@ -89,7 +89,16 @@ theorem oneLineTenthHeavyJointBlindWeakToStrict_iff_tenthHeavy :
 /-- The exact two-meeting-lines residual after the tenth-light theorem, the
 pair-cap engine, and both line-normal lift criteria have fired.  In the joint
 blind spot every possible strict winner is one of the four transversals named
-by `Gtz.TwoMeetingLinesTransversalStrict`. -/
+by `Gtz.TwoMeetingLinesTransversalStrict`.
+
+#NOT-THE-AXIOM.  This Prop is no longer the registry entry.  The axiom is
+`Skeleton.obligationSeededTransversalTwoMeetingLines`
+(Skeleton/Obligations.lean:283), whose Prop is
+`Gtz.TwoMeetingLinesSeededTransversal` (Gtz/Wave/FlatPairWeakSeed.lean:651).
+That form carries `Gtz.TwoMeetingLinesWeakSeed` in its antecedent, so a prover
+receives the pinch, the trichotomy and the transversal arm for free.  The two
+Props are interderivable by `Gtz.twoMeetingLinesSeededTransversal_iff` (:695).
+Start from the seeded form, not from this one. -/
 def TwoMeetingLinesTenthHeavyJointBlindTransversal : Prop :=
   ∀ design : WeightedDesign 6 3,
     HasLinePattern design

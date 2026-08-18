@@ -123,7 +123,16 @@ theorem twoMeetingLines_shared_pivot_lt_one (design : WeightedDesign 6 3)
 
 /-- **THE OBSTRUCTION.**  A design whose shared atom carries unit pivot or more
 admits no strict transversal.  The contrapositive of the exclusion, and the form
-a refutation would take. -/
+a refutation would take.
+
+#ZERO-CONSUMER, and it is the sharpest refuter shape in this class.  A single
+design on the two-meeting-lines stratum that satisfies the antecedent of
+`Gtz.TwoMeetingLinesSeededTransversal` (Gtz/Wave/FlatPairWeakSeed.lean:651) and
+carries `1 <= pivot design Finset.univ 0` would refute
+`Skeleton.obligationSeededTransversalTwoMeetingLines` outright.  No search for
+such a design is recorded.  The exact-rational stratum witness
+`Gtz.twinFailureDesign` (Gtz/Design/OrthogonalConicAndTwinRefutation.lean:670)
+is the natural first probe. -/
 theorem not_twoMeetingLinesTransversalStrict_of_shared_pivot_ge_one
     (design : WeightedDesign 6 3) (hge : 1 ≤ pivot design Finset.univ 0) :
     ¬ TwoMeetingLinesTransversalStrict design := fun hstrict =>

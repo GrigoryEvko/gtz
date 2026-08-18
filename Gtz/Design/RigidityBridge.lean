@@ -166,6 +166,19 @@ def DirectionChartIsTieFree {size : ℕ} (direction : Fin size → (Fin 3 → �
       ∃ selected : Finset (Fin size), selected.card = 3 ∧
         (directionChartGap direction point.mass point.weight selected).PosDef
 
+-- AUDIT-BOGUS-ROUTE (2026-08-17): this Prop is KERNEL-FALSE in general, so no
+-- route may pass through it.  `Gtz.not_directionChartHasStrictTriple_flatDirection`
+-- (Gtz/Wave/WiringChartGenericRoads.lean:193) refutes it outright at
+-- `flatDirection`, and `:209` refutes the universally quantified form.  The cause
+-- is structural: dropping the `PosSemidef` antecedent that
+-- `Gtz.DirectionChartIsTieFree` (:162) carries turns a conditional obligation
+-- into an unconditional one that a non-spanning family cannot meet.
+-- `Skeleton/Obligations.lean:161` records the same instruction in prose:
+-- "Route through `Gtz.DirectionChartIsTieFree`, never through
+-- `Gtz.DirectionChartHasStrictTriple`, which drops the `PosSemidef` antecedent
+-- and is refutable."
+-- The producer below (:176) stays sound, because it only consumes this Prop.
+-- What is dead is any attempt to PROVE this Prop at a general direction family.
 /-- The stronger form the certificate corpus actually measures: SOME triple is
 strictly dominating at every chart point, with no antecedent. -/
 def DirectionChartHasStrictTriple {size : ℕ} (direction : Fin size → (Fin 3 → ℝ)) : Prop :=
@@ -1399,6 +1412,36 @@ theorem directionChartIsTieFree_threeLines_of_inv (slide : ℝ) (hslideNe : slid
 
 /-! ## The sharpened three-lines residual: a fundamental domain -/
 
+-- AUDIT-CIRCULAR (2026-08-17, MEASURED): this Prop sits at the centre of a ring
+-- of TEN mutually equivalent restatements, and not one of them is proved.  Every
+-- module below adds a cell hypothesis, then proves the narrowed form `Iff`-equal
+-- to this one.  Each step is honest and each step buys ZERO strength.
+--   1 `ChartTieFreeThreeLinesFundamentalDomain`                    (here, :1405)
+--   2 `...TenthHeavyBudgetBlind`         Gtz/Wave/ThreeLinesBudgetWiring.lean:145
+--   3 `...TenthHeavyBudgetReadingBlind`  Gtz/Wave/ThreeLinesReadingCoverWiring.lean:48
+--   4 `...TenthHeavyBudgetReadingBlindOffLines`
+--                                        Gtz/Wave/ThreeLinesOffLinesWiring.lean:77
+--   5 `...BudgetReadingUnsignedBlindOffLines`
+--                                        Gtz/Wave/ThreeLinesUnsignedCycleWiring.lean:137
+--   6 `...BudgetReadingTraceBlindOffLines`
+--                                        Gtz/Wave/ThreeLinesUnsignedTraceWiring.lean:172
+--   7 `...BudgetReadingSevenOrbitTraceBlindOffLines`  (the registry axiom)
+--                                        Gtz/Wave/ThreeLinesMovedOrbitTraceWiring.lean:563
+--   8 `...SevenOrbitTraceBlindOffLinesLeverage`
+--                                        Gtz/Wave/ThreeLinesHeavyLeverageFloor.lean:252
+--   9 `...SevenOrbitPivotThirdBlindOffLines`
+--                                        Gtz/Wave/ThreeLinesPivotThirdWiring.lean:155
+--  10 `ThreeLinesFundamentalStallEscape` Gtz/Wave/ThreeLinesStallEscapeWiring.lean:143
+-- Entries 8 and 9 are each `Iff` with entry 7 and were never COMBINED, so the
+-- leverage floor and the pivot-third cell are still not spent together.
+-- Entry 10 is the only one that changes the SHAPE of the problem, from a
+-- card-three search to a card-four repair, and it has zero consumers.
+-- The two exits that are NOT restatements:
+--   `Gtz.chartTieFreeThreeLinesFundamentalDomain_iff_minorSigns`
+--   (Gtz/Design/ThreeLinesAtlas.lean:923) drops to polynomial sign conditions.
+--   `Gtz.threeLines_cardThree_or_cardFour_stall`
+--   (Gtz/Design/ThreeLinesDescentPort.lean:372) is UNCONDITIONAL and reduces the
+--   whole residual to the nonexistence of a stalled card-four selection.
 /-- **The sharpened three-lines residual.**  Tie-freeness is demanded only on
 the fundamental domain `1 <= |slide|` of the involution `slide <-> 1 / slide`;
 the rest of the admissible parameter line is DISCHARGED by the transport. -/
