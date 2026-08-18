@@ -6308,3 +6308,6 @@ import Gtz.Wave.CorankTwoClosure
 import Gtz.LinAlg.PlaneSpread
 import Gtz.Wave.CorankTwoPlanarRigidity
 import Gtz.Wave.CorankTwoIsotropy
+import Gtz.LinAlg.PlaneTwoForm
+import Gtz.LinAlg.PlanarCaseInequalities
+import Gtz.Wave.CorankTwoPlanarClosure

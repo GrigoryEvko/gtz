@@ -1219,6 +1219,9 @@ import Gtz.Wave.CorankTwoClosure
 import Gtz.LinAlg.PlaneSpread
 import Gtz.Wave.CorankTwoPlanarRigidity
 import Gtz.Wave.CorankTwoIsotropy
+import Gtz.LinAlg.PlaneTwoForm
+import Gtz.LinAlg.PlanarCaseInequalities
+import Gtz.Wave.CorankTwoPlanarClosure
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35504,3 +35507,33 @@ run_cmd do
 #print axioms Gtz.alignment_witness_of_isTie_planar
 #print axioms Gtz.pair_witness_cap
 #print axioms Gtz.corankTwoPlanar_pigeonhole_violation
+
+-- Gtz/LinAlg/PlaneTwoForm.lean
+#print axioms Gtz.plane_resolve
+#print axioms Gtz.plane_pythagoras
+#print axioms Gtz.plane_polar
+#print axioms Gtz.cross_binet
+#print axioms Gtz.threeForm_diag
+#print axioms Gtz.threeForm_gram
+#print axioms Gtz.threeForm_det_pos
+#print axioms Gtz.threeForm_turn_floor
+
+-- Gtz/LinAlg/PlanarCaseInequalities.lean
+#print axioms Gtz.planarVertex_capOne
+#print axioms Gtz.planarVertex_capTwo
+#print axioms Gtz.planarVertex_origin
+#print axioms Gtz.planarVertex_oneFat_capTwo
+#print axioms Gtz.planarVertex_oneFat_sum
+#print axioms Gtz.planarPolygon_allFat
+#print axioms Gtz.planarPolygon_twoFat
+#print axioms Gtz.planarPolygon_oneFat
+#print axioms Gtz.planarCase_allFat
+#print axioms Gtz.planarCase_twoFat
+#print axioms Gtz.planarCase_oneFat
+#print axioms Gtz.planar_scalar_dispatch
+
+-- Gtz/Wave/CorankTwoPlanarClosure.lean
+#print axioms Gtz.outside_isotropy_polar
+#print axioms Gtz.planar_fatPair_pigeonhole
+#print axioms Gtz.planar_pairPD_pigeonhole
+#print axioms Gtz.corankTwoPlanar_absurd
