@@ -1213,6 +1213,9 @@ import Gtz.Wave.WiringSynonymClass
 import Gtz.Wave.CellAssemblyAudit
 import Gtz.Wave.DiamondConicStress
 import Gtz.Wave.AdjacentDominatorStress
+import Gtz.LinAlg.DepthTwoDowndate
+import Gtz.Wave.CorankTwoOneShared
+import Gtz.Wave.CorankTwoClosure
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35442,3 +35445,36 @@ run_cmd do
 #print axioms Gtz.outside_weighted_floor_of_isTie
 #print axioms Gtz.allOnes_subset_unique
 #print axioms Gtz.coveringDefect_dual_null_orthogonality
+
+-- Gtz/LinAlg/DepthTwoDowndate.lean
+#print axioms Gtz.vecMulVec_mul
+#print axioms Gtz.shermanMorrison_downdate_inv
+#print axioms Gtz.downdate_reading
+#print axioms Gtz.posDef_sub_two_vecMulVec_iff
+#print axioms Gtz.second_reading_lt_one_of_posDef_sub_two
+#print axioms Gtz.not_posDef_sub_two_vecMulVec_iff
+
+-- Gtz/Wave/CorankTwoOneShared.lean
+#print axioms Gtz.sum_sq_affine
+#print axioms Gtz.gapForm_uSplit
+#print axioms Gtz.posDef_gap_iff_uSplit
+#print axioms Gtz.not_posDef_gap_of_uMass_le
+#print axioms Gtz.not_posDef_gap_of_planeWitness
+#print axioms Gtz.not_isTie_of_uSplit_cover
+#print axioms Gtz.uMass_le_or_planeWitness_of_isTie
+#print axioms Gtz.uMass_of_rankOneGap
+#print axioms Gtz.resolve_of_rankOneGap
+#print axioms Gtz.cross_of_rankOneGap
+#print axioms Gtz.planeMass_of_rankOneGap
+#print axioms Gtz.gap_erase_two
+#print axioms Gtz.erased_two_not_posDef_iff_gram
+
+-- Gtz/Wave/CorankTwoClosure.lean
+#print axioms Gtz.corankTwoPlanarDesign
+#print axioms Gtz.corankTwoPlanarDesign_gap
+#print axioms Gtz.corankTwoPlanar_gapDir_unit
+#print axioms Gtz.transpose_smul_atomMatrix
+#print axioms Gtz.corankTwoPlanarDesign_dominates
+#print axioms Gtz.corankTwoPlanar_complement_refused
+#print axioms Gtz.corankTwoPlanar_oneShared_strict
+#print axioms Gtz.corankTwoPlanar_not_isTie

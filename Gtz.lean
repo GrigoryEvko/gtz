@@ -6302,3 +6302,6 @@ import Gtz.Wave.WiringSixThreeNoGo
 import Gtz.Wave.GaleInvolution
 import Gtz.Wave.DiamondConicStress
 import Gtz.Wave.AdjacentDominatorStress
+import Gtz.LinAlg.DepthTwoDowndate
+import Gtz.Wave.CorankTwoOneShared
+import Gtz.Wave.CorankTwoClosure
