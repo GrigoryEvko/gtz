@@ -6305,3 +6305,6 @@ import Gtz.Wave.AdjacentDominatorStress
 import Gtz.LinAlg.DepthTwoDowndate
 import Gtz.Wave.CorankTwoOneShared
 import Gtz.Wave.CorankTwoClosure
+import Gtz.LinAlg.PlaneSpread
+import Gtz.Wave.CorankTwoPlanarRigidity
+import Gtz.Wave.CorankTwoIsotropy

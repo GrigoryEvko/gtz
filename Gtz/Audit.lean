@@ -1216,6 +1216,9 @@ import Gtz.Wave.AdjacentDominatorStress
 import Gtz.LinAlg.DepthTwoDowndate
 import Gtz.Wave.CorankTwoOneShared
 import Gtz.Wave.CorankTwoClosure
+import Gtz.LinAlg.PlaneSpread
+import Gtz.Wave.CorankTwoPlanarRigidity
+import Gtz.Wave.CorankTwoIsotropy
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35479,3 +35482,25 @@ run_cmd do
 #print axioms Gtz.corankTwoPlanar_oneShared_strict
 #print axioms Gtz.corankTwoPlanar_not_isTie
 #print axioms Gtz.exists_heavy_inside_of_planarOutside
+
+-- Gtz/LinAlg/PlaneSpread.lean
+#print axioms Gtz.quadruple_product
+#print axioms Gtz.plane_cramer
+#print axioms Gtz.planeDet_sq_le
+#print axioms Gtz.spread_sq_bound
+
+-- Gtz/Wave/CorankTwoPlanarRigidity.lean
+#print axioms Gtz.weighted_resolve
+#print axioms Gtz.coeff_eq_zero_of_sum_smul_eq_zero_of_rankOneGap
+#print axioms Gtz.insideWeight_eq_of_rankOneGap_of_planarOutside
+#print axioms Gtz.uReading_ne_zero_of_planarOutside_of_primitive
+#print axioms Gtz.planar_insideWeights_eq_and_lam_gt_two
+
+-- Gtz/Wave/CorankTwoIsotropy.lean
+#print axioms Gtz.outside_isotropy_of_planar
+#print axioms Gtz.outside_weight_total_of_planar
+#print axioms Gtz.exists_outside_reading_floor
+#print axioms Gtz.thin_witness_omitted_reading
+#print axioms Gtz.alignment_witness_of_isTie_planar
+#print axioms Gtz.pair_witness_cap
+#print axioms Gtz.corankTwoPlanar_pigeonhole_violation
