@@ -35623,6 +35623,7 @@ run_cmd do
 #print axioms Gtz.swapPD_iff_ghostBlock
 #print axioms Gtz.nonplanarFourSetCore_of_ghostBlockShort
 #print axioms Gtz.corankTwoNonplanar_absurd_of_ghostBlock
+#print axioms Gtz.corankTwoNonplanar_absurd_of_ghostBlock'
 
 -- Gtz/Wave/GhostRowBound.lean
 #print axioms Gtz.inside_row_law

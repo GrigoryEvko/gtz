@@ -1,5 +1,6 @@
 import Gtz.Wave.SixSetCorner
 import Gtz.Wave.SixSetDowndate
+import Gtz.Wave.SixSetGapUniversal
 import Gtz.Wave.CorankTwoNonplanarDescent
 
 set_option autoImplicit false
@@ -165,5 +166,16 @@ theorem corankTwoNonplanar_absurd_of_ghostBlock (D : WeightedDesign 6 3)
     (hshort : GhostBlockShort D f h) : False :=
   corankTwoNonplanar_absurd_of_core D htie C hcard
     (nonplanarFourSetCore_of_ghostBlockShort D C hcard he hfh herase hPD hshort)
+
+/-- **The non-planar corner closes from a short ghost block, with no proviso.**
+`Gtz.sixSetGap_posDef` makes the positive definiteness of the six-set gap
+automatic at every `(6,3)` design, so the corner closure needs only the tie, the
+dominator, and the ghost block. -/
+theorem corankTwoNonplanar_absurd_of_ghostBlock' (D : WeightedDesign 6 3)
+    (htie : IsTie D) (C : Finset (Fin 6)) (hcard : C.card = 3)
+    {e f h : Fin 6} (he : e ∈ C) (hfh : f ≠ h) (herase : C.erase e = {f, h})
+    (hshort : GhostBlockShort D f h) : False :=
+  corankTwoNonplanar_absurd_of_ghostBlock D htie C hcard he hfh herase
+    (sixSetGap_posDef_sixThree D) hshort
 
 end Gtz
