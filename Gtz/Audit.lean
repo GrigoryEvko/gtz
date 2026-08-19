@@ -1251,6 +1251,7 @@ import Gtz.Wave.CornerSecondMoment
 import Gtz.Wave.LedgerAggregateFoil
 import Gtz.Wave.FourSetTraceFloor
 import Gtz.Wave.CornerParityLedger
+import Gtz.Wave.CornerBracketPlucker
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35907,3 +35908,13 @@ run_cmd do
 #print axioms Gtz.corner_twoInside_det_nonpos
 #print axioms Gtz.corner_twoInside_tripleParity_forced
 #print axioms Gtz.corner_fourSet_parity_forced
+
+-- Gtz/Wave/CornerBracketPlucker.lean -- the corner bracket and the Pluecker bridge
+#print axioms Gtz.corner_axis_mass
+#print axioms Gtz.corner_heavyExcess_sum
+#print axioms Gtz.corner_pairMinor_eq_zero
+#print axioms Gtz.corner_atomBracket_sq
+#print axioms Gtz.corner_bracket_bridge
+#print axioms Gtz.corner_heron
+#print axioms Gtz.corner_bracket_extremal
+#print axioms Gtz.corner_bracket_le
