@@ -6344,3 +6344,4 @@ import Gtz.Wave.CornerBracketPlucker
 import Gtz.Wave.CornerSignWord
 import Gtz.Wave.CornerSignMatching
 import Gtz.Wave.SignCoherentFoil
+import Gtz.Wave.FourSetCoweightCap

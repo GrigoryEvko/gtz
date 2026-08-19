@@ -1255,6 +1255,7 @@ import Gtz.Wave.CornerBracketPlucker
 import Gtz.Wave.CornerSignWord
 import Gtz.Wave.CornerSignMatching
 import Gtz.Wave.SignCoherentFoil
+import Gtz.Wave.FourSetCoweightCap
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35960,3 +35961,15 @@ run_cmd do
 #print axioms Gtz.signCoherentFoil_dominator
 #print axioms Gtz.signCoherentFoil_not_isTie
 #print axioms Gtz.signCoherent_nonplanar_corner_inhabited
+
+-- Gtz/Wave/FourSetCoweightCap.lean -- the four-set coweight cap and the zero-pairing kill
+#print axioms Gtz.sixWeight_pair_lt_one
+#print axioms Gtz.tie_fourSet_coweight_cap
+#print axioms Gtz.atomMatrix_orthonormal_resolution
+#print axioms Gtz.read_sq_orthonormal_resolution
+#print axioms Gtz.corner_axisOrthogonal_inside_frame
+#print axioms Gtz.quadForm_subsetSum_sub_one
+#print axioms Gtz.parseval_read_corner_split
+#print axioms Gtz.corner_axisOrthogonal_fourSet_posDef
+#print axioms Gtz.corner_twoAxisZero_absurd
+#print axioms Gtz.corner_zeroPairings_absurd
