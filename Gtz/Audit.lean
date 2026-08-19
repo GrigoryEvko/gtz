@@ -35996,6 +35996,7 @@ run_cmd do
 #print axioms Gtz.subsetSum_coweight_split
 #print axioms Gtz.subset_reading_ledger
 #print axioms Gtz.tie_fourSet_excluded_floor
+#print axioms Gtz.tie_fourSet_excluded_trace_floor
 #print axioms Gtz.tie_fourSet_excluded_witness
 #print axioms Gtz.subset_dominates_of_weighted_ceiling
 #print axioms Gtz.tie_weighted_ceiling_floor

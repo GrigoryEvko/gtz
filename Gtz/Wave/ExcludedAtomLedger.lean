@@ -160,6 +160,97 @@ theorem tie_fourSet_excluded_floor (D : WeightedDesign m 3) (htie : IsTie D)
     linarith
   linarith [hledger, hmembers, hcoweight]
 
+/-- **THE EXCLUDED-TRACE FLOOR.**  At a tie, a strictly dominating four-set
+floors its excluded weighted readings not merely at their weight total but at
+the inverse-gap trace, through every admissible odds level `o`: the coweights
+`(1 − t_a) − o·t_a` stay nonnegative up to the smallest member odds, and the
+member floors then charge the excluded atoms `o·(tr (S_F−1)⁻¹ − 1)` beyond
+the zero-odds floor.  At `o = 0` this is `Gtz.tie_fourSet_excluded_floor`. -/
+theorem tie_fourSet_excluded_trace_floor (D : WeightedDesign m 3) (htie : IsTie D)
+    (F : Finset (Fin m)) (hF : F.card = 4)
+    (hPD : (subsetSum D F - 1).PosDef) {o : ℝ} (ho : 0 ≤ o)
+    (hodds : ∀ a ∈ F, o * D.weight a ≤ 1 - D.weight a) :
+    o * (Matrix.trace (subsetSum D F - 1)⁻¹ - 1)
+      ≤ (1 + o) * (∑ b ∈ Fᶜ, D.weight b
+          * (D.atom b ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ D.atom b))
+        - ∑ b ∈ Fᶜ, D.weight b) := by
+  classical
+  set A : Matrix (Fin 3) (Fin 3) ℝ := subsetSum D F - 1 with hA
+  have hdet : IsUnit A.det := isUnit_iff_ne_zero.mpr (ne_of_gt hPD.det_pos)
+  -- the coweighted member mass, exactly
+  have hmassmat : ∑ a ∈ F, ((1 - D.weight a) - o * D.weight a)
+      • atomMatrix (D.atom a)
+      = (A - o • 1)
+        + (1 + o) • ∑ b ∈ Fᶜ, D.weight b • atomMatrix (D.atom b) := by
+    have hsplit0 := subsetSum_coweight_split D F
+    have hparse := Finset.sum_add_sum_compl F
+      (fun a => D.weight a • atomMatrix (D.atom a))
+    rw [D.isParseval] at hparse
+    have hexp : ∑ a ∈ F, ((1 - D.weight a) - o * D.weight a)
+        • atomMatrix (D.atom a)
+        = ∑ a ∈ F, (1 - D.weight a) • atomMatrix (D.atom a)
+          - o • ∑ a ∈ F, D.weight a • atomMatrix (D.atom a) := by
+      rw [Finset.smul_sum, ← Finset.sum_sub_distrib]
+      refine Finset.sum_congr rfl fun a _ => ?_
+      rw [sub_smul, smul_smul]
+    have hFin : ∑ a ∈ F, D.weight a • atomMatrix (D.atom a)
+        = 1 - ∑ b ∈ Fᶜ, D.weight b • atomMatrix (D.atom b) := by
+      rw [← hparse]; abel
+    rw [hexp, hsplit0, hFin, ← hA, smul_sub]
+    have hone : (1 : ℝ) • ∑ b ∈ Fᶜ, D.weight b • atomMatrix (D.atom b)
+        = ∑ b ∈ Fᶜ, D.weight b • atomMatrix (D.atom b) := one_smul _ _
+    rw [add_smul, hone]
+    abel
+  -- the trace pairing
+  have htr : ∀ (s : Finset (Fin m)) (w : Fin m → ℝ),
+      Matrix.trace (A⁻¹ * ∑ a ∈ s, w a • atomMatrix (D.atom a))
+        = ∑ a ∈ s, w a * (D.atom a ⬝ᵥ (A⁻¹ *ᵥ D.atom a)) := by
+    intro s w
+    rw [Matrix.mul_sum, Matrix.trace_sum]
+    refine Finset.sum_congr rfl fun a _ => ?_
+    rw [mul_smul_comm, Matrix.trace_smul, trace_mul_atomMatrix, smul_eq_mul]
+  have htrace := congrArg (fun M : Matrix (Fin 3) (Fin 3) ℝ
+    => Matrix.trace (A⁻¹ * M)) hmassmat
+  simp only [Matrix.mul_add, Matrix.trace_add, Matrix.mul_sub,
+    Matrix.trace_sub] at htrace
+  rw [htr F (fun a => (1 - D.weight a) - o * D.weight a),
+    Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_smul, Matrix.trace_smul,
+    htr Fᶜ D.weight, Matrix.nonsing_inv_mul A hdet, Matrix.trace_one,
+    Matrix.mul_one] at htrace
+  -- the member floors
+  have hfloors : ∑ a ∈ F, ((1 - D.weight a) - o * D.weight a)
+      ≤ ∑ a ∈ F, ((1 - D.weight a) - o * D.weight a)
+          * (D.atom a ⬝ᵥ (A⁻¹ *ᵥ D.atom a)) := by
+    refine Finset.sum_le_sum fun a ha => ?_
+    have hfloor := fourSet_leverage_ge_one D htie F hF hPD ha
+    rw [← hA] at hfloor
+    have hw : (0 : ℝ) ≤ (1 - D.weight a) - o * D.weight a := by
+      linarith [hodds a ha]
+    nlinarith [hfloor, hw]
+  -- the coweight totals
+  have hcoweight : ∑ a ∈ F, (1 - D.weight a) = 3 + ∑ b ∈ Fᶜ, D.weight b := by
+    have hsplitw := Finset.sum_add_sum_compl F D.weight
+    rw [D.weight_sum_one] at hsplitw
+    have hones : ∑ _a ∈ F, (1 : ℝ) = 4 := by
+      rw [Finset.sum_const, hF]
+      norm_num
+    rw [Finset.sum_sub_distrib, hones]
+    linarith
+  have hwsum : ∑ a ∈ F, ((1 - D.weight a) - o * D.weight a)
+      = (3 + ∑ b ∈ Fᶜ, D.weight b) - o * (1 - ∑ b ∈ Fᶜ, D.weight b) := by
+    have hsplitw := Finset.sum_add_sum_compl F D.weight
+    rw [D.weight_sum_one] at hsplitw
+    rw [Finset.sum_sub_distrib, hcoweight, ← Finset.mul_sum]
+    have : ∑ a ∈ F, D.weight a = 1 - ∑ b ∈ Fᶜ, D.weight b := by linarith
+    rw [this]
+  rw [hwsum] at hfloors
+  rw [htrace] at hfloors
+  have hcast : ((Fintype.card (Fin 3) : ℝ)) = 3 := by
+    rw [Fintype.card_fin]; norm_num
+  rw [hcast] at hfloors
+  simp only [smul_eq_mul] at hfloors
+  linarith [hfloors]
+
 /-- **THE EXCLUDED-ATOM WITNESS.**  At a tie, a strictly dominating four-set
 hands some excluded atom a reading of at least one. -/
 theorem tie_fourSet_excluded_witness (D : WeightedDesign m 3) (htie : IsTie D)
