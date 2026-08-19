@@ -1225,6 +1225,8 @@ import Gtz.Wave.CorankTwoPlanarClosure
 import Gtz.Wave.CorankTwoNonplanarSystem
 import Gtz.Wave.CorankTwoNonplanarFixture
 import Gtz.Wave.CorankTwoNonplanarDescent
+import Gtz.Wave.SixSetProjection
+import Gtz.Wave.SixSetDowndate
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35565,3 +35567,25 @@ run_cmd do
 #print axioms Gtz.sum_subset_quadForm_eq_trace
 #print axioms Gtz.tie_forces_ghost_reading
 #print axioms Gtz.not_isTie_of_ghost_readings_lt
+
+-- Gtz/Wave/CorankTwoNonplanarSystem.lean (outside plane cover)
+#print axioms Gtz.outsideWeight_total_of_rankOneGap
+#print axioms Gtz.outside_plane_cover_of_rankOneGap
+
+-- Gtz/Wave/CorankTwoNonplanarDescent.lean (the core and its producer)
+#print axioms Gtz.corankTwoNonplanar_absurd_of_core
+#print axioms Gtz.nonplanarFourSetCore_of_swapPD
+
+-- Gtz/Wave/SixSetProjection.lean
+#print axioms Gtz.coweight_atomSum_eq_sixSetGap
+#print axioms Gtz.sixSetGap_posDef_of_rankOneGap
+#print axioms Gtz.pivot_coweight_projection
+#print axioms Gtz.sixSet_coweight_pivot_sum
+
+-- Gtz/Wave/SixSetDowndate.lean
+#print axioms Gtz.tripleGap_eq_sixSet_downdate
+#print axioms Gtz.posDef_sub_triple_of_combination_reading
+#print axioms Gtz.not_isTie_of_sixSet_combination_reading
+
+-- Gtz/Wave/SixSetProjection.lean (the pivot cap)
+#print axioms Gtz.sixSet_pivot_cap

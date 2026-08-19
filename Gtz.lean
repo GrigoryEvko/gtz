@@ -6314,3 +6314,5 @@ import Gtz.Wave.CorankTwoPlanarClosure
 import Gtz.Wave.CorankTwoNonplanarSystem
 import Gtz.Wave.CorankTwoNonplanarFixture
 import Gtz.Wave.CorankTwoNonplanarDescent
+import Gtz.Wave.SixSetProjection
+import Gtz.Wave.SixSetDowndate
