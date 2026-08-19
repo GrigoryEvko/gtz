@@ -1253,6 +1253,7 @@ import Gtz.Wave.FourSetTraceFloor
 import Gtz.Wave.CornerParityLedger
 import Gtz.Wave.CornerBracketPlucker
 import Gtz.Wave.CornerSignWord
+import Gtz.Wave.CornerSignMatching
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35932,3 +35933,10 @@ run_cmd do
 #print axioms Gtz.corner_oppositePair_bracket_floor
 #print axioms Gtz.corner_oppositePair_bracket_pos
 #print axioms Gtz.corner_informative_bracket_floor
+
+-- Gtz/Wave/CornerSignMatching.lean -- the coplanar matching of a sign-coherent corner
+#print axioms Gtz.bracketNormal_crossPair
+#print axioms Gtz.bracketNormal_triple_expansion
+#print axioms Gtz.not_double_coplanar_of_primitive
+#print axioms Gtz.corner_matching_of_signCoherent
+#print axioms Gtz.corner_matching_quantization
