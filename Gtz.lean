@@ -6333,3 +6333,5 @@ import Gtz.Wave.NonplanarResidualFoil
 import Gtz.Wave.PairRefusalLedger
 import Gtz.Wave.TiePivotCensus
 import Gtz.Wave.DeficitResidualFoil
+import Gtz.Wave.CornerRefusalCensus
+import Gtz.Wave.CornerGapWindow

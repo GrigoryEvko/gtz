@@ -1244,6 +1244,8 @@ import Gtz.Wave.NonplanarResidualFoil
 import Gtz.Wave.PairRefusalLedger
 import Gtz.Wave.TiePivotCensus
 import Gtz.Wave.DeficitResidualFoil
+import Gtz.Wave.CornerRefusalCensus
+import Gtz.Wave.CornerGapWindow
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35779,3 +35781,26 @@ run_cmd do
 #print axioms Gtz.corankTwoNonplanar_not_deficient_one_two
 #print axioms Gtz.not_unconditionalNonplanarDeficitResidual
 #print axioms Gtz.deficitResidual_two_sided
+
+-- Gtz/Wave/CornerRefusalCensus.lean -- ten of the twenty refusals of a corner are free
+#print axioms Gtz.not_posDef_of_nonpos_reading
+#print axioms Gtz.det_atomPair_eq_zero
+#print axioms Gtz.det_atomSingle_eq_zero
+#print axioms Gtz.exists_kernel_of_det_eq_zero
+#print axioms Gtz.subsetSum_swap
+#print axioms Gtz.corner_self_not_posDef
+#print axioms Gtz.corner_swap_not_posDef
+#print axioms Gtz.eq_swap_of_card_inter_two
+#print axioms Gtz.corner_census_not_posDef
+#print axioms Gtz.strictDominator_inter_card_le_one
+#print axioms Gtz.isTie_iff_corner_refusals
+#print axioms Gtz.exists_third_outside
+#print axioms Gtz.outside_pivot_minor_nonpos
+
+-- Gtz/Wave/CornerGapWindow.lean -- the gap scale of a corner sits in a weight window
+#print axioms Gtz.sum_weight_read_sq
+#print axioms Gtz.corner_gapScale_le_of_weightFloor
+#print axioms Gtz.outside_cover_quantitative
+#print axioms Gtz.corner_gapScale_floor_of_isTie
+#print axioms Gtz.corner_gapScale_window
+#print axioms Gtz.corner_gapScale_floor_concrete
