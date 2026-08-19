@@ -1250,6 +1250,7 @@ import Gtz.Wave.OutsideFrameLaws
 import Gtz.Wave.CornerSecondMoment
 import Gtz.Wave.LedgerAggregateFoil
 import Gtz.Wave.FourSetTraceFloor
+import Gtz.Wave.CornerParityLedger
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35892,3 +35893,17 @@ run_cmd do
 #print axioms Gtz.fourSet_trace_floor
 #print axioms Gtz.not_isTie_of_fourSet_trace_lt
 #print axioms Gtz.corner_fourSet_trace_floor
+
+-- Gtz/Wave/CornerParityLedger.lean -- the corner priced against the parity bit
+#print axioms Gtz.corner_heavyExcess_axis
+#print axioms Gtz.corner_atomPairing_axis
+#print axioms Gtz.corner_inside_pairMinor_eq_zero
+#print axioms Gtz.corner_inside_tripleProduct
+#print axioms Gtz.corner_inside_tripleProduct_nonneg
+#print axioms Gtz.corner_inside_tripleParity_eq_one
+#print axioms Gtz.corner_twoInside_excessGap
+#print axioms Gtz.corner_twoInside_tripleProduct
+#print axioms Gtz.corner_twoInside_det_square
+#print axioms Gtz.corner_twoInside_det_nonpos
+#print axioms Gtz.corner_twoInside_tripleParity_forced
+#print axioms Gtz.corner_fourSet_parity_forced
