@@ -1236,6 +1236,8 @@ import Gtz.Wave.SixSetGapUniversal
 import Gtz.Wave.GhostWeightedDeficit
 import Gtz.Wave.CorankTwoArm
 import Gtz.Wave.CorankTwoDeficitArm
+import Gtz.Wave.CornerPivotRigidity
+import Gtz.Wave.NonplanarResidualFoil
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35655,3 +35657,32 @@ run_cmd do
 #print axioms Gtz.nonplanarDeficitResidual_of_ghostResidual
 #print axioms Gtz.corankTwoGap_absurd'
 #print axioms Gtz.gapKernel_subsingleton_of_isTie'
+
+-- Gtz/Wave/CornerPivotRigidity.lean
+#print axioms Gtz.outside_cross_row_mass
+#print axioms Gtz.outside_pivot_compose
+#print axioms Gtz.outside_pivot_eigen
+#print axioms Gtz.outside_gapCross_mass
+#print axioms Gtz.lam_mul_gapCrossMass
+#print axioms Gtz.outsideDefect_comm
+#print axioms Gtz.outsideDefect_compose
+#print axioms Gtz.outsideDefect_trace
+#print axioms Gtz.outsideDefect_eq_zero
+#print axioms Gtz.outsidePivot_diag_rankOne
+#print axioms Gtz.outsidePivot_offDiag_rankOne
+#print axioms Gtz.outsidePivot_minor_vanishes
+#print axioms Gtz.outsidePivot_minor_vanishes'
+#print axioms Gtz.outsidePivot_diag_rankOne'
+#print axioms Gtz.swap_add_swap_eq_two_smul
+#print axioms Gtz.not_ghostBlockShort_two_selectors
+
+-- Gtz/Wave/NonplanarResidualFoil.lean
+#print axioms Gtz.residualFoil_gapMat
+#print axioms Gtz.residualFoil_gapInv
+#print axioms Gtz.residualFoil_corner
+#print axioms Gtz.residualFoil_pivot_zero
+#print axioms Gtz.residualFoil_pivot_one
+#print axioms Gtz.residualFoil_pivot_two
+#print axioms Gtz.residualFoil_weight_floor
+#print axioms Gtz.not_nonplanarGhostResidual
+#print axioms Gtz.exists_not_nonplanarGhostResidual

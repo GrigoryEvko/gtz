@@ -6325,3 +6325,5 @@ import Gtz.Wave.SixSetGapUniversal
 import Gtz.Wave.GhostWeightedDeficit
 import Gtz.Wave.CorankTwoArm
 import Gtz.Wave.CorankTwoDeficitArm
+import Gtz.Wave.CornerPivotRigidity
+import Gtz.Wave.NonplanarResidualFoil

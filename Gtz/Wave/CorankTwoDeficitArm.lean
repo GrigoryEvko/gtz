@@ -34,9 +34,11 @@ actually refutes.
 
 `Gtz.NonplanarGhostResidual` carries no tie hypothesis, so it asks for a short
 ghost block at EVERY non-planar corank-two corner of every design.  That is
-false at corners far from a tie.  The arm applies the residual only under a tie
-and a primitive design, so `Gtz.NonplanarDeficitResidual` carries both
-hypotheses, which weakens what a producer must prove.
+false: `Gtz.not_nonplanarGhostResidual` exhibits a design whose corner admits no
+short selector at all, with every weight above `1/20`.  The arm applies the
+residual only under a tie and a primitive design, so
+`Gtz.NonplanarDeficitResidual` carries both hypotheses, which weakens what a
+producer must prove.
 `Gtz.corankTwoGap_absurd'` and `Gtz.gapKernel_subsingleton_of_isTie'` are the
 arm and the arm statement over the widened, correctly hypothesised residual.
 -/
