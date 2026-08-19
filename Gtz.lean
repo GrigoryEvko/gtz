@@ -6335,3 +6335,5 @@ import Gtz.Wave.TiePivotCensus
 import Gtz.Wave.DeficitResidualFoil
 import Gtz.Wave.CornerRefusalCensus
 import Gtz.Wave.CornerGapWindow
+import Gtz.Wave.OutsideFrameLaws
+import Gtz.Wave.CornerSecondMoment

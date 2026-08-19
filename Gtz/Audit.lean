@@ -1246,6 +1246,8 @@ import Gtz.Wave.TiePivotCensus
 import Gtz.Wave.DeficitResidualFoil
 import Gtz.Wave.CornerRefusalCensus
 import Gtz.Wave.CornerGapWindow
+import Gtz.Wave.OutsideFrameLaws
+import Gtz.Wave.CornerSecondMoment
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35809,3 +35811,28 @@ run_cmd do
 #print axioms Gtz.swapRefusal_axis_bound
 #print axioms Gtz.exists_swapRefusal_bound
 #print axioms Gtz.refusal_direction_angle_floor
+
+-- Gtz/Wave/OutsideFrameLaws.lean -- the complement triple is a frame
+#print axioms Gtz.sum_compl_of_support_pair
+#print axioms Gtz.outside_gram_le
+#print axioms Gtz.outside_gram_pair_le
+#print axioms Gtz.outside_pivot_minor_nonneg
+#print axioms Gtz.outside_pivot_minor_eq_zero
+#print axioms Gtz.square_frame_adj
+#print axioms Gtz.square_frame_adj_column
+#print axioms Gtz.outsideFrame_diagonal
+#print axioms Gtz.outsideFrame_transpose
+#print axioms Gtz.sum_compl_eq_enum
+#print axioms Gtz.enum_injective
+#print axioms Gtz.outside_weighted_adj_square
+#print axioms Gtz.outside_leverage_adj
+
+-- Gtz/Wave/CornerSecondMoment.lean -- the second moment of the outside co-weights
+#print axioms Gtz.coweight_outside_atomSum
+#print axioms Gtz.coweight_outside_transpose
+#print axioms Gtz.coweight_outside_mulVec
+#print axioms Gtz.outside_secondMoment_adj
+#print axioms Gtz.outside_secondMoment_pivot
+#print axioms Gtz.outside_secondMoment_gapCross
+#print axioms Gtz.ghostDeficitForm_ge_coweight_slack
+#print axioms Gtz.corner_secondMoment_refusal
