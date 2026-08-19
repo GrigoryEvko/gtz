@@ -6346,3 +6346,4 @@ import Gtz.Wave.CornerSignMatching
 import Gtz.Wave.SignCoherentFoil
 import Gtz.Wave.FourSetCoweightCap
 import Gtz.Wave.FiveSetPairFloor
+import Gtz.Wave.CornerFramePair

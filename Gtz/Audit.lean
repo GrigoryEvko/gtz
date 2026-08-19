@@ -1257,6 +1257,7 @@ import Gtz.Wave.CornerSignMatching
 import Gtz.Wave.SignCoherentFoil
 import Gtz.Wave.FourSetCoweightCap
 import Gtz.Wave.FiveSetPairFloor
+import Gtz.Wave.CornerFramePair
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35982,3 +35983,8 @@ run_cmd do
 #print axioms Gtz.tie_fiveSet_pair_floor
 #print axioms Gtz.complement_erase_posDef_of_leverage_le_one
 #print axioms Gtz.corner_oneAxisZero_fiveSet_posDef
+
+-- Gtz/Wave/CornerFramePair.lean -- the frame pair and the modulus-free complement law
+#print axioms Gtz.atomMatrix_add_expand
+#print axioms Gtz.corner_oneAxisZero_frame_pair
+#print axioms Gtz.corner_oneAxisZero_complement_law
