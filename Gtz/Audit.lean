@@ -1254,6 +1254,7 @@ import Gtz.Wave.CornerParityLedger
 import Gtz.Wave.CornerBracketPlucker
 import Gtz.Wave.CornerSignWord
 import Gtz.Wave.CornerSignMatching
+import Gtz.Wave.SignCoherentFoil
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35940,3 +35941,21 @@ run_cmd do
 #print axioms Gtz.not_double_coplanar_of_primitive
 #print axioms Gtz.corner_matching_of_signCoherent
 #print axioms Gtz.corner_matching_quantization
+
+-- Gtz/Wave/SignCoherentFoil.lean -- an exact non-planar corner on the coherent horn
+#print axioms Gtz.signCoherentFoil_corner
+#print axioms Gtz.signCoherentFoil_axis_unit
+#print axioms Gtz.signCoherentFoil_coplanar
+#print axioms Gtz.signCoherentFoil_nonplanar
+#print axioms Gtz.signCoherentFoil_pairings
+#print axioms Gtz.signCoherentFoil_base0_minors
+#print axioms Gtz.signCoherentFoil_base1_minors
+#print axioms Gtz.signCoherentFoil_base2_minors
+#print axioms Gtz.signCoherentFoil_coherent_base0
+#print axioms Gtz.signCoherentFoil_coherent_base1
+#print axioms Gtz.signCoherentFoil_coherent_base2
+#print axioms Gtz.signCoherentFoil_quantized
+#print axioms Gtz.isPrimitiveDesign_signCoherentFoil
+#print axioms Gtz.signCoherentFoil_dominator
+#print axioms Gtz.signCoherentFoil_not_isTie
+#print axioms Gtz.signCoherent_nonplanar_corner_inhabited
