@@ -35808,3 +35808,4 @@ run_cmd do
 #print axioms Gtz.swapTriple_quadForm
 #print axioms Gtz.swapRefusal_axis_bound
 #print axioms Gtz.exists_swapRefusal_bound
+#print axioms Gtz.refusal_direction_angle_floor

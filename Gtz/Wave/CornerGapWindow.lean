@@ -320,4 +320,28 @@ theorem exists_swapRefusal_bound (D : WeightedDesign 6 3) (htie : IsTie D)
     (htie.2 _ hcardT)
   exact ⟨z, hz, swapRefusal_axis_bound D C hgap hIn hOut hOut0 he hd hread⟩
 
+
+/-! ## 8. The angle floor, in weights alone -/
+
+/-- **The refusal direction of the complement triple makes a weight-bounded angle
+with the gap axis.**  The ceiling on the gap scale eliminates `lam` from
+`Gtz.refusal_direction_axis_floor`, leaving a floor on the squared cosine that
+reads only the weights.  It is stated in multiplied form, so no weight has to be
+inverted. -/
+theorem refusal_direction_angle_floor (D : WeightedDesign m 3) (C : Finset (Fin m))
+    {lam : ℝ} {u : Fin 3 → ℝ} (hunit : u ⬝ᵥ u = 1)
+    (hgap : subsetSum D C - 1 = lam • atomMatrix u)
+    {weightFloor ceilIn ceilOut : ℝ} (hfloor : ∀ e ∈ C, weightFloor ≤ D.weight e)
+    (hIn : ∀ e ∈ C, D.weight e ≤ ceilIn) (hOut : ∀ d ∈ Cᶜ, D.weight d ≤ ceilOut)
+    (hfloor0 : 0 ≤ weightFloor) (hIn0 : 0 ≤ ceilIn) (hOut0 : 0 ≤ ceilOut)
+    {z : Fin 3 → ℝ} (hread : z ⬝ᵥ ((subsetSum D Cᶜ - 1) *ᵥ z) ≤ 0) :
+    weightFloor * ((1 - ceilIn - ceilOut) * (z ⬝ᵥ z))
+      ≤ ceilIn * ((1 - weightFloor) * (u ⬝ᵥ z) ^ 2) := by
+  have haxis := refusal_direction_axis_floor D C hgap hIn hOut hOut0 hread
+  have hcap := corner_gapScale_le_of_weightFloor D C hunit hgap hfloor
+  have hstep : weightFloor * ((1 - ceilIn - ceilOut) * (z ⬝ᵥ z))
+      ≤ weightFloor * (ceilIn * (lam * (u ⬝ᵥ z) ^ 2)) :=
+    mul_le_mul_of_nonneg_left haxis hfloor0
+  nlinarith [hstep, hcap, sq_nonneg (u ⬝ᵥ z), mul_nonneg hIn0 (sq_nonneg (u ⬝ᵥ z))]
+
 end Gtz
