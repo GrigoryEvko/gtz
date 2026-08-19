@@ -1249,6 +1249,7 @@ import Gtz.Wave.CornerGapWindow
 import Gtz.Wave.OutsideFrameLaws
 import Gtz.Wave.CornerSecondMoment
 import Gtz.Wave.LedgerAggregateFoil
+import Gtz.Wave.FourSetTraceFloor
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35869,3 +35870,10 @@ run_cmd do
 #print axioms Gtz.ledgerFoil_coweight_neg
 #print axioms Gtz.ledgerFoil_not_isTie
 #print axioms Gtz.exists_coweight_beats_aggregate
+
+-- Gtz/Wave/FourSetTraceFloor.lean -- the four triples of a four-set floor its inverse gap
+#print axioms Gtz.subsetSum_erase_sub_one_rankOne
+#print axioms Gtz.fourSet_leverage_ge_one
+#print axioms Gtz.fourSet_trace_floor
+#print axioms Gtz.not_isTie_of_fourSet_trace_lt
+#print axioms Gtz.corner_fourSet_trace_floor

@@ -6338,3 +6338,4 @@ import Gtz.Wave.CornerGapWindow
 import Gtz.Wave.OutsideFrameLaws
 import Gtz.Wave.CornerSecondMoment
 import Gtz.Wave.LedgerAggregateFoil
+import Gtz.Wave.FourSetTraceFloor
