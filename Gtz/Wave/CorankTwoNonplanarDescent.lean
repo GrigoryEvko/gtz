@@ -220,4 +220,51 @@ theorem not_isTie_of_ghost_readings_lt (D : WeightedDesign 6 3)
     nlinarith [D.weight_pos f, this]
   linarith [hforced, hlt]
 
+
+/-! ## 5. The geometric core, named -/
+
+/-- **The geometric core of the non-planar closure.**  Some inside atom of
+the dominator carries a positive definite four-set gap on which both ghost
+atoms read strictly below one.  This is the exact residual of the non-planar
+corank-two corner: `Gtz.corankTwoNonplanar_absurd_of_core` closes the corner
+from it, and the campaign record calibrates it at every near-tie record
+(ghost readings at most `0.84` against the threshold `1`). -/
+def NonplanarFourSetCore (D : WeightedDesign 6 3) (C : Finset (Fin 6)) : Prop :=
+  ∃ e ∈ C, (subsetSum D (insert e Cᶜ) - 1).PosDef
+    ∧ ∀ f ∈ C.erase e,
+        D.atom f ⬝ᵥ ((subsetSum D (insert e Cᶜ) - 1)⁻¹ *ᵥ D.atom f) < 1
+
+/-- **The non-planar corner closes from the core.**  A `(6,3)` tie whose
+dominator satisfies the four-set core is impossible. -/
+theorem corankTwoNonplanar_absurd_of_core (D : WeightedDesign 6 3)
+    (htie : IsTie D) (C : Finset (Fin 6)) (hcard : C.card = 3)
+    (hcore : NonplanarFourSetCore D C) : False := by
+  obtain ⟨e, he, hPD, hghost⟩ := hcore
+  exact not_isTie_of_ghost_readings_lt D C hcard he hPD hghost htie
+
+
+/-- **The inverse-free core producer.**  Positive definiteness of the two
+explicit swap matrices `B_e − g_f g_fᵀ` produces the four-set core: the base
+`B_e` is then automatically positive definite, and the ghost readings drop
+below one by the strict rank-one Schur criterion. -/
+theorem nonplanarFourSetCore_of_swapPD (D : WeightedDesign 6 3)
+    (C : Finset (Fin 6)) (hcard : C.card = 3) {e : Fin 6} (he : e ∈ C)
+    (hswap : ∀ f ∈ C.erase e,
+      ((subsetSum D (insert e Cᶜ) - 1)
+        - Matrix.vecMulVec (D.atom f) (D.atom f)).PosDef) :
+    NonplanarFourSetCore D C := by
+  classical
+  have hCe : (C.erase e).Nonempty := by
+    rw [← Finset.card_pos, Finset.card_erase_of_mem he, hcard]
+    norm_num
+  obtain ⟨f0, hf0⟩ := hCe
+  have hPD : (subsetSum D (insert e Cᶜ) - 1).PosDef := by
+    have hadd := Matrix.PosDef.add_posSemidef (hswap f0 hf0)
+      (posSemidef_atomMatrix (D.atom f0))
+    rwa [show atomMatrix (D.atom f0)
+        = Matrix.vecMulVec (D.atom f0) (D.atom f0) from rfl,
+      sub_add_cancel] at hadd
+  refine ⟨e, he, hPD, fun f hf => ?_⟩
+  exact (posDef_sub_vecMulVec_iff _ hPD (D.atom f)).mp (hswap f hf)
+
 end Gtz

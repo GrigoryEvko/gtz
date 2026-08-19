@@ -331,4 +331,143 @@ theorem exists_inside_deficit_of_nonplanar (D : WeightedDesign m 3)
     Finset.sum_nonneg hterm
   nlinarith [humass, hpos, hsum, hone]
 
+
+/-! ## 6. The outside plane cover -/
+
+/-- The outside weight total: `(1+lam)·Σ_{d∉C} t_d = lam − 2 − Σ_e s_e`. -/
+theorem outsideWeight_total_of_rankOneGap (D : WeightedDesign m 3)
+    (C : Finset (Fin m)) (hcard : C.card = 3) (lam : ℝ) :
+    (1 + lam) * ∑ d ∈ Cᶜ, D.weight d
+      = lam - 2 - ∑ e ∈ C, ((1 + lam) * D.weight e - 1) := by
+  have hsum := D.weight_sum_one
+  rw [← Finset.sum_add_sum_compl C] at hsum
+  have hin : ∑ e ∈ C, ((1 + lam) * D.weight e - 1)
+      = (1 + lam) * ∑ e ∈ C, D.weight e - 3 := by
+    rw [Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_const, hcard]
+    norm_num
+  rw [hin]
+  linear_combination (1 + lam) * hsum
+
+/-- **The outside plane cover.**  At the corner, the unweighted outside atoms
+strictly cover the norm on the whole plane orthogonal to the gap direction:
+`|w|² < Σ_{d∉C} (q_d·w)²`.  The planar corner's outside positivity
+generalizes with the inside deviation corrections absorbed by the weight
+identities. -/
+theorem outside_plane_cover_of_rankOneGap (D : WeightedDesign m 3)
+    (C : Finset (Fin m)) (hcard : C.card = 3) (hne : Cᶜ.Nonempty)
+    {lam : ℝ} (hlam : 0 ≤ lam) {u : Fin 3 → ℝ} (hunit : u ⬝ᵥ u = 1)
+    (hgap : subsetSum D C - 1 = lam • atomMatrix u)
+    {w : Fin 3 → ℝ} (hw : w ⬝ᵥ u = 0) (hwne : w ≠ 0) :
+    w ⬝ᵥ w < ∑ d ∈ Cᶜ, (D.atom d ⬝ᵥ w) ^ 2 := by
+  classical
+  by_contra hcon
+  push_neg at hcon
+  have hone : (0 : ℝ) < 1 + lam := by linarith
+  -- the isotropy instance at (w, w)
+  have h1 := outside_reading_of_rankOneGap D C hgap w w
+  have huw : u ⬝ᵥ w = 0 := by rwa [dotProduct_comm] at hw
+  rw [huw] at h1
+  have hsq : ∀ c : Fin m,
+      (D.atom c ⬝ᵥ w) * (D.atom c ⬝ᵥ w) = (D.atom c ⬝ᵥ w) ^ 2 := fun c => by
+    ring
+  simp only [hsq, mul_zero, zero_mul, sub_zero] at h1
+  -- the inside plane Parseval
+  have h2 := planeMass_of_rankOneGap D C hw hgap
+  -- the crude outside bound under the contradiction hypothesis
+  have h3 : ∑ d ∈ Cᶜ, D.weight d * (D.atom d ⬝ᵥ w) ^ 2
+      ≤ (∑ d ∈ Cᶜ, D.weight d) * (w ⬝ᵥ w) := by
+    calc ∑ d ∈ Cᶜ, D.weight d * (D.atom d ⬝ᵥ w) ^ 2
+        ≤ ∑ d ∈ Cᶜ, D.weight d * ∑ d' ∈ Cᶜ, (D.atom d' ⬝ᵥ w) ^ 2 := by
+          refine Finset.sum_le_sum fun d hd => ?_
+          refine mul_le_mul_of_nonneg_left ?_ (D.weight_pos d).le
+          exact Finset.single_le_sum
+            (f := fun d' => (D.atom d' ⬝ᵥ w) ^ 2)
+            (fun d' _ => sq_nonneg _) hd
+      _ ≤ ∑ d ∈ Cᶜ, D.weight d * (w ⬝ᵥ w) := by
+          refine Finset.sum_le_sum fun d _ => ?_
+          exact mul_le_mul_of_nonneg_left hcon (D.weight_pos d).le
+      _ = (∑ d ∈ Cᶜ, D.weight d) * (w ⬝ᵥ w) := by rw [Finset.sum_mul]
+  -- the outside weight total
+  have h4 := outsideWeight_total_of_rankOneGap D C hcard lam
+  -- the strict inside reading: some inside atom reads the witness
+  have h5 : ∃ e0 ∈ C, (D.atom e0 ⬝ᵥ w) ≠ 0 := by
+    by_contra hall
+    push_neg at hall
+    exact not_forall_reads_zero_of_rankOneGap D C hlam hgap hwne hall
+  obtain ⟨e0, he0, hread0⟩ := h5
+  -- the strict co-coefficient sum at the reading atom
+  have hcoeff : 0 < ∑ f ∈ C.erase e0, (1 + lam) * D.weight f := by
+    refine Finset.sum_pos (fun f _ => mul_pos hone (D.weight_pos f)) ?_
+    rw [← Finset.card_pos, Finset.card_erase_of_mem he0, hcard]
+    norm_num
+  -- the remainder is positive: some inside atom reads with a positive co-sum
+  have hR : 0 < ∑ e ∈ C, (∑ f ∈ C.erase e, (1 + lam) * D.weight f)
+      * (D.atom e ⬝ᵥ w) ^ 2 := by
+    refine Finset.sum_pos' (fun e _ => mul_nonneg ?_ (sq_nonneg _))
+      ⟨e0, he0, ?_⟩
+    · exact Finset.sum_nonneg fun f _ => (mul_pos hone (D.weight_pos f)).le
+    · refine mul_pos hcoeff ?_
+      positivity
+  -- expand the remainder against the plane Parseval
+  have hsplit : ∀ e ∈ C, ∑ f ∈ C.erase e, (1 + lam) * D.weight f
+      = (∑ f ∈ C, (1 + lam) * D.weight f) - (1 + lam) * D.weight e := by
+    intro e he
+    rw [← Finset.add_sum_erase C _ he]
+    ring
+  have hRid : ∑ e ∈ C, (∑ f ∈ C.erase e, (1 + lam) * D.weight f)
+        * (D.atom e ⬝ᵥ w) ^ 2
+      = (∑ f ∈ C, (1 + lam) * D.weight f) * (w ⬝ᵥ w)
+        - ∑ e ∈ C, ((1 + lam) * D.weight e) * (D.atom e ⬝ᵥ w) ^ 2 := by
+    calc ∑ e ∈ C, (∑ f ∈ C.erase e, (1 + lam) * D.weight f)
+          * (D.atom e ⬝ᵥ w) ^ 2
+        = ∑ e ∈ C, ((∑ f ∈ C, (1 + lam) * D.weight f) * (D.atom e ⬝ᵥ w) ^ 2
+            - ((1 + lam) * D.weight e) * (D.atom e ⬝ᵥ w) ^ 2) := by
+          refine Finset.sum_congr rfl fun e he => ?_
+          rw [hsplit e he]
+          ring
+      _ = (∑ f ∈ C, (1 + lam) * D.weight f)
+            * (∑ e ∈ C, (D.atom e ⬝ᵥ w) ^ 2)
+            - ∑ e ∈ C, ((1 + lam) * D.weight e) * (D.atom e ⬝ᵥ w) ^ 2 := by
+          rw [Finset.sum_sub_distrib, Finset.mul_sum]
+      _ = (∑ f ∈ C, (1 + lam) * D.weight f) * (w ⬝ᵥ w)
+            - ∑ e ∈ C, ((1 + lam) * D.weight e) * (D.atom e ⬝ᵥ w) ^ 2 := by
+          rw [h2]
+  rw [hRid] at hR
+  -- the deviation mass identity
+  have hS1 : ∑ e ∈ C, ((1 + lam) * D.weight e - 1) * (D.atom e ⬝ᵥ w) ^ 2
+      = ∑ e ∈ C, ((1 + lam) * D.weight e) * (D.atom e ⬝ᵥ w) ^ 2
+        - w ⬝ᵥ w := by
+    calc ∑ e ∈ C, ((1 + lam) * D.weight e - 1) * (D.atom e ⬝ᵥ w) ^ 2
+        = ∑ e ∈ C, (((1 + lam) * D.weight e) * (D.atom e ⬝ᵥ w) ^ 2
+            - (D.atom e ⬝ᵥ w) ^ 2) :=
+          Finset.sum_congr rfl fun e _ => by ring
+      _ = ∑ e ∈ C, ((1 + lam) * D.weight e) * (D.atom e ⬝ᵥ w) ^ 2
+            - w ⬝ᵥ w := by
+          rw [Finset.sum_sub_distrib, h2]
+  -- the K-ledger bridges
+  have hK : ∑ e ∈ C, ((1 + lam) * D.weight e - 1)
+      = (∑ f ∈ C, (1 + lam) * D.weight f) - 3 := by
+    rw [Finset.sum_sub_distrib, Finset.sum_const, hcard]
+    norm_num
+  have hDW : (∑ e ∈ C, ((1 + lam) * D.weight e - 1)) * (w ⬝ᵥ w)
+      = (∑ f ∈ C, (1 + lam) * D.weight f) * (w ⬝ᵥ w) - 3 * (w ⬝ᵥ w) := by
+    rw [hK]
+    ring
+  -- the chained crude bound
+  have hchain : (1 + lam) * ∑ d ∈ Cᶜ, D.weight d * (D.atom d ⬝ᵥ w) ^ 2
+      ≤ lam * (w ⬝ᵥ w) - 2 * (w ⬝ᵥ w)
+        - (∑ e ∈ C, ((1 + lam) * D.weight e - 1)) * (w ⬝ᵥ w) := by
+    have hmul := mul_le_mul_of_nonneg_left h3 hone.le
+    calc (1 + lam) * ∑ d ∈ Cᶜ, D.weight d * (D.atom d ⬝ᵥ w) ^ 2
+        ≤ (1 + lam) * ((∑ d ∈ Cᶜ, D.weight d) * (w ⬝ᵥ w)) := hmul
+      _ = ((1 + lam) * ∑ d ∈ Cᶜ, D.weight d) * (w ⬝ᵥ w) := by ring
+      _ = (lam - 2 - ∑ e ∈ C, ((1 + lam) * D.weight e - 1)) * (w ⬝ᵥ w) := by
+          rw [h4]
+      _ = lam * (w ⬝ᵥ w) - 2 * (w ⬝ᵥ w)
+            - (∑ e ∈ C, ((1 + lam) * D.weight e - 1)) * (w ⬝ᵥ w) := by
+          ring
+  -- assemble: linear arithmetic over the shared sum atoms
+  have hW : 0 < w ⬝ᵥ w := dotProduct_self_pos hwne
+  linarith [h1, hchain, hR, hS1, hDW, hW]
+
 end Gtz
