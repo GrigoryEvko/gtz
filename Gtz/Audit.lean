@@ -1258,6 +1258,7 @@ import Gtz.Wave.SignCoherentFoil
 import Gtz.Wave.FourSetCoweightCap
 import Gtz.Wave.FiveSetPairFloor
 import Gtz.Wave.CornerFramePair
+import Gtz.Wave.ExcludedAtomLedger
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35988,3 +35989,16 @@ run_cmd do
 #print axioms Gtz.atomMatrix_add_expand
 #print axioms Gtz.corner_oneAxisZero_frame_pair
 #print axioms Gtz.corner_oneAxisZero_complement_law
+
+-- Gtz/Wave/ExcludedAtomLedger.lean -- the reading ledger, the excluded-atom law,
+-- the weighted ceiling, and the deficiency floor
+#print axioms Gtz.subsetSum_coweight_split
+#print axioms Gtz.subset_reading_ledger
+#print axioms Gtz.tie_fourSet_excluded_floor
+#print axioms Gtz.tie_fourSet_excluded_witness
+#print axioms Gtz.subset_dominates_of_weighted_ceiling
+#print axioms Gtz.tie_weighted_ceiling_floor
+#print axioms Gtz.one_sub_atomMatrix_posSemidef
+#print axioms Gtz.erase_deficiency_floor
+#print axioms Gtz.sixThree_erase_deficiency_total
+#print axioms Gtz.corner_oneAxisZero_deficiency_floor
