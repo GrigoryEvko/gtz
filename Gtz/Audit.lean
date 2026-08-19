@@ -1260,6 +1260,7 @@ import Gtz.Wave.FiveSetPairFloor
 import Gtz.Wave.CornerFramePair
 import Gtz.Wave.ExcludedAtomLedger
 import Gtz.Wave.OneAxisZeroFourSets
+import Gtz.Wave.OneAxisZeroRefusalBudget
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36010,3 +36011,18 @@ run_cmd do
 #print axioms Gtz.oneAxisZero_fourSet_scalar_core
 #print axioms Gtz.oneAxisZero_fourSet_posDef_branch
 #print axioms Gtz.corner_oneAxisZero_fourSet_split
+
+-- Gtz/Wave/OneAxisZeroRefusalBudget.lean -- the Z1 refusal budget, the pair-system
+-- collapse of the tie, the two cell collapses, and the assembly
+#print axioms Gtz.not_posDef_sub_vecMulVec_of_not_posDef
+#print axioms Gtz.corner_oneAxisZero_unit
+#print axioms Gtz.corner_oneAxisZero_xTriple_not_posDef
+#print axioms Gtz.corner_oneAxisZero_isTie_iff_xAvoiding
+#print axioms Gtz.xAvoiding_pair_surgery
+#print axioms Gtz.corner_oneAxisZero_isTie_iff_pairSystem
+#print axioms Gtz.oneInside_triple_form
+#print axioms Gtz.corner_xAvoiding_trichotomy
+#print axioms Gtz.corner_oneAxisZero_heavyInside_isTie_iff
+#print axioms Gtz.corner_oneAxisZero_bothLight_isTie_iff
+#print axioms Gtz.corner_oneAxisZero_absurd
+#print axioms Gtz.oneAxisZeroPairCoverage_iff
