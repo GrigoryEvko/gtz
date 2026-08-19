@@ -1259,6 +1259,7 @@ import Gtz.Wave.FourSetCoweightCap
 import Gtz.Wave.FiveSetPairFloor
 import Gtz.Wave.CornerFramePair
 import Gtz.Wave.ExcludedAtomLedger
+import Gtz.Wave.OneAxisZeroFourSets
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36002,3 +36003,9 @@ run_cmd do
 #print axioms Gtz.erase_deficiency_floor
 #print axioms Gtz.sixThree_erase_deficiency_total
 #print axioms Gtz.corner_oneAxisZero_deficiency_floor
+
+-- Gtz/Wave/OneAxisZeroFourSets.lean -- the four-set dichotomy: both-heavy is empty
+#print axioms Gtz.corner_oneAxisZero_frame_decomp
+#print axioms Gtz.oneAxisZero_fourSet_scalar_core
+#print axioms Gtz.oneAxisZero_fourSet_posDef_branch
+#print axioms Gtz.corner_oneAxisZero_fourSet_split
