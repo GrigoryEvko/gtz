@@ -6324,3 +6324,4 @@ import Gtz.Wave.GhostRowBound
 import Gtz.Wave.SixSetGapUniversal
 import Gtz.Wave.GhostWeightedDeficit
 import Gtz.Wave.CorankTwoArm
+import Gtz.Wave.CorankTwoDeficitArm

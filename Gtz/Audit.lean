@@ -1235,6 +1235,7 @@ import Gtz.Wave.GhostRowBound
 import Gtz.Wave.SixSetGapUniversal
 import Gtz.Wave.GhostWeightedDeficit
 import Gtz.Wave.CorankTwoArm
+import Gtz.Wave.CorankTwoDeficitArm
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35645,3 +35646,12 @@ run_cmd do
 #print axioms Gtz.ghostReading_scalar
 #print axioms Gtz.ghostReading_mul_det
 #print axioms Gtz.not_isTie_of_weightedGhostDeficit
+
+-- Gtz/Wave/CorankTwoDeficitArm.lean
+#print axioms Gtz.weightedDeficit_eq_swapBrackets
+#print axioms Gtz.swapBracket_eq_traceForm
+#print axioms Gtz.ghostDeficitShort_of_ghostBlockShort
+#print axioms Gtz.corankTwoNonplanar_absurd_of_ghostDeficit
+#print axioms Gtz.nonplanarDeficitResidual_of_ghostResidual
+#print axioms Gtz.corankTwoGap_absurd'
+#print axioms Gtz.gapKernel_subsingleton_of_isTie'
