@@ -6318,3 +6318,5 @@ import Gtz.Wave.SixSetProjection
 import Gtz.Wave.SixSetDowndate
 import Gtz.LinAlg.DepthThreeDowndate
 import Gtz.Wave.SixSetRefusal
+import Gtz.Wave.SixSetCorner
+import Gtz.Wave.GhostBlockCore
