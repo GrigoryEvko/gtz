@@ -6322,3 +6322,4 @@ import Gtz.Wave.SixSetCorner
 import Gtz.Wave.GhostBlockCore
 import Gtz.Wave.GhostRowBound
 import Gtz.Wave.SixSetGapUniversal
+import Gtz.Wave.CorankTwoArm
