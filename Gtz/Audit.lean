@@ -1222,6 +1222,9 @@ import Gtz.Wave.CorankTwoIsotropy
 import Gtz.LinAlg.PlaneTwoForm
 import Gtz.LinAlg.PlanarCaseInequalities
 import Gtz.Wave.CorankTwoPlanarClosure
+import Gtz.Wave.CorankTwoNonplanarSystem
+import Gtz.Wave.CorankTwoNonplanarFixture
+import Gtz.Wave.CorankTwoNonplanarDescent
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35537,3 +35540,28 @@ run_cmd do
 #print axioms Gtz.planar_fatPair_pigeonhole
 #print axioms Gtz.planar_pairPD_pigeonhole
 #print axioms Gtz.corankTwoPlanar_absurd
+
+-- Gtz/Wave/CorankTwoNonplanarSystem.lean
+#print axioms Gtz.insideGram_of_rankOneGap
+#print axioms Gtz.insideGram_self_of_rankOneGap
+#print axioms Gtz.insideGram_offDiag_of_rankOneGap
+#print axioms Gtz.outside_reading_of_rankOneGap
+#print axioms Gtz.outside_uMass_of_rankOneGap
+#print axioms Gtz.outside_cross_of_rankOneGap
+#print axioms Gtz.nonplanar_resolve_difference
+#print axioms Gtz.insideWeight_cap_of_rankOneGap
+#print axioms Gtz.exists_inside_deficit_of_nonplanar
+
+-- Gtz/Wave/CorankTwoNonplanarFixture.lean
+#print axioms Gtz.corankTwoNonplanarDesign
+#print axioms Gtz.corankTwoNonplanarDesign_gap
+#print axioms Gtz.corankTwoNonplanar_offPlane_witness
+#print axioms Gtz.corankTwoNonplanar_oneShared_strict
+#print axioms Gtz.corankTwoNonplanar_not_isTie
+#print axioms Gtz.corankTwoNonplanar_inside_deficit
+
+-- Gtz/Wave/CorankTwoNonplanarDescent.lean
+#print axioms Gtz.sum_weight_quadForm_eq_trace
+#print axioms Gtz.sum_subset_quadForm_eq_trace
+#print axioms Gtz.tie_forces_ghost_reading
+#print axioms Gtz.not_isTie_of_ghost_readings_lt

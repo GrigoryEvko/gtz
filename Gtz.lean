@@ -6311,3 +6311,6 @@ import Gtz.Wave.CorankTwoIsotropy
 import Gtz.LinAlg.PlaneTwoForm
 import Gtz.LinAlg.PlanarCaseInequalities
 import Gtz.Wave.CorankTwoPlanarClosure
+import Gtz.Wave.CorankTwoNonplanarSystem
+import Gtz.Wave.CorankTwoNonplanarFixture
+import Gtz.Wave.CorankTwoNonplanarDescent
