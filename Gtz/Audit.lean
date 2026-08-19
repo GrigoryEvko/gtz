@@ -1248,6 +1248,7 @@ import Gtz.Wave.CornerRefusalCensus
 import Gtz.Wave.CornerGapWindow
 import Gtz.Wave.OutsideFrameLaws
 import Gtz.Wave.CornerSecondMoment
+import Gtz.Wave.LedgerAggregateFoil
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35836,3 +35837,35 @@ run_cmd do
 #print axioms Gtz.outside_secondMoment_gapCross
 #print axioms Gtz.ghostDeficitForm_ge_coweight_slack
 #print axioms Gtz.corner_secondMoment_refusal
+
+-- Gtz/Wave/LedgerAggregateFoil.lean -- the co-weighted aggregate beats the unweighted one
+#print axioms Gtz.ledgerFoil
+#print axioms Gtz.ledgerFoil_atom
+#print axioms Gtz.ledgerFoil_weight
+#print axioms Gtz.ledgerFoil_gapMat
+#print axioms Gtz.ledgerFoil_gapInv
+#print axioms Gtz.ledgerFoil_corner
+#print axioms Gtz.ledgerFoil_nonplanar
+#print axioms Gtz.ledgerFoil_pivot
+#print axioms Gtz.ledgerFoil_pivot_00
+#print axioms Gtz.ledgerFoil_pivot_11
+#print axioms Gtz.ledgerFoil_pivot_01
+#print axioms Gtz.ledgerFoil_pivot_03
+#print axioms Gtz.ledgerFoil_pivot_04
+#print axioms Gtz.ledgerFoil_pivot_05
+#print axioms Gtz.ledgerFoil_pivot_13
+#print axioms Gtz.ledgerFoil_pivot_14
+#print axioms Gtz.ledgerFoil_pivot_15
+#print axioms Gtz.ledgerFoil_pivot_33
+#print axioms Gtz.ledgerFoil_pivot_44
+#print axioms Gtz.ledgerFoil_pivot_55
+#print axioms Gtz.ledgerFoil_pairMinor
+#print axioms Gtz.ledgerFoil_admissible
+#print axioms Gtz.ledgerFoil_slack_three
+#print axioms Gtz.ledgerFoil_slack_four
+#print axioms Gtz.ledgerFoil_slack_five
+#print axioms Gtz.ledgerFoil_compl
+#print axioms Gtz.ledgerFoil_aggregate_nonneg
+#print axioms Gtz.ledgerFoil_coweight_neg
+#print axioms Gtz.ledgerFoil_not_isTie
+#print axioms Gtz.exists_coweight_beats_aggregate
