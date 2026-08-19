@@ -1239,6 +1239,7 @@ import Gtz.Wave.CorankTwoDeficitArm
 import Gtz.Wave.CornerPivotRigidity
 import Gtz.Wave.LightSetFloor
 import Gtz.Wave.RefusalDirectionSelector
+import Gtz.Wave.RefusalConeGeometry
 import Gtz.Wave.NonplanarResidualFoil
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -35711,3 +35712,10 @@ run_cmd do
 #print axioms Gtz.not_ghostBlockShort_two_selectors_of_refusal
 #print axioms Gtz.outsidePivot_offDiag_sq
 #print axioms Gtz.outsidePivot_triple_product_nonpos
+
+-- Gtz/Wave/RefusalConeGeometry.lean
+#print axioms Gtz.subsetSum_quadForm_eq_sum_sq
+#print axioms Gtz.inside_quadForm_of_rankOneGap
+#print axioms Gtz.refusal_reads_axis
+#print axioms Gtz.selector_reading_floor
+#print axioms Gtz.not_ghostBlockShort_of_tied_readings
