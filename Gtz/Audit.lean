@@ -1227,6 +1227,8 @@ import Gtz.Wave.CorankTwoNonplanarFixture
 import Gtz.Wave.CorankTwoNonplanarDescent
 import Gtz.Wave.SixSetProjection
 import Gtz.Wave.SixSetDowndate
+import Gtz.LinAlg.DepthThreeDowndate
+import Gtz.Wave.SixSetRefusal
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35589,3 +35591,14 @@ run_cmd do
 
 -- Gtz/Wave/SixSetProjection.lean (the pivot cap)
 #print axioms Gtz.sixSet_pivot_cap
+
+-- Gtz/LinAlg/DepthThreeDowndate.lean
+#print axioms Gtz.downdate_cross_reading
+#print axioms Gtz.sylvester_of_downdate_chain
+#print axioms Gtz.downdate_chain_of_sylvester
+#print axioms Gtz.posDef_sub_three_vecMulVec_iff
+#print axioms Gtz.not_posDef_sub_three_vecMulVec_iff
+
+-- Gtz/Wave/SixSetRefusal.lean
+#print axioms Gtz.tie_forces_sixSet_reading
+#print axioms Gtz.tie_refusal_sylvester
