@@ -1237,6 +1237,8 @@ import Gtz.Wave.GhostWeightedDeficit
 import Gtz.Wave.CorankTwoArm
 import Gtz.Wave.CorankTwoDeficitArm
 import Gtz.Wave.CornerPivotRigidity
+import Gtz.Wave.LightSetFloor
+import Gtz.Wave.RefusalDirectionSelector
 import Gtz.Wave.NonplanarResidualFoil
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -35686,3 +35688,26 @@ run_cmd do
 #print axioms Gtz.residualFoil_weight_floor
 #print axioms Gtz.not_nonplanarGhostResidual
 #print axioms Gtz.exists_not_nonplanarGhostResidual
+
+-- Gtz/Wave/LightSetFloor.lean
+#print axioms Gtz.sixSetPivot_self_nonneg
+#print axioms Gtz.coweight_pivot_deficit
+#print axioms Gtz.mem_lightSet_iff
+#print axioms Gtz.compl_subset_lightSet_of_posDef
+#print axioms Gtz.card_lightSet_gt
+#print axioms Gtz.three_le_card_lightSet
+#print axioms Gtz.eq_compl_lightSet_of_card_three
+#print axioms Gtz.inside_cross_row_law
+#print axioms Gtz.weightedDeficit_cofactor_form
+#print axioms Gtz.ghostBlockShort_cofactor_form
+#print axioms Gtz.ghostDeficitShort_of_cofactor
+
+-- Gtz/Wave/RefusalDirectionSelector.lean
+#print axioms Gtz.exists_refusal_direction
+#print axioms Gtz.quadForm_atomMatrix
+#print axioms Gtz.swap_eq_complementGap
+#print axioms Gtz.reading_lt_of_swapPD_of_refusal
+#print axioms Gtz.ghostBlockShort_argmax_of_refusal
+#print axioms Gtz.not_ghostBlockShort_two_selectors_of_refusal
+#print axioms Gtz.outsidePivot_offDiag_sq
+#print axioms Gtz.outsidePivot_triple_product_nonpos
