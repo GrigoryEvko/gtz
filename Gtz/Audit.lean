@@ -1243,6 +1243,7 @@ import Gtz.Wave.RefusalConeGeometry
 import Gtz.Wave.NonplanarResidualFoil
 import Gtz.Wave.PairRefusalLedger
 import Gtz.Wave.TiePivotCensus
+import Gtz.Wave.DeficitResidualFoil
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35761,3 +35762,20 @@ run_cmd do
 #print axioms Gtz.sum_light_inside_pivot_lt
 #print axioms Gtz.two_le_card_light_inside
 #print axioms Gtz.half_lt_cornerPivot_of_two_light_inside
+
+-- Gtz/Wave/DeficitResidualFoil.lean
+#print axioms Gtz.corankTwoNonplanar_gapMat
+#print axioms Gtz.corankTwoNonplanar_gapInv
+#print axioms Gtz.corankTwoNonplanar_pivot
+#print axioms Gtz.corankTwoNonplanar_pivot_zero_zero
+#print axioms Gtz.corankTwoNonplanar_pivot_one_one
+#print axioms Gtz.corankTwoNonplanar_pivot_two_two
+#print axioms Gtz.corankTwoNonplanar_pivot_zero_one
+#print axioms Gtz.corankTwoNonplanar_pivot_zero_two
+#print axioms Gtz.corankTwoNonplanar_pivot_one_two
+#print axioms Gtz.ghostDeficitShort_comm
+#print axioms Gtz.corankTwoNonplanar_not_deficient_zero_one
+#print axioms Gtz.corankTwoNonplanar_not_deficient_zero_two
+#print axioms Gtz.corankTwoNonplanar_not_deficient_one_two
+#print axioms Gtz.not_unconditionalNonplanarDeficitResidual
+#print axioms Gtz.deficitResidual_two_sided

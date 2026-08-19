@@ -6332,3 +6332,4 @@ import Gtz.Wave.RefusalConeGeometry
 import Gtz.Wave.NonplanarResidualFoil
 import Gtz.Wave.PairRefusalLedger
 import Gtz.Wave.TiePivotCensus
+import Gtz.Wave.DeficitResidualFoil
