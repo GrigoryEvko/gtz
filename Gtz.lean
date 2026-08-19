@@ -6341,3 +6341,4 @@ import Gtz.Wave.LedgerAggregateFoil
 import Gtz.Wave.FourSetTraceFloor
 import Gtz.Wave.CornerParityLedger
 import Gtz.Wave.CornerBracketPlucker
+import Gtz.Wave.CornerSignWord
