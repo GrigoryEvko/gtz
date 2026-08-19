@@ -212,6 +212,31 @@ theorem eq_compl_lightSet_of_card_three (D : WeightedDesign 6 3)
   have heq : Tᶜ = lightSet D := Finset.eq_of_subset_of_card_le hsub hcard2
   rw [← compl_compl T, heq]
 
+/-- **Some atom of a `(6,3)` design has pivot below two thirds.**  The
+co-weight deficits sum to two over six atoms, and a pivot at two thirds or above
+caps its own deficit at one third. -/
+theorem exists_pivot_lt_two_thirds (D : WeightedDesign 6 3) :
+    ∃ c : Fin 6, sixSetPivot D c c < 2 / 3 := by
+  classical
+  by_contra hcon
+  push_neg at hcon
+  have hdef := coweight_pivot_deficit D (sixSetGap_posDef_sixThree D)
+  have hbound : ∀ c : Fin 6,
+      (1 - D.weight c) * (1 - sixSetPivot D c c) < 1 / 3 := by
+    intro c
+    have h1 : (0:ℝ) < 1 - D.weight c := by
+      linarith [design_weight_lt_one D (by norm_num) c]
+    have h2 : 1 - sixSetPivot D c c ≤ 1 / 3 := by linarith [hcon c]
+    have h3 : 0 ≤ (1 - D.weight c) * (1 / 3 - (1 - sixSetPivot D c c)) :=
+      mul_nonneg h1.le (by linarith)
+    nlinarith [D.weight_pos c, h1, h3]
+  have hlt : ∑ _c : Fin 6, (1 - D.weight _c) * (1 - sixSetPivot D _c _c)
+      < ∑ _c : Fin 6, (1 / 3 : ℝ) :=
+    Finset.sum_lt_sum_of_nonempty ⟨0, Finset.mem_univ 0⟩ fun c _ => hbound c
+  rw [hdef] at hlt
+  simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at hlt
+  norm_num at hlt
+
 /-! ## 3. The polarized inside row law -/
 
 /-- **The inside row law, polarized.**  The co-weighted inside pairing of two

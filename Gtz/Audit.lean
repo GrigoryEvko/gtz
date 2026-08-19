@@ -35698,6 +35698,7 @@ run_cmd do
 #print axioms Gtz.card_lightSet_gt
 #print axioms Gtz.three_le_card_lightSet
 #print axioms Gtz.eq_compl_lightSet_of_card_three
+#print axioms Gtz.exists_pivot_lt_two_thirds
 #print axioms Gtz.inside_cross_row_law
 #print axioms Gtz.weightedDeficit_cofactor_form
 #print axioms Gtz.ghostBlockShort_cofactor_form
