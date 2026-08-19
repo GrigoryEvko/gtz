@@ -1241,6 +1241,7 @@ import Gtz.Wave.LightSetFloor
 import Gtz.Wave.RefusalDirectionSelector
 import Gtz.Wave.RefusalConeGeometry
 import Gtz.Wave.NonplanarResidualFoil
+import Gtz.Wave.PairRefusalLedger
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35720,3 +35721,29 @@ run_cmd do
 #print axioms Gtz.refusal_reads_axis
 #print axioms Gtz.selector_reading_floor
 #print axioms Gtz.not_ghostBlockShort_of_tied_readings
+
+-- Gtz/Wave/PairRefusalLedger.lean
+#print axioms Gtz.sum_coweight_pivot_sq
+#print axioms Gtz.sum_coweight_pivot_cross
+#print axioms Gtz.sixSetPivot_sq_le_mul
+#print axioms Gtz.sum_coweight_pairRefusalSlack
+#print axioms Gtz.pairRefusalSlack_nonneg_of_isTie
+#print axioms Gtz.ghostDeficitForm_nonneg_of_isTie
+#print axioms Gtz.pairRefusalLedger
+#print axioms Gtz.pairPivotMinor_le_half_of_isTie
+#print axioms Gtz.not_ghostDeficitShort_of_isTie
+#print axioms Gtz.not_ghostBlockShort_of_isTie
+#print axioms Gtz.no_nonplanar_corner_of_nonplanarDeficitResidual
+#print axioms Gtz.nonplanarDeficitResidual_iff_no_corner
+#print axioms Gtz.sum_three_ge_one_of_pairLaw
+#print axioms Gtz.tie_pair_pivot_law
+#print axioms Gtz.tie_pivot_lt_third_unique
+#print axioms Gtz.tie_pair_pivot_sum_ge_half
+#print axioms Gtz.two_le_sum_lightSet_coweight_deficit
+#print axioms Gtz.sum_lightSet_pivot_lt
+#print axioms Gtz.four_le_card_lightSet_of_isTie
+#print axioms Gtz.sum_pairRefusalSlack_compl
+#print axioms Gtz.corner_pairRefusal_bound
+#print axioms Gtz.tie_triple_pivot_sum_ge_one
+#print axioms Gtz.inside_pivot_sum
+#print axioms Gtz.corner_trace_floor_of_isTie
