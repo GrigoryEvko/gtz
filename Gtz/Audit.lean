@@ -35870,6 +35870,21 @@ run_cmd do
 #print axioms Gtz.ledgerFoil_coweight_neg
 #print axioms Gtz.ledgerFoil_not_isTie
 #print axioms Gtz.exists_coweight_beats_aggregate
+#print axioms Gtz.ledgerFoil_pivot_02
+#print axioms Gtz.ledgerFoil_pivot_12
+#print axioms Gtz.ledgerFoil_pivot_22
+#print axioms Gtz.ledgerFoil_pivot_23
+#print axioms Gtz.ledgerFoil_pivot_24
+#print axioms Gtz.ledgerFoil_pivot_25
+#print axioms Gtz.ledgerFoil_pairMinor_02
+#print axioms Gtz.ledgerFoil_pairMinor_12
+#print axioms Gtz.ledgerFoil_slack_02_three
+#print axioms Gtz.ledgerFoil_slack_02_four
+#print axioms Gtz.ledgerFoil_slack_02_five
+#print axioms Gtz.ledgerFoil_slack_12_three
+#print axioms Gtz.ledgerFoil_slack_12_four
+#print axioms Gtz.ledgerFoil_slack_12_five
+#print axioms Gtz.ledgerFoil_aggregate_nonneg_all
 
 -- Gtz/Wave/FourSetTraceFloor.lean -- the four triples of a four-set floor its inverse gap
 #print axioms Gtz.subsetSum_erase_sub_one_rankOne

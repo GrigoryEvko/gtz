@@ -210,6 +210,36 @@ theorem ledgerFoil_pivot_55 : sixSetPivot ledgerFoil 5 5 = 4609 / 6337 := by
   norm_num [atomFn, gapInvMat, dotProduct, Matrix.mulVec, Fin.sum_univ_three,
     Matrix.cons_val_two]
 
+theorem ledgerFoil_pivot_02 : sixSetPivot ledgerFoil 0 2 = 0 := by
+  rw [ledgerFoil_pivot]
+  norm_num [atomFn, gapInvMat, dotProduct, Matrix.mulVec, Fin.sum_univ_three,
+    Matrix.cons_val_two]
+
+theorem ledgerFoil_pivot_12 : sixSetPivot ledgerFoil 1 2 = -(1280 / 6337) := by
+  rw [ledgerFoil_pivot]
+  norm_num [atomFn, gapInvMat, dotProduct, Matrix.mulVec, Fin.sum_univ_three,
+    Matrix.cons_val_two]
+
+theorem ledgerFoil_pivot_22 : sixSetPivot ledgerFoil 2 2 = 5504 / 6337 := by
+  rw [ledgerFoil_pivot]
+  norm_num [atomFn, gapInvMat, dotProduct, Matrix.mulVec, Fin.sum_univ_three,
+    Matrix.cons_val_two]
+
+theorem ledgerFoil_pivot_23 : sixSetPivot ledgerFoil 2 3 = 1880 / 6337 := by
+  rw [ledgerFoil_pivot]
+  norm_num [atomFn, gapInvMat, dotProduct, Matrix.mulVec, Fin.sum_univ_three,
+    Matrix.cons_val_two]
+
+theorem ledgerFoil_pivot_24 : sixSetPivot ledgerFoil 2 4 = 1880 / 6337 := by
+  rw [ledgerFoil_pivot]
+  norm_num [atomFn, gapInvMat, dotProduct, Matrix.mulVec, Fin.sum_univ_three,
+    Matrix.cons_val_two]
+
+theorem ledgerFoil_pivot_25 : sixSetPivot ledgerFoil 2 5 = -(2256 / 6337) := by
+  rw [ledgerFoil_pivot]
+  norm_num [atomFn, gapInvMat, dotProduct, Matrix.mulVec, Fin.sum_univ_three,
+    Matrix.cons_val_two]
+
 /-! ## 3. The pair is admissible and its three outside slacks are exact -/
 
 /-- The pair minor of `{0,1}`. -/
@@ -298,5 +328,76 @@ theorem exists_coweight_beats_aggregate :
   ⟨ledgerFoil, {0, 1, 2}, 3, axisVec, 0, 1, by decide, by norm_num, ledgerFoil_corner,
     by decide, by decide, by decide, ledgerFoil_admissible.1, ledgerFoil_admissible.2,
     ledgerFoil_aggregate_nonneg, ledgerFoil_coweight_neg⟩
+
+/-! ## 5. The other two inside pairs are admissible and equally blind -/
+
+theorem ledgerFoil_pairMinor_02 : pairPivotMinor ledgerFoil 0 2 = 39151 / 456264 := by
+  rw [pairPivotMinor, ledgerFoil_pivot_00, ledgerFoil_pivot_22, ledgerFoil_pivot_02]
+  norm_num
+
+theorem ledgerFoil_pairMinor_12 : pairPivotMinor ledgerFoil 1 2 = 1657 / 25348 := by
+  rw [pairPivotMinor, ledgerFoil_pivot_11, ledgerFoil_pivot_22, ledgerFoil_pivot_12]
+  norm_num
+
+theorem ledgerFoil_slack_02_three :
+    pairRefusalSlack ledgerFoil 0 2 3 = 19475 / 304176 := by
+  rw [pairRefusalSlack, pairPivotMinor, ledgerFoil_pivot_00, ledgerFoil_pivot_22,
+    ledgerFoil_pivot_02, ledgerFoil_pivot_03, ledgerFoil_pivot_23, ledgerFoil_pivot_33]
+  norm_num
+
+theorem ledgerFoil_slack_02_four :
+    pairRefusalSlack ledgerFoil 0 2 4 = 19475 / 304176 := by
+  rw [pairRefusalSlack, pairPivotMinor, ledgerFoil_pivot_00, ledgerFoil_pivot_22,
+    ledgerFoil_pivot_02, ledgerFoil_pivot_04, ledgerFoil_pivot_24, ledgerFoil_pivot_44]
+  norm_num
+
+theorem ledgerFoil_slack_02_five :
+    pairRefusalSlack ledgerFoil 0 2 5 = 376 / 6337 := by
+  rw [pairRefusalSlack, pairPivotMinor, ledgerFoil_pivot_00, ledgerFoil_pivot_22,
+    ledgerFoil_pivot_02, ledgerFoil_pivot_05, ledgerFoil_pivot_25, ledgerFoil_pivot_55]
+  norm_num
+
+theorem ledgerFoil_slack_12_three :
+    pairRefusalSlack ledgerFoil 1 2 3 = 2425 / 25348 := by
+  rw [pairRefusalSlack, pairPivotMinor, ledgerFoil_pivot_11, ledgerFoil_pivot_22,
+    ledgerFoil_pivot_12, ledgerFoil_pivot_13, ledgerFoil_pivot_23, ledgerFoil_pivot_33]
+  norm_num
+
+theorem ledgerFoil_slack_12_four :
+    pairRefusalSlack ledgerFoil 1 2 4 = 2425 / 25348 := by
+  rw [pairRefusalSlack, pairPivotMinor, ledgerFoil_pivot_11, ledgerFoil_pivot_22,
+    ledgerFoil_pivot_12, ledgerFoil_pivot_14, ledgerFoil_pivot_24, ledgerFoil_pivot_44]
+  norm_num
+
+theorem ledgerFoil_slack_12_five :
+    pairRefusalSlack ledgerFoil 1 2 5 = 1529 / 25348 := by
+  rw [pairRefusalSlack, pairPivotMinor, ledgerFoil_pivot_11, ledgerFoil_pivot_22,
+    ledgerFoil_pivot_12, ledgerFoil_pivot_15, ledgerFoil_pivot_25, ledgerFoil_pivot_55]
+  norm_num
+
+/-- **The unweighted aggregate is blind at every admissible inside pair.**  The
+three inside pairs of the foil are all admissible and all three have a positive
+unweighted outside aggregate, so `Gtz.corner_pairRefusal_bound` refutes nothing
+anywhere on the foil. -/
+theorem ledgerFoil_aggregate_nonneg_all :
+    (0 : ℝ) < ∑ d ∈ ({0, 1, 2} : Finset (Fin 6))ᶜ, pairRefusalSlack ledgerFoil 0 2 d
+      ∧ (0 : ℝ) < ∑ d ∈ ({0, 1, 2} : Finset (Fin 6))ᶜ, pairRefusalSlack ledgerFoil 1 2 d
+      ∧ sixSetPivot ledgerFoil 0 0 < 1 ∧ 0 < pairPivotMinor ledgerFoil 0 2
+      ∧ sixSetPivot ledgerFoil 1 1 < 1 ∧ 0 < pairPivotMinor ledgerFoil 1 2 := by
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
+  · rw [ledgerFoil_compl,
+      show ({3, 4, 5} : Finset (Fin 6)) = insert 3 (insert 4 {5}) from rfl,
+      Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton,
+      ledgerFoil_slack_02_three, ledgerFoil_slack_02_four, ledgerFoil_slack_02_five]
+    norm_num
+  · rw [ledgerFoil_compl,
+      show ({3, 4, 5} : Finset (Fin 6)) = insert 3 (insert 4 {5}) from rfl,
+      Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton,
+      ledgerFoil_slack_12_three, ledgerFoil_slack_12_four, ledgerFoil_slack_12_five]
+    norm_num
+  · rw [ledgerFoil_pivot_00]; norm_num
+  · rw [ledgerFoil_pairMinor_02]; norm_num
+  · rw [ledgerFoil_pivot_11]; norm_num
+  · rw [ledgerFoil_pairMinor_12]; norm_num
 
 end Gtz
