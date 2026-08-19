@@ -1232,6 +1232,7 @@ import Gtz.Wave.SixSetRefusal
 import Gtz.Wave.SixSetCorner
 import Gtz.Wave.GhostBlockCore
 import Gtz.Wave.GhostRowBound
+import Gtz.Wave.SixSetGapUniversal
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35627,3 +35628,7 @@ run_cmd do
 #print axioms Gtz.inside_row_law
 #print axioms Gtz.ghost_pivot_quadratic
 #print axioms Gtz.ghost_pivot_lt_half
+
+-- Gtz/Wave/SixSetGapUniversal.lean
+#print axioms Gtz.sixSetGap_posDef
+#print axioms Gtz.sixSetGap_posDef_sixThree
