@@ -35941,6 +35941,7 @@ run_cmd do
 #print axioms Gtz.not_double_coplanar_of_primitive
 #print axioms Gtz.corner_matching_of_signCoherent
 #print axioms Gtz.corner_matching_quantization
+#print axioms Gtz.corner_signCoherent_absurd_fiveThree
 
 -- Gtz/Wave/SignCoherentFoil.lean -- an exact non-planar corner on the coherent horn
 #print axioms Gtz.signCoherentFoil_corner

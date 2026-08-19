@@ -329,4 +329,47 @@ theorem corner_matching_quantization (D : WeightedDesign 6 3) (C : Finset (Fin 6
   · rw [← htZ, hswapZX, hzXZ, hswapZY, hzYZ]
     ring
 
+/-! ## 5. The size marker: the coherent horn is empty at size five -/
+
+/-- **THE COHERENT HORN NEEDS THREE OUTSIDE ATOMS.**  At size five the
+complement of a corner has two atoms, and the matching demands three distinct
+ones: a `(5,3)` corank-two corner with nondegenerate pairings always carries an
+opposite-sign pair.  This is where the sign-word chain consumes `6 = 3 + 3` —
+the complement must be exactly as large as the set of inside planes. -/
+theorem corner_signCoherent_absurd_fiveThree (D : WeightedDesign 5 3)
+    (C : Finset (Fin 5)) {lam : ℝ} (hlam : 0 ≤ lam) {u : Fin 3 → ℝ}
+    (hunit : u ⬝ᵥ u = 1) (hgap : subsetSum D C - 1 = lam • atomMatrix u)
+    {x y z : Fin 5} (hC : C = ({x, y, z} : Finset (Fin 5)))
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hPyz : atomPairing D y z ≠ 0) (hPxz : atomPairing D x z ≠ 0)
+    (hPxy : atomPairing D x y ≠ 0)
+    (hbaseX : ∀ d ∈ Cᶜ, ∀ d' ∈ Cᶜ,
+      0 ≤ (atomBracket D x y d * atomBracket D x z d)
+        * (atomBracket D x y d' * atomBracket D x z d'))
+    (hbaseY : ∀ d ∈ Cᶜ, ∀ d' ∈ Cᶜ,
+      0 ≤ (atomBracket D y x d * atomBracket D y z d)
+        * (atomBracket D y x d' * atomBracket D y z d'))
+    (hbaseZ : ∀ d ∈ Cᶜ, ∀ d' ∈ Cᶜ,
+      0 ≤ (atomBracket D z x d * atomBracket D z y d)
+        * (atomBracket D z x d' * atomBracket D z y d')) :
+    False := by
+  obtain ⟨d1, hd1, d2, hd2, d3, hd3, h12, h13, h23, -⟩ :=
+    corner_matching_of_signCoherent D C hlam hunit hgap hC hxy hxz hyz
+      hPyz hPxz hPxy hbaseX hbaseY hbaseZ
+  have hcard : C.card = 3 := by rw [hC]; exact card_triple_eq hxy hxz hyz
+  have hcompl : (Cᶜ : Finset (Fin 5)).card = 2 := by
+    rw [Finset.card_compl, hcard, Fintype.card_fin]
+  have hsub : ({d1, d2, d3} : Finset (Fin 5)) ⊆ Cᶜ := by
+    intro a ha
+    rcases Finset.mem_insert.mp ha with h | h
+    · exact h ▸ hd1
+    · rcases Finset.mem_insert.mp h with h' | h'
+      · exact h' ▸ hd2
+      · exact (Finset.mem_singleton.mp h') ▸ hd3
+  have hle : ({d1, d2, d3} : Finset (Fin 5)).card ≤ 2 := by
+    rw [← hcompl]
+    exact Finset.card_le_card hsub
+  rw [card_triple_eq h12 h13 h23] at hle
+  omega
+
 end Gtz
