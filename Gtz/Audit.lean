@@ -1242,6 +1242,7 @@ import Gtz.Wave.RefusalDirectionSelector
 import Gtz.Wave.RefusalConeGeometry
 import Gtz.Wave.NonplanarResidualFoil
 import Gtz.Wave.PairRefusalLedger
+import Gtz.Wave.TiePivotCensus
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -35747,3 +35748,16 @@ run_cmd do
 #print axioms Gtz.tie_triple_pivot_sum_ge_one
 #print axioms Gtz.inside_pivot_sum
 #print axioms Gtz.corner_trace_floor_of_isTie
+
+-- Gtz/Wave/TiePivotCensus.lean
+#print axioms Gtz.outside_cross_row_mass_general
+#print axioms Gtz.trace_gapInv_eq_weighted_pivot
+#print axioms Gtz.sum_pivot_eq_three_add_trace
+#print axioms Gtz.pivot_sum_ge_one_of_pairMinor_nonpos
+#print axioms Gtz.light_pair_dichotomy
+#print axioms Gtz.sum_outside_copivot
+#print axioms Gtz.sum_light_outside_coweight_le
+#print axioms Gtz.sum_light_inside_coweight_ge
+#print axioms Gtz.sum_light_inside_pivot_lt
+#print axioms Gtz.two_le_card_light_inside
+#print axioms Gtz.half_lt_cornerPivot_of_two_light_inside
