@@ -59,6 +59,28 @@ Putting the two together (`Gtz.corner_gapScale_window`) traps the gap scale:
   `(1 − ceilIn − ceilOut)/ceilIn  ≤  lam  ≤  1/t_min − 1` .
 
 Both ends are weights, and neither reads the pivot matrix.
+
+## The refusals, priced
+
+The census (`Gtz.strictDominator_inter_card_le_one`) leaves exactly ten triples
+that can dominate strictly at a corner: the complement `Cᶜ` and the nine triples
+with one inside atom and two outside ones.  The quantitative cover prices the
+refusal of each.  For `Cᶜ` the refusal direction is pinned to the gap axis
+(`Gtz.refusal_direction_axis_floor`)
+
+  `(1 − ceilIn − ceilOut)·(z·z) ≤ ceilIn·lam·(u·z)²` ,
+
+which sharpens `Gtz.refusal_reads_axis` from "not orthogonal to `u`" to an
+explicit angle.  For the nine one-inside triples
+(`Gtz.swapRefusal_axis_bound`, `Gtz.exists_swapRefusal_bound`)
+
+  `(1 − ceilIn − ceilOut)·(z·z) + ceilOut·(g_e·z)²
+      ≤ ceilIn·lam·(u·z)² + ceilOut·(g_d·z)²` ,
+
+so the inside atom the triple carries never reads harder than the outside atom
+it drops, up to the axis term and the free mass `1 − ceilIn − ceilOut`.  Those
+ten inequalities are the whole quantitative content of a tie at a corank-two
+corner.
 -/
 
 namespace Gtz
@@ -210,5 +232,92 @@ theorem corner_gapScale_floor_concrete (D : WeightedDesign 6 3) (htie : IsTie D)
   have h := corner_gapScale_floor_of_isTie D htie C hcompl hlam hunit hgap hemax hdmax
     (D.weight_pos eStar).le
   nlinarith [h]
+
+
+/-! ## 6. The refusal direction is pinned to the gap axis -/
+
+/-- **The refusal direction of the complement triple is pinned to the gap axis,
+quantitatively.**  `Gtz.refusal_reads_axis` says such a direction is not
+orthogonal to `u`; this gives the angle an explicit weight-carrying floor. -/
+theorem refusal_direction_axis_floor (D : WeightedDesign m 3) (C : Finset (Fin m))
+    {lam : ℝ} {u : Fin 3 → ℝ} (hgap : subsetSum D C - 1 = lam • atomMatrix u)
+    {ceilIn ceilOut : ℝ} (hIn : ∀ e ∈ C, D.weight e ≤ ceilIn)
+    (hOut : ∀ d ∈ Cᶜ, D.weight d ≤ ceilOut) (hOut0 : 0 ≤ ceilOut)
+    {z : Fin 3 → ℝ} (hread : z ⬝ᵥ ((subsetSum D Cᶜ - 1) *ᵥ z) ≤ 0) :
+    (1 - ceilIn - ceilOut) * (z ⬝ᵥ z) ≤ ceilIn * (lam * (u ⬝ᵥ z) ^ 2) := by
+  have hquad := subsetSum_quadForm_eq_sum_sq D Cᶜ z
+  rw [Matrix.sub_mulVec, dotProduct_sub, Matrix.one_mulVec, hquad] at hread
+  have hcover := outside_cover_quantitative D C hgap hIn hOut z
+  have hstep : ceilOut * ∑ d ∈ Cᶜ, (D.atom d ⬝ᵥ z) ^ 2 ≤ ceilOut * (z ⬝ᵥ z) :=
+    mul_le_mul_of_nonneg_left (by linarith) hOut0
+  nlinarith [hcover, hstep]
+
+/-! ## 7. The nine surviving refusals, priced -/
+
+/-- **The quadratic form of a one-inside triple.**  Trading the outside atom `d`
+for the inside atom `e` moves the complement's reading by exactly those two
+atoms. -/
+theorem swapTriple_quadForm (D : WeightedDesign m 3) (C : Finset (Fin m))
+    {e d : Fin m} (he : e ∈ C) (hd : d ∈ Cᶜ) (z : Fin 3 → ℝ) :
+    ∑ a ∈ insert e (Cᶜ.erase d), (D.atom a ⬝ᵥ z) ^ 2
+      = ∑ a ∈ Cᶜ, (D.atom a ⬝ᵥ z) ^ 2 + (D.atom e ⬝ᵥ z) ^ 2 - (D.atom d ⬝ᵥ z) ^ 2 := by
+  classical
+  have heout : e ∉ (Cᶜ : Finset (Fin m)) := by simpa using he
+  have hswap := subsetSum_swap D Cᶜ hd heout
+  have hform := congrArg (fun M : Matrix (Fin 3) (Fin 3) ℝ => z ⬝ᵥ (M *ᵥ z)) hswap
+  simp only [Matrix.add_mulVec, dotProduct_add] at hform
+  rw [subsetSum_quadForm_eq_sum_sq, subsetSum_quadForm_eq_sum_sq,
+    show atomMatrix (D.atom d) = Matrix.vecMulVec (D.atom d) (D.atom d) from rfl,
+    show atomMatrix (D.atom e) = Matrix.vecMulVec (D.atom e) (D.atom e) from rfl,
+    quadForm_atomMatrix, quadForm_atomMatrix] at hform
+  linarith
+
+/-- **Each surviving refusal prices one inside reading against one outside
+reading.**  At a corank-two corner the only triples that can dominate strictly
+carry one inside atom and two outside ones (`Gtz.strictDominator_inter_card_le_one`).
+A direction where such a triple refuses obeys an explicit weight inequality: the
+inside atom it carries reads no harder than the outside atom it drops, up to the
+axis term and the free mass. -/
+theorem swapRefusal_axis_bound (D : WeightedDesign m 3) (C : Finset (Fin m))
+    {lam : ℝ} {u : Fin 3 → ℝ} (hgap : subsetSum D C - 1 = lam • atomMatrix u)
+    {ceilIn ceilOut : ℝ} (hIn : ∀ c ∈ C, D.weight c ≤ ceilIn)
+    (hOut : ∀ c ∈ Cᶜ, D.weight c ≤ ceilOut) (hOut0 : 0 ≤ ceilOut)
+    {e d : Fin m} (he : e ∈ C) (hd : d ∈ Cᶜ) {z : Fin 3 → ℝ}
+    (hread : z ⬝ᵥ ((subsetSum D (insert e (Cᶜ.erase d)) - 1) *ᵥ z) ≤ 0) :
+    (1 - ceilIn - ceilOut) * (z ⬝ᵥ z) + ceilOut * (D.atom e ⬝ᵥ z) ^ 2
+      ≤ ceilIn * (lam * (u ⬝ᵥ z) ^ 2) + ceilOut * (D.atom d ⬝ᵥ z) ^ 2 := by
+  classical
+  have hquad := subsetSum_quadForm_eq_sum_sq D (insert e (Cᶜ.erase d)) z
+  rw [Matrix.sub_mulVec, dotProduct_sub, Matrix.one_mulVec, hquad,
+    swapTriple_quadForm D C he hd z] at hread
+  have hcover := outside_cover_quantitative D C hgap hIn hOut z
+  have hstep : ceilOut * ∑ c ∈ Cᶜ, (D.atom c ⬝ᵥ z) ^ 2
+      ≤ ceilOut * ((z ⬝ᵥ z) - (D.atom e ⬝ᵥ z) ^ 2 + (D.atom d ⬝ᵥ z) ^ 2) :=
+    mul_le_mul_of_nonneg_left (by linarith) hOut0
+  nlinarith [hcover, hstep]
+
+/-- **A tie supplies the direction.**  At a corank-two corner of a `(6,3)` tie
+every one of the nine one-inside triples refuses, so each carries a direction
+where the weight inequality binds. -/
+theorem exists_swapRefusal_bound (D : WeightedDesign 6 3) (htie : IsTie D)
+    (C : Finset (Fin 6)) (hcard : C.card = 3) {lam : ℝ} {u : Fin 3 → ℝ}
+    (hgap : subsetSum D C - 1 = lam • atomMatrix u)
+    {ceilIn ceilOut : ℝ} (hIn : ∀ c ∈ C, D.weight c ≤ ceilIn)
+    (hOut : ∀ c ∈ Cᶜ, D.weight c ≤ ceilOut) (hOut0 : 0 ≤ ceilOut)
+    {e d : Fin 6} (he : e ∈ C) (hd : d ∈ Cᶜ) :
+    ∃ z : Fin 3 → ℝ, z ≠ 0 ∧
+      (1 - ceilIn - ceilOut) * (z ⬝ᵥ z) + ceilOut * (D.atom e ⬝ᵥ z) ^ 2
+        ≤ ceilIn * (lam * (u ⬝ᵥ z) ^ 2) + ceilOut * (D.atom d ⬝ᵥ z) ^ 2 := by
+  classical
+  have hcompl : (Cᶜ : Finset (Fin 6)).card = 3 := by
+    rw [Finset.card_compl, hcard]; simp
+  have heout : e ∉ (Cᶜ : Finset (Fin 6)) := by simpa using he
+  have hnotmem : e ∉ (Cᶜ : Finset (Fin 6)).erase d := fun hc =>
+    heout (Finset.mem_of_mem_erase hc)
+  have hcardT : (insert e ((Cᶜ : Finset (Fin 6)).erase d)).card = 3 := by
+    rw [Finset.card_insert_of_notMem hnotmem, Finset.card_erase_of_mem hd, hcompl]
+  obtain ⟨z, hz, hread⟩ := exists_refusal_direction D (insert e (Cᶜ.erase d))
+    (htie.2 _ hcardT)
+  exact ⟨z, hz, swapRefusal_axis_bound D C hgap hIn hOut hOut0 he hd hread⟩
 
 end Gtz

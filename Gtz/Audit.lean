@@ -35804,3 +35804,7 @@ run_cmd do
 #print axioms Gtz.corner_gapScale_floor_of_isTie
 #print axioms Gtz.corner_gapScale_window
 #print axioms Gtz.corner_gapScale_floor_concrete
+#print axioms Gtz.refusal_direction_axis_floor
+#print axioms Gtz.swapTriple_quadForm
+#print axioms Gtz.swapRefusal_axis_bound
+#print axioms Gtz.exists_swapRefusal_bound
