@@ -44,7 +44,7 @@ system of the anchor is infeasible on `Z1` proper (`0 < lam`, both other
 inside axis readings nonzero).  Granting it, a `(6,3)` tie has no `Z1` corner
 (`Gtz.corner_oneAxisZero_absurd`), and the coverage Prop is EXACTLY the
 emptiness of the stratum (`Gtz.oneAxisZeroPairCoverage_iff`): the pair system
-loses nothing, because on `Z1` it is the tie.  Measured: a fresh 3.3·10⁹
+loses nothing, because on `Z1` it is the tie.  Measured: a fresh 4.19·10⁹
 sample sweep of the stratum finds no configuration that satisfies the pair
 system, and the 71 exact stragglers of the aggregate battery all violate it
 with best margin `0.079` — always at a one-inside triple, never at the
