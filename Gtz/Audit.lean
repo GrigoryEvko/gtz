@@ -1315,6 +1315,7 @@ import Gtz.Wave.BracketContractionTax
 import Gtz.Wave.PairBracketMass
 import Gtz.Wave.PairMassRowLaw
 import Gtz.Wave.DominatorWedgeFloor
+import Gtz.Wave.OppositeHornWedgeCap
 import Gtz.Wave.BracketPhaseRigidity
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
@@ -1326,7 +1327,6 @@ import Gtz.Wave.OppositeHornTwoPoint
 import Gtz.Wave.OppositeHornCycleNoGo
 import Gtz.Wave.KOneNormalForm
 import Gtz.Wave.KOneTransverse
-import Gtz.Wave.OppositeHornScalarSystem
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36860,6 +36860,12 @@ run_cmd do
 #print axioms Gtz.pairAnchor_bracket_general
 #print axioms Gtz.kOne_sharp_weight_cap
 #print axioms Gtz.kOne_sharp_weight_cap_of_null
+#print axioms Gtz.corner_inside_pairBracketSq_eq
+#print axioms Gtz.corner_twoInside_bracket_cap
+#print axioms Gtz.corner_twoInside_bracket_cap_sum
+#print axioms Gtz.corner_atom_minorTriple_neg
+#print axioms Gtz.corner_generic_baseY_minor_ne_zero
+#print axioms Gtz.corner_twoCoherent_imp_thirdCoherent
 #print axioms Gtz.isTie_probe_pinch
 #print axioms Gtz.probe_contactForm_eq
 #print axioms Gtz.cross_dot_left
@@ -36885,9 +36891,3 @@ run_cmd do
 #print axioms Gtz.atomBracket_smul_left
 #print axioms Gtz.parallel_mirror_bracket_constraint
 #print axioms Gtz.pairAnchor_bracket_difference
-#print axioms Gtz.corner_outside_leverage_total
-#print axioms Gtz.corner_outside_pairing_sq_total
-#print axioms Gtz.corner_outside_wedge_total
-#print axioms Gtz.corner_outside_axis_mass
-#print axioms Gtz.corner_axis_weight_cap
-#print axioms Gtz.corner_twoInside_cap_closed
