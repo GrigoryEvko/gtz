@@ -1280,6 +1280,7 @@ import Gtz.Wave.LedgerSharpSFloor
 import Gtz.Wave.FloorsForceExcess
 import Gtz.Wave.CappedSharpFloor
 import Gtz.Wave.HeavyInsideResidualBridge
+import Gtz.Wave.MemberGramPushThrough
 import Gtz.Wave.CrossLedgerRigidity
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -36254,6 +36255,11 @@ run_cmd do
 -- Gtz/Wave/HeavyInsideResidualBridge.lean -- the heavy-inside residual
 -- reduces to one conjunctive geometric emptiness, with the excess free
 #print axioms Gtz.oneAxisZeroHeavyInsideResidual_of_geometry
+
+-- Gtz/Wave/MemberGramPushThrough.lean -- the member readings of a dominating
+-- set are the diagonal of the inverse shifted member Gram
+#print axioms Gtz.matrix_pushThrough_inv
+#print axioms Gtz.member_reading_eq_gram_inv
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
