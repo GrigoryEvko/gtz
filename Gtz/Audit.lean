@@ -1283,6 +1283,7 @@ import Gtz.Wave.HeavyInsideResidualBridge
 import Gtz.Wave.MemberGramPushThrough
 import Gtz.Wave.CrossLedgerRigidity
 import Gtz.Wave.ReadingMatrixRelation
+import Gtz.Wave.HeavyInsideDeterminantForm
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36272,6 +36273,12 @@ run_cmd do
 #print axioms Gtz.reading_relation_member_diag
 #print axioms Gtz.reading_member_diag_floor
 #print axioms Gtz.corner_fourSet_member_diag_floor
+
+-- Gtz/Wave/HeavyInsideDeterminantForm.lean -- a member floor is a determinant
+-- sign, so the heavy-inside residual loses every matrix inverse
+#print axioms Gtz.gapDet_erase
+#print axioms Gtz.member_floor_iff_gapDet_erase_nonpos
+#print axioms Gtz.oneAxisZeroHeavyInsideResidual_of_determinants
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
