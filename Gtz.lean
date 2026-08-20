@@ -6409,3 +6409,4 @@ import Gtz.Wave.OppositeHornCoherentBranch
 import Gtz.Wave.KOneBracketLedger
 import Gtz.Wave.DiamondNeighborhoodLock
 import Gtz.Wave.CoherentHornDualFrame
+import Gtz.Wave.OppositeHornTwoPoint
