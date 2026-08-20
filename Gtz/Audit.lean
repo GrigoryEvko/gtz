@@ -1306,11 +1306,13 @@ import Gtz.Wave.DualFrameBudget
 import Gtz.Wave.ErasedEnergyLedger
 import Gtz.Wave.ErasedWitnessGram
 import Gtz.Wave.TripleGramChart
+import Gtz.Wave.DiamondNeighborhoodMirror
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
 import Gtz.Wave.BracketContractionTax
-import Gtz.Wave.OppositeHornCount
-import Gtz.Wave.OppositeHornBudget
+import Gtz.Wave.PairBracketMass
+import Gtz.Wave.PairMassRowLaw
+import Gtz.Wave.OppositeHornSplit
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36429,29 +36431,17 @@ run_cmd do
 #print axioms Gtz.corner_inside_leverage_sum
 #print axioms Gtz.corner_bothLight_cross_terms_cap
 
--- Gtz/Wave/TripleGramChart.lean -- the inverse-free chart of an outside
--- triple: the Gram, the witness map, the master adjugate polarization,
--- and Parseval as one matrix identity in the chart
-#print axioms Gtz.tripleGram_eq_transpose_mul
 #print axioms Gtz.tripleWitness_eq_mulVec
-#print axioms Gtz.tripleColumns_mul_transpose
-#print axioms Gtz.tripleColumns_diagonal_mul_transpose
-#print axioms Gtz.tripleGram_transpose
-#print axioms Gtz.tripleGram_det_eq_bracket_sq
-#print axioms Gtz.tripleGram_trace
 #print axioms Gtz.tripleWitness_dotProduct
 #print axioms Gtz.tripleGram_mulVec_witness
 #print axioms Gtz.tripleGram_quadForm_witness
 #print axioms Gtz.tripleGram_adjugate_polarization
-#print axioms Gtz.tripleGram_adjugate_normalization
-#print axioms Gtz.tripleGram_adjugate_orthogonal
 #print axioms Gtz.corner_outside_atomSum
 #print axioms Gtz.corner_witness_normalization
 #print axioms Gtz.corner_witness_orthogonality
 #print axioms Gtz.corner_inside_witness_gram
 #print axioms Gtz.corner_erased_energy_witness
 #print axioms Gtz.parseval_tripleGram_identity
-#print axioms Gtz.tripleGram_det_eq_outside_det
 #print axioms Gtz.corner_chart_witness_pin
 
 -- Gtz/Wave/InvariantBudgets.lean -- the conservation laws of the tax
@@ -36486,6 +36476,29 @@ run_cmd do
 #print axioms Gtz.isTie_light_triple_bracket_cap
 #print axioms Gtz.isTie_sixThree_bracket_quarter
 #print axioms Gtz.blockEigen_one_of_supported_mem_range
+
+-- Gtz/Wave/PairBracketMass.lean -- the local bridge between the two budgets:
+-- the bracket mass of a pair is its wedge, the hinge conclusion is a zero of
+-- the bracket budget, and a tie caps the lightest pair by its own weight
+#print axioms Gtz.tripleBracket_eq_cross_dot
+#print axioms Gtz.pair_bracket_mass
+#print axioms Gtz.pair_bracket_mass_eq_blockDet
+#print axioms Gtz.hasParallelPair_iff_exists_pair_bracket_mass_zero
+#print axioms Gtz.pair_bracket_mass_le_leverage
+#print axioms Gtz.exists_lightest_pair
+#print axioms Gtz.isTie_lightest_pair_bracket_mass_cap
+#print axioms Gtz.isTie_exists_pair_bracket_mass_cap
+
+-- Gtz/Wave/PairMassRowLaw.lean -- the row law of the pair mass, the small pair
+-- it forces at every design, and the named realness carrier of the lane
+#print axioms Gtz.parseval_pairing_row
+#print axioms Gtz.pair_mass_row
+#print axioms Gtz.pair_mass_self
+#print axioms Gtz.exists_small_pair_mass
+#print axioms Gtz.exists_pair_mass_le
+#print axioms Gtz.exists_pair_mass_le_fifth
+#print axioms Gtz.pair_mass_nonneg
+#print axioms Gtz.pair_mass_le_row
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
@@ -36693,3 +36706,41 @@ run_cmd do
 #print axioms Gtz.corner_informative_pair_le_budget
 #print axioms Gtz.corner_oppositePair_budget_bound
 #print axioms Gtz.corner_two_oppositePair_budget_bounds
+#print axioms Gtz.det_pairSum_add_atom_sub_one
+#print axioms Gtz.pairAnchor_resolve
+#print axioms Gtz.pairAnchor_relation_left
+#print axioms Gtz.pairAnchor_relation_right
+#print axioms Gtz.pairAnchor_readings_sq_sum
+#print axioms Gtz.pairAnchor_wedge_eq
+#print axioms Gtz.pairAnchor_det_update
+#print axioms Gtz.not_posDef_of_pairAnchor_add_atom
+#print axioms Gtz.e2_tripleSum_sub_one
+#print axioms Gtz.pairAnchor_e2_price
+#print axioms Gtz.two_le_leverageSum_of_pairAnchor
+#print axioms Gtz.kOne_pairAnchor
+#print axioms Gtz.kOne_leverage_gt_one
+#print axioms Gtz.kOne_two_le_leverageSum
+#print axioms Gtz.kOne_not_posDef_pairTriple
+#print axioms Gtz.kOne_pairTriple_det
+#print axioms Gtz.pairAnchor_wedge_value
+#print axioms Gtz.kOne_one_le_pairWedge
+#print axioms Gtz.kOne_isTie_iff_avoidingRefusals
+#print axioms Gtz.parseval_probe_form
+#print axioms Gtz.pairAnchor_transverse_energy
+#print axioms Gtz.kOne_pair_weight_cap
+#print axioms Gtz.psd_mulVec_normSq_le_trace_mul_quadForm
+#print axioms Gtz.wedge_le_reading_gap_of_mirror_dominators
+#print axioms Gtz.hasParallelPair_of_mirror_dominators_of_readings_eq
+#print axioms Gtz.corner_atom_signTriple_neg
+#print axioms Gtz.corner_coherentBase_atom_alternates
+#print axioms Gtz.corner_disagree_agree_oppositePair
+#print axioms Gtz.corner_oppositePair_bracket_exact
+#print axioms Gtz.corner_samePair_bracket_exact
+#print axioms Gtz.corner_oppositePair_budget_sharp
+#print axioms Gtz.atomBracket_sq_eq_gap_invariants
+#print axioms Gtz.refused_triple_invariant_trichotomy
+#print axioms Gtz.isTie_triple_invariant_trichotomy
+#print axioms Gtz.isTie_bracket_invariant_cap
+#print axioms Gtz.corner_bracket_partition
+#print axioms Gtz.corner_inside_pair_wedge_eq
+#print axioms Gtz.corner_one_le_inside_pair_wedge
