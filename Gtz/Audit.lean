@@ -1196,6 +1196,7 @@ import Gtz.Wave.CorankOneExchange
 import Gtz.Wave.CorankOnePlanePair
 import Gtz.Wave.CorankOneAssembly
 import Gtz.Wave.CorankOnePropagation
+import Gtz.Wave.CorankOneGramMirror
 import Gtz.Wave.ThreeLinesSlideElimination
 import Gtz.Wave.PairingEnergyBudget
 import Gtz.Wave.KFourTreeSumSign
@@ -1212,6 +1213,7 @@ import Gtz.Wave.WiringAllFiveOnPath
 import Gtz.Wave.WiringSynonymClass
 import Gtz.Wave.CellAssemblyAudit
 import Gtz.Wave.DiamondConicStress
+import Gtz.Wave.DiamondNullFrame
 import Gtz.Wave.AdjacentDominatorStress
 import Gtz.LinAlg.DepthTwoDowndate
 import Gtz.Wave.CorankTwoOneShared
@@ -36193,3 +36195,46 @@ run_cmd do
 #print axioms Gtz.update_cross_reading
 #print axioms Gtz.seesaw_exchange_reading
 #print axioms Gtz.corner_oneAxisZero_bothLight_seesaw_floor
+
+-- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
+-- leverage ladder with the two-zero detector, the null census, and the
+-- transferred avoiding-refusal budget
+#print axioms Gtz.nullDir_resolve_reading
+#print axioms Gtz.insideGram_fixes_nullReadings
+#print axioms Gtz.one_le_leverage_of_mem_dominating_triple
+#print axioms Gtz.inside_pair_orthogonal_of_leverage_eq_one
+#print axioms Gtz.gapForm_null_at_leverage_one
+#print axioms Gtz.eq_nullDir_of_leverage_eq_one
+#print axioms Gtz.nullReadings_zero_of_leverage_eq_one
+#print axioms Gtz.leverage_eq_one_of_nullReadings_zero
+#print axioms Gtz.one_lt_leverage_of_nullReading_ne_zero
+#print axioms Gtz.exists_outside_nullReading_sq_gt_one_of_twoZeroReadings
+#print axioms Gtz.swapGapForm_at_nullDir
+#print axioms Gtz.not_posDef_swap_of_nullReading_sq_le
+#print axioms Gtz.complGapForm_at_nullDir
+#print axioms Gtz.not_posDef_compl_of_nullMass_le
+#print axioms Gtz.isTie_iff_avoidingRefusals_of_leverage_le_one
+#print axioms Gtz.isTie_iff_avoidingRefusals_of_twoZeroReadings
+
+-- Gtz/Wave/DiamondNullFrame.lean -- the graphic null-frame transport and the
+-- exact null data of the diamond and the split diamond at the spine dominator
+#print axioms Gtz.graphicDesign_gap_form
+#print axioms Gtz.gapNullLine_graphicDesign_of_potential
+#print axioms Gtz.graphicAtom_dotProduct_whitenerInv
+#print axioms Gtz.whitenerInv_pairing
+#print axioms Gtz.diamondSpineGap_potentialForm
+#print axioms Gtz.diamondSpine_potential_line
+#print axioms Gtz.diamondSpine_potential_null
+#print axioms Gtz.diamondNullVector
+#print axioms Gtz.gapNullLine_diamondDesign_spine
+#print axioms Gtz.diamondNull_reading_sq
+#print axioms Gtz.diamondNull_drops
+#print axioms Gtz.diamondNull_reading_sq_values
+#print axioms Gtz.diamondNullVector_normSq
+#print axioms Gtz.diamondNull_spine_readings_ne_zero
+#print axioms Gtz.subsetSum_sixSplit_spine
+#print axioms Gtz.gapNullLine_sixSplitDiamondDesign_spine
+#print axioms Gtz.sixSplit_atom_copy
+#print axioms Gtz.sixSplit_spine_atoms
+#print axioms Gtz.sixSplit_spine_readings_ne_zero
+#print axioms Gtz.sixSplit_copySwap_wform_zero
