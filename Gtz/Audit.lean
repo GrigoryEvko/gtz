@@ -1320,6 +1320,7 @@ import Gtz.Wave.DominatorWedgeFloor
 import Gtz.Wave.OppositeHornWedgeCap
 import Gtz.Wave.BracketPhaseRigidity
 import Gtz.Wave.BracketPluckerSyzygy
+import Gtz.Wave.ParallelPairFactorization
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
@@ -36600,6 +36601,15 @@ run_cmd do
 #print axioms Gtz.weightedBracket_plucker
 #print axioms Gtz.bracketMass_triangle
 #print axioms Gtz.bracketMass_plucker_propagation
+
+-- Gtz/Wave/ParallelPairFactorization.lean -- a parallel pair does not only
+-- empty its own triples, it forces the surviving mass distribution into
+-- product form through every base label
+#print axioms Gtz.weightedBracket_eq_zero_of_parallel
+#print axioms Gtz.weightedBracket_factorization
+#print axioms Gtz.bracketMass_factorization
+#print axioms Gtz.bracketMass_factorization_of_parallel
+#print axioms Gtz.not_parallel_of_bracketMass_factorization_fails
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
