@@ -450,4 +450,85 @@ theorem wedge_le_coupling_of_isTie (D : WeightedDesign m 3) (htie : IsTie D)
     rw [hsplit]; nlinarith [hgapsq]
   nlinarith [hdefect, hdef, hlevnn, sq_nonneg mu']
 
+/-! ## 7. The polynomial system at fixed rational probes
+
+The tangent-space LP of the calibration is EVIDENCE, never a proof step:
+its functionals are derivatives, its equations are differentiated
+constraints, and its variables are perturbations — none of them kernel
+objects.  The kernel-native replacement fixes the fixture's twelve rational
+null vectors as PROBES and reads the tie through them.  Both facts below
+are polynomial in the design and hold PER PROBE.  They are deliberately not
+summed: summation collapses a two-point form into a field-blind identity
+and destroys the very sensitivity the arm's realness rests on. -/
+
+/-- **THE PROBE FLOOR OF A WEAK DOMINATOR.**  A weakly dominating triple
+outreads every probe:
+
+  `v·v ≤ Σ_{c∈C}(g_c·v)²` .
+
+Polynomial in the design at every fixed probe, with no coercivity, no null
+hypothesis and no size restriction.  Instantiated at the fixture's twelve
+rational null vectors this is the twelve-inequality system. -/
+theorem dominates_probe_floor (D : WeightedDesign m k) {C : Finset (Fin m)}
+    (hdom : Dominates D C) (v : Fin k → ℝ) :
+    v ⬝ᵥ v ≤ ∑ c ∈ C, (D.atom c ⬝ᵥ v) ^ 2 := by
+  have hq := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdom).2 v
+  rw [star_trivial, Matrix.sub_mulVec, Matrix.one_mulVec, dotProduct_sub] at hq
+  have hsum : v ⬝ᵥ (subsetSum D C *ᵥ v) = ∑ c ∈ C, (D.atom c ⬝ᵥ v) ^ 2 := by
+    rw [subsetSum, Matrix.sum_mulVec, dotProduct_sum]
+    refine Finset.sum_congr rfl fun c _ => ?_
+    rw [atomMatrix_mulVec, dotProduct_smul, smul_eq_mul, dotProduct_comm]
+    ring
+  rw [hsum] at hq
+  linarith
+
+/-- **A TIE'S WEAK DOMINATOR IS SINGULAR.**  Positive semidefinite and not
+positive definite forces a vanishing determinant: an exact POLYNOMIAL
+equation at every weak dominator of a tie, with no probe and no coercivity.
+Together with the probe floor it makes the twelve-probe system algebraic. -/
+theorem isTie_dominates_det_eq_zero (D : WeightedDesign m k) (htie : IsTie D)
+    {C : Finset (Fin m)} (hcard : C.card = k) (hdom : Dominates D C) :
+    (subsetSum D C - 1).det = 0 := by
+  by_contra hne
+  exact htie.2 C hcard (hdom.posDef_iff_det_ne_zero.mpr hne)
+
+/-- **THE TWELVE-PROBE SYSTEM, PACKAGED.**  At a tie, every weak dominator
+satisfies the probe floor at EVERY fixed probe and carries a singular gap.
+This is the kernel-native form of the calibration's twelve inequalities:
+polynomial, per-probe, and free of any tangent-space object. -/
+theorem isTie_dominates_probe_system (D : WeightedDesign m k) (htie : IsTie D)
+    {C : Finset (Fin m)} (hcard : C.card = k) (hdom : Dominates D C) :
+    (∀ v : Fin k → ℝ, v ⬝ᵥ v ≤ ∑ c ∈ C, (D.atom c ⬝ᵥ v) ^ 2)
+      ∧ (subsetSum D C - 1).det = 0 :=
+  ⟨dominates_probe_floor D hdom, isTie_dominates_det_eq_zero D htie hcard hdom⟩
+
+/-- **THE MISALIGNMENT IS CAPPED BY THE COUPLING.**  At a tie, with `C` a
+weak dominator killing `w` and the swapped triple killing `w'` at
+coercivity `mu'`:
+
+  `mu'^2*(1 - (w.w')^2) ≤ K` ,  `K = |b'|^2` the swap coupling energy.
+
+The floor of section 3 pushes the reading gap up by the misalignment, and
+the pinch of the previous module caps the reading gap by the coupling; the
+two compose into a CEILING on the misalignment itself.  This is the exact
+partner of an intrinsic misalignment FLOOR: a floor and this ceiling
+together pin the coupling from below. -/
+theorem misalignment_le_coupling_of_isTie (D : WeightedDesign m 3) (htie : IsTie D)
+    {C : Finset (Fin m)} (hcard : C.card = 3) {p q : Fin m}
+    (hp : p ∈ C) (hq : q ∉ C) {w w' : Fin 3 → ℝ}
+    (hwunit : w ⬝ᵥ w = 1) (hw'unit : w' ⬝ᵥ w' = 1)
+    (hnullC : (subsetSum D C - 1) *ᵥ w = 0)
+    (hnullSwap : (subsetSum D (insert q (C.erase p)) - 1) *ᵥ w' = 0)
+    {mu' : ℝ} (hmu' : 0 < mu')
+    (hcoerW : ∀ v : Fin 3 → ℝ, v ⬝ᵥ w = 0 →
+      mu' * (v ⬝ᵥ v) ≤ v ⬝ᵥ ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ v))
+    (hcoerW' : ∀ v : Fin 3 → ℝ, v ⬝ᵥ w' = 0 →
+      mu' * (v ⬝ᵥ v) ≤ v ⬝ᵥ ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ v)) :
+    mu' ^ 2 * (1 - (w ⬝ᵥ w') ^ 2)
+      ≤ swapCoupling D p q w ⬝ᵥ swapCoupling D p q w := by
+  have hfloor := reading_gap_floor_of_swapNulls D hp hq hwunit hw'unit hnullC
+    hnullSwap hcoerW'
+  have hpinch := swap_pinch_of_isTie D htie hcard hp hq hwunit hnullC hmu' hcoerW
+  nlinarith [hfloor, hpinch, hmu']
+
 end Gtz

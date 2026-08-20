@@ -390,3 +390,45 @@ not effort:
   kernel-native, and it is where I would put the next effort. The
   first-order LP is then not a step to translate but EVIDENCE that the
   polynomial system is infeasible in the relevant directions.
+
+F32-13. ROUND 5: THE POLYNOMIAL PROBE SYSTEM, AND THE MISALIGNMENT CEILING
+===========================================================================
+DiamondNeighborhoodLock.lean now 17 theorems / 534 lines, all pins standard,
+zero sorries, builds 9354 exit 0.
+
+THE TANGENT LP IS REPLACED BY A KERNEL-NATIVE POLYNOMIAL SYSTEM. Two facts,
+both polynomial in the design, both PER PROBE, neither summed:
+  dominates_probe_floor        v.v <= sum_{c in C} (g_c . v)^2
+    A weakly dominating triple outreads EVERY probe. No coercivity, no null
+    hypothesis, no size restriction. Instantiated at the fixture's twelve
+    rational null vectors this IS the twelve-inequality system.
+  isTie_dominates_det_eq_zero  det(S_C - 1) = 0 at every weak dominator of
+    a tie. PSD and not PD forces a singular gap - an exact polynomial
+    EQUATION, no probe and no coercivity.
+  isTie_dominates_probe_system packages the two.
+DELIBERATELY NOT SUMMED. The coordinator's cross-arm fact (sighted three
+times independently, most recently at the opposite horn) is that
+AGGREGATION DESTROYS REALNESS: summed certificates collapse into field-blind
+identities. The twelve inequalities are therefore kept per-probe, and the
+system is a CONJUNCTION, never a sum.
+
+THE MISALIGNMENT CEILING (misalignment_le_coupling_of_isTie):
+   mu'^2 (1 - (w.w')^2) <= K ,    K = |b'|^2 the swap coupling energy.
+The section-3 floor pushes the reading gap UP by the misalignment; the
+previous module's pinch caps the reading gap by the coupling; the two
+compose into a CEILING on the misalignment itself. This is the exact
+partner of the sibling's new misalignment FLOOR
+(Gtz.misalignment_floor_of_pairBounds, DominatorWedgeFloor.lean - they
+adopted the misalignment as a shared quantity). A floor and this ceiling
+together pin the COUPLING from below, which is the composition the next
+round should exploit.
+
+WHAT IS AND IS NOT DECIDED. The system is BUILT and kernel-native. The
+delta > 0 decision is NOT made: I have the ceiling mu'^2 delta <= K and the
+wedge bound wedge (g_q.w)^2 <= |g_p|^2 (tr M')^2 delta, both upper bounds in
+delta, so they cannot by themselves contradict a positive delta. A
+CONTRADICTION NEEDS A LOWER BOUND ON delta OR ON K FROM THE OTHER PROBES,
+and that is exactly where the sibling's misalignment floor enters. The
+honest state: C1-7 Case A closed exactly, Case B closed quantitatively, the
+system for the last step assembled and kernel-native, the decision itself
+open and now a two-sided fight between my ceiling and their floor.
