@@ -1262,6 +1262,7 @@ import Gtz.Wave.ExcludedAtomLedger
 import Gtz.Wave.OneAxisZeroFourSets
 import Gtz.Wave.OneAxisZeroRefusalBudget
 import Gtz.Wave.OneAxisZeroAnchorLaws
+import Gtz.Wave.OneAxisZeroWitness
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36037,3 +36038,20 @@ run_cmd do
 #print axioms Gtz.corner_oneAxisZero_tie_reading_floor
 #print axioms Gtz.corner_oneAxisZero_heavyInside_isTie_iff'
 #print axioms Gtz.corner_oneAxisZero_tie_cell_dispatch
+
+-- Gtz/Wave/OneAxisZeroWitness.lean -- the exchange forcing and the exact rational
+-- Z1 witness with the two coverage foil tests
+#print axioms Gtz.corner_fourSet_exchange_reading
+#print axioms Gtz.oneAxisZeroWitness_atom
+#print axioms Gtz.oneAxisZeroWitness_weight
+#print axioms Gtz.oneAxisZeroAxis_unit
+#print axioms Gtz.oneAxisZeroWitness_gap
+#print axioms Gtz.oneAxisZeroWitness_zero_reading
+#print axioms Gtz.oneAxisZeroWitness_nonzero_readings
+#print axioms Gtz.oneAxisZeroWitness_compl_form
+#print axioms Gtz.oneAxisZeroWitness_compl_posDef
+#print axioms Gtz.oneAxisZeroWitness_not_isTie
+#print axioms Gtz.oneAxisZeroWitness_pairSystem_fails
+#print axioms Gtz.oneAxisZeroWitness_fourSet_posDef
+#print axioms Gtz.oneAxisZeroWitness_bothLight_floors_fail
+#print axioms Gtz.oneAxisZeroWitness_xMass
