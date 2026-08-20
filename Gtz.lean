@@ -6419,3 +6419,4 @@ import Gtz.Wave.KOneNormalForm
 import Gtz.Wave.KOneTransverse
 import Gtz.Wave.OppositeHornWedgeCap
 import Gtz.Wave.BracketPhaseRigidity
+import Gtz.Wave.BracketPluckerSyzygy

@@ -1318,6 +1318,7 @@ import Gtz.Wave.PairMassRowLaw
 import Gtz.Wave.DominatorWedgeFloor
 import Gtz.Wave.OppositeHornWedgeCap
 import Gtz.Wave.BracketPhaseRigidity
+import Gtz.Wave.BracketPluckerSyzygy
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
@@ -36580,6 +36581,15 @@ run_cmd do
 #print axioms Gtz.bracketMass_eq_zero_kills_row
 #print axioms Gtz.bracketMass_nonneg
 #print axioms Gtz.bracketMass_le_pair_mass
+
+-- Gtz/Wave/BracketPluckerSyzygy.lean -- the Grassmann-Plucker syzygy of the
+-- bracket masses: the three-term relation, its weighted form, and the
+-- multiplicative triangle bound it forces on the mass distribution
+#print axioms Gtz.tripleBracket_plucker
+#print axioms Gtz.sq_weightedBracket
+#print axioms Gtz.weightedBracket_plucker
+#print axioms Gtz.bracketMass_triangle
+#print axioms Gtz.bracketMass_plucker_propagation
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
