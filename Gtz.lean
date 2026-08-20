@@ -6375,6 +6375,7 @@ import Gtz.Wave.KTwoEraseSystem
 import Gtz.Wave.KTwoCrossPrice
 import Gtz.Wave.KTwoChartIdentity
 import Gtz.Wave.ProjectionTaxLaw
+import Gtz.Wave.InvariantTaxTeeth
 import Gtz.Wave.SixSetNullColumn
 import Gtz.Wave.PairMinorBridge
 import Gtz.Wave.ReadingMatrixRelation

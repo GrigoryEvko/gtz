@@ -1286,6 +1286,7 @@ import Gtz.Wave.KTwoEraseSystem
 import Gtz.Wave.KTwoCrossPrice
 import Gtz.Wave.KTwoChartIdentity
 import Gtz.Wave.ProjectionTaxLaw
+import Gtz.Wave.InvariantTaxTeeth
 import Gtz.Wave.SixSetNullColumn
 import Gtz.Wave.PairMinorBridge
 import Gtz.Wave.ReadingMatrixRelation
@@ -36486,6 +36487,16 @@ run_cmd do
 #print axioms Gtz.card_light_le_two_of_isTie
 #print axioms Gtz.uniform_floor_tax_cap_of_isTie
 #print axioms Gtz.uniform_floor_le_quarter_of_isTie
+
+-- Gtz/Wave/InvariantTaxTeeth.lean -- the spectral-free block floors: the
+-- trace law, the Cayley-Hamilton adjugate, the e2-det floor, and the
+-- polynomial producer and block tax
+#print axioms Gtz.form_le_trace_mul_normSq_of_posSemidef
+#print axioms Gtz.adjugate_eq_fin_three_cayley
+#print axioms Gtz.e2_mul_form_ge_det_mul_normSq
+#print axioms Gtz.e2_nonneg_of_posSemidef
+#print axioms Gtz.posDef_subsetSum_of_invariant_light
+#print axioms Gtz.isTie_block_tax
 
 -- Gtz/Wave/SixSetNullColumn.lean -- the null column of the six-set
 -- projection: the complement resolve and the touching eigenvector of a
