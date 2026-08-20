@@ -6373,8 +6373,10 @@ import Gtz.Wave.MemberGramPushThrough
 import Gtz.Wave.CrossLedgerRigidity
 import Gtz.Wave.KTwoEraseSystem
 import Gtz.Wave.SixSetNullColumn
+import Gtz.Wave.PairMinorBridge
 import Gtz.Wave.ReadingMatrixRelation
 import Gtz.Wave.HeavyInsideDeterminantForm
 import Gtz.Wave.CoweightedMemberLedger
 import Gtz.Wave.FourSetTetrahedralFoil
 import Gtz.Wave.AdjugateDowndateReadings
+import Gtz.Wave.CompoundProbeRelations

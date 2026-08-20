@@ -1284,11 +1284,13 @@ import Gtz.Wave.MemberGramPushThrough
 import Gtz.Wave.CrossLedgerRigidity
 import Gtz.Wave.KTwoEraseSystem
 import Gtz.Wave.SixSetNullColumn
+import Gtz.Wave.PairMinorBridge
 import Gtz.Wave.ReadingMatrixRelation
 import Gtz.Wave.HeavyInsideDeterminantForm
 import Gtz.Wave.CoweightedMemberLedger
 import Gtz.Wave.FourSetTetrahedralFoil
 import Gtz.Wave.AdjugateDowndateReadings
+import Gtz.Wave.CompoundProbeRelations
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36318,6 +36320,15 @@ run_cmd do
 #print axioms Gtz.corner_oneAxisZero_heavyInside_KRz_eq
 #print axioms Gtz.corner_oneAxisZero_heavyInside_crossY_pos
 
+-- Gtz/Wave/CompoundProbeRelations.lean -- the second-compound probes: the
+-- adjugate Cauchy-Binet and the wedge domination of the excluded readings
+#print axioms Gtz.adj_add_atomMatrix_probe
+#print axioms Gtz.adj_sum_four_atomMatrix
+#print axioms Gtz.adj_probe_two_excluded
+#print axioms Gtz.coweighted_member_sum_posSemidef
+#print axioms Gtz.corner_excluded_reading_wedge_dominated
+#print axioms Gtz.corner_excluded_reading_wedge_dominated_x
+
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
 -- transferred avoiding-refusal budget
@@ -36407,3 +36418,11 @@ run_cmd do
 #print axioms Gtz.nullReading_pivot_column_identity
 #print axioms Gtz.nullReading_touching_eigenvector
 #print axioms Gtz.sum_nullReading_pivot_pairing
+
+-- Gtz/Wave/PairMinorBridge.lean -- the pair minors of the six-set pivot:
+-- the compound identity, the W-metric cross reading, and the hinge as a
+-- determinant locus
+#print axioms Gtz.det_pairGram_eq_cross_adjugate
+#print axioms Gtz.pairPivotMinor_mul_det_eq_crossReading
+#print axioms Gtz.pairPivotMinor_eq_zero_iff_parallel
+#print axioms Gtz.hasParallelPair_iff_exists_pairPivotMinor_eq_zero
