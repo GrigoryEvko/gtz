@@ -1307,6 +1307,7 @@ import Gtz.Wave.ErasedEnergyLedger
 import Gtz.Wave.ErasedWitnessGram
 import Gtz.Wave.TripleGramChart
 import Gtz.Wave.ChartBracketTax
+import Gtz.Wave.TieGraphTrichotomy
 import Gtz.Wave.DiamondNeighborhoodMirror
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
@@ -36465,6 +36466,21 @@ run_cmd do
 #print axioms Gtz.chart_parseval_det_identity
 #print axioms Gtz.posDef_subsetSum_of_obtuse_rowPositive
 #print axioms Gtz.isTie_not_obtuse_rowPositive
+
+-- Gtz/Wave/TieGraphTrichotomy.lean -- the tie as a graph condition: the
+-- symmetric Sylvester criterion, the trichotomy of every triple, the
+-- four-vertex saturation, and the exact zero of the dominating triple
+#print axioms Gtz.posDef_subsetSum_iff_live_and_gapDet
+#print axioms Gtz.isTie_triple_trichotomy
+#print axioms Gtz.isTie_live_gapDet_nonpos
+#print axioms Gtz.isTie_heavyFour_admissible_gapDet_nonpos
+#print axioms Gtz.posDef_of_posSemidef_of_det_pos
+#print axioms Gtz.dominating_triple_gapDet_eq_zero
+#print axioms Gtz.dominating_triple_bracket_identity
+#print axioms Gtz.dominating_triple_pairMinor_sum_nonneg
+#print axioms Gtz.dominating_triple_bracket_sharp_iff
+#print axioms Gtz.corner_triple_gapDet_eq_zero
+#print axioms Gtz.corner_bracket_identity
 
 -- Gtz/Wave/InvariantBudgets.lean -- the conservation laws of the tax
 -- currencies: the Parseval moments, the wedge budget, the bracket budget
