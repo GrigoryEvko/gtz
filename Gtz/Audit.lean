@@ -1306,12 +1306,14 @@ import Gtz.Wave.DualFrameBudget
 import Gtz.Wave.ErasedEnergyLedger
 import Gtz.Wave.ErasedWitnessGram
 import Gtz.Wave.TripleGramChart
+import Gtz.Wave.ChartBracketTax
 import Gtz.Wave.DiamondNeighborhoodMirror
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
 import Gtz.Wave.BracketContractionTax
 import Gtz.Wave.PairBracketMass
 import Gtz.Wave.PairMassRowLaw
+import Gtz.Wave.DominatorWedgeFloor
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
@@ -36450,6 +36452,17 @@ run_cmd do
 #print axioms Gtz.parseval_tripleGram_identity
 #print axioms Gtz.corner_chart_witness_pin
 
+-- Gtz/Wave/ChartBracketTax.lean -- the contraction tax in chart currency,
+-- the outside cap of a corner tie, the determinant of the chart identity,
+-- and the M-matrix producer in the chart
+#print axioms Gtz.chartDet_eq_bracket_sq
+#print axioms Gtz.subsetSum_det_eq_chartDet
+#print axioms Gtz.isTie_chartDet_tax
+#print axioms Gtz.corner_bothLight_outside_chartDet_cap
+#print axioms Gtz.chart_parseval_det_identity
+#print axioms Gtz.posDef_subsetSum_of_obtuse_rowPositive
+#print axioms Gtz.isTie_not_obtuse_rowPositive
+
 -- Gtz/Wave/InvariantBudgets.lean -- the conservation laws of the tax
 -- currencies: the Parseval moments, the wedge budget, the bracket budget
 #print axioms Gtz.trace_atomMatrix_mul_three
@@ -36505,6 +36518,16 @@ run_cmd do
 #print axioms Gtz.exists_pair_mass_le_fifth
 #print axioms Gtz.pair_mass_nonneg
 #print axioms Gtz.pair_mass_le_row
+
+-- Gtz/Wave/DominatorWedgeFloor.lean -- the bracket floor of a weak dominator
+-- becomes a floor on its inside wedges, and the per-pair aggregation returns
+-- an intrinsic lower bound on the misalignment of two null lines
+#print axioms Gtz.tripleBracket_sq_le_wedge_mul_leverage
+#print axioms Gtz.dominator_inside_wedge_floor
+#print axioms Gtz.dominator_inside_wedge_ge_weight
+#print axioms Gtz.dominator_inside_pair_mass_floor
+#print axioms Gtz.dominator_no_inside_parallel
+#print axioms Gtz.misalignment_floor_of_pairBounds
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
@@ -36781,3 +36804,6 @@ run_cmd do
 #print axioms Gtz.corner_bracket_twoPoint_dichotomy
 #print axioms Gtz.corner_generic_baseX_minor_ne_zero
 #print axioms Gtz.corner_generic_bracket_twoPoint
+#print axioms Gtz.swapDefect_eq_couplingSq_add_nullFormSq
+#print axioms Gtz.reading_gap_trapped_of_isTie
+#print axioms Gtz.wedge_le_coupling_of_isTie

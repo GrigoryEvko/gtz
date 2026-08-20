@@ -6395,6 +6395,7 @@ import Gtz.Wave.DualFrameBudget
 import Gtz.Wave.ErasedEnergyLedger
 import Gtz.Wave.ErasedWitnessGram
 import Gtz.Wave.TripleGramChart
+import Gtz.Wave.ChartBracketTax
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
 import Gtz.Wave.BracketContractionTax
@@ -6410,3 +6411,4 @@ import Gtz.Wave.KOneBracketLedger
 import Gtz.Wave.DiamondNeighborhoodLock
 import Gtz.Wave.CoherentHornDualFrame
 import Gtz.Wave.OppositeHornTwoPoint
+import Gtz.Wave.DominatorWedgeFloor
