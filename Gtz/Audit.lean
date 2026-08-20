@@ -1285,6 +1285,7 @@ import Gtz.Wave.CrossLedgerRigidity
 import Gtz.Wave.KTwoEraseSystem
 import Gtz.Wave.KTwoCrossPrice
 import Gtz.Wave.KTwoChartIdentity
+import Gtz.Wave.ProjectionTaxLaw
 import Gtz.Wave.SixSetNullColumn
 import Gtz.Wave.PairMinorBridge
 import Gtz.Wave.ReadingMatrixRelation
@@ -1296,6 +1297,7 @@ import Gtz.Wave.CompoundProbeRelations
 import Gtz.Wave.BothLightCoreBound
 import Gtz.Wave.SecondInvariantLedger
 import Gtz.Wave.ShellAnchor
+import Gtz.Wave.TransverseFloor
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36350,6 +36352,15 @@ run_cmd do
 #print axioms Gtz.corner_oneAxisZero_not_parallel
 #print axioms Gtz.corner_oneAxisZero_not_parallel_z
 
+-- Gtz/Wave/TransverseFloor.lean -- the seven floors force transverse energy
+-- at the rate of the two smaller outside weights
+#print axioms Gtz.posSemidef_bilinear_sq_le
+#print axioms Gtz.posDef_diag_mul_inv_diag
+#print axioms Gtz.posDef_schur_diag_nonneg
+#print axioms Gtz.posDef_frame_reading_le
+#print axioms Gtz.seventh_floor_energy
+#print axioms Gtz.transverse_floor
+
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
 -- transferred avoiding-refusal budget
@@ -36463,6 +36474,18 @@ run_cmd do
 #print axioms Gtz.k2Chart_quotient_nonneg
 #print axioms Gtz.k2Chart_quotient_mirror_nonneg
 #print axioms Gtz.k2Chart_kill_of_doubleQuotientCorner
+
+-- Gtz/Wave/ProjectionTaxLaw.lean -- the projection tax of a tie: the
+-- light-triple strict-dominator producer, the taxed atom of a refusal,
+-- the two-light law, and the 1/(m-2) tax cap
+#print axioms Gtz.projectionWeightGap_transpose
+#print axioms Gtz.posDef_subsetSum_of_projectionFloor_light
+#print axioms Gtz.exists_heavy_slot_of_refused
+#print axioms Gtz.injective_tripleSlots
+#print axioms Gtz.image_tripleSlots
+#print axioms Gtz.card_light_le_two_of_isTie
+#print axioms Gtz.uniform_floor_tax_cap_of_isTie
+#print axioms Gtz.uniform_floor_le_quarter_of_isTie
 
 -- Gtz/Wave/SixSetNullColumn.lean -- the null column of the six-set
 -- projection: the complement resolve and the touching eigenvector of a
