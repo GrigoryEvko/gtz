@@ -1273,6 +1273,7 @@ import Gtz.Wave.OneAxisZeroDowndateOdds
 import Gtz.Wave.ErasedDeflationFloor
 import Gtz.Wave.HeavyInsideTracePinch
 import Gtz.Wave.SeesawExchangeFloor
+import Gtz.Wave.CrossLedgerRigidity
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36241,3 +36242,21 @@ run_cmd do
 #print axioms Gtz.sixSplit_spine_atoms
 #print axioms Gtz.sixSplit_spine_readings_ne_zero
 #print axioms Gtz.sixSplit_copySwap_wform_zero
+
+-- Gtz/Wave/CrossLedgerRigidity.lean -- the cross ledger of a four-set built
+-- from a triple and one outside atom, and the three degeneration markers of
+-- its cross family
+#print axioms Gtz.det_add_atomMatrix_adjugate
+#print axioms Gtz.sum_det_add_atomMatrix_eq
+#print axioms Gtz.sum_det_add_atomMatrix_gap
+#print axioms Gtz.fourSet_removal_gap
+#print axioms Gtz.fourSet_gap
+#print axioms Gtz.cross_ledger
+#print axioms Gtz.cross_reading_eq_zero_of_parallel
+#print axioms Gtz.cross_reading_eq_zero_iff_mulVec_eq_zero
+#print axioms Gtz.cross_reading_eq_zero_iff_parallel_of_posDef
+#print axioms Gtz.cross_ledger_le_of_isTie
+#print axioms Gtz.swapGapForm_eq_zero_of_unit_parallel
+#print axioms Gtz.cross_ledger_le_of_isTie_of_parallel
+#print axioms Gtz.k0_leverage_gt_one_of_readings_ne_zero
+#print axioms Gtz.k2_one_le_nullDir_anchor_reading_of_isTie
