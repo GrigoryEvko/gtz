@@ -1315,6 +1315,7 @@ import Gtz.Wave.BracketContractionTax
 import Gtz.Wave.PairBracketMass
 import Gtz.Wave.PairMassRowLaw
 import Gtz.Wave.DominatorWedgeFloor
+import Gtz.Wave.BracketPhaseRigidity
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
@@ -1324,7 +1325,7 @@ import Gtz.Wave.DiamondNeighborhoodLock
 import Gtz.Wave.OppositeHornTwoPoint
 import Gtz.Wave.OppositeHornCycleNoGo
 import Gtz.Wave.KOneNormalForm
-import Gtz.Wave.OppositeHornWedgeCap
+import Gtz.Wave.KOneTransverse
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -16777,7 +16778,7 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.poleSectorGate_iff_poleMass_gt_half
 
 -- Gtz/Design/StressFreeClosureFailure.lean
-#print axioms Gtz.tripleGap_form
+#print axioms Gtz.kOne_tripleGap_form
 #print axioms Gtz.sq_dotProduct_le_mul_dotProduct_self
 #print axioms Gtz.not_posDef_tripleGap_of_leverage_le_one
 #print axioms Gtz.extendedAtom_castSucc
@@ -36552,6 +36553,21 @@ run_cmd do
 #print axioms Gtz.dominator_inside_wedge_floor_sharp
 #print axioms Gtz.misalignment_floor_sharp_of_pairBounds
 
+-- Gtz/Wave/BracketPhaseRigidity.lean -- the third compound of the projection
+-- has rank one: the paired block determinant factors, the squared block
+-- determinant is a product of bracket masses, and the three-cycle is a
+-- product of squares -- the chirotope as one identity
+#print axioms Gtz.projectionBlock_pair_eq_mul
+#print axioms Gtz.det_scaledRows_block
+#print axioms Gtz.det_projectionBlock_pair
+#print axioms Gtz.sq_weighted_bracket
+#print axioms Gtz.bracketMass_phase_rigidity
+#print axioms Gtz.bracket_threeCycle
+#print axioms Gtz.bracket_threeCycle_nonneg
+#print axioms Gtz.bracketMass_eq_zero_kills_row
+#print axioms Gtz.bracketMass_nonneg
+#print axioms Gtz.bracketMass_le_pair_mass
+
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
 -- transferred avoiding-refusal budget
@@ -36843,9 +36859,28 @@ run_cmd do
 #print axioms Gtz.pairAnchor_bracket_general
 #print axioms Gtz.kOne_sharp_weight_cap
 #print axioms Gtz.kOne_sharp_weight_cap_of_null
-#print axioms Gtz.corner_inside_pairBracketSq_eq
-#print axioms Gtz.corner_twoInside_bracket_cap
-#print axioms Gtz.corner_twoInside_bracket_cap_sum
-#print axioms Gtz.corner_atom_minorTriple_neg
-#print axioms Gtz.corner_generic_baseY_minor_ne_zero
-#print axioms Gtz.corner_twoCoherent_imp_thirdCoherent
+#print axioms Gtz.isTie_probe_pinch
+#print axioms Gtz.probe_contactForm_eq
+#print axioms Gtz.cross_dot_left
+#print axioms Gtz.cross_dot_right
+#print axioms Gtz.tripleBracket_cyclic
+#print axioms Gtz.cross_dot_erased_eq_bracket
+#print axioms Gtz.pairAnchor_cross_normSq
+#print axioms Gtz.pairAnchor_cross_dot_null
+#print axioms Gtz.pairAnchor_cross_ne_zero
+#print axioms Gtz.kOne_tripleGap_form
+#print axioms Gtz.kOne_bracket_gt_wedge
+#print axioms Gtz.kOne_transverse_parseval
+#print axioms Gtz.kOne_erased_weight_cap
+#print axioms Gtz.kOne_erased_weight_lt_one
+#print axioms Gtz.kOne_bracket_gt_wedge_of_null
+#print axioms Gtz.kOne_erased_weight_cap_of_null
+#print axioms Gtz.kOne_three_weight_collision
+#print axioms Gtz.swapDefect_eq_reading_formula
+#print axioms Gtz.coupling_eq_reading_formula
+#print axioms Gtz.wedge_reading_sq_eq_defect_sub_longitudinal
+#print axioms Gtz.coupling_parallel_factorization
+#print axioms Gtz.mirror_bracket_difference
+#print axioms Gtz.atomBracket_smul_left
+#print axioms Gtz.parallel_mirror_bracket_constraint
+#print axioms Gtz.pairAnchor_bracket_difference
