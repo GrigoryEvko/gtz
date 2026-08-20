@@ -1266,6 +1266,7 @@ import Gtz.Wave.OneAxisZeroWitness
 import Gtz.Wave.OneAxisZeroAnchorCaps
 import Gtz.Wave.OutsideTriadDeterminant
 import Gtz.Wave.AnchorInverseDomination
+import Gtz.Wave.HeavyInsideCapGap
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36092,3 +36093,26 @@ run_cmd do
 #print axioms Gtz.quadForm_inv_le_of_loewner
 #print axioms Gtz.corner_oneAxisZero_anchor_capMatrix_floor
 #print axioms Gtz.corner_oneAxisZero_anchor_reading_cap
+
+-- Gtz/Wave/HeavyInsideCapGap.lean -- the paid four-set of the heavy-inside cell,
+-- the closed-form reading caps, the cap-gap emptiness, and the determinant
+-- exchange pins
+#print axioms Gtz.capMatrix_quadForm
+#print axioms Gtz.corner_fourSet_capMatrix_floor
+#print axioms Gtz.sylvester_quad_nonneg
+#print axioms Gtz.sylvester_quad_pos
+#print axioms Gtz.corner_oneAxisZero_heavyInside_cap_posDef
+#print axioms Gtz.corner_oneAxisZero_heavyInside_reading_cap
+#print axioms Gtz.corner_oneAxisZero_outside_xEigen
+#print axioms Gtz.corner_oneAxisZero_heavyInside_erased_cap
+#print axioms Gtz.corner_oneAxisZero_heavyInside_excluded_floor
+#print axioms Gtz.corner_oneAxisZero_heavyInside_capGap_absurd
+#print axioms Gtz.corner_oneAxisZero_heavyInside_capGap_absurd'
+#print axioms Gtz.corner_oneAxisZero_heavyInside_isTie_iff_capGap
+#print axioms Gtz.det_add_atomMatrix_sub_atomMatrix_cross
+#print axioms Gtz.corner_oneAxisZero_cross_pin
+#print axioms Gtz.corner_oneAxisZero_excluded_det_exchange
+#print axioms Gtz.excluded_pair_det_ledger
+#print axioms Gtz.corner_oneAxisZero_heavyInside_tie_det_floor
+#print axioms Gtz.corner_oneAxisZero_erased_overRead
+#print axioms Gtz.corner_oneAxisZero_erased_overRead_strict
