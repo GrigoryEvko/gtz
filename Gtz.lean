@@ -6417,3 +6417,4 @@ import Gtz.Wave.OppositeHornCycleNoGo
 import Gtz.Wave.KOneNormalForm
 import Gtz.Wave.KOneTransverse
 import Gtz.Wave.BracketPhaseRigidity
+import Gtz.Wave.OppositeHornScalarSystem
