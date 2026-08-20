@@ -1269,6 +1269,8 @@ import Gtz.Wave.AnchorInverseDomination
 import Gtz.Wave.HeavyInsideCapGap
 import Gtz.Wave.OneAxisZeroDowndateOdds
 import Gtz.Wave.ErasedDeflationFloor
+import Gtz.Wave.HeavyInsideTracePinch
+import Gtz.Wave.SeesawExchangeFloor
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36165,3 +36167,29 @@ run_cmd do
 #print axioms Gtz.corner_oneAxisZero_deflated_reading_split
 #print axioms Gtz.corner_oneAxisZero_deflated_outside_total
 #print axioms Gtz.corner_oneAxisZero_deflated_parseval
+
+-- Gtz/Wave/HeavyInsideTracePinch.lean -- the two-update determinant law, the
+-- member trace pinch, the heavy-inside self-read, the S-floor, the
+-- hypothesis-free caps, and the S-window
+#print axioms Gtz.det_sub_add_atomMatrix_readings
+#print axioms Gtz.subset_reading_total
+#print axioms Gtz.tie_fourSet_member_trace_pinch
+#print axioms Gtz.corner_oneAxisZero_heavyInside_selfRead
+#print axioms Gtz.corner_oneAxisZero_heavyInside_selfRead_ge_one
+#print axioms Gtz.corner_oneAxisZero_heavyInside_member_trace_pinch
+#print axioms Gtz.corner_oneAxisZero_heavyInside_trace_pinch_sharp
+#print axioms Gtz.corner_oneAxisZero_heavyInside_odds_reading_floor
+#print axioms Gtz.corner_oneAxisZero_heavyInside_sFloor
+#print axioms Gtz.corner_oneAxisZero_heavyInside_erased_cap_auto
+#print axioms Gtz.corner_oneAxisZero_heavyInside_sWindow
+#print axioms Gtz.corner_oneAxisZero_bothLight_member_trace_pinch
+#print axioms Gtz.oneAxisZeroWitness_fourSet_inv
+#print axioms Gtz.oneAxisZeroWitness_not_isTie_by_tracePinch
+
+-- Gtz/Wave/SeesawExchangeFloor.lean -- the reading symmetry, the two-sided
+-- Sherman-Morrison update, the seesaw exchange identity, and the seesaw floor
+-- of the both-light cell
+#print axioms Gtz.inv_reading_symm
+#print axioms Gtz.update_cross_reading
+#print axioms Gtz.seesaw_exchange_reading
+#print axioms Gtz.corner_oneAxisZero_bothLight_seesaw_floor
