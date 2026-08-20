@@ -1264,6 +1264,7 @@ import Gtz.Wave.OneAxisZeroRefusalBudget
 import Gtz.Wave.OneAxisZeroAnchorLaws
 import Gtz.Wave.OneAxisZeroWitness
 import Gtz.Wave.OneAxisZeroAnchorCaps
+import Gtz.Wave.OutsideTriadDeterminant
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36075,3 +36076,12 @@ run_cmd do
 #print axioms Gtz.corner_oneAxisZero_heavyInside_anchor_reading
 #print axioms Gtz.corner_oneAxisZero_heavyInside_anchor_reading'
 #print axioms Gtz.corner_oneAxisZero_anchor_tension
+
+-- Gtz/Wave/OutsideTriadDeterminant.lean -- the triad recombination determinant law,
+-- the outside pencil characteristic identity, the det-sharp payment, and the
+-- Parseval-pinned outside determinant
+#print axioms Gtz.det_triad_recombination
+#print axioms Gtz.outside_triad_det_link
+#print axioms Gtz.outside_triad_char_identity
+#print axioms Gtz.outside_payment_det_sharp
+#print axioms Gtz.corner_outside_det_pinned
