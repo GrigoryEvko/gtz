@@ -36649,3 +36649,25 @@ run_cmd do
 #print axioms Gtz.pairPivotMinor_eq_zero_iff_parallel
 #print axioms Gtz.hasParallelPair_iff_exists_pairPivotMinor_eq_zero
 #print axioms Gtz.not_posDef_compl_of_pair_reading
+
+-- the mirror rigidity of a doubled tie (fork 32, K0 local)
+#print axioms Gtz.quadForm_probe_split
+#print axioms Gtz.posDef_of_probe_coercivity
+#print axioms Gtz.probe_coercivity_pinch
+#print axioms Gtz.not_isTie_of_probe_coercivity
+#print axioms Gtz.subsetSum_swap_eq
+#print axioms Gtz.swap_gap_mulVec_of_null
+#print axioms Gtz.swap_nullForm_of_null
+#print axioms Gtz.swap_reading_sq_le_of_dominates
+#print axioms Gtz.mirror_reading_smul_eq
+#print axioms Gtz.hasParallelPair_of_mirror_nullDominators
+#print axioms Gtz.nullReading_eq_zero_of_mirror_of_not_hasParallelPair
+#print axioms Gtz.mirror_readings_eq_zero_of_not_hasParallelPair
+#print axioms Gtz.mirror_reading_squeeze
+#print axioms Gtz.swap_pinch_of_isTie
+#print axioms Gtz.parallel_swap_coercivity_bound
+#print axioms Gtz.bracketNormal_swapVec
+#print axioms Gtz.wedge_mul_reading_sq_le_swap_defect
+#print axioms Gtz.mirror_wedge_eq_zero
+#print axioms Gtz.swap_defect_ge_wedge_ratio
+#print axioms Gtz.swap_defect_pos_of_not_hasParallelPair
