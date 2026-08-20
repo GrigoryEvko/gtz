@@ -1304,6 +1304,7 @@ import Gtz.Wave.PencilWiring
 import Gtz.Wave.ErasedAtomSpectrum
 import Gtz.Wave.DualFrameBudget
 import Gtz.Wave.ErasedEnergyLedger
+import Gtz.Wave.ErasedWitnessGram
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
@@ -36414,6 +36415,15 @@ run_cmd do
 #print axioms Gtz.corner_lambda_weight_cap
 #print axioms Gtz.corner_bothLight_lambda_terms_cap
 #print axioms Gtz.corner_erased_adjugate_cayley
+
+-- Gtz/Wave/ErasedWitnessGram.lean -- the corner cross norm, the trace cap
+-- of a cross energy, the inside leverage total, and the cross-term cap of
+-- the weight-gap roof
+#print axioms Gtz.corner_cross_normSq
+#print axioms Gtz.posSemidef_energy_le_trace
+#print axioms Gtz.corner_cross_energy_le_trace
+#print axioms Gtz.corner_inside_leverage_sum
+#print axioms Gtz.corner_bothLight_cross_terms_cap
 
 -- Gtz/Wave/InvariantBudgets.lean -- the conservation laws of the tax
 -- currencies: the Parseval moments, the wedge budget, the bracket budget
