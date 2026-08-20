@@ -57,6 +57,7 @@ import Gtz.Wave.CorankOneGramMirror
 import Gtz.Wave.HeavyInsideCapGap
 import Gtz.Wave.ErasedDeflationFloor
 import Gtz.Design.SphereExistence
+import Gtz.Wave.DiamondNullFrame
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -387,5 +388,93 @@ theorem k2_one_le_nullDir_anchor_reading_of_isTie (D : WeightedDesign m 3)
   · rw [hxw] at hexch
     simpa only [Matrix.mulVec_neg, dotProduct_neg, neg_dotProduct, neg_neg]
       using hexch
+
+/-! ## 7. The markers at the split diamond, in kernel
+
+The `(6,3)` split diamond is the arm's boundary fixture: a tie, with a parallel
+pair, whose spine dominator has a corank-one gap
+(`Gtz.gapNullLine_sixSplitDiamondDesign_spine`).  Two of the three degeneration
+markers are now kernel facts about it, and they fire on the SAME pair. -/
+
+/-- **The split diamond's doubled spine kills every cross reading.**  The copy
+IS the spine atom, so the cross product vanishes and the ledger's term at that
+pair is zero against every base matrix — in particular against the complement
+gap of any triple. -/
+theorem sixSplit_crossReading_eq_zero (M : Matrix (Fin 3) (Fin 3) ℝ) :
+    crossProduct (sixSplitDiamondDesign.atom 0) (sixSplitDiamondDesign.atom 5)
+        ⬝ᵥ (M *ᵥ crossProduct (sixSplitDiamondDesign.atom 0)
+              (sixSplitDiamondDesign.atom 5)) = 0 :=
+  cross_reading_eq_zero_of_parallel M _ _
+    (by rw [sixSplit_atom_copy, one_smul])
+
+/-- **TWO MARKERS, ONE PAIR, IN KERNEL.**  At the split diamond the doubled
+spine simultaneously kills the ledger's cross reading and flattens the swap null
+form of the spine dominator.  The third marker — the vanishing determinant of
+that same removal triple — is [MEASURED, `scratchpad/corank1/fix.jl`, exact
+rationals: `det(S_T − 1) = 0` at `T = {0,3,4}`].  The coincidence is not an
+accident of the fixture: by
+`Gtz.cross_reading_eq_zero_iff_parallel_of_posDef` the cross marker IS
+parallelism at a definite base, and by
+`Gtz.cross_reading_eq_zero_iff_cross_mem_nullLine` it is parallelism modulo the
+null line at a corank-one one. -/
+theorem sixSplit_two_markers_coincide (M : Matrix (Fin 3) (Fin 3) ℝ) :
+    crossProduct (sixSplitDiamondDesign.atom 0) (sixSplitDiamondDesign.atom 5)
+        ⬝ᵥ (M *ᵥ crossProduct (sixSplitDiamondDesign.atom 0)
+              (sixSplitDiamondDesign.atom 5)) = 0
+      ∧ diamondNullVector ⬝ᵥ
+          ((subsetSum sixSplitDiamondDesign
+              (insert 5 (({0, 1, 2} : Finset (Fin 6)).erase 0)) - 1)
+            *ᵥ diamondNullVector) = 0 :=
+  ⟨sixSplit_crossReading_eq_zero M, sixSplit_copySwap_wform_zero⟩
+
+/-! ## 8. The mixed family of the two-zero budget
+
+The ten refusals of `Gtz.isTie_iff_avoidingRefusals_of_twoZeroReadings` split
+`3 + 3 + 3 + 1`: the triples `{y, z, d}` (priced by
+`Gtz.k2_planeWitness_of_isTie`), the MIXED triples `{y, d, d'}` and
+`{z, d, d'}`, and the complement `{d, d', d''}`.  The mixed family carries ONE
+silenced atom, so its `u`-mass is the outside pair alone. -/
+
+/-- **THE MIXED `K2` REFUSAL.**  A triple made of one silenced atom and two
+outside atoms either keeps the null mass of the outside pair at one, or concedes
+a plane probe.  With `g_y·w = 0` the `u`-mass is exactly `(q_d·w)² + (q_d'·w)²`
+and the cross sum loses its inside term — the second family of the two-zero
+budget, in scalar form. -/
+theorem k2_mixed_planeWitness_of_isTie (D : WeightedDesign m 3) (htie : IsTie D)
+    {y d e : Fin m} (hyd : y ≠ d) (hye : y ≠ e) (hde : d ≠ e)
+    {nullDir : Fin 3 → ℝ} (hunit : nullDir ⬝ᵥ nullDir = 1)
+    (hy : D.atom y ⬝ᵥ nullDir = 0) :
+    (D.atom d ⬝ᵥ nullDir) ^ 2 + (D.atom e ⬝ᵥ nullDir) ^ 2 ≤ 1
+      ∨ ∃ probe : Fin 3 → ℝ, probe ⬝ᵥ nullDir = 0 ∧ probe ≠ 0 ∧
+          ((D.atom d ⬝ᵥ nullDir) ^ 2 + (D.atom e ⬝ᵥ nullDir) ^ 2 - 1)
+              * ((D.atom y ⬝ᵥ probe) ^ 2 + (D.atom d ⬝ᵥ probe) ^ 2
+                  + (D.atom e ⬝ᵥ probe) ^ 2 - probe ⬝ᵥ probe)
+            ≤ ((D.atom d ⬝ᵥ nullDir) * (D.atom d ⬝ᵥ probe)
+                + (D.atom e ⬝ᵥ nullDir) * (D.atom e ⬝ᵥ probe)) ^ 2 := by
+  classical
+  have hcard : ({y, d, e} : Finset (Fin m)).card = 3 := by
+    rw [Finset.card_insert_of_notMem (by simp [hyd, hye]),
+      Finset.card_insert_of_notMem (by simp [hde]), Finset.card_singleton]
+  have hmass : ∑ c ∈ ({y, d, e} : Finset (Fin m)), (D.atom c ⬝ᵥ nullDir) ^ 2
+      = (D.atom d ⬝ᵥ nullDir) ^ 2 + (D.atom e ⬝ᵥ nullDir) ^ 2 := by
+    rw [sum_over_triple (fun c => (D.atom c ⬝ᵥ nullDir) ^ 2) hyd hye hde, hy]
+    ring
+  rcases uMass_le_or_planeWitness_of_isTie D htie ({y, d, e} : Finset (Fin m))
+    hcard hunit with hle | ⟨probe, hperp, hne, hwit⟩
+  · exact Or.inl (by rwa [hmass] at hle)
+  · refine Or.inr ⟨probe, hperp, hne, ?_⟩
+    have hcross : ∑ c ∈ ({y, d, e} : Finset (Fin m)),
+        (D.atom c ⬝ᵥ nullDir) * (D.atom c ⬝ᵥ probe)
+        = (D.atom d ⬝ᵥ nullDir) * (D.atom d ⬝ᵥ probe)
+          + (D.atom e ⬝ᵥ nullDir) * (D.atom e ⬝ᵥ probe) := by
+      rw [sum_over_triple
+        (fun c => (D.atom c ⬝ᵥ nullDir) * (D.atom c ⬝ᵥ probe)) hyd hye hde, hy]
+      ring
+    have hsq : ∑ c ∈ ({y, d, e} : Finset (Fin m)), (D.atom c ⬝ᵥ probe) ^ 2
+        = (D.atom y ⬝ᵥ probe) ^ 2 + (D.atom d ⬝ᵥ probe) ^ 2
+          + (D.atom e ⬝ᵥ probe) ^ 2 :=
+      sum_over_triple (fun c => (D.atom c ⬝ᵥ probe) ^ 2) hyd hye hde
+    rw [hmass, hcross, hsq] at hwit
+    exact hwit
 
 end Gtz

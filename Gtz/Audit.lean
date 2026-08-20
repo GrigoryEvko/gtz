@@ -1273,6 +1273,7 @@ import Gtz.Wave.OneAxisZeroDowndateOdds
 import Gtz.Wave.ErasedDeflationFloor
 import Gtz.Wave.HeavyInsideTracePinch
 import Gtz.Wave.SeesawExchangeFloor
+import Gtz.Wave.WeightGapDeterminant
 import Gtz.Wave.CrossLedgerRigidity
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -36197,6 +36198,21 @@ run_cmd do
 #print axioms Gtz.seesaw_exchange_reading
 #print axioms Gtz.corner_oneAxisZero_bothLight_seesaw_floor
 
+-- Gtz/Wave/WeightGapDeterminant.lean -- the three-atom determinant expansion,
+-- the Parseval reading rail, the weight-gap determinant law, and the positive
+-- weight-gap floor of the both-light cell
+#print axioms Gtz.det_add_three_atomMatrix_fin_three
+#print axioms Gtz.weighted_reading_total_eq_trace
+#print axioms Gtz.tie_fourSet_trace_ge_one
+#print axioms Gtz.corner_oneAxisZero_weightGap_reshape
+#print axioms Gtz.corner_oneAxisZero_weightGap_det_law
+#print axioms Gtz.corner_oneAxisZero_bothLight_weightGap_floor
+#print axioms Gtz.corner_outside_det_eq_triple_sq
+#print axioms Gtz.prod_three_one_sub_ge
+#print axioms Gtz.corner_oneAxisZero_outside_slack_floor
+#print axioms Gtz.corner_oneAxisZero_bothLight_weightGap_positive_floor
+#print axioms Gtz.oneAxisZeroWitness_outside_det
+
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
 -- transferred avoiding-refusal budget
@@ -36261,3 +36277,6 @@ run_cmd do
 #print axioms Gtz.cross_ledger_le_of_isTie_of_parallel
 #print axioms Gtz.k0_leverage_gt_one_of_readings_ne_zero
 #print axioms Gtz.k2_one_le_nullDir_anchor_reading_of_isTie
+#print axioms Gtz.sixSplit_crossReading_eq_zero
+#print axioms Gtz.sixSplit_two_markers_coincide
+#print axioms Gtz.k2_mixed_planeWitness_of_isTie
