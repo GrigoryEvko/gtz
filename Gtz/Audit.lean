@@ -36293,6 +36293,10 @@ run_cmd do
 #print axioms Gtz.corner_tripleProduct_fixed_point
 #print axioms Gtz.det_mul_cross_quadForm
 #print axioms Gtz.coweighted_member_det_ge_gapDet
+#print axioms Gtz.adjugate_reading
+#print axioms Gtz.adjugate_cross_reading
+#print axioms Gtz.cross_quadForm_eq_readingGram
+#print axioms Gtz.coweighted_member_det_reading_ledger
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the

@@ -320,4 +320,107 @@ theorem coweighted_member_det_ge_gapDet (D : WeightedDesign m 3)
   rw [coweighted_member_det_law D F hxz hcompl]
   linarith
 
+/-! ## 7. The determinant ledger in reading coordinates
+
+Dividing the determinant ledger by the gap determinant turns both sides into
+readings.  Writing `τ = t_x r_x + t_z r_z` for the excluded reading total and
+`π = t_x t_z (r_x r_z − P_xz²)` for the excluded reading Gram, the law is
+
+  `det(Σ_{a∈F}(1−t_a)g_ag_aᵀ) = det(S_F − 1)·(1 + τ + π)` .
+
+Combined with Cauchy-Binet at four atoms the left side is the coweighted sum
+of the FOUR TRIPLE GRAM DETERMINANTS of the members, and by
+`Gtz.member_floor_iff_gapDet_erase_nonpos` those four triples are exactly the
+ones whose failure is the four member floors.  So the law couples the whole
+floor system to the two excluded atoms in one equation.
+
+It is the SECOND invariant of the coweighted member sum.  The campaign has
+used only the first — the trace, which is the coweight ledger
+`Σ_{a∈F}(1−t_a)r_a = 3 + τ`.  The third invariant is `Σ_{a<b}(1−t_a)(1−t_b)
+(r_ar_b − P_ab²) = 3 + 2τ + π`, and the fourth is that the coweighted reading
+matrix is singular.  Together they pin the whole characteristic polynomial of
+the coweighted member reading matrix in terms of `τ` and `π` alone. -/
+
+/-- The adjugate reading of a positive definite gap is the determinant times
+the inverse reading. -/
+theorem adjugate_reading (D : WeightedDesign m 3) (F : Finset (Fin m))
+    (hpd : (subsetSum D F - 1).PosDef) (g : Fin 3 → ℝ) :
+    g ⬝ᵥ ((subsetSum D F - 1).adjugate *ᵥ g)
+      = (subsetSum D F - 1).det * (g ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ g)) := by
+  have hdet : IsUnit (subsetSum D F - 1).det :=
+    isUnit_iff_ne_zero.mpr (ne_of_gt hpd.det_pos)
+  have hadj : (subsetSum D F - 1).adjugate
+      = (subsetSum D F - 1).det • (subsetSum D F - 1)⁻¹ := by
+    rw [Matrix.inv_def, smul_smul, Ring.mul_inverse_cancel _ hdet, one_smul]
+  rw [hadj, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]
+
+/-- The adjugate cross reading of a positive definite gap. -/
+theorem adjugate_cross_reading (D : WeightedDesign m 3) (F : Finset (Fin m))
+    (hpd : (subsetSum D F - 1).PosDef) (g h : Fin 3 → ℝ) :
+    g ⬝ᵥ ((subsetSum D F - 1).adjugate *ᵥ h)
+      = (subsetSum D F - 1).det * (g ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ h)) := by
+  have hdet : IsUnit (subsetSum D F - 1).det :=
+    isUnit_iff_ne_zero.mpr (ne_of_gt hpd.det_pos)
+  have hadj : (subsetSum D F - 1).adjugate
+      = (subsetSum D F - 1).det • (subsetSum D F - 1)⁻¹ := by
+    rw [Matrix.inv_def, smul_smul, Ring.mul_inverse_cancel _ hdet, one_smul]
+  rw [hadj, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]
+
+/-- **THE CROSS TERM IS THE EXCLUDED READING GRAM.**  At a positive definite
+gap the cross product of the two excluded atoms reads the gap as the
+determinant times their reading Gram:
+
+  `(g_x × g_z)ᵀ A (g_x × g_z) = det A · (r_x r_z − P_xz²)` . -/
+theorem cross_quadForm_eq_readingGram (D : WeightedDesign m 3)
+    (F : Finset (Fin m)) (hpd : (subsetSum D F - 1).PosDef) (g h : Fin 3 → ℝ) :
+    crossProduct g h ⬝ᵥ ((subsetSum D F - 1) *ᵥ crossProduct g h)
+      = (subsetSum D F - 1).det
+        * ((g ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ g))
+              * (h ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ h))
+            - (g ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ h)) ^ 2) := by
+  have hne : (subsetSum D F - 1).det ≠ 0 := ne_of_gt hpd.det_pos
+  have hkey := det_mul_cross_quadForm (subsetSum D F - 1) g h
+  rw [adjugate_reading D F hpd g, adjugate_reading D F hpd h,
+    adjugate_cross_reading D F hpd g h, adjugate_cross_reading D F hpd h g,
+    inv_reading_symm hpd h g] at hkey
+  have hcancel : (subsetSum D F - 1).det
+      * (crossProduct g h ⬝ᵥ ((subsetSum D F - 1) *ᵥ crossProduct g h))
+      = (subsetSum D F - 1).det
+        * ((subsetSum D F - 1).det
+            * ((g ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ g))
+                  * (h ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ h))
+                - (g ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ h)) ^ 2)) := by
+    rw [hkey]; ring
+  exact mul_left_cancel₀ hne hcancel
+
+/-- **THE DETERMINANT LEDGER, IN READINGS.**  The second invariant of the
+coweighted member sum, with the excluded pair entering through its reading
+total and its reading Gram:
+
+  `det(Σ_{a∈F}(1−t_a)g_ag_aᵀ)
+      = det A · (1 + t_x r_x + t_z r_z + t_x t_z (r_x r_z − P_xz²))` .
+
+By `Gtz.det_sum_four_atomMatrix` the left side is the coweighted sum of the
+four triple Gram determinants of the members, so this one equation ties every
+member floor to the excluded pair. -/
+theorem coweighted_member_det_reading_ledger (D : WeightedDesign m 3)
+    (F : Finset (Fin m)) {x z : Fin m} (hxz : x ≠ z)
+    (hcompl : (Fᶜ : Finset (Fin m)) = {x, z})
+    (hpd : (subsetSum D F - 1).PosDef) :
+    (∑ a ∈ F, (1 - D.weight a) • atomMatrix (D.atom a)).det
+      = (subsetSum D F - 1).det
+        * (1
+            + D.weight x
+                * (D.atom x ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ D.atom x))
+            + D.weight z
+                * (D.atom z ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ D.atom z))
+            + D.weight x * D.weight z
+                * ((D.atom x ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ D.atom x))
+                      * (D.atom z ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ D.atom z))
+                    - (D.atom x ⬝ᵥ ((subsetSum D F - 1)⁻¹ *ᵥ D.atom z)) ^ 2)) := by
+  rw [coweighted_member_det_law D F hxz hcompl,
+    adjugate_reading D F hpd (D.atom x), adjugate_reading D F hpd (D.atom z),
+    cross_quadForm_eq_readingGram D F hpd (D.atom x) (D.atom z)]
+  ring
+
 end Gtz
