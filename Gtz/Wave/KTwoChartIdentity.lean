@@ -20,11 +20,18 @@ combine EXACTLY into
 
 with `G = td·α² + te·β²` the outside `w`-mass, so `G − 1 = −t_x`.  At a tie
 the four slacks are nonnegative, the excess residual vanishes, and the left
-side is nonpositive.  When the quotient `Q1` is negative the identity forces
-`t_x ≤ 0` — no legal design.  The mirror case swaps `y` and `z` through the
-exact symmetry `S3 ↔ S4`, `X ↔ 1 − X`.  The single remaining case — both
-quotients nonnegative — is the named corner `Gtz.K2ChartDoubleQuotientCorner`
-[MEASURED empty: the two caps alone fail there, 0 of 20881 corner samples].
+side is nonpositive.  The identity therefore makes BOTH quotients
+nonnegative at every chart tie, with no case analysis: `t_x·Q1` EQUALS the
+positive combination of the four slacks (`k2Chart_quotient_nonneg`), and the
+mirror twin holds by the exact symmetry `S3 ↔ S4`, `X ↔ 1 − X`.  The
+quotient conditions are the identity's real content: `Q1` carries no `ty`
+and the mirror carries no `tz`, so the two mixed refusals are traded for two
+variable-separated necessary conditions.  The whole chart kill is then ONE
+named corner, `Gtz.K2ChartDoubleQuotientCorner`: the four slacks and the two
+quotients together on the structured legal domain [MEASURED empty: the two
+caps alone already fail there, 0 of 20881 corner samples].  The sign-case
+consumers `caseA/caseB` stay as documentation of the identity's mechanism;
+their cases are empty at ties.
 -/
 import Gtz.Wave.KTwoCrossPrice
 
@@ -233,6 +240,37 @@ theorem k2Chart_caseB_kill {ed ee P td te ty tz X : ℝ}
   · rw [k2ChartRefusalY_swap]; exact hS4
   · rw [k2ChartRefusalZ_swap]; exact hS3
 
+/-- **The quotient is nonnegative at every chart tie, free.**  The four
+slack floors make the identity's left side nonpositive, the excess residual
+vanishes, and the erased weight is positive.  No case analysis: the tie
+PAYS `t_x·Q1` with the four slacks. -/
+theorem k2Chart_quotient_nonneg {ed ee P td te ty tz X : ℝ}
+    (hty : 0 < ty) (htz : 0 < tz) (htd : 0 < td) (hte : 0 < te)
+    (hsum : td + te + ty + tz < 1)
+    (hE : td*ed + te*ee = ty + tz)
+    (hS1 : 0 ≤ k2ChartCapD ed ee P td te ty tz X)
+    (hS2 : 0 ≤ k2ChartCapE ed ee P td te ty tz X)
+    (hS3 : 0 ≤ k2ChartRefusalY ed ee P td te ty tz X)
+    (hS4 : 0 ≤ k2ChartRefusalZ ed ee P td te ty tz X) :
+    0 ≤ k2ChartQuotient ed ee P td te tz X := by
+  by_contra hcon
+  push Not at hcon
+  exact k2Chart_caseA_kill hty htz htd hte hsum hE hS1 hS2 hS3 hS4 hcon
+
+/-- The mirror quotient is nonnegative at every chart tie, free. -/
+theorem k2Chart_quotient_mirror_nonneg {ed ee P td te ty tz X : ℝ}
+    (hty : 0 < ty) (htz : 0 < tz) (htd : 0 < td) (hte : 0 < te)
+    (hsum : td + te + ty + tz < 1)
+    (hE : td*ed + te*ee = ty + tz)
+    (hS1 : 0 ≤ k2ChartCapD ed ee P td te ty tz X)
+    (hS2 : 0 ≤ k2ChartCapE ed ee P td te ty tz X)
+    (hS3 : 0 ≤ k2ChartRefusalY ed ee P td te ty tz X)
+    (hS4 : 0 ≤ k2ChartRefusalZ ed ee P td te ty tz X) :
+    0 ≤ k2ChartQuotient ed ee P td te ty (1-X) := by
+  by_contra hcon
+  push Not at hcon
+  exact k2Chart_caseB_kill hty htz htd hte hsum hE hS1 hS2 hS3 hS4 hcon
+
 /-! ## 5. The residual corner -/
 
 /-- **THE DOUBLE-QUOTIENT CORNER.**  The single unresolved case of the
@@ -254,13 +292,15 @@ def K2ChartDoubleQuotientCorner : Prop :=
     0 < te*(1+ee) - P*td*(td*(1+ed) + te*(1+ee)) →
     0 ≤ k2ChartCapD ed ee P td te ty tz X →
     0 ≤ k2ChartCapE ed ee P td te ty tz X →
+    0 ≤ k2ChartRefusalY ed ee P td te ty tz X →
+    0 ≤ k2ChartRefusalZ ed ee P td te ty tz X →
     0 ≤ k2ChartQuotient ed ee P td te tz X →
     0 ≤ k2ChartQuotient ed ee P td te ty (1-X) →
     False
 
 /-- **THE CHART KILL, conditional on the corner.**  The four refusal floors
-of a `(5,3)` two-zero chart tie are impossible: the two quotient signs each
-fall to the master identity, and the corner eats the rest. -/
+of a `(5,3)` two-zero chart tie are impossible: the master identity supplies
+the two quotient floors for free, and the corner eats the whole system. -/
 theorem k2Chart_kill_of_doubleQuotientCorner
     (hcorner : K2ChartDoubleQuotientCorner)
     {ed ee P td te ty tz X : ℝ}
@@ -277,12 +317,10 @@ theorem k2Chart_kill_of_doubleQuotientCorner
     (hS1 : 0 ≤ k2ChartCapD ed ee P td te ty tz X)
     (hS2 : 0 ≤ k2ChartCapE ed ee P td te ty tz X)
     (hS3 : 0 ≤ k2ChartRefusalY ed ee P td te ty tz X)
-    (hS4 : 0 ≤ k2ChartRefusalZ ed ee P td te ty tz X) : False := by
-  rcases lt_or_ge (k2ChartQuotient ed ee P td te tz X) 0 with hQ | hQ
-  · exact k2Chart_caseA_kill hty htz htd hte hsum hE hS1 hS2 hS3 hS4 hQ
-  rcases lt_or_ge (k2ChartQuotient ed ee P td te ty (1-X)) 0 with hQm | hQm
-  · exact k2Chart_caseB_kill hty htz htd hte hsum hE hS1 hS2 hS3 hS4 hQm
-  exact hcorner ed ee P td te ty tz X hty htz htd hte hP hX0 hX1 hed hee
-    hE hsum hV hU hD hW hS1 hS2 hQ hQm
+    (hS4 : 0 ≤ k2ChartRefusalZ ed ee P td te ty tz X) : False :=
+  hcorner ed ee P td te ty tz X hty htz htd hte hP hX0 hX1 hed hee
+    hE hsum hV hU hD hW hS1 hS2 hS3 hS4
+    (k2Chart_quotient_nonneg hty htz htd hte hsum hE hS1 hS2 hS3 hS4)
+    (k2Chart_quotient_mirror_nonneg hty htz htd hte hsum hE hS1 hS2 hS3 hS4)
 
 end Gtz

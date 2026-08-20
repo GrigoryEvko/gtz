@@ -36460,6 +36460,8 @@ run_cmd do
 #print axioms Gtz.k2ChartRefusalZ_swap
 #print axioms Gtz.k2Chart_caseA_kill
 #print axioms Gtz.k2Chart_caseB_kill
+#print axioms Gtz.k2Chart_quotient_nonneg
+#print axioms Gtz.k2Chart_quotient_mirror_nonneg
 #print axioms Gtz.k2Chart_kill_of_doubleQuotientCorner
 
 -- Gtz/Wave/SixSetNullColumn.lean -- the null column of the six-set
