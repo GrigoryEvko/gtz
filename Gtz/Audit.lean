@@ -1291,6 +1291,7 @@ import Gtz.Wave.CoweightedMemberLedger
 import Gtz.Wave.FourSetTetrahedralFoil
 import Gtz.Wave.AdjugateDowndateReadings
 import Gtz.Wave.CompoundProbeRelations
+import Gtz.Wave.BothLightCoreBound
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36328,6 +36329,11 @@ run_cmd do
 #print axioms Gtz.coweighted_member_sum_posSemidef
 #print axioms Gtz.corner_excluded_reading_wedge_dominated
 #print axioms Gtz.corner_excluded_reading_wedge_dominated_x
+
+-- Gtz/Wave/BothLightCoreBound.lean -- the heavy core of the seven weighted
+-- terms bounded by the weighted four-set determinants under the seventh floor
+#print axioms Gtz.corner_outside_det_eq_fourSet_scale
+#print axioms Gtz.corner_bothLight_core_bound
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
