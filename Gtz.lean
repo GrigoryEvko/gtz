@@ -6404,3 +6404,5 @@ import Gtz.Wave.OppositeHornBudget
 import Gtz.Wave.PairBracketMass
 import Gtz.Wave.KOneAnchor
 import Gtz.Wave.OppositeHornSplit
+import Gtz.Wave.PairMassRowLaw
+import Gtz.Wave.OppositeHornCoherentBranch
