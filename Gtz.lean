@@ -6354,3 +6354,4 @@ import Gtz.Wave.OneAxisZeroAnchorLaws
 import Gtz.Wave.OneAxisZeroWitness
 import Gtz.Wave.OneAxisZeroAnchorCaps
 import Gtz.Wave.OutsideTriadDeterminant
+import Gtz.Wave.AnchorInverseDomination

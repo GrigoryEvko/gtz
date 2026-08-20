@@ -1265,6 +1265,7 @@ import Gtz.Wave.OneAxisZeroAnchorLaws
 import Gtz.Wave.OneAxisZeroWitness
 import Gtz.Wave.OneAxisZeroAnchorCaps
 import Gtz.Wave.OutsideTriadDeterminant
+import Gtz.Wave.AnchorInverseDomination
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36085,3 +36086,9 @@ run_cmd do
 #print axioms Gtz.outside_triad_char_identity
 #print axioms Gtz.outside_payment_det_sharp
 #print axioms Gtz.corner_outside_det_pinned
+
+-- Gtz/Wave/AnchorInverseDomination.lean -- inverse domination, the full anchor
+-- Loewner floor, and the reading cap of every anchored atom
+#print axioms Gtz.quadForm_inv_le_of_loewner
+#print axioms Gtz.corner_oneAxisZero_anchor_capMatrix_floor
+#print axioms Gtz.corner_oneAxisZero_anchor_reading_cap
