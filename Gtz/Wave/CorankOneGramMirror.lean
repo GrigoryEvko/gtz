@@ -44,6 +44,15 @@ the gap axis.  `Gtz.isTie_iff_avoidingRefusals_of_leverage_le_one` is the
 transferred budget: the tie of a design with a leverage-one atom is exactly
 the refusals of the triples that avoid it.
 
+## The K2 refusal system
+
+`Gtz.k2_outside_excess_total` prices the stratum exactly: the weighted total
+excess of the outside null readings is `t_y + t_z`, the sum of the two silenced
+weights.  `Gtz.k2_planeWitness_of_isTie` then reads the three `{y, z, d}`
+refusals of the budget as one scalar system, because the two zeros collapse the
+`u`-split cross sum to its outside term, and
+`Gtz.k2_excess_and_planeWitness_of_isTie` assembles both halves.
+
 ## The null census
 
 At a null direction of `C` every one-atom exchange has an exact `w`-form
@@ -74,6 +83,7 @@ stratification, not the fixtures' refusals.
 -/
 import Gtz.Wave.CorankOneExchange
 import Gtz.Wave.CorankOneAssembly
+import Gtz.Wave.CorankTwoOneShared
 import Gtz.Design.SelectorEquivalences
 import Gtz.Design.TightAntecedentMining
 import Gtz.Design.LeverageBound
@@ -493,5 +503,147 @@ theorem isTie_iff_avoidingRefusals_of_twoZeroReadings (D : WeightedDesign m 3)
     rw [Finset.card_insert_of_notMem (by simp [hxy, hxz]),
       Finset.card_insert_of_notMem (by simp [hyz]), Finset.card_singleton]
   exact isTie_iff_avoidingRefusals_of_leverage_le_one D hcard hdominates hlev.le
+
+/-- **THE `K2` EXCESS IDENTITY.**  In the two-zero stratum the weighted total
+excess of the OUTSIDE null readings is exactly the sum of the two silenced
+weights:
+
+  `Σ_{d ∉ C} t_d ((q_d·w)² − 1) = t_y + t_z` .
+
+Weighted Parseval at `w` puts `1 − t_x` of null mass outside, while the outside
+carries only `1 − t_x − t_y − t_z` of weight, and the deficit is the identity.
+This is the sharp form of `Gtz.exists_outside_nullReading_sq_gt_one_of_twoZeroReadings`:
+the existential follows because the right side is strictly positive.  It also
+prices the stratum quantitatively — a single witness atom `d` carrying the whole
+excess must reach `(q_d·w)² ≥ 1 + (t_y + t_z)/t_d`. -/
+theorem k2_outside_excess_total (D : WeightedDesign m 3)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hdominates : Dominates D ({x, y, z} : Finset (Fin m)))
+    {nullDir : Fin 3 → ℝ}
+    (hnull : nullDir ⬝ᵥ ((subsetSum D ({x, y, z} : Finset (Fin m)) - 1) *ᵥ nullDir) = 0)
+    (hunit : nullDir ⬝ᵥ nullDir = 1)
+    (hy : D.atom y ⬝ᵥ nullDir = 0) (hz : D.atom z ⬝ᵥ nullDir = 0) :
+    ∑ d ∈ (({x, y, z} : Finset (Fin m))ᶜ),
+        D.weight d * ((D.atom d ⬝ᵥ nullDir) ^ 2 - 1)
+      = D.weight y + D.weight z := by
+  classical
+  obtain ⟨-, hxw⟩ :=
+    leverage_eq_one_of_nullReadings_zero D hxy hxz hyz hdominates hnull hunit hy hz
+  have hx2 : (D.atom x ⬝ᵥ nullDir) ^ 2 = 1 := by
+    rcases hxw with hxw | hxw <;> rw [hxw] <;>
+      simp only [dotProduct_neg, neg_dotProduct, neg_neg, hunit] <;> norm_num
+  have hparseval := sum_weight_mul_dotProduct_sq D nullDir
+  rw [hunit] at hparseval
+  have hsplit := Finset.sum_add_sum_compl ({x, y, z} : Finset (Fin m))
+    (fun c => D.weight c * (D.atom c ⬝ᵥ nullDir) ^ 2)
+  have hinside : ∑ c ∈ ({x, y, z} : Finset (Fin m)),
+      D.weight c * (D.atom c ⬝ᵥ nullDir) ^ 2 = D.weight x := by
+    rw [sum_over_triple (fun c => D.weight c * (D.atom c ⬝ᵥ nullDir) ^ 2) hxy hxz hyz,
+      hx2, hy, hz]
+    ring
+  have houtMass : ∑ d ∈ (({x, y, z} : Finset (Fin m))ᶜ),
+      D.weight d * (D.atom d ⬝ᵥ nullDir) ^ 2 = 1 - D.weight x := by
+    have := hsplit.trans hparseval
+    rw [hinside] at this
+    linarith
+  have hweights : ∑ d ∈ (({x, y, z} : Finset (Fin m))ᶜ), D.weight d
+      = 1 - (D.weight x + D.weight y + D.weight z) := by
+    have hsum := Finset.sum_add_sum_compl ({x, y, z} : Finset (Fin m)) D.weight
+    rw [D.weight_sum_one, sum_over_triple D.weight hxy hxz hyz] at hsum
+    linarith
+  have hexpand : ∑ d ∈ (({x, y, z} : Finset (Fin m))ᶜ),
+        D.weight d * ((D.atom d ⬝ᵥ nullDir) ^ 2 - 1)
+      = (∑ d ∈ (({x, y, z} : Finset (Fin m))ᶜ),
+          D.weight d * (D.atom d ⬝ᵥ nullDir) ^ 2)
+        - ∑ d ∈ (({x, y, z} : Finset (Fin m))ᶜ), D.weight d := by
+    rw [← Finset.sum_sub_distrib]
+    exact Finset.sum_congr rfl fun d _ => by ring
+  rw [hexpand, houtMass, hweights]
+  ring
+
+/-! ## 5. The K2 refusal system
+
+The two-zero budget says a `K2` tie is exactly the refusals of the ten triples
+avoiding the unit atom.  Three of those ten are `{y, z, d}` with `d` outside,
+and there the `u`-split criterion of `Gtz.CorankTwoOneShared` collapses: the two
+silenced readings kill the whole cross sum except the outside term, so the
+refusal is one scalar inequality in the outside reading and one plane probe. -/
+
+/-- **THE `K2` PLANE WITNESS.**  Let two atoms silence a unit direction and a
+third read it above one in square.  At a tie the triple of the three concedes a
+plane probe where the outside reading beats the in-plane gap:
+
+  `((q_d·w)² − 1)·(Σ_{c∈{y,z,d}} (g_c·p)² − |p|²) ≤ (q_d·w)²·(q_d·p)²` .
+
+The cross sum factorizes because `g_y·w = g_z·w = 0`, which is exactly the
+`K2` hypothesis.  No domination, no corank and no null line are consumed — only
+the two zeros, the excess, and the tie. -/
+theorem k2_planeWitness_of_isTie (D : WeightedDesign m 3) (htie : IsTie D)
+    {y z d : Fin m} (hyz : y ≠ z) (hyd : y ≠ d) (hzd : z ≠ d)
+    {nullDir : Fin 3 → ℝ} (hunit : nullDir ⬝ᵥ nullDir = 1)
+    (hy : D.atom y ⬝ᵥ nullDir = 0) (hz : D.atom z ⬝ᵥ nullDir = 0)
+    (hread : 1 < (D.atom d ⬝ᵥ nullDir) ^ 2) :
+    ∃ probe : Fin 3 → ℝ, probe ⬝ᵥ nullDir = 0 ∧ probe ≠ 0 ∧
+      ((D.atom d ⬝ᵥ nullDir) ^ 2 - 1)
+          * ((D.atom y ⬝ᵥ probe) ^ 2 + (D.atom z ⬝ᵥ probe) ^ 2
+              + (D.atom d ⬝ᵥ probe) ^ 2 - probe ⬝ᵥ probe)
+        ≤ (D.atom d ⬝ᵥ nullDir) ^ 2 * (D.atom d ⬝ᵥ probe) ^ 2 := by
+  classical
+  have hcard : ({y, z, d} : Finset (Fin m)).card = 3 := by
+    rw [Finset.card_insert_of_notMem (by simp [hyz, hyd]),
+      Finset.card_insert_of_notMem (by simp [hzd]), Finset.card_singleton]
+  have hmass : ∑ c ∈ ({y, z, d} : Finset (Fin m)), (D.atom c ⬝ᵥ nullDir) ^ 2
+      = (D.atom d ⬝ᵥ nullDir) ^ 2 := by
+    rw [sum_over_triple (fun c => (D.atom c ⬝ᵥ nullDir) ^ 2) hyz hyd hzd, hy, hz]
+    ring
+  rcases uMass_le_or_planeWitness_of_isTie D htie ({y, z, d} : Finset (Fin m))
+    hcard hunit with hle | ⟨probe, hperp, hne, hwit⟩
+  · rw [hmass] at hle
+    linarith
+  · refine ⟨probe, hperp, hne, ?_⟩
+    have hcross : ∑ c ∈ ({y, z, d} : Finset (Fin m)),
+        (D.atom c ⬝ᵥ nullDir) * (D.atom c ⬝ᵥ probe)
+        = (D.atom d ⬝ᵥ nullDir) * (D.atom d ⬝ᵥ probe) := by
+      rw [sum_over_triple
+        (fun c => (D.atom c ⬝ᵥ nullDir) * (D.atom c ⬝ᵥ probe)) hyz hyd hzd, hy, hz]
+      ring
+    have hsq : ∑ c ∈ ({y, z, d} : Finset (Fin m)), (D.atom c ⬝ᵥ probe) ^ 2
+        = (D.atom y ⬝ᵥ probe) ^ 2 + (D.atom z ⬝ᵥ probe) ^ 2
+          + (D.atom d ⬝ᵥ probe) ^ 2 :=
+      sum_over_triple (fun c => (D.atom c ⬝ᵥ probe) ^ 2) hyz hyd hzd
+    rw [hmass, hcross, hsq, mul_pow] at hwit
+    exact hwit
+
+/-- **THE `K2` SYSTEM, ASSEMBLED.**  A tie whose corank-one weak dominator sits
+in the two-zero stratum carries BOTH halves at once: an outside atom reading the
+null direction above one in square (the Parseval excess), and a plane probe at
+that atom where the refusal is tight.  This is the whole informative content of
+the three `{y, z, d}` triples of the stratum's ten-refusal budget.
+
+[MEASURED, `scratchpad/corank1/mega2.jl` and `k2five.jl`: the stratum is EMPTY
+at `(6,3)` and at `(5,3)`, min obstruction `1.2e-2` and `3.6e-1`.  Closing it in
+kernel needs the remaining seven refusals against this system.] -/
+theorem k2_excess_and_planeWitness_of_isTie (D : WeightedDesign m 3)
+    (htie : IsTie D) {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hdominates : Dominates D ({x, y, z} : Finset (Fin m)))
+    {nullDir : Fin 3 → ℝ}
+    (hnull : nullDir ⬝ᵥ ((subsetSum D ({x, y, z} : Finset (Fin m)) - 1) *ᵥ nullDir) = 0)
+    (hunit : nullDir ⬝ᵥ nullDir = 1)
+    (hy : D.atom y ⬝ᵥ nullDir = 0) (hz : D.atom z ⬝ᵥ nullDir = 0) :
+    ∃ d ∈ ({x, y, z} : Finset (Fin m))ᶜ, 1 < (D.atom d ⬝ᵥ nullDir) ^ 2
+      ∧ ∃ probe : Fin 3 → ℝ, probe ⬝ᵥ nullDir = 0 ∧ probe ≠ 0 ∧
+        ((D.atom d ⬝ᵥ nullDir) ^ 2 - 1)
+            * ((D.atom y ⬝ᵥ probe) ^ 2 + (D.atom z ⬝ᵥ probe) ^ 2
+                + (D.atom d ⬝ᵥ probe) ^ 2 - probe ⬝ᵥ probe)
+          ≤ (D.atom d ⬝ᵥ nullDir) ^ 2 * (D.atom d ⬝ᵥ probe) ^ 2 := by
+  classical
+  obtain ⟨d, hd, hexcess⟩ :=
+    exists_outside_nullReading_sq_gt_one_of_twoZeroReadings D hxy hxz hyz
+      hdominates hnull hunit hy hz
+  have hmem : d ∉ ({x, y, z} : Finset (Fin m)) := Finset.mem_compl.mp hd
+  have hyd : y ≠ d := fun h => hmem (by rw [← h]; simp)
+  have hzd : z ≠ d := fun h => hmem (by rw [← h]; simp)
+  exact ⟨d, hd, hexcess,
+    k2_planeWitness_of_isTie D htie hyz hyd hzd hunit hy hz hexcess⟩
 
 end Gtz

@@ -36215,6 +36215,9 @@ run_cmd do
 #print axioms Gtz.not_posDef_compl_of_nullMass_le
 #print axioms Gtz.isTie_iff_avoidingRefusals_of_leverage_le_one
 #print axioms Gtz.isTie_iff_avoidingRefusals_of_twoZeroReadings
+#print axioms Gtz.k2_outside_excess_total
+#print axioms Gtz.k2_planeWitness_of_isTie
+#print axioms Gtz.k2_excess_and_planeWitness_of_isTie
 
 -- Gtz/Wave/DiamondNullFrame.lean -- the graphic null-frame transport and the
 -- exact null data of the diamond and the split diamond at the spine dominator
