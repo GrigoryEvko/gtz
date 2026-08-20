@@ -544,3 +544,64 @@ in wedge_nonneg, which is OUTSIDE the twelve-inequality system - the system
 itself is field-blind and is allowed to be, since it is not the step that
 distinguishes R from C. That separation should be stated explicitly wherever
 the certificate is eventually used, or the realness audit will look wrong.
+
+F32-16. ROUND 8: THE SYZYGY IS REFUTED, AND THE COUPLING IS SOLVED
+===================================================================
+THE SYZYGY ATTEMPT, AND ITS EXACT NEGATIVE. If twelve weights lam_i could be
+found with  sum_{i : c in C_i} lam_i y_i y_i' = t_c * M  for a common M,
+then Parseval would make sum_i lam_i a_i(D) DESIGN-INDEPENDENT, turning the
+twelve contact forms into one constant and giving the endgame a first-order
+handle with no tangent space. SOLVED EXACTLY (f32/syzygy.jl, 36x18 rational
+system, exact rref): NULLSPACE DIMENSION 0. No such syzygy exists, not even
+with signs free. The route is closed, and closed by computation rather than
+by taste.
+Worth recording WHY it had to fail: the fixture is a genuine tie with all
+twelve a_i = 0, so any design-independent combination is forced to the value
+0 there; a constant identity can never see the FIRST-ORDER motion that
+distinguishes a perturbed tie. Design-independent identities are blind to
+exactly the content the endgame needs.
+
+THE COUPLING IN READING COORDINATES (section 10, 4 theorems). Everything the
+swap does at a null probe lives in five scalars: A = g_q.w, B = g_p.w, the
+two leverages, the pairing P.
+  swapDefect_eq_reading_formula   |M'w|^2 = A^2 l_q - 2ABP + B^2 l_p
+  coupling_eq_reading_formula     K = that, minus (A^2-B^2)^2
+  wedge_reading_sq_eq_defect_sub_longitudinal
+      A^2 * w_pq = |M'w|^2 * l_p - (A*P - B*l_p)^2     EXACT
+    THIS SHARPENS THE PREVIOUS MODULE'S INEQUALITY INTO AN IDENTITY. The
+    discarded term is the LONGITUDINAL component of the swap image along the
+    outgoing atom, so the wedge bound is tight exactly when the swap image is
+    transverse to g_p. That is new information about when the endgame's main
+    inequality is lossless.
+  coupling_parallel_factorization  g_q = rho g_p  =>  K = B^2 (rho^2-1)^2 (l_p - B^2).
+    A parallel pair has ZERO coupling exactly when its ratio is a sign or the
+    shared direction lies along the probe. The doubled fixture sits at
+    rho = 1 - the only place K vanishes for a parallel pair.
+
+THE MIRROR BRACKET LAW (section 11, 3 theorems) - A SECOND FAMILY OF READING
+GAPS. The sibling's tie-graph module supplies the bracket identity at every
+weak dominator of a tie,
+   [xyz]^2 = l_x + l_y + l_z - 2 + (pm_xy + pm_xz + pm_yz) .
+Read it at BOTH members of a mirror pair and SUBTRACT: the shared pair's
+minor cancels and
+   [prs]^2 - [qrs]^2 = (l_p - l_q)(l_r + l_s - 1)
+       + ((g_q.g_r)^2 - (g_p.g_r)^2) + ((g_q.g_s)^2 - (g_p.g_s)^2) .
+The right side is the SAME currency as the reading gap of section 4 -
+differences of squared readings of the exchanged pair - but read against the
+two SHARED ATOMS instead of against the null probe. That is a second,
+independent family of reading gaps, and the endgame had only one.
+  parallel_mirror_bracket_constraint: if the pair is parallel with rho^2 != 1
+  and both mirror triples carry the identity, the ratio DROPS OUT and
+     [prs]^2 = l_p (l_r + l_s - 1) - (g_p.g_r)^2 - (g_p.g_s)^2
+  exactly. So a parallel pair whose two mirror triples both dominate is NOT
+  free unless its ratio is a sign. THE FIXTURE EVADES THIS ONLY BY SITTING AT
+  rho = 1 - a second, independent reason it is the rigid configuration, and
+  the first one that does not go through the null probe at all.
+
+COORDINATION NOTE. TieGraphTrichotomy.lean is UNTRACKED, so importing it
+would break HEAD exactly as TripleGramChart did. The bracket identity
+therefore enters as a HYPOTHESIS: all the vocabulary (atomBracket,
+leverageOf, pairGapMinor) is committed, so the bridge composes with their
+theorem in one line the moment it lands, and nothing here depends on an
+uncommitted module. Recommend the coordinator relay that the composition is
+waiting on their commit, not on new mathematics.

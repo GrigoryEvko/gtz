@@ -625,4 +625,209 @@ theorem probe_contactForm_eq (D : WeightedDesign m k) (C : Finset (Fin m))
   rw [atomMatrix_mulVec, dotProduct_smul, smul_eq_mul, dotProduct_comm]
   ring
 
+/-! ## 10. The coupling in reading coordinates
+
+Everything the swap does at a null probe is visible in five scalars: the two
+readings `A = g_q.w`, `B = g_p.w`, the two leverages and the pairing.  This
+section writes the defect, the coupling and the wedge in those coordinates
+EXACTLY, which sharpens the inequality of the previous module into an
+identity and exposes what the coupling measures.
+
+The last identity is the sharp one: it says the missing term in the wedge
+bound is the LONGITUDINAL component `A*P - B*l_p` of the swap image along
+the outgoing atom.  Dropping it is what turned the identity into the earlier
+inequality. -/
+
+/-- **THE SWAP DEFECT ∈ READING COORDINATES.**  Exact, at every design. -/
+theorem swapDefect_eq_reading_formula (D : WeightedDesign m k) {C : Finset (Fin m)}
+    {p q : Fin m} (hp : p ∈ C) (hq : q ∉ C) {w : Fin k → ℝ}
+    (hnull : (subsetSum D C - 1) *ᵥ w = 0) :
+    ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w)
+        ⬝ᵥ ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w)
+      = (D.atom q ⬝ᵥ w) ^ 2 * (D.atom q ⬝ᵥ D.atom q)
+        - 2 * (D.atom q ⬝ᵥ w) * (D.atom p ⬝ᵥ w) * (D.atom p ⬝ᵥ D.atom q)
+        + (D.atom p ⬝ᵥ w) ^ 2 * (D.atom p ⬝ᵥ D.atom p) := by
+  rw [swap_gap_mulVec_of_null D hp hq hnull]
+  simp only [sub_dotProduct, dotProduct_sub, smul_dotProduct, dotProduct_smul,
+    smul_eq_mul]
+  rw [dotProduct_comm (D.atom q) (D.atom p)]
+  ring
+
+/-- **THE COUPLING ∈ READING COORDINATES.**  The transverse coupling energy
+is the defect minus the squared reading gap. -/
+theorem coupling_eq_reading_formula (D : WeightedDesign m k) {C : Finset (Fin m)}
+    {p q : Fin m} (hp : p ∈ C) (hq : q ∉ C) {w : Fin k → ℝ}
+    (hwunit : w ⬝ᵥ w = 1) (hnull : (subsetSum D C - 1) *ᵥ w = 0) :
+    swapCoupling D p q w ⬝ᵥ swapCoupling D p q w
+      = (D.atom q ⬝ᵥ w) ^ 2 * (D.atom q ⬝ᵥ D.atom q)
+        - 2 * (D.atom q ⬝ᵥ w) * (D.atom p ⬝ᵥ w) * (D.atom p ⬝ᵥ D.atom q)
+        + (D.atom p ⬝ᵥ w) ^ 2 * (D.atom p ⬝ᵥ D.atom p)
+        - ((D.atom q ⬝ᵥ w) ^ 2 - (D.atom p ⬝ᵥ w) ^ 2) ^ 2 := by
+  have hsplit := swapDefect_eq_couplingSq_add_nullFormSq D hp hq hwunit hnull
+  have hform := swapDefect_eq_reading_formula D hp hq hnull
+  rw [hform] at hsplit
+  linarith [hsplit]
+
+/-- **THE WEDGE IDENTITY.**  Lagrange at the swap image against the outgoing
+atom, in full:
+
+  `A^2*w_{pq} = |defect|^2*l_p - (A*P - B*l_p)^2` .
+
+The subtracted term is the LONGITUDINAL component of the swap image along
+`g_p`; discarding it gives the inequality the previous module landed.  So
+the wedge bound is tight exactly when the swap image is transverse to the
+outgoing atom. -/
+theorem wedge_reading_sq_eq_defect_sub_longitudinal (D : WeightedDesign m 3)
+    {C : Finset (Fin m)} {p q : Fin m} (hp : p ∈ C) (hq : q ∉ C)
+    {w : Fin 3 → ℝ} (hnull : (subsetSum D C - 1) *ᵥ w = 0) :
+    (D.atom q ⬝ᵥ w) ^ 2
+        * (leverageOf (D.atom p) * leverageOf (D.atom q)
+          - (D.atom p ⬝ᵥ D.atom q) ^ 2)
+      = (((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w)
+            ⬝ᵥ ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w))
+          * leverageOf (D.atom p)
+        - ((D.atom q ⬝ᵥ w) * (D.atom p ⬝ᵥ D.atom q)
+          - (D.atom p ⬝ᵥ w) * leverageOf (D.atom p)) ^ 2 := by
+  have hv := swap_gap_mulVec_of_null D hp hq hnull
+  have hcross : bracketNormal ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w) (D.atom p)
+      = (D.atom q ⬝ᵥ w) • bracketNormal (D.atom q) (D.atom p) := by
+    rw [hv]; exact bracketNormal_swapVec (D.atom p) (D.atom q) w
+  have hscale : crossNormSq ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w) (D.atom p)
+      = (D.atom q ⬝ᵥ w) ^ 2 * crossNormSq (D.atom q) (D.atom p) := by
+    rw [crossNormSq, crossNormSq, hcross, smul_dotProduct, dotProduct_smul,
+      smul_eq_mul, smul_eq_mul]
+    ring
+  have hL1 := crossNormSq_eq_leverage_mul_sub_sq
+    ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w) (D.atom p)
+  have hL2 := crossNormSq_eq_leverage_mul_sub_sq (D.atom q) (D.atom p)
+  have hlev := leverageOf_eq_dotProduct ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w)
+  have hcomm : D.atom q ⬝ᵥ D.atom p = D.atom p ⬝ᵥ D.atom q := dotProduct_comm _ _
+  have hlong : ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w) ⬝ᵥ D.atom p
+      = (D.atom q ⬝ᵥ w) * (D.atom p ⬝ᵥ D.atom q)
+        - (D.atom p ⬝ᵥ w) * leverageOf (D.atom p) := by
+    rw [hv, sub_dotProduct, smul_dotProduct, smul_dotProduct, smul_eq_mul,
+      smul_eq_mul, leverageOf_eq_dotProduct, hcomm]
+  rw [hlev] at hL1
+  rw [hlong] at hL1
+  rw [hscale, hL2, hcomm] at hL1
+  linarith [hL1]
+
+/-- **THE COUPLING OF A PARALLEL PAIR FACTORS.**  If `g_q = rho*g_p` then
+
+  `K = B^2*(rho^2-1)^2*(l_p - B^2)` ,
+
+the squared ratio excess times the probe-transverse leverage of the shared
+direction.  So a parallel pair has vanishing coupling EXACTLY when its ratio
+is a sign or the shared direction lies along the probe — and the doubled
+fixture, whose two copies are equal, sits at `rho = 1`. -/
+theorem coupling_parallel_factorization (D : WeightedDesign m k)
+    {C : Finset (Fin m)} {p q : Fin m} (hp : p ∈ C) (hq : q ∉ C)
+    {w : Fin k → ℝ} (hwunit : w ⬝ᵥ w = 1)
+    (hnull : (subsetSum D C - 1) *ᵥ w = 0)
+    {ratio : ℝ} (hpar : D.atom q = ratio • D.atom p) :
+    swapCoupling D p q w ⬝ᵥ swapCoupling D p q w
+      = (D.atom p ⬝ᵥ w) ^ 2 * (ratio ^ 2 - 1) ^ 2
+        * (D.atom p ⬝ᵥ D.atom p - (D.atom p ⬝ᵥ w) ^ 2) := by
+  rw [coupling_eq_reading_formula D hp hq hwunit hnull, hpar]
+  simp only [smul_dotProduct, dotProduct_smul, smul_eq_mul]
+  ring
+
+/-! ## 11. The mirror bracket law
+
+A sibling's tie-graph work supplies, at every weak dominator of a tie, the
+BRACKET IDENTITY
+
+  `[xyz]^2 = l_x + l_y + l_z - 2 + (pm_{xy} + pm_{xz} + pm_{yz})` ,
+
+`pm` the pair gap minor.  Read it at BOTH members of a mirror pair and
+subtract: the shared pair's minor cancels, and what survives is a law about
+the exchanged atoms alone.
+
+That module is in flight, so the identity enters here as a HYPOTHESIS rather
+than an import — the vocabulary (`atomBracket`, `leverageOf`,
+`pairGapMinor`) is all committed, so the bridge composes with their theorem
+in one line the moment it lands, and nothing here depends on an uncommitted
+module. -/
+
+/-- **THE MIRROR BRACKET DIFFERENCE.**  Subtracting the bracket identity at
+the two members of a mirror pair kills the shared pair's minor and leaves
+
+  `[prs]^2 - [qrs]^2 = (l_p - l_q)(l_r + l_s - 1)
+      + ((g_q.g_r)^2 - (g_p.g_r)^2) + ((g_q.g_s)^2 - (g_p.g_s)^2)` .
+
+Exact.  The right side is built from the SAME currency as the reading gap of
+section 4 — differences of squared readings of the exchanged pair — but read
+against the two SHARED atoms instead of against the null probe.  That is the
+second family of reading gaps the endgame was missing. -/
+theorem mirror_bracket_difference (D : WeightedDesign m 3) (p q r s : Fin m)
+    (hP : atomBracket D p r s ^ 2
+      = leverageOf (D.atom p) + leverageOf (D.atom r) + leverageOf (D.atom s) - 2
+        + (pairGapMinor (D.atom p) (D.atom r) + pairGapMinor (D.atom p) (D.atom s)
+          + pairGapMinor (D.atom r) (D.atom s)))
+    (hQ : atomBracket D q r s ^ 2
+      = leverageOf (D.atom q) + leverageOf (D.atom r) + leverageOf (D.atom s) - 2
+        + (pairGapMinor (D.atom q) (D.atom r) + pairGapMinor (D.atom q) (D.atom s)
+          + pairGapMinor (D.atom r) (D.atom s))) :
+    atomBracket D p r s ^ 2 - atomBracket D q r s ^ 2
+      = (leverageOf (D.atom p) - leverageOf (D.atom q))
+          * (leverageOf (D.atom r) + leverageOf (D.atom s) - 1)
+        + ((D.atom q ⬝ᵥ D.atom r) ^ 2 - (D.atom p ⬝ᵥ D.atom r) ^ 2)
+        + ((D.atom q ⬝ᵥ D.atom s) ^ 2 - (D.atom p ⬝ᵥ D.atom s) ^ 2) := by
+  simp only [pairGapMinor] at hP hQ
+  linarith [hP, hQ]
+
+/-- A bracket is linear in each atom: replacing one member by a multiple
+scales it. -/
+theorem atomBracket_smul_left (D : WeightedDesign m 3) (p q r s : Fin m)
+    {ratio : ℝ} (hpar : D.atom q = ratio • D.atom p) :
+    atomBracket D q r s = ratio * atomBracket D p r s := by
+  simp only [atomBracket, tripleBracket_eq, hpar, Pi.smul_apply, smul_eq_mul]
+  ring
+
+/-- **THE PARALLEL MIRROR CONSTRAINT.**  If the exchanged pair is parallel
+with ratio `rho`, `rho^2 != 1`, and BOTH mirror triples carry the bracket
+identity, then the shared data satisfies an EXACT equation:
+
+  `[prs]^2 = l_p*(l_r + l_s - 1) - (g_p.g_r)^2 - (g_p.g_s)^2` .
+
+The ratio drops out entirely.  So a parallel pair whose two mirror triples
+both weakly dominate is not free: unless its ratio is a sign, it pins the
+bracket of the shared triple against the shared leverages.  The doubled
+fixture evades this by sitting exactly at `rho = 1`, which is the only place
+the constraint is vacuous — a second, independent reason the fixture is the
+rigid configuration. -/
+theorem parallel_mirror_bracket_constraint (D : WeightedDesign m 3) (p q r s : Fin m)
+    (hP : atomBracket D p r s ^ 2
+      = leverageOf (D.atom p) + leverageOf (D.atom r) + leverageOf (D.atom s) - 2
+        + (pairGapMinor (D.atom p) (D.atom r) + pairGapMinor (D.atom p) (D.atom s)
+          + pairGapMinor (D.atom r) (D.atom s)))
+    (hQ : atomBracket D q r s ^ 2
+      = leverageOf (D.atom q) + leverageOf (D.atom r) + leverageOf (D.atom s) - 2
+        + (pairGapMinor (D.atom q) (D.atom r) + pairGapMinor (D.atom q) (D.atom s)
+          + pairGapMinor (D.atom r) (D.atom s)))
+    {ratio : ℝ} (hpar : D.atom q = ratio • D.atom p) (hratio : ratio ^ 2 ≠ 1) :
+    atomBracket D p r s ^ 2
+      = leverageOf (D.atom p) * (leverageOf (D.atom r) + leverageOf (D.atom s) - 1)
+        - (D.atom p ⬝ᵥ D.atom r) ^ 2 - (D.atom p ⬝ᵥ D.atom s) ^ 2 := by
+  have hdiff := mirror_bracket_difference D p q r s hP hQ
+  have hbr := atomBracket_smul_left D p q r s hpar
+  have hlev : leverageOf (D.atom q) = ratio ^ 2 * leverageOf (D.atom p) := by
+    rw [leverageOf_eq_dotProduct, leverageOf_eq_dotProduct, hpar, smul_dotProduct,
+      dotProduct_smul, smul_eq_mul, smul_eq_mul]
+    ring
+  have hr : D.atom q ⬝ᵥ D.atom r = ratio * (D.atom p ⬝ᵥ D.atom r) := by
+    rw [hpar, smul_dotProduct, smul_eq_mul]
+  have hs : D.atom q ⬝ᵥ D.atom s = ratio * (D.atom p ⬝ᵥ D.atom s) := by
+    rw [hpar, smul_dotProduct, smul_eq_mul]
+  rw [hbr, hlev, hr, hs] at hdiff
+  have hfac : (1 - ratio ^ 2) * (atomBracket D p r s ^ 2
+      - (leverageOf (D.atom p) * (leverageOf (D.atom r) + leverageOf (D.atom s) - 1)
+        - (D.atom p ⬝ᵥ D.atom r) ^ 2 - (D.atom p ⬝ᵥ D.atom s) ^ 2)) = 0 := by
+    linear_combination hdiff
+  have hne : (1 : ℝ) - ratio ^ 2 ≠ 0 := fun h => hratio (by linarith)
+  have := mul_eq_zero.mp hfac
+  rcases this with h | h
+  · exact absurd h hne
+  · linarith [h]
+
 end Gtz
