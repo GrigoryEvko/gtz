@@ -724,3 +724,43 @@ tried on this object is the inverse-free Gram chart -- every gap determinant as
 a polynomial in six dot products -- which would let the repaired triple's
 domination be attacked as a Sylvester sign system rather than through a frame.
 That is where I would send the next round.
+
+38. THE GRAM-CHART ROUTE COLLAPSES STEP (3) TO ONE POLYNOMIAL SIGN
+--------------------------------------------------------------------
+(coh19.jl, same 670102 branch points / 2010306 repaired triples.)
+Domination IS Sylvester on the gap -- three heavy atoms, three admissible
+pairs, positive determinant (fork 27's trichotomy).  Measured per repaired
+triple through e*:
+    three atoms HEAVY (leverage > 1)        83.9352%
+    three pairs ADMISSIBLE                  55.3086%
+    heavy AND admissible                    55.3086%   <- identical: on this
+                                            branch ADMISSIBILITY IMPLIES
+                                            HEAVINESS (three pairwise positive
+                                            products force one common sign, and
+                                            the all-light branch does not occur)
+    gap DETERMINANT positive                47.9657%
+    TRULY dominates                         47.9657%
+    det > 0 AGREES with domination         100.0000%   <- EXACT, not a count
+Positive definiteness always implies a positive determinant, so the containment
+is automatic in one direction; the measurement says the converse holds too,
+exactly, on this stratum.  THEREFORE:
+
+  ON THE FAILING BRANCH, A REPAIRED TRIPLE DOMINATES IF AND ONLY IF ITS GAP
+  DETERMINANT IS POSITIVE.
+
+This is the same regularity fork 30 found for the complement in section 15
+(det < 0 iff not PD), now established for the repaired triples as well.  It
+collapses step (3) from a positive-definiteness statement to a SINGLE
+POLYNOMIAL SIGN, and the inverse-free Gram chart writes that sign as
+tripleGapDet in six dot products, with no frame, no inverse and no eigenvalue.
+
+39. STEP (3), RESTATED FOR THE SUCCESSOR
+------------------------------------------
+  Show that one of the at most six triples through the top two planes of the
+  selected direction has POSITIVE GAP DETERMINANT.
+Everything else is landed: the direction is the cofactor column (sec 30), the
+selection is the largest principal minors (sec 32), the accounting is the repay
+threshold (sec 33).  Do NOT route through positive definiteness, frames or
+producers -- the Z-pattern is provably unavailable (36a) and the contraction tax
+reaches only 61.77% (36b).  The target is a determinant sign, and
+Gtz.subsetSum_gapDet_eq_tripleGapDet already puts it in dot products.
