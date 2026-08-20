@@ -1302,6 +1302,7 @@ import Gtz.Wave.ShellAnchor
 import Gtz.Wave.TransverseFloor
 import Gtz.Wave.PencilWiring
 import Gtz.Wave.ErasedAtomSpectrum
+import Gtz.Wave.DualFrameBudget
 import Gtz.Wave.InvariantBudgets
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -36391,6 +36392,14 @@ run_cmd do
 #print axioms Gtz.bothLight_y_floor_iff_z_floor
 #print axioms Gtz.corner_oneAxisZero_weightedComplement_eigen
 #print axioms Gtz.corner_oneAxisZero_outsideDual_reading
+
+-- Gtz/Wave/DualFrameBudget.lean -- the conservation laws of the outside
+-- dual frame and the dual-collapsed floor of the both-light cell
+#print axioms Gtz.dual_frame_energy_trace
+#print axioms Gtz.dual_frame_parseval
+#print axioms Gtz.dual_reading_total
+#print axioms Gtz.fourSet_dual_energy_total
+#print axioms Gtz.corner_bothLight_dual_trace_floor
 
 -- Gtz/Wave/InvariantBudgets.lean -- the conservation laws of the tax
 -- currencies: the Parseval moments, the wedge budget, the bracket budget
