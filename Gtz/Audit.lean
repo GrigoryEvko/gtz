@@ -1313,6 +1313,8 @@ import Gtz.Wave.BracketContractionTax
 import Gtz.Wave.PairBracketMass
 import Gtz.Wave.PairMassRowLaw
 import Gtz.Wave.OppositeHornSplit
+import Gtz.Wave.OppositeHornCount
+import Gtz.Wave.OppositeHornBudget
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
