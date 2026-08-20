@@ -6399,3 +6399,5 @@ import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
 import Gtz.Wave.BracketContractionTax
 import Gtz.Wave.DiamondNeighborhoodMirror
+import Gtz.Wave.OppositeHornCount
+import Gtz.Wave.OppositeHornBudget

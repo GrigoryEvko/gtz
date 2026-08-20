@@ -1309,6 +1309,8 @@ import Gtz.Wave.TripleGramChart
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
 import Gtz.Wave.BracketContractionTax
+import Gtz.Wave.OppositeHornCount
+import Gtz.Wave.OppositeHornBudget
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36671,3 +36673,23 @@ run_cmd do
 #print axioms Gtz.mirror_wedge_eq_zero
 #print axioms Gtz.swap_defect_ge_wedge_ratio
 #print axioms Gtz.swap_defect_pos_of_not_hasParallelPair
+#print axioms Gtz.atomBracket_tripleProduct_swapLeft
+#print axioms Gtz.atomBracket_tripleProduct_cycle
+#print axioms Gtz.corner_twoCoherent_atom_disagree
+#print axioms Gtz.corner_twoCoherent_exists_coplanar
+#print axioms Gtz.corner_generic_two_oppositePairs
+#print axioms Gtz.corner_two_informative_bracket_floors
+#print axioms Gtz.lagrange_three
+#print axioms Gtz.det_weightedGram_three
+#print axioms Gtz.atomBracket_swapLeft_neg
+#print axioms Gtz.atomPairing_self_eq
+#print axioms Gtz.corner_compl_bracket_sq_sum
+#print axioms Gtz.corner_compl_bracket_mixed_xy
+#print axioms Gtz.corner_compl_bracket_mixed_xz
+#print axioms Gtz.corner_informative_bracket_budget
+#print axioms Gtz.corner_informative_bracket_budget_closed
+#print axioms Gtz.corner_outside_gram_det
+#print axioms Gtz.corner_outside_gram_det_nonneg
+#print axioms Gtz.corner_informative_pair_le_budget
+#print axioms Gtz.corner_oppositePair_budget_bound
+#print axioms Gtz.corner_two_oppositePair_budget_bounds
