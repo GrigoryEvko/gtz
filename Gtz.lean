@@ -6401,3 +6401,6 @@ import Gtz.Wave.BracketContractionTax
 import Gtz.Wave.DiamondNeighborhoodMirror
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
+import Gtz.Wave.PairBracketMass
+import Gtz.Wave.KOneAnchor
+import Gtz.Wave.OppositeHornSplit
