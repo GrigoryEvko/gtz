@@ -1323,6 +1323,7 @@ import Gtz.Wave.DiamondNeighborhoodLock
 import Gtz.Wave.OppositeHornTwoPoint
 import Gtz.Wave.OppositeHornCycleNoGo
 import Gtz.Wave.KOneNormalForm
+import Gtz.Wave.OppositeHornWedgeCap
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36826,3 +36827,9 @@ run_cmd do
 #print axioms Gtz.pairAnchor_bracket_general
 #print axioms Gtz.kOne_sharp_weight_cap
 #print axioms Gtz.kOne_sharp_weight_cap_of_null
+#print axioms Gtz.corner_inside_pairBracketSq_eq
+#print axioms Gtz.corner_twoInside_bracket_cap
+#print axioms Gtz.corner_twoInside_bracket_cap_sum
+#print axioms Gtz.corner_atom_minorTriple_neg
+#print axioms Gtz.corner_generic_baseY_minor_ne_zero
+#print axioms Gtz.corner_twoCoherent_imp_thirdCoherent
