@@ -6372,6 +6372,7 @@ import Gtz.Wave.HeavyInsideResidualBridge
 import Gtz.Wave.MemberGramPushThrough
 import Gtz.Wave.CrossLedgerRigidity
 import Gtz.Wave.KTwoEraseSystem
+import Gtz.Wave.SixSetNullColumn
 import Gtz.Wave.ReadingMatrixRelation
 import Gtz.Wave.HeavyInsideDeterminantForm
 import Gtz.Wave.CoweightedMemberLedger

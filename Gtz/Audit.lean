@@ -1283,6 +1283,7 @@ import Gtz.Wave.HeavyInsideResidualBridge
 import Gtz.Wave.MemberGramPushThrough
 import Gtz.Wave.CrossLedgerRigidity
 import Gtz.Wave.KTwoEraseSystem
+import Gtz.Wave.SixSetNullColumn
 import Gtz.Wave.ReadingMatrixRelation
 import Gtz.Wave.HeavyInsideDeterminantForm
 import Gtz.Wave.CoweightedMemberLedger
@@ -36393,3 +36394,16 @@ run_cmd do
 #print axioms Gtz.k2_fiveThree_nullReading_ge_one
 #print axioms Gtz.k2_fiveThree_traceInv_ge_one
 #print axioms Gtz.k2_fiveThree_not_isTie_of_nullReading_lt_one
+#print axioms Gtz.reading_lt_one_of_posDef_sub_one
+#print axioms Gtz.k2_fiveThree_not_isTie_of_erase_levelTwo
+#print axioms Gtz.k2_fiveThree_wMass_gt_two_of_balanced
+#print axioms Gtz.k2_not_isTie_of_outside_parallel_nullDir
+
+-- Gtz/Wave/SixSetNullColumn.lean -- the null column of the six-set
+-- projection: the complement resolve and the touching eigenvector of a
+-- corank-one weak dominator
+#print axioms Gtz.sixSetGap_mulVec_nullDir
+#print axioms Gtz.nullDir_sixSet_resolve
+#print axioms Gtz.nullReading_pivot_column_identity
+#print axioms Gtz.nullReading_touching_eigenvector
+#print axioms Gtz.sum_nullReading_pivot_pairing
