@@ -1142,4 +1142,362 @@ theorem no_posVector_of_not_posDef_zPattern {gapForm : Matrix (Fin 3) (Fin 3) �
   exact hnot (posDef_three_of_zPattern_of_posVector hsymm h01 h02 h12 hv0 hv1 hv2
     hr0 hr1 hr2)
 
+/-! ## 15. The refusal direction, by cofactors -/
+
+/-- **THE COFACTOR COLUMN.**  The first column of the adjugate of a `3×3`
+matrix, written out in the entries.  For the failing branch of the horn this is
+the campaign's replacement for the negative eigendirection: explicit,
+polynomial, and read straight off the form with no spectral theory. -/
+noncomputable def cofactorColumn (gapForm : Matrix (Fin 3) (Fin 3) ℝ) : Fin 3 → ℝ :=
+  ![gapForm 1 1 * gapForm 2 2 - gapForm 1 2 * gapForm 2 1,
+    gapForm 1 2 * gapForm 2 0 - gapForm 1 0 * gapForm 2 2,
+    gapForm 1 0 * gapForm 2 1 - gapForm 1 1 * gapForm 2 0]
+
+/-- The zeroth entry of the cofactor column is the complementary minor. -/
+theorem cofactorColumn_zero (gapForm : Matrix (Fin 3) (Fin 3) ℝ) :
+    cofactorColumn gapForm 0 = gapForm 1 1 * gapForm 2 2 - gapForm 1 2 * gapForm 2 1 := rfl
+
+/-- **THE COFACTOR COLUMN IS SENT TO THE DETERMINANT AXIS.**  The defining
+property of the adjugate, in coordinates: the form carries its own first
+cofactor column onto the determinant times the first basis vector. -/
+theorem mulVec_cofactorColumn (gapForm : Matrix (Fin 3) (Fin 3) ℝ) :
+    (gapForm *ᵥ cofactorColumn gapForm) 0 = gapForm.det
+      ∧ (gapForm *ᵥ cofactorColumn gapForm) 1 = 0
+      ∧ (gapForm *ᵥ cofactorColumn gapForm) 2 = 0 := by
+  refine ⟨?_, ?_, ?_⟩ <;>
+    · simp only [cofactorColumn, Matrix.mulVec, dotProduct, Fin.sum_univ_three,
+        Matrix.det_fin_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+      ring
+
+/-- **THE COFACTOR QUADRATIC FORM.**  A form reads its own cofactor column at
+the determinant times the complementary minor.  A negative determinant against
+a positive minor therefore hands over a REFUSAL DIRECTION, with no eigenvalue
+named anywhere. -/
+theorem quadForm_cofactorColumn (gapForm : Matrix (Fin 3) (Fin 3) ℝ) :
+    cofactorColumn gapForm ⬝ᵥ (gapForm *ᵥ cofactorColumn gapForm)
+      = gapForm.det * (gapForm 1 1 * gapForm 2 2 - gapForm 1 2 * gapForm 2 1) := by
+  simp only [cofactorColumn, Matrix.mulVec, dotProduct, Fin.sum_univ_three,
+    Matrix.det_fin_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- **THE COFACTOR COLUMN OF A Z-PATTERN FORM IS SINGLE-SIGNED.**  Nonpositive
+off-diagonals against a positive diagonal make every remaining entry of the
+column nonnegative: each is a product of two nonpositive entries minus a
+positive entry times a nonpositive one.
+
+This is the campaign's replacement for Perron–Frobenius.  The measured fact
+that the refusal direction of the horn's failing branch lies in one orthant is
+recovered here from the Z-pattern DIRECTLY, as sign arithmetic on two products,
+with no spectral machinery imported. -/
+theorem cofactorColumn_nonneg_of_zPattern {gapForm : Matrix (Fin 3) (Fin 3) ℝ}
+    (hsymm : gapFormᵀ = gapForm)
+    (h01 : gapForm 0 1 ≤ 0) (h02 : gapForm 0 2 ≤ 0) (h12 : gapForm 1 2 ≤ 0)
+    (hd1 : 0 < gapForm 1 1) (hd2 : 0 < gapForm 2 2) :
+    0 ≤ cofactorColumn gapForm 1 ∧ 0 ≤ cofactorColumn gapForm 2 := by
+  have hs10 : gapForm 1 0 = gapForm 0 1 := by
+    have h := congrFun (congrFun hsymm 0) 1
+    simpa only [Matrix.transpose_apply] using h
+  have hs20 : gapForm 2 0 = gapForm 0 2 := by
+    have h := congrFun (congrFun hsymm 0) 2
+    simpa only [Matrix.transpose_apply] using h
+  have hs21 : gapForm 2 1 = gapForm 1 2 := by
+    have h := congrFun (congrFun hsymm 1) 2
+    simpa only [Matrix.transpose_apply] using h
+  constructor
+  · show 0 ≤ gapForm 1 2 * gapForm 2 0 - gapForm 1 0 * gapForm 2 2
+    rw [hs20, hs10]
+    nlinarith [mul_nonneg (neg_nonneg.mpr h12) (neg_nonneg.mpr h02),
+      mul_nonpos_of_nonpos_of_nonneg h01 hd2.le]
+  · show 0 ≤ gapForm 1 0 * gapForm 2 1 - gapForm 1 1 * gapForm 2 0
+    rw [hs10, hs21, hs20]
+    nlinarith [mul_nonneg (neg_nonneg.mpr h01) (neg_nonneg.mpr h12),
+      mul_nonpos_of_nonneg_of_nonpos hd1.le h02]
+
+/-- **THE REFUSAL DIRECTION OF A FAILING Z-PATTERN FORM.**  A symmetric
+Z-pattern form with a positive complementary minor and a NEGATIVE determinant
+carries an explicit single-signed direction on which it is strictly negative:
+its own first cofactor column.
+
+Steps one and two of the failing branch — the inertia and the canonical
+direction — are discharged together here, without a spectral theorem and
+without Perron–Frobenius.  The direction is a polynomial in the entries. -/
+theorem cofactorColumn_refusal_of_det_neg {gapForm : Matrix (Fin 3) (Fin 3) ℝ}
+    (hsymm : gapFormᵀ = gapForm)
+    (h01 : gapForm 0 1 ≤ 0) (h02 : gapForm 0 2 ≤ 0) (h12 : gapForm 1 2 ≤ 0)
+    (hd1 : 0 < gapForm 1 1) (hd2 : 0 < gapForm 2 2)
+    (hminor : 0 < gapForm 1 1 * gapForm 2 2 - gapForm 1 2 * gapForm 2 1)
+    (hdet : gapForm.det < 0) :
+    0 < cofactorColumn gapForm 0
+      ∧ 0 ≤ cofactorColumn gapForm 1
+      ∧ 0 ≤ cofactorColumn gapForm 2
+      ∧ cofactorColumn gapForm ≠ 0
+      ∧ cofactorColumn gapForm ⬝ᵥ (gapForm *ᵥ cofactorColumn gapForm) < 0 := by
+  obtain ⟨hn1, hn2⟩ := cofactorColumn_nonneg_of_zPattern hsymm h01 h02 h12 hd1 hd2
+  have hz : 0 < cofactorColumn gapForm 0 := by
+    rw [cofactorColumn_zero]; exact hminor
+  refine ⟨hz, hn1, hn2, ?_, ?_⟩
+  · intro hzero
+    rw [hzero] at hz
+    exact lt_irrefl 0 hz
+  · rw [quadForm_cofactorColumn]
+    exact mul_neg_of_neg_of_pos hdet hminor
+
+/-! ## 16. The refusal direction in ambient coordinates -/
+
+/-- The dual frame applied to a weight vector is the ambient dual combination. -/
+theorem dualNormalFrame_mulVec_eq_dualCombination (D : WeightedDesign m 3)
+    (x y z : Fin m) (weightVec : Fin 3 → ℝ) :
+    dualNormalFrame D x y z *ᵥ weightVec = dualCombination D x y z weightVec := by
+  funext coord
+  simp only [dualNormalFrame, dualCombination, Matrix.mulVec, dotProduct,
+    Fin.sum_univ_three, Matrix.of_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- **A NONZERO WEIGHT VECTOR GIVES A NONZERO AMBIENT DIRECTION.**  At a corner
+the dual frame is invertible, because its determinant is the squared bracket. -/
+theorem dualCombination_ne_zero (D : WeightedDesign m 3) (x y z : Fin m)
+    (hbracket : atomBracket D x y z ≠ 0) {weightVec : Fin 3 → ℝ}
+    (hne : weightVec ≠ 0) :
+    dualCombination D x y z weightVec ≠ 0 := by
+  have hdet : IsUnit (dualNormalFrame D x y z).det := by
+    rw [det_dualNormalFrame]
+    exact isUnit_iff_ne_zero.mpr (pow_ne_zero 2 hbracket)
+  have hinj : Function.Injective (dualNormalFrame D x y z).mulVec :=
+    Matrix.mulVec_injective_iff_isUnit.mpr
+      ((Matrix.isUnit_iff_isUnit_det _).mpr hdet)
+  rw [← dualNormalFrame_mulVec_eq_dualCombination]
+  intro hzero
+  refine hne (hinj ?_)
+  rw [hzero, Matrix.mulVec_zero]
+
+/-- **THE COMPLEMENT'S REFUSAL DIRECTION, AMBIENT AND EXPLICIT.**  On the
+failing branch of the horn — the dual-frame gap a Z-pattern with positive
+minors and negative determinant — the cofactor column transports to an ambient
+direction on which the complement's gap is STRICTLY NEGATIVE.  The complement
+therefore does not dominate, and the direction is a polynomial in the design.
+
+This is the failing branch's hypothesis turned into a usable object: the whole
+of steps one and two, in ambient coordinates. -/
+theorem complement_refusal_direction (D : WeightedDesign m 3) (x y z : Fin m)
+    (hbracket : atomBracket D x y z ≠ 0) (C : Finset (Fin m))
+    (hsymm : ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+      * dualNormalFrame D x y z)ᵀ
+      = (dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1) * dualNormalFrame D x y z)
+    (h01 : ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+      * dualNormalFrame D x y z) 0 1 ≤ 0)
+    (h02 : ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+      * dualNormalFrame D x y z) 0 2 ≤ 0)
+    (h12 : ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+      * dualNormalFrame D x y z) 1 2 ≤ 0)
+    (hd1 : 0 < ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+      * dualNormalFrame D x y z) 1 1)
+    (hd2 : 0 < ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+      * dualNormalFrame D x y z) 2 2)
+    (hminor : 0 < ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+        * dualNormalFrame D x y z) 1 1
+        * ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 2 2
+      - ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 1 2
+        * ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 2 1)
+    (hdet : ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+      * dualNormalFrame D x y z).det < 0) :
+    dualCombination D x y z
+        (cofactorColumn ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z)) ≠ 0
+      ∧ dualCombination D x y z
+          (cofactorColumn ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+            * dualNormalFrame D x y z)) ⬝ᵥ
+        ((subsetSum D C - 1) *ᵥ dualCombination D x y z
+          (cofactorColumn ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+            * dualNormalFrame D x y z))) < 0 := by
+  obtain ⟨-, -, -, hvne, hneg⟩ :=
+    cofactorColumn_refusal_of_det_neg hsymm h01 h02 h12 hd1 hd2 hminor hdet
+  refine ⟨dualCombination_ne_zero D x y z hbracket hvne, ?_⟩
+  rw [refusal_transfer]
+  exact hneg
+
+/-! ## 17. The repay threshold -/
+
+/-- **THE REPAY THRESHOLD.**  A repaired triple can only dominate if the plane
+it enters through buys back MORE than the base refusal plus the dropped atom's
+reading:
+
+  `(n_v·g_dropped)² − (base refusal) < (v₀·[xyz])²` .
+
+This is the repair identity turned into a necessary condition, and it is the
+exact accounting the failing branch needs: the left side is what the swap costs,
+the right side is what the entering plane repays, and the base refusal — being
+negative — makes the bar strictly higher than the cost alone.  Polynomial on
+both sides, no spectral input. -/
+theorem repay_threshold_of_dominates (D : WeightedDesign m 3) (x y z : Fin m)
+    {dropped keptOne keptTwo : Fin m}
+    (hdk1 : dropped ≠ keptOne) (hdk2 : dropped ≠ keptTwo) (hk12 : keptOne ≠ keptTwo)
+    (hxk1 : x ≠ keptOne) (hxk2 : x ≠ keptTwo)
+    (weightVec : Fin 3 → ℝ)
+    (hne : dualCombination D x y z weightVec ≠ 0)
+    (hdom : (subsetSum D ({x, keptOne, keptTwo} : Finset (Fin m)) - 1).PosDef) :
+    (dualCombination D x y z weightVec ⬝ᵥ D.atom dropped) ^ 2
+        - dualCombination D x y z weightVec ⬝ᵥ
+          ((subsetSum D ({dropped, keptOne, keptTwo} : Finset (Fin m)) - 1)
+            *ᵥ dualCombination D x y z weightVec)
+      < (weightVec 0 * atomBracket D x y z) ^ 2 := by
+  have hpos := hdom.dotProduct_mulVec_pos hne
+  rw [star_trivial] at hpos
+  have hid := repair_identity_first D x y z hdk1 hdk2 hk12 hxk1 hxk2 weightVec
+  rw [hid] at hpos
+  linarith
+
+/-! ## 18. The refusal direction at any plane, and the second invariant -/
+
+/-- The second column of the adjugate, written out. -/
+noncomputable def cofactorColumnTwo (gapForm : Matrix (Fin 3) (Fin 3) ℝ) : Fin 3 → ℝ :=
+  ![gapForm 0 2 * gapForm 2 1 - gapForm 0 1 * gapForm 2 2,
+    gapForm 0 0 * gapForm 2 2 - gapForm 0 2 * gapForm 2 0,
+    gapForm 0 1 * gapForm 2 0 - gapForm 0 0 * gapForm 2 1]
+
+/-- The third column of the adjugate, written out. -/
+noncomputable def cofactorColumnThree (gapForm : Matrix (Fin 3) (Fin 3) ℝ) : Fin 3 → ℝ :=
+  ![gapForm 0 1 * gapForm 1 2 - gapForm 0 2 * gapForm 1 1,
+    gapForm 0 2 * gapForm 1 0 - gapForm 0 0 * gapForm 1 2,
+    gapForm 0 0 * gapForm 1 1 - gapForm 0 1 * gapForm 1 0]
+
+/-- The second cofactor column is read at the determinant times its own minor. -/
+theorem quadForm_cofactorColumnTwo (gapForm : Matrix (Fin 3) (Fin 3) ℝ) :
+    cofactorColumnTwo gapForm ⬝ᵥ (gapForm *ᵥ cofactorColumnTwo gapForm)
+      = gapForm.det * (gapForm 0 0 * gapForm 2 2 - gapForm 0 2 * gapForm 2 0) := by
+  simp only [cofactorColumnTwo, Matrix.mulVec, dotProduct, Fin.sum_univ_three,
+    Matrix.det_fin_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- The third cofactor column is read at the determinant times its own minor. -/
+theorem quadForm_cofactorColumnThree (gapForm : Matrix (Fin 3) (Fin 3) ℝ) :
+    cofactorColumnThree gapForm ⬝ᵥ (gapForm *ᵥ cofactorColumnThree gapForm)
+      = gapForm.det * (gapForm 0 0 * gapForm 1 1 - gapForm 0 1 * gapForm 1 0) := by
+  simp only [cofactorColumnThree, Matrix.mulVec, dotProduct, Fin.sum_univ_three,
+    Matrix.det_fin_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- **A REFUSAL DIRECTION FROM ONE POSITIVE MINOR.**  The minimal form of the
+mechanism: a NEGATIVE determinant against ANY ONE positive principal minor
+already hands over an explicit nonzero direction on which the form is strictly
+negative.  Neither the Z-pattern nor the diagonal is used — those enter only
+for the SIGN of the direction, not for its existence. -/
+theorem exists_refusal_direction_of_minor_pos {gapForm : Matrix (Fin 3) (Fin 3) ℝ}
+    (hdet : gapForm.det < 0)
+    (hminor : 0 < gapForm 1 1 * gapForm 2 2 - gapForm 1 2 * gapForm 2 1
+      ∨ 0 < gapForm 0 0 * gapForm 2 2 - gapForm 0 2 * gapForm 2 0
+      ∨ 0 < gapForm 0 0 * gapForm 1 1 - gapForm 0 1 * gapForm 1 0) :
+    ∃ probe : Fin 3 → ℝ, probe ≠ 0 ∧ probe ⬝ᵥ (gapForm *ᵥ probe) < 0 := by
+  rcases hminor with h | h | h
+  · refine ⟨cofactorColumn gapForm, ?_, ?_⟩
+    · intro hzero
+      have h0 : cofactorColumn gapForm 0 = 0 := by rw [hzero]; rfl
+      rw [cofactorColumn_zero] at h0
+      exact absurd h0 (ne_of_gt h)
+    · rw [quadForm_cofactorColumn]
+      exact mul_neg_of_neg_of_pos hdet h
+  · refine ⟨cofactorColumnTwo gapForm, ?_, ?_⟩
+    · intro hzero
+      have h0 : cofactorColumnTwo gapForm 1 = 0 := by rw [hzero]; rfl
+      have h1 : cofactorColumnTwo gapForm 1
+          = gapForm 0 0 * gapForm 2 2 - gapForm 0 2 * gapForm 2 0 := rfl
+      rw [h1] at h0
+      exact absurd h0 (ne_of_gt h)
+    · rw [quadForm_cofactorColumnTwo]
+      exact mul_neg_of_neg_of_pos hdet h
+  · refine ⟨cofactorColumnThree gapForm, ?_, ?_⟩
+    · intro hzero
+      have h0 : cofactorColumnThree gapForm 2 = 0 := by rw [hzero]; rfl
+      have h1 : cofactorColumnThree gapForm 2
+          = gapForm 0 0 * gapForm 1 1 - gapForm 0 1 * gapForm 1 0 := rfl
+      rw [h1] at h0
+      exact absurd h0 (ne_of_gt h)
+    · rw [quadForm_cofactorColumnThree]
+      exact mul_neg_of_neg_of_pos hdet h
+
+/-- **THE SECOND INVARIANT SUPPLIES THE POSITIVE MINOR.**  A positive second
+invariant — the sum of the three principal minors — forces one of them
+positive.  On the failing branch of the horn `e₂ > 0` holds throughout, so the
+hypothesis of `Gtz.exists_refusal_direction_of_minor_pos` is never an extra
+assumption: it is already part of the branch. -/
+theorem exists_pos_principalMinor_of_e2_pos {gapForm : Matrix (Fin 3) (Fin 3) ℝ}
+    (he2 : 0 < (gapForm 1 1 * gapForm 2 2 - gapForm 1 2 * gapForm 2 1)
+      + (gapForm 0 0 * gapForm 2 2 - gapForm 0 2 * gapForm 2 0)
+      + (gapForm 0 0 * gapForm 1 1 - gapForm 0 1 * gapForm 1 0)) :
+    0 < gapForm 1 1 * gapForm 2 2 - gapForm 1 2 * gapForm 2 1
+      ∨ 0 < gapForm 0 0 * gapForm 2 2 - gapForm 0 2 * gapForm 2 0
+      ∨ 0 < gapForm 0 0 * gapForm 1 1 - gapForm 0 1 * gapForm 1 0 := by
+  by_contra hcon
+  push Not at hcon
+  obtain ⟨h1, h2, h3⟩ := hcon
+  linarith
+
+/-- **THE FAILING BRANCH ALWAYS CARRIES AN EXPLICIT REFUSAL DIRECTION.**  On the
+branch — second invariant positive, determinant negative — the form is read
+strictly negatively on a direction that is a POLYNOMIAL in its entries: one of
+the three adjugate columns, selected by whichever principal minor is positive.
+
+This discharges the inertia and canonical-direction steps of the failing branch
+together, with no characteristic polynomial, no eigenvalue, and no
+Perron–Frobenius.  The measured branch has `e₂ > 0` at 100% and the largest
+principal minor positive at 100%, so the hypothesis is exactly the branch. -/
+theorem exists_refusal_direction_of_e2_pos_of_det_neg
+    {gapForm : Matrix (Fin 3) (Fin 3) ℝ}
+    (he2 : 0 < (gapForm 1 1 * gapForm 2 2 - gapForm 1 2 * gapForm 2 1)
+      + (gapForm 0 0 * gapForm 2 2 - gapForm 0 2 * gapForm 2 0)
+      + (gapForm 0 0 * gapForm 1 1 - gapForm 0 1 * gapForm 1 0))
+    (hdet : gapForm.det < 0) :
+    ∃ probe : Fin 3 → ℝ, probe ≠ 0 ∧ probe ⬝ᵥ (gapForm *ᵥ probe) < 0 :=
+  exists_refusal_direction_of_minor_pos hdet (exists_pos_principalMinor_of_e2_pos he2)
+
+/-- **THE AMBIENT REFUSAL DIRECTION OF THE FAILING BRANCH.**  Transported through
+the dual frame: at a corner whose triple spans, a complement gap whose dual-frame
+congruence has positive second invariant and negative determinant is read
+strictly negatively on an EXPLICIT ambient direction.  The complement does not
+dominate, and the witness is polynomial in the design. -/
+theorem exists_ambient_refusal_of_dualFrame_branch (D : WeightedDesign m 3)
+    (x y z : Fin m) (hbracket : atomBracket D x y z ≠ 0) (C : Finset (Fin m))
+    (he2 : 0 < (((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 1 1
+        * ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 2 2
+      - ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 1 2
+        * ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 2 1)
+      + (((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 0 0
+        * ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 2 2
+      - ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 0 2
+        * ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 2 0)
+      + (((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 0 0
+        * ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 1 1
+      - ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 0 1
+        * ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+          * dualNormalFrame D x y z) 1 0))
+    (hdet : ((dualNormalFrame D x y z)ᵀ * (subsetSum D C - 1)
+      * dualNormalFrame D x y z).det < 0) :
+    ∃ probe : Fin 3 → ℝ, probe ≠ 0
+      ∧ probe ⬝ᵥ ((subsetSum D C - 1) *ᵥ probe) < 0 := by
+  obtain ⟨weightVec, hne, hneg⟩ :=
+    exists_refusal_direction_of_e2_pos_of_det_neg he2 hdet
+  refine ⟨dualCombination D x y z weightVec,
+    dualCombination_ne_zero D x y z hbracket hne, ?_⟩
+  rw [refusal_transfer]
+  exact hneg
+
 end Gtz

@@ -1,0 +1,677 @@
+FORK 30 -- THE COHERENT HORN (C2-7), round 1, 2026-08-20
+=========================================================
+
+0. HEADLINE
+-----------
+THE COHERENT HORN HAS AN EXACT CHART, AND IT IS A ZERO-DIAGONAL FRAME.
+Landed: Gtz/Wave/CoherentHornDualFrame.lean, commit 8b017f2, 541 lines,
+24 declarations, 14 headline names audited [propext, Classical.choice,
+Quot.sound]. Per-module build 9298 jobs exit 0 (the FULL gate is red at the
+working tree inside a sibling's TripleGramChart/TripleGramSylvester name
+collision -- not my file, owner is fixing).
+NOT wired into Gtz.lean / Gtz/Audit.lean: the shared index is contended by six
+agents and both umbrellas carry siblings' uncommitted edits. WIRING IS PENDING.
+
+1. THE CHART (the new mathematics; re-derive before trusting anything below)
+----------------------------------------------------------------------------
+Corner C={x,y,z}, gap lam*uu^T, lam>0.  S_C = 1 + lam uu^T is PD, so the inside
+triple is a BASIS; V := [g_x g_y g_z], H := V^T V = I + lam*ahat ahat^T with
+ahat := (a_x,a_y,a_z)/sqrt(1+lam) unit (a_e = g_e . u).  Take V symmetric, so
+u = ahat.  Write g_d = V c_d.  Then Parseval becomes, in the inside chart,
+
+   diag(t_x,t_y,t_z) + sum_d t_d c_d c_d^T  =  H^{-1} = I - mu*ahat ahat^T,
+   mu := lam/(1+lam) in (0,1).
+
+COHERENT MATCHING => c_4=(0,p4,q4), c_5=(p5,0,q5), c_6=(p6,q6,0): THE OUTSIDE
+FRAME Gamma=[c4 c5 c6] IS A 3x3 MATRIX WITH ZERO DIAGONAL.  That is the whole
+horn.  The off-diagonal Parseval equations then have exactly ONE term each and
+ARE the landed matching quantization:
+   t_6 p6 q6 = -mu a1 a2,  t_5 p5 q5 = -mu a1 a3,  t_4 p4 q4 = -mu a2 a3.
+Diagonals have exactly TWO terms:  t_5 p5^2 + t_6 p6^2 = 1 - t_x - mu a1^2, etc.
+DOMINATION IN THE CHART:  T dominates strictly  <=>  sum_{a in T} c_a c_a^T > Q,
+Q := I - mu*aa^T = sum_a t_a c_a c_a^T  (c_e = e_e for inside atoms).
+COWEIGHT FORM (cleaner):  T dominates  <=>  sum_{a in T}(1-t_a)c_ac_a^T
+                                            >  sum_{a notin T} t_a c_ac_a^T.
+For the complement this reads  Gamma C_out Gamma^T > T_in,  C_out=diag(1-t_d).
+
+2. SIGN RIGIDITY (real-only; the reason the horn is not field-blind)
+--------------------------------------------------------------------
+Atom signs are free, so normalise ahat > 0 componentwise (legal on (P): all
+a_e != 0).  Then EVERY COLUMN OF Gamma HAS ONE + AND ONE - ENTRY, because the
+quantization forces p_d q_d < 0.  Consequences, all exact:
+ * the three cross products c_5 x c_6, c_6 x c_4, c_4 x c_5 are each ENTRYWISE
+   SINGLE-SIGNED (-,+,- as a triple), so each is +/- a positive-orthant vector;
+ * psi := Gamma^{-1} ahat has STRICTLY ALTERNATING signs;
+ * det Gamma = A + B with A*B = -(mu^3 (a1a2a3)^2)/(t4t5t6) < 0: the two
+   3-cycles of a zero-diagonal determinant have OPPOSITE SIGNS, so
+   |det Gamma| = ||A| - |B||;
+ * THE COMPLEMENT GAP IS A Z-MATRIX.  In the chart Gamma C_out Gamma^T - T_in
+   has off-diagonal (e,f) = -o_g * mu a_e a_f < 0, o_g := (1-t_{d_g})/t_{d_g}.
+   It is the UNIQUE informative triple with that sign pattern: {x,4,5} has
+   pattern (+,-,-) and {x,5,6} has (-,-,+), and NEITHER is signature-equivalent
+   to a Z-matrix (the parity of the three signs obstructs it).  A symmetric
+   Z-matrix is PD iff exists v>0 with Mv>0 (M-matrix), which is why the
+   complement is the natural dominator and dominates 92% of the horn.
+
+3. MEASUREMENTS (Float64 sampler in the chart; scratchpad/f30/coh*.jl)
+----------------------------------------------------------------------
+Sampler: draw (mu, ahat, t) then SOLVE the six chart equations by one scalar
+root-find (0 or 2 branches); 8 free parameters, ~4M feasible horn points/run.
+ (a) NO TIE anywhere: 0 ties in 3.8M, 6.2M, 40M samples. min over the ten
+     informative triples of max-margin = +1.2e-2 at floor 0, i.e. random
+     sampling never approaches the boundary.
+ (b) THE MARGIN DOES DEGENERATE AT THE WEIGHT BOUNDARY, super-linearly:
+     floor 0.05 -> 5.2e-2 ; 1e-3 -> 3.4e-4 ; 1e-4 -> 1.7e-5 ; 1e-5 -> 3.1e-7.
+     log-log slope grows 1.3 -> 1.7.  SO THE CERTIFICATE MUST CARRY WEIGHTS.
+     (My first read -- "uniform margin, no weights needed" -- was WRONG; only
+     the adversarial descent finds the boundary.)
+ (c) DOMINATION COVERAGE per triple (stable across floors 0, 1e-2, 1e-3):
+       complement {4,5,6}                       91.97%
+       HIGH orbit  {x,4,5},{y,5,6},{z,4,6}      ~69% each
+       MID  orbit  {x,4,6},{y,4,5},{z,5,6}      ~21% each
+       LOW  orbit  {x,5,6},{y,4,6},{z,4,5}      ~5% each
+     (orbits under the simultaneous 3-cycle on inside labels and matched atoms)
+     NO PAIR of triples covers the horn.  complement+HIGH = 96.45%,
+     complement+MID = 95.73%, complement+HIGH+MID (7 triples) = 99.50%.
+     ==> THE KILL NEEDS ALL TEN REFUSALS OR A REAL AGGREGATION.
+ (d) THE TRACE FORM IS TOO WEAK.  Refusal(T) => tr(Q S_T^{-1}) >= 1, i.e.
+     (wedge mass of T) >= (squared bracket of T).  Polynomial, no eigenvalues,
+     but 94516 of 6.25M horn points (1.5%) satisfy ALL TEN trace inequalities.
+     sup over the horn of min_T tr(Q S_T^{-1}) = 1.30 > 1.  DEAD as a kill.
+ (e) THE BRACKET TAX (fork 28's, via my size-six identity) fires at the
+     complement on 76.13% and at SOME informative triple on 87.56%.
+
+4. WHAT LANDED IN KERNEL (all general unless marked)
+-----------------------------------------------------
+Gtz/Wave/CoherentHornDualFrame.lean
+  atomNormal, atomNormal_dot_atom/_left/_right   the dual frame
+  parseval_read_pair          PARSEVAL AT TWO PROBES (general, any (m,3))
+  dualPair_split              the outside/inside split of that identity
+  atomBracket_cycle           cyclic invariance of the bracket
+  inside_dualPair_diag/_offDiag   THE INSIDE COLLAPSE (one squared bracket / 0)
+  outside_dualPair_diag/_offDiag  THE DUAL-FRAME PARSEVAL OF A TRIPLE:
+      sum_{d notin C} t_d (n_e.g_d)(n_f.g_d) = n_e.n_f - [xyz]^2 t_e [e=f]
+  dualNormal_selfPairing_eq_wedge   |n_e|^2 = the WEDGE of the opposite pair
+  dualNormal_pairing_eq_gram        n_e.n_f = a Gram minor of the pairings
+  coherent_offDiag_single     (6,3) horn: the off-diagonal keeps ONE term
+  coherent_diag_pair          (6,3) horn: the diagonal keeps TWO terms
+  coherent_slot_product       the two slot energies of ONE matched atom
+                              multiply to the squared dual pairing
+  four_mul_le_sq_of_add, slot_energy_nonneg
+  coherent_amgm_law           THE AM-GM LAW OF THE HORN:
+      64*((n_x.n_y)(n_y.n_z)(n_z.n_x))^2 <= (prod_e(|n_e|^2 - t_e [xyz]^2))^2
+      tie-free, weight-carrying, polynomial, in the wedge/bracket currency
+  weighted_compl_eq_one_sub_inside
+  det_weighted_compl_eq_bracket   THE SIZE-SIX DETERMINANT LAW:
+      det(sum_{d notin C} t_d G_d) = t_{d1}t_{d2}t_{d3} [d1d2d3]^2
+      (consumes 6 = 3+3: at (5,3) the complement is a pair and it is 0)
+  quadForm_weighted_atom/_sum, quadForm_subsetSum_eq
+  posDef_compl_of_det_gt_e2_mul_weight   THE DETERMINANT PRODUCER (any m):
+      det(N) > tcap * e2(N)  =>  the complement DOMINATES STRICTLY
+      (uses ONLY the committed spectral-free floor of InvariantTaxTeeth)
+  not_isTie_of_complement_bracket_beats  the (6,3) kill in bracket currency
+
+5. FIELD VERDICT (asked for in the brief)
+------------------------------------------
+THE COHERENT HORN NEEDS NO REALNESS LAYER.  The complex corner tie
+(scratchpad/corner-ten/complextie.txt) satisfies the OPPOSITE-sign horn, not
+the coherent one (CornerSignMatching docstring, and NOTES-corner-ten section 8),
+so it is not a foil for anything here: a field-blind chain CAN close this horn.
+Independently my sign rigidity of section 2 is real-only anyway (cross products
+and the order structure of R), so the laws landed are real theorems that the
+complex witness never sees.  signCoherentFoil stays SILENT under everything
+landed: it is a non-tie, and every law here is either tie-free (the AM-GM law,
+the dual Parseval) or a producer whose hypothesis the foil fails.
+
+6. THE RESIDUAL, EXACTLY
+-------------------------
+The horn is NOT empty as a stratum (signCoherentFoil, and my 40M samples are
+all non-ties with a positive margin).  Only the refusals can close it, and the
+measurement says no small set of them suffices.  The open fight is:
+  (i)  the complement's Z-matrix criterion: characterise when NO positive
+       vector v has (Gamma C_out Gamma^T - T_in) v > 0.  That is exactly the
+       8% where the complement refuses.  The M-matrix equivalence
+       (symmetric Z-matrix PD <=> exists v>0 with Mv>0) is the certificate
+       shape, and its Lean proof is cheap: scale by diag(v), then strict
+       diagonal dominance, then the quadratic form.  NOT YET LANDED.
+  (ii) on that 8%, one of the HIGH/MID orbit triples must be produced.
+       Their gaps are NOT Z-matrices, so a different instrument is needed --
+       the bracket tax (fork 28) fires on 87.56% overall and is the current
+       best; the AM-GM law of section 4 has not yet been PLAYED against any
+       refusal, and that is the obvious next move: it is the only landed law
+       that carries the horn's own quantization.
+  (iii) the certificate must degenerate at the weight boundary at rate ~t^1.5.
+
+7. FOR THE SUCCESSOR, IN ORDER
+-------------------------------
+(1) Land the M-matrix producer (Z-matrix + positive vector => PD) as a general
+    3x3 tool; instantiate at the complement gap in the dual frame.  This is the
+    single highest-value brick and it is elementary.
+(2) Play coherent_amgm_law against the complement refusal: the refusal bounds
+    the wedges from ABOVE while the AM-GM law bounds their product from BELOW
+    by the dual pairings.  Both sides are now in kernel and in the same
+    currency.  That collision is the horn's kill if it exists.
+(3) Wire the module into Gtz.lean and Gtz/Audit.lean when the tree is green
+    (the umbrella is contended; see section 0).
+(4) Do NOT rebuild: the trace form (dead, section 3d), any pair-of-triples
+    covering (dead, 3c), a weight-free certificate (dead, 3b).
+FILES: scratchpad/f30/coh1.jl (sampler+census), coh2.jl (adversarial descent +
+weight-floor sweep), coh3.jl (coverage), coh4.jl (trace form), coh5.jl (union
+coverage + Z-matrix test), coh6.jl (bracket tax).  All Julia, 32 threads,
+StaticArrays, closed-form 3x3 eigmin (Viete), zero allocation in the hot loop.
+
+
+FORK 30 -- round 2 (resumed after the model switch), 2026-08-20
+===============================================================
+
+8. LANDED THIS ROUND (commit 22f22d8, +173 lines, 4 pins standard, my audit)
+----------------------------------------------------------------------------
+  posDef_three_of_zPattern_of_posVector   THE M-MATRIX PRODUCER (general 3x3):
+      symmetric, off-diagonals <= 0, and SOME strictly positive vector sent to
+      a strictly positive vector  =>  PosDef.  Proof is ONE scaled identity
+        (v0v1v2)*Q = sum_e x_e^2 (v_f v_g) R_e - sum_{e<f} v_g M_ef (v_f x_e - v_e x_f)^2
+      closed by ring; the three subtracted terms are nonpositive and the three
+      row readings R_e are positive.  No eigenvalue, no diagonal dominance, no
+      congruence machinery.  REUSABLE ANYWHERE IN THE CAMPAIGN.
+  bilinear_subsetSum_sub_one              the bilinear reading of a subset gap
+  coherent_complGap_offDiag   THE Z-PATTERN IN KERNEL:
+      t_d * (n_e . (S_{C^c} - 1) . n_f) = (1 - t_d) * (n_e . n_f)
+      both scales positive => the entry carries EXACTLY the sign of n_e.n_f.
+  coherent_complGap_diag      the diagonal = two slot readings minus the wedge.
+So the 92% branch now has its certificate shape in kernel: verify the three
+dual pairings are nonpositive, exhibit one positive vector, done.
+
+9. THE DIFFERENCE IDENTITY -- the coordinator's diagnosis is CONFIRMED
+----------------------------------------------------------------------
+The sibling's small-branch pinning (8819d98, OppositeHornCoherentBranch) is THE
+SAME STRUCTURE I found in the chart, discovered independently on the other horn:
+a coherent base sits on the DIFFERENCE branch, not the sum branch.  In my slot
+variables the exact statement is (coh7.jl, 260088 samples, Float64):
+
+    t4 t5 t6 (det Gamma)^2 = ( sqrt(u5 v6 v4) - sqrt(u6 u4 v5) )^2
+    DIFFERENCE form max rel err 7.8e-16     SUM form max rel err 1.3e-1
+
+i.e. the two 3-cycles of the zero-diagonal determinant NEARLY CANCEL, and the
+weighted complement bracket is the square of their difference.
+
+CONSEQUENCE (this is the handoff): the six slot energies N_{e,g} form a 3x3
+ZERO-DIAGONAL ARRAY with THREE pinnings, and coherent_amgm_law consumes only two
+of them:
+   (a) products by ATOM (column)  = the squared dual pairings   [quantization]
+   (b) sums by PLANE (row)        = |n_e|^2 - t_e [xyz]^2       [diagonal law]
+   (c) the two 3-CYCLES differ, and the difference squared is the weighted
+       complement bracket                                       [NOT CONSUMED]
+My AM-GM law uses (a) and (b) only.  That is precisely why its bracket term is
+AM-weakened, and it is why the measured boundary degeneration is SUPER-LINEAR:
+near the boundary the two 3-cycles cancel, so [456]^2 is quadratically small
+while the AM-GM bound sees only the row sums.  THE COLLISION OF TASK 3 MUST
+CONSUME (c).  That is the single sharpest open lead on this horn.
+
+10. REVISED SUCCESSOR ORDER
+----------------------------
+(1) Land (c): t4t5t6 [456]^2 = (1+lam) (sqrt(N1N2N3) - sqrt(N4N5N6))^2 in the
+    slot variables -- the difference identity.  Everything needed is in kernel
+    (coherent_diag_pair, coherent_slot_product, det_weighted_compl_eq_bracket).
+    Land it squared to stay polynomial and avoid the roots.
+(2) THEN collide: the complement refusal caps the slot readings from above
+    (coherent_complGap_diag), the quantization pins their column products, and
+    (c) says the bracket is their 3-cycle difference.  The certificate must
+    carry the weights quadratically -- (c) is where the second power comes from.
+(3) The 8% branch: with the Z-pattern landed, characterise when NO positive
+    vector certifies.  For a symmetric Z-matrix that is exactly the failure of
+    the M-matrix property, so it is a determinant condition on the 3x3 dual
+    frame gap; the selection rule for the replacement triple is part of the
+    theorem (no fixed pair covers, seven fixed triples reach 99.50%).
+(4) Umbrella wiring once the tree is green (gate still red on fork 28's
+    TripleGramChart / TripleGramSylvester tripleGram collision, not mine).
+FILES ADDED: scratchpad/f30/coh7.jl (the difference identity check).
+
+
+FORK 30 -- round 3, 2026-08-20 (commit 6183ef9, +194 lines, 5 pins standard)
+=============================================================================
+
+11. THE AM-GM IS GONE.  TASK 1 IS DONE AND IT GAVE MORE THAN ASKED.
+--------------------------------------------------------------------
+  tripleBracket_dualFrame_det   the six-term Grassmann expansion, ANY six
+      vectors, closed by ring in coordinates:
+        [xyz]^2 [w1w2w3] = det of the 3x3 bracket matrix ([yz w_j];[zx w_j];[xy w_j])
+  coherent_bracket_two_cycles   at the horn FOUR of the six terms carry a
+      matched atom against its own plane and vanish:
+        [xyz]^2 [d d' d''] = cycle1 + cycle2      (the two 3-cycles alone)
+  coherent_cycle_cross          the two cycles multiply, against the three
+      matched weights, to the PRODUCT OF THE THREE DUAL PAIRINGS, with sign:
+        t t t (cycle1 * cycle2) = (n_yz.n_zx)(n_zx.n_xy)(n_xy.n_yz) =: Pi
+  coherent_difference_identity  THE DIFFERENCE IDENTITY, polynomial:
+        t t t ([xyz]^2 [d d' d''])^2 = P + Q + 2*Pi
+      P, Q the two cycle energies.  P*Q = Pi^2, so the right side is
+      (sqrt P - sqrt Q)^2 exactly when Pi < 0, which the coherent signs force.
+  coherent_plane_product_identity   THE EXACT PLANE-PRODUCT LAW:
+        D_x D_y D_z = P + Q + Pi_xy D_z + Pi_yz D_x + Pi_zx D_y
+      Pi_ef the SQUARED dual pairings.  Proof: expand the three diagonal totals,
+      regroup the six mixed terms by matched atom, rewrite each pair by the
+      product law, ring.  NO MEAN BOUND ANYWHERE.
+
+CONSEQUENCE.  coherent_amgm_law is now SUPERSEDED as an estimate: combining the
+last two laws,
+      D_x D_y D_z = (t t t [xyz]^4 [d d' d'']^2) - 2 Pi
+                    + Pi_xy D_z + Pi_yz D_x + Pi_zx D_y
+which is an IDENTITY relating the three plane totals, the three squared dual
+pairings and the COMPLEMENT'S BRACKET.  The AM-weakening diagnosed in section 9
+is removed at the source: the bracket enters exactly, with its quadratic
+smallness near the boundary visible as the cancellation P + Q + 2Pi -> 0.
+
+12. WHERE THE COLLISION NOW STANDS (task 2)
+--------------------------------------------
+Everything the collision needs is in kernel and in one currency:
+  UP   the plane totals D_e are bounded BELOW by nothing yet, but they are
+       pinned exactly by the identity above against the bracket;
+  DOWN the complement refusal caps the slot readings from above through
+       coherent_complGap_diag, and the free contraction tax
+       (t_at_bt_c[abc]^2 > each member weight => strict dominator) caps the
+       bracket from above at a tie;
+  SIZE every weak dominator has [C]^2 >= 1 and consumes t_x t_y t_z of the
+       bracket budget 1 (landed elsewhere, free).
+THE SHAPE TO HUNT: at a tie the contraction tax caps the complement's weighted
+bracket by a member weight, so the identity caps P + Q + 2Pi by that weight;
+but the three plane totals are bounded below by the floors, so the identity's
+left side is bounded below.  Collide the two.  The weights enter QUADRATICALLY
+through the bracket term, which is exactly the rate section 3(b) measured.
+BUILD IT AGAINST ADVERSARIAL DESCENT (coh2.jl), NEVER UNIFORM SWEEPS.
+
+13. OPERATIONAL
+----------------
+The umbrella is wired by the coordinator (f812087): Gtz/Audit.lean keeps its OWN
+import list and does NOT import the umbrella, so a new module needs BOTH lines.
+My later theorems are unpinned, which is fine; pin them when the tree is calm.
+The shared .lake build directory RACES with six agents: two consecutive full
+gates failed on DIFFERENT missing oleans (Skeleton/Obligations, then fork 32's
+DiamondNeighborhoodLock), which is a concurrent-rebuild artifact and not a gate
+failure.  Verify per-module and let the coordinator run the authoritative gate.
+
+
+FORK 30 -- round 4 (measurement), 2026-08-20.  No Lean this round by design:
+the round's product is one REFUTATION and one exact characterisation.
+==============================================================================
+
+14. THE COLLISION AS POSED IS REFUTED (coh8.jl, 3126261 horn points)
+---------------------------------------------------------------------
+Built in DESIGN space from the chart parameters, so no translation can hide it.
+SANITY: the two landed identities reproduce to 3.3e-11 --
+   t4t5t6 [xyz]^4 [456]^2 = D_x D_y D_z - Pi_xy D_z - Pi_yz D_x - Pi_zx D_y + 2Pi
+is confirmed numerically and independently of the chart derivation.
+THE COLLISION.  A tie plus the contraction tax at the complement forces
+   Psi := D_x D_y D_z - Pi_xy D_z - Pi_yz D_x - Pi_zx D_y + 2Pi - [xyz]^4 t_max^out <= 0.
+MEASURED: Psi <= 0 at 23.8887% of the horn.  That is EXACTLY the complement of
+the 76.13% at which the contraction tax fires at the complement (section 3e).
+CONCLUSION, and it is a real negative worth banking: THE IDENTITY ADDS NO
+SEPARATING POWER TO THE COMPLEMENT TAX.  Being an identity, substituting it is a
+change of variables, not new information.  Its value is elsewhere -- it makes
+the bracket EXACT, which fixes the certificate's SHAPE (the weights enter
+quadratically) -- but it cannot by itself close anything.  Any future collision
+must bring a genuinely independent bound on the plane totals D_e, or use the
+refusals of triples OTHER than the complement.
+
+15. THE M-MATRIX ROUTE IS EXACT, AND THE 8% IS A DETERMINANT CONDITION
+-----------------------------------------------------------------------
+(coh9.jl, 3127632 horn points, the dual-frame gap built from the LANDED
+formulas coherent_complGap_offDiag / coherent_complGap_diag.)
+  the dual-frame gap is a Z-MATRIX          100.0000%   <-- the sign law, confirmed
+  it is POSITIVE DEFINITE                    91.9350%
+  PD agrees with TRUE domination            100.0000%   <-- the congruence is exact
+  det(dual gap) < 0                           8.0650%
+The second and fourth numbers COINCIDE: on the horn the dual-frame gap fails to
+be positive definite IF AND ONLY IF ITS DETERMINANT IS NEGATIVE.  The diagonal
+entries and all three 2x2 minors stay positive throughout; only the determinant
+can turn.  So task 3's characterisation is a SINGLE POLYNOMIAL CONDITION, as the
+coordinator anticipated, and it is the cheapest possible one.
+INSTRUMENT RANKING at the complement, measured on the same stratum:
+  M-matrix / dual-frame criterion   91.94%   (EXACT for this triple, no loss)
+  contraction tax                   76.13%
+  tax at ANY informative triple     87.56%
+So the M-matrix route strictly dominates the tax family, and it is exact.
+
+16. THE SELECTION RULE IS GENUINELY ADAPTIVE -- MEASURED
+---------------------------------------------------------
+On the 8.065% non-PD branch the dominating triple is spread NEARLY UNIFORMLY
+across all nine one-inside triples:
+  {x,4,5} 13.44%  {z,4,6} 13.20%  {y,4,5} 12.55%  {y,4,6} 11.45%  {z,4,5} 11.37%
+  {y,5,6} 10.80%  {x,5,6}  9.90%  {x,4,6}  9.51%  {z,5,6}  7.80%
+Maximum 13.4%: NO fixed replacement triple covers even a seventh of the branch.
+A nine-case fixed split would leave each case carrying about a ninth, so the
+selection rule cannot be a preamble -- it must be produced from the data inside
+the theorem.  This is the third independent confirmation of section 3(c).
+
+17. REVISED ORDER FOR THE SUCCESSOR
+------------------------------------
+(1) LAND THE CONGRUENCE.  The dual-frame criterion is measured EXACT (100%
+    agreement), so the only missing kernel step for the 92% branch is:
+    W := N^T (S_{C^c} - 1) N with N = [n_x n_y n_z]; det N = [xyz]^2 /= 0 at a
+    corner, so W PD => S_{C^c} - 1 PD.  With that plus the landed
+    posDef_three_of_zPattern_of_posVector the 92% branch is CLOSED IN KERNEL.
+(2) Then the 8%: det(W) <= 0 is the exact hypothesis, a single polynomial in the
+    dual frame.  Produce the replacement triple from that determinant's own
+    data -- the near-uniform spread says nothing else will work.
+(3) DO NOT retry the collision of section 14 in any form that substitutes the
+    identity into the complement tax; it is provably circular.
+
+
+FORK 30 -- round 5, 2026-08-20 (commit 1a7baac, +110 lines, 5 pins standard)
+=============================================================================
+
+18. THE 92% BRANCH IS CLOSED IN KERNEL
+---------------------------------------
+  posDef_of_posDef_congr        an invertible congruence REFLECTS positive
+      definiteness (general 3x3): pull the probe back by frame^{-1}, the form
+      transports, done.  No spectral theory.
+  dualNormalFrame               the frame whose three COLUMNS are the dual
+      normals of a triple.
+  det_dualNormalFrame           det[b x c, c x a, a x b] = [abc]^2 -- the frame
+      is invertible EXACTLY when the triple spans, which a corner guarantees
+      since [xyz]^2 = det S_C = 1 + lam > 0.
+  dualNormalFrame_congr_apply   the congruence reads the form at the normals.
+  posDef_compl_of_dualFrame_certificate   THE COMPLEMENT CERTIFICATE: at a
+      corner whose triple spans, if the complement gap read in the dual frame
+      has nonpositive off-diagonals and sends ONE strictly positive vector to a
+      strictly positive vector, the complement DOMINATES STRICTLY.
+  not_isTie_of_dualFrame_certificate      hence NO TIE.
+The chain is now complete for the certified branch:
+  coherent_complGap_offDiag  supplies the Z-pattern (sign of the dual pairing)
+  posDef_three_of_zPattern_of_posVector  is the producer
+  posDef_of_posDef_congr + det_dualNormalFrame  transport it to the ambient gap.
+Measured coverage of exactly this hypothesis: 91.9350%, and it AGREES WITH TRUE
+DOMINATION AT 100.0000% (section 15), so the kernel statement is lossless -- the
+8% that remains is not slack in the certificate, it is the genuine non-PD locus.
+
+19. STATE OF THE HORN AFTER FIVE ROUNDS
+----------------------------------------
+KERNEL: the chart (dual-frame Parseval, the coherent collapse), the invariant
+dictionary (wedge / Gram minor), the exact two-cycle identities replacing AM-GM,
+the size-six determinant law, two producers (determinant/e2 and Z-pattern), the
+congruence, and the complement certificate.  40 declarations, ~1020 lines.
+OPEN: the 8.065% non-PD branch.  Exactly characterised (section 15): it is
+det(dual frame gap) < 0 and nothing else -- diagonal and all three 2x2 minors
+stay positive.  On it the dominating triple is spread near-uniformly over all
+nine one-inside triples (13.44% down to 7.80%), so the replacement must be
+produced from the determinant's own data.
+DEAD, do not retry: the trace form (3d), any fixed pair or seven-triple cover
+(3c), a weight-free certificate (3b), and the identity-into-tax collision (14).
+
+
+FORK 30 -- round 6 (measurement), 2026-08-20.  THE SELECTION RULE IS FOUND.
+============================================================================
+
+20. THE REFUSAL DIRECTION NAMES THE REPAIRING PLANE
+----------------------------------------------------
+On the 8.065% branch det W < 0 while e1(W), e2(W) > 0, so W has EXACTLY ONE
+negative eigenvalue and its eigenvector is canonical: THE REFUSAL DIRECTION v.
+Measured on 251387 non-PD horn points (coh10.jl, coh11.jl; chance = 33.3%):
+
+  which inside atom carries the BEST one-inside triple
+    e* := argmax_e |v_e|   (the refusal direction)      96.134%
+    argmin_e D_e           (smallest plane total)       71.855%
+    argmax_e t_e           (heaviest inside)            61.870%
+    argmin_e |v_e|                                       0.083%   <- anti-rule
+  and the WEAKER, CORRECT target -- the theorem needs SOME dominating triple:
+    SOME triple through e* = argmax|v_e| dominates      99.914%
+
+So the rule is: THE REFUSAL DIRECTION POINTS AT THE PLANE THAT REPAIRS IT.  The
+object is one the theorem already owns -- the negative eigendirection of the very
+matrix whose determinant defines the branch -- so the selection rule is produced
+from corner data exactly as the arm requires, and it is not a case split.
+The OUTSIDE pair is not yet pinned: omitting e*'s matched atom works 64.393%,
+omitting the heaviest outside atom 77.808%, the lightest 28.559%.  But this no
+longer matters much: NINE cases have collapsed to THREE (the three triples
+through e*), and a three-way disjunction is cheap.
+RESIDUAL of the rule: 0.086%.  Either the argmax needs a refinement, or those
+points are repaired through a different plane; both are small and checkable.
+
+21. FIELD RE-CONFIRMATION AT THE 8% BOUNDARY (structural, not measured)
+-----------------------------------------------------------------------
+The coordinator is right that a determinant sign is the kind of condition ℂ can
+satisfy, so here is the argument, which is stronger than the earlier verdict.
+THE COHERENT / OPPOSITE DICHOTOMY IS ITSELF REAL-ONLY.  Its hypotheses are SIGN
+conditions on products of brackets (corner_signWord_dichotomy takes
+`0 <= (bracket*bracket)*(bracket*bracket)`).  Over C brackets are complex and
+those conditions do not parse: the classification does not extend.  So the
+complex witness does not merely happen to sit on the other horn -- NO complex
+object inhabits this stratum, because the stratum is cut out by real sign data.
+My branch condition det W < 0 is the same kind of object: a real sign on a real
+matrix built from cross products and odds.  The field-blind verdict therefore
+holds at the 8% boundary, and it holds for the reason that matters -- there is
+nothing over C in this stratum to satisfy the condition.
+NOTE the asymmetry with the other horn, which the coordinator reported: there
+the complex witness satisfies every refusal, so no field-blind argument can ever
+suffice.  The two horns are genuinely different problems, and their instruments
+should NOT be expected to transfer -- as that fork also found from its side (no
+third pinning there; the third pinning is what my whole two-cycle chain rests on).
+
+22. NEXT
+---------
+(1) Land the 8% skeleton: det W < 0 => W has one negative eigendirection v;
+    take e* = argmax|v_e|; then one of the THREE triples through e* dominates.
+    The first two steps are linear algebra the campaign already has in pieces
+    (e1,e2 > 0 with e3 < 0 pins the inertia); the third is the open content.
+(2) The inverse-free Gram chart and the contraction tax are the transferable
+    instruments for that third step, per the coordinator.
+(3) Pin the outside pair, or accept the three-way disjunction.
+
+
+FORK 30 -- round 7.  THE 0.086% IS A TIE-BREAK, AND THE RULE IS NOW TOTAL.
+===========================================================================
+
+23. CHARACTERISATION OF THE RULE'S FAILURES (coh12.jl, 671846 non-PD points,
+    566 failures = 0.0842% of the branch)
+-----------------------------------------------------------------------------
+  |v_2nd| / |v_1st| :  mean 0.9050   min 0.5000   max 0.9999
+  near-tie, ratio > 0.9                      62.014%
+  the SECOND plane carries a dominator      100.000%
+  SOME other plane does                     100.000%
+  NO plane does (all nine refuse)             0.000%    <-- would have been a TIE
+THE ANSWER IS THE COORDINATOR'S FIRST CASE, and completely so.  Every failure of
+`e* = argmax|v_e|` is repaired by the SECOND-largest coordinate's plane, at
+100.000%.  Nothing in the branch has all nine one-inside triples refusing, so no
+new configuration appears and none can: the residual is a TIE-BREAK, not a
+stratum.
+THE RULE, now total and with no residual:
+   det W < 0  =>  W has one negative eigendirection v ; take the TWO largest
+   coordinates of |v| ; one of their planes carries a dominating triple.
+Measured coverage 99.914% + 0.086% = 100.000%.
+A SHARP MEASURED THRESHOLD, worth an algebraic look: the minimum ratio over ALL
+566 failures is EXACTLY 0.5000.  So the failures never have the second
+coordinate below half the first, i.e. contrapositively
+   |v_2nd| < |v_1st| / 2   =>   the argmax plane e* ALREADY works.
+The roundness of 1/2 says this is an algebraic threshold, not a sampling
+artifact, and pinning it would turn the tie-break into a quantitative clause
+rather than a disjunction.  That is the cheapest remaining question on the horn.
+
+24. THE SKELETON TO LAND (unchanged in shape, now with no residual)
+-------------------------------------------------------------------
+(1) INERTIA: on the branch e1(W) > 0, e2(W) > 0, e3(W) = det W < 0, so W has
+    exactly one negative eigenvalue.  (The campaign has the pieces; this is the
+    sign bookkeeping of the characteristic polynomial, not a spectral theorem.)
+(2) The negative eigendirection v is then canonical up to scale.
+(3) OPEN CONTENT: one of the at most six triples through the top two coordinate
+    planes of |v| dominates.  Instruments: the inverse-free Gram chart (any gap
+    determinant as a polynomial in six dot products) and the contraction tax.
+(4) OPTIONAL SHARPENING: prove the 1/2 threshold and collapse (3) to three cases.
+
+
+FORK 30 -- round 8 (final).  THE 1/2 THRESHOLD IS REFUTED; THE MECHANISM IS
+LANDED.  Commit a39730a, +127 lines, 6 pins standard.  Module: 48 declarations,
+1145 lines.
+=============================================================================
+
+25. THE 1/2 THRESHOLD IS A SMALL-SAMPLE ARTIFACT -- REFUTED
+------------------------------------------------------------
+Round 7 reported the minimum failure ratio |v_2nd|/|v_1st| as EXACTLY 0.5000
+over 566 failures and I flagged it as probably algebraic.  IT IS NOT.  At ten
+times the statistics (coh13.jl, 1507960 non-PD points, 1329 failures) the
+minimum falls to 0.476855, and the histogram is a smooth decaying tail with no
+floor:
+   [0.46,0.49) 2   [0.49,0.52) 2   [0.55,0.58) 2   [0.58,0.61) 4  [0.61,0.64) 5
+   [0.64,0.67) 11  [0.67,0.70) 20  [0.70,0.73) 22  ... [0.97,1.00) 321
+The 0.5000 was the empirical minimum of a thin tail, nothing more.  DO NOT
+re-derive it.  The tie-break stays a two-plane disjunction; it does not become
+a quantitative clause.
+
+26. WHAT REPLACED IT: THE REFUSAL DIRECTION IS SINGLE-SIGNED (Perron)
+----------------------------------------------------------------------
+MEASURED at 100.0000% of 1507960 non-PD points: the negative eigendirection v
+of the dual-frame gap W is SINGLE-SIGNED.  The reason is structural and worth
+stating -- -W has NONNEGATIVE off-diagonals (W is a Z-matrix by
+coherent_complGap_offDiag), so -W is a Metzler matrix and Perron-Frobenius puts
+the eigenvector of its LARGEST eigenvalue (= -lam_min(W)) in the closed positive
+orthant.  So |v_e| is really v_e and the refusal direction is canonical.
+NOT LANDED: Perron-Frobenius itself.  A successor wanting it should note that
+only the 3x3 case is needed.
+
+27. THE MECHANISM, LANDED (this is the round's product)
+--------------------------------------------------------
+  dualCombination D x y z v      n_v := v_0 n_yz + v_1 n_zx + v_2 n_xy
+  inside_dot_dualCombination_{first,second,third}
+      THE READING IDENTITY:  g_e . n_v = v_e * [xyz] ,
+      because the other two normals annihilate g_e.  MEASURED 100.0000%
+      (coh14.jl) before landing, then proved.
+  repair_identity_first          THE REPAIR IDENTITY:
+      n_v.(S_{e,d,d'} - 1).n_v = n_v.(S_{C^c} - 1).n_v + (v_e [xyz])^2
+                                  - (n_v . g_{dropped})^2
+      Swapping an inside atom in for an outside atom repays EXACTLY the squared
+      dual weight of that plane times the squared bracket, and costs EXACTLY the
+      squared reading of the dropped atom.
+  refusal_transfer               reading along n_v = reading the congruence at v,
+      so a negative congruence hands over an EXPLICIT ambient refusal direction.
+  no_posVector_of_not_posDef_zPattern   the obstruction dichotomy.
+THIS EXPLAINS THE SELECTION RULE.  The repair a plane can buy is (v_e [xyz])^2,
+monotone in v_e, so the plane with the largest dual weight buys the most --
+which is exactly why argmax|v_e| names the repairing plane at 96.13% / 99.914%.
+The rule is no longer an empirical fit; its mechanism is an identity in kernel.
+
+28. AND THE COST SIDE IS OPEN -- ONE REFUTED GUESS RECORDED
+------------------------------------------------------------
+The repair identity suggested omitting the outside atom with the SMALLEST
+reading |n_v . g_d|.  MEASURED: 11.0872% (coh14.jl), far BELOW the 33% chance
+level, so the rule is strongly ANTI-correlated -- omit the LARGEST instead, or
+more likely the binding direction for the repaired triple is no longer n_v.
+That is the honest state: the repay side of the identity explains the plane
+choice, the cost side does not yet explain the pair choice.
+DO NOT retry "omit the smallest reading"; it is refuted.
+
+29. FINAL HANDOFF -- THE SKELETON, UNCHANGED IN SHAPE
+------------------------------------------------------
+(1) INERTIA: on the branch e1(W) > 0, e2(W) > 0, det W < 0, so exactly one
+    negative eigenvalue and a canonical eigendirection v (single-signed, sec 26).
+(2) SELECTION: take the two largest coordinates of v.  Coverage 100.000%
+    (sec 23); the first alone covers 99.914%.
+(3) OPEN CONTENT: one of the at most six triples through those two planes
+    dominates.  The repair identity (sec 27) is the exact accounting to close
+    it: repay (v_e [xyz])^2 against the base refusal plus the dropped atom's
+    reading.  Instruments: the inverse-free Gram chart, the contraction tax,
+    and now ChartBracketTax (b272344), which already consumes my M-matrix
+    producer from a sibling lane.
+
+
+FORK 35 -- round 1.  THE REFUSAL DIRECTION IS A COFACTOR COLUMN, AND THE
+SELECTION RULE NEEDS NO VECTOR AT ALL.  Two banked claims REFUTED.
+=============================================================================
+
+30. THE MECHANISM: STEPS (1) AND (2) OF SECTION 29, DISCHARGED TOGETHER
+------------------------------------------------------------------------
+The handoff asked for inertia bookkeeping on the characteristic polynomial and
+then a canonical direction via Perron-Frobenius.  NEITHER IS NEEDED.  The
+adjugate does both at once, polynomially.
+
+For any 3x3 form W, let v := adj(W) e_0 (the first cofactor column, written out
+in the entries).  Then W v = det(W) e_0 by the defining property of the
+adjugate, so
+        v . (W v) = det(W) * (the complementary 2x2 minor).
+A NEGATIVE determinant against a POSITIVE minor therefore hands over a refusal
+direction, with no eigenvalue named anywhere.  LANDED:
+  cofactorColumn, cofactorColumn_zero, mulVec_cofactorColumn,
+  quadForm_cofactorColumn.
+
+AND THE SIGN COMES FROM THE Z-PATTERN DIRECTLY, NOT FROM PERRON-FROBENIUS.
+For symmetric W with off-diagonals <= 0 and positive diagonal, each remaining
+entry of the column is (nonpositive * nonpositive) - (positive * nonpositive),
+hence >= 0.  Section 26 observed the refusal direction is single-signed and
+attributed it to Perron; it is two products of signs.  LANDED:
+  cofactorColumn_nonneg_of_zPattern, cofactorColumn_refusal_of_det_neg.
+Transported to ambient coordinates through refusal_transfer:
+  dualNormalFrame_mulVec_eq_dualCombination, dualCombination_ne_zero,
+  complement_refusal_direction.
+
+31. TWO BANKED CLAIMS REFUTED (coh16.jl, 1173645 failing-branch points)
+------------------------------------------------------------------------
+Section 15 states: "The diagonal entries and all three 2x2 minors stay positive
+throughout; only the determinant can turn."  BOTH HALVES ARE FALSE.
+    all three DIAGONAL entries > 0        96.4317%
+    all three 2x2 PRINCIPAL minors > 0    66.1821%
+    minors negative:  0 of 3  66.1821%    1 of 3  29.5928%
+                      2 of 3   4.2251%    3 of 3   0.0000%
+The confusion is e2 versus its summands: e2(W) > 0 is the SUM of the three
+principal minors, and a positive sum does not make each positive.  What IS true,
+and is what the mechanism actually needs:
+    e2 = sum of the three minors > 0     100.0000%
+    the LARGEST principal minor > 0      100.0000%
+So the hypothesis is never an extra assumption -- it is the branch itself.
+LANDED at the general index, so the theorem applies at whichever minor is
+positive:
+  cofactorColumnTwo, cofactorColumnThree, quadForm_cofactorColumnTwo/Three,
+  exists_refusal_direction_of_minor_pos      (needs ONLY det < 0 and one minor)
+  exists_pos_principalMinor_of_e2_pos        (e2 > 0 forces one minor positive)
+  exists_refusal_direction_of_e2_pos_of_det_neg
+  exists_ambient_refusal_of_dualFrame_branch (the ambient form)
+NOTE the clean separation the refutation forced: the EXISTENCE of the refusal
+direction needs only det < 0 plus one positive minor -- no Z-pattern, no
+diagonal.  The Z-pattern and the diagonal are needed ONLY for the direction's
+SIGN.  That is why existence is universal on the branch (100%) while
+single-signedness is not (85.83% for the first column).
+
+32. THE SELECTION RULE NEEDS NO VECTOR: USE THE LARGEST PRINCIPAL MINOR
+------------------------------------------------------------------------
+adj(W) = det(W) W^{-1}, and near the branch boundary W^{-1} is dominated by the
+near-singular direction, so adj(W) ~ lam2 lam3 v v'.  Its DIAGONAL is then
+lam2 lam3 v_e^2 -- and the diagonal of the adjugate IS the three principal 2x2
+minors.  PREDICTION: argmax_e (principal minor e) = argmax_e |v_e|.  MEASURED
+(coh15.jl, 1173645 points; chance 33.3%):
+    rule                          agrees with eigenvector      names a plane
+    argmax |eigenvector|                    ---                  99.9088%
+    argmax cofactor column               98.6201%                99.8887%
+    argmax principal MINOR               99.8866%                99.9071%
+    argmax minor, TOP TWO planes            ---                  99.9997%
+    argmax minor, all three                 ---                 100.0000%
+THE MINOR RULE MATCHES THE EIGENVECTOR RULE TO WITHIN 0.002% AND USES NO VECTOR.
+So the whole skeleton can be stated spectral-free: order the three planes by
+their principal 2x2 minors.  (The top-two minor rule is very slightly weaker
+than section 23's top-two eigenvector rule -- 4 failures in 1.17M rather than 0
+in 672k -- so if a successor wants the exact 100% two-plane statement it should
+keep the eigenvector ordering, or add the third plane, which is total.)
+
+33. THE REPAY THRESHOLD -- THE ACCOUNTING FOR STEP (3)
+-------------------------------------------------------
+  repay_threshold_of_dominates:  if the repaired triple {x, kept, kept'}
+  DOMINATES, then
+        (n_v . g_dropped)^2  -  (base refusal reading)  <  (v_0 [xyz])^2 .
+The left side is what the swap costs plus the deficit it must clear (the base
+reading is NEGATIVE on the refusal direction, so subtracting it RAISES the bar);
+the right side is what the entering plane repays.  A necessary condition,
+polynomial on both sides, and the exact form of section 27's accounting.
+
+34. WHAT IS STILL OPEN, PRECISELY
+----------------------------------
+Step (3) itself: that one of the six triples DOES dominate.  The obstruction is
+structural and worth stating so the successor does not rediscover it: the repair
+identity controls the repaired gap ALONG ONE DIRECTION n_v, whereas domination
+is positive definiteness in ALL directions.  Positivity along n_v is necessary,
+not sufficient.  Section 6(ii) already noted the repaired triples' gaps are NOT
+Z-matrices, so the M-matrix producer does not apply to them either.  A THIRD
+instrument is needed for the repaired triple -- the inverse-free Gram chart and
+the contraction tax are the candidates named, and neither has been tried on it.
+DO NOT expect the repair identity alone to close it.
+
+35. FILES / DISCIPLINE
+-----------------------
+coh15.jl (cofactor vs eigenvector vs minor selection), coh16.jl (the minor
+positivity refutation and the top-k minor rule).  Both mirror coh13.jl's
+construction bit for bit -- same sampler, same root-find, same eigs3 -- per the
+campaign rule that a verifier must reproduce the optimizer's construction
+choices before its numbers mean anything.
