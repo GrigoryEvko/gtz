@@ -1282,6 +1282,7 @@ import Gtz.Wave.CappedSharpFloor
 import Gtz.Wave.HeavyInsideResidualBridge
 import Gtz.Wave.MemberGramPushThrough
 import Gtz.Wave.CrossLedgerRigidity
+import Gtz.Wave.KTwoEraseSystem
 import Gtz.Wave.ReadingMatrixRelation
 import Gtz.Wave.HeavyInsideDeterminantForm
 import Gtz.Wave.CoweightedMemberLedger
@@ -36372,3 +36373,12 @@ run_cmd do
 #print axioms Gtz.sixSplit_crossReading_eq_zero
 #print axioms Gtz.sixSplit_two_markers_coincide
 #print axioms Gtz.k2_mixed_planeWitness_of_isTie
+
+-- Gtz/Wave/KTwoEraseSystem.lean -- the two-zero stratum at the erase anchor:
+-- the strictly dominating complement, the four removal readings, the
+-- null-direction floor, and the isolated kill target
+#print axioms Gtz.k2_erase_anchor_posDef
+#print axioms Gtz.k2_fiveThree_removal_readings_ge_one
+#print axioms Gtz.k2_fiveThree_nullReading_ge_one
+#print axioms Gtz.k2_fiveThree_traceInv_ge_one
+#print axioms Gtz.k2_fiveThree_not_isTie_of_nullReading_lt_one
