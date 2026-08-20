@@ -905,4 +905,114 @@ theorem coherent_plane_product_identity (D : WeightedDesign 6 3) {x y z dyz dxz 
   rw [← hdX, ← hdY, ← hdZ, ← hpA, ← hpB, ← hpC]
   ring
 
+/-! ## 13. The congruence, and the complement certificate -/
+
+/-- **CONGRUENCE REFLECTS POSITIVE DEFINITENESS.**  If an invertible congruence
+of a symmetric form is positive definite, so is the form. -/
+theorem posDef_of_posDef_congr {form frame : Matrix (Fin 3) (Fin 3) ℝ}
+    (hsymm : formᵀ = form) (hdet : IsUnit frame.det)
+    (hcong : (frameᵀ * form * frame).PosDef) : form.PosDef := by
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr
+    ⟨isHermitian_of_transpose_eq hsymm, fun probe hprobe => ?_⟩
+  rw [star_trivial]
+  set pull : Fin 3 → ℝ := frame⁻¹ *ᵥ probe with hpull
+  have hframePull : frame *ᵥ pull = probe := by
+    rw [hpull, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv frame hdet, Matrix.one_mulVec]
+  have hpullne : pull ≠ 0 := by
+    intro hzero
+    rw [hzero, Matrix.mulVec_zero] at hframePull
+    exact hprobe hframePull.symm
+  have hstep : (frameᵀ * form * frame) *ᵥ pull = frameᵀ *ᵥ (form *ᵥ probe) := by
+    rw [Matrix.mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hframePull]
+  have hform : pull ⬝ᵥ ((frameᵀ * form * frame) *ᵥ pull) = probe ⬝ᵥ (form *ᵥ probe) := by
+    rw [hstep, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, hframePull]
+  have hpos := (Matrix.posDef_iff_dotProduct_mulVec.mp hcong).2 hpullne
+  rw [star_trivial, hform] at hpos
+  exact hpos
+
+/-- The frame whose three columns are the dual normals of a triple. -/
+noncomputable def dualNormalFrame (D : WeightedDesign m 3) (x y z : Fin m) :
+    Matrix (Fin 3) (Fin 3) ℝ :=
+  Matrix.of fun coord slot =>
+    (![atomNormal D y z, atomNormal D z x, atomNormal D x y] slot) coord
+
+/-- **THE DUAL FRAME HAS THE SQUARED BRACKET AS DETERMINANT.**  The classical
+`det[b×c, c×a, a×b] = [abc]²`: the dual frame is invertible exactly when the
+triple spans. -/
+theorem det_dualNormalFrame (D : WeightedDesign m 3) (x y z : Fin m) :
+    (dualNormalFrame D x y z).det = atomBracket D x y z ^ 2 := by
+  simp only [dualNormalFrame, Matrix.det_fin_three, Matrix.of_apply, atomNormal,
+    bracketNormal, atomBracket, tripleBracket_eq, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- The congruence of a form by the dual frame reads the form at the normals. -/
+theorem dualNormalFrame_congr_apply (D : WeightedDesign m 3) (x y z : Fin m)
+    (form : Matrix (Fin 3) (Fin 3) ℝ) (rowSlot colSlot : Fin 3) :
+    ((dualNormalFrame D x y z)ᵀ * form * dualNormalFrame D x y z) rowSlot colSlot
+      = (![atomNormal D y z, atomNormal D z x, atomNormal D x y] rowSlot) ⬝ᵥ
+        (form *ᵥ (![atomNormal D y z, atomNormal D z x, atomNormal D x y] colSlot)) := by
+  simp only [Matrix.mul_apply, Matrix.transpose_apply, dualNormalFrame, Matrix.of_apply,
+    Matrix.mulVec, dotProduct, Fin.sum_univ_three]
+  ring
+
+/-- **THE COMPLEMENT CERTIFICATE.**  At a `(6,3)` corner whose triple spans, if
+the complement's gap read in the dual frame has nonpositive off-diagonal entries
+and sends one strictly positive vector to a strictly positive vector, then the
+complement DOMINATES STRICTLY.  The Z-pattern is supplied by
+`Gtz.coherent_complGap_offDiag`, whose entries carry the sign of the dual
+pairings; the producer is `Gtz.posDef_three_of_zPattern_of_posVector`; and the
+congruence is invertible because its determinant is the squared bracket. -/
+theorem posDef_compl_of_dualFrame_certificate (D : WeightedDesign 6 3)
+    (C : Finset (Fin 6)) {x y z : Fin 6} (hspan : atomBracket D x y z ≠ 0)
+    (h01 : ((dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1)
+      * dualNormalFrame D x y z) 0 1 ≤ 0)
+    (h02 : ((dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1)
+      * dualNormalFrame D x y z) 0 2 ≤ 0)
+    (h12 : ((dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1)
+      * dualNormalFrame D x y z) 1 2 ≤ 0)
+    {scale : Fin 3 → ℝ} (hv0 : 0 < scale 0) (hv1 : 0 < scale 1) (hv2 : 0 < scale 2)
+    (hr0 : 0 < ((dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1)
+          * dualNormalFrame D x y z) 0 0 * scale 0
+        + ((dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1)
+          * dualNormalFrame D x y z) 0 1 * scale 1
+        + ((dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1)
+          * dualNormalFrame D x y z) 0 2 * scale 2)
+    (hr1 : 0 < ((dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1)
+          * dualNormalFrame D x y z) 0 1 * scale 0
+        + ((dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1)
+          * dualNormalFrame D x y z) 1 1 * scale 1
+        + ((dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1)
+          * dualNormalFrame D x y z) 1 2 * scale 2)
+    (hr2 : 0 < ((dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1)
+          * dualNormalFrame D x y z) 0 2 * scale 0
+        + ((dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1)
+          * dualNormalFrame D x y z) 1 2 * scale 1
+        + ((dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1)
+          * dualNormalFrame D x y z) 2 2 * scale 2) :
+    (subsetSum D Cᶜ - 1).PosDef := by
+  have hgapsymm : (subsetSum D Cᶜ - 1)ᵀ = subsetSum D Cᶜ - 1 := by
+    rw [Matrix.transpose_sub, Matrix.transpose_one, subsetSum_transpose]
+  have hcongsymm : ((dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1)
+      * dualNormalFrame D x y z)ᵀ
+      = (dualNormalFrame D x y z)ᵀ * (subsetSum D Cᶜ - 1) * dualNormalFrame D x y z := by
+    rw [Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose,
+      hgapsymm, Matrix.mul_assoc]
+  have hdet : IsUnit (dualNormalFrame D x y z).det := by
+    rw [det_dualNormalFrame]
+    exact isUnit_iff_ne_zero.mpr (pow_ne_zero 2 hspan)
+  exact posDef_of_posDef_congr hgapsymm hdet
+    (posDef_three_of_zPattern_of_posVector hcongsymm h01 h02 h12 hv0 hv1 hv2 hr0 hr1 hr2)
+
+/-- **THE COHERENT COMPLEMENT KILL.**  A `(6,3)` design whose complement gap
+carries a dual-frame certificate is NO TIE. -/
+theorem not_isTie_of_dualFrame_certificate (D : WeightedDesign 6 3) (C : Finset (Fin 6))
+    {d1 d2 d3 : Fin 6} (h12' : d1 ≠ d2) (h13' : d1 ≠ d3) (h23' : d2 ≠ d3)
+    (hcompl : (Cᶜ : Finset (Fin 6)) = {d1, d2, d3})
+    (hpd : (subsetSum D Cᶜ - 1).PosDef) : ¬ IsTie D := by
+  intro htie
+  have hcard : (Cᶜ : Finset (Fin 6)).card = 3 := by
+    rw [hcompl]; exact card_triple_eq h12' h13' h23'
+  exact htie.2 _ hcard hpd
+
 end Gtz
