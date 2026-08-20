@@ -6412,3 +6412,4 @@ import Gtz.Wave.DiamondNeighborhoodLock
 import Gtz.Wave.CoherentHornDualFrame
 import Gtz.Wave.OppositeHornTwoPoint
 import Gtz.Wave.DominatorWedgeFloor
+import Gtz.Wave.OppositeHornCycleNoGo
