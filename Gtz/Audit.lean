@@ -1303,6 +1303,7 @@ import Gtz.Wave.TransverseFloor
 import Gtz.Wave.PencilWiring
 import Gtz.Wave.ErasedAtomSpectrum
 import Gtz.Wave.DualFrameBudget
+import Gtz.Wave.ErasedEnergyLedger
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
@@ -36401,6 +36402,18 @@ run_cmd do
 #print axioms Gtz.dual_reading_total
 #print axioms Gtz.fourSet_dual_energy_total
 #print axioms Gtz.corner_bothLight_dual_trace_floor
+
+-- Gtz/Wave/ErasedEnergyLedger.lean -- the witness pin, the erased energy
+-- and its two-sided weight control, the positive kxx of the both-light
+-- cell, the weight-polynomial lambda caps, and the Cayley adjugate form
+#print axioms Gtz.corner_erased_outside_energy_pin
+#print axioms Gtz.corner_erased_energy_eq
+#print axioms Gtz.corner_erased_energy_cap
+#print axioms Gtz.corner_erased_energy_floor
+#print axioms Gtz.corner_bothLight_kxx_pos
+#print axioms Gtz.corner_lambda_weight_cap
+#print axioms Gtz.corner_bothLight_lambda_terms_cap
+#print axioms Gtz.corner_erased_adjugate_cayley
 
 -- Gtz/Wave/InvariantBudgets.lean -- the conservation laws of the tax
 -- currencies: the Parseval moments, the wedge budget, the bracket budget
