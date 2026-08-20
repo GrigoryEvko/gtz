@@ -1302,6 +1302,7 @@ import Gtz.Wave.ShellAnchor
 import Gtz.Wave.TransverseFloor
 import Gtz.Wave.PencilWiring
 import Gtz.Wave.ErasedAtomSpectrum
+import Gtz.Wave.InvariantBudgets
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36390,6 +36391,15 @@ run_cmd do
 #print axioms Gtz.bothLight_y_floor_iff_z_floor
 #print axioms Gtz.corner_oneAxisZero_weightedComplement_eigen
 #print axioms Gtz.corner_oneAxisZero_outsideDual_reading
+
+-- Gtz/Wave/InvariantBudgets.lean -- the conservation laws of the tax
+-- currencies: the Parseval moments, the wedge budget, the bracket budget
+#print axioms Gtz.trace_atomMatrix_mul_three
+#print axioms Gtz.parseval_pairing_sq_total
+#print axioms Gtz.parseval_pairing_cycle_total
+#print axioms Gtz.wedge_mass_budget
+#print axioms Gtz.tripleBracket_sq_gram
+#print axioms Gtz.bracket_budget
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
