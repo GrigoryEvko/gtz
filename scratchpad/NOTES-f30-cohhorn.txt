@@ -675,3 +675,52 @@ positivity refutation and the top-k minor rule).  Both mirror coh13.jl's
 construction bit for bit -- same sampler, same root-find, same eigs3 -- per the
 campaign rule that a verifier must reproduce the optimizer's construction
 choices before its numbers mean anything.
+
+36. STEP (3) ATTEMPTED: BOTH NAMED INSTRUMENTS MEASURED, ONE REFUTED
+----------------------------------------------------------------------
+(coh17.jl / coh18.jl, 670102 failing-branch points, 2010306 repaired triples --
+the three planes through e* = argmax principal minor.)
+
+(a) THE M-MATRIX PRODUCER DOES NOT TRANSFER.  REFUTED, and cleanly:
+      the repaired gap is a Z-MATRIX in its complement's dual frame  0.0000%
+      Z-pattern holds AND the triple dominates                       0.0000%
+    Section 6(ii) said the HIGH/MID gaps "are NOT Z-matrices"; this measures it
+    at the exact object step (3) needs, over two million triples, at a clean
+    zero.  THE STRUCTURAL REASON: the complement's gap is a Z-matrix because of
+    the horn's SIGN RIGIDITY (section 2) -- every column of Gamma has one + and
+    one -, which forces the three dual pairings negative.  A repaired triple's
+    complement is {two inside atoms, one outside atom}, a MIXED set to which
+    that sign argument does not apply.  So this is not a near miss to be
+    repaired; the mechanism is absent.  DO NOT retry the producer here in any
+    dual frame of this kind.
+    (Side reading: the congruence agrees with true domination only 84.34%,
+    because det N = [pqr]^2 vanishes when the mixed complement is coplanar.  A
+    congruence built on a mixed complement is not even faithful.)
+
+(b) THE CONTRACTION TAX IS SOUND BUT PARTIAL.  Measured:
+      per repaired triple:  truly dominates            47.9657%
+      per repaired triple:  contraction tax fires      21.2588%
+      tax fires AND dominates                          21.2588%  <- zero false
+                                                       positives, as a theorem
+                                                       demands
+      per branch point:  SOME triple through e* dominates   99.9109%
+      per branch point:  SOME triple has the tax firing     61.7701%
+    So the tax certifies 61.77% of the failing branch and the remaining 38.14%
+    dominates without any landed instrument seeing it.  The tax is the best
+    available and it is not enough.
+
+37. THE HONEST STATE OF STEP (3)
+---------------------------------
+Steps (1) and (2) are DONE and spectral-free (sections 30-32).  Step (3) is
+open, and after this round the obstruction is sharper than "not yet proved":
+  * the repair identity controls the repaired gap ALONG ONE DIRECTION only,
+    while domination is positive definiteness in ALL directions -- necessary,
+    not sufficient (repay_threshold_of_dominates is exactly that necessary
+    condition, landed);
+  * the M-matrix producer is structurally unavailable (36a);
+  * the contraction tax covers 61.77% (36b).
+A THIRD instrument is genuinely required.  The remaining named candidate not yet
+tried on this object is the inverse-free Gram chart -- every gap determinant as
+a polynomial in six dot products -- which would let the repaired triple's
+domination be attacked as a Sylvester sign system rather than through a frame.
+That is where I would send the next round.
