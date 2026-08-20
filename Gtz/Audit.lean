@@ -1300,6 +1300,7 @@ import Gtz.Wave.BothLightCoreBound
 import Gtz.Wave.SecondInvariantLedger
 import Gtz.Wave.ShellAnchor
 import Gtz.Wave.TransverseFloor
+import Gtz.Wave.PencilWiring
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36362,6 +36363,17 @@ run_cmd do
 #print axioms Gtz.posDef_frame_reading_le
 #print axioms Gtz.seventh_floor_energy
 #print axioms Gtz.transverse_floor
+
+-- Gtz/Wave/PencilWiring.lean -- the pencil chart congruence: the ambient
+-- frame caps and the transverse floor in ambient corner terms
+#print axioms Gtz.congr_atomMatrix
+#print axioms Gtz.posDef_congruence
+#print axioms Gtz.inv_congr_inv
+#print axioms Gtz.parseval_weight_leverage_le_one
+#print axioms Gtz.corner_trace_identity
+#print axioms Gtz.corner_scale_cap
+#print axioms Gtz.corner_bothLight_transverse_floor
+#print axioms Gtz.corner_bothLight_transverse_floor_of_corner
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
