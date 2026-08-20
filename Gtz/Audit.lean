@@ -1285,6 +1285,7 @@ import Gtz.Wave.CrossLedgerRigidity
 import Gtz.Wave.ReadingMatrixRelation
 import Gtz.Wave.HeavyInsideDeterminantForm
 import Gtz.Wave.CoweightedMemberLedger
+import Gtz.Wave.FourSetTetrahedralFoil
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36297,6 +36298,12 @@ run_cmd do
 #print axioms Gtz.adjugate_cross_reading
 #print axioms Gtz.cross_quadForm_eq_readingGram
 #print axioms Gtz.coweighted_member_det_reading_ledger
+
+-- Gtz/Wave/FourSetTetrahedralFoil.lean -- the four-set alone carries no
+-- obstruction: a PD gap with all member floors strict is realizable
+#print axioms Gtz.tetraFoil_gap_posDef
+#print axioms Gtz.tetraFoil_reading
+#print axioms Gtz.fourSet_posDef_gap_all_floors_realizable
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the

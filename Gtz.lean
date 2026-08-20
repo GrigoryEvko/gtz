@@ -6374,3 +6374,4 @@ import Gtz.Wave.CrossLedgerRigidity
 import Gtz.Wave.ReadingMatrixRelation
 import Gtz.Wave.HeavyInsideDeterminantForm
 import Gtz.Wave.CoweightedMemberLedger
+import Gtz.Wave.FourSetTetrahedralFoil
