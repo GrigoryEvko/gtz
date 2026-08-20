@@ -1267,6 +1267,7 @@ import Gtz.Wave.OneAxisZeroAnchorCaps
 import Gtz.Wave.OutsideTriadDeterminant
 import Gtz.Wave.AnchorInverseDomination
 import Gtz.Wave.HeavyInsideCapGap
+import Gtz.Wave.OneAxisZeroDowndateOdds
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36116,3 +36117,19 @@ run_cmd do
 #print axioms Gtz.corner_oneAxisZero_heavyInside_tie_det_floor
 #print axioms Gtz.corner_oneAxisZero_erased_overRead
 #print axioms Gtz.corner_oneAxisZero_erased_overRead_strict
+
+-- Gtz/Wave/OneAxisZeroDowndateOdds.lean -- the downdate floor of the anchor,
+-- the odds-determinant floor, the sharpened heavy-inside tie condition, and
+-- the cell factorization of the coverage residual
+#print axioms Gtz.trace_inv_mul_det_eq_trace_adjugate
+#print axioms Gtz.trace_adjugate_add_atomMatrix
+#print axioms Gtz.det_nonpos_of_not_posDef_of_add_atomMatrix_posDef
+#print axioms Gtz.corner_oneAxisZero_heavyInside_failedSet_det_nonpos
+#print axioms Gtz.corner_oneAxisZero_heavyInside_outsideGap_det_nonpos
+#print axioms Gtz.corner_oneAxisZero_tie_downdate_floor
+#print axioms Gtz.corner_oneAxisZero_tie_downdate_floor_cap
+#print axioms Gtz.corner_oneAxisZero_heavyInside_odds_det_floor
+#print axioms Gtz.corner_oneAxisZero_heavyInside_isTie_iff_downdateOdds
+#print axioms Gtz.oneAxisZeroPairCoverage_iff_cellResiduals
+#print axioms Gtz.oneAxisZeroWitness_oddsDet_fails
+#print axioms Gtz.oneAxisZeroWitness_not_isTie_by_oddsDet

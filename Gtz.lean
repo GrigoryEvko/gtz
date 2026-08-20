@@ -6356,3 +6356,4 @@ import Gtz.Wave.OneAxisZeroAnchorCaps
 import Gtz.Wave.OutsideTriadDeterminant
 import Gtz.Wave.AnchorInverseDomination
 import Gtz.Wave.HeavyInsideCapGap
+import Gtz.Wave.OneAxisZeroDowndateOdds
