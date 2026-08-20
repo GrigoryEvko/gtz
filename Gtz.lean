@@ -6376,6 +6376,7 @@ import Gtz.Wave.KTwoCrossPrice
 import Gtz.Wave.KTwoChartIdentity
 import Gtz.Wave.ProjectionTaxLaw
 import Gtz.Wave.InvariantTaxTeeth
+import Gtz.Wave.WedgeBracketTax
 import Gtz.Wave.SixSetNullColumn
 import Gtz.Wave.PairMinorBridge
 import Gtz.Wave.ReadingMatrixRelation

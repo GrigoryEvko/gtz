@@ -130,6 +130,7 @@ theorem image_tripleSlots (a b c : Fin m) :
 
 /-! ## 3. The light set of a tie has at most two atoms, every size -/
 
+set_option linter.unusedSimpArgs false in
 /-- **AT MOST TWO ATOMS OF A TIE ARE LIGHT.**  For a uniform projection
 floor `lam` over all triples, a tie keeps the set `{c : t_c < lam}` at
 cardinality two or less: three light atoms would form a strictly dominating

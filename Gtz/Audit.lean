@@ -1287,6 +1287,7 @@ import Gtz.Wave.KTwoCrossPrice
 import Gtz.Wave.KTwoChartIdentity
 import Gtz.Wave.ProjectionTaxLaw
 import Gtz.Wave.InvariantTaxTeeth
+import Gtz.Wave.WedgeBracketTax
 import Gtz.Wave.SixSetNullColumn
 import Gtz.Wave.PairMinorBridge
 import Gtz.Wave.ReadingMatrixRelation
@@ -36497,6 +36498,17 @@ run_cmd do
 #print axioms Gtz.e2_nonneg_of_posSemidef
 #print axioms Gtz.posDef_subsetSum_of_invariant_light
 #print axioms Gtz.isTie_block_tax
+
+-- Gtz/Wave/WedgeBracketTax.lean -- the tie law in the invariant arena: the
+-- scaled-Gram laws, the block translations, and the wedge-bracket tax with
+-- its producer twin
+#print axioms Gtz.det_scaledGram
+#print axioms Gtz.e2_scaledGram
+#print axioms Gtz.projectionBlock_eq_scaledGram
+#print axioms Gtz.projectionBlock_det_eq
+#print axioms Gtz.projectionBlock_e2_eq
+#print axioms Gtz.isTie_wedgeBracket_tax
+#print axioms Gtz.posDef_subsetSum_of_wedgeBracket_light
 
 -- Gtz/Wave/SixSetNullColumn.lean -- the null column of the six-set
 -- projection: the complement resolve and the touching eigenvector of a
