@@ -1284,6 +1284,7 @@ import Gtz.Wave.MemberGramPushThrough
 import Gtz.Wave.CrossLedgerRigidity
 import Gtz.Wave.ReadingMatrixRelation
 import Gtz.Wave.HeavyInsideDeterminantForm
+import Gtz.Wave.CoweightedMemberLedger
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36279,6 +36280,19 @@ run_cmd do
 #print axioms Gtz.gapDet_erase
 #print axioms Gtz.member_floor_iff_gapDet_erase_nonpos
 #print axioms Gtz.oneAxisZeroHeavyInsideResidual_of_determinants
+
+-- Gtz/Wave/CoweightedMemberLedger.lean -- the master identity, the
+-- co-annihilator fixed point, Cauchy-Binet at four atoms, and the
+-- determinant ledger of a subset
+#print axioms Gtz.det_sum_four_atomMatrix
+#print axioms Gtz.coweighted_member_sum_eq
+#print axioms Gtz.coweighted_member_det_law
+#print axioms Gtz.reading_defect_atoms
+#print axioms Gtz.reading_defect_probe
+#print axioms Gtz.coweighted_reading_fixed_point
+#print axioms Gtz.corner_tripleProduct_fixed_point
+#print axioms Gtz.det_mul_cross_quadForm
+#print axioms Gtz.coweighted_member_det_ge_gapDet
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the

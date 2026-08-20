@@ -6373,3 +6373,4 @@ import Gtz.Wave.MemberGramPushThrough
 import Gtz.Wave.CrossLedgerRigidity
 import Gtz.Wave.ReadingMatrixRelation
 import Gtz.Wave.HeavyInsideDeterminantForm
+import Gtz.Wave.CoweightedMemberLedger
