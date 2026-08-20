@@ -1283,6 +1283,7 @@ import Gtz.Wave.HeavyInsideResidualBridge
 import Gtz.Wave.MemberGramPushThrough
 import Gtz.Wave.CrossLedgerRigidity
 import Gtz.Wave.KTwoEraseSystem
+import Gtz.Wave.KTwoCrossPrice
 import Gtz.Wave.SixSetNullColumn
 import Gtz.Wave.PairMinorBridge
 import Gtz.Wave.ReadingMatrixRelation
@@ -36415,6 +36416,25 @@ run_cmd do
 #print axioms Gtz.k2_fiveThree_not_isTie_of_erase_levelTwo
 #print axioms Gtz.k2_fiveThree_wMass_gt_two_of_balanced
 #print axioms Gtz.k2_not_isTie_of_outside_parallel_nullDir
+
+-- Gtz/Wave/KTwoCrossPrice.lean -- the cross price of the two-zero stratum:
+-- the forbidden-triple determinant law, the per-atom excess cap, and the
+-- weighted cross-price of the silenced pair
+#print axioms Gtz.det_add_smul_atomMatrix
+#print axioms Gtz.det_add_atomMatrix_sub_two_atomMatrix_cross
+#print axioms Gtz.adjugate_mulVec_fixed
+#print axioms Gtz.cross_reading_at_fixed_unit
+#print axioms Gtz.det_add_atomMatrix_sub_two_fixed
+#print axioms Gtz.k2_gap_mulVec_nullDir_eq_zero
+#print axioms Gtz.k2_frame_mulVec_fixed
+#print axioms Gtz.k2_frame_transpose
+#print axioms Gtz.k2_frame_posDef
+#print axioms Gtz.k2_swapBase_posDef
+#print axioms Gtz.k2_avoiding_triple_normal_form
+#print axioms Gtz.k2_forbidden_det_eq
+#print axioms Gtz.k2_isTie_excess_le_cross
+#print axioms Gtz.k2_isTie_crossPrice
+#print axioms Gtz.k2_not_isTie_of_outside_parallel_all
 
 -- Gtz/Wave/SixSetNullColumn.lean -- the null column of the six-set
 -- projection: the complement resolve and the touching eigenvector of a
