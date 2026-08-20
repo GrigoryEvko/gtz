@@ -6382,3 +6382,4 @@ import Gtz.Wave.FourSetTetrahedralFoil
 import Gtz.Wave.AdjugateDowndateReadings
 import Gtz.Wave.CompoundProbeRelations
 import Gtz.Wave.BothLightCoreBound
+import Gtz.Wave.SecondInvariantLedger
