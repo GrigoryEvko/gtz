@@ -1276,6 +1276,7 @@ import Gtz.Wave.SeesawExchangeFloor
 import Gtz.Wave.WeightGapDeterminant
 import Gtz.Wave.AnchorTransportPairs
 import Gtz.Wave.MomentProbeRelations
+import Gtz.Wave.LedgerSharpSFloor
 import Gtz.Wave.CrossLedgerRigidity
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -36233,6 +36234,11 @@ run_cmd do
 #print axioms Gtz.inv_mul_atomMatrix_probe
 #print axioms Gtz.fourSet_inverse_moment_probe
 #print axioms Gtz.corner_oneAxisZero_erased_probe
+
+-- Gtz/Wave/LedgerSharpSFloor.lean -- the exact coweight ledger of the
+-- heavy-inside cell and the sharpened S-floor at the surviving inside atom
+#print axioms Gtz.corner_oneAxisZero_heavyInside_ledger_identity
+#print axioms Gtz.corner_oneAxisZero_heavyInside_sFloor_sharp
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
