@@ -570,4 +570,59 @@ theorem no_dominator_contains_mirror_pair (D : WeightedDesign 6 3)
   rw [hset]
   exact hdom
 
+/-! ## 9. The first-order content: the pinch at a fixed probe
+
+An order count settles which instruments can decide the last step.  Open the
+pair by `eps`.  Then the swap null form moves at FIRST order, `a' = O(eps)`,
+while the coupling, the misalignment and the wedge all move at SECOND
+order, `K = O(eps^2)`, `delta = O(eps^2)`, `w_pq = O(eps^2)`.  The ceiling
+`mu'^2 delta ≤ K` and the wedge bound are therefore tight at second order
+and cannot by themselves force `eps = 0`: they are homogeneous of the same
+degree as the quantity being determined.
+
+The obstruction the calibration LP finds is FIRST order.  The instrument
+that carries first-order content is the pinch read at a FIXED probe: the
+contact form `a_i(D)` is first order in the deviation, while the tie caps it
+by the coupling, which is second order.  Twelve such caps, one per fixture
+probe, are the exact polynomial form of the LP's twelve constraints — a
+conjunction, never a sum. -/
+
+/-- **THE PINCH AT A FIXED PROBE.**  At a tie, EVERY triple and EVERY unit
+probe with positive transverse coercivity obey
+
+  `(Sigma_{c in C}(g_c . v)^2 - 1) * mu ≤ |b|^2` ,
+
+with `b` the transverse part of the gap at the probe.  The left side is the
+contact form at a FIXED probe — first order in any deviation from a contact
+— and the right side is second order.  Instantiated at the twelve rational
+null vectors of the doubled fixture this is the exact polynomial form of the
+calibration's twelve first-order constraints, with no tangent-space object
+anywhere. -/
+theorem isTie_probe_pinch (D : WeightedDesign m k) (htie : IsTie D)
+    {C : Finset (Fin m)} (hcard : C.card = k) {v : Fin k → ℝ}
+    (hunit : v ⬝ᵥ v = 1) {mu : ℝ} (hmu : 0 < mu)
+    (hcoer : ∀ u : Fin k → ℝ, u ⬝ᵥ v = 0 →
+      mu * (u ⬝ᵥ u) ≤ u ⬝ᵥ ((subsetSum D C - 1) *ᵥ u)) :
+    (v ⬝ᵥ ((subsetSum D C - 1) *ᵥ v)) * mu
+      ≤ ((subsetSum D C - 1) *ᵥ v - (v ⬝ᵥ ((subsetSum D C - 1) *ᵥ v)) • v)
+        ⬝ᵥ ((subsetSum D C - 1) *ᵥ v
+          - (v ⬝ᵥ ((subsetSum D C - 1) *ᵥ v)) • v) := by
+  have hsymm : (subsetSum D C - 1)ᵀ = subsetSum D C - 1 := by
+    rw [Matrix.transpose_sub, Matrix.transpose_one]
+    congr 1
+    exact transpose_eq_of_isHermitian (subsetSum_isHermitian D C)
+  exact probe_coercivity_pinch hsymm hunit hmu hcoer (htie.2 C hcard)
+
+/-- The contact form of a triple at a probe, read in atom coordinates: the
+polynomial the twelve-inequality system constrains. -/
+theorem probe_contactForm_eq (D : WeightedDesign m k) (C : Finset (Fin m))
+    (v : Fin k → ℝ) (hunit : v ⬝ᵥ v = 1) :
+    v ⬝ᵥ ((subsetSum D C - 1) *ᵥ v) = (∑ c ∈ C, (D.atom c ⬝ᵥ v) ^ 2) - 1 := by
+  rw [Matrix.sub_mulVec, Matrix.one_mulVec, dotProduct_sub, hunit, subsetSum,
+    Matrix.sum_mulVec, dotProduct_sum]
+  congr 1
+  refine Finset.sum_congr rfl fun c _ => ?_
+  rw [atomMatrix_mulVec, dotProduct_smul, smul_eq_mul, dotProduct_comm]
+  ring
+
 end Gtz

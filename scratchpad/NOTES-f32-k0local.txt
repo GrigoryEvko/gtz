@@ -491,3 +491,56 @@ reach the target pair.
 C1-7 REMAINS: Case A closed exactly, Case B closed quantitatively, the
 polynomial probe system built and kernel-native, and the last decision open
 with this particular composition RULED OUT rather than untried.
+
+F32-15. ROUND 7: THE OTHER PROBES — DECIDED BY ORDER COUNTING
+==============================================================
+The coordinator's last live candidate was an upper bound on K from the
+probes at contacts OTHER than the one carrying the swap. VERDICT: NOT in
+the form I was seeking, and the reason is an order count, not a failure of
+search.
+
+THE ORDER COUNT. Open the pair by eps. Then
+    a'    = (g_q.w)^2 - (g_p.w)^2      = O(eps)     FIRST order
+    M'w   = (g_q.w)g_q - (g_p.w)g_p    = O(eps)
+    K     = |M'w|^2 - a'^2             = O(eps^2)   second order
+    delta = 1 - <w,w'>^2               = O(eps^2)   second order
+    w_pq  (the pair wedge)             = O(eps^2)   second order
+So my ceiling mu'^2 delta <= K is TIGHT at second order (both sides eps^2),
+and the wedge bound w_pq A^2 <= l_p tr(M')^2 delta likewise. EVERY
+INSTRUMENT I HOLD IS SECOND ORDER, homogeneous of the same degree as the
+quantity being determined; none of them can force eps = 0. Adding more
+second-order relations from other probes cannot change that. This also
+retro-explains the two dead candidates of F32-14: the trace budget matched
+the lower bound's order because it is the same second-order relation seen
+twice.
+
+WHAT DOES CARRY FIRST-ORDER CONTENT. The contact form at a FIXED probe.
+a_i(D) = sum_{c in C_i}(g_c . w_i)^2 - 1 is FIRST order in the deviation,
+while the tie caps it by the coupling, which is SECOND order. That mismatch
+of orders IS the obstruction the calibration LP finds - and it is now in
+kernel, exactly and polynomially:
+  isTie_probe_pinch   at a tie, every triple and every unit probe with
+    positive transverse coercivity obey  a(D) * mu <= |b(D)|^2 ,
+    left side first order, right side second order;
+  probe_contactForm_eq  reads the contact form in atom coordinates,
+    a(D) = sum_{c in C}(g_c . v)^2 - 1, the polynomial the system
+    constrains.
+Instantiated at the twelve rational null vectors of the fixture these ARE
+the LP's twelve first-order constraints, in exact polynomial form, with no
+tangent-space object anywhere. A CONJUNCTION, never a sum.
+
+THE HONEST RESIDUAL, AND IT IS NOW SHARP. The last step of C1-7 is: show
+that the twelve exact inequalities a_i(D) mu_i <= |b_i(D)|^2, together with
+Parseval and the simplex, are infeasible with the pair opened. That is a
+polynomial infeasibility over twelve constraints at fixed rational probes -
+the same shape as the corner arm's cell fights, and the corner arm's
+instruments apply. It is NOT a second-order estimate and no further
+second-order instrument will reach it.
+A CAVEAT I OWE THE AGGREGATION LANE: a Positivstellensatz certificate for
+that infeasibility is a nonnegative combination, i.e. a sum. The realness
+constraint says summed certificates collapse to field-blind identities.
+Here that is survivable ONLY because the field sensitivity of this arm sits
+in wedge_nonneg, which is OUTSIDE the twelve-inequality system - the system
+itself is field-blind and is allowed to be, since it is not the step that
+distinguishes R from C. That separation should be stated explicitly wherever
+the certificate is eventually used, or the realness audit will look wrong.
