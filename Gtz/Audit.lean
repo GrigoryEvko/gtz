@@ -1274,6 +1274,7 @@ import Gtz.Wave.ErasedDeflationFloor
 import Gtz.Wave.HeavyInsideTracePinch
 import Gtz.Wave.SeesawExchangeFloor
 import Gtz.Wave.WeightGapDeterminant
+import Gtz.Wave.AnchorTransportPairs
 import Gtz.Wave.CrossLedgerRigidity
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -36212,6 +36213,19 @@ run_cmd do
 #print axioms Gtz.corner_oneAxisZero_outside_slack_floor
 #print axioms Gtz.corner_oneAxisZero_bothLight_weightGap_positive_floor
 #print axioms Gtz.oneAxisZeroWitness_outside_det
+
+-- Gtz/Wave/AnchorTransportPairs.lean -- the anchor split, the reading
+-- transport, the transported pair system of the heavy-inside cell, the
+-- inverse moment identity, and the z-pair collapse onto the floors
+#print axioms Gtz.corner_anchor_insert_eq
+#print axioms Gtz.corner_anchor_eq_fourSet_add_atom
+#print axioms Gtz.corner_anchor_reading_transport
+#print axioms Gtz.corner_anchor_heavy_branch_iff
+#print axioms Gtz.corner_anchor_minor_branch_iff
+#print axioms Gtz.fourSet_inverse_moment_identity
+#print axioms Gtz.corner_oneAxisZero_heavyInside_isTie_iff_transportedPairs
+#print axioms Gtz.corner_anchor_zHeavy_false
+#print axioms Gtz.corner_anchor_zPair_iff_floor
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the

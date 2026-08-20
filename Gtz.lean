@@ -6363,4 +6363,5 @@ import Gtz.Wave.ErasedDeflationFloor
 import Gtz.Wave.HeavyInsideTracePinch
 import Gtz.Wave.SeesawExchangeFloor
 import Gtz.Wave.WeightGapDeterminant
+import Gtz.Wave.AnchorTransportPairs
 import Gtz.Wave.CrossLedgerRigidity
