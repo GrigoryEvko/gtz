@@ -6393,3 +6393,4 @@ import Gtz.Wave.PencilWiring
 import Gtz.Wave.ErasedAtomSpectrum
 import Gtz.Wave.DualFrameBudget
 import Gtz.Wave.InvariantBudgets
+import Gtz.Wave.KTwoCapSum

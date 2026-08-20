@@ -1304,6 +1304,7 @@ import Gtz.Wave.PencilWiring
 import Gtz.Wave.ErasedAtomSpectrum
 import Gtz.Wave.DualFrameBudget
 import Gtz.Wave.InvariantBudgets
+import Gtz.Wave.KTwoCapSum
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36409,6 +36410,15 @@ run_cmd do
 #print axioms Gtz.wedge_mass_budget
 #print axioms Gtz.tripleBracket_sq_gram
 #print axioms Gtz.bracket_budget
+
+-- Gtz/Wave/KTwoCapSum.lean -- the cap-sum collapse of the (5,3) two-zero
+-- corner: td*CapD + CapE = -TGT, the mirror WLOG, and the corner discharge
+-- conditional on the half-chart target positivity
+#print axioms Gtz.k2Chart_capSum_identity
+#print axioms Gtz.k2Chart_caps_force_target_nonpos
+#print axioms Gtz.k2ChartTarget_swap
+#print axioms Gtz.k2ChartDoubleQuotientCorner_of_targetPositivityHalf
+#print axioms Gtz.k2Chart_kill_of_targetPositivityHalf
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
