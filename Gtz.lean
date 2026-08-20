@@ -6406,3 +6406,6 @@ import Gtz.Wave.KOneAnchor
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.PairMassRowLaw
 import Gtz.Wave.OppositeHornCoherentBranch
+import Gtz.Wave.KOneBracketLedger
+import Gtz.Wave.DiamondNeighborhoodLock
+import Gtz.Wave.CoherentHornDualFrame

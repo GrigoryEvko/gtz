@@ -1315,6 +1315,9 @@ import Gtz.Wave.PairMassRowLaw
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
+import Gtz.Wave.KOneAnchor
+import Gtz.Wave.KOneBracketLedger
+import Gtz.Wave.DiamondNeighborhoodLock
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36746,3 +36749,31 @@ run_cmd do
 #print axioms Gtz.corner_bracket_partition
 #print axioms Gtz.corner_inside_pair_wedge_eq
 #print axioms Gtz.corner_one_le_inside_pair_wedge
+#print axioms Gtz.det_shift_one
+#print axioms Gtz.det_tripleSum_eq_bracket_sq
+#print axioms Gtz.posSemidef_trace_nonneg
+#print axioms Gtz.dominator_bracket_floor
+#print axioms Gtz.dominator_bracket_floor_add_trace
+#print axioms Gtz.corankOne_bracket_sq_eq
+#print axioms Gtz.pairAnchor_transverse_split
+#print axioms Gtz.pairAnchor_bracket_mirror
+#print axioms Gtz.pairAnchor_bracket_master
+#print axioms Gtz.kOne_two_lt_leverageSum
+#print axioms Gtz.kOne_transverse_pos
+#print axioms Gtz.kOne_pair_weight_cap_of_null
+#print axioms Gtz.kOne_bracket_weight_cap
+#print axioms Gtz.kOne_outside_null_mass
+#print axioms Gtz.kOne_exists_strict_refusal
+#print axioms Gtz.kOne_lightest_live_pair_weight_bound
+
+-- the two-probe lock: Case A of K0 local rigidity, exact (fork 32)
+#print axioms Gtz.nullShift_form_floor
+#print axioms Gtz.nullShift_form_ceiling
+#print axioms Gtz.nullShift_eq_smul_of_form_eq_zero
+#print axioms Gtz.swap_null_bilinear_lock
+#print axioms Gtz.swap_null_gap_lock
+#print axioms Gtz.reading_gap_floor_of_swapNulls
+#print axioms Gtz.hasParallelPair_of_swapNulls_reading_eq
+#print axioms Gtz.strict_gap_of_not_hasParallelPair
+#print axioms Gtz.nullShift_trace_nonneg
+#print axioms Gtz.wedge_le_misalignment_of_mirror_dominators
