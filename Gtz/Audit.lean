@@ -1308,6 +1308,7 @@ import Gtz.Wave.ErasedWitnessGram
 import Gtz.Wave.TripleGramChart
 import Gtz.Wave.ChartBracketTax
 import Gtz.Wave.TieGraphTrichotomy
+import Gtz.Wave.TieMantelBound
 import Gtz.Wave.DiamondNeighborhoodMirror
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
@@ -36483,6 +36484,17 @@ run_cmd do
 #print axioms Gtz.dominating_triple_bracket_sharp_iff
 #print axioms Gtz.corner_triple_gapDet_eq_zero
 #print axioms Gtz.corner_bracket_identity
+
+-- Gtz/Wave/TieMantelBound.lean -- the second invariant as the pair minor
+-- sum, the flat corner, and the Mantel bound of a tie at four heavy atoms
+#print axioms Gtz.secondInvariant_gap_eq_pairMinor_sum
+#print axioms Gtz.secondInvariant_smul_atomMatrix
+#print axioms Gtz.corner_pairMinor_sum_eq_zero
+#print axioms Gtz.corner_bracket_eq_leverageSum_sub_two
+#print axioms Gtz.mantel_four
+#print axioms Gtz.mem_admissibleEdges
+#print axioms Gtz.isTie_heavyFour_admissible_card_le_four
+#print axioms Gtz.isTie_heavyFour_two_inadmissible
 
 -- Gtz/Wave/InvariantBudgets.lean -- the conservation laws of the tax
 -- currencies: the Parseval moments, the wedge budget, the bracket budget

@@ -6397,6 +6397,7 @@ import Gtz.Wave.ErasedWitnessGram
 import Gtz.Wave.TripleGramChart
 import Gtz.Wave.ChartBracketTax
 import Gtz.Wave.TieGraphTrichotomy
+import Gtz.Wave.TieMantelBound
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
 import Gtz.Wave.BracketContractionTax
