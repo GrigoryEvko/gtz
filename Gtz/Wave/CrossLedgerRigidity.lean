@@ -192,6 +192,26 @@ theorem cross_reading_eq_zero_iff_mulVec_eq_zero {M : Matrix (Fin 3) (Fin 3) ℝ
   · intro hker
     rw [hker, dotProduct_zero]
 
+/-- **At a corank-one base the cross reading is parallelism modulo the null
+line.**  With `M` positive semidefinite and its kernel exactly the line through
+`v`, the ledger degenerates at `(p, q)` precisely when `p × q` is a multiple of
+`v`.  This is the exact form the split diamond exhibits: there `M` is the
+complement gap, semidefinite of corank one, and the degenerate pair is the
+doubled spine, whose cross product is zero and so trivially on the line. -/
+theorem cross_reading_eq_zero_iff_cross_mem_nullLine
+    {M : Matrix (Fin 3) (Fin 3) ℝ} (hpsd : M.PosSemidef) (hsymm : Mᵀ = M)
+    {v : Fin 3 → ℝ} (hv : M *ᵥ v = 0)
+    (hline : ∀ probe : Fin 3 → ℝ, M *ᵥ probe = 0 → ∃ s : ℝ, probe = s • v)
+    (p q : Fin 3 → ℝ) :
+    crossProduct p q ⬝ᵥ (M *ᵥ crossProduct p q) = 0
+      ↔ ∃ s : ℝ, crossProduct p q = s • v := by
+  rw [cross_reading_eq_zero_iff_mulVec_eq_zero hpsd hsymm p q]
+  constructor
+  · intro hker
+    exact hline _ hker
+  · rintro ⟨s, hs⟩
+    rw [hs, Matrix.mulVec_smul, hv, smul_zero]
+
 /-- **At a positive definite base the cross reading IS parallelism.**  The
 ledger degenerates at `(c, d)` exactly when the two atoms are parallel — the
 rigidity marker in its sharpest local form. -/

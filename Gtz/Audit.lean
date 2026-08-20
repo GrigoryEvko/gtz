@@ -36254,6 +36254,7 @@ run_cmd do
 #print axioms Gtz.cross_ledger
 #print axioms Gtz.cross_reading_eq_zero_of_parallel
 #print axioms Gtz.cross_reading_eq_zero_iff_mulVec_eq_zero
+#print axioms Gtz.cross_reading_eq_zero_iff_cross_mem_nullLine
 #print axioms Gtz.cross_reading_eq_zero_iff_parallel_of_posDef
 #print axioms Gtz.cross_ledger_le_of_isTie
 #print axioms Gtz.swapGapForm_eq_zero_of_unit_parallel
