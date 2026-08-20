@@ -205,4 +205,30 @@ theorem kOne_sharp_weight_cap_of_null (D : WeightedDesign 6 3)
     (kOne_pairAnchor D hxy hxz hyz hdominates hline.2.1 hax) hunit
     (kOne_transverse_pos D hxy hxz hyz hdominates hline hunit hax hbz)
 
+/-- **THE MIRROR-PAIR BRACKET DIFFERENCE, anchored form.**  Reading the
+general bracket law at two atoms over the SAME anchored pair and subtracting
+kills the shared pair's own contribution, leaving a pure reading-gap
+statement:
+
+  `[p,y,z]^2 - [q,y,z]^2 = A·(l_p - l_q) - (<p,g_y>^2 - <q,g_y>^2)
+                             - (<p,g_z>^2 - <q,g_z>^2)
+                             - (A-1)·((p.w)^2 - (q.w)^2)` .
+
+A second source of reading-gap information about the stratum, read against
+the two SHARED atoms rather than through a null probe.  The last term is the
+anchored correction: over a general shared pair it is absent, and here it is
+exactly the null-reading gap of the two probes. -/
+theorem pairAnchor_bracket_difference {gy gz p q w : Fin 3 → ℝ}
+    (hanchor : (atomMatrix gy + atomMatrix gz) *ᵥ w = w)
+    (hunit : w ⬝ᵥ w = 1) :
+    tripleBracket p gy gz ^ 2 - tripleBracket q gy gz ^ 2
+      = (leverageOf gy + leverageOf gz - 1) * (leverageOf p - leverageOf q)
+        - ((p ⬝ᵥ gy) ^ 2 - (q ⬝ᵥ gy) ^ 2)
+        - ((p ⬝ᵥ gz) ^ 2 - (q ⬝ᵥ gz) ^ 2)
+        - (leverageOf gy + leverageOf gz - 2)
+            * ((p ⬝ᵥ w) ^ 2 - (q ⬝ᵥ w) ^ 2) := by
+  rw [pairAnchor_bracket_general (g := p) hanchor hunit,
+    pairAnchor_bracket_general (g := q) hanchor hunit]
+  ring
+
 end Gtz
