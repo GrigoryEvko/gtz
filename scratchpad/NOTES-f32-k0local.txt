@@ -323,3 +323,70 @@ equality (equivalently delta = 0) at a perturbed tie; the gap lock says the
 two reading gaps are proportional, and the floor/ceiling sandwich both by
 delta, so the whole question is whether a tie can hold delta > 0 - which is
 exactly the LP infeasibility of F32-4, now needing its kernel form.
+
+F32-11. ROUND 4: CASE B CLOSED, AND THE COUPLING BOUND
+=======================================================
+3 more theorems in DiamondNeighborhoodLock.lean (13 total, 453 lines, all
+pins standard, zero sorries, builds 9354 exit 0).
+
+CASE B IS NOT A SEPARATE FIGHT. The swap pinch needs only that the swapped
+triple is NOT POSITIVE DEFINITE - which a tie supplies at EVERY triple -
+plus positive transverse coercivity, which the calibration gives at all
+twelve contacts (e2 > 0, e3 = 0). So the pinch covers refused and
+dominating swaps alike. What the DOMINATING case adds is the census lower
+bound, and the two together TRAP the reading gap:
+   reading_gap_trapped_of_isTie :  0 <= s  and  s * mu' <= K
+with s = (g_q.w)^2 - (g_p.w)^2 the reading gap and K = |b'|^2 the coupling
+energy. Lower half = census, upper half = pinch.
+
+THE DEFECT SPLITS BY PYTHAGORAS (swapDefect_eq_couplingSq_add_nullFormSq):
+at a UNIT probe the coupling is transverse to the probe, so
+   |(S_{C'}-1)w|^2 = K + s^2 .
+Exact, any size, no positivity.
+
+THE WEDGE IS BOUNDED BY THE COUPLING ALONE (wedge_le_coupling_of_isTie):
+   w_{pq} (g_q.w)^2 mu'^2 <= |g_p|^2 (K^2 + mu'^2 K) .
+The trapped gap eliminates the reading data entirely (s^2 mu'^2 <= K^2), so
+the pair wedge is controlled by the transverse coupling of the swapped gap
+at the calibrated coercivity. K = 0 forces the wedge to vanish, i.e. the
+parallel pair. THIS IS THE CASE-A/CASE-B UNIFIED QUANTITATIVE CLOSURE.
+
+STATE OF C1-7 AFTER THIS ROUND
+  Case A (swap dominates)  : CLOSED EXACTLY (reading equality is null
+                             sharing) and quantitatively (coupling bound).
+  Case B (swap refused)    : CLOSED quantitatively by the same pinch, with
+                             the calibrated coercivity floor.
+  Remaining               : the delta > 0 question, i.e. whether a tie can
+                             hold the two null lines apart. See F32-12.
+
+F32-12. WHY THE LP DOES NOT TRANSLATE MECHANICALLY (honest obstruction)
+========================================================================
+The coordinator's step 2 asks to turn the F32-4 Farkas certificate into a
+kernel linear_combination. I did NOT do this, and the reason is structural,
+not effort:
+  THE LP LIVES IN THE TANGENT SPACE, NOT IN THE DESIGN VARIETY. Its twelve
+  functionals are DERIVATIVES d(a_C) of the contact forms, its seven
+  equations are the DIFFERENTIATED Parseval and simplex constraints, and
+  its variables are perturbations (mu_c, dt_c). None of these objects
+  exists in the kernel today: there is no formalized tangent space of the
+  design variety, no derivative of subsetSum, and no statement that a
+  nearby tie yields an admissible tangent vector.
+  A rational Farkas certificate for a LINEAR system is indeed mechanical to
+  replay - but only once the linear system itself is a kernel object. Here
+  the certificate would have to be preceded by: (a) a definition of the
+  perturbation space, (b) the first-order expansion of a_C with an explicit
+  second-order remainder, (c) the fact that a tie near the fixture supplies
+  a vector in the admissible cone. Step (b) is the genuine analytic content
+  and it is exactly the epsilon bookkeeping the exact route was built to
+  avoid.
+  RECOMMENDED ALTERNATIVE, ALGEBRAIC AND KERNEL-NATIVE: the twelve contact
+  forms a_i(D) = sum_{c in C_i}(g_c.w_i)^2 - |w_i|^2 at the FIXTURE's twelve
+  rational null vectors w_i are POLYNOMIALS in the design, and at any tie
+  the probe pinch gives a_i(D) mu_i <= |b_i(D)|^2 for each. That is twelve
+  polynomial inequalities at fixed rational probes, with no tangent space
+  anywhere. The question is whether a Positivstellensatz combination of
+  those twelve (plus Parseval and the simplex) forces the wedge to zero.
+  This is the same shape as the corner arm's cell fights, it is
+  kernel-native, and it is where I would put the next effort. The
+  first-order LP is then not a step to translate but EVIDENCE that the
+  polynomial system is infeasible in the relevant directions.

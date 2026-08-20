@@ -347,4 +347,107 @@ theorem wedge_le_misalignment_of_mirror_dominators (D : WeightedDesign m 3)
           * (Matrix.trace (subsetSum D (insert q (C.erase p)) - 1) ^ 2
             * (1 - (w ⬝ᵥ w') ^ 2)) := mul_le_mul_of_nonneg_left hinner hlevnn
 
+/-! ## 6. Case B: the refused swap, and the unified coupling bound
+
+A refused swap has an indefinite gap, hence no null probe, so the lock of
+section 2 cannot reach it.  The swap pinch can: it needs only that the
+swapped triple is not positive definite, which a tie supplies at EVERY
+triple, plus a positive transverse coercivity — and the calibration puts
+that coercivity above zero at all twelve contacts of the fixture
+(`e₂ > 0` with `e₃ = 0` everywhere).
+
+Adding the census lower bound of a DOMINATING swap traps the reading gap in
+a two-sided interval, and the swap defect splits by Pythagoras into the
+coupling and the gap.  The wedge is then bounded by the coupling ALONE. -/
+
+/-- **THE DEFECT SPLITS.**  At a unit probe the swap defect is the coupling
+plus the squared reading gap — the coupling is transverse to the probe. -/
+theorem swapDefect_eq_couplingSq_add_nullFormSq (D : WeightedDesign m k)
+    {C : Finset (Fin m)} {p q : Fin m} (hp : p ∈ C) (hq : q ∉ C)
+    {w : Fin k → ℝ} (hwunit : w ⬝ᵥ w = 1)
+    (hnull : (subsetSum D C - 1) *ᵥ w = 0) :
+    ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w)
+        ⬝ᵥ ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w)
+      = swapCoupling D p q w ⬝ᵥ swapCoupling D p q w
+        + ((D.atom q ⬝ᵥ w) ^ 2 - (D.atom p ⬝ᵥ w) ^ 2) ^ 2 := by
+  have hv := swap_gap_mulVec_of_null D hp hq hnull
+  have hvw : ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w) ⬝ᵥ w
+      = (D.atom q ⬝ᵥ w) ^ 2 - (D.atom p ⬝ᵥ w) ^ 2 := by
+    rw [hv, sub_dotProduct, smul_dotProduct, smul_dotProduct, smul_eq_mul,
+      smul_eq_mul]
+    ring
+  have hcoup : swapCoupling D p q w
+      = ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w)
+        - ((D.atom q ⬝ᵥ w) ^ 2 - (D.atom p ⬝ᵥ w) ^ 2) • w := by
+    rw [swapCoupling, hv]
+  rw [hcoup]
+  simp only [sub_dotProduct, dotProduct_sub, dotProduct_smul, smul_dotProduct,
+    smul_eq_mul, hwunit]
+  rw [hvw, dotProduct_comm w ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w),
+    hvw]
+  ring
+
+/-- **THE TRAPPED READING GAP.**  At a tie whose swapped triple also weakly
+dominates, the reading gap is caught between zero and the coupling at the
+coercivity rate:
+
+  `0 ≤ (g_q·w)² − (g_p·w)²`   and   `((g_q·w)² − (g_p·w)²)·μ′ ≤ |b′|²` .
+
+The lower half is the census, the upper half is the pinch. -/
+theorem reading_gap_trapped_of_isTie (D : WeightedDesign m 3) (htie : IsTie D)
+    {C : Finset (Fin m)} (hcard : C.card = 3) {p q : Fin m}
+    (hp : p ∈ C) (hq : q ∉ C) {w : Fin 3 → ℝ} (hwunit : w ⬝ᵥ w = 1)
+    (hnull : (subsetSum D C - 1) *ᵥ w = 0) {mu' : ℝ} (hmu' : 0 < mu')
+    (hcoer : ∀ v : Fin 3 → ℝ, v ⬝ᵥ w = 0 →
+      mu' * (v ⬝ᵥ v) ≤ v ⬝ᵥ ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ v))
+    (hdom : Dominates D (insert q (C.erase p))) :
+    0 ≤ (D.atom q ⬝ᵥ w) ^ 2 - (D.atom p ⬝ᵥ w) ^ 2
+      ∧ ((D.atom q ⬝ᵥ w) ^ 2 - (D.atom p ⬝ᵥ w) ^ 2) * mu'
+          ≤ swapCoupling D p q w ⬝ᵥ swapCoupling D p q w := by
+  refine ⟨?_, swap_pinch_of_isTie D htie hcard hp hq hwunit hnull hmu' hcoer⟩
+  have hcensus := swap_reading_sq_le_of_dominates D hp hq hnull hdom
+  linarith
+
+/-- **THE WEDGE IS BOUNDED BY THE COUPLING ALONE.**  At a tie with a
+dominating swap, with `K = |b′|²` the swap coupling energy:
+
+  `w_{pq}·(g_q·w)²·μ′² ≤ |g_p|²·(K² + μ′²·K)` .
+
+The trapped gap eliminates the reading data entirely: the pair wedge is
+controlled by the transverse coupling of the swapped gap, at the calibrated
+coercivity.  `K = 0` forces the wedge to vanish, i.e. the parallel pair. -/
+theorem wedge_le_coupling_of_isTie (D : WeightedDesign m 3) (htie : IsTie D)
+    {C : Finset (Fin m)} (hcard : C.card = 3) {p q : Fin m}
+    (hp : p ∈ C) (hq : q ∉ C) {w : Fin 3 → ℝ} (hwunit : w ⬝ᵥ w = 1)
+    (hnull : (subsetSum D C - 1) *ᵥ w = 0) {mu' : ℝ} (hmu' : 0 < mu')
+    (hcoer : ∀ v : Fin 3 → ℝ, v ⬝ᵥ w = 0 →
+      mu' * (v ⬝ᵥ v) ≤ v ⬝ᵥ ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ v))
+    (hdom : Dominates D (insert q (C.erase p))) :
+    (leverageOf (D.atom p) * leverageOf (D.atom q) - (D.atom p ⬝ᵥ D.atom q) ^ 2)
+        * (D.atom q ⬝ᵥ w) ^ 2 * mu' ^ 2
+      ≤ leverageOf (D.atom p)
+        * ((swapCoupling D p q w ⬝ᵥ swapCoupling D p q w) ^ 2
+          + mu' ^ 2 * (swapCoupling D p q w ⬝ᵥ swapCoupling D p q w)) := by
+  obtain ⟨hlow, hhigh⟩ := reading_gap_trapped_of_isTie D htie hcard hp hq hwunit
+    hnull hmu' hcoer hdom
+  have hdefect := wedge_mul_reading_sq_le_swap_defect D hp hq hnull
+  have hsplit := swapDefect_eq_couplingSq_add_nullFormSq D hp hq hwunit hnull
+  have hlevnn : 0 ≤ leverageOf (D.atom p) := by
+    rw [leverageOf_eq_dotProduct]
+    exact dotProduct_self_nonneg _
+  have hKnn : 0 ≤ swapCoupling D p q w ⬝ᵥ swapCoupling D p q w :=
+    dotProduct_self_nonneg _
+  -- the squared gap is below `K²/μ′²`, so `μ′²·defect ≤ K² + μ′²K`
+  have hgapsq : ((D.atom q ⬝ᵥ w) ^ 2 - (D.atom p ⬝ᵥ w) ^ 2) ^ 2 * mu' ^ 2
+      ≤ (swapCoupling D p q w ⬝ᵥ swapCoupling D p q w) ^ 2 := by
+    have hs : 0 ≤ ((D.atom q ⬝ᵥ w) ^ 2 - (D.atom p ⬝ᵥ w) ^ 2) * mu' :=
+      mul_nonneg hlow hmu'.le
+    nlinarith [mul_self_le_mul_self hs hhigh]
+  have hdef : (((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w)
+        ⬝ᵥ ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w)) * mu' ^ 2
+      ≤ (swapCoupling D p q w ⬝ᵥ swapCoupling D p q w) ^ 2
+        + mu' ^ 2 * (swapCoupling D p q w ⬝ᵥ swapCoupling D p q w) := by
+    rw [hsplit]; nlinarith [hgapsq]
+  nlinarith [hdefect, hdef, hlevnn, sq_nonneg mu']
+
 end Gtz
