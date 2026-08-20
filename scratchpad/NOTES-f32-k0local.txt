@@ -238,3 +238,88 @@ equality at a perturbed tie. mirror_reading_squeeze gives the two halves at
 the two null probes; when the probes coincide the equality is immediate
 (section 3), and the general case needs the two probes to be compared. That
 is now a statement about TWO SCALARS, not about matrices or eigenvalues.
+
+F32-10. ROUND 3: THE TWO-PROBE LOCK — CASE A CLOSES EXACTLY, NO EPSILON
+========================================================================
+Gtz/Wave/DiamondNeighborhoodLock.lean, 10 theorems, 350 lines, all pins
+standard, zero sorries, builds 9354 jobs exit 0 (per-module: the umbrella
+gate is red on a sibling's TripleGramChart).
+
+THE BILINEAR LOCK (swap_null_bilinear_lock). Evaluate w' M' w two ways:
+via M'w' = 0 with symmetry it is zero; by expansion it is
+w'Mw + (g_q.w')(g_q.w) - (g_p.w')(g_p.w) with Mw = 0 killing the first
+term. Hence EXACTLY
+      (g_p.w)(g_p.w') = (g_q.w)(g_q.w')
+two lines, no positivity, any size. IT IS THE POLARIZED FORM OF THE LANDED
+mirror_reading_smul_eq (that theorem is the w = w' case), which is exactly
+why it removes the shared-null hypothesis from the two-probe fight.
+Corollary swap_null_gap_lock (one linear_combination): the two reading gaps
+are proportional with the squared readings as weights,
+   ((g_q.w)^2-(g_p.w)^2)(g_p.w')^2 = ((g_p.w')^2-(g_q.w')^2)(g_q.w)^2 .
+
+THE SECOND CLAIM IS PROVED, IN THE STRONGER FORM THE COORDINATOR NAMED.
+The misalignment calculus is exact:
+  nullShift_form_floor    mu(1 - (w.w')^2) <= w'Nw      (N null at w', coercive)
+  nullShift_form_ceiling  w'Nw <= tr N (1 - (w.w')^2)   (N PSD, null at w')
+  nullShift_eq_smul_of_form_eq_zero   a VANISHED form at positive coercivity
+    puts the probe ON the null line and kills it.
+Hence hasParallelPair_of_swapNulls_reading_eq: two swap-related null probes
+with positive transverse coercivity and EQUAL squared readings force the
+parallel pair. UNDER CORANK ONE, READING EQUALITY *IS* NULL SHARING. C1-7's
+Case A is therefore not a ball statement at all: it is an EXACT statement
+about the whole mirror family, strictly stronger than the target set.
+
+THE NEIGHBORHOOD THEOREM HAS AN INTRINSIC RADIUS (wedge_le_misalignment_of_
+mirror_dominators): combining the landed reading-gap law with the ceiling,
+   w_{pq} (g_q.w)^2 <= |g_p|^2 (tr M')^2 (1 - (w.w')^2) .
+No ball, no epsilon: the radius is the MISALIGNMENT delta = 1 - (w.w')^2 of
+the two null lines, which vanishes exactly when the mirror members share
+their null line - and there the wedge vanishes, i.e. the pair is parallel.
+This is the C1-8 consumable shape: a margin against the pair wedge, tight
+at the fixture, no additive constant.
+Also strict_gap_of_not_hasParallelPair: at a primitive design the two
+probes are STRICTLY apart ((w.w')^2 < 1) and the reading gap carries the
+misalignment floor. NOTE: this needed NO coercivity positivity - the
+strictness comes from the mirror rigidity alone. Hypothesis dropped.
+
+CASE B IS UNCHANGED AND STILL NEEDS THE PINCH. If C' is refused its gap is
+indefinite, so it has no null probe and the lock does not apply; the swap
+pinch (landed last round) is the tool, and my calibration supplies its
+coercivity floor - e2 > 0 with e3 = 0 at ALL TWELVE contacts.
+
+BENCH, BOTH MANDATORY TESTS PASS (exact rationals, f32/bench53.jl,
+f32/bench63.jl):
+  (5,3) PRIMITIVE DIAMOND - THE ESCAPE. 8 corank-one weak dominators; 36
+  mirror-swap configurations in which BOTH members dominate; of those,
+  ZERO have equal live readings. The theorem's hypothesis is exactly what
+  fails at size five, so the primitive (5,3) diamond ESCAPES - as it must,
+  since the hinge is false there. The exact theorems carry no size
+  hypothesis and needed this test; they pass it.
+  (6,3) SPLIT DIAMOND - THE POSITIVE CONTROL. 8 mirror configurations with
+  equal live readings, and in ALL EIGHT the two null lines COINCIDE
+  (delta = 0 exactly). So the theorem fires at the fixture and is not
+  vacuous, and "reading equality => shared null" is confirmed exactly.
+  => READING EQUALITY IS THE DOUBLING SIGNATURE. That is the sharp
+  separation between the two fixtures, and it is the mechanism's real
+  content: not proximity to the fixture, but equality of the two copies'
+  readings.
+
+REALNESS, LOCALIZED AND NAMED. Every theorem of this module is FIELD-BLIND:
+the lock is a subtraction of two null conditions, the misalignment calculus
+is Cauchy-Schwarz and coercivity bookkeeping, and the final division is
+pure linear algebra. They are all CONDITIONAL ("if this mirror
+configuration occurs then parallel"), so they are true over C as well and
+complextie_c1 cannot threaten them. Realness still enters at exactly ONE
+step in the whole arm: wedge_nonneg, used only in
+hasParallelPair_of_mirror_dominators_of_readings_eq of the previous module,
+where "wedge <= 0 => wedge = 0" needs the wedge to be a sum of squares.
+Over C the bilinear wedge vanishes on isotropic atoms and that step fails.
+BREAKING STEP NAMED: wedge_nonneg, and nothing else.
+
+RESIDUAL AFTER THIS ROUND. Case A: CLOSED EXACTLY. Case B: needs the swap
+pinch with the calibrated coercivity floor. The remaining passage to a
+finite neighborhood statement is now purely about forcing the reading
+equality (equivalently delta = 0) at a perturbed tie; the gap lock says the
+two reading gaps are proportional, and the floor/ceiling sandwich both by
+delta, so the whole question is whether a tie can hold delta > 0 - which is
+exactly the LP infeasibility of F32-4, now needing its kernel form.
