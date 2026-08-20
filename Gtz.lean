@@ -6394,5 +6394,7 @@ import Gtz.Wave.ErasedAtomSpectrum
 import Gtz.Wave.DualFrameBudget
 import Gtz.Wave.ErasedEnergyLedger
 import Gtz.Wave.ErasedWitnessGram
+import Gtz.Wave.TripleGramChart
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
+import Gtz.Wave.BracketContractionTax

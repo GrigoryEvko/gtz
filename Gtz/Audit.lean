@@ -1305,8 +1305,10 @@ import Gtz.Wave.ErasedAtomSpectrum
 import Gtz.Wave.DualFrameBudget
 import Gtz.Wave.ErasedEnergyLedger
 import Gtz.Wave.ErasedWitnessGram
+import Gtz.Wave.TripleGramChart
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
+import Gtz.Wave.BracketContractionTax
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36425,6 +36427,31 @@ run_cmd do
 #print axioms Gtz.corner_inside_leverage_sum
 #print axioms Gtz.corner_bothLight_cross_terms_cap
 
+-- Gtz/Wave/TripleGramChart.lean -- the inverse-free chart of an outside
+-- triple: the Gram, the witness map, the master adjugate polarization,
+-- and Parseval as one matrix identity in the chart
+#print axioms Gtz.tripleGram_eq_transpose_mul
+#print axioms Gtz.tripleWitness_eq_mulVec
+#print axioms Gtz.tripleColumns_mul_transpose
+#print axioms Gtz.tripleColumns_diagonal_mul_transpose
+#print axioms Gtz.tripleGram_transpose
+#print axioms Gtz.tripleGram_det_eq_bracket_sq
+#print axioms Gtz.tripleGram_trace
+#print axioms Gtz.tripleWitness_dotProduct
+#print axioms Gtz.tripleGram_mulVec_witness
+#print axioms Gtz.tripleGram_quadForm_witness
+#print axioms Gtz.tripleGram_adjugate_polarization
+#print axioms Gtz.tripleGram_adjugate_normalization
+#print axioms Gtz.tripleGram_adjugate_orthogonal
+#print axioms Gtz.corner_outside_atomSum
+#print axioms Gtz.corner_witness_normalization
+#print axioms Gtz.corner_witness_orthogonality
+#print axioms Gtz.corner_inside_witness_gram
+#print axioms Gtz.corner_erased_energy_witness
+#print axioms Gtz.parseval_tripleGram_identity
+#print axioms Gtz.tripleGram_det_eq_outside_det
+#print axioms Gtz.corner_chart_witness_pin
+
 -- Gtz/Wave/InvariantBudgets.lean -- the conservation laws of the tax
 -- currencies: the Parseval moments, the wedge budget, the bracket budget
 #print axioms Gtz.trace_atomMatrix_mul_three
@@ -36442,6 +36469,21 @@ run_cmd do
 #print axioms Gtz.k2ChartTarget_swap
 #print axioms Gtz.k2ChartDoubleQuotientCorner_of_targetPositivityHalf
 #print axioms Gtz.k2Chart_kill_of_targetPositivityHalf
+
+-- Gtz/Wave/BracketContractionTax.lean -- the triple block is a contraction,
+-- so its determinant is a quadratic floor: the bracket producer, the bracket
+-- tax of a tie, the light triple, the quarter law, and the contact lemma
+#print axioms Gtz.posSemidef_one_sub_projectionBlock
+#print axioms Gtz.det_projectionBlock_mul_normSq_le
+#print axioms Gtz.posDef_subsetSum_of_det_gt_weights
+#print axioms Gtz.posDef_subsetSum_of_bracket_gt_weights
+#print axioms Gtz.isTie_bracket_tax
+#print axioms Gtz.isTie_bracket_tax_combined
+#print axioms Gtz.blockFloor_ge_det
+#print axioms Gtz.exists_light_triple
+#print axioms Gtz.isTie_light_triple_bracket_cap
+#print axioms Gtz.isTie_sixThree_bracket_quarter
+#print axioms Gtz.blockEigen_one_of_supported_mem_range
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
