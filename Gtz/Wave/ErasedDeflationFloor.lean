@@ -707,4 +707,199 @@ theorem oneAxisZeroWitness_memberDet_five :
   norm_num [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
     Matrix.cons_val_two, Matrix.tail_cons]
 
+/-! ## 8. The heavy-erased reduction of the tie condition -/
+
+/-- **THE HEAVY-ERASED REDUCTION.**  On the heavy-inside cell, when one
+outside atom carries at least the whole erased energy, its floor is free and
+the tie condition collapses to the TWO floors of the other outside atoms:
+one of the ten raw pair clauses of the anchor leaves the system for
+nothing.  At the fork-21 survivor the heavy atom exists (`ξ²/kxx = 1.035`),
+so the residual fight there is a two-floor fight. -/
+theorem corner_oneAxisZero_heavyInside_isTie_iff_heavyErased
+    (D : WeightedDesign 6 3) {x y z : Fin 6}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    {lam : ℝ} (hlam : 0 < lam) {u : Fin 3 → ℝ} (hunit : u ⬝ᵥ u = 1)
+    (hgap : subsetSum D ({x, y, z} : Finset (Fin 6)) - 1 = lam • atomMatrix u)
+    (hax : D.atom x ⬝ᵥ u = 0) (haz : D.atom z ⬝ᵥ u ≠ 0)
+    (hnotz : ¬ (subsetSum D (insert z (({x, y, z} : Finset (Fin 6))ᶜ)) - 1).PosDef)
+    {d : Fin 6} (_hd : d ∈ (({x, y, z} : Finset (Fin 6))ᶜ))
+    (hheavy : D.atom x ⬝ᵥ (subsetSum D (({x, y, z} : Finset (Fin 6))ᶜ)
+          *ᵥ D.atom x) - 1
+        ≤ (D.atom d ⬝ᵥ D.atom x) ^ 2) :
+    IsTie D ↔ ∀ e ∈ (({x, y, z} : Finset (Fin 6))ᶜ), e ≠ d →
+      1 ≤ D.atom e ⬝ᵥ
+        ((subsetSum D (insert y (({x, y, z} : Finset (Fin 6))ᶜ)) - 1)⁻¹
+          *ᵥ D.atom e) := by
+  have hAy : (subsetSum D (insert y (({x, y, z} : Finset (Fin 6))ᶜ)) - 1).PosDef :=
+    (corner_oneAxisZero_fourSet_split D hxy hxz hyz hlam hunit hgap hax
+      haz).resolve_left hnotz
+  rw [corner_oneAxisZero_heavyInside_isTie_iff D hxy hxz hyz hlam hunit hgap
+    hax haz hnotz]
+  constructor
+  · intro hfloors e he _
+    exact hfloors e he
+  · intro htwo e he
+    by_cases hed : e = d
+    · rw [hed]
+      exact corner_oneAxisZero_erased_floor_free D (by norm_num) hxy hxz hyz
+        hlam.le hunit hgap hax hAy hheavy
+    · exact htwo e he hed
+
+/-! ## 9. The deflated moment rails of the four-set -/
+
+/-- **The deflated reading split**, definitional: every four-set reading is
+its deflated reading plus the erased share.  The identity that moves the
+floors into the deflated arena, losslessly. -/
+theorem corner_oneAxisZero_deflated_reading_split (D : WeightedDesign m 3)
+    (hm : 4 ≤ m) {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    {lam : ℝ} (hlam : 0 ≤ lam) {u : Fin 3 → ℝ} (hunit : u ⬝ᵥ u = 1)
+    (hgap : subsetSum D ({x, y, z} : Finset (Fin m)) - 1 = lam • atomMatrix u)
+    (hax : D.atom x ⬝ᵥ u = 0) (q : Fin 3 → ℝ) :
+    q ⬝ᵥ ((subsetSum D (insert y (({x, y, z} : Finset (Fin m))ᶜ)) - 1)⁻¹ *ᵥ q)
+      = q ⬝ᵥ (((subsetSum D (insert y (({x, y, z} : Finset (Fin m))ᶜ)) - 1)⁻¹
+            - (D.atom x ⬝ᵥ (subsetSum D (({x, y, z} : Finset (Fin m))ᶜ)
+                  *ᵥ D.atom x) - 1)⁻¹
+              • Matrix.vecMulVec (D.atom x) (D.atom x)) *ᵥ q)
+        + (q ⬝ᵥ D.atom x) ^ 2
+          / (D.atom x ⬝ᵥ (subsetSum D (({x, y, z} : Finset (Fin m))ᶜ)
+              *ᵥ D.atom x) - 1) := by
+  have hE := corner_oneAxisZero_fourSet_erased_energy_pos D hm hxy hxz hyz hlam
+    hunit hgap hax
+  rw [Matrix.sub_mulVec, dotProduct_sub, Matrix.smul_mulVec, dotProduct_smul,
+    smul_eq_mul, vecMulVec_mulVec_eq, dotProduct_smul, smul_eq_mul,
+    show D.atom x ⬝ᵥ q = q ⬝ᵥ D.atom x from dotProduct_comm _ _]
+  field_simp
+  ring
+
+/-- **THE DEFLATED OUTSIDE TOTAL.**  The three deflated outside readings of
+the four-set total exactly
+
+  `Σ_d q_dᵀD_y q_d = 2 + tr A_y⁻¹ − r_y(A_y) − 1/kxx` :
+
+the unweighted moment rail of the deflated floor system.  An identity given
+the four-set dominates — no tie. -/
+theorem corner_oneAxisZero_deflated_outside_total (D : WeightedDesign m 3)
+    (hm : 4 ≤ m) {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    {lam : ℝ} (hlam : 0 ≤ lam) {u : Fin 3 → ℝ} (hunit : u ⬝ᵥ u = 1)
+    (hgap : subsetSum D ({x, y, z} : Finset (Fin m)) - 1 = lam • atomMatrix u)
+    (hax : D.atom x ⬝ᵥ u = 0)
+    (hAy : (subsetSum D (insert y (({x, y, z} : Finset (Fin m))ᶜ)) - 1).PosDef) :
+    ∑ d ∈ (({x, y, z} : Finset (Fin m))ᶜ),
+        D.atom d ⬝ᵥ
+          (((subsetSum D (insert y (({x, y, z} : Finset (Fin m))ᶜ)) - 1)⁻¹
+              - (D.atom x ⬝ᵥ (subsetSum D (({x, y, z} : Finset (Fin m))ᶜ)
+                    *ᵥ D.atom x) - 1)⁻¹
+                • Matrix.vecMulVec (D.atom x) (D.atom x)) *ᵥ D.atom d)
+      = 2 + Matrix.trace (subsetSum D (insert y (({x, y, z} : Finset (Fin m))ᶜ))
+              - 1)⁻¹
+        - D.atom y ⬝ᵥ ((subsetSum D (insert y (({x, y, z} : Finset (Fin m))ᶜ))
+              - 1)⁻¹ *ᵥ D.atom y)
+        - (D.atom x ⬝ᵥ (subsetSum D (({x, y, z} : Finset (Fin m))ᶜ)
+              *ᵥ D.atom x) - 1)⁻¹ := by
+  classical
+  set A : Matrix (Fin 3) (Fin 3) ℝ :=
+    subsetSum D (insert y (({x, y, z} : Finset (Fin m))ᶜ)) - 1 with hA
+  set E : ℝ := D.atom x ⬝ᵥ (subsetSum D (({x, y, z} : Finset (Fin m))ᶜ)
+    *ᵥ D.atom x) - 1 with hEdef
+  have hdet : IsUnit A.det := isUnit_iff_ne_zero.mpr (ne_of_gt hAy.det_pos)
+  have hyK : y ∉ (({x, y, z} : Finset (Fin m))ᶜ) := by simp
+  have hsplit : ∀ d : Fin m,
+      D.atom d ⬝ᵥ ((A⁻¹ - E⁻¹ • Matrix.vecMulVec (D.atom x) (D.atom x))
+          *ᵥ D.atom d)
+        = D.atom d ⬝ᵥ (A⁻¹ *ᵥ D.atom d)
+          - E⁻¹ * (D.atom d ⬝ᵥ D.atom x) ^ 2 := by
+    intro d
+    rw [Matrix.sub_mulVec, dotProduct_sub, Matrix.smul_mulVec, dotProduct_smul,
+      smul_eq_mul, vecMulVec_mulVec_eq, dotProduct_smul, smul_eq_mul,
+      show D.atom x ⬝ᵥ D.atom d = D.atom d ⬝ᵥ D.atom x from dotProduct_comm _ _]
+    ring
+  rw [Finset.sum_congr rfl fun d _ => hsplit d, Finset.sum_sub_distrib,
+    ← Finset.mul_sum]
+  have htr : Matrix.trace (A⁻¹ * subsetSum D (({x, y, z} : Finset (Fin m))ᶜ))
+      = ∑ a ∈ (({x, y, z} : Finset (Fin m))ᶜ),
+          D.atom a ⬝ᵥ (A⁻¹ *ᵥ D.atom a) := by
+    rw [subsetSum, Matrix.mul_sum, Matrix.trace_sum]
+    exact Finset.sum_congr rfl fun a _ => trace_mul_atomMatrix A⁻¹ (D.atom a)
+  have hMo : subsetSum D (({x, y, z} : Finset (Fin m))ᶜ)
+      = A + 1 - atomMatrix (D.atom y) := by
+    rw [hA, subsetSum, subsetSum, Finset.sum_insert hyK]
+    abel
+  have houtside : ∑ d ∈ (({x, y, z} : Finset (Fin m))ᶜ),
+      D.atom d ⬝ᵥ (A⁻¹ *ᵥ D.atom d)
+      = 3 + Matrix.trace A⁻¹ - D.atom y ⬝ᵥ (A⁻¹ *ᵥ D.atom y) := by
+    have h := htr
+    rw [hMo, Matrix.mul_sub, Matrix.mul_add, Matrix.trace_sub, Matrix.trace_add,
+      Matrix.nonsing_inv_mul A hdet, Matrix.trace_one, Matrix.mul_one,
+      trace_mul_atomMatrix, Fintype.card_fin] at h
+    rw [← h]
+    norm_num
+  have hmass := corner_oneAxisZero_erased_mass_split D hxy hxz hyz hlam hunit
+    hgap hax
+  have hsum2 : ∑ d ∈ (({x, y, z} : Finset (Fin m))ᶜ), (D.atom d ⬝ᵥ D.atom x) ^ 2
+      = E + 1 := by
+    rw [hEdef]
+    linarith [hmass]
+  have hEpos : 0 < E := by
+    rw [hEdef]
+    exact corner_oneAxisZero_fourSet_erased_energy_pos D hm hxy hxz hyz hlam
+      hunit hgap hax
+  have hEE : E⁻¹ * (E + 1) = 1 + E⁻¹ := by
+    field_simp
+  rw [houtside, hsum2, hEE]
+  ring
+
+/-- **THE DEFLATED PARSEVAL.**  The full weighted trace of the deflated form
+is the inverse trace minus the inverse erased energy:
+
+  `Σ_c t_c g_cᵀD_y g_c = tr A_y⁻¹ − 1/kxx` ,
+
+because Parseval reads the erased direction at exactly one.  An identity —
+no tie, no positivity: the weighted moment rail of the deflated floor
+system. -/
+theorem corner_oneAxisZero_deflated_parseval (D : WeightedDesign m 3)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    {lam : ℝ} (hlam : 0 ≤ lam) {u : Fin 3 → ℝ} (hunit : u ⬝ᵥ u = 1)
+    (hgap : subsetSum D ({x, y, z} : Finset (Fin m)) - 1 = lam • atomMatrix u)
+    (hax : D.atom x ⬝ᵥ u = 0) :
+    ∑ c, D.weight c
+        * (D.atom c ⬝ᵥ
+          (((subsetSum D (insert y (({x, y, z} : Finset (Fin m))ᶜ)) - 1)⁻¹
+              - (D.atom x ⬝ᵥ (subsetSum D (({x, y, z} : Finset (Fin m))ᶜ)
+                    *ᵥ D.atom x) - 1)⁻¹
+                • Matrix.vecMulVec (D.atom x) (D.atom x)) *ᵥ D.atom c))
+      = Matrix.trace (subsetSum D (insert y (({x, y, z} : Finset (Fin m))ᶜ))
+            - 1)⁻¹
+        - (D.atom x ⬝ᵥ (subsetSum D (({x, y, z} : Finset (Fin m))ᶜ)
+              *ᵥ D.atom x) - 1)⁻¹ := by
+  classical
+  set A : Matrix (Fin 3) (Fin 3) ℝ :=
+    subsetSum D (insert y (({x, y, z} : Finset (Fin m))ᶜ)) - 1 with hA
+  set E : ℝ := D.atom x ⬝ᵥ (subsetSum D (({x, y, z} : Finset (Fin m))ᶜ)
+    *ᵥ D.atom x) - 1 with hEdef
+  have hterm : ∀ c : Fin m, D.weight c
+      * (D.atom c ⬝ᵥ ((A⁻¹ - E⁻¹ • Matrix.vecMulVec (D.atom x) (D.atom x))
+          *ᵥ D.atom c))
+      = D.weight c * (D.atom c ⬝ᵥ (A⁻¹ *ᵥ D.atom c))
+        - E⁻¹ * (D.weight c * (D.atom c ⬝ᵥ D.atom x) ^ 2) := by
+    intro c
+    rw [Matrix.sub_mulVec, dotProduct_sub, Matrix.smul_mulVec, dotProduct_smul,
+      smul_eq_mul, vecMulVec_mulVec_eq, dotProduct_smul, smul_eq_mul,
+      show D.atom x ⬝ᵥ D.atom c = D.atom c ⬝ᵥ D.atom x from dotProduct_comm _ _]
+    ring
+  rw [Finset.sum_congr rfl fun c _ => hterm c, Finset.sum_sub_distrib,
+    ← Finset.mul_sum]
+  have hfull : ∑ c, D.weight c * (D.atom c ⬝ᵥ (A⁻¹ *ᵥ D.atom c))
+      = Matrix.trace A⁻¹ := by
+    have htr : Matrix.trace (A⁻¹ * ∑ c, D.weight c • atomMatrix (D.atom c))
+        = ∑ c, D.weight c * (D.atom c ⬝ᵥ (A⁻¹ *ᵥ D.atom c)) := by
+      rw [Matrix.mul_sum, Matrix.trace_sum]
+      refine Finset.sum_congr rfl fun c _ => ?_
+      rw [mul_smul_comm, Matrix.trace_smul, trace_mul_atomMatrix, smul_eq_mul]
+    rw [← htr, D.isParseval, Matrix.mul_one]
+  have hxlev := corner_oneAxisZero_unit D _ (card_triple_eq hxy hxz hyz) hlam
+    hunit hgap (by simp : x ∈ ({x, y, z} : Finset (Fin m))) hax
+  have hxmass : ∑ c, D.weight c * (D.atom c ⬝ᵥ D.atom x) ^ 2 = 1 := by
+    rw [sum_weight_read_sq D (D.atom x), hxlev]
+  rw [hfull, hxmass, mul_one]
+
 end Gtz

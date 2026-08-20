@@ -36161,3 +36161,7 @@ run_cmd do
 #print axioms Gtz.oneAxisZeroWitness_memberDet_three
 #print axioms Gtz.oneAxisZeroWitness_memberDet_four
 #print axioms Gtz.oneAxisZeroWitness_memberDet_five
+#print axioms Gtz.corner_oneAxisZero_heavyInside_isTie_iff_heavyErased
+#print axioms Gtz.corner_oneAxisZero_deflated_reading_split
+#print axioms Gtz.corner_oneAxisZero_deflated_outside_total
+#print axioms Gtz.corner_oneAxisZero_deflated_parseval
