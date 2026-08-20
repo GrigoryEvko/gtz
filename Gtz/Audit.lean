@@ -1261,6 +1261,7 @@ import Gtz.Wave.CornerFramePair
 import Gtz.Wave.ExcludedAtomLedger
 import Gtz.Wave.OneAxisZeroFourSets
 import Gtz.Wave.OneAxisZeroRefusalBudget
+import Gtz.Wave.OneAxisZeroAnchorLaws
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36026,3 +36027,13 @@ run_cmd do
 #print axioms Gtz.corner_oneAxisZero_bothLight_isTie_iff
 #print axioms Gtz.corner_oneAxisZero_absurd
 #print axioms Gtz.oneAxisZeroPairCoverage_iff
+
+-- Gtz/Wave/OneAxisZeroAnchorLaws.lean -- the x-resolution, the coweighted reading cap,
+-- the per-atom tie floor, the relabelled collapse, and the cell dispatch
+#print axioms Gtz.corner_oneAxisZero_xOrthogonal
+#print axioms Gtz.corner_oneAxisZero_outside_xResolve
+#print axioms Gtz.corner_oneAxisZero_outside_xMass
+#print axioms Gtz.corner_oneAxisZero_coweight_reading_cap
+#print axioms Gtz.corner_oneAxisZero_tie_reading_floor
+#print axioms Gtz.corner_oneAxisZero_heavyInside_isTie_iff'
+#print axioms Gtz.corner_oneAxisZero_tie_cell_dispatch
