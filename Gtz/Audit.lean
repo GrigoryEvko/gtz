@@ -1322,6 +1322,7 @@ import Gtz.Wave.OppositeHornWedgeCap
 import Gtz.Wave.BracketPhaseRigidity
 import Gtz.Wave.BracketPluckerSyzygy
 import Gtz.Wave.ParallelPairFactorization
+import Gtz.Wave.KTwoXSplit
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
@@ -36620,6 +36621,12 @@ run_cmd do
 #print axioms Gtz.bracketMass_factorization
 #print axioms Gtz.bracketMass_factorization_of_parallel
 #print axioms Gtz.not_parallel_of_bracketMass_factorization_fails
+
+-- Gtz/Wave/KTwoXSplit.lean -- the plane angle decides which quotient floor
+-- does the work, so the corner needs ONE of them on the low-angle half and
+-- the swap transports the other
+#print axioms Gtz.k2ChartDoubleQuotientCorner_of_xHalf
+#print axioms Gtz.k2Chart_kill_of_xHalf
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
