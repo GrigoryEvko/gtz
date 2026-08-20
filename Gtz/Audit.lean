@@ -1268,6 +1268,7 @@ import Gtz.Wave.OutsideTriadDeterminant
 import Gtz.Wave.AnchorInverseDomination
 import Gtz.Wave.HeavyInsideCapGap
 import Gtz.Wave.OneAxisZeroDowndateOdds
+import Gtz.Wave.ErasedDeflationFloor
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36133,3 +36134,30 @@ run_cmd do
 #print axioms Gtz.oneAxisZeroPairCoverage_iff_cellResiduals
 #print axioms Gtz.oneAxisZeroWitness_oddsDet_fails
 #print axioms Gtz.oneAxisZeroWitness_not_isTie_by_oddsDet
+
+-- Gtz/Wave/ErasedDeflationFloor.lean -- the erased deflation of the surviving
+-- four-set, the free-floor classifier, the member determinant floors, and the
+-- pivot determinant floor
+#print axioms Gtz.psd_inv_deflation
+#print axioms Gtz.psd_inv_deflation_mulVec
+#print axioms Gtz.deflation_reading_sq_le
+#print axioms Gtz.deflated_gram_det_eq_zero
+#print axioms Gtz.corner_oneAxisZero_fourSet_erased_energy
+#print axioms Gtz.corner_oneAxisZero_fourSet_erased_energy_pos
+#print axioms Gtz.corner_oneAxisZero_erased_reading_floor
+#print axioms Gtz.corner_oneAxisZero_erased_floor_free
+#print axioms Gtz.corner_oneAxisZero_erased_mass_split
+#print axioms Gtz.corner_oneAxisZero_erased_two_heavy_bound
+#print axioms Gtz.subset_removal_det_ledger
+#print axioms Gtz.fourSet_member_det_total
+#print axioms Gtz.tie_fourSet_member_det_nonpos
+#print axioms Gtz.tie_fourSet_pivot_det_floor
+#print axioms Gtz.corner_oneAxisZero_heavyInside_member_det_floor
+#print axioms Gtz.corner_oneAxisZero_heavyInside_isTie_iff_memberDet
+#print axioms Gtz.corner_oneAxisZero_bothLight_member_det_floor
+#print axioms Gtz.corner_oneAxisZero_bothLight_isTie_iff_memberDet
+#print axioms Gtz.oneAxisZeroWitness_complement_det
+#print axioms Gtz.oneAxisZeroWitness_not_isTie_by_memberDet
+#print axioms Gtz.oneAxisZeroWitness_memberDet_three
+#print axioms Gtz.oneAxisZeroWitness_memberDet_four
+#print axioms Gtz.oneAxisZeroWitness_memberDet_five
