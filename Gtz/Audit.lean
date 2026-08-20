@@ -1282,6 +1282,7 @@ import Gtz.Wave.CappedSharpFloor
 import Gtz.Wave.HeavyInsideResidualBridge
 import Gtz.Wave.MemberGramPushThrough
 import Gtz.Wave.CrossLedgerRigidity
+import Gtz.Wave.ReadingMatrixRelation
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36260,6 +36261,17 @@ run_cmd do
 -- set are the diagonal of the inverse shifted member Gram
 #print axioms Gtz.matrix_pushThrough_inv
 #print axioms Gtz.member_reading_eq_gram_inv
+
+-- Gtz/Wave/ReadingMatrixRelation.lean -- the reading matrix is a generalized
+-- inverse of the weight defect, and its entries are the ambient ideal
+#print axioms Gtz.atoms_weightDefect_eq_gap
+#print axioms Gtz.readingMatrix_symm
+#print axioms Gtz.reading_matrix_generalized_inverse
+#print axioms Gtz.reading_relation_split
+#print axioms Gtz.reading_relation_diag
+#print axioms Gtz.reading_relation_member_diag
+#print axioms Gtz.reading_member_diag_floor
+#print axioms Gtz.corner_fourSet_member_diag_floor
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
