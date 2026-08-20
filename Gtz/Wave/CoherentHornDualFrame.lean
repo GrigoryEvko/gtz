@@ -538,4 +538,177 @@ theorem not_isTie_of_complement_bracket_beats (D : WeightedDesign 6 3) (C : Fins
     rw [hcompl]; exact card_triple_eq h12 h13 h23
   exact htie.2 _ hcard hpd
 
+/-! ## 9. The M-matrix producer -/
+
+/-- **A Z-PATTERN FORM WITH A POSITIVE VECTOR IS POSITIVE DEFINITE.**  A
+symmetric `3×3` matrix whose off-diagonal entries are nonpositive and which
+sends SOME strictly positive vector to a strictly positive vector is positive
+definite.  The proof is one scaled identity: against the weights `v` the
+quadratic form splits into the three row readings plus three nonpositive
+squares, so no eigenvalue and no diagonal dominance is ever named.  This is the
+M-matrix criterion, in the only size the campaign needs. -/
+theorem posDef_three_of_zPattern_of_posVector {gapForm : Matrix (Fin 3) (Fin 3) ℝ}
+    (hsymm : gapFormᵀ = gapForm)
+    (h01 : gapForm 0 1 ≤ 0) (h02 : gapForm 0 2 ≤ 0) (h12 : gapForm 1 2 ≤ 0)
+    {scale : Fin 3 → ℝ} (hv0 : 0 < scale 0) (hv1 : 0 < scale 1) (hv2 : 0 < scale 2)
+    (hr0 : 0 < gapForm 0 0 * scale 0 + gapForm 0 1 * scale 1 + gapForm 0 2 * scale 2)
+    (hr1 : 0 < gapForm 0 1 * scale 0 + gapForm 1 1 * scale 1 + gapForm 1 2 * scale 2)
+    (hr2 : 0 < gapForm 0 2 * scale 0 + gapForm 1 2 * scale 1 + gapForm 2 2 * scale 2) :
+    gapForm.PosDef := by
+  have hs10 : gapForm 1 0 = gapForm 0 1 := by
+    have h := congrFun (congrFun hsymm 0) 1
+    simpa only [Matrix.transpose_apply] using h
+  have hs20 : gapForm 2 0 = gapForm 0 2 := by
+    have h := congrFun (congrFun hsymm 0) 2
+    simpa only [Matrix.transpose_apply] using h
+  have hs21 : gapForm 2 1 = gapForm 1 2 := by
+    have h := congrFun (congrFun hsymm 1) 2
+    simpa only [Matrix.transpose_apply] using h
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr
+    ⟨isHermitian_of_transpose_eq hsymm, fun probe hprobe => ?_⟩
+  rw [star_trivial]
+  have hexp : probe ⬝ᵥ (gapForm *ᵥ probe)
+      = gapForm 0 0 * probe 0 ^ 2 + gapForm 1 1 * probe 1 ^ 2 + gapForm 2 2 * probe 2 ^ 2
+        + 2 * (gapForm 0 1 * (probe 0 * probe 1))
+        + 2 * (gapForm 0 2 * (probe 0 * probe 2))
+        + 2 * (gapForm 1 2 * (probe 1 * probe 2)) := by
+    simp only [dotProduct, Matrix.mulVec, Fin.sum_univ_three]
+    rw [hs10, hs20, hs21]
+    ring
+  -- the scaled identity: the form against the weights is the three row readings
+  -- plus three nonpositive squares
+  have hid : (scale 0 * scale 1 * scale 2) * (probe ⬝ᵥ (gapForm *ᵥ probe))
+      = probe 0 ^ 2 * ((scale 1 * scale 2)
+            * (gapForm 0 0 * scale 0 + gapForm 0 1 * scale 1 + gapForm 0 2 * scale 2))
+        + probe 1 ^ 2 * ((scale 0 * scale 2)
+            * (gapForm 0 1 * scale 0 + gapForm 1 1 * scale 1 + gapForm 1 2 * scale 2))
+        + probe 2 ^ 2 * ((scale 0 * scale 1)
+            * (gapForm 0 2 * scale 0 + gapForm 1 2 * scale 1 + gapForm 2 2 * scale 2))
+        - scale 2 * (gapForm 0 1 * (scale 1 * probe 0 - scale 0 * probe 1) ^ 2)
+        - scale 1 * (gapForm 0 2 * (scale 2 * probe 0 - scale 0 * probe 2) ^ 2)
+        - scale 0 * (gapForm 1 2 * (scale 2 * probe 1 - scale 1 * probe 2) ^ 2) := by
+    rw [hexp]; ring
+  have hneg0 : scale 2 * (gapForm 0 1 * (scale 1 * probe 0 - scale 0 * probe 1) ^ 2) ≤ 0 :=
+    mul_nonpos_of_nonneg_of_nonpos hv2.le (mul_nonpos_of_nonpos_of_nonneg h01 (sq_nonneg _))
+  have hneg1 : scale 1 * (gapForm 0 2 * (scale 2 * probe 0 - scale 0 * probe 2) ^ 2) ≤ 0 :=
+    mul_nonpos_of_nonneg_of_nonpos hv1.le (mul_nonpos_of_nonpos_of_nonneg h02 (sq_nonneg _))
+  have hneg2 : scale 0 * (gapForm 1 2 * (scale 2 * probe 1 - scale 1 * probe 2) ^ 2) ≤ 0 :=
+    mul_nonpos_of_nonneg_of_nonpos hv0.le (mul_nonpos_of_nonpos_of_nonneg h12 (sq_nonneg _))
+  have hrow0 : 0 ≤ probe 0 ^ 2 * ((scale 1 * scale 2)
+      * (gapForm 0 0 * scale 0 + gapForm 0 1 * scale 1 + gapForm 0 2 * scale 2)) :=
+    mul_nonneg (sq_nonneg _) (mul_nonneg (mul_pos hv1 hv2).le hr0.le)
+  have hrow1 : 0 ≤ probe 1 ^ 2 * ((scale 0 * scale 2)
+      * (gapForm 0 1 * scale 0 + gapForm 1 1 * scale 1 + gapForm 1 2 * scale 2)) :=
+    mul_nonneg (sq_nonneg _) (mul_nonneg (mul_pos hv0 hv2).le hr1.le)
+  have hrow2 : 0 ≤ probe 2 ^ 2 * ((scale 0 * scale 1)
+      * (gapForm 0 2 * scale 0 + gapForm 1 2 * scale 1 + gapForm 2 2 * scale 2)) :=
+    mul_nonneg (sq_nonneg _) (mul_nonneg (mul_pos hv0 hv1).le hr2.le)
+  have hscalepos : 0 < scale 0 * scale 1 * scale 2 := mul_pos (mul_pos hv0 hv1) hv2
+  -- some coordinate is nonzero, so its row reading is strictly positive
+  have hstrict : 0 < probe 0 ^ 2 * ((scale 1 * scale 2)
+        * (gapForm 0 0 * scale 0 + gapForm 0 1 * scale 1 + gapForm 0 2 * scale 2))
+      + probe 1 ^ 2 * ((scale 0 * scale 2)
+        * (gapForm 0 1 * scale 0 + gapForm 1 1 * scale 1 + gapForm 1 2 * scale 2))
+      + probe 2 ^ 2 * ((scale 0 * scale 1)
+        * (gapForm 0 2 * scale 0 + gapForm 1 2 * scale 1 + gapForm 2 2 * scale 2)) := by
+    obtain ⟨slot, hslot⟩ := Function.ne_iff.mp hprobe
+    fin_cases slot
+    · have hsq : 0 < probe 0 ^ 2 := by
+        have : probe 0 ≠ 0 := hslot
+        positivity
+      have : 0 < probe 0 ^ 2 * ((scale 1 * scale 2)
+          * (gapForm 0 0 * scale 0 + gapForm 0 1 * scale 1 + gapForm 0 2 * scale 2)) :=
+        mul_pos hsq (mul_pos (mul_pos hv1 hv2) hr0)
+      linarith
+    · have hsq : 0 < probe 1 ^ 2 := by
+        have : probe 1 ≠ 0 := hslot
+        positivity
+      have : 0 < probe 1 ^ 2 * ((scale 0 * scale 2)
+          * (gapForm 0 1 * scale 0 + gapForm 1 1 * scale 1 + gapForm 1 2 * scale 2)) :=
+        mul_pos hsq (mul_pos (mul_pos hv0 hv2) hr1)
+      linarith
+    · have hsq : 0 < probe 2 ^ 2 := by
+        have : probe 2 ≠ 0 := hslot
+        positivity
+      have : 0 < probe 2 ^ 2 * ((scale 0 * scale 1)
+          * (gapForm 0 2 * scale 0 + gapForm 1 2 * scale 1 + gapForm 2 2 * scale 2)) :=
+        mul_pos hsq (mul_pos (mul_pos hv0 hv1) hr2)
+      linarith
+  nlinarith [hid, hstrict, hneg0, hneg1, hneg2, hscalepos]
+
+/-! ## 10. The complement gap in the dual frame -/
+
+/-- The bilinear reading of a subset gap: the subset energies minus the pairing. -/
+theorem bilinear_subsetSum_sub_one (D : WeightedDesign m 3) (S : Finset (Fin m))
+    (probeLeft probeRight : Fin 3 → ℝ) :
+    probeLeft ⬝ᵥ ((subsetSum D S - 1) *ᵥ probeRight)
+      = (∑ a ∈ S, (probeLeft ⬝ᵥ D.atom a) * (probeRight ⬝ᵥ D.atom a))
+        - probeLeft ⬝ᵥ probeRight := by
+  rw [Matrix.sub_mulVec, dotProduct_sub, Matrix.one_mulVec, subsetSum,
+    Matrix.sum_mulVec, dotProduct_sum]
+  congr 1
+  refine Finset.sum_congr rfl fun a _ => ?_
+  rw [show atomMatrix (D.atom a) *ᵥ probeRight = (D.atom a ⬝ᵥ probeRight) • D.atom a from
+    vecMulVec_mulVec_eq _ _ _, dotProduct_smul, smul_eq_mul,
+    dotProduct_comm (D.atom a) probeRight]
+  ring
+
+/-- **THE Z-PATTERN OF THE COMPLEMENT GAP.**  At the coherent horn the complement's
+gap, read in the dual frame at two DIFFERENT planes, is the dual pairing of those
+planes scaled by the ODDS of the atom matched to the third:
+
+  `t_{d}·(n_e·(S_{Cᶜ}−1)·n_f) = (1 − t_{d})·(n_e·n_f)` .
+
+Both scales are strictly positive, so the entry carries EXACTLY THE SIGN of
+`n_e·n_f`.  With the three dual pairings negative the complement's gap is a
+Z-matrix in this frame, and `Gtz.posDef_three_of_zPattern_of_posVector` applies
+to it.  No other informative triple has this pattern. -/
+theorem coherent_complGap_offDiag (D : WeightedDesign 6 3) {x y z dyz dxz dxy : Fin 6}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (h12 : dyz ≠ dxz) (h13 : dyz ≠ dxy) (h23 : dxz ≠ dxy)
+    (hcompl : (({x, y, z} : Finset (Fin 6))ᶜ : Finset (Fin 6)) = {dyz, dxz, dxy})
+    (hzYZ : atomBracket D y z dyz = 0) (hzXZ : atomBracket D x z dxz = 0) :
+    D.weight dxy * (atomNormal D y z ⬝ᵥ
+        ((subsetSum D ((({x, y, z} : Finset (Fin 6))ᶜ : Finset (Fin 6))) - 1)
+          *ᵥ atomNormal D z x))
+      = (1 - D.weight dxy) * (atomNormal D y z ⬝ᵥ atomNormal D z x) := by
+  rw [hcompl]
+  have hbil := bilinear_subsetSum_sub_one D ({dyz, dxz, dxy} : Finset (Fin 6))
+    (atomNormal D y z) (atomNormal D z x)
+  rw [Finset.sum_insert (by simp [h12, h13]), Finset.sum_insert (by simp [h23]),
+    Finset.sum_singleton] at hbil
+  have hA : atomNormal D y z ⬝ᵥ D.atom dyz = 0 := by
+    rw [atomNormal_dot_atom]; exact hzYZ
+  have hB : atomNormal D z x ⬝ᵥ D.atom dxz = 0 := by
+    rw [atomNormal_dot_atom,
+      show atomBracket D z x dxz = -atomBracket D x z dxz from
+        tripleBracket_swapLeft _ _ _, hzXZ, neg_zero]
+  rw [hA, hB] at hbil
+  have hq := coherent_offDiag_single D hxy hxz hyz h12 h13 h23 hcompl hzYZ hzXZ
+  rw [hbil]
+  linear_combination hq
+
+/-- **THE DIAGONAL OF THE COMPLEMENT GAP.**  Its own matched atom is invisible to
+a plane's normal, so the diagonal entry is the two surviving slot readings minus
+the plane's wedge. -/
+theorem coherent_complGap_diag (D : WeightedDesign 6 3) {x y z dyz dxz dxy : Fin 6}
+    (h12 : dyz ≠ dxz) (h13 : dyz ≠ dxy) (h23 : dxz ≠ dxy)
+    (hcompl : (({x, y, z} : Finset (Fin 6))ᶜ : Finset (Fin 6)) = {dyz, dxz, dxy})
+    (hzYZ : atomBracket D y z dyz = 0) :
+    atomNormal D y z ⬝ᵥ
+        ((subsetSum D ((({x, y, z} : Finset (Fin 6))ᶜ : Finset (Fin 6))) - 1)
+          *ᵥ atomNormal D y z)
+      = (atomNormal D y z ⬝ᵥ D.atom dxz) ^ 2 + (atomNormal D y z ⬝ᵥ D.atom dxy) ^ 2
+        - atomNormal D y z ⬝ᵥ atomNormal D y z := by
+  rw [hcompl]
+  have hbil := bilinear_subsetSum_sub_one D ({dyz, dxz, dxy} : Finset (Fin 6))
+    (atomNormal D y z) (atomNormal D y z)
+  rw [Finset.sum_insert (by simp [h12, h13]), Finset.sum_insert (by simp [h23]),
+    Finset.sum_singleton] at hbil
+  have hA : atomNormal D y z ⬝ᵥ D.atom dyz = 0 := by
+    rw [atomNormal_dot_atom]; exact hzYZ
+  rw [hA] at hbil
+  rw [hbil]
+  ring
+
 end Gtz
