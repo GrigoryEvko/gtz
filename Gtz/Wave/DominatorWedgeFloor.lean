@@ -208,4 +208,155 @@ theorem misalignment_floor_of_pairBounds (D : WeightedDesign 6 3) {x y z : Fin 6
       mul_le_mul_of_nonneg_left hfY hsqZ]
   nlinarith [hunit, hcapX, hcapY, hcapZ]
 
+/-! ## 3. The sharpened floor -/
+
+/-- The trace of a weak dominator is at least the rank: the gap is positive
+semidefinite, so its trace is nonnegative. -/
+theorem dominator_trace_floor (D : WeightedDesign 6 3) {x y z : Fin 6}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hdominates : Dominates D ({x, y, z} : Finset (Fin 6))) :
+    3 ≤ leverageOf (D.atom x) + leverageOf (D.atom y) + leverageOf (D.atom z) := by
+  have htr := hdominates.trace_nonneg
+  rw [Matrix.trace_sub, Matrix.trace_one, Fintype.card_fin] at htr
+  have hsum : subsetSum D ({x, y, z} : Finset (Fin 6))
+      = atomMatrix (D.atom x) + atomMatrix (D.atom y) + atomMatrix (D.atom z) := by
+    rw [subsetSum, Finset.sum_insert (by simp [hxy, hxz]),
+      Finset.sum_insert (by simp [hyz]), Finset.sum_singleton]
+    abel
+  rw [hsum, Matrix.trace_add, Matrix.trace_add, trace_atomMatrix, trace_atomMatrix,
+    trace_atomMatrix] at htr
+  norm_num at htr
+  linarith
+
+/-- **THE SHARPENED BRACKET FLOOR.**  A weak dominator's squared bracket is at
+least its total leverage minus two:
+
+  `[xyz]² ≥ ℓ_x + ℓ_y + ℓ_z − 2` .
+
+The shift expansion reads `[C]²` as one plus the three invariants of the gap,
+and positive semidefiniteness signs all three; keeping the TRACE term rather
+than discarding it turns the floor `1` into `tr S_C − 2`.  The gain is exactly
+`tr S_C − 3 ≥ 0`, so this never loses against `Gtz.dominator_bracket_floor`
+and strictly improves it whenever the dominator carries any slack. -/
+theorem dominator_bracket_floor_sharp (D : WeightedDesign 6 3) {x y z : Fin 6}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hdominates : Dominates D ({x, y, z} : Finset (Fin 6))) :
+    leverageOf (D.atom x) + leverageOf (D.atom y) + leverageOf (D.atom z) - 2
+      ≤ atomBracket D x y z ^ 2 := by
+  classical
+  set G : Matrix (Fin 3) (Fin 3) ℝ := subsetSum D ({x, y, z} : Finset (Fin 6)) - 1
+    with hG
+  have hsum : subsetSum D ({x, y, z} : Finset (Fin 6))
+      = atomMatrix (D.atom x) + atomMatrix (D.atom y) + atomMatrix (D.atom z) := by
+    rw [subsetSum, Finset.sum_insert (by simp [hxy, hxz]),
+      Finset.sum_insert (by simp [hyz]), Finset.sum_singleton]
+    abel
+  have hdetbr : (subsetSum D ({x, y, z} : Finset (Fin 6))).det
+      = atomBracket D x y z ^ 2 := by
+    rw [hsum, det_tripleSum_eq_bracket_sq, atomBracket]
+  have hshift := det_shift_one G
+  have hone : G + 1 = subsetSum D ({x, y, z} : Finset (Fin 6)) := by rw [hG]; abel
+  rw [hone, hdetbr] at hshift
+  -- the three gap invariants are nonnegative
+  have hpsd : G.PosSemidef := hdominates
+  have htr : 0 ≤ Matrix.trace G := hpsd.trace_nonneg
+  have he2 : 0 ≤ ((Matrix.trace G) ^ 2 - Matrix.trace (G * G)) / 2 :=
+    e2_nonneg_of_posSemidef hpsd
+  have hdet : 0 ≤ G.det := hpsd.det_nonneg
+  -- the trace of the gap is the leverage total minus the rank
+  have htrG : Matrix.trace G
+      = leverageOf (D.atom x) + leverageOf (D.atom y) + leverageOf (D.atom z) - 3 := by
+    rw [hG, Matrix.trace_sub, Matrix.trace_one, Fintype.card_fin, hsum,
+      Matrix.trace_add, Matrix.trace_add, trace_atomMatrix, trace_atomMatrix,
+      trace_atomMatrix]
+    norm_num
+  have hbound : 1 + Matrix.trace G ≤ atomBracket D x y z ^ 2 := by
+    linarith [hshift, he2, hdet]
+  rw [htrG] at hbound
+  linarith [hbound]
+
+/-- **THE SHARPENED WEDGE FLOOR.**  Each inside pair of a weak dominator obeys
+
+  `w_{xy}·ℓ_z ≥ ℓ_x + ℓ_y + ℓ_z − 2` ,
+
+the leverage total minus two in place of the bare one. -/
+theorem dominator_inside_wedge_floor_sharp (D : WeightedDesign 6 3) {x y z : Fin 6}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hdominates : Dominates D ({x, y, z} : Finset (Fin 6))) :
+    leverageOf (D.atom x) + leverageOf (D.atom y) + leverageOf (D.atom z) - 2
+      ≤ (leverageOf (D.atom x) * leverageOf (D.atom y)
+        - atomPairing D x y ^ 2) * leverageOf (D.atom z) := by
+  have hfloor := dominator_bracket_floor_sharp D hxy hxz hyz hdominates
+  have hcs := tripleBracket_sq_le_wedge_mul_leverage (D.atom x) (D.atom y) (D.atom z)
+  rw [← atomBracket, ← atomPairing] at hcs
+  linarith [hfloor, hcs]
+
+/-- **THE SHARPENED MISALIGNMENT FLOOR.**  With the same per-pair ceilings, the
+aggregation returns
+
+  `e₁(ℓ) − 2 ≤ radius·e₂(ℓ)` ,
+
+so the misalignment is bounded below by `(e₁(ℓ) − 2)/e₂(ℓ)` in place of
+`1/e₂(ℓ)`.  Since a weak dominator has `e₁(ℓ) ≥ 3`, the gain factor is at least
+one and grows with the dominator's own slack — the lever on the cross-arm
+composition, whose coupling bound carries `e₂(ℓ)` in its denominator. -/
+theorem misalignment_floor_sharp_of_pairBounds (D : WeightedDesign 6 3)
+    {x y z : Fin 6} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hdominates : Dominates D ({x, y, z} : Finset (Fin 6)))
+    {bx by' bz radius : ℝ}
+    (hunit : bx ^ 2 + by' ^ 2 + bz ^ 2 = 1)
+    (hboundX : (leverageOf (D.atom x) * leverageOf (D.atom y)
+        - atomPairing D x y ^ 2) * bx ^ 2 ≤ leverageOf (D.atom y) * radius)
+    (hboundY : (leverageOf (D.atom y) * leverageOf (D.atom z)
+        - atomPairing D y z ^ 2) * by' ^ 2 ≤ leverageOf (D.atom z) * radius)
+    (hboundZ : (leverageOf (D.atom x) * leverageOf (D.atom z)
+        - atomPairing D x z ^ 2) * bz ^ 2 ≤ leverageOf (D.atom x) * radius) :
+    leverageOf (D.atom x) + leverageOf (D.atom y) + leverageOf (D.atom z) - 2
+      ≤ radius * (leverageOf (D.atom x) * leverageOf (D.atom y)
+        + leverageOf (D.atom x) * leverageOf (D.atom z)
+        + leverageOf (D.atom y) * leverageOf (D.atom z)) := by
+  set E : ℝ := leverageOf (D.atom x) + leverageOf (D.atom y)
+    + leverageOf (D.atom z) - 2 with hE
+  have hEpos : 1 ≤ E := by
+    have := dominator_trace_floor D hxy hxz hyz hdominates
+    rw [hE]; linarith
+  have hfZ : E ≤ (leverageOf (D.atom x) * leverageOf (D.atom y)
+      - atomPairing D x y ^ 2) * leverageOf (D.atom z) :=
+    dominator_inside_wedge_floor_sharp D hxy hxz hyz hdominates
+  have hfX : E ≤ (leverageOf (D.atom y) * leverageOf (D.atom z)
+      - atomPairing D y z ^ 2) * leverageOf (D.atom x) := by
+    have hperm : Dominates D ({y, z, x} : Finset (Fin 6)) := by
+      have hset : ({y, z, x} : Finset (Fin 6)) = ({x, y, z} : Finset (Fin 6)) := by
+        ext w; simp [or_comm, or_assoc, or_left_comm]
+      rw [hset]; exact hdominates
+    have h := dominator_inside_wedge_floor_sharp D hyz (Ne.symm hxy) (Ne.symm hxz) hperm
+    rw [hE]; linarith [h]
+  have hfY : E ≤ (leverageOf (D.atom x) * leverageOf (D.atom z)
+      - atomPairing D x z ^ 2) * leverageOf (D.atom y) := by
+    have hperm : Dominates D ({x, z, y} : Finset (Fin 6)) := by
+      have hset : ({x, z, y} : Finset (Fin 6)) = ({x, y, z} : Finset (Fin 6)) := by
+        ext w; simp [or_comm, or_assoc, or_left_comm]
+      rw [hset]; exact hdominates
+    have h := dominator_inside_wedge_floor_sharp D hxz hxy (Ne.symm hyz) hperm
+    rw [hE]; linarith [h]
+  have hsqX : 0 ≤ bx ^ 2 := sq_nonneg bx
+  have hsqY : 0 ≤ by' ^ 2 := sq_nonneg by'
+  have hsqZ : 0 ≤ bz ^ 2 := sq_nonneg bz
+  have hlx : 0 ≤ leverageOf (D.atom x) := by rw [leverageOf]; positivity
+  have hly : 0 ≤ leverageOf (D.atom y) := by rw [leverageOf]; positivity
+  have hlz : 0 ≤ leverageOf (D.atom z) := by rw [leverageOf]; positivity
+  have hcapX : E * bx ^ 2
+      ≤ leverageOf (D.atom y) * leverageOf (D.atom z) * radius := by
+    nlinarith [mul_le_mul_of_nonneg_left hboundX hlz,
+      mul_le_mul_of_nonneg_left hfZ hsqX]
+  have hcapY : E * by' ^ 2
+      ≤ leverageOf (D.atom z) * leverageOf (D.atom x) * radius := by
+    nlinarith [mul_le_mul_of_nonneg_left hboundY hlx,
+      mul_le_mul_of_nonneg_left hfX hsqY]
+  have hcapZ : E * bz ^ 2
+      ≤ leverageOf (D.atom x) * leverageOf (D.atom y) * radius := by
+    nlinarith [mul_le_mul_of_nonneg_left hboundZ hly,
+      mul_le_mul_of_nonneg_left hfY hsqZ]
+  nlinarith [hunit, hcapX, hcapY, hcapZ]
+
 end Gtz

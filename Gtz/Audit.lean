@@ -1321,6 +1321,7 @@ import Gtz.Wave.KOneAnchor
 import Gtz.Wave.KOneBracketLedger
 import Gtz.Wave.DiamondNeighborhoodLock
 import Gtz.Wave.OppositeHornTwoPoint
+import Gtz.Wave.OppositeHornCycleNoGo
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36528,6 +36529,10 @@ run_cmd do
 #print axioms Gtz.dominator_inside_pair_mass_floor
 #print axioms Gtz.dominator_no_inside_parallel
 #print axioms Gtz.misalignment_floor_of_pairBounds
+#print axioms Gtz.dominator_trace_floor
+#print axioms Gtz.dominator_bracket_floor_sharp
+#print axioms Gtz.dominator_inside_wedge_floor_sharp
+#print axioms Gtz.misalignment_floor_sharp_of_pairBounds
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
@@ -36807,3 +36812,10 @@ run_cmd do
 #print axioms Gtz.swapDefect_eq_couplingSq_add_nullFormSq
 #print axioms Gtz.reading_gap_trapped_of_isTie
 #print axioms Gtz.wedge_le_coupling_of_isTie
+#print axioms Gtz.dominates_probe_floor
+#print axioms Gtz.isTie_dominates_det_eq_zero
+#print axioms Gtz.isTie_dominates_probe_system
+#print axioms Gtz.misalignment_le_coupling_of_isTie
+#print axioms Gtz.three_pairProducts_not_all_neg
+#print axioms Gtz.corner_base_not_all_pairs_opposite
+#print axioms Gtz.corner_oppositeBase_third_pair_same_sign
