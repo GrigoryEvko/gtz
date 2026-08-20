@@ -1,5 +1,6 @@
 import Gtz.Wave.DiamondNeighborhoodMirror
 import Gtz.Wave.DominatorWedgeFloor
+import Gtz.Wave.TieGraphTrichotomy
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -829,5 +830,178 @@ theorem parallel_mirror_bracket_constraint (D : WeightedDesign m 3) (p q r s : F
   rcases this with h | h
   · exact absurd h hne
   · linarith [h]
+
+/-! ## 12. The ratio of a mirrored parallel pair is a sign
+
+The constraint of section 11 looks like an accident of the shared triple.
+It is not.  Substituting the bracket identity back into it, every term
+involving the exchanged atom cancels and what survives is
+
+  `(l_r - 1)(l_s - 1) - (g_r.g_s)^2 = 0` ,
+
+the PAIR GAP MINOR OF THE TWO SHARED ATOMS.  So a parallel pair whose ratio
+is not a sign forces the shared pair onto the admissibility boundary — and
+if the shared pair is admissible, the ratio IS a sign.
+
+That is the constraint the endgame had not spent: at a tie, a parallel pair
+carried by two dominating mirror triples with an admissible shared pair is
+an exact `+-1` doubling, exactly the fixture's configuration.  And a sign
+ratio makes the swap coupling vanish identically. -/
+
+/-- **THE SHARED PAIR IS FORCED TO THE ADMISSIBILITY BOUNDARY.**  A parallel
+pair with `rho^2 != 1`, carried by two mirror triples that both satisfy the
+bracket identity, forces the shared pair's gap minor to VANISH. -/
+theorem parallel_mirror_sharedPair_degenerate (D : WeightedDesign m 3)
+    (p q r s : Fin m)
+    (hP : atomBracket D p r s ^ 2
+      = leverageOf (D.atom p) + leverageOf (D.atom r) + leverageOf (D.atom s) - 2
+        + (pairGapMinor (D.atom p) (D.atom r) + pairGapMinor (D.atom p) (D.atom s)
+          + pairGapMinor (D.atom r) (D.atom s)))
+    (hQ : atomBracket D q r s ^ 2
+      = leverageOf (D.atom q) + leverageOf (D.atom r) + leverageOf (D.atom s) - 2
+        + (pairGapMinor (D.atom q) (D.atom r) + pairGapMinor (D.atom q) (D.atom s)
+          + pairGapMinor (D.atom r) (D.atom s)))
+    {ratio : ℝ} (hpar : D.atom q = ratio • D.atom p) (hratio : ratio ^ 2 ≠ 1) :
+    pairGapMinor (D.atom r) (D.atom s) = 0 := by
+  have hpin := parallel_mirror_bracket_constraint D p q r s hP hQ hpar hratio
+  simp only [pairGapMinor] at hP hpin ⊢
+  linarith [hP, hpin]
+
+/-- **THE RATIO IS A SIGN.**  If the shared pair is ADMISSIBLE — its gap
+minor does not vanish — then a parallel pair carried by two mirror triples
+that both satisfy the bracket identity has `rho^2 = 1`.
+
+This is the ratio constraint in its usable direction: at a tie, the only
+parallel pairs a mirrored dominating configuration admits are exact `+-1`
+doublings. -/
+theorem parallel_mirror_ratio_sq_eq_one (D : WeightedDesign m 3) (p q r s : Fin m)
+    (hP : atomBracket D p r s ^ 2
+      = leverageOf (D.atom p) + leverageOf (D.atom r) + leverageOf (D.atom s) - 2
+        + (pairGapMinor (D.atom p) (D.atom r) + pairGapMinor (D.atom p) (D.atom s)
+          + pairGapMinor (D.atom r) (D.atom s)))
+    (hQ : atomBracket D q r s ^ 2
+      = leverageOf (D.atom q) + leverageOf (D.atom r) + leverageOf (D.atom s) - 2
+        + (pairGapMinor (D.atom q) (D.atom r) + pairGapMinor (D.atom q) (D.atom s)
+          + pairGapMinor (D.atom r) (D.atom s)))
+    {ratio : ℝ} (hpar : D.atom q = ratio • D.atom p)
+    (hadm : pairGapMinor (D.atom r) (D.atom s) ≠ 0) :
+    ratio ^ 2 = 1 := by
+  by_contra hratio
+  exact hadm (parallel_mirror_sharedPair_degenerate D p q r s hP hQ hpar hratio)
+
+/-- **A SIGN RATIO KILLS THE COUPLING.**  With `rho^2 = 1` the parallel
+factorization of section 10 collapses: the swap coupling vanishes
+identically, at every probe.  This is the fixture's own configuration, and
+it is the unique parallel one at which the endgame's main instrument
+degenerates. -/
+theorem parallel_ratioOne_coupling_eq_zero (D : WeightedDesign m k)
+    {C : Finset (Fin m)} {p q : Fin m} (hp : p ∈ C) (hq : q ∉ C)
+    {w : Fin k -> ℝ} (hwunit : w ⬝ᵥ w = 1)
+    (hnull : (subsetSum D C - 1) *ᵥ w = 0)
+    {ratio : ℝ} (hpar : D.atom q = ratio • D.atom p) (hratio : ratio ^ 2 = 1) :
+    swapCoupling D p q w ⬝ᵥ swapCoupling D p q w = 0 := by
+  rw [coupling_parallel_factorization D hp hq hwunit hnull hpar, hratio]
+  ring
+
+/-! ## 13. The mirror condition, characterized
+
+The bracket identity is now a theorem, so sections 11 and 12 lose their
+hypotheses.  A word on the design-independence filter first, because the
+identity holds at EVERY dominator of a tie and that is exactly the shape
+that was blind in the syzygy attempt: the filter passes here because
+nothing below uses the identity ALONE.  Every use is a DIFFERENCE of two
+instances at two different triples, and a difference of identities at
+different triples is not design-independent — it carries the mirror
+structure, which is precisely the motion the constant was blind to.
+
+The section then closes the loop.  Section 3 bought the parallel pair from a
+SHARED null line; the ratio law buys the shared null line back from a sign
+ratio, and the two together make the mirror condition an EQUIVALENCE. -/
+
+/-- **THE MIRROR DIFFERENCE, UNCONDITIONALLY.**  At a tie, two dominating
+mirror triples obey the bracket difference with no hypothesis left over. -/
+theorem isTie_mirror_bracket_difference (D : WeightedDesign m 3) (htie : IsTie D)
+    {p q r s : Fin m} (hpr : p ≠ r) (hps : p ≠ s) (hrs : r ≠ s)
+    (hqr : q ≠ r) (hqs : q ≠ s)
+    (hdomP : Dominates D ({p, r, s} : Finset (Fin m)))
+    (hdomQ : Dominates D ({q, r, s} : Finset (Fin m))) :
+    atomBracket D p r s ^ 2 - atomBracket D q r s ^ 2
+      = (leverageOf (D.atom p) - leverageOf (D.atom q))
+          * (leverageOf (D.atom r) + leverageOf (D.atom s) - 1)
+        + ((D.atom q ⬝ᵥ D.atom r) ^ 2 - (D.atom p ⬝ᵥ D.atom r) ^ 2)
+        + ((D.atom q ⬝ᵥ D.atom s) ^ 2 - (D.atom p ⬝ᵥ D.atom s) ^ 2) :=
+  mirror_bracket_difference D p q r s
+    (dominating_triple_bracket_identity D htie hpr hps hrs hdomP)
+    (dominating_triple_bracket_identity D htie hqr hqs hrs hdomQ)
+
+/-- **THE RATIO OF A MIRRORED PARALLEL PAIR IS A SIGN, UNCONDITIONALLY.**
+At a tie, a parallel pair carried by two dominating mirror triples whose
+shared pair is admissible is an exact `+-1` doubling.
+
+This is the constraint the endgame had not spent, now with no hypothesis
+beyond the tie, the two dominations, and admissibility of the shared pair. -/
+theorem isTie_parallel_mirror_ratio_sq_eq_one (D : WeightedDesign m 3) (htie : IsTie D)
+    {p q r s : Fin m} (hpr : p ≠ r) (hps : p ≠ s) (hrs : r ≠ s)
+    (hqr : q ≠ r) (hqs : q ≠ s)
+    (hdomP : Dominates D ({p, r, s} : Finset (Fin m)))
+    (hdomQ : Dominates D ({q, r, s} : Finset (Fin m)))
+    {ratio : ℝ} (hpar : D.atom q = ratio • D.atom p)
+    (hadm : pairGapMinor (D.atom r) (D.atom s) ≠ 0) :
+    ratio ^ 2 = 1 :=
+  parallel_mirror_ratio_sq_eq_one D p q r s
+    (dominating_triple_bracket_identity D htie hpr hps hrs hdomP)
+    (dominating_triple_bracket_identity D htie hqr hqs hrs hdomQ) hpar hadm
+
+/-- **A SIGN RATIO RESTORES THE SHARED NULL LINE.**  If `g_q = rho*g_p` with
+`rho^2 = 1`, the swapped gap kills the SAME probe the original does — the
+exchange term collapses because `(rho^2 - 1)` does.  Exact, at every design,
+with no tie and no positivity. -/
+theorem parallel_ratioOne_swap_null (D : WeightedDesign m k)
+    {C : Finset (Fin m)} {p q : Fin m} (hp : p ∈ C) (hq : q ∉ C)
+    {w : Fin k -> ℝ} (hnull : (subsetSum D C - 1) *ᵥ w = 0)
+    {ratio : ℝ} (hpar : D.atom q = ratio • D.atom p) (hratio : ratio ^ 2 = 1) :
+    (subsetSum D (insert q (C.erase p)) - 1) *ᵥ w = 0 := by
+  rw [swap_gap_mulVec_of_null D hp hq hnull, hpar]
+  funext i
+  simp only [Pi.sub_apply, Pi.smul_apply, smul_dotProduct, smul_eq_mul, Pi.zero_apply]
+  linear_combination ((D.atom p ⬝ᵥ w) * D.atom p i) * hratio
+
+/-- **THE MIRROR CONDITION IS EXACTLY A SIGN RATIO.**  At a weak dominator's
+null probe that the exchanged member actually reads,
+
+  `the swap kills the probe too`  <->  `g_q = +-g_p` .
+
+Forward is the mirror identity of section 3, whose scaling factor squares to
+one the moment one dots it against the probe; backward is the collapse
+above.  So the shared-null hypothesis that bought the parallel pair is not
+an extra assumption at all — it is EQUIVALENT to the conclusion in its sharp
+form, with the ratio pinned to a sign. -/
+theorem mirror_null_iff_ratio_sq_one (D : WeightedDesign m k)
+    {C : Finset (Fin m)} {p q : Fin m} (hp : p ∈ C) (hq : q ∉ C)
+    {w : Fin k -> ℝ} (hnull : (subsetSum D C - 1) *ᵥ w = 0)
+    (hread : D.atom p ⬝ᵥ w ≠ 0) :
+    ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w = 0)
+      ↔ ∃ ratio : ℝ, D.atom q = ratio • D.atom p ∧ ratio ^ 2 = 1 := by
+  constructor
+  · intro hswap
+    have h := mirror_reading_smul_eq D hp hq hnull hswap
+    have hsq : (D.atom p ⬝ᵥ w) ^ 2 = (D.atom q ⬝ᵥ w) ^ 2 := by
+      have := congrArg (fun z : Fin k -> ℝ => z ⬝ᵥ w) h
+      simp only [smul_dotProduct, smul_eq_mul] at this
+      linarith [this]
+    have hqread : D.atom q ⬝ᵥ w ≠ 0 := by
+      intro h0
+      rw [h0] at hsq
+      exact hread (pow_eq_zero_iff two_ne_zero |>.mp (by linarith [hsq]))
+    refine ⟨(D.atom p ⬝ᵥ w) / (D.atom q ⬝ᵥ w), ?_, ?_⟩
+    · have hscaled := congrArg
+        (fun z : Fin k -> ℝ => (D.atom q ⬝ᵥ w)⁻¹ • z) h.symm
+      simp only [smul_smul, inv_mul_cancel₀ hqread, one_smul] at hscaled
+      rw [div_eq_inv_mul]
+      exact hscaled
+    · field_simp
+      linarith [hsq]
+  · rintro ⟨ratio, hpar, hratio⟩
+    exact parallel_ratioOne_swap_null D hp hq hnull hpar hratio
 
 end Gtz

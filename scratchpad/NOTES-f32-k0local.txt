@@ -605,3 +605,79 @@ leverageOf, pairGapMinor) is committed, so the bridge composes with their
 theorem in one line the moment it lands, and nothing here depends on an
 uncommitted module. Recommend the coordinator relay that the composition is
 waiting on their commit, not on new mathematics.
+
+F32-17. ROUND 9: THE MIRROR CONDITION IS EXACTLY A SIGN RATIO
+==============================================================
+DiamondNeighborhoodLock.lean: 34 theorems, 1007 lines, zero sorries, all
+pins standard, builds 9372 exit 0. TieGraphTrichotomy landed (49712e2) so
+the bracket identity is now imported as a theorem, not carried as a
+hypothesis.
+
+THE DESIGN-INDEPENDENCE FILTER, APPLIED AS INSTRUCTED. The bracket identity
+holds at EVERY dominator of a tie, which is exactly the shape that was blind
+in the syzygy attempt. VERDICT: my use passes, and for a statable reason -
+nothing here uses the identity ALONE. Every use is a DIFFERENCE of two
+instances at two DIFFERENT triples, and a difference of identities at
+different triples is not design-independent: it carries the mirror
+structure, which is precisely the motion a constant is blind to. The filter
+kills constants, not differences of constants taken at different objects.
+
+THE CHAIN, COMPLETED (section 12 + 13).
+ (a) Substituting the bracket identity into the pinned constraint of section
+     11, EVERY term involving the exchanged atom cancels and what survives is
+        (l_r - 1)(l_s - 1) - (g_r.g_s)^2 = 0 ,
+     the PAIR GAP MINOR OF THE TWO SHARED ATOMS. The pinned equation was
+     never about the exchanged pair at all - it is the shared pair being
+     driven onto the admissibility boundary.
+     (parallel_mirror_sharedPair_degenerate)
+ (b) Hence if the shared pair is ADMISSIBLE, rho^2 = 1.
+     (parallel_mirror_ratio_sq_eq_one, and the tie-level
+      isTie_parallel_mirror_ratio_sq_eq_one with the identity discharged)
+     AT A TIE, A PARALLEL PAIR CARRIED BY TWO DOMINATING MIRROR TRIPLES WITH
+     AN ADMISSIBLE SHARED PAIR IS AN EXACT +-1 DOUBLING. That is the
+     unspent constraint, spent.
+ (c) A sign ratio makes the exchange term collapse, so the swapped gap kills
+     the SAME probe: parallel_ratioOne_swap_null. No tie, no positivity.
+ (d) THE EQUIVALENCE (mirror_null_iff_ratio_sq_one). At a weak dominator's
+     null probe that the exchanged member reads,
+        the swap kills the probe  <->  g_q = +- g_p .
+     Forward is the section-3 mirror identity, whose scaling factor squares
+     to one the moment it is dotted against the probe; backward is (c).
+     SO THE SHARED-NULL HYPOTHESIS THAT BOUGHT THE PARALLEL PAIR IN SECTION
+     3 IS NOT AN EXTRA ASSUMPTION - IT IS EQUIVALENT TO THE CONCLUSION IN ITS
+     SHARP FORM, WITH THE RATIO PINNED TO A SIGN. The loop is closed.
+
+WHAT THIS CHANGES FOR C1-7. Case A is no longer "closed under a hypothesis
+that has to be discharged"; the hypothesis IS the conclusion. The remaining
+decision is unchanged in content but sharper in form: at a tie near the
+fixture, must some mirror pair of dominating triples share its null probe -
+equivalently, must some exchanged pair be an exact +-1 doubling? The
+sign-ratio law says the ONLY parallel pairs such a configuration admits are
+the fixture's own kind, so the question is now existence of the
+configuration, not its shape.
+
+F32-18. HANDOFF
+================
+STATE. C1-7: Case A closed exactly and now characterized as an equivalence;
+Case B closed quantitatively; the polynomial probe system built and
+kernel-native; the coupling solved in reading coordinates with the main
+bound sharpened from an inequality to an identity; two independent families
+of reading gaps available (at the null probe, and at the shared atoms); the
+ratio of any mirrored parallel pair pinned to a sign. NOT decided: whether a
+tie can hold the two null lines apart (delta > 0). Everything I hold is
+second order in the opening; the obstruction is first order; the first-order
+instrument is isTie_probe_pinch at the twelve fixed rational probes, and
+deciding it is a polynomial infeasibility in that conjunction.
+DEAD ROUTES, with reasons, do not retry: the tangent-space Farkas replay
+(objects are not kernel objects); the design-independent syzygy (nullspace
+dimension 0, and structurally blind); the dominator inside-wedge floor
+chained against my ceiling (its domain cannot contain a parallel pair); the
+trace budget as an upper bound on K (same order in delta); the Parseval
+transverse cap (blows up along the t_q -> 0 (5,3) escape).
+FIXTURES. f32/calib.jl (the exact 12 contacts + 8 refusals), f32/tangent.jl
+(the first-order LP and the mirror-only test), f32/syzygy.jl (the exact
+refutation), f32/bench53.jl and f32/bench63.jl (the two mandatory benches:
+0 of 36 at (5,3), 8 of 8 with delta = 0 at (6,3)).
+REALNESS. wedge_nonneg, and nothing else, in the whole arm. Every theorem in
+both of my modules is field-blind and conditional, so complextie_c1 cannot
+threaten them.
