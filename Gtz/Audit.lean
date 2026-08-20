@@ -1278,6 +1278,7 @@ import Gtz.Wave.AnchorTransportPairs
 import Gtz.Wave.MomentProbeRelations
 import Gtz.Wave.LedgerSharpSFloor
 import Gtz.Wave.FloorsForceExcess
+import Gtz.Wave.CappedSharpFloor
 import Gtz.Wave.CrossLedgerRigidity
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -36244,6 +36245,10 @@ run_cmd do
 -- Gtz/Wave/FloorsForceExcess.lean -- the three outside floors force the
 -- excluded pair excess nonnegative on the heavy-inside cell, with no tie
 #print axioms Gtz.corner_oneAxisZero_heavyInside_floors_force_excess
+
+-- Gtz/Wave/CappedSharpFloor.lean -- the sharpened S-floor with the erased
+-- reading eliminated by the hypothesis-free cap
+#print axioms Gtz.corner_oneAxisZero_heavyInside_sFloor_capped
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the

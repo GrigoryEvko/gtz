@@ -6367,4 +6367,5 @@ import Gtz.Wave.AnchorTransportPairs
 import Gtz.Wave.MomentProbeRelations
 import Gtz.Wave.LedgerSharpSFloor
 import Gtz.Wave.FloorsForceExcess
+import Gtz.Wave.CappedSharpFloor
 import Gtz.Wave.CrossLedgerRigidity
