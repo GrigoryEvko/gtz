@@ -1275,6 +1275,7 @@ import Gtz.Wave.HeavyInsideTracePinch
 import Gtz.Wave.SeesawExchangeFloor
 import Gtz.Wave.WeightGapDeterminant
 import Gtz.Wave.AnchorTransportPairs
+import Gtz.Wave.MomentProbeRelations
 import Gtz.Wave.CrossLedgerRigidity
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -36226,6 +36227,12 @@ run_cmd do
 #print axioms Gtz.corner_oneAxisZero_heavyInside_isTie_iff_transportedPairs
 #print axioms Gtz.corner_anchor_zHeavy_false
 #print axioms Gtz.corner_anchor_zPair_iff_floor
+
+-- Gtz/Wave/MomentProbeRelations.lean -- the probe form of the inverse moment
+-- identity and the erased corner relation of the one-zero corner
+#print axioms Gtz.inv_mul_atomMatrix_probe
+#print axioms Gtz.fourSet_inverse_moment_probe
+#print axioms Gtz.corner_oneAxisZero_erased_probe
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
