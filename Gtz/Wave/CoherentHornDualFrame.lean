@@ -711,4 +711,198 @@ theorem coherent_complGap_diag (D : WeightedDesign 6 3) {x y z dyz dxz dxy : Fin
   rw [hbil]
   ring
 
+/-! ## 11. The two cycles: the difference identity -/
+
+/-- **THE DUAL-FRAME DETERMINANT.**  For any six vectors, the determinant of the
+matrix of brackets `[plane, atom]` is the squared bracket of the base triple
+times the bracket of the other three.  A six-term Grassmann expansion, closed by
+`ring` in coordinates. -/
+theorem tripleBracket_dualFrame_det (baseX baseY baseZ probeOne probeTwo probeThree : Fin 3 → ℝ) :
+    tripleBracket baseX baseY baseZ ^ 2 * tripleBracket probeOne probeTwo probeThree
+      = tripleBracket baseY baseZ probeOne
+          * (tripleBracket baseZ baseX probeTwo * tripleBracket baseX baseY probeThree)
+        + tripleBracket baseY baseZ probeTwo
+          * (tripleBracket baseZ baseX probeThree * tripleBracket baseX baseY probeOne)
+        + tripleBracket baseY baseZ probeThree
+          * (tripleBracket baseZ baseX probeOne * tripleBracket baseX baseY probeTwo)
+        - tripleBracket baseY baseZ probeOne
+          * (tripleBracket baseZ baseX probeThree * tripleBracket baseX baseY probeTwo)
+        - tripleBracket baseY baseZ probeTwo
+          * (tripleBracket baseZ baseX probeOne * tripleBracket baseX baseY probeThree)
+        - tripleBracket baseY baseZ probeThree
+          * (tripleBracket baseZ baseX probeTwo * tripleBracket baseX baseY probeOne) := by
+  simp only [tripleBracket_eq]
+  ring
+
+/-- **THE BRACKET IS THE SUM OF TWO CYCLES.**  At the coherent horn four of the
+six Grassmann terms carry a matched atom against its own plane and vanish, so the
+complement's bracket is carried by the two 3-CYCLES alone. -/
+theorem coherent_bracket_two_cycles (D : WeightedDesign 6 3) {x y z dyz dxz dxy : Fin 6}
+    (hzYZ : atomBracket D y z dyz = 0) (hzXZ : atomBracket D x z dxz = 0)
+    (hzXY : atomBracket D x y dxy = 0) :
+    atomBracket D x y z ^ 2 * atomBracket D dyz dxz dxy
+      = (atomNormal D y z ⬝ᵥ D.atom dxz)
+          * ((atomNormal D z x ⬝ᵥ D.atom dxy) * (atomNormal D x y ⬝ᵥ D.atom dyz))
+        + (atomNormal D y z ⬝ᵥ D.atom dxy)
+          * ((atomNormal D z x ⬝ᵥ D.atom dyz) * (atomNormal D x y ⬝ᵥ D.atom dxz)) := by
+  have hzZX : atomBracket D z x dxz = 0 := by
+    rw [show atomBracket D z x dxz = -atomBracket D x z dxz from
+      tripleBracket_swapLeft _ _ _, hzXZ, neg_zero]
+  have hgen : atomBracket D x y z ^ 2 * atomBracket D dyz dxz dxy
+      = atomBracket D y z dyz * (atomBracket D z x dxz * atomBracket D x y dxy)
+        + atomBracket D y z dxz * (atomBracket D z x dxy * atomBracket D x y dyz)
+        + atomBracket D y z dxy * (atomBracket D z x dyz * atomBracket D x y dxz)
+        - atomBracket D y z dyz * (atomBracket D z x dxy * atomBracket D x y dxz)
+        - atomBracket D y z dxz * (atomBracket D z x dyz * atomBracket D x y dxy)
+        - atomBracket D y z dxy * (atomBracket D z x dxz * atomBracket D x y dyz) :=
+    tripleBracket_dualFrame_det (D.atom x) (D.atom y) (D.atom z)
+      (D.atom dyz) (D.atom dxz) (D.atom dxy)
+  simp only [atomNormal_dot_atom]
+  rw [hgen, hzYZ, hzZX, hzXY]
+  ring
+
+/-- **THE CYCLE CROSS PRODUCT.**  The two cycles multiply, against the three
+matched weights, to the product of the three dual pairings — with its sign.
+Three instances of the single off-diagonal law, multiplied. -/
+theorem coherent_cycle_cross (D : WeightedDesign 6 3) {x y z dyz dxz dxy : Fin 6}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (h12 : dyz ≠ dxz) (h13 : dyz ≠ dxy) (h23 : dxz ≠ dxy)
+    (hcompl : (({x, y, z} : Finset (Fin 6))ᶜ : Finset (Fin 6)) = {dyz, dxz, dxy})
+    (hzYZ : atomBracket D y z dyz = 0) (hzXZ : atomBracket D x z dxz = 0)
+    (hzXY : atomBracket D x y dxy = 0) :
+    (D.weight dyz * (D.weight dxz * D.weight dxy))
+        * (((atomNormal D y z ⬝ᵥ D.atom dxz)
+              * ((atomNormal D z x ⬝ᵥ D.atom dxy) * (atomNormal D x y ⬝ᵥ D.atom dyz)))
+          * ((atomNormal D y z ⬝ᵥ D.atom dxy)
+              * ((atomNormal D z x ⬝ᵥ D.atom dyz) * (atomNormal D x y ⬝ᵥ D.atom dxz))))
+      = (atomNormal D y z ⬝ᵥ atomNormal D z x)
+        * ((atomNormal D z x ⬝ᵥ atomNormal D x y)
+          * (atomNormal D x y ⬝ᵥ atomNormal D y z)) := by
+  have hCy : (({y, z, x} : Finset (Fin 6))ᶜ : Finset (Fin 6)) = {dxz, dxy, dyz} := by
+    rw [show ({y, z, x} : Finset (Fin 6)) = ({x, y, z} : Finset (Fin 6)) from by
+      ext a; simp only [Finset.mem_insert, Finset.mem_singleton]; tauto, hcompl]
+    ext a; simp only [Finset.mem_insert, Finset.mem_singleton]; tauto
+  have hCz : (({z, x, y} : Finset (Fin 6))ᶜ : Finset (Fin 6)) = {dxy, dyz, dxz} := by
+    rw [show ({z, x, y} : Finset (Fin 6)) = ({x, y, z} : Finset (Fin 6)) from by
+      ext a; simp only [Finset.mem_insert, Finset.mem_singleton]; tauto, hcompl]
+    ext a; simp only [Finset.mem_insert, Finset.mem_singleton]; tauto
+  have hzZX : atomBracket D z x dxz = 0 := by
+    rw [show atomBracket D z x dxz = -atomBracket D x z dxz from
+      tripleBracket_swapLeft _ _ _, hzXZ, neg_zero]
+  have hzYX : atomBracket D y x dxy = 0 := by
+    rw [show atomBracket D y x dxy = -atomBracket D x y dxy from
+      tripleBracket_swapLeft _ _ _, hzXY, neg_zero]
+  have hzZY : atomBracket D z y dyz = 0 := by
+    rw [show atomBracket D z y dyz = -atomBracket D y z dyz from
+      tripleBracket_swapLeft _ _ _, hzYZ, neg_zero]
+  have hqA := coherent_offDiag_single D hxy hxz hyz h12 h13 h23 hcompl hzYZ hzXZ
+  have hqB := coherent_offDiag_single D hyz (Ne.symm hxy) (Ne.symm hxz)
+    h23 (Ne.symm h12) (Ne.symm h13) hCy hzZX hzYX
+  have hqC := coherent_offDiag_single D (Ne.symm hxz) (Ne.symm hyz) hxy
+    (Ne.symm h13) (Ne.symm h23) h12 hCz hzXY hzZY
+  rw [← hqA, ← hqB, ← hqC]
+  ring
+
+/-- **THE DIFFERENCE IDENTITY.**  The weighted squared bracket of the complement
+equals the two cycle energies PLUS TWICE the product of the three dual pairings:
+
+  `t·t·t·[xyz]⁴·[d d' d'']² = P + Q + 2·Π` ,
+
+`P`, `Q` the products of the three first and the three second slot energies and
+`Π` the product of the three dual pairings.  Since `P·Q = Π²`, the right side is
+`(√P − √Q)²` exactly when `Π < 0` — which the coherent sign pattern forces.  So
+the bracket is the DIFFERENCE of the two cycles, and near the boundary the two
+cycles cancel: that is why the bracket is quadratically small there, and why an
+AM–GM bound that sees only the plane totals is weak. -/
+theorem coherent_difference_identity (D : WeightedDesign 6 3) {x y z dyz dxz dxy : Fin 6}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (h12 : dyz ≠ dxz) (h13 : dyz ≠ dxy) (h23 : dxz ≠ dxy)
+    (hcompl : (({x, y, z} : Finset (Fin 6))ᶜ : Finset (Fin 6)) = {dyz, dxz, dxy})
+    (hzYZ : atomBracket D y z dyz = 0) (hzXZ : atomBracket D x z dxz = 0)
+    (hzXY : atomBracket D x y dxy = 0) :
+    (D.weight dyz * (D.weight dxz * D.weight dxy))
+        * (atomBracket D x y z ^ 2 * atomBracket D dyz dxz dxy) ^ 2
+      = (D.weight dxz * (atomNormal D y z ⬝ᵥ D.atom dxz) ^ 2)
+          * ((D.weight dxy * (atomNormal D z x ⬝ᵥ D.atom dxy) ^ 2)
+            * (D.weight dyz * (atomNormal D x y ⬝ᵥ D.atom dyz) ^ 2))
+        + (D.weight dxy * (atomNormal D y z ⬝ᵥ D.atom dxy) ^ 2)
+          * ((D.weight dyz * (atomNormal D z x ⬝ᵥ D.atom dyz) ^ 2)
+            * (D.weight dxz * (atomNormal D x y ⬝ᵥ D.atom dxz) ^ 2))
+        + 2 * ((atomNormal D y z ⬝ᵥ atomNormal D z x)
+            * ((atomNormal D z x ⬝ᵥ atomNormal D x y)
+              * (atomNormal D x y ⬝ᵥ atomNormal D y z))) := by
+  have hcyc := coherent_bracket_two_cycles D hzYZ hzXZ hzXY
+  have hcross := coherent_cycle_cross D hxy hxz hyz h12 h13 h23 hcompl hzYZ hzXZ hzXY
+  rw [hcyc, ← hcross]
+  ring
+
+/-! ## 12. The exact plane-product law: AM–GM removed -/
+
+/-- **THE EXACT PRODUCT LAW OF THE PLANE TOTALS.**  Expand the three diagonal
+totals and regroup by MATCHED ATOM: every one of the six mixed terms carries one
+of the three atom pairs, so it is a squared dual pairing times the remaining
+plane total.  The result is an IDENTITY
+
+  `D_x·D_y·D_z = P + Q + Π_xy·D_z + Π_yz·D_x + Π_zx·D_y` ,
+
+with `P`, `Q` the two cycle energies and `Π_ef` the squared dual pairings.  It
+replaces the AM–GM step of `Gtz.coherent_amgm_law` WITH NO LOSS, and through
+`Gtz.coherent_difference_identity` — which prices `P + Q` by the complement's
+bracket — it reads the plane totals directly against the bracket budget. -/
+theorem coherent_plane_product_identity (D : WeightedDesign 6 3) {x y z dyz dxz dxy : Fin 6}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (h12 : dyz ≠ dxz) (h13 : dyz ≠ dxy) (h23 : dxz ≠ dxy)
+    (hcompl : (({x, y, z} : Finset (Fin 6))ᶜ : Finset (Fin 6)) = {dyz, dxz, dxy})
+    (hzYZ : atomBracket D y z dyz = 0) (hzXZ : atomBracket D x z dxz = 0)
+    (hzXY : atomBracket D x y dxy = 0) :
+    (atomNormal D y z ⬝ᵥ atomNormal D y z - D.weight x * atomBracket D x y z ^ 2)
+        * ((atomNormal D z x ⬝ᵥ atomNormal D z x - D.weight y * atomBracket D x y z ^ 2)
+          * (atomNormal D x y ⬝ᵥ atomNormal D x y - D.weight z * atomBracket D x y z ^ 2))
+      = (D.weight dxz * (atomNormal D y z ⬝ᵥ D.atom dxz) ^ 2)
+            * ((D.weight dxy * (atomNormal D z x ⬝ᵥ D.atom dxy) ^ 2)
+              * (D.weight dyz * (atomNormal D x y ⬝ᵥ D.atom dyz) ^ 2))
+        + (D.weight dxy * (atomNormal D y z ⬝ᵥ D.atom dxy) ^ 2)
+            * ((D.weight dyz * (atomNormal D z x ⬝ᵥ D.atom dyz) ^ 2)
+              * (D.weight dxz * (atomNormal D x y ⬝ᵥ D.atom dxz) ^ 2))
+        + (atomNormal D y z ⬝ᵥ atomNormal D z x) ^ 2
+            * (atomNormal D x y ⬝ᵥ atomNormal D x y - D.weight z * atomBracket D x y z ^ 2)
+        + (atomNormal D z x ⬝ᵥ atomNormal D x y) ^ 2
+            * (atomNormal D y z ⬝ᵥ atomNormal D y z - D.weight x * atomBracket D x y z ^ 2)
+        + (atomNormal D x y ⬝ᵥ atomNormal D y z) ^ 2
+            * (atomNormal D z x ⬝ᵥ atomNormal D z x
+                - D.weight y * atomBracket D x y z ^ 2) := by
+  have hCy : (({y, z, x} : Finset (Fin 6))ᶜ : Finset (Fin 6)) = {dxz, dxy, dyz} := by
+    rw [show ({y, z, x} : Finset (Fin 6)) = ({x, y, z} : Finset (Fin 6)) from by
+      ext a; simp only [Finset.mem_insert, Finset.mem_singleton]; tauto, hcompl]
+    ext a; simp only [Finset.mem_insert, Finset.mem_singleton]; tauto
+  have hCz : (({z, x, y} : Finset (Fin 6))ᶜ : Finset (Fin 6)) = {dxy, dyz, dxz} := by
+    rw [show ({z, x, y} : Finset (Fin 6)) = ({x, y, z} : Finset (Fin 6)) from by
+      ext a; simp only [Finset.mem_insert, Finset.mem_singleton]; tauto, hcompl]
+    ext a; simp only [Finset.mem_insert, Finset.mem_singleton]; tauto
+  have hbY : atomBracket D y z x = atomBracket D x y z := (atomBracket_cycle D x y z).symm
+  have hbZ : atomBracket D z x y = atomBracket D x y z := by rw [atomBracket_cycle D z x y]
+  have hzZX : atomBracket D z x dxz = 0 := by
+    rw [show atomBracket D z x dxz = -atomBracket D x z dxz from
+      tripleBracket_swapLeft _ _ _, hzXZ, neg_zero]
+  have hzYX : atomBracket D y x dxy = 0 := by
+    rw [show atomBracket D y x dxy = -atomBracket D x y dxy from
+      tripleBracket_swapLeft _ _ _, hzXY, neg_zero]
+  have hzZY : atomBracket D z y dyz = 0 := by
+    rw [show atomBracket D z y dyz = -atomBracket D y z dyz from
+      tripleBracket_swapLeft _ _ _, hzYZ, neg_zero]
+  have hdX := coherent_diag_pair D hxy hxz hyz h12 h13 h23 hcompl hzYZ
+  have hdY := coherent_diag_pair D hyz (Ne.symm hxy) (Ne.symm hxz)
+    h23 (Ne.symm h12) (Ne.symm h13) hCy hzZX
+  have hdZ := coherent_diag_pair D (Ne.symm hxz) (Ne.symm hyz) hxy
+    (Ne.symm h13) (Ne.symm h23) h12 hCz hzXY
+  rw [hbY] at hdY
+  rw [hbZ] at hdZ
+  have hpA := coherent_slot_product D hxy hxz hyz h12 h13 h23 hcompl hzYZ hzXZ
+  have hpB := coherent_slot_product D hyz (Ne.symm hxy) (Ne.symm hxz)
+    h23 (Ne.symm h12) (Ne.symm h13) hCy hzZX hzYX
+  have hpC := coherent_slot_product D (Ne.symm hxz) (Ne.symm hyz) hxy
+    (Ne.symm h13) (Ne.symm h23) h12 hCz hzXY hzZY
+  rw [← hdX, ← hdY, ← hdZ, ← hpA, ← hpB, ← hpC]
+  ring
+
 end Gtz
