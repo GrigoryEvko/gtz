@@ -1284,6 +1284,7 @@ import Gtz.Wave.MemberGramPushThrough
 import Gtz.Wave.CrossLedgerRigidity
 import Gtz.Wave.KTwoEraseSystem
 import Gtz.Wave.KTwoCrossPrice
+import Gtz.Wave.KTwoChartIdentity
 import Gtz.Wave.SixSetNullColumn
 import Gtz.Wave.PairMinorBridge
 import Gtz.Wave.ReadingMatrixRelation
@@ -1294,6 +1295,7 @@ import Gtz.Wave.AdjugateDowndateReadings
 import Gtz.Wave.CompoundProbeRelations
 import Gtz.Wave.BothLightCoreBound
 import Gtz.Wave.SecondInvariantLedger
+import Gtz.Wave.ShellAnchor
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36342,6 +36344,12 @@ run_cmd do
 #print axioms Gtz.trace_adj_mul_two_excluded
 #print axioms Gtz.corner_second_invariant_ledger
 
+-- Gtz/Wave/ShellAnchor.lean -- the arithmetic core and the geometric kill
+-- of the both-light collapse shell
+#print axioms Gtz.shell_equality_forcing
+#print axioms Gtz.corner_oneAxisZero_not_parallel
+#print axioms Gtz.corner_oneAxisZero_not_parallel_z
+
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
 -- transferred avoiding-refusal budget
@@ -36441,6 +36449,18 @@ run_cmd do
 #print axioms Gtz.k2_isTie_excess_le_cross
 #print axioms Gtz.k2_isTie_crossPrice
 #print axioms Gtz.k2_not_isTie_of_outside_parallel_all
+
+-- Gtz/Wave/KTwoChartIdentity.lean -- the (5,3) two-zero chart: the master
+-- identity of the four refusal slacks, the mirror symmetry, the two
+-- quotient-sign kills, and the conditional chart kill
+#print axioms Gtz.k2Chart_master_identity
+#print axioms Gtz.k2ChartCapD_swap
+#print axioms Gtz.k2ChartCapE_swap
+#print axioms Gtz.k2ChartRefusalY_swap
+#print axioms Gtz.k2ChartRefusalZ_swap
+#print axioms Gtz.k2Chart_caseA_kill
+#print axioms Gtz.k2Chart_caseB_kill
+#print axioms Gtz.k2Chart_kill_of_doubleQuotientCorner
 
 -- Gtz/Wave/SixSetNullColumn.lean -- the null column of the six-set
 -- projection: the complement resolve and the touching eigenvector of a
