@@ -6352,3 +6352,4 @@ import Gtz.Wave.OneAxisZeroFourSets
 import Gtz.Wave.OneAxisZeroRefusalBudget
 import Gtz.Wave.OneAxisZeroAnchorLaws
 import Gtz.Wave.OneAxisZeroWitness
+import Gtz.Wave.OneAxisZeroAnchorCaps

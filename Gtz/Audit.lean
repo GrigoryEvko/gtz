@@ -1263,6 +1263,7 @@ import Gtz.Wave.OneAxisZeroFourSets
 import Gtz.Wave.OneAxisZeroRefusalBudget
 import Gtz.Wave.OneAxisZeroAnchorLaws
 import Gtz.Wave.OneAxisZeroWitness
+import Gtz.Wave.OneAxisZeroAnchorCaps
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36055,3 +36056,22 @@ run_cmd do
 #print axioms Gtz.oneAxisZeroWitness_fourSet_posDef
 #print axioms Gtz.oneAxisZeroWitness_bothLight_floors_fail
 #print axioms Gtz.oneAxisZeroWitness_xMass
+
+-- Gtz/Wave/OneAxisZeroAnchorCaps.lean -- the anchor caps: the pair Gram cap, the
+-- erased over-coverage, the Loewner floor, the reading identities and window,
+-- and the trace pinch of a tie
+#print axioms Gtz.psd_pair_gram_cap
+#print axioms Gtz.corner_oneAxisZero_outside_overCoverage
+#print axioms Gtz.erase_eq_insert_insert_compl
+#print axioms Gtz.corner_oneAxisZero_anchor_split
+#print axioms Gtz.corner_oneAxisZero_anchor_loewner
+#print axioms Gtz.corner_oneAxisZero_anchor_axis_cap
+#print axioms Gtz.corner_oneAxisZero_anchor_outside_total
+#print axioms Gtz.corner_oneAxisZero_anchor_trace_identity
+#print axioms Gtz.corner_oneAxisZero_anchor_outside_window
+#print axioms Gtz.tie_fiveSet_trace_pinch
+#print axioms Gtz.corner_oneAxisZero_anchor_pinch
+#print axioms Gtz.corner_oneAxisZero_outside_pinch
+#print axioms Gtz.corner_oneAxisZero_heavyInside_anchor_reading
+#print axioms Gtz.corner_oneAxisZero_heavyInside_anchor_reading'
+#print axioms Gtz.corner_oneAxisZero_anchor_tension
