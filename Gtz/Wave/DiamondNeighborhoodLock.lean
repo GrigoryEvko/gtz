@@ -1,4 +1,5 @@
 import Gtz.Wave.DiamondNeighborhoodMirror
+import Gtz.Wave.DominatorWedgeFloor
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -530,5 +531,43 @@ theorem misalignment_le_coupling_of_isTie (D : WeightedDesign m 3) (htie : IsTie
     hnullSwap hcoerW'
   have hpinch := swap_pinch_of_isTie D htie hcard hp hq hwunit hnullC hmu' hcoerW
   nlinarith [hfloor, hpinch, hmu']
+
+/-! ## 8. Where the dominator wedge floor cannot reach
+
+The inside-wedge floor of a weak dominator (`Gtz.dominator_inside_wedge_ge_weight`)
+bounds the wedge of a pair that CO-OCCURS in a dominator from below by the
+third member's weight.  The pair the hinge hunts never co-occurs: it is
+parallel, and no weak dominator carries a parallel inside pair.  So that
+floor, strong as it is, is structurally unable to bound the target pair's
+wedge — which is why the misalignment floor and the misalignment ceiling of
+section 7 do not chain into a contradiction. -/
+
+/-- **THE TARGET PAIR SITS ∈ NO WEAK DOMINATOR.**  A mirror pair of
+null-sharing weak dominators with a live reading is parallel, and a weak
+dominator has no parallel inside pair.  Hence no weak dominator contains
+both exchanged labels.
+
+At the doubled fixture this is exact and visible: the four triples carrying
+both spine copies are precisely four of the eight refusals.  The
+consequence for the endgame is negative and worth stating: the inside-wedge
+floor of a dominator cannot bound the target pair's wedge from below, so it
+cannot be chained against an upper bound on that wedge. -/
+theorem no_dominator_contains_mirror_pair (D : WeightedDesign 6 3)
+    {C : Finset (Fin 6)} {p q : Fin 6} (hpq : p ≠ q) (hp : p ∈ C) (hq : q ∉ C)
+    {w : Fin 3 → ℝ}
+    (hnullC : (subsetSum D C - 1) *ᵥ w = 0)
+    (hnullSwap : (subsetSum D (insert q (C.erase p)) - 1) *ᵥ w = 0)
+    (hread : D.atom p ⬝ᵥ w ≠ 0)
+    {r : Fin 6} (hpr : p ≠ r) (hqr : q ≠ r) :
+    ¬ Dominates D ({p, q, r} : Finset (Fin 6)) := by
+  intro hdom
+  have h := mirror_reading_smul_eq D hp hq hnullC hnullSwap
+  have hscaled := congrArg (fun z : Fin 3 → ℝ => (D.atom p ⬝ᵥ w)⁻¹ • z) h
+  simp only [smul_smul, inv_mul_cancel₀ hread, one_smul] at hscaled
+  have hset : ({q, p, r} : Finset (Fin 6)) = ({p, q, r} : Finset (Fin 6)) :=
+    Finset.insert_comm q p _
+  refine dominator_no_inside_parallel D (Ne.symm hpq) hqr hpr ?_ _ hscaled
+  rw [hset]
+  exact hdom
 
 end Gtz

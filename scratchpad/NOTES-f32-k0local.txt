@@ -432,3 +432,62 @@ and that is exactly where the sibling's misalignment floor enters. The
 honest state: C1-7 Case A closed exactly, Case B closed quantitatively, the
 system for the last step assembled and kernel-native, the decision itself
 open and now a two-sided fight between my ceiling and their floor.
+
+F32-14. ROUND 6: THE CHAIN DOES NOT COMPOSE — DECIDED, NOT ASSUMED
+====================================================================
+The coordinator routed me the composition of the sibling's misalignment
+FLOOR (DominatorWedgeFloor.misalignment_floor_of_pairBounds) with my
+misalignment CEILING (misalignment_le_coupling_of_isTie), summarized as
+  their floor   delta >= 1/(R^2 e2(l))
+  my ceiling    mu'^2 delta <= K
+  chain         K >= mu'^2/(R^2 e2(l))     -- a lower bound on the coupling
+and asked me to DECIDE it. VERDICT: THE CHAIN DOES NOT COMPOSE. Two
+independent reasons, both structural.
+
+(1) INDEX MISMATCH. Their theorem's three hypotheses price the three INSIDE
+pairs of one weak dominator {x,y,z}:
+    w_{xy} bx^2 <= l_y radius , w_{yz} by^2 <= l_z radius , w_{xz} bz^2 <= l_x radius
+with (bx,by,bz) a UNIT vector - the null readings of that dominator, unit by
+the corank-one normalization. My wedge_le_misalignment_of_mirror_dominators
+prices a SWAP pair (p in C, q NOT in C) and its reading is taken at C's own
+null probe. Inside-inside versus inside-outside: my bound cannot supply
+their hypotheses. Supplying them needs an upper bound on an INSIDE pair
+wedge by the misalignment, which nobody has.
+
+(2) THE DEEPER OBSTRUCTION, AND IT IS FATAL TO THIS ROUTE. Their floor is
+built on dominator_no_inside_parallel: no inside pair of a weak dominator is
+parallel, margin t_z. But the pair the hinge HUNTS is parallel, so it can
+never be an inside pair of a weak dominator. Their inside-wedge floor is
+therefore structurally unable to bound the target pair's wedge from below,
+and a floor that cannot reach the target cannot be chained against an upper
+bound on it.
+LANDED AS no_dominator_contains_mirror_pair (imports their theorem, does not
+reimplement it): a mirror pair of null-sharing weak dominators with a live
+reading sits in NO weak dominator. At the fixture this is exact and visible
+in my own calibration - the four triples carrying both spine copies,
+(1,2,6) (1,3,6) (1,4,6) (1,5,6), are precisely four of the eight refusals,
+at det -675. Never dominators.
+
+STATUS OF THEIR THEOREM. It is a well-formed CONDITIONAL awaiting an
+instantiation that does not exist. Its hypotheses ask for the three inside
+wedges to be SMALL (bounded by radius), while their own
+dominator_inside_wedge_ge_weight says inside wedges are LARGE (>= t_z). The
+hypotheses are not contradictory only because radius is free, but nothing
+currently supplies them.
+
+WHAT AN UPPER BOUND ON K WOULD NEED. The coordinator's three candidates:
+  - the trace budget. I have |Mw|^2 <= tr M (w'Mw); with the Pythagoras
+    split it gives K <= tr(M')a' <= tr(M')^2 delta. That is an upper bound
+    on K of the SAME ORDER IN delta as the lower bound, so it cannot beat
+    it. Checked, does not close.
+  - Parseval's transverse cap: bounds readings by leverages and leverages by
+    3/t_c, so K <= tr(M') * 3/t_q - weight-dependent and blowing up as
+    t_q -> 0, exactly the (5,3)-diamond escape channel. Does not close.
+  - the other probes: still open, and now the only live candidate.
+I did not assume any of these. The honest state is that no upper bound on K
+beating the floor is currently available, and the floor itself does not
+reach the target pair.
+
+C1-7 REMAINS: Case A closed exactly, Case B closed quantitatively, the
+polynomial probe system built and kernel-native, and the last decision open
+with this particular composition RULED OUT rather than untried.
