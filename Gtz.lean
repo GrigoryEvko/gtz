@@ -6413,3 +6413,4 @@ import Gtz.Wave.CoherentHornDualFrame
 import Gtz.Wave.OppositeHornTwoPoint
 import Gtz.Wave.DominatorWedgeFloor
 import Gtz.Wave.OppositeHornCycleNoGo
+import Gtz.Wave.KOneNormalForm
