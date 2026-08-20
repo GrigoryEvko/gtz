@@ -36426,3 +36426,4 @@ run_cmd do
 #print axioms Gtz.pairPivotMinor_mul_det_eq_crossReading
 #print axioms Gtz.pairPivotMinor_eq_zero_iff_parallel
 #print axioms Gtz.hasParallelPair_iff_exists_pairPivotMinor_eq_zero
+#print axioms Gtz.not_posDef_compl_of_pair_reading
