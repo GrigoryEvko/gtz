@@ -1015,4 +1015,131 @@ theorem not_isTie_of_dualFrame_certificate (D : WeightedDesign 6 3) (C : Finset 
     rw [hcompl]; exact card_triple_eq h12' h13' h23'
   exact htie.2 _ hcard hpd
 
+/-! ## 14. The refusal direction and the exact repair -/
+
+/-- The ambient direction of a dual-frame vector: the combination of the three
+dual normals with the given weights. -/
+noncomputable def dualCombination (D : WeightedDesign m 3) (x y z : Fin m)
+    (weightVec : Fin 3 → ℝ) : Fin 3 → ℝ :=
+  weightVec 0 • atomNormal D y z + weightVec 1 • atomNormal D z x
+    + weightVec 2 • atomNormal D x y
+
+/-- **THE READING IDENTITY, FIRST PLANE.**  An inside atom reads the ambient
+combination at its OWN weight times the bracket: the dual normals of the other
+two planes annihilate it. -/
+theorem inside_dot_dualCombination_first (D : WeightedDesign m 3) (x y z : Fin m)
+    (weightVec : Fin 3 → ℝ) :
+    D.atom x ⬝ᵥ dualCombination D x y z weightVec
+      = weightVec 0 * atomBracket D x y z := by
+  have h1 : atomNormal D y z ⬝ᵥ D.atom x = atomBracket D x y z := by
+    rw [atomNormal_dot_atom,
+      show atomBracket D y z x = atomBracket D x y z from (atomBracket_cycle D x y z).symm]
+  have h2 : atomNormal D z x ⬝ᵥ D.atom x = 0 := atomNormal_dot_right D z x
+  have h3 : atomNormal D x y ⬝ᵥ D.atom x = 0 := atomNormal_dot_left D x y
+  rw [dualCombination, dotProduct_comm, add_dotProduct, add_dotProduct,
+    smul_dotProduct, smul_dotProduct, smul_dotProduct, smul_eq_mul, smul_eq_mul,
+    smul_eq_mul, h1, h2, h3]
+  ring
+
+/-- **THE READING IDENTITY, SECOND PLANE.** -/
+theorem inside_dot_dualCombination_second (D : WeightedDesign m 3) (x y z : Fin m)
+    (weightVec : Fin 3 → ℝ) :
+    D.atom y ⬝ᵥ dualCombination D x y z weightVec
+      = weightVec 1 * atomBracket D x y z := by
+  have h1 : atomNormal D y z ⬝ᵥ D.atom y = 0 := atomNormal_dot_left D y z
+  have h2 : atomNormal D z x ⬝ᵥ D.atom y = atomBracket D x y z := by
+    rw [atomNormal_dot_atom,
+      show atomBracket D z x y = atomBracket D x y z from atomBracket_cycle D z x y]
+  have h3 : atomNormal D x y ⬝ᵥ D.atom y = 0 := atomNormal_dot_right D x y
+  rw [dualCombination, dotProduct_comm, add_dotProduct, add_dotProduct,
+    smul_dotProduct, smul_dotProduct, smul_dotProduct, smul_eq_mul, smul_eq_mul,
+    smul_eq_mul, h1, h2, h3]
+  ring
+
+/-- **THE READING IDENTITY, THIRD PLANE.** -/
+theorem inside_dot_dualCombination_third (D : WeightedDesign m 3) (x y z : Fin m)
+    (weightVec : Fin 3 → ℝ) :
+    D.atom z ⬝ᵥ dualCombination D x y z weightVec
+      = weightVec 2 * atomBracket D x y z := by
+  have h1 : atomNormal D y z ⬝ᵥ D.atom z = 0 := atomNormal_dot_right D y z
+  have h2 : atomNormal D z x ⬝ᵥ D.atom z = 0 := atomNormal_dot_left D z x
+  have h3 : atomNormal D x y ⬝ᵥ D.atom z = atomBracket D x y z := atomNormal_dot_atom D x y z
+  rw [dualCombination, dotProduct_comm, add_dotProduct, add_dotProduct,
+    smul_dotProduct, smul_dotProduct, smul_dotProduct, smul_eq_mul, smul_eq_mul,
+    smul_eq_mul, h1, h2, h3]
+  ring
+
+/-- **THE REPAIR IDENTITY.**  Swap one inside atom in for one outside atom and
+read the new gap along an ambient dual combination.  The inside atom repays
+EXACTLY its own squared dual weight times the squared bracket, and the dropped
+outside atom costs exactly its squared reading:
+
+  `n_v·(S_T − 1)·n_v = n_v·(S_{Cᶜ} − 1)·n_v + v_e²·[xyz]² − (g_{d''}·n_v)²` .
+
+This is the quantitative mechanism behind the selection rule: among the three
+planes the one with the LARGEST dual weight buys the most repair, which is why
+the refusal direction of the complement names the repairing plane. -/
+theorem repair_identity_first (D : WeightedDesign m 3) (x y z : Fin m)
+    {dropped keptOne keptTwo : Fin m}
+    (hdk1 : dropped ≠ keptOne) (hdk2 : dropped ≠ keptTwo) (hk12 : keptOne ≠ keptTwo)
+    (hxk1 : x ≠ keptOne) (hxk2 : x ≠ keptTwo)
+    (weightVec : Fin 3 → ℝ) :
+    dualCombination D x y z weightVec ⬝ᵥ
+        ((subsetSum D ({x, keptOne, keptTwo} : Finset (Fin m)) - 1)
+          *ᵥ dualCombination D x y z weightVec)
+      = dualCombination D x y z weightVec ⬝ᵥ
+          ((subsetSum D ({dropped, keptOne, keptTwo} : Finset (Fin m)) - 1)
+            *ᵥ dualCombination D x y z weightVec)
+        + (weightVec 0 * atomBracket D x y z) ^ 2
+        - (dualCombination D x y z weightVec ⬝ᵥ D.atom dropped) ^ 2 := by
+  classical
+  have hswap := bilinear_subsetSum_sub_one D ({x, keptOne, keptTwo} : Finset (Fin m))
+    (dualCombination D x y z weightVec) (dualCombination D x y z weightVec)
+  have hbase := bilinear_subsetSum_sub_one D ({dropped, keptOne, keptTwo} : Finset (Fin m))
+    (dualCombination D x y z weightVec) (dualCombination D x y z weightVec)
+  rw [Finset.sum_insert (by simp [hxk1, hxk2]), Finset.sum_insert (by simp [hk12]),
+    Finset.sum_singleton] at hswap
+  rw [Finset.sum_insert (by simp [hdk1, hdk2]), Finset.sum_insert (by simp [hk12]),
+    Finset.sum_singleton] at hbase
+  have hread : dualCombination D x y z weightVec ⬝ᵥ D.atom x
+      = weightVec 0 * atomBracket D x y z := by
+    rw [dotProduct_comm]
+    exact inside_dot_dualCombination_first D x y z weightVec
+  rw [hswap, hbase, hread]
+  ring
+
+/-- **THE REFUSAL TRANSFER.**  Reading a form along an ambient dual combination
+is the same as reading its dual-frame congruence at the weights.  A negative
+value on the congruence therefore hands over an EXPLICIT ambient direction on
+which the form is negative. -/
+theorem refusal_transfer (D : WeightedDesign m 3) (x y z : Fin m)
+    (form : Matrix (Fin 3) (Fin 3) ℝ) (weightVec : Fin 3 → ℝ) :
+    dualCombination D x y z weightVec ⬝ᵥ (form *ᵥ dualCombination D x y z weightVec)
+      = weightVec ⬝ᵥ
+        (((dualNormalFrame D x y z)ᵀ * form * dualNormalFrame D x y z) *ᵥ weightVec) := by
+  simp only [Matrix.mul_apply, Matrix.transpose_apply, dualNormalFrame,
+    dualCombination, Matrix.of_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_three,
+    Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- **THE OBSTRUCTION DICHOTOMY.**  A symmetric Z-pattern form that is NOT
+positive definite admits no positive vector with positive image: every strictly
+positive vector has some nonpositive row reading.  The exact contrapositive of
+`Gtz.posDef_three_of_zPattern_of_posVector`, and the statement the failing
+branch has to consume. -/
+theorem no_posVector_of_not_posDef_zPattern {gapForm : Matrix (Fin 3) (Fin 3) ℝ}
+    (hsymm : gapFormᵀ = gapForm)
+    (h01 : gapForm 0 1 ≤ 0) (h02 : gapForm 0 2 ≤ 0) (h12 : gapForm 1 2 ≤ 0)
+    (hnot : ¬ gapForm.PosDef)
+    {scale : Fin 3 → ℝ} (hv0 : 0 < scale 0) (hv1 : 0 < scale 1) (hv2 : 0 < scale 2) :
+    gapForm 0 0 * scale 0 + gapForm 0 1 * scale 1 + gapForm 0 2 * scale 2 ≤ 0
+      ∨ gapForm 0 1 * scale 0 + gapForm 1 1 * scale 1 + gapForm 1 2 * scale 2 ≤ 0
+      ∨ gapForm 0 2 * scale 0 + gapForm 1 2 * scale 1 + gapForm 2 2 * scale 2 ≤ 0 := by
+  by_contra hcon
+  push Not at hcon
+  obtain ⟨hr0, hr1, hr2⟩ := hcon
+  exact hnot (posDef_three_of_zPattern_of_posVector hsymm h01 h02 h12 hv0 hv1 hv2
+    hr0 hr1 hr2)
+
 end Gtz
