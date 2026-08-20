@@ -6376,3 +6376,4 @@ import Gtz.Wave.ReadingMatrixRelation
 import Gtz.Wave.HeavyInsideDeterminantForm
 import Gtz.Wave.CoweightedMemberLedger
 import Gtz.Wave.FourSetTetrahedralFoil
+import Gtz.Wave.AdjugateDowndateReadings

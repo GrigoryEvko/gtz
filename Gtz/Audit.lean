@@ -1287,6 +1287,7 @@ import Gtz.Wave.ReadingMatrixRelation
 import Gtz.Wave.HeavyInsideDeterminantForm
 import Gtz.Wave.CoweightedMemberLedger
 import Gtz.Wave.FourSetTetrahedralFoil
+import Gtz.Wave.AdjugateDowndateReadings
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36305,6 +36306,16 @@ run_cmd do
 #print axioms Gtz.tetraFoil_gap_posDef
 #print axioms Gtz.tetraFoil_reading
 #print axioms Gtz.fourSet_posDef_gap_all_floors_realizable
+
+-- Gtz/Wave/AdjugateDowndateReadings.lean -- the adjugate readings of a
+-- rank-one downdate, and the weight-gap law terms as four-set readings
+#print axioms Gtz.adj_sub_atomMatrix_self_reading
+#print axioms Gtz.det_mul_adj_sub_atomMatrix_reading
+#print axioms Gtz.cross_quadForm_sub_atomMatrix
+#print axioms Gtz.cross_dotProduct_self
+#print axioms Gtz.corner_oneAxisZero_heavyInside_KRy_eq
+#print axioms Gtz.corner_oneAxisZero_heavyInside_KRz_eq
+#print axioms Gtz.corner_oneAxisZero_heavyInside_crossY_pos
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
