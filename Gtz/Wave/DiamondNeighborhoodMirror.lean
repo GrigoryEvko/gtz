@@ -1,5 +1,7 @@
 import Gtz.Wave.TieStratumClassification
 import Gtz.Design.TripleGramSylvester
+import Gtz.Wave.InvariantTaxTeeth
+import Gtz.Wave.TransverseFloor
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -574,5 +576,127 @@ theorem swap_defect_pos_of_not_hasParallelPair (D : WeightedDesign m 3)
       exact absurd heq.symm (ne_of_gt (dotProduct_self_pos hne))
     exact hread
       (mirror_readings_eq_zero_of_not_hasParallelPair D hprim hpq hp hq hnull hzero).2
+
+/-! ## 6. Discharging the shared null line
+
+Section 3 buys the parallel pair from a SHARED null line, and section 5
+prices the wedge by the swap defect.  Both hypotheses can now be removed at
+once.  A positive semidefinite gap cannot send a probe far while reading it
+little: Cauchy–Schwarz in the gap's own form, against the landed trace law,
+gives
+
+  `|M w|² ≤ tr M · (wᵀ M w)` ,
+
+so the swap defect is at most the trace times the swap's null form — and
+the swap's null form at the probe of a weak dominator is exactly the
+READING GAP of the exchanged pair.  The wedge is therefore capped by how
+much more the incoming atom reads than the outgoing one.  At the doubled
+fixture the two copies read EQUALLY, so the cap is zero. -/
+
+/-- **A SEMIDEFINITE GAP CANNOT THROW A PROBE IT BARELY READS.**  For a
+positive semidefinite matrix, `|Mw|² ≤ tr M · (wᵀMw)`.  Proved from the
+form's own Cauchy–Schwarz against the landed trace law — no spectral
+theorem, no square root. -/
+theorem psd_mulVec_normSq_le_trace_mul_quadForm
+    {M : Matrix (Fin 3) (Fin 3) ℝ} (hM : M.PosSemidef) (w : Fin 3 → ℝ) :
+    (M *ᵥ w) ⬝ᵥ (M *ᵥ w) ≤ Matrix.trace M * (w ⬝ᵥ (M *ᵥ w)) := by
+  have hsymm : Mᵀ = M := transpose_eq_of_isHermitian hM.1
+  have hmove : ∀ x y : Fin 3 → ℝ, x ⬝ᵥ (M *ᵥ y) = y ⬝ᵥ (M *ᵥ x) := by
+    intro x y
+    rw [Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hsymm, dotProduct_comm]
+  have hquad : ∀ x : Fin 3 → ℝ, 0 ≤ x ⬝ᵥ (M *ᵥ x) := by
+    intro x
+    have h := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hM).2 x
+    rwa [star_trivial] at h
+  -- `|Mw|²` is the `M`-pairing of `w` against `Mw`
+  have hX : w ⬝ᵥ (M *ᵥ (M *ᵥ w)) = (M *ᵥ w) ⬝ᵥ (M *ᵥ w) := by
+    rw [hmove w (M *ᵥ w)]
+  have hcs := posSemidef_bilinear_sq_le hM w (M *ᵥ w)
+  rw [hX] at hcs
+  have htrace := form_le_trace_mul_normSq_of_posSemidef hM (M *ᵥ w)
+  set X : ℝ := (M *ᵥ w) ⬝ᵥ (M *ᵥ w) with hXdef
+  have hXnn : 0 ≤ X := dotProduct_self_nonneg _
+  rcases hXnn.lt_or_eq with hpos | hzero
+  · nlinarith [hcs, htrace, hquad w, hpos]
+  · rw [← hzero]
+    have hdiag : ∀ i, 0 ≤ M i i := by
+      intro i
+      have h := hquad (Pi.single i 1)
+      rw [single_one_dotProduct, Matrix.mulVec_single_one] at h
+      simpa using h
+    have htr : 0 ≤ Matrix.trace M := by
+      rw [Matrix.trace_fin_three]
+      linarith [hdiag 0, hdiag 1, hdiag 2]
+    exact mul_nonneg htr (hquad w)
+
+/-- **THE READING-GAP RIGIDITY.**  When BOTH members of a mirror candidate
+weakly dominate and the first kills the probe, the pair wedge is capped by
+the READING GAP alone:
+
+  `w_{pq}·(g_q·w)² ≤ |g_p|²·tr(S_{C'} − 1)·((g_q·w)² − (g_p·w)²)` .
+
+No coercivity constant, no shared null line, no smallness hypothesis.  The
+mirror hypothesis of section 3 has been traded for two weak dominations,
+and the entire obstruction is the excess reading of the incoming atom.  At
+the doubled fixture the two copies read EQUALLY, the right side is zero,
+and the wedge vanishes: the local rigidity with its analytic hypothesis
+discharged. -/
+theorem wedge_le_reading_gap_of_mirror_dominators (D : WeightedDesign m 3)
+    {C : Finset (Fin m)} {p q : Fin m} (hp : p ∈ C) (hq : q ∉ C)
+    {w : Fin 3 → ℝ} (hnull : (subsetSum D C - 1) *ᵥ w = 0)
+    (hdom : Dominates D (insert q (C.erase p))) :
+    (leverageOf (D.atom p) * leverageOf (D.atom q) - (D.atom p ⬝ᵥ D.atom q) ^ 2)
+        * (D.atom q ⬝ᵥ w) ^ 2
+      ≤ leverageOf (D.atom p)
+        * (Matrix.trace (subsetSum D (insert q (C.erase p)) - 1)
+          * ((D.atom q ⬝ᵥ w) ^ 2 - (D.atom p ⬝ᵥ w) ^ 2)) := by
+  have hdefect := wedge_mul_reading_sq_le_swap_defect D hp hq hnull
+  have hthrow := psd_mulVec_normSq_le_trace_mul_quadForm hdom w
+  rw [swap_nullForm_of_null D hp hq hnull] at hthrow
+  have hlevnn : 0 ≤ leverageOf (D.atom p) := by
+    rw [leverageOf_eq_dotProduct]
+    exact dotProduct_self_nonneg _
+  calc (leverageOf (D.atom p) * leverageOf (D.atom q)
+          - (D.atom p ⬝ᵥ D.atom q) ^ 2) * (D.atom q ⬝ᵥ w) ^ 2
+      ≤ leverageOf (D.atom p)
+          * (((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w)
+            ⬝ᵥ ((subsetSum D (insert q (C.erase p)) - 1) *ᵥ w)) := hdefect
+    _ ≤ leverageOf (D.atom p)
+          * (Matrix.trace (subsetSum D (insert q (C.erase p)) - 1)
+            * ((D.atom q ⬝ᵥ w) ^ 2 - (D.atom p ⬝ᵥ w) ^ 2)) :=
+        mul_le_mul_of_nonneg_left hthrow hlevnn
+
+/-- **THE MIRROR RIGIDITY WITHOUT THE SHARED NULL.**  Two weakly dominating
+mirror members whose exchanged atoms read the probe EQUALLY force the pair
+parallel.  This is the local rigidity in its final hypothesis: equal
+readings, not a shared null line. -/
+theorem hasParallelPair_of_mirror_dominators_of_readings_eq (D : WeightedDesign m 3)
+    {C : Finset (Fin m)} {p q : Fin m} (hpq : p ≠ q) (hp : p ∈ C) (hq : q ∉ C)
+    {w : Fin 3 → ℝ} (hnull : (subsetSum D C - 1) *ᵥ w = 0)
+    (hdom : Dominates D (insert q (C.erase p)))
+    (hreadeq : (D.atom p ⬝ᵥ w) ^ 2 = (D.atom q ⬝ᵥ w) ^ 2)
+    (hread : D.atom q ⬝ᵥ w ≠ 0) :
+    HasParallelPair D := by
+  have hbound := wedge_le_reading_gap_of_mirror_dominators D hp hq hnull hdom
+  rw [← hreadeq, sub_self, mul_zero, mul_zero] at hbound
+  have hwedge : leverageOf (D.atom p) * leverageOf (D.atom q)
+      - (D.atom p ⬝ᵥ D.atom q) ^ 2 = 0 := by
+    have hpos : 0 < (D.atom q ⬝ᵥ w) ^ 2 := by positivity
+    have hnn := wedge_nonneg (D.atom p) (D.atom q)
+    nlinarith [hbound, hpos, hnn]
+  -- a vanishing wedge is a vanishing cross, hence a parallel pair
+  have hcross : crossNormSq (D.atom p) (D.atom q) = 0 := by
+    rw [crossNormSq_eq_leverage_mul_sub_sq]; exact hwedge
+  have hbn : bracketNormal (D.atom p) (D.atom q) = 0 := by
+    rw [crossNormSq] at hcross
+    exact dotProduct_self_eq_zero.mp hcross
+  have hpne : D.atom p ≠ 0 := by
+    intro h0
+    refine hread ?_
+    have hsq : (D.atom q ⬝ᵥ w) ^ 2 = 0 := by
+      rw [← hreadeq, h0, zero_dotProduct]; ring
+    exact pow_eq_zero_iff two_ne_zero |>.mp hsq
+  exact ⟨p, q, (D.atom p ⬝ᵥ D.atom q) / (D.atom p ⬝ᵥ D.atom p), hpq,
+    eq_smul_of_bracketNormal_eq_zero (D.atom p) (D.atom q) hpne hbn⟩
 
 end Gtz

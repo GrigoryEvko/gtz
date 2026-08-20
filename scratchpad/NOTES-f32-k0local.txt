@@ -1,0 +1,240 @@
+FORK 32 — C1-7, K0 LOCAL RIGIDITY (the calibration theorem)
+============================================================
+
+F32-1. THE HEADLINE: THE MIRROR MECHANISM IS EXACT, NOT PERTURBATIVE
+---------------------------------------------------------------------
+The brief asked for an O(eps) neighborhood theorem. The mechanism turned
+out to need NO perturbation theory at all. Two triples differing in one
+label have gaps differing by ONE rank-one exchange, so at a null probe w
+of C:
+
+    (S_{C'} - 1) w = (g_q.w) g_q - (g_p.w) g_p     EXACT     [swap_gap_mulVec_of_null]
+
+If C' ALSO kills w (a "mirror pair of null-sharing weak dominators") the
+right side vanishes:
+
+    (g_p.w) g_p = (g_q.w) g_q                                [mirror_reading_smul_eq]
+
+so the two atoms are PROPORTIONAL as soon as either reads the probe. That
+IS the local rigidity, in one subtraction, at every size, with no
+positivity, no eigenvalues, no tie hypothesis, no smallness.
+
+CALIBRATION CONFIRMS IT FIRES AT THE FIXTURE: all four mirror pairs of the
+split diamond share their null vector EXACTLY, and the spine reading is
+d = +-3 != 0 at all four. See the table in F32-3.
+
+F32-2. WHAT LANDED (Gtz/Wave/DiamondNeighborhoodMirror.lean, 24 thms + 1 def)
+------------------------------------------------------------------------------
+Sec 1, THE PROBE CALCULUS (general, any size, no spectral theorem):
+  quadForm_probe_split      u'Au = a*alpha^2 + 2 alpha (v.b) + v'Av along a
+                            unit probe, a = w'Aw, b = Aw - a w.
+  posDef_of_probe_coercivity   a*mu > b.b  =>  A > 0.  One discriminant:
+                            a(a alpha^2 + 2 alpha (v.b) + mu|v|^2)
+                              = (a alpha + v.b)^2 + |v|^2 (a mu - b.b).
+  probe_coercivity_pinch    NOT PD => a*mu <= b.b.  THE QUANTITATIVE FORM OF
+                            "A CONTACT CANNOT OPEN UPWARD".
+  not_isTie_of_probe_coercivity   ONE probe + one coercivity constant
+                            produces a STRICT DOMINATOR, hence kills the tie.
+Sec 2, THE SWAP CALCULUS: subsetSum_erase_add, subsetSum_swap_eq,
+  card_swap_eq, swap_gap_mulVec_of_null, swap_nullForm_of_null
+  (w'(S_{C'}-1)w = (g_q.w)^2 - (g_p.w)^2), swap_reading_sq_le_of_dominates
+  (the landed free census, now quantitative).
+Sec 3, THE MIRROR RIGIDITY: mirror_reading_smul_eq;
+  hasParallelPair_of_mirror_nullDominators (THE THEOREM);
+  nullReading_eq_zero_of_mirror_of_not_hasParallelPair and
+  mirror_readings_eq_zero_of_not_hasParallelPair (the primitive
+  obstruction: at a primitive design every mirror pair is BLIND to both
+  exchanged members); mirror_reading_squeeze (the two-sided trap when the
+  null lines do NOT coincide - the quantitative residue).
+Sec 4, THE QUANTITATIVE SWAP PINCH: swapCoupling (def);
+  swap_pinch_of_isTie   ((g_q.w)^2 - (g_p.w)^2) mu <= |swapCoupling|^2 at a
+    tie - the excess is paid ENTIRELY by the transverse coupling;
+  parallel_swap_coercivity_bound  a parallel pair of ratio rho^2 > 1 caps
+    every swapped triple's coercivity: mu <= (rho^2 - 1)(|g_p|^2 - (g_p.w)^2).
+Sec 5, THE WEDGE DEFECT (the hinge's own currency):
+  bracketNormal_swapVec, wedge_nonneg,
+  wedge_mul_reading_sq_le_swap_defect  THE CROWN:
+      w_{pq} * (g_q.w)^2  <=  |g_p|^2 * |(S_{C'}-1) w|^2
+    EXACT at every design. The right side vanishes EXACTLY on the mirror
+    locus, so the bound degenerates precisely where the rigidity claims.
+  mirror_wedge_eq_zero      mirror => wedge = 0 (= singular pair minor of
+    the pivot matrix = floorless block of the wedge-bracket tax).
+  swap_defect_ge_wedge_ratio     the divided floor.
+  swap_defect_pos_of_not_hasParallelPair   at a primitive design EVERY
+    mirror-candidate swap misses the probe STRICTLY.
+GATE: module builds standalone, 9242 jobs, exit 0, ZERO warnings in the
+file, zero sorries. All 20 pinned names on [propext, Classical.choice,
+Quot.sound]. Registry untouched at 7.
+
+F32-3. THE CALIBRATION TABLE (EXACT rationals; the deliverable)
+----------------------------------------------------------------
+Potential frame (graphicDesign transport): S_C >= I  <=>  K_C >= L, with
+  L = [[8,-2,-3],[-2,8,-3],[-3,-3,6]],  b0=(1,-1,0) b1=(1,0,-1) b2=(1,0,0)
+  b3=(0,1,-1) b4=(0,1,0),  K_C = sum_{c in C} k_c b_c b_c',
+  k = (10,15,15,15,15,10),  b_6 = b_0.
+Atoms 1 and 6 (1-indexed) are the spine copies = THE PARALLEL PAIR.
+All null vectors verified EXACTLY in ker(K_C - L). Script: f32/calib.jl.
+
+12 CONTACTS - every one PSD of corank EXACTLY one (e3 = 0, e2 > 0, so the
+transverse coercivity mu that the probe calculus needs is positive at all
+twelve):
+  MIRROR PAIRS (exactly one spine copy; the two members SHARE the null vector)
+    (1,2,3) ~ (2,3,6)   y = (1,4,0)   e2 = 153   spine drop d = -3
+    (1,2,5) ~ (2,5,6)   y = (4,1,5)   e2 = 378   d = +3
+    (1,3,4) ~ (3,4,6)   y = (1,4,5)   e2 = 378   d = -3
+    (1,4,5) ~ (4,5,6)   y = (4,1,0)   e2 = 153   d = +3
+  SIGMA-FIXED = THE COMPLEMENT FAMILY (the four triples inside {2,3,4,5},
+  i.e. avoiding the parallel pair entirely)
+    (2,3,4) y = (2,8,5)  e2 = 558      (2,3,5) y = (3,-3,5)  e2 = 258
+    (2,4,5) y = (8,2,5)  e2 = 558      (3,4,5) y = (3,-3,-5) e2 = 258
+8 REFUSALS (indefinite; stable under perturbation, so they never bind)
+  both-copy      (1,2,6) (1,3,6) (1,4,6) (1,5,6)   det M = -675
+  triangle lifts (1,2,4) (1,3,5) (2,4,6) (3,5,6)   det M = -1800
+  ((1,3,6) and (1,5,6) carry e2 = -252 as well: deeply indefinite.)
+
+F32-4. THE FIRST-ORDER VERDICT AND THE SIZE-SIX CONSUMPTION
+------------------------------------------------------------
+Tangent system (f32/tangent.jl): variables mu_1..mu_6 in R^3 and dt_1..dt_6
+(24), constraints = Parseval tangent sum_c ceff_c (mu_c b_c' + b_c mu_c') = 0
+(6) and sum dt = 0 (1); ceff = (1,3,3,3,3,1). The contact functionals are
+RATIONAL:
+    d(a_C) = sum_{c in C} [ 2 k_c d_c (y_C . mu_c) - (dt_c/t_c) k_c d_c^2 ],
+    d_c = b_c . y_C .
+The pair opens transversally iff theta := (mu_1 - mu_6)/2 leaves R b0.
+LP (all 12 contact functionals <= 0, i.e. no strict dominator appears):
+    transverse (1,1,0), both signs : INFEASIBLE
+    transverse (0,0,1), both signs : INFEASIBLE     => FIRST-ORDER RIGID
+    parallel b0                    : FEASIBLE  (the weight/scale resplit,
+                                     exactly tau = lambda/5 - it keeps the
+                                     pair parallel, as it must)
+    MIRROR CONTACTS ALONE (drop the 4 sigma-fixed): FEASIBLE
+=> THE COMPLEMENT FAMILY IS LOAD-BEARING. The four triples that avoid the
+   parallel pair have NO (5,3) analogue, and rigidity FAILS without them.
+   THE SIZE-SIX CONSUMPTION IS NOW PROVEN, NOT MEASURED - and this is the
+   boundary-discipline test passing: the argument cannot extend to the
+   primitive (5,3) diamond, where the hinge is false.
+Farkas structure: all multipliers in {1/600, 2/600}; ALL FOUR sigma-fixed
+contacts appear with weight 1 in every one of the four certificates.
+Hand check of the pure antisymmetric sector reproduces the LP exactly: the
+four mirror constraints alone force theta_2 = 0 and theta = 5 tau (1,-1,0)
+= 5 tau b0, i.e. the parallel line.
+
+F32-5. CONSTANTS FOR THE GLOBAL LAW (handoff to the C1-8 fight)
+----------------------------------------------------------------
+A global law of the shape
+    sum_i lambda_i (refusal margin)_i  >=  c(data) * (min pair wedge)
+must be consistent with:
+ (a) EQUALITY AT THE FIXTURE. All 12 contact margins are 0 and the min pair
+     wedge is 0 at the split diamond, so the law is tight there and cannot
+     carry an additive constant.
+ (b) THE MIRROR PAIRING. For each of the 4 mirror pairs the two margins are
+     equal-and-opposite in the antisymmetric sector (exactly: d(a_C) =
+     -d(a_{sigma C}) there), so any lambda that is NOT sigma-symmetric on a
+     mirror pair is killed by the antisymmetric direction. lambda must be
+     sigma-symmetric.
+ (c) THE COMPLEMENT FAMILY MUST CARRY POSITIVE WEIGHT. Mirror-only is
+     feasible, so lambda_i > 0 is FORCED on all four sigma-fixed contacts.
+     The measured certificates put them at weight 1 against mirror weights
+     1 or 2, i.e. the ratio lambda_mirror/lambda_complement lies in [1,2].
+ (d) THE SCALE. With the certificates normalized to the transverse opening,
+     the multiplier scale is 1/600 in the (k, t) normalization above.
+ (e) THE DEGENERATION FACTOR. wedge_mul_reading_sq_le_swap_defect says the
+     wedge is capped by |g_p|^2 |(S_{C'}-1)w|^2 / (g_q.w)^2, so c(data)
+     may not exceed (min over mirror candidates of (g_q.w)^2 / |g_p|^2).
+     At the fixture (g_q.w)^2 = k_1 d^2 = 10*9 = 90 against |w|^2 = 120.
+
+F32-6. FIELD SENSITIVITY (the realness question, answered)
+-----------------------------------------------------------
+THE MIRROR RIGIDITY IS FIELD-BLIND. mirror_reading_smul_eq is a subtraction
+of two null conditions and holds verbatim over C with the bilinear form;
+the step "(g_p.w) g_p = (g_q.w) g_q and (g_p.w) != 0 => proportional" is
+pure linear algebra, valid over any field. So the LOCAL theorem does NOT
+need realness, and complextie_c1 does not threaten it.
+WHERE REALNESS MUST ENTER: the moment the argument passes from the exact
+mirror hypothesis to the QUANTITATIVE one. Over R the wedge is a SUM OF
+SQUARES (wedge_nonneg, via crossNormSq), so "wedge <= 0" forces "wedge = 0"
+forces parallelism. Over C the bilinear wedge is not a sum of squares, it
+vanishes on isotropic atoms with no proportionality, and wedge_nonneg is
+FALSE. So the ORDER content of section 5 - and only that - is the real
+step. The global law will inherit exactly this: its degeneration factor is
+the wedge, and its realness is wedge_nonneg.
+
+F32-7. THE RESIDUAL AFTER THIS ROUND
+-------------------------------------
+CLOSED: the exact mirror rigidity; the general probe calculus; the
+quantitative swap pinch; the wedge defect bound; the calibration table; the
+first-order verdict with the size-six consumption proven.
+OPEN (the honest gap): the passage from "tie near the fixture" to "some
+mirror pair shares a null line". The exact theorem consumes the SHARED
+NULL; a perturbed tie has two corank-one dominators whose null lines are
+O(eps) apart, and mirror_reading_squeeze is the two-sided trap that must be
+converted into the shared-null hypothesis. The ingredients are all landed:
+probe_coercivity_pinch bounds the null form by the coupling (order eps^2)
+while the opening is order eps, and wedge_mul_reading_sq_le_swap_defect
+converts the defect into the wedge. What is missing is only the eps
+bookkeeping - a genuinely analytic step, and the one place this arm still
+needs a neighborhood formalism rather than an identity.
+NEXT BRICKS, in order: (1) the corank-one persistence lemma (a corank-one
+PSD gap with coercivity mu stays corank <= 1 under perturbations below
+mu/2, with its null line moving by O(eps/mu)); (2) feed it to
+mirror_reading_squeeze to get |(g_p.w)^2 - (g_q.w)^2| = O(eps^2); (3) the
+wedge bound then gives wedge = O(eps^2) - quantitative local rigidity; (4)
+hand the calibration constants of F32-5 to the global aggregation.
+
+F32-8. FILES
+-------------
+Gtz/Wave/DiamondNeighborhoodMirror.lean  (mine)
+scratchpad/corank1/f32/calib.jl    the exact contact structure
+scratchpad/corank1/f32/tangent.jl  the first-order LP + the mirror-only test
+scratchpad/corank1/f32/cert.jl     Farkas extraction
+COORDINATION: HEAD moved twice during this round (siblings landed
+PencilWiring/ErasedAtomSpectrum/DualFrameBudget/InvariantBudgets/
+BracketContractionTax...). I staged only my own paths; my umbrella and
+audit edits are INSERTIONS ONLY (1 + 22 lines, zero deletions).
+SIBLING BREAKAGE OBSERVED, NOT TOUCHED: the in-flight untracked
+Gtz/Wave/TripleGramChart.lean re-declares Gtz.tripleGram, which already
+exists in Gtz/Design/TripleGramSylvester.lean (imported at Gtz.lean:4852,
+long before TripleGramChart at 6397). The full umbrella gate therefore
+fails at Gtz/Audit.lean:43 with "environment already contains
+'Gtz.tripleGram'". This is PRE-EXISTING at HEAD and independent of my
+change; its owner must rename. My module builds and audits standalone.
+
+F32-9. ROUND 2: THE SHARED NULL LINE IS DISCHARGED (section 6)
+---------------------------------------------------------------
+The residual named in F32-7 is CLOSED, and without any eps bookkeeping.
+A positive semidefinite gap cannot throw a probe it barely reads:
+
+    |M w|^2 <= tr M * (w' M w)          [psd_mulVec_normSq_le_trace_mul_quadForm]
+
+proved from Cauchy-Schwarz in the gap's OWN form (the sibling's landed
+posSemidef_bilinear_sq_le of TransverseFloor) against the sibling's landed
+trace law (form_le_trace_mul_normSq_of_posSemidef of InvariantTaxTeeth):
+CS gives |Mw|^4 <= (w'Mw)(Mw)'M(Mw) and the trace law gives
+(Mw)'M(Mw) <= tr M |Mw|^2, so |Mw|^2 <= tr M (w'Mw). No spectral theorem
+and no square root. BOTH ARMS' INSTRUMENTS ARE CONSUMED HERE.
+
+Feeding it to the wedge defect bound and using
+w'(S_{C'}-1)w = (g_q.w)^2 - (g_p.w)^2 gives THE READING-GAP RIGIDITY:
+
+    w_{pq} (g_q.w)^2 <= |g_p|^2 tr(S_{C'}-1) ((g_q.w)^2 - (g_p.w)^2)
+                                    [wedge_le_reading_gap_of_mirror_dominators]
+
+Hypotheses: C weakly dominates AND kills w, C' weakly dominates. THAT IS
+ALL. No coercivity constant, no shared null line, no smallness. The whole
+obstruction is the EXCESS READING of the incoming atom, and at the doubled
+fixture the two copies read EQUALLY, so the right side is ZERO.
+
+    hasParallelPair_of_mirror_dominators_of_readings_eq :
+      two weakly dominating mirror members whose exchanged atoms read the
+      probe equally in square FORCE the pair parallel.
+
+So the local rigidity's final hypothesis is EQUAL READINGS, not a shared
+null line. That is strictly weaker, it is what the census and the two-sided
+squeeze already deliver, and it is checkable from the reading data alone.
+Gate: 9353 jobs exit 0, zero warnings in the file, three new pins standard.
+
+REVISED RESIDUAL: the only remaining step of C1-7 is to force the reading
+equality at a perturbed tie. mirror_reading_squeeze gives the two halves at
+the two null probes; when the probes coincide the equality is immediate
+(section 3), and the general case needs the two probes to be compared. That
+is now a statement about TWO SCALARS, not about matrices or eigenvalues.
