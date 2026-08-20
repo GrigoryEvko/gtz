@@ -1301,6 +1301,7 @@ import Gtz.Wave.SecondInvariantLedger
 import Gtz.Wave.ShellAnchor
 import Gtz.Wave.TransverseFloor
 import Gtz.Wave.PencilWiring
+import Gtz.Wave.ErasedAtomSpectrum
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36374,6 +36375,21 @@ run_cmd do
 #print axioms Gtz.corner_scale_cap
 #print axioms Gtz.corner_bothLight_transverse_floor
 #print axioms Gtz.corner_bothLight_transverse_floor_of_corner
+
+-- Gtz/Wave/ErasedAtomSpectrum.lean -- the erased atom as an exact
+-- eigenvector of the weighted outside moment, its determinant and
+-- adjugate transports, the dual rigidity, and the free z-floor
+#print axioms Gtz.corner_subsetSum_mulVec_erased
+#print axioms Gtz.corner_gap_mulVec_erased
+#print axioms Gtz.corner_weightedComplement_eigen
+#print axioms Gtz.corner_weightedInside_eigen
+#print axioms Gtz.weightedComplement_det_eigen
+#print axioms Gtz.weightedComplement_adjugate_eigen
+#print axioms Gtz.corner_outsideDual_reading
+#print axioms Gtz.corner_erasedDual_quota
+#print axioms Gtz.bothLight_y_floor_iff_z_floor
+#print axioms Gtz.corner_oneAxisZero_weightedComplement_eigen
+#print axioms Gtz.corner_oneAxisZero_outsideDual_reading
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
