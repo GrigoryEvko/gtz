@@ -1310,6 +1310,7 @@ import Gtz.Wave.ChartBracketTax
 import Gtz.Wave.TieGraphTrichotomy
 import Gtz.Wave.TieMantelBound
 import Gtz.Wave.CellHChartFloors
+import Gtz.Wave.CellBTiePackage
 import Gtz.Wave.DiamondNeighborhoodMirror
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
@@ -36507,6 +36508,15 @@ run_cmd do
 #print axioms Gtz.weighted_leverage_total
 #print axioms Gtz.two_le_card_heavy
 #print axioms Gtz.isTie_heavyFour_mantel_dichotomy
+
+-- Gtz/Wave/CellBTiePackage.lean -- the tie's necessary polynomial system:
+-- the floors as gap determinant signs and the contraction tax at every
+-- triple, with no inverse and no matrix
+#print axioms Gtz.cellB_seven_floors_iff_gapDets
+#print axioms Gtz.cellB_yFloor_iff_zFloor_gapDet
+#print axioms Gtz.isTie_tax_package
+#print axioms Gtz.isTie_tax_package_bracket
+#print axioms Gtz.cellB_tie_package
 
 -- Gtz/Wave/InvariantBudgets.lean -- the conservation laws of the tax
 -- currencies: the Parseval moments, the wedge budget, the bracket budget
