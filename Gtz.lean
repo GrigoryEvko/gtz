@@ -6487,3 +6487,4 @@ import Gtz.Wave.CellHTwoStarProducer
 import Gtz.Wave.BranchTwoDeterminantSum
 import Gtz.Wave.CornerEmptinessSlack
 import Gtz.Wave.CornerDescentRank
+import Gtz.Wave.BranchTwoTrueDeterminants

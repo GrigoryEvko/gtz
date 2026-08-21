@@ -1373,6 +1373,7 @@ import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.CornerGatewayBudget
 import Gtz.Wave.BranchTwoDeterminantSum
 import Gtz.Wave.CornerDescentRank
+import Gtz.Wave.BranchTwoTrueDeterminants
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.CornerEmptinessSlack
@@ -37787,3 +37788,13 @@ run_cmd do
 #print axioms Gtz.pairGapMinor_nonneg_of_dominates
 #print axioms Gtz.inadmissible_pair_not_inside_dominates
 #print axioms Gtz.crossNormSq_le_of_pairGapMinor_nonpos
+
+-- Gtz/Wave/BranchTwoTrueDeterminants.lean -- the box determinants of the
+-- gateway are the extremal case of the true ones: the sum differs by exactly
+-- the three pair minors, nonpositive on the inadmissible set
+#print axioms Gtz.det_outsideGram
+#print axioms Gtz.det_one_sub_outsideGram
+#print axioms Gtz.det_sum_eq_box_add_pairMinors
+#print axioms Gtz.det_sum_le_box_of_inadmissible
+#print axioms Gtz.true_slack_factorization
+#print axioms Gtz.true_target_of_defect
