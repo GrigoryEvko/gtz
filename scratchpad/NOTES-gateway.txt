@@ -857,3 +857,39 @@ F66-7. ROUND SUMMARY (fork 66).  E1 IS NOT CLOSED; I do not state it and I hand
   Enumerating ALL of it, then certifying the target on each face separately, is
   the route the two obstructions point at -- a face-by-face argument, not a
   single certificate.
+
+F66-8. **A CAVEAT ON THE (a,t) BOX ITSELF, FOUND BY TESTING IT AT REAL CORNERS.**
+  I tried to read F66-3 at the design level.  The READING is right:
+     S = tau_C (the inside weight mass)  and  sum a - 1 = 1 - s  (s the inside
+     share), both confirmed to 1e-9 at 1750 genuine corners.
+  But the IDENTITY did not reproduce there: max |err| = 1.33, not 0.  The cause
+  is not the identity -- that is a polynomial fact -- it is that
+  Gtz.branchDetComplement and Gtz.branchDetOutside are DEFINITIONS, polynomials
+  in (a,t) alone, and they are NOT det(1-M) and det(M) at a general corner.
+  MEASURED (scratchpad/f66/proxy.py).  Build M with diagonal t_i + a_i and free
+  off-diagonals m_ij, so K = M - diag(t) has K_ii = a_i, K_ij = m_ij and pair
+  minor q_ij = a_i a_j - m_ij^2.  Then, max error over 3000 draws each:
+     random off-diagonals            dM - det M = 2.51e-01,  dIM = 5.75e-01
+     pair-tight (q_ij=0), sigma=+1   dM - det M = 8.80e-02,  dIM = 8.80e-02
+     pair-tight (q_ij=0), sigma=-1   dM - det M = 4.34e-17,  dIM = 3.33e-16
+  So the two definitions coincide with the true determinants EXACTLY on the
+  slice { all three pair minors zero, Bargmann sign sigma = -1 } and nowhere
+  else.  This is consistent with F47-8, whose exact formula
+     det(K_D - I) = -2 prod x + 2 sigma sqrt(prod(x_i x_j + r_ij)) - sum x_i r_jk
+  reduces at r = 0, sigma = -1 to the -4 prod a term the definitions carry.
+  WHAT THIS DOES AND DOES NOT MEAN.  It does NOT invalidate anything landed:
+  every theorem in BranchTwoDeterminantSum, BranchTwoReduction, CornerDescentRank
+  and CornerEmptinessSlack is an unconditional polynomial identity or an
+  implication from stated hypotheses, and none of them claims the definitions
+  are determinants.  What it means is that the (a,t) box is a SIX-DIMENSIONAL
+  SLICE of the true problem -- the boundary r = 0 of the inadmissible region,
+  at one Bargmann sign -- and the true problem carries r_ij >= 0 free and both
+  signs.  Whether the extremum of sum a over the true inadmissible region is
+  attained on that slice is a step I did NOT find stated anywhere in this lane's
+  notes, and it is not implied by F58-4 (whose "no pair tight" refers to
+  b_i + b_j = 1, a DIFFERENT condition from q_ij = 0).
+  RECOMMENDATION: before another certificate round, settle whether sup sum a
+  over {q_ij <= 0, both signs} equals sup over the r = 0, sigma = -1 slice.  If
+  it does, say so and cite it; if it does not, the box target is the wrong one
+  and every Handelman failure in F58-6, F58-12, F58-13, F65-8 and F66-6 was
+  aimed at a proxy.  This is cheap to test and it gates the whole lane.
