@@ -1,0 +1,61 @@
+LANE: the K0 residual stratum of the (6,3) hinge.
+TARGET was: kill { D all-heavy, every 5-set strictly dominating, every dominating triple K0 }.
+OUTCOME: not killed.  Landed the sharpest reduction reached, plus a new general law.
+
+F-LP-1.  THE SUBSET-DETERMINANT LAYER LAW AT EVERY SUBSET SIZE (new).
+  Sum_{|T|=r} det(S_T - 1) = Sum_j (-1)^{k+j} C(m-j, r-j) e_j(N),   N = Sum_c g_c g_c^T.
+  The tree had this at r = k ONLY (Gtz.sum_det_subsetSum_sub_one_eq).  The shipped proof
+  never uses |T| = k; removing that hypothesis is the whole step.  Below the rank the top
+  layers vanish because an r-sized Gram block has no j-minor for j > r
+  (Gtz.sum_principalMinorTotal_subsetSum_layer_of_lt), which is what lets the profile run
+  down to r = 2.
+  GENERATING FORM (derived by hand, not mechanized here):
+      Sum_r z^r Sum_{|T|=r} det(S_T - 1) = (-1)^k (1+z)^{m-k} det(I - z(N - 1)).
+  So the whole determinant profile across ALL subset sizes is one degree-m polynomial in
+  the k eigenvalues of N - 1.
+  VERIFIED in exact rationals: 2100/2100 at (6,3) over r = 0..6, and ALL EXACT at
+  (4,3) (5,3) (7,3) (5,2) (6,2) (7,4) (8,4).
+
+F-LP-2.  THE READINGS THAT CARRY A HYPOTHESIS.  With E_j the elementary symmetric functions
+  of the spectrum nu of N - 1, at (6,3):
+      r=6: E_3            always > 0
+      r=5: 3E_3 - E_2     > 0 when every five-set dominates strictly
+      r=4: 3E_3 - 3E_2 + E_1
+      r=3: E_3 - 3E_2 + 3E_1 - 1   <= 0 at a tie
+  The r=5 reading REPROVES the sibling identity Sum_c totalGapReading = k + tr((N-1)^-1)
+  of Gtz/Wave/SharpFiveSetCriterion.lean by Cauchy-Binet where that file uses Parseval.
+
+F-LP-3.  WHY THIS CANNOT CLOSE THE STRATUM, and no successor should try.
+  Both the tie bound and the five-set bound carry the SAME coefficient -4 on e_2(N).  The
+  e_2 layer is the only place the pair geometry enters (e_2(N) = Sum_{a<b} w_ab by
+  Cauchy-Binet), and it CANCELS in the difference of the two hypotheses.  A parallel pair
+  is a vanishing 2x2 Gram minor, so the two aggregates see it through one shared
+  coefficient and cannot separate it.  Landed as Gtz.e_two_cancels_in_the_window.
+  The window is also measurably non-empty: at the split diamond (in the stratum, WITH a
+  parallel pair) nu = (4,4,6), triple total -55, five total +224, sigma_1 = 2/3 -- wide
+  slack on both.
+
+F-LP-4.  NUMERICS, independent reimplementation of the campaign's (6,3) search.
+  Parametrise by (A,z) -> whiten -> design; objective |max_T lambda_min| computed as the
+  TRUE max (no smoothed surrogate); hard collinearity bound cos^2 <= 1 - eps.
+  CALIBRATION at (5,3), where the hinge is kernel-refuted: reaches 3.03e-07.  The method
+  finds parallel-free ties where they exist.
+  AT (6,3): 3.21e-02, 9.18e-03, 2.36e-03, 1.70e-03 for eps = 0.30, 0.10, 0.03, 0.01, and
+  the collinearity constraint is INACTIVE at every optimum.  Four to five orders of
+  magnitude above the calibration, and the obstruction is not the constraint.  This
+  reproduces the campaign's reported (6,3) figure from a fresh implementation.
+
+F-LP-5.  WHAT IS LEFT, exactly.
+  D all-heavy, every 5-set strictly dominating, every dominating triple K0 (all three
+  inside pair minors > 0), no strictly dominating triple.  Non-empty (the split diamond),
+  so the statement is not vacuous.  The stratum is SELF-DUAL under the sharp design: D
+  all-heavy <=> E's five-sets strict, and D's five-sets strict <=> E all-heavy.
+  Derived by hand and NOT mechanized here, offered to a successor:
+    * writing M = P - diag t for the chart gap, the sharp dual has M_E = -N M^{-1} N with
+      N = diag(sqrt(t_c(1-t_c))).  So the sharp duality is an EXACT INVOLUTION, and it has
+      NO fixed point: M = -N M^{-1} N would force (N^{-1/2} M N^{-1/2})^2 = -I, impossible
+      for a real symmetric matrix.
+    * D's five-sets strict <=> (M^{-1})_{cc} < 0 for all c, while all-heavy is M_cc > 0.
+      The residual stratum is exactly { M_cc > 0 and (M^-1)_{cc} < 0, all c }, with M of
+      inertia (3,0,3).
+  ROUTE THAT DIES: any argument built only on the spectrum of N.  See F-LP-3.
