@@ -138,3 +138,26 @@ F49-7.  WHAT THE SUCCESSOR SHOULD DO
 3. The chart of F49-2 is exact and cheap; add the design constraints to it
    rather than working in raw vectors.
 4. Do not: sum over slots (F49-1, F49-5), or hunt a scalar selector (F49-6).
+
+F49-8.  NO WEIGHT-CAP-SHAPED HYPOTHESIS CAN BE THE MISSING INGREDIENT
+---------------------------------------------------------------------
+The F49-3 witness geometry admits legal outside weights: t_a = t_b = 0.059 gives
+member cap t*l_a = 0.2655 <= 1 and pairing-cap slack +0.5219 (checked in exact
+rationals).  So the witness survives BOTH the landed member weight cap and the
+landed pairing cap.  More generally any hypothesis that can be satisfied by
+SHRINKING the outside weights is satisfiable at this geometry, since the caps
+only get slacker as t_a, t_b -> 0.
+=> The missing ingredient is NOT an inequality of weight-cap type.  It is the
+Parseval EQUATION itself -- specifically the third outside atom together with
+the inside weights, which is exactly what the (1,2)-entry obstruction in F49-3
+uses to reject the witness.  A proof of E2 must consume the sixth atom.
+
+F49-9.  WHY A DIRECT POSITIVSTELLENSATZ ATTACK IS OUT OF RANGE
+--------------------------------------------------------------
+Refuting {corner, full Parseval, all nine R <= 0} means eliminating over
+6 atoms x 3 coords + 6 weights = 24 parameters, less 3 for rotation, with the
+6 Parseval equations: ~15 effective dimensions at degree ~6.  The K2 chart
+capstone succeeded at 5 variables, degree 6, on a POLYTOPE.  This is far outside
+that range.  Any tractable attack must first cut the problem down -- e.g. by a
+partial selection rule that leaves a small residual cell -- not certify the
+disjunction whole.
