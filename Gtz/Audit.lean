@@ -1469,6 +1469,7 @@ import Gtz.Wave.UnitAtomFunnelClosure
 import Gtz.Wave.CorankStratumCollapse
 import Gtz.Wave.RankTwoTieClassification
 import Gtz.Wave.SharpFiveSetCriterion
+import Gtz.Wave.SharpShareCoAtom
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39374,3 +39375,36 @@ run_cmd do
 #print axioms Gtz.dotProduct_subsetSum_mulVec_sq
 #print axioms Gtz.corner_planeProbe_tight
 #print axioms Gtz.corner_axisProbe_total
+
+-- Gtz/Wave/SharpShareCoAtom.lean -- the sharp share computed without its
+-- whitener, identified with the co-atom reading through two orthogonal hats,
+-- and the two caps of a pair
+#print axioms Gtz.diag_eq_sum_sq_of_symmIdem
+#print axioms Gtz.eq_one_of_symmIdem_of_trace_eq
+#print axioms Gtz.coRoot_pos
+#print axioms Gtz.coRoot_mul_self
+#print axioms Gtz.coRoot_sq
+#print axioms Gtz.totalGap_eq_sum
+#print axioms Gtz.transpose_mul_totalGapFrame
+#print axioms Gtz.transpose_mul_sharpFrame
+#print axioms Gtz.transpose_totalGapFrame_mul_sharpFrame
+#print axioms Gtz.totalGapHat_transpose
+#print axioms Gtz.sharpHat_transpose
+#print axioms Gtz.totalGapHat_idem
+#print axioms Gtz.sharpHat_idem
+#print axioms Gtz.totalGapHat_mul_sharpHat
+#print axioms Gtz.trace_totalGapHat
+#print axioms Gtz.trace_sharpHat
+#print axioms Gtz.totalGapHat_add_sharpHat
+#print axioms Gtz.hat_diag_eq
+#print axioms Gtz.reading_smul
+#print axioms Gtz.totalGapHat_diag
+#print axioms Gtz.sharpHat_diag
+#print axioms Gtz.one_sub_naimarkSharpShare
+#print axioms Gtz.sum_naimarkSharpShare
+#print axioms Gtz.naimarkSharpShare_eq_weight_iff
+#print axioms Gtz.forall_weight_lt_naimarkSharpShare_iff
+#print axioms Gtz.chartPairEntry_sq
+#print axioms Gtz.sharePairForm_eq
+#print axioms Gtz.sharePairForm_eq_zero_iff
+#print axioms Gtz.coSharePairForm_eq_chart
