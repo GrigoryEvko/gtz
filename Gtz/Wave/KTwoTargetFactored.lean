@@ -93,4 +93,40 @@ theorem k2ChartTarget_pos_of_ratio (ed ee P td te ty tz X : ℝ)
   rw [div_lt_div_iff₀ hbase hom] at hratio
   nlinarith [hratio, hom, hbase]
 
+/-! ## 3. The corner as one bound on the erased cross mass -/
+
+/-- **THE CORNER IS ONE SCALAR BOUND.**  Writing `A = T(1−ty)(1−tz)` and
+`B = (T+1)·Vn` — both PURE WEIGHT-AND-ANGLE DATA, functions of `ty, tz, X`
+alone — the factorization reads
+
+  `TGT = q·A − ω·(A + B)` ,
+
+so the target is positive exactly when
+
+  **`ω·(A + B) < q·A`** ,
+
+the erased cross mass against the second outside energy, weighted by two
+explicit weight polynomials.  Division-free, and the whole seven-scalar corner
+fight is this one comparison.
+
+Normalizing by `q` (positive at the corner) the same statement is
+`ω/q < A/(A+B)`: a SINGLE SCALAR below a function of three weight variables.
+
+[MEASURED.  The quotient floor supplies exactly this bound: with `Q1 ≥ 0` the
+comparison holds at every sampled point (0 of 48383), while the domain alone
+fails it 7.5 percent of the time.  The normalized cross mass is capped
+uniformly, `ω/q < 0.6` overall and `< 1/2` in the tight regime `X → 0`,
+`tz ≪ ty`, where the threshold falls toward one half.  The two are NOT
+separable by a constant — `A/(A+B)` reaches down to `0.185` — so the bound on
+`ω/q` must carry the weight data with it.] -/
+theorem k2ChartTarget_pos_iff_crossMass (ed ee P td te ty tz X : ℝ)
+    (hE : td*ed + te*ee = ty + tz) :
+    0 < k2ChartTarget ed ee P td te ty tz X
+      ↔ P*td*(td*(1+ed) + te*(1+ee))
+            * ((ty + tz) * ((1-ty)*(1-tz))
+              + (ty + tz + 1) * (X*tz + (1-X)*ty - ty*tz))
+          < te*(1+ee) * ((ty + tz) * ((1-ty)*(1-tz))) := by
+  rw [k2ChartTarget_factored ed ee P td te ty tz X hE]
+  constructor <;> intro h <;> nlinarith [h]
+
 end Gtz

@@ -1340,6 +1340,7 @@ import Gtz.Wave.KOneTransverse
 import Gtz.Wave.OppositeHornFailureDirection
 import Gtz.Wave.DiamondNeighborhoodBudget
 import Gtz.Wave.DiamondNeighborhoodFourSet
+import Gtz.Wave.CoherentHornSumLaw
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36664,6 +36665,7 @@ run_cmd do
 #print axioms Gtz.k2ChartTarget_factored
 #print axioms Gtz.k2ChartTarget_pos_iff
 #print axioms Gtz.k2ChartTarget_pos_of_ratio
+#print axioms Gtz.k2ChartTarget_pos_iff_crossMass
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
@@ -37038,3 +37040,11 @@ run_cmd do
 #print axioms Gtz.not_admissiblePair_of_parallel_of_heavy
 #print axioms Gtz.not_liveTriple_of_parallel
 #print axioms Gtz.heavyAdmissible_omits_parallel_member
+#print axioms Gtz.quadForm_sum_of_corner
+#print axioms Gtz.trace_adjugate_fin_three
+#print axioms Gtz.corner_sum_det_pairBase
+#print axioms Gtz.exists_inside_det_pos_of_corner_sum_pos
+#print axioms Gtz.corner_atomSum_eq
+#print axioms Gtz.corner_dominates
+#print axioms Gtz.corner_inside_one_le_leverage
+#print axioms Gtz.corner_sum_det_over_pair
