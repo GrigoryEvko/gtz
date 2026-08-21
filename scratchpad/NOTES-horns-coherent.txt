@@ -475,3 +475,50 @@ locus of Phi := max_T lmin(S_T - I), and GtzWeighted asserts Phi >= 0.  E2*
 says exactly Phi > 0 at complement-refusing corners, so "E2* at every corner"
 IS corner emptiness for (P) -- which is F49-14, now with the variational
 reading attached.
+
+======================================================================
+F60-7.  THE E2* MARGIN IS NOT BOUNDED BELOW (my own thin-tail, caught)
+======================================================================
+On the corrected refusing locus, over 5769 refusing corners:
+    E1 (some admissible pair)      5769 / 5769
+    E2* holds                      5769 / 5769
+    E1 but NOT E2*                    0
+    esymm-sign criterion fired     5769,  missed 0
+    worst SAMPLED E2* margin       +1.782331e-01
+That +0.178 is an ARTIFACT.  Adversarial descent over the full 12-parameter
+refusing chart drives it to
+    inf E2* margin  =  +6.77187602e-06     at lam = 359203.5, t = 3.0e-6
+i.e. the DEGENERATE RAY lam -> infinity, weights -> 0.  Eighth thin-tail event
+of the campaign, and the first one I generated myself.  DO NOT QUOTE +0.178.
+
+WHAT SURVIVES, AND IT IS THE USEFUL PART.  The margin is strictly POSITIVE at
+every point reached (+6.8e-06 > 0), so E2* is not violated -- it is merely
+UNBOUNDED BELOW on the degenerate ray.  Consequence for certificate design:
+    a certificate for E2* CAN exist but CANNOT BE STRICT / bounded-below.
+That is exactly the shape the E1 lane reported for its own residual ("the bound
+is TIGHT, so a Positivstellensatz certificate exists but cannot be strict").
+Two independent lanes, same conclusion: PLAN FOR A NON-STRICT CERTIFICATE FROM
+THE START, and expect the extremal on the lam -> infinity, t -> 0 ray.
+
+A METHOD NOTE ON THE SAMPLER OUTPUT.  My first run printed percentages of
+0.1733% where the counts said 100%.  Cause: in Julia `100e1` is the FLOAT
+LITERAL 1000.0, not 100*e1.  The COUNTS were always right.  Anyone reusing
+these scripts: name count variables so they cannot collide with exponent
+syntax.
+
+F60-8.  QUEUE STATE AT HANDOFF
+-------------------------------
+DONE this round: item 1 (already landed, F60-1); F49-20's decisive experiment
+(F60-2, undetermination survives Parseval); the reachability bug (F60-3);
+E2 vs E2* gauge dichotomy (F60-4); acceptance test (F60-5); margin descent
+(F60-7).
+NOT DONE: the two-point pinning applied to the characterized residual.  NOTE
+F49-18 already REFUTED the natural pinning route (realness does not enter
+through the 3-cycle sign: balanced sign graph 0.0000%, and only 27.68% of
+repaying triples carry a nonnegative cycle against E2* at 100%).  So the
+pinning must enter some other way, or not at all -- F49-18's own conclusion
+was that realness lives in the GLOBAL obstruction, not in a single triple's
+cross term.  A successor should start there and NOT re-run the cycle-sign idea.
+NEXT CHEAPEST: with the reachability bug fixed, EVERY rate this lane has ever
+measured on the refusing locus should be re-measured; the old numbers came from
+a region that could not reach t(1+lam) > 0.3.
