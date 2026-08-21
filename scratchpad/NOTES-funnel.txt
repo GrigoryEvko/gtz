@@ -1,0 +1,130 @@
+NOTES — the funnel lane (unit-atom branch of the (6,3) tie dichotomy)
+=====================================================================
+Landed this round: 86a4639
+  Gtz/Wave/FunnelSecondInvariantFloor.lean   (12 theorems)
+  Gtz/Wave/FunnelSwapClosure.lean            ( 4 theorems)
+All 16 pins standard [propext, Classical.choice, Quot.sound]. Umbrellas wired,
+insertions only.
+
+F1. THE SECOND-INVARIANT FLOOR, AND IT IS SHARP
+-----------------------------------------------
+The landed deflated gap bound (1-t_a)(S_T-1) - t_a(1-g_a g_a^T) >= 0 gives
+   (1-t_a)^2 * e2(S_T-1) = e2(R) + t_a^2 + t_a*(tr R + g_a.R g_a)
+with R the PSD slack. Every piece is nonnegative, so
+   pairMinorTotal >= (t_a/(1-t_a))^2 > 0.
+So a FUNNEL DOMINATOR IS NEVER A CORNER: its gap has corank exactly one.
+This discharges the pairMinorTotal /= 0 hypothesis of the landed pair-minor
+trigger (Gtz.unitAtom_parallel_of_two_pairMinors_zero_of_bound).
+
+Four expansion identities verified to 7.1e-15 over 20,000 draws each:
+   e2(V V^T - I) = pairMinorTotal(columns of V)      5.684e-14
+   e2(X+Y) = e2 X + e2 Y + tr X tr Y - tr(XY)        7.105e-15
+   e2(mu*(I-gg^T)) = mu^2 when |g|=1                 7.105e-15
+   tr((I-gg^T)R) = tr R - g.Rg  (R SYMMETRIC ONLY)   3.553e-15
+The last one is FALSE for non-symmetric R -- it reads the transpose. The Lean
+statement carries the symmetry hypothesis.
+
+SHARPNESS (slack R = 0 exactly):
+   t=0.10  pairMinorTotal = 0.012345679   (t/(1-t))^2 = 0.012345679
+   t=0.30                   0.183673469                 0.183673469
+   t=0.50                   1.000000000                 1.000000000
+   t=0.80                  16.000000000                16.000000000
+Minimum ratio over 20,000 random deflated configurations: 1.000922.
+No constant better than (t_a/(1-t_a))^2 exists.
+
+F2. THREE BLIND ATOMS OVERSPEND THE PARSEVAL BUDGET  (new obstruction)
+----------------------------------------------------------------------
+At a (6,3) design with leverage(g_a) = 1, Parseval read at g_a gives
+   t_a + sum_{c/=a} t_c (g_c.g_a)^2 = 1 .
+If three of the five remaining atoms are blind to a, the two visible ones carry
+the whole reading, t_x s_x^2 + t_y s_y^2 = 1 - t_a, while the funnel's own
+resolution gives s_x^2 + s_y^2 = 1. Then
+   1 - t_a = t_x s_x^2 + t_y s_y^2 <= t_x + t_y < 1 - t_a,
+strict because the three blind atoms carry positive weight. CONTRADICTION.
+A funnel has AT MOST TWO blind atoms, and the bound is on WEIGHTS, not geometry.
+
+F3. A FUNNEL REFUSES A SECOND SWAP IN EVERY DIRECTION
+-----------------------------------------------------
+Second null-sharing swap of a funnel dominator T = {p,x,y}:
+  (a) at a DIFFERENT member  -> landed Gtz.unitAtom_two_mirror_swaps_absurd
+  (b) exchanging p for the unit atom a itself -> the mirror identity reads
+      (g_p.g_a) g_p = (g_a.g_a) g_a = g_a, so g_a is a multiple of g_p: a
+      PARALLEL PAIR outright  (Gtz.unitAtom_parallel_of_swap_to_atom)
+  (c) exchanging p for the two remaining labels -> three blind atoms -> F2.
+So at a design with no parallel pair a funnel dominator carries AT MOST ONE
+null-sharing swap.
+
+F4. THE COMBINATORIAL CAP -- AND A CORRECTION TO THE BRIEF
+-----------------------------------------------------------
+Triples of a 5-set <-> complementary edges of K5; "share two members" <-> the
+edges are adjacent; the swap graph is the line graph of K5, degree six. Exact
+brute force over all families:
+   max family with swap-degree <= 1                         : 3   CONFIRMED
+     example {0,1,2},{0,1,3},{2,3,4}
+   max family with no triple having two neighbours at
+     DIFFERENT members                                      : 4   <-- NOT 3
+     example {0,1,2},{0,1,3},{0,1,4},{2,3,4}
+The brief predicted 3 for the second reading. It is 4: three triples sharing one
+common pair each have both neighbours at the SAME member. Because F3 closes the
+same-member case too, the operative cap is the swap-degree one, i.e. 3.
+Landed as Gtz.swapDegree_le_one_card_le_three by decision over 1024 families,
+after re-encoding the family as Finset (Fin 10) -- quantifying over
+Finset (Finset (Fin 5)) is 2^32 and does not decide.
+
+F5. HOW MANY DOMINATORS DOES A (5,3) TIE HAVE?  (measured)
+-----------------------------------------------------------
+Ties located as exact zeros of  sum_T max(lambda_min(S_T - I), 0)^2  (the tie
+locus is a MINIMUM locus, so plain minimisation of max lambda_min does not find
+it -- 0/70 hits; this reformulation gets ~60% of starts).
+71 ties found, objective < 1e-13. Dominator-count histogram:
+   6 -> 1     7 -> 33     8 -> 37        MINIMUM SEEN: 6
+The (5,3) diamond tie carries 8.
+Against the cap of 3 from F3+F4, NO FUNNEL SURVIVES. The funnel branch of the
+(6,3) dichotomy is therefore empty, CONDITIONAL on "every (5,3) tie has at least
+four weakly dominating triples", which is measured (71/71, min 6) and NOT PROVED.
+That conditional is the single remaining gap on this branch.
+
+F6. THE FROZEN-WEDGE SEPARATOR IS REFUTED (with a witness), AND THE NOTION IS
+    NOT WELL POSED
+-----------------------------------------------------------------------------
+Sound harness: at a tie, take the active triples (lambda_min = 0), form the
+Jacobian of their lambda_min against a 20- or 24-parameter whitened design
+chart, take its null space as the tangent to the equality stratum, and ask which
+wedge differentials vanish on it.
+
+  (5,3) ties, 25 analysed: frozen-wedge count = 0 in ALL 25.
+     active-set sizes 7 (x10), 8 (x15); tangent dimension 14 throughout.
+  SPLIT DIAMOND (6,3), which HAS the parallel pair (0,1):
+     Parseval residual 6.7e-16, Phi = 1.3e-15, 12 active triples, active rank 9,
+     tangent dimension 15, frozen wedges: NONE.
+     relative motion of each pair's wedge along the tangent:
+       (0,1) 5.196e-01   <-- THE PARALLEL PAIR, NOT FROZEN
+       (0,2) 5.067e-01  (0,3) 3.930e-01  (0,4) 5.129e-01  (0,5) 3.263e-01
+       (1,2) 5.485e-01  (1,3) 4.179e-01  (1,4) 5.552e-01  (1,5) 3.469e-01
+       (2,3) 8.684e-01  (2,4) 6.290e-01  (2,5) 1.036e+00
+       (3,4) 1.031e+00  (3,5) 6.195e-01  (4,5) 9.567e-01
+"Exactly one frozen wedge, always the parallel pair" is FALSE under the
+equality-stratum reading: the parallel pair's wedge moves at the same order as
+every other pair.
+And under an inequality reading the notion DEGENERATES: the tie locus is the
+boundary of {all lambda_min <= 0}, its tangent cone is {A delta <= 0} which is
+full dimensional, so a differential vanishing on it vanishes identically. There
+is no reading in which the separator is a nontrivial true statement about this
+fixture. DO NOT BUILD ON IT.
+(The old harness reporting all 15 wedges frozen at exactly 0.0 was the
+re-whitening artifact; the tell was that the output did not change after the
+"fix". This harness never re-whitens a perturbed point.)
+
+F7. WHAT A SIBLING ALREADY LANDED, SO I DID NOT WRITE IT
+--------------------------------------------------------
+Gtz/Wave/FunnelPairMinorHinge.lean carries dominates_and_fixes_of_deflatedGapBound
+(every triple with the bound dominates AND fixes the unit atom -- the brief's
+item 2), isTie_sixThree_unitAtom_funnel_bounded, and funnel_reading_sq_eq_pairMinor_div.
+Gtz/Wave/KTwoSixThreeFunnel.lean carries funnel_dominator_meets_orthogonal_pair,
+funnel_one_blind_pairMinor_zero, k2SixThree_parallel_or_pairMinor_zero.
+No overlap with F1-F4.
+
+HAZARD: a name collision was caught before commit. My quadForm_nonneg_of_posSemidef
+duplicated Gtz/Reduction/StrengthenedInductionHypothesis.lean:163. Removed and
+retargeted to the landed general quadForm_nonneg_of_posSemidef_rankOne. A
+per-module build does NOT catch this -- only a name scan does.
