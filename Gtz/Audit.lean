@@ -37005,3 +37005,10 @@ run_cmd do
 #print axioms Gtz.gap_triple_eq_pair_add_atom
 #print axioms Gtz.gapDet_exchange_pair
 #print axioms Gtz.gapDet_pos_iff_repay_exceeds_deficit
+#print axioms Gtz.subsetSum_quadForm
+#print axioms Gtz.failureDirection_inside_share
+#print axioms Gtz.failureDirection_inside_mass
+#print axioms Gtz.exists_inside_reads_failureDirection
+#print axioms Gtz.corner_inside_quadForm
+#print axioms Gtz.corner_failureDirection_axis_bound
+#print axioms Gtz.exists_failureDirection_of_not_posDef
