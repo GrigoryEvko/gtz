@@ -5,8 +5,9 @@ WHAT LANDED
   Gtz/Wave/ChartQuadraticCore.lean       (31 theorems, 1 structure)
   Gtz/Wave/ChartGapSharpDuality.lean     (36 theorems)
   Gtz/Wave/ChartPairDualityExchange.lean (9 theorems)
+  Gtz/Wave/ChartComplementBlockLaw.lean   (9 theorems)
 
-All 76 theorems pin to [propext, Classical.choice, Quot.sound]. Both umbrellas
+All 85 theorems pin to [propext, Classical.choice, Quot.sound]. Both umbrellas
 carry the imports and the pins. Three collision scans over Gtz/ and Skeleton/,
 namespace-aware, after each module: zero collisions.
 
@@ -140,12 +141,38 @@ THREE DIFFERENT DUALS ARE IN THE TREE. DO NOT CONFUSE THEM.
 The sibling lane's Gtz.coProjection is 1 - P, the second one. My M is P - diag t.
 Different objects, no name collision.
 
+THE COMPLEMENTARY BLOCK LAW -- why ONE block carries BOTH shifts
+
+  det P[C,C] = det (1 - P)[C^c,C^c]     for |C| = rank
+
+and it is NOT Jacobi's complementary minor identity. Both sides are det(V_C)^2:
+the left is det(V_C V_C^T); the right is det(1 - V_{C^c} V_{C^c}^T), which the
+Weinstein-Aronszajn flip (Matrix.det_one_add_mul_comm, already used in the tree)
+turns into det(1 - V_{C^c}^T V_{C^c}), and V^T V = 1 splits as
+V_C^T V_C + V_{C^c}^T V_{C^c} = 1. Four lines. Mathlib does NOT have Jacobi and
+this route does not need it.
+
+In the gap that reads
+
+  det(M[C,C] + T_C) = det(1 - M[C^c,C^c] - T_{C^c})
+
+-- the FIRST shift on a block is the SECOND shift on the COMPLEMENTARY block.
+That is why one 2x2 block of M carries both halves of the pair dictionary, and at
+(6,3) it pairs the twenty 3x3 blocks into TEN complementary couples. Design-free
+form: Gtz.chartCore_det_gapBlock_shift_eq.
+
+It is an equality of DETERMINANTS, not of definiteness. At 3x3 a positive
+determinant survives two negative eigenvalues, which is exactly the parity failure
+Gtz.tripleGapDet_nonpos_iff_naimark already records. It constrains a (6,3) tie and
+decides nothing. Do not expect it to close the cell.
+
 WHAT I DID NOT DO
 
-  * The inertia eigenvalue count. Not needed; see above.
-  * det P[C,C] = det (I-P)[C^c,C^c] for a rank-k projection at |C| = k. This is
-    Jacobi's complementary minor identity and Mathlib does not carry it. It would
-    relate the twenty (6,3) blocks in complementary pairs and is the most obvious
-    next brick for anyone attacking Job D as a matrix statement.
+  * The inertia eigenvalue count. Not needed; see above. The two Rayleigh
+    statements that carry its content are landed in Gtz/Design/ProjectionChart.lean
+    and a genuine count would need inertia machinery Mathlib does not have.
   * Any attack on the twenty blocks themselves. The chart is now design-free;
-    the question is not.
+    the question is not. What a successor now has, weight-aware and design-free:
+    the quadratic equation, tr M = k - 1, diag M > 0, diag M^{-1} < 0, the ten
+    complementary block determinants, and the layer totals of
+    Gtz.sum_det_subsetSum_sub_one_layer.
