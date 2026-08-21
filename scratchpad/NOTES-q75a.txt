@@ -1,0 +1,190 @@
+NOTES — Question 7.5(a) of the brief: is branch B empty at (6,3)?
+=================================================================
+
+STATEMENT.  Branch B = every atom strictly heavy (l_c > 1) and every one of the
+fifteen pair minors positive (q_ab > 0).  On branch B the Sylvester criterion
+collapses to its top minor, so a boundary system there has all twenty
+tripleGapDet <= 0, and at least one = 0.  Question: does such a (6,3) system
+exist?
+
+ANSWER, MEASURED, NOT PROVED: no at size six, YES at sizes four and five.
+The margin degenerates, so the emptiness is true but not uniform.
+
+
+Q75A-1  LANDED: the leverage floor from an admissible row.
+----------------------------------------------------------
+Gtz/Wave/AdmissibleRowLeverageFloor.lean, commit 07a4b16, 9 pins, all standard.
+
+  Gtz.leverageExcess_floor_of_admissibleRow :
+     every pair through a admissible  ==>  1 - t_a < (1 + 2 t_a) (l_a - 1)
+
+Proof: Parseval at g_a gives  sum_c t_c <g_c,g_a>^2 = l_a ; the a-term is
+t_a l_a^2 ; each other term is capped by q_ac > 0 as <g_a,g_c>^2 < x_a x_c ;
+and sum_c t_c x_c = 2.  Rearranging, LHS - RHS = (1 - t_a) - x_a (1 + 2 t_a).
+At general rank k the same computation gives x_a > (1 - t_a)/(k - 2 + 2 t_a).
+
+Consequences landed: an admissible ROW needs no heavy seed (the landed
+one_lt_leverage_of_admissiblePair does), so branch B is ONE hypothesis, not two
+(Gtz.branchB_of_forall_admissible); and at six points some weight is at most
+1/6, where the floor reads l_a > 13/8.
+
+MEASURED first: over 20,000 random rank-three designs of size six the slack
+(1+2t_a)(l_a-1) - (1-t_a) never fell below 0.2199 at an atom with an admissible
+row, and never below 0.5678 at a fully admissible design.  Diamond slacks:
+0.6, 2.35, 2.35, 2.35, 2.35.
+
+
+Q75A-2  LANDED: every refused heavy triple carries a strong pair.
+-----------------------------------------------------------------
+Gtz/Wave/BranchBStrongPair.lean, commit a74079a, 4 pins, all standard.
+
+  Gtz.exists_strongPair_of_tripleGapDet_nonpos :
+     x_a,x_b,x_c > 0 and tripleGapDet <= 0
+       ==>  some pair has  x_i x_j <= 4 <g_i,g_j>^2      (call it STRONG)
+     equivalently  4 q_ij <= 3 x_i x_j .
+
+Mechanism.  With rho_ij = <g_i,g_j>/sqrt(x_i x_j) the determinant factors as
+  tripleGapDet = x_a x_b x_c (1 - rho_ab^2 - rho_ac^2 - rho_bc^2 + 2 rho rho rho)
+so <= 0 says  sum rho^2 - 2 prod rho >= 1 .  If every |rho| < r the left side is
+below 3r^2 + 2r^3, which equals one exactly at r = 1/2.  The Lean proof forms no
+square root: it squares the Bargmann term, (2 p p p)^2 < (x x x / 4)^2, and adds
+the three diagonal bounds.
+
+THE CONSTANT IS SHARP at the regular tetrahedron (Q75A-3).
+
+Graph consequence, not yet formalized: the WEAK pairs (those with
+4 <g,g>^2 < x x) span a triangle-free graph, since every triple carries a strong
+pair.  By Mantel a triangle-free graph on six vertices has at most nine edges,
+so A BRANCH-B TIE CARRIES AT LEAST SIX STRONG PAIRS.  This is the first proven
+edge the landed Mantel machinery (Gtz.mantel_four,
+Gtz.isTie_heavyFour_mantel_dichotomy) can be fed on this branch: until now the
+graph route had a family of triples and no sign.
+
+
+Q75A-3  LANDED: the tetrahedron is inside branch B.
+----------------------------------------------------
+Gtz/Wave/TetrahedronBranchB.lean, commit c57a937, 6 pins, all standard.
+
+The landed Gtz.tetraDesign (four even-parity sign vectors (1,1,1), (1,-1,-1),
+(-1,1,-1), (-1,-1,1) at weight 1/4) has leverage 3 everywhere, pairing -1
+everywhere, hence PAIR MINOR 3 everywhere, and it is a tie
+(Gtz.tetraDesign_isTie).  So:
+
+  Gtz.branchB_nonempty_at_four :  branch B contains a boundary system at size 4.
+
+All four of its gap determinants are exactly zero, and every pair attains the
+strong-pair quarter with equality: 2*2 = 4*1.
+
+THE (5,3) DIAMOND IS A SECOND ONE.  Gtz.diamondTieDesign has leverages
+(2, 13/4, 13/4, 13/4, 13/4) and pair minors 3/4, 2, 9/2 — all positive — and it
+is a tie.  Verified numerically this round against the required calibration:
+8 of 10 dominating triples, none strict, adjugate readings (0.75, 0.125, 0.125)
+against pair minors (4.5, 0.75, 0.75) with e2 = 6.
+
+
+Q75A-4  GRAVEYARD.  Three routes that provably cannot close 7.5(a).
+-------------------------------------------------------------------
+(a) NO SIZE-BLIND ARGUMENT.  Branch B is nonempty at sizes four and five
+    (Q75A-3).  Any argument that reads only four or only five of the six atoms
+    proves something false.  Same shape as the hinge, false at size five.
+
+(b) THE FOUR-SET ROUTE IS DEAD.  A branch-B tie must contain a strictly
+    dominating FOUR-set: its dominating triple C has tripleGapDet = 0, the
+    landed four-set law gives det(S_C - 1 + v v^T) = e2 <v,w>^2, and the outside
+    reading floor supplies d outside C with <g_d,w> nonzero.  One might hope a
+    strictly dominating four-set inside branch B is impossible.  IT IS NOT: the
+    diamond realises it at C = {0,1,2}, d = 3, with eig(S_F - 1) =
+    (0.75, 4, 4), inertia of the 4x4 Gram gap (3,1), and its four triple
+    determinants (0, -10, 0, 0), all nonpositive.
+
+(c) AGGREGATES ARE BLIND, CONFIRMED BY AN IDENTITY.  The sum of the twenty
+    weighted gap determinants is EXACTLY the quantity U of the earlier campaign:
+      e3(P - T) = sum_{a<b<c} t_a t_b t_c D_abc
+                = -2/3 + sum t^2 l + sum t^3 l - sum t^2 - (1/3) sum t^3 = U ,
+    derived from tr(P-T) = 2, tr(P-T)^2 = 3 - 2 sum t^2 l + sum t^2 and
+    tr(P-T)^3 = 3 - 3 sum t^2 l + 3 sum t^3 l - sum t^3.  At the icosahedron
+    U = -0.259 while ten of the twenty determinants are POSITIVE (max 2.03).
+    So U <= 0 is compatible with a strict dominator and can never close.
+
+
+Q75A-5  THE INERTIA OF THE SIX-POINT GRAM GAP IS EXACTLY (3,3).
+----------------------------------------------------------------
+Not formalized; the derivation is three lines and is worth landing.
+
+Let G be the 6x6 Gram matrix and H = G - I_6.  H_aa = x_a, the 2x2 principal
+minors are q_ab, the 3x3 principal minors are D_abc.  G has rank 3 with nonzero
+spectrum that of S = sum_c g_c g_c^T, so H has eigenvalues mu_i - 1 (three) and
+-1 (three).  Since t_c <= t_max < 1,
+    I = sum t_c g_c g_c^T  <=  t_max * S     hence   S >= I / t_max  >  I,
+so all three mu_i > 1 and In(H) = (3,3,0) exactly.
+
+Equivalent normalisation, which is the one to compute in: with P the rank-three
+projection V V^T (V the 6x3 matrix of rows sqrt(t_c) g_c^T) and T = diag(t),
+    H is congruent to  P - T  ,
+whose diagonal is t_a x_a, whose 2x2 minors are t_a t_b q_ab and whose 3x3
+minors are t_a t_b t_c D_abc.  Note P - T = Lambda - P_perp with
+Lambda = diag(1 - t_a) and P_perp the projection on the RELATION space
+{ y : sum y_c g_c = 0 }, and that the negative eigenvalues of P - T all lie in
+[-t_max, 0) while the positive ones lie in [1 - t_max, 1].
+
+WHY THIS MATTERS, AND WHY IT IS NOT ENOUGH.  The maximum order of a positive
+definite principal submatrix is at most the number of positive eigenvalues, but
+the CONVERSE IS FALSE, so In(H) = (3,3) does not by itself produce a positive
+definite 3x3 principal submatrix.  Explicit counterexample, checked:
+  A = [[1,1,1],[1,1,2],[1,2,1]] has eigenvalues -1, 2 +- sqrt 3, so p(A) = 2,
+  yet no 2x2 principal submatrix is positive definite.
+Numerics confirm the gap is real at our sizes: a 6x6 unit-diagonal matrix with
+all fifteen 2x2 minors positive and all twenty 3x3 minors nonpositive EXISTS,
+both at inertia (5,1) and at inertia (3,3) (min max_T det reached -0.4443 under
+a margin of 1e-6 on both the minors and the inertia).  So the obstruction at
+(6,3) is NOT the inertia: it is the projection structure P - T.
+
+
+Q75A-6  THE SIZE-SIX NUMERICS, AND THE EXTREMAL RAY.
+-----------------------------------------------------
+Search: P = A (A^T A)^{-1} A^T over A in R^{6x3}, t = tau + (1 - 6 tau) softmax,
+minimise max_T tripleGapDet subject to min x >= eps and min q >= eps, SLSQP with
+an epigraph variable, 40 random starts each.  Calibrated against the diamond
+first (leverages (2, 13/4 x4), pair minors 0.75/4.5/2.0, 8 of 10 dominating,
+adjugate readings (0.75,0.125,0.125)) — exact.
+
+  tau = 5e-2, eps = 1e-3 :  min max_T D = +2.0910886554e-02
+     t = [0.05000941, 0.05003431, 0.39615156, 0.05000891, 0.40379572, 0.05000009]
+     l = [12.323042, 12.317109, 1.88982, 2.668223, 1.862203, 2.66828]
+  tau = 1e-2, eps = 1e-3 :  min max_T D = +1.6462621364e-03
+     t = [0.01002408, 0.01, 0.32449391, 0.44846273, 0.01010598, 0.1969133]
+     l = [2.933034, 65.23116, 2.34888, 1.797075, 3.193114, 3.645764]
+  tau = 1e-3, eps = 1e-4 :  min max_T D = +1.2515254289e-04
+     t = [0.03259932, 0.21507373, 0.0023673, 0.41259276, 0.33421419, 0.0031527]
+     l = [20.633727, 3.414587, 3.009289, 1.941858, 2.317871, 3.165837]
+  In every run the maximum is attained at several triples at once (four at
+  tau = 5e-2, two at tau = 1e-3), i.e. a genuine constrained minimum.
+
+THE MINIMISER DEGENERATES ONTO THE TETRAHEDRON, not onto the diamond.  At
+tau = 1e-3 the two atoms with weight below 1e-2 are 2 and 5; they carry excess
+mass t*x = 0.00476 and 0.00683 out of the total 2.  The four survivors {0,1,3,4}
+carry 1.99 of it, all four of their triple determinants are within 2e-5 of the
+maximum, and their normalised pairings are
+
+     rho = -0.49423, -0.50141, +0.50435, -0.50434, +0.50140, +0.49422
+
+against the tetrahedral +-1/2 (signs are gauge, g_c -> -g_c is the same design).
+
+CONCLUSION FOR A SUCCESSOR.  The infimum of max_T tripleGapDet over branch-B
+(6,3) designs is ZERO, approached as two weights collapse and the four
+survivors go to the regular tetrahedron.  So:
+  * the emptiness at size six is true but NOT uniform;
+  * any certificate must VANISH on the tetrahedron-plus-two-ghosts ray, hence
+    be non-strict — the same shape the E1 and cell lanes reached independently;
+  * any certificate must CONSUME THE WEIGHTS; a weight-free inequality in the
+    leverages and pairings alone cannot exist, because the tetrahedron already
+    saturates every one of them.
+
+WHAT I DID NOT DO.  I did not prove the emptiness.  The two handles I built and
+did not manage to close with are: (i) the deflation bound, which for every f
+gives a triple T_f avoiding f with S_{T_f} - 1 >= mu_f (1 - g_f g_f^T),
+mu_f = t_f/(1 - t_f), hence sum_{c in T_f} x_c > (1 + x_f)(1 - mu_f x_f)/x_f on
+branch B; and (ii) the bracket budget sum t t t [abc]^2 = 1 against the currency
+bridge [abc]^2 = D + sum q + sum x + 1, which on branch B with D <= 0 gives
+twenty upper bounds against one exact total — at the icosahedron the resulting
+inequality reads 1 <= 1.259, far from tight, so it does not close either.
