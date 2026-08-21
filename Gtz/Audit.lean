@@ -38253,6 +38253,8 @@ run_cmd do
 #print axioms Gtz.trace_projection_isometry
 #print axioms Gtz.sum_projectionDiag_sub_weight
 #print axioms Gtz.projectionDiag_designOfIsometry
+#print axioms Gtz.posSemidef_projectionBlock_mono
+#print axioms Gtz.posSemidef_projectionBlock_of_scalarFloor
 
 -- Gtz/Wave/ResolventProjectionLaw.lean -- the resolvent readings of a design
 -- form a projection in the co-weight metric, of trace the rank: this is the

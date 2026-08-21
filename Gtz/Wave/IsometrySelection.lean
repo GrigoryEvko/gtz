@@ -170,6 +170,52 @@ theorem sum_projectionDiag_sub_weight (V : Matrix (Fin m) (Fin k) ℝ) (hV : V�
     rw [show (∑ c, (V * Vᵀ) c c) = (V * Vᵀ).trace from rfl, trace_projection_isometry V hV]
   rw [Finset.sum_sub_distrib, htsum, htr]
 
+/-! ## 4. What the uncoupling buys: the blocks are monotone in the weights
+
+In the design coordinates the weights cannot be moved without breaking Parseval.
+Here they can, and the selection condition is monotone in them.  These two
+lemmas are the reason the abstract form is easier to work in than the design
+form, and they are false as stated about designs. -/
+
+/-- **LOWERING THE WEIGHTS ONLY HELPS.**  If a block dominates one weight vector
+it dominates every smaller one, because the difference of the two diagonals is
+positive semidefinite. -/
+theorem posSemidef_projectionBlock_mono {P : Matrix (Fin m) (Fin m) ℝ}
+    {pick : Fin k → Fin m} {t t' : Fin m → ℝ}
+    (hle : ∀ selectedIndex, t' (pick selectedIndex) ≤ t (pick selectedIndex))
+    (h : (P.submatrix pick pick
+      - Matrix.diagonal (fun selectedIndex => t (pick selectedIndex))).PosSemidef) :
+    (P.submatrix pick pick
+      - Matrix.diagonal (fun selectedIndex => t' (pick selectedIndex))).PosSemidef := by
+  have hdiag : (Matrix.diagonal
+      (fun selectedIndex => t (pick selectedIndex) - t' (pick selectedIndex))).PosSemidef :=
+    Matrix.posSemidef_diagonal_iff.mpr fun selectedIndex => sub_nonneg.mpr (hle selectedIndex)
+  have hsplit : P.submatrix pick pick
+        - Matrix.diagonal (fun selectedIndex => t' (pick selectedIndex))
+      = (P.submatrix pick pick
+          - Matrix.diagonal (fun selectedIndex => t (pick selectedIndex)))
+        + Matrix.diagonal
+            (fun selectedIndex => t (pick selectedIndex) - t' (pick selectedIndex)) := by
+    ext rowIndex colIndex
+    rcases eq_or_ne rowIndex colIndex with rfl | hne
+    · simp only [Matrix.sub_apply, Matrix.add_apply, Matrix.diagonal_apply_eq]; ring
+    · simp only [Matrix.sub_apply, Matrix.add_apply, Matrix.diagonal_apply_ne _ hne]; ring
+  rw [hsplit]
+  exact h.add hdiag
+
+/-- **A SCALAR FLOOR SELECTS.**  A block that clears a constant level dominates
+every weight vector below that level.  This is the cheapest producer in the
+abstract form: one eigenvalue bound on one block, and no interaction between the
+weights at all. -/
+theorem posSemidef_projectionBlock_of_scalarFloor {P : Matrix (Fin m) (Fin m) ℝ}
+    {pick : Fin k → Fin m} {t : Fin m → ℝ} {level : ℝ}
+    (hfloor : (P.submatrix pick pick
+      - Matrix.diagonal (fun _ : Fin k => level)).PosSemidef)
+    (hle : ∀ selectedIndex, t (pick selectedIndex) ≤ level) :
+    (P.submatrix pick pick
+      - Matrix.diagonal (fun selectedIndex => t (pick selectedIndex))).PosSemidef :=
+  posSemidef_projectionBlock_mono (t := fun _ => level) hle hfloor
+
 /-- **THE DIAGONAL IS THE WEIGHTED LEVERAGE.**  Under the realization the
 projection diagonal is the design's own leverage score, so the abstract
 statement's diagonal data is the campaign's `t_c * l_c`. -/
