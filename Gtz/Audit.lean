@@ -1409,6 +1409,8 @@ import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.CornerEmptinessSlack
 import Gtz.Wave.GatewayCertificateObstruction
 import Gtz.Wave.GatewayExcessBound
+import Gtz.Wave.GatewayParsevalRow
+import Gtz.Wave.ContractionTransfer
 import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoFrameKill
 import Gtz.Wave.KTwoFrameChart
@@ -38312,3 +38314,23 @@ run_cmd do
 #print axioms Gtz.branchB_nonempty_at_four
 #print axioms Gtz.tetraDesign_strongPair_sharp
 #print axioms Gtz.tetraDesign_forall_strongPair
+
+-- Gtz/Wave/GatewayParsevalRow.lean -- condition (A) of the rank-one case at the
+-- design level: a triple whose pair minors are all nonpositive cannot carry
+-- weighted excess past one, so a corner's outside triple has an admissible pair
+#print axioms Gtz.inadmissible_row_excess_bound
+#print axioms Gtz.excess_gt_one_cap_slack
+#print axioms Gtz.branchDetOutside_eq_leverageForm
+#print axioms Gtz.branchDetOutside_nonneg_of_excess
+#print axioms Gtz.exists_pairMinor_pos_of_excess_gt_one
+#print axioms Gtz.exists_pairMinor_pos_of_insideShare
+
+-- Gtz/Wave/ContractionTransfer.lean -- the contraction companion of the landed
+-- expansion transfer: 1 - MᵀM is positive semidefinite exactly when 1 - MMᵀ is,
+-- for a rectangular matrix, with no inverse and no square hypothesis
+#print axioms Gtz.one_sub_transpose_mul_form
+#print axioms Gtz.posSemidef_one_sub_transpose_mul_iff
+#print axioms Gtz.dotProduct_self_eq_sq_sqrt
+#print axioms Gtz.transpose_contracts_of_contracts
+#print axioms Gtz.posSemidef_one_sub_mul_transpose_comm
+#print axioms Gtz.posSemidef_smul_one_sub_mul_transpose_comm

@@ -6500,6 +6500,8 @@ import Gtz.Wave.BranchTwoDeterminantSum
 import Gtz.Wave.CornerEmptinessSlack
 import Gtz.Wave.GatewayCertificateObstruction
 import Gtz.Wave.GatewayExcessBound
+import Gtz.Wave.GatewayParsevalRow
+import Gtz.Wave.ContractionTransfer
 import Gtz.Wave.CornerDescentRank
 import Gtz.Wave.BranchTwoTrueDeterminants
 import Gtz.Wave.NullProbeAdjugateLaw
