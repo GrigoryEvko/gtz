@@ -38116,6 +38116,7 @@ run_cmd do
 #print axioms Gtz.twoPlane_bracket_eq_zero
 #print axioms Gtz.unitAtom_plane_bracket_eq_zero
 #print axioms Gtz.twoPlane_collapse
+#print axioms Gtz.swap_fixes_unitAtom
 #print axioms Gtz.six_labels_cover
 #print axioms Gtz.blindReading_cover
 #print axioms Gtz.k2SixThree_parallel_or_two_plane

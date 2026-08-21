@@ -187,6 +187,35 @@ theorem twoPlane_collapse (D : WeightedDesign m 3)
   ⟨unitAtom_plane_bracket_eq_zero D hplane,
     twoPlane_bracket_eq_zero D had hadp hae hddp hde hdpe hunit hcover hplane hlive⟩
 
+/-- **EVERY BLIND PARTNER OF THE PLANE PAIR FIXES THE UNIT ATOM.**  The plane
+relation already supplies the whole of `g_a`, so adjoining any atom orthogonal to
+`g_a` leaves it fixed.
+
+This is why the mirror is vacuous on the swaps of a funnel dominator across the
+blind labels: they all share the kernel ray of the unit atom, but both swapped
+readings are zero already, so
+`Gtz.mirror_readings_eq_zero_of_not_hasParallelPair` asserts what is given and
+`Gtz.mirror_shared_pairGapMinor_eq_zero` only re-derives the vanishing pair minor
+of the plane pair.  A successor must not expect the mirror to fire here.
+
+[MEASURED: the swapped triple fixes the unit atom to `2.2e-16` at every sampled
+member of the collapsed family, but it dominates at only 59% of them — the
+minimum of its gap is `-0.9996` — so it is NOT a second weak dominator in
+general.] -/
+theorem swap_fixes_unitAtom (D : WeightedDesign m 3) {a d dp w : Fin m}
+    (hwd : w ≠ d) (hwdp : w ≠ dp) (hddp : d ≠ dp)
+    (hplane : (D.atom d ⬝ᵥ D.atom a) • D.atom d
+      + (D.atom dp ⬝ᵥ D.atom a) • D.atom dp = D.atom a)
+    (hblind : D.atom w ⬝ᵥ D.atom a = 0) :
+    subsetSum D ({w, d, dp} : Finset (Fin m)) *ᵥ D.atom a = D.atom a := by
+  have hexpand : subsetSum D ({w, d, dp} : Finset (Fin m)) *ᵥ D.atom a
+      = ∑ c ∈ ({w, d, dp} : Finset (Fin m)), (D.atom c ⬝ᵥ D.atom a) • D.atom c := by
+    rw [subsetSum, Matrix.sum_mulVec]
+    exact Finset.sum_congr rfl fun c _ => by rw [atomMatrix, vecMulVec_mulVec_eq]
+  rw [hexpand, Finset.sum_insert (by simp [hwd, hwdp]),
+    Finset.sum_insert (by simp [hddp]), Finset.sum_singleton, hblind, zero_smul, zero_add]
+  exact hplane
+
 /-! ## 4. The six labels of a `(6,3)` design -/
 
 /-- Six pairwise distinct labels exhaust `Fin 6`. -/
