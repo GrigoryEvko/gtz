@@ -1,0 +1,351 @@
+NOTES — the three strata of the corank-two corner, round of 2026-08-19/22
+=========================================================================
+
+0. HEADLINE
+-----------
+STRATUM 3 IS HALF DEAD, AND THE HALF THAT DIED IS DEAD COMPLETELY.  A new
+kernel lever — THE FOUR-SET COWEIGHT CAP — turns a tie into a linear cap on
+any Loewner-dominated coweighting of a strictly dominating four-set:
+
+  tie + F.card = 4 + (S_F − 1) PD + w ≥ 0 on F + Σ_{a∈F} w_a·g_a g_aᵀ ⪯ S_F − 1
+    ⟹  Σ_{a∈F} w_a ≤ 3            (Gtz.tie_fourSet_coweight_cap, any m)
+
+Instantiated at the four-set {axis atom} ∪ Cᶜ of a corner whose inside
+pairings all vanish, with w = coweights minus odds-scaled weights, the cap
+unwinds to t_x·t_y + t_z ≤ 0: impossible.  So
+
+  Gtz.corner_zeroPairings_absurd — A (6,3) TIE HAS NO CORANK-TWO CORNER
+  (lam > 0) WITH ALL THREE INSIDE PAIRINGS ZERO.  KERNEL.  No primitivity,
+  no planarity split, no nonplanarity hypothesis: the kill covers the planar
+  slice of the stratum too.
+
+This is the stratum where the sign-word dichotomy is silent (every pairing
+hypothesis fails) and where ledgerFoil/residualFoil live.
+
+1. THE THREE-STRATA CASE SPLIT, EXACT
+--------------------------------------
+At a corner C = {x,y,z}, gap = lam•uuᵀ, lam > 0, u unit, write a_e := g_e·u.
+The landed corner_atomPairing_axis gives (1+lam)P_ef = lam·a_e·a_f, so with
+lam > 0: P_ef = 0 ⟺ a_e a_f = 0.  Since a_x²+a_y²+a_z² = 1+lam > 0
+(corner_axis_mass), the pairing-vanishing pattern is exactly one of:
+
+  (P)  all three pairings nonzero  ⟺  all three a_e ≠ 0.
+       Sub-split by Gtz.corner_signWord_dichotomy hypotheses (all present):
+       (P-coh)  all three bases sign-coherent  → the matching quantization
+                (corner_matching_of_signCoherent, corner_matching_quantization)
+       (P-opp)  some base carries an opposite-sign pair → the floor
+                (corner_oppositePair_bracket_floor)
+  (Z1) exactly one a_e = 0  ⟺  exactly ONE pairing nonzero (the one avoiding
+       the zero atom).  One modulus: the zero atom is UNIT and ⊥ u and ⊥ the
+       other two inside atoms; the two carriers live in its orthocomplement
+       plane; â_y² + â_z² = 1 with â = a/√(1+lam).
+  (Z2) two a_e = 0  ⟺  ALL pairings zero.  Rigid inside frame: two unit
+       inside atoms orthonormal with u, third = ±√(1+lam)·u
+       (Gtz.corner_axisOrthogonal_inside_frame).  ***DEAD (kernel).***
+
+No atom falls through: (P) ∪ (Z1) ∪ (Z2) is a complete case split on the
+number of zero axis readings (three zeros is impossible by the axis mass).
+The wrapper corner_zeroPairings_absurd internalizes the two-zero selection;
+its hypotheses are the three pairing-zero equations only.
+
+2. WHAT LANDED THIS ROUND (Gtz/Wave/FourSetCoweightCap.lean, KERNEL)
+--------------------------------------------------------------------
+  sixWeight_pair_lt_one                two weights of a six-design total < 1
+  tie_fourSet_coweight_cap             THE LEVER (any m, rank 3)
+  atomMatrix_orthonormal_resolution    uuᵀ+vvᵀ+wwᵀ = 1 for an orthonormal triple
+  read_sq_orthonormal_resolution       its quadratic-form reading
+  corner_axisOrthogonal_inside_frame   the Z2 inside rigidity
+  quadForm_subsetSum_sub_one           quadform of a subset gap
+  parseval_read_corner_split           Parseval reading split at a corner
+  corner_axisOrthogonal_fourSet_posDef {x}∪Cᶜ dominates STRICTLY, no tie needed
+  corner_twoAxisZero_absurd            the Z2 kill, labeled form
+  corner_zeroPairings_absurd           the Z2 kill, pairing form (THE STRATUM)
+
+Consumed from the tree: fourSet_leverage_ge_one (FourSetTraceFloor),
+corner_heavyExcess_axis / corner_atomPairing_axis (CornerParityLedger),
+corner_axis_mass (CornerBracketPlucker), sum_weight_read_sq (CornerGapWindow),
+trace_mul_nonneg_of_posSemidef (TwoFamilyTightFrame), trace_mul_atomMatrix
+(StressFreeNormalizer), card_compl_eq_three_of_card_eq_three, card_triple_eq,
+sum_triple_eq, transpose_subsetSum_sub_one, quadForm_atomMatrix,
+posSemidef_atomMatrix, isHermitian_of_transpose_eq, dotProduct_self_eq_zero,
+Matrix.PosDef.inv (Mathlib), mul_eq_one_comm (Mathlib).
+
+Nearly rebuilt and reused instead: weight_add_weight_lt_one exists in
+Gtz/Design/BalancedStratum.lean but demands a THIRD label; the new
+sixWeight_pair_lt_one avoids that.  The four-set reading floor existed
+(fourSet_leverage_ge_one); the cap is its weighted aggregate.
+
+BUILD GOTCHA (new): `lake env lean` does NOT apply the lakefile option
+backward.isDefEq.respectTransparency.types = false, so a file can pass
+`lake env lean` and fail `lake build`.  Gate with `lake build` only.
+
+3. THE Z2 KILL, MATHEMATICALLY
+------------------------------
+F = {x} ∪ Cᶜ (four atoms exactly at 6 = 3+3), B := S_F − 1.
+(i)   B ≻ 0 with NO tie hypothesis: B = c_x·G_x + Σ_d c_d·G_d − t_y·G_y −
+      t_z·G_z (Parseval), bound Σc_dG_d ⪰ ρΣt_dG_d at ρ := min_d c_d/t_d,
+      eliminate Σt_dG_d by Parseval again, and read in the orthonormal frame
+      {u, g_y, g_z}: coefficients (c_x(1+lam) + ρ(1 − t_x(1+lam)),
+      ρc_y − t_y, ρc_z − t_z), all > 0 because 1 − t_d − t_e > 0 for any two
+      atoms and t_x(1+lam) ≤ 1 (Parseval at u).
+(ii)  the tie readings: g_aᵀB⁻¹g_a ≥ 1 for all a ∈ F (landed four-set floor;
+      the four refusals consumed are Cᶜ and the three x-swaps — informative).
+(iii) the comparison: with o := max(o_y, o_z), odds o_e = t_e/c_e,
+      M := c_x·G_x + Σ_d (c_d − o·t_d)·G_d satisfies M ⪯ B, because
+      B − M = o(1 − t_x(1+lam))·uuᵀ + (o·c_y − t_y)·g_yg_yᵀ + (o·c_z − t_z)·g_zg_zᵀ.
+(iv)  the cap: c_x + (Σc_d) − o·τ ≤ 3, i.e. c_x ≤ τ(1+o), τ := t1+t2+t3.
+      At o = o_y: c_x·c_y ≤ τ ⟺ t_xt_y + t_z ≤ 0.  Contradiction.
+Weights enter at (iv) — the certificate carries them, as the boundary
+degeneration demanded.  The (5,3) consumption: |{x} ∪ Cᶜ| = 4 needs |Cᶜ| = 3.
+
+4. MEASURED STATE OF THE OTHER STRATA (cvxpy SDP battery; sampling is not
+   evidence of absence, used here only to TARGET mechanization)
+--------------------------------------------------------------------------
+The cap generalizes: at any four-set F of a tie with PD gap, the SDP
+  cap(F) := max{Σw : w ≥ 0 on F, Σw_a G_a ⪯ S_F − 1}
+must be ≤ 3.  Measured:
+  Z1: the three four-sets {e}∪Cᶜ close 398/400 sampled points; the full
+      battery of all 15 four-sets closes 250/250.  The escapes of the main
+      three have B_x ⊁ 0 (x the unit inside atom) and caps 2.975–2.982 at
+      large lam (7.3, 11.3); mixed four-sets {e,f,d,d'} close them.
+  coherent horn: battery closes 210/220; ten escapes with caps 2.74–2.99.
+      The horn needs the quantization equations in the fight, not caps alone.
+  COMPLEX WITNESS (MANDATORY CALIBRATION): every available cap is ≤ 3
+      (max 2.8194 at F = {1,3,4,5}; the two-inside four-sets are mostly not
+      PD there).  The cap chain is FIELD-BLIND and the witness respects it,
+      exactly as it must.  ANY closure of (P-opp) still needs the phase
+      rigidity spent explicitly; the cap cannot be the closing step there.
+  signCoherentFoil: a non-tie; the cap inequality does not bind there (the
+      readings need the refusals).  Its four-set {2,4,5}+x... its strict
+      dominator {2,4,5} certifies non-tieness independently of the cap.
+
+5. THE RESIDUAL, EXACTLY
+------------------------
+The corner is open on:
+  (Z1)    exactly-one-zero pairing stratum.  The general kill condition at
+          inside atom e (derived, not yet landed): with window
+          ρ ∈ (max(o_f,o_g), (t_f+t_g)/τ) — always nonempty — the corner
+          dies at e if S_{{e}∪Cᶜ} − 1 ≻ 0 and
+          μ[α_e²/c_e + ρα_f²/(ρc_f − t_f) + ρα_g²/(ρc_g − t_g)] < 1
+          for some ρ in the window (α = axis readings/√(1+lam), μ = lam/(1+lam)).
+          On Z1 the plane form: λ_max(t_y ĝ_yĝ_yᵀ + t_z ĝ_zĝ_zᵀ) < ρ/(1+ρ),
+          with det(t_yĝĝ + t_zĝĝ) = t_yt_z(1+lam) exactly.
+          The residual of the main three four-sets is the sub-stratum
+          B_x ⊁ 0; mixed four-sets {e,f,d,d'} cover it in measurement.
+  (P-coh) the coherent horn: quantization + caps; caps alone leave ~5%.
+  (P-opp) the opposite horn: the floor at every opposite base + refusals;
+          field must enter through |M| = √(det·det) (phase rigidity).
+
+6. WHITENED PICTURE (analysis tool used to find the kill; do not rebuild in
+   Lean without need)
+--------------------------------------------------------------------------
+Whitening by S_C^{−1/2} sends the inside triple to an orthonormal basis h_e
+and outside atoms to w_d with Σ_d t_d w_dw_dᵀ = diag(c_C) − μ ûûᵀ (h-frame).
+All ten informative gaps take the uniform coweight shape
+  K0 = Σ_d c_d w_dw_dᵀ − diag(t_C)      (complement triple)
+  K(e,d) = K0 + h_eh_eᵀ − w_dw_dᵀ       (one-inside triples; d = omitted)
+i.e. nine rank-one swaps of one matrix.  The real/complex gap of the corner
+is exactly O(3) vs U(3) freedom in the factorization V = O·N^{1/2} of the
+scaled outside frame.  The four-set gaps are B_e = K0 + h_eh_eᵀ (whitened),
+which is where the cap lives.  Scripts: scratchpad/wiring/{horn1,horn2,
+stratz,stratz2,z2reduced,z2cond,z2verify,z1sdp,hornsdp}.py.
+
+7. DEAD/CLOSED THIS ROUND
+-------------------------
+  - The coordinator's stratum-3 item 2 sub-stratum (two-zero): CLOSED, and
+    stronger than his sketch — no primitivity, no stress-free weapon, no
+    planar/nonplanar split needed.
+  - His item 3 (stress-free kill of two planar outside atoms on Z2): NOT
+    NEEDED; the cap kill covers planar Z2 wholesale.
+  - His item 1 identification: VERIFIED against CornerSignWord.lean — the
+    dichotomy hypotheses are exactly the three inside pairings.
+
+8. THE SECOND AND THIRD MODULES (landed after the first)
+--------------------------------------------------------
+Gtz/Wave/FiveSetPairFloor.lean (commit 2):
+  psd_form_cross_sq_le          Cauchy-Schwarz in a PSD metric (general k)
+  subsetSum_erase_erase_sub_one the double downdate identity
+  tie_fiveSet_pair_reading      THE PAIR SYSTEM: tie + five-set PD gap =>
+                                per pair: 1 <= r_a  OR  (1-r_a)(1-r_b) <= rho_ab^2
+  tie_fiveSet_pair_floor        THE PAIR FLOOR: r_a + r_b >= 1, unconditional
+  complement_erase_posDef_of_leverage_le_one   leverage <= 1 => the erased
+                                complement dominates STRICTLY, no tie (any m >= 3)
+  corner_oneAxisZero_fiveSet_posDef   the Z1 anchor is PD, no tie
+
+Gtz/Wave/CornerFramePair.lean (commit 3):
+  atomMatrix_add_expand
+  corner_oneAxisZero_frame_pair THE FRAME PAIR: on Z1 (a_x = 0, a_z != 0):
+                                G_y + G_z = (1+lam) * uu^T + ww^T for an
+                                explicit unit w perp u, perp g_x.  THE MODULUS
+                                OF THE PAIR DROPS OUT OF THE SUM.
+  corner_oneAxisZero_complement_law   the complement refusal of a Z1 tie is
+                                the modulus-free disjunction
+                                1 <= (1+lam)U  or  (1-(1+lam)U)(1-W) <= (1+lam)X^2
+                                in the three anchor readings U = u^T B^{-1} u,
+                                W = w^T B^{-1} w, X = u^T B^{-1} w.
+
+MEASURED FACTS about the five-set system (the joint instrument):
+  * anchor e = x on Z1: B PD at 2000/2000; the pair SYSTEM (all ten pairs) is
+    violated at 2000/2000 sampled Z1 points — the joint system empties Z1 in
+    measurement.  The violated pair is {y,z} at ~95 percent, else {y,d},{z,d}.
+  * on GENERAL corners: the system is violated at EVERY PD anchor for
+    2956/3000 samples, and 0/4000 corners satisfy it at every PD anchor.
+  * the complex witness SATISFIES it (field-blind, |cross| readings) — the
+    field separation of the pair system sits in the PHASES of the B^{-1}-Gram,
+    i.e. exactly the campaign's phase-rigidity quantum, now at the anchor
+    metric instead of the ambient one.
+  * case dictionary: R_aa >= 1 at the anchor <=> the four-set F5 minus a
+    LOSES positive definiteness <=> the four-set cap at F5 minus a goes
+    silent.  The two landed modules are the two halves of one case analysis.
+  * CASE (R_yy >= 1 AND R_zz >= 1) never occurs on 6000 Z1 samples; max
+    R_yy + R_zz observed 3.17, but never both >= 1.  Unproved.
+
+9. DOUBLE-FOIL VERDICTS (mandatory)
+------------------------------------
+  law                          signCoherentFoil        complextie
+  four-set coweight cap        VIOLATED (max 4.61>3):  SATISFIED (max 2.82):
+   (tie-necessary)             non-tie revealed        Hermitian tie respects
+  zero-pairing kill            vacuous (pairings!=0)   vacuous (pairings!=0,
+                                                       |readings| .53-1.66)
+  five-set pair floor          VIOLATED (0.714<1 at    SATISFIED (system holds
+   (tie-necessary)             anchor 3, pair {0,1})   at every PD anchor)
+  frame pair (identity)        vacuous (not in Z1)     vacuous (not in Z1)
+  leverage complement PD       n/a                     field-blind, holds
+  ledgerFoil rows: cap 3.63>3 reveals non-tie; pair floor 0.698<1 reveals
+  non-tie; unit atoms 0,1 leave PD complements (1.88, 2.79).
+
+10. NEXT
+--------
+(1) Z1 endgame: the case split (R_yy >= 1?, R_zz >= 1?).  In the both-light
+    case the complement law is active in (U, W, X); play it against the
+    modulus-free mixed-pair SUM (1-R_dd)(2-(1+lam)U-W) <= (1+lam)p'_d^2+q'_d^2
+    (needs both {y,d},{z,d} in the minor branch) and the B*B^{-1} = I
+    identities lam*U + sum_d p_d p'_d = 1, sum_d q_d q'_d = 1,
+    lam*X + sum_d p_d q'_d = 0.  In the one-heavy case the four-set cap at
+    the OTHER inside atom is live.  Prove both-heavy empty.
+(2) The general KILL(e) window condition as a kernel theorem (all strata):
+    rho in (max odds, (t_f+t_g)/tau) with the plane comparison.
+(3) The horns per the standing plan; the five-set pair system is the joint
+    instrument the notes of round ten asked for, and its real-only content is
+    the sign structure of the B^{-1}-Gram (parity at the anchor).
+
+================================================================================
+FORK 43 (successor to fork 39) -- C2-7, the coherent horn.  Round 1.
+================================================================================
+
+F43-0.  JOB ZERO: CoherentHornBlockCriterion.lean was broken on disk.  The
+parent reported six errors; only THREE were real (the rest were stale cache):
+  * 133:  `rcases htail with h | h; . exact h; . exact absurd h2 h` -- the
+    semicolon chain does not focus.  Replaced by
+    `htail.resolve_right (not_not_intro h2)`.
+  * 165:  `posDef_iff_invariants_pos` lives in Gtz/Wave/TripleInvariantLedger,
+    which was not imported.  Added the import (no cycle: that file imports
+    none of the CoherentHorn chain).
+  * 106/108/110:  `simpa ... using this.symm` had the equation backwards.
+    `congrFun (congrFun hsymm i) j` with `hsymm : K^T = K` already gives
+    `K j i = K i j`.  Dropped the `.symm`.
+LANDED.  The Schur identity `quadForm_lastBlock_identity` is real and general.
+
+F43-1.  *** CORRECTION TO THE PARENT'S BRIEF.  JOB ZERO WAS NOT NEEDED FOR THE
+HORN. ***  The brief said the block criterion is the tool that turns the
+predecessor's `only e2 fails = 0.0000%` measurement into a proof.  The campaign
+ALREADY HAS THAT, as an IFF, and has had it for a long time:
+
+  Gtz/Design/TripleGramSylvester.lean:234
+    tripleGram_posDef_iff_pairVocabulary (a b c) :
+      (tripleGram a b c - 1).PosDef
+        <-> 0 < leverageOf a - 1 /\ 0 < pairGapMinor a b /\ 0 < tripleGapDet a b c
+
+  Gtz/Design/TripleGramSylvester.lean:249
+    subsetSum_posDef_iff_pairVocabulary  -- the same at a design
+
+`pairGapMinor a b = (l_a - 1)(l_b - 1) - (a.b)^2` IS the outside pair's gap
+determinant, so "admissible outside pair" is exactly the first two Sylvester
+minors and "det > 0" is the third.  The Sylvester route is strictly better than
+the trailing-block route: it is an IFF, it is bracket-free, and it was landed.
+The block criterion survives only as a TRAILING-block convenience (it saves
+reordering a Matrix (Fin 3)); it bought this lane nothing.
+
+F43-2.  THE NEW MODULE: Gtz/Wave/CornerPairAdjugate.lean.  The outside pair as
+a base.  All identities hypothesis-free unless stated.
+
+  pairGap a b := a a' + b b' - 1
+
+  pairGap_det                : det = -pairGapMinor a b
+  pairGap_secondInvariant    : e2  =  pairGapMinor a b - l_a - l_b + 2
+  pairGap_add_atom_det       : det(pairGap a b + c c') = tripleGapDet a b c
+  pairGap_adjugate_reading   : <c, adj(pairGap a b) c> = tripleGapDet a b c
+                                                        + pairGapMinor a b
+  pairGap_adjugate_reading_currency :
+      <c, adj(pairGap a b) c> = [a,b,c]^2 + l_c*(1 - l_a - l_b)
+                                + (a.c)^2 + (b.c)^2
+
+So ALL THREE invariants of the base are the ONE landed pair minor, and the
+rank-one update is the landed third Sylvester minor.  Nothing new had to be
+defined to say any of it.
+
+F43-3.  *** THE EXACT SPLIT (the round's structural find). ***
+
+  tripleGapDet_eq_pairAxisForm :
+    tripleGapDet a b c = pairAxisForm a b (a.c) (b.c) + (l_c - 1)*pairGapMinor a b
+
+  pairAxisForm a b al be := (1 - l_b)*al^2 + 2*(a.b)*al*be + (1 - l_a)*be^2
+
+Hypothesis-free.  The third atom enters ONLY through its two READINGS against
+the pair and its LEVERAGE EXCESS.  The bracket is gone.  The discriminant of the
+axis form is the pair minor, exhibited by a one-`ring` square identity:
+
+  pairAxisForm_sos :
+    (l_b - 1)*pairAxisForm a b al be
+      = -((l_b - 1)*al - (a.b)*be)^2 - pairGapMinor a b * be^2
+
+Hence ON AN ADMISSIBLE PAIR THE AXIS FORM IS NEGATIVE DEFINITE
+(pairAxisForm_neg).  Admissibility transports across the pair for free
+(one_lt_leverage_of_pairGapMinor_pos: 1 < l_a and 0 < pairGapMinor => 1 < l_b).
+
+F43-4.  THE AXIS NEVER REPAYS (tripleGapDet_axis_neg).  A corner's axis u is a
+unit vector, so its leverage excess vanishes and tripleGapDet a b u IS the axis
+form: STRICTLY NEGATIVE on an admissible pair whenever u reads the pair at all.
+In the (P) stratum every axis reading is nonzero, so the axis direction adjoined
+to an admissible outside pair NEVER strictly dominates.  No tie hypothesis, no
+branch, no measurement.
+
+F43-5.  *** WHY THE CORNER SUM LAW IS LOSSY -- the measurement explained. ***
+CoherentHornSumLaw's own docstring records the total positive at only 22.46% of
+pairs and 58.75% of branch points.  Feeding the pair base into it and reading
+every invariant in currency:
+
+  corner_pairSum_currency :
+    sum_{e in C} tripleGapDet a b e
+      = lam*(pairGapMinor a b + pairAxisForm a b (a.u) (b.u))
+        - 2*pairGapMinor a b - (l_a + l_b - 2)
+
+The pair-only part is  -2*pairGapMinor - tr,  STRICTLY NEGATIVE on an admissible
+pair, and the axis term is DAMPED by a negative-definite form.  Therefore
+
+  corner_pairSum_pos_lam_threshold :
+    total > 0  ==>  (lam - 2)*pairGapMinor a b > l_a + l_b - 2
+
+and its contrapositive corner_pairSum_nonpos_of_lam_le is an EMPTINESS TEST: at
+or below the threshold the sum law provably cannot fire at that pair.  THE
+INSTRUMENT'S BLINDNESS IS EXACT, NOT STATISTICAL.  The parent's queue item 3
+("force the 8% sign via the closed form 3detP + e2 + lam<u,adj P u>") is
+REFUTED AS A CLOSURE by this: that closed form IS the landed sum law, and it is
+an aggregation, which the campaign's own doctrine forbids as a closer.
+
+F43-6.  THE REPLACEMENT -- SELECT, DO NOT SUM.
+
+  tripleGram_posDef_of_admissible_of_repay :
+    1 < l_a  ->  0 < pairGapMinor a b
+      ->  pairGapMinor a b < <c, adj(pairGap a b) c>
+      ->  (tripleGram a b c - 1).PosDef
+
+  subsetSum_posDef_of_admissible_of_repay  -- the design reading
+  repayment_le_pairGapMinor_of_not_posDef  -- the tie-necessary law, PER TRIPLE
+
+Routed through the landed Sylvester iff, so no new positive-definiteness
+machinery is spent.  This is the shape the doctrine demands: one triple at a
+time, no aggregation anywhere.
+
+Gate at the end of this batch: 10030 jobs, exit 0, zero errors, zero sorryAx,
+registry 7, every new pin [propext, Classical.choice, Quot.sound] (my run).
