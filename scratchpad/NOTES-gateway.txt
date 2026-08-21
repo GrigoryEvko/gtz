@@ -409,3 +409,64 @@ F58-7. WHAT IS LANDED THIS ROUND (Gtz/Wave/BranchTwoDeterminantSum.lean, commit
      centerPoint_detOutside_neg       hence detM < 0 on the stratum
   E1 IS NOT CLOSED.  The remaining gap is KEY of F58-5, and it is one scalar
   inequality in six variables with the degeneracy located.
+
+F58-8. ITEM 0 — THE 3-vs-1 ASYMMETRY IS A THEOREM, NOT A MEASUREMENT
+  (LANDED, Gtz/Wave/CornerDescentRank.lean, commit 5f8c59c, 5 theorems, all
+   pins [propext, Classical.choice, Quot.sound]).
+  The coordinator relayed a measured rank-3 result over 297 corners.  It is
+  exact, and the proof is one line of the corner equation.
+  Let S_C - 1 = lam u u^T with |u|=1, and let B carry an orthonormal basis of
+  the kernel plane u^perp.  Because B is orthogonal to the axis, the axis term
+  DIES under the congruence:
+      sum_{c in C} (B^T g_c)(B^T g_c)^T  =  B^T S_C B  =  I_2 .
+  THE PROJECTED INSIDE ATOMS ARE A PARSEVAL FRAME FOR THE KERNEL PLANE, at every
+  corner, with no genericity.  Landed at probe level as
+      corner_kernel_probe_form         sum_c (g_c . v)^2 = v.v      (u.v = 0)
+      corner_projectedAtoms_resolve    sum_c (g_c.v)(g_c.w) = v.w   (u.v=u.w=0)
+      corner_projectedAtom_ne_zero_of_probe   no kernel probe is missed
+      corner_kernel_reading_total / _cross    the orthonormal specialisations
+  CONSEQUENCE: the reachable set of gap perturbations on the kernel contains
+  w h^T + h w^T for every projected atom h and every w, and those span Sym(2)
+  as soon as the h span the plane -- which the resolution guarantees.  So a
+  CORNER must block a 3-DIMENSIONAL descent where a corank-one tie blocks 1.
+  MY OWN MEASUREMENT BEFORE PROVING (scratchpad/f58/probe0.py): 400 random real
+  corank-two corners, rank 3 in ALL 400, third singular value EXACTLY
+  1.4142135623730934 (= sqrt 2, constant, median 1.4142135623730951).  A
+  CONSTANT third singular value is the signature of a resolution of the
+  identity; a generic rank count would not produce one.  That constant is what
+  told me it was an identity rather than a measurement.
+
+F58-9. THE 3-vs-1 STRUCTURE DOES NOT, BY ITSELF, DELIVER E1 — honest scope.
+  The descent statement is about which perturbations of the INSIDE atoms a
+  corner must block.  E1 is a statement about the OUTSIDE pairs' minors.  The
+  resolution constrains the inside geometry completely and says nothing directly
+  about q_dd'.  So it does NOT replace the six-variable scalar fight; it is a
+  strictly stronger structural fact about corners that a successor should use
+  when attacking corner EMPTINESS, not E1.
+  E1 itself re-confirmed independently this round (scratchpad/f58/e1try.py):
+  14495 freshly built corank-two corners, some outside pair admissible in
+  14495 of them -- 100.0000%, zero exceptions.
+
+F58-10. WHAT A SUCCESSOR SHOULD DO WITH KEY (F58-5), in priority order.
+  (a) Certify KEY with the b=0 degeneracy factored out.  KEY vanishes to first
+      order at b=0 in every variable, so certify KEY on the slice sum b = 1, or
+      certify KEY/(b1+b2+b3), or homogenise.  The Handelman LP over
+      {b_i, t_i, A_i, 1-sum t, pair, detIM, detM} is INFEASIBLE at degree 2 (136
+      products, 201 monomials) and degree 3 (816 products, 1075 monomials);
+      degree 4 exceeds the time budget on the original target.
+  (b) Case split on which b_i is the largest, using detM only where the pair
+      bound fails.  The pair bound alone gives 4 b1b2b3 <= b1 (from b2b3 <= 1/4),
+      which suffices iff 4 b_j b_k <= t_i for i = argmax b.  MEASURED: that
+      sufficient condition FAILS at 32439 of 96009 feasible points (a third of
+      them), worst case 4 b_j b_k - t_i = +0.8548978120895784 at
+        b = (0.45632135, 0.484212, 0.51006457), t = (0.84108709, 0.11937363, 0.0289273)
+      where KEY is nonetheless +0.005555059093889092.  So the split is real but
+      the hard branch needs detM, exactly as the LP infeasibility predicts.
+      In the hard region (32511 points) min KEY = +2.1889923769500106e-06 at
+        b = (1.07566628e-05, 7.78980257e-03, 6.85224350e-01)
+        t = (1.06059930e-01, 1.54488960e-04, 1.08532366e-07)
+      -- tight but never violated.
+  (c) The Cayley rational corner chart (relayed by the coordinator this round,
+      Q = (I-K)(I+K)^{-1} for skew K, inside atoms the columns of
+      diag(1,1,mu) Q with mu = 1+e^s) is polytope-compatible and may make the
+      domain a polytope where the (b,t) variables do not.  UNTESTED BY ME.
