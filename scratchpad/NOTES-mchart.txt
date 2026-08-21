@@ -7,11 +7,12 @@ WHAT LANDED
   Gtz/Wave/ChartPairDualityExchange.lean (9 theorems)
   Gtz/Wave/ChartComplementBlockLaw.lean   (9 theorems)
   Gtz/Wave/ChartSharpDesignGap.lean       (8 theorems)
+  Gtz/Wave/ChartFrobeniusLaw.lean         (8 theorems)
 
-All 93 theorems pin to [propext, Classical.choice, Quot.sound], all 93 are pinned
-in Gtz/Audit.lean, and all five imports are in BOTH umbrellas. Five collision
-scans over Gtz/ and Skeleton/, namespace-aware, one after each module: zero
-collisions.
+2284 lines, 115 declarations, 101 theorems. All 101 pin to
+[propext, Classical.choice, Quot.sound], all 101 are pinned in Gtz/Audit.lean,
+and all six imports are in BOTH umbrellas. Six collision scans over Gtz/ and
+Skeleton/, namespace-aware, one after each module: zero collisions.
 
 JOB A WAS ALREADY SHIPPED. DO NOT RE-DERIVE IT.
 
@@ -131,6 +132,17 @@ The hinge does NOT transport across the duality: the sibling lane's
 Every statement here is scoped: the EXCHANGE is general, the READING of its right
 side as four coplanar atoms is (6,3) only, and no statement claims transport of
 HasParallelPair at any cell.
+
+TRACING THE EQUATION PRICES THE WHOLE MATRIX
+
+  sum_{p,q} M_pq^2 = rank - 2 sum_c t_c M_cc - sum_c t_c^2
+
+M is symmetric so the left side is the total square mass. Splitting the diagonal
+off makes the OFF-diagonal mass -- every pairing of the design -- a function of
+the diagonal and the weights alone. Every strictly positive diagonal entry spends
+from that budget, so an ALL-HEAVY design has strictly less off-diagonal mass than
+rank - sum_c t_c^2 (Gtz.sum_sq_offDiagonal_lt_of_allHeavy). Design-free form:
+Gtz.chartCore_sum_sq_gap. One scalar identity; it decides nothing on its own.
 
 A MEASURED ITEM OF THE CAMPAIGN, NOW PROVED
 
