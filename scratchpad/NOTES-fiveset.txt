@@ -60,3 +60,59 @@ WHAT DID NOT WORK
   gaps positive definite) -- so that stratum is INHABITED.  It carries a parallel
   pair, so it does not refute the hinge.  The open question is whether its
   PARALLEL-FREE part is empty, and I did not settle it.
+
+================================================================================
+SECOND PASS -- the four jobs the coordinator sent back
+
+JOB 1 DONE.  Gtz/Wave/SharpShareCoAtom.lean, 539 lines, 30 theorems.
+  THE CRITERION IS LANDED:
+      1 - shat_c = (1 - t_c) * rho_c        Gtz.one_sub_naimarkSharpShare
+  with shat_c := naimarkSharpCoeff D c * (co_c . (naimarkSharpTarget N)^-1 co_c),
+  which is exactly t_c * leverageOf(sharp atom c) with the whitener cancelled.
+  Verified against the LANDED definition at 2e-15 over eight cells.
+
+  THE PROOF, and it needs no spectral theorem, no rank theory, no block reindexing:
+      A_c = sqrt(1-t_c) g_c            A^T A = S_all - 1     (Parseval)
+      B_c = (t_c/sqrt(1-t_c)) co_c     B^T B = Omega - 1     (dual Parseval)
+      A^T B = 0                                              (Naimark dependency)
+  so the two hats are symmetric idempotents killing each other with traces k and r,
+  their sum is a symmetric idempotent of trace k+r = m, and
+      Gtz.eq_one_of_symmIdem_of_trace_eq :  such a matrix IS the identity,
+  because 1 - Pi has squared row norms on its diagonal and zero trace.
+  Read the resolution on the diagonal and the criterion falls out.
+
+  COROLLARIES LANDED:
+      Gtz.naimarkSharpShare_eq_weight_iff        unit sharp atom <=> rho_c = 1
+                                                 <=> the co-atom set is singular
+      Gtz.forall_weight_lt_naimarkSharpShare_iff sharp design all-heavy
+                                                 <=> EVERY co-atom set strict
+      Gtz.sum_naimarkSharpShare                  shares total the dual rank r
+
+JOB 2 DONE -- THE LP WAS RUN, AND IT IS FEASIBLE.
+  Variables nu_T >= 0 on the twenty triples, sum 1; the thirty functionals
+  delta_pq = sum_{T >= pq} nu_T  and  delta'_pq = sum_{T <= pq^c} nu_T.
+  Ask for all thirty >= eps.  FEASIBLE at every eps tested up to 0.05, and
+      MAX min-slack over the simplex = 0.2000,
+  attained at a 10-triple support with every nu = 0.1 (one triple from each
+  complementary pair; then delta = delta' = 0.2 at all fifteen pairs, forcing all
+  shares = 1/2, consistent with delta - delta' = s_p + s_q - 1).
+
+  CONCLUSION: the hinge obstruction is NOT LINEAR in the triple volumes.  Any
+  future attempt to obstruct the hinge by linear inequalities on nu is dead.
+
+  THE STRUCTURAL REASON, which is stronger than the LP: nu_T = det P[T] is a
+  function of the PROJECTION ALONE, while a tie compares P[T] to diag(t_T).  Fix
+  P and vary t over the simplex: nu never moves and the tie verdict does.  So no
+  function of nu alone can decide a tie.  DO NOT REVISIT.
+
+JOB 3 DONE -- the strongly-Rayleigh content, and it is elementary.
+  The chart of a design IS a determinantal point process, so
+      delta_pq  = s_p s_q - P_pq^2      (P PSD)
+      delta'_pq = u_p u_q - P_pq^2      (1-P PSD)
+  both at 1.1e-16.  Negative association nu_T <= s_a s_b s_c holds 800/800.
+  Hence, with NO dual design in the statement:
+      PARALLEL PAIR      <=>  a pair saturates its share cap   P_pq^2 = s_p s_q
+      COPLANAR FOUR-SET  <=>  a pair saturates its co-share cap P_pq^2 = u_p u_q
+  LANDED as Gtz.sharePairForm_eq_zero_iff and Gtz.coSharePairForm_eq_chart.
+  The two halves of the (6,3) hinge dictionary are one pair saturating one of its
+  two caps.  That is the sharpest intrinsic form the campaign has.
