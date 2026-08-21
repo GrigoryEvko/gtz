@@ -1472,6 +1472,7 @@ import Gtz.Wave.CorankStratumCollapse
 import Gtz.Wave.RankTwoTieClassification
 import Gtz.Wave.SharpFiveSetCriterion
 import Gtz.Wave.SharpShareCoAtom
+import Gtz.Wave.ChartQuadraticCore
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39497,3 +39498,40 @@ run_cmd do
 #print axioms Gtz.sharePairForm_eq
 #print axioms Gtz.sharePairForm_eq_zero_iff
 #print axioms Gtz.coSharePairForm_eq_chart
+
+-- Gtz/Wave/ChartQuadraticCore.lean -- a design is one symmetric matrix and one quadratic
+--   equation.  `Gtz.ChartCore` carries a symmetric gap `M`, a positive weight vector on
+--   the simplex, the equation `M M + M T + T M + T T = M + T` with `T = diag t`, and the
+--   trace normalisation `tr M = rank - 1`.  Those five items are exactly the gaps of
+--   designs, in both directions: `Gtz.chartCoreOfDesign` forwards and
+--   `Gtz.exists_design_of_chartCore` back.  As a result `Gtz.GtzWeighted` and
+--   `Gtz.HingeHoldsAtSize` become statements about one real symmetric matrix, at every
+--   size and every rank.  Job A of the chart brief was already shipped
+--   (`Gtz.dominates_iff_posSemidef_projectionBlock`, `Gtz.posDef_gap_iff_posDef_projectionBlock`)
+--   and is cited here, not re-derived.
+#print axioms Gtz.chartQuadratic_iff_mul_self
+#print axioms Gtz.submatrix_diagonal_of_injective
+#print axioms Gtz.ChartCore.chart_transpose
+#print axioms Gtz.ChartCore.chart_mul_self
+#print axioms Gtz.ChartCore.trace_chart
+#print axioms Gtz.chartGapOfDesign_transpose
+#print axioms Gtz.chartGapOfDesign_add_weightDiagonal
+#print axioms Gtz.chartGapOfDesign_apply_of_ne
+#print axioms Gtz.chartGapOfDesign_diagonal
+#print axioms Gtz.trace_chartGapOfDesign
+#print axioms Gtz.chartGapOfDesign_isQuadratic
+#print axioms Gtz.chartCoreOfDesign_chart
+#print axioms Gtz.exists_design_of_chartCore
+#print axioms Gtz.exists_design_chartCoreOfDesign_eq
+#print axioms Gtz.chartGapOfDesign_submatrix
+#print axioms Gtz.dominates_iff_posSemidef_chartGapBlock
+#print axioms Gtz.posDef_gap_iff_posDef_chartGapBlock
+#print axioms Gtz.gtzWeighted_iff_chartCore
+#print axioms Gtz.gtzWeighted_six_three_iff_chartCore
+#print axioms Gtz.chartPairDeterminant_eq_weight_mul_pairGramMinor
+#print axioms Gtz.hasParallelPair_iff_chartCore
+#print axioms Gtz.isTie_iff_chartCore
+#print axioms Gtz.hingeHoldsAtSize_iff_chartCore
+#print axioms Gtz.hingeHoldsAtSize_six_three_iff_chartCore
+#print axioms Gtz.chartCoPairDeterminant_eq_pairCapSlack
+#print axioms Gtz.sixThree_pair_dictionary_in_chartGap

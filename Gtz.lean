@@ -6784,3 +6784,4 @@ import Gtz.Wave.CorankStratumCollapse
 import Gtz.Wave.RankTwoTieClassification
 import Gtz.Wave.SharpFiveSetCriterion
 import Gtz.Wave.SharpShareCoAtom
+import Gtz.Wave.ChartQuadraticCore
