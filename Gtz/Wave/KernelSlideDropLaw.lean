@@ -67,6 +67,7 @@ import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Reduction.MassGapDescent
 import Gtz.Wave.FourSetProducer
 import Gtz.Reduction.PolarGapDeterminant
+import Gtz.Wave.FunnelFourSetPayment
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -452,15 +453,6 @@ section Design
 
 variable {m : ℕ}
 
-/-- A triple's atom sum, written out. -/
-theorem subsetSum_triple_expand (D : WeightedDesign m 3) {x y z : Fin m}
-    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) :
-    subsetSum D ({x, y, z} : Finset (Fin m))
-      = atomMatrix (D.atom x) + atomMatrix (D.atom y) + atomMatrix (D.atom z) := by
-  rw [subsetSum, Finset.sum_insert (by simp [hxy, hxz]), Finset.sum_insert (by simp [hyz]),
-    Finset.sum_singleton]
-  abel
-
 /-- **THE READING CAP AT A BOUNDARY DESIGN.**  Every atom of a boundary design is
 capped against every corank-one weak dominator, in terms of that dominator alone.
 
@@ -492,7 +484,7 @@ theorem reading_cap_of_isTie (D : WeightedDesign m 3) (htie : IsTie D)
           ((kernelShift (subsetSum D ({x, y, z} : Finset (Fin m)) - 1) kern)⁻¹ *ᵥ D.atom d) := by
   classical
   set gap := subsetSum D ({x, y, z} : Finset (Fin m)) - 1 with hgapset
-  have hexpand := subsetSum_triple_expand D hxy hxz hyz
+  have hexpand := subsetSum_triple_atoms D hxy hxz hyz
   have hgapdef : gap = atomMatrix (D.atom x) + atomMatrix (D.atom y) + atomMatrix (D.atom z) - 1 := by
     rw [hgapset, hexpand]
   have hS : atomMatrix (D.atom x) + atomMatrix (D.atom y) + atomMatrix (D.atom z) = gap + 1 := by
@@ -514,7 +506,7 @@ theorem reading_cap_of_isTie (D : WeightedDesign m 3) (htie : IsTie D)
       ¬ (atomMatrix (D.atom p) + atomMatrix (D.atom q) + atomMatrix (D.atom r) - 1).PosDef := by
     intro p q r hpq hpr hqr
     have hrefuse := htie.2 ({p, q, r} : Finset (Fin m)) (card_triple_eq hpq hpr hqr)
-    rwa [subsetSum_triple_expand D hpq hpr hqr] at hrefuse
+    rwa [subsetSum_triple_atoms D hpq hpr hqr] at hrefuse
   -- the three drops of the four-set, each refused
   have hrefa : 1 ≤ D.atom x ⬝ᵥ ((gap + atomMatrix (D.atom d))⁻¹ *ᵥ D.atom x) := by
     refine one_le_inverseForm_of_not_posDef hfourPD ?_

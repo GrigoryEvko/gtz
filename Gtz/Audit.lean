@@ -1399,6 +1399,7 @@ import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
 import Gtz.Wave.FourSetFloorPackage
 import Gtz.Wave.FunnelFourSetPayment
+import Gtz.Wave.KernelSlideDropLaw
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.PairNormalWedgeLaw
 import Gtz.Wave.ErasedPairCap
@@ -38444,3 +38445,30 @@ run_cmd do
 #print axioms Gtz.offDiag_resolventPairMinor_ge
 #print axioms Gtz.offDiag_resolventPairMinor_pos_six_three
 #print axioms Gtz.exists_offDiag_resolventPairMinor_pos_six_three
+
+-- Gtz/Wave/KernelSlideDropLaw.lean -- the inverse form of a four-set built
+-- from a corank-one weak dominator, evaluated by sliding the probe along the
+-- adjoined atom into the kernel's complement; the blind case is independent of
+-- the adjoined atom, and the three drops sum to a cap on every reading
+#print axioms Gtz.kernelShift_transpose
+#print axioms Gtz.kernelShift_mulVec_kernel
+#print axioms Gtz.kernelShift_inv_mulVec_kernel
+#print axioms Gtz.kernelShift_inv_transpose
+#print axioms Gtz.kernelShift_inv_dotProduct_kernel
+#print axioms Gtz.gap_mulVec_kernelShift_inv
+#print axioms Gtz.fourSet_mulVec_kernel
+#print axioms Gtz.fourSet_inv_mulVec_atom
+#print axioms Gtz.fourSet_inverseForm_self
+#print axioms Gtz.fourSet_inverseForm_cross
+#print axioms Gtz.kernelOrth_inverseForm_eq
+#print axioms Gtz.kernelSlide_dotProduct_kernel
+#print axioms Gtz.inverseForm_sub_smul
+#print axioms Gtz.fourSet_inverseForm_split
+#print axioms Gtz.fourSet_inverseForm_eq_kernelSlide
+#print axioms Gtz.blind_fourSet_inverseForm
+#print axioms Gtz.triple_kernel_reproduction
+#print axioms Gtz.triple_kernel_readings_sq
+#print axioms Gtz.triple_fourSet_inverseForm_sum
+#print axioms Gtz.one_le_inverseForm_of_not_posDef
+#print axioms Gtz.reading_cap_of_refusals
+#print axioms Gtz.reading_cap_of_isTie
