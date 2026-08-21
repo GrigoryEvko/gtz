@@ -1374,6 +1374,7 @@ import Gtz.Wave.CornerGatewayBudget
 import Gtz.Wave.BranchTwoDeterminantSum
 import Gtz.Wave.CornerDescentRank
 import Gtz.Wave.BranchTwoTrueDeterminants
+import Gtz.Wave.NullProbeAdjugateLaw
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.CornerEmptinessSlack
@@ -37798,3 +37799,27 @@ run_cmd do
 #print axioms Gtz.det_sum_le_box_of_inadmissible
 #print axioms Gtz.true_slack_factorization
 #print axioms Gtz.true_target_of_defect
+
+-- Gtz/Wave/NullProbeAdjugateLaw.lean -- the adjugate law of the gap Gram: each
+-- pair minor of a weak dominator is the second invariant times the squared
+-- reading of the member the pair leaves out, so the corner's triangle deletion
+-- and the corank-one arm's zero-reading rigidity are one identity
+#print axioms Gtz.adjugate_cross_first
+#print axioms Gtz.adjugate_cross_second
+#print axioms Gtz.adjugate_law_core
+#print axioms Gtz.nullProbe_reproduction
+#print axioms Gtz.nullProbe_mulVec_fixed
+#print axioms Gtz.nullProbe_row_first
+#print axioms Gtz.nullProbe_row_second
+#print axioms Gtz.nullProbe_row_third
+#print axioms Gtz.nullProbe_readings_resolve
+#print axioms Gtz.pairGapMinor_eq_pairMinorTotal_mul_reading_first
+#print axioms Gtz.pairGapMinor_eq_pairMinorTotal_mul_reading_second
+#print axioms Gtz.pairGapMinor_eq_pairMinorTotal_mul_reading_third
+#print axioms Gtz.pairGapMinor_eq_zero_of_pairMinorTotal_eq_zero
+#print axioms Gtz.pairGapMinor_eq_zero_iff_reading_eq_zero
+#print axioms Gtz.pairGapMinor_sign_uniform
+#print axioms Gtz.pairMinorTotal_eq_pairMinorTotal_mul_reading_sum
+#print axioms Gtz.nullProbe_reproduction_triple
+#print axioms Gtz.pairGapMinor_eq_pairMinorTotal_mul_reading_design
+#print axioms Gtz.unitAtom_parallel_of_two_pairMinors_zero
