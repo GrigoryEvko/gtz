@@ -6695,3 +6695,24 @@ import Gtz.Wave.PlaneShadowPairBridge
 -- room at all.  The module also lands Gtz.dominatingFamily, the finset of
 -- dominating subsets of a design at a fixed size, which the tree lacked.
 import Gtz.Wave.PivotFourDominatingTriples
+
+-- Gtz/Wave/UnitAtomFunnelClosure.lean -- THE FUNNEL BRANCH OF (6,3), CLOSED.  A
+-- (6,3) tie with an atom of leverage one has a parallel pair.  Deflating the unit
+-- atom leaves a (5,3) design; light-atom deflation preserves ties
+-- (Gtz.isTie_deflatedDesign), so that design is a tie, and the three-class law
+-- gives it SEVEN dominating triples.  Each lifts -- deflated domination is the
+-- deflated gap bound at the lifted triple, and the landed
+-- Gtz.dominates_and_fixes_of_deflatedGapBound reads that bound as domination AND
+-- fixing of the unit atom, which is null sharing.  A parallel-free funnel refuses
+-- two null-sharing swaps at one dominator, at the same exchanged member
+-- (Gtz.unitAtom_second_swap_absurd) and at different members
+-- (Gtz.unitAtom_two_mirror_swaps_absurd) alike, so the seven triples would have
+-- swap-degree at most one -- and Gtz.swapDegree_le_one_card_le_three caps such a
+-- family at three.  The swap language is now usable: the normal form of two
+-- triples meeting in a pair, the presentation of a triple through a named label,
+-- and the injectivity and triple-surjectivity of the ten-triple index.  With the
+-- landed all-heavy split this leaves EXACTLY ONE branch of the hinge at (6,3),
+-- and hence of weighted GTZ at rank three: the all-heavy one
+-- (Gtz.gtzWeightedAll_three_of_allHeavy_hinge).
+import Gtz.Wave.UnitAtomFunnelClosure
+

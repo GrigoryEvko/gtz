@@ -39164,3 +39164,15 @@ run_cmd do
 #print axioms Gtz.isTie_deflatedDesign
 #print axioms Gtz.seven_le_card_dominatingFamily_of_isTie_sixThree_of_light
 #print axioms Gtz.seven_le_card_dominatingFamily_of_isTie_sixThree_of_light'
+
+-- Gtz/Wave/UnitAtomFunnelClosure.lean -- the funnel branch of (6,3), closed
+#print axioms Gtz.deflatedGapBoundAt_image_of_dominates_deflatedDesign
+#print axioms Gtz.exists_swap_normalForm
+#print axioms Gtz.exists_triple_through
+#print axioms Gtz.tripleIndex_injective
+#print axioms Gtz.card_tripleIndex
+#print axioms Gtz.exists_tripleIndex_eq
+#print axioms Gtz.hasParallelPair_of_isTie_sixThree_of_unitAtom
+#print axioms Gtz.hingeHoldsAtSize_six_three_of_allHeavy
+#print axioms Gtz.gtzWeightedAll_three_of_allHeavy_hinge
+
