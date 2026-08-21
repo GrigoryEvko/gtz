@@ -39793,3 +39793,6 @@ run_cmd do
 #print axioms Gtz.corner_sum_tripleGapDet_insidePair
 #print axioms Gtz.corner_insidePair_law_of_isTie
 #print axioms Gtz.corner_insidePair_minor_le_of_isTie
+#print axioms Gtz.corner_inside_leverage_total_eq
+#print axioms Gtz.corner_insidePair_minor_le_axisReading
+#print axioms Gtz.corner_insidePair_sum_law_of_isTie
