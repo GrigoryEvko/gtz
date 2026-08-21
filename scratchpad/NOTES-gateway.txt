@@ -771,3 +771,89 @@ F65-14. ROUND SUMMARY, FINAL (fork 65).  E1 IS NOT CLOSED; I do not state it,
   METHOD RULES ADDED: feasibility tolerance is not feasibility -- recheck any
   optimiser-reported violation in extended precision (F65-2); and evaluate a
   candidate descent direction exactly rather than trusting an LP's sign (F65-4).
+
+============ ROUND 7 (fork 66) — THE SLACK FACTORIZATION, AND A 2-SIMPLEX ============
+
+F66-1. THE COORDINATE CHANGE THAT MAKES EVERYTHING DEGREE 3.
+  Work in (a,t), NOT (b,t).  With A_i = 1-t_i and a_i = b_i A_i:
+     a_i >= 0                                   deg 1
+     t_i >= 0,  S := 1 - t1 - t2 - t3 >= 0      deg 1
+     p_ij := A_iA_j - a_iA_j - a_jA_i >= 0      deg 2   (the pair constraint)
+     dIM  := A1A2A3 - sum a_i A_jA_k + 4a1a2a3  deg 3
+     dM   := t1t2t3 + sum a_i t_jt_k - 4a1a2a3  deg 3
+     target 1 - sum a                            deg 1
+  In (b,t) the determinants are degree SIX (a_i = b_i A_i is degree 2), which is
+  why every prior Handelman run was expensive.  In (a,t) degree-4 Handelman is
+  1820 products over 2612 monomials -- small.  Recorded because it is reusable.
+
+F66-2. THE DEGENERACY IS A 2-SIMPLEX, NOT A RAY -- CORRECTION TO F65-3.
+  F65-3 recorded the triple-zero locus as the one-parameter ray
+  b = (1/2,1/2,1/2), t = (r, 1-r, 0).  It is bigger: EVERY point with
+     b = (1/2,1/2,1/2)   and   t1+t2+t3 = 1     (t anywhere on the 2-simplex)
+  has dIM = 0, dM = 0, all three pair minors 0, S = 0, sum a = 1, AND
+  sum a_i t_i - e2 = 0.  Checked in exact rationals at six random weight
+  vectors (scratchpad/f66/degen.py); the F65-3 ray is just the edge t3 = 0.
+  CONSEQUENCE: a certificate for the target must vanish on a TWO-dimensional
+  set.  That is a sharper obstruction than F65-3 stated, and it is the honest
+  reason the Handelman LPs fail.
+
+F66-3. THE SLACK FACTORIZATION (LANDED, one ring).  Substituting
+  1 - t_j - t_k = S + t_i  and  A1A2A3 + t1t2t3 = S + e2  into F58-1 gives
+     dIM + dM = (S + e2) - ( S*(sum a) + sum a_i t_i )
+  hence, with e2 = t1t2+t1t3+t2t3,
+     **  S * (sum a - 1)  =  e2 - sum a_i t_i - (dIM + dM)  **
+  Verified at 4000 random rational points with ZERO mismatch BEFORE proving
+  (scratchpad/f66/lin.py); it is a polynomial identity, no hypothesis.
+  LANDED as Gtz.branchTwo_slack_factorization, Gtz/Wave/CornerEmptinessSlack.lean.
+
+F66-4. WHAT F66-3 SETTLES, AND WHAT IT DOES NOT.
+  (a) The target times the slack is EXPLICIT.  On S > 0,
+        sum a <= 1   <==>   e2 <= sum a_i t_i + dIM + dM
+      (Gtz.branchTwo_target_iff_defect).  The two determinants enter ONLY as a
+      sum, so this is the exact strength of the summed conditions -- F58-2's
+      1.0671 and F58-3's whole one-parameter family are now explained
+      structurally, not just measured.
+  (b) Dropping both determinants leaves  S*(sum a - 1) <= e2 - sum a_i t_i
+      (Gtz.branchTwo_slack_bound), and the right side IS genuinely positive on
+      the feasible set: at a = 0, t = (1/3,1/3,1/3) it is 1/3 while every
+      hypothesis holds (dIM = 8/27, dM = 1/27, all p_ij >= 0, S = 0).
+  (c) HONEST LIMIT: F66-3 is an exact reformulation, so it does NOT by itself
+      advance the proof.  Any attempt to use it circularly returns the target.
+      Its value is diagnostic and as a Lean stepping stone.
+
+F66-5. THE DEGREE-2 REDUCTION, TESTED AND REFUTED WITH A WITNESS.
+  F66-3 suggests: if the OTHER constraints forced sum a_i t_i >= e2, then with
+  S > 0 the target would follow immediately.  TESTED over
+  {pair, S >= 0, sum a >= 1, b,t in [0,1]} by SLSQP, 4000 restarts:
+     MIN of (sum a_i t_i - e2) = -0.25   at   b = (1,0,0),  t = (0, 1/2, 1/2)
+  and that witness is FULLY FEASIBLE for the whole system:
+     p = (0,0,0),  S = 0,  sum a = 1,  dIM = 0,  dM = 1/4 >= 0.
+  So the degree-2 reduction is FALSE, and note the witness is a degeneracy
+  point OUTSIDE the F66-2 simplex (b is a vertex of the pair polytope, not the
+  centre).  The full degenerate set is therefore larger than F66-2 alone.
+  DO NOT re-run this reduction.
+
+F66-6. HANDELMAN IN (a,t) -- STATUS, INCLUDING ONE INCONCLUSIVE RUN.
+  Target 1 - sum a, generators {a_i, t_i, S, p_ij, dIM, dM} (12 of them):
+     D=2:   91 products,  165 monomials -- INFEASIBLE
+     D=3:  455 products,  769 monomials -- INFEASIBLE
+     D=4: 1820 products, 2612 monomials -- HiGHS status 4, NUMERICALLY
+          INCONCLUSIVE after 278 s.  NOT a refutation.  Recorded as such.
+  F58-6 reported D=4 as "exceeds the time budget" in (b,t); in (a,t) it RUNS
+  but does not decide.  A successor wanting D=4 should re-run it with exact
+  rational arithmetic or a rescaled LP, not trust the float result either way.
+
+F66-7. ROUND SUMMARY (fork 66).  E1 IS NOT CLOSED; I do not state it and I hand
+  over no gateway.
+  LANDED: Gtz/Wave/CornerEmptinessSlack.lean, 10 theorems, all pins
+  [propext, Classical.choice, Quot.sound], per-module build exit 0.
+  ADVANCED: the (a,t) coordinates (F66-1); the degeneracy corrected upward to a
+  2-simplex (F66-2); the slack factorization, exact and landed (F66-3); the
+  exact strength of the summed conditions (F66-4).
+  REFUTED WITH WITNESSES: the degree-2 reduction sum a_i t_i >= e2 (F66-5).
+  INCONCLUSIVE, flagged: Handelman D=4 in (a,t) (F66-6).
+  WHAT I WOULD DO NEXT: the degenerate set is now known to contain both the
+  F66-2 centre simplex and the F66-5 vertex point, so it is a union of faces.
+  Enumerating ALL of it, then certifying the target on each face separately, is
+  the route the two obstructions point at -- a face-by-face argument, not a
+  single certificate.

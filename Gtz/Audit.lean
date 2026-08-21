@@ -1373,6 +1373,7 @@ import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.CornerGatewayBudget
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
+import Gtz.Wave.CornerEmptinessSlack
 import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoFrameKill
 import Gtz.Wave.KTwoFrameChart
@@ -37521,7 +37522,7 @@ run_cmd do
 #print axioms Gtz.weightedTriple_pairMinor_identity
 #print axioms Gtz.parseval_triple_reading_le
 #print axioms Gtz.complement_triple_posSemidef
-#print axioms Gtz.det_complementTriple_nonneg
+#print axioms Gtz.det_oneSubWeightedTriple_nonneg
 #print axioms Gtz.exists_pairMinor_pos_of_bracketBudget
 #print axioms Gtz.exists_pairMinor_pos_of_weightBudget
 #print axioms Gtz.weightedTriple_pairMinor_gapForm
@@ -37754,6 +37755,19 @@ run_cmd do
 #print axioms Gtz.centerPoint_excess_gt_one
 #print axioms Gtz.centerPoint_detOutside_eq
 #print axioms Gtz.centerPoint_detOutside_neg
+
+-- Gtz/Wave/CornerEmptinessSlack.lean -- the weight slack times the excess
+-- defect in closed form, and the two dimensional degenerate simplex
+#print axioms Gtz.branchTwo_coefficient_slack
+#print axioms Gtz.branchTwo_constant_slack
+#print axioms Gtz.branchTwo_slack_factorization
+#print axioms Gtz.branchTwo_slack_bound
+#print axioms Gtz.branchTwo_target_iff_defect
+#print axioms Gtz.branchTwo_target_of_defect
+#print axioms Gtz.centerSimplex_detComplement_zero
+#print axioms Gtz.centerSimplex_detOutside_zero
+#print axioms Gtz.centerSimplex_degenerate
+#print axioms Gtz.centerSimplex_defect_eq
 
 -- Gtz/Wave/CornerDescentRank.lean -- a corner resolves the identity on its own
 -- kernel, so it must block a three dimensional descent where corank one blocks one
