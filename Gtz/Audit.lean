@@ -1313,6 +1313,7 @@ import Gtz.Wave.CellHChartFloors
 import Gtz.Wave.CellHDowndateLaws
 import Gtz.Wave.CellHStarPromotion
 import Gtz.Wave.CellHDowndatePromotion
+import Gtz.Wave.CellHTwoStarProducer
 import Gtz.Wave.InsertionDowndateLedger
 import Gtz.Wave.CellBTiePackage
 import Gtz.Wave.BothLightChartReduction
@@ -37734,3 +37735,9 @@ run_cmd do
 #print axioms Gtz.planePart_eq_zero_of_forall_dotProduct_eq_zero
 #print axioms Gtz.k2FiveAxis_parallel_dichotomy
 #print axioms Gtz.k2FiveAxis_parallel_both
+
+-- Gtz/Wave/CellHTwoStarProducer.lean -- the y-trio is blind to the other two
+-- inside atoms; the second star covers exactly that blind spot
+#print axioms Gtz.star_exists_posDef_of_posDef_of_det_pos
+#print axioms Gtz.twoStar_exists_dominating_triple
+#print axioms Gtz.exists_posDef_of_twoStar

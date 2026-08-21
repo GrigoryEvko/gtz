@@ -239,3 +239,80 @@ diag(1,1,sqrt(1+lam)) * Q with Q in O(3), and Q = (I-K)(I+K)^-1 for skew K is a
 RATIONAL 3-parameter chart with denominator 1+|k|^2 > 0.  Setting mu^2 = 1+lam
 clears the last root.  That gives a rational chart in (mu, k1, k2, k3) plus the
 outside atoms.  NOT attempted here.
+
+=======================================================================
+FORK 59 (Cayley chart; the emptiness target is FALSE; two-star repair)
+=======================================================================
+
+F59-1.  THE CAYLEY CHART WORKS -- item 1 of the queue, done
+---------------------------------------------------------------------
+Q = (I-K)(I+K)^-1 for skew K=(k1,k2,k3) is rational with denominator
+1+|k|^2 > 0; inside atoms are the COLUMNS of diag(1,1,mu)*Q with mu=1+exp(s)
+so mu>1, and lam = mu^2-1.  Then S_C = D Q Q' D = diag(1,1,mu^2) EXACTLY,
+so S_C - I = diag(0,0,lam): a genuine corank-two corner with axis e3, with NO
+square root and NO trigonometry anywhere.  Measured over 400000 draws:
+    max |corner equation residual|          1.1e-13
+    S_C - I eigenvalues                     (0, 0, lam) to 1e-16
+Chart is scratchpad/cells/f59cayley.jl, library f59check_lib.jl.
+The chart is POLYTOPE-COMPATIBLE and is the right base for any Handelman run.
+
+F59-2.  *** THE EMPTINESS TARGET OF F55-5 IS FALSE ***
+---------------------------------------------------------------------
+    { corner, A_y > 0, A_z NOT > 0, T4<=0, T5<=0, T6<=0 }   IS NOT EMPTY.
+Measured in the Cayley chart, enforcing every hypothesis AND the landed
+leverage floor (all leverages >= 1, tie-necessary):
+    cell-H inhabitants                     18010
+    all three T_i strictly negative         1935  = 10.744 %
+An explicit witness, verified in scratchpad/cells/f59verify2.jl FROM ITS RAW
+ATOMS WITH NO SHARED CODE (the discipline the campaign requires):
+    weights sum to 1        8.9e-16 off
+    Parseval residual       2.0e-14
+    S_C - I eigenvalues     (-4.5e-16, +1.1e-15, 2.948744)   <- corank two
+    mineig(A_y) = +0.099371   (> 0, as cell H needs)
+    mineig(A_z) = -0.114719   (< 0, as cell H needs)
+    T4,T5,T6    = -5561.49, -25182.02, -16347.39   <- all negative
+    leverages   = 1.05274, 3.57045, 1.32555, 422.649, 43.101, 188.023  (all >=1)
+So F55-5's target is refuted.  DO NOT hunt a Positivstellensatz certificate
+for it -- there is nothing to certify.
+
+F59-3.  BUT THE CELL-H KILL IS UNTOUCHED -- the target was mis-stated
+---------------------------------------------------------------------
+The same witness has  best lambda_min over all 20 triples = +0.048688 at
+{x,4,5}.  A TRIPLE STRICTLY DOMINATES, so the design is NOT A TIE and the
+cell-H conclusion holds there.  The target was false because the y-trio is
+the STAR OF ONE INSIDE ATOM and never looks at the other two.
+Census over the 1935 residual points:
+    some triple dominates                  1935 / 1935   (100 %)
+    ... and NO triple dominates               0 / 1935
+    rescuing triple contains g_x           1935 / 1935
+       {x,4,6} 669    {x,5,6} 657    {x,4,5} 609
+The one-star census that reported 100.0000 % coverage sampled a chart in which
+the omitted inside atom could not carry the dominator.  This is NOT a numerics
+failure -- both constructions are exact corners (predecessor's reproduces at
+Parseval 3.1e-15 and gap 4.6e-16); it is a chart-coverage failure.
+
+F59-4.  THE REPAIR, LANDED (commit below): TWO STARS, NOT ONE
+---------------------------------------------------------------------
+The rank-one downdate argument never uses WHICH inside atom is fixed, so run it
+at A_x as well as A_y.  Measured on the same 18010 inhabitants:
+    y-trio fires                           89.256 %
+    of the 1935 residual: A_x > 0          1935 / 1935
+    of the 1935 residual: x-trio fires     1935 / 1935
+    UNION (y-trio OR x-trio)               18010 / 18010  = 100.0000 %
+Gtz/Wave/CellHTwoStarProducer.lean:
+    Gtz.star_exists_posDef_of_posDef_of_det_pos   (fixed atom named, not assumed y)
+    Gtz.twoStar_exists_dominating_triple          (either star fires => dominator)
+    Gtz.exists_posDef_of_twoStar                  (as a single existential)
+No probe, no selection rule, no data-dependent constant -- the disjunction is
+over the two stars only.
+
+F59-5.  THE RESIDUAL, RESTATED CORRECTLY
+---------------------------------------------------------------------
+Cell H now reduces to: at a cell-H inhabitant, at least one of the two stars
+fires.  As an emptiness target that is
+    { corner, A_y>0, A_z NOT>0, T4<=0,T5<=0,T6<=0,
+      (A_x NOT>0  OR  S4<=0,S5<=0,S6<=0) }  = EMPTY
+where S_i = det(A_x - g_i g_i').  Measured EMPTY at 18010/18010.  This is the
+statement to certify in the Cayley chart -- NOT F55-5's.
+NOT DONE: the Handelman run itself, and cell B.  The chart (F59-1) is built and
+is the gating tool both need.
