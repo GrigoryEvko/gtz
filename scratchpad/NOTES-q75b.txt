@@ -110,3 +110,58 @@ one -- at the 26 ties the inadmissible pair is exactly the pair no dominating
 triple covers, which is the same separation the landed
 inadmissible_pair_not_inside_dominates gives, so the two facts are consistent but
 neither implies blindness.
+
+## Q75B-6. The erasure ladder (landed, commits cf702d9 and f5cb0d6)
+
+The proof of leverage_one_le_of_isTie is an ERASURE: drop one atom, whiten,
+import a dominating triple from the smaller size, read the bound back.  Nothing
+in it used that only ONE atom was dropped.  Dropping a set E from a (6,3)
+boundary system leaves 6 - |E| atoms, and sizes three, four and five are all
+inside the corank floor (gtzWeighted_of_le_five).  So the same argument runs for
+every E with 1 <= |E| <= 3.
+
+  THE CAP.  At a boundary system, with t(E) = sum of the erased weights and
+  P_E = sum of t_c * g_c g_c^T over E:
+
+      t(E) * 1  -  P_E   is NEVER positive definite.
+
+  Equivalently lmax(P_E) >= t(E).  Equivalently (reading form): there is a
+  nonzero x with  sum_{c in E} t_c <g_c,x>^2  >=  t(E) * |x|^2, and by Parseval
+  the same x makes the SURVIVORS read at most their own weight.
+
+Rungs:
+  |E| = 1  ->  1 <= leverage.  This IS the landed heaviness theorem, recovered
+               as one_le_leverage_of_erasedCap.  The family generalizes a
+               theorem rather than guessing a new one.
+  |E| = 2  ->  caps a pair; in scalars a three-way disjunction whose last two
+               branches bound the pair's WEDGE from above (ErasedPairCap).
+  |E| = 3  ->  caps a triple; new.
+At (6,3) that is 6 + 15 + 20 = 41 simultaneous necessary conditions.
+
+Measured on the 26 ties, worst slack lmax(P_E) - t(E):
+  |E|=1  156 instances, 0 violations, worst +0.057397
+  |E|=2  390 instances, 0 violations, worst +0.105122
+  |E|=3  520 instances, 0 violations, worst +0.170409
+  |E|=4  390 instances, 0 violations, worst +0.111494   <- NOT covered by the
+         argument (two survivors cannot form a triple); measured only.
+Diamond (5,3), all ten pairs: worst slack +0.400.
+
+## Q75B-7. Why the ladder cannot close (6,3) by itself, and where it meets the hinge
+
+The ladder holds at all 26 ties, so it is consistent with ties existing -- as it
+must be, since (6,3) ties DO exist (the split diamond).  No contradiction can
+come from the 41 conditions alone.  Primitivity has to enter, and there is an
+exact place where it does:
+
+  AT A COLLINEAR PAIR THE PAIR CAP IS VACUOUS.  If g_b = rho * g_a then P_ab has
+  RANK ONE, so lmax(P_ab) = tr(P_ab) = t_a*l_a + t_b*l_b, and the cap
+  lmax >= t_a + t_b follows from l >= 1 alone.  The cap costs the design nothing
+  there.
+
+  AT A NON-COLLINEAR PAIR P_ab HAS RANK TWO, so lmax < tr strictly, and the cap
+  is a genuine constraint.
+
+So the ladder is exactly the instrument that is switched OFF by a collinear pair
+and switched ON by primitivity -- the shape the hinge needs.  A successor should
+push the |E| = 2 and |E| = 3 rungs under the primitivity hypothesis, where the
+strict gap lmax(P_E) < tr(P_E) is available, rather than at a general tie.
