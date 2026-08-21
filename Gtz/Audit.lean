@@ -1324,6 +1324,7 @@ import Gtz.Wave.CellHDowndateLaws
 import Gtz.Wave.CellHStarPromotion
 import Gtz.Wave.CellHDowndatePromotion
 import Gtz.Wave.CellHTwoStarProducer
+import Gtz.Wave.ZeroAxisStarLedger
 import Gtz.Wave.InsertionDowndateLedger
 import Gtz.Wave.CellBTiePackage
 import Gtz.Wave.BothLightChartReduction
@@ -37807,6 +37808,46 @@ run_cmd do
 #print axioms Gtz.star_exists_posDef_of_posDef_of_det_pos
 #print axioms Gtz.twoStar_exists_dominating_triple
 #print axioms Gtz.exists_posDef_of_twoStar
+
+-- Gtz/Wave/ZeroAxisStarLedger.lean -- the three star ledgers, the zero-axis
+-- frame, the free half of a cell-H tie, and the six-refusal collapse
+#print axioms Gtz.star_ledger_weighted
+#print axioms Gtz.gap_insert_eq_add_atomMatrix
+#print axioms Gtz.gap_insert_erase_eq_sub_atomMatrix
+#print axioms Gtz.star_reading_total
+#print axioms Gtz.star_ledger_unweighted
+#print axioms Gtz.exists_reading_lt_one_of_weighted_total_pos
+#print axioms Gtz.exists_reading_lt_one_of_total_pos
+#print axioms Gtz.star_posDef_of_reading_lt_one
+#print axioms Gtz.exists_star_posDef_of_weighted_ledger
+#print axioms Gtz.exists_star_posDef_of_unweighted_ledger
+#print axioms Gtz.zeroAxis_leverage_eq_one
+#print axioms Gtz.zeroAxis_orthogonal
+#print axioms Gtz.zeroAxis_parseval_transfer
+#print axioms Gtz.zeroAxis_outside_mass
+#print axioms Gtz.zeroAxis_outside_axis_cross
+#print axioms Gtz.star_not_posDef_of_fourSet_not_posDef
+#print axioms Gtz.core_not_posDef_of_fourSet_not_posDef
+#print axioms Gtz.fourSet_det_nonpos_of_sibling_posDef
+#print axioms Gtz.cellH_adjugate_separation
+#print axioms Gtz.cellH_adjugate_strict_order
+#print axioms Gtz.corner_gap_posSemidef
+#print axioms Gtz.corner_superset_gap_posSemidef
+#print axioms Gtz.corner_fiveSet_gapDet_eq_adjugate_reading
+#print axioms Gtz.corner_fiveSet_gapDet_nonneg
+#print axioms Gtz.corner_fiveSet_posDef_of_det_ne_zero
+#print axioms Gtz.corner_inverse_reading_total
+#print axioms Gtz.star_aggregate_corner_form
+#print axioms Gtz.exists_star_posDef_of_axis_reading_gt
+#print axioms Gtz.star_refusals_iff_downdate_det_nonpos
+#print axioms Gtz.oneInside_triple_card
+#print axioms Gtz.oneInside_triple_inter_card
+#print axioms Gtz.isTie_oneInside_not_posDef
+#print axioms Gtz.CellHStarRefusalSystem
+#print axioms Gtz.cornerTriple_card
+#print axioms Gtz.cornerTriple_compl_card
+#print axioms Gtz.oneAxisZeroHeavyInsideResidual_of_starRefusals
+#print axioms Gtz.cellH_zSide_refusals_free
 
 -- Gtz/Wave/BranchTwoDeterminantSum.lean -- the two determinant conditions of E1
 -- add to a linear bound; the centre is ruled out by the second alone
