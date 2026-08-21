@@ -1465,6 +1465,7 @@ import Gtz.Wave.NaimarkSharpDesign
 import Gtz.Wave.PlaneShadowPairBridge
 import Gtz.Wave.PivotFourDominatingTriples
 import Gtz.Wave.UnitAtomFunnelClosure
+import Gtz.Wave.RankTwoTieClassification
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge

@@ -159,7 +159,7 @@ private theorem funext_two {leftVec rightVec : Fin 2 → ℝ}
 /-! The wedge `Gtz.planeWedge` is the tree's, from `Gtz.Wave.PlaneCapTripleClosure`:
 `u_0 v_1 - u_1 v_0`, the determinant of the two by two matrix with those columns. -/
 
-@[simp] theorem planeWedge_self (vec : Fin 2 → ℝ) : planeWedge vec vec = 0 := by
+@[simp] theorem planeWedge_self_eq_zero (vec : Fin 2 → ℝ) : planeWedge vec vec = 0 := by
   simp only [planeWedge]; ring
 
 theorem planeWedge_comm (leftVec rightVec : Fin 2 → ℝ) :
@@ -303,7 +303,7 @@ theorem tieCoupling_comm (D : WeightedDesign m 2) (atomFirst atomSecond : Fin m)
 theorem tieCoupling_self (D : WeightedDesign m 2) (atomIndex : Fin m) :
     tieCoupling D atomIndex atomIndex
       = D.weight atomIndex ^ 2 * (2 * leverageOf (D.atom atomIndex) - 1) := by
-  simp only [tieCoupling, planeWedge_self]
+  simp only [tieCoupling, planeWedge_self_eq_zero]
   ring
 
 /-- The coupling is minus the weighted gap determinant. -/
@@ -958,7 +958,7 @@ theorem normalizedCoupling_transpose (D : WeightedDesign m 2) :
 theorem normalizedCoupling_diag (D : WeightedDesign m 2) (atomIndex : Fin m) :
     normalizedCoupling D atomIndex atomIndex
       = D.weight atomIndex * (2 * leverageOf (D.atom atomIndex) - 1) := by
-  simp only [normalizedCoupling_apply, planeWedge_self]
+  simp only [normalizedCoupling_apply, planeWedge_self_eq_zero]
   rw [rootWeight_mul_self]
   ring
 
@@ -1330,13 +1330,13 @@ theorem normalizedCoupling_diag_pos (D : WeightedDesign m 2)
     (hheavy : ∀ atomIndex : Fin m, 1 ≤ leverageOf (D.atom atomIndex)) (atomIndex : Fin m) :
     0 < normalizedCoupling D atomIndex atomIndex := by
   rw [normalizedCoupling_pos_iff]
-  exact tieCoupling_pos_of_planeWedge_eq_zero D hheavy (planeWedge_self (D.atom atomIndex))
+  exact tieCoupling_pos_of_planeWedge_eq_zero D hheavy (planeWedge_self_eq_zero (D.atom atomIndex))
 
 theorem self_mem_tieClass (D : WeightedDesign m 2)
     (hheavy : ∀ atomIndex : Fin m, 1 ≤ leverageOf (D.atom atomIndex)) (pivot : Fin m) :
     pivot ∈ tieClass D pivot := by
   rw [mem_tieClass_iff]
-  exact tieCoupling_pos_of_planeWedge_eq_zero D hheavy (planeWedge_self (D.atom pivot))
+  exact tieCoupling_pos_of_planeWedge_eq_zero D hheavy (planeWedge_self_eq_zero (D.atom pivot))
 
 /-- **The row law, normalised.**  The square-root weight vector is a fixed vector of
 the normalised coupling. -/
