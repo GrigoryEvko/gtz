@@ -128,3 +128,65 @@ Diamond, from the graph K4 minus an edge with conductances (2,3,3,3,3),
 uniform weights 1/5:  L = [[8,-2,-3],[-2,8,-3],[-3,-3,6]], det L = 180,
 leverages (2, 13/4, 13/4, 13/4, 13/4), 8 of 10 triples dominate, none strictly,
 no parallel pair.  Reproduced exactly by the harness.
+
+================================================================================
+F71-7  THE MAIN (6,3) STATEMENT WITH THE ATOMS REMOVED  -- verified 4000/4000
+================================================================================
+The half-floor work exposed the right chart for the WHOLE problem, not just for
+Question 7.1.  Write s_c = 1 - t_c, W = subsetSum D univ - 1 (PosDef), and
+
+    Pi a b  =  g_a . (W^-1 g_b)          Gtz.resolventReading
+
+Then, hypothesis-free at every size and rank (Gtz.sum_coWeight_mul_resolventReading_mul):
+
+    sum_c s_c * Pi a c * Pi c b  =  Pi a b        i.e.   Pi diag(s) Pi = Pi,
+
+and sum_c s_c Pi c c = k (Gtz.descent_identity).  So
+
+    P := diag(sqrt s) Pi diag(sqrt s)
+
+is an ORTHOGONAL PROJECTION of R^m of rank exactly k, with P_cc = s_c rho_c.
+This is the CO-Parseval projection.  It is NOT the campaign's landed
+Gtz.projectionOfDesign (which is the Parseval one, P0_cd = sqrt(t_c t_d)<g_c,g_d>);
+the two coincide EXACTLY when all weights are equal, because the co-Parseval
+operator is then a multiple of the identity.
+
+THE CRITERION (verified on 4000 triples of 200 random (6,3) designs, zero
+mismatches, after checking P^2 = P and tr P = 3 on each):
+
+    triple C dominates   <=>   Q[Cc,Cc]  >=  diag(t_d : d in Cc),   Q = I - P,
+
+with Cc the complementary triple.  Derivation: C dominates <=> sum_{e in Cc} g_e g_e^T <= W
+(the complement dictionary) <=> Pi[Cc,Cc] <= I_3 <=> P[Cc,Cc] <= diag(s)_{Cc}
+<=> Q[Cc,Cc] >= diag(t)_{Cc}.
+
+CONSEQUENCE -- GtzWeighted 6 3 is equivalent to a statement with no atoms in it:
+
+    ** Let Q be a rank-three orthogonal projection of R^6 and let t_1..t_6 > 0
+       with sum t_c = 1.  Then some three-element D has Q[D,D] >= diag(t_d). **
+
+The correspondence is onto: given any rank-three projection P of R^6 and any
+such t, set a_c = rows of A with A A^T = P, A^T A = I_3, gtilde_c = a_c/sqrt(s_c),
+M = sum_c t_c gtilde_c gtilde_c^T (PosDef), and R with R^T R = M; then
+g_c = R^{-T} gtilde_c is a (6,3) design whose co-Parseval projection is P.
+Checked: sum_c t_c g_c g_c^T = I and Sigma - I = W both come out automatically.
+
+At UNIFORM weights t = 1/6 the co-Parseval and Parseval projections agree and the
+statement is the classical one: some k rows of a matrix with orthonormal columns
+have smallest singular value at least 1/sqrt(n).  So this chart contains the
+classical form and extends it to arbitrary weights with the weights appearing
+ONLY as diag(t) on the right-hand side -- never inside the block.
+
+WHY THIS IS WORTH A LANE: the statement is now pure finite-dimensional linear
+algebra about principal blocks of a half-dimensional projection, which is the
+natural home of restricted invertibility (Bourgain-Tzafriri) and of the
+Marcus-Spielman-Srivastava interlacing method.  Nothing in the campaign's
+vocabulary -- leverages, pair minors, brackets -- survives into it.
+
+LANDED: Gtz/Wave/ResolventProjectionLaw.lean (9 pins, all standard).  NOT landed:
+the criterion itself as an iff in Lean.  Its proof is: whiten W by
+Gtz.exists_congruence_to_one, apply the landed complement dictionary, and flip
+the 3x3 Gram with Gtz.posSemidef_transpose_mul_sub_one_comm (square at (6,3), so
+the landed square version applies) -- but that lemma is stated for M^T M - 1, and
+the criterion needs the 1 - M^T M direction, which is not landed.  That missing
+flip is the one gap between here and the theorem.

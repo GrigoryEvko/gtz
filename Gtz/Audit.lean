@@ -1263,6 +1263,7 @@ import Gtz.Wave.SignCoherentFoil
 import Gtz.Wave.FourSetCoweightCap
 import Gtz.Wave.FiveSetPairFloor
 import Gtz.Wave.CoParsevalPivotHalfFloor
+import Gtz.Wave.ResolventProjectionLaw
 import Gtz.Wave.CornerFramePair
 import Gtz.Wave.ExcludedAtomLedger
 import Gtz.Wave.OneAxisZeroFourSets
@@ -38250,3 +38251,17 @@ run_cmd do
 #print axioms Gtz.trace_projection_isometry
 #print axioms Gtz.sum_projectionDiag_sub_weight
 #print axioms Gtz.projectionDiag_designOfIsometry
+
+-- Gtz/Wave/ResolventProjectionLaw.lean -- the resolvent readings of a design
+-- form a projection in the co-weight metric, of trace the rank: this is the
+-- (6,3) statement with every atom removed, leaving a rank-three projection of
+-- six-space and a probability vector
+#print axioms Gtz.dot_weighted_atoms_mulVec_bilinear
+#print axioms Gtz.resolventReading_symm
+#print axioms Gtz.resolventReading_diag
+#print axioms Gtz.sum_coWeight_mul_resolventReading_mul
+#print axioms Gtz.sum_coWeight_mul_resolventReading_diag
+#print axioms Gtz.resolventMatrix_apply
+#print axioms Gtz.resolventMatrix_symm
+#print axioms Gtz.resolventMatrix_idempotent
+#print axioms Gtz.resolventMatrix_trace_eq_rank
