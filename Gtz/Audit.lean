@@ -1265,6 +1265,7 @@ import Gtz.Wave.FourSetCoweightCap
 import Gtz.Wave.FiveSetPairFloor
 import Gtz.Wave.CoParsevalPivotHalfFloor
 import Gtz.Wave.ResolventProjectionLaw
+import Gtz.Wave.ResolventBlockCriterion
 import Gtz.Wave.CornerFramePair
 import Gtz.Wave.ExcludedAtomLedger
 import Gtz.Wave.OneAxisZeroFourSets
@@ -38349,3 +38350,18 @@ run_cmd do
 #print axioms Gtz.exists_admissible_or_inadmissible_triangle
 #print axioms Gtz.isTie_allHeavy_inadmissible_triangle_or_strongPair
 #print axioms Gtz.branchB_exists_two_strong_partners
+
+-- Gtz/Wave/ResolventBlockCriterion.lean -- domination is a block of the
+-- resolvent reading matrix: a selection dominates exactly when the principal
+-- block on its complement sits below the identity, with no weight inside
+#print axioms Gtz.quadForm_mixed_le_of_posDef
+#print axioms Gtz.atomSum_mulVec
+#print axioms Gtz.atomSumForm
+#print axioms Gtz.atomSum_transpose
+#print axioms Gtz.sum_mul_sq_le
+#print axioms Gtz.posSemidef_sub_atomSum_iff_resolventForm
+#print axioms Gtz.fullExcess_sub_subsetSum_compl
+#print axioms Gtz.resolventForm_eq_sum
+#print axioms Gtz.dominates_iff_resolventForm_le
+#print axioms Gtz.dominates_compl_iff_resolventForm_le
+#print axioms Gtz.gtzWeighted_six_three_iff_resolventBlock
