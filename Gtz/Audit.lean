@@ -39789,3 +39789,7 @@ run_cmd do
 #print axioms Gtz.transpose_scaledAtomRows_mulVec_eq_zero_iff
 #print axioms Gtz.dominates_iff_dependencyBound
 #print axioms Gtz.dominates_iff_dependencyBound_compl
+#print axioms Gtz.tripleGapDet_repeat_left_pairMinor
+#print axioms Gtz.corner_sum_tripleGapDet_insidePair
+#print axioms Gtz.corner_insidePair_law_of_isTie
+#print axioms Gtz.corner_insidePair_minor_le_of_isTie
