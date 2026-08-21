@@ -164,7 +164,51 @@ Gtz/Wave/OutsideFrameMomentLadder.lean  (14 theorems)
 All 51 pins are [propext, Classical.choice, Quot.sound].
 
 =======================================================================
-H-6.  WHAT IS OPEN, AND THE ONE HONEST NEXT STEP
+H-6.  *** THE ERASE FRAME *** (new, landed) -- the nine refusals are three forms
+=======================================================================
+Erase ONE OUTSIDE label from the universe.  What is left contains the whole
+corner, so its gap F_d := S_{univ \ d} - 1 is positive semidefinite for free and
+its determinant is nonnegative for free.  And for every inside atom e the index
+sets {e} u (K \ d) and C \ {e} PARTITION univ \ {d}, hence
+
+    S_{{e} u K\d} - 1  =  F_d  -  sum_{c in C, c != e} g_c g_c^T .
+
+At |C| = 3 the correction is exactly TWO atoms, so the nine one-inside triples
+are nine DEPTH-TWO DOWNDATES of only THREE forms, and the landed depth-two
+criterion turns each refusal into one reading and one 2x2 determinant in the
+metric of F_d.
+
+MEASURED in quad over 156421 exact Z1 corners (three erased gaps each,
+scratchpad/cellh/erasecheck.c):
+    downdate identity                    3.5e-33 relative
+    det F_d = lam * [u, g_d', g_d'']^2   1.6e-20 relative
+    erased gaps positive definite        469263 / 469263
+    min lambda_min / matrix scale        +1.2e-15
+
+WHY THIS FRAME AND NOT THE CELLS.  The four-set gaps A_y, A_z that the cell
+system is built on have NEITHER property: they are not corner supersets, their
+determinants have no sign, and A_z is precisely the one that fails.  F_d has
+both properties before anything is computed, and the three F_d do not know which
+inside atom anchors the triple -- so the y-star, the x-star and the z-star are
+the SAME nine numbers read three ways.  The cell dichotomy disappears from the
+statement.  At a Z1 corner the pair the y-criterion downdates is (g_x, g_z) and
+g_x is a UNIT vector orthogonal to g_z, so half of the Gram is pinned free.
+
+Landed as Gtz/Wave/CornerEraseDowndate.lean (13 theorems):
+  corner_erase_partition, corner_erase_disjoint
+  corner_oneInside_gap_eq_erase_downdate      the partition identity
+  corner_erase_gap_posSemidef                 F_d >= 0, free
+  corner_erase_gapDet_nonneg                  det F_d >= 0, free
+  corner_erase_gap_posDef_of_det_ne_zero
+  corner_yTriple_gap_eq_depthTwo              the depth-two form
+  corner_yTriple_not_posDef_iff_readings      the refusal as two readings
+  corner_yTriple_posDef_of_readings           the producer
+  corner_yTriple_second_reading_lt_one        the second reading is free
+  zeroAxis_downdated_pair_gram                the pair is half pinned
+  isTie_erase_downdate_not_posDef             the nine refusals
+
+=======================================================================
+H-7.  WHAT IS OPEN, AND THE ONE HONEST NEXT STEP
 =======================================================================
 The ten refusals are now the WHOLE Z1 residual.  Four of the ten are free at
 cell H.  What is not proved is that the six that remain are contradictory.
@@ -177,10 +221,17 @@ is none here.  The K2 route worked because the plane masses linearised its
 domain; the corank-two corner has no such pair of masses, because the corner
 equation is quadratic in the atoms and the weights enter through the inverse.
 
-The one route I would take next: the corner ladder.  A corner gap is positive
-semidefinite, so every superset dominates weakly; the four-set determinants
-vanish; the five-set determinants are lam times a bracket squared and are
-nonnegative.  At (6,3) a five-set is the universe less ONE label.  That gives
-three free nonnegative determinants that no cell system uses, and they are
-polynomial in the atoms with no inverse anywhere.  Price the six star refusals
-against those three, not against a chart.
+The route to take next is H-6, and it is now landed as machinery.  Work in the
+THREE erased gaps F_4, F_5, F_6, not in the two four-set gaps of the cells.
+Each F_d is positive definite whenever the axis is not coplanar with the two
+surviving outside atoms, its determinant is lam times that bracket squared, and
+the nine refusals are nine 2x2 sign conditions on the readings of the three
+inside atoms in the three F_d metrics.  That is nine conditions on a 3x3x3 array
+of readings whose diagonal is pinned by the Z1 frame -- a far smaller object
+than a ten-parameter chart, and the first form of the corner residual that is
+not a disjunction over which triple fires.
+
+Also open, and cheap: the three erased gaps satisfy Parseval-type relations
+among themselves, because sum_d (S_{univ\d} - 1) = 3*(S_univ - 1) - (S_univ - 1)
+= 2*(S_univ - 1) + ... -- work that identity out; it prices the three metrics
+against each other and no lane has looked at it.
