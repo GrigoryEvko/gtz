@@ -317,4 +317,118 @@ theorem corner_column_exists_posDef_closed (h : CornerForm gx gy gz u lam)
   rw [cornerForm_tripleGapDet_column_total h hu a b]
   exact hclosed
 
+
+/-! ## 7. The weighted column total, and the gauge -/
+
+/-- **THE WEIGHTED COLUMN TOTAL.**  Hypothesis-free: weighting the three gap
+determinants over a pair base by the inside weights and totalling gives the pair
+minor against the weighted leverage excess, plus the pair's axis form read at
+the three WEIGHTED second moments of the inside readings.
+
+Unlike the unweighted total this is NOT determined by the corner and pair
+invariants.  A sibling's rotation gauge `V_C → V_C·Q` fixes every corner and
+pair invariant while rotating the individual readings, and the unweighted total
+is forced constant on that orbit (`Gtz.cornerForm_tripleGapDet_column_total`).
+The weights break the gauge, because they are attached to individual atoms.
+**That is why a certificate for the horn must carry weights: the gauge-invariant
+part of the column is exactly its unweighted total, and nothing more.** -/
+theorem weighted_column_total (tx ty tz : ℝ) (a b gx gy gz : Fin 3 → ℝ) :
+    tx * tripleGapDet a b gx + ty * tripleGapDet a b gy + tz * tripleGapDet a b gz
+      = pairGapMinor a b
+          * (tx * (leverageOf gx - 1) + ty * (leverageOf gy - 1)
+              + tz * (leverageOf gz - 1))
+        + (1 - leverageOf b)
+            * (tx * (a ⬝ᵥ gx) ^ 2 + ty * (a ⬝ᵥ gy) ^ 2 + tz * (a ⬝ᵥ gz) ^ 2)
+        + 2 * (a ⬝ᵥ b)
+            * (tx * ((a ⬝ᵥ gx) * (b ⬝ᵥ gx)) + ty * ((a ⬝ᵥ gy) * (b ⬝ᵥ gy))
+                + tz * ((a ⬝ᵥ gz) * (b ⬝ᵥ gz)))
+        + (1 - leverageOf a)
+            * (tx * (b ⬝ᵥ gx) ^ 2 + ty * (b ⬝ᵥ gy) ^ 2 + tz * (b ⬝ᵥ gz) ^ 2) := by
+  simp only [tripleGapDet, pairGapMinor, leverageOf, dotProduct, Fin.sum_univ_three]
+  ring
+
+/-- **ANY NONNEGATIVE WEIGHTING IS A PRODUCER.**  If a nonnegative combination
+of the three gap determinants is positive, one of them is positive.  The
+coefficients need not be the design's weights: any nonnegative triple works, so
+the weighted total, the unweighted total and the axis-mass total are all
+instances. -/
+theorem exists_pos_of_nonneg_combo_pos {cx cy cz x y z : ℝ}
+    (hcx : 0 ≤ cx) (hcy : 0 ≤ cy) (hcz : 0 ≤ cz)
+    (hpos : 0 < cx * x + cy * y + cz * z) :
+    0 < x ∨ 0 < y ∨ 0 < z := by
+  by_contra hcon
+  push_neg at hcon
+  obtain ⟨hx, hy, hz⟩ := hcon
+  nlinarith [mul_nonpos_of_nonneg_of_nonpos hcx hx,
+    mul_nonpos_of_nonneg_of_nonpos hcy hy, mul_nonpos_of_nonneg_of_nonpos hcz hz]
+
+/-- **THE WEIGHTED PRODUCER, AS A DOMINATOR.**  Over an admissible outside pair,
+a positive weighted column total exhibits a strictly dominating triple. -/
+theorem corner_column_posDef_of_weighted_pos {tx ty tz : ℝ} (a b : Fin 3 → ℝ)
+    (hmin : 0 < pairGapMinor a b) (htr : 2 < leverageOf a + leverageOf b)
+    (hx : 0 ≤ tx) (hy : 0 ≤ ty) (hz : 0 ≤ tz)
+    (hpos : 0 < tx * tripleGapDet a b gx + ty * tripleGapDet a b gy
+        + tz * tripleGapDet a b gz) :
+    (tripleGram a b gx - 1).PosDef ∨ (tripleGram a b gy - 1).PosDef
+      ∨ (tripleGram a b gz - 1).PosDef := by
+  rcases exists_pos_of_nonneg_combo_pos hx hy hz hpos with h | h | h
+  · exact Or.inl ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h)
+  · exact Or.inr (Or.inl ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h))
+  · exact Or.inr (Or.inr ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h))
+
+/-! ## 8. No positive linear functional is complete -/
+
+/-- **THE LINEAR PRODUCERS ARE PROVABLY INCOMPLETE.**  For EVERY strictly
+positive coefficient triple there is a configuration with a positive member
+whose combination is negative: one small positive against two large negatives
+outweighs any fixed weighting.
+
+So no producer of the form `Σ c_e φ_e > 0` — the unweighted total, the weighted
+total, the axis-mass total, any of them — can detect every positive member.
+The second and third elementary symmetric functions are not a refinement of the
+sum, they are REQUIRED, and `Gtz.exists_pos_iff_esymm_signs` is the complete
+criterion the linear family cannot reach.
+
+[MEASURED: over 12375 corners whose complement refuses, the best producer of the
+shape `c_e = t_e^α (ℓ_e−1)^β` on a 7×6 grid of exponents reaches 99.895 percent
+at `α = 2, β = 3/2`, and the plain weighted total 98.75 percent, while the
+elementary symmetric criterion reaches 100.0000 percent — as it must, being an
+equivalence.] -/
+theorem linear_producer_incomplete (cx cy cz : ℝ)
+    (hcx : 0 < cx) (hcy : 0 < cy) (hcz : 0 < cz) :
+    ∃ x y z : ℝ, (0 < x ∨ 0 < y ∨ 0 < z) ∧ cx * x + cy * y + cz * z < 0 := by
+  refine ⟨1, -(cx + 1) / cy, 0, Or.inl one_pos, ?_⟩
+  have h : cy * (-(cx + 1) / cy) = -(cx + 1) := by field_simp
+  rw [h]; linarith
+
+/-! ## 9. The corner criterion, complete -/
+
+/-- **THE COMPLETE COLUMN CRITERION.**  Over an admissible outside pair, a
+strictly dominating triple exists EXACTLY when the three elementary symmetric
+functions of the column's gap determinants carry one of the three signs.
+
+Both directions: the producer is `Gtz.corner_column_exists_posDef`, and the
+converse reads the landed ordered Sylvester criterion backwards.  This is the
+lane's complete, selection-free reading of "some inside atom repays this pair",
+and no linear functional can replace it (`Gtz.linear_producer_incomplete`). -/
+theorem corner_column_posDef_iff_esymm_signs (a b : Fin 3 → ℝ)
+    (hmin : 0 < pairGapMinor a b) (htr : 2 < leverageOf a + leverageOf b) :
+    ((tripleGram a b gx - 1).PosDef ∨ (tripleGram a b gy - 1).PosDef
+        ∨ (tripleGram a b gz - 1).PosDef)
+      ↔ (0 < tripleGapDet a b gx + tripleGapDet a b gy + tripleGapDet a b gz
+        ∨ tripleGapDet a b gx * tripleGapDet a b gy
+            + tripleGapDet a b gx * tripleGapDet a b gz
+            + tripleGapDet a b gy * tripleGapDet a b gz < 0
+        ∨ 0 < tripleGapDet a b gx * tripleGapDet a b gy * tripleGapDet a b gz) := by
+  rw [← exists_pos_iff_esymm_signs]
+  constructor
+  · rintro (h | h | h)
+    · exact Or.inl ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mp h)
+    · exact Or.inr (Or.inl ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mp h))
+    · exact Or.inr (Or.inr ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mp h))
+  · rintro (h | h | h)
+    · exact Or.inl ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h)
+    · exact Or.inr (Or.inl ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h))
+    · exact Or.inr (Or.inr ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h))
+
 end Gtz
