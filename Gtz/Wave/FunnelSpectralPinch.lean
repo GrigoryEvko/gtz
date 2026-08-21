@@ -121,14 +121,28 @@ and the payment agree to `2.2e-11` over 300000 draws.  The eigenvalue form of th
 window implies the producer's payment hypothesis at 16197 of 300000 draws with
 ZERO failures, and the root-free window agrees with it at every draw.
 
+WHERE IT STOPS.  The window fires at an atom `p` exactly when
+`n_p * lam1 < e2 * (R_p - 1) - R_p * tau`, and everything on the right is a
+quantity of the DOMINATOR.  Nothing in the landed floors bounds the outside
+reader's plane norm `n_p = leverage_p - R_p` from ABOVE.  The only available
+bound is Parseval's `t_p * leverage_p ≤ 1`, so `n_p ≤ 1 / t_p`, which diverges
+as the reader's weight goes to zero.  A SUCCESSOR MUST BOUND `n_p`, the outside
+reader's squared component orthogonal to the unit atom, by a quantity of the
+dominator.
+
 THE WINDOW IS NOT VACUOUS, AND IT IS EXACTLY WEIGHT-BOUND.  Over 251581 funnel
 `(6,3)` designs built by exact rank-two closure the window fires at 35.5 percent
 of them.  But minimizing the best triple's `lambda_min` SUBJECT TO the window
 never firing gives `0.345, 0.103, 0.0527, 0.0176, 0.0083` at smallest-weight
 floors `0.10, 0.05, 0.02, 0.01, 0.003`: the residual is LINEAR in the smallest
-weight, near `2.6` times it.  This is the campaign's universal obstruction, not
-a defect of the law.  The `(5,3)` diamond has leverages `2, 13/4, 13/4, 13/4,
-13/4` and no unit atom, so it is an ALL-HEAVY tie and does not test this branch.]
+weight, near `2.6` times it, with no sign of a floor.  This is the campaign's
+universal obstruction, not a defect of the law.  At weight floor `0.01` the
+window misses by a factor of only `1.31` (`n = 78.95` against a threshold of
+`60.11` at an atom with `R = 11.27`); at floor `0.0025` it misses by `3945`.  The `(5,3)` diamond has leverages `2, 13/4, 13/4, 13/4,
+13/4` and no unit atom, so it is an ALL-HEAVY tie and does not test this
+branch.  `icosaDesign`, `kFourDesign` and `coordinateDiagonalDesign` all have
+every leverage `3`, so none is a funnel: this branch has NO named symmetric
+fixture in the corpus.]
 -/
 import Gtz.Wave.KernelSlideDropLaw
 

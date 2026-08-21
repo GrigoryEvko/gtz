@@ -1,0 +1,143 @@
+NOTES: the funnel spectral pinch, and where the funnel branch stops
+Module: Gtz/Wave/FunnelSpectralPinch.lean   Commits: 0197598, 9285e26
+
+1. WHAT IS NEW
+
+The gap of a funnel dominator is positive semidefinite AND singular, so its
+adjugate is rank one:
+
+    adj G = e2 * w wT                      (adjugate_eq_smul_atomMatrix_of_unit_null)
+
+The corpus carried only the QUADRATIC FORM of this (adjugate_reading_of_unit_null).
+Polarization (eq_of_quadForm_eq) upgrades it to a matrix identity, and with the
+hypothesis-free adjugate polynomial adj M = M^2 - (tr M) M + e2 M * 1 it gives
+
+    G * G = tau * G - e2 * (1 - w wT)      (mul_self_of_unit_null)
+
+which is two-by-two Cayley-Hamilton on the plane w-perp, carried on a
+three-by-three matrix.  No eigenvalue, no square root, no spectral theorem.
+
+Consequences landed:
+  * (G + w wT)^-1 = (tau*1 - G + (e2 - tau)*w wT)/e2      (inv_kernelShift_eq)
+    The whole KernelSlideDropLaw layer carried `IsUnit (kernelShift gap kern).det`
+    as a hypothesis.  It is now a THEOREM from e2 != 0 (isUnit_det_kernelShift).
+  * trace (G + w wT)^-1 = 1 + tau/e2                      (trace_inv_kernelShift)
+  * N * G = 1 - w wT                                      (kernelShiftInverse_mul_self)
+  * sum over a triple of the shifted forms = 3 + tau/e2   (triple_inverseForm_sum_of_unit_null)
+  * 4*e2 <= tau^2                                         (four_mul_secondInvariant_le_trace_sq_of_unit_null)
+
+2. THE TWO ROUTES ARE ONE LAW  (readingCap_sub_eq_payment_sub, readingCap_iff_payment)
+
+  e2 * (cap deficit) = (payment deficit),  exactly.
+
+So Gtz.reading_cap_of_isTie (three drop refusals, KernelSlideDropLaw) and
+Gtz.isTie_funnel_payment (four-set determinant, FunnelFourSetPayment) carry
+IDENTICAL information.  Do not spend effort on both.  Measured: max discrepancy
+2.2e-11 over 300000 draws.
+
+Because the cap route needs no unit atom, the payment law GENERALIZES off the
+funnel: payment_law_of_isTie holds at every corank-one weak dominator of every
+boundary system, at any size m.
+
+3. THE PINCH, AND THE ELIMINATION
+
+For h orthogonal to the kernel, with n = h.h and s = h.(G h):
+
+    ||G h||^2 = tau*s - e2*n     and    s^2 <= n*||G h||^2
+  =>  s^2 - tau*n*s + e2*n^2 <= 0                      (pinch_of_kernelOrth)
+
+One polynomial inequality carrying the whole statement "s/n lies between the two
+nonzero eigenvalues".  At an atom v the slid probe h = v - (v.w) w has
+n = leverage - reading^2 and the SAME gap reading as v (atom_pinch).
+
+Write M = leverage*tau - e2*(reading^2 - 1), the payment ceiling.  The producer
+fires exactly when s > M.  The brief's two eliminants are then not new
+polynomials:
+
+    K = tau*n - 2*M          Q = M^2 - tau*n*M + e2*n^2 = pinchPoly at M.
+
+CORRECTION TO THE BRIEF.  The brief's eigenvalue shape "e2*(r^2-1) > lam2*l +
+lam1*r^2" has lam1 and lam2 interchanged.  The correct firing condition is
+
+    leverage*lam1 + reading^2*lam2 < e2*(reading^2 - 1) ,
+
+with lam1 the LARGER root multiplying the leverage.  Equivalently
+
+    n*lam1 < e2*(reading^2 - 1) - reading^2*tau .
+
+4. WHAT THE WINDOW NEEDS  (trace_lt_secondInvariant_of_window, one_lt_reading_of_window)
+
+An open window forces
+
+    tau < e2      and      e2 < reading^2 * (e2 - tau) ,   hence reading^2 > 1 .
+
+Reading tau/e2 = 1/lam1 + 1/lam2, the first says 1/lam1 + 1/lam2 < 1.  The
+second pins the window to atoms whose squared reading exceeds one, which is
+exactly where Gtz.exists_outside_reading_sq_gt_one puts an atom of a funnel.
+Measured: 1479 open windows in 40000 draws, zero violations of the three
+conditions.
+
+5. WHERE IT STOPS: THE PLANE NORM OF THE OUTSIDE READER
+
+The window fires at atom p exactly when
+
+    n_p * lam1 < e2*(R_p - 1) - R_p*tau ,     n_p = leverage_p - R_p .
+
+Everything on the right is a quantity of the DOMINATOR plus the reading.  Nothing
+in the landed floors bounds n_p from ABOVE.  The only available bound is
+Parseval's t_p * leverage_p <= 1, so n_p <= 1/t_p, which DIVERGES as the reader's
+weight goes to zero.  A successor must bound the outside reader's squared
+component ORTHOGONAL to the unit atom by a quantity of the dominator.
+
+6. MEASUREMENTS  (scratchpad/funnelpinch/)
+
+Construction: exact rank-two closure.  g0 = e3 the unit atom; T = {1,2,3} with
+plane parts p1,p2,p3 free and the z-components the unit kernel vector of
+[p1 p2 p3], so S_T e3 = e3 by construction; t0 = det B / cof33(B) makes the
+residual A = I - t0 e3e3T - sum_T t_c g_c g_cT singular; A closes on the two
+outside atoms.  Every design built is an exact (6,3) funnel: sum t = 1,
+leverage_a = 1, S_T g_a = g_a, gap PSD.
+
+  * 251581 funnel designs.  The window fires at 35.5 percent.  74.9 percent have
+    e2 >= tau, so the first window condition alone is not the obstruction.
+  * MINIMIZE the best triple's lambda_min SUBJECT TO the window never firing,
+    against a floor w on the smallest weight:
+
+      w        0.10   0.08   0.05   0.04   0.02   0.01   0.005  0.003  0.0025
+      best     0.345  0.243  0.103  0.083  0.052  0.018  0.016  0.008  0.009
+      ratio    3.45   3.03   2.06   2.08   2.62   1.76   3.16   2.77   3.59
+
+    The residual is LINEAR in the smallest weight, near 2.6 times it, with no
+    sign of a floor.  THIS IS THE CAMPAIGN'S UNIVERSAL OBSTRUCTION, and this
+    route hits it in its sharpest form: the required bound on n_p is a constant
+    of the dominator while the available bound is 1/t_p.
+
+    Diagnostic at the constrained optima (atom with reading above one):
+      w=0.01   : R=11.27, n=78.95, window needs n < 60.11    (short by 1.31x)
+      w=0.0025 : R=2.711, n=388.5, window needs n < 0.0985   (short by 3945x)
+    So the window MISSES BY A FACTOR OF 1.31 at weight floor 0.01.  It is close.
+
+7. FIXTURES
+
+  * The (5,3) diamond has leverages 2, 13/4, 13/4, 13/4, 13/4 and NO unit atom.
+    It is an ALL-HEAVY tie (eight triples with lambda_min exactly 0, none
+    strict).  It does NOT test the funnel branch.  The (5,3) legality test is
+    therefore silent here, and a successor must NOT read the diamond as
+    protection for this branch.
+  * icosaDesign, kFourDesign and coordinateDiagonalDesign all have every
+    leverage 3.  None is a funnel, and all three dominate.  The funnel branch
+    has NO named symmetric fixture in the corpus.
+
+8. IDENTITY CALIBRATION (all measured before any Lean was written)
+
+  plane Cayley-Hamilton, matrix          4.3e-14
+  adj G = e2 w wT                        4.3e-14
+  (G + w wT)^-1 closed form              6.9e-11
+  N * G = 1 - w wT                       1.5e-11
+  triple shifted-form sum = 3 + tau/e2   5.5e-12
+  ||Gh||^2 = tau s - e2 n                3.4e-13
+  pinch s^2 - tau n s + e2 n^2 <= 0      0 violations, 200000 draws
+  cap deficit = payment deficit / e2     2.2e-11, 300000 draws
+  eigen window implies the producer      16197 firings, 0 failures, 300000 draws
+  root-free window = eigen window        0 disagreements, 300000 draws
+  4 e2 <= tau^2                          0 violations, 40000 draws
