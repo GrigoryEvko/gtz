@@ -1,0 +1,188 @@
+FORK 63 -- G5, THE TIE VARIETY.  Self-contained.  Scripts: scratchpad/f63/tv{1..6}
+All numbers are FLOAT measurements at named fixtures.  Nothing here is a proof.
+
+=====================================================================
+0. SCOPE CORRECTION -- I DID NOT RUN THE DECOMPOSITION I WAS ASKED FOR
+=====================================================================
+The directive named the object  V_C = {Parseval, sum t = 1, det(S_C - I) = 0}
+and asked for its numerical irreducible decomposition.  Step 1 showed that is
+the WRONG OBJECT, so I did not spend the budget on it.  Reason:
+
+  Phi(design) := max over the 20 triples of lam_min(S_T - I).
+  A tie is exactly {Phi = 0}.  GtzWeighted (m,3) asserts Phi >= 0 EVERYWHERE.
+  So over R the tie locus is the MINIMUM LOCUS of a nonnegative function,
+  NOT a generic level set.
+
+V_C is a hypersurface (codim 1) in design moduli.  The tie locus is codim 6 at
+(5,3) and codim 9 at (6,3) -- measured below.  Decomposing V_C would have
+decomposed an object that contains the tie locus in codimension 5 resp. 8.
+The tie locus is also SEMIALGEBRAIC (a min-locus), which numerical irreducible
+decomposition does not address.  The right first-order object is the ACTIVE SET
+and its Gordan/Fritz-John certificate, which is what I measured instead.
+
+=====================================================================
+1. DIMENSIONS (tv1, tv2, tv3)
+=====================================================================
+design moduli dim = 4m - 10   [ (g,t): 4m ; Parseval 6 ; sum t 1 ; O(3) gauge 3 ]
+    (5,3): 10        (6,3): 14      -- both CONFIRMED by SVD rank, gauge verified
+                                       in the kernel to 2e-15.
+
+V_C local dim at both diamonds = 4m - 11  (9 and 13), and both fixtures are
+SMOOTH points of V_C (Jacobian rank 11 of 11).  Not the tie locus.
+
+TIE TANGENT (= ker of the active gradients, valid because the Gordan multiplier
+is fully supported, see sec. 2):
+    (5,3) primitive diamond : moduli 10, active  8, grad rank 6, TIE TANGENT 4
+    (6,3) split diamond     : moduli 14, active 12, grad rank 9, TIE TANGENT 5
+So the tie locus is codim 6 at (5,3) and codim 9 at (6,3).  It is RIGID.
+
+Gradient of the active constraint (lam_min simple, verified at every active
+triple): d lam_T / d g_c = 2 (g_c . w_T) w_T for c in T, and ZERO in the
+weights -- S_T is weight-free.  The weights enter only through Parseval.
+
+=====================================================================
+2. A REAL TIE IS A FIRST-ORDER LOCAL MINIMUM.  SATURATION CONFIRMED.
+=====================================================================
+Gordan: no strict descent direction exists  <=>  0 lies in the convex hull of
+the active gradients.  Measured at both diamonds: GORDAN HOLDS, no strict
+descent.  This is the first-order shadow of GtzWeighted, and it explains the
+sibling lane's bracket-mass Farkas covector -- that covector IS this multiplier.
+
+*** TOOL WARNING, MY OWN ERROR, CAUGHT BY RE-TEST ***
+A feasibility LP returns a VERTEX of the multiplier polytope, which is
+artificially sparse.  My first run reported support 6 of 8 and 8 of 12 and I
+nearly banked "NOT saturated".  The multiplier polytope has dimension
+(#active - rank) = 2 at (5,3) and 3 at (6,3), so vertices are sparse by
+construction.  Solving max eps s.t. B^T mu = 0, sum mu = 1, mu >= eps gives
+    (5,3): eps* = 0.0667 > 0     (6,3): eps* = 0.0333 > 0
+=> a FULLY SUPPORTED (saturated) certificate exists at both.  ALWAYS use the
+max-min interior multiplier, never a feasibility vertex, to test support.
+Note the sibling's bracket masses (0.1 x4, 0.15 x4) and my max-min multiplier
+(1/15 x4, 11/60 x4) are DIFFERENT POINTS OF THE SAME 2-DIM POLYTOPE.  Both are
+valid Gordan certificates; neither contradicts the other.
+
+=====================================================================
+3. THE HINGE IS TRUE TO FIRST ORDER AT EVERY KNOWN (6,3) TIE  (tv4, tv6)
+=====================================================================
+At the split diamond the tie tangent (dim 5) is EXACTLY contained in the
+parallel-pair tangent: all three components of d(g_1 x g_6) vanish on it,
+max 3.2e-16, all singular values 0.
+
+CONTROL -- the containment is specific, not a degeneracy:
+    pair (1,6)  wedge 0.000   max |d wedge| on tie tangent = 0.0e+00  FROZEN
+    every other pair          max |d wedge| = 2.7 ... 11.0            FREE
+Only the parallel pair is frozen.
+
+FAMILY (split diamond atom s into two parallel copies, weight ratio alpha;
+15 designs, s=1..5, alpha=0.5/0.3/0.15, Parseval verified < 1e-10 each):
+    ALL 15: active 12 or 13, grad rank 9, TIE TANGENT 5, eps* > 0 (saturated),
+            and EXACTLY ONE frozen wedge -- always exactly the parallel pair.
+The invariants are constant across the whole family.
+
+=====================================================================
+3b. BEYOND FIRST ORDER: NEWTON PROJECTION ONTO THE TIE LOCUS  (tv7b)
+=====================================================================
+Step from the split diamond along a random tie-tangent direction, then project
+back onto {Parseval, sum t = 1, all 12 active lam_T = 0} by trust-region least
+squares.  F CONTAINS NO PARALLELISM CONSTRAINT.  Measured wedge of the pair
+(1,6) at the projected point, against a design whose other wedges are 5 to 10:
+
+    moved 0.0009  |F| 4.3e-07   wedge(1,6) = 1.6e-29
+    moved 0.0079  |F| 3.6e-05   wedge(1,6) = 2.2e-22
+    moved 0.0605  |F| 3.8e-04   wedge(1,6) = 1.8e-16
+    moved 0.1349  |F| 5.8e-03   wedge(1,6) = 1.3e-12
+    moved 0.3234  |F| 4.2e-02   wedge(1,6) = 6.0e-11
+
+The wedge is 9+ orders below the solver's OWN residual at every step, so it is
+not second-order nonzero either.  Honest caveat: trf does not reach machine
+zero on the two largest steps (|F| 5.8e-3, 4.2e-2), so those points are only
+approximately on the tie locus; the two smallest steps are effectively on it.
+Reading: near the split diamond THE TIE LOCUS IS THE PARALLEL LOCUS, not merely
+tangent to it.
+
+*** TOOL FAILURE, CAUGHT AND REPAIRED (tv7 -> tv7b) ***
+Plain Gauss-Newton with np.linalg.pinv DIVERGED to |F| ~ 1e61.  Cause is
+structural, not a coding slip: the 12 active constraints have RANK 9, so the
+19x24 Jacobian has rank 16 of 19 and the pseudo-inverse step is unbounded.
+scipy 'lm' also refuses (residuals < variables); 'trf' is the right solver.
+A residual of 1e61 is never mathematics -- suspect the tool.
+
+=====================================================================
+4. THE (5,3) vs (6,3) SEPARATOR, IN TANGENT TERMS
+=====================================================================
+    (5,3) primitive diamond [hinge FALSE]: 0 of 10 wedges frozen.
+          min wedge 5.0, smallest |d wedge| over all pairs = 2.79.
+    (6,3) split family      [hinge TRUE ]: exactly 1 of 15 wedges frozen,
+          and it is the parallel pair, in all 15 designs.
+This is a clean size-six separator in first-order data.  The K0 lane has been
+hunting an ingredient that separates the fixtures; "a frozen wedge in the tie
+tangent" separates them, and the frozen wedge IS the hinge conclusion.
+CAVEAT: the (6,3) family is all splits of ONE base design.  "Generic among
+(6,3) ties" is NOT established -- only "constant across the known family".
+
+=====================================================================
+5. THE COMPLEX TIE IS NOT THE SAME KIND OF OBJECT  (tv4)
+=====================================================================
+Fixture: scratchpad/ctie_g.npy + ctie_t.npy.  Hermitian Parseval residual
+1.0e-14, sum t = 1.  (The .pkl is a different normalisation -- do not use it.)
+Hermitian design moduli: 7m - 19; U(3) gauge dim 9 verified in the kernel to
+1.05e-14.  Measured moduli tangent = 23 (real dim).
+
+ACTIVE SET = 1 triple only, and it has CORANK 2 (gap eigenvalues 0, 0, 3.764).
+lam_min is a DOUBLE eigenvalue there, so it is not differentiable; the correct
+first-order object is the block map  v -> W* dS_C W  into Herm(2) = R^4.
+MEASURED: that map has rank 4 -- ONTO.  A strict descent direction exists.
+
+*** THE COMPLEX TIE IS A REGULAR POINT OF THE LEVEL SET {Phi = 0}, NOT A
+    CRITICAL POINT. ***
+That is exactly why the complex problem reaches Phi = -4.76e-3 while the real
+slice floors at +1.485e-3: over C, Phi has no sign, so {Phi=0} is an ordinary
+codim-1 level set of real dimension 23 - 1 = 22.  Over R, Phi >= 0, so the tie
+locus is a min-locus of dimension 5.
+
+    THE REALNESS GAP AS ONE NUMBER:   22   vs   5.
+
+This is the dimension-count form of the sibling lane's Schur-Horn result
+(gauge O(3) over R vs U(3) over C).  Real and complex ties are not two points
+of one variety; they are critical vs regular points of two different problems.
+
+=====================================================================
+6. THE CORNER ARM HAS A FIRST-ORDER REFORMULATION  (tv5)
+=====================================================================
+At a corank-2 corner the descent condition is  W^T dS_C W  NEGATIVE DEFINITE
+in Sym(2) = R^3 (real case; Herm(2) = R^4 in the complex case).
+MEASURED over 297 random real corank-2 corners (Parseval-exact construction:
+inside = M^{1/2}Q with M = I + lam u u^T, outside whitened from I - N_C):
+    rank of v -> W^T dS_C W  is 3 (ONTO) in ALL 297,
+    smallest singular value: min 1.18, median 1.41  -- nowhere near degenerate.
+    0 of 297 corners were themselves ties (Phi > 0 always) -- consistent with
+    the corner arm's emptiness claim.
+
+READING.  A corank-1 tie must block a ONE-dimensional descent (a single
+lam_min).  A corank-2 corner tie must block a THREE-dimensional descent cone.
+That is a structural reason corners should be harder to sustain than corank-1
+ties, i.e. WHY the corner stratum ought to be empty.
+The sharp criterion is the semidefinite (Fritz John) Gordan condition: a corner
+tie needs Lambda >= 0 in Sym(2), Lambda nonzero, and mu_T >= 0 with
+    <Lambda, W^T dS_C(v) W> + sum_T mu_T (grad lam_T . v) = 0  for all v.
+NOT PROVED: random corners are not ties, so this does not by itself close the
+corner arm.  A corner tie would carry OTHER active triples (mean 2.1, max 5
+near-active in the sample) which could block the 3-dim descent.  What is
+established is the SHAPE of the obstruction, not its impossibility.
+
+=====================================================================
+7. WHAT THIS MEANS FOR THE PLAN
+=====================================================================
+(a) The stratification is NOT shown redundant.  I did not establish that the
+    corner / K1 / K2 strata lie in the closure of a K0 component; the min-locus
+    structure makes that question different from the one posed.
+(b) The hinge holds at every known (6,3) tie, with the parallel wedge frozen
+    to machine zero and every other wedge free -- verified BEYOND first order by
+    Newton projection (sec. 3b), out to deformations of size 0.32.  Strong positive
+    evidence, and a candidate PROOF STRATEGY: show that at any (6,3) tie the
+    active gradients' common kernel forces some wedge differential to vanish.
+(c) The corner arm reduces to blocking a 3-dimensional descent cone; the
+    corank-1 arm to blocking a 1-dimensional one.  That asymmetry is new.
+(d) Realness is a dimension count: 22 (complex, regular) vs 5 (real, critical).
+(e) Saturation (the sibling's open question) is CONFIRMED at both diamonds via
+    the max-min multiplier, with the polytope dimensions 2 and 3.
