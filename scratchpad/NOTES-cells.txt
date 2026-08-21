@@ -316,3 +316,105 @@ where S_i = det(A_x - g_i g_i').  Measured EMPTY at 18010/18010.  This is the
 statement to certify in the Cayley chart -- NOT F55-5's.
 NOT DONE: the Handelman run itself, and cell B.  The chart (F59-1) is built and
 is the gating tool both need.
+
+=======================================================================
+FORK 67 (cells lane; the FOUR-SET LAW; cell H under a weight floor)
+=======================================================================
+
+F67-0.  CALIBRATION AT THE (5,3) DIAMOND -- done first, as the law requires
+---------------------------------------------------------------------
+scratchpad/cells/f67base.jl rebuilds the diamond tie from K4-e, conductance
+(2,3,3,3,3), uniform weight 1/5, and reproduces the campaign's known values:
+    Parseval residual        1.1e-15
+    leverages                [2.0, 3.25, 3.25, 3.25, 3.25]
+    pair minors {1,2}/{2,3}/{2,4}   0.75 / 4.5 / 2.0
+    weak dominators          8 / 10
+    adjugate law at {1,2,3}  residual 6.3e-15,
+        readings^2 = (0.75, 0.125, 0.125) = q/e2 = (4.5,0.75,0.75)/6
+So the harness agrees with the substrate before any new number is quoted.
+
+F67-1.  *** THE FOUR-SET LAW *** -- new, landed
+---------------------------------------------------------------------
+For a symmetric 3x3 form G with G*w = 0 and |w| = 1, and EVERY vector v:
+
+        det(G + v v')  =  e2(G) * (v . w)^2
+
+Measured at 20000 independently built corank-one weak dominators, three
+arbitrary extra vectors each:   max rel residual 5.3e-14 .
+At the three MEMBERS it returns the pair minor of the other two: 3.3e-14.
+Landed as Gtz/Wave/NullProbeFourSetLaw.lean (24 pins, standard axioms).
+Carrier: adj(G) = e2(G) * w w' , read as a quadratic form, six scalar
+linear_combination certificates (verified in sympy, f67verifycerts.py).
+
+WHY IT MATTERS.  The campaign already had the WEIGHTED ledger
+    sum_c t_c det(N + a_c a_c') = det N + e2(N)
+    (Gtz.sum_weight_mul_det_add_atomMatrix_fin_three)
+whose own docstring says reading a sign off it "has failed six times and will
+fail a seventh" because it is an AVERAGE.  At a weak dominator the four-set law
+gives every summand EXACTLY -- each is e2 * (a_c.w)^2 >= 0 -- so the average is
+a sum of known nonnegative terms and the aggregation barrier does not apply.
+Consequences, all landed:
+  * every four-set determinant through a weak dominator is NONNEGATIVE;
+  * it vanishes exactly when the added atom is blind to the probe;
+  * a CORNER has e2 = 0, so EVERY four-set determinant through it vanishes --
+    the corner collapse, with no corner normal form and no axis;
+  * one NONZERO four-set determinant certifies corank one, so a four-set
+    determinant SEPARATES the two arms and is a polynomial in the atoms.
+
+F67-2.  L1 WAS ALREADY LANDED -- the grep rule paid
+---------------------------------------------------------------------
+I was about to re-derive the weighted UPDATE ledger as a "twin" of the landed
+downdate law.  It is already in the substrate as
+Gtz.sum_weight_mul_det_add_atomMatrix_fin_three (ConservationCalculus.lean:351).
+Not re-derived.
+
+F67-3.  THE TWO-STAR UNION IS A THIN TAIL -- ninth of the species
+---------------------------------------------------------------------
+Target (F59-5): at a cell-H inhabitant at least one of the two stars fires.
+Normalised objective  max( max_i tau_i(A_y), max_i tau_i(A_x) )  with
+tau_i = 1 - g_i' A^{-1} g_i , sign(tau_i) = sign(det(A - g_i g_i')) at A > 0.
+    SAMPLING (2 x 400000 draws, two different generator widths):
+        union fires        100.0000 %  on both  (3405/3405, 1421/1421)
+        y-residual         366 and 97 ; of those A_x > 0 : 366 and 97
+        worst sampled margin   3.06  and  4.73
+    DESCENT (NelderMead, 400 starts x 3 scales, penalty on the cell):
+        best margin  6.06e-4    <- three and a half orders below sampling
+    MULTI-STAGE POLISH (500 starts, 6 rounds each):
+        best margin  5.28e-6
+So the sampled floor evaporates, exactly like the other eight.
+
+F67-4.  THE ESCAPE IS WEIGHT COLLAPSE, NOT CORNER SCALE
+---------------------------------------------------------------------
+At the polished optimum (margin 5.28e-6):
+    weights    = [0.0, 0.99808093, 0.0, 4.0e-8, 0.0, 0.00191903]
+    leverages  = [2.424914, 1.001559, 1.268969, 1.62e7, 5.74e9, 422.31355]
+    mineig A_x = 0.007649   A_y = 0.997221   A_z = -7.11e-6
+    lam        = 1.6954
+Four of the six weights have gone to ZERO and two leverages blow to 5.7e9.
+A zero weight is NOT a design (WeightedDesign.weight_pos), so the infimum is
+attained OUTSIDE the domain -- the fourth artifact species.
+
+F67-5.  *** CELL H IS EMPTY AT A WEIGHT FLOOR *** -- the decisive measurement
+---------------------------------------------------------------------
+Same descent, with a floor tau on every weight:
+    tau = 0        best margin  2.90e-3   (minw = 0, maxlev 6.7e13 -- degenerate)
+    tau = 1e-6     best margin  2.81e-5   (lam 362)
+    tau = 1e-4     best margin  3.94e-4
+    tau = 1e-3     best margin  1.75e-3
+    tau = 1e-2     NO INHABITANT AT ALL   (cell H is EMPTY)
+    tau = 3e-2     NO INHABITANT AT ALL
+So the margin is roughly 2*tau, LINEAR in the floor, and cell H itself does not
+survive a floor of one percent.  A certificate for the two-star union therefore
+CANNOT be strict: it must consume the weight positivity, in the same
+"sum t <= 1 - tau" shape the E1 lane reached independently.
+
+F67-6.  THE AGGREGATE ROUTE IS DEAD FOR THE TWO STARS
+---------------------------------------------------------------------
+sum(T) + sum(S) > 0 holds at only 43.4 % (gen 1) and 15.8 % (gen 2) of cell-H
+inhabitants, and its minimum over samples is -4.40e20.  Do not build a
+certificate on the summed two-star total.  (The per-star totals are the landed
+Gtz.sum_three_downdate_det; the union needs the MAX, not the SUM.)
+
+NOT DONE: the Handelman run itself (the domain is not a polytope in the Cayley
+chart because the OUTSIDE atoms still need a matrix square root -- the chart is
+rational for the inside atoms only); cell B.

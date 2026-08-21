@@ -1377,6 +1377,9 @@ import Gtz.Wave.CornerDescentRank
 import Gtz.Wave.BranchTwoTrueDeterminants
 import Gtz.Wave.NullProbeAdjugateLaw
 import Gtz.Wave.MirrorPairMinorTrigger
+import Gtz.Wave.FunnelSecondInvariantFloor
+import Gtz.Wave.FunnelSwapClosure
+import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
@@ -37937,3 +37940,58 @@ run_cmd do
 #print axioms Gtz.gatewayGenW1_pos_of_not_mem
 #print axioms Gtz.gatewayGenW2_zero_of_mem
 #print axioms Gtz.gateway_no_handelman_certificate
+
+-- Gtz/Wave/NullProbeFourSetLaw.lean -- the four-set law: at a triple whose gap
+-- kills a unit probe, EVERY rank-one update determinant is the second invariant
+-- times one squared reading, so the landed weighted update ledger is a sum of
+-- individually determined terms and its sign is readable one term at a time
+#print axioms Gtz.adjugateScalar_diag_first
+#print axioms Gtz.adjugateScalar_diag_second
+#print axioms Gtz.adjugateScalar_diag_third
+#print axioms Gtz.adjugateScalar_offDiag_first
+#print axioms Gtz.adjugateScalar_offDiag_second
+#print axioms Gtz.adjugateScalar_offDiag_third
+#print axioms Gtz.adjugateScalar_reading
+#print axioms Gtz.null_row_of_mulVec_eq_zero
+#print axioms Gtz.det_eq_zero_of_unit_null
+#print axioms Gtz.adjugate_reading_of_unit_null
+#print axioms Gtz.det_add_atomMatrix_of_unit_null
+#print axioms Gtz.det_add_atomMatrix_nonneg_of_unit_null
+#print axioms Gtz.secondInvariant_ne_zero_of_det_add_ne_zero
+#print axioms Gtz.fourSet_gapDet_of_unit_null
+#print axioms Gtz.fourSet_gapDet_nonneg_of_unit_null
+#print axioms Gtz.fourSet_gapDet_eq_zero_of_secondInvariant_eq_zero
+#print axioms Gtz.secondInvariant_ne_zero_of_fourSet_gapDet_ne_zero
+#print axioms Gtz.weighted_fourSet_gapDet_total
+#print axioms Gtz.exists_reading_ne_zero_of_unit_probe
+#print axioms Gtz.exists_det_add_atomMatrix_pos_of_secondInvariant_pos
+#print axioms Gtz.secondInvariantOfThree_atomTriple_eq_pairMinorTotal
+#print axioms Gtz.atomTriple_gap_transpose
+#print axioms Gtz.det_add_atomMatrix_eq_pairMinorTotal_mul_reading_sq
+#print axioms Gtz.det_add_own_atomMatrix_eq_pairGapMinor
+
+-- Gtz/Wave/FunnelSecondInvariantFloor.lean -- the funnel's dominator is never a
+-- corner: the deflated gap bound gives its pair minor total the sharp floor
+-- (t_a/(1-t_a))^2, which discharges the second-invariant hypothesis of the
+-- landed pair-minor trigger
+#print axioms Gtz.secondInvariantOfThree_add
+#print axioms Gtz.secondInvariantOfThree_smul
+#print axioms Gtz.secondInvariantOfThree_one_sub_atomMatrix
+#print axioms Gtz.trace_one_sub_atomMatrix
+#print axioms Gtz.trace_one_sub_atomMatrix_mul
+#print axioms Gtz.secondInvariantOfThree_nonneg_of_posSemidef
+#print axioms Gtz.trace_nonneg_of_posSemidef
+#print axioms Gtz.secondInvariantOfThree_gap_eq_pairMinorTotal
+#print axioms Gtz.pairMinorTotal_floor_of_deflatedGapBound
+#print axioms Gtz.pairMinorTotal_pos_of_deflatedGapBound
+#print axioms Gtz.unitAtom_parallel_of_two_pairMinors_zero_of_bound
+#print axioms Gtz.trace_floor_of_deflatedGapBound
+
+-- Gtz/Wave/FunnelSwapClosure.lean -- a funnel refuses a second null-sharing swap
+-- in every direction: onto the unit atom it is a parallel pair outright, onto
+-- the two remaining labels it makes three atoms blind and overspends the
+-- Parseval reading budget
+#print axioms Gtz.unitAtom_three_blind_absurd
+#print axioms Gtz.unitAtom_parallel_of_swap_to_atom
+#print axioms Gtz.swapDegree_le_one_card_le_three
+#print axioms Gtz.unitAtom_second_swap_absurd

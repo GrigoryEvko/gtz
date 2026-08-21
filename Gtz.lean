@@ -6492,6 +6492,9 @@ import Gtz.Wave.CornerDescentRank
 import Gtz.Wave.BranchTwoTrueDeterminants
 import Gtz.Wave.NullProbeAdjugateLaw
 import Gtz.Wave.MirrorPairMinorTrigger
+import Gtz.Wave.FunnelSecondInvariantFloor
+import Gtz.Wave.FunnelSwapClosure
+import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
