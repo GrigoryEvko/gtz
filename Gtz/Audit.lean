@@ -1475,6 +1475,7 @@ import Gtz.Wave.SharpFiveSetCriterion
 import Gtz.Wave.SharpShareCoAtom
 import Gtz.Wave.ChartQuadraticCore
 import Gtz.Wave.SharpDesignInvolution
+import Gtz.Wave.ChartGapSharpDuality
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39615,3 +39616,48 @@ run_cmd do
 #print axioms Gtz.sixThree_volume_generating
 #print axioms Gtz.sixThree_volume_generating_pos
 #print axioms Gtz.sixThree_volume_generating_one
+
+-- Gtz/Wave/ChartGapSharpDuality.lean -- the chart gap is invertible and the sharp dual is
+--   `-N M⁻¹ N`.  The Rayleigh identity `x ⬝ M x = |P x|² - Σ t_c x_c²` collapses at a null
+--   vector to `Σ t_c(1 - t_c) x_c² = 0`, so the pair mass is the whole obstruction to
+--   invertibility.  One Woodbury product gives `M⁻¹ = W G⁻¹ Wᵀ - diag(1/t)` and its
+--   diagonal is the co-atom reading, `t_c (M⁻¹)_cc = ρ_c - 1`.  Three strata become sign
+--   conditions: all-heavy is `diag M > 0`, every co-atom set strictly dominating is
+--   `diag M⁻¹ < 0`, and at `(k+1, k)` an exact tie is `diag M⁻¹ = 0` -- the equality
+--   boundary of the second, agreeing with `Gtz.isTie_iff_leverage_law`.  Conjugating the
+--   inverse by `diag √(t(1-t))` and changing the sign gives `Gtz.sharpChartGap`, which is
+--   `Gtz.sharpHat` less the weight diagonal.  That map is an involution and has NO fixed
+--   point, at any size and any cell.  It does NOT transport `Gtz.HasParallelPair`; refer
+--   to `Gtz.hinge_not_preserved_by_duality`.
+#print axioms Gtz.sqrtWeight_mul_inv_weight
+#print axioms Gtz.weight_mul_inv_sqrtWeight
+#print axioms Gtz.inv_sqrtWeight_sq
+#print axioms Gtz.weightDiagonal_mul_inverseWeightDiagonal
+#print axioms Gtz.weightDiagonal_mul_invRootAtomRows
+#print axioms Gtz.transpose_scaledAtomRows_mul_inverseWeightDiagonal
+#print axioms Gtz.transpose_scaledAtomRows_mul_invRootAtomRows
+#print axioms Gtz.quadForm_chartGapOfDesign
+#print axioms Gtz.chartGapOfDesign_mulVec_eq_zero
+#print axioms Gtz.isUnit_det_chartGapOfDesign
+#print axioms Gtz.chartGapOfDesign_mul_inverseForm
+#print axioms Gtz.chartGapOfDesign_inv_eq
+#print axioms Gtz.weight_mul_chartGapInverse_diag
+#print axioms Gtz.posDef_gap_erase_iff_chartGapInverse_diag_neg
+#print axioms Gtz.gap_erase_corankOne_iff_chartGapInverse_diag_eq_zero
+#print axioms Gtz.forall_posDef_gap_erase_iff_chartGapInverse_diag_neg
+#print axioms Gtz.allHeavy_iff_chartGapOfDesign_diag_pos
+#print axioms Gtz.isTie_iff_chartGapInverse_diag_eq_zero
+#print axioms Gtz.pairRootDiagonal_mul_invRootAtomRows
+#print axioms Gtz.transpose_invRootAtomRows_mul_pairRootDiagonal
+#print axioms Gtz.pairRootDiagonal_conj_inverseWeightDiagonal
+#print axioms Gtz.chartGapOfDesign_sharpDual_eq
+#print axioms Gtz.sharpChartGap_add_weightDiagonal
+#print axioms Gtz.sharpChartGap_add_weightDiagonal_eq_sharpHat
+#print axioms Gtz.chartGapOfDesign_sharpDual_eq_negConjInv
+#print axioms Gtz.negConjInv_inv_eq
+#print axioms Gtz.negConjInv_negConjInv
+#print axioms Gtz.isUnit_det_pairRootDiagonal
+#print axioms Gtz.chartGapOfDesign_sharpDual_involutive
+#print axioms Gtz.diagonal_mul_diagonal_inv
+#print axioms Gtz.negConjInv_ne_self_of_diagonal_pos
+#print axioms Gtz.sharpChartGap_ne_chartGapOfDesign
