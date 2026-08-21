@@ -370,4 +370,48 @@ theorem gtzWeighted_six_three_iff_dominating_compl :
     · rw [Finset.card_image_of_injective _ hselinj, Finset.card_univ, Fintype.card_fin]
     · exact (naimark_dominates_iff_compl_reading N (by norm_num) sel cosel hpart).mpr hpsd
 
+/-! ## 6. The squeeze on a dominating triple -/
+
+/-- **A DOMINATING TRIPLE IS SQUEEZED BETWEEN TWO EXPLICIT SETS.**  Every atom of
+a dominating triple of `D` is heavy in `D`, and every atom of the complementary
+triple is heavy in the sharp design `E`.  So a dominating triple contains the
+complement of `E`'s heavy set and is contained in `D`'s heavy set.
+
+Both heavy sets have at least three elements by
+`Gtz.rank_le_card_heavyLeverage`, so the complement of `E`'s heavy set has at
+most three.  When either bound is met the triple is FORCED: if `D` has exactly
+three heavy atoms the only candidate is that triple, and if `E` has exactly
+three heavy atoms the only candidate is the complement of them. -/
+theorem sixThree_dominating_squeeze (D E : WeightedDesign 6 3)
+    (sel cosel : Fin 3 → Fin 6) (hpart : Function.Bijective (Sum.elim sel cosel))
+    (htransfer : Dominates D (Finset.image sel Finset.univ)
+      ↔ Dominates E (Finset.image cosel Finset.univ))
+    (hdom : Dominates D (Finset.image sel Finset.univ)) :
+    (∀ a, sel a ∈ heavyLeverageSet D) ∧ (∀ j, cosel j ∈ heavyLeverageSet E) := by
+  have hselinj : Function.Injective sel := by
+    intro a b hab
+    have h : Sum.elim sel cosel (Sum.inl a) = Sum.elim sel cosel (Sum.inl b) := hab
+    exact Sum.inl.inj (hpart.1 h)
+  have hcoinj : Function.Injective cosel := by
+    intro a b hab
+    have h : Sum.elim sel cosel (Sum.inr a) = Sum.elim sel cosel (Sum.inr b) := hab
+    exact Sum.inr.inj (hpart.1 h)
+  exact ⟨dominates_subset_heavyLeverage D hselinj hdom,
+    dominates_subset_heavyLeverage E hcoinj (htransfer.mp hdom)⟩
+
+/-- **THE FORCED TRIPLE.**  If a `(6,3)` design has exactly three heavy atoms,
+then those three are the ONLY candidate for a dominating triple, and weighted GTZ
+at that design is the single question whether they dominate. -/
+theorem sixThree_forced_triple (D : WeightedDesign 6 3) {pick : Fin 3 → Fin 6}
+    (hpick : Function.Injective pick) (hdom : Dominates D (Finset.image pick Finset.univ))
+    (hthree : (heavyLeverageSet D).card = 3) :
+    Finset.image pick Finset.univ = heavyLeverageSet D := by
+  have hsub : Finset.image pick Finset.univ ⊆ heavyLeverageSet D := by
+    intro c hc
+    obtain ⟨a, _, rfl⟩ := Finset.mem_image.mp hc
+    exact dominates_subset_heavyLeverage D hpick hdom a
+  have hcard : (Finset.image pick Finset.univ).card = 3 := by
+    rw [Finset.card_image_of_injective _ hpick, Finset.card_univ, Fintype.card_fin]
+  exact Finset.eq_of_subset_of_card_le hsub (by rw [hthree, hcard])
+
 end Gtz
