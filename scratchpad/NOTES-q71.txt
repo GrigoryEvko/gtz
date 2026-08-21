@@ -1,0 +1,130 @@
+================================================================================
+Q7.1 -- every boundary (5,3) system has at least four dominating triples
+================================================================================
+Lane: Question 7.1 of paper/brief/brief.tex.  A positive answer closes the whole
+unit-length branch of (6,3), because Gtz.swapDegree_le_one_card_le_three caps
+that branch's family of triples at three.
+
+--------------------------------------------------------------------------------
+F71-1  ANSWER TO THE COUNT: the minimum is SEVEN, not four.  Q7.1 is true with
+       room to spare, and is NOT sharp.
+--------------------------------------------------------------------------------
+Boundary (5,3) systems generated as the zero set of  sum_T max(lambda_min(S_T-I),0)^2
+with a hard weight floor t >= 0.05 (never by minimising Phi = max_T lambda_min,
+which finds only dust).  40 systems per seed, three seeds.
+
+    dominating-triple counts:   {7: 15, 8: 25}   (seed 3)
+                                {7: 12, 8: 28}   (seed 5)
+    never 6, never fewer.  The diamond Gtz.diamondTieDesign has 8.
+
+Independent confirmation from the rank-two side (F71-3): maximising the smallest
+slack off an allowed tight set T over all isomorphism classes of graphs on five
+vertices returns exactly 0.0 for |T| = 3, 4, 5, 6 -- no configuration with six or
+fewer tight pairs.  (Iso-class counts by edge number reproduce the known
+sequence 1,1,2,4,6,6,6,4,2,1,1.)
+
+--------------------------------------------------------------------------------
+F71-2  CORRECTION, load-bearing: the Naimark dual is NOT the orthogonal
+       complement of the Parseval projection.
+--------------------------------------------------------------------------------
+Gtz.weighted_naimark_duality builds its dual by whitening the CO-PARSEVAL
+operator W = sum_c (1-t_c) g_c g_c^T, i.e. A has rows sqrt(1-t_c)*R^T g_c with
+R^T W R = I, and the dual atoms are B_{c.}/sqrt(t_c) for an orthonormal
+completion [A|B].  The naive construction -- complete V (rows sqrt(t_c) g_c) and
+rescale by 1/sqrt(t_c) -- is a DIFFERENT design and does NOT carry the
+domination correspondence: 161 mismatches out of 400 on sampled boundary
+systems.  The two constructions coincide exactly when all weights are equal,
+which is why the diamond passed the naive test.  With the correct construction:
+4 weak mismatches out of 400 and 2 strict, all at exact zeros (tolerance).
+BOTH weak and strict domination transfer.
+
+--------------------------------------------------------------------------------
+F71-3  THE RANK-TWO REFORMULATION (clean, and the right place to search)
+--------------------------------------------------------------------------------
+At (5,3), m = k+2, so the dual has rank two and dominating TRIPLES correspond to
+dominating PAIRS of the dual.  In the dual write u_c = h_c/|h_c| (unit),
+m_c = t_c*l_c, y_c = 1 - 1/l_c.  Then
+
+    sum_c m_c u_c u_c^T = I_2,  sum_c m_c = 2,  y_c in [0,1),  sum_c m_c y_c = 1,
+    pair {a,b} dominates        <=>  y_a y_b >= <u_a,u_b>^2,
+    pair {a,b} dominates strictly <=> y_a y_b >  <u_a,u_b>^2.
+
+So a boundary system is exactly:  y_a y_b <= <u_a,u_b>^2 for ALL pairs, and the
+dominating pairs are the EQUALITIES.  (Some equality is then automatic from the
+landed GtzWeighted 5 2.)  Diamond dual in these coordinates, verified exactly:
+    l^dual = (3, 7/4, 7/4, 7/4, 7/4),  m = (0.6, 0.35, 0.35, 0.35, 0.35),
+    y = (2/3, 3/7, 3/7, 3/7, 3/7),  line angles (deg) = (0, 122.31, 57.69,
+    122.31, 57.69) -- three directions at 60 degrees apart, two duplicated.
+    8 tight pairs; the two slack pairs are the two duplicated (parallel) ones.
+
+--------------------------------------------------------------------------------
+F71-4  THE PIVOT CHART AND THE HALF FLOOR  -- LANDED, no duality needed
+--------------------------------------------------------------------------------
+Write W = subsetSum D univ - 1 = sum_c (1-t_c) g_c g_c^T (PosDef,
+Gtz.posDef_fullExcess), rho_a = Gtz.pivot D univ a = g_a . (W^-1 g_a), and
+pi_ab = g_a . (W^-1 g_b).  Three moments:
+
+  (i)   sum_c (1-t_c) rho_c = k            Gtz.descent_identity        [landed]
+  (ii)  sum_c (1-t_c)       = m-1          Gtz.sum_one_sub_weight      [landed]
+  (iii) sum_c (1-t_c) pi_ac^2 = rho_a      Gtz.sum_coWeight_mul_resolvent_reading_sq
+                                                                       [NEW]
+(iii) is Parseval read once in the resolvent metric and is hypothesis-free at
+every size and rank.
+
+At (5,3), (i)+(ii) give sum_c (1-t_c)(1-rho_c) = 4-3 = 1.  A boundary system
+refuses every triple, a triple is a double downdate of W, so
+Gtz.tie_fiveSet_pair_reading at F = univ gives for every pair
+    1 <= rho_a   or   (1-rho_a)(1-rho_b) <= pi_ab^2 .
+Feed that into (iii):
+    rho_a = (1-t_a) rho_a^2 + sum_{c/=a} (1-t_c) pi_ac^2
+         >= (1-t_a) rho_a^2 + (1-rho_a)[1 - (1-t_a)(1-rho_a)]
+    ==>  t_a (2 rho_a - 1) >= 0  ==>  rho_a >= 1/2.
+LANDED as Gtz.pivot_half_floor.  Equality holds iff every pair inequality at a
+is an equality.
+
+MEASURED (40 boundary systems): worst slack of rho_a >= 1/2 is -1.6e-9; and
+min_a rho_a = 0.4999999984 in EVERY system.  Equivalence
+    rho_a = 1/2  <=>  all four triples avoiding a dominate
+holds with ZERO mismatches.  At the diamond rho = (1/2, 13/16, 13/16, 13/16,
+13/16).  Degree sequences (deg a = # dominating triples avoiding a):
+    (2,2,2,4,4) x12,  (3,3,3,3,4) x28  -- every one contains a 4.
+
+--------------------------------------------------------------------------------
+F71-5  WHAT REMAINS: Q7.1 is now ONE scalar statement
+--------------------------------------------------------------------------------
+Gtz.PivotHalfAttained :  every boundary (5,3) system has an atom with
+                         rho_a <= 1/2.
+Together with the landed floor this says min_a rho_a = 1/2 exactly, and an atom
+attaining it is avoided by all four triples of its complement -- four dominating
+triples, which is Q7.1.
+
+Equivalent primal forms of "rho_a <= 1/2", all verified:
+    rho_a <= 1/2  <=>  W >= 2 g_a g_a^T  <=>  sum_{c/=a} g_c g_c^T >= I + g_a g_a^T
+                  <=>  Sigma - I - 2 g_a g_a^T  psd,   Sigma = sum_c g_c g_c^T.
+In the whitened co-design (ghat_c = 2 W^{-1/2} g_c, tau_c = (1-t_c)/4, a genuine
+weighted (5,3) design with lhat_c = 4 rho_c) the floor reads lhat_a >= 2 and the
+target reads min_a lhat_a = 2, with sum_a tau_a lhat_a = 3 and lhat_a <= 4
+whenever some dominating triple avoids a.
+
+WHY AVERAGING CANNOT DO IT: sum_a (1-t_a) rho_a = 3 with sum_a (1-t_a) = 4, so
+the co-weighted mean of rho is 3/4, ABOVE 1/2.  The target asks one atom to sit
+below the mean by a definite amount; it must consume the boundary hypothesis,
+not just the moments.
+
+ROUTE THAT WORKS ON PAPER BUT IS NOT FORMALISED: in the rank-two chart a
+boundary system is exactly a maximiser of the linear functional sum_c m_c y_c
+over the region {y in [0,1)^5 : y_a y_b <= <u_a,u_b>^2}, with maximum exactly 1
+(the inequality max <= 1 IS GtzWeighted 5 2).  KKT at that maximiser gives
+    m_c = sum_{(c,d) tight} lambda_cd y_d,  lambda >= 0,
+so every vertex has degree at least one in the tight graph -- hence at least
+three tight pairs, with equality only for the graph P3 + K2.  Excluding that one
+graph, or upgrading to "some vertex has degree four", closes Q7.1.  A
+perturbation/KKT argument is the obstacle to formalising this.
+
+--------------------------------------------------------------------------------
+F71-6  HARNESS CALIBRATION (all reproduced before any claim)
+--------------------------------------------------------------------------------
+Diamond, from the graph K4 minus an edge with conductances (2,3,3,3,3),
+uniform weights 1/5:  L = [[8,-2,-3],[-2,8,-3],[-3,-3,6]], det L = 180,
+leverages (2, 13/4, 13/4, 13/4, 13/4), 8 of 10 triples dominate, none strictly,
+no parallel pair.  Reproduced exactly by the harness.

@@ -1261,6 +1261,7 @@ import Gtz.Wave.CornerSignMatching
 import Gtz.Wave.SignCoherentFoil
 import Gtz.Wave.FourSetCoweightCap
 import Gtz.Wave.FiveSetPairFloor
+import Gtz.Wave.CoParsevalPivotHalfFloor
 import Gtz.Wave.CornerFramePair
 import Gtz.Wave.ExcludedAtomLedger
 import Gtz.Wave.OneAxisZeroFourSets
@@ -1365,6 +1366,7 @@ import Gtz.Wave.CoherentHornBlockCriterion
 import Gtz.Wave.CornerPairAdjugate
 import Gtz.Wave.CornerRepaymentMatrix
 import Gtz.Wave.WeightedRepaymentTrace
+import Gtz.Wave.CornerReadingDuality
 import Gtz.Wave.CornerAxisElimination
 import Gtz.Wave.CornerAxisCalculus
 import Gtz.Wave.CornerAxisBridges
@@ -38173,3 +38175,28 @@ run_cmd do
 #print axioms Gtz.blind_pairGapMinor_eq_zero
 #print axioms Gtz.blind_pairMinorTotal_eq_pairGapMinor
 #print axioms Gtz.blind_form_on_perp
+
+-- Gtz/Wave/CoParsevalPivotHalfFloor.lean -- the second-order law of the pivot
+-- chart, and the half floor it forces at a boundary (5,3) system: every
+-- co-Parseval pivot is at least one half, which reduces Question 7.1 to the
+-- single scalar statement that the floor is attained
+#print axioms Gtz.isUnit_det_fullExcess
+#print axioms Gtz.resolvent_reading_comm
+#print axioms Gtz.sum_coWeight_mul_resolvent_reading_sq
+#print axioms Gtz.sum_coWeight_mul_one_sub_pivot_fiveThree
+#print axioms Gtz.tie_fullSet_pair_reading
+#print axioms Gtz.pivot_half_floor
+#print axioms Gtz.exists_pivot_eq_half_of_attained
+#print axioms Gtz.resolvent_pair_minor_le_of_pivot_eq_half
+
+-- Gtz/Wave/CornerReadingDuality.lean -- a triple with a nonzero bracket
+-- determines every pairing it sees, so the corner and one outside pair are a
+-- free parameter and cannot decide the repayment; and the merged existential
+-- the corner arm actually needs, with its producer
+#print axioms Gtz.dualReadingForm_comm
+#print axioms Gtz.sq_tripleBracket_mul_dotProduct_eq_dualReadingForm
+#print axioms Gtz.sq_tripleBracket_mul_leverage_eq_dualReadingForm
+#print axioms Gtz.sq_tripleBracket_of_rankOneGram
+#print axioms Gtz.corner_dotProduct_eq_readings
+#print axioms Gtz.not_isTie_of_cornerRepaysSomePair
+#print axioms Gtz.tripleGapDet_nonpos_of_isTie_of_admissible

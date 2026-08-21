@@ -6350,6 +6350,7 @@ import Gtz.Wave.CornerSignMatching
 import Gtz.Wave.SignCoherentFoil
 import Gtz.Wave.FourSetCoweightCap
 import Gtz.Wave.FiveSetPairFloor
+import Gtz.Wave.CoParsevalPivotHalfFloor
 import Gtz.Wave.CornerFramePair
 import Gtz.Wave.ExcludedAtomLedger
 import Gtz.Wave.OneAxisZeroFourSets
@@ -6448,6 +6449,7 @@ import Gtz.Wave.CoherentHornBlockCriterion
 import Gtz.Wave.CornerPairAdjugate
 import Gtz.Wave.CornerRepaymentMatrix
 import Gtz.Wave.WeightedRepaymentTrace
+import Gtz.Wave.CornerReadingDuality
 import Gtz.Wave.CornerGramWeightLaw
 import Gtz.Wave.CornerAxisCalculus
 import Gtz.Wave.CornerAdjugateWeightCap
