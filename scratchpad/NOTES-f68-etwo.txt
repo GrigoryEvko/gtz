@@ -191,3 +191,41 @@ exactly when the axis and the outside pair are not coplanar.  The surviving
 realness carrier from NOTES-realness is the MAGNITUDE form (|Re tau| against
 sqrt(Q Q Q)), not the sign form, which F49-18 killed.  Test it against the
 witness in F68-0, not against the destroyed fixture.
+
+F68-7.  *** ITEM 2 ANSWERED: THE REAL-ONLY INGREDIENT IS BARGMANN EXTREMALITY ***
+---------------------------------------------------------------------------------
+F49-18 killed the SIGN form of the 3-cycle.  The MAGNITUDE form is alive, and it
+separates decisively at the rebuilt witness.  For a triple write
+    tau := rho_ij rho_jk rho_ki ,   deficit := 1 - (Re tau)^2 / (|rho_ij|^2 |rho_jk|^2 |rho_ki|^2)
+Over R the pairings are real, tau is real, and the deficit is IDENTICALLY ZERO --
+it is an equation, not an inequality.  Over C only Re(tau) enters det(K_T - I)
+and the deficit is strictly positive unless the phase happens to align.
+
+MEASURED at the rebuilt complex corner tie (scratchpad/f68/realness.jl):
+    triples with a live deficit (>1e-6)   19 / 20
+    worst deficit                         0.995327   (triple {1,2,4})
+    deficits range                        0.014525 .. 0.995327
+    THE ONE EXCEPTION IS THE DOMINATOR C = {0,1,2}: deficit -0.000000,
+    Im(tau)/|tau| = -0.000000.
+That exception is FORCED, not accidental: the corner's inside gap Gram is rank
+one, so the inside pairings factor as rho_ef = c_e c_f and tau_C = (c_1c_2c_3)^2
+is real and nonnegative over BOTH fields.  This INDEPENDENTLY REPRODUCES the
+structural fact NOTES-realness section 2 recorded for the destroyed fixture
+("At the dominator triple {0,1,2} the deficit is 0.0 percent"), on a witness
+built from scratch by a different descent.  Two independent complex ties agree.
+
+SO THE REALNESS BUDGET OF A CORNER LIVES ON THE NINETEEN NON-DOMINATOR TRIPLES,
+and is exactly zero on the dominator.  The landed
+Gtz.realTriangle_bargmann_extremal (RealnessEngine.lean:517) already states the
+real side; NOTES-realness section 4 says DO NOT REBUILD it, and I did not.
+
+HOW IT MUST COMPOSE WITH F68-1, which is the part that is new.  The closing
+instrument is a selector for the single positive eigendirection of the repayment
+matrix X.  Extremality is an EQUATION on each triple's cross term, so it pins
+det(K_T - I) -- which is a DIAGONAL ENTRY of X -- to a two-point set rather than
+an interval.  A successor should ask whether the nine one-inside diagonal entries
+of the three repayment matrices can ALL sit at their nonpositive branch
+simultaneously, given det X = lam*D^2*[u,a,b]^2 > 0 forces a positive
+eigendirection in each.  That is a finite sign system over the chirotope, not a
+search, and it is the first formulation of E2* in which realness enters as an
+equation rather than as an inequality to be estimated.
