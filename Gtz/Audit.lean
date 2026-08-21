@@ -1476,6 +1476,7 @@ import Gtz.Wave.SharpShareCoAtom
 import Gtz.Wave.ChartQuadraticCore
 import Gtz.Wave.SharpDesignInvolution
 import Gtz.Wave.ChartGapSharpDuality
+import Gtz.Wave.CornerAxisPairAdjugateLaw
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39661,3 +39662,25 @@ run_cmd do
 #print axioms Gtz.diagonal_mul_diagonal_inv
 #print axioms Gtz.negConjInv_ne_self_of_diagonal_pos
 #print axioms Gtz.sharpChartGap_ne_chartGapOfDesign
+-- Gtz/Wave/CornerAxisPairAdjugateLaw.lean
+#print axioms Gtz.det_pairGapMatrix
+#print axioms Gtz.det_tripleAtomGap
+#print axioms Gtz.adjugate_pairGapMatrix_reading
+#print axioms Gtz.trace_adjugate_eq_shifted_det_fin_three
+#print axioms Gtz.det_atomMatrix_add_atomMatrix
+#print axioms Gtz.trace_pairGapMatrix
+#print axioms Gtz.trace_adjugate_pairGapMatrix
+#print axioms Gtz.tripleGapDet_axisProbe
+#print axioms Gtz.tripleGapDet_axisProbe_nonpos
+#print axioms Gtz.corner_form_reading_total
+#print axioms Gtz.corner_sum_tripleGapDet_outsidePair
+#print axioms Gtz.corner_axisPair_law_of_isTie
+#print axioms Gtz.corner_axisPair_excess_le_of_isTie
+#print axioms Gtz.corner_blindPair_law_of_isTie
+#print axioms Gtz.corner_lam_le_of_blindPair
+#print axioms Gtz.notMem_of_mem_compl
+#print axioms Gtz.corner_axisPair_law_sixThree
+#print axioms Gtz.not_isTie_of_corner_sum_pos
+#print axioms Gtz.pairGapMinor_ratio_of_pivotRow
+#print axioms Gtz.pairGapMinor_pos_of_pairGapMinor_pos_of_pivotRow
+#print axioms Gtz.pairGapMinor_eq_zero_of_pairGapMinor_eq_zero_of_pivotRow

@@ -6824,3 +6824,4 @@ import Gtz.Wave.SharpDesignInvolution
 --     Gtz.sixThree_volume_generating_pos is its positivity on the positive orthant.
 import Gtz.Wave.TwentyVolumeMarginals
 import Gtz.Wave.ChartGapSharpDuality
+import Gtz.Wave.CornerAxisPairAdjugateLaw
