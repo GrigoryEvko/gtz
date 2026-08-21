@@ -728,3 +728,46 @@ F65-12. SCOPE NOTE ON THE CAYLEY CHART (queue item 2) — why I did not use it.
   weights are carried explicitly -- and THEN the Cayley chart is exactly how to
   parametrise the inside atoms rationally.  Recorded so the next fork does not
   spend a round discovering the mismatch.
+
+F65-13. THE SHARPEST STATEMENT OF THE E1 GAP AVAILABLE — where sum a > 1 lives.
+  Maximising sum a over the FULL box system {detIM>=0, detM>=0, pair, sum t<1}
+  (SLSQP, 5000 restarts) gives
+     max sum a = 1.0000000281   at  b = (0.50000006, 0.49999994, 0.49999994),
+                                     t = (1e-12, 0.424012227, 0.575987716),
+                                     sum t = 0.99999994,
+     detM = -2.5e-15,  detIM = -6.7e-15   -- BOTH at machine epsilon, i.e. the
+  optimiser is sitting ON the ray of F65-3 and marginally outside the domain,
+  the same artifact as F65-2.  Exactly-feasible sampling with the target's own
+  hypothesis sum a > 1 imposed found ZERO points in 200000 draws.
+  READING, stated carefully because an empty sample is weak evidence:
+  the region {sum a > 1} of the box appears to touch the feasible set ONLY at
+  the ray, and the ray is not in the image of the corner map (F65-10).  If that
+  is exact -- and I did NOT prove it -- then E1 on the box is true for the
+  degenerate reason that its hypothesis and its conclusion collide only where no
+  design lives.  A successor should test this directly: is
+        {detIM >= 0, detM >= 0, pair, sum t <= 1 - tau, sum a >= 1}
+  EMPTY for every tau > 0?  That is a cleaner target than KEY, it is a
+  Positivstellensatz EMPTINESS question (not a tight inequality), and emptiness
+  certificates do not suffer the "cannot be strict" obstruction that killed
+  every attempt in F58-6, F58-12, F58-13 and F65-8.
+  THIS IS THE ROUTE I WOULD TAKE NEXT.
+
+F65-14. ROUND SUMMARY, FINAL (fork 65).  E1 IS NOT CLOSED; I do not state it,
+  and I hand over no gateway.
+  NO NEW LEAN.  Nothing this round survived as a theorem, and the one candidate
+  that looked like a counterexample was an artifact.  Three notes commits.
+  WHAT ADVANCED:
+   * the (b,t) form of detM, exact both directions            (F65-1)
+   * KEY re-established under exact arithmetic after a false alarm (F65-2, F65-6)
+   * the degeneracy identified as a RAY of triple zeros, with no first-order
+     descent leaving it                                        (F65-3, F65-4)
+   * the ray shown UNREACHABLE by any design, from Parseval    (F65-10)
+   * the missing constraint named: the inside weight mass tau_C, which the box
+     formulation discards                                      (F65-11)
+   * the target reformulated as an EMPTINESS question that avoids the tightness
+     obstruction entirely                                      (F65-13)
+  REFUTED WITH WITNESSES: detM+pair without detIM (F65-7a); the divided form of
+  detM (F65-7b); and the Cayley chart as a route to KEY as posed (F65-12).
+  METHOD RULES ADDED: feasibility tolerance is not feasibility -- recheck any
+  optimiser-reported violation in extended precision (F65-2); and evaluate a
+  candidate descent direction exactly rather than trusting an LP's sign (F65-4).
