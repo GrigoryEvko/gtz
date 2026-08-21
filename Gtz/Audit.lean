@@ -1325,6 +1325,7 @@ import Gtz.Wave.ParallelPairFactorization
 import Gtz.Wave.KTwoXSplit
 import Gtz.Wave.DominatorLeverageCap
 import Gtz.Wave.KTwoLeverageExcess
+import Gtz.Wave.ContractionTaxSharp
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
@@ -36645,6 +36646,13 @@ run_cmd do
 #print axioms Gtz.axisTriple_pairing_sq_le
 #print axioms Gtz.axisTriple_orthogonal_of_leverage_one
 #print axioms Gtz.axisTriple_leverage_gt_one_of_pairing
+
+-- Gtz/Wave/ContractionTaxSharp.lean -- the tetrahedral tie saturates the
+-- bracket tax at every triple at once, so its constant is best possible
+#print axioms Gtz.tetra_bracket_sq
+#print axioms Gtz.tetra_bracketMass_eq_weight
+#print axioms Gtz.tetra_tax_tight
+#print axioms Gtz.tetra_tax_not_improvable
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
