@@ -6503,8 +6503,10 @@ import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
 import Gtz.Wave.FourSetFloorPackage
 import Gtz.Wave.ProbeFreeHingeTrigger
+import Gtz.Wave.PairNormalWedgeLaw
 import Gtz.Wave.ProbeFreeParsevalBudget
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
 import Gtz.Wave.BlindMemberPlane
+import Gtz.Wave.BlindMemberNormalForm
 import Gtz.Wave.TwoPlaneCollapse

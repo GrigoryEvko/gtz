@@ -1388,10 +1388,12 @@ import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
 import Gtz.Wave.FourSetFloorPackage
 import Gtz.Wave.ProbeFreeHingeTrigger
+import Gtz.Wave.PairNormalWedgeLaw
 import Gtz.Wave.ProbeFreeParsevalBudget
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
 import Gtz.Wave.BlindMemberPlane
+import Gtz.Wave.BlindMemberNormalForm
 import Gtz.Wave.TwoPlaneCollapse
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
@@ -38130,3 +38132,43 @@ run_cmd do
 #print axioms Gtz.branchB_of_forall_admissible
 #print axioms Gtz.branchB_leverage_floor
 #print axioms Gtz.exists_leverage_gt_thirteen_eighths_of_forall_admissible
+
+-- Gtz/Wave/PairNormalWedgeLaw.lean -- the two-update determinant law, where the
+-- hunted pair's own wedge enters: det(F + u uᵀ + v vᵀ) costs two adjugate
+-- readings plus the form of F at the pair's normal, with no hypothesis; at a
+-- corank-one gap a vanishing wedge form pins the kernel to that normal, so two
+-- non-parallel kernels force the pair collinear
+#print axioms Gtz.det_add_two_atomMatrix
+#print axioms Gtz.det_add_two_atomMatrix_of_unit_null
+#print axioms Gtz.exists_unit_null_of_mulVec_eq_zero
+#print axioms Gtz.null_reading_sq_eq_one_of_secondInvariant_ne_zero
+#print axioms Gtz.eq_smul_of_reading_sq_eq_one
+#print axioms Gtz.kernel_eq_smul_bracketNormal_of_wedgeForm_eq_zero
+#print axioms Gtz.blind_of_wedgeForm_eq_zero
+#print axioms Gtz.bracketNormal_eq_zero_of_wedgeForm_eq_zero_two
+#print axioms Gtz.hasParallelPair_of_wedgeForm_eq_zero_two
+
+-- Gtz/Wave/BlindMemberNormalForm.lean -- a blind member collapses the triple to
+-- two vectors in the probe's plane: the two live members' plane parts are
+-- antiparallel, so off the probe they contribute one square between them, and
+-- the triple's second invariant is a single pair minor
+#print axioms Gtz.dotProduct_axis_plane
+#print axioms Gtz.dotProduct_axis_plane_left
+#print axioms Gtz.nf_leverage_left
+#print axioms Gtz.nf_leverage_right
+#print axioms Gtz.nf_pairing_left
+#print axioms Gtz.nf_pairing_right
+#print axioms Gtz.nf_pairing_live
+#print axioms Gtz.nf_perp_left
+#print axioms Gtz.nf_perp_right
+#print axioms Gtz.nf_pairGapMinor_eq_zero
+#print axioms Gtz.nf_pairMinorTotal_eq_pairGapMinor
+#print axioms Gtz.nf_form_on_perp
+#print axioms Gtz.blind_readings_sq_sum
+#print axioms Gtz.blind_planeParts_antiparallel
+#print axioms Gtz.blindPlaneVector_dotProduct_axis
+#print axioms Gtz.blind_decomposition_left
+#print axioms Gtz.blind_decomposition_right
+#print axioms Gtz.blind_pairGapMinor_eq_zero
+#print axioms Gtz.blind_pairMinorTotal_eq_pairGapMinor
+#print axioms Gtz.blind_form_on_perp
