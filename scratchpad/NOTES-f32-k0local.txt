@@ -1324,3 +1324,84 @@ determinants <= 0} is inconsistent.  That is the same core branch B needs, and
 it is NOT supplied by any budget I could find this round.
 The bridge itself remains open in the strong sense: inadmissible + heavy gives
 only w_ab <= l_a + l_b - 1, and NOTHING landed forces w_ab to 0.
+
+================================================================
+FORK 61 -- the separation theorem, and two measured branch results
+================================================================
+
+F61-1. THE UNTRACKED LeverageOneVertex.lean WAS SUPERSEDED; I DELETED IT.
+  It built clean (274 lines) but every result in it is now landed elsewhere:
+    * isTie_boundaryAtom_readingSum_eq_one  == unitAtom_readings_resolve
+      (UnitAtomFunnel, 198cba0)
+    * dominates_of_leverage_le_one          == dominating_of_light_atom
+      (Gtz/Reduction/Deflation.lean:177) -- VERBATIM duplicate
+    * its gap-annihilation                  == unitAtom_exists_dominator_fixing
+  CRITICAL DEFICIT: it never proves `d not-in C`.  Its deflation route
+  (exists_deflatedGap_of_light_atom) does not carry avoidance, whereas
+  UnitAtomFunnel does.  Without avoidance the parallel-pair extraction
+  (unitAtom_parallel_of_two_readings_zero) is UNAVAILABLE.  So the landed
+  module is strictly stronger and the untracked one was dead weight.
+  Only genuinely-new item was a general-RANK PosSemidef lemma; the landed
+  posDef_one_sub_atomMatrix_of_leverage_lt_one is rank-3 and strict-only.
+  Not salvaged -- no consumer needs it yet.
+
+F61-2. LANDED (d3d3932, Gtz/Wave/InadmissiblePairSeparation.lean, 6 thms,
+  all pins [propext, Classical.choice, Quot.sound], my scratch audit):
+  AN INADMISSIBLE PAIR NEVER SITS INSIDE A WEAK DOMINATOR.
+    pairGapMinor_nonneg_of_dominates : weak dominator => every INSIDE pair
+      has q >= 0.  Proof: S_C - I is PSD, so the 2x2 principal form at two
+      member atoms is a nonnegative quadratic in the two coefficients, whose
+      discriminant is <= 0; that discriminant IS the pair minor.
+    inadmissible_pair_not_inside_dominates : contrapositive -- q < 0 forces a
+      member outside every weak dominator.
+  The landed pairGapMinor_pos_of_subsetSum_posDef is the STRICT version and
+  needs PosDef, which a tie never supplies.  The weak version is the one a tie
+  can afford.  MEASURED FIRST, now a corollary: 0 inadmissible pairs inside
+  any of 1,205,288 weak dominators, against 6,160,771 outside.
+  CONSEQUENCE: the hinge's target pair CROSSES every dominator boundary.
+  That is the campaign's third instrument-blindness, and the FIRST proved
+  rather than measured.
+
+F61-3. THE WEDGE BOUND IS SHARP -- no sharpening alone can close the joint.
+  crossNormSq_le_of_pairGapMinor_nonpos : q_ab <= 0 => w_ab <= l_a + l_b - 1.
+  MEASURED over 630,642 inadmissible heavy pairs of random designs:
+    max ratio w/(l_a+l_b-1) = 0.999999   (the bound is attained)
+    min wedge               = 1.0e-5     (they DO approach parallel)
+  So the bound cannot be improved without the tie hypothesis, and the missing
+  ingredient must consume tie-ness itself.
+
+F61-4. THE PREDECESSOR'S DYING OBSERVATION IS CONFIRMED AND MONOTONE.
+  Claim was: "the descent reaches zero ONLY by collapsing four weights to zero
+  with leverages blowing up".  Tested with weight floors (floortest.jl, 48
+  restarts x 40000 steps each):
+    wfloor 0.00 -> inf|F| = 0.0026  t_min 0.00025
+    wfloor 0.01 -> inf|F| = 0.0142  t_min 0.0146
+    wfloor 0.03 -> inf|F| = 0.0229  t_min 0.0399
+    wfloor 0.05 -> inf|F| = 0.0305  t_min 0.0562
+  t_min sits AT the floor every time and inf|F| RISES with it.  The approach
+  to zero is driven purely by weight collapse -- a boundary artifact, exactly
+  like K1's.  DO NOT read the unconstrained infimum as evidence of a tie.
+
+F61-5. THE LEVERAGE-ONE BRANCH LOOKS EMPTY AT EVERY POSITIVE WEIGHT FLOOR.
+  levone.jl pins l_1 = 1 exactly (renormalise inside the Parseval iteration)
+  and minimises |F| with a weight floor, 80 restarts x 40000 steps:
+    wfloor 0.01 -> inf|F| = 0.01046   (l_1 = 1.0 exactly, t_min 0.01025)
+    wfloor 0.03 -> inf|F| = 0.01931   (t_min 0.03065)
+    wfloor 0.05 -> inf|F| = 0.03013   (t_min 0.05007)
+  Same monotone signature as F61-4.  MEASURED ONLY -- the correct normaliser
+  is open, exactly as in K1, so this is NOT a proof of emptiness.
+
+F61-6. THE (5,3) DIAMOND IS BRANCH B, WHICH IS WHY THE HINGE FAILS THERE.
+  Exact check on the K4-e fixture (Parseval residual 4.4e-16, max lambda_min
+  4.7e-16 so a genuine tie): leverages (2, 3.25, 3.25, 3.25, 3.25) -- NO atom
+  at leverage one -- eight weak dominators, and ALL TEN pair minors strictly
+  positive (0.75, 2.0, 4.5), every one inside some dominator.  So the diamond
+  has no inadmissible pair at all.  Consistent with F61-2 and it explains the
+  fixture: the hinge fails at (5,3) because branch B is inhabited there.
+
+F61-7. WHAT I DID NOT DO.
+  Could not force two vanishing readings in the leverage-one branch.  The
+  funnel's conclusion is conditional on a TIE, and no tie was reached in that
+  branch (F61-5), so the hypothesis could not be instantiated numerically.
+  The joint itself remains open: F61-2 says WHERE the pair is, not that its
+  wedge vanishes.
