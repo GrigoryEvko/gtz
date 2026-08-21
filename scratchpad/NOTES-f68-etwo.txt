@@ -1,0 +1,62 @@
+FORK 68 -- THE E2 LANE.  Self-contained notes.
+==============================================
+Scripts: scratchpad/f68/*.jl  (Julia, <= 8 threads, heap hint 4G, peak RSS well
+under 1 GB).  Scratch scripts are NOT version controlled, so every load-bearing
+number is transcribed here verbatim.
+
+F68-0.  *** THE LANE'S ACCEPTANCE TEST HAD BEEN DESTROYED; IT IS RESTORED ***
+-----------------------------------------------------------------------------
+scratchpad/corner-ten/complextie.txt, complextie.pkl, ctie_g.npy, ctie_t.npy and
+every f49/ script were DELETED by the retrospective scratchpad history rewrite,
+which kept only NOTES-*.txt.  F49-15 and F60-5 both name that file as the
+MANDATORY acceptance test for every candidate E2 law.  The lane could therefore
+no longer test anything.  I rebuilt a complex corank-two corner tie from scratch
+(scratchpad/f68/ctie.jl), by Nelder-Mead descent over the complexified F49-16
+chart with 400 random restarts:
+
+    lam > 0, unit u in C^3, Q in U(3):   M = I + lam u u*,  Vc = M^{1/2} Q
+    inside atoms = columns of Vc,        inside weights D_in
+    N_O = I - Vc D_in Vc*  (must be positive definite)
+    outside atoms  g_d = N_O^{1/2} R e_d / sqrt(t_d),  R in U(3)
+    objective: max over the TEN informative triples of lambda_min(S_T - I)
+
+THE NEW WITNESS IS 20x MORE ROBUST THAN THE DESTROYED ONE: informative margin
+-9.550744e-02 against the old -4.764e-03, at weight floor 5e-3.
+
+VERIFIED (scratchpad/f68/accept.jl, Hermitian reading, DIRECT lambda_min, with
+the domination control that catches a backwards conjugation):
+    Hermitian Parseval residual        1.332e-15
+    corner gap eigenvalues             [0.0, 0.0, 6.691184195]   corank two, lam>0
+    CONTROL max lmin(S_T - I) over 20  2.220446e-16   -> a GENUINE TIE
+    complement {4,5,6} lmin(S-I)       -0.095980      -> it REFUSES
+    |g_d . u| outside                  0.9321  0.7435  0.8700    -> NON-PLANAR
+    primitivity margin                 0.247355                  -> PRIMITIVE
+    max |Im K_ij| off-diagonal         2.4268                    -> genuinely complex
+    E1  (some admissible pair)         TRUE   q = +0.974230, +19.043450, +14.422308
+    E2* (some pair repays)             FALSE at all nine slots
+    domination control |R_e - det(K_T - I)|  <= 1.510e-14 at every slot
+
+STRONGER THAN THE OLD FIXTURE IN ONE RESPECT WORTH RECORDING: the complement
+refusal is verified explicitly here, so this witness refutes E2* itself and not
+merely unconditional E2.  (At a tie every triple refuses, so the hypothesis is
+free -- but it is now checked rather than argued.)
+
+THE WITNESS, VERBATIM (transcribe from here, the .txt is gitignored)
+--------------------------------------------------------------------
+t[0] = 0.064612680631891
+t[1] = 0.043729239042392
+t[2] = 0.400443316399436
+t[3] = 0.187045697987545
+t[4] = 0.243122487644195
+t[5] = 0.061046578294541
+g[0] = [-0.098203303716907+0.660852555571537j, -0.261656261636146-0.142572092254296j,  0.844312951841216-1.663918838808734j]
+g[1] = [ 0.841801002867606-0.702557035426206j,  0.947377725491373-0.476609926443579j, -1.319998973198980-0.003454110782639j]
+g[2] = [-0.438351574381946+0.283570610492043j,  0.670492899411833-0.160928145477579j, -0.923800031424777+0.061624190942802j]
+g[3] = [-1.031206576147881+1.066897783621571j,  0.082925927650595-0.025740618847718j,  0.367164619975817+0.667746707905798j]
+g[4] = [ 0.143138939649543-0.952428164055910j, -0.335460234072171+0.777101424000760j,  0.226624249965980+0.797627459974990j]
+g[5] = [ 0.891192856493699-1.423043514681480j,  2.287181318217433-2.062762349897789j,  1.139626300830576-0.093328269191734j]
+Atoms 0,1,2 are the inside triple C (the corner); 3,4,5 are the complement.
+Read K_ij = <g_i, g_j> HERMITIAN.  The BILINEAR reading is the wrong form and
+gives a Parseval residual of order 1, as F49-10 warned.
+
+ANY CANDIDATE E2* LAW THAT HOLDS AT THIS POINT IS NOT THE LAW.
