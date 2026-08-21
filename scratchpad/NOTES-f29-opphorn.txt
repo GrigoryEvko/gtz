@@ -1347,3 +1347,124 @@ admissible.
   e2cond.jl  the same conditioned on the complement refusing
   probe.jl   the fixed-probe windows, and their disjointness
   probe2.jl  seven scaled probes, all infeasible
+
+======================================================================
+ROUND 13c (FORK 50).  THE GAUGE EXPLAINED, THE WEIGHTS AS THE GAUGE
+BREAKER, AND A 100 PERCENT LAW -- WITH A PROOF THAT NO LINEAR
+PRODUCER CAN REACH IT.   (26c8b76)
+======================================================================
+
+67. **WHY CORNER-PAIR INVARIANTS CANNOT WORK -- THE GAUGE, IN CLOSED FORM**
+----------------------------------------------------------------------------
+Write s_e = <u,g_e>, r_e = (<g_e,a>,<g_e,b>), M the pair gap block, A = adj M.
+Two exact reductions (gauge.jl, 26536 corners):
+
+  phi_e := tripleGapDet a b g_e = D*(lam/(1+lam))*s_e^2 - r_e' A r_e   (3.5e-12)
+
+so **the informative gap determinant sees the inside atom ONLY through its three
+readings.**  Next, [s|R] is 3x3 and its Gram is FIXED by the corner and pair
+invariants:  [[1+lam, (1+lam)gam'],[(1+lam)gam, M+I+lam*gam gam']].  Hence
+[s|R] = O*L with L fixed and O in O(3), and with Psi = diag(D*lam/(1+lam), -A):
+
+  **phi = diag( O Phi O' ),   Phi = L Psi L'  FIXED**              (3.1e-10)
+
+By Schur-Horn the achievable diagonals are exactly the vectors majorised by
+eig(Phi).  The constant vector (tr Phi/3, ...) is always achievable, so:
+
+  **if tr Phi <= 0 there is a gauge with ALL phi_e <= 0.**
+
+and tr Phi = e1 = the unweighted column total, which my round-13 law shows is
+determined by the corner and pair invariants.  **So e1 > 0 is the ONLY thing
+those invariants decide, exactly as the coordinator's rational witness showed,
+and now with the reason.**  Note the argument is FIELD-BLIND -- Schur-Horn holds
+for Hermitian matrices too, and U(3) is bigger than O(3), which is precisely why
+the complex tie exists.
+
+68. **THE WEIGHTS ARE THE GAUGE BREAKER, AND THEY ARE WORTH 3x**
+-----------------------------------------------------------------
+The weights are attached to individual atoms, so they do NOT descend to the
+gauge orbit.  Hypothesis-free (weighted_column_total, LANDED):
+
+  sum_e t_e phi_e = pairGapMinor(a,b) * sum_e t_e (lev g_e - 1)
+                    + (1-lev b)*sum_e t_e <a,g_e>^2
+                    + 2(a.b) *sum_e t_e <a,g_e><b,g_e>
+                    + (1-lev a)*sum_e t_e <b,g_e>^2
+
+and by Parseval each weighted moment is the pair's own Gram less the OUTSIDE
+moment's reading, which is where the design enters.  MEASURED on the
+complement-fails region:
+
+    unweighted total e1 > 0            31.898 %
+    WEIGHTED total sum t_e phi_e > 0   98.470 %      <- 3x, and gauge-breaking
+    Parseval-weighted distinct total   2.858 %
+    union of the three                 98.873 %
+
+**ACCEPTANCE TEST PASSED at the complex corner tie**, and it needed the control.
+My first Hermitian transcription of the weighted total was WRONG (it fired,
+falsely).  Computing sum_e t_e * det(gap) DIRECTLY over the Hermitian gaps gives
+-0.110767, -0.651253, -0.965026 at the three pairs, every one of the nine dets
+negative, max lmin -0.01685 -- the producer is SILENT, as it must be.  **The
+conjugation error is in transcribing the bilinear closed form, not in the
+producer.  Always run the direct sum as the control.**
+
+69. **THE 100 PERCENT LAW, AND WHY NO LINEAR PRODUCER REACHES IT**
+-------------------------------------------------------------------
+Battery over the complement-fails region (battery.jl, 12183 corners; grid.jl,
+12375 corners, exponents c_e = t_e^alpha (lev-1)^beta on a 7x6 grid):
+
+    1 (unweighted)                     55.553 %
+    1/t_e                              35.952 %
+    |r_e|^2                            31.684 %
+    t_e                                98.752 %
+    (lev-1)                            91.677 %
+    t_e*(lev-1)                        99.516 %
+    best power law (alpha=2, beta=3/2) 99.895 %
+    **ELEMENTARY SYMMETRIC CRITERION   100.0000 %**
+
+The last is 100 percent because it is an EQUIVALENCE (round 13, section 59), not
+because the sample was kind.  And the linear family's shortfall is not a sampling
+artefact either -- it is a theorem (linear_producer_incomplete, LANDED):
+
+  **for EVERY strictly positive (c_x,c_y,c_z) the configuration
+    phi = (1, -(c_x+1)/c_y, 0) has a positive member and negative combination.**
+
+One small positive against two large negatives outweighs any fixed weighting.
+**So e2 and e3 are not a refinement of the sum, they are REQUIRED.**  This is the
+campaign's "select or multiply, never add" doctrine turned into a proof inside
+this lane: the sum-shaped producers are capped strictly below 100 percent by
+algebra, and the complete criterion is the symmetric one.
+
+LANDED THIS ROUND (all pins standard, my audits):
+  cornerForm_polarized, cornerForm_tripleGapDet_column_total,
+  cornerForm_tripleGapDet_nine_total, esymm_signs_of_nonpos,
+  exists_pos_iff_esymm_signs, corner_column_exists_tripleGapDet_pos(_closed),
+  exists_pos_of_prod_sub_nonpos, exists_prod_sub_nonpos_of_exists_pos,
+  corner_column_exists_tripleGapDet_pos_prod,
+  tripleGram_posDef_iff_gapDet_pos_of_admissible,
+  corner_column_exists_posDef(_closed), weighted_column_total,
+  exists_pos_of_nonneg_combo_pos, corner_column_posDef_of_weighted_pos,
+  linear_producer_incomplete, corner_column_posDef_iff_esymm_signs.
+
+70. **WHAT REMAINS OF E2, STATED EXACTLY**
+--------------------------------------------
+The complete criterion is landed, so E2 on the complement-refusing branch is now
+EXACTLY:
+
+  **complement refuses ==> some admissible outside pair has
+      e1 > 0  or  e2 < 0  or  e3 > 0**
+
+with e_k the elementary symmetric functions of that pair's three gap
+determinants.  100 percent measured, equivalent to E2, selection-free in the
+inside atom, and it CANNOT be weakened to any linear functional (section 69).
+By section 67 its proof must use the weights, and by the complex tie it must use
+realness.  The weighted total carries 98.47 percent of it; the residual 1.5
+percent is exactly where one small positive determinant hides behind two large
+negative ones, which is the configuration section 69 shows no sum can see.
+
+71. SCRIPTS ADDED (scratchpad/f50)
+------------------------------------
+  gauge.jl    the readings reduction and the Schur-Horn Phi
+  wsum.jl     the weighted column total, verified, and its fire rate
+  agg.jl      fork 46's -4 at a corner, the corner split, producer union
+  battery.jl  seven producers plus the symmetric criterion
+  grid.jl     the 7x6 exponent grid, best 99.895 percent
