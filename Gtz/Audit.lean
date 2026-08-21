@@ -1401,6 +1401,7 @@ import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.CorankOneAdjugateGeneralRank
 import Gtz.Wave.BandTieTower
 import Gtz.Wave.WeightedMomentDomination
+import Gtz.Wave.GaleSelfDualCell
 import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
 import Gtz.Wave.FourSetFloorPackage
@@ -39096,3 +39097,26 @@ run_cmd do
 #print axioms Gtz.seven_le_card_dominatingFamily_of_isTie_fiveTwo
 #print axioms Gtz.seven_le_card_dominatingFamily_of_isTie_fiveThree
 #print axioms Gtz.seven_le_card_dominatingTriples_of_isTie_fiveThree
+
+-- Gtz/Wave/GaleSelfDualCell.lean -- the Gale complementation law at every rank
+-- and size on the uniform-weight slice, the tie involution it carries, and the
+-- identification of the SELF-DUAL cell as size = 2 * rank, which is the lower
+-- endpoint of the sub-threshold band at every rank
+#print axioms Gtz.naimark_rank_eq_iff_size_eq_two_mul
+#print axioms Gtz.subsetSum_univ_of_uniform
+#print axioms Gtz.subsetSum_add_compl
+#print axioms Gtz.naimarkInvWeight_of_uniform
+#print axioms Gtz.image_orderEmbOfFin_univ
+#print axioms Gtz.posDef_gap_iff_naimarkGram
+#print axioms Gtz.naimarkGram_dual_eq_coGram
+#print axioms Gtz.gap_eq_smul_one_sub_transpose_mul
+#print axioms Gtz.dominates_iff_dominates_naimarkDual_compl_of_uniform
+#print axioms Gtz.posDef_gap_iff_posDef_gap_naimarkDual_compl_of_uniform
+#print axioms Gtz.card_compl_of_naimark
+#print axioms Gtz.isTie_naimarkDual_of_isTie_of_uniform
+#print axioms Gtz.naimark_flip_dual_eq
+#print axioms Gtz.isTie_naimarkDual_iff_of_uniform
+#print axioms Gtz.isTie_iff_isTie_naimarkDual_selfDualCell
+#print axioms Gtz.naimark_rank_lt_of_size_lt_two_mul
+#print axioms Gtz.naimark_rank_gt_of_two_mul_lt
+#print axioms Gtz.exists_naimarkDual_isTie_iff_of_uniform
