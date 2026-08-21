@@ -1326,6 +1326,7 @@ import Gtz.Wave.KTwoXSplit
 import Gtz.Wave.DominatorLeverageCap
 import Gtz.Wave.KTwoLeverageExcess
 import Gtz.Wave.ContractionTaxSharp
+import Gtz.Wave.KTwoTargetFactored
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
@@ -36655,6 +36656,13 @@ run_cmd do
 #print axioms Gtz.tetra_bracketMass_eq_weight
 #print axioms Gtz.tetra_tax_tight
 #print axioms Gtz.tetra_tax_not_improvable
+
+-- Gtz/Wave/KTwoTargetFactored.lean -- on the excess surface the degree-nine
+-- chart target collapses to two products, so the corner fight is one
+-- comparison between explicit low-degree quantities
+#print axioms Gtz.k2ChartTarget_factored
+#print axioms Gtz.k2ChartTarget_pos_iff
+#print axioms Gtz.k2ChartTarget_pos_of_ratio
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the

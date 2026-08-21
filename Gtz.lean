@@ -6429,3 +6429,4 @@ import Gtz.Wave.DominatorLeverageCap
 import Gtz.Wave.KTwoLeverageExcess
 import Gtz.Wave.OppositeHornFailureDirection
 import Gtz.Wave.ContractionTaxSharp
+import Gtz.Wave.KTwoTargetFactored
