@@ -256,3 +256,108 @@ THE SCHUR CRITERION IS THE RIGHT TOOL AND IS EXACT (unchanged from K2-6)
   d2^2+d2'^2 >= 1+kappa_y.  For the two candidates through the reader the (1,1)
   entry is d1^2+p^2 resp. d1'^2+p^2, STRICTLY above one, since d1^2+d1'^2 = 1
   and p^2 > 1.  A successor should work in these 2x2 terms.
+
+K2-8. THE TWO-PLANE LANE, ROUND 3: THE REFUSAL IS NOT CLOSED, BUT THE
+      CONFIGURATION IS PINNED TO FIVE TRIPLES, AND A NEW PRODUCER LANDED
+      ON THE MAIN (6,3) FUNNEL BRANCH
+==========================================================================
+
+CALIBRATION.  Diamond reproduced exactly: leverages (2, 3.25 x4), pair minors
+{0.75, 2.0, 4.5}, 8 of 10 dominating triples.
+
+EXACT PARAMETRISATION (independent rederivation; agrees with K2-6 under
+s <-> mu, th <-> theta, (p,q) <-> (X,Y), y,z <-> b,f).  Basis e1 = g_a, plane
+P = span(e1,e2), e3 normal.  With u = cos th, v = sin th:
+    g_a = (1,0,0)     g_d = (u,-mu v,0)     g_D = (v, mu u,0)
+    g_e = (X,Y,0)     g_b = (0,pb,hb)       g_f = (0,pf,hf)
+The plane relation, q(g_d,g_D) = 0 and bracket(g_d,g_D,g_e) = 0 hold
+IDENTICALLY.  M_{dD} := g_d g_d^T + g_D g_D^T = diag(1, mu^2) exactly, so
+g_d = A f_d, g_D = A f_D with A = diag(1,mu) and {f_d,f_D} ORTHONORMAL.
+Tie heaviness of d and D forces mu^2 >= 1.
+Eight free parameters (weights 5, th, mu, hb); Parseval residual 1.1e-15.
+Parseval (1,3) is automatic, so only five of its six equations bite.
+The off-plane pair satisfies W^T diag(t_b,t_f) W = diag(tau,1) on (e2,e3),
+i.e. IT IS ITSELF A WEIGHTED RANK-TWO DESIGN, and inverting gives the three
+exact relations  pb pf = -tau hb hf,  sigma = tau(1/t_b + 1/t_f - H),
+D^2 = tau(K - H^2)  with sigma = pb^2+pf^2, D = pb hb + pf hf, H = hb^2+hf^2,
+K = hb^2/t_b + hf^2/t_f.
+
+*** ONLY FIVE OF THE TWENTY TRIPLES CAN STRICTLY DOMINATE ***
+Measured over 78560 family members with every leverage >= 1: the triples that
+are EVER strictly positive are exactly
+    ebf (96.2%), Def (37.1%), def (36.6%), Deb (6.5%), deb (6.3%)
+and the other fifteen never are.  The reason is structural and basis-free:
+  (i)  l_a = 1 makes q(g_a,g_c) = -<g_a,g_c>^2 <= 0 for EVERY c, so by the
+       landed pairGapMinor_nonneg_of_dominates the unit atom can only sit in a
+       dominating triple beside atoms orthogonal to it -- and then the (1,1)
+       gap entry is exactly 0, so such a triple is never STRICT.  (Landed this
+       round the cheap way, as Gtz.unitAtom_notMem_posDef_triple, from
+       Gtz.one_lt_leverage_of_posDef: the unit atom's leverage excess IS the
+       first Sylvester minor.)
+  (ii) The plane relation gives <g_d,g_a>^2 + <g_D,g_a>^2 = l_a = 1, and b,f
+       are blind, so any triple inside {d,D,b,f} reads g_a at total <= 1 and
+       cannot be strict (Gtz.reading_sq_sum_gt_of_posDef).
+  (iii) {d,D,e} is coplanar, hence degenerate.
+  Hence every strictly dominating triple contains the READER e and at least one
+  off-plane atom.  Five triples remain.
+  Numerically the three tight ones are dDb, dDf, abf, all at lambda_min exactly
+  0 -- each covers the e1 direction exactly.
+
+THE EXACT CRITERION FOR THE 96% TRIPLE.  {e,b,f} dominates iff H > 1 and
+    (X^2 - 1) * SC >= Y^2,   SC := sigma - 1 - D^2/(H-1),
+and SC is precisely the Schur complement of the (e2,e3) block of {b,f} against
+the identity -- so SC >= 0 is exactly "{a,b,f} weakly dominates".  Since the
+off-plane pair is a rank-two design, B >= (1/t_max) diag(tau,1) with
+t_max = max(t_b,t_f), and Schur complements are operator monotone, giving the
+clean bound  SC >= tau/t_max - 1  (verified, min gap +7.5e-07, and TIGHT when
+t_b = t_f and hb = hf).  Hence the sufficient condition
+    (X^2 - 1)(tau/t_max - 1) > Y^2       -- covers 92.23% of the family.
+
+WHY THE REFUSAL DID NOT CLOSE.  {e,b,f} alone covers 96.2%.  In its failure
+region def/Def/deb/Deb always work, and the (3,2)-design route covers 99.91% of
+that region but NOT all of it (min over failures of rho - min(kappa) =
+-0.082915, rho = (1-tau)/T1 - 1).  Imposing the funnel dominator WITH the
+deflated bound (a genuine necessary condition I had omitted, and which cuts the
+family to 75.8%) does not help: {e,b,f} still only covers 95.66% there, and the
+sub-family minimum of max_T lambda_min is +0.1246.
+Unpenalised descent, weight floor 0.05: inf max_T lambda_min = +0.0837,
+reproducing K2-7's +0.081 independently.  Active set at the minimiser: def,
+ebf, deb all at +0.0837, with dDb, dDf, abf all exactly 0.
+
+*** WHAT LANDED INSTEAD, AND IT IS ON THE MAIN TARGET ***
+Gtz/Wave/FunnelFourSetPayment.lean (commit 67d359b, 7 theorems, all pins
+[propext, Classical.choice, Quot.sound], per-module build, both umbrellas
+insertions-only).  NOT specific to the two-plane case -- it is a producer for
+the whole FUNNEL branch of (6,3).
+  The point: at a funnel, l_a = 1 makes g_a literally a UNIT vector, and the
+  funnel dominator FIXES it, so g_a is a unit null probe of G = S_T - 1.  That
+  is exactly the hypothesis the landed four-set law consumes.  Two closed forms:
+      det(G + v v^T) = e2(G) * (v . g_a)^2                 [four-set law]
+      e2 (G + v v^T) = e2(G) + leverageOf v * tr G - v.(G v)  [landed update]
+  A four-set with det > e2 cannot have four nonpositive member floors
+  (fourSet_det_le_secondInvariant_of_floors), and the member that IS the
+  dominator pays det G = 0, so the positive member lies in the star of v, where
+  star_exists_posDef_of_posDef_of_det_pos upgrades it to strict domination:
+      *** Gtz.exists_star_posDef_of_payment_lt:  if
+          leverageOf v * tr G - v.(G v)  <  e2(G) * ((v . g_a)^2 - 1)
+          then one of the three swaps of a member of T for v STRICTLY dominates.
+  Design level: Gtz.funnel_exists_strict_of_payment_lt, and the contrapositive
+      *** Gtz.isTie_funnel_payment: a funnel boundary system pays
+          e2 * ((g_p . g_a)^2 - 1)  <=  l_p * tr G - g_p.(G g_p)   at EVERY p,
+  with Gtz.isTie_sixThree_funnel_payment supplying the dominator at six points.
+  The right side is positive exactly where the landed
+  exists_outside_reading_sq_gt_one produces a reading above one, so the law
+  binds there and nowhere else.
+  VERIFIED before proving: both update identities reproduce to 3.7e-13 over
+  20000 random PSD forms with a unit null vector; the producer fired at 217 of
+  20000 draws and delivered a strictly dominating triple every time, 0 failures.
+
+WHAT A SUCCESSOR SHOULD DO.  The payment law is an exact scalar inequality on
+every funnel boundary system.  Decompose g_p = r_p g_a + h with h perpendicular
+to g_a; since G kills g_a and has eigenvalues 0 <= lam1 <= lam2 on g_a^perp,
+    l_p tr G - g_p.(G g_p) <= lam2 l_p + lam1 r_p^2,   e2(G) = lam1 lam2,
+so the producer fires whenever  lam1 lam2 (r_p^2 - 1) > lam2 l_p + lam1 r_p^2.
+Bounding lam1, lam2 below at a funnel (the landed
+pairMinorTotal_floor_of_deflatedGapBound gives lam1 lam2 >= (t_a/(1-t_a))^2) is
+the remaining work.  That is a statement about the MAIN branch, not about the
+two-plane configuration.
