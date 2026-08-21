@@ -38836,3 +38836,5 @@ run_cmd do
 #print axioms Gtz.exists_naimark_sharp_design
 #print axioms Gtz.sumElim_orderEmb_bijective
 #print axioms Gtz.gtzWeighted_six_three_iff_dominating_compl
+#print axioms Gtz.sixThree_dominating_squeeze
+#print axioms Gtz.sixThree_forced_triple
