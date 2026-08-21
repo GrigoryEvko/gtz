@@ -1466,6 +1466,7 @@ import Gtz.Wave.PlaneShadowPairBridge
 import Gtz.Wave.PivotFourDominatingTriples
 import Gtz.Wave.UnitAtomFunnelClosure
 import Gtz.Wave.RankTwoTieClassification
+import Gtz.Wave.SharpFiveSetCriterion
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39291,3 +39292,41 @@ run_cmd do
 #print axioms Gtz.sixThree_planeShadow_light_or_strictPair_of_leverage_lt_two
 #print axioms Gtz.sixThree_planeShadow_trichotomy
 #print axioms Gtz.sum_classWeight_eq_one
+
+-- Gtz/Wave/SharpFiveSetCriterion.lean -- the total gap of a design, the co-atom
+-- reading that decides each five-set, the reading budget and its counting
+-- corollary, and the transfer of Cauchy-Schwarz equality between the Euclidean
+-- metric and the metric of the total gap
+#print axioms Gtz.posDef_totalGap
+#print axioms Gtz.isUnit_det_totalGap
+#print axioms Gtz.totalGap_transpose
+#print axioms Gtz.quadForm_totalGap
+#print axioms Gtz.posDef_totalGap_inv
+#print axioms Gtz.totalGapReading_nonneg
+#print axioms Gtz.totalGapReading_pos_of_atom_ne_zero
+#print axioms Gtz.gap_erase_eq_totalGap_sub
+#print axioms Gtz.det_gap_erase_eq
+#print axioms Gtz.posDef_gap_erase_iff
+#print axioms Gtz.posSemidef_gap_erase_iff
+#print axioms Gtz.gap_erase_corankOne_iff
+#print axioms Gtz.det_gap_erase_eq_zero_of_reading_eq_one
+#print axioms Gtz.dotProduct_mulVec_eq_trace_mul_atomMatrix_gen
+#print axioms Gtz.sum_smul_reading_eq_trace
+#print axioms Gtz.sum_weight_mul_reading_eq_trace_gen
+#print axioms Gtz.sum_reading_eq_trace_mul_total
+#print axioms Gtz.sum_one_sub_weight_mul_totalGapReading
+#print axioms Gtz.card_le_of_forall_one_le_totalGapReading
+#print axioms Gtz.exists_posDef_gap_erase
+#print axioms Gtz.exists_posDef_gap_erase_sixThree
+#print axioms Gtz.sum_totalGapReading_sixThree
+#print axioms Gtz.gramDefect_eq_zero_iff
+#print axioms Gtz.leverageDefect_eq_zero_iff
+#print axioms Gtz.totalGapDefect_eq_zero_iff_leverageDefect_eq_zero
+#print axioms Gtz.hasParallelPair_of_totalGapDefect_eq_zero
+#print axioms Gtz.totalGapDefect_eq_zero_of_parallel
+#print axioms Gtz.coSharePairForm_comm
+#print axioms Gtz.coSharePairForm_eq_det
+#print axioms Gtz.sum_coShareOf
+#print axioms Gtz.gap_erase_trichotomy
+#print axioms Gtz.forall_posDef_gap_erase_iff
+#print axioms Gtz.exists_null_of_gap_erase_reading_eq_one

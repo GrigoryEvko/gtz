@@ -6778,3 +6778,4 @@ import Gtz.Wave.UnitAtomFunnelClosure
 --     rank-two only: pairs ARE the selections, rank(P o P) <= dim Sym^2 R^k = 3 only at
 --     k = 2, and tr S = 2k - 1 = 3 only at k = 2.
 import Gtz.Wave.RankTwoTieClassification
+import Gtz.Wave.SharpFiveSetCriterion
