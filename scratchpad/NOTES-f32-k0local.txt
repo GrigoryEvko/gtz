@@ -1141,3 +1141,118 @@ KERNEL NOTE: this is a GRADIENT statement, so by the banked rule it is EVIDENCE,
 not a proof step. Its kernel-native shadow is the saturation predicate
 "bm_T > 0 <-> d_T = 0", which is polynomial in the design and needs no tangent
 space. That is the object to formalise, not the gradient identity.
+
+================================================================================
+F52. FORK 52 -- BRANCH B COLLAPSES, THE KILL LOSES ITS SELECTOR, AND THE
+     HARNESS WAS BROKEN TWICE
+================================================================================
+
+F52-1. THE CAPSTONE (Gtz/Wave/BranchBProductKill.lean, commit ba0a383 + the
+       sibling's 95ecdb9 which tracked the file; 12 theorems, all pins standard)
+--------------------------------------------------------------------------------
+(a) BRANCH B COLLAPSES SYLVESTER TO ITS TOP MINOR.  Strict domination is three
+    minors; branch B supplies the leverage excess and the pair minor for every
+    atom and every pair AT ONCE.  So on branch B
+        T dominates strictly  <=>  0 < tripleGapDet T
+    (branchB_posDef_iff_gapDet_pos, via liveTriple_posDef_iff_gapDet_pos).
+    The coordinator's caveat "det > 0 is not domination" (2790 measured
+    counterexamples) is exactly the inadmissible-pair case and DOES NOT APPLY
+    inside branch B.  Branch B is the hypothesis that removes it.
+
+(b) THE SAME COLLAPSE WITH NO DETERMINANT IN IT.  Substituting the landed
+    currency bridge sq_tripleBracket_eq_gapDet_add_pairMinors:
+        T dominates strictly  <=>  sum q_ij + sum x_i + 1  <  [abc]^2
+    (branchB_posDef_iff_bracket_sq_gt), so a branch-B tie forces the reverse at
+    ALL C(m,3) triples simultaneously (branchB_isTie_bracket_sq_le).  Bracket,
+    pair minor, leverage excess -- the hinge's, admissibility's and heaviness's
+    own currencies, with the determinant eliminated.
+
+(c) THE KILL WITHOUT A SELECTION RULE.  Feeding (a) into the landed
+    exists_pos_of_prod_sub_nonpos: for ANY finite family of triples and ANY
+    t > 0,   prod (t - tripleGapDet) <= 0  on branch B  ==>  NOT IsTie
+    (branchB_not_isTie_of_prod_nonpos).  LOSSLESS: at a branch-B tie every such
+    product is >= t^card (branchB_isTie_prod_ge).  Two-triple form landed too.
+    This is the aggregation that survives where the sum provably cannot --
+    weighted_aggregate_design_blind kills the sum, not this.
+
+(d) THE STRICT PRODUCER (posDef_of_pairAreaSum_lt_bracket_sq).  The landed
+    producer returns WEAK domination from pairAreaSum <= bracket^2; making the
+    hypothesis strict makes the conclusion strict, which is what a tie refuses.
+    Consequence, landed: at ANY tie, EVERY spanning triple has
+        [abc]^2 <= triplePairAreaSum          (isTie_pairAreaSum_ge_bracket_sq)
+    -- tie-necessary, chart-free, both sides wedges and brackets, and it holds
+    at every triple at once rather than at a selected one.
+
+F52-2. THE PRODUCT DEVICE IS A PRODUCER, NOT A CLOSING FORM (coordinator's
+       correction, adopted)
+--------------------------------------------------------------------------------
+prod(t - phi) <= 0 holds exactly on t in (2nd largest phi, largest phi], and
+those windows are data-dependent (disjoint across instances by 3 orders of
+magnitude).  So the device converts a disjunction over MEMBERS into an
+existential over PROBES.  Use it to PRODUCE a dominator from any convenient t;
+do NOT hunt a single closing polynomial.  With 20 factors the degree explodes
+anyway.  Recorded in the module docstring.
+
+F52-3. TWO TOOL FAILURES, BOTH CAUGHT BY LANDED THEOREMS -- THE RULE WORKS
+--------------------------------------------------------------------------------
+FAILURE 1 (f52tie.jl): descent on F = max_T lambda_min(S_T) returned
+    F = -6e14  with NEGATIVE LEVERAGES.
+A leverage is a sum of squares.  IMPOSSIBLE => the tool, not the mathematics.
+Cause: whitening through an explicit adjugate inverse blows up when the moment
+matrix goes singular, and the optimiser DRIVES IT THERE to manufacture the
+minimum.  Repaired with Cholesky whitening (M = L L^T, V = L\H, G = V^T V).
+
+FAILURE 2 (f52tie2.jl, first run): after the Cholesky repair the descent still
+returned  F = 0.99999817 at m=5 and 0.99999962 at m=6.
+GtzWeighted 5 3 IS A LANDED THEOREM and says F >= 1 ALWAYS.  IMPOSSIBLE again.
+Cause: softmax weights underflow, one weight -> 1e-300, its whitened atom's
+leverage explodes, and eigmin of the resulting huge 3x3 loses precision.
+Repaired with a weight floor (min t > 1e-5), a leverage ceiling (max l < 1e6)
+and a tightened conditioning guard (1e-8).
+AFTER REPAIR: min F = 1.000000611 (m=5), 1.000001370 (m=6).  THE SUBSTRATE
+ASSERTION PASSES.  f52tie2.jl now carries assert_substrate() which re-checks it.
+
+*** CONSEQUENCE FOR THIS LANE: EVERY NUMBER IN THE FIRST TWO RUNS IS VOID. ***
+No saturation conclusion and no parallel-pair conclusion may be drawn from them.
+
+F52-4. SATURATION AND THE BRIDGE REMAIN UNDECIDED -- honestly
+--------------------------------------------------------------------------------
+With the repaired harness the descent reaches F = 1.000003, i.e. NEAR-ties, not
+ties.  A near-tie with F > 1 HAS a strict dominator and is therefore NOT a tie,
+so its saturation and min-wedge readings say nothing about the tie locus.  Of 95
+m=6 near-ties, 39 were branch B -- all with F > 1, i.e. all with a strict
+dominator, which is CONSISTENT with branch B having no ties but proves nothing.
+THE SATURATION TEST IS NOT YET ANSWERED.  What is needed is a descent that
+reaches EXACT ties (F = 1 to 1e-12), i.e. a constrained solve on the active set,
+not an unconstrained random descent -- which is the same Chebyshev-point lesson
+the K1 lane learned.  DO NOT quote any saturation or min-wedge number from f52.
+
+F52-5. TWO NEGATIVE RESULTS OF MY OWN, WITH WITNESSES
+--------------------------------------------------------------------------------
+(a) THE UNWEIGHTED PRODUCER AGGREGATE IS TRUE BUT LOOSE.  Summing (d) above over
+    all triples, using the three identities (all verified to 1e-13 at the
+    fixtures)
+        sum_{a<b} w_ab = e2(S),  sum_T [T]^2 = det S,
+        sum_T e2(K_T) = (m-2) e2(S)
+    gives the unweighted, size-carrying tie condition   det S <= (m-2) e2(S).
+    It is NOT vacuous (1.6-4.1 percent of random designs violate it) but it is
+    LOOSE at ties: ratio 0.556 (5,3 diamond), 0.461 (6,3 split), 0.667 (tetra)
+    against the permitted 1.  Recorded, NOT built upon.  f52prod.jl.
+(b) THE BRANCH-B CURRENCY LAW RE-DERIVES THE LANDED SIZE LAW, NOT MORE.
+    Summing branchB_isTie_bracket_sq_le over the 20 triples with
+        sum_T sum_{ij in T} q_ij = 4 Q,  sum_T sum_{i in T} x_i = 10 X,
+        Q = e2(S) - 5X - 15,  X = tr S - 6
+    gives  det S <= 4 e2(S) - 10 tr S + 20, which is EXACTLY the landed
+    isTie_branchB_sixSet_bound rewritten from Gamma = S - I to S.  A clean
+    consistency check on both, and NO new content.  Aggregation keeps landing
+    on things already known -- the doctrine again.
+
+F52-6. WHAT BRANCH B IS AND IS NOT
+--------------------------------------------------------------------------------
+branch B ==> no parallel pair (not_admissiblePair_of_parallel_of_heavy), so
+branch B lies inside the primitive locus.  BUT NOT CONVERSELY: a primitive tie
+may carry a light atom, or an inadmissible pair that is NOT parallel.  Indeed
+inadmissible + heavy only gives  w_ab <= l_a + l_b - 1, which is far from 0.
+SO CLOSING BRANCH B DOES NOT CLOSE THE HINGE.  The real target for the arm is
+"a primitive (6,3) tie is impossible"; branch B is one sub-case of it, and the
+inadmissible-but-not-parallel sub-case is still owned by nobody.
