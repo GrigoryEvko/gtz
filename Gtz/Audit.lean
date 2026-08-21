@@ -39541,6 +39541,11 @@ run_cmd do
 #print axioms Gtz.hingeHoldsAtSize_six_three_iff_chartCore
 #print axioms Gtz.chartCoPairDeterminant_eq_pairCapSlack
 #print axioms Gtz.sixThree_pair_dictionary_in_chartGap
+#print axioms Gtz.ChartCore.toChartPoint_chart
+#print axioms Gtz.ChartCore.toChartPoint_weight
+#print axioms Gtz.chartCoreOfDesign_gap
+#print axioms Gtz.chartCoreOfDesign_weight
+#print axioms Gtz.weight_mul_one_sub_weight_eq
 
 -- Gtz/Wave/SharpDesignInvolution.lean -- the sharp design as a DEFINITION, the round trip
 -- that returns the original atoms on the nose, and the proof that the round trip has no
@@ -39664,6 +39669,10 @@ run_cmd do
 #print axioms Gtz.diagonal_mul_diagonal_inv
 #print axioms Gtz.negConjInv_ne_self_of_diagonal_pos
 #print axioms Gtz.sharpChartGap_ne_chartGapOfDesign
+#print axioms Gtz.sqrtWeight_ne_zero
+#print axioms Gtz.sqrtWeight_mul_self'
+#print axioms Gtz.sqrtWeight_sq
+#print axioms Gtz.card_erase_univ_eq
 -- Gtz/Wave/CornerAxisPairAdjugateLaw.lean
 #print axioms Gtz.det_pairGapMatrix
 #print axioms Gtz.det_tripleAtomGap
