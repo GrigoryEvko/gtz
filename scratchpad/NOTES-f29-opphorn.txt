@@ -1129,3 +1129,128 @@ trace bound can never deliver lam_max(Z) < 1.  DO NOT RETRY IT.
   wide.jl      the 43-producer union and the escaper printout
   weighted.jl  the Parseval-weighted total and its closed form
   trace.jl     the vacuous trace criterion
+
+======================================================================
+ROUND 13 (FORK 50).  THE FIXED-LINE REDUCTION IS REFUTED.  SELECTION
+OVER THE INSIDE ATOMS IS REMOVED ALTOGETHER, AND THE COLUMN AND NINE
+TOTALS ARE CLOSED.
+Gtz/Wave/OppositeHornSelect.lean  (cc048a2, 1d4fad6, c51d049)
+======================================================================
+
+57. **REFUTED: "BUILD THE CERTIFICATE ON FOUR CONSTRAINTS" DOES NOT MEAN A
+     FIXED FOUR**
+-----------------------------------------------------------------------------
+Round 11 section 49 found that exactly four of the ten live refusals bind at the
+tie-branch minimiser -- the complement plus a LINE of the 3x3 informative grid
+(rows = fixed inside atom, columns = fixed outside pair).  The natural reading,
+and the one I was briefed with, is that a four-constraint system suffices.
+IT DOES NOT.  Adversarial descent (desc.jl, 25-parameter chart, 32 threads):
+
+    inf over corners of max lmin over ...        floor 0.01
+      all ten live triples                        +0.0050
+      complement + a FIXED row (3 informative)    -0.9999
+      complement + a FIXED column                 -0.9999
+      complement alone                            -1.0000
+
+So dropping the other six constraints is INVALID: the optimiser simply moves to
+a corner where the four chosen triples are all deeply refused and some triple
+OUTSIDE the chosen four dominates.  An active set at a minimiser describes that
+minimiser; it is not a licence to delete constraints globally.  The four-binding
+structure is real and it is still useful, but only for a critical-point /
+KKT-style argument, never for a subsystem.
+(Note also: random sampling floors at +0.0738, descent at +0.0050 -- a factor of
+15.  Sampling remains useless here, as everywhere in this campaign.)
+
+58. THE 3x3 GRID, AND HALF THE SELECTION REMOVED
+--------------------------------------------------
+The ten live refusals are the complement plus a 3x3 grid: nine informative
+triples {e,d,d'} indexed by (inside atom e, outside pair {d,d'}).  Selection
+therefore has TWO components -- which inside atom, which outside pair.  This
+round removes the first one completely.
+
+**THE COLUMN TOTAL, CLOSED** (cornerForm_tripleGapDet_column_total, 7.3e-12):
+
+  sum_{e in C} tripleGapDet a b g_e
+    = (lam-2)*pairGapMinor a b - (lev a + lev b - 2)
+      + lam * pairAxisForm a b <u,a> <u,b>
+
+Every inside coordinate cancels.  The mechanism is the corner form POLARIZED
+(cornerForm_polarized, 2.1e-14): the inside triple pairs any two probes by their
+inner product plus the scale times the two axis readings, which is exactly the
+three second moments the axis form needs.  This PROMOTES A MEASUREMENT TO AN
+IDENTITY -- round 10 recorded the column sum negative at 48722 of 49845
+admissible outside pairs, and this says why, and exactly when it is not.
+
+**THE NINE TOTAL** (cornerForm_tripleGapDet_nine_total, 5.5e-12): summing the
+column total over the three outside pairs removes the inside triple entirely.
+The nine-sum is a function of the OUTSIDE TRIPLE AND lam ALONE.  So the first
+symmetric function of the nine cannot separate two corners sharing an outside
+triple and a scale -- a structural reason it is weak, not a sampling artefact.
+
+59. **SELECTION WITHOUT A SELECTOR: THE COLUMN CRITERION**
+----------------------------------------------------------
+The sum is only the FIRST elementary symmetric function of the three column
+determinants.  All three decide the existential EXACTLY:
+
+  some triple over the pair has positive gap determinant
+    <=>  0 < e1  or  e2 < 0  or  0 < e3          (exists_pos_iff_esymm_signs)
+
+Forward is elementary (three nonpositive reals: sum <= 0, e2 >= 0, product <= 0).
+The converse is the ALREADY-LANDED Gtz.nonneg_of_elementarySymmetric_nonneg
+(Gtz/Quantitative/ExpectedCharPolynomial.lean:396) read at the negated triple --
+found by grepping the substrate first, exactly as the standing rule demands.
+DO NOT RE-DERIVE IT.
+
+MEASURED over 313309 admissible columns: the criterion agrees with the truth at
+EVERY point, zero exceptions.  And the three conditions are wildly unequal:
+
+    0 < e3 (the PRODUCT)  fires 27.003 %
+    e2 < 0                fires 10.873 %
+    0 < e1 (the SUM)      fires  2.581 %
+
+**THE PRODUCT CARRIES TEN TIMES THE INFORMATION OF THE SUM.**  This is the
+campaign's "select or multiply, never add" doctrine measured inside this lane
+for the first time, and it says the arm has been reading its determinants
+through the weakest of the three available symmetric functions.
+
+**THE PRODUCT FORM, GENERAL** (exists_pos_of_prod_sub_nonpos): for ANY finite
+family and ANY t > 0, if prod_i (t - f i) <= 0 then some f i > 0 -- because three
+(or n) nonpositive members make every factor positive.  One scalar, one probe, no
+symmetric functions, no selector.  The converse holds by taking t at the positive
+member, so the criterion is lossless over the positive probes.  This is stated
+for a general Finset and is REUSABLE BY EVERY LANE with a selection problem
+(K1's five active refusals, the coherent horn's three inside slots).
+
+60. WHAT IS STILL OPEN, AND THE HONEST SCOPE
+----------------------------------------------
+(a) THE SECOND SELECTION SURVIVES -- which of the three outside pairs.  On the
+    residual region where the complement refuses (measured 16395 corners), the
+    nine-element Descartes disjunction needs SIX of the nine conditions to reach
+    every point; the best single one is the third symmetric function at 87.1 %,
+    and the sum is at 27.97 %.  No single symmetric function closes it.
+(b) A POSITIVE GAP DETERMINANT IS NOT YET A DOMINATOR.  tripleGapDet is the third
+    Sylvester minor; domination also needs liveness.  At the corner level the two
+    agree in every sample (61.106 % of corners carry an informative triple with a
+    positive gap determinant, and at every one of them some such triple is also
+    live -- 0 exceptions in 106171), but that is MEASURED.  At the individual
+    triple level they do NOT agree: 2790 instances of det > 0 with a dead triple.
+    The liveness step is posDef_subsetSum_iff_live_and_gapDet.
+(c) THE CRITERION CANNOT CLOSE THE HORN, AND THIS IS PROVED, NOT HOPED.  It is an
+    IFF, hence a faithful reformulation, hence it inherits exactly the field
+    blindness of the determinant data.  MANDATORY PRE-TEST RUN: at the complex
+    tie (scratchpad/corner-ten/complextie.txt, which is HERMITIAN Parseval --
+    residual 2.9e-15 -- not bilinear; the bilinear reading is off by 1.62 and is
+    the wrong form) all nine informative gap determinants are negative, all three
+    columns fail to fire, and the criterion correctly stays SILENT.  Realness must
+    still enter through the per-slot two-point pinning, exactly as banked.
+
+61. SCRIPTS  (scratchpad/f50)
+------------------------------
+  corner.jl  exact corank-two corner sampler + the ten live refusals as a grid
+  grid.jl    census: tie margin by sampling, argmax is the complement 87 %
+  desc.jl    THE REFUTATION: adversarial descent on the reduced systems
+  phi.jl     the second-moment identity and the column criterion census
+  esym.jl / esym2.jl  the Descartes disjunction over nine, det>0 versus live
+  resid.jl   fire rates restricted to the complement-fails region
+  colid.jl   the polarized form and the column total, verified
+  nine.jl    the nine total, verified
