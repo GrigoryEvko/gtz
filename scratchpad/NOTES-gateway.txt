@@ -672,3 +672,59 @@ F65-9. ROUND SUMMARY (fork 65).  E1 IS NOT CLOSED and I do not state it.
   METHOD RULE ADDED: a constrained optimiser reporting a violation with
   constraint slacks at machine epsilon has proved nothing.  Recheck in extended
   precision before believing it -- feasibility tolerance is not feasibility.
+
+F65-10. THE DEGENERATE RAY IS NOT IN THE IMAGE OF THE CORNER MAP — the round's
+  most useful structural finding, and it is an ARGUMENT, not a measurement.
+  The ray of F65-3 requires  sum t = 1  exactly, where t = (t1,t2,t3) are the
+  THREE OUTSIDE weights.  Parseval fixes the sum of ALL SIX weights at 1
+  (WeightedDesign.weight_sum_one), so
+       sum t = 1   <=>   the three INSIDE weights sum to zero
+                   <=>   every inside weight is zero,
+  which WeightedDesign.weight_pos forbids.  Hence NO DESIGN maps to the ray:
+  it is a boundary of the (b,t) BOX that the corner map approaches and never
+  reaches.  This is the same weight-collapse boundary that fork 61 measured for
+  the K0 joint (inf|F| = 0.0026/0.0142/0.0229/0.0305 at weight floors
+  0.00/0.01/0.03/0.05) and fork 45 for K1 -- a THIRD arm hitting the identical
+  artifact, and here it is settled by Parseval rather than by descent.
+  SUPPORTING MEASUREMENT (not the argument): 34964 real corners built with all
+  outside excesses positive gave min max_i |b_i - 1/2| = 0.0216 and sum t range
+  [0.1000, 0.9900]; points with |b - 1/2| < 0.05 AND sum t > 0.9: ZERO.
+  CAVEAT, STATED PLAINLY: I did not verify that the corner image is bounded away
+  from the ray UNIFORMLY.  Nelder-Mead targeting of the ray over a 16-parameter
+  corner construction TIMED OUT at 2 minutes and is unfinished -- treat the
+  quantitative gap as unmeasured.  What IS established is the qualitative fact:
+  sum t = 1 is unattainable for a design, so the ray is not in the image.
+
+F65-11. WHAT THIS CHANGES FOR THE CERTIFICATE — the successor's best lead.
+  Every Handelman/Positivstellensatz failure recorded in F58-6, F58-12, F58-13
+  was on the (b,t) BOX, whose closure CONTAINS the ray, where the target is
+  tight and no strict certificate can exist.  But E1 only ever needs KEY on the
+  IMAGE OF THE CORNER MAP, which by F65-10 excludes the ray.
+  SO THE RIGHT MOVE IS TO ADD THE DESIGN'S OWN CONSTRAINT AND RETRY:
+     sum t <= 1 - tau   for the inside weight mass tau > 0,
+  or, better, carry the inside weights explicitly as variables so that
+  sum(all six) = 1 is an EQUATION of the system rather than an unused fact.
+  MEASURED (exact rationals, 7522 strictly feasible points, bucketed by
+  eps = 1 - sum t):
+     eps ~ 1e-0: min KEY = +2.07e-04     eps ~ 1e-3: min KEY = +1.21e-01
+     eps ~ 1e-1: min KEY = +2.83e-02     eps ~ 1e-4: min KEY = +7.45e-02
+     eps ~ 1e-2: min KEY = +3.78e-02     eps ~ 1e-5: min KEY = +2.00e-01
+  KEY does NOT degrade as eps -> 0 in these samples, i.e. the tight direction is
+  NOT simply "small inside mass" -- so a bound of the form KEY >= c*eps is NOT
+  what the data suggests, and a successor should not assume one.  The honest
+  reading: the ray is approached along a thin direction the sampler does not
+  favour, and locating that direction is the next measurement.
+  DO NOT re-run anything in the F65-8 do-not-list.
+
+F65-12. SCOPE NOTE ON THE CAYLEY CHART (queue item 2) — why I did not use it.
+  The Cayley chart parametrises the INSIDE atoms of a corner
+  (V = diag(1,1,mu) Q, Q = (I-K)(I+K)^{-1}), and I confirmed it builds corners
+  cleanly: 20000/20000 draws gave N_O positive definite.
+  But the E1 variables (b,t) are OUTSIDE-triple data -- the weighted outside
+  Gram M, the excesses a_i and the outside weights t_i.  The Cayley chart does
+  not chart that domain; it charts the corner that produces it.  So it is the
+  right tool for the CELLS lane (corner geometry) and the wrong tool for KEY
+  as currently posed.  It becomes relevant only via F65-11, i.e. if the inside
+  weights are carried explicitly -- and THEN the Cayley chart is exactly how to
+  parametrise the inside atoms rationally.  Recorded so the next fork does not
+  spend a round discovering the mismatch.
