@@ -8,10 +8,11 @@ WHAT LANDED
   Gtz/Wave/ChartComplementBlockLaw.lean   (9 theorems)
   Gtz/Wave/ChartSharpDesignGap.lean       (8 theorems)
   Gtz/Wave/ChartFrobeniusLaw.lean         (8 theorems)
+  Gtz/Wave/ChartGaleSpectralLaw.lean      (7 theorems)
 
-2284 lines, 115 declarations, 101 theorems. All 101 pin to
-[propext, Classical.choice, Quot.sound], all 101 are pinned in Gtz/Audit.lean,
-and all six imports are in BOTH umbrellas. Six collision scans over Gtz/ and
+2508 lines, 122 declarations, 108 theorems. All 108 pin to
+[propext, Classical.choice, Quot.sound], all 108 are pinned in Gtz/Audit.lean,
+and all seven imports are in BOTH umbrellas. Seven collision scans over Gtz/ and
 Skeleton/, namespace-aware, one after each module: zero collisions.
 
 JOB A WAS ALREADY SHIPPED. DO NOT RE-DERIVE IT.
@@ -293,18 +294,26 @@ WHAT THE NUMERICS CONFIRMED THAT I ALSO PROVED
   * Both diagonal readings, 2200 tests each, ZERO mismatches, and the duality
     swaps them through (M_E)_cc = -t_c(1-t_c)(M^{-1})_cc.
 
-A STRONGER LAW THAN THE ONE I LANDED, AND IT IS (6,3) ONLY
+A STRONGER LAW, NOW ALSO LANDED, AND IT IS SELF-DUAL-CELL ONLY
 
-I landed det(M[C,C] + T_C) = det(1 - M[C^c,C^c] - T_{C^c}) at every cell. At
-m = 2k the FULL SPECTRA agree, not only the determinants:
+Gtz/Wave/ChartComplementBlockLaw.lean has
+det(M[C,C] + T_C) = det(1 - M[C^c,C^c] - T_{C^c}) at every cell. At m = 2k the
+FULL SPECTRA agree, not only the determinants, and
+Gtz/Wave/ChartGaleSpectralLaw.lean now proves that
+(Gtz.det_shifted_chartGapBlock_eq, design-free in
+Gtz.chartCore_det_shifted_gapBlock_eq):
 
   spec( M[C,C] + diag(t_C) ) = spec( diag(1 - t_{C^c}) - M[C^c,C^c] )
 
 residual 4.00e-15 at (6,3), (8,4), (10,5), (4,2). It FAILS off m = 2k: the top-p
-spectral difference is 0.97 at (7,3) and 0.998 at (8,3). The reason is visible in
-my own proof: both sides are det(V_C)^2 through V_{C^c}, and V_{C^c} is square
-ONLY at m = 2k, so spec(V_{C^c} V_{C^c}^T) and spec(V_{C^c}^T V_{C^c}) coincide
-only there.
+spectral difference is 0.97 at (7,3) and 0.998 at (8,3). The proof says exactly
+why: the argument needs the Weinstein-Aronszajn flip TWICE, and the second flip
+needs the COMPLEMENTARY row block V_{C^c} to be square, which happens only at
+m = 2k. Off the cell V_{C^c} V_{C^c}^T and V_{C^c}^T V_{C^c} differ by a block of
+zeros. The determinant law survives everywhere because a determinant is the one
+coefficient those zeros do not move.
+
+So at (6,3) the twenty 3x3 blocks carry only TEN spectra between them.
 
 WARNING, measured. This does NOT say C dominates exactly when C^c dominates in
 the SAME design. Those two disagree on 2992 of 8000 subsets.
