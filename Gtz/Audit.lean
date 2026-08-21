@@ -1440,7 +1440,10 @@ import Gtz.Wave.InadmissibleParallelJoint
 import Gtz.Wave.InadmissiblePairSeparation
 import Gtz.Wave.EtwoRealnessGauge
 import Gtz.Wave.PairComplementBudget
+import Gtz.Wave.FourAtomRigidity
+import Gtz.Wave.BranchBPairCap
 import Gtz.Wave.PairBudgetAggregate
+import Gtz.Wave.PairMinorSumBudget
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -38515,3 +38518,42 @@ run_cmd do
 #print axioms Gtz.threeFrame_all_tight
 #print axioms Gtz.exists_singleton_class
 #print axioms Gtz.exists_vanishing_row
+
+-- Gtz/Wave/FourAtomRigidity.lean -- the four-atom branch of the admissible case
+-- is one explicit family: the pairing cap is an equality there, the product of a
+-- triple's three pairings is pinned, and a strictly positive convex combination
+-- cannot dominate its own terms, so every co-share is one third
+#print axioms Gtz.det_smul_atomMatrix
+#print axioms Gtz.det_smul_atomMatrix_add
+#print axioms Gtz.four_complement_pair
+#print axioms Gtz.four_complement_triple
+#print axioms Gtz.four_pair_cap_eq
+#print axioms Gtz.four_pair_cap_eq_triple
+#print axioms Gtz.four_triple_pairing_prod
+#print axioms Gtz.four_tripleGapDet_identity
+#print axioms Gtz.eq_of_le_weighted_average
+#print axioms Gtz.coShare_mul_coWeight
+#print axioms Gtz.four_coShare_total
+#print axioms Gtz.four_coShare_triple_ge_one
+#print axioms Gtz.fourAtom_branchB_coShare
+#print axioms Gtz.fourAtom_branchB_leverage
+#print axioms Gtz.fourAtom_branchB_tripleGapDet_eq_zero
+
+-- Gtz/Wave/BranchBPairCap.lean -- the pair budget read on the admissible case:
+-- the first upper bound on a named pair minor in the campaign
+#print axioms Gtz.branchB_pairGapMinor_cap
+#print axioms Gtz.branchB_excess_pos_of_cap
+#print axioms Gtz.branchB_pairGapMinor_le_div
+#print axioms Gtz.branchB_forall_pairGapMinor_cap
+
+-- Gtz/Wave/PairMinorSumBudget.lean -- the second symmetric invariant has a pair
+-- budget as well, from the landed row law for the pair minors; and a positive
+-- budget at heavy atoms forces its own admissibility, so the producer carries
+-- no side condition and at a tie heaviness is free
+#print axioms Gtz.sum_pairCompl_eq
+#print axioms Gtz.weighted_pairMinorSum_pairCompl
+#print axioms Gtz.pairGapMinor_pos_of_pairBudget_pos
+#print axioms Gtz.one_lt_leverage_of_pairBudget_pos
+#print axioms Gtz.not_isTie_of_pairBudget_pos_of_heavy
+#print axioms Gtz.exists_pairMinorSum_pos_of_budget_pos
+#print axioms Gtz.exists_tripleGapDet_nonpos_of_pairMinorSum_budget_pos

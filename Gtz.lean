@@ -6531,4 +6531,7 @@ import Gtz.Wave.BlindMemberPlane
 import Gtz.Wave.BlindMemberNormalForm
 import Gtz.Wave.TwoPlaneCollapse
 import Gtz.Wave.PairComplementBudget
+import Gtz.Wave.FourAtomRigidity
+import Gtz.Wave.BranchBPairCap
 import Gtz.Wave.PairBudgetAggregate
+import Gtz.Wave.PairMinorSumBudget
