@@ -166,3 +166,15 @@ V +- 2|P| with V = x_a x_b x_c - sum x_i p_jk^2 and P = |p_ab p_ac p_bc|, the
 sign being the triple's chirotope.  The budget then becomes a finite sign system
 on the chirotope with an EXACT total, rather than an inequality to estimate --
 which is the first setting in which realness enters this question as an equation.
+
+F75-9.  WHAT IS IN THE RESIDUAL (measured, scratchpad/f75/residual.py)
+-----------------------------------------------------------------------
+Driving descent to designs where EVERY pair budget is negative (117 such (6,3)
+designs at weight floor 0.05), the designs are not close to being ties at all:
+    strictly dominating triples per design:  min 3, median 5.0, max 9
+So the producer's residual is comfortably inside GTZ -- it is blind, not tight.
+AND A CAUTION FOR THE SUCCESSOR: the 3-cycle sign of those strict dominators is
+    positive 63.3%,  negative 36.7%
+so a selector keyed to the chirotope SIGN alone does not pick them out.  The
+sign form was already killed at F49-18; this confirms it in the residual of the
+budget as well.  The MAGNITUDE form (F68-7) is what remains.
