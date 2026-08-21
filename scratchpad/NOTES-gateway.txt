@@ -893,3 +893,135 @@ F66-8. **A CAVEAT ON THE (a,t) BOX ITSELF, FOUND BY TESTING IT AT REAL CORNERS.*
   it does, say so and cite it; if it does not, the box target is the wrong one
   and every Handelman failure in F58-6, F58-12, F58-13, F65-8 and F66-6 was
   aimed at a proxy.  This is cheap to test and it gates the whole lane.
+
+============ ROUND 8 (fork 67) — THE TIGHT FAMILY, AND NO CERTIFICATE EXISTS ============
+
+F67-1. **THE TIGHT FAMILY OF THE BOX, EXACT AND CLOSED FORM.**  The box system
+  carries a TWO-PARAMETER family of points at which the target holds with
+  EQUALITY while the weight slack stays strictly positive:
+
+      t = (0, t2, t3)      a = ( 1 - (t2+t3)/2 ,  t3/2 ,  t2/2 )
+
+  Verified SYMBOLICALLY (sympy, scratchpad/f67/fam1.py), exactly zero in every
+  slot, for all t2, t3:
+      dIM = 0            dM = 0            sum a - 1 = 0
+      p12 = t2*(1-t2-t3)/2          p13 = t3*(1-t2-t3)/2
+      p23 = (1-t2-t3)*(2-t2-t3)/2
+  so with 0 < t2, 0 < t3, t2+t3 < 1 ALL THREE PAIR SLACKS ARE STRICTLY
+  POSITIVE — the family is DEEP INSIDE the pair polytope, not on its boundary,
+  and S = 1 - t2 - t3 is free in (0,1).
+  Note b = (1-(t2+t3)/2, t3/(2(1-t2)), t2/(2(1-t3))) — the CROSS pairing
+  a2 = t3/2, a3 = t2/2 is the shape, and it is a DOUBLE root: at t1 = 0 the
+  system {dM=0, sum a=1} reduces to (2*a3 - t2)^2 = 0.
+
+F67-2. **TWO RECORDED CONJECTURES DIE.  Both were reachability artifacts.**
+  (a) `1 - sum a >= c*S` is FALSE for every c > 0 (the family has 1-sum a = 0
+      at every S in (0,1)).  The recorded measurement `min (1-suma)/S = 0.0248`
+      came from a sampler that could not reach t1 = 0.
+  (b) F65-13's emptiness question — is
+      {dIM>=0, dM>=0, pair, sum t <= 1-tau, sum a >= 1} empty for every tau>0 —
+      is answered **NO**.  The family sits inside it for every tau in (0,1).
+      DO NOT re-run that question as posed.
+  Also corrected: the recorded `max sum a = 0.988188` is wrong; the supremum is
+  exactly 1 and it is ATTAINED on the family.
+
+F67-3. **THE FAMILY LIVES ONLY ON t1*t2*t3 = 0.**  The tight system
+  {sum a = 1, dIM = 0, dM = 0} is three equations; (1) and (2) are linear in a
+  and (3) is a cubic on that line, so up to three roots per weight vector.
+  Solved EXACTLY (sympy, scratchpad/f67/cubic.py) at four rational weight
+  vectors with all t_i > 0 — t = (1/10,1/5,3/10), (1/4,1/4,1/4), (1/6,1/3,1/4),
+  (1/20,2/5,1/4).  Every time: two complex roots and one real root with
+  NEGATIVE components (e.g. a = (-0.00647, 1.91294, -0.90647)).  ZERO feasible
+  tight points with all weights positive.
+
+F67-4. **THE HANDELMAN OBSTRUCTION — NO CERTIFICATE EXISTS AT ANY DEGREE.**
+  This is the round's main result and it is LANDED.  Two exact rational
+  witnesses, sharing ONE weight vector t = (0, 3/10, 1/4):
+
+    W1  a = (29/40, 1/8, 3/20)     b = (29/40, 5/28, 1/5)
+        sum a = 1 exactly,  1 - sum a = 0
+        dIM = 0, dM = 0, S = 9/20
+        pairs = (27/400, 9/160, 261/800)      all > 0
+        amgm  = (27/80, 63/200, 9/20)         all > 0
+        caps  = (11/40, 23/40, 3/5)           all > 0
+        A = (1, 7/10, 3/4),  e2 = 3/40 = sum a_i t_i
+        ==> the ONLY vanishing generators are { t1, dIM, dM }
+
+    W2  a = (0, 7/20, 3/8)         b = (0, 1/2, 1/2)
+        sum a = 29/40,  1 - sum a = 11/40 > 0
+        dIM = 0, dM = 0, t1 = 0, S = 9/20
+        pairs = (7/20, 3/8, 0)    amgm = (7/10, 3/4, 0)   caps = (1, 7/20, 3/8)
+
+  ARGUMENT.  Write the certificate as sum_alpha lambda_alpha * (monomial in the
+  generators), lambda >= 0.  At W1 every generator is >= 0 and the target is 0,
+  so every monomial with a positive coefficient is 0 at W1, hence carries a
+  generator that vanishes at W1, hence one of {t1, dIM, dM}.  At W2 all three of
+  those are 0, so the whole certificate is 0 there — but the target is 11/40.
+  Contradiction.  **NO DEGREE BOUND APPEARS**, so no amount of degree helps.
+  Verified exactly in scratchpad/f67/witness.py.
+
+F67-5. LP RUNS, ALL WITH AN ENRICHED GENERATOR SET NO EARLIER ROUND USED.
+  Generators {a_i, t_i, A_i, c_i = A_i - a_i, S, p_ij, m_ij = A_iA_j - 4a_ia_j,
+  dIM, dM}.  The m_ij are the arithmetic-mean bounds 4 b_i b_j <= 1: they follow
+  from the pair constraint through the SQUARE (b_i - b_j)^2 >= 0 and are
+  therefore NOT products of the other generators.  Adding them is a genuine
+  strengthening, and it still fails:
+     target 1 - sum a :  D=2 infeasible, D=3 infeasible, D=4 infeasible
+  **This CORRECTS F66-6's "D=4 numerically inconclusive".**  In the enriched set
+  the D=4 LP is 3062 columns by 210 rows and HiGHS returns a clean INFEASIBLE.
+  D=3 infeasibility is now EXPLAINED, not just observed: F67-1 forces every
+  monomial to carry dIM, dM, or all three weights, and F66-2's centre simplex
+  forces a second factor, so degree 3 cannot reach.
+
+F67-6. THE WEIGHT-MULTIPLIED TARGET AND THE WEIGHT FLOOR — BOTH STILL FAIL.
+  F67-4's obstruction does NOT block t1*t2*t3*(1 - sum a) (that target vanishes
+  at both witnesses), so it was worth trying.  It is infeasible at D=4 and D=5
+  (12444 products, 462 monomials).
+  Adding a weight floor generator t_i - tau with tau = 1/10 — the repair F67-4
+  points at, since both witnesses have a zero weight and no design does —
+  is infeasible at D=2, D=3 and D=4 (5818 products).
+  READING: with a floor the feasible set is COMPACT and the target is STRICTLY
+  POSITIVE on it, so no two-point obstruction of the F67-4 kind can exist there.
+  The failure is therefore one of COMPLETENESS: the constraint set is not a
+  polytope (dIM and dM are cubic), so Handelman's theorem does not apply and
+  products of generators are simply not a complete dictionary.  **The lane's
+  method has been wrong since F58: it needs SQUARE multipliers (Positivstellensatz
+  /SOS), or a hand proof, not an LP over products.**
+
+F67-7. NUMERICS, FOR THE RECORD.  Julia, 100 threads, 3,000,000 refined samples
+  of the box system with local ascent (scratchpad/f67/hunt.jl): sum a NEVER
+  exceeded 1; best 0.9999484344883168, and the maximiser always drove min(t) to
+  zero (min t = 3.65e-6 at the record).  Continuation of the family off the
+  boundary (scratchpad/f67/impossible.py), keeping dIM = dM = 0 while raising
+  t1 from 0 at t2 = 0.30, t3 = 0.25, stays FEASIBLE throughout and gives
+     t1 = 1e-4  -> 1 - sum a = 6.207e-05
+     t1 = 1e-3  -> 6.204e-04
+     t1 = 1e-2  -> 6.173e-03
+     t1 = 0.05  -> 3.014e-02
+     t1 = 0.10  -> 5.814e-02
+     t1 = 0.20  -> 1.047e-01
+  i.e. 1 - sum a is LINEAR in t1 near the family with slope about 0.62 there.
+
+F67-8. LANDED.  Gtz/Wave/GatewayCertificateObstruction.lean, commit e2b34e6,
+  22 theorems, every pin [propext, Classical.choice, Quot.sound], per-module
+  build exit 0, both umbrellas wired insertions-only.
+  Contents: a REUSABLE two-point obstruction lemma for certificates of
+  Handelman type (Gtz.certValue_eq_zero_of_obstruction — stated for an arbitrary
+  generator count, usable by ANY lane before it spends a round on an LP); the
+  family with all six identities; the pair-slack positivity; the refutation of
+  the slack bound; the two witnesses with every generator value; and
+  Gtz.gateway_no_handelman_certificate.
+
+F67-9. ROUND SUMMARY (fork 67).  E1 IS NOT CLOSED and I hand over no gateway.
+  REFUTED WITH EXACT WITNESSES: the `1 - sum a >= c*S` conjecture (F67-2a); the
+  F65-13 emptiness question as posed (F67-2b); the recorded max sum a and the
+  recorded min ratio (F67-2); F66-6's "inconclusive" D=4 reading (F67-5).
+  PROVED AND LANDED: the tight family, and that NO Handelman-type certificate
+  exists at any degree (F67-4).
+  WHAT A SUCCESSOR SHOULD DO.  Stop running LPs over products of generators —
+  F67-6 shows the dictionary is incomplete for this set, and F67-4 shows the
+  unfloored target is hopeless outright.  Either (i) prove sum a <= 1 by hand
+  using that the tight set is exactly the t1*t2*t3 = 0 boundary (F67-3), or
+  (ii) drop the box: F66-8 and the parent's Gtz.det_sum_le_box_add_pairMinors
+  make the box the EXTREMAL case of the true problem, so the true problem may
+  be easier, not harder, once the off-diagonals r_ij are carried.
