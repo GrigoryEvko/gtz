@@ -6801,3 +6801,25 @@ import Gtz.Wave.ChartQuadraticCore
 --   THE FLIP PRESERVES Gtz.IsTie AND IT DOES NOT PRESERVE Gtz.HasParallelPair.  Refer to
 --     Gtz.hinge_not_preserved_by_duality.
 import Gtz.Wave.SharpDesignInvolution
+
+-- THE TWENTY VOLUMES AS A MEASURE: MARGINALS, THE PAIR TOTAL, AND THE TIE IN VOLUME
+-- CURRENCY.
+--   Gtz.shareOf, Gtz.pairVolume, Gtz.selectionVolume name the point, pair and triple
+--     masses of the determinantal measure the chart of a design carries.
+--   Gtz.sum_selectionVolume_eq_pairVolume is the landed row law in that vocabulary, and
+--     Gtz.sum_sum_selectionVolume_eq_two_mul_shareOf is the ONE-POINT MARGINAL, which the
+--     campaign never had: the ten triples through a label total that label's share.
+--   Gtz.sum_sum_pairVolume prices the whole pair layer at 2k, so Gtz.sum_fifteen_pairVolume_sixThree
+--     and Gtz.sum_fifteen_pairCapSlack_sixThree both read three, and
+--     Gtz.exists_pairVolume_le_one_fifth_sixThree with
+--     Gtz.exists_pairCapSlack_le_one_fifth_sixThree give every (6,3) design a pair of mass
+--     at most one fifth on BOTH halves of the hinge dictionary.  SHARP at the icosahedron.
+--   Gtz.weightProd_mul_tripleGapDet_eq_marginal puts the Sylvester determinant of a triple
+--     into that currency, and Gtz.marginal_tie_equality_of_isTie_sixThree closes it at a tie.
+--   Gtz.hadamard_sq_tripleBracket is the rank-three Hadamard bound with NO hypothesis,
+--     which the landed Gtz.sq_tripleBracket_le_leverage_prod reaches only from five.  It
+--     gives negative association, Gtz.selectionVolume_le_shareOf_prod.
+--   Gtz.pairCapSlack_nonneg_of_ne proves the pairing cap at EVERY size with no dual design.
+--   Gtz.sixThree_volume_generating is the generating polynomial of the measure and
+--     Gtz.sixThree_volume_generating_pos is its positivity on the positive orthant.
+import Gtz.Wave.TwentyVolumeMarginals

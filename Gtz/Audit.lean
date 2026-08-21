@@ -1461,6 +1461,7 @@ import Gtz.Wave.TripleVolumeRowLaw
 import Gtz.Wave.ComplementVolumeRowLaw
 import Gtz.Wave.TripleInvariantChart
 import Gtz.Wave.VolumeFloorSizeSix
+import Gtz.Wave.TwentyVolumeMarginals
 import Gtz.Wave.NaimarkDualDesign
 import Gtz.Wave.NaimarkDualExistence
 import Gtz.Wave.NaimarkCycleFree
@@ -39566,3 +39567,51 @@ run_cmd do
 #print axioms Gtz.fourCoplanar_iff_crossNormSq_naimarkSharpAtom
 #print axioms Gtz.hasParallelPair_naimarkSharpDesign_of_fourCoplanar
 #print axioms Gtz.fourCoplanar_naimarkSharpDesign_iff_crossNormSq
+
+-- Gtz/Wave/TwentyVolumeMarginals.lean -- the twenty volumes as a determinantal measure.
+#print axioms Gtz.sum_shareOf
+#print axioms Gtz.shareOf_nonneg
+#print axioms Gtz.shareOf_le_one
+#print axioms Gtz.pairVolume_nonneg
+#print axioms Gtz.pairVolume_comm
+#print axioms Gtz.pairVolume_self
+#print axioms Gtz.selectionVolume_nonneg
+#print axioms Gtz.tripleBracket_repeat_lead
+#print axioms Gtz.sq_tripleBracket_swap_right
+#print axioms Gtz.sq_tripleBracket_swap_left
+#print axioms Gtz.selectionVolume_swap_right
+#print axioms Gtz.selectionVolume_swap_left
+#print axioms Gtz.selectionVolume_repeat_first
+#print axioms Gtz.selectionVolume_repeat_outer
+#print axioms Gtz.selectionVolume_repeat_right
+#print axioms Gtz.sum_selectionVolume_eq_pairVolume
+#print axioms Gtz.sum_pairVolume_eq_two_mul_shareOf
+#print axioms Gtz.sum_sum_selectionVolume_eq_two_mul_shareOf
+#print axioms Gtz.sum_sum_pairVolume
+#print axioms Gtz.sum_fifteen_pairVolume_sixThree
+#print axioms Gtz.exists_pairVolume_le_one_fifth_sixThree
+#print axioms Gtz.pairCapSlack_eq_one_sub_shareOf_add_pairVolume
+#print axioms Gtz.sum_fifteen_pairCapSlack_sixThree
+#print axioms Gtz.exists_pairCapSlack_le_one_fifth_sixThree
+#print axioms Gtz.pairCapSlack_eq_det_weightedComplement
+#print axioms Gtz.pairCapSlack_nonneg_of_ne
+#print axioms Gtz.pairVolume_sub_pairCapSlack
+#print axioms Gtz.pairVolume_pos_of_one_lt_shareOf_sum
+#print axioms Gtz.crossNormSq_pos_of_one_lt_shareOf_sum
+#print axioms Gtz.pairCapSlack_pos_of_shareOf_sum_lt_one
+#print axioms Gtz.exists_shareOf_sum_le_one_sixThree
+#print axioms Gtz.exists_one_le_shareOf_sum_sixThree
+#print axioms Gtz.hadamard_sq_tripleBracket
+#print axioms Gtz.selectionVolume_le_pairVolume_mul_shareOf
+#print axioms Gtz.selectionVolume_le_shareOf_prod
+#print axioms Gtz.one_le_sum_twenty_shareOf_prod_sixThree
+#print axioms Gtz.weightProd_mul_tripleGapDet_eq_marginal
+#print axioms Gtz.tripleGapDet_eq_det_tripleGram_sub_one
+#print axioms Gtz.tripleGapDet_nonneg_of_dominates
+#print axioms Gtz.tripleGapDet_eq_zero_of_dominates_of_not_posDef
+#print axioms Gtz.marginal_relation_of_dominates
+#print axioms Gtz.marginal_tie_equality_of_isTie_sixThree
+#print axioms Gtz.posDef_scaledAtomSum
+#print axioms Gtz.sixThree_volume_generating
+#print axioms Gtz.sixThree_volume_generating_pos
+#print axioms Gtz.sixThree_volume_generating_one
