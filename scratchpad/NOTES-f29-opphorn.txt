@@ -1,0 +1,789 @@
+NOTES -- fork 29, the opposite horn (C2-6), round 1 of 2026-08-20
+=================================================================
+
+0. HEADLINE
+-----------
+THE SIGN COUPLING IS EXHAUSTED BY TWO COHERENT BASES, NOT THREE.  The landed
+Gtz.corner_signWord_dichotomy spends the coupling only when all three inside
+bases are coherent.  Two already suffice, and the count follows:
+
+  AT LEAST TWO OF THE THREE INSIDE BASES CARRY AN OPPOSITE-SIGN PAIR
+  (Gtz.corner_generic_two_oppositePairs), hence TWO informative triples of
+  strictly positive squared bracket at two DISTINCT bases
+  (Gtz.corner_two_informative_bracket_floors).
+
+And the corner owns an EXACT, CLOSED-FORM bracket budget in seven scalars,
+which is the resource any floor argument spends.
+
+COMMIT 5f54ef7  Gtz/Wave/OppositeHornCount.lean (377 lines, 6 thms)
+                Gtz/Wave/OppositeHornBudget.lean (566 lines, 14 thms)
+   20/20 pins audit to [propext, Classical.choice, Quot.sound] (my own run).
+   Both modules build standalone (9295 jobs, exit 0).
+   FULL GATE FAILS -- in Gtz/Wave/TripleGramChart.lean (a SIBLING's module,
+   clean in the working tree, therefore BROKEN AT HEAD, three errors at
+   169:31, 188:38, 212:57).  Not mine, not touched.
+
+1. THE MECHANISM (new)
+----------------------
+At an outside atom write the three base products
+  M^x_d = [xyd][xzd],  M^y_d = [yxd][yzd],  M^z_d = [zxd][zyd].
+Landed: M^x M^y M^z = -T^2 with T = [xyd][xzd][yzd] (baseProduct_cycle), and
+P_xy P_xz P_yz >= 0 (inside_tripleProduct_nonneg).  Coherence at bases y and z
+makes P_xz M^y_d >= 0 and P_xy M^z_d >= 0 through the landed half-line lemma.
+The product of the three signed readings is -(P_xyP_xzP_yz) T^2, so at every
+BRACKET-GENERIC atom the free reading is forced STRICTLY NEGATIVE:
+
+  P_yz * M^x_d < 0        (Gtz.corner_twoCoherent_atom_disagree)
+
+But the corner transport totals exactly those readings:
+  sum_{d in C^c} t_d M^x_d = P_yz,  so  sum_d t_d (P_yz M^x_d) = P_yz^2 > 0,
+a positive total of nonpositive terms.  Contradiction unless some outside atom
+is coplanar with an inside pair (Gtz.corner_twoCoherent_exists_coplanar).
+
+CENSUS (census.jl, 32675 generic real corners, and budget.jl 24414 more):
+  coherent-base count 0 / 1 / 2 / 3  =  28737 / 3938 / 0 / 0
+  ZERO violations of the two-coherent law.
+  The one-coherent stratum is 12.05 percent and NOT empty -- the count is
+  SHARP, three opposite bases is NOT a theorem.
+  In every one-coherent sample the disagreement split across the two opposite
+  bases is (1,2): each generic outside atom disagrees at EXACTLY ONE base.
+  Derivation: the per-atom readings multiply to -(pos)T^2 < 0, so an ODD
+  number of the three are negative; coherence at z removes z; so exactly one
+  of x,y.  Both x and y must receive at least one (else two coherent bases).
+  CONSEQUENCE: every opposite base carries EXACTLY TWO opposite pairs
+  (#dis * #agree = 1*2 or 2*1).
+
+2. THE BRACKET GRAM OF A CORNER (new, exact, all verified to 1e-13)
+--------------------------------------------------------------------
+Read the three anchored families xi_d = [xyd], eta_d = [xzd], zeta_d = [yzd]
+over the complement.  Their weighted Gram entries are ALL corner scalars:
+
+  sum_{d in C^c} t_d xi_d^2      = 1 + e_x + e_y - t_z (1+lam)   =: A_xy
+  sum_{d in C^c} t_d xi_d eta_d  = P_yz            (landed transport)
+  sum_{d in C^c} t_d xi_d zeta_d = -P_xz
+  sum_{d in C^c} t_d eta_d zeta_d = P_xy
+
+The inside slots contribute exactly one term, t_z [xyz]^2 = t_z(1+lam), and the
+pair minor of the rank-one gap turns P_xy^2 into e_x e_y.
+Landed as corner_compl_bracket_sq_sum / _mixed_xy / _mixed_xz.
+
+THE INFORMATIVE BRACKET BUDGET (Lagrange at three slots + the landed bridge):
+
+  (1+lam) * sum_{{d,d'} in C^c} t_d t_d' [x d d']^2  =  A_xy * A_xz - e_y e_z
+
+Landed as corner_informative_bracket_budget (sum form) and
+corner_informative_bracket_budget_closed (closed form).  Verified 5.7e-13.
+
+THE OUTSIDE GRAM DETERMINANT (Cauchy-Binet at three slots):
+
+  A_xy A_xz A_yz - 2 e_x e_y e_z - A_xy e_x e_y - A_xz e_x e_z - A_yz e_y e_z
+    = t_4 t_5 t_6 * (det of the 3x3 bracket matrix)^2  =  (1+lam)^2 t_4t_5t_6 [C^c]^2
+
+Landed as corner_outside_gram_det, with corner_outside_gram_det_nonneg the
+cubic inequality every corank-two corner obeys (equality iff the complement
+triple is coplanar).  Verified 3.9e-12.
+
+THE FLOOR-BUDGET COLLISION (real-only), corner_oppositePair_budget_bound:
+
+  4 t_d t_d' |M^x_d| |M^x_d'|  <=  A_xy A_xz - e_y e_z
+
+at TWO distinct bases by the count law (corner_two_oppositePair_budget_bounds).
+
+3. NEGATIVE RESULTS -- DO NOT SPEND A ROUND ON THESE
+-----------------------------------------------------
+(a) THE GLOBAL 20-TRIPLE BRACKET BUDGET IS VACUOUS AT A CORNER.  The sibling's
+    Gtz.bracket_budget (sum over triples of t t t [abc]^2 = 1) partitions at a
+    corner into closed corner scalars:
+      1 = t_x t_y t_z (1+lam)                          [dominator]
+        + t_x t_y A_xy + t_x t_z A_xz + t_y t_z A_yz   [nine two-inside]
+        + t_x b_x + t_y b_y + t_z b_z                  [nine one-inside]
+        + detG/(1+lam)^2                               [complement]
+    with b_x = (A_xy A_xz - e_y e_z)/(1+lam).  MEASURED EXACT to 1.1e-14, and
+    sympy reduces (total - 1) to IDENTICALLY ZERO once lam = e_x+e_y+e_z is
+    substituted (red.py).  So the global budget carries NO information at a
+    corner beyond the landed corner_heavyExcess_sum.  It is a consistency
+    check on the closed forms, not a constraint.  partition.jl, red.py.
+(b) THE AGGREGATED FLOOR IS CAUCHY-SCHWARZ, HENCE FIELD-BLIND.  Summing the
+    opposite-sign floor over all opposite pairs at one base and using the
+    budget gives exactly (sum_d t_d |M^x_d|)^2 <= A_xy A_xz, which is
+    Cauchy-Schwarz on the two anchored families and holds verbatim over C.
+    THE REALNESS OF THE FLOOR LIVES PER PAIR AND DIES UNDER SUMMATION.  Any
+    closing certificate must consume the floors pair by pair.
+(c) The corner budget versus the sibling's tie-necessary wedge-bracket tax
+    (Gtz.isTie_wedgeBracket_tax) is far from binding at generic corners:
+    budget/cap ratio median 0.153, only 2 of 42840 bases exceed 1 (collide.jl).
+    The tax is not the cap that closes the horn by itself.
+
+4. WHERE THE FIELD ACTS, SHARPENED
+-----------------------------------
+The bridge gives (1+lam)[x d d']^2 = (a-b)^2 with a = [xyd][xzd'],
+b = [xyd'][xzd] and ab = M^x_d M^x_d'.  Over R, ab has a SIGN, so
+  ab < 0  =>  (1+lam)[x d d']^2 = (|a| + |b|)^2      (opposite pair)
+  ab > 0  =>  (1+lam)[x d d']^2 = (|a| - |b|)^2      (same-sign pair)
+a TWO-POINT set.  Over C only |a-b|^2 in [(|a|-|b|)^2, (|a|+|b|)^2].  The
+landed floor is the AM-GM weakening (|a|+|b|)^2 >= 4|ab| of the first line;
+the EXACT two-point form is strictly stronger and is the sharp real-only
+statement of the horn.
+
+5. RESIDUAL AND NEXT
+---------------------
+The count law is SHARP, so the horn splits into
+  (i)  all three bases opposite  (88 percent of corners), six opposite pairs;
+  (ii) exactly one coherent base (12 percent), four opposite pairs, each
+       generic outside atom disagreeing at exactly one of the two others.
+Neither is empty as a set of CORNERS -- both must be emptied using the TEN
+REFUSALS, which no law of this round consumes.  The refusal shape at a tie:
+every atom has leverage > 1 (landed complement_erase_posDef_of_leverage_le_one),
+so tr(S_T - 1) > 0 on every informative triple, and refusal forces
+e2(S_T - 1) <= 0 or det(S_T - 1) <= 0.  With
+  [T]^2 = 1 + tr(S_T-1) + e2(S_T-1) + det(S_T-1)
+that is an UPPER cap on the informative bracket, to be played against the
+EXACT budget of section 2.  That collision -- exact budget from below, refusal
+cap from above, per pair with the two-point form of section 4 -- is the next
+brick.  Scripts: scratchpad/f29/{census,budget,collide,partition,descent}.jl,
+red.py.  descent.jl reaches the tie branch by random-restart descent on the
+13-parameter corner manifold; random sampling does NOT (min margin 0.064).
+
+======================================================================
+ROUND 2 (same session, after the quota switch).  Commits e14c7ed, 8819d98
+======================================================================
+
+6. WHAT LANDED IN ROUND 2
+--------------------------
+e14c7ed  Gtz/Wave/OppositeHornSplit.lean (13 thms, all pins standard)
+  corner_atom_signTriple_neg      THE SIGN TRICHOTOMY: the three signed base
+     readings of a bracket-generic outside atom multiply to
+     -(P_xy P_xz P_yz) T_d^2 < 0.  An ODD number is negative.  Every aggregate
+     sign result of round 1 is a corollary of this one line.
+  corner_coherentBase_atom_alternates   one coherent base => every generic atom
+     disagrees at EXACTLY ONE of the other two.
+  corner_oppositePair_bracket_exact / corner_samePair_bracket_exact
+     THE TWO-POINT FORM.  ab < 0 => (1+lam)[x d d']^2 = (|a|+|b|)^2 ;
+     0 < ab => (1+lam)[x d d']^2 = (|a|-|b|)^2, with a = [xyd][xzd'],
+     b = [xyd'][xzd].  The landed floor is the AM-GM weakening of the first.
+  corner_oppositePair_budget_sharp   keeping the exact form adds a^2 + b^2 on
+     top of the landed 4|ab| in the budget bound.
+  atomBracket_sq_eq_gap_invariants   [p l r]^2 = 1 + gapTrace + gapSecond
+     + gapDet.  Pure ring on the landed invariant definitions.
+  refused_triple_invariant_trichotomy / isTie_triple_invariant_trichotomy /
+  isTie_bracket_invariant_cap        THE REFUSAL SCALARISATION.  Through the
+     landed Gtz.posDef_iff_invariants_pos a refused triple fails one of its
+     three characteristic invariants, so every refusal CAPS the squared bracket
+     of its own triple.  Stated for every design and every triple, not only at
+     a corner -- usable by the whole campaign.
+  corner_bracket_partition           the four channels of a corner total the
+     unit bracket budget (see 3(a): this is an identity, not a constraint).
+  corner_inside_pair_wedge_eq / corner_one_le_inside_pair_wedge
+     the wedge of an inside pair is 1 + e_e + e_f >= 1, so A CORNER NEVER
+     CONTAINS A PARALLEL PAIR: primitivity of the dominator is free.
+8819d98  Gtz/Wave/OppositeHornCoherentBranch.lean (3 thms, all pins standard)
+  corner_coherentBase_pair_same_sign      genericity upgrades coherence from a
+     nonnegative product to a STRICTLY positive one at every pair.
+  corner_coherentBase_bracket_difference  hence EVERY informative bracket of the
+     coherent base is on the DIFFERENCE branch, at all three pairs, while its
+     budget A_xz A_yz - e_x e_y stays fixed.  The opposite bases sit on the SUM
+     branch at their two opposite pairs.
+
+7. THE TIE-BRANCH DESCENT (descent.jl, 48 restarts, weight floor 0.01)
+-----------------------------------------------------------------------
+Best margins 1.43e-2 ... 2.40e-2, all STRICTLY POSITIVE -- the descent never
+reaches a tie, as it must not.  Noise guard: max atom norm 9.8, far below the
+1e4 scale where the trig eigenformula loses the small eigenvalues; LAPACK
+eigvals on Symmetric was used, never a trig formula.  Diagnostics at the four
+best minimisers:
+  * branches(tr, e2, det) over the nine one-inside triples = [0,2,6], [0,0,6],
+    [0,1,8], [0,0,7], and in round two [0,0,7], [0,2,9].
+    gapTrace <= 0 NEVER FIRES.  So at the tie branch the refusal trichotomy
+    collapses to min(gapSecond, gapDet) <= 0, and gapDet <= 0 is the dominant
+    branch (6 to 9 of the 9 triples).  The trace branch may be dropped from any
+    certificate that assumes proximity to the tie branch.
+  * coherent count at the best minimisers: 0, 0, 0, 1 and 0, 0.  THE
+    ONE-COHERENT STRATUM REACHES THE SAME NEAR-TIE MARGINS AS THE ALL-DISAGREE
+    STRATUM.  It is NOT excluded by distance from the tie branch and must be
+    killed on its own terms.
+  * budget/cap ratio per base reaches 1.0000, 0.9889, 0.9760 at the best
+    minimisers -- the budget-versus-cap collision is TIGHT exactly where the
+    corner is hardest.  That is the right shape for the closing certificate.
+
+8. THE ONE-BASE GAP: DECIDED, AND THE ANSWER IS NEGATIVE
+---------------------------------------------------------
+"Extend the exact bracket floor to EVERY base" is FALSE as a statement about
+corners.  The count law is SHARP: 3938 of 32675 generic corners (12.05 percent)
+have exactly one coherent base, and that base carries NO opposite pair, hence
+no floor.  The descent shows the stratum reaches the tie branch.  So the horn
+MUST be split, and the coherent-base stratum killed using the refusals.  The
+handle is corner_coherentBase_bracket_difference: in that stratum the coherent
+base is pinned to the SMALL branch at all three pairs, so it contributes the
+least possible bracket mass while owing a budget fixed by the corner scalars.
+
+9. RESIDUAL, EXACTLY, FOR THE SUCCESSOR
+----------------------------------------
+Not reached this session: the collision of the per-base floors against the ten
+refusals through the five-set pair system.  Its shape is now fully determined:
+  LOWER (exact, landed): (1+lam) * sum_{pairs} t_d t_d' [e d d']^2
+      = A_ef A_eg - e_f e_g                (corner_informative_bracket_budget)
+  UPPER (landed, tie-necessary): each triple's [T]^2 <= 1 + (the two invariants
+      that survive), with min(gapSecond, gapDet) <= 0 and gapTrace > 0 measured
+      at the tie branch          (isTie_bracket_invariant_cap)
+  BRANCH (landed, real-only): sum branch at opposite pairs, difference branch
+      at same-sign pairs         (corner_oppositePair/samePair_bracket_exact)
+Spend realness ONLY at the branch step.  The complex witness satisfies every
+AM-weakened law; the exact two-point form is what it violates.
+
+======================================================================
+ROUND 3.  Commit a237a79.  THE ONE-BASE GAP IS DISSOLVED.
+======================================================================
+
+10. THE MANDATORY BENCH, RECOMPUTED AT 512 BITS (witness.jl)
+-------------------------------------------------------------
+Source: scratchpad/ctie_g.npy / ctie_t.npy (float64-native, so 512 bits removes
+DOWNSTREAM roundoff, not input error).  Parseval residual 1.018e-14,
+lam = 3.764068911978433 from |[012]|^2 - 1 (banked 3.764068911978454, agrees to
+13 digits).  Complex brackets = determinants with the atoms as columns; the
+Grassmann-Plucker three-term relation is field-blind, so
+  (1+lam)|[e d d']|^2 = |a - b|^2 ,  a = [efd][egd'] , b = [efd'][egd].
+
+  base pair   (1+lam)|[edd']|^2     4|a||b|   (|a|-|b|)^2  (|a|+|b|)^2  verdict
+   0  {3,4}        50.6915          36.2800     16.2634      52.5434   floor ok / TWO-POINT VIOLATED
+   0  {3,5}       104.4055          42.0343    104.1334     146.1677   floor ok / TWO-POINT VIOLATED
+   0  {4,5}       110.9563          83.7598     34.9161     118.6759   floor ok / TWO-POINT VIOLATED
+   1  {3,4}        50.3500          45.6617     12.4382      58.0998   floor ok / TWO-POINT VIOLATED
+   1  {3,5}       117.0514          23.9900    109.6643     133.6543   floor ok / TWO-POINT VIOLATED
+   1  {4,5}       145.7172          61.6025     85.7495     147.3521   floor ok / TWO-POINT VIOLATED
+   2  {3,4}        20.1586          52.3815      0.8467      53.2282   FLOOR VIOLATED / TWO-POINT VIOLATED
+   2  {3,5}         2.5332           8.1645      0.6034       8.7679   FLOOR VIOLATED / TWO-POINT VIOLATED
+   2  {4,5}         1.1086           5.9763      0.9842       6.9604   FLOOR VIOLATED / TWO-POINT VIOLATED
+
+THE BANKED NUMBERS ARE CONFIRMED: base 2 {3,4} gives 20.1586 < 52.3815 and
+base 2 {3,5} gives 2.5332 < 8.1645, matching NOTES-bracket's 20.16 < 52.38 and
+2.53 < 8.16.  The a-fortiori deduction of round 2 rests on correct arithmetic.
+
+AND THE EXACT FORM IS FAR STRONGER THAN THE FLOOR:
+  AM-weakened floor violated at 3 of 9 slots, ALL at the single base 2;
+  EXACT two-point form violated at 9 of 9 slots, at EVERY base.
+Relative distance from the nearer branch endpoint: 1.9e-3 to 3.6e-1, all far
+above both the 512-bit noise and the 1e-14 input noise.  QUANTIFIED: the AM
+weakening costs the horn two thirds of its separating slots.
+
+11. CONSEQUENCE -- THE ONE-BASE GAP WAS AN ARTEFACT
+-----------------------------------------------------
+The gap existed because the FLOOR needs an opposite pair, and a coherent base
+has none.  The EXACT form needs only genericity: both mixed minors nonzero gives
+the product a strict sign, and BOTH signs are pinned (sum branch on an opposite
+pair, difference branch on a same-sign pair).  Landed as
+  Gtz.corner_bracket_twoPoint_dichotomy   (no sign hypothesis at all)
+  Gtz.corner_generic_bracket_twoPoint     (its hgen-driven form)
+so every one of the nine informative slots of a generic corner is pinned,
+including all three slots of a coherent base.  The horn no longer needs the
+"floor at every base"; it needs the PINNING at every slot, which it now has.
+
+12. A THIRD NEGATIVE: EVEN THE EXACT FORM DIES UNDER SUMMATION
+----------------------------------------------------------------
+Summing the pinned slots of one base over its three pairs:  for an opposite pair
+the branch contributes -2 M_d M_d', and for a same-sign pair it contributes
+-2 M_d M_d' as well -- the SAME expression, because the sign of the branch and
+the sign of the product cancel.  So
+  sum_p t_d t_d' (|a_p| ± |b_p|)^2  =  A_ef A_eg - (sum_d t_d M^e_d)^2
+which is the landed transport squared, P_fg^2 = e_f e_g.  An IDENTITY, carrying
+no field information.  So the realness is irreducibly PER SLOT, at every level
+of sharpness -- not merely for the AM-weakened floor (round 1, section 3(b)) but
+for the exact two-point form as well.  NO SUMMED CERTIFICATE CAN EVER CLOSE THE
+HORN.  A closing certificate must combine the slots multiplicatively, or select
+one slot, never add them.
+
+13. THE WEIGHT POWERS MATCH THE COHERENT-HORN FORK
+----------------------------------------------------
+Their kill reads t_4 t_5 t_6 (det Gamma)^2 = (sqrt(u5 v6 v4) - sqrt(u6 u4 v5))^2,
+a weight TRIPLE times a squared DIFFERENCE.  Mine has the same two degrees:
+  degree 2:  the budget carries its brackets on pair products t_d t_d'
+             (corner_informative_bracket_budget)
+  degree 3:  the outside Gram determinant is t_4 t_5 t_6 times a squared
+             alternating determinant (corner_outside_gram_det)
+and my difference branch is their difference form -- both are the small branch of
+the same two-point phenomenon, reached by consuming the third pinning rather
+than only the products and the plane sums.  The correspondence is exact.
+
+14. RESIDUAL FOR THE SUCCESSOR (order 3, per slot only)
+--------------------------------------------------------
+  PINNED (landed, real-only, all nine slots):
+      (1+lam)[e d d']^2 = (|a| ± |b|)^2       corner_bracket_twoPoint_dichotomy
+  CAP (landed, tie-necessary, per triple):
+      [T]^2 <= 1 + two surviving invariants   isTie_bracket_invariant_cap
+      with gapTrace > 0 measured at the tie branch and gapDet <= 0 dominant
+  BUDGET (landed, exact, per base):
+      (1+lam) sum_p t_d t_d' [e d d']^2 = A_ef A_eg - e_f e_g
+Collide PER SLOT: (|a| ± |b|)^2 <= (1+lam)(1 + gapTrace + surviving invariants).
+Do NOT sum the slots (section 12).  Spend realness only at the branch step.
+
+======================================================================
+ROUND 4.  ORDER 3 UNDER THE NO-SUMMATION RULE.  BOTH SHAPES TESTED.
+======================================================================
+
+15. SHAPE (b), THE PRODUCT: REFUTED, 0 of 14165, AND THE 0 IS STRUCTURAL
+-------------------------------------------------------------------------
+The natural multiplicative candidate is the outside-triple bracket.  With
+xi_d = [xyd], eta_d = [xzd], zeta_d = [yzd] over the complement,
+  det M = C+ - C-,
+  C+ = xi4 eta5 zeta6 + xi5 eta6 zeta4 + xi6 eta4 zeta5,
+  C- = xi4 eta6 zeta5 + xi5 eta4 zeta6 + xi6 eta5 zeta4,
+and det M = (1+lam)[d4 d5 d6] -- VERIFIED to 1.5e-14 (cycle.jl), which also
+confirms the signed form of the landed corner_outside_gram_det.
+If both cycles were SIGN-DEFINITE then |det M| = | |C+| -/+ |C-| |, a two-point
+set, and the outside bracket would carry a THIRD realness step -- the coherent
+horn's (sqrt - sqrt)^2 in my currency.
+
+MEASURED: C+ definite 43.7 percent, C- definite 44.1 percent, BOTH definite
+0 of 14165 (0.0 percent).
+
+AND THE ZERO IS A THEOREM, not rarity.  Pairing the monomials,
+  mp_i * mm_j = (a base pair product) * (a square),
+and the nine products run over the three pairs of each of the three bases:
+  mp1 mm1 -> M^z_5 M^z_6 * xi4^2      mp1 mm2 -> M^x_4 M^x_5 * zeta6^2
+  mp2 mm2 -> M^z_4 M^z_6 * xi5^2      mp2 mm3 -> M^x_5 M^x_6 * zeta4^2
+  mp3 mm3 -> M^z_4 M^z_5 * xi6^2      mp3 mm1 -> M^x_4 M^x_6 * zeta5^2
+  mp1 mm3 -> M^y_4 M^y_6 * eta5^2     mp2 mm1 -> M^y_4 M^y_5 * eta3^2
+  mp3 mm2 -> M^y_5 M^y_6 * eta4^2
+Both cycles definite => all mp share a sign and all mm share a sign => every
+mp_i mm_j shares the sign sigma => every one of the NINE base pair products has
+sign sigma.  Multiplying the three that belong to ONE base gives
+(M_4 M_5 M_6)^2 (square) >= 0 with sign sigma^3 = sigma, so SIGMA > 0; then all
+three bases are coherent, which Gtz.corner_twoCoherent_exists_coplanar forbids
+at a generic corner.  THERE IS NO THIRD PINNING ON THIS HORN.
+Landed as the load-bearing step: Gtz.three_pairProducts_not_all_neg and its two
+corner corollaries (commit pending at the time of writing).
+COROLLARY worth keeping: an opposite base carries EXACTLY TWO opposite pairs and
+one same-sign pair, so every opposite base MIXES the two branches
+(corner_oppositeBase_third_pair_same_sign).
+
+16. SHAPE (a), THE SELECTION RULE: LIVE, BUT NO CORNER-SCALAR SELECTOR
+-----------------------------------------------------------------------
+The realness margin of a slot is the gap between its two branch endpoints,
+4|M_d M_d'|, relative to the pinned value (1+lam)[e d d']^2.
+MEASURED over 14165 generic corners, taking the BEST slot of the nine:
+  min 0.3248,  median 11.0090,  max 1.05e10.
+SO A SEPARATING SLOT ALWAYS EXISTS, and at every sampled corner its two branches
+differ by at least 32 percent of the pinned value.  That is the existential a
+certificate needs, and the disjunction over nine slots is finite.
+BUT THE SELECTOR IS NOT A CORNER SCALAR:
+  argmax base = the min-excess base   36.1 percent   (chance 33.3)
+  argmax pair = the heaviest weight pair 32.7 percent (chance 33.3)
+Neither beats chance.  This reproduces, at the slot level, the campaign's
+banked negative that no single outside rule selects the breaching atom
+(NOTES-corner-ten section 0).  A closing certificate must therefore take the
+MAX over the nine slots, not a formula for which slot.
+
+17. STATE OF ORDER 3
+---------------------
+The per-slot collision is set up and both multiplicative shapes are decided:
+  product over slots  -- DEAD (section 15, and it is a theorem)
+  selection by formula -- DEAD (section 16, no selector beats chance)
+  selection by MAX over the nine slots -- LIVE, with a measured floor of 0.32 on
+    the best slot's relative realness margin at every sampled corner.
+The remaining work is the certificate for the max form: show that the slot
+maximising 4|M_d M_d'|/((1+lam)[e d d']^2) cannot satisfy its own refusal
+constraint, using the pinning (real-only) against the invariant cap
+(isTie_bracket_invariant_cap) inside the exact per-base budget.  Do not sum.
+
+======================================================================
+ROUND 5.  THE ORDER-3 COLLISION AS POSED IS REFUTED, ON THE SAME
+STRUCTURAL GROUNDS AS THE COHERENT HORN'S.  DO NOT RETRY.
+======================================================================
+
+18. THE TEST AND THE VERDICT
+------------------------------
+The coordinator's rule: substituting an exact identity is a CHANGE OF VARIABLES,
+not information.  My section-14 collision has exactly that shape --
+  PINNING  (1+lam)[e d d']^2 = (|a| ± |b|)^2      an identity over R
+  BUDGET   (1+lam) sum_p t_d t_d' [e d d']^2 = A_ef A_eg - e_f e_g   an identity
+  CAP      [T]^2 <= 1 + gapTrace + surviving invariants   from the refusal
+-- so only the CAP carries information about real designs.
+
+MEASURED, at the complex corner-tie witness (its own fixture table):
+  all nine informative triples are STRICTLY refused,
+    (0,3,4) -0.0870  (0,3,5) -0.3154  (0,4,5) -0.4246
+    (1,3,4) -0.0457  (1,3,5) -0.0394  (1,4,5) -0.0169
+    (2,3,4) -0.5047  (2,3,5) -0.9700  (2,4,5) -0.9898
+  so THE INVARIANT CAP IS SATISFIED AT ALL NINE SLOTS AT THE WITNESS.
+  The pinning, by contrast, is violated at all nine (section 10).
+
+THE TWO INGREDIENTS ACT ON DISJOINT POPULATIONS:
+  * on REAL designs the pinning is an identity, so it constrains NOTHING; only
+    the cap cuts.
+  * at the COMPLEX witness the cap is satisfied, so it cuts NOTHING; only the
+    pinning excludes.
+Their conjunction therefore fires, on real designs, exactly where the cap fires
+alone.  ZERO ADDED SEPARATING POWER, the same verdict the coherent-horn fork
+reached for its plane-total/contraction-tax collision.  The pinning and the
+budget carry SHAPE, not power.
+
+19. WHAT THIS DOES NOT REFUTE
+-------------------------------
+The two-point form itself stands and is the arm's realness step: 9 of 9
+separating slots against the weakened floor's 3 of 9 (section 10).  What is
+refuted is only the ARCHITECTURE of section 14 -- collide the pinning against
+the cap at ONE base and expect a contradiction.
+
+The correct reading of the pinning's role: it is not an extra constraint on real
+designs, it is the step that FAILS over C.  The field-blind part of any argument
+can never suffice, because the witness satisfies every refusal.  So a closing
+proof must derive False from {nine refusals, Parseval, corner structure} TOGETHER
+WITH the pinning, and must use the pinning where the complex freedom actually
+buys the witness something -- not as a substitution inside a single base's
+identity.
+
+20. THE NEXT EXPERIMENT, WELL-POSED AND CHEAP
+-----------------------------------------------
+The witness sits STRICTLY INSIDE its two-point interval at all nine slots, at
+relative distance 1.9e-3 to 3.6e-1 from the nearer endpoint (section 10).  The
+decisive question is whether that interior position is ESSENTIAL to its being a
+tie:  constrain each slot's bracket to an ENDPOINT and ask whether the nine
+refusals can still hold jointly.  If snapping to endpoints breaks the refusal
+system, the pinning is exactly the right instrument and the certificate should
+be built as a nine-slot endpoint enumeration (2^9 sign words, most of them
+already excluded by the sign trichotomy of section 6 and the
+exactly-two-opposite-pairs law of section 15).  If the refusals survive at the
+endpoints, the horn needs an input this fork has not found.
+THE SIGN WORD ALREADY CUTS THAT ENUMERATION HARD: at most one coherent base
+(count law), every opposite base has exactly two opposite pairs and one
+same-sign pair, and each generic atom disagrees at an odd number of bases.
+
+21. INSTRUMENT NOTE
+--------------------
+If order 3 stalls, the coherent-horn lane reports its M-matrix criterion beating
+the tax family in both coverage and exactness on comparable data; it is landed
+and importable.  Not used by this fork.
+
+======================================================================
+ROUND 6.  SECTION 20 EXECUTED.  ENDPOINTS ARE RESTRICTIVE; THE CASE
+TREE IS SEVEN WORDS.
+======================================================================
+
+22. THE ENDPOINT TEST AT THE WITNESS (witness.jl, section 20 block)
+--------------------------------------------------------------------
+Method note honoured: the test reuses witness.jl's OWN bracket function bit for
+bit, and normalises nothing the law depends on.
+FIRST, THE CONTROL.  The budget is the Hermitian Lagrange identity, so it must
+hold at the complex witness -- and it does, to arithmetic zero:
+  base 0 rel res 0.000e+00 ,  base 1  2.445e-154 ,  base 2  4.772e-154 .
+That confirms the budget is FIELD-BLIND and that the construction mirrors.
+
+THEN THE TEST.  Keeping the witness's own |a_p|, |b_p| and weights, all EIGHT
+endpoint sign words were tried against each base's budget:
+  base 0 : best word ++-  misses by 0.0204
+  base 1 : best word ++-  misses by 0.0140
+  base 2 : best word -++  misses by 0.7178
+NO ENDPOINT WORD REPRODUCES ANY BASE'S BUDGET.  The smallest miss is 1.4
+percent, against 1e-154 arithmetic noise -- a margin of some 150 orders of
+magnitude.  SNAPPING TO ENDPOINTS BREAKS THE SYSTEM, and it breaks it at the
+BUDGET, before the refusals are consulted at all.
+
+23. THE CASE TREE IS SEVEN WORDS (enum.jl)
+--------------------------------------------
+The branch word is fixed by the nine mixed-minor signs sigma[e][d].  The landed
+laws cut the enumeration:
+  512  raw sign patterns
+   64  after the TRICHOTOMY (per atom, prod over bases of sigma = -1)
+        -- Gtz.corner_atom_signTriple_neg, an 8-fold cut
+   60  after the COUNT LAW (at most one coherent base)
+    7  distinct branch words modulo the per-base global flip
+Coherent-base histogram over the 64 trichotomy survivors: 24 with none, 36 with
+exactly one, ZERO with exactly two, 4 with all three.
+WORTH NOTING: "never exactly two coherent bases" is already FREE from the
+trichotomy at the sign level; the count law is needed only to exclude the four
+all-three-coherent patterns.  That is a sharper reading of
+Gtz.corner_twoCoherent_exists_coplanar than round 1 had.
+
+24. HONEST CAVEAT ON WHAT SECTION 22 BUYS
+-------------------------------------------
+On a REAL design the true word is an endpoint word and reproduces the budget
+exactly, by construction.  So "some endpoint word matches the budget" is an
+identity on reals and, by the round-5 disjoint-populations argument, cuts
+nothing there on its own.  What section 22 establishes is that the endpoint
+constraint is GENUINELY RESTRICTIVE as a scalar condition -- a generic interior
+point misses every word by 1.4 to 72 percent -- so once the word is FIXED, the
+three budget equations are a tight constraint rather than a loose one.  The
+separating power of the enumeration must therefore come from the refusal caps
+WITHIN each of the seven fixed words; the budget supplies the shape and the
+word supplies the finite case split.  That is the certificate architecture, and
+it is now fully specified and small.
+
+25. WHAT A SUCCESSOR SHOULD DO FIRST
+--------------------------------------
+For each of the seven branch words: fix the branch of every slot, write the
+three budget equations in the slot magnitudes, adjoin the nine refusal caps
+(isTie_bracket_invariant_cap, with gapTrace > 0 and gapDet <= 0 dominant from
+the descent of section 7), and test the resulting scalar system for
+infeasibility.  Seven small systems.  If all seven are infeasible the horn is
+closed; if any is feasible, the feasible word names exactly which configuration
+the instrument set cannot see, which is the input to look for next.
+
+======================================================================
+ROUND 7.  THE SECOND INDEPENDENT INPUT IS FOUND.  Commit 90d9a1c.
+======================================================================
+
+26. THE TWO-INSIDE CAP -- A GENUINE INEQUALITY, NOT AN IDENTITY
+----------------------------------------------------------------
+The coordinator asked for "a bound from triples other than the ones the budget
+already ties together".  It is the NINE TWO-INSIDE TRIPLES {x,y,d}, and it was
+sitting unspent: Gtz.corner_twoInside_det_nonpos gives det(S_{xyd} - 1) <= 0 at
+a corner with NO TIE HYPOTHESIS.  Feed it through my invariant ledger
+  [T]^2 = 1 + gapTrace + gapSecond + gapDet
+and the corner wedge law w_xy = lev_x + lev_y - 1, and everything collapses:
+
+  **[x y d]^2  <=  w_xd + w_yd - lev_d**     (corner_twoInside_bracket_cap)
+
+x,y inside, d outside, w the pair wedge.  This is in the SIBLING'S CURRENCY
+(pair_bracket_mass reads the bracket mass of a pair as its wedge), it is
+tie-free, and it is a genuine inequality rather than a rewriting.
+Weighted over the complement it caps the diagonal of the outside bracket Gram,
+whose closed form is landed:
+  1 + e_x + e_y - t_z(1+lam) <= sum_{d in C^c} t_d (w_xd + w_yd - lev_d)
+                                       (corner_twoInside_bracket_cap_sum)
+
+MEASURED (cap.jl, 10629 generic corners, 31887 slots):
+  control: the corner wedge law w_xy = lev_x + lev_y - 1 holds to 9.3e-15
+  per-atom cap: worst violation -2.860e-10 (holds), relative slack
+      min 0.0000, q01 0.0000, median 0.1415, max 1.0000
+  summed cap:  worst violation -3.780e-06, slack min 0.0000, median 0.1736
+THE CAP IS EXACTLY TIGHT ON A POSITIVE-MEASURE SET.  It is sharp, so it is
+worth spending; a loose bound would not have been.
+
+27. THE SIGN WORD, ONE STEP EARLIER
+-------------------------------------
+The landed atomBracket_baseProduct_cycle already says the three base products at
+an atom multiply to minus a square.  Read at a bracket-generic atom that IS the
+whole trichotomy, with no pairings and no transport:
+  corner_atom_minorTriple_neg :  M^x_d M^y_d M^z_d < 0.
+Multiplying it at two atoms gives, with no further input whatsoever,
+  corner_twoCoherent_imp_thirdCoherent : two coherent bases force the THIRD.
+So "exactly two coherent bases" is impossible FOR FREE, and the landed
+coplanarity theorem (corner_twoCoherent_exists_coplanar) is needed only against
+the all-three case.  This is the mechanism behind the enumeration of section 23:
+of the 64 trichotomy survivors, ZERO have exactly two coherent bases.
+It is also a strictly better proof of the round-1 count law than the transport
+argument that round used.
+
+28. STATE
+----------
+The instrument set now has, for the first time, TWO independent genuine inputs
+on the horn:
+  (i)  the refusal caps at the nine INFORMATIVE triples (tie-necessary),
+  (ii) the wedge cap at the nine TWO-INSIDE triples (tie-free, sharp),
+plus the identities that fix shape (budgets, pinning, partition) and the sign
+laws that cut the case tree to seven words.  The round-5 disjointness objection
+does NOT apply to (ii): it is an inequality on real designs, with measured slack
+0 to 1, so it cuts real designs.  A successor should retry the seven-word
+enumeration of section 25 with (ii) adjoined -- that is the first version of the
+collision with two independent sources of information in it.
+
+======================================================================
+ROUND 8.  THE DIAGNOSTIC VERDICT, AND THE CORNER'S SCALAR SYSTEM.
+Commit fad7be5.
+======================================================================
+
+29. THE DIAGNOSTIC THE COORDINATOR ORDERED: A SPLIT VERDICT
+-------------------------------------------------------------
+(a) AT THE TIE BRANCH THE WEDGE CAP IS ACTIVE.  At the four best near-tie
+    minimisers of the descent (margins 2.2e-2 to 2.3e-2, weight floor 0.01) the
+    MINIMUM slack of the wedge cap over the nine two-inside slots is
+      0.07955 , 0.00199 , 0.00142 , 0.00031
+    while 8 or 9 of the nine informative refusals hold (branches [0,0,8] and
+    [0,0,9]).  So BOTH constraint families are near-binding in the SAME region.
+    That is the signature rounds 4 and 5 lacked, where the added ingredient was
+    an identity (zero slack everywhere by construction) or field-blind.
+(b) BUT TIGHTNESS IS NOT A TIE-BRANCH SIGNAL.  Binning the minimum wedge-cap
+    slack by tie margin over 28126 corners (corr.jl):
+      margin bin      n      min slack      q10        median
+      [0.05,0.10)     4      0.000141     0.000141    0.000390
+      [0.10,0.20)    51      0.000004     0.000024    0.001963
+      [0.20,0.40)   582      0.000000     0.000052    0.002959
+      [0.40,0.80)  3659      0.000000     0.000045    0.002619
+      [0.80,1.60) 10620      0.000000     0.000036    0.002081
+      [1.60,inf)  13210      0.000000     0.000020    0.001219
+    THE PROFILE IS FLAT.  Some slot is nearly tight at essentially EVERY corner,
+    at every margin.  So "the wedge cap is tight near a tie" is true but carries
+    no information -- it is tight everywhere.  The naive hope that its slack
+    would cross zero as the margin does is REFUTED.
+    HONEST READING: the wedge cap is a second SOURCE (tie-free, sharp, cuts real
+    designs), which rounds 4 and 5 did not have, but it is not by itself a
+    margin proxy.  A certificate must use it jointly with the refusals, not as a
+    substitute for them.
+
+30. THE CORNER'S SCALAR SYSTEM (new, all verified, commit fad7be5)
+--------------------------------------------------------------------
+Parseval read at three different probes closes every sum the cap leaves open.
+  corner_outside_leverage_total   sum_{d in C^c} t_d lev_d
+                                    = 3 - t_x lev_x - t_y lev_y - t_z lev_z
+                                    (2.5e-15)
+  corner_outside_pairing_sq_total sum_{d in C^c} t_d P_xd^2
+                                    = lev_x - t_x lev_x^2 - t_y e_x e_y
+                                      - t_z e_x e_z          (4.5e-14)
+  corner_outside_wedge_total      the two combined              (2.9e-15)
+  corner_outside_axis_mass        lam * sum_{d} t_d (g_d.u)^2
+                                    = lam - (1+lam) sum_C t_e e_e   (4.2e-13)
+  corner_axis_weight_cap          (1+lam) * sum_C t_e e_e  <=  lam
+                                    measured slack minimum 7.3e-4 -- TIGHT
+  corner_twoInside_cap_closed     THE HEADLINE: the two-inside cap as a
+                                    polynomial inequality in the SEVEN scalars
+                                    e_x,e_y,e_z,t_x,t_y,t_z,lam, no sums left.
+                                    Measured worst violation -1.7e-6.
+The axis weight cap is worth noting on its own: it is a new, tight, purely
+scalar necessary condition on a corank-two corner, and it did not exist before.
+
+31. HANDOFF -- WHAT A SUCCESSOR INHERITS AND WHAT TO DO
+--------------------------------------------------------
+LANDED BY THIS FORK (eight commits, 57 declarations, eight modules, all pins
+standard, no sorry/admit/native_decide):
+  OppositeHornCount        the count law: at least two bases carry an opposite
+                           pair; two informative triples at distinct bases
+  OppositeHornBudget       the outside bracket Gram in corner scalars, the
+                           informative bracket budget, Cauchy-Binet for the
+                           outside Gram determinant, the floor-budget collision
+  OppositeHornSplit        the sign trichotomy, the TWO-POINT FORM (sum branch /
+                           difference branch), the REFUSAL SCALARISATION
+                           ([T]^2 = 1 + gapTrace + gapSecond + gapDet, every
+                           refusal caps its own triple), the bracket partition,
+                           the inside wedge law
+  OppositeHornCoherentBranch  the coherent base is on the small branch
+  OppositeHornTwoPoint     the pinning is TOTAL: all nine slots, no sign
+                           hypothesis, no exempt base
+  OppositeHornCycleNoGo    three reals have no three negative pairwise products;
+                           no third pinning at the outside triple bracket
+  OppositeHornWedgeCap     THE SECOND SOURCE: [xyd]^2 <= w_xd + w_yd - lev_d,
+                           tie-free and sharp; the sign word one step earlier
+  OppositeHornScalarSystem the corner's scalar system and the closed cap
+FOUR BANKED NEGATIVES (do not retry): the global bracket budget is vacuous at a
+corner (sec 3a); aggregation destroys realness at EVERY sharpness (sec 3b, 12);
+there is no third pinning (sec 15); the pinning-versus-cap collision adds zero
+separating power (sec 18).
+NEXT: the seven-word enumeration of section 25 with the wedge cap adjoined, now
+that the cap is closed in scalars.  Seven small systems; for each fixed word,
+the three budgets (identities), the nine refusal caps (tie-necessary) and the
+closed two-inside cap plus the axis weight cap (tie-free, sharp).  Infeasibility
+of all seven closes the horn; a feasible word names the missing input.
+Scripts, all in scratchpad/f29: census, budget, collide, partition, descent,
+cycle, cap, corr, scal, enum, witness (the 512-bit bench), red.py.
+
+======================================================================
+ROUND 9 (FORK 38).  THE PREDECESSOR'S HEADLINE IS REFUTED; THE
+ENUMERATION IS RUN AND EVERY WORD IS FEASIBLE.  Commit (see below).
+======================================================================
+
+32. THE +0.0593 CASE-B MARGIN IS REFUTED BY DESCENT (f38verify/f38refute.jl)
+-----------------------------------------------------------------------------
+Fork 36's headline: in CASE B (the complement fails to dominate) some triple
+through the top TWO inside atoms ordered by (g_e.v)^2 dominates, worst margin
++0.0593 over 13179 SAMPLED case-B corners.  Fork 36 distrusted it in its dying
+message and was right.
+
+ADVERSARIAL DESCENT (24 seeds x 4 starts x 1500 iters, weight floor 0.01):
+  minimum of the case-B law margin = -6.8340e-02      THE LAW IS FALSE.
+A second seed block gives +1.1832e-02, itself far below the claimed 0.0593, so
+even where the law holds the margin claim fails.  Random sampling on the SAME
+code path reproduces fork 36: worst +6.3469e-02 over 13090 case-B corners.
+This is the campaign's thin-tail trap again (cf. the 1/2 threshold on the
+coherent horn): a sampled extreme is not a floor.
+
+THE WITNESS, diagnosed and confirmed at 512 bits:
+  lam = 8.03049, Parseval residual 1.5e-15 (Float64) / 1.26e-15 (512-bit),
+  complement lambda_min = -1.328361e-02  -> genuine case B,
+  inside readings (g_e.v)^2 = 3.2480, 2.4034, 2.0672  -> order [1,2,3].
+  All SIX triples through e*=1 and e**=2 FAIL:
+    (1,4,5) -6.83e-02  (1,4,6) -8.81e-01  (1,5,6) -1.77e-01
+    (2,4,5) -7.25e-02  (2,4,6) -1.10e-01  (2,5,6) -3.21e-01
+  But (3,4,5) = +1.026729e+00 -- the THIRD inside atom, by a huge margin.
+  Best over all twenty: +1.0267.  So it is NOT a tie; the SELECTION RULE fails.
+A second witness (seed block 41000) has order [1,3,2] with all six top-two
+triples failing and (2,5,6) = +0.6203 dominating -- again the third atom.
+CONCLUSION: the (g_e.v)^2 ordering is ANTI-INFORMATIVE at the extreme.  This
+reproduces at yet another level the banked negative that no scalar selector
+beats chance (sec 16), and matches the coherent horn's finding that its
+smallest-reading omission rule scored 11.09 percent, below chance.
+DO NOT REVIVE ANY READING-ORDER SELECTOR.
+
+33. WHERE A CORNER'S DOMINATOR ACTUALLY LIVES (f38diag.jl, 745691 corners)
+---------------------------------------------------------------------------
+  complement (4,5,6)      660236    88.54 percent
+  informative (one-inside) 85455    11.46 percent
+  two-inside                   0     0.00 percent   <- ZERO exceptions
+So the corner dichotomy is exactly CASE A (complement dominates) / CASE B
+(complement fails, and then an INFORMATIVE triple dominates).  Fork 36's case
+split was right in structure; only its selection rule inside case B was wrong.
+The two-inside column is zero because Gtz.corner_twoInside_det_nonpos is a
+landed theorem -- this measurement is its numerical confirmation.
+
+34. LANDED: THE REFUSAL BUDGET OF A CORNER (Gtz/Wave/OppositeHornRefusalBudget)
+-------------------------------------------------------------------------------
+Section 33 made it clear the arm had never composed the landed determinant
+statements into domination statements.  Three theorems, all pins standard, no
+tie hypothesis anywhere:
+  corner_self_not_posDef            the gap of the dominator is lam * u u^T,
+                                    whose determinant vanishes, so C itself
+                                    never dominates strictly
+  corner_twoInside_not_posDef       corner_twoInside_det_nonpos composed with
+                                    PosDef.det_pos
+  corner_posDef_triple_inter_le_one THE BUDGET: every strictly dominating
+                                    triple of a corner meets C in AT MOST ONE
+                                    label
+So of the twenty triples, TEN are refused for free (the dominator and the nine
+two-inside), and only the nine informative triples and the complement can carry
+a tie.  The arm has used "the ten refusals" informally since round 1; this is
+that reduction as a theorem.
+
+35. THE SEVEN-WORD ENUMERATION, RUN -- AND EVERY WORD IS FEASIBLE
+------------------------------------------------------------------
+Canonicalising the nine mixed-minor signs sigma[e][d] by a per-base global flip
+(column 1 made positive) gives 15 REALIZABLE words over 993602 generic corners,
+splitting cleanly by coherent-base count:
+  6 words with NO coherent base   ~147k each   (88.5 percent of corners)
+  9 words with ONE coherent base  ~9k-13k each (11.5 percent)
+  ZERO words with two or three -- confirming corner_twoCoherent_imp_thirdCoherent
+    and corner_twoCoherent_exists_coplanar at the sign level.
+
+DESCENT ON THE TIE MARGIN (max lambda_min over all nineteen non-dominator
+triples), 32 seeds x 5 starts x 1800 iters, binned by word (f38word.jl):
+  best tie margins per word, all-opposite family : +1.79e-02 ... +2.64e-02
+  best tie margins per word, one-coherent family : +2.05e-02 ... +5.50e-02
+  BY FAMILY: all-opposite best +1.7903e-02 (129 hits)
+             one-coherent best +2.0512e-02 ( 24 hits)
+EVERY ONE OF THE THIRTEEN WORDS REACHED HOSTS NEAR-TIE MINIMISERS AT
+COMPARABLE MARGINS.  No word is excluded by distance from the tie branch.
+(The range reproduces fork 29's descent of section 7, 1.43e-2 ... 2.40e-2.)
+
+AND THE TWO TIE-FREE CAPS ARE SLACK THERE.  At the per-word best minimisers:
+  wedge-cap min slack : 3.1e-05 ... 2.14      (median order 1e-1)
+  axis-cap slack      : 4.9e-01 ... 2.15e+01  (never below 0.48)
+Compare the sampling census, where the wedge cap is numerically TIGHT
+(min slack -5.3e-15 to 4.9e-09) and the axis cap sits at 8e-05 to 8e-03.
+So the caps are tight almost everywhere EXCEPT at the tie branch, where they go
+slack by one to four orders of magnitude.  This sharpens round 8's finding (b)
+from "tightness is not a margin proxy" to the stronger and more damaging
+"the caps are LOOSE exactly where the horn is hard".
+
+36. VERDICT ON THE ENUMERATION, AND THE MISSING INPUT
+------------------------------------------------------
+By the criterion set for this round -- all seven infeasible closes the horn, a
+feasible word names the missing input -- EVERY WORD IS FEASIBLE with the current
+instrument set.  The enumeration does not close the horn, and the obstruction is
+NOT word-specific: the sign word is a finite case split that costs nothing and
+buys nothing, because the constraint that must do the cutting (the wedge cap and
+the axis cap) has large slack in every word at the tie branch.
+DO NOT BUILD SEVEN CERTIFICATE SYSTEMS.  They cannot close.
+WHAT THIS LEAVES: the only constraints still tight at the tie branch are the
+nine informative refusals themselves and the complement refusal -- i.e. exactly
+the ten of section 34, and nothing else.  A closing certificate must therefore
+come from the ten refusals plus the two-point pinning, with the budget and the
+caps supplying shape only.  Since the complex witness satisfies all ten refusals
+(section 18), realness must enter through the pinning, per slot (sections 12,
+16), and no summed or word-indexed construction can substitute for it.
+
+37. SCRIPTS
+------------
+  f38build.jl   the corner builder, lifted verbatim from f36verify.jl
+  f38refute.jl  descent on the case-B law margin + full twenty-triple diagnosis
+                + 512-bit confirmation of the witness
+  f38enum.jl    the word census with tie margin, informative margin and both
+                cap slacks
+  f38word.jl    descent on the tie margin binned by word (the section-35 table)
+  f38diag.jl    where a corner's dominating triple lives (section 33)
+All run at 32 threads with --heap-size-hint=20G; peak RSS well under 1 GB.
