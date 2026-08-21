@@ -10,7 +10,20 @@ are new at general rank.
 
 ## 1. The hinge is FALSE at size `rank + 1`, at EVERY rank
 
-`Gtz.simplexTieDesign` is an explicit weighted design of size `rank + 1` and
+WHAT IS ALREADY IN THE TREE, AND WHAT IS NEW.  `Gtz.simplexTieDesign`
+(Gtz/Ties/CorankOneTieExistence.lean) already inhabits this cell, and at EVERY
+weight vector rather than only at the uniform one: `Gtz.exists_isTie_of_weights`
+and `Gtz.corank_one_tie_stratum` say the corank-one tie stratum is a section over
+the whole open weight simplex.  That construction runs through a Householder
+reflection, and NOTHING in the tree records whether its atoms are pairwise
+non-parallel.  The parallel-free half is what refutes the hinge, and it is the
+new content here.  `Gtz.flatSimplexDesign` below is the uniform member written in
+explicit coordinates, which is what makes the parallel-free check one line per
+case.  Its `IsTie` half duplicates nothing that is stated -- the landed statement
+is about a different construction -- and its existence content is superseded by
+`Gtz.exists_isTie_of_weights`, which is stronger.
+
+`Gtz.flatSimplexDesign` is an explicit weighted design of size `rank + 1` and
 rank `rank`.  Its atoms are
 
   `g_i = p · e_i + q · 1` for `i < rank`,   `g_last = 1` ,
@@ -236,54 +249,54 @@ The atoms are `g_i = p · e_i + q · 1` for `i < rank` and `g_last = 1`, with
 `2 p q + rank q² + 1 = 0` drives every computation below. -/
 
 /-- The scale of the simplex tie, `p = √(rank + 1)`. -/
-noncomputable def simplexScale (rank : ℕ) : ℝ := Real.sqrt ((rank : ℝ) + 1)
+noncomputable def flatSimplexScale (rank : ℕ) : ℝ := Real.sqrt ((rank : ℝ) + 1)
 
 /-- The shift of the simplex tie, `q = (1 - p) / rank`. -/
-noncomputable def simplexShift (rank : ℕ) : ℝ := (1 - simplexScale rank) / (rank : ℝ)
+noncomputable def flatSimplexShift (rank : ℕ) : ℝ := (1 - flatSimplexScale rank) / (rank : ℝ)
 
 /-- The atoms of the simplex tie. -/
-noncomputable def simplexTieAtom (rank : ℕ) : Fin (rank + 1) → (Fin rank → ℝ) :=
+noncomputable def flatSimplexAtom (rank : ℕ) : Fin (rank + 1) → (Fin rank → ℝ) :=
   Fin.snoc
     (fun axis : Fin rank => fun coord : Fin rank =>
-      (if coord = axis then simplexScale rank else 0) + simplexShift rank)
+      (if coord = axis then flatSimplexScale rank else 0) + flatSimplexShift rank)
     (fun _ : Fin rank => (1 : ℝ))
 
-theorem simplexTieAtom_castSucc (rank : ℕ) (axis coord : Fin rank) :
-    simplexTieAtom rank (Fin.castSucc axis) coord
-      = (if coord = axis then simplexScale rank else 0) + simplexShift rank := by
-  rw [simplexTieAtom, Fin.snoc_castSucc]
+theorem flatSimplexAtom_castSucc (rank : ℕ) (axis coord : Fin rank) :
+    flatSimplexAtom rank (Fin.castSucc axis) coord
+      = (if coord = axis then flatSimplexScale rank else 0) + flatSimplexShift rank := by
+  rw [flatSimplexAtom, Fin.snoc_castSucc]
 
-theorem simplexTieAtom_last (rank : ℕ) (coord : Fin rank) :
-    simplexTieAtom rank (Fin.last rank) coord = 1 := by
-  rw [simplexTieAtom, Fin.snoc_last]
+theorem flatSimplexAtom_last (rank : ℕ) (coord : Fin rank) :
+    flatSimplexAtom rank (Fin.last rank) coord = 1 := by
+  rw [flatSimplexAtom, Fin.snoc_last]
 
-theorem simplexScale_sq (rank : ℕ) : simplexScale rank ^ 2 = (rank : ℝ) + 1 :=
+theorem flatSimplexScale_sq (rank : ℕ) : flatSimplexScale rank ^ 2 = (rank : ℝ) + 1 :=
   Real.sq_sqrt (by positivity)
 
-theorem one_lt_simplexScale {rank : ℕ} (hrank : 0 < rank) : 1 < simplexScale rank := by
+theorem one_lt_flatSimplexScale {rank : ℕ} (hrank : 0 < rank) : 1 < flatSimplexScale rank := by
   have hcast : (1 : ℝ) < (rank : ℝ) + 1 := by
     have hpos : (0 : ℝ) < (rank : ℝ) := by exact_mod_cast hrank
     linarith
   have hstep := Real.sqrt_lt_sqrt (by norm_num : (0 : ℝ) ≤ 1) hcast
   rwa [Real.sqrt_one] at hstep
 
-theorem simplexShift_neg {rank : ℕ} (hrank : 0 < rank) : simplexShift rank < 0 := by
-  have hscale := one_lt_simplexScale hrank
+theorem flatSimplexShift_neg {rank : ℕ} (hrank : 0 < rank) : flatSimplexShift rank < 0 := by
+  have hscale := one_lt_flatSimplexScale hrank
   have hcast : (0 : ℝ) < (rank : ℝ) := by exact_mod_cast hrank
-  rw [simplexShift]
+  rw [flatSimplexShift]
   exact div_neg_of_neg_of_pos (by linarith) hcast
 
-theorem simplexShift_ne_zero {rank : ℕ} (hrank : 0 < rank) : simplexShift rank ≠ 0 :=
-  ne_of_lt (simplexShift_neg hrank)
+theorem flatSimplexShift_ne_zero {rank : ℕ} (hrank : 0 < rank) : flatSimplexShift rank ≠ 0 :=
+  ne_of_lt (flatSimplexShift_neg hrank)
 
 /-- **THE SCALAR IDENTITY OF THE SIMPLEX TIE.**  Everything below is this one line
 read at a different place. -/
-theorem simplex_key {rank : ℕ} (hrank : 0 < rank) :
-    2 * simplexScale rank * simplexShift rank
-      + (rank : ℝ) * simplexShift rank ^ 2 + 1 = 0 := by
+theorem flatSimplex_key {rank : ℕ} (hrank : 0 < rank) :
+    2 * flatSimplexScale rank * flatSimplexShift rank
+      + (rank : ℝ) * flatSimplexShift rank ^ 2 + 1 = 0 := by
   have hcast : ((rank : ℝ)) ≠ 0 := Nat.cast_ne_zero.mpr hrank.ne'
-  have hsq := simplexScale_sq rank
-  rw [simplexShift]
+  have hsq := flatSimplexScale_sq rank
+  rw [flatSimplexShift]
   field_simp
   nlinarith [hsq]
 
@@ -291,32 +304,32 @@ theorem simplex_key {rank : ℕ} (hrank : 0 < rank) :
 
 /-- **THE UNWEIGHTED GRAM IS `(rank + 1)` TIMES THE IDENTITY.**  The atoms form a
 tight frame, and the scalar identity is exactly what cancels the off-diagonal. -/
-theorem simplexTieAtom_gram {rank : ℕ} (hrank : 0 < rank) (rowCoord colCoord : Fin rank) :
+theorem flatSimplexAtom_gram {rank : ℕ} (hrank : 0 < rank) (rowCoord colCoord : Fin rank) :
     ∑ label : Fin (rank + 1),
-        simplexTieAtom rank label rowCoord * simplexTieAtom rank label colCoord
+        flatSimplexAtom rank label rowCoord * flatSimplexAtom rank label colCoord
       = if rowCoord = colCoord then ((rank : ℝ) + 1) else 0 := by
   classical
   have hexpand : ∀ axis : Fin rank,
-      simplexTieAtom rank (Fin.castSucc axis) rowCoord
-          * simplexTieAtom rank (Fin.castSucc axis) colCoord
-        = (if rowCoord = axis then simplexScale rank else 0)
-            * (if colCoord = axis then simplexScale rank else 0)
-          + (simplexShift rank * (if rowCoord = axis then simplexScale rank else 0)
-            + simplexShift rank * (if colCoord = axis then simplexScale rank else 0))
-          + simplexShift rank ^ 2 := by
+      flatSimplexAtom rank (Fin.castSucc axis) rowCoord
+          * flatSimplexAtom rank (Fin.castSucc axis) colCoord
+        = (if rowCoord = axis then flatSimplexScale rank else 0)
+            * (if colCoord = axis then flatSimplexScale rank else 0)
+          + (flatSimplexShift rank * (if rowCoord = axis then flatSimplexScale rank else 0)
+            + flatSimplexShift rank * (if colCoord = axis then flatSimplexScale rank else 0))
+          + flatSimplexShift rank ^ 2 := by
     intro axis
-    rw [simplexTieAtom_castSucc, simplexTieAtom_castSucc]
+    rw [flatSimplexAtom_castSucc, flatSimplexAtom_castSucc]
     ring
   have hcross : ∑ axis : Fin rank,
-      (if rowCoord = axis then simplexScale rank else 0)
-        * (if colCoord = axis then simplexScale rank else 0)
-      = if rowCoord = colCoord then simplexScale rank ^ 2 else 0 := by
+      (if rowCoord = axis then flatSimplexScale rank else 0)
+        * (if colCoord = axis then flatSimplexScale rank else 0)
+      = if rowCoord = colCoord then flatSimplexScale rank ^ 2 else 0 := by
     by_cases hsame : rowCoord = colCoord
     · subst hsame
       have hpoint : ∀ axis : Fin rank,
-          (if rowCoord = axis then simplexScale rank else 0)
-            * (if rowCoord = axis then simplexScale rank else 0)
-          = if axis = rowCoord then simplexScale rank ^ 2 else 0 := by
+          (if rowCoord = axis then flatSimplexScale rank else 0)
+            * (if rowCoord = axis then flatSimplexScale rank else 0)
+          = if axis = rowCoord then flatSimplexScale rank ^ 2 else 0 := by
         intro axis
         by_cases haxis : rowCoord = axis
         · simp [haxis, pow_two]
@@ -324,8 +337,8 @@ theorem simplexTieAtom_gram {rank : ℕ} (hrank : 0 < rank) (rowCoord colCoord :
       rw [Finset.sum_congr rfl fun axis _ => hpoint axis, Finset.sum_ite_eq' Finset.univ rowCoord]
       simp
     · have hpoint : ∀ axis : Fin rank,
-          (if rowCoord = axis then simplexScale rank else 0)
-            * (if colCoord = axis then simplexScale rank else 0) = 0 := by
+          (if rowCoord = axis then flatSimplexScale rank else 0)
+            * (if colCoord = axis then flatSimplexScale rank else 0) = 0 := by
         intro axis
         by_cases haxis : rowCoord = axis
         · have : colCoord ≠ axis := fun hc => hsame (haxis.trans hc.symm)
@@ -333,13 +346,13 @@ theorem simplexTieAtom_gram {rank : ℕ} (hrank : 0 < rank) (rowCoord colCoord :
         · simp [haxis]
       rw [Finset.sum_congr rfl fun axis _ => hpoint axis, Finset.sum_const_zero, if_neg hsame]
   have hlinear : ∀ target : Fin rank,
-      ∑ axis : Fin rank, simplexShift rank * (if target = axis then simplexScale rank else 0)
-        = simplexShift rank * simplexScale rank := by
+      ∑ axis : Fin rank, flatSimplexShift rank * (if target = axis then flatSimplexScale rank else 0)
+        = flatSimplexShift rank * flatSimplexScale rank := by
     intro target
     rw [← Finset.mul_sum]
     have hpoint : ∀ axis : Fin rank,
-        (if target = axis then simplexScale rank else 0)
-          = if axis = target then simplexScale rank else 0 := by
+        (if target = axis then flatSimplexScale rank else 0)
+          = if axis = target then flatSimplexScale rank else 0 := by
       intro axis; by_cases haxis : target = axis
       · simp [haxis]
       · simp [haxis, Ne.symm haxis]
@@ -348,10 +361,10 @@ theorem simplexTieAtom_gram {rank : ℕ} (hrank : 0 < rank) (rowCoord colCoord :
   rw [Fin.sum_univ_castSucc, Finset.sum_congr rfl fun axis _ => hexpand axis,
     Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib,
     hcross, hlinear rowCoord, hlinear colCoord, Finset.sum_const, Finset.card_univ,
-    Fintype.card_fin, nsmul_eq_mul, simplexTieAtom_last, simplexTieAtom_last]
-  have hkey := simplex_key hrank
+    Fintype.card_fin, nsmul_eq_mul, flatSimplexAtom_last, flatSimplexAtom_last]
+  have hkey := flatSimplex_key hrank
   by_cases hsame : rowCoord = colCoord
-  · rw [if_pos hsame, if_pos hsame, simplexScale_sq]
+  · rw [if_pos hsame, if_pos hsame, flatSimplexScale_sq]
     linarith
   · rw [if_neg hsame, if_neg hsame]
     linarith
@@ -360,9 +373,9 @@ theorem simplexTieAtom_gram {rank : ℕ} (hrank : 0 < rank) (rowCoord colCoord :
 
 /-- **THE SIMPLEX TIE**, an exact weighted design of size `rank + 1` and rank
 `rank` at uniform weight. -/
-noncomputable def simplexTieDesign (rank : ℕ) (hrank : 0 < rank) :
+noncomputable def flatSimplexDesign (rank : ℕ) (hrank : 0 < rank) :
     WeightedDesign (rank + 1) rank where
-  atom := simplexTieAtom rank
+  atom := flatSimplexAtom rank
   weight := fun _ => 1 / ((rank : ℝ) + 1)
   weight_pos := fun _ => by positivity
   weight_sum_one := by
@@ -373,13 +386,13 @@ noncomputable def simplexTieDesign (rank : ℕ) (hrank : 0 < rank) :
     ext rowCoord colCoord
     rw [Matrix.sum_apply]
     have hpoint : ∀ label : Fin (rank + 1),
-        ((1 / ((rank : ℝ) + 1)) • atomMatrix (simplexTieAtom rank label)) rowCoord colCoord
+        ((1 / ((rank : ℝ) + 1)) • atomMatrix (flatSimplexAtom rank label)) rowCoord colCoord
           = (1 / ((rank : ℝ) + 1))
-            * (simplexTieAtom rank label rowCoord * simplexTieAtom rank label colCoord) := by
+            * (flatSimplexAtom rank label rowCoord * flatSimplexAtom rank label colCoord) := by
       intro label
       rw [Matrix.smul_apply, atomMatrix, Matrix.vecMulVec_apply, smul_eq_mul]
     rw [Finset.sum_congr rfl fun label _ => hpoint label, ← Finset.mul_sum,
-      simplexTieAtom_gram hrank]
+      flatSimplexAtom_gram hrank]
     have hne : ((rank : ℝ) + 1) ≠ 0 := by positivity
     by_cases hsame : rowCoord = colCoord
     · rw [if_pos hsame, hsame, Matrix.one_apply_eq]
@@ -387,29 +400,29 @@ noncomputable def simplexTieDesign (rank : ℕ) (hrank : 0 < rank) :
     · rw [if_neg hsame, Matrix.one_apply_ne hsame]
       ring
 
-theorem simplexTieDesign_atom (rank : ℕ) (hrank : 0 < rank) :
-    (simplexTieDesign rank hrank).atom = simplexTieAtom rank := rfl
+theorem flatSimplexDesign_atom (rank : ℕ) (hrank : 0 < rank) :
+    (flatSimplexDesign rank hrank).atom = flatSimplexAtom rank := rfl
 
 /-- **EVERY ATOM OF THE SIMPLEX TIE HAS LEVERAGE EXACTLY `rank`.** -/
-theorem leverageOf_simplexTieAtom {rank : ℕ} (hrank : 0 < rank) (label : Fin (rank + 1)) :
-    leverageOf (simplexTieAtom rank label) = (rank : ℝ) := by
-  have hgram := simplexTieAtom_gram hrank
+theorem leverageOf_flatSimplexAtom {rank : ℕ} (hrank : 0 < rank) (label : Fin (rank + 1)) :
+    leverageOf (flatSimplexAtom rank label) = (rank : ℝ) := by
+  have hgram := flatSimplexAtom_gram hrank
   have hself : ∀ coord : Fin rank,
-      simplexTieAtom rank label coord ^ 2
-        = simplexTieAtom rank label coord * simplexTieAtom rank label coord := fun _ => pow_two _
+      flatSimplexAtom rank label coord ^ 2
+        = flatSimplexAtom rank label coord * flatSimplexAtom rank label coord := fun _ => pow_two _
   rw [leverageOf, Finset.sum_congr rfl fun coord _ => hself coord]
   -- read the diagonal of the Gram from the other side: sum over labels of the same product
   have hdiag : ∑ coord : Fin rank,
-      simplexTieAtom rank label coord * simplexTieAtom rank label coord = (rank : ℝ) := by
+      flatSimplexAtom rank label coord * flatSimplexAtom rank label coord = (rank : ℝ) := by
     rcases Fin.eq_castSucc_or_eq_last label with ⟨axis, rfl⟩ | rfl
     · have hexpand : ∀ coord : Fin rank,
-          simplexTieAtom rank (Fin.castSucc axis) coord
-              * simplexTieAtom rank (Fin.castSucc axis) coord
-            = (if coord = axis then simplexScale rank ^ 2 else 0)
-              + 2 * simplexShift rank * (if coord = axis then simplexScale rank else 0)
-              + simplexShift rank ^ 2 := by
+          flatSimplexAtom rank (Fin.castSucc axis) coord
+              * flatSimplexAtom rank (Fin.castSucc axis) coord
+            = (if coord = axis then flatSimplexScale rank ^ 2 else 0)
+              + 2 * flatSimplexShift rank * (if coord = axis then flatSimplexScale rank else 0)
+              + flatSimplexShift rank ^ 2 := by
         intro coord
-        rw [simplexTieAtom_castSucc]
+        rw [flatSimplexAtom_castSucc]
         by_cases hcoord : coord = axis
         · simp [hcoord]; ring
         · simp [hcoord]; ring
@@ -418,14 +431,14 @@ theorem leverageOf_simplexTieAtom {rank : ℕ} (hrank : 0 < rank) (label : Fin (
         Finset.sum_ite_eq' Finset.univ axis, Finset.sum_const, Finset.card_univ,
         Fintype.card_fin, nsmul_eq_mul]
       simp only [Finset.mem_univ, if_true]
-      rw [simplexScale_sq]
-      have hkey := simplex_key hrank
+      rw [flatSimplexScale_sq]
+      have hkey := flatSimplex_key hrank
       linarith
     · have hone : ∀ coord : Fin rank,
-          simplexTieAtom rank (Fin.last rank) coord * simplexTieAtom rank (Fin.last rank) coord
+          flatSimplexAtom rank (Fin.last rank) coord * flatSimplexAtom rank (Fin.last rank) coord
             = (1 : ℝ) := by
         intro coord
-        rw [simplexTieAtom_last, mul_one]
+        rw [flatSimplexAtom_last, mul_one]
       rw [Finset.sum_congr rfl fun coord _ => hone coord, Finset.sum_const, Finset.card_univ,
         Fintype.card_fin, nsmul_eq_mul, mul_one]
   exact hdiag
@@ -434,17 +447,17 @@ theorem leverageOf_simplexTieAtom {rank : ℕ} (hrank : 0 < rank) (label : Fin (
 
 /-- The unweighted atom total of the simplex tie is `(rank + 1)` times the
 identity. -/
-theorem simplexTieAtom_sum {rank : ℕ} (hrank : 0 < rank) :
-    ∑ label : Fin (rank + 1), atomMatrix (simplexTieAtom rank label)
+theorem flatSimplexAtom_sum {rank : ℕ} (hrank : 0 < rank) :
+    ∑ label : Fin (rank + 1), atomMatrix (flatSimplexAtom rank label)
       = ((rank : ℝ) + 1) • (1 : Matrix (Fin rank) (Fin rank) ℝ) := by
   ext rowCoord colCoord
   rw [Matrix.sum_apply]
   have hpoint : ∀ label : Fin (rank + 1),
-      atomMatrix (simplexTieAtom rank label) rowCoord colCoord
-        = simplexTieAtom rank label rowCoord * simplexTieAtom rank label colCoord := by
+      atomMatrix (flatSimplexAtom rank label) rowCoord colCoord
+        = flatSimplexAtom rank label rowCoord * flatSimplexAtom rank label colCoord := by
     intro label
     rw [atomMatrix, Matrix.vecMulVec_apply]
-  rw [Finset.sum_congr rfl fun label _ => hpoint label, simplexTieAtom_gram hrank,
+  rw [Finset.sum_congr rfl fun label _ => hpoint label, flatSimplexAtom_gram hrank,
     Matrix.smul_apply, smul_eq_mul]
   by_cases hsame : rowCoord = colCoord
   · rw [if_pos hsame, hsame, Matrix.one_apply_eq, mul_one]
@@ -465,19 +478,19 @@ theorem exists_erase_of_card_eq {ambient : ℕ} {selected : Finset (Fin (ambient
   rw [hback, Finset.compl_singleton]
 
 /-- The gap of every selection of the simplex tie is `rank · I - g_j g_jᵀ`. -/
-theorem simplexTieDesign_gap {rank : ℕ} (hrank : 0 < rank) (missing : Fin (rank + 1)) :
-    subsetSum (simplexTieDesign rank hrank) (Finset.univ.erase missing) - 1
+theorem flatSimplexDesign_gap {rank : ℕ} (hrank : 0 < rank) (missing : Fin (rank + 1)) :
+    subsetSum (flatSimplexDesign rank hrank) (Finset.univ.erase missing) - 1
       = (rank : ℝ) • (1 : Matrix (Fin rank) (Fin rank) ℝ)
-        - atomMatrix (simplexTieAtom rank missing) := by
-  have htotal : subsetSum (simplexTieDesign rank hrank) (Finset.univ.erase missing)
+        - atomMatrix (flatSimplexAtom rank missing) := by
+  have htotal : subsetSum (flatSimplexDesign rank hrank) (Finset.univ.erase missing)
       = ((rank : ℝ) + 1) • (1 : Matrix (Fin rank) (Fin rank) ℝ)
-        - atomMatrix (simplexTieAtom rank missing) := by
+        - atomMatrix (flatSimplexAtom rank missing) := by
     have hsplit : ∑ label ∈ Finset.univ.erase missing,
-          atomMatrix (simplexTieAtom rank label)
-        + atomMatrix (simplexTieAtom rank missing)
-        = ∑ label : Fin (rank + 1), atomMatrix (simplexTieAtom rank label) :=
+          atomMatrix (flatSimplexAtom rank label)
+        + atomMatrix (flatSimplexAtom rank missing)
+        = ∑ label : Fin (rank + 1), atomMatrix (flatSimplexAtom rank label) :=
       Finset.sum_erase_add _ _ (Finset.mem_univ missing)
-    rw [subsetSum, simplexTieDesign_atom, ← simplexTieAtom_sum hrank, ← hsplit]
+    rw [subsetSum, flatSimplexDesign_atom, ← flatSimplexAtom_sum hrank, ← hsplit]
     abel
   rw [htotal]
   have hshift : ((rank : ℝ) + 1) • (1 : Matrix (Fin rank) (Fin rank) ℝ)
@@ -488,23 +501,23 @@ theorem simplexTieDesign_gap {rank : ℕ} (hrank : 0 < rank) (missing : Fin (ran
 
 /-- **EVERY SELECTION OF THE SIMPLEX TIE DOMINATES.**  Cauchy-Schwarz at leverage
 exactly `rank`. -/
-theorem simplexTieDesign_dominates {rank : ℕ} (hrank : 0 < rank)
+theorem flatSimplexDesign_dominates {rank : ℕ} (hrank : 0 < rank)
     {selected : Finset (Fin (rank + 1))} (hcard : selected.card = rank) :
-    Dominates (simplexTieDesign rank hrank) selected := by
+    Dominates (flatSimplexDesign rank hrank) selected := by
   obtain ⟨missing, rfl⟩ := exists_erase_of_card_eq hcard
-  rw [Dominates, simplexTieDesign_gap hrank]
+  rw [Dominates, flatSimplexDesign_gap hrank]
   exact posSemidef_smul_one_sub_atomMatrix_of_leverage_le
-    (le_of_eq (leverageOf_simplexTieAtom hrank missing))
+    (le_of_eq (leverageOf_flatSimplexAtom hrank missing))
 
 /-- **NO SELECTION OF THE SIMPLEX TIE DOMINATES STRICTLY.**  The missing atom is
 itself the null direction of the gap. -/
-theorem simplexTieDesign_not_posDef {rank : ℕ} (hrank : 0 < rank)
+theorem flatSimplexDesign_not_posDef {rank : ℕ} (hrank : 0 < rank)
     {selected : Finset (Fin (rank + 1))} (hcard : selected.card = rank) :
-    ¬ (subsetSum (simplexTieDesign rank hrank) selected - 1).PosDef := by
+    ¬ (subsetSum (flatSimplexDesign rank hrank) selected - 1).PosDef := by
   obtain ⟨missing, rfl⟩ := exists_erase_of_card_eq hcard
   intro hposDef
-  set probe : Fin rank → ℝ := simplexTieAtom rank missing with hprobe
-  have hlev : leverageOf probe = (rank : ℝ) := leverageOf_simplexTieAtom hrank missing
+  set probe : Fin rank → ℝ := flatSimplexAtom rank missing with hprobe
+  have hlev : leverageOf probe = (rank : ℝ) := leverageOf_flatSimplexAtom hrank missing
   have hdot : probe ⬝ᵥ probe = (rank : ℝ) := by
     rw [← hlev, leverageOf, dotProduct]
     exact Finset.sum_congr rfl fun coord _ => (pow_two (probe coord)).symm
@@ -516,35 +529,35 @@ theorem simplexTieDesign_not_posDef {rank : ℕ} (hrank : 0 < rank)
     linarith
   rw [Matrix.posDef_iff_dotProduct_mulVec] at hposDef
   have hvalue := hposDef.2 hne
-  rw [star_trivial, simplexTieDesign_gap hrank, Matrix.sub_mulVec, Matrix.smul_mulVec,
+  rw [star_trivial, flatSimplexDesign_gap hrank, Matrix.sub_mulVec, Matrix.smul_mulVec,
     Matrix.one_mulVec, dotProduct_sub, dotProduct_smul, smul_eq_mul,
     dotProduct_atomMatrix_mulVec, hdot] at hvalue
   nlinarith [hvalue]
 
 /-- **THE SIMPLEX DESIGN IS AN EXACT TIE**, at every rank. -/
-theorem simplexTieDesign_isTie {rank : ℕ} (hrank : 0 < rank) :
-    IsTie (simplexTieDesign rank hrank) := by
+theorem flatSimplexDesign_isTie {rank : ℕ} (hrank : 0 < rank) :
+    IsTie (flatSimplexDesign rank hrank) := by
   classical
   have hcardErase : (Finset.univ.erase (Fin.last rank)).card = rank := by
     rw [Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]
     omega
   refine ⟨⟨Finset.univ.erase (Fin.last rank), hcardErase,
-    simplexTieDesign_dominates hrank hcardErase⟩, ?_⟩
+    flatSimplexDesign_dominates hrank hcardErase⟩, ?_⟩
   intro selected hcard
-  exact simplexTieDesign_not_posDef hrank hcard
+  exact flatSimplexDesign_not_posDef hrank hcard
 
 /-- **THE SIMPLEX TIE CARRIES NO PARALLEL PAIR**, at every rank `≥ 3`. -/
-theorem simplexTieDesign_not_hasParallelPair {rank : ℕ} (hrank : 0 < rank) (hthree : 3 ≤ rank) :
-    ¬ HasParallelPair (simplexTieDesign rank hrank) := by
+theorem flatSimplexDesign_not_hasParallelPair {rank : ℕ} (hrank : 0 < rank) (hthree : 3 ≤ rank) :
+    ¬ HasParallelPair (flatSimplexDesign rank hrank) := by
   classical
   rintro ⟨keptLabel, dropLabel, ratio, hdistinct, hparallel⟩
   have hatomEq : ∀ coord : Fin rank,
-      simplexTieAtom rank dropLabel coord = ratio * simplexTieAtom rank keptLabel coord := by
+      flatSimplexAtom rank dropLabel coord = ratio * flatSimplexAtom rank keptLabel coord := by
     intro coord
     have hstep := congrFun hparallel coord
-    simpa [simplexTieDesign_atom, Pi.smul_apply, smul_eq_mul] using hstep
-  have hscale : 1 < simplexScale rank := one_lt_simplexScale hrank
-  have hshiftNe : simplexShift rank ≠ 0 := simplexShift_ne_zero hrank
+    simpa [flatSimplexDesign_atom, Pi.smul_apply, smul_eq_mul] using hstep
+  have hscale : 1 < flatSimplexScale rank := one_lt_flatSimplexScale hrank
+  have hshiftNe : flatSimplexShift rank ≠ 0 := flatSimplexShift_ne_zero hrank
   -- a coordinate outside a two-element set exists because the rank is at least three
   have hthird : ∀ first second : Fin rank, ∃ other : Fin rank, other ≠ first ∧ other ≠ second := by
     intro first second
@@ -563,23 +576,23 @@ theorem simplexTieDesign_not_hasParallelPair {rank : ℕ} (hrank : 0 < rank) (ht
         exact hdistinct (by rw [haxis])
       obtain ⟨other, hotherKept, hotherDrop⟩ := hthird keptAxis dropAxis
       have hAtOther := hatomEq other
-      rw [simplexTieAtom_castSucc, simplexTieAtom_castSucc, if_neg hotherDrop,
+      rw [flatSimplexAtom_castSucc, flatSimplexAtom_castSucc, if_neg hotherDrop,
         if_neg hotherKept] at hAtOther
       have hratio : ratio = 1 := by
-        have hstep : simplexShift rank * (ratio - 1) = 0 := by linear_combination -hAtOther
+        have hstep : flatSimplexShift rank * (ratio - 1) = 0 := by linear_combination -hAtOther
         rcases mul_eq_zero.mp hstep with hzero | hone
         · exact absurd hzero hshiftNe
         · linarith
       have hAtDrop := hatomEq dropAxis
-      rw [simplexTieAtom_castSucc, simplexTieAtom_castSucc, if_pos rfl,
+      rw [flatSimplexAtom_castSucc, flatSimplexAtom_castSucc, if_pos rfl,
         if_neg haxisNe, hratio] at hAtDrop
       linarith
     · obtain ⟨other, hotherKept, _⟩ := hthird keptAxis keptAxis
       have hAtKept := hatomEq keptAxis
       have hAtOther := hatomEq other
-      rw [simplexTieAtom_last, simplexTieAtom_castSucc, if_pos rfl] at hAtKept
-      rw [simplexTieAtom_last, simplexTieAtom_castSucc, if_neg hotherKept] at hAtOther
-      have hzero : ratio * simplexScale rank = 0 := by linear_combination hAtOther - hAtKept
+      rw [flatSimplexAtom_last, flatSimplexAtom_castSucc, if_pos rfl] at hAtKept
+      rw [flatSimplexAtom_last, flatSimplexAtom_castSucc, if_neg hotherKept] at hAtOther
+      have hzero : ratio * flatSimplexScale rank = 0 := by linear_combination hAtOther - hAtKept
       rcases mul_eq_zero.mp hzero with hratioZero | hscaleZero
       · rw [hratioZero, zero_mul] at hAtOther
         linarith
@@ -588,8 +601,8 @@ theorem simplexTieDesign_not_hasParallelPair {rank : ℕ} (hrank : 0 < rank) (ht
     · obtain ⟨other, hotherDrop, _⟩ := hthird dropAxis dropAxis
       have hAtDrop := hatomEq dropAxis
       have hAtOther := hatomEq other
-      rw [simplexTieAtom_castSucc, simplexTieAtom_last, if_pos rfl, mul_one] at hAtDrop
-      rw [simplexTieAtom_castSucc, simplexTieAtom_last, if_neg hotherDrop, mul_one] at hAtOther
+      rw [flatSimplexAtom_castSucc, flatSimplexAtom_last, if_pos rfl, mul_one] at hAtDrop
+      rw [flatSimplexAtom_castSucc, flatSimplexAtom_last, if_neg hotherDrop, mul_one] at hAtOther
       linarith
     · exact hdistinct rfl
 
@@ -605,8 +618,8 @@ theorem not_hingeHoldsAtSize_succ_rank {rank : ℕ} (hthree : 3 ≤ rank) :
     ¬ HingeHoldsAtSize (rank + 1) rank := by
   have hrank : 0 < rank := by omega
   intro hhinge
-  exact simplexTieDesign_not_hasParallelPair hrank hthree
-    (hhinge (simplexTieDesign rank hrank) (simplexTieDesign_isTie hrank))
+  exact flatSimplexDesign_not_hasParallelPair hrank hthree
+    (hhinge (flatSimplexDesign rank hrank) (flatSimplexDesign_isTie hrank))
 
 /-! ## 2. The duplicate split
 
@@ -857,7 +870,7 @@ theorem exists_isTie_of_succ_rank_le {rank size : ℕ} (hthree : 3 ≤ rank)
     (hsize : rank + 1 ≤ size) : ∃ D : WeightedDesign size rank, IsTie D := by
   induction size, hsize using Nat.le_induction with
   | base =>
-      exact ⟨simplexTieDesign rank (by omega), simplexTieDesign_isTie (by omega)⟩
+      exact ⟨flatSimplexDesign rank (by omega), flatSimplexDesign_isTie (by omega)⟩
   | succ current hcurrent ihcurrent =>
       obtain ⟨D, htie⟩ := ihcurrent
       obtain ⟨E, htieE, _⟩ := exists_isTie_succ htie

@@ -2529,10 +2529,10 @@ import Gtz.Wave.PlaneShadowPairBridge
 #print axioms Gtz.tieHouseholder_head
 #print axioms Gtz.tieHouseholder_column_pairing
 #print axioms Gtz.tieHouseholder_tail_pairing
-#print axioms Gtz.simplexTieDesign_weight
+#print axioms Gtz.flatSimplexDesign_weight
 #print axioms Gtz.weight_mul_leverage_simplexTieAtom
-#print axioms Gtz.simplexTieDesign_leverage_identity
-#print axioms Gtz.simplexTieDesign_isTie
+#print axioms Gtz.flatSimplexDesign_leverage_identity
+#print axioms Gtz.flatSimplexDesign_isTie
 #print axioms Gtz.exists_isTie_of_weights
 #print axioms Gtz.leverage_of_isTie
 #print axioms Gtz.corank_one_tie_stratum
@@ -4761,7 +4761,7 @@ import Gtz.Wave.PlaneShadowPairBridge
 #print axioms Gtz.splitSevenClassTotalWeight_eq_quarter
 #print axioms Gtz.tieDefect_uniformQuarter
 #print axioms Gtz.tieReflector_uniformQuarter
-#print axioms Gtz.simplexTieAtom_uniformQuarter_eq_tetraAtom
+#print axioms Gtz.flatSimplexAtom_uniformQuarter_eq_tetraAtom
 #print axioms Gtz.splitSevenClassDesign_eq_splitSevenDesign
 #print axioms Gtz.bundledCycle_exists_dominatingSubset
 #print axioms Gtz.tetraAtom_abs_eq_one
@@ -7935,9 +7935,9 @@ import Gtz.Wave.PlaneShadowPairBridge
 -- whose deficit is tau, and tau is free in (0,1] INDEPENDENTLY of the leverage -- a large cap
 -- does not make the residue close to a design.  The DEFLATION route is circular at (7,3): its
 -- heavy branch consumes Gtz.GtzWeighted 6 3, which is open.
-#print axioms Gtz.simplexTieAtom_leverage_identity
+#print axioms Gtz.flatSimplexAtom_leverage_identity
 #print axioms Gtz.one_lt_leverage_simplexTieAtom
-#print axioms Gtz.leverage_simplexTieAtom_eq
+#print axioms Gtz.leverage_flatSimplexAtom_eq
 #print axioms Gtz.spikeClassWeight
 #print axioms Gtz.spikeClassWeight_zero
 #print axioms Gtz.spikeClassWeight_apply
@@ -38981,23 +38981,23 @@ run_cmd do
 #print axioms Gtz.exists_null_of_card_lt
 #print axioms Gtz.exists_null_of_parallel_within
 #print axioms Gtz.not_dominates_of_parallel_within
-#print axioms Gtz.simplexTieAtom_castSucc
-#print axioms Gtz.simplexTieAtom_last
-#print axioms Gtz.simplexScale_sq
+#print axioms Gtz.flatSimplexAtom_castSucc
+#print axioms Gtz.flatSimplexAtom_last
+#print axioms Gtz.flatSimplexScale_sq
 #print axioms Gtz.one_lt_simplexScale
-#print axioms Gtz.simplexShift_neg
-#print axioms Gtz.simplexShift_ne_zero
+#print axioms Gtz.flatSimplexShift_neg
+#print axioms Gtz.flatSimplexShift_ne_zero
 #print axioms Gtz.simplex_key
-#print axioms Gtz.simplexTieAtom_gram
-#print axioms Gtz.simplexTieDesign_atom
-#print axioms Gtz.leverageOf_simplexTieAtom
-#print axioms Gtz.simplexTieAtom_sum
+#print axioms Gtz.flatSimplexAtom_gram
+#print axioms Gtz.flatSimplexDesign_atom
+#print axioms Gtz.leverageOf_flatSimplexAtom
+#print axioms Gtz.flatSimplexAtom_sum
 #print axioms Gtz.exists_erase_of_card_eq
-#print axioms Gtz.simplexTieDesign_gap
-#print axioms Gtz.simplexTieDesign_dominates
-#print axioms Gtz.simplexTieDesign_not_posDef
-#print axioms Gtz.simplexTieDesign_isTie
-#print axioms Gtz.simplexTieDesign_not_hasParallelPair
+#print axioms Gtz.flatSimplexDesign_gap
+#print axioms Gtz.flatSimplexDesign_dominates
+#print axioms Gtz.flatSimplexDesign_not_posDef
+#print axioms Gtz.flatSimplexDesign_isTie
+#print axioms Gtz.flatSimplexDesign_not_hasParallelPair
 #print axioms Gtz.not_hingeHoldsAtSize_succ_rank
 #print axioms Gtz.duplicateSplitDesign_atom_castSucc
 #print axioms Gtz.duplicateSplitDesign_atom_last
