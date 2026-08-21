@@ -465,3 +465,35 @@ The correct route is Parseval plus the inside cap, not the split.
 Chained: Gtz.exists_outside_fourSet_posDef -- every corank-one weak dominator of
 a design on more than three labels extends, BY AN ATOM OUTSIDE IT, to a four-set
 with positive definite gap.  No selector, no chart, no probe constant.
+
+F67-10.  THE FLOOR PACKAGE -- four floors are ONE inverse-free inequality
+---------------------------------------------------------------------
+The four triples of a four-set total det - e2 of its gap (landed
+Gtz.sum_fourSet_gapDet_eq_det_sub_e2).  Four nonpositive determinants therefore
+give exactly one inequality:      det A <= e2(A) .
+For A > 0 with eigenvalues a,b,c that is abc <= ab+ac+bc, i.e. tr(A^-1) >= 1 --
+and independently, the four member floors say each member reads A^-1 at least
+one, while the four members rebuild A + 1, so their readings total 3 + tr(A^-1).
+The two derivations agree: the AGGREGATE of the four floors IS tr(A^-1) >= 1,
+and det A <= e2(A) is that with the inverse cleared.
+Cell B's seven gap determinant signs deliver the package at BOTH surviving
+four-sets (Gtz.bothLight_det_le_secondInvariant).
+
+F67-11.  THE CORNER'S THREE FREE EQUATIONS
+---------------------------------------------------------------------
+A corner gap is rank one, so adjoining any label leaves a SINGULAR gap:
+    Gtz.corner_fourSet_gapDet_eq_zero :  det(S_{C+d} - 1) = 0 .
+At (6,3) that is THREE polynomial EQUATIONS in the atoms, true at every corner,
+available before any floor is read, and not present in either cell's system.
+Hence Gtz.corner_fourSet_not_posDef: a corner carries no strict four-set --
+the corank-two half of the Loewner separation whose corank-one half is
+Gtz.exists_outside_fourSet_posDef.
+
+HANDOFF.  Landed this round: Gtz/Wave/NullProbeFourSetLaw.lean,
+Gtz/Wave/FourSetProducer.lean, Gtz/Wave/OutsideReadingFloor.lean,
+Gtz/Wave/FourSetFloorPackage.lean.  Still open: the cell-H two-star residual
+(now known to need a NON-STRICT certificate consuming weight positivity, since
+the margin is ~2*tau under a weight floor tau and cell H is EMPTY at tau >= 0.01),
+and cell B.  The Cayley chart is NOT polytope-compatible end to end: it is
+rational for the inside atoms only, and the outside atoms still need a matrix
+square root, so a Handelman LP has no polytope to run on in that chart.

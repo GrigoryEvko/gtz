@@ -1382,6 +1382,7 @@ import Gtz.Wave.FunnelSwapClosure
 import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
+import Gtz.Wave.FourSetFloorPackage
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.ProbeFreeParsevalBudget
 import Gtz.Wave.KTwoSixThreeFunnel
@@ -38044,3 +38045,15 @@ run_cmd do
 #print axioms Gtz.weight_mul_pairAdjForm_le_pairMinorTotal
 #print axioms Gtz.pairAdjForm_le_pairMinorTotal_mul_leverage
 #print axioms Gtz.weight_mul_pairGapMinor_le_pairMinorTotal_of_dominates
+
+-- Gtz/Wave/FourSetFloorPackage.lean -- the four member floors of a four-set are
+-- one inverse-free inequality det A <= e2(A), which is tr(A inverse) >= 1; and
+-- a corner pays a free equation at every four-set through it, three of them at
+-- size six, available before any floor is read
+#print axioms Gtz.fourSet_det_le_secondInvariant_of_floors
+#print axioms Gtz.fourSet_det_eq_secondInvariant_of_floors_eq_zero
+#print axioms Gtz.secondInvariantOfThree_smul_atomMatrix
+#print axioms Gtz.det_smul_atomMatrix_add_atomMatrix
+#print axioms Gtz.corner_fourSet_gapDet_eq_zero
+#print axioms Gtz.corner_fourSet_not_posDef
+#print axioms Gtz.bothLight_det_le_secondInvariant
