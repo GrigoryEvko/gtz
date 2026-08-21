@@ -30,7 +30,7 @@ Three consequences, each hypothesis-free at every rank `k ≥ 2`.
 
 Write `t_c` for the weight, `l_c` for the leverage, and
 
-    `u_c := 1 - t_c * l_c`      (`Gtz.coShare`, the co-share)
+    `u_c := 1 - t_c * l_c`      (`Gtz.designCoShare`, the co-share)
     `R_c := u_c / (1 - t_c)`    (`Gtz.coRatio`)
     `Sigma := sum_c t_c * R_c`  (`Gtz.coMean`, the weight-average of the ratios).
 
@@ -127,7 +127,7 @@ theorem trace_transpose_mul_self {size : ℕ} (form : Matrix (Fin size) (Fin siz
     Finset.sum_congr rfl fun colIndex _ => (pow_two _).symm
 
 /-- **A SYMMETRIC IDEMPOTENT OF TRACE ZERO VANISHES.** -/
-theorem eq_zero_of_symm_idem_trace_zero {size : ℕ} {form : Matrix (Fin size) (Fin size) ℝ}
+theorem matrix_eq_zero_of_symm_idem_trace_zero {size : ℕ} {form : Matrix (Fin size) (Fin size) ℝ}
     (hsymm : formᵀ = form) (hidem : form * form = form) (htrace : form.trace = 0) :
     form = 0 := by
   have hgram : (formᵀ * form).trace = 0 := by rw [hsymm, hidem, htrace]
@@ -242,7 +242,7 @@ theorem exists_vecMulVec_of_symm_idem_trace_one {size : ℕ}
         exact Finset.sum_congr rfl fun other _ => by ring]
       rw [show (∑ other, axis other * axis other) = axis ⬝ᵥ axis from rfl, hunit, mul_one]
     have hzero : form - Matrix.vecMulVec axis axis = 0 := by
-      refine eq_zero_of_symm_idem_trace_zero ?_ ?_ ?_
+      refine matrix_eq_zero_of_symm_idem_trace_zero ?_ ?_ ?_
       · rw [Matrix.transpose_sub, hsymm, houter]
       · simp only [Matrix.sub_mul, Matrix.mul_sub, hidem, hleft, hright, hsquare]
         abel
@@ -261,7 +261,7 @@ theorem designIsometry_apply (D : WeightedDesign m k) (atomIndex : Fin m) (coord
     designIsometry D atomIndex coordIndex
       = Real.sqrt (D.weight atomIndex) * D.atom atomIndex coordIndex := rfl
 
-theorem rootWeight_mul_self (D : WeightedDesign m k) (atomIndex : Fin m) :
+theorem sqrtWeight_mul_self (D : WeightedDesign m k) (atomIndex : Fin m) :
     Real.sqrt (D.weight atomIndex) * Real.sqrt (D.weight atomIndex) = D.weight atomIndex :=
   Real.mul_self_sqrt (D.weight_pos atomIndex).le
 
@@ -273,17 +273,17 @@ theorem designIsometry_transpose_mul (D : WeightedDesign m k) :
   rw [Matrix.sum_apply] at hparseval
   rw [Matrix.mul_apply, ← hparseval]
   refine Finset.sum_congr rfl fun atomIndex _ => ?_
-  have hroot := rootWeight_mul_self D atomIndex
+  have hroot := sqrtWeight_mul_self D atomIndex
   simp only [Matrix.transpose_apply, designIsometry_apply, Matrix.smul_apply, atomMatrix,
     Matrix.vecMulVec_apply, smul_eq_mul]
   linear_combination (D.atom atomIndex rowCoord * D.atom atomIndex colCoord) * hroot
 
 /-- The co-share of an atom: the deficit of its Parseval share. -/
-noncomputable def coShare (D : WeightedDesign m k) (atomIndex : Fin m) : ℝ :=
+noncomputable def designCoShare (D : WeightedDesign m k) (atomIndex : Fin m) : ℝ :=
   1 - D.weight atomIndex * leverageOf (D.atom atomIndex)
 
-theorem coShare_apply (D : WeightedDesign m k) (atomIndex : Fin m) :
-    coShare D atomIndex = 1 - D.weight atomIndex * leverageOf (D.atom atomIndex) := rfl
+theorem designCoShare_apply (D : WeightedDesign m k) (atomIndex : Fin m) :
+    designCoShare D atomIndex = 1 - D.weight atomIndex * leverageOf (D.atom atomIndex) := rfl
 
 /-- The complementary projection of a design: a symmetric idempotent of `R^m`
 whose diagonal is the co-share and whose trace is `m - k`. -/
@@ -310,15 +310,15 @@ theorem coProjection_mul_self (D : WeightedDesign m k) :
 
 /-- **THE DIAGONAL OF THE COMPLEMENTARY PROJECTION IS THE CO-SHARE.** -/
 theorem coProjection_diag (D : WeightedDesign m k) (atomIndex : Fin m) :
-    coProjection D atomIndex atomIndex = coShare D atomIndex := by
+    coProjection D atomIndex atomIndex = designCoShare D atomIndex := by
   have hrow : (designIsometry D * (designIsometry D)ᵀ) atomIndex atomIndex
       = D.weight atomIndex * leverageOf (D.atom atomIndex) := by
     rw [Matrix.mul_apply, leverageOf, Finset.mul_sum]
     refine Finset.sum_congr rfl fun coordIndex _ => ?_
-    have hroot := rootWeight_mul_self D atomIndex
+    have hroot := sqrtWeight_mul_self D atomIndex
     simp only [Matrix.transpose_apply, designIsometry_apply]
     linear_combination (D.atom atomIndex coordIndex ^ 2) * hroot
-  rw [coProjection, Matrix.sub_apply, Matrix.one_apply_eq, hrow, coShare_apply]
+  rw [coProjection, Matrix.sub_apply, Matrix.one_apply_eq, hrow, designCoShare_apply]
 
 /-- **THE OFF-DIAGONAL OF THE COMPLEMENTARY PROJECTION IS THE WEIGHTED PAIRING.** -/
 theorem coProjection_offDiag (D : WeightedDesign m k) {leftIndex rightIndex : Fin m}
@@ -351,8 +351,8 @@ theorem coProjection_mul_designIsometry (D : WeightedDesign m k) :
     designIsometry_transpose_mul, Matrix.mul_one, sub_self]
 
 /-- **THE CO-SHARES TOTAL THE CORANK.**  Parseval's trace, read on the diagonal. -/
-theorem sum_coShare (D : WeightedDesign m k) :
-    ∑ atomIndex, coShare D atomIndex = (m : ℝ) - (k : ℝ) := by
+theorem sum_designCoShare (D : WeightedDesign m k) :
+    ∑ atomIndex, designCoShare D atomIndex = (m : ℝ) - (k : ℝ) := by
   rw [← trace_coProjection D, Matrix.trace]
   exact (Finset.sum_congr rfl fun atomIndex _ => coProjection_diag D atomIndex).symm
 
@@ -369,7 +369,7 @@ theorem trace_coProjection_succ (D : WeightedDesign (k + 1) k) :
 theorem exists_coAxis (D : WeightedDesign (k + 1) k) :
     ∃ axis : Fin (k + 1) → ℝ, axis ⬝ᵥ axis = 1
       ∧ coProjection D = Matrix.vecMulVec axis axis
-      ∧ ∀ atomIndex, axis atomIndex ^ 2 = coShare D atomIndex := by
+      ∧ ∀ atomIndex, axis atomIndex ^ 2 = designCoShare D atomIndex := by
   obtain ⟨axis, hunit, hform⟩ := exists_vecMulVec_of_symm_idem_trace_one
     (coProjection_transpose D) (coProjection_mul_self D) (trace_coProjection_succ D)
   refine ⟨axis, hunit, hform, fun atomIndex => ?_⟩
@@ -384,7 +384,7 @@ resolves the whole weighted Gram: `t_r * (delta_rc - t_c * p_rc) = dep_r * dep_c
 theorem exists_dependency (D : WeightedDesign (k + 1) k) :
     ∃ dep : Fin (k + 1) → ℝ,
       (∀ coordIndex : Fin k, ∑ atomIndex, dep atomIndex * D.atom atomIndex coordIndex = 0)
-        ∧ (∀ atomIndex, dep atomIndex ^ 2 = D.weight atomIndex * coShare D atomIndex)
+        ∧ (∀ atomIndex, dep atomIndex ^ 2 = D.weight atomIndex * designCoShare D atomIndex)
         ∧ (∀ rowIndex colIndex : Fin (k + 1),
             D.weight rowIndex * ((if rowIndex = colIndex then (1 : ℝ) else 0)
                 - D.weight colIndex * (D.atom rowIndex ⬝ᵥ D.atom colIndex))
@@ -417,12 +417,12 @@ theorem exists_dependency (D : WeightedDesign (k + 1) k) :
     exact Finset.sum_congr rfl fun atomIndex _ => by
       rw [designIsometry_apply]; ring
   · rw [mul_pow, Real.sq_sqrt (D.weight_pos atomIndex).le, haxisSq]
-  · have hrootRow := rootWeight_mul_self D rowIndex
-    have hrootCol := rootWeight_mul_self D colIndex
+  · have hrootRow := sqrtWeight_mul_self D rowIndex
+    have hrootCol := sqrtWeight_mul_self D colIndex
     by_cases hcase : rowIndex = colIndex
     · subst hcase
       have hdiag := haxisSq rowIndex
-      rw [coShare_apply, leverageOf_eq_dotProduct] at hdiag
+      rw [designCoShare_apply, leverageOf_eq_dotProduct] at hdiag
       have hone : (if rowIndex = rowIndex then (1 : ℝ) else 0) = 1 := by simp
       rw [hone]
       calc D.weight rowIndex
@@ -453,7 +453,7 @@ EVERY `(k+1, k)` design and with no tie hypothesis. -/
 theorem weight_mul_sq_dotProduct_eq_coShare_mul (D : WeightedDesign (k + 1) k)
     {leftIndex rightIndex : Fin (k + 1)} (hdistinct : leftIndex ≠ rightIndex) :
     D.weight leftIndex * D.weight rightIndex * (D.atom leftIndex ⬝ᵥ D.atom rightIndex) ^ 2
-      = coShare D leftIndex * coShare D rightIndex := by
+      = designCoShare D leftIndex * designCoShare D rightIndex := by
   obtain ⟨axis, hunit, hform, haxisSq⟩ := exists_coAxis D
   have houter : coProjection D leftIndex rightIndex = axis leftIndex * axis rightIndex := by
     rw [hform, Matrix.vecMulVec_apply]
@@ -474,19 +474,19 @@ theorem weight_mul_sq_dotProduct_eq_coShare_mul (D : WeightedDesign (k + 1) k)
 
 /-- The co-ratio of an atom: its co-share against its own outside weight. -/
 noncomputable def coRatio (D : WeightedDesign m k) (atomIndex : Fin m) : ℝ :=
-  coShare D atomIndex / (1 - D.weight atomIndex)
+  designCoShare D atomIndex / (1 - D.weight atomIndex)
 
 /-- The weight-average of the co-ratios. -/
 noncomputable def coMean (D : WeightedDesign m k) : ℝ :=
   ∑ atomIndex, D.weight atomIndex * coRatio D atomIndex
 
-theorem one_sub_weight_pos (D : WeightedDesign m k) (hsize : 2 ≤ m) (atomIndex : Fin m) :
+theorem one_sub_weight_pos_of_size (D : WeightedDesign m k) (hsize : 2 ≤ m) (atomIndex : Fin m) :
     0 < 1 - D.weight atomIndex := by
   linarith [weight_lt_one D hsize atomIndex]
 
-theorem coShare_eq_mul (D : WeightedDesign m k) (hsize : 2 ≤ m) (atomIndex : Fin m) :
-    coShare D atomIndex = (1 - D.weight atomIndex) * coRatio D atomIndex := by
-  rw [coRatio, mul_div_cancel₀ _ (one_sub_weight_pos D hsize atomIndex).ne']
+theorem designCoShare_eq_mul (D : WeightedDesign m k) (hsize : 2 ≤ m) (atomIndex : Fin m) :
+    designCoShare D atomIndex = (1 - D.weight atomIndex) * coRatio D atomIndex := by
+  rw [coRatio, mul_div_cancel₀ _ (one_sub_weight_pos_of_size D hsize atomIndex).ne']
 
 theorem gap_isHermitian (D : WeightedDesign m k) (C : Finset (Fin m)) :
     (subsetSum D C - 1).IsHermitian :=
@@ -494,7 +494,7 @@ theorem gap_isHermitian (D : WeightedDesign m k) (C : Finset (Fin m)) :
     rw [Matrix.transpose_sub, Matrix.transpose_one, subsetSum_transpose])
 
 /-- Parseval as a quadratic form: the weighted square readings total the norm. -/
-theorem sum_weight_mul_sq_reading (D : WeightedDesign m k) (probe : Fin k → ℝ) :
+theorem sum_weight_mul_sq_reading_eq_normSq (D : WeightedDesign m k) (probe : Fin k → ℝ) :
     ∑ atomIndex, D.weight atomIndex * (D.atom atomIndex ⬝ᵥ probe) ^ 2 = probe ⬝ᵥ probe := by
   have hmoment := dotProduct_weightedMoment_mulVec D Finset.univ probe
   rw [weightedMoment_univ, Matrix.one_mulVec] at hmoment
@@ -510,7 +510,7 @@ theorem dotProduct_erase_gap_mulVec (D : WeightedDesign m k) (eraseIndex : Fin m
         - (D.atom eraseIndex ⬝ᵥ probe) ^ 2 := by
   classical
   have hgap := dotProduct_subsetSum_finset_mulVec D (Finset.univ.erase eraseIndex) probe
-  have hparseval := sum_weight_mul_sq_reading D probe
+  have hparseval := sum_weight_mul_sq_reading_eq_normSq D probe
   have hsplit : ∑ atomIndex ∈ Finset.univ.erase eraseIndex, (D.atom atomIndex ⬝ᵥ probe) ^ 2
       = (∑ atomIndex, (D.atom atomIndex ⬝ᵥ probe) ^ 2)
         - (D.atom eraseIndex ⬝ᵥ probe) ^ 2 := by
@@ -639,15 +639,15 @@ theorem sum_dep_mul_reading_eq_zero (D : WeightedDesign (k + 1) k) {dep : Fin (k
 /-- The mass the constrained Cauchy-Schwarz sees is the co-mean. -/
 theorem dep_mass_eq_coMean (D : WeightedDesign (k + 1) k) (hsize : 2 ≤ k + 1)
     {dep : Fin (k + 1) → ℝ}
-    (hnorm : ∀ atomIndex, dep atomIndex ^ 2 = D.weight atomIndex * coShare D atomIndex) :
+    (hnorm : ∀ atomIndex, dep atomIndex ^ 2 = D.weight atomIndex * designCoShare D atomIndex) :
     ∑ atomIndex, dep atomIndex ^ 2 / (1 - D.weight atomIndex) = coMean D := by
   rw [coMean]
   exact Finset.sum_congr rfl fun atomIndex _ => by
     rw [hnorm atomIndex, coRatio, mul_div_assoc]
 
 /-- The co-shares are squares, hence nonnegative. -/
-theorem coShare_nonneg (D : WeightedDesign (k + 1) k) (atomIndex : Fin (k + 1)) :
-    0 ≤ coShare D atomIndex := by
+theorem designCoShare_nonneg (D : WeightedDesign (k + 1) k) (atomIndex : Fin (k + 1)) :
+    0 ≤ designCoShare D atomIndex := by
   obtain ⟨axis, -, -, haxisSq⟩ := exists_coAxis D
   rw [← haxisSq atomIndex]
   exact sq_nonneg _
@@ -658,18 +658,18 @@ theorem coMean_pos (D : WeightedDesign (k + 1) k) (hrank : 1 ≤ k) : 0 < coMean
   classical
   have hsize : 2 ≤ k + 1 := by omega
   have hslack : ∀ atomIndex : Fin (k + 1), 0 < 1 - D.weight atomIndex :=
-    one_sub_weight_pos D hsize
-  have htotal : ∑ atomIndex, coShare D atomIndex = 1 := by
-    rw [sum_coShare D]; push_cast; ring
-  obtain ⟨witness, hwitness⟩ : ∃ witness : Fin (k + 1), 0 < coShare D witness := by
+    one_sub_weight_pos_of_size D hsize
+  have htotal : ∑ atomIndex, designCoShare D atomIndex = 1 := by
+    rw [sum_designCoShare D]; push_cast; ring
+  obtain ⟨witness, hwitness⟩ : ∃ witness : Fin (k + 1), 0 < designCoShare D witness := by
     by_contra hcontra
     push_neg at hcontra
-    have hzero : ∑ atomIndex, coShare D atomIndex ≤ 0 :=
+    have hzero : ∑ atomIndex, designCoShare D atomIndex ≤ 0 :=
       Finset.sum_nonpos fun atomIndex _ => hcontra atomIndex
     rw [htotal] at hzero
     norm_num at hzero
   refine Finset.sum_pos' (fun atomIndex _ =>
-    mul_nonneg (D.weight_pos atomIndex).le (div_nonneg (coShare_nonneg D atomIndex)
+    mul_nonneg (D.weight_pos atomIndex).le (div_nonneg (designCoShare_nonneg D atomIndex)
       (hslack atomIndex).le)) ⟨witness, Finset.mem_univ _, ?_⟩
   exact mul_pos (D.weight_pos witness) (div_pos hwitness (hslack witness))
 
@@ -679,7 +679,7 @@ theorem sq_reading_mul_le (D : WeightedDesign (k + 1) k) (hrank : 1 ≤ k)
     (eraseIndex : Fin (k + 1)) (probe : Fin k → ℝ) :
     (D.atom eraseIndex ⬝ᵥ probe) ^ 2 * ((1 - D.weight eraseIndex) ^ 2 * coMean D)
       ≤ ((1 - D.weight eraseIndex) * coMean D
-          - D.weight eraseIndex * coShare D eraseIndex)
+          - D.weight eraseIndex * designCoShare D eraseIndex)
         * ∑ atomIndex, (1 - D.weight atomIndex) * (D.atom atomIndex ⬝ᵥ probe) ^ 2 := by
   have hsize : 2 ≤ k + 1 := by omega
   obtain ⟨dep, hdep, hnorm, -⟩ := exists_dependency D
@@ -687,7 +687,7 @@ theorem sq_reading_mul_le (D : WeightedDesign (k + 1) k) (hrank : 1 ≤ k)
   have hcap := sq_le_of_constrained_cauchySchwarz
     (outsideWeight := fun atomIndex => 1 - D.weight atomIndex) (coefficient := dep)
     (reading := fun atomIndex => D.atom atomIndex ⬝ᵥ probe)
-    (one_sub_weight_pos D hsize) (sum_dep_mul_reading_eq_zero D hdep probe) eraseIndex
+    (one_sub_weight_pos_of_size D hsize) (sum_dep_mul_reading_eq_zero D hdep probe) eraseIndex
     (by rw [hmass]; exact coMean_pos D hrank)
   rw [hmass, hnorm eraseIndex] at hcap
   exact hcap
@@ -698,18 +698,18 @@ theorem dominates_erase_of_coMean_le (D : WeightedDesign (k + 1) k) (hrank : 1 �
     (eraseIndex : Fin (k + 1)) (hclears : coMean D ≤ coRatio D eraseIndex) :
     Dominates D (Finset.univ.erase eraseIndex) := by
   have hsize : 2 ≤ k + 1 := by omega
-  have hslack := one_sub_weight_pos D hsize eraseIndex
+  have hslack := one_sub_weight_pos_of_size D hsize eraseIndex
   have hmeanPos := coMean_pos D hrank
   refine Matrix.posSemidef_iff_dotProduct_mulVec.mpr ⟨gap_isHermitian D _, fun probe => ?_⟩
   rw [star_trivial, dotProduct_erase_gap_mulVec D eraseIndex]
   have henergyNonneg : (0 : ℝ)
       ≤ ∑ atomIndex, (1 - D.weight atomIndex) * (D.atom atomIndex ⬝ᵥ probe) ^ 2 :=
     Finset.sum_nonneg fun atomIndex _ =>
-      mul_nonneg (one_sub_weight_pos D hsize atomIndex).le (sq_nonneg _)
+      mul_nonneg (one_sub_weight_pos_of_size D hsize atomIndex).le (sq_nonneg _)
   have hcap := sq_reading_mul_le D hrank eraseIndex probe
-  have hshareEq := coShare_eq_mul D hsize eraseIndex
+  have hshareEq := designCoShare_eq_mul D hsize eraseIndex
   have hrate : (1 - D.weight eraseIndex) * coMean D
-        - D.weight eraseIndex * coShare D eraseIndex
+        - D.weight eraseIndex * designCoShare D eraseIndex
       ≤ (1 - D.weight eraseIndex) ^ 2 * coMean D := by
     rw [hshareEq]
     have hprod : (0 : ℝ) ≤ (1 - D.weight eraseIndex)
@@ -726,7 +726,7 @@ theorem dominates_erase_of_coMean_le (D : WeightedDesign (k + 1) k) (hrank : 1 �
       ≤ (∑ atomIndex, (1 - D.weight atomIndex) * (D.atom atomIndex ⬝ᵥ probe) ^ 2)
         * ((1 - D.weight eraseIndex) ^ 2 * coMean D) := by
     refine le_trans hcap ?_
-    calc ((1 - D.weight eraseIndex) * coMean D - D.weight eraseIndex * coShare D eraseIndex)
+    calc ((1 - D.weight eraseIndex) * coMean D - D.weight eraseIndex * designCoShare D eraseIndex)
           * ∑ atomIndex, (1 - D.weight atomIndex) * (D.atom atomIndex ⬝ᵥ probe) ^ 2
         ≤ ((1 - D.weight eraseIndex) ^ 2 * coMean D)
           * ∑ atomIndex, (1 - D.weight atomIndex) * (D.atom atomIndex ⬝ᵥ probe) ^ 2 :=
@@ -740,13 +740,13 @@ theorem posDef_erase_of_coMean_lt (D : WeightedDesign (k + 1) k) (hrank : 1 ≤ 
     (subsetSum D (Finset.univ.erase eraseIndex) - 1).PosDef := by
   classical
   have hsize : 2 ≤ k + 1 := by omega
-  have hslack := one_sub_weight_pos D hsize eraseIndex
+  have hslack := one_sub_weight_pos_of_size D hsize eraseIndex
   have hmeanPos := coMean_pos D hrank
   refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨gap_isHermitian D _, fun probe hprobe => ?_⟩
   rw [star_trivial, dotProduct_erase_gap_mulVec D eraseIndex]
   have henergyPos : (0 : ℝ)
       < ∑ atomIndex, (1 - D.weight atomIndex) * (D.atom atomIndex ⬝ᵥ probe) ^ 2 := by
-    have hparseval := sum_weight_mul_sq_reading D probe
+    have hparseval := sum_weight_mul_sq_reading_eq_normSq D probe
     have hprobePos : 0 < probe ⬝ᵥ probe := dotProduct_self_pos_of_ne_zero hprobe
     rw [← hparseval] at hprobePos
     obtain ⟨witness, hwitness⟩ : ∃ witness : Fin (k + 1),
@@ -758,14 +758,14 @@ theorem posDef_erase_of_coMean_lt (D : WeightedDesign (k + 1) k) (hrank : 1 ≤ 
     have hterm : 0 < (1 - D.weight witness) * (D.atom witness ⬝ᵥ probe) ^ 2 := by
       have hsq : 0 < (D.atom witness ⬝ᵥ probe) ^ 2 := by
         nlinarith [hwitness, D.weight_pos witness, sq_nonneg (D.atom witness ⬝ᵥ probe)]
-      exact mul_pos (one_sub_weight_pos D hsize witness) hsq
+      exact mul_pos (one_sub_weight_pos_of_size D hsize witness) hsq
     exact Finset.sum_pos' (fun atomIndex _ =>
-      mul_nonneg (one_sub_weight_pos D hsize atomIndex).le (sq_nonneg _))
+      mul_nonneg (one_sub_weight_pos_of_size D hsize atomIndex).le (sq_nonneg _))
       ⟨witness, Finset.mem_univ _, hterm⟩
   have hcap := sq_reading_mul_le D hrank eraseIndex probe
-  have hshareEq := coShare_eq_mul D hsize eraseIndex
+  have hshareEq := designCoShare_eq_mul D hsize eraseIndex
   have hrate : (1 - D.weight eraseIndex) * coMean D
-        - D.weight eraseIndex * coShare D eraseIndex
+        - D.weight eraseIndex * designCoShare D eraseIndex
       < (1 - D.weight eraseIndex) ^ 2 * coMean D := by
     rw [hshareEq]
     have hprod : (0 : ℝ) < (1 - D.weight eraseIndex)
@@ -782,7 +782,7 @@ theorem posDef_erase_of_coMean_lt (D : WeightedDesign (k + 1) k) (hrank : 1 ≤ 
       < (∑ atomIndex, (1 - D.weight atomIndex) * (D.atom atomIndex ⬝ᵥ probe) ^ 2)
         * ((1 - D.weight eraseIndex) ^ 2 * coMean D) := by
     refine lt_of_le_of_lt hcap ?_
-    calc ((1 - D.weight eraseIndex) * coMean D - D.weight eraseIndex * coShare D eraseIndex)
+    calc ((1 - D.weight eraseIndex) * coMean D - D.weight eraseIndex * designCoShare D eraseIndex)
           * ∑ atomIndex, (1 - D.weight atomIndex) * (D.atom atomIndex ⬝ᵥ probe) ^ 2
         < ((1 - D.weight eraseIndex) ^ 2 * coMean D)
           * ∑ atomIndex, (1 - D.weight atomIndex) * (D.atom atomIndex ⬝ᵥ probe) ^ 2 :=
@@ -837,18 +837,18 @@ theorem coRatio_eq_coMean_of_noStrict (D : WeightedDesign (k + 1) k) (hrank : 1 
 theorem coMean_mul_rank (D : WeightedDesign (k + 1) k) (hrank : 1 ≤ k)
     (hno : NoStrictSelection D) : coMean D * (k : ℝ) = 1 := by
   have hsize : 2 ≤ k + 1 := by omega
-  have htotal : ∑ atomIndex, coShare D atomIndex = 1 := by
-    rw [sum_coShare D]; push_cast; ring
+  have htotal : ∑ atomIndex, designCoShare D atomIndex = 1 := by
+    rw [sum_designCoShare D]; push_cast; ring
   have houtside : ∑ atomIndex : Fin (k + 1), (1 - D.weight atomIndex) = (k : ℝ) := by
     rw [Finset.sum_sub_distrib, D.weight_sum_one, Finset.sum_const, Finset.card_univ,
       Fintype.card_fin, nsmul_eq_mul, mul_one]
     push_cast
     ring
-  have hexpand : ∑ atomIndex, coShare D atomIndex
+  have hexpand : ∑ atomIndex, designCoShare D atomIndex
       = coMean D * ∑ atomIndex : Fin (k + 1), (1 - D.weight atomIndex) := by
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl fun atomIndex _ => ?_
-    rw [coShare_eq_mul D hsize atomIndex, coRatio_eq_coMean_of_noStrict D hrank hno atomIndex]
+    rw [designCoShare_eq_mul D hsize atomIndex, coRatio_eq_coMean_of_noStrict D hrank hno atomIndex]
     ring
   rw [hexpand, houtside] at htotal
   exact htotal
@@ -864,8 +864,8 @@ theorem rank_mul_share_eq_of_noStrict (D : WeightedDesign (k + 1) k) (hrank : 1 
     (k : ℝ) * (D.weight atomIndex * leverageOf (D.atom atomIndex))
       = ((k : ℝ) - 1) + D.weight atomIndex := by
   have hsize : 2 ≤ k + 1 := by omega
-  have hshare := coShare_eq_mul D hsize atomIndex
-  rw [coRatio_eq_coMean_of_noStrict D hrank hno atomIndex, coShare_apply] at hshare
+  have hshare := designCoShare_eq_mul D hsize atomIndex
+  rw [coRatio_eq_coMean_of_noStrict D hrank hno atomIndex, designCoShare_apply] at hshare
   have hmean := coMean_mul_rank D hrank hno
   linear_combination (-(k : ℝ)) * hshare - (1 - D.weight atomIndex) * hmean
 
@@ -889,9 +889,9 @@ theorem coRatio_eq_coMean_of_law (D : WeightedDesign (k + 1) k) (hrank : 1 ≤ k
   have hcast : (0 : ℝ) < (k : ℝ) := by exact_mod_cast hrank
   have hratio : ∀ other : Fin (k + 1), coRatio D other * (k : ℝ) = 1 := by
     intro other
-    have hslack := one_sub_weight_pos D hsize other
-    have hshare : coShare D other * (k : ℝ) = 1 - D.weight other := by
-      rw [coShare_apply]
+    have hslack := one_sub_weight_pos_of_size D hsize other
+    have hshare : designCoShare D other * (k : ℝ) = 1 - D.weight other := by
+      rw [designCoShare_apply]
       nlinarith [hlaw other]
     rw [coRatio, div_mul_eq_mul_div, hshare, div_self hslack.ne']
   have hmean : coMean D * (k : ℝ) = 1 := by
@@ -976,15 +976,15 @@ theorem exists_null_probe_of_law (D : WeightedDesign (k + 1) k) (hrank : 1 ≤ k
   classical
   have hsize : 2 ≤ k + 1 := by omega
   have hslack : ∀ atomIndex : Fin (k + 1), 0 < 1 - D.weight atomIndex :=
-    one_sub_weight_pos D hsize
+    one_sub_weight_pos_of_size D hsize
   have hmeanPos := coMean_pos D hrank
   have hequal := coRatio_eq_coMean_of_law D hrank hlaw
   obtain ⟨dep, -, hnorm, hres⟩ := exists_dependency D
   -- every co-share is the outside weight times the common co-mean
   have hshare : ∀ atomIndex : Fin (k + 1),
-      coShare D atomIndex = (1 - D.weight atomIndex) * coMean D := by
+      designCoShare D atomIndex = (1 - D.weight atomIndex) * coMean D := by
     intro atomIndex
-    rw [coShare_eq_mul D hsize atomIndex, hequal atomIndex]
+    rw [designCoShare_eq_mul D hsize atomIndex, hequal atomIndex]
   have hdepSq : ∀ atomIndex : Fin (k + 1),
       dep atomIndex ^ 2 = D.weight atomIndex * ((1 - D.weight atomIndex) * coMean D) := by
     intro atomIndex
@@ -1120,26 +1120,26 @@ theorem not_hasParallelPair_of_isTie_succ_rank (D : WeightedDesign (k + 1) k) (h
     rw [hdot, hlev]
     ring
   have hshare : ∀ atomIndex : Fin (k + 1),
-      coShare D atomIndex * (k : ℝ) = 1 - D.weight atomIndex := by
+      designCoShare D atomIndex * (k : ℝ) = 1 - D.weight atomIndex := by
     intro atomIndex
-    rw [coShare_apply]
+    rw [designCoShare_apply]
     nlinarith [hlaw atomIndex]
-  have hkeptSlack := one_sub_weight_pos D hsize keptLabel
-  have hdropSlack := one_sub_weight_pos D hsize dropLabel
+  have hkeptSlack := one_sub_weight_pos_of_size D hsize keptLabel
+  have hdropSlack := one_sub_weight_pos_of_size D hsize dropLabel
   have hkeptPos := D.weight_pos keptLabel
   have hdropPos := D.weight_pos dropLabel
   have hclash : ((k : ℝ) - 1 + D.weight keptLabel) * ((k : ℝ) - 1 + D.weight dropLabel)
       = (1 - D.weight keptLabel) * (1 - D.weight dropLabel) := by
     have hstep : (k : ℝ) ^ 2 * (D.weight keptLabel * D.weight dropLabel
         * (D.atom keptLabel ⬝ᵥ D.atom dropLabel) ^ 2)
-        = (k : ℝ) ^ 2 * (coShare D keptLabel * coShare D dropLabel) := by rw [hsat]
+        = (k : ℝ) ^ 2 * (designCoShare D keptLabel * designCoShare D dropLabel) := by rw [hsat]
     have hleftEq : (k : ℝ) ^ 2 * (D.weight keptLabel * D.weight dropLabel
         * (D.atom keptLabel ⬝ᵥ D.atom dropLabel) ^ 2)
         = ((k : ℝ) * (D.weight keptLabel * leverageOf (D.atom keptLabel)))
           * ((k : ℝ) * (D.weight dropLabel * leverageOf (D.atom dropLabel))) := by
       rw [hpair]; ring
-    have hrightEq : (k : ℝ) ^ 2 * (coShare D keptLabel * coShare D dropLabel)
-        = (coShare D keptLabel * (k : ℝ)) * (coShare D dropLabel * (k : ℝ)) := by ring
+    have hrightEq : (k : ℝ) ^ 2 * (designCoShare D keptLabel * designCoShare D dropLabel)
+        = (designCoShare D keptLabel * (k : ℝ)) * (designCoShare D dropLabel * (k : ℝ)) := by ring
     rw [hleftEq, hlaw keptLabel, hlaw dropLabel, hrightEq, hshare keptLabel,
       hshare dropLabel] at hstep
     exact hstep
