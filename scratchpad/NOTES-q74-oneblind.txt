@@ -154,3 +154,102 @@ imported a file git did not have.  Repaired by committing the module (fef482a);
 every umbrella import now resolves to a tracked file.  This is the second
 occurrence of the same hazard and it is worth a standing rule: commit the module
 file BEFORE editing either umbrella.
+
+
+================================================================================
+ROUND 2 (this lane).  WHY THERE IS NO CONSTANT: THE CASE DEGENERATES ONTO THE
+TWO-ZEROS CASE.  Plus a general drop law and a cap on every reading.
+================================================================================
+
+CALIBRATION, run first: the (5,3) diamond reproduces exactly -- Parseval residual
+6.66e-16, leverages (2, 3.25 x4), distinct pair minors {0.75, 2.0, 4.5}, 8 of 10
+dominating triples.
+
+Q74-A.  *** THE DEGENERATION IS THE TWO-ZEROS BOUNDARY, NOT a generic dust ray. ***
+Optimising the zero-set objective over the FULL 13 parameters (4 inside + 6
+weights + 3 for the orthogonal completion), floor tau = 0.001, 60 starts, the best
+point (cost 1.77e-07, max live margin +0.00036787) is
+
+    inside (a1, a2, n, s) = (2.82209, 13.60909, 26.70715, 0.00000)
+    weights  [0.001, 0.001, 0.001, 0.995, 0.001, 0.001]
+    leverages[193.171, 713.272, 1.000, 1.003, 450.112, 644.867]
+    X = 184.207   Y = 712.272   alpha = 7.964   e2 = 131197.64
+    the single active triple is (1,3,5)
+
+s = 0 is NOT an interior point of this case: s = be^2 and be = <g_b, w> must be
+NONZERO, that is exactly the "exactly one blind member" hypothesis.  At s = 0 one
+gets g_b = (n,0,0), g_c = (0,0,1) = w, so g_c is a UNIT vector ORTHOGONAL to both
+g_a and g_b -- the TWO-ZEROS signature of Proposition 6.1 of the survey, and the
+third leverage in the table above is 1.000 exactly.
+
+CONSEQUENCE, and it explains the whole "no sharp constant" story: the infimum of
+the refusal margin over the one-blind case sits on the boundary of the case's OWN
+parameter domain, at the two-zeros case.  The margin cannot be bounded below
+because the case is not closed.  A proof of Q7.4 should therefore be sought
+TOGETHER with Proposition 6.1, not separately -- and any constant reported for
+either alone is a property of where the optimiser stopped.
+
+Q74-B.  THE INSIDE DATA ALONE DOES NOT CLOSE THE CASE.  Eliminating the three
+outside atoms from the four-set drop conditions gives an inequality in the inside
+data only (7 numbers: a1, X = a2^2-1, Y = n^2-1, s, t_a, t_b, t_c).  With
+A = t_b(1-s) + t_c s, B = t_b s + t_c(1-s), tau = t_b + t_c, alpha = a1^2:
+
+  (Phi)  2 X Y (t_a + A)  <=  X (2 - tau) + Y (1 - t_a) + alpha (2 + 2 t_a + A - B)
+
+verified as an identity (relative deviation 7.08e-14 over 1027 constructed
+designs).  Together with e2 > 0, the outside block being positive semidefinite,
+and the four erasure-ladder conditions, 10571 of 39247 sampled valid designs
+satisfy ALL of them -- 27%.  So this elimination is far too lossy; the content is
+in the sixteen live refusals, which need the outside atoms.
+Violation counts over the same sample: E7 23554, E4 19021, E5 12309, E6 12234,
+Phi 202.  Phi is the weakest of the five; the erasure ladder is much stronger here.
+
+Q74-C.  THE COMPLETION IS ONLY THREE-DIMENSIONAL.  Given inside data and all six
+weights, the outside atoms are R^{1/2} Q e_i / sqrt(t_i) with Q orthogonal, so the
+remaining freedom is Q in O(3).  Minimising the worst live margin over Q alone at
+20 generic inside configurations with min weight >= 0.02: minimum 0.098297,
+median 0.3448, and NO configuration admitted a completion refusing all sixteen.
+Generic inside data cannot be completed to a boundary system at all.
+
+Q74-D.  LANDED, and it is general, not specific to this case.
+Gtz/Wave/KernelSlideDropLaw.lean (commits 49522d6, 24bde21, f684b90), 22
+theorems, every pin [propext, Classical.choice, Quot.sound], per-module build
+only, both umbrellas insertions-only (29 insertions, 0 deletions).
+
+  THE DROP LAW.  G psd of corank one with unit kernel w, <v,w> != 0, K = G + v v^T.
+  Then for every u, with lam = <u,w>/<v,w>:
+
+      u . K^{-1} u  =  (u - lam v) . (G + w w^T)^{-1} (u - lam v)  +  lam^2 .
+
+  Checked to 3.4e-10 at ranks 2,3,4,5,6 (13203 well-conditioned samples).  The
+  proof needs no pseudoinverse and never inverts a sum: K w = <v,w> v gives
+  K^{-1} v = w/<v,w>, so v . K^{-1} v = 1 exactly and the cross term dies, and a
+  vector orthogonal to w cannot tell K from G + w w^T.
+
+  BLIND CASE: <u,w> = 0 makes the right side independent of v altogether.  So all
+  the refusals from dropping a blind member of a dominating triple are ONE
+  condition on that triple.
+
+  THE READING CAP (design level, Gtz.reading_cap_of_isTie).  At a boundary design,
+  for every corank-one weak dominator {x,y,z} with unit null probe w and nonzero
+  second invariant, writing N = (S_C - 1 + w w^T)^{-1}, EVERY atom d obeys
+
+      (5 - (g_x.N g_x + g_y.N g_y + g_z.N g_z)) * <g_d,w>^2  <=  1 + g_d . N g_d ,
+
+  and the left coefficient equals 3 - trace N.  ATTAINED: at the (5,3) diamond the
+  four dominating triples {1,2,3},{1,2,4},{1,3,4},{2,3,4} give coefficient
+  1.386364 and slack EXACTLY 0.000000000 at the atom outside them; the other four
+  dominators give coefficient 1.083333 and slack 1.666667.  Minimum slack over the
+  whole diamond: -0.000000000.
+
+Q74-E.  NOT ESTABLISHED.  I did not prove the case empty, and I did not bound the
+cross term b_T = sum <g_x,w> P g_x that the previous round named as the wall --
+the drop law goes around it rather than through it.  The honest state is Q74-A:
+the case is empty on every compact region and its infimum sits at the two-zeros
+boundary, so it should be attacked jointly with Proposition 6.1.
+
+PROCESS.  Gtz.subsetSum_triple_atoms was landed by a sibling lane (Gtz/Wave/
+FunnelFourSetPayment.lean) DURING this round, after my opening grep; I had written
+the same statement and deleted mine on finding it.  Two untracked sibling files
+(FourAtomRigidity, SymmetricTripleCriterion) are in flight; neither umbrella
+imports them, so no untracked-import hazard is open.  paper/brief/ untouched.
