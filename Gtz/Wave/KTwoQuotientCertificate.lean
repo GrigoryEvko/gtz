@@ -478,6 +478,44 @@ theorem k2ChartCrossCert_leadCoeff_pos {ed ee td te : ℝ}
     apply mul_pos (mul_pos htd hte); linarith
   linarith
 
+/-- **THE ZERO-ANGLE BRANCH IS FREE WHEN THE MIDDLE COEFFICIENT IS NONNEGATIVE.**
+The quadratic then has every coefficient nonnegative and a strictly positive
+constant term, so it is positive at every positive plane weight, and the
+outside prefactor is a product of chart positives.
+
+[MEASURED: this covers 93.3996% of the four-scalar arena outright.  Of the
+remainder, 1.3983% has its vertex at or past the plane total, and 5.2021% has a
+strictly positive discriminant.  NOTHING falls outside those three cases —
+0.0% of 24222982 points.  `scratchpad/corank1/f26sym/f44p1.jl`,
+`f44vertex.jl`.] -/
+theorem k2ChartCrossCert_xZero_pos_of_midNonneg {ed ee td te tz : ℝ}
+    (htd : 0 < td) (hte : 0 < te) (hed : -1 < ed) (hee : -1 < ee)
+    (htz : 0 < tz) (htz1 : tz < 1)
+    (hT : 0 < td*ed + te*ee)
+    (hbudget : td + te < 1)
+    (hmid : 0 ≤ k2ChartCrossCertMid ed ee td te) :
+    0 < k2ChartCrossCert ed ee td te (td*ed + te*ee - tz) tz 0 := by
+  rw [k2ChartCrossCert_xZero]
+  have hG : 0 < td*(1+ed) + te*(1+ee) := by nlinarith
+  have hsum := k2Chart_excessSum_pos htd hte hed hee hT
+  have hb : 0 < 1 - td - te := by linarith
+  have hee1 : 0 < 1 + ee := by linarith
+  have hq : 0 < te*(1+ee) := mul_pos hte hee1
+  have hsq : 0 < (1-tz)^2 := pow_pos (by linarith) 2
+  have hp0 : 0 < 2*td*te*(td*ed + te*ee)*(1 + ed + ee)*(1 - td - te) :=
+    mul_pos (mul_pos (mul_pos (mul_pos (by linarith : (0:ℝ) < 2*td) hte) hT)
+      hsum) hb
+  have hp2 := k2ChartCrossCert_leadCoeff_pos htd hte hed hee hT hG
+  have hmidterm : 0 ≤ tz * k2ChartCrossCertMid ed ee td te :=
+    mul_nonneg htz.le hmid
+  have hlead : 0 < tz^2 * ((td*ed + te*ee)*(td*(1+ed) + te*(1+ee))
+      + td*te*(2 + ed + ee)) := mul_pos (pow_pos htz 2) hp2
+  have hbr : 0 < 2*td*te*(td*ed + te*ee)*(1 + ed + ee)*(1 - td - te)
+      + tz * k2ChartCrossCertMid ed ee td te
+      + tz^2 * ((td*ed + te*ee)*(td*(1+ed) + te*(1+ee))
+          + td*te*(2 + ed + ee)) := by linarith
+  exact mul_pos (mul_pos (mul_pos hq hsq) hG) hbr
+
 /-! ## 8. The residual -/
 
 /-- **THE TWO-ZERO CORNER, REDUCED TO TWO SCALE-FREE SIGNS.**  On the low-angle

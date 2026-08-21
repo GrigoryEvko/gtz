@@ -1305,3 +1305,21 @@ F44-13. WHERE THE SUCCESSOR SHOULD START
 (2) The X=1/2 endpoint: same treatment. CERT(1/2) should factor similarly.
 (3) Both infima are 0 on a degenerate ray (td,te,tz -> 0), so the proof must be
     a PRODUCT of chart positives, never a bounded-below estimate.
+
+F44-14. **THE ZERO-ANGLE BRANCH SPLITS THREE WAYS, AND 93% IS FREE**
+-----------------------------------------------------------------------
+PHI = p0 + p1*tz + p2*tz^2 with p0>0, p2>0, and tz ranging over (0,T) — note
+the budget td+te+T<1 does NOT involve tz, so tz is FREE in (0,T).
+MEASURED in the four-scalar arena (f44p1.jl, f44vertex.jl, 24.2M points):
+    p1 >= 0        -> PHI>0 FOR FREE (all coeffs >=0, p0>0)  : 93.3996%
+    p1 < 0, vertex -p1/(2p2) >= T                            :  1.3983%
+    p1 < 0, vertex < T, discriminant 4*p0*p2-p1^2 > 0        :  5.2021%
+    ANYTHING ELSE                                            :  0.0%
+    PHI > 0 on all of (0,T)                                  : 100.0%
+NOTE the discriminant alone is the WRONG framing: it is positive only 76.67% of
+the arena. The vertex lies in range only 5.2% of the time, and that is exactly
+where the discriminant is needed. Do not hunt a global discriminant bound.
+LANDED: k2ChartCrossCert_xZero_pos_of_midNonneg — the 93.4% branch, in kernel,
+from the quadratic form plus the chart positives, no search.
+REMAINING at zero angle: the 6.6% where p1<0. Two sub-branches, both in FOUR
+scalars (ed,ee,td,te) with no tz, no X, no P.
