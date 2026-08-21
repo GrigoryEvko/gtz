@@ -1,0 +1,106 @@
+NOTES-rankfour.txt — the rank-four lane (Conjecture 9.2 of the brief: the two remaining
+general-rank registry axioms, the window 2k <= m <= k(k+1)/2).
+
+All numbers below are EXACT RATIONALS, computed from the reduced incidence matrix of the
+named graph with unit conductances: L = B^T B on rank = V-1 reduced coordinates, projection
+P = B L^{-1} B^T (transfer impedance), uniform design weight 1/m. Every harness run was
+calibrated first against the landed K4 values and reproduced them exactly.
+
+
+F-R4-1. CALIBRATION AGAINST THE LANDED K4 CHART. PASSES.
+  K4, rank 3, size 6: diagonal 1/2, meeting |P| 1/4, disjoint |P| 0, weight 1/6,
+  free excess 1/3, two meeting partners contribute 1/2, deficit 1/6.
+  This reproduces Gtz.kFourProfile_excess_eq and Gtz.kFourProfile_deficit_eq exactly.
+
+
+F-R4-2. THE COMPLETE-GRAPH PROFILE IS EXACT AT EVERY RANK TESTED.
+  Gtz.CompleteGraphProfile asks diagonal 2/(rank+1), weight 2/(rank(rank+1)), meeting
+  pairing magnitude 1/(rank+1). Measured on K_{rank+1}:
+
+    rank 3  K4  size  6 : diag 1/2   meet 1/4   disjoint 0   weight 1/6   excess 1/3
+    rank 4  K5  size 10 : diag 2/5   meet 1/5   disjoint 0   weight 1/10  excess 3/10
+    rank 5  K6  size 15 : diag 1/3   meet 1/6   disjoint 0   weight 1/15  excess 4/15
+
+  Every value matches the closed form. So the profile hypothesis of
+  Gtz.not_exists_excessDominates_of_edgeLabelling is inhabited at every rank, and the
+  rank-four instance Gtz.not_exists_excessDominates_kFive is not vacuous.
+
+
+F-R4-3. LANDED: CROWDEDNESS AT EVERY RANK (commit 731f0d9,
+        Gtz/Wave/MeetingDegreeCrowdedness.lean, 15 theorems, all pins standard).
+  A family of two-element edges in which no edge meets two others spans at least 3/2 its
+  own size in vertices (Gtz.three_mul_card_le_two_mul_card_biUnion). Induction, not
+  decomposition: remove an isolated edge (1 edge, 2 fresh vertices) or a meeting pair
+  (2 edges, 3 fresh vertices).
+  With rank edges on rank+1 vertices: 3*rank <= 2*(rank+1), so rank <= 2. Hence from rank
+  three every selection of rank edges of a graph on rank+1 vertices is crowded
+  (Gtz.exists_meets_two_of_three_le_rank).
+  THIS CLOSES THE REGISTRY'S NAMED GAP: "the vertex count 3p + 2s <= rank + 1 against
+  2p + s = rank is a hypothesis" above rank three. It is now a theorem at every rank, and
+  by counting rather than by `decide`. The `decide` over 210 four-subsets of Fin 10 was
+  NOT needed.
+  Verified by direct enumeration as well: every selection of rank edges is crowded at K4
+  (20 selections), K5 (210), K6 (3003), and at every band cell listed in F-R4-4.
+
+
+F-R4-4. THE REGISTRY'S NAMED SUCCESSOR SHAPE IS REFUTED. THIS IS THE MAIN NEGATIVE
+        FINDING OF THE ROUND.
+  The registry says: "A weaker profile is necessary, bounded free excess together with a
+  meeting-pair floor. Once that profile exists the crowdedness count closes the lane."
+  NO SUCH PAIR OF CONSTANTS EXISTS AT ANY BAND CELL. Exact rationals:
+
+    cell                        size  free excess range      meeting |P| range   max disj |P|
+    K5 (threshold, rank 4)        10  [3/10, 3/10]           [1/5, 1/5]          0
+    K5 - 1 edge      (band)        9  [13/45, 16/45]         [2/15, 4/15]        1/15
+    K5 - 2 adjacent  (band)        8  [11/40, 19/40]         [1/10, 2/5]         1/10
+    K5 - 2 disjoint  (band)        8  [41/120, 49/120]       [2/15, 4/15]        2/15
+    K4 (threshold, rank 3)         6  [1/3, 1/3]             [1/4, 1/4]          0
+    K6 (threshold, rank 5)        15  [4/15, 4/15]           [1/6, 1/6]          0
+    K6 - 1 edge      (band)       14  [11/42, 17/56]         [1/8, 5/24]         1/24
+    K6 - 3 edges     (band)       12  [1/4, 1/2]             [1/12, 5/12]        1/12
+
+  CAP TEST  max excess <= 2 * min meeting level:
+    K4  1/3   <= 1/2    TRUE      K5  3/10 <= 2/5   TRUE      K6  4/15 <= 1/3   TRUE
+    K5-1  16/45 <= 8/15  FALSE    K5-2adj 19/40 <= 1/5 FALSE  K5-2disj 49/120 <= 8/15 FALSE
+    K6-1  17/56 <= 1/4   FALSE    K6-3  1/2 <= 1/6   FALSE
+  So the global two-constant profile fails at EVERY band cell tested, at two ranks.
+
+  Note also: at every band cell the DISJOINT pairings are NONZERO (1/15, 1/10, 2/15,
+  1/24, 1/12). On the complete graph they vanish. That is the structural reason the
+  profile does not survive deletion: the cut space of a proper subgraph couples edges
+  that share no vertex.
+
+
+F-R4-5. EVEN THE PER-SLOT TWO-PARTNER FORM FAILS AT ONE BAND CELL.
+  Per selection, ask: is there a crowded slot whose two meeting partners cover its excess?
+    landed form  excess <= 2 * min(|P1|,|P2|) :
+      TRUE at K4, K5, K6 (the three threshold cells); FALSE at ALL FIVE band cells.
+    sum form     excess <= |P1| + |P2|        :
+      TRUE at K5-1, K5-2adj, K6-1, K6-3; FALSE at K5 - 2 DISJOINT EDGES (size 8, rank 4).
+  So no two-partner criterion of any kind closes the band. The witness cell is K5 less the
+  two disjoint edges {3,4} and {1,2}.
+
+
+F-R4-6. WHAT DOES WORK: THE WHOLE ROW. Landed as Gtz/Wave/RowCoveredRefutation.lean.
+  Excess dominance asks EVERY slot's excess to exceed the sum of the absolute pairings in
+  its own row. Measured over every selection of every cell above:
+    the maximum over slots of (excess - row sum) is NEGATIVE at every selection.
+  Worst (i.e. largest, so closest to failing) values of that maximum:
+    K4 -1/6    K5 -3/10   K6 -2/5
+    K5-1 -8/45   K5-2adj -7/40   K5-2disj -23/120   K6-1 -9/28   K6-3 -19/60
+  The K4 figure -1/6 is exactly the landed deficit, which is the calibration.
+  So EVERY slot of EVERY selection of EVERY cell tested is row-covered, with margin.
+  Landed: Gtz.not_excessDominates_of_row_le (the direct negation, weakest possible
+  hypothesis), Gtz.not_excessDominates_of_two_partners_sum (strictly weaker than the
+  landed level form, by Gtz.two_partners_sum_of_level),
+  Gtz.RowCoveredAtEverySelection and Gtz.not_exists_excessDominates_of_rowCovered.
+
+  CONSEQUENCE FOR THE REGISTRY. The excess-dominance instrument is dead at every rank and
+  at every cell of the window, threshold and band alike, and it is now dead by theorem at
+  the threshold cells and by exact measurement at the band. A successor must not be a
+  two-constant profile; the correct hypothesis is Gtz.RowCoveredAtEverySelection.
+
+  BUT NOTE, AND THIS IS THE LIMIT OF THE WHOLE LANE: none of this proves the axiom.
+  ExcessDominatesBlock refutes IsTie outright, so a producer built on it discharges the
+  hinge by refuting its own antecedent. Killing the instrument is a graveyard result. The
+  axiom still needs a route that assumes a tie and produces a parallel pair.

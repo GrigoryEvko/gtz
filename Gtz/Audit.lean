@@ -1131,6 +1131,7 @@ import Gtz.Wave.ThreeRowAmbientWrapper
 import Gtz.Wave.ThreeRowCapturedDichotomy
 import Gtz.Wave.ThresholdCellDominance
 import Gtz.Wave.MeetingDegreeCrowdedness
+import Gtz.Wave.RowCoveredRefutation
 import Gtz.Wave.ThresholdEnergyClosure
 import Gtz.Wave.ThresholdSpread
 import Gtz.Wave.TightGramSixLaws
@@ -38092,3 +38093,13 @@ run_cmd do
 #print axioms Gtz.kFiveEdgeSet_card
 #print axioms Gtz.kFiveEdgeSet_injective
 #print axioms Gtz.not_exists_excessDominates_kFive
+
+-- Gtz/Wave/RowCoveredRefutation.lean -- the whole row, not two partners: the weakest
+-- hypothesis that refutes excess dominance, and the shape a band producer must supply,
+-- since no constant level and excess cap exist at any band cell
+#print axioms Gtz.not_excessDominates_of_row_le
+#print axioms Gtz.not_excessDominates_of_two_partners_sum
+#print axioms Gtz.two_partners_sum_of_level
+#print axioms Gtz.not_exists_excessDominates_of_rowCovered
+#print axioms Gtz.not_forall_excessDominates_of_rowCovered
+#print axioms Gtz.rowCovered_of_crowded_profile

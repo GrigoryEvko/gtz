@@ -5065,6 +5065,7 @@ import Gtz.Wave.CrossEnergyFloor
 -- refutes it at every threshold cell.  The rank-three member is the `K4` chart.
 import Gtz.Wave.ThresholdCellDominance
 import Gtz.Wave.MeetingDegreeCrowdedness
+import Gtz.Wave.RowCoveredRefutation
 -- The chart gap is the reduced Laplacian of ONE signed edge vector, so Kirchhoff's
 -- theorem reads every selection determinant as a sixteen-term spanning-tree sum.  The
 -- corank-two gauge wall of the registered `K4` component is then a rational variety
