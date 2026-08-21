@@ -6511,6 +6511,7 @@ import Gtz.Wave.FourSetFloorPackage
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.PairNormalWedgeLaw
 import Gtz.Wave.ErasedPairCap
+import Gtz.Wave.ErasedSetCap
 import Gtz.Wave.ProbeFreeParsevalBudget
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge

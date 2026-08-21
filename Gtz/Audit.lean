@@ -1396,6 +1396,7 @@ import Gtz.Wave.FourSetFloorPackage
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.PairNormalWedgeLaw
 import Gtz.Wave.ErasedPairCap
+import Gtz.Wave.ErasedSetCap
 import Gtz.Wave.ProbeFreeParsevalBudget
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
@@ -38265,3 +38266,14 @@ run_cmd do
 #print axioms Gtz.resolventMatrix_symm
 #print axioms Gtz.resolventMatrix_idempotent
 #print axioms Gtz.resolventMatrix_trace_eq_rank
+
+-- Gtz/Wave/ErasedSetCap.lean -- the erasure ladder: dropping ANY set that leaves
+-- three to five survivors lands inside the corank floor, so at a boundary system
+-- the erased set's weight never strictly dominates its Parseval contribution;
+-- the singleton rung IS the landed heaviness theorem, the pair rung caps a
+-- wedge, and the triple rung is new -- 41 conditions at (6,3)
+#print axioms Gtz.exists_triple_ge_frameOperator_le_five
+#print axioms Gtz.erasedCapForm_transpose
+#print axioms Gtz.not_posDef_erasedCap_of_isTie
+#print axioms Gtz.exists_reading_ge_of_isTie
+#print axioms Gtz.one_le_leverage_of_erasedCap
