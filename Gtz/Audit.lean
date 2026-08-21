@@ -1397,6 +1397,7 @@ import Gtz.Wave.FunnelSecondInvariantFloor
 import Gtz.Wave.FunnelSwapClosure
 import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.CorankOneAdjugateGeneralRank
+import Gtz.Wave.BandTieTower
 import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
 import Gtz.Wave.FourSetFloorPackage
@@ -38911,3 +38912,55 @@ run_cmd do
 #print axioms Gtz.schurProbe_dotProduct_self
 #print axioms Gtz.sum_weight_mul_frameAlpha
 #print axioms Gtz.schurProbe_energy_le_of_isTie
+
+-- Gtz/Wave/BandTieTower.lean -- the hinge refuted at size rank plus one at EVERY
+-- rank by the explicit simplex tie, the duplicate split calculus that makes the
+-- tie stratum of every cell inhabited, and the strict merge pullback that turns
+-- the hinge into a descent law
+#print axioms Gtz.not_dominates_of_exists_null
+#print axioms Gtz.exists_null_of_card_lt
+#print axioms Gtz.exists_null_of_parallel_within
+#print axioms Gtz.not_dominates_of_parallel_within
+#print axioms Gtz.simplexTieAtom_castSucc
+#print axioms Gtz.simplexTieAtom_last
+#print axioms Gtz.simplexScale_sq
+#print axioms Gtz.one_lt_simplexScale
+#print axioms Gtz.simplexShift_neg
+#print axioms Gtz.simplexShift_ne_zero
+#print axioms Gtz.simplex_key
+#print axioms Gtz.simplexTieAtom_gram
+#print axioms Gtz.simplexTieDesign_atom
+#print axioms Gtz.leverageOf_simplexTieAtom
+#print axioms Gtz.simplexTieAtom_sum
+#print axioms Gtz.exists_erase_of_card_eq
+#print axioms Gtz.simplexTieDesign_gap
+#print axioms Gtz.simplexTieDesign_dominates
+#print axioms Gtz.simplexTieDesign_not_posDef
+#print axioms Gtz.simplexTieDesign_isTie
+#print axioms Gtz.simplexTieDesign_not_hasParallelPair
+#print axioms Gtz.not_hingeHoldsAtSize_succ_rank
+#print axioms Gtz.duplicateSplitDesign_atom_castSucc
+#print axioms Gtz.duplicateSplitDesign_atom_last
+#print axioms Gtz.hasParallelPair_duplicateSplitDesign
+#print axioms Gtz.mem_pullbackSelection
+#print axioms Gtz.sum_over_split_selection
+#print axioms Gtz.card_split_selection
+#print axioms Gtz.subsetSum_duplicateSplitDesign
+#print axioms Gtz.not_dominates_duplicateSplit_of_both
+#print axioms Gtz.exists_downstairs_selection
+#print axioms Gtz.subsetSum_image_castSucc
+#print axioms Gtz.card_image_castSucc
+#print axioms Gtz.isTie_duplicateSplitDesign_iff
+#print axioms Gtz.exists_isTie_succ
+#print axioms Gtz.exists_isTie_of_succ_rank_le
+#print axioms Gtz.not_forall_not_isTie
+#print axioms Gtz.exists_isTie_bandCell
+#print axioms Gtz.exists_isTie_sixThree
+#print axioms Gtz.exists_isTie_eightFour
+#print axioms Gtz.exists_isTie_tenFour
+#print axioms Gtz.exists_posDef_of_mergedParallel_posDef
+#print axioms Gtz.isTie_mergedParallelDesign
+#print axioms Gtz.exists_isTie_pred_of_hinge
+#print axioms Gtz.exists_isTie_succ_iff_of_hinge
+#print axioms Gtz.exists_isTie_sixThree_iff_of_hinge
+#print axioms Gtz.exists_isTie_eightFour_iff_of_hinge
