@@ -6451,6 +6451,7 @@ import Gtz.Wave.CornerPairAdjugate
 import Gtz.Wave.CornerRepaymentMatrix
 import Gtz.Wave.WeightedRepaymentTrace
 import Gtz.Wave.CornerReadingDuality
+import Gtz.Wave.IsometrySelection
 import Gtz.Wave.CornerGramWeightLaw
 import Gtz.Wave.CornerAxisCalculus
 import Gtz.Wave.CornerAdjugateWeightCap

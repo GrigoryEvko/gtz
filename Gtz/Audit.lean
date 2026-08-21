@@ -1368,6 +1368,7 @@ import Gtz.Wave.CornerPairAdjugate
 import Gtz.Wave.CornerRepaymentMatrix
 import Gtz.Wave.WeightedRepaymentTrace
 import Gtz.Wave.CornerReadingDuality
+import Gtz.Wave.IsometrySelection
 import Gtz.Wave.CornerAxisElimination
 import Gtz.Wave.CornerAxisCalculus
 import Gtz.Wave.CornerAxisBridges
@@ -38236,3 +38237,16 @@ run_cmd do
 #print axioms Gtz.exists_pairGapMinor_le_three_quarters
 #print axioms Gtz.exists_strongPair_of_isTie_of_allHeavy
 #print axioms Gtz.branchB_exists_strongPair
+
+-- Gtz/Wave/IsometrySelection.lean -- every isometry with a simplex point IS a
+-- design, so weighted GTZ is equivalent to a statement about the principal
+-- blocks of V Vᵀ with no design in it
+#print axioms Gtz.scaledAtomRows_designOfIsometry
+#print axioms Gtz.projectionOfDesign_designOfIsometry
+#print axioms Gtz.gtzWeighted_of_isometrySelects
+#print axioms Gtz.isometrySelects_of_gtzWeighted
+#print axioms Gtz.gtzWeighted_iff_isometrySelects
+#print axioms Gtz.gtzWeighted_six_three_iff_isometrySelects
+#print axioms Gtz.trace_projection_isometry
+#print axioms Gtz.sum_projectionDiag_sub_weight
+#print axioms Gtz.projectionDiag_designOfIsometry
