@@ -265,4 +265,56 @@ theorem cornerForm_tripleGapDet_nine_total (h : CornerForm gx gy gz u lam)
     cornerForm_tripleGapDet_column_total h hu b c]
   ring
 
+
+/-! ## 6. On an admissible pair the determinant IS domination -/
+
+/-- **THE CAVEAT DISAPPEARS ON AN ADMISSIBLE OUTSIDE PAIR.**  The landed
+Sylvester criterion is ORDERED: reading the triple with the pair first, its
+three leading principal minors are the pair's first leverage excess, the pair
+minor, and the gap determinant.  So once the pair is admissible, a positive gap
+determinant is not merely necessary for domination — it IS domination.
+
+Admissibility is supplied by two scalars, the pair minor and the pair trace,
+through the landed `Gtz.one_lt_leverage_of_pairGapMinor_pos_of_trace`. -/
+theorem tripleGram_posDef_iff_gapDet_pos_of_admissible {a b c : Fin 3 → ℝ}
+    (hmin : 0 < pairGapMinor a b) (htr : 2 < leverageOf a + leverageOf b) :
+    (tripleGram a b c - 1).PosDef ↔ 0 < tripleGapDet a b c := by
+  obtain ⟨hla, -⟩ := one_lt_leverage_of_pairGapMinor_pos_of_trace hmin htr
+  rw [tripleGram_posDef_iff_pairVocabulary]
+  constructor
+  · rintro ⟨-, -, h3⟩; exact h3
+  · intro h3; exact ⟨by linarith, hmin, h3⟩
+
+/-- **THE COLUMN PRODUCER, AS A DOMINATOR.**  Over an admissible outside pair,
+the three sign conditions on the elementary symmetric functions of the three gap
+determinants exhibit an inside atom whose triple STRICTLY DOMINATES — with no
+rule naming the atom, and with no liveness side condition left over. -/
+theorem corner_column_exists_posDef (a b : Fin 3 → ℝ)
+    (hmin : 0 < pairGapMinor a b) (htr : 2 < leverageOf a + leverageOf b)
+    (hsign : 0 < tripleGapDet a b gx + tripleGapDet a b gy + tripleGapDet a b gz
+      ∨ tripleGapDet a b gx * tripleGapDet a b gy
+          + tripleGapDet a b gx * tripleGapDet a b gz
+          + tripleGapDet a b gy * tripleGapDet a b gz < 0
+      ∨ 0 < tripleGapDet a b gx * tripleGapDet a b gy * tripleGapDet a b gz) :
+    (tripleGram a b gx - 1).PosDef ∨ (tripleGram a b gy - 1).PosDef
+      ∨ (tripleGram a b gz - 1).PosDef := by
+  rcases corner_column_exists_tripleGapDet_pos a b hsign with h | h | h
+  · exact Or.inl ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h)
+  · exact Or.inr (Or.inl ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h))
+  · exact Or.inr (Or.inr ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h))
+
+/-- The same, from the closed column total: a single scalar inequality in the
+outside pair's data and the scale exhibits a strict dominator. -/
+theorem corner_column_exists_posDef_closed (h : CornerForm gx gy gz u lam)
+    (hu : leverageOf u = 1) (a b : Fin 3 → ℝ)
+    (hmin : 0 < pairGapMinor a b) (htr : 2 < leverageOf a + leverageOf b)
+    (hclosed : 0 < (lam - 2) * pairGapMinor a b
+      - (leverageOf a + leverageOf b - 2)
+      + lam * pairAxisForm a b (u ⬝ᵥ a) (u ⬝ᵥ b)) :
+    (tripleGram a b gx - 1).PosDef ∨ (tripleGram a b gy - 1).PosDef
+      ∨ (tripleGram a b gz - 1).PosDef := by
+  refine corner_column_exists_posDef a b hmin htr (Or.inl ?_)
+  rw [cornerForm_tripleGapDet_column_total h hu a b]
+  exact hclosed
+
 end Gtz

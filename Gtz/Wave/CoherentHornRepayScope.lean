@@ -174,4 +174,121 @@ theorem repayScope_not_forced :
   · rw [repayScope_det_y]; norm_num
   · rw [repayScope_det_z]; norm_num
 
+/-!
+## 5. The corner and its pair do not determine the repayment
+
+The landed column total `Gtz.cornerForm_tripleGapDet_column_total` computes the
+FIRST elementary symmetric function of the three one-inside gap determinants
+from the corner scale and the pair alone.  This section shows that is the end of
+the road: the second and third symmetric functions are NOT functions of that
+data, and neither is the repayment itself.
+
+The mechanism is the inside frame.  If `Vc` carries the three inside atoms as
+columns then `Vc Vc' = 1 + lam u u'` is unchanged by `Vc -> Vc Q` for orthogonal
+`Q`, so every corner invariant survives, while the individual readings of a
+fixed outside pair rotate.  Taking `Q` a rational rotation of the first and
+third axes turns the witness of section 4, where NO inside atom repays, into a
+corner where one does -- with the axis, the scale, the outside pair, all the
+pair invariants, and the column total all identical.
+-/
+
+namespace RepayScope
+
+/-- The first inside atom of the rotated corner. -/
+noncomputable def rotX : Fin 3 → ℝ := ![3 / 5, 0, 8 / 5]
+
+/-- The second inside atom of the rotated corner, unchanged by the rotation. -/
+def rotY : Fin 3 → ℝ := ![0, 1, 0]
+
+/-- The third inside atom of the rotated corner. -/
+noncomputable def rotZ : Fin 3 → ℝ := ![-(4 / 5), 0, 6 / 5]
+
+end RepayScope
+
+open RepayScope
+
+/-- The rotated triple is a corner with the SAME axis and the SAME scale. -/
+theorem repayScope_rot_corner :
+    atomMatrix rotX + atomMatrix rotY + atomMatrix rotZ
+      = 1 + (3 : ℝ) • atomMatrix axis := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    norm_num [rotX, rotY, rotZ, axis, atomMatrix, Matrix.cons_val_two]
+
+/-- The rotated corner has a different inside leverage profile. -/
+theorem repayScope_rot_leverages :
+    leverageOf rotX = 73 / 25 ∧ leverageOf rotY = 1 ∧ leverageOf rotZ = 52 / 25 := by
+  refine ⟨?_, ?_, ?_⟩ <;>
+    norm_num [rotX, rotY, rotZ, leverageOf, Fin.sum_univ_three, Matrix.cons_val_two]
+
+/-- On the rotated corner the first inside atom still does not repay. -/
+theorem repayScope_rot_det_x :
+    tripleGapDet outsideA outsideB rotX = -(1767 / 200) := by
+  norm_num [tripleGapDet, outsideA, outsideB, rotX, leverageOf, dotProduct,
+    Fin.sum_univ_three, Matrix.cons_val_two]
+
+/-- Nor does the second. -/
+theorem repayScope_rot_det_y :
+    tripleGapDet outsideA outsideB rotY = -(63 / 8) := by
+  norm_num [tripleGapDet, outsideA, outsideB, rotY, leverageOf, dotProduct,
+    Fin.sum_univ_three, Matrix.cons_val_two]
+
+/-- **BUT THE THIRD DOES.**  The same outside pair is repaid on the rotated
+corner, by a strictly positive margin. -/
+theorem repayScope_rot_det_z :
+    tripleGapDet outsideA outsideB rotZ = 9 / 400 := by
+  norm_num [tripleGapDet, outsideA, outsideB, rotZ, leverageOf, dotProduct,
+    Fin.sum_univ_three, Matrix.cons_val_two]
+
+/-- **THE TWO CORNERS SHARE THEIR COLUMN TOTAL.**  Both equal `-267/16`, as the
+landed column total law forces, since the axis, the scale and the pair agree. -/
+theorem repayScope_column_totals_agree :
+    tripleGapDet outsideA outsideB insideX + tripleGapDet outsideA outsideB insideY
+        + tripleGapDet outsideA outsideB insideZ
+      = tripleGapDet outsideA outsideB rotX + tripleGapDet outsideA outsideB rotY
+        + tripleGapDet outsideA outsideB rotZ := by
+  rw [repayScope_det_x, repayScope_det_y, repayScope_det_z,
+    repayScope_rot_det_x, repayScope_rot_det_y, repayScope_rot_det_z]
+  norm_num
+
+/-- The two corners have DIFFERENT second symmetric functions, so `e2` is not a
+function of the corner and the pair. -/
+theorem repayScope_esymm_two_differ :
+    tripleGapDet outsideA outsideB insideX * tripleGapDet outsideA outsideB insideY
+        + tripleGapDet outsideA outsideB insideX * tripleGapDet outsideA outsideB insideZ
+        + tripleGapDet outsideA outsideB insideY * tripleGapDet outsideA outsideB insideZ
+      ≠ tripleGapDet outsideA outsideB rotX * tripleGapDet outsideA outsideB rotY
+        + tripleGapDet outsideA outsideB rotX * tripleGapDet outsideA outsideB rotZ
+        + tripleGapDet outsideA outsideB rotY * tripleGapDet outsideA outsideB rotZ := by
+  rw [repayScope_det_x, repayScope_det_y, repayScope_det_z,
+    repayScope_rot_det_x, repayScope_rot_det_y, repayScope_rot_det_z]
+  norm_num
+
+/-- **THE CORNER AND ITS PAIR DO NOT DETERMINE THE REPAYMENT.**  Two corners
+share an axis, a scale, an outside pair -- hence every pair invariant, the two
+axis readings, and the column total -- yet no inside atom of the first repays the
+pair while one of the second does.
+
+So no function of the corner-pair data decides the repayment.  In particular the
+column total, which is the only symmetric function of the three determinants the
+corner determines, provably cannot: it takes the same value on both sides. -/
+theorem repayScope_pairData_undetermined :
+    ∃ gx gy gz gx' gy' gz' u a b : Fin 3 → ℝ, ∃ lam : ℝ,
+      (atomMatrix gx + atomMatrix gy + atomMatrix gz = 1 + lam • atomMatrix u)
+        ∧ (atomMatrix gx' + atomMatrix gy' + atomMatrix gz' = 1 + lam • atomMatrix u)
+        ∧ leverageOf u = 1
+        ∧ 0 < pairGapMinor a b
+        ∧ (tripleGapDet a b gx + tripleGapDet a b gy + tripleGapDet a b gz
+            = tripleGapDet a b gx' + tripleGapDet a b gy' + tripleGapDet a b gz')
+        ∧ (tripleGapDet a b gx ≤ 0 ∧ tripleGapDet a b gy ≤ 0 ∧ tripleGapDet a b gz ≤ 0)
+        ∧ 0 < tripleGapDet a b gz' := by
+  refine ⟨insideX, insideY, insideZ, rotX, rotY, rotZ, axis, outsideA, outsideB, 3,
+    repayScope_corner, repayScope_rot_corner, repayScope_axis_unit, ?_,
+    repayScope_column_totals_agree, ⟨?_, ?_, ?_⟩, ?_⟩
+  · rw [repayScope_admissible]; norm_num
+  · rw [repayScope_det_x]; norm_num
+  · rw [repayScope_det_y]; norm_num
+  · rw [repayScope_det_z]; norm_num
+  · rw [repayScope_rot_det_z]; norm_num
+
 end Gtz

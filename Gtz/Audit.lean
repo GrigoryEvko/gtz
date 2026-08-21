@@ -37454,6 +37454,14 @@ run_cmd do
 #print axioms Gtz.repayScope_det_z
 #print axioms Gtz.repayScope_all_neg
 #print axioms Gtz.repayScope_not_forced
+#print axioms Gtz.repayScope_rot_corner
+#print axioms Gtz.repayScope_rot_leverages
+#print axioms Gtz.repayScope_rot_det_x
+#print axioms Gtz.repayScope_rot_det_y
+#print axioms Gtz.repayScope_rot_det_z
+#print axioms Gtz.repayScope_column_totals_agree
+#print axioms Gtz.repayScope_esymm_two_differ
+#print axioms Gtz.repayScope_pairData_undetermined
 
 -- Gtz/Wave/OppositeHornSelect.lean -- the column criterion of a corner: the
 -- polarized corner form, the closed column total, and the existential over the

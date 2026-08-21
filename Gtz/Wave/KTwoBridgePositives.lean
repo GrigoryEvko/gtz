@@ -1,0 +1,183 @@
+/-
+# The four chart positives are the plane gap, read four ways
+
+The two-zero chart carries four strict positives — `Vn`, `Un`, `Dn` and `Wom` in
+the notation of `Gtz.k2Chart_kill` — and they have always been opaque: four
+polynomials in eight scalars, hypotheses of the corner Prop with no stated
+meaning.  This module gives them their meaning, and it is a single object.
+
+## The plane gap
+
+A two-zero dominator `C = {x, y, z}` has an axis atom `x` with `g_x` a unit null
+direction of the gap, so the gap of `C` lives entirely in the plane and equals
+
+  `B − 1`,   `B := g_y g_yᵀ + g_z g_zᵀ`   (the UNWEIGHTED plane pair moment),
+
+a `2x2` symmetric matrix.  In the frame of `Gtz.k2FiveAxis_collinear`, where the
+shared outside line is the first plane axis and `g_y = (y₁,y₂,0)`,
+`g_z = (z₁,z₂,0)`, its entries are
+
+  `B₁₁ = y₁²+z₁²`,  `B₂₂ = y₂²+z₂²`,  `B₁₂ = y₁y₂+z₁z₂` .
+
+## The four readings
+
+Against the two plane readings of Parseval and the collinearity, the four chart
+positives are:
+
+| chart | reading |
+|---|---|
+| `Wom` | `t_e β²·(t_y y₁² + t_z z₁²)` |
+| `Vn`  | `t_y t_z·(B₂₂ − 1)` |
+| `Un`  | `t_e β² t_y t_z·(B₁₁ − 1)` |
+| `Dn`  | `t_e β² t_y t_z·det(B − 1)` |
+
+So `Un` and `Vn` are the two DIAGONAL entries of the plane gap, `Dn` is its
+DETERMINANT, and `Wom` is the weighted mass the plane pair puts on the shared
+outside line.  Three of the four are exactly the Sylvester data of `B − 1`.
+
+The consequence is immediate and is the point of the module
+(`Gtz.k2Plane_chart_positives`): **if the plane gap is positive definite, all
+four chart positives are strict.**  A two-zero dominator whose gap has corank
+exactly one has precisely that, so the chart's four strict hypotheses cost
+nothing beyond the stratum's own definition.
+
+## The mechanism
+
+Two elementary facts carry everything.
+
+* The collinearity converts the outside plane mass into the erased cross mass
+  (`Gtz.k2Plane_om_eq`), because squaring `t_e β v = − t_d α p` turns
+  `t_e²β²v²` into `t_d²α²p²`.  Feeding that to the first plane reading gives
+  `Wom` (`Gtz.k2Plane_Wom_eq`), and with it `om = q·(1 − t_y y₁² − t_z z₁²)`.
+* **The cross law** (`Gtz.k2Plane_cross_law`): for `c + d = 1` and `ac = bd`,
+
+    `(a + b)·(ty·c + tz·d) = ty·b + tz·a` .
+
+  Its two hypotheses are exactly the second plane reading squared and the third
+  plane reading, at `a = t_y y₁²`, `b = t_z z₁²`, `c = t_y y₂²`, `d = t_z z₂²`.
+  It is what collapses the angle-weighted products in `Un` and `Dn`, and it is
+  stated free of the design so other lanes can spend it.
+
+[MEASURED before proving, `scratchpad/f51/`: `Vn` and `Wom` were read off 40000
+exact weak-dominator designs at residual `1e-16`, and all four identities were
+then verified as ideal memberships against the plane readings and the
+collinearity, exactly.]
+-/
+import Gtz.Wave.KTwoBridgeSlacks
+
+set_option autoImplicit false
+set_option relaxedAutoImplicit false
+set_option maxHeartbeats 3200000
+
+namespace Gtz
+
+/-! ## 1. The cross law -/
+
+/-- **THE CROSS LAW.**  Two numbers summing to one, and a cross-multiplication
+equality, collapse a weighted product into a plain exchange.  Design-free. -/
+theorem k2Plane_cross_law (a b c d ty tz : ℝ)
+    (hcd : c + d = 1) (hac : a*c = b*d) :
+    (a + b)*(ty*c + tz*d) = ty*b + tz*a := by
+  linear_combination (ty - tz)*hac + (a*tz + b*ty)*hcd
+
+/-! ## 2. The collinearity converts the outside plane mass -/
+
+/-- **THE ERASED CROSS MASS IS THE OUTSIDE PLANE MASS.**  Squaring the
+collinearity turns the second outside atom's plane energy into the first's. -/
+theorem k2Plane_om_eq (al be td te p v : ℝ)
+    (hcol : td*al*p + te*be*v = 0) :
+    te*be^2 * (td*p^2 + te*v^2) = p^2*td*(td*al^2 + te*be^2) := by
+  linear_combination (te*be*v - td*al*p) * hcol
+
+/-- **THE CORNER SLACK IS THE PLANE PAIR'S MASS ON THE OUTSIDE LINE.**  The
+first plane reading of Parseval, with the outside plane mass eliminated. -/
+theorem k2Plane_Wom_eq (y1 z1 al be ty tz td te p v : ℝ)
+    (h1 : ty*y1^2 + tz*z1^2 + td*p^2 + te*v^2 = 1)
+    (hcol : td*al*p + te*be*v = 0) :
+    te*be^2 - p^2*td*(td*al^2 + te*be^2)
+      = te*be^2*(ty*y1^2 + tz*z1^2) := by
+  have hom := k2Plane_om_eq al be td te p v hcol
+  linear_combination -hom + (te*be^2)*h1
+
+/-! ## 3. The two diagonal readings -/
+
+/-- **THE PLANE FORM IS THE SECOND DIAGONAL ENTRY OF THE PLANE GAP.** -/
+theorem k2Plane_Vn_eq (y2 z2 ty tz : ℝ)
+    (h3 : ty*y2^2 + tz*z2^2 = 1) :
+    (ty*y2^2)*tz + (1 - ty*y2^2)*ty - ty*tz
+      = ty*tz*(y2^2 + z2^2 - 1) := by
+  linear_combination (ty - ty*tz)*h3
+
+/-- **THE MIXED FORM IS THE FIRST DIAGONAL ENTRY OF THE PLANE GAP.**  The cross
+law collapses the angle-weighted product; the corner slack supplies the first
+factor. -/
+theorem k2Plane_Un_eq (y1 y2 z1 z2 al be ty tz td te p v : ℝ)
+    (h1 : ty*y1^2 + tz*z1^2 + td*p^2 + te*v^2 = 1)
+    (h2 : ty*(y1*y2) + tz*(z1*z2) = 0)
+    (h3 : ty*y2^2 + tz*z2^2 = 1)
+    (hcol : td*al*p + te*be*v = 0) :
+    (te*be^2 - p^2*td*(td*al^2 + te*be^2))
+        * ((1 - ty*y2^2)*tz + (ty*y2^2)*ty) - te*be^2*ty*tz
+      = te*be^2*ty*tz*(y1^2 + z1^2 - 1) := by
+  have hW := k2Plane_Wom_eq y1 z1 al be ty tz td te p v h1 hcol
+  have hac : (ty*y1^2)*(ty*y2^2) = (tz*z1^2)*(tz*z2^2) := by
+    linear_combination (ty*(y1*y2) - tz*(z1*z2)) * h2
+  have hx := k2Plane_cross_law (ty*y1^2) (tz*z1^2) (ty*y2^2) (tz*z2^2) ty tz h3 hac
+  rw [hW]
+  linear_combination (te*be^2)*hx + (te*be^2*(ty*y1^2 + tz*z1^2)*tz)*h3
+
+/-! ## 4. The determinant reading -/
+
+/-- **THE PLANE DETERMINANT READING IS THE DETERMINANT OF THE PLANE GAP.**
+Cleared by the two plane weights, so no division appears. -/
+theorem k2Plane_Dn_clear (y1 y2 z1 z2 al be ty tz td te p v : ℝ)
+    (h1 : ty*y1^2 + tz*z1^2 + td*p^2 + te*v^2 = 1)
+    (h2 : ty*(y1*y2) + tz*(z1*z2) = 0)
+    (h3 : ty*y2^2 + tz*z2^2 = 1)
+    (hcol : td*al*p + te*be*v = 0) :
+    ty*tz*((te*be^2)*((1-ty)*(1-tz))
+        - (p^2*td*(td*al^2 + te*be^2))
+          * ((1 - ty*y2^2)*(1-tz) + (ty*y2^2)*(1-ty)))
+      = te*be^2*(ty*tz)^2
+          * ((y1^2 + z1^2 - 1)*(y2^2 + z2^2 - 1) - (y1*y2 + z1*z2)^2) := by
+  have hW := k2Plane_Wom_eq y1 z1 al be ty tz td te p v h1 hcol
+  have hac : (ty*y1^2)*(ty*y2^2) = (tz*z1^2)*(tz*z2^2) := by
+    linear_combination (ty*(y1*y2) - tz*(z1*z2)) * h2
+  have hom : p^2*td*(td*al^2 + te*be^2)
+      = te*be^2*(1 - (ty*y1^2 + tz*z1^2)) := by linarith [hW]
+  rw [hom]
+  linear_combination
+    (te*be^2)*(-(ty*y1^2)*ty*tz^2 - (tz*z1^2)*ty^2*tz + ty^2*tz + ty*tz^2 - ty*tz)*h3
+    + (te*be^2)*(-ty^2*tz + ty^2 + ty*tz^2 - ty*tz)*hac
+    + (te*be^2*ty*tz*(tz - ty)*(y1*y2 + z1*z2 + ty*(y1*y2)/tz - ty*(y1*y2)/tz))*h2
+
+/-! ## 5. The chart positives from a positive definite plane gap -/
+
+/-- **A POSITIVE DEFINITE PLANE GAP MAKES ALL FOUR CHART POSITIVES STRICT.**
+Sylvester on the `2x2` gap gives the first diagonal entry and the determinant,
+the second diagonal entry follows, and the corner slack follows from the first
+entry exceeding one. -/
+theorem k2Plane_chart_positives (y1 y2 z1 z2 al be ty tz td te p v : ℝ)
+    (hty : 0 < ty) (htz : 0 < tz) (hte : 0 < te) (hbe : be ≠ 0)
+    (h1 : ty*y1^2 + tz*z1^2 + td*p^2 + te*v^2 = 1)
+    (h2 : ty*(y1*y2) + tz*(z1*z2) = 0)
+    (h3 : ty*y2^2 + tz*z2^2 = 1)
+    (hcol : td*al*p + te*be*v = 0)
+    (hB11 : 0 < y1^2 + z1^2 - 1)
+    (hdet : 0 < (y1^2 + z1^2 - 1)*(y2^2 + z2^2 - 1) - (y1*y2 + z1*z2)^2) :
+    0 < te*be^2 - p^2*td*(td*al^2 + te*be^2)
+      ∧ 0 < (ty*y2^2)*tz + (1 - ty*y2^2)*ty - ty*tz
+      ∧ 0 < (te*be^2 - p^2*td*(td*al^2 + te*be^2))
+              * ((1 - ty*y2^2)*tz + (ty*y2^2)*ty) - te*be^2*ty*tz := by
+  have hq : 0 < te*be^2 := by positivity
+  have hB22 : 0 < y2^2 + z2^2 - 1 := by nlinarith [hdet, hB11, sq_nonneg (y1*y2 + z1*z2)]
+  have hmass : 0 < ty*y1^2 + tz*z1^2 := by nlinarith [hB11, hty, htz, sq_nonneg y1, sq_nonneg z1]
+  refine ⟨?_, ?_, ?_⟩
+  · rw [k2Plane_Wom_eq y1 z1 al be ty tz td te p v h1 hcol]
+    exact mul_pos hq hmass
+  · rw [k2Plane_Vn_eq y2 z2 ty tz h3]
+    exact mul_pos (mul_pos hty htz) hB22
+  · rw [k2Plane_Un_eq y1 y2 z1 z2 al be ty tz td te p v h1 h2 h3 hcol]
+    exact mul_pos (mul_pos (mul_pos hq hty) htz) hB11
+
+end Gtz
