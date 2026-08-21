@@ -914,3 +914,183 @@ FILES: f37/f40four.jl (the exact filter + identity at both fixtures),
 f37/f40branch.jl (branch-B descent, artifact), f37/f40ctrl.jl (the m=5 control
 that killed it), f37/f40valid.jl (the objective validation), f37/f40local.jl
 (the seeded local opening).
+
+F46-1. ROUND 12: A HARNESS BUG EXPLAINS THE TOOL DEBT, AND IT IS NOW SETTLED
+=============================================================================
+CORRECTION TO THE COORDINATOR'S BRIEF: it queued "derive the exact four-set
+identity, your predecessor died mid-derivation". IT IS ALREADY LANDED - F40-1,
+sum_fourSet_gapDet_eq_det_sub_e2. Nothing to do there.
+
+THE BUG. Every whitening harness in this lane computes the Gram as
+    Gamma = H' * inv(M) * H
+and in Julia H' is the CONJUGATE transpose. Under complex-step differentiation
+(x + i*h) conjugation is not analytic, so EVERY complex-step gradient this lane
+has taken was wrong. That is why F40's descent floored at +0.0035 at both sizes
+and why my first two runs floored too. Fixed by transpose(H) throughout.
+CAUGHT BY A LANDED THEOREM, not by inspection: with the buggy Jacobian the
+active set at the (5,3) diamond had FULL ROW RANK 8, which says some direction
+decreases all eight active gap determinants at once - giving a branch-B (5,3)
+design with no dominating triple, contradicting GtzWeighted 5 3. Stepping along
+that direction did NOT reproduce the prediction (max_T gapDet went POSITIVE,
+linearly), which located the bug.
+AFTER THE FIX the tool reaches a known extremum: the m=5 descent on Phi (below)
+returns -0.00000000, the diamond's exact value. F40's tool debt is SETTLED, and
+absolute floors from this family of searches are believable again PROVIDED the
+harness uses transpose. Files: f46tangent.jl, f46check.jl, f46farkas.jl.
+
+F46-2. FIXTURES RE-VERIFIED BIT FOR BIT (mandatory pre-test 5)
+==============================================================
+Rebuilt both from diamondData (conductance (2,3,3,3,3), weight 1/5 uniform,
+g_e = sqrt(c_e/t_e) L^{-1/2} b_e) and from parallelSplitDesign, which duplicates
+the ATOM exactly and splits only the weight.
+  (5,3): leverages (2, 3.25, 3.25, 3.25, 3.25); min pair minor 0.750000;
+         8 of 10 gapDets zero (the 8 spanning trees; det L = 8); branch B TRUE.
+  (6,3): leverages (2,2,3.25x4); min pair minor -3.000000 = 1 - 2*l_1 with
+         l_1 = 2; 12 of 20 gapDets zero; branch B FALSE.
+Every banked number reproduces. The doubled edge is e1, the only one with
+leverage exactly 2, and 12 = 8 + T_1 with T_1 = 4 trees through e1.
+
+F46-3. LANDED: THE TRIPLE-SUM SIZE LAW (commit 8441662, 5 thms, pins standard)
+==============================================================================
+Gtz/Wave/TripleSumSizeLaw.lean. For ANY atoms, no hypothesis:
+    sum_{T subset S, |T|=3} det(S_T - 1)
+      = det G - q*e2(G) + C(q,2)*tr G - C(q,3),   G = S_S - 1,  q = |S| - 3.
+  q=1: det G - e2(G)                        = the landed four-set law
+  q=2: det G - 2 e2(G) + tr G               (sum_fiveSet_gapDet_eq)
+  q=3: det G - 3 e2(G) + 3 tr G - 1         (sum_sixSet_gapDet_eq)
+ROUTE: Gamma and S_S share their nonzero spectrum, so spec(Gamma - 1) is
+{lam_i - 1} u {-1}^(m-3); every 3x3 principal minor of Gamma - 1 is a triple
+gap determinant and their sum is e_3 of that spectrum, i.e. the x^3 coefficient
+of prod(1 + a_i x)(1 - x)^(m-3). THE MULTIPLICITY m-3 IS THE SIZE, and it is
+the only place the size enters. Verified: exact rational EQUAL at m=4,5,6;
+1e5 random designs m=4..8 at 4.4e-12; -20 at the (5,3) diamond and -55 at the
+(6,3) split diamond, matching their contact counts.
+THIS IS THE FIRST LAW IN THE ARM WHOSE STATEMENT DEPENDS ON THE SIZE. The
+fixture filter is passed by construction: the m=5 and m=6 forms are different
+polynomials, so no design satisfies one by satisfying the other.
+CONSEQUENCE landed (isTie_branchB_sixSet_bound): at a branch-B tie every triple
+is live, so all twenty gap determinants are <= 0 and
+    det G - 3 e2(G) + 3 tr G <= 1 .
+
+F46-4. THE SIZE LAW DOES NOT CLOSE BRANCH B - measured, with the reason
+=======================================================================
+Minimising the triple sum over branch B ran away to -1.7e41 (f46branchB.jl), at
+a point whose max_T gapDet was +5.6e42 - A STRICT DOMINATOR, hence no tie at
+all. "Sum <= 0" is a NECESSARY condition at a tie and a very weak one: it cuts
+branch B, it does not empty it. Do not spend a round trying to close branch B
+with the triple sum alone.
+
+F46-5. THE FARKAS CERTIFICATE AT THE DIAMOND IS THE BRACKET MASS
+=================================================================
+With correct derivatives the Jacobian of the EIGHT active gap determinants at
+the (5,3) diamond has RANK 6, not 8: two independent dependencies. Hence
+J v = -1 is INCONSISTENT (residual 2.774) - NO DIRECTION DECREASES ALL EIGHT.
+That is the first-order shadow of GtzWeighted 5 3 at the diamond.
+Scanning the 2-dimensional left null space for a nonnegative covector gives a
+STRICTLY POSITIVE one, normalised
+    (1,2,3),(1,2,5),(1,3,4),(1,4,5) -> 0.100
+    (2,3,4),(2,3,5),(2,4,5),(3,4,5) -> 0.150
+and the two non-trees -> 0. THESE ARE EXACTLY THE BRACKET MASSES
+t_a t_b t_c [abc]^2, computed independently: 0.1000000000 and 0.1500000000,
+zero on the two non-trees, summing to 1.000000000000 (the landed bracket
+budget). Equivalently prod(c_e)/det L = 18/180 and 27/180 - the spanning-tree
+measure, which for a graphic design IS the bracket mass.
+SO THE MULTIPLIERS ARE A LANDED KERNEL OBJECT, not a numerical artifact, and
+they vanish exactly on the degenerate triples. This is the cleanest structural
+find of the round and the successor's best lead.
+
+F46-6. BUT THE OBVIOUS COLLISION IS REFUTED
+============================================
+Phi := sum_T (t_a t_b t_c [abc]^2) * tripleGapDet_T is 0 EXACTLY at the (5,3)
+diamond. It is NOT an identity (generically ~ +22, up to 4e3). Hoped shape:
+Phi >= 0 always, Phi <= 0 at a branch-B tie, hence Phi = 0 and every triple of
+positive bracket mass weakly dominates.
+ADVERSARIAL DESCENT KILLS IT AT SIZE SIX: m=5 gives min Phi = -0.00000000 over
+64 descents, 0 negative - the bound holds and the diamond attains it. m=6 gives
+min Phi = -2.2e21, 50 of 64 NEGATIVE. Phi is unbounded below at (6,3), so
+Phi >= 0 is false there and the collision does not exist.
+(Sampling had said min +0.175 at m=6 - the FOURTH thin-tail trap in this
+campaign. Descent, never sampling.)
+
+F46-7. RESIDUAL AND HANDOFF
+============================
+TARGET, unchanged and still the right one (F40-3): EVERY (6,3) TIE HAS AN
+INADMISSIBLE PAIR, equivalently branch B holds no (6,3) tie. Strictly weaker
+than the hinge, polynomial, size-six by construction since the (5,3) diamond is
+a branch-B tie.
+BEST LEAD: the bracket-mass Farkas certificate (F46-5). At the diamond the
+bracket masses annihilate the active gap-determinant gradients. The successor
+should ask whether that is a DESIGN-INDEPENDENT statement - i.e. whether
+sum_T bracketMass_T * grad(tripleGapDet_T) = 0 holds at every tie, not just at
+the diamond. If it does, it is a polynomial identity in the design and hence a
+kernel object, and it prices exactly the twenty refusal margins the arm needs.
+Test it at the (6,3) split diamond FIRST (one evaluation).
+DEAD, do not retry: the triple sum as a closure (F46-4); Phi >= 0 at size six
+(F46-6); the tie-graph vocabulary (F40-2, blind to doublings); the swap pinch
+(F37-2); the inside-wedge floor (F32-14); the five routes of F32-18.
+TOOL: transpose, never adjoint, in any complex-step harness. The corrected
+scripts are f46tangent.jl, f46farkas.jl, f46phimin.jl, f46ident.jl.
+REALNESS: unchanged, wedge_nonneg alone. Everything this round is field-blind.
+
+F46-8. THE AGGREGATION DOCTRINE IS NOW A THEOREM: THE CONSTANT -4
+==================================================================
+Gtz/Wave/WeightedAggregateConstant.lean, 8 theorems.
+
+    sum_a sum_b sum_c  t_a t_b t_c * tripleGapDet(g_a,g_b,g_c)  =  -4
+
+for EVERY weighted design of rank three, at EVERY size, no hypothesis. The
+right side mentions neither the atoms nor the weights nor the size.
+
+ROUTE (all inputs already landed). The Sylvester expansion
+    det(K - 1) = det K - e2(K) + tr K - 1
+reads, in the campaign's currencies,
+    tripleGapDet = [abc]^2 - (w_ab + w_ac + w_bc) + (l_a + l_b + l_c) - 1
+(one ring), and each piece is a conservation law once weighted:
+    bracket_budget          sum [abc]^2 weighted  = 6
+    wedge_mass_budget       enters 3 times, 3*6*1 = 18
+    sum_weighted_leverage   enters 3 times, 3*3   = 9
+    weight_sum_one                                = 1
+and 6 - 18 + 9 - 1 = -4. The three budgets ARE the three Sylvester minors of
+the gap, so the cancellation is structural, not arithmetic luck.
+
+WHAT IT CLOSES. Three rounds of this campaign found by MEASUREMENT, once per
+arm, that aggregating gap determinants destroys the design (the 20-triple tax
+aggregation vacuous at every size; the corner's global bracket budget reducing
+to zero; the summed two-point form going field-blind). The banked rule "select
+a slot or multiply slots, never add them" had three sightings behind it. IT IS
+NOW A THEOREM: weighted_aggregate_design_blind says any two designs -- any two
+sizes, tie and non-tie, real and complex-realified -- give the SAME aggregate.
+Any certificate of that shape is refuted before it is built, at the cost of one
+rewrite. weighted_aggregate_ne_zero kills "the aggregate vanishes at a tie".
+
+A USABLE COROLLARY, not just a negative (isTie_degenerate_slots_ge): split the
+ordered aggregate into distinct-label triples and the rest. If every distinct
+triple has nonpositive gap determinant -- which a branch-B tie supplies, since
+there every triple is live -- then THE DEGENERATE PART ALONE IS >= -4. The
+degenerate part has repeated labels, so it is a function of the WEIGHTS AND
+LEVERAGES ONLY, with no angle in it. Working it out by hand,
+    ordered = 6*U + 6*R2 - 6*P - 6*Q + 2*R3
+with U the unordered distinct sum, P = sum t^2 l, Q = sum t^3 l, R2 = sum t^2,
+R3 = sum t^3, so a branch-B tie forces
+    U = -2/3 + P + Q - R2 - R3/3  <=  0 ,
+a pure weight-and-leverage inequality in 2m variables with sum t = 1 and
+sum t l = 3. THAT IS A LARGE REDUCTION of the branch-B question -- the angles
+are gone. Verified numerically: 15000 random designs, m = 4..8, worst relative
+error 6.9e-12 (f46wt.jl); exact at both fixtures.
+HONEST LIMIT, measured: U <= 0 does NOT close branch B. At m = 6 uniform
+t = 1/6, l = 3 it gives U = -0.259 < 0, so branch-B ties are not excluded by
+it. It is a genuine necessary condition and a big reduction, not the closure.
+
+F46-9. HOW THIS CHANGES THE ARM
+================================
+The unweighted six-set law (F46-3) and this weighted law are complementary and
+should be read together:
+  UNWEIGHTED  sum_T tripleGapDet_T = det G - (m-3) e2(G) + C(m-1,2) tr G
+                                     - C(m,3)   -- KEEPS the angles, and its
+              coefficients are binomials in m-3, so it CARRIES THE SIZE.
+  WEIGHTED    sum t_a t_b t_c tripleGapDet_T = -4  -- LOSES the angles AND the
+              size entirely.
+So the weights are exactly what destroys the information. Any future
+aggregation in this arm must be UNWEIGHTED (or weighted by something other than
+the product of the atom weights), and the unweighted law is the one with a size
+marker in it. That is the round's structural lesson and it is provable.

@@ -1342,10 +1342,12 @@ import Gtz.Wave.KOneNormalForm
 import Gtz.Wave.KOneTransverse
 import Gtz.Wave.KOneWedgeCeiling
 import Gtz.Wave.KOneWedgeGram
+import Gtz.Wave.KOneWedgeProducer
 import Gtz.Wave.OppositeHornFailureDirection
 import Gtz.Wave.DiamondNeighborhoodBudget
 import Gtz.Wave.DiamondNeighborhoodFourSet
 import Gtz.Wave.TripleSumSizeLaw
+import Gtz.Wave.WeightedAggregateConstant
 import Gtz.Wave.CoherentHornSumLaw
 import Gtz.Wave.OppositeHornRefusalBudget
 import Gtz.Wave.CornerAdjugateWeightCap
@@ -37069,6 +37071,16 @@ run_cmd do
 #print axioms Gtz.wedgeProbe_normSq_le_bracket_sq_mul_of_dominates
 #print axioms Gtz.not_dominates_of_bracket_sq_mul_lt_wedgeProbe_normSq
 
+-- Gtz/Wave/KOneWedgeProducer.lean -- the converse, which PRODUCES a dominator:
+-- the bracket times a vector is the wedge probe at that vector's own readings,
+-- so a capped wedge Gram forces domination, and the cap characterizes it
+#print axioms Gtz.bracket_smul_eq_wedgeProbe_readings
+#print axioms Gtz.wedgeProbe_readings_normSq
+#print axioms Gtz.posSemidef_of_wedgeGram_cap
+#print axioms Gtz.posSemidef_iff_wedgeGram_cap
+#print axioms Gtz.dominates_of_wedgeGram_cap
+#print axioms Gtz.dominates_iff_wedgeGram_cap
+
 #print axioms Gtz.cofactorColumn_zero
 #print axioms Gtz.mulVec_cofactorColumn
 #print axioms Gtz.quadForm_cofactorColumn
@@ -37128,6 +37140,15 @@ run_cmd do
 #print axioms Gtz.sum_sixSet_gapDet_eq
 #print axioms Gtz.liveTriple_of_branchB
 #print axioms Gtz.isTie_branchB_sixSet_bound
+
+-- Gtz/Wave/WeightedAggregateConstant.lean -- the weighted ordered total of the
+-- triple gap determinants is the universal constant -4, so no certificate can
+-- be built by aggregating them
+#print axioms Gtz.tripleGapDet_eq_bracket_sub_wedge_add_leverage
+#print axioms Gtz.weighted_ordered_tripleGapDet_sum
+#print axioms Gtz.weighted_aggregate_design_blind
+#print axioms Gtz.weighted_aggregate_ne_zero
+#print axioms Gtz.isTie_degenerate_slots_ge
 
 #print axioms Gtz.quadForm_sum_of_corner
 #print axioms Gtz.trace_adjugate_fin_three
