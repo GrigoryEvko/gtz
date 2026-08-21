@@ -470,3 +470,39 @@ F58-10. WHAT A SUCCESSOR SHOULD DO WITH KEY (F58-5), in priority order.
       Q = (I-K)(I+K)^{-1} for skew K, inside atoms the columns of
       diag(1,1,mu) Q with mu = 1+e^s) is polytope-compatible and may make the
       domain a polytope where the (b,t) variables do not.  UNTESTED BY ME.
+
+F58-11. THE CASE SPLIT OF ROUTE (b), MAPPED — THE CORE IS SMALL AND NOT TIGHT.
+  Write i = argmax b, and o = the other two indices.
+  STEP 1 (pure pair constraints, proved by hand): b_j + b_k <= 1 gives
+     b_j b_k <= ((b_j+b_k)/2)^2 <= 1/4,  so  4 b1b2b3 <= b_i .
+  STEP 2 (measured decomposition of the remaining work, 3e6 draws):
+     * 4 b1b2b3 <= sum_{x in o} b_x t_x  -- i.e. THE OTHER TWO TERMS ALONE carry
+       KEY -- at 97.3 percent of the hard branch (31255 of 32132).
+     * The CORE where b_i t_i is genuinely required is 21140 points of 3e6 draws.
+       min KEY on the core = +0.0005337875696401677  -- BOUNDED AWAY FROM ZERO,
+       unlike the global picture where the sup of 4 prod b - sum b_i t_i is 0.
+       On the core: t_i in [0.00097, 0.99972], median 0.5519
+                    b_i in [0.04821, 0.96152], median 0.5084
+       So t_i is LARGE exactly where it is needed -- the term that must be spent
+       is the one that is big.  Extremal core witness:
+         KEY = 5.3379e-04, i = 1,
+         b = (5.83896099e-05, 5.50359834e-01, 1.20241202e-01)
+         t = (2.44313676e-01, 9.71642260e-04, 1.87342675e-06)
+  READING: the b=0 degeneracy that blocks a strict certificate for KEY lives
+  ENTIRELY in the easy branch (where the other two terms carry it).  The core --
+  the only place detM is genuinely needed -- has a strictly positive margin.
+  A SUCCESSOR SHOULD CERTIFY THE TWO BRANCHES SEPARATELY: the easy branch by the
+  pair constraints and step 1, the core by a certificate that may be STRICT,
+  because its margin is bounded below.  That is why the single global Handelman
+  LP kept failing: it was being asked for one certificate covering a degenerate
+  branch and a non-degenerate one at once.
+
+F58-12. HANDELMAN ATTEMPTS THIS ROUND, ALL INFEASIBLE — recorded so nobody repeats.
+  Generator set {b_i, t_i, A_i, 1-sum t, pair(3), dIM, dM} throughout.
+     target sum a <= 1        D=3: 816 products, 769 monomials -- INFEASIBLE
+                              D=4: exceeded the time budget
+     target KEY               D=2: 136 products, 201 monomials -- INFEASIBLE
+                              D=3: 816 products, 1075 monomials -- INFEASIBLE
+     target KEY*(b1+b2+b3)    D=2 and D=3 -- INFEASIBLE
+  The degeneracy-multiplied form does NOT help, which is itself informative: the
+  obstruction is the BRANCH MIXTURE of F58-11, not the vanishing at b=0 alone.
