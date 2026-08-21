@@ -1376,6 +1376,7 @@ import Gtz.Wave.KTwoBridgePositives
 import Gtz.Wave.KTwoBridgeDominates
 import Gtz.Wave.KTwoBridgePlaneReadings
 import Gtz.Wave.KTwoAxisWedgeBudget
+import Gtz.Wave.AtomWedgeMass
 import Gtz.Wave.CoherentHornRepayScope
 import Gtz.Wave.BranchBProductKill
 import Gtz.Wave.InadmissibleParallelJoint
@@ -37622,3 +37623,13 @@ run_cmd do
 #print axioms Gtz.not_liveTriple_of_leverage_eq_one
 #print axioms Gtz.sixThree_isTie_heavy_or_boundary
 #print axioms Gtz.sixThree_isTie_trichotomy
+
+-- Gtz/Wave/AtomWedgeMass.lean -- the per-atom refinement of the wedge and pair
+-- minor budgets, and the leverage threshold that forces an inadmissible pair
+#print axioms Gtz.atomReading_total
+#print axioms Gtz.atomWedge_mass
+#print axioms Gtz.exists_atomWedge_pos
+#print axioms Gtz.atomPairMinor_mass
+#print axioms Gtz.pairGapMinor_self_eq
+#print axioms Gtz.atomPairMinor_offDiag_mass
+#print axioms Gtz.exists_inadmissible_of_leverage_small
