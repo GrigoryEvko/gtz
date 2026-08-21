@@ -6,3 +6,7 @@
 # refutations and graveyard entries, and every brief cites it.
 scratchpad/*
 !scratchpad/NOTES-*.txt
+paper/brief/*.aux
+paper/brief/*.log
+paper/brief/*.out
+paper/brief/*.toc

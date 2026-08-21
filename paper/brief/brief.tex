@@ -10,6 +10,7 @@
 \usepackage[russian]{babel}
 \usepackage{lmodern}
 \usepackage[left=25mm,right=25mm,top=24mm,bottom=26mm]{geometry}
+\setlength{\emergencystretch}{3em}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{microtype}
 \usepackage{array}
@@ -418,14 +419,16 @@ $\ell_a<1$. Тогда $S_T\succ\Id$ --- вопреки граничности.
 
 \subsection{Воронка: вектор длины ровно один}\label{sub:funnel}
 
-\begin{proposition}[\code{isTie\_sixThree\_allHeavy\_or\_funnel}]\label{prop:funnel}
+\begin{proposition}[\code{isTie\_sixThree\_allHeavy\_or\_funnel},
+\code{unitAtom\_parallel\_of\_two\_readings\_zero}]\label{prop:funnel}
 Пусть в граничной системе $D$ размера~6 ранга~3 вектор $g_a$ имеет $\ell_a=1$.
 Тогда есть подходящая тройка $T\not\ni a$, для которой
 \[
   S_Tg_a=g_a,\qquad \sum_{c\in T}\langle g_c,g_a\rangle^2=1 .
 \]
-Если два из трёх показаний $\langle g_c,g_a\rangle$ равны нулю, в $D$ есть
-коллинеарная пара (\code{unitAtom\_parallel\_of\_two\_readings\_zero}).
+Если при этом два из трёх показаний $\langle g_c,g_a\rangle$, $c\in T$, равны
+нулю, то в $D$ есть коллинеарная пара: вектор $g_a$ кратен третьему вектору
+тройки.
 \end{proposition}
 \begin{proof}
 При $\ell_a=1$ правая часть~\eqref{eq:funnel} равна $\Id+\mu P$, где
@@ -457,9 +460,9 @@ $\ell_a=1$, и пусть $\mathcal T$ --- множество троек $T\not\
   \ge\bigl(t_a/(1-t_a)\bigr)^2>0$, и оценка точна
   (\code{pairMinorTotal\_floor\_of\_deflatedGapBound});
 \item если $T,T'\in\mathcal T$ различаются одним обменом, то заменяемый
-  вектор слеп к $g_a$, и у $T$ не может быть двух таких соседей
-  (\code{unitAtom\_two\_mirror\_swaps\_absurd},
-  \code{unitAtom\_second\_swap\_absurd});
+  вектор слеп к $g_a$, и у $T$ не может быть двух таких соседей; формально это
+  \code{unitAtom\_two\_mirror\_swaps\_absurd} для обменов у разных членов $T$ и
+  \code{unitAtom\_second\_swap\_absurd} для двух обменов у одного члена;
 \item тройки пятиэлементного множества --- это дополнения рёбер графа $K_5$,
   обмен --- смежность рёбер, и семейство рёбер, в котором каждое ребро смежно
   не более чем с одним другим, содержит не более трёх рёбер
@@ -749,7 +752,16 @@ E2 утверждает, что такой $e$ найдётся всегда. З
 $\langle g_e,u\rangle$ связаны с длинами унитарной группой, и $U(3)$
 просторнее $O(3)$. Численно E2 над $\RR$ не нарушается, но запас не
 отделён от нуля (при спуске доходит до $7\cdot10^{-6}$), так что
-сертификат обязан быть нестрогим. \emph{Открыто.}
+сертификат обязан быть нестрогим. Известна точная форма остатка: три числа
+$D_{edd'}$, $e\in C$, --- диагональ явной симметрической матрицы $X$
+порядка~3, у которой $\det X=\lambda\,q_{dd'}^2\,[u\,d\,d']^2$, а
+положительных собственных значений не больше одного
+(\code{CornerRepaymentMatrix}). Поэтому никакая взвешенная сумма по $e$ не
+может быть положительной всегда: нужен выбор одного $e$, а не усреднение.
+Вещественный ингредиент назван: это равенство между произведением трёх
+попарных произведений и его действительной частью, которое над $\RR$
+выполнено тождественно, а над $\CC$ нарушено у 19 из 20 троек
+комплексной системы. \emph{Открыто.}
 
 Если E1 и E2 доказаны, ветвь ранга один пуста в основном случае.
 
