@@ -161,3 +161,106 @@ capstone succeeded at 5 variables, degree 6, on a POLYTOPE.  This is far outside
 that range.  Any tractable attack must first cut the problem down -- e.g. by a
 partial selection rule that leaves a small residual cell -- not certify the
 disjunction whole.
+
+================== ROUND 2: THE COMPLEX FIXTURE AND WHAT IT SETTLES ==========
+
+F49-10.  THE COMPLEX CORNER TIE -- VERIFIED INDEPENDENTLY (my own run)
+----------------------------------------------------------------------
+scratchpad/corner-ten/complextie.txt, read HERMITIAN (K_ij = <g_i,g_j>):
+  Hermitian Parseval residual 2.887e-15   (BILINEAR reading residual 1.622 --
+  the wrong form, as the coordinator warned)
+  S_C - I eigenvalues (0, 0, 3.76406891) ; max |Im K_ij| off-diagonal 2.8641
+  max over the twenty triples of lam_min(S_T - I) = -3.112e-15   -> a TIE
+  E1 HOLDS: q_34=+2.0132, q_35=+6.1155, q_45=+9.8843, all three admissible
+  E2 FAILS at all nine slots: -0.2447 (best), -0.3332, -0.4436, -0.5957,
+     -1.7767, -6.4566, -7.2373, -11.4985, -11.8586
+  DOMINATION CONTROL: |D(l_e-1) - r* adj(M) r  -  det(K_T - I)| <= 3.553e-15
+  at all nine slots, with the pair as the LEADING 2x2 block and the inside atom
+  LAST.  (Run this control; the conjugation is easy to get backwards.)
+
+F49-11.  *** THE DECISIVE FACT: MY FIELD-BLIND IDENTITIES HOLD AT THE TIE ***
+-----------------------------------------------------------------------------
+Checked at the complex tie, Hermitian reading:
+    sum_e (l_e - 1) - lam                                 =  6.2e-15
+    sum_e |<g_e,a>|^2 - (l_a + lam |<u,a>|^2),  a=3,4,5    = -6.2e-15, 2.0e-14, 2.7e-14
+These are exactly the identities the F49-2 chart is built from, and they are the
+identities the landed column total is built from.  So THE COMPLEX TIE IS A
+FEASIBLE POINT OF EVERY FIELD-BLIND CONSTRAINT SYSTEM THIS LANE HAS.
+=> E2 ADMITS NO FIELD-BLIND CERTIFICATE, and the reason is sharper than
+"no target polynomial": there IS a target now (the product form), but it is
+FALSE at a feasible point of the domain.  Any Handelman/SOS/LP run over
+field-blind generators is therefore INFEASIBLE, with the complex tie as the
+explicit certificate of infeasibility.  My round-1 Handelman verdict stands and
+is upgraded: the blocker is not expressibility, it is that the statement is
+false on the field-blind locus.
+CONFIRMED: the product form does NOT fire at the tie -- at t = 0.5, 1.0, 2.0 all
+three pair-products are > 0, exactly as it must be.
+
+F49-12.  *** CORRECTION: PARSEVAL AND REALNESS ARE BOTH NECESSARY ***
+---------------------------------------------------------------------
+The coordinator wrote "the missing ingredient is not the sixth atom, it is
+REALNESS".  Both are necessary and NEITHER is redundant, and there is now an
+explicit witness for each:
+  (i)  F49-3 witness: REAL, corner + admissible + both heavy, NO Parseval
+       -> E2 fails.  Landed, Gtz.repayScope_not_forced.
+  (ii) complextie.txt: full (Hermitian) Parseval, corner, E1 holds, NOT real
+       -> E2 fails.  Verified F49-10.
+So a proof of E2 must consume BOTH the sixth atom AND a realness carrier.
+Dropping either is refuted by an explicit fixture.
+
+F49-13.  *** NEW: THE CORNER AND ITS PAIR DO NOT DETERMINE E2 ***
+------------------------------------------------------------------
+LANDED (commit 74e26a4, Gtz.repayScope_pairData_undetermined, 8 new pins, all
+standard, my audit).  Mechanism: with Vc the inside atoms as columns,
+Vc Vc' = 1 + lam uu' is invariant under Vc -> Vc Q for orthogonal Q, so every
+corner invariant survives while the readings of a fixed outside pair rotate.
+Take Q the rational rotation (3/5, 4/5) of axes 1 and 3:
+    corner 1: gx=(1,0,0)   gy=(0,1,0) gz=(0,0,2)
+    corner 2: gx'=(3/5,0,8/5) gy=(0,1,0) gz'=(-4/5,0,6/5)
+Both are corners with the SAME axis u=(0,0,1) and the SAME scale lam=3, against
+the SAME pair a=(3/2,0,3/2), b=(0,3/2,3/2): l_a=l_b=9/2, p=9/4, D=115/16,
+<u,a>=<u,b>=3/2 -- every pair invariant identical.
+    corner 1 determinants: -63/8, -63/8, -15/16     E2 FAILS
+    corner 2 determinants: -1767/200, -63/8, +9/400  E2 HOLDS
+    column total e1 = -267/16 on BOTH  (as the landed column total law forces)
+    e2 = 2457/32  vs  1383993/20000   -- DIFFERENT
+    e3 = -59535/1024 vs +1001889/640000 -- DIFFERENT
+CONSEQUENCES, and they explain the whole lane at once:
+  * e1 is the ONLY symmetric function of the three column determinants that the
+    corner and pair determine.  e2 and e3 have no closed form in that data --
+    which is why the arm only ever found the sum law.
+  * The sum is therefore not merely the weakest of the three (the sibling's
+    27.0 / 10.9 / 2.6 fire rates); it is the only one AVAILABLE at that level.
+  * No function of the corner-pair data can decide E2, so F49-5 (every
+    aggregate fails), F49-6 (no selection rule is total) and the 54.63% of
+    F49-3 are three faces of this one theorem.
+  * The sibling's e2/e3 route must therefore be run on data BELOW the corner-
+    pair level -- the individual readings -- not on corner invariants.
+
+F49-14.  E2 IS NOT A LEMMA; IT IS THE DESTINATION
+--------------------------------------------------
+A tie has NO strictly dominating triple.  E2 produces one.  So E2 at every
+corner implies no corank-two corner tie exists -- which is the arm's goal for
+the (P) stratum.  Restricted to the failing branch, E2 IS the emptiness
+statement, given E1.  This is why no local corner argument was ever going to
+reach it, and why the complex tie kills it: proving E2 means proving no complex
+corner tie exists, and one does.
+
+F49-15.  REVISED GUIDANCE FOR THE SUCCESSOR
+--------------------------------------------
+1. Mandatory acceptance test: evaluate every candidate E2 law at
+   scratchpad/corner-ten/complextie.txt, Hermitian reading, with the domination
+   control.  A law that holds there is not the law.  (Do NOT use
+   scratchpad/corank1/complextie_c1.txt -- that fixture is CORANK ONE, the wrong
+   stratum for corner statements.)
+2. Second acceptance test: Gtz.repayScope_not_forced -- a law that never uses
+   the sixth atom is refuted before it starts.
+3. Third, from F49-13: a law expressed in corner-pair invariants alone cannot
+   work.  It must reach the individual readings.
+4. The realness carriers to test are the chirotope factorization, the exact
+   two-point bracket pinning (opposite-horn lane, already proved real-only), and
+   wedge/bracket ORDER facts.  The elementary separator to look for: over R the
+   pairing 3-cycle p_ab p_bc p_ca is REAL, so its square equals the product of
+   the three squared pairings; over C only Re(...) enters det(K-I), and at this
+   fixture the off-diagonal Gram has |Im| up to 2.8641.  That is where the
+   field enters the determinant, and any real-only law must consume it.

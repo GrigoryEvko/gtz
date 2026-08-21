@@ -1403,3 +1403,81 @@ k2ChartCrossCert_half_pos_of_residue.
     0 <= k2ChartCrossHalfResidue ed ee td te tz
 on {td,te,tz>0, ed,ee>-1, tz<T, td+te+T<1}. FIVE scalars, no erased scale, no
 quotient, no plane angle, and a normalised margin of 0.71 rather than 0.
+
+F51-1. THE CHART-TO-DESIGN BRIDGE, FULLY MAPPED AND VERIFIED  (scratchpad/f51/)
+================================================================================
+THE CHART MAP, recovered from designs BEFORE any algebra (measurement first):
+  frame   w = g_x (the axis atom, unit leverage, orthogonal to g_y,g_z)
+          vhat = the shared outside plane line;  nhat = w x vhat
+  ed = (g_d.w)^2 - 1        ee = (g_e.w)^2 - 1
+  td,te,ty,tz = the four non-axis weights (chart names = design names)
+  P  = |g_d - (g_d.w)w|^2   THE SQUARED PLANE PART OF d   [regression: exponent
+       1.000 on s, 0.000 on all eight other candidates, max log-residual 3e-15]
+  X  = ty*(g_y.nhat)^2      [matched the construction's own rotation parameter
+       sin^2(theta) to 1e-16, 6/6 trials]
+KEY STRUCTURAL FACT: every slack has P and X ONLY as the monomials P and P*X,
+so each slack is AFFINE in (P, P*X) -- that is what makes the map solvable.
+FRAME-FREE FORMS:  P = l_d - p_dx^2 ,  P*X = ty*(P*l_y - p_yd^2).
+
+THE FOUR CLEARING FACTORS (all exact positive monomials, 200 designs, 1e-13):
+  CapD     = - ty*tz*te   *be^2 * det(S_{y,z,d} - 1)
+  CapE     = - ty*tz*te^2 *be^2 * det(S_{y,z,e} - 1)
+  RefusalY = - ty   *te^2 *be^2 * det(S_{y,d,e} - 1)
+  RefusalZ = - tz   *te^2 *be^2 * det(S_{z,d,e} - 1)
+so SLACK >= 0  <=>  THE TRIPLE IS REFUSED.  (be^2 = 1+ee.)
+
+THE CHART HYPOTHESES, at the design level:
+  hE   td*ed+te*ee = ty+tz     LANDED k2FiveAxis_excess_eq (Parseval at axis)
+  hsum td+te+ty+tz < 1         LANDED k2FiveAxis_budget
+  hX0/hX1  0 <= X <= 1         LANDED k2FiveAxis_planePair_reading (free!)
+  hV, hW   AUTOMATIC -- 100% of 60000 arbitrary K2-shaped designs, with EXACT
+           design readings (1e-16):
+             Vn  = ty*tz*((g_y.nhat)^2 + (g_z.nhat)^2 - 1)
+             Wom = te*be^2*ty*tz*(plane bracket)^2
+           so Wom>0 <=> the plane pair is independent, and Vn>0 follows from
+           ty*(g_y.n)^2+tz*(g_z.n)^2 = 1 together with ty,tz < 1.
+  hU, hD   NOT automatic on arbitrary designs (90.1%, 86.1%) BUT hold at
+           40000/40000 designs where C={x,y,z} WEAKLY DOMINATES.  They are
+           consequences of weak domination; the exact readings are still open.
+  hed/hee  -1 < ed,ee  <=>  g_d.w, g_e.w nonzero (the alpha=0 / rho=0 edges,
+           already dead by the landed excess and parallel laws).
+
+THE FOUR SLACK IDENTITIES ARE IDEAL MEMBERSHIPS (Groebner, EXACT, c-free
+parametrisation g_d=(p,0,al), g_e=(v,0,be), g_y=(y1,y2,0), g_z=(z1,z2,0)):
+  r1   ty*y1^2 + tz*z1^2 + td*p^2 + te*v^2 = 1     (plane Parseval at vhat)
+  r2   ty*y1*y2 + tz*z1*z2 = 0                     (plane Parseval, mixed)
+  r3   ty*y2^2 + tz*z2^2 = 1                       (plane Parseval at nhat)
+  hcol td*al*p + te*be*v = 0                       (THE COLLINEARITY)
+ALL FOUR diffs lie in <r1,r2,r3,hcol>.  Eliminating z from r1,r2,r3 gives the
+PLANE RANK RELATION
+  star := (ty*y1*y2)^2 - (1 - td*p^2 - te*v^2 - ty*y1^2)*(1 - ty*y2^2) = 0
+(it is (tz*z1z2)^2 - (tz*z1^2)(tz*z2^2)), and modulo r1,r2,r3 each diff is
+star times an explicit CHART quotient:
+  CapD : ed*(1+ty-tz)      CapE : te*ee*(1+ty-tz)
+  RefY : -te*(1+ed+ee)     RefZ : +te*(1+ed+ee)
+NOTE 1+ed+ee is the chart excess sum, POSITIVE by the landed
+k2Chart_excessSum_pos.
+
+WARNING FOR THE SUCCESSOR: the identities are NOT free polynomial identities.
+On K2-SHAPED data with no Parseval they fail at O(1) (max relative error 1.8).
+Any attempt to prove them by `ring` alone will fail; they need r1,r2,r3,hcol.
+
+LANDED THIS ROUND
+  2168363 Gtz/Wave/KTwoBridgeNormalForm.lean  (7 thms, all standard)
+      k2Axis_reading_total, k2Axis_mixed_total_zero  (any size; Parseval at
+      the axis against itself and against an orthogonal probe)
+      k2FiveAxis_reading, k2FiveAxis_excess_eq, k2FiveAxis_budget,
+      k2FiveAxis_collinear, k2FiveAxis_planePair_reading
+  e6eb4be Gtz/Wave/KTwoBridgeRefusalY.lean  (3 thms, all standard)
+      k2Plane_star_eq_zero, k2ChartRefusalY_eq_gapDet,
+      k2ChartRefusalY_nonneg_iff_gapDet_nonpos
+      (the linear_combination cofactors are in scratchpad/f51/gen_out.txt)
+
+STILL OPEN ON THE BRIDGE
+  (a) the other three slack identities -- same recipe, cofactors on
+      [r1,r2,r3,star,hcol] (the z-dependence is only via z1^2, z1z2, z2^2, so
+      multiply by tz and substitute; see F51-2);
+  (b) hU and hD from weak domination (measured 40000/40000, no reading yet);
+  (c) the frame construction itself: producing the coordinates from an abstract
+      design (choose w = g_x, vhat along the shared outside line, nhat = w x vhat).
+      This is the only remaining piece that is not pure algebra.
