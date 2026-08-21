@@ -1311,6 +1311,7 @@ import Gtz.Wave.TieGraphTrichotomy
 import Gtz.Wave.TieMantelBound
 import Gtz.Wave.CellHChartFloors
 import Gtz.Wave.CellHDowndateLaws
+import Gtz.Wave.CellHStarPromotion
 import Gtz.Wave.InsertionDowndateLedger
 import Gtz.Wave.CellBTiePackage
 import Gtz.Wave.BothLightChartReduction
@@ -37643,3 +37644,12 @@ run_cmd do
 #print axioms Gtz.tripleGapDet_frame_yze
 #print axioms Gtz.sq_pos_of_ne
 #print axioms Gtz.k2Frame_kill
+
+-- Gtz/Wave/CellHStarPromotion.lean -- the star promotion: two admissible pairs
+-- through a fixed atom turn the cell H trio into a strictly dominating triple
+#print axioms Gtz.atomTriple_eq_mul_transpose
+#print axioms Gtz.atomTriple_posDef_iff_tripleGram
+#print axioms Gtz.atomTriple_posDef_iff_gapDet_pos_of_admissible
+#print axioms Gtz.star_exists_posDef_of_exists_gapDet_pos
+#print axioms Gtz.star_exists_posDef_of_admissibleStar
+#print axioms Gtz.cellH_exists_dominating_triple
