@@ -1,0 +1,1244 @@
+CORANK-ONE ARM — fork 28 notes (2026-08-20)
+============================================
+
+F28-1. THE INVARIANT BUDGETS (commit 693836c, Gtz/Wave/InvariantBudgets.lean)
+------------------------------------------------------------------------------
+The conservation laws of the tax currencies, all from Parseval, all sizes:
+  parseval_pairing_sq_total    sum_{a,b} t_a t_b <g_a,g_b>^2 = 3   (tr Pi^2)
+  parseval_pairing_cycle_total sum_{a,b,c} t_a t_b t_c <ab><bc><ca> = 3 (tr Pi^3)
+  wedge_mass_budget            sum_{a,b} t_a t_b w_ab = 6   (ordered; 3 unordered)
+  bracket_budget               sum_{a,b,c} t_a t_b t_c [abc]^2 = 6 (ordered; 1 unord)
+  tripleBracket_sq_gram        the Gram expansion of the squared bracket
+bracket_budget IS Cauchy-Binet at the identity with NO compound matrices: the
+Gram expansion reduces the triple sum to the three moments, 27 + 2*3 - 3*9 = 6.
+NAME CLASH FOUND: wedge_budget already exists in CorankOneAssembly (cross-product
+form). Mine is the leverage-and-pairing form -> renamed wedge_mass_budget.
+The budgets are the elementary symmetric functions of the projection spectrum:
+e1(Pi)=3, e2(Pi)=3, e3(Pi)=1, i.e. the binomials C(3,k) since Pi has spectrum
+1,1,1,0,0,0. Verified numerically exact (f28budget.jl).
+
+F28-2. THE CAP-SUM COLLAPSE OF THE K2 CORNER (commit f6c5668, KTwoCapSum.lean)
+-------------------------------------------------------------------------------
+LAW-A IS EXACT AND MINIMAL. Solved for monomial multipliers of the two caps
+against the target: the ONLY solution is
+      -TGT = td*CapD + CapE       (unique, coefficients (0,1,0,0,1,0,0,0))
+and it holds with ty FREE, not merely on the excess surface (verified both
+readings symbolically; the ty+tz reading needs a 24-term correction mod E, the
+td*ed+te*ee reading is exact). Landed as k2Chart_capSum_identity, one ring.
+CONSEQUENCE: the two excess caps are GONE from the corner fight. At the corner
+td > 0 and both caps >= 0 force TGT <= 0 (k2Chart_caps_force_target_nonpos), so
+the corner dies the moment the REMAINING data forces TGT > 0.
+THE RESIDUAL IS NOW K2ChartTargetPositivityHalf: domain + four strict chart
+positives + the two mixed refusals + the two quotient floors + the HALF-CHART
+normalization tz <= ty  =>  TGT > 0. The half-chart is free: k2ChartTarget_swap
+shows the target is invariant under the plane swap, the caps are invariant, the
+mixed refusals interchange and the quotient floors interchange, so
+k2ChartDoubleQuotientCorner_of_targetPositivityHalf transports the mirror half.
+k2Chart_kill_of_targetPositivityHalf chains it through the landed conditional
+kill. TWO HYPOTHESES REMOVED, ONE WLOG GAINED, relative to F26-7.
+
+F28-3. THE CONTRACTION TAX (commit 35c8b73, BracketContractionTax.lean)
+------------------------------------------------------------------------
+NEW MATH, and the sharpest producer the arm has. The projection is ORTHOGONAL,
+so every principal block is a CONTRACTION 0 <= Pi[C] <= 1. The landed spectral
+step of CauchyBinetValueFloor then gives det Pi[C] <= every Rayleigh quotient,
+i.e. THE BLOCK DETERMINANT IS ITSELF A QUADRATIC FLOOR OF THE BLOCK. Feeding
+that floor to the landed light-triple producer:
+  posDef_subsetSum_of_det_gt_weights     det Pi[C] > all three weights => STRICT
+  posDef_subsetSum_of_bracket_gt_weights t_a t_b t_c [abc]^2 > t_a,t_b,t_c
+                                          => STRICT DOMINATOR
+  isTie_bracket_tax   at a tie EVERY triple pays: t_at_bt_c[abc]^2 <= some t_member
+This is the wedge-bracket tax with e2 REMOVED. The two are complementary:
+the wedge tax wins when e2 < 1, the contraction tax when e2 > 1 (e2 <= 3 always
+by the same contraction). blockFloor_ge_det records the combined floor
+lam >= det*max(1, 1/e2).
+SIZE CONSUMED AGAIN: exists_light_triple (heavy atoms number at most m-3, so
+three atoms sit at weight <= 1/(m-2)) gives isTie_light_triple_bracket_cap --
+every (m,3) tie carries a triple with t_at_bt_c[abc]^2 <= 1/(m-2). THE QUARTER
+at (6,3) (isTie_sixThree_bracket_quarter), the THIRD at (5,3).
+CONTACT: blockEigen_one_of_supported_mem_range -- a vector supported on the
+triple and fixed by the projection restricts to a +1 eigenvector of the block.
+No spectral theorem.
+MEASURED: 0 counterexamples in 400000 random triples (f28det.jl), and EXACTLY
+TIGHT at the tetrahedral tie, whose block spectrum is (1/4, 1, 1) -- the two +1
+eigenvalues are the two contact directions, and det = lam_min there.
+
+F28-4. THE PAIR BRACKET MASS (PairBracketMass.lean)
+----------------------------------------------------
+THE LOCAL BRIDGE BETWEEN THE TWO BUDGETS, new and exact:
+      sum_c t_a t_b t_c [abc]^2  =  t_a t_b w_ab           (pair_bracket_mass)
+the bracket mass of a pair IS its wedge mass. Sum over ALL c: the two degenerate
+terms vanish by themselves. Proof: [abc] = <g_a x g_b, g_c>, so the sum is the
+design's own form at the cross product, which Parseval evaluates as |g_a x g_b|^2,
+and Lagrange makes that the wedge. Consistency: summing over the 15 pairs gives
+3, and each triple is counted 3 times against the unordered bracket budget 1.
+CONSEQUENCES:
+ (a) pair_bracket_mass_eq_blockDet -- the same number is the 2x2 principal minor
+     of the projection, the pair-minor bridge's functional.
+ (b) hasParallelPair_iff_exists_pair_bracket_mass_zero -- THE HINGE'S CONCLUSION
+     IS A ZERO OF THE BRACKET BUDGET: a design has a parallel pair exactly when
+     SOME PAIR CARRIES NO BRACKET MASS. The endgame target is now "at a tie the
+     bracket mass distribution over the 15 pairs has a zero entry".
+ (c) pair_bracket_mass_le_leverage -- the pair mass is at most either endpoint's
+     weighted leverage, hence at most one (contraction + the sibling's landed
+     parseval_weight_leverage_le_one).
+ (d) THE PAIR TIE CAP (isTie_lightest_pair_bracket_mass_cap): at a tie the two
+     LIGHTEST atoms obey   t_a t_b w_ab <= 1 - t_a - t_b.
+     Each of the m-2 triples through the pair pays its own heaviest member by
+     the contraction tax; because the pair is lightest that member is the THIRD
+     atom; the simplex sums the payments. Strictly sharper than the free cap by
+     the two weights themselves.
+MEASURED: the identity is exact to 9e-16 over 45000 pairs, and the cap is
+EXACTLY TIGHT at the tetrahedral tie (both sides one half). f28pair.jl.
+
+F28-5. REFUTATION: THE NAIVE BUDGET AGGREGATION IS VACUOUS. DO NOT RETRY.
+--------------------------------------------------------------------------
+The directive's route 5(c) -- sum the 20 taxes against the bracket budget -- is
+DEAD at every size. Unordered: sum_C det = 1 and sum_C e2 = 3(m-2), so the tax
+gives only t_max >= 1/(3(m-2)), and the FREE pigeonhole already gives t_max >= 1/m,
+which is larger for every m >= 3 (f28agg.jl). The same collapse happens with the
+sharper contraction tax: 1 <= sum_C max_C t = t3 + 3t4 + 6t5 + 10t6 >= 10/6 at
+(6,3), vacuous. LESSON: the 20-triple sum is too generous by a factor ~12; the
+content of the tax is POINTWISE and PER-PAIR, never in the global sum. The pair
+identity (F28-4) is the right localization -- it sums only the m-2 triples through
+one pair, and there the cap is tight.
+
+F28-6. THE LP STATE
+--------------------
+step27's ladder (posmon deg <= 2 plain, pair products with posmon deg <= 1) is
+INFEASIBLE, confirmed. f28lp.jl re-runs the hunt in Julia/HiGHS with the
+half-chart generator DYZ = ty - tz added and pair products at posmon deg 2 --
+the configuration F26-8 named as untried. Polynomials emitted ty-substituted in
+f26sym/f28polys.txt (Q1 Q1m Vn DnC UnC Wom TX TY TGT S1..S4, degrees 2..9).
+NOTE: with the cap-sum collapse the LP target is UNCHANGED but two generators
+(S1, S2) are no longer needed on the corner side -- they are the collapse.
+
+F28-8. THE ROW LAW OF THE PAIR MASS (commit 680933d, PairMassRowLaw.lean)
+--------------------------------------------------------------------------
+THE ROW LAW, new and exact:   sum_b t_a t_b w_ab = 2 * t_a * l_a = 2 * Pi_aa.
+Parseval twice: parseval_pairing_row (sum_b t_b <g_a,g_b>^2 = l_a, Parseval read
+at the atom itself) and the leverage total 3, then 3*l_a - l_a = 2*l_a. The
+diagonal term vanishes by itself (pair_mass_self), so the sum runs over all b.
+Summing over a returns the ordered wedge budget 6 -- consistent with F28-1.
+CONSEQUENCES (both free, no tie):
+  exists_small_pair_mass  every atom carries a partner with P_ab <= 2*Pi_aa/(m-1)
+                          (min <= average over the m-1 partners)
+  exists_pair_mass_le     SOME pair of ANY design has P_ab <= 6/(m(m-1))
+                          (the lightest diagonal is <= 3/m since they total 3)
+  exists_pair_mass_le_fifth   at (6,3): SOME pair has mass <= 1/5.
+THE REALNESS CARRIER IS NAMED AND ISOLATED (per the coordinator's C1-8 handoff):
+  pair_mass_nonneg  0 <= t_a t_b w_ab, because w_ab = |g_a x g_b|^2.
+THIS IS THE ONLY FIELD-SENSITIVE STEP OF THE WHOLE PAIR-MASS LANE. Every other
+law -- the row law, the budgets, the pair identity, the small-partner extraction
+-- is a polynomial identity or a counting argument and never looks at a sign.
+Over C with the BILINEAR wedge the expression is not a sum of squares and can
+vanish or go negative at isotropic atoms with no proportionality: that is exactly
+how the complex corank-one ties evade field-blind laws. Downstream arguments must
+spend realness HERE and nowhere else. pair_mass_le_row is the first consumer.
+MEASURED: row identity exact to 1.6e-15 over 24000 rows (f28row.jl).
+
+F28-9. THE STATE OF THE K0 DESCENT AFTER THIS ROUND
+----------------------------------------------------
+The hinge conclusion is now "some pair mass is ZERO" (F28-4b). What is landed:
+  * the 15 pair masses total 3 (unordered wedge budget)
+  * every row totals 2*Pi_aa, and the diagonals total 3
+  * every design already has a pair of mass <= 1/5 at (6,3)  [FREE]
+  * at a tie the lightest pair pays <= 1 - t_a - t_b        [TIE]
+  * every pair mass is nonneg, and that is the only realness spend
+WHAT IS MISSING: a LOWER bound on the smallest pair mass from primitivity that
+contradicts the caps. NOTE THE OBSTRUCTION: the tetrahedral tie makes the tie cap
+an EQUALITY (both sides 1/2), so any closing argument must be tight there and must
+consume m = 6 -- the tetrahedron is (4,3). The coordinator's C1-8 constants say
+the multiplier vector must be sigma-symmetric on mirror pairs, strictly positive
+on all four complement-family contacts, ratio in [1,2], scale 1/600, tight at the
+fixture. Those four complement-family contacts have NO (5,3) analogue, which is
+the size consumption -- consistent with the tetrahedral obstruction above.
+
+F28-10. THE WEDGE FLOOR OF A WEAK DOMINATOR (DominatorWedgeFloor.lean)
+------------------------------------------------------------------------
+Built on the K1 fork's dominator_bracket_floor ([C]^2 >= 1 at a weak dominator).
+Cauchy-Schwarz at the cross product, [xyz]^2 = <g_x x g_y, g_z>^2 <= w_xy * l_z,
+turns the bracket floor into a WEDGE FLOOR -- the direction the hinge needs,
+since the hinge wants a wedge driven to ZERO:
+  dominator_inside_wedge_floor      w_xy * l_z >= 1  (each of the three pairs)
+  dominator_inside_wedge_ge_weight  w_xy >= t_z      (via t_z l_z <= 1)
+  dominator_inside_pair_mass_floor  t_x t_y w_xy >= t_x t_y t_z
+                                    = the dominator's localized budget share
+  dominator_no_inside_parallel      no inside pair is parallel, MARGIN t_z
+                                    (not merely a rank count)
+THE AGGREGATION (misalignment_floor_of_pairBounds), the coordinator's ask:
+given the endgame's per-pair upper bound  w_pq * beta_q^2 <= l_p * radius  with
+radius = R^2(1 - <w,w'>^2), and the dominator's null readings a UNIT vector,
+the wedge floor converts each per-pair bound into a cap on ONE squared reading:
+  beta_x^2 <= l_y l_z r,  beta_y^2 <= l_z l_x r,  beta_z^2 <= l_x l_y r
+and summing against Sum beta^2 = 1 gives
+      1 <= radius * (l_x l_y + l_x l_z + l_y l_z) = radius * e2(l).
+AN INTRINSIC LOWER BOUND ON THE MISALIGNMENT of the two null lines, in the second
+elementary symmetric function of the inside leverages. Per-pair throughout, and
+the ONLY field-sensitive ingredient is wedge nonnegativity (pair_mass_nonneg).
+INDEXING WARNING (cost one build): the three per-pair bounds must pair the
+reading of one member with the leverage of the OTHER member of the same pair
+(beta_x with l_y on pair {x,y}, etc.). Pairing reading and leverage from the
+same slot makes the three caps sum to r(2 l_x l_y + l_x l_z), which does NOT
+dominate e2(l) and the aggregation does not close. The statement carries the
+correct indexing.
+MEASURED: 350691 REAL weak dominators, ZERO violations of either floor; min
+w*l = 15.0, min slack w - t_z = 4.67 (f28wedge.jl). The floors are loose on
+random designs -- they bite at the tie boundary, which is where they are used.
+
+F28-11. THE SHARPENED DOMINATOR FLOOR (DominatorWedgeFloor.lean, section 3)
+---------------------------------------------------------------------------
+The K1 fork's dominator_bracket_floor DISCARDS the trace term of the shift
+expansion. Keeping it is free and strictly better. With G = S_C - 1 PSD,
+  [C]^2 = det(G+1) = 1 + tr G + e2(G) + det G,  all three invariants >= 0,
+so keeping tr G = e1(l) - 3 gives
+  dominator_bracket_floor_sharp       [xyz]^2 >= l_x + l_y + l_z - 2
+  dominator_inside_wedge_floor_sharp  w_xy * l_z >= e1(l) - 2
+  misalignment_floor_sharp_of_pairBounds   e1(l) - 2 <= radius * e2(l)
+  dominator_trace_floor               e1(l) >= 3   (PSD gap has nonneg trace)
+THE GAIN FACTOR IS e1(l) - 2, WHICH IS >= 1 ALWAYS because a weak dominator's
+trace is at least the rank. So the sharp floor never loses and strictly improves
+whenever the dominator carries slack.
+CROSS-ARM CONSEQUENCE: the coordinator's composition K >= mu'^2/(R^2 e2(l))
+becomes  K >= mu'^2 (e1(l) - 2)/(R^2 e2(l)).  If the K0 fight turns on the size
+of e2(l), this is the lever -- the numerator now grows with the dominator trace.
+MEASURED: 233902 dominators, ZERO violations. CAVEAT ON THE MEASUREMENT: my
+sampler normalizes every atom to leverage 3, so e1 = 9 and the observed gain is
+a flat 7 -- that is a SAMPLER ARTIFACT, not a general constant. The guaranteed
+gain is e1(l) - 2 >= 1. Any successor re-measuring must vary the leverages.
+LEAN GOTCHA (cost one build): rewriting the trace into `hshift` desynchronises
+it from `he2`, which still mentions `Matrix.trace G`, and linarith then fails.
+Derive the bound FIRST (1 + tr G <= [C]^2), then rewrite the trace in the bound.
+
+F28-12. THE LP: A COMPUTATIONAL VERDICT, NOT A FEASIBILITY VERDICT
+-------------------------------------------------------------------
+The rerun under the 3000s cap (f28lp.jl, ladder p2s2p2 -> p2s2p2A2 -> p2s3p2A2)
+produced NO output at all -- not even the first config's status line, which is
+printed after optimize!. So the job never reached the solver: THE BOTTLENECK IS
+THE POLYNOMIAL COLUMN CONSTRUCTION, NOT THE LP. The generators are degree 8-9 in
+7 variables; pair products push them to degree ~18, and posmon degree 2 on top
+multiplies the column count into the thousands, each requiring a full monomial
+expansion. This is a scaling wall in the FORMULATION, and no amount of solver
+time clears it.
+CONSEQUENCE FOR THE SUCCESSOR: do NOT re-run the dictionary ladder at full
+variable count. Go to the collapsed variables FIRST -- p := td(1+ed),
+q := te(1+ee) with p + q = 1 - t_x reduces the fight to ~5 variables, where both
+a product-dictionary LP and QE/CAD are tractable. The margin is 17 percent
+multiplicative with Dn >= 0.37, so the certificate exists; only the arena was
+too large.
+
+F28-13. PHASE RIGIDITY: THE THIRD COMPOUND HAS RANK ONE (BracketPhaseRigidity)
+------------------------------------------------------------------------------
+NEW MATH, and it is the realness carrier the campaign wanted. Pi = M M^T with M
+the 6x3 scaled frame, so a 3x3 block of Pi at ROW triple C and COLUMN triple D
+is a product of two SQUARE blocks of M:
+      Pi[C,D] = M[C] M[D]^T      =>   det Pi[C,D] = b_C * b_D
+with b_C = sqrt(t_a t_b t_c) [abc]. One line, det(AB) = det A det B. Everything
+below is that factorization read differently:
+  bracketMass_phase_rigidity  (det Pi[C,D])^2 = m_C * m_D      THE RANK-ONE LAW
+  bracket_threeCycle          det Pi[C,D] det Pi[D,E] det Pi[E,C] = m_C m_D m_E
+  bracket_threeCycle_nonneg   ... hence >= 0 over R            THE CHIROTOPE
+  bracketMass_eq_zero_kills_row   m_C = 0 => every block through C is singular
+  bracketMass_le_pair_mass    m_C <= P_ab for each pair of C (marginal bound)
+STRUCTURE: Lambda^3 Pi is the RANK-ONE projection b b^T on Lambda^3 R^6 = R^20.
+Its diagonal is the 20 bracket masses; its trace is the bracket budget 1; so
+THE MASSES ARE A PROBABILITY DISTRIBUTION ON THE TRIPLES and the off-diagonals
+are pinned to +-sqrt(m_C m_D) with no freedom. The marginals are the campaign's
+own currencies: the 2-marginal is the pair mass (F28-4), the 1-marginal is the
+projection diagonal t_a l_a (F28-8 row law). The whole bracket/wedge calculus is
+the marginal structure of one rank-one form.
+REALNESS: the identity is field-blind; the NONNEGATIVITY of the three-cycle is
+not. Over C the same algebra holds and the sign is gone. So this lane spends
+realness at exactly two named places: pair_mass_nonneg (wedge) and
+bracket_threeCycle_nonneg (chirotope).
+MEASURED: rank-one law 3e-16, three-cycle 2e-17 with ZERO negative cycles,
+bracket budget 2e-15 (f28phase.jl).
+
+F28-14. TWO REFUTATIONS OF THE COLLAPSED-ARENA PLAN. DO NOT RETRY.
+-------------------------------------------------------------------
+(a) TGT > 0 IS NOT FORCED BY THE DOMAIN. In the collapsed variables the domain
+    plus the four strict positives leaves 165991 violations out of 1091215
+    feasible points (15 percent), ratio omega*Vn/(T*DnC) up to 4.8e5
+    (f28collapse.jl). The quotient floors and mixed refusals are load-bearing.
+(b) THE p,q COLLAPSE DOES NOT REDUCE THE CONSTRAINT SET. Only the TARGET and the
+    DOMAIN collapse to (p, q, U := P*td, ty, tz, X). Q1, S3 and S4 depend on
+    (td, te, P) SEPARATELY -- measured spreads 0.097, 0.034, 0.019 at fixed
+    collapsed coordinates. So the planned 5-variable fallback arena DOES NOT
+    EXIST; the fight stays at 7 variables.
+CONSEQUENCE: the successor must either find a smaller generator set (test
+whether S3, S4 alone suffice -- the degree-7 ones, dropping the degree-8/9
+quotients) or accept 7 variables. The naive dictionary ladder is out (F28-12).
+
+F28-15. AN INCIDENT: THE SHARED-UMBRELLA READ-MODIFY-WRITE RACE
+----------------------------------------------------------------
+My commit of BracketPhaseRigidity DROPPED one import and six pins of the
+OppositeHorn lane. Cause: I read Gtz.lean and Gtz/Audit.lean into python,
+rewrote them, and committed by pathspec -- and `git commit -- <paths>` commits
+the WORKING TREE, so my stale in-memory copy overwrote lines a sibling had added
+between my read and my write. Restored in the next commit; set comparison against
+the pre-clobber revision confirms ZERO lines lost.
+THE RULE: after ANY python rewrite of a shared umbrella, and BEFORE committing,
+diff the staged/working version against HEAD and confirm the diff is
+INSERTIONS ONLY. `git show --stat` after the fact is too late. Better: never
+read-modify-write the umbrellas; append with a targeted edit and re-read
+immediately before commit.
+
+F28-16. THE MINIMAL GENERATOR SET OF THE K2 CORNER (decisive measurement)
+--------------------------------------------------------------------------
+608489 feasible points (domain + the four strict positives), f28which.jl:
+  TGT <= 0, domain alone            : 43051   (7 percent)
+  TGT <= 0, + S3,S4 >= 0  (deg 7)   : 20
+  TGT <= 0, + Q1,Q1m >= 0 (deg 8-9) : 0       <-- SUFFICIENT
+  TGT <= 0, + Q1 ALONE              : 1424
+  TGT <= 0, + Q1m ALONE             : 2708
+  half-chart tz<=ty, + Q1 ALONE     : 127     (best single generator)
+SO: THE MINIMAL SUFFICIENT SET IS {domain, Q1, Q1m}. S3 and S4 -- the two mixed
+refusals -- are NOT load-bearing and should be DROPPED from every certificate
+hunt. Neither quotient suffices alone, even on the half-chart. This corrects the
+F26-8 plan, which kept all four.
+MARGIN, remeasured on the corner region {domain, Q1>=0, Q1m>=0}: the ratio
+omega*Vn/(T*DnC) maxes at 0.629 -- a 37 percent margin, BETTER than the 17
+percent on record (F26-7 measured on a different filter).
+
+F28-17. THREE CERTIFICATE ROUTES REFUTED AT THE REDUCED SET. DO NOT RETRY.
+---------------------------------------------------------------------------
+(a) LP, TARGET FORM, reduced generators {Q1,Q1m,Vn,UnC,DnC,Wom,DYZ}:
+    INFEASIBLE at (posmon<=1), (posmon<=2), and (pair products, posmon<=2).
+    154/539/902 columns, 1161/3298/18311 monomials -- and note it now RUNS in
+    seconds, where the full 9-generator version never reached the solver at all
+    (F28-12). The reduction fixed the SCALING wall; the certificate is still
+    absent, so the wall now is DEGREE, not size.
+(b) LP, EMPTINESS FORM with the caps as extra generators. By the landed cap-sum
+    identity -TGT = td*S1 + S2, the corner is {domain,Q1,Q1m,S1,S2} = empty, and
+    S1,S2 are extra leverage the target form cannot use. ALSO INFEASIBLE at all
+    three rungs (165/660/1155 cols).
+(c) THE NAIVE MULTIPLICATIVE SPLIT IS CATASTROPHIC. Bounding the two factors
+    separately gives max(omega/T) * max(Vn/DnC) = 74.6 * 52.8 = 3937, against a
+    true max product of 0.629 -- a factor 6000 loss. The two factors are strongly
+    anti-correlated and MUST be handled jointly. (f28ratio.jl)
+(d) SOS at degree 5 and 6: INFEASIBLE, but that is NOT a verdict -- TGT itself is
+    degree 9, so those truncations cannot express any certificate. A degree-10
+    attempt on the trimmed generator set is the honest test.
+NOTE ON SDP AT THIS SCALE: the campaign's "SDP is dead" verdict was measured on
+the PROBE-LIFTED 48-51 variable cell H/B models. THIS chart is 7 variables, where
+an order-3 moment matrix is 120x120. The verdict does not transfer, and SOS here
+had never been tried before this round.
+
+F28-18. THE PLUCKER SYZYGY AND THE PARALLEL-PAIR FACTORIZATION (two modules)
+-----------------------------------------------------------------------------
+BracketPluckerSyzygy.lean -- the bracket masses are the SQUARED COORDINATES of a
+Plucker vector, so they obey the Grassmann-Plucker syzygies:
+  tripleBracket_plucker     [abc][ade] - [abd][ace] + [abe][acd] = 0   (ring)
+  weightedBracket_plucker   the same on b_C = sqrt(t_a t_b t_c)[abc]; all three
+                            products carry the factor t_a*sqrt(t_b t_c t_d t_e)
+                            so the weighting is invisible to the syzygy
+  bracketMass_triangle      m_abc*m_ade <= 2(m_abd*m_ace + m_abe*m_acd)
+                            MULTIPLICATIVE: products of pairs on both sides
+  bracketMass_plucker_propagation   two vanishing products force the third
+NAME CLASH: tripleBracket_cramer already exists in Reduction/PolarCrossWitness;
+my duplicate was dropped rather than renamed.
+ParallelPairFactorization.lean -- run the syzygy from a base label c with the
+parallel pair {a,b} in the INNER slots. The first product dies with the pair, so
+      b_cad * b_cbe = b_cae * b_cbd      and      m_cad*m_cbe = m_cae*m_cbd.
+A PARALLEL PAIR DOES NOT ONLY EMPTY ITS OWN FOUR TRIPLES -- IT FORCES THE
+SIXTEEN SURVIVORS INTO PRODUCT FORM: through every base label the mass vectors
+carried by the two members are PROPORTIONAL. The contrapositive
+(not_parallel_of_bracketMass_factorization_fails) refutes a parallel pair from a
+single broken product identity, with no geometry and no field hypothesis.
+MEASURED: syzygy exact at 160000 tests; triangle bound 0 violations at 160000;
+factorization verified to 5e-12 on 100000 tests at designs BUILT with a parallel
+pair (f28gp.jl, f28tri.jl, f28fact.jl).
+
+F28-19. THE INSERTIONS-ONLY CHECK PAID FOR ITSELF IMMEDIATELY
+--------------------------------------------------------------
+Running the pre-commit diff (F28-15) caught a SECOND clobber before it landed:
+the working-tree umbrellas were STALE against HEAD (a sibling had committed
+TieMantelBound), so `git diff` showed their lines as deletions. The fix is the
+protocol now used for every commit: `git checkout HEAD -- Gtz.lean Gtz/Audit.lean`
+FIRST, then append my lines, then confirm the diff has ZERO '-' lines, then
+commit. Three commits this round: 164, 125 and 163 insertions, ALL with zero
+deletions.
+
+F28-20. THE OOM INCIDENT WAS MINE. THE JOB IS DEAD AND STAYS DEAD.
+--------------------------------------------------------------------
+The box was knocked over TWICE by a Julia job at ~285 GB RSS / 4.3 TB virtual,
+taking Claude Code and all six lanes with it. IT WAS MY f28sos.jl -- a degree-10
+SOS on the 7-variable chart with 15+ constraint multipliers. The second kill was
+a RELAUNCH I ordered after the first restart, which was the real error: I had
+ALREADY diagnosed this exact failure mode (F28-12: "no output at all ... never
+reached the solver ... the bottleneck is polynomial column construction"), and
+relaunched anyway. An empty log plus climbing RSS means BUILDING, not solving.
+STANDING RULE FOR THIS LANE, now campaign law: estimate peak allocation BEFORE
+launching; cap with --heap-size-hint=50G and -t <= 32; never an order-3 SOS or a
+large moment matrix on a many-variable model; no output for minutes while eating
+memory => kill it yourself; hard ceiling 100 GB, target 50 GB.
+The certificate hunt for the K2 corner is therefore CLOSED to solvers at this
+formulation. It reopens only if the arena shrinks (see F28-16/17 and below).
+
+F28-21. WHAT THE SMALLER GENERATOR SET ACTUALLY IS
+---------------------------------------------------
+The coordinator's item 1 asked whether the degree-7 S3,S4 alone suffice. THEY DO
+NOT -- 20 violations (F28-16). The smaller set that DOES work is the X-SPLIT:
+      on X <= 1/2, {domain, Q1 >= 0} alone gives 0 failures in 1212080 points
+      on X >= 1/2, {domain, Q1m >= 0} alone gives 0 in 1220717
+      cross assignments fail (11007 and 5845), so the split is exact
+and the swap (ty<->tz, X<->1-X) maps one half to the other exchanging the
+quotients, so ONE branch proves both. Landed as KTwoXSplit.lean. THIS IS the
+memory fix the coordinator was asking for: ONE degree-8 generator plus a
+degree-1 marker, in place of four degree-7-to-9 generators -- the column
+construction shrinks by the pair-product count, from 45 products to none.
+MARGIN on the low-angle half: infimum of TGT/(T*DnC) is 0.349 (f28margin.jl).
+BOUNDED AWAY FROM ZERO, so NO degeneration factor is needed; the certificate is
+fat and only the multiplier degree is at issue.
+STILL INFEASIBLE at monomial-positive posmon <= 2 with pair products (f28lp4).
+
+F28-22. THE PHASE RIGIDITY SPENT AT K2, AT THE DESIGN LEVEL
+------------------------------------------------------------
+The chart-to-design bridge is still unlanded, so the distribution constraint
+cannot yet be applied inside the chart. But the two-zero stratum can be attacked
+DIRECTLY in the design, and there the bracket collapses:
+  axisTriple_bracket_sq   when one atom is the unit axis and is orthogonal to
+                          its two partners, [xyz]^2 = l_y l_z - <g_y,g_z>^2,
+                          i.e. THE SQUARED BRACKET IS THE OPPOSITE WEDGE
+  axisTriple_pairing_sq_le   feeding that to the SHARPENED floor gives
+                          <g_y,g_z>^2 <= (l_y - 1)(l_z - 1)
+GEOMETRIC READING: this is exactly "the plane pair {g_y,g_z} dominates the
+identity of the plane w-perp" -- the 2x2 Gram minus I_2 is PSD. So the law is
+the design-level content that the chart encodes, obtained WITHOUT the bridge.
+  axisTriple_orthogonal_of_leverage_one     a partner at the leverage floor
+                          forces the two partners orthogonal
+  axisTriple_leverage_gt_one_of_pairing     a nonzero pairing puts BOTH
+                          partners strictly above the floor (uses the landed
+                          one_le_leverage_of_mem_dominating_triple)
+
+F28-23. THE CONTRACTION TAX IS SHARP, WITNESSED IN KERNEL
+----------------------------------------------------------
+ContractionTaxSharp.lean. The regular tetrahedron is a LANDED (4,3) tie with all
+weights 1/4, all leverages 3, all pairings -1. Every triple's Gram is 4I - J with
+determinant 16, so every bracket mass is (1/4)^3 * 16 = 1/4 = the member weight:
+ALL FOUR TRIPLES SATURATE THE TAX SIMULTANEOUSLY. Hence tetra_tax_not_improvable:
+no constant below one can replace it. The tetrahedron is PRIMITIVE, so like the
+(5,3) diamond it shows the hinge is false below size six -- a foil, not a
+counterexample, and every law of this lane is tested against it.
+LEAN GOTCHA RE-CONFIRMED (cost one build): norm_num does NOT reduce ![a,b,c] 2;
+plain simp does. Use `simp [defs] <;> norm_num`, never `norm_num [defs]`.
+
+F28-24. THE LEVERAGE CAP OF A DOMINATOR AT A TIE
+--------------------------------------------------
+DominatorLeverageCap.lean. The sharpened floor puts the dominator's mass ABOVE
+its weighted leverage deficit; the contraction tax puts the same mass BELOW one
+member weight. They meet:
+  isTie_dominator_leverage_cap        t_x t_y t_z (l_x+l_y+l_z-2) <= t_member
+  isTie_dominator_leverage_total_cap  l_x+l_y+l_z <= 2 + t_member/(t_x t_y t_z)
+  isTie_dominator_weightProduct_le    t_x t_y t_z <= t_member  (never vacuous,
+                                      via the trace floor l_sum >= 3)
+So AT A TIE A WEAK DOMINATOR CANNOT CARRY LARGE TOTAL LEVERAGE UNLESS ITS
+WEIGHTS ARE VERY UNEQUAL. Both sides multiplicative. Checked at the tetrahedral
+foil: 7/64 <= 1/4, satisfied with room.
+
+F28-25. THE TARGET FACTORS. THE QUOTIENT DOES NOT. (KTwoTargetFactored.lean)
+-----------------------------------------------------------------------------
+THE BIGGEST STRUCTURAL FIND OF THE ROUND. On the excess surface
+td*ed + te*ee = ty + tz (which every corner point carries), the degree-NINE
+chart target collapses to TWO TERMS:
+
+      TGT  =  Wom * T * (1-ty)(1-tz)  -  om * (T+1) * Vn
+
+with T = ty+tz, om = P*td*G, q = te(1+ee), Wom = q - om, and Vn the plane form.
+One `ring` after rw [hE]. Verified independently in sympy (exact zero).
+CAUTION THAT COST ONE BUILD: k2ChartTarget is defined with (td*ed + te*ee) in
+the T slot, NOT (ty+tz). They agree only ON the excess surface, so the
+factorization is NOT a polynomial identity and the hypothesis hE is required.
+CONSEQUENCE: the corner fight is ONE comparison between two explicit products,
+      Wom * T * (1-ty)(1-tz)  >  om * (T+1) * Vn
+every factor being a quantity the chart already carries as a strict positive.
+k2ChartTarget_pos_iff and k2ChartTarget_pos_of_ratio are the consumable forms.
+BUT THE RATIOS ARE NOT SEPARABLE: min(Wom/om) = 0.728 sits BELOW
+max((T+1)Vn/(T(1-ty)(1-tz))) = 4.354, so the two must be bounded JOINTLY. The
+pointwise gap is >= 0.193 everywhere sampled.
+AND Q1 IS IRREDUCIBLE: 87 terms, total degree 8, ty-free, NO nontrivial factors
+either raw or on the excess surface (sympy factor). So the asymmetry is real --
+the target is transparent, the quotient is not. INTERPRETING Q1 IS THE NEXT
+REAL LEVER: from the master identity, t_x*Q1 is the POSITIVE combination of the
+four refusal slacks, i.e. Q1 = (weighted slack total)/(erased weight). Any
+successor who can read that geometrically cracks the corner.
+
+F28-26. THE CERTIFICATE CLASS IS THE WALL, NOT THE STATEMENT
+--------------------------------------------------------------
+The statement is TRUE and ROBUST. Wide-range sampling (large P, large ed/ee,
+tiny weights -- the tail the bounded sampler never reached) gives 0 violations
+in 65415 points with infimum TGT/(T*DnC) = 0.167 (f28tail.jl). So the earlier
+0.349 was optimistic but the margin survives the tail.
+MONOMIAL-POSITIVE LP IS EXHAUSTED on this problem:
+  - reduced generators, posmon <= 1,2, and pair products: INFEASIBLE (F28-17)
+  - emptiness form with the caps as extra generators: INFEASIBLE (F28-17)
+  - X-split single generator, posmon <= 3, no pairs: INFEASIBLE
+    (2340 cols, 6220 monos, seconds, no memory issue)
+  - X-split with the atom list ENRICHED by the factorization's own positives
+    (1-ty), (1-tz), (T+1): INFEASIBLE (4320 cols, same monomials)
+NOTE Q1 IS ALREADY IN THE CONE of S1..S4 (t_x*Q1 is their positive combination),
+so an LP carrying S1..S4 is at least as strong as one carrying Q1 -- adding the
+quotient buys nothing the slacks did not already give. That closes the LP route.
+WHAT REMAINS IS SOS, and it must be sized honestly. At maxdegree 10 in 7
+variables the PSD blocks are small (sigma_0 is C(12,7) = 792, Q1's multiplier is
+degree 2 giving an 8x8 block) -- the blocks were NEVER the problem. The 285 GB
+came from SumOfSquares.jl building the CONSTRAINT SYSTEM: matching coefficients
+of products of degree-8 polynomials with degree-8 multipliers in 7 variables
+means monomials of degree <= 16, and C(23,7) = 245157 of them. THAT is the
+object to bound before launching. A successor attempting SOS must cap
+--heap-size-hint, watch RSS at one minute, and kill on an empty log.
+
+F28-27. THE BLINDNESS AUDIT OF MY OWN INSTRUMENTS (K0 lane's warning)
+----------------------------------------------------------------------
+A direction orthogonal to every atom of a triple is a -1 eigenvector of its gap,
+and a triple containing both members of a parallel pair always has one. Tested
+my instruments for that blindness:
+  BLIND -- and by MY OWN THEOREM dominator_no_inside_parallel, which proves no
+  inside pair of a weak dominator is parallel (margin t_z):
+      dominator_inside_wedge_floor / _ge_weight / _sharp
+      dominator_inside_pair_mass_floor
+      isTie_dominator_leverage_cap   (all quantify over pairs INSIDE a dominator)
+  => THESE CAN NEVER BOUND THE HINGE'S TARGET PAIR. The wedge-floor line is
+     structurally unable to reach the hinge, and I should not invest there.
+  NOT BLIND -- no dominator, no gap, no eigenvector anywhere in the statement:
+      pair_bracket_mass ; hasParallelPair_iff_exists_pair_bracket_mass_zero
+      bracketMass_factorization ; not_parallel_of_bracketMass_factorization_fails
+      pair_mass_row ; exists_pair_mass_le ; isTie_lightest_pair_bracket_mass_cap
+  => THE MASS AND SYZYGY LINE IS THE ONE THAT CAN REACH THE TARGET PAIR. All
+     future aggregation work in this lane belongs there.
+
+F28-28. THE CORNER IS ONE SCALAR AGAINST PURE WEIGHT DATA
+-----------------------------------------------------------
+The coordinator's conjecture (Wom/om = (1-omt)/omt with omt = om/q) is CORRECT
+and it collapses further. With omt := om/q, A := T(1-ty)(1-tz), B := (T+1)Vn:
+
+      TGT = q*A - om*(A+B)        so        TGT > 0  <=>  om*(A+B) < q*A
+                                            equivalently  omt < A/(A+B)
+
+VERIFIED EXACT in sympy. A AND B DEPEND ONLY ON (ty, tz, X) -- pure weight and
+angle data. So the entire seven-scalar corner is ONE SCALAR omt BELOW A
+THREE-VARIABLE FUNCTION. Landed division-free as k2ChartTarget_pos_iff_crossMass.
+
+WHAT Q1 SUPPLIES, MEASURED:
+  domain only   : omt >= thr at 53711 of 711366 points (7.5 percent)
+  with Q1 >= 0  : 0 of 48383.   Q1 EXACTLY SUPPLIES THIS BOUND.
+  omt is capped UNIFORMLY: max omt = 0.60 overall, and by weight scale
+      T<0.005: 0.565   T<0.05: 0.573   T<0.2: 0.510   T>0.4: 0.136
+  threshold A/(A+B) ranges [0.185, 0.996]; NOT constant-separable from omt.
+  For T >= 0.4 they ARE separated (max omt 0.136 < min thr 0.204) -- a constant
+  works there; the fight is entirely at small and medium T.
+
+THE TIGHT REGIME IS X -> 0 WITH tz << ty. There A ~ T, B ~ V = X tz + (1-X) ty,
+so thr ~ 1/(1 + V/T) and V/T -> 1-X -> 1, giving thr -> 1/2. Measured there:
+      X<0.05, tz/ty<0.05 : max omt = 0.4953,  min gap 0.0092, 0 bad of 539138
+      X<0.02, tz/ty<0.02 : max omt = 0.4919,  min gap 0.0099, 0 bad of 542974
+      X<0.005,tz/ty<0.01 : max omt = 0.4890,  min gap 0.0097, 0 bad of 542234
+So Q1 >= 0 FORCES omt < 1/2 IN THE TIGHT REGIME, converging to 1/2 from below.
+THAT IS THE SHARP CLAIM A CERTIFICATE MUST PROVE, and it is a 1-scalar bound.
+
+THE OBSTRUCTION, PRECISELY: sign(Q1) is NOT determined by (omt, ty, tz, X).
+Fixing those four and varying the underlying (ed,ee,P,td,te) flips the sign in
+3 of 6 tested cells. So the TARGET descends to a 4-variable quotient but the
+CONSTRAINT does not. The successor's object is therefore the DESCENDED bound
+      g(ty,tz,X) := sup{ omt : Q1 >= 0, domain }
+and the corner is proved iff g < A/(A+B) pointwise. The measurements above are
+samples of g: g <= 0.6 globally, g <= 1/2 in the tight regime.
+Scripts: f28omt.jl, f28desc.jl, f28tight.jl, and the sympy check inline.
+
+F28-7. NEXT BRICKS, in priority order
+--------------------------------------
+(1) K2ChartTargetPositivityHalf: the LP with the half-chart generator, or QE in
+    p := td(1+ed), q := te(1+ee), p+q = 1-t_x. The margin is multiplicative
+    (>= 17 percent) and Dn is bounded away from 0 (min 0.37), so NO degeneration
+    factor is needed -- this is an interior positivity, the easiest kind.
+(2) The chart-to-design bridge for k2Chart_kill (frame normal form).
+(3) The ch1/ch2 boundary lemmas.
+(4) K0: the pair-mass distribution. The hinge is now "some pair mass is zero"
+    against the budget "the 15 pair masses total 3" and the tie cap "the lightest
+    pair's mass is at most 1 - t_a - t_b". The endgame wants a LOWER bound on the
+    lightest pair mass from primitivity that contradicts the cap -- note the
+    tetrahedral tie makes the cap an EQUALITY, so any such argument must be
+    tight there and must consume m = 6 (the tetrahedron is (4,3)).
+(5) The equality case of the contraction tax IS the contact geometry: det = lam_min
+    exactly when the other two block eigenvalues are 1, i.e. when a 2-plane of
+    C-supported vectors lies in the range of the projection. blockEigen_one_of_
+    supported_mem_range is the algebraic half; the converse needs a rank argument.
+
+CORANK-ONE ARM — fork 26 continuation (2026-08-20, after the fork-24 block)
+============================================================================
+
+F26-0. ROUND 1 (RESCUE) — DONE, COMMITTED
+-----------------------------------------
+d9c95e5 lands Gtz/Wave/PairMinorBridge.lean: FIVE theorems (the brief said
+four; the fifth is the pair-heavy free engine):
+  det_pairGram_eq_cross_adjugate, pairPivotMinor_mul_det_eq_crossReading,
+  pairPivotMinor_eq_zero_iff_parallel,
+  hasParallelPair_iff_exists_pairPivotMinor_eq_zero,
+  not_posDef_compl_of_pair_reading  (heavy 2x2 pivot block => the avoiding
+    triple is refused; Cauchy-Schwarz at the resolvent witness).
+All five: [propext, Classical.choice, Quot.sound]. Gate 9970 exit 0.
+BRIEF ERRORS (round 1): (a) CompoundProbeRelations was NOT uncommitted; the
+sibling's commit 61e9566 swept it in together with BOTH umbrella lines and
+my four audit pins, leaving HEAD referencing a missing PairMinorBridge —
+the rescue was one module + one pin line, not two modules. (b) `push Not`
+is CURRENT syntax (push_neg is deprecated in this toolchain), so that line
+was never broken. The real defects in theorem 5: hρle stated the WRONG
+DIRECTION of hheavy (deleted, unused), hcombo used a fragile `rw at *`
+(replaced by ordered rewrites), hcne proved equalities by nlinarith
+(replaced by le_antisymm + pow_eq_zero_iff two_ne_zero).
+
+F26-1. SIBLING DISCOVERY THAT CHANGES K0 (read before any K0 work)
+------------------------------------------------------------------
+Gtz/Wave/PairRefusalLedger.lean (sibling, landed): `pairPivotMinor D f h`
+THERE means det of the pair minor of (1 - P), NOT of P — my bridge theorems
+are about det P[{a,b}] and the names do not collide, but the CONCEPTS are
+one Schur flip apart. Its tie laws are K0 ammunition, all kernel:
+  sixSetPivot D p q  (DEFEQ to the inline reading g_p' W^{-1} g_q — rfl),
+  sixSetPivot_sq_le_mul       (CS: P_fh^2 <= P_ff P_hh, any size),
+  tie_pair_pivot_law          ((6,3) tie: 1 <= 2P_ff + P_hh or swap),
+  tie_triple_pivot_sum_ge_one ((6,3) tie: every triple's pivot sum >= 1),
+  tie_pair_pivot_sum_ge_half, tie_pivot_lt_third_unique,
+  four_le_card_lightSet_of_isTie,
+  pairPivotMinor_le_half_of_isTie (admissible pair: (1-P)-minor <= 1/2),
+  coweight_pivot_deficit      (Σ (1-t_x)(1-P_xx) = m - 4; = 2 at six),
+  sum_coweight_pivot_sq / _cross (the projection identity row masses),
+  inside_pivot_sum, corner_trace_floor_of_isTie.
+ALSO sibling modules using the pivot language: LedgerAggregateFoil,
+CornerSecondMoment, TiePivotCensus (grep before writing pivot lemmas).
+
+F26-2. ROUNDS 2-3: THE K2 (5,3) ENDGAME — three commits
+--------------------------------------------------------
+c111e6c Gtz/Wave/KTwoCrossPrice.lean (15 thms): frame matrix M = G + wwT is
+  PD and fixes w; det(S_{yzd}-1) = ((g_d.w)^2-1)detM - (g_d x w)'M(g_d x w)
+  EXACT (cross = the (x,d)-pair cross since g_x = +-w); refusal iff excess
+  <= cross (k2_isTie_excess_le_cross); THE CROSS PRICE (t_y+t_z)detM <=
+  sum_d t_d cross_d (k2_isTie_crossPrice); all-parallel outside => no tie
+  (k2_not_isTie_of_outside_parallel_all, no c^2>1 hypothesis). All sizes m.
+0476bcb+1f701a1 Gtz/Wave/KTwoChartIdentity.lean: the (5,3) reduced chart
+  (8 scalars: ed ee P td te ty tz X; exact Parseval built in; collinear
+  outside plane parts; plane pair = rotation chart), four refusal slacks as
+  POLYNOMIALS (CapD, CapE, RefusalY [tz-free], RefusalZ [ty-free]), and THE
+  MASTER IDENTITY (unique deg<=2 syzygy, found by SVD kernel + exact
+  linsolve, verified by ring):
+    te(te-1)S1 + (td-1)S2 + tz(tz-1)S3 + (td+te+tz)(td+te+tz-1)S4
+      = E*QE + (G-1)*Q1,   G = td(1+ed)+te(1+ee) = 1 - t_x,
+  Q1, QE both ty-FREE. Mirror by exact swap (ty<->tz, X<->1-X, S3<->S4).
+  COORDINATOR AUDIT (verified): at a tie LHS <= 0 automatically, so Q1 >= 0
+  AND mirror-Q1 >= 0 are FREE consequences (k2Chart_quotient_nonneg /
+  _mirror_nonneg landed). The identity TRADES the two mixed refusals for
+  two variable-separated floors + the equality t_x*Q1 = |m_i|S_i.
+  THE RESIDUAL = K2ChartDoubleQuotientCorner (all four slacks + both
+  quotient floors + structured domain => False). Conditional kill landed
+  (k2Chart_kill_of_doubleQuotientCorner). MEASURED: corner empty 0/20881,
+  the TWO CAPS ALONE fail there (step21.py).
+
+F26-3. MEASURED MAP CORRECTIONS (probes f26probe2/3/4.jl, BigFloat 512)
+------------------------------------------------------------------------
+The predecessor's "margin 1e-2/0.359" interior claims are boundary-blind:
+  the unfloored obstruction infimum is ZERO along TWO channels:
+  (ch1) t_x,t_y,t_z -> 0 with |y|,|z| -> inf: all four readings -> 1,
+        r_w -> 0.83 < 1; SITS IN CASE I (eig A = 1.21, 8.2, 20.3), so the
+        landed level-two kill r_w < 1 covers it with FAT margin 0.17.
+  (ch2) t_e -> 1, g_e -> +-w (THE PARALLEL LIMIT), lam_min(A) = 1 with
+        w-eigenvector. At the EXACT parallel slice: Parseval cross forces
+        alpha = 0 (dead: excess -t_d = t_y+t_z) or rho_d = 0 (both outside
+        parallel: dead by k2_not_isTie_of_outside_parallel_all / c^2>1).
+  Both channels die on landed theorems; the interior is the corner fight.
+The old cstar (C**) refutation is VOID: it sampled s and t_y+t_z freely,
+  ignoring plane realizability. Case II interior is NOT empty-on-chart
+  (predecessor claim wrong): margins -> 0 along ch2 inside Case II.
+
+F26-4. THE CORNER DISCHARGE PLAN (next; coordinator sections 3-5)
+------------------------------------------------------------------
+(i) Measure the corner samples' failure pattern (which cap fails, detQ
+    clustering at the corank-2 boundary; if infimum at detQ -> 0 the
+    certificate carries a detQ factor — legitimate, strict corank one).
+(ii) The summed-cap budget (verified): ty+tz <= R(1 - ty c_y - tz c_z),
+    R = vhat'Q^{-1}vhat, c_y = (g_y.vhat)^2 — the collinearity bottleneck.
+    Corner target: structured constraints => R(1-...) < ty+tz.
+(iii) EXACT LP (Nemo rationals) for the corner syzygy over facet products;
+    LP infeasible at posmon deg<=3 with linear generator use — products of
+    generators or higher degree needed; sympy pipeline in
+    scratchpad/corank1/f26sym/ (step*.py: slacks.pkl, identity.pkl).
+(iv) Variable collapse p := td(1+ed), q := te(1+ee), p+q = 1-t_x; then QE/
+    CAD in ~7 clustered vars is feasible.
+(6,3) K2: same syzygy hunt on the 10 cleared slacks; p_i = 0 outside atom
+    IS a parallel pair (hinge witness, not a refutation case).
+
+F26-5. ROUND 4: THE PROJECTION TAX LAW (main-fight, commit 2ed7936)
+--------------------------------------------------------------------
+Gtz/Wave/ProjectionTaxLaw.lean (8 thms, standard axioms): on the GRAM-side
+projection Pi = projectionOfDesign (P_cd = u_c.u_d, u_c = sqrt(t_c) g_c;
+weight-independent given L!):
+  posDef_subsetSum_of_projectionFloor_light — a triple whose Pi-block has
+    quadratic floor lam with all three weights < lam DOMINATES STRICTLY
+    (via the landed congruence posDef_subsetSum_iff_posDef_projectionBlock).
+    THE FIRST POLYNOMIAL STRICT-DOMINATOR PRODUCER.
+  exists_heavy_slot_of_refused — a refused floored triple has a taxed atom
+    (t_c >= lam).
+  card_light_le_two_of_isTie — at ANY (m,3) tie at most TWO atoms sit below
+    a uniform floor.
+  uniform_floor_tax_cap_of_isTie — (m-2)*lam <= 1;
+  uniform_floor_le_quarter_of_isTie — lam <= 1/4 at (6,3) (1/3 at (5,3)):
+    THE SIZE ENTERS AS THE HITTING-SET CARDINALITY of all triples of [m].
+CALIBRATION (f26tax3.jl, diamondTieDesign reproduced EXACTLY: conductances
+(2,3,3,3,3), t = 1/5, max lammin(S_C) = 1.000000):
+  (5,3) tie: EIGHT of ten triples EXACTLY at lammin(Pi[C]) = t = 1/5 — the
+  tax is TIGHT at every tree-triple; cycles at lamPi = 0.
+  (6,3) split: the tight family is EXACTLY the complement family
+  {3,4,5},{3,4,6},{3,5,6},{4,5,6} at lamPi = 0.2 = max t; pair-triples 0;
+  mixed 0.1127 slack 0.087. THE TAX EQUALITY = THE CONTACT STRUCTURE (same
+  four triples as tp.jl's tie-breaking family). The K0 target inequality
+  (sum refusal margins >= c * min pair minor) has the tax margins
+  (max t - lamminPi) as its scalar shadow.
+NEXT teeth: the det-floor (PSD block <= 1 => lammin >= det = t_at_bt_c[C]^2)
+  via the e-invariant scalar arena (PD-from-invariants machinery landed in
+  KirchhoffSignTower); the equality case of the tax (tight triple => the
+  block eigenvector at lam is pinned = the touching eigenvector law).
+
+F26-6. ROUNDS 5-6: THE TEETH AND THE INVARIANT ARENA (e679532, c540a27)
+------------------------------------------------------------------------
+Gtz/Wave/InvariantTaxTeeth.lean (6 thms): form <= trace for PSD 3x3 (gap =
+  the three paired compressions EXACTLY); the Cayley-Hamilton adjugate
+  adj A = A^2 - (trA)A + e2*1; THE SPECTRAL-FREE FLOOR det A * |xi|^2 <=
+  e2(A) * xi'A xi (probe A adjA = detA at xi; residue = trace law at A xi);
+  e2 >= 0 (sum of PSD 2x2 compression dets); the polynomial producer
+  (t*e2 < det all members => strict dominator) and isTie_block_tax
+  (tie => det Pi[C] <= t_member * e2(Pi[C]) some member). Coordinator
+  verified independently; floors stated at GENERAL PSD 3x3 for corank-2
+  reuse (their SecondInvariantLedger runs the same (det,e2) currency).
+Gtz/Wave/WedgeBracketTax.lean (7 thms): block det = t_at_bt_c [abc]^2;
+  block e2 = weighted wedge mass sum t_at_b w_ab (w = lev*lev - pairing^2);
+  THE WEDGE-BRACKET TAX: tie => at every triple with positive wedge mass,
+  some member t prices t_at_bt_c [abc]^2 <= t * (wedge mass). Producer twin.
+  BOTH SIDES POLYNOMIAL IN THE HINGE CURRENCIES (wedge = 0 iff parallel
+  pair; bracket = 0 on stress conics).
+
+F26-7. THE K2 CORNER DISCHARGE IS ONE INEQUALITY (measured, step25/26)
+-----------------------------------------------------------------------
+Diagnosis of the double-Q corner (20881 samples): mixed cap failure (S2
+  fails 81%, S1 40%, both 21%; normalized min-cap margin <= -0.0057 FAT);
+  Dn (detQ-proxy) NOWHERE near 0 (min 0.37: NO corank-2 clustering, NO
+  detQ factor needed); tx spans (6e-6..0.98).
+THE MECHANISM: the exact identity omega*Vn - T*Dn = td*(P*Vn - ed*Dn)
+  + te*(q^2*Vn - ee*Dn) (LAW-A = the weighted cap sum). step26 measured
+  omega*Vn - T*Dn < 0 on ALL double-Q samples WITHOUT cap filters
+  (max -1.2e-6, ratio omega*Vn/(T*Dn) <= 0.853). SO: {structure, Q1>=0,
+  Q1m>=0} => omega*Vn < T*Dn => some cap fails => the corner Prop is
+  discharged. K2-(5,3) CLOSES ON THIS ONE CERTIFICATE:
+    {E=0, legal, hV,hU,hD,hW, Q1>=0, Q1m>=0} => T*Dn - omega*Vn > 0.
+  Hunt: sympy/LP with generators {Q1, Q1m, domain facets}; the margin is
+  multiplicative (>= 17 percent), no boundary degeneration observed in the
+  region. THEN: the chart-to-design bridge (frame normal form) + the ch1/
+  ch2 boundary lemmas wire k2Chart_kill into the design-level (5,3) kill.
+
+F26-8. WRAP STATE (end of fork 26's run)
+-----------------------------------------
+COMMITTED, ALL GATED (exit 0, zero errors, zero sorryAx, standard axioms):
+  d9c95e5  PairMinorBridge (5 thms) — the rescue; HEAD repair.
+  c111e6c  KTwoCrossPrice (15 thms).
+  0476bcb+1f701a1  KTwoChartIdentity (10 thms + corner Prop).
+  2ed7936  ProjectionTaxLaw (8 thms).
+  e679532  InvariantTaxTeeth (6 thms).
+  c540a27  WedgeBracketTax (7 thms).
+LAST GATE: 9979 jobs, exit 0. Registry untouched at 7.
+OPEN HUNTS, in priority order:
+(1) THE K2-(5,3) CORNER CERTIFICATE (F26-7): the single inequality
+    TGT := te*B2*(T*Dn - om*Vn) > 0 on {E-subst, domain, Q1>=0, Q1m>=0}.
+    step27.py LP: INFEASIBLE at posmon deg<=2 and pair-products deg<=1 —
+    the certificate needs deg-2 products, Q-cross products, or QE/CAD in
+    the p,q-collapsed variables (coordinator section 4 collapse). All
+    pipeline state in scratchpad/corank1/f26sym/ (slacks.pkl identity.pkl
+    slacks5.pkl slacks6.pkl + step*.py). Margin is multiplicative (17
+    percent) — the certificate exists; findability is the fight.
+(2) The chart-to-design bridge for k2Chart_kill (frame normal form: the
+    collinearity + rotation chart as kernel lemmas; edge cases already
+    landed: alpha=0 dead by excess, rho=0 dead by parallel laws).
+(3) The ch1/ch2 boundary lemmas (Case-I coverage of ch1; parallel-slice
+    dichotomy of ch2) — assembly-completeness.
+(4) (6,3)-K2: the same syzygy machine on the 10 cleared slacks (triangle
+    constraint replaces collinearity; p_i = 0 is a hinge witness).
+(5) MAIN FIGHT: sharpen the tax at the contact (tight triple => pinned
+    eigenvector = touching eigenvector law of SixSetNullColumn); the
+    20-triple aggregation of the wedge-bracket tax with the hitting-set
+    combinatorics — the K0 target shape (sum margins >= c*min pair minor).
+BENCH VERDICTS this run: diamondTieDesign reproduced EXACTLY (conductances
+  (2,3,3,3,3), t=1/5): the tax is TIGHT at all 8 tree-triples; split
+  diamond: tight exactly on the complement family. No law landed excludes
+  either diamond; all tie-necessary laws hold at both fixtures.
+
+=== fork 24 notes below (still accurate except as corrected above) ===
+
+CORANK-ONE ARM — fork 24 notes (2026-08-20)
+=============================================
+
+0. BRIEF ERRORS FOUND (the 22nd brief with errors)
+--------------------------------------------------
+(E1) "the last untouched rung" — FALSE. Six modules already populate the arm:
+     CorankOneNormalForm / Exchange / Propagation / Assembly / PlanePair /
+     AdjacentDominatorStress, plus TotalTieCorankOne.
+(E2) "land the w-resolution" — already landed: Gtz.dominator_resolves_nullDir;
+     the scalar mass-one is one rewrite of Gtz.gapForm_eq_zero_iff_sum_sq.
+(E3) "construct the doubled diamond" — already landed as
+     Gtz.sixSplitDiamondDesign (+ isTie, hasParallelPair, not primitive).
+     What was missing was only its corank-one NULL DATA (landed this fork).
+(E4) The corank-one entry point is Gtz.GapNullLine, not a two-atom spectral
+     form; no spectral theorem is available or needed.
+(E5) The census free-refusal engine existed in general form
+     (Gtz.not_posDef_gap_of_uMass_le); the corank-one content is the exact
+     w-mass identities, landed this fork.
+(E6/P2) "splitting the pair breaks the tie at a census refusal, second order"
+     — WRONG twice: the w-census is EMPTY at both fixtures (all swaps carry
+     w-form > 0 there), and the split geometry is governed by the two-plane
+     structure (below), not by a census equality.
+(P1) "two-zero stratum dies without primitivity" — CONFIRMED by measurement
+     (10^9-eval search, min obstruction 1.2e-2 at delta 0), kill not yet in
+     kernel; the B_T > 1 half is landed.
+(P3) "a complex primitive corank-one tie exists" — CONFIRMED and verified at
+     256 bits; they are ABUNDANT (8000 found, mincross up to 0.686).
+Coordinator's ten-section message: nullDirection_budget_identity was already
+landed (its "verify" item); the expected inertia (2,1) for M = S_{C^c} - 1 is
+wrong at the doubled diamond (M is PSD corank one: the complement is a tree).
+
+1. WHAT LANDED IN KERNEL (this fork)
+------------------------------------
+Gtz/Wave/CorankOneGramMirror.lean (16 theorems):
+  reading calculus: nullDir_resolve_reading, insideGram_fixes_nullReadings
+    (H beta = beta, the corank-one mirror of insideGram_of_rankOneGap).
+  leverage ladder: one_le_leverage_of_mem_dominating_triple (tie-free, local;
+    contrast the tie-global leverage_one_le_of_isTie_sixThree which needs
+    GtzWeighted 5 3), inside_pair_orthogonal_of_leverage_eq_one,
+    gapForm_null_at_leverage_one, eq_nullDir_of_leverage_eq_one (K2 detector:
+    leverage-one inside atom IS +-w), nullReadings_zero_of_leverage_eq_one,
+    leverage_eq_one_of_nullReadings_zero (converse; needs only form-null),
+    one_lt_leverage_of_nullReading_ne_zero (strict floor off K2).
+  null census: swapGapForm_at_nullDir (w-form of a swap = q_d^2 - beta_e^2),
+    not_posDef_swap_of_nullReading_sq_le (free half),
+    complGapForm_at_nullDir (= total null mass - 2|w|^2),
+    not_posDef_compl_of_nullMass_le.
+  the budget: isTie_iff_avoidingRefusals_of_leverage_le_one (tie of a design
+    with a light-or-unit atom = refusals of the avoiding triples; Z1 pattern
+    transferred on a leverage hypothesis), isTie_iff_avoidingRefusals_of_
+    twoZeroReadings (the K2 budget: 10 avoiding refusals at (6,3)).
+  the kill's first half: exists_outside_nullReading_sq_gt_one_of_
+    twoZeroReadings (in K2 some outside atom reads w above one in square —
+    weighted Parseval average over the outside; gives B_T > 1 for every
+    triple through that atom).
+
+Gtz/Wave/DiamondNullFrame.lean (20 declarations):
+  graphic transport: graphicDesign_gap_form (form at probe = potential form
+    at whitened image), gapNullLine_graphicDesign_of_potential,
+    graphicAtom_dotProduct_whitenerInv (reading = sqrt(c/t) * drop,
+    whitener-free), whitenerInv_pairing (norms = Dirichlet energies).
+  the diamond: diamondSpineGap_potentialForm (closed polynomial),
+    diamondSpine_potential_line (2Q = (-8y0+2y1+3y2)^2 + 9y2^2, null line =
+    R(1,4,0)), diamondSpine_potential_null, diamondNullVector,
+    gapNullLine_diamondDesign_spine (corank exactly one, kernel),
+    diamondNull_reading_sq, diamondNull_drops (-3,1,1,4,4),
+    diamondNull_reading_sq_values (90,15,15,240,240),
+    diamondNullVector_normSq (=120; beta^2 = 3/4,1/8,1/8 | 2,2),
+    diamondNull_spine_readings_ne_zero (K0 verdict).
+  the split diamond: subsetSum_sixSplit_spine (same matrix),
+    gapNullLine_sixSplitDiamondDesign_spine (same null line),
+    sixSplit_atom_copy (copy = spine atom on the nose), sixSplit_spine_atoms,
+    sixSplit_spine_readings_ne_zero (K0), sixSplit_copySwap_wform_zero
+    (the parallel pair as the w-flat swap: the census degeneration signature).
+
+2. MEASURED CASE DICTIONARY (scratchpad/corank1/)
+-------------------------------------------------
+fix.jl (exact rationals + 512-bit):
+  diamond (5,3): 8 trees weakly dominate, all corank one, spectra (0,3/2,4)
+  and (0,11/4,4); circuits (-1,5/2,4). beta^2 = (3/4,1/8,1/8), sigma = 4.
+  Exchange readings (1,1,11/6)|(1,11/6,1) — the measured header of
+  CorankOnePropagation is now reproduced exactly.
+  split diamond (6,3): 12 weak dominators (= trees of the doubled graph,
+  spine trees doubled), 8 refusals at margin -1 (4 both-copy + 4 others at
+  detgap -10). W-CENSUS EMPTY: every swap w-form > 0 except the copy swap
+  (= 0, another dominator). M = S_{C^c} - 1 is PSD corank one, det M = 0,
+  tr adj M = 6. Cross ledger (coordinator sec 4) verified EXACTLY at all
+  three inside atoms; the parallel pair appears as crossreading = 0 at
+  (c=0, d''=copy) with det(S_T-1) = 0.
+kmap.jl (exact): ALL 8 diamond dominators are K0 => all 12 split-diamond
+  dominators are K0. K1/K2 uninhabited by the fixture zoo, both sizes.
+mega2.jl (200 threads, ~10^9 evals, task-local, zero-alloc; offenders in
+  p1/p2/p3 CSVs; verify.jl reconfirms at 256 bits):
+  P1 (real, corank-one dominator by construction, weight floor 0.05 hard):
+    ZERO ties at mincross >= 1e-3. Frontier min obstruction:
+    delta 1e-3: 8.86e-3 | 3e-3: 7.57e-3 | 1e-2: 1.34e-2 | 3e-2: 1.10e-2.
+    UNGUARDED (no weight floor) the obstruction collapses to 6e-8 via the
+    (5,3)-diamond escape t_6 -> 0: the graveyard-law channel, now measured.
+    The frontier law must carry BOTH floors.
+  P2 (K2): ZERO ties even at delta = 0 (parallel pairs allowed); min
+    obstruction over the ten avoiding triples 1.22e-2. K2 IS EMPTY AT (6,3).
+  k2five.jl: K2 empty at (5,3) too (min obstruction 0.359, reproduced on a
+  second seed at 0.513, four avoiding
+    triples). The kill is not size-bound and is diamond-safe (diamond is K0).
+  P3 (complex Hermitian): ties ABUNDANT: 8000 saved; deepest verified at
+    256 bits: all 19 margins <= -0.1016, mincross 0.686, Parseval 1.7e-77
+    (complextie_c1.txt). THE ARM IS NOT FIELD-BLIND: every closing law needs
+    the realness carrier (brackets/Pluecker), as in the corner.
+rig/rig2/rig3.jl (256-bit): the doubled diamond CANNOT be perturbed off its
+  parallel class inside the design variety at first order: one-copy rotation
+  and symmetric splits in generic planes make the Parseval solve infeasible
+  (the stress response diverges as 1/eps with a sign violation). DECODED:
+  the diamond's five directions lie on the DEGENERATE conic = line pair
+  {x3 = 0} u {x1+x2+x3 = 0} (potential frame): three atoms per plane, spine
+  on the intersection. Openings that keep six atoms on the two planes keep
+  the stress (solve singular, solution line); openings that leave the conic
+  are blocked at O(eps). So the pair-opening channel is exactly the
+  TWO-PLANE family, where the landed sixThree_hasParallelPair_of_isTie_of_
+  twoPlaneCover already forces no-tie-or-parallel.
+tp.jl (256-bit, MEASURED): the one-copy-per-plane channel IS feasible (the
+  Parseval solution line has positivity interval tau in [-0.283, 0.283] at
+  every eps, the stress survives exactly), and along it the value is rigid at
+  order ~1 in the split angle even after minimizing over the Parseval line
+  and the weight simplex: value-1 = 3.5e-2 | 1.1e-2 | 4.0e-3 | 1.4e-3 |
+  8.3e-4 at eps = 0.1 | 0.03 | 0.01 | 0.003 | 0.001 (fitted order 0.96 ->
+  0.84 -> 0.50 near zero; coarse grid at the last rung). THE BREAKING
+  TRIPLES ARE THE COMPLEMENT FAMILY ((4,5,6), (2,4,5), (3,4,5), (2,3,4)):
+  the size-six refusals, absent at (5,3), are what rigidify the doubled
+  family. The brief's P2 (census equality, second order) is doubly refuted.
+audit.jl (the law auditor, 200 threads): every kernel identity/inequality
+  of the arm checked per sample (resolve, mass-one, eigenvector, budget,
+  wedge, swap/compl census, anchor self-reading and trace law, cross
+  ledger, leverage ladder, full-moment floor, K2 excess) + hinge/K2/frontier
+  offender CSVs. Verified: selftest reproduces the doubled diamond as a tie
+  with mincross 0 and identity residual 1e-15; two seeds x 4e6 samples give
+  ZERO identity violations (worst residual 2e-12).
+
+2b. THE LAW AUDIT (final run, 200 threads, 900 s)
+--------------------------------------------------
+88,777,997,171 samples at 9.86e7/s (10.8e9 rejected as non-Parseval-feasible).
+Every sample is a genuine weighted (6,3) design with a corank-one weak
+dominator BY CONSTRUCTION. Per sample the battery checks the resolve identity,
+mass-one, the Gram eigenvector law, the null-direction budget, the wedge
+budget, the swap and complement census identities, the anchor self-reading and
+harmonic trace law, the cross ledger at all three inside atoms, the inside
+leverage floor, the strict floor off K2, the full-moment floor and the K2
+outside excess.
+  identity violations : 0        (worst residual 4.215e-11, pure float noise)
+  ties found          : 0
+  K2 ties found       : 0
+  hinge offenders     : 0        (ties with mincross > 1e-6)
+Selftest reproduces the doubled diamond as an exact tie (obst 6.7e-15,
+mincross -2.2e-16, identity residual 5.9e-16) before the sweep starts, so the
+sampler provably reaches the boundary it is meant to probe.
+
+2c. THE K2 (5,3) KILL — CASE TREE STATUS (round 3)
+---------------------------------------------------
+LANDED (Gtz/Wave/KTwoEraseSystem.lean, 8 theorems, all standard axioms):
+  k2_erase_anchor_posDef             A = S_{univ\x} - 1 > 0, tie-free.
+  k2_fiveThree_removal_readings_ge_one   tie => all four r_a >= 1.
+  k2_fiveThree_nullReading_ge_one    tie => w'A^{-1}w >= 1  (the box).
+  k2_fiveThree_traceInv_ge_one       tie => tr A^{-1} >= 1.
+  k2_fiveThree_not_isTie_of_nullReading_lt_one   the kill consumer.
+  reading_lt_one_of_posDef_sub_one   A > 1 => w'A^{-1}w < 1, spectral-free
+                                     (|Bv|^2 + v'Bv with B = A-1, v = A^{-1}w).
+  k2_fiveThree_not_isTie_of_erase_levelTwo  S_F - 2 > 0 kills (Case I).
+  k2_fiveThree_wMass_gt_two_of_balanced     sigma_w > 2 unless one outside
+                                     weight >= sum of the other three non-x
+                                     weights (pure Parseval + excess).
+MEASURED (k2core/k2min/k2case2/cstar.jl):
+  - at every interior weight profile the shape-minimizer of the max avoiding
+    margin is POSITIVE (0.018..0.149) and EQUALIZES all four triples; the
+    readings sit at 0.95..0.997 and w'A^{-1}w at 0.20..0.75.
+  - every 3-subset of the four refusals is DEEPLY feasible (margins -1):
+    the kill is exactly the joint four-refusal system. No shortcut exists.
+  - Case II (lambda_min(S_F) <= 2) is EMPTY ON THE CHART: the optimizer
+    cannot reach it; forcing it blows the avoiding margins to 0.9.
+  - the two-refusal ceiling claim (C**) is FALSE without the h-sector: the
+    violation channel is s = u'Q^{-1}u -> infinity, i.e. the corank-two
+    boundary. The mixed refusals r_y, r_z >= 1 must cap that channel.
+OPEN RESIDUAL (the last step of the (5,3) K2 kill):
+  prove S_F - 2 > 0 (or directly w'A^{-1}w < 1) from the K2 structure + the
+  four refusals in the region where one outside weight dominates OR the
+  corank-two boundary is approached. Plan: SOS certificate on the reduced
+  frame (13 vars, all-Parseval-exact chart in k2core.jl), rationalize, then
+  nlinarith with explicit multipliers. The w-direction is already closed by
+  k2_fiveThree_wMass_gt_two_of_balanced in the balanced-weight region.
+
+2d. THE SIX-SET ARENA UNIFICATION (round 3, the main-fight hook)
+----------------------------------------------------------------
+The sibling's projection program (SixSetGapUniversal/SixSetProjection/
+SixSetDowndate) holds at every design: W = S_univ - 1 > 0, pivot matrix
+P_ab = g_a' W^{-1} g_b, D^{1/2}PD^{1/2} a rank-3 projection (D = I-T),
+refusal of a triple T <=> lmax(P[T^c]) >= 1, weak dominator C <=>
+lmax(P[C^c]) <= 1. A PARALLEL PAIR IS A SINGULAR 2x2 PRINCIPAL MINOR OF P
+(P is a W^{-1}-Gram). The whole (6,3) tie is: a rank-3 coweighted projection
+whose twenty complementary blocks all reach lmax >= 1, one of them <= 1.
+LANDED (Gtz/Wave/SixSetNullColumn.lean, 5 theorems): at a corank-one weak
+dominator the arm's null calculus identifies the contact:
+  W w = S_{C^c} w  (the gap maps w into the complement),
+  w = sum_{d in C^c} (q_d.w) W^{-1} q_d  (the six-set resolve),
+  sum_{d in C^c} P_{ad}(q_d.w) = g_a.w for EVERY a (the null column law),
+  => THE OUTSIDE NULL READINGS ARE THE +1 (TOP, TOUCHING) EIGENVECTOR OF
+  THE DOMINATOR'S COMPLEMENT BLOCK. Verified at the split diamond to 1e-77
+  (contact.jl): twelve blocks CONTACT (the twelve trees), the eight refused
+  blocks sit at lmax = 5/4 EXACTLY, the pair minor {spine, copy} is 0
+  exactly, and the touching eigenvector = normalized outside readings
+  (alignment 1.0). Bracket law for the arena, kernel-trivial route:
+  det P[S,S'] * det W = br(S) br(S') (Cauchy-Binet on 3x3s) — the mixed
+  minors factor through the atom brackets; over C-Hermitian the same
+  factorization carries conjugate phases; the REAL constraint is the
+  existence of the sign word (the chirotope). This is where realness enters
+  the endgame.
+LANDED round 4 (Gtz/Wave/PairMinorBridge.lean, 4 theorems):
+  det_pairGram_eq_cross_adjugate — the 2x2 compound identity (Lagrange at
+    M = 1): pair Gram det in an M-metric = cross' adj(M) cross.
+  pairPivotMinor_mul_det_eq_crossReading — det P[{a,b}] * det W =
+    (g_a x g_b)' W (g_a x g_b): THE PAIR MINOR IS A W-METRIC CROSS READING.
+  pairPivotMinor_eq_zero_iff_parallel — W > 0 makes it definite: the minor
+    vanishes exactly at proportional atoms (zero atom = ratio-zero multiple).
+  hasParallelPair_iff_exists_pairPivotMinor_eq_zero — THE HINGE'S CONCLUSION
+    IS A DETERMINANT LOCUS OF THE PIVOT MATRIX, at every (m,3) design.
+THE QUANTITATIVE HINGE (the arena form of the whole fight): P is PSD, so all
+pair minors are >= 0 automatically; a tie must push some pair minor to ZERO.
+mega2's guarded frontier already measures the quantitative version:
+value - 1 >= c(minor floor) with c(1e-3) ~ 8.9e-3 at weight floor 0.05.
+The kernel fight is to derive, from the twenty block conditions + the
+coweighted projection identity + realness (the bracket sign word via
+det P[S,S'] det W = br(S) br(S')), that min pair minor <= C (value - 1).
+
+RIGIDITY PROGRAM (P-language): each contact block pins lmax = 1 WITH the
+eigenvector pinned at the null readings (my law). The doubled family carries
+TWELVE simultaneous contacts — the overdetermination that forces the
+singular pair minor. Quantify: dim of rank-3 P's with k pinned contacts vs
+k = 12; the equality-swap dichotomy (landed) makes contacts propagate.
+
+3. THE ARM'S NEXT BRICKS (exact, in order)
+------------------------------------------
+(B1) THE K2 KILL, kernel: two-zero stratum carries no (6,3) tie. Landed
+     (cycle 2 of this fork): the EXACT excess identity
+       sum_{d not in C} t_d ((q_d.w)^2 - 1) = t_y + t_z
+     (k2_outside_excess_total) — sharp form of the existential, and the
+     quantitative price of the stratum: a single witness must reach
+     (q_d.w)^2 >= 1 + (t_y+t_z)/t_d. Also landed: the three {y,z,d} refusals
+     of the ten-refusal budget as ONE scalar system
+     (k2_planeWitness_of_isTie: the two zeros collapse the u-split cross sum
+     to its outside term, so the refusal is
+       ((q_d.w)^2 - 1) * (in-plane gap at p) <= (q_d.w)^2 (q_d.p)^2 )
+     and the assembled two-half statement k2_excess_and_planeWitness_of_isTie.
+     Remaining half: from the witness
+     and corank one (plane block B > 0), refusal of T = {y, z, d*} needs a
+     plane probe p with (qbar.p)^2 >= (q_w^2 - 1) p'Bp; the tie must supply
+     it for EVERY witness; play it against the exchange ledger (all
+     exchange readings in K2 are automatic: reading_e = (H(H-I)^{-1})_{ee}
+     > 1 strictly, computed in the fork's analysis) and the ten-refusal
+     budget. Measured true with margin 1.2e-2; not size-bound.
+(B2) THE FRONTIER LAW: obst >= c(delta, tfloor) with the two floors explicit;
+     candidate mechanization: the two-plane channel is the unique degeneration
+     (B4 below) + a quantitative version of the stress/conic dichotomy.
+(B2a) THE CROSS LEDGER IS LANDED (cycle 3 of this fork),
+     Gtz/Wave/CrossLedgerRigidity.lean, 12 theorems:
+       cross_ledger — at every rank-three design, every triple E and every
+         atom c not in E,
+           sum_{d in E} det(S_{{c} u E\d} - 1)
+             = 3 det A_F - 3 det M - tr adj M
+               - sum_{d in E} (g_c x q_d)' M (g_c x q_d),
+         with M = S_E - 1 and A_F = M + g_c g_c'. Carried by the landed
+         det_add_atomMatrix_sub_atomMatrix_cross, the new rank-one adjugate
+         expansion det_add_atomMatrix_adjugate, and sum_readings_eq_trace;
+         the complement's Parseval enters once, as S_E = M + 1, which turns
+         the three adjugate readings into 3 det M + tr adj M.
+       cross_ledger_le_of_isTie — at a tie with A_F positive definite the
+         left side is nonpositive (tie_fourSet_member_det_nonpos), so
+           3 det A_F <= 3 det M + tr adj M + sum cross.
+         THE CROSS FAMILY CARRIES THE FOUR-SET DETERMINANT.
+       cross_reading_eq_zero_of_parallel / _iff_mulVec_eq_zero (PSD base) /
+         _iff_parallel_of_posDef (PD base) — the marker is EXACTLY
+         parallelism at a definite complement gap, and parallelism modulo the
+         null line at a corank-one one.
+       swapGapForm_eq_zero_of_unit_parallel — a unit-ratio parallel pair
+         flattens the swap w-form: the second marker, provable.
+       cross_ledger_le_of_isTie_of_parallel — a parallel pair contributes
+         nothing to the family, so the surviving crosses carry the whole
+         four-set determinant alone. THE QUANTITATIVE RIGIDITY BACKBONE.
+       cross_reading_eq_zero_iff_cross_mem_nullLine — at a corank-one base
+         the marker is exactly "g_c x q_d lies on the null line"; the split
+         diamond realises it with cross product ZERO, trivially on the line.
+       k0_leverage_gt_one_of_readings_ne_zero — the all-nonzero stratum is
+         STRICTLY heavy on the inside (all three inside leverages > 1), and
+         attainment of the floor is exactly K2: the leverage alone separates
+         the two strata, with no tie hypothesis and no size restriction.
+       k2_one_le_nullDir_anchor_reading_of_isTie — in K2 the triple {y,z,d}
+         IS the exchange dropping x, and x is +-w, so the landed exchange law
+         becomes  1 <= w' (S_C - 1 + q_d q_d')^{-1} w  for every outside d
+         that reads w. Against anchor_selfReading_eq_one (the added atom
+         reads EXACTLY one) the stratum is pinned between two unit readings
+         in one positive definite metric.
+
+       sixSplit_crossReading_eq_zero / sixSplit_two_markers_coincide — TWO
+         of the three markers are now KERNEL facts about the fixture and they
+         fire on the SAME pair (the doubled spine): the ledger cross reading
+         vanishes against every base, and the swap null form of the spine
+         dominator is zero. The third (det(S_T-1) = 0 at T = {0,3,4}) stays
+         measured.
+
+       k2_mixed_planeWitness_of_isTie — the SECOND family of the ten-refusal
+         budget ({y,d,d'} and {z,d,d'}, six triples): one silenced atom, so
+         the u-mass is the outside pair alone and the cross sum loses its
+         inside term. With k2_planeWitness_of_isTie (three triples) nine of
+         the ten refusals are now scalar; only the complement {d,d',d''}
+         remains unreduced.
+
+     ANALYSIS (derived this fork, not yet in kernel — the K2 residual):
+       weighting the three {y,z,d} refusals by t_d and summing against the
+       plane Parseval gives the K2 TRACE INEQUALITY
+         tr Q^{-1} - t_y g_y' Q^{-1} g_y - t_z g_z' Q^{-1} g_z >= t_y + t_z,
+       with Q = P - I the (2x2) plane gap, P = g_y g_y' + g_z g_z'. Using
+       g_y' Q^{-1} g_y + g_z' Q^{-1} g_z = tr(Q^{-1}P) = 2 + tr Q^{-1}, the
+       equal-weight case reduces to tr Q^{-1} >= 4t/(1-t), which is
+       SATISFIABLE. So the three {y,z,d} refusals alone do NOT empty K2; the
+       kill needs the remaining seven ({y,d,d'}, {z,d,d'}, {d,d',d''}).
+       That is the precise residual, and it is why the fork did not claim the
+       kill.
+
+(B2b) THE CROSS LEDGER IS TESTED (coordinator item 3, done in fix.jl):
+     at the split diamond with M = S_{Cc} - 1, the ledger
+       sum_{d''} det(S_T - 1) = 3 det A_F - 3 det M - tr adj M - sum_{d''} cr
+     holds EXACTLY at all three inside atoms (c = spine: sum det = -7.5 on
+     both sides; c = 1, 2: -10 on both sides). ITS EQUALITY CASE DOES
+     COINCIDE WITH THE PARALLEL PAIR: the cross reading
+     (g_c x q_d)' M (g_c x q_d) vanishes exactly at (c = spine, d'' = copy),
+     and that is the same triple whose det(S_T - 1) = 0 and whose swap
+     w-form is zero (sixSplit_copySwap_wform_zero). Three independent
+     degeneration markers coincide on the parallel pair, so the ledger IS a
+     viable rigidity backbone.
+
+(B3) THE REALNESS CARRIER: transport the corner's bracket/Pluecker layer to
+     the corank-one exchange system; the complex witness complextie_c1.txt is
+     the foil every real-only law must fail against.
+(B4) THE TWO-PLANE RIGIDITY: kernel statement of "the only pair-opening
+     directions at the doubled diamond keep the two-plane cover" — the
+     O(eps) obstruction is the conic pairing <Q, u0 v^T + v u0^T> != 0;
+     Q is the LINE PAIR above, so the obstruction is explicit and rational.
+     Combine with the landed two-plane law to close a neighborhood of the
+     doubled diamond in the rigidity fight.
+
+4. COORDINATION LOG
+-------------------
+Sibling (cell-H) landed 7b5e598 (HeavyInsideTracePinch + SeesawExchangeFloor)
+mid-fork; umbrellas re-read and my inserts applied on top. No foreign files
+staged. The pgrep -f "lake build" waiter DEADLOCKS on itself (matches its own
+shell); per-module builds only, one full gate at commit time.
+
+================================================================================
+FORK 44 — THE TWO-ZERO CORNER: THE ERASED SCALE IS ELIMINATED
+================================================================================
+
+F44-1. THE PLANE SPLIT COLLAPSES TO TWO SCALARS  (f44mp.py, f44thr.py)
+-----------------------------------------------------------------------
+Write m := (1-X)tz + X*ty  (mixed plane reading),  p := ty*tz,  T := ty+tz.
+ALL VERIFIED EXACT IN SYMPY:
+    A   = T(1-ty)(1-tz)          = T(1 - T + p)
+    Vn  = X*tz+(1-X)ty - ty*tz   = T - m - p
+    n   = (1-X)(1-tz)+X(1-ty)    = 1 - m
+    UnC/q = (1-om)m - p          DnC/q = (1-T+p) - om(1-m)
+    D  := T(1-ty)(1-tz) - (1-T)Vn = m(1-T) + p
+         = (1-X)*tz(1-tz) + X*ty(1-ty)            <-- TWO FORMS, both exact
+    m(T-m) - p = X(1-X)(ty-tz)^2                  <-- the ONLY (m,p) constraint
+So the three split variables (ty,tz,X) enter the WHOLE corner problem only
+through (T,m,p), and the feasible region is exactly 0<m<T, 0<p<=m(T-m).
+CONSEQUENCE: Vn>0 is IMPLIED by p<=m(T-m)  (T-m-p >= (T-m)(1-m) > 0).
+
+F44-2. THE THRESHOLD HAS AN ANGLE-FREE FLOOR  (f44thr.py, f44closed.py)
+-----------------------------------------------------------------------
+    2A - (1-T)(A+B) = (T+1)*D ,  D > 0        =>  thr := A/(A+B) > (1-T)/2
+    thr - (1-T)/2 = (T+1)D / (2(A+B))
+COORDINATOR'S CAUTION (b) IS **CORRECT**, verified: at X=0, thr = (-ty^2-ty*tz
++ty+tz)/(2ty+tz); as tz->0 this is (1-ty)/2, and ->1/2 only as ty->0. So the
+measured "thr -> 1/2" is a TRIPLE limit. Also thr-(1-T)/2 = tz(ty+tz+1)/
+(2(2ty+tz)) at X=0 — strictly positive, explicit.
+
+F44-3. REFUTED: THE SPLIT-FREE BOUND IS NOT ENOUGH  (f44split.jl, WITNESS)
+-----------------------------------------------------------------------
+2*om <= (1-T)*q would give the corner with NO floor (margin identity below).
+MEASURED max 2om/((1-T)q) = 1.1940 over 545786 corner points — FALSE by 19%.
+argmax (ed,ee,P,td,te,tz,X,ty) = (0.60624,-0.39837,0.31963,0.43961,0.41608,
+0.067282,0.51103,0.033470); there r2 = om(A+B)/(qA) = 0.8524 < 1, so the corner
+holds but only because the ACTUAL split is not the extremal one.
+True corner max om(A+B)/(qA) = 0.86368 over the same set (sanity: < 1).
+STILL LANDED, because it is exact and carries 84.7% with no floor:
+    TGT - (q(T+1)/2)*D = (A+B)*((1-T)q - 2om)/2
+
+F44-4. **Q1 IS AFFINE IN THE ERASED SCALE P**  (f44q1b.py, f44alpha.py, f44ax.py)
+-----------------------------------------------------------------------
+    Q1 = P*alpha + beta ,   deg_P Q1 = 1   (VERIFIED)
+    beta  = te^2(1+ee)(1-tz) * ( ed(te+tz-1) + ee(td+tz-1) + td+te+2tz )
+            -- FULLY FACTORED, and FREE OF X
+    alpha = alpha0 + X*alphaX          -- linear in X
+    alpha0 = -(1-tz)*G*(tz*G + 2*td*te)          G := td(1+ed)+te(1+ee)
+             -- MANIFESTLY NEGATIVE (every factor a chart positive)
+    alphaX = td*te*G*(2 - td - te + ed(1-te) + ee(1-td))
+             + 2tz*( td^2(1-te)(1+ed) + te^2(1-td)(1+ee) )
+             -- both parts POSITIVE: the second obviously, the first because
+                2 - td - te + ed(1-te)+ee(1-td) = 2(1 - g0) and g0 < 1.
+So alpha < 0  <=>  X < X* := -alpha0/alphaX. At X=0 alpha<0 ALWAYS.
+
+F44-5. **THE CERTIFICATE IDENTITY** (f44ident.py, VERIFIED EXACT)
+-----------------------------------------------------------------------
+    (-alpha) * TGT  =  CERT  +  td*G*(A+B) * Q1
+    CERT := q*(-alpha)*A - td*G*beta*(A+B)
+It is a FREE identity in A,B (no excess surface needed) — the content is only
+Q1 = P*alpha+beta and TGT = qA - om(A+B). P cancels identically.
+    CERT = q*(1-tz)*RES ,  RES 305 terms, degree 11, six variables, no P.
+**WHY EVERY LP RUNG WAS INFEASIBLE**: the hunts multiplied TGT by a POSITIVE
+MONOMIAL combination. The correct multiplier is -alpha, a specific degree-8
+polynomial whose sign varies over the chart. It is not in any monomial
+dictionary. The banked "Q1 already lies in the cone of S1..S4" is a statement
+about the MULTIPLIER SPACE, not about the target.
+
+F44-6. MEASURED, f44test.jl (545218 feasible corner points)
+-----------------------------------------------------------------------
+    alpha < 0            : 97.6362%   (max alpha = +0.08862)
+    RES  > 0             : 84.6911%
+    alpha<0 AND RES>0    : 84.6911%   <-- EXACTLY EQUAL: RES>0 => alpha<0
+                                          at 461751 of 461751 points
+    **ON X <= 1/2 (the half the landed X-split reduces the corner to):
+      RES > 0 at 100.0000% of 272541 points.**
+The failures are all at X near 1 (worst at X = 0.9904), i.e. exactly where the
+MIRROR floor Q1m is the live one — the certificate matches the landed X-split.
+
+F44-7. **THE TIGHT RAY, EXPANDED NOT SAMPLED**  (f44ray.py, f44closed.py)
+-----------------------------------------------------------------------
+At tz=0, X=0:   alpha = -2*td*te*G   (exact)
+    g0 := sup{om/q : Q1>=0} = ( td + te - ed(1-te) - ee(1-td) ) / 2
+    thr0 = (1-T)/2
+    ***  thr0 - g0 = (1 + ed + ee)(1 - td - te) / 2  ***
+    CERT|ray = 2*T*td*te^2*(1+ee)*G*(1-td-te)*(1+ed+ee)
+    RES |ray = 2*T*td*te*G*(1-td-te)*(1+ed+ee)
+BOTH factors strictly positive: 1-td-te>0 is the weight budget; 1+ed+ee>0
+because T>0 forces one excess positive while both exceed -1 (if ed<=0 then
+td*ed<=0 so te*ee>0 so ee>0, and 1+ed+ee>1-1+ee=ee>0).
+COORDINATOR'S THREE-WAY DECISION: **BRANCH 1** — g vanishes strictly below the
+threshold, a positive margin exists in CLOSED FORM, and the margin NAMES its own
+normalization. NOT a tangency. This replaces the sampled creep 0.4953 -> 0.4919
+-> 0.4890, which was a limit read off samples.
+
+F44-8. LANDED (Gtz/Wave/KTwoQuotientCertificate.lean, 16 pins all standard)
+-----------------------------------------------------------------------
+k2_planeSplit_defect, k2_planeForm_eq, k2_outsideGap_eq, k2_erasedReading_eq,
+k2_crossMassGap_eq, k2ChartPlaneGap(+_pos), k2_thresholdFloor_identity,
+k2ChartTarget_margin_identity, k2ChartTarget_pos_of_crossMass_half,
+k2ChartQuotientSlope, k2ChartQuotientBase, k2ChartQuotient_affine,
+k2ChartQuotientSlope_xZero, k2ChartQuotientSlope_neg_of_xZero,
+k2ChartCrossCert, k2Chart_quotient_certificate, k2ChartTarget_pos_of_crossCert,
+k2ChartCrossCert_ray, k2Chart_excessSum_pos, k2ChartCrossCert_ray_pos,
+K2ChartCrossCertPositivity, k2ChartTargetPositivityXHalf_of_crossCert.
+
+THE RESIDUAL IS NOW: K2ChartCrossCertPositivity — on X<=1/2,
+    alpha < 0   AND   CERT > 0 .
+Six variables (ed,ee,td,te,tz,X + ty via excess), NO erased scale P, NO
+quotient. Previously: eight variables with the degree-eight quotient floor.
+
+F44-9. OPEN, for the successor
+-----------------------------------------------------------------------
+(1) Prove alpha<0 on X<=1/2: alpha is LINEAR in X and alpha0<0, so it is
+    exactly 2*alpha0 + alphaX < 0. At tz=0 that is g0 > -1, which is free.
+    The general tz case is not yet done.
+(2) Prove CERT>0 on X<=1/2. Measured 100% of 272541. The ray value is a product
+    of six positives — look for a positive-combination proof interpolating from
+    the ray, in the (T,m,p) coordinates of F44-1 where the split is only two
+    scalars.
+(3) The mirror branch X>=1/2 is the swap image; the landed
+    k2ChartDoubleQuotientCorner_of_xHalf should carry it once (2) lands.
