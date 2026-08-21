@@ -1365,6 +1365,7 @@ import Gtz.Wave.PairNormalParseval
 import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoBridgeNormalForm
+import Gtz.Wave.CoherentHornRepayScope
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -37436,3 +37437,17 @@ run_cmd do
 #print axioms Gtz.k2FiveAxis_budget
 #print axioms Gtz.k2FiveAxis_collinear
 #print axioms Gtz.k2FiveAxis_planePair_reading
+
+-- Gtz/Wave/CoherentHornRepayScope.lean -- the repaying inside atom is not forced
+-- by the corner equation and admissibility: an exact rational witness
+#print axioms Gtz.repayScope_corner
+#print axioms Gtz.repayScope_axis_unit
+#print axioms Gtz.repayScope_leverage_a
+#print axioms Gtz.repayScope_leverage_b
+#print axioms Gtz.repayScope_pairing
+#print axioms Gtz.repayScope_admissible
+#print axioms Gtz.repayScope_det_x
+#print axioms Gtz.repayScope_det_y
+#print axioms Gtz.repayScope_det_z
+#print axioms Gtz.repayScope_all_neg
+#print axioms Gtz.repayScope_not_forced

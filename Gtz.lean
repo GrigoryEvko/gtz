@@ -6456,3 +6456,4 @@ import Gtz.Wave.PairNormalParseval
 import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoBridgeNormalForm
+import Gtz.Wave.CoherentHornRepayScope
