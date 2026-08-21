@@ -644,4 +644,137 @@ theorem not_complexHingeHoldsAtSize_four_two : ¬ ComplexHingeHoldsAtSize 4 2 :=
   fun hhinge => not_complexHingeDesign_hasParallelPair
     (hhinge complexHingeDesign complexHingeDesign_isTie)
 
+/-! ## 6. The `(6,3)` witness
+
+Five atoms in the plane `ℂ² × {0}` and one spike on the third axis.  A triple that
+misses the spike has a zero third coordinate, so its gap carries `-1` on the
+diagonal; a triple `{a, b, spike}` has a block-diagonal gap whose determinant is
+`24` times the pair excess of `{a,b}`. -/
+
+/-- The fifth planar atom, of squared length `5/2`. -/
+noncomputable def spreadAtom : Fin 2 → ℂ := ![rootTwoAmp, rootTwoAmp / 2]
+
+/-- The spike, of squared length `25`. -/
+noncomputable def spikeAtom : Fin 3 → ℂ := ![0, 0, 5]
+
+/-- A planar vector, read in `ℂ³`. -/
+noncomputable def liftPlane (planeVec : Fin 2 → ℂ) : Fin 3 → ℂ :=
+  ![planeVec 0, planeVec 1, 0]
+
+@[simp] theorem liftPlane_apply_two (planeVec : Fin 2 → ℂ) : liftPlane planeVec 2 = 0 := rfl
+
+/-- **Lifting preserves every Gram entry.**  So the whole `(6,3)` Gram is the
+rank-two Gram already computed, plus one orthogonal spike. -/
+theorem starDot_liftPlane (leftVec rightVec : Fin 2 → ℂ) :
+    star (liftPlane leftVec) ⬝ᵥ liftPlane rightVec = star leftVec ⬝ᵥ rightVec := by
+  simp [liftPlane, dotProduct, Fin.sum_univ_two, Fin.sum_univ_three]
+
+theorem starDot_liftPlane_spike (planeVec : Fin 2 → ℂ) :
+    star (liftPlane planeVec) ⬝ᵥ spikeAtom = 0 := by
+  simp [liftPlane, spikeAtom, dotProduct, Fin.sum_univ_three]
+
+theorem starDot_spike_liftPlane (planeVec : Fin 2 → ℂ) :
+    star spikeAtom ⬝ᵥ liftPlane planeVec = 0 := by
+  simp [liftPlane, spikeAtom, dotProduct, Fin.sum_univ_three]
+
+theorem starDot_spike : star spikeAtom ⬝ᵥ spikeAtom = 25 := by
+  simp [spikeAtom, dotProduct, Fin.sum_univ_three, Complex.conj_ofNat]
+  norm_num
+
+/-- The lifted rank-one atom, entry by entry. -/
+theorem complexAtom_liftPlane (planeVec : Fin 2 → ℂ) :
+    complexAtom (liftPlane planeVec)
+      = !![planeVec 0 * (starRingEnd ℂ) (planeVec 0),
+             planeVec 0 * (starRingEnd ℂ) (planeVec 1), 0;
+           planeVec 1 * (starRingEnd ℂ) (planeVec 0),
+             planeVec 1 * (starRingEnd ℂ) (planeVec 1), 0;
+           0, 0, 0] := by
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [complexAtom, liftPlane, Matrix.vecMulVec_apply]
+
+theorem complexAtom_spike : complexAtom spikeAtom = !![0, 0, 0; 0, 0, 0; 0, 0, 25] := by
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [complexAtom, spikeAtom, Matrix.vecMulVec_apply] <;> norm_num
+
+/-- The squared length of the fifth planar atom. -/
+theorem spreadAtom_norm : star spreadAtom ⬝ᵥ spreadAtom = 5 / 2 := by
+  have hTwo := rootTwoAmp_sq
+  rw [spreadAtom, starDot_pair]
+  simp only [map_div₀, Complex.conj_ofNat, rootTwoAmp_conj]
+  linear_combination (5 / 4 : ℂ) * hTwo
+
+/-- The six atoms of the `(6,3)` witness. -/
+noncomputable def complexHingeSixAtom : Fin 6 → Fin 3 → ℂ :=
+  ![liftPlane (complexHingeAtom 0), liftPlane (complexHingeAtom 1),
+    liftPlane (complexHingeAtom 2), liftPlane (complexHingeAtom 3),
+    liftPlane spreadAtom, spikeAtom]
+
+/-- The planar shadow of an atom.  The sixth entry is a placeholder never read. -/
+noncomputable def complexHingePlaneAtom : Fin 6 → (Fin 2 → ℂ) :=
+  ![complexHingeAtom 0, complexHingeAtom 1, complexHingeAtom 2, complexHingeAtom 3,
+    spreadAtom, ![0, 0]]
+
+theorem complexHingeSixAtom_zero : complexHingeSixAtom 0 = liftPlane (complexHingeAtom 0) := rfl
+theorem complexHingeSixAtom_one : complexHingeSixAtom 1 = liftPlane (complexHingeAtom 1) := rfl
+theorem complexHingeSixAtom_two : complexHingeSixAtom 2 = liftPlane (complexHingeAtom 2) := rfl
+theorem complexHingeSixAtom_three : complexHingeSixAtom 3 = liftPlane (complexHingeAtom 3) := rfl
+theorem complexHingeSixAtom_four : complexHingeSixAtom 4 = liftPlane spreadAtom := rfl
+theorem complexHingeSixAtom_five : complexHingeSixAtom 5 = spikeAtom := rfl
+
+/-- Away from the spike every atom is a lift. -/
+theorem complexHingeSixAtom_eq_liftPlane (atomLabel : Fin 6) (hlabel : atomLabel ≠ 5) :
+    complexHingeSixAtom atomLabel = liftPlane (complexHingePlaneAtom atomLabel) := by
+  fin_cases atomLabel
+  · rfl
+  · rfl
+  · rfl
+  · rfl
+  · rfl
+  · exact absurd rfl hlabel
+
+/-- The six weights.  All rational: the design is the `(4,2)` witness reweighted,
+plus a fifth planar atom and the spike. -/
+noncomputable def complexHingeSixWeight : Fin 6 → ℝ :=
+  ![3 / 88, 81 / 440, 16 / 55, 16 / 55, 4 / 25, 1 / 25]
+
+theorem complexHingeSixWeight_pos : ∀ atomLabel, 0 < complexHingeSixWeight atomLabel := by
+  intro atomLabel
+  fin_cases atomLabel <;> norm_num [complexHingeSixWeight]
+
+theorem complexHingeSixWeight_sum_one : ∑ atomLabel, complexHingeSixWeight atomLabel = 1 := by
+  simp [complexHingeSixWeight, Fin.sum_univ_six]
+  norm_num
+
+/-- **Parseval at `(6,3)`.**  The third row and column see only the spike, whose
+share is `(1/25)·25 = 1`; the `2×2` block is the reweighted rank-two Parseval. -/
+theorem complexHingeSixParseval :
+    ∑ atomLabel, ((complexHingeSixWeight atomLabel : ℝ) : ℂ)
+      • complexAtom (complexHingeSixAtom atomLabel) = 1 := by
+  rw [Fin.sum_univ_six, complexHingeSixAtom_zero, complexHingeSixAtom_one,
+    complexHingeSixAtom_two, complexHingeSixAtom_three, complexHingeSixAtom_four,
+    complexHingeSixAtom_five, complexAtom_liftPlane, complexAtom_liftPlane,
+    complexAtom_liftPlane, complexAtom_liftPlane, complexAtom_liftPlane, complexAtom_spike]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [complexHingeAtom_zero, complexHingeAtom_one, complexHingeAtom_two,
+      complexHingeAtom_three, spreadAtom, complexHingeSixWeight, Complex.conj_ofNat,
+      fifthAmp_conj, rootTwoAmp_conj, omegaRoot_conj_eq, omegaRoot_sq_conj]
+  · linear_combination (27 / 55 : ℂ) * fifthAmp_sq + (4 / 25 : ℂ) * rootTwoAmp_sq
+  · linear_combination (36 / 55 : ℂ) * fifthAmp_sq + (2 / 25 : ℂ) * rootTwoAmp_sq
+      + (16 / 55 : ℂ) * omegaRoot_pair
+  · linear_combination (36 / 55 : ℂ) * fifthAmp_sq + (2 / 25 : ℂ) * rootTwoAmp_sq
+      + (16 / 55 : ℂ) * omegaRoot_pair
+  · linear_combination (93 / 55 : ℂ) * fifthAmp_sq + (1 / 25 : ℂ) * rootTwoAmp_sq
+      + (32 / 55 : ℂ) * omegaRoot_cube
+
+/-- **The `(6,3)` complex design.** -/
+noncomputable def complexHingeSixDesign : ComplexWeightedDesign 6 3 where
+  atom := complexHingeSixAtom
+  weight := complexHingeSixWeight
+  weight_pos := complexHingeSixWeight_pos
+  weight_sum_one := complexHingeSixWeight_sum_one
+  isParseval := complexHingeSixParseval
+
 end Gtz
