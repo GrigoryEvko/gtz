@@ -1480,6 +1480,7 @@ import Gtz.Wave.CornerAxisPairAdjugateLaw
 import Gtz.Wave.ChartPairDualityExchange
 import Gtz.Wave.ChartComplementBlockLaw
 import Gtz.Wave.ChartSharpDesignGap
+import Gtz.Wave.ChartFrobeniusLaw
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39754,3 +39755,19 @@ run_cmd do
 #print axioms Gtz.chartGapOfDesign_naimarkSharpDesign
 #print axioms Gtz.chartGapOfDesign_sharpDual_eq_sharpDesign
 #print axioms Gtz.exists_design_chartGap_eq_sharpDual
+
+-- Gtz/Wave/ChartFrobeniusLaw.lean -- tracing the realizability equation prices the whole
+--   chart gap: `Σ_{p,q} M_pq² = rank - 2 Σ_c t_c M_cc - Σ_c t_c²`, design-free in
+--   `Gtz.chartCore_sum_sq_gap`.  `M` is symmetric, so the left side is the total square
+--   mass, and splitting the diagonal off makes the OFF-diagonal mass a function of the
+--   diagonal and the weights alone.  Every strictly positive diagonal entry spends from
+--   that budget, so an all-heavy design has strictly less off-diagonal mass than
+--   `rank - Σ_c t_c²`.  One scalar identity; it decides nothing on its own.
+#print axioms Gtz.trace_mul_self_of_transpose_eq
+#print axioms Gtz.trace_mul_weightDiagonal
+#print axioms Gtz.trace_weightDiagonal_mul_sq
+#print axioms Gtz.sum_sq_chartGapOfDesign
+#print axioms Gtz.sum_sq_offDiagonal_chartGapOfDesign
+#print axioms Gtz.chartCore_sum_sq_gap
+#print axioms Gtz.sixThree_sum_sq_chartGap
+#print axioms Gtz.sum_sq_offDiagonal_lt_of_allHeavy
