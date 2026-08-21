@@ -6478,3 +6478,4 @@ import Gtz.Wave.KTwoFrameChart
 import Gtz.Wave.KTwoDesignKill
 import Gtz.Wave.CellHDowndatePromotion
 import Gtz.Wave.KTwoProbePair
+import Gtz.Wave.EtwoRealnessGauge

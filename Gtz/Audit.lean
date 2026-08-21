@@ -1387,6 +1387,7 @@ import Gtz.Wave.AtomWedgeMass
 import Gtz.Wave.CoherentHornRepayScope
 import Gtz.Wave.BranchBProductKill
 import Gtz.Wave.InadmissibleParallelJoint
+import Gtz.Wave.EtwoRealnessGauge
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -37692,3 +37693,15 @@ run_cmd do
 -- cross product of the axis with the first, and it annihilates their span
 #print axioms Gtz.dotProduct_bracketNormal_combo
 #print axioms Gtz.k2Probe_cross_spec
+
+-- Gtz/Wave/EtwoRealnessGauge.lean -- the corner design carries a residual gauge
+-- on the commutant of the inside weights, and the whole outside is blind to it
+#print axioms Gtz.gaugeFrame_corner_eq
+#print axioms Gtz.gaugeFrame_moment_eq
+#print axioms Gtz.gaugeFrame_outside_moment_eq
+#print axioms Gtz.planarGauge_orthogonal
+#print axioms Gtz.planarGauge_commutes_diagonal
+#print axioms Gtz.planarGauge_moment_eq
+#print axioms Gtz.planarGauge_outside_moment_eq
+#print axioms Gtz.planarGauge_corner_eq
+#print axioms Gtz.planarGauge_quarterTurn_frame
