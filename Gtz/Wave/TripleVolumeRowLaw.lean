@@ -11,7 +11,7 @@ The bracket is an inner product against the normal of its first two slots, and
 the normal's own squared length is the pair's squared area.  Parseval read at
 that normal is therefore a budget for the VOLUMES through one pair:
 
-  **`Gtz.sum_weight_mul_sq_tripleBracket`:  `∑_r t_r · [g_p, g_q, g_r]² = w_pq`** ,
+  **`Gtz.sum_weight_mul_sq_tripleBracket_crossNormSq`:  `∑_r t_r·[g_p,g_q,g_r]² = w_pq`** ,
 
 with `w_pq = l_p·l_q − ⟨g_p,g_q⟩²`.  Two lines, no chart, no hypothesis, every
 size and every design.  Everything below is a corollary.
@@ -85,6 +85,7 @@ law at the pair `{1,2}` reads `∑_r t_r·[1,2,r]² = 10 = w_12`, and at `{0,1}`
 reads `5 = w_01`.]
 -/
 import Gtz.Wave.ComplementPairDeterminantLaw
+import Gtz.Wave.NoStressResidualSwapBrackets
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -104,20 +105,24 @@ theorem bracketNormal_dotProduct_self (leftVec rightVec : Fin 3 → ℝ) :
     bracketNormal leftVec rightVec ⬝ᵥ bracketNormal leftVec rightVec
       = crossNormSq leftVec rightVec := rfl
 
-/-- **THE TRIPLE VOLUME ROW LAW.**  The weighted squared volumes of all the
-triples through one pair total that pair's squared area.  The bracket is the
-inner product against the pair's normal, so this is Parseval read at that normal
-and nothing else. -/
-theorem sum_weight_mul_sq_tripleBracket (D : WeightedDesign m 3) (first second : Fin m) :
+/-- The pair Gram determinant of the sibling module is the campaign's squared
+area under a different name. -/
+theorem crossNormSq_eq_pairBracketSq (leftVec rightVec : Fin 3 → ℝ) :
+    crossNormSq leftVec rightVec = pairBracketSq leftVec rightVec := by
+  rw [crossNormSq_eq_leverage_mul_sub_sq, pairBracketSq]
+
+/-- **THE TRIPLE VOLUME ROW LAW, IN SQUARED-AREA VOCABULARY.**  The weighted
+squared volumes of all the triples through one pair total that pair's squared
+area.  The sibling module `Gtz.Wave.NoStressResidualSwapBrackets` proves the same
+total against its own `Gtz.pairBracketSq`; this is that theorem read through
+`Gtz.crossNormSq`, which is the vocabulary the rest of this module uses. -/
+theorem sum_weight_mul_sq_tripleBracket_crossNormSq (D : WeightedDesign m 3)
+    (first second : Fin m) :
     ∑ third, D.weight third
         * tripleBracket (D.atom first) (D.atom second) (D.atom third) ^ 2
       = crossNormSq (D.atom first) (D.atom second) := by
-  have hprobe := sum_weight_mul_sq_reading D (bracketNormal (D.atom first) (D.atom second))
-  rw [bracketNormal_dotProduct_self] at hprobe
-  rw [← hprobe]
-  refine Finset.sum_congr rfl fun third _ => ?_
-  rw [tripleBracket_eq_bracketNormal_dotProduct,
-    dotProduct_comm (bracketNormal (D.atom first) (D.atom second)) (D.atom third)]
+  rw [crossNormSq_eq_pairBracketSq]
+  exact sum_weight_mul_sq_tripleBracket D first second
 
 /-- **THE HINGE IN VOLUME VOCABULARY.**  A pair has vanishing squared area — the
 survey's `w_ab = 0`, that is, the pair is parallel — exactly when every triple
@@ -128,7 +133,7 @@ theorem crossNormSq_eq_zero_iff_forall_sq_tripleBracket_eq_zero (D : WeightedDes
       ↔ ∀ third, tripleBracket (D.atom first) (D.atom second) (D.atom third) = 0 := by
   constructor
   · intro hflat third
-    have hrow := sum_weight_mul_sq_tripleBracket D first second
+    have hrow := sum_weight_mul_sq_tripleBracket_crossNormSq D first second
     rw [hflat] at hrow
     have hterm : D.weight third
         * tripleBracket (D.atom first) (D.atom second) (D.atom third) ^ 2 ≤ 0 := by
@@ -141,7 +146,7 @@ theorem crossNormSq_eq_zero_iff_forall_sq_tripleBracket_eq_zero (D : WeightedDes
       exact absurd hterm (not_le.mpr (mul_pos (D.weight_pos third) (lt_of_not_ge hcon)))
     exact pow_eq_zero_iff (n := 2) (by norm_num) |>.mp (le_antisymm hsq (sq_nonneg _))
   · intro hall
-    rw [← sum_weight_mul_sq_tripleBracket D first second]
+    rw [← sum_weight_mul_sq_tripleBracket_crossNormSq D first second]
     refine Finset.sum_eq_zero fun third _ => ?_
     rw [hall third]
     ring
@@ -530,7 +535,7 @@ theorem exists_sq_tripleBracket_pos_of_crossNormSq_pos (D : WeightedDesign m 3)
   by_contra hcon
   push Not at hcon
   have hzero : crossNormSq (D.atom first) (D.atom second) = 0 := by
-    rw [← sum_weight_mul_sq_tripleBracket D first second]
+    rw [← sum_weight_mul_sq_tripleBracket_crossNormSq D first second]
     refine Finset.sum_eq_zero fun third _ => ?_
     have := hcon third
     have hsq : tripleBracket (D.atom first) (D.atom second) (D.atom third) ^ 2 = 0 :=
@@ -556,7 +561,7 @@ theorem exists_sq_tripleBracket_ge_crossNormSq (D : WeightedDesign m 3)
       * tripleBracket (D.atom first) (D.atom second) (D.atom third) ^ 2
       < ∑ third, D.weight third * crossNormSq (D.atom first) (D.atom second) :=
     Finset.sum_lt_sum_of_nonempty ⟨first, Finset.mem_univ first⟩ fun third _ => hstrict third
-  rw [sum_weight_mul_sq_tripleBracket D first second, ← Finset.sum_mul,
+  rw [sum_weight_mul_sq_tripleBracket_crossNormSq D first second, ← Finset.sum_mul,
     D.weight_sum_one, one_mul] at hsum
   exact absurd hsum (lt_irrefl _)
 

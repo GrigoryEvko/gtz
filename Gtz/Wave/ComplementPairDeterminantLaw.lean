@@ -158,6 +158,8 @@ smallest weight.  That is the campaign's universal obstruction, measured here
 from the counterexample side rather than from the certificate side.]
 -/
 import Gtz.Wave.InadmissiblePairSeparation
+import Gtz.Design.DirectionBudget
+import Gtz.Design.StressFreeNormalizer
 import Gtz.Wave.CrossFrameRowLaw
 import Gtz.Design.PrimitiveTightClassification
 import Gtz.Core.Sanity
@@ -192,16 +194,10 @@ theorem scaledAtom_reading (D : WeightedDesign m k) (c : Fin m) (probe : Fin k �
   rw [hvec, dotProduct_smul, smul_eq_mul, dotProduct_comm]
   ring
 
-/-- **PARSEVAL, READ AT A PROBE.**  The weighted squared readings of all the atoms
-total the probe's own squared length. -/
-theorem sum_weight_mul_sq_reading (D : WeightedDesign m k) (probe : Fin k → ℝ) :
-    ∑ c, D.weight c * (D.atom c ⬝ᵥ probe) ^ 2 = probe ⬝ᵥ probe := by
-  classical
-  have hread : probe ⬝ᵥ ((∑ c, D.weight c • atomMatrix (D.atom c)) *ᵥ probe)
-      = ∑ c, D.weight c * (D.atom c ⬝ᵥ probe) ^ 2 := by
-    rw [Matrix.sum_mulVec, dotProduct_sum]
-    exact Finset.sum_congr rfl fun c _ => scaledAtom_reading D c probe
-  rw [← hread, D.isParseval, Matrix.one_mulVec]
+/-! The Parseval reading `Gtz.sum_weight_mul_sq_reading` and the gap symmetry
+`Gtz.isHermitian_subsetSum_sub_one` are landed in `Gtz.Design.DirectionBudget`
+and `Gtz.Design.StressFreeNormalizer` respectively, and are imported rather than
+restated. -/
 
 /-- A weighted subsum of atoms, read at a probe. -/
 theorem dotProduct_weightedSubsum_mulVec (D : WeightedDesign m k) (C : Finset (Fin m))
@@ -220,11 +216,6 @@ theorem posSemidef_weightedSubsum (D : WeightedDesign m k) (C : Finset (Fin m)) 
     Matrix.PosSemidef.zero ?_
   intro c _
   exact (posSemidef_atomMatrix (D.atom c)).smul (D.weight_pos c).le
-
-/-- The gap of a subset is Hermitian. -/
-theorem isHermitian_subsetSum_sub_one (D : WeightedDesign m k) (C : Finset (Fin m)) :
-    (subsetSum D C - 1).IsHermitian :=
-  (posSemidef_subsetSum D C).1.sub Matrix.isHermitian_one
 
 /-! ## 2. Three determinant laws
 
