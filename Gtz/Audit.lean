@@ -1325,6 +1325,7 @@ import Gtz.Wave.CellHStarPromotion
 import Gtz.Wave.CellHDowndatePromotion
 import Gtz.Wave.CellHTwoStarProducer
 import Gtz.Wave.ZeroAxisStarLedger
+import Gtz.Wave.OutsideFrameMomentLadder
 import Gtz.Wave.InsertionDowndateLedger
 import Gtz.Wave.CellBTiePackage
 import Gtz.Wave.BothLightChartReduction
@@ -37849,6 +37850,23 @@ run_cmd do
 #print axioms Gtz.cornerTriple_compl_card
 #print axioms Gtz.oneAxisZeroHeavyInsideResidual_of_starRefusals
 #print axioms Gtz.cellH_zSide_refusals_free
+
+-- Gtz/Wave/OutsideFrameMomentLadder.lean -- the weight moments of a complement
+-- triple, and the ten-refusal collapse of the Z1 coverage
+#print axioms Gtz.weightedTriple_eq_columnMatrix_conj
+#print axioms Gtz.diagonal_weights_sq
+#print axioms Gtz.adjugate_diagonal_three
+#print axioms Gtz.outside_second_moment_ladder
+#print axioms Gtz.outside_inverse_moment_ladder
+#print axioms Gtz.outside_second_moment_probe
+#print axioms Gtz.outside_second_moment_probe_nonneg
+#print axioms Gtz.compl_inter_card_le_one
+#print axioms Gtz.isTie_compl_not_posDef
+#print axioms Gtz.OneAxisZeroStarRefusalSystem
+#print axioms Gtz.oneAxisZeroPairCoverage_of_starRefusalSystem
+#print axioms Gtz.oneAxisZeroHeavyInsideResidual_of_starRefusalSystem
+#print axioms Gtz.oneAxisZeroBothLightResidual_of_starRefusalSystem
+#print axioms Gtz.cellH_starRefusalSystem_budget
 
 -- Gtz/Wave/BranchTwoDeterminantSum.lean -- the two determinant conditions of E1
 -- add to a linear bound; the centre is ruled out by the second alone
