@@ -1,0 +1,160 @@
+NOTES — RANK FOUR: THE FIRST CENSUS, AND THE GENERAL-RANK ADJUGATE LAW
+=====================================================================
+Lane: conjecture 9.2 of the survey, i.e. the two general-rank registry axioms
+  Skeleton.obligationSubThresholdBandHinge          (band, 2k <= m < k(k+1)/2)
+  Skeleton.obligationThresholdCellHingeRankFourAndUp (cell, m = k(k+1)/2, k >= 4)
+First live at rank four: band (8,4), (9,4); threshold cell (10,4).
+The registry's STATUS field for the band axiom reads "no evidence".  This file
+supplies the first evidence.
+
+
+F-R4C-1.  LANDED: the corank-one adjugate law at EVERY rank.
+-----------------------------------------------------------
+Gtz/Wave/CorankOneAdjugateGeneralRank.lean, commit c0e9c59, 11 theorems, every
+pin [propext, Classical.choice, Quot.sound], per-module build only, both
+umbrellas wired insertions-only (0 deletions).
+
+  G symmetric,  G *v w = 0,  w . w = 1,  ker G = R w   ==>
+
+      adj G = trace(adj G) * w w^T                      adjugate_eq_trace_smul_vecMulVec
+      v . (adj G *v v) = trace(adj G) * (v . w)^2       adjugate_quadForm_eq
+      det(G + v v^T) = trace(adj G) * (v . w)^2         det_add_atomMatrix_of_kernelIsLine
+
+trace(adj G) is e_{k-1}(G), the total of the principal minors of order k-1.  At
+rank three these are the campaign's pairGapMinor_eq_pairMinorTotal_mul_reading_*
+and det_add_atomMatrix_of_unit_null, both proved there by explicit
+linear_combination certificates on the NINE entries.  That proof does not
+generalise: at rank k the entries number k^2.
+
+The proof here is structural and rank-free:
+  (i)   a unit kernel vector makes det G = 0, so G * adj G = 0;
+  (ii)  hence every column of adj G is a kernel vector;
+  (iii) corank one makes each column a multiple of w, so adj G = w c^T;
+  (iv)  adj of a symmetric matrix is symmetric, forcing c in R w;
+  (v)   the trace names the scalar.
+No eigenvalue, no characteristic polynomial, no certificate.
+
+Also free, with NO corank hypothesis at any rank:
+  v . w = 0  ==>  (G + v v^T) *v w = 0  and  det(G + v v^T) = 0
+        add_atomMatrix_mulVec_eq_zero_of_blind, det_add_atomMatrix_eq_zero_of_blind
+
+The corank hypothesis is carried as an explicit predicate KernelIsLine G w
+("every kernel vector is a multiple of w") rather than through rank vocabulary.
+That is honest and it is what the corank-one arm actually uses.
+
+TWO NAME COLLISIONS caught by a single-pass scan before either broke a umbrella:
+  vecMulVec_mulVec_eq            already Gtz/LinAlg/SchurRankOne.lean:49
+  ne_zero_of_dotProduct_self_eq_one  already Gtz/Wave/FlatPairWeakSeed.lean:226
+Both landed versions are identical in statement to what I had written; mine were
+deleted and the landed ones imported.  The grep rule paid twice in one module.
+
+
+F-R4C-2.  THE FIRST RANK-FOUR BOUNDARY SYSTEMS.
+-----------------------------------------------
+Nobody had produced one.  Method: search the boundary locus as the ZERO SET of
+  Phi(D) = sum over k-subsets T of max(lmin(S_T - I), 0)^2
+under a hard weight floor t >= 0.03, never by minimising max_T lmin (which
+converges to dust).  Parametrisation: weights by softmax over the floor,
+directions by an arbitrary m x k matrix whitened against the weighted frame
+operator, so Parseval holds exactly by construction at every iterate.
+
+Harness: Julia, 300 threads, BLAS pinned to one thread, hand-rolled in-place
+cyclic Jacobi for the 4x4 symmetric eigenproblem, allocation-free hot loop, no
+lock (restarts chunked, each task owns its workspace).
+CALIBRATION: the Jacobi agrees with LAPACK to 7.55e-15 over 5000 random
+symmetric 4x4 matrices.
+Exact check first: the uniform graphic design of K5 at (10,4) has every leverage
+equal to 4 and all 65 of its dominating 4-sets STRICT — not a boundary system.
+
+Free search, 180 restarts per cell, weight floor 0.03:
+
+  cell   max lmin    dominating/total   strict   max cos^2        min t
+  (8,4)  +2.149e-6      8 / 70            8      0.999999999999   0.0302
+  (9,4)  +2.442e-6      6 / 126           6      1.0              0.0300
+  (10,4) +1.042e-6     24 / 210          22      1.0              0.0300
+
+leverages (8,4)  [10.98, 7.48, 21.25, 10.98, 4.76, 21.94, 1.18, 22.91]
+weights   (8,4)  [.0305,.0302,.0310,.0304,.0303,.0307,.7863,.0306]
+leverages (9,4)  [10.90, 21.24, 22.78, 3.99, 1.20, 3.99, 7.20, 21.64, 10.90]
+weights   (9,4)  [.0304,.0301,.0300,.0300,.7591,.0300,.0300,.0300,.0303]
+leverages (10,4) [12.40, 7.90, 12.40, 6.00, 1.27, 11.70, 7.90, 24.53, 11.70, 7.90]
+weights   (10,4) [.0300,.0301,.0300,.0300,.7299,.0300,.0300,.0300,.0300,.0300]
+
+*** AT ALL THREE CELLS THE MINIMISER CARRIES A COLLINEAR PAIR (max cos^2 = 1). ***
+
+Two structural features of every minimiser, at all three cells:
+  - ONE dominant weight (0.73 to 0.79), every other weight pinned at the floor;
+  - the dominant-weight atom is the one of LEAST leverage (1.18, 1.20, 1.27),
+    barely above one, while the floor-weight atoms carry leverages up to 24.5.
+This is the simplex-vertex collapse the (6,3) lanes report independently.
+
+
+F-R4C-3.  PRIMITIVITY IS WHAT BLOCKS IT.  THE EVIDENCE FOR CONJECTURE 9.2.
+--------------------------------------------------------------------------
+Same search with collinearity forbidden by a barrier on cos^2 <= 1 - delta,
+same floor, same restart count.  The tie objective is the value that must reach
+zero for a boundary system to exist:
+
+  cell    delta   tie objective   max lmin        max cos^2 attained
+  (8,4)   0.10    1.0939e-07      +2.120e-04      0.4670
+  (8,4)   0.02    1.5348e-07      +3.071e-04      0.5073
+  (9,4)   0.10    6.8723e-07      +6.719e-04      0.5219
+  (9,4)   0.02    7.6148e-07      +7.710e-04      0.5796
+  (10,4)  0.10    1.4643e-05      +2.883e-03      0.6669
+  (10,4)  0.02    1.3684e-05      +3.188e-03      0.9800
+
+READING.  With collinearity allowed the search drives max lmin to ~1e-6 and the
+minimiser is collinear at every cell.  With collinearity forbidden max lmin
+STAYS STRICTLY POSITIVE, two to four orders of magnitude higher, at every cell
+and at both barrier strengths — the objective never approaches zero.  A
+primitive rank-four boundary system was not reachable at any window cell, while
+a collinear one was reachable at all three.  That is exactly what conjecture 9.2
+asserts, and it is the first evidence of any kind for the band axiom.
+
+HONEST LIMITS, stated because the campaign's record demands it:
+  - the free search reaches max lmin ~1e-6, not an exact boundary system; these
+    are near-boundary points, not certified ties;
+  - the barrier figures are PENALISED, and this campaign has a recorded incident
+    of a penalty trapping an optimiser into a false report.  The separation here
+    is 2 to 4 orders of magnitude and consistent across three cells and two
+    barrier strengths, which is why it is reported, but it is evidence and not
+    proof;
+  - the minimisers sit at a weight-floor boundary with one dominant weight, so
+    they probe the corner of the domain, not its interior.
+
+WHAT WOULD SETTLE IT.  A certified rank-four boundary system, obtained by
+solving the active-set system exactly at one of these near-boundary points
+rather than by descent, and then a census of its collinear pairs.  The active
+set at (8,4) is the 8 subsets listed above.
+
+
+F-R4C-4.  WHICH RANK-THREE INSTRUMENTS TRANSFER (survey section 9.2).
+---------------------------------------------------------------------
+Checked against the substrate, not asserted:
+  TRANSFER AS STATED, already general in k:
+    the Gram/Sylvester criterion (posDef_transpose_mul_sub_one_comm is general);
+    the mirror (mirror_reading_smul_eq is stated at WeightedDesign m k);
+    the leverage floor and the unit-atom proposition (leverage_one_le_of_isTie
+      is stated at general k);
+    the pivot ledger — trace_identity, excess_balance and
+      erase_dominates_iff_pivot_le_one in Gtz/Design/TraceIdentity.lean are all
+      general (m,k) already;
+    the budgets, with BINOMIAL constants (GeneralRankBudgets, landed).
+  DID NOT TRANSFER UNTIL NOW, and this lane supplied them:
+    the corank-one adjugate law and the four-set determinant law (F-R4C-1).
+  STILL RANK-THREE ONLY:
+    everything phrased through the bracket [abc] or the cross product, since
+    both are rank-three constructions; the general-rank replacement is the
+    adjugate, which is what F-R4C-1 provides.
+
+
+F-R4C-5.  PROCESS.
+------------------
+Two runaway Julia processes were created and killed during this round: the first
+searches used g_tol = 1e-14 with FINITE-DIFFERENCE gradients, which never
+converges, so every restart burned its full iteration budget — 14 minutes on one
+cell.  Setting g_abstol = 1e-10 and pinning BLAS to a single thread (Julia
+threads times BLAS threads was oversubscribing 384 cores at 523 threads per
+process) brought the same three cells to 114, 172 and 293 seconds.
+RULE: with finite-difference gradients, never set a gradient tolerance below
+about 1e-10, and always pin BLAS to one thread when the hot loop is hand rolled.

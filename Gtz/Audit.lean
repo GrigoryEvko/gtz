@@ -1396,6 +1396,7 @@ import Gtz.Wave.MirrorPairMinorTrigger
 import Gtz.Wave.FunnelSecondInvariantFloor
 import Gtz.Wave.FunnelSwapClosure
 import Gtz.Wave.NullProbeFourSetLaw
+import Gtz.Wave.CorankOneAdjugateGeneralRank
 import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
 import Gtz.Wave.FourSetFloorPackage
@@ -38602,3 +38603,19 @@ run_cmd do
 #print axioms Gtz.exists_coord_sq_lt_one
 #print axioms Gtz.four_mul_secondInvariant_le_trace_sq_of_unit_null
 #print axioms Gtz.isTie_sixThree_funnel_pinch_law
+
+-- Gtz/Wave/CorankOneAdjugateGeneralRank.lean -- the corank-one adjugate law and
+-- the four-set determinant law at EVERY rank, structurally rather than by
+-- entrywise certificates: the instruments the general-rank obligations need at
+-- the band cells (8,4), (9,4) and the threshold cell (10,4)
+#print axioms Gtz.dotProduct_smul_right
+#print axioms Gtz.det_eq_zero_of_mulVec_eq_zero
+#print axioms Gtz.mul_adjugate_eq_zero_of_unit_null
+#print axioms Gtz.mulVec_adjugate_mulVec_eq_zero
+#print axioms Gtz.adjugate_transpose_eq_of_symm
+#print axioms Gtz.exists_adjugate_eq_vecMulVec
+#print axioms Gtz.adjugate_eq_trace_smul_vecMulVec
+#print axioms Gtz.adjugate_quadForm_eq
+#print axioms Gtz.det_add_atomMatrix_of_kernelIsLine
+#print axioms Gtz.det_add_atomMatrix_eq_zero_of_blind
+#print axioms Gtz.add_atomMatrix_mulVec_eq_zero_of_blind
