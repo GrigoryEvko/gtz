@@ -1481,6 +1481,7 @@ import Gtz.Wave.ChartPairDualityExchange
 import Gtz.Wave.ChartComplementBlockLaw
 import Gtz.Wave.ChartSharpDesignGap
 import Gtz.Wave.ChartFrobeniusLaw
+import Gtz.Wave.DependencyDominationCriterion
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39771,3 +39772,20 @@ run_cmd do
 #print axioms Gtz.chartCore_sum_sq_gap
 #print axioms Gtz.sixThree_sum_sq_chartGap
 #print axioms Gtz.sum_sq_offDiagonal_lt_of_allHeavy
+
+-- Gtz/Wave/DependencyDominationCriterion.lean -- domination read on the linear
+-- DEPENDENCIES of the atoms: a k-subset dominates exactly when every z with
+-- sum_c z_c g_c = 0 obeys sum_{c in C} z_c^2/(1-t_c) <= sum_{c not in C} z_c^2/t_c.
+-- The engine is one general fact about a symmetric idempotent, proved by two
+-- Cauchy-Schwarz steps with no eigenvalue, no rank and no matrix inverse.
+#print axioms Gtz.dependencySpread_transfer
+#print axioms Gtz.dependencySpread_quadForm
+#print axioms Gtz.posSemidef_diagonal_sub_block_iff_kernelBound
+#print axioms Gtz.coProjectionForm_transpose
+#print axioms Gtz.coProjectionForm_mul_self
+#print axioms Gtz.mulVec_coProjection_self_iff
+#print axioms Gtz.projectionBlock_gap_eq_coProjection_gap
+#print axioms Gtz.dominates_iff_kernelBound
+#print axioms Gtz.transpose_scaledAtomRows_mulVec_eq_zero_iff
+#print axioms Gtz.dominates_iff_dependencyBound
+#print axioms Gtz.dominates_iff_dependencyBound_compl
