@@ -1391,6 +1391,7 @@ import Gtz.Wave.ProbeFreeParsevalBudget
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
 import Gtz.Wave.BlindMemberPlane
+import Gtz.Wave.TwoPlaneCollapse
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.CornerEmptinessSlack
@@ -38103,3 +38104,15 @@ run_cmd do
 #print axioms Gtz.not_exists_excessDominates_of_rowCovered
 #print axioms Gtz.not_forall_excessDominates_of_rowCovered
 #print axioms Gtz.rowCovered_of_crowded_profile
+
+-- Gtz/Wave/TwoPlaneCollapse.lean -- the unit atom trapped in a boundary plane
+-- drags every live reader into the same plane, so the two-zeros case of a
+-- (6,3) tie collapses to four coplanar atoms
+#print axioms Gtz.parseval_at_unitAtom_four_labels
+#print axioms Gtz.unitAtom_plane_collapse_relation
+#print axioms Gtz.twoPlane_bracket_eq_zero
+#print axioms Gtz.unitAtom_plane_bracket_eq_zero
+#print axioms Gtz.twoPlane_collapse
+#print axioms Gtz.six_labels_cover
+#print axioms Gtz.blindReading_cover
+#print axioms Gtz.k2SixThree_parallel_or_two_plane

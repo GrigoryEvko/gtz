@@ -6506,3 +6506,4 @@ import Gtz.Wave.ProbeFreeParsevalBudget
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
 import Gtz.Wave.BlindMemberPlane
+import Gtz.Wave.TwoPlaneCollapse
