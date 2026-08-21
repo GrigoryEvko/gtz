@@ -1463,6 +1463,8 @@ import Gtz.Wave.NaimarkDualExistence
 import Gtz.Wave.NaimarkCycleFree
 import Gtz.Wave.NaimarkSharpDesign
 import Gtz.Wave.PlaneShadowPairBridge
+import Gtz.Wave.PivotFourDominatingTriples
+import Gtz.Wave.UnitAtomFunnelClosure
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -38963,9 +38965,9 @@ run_cmd do
 #print axioms Gtz.exists_planeStrictPair_of_shadowNesterenkoExcess
 #print axioms Gtz.exists_unitAxis_dotProduct_eq_zero
 #print axioms Gtz.exists_unitAxis_planeStrictPair_of_nesterenkoExcess
-#print axioms Gtz.subsetSum_triple
-#print axioms Gtz.det_pairGap_eq_neg_pairGapMinor
-#print axioms Gtz.det_tripleGap_eq_tripleGapDet
+#print axioms Gtz.subsetSum_triple_rankThree
+#print axioms Gtz.det_subsetSum_pairGap_eq_neg_pairGapMinor
+#print axioms Gtz.det_subsetSum_tripleGap_eq_tripleGapDet
 #print axioms Gtz.gapReading_pTwo_pos_of_planeStrictPair
 #print axioms Gtz.admissiblePair_of_planeStrictPair
 #print axioms Gtz.one_lt_leverage_of_planeStrictPair

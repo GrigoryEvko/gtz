@@ -790,7 +790,7 @@ plane-strict pair is an ADMISSIBLE pair in the sense of
 `Gtz.AdmissiblePair`. -/
 
 /-- The unweighted sum over a triple, unfolded. -/
-theorem subsetSum_triple (design : WeightedDesign size 3)
+theorem subsetSum_triple_rankThree (design : WeightedDesign size 3)
     {labelOne labelTwo labelThree : Fin size} (hOneTwo : labelOne ≠ labelTwo)
     (hOneThree : labelOne ≠ labelThree) (hTwoThree : labelTwo ≠ labelThree) :
     subsetSum design {labelOne, labelTwo, labelThree}
@@ -806,7 +806,7 @@ theorem subsetSum_triple (design : WeightedDesign size 3)
 /-- **THE PAIR GAP DETERMINANT IS MINUS THE PAIR MINOR.**  At rank three the pair
 sum is singular, so its gap determinant carries the sign of the missing
 direction. -/
-theorem det_pairGap_eq_neg_pairGapMinor (design : WeightedDesign size 3)
+theorem det_subsetSum_pairGap_eq_neg_pairGapMinor (design : WeightedDesign size 3)
     {strongLabel otherLabel : Fin size} (hne : strongLabel ≠ otherLabel) :
     (subsetSum design {strongLabel, otherLabel} - 1).det
       = - pairGapMinor (design.atom strongLabel) (design.atom otherLabel) := by
@@ -817,13 +817,13 @@ theorem det_pairGap_eq_neg_pairGapMinor (design : WeightedDesign size 3)
   ring
 
 /-- **THE TRIPLE GAP DETERMINANT IS THE THIRD SYLVESTER MINOR.** -/
-theorem det_tripleGap_eq_tripleGapDet (design : WeightedDesign size 3)
+theorem det_subsetSum_tripleGap_eq_tripleGapDet (design : WeightedDesign size 3)
     {labelOne labelTwo labelThree : Fin size} (hOneTwo : labelOne ≠ labelTwo)
     (hOneThree : labelOne ≠ labelThree) (hTwoThree : labelTwo ≠ labelThree) :
     (subsetSum design {labelOne, labelTwo, labelThree} - 1).det
       = tripleGapDet (design.atom labelOne) (design.atom labelTwo)
           (design.atom labelThree) := by
-  rw [subsetSum_triple design hOneTwo hOneThree hTwoThree, Matrix.det_fin_three, tripleGapDet]
+  rw [subsetSum_triple_rankThree design hOneTwo hOneThree hTwoThree, Matrix.det_fin_three, tripleGapDet]
   simp only [Matrix.sub_apply, Matrix.add_apply, atomMatrix, Matrix.vecMulVec_apply,
     leverageOf, dotProduct, Fin.sum_univ_three, Matrix.one_apply, Fin.isValue]
   norm_num [Fin.ext_iff]
@@ -849,7 +849,7 @@ theorem admissiblePair_of_planeStrictPair (design : WeightedDesign size 3)
   have hframeNeg := frameDet_pair_neg_of_planeStrictPair design frame hne hstrict
   have hdetValue := det_gap_eq_frameDet design ({strongLabel, otherLabel} : Finset (Fin size))
     frame
-  have hdictionary := det_pairGap_eq_neg_pairGapMinor design hne
+  have hdictionary := det_subsetSum_pairGap_eq_neg_pairGapMinor design hne
   rw [hdetValue] at hdictionary
   rw [AdmissiblePair]
   linarith
@@ -1149,7 +1149,7 @@ theorem sq_tripleBracket_window_of_isTie (design : WeightedDesign size 3) (htie 
     det_gap_nonpos_of_isTie_of_pairPlaneStrict design htie frame.oneOne frame.twoTwo
       frame.axisAxis frame.oneTwo frame.oneAxis frame.twoAxis hne hneStrongThird
       hneOtherThird hstrict
-  rw [det_tripleGap_eq_tripleGapDet design hne hneStrongThird hneOtherThird] at hgate
+  rw [det_subsetSum_tripleGap_eq_tripleGapDet design hne hneStrongThird hneOtherThird] at hgate
   have hareaNonneg : 0 ≤ crossNormSq (design.atom strongLabel) (design.atom otherLabel) := by
     rw [crossNormSq]
     exact dotProduct_self_nonneg _
