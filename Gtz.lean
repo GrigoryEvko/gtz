@@ -6446,3 +6446,6 @@ import Gtz.Wave.CornerAdjugateWeightCap
 import Gtz.Wave.BracketMassRefusal
 import Gtz.Wave.CornerAxisElimination
 import Gtz.Wave.CornerAxisBridges
+import Gtz.Wave.ComplementBracketLaw
+import Gtz.Wave.CornerSizeLaw
+import Gtz.Wave.PairMinorBudget

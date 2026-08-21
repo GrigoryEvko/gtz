@@ -1350,11 +1350,14 @@ import Gtz.Wave.CoherentHornSumLaw
 import Gtz.Wave.OppositeHornRefusalBudget
 import Gtz.Wave.CornerAdjugateWeightCap
 import Gtz.Wave.BracketMassRefusal
+import Gtz.Wave.ComplementBracketLaw
 import Gtz.Wave.CoherentHornBlockCriterion
 import Gtz.Wave.CornerPairAdjugate
 import Gtz.Wave.CornerAxisElimination
 import Gtz.Wave.CornerAxisCalculus
 import Gtz.Wave.CornerAxisBridges
+import Gtz.Wave.CornerSizeLaw
+import Gtz.Wave.PairMinorBudget
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -37269,3 +37272,43 @@ run_cmd do
 #print axioms Gtz.cornerForm_wedgeCeiling_slack
 #print axioms Gtz.three_of_six_share_a_side
 #print axioms Gtz.allSameSideInadmissible_no_posDef
+
+-- Gtz/Wave/ComplementBracketLaw.lean -- the two complementary triples pay their
+-- bracket masses into one budget, and the size five to six gap IS that slack
+#print axioms Gtz.det_one_sub_weighted_triple
+#print axioms Gtz.det_weighted_triple
+#print axioms Gtz.det_weighted_pair
+#print axioms Gtz.complement_bracket_law
+#print axioms Gtz.triple_bracket_law_five
+#print axioms Gtz.complement_bracket_slack
+#print axioms Gtz.tripleBracket_mass_le_budget
+#print axioms Gtz.tripleBracket_lt_budget_of_complement_spans
+
+-- Gtz/Wave/CornerSizeLaw.lean -- the six-set size law at a corner.  A corner is
+-- never in branch B, so the law's only tie consequence is unusable there; this
+-- module replaces it by evaluating the corner's own ten terms EXACTLY.  The
+-- three two-inside triples at an outside atom total minus the scale times that
+-- atom's transverse mass, and stripping the corner's whole share leaves the ten
+-- live triples against the size-carrying invariants plus one nonnegative
+-- correction.
+#print axioms Gtz.tripleBracket_sq_swap_outer
+#print axioms Gtz.cornerForm_twoInside_gapDet_atom_total
+#print axioms Gtz.cornerForm_twoInside_gapDet_total
+#print axioms Gtz.cornerForm_transverseMass_nonneg
+#print axioms Gtz.cornerForm_not_branchB
+#print axioms Gtz.cornerForm_sixSet_liveTotal
+#print axioms Gtz.cornerForm_isTie_sixSet_bound
+#print axioms Gtz.cornerForm_isTie_sixSet_bound_invariants
+
+-- Gtz/Wave/PairMinorBudget.lean -- the weighted pair minors of every design
+-- total one, and the surplus over the diagonal names an admissible pair
+#print axioms Gtz.pairGapMinor_self
+#print axioms Gtz.pairMinor_budget
+#print axioms Gtz.sum_weight_sq_lt_one
+#print axioms Gtz.offDiag_weight_mass
+#print axioms Gtz.pairMinor_offDiag_budget
+#print axioms Gtz.sum_weightSq_leverage_pos
+#print axioms Gtz.exists_offDiag_pairMinor_pos
+#print axioms Gtz.exists_offDiag_pairMinor_gt_one
+#print axioms Gtz.exists_pairMinor_pos_not_both_mem
+#print axioms Gtz.exists_pairMinor_gt_one_not_both_mem
