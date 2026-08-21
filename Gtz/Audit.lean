@@ -1132,6 +1132,7 @@ import Gtz.Wave.ThreeRowCapturedDichotomy
 import Gtz.Wave.ThresholdCellDominance
 import Gtz.Wave.MeetingDegreeCrowdedness
 import Gtz.Wave.RowCoveredRefutation
+import Gtz.Wave.GeneralRankBudgets
 import Gtz.Wave.ThresholdEnergyClosure
 import Gtz.Wave.ThresholdSpread
 import Gtz.Wave.TightGramSixLaws
@@ -38200,3 +38201,13 @@ run_cmd do
 #print axioms Gtz.corner_dotProduct_eq_readings
 #print axioms Gtz.not_isTie_of_cornerRepaysSomePair
 #print axioms Gtz.tripleGapDet_nonpos_of_isTie_of_admissible
+
+-- Gtz/Wave/GeneralRankBudgets.lean -- the budgets at general rank: the weighted squared
+-- pairing totals the rank, the wedge totals `k^2 - k` and the pair minor `k^2 - 3k + 1`,
+-- so two of the five constants are quadratic in the rank rather than linear
+#print axioms Gtz.trace_vecMulVec
+#print axioms Gtz.sq_dotProduct_eq_trace_mul
+#print axioms Gtz.pairingSq_budget
+#print axioms Gtz.wedge_budget_rank
+#print axioms Gtz.pairMinor_budget_rank
+#print axioms Gtz.pairMinor_constant_pos_iff
