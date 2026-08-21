@@ -1373,6 +1373,8 @@ import Gtz.Wave.KTwoBridgeRefusalY
 import Gtz.Wave.KTwoBridgeSlacks
 import Gtz.Wave.KTwoBridgePositives
 import Gtz.Wave.KTwoBridgeDominates
+import Gtz.Wave.KTwoBridgePlaneReadings
+import Gtz.Wave.KTwoAxisWedgeBudget
 import Gtz.Wave.CoherentHornRepayScope
 import Gtz.Wave.BranchBProductKill
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
@@ -37569,3 +37571,26 @@ run_cmd do
 #print axioms Gtz.exists_pairGapMinor_pos_of_leverage
 #print axioms Gtz.sum_weight_mul_tripleGapDet_through_pair
 #print axioms Gtz.exists_tripleGapDet_pos_through_pair
+#print axioms Gtz.weighted_column_total
+#print axioms Gtz.exists_pos_of_nonneg_combo_pos
+#print axioms Gtz.corner_column_posDef_of_weighted_pos
+#print axioms Gtz.linear_producer_incomplete
+#print axioms Gtz.corner_column_posDef_iff_esymm_signs
+
+-- Gtz/Wave/KTwoBridgePlaneReadings.lean -- the determinant reading of the chart
+-- and the four bridge relations as Parseval readings at a plane frame
+#print axioms Gtz.k2Plane_det_law
+#print axioms Gtz.k2Plane_cross_sq
+#print axioms Gtz.k2Plane_Dn_clear
+#print axioms Gtz.k2FivePlane_outside_nhat_zero
+#print axioms Gtz.k2FivePlane_relations
+
+-- Gtz/Wave/KTwoAxisWedgeBudget.lean -- the erased scale is the axis wedge, its
+-- budget is two, and the cross law needs no normalisation
+#print axioms Gtz.axisWedge_eq_leverage_sub_pairing_sq
+#print axioms Gtz.hasParallelPair_of_axisWedge_eq_zero
+#print axioms Gtz.axisWedge_budget
+#print axioms Gtz.axisWedge_term_nonneg
+#print axioms Gtz.exists_axisWedge_pos
+#print axioms Gtz.axisWedge_outside_budget
+#print axioms Gtz.k2Plane_cross_law_homog

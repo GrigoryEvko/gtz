@@ -6466,3 +6466,5 @@ import Gtz.Wave.CornerGatewayBudget
 import Gtz.Wave.KTwoBridgePositives
 import Gtz.Wave.BranchBProductKill
 import Gtz.Wave.KTwoBridgeDominates
+import Gtz.Wave.KTwoBridgePlaneReadings
+import Gtz.Wave.KTwoAxisWedgeBudget
