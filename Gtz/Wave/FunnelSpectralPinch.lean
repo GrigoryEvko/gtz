@@ -903,7 +903,174 @@ theorem four_mul_secondInvariant_le_trace_sq_of_unit_null
     nlinarith [hp, hsq]
   nlinarith [hkey, pow_pos hpos 2]
 
-/-! ## 14. The pinch law at six points -/
+/-! ## 14. The plane Parseval budget, and the weight the window needs -/
+
+/-- The weighted leverages of a rank-three design total three. -/
+theorem sum_weight_leverage (D : WeightedDesign m 3) :
+    ∑ c, D.weight c * leverageOf (D.atom c) = 3 := by
+  have h := congrArg Matrix.trace D.isParseval
+  rw [Matrix.trace_sum, Matrix.trace_one] at h
+  simp only [Matrix.trace_smul, smul_eq_mul, trace_atomMatrix, Fintype.card_fin] at h
+  rw [h]
+  norm_num
+
+/-- **THE PLANE PARSEVAL BUDGET.**  The weighted plane norms of a design against
+any probe total three less the probe's own square.  At a unit probe the budget is
+exactly TWO: the two directions of the plane. -/
+theorem sum_weight_planeNormSq (D : WeightedDesign m 3) (w : Fin 3 → ℝ) :
+    ∑ c, D.weight c * planeNormSq (D.atom c) w = 3 - w ⬝ᵥ w := by
+  have hlev := sum_weight_leverage D
+  have hpar := parseval_probe_form D w
+  simp only [planeNormSq, mul_sub]
+  rw [Finset.sum_sub_distrib, hlev, hpar]
+
+/-- **NO ATOM EXCEEDS THE BUDGET.**  One atom's weighted plane norm is at most
+two, because every other summand of the budget is nonnegative.  This is the ONLY
+upper bound the corpus has on an outside reader's plane norm, and it carries the
+reciprocal of that reader's weight. -/
+theorem weight_mul_planeNormSq_le (D : WeightedDesign m 3) {w : Fin 3 → ℝ}
+    (hunit : w ⬝ᵥ w = 1) (p : Fin m) :
+    D.weight p * planeNormSq (D.atom p) w ≤ 2 := by
+  have hbudget := sum_weight_planeNormSq D w
+  rw [hunit] at hbudget
+  have hsingle : D.weight p * planeNormSq (D.atom p) w
+      ≤ ∑ c, D.weight c * planeNormSq (D.atom c) w :=
+    Finset.single_le_sum
+      (f := fun c => D.weight c * planeNormSq (D.atom c) w)
+      (fun c _ => mul_nonneg (D.weight_pos c).le (planeNormSq_nonneg hunit))
+      (Finset.mem_univ p)
+  linarith [hbudget, hsingle]
+
+/-- **ONE POLYNOMIAL INEQUALITY OPENS THE WINDOW.**  `tau * M < e2 * n` is
+sufficient, because `e2 / tau` never exceeds the smaller nonzero eigenvalue.  No
+eigenvalue is named: the certificate is
+`tau ^ 2 * Q = e2 ^ 2 * n ^ 2 + (tau * M - e2 * n) * (tau * M + e2 * n - tau ^ 2 * n)`
+read against `4 * e2 ≤ tau ^ 2`. -/
+theorem window_of_trace_mul_ceiling_lt {form : Matrix (Fin 3) (Fin 3) ℝ}
+    (htau : 0 < Matrix.trace form) (he : 0 < secondInvariantOfThree form)
+    (hdisc : 4 * secondInvariantOfThree form ≤ Matrix.trace form ^ 2)
+    {v w : Fin 3 → ℝ} (hn : 0 ≤ planeNormSq v w)
+    (hlt : Matrix.trace form * paymentCeiling form v w
+      < secondInvariantOfThree form * planeNormSq v w) :
+    2 * paymentCeiling form v w < Matrix.trace form * planeNormSq v w
+      ∧ 0 < pinchPoly form (planeNormSq v w) (paymentCeiling form v w) := by
+  set tau := Matrix.trace form with htaudef
+  set e2 := secondInvariantOfThree form with he2def
+  set n := planeNormSq v w with hndef
+  set M := paymentCeiling form v w with hMdef
+  refine ⟨by nlinarith [hlt, hdisc, htau, hn, he], ?_⟩
+  rw [pinchPoly, ← htaudef, ← he2def]
+  rcases eq_or_lt_of_le hn with hzero | hpos
+  · have hM : M < 0 := by nlinarith [hlt, htau, hzero]
+    nlinarith [hM, hzero]
+  · have hcert : tau ^ 2 * (M ^ 2 - tau * n * M + e2 * n ^ 2)
+        = e2 ^ 2 * n ^ 2 + (tau * M - e2 * n) * (tau * M + e2 * n - tau ^ 2 * n) := by
+      ring
+    have hfac : 0 ≤ (tau * M - e2 * n) * (tau * M + e2 * n - tau ^ 2 * n) := by
+      have h1 : tau * M - e2 * n < 0 := by linarith [hlt]
+      have h2 : tau * M + e2 * n - tau ^ 2 * n ≤ 0 := by nlinarith [hlt, hdisc, hpos]
+      nlinarith [h1, h2]
+    nlinarith [hcert, hfac, hpos, he, mul_pos htau htau]
+
+/-- **THE WEIGHT PRODUCER AT A FUNNEL.**  The plane Parseval budget caps the
+outside reader's plane norm at `2 / weight`, so a reader with enough weight opens
+the window and hands back a strictly dominating triple.  Everything in the
+hypothesis is polynomial in the reader's weight, the gap's trace and second
+invariant, and the squared reading. -/
+theorem funnel_exists_strict_of_weight (D : WeightedDesign m 3)
+    {a x y z p : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hdom : Dominates D ({x, y, z} : Finset (Fin m)))
+    (hunit : leverageOf (D.atom a) = 1)
+    (hfix : subsetSum D ({x, y, z} : Finset (Fin m)) *ᵥ D.atom a = D.atom a)
+    (he : 0 < pairMinorTotal (D.atom x) (D.atom y) (D.atom z))
+    (hread : D.atom p ⬝ᵥ D.atom a ≠ 0)
+    (hfloor : 2 * (Matrix.trace (subsetSum D ({x, y, z} : Finset (Fin m)) - 1) ^ 2
+          - secondInvariantOfThree (subsetSum D ({x, y, z} : Finset (Fin m)) - 1))
+        < D.weight p * Matrix.trace (subsetSum D ({x, y, z} : Finset (Fin m)) - 1)
+          * ((D.atom p ⬝ᵥ D.atom a) ^ 2
+              * (secondInvariantOfThree (subsetSum D ({x, y, z} : Finset (Fin m)) - 1)
+                - Matrix.trace (subsetSum D ({x, y, z} : Finset (Fin m)) - 1))
+            - secondInvariantOfThree (subsetSum D ({x, y, z} : Finset (Fin m)) - 1))) :
+    (atomMatrix (D.atom p) + atomMatrix (D.atom y) + atomMatrix (D.atom z) - 1).PosDef
+      ∨ (atomMatrix (D.atom p) + atomMatrix (D.atom x)
+          + atomMatrix (D.atom z) - 1).PosDef
+      ∨ (atomMatrix (D.atom p) + atomMatrix (D.atom x)
+          + atomMatrix (D.atom y) - 1).PosDef := by
+  set G := subsetSum D ({x, y, z} : Finset (Fin m)) - 1 with hGdef
+  have hpsd : G.PosSemidef := hdom
+  have hsym : Gᵀ = G := (by simpa using hpsd.isHermitian : G.IsSymm)
+  have hunit' : D.atom a ⬝ᵥ D.atom a = 1 := by
+    rw [dotProduct_self_eq_leverage]; exact hunit
+  have hnull : G *ᵥ D.atom a = 0 := by
+    rw [hGdef, Matrix.sub_mulVec, Matrix.one_mulVec, hfix, sub_self]
+  have hePM : secondInvariantOfThree G = pairMinorTotal (D.atom x) (D.atom y) (D.atom z) :=
+    secondInvariantOfThree_gap_eq_pairMinorTotal D hxy hxz hyz
+  have he2 : 0 < secondInvariantOfThree G := by rw [hePM]; exact he
+  have hdisc : 4 * secondInvariantOfThree G ≤ Matrix.trace G ^ 2 :=
+    four_mul_secondInvariant_le_trace_sq_of_unit_null hsym hnull hunit'
+  have htau : 0 < Matrix.trace G := by
+    rcases lt_or_ge 0 (Matrix.trace G) with h | h
+    · exact h
+    · exfalso
+      have hnn := trace_nonneg_of_posSemidef hpsd
+      have : Matrix.trace G = 0 := le_antisymm h hnn
+      rw [this] at hdisc
+      simp at hdisc
+      linarith [he2, hdisc]
+  have hn : 0 ≤ planeNormSq (D.atom p) (D.atom a) := planeNormSq_nonneg hunit'
+  have hcap : D.weight p * planeNormSq (D.atom p) (D.atom a) ≤ 2 :=
+    weight_mul_planeNormSq_le D hunit' p
+  have hwpos : 0 < D.weight p := D.weight_pos p
+  have hgap : 0 < Matrix.trace G ^ 2 - secondInvariantOfThree G := by nlinarith [hdisc, he2]
+  -- the budget turns the weight floor into the scalar window
+  have hlt : Matrix.trace G * paymentCeiling G (D.atom p) (D.atom a)
+      < secondInvariantOfThree G * planeNormSq (D.atom p) (D.atom a) := by
+    rw [paymentCeiling, planeNormSq] at *
+    nlinarith [hfloor, hcap, hgap, hwpos, hn, htau]
+  obtain ⟨hleft, hpos⟩ := window_of_trace_mul_ceiling_lt htau he2 hdisc hn hlt
+  exact funnel_exists_strict_of_window D hxy hxz hyz hdom hunit hfix he hread hleft hpos
+
+/-- **THE WEIGHT CAP OF A FUNNEL BOUNDARY SYSTEM.**  At a boundary system every
+atom outside the dominator that reads the unit atom carries a CAP on its own
+weight, in the dominator's trace and second invariant and the squared reading
+alone:
+
+  `weight * tau * (reading ^ 2 * (e2 - tau) - e2) ≤ 2 * (tau ^ 2 - e2)` .
+
+This is the sharpest thing this route yields, and it is exactly the campaign's
+universal obstruction in a theorem: the cap is vacuous as the reader's weight
+goes to zero, and the only bound on the reader's plane norm is the plane Parseval
+budget, which pays `2 / weight`. -/
+theorem isTie_funnel_weight_cap (D : WeightedDesign m 3) (htie : IsTie D)
+    {a x y z p : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hpx : p ≠ x) (hpy : p ≠ y) (hpz : p ≠ z)
+    (hdom : Dominates D ({x, y, z} : Finset (Fin m)))
+    (hunit : leverageOf (D.atom a) = 1)
+    (hfix : subsetSum D ({x, y, z} : Finset (Fin m)) *ᵥ D.atom a = D.atom a)
+    (he : 0 < pairMinorTotal (D.atom x) (D.atom y) (D.atom z))
+    (hread : D.atom p ⬝ᵥ D.atom a ≠ 0) :
+    D.weight p * Matrix.trace (subsetSum D ({x, y, z} : Finset (Fin m)) - 1)
+        * ((D.atom p ⬝ᵥ D.atom a) ^ 2
+            * (secondInvariantOfThree (subsetSum D ({x, y, z} : Finset (Fin m)) - 1)
+              - Matrix.trace (subsetSum D ({x, y, z} : Finset (Fin m)) - 1))
+          - secondInvariantOfThree (subsetSum D ({x, y, z} : Finset (Fin m)) - 1))
+      ≤ 2 * (Matrix.trace (subsetSum D ({x, y, z} : Finset (Fin m)) - 1) ^ 2
+          - secondInvariantOfThree (subsetSum D ({x, y, z} : Finset (Fin m)) - 1)) := by
+  by_contra hcon
+  push Not at hcon
+  have hstrict := funnel_exists_strict_of_weight D hxy hxz hyz hdom hunit hfix he hread hcon
+  have hkill : ∀ u v w : Fin m, u ≠ v → u ≠ w → v ≠ w →
+      ¬ (atomMatrix (D.atom u) + atomMatrix (D.atom v)
+          + atomMatrix (D.atom w) - 1).PosDef := by
+    intro u v w huv huw hvw hposd
+    refine htie.2 ({u, v, w} : Finset (Fin m)) (card_triple_eq huv huw hvw) ?_
+    rwa [subsetSum_triple_atoms D huv huw hvw]
+  rcases hstrict with h | h | h
+  · exact hkill p y z hpy hpz hyz h
+  · exact hkill p x z hpx hpz hxz h
+  · exact hkill p x y hpx hpy hxy h
+
+/-! ## 15. The pinch law at six points -/
 
 /-- **THE FUNNEL PINCH LAW AT `(6,3)`.**  The funnel is supplied by the landed
 `Gtz.isTie_sixThree_unitAtom_funnel`, so at six points the law needs only the
