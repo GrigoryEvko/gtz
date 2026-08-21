@@ -39139,3 +39139,11 @@ run_cmd do
 #print axioms Gtz.exists_pair_window_of_isTie_sixThree_unconditional
 #print axioms Gtz.tripleGapDet_eq_zero_of_crossNormSq_eq_ceiling
 #print axioms Gtz.tetraDesign_crossNormSq_eq_ceiling
+#print axioms Gtz.posDef_one_sub_weight_smul_atomMatrix
+#print axioms Gtz.deflatedGap_transpose
+#print axioms Gtz.deflatedGap_congruence
+#print axioms Gtz.dominates_image_of_dominates_deflatedDesign
+#print axioms Gtz.posDef_image_of_posDef_deflatedDesign
+#print axioms Gtz.isTie_deflatedDesign
+#print axioms Gtz.seven_le_card_dominatingFamily_of_isTie_sixThree_of_light
+#print axioms Gtz.seven_le_card_dominatingFamily_of_isTie_sixThree_of_light'

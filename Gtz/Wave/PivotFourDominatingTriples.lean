@@ -485,7 +485,7 @@ theorem card_parallelClasses_le_three {atoms : ℕ} (D : WeightedDesign atoms 2)
     (hatoms : 2 ≤ atoms) (htie : IsTie D) : (parallelClasses D).card ≤ 3 := by
   by_contra hbig
   rw [Nat.not_le] at hbig
-  haveI : Nonempty (Fin atoms) := ⟨⟨0, by omega⟩⟩
+  have : Nonempty (Fin atoms) := ⟨⟨0, by omega⟩⟩
   set firstLabel : Fin atoms := ⟨0, by omega⟩ with hfirstLabel
   have hcover : ∀ chosen : List (Fin atoms),
       (∀ probe : Fin atoms, ∃ pivot ∈ chosen, pairBracket D pivot probe = 0) →
@@ -963,5 +963,186 @@ theorem seven_le_card_dominatingTriples_of_isTie_fiveThree (D : WeightedDesign 5
     exact ⟨fun hmember => hmember.2, fun hmember => ⟨Finset.mem_univ selected, hmember⟩⟩
   rw [hrewrite]
   exact seven_le_card_dominatingFamily_of_isTie_fiveThree D htie
+
+
+/-! ## 8. Light-atom deflation preserves ties -/
+
+/-- The light atom's own Parseval block is positive definite. -/
+theorem posDef_one_sub_weight_smul_atomMatrix {atoms rank : ℕ}
+    (D : WeightedDesign atoms rank) (hatoms : 2 ≤ atoms) (light : Fin atoms)
+    (hlight : leverageOf (D.atom light) ≤ 1) :
+    (1 - D.weight light • atomMatrix (D.atom light)).PosDef := by
+  have hweightPos := D.weight_pos light
+  have hslack : (0 : ℝ) < 1 - D.weight light := by
+    linarith [weight_lt_one D hatoms light]
+  have hsymmetric : (1 - D.weight light • atomMatrix (D.atom light))ᵀ
+      = 1 - D.weight light • atomMatrix (D.atom light) := by
+    rw [Matrix.transpose_sub, Matrix.transpose_one, Matrix.transpose_smul,
+      transpose_eq_of_isHermitian (posSemidef_atomMatrix (D.atom light)).1]
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr
+    ⟨isHermitian_of_transpose_eq hsymmetric, fun probe hprobe => ?_⟩
+  rw [star_trivial, Matrix.sub_mulVec, dotProduct_sub, Matrix.one_mulVec,
+    Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, atomMatrix,
+    vecMulVec_mulVec_eq, dotProduct_smul, smul_eq_mul,
+    dotProduct_comm probe (D.atom light)]
+  have hcauchy : (D.atom light ⬝ᵥ probe) * (D.atom light ⬝ᵥ probe)
+      ≤ leverageOf (D.atom light) * (probe ⬝ᵥ probe) := by
+    have hineq := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (D.atom light) probe
+    rw [dotProduct, dotProduct_self_eq_sum_sq, leverageOf]
+    nlinarith [hineq]
+  have hprobePos : 0 < probe ⬝ᵥ probe := dotProduct_self_pos hprobe
+  nlinarith [mul_le_mul_of_nonneg_left hcauchy hweightPos.le,
+    mul_le_mul_of_nonneg_right (mul_le_of_le_one_right hweightPos.le hlight) hprobePos.le,
+    mul_pos hslack hprobePos]
+
+/-- The deflated gap of a selection is symmetric. -/
+theorem deflatedGap_transpose {atoms rank : ℕ} (D : WeightedDesign (atoms + 1) rank)
+    (light : Fin (atoms + 1)) (selected : Finset (Fin (atoms + 1))) :
+    ((((1 : ℝ) - D.weight light) • subsetSum D selected)
+        - (1 - D.weight light • atomMatrix (D.atom light)))ᵀ
+      = (((1 : ℝ) - D.weight light) • subsetSum D selected)
+        - (1 - D.weight light • atomMatrix (D.atom light)) := by
+  rw [Matrix.transpose_sub, Matrix.transpose_smul, subsetSum_transpose,
+    Matrix.transpose_sub, Matrix.transpose_one, Matrix.transpose_smul,
+    transpose_eq_of_isHermitian (posSemidef_atomMatrix (D.atom light)).1]
+
+/-- **THE DEFLATION CONGRUENCE, PER SELECTION.**  The gap matrix of a selection
+in the deflated design is the congruence by `R` of the primal deflated gap at the
+lifted selection.  Both Loewner verdicts therefore cross, in both directions. -/
+theorem deflatedGap_congruence {atoms rank : ℕ} (D : WeightedDesign (atoms + 1) rank)
+    (light : Fin (atoms + 1)) (R : Matrix (Fin rank) (Fin rank) ℝ)
+    (hslack : (0 : ℝ) < 1 - D.weight light)
+    (hcongruence : Rᵀ * (1 - D.weight light • atomMatrix (D.atom light)) * R = 1)
+    (chosen : Finset (Fin atoms)) :
+    Rᵀ * ((((1 : ℝ) - D.weight light) • subsetSum D (chosen.image light.succAbove))
+        - (1 - D.weight light • atomMatrix (D.atom light))) * R
+      = subsetSum (deflatedDesign D light R hslack hcongruence) chosen - 1 := by
+  have hembed : Function.Injective light.succAbove := Fin.succAbove_right_injective
+  have hlift : subsetSum (deflatedDesign D light R hslack hcongruence) chosen
+      = Rᵀ * (((1 : ℝ) - D.weight light) • subsetSum D (chosen.image light.succAbove)) * R := by
+    rw [subsetSum, subsetSum, Finset.sum_image fun left _ right _ hlr => hembed hlr,
+      Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sum, Matrix.sum_mul, Finset.smul_sum]
+    refine Finset.sum_congr rfl fun index _ => ?_
+    rw [show (deflatedDesign D light R hslack hcongruence).atom index
+        = Real.sqrt (1 - D.weight light) • (Rᵀ *ᵥ D.atom (light.succAbove index)) from rfl,
+      atomMatrix_smul, Real.sq_sqrt hslack.le, transpose_mul_atomMatrix_mul]
+  rw [Matrix.mul_sub, Matrix.sub_mul, hcongruence, hlift]
+
+/-- **DEFLATED DOMINATION LIFTS.**  A dominating selection of the deflated design
+lifts to a dominating selection of the primal, and a strictly dominating one
+lifts strictly.  The light atom's rank-one defect `1 - g g^T` is what pays for
+the lift, and it is positive semidefinite exactly because the atom is light. -/
+theorem dominates_image_of_dominates_deflatedDesign {atoms rank : ℕ}
+    (D : WeightedDesign (atoms + 1) rank) (light : Fin (atoms + 1)) (hlight : leverageOf (D.atom light) ≤ 1)
+    (R : Matrix (Fin rank) (Fin rank) ℝ) (hunit : IsUnit R.det)
+    (hslack : (0 : ℝ) < 1 - D.weight light)
+    (hcongruence : Rᵀ * (1 - D.weight light • atomMatrix (D.atom light)) * R = 1)
+    {chosen : Finset (Fin atoms)}
+    (hdominates : Dominates (deflatedDesign D light R hslack hcongruence) chosen) :
+    Dominates D (chosen.image light.succAbove) := by
+  have hdefect : (1 - atomMatrix (D.atom light)).PosSemidef :=
+    (posSemidef_sub_vecMulVec_iff 1 Matrix.PosDef.one (D.atom light)).mpr
+      (by rw [inv_one, Matrix.one_mulVec, dotProduct_self_eq_sum_sq]; exact hlight)
+  have hgap : ((((1 : ℝ) - D.weight light) • subsetSum D (chosen.image light.succAbove))
+      - (1 - D.weight light • atomMatrix (D.atom light))).PosSemidef := by
+    refine (posSemidef_congr_right
+      (deflatedGap_transpose D light (chosen.image light.succAbove)) hunit).mpr ?_
+    rw [deflatedGap_congruence D light R hslack hcongruence chosen]
+    exact hdominates
+  show (subsetSum D (chosen.image light.succAbove) - 1).PosSemidef
+  rw [subsetSum_sub_one_eq_deflatedGap_combination D light _ hslack]
+  exact (hgap.add (hdefect.smul (D.weight_pos light).le)).smul (inv_nonneg.mpr hslack.le)
+
+/-- The strict twin of `Gtz.dominates_image_of_dominates_deflatedDesign`. -/
+theorem posDef_image_of_posDef_deflatedDesign {atoms rank : ℕ}
+    (D : WeightedDesign (atoms + 1) rank) (light : Fin (atoms + 1)) (hlight : leverageOf (D.atom light) ≤ 1)
+    (R : Matrix (Fin rank) (Fin rank) ℝ) (hunit : IsUnit R.det)
+    (hslack : (0 : ℝ) < 1 - D.weight light)
+    (hcongruence : Rᵀ * (1 - D.weight light • atomMatrix (D.atom light)) * R = 1)
+    {chosen : Finset (Fin atoms)}
+    (hstrict : (subsetSum (deflatedDesign D light R hslack hcongruence) chosen - 1).PosDef) :
+    (subsetSum D (chosen.image light.succAbove) - 1).PosDef := by
+  have hdefect : (1 - atomMatrix (D.atom light)).PosSemidef :=
+    (posSemidef_sub_vecMulVec_iff 1 Matrix.PosDef.one (D.atom light)).mpr
+      (by rw [inv_one, Matrix.one_mulVec, dotProduct_self_eq_sum_sq]; exact hlight)
+  have hgap : ((((1 : ℝ) - D.weight light) • subsetSum D (chosen.image light.succAbove))
+      - (1 - D.weight light • atomMatrix (D.atom light))).PosDef := by
+    refine (posDef_congr_right
+      (deflatedGap_transpose D light (chosen.image light.succAbove)) hunit).mpr ?_
+    rw [deflatedGap_congruence D light R hslack hcongruence chosen]
+    exact hstrict
+  rw [subsetSum_sub_one_eq_deflatedGap_combination D light _ hslack]
+  exact Matrix.PosDef.smul (Matrix.PosDef.add_posSemidef hgap
+    (hdefect.smul (D.weight_pos light).le)) (inv_pos.mpr hslack)
+
+/-- **LIGHT-ATOM DEFLATION PRESERVES TIES.**  Weighted GTZ one size down supplies
+the deflated design's own weak dominator, and the strict lift carries every
+strict dominator of the deflated design back to the primal, which a tie refuses.
+So the deflation of a tie at a light atom is again a tie. -/
+theorem isTie_deflatedDesign {atoms rank : ℕ} (D : WeightedDesign (atoms + 1) rank)
+    (hrec : GtzWeighted atoms rank) (htie : IsTie D)
+    (light : Fin (atoms + 1)) (hlight : leverageOf (D.atom light) ≤ 1)
+    (R : Matrix (Fin rank) (Fin rank) ℝ) (hunit : IsUnit R.det)
+    (hslack : (0 : ℝ) < 1 - D.weight light)
+    (hcongruence : Rᵀ * (1 - D.weight light • atomMatrix (D.atom light)) * R = 1) :
+    IsTie (deflatedDesign D light R hslack hcongruence) := by
+  refine ⟨hrec _, fun chosen hcard hstrict => ?_⟩
+  have hembed : Function.Injective light.succAbove := Fin.succAbove_right_injective
+  refine htie.2 (chosen.image light.succAbove) ?_
+    (posDef_image_of_posDef_deflatedDesign D light hlight R hunit hslack
+      hcongruence hstrict)
+  rw [Finset.card_image_of_injective _ hembed, hcard]
+
+/-! ## 9. The `(6,3)` cell: a tie with a light atom carries seven triples -/
+
+open scoped Classical in
+/-- **SEVEN DOMINATING TRIPLES AT A `(6,3)` TIE WITH A LIGHT ATOM, ALL AVOIDING
+IT.**  Deflating the light atom leaves a `(5,3)` design which is again a tie, so
+the three-class law gives it seven dominating triples, and each lifts to a
+dominating triple of the `(6,3)` design that misses the light atom.
+
+Against the swap-degree cap of three (`Gtz.swapDegree_le_one_card_le_three`),
+seven leaves no room: the dominators of such a tie cannot all be one swap from at
+most one other. -/
+theorem seven_le_card_dominatingFamily_of_isTie_sixThree_of_light
+    (D : WeightedDesign 6 3) (htie : IsTie D) (light : Fin 6)
+    (hlight : leverageOf (D.atom light) ≤ 1) :
+    7 ≤ ((dominatingFamily D 3).filter fun selected => light ∉ selected).card := by
+  have hslack : (0 : ℝ) < 1 - D.weight light := by
+    linarith [weight_lt_one D (by norm_num) light]
+  obtain ⟨R, hunit, hcongruence⟩ :=
+    exists_congruence_to_one (posDef_one_sub_weight_smul_atomMatrix D (by norm_num) light hlight)
+  set deflated := deflatedDesign D light R hslack hcongruence with hdeflated
+  have hrec : GtzWeighted 5 3 := gtzWeighted_corank_two 3 (by norm_num)
+  have hdeflatedTie : IsTie deflated :=
+    isTie_deflatedDesign D hrec htie light hlight R hunit hslack hcongruence
+  have hcount := seven_le_card_dominatingFamily_of_isTie_fiveThree deflated hdeflatedTie
+  have hembed : Function.Injective light.succAbove := Fin.succAbove_right_injective
+  have hmaps : ∀ chosen ∈ dominatingFamily deflated 3,
+      chosen.image light.succAbove
+        ∈ (dominatingFamily D 3).filter fun selected => light ∉ selected := by
+    intro chosen hchosen
+    obtain ⟨hcard, hdominates⟩ := (mem_dominatingFamily_iff deflated 3 chosen).mp hchosen
+    refine Finset.mem_filter.mpr ⟨(mem_dominatingFamily_iff D 3 _).mpr
+      ⟨by rw [Finset.card_image_of_injective _ hembed, hcard], ?_⟩, ?_⟩
+    · exact dominates_image_of_dominates_deflatedDesign D light hlight R hunit
+        hslack hcongruence hdominates
+    · intro hmember
+      obtain ⟨index, -, hindex⟩ := Finset.mem_image.mp hmember
+      exact (Fin.succAbove_ne light index) hindex
+  have hinjective : Set.InjOn (fun chosen : Finset (Fin 5) => chosen.image light.succAbove)
+      ((dominatingFamily deflated 3 : Finset (Finset (Fin 5))) : Set (Finset (Fin 5))) := by
+    intro leftSet _ rightSet _ hequal
+    exact Finset.image_injective hembed hequal
+  exact le_trans hcount (Finset.card_le_card_of_injOn _ hmaps hinjective)
+
+open scoped Classical in
+/-- The same count, read on the whole family. -/
+theorem seven_le_card_dominatingFamily_of_isTie_sixThree_of_light'
+    (D : WeightedDesign 6 3) (htie : IsTie D) (light : Fin 6)
+    (hlight : leverageOf (D.atom light) ≤ 1) :
+    7 ≤ (dominatingFamily D 3).card :=
+  le_trans (seven_le_card_dominatingFamily_of_isTie_sixThree_of_light D htie light hlight)
+    (Finset.card_le_card (Finset.filter_subset _ _))
 
 end Gtz
