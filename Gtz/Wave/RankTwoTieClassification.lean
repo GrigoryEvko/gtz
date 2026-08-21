@@ -86,6 +86,17 @@ This file is independent of that hinge and finer than that aggregate.
 * `Gtz.rankTwoTie_three_atoms` — at three atoms all three classes are singletons,
   all three pairs dominate, and `t_c (2 l_c - 1) = 1`, that is
   `l_c = (1 + t_c)/(2 t_c)`.  The weights are NOT forced uniform.
+* `Gtz.exists_two_le_leverage_of_isTie` — SOME atom of a rank-two tie carries
+  leverage at least two.  The three class weights sum to one
+  (`Gtz.sum_classWeight_eq_one`) and each is `1/(2 l_A - 1)`
+  (`Gtz.classWeight_eq_inv`), so the three class leverages satisfy the single
+  equation `sum_A 1/(2 l_A - 1) = 1`, whose symmetric solution is `l = 2`.
+* `Gtz.sixThree_planeShadow_trichotomy` — the `(6,3)` packaging.  At six atoms and
+  any plane: the shadow is light somewhere, or the plane carries a strictly
+  dominating shadow pair, or the six atoms are rigid — three frame-bracket classes,
+  a pair with a vanishing frame bracket, and an atom of shadow leverage at least
+  two.  `Gtz.sixThree_planeShadow_light_or_strictPair_of_leverage_lt_two` removes
+  the third alternative from every design whose leverages stay below two.
 * `Gtz.planeShadow_three_classes` and
   `Gtz.planeShadow_exists_frameBracket_eq_zero` — the rank-THREE payload.  Every
   plane shadow of a rank-three design is a rank-two design
@@ -2204,5 +2215,200 @@ theorem fourteen_le_sum_card_dominatingPartners_five (D : WeightedDesign 5 2) (h
   have hnostrict := noStrictPair_of_isTie D htie
   have := four_mul_size_le_sum_card_dominatingPartners D hheavy hnostrict
   omega
+
+/-! ## Part K: the three class weights, and the leverage-two atom
+
+The three class weights sum to one, and each is the reciprocal of `2 l_A - 1`.  So the
+three class leverages of a rank-two tie satisfy ONE equation,
+
+    1/(2 l_1 - 1) + 1/(2 l_2 - 1) + 1/(2 l_3 - 1) = 1,
+
+whose symmetric solution is `l = 2` at every class.  The immediate consequence is that
+SOME atom of a rank-two tie has leverage at least two, and the plane-shadow reading
+turns that into a rank-THREE statement. -/
+
+/-- **The three class weights sum to one.** -/
+theorem sum_classWeight_eq_one {size : ℕ} (D : WeightedDesign size 2)
+    (hheavy : ∀ atomIndex : Fin size, 1 ≤ leverageOf (D.atom atomIndex))
+    (hnostrict : NoStrictPair D) :
+    ∑ classSet ∈ Finset.univ.image (tieClass D), ∑ member ∈ classSet, D.weight member = 1 := by
+  classical
+  have hfiber := Finset.sum_fiberwise_of_maps_to
+    (s := (Finset.univ : Finset (Fin size))) (t := Finset.univ.image (tieClass D))
+    (g := tieClass D) (f := fun atomIndex => D.weight atomIndex)
+    (fun atomIndex _ => Finset.mem_image_of_mem _ (Finset.mem_univ atomIndex))
+  rw [D.weight_sum_one] at hfiber
+  rw [← hfiber]
+  refine Finset.sum_congr rfl fun classSet hclassSet => ?_
+  obtain ⟨pivot, _, hpivot⟩ := Finset.mem_image.mp hclassSet
+  subst hpivot
+  rw [filter_tieClass_eq D hheavy hnostrict pivot]
+
+/-- **Some atom carries leverage at least two.**  The three class weights sum to one, so
+one class weighs at most a third, and its common leverage `(1 + 1/T_A)/2` is at least
+two.  Equality forces all three class weights to a third, which is the symmetric tie.
+
+This needs NO tie hypothesis: heaviness and the absence of a strictly dominating pair
+are enough. -/
+theorem exists_two_le_leverage_of_noStrictPair {size : ℕ} (D : WeightedDesign size 2)
+    (hheavy : ∀ atomIndex : Fin size, 1 ≤ leverageOf (D.atom atomIndex))
+    (hnostrict : NoStrictPair D) :
+    ∃ atomIndex : Fin size, 2 ≤ leverageOf (D.atom atomIndex) := by
+  classical
+  have hsum := sum_classWeight_eq_one D hheavy hnostrict
+  have hcount := card_image_tieClass_eq_three D hheavy hnostrict
+  have hthirds : ∑ classSet ∈ Finset.univ.image (tieClass D), ∑ member ∈ classSet, D.weight member
+      ≤ ∑ classSet ∈ Finset.univ.image (tieClass D), (1 / 3 : ℝ) := by
+    rw [hsum, Finset.sum_const, hcount, nsmul_eq_mul]
+    norm_num
+  have hnonempty : (Finset.univ.image (tieClass D)).Nonempty := by
+    rw [← Finset.card_pos, hcount]
+    norm_num
+  obtain ⟨classSet, hclassSet, hsmall⟩ := Finset.exists_le_of_sum_le hnonempty hthirds
+  obtain ⟨pivot, _, hpivot⟩ := Finset.mem_image.mp hclassSet
+  subst hpivot
+  refine ⟨pivot, ?_⟩
+  have hlev := two_leverage_sub_one_mul_classWeight D hheavy hnostrict pivot
+    (self_mem_tieClass D hheavy pivot)
+  have hpos := classWeight_pos D hheavy pivot
+  nlinarith [hlev, hpos, hsmall]
+
+/-- **Some atom of a rank-two tie carries leverage at least two.** -/
+theorem exists_two_le_leverage_of_isTie {size : ℕ} (D : WeightedDesign size 2)
+    (htie : IsTie D) : ∃ atomIndex : Fin size, 2 ≤ leverageOf (D.atom atomIndex) :=
+  exists_two_le_leverage_of_noStrictPair D (heavy_of_isTie D htie) (noStrictPair_of_isTie D htie)
+
+/-- **THE RANK-THREE READING.**  On every plane whose shadow of a rank-three design is
+heavy and carries no strictly dominating shadow pair, SOME atom has shadow leverage at
+least two.  Because the shadow leverage is at most the leverage, that atom has
+`2 <= l_c` in the ambient design.
+
+This is a lever on `(6,3)`: a rank-three design all of whose leverages are strictly
+below two admits NO such plane at all, so at every plane the shadow is light somewhere
+or carries a strictly dominating pair — and a strictly dominating shadow pair is a
+plane-strict pair. -/
+theorem planeShadow_exists_two_le_leverage {size : ℕ} (design : WeightedDesign size 3)
+    (basisFirst basisSecond : Fin 3 → ℝ) (hfirstUnit : basisFirst ⬝ᵥ basisFirst = 1)
+    (hsecondUnit : basisSecond ⬝ᵥ basisSecond = 1) (horth : basisFirst ⬝ᵥ basisSecond = 0)
+    (hheavy : ∀ label : Fin size, 1 ≤ (design.atom label ⬝ᵥ basisFirst) ^ 2
+      + (design.atom label ⬝ᵥ basisSecond) ^ 2)
+    (hnostrict : NoStrictPair
+      (inPlaneRestriction design basisFirst basisSecond hfirstUnit hsecondUnit horth)) :
+    ∃ label : Fin size, 2 ≤ (design.atom label ⬝ᵥ basisFirst) ^ 2
+      + (design.atom label ⬝ᵥ basisSecond) ^ 2 := by
+  set shadow := inPlaneRestriction design basisFirst basisSecond hfirstUnit hsecondUnit horth
+    with hshadow
+  have hshadowHeavy : ∀ label : Fin size, 1 ≤ leverageOf (shadow.atom label) := by
+    intro label
+    rw [hshadow, leverageOf_inPlaneRestriction_atom]
+    exact hheavy label
+  obtain ⟨label, hlabel⟩ := exists_two_le_leverage_of_noStrictPair shadow hshadowHeavy hnostrict
+  refine ⟨label, ?_⟩
+  rwa [hshadow, leverageOf_inPlaneRestriction_atom] at hlabel
+
+/-- **THE CONTRAPOSITIVE, the shape a `(6,3)` argument consumes.**  If every shadow
+leverage of a plane is strictly below two, then either the shadow is light at some atom
+or the plane carries a strictly dominating shadow pair.  In the tree's vocabulary the
+second alternative is a PLANE-STRICT PAIR. -/
+theorem planeShadow_light_or_strictPair {size : ℕ} (design : WeightedDesign size 3)
+    (basisFirst basisSecond : Fin 3 → ℝ) (hfirstUnit : basisFirst ⬝ᵥ basisFirst = 1)
+    (hsecondUnit : basisSecond ⬝ᵥ basisSecond = 1) (horth : basisFirst ⬝ᵥ basisSecond = 0)
+    (hsmall : ∀ label : Fin size, (design.atom label ⬝ᵥ basisFirst) ^ 2
+      + (design.atom label ⬝ᵥ basisSecond) ^ 2 < 2) :
+    (∃ label : Fin size, (design.atom label ⬝ᵥ basisFirst) ^ 2
+        + (design.atom label ⬝ᵥ basisSecond) ^ 2 < 1)
+      ∨ ∃ labelFirst labelSecond : Fin size, labelFirst ≠ labelSecond ∧
+        (subsetSum (inPlaneRestriction design basisFirst basisSecond hfirstUnit hsecondUnit
+          horth) {labelFirst, labelSecond} - 1).PosDef := by
+  by_cases hheavy : ∀ label : Fin size, 1 ≤ (design.atom label ⬝ᵥ basisFirst) ^ 2
+      + (design.atom label ⬝ᵥ basisSecond) ^ 2
+  · refine Or.inr ?_
+    by_contra hcontra
+    push_neg at hcontra
+    obtain ⟨label, hlabel⟩ := planeShadow_exists_two_le_leverage design basisFirst basisSecond
+      hfirstUnit hsecondUnit horth hheavy
+      (fun labelFirst labelSecond hdistinct => hcontra labelFirst labelSecond hdistinct)
+    exact absurd hlabel (not_le.mpr (hsmall label))
+  · push_neg at hheavy
+    obtain ⟨label, hlabel⟩ := hheavy
+    exact Or.inl ⟨label, hlabel⟩
+
+/-- **The class weight is the reciprocal of the class excess.**  Written so the reader
+can read off the one equation the three class leverages satisfy:
+`sum_A 1/(2 l_A - 1) = 1`, by `Gtz.sum_classWeight_eq_one`. -/
+theorem classWeight_eq_inv {size : ℕ} (D : WeightedDesign size 2)
+    (hheavy : ∀ atomIndex : Fin size, 1 ≤ leverageOf (D.atom atomIndex))
+    (hnostrict : NoStrictPair D) (pivot : Fin size) :
+    (∑ member ∈ tieClass D pivot, D.weight member)
+      = (2 * leverageOf (D.atom pivot) - 1)⁻¹ := by
+  have hlev := two_leverage_sub_one_mul_classWeight D hheavy hnostrict pivot
+    (self_mem_tieClass D hheavy pivot)
+  have hpos := classWeight_pos D hheavy pivot
+  have hexcess : (0 : ℝ) < 2 * leverageOf (D.atom pivot) - 1 := by nlinarith [hlev, hpos]
+  field_simp
+  linarith [hlev]
+
+/-! ## Part L: the `(6,3)` packaging
+
+One statement, in the shape the rank-three programme consumes.  Fix a rank-three
+design at six atoms and a plane.  Either the plane shadow is light somewhere, or the
+plane carries a strictly dominating shadow pair -- a PLANE-STRICT PAIR -- or the six
+atoms are rigidly organised: exactly three frame-bracket classes, a pair of atoms with
+a vanishing frame bracket, and an atom of shadow leverage at least two. -/
+
+/-- **THE `(6,3)` PLANE TRICHOTOMY.**  At six atoms and any plane, one of three things
+happens, and the third alternative is a complete description rather than a residue. -/
+theorem sixThree_planeShadow_trichotomy (design : WeightedDesign 6 3)
+    (basisFirst basisSecond : Fin 3 → ℝ) (hfirstUnit : basisFirst ⬝ᵥ basisFirst = 1)
+    (hsecondUnit : basisSecond ⬝ᵥ basisSecond = 1) (horth : basisFirst ⬝ᵥ basisSecond = 0) :
+    (∃ label : Fin 6, (design.atom label ⬝ᵥ basisFirst) ^ 2
+        + (design.atom label ⬝ᵥ basisSecond) ^ 2 < 1)
+      ∨ (∃ labelFirst labelSecond : Fin 6, labelFirst ≠ labelSecond ∧
+          (subsetSum (inPlaneRestriction design basisFirst basisSecond hfirstUnit
+            hsecondUnit horth) {labelFirst, labelSecond} - 1).PosDef)
+      ∨ ((Finset.univ.image (tieClass (inPlaneRestriction design basisFirst basisSecond
+              hfirstUnit hsecondUnit horth))).card = 3
+          ∧ (∃ labelFirst labelSecond : Fin 6, labelFirst ≠ labelSecond ∧
+              (design.atom labelFirst ⬝ᵥ basisFirst) * (design.atom labelSecond ⬝ᵥ basisSecond)
+                - (design.atom labelFirst ⬝ᵥ basisSecond)
+                  * (design.atom labelSecond ⬝ᵥ basisFirst) = 0)
+          ∧ ∃ label : Fin 6, 2 ≤ (design.atom label ⬝ᵥ basisFirst) ^ 2
+              + (design.atom label ⬝ᵥ basisSecond) ^ 2) := by
+  by_cases hheavy : ∀ label : Fin 6, 1 ≤ (design.atom label ⬝ᵥ basisFirst) ^ 2
+      + (design.atom label ⬝ᵥ basisSecond) ^ 2
+  · by_cases hstrict : ∃ labelFirst labelSecond : Fin 6, labelFirst ≠ labelSecond ∧
+        (subsetSum (inPlaneRestriction design basisFirst basisSecond hfirstUnit
+          hsecondUnit horth) {labelFirst, labelSecond} - 1).PosDef
+    · exact Or.inr (Or.inl hstrict)
+    · push_neg at hstrict
+      have hnostrict : NoStrictPair (inPlaneRestriction design basisFirst basisSecond
+          hfirstUnit hsecondUnit horth) := fun labelFirst labelSecond hdistinct =>
+        hstrict labelFirst labelSecond hdistinct
+      exact Or.inr (Or.inr ⟨(planeShadow_three_classes design basisFirst basisSecond hfirstUnit
+          hsecondUnit horth hheavy hnostrict).1,
+        planeShadow_exists_frameBracket_eq_zero design basisFirst basisSecond hfirstUnit
+          hsecondUnit horth (by norm_num) hheavy hnostrict,
+        planeShadow_exists_two_le_leverage design basisFirst basisSecond hfirstUnit
+          hsecondUnit horth hheavy hnostrict⟩)
+  · push_neg at hheavy
+    obtain ⟨label, hlabel⟩ := hheavy
+    exact Or.inl ⟨label, hlabel⟩
+
+/-- **A `(6,3)` design of small leverage admits no rigid plane.**  If every atom has
+leverage strictly below two, then no plane can reach the third alternative of the
+trichotomy, because a shadow leverage never exceeds the leverage.  Every plane is then
+light somewhere or carries a plane-strict pair. -/
+theorem sixThree_planeShadow_light_or_strictPair_of_leverage_lt_two (design : WeightedDesign 6 3)
+    (basisFirst basisSecond : Fin 3 → ℝ) (hfirstUnit : basisFirst ⬝ᵥ basisFirst = 1)
+    (hsecondUnit : basisSecond ⬝ᵥ basisSecond = 1) (horth : basisFirst ⬝ᵥ basisSecond = 0)
+    (hsmall : ∀ label : Fin 6, (design.atom label ⬝ᵥ basisFirst) ^ 2
+      + (design.atom label ⬝ᵥ basisSecond) ^ 2 < 2) :
+    (∃ label : Fin 6, (design.atom label ⬝ᵥ basisFirst) ^ 2
+        + (design.atom label ⬝ᵥ basisSecond) ^ 2 < 1)
+      ∨ ∃ labelFirst labelSecond : Fin 6, labelFirst ≠ labelSecond ∧
+        (subsetSum (inPlaneRestriction design basisFirst basisSecond hfirstUnit hsecondUnit
+          horth) {labelFirst, labelSecond} - 1).PosDef :=
+  planeShadow_light_or_strictPair design basisFirst basisSecond hfirstUnit hsecondUnit horth
+    hsmall
 
 end Gtz
