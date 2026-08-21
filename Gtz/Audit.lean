@@ -1383,6 +1383,7 @@ import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
 import Gtz.Wave.ProbeFreeHingeTrigger
+import Gtz.Wave.ProbeFreeParsevalBudget
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
 import Gtz.Wave.BlindMemberPlane
@@ -38029,3 +38030,17 @@ run_cmd do
 #print axioms Gtz.exists_outside_reading_sq_one_le
 #print axioms Gtz.exists_outside_fourSet_posDef
 #print axioms Gtz.secondInvariant_le_reading_term
+
+-- Gtz/Wave/ProbeFreeParsevalBudget.lean -- Parseval transported through the
+-- probe elimination: the weighted total of the adjugate form over all atoms is
+-- the triple's second invariant, the outside atoms carry the coweighted pair
+-- minors, and a dominating swap prices its outside atom in pair currency
+#print axioms Gtz.pairAdjForm_self_second
+#print axioms Gtz.pairAdjForm_self_third
+#print axioms Gtz.pairAdjForm_weighted_budget
+#print axioms Gtz.pairAdjForm_inside_budget
+#print axioms Gtz.pairAdjForm_outside_budget
+#print axioms Gtz.pairAdjForm_nonneg
+#print axioms Gtz.weight_mul_pairAdjForm_le_pairMinorTotal
+#print axioms Gtz.pairAdjForm_le_pairMinorTotal_mul_leverage
+#print axioms Gtz.weight_mul_pairGapMinor_le_pairMinorTotal_of_dominates

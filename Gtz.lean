@@ -6498,6 +6498,7 @@ import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
 import Gtz.Wave.ProbeFreeHingeTrigger
+import Gtz.Wave.ProbeFreeParsevalBudget
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
 import Gtz.Wave.BlindMemberPlane

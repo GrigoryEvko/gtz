@@ -70,3 +70,17 @@ IS the parallel pair, in all five cases.  Consistent with the joint.
 The joint itself: inadmissible (q <= 0) implies parallel (wedge = 0).  The new
 trigger does not close it -- it converts the MIRROR's hypothesis to pair
 currency, which is what a (6,3) constraint system needs.
+
+## Second module: Gtz/Wave/ProbeFreeParsevalBudget.lean (9 pins, standard)
+Parseval transported through the probe elimination.
+  sum_c t_c * pairAdjForm a b c g_c = pairMinorTotal a b c     (every design)
+  sum_{d not in C} t_d * pairAdjForm a b c g_d
+      = (1-t_a) q_bc + (1-t_b) q_ac + (1-t_c) q_ab
+  t_d * pairAdjForm <= pairMinorTotal          (Parseval, termwise)
+  pairAdjForm <= pairMinorTotal * leverage_d   (Cauchy-Schwarz)
+  swap at x with d dominates  =>  t_d * q_yz <= pairMinorTotal
+MEASURED on 3000 designs built by WEIGHT ELIMINATION (six atoms chosen first,
+weights the unique solution of the 6x6 Parseval system, positive solutions with
+a genuinely singular inside gap kept): budget error <= 8.5e-14, split <= 3.4e-14.
+The sample COUNT is reported because the first version of the measurement
+filtered every draw away and printed a vacuous 0.000e+00.
