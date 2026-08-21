@@ -1456,6 +1456,7 @@ import Gtz.Wave.NaimarkDualDesign
 import Gtz.Wave.NaimarkDualExistence
 import Gtz.Wave.NaimarkCycleFree
 import Gtz.Wave.NaimarkSharpDesign
+import Gtz.Wave.PlaneShadowPairBridge
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -38854,3 +38855,59 @@ run_cmd do
 #print axioms Gtz.exists_areaSum_ge_leverageSum_add_of_admissible_sixThree
 #print axioms Gtz.exists_areaSum_ge_leverageSum_add_of_admissible_fiveThree
 #print axioms Gtz.exists_pairMinorSum_ge_of_admissible_sixThree
+
+-- Gtz/Wave/PlaneShadowPairBridge.lean
+#print axioms Gtz.frameDet_eq_blockDet_mul_sub_schurLoad
+#print axioms Gtz.frameBlockDet_rankOne
+#print axioms Gtz.frameDet_rankOne
+#print axioms Gtz.frameAlpha_nonneg
+#print axioms Gtz.frameBlockDet_rankOne_pos
+#print axioms Gtz.AxisFrame.pOne_ne_zero
+#print axioms Gtz.AxisFrame.pTwo_ne_zero
+#print axioms Gtz.AxisFrame.dotProduct_self_split
+#print axioms Gtz.AxisFrame.planeCombination_dotProduct_axis
+#print axioms Gtz.AxisFrame.planeCombination_ne_zero
+#print axioms Gtz.gapReading_eq_sum
+#print axioms Gtz.gapReading_insert
+#print axioms Gtz.gapReading_comm
+#print axioms Gtz.det_gap_eq_frameDet
+#print axioms Gtz.gapReading_frameCoordinates
+#print axioms Gtz.gapReading_pos_of_planeStrictPair
+#print axioms Gtz.gapReading_pOne_pos_of_planeStrictPair
+#print axioms Gtz.frameBlockDet_pos_of_planeStrictPair
+#print axioms Gtz.frameDet_pair_neg_of_planeStrictPair
+#print axioms Gtz.tripleSet_eq_insert
+#print axioms Gtz.sq_schurProbe_reading_le_of_isTie
+#print axioms Gtz.planarCompressionDesign_weight
+#print axioms Gtz.leverageOf_planarCompressionDesign_atom
+#print axioms Gtz.planeStrictPair_of_posDef_compression
+#print axioms Gtz.exists_planeStrictPair_of_shadowNesterenkoExcess
+#print axioms Gtz.exists_unitAxis_dotProduct_eq_zero
+#print axioms Gtz.exists_unitAxis_planeStrictPair_of_nesterenkoExcess
+#print axioms Gtz.subsetSum_triple
+#print axioms Gtz.det_pairGap_eq_neg_pairGapMinor
+#print axioms Gtz.det_tripleGap_eq_tripleGapDet
+#print axioms Gtz.gapReading_pTwo_pos_of_planeStrictPair
+#print axioms Gtz.admissiblePair_of_planeStrictPair
+#print axioms Gtz.one_lt_leverage_of_planeStrictPair
+#print axioms Gtz.exists_admissiblePair_of_not_hasParallelPair
+#print axioms Gtz.exists_admissiblePair_of_nesterenkoExcess
+#print axioms Gtz.pairNormalDefect_eq_quadraticForm
+#print axioms Gtz.pairNormalDefect_eq_bracketForm
+#print axioms Gtz.pairNormalDefect_leadingCoeff
+#print axioms Gtz.pairNormalDefect_trailingCoeff
+#print axioms Gtz.pairNormalDefect_discriminant
+#print axioms Gtz.binaryQuadratic_nonneg
+#print axioms Gtz.pairNormalDefect_nonneg
+#print axioms Gtz.crossNormSq_mul_tripleGapDet_eq
+#print axioms Gtz.crossNormSq_mul_tripleGapDet_eq_pairVocabulary
+#print axioms Gtz.crossNormSq_mul_tripleGapDet_le
+#print axioms Gtz.crossNormSq_lt_sq_tripleBracket_of_tripleGapDet_pos
+#print axioms Gtz.sq_tripleBracket_window_of_isTie
+#print axioms Gtz.dotProduct_schurProbe
+#print axioms Gtz.schurProbe_dotProduct_pOne
+#print axioms Gtz.schurProbe_dotProduct_pTwo
+#print axioms Gtz.schurProbe_dotProduct_axis
+#print axioms Gtz.schurProbe_dotProduct_self
+#print axioms Gtz.sum_weight_mul_frameAlpha
+#print axioms Gtz.schurProbe_energy_le_of_isTie

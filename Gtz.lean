@@ -6646,3 +6646,19 @@ import Gtz.Wave.NaimarkSharpDesign
 -- Against the volume floor the two meet, and branch B at (6,3) must carry a
 -- triple whose squared-area sum exceeds its leverage sum by 7/20 = 27/20 - 1.
 import Gtz.Wave.GapDetPositiveInadmissible
+
+-- Gtz/Wave/PlaneShadowPairBridge.lean -- the shadow of a rank-three design on a
+-- plane is a rank-two design, so the tree's Nesterenko engine applies to it: an
+-- atom whose SHADOW leverage passes the threshold forces a pair that beats the
+-- plane, with no transversality and no genericity.  A plane-strict pair has a
+-- strictly negative gap determinant, and the gap determinant of a pair is minus
+-- its pair minor, so a plane-strict pair is an ADMISSIBLE pair with two strictly
+-- heavy atoms.  An admissible heavy pair therefore exists at every simple design
+-- with four labels, and through every atom of Nesterenko excess.  Along the
+-- pair's own normal the rank-one Schur update becomes a polynomial identity: the
+-- squared area times the third Sylvester minor is the pair minor against the
+-- squared volume less the squared area, minus a pair-normal defect that is a
+-- binary quadratic in the third atom's two pair readings.  At a tie the gate
+-- reads as a LINEAR inequality in the squared volume, whose direction the pair
+-- minor decides against ONE.
+import Gtz.Wave.PlaneShadowPairBridge
