@@ -419,4 +419,80 @@ theorem pairGapMinor_eq_zero_of_pairGapMinor_eq_zero_of_pivotRow {a b c : Fin 3 
   rw [hac, mul_zero] at hratio
   exact (mul_eq_zero.mp hratio).resolve_left (ne_of_gt hexcessA)
 
+/-! ## Part 7 — the same identity at a pair that MEETS the corner
+
+`Gtz.corner_sum_tripleGapDet_outsidePair` is stated for arbitrary labels, so it
+may be read at a pair whose first member is an INSIDE atom.  One summand of the
+corner total is then the repeated-atom minor, which is a pair quantity and not a
+refusal.  Peeling it off leaves the two genuine refusals and a SHARPER law: the
+right side is one leverage excess, not two. -/
+
+/-- The repeated-atom minor in pair-minor vocabulary.  The tree carries it in
+squared-area vocabulary (`Gtz.tripleGapDet_repeat_left`); the pair minor is what
+the corner identity speaks. -/
+theorem tripleGapDet_repeat_left_pairMinor (a b : Fin 3 → ℝ) :
+    tripleGapDet a b a = -2 * pairGapMinor a b - leverageOf b + 1 := by
+  rw [tripleGapDet_repeat_left, pairGapMinor_eq_crossNormSq]
+  ring
+
+/-- **THE CORNER AXIS IDENTITY AT A PAIR THROUGH THE CORNER.**  With `a0` inside
+the corner and `d` any other label, the two remaining inside atoms total
+
+  `lam·q - (l_{a0} - 1) + lam·tripleGapDet g_{a0} g_d u` .
+
+The pair minor now carries the FULL factor `lam`, not `lam - 2`, and the leverage
+term is a single excess. -/
+theorem corner_sum_tripleGapDet_insidePair (D : WeightedDesign m 3) {C : Finset (Fin m)}
+    (hcard : C.card = 3) {lam : ℝ} {u : Fin 3 → ℝ}
+    (hgap : subsetSum D C - 1 = lam • atomMatrix u)
+    {a0 : Fin m} (ha0 : a0 ∈ C) (d : Fin m) :
+    ∑ a ∈ C.erase a0, tripleGapDet (D.atom a0) (D.atom d) (D.atom a)
+      = lam * pairGapMinor (D.atom a0) (D.atom d) - (leverageOf (D.atom a0) - 1)
+        + lam * tripleGapDet (D.atom a0) (D.atom d) u := by
+  have hsplit : ∑ a ∈ C.erase a0, tripleGapDet (D.atom a0) (D.atom d) (D.atom a)
+      + tripleGapDet (D.atom a0) (D.atom d) (D.atom a0)
+      = ∑ a ∈ C, tripleGapDet (D.atom a0) (D.atom d) (D.atom a) :=
+    Finset.sum_erase_add _ _ ha0
+  rw [corner_sum_tripleGapDet_outsidePair D hcard hgap a0 d,
+    tripleGapDet_repeat_left_pairMinor] at hsplit
+  linarith
+
+/-- **THE CORNER AXIS LAW AT A PAIR THROUGH THE CORNER.**  A tie prices an
+admissible heavy pair whose first atom is INSIDE the corner and whose second is
+outside it, against one leverage excess. -/
+theorem corner_insidePair_law_of_isTie (D : WeightedDesign m 3) (htie : IsTie D)
+    {C : Finset (Fin m)} (hcard : C.card = 3) {lam : ℝ} {u : Fin 3 → ℝ}
+    (hgap : subsetSum D C - 1 = lam • atomMatrix u)
+    {a0 d : Fin m} (ha0 : a0 ∈ C) (hd : d ∉ C)
+    (hheavy : 1 < leverageOf (D.atom a0))
+    (hadmissible : AdmissiblePair (D.atom a0) (D.atom d)) :
+    lam * pairGapMinor (D.atom a0) (D.atom d)
+        + lam * tripleGapDet (D.atom a0) (D.atom d) u
+      ≤ leverageOf (D.atom a0) - 1 := by
+  have hne : a0 ≠ d := fun hcon => hd (hcon ▸ ha0)
+  have hnonpos : ∑ a ∈ C.erase a0, tripleGapDet (D.atom a0) (D.atom d) (D.atom a) ≤ 0 := by
+    refine Finset.sum_nonpos fun a ha => ?_
+    have haC : a ∈ C := Finset.mem_of_mem_erase ha
+    have hane : a ≠ a0 := Finset.ne_of_mem_erase ha
+    exact tripleGapDet_nonpos_of_isTie D htie hne (Ne.symm hane)
+      (fun hcon => hd (hcon ▸ haC)) hheavy hadmissible
+  rw [corner_sum_tripleGapDet_insidePair D hcard hgap ha0 d] at hnonpos
+  linarith
+
+/-- **THE PAIR MINOR CAP AT A CORNER.**  Divided form: at a genuine corner the
+pair minor of an admissible heavy pair through the corner is capped by the axis
+minor and by the SQUARED AXIS READING of the inside atom, because
+`(l_{a0} - 1)/lam` is exactly that reading. -/
+theorem corner_insidePair_minor_le_of_isTie (D : WeightedDesign m 3) (htie : IsTie D)
+    {C : Finset (Fin m)} (hcard : C.card = 3) {lam : ℝ} (hlam : 0 < lam) {u : Fin 3 → ℝ}
+    (hgap : subsetSum D C - 1 = lam • atomMatrix u)
+    {a0 d : Fin m} (ha0 : a0 ∈ C) (hd : d ∉ C)
+    (hheavy : 1 < leverageOf (D.atom a0))
+    (hadmissible : AdmissiblePair (D.atom a0) (D.atom d)) :
+    pairGapMinor (D.atom a0) (D.atom d) + tripleGapDet (D.atom a0) (D.atom d) u
+      ≤ (leverageOf (D.atom a0) - 1) / lam := by
+  have hlaw := corner_insidePair_law_of_isTie D htie hcard hgap ha0 hd hheavy hadmissible
+  rw [le_div_iff₀ hlam]
+  linarith
+
 end Gtz
