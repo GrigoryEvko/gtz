@@ -156,3 +156,86 @@ Scripts (all StaticArrays, <=32 threads, peak RSS well under 1 GB):
   scratchpad/cells/trio_desc.jl  adversarial descent on the trio
   scratchpad/cells/ledger.jl     the four ledger identities + per-vertex producer
   scratchpad/cells/paircon.jl    the pair constraint at m=4..7
+
+=======================================================================
+FORK 55.  THE INDEX-SHAPE QUESTION, ANSWERED -- AND SUPERSEDED
+=======================================================================
+
+F55-1.  THE PROMOTION EXISTS IN THE ATOM-FIXED SHAPE (commit 1c90e0c)
+---------------------------------------------------------------------
+The coordinator asked whether a promotion lemma exists between the two index
+shapes.  IT DOES.  The cell-H trio is the STAR of the fixed atom:
+    {x,c,d}, {x,b,d}, {x,b,c}
+and every one of those triples contains a pair THROUGH x.  So the corner arm's
+per-triple promotion applies to each with a pair the fixed atom belongs to:
+    {x,c,d} via (x,c),   {x,b,d} via (x,b),   {x,b,c} via (x,b).
+TWO admissible pairs through the fixed atom promote the WHOLE trio -- not three,
+and not the outside pairs at all.  Landed as
+    Gtz.star_exists_posDef_of_exists_gapDet_pos     (two pairs, minimal)
+    Gtz.star_exists_posDef_of_admissibleStar        (the full star)
+    Gtz.cellH_exists_dominating_triple              (chained against the trio)
+plus the raw-vector Gram bridge Gtz.atomTriple_posDef_iff_tripleGram, the
+three-atom analogue of the landed design-level subsetSum_posDef_iff_tripleGram.
+
+F55-2.  BUT IT IS THE WRONG TOOL -- MEASURED (scratchpad/cells/f55star.jl)
+---------------------------------------------------------------------
+Construction reused BIT FOR BIT from law2.jl's ev().  32885 cell-H inhabitants:
+    full star of g_y admissible (all three q>0)      40.06 %
+    the TWO pairs the star promotion needs           71.97 %
+    at least one q <= 0                              59.94 %
+    some T_i > 0                                    100.0000 %
+      ... and that triple is PosDef                 100.0000 % of those
+    SOME triple of the design dominates             100.0000 %
+So admissibility covers 72 percent while the conclusion holds at 100.  The star
+promotion is SUFFICIENT BUT NOT NECESSARY, and it does not cover the cell.
+
+F55-3.  THE RIGHT TOOL: THE RANK-ONE DOWNDATE (commit 42f909f)
+---------------------------------------------------------------------
+Every triple of the trio is A_y LESS ONE OUTSIDE ATOM, and cell H carries
+A_y > 0 as a hypothesis.  A rank-one downdate of a PosDef matrix moves at most
+one eigenvalue across zero, so a positive determinant leaves none across.
+Landed, GENERAL and reusable by every lane:
+    Gtz.det_sub_vecMulVec        det(N - g g') = det N * (1 - g' N^-1 g)
+                                 (matrix determinant lemma, via mathlib's
+                                  Matrix.det_add_mul; NOT previously landed)
+    Gtz.posDef_sub_vecMulVec_of_det_pos    N > 0 /\ det(N - g g') > 0
+                                            =>  N - g g' > 0
+    Gtz.posDef_sub_atomMatrix_of_det_pos   the atom form
+    Gtz.cellH_exists_dominating_triple_of_posDef
+        -- cell H yields a STRICTLY DOMINATING TRIPLE with NO admissibility
+This SUPERSEDES F55-1 for cell H.  It is the same mechanism the lane already
+used for A_z, now stated as a theorem instead of an argument in a docstring.
+
+F55-4.  A CLEAN NEGATIVE: THE FOUR-SET REDUCTION IS INSUFFICIENT
+---------------------------------------------------------------------
+The landed four-set law applied to A_y gives, verified at 6.1e-09:
+    det W  +  T4 + T5 + T6  =  det A_y  -  e2 A_y
+and cell H gives det W <= 0 FREE (measured 100.0000%, matching F48-1's
+mechanism).  Hence  sum T_i  >=  det A_y - e2 A_y, so
+    det A_y > e2 A_y   IS SUFFICIENT for the kill.
+MEASURED: it holds at only 59.81 % of cell-H inhabitants (min -1.80e+08).
+REFUTED as a route.  Do not spend a round on it.
+Also measured: e1 = sum T_i > 0 alone fires at 98.43 %, so the OTHER TWO
+symmetric functions carry the last 1.57 % -- e1 alone is not enough.
+
+F55-5.  THE RESIDUAL, RESTATED -- AND IT IS NOT A DISJUNCTION
+---------------------------------------------------------------------
+With F55-3 landed, cell H reduces to proving the trio fires.  Do NOT state that
+as a disjunction and do NOT hunt a product-form probe for it: a sibling proved
+the probe in prod(t - phi) <= 0 is irreducibly data-dependent (valid windows
+disjoint by three orders of magnitude).  State it as EMPTINESS of the negation,
+which is a single Positivstellensatz target with no disjunction at all:
+
+    { corner,  A_y > 0,  A_z NOT > 0,  T4 <= 0,  T5 <= 0,  T6 <= 0 }  =  EMPTY
+
+where T4 = det(A_y - g4 g4'), etc.  This is simpler than the symmetric-function
+form {e1<=0, e2>=0, e3<=0} that F48 recorded -- the three T_i <= 0 are directly
+the negation and are equivalent to it.
+
+STILL OPEN, and the gating step is unchanged: a POLYTOPE (rational) chart for
+the corner.  The trigonometric parametrisation in ev() is not polytope
+compatible.  The untested route is the CAYLEY TRANSFORM: the inside atoms are
+diag(1,1,sqrt(1+lam)) * Q with Q in O(3), and Q = (I-K)(I+K)^-1 for skew K is a
+RATIONAL 3-parameter chart with denominator 1+|k|^2 > 0.  Setting mu^2 = 1+lam
+clears the last root.  That gives a rational chart in (mu, k1, k2, k3) plus the
+outside atoms.  NOT attempted here.
