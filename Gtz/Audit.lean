@@ -36719,6 +36719,11 @@ run_cmd do
 #print axioms Gtz.k2ChartCrossCert_xZero
 #print axioms Gtz.k2ChartCrossCert_leadCoeff_pos
 #print axioms Gtz.k2ChartCrossCert_xZero_pos_of_midNonneg
+#print axioms Gtz.k2ChartCrossCert_xZero_split
+#print axioms Gtz.k2ChartCrossCert_xZero_pos
+#print axioms Gtz.k2ChartCrossCert_delta_split
+#print axioms Gtz.k2ChartCrossDelta_xZero
+#print axioms Gtz.k2ChartCrossCert_pos_of_halfAngle
 #print axioms Gtz.k2ChartQuotientWomBoundary_xZero
 
 
@@ -37081,6 +37086,11 @@ run_cmd do
 #print axioms Gtz.posSemidef_iff_wedgeGram_cap
 #print axioms Gtz.dominates_of_wedgeGram_cap
 #print axioms Gtz.dominates_iff_wedgeGram_cap
+#print axioms Gtz.crossNormSq_comm
+#print axioms Gtz.normSq_combination_le
+#print axioms Gtz.wedgeProbe_normSq_le_pairAreaSum_mul
+#print axioms Gtz.posSemidef_of_pairAreaSum_le_bracket_sq
+#print axioms Gtz.dominates_of_pairAreaSum_le_bracket_sq
 
 #print axioms Gtz.cofactorColumn_zero
 #print axioms Gtz.mulVec_cofactorColumn

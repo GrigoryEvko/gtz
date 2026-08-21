@@ -516,7 +516,149 @@ theorem k2ChartCrossCert_xZero_pos_of_midNonneg {ed ee td te tz : ℝ}
           + td*te*(2 + ed + ee)) := by linarith
   exact mul_pos (mul_pos (mul_pos hq hsq) hG) hbr
 
-/-! ## 8. The residual -/
+/-- **THE ZERO-ANGLE REMAINDER IS A SUM OF TWO PRODUCTS OF CHART POSITIVES.**
+The quadratic of `Gtz.k2ChartCrossCert_xZero` regroups, on the excess surface,
+into two terms in which every factor is a positive of the corner:
+
+  `tz·(1 − ty)·(T·G + td·te)`  and
+  `td·te·(2T − tz)·(1 − td − te − tz)·(1 + ed + ee)` .
+
+The middle coefficient of the quadratic never has to be signed, and no
+discriminant is needed.  The regrouping is the identity `Ξ = (1 − T) − E` with
+`E = (1 − td − te − tz)(1 + ed + ee) − tz`, which exposes the excess sum as the
+carrier of the whole zero-angle branch. -/
+theorem k2ChartCrossCert_xZero_split (ed ee td te tz : ℝ) :
+    k2ChartCrossCert ed ee td te (td*ed + te*ee - tz) tz 0
+      = te*(1+ee) * (1-tz)^2 * (td*(1+ed) + te*(1+ee))
+        * ( tz * (1 - (td*ed + te*ee) + tz)
+              * ((td*ed + te*ee)*(td*(1+ed) + te*(1+ee)) + td*te)
+            + td*te * (2*(td*ed + te*ee) - tz)
+              * (1 - td - te - tz) * (1 + ed + ee) ) := by
+  unfold k2ChartCrossCert k2ChartQuotientSlope k2ChartQuotientBase
+  ring
+
+/-- **THE ZERO-ANGLE BRANCH OF THE CORNER IS CLOSED, UNCONDITIONALLY.**  Every
+factor of the split is a positive of the corner: the plane weight, the weight
+complement of the retained plane atom, the excess total against the outside
+mass, the plane total against the plane weight, the weight budget, and the
+excess sum.
+
+This supersedes the three-case reading of the branch.  The case split into a
+nonnegative middle coefficient, a vertex past the plane total, and a positive
+discriminant was an artifact of the quadratic form: in the regrouped form no
+case survives.  [The measured split was 93.3996% / 1.3983% / 5.2021%, and the
+discriminant — positive at only 76.67% of the arena — was never the right
+question.] -/
+theorem k2ChartCrossCert_xZero_pos {ed ee td te tz : ℝ}
+    (htd : 0 < td) (hte : 0 < te) (hed : -1 < ed) (hee : -1 < ee)
+    (htz : 0 < tz)
+    (hT : 0 < td*ed + te*ee)
+    (hty : tz < td*ed + te*ee)
+    (hbudget : td + te + (td*ed + te*ee) < 1) :
+    0 < k2ChartCrossCert ed ee td te (td*ed + te*ee - tz) tz 0 := by
+  rw [k2ChartCrossCert_xZero_split]
+  have hG : 0 < td*(1+ed) + te*(1+ee) := by nlinarith
+  have hsum := k2Chart_excessSum_pos htd hte hed hee hT
+  have hee1 : 0 < 1 + ee := by linarith
+  have hq : 0 < te*(1+ee) := mul_pos hte hee1
+  have hbud : 0 < 1 - td - te - tz := by linarith
+  have htz1 : 0 < 1 - tz := by nlinarith
+  have hsq : 0 < (1-tz)^2 := pow_pos htz1 2
+  have hgap : 0 < 1 - (td*ed + te*ee) + tz := by linarith
+  have htwo : 0 < 2*(td*ed + te*ee) - tz := by linarith
+  have hmass : 0 < (td*ed + te*ee)*(td*(1+ed) + te*(1+ee)) + td*te := by
+    have := mul_pos hT hG
+    have h2 := mul_pos htd hte
+    linarith
+  have hL : 0 < tz * (1 - (td*ed + te*ee) + tz)
+      * ((td*ed + te*ee)*(td*(1+ed) + te*(1+ee)) + td*te) :=
+    mul_pos (mul_pos htz hgap) hmass
+  have hR : 0 < td*te * (2*(td*ed + te*ee) - tz)
+      * (1 - td - te - tz) * (1 + ed + ee) :=
+    mul_pos (mul_pos (mul_pos (mul_pos htd hte) htwo) hbud) hsum
+  exact mul_pos (mul_pos (mul_pos hq hsq) hG) (by linarith)
+
+/-- The excess balance of the corner: the negated slope against the excess
+total, less the outside mass against the weighted total. -/
+def k2ChartCrossDelta (ed ee td te ty tz X : ℝ) : ℝ :=
+  (-(k2ChartQuotientSlope ed ee td te tz X)) * (ty + tz)
+    - td*te*(td*(1+ed) + te*(1+ee))
+      * ((ty + tz)*((1-ty)*(1-tz))
+          + (ty + tz + 1)*(X*tz + (1-X)*ty - ty*tz))
+
+/-- **THE REMAINDER IS THE EXCESS BALANCE PLUS ONE MANIFESTLY POSITIVE TERM.**
+Substituting `Ξ = (1 − T) − E` with `E + tz = (1 − td − te − tz)(1 + ed + ee)`
+splits the remainder into the weight complement of the retained plane atom
+against the excess balance, plus a product in which every factor is a chart
+positive.  The whole corner is therefore carried by the single quantity
+`Gtz.k2ChartCrossDelta`.
+
+[At zero plane angle the balance is a product of five chart positives
+(`Gtz.k2ChartCrossDelta_xZero`), which is what closes that branch.  It does NOT
+stay positive at larger angles: MEASURED 93.1005% over the domain and only
+81.9154% at the half angle, worst value −3.30e-2 at `(ed,ee,td,te,tz) =
+(0.8328, 3.7979, 0.20546, 0.12956, 9.267e-6)`.  So this split is exactly tight
+at zero angle and TOO LOSSY at the half angle — the half-angle endpoint needs a
+different regrouping, not this one.  `scratchpad/corank1/f26sym/f44dl.jl`.] -/
+theorem k2ChartCrossCert_delta_split (ed ee td te tz X : ℝ) :
+    k2ChartCrossCert ed ee td te (td*ed + te*ee - tz) tz X
+      = te*(1+ee) * (1-tz)
+        * ( (1 - (td*ed + te*ee - tz))
+              * k2ChartCrossDelta ed ee td te (td*ed + te*ee - tz) tz X
+            + td*te*(td*(1+ed) + te*(1+ee))
+              * ((td*ed + te*ee)*((1 - (td*ed + te*ee - tz))*(1-tz))
+                  + (td*ed + te*ee + 1)
+                    * (X*tz + (1-X)*(td*ed + te*ee - tz)
+                        - (td*ed + te*ee - tz)*tz))
+              * (1 - td - te - tz) * (1 + ed + ee) ) := by
+  unfold k2ChartCrossCert k2ChartCrossDelta k2ChartQuotientSlope
+    k2ChartQuotientBase
+  ring
+
+/-- **THE EXCESS BALANCE AT ZERO ANGLE IS A PRODUCT OF FIVE CHART POSITIVES.**
+The two middle factors are the outside mass less each plane weight, both of
+which the chart carries as positive. -/
+theorem k2ChartCrossDelta_xZero (ed ee td te tz : ℝ) :
+    k2ChartCrossDelta ed ee td te (td*ed + te*ee - tz) tz 0
+      = tz * (1-tz) * (td*ed + te*ee + td) * (td*ed + te*ee + te)
+        * (td*(1+ed) + te*(1+ee)) := by
+  unfold k2ChartCrossDelta k2ChartQuotientSlope
+  ring
+
+/-! ## 8. The residual: one endpoint, five scalars -/
+
+/-- **THE RESIDUAL OF THE WHOLE LOW-ANGLE CORNER, AT ONE ANGLE.**  The
+remainder is affine in the plane angle and its zero-angle endpoint is closed
+unconditionally, so nothing is left but the half-angle endpoint.  Five scalars,
+no erased scale, no quotient, no plane angle.
+
+[MEASURED positive at 100.0000% of 12637451 points of the plain domain, with
+infimum zero on the degenerate ray `td, te, tz → 0` — so the proof must be a
+product of chart positives, exactly as the zero-angle endpoint turned out to
+be.  `scratchpad/corank1/f26sym/f44end.jl`.] -/
+def K2ChartCrossCertHalfAngle : Prop :=
+  ∀ ed ee td te tz : ℝ,
+    0 < td → 0 < te → 0 < tz → (-1 : ℝ) < ed → (-1 : ℝ) < ee →
+    tz < td*ed + te*ee →
+    td + te + (td*ed + te*ee) < 1 →
+    0 < k2ChartCrossCert ed ee td te (td*ed + te*ee - tz) tz (1/2)
+
+/-- **THE HALF-ANGLE ENDPOINT CARRIES THE WHOLE LOW-ANGLE HALF.**  Affine in the
+angle, closed at zero angle, so one endpoint decides every angle up to a
+half. -/
+theorem k2ChartCrossCert_pos_of_halfAngle (h : K2ChartCrossCertHalfAngle)
+    {ed ee td te tz X : ℝ}
+    (htd : 0 < td) (hte : 0 < te) (hed : -1 < ed) (hee : -1 < ee)
+    (htz : 0 < tz) (hX : 0 ≤ X) (hX2 : X ≤ 1/2)
+    (hT : 0 < td*ed + te*ee)
+    (hty : tz < td*ed + te*ee)
+    (hbudget : td + te + (td*ed + te*ee) < 1) :
+    0 < k2ChartCrossCert ed ee td te (td*ed + te*ee - tz) tz X :=
+  k2ChartCrossCert_pos_of_endpoints hX hX2
+    (k2ChartCrossCert_xZero_pos htd hte hed hee htz hT hty hbudget)
+    (h ed ee td te tz htd hte htz hed hee hty hbudget)
+
+/-! ## 9. The scale-free residual -/
 
 /-- **THE TWO-ZERO CORNER, REDUCED TO TWO SCALE-FREE SIGNS.**  On the low-angle
 half the corner needs only that the quotient slope is negative and the

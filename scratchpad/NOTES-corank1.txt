@@ -1323,3 +1323,52 @@ LANDED: k2ChartCrossCert_xZero_pos_of_midNonneg — the 93.4% branch, in kernel,
 from the quadratic form plus the chart positives, no search.
 REMAINING at zero angle: the 6.6% where p1<0. Two sub-branches, both in FOUR
 scalars (ed,ee,td,te) with no tz, no X, no P.
+
+F44-15. **THE ZERO-ANGLE BRANCH IS CLOSED UNCONDITIONALLY** (f44clean.py, VERIFIED)
+-----------------------------------------------------------------------
+The three-case reading of F44-14 was an ARTIFACT OF THE QUADRATIC FORM. In the
+right regrouping no case survives. The mechanism is the substitution
+    Xi = (1-T) - E ,   E := (1-td-te-tz)(1+ed+ee) - tz ,
+    so   E + tz = (1-td-te-tz)(1+ed+ee)   -- MANIFESTLY POSITIVE
+which turns PHI into a SUM OF TWO PRODUCTS OF CHART POSITIVES:
+    PHI = tz*(1-ty)*(T*G + td*te)
+          + td*te*(2T - tz)*(1-td-te-tz)*(1+ed+ee)
+Positivity of each factor: tz>0; 1-ty>0; T*G+td*te>0; td,te>0; 2T-tz>0 because
+tz<T; 1-td-te-tz>0 because td+te+T<1 and tz<T; 1+ed+ee>0 by the landed
+k2Chart_excessSum_pos. **NO discriminant, NO p1 sign, NO case split.**
+LANDED: k2ChartCrossCert_xZero_split, k2ChartCrossCert_xZero_pos.
+(The earlier k2ChartCrossCert_xZero_pos_of_midNonneg is now SUPERSEDED but kept
+— it is the p1>=0 sub-branch and costs nothing.)
+
+F44-16. THE ONE-QUANTITY REDUCTION, AND ITS REFUTATION AT THE HALF ANGLE
+-----------------------------------------------------------------------
+EXACT (k2ChartCrossCert_delta_split):
+    CERT = q(1-tz) * [ (1-ty)*Delta
+                       + td*te*G*(A+B)*(1-td-te-tz)*(1+ed+ee) ]
+    Delta := (-alpha)*T - td*te*G*(A+B)          <-- ONE quantity, linear in X
+    Delta|X=0 = tz*(1-tz)*(T+td)*(T+te)*G        <-- FIVE chart positives
+                (note T+td = G-te and T+te = G-td, both positive)
+**REFUTED: Delta > 0 does NOT hold in general.** MEASURED (f44dl.jl, 16.86M pts)
+    Delta(X) > 0    : 93.1005%
+    dDelta/dX >= 0  :  0.0%      <-- Delta is DECREASING in X, always
+    Delta(1/2) > 0  : 81.9154%   min -3.2988e-2
+    worst (ed,ee,td,te,tz) = (0.83284, 3.79795, 0.20546, 0.12956, 9.2666e-6)
+So the bound E > -tz is EXACTLY TIGHT at zero angle and TOO LOSSY at the half
+angle. The half-angle endpoint needs a DIFFERENT regrouping, not this one.
+Do not spend a round pushing Delta.
+
+F44-17. **THE RESIDUAL IS NOW ONE ENDPOINT IN FIVE SCALARS**
+-----------------------------------------------------------------------
+CERT is affine in X (k2ChartCrossCert_xInterp) and the zero-angle endpoint is
+closed, so k2ChartCrossCert_pos_of_halfAngle reduces the whole low-angle half to
+    K2ChartCrossCertHalfAngle :
+      CERT(ed,ee,td,te, ty=T-tz, tz, X=1/2) > 0
+on {td,te,tz>0, ed,ee>-1, tz<T, td+te+T<1}. FIVE scalars. No P, no quotient, no
+plane angle. MEASURED 100.0000% of 12637451 plain-domain points, infimum 0 on
+the degenerate ray td,te,tz -> 0.
+SUCCESSOR: find the half-angle analogue of the F44-15 regrouping. The zero-angle
+proof came from writing Xi = (1-T) - E and reading E+tz as a product; the
+half-angle case needs the analogous substitution for the X-dependent part of
+alpha. Note dDelta/dX < 0 ALWAYS (0.0% nonneg), and its tz-coefficient is
+    -2*( ed*td^3*(1+ed) + ee*te^3*(1+ee) + td*te*(td+te)*(1+ed)*(1+ee) )
+which is a verified closed form and a good starting handle.
