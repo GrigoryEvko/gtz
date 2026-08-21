@@ -65,6 +65,18 @@ So: the corner stratum of (6,3) carries no all-heavy tie, and a certificate for
 that must consume weight positivity. Do not look for a uniform bound.
 
 
+3a. THE CALIBRATION
+------------------
+The same objective and the same optimiser, on the UNCONSTRAINED (6,3)
+projection chart, find an EXACT tie. Best F = 9.2e-29, which is machine zero.
+Thirteen triples are weakly tight, none dominates strictly, and the largest
+squared cosine over the fifteen pairs is 1.0 exactly. So the search rediscovers
+a (6,3) split of the (5,3) diamond, with its parallel pair and its twelve or
+thirteen simultaneously tight triples. Recorded in
+scratchpad/cornerempty/calib.jl, run in Julia as an independent implementation.
+The corner numbers of part 3 therefore rest on an instrument that works.
+
+
 4. TWO ROUTES THAT DO NOT CLOSE THE CORNER
 ------------------------------------------
 a) THE AREA CEILING ALONE DOES NOT. Minimising over the corner chart the
@@ -88,6 +100,30 @@ b) A SECOND DERIVATION OF THE CEILING, WHICH CONFIRMS BOTH. Read the pair gap
 
 The corner aggregate of part 2 is the UNWEIGHTED inside total. The ceiling is
 the WEIGHTED total over all atoms. The two are independent.
+
+
+4a. THE SHARPER LAW AT A PAIR THAT MEETS THE CORNER
+--------------------------------------------------
+Read the identity of part 2 at a pair whose FIRST atom is inside the corner.
+One summand is then the repeated-atom minor, which is a pair quantity and not a
+refusal. Peel it off:
+
+  sum over a in C, a not a0, of tripleGapDet g_a0 g_d g_a
+     = lam * pairGapMinor g_a0 g_d - (l_a0 - 1) + lam * tripleGapDet g_a0 g_d u.
+
+Verified to a relative 0 to 8e-16. At a tie the left side is nonpositive, so
+
+  lam * (pairGapMinor + tripleGapDet g_a0 g_d u)  <=  l_a0 - 1 .
+
+The pair minor now carries the FULL factor lam, and the right side is ONE
+leverage excess. Divided by lam the right side is the squared axis reading of
+the inside atom. Summed over the three inside atoms the eigenvalue cancels,
+because the inside leverage excesses total exactly lam, and what is left is
+
+  sum over a in C of (pairGapMinor g_a g_d + tripleGapDet g_a g_d u)  <=  1 .
+
+Measured: this law holds at every eligible pair of the near-optima. It does not
+fire on its own.
 
 
 5. THE K1 MINOR RATIO  (new, and now in Lean)
