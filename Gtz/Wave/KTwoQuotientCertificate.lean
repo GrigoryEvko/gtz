@@ -110,6 +110,7 @@ import Gtz.Wave.KTwoTargetFactored
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
 set_option maxHeartbeats 3200000
+set_option maxRecDepth 16000
 
 namespace Gtz
 
@@ -657,6 +658,95 @@ theorem k2ChartCrossCert_pos_of_halfAngle (h : K2ChartCrossCertHalfAngle)
   k2ChartCrossCert_pos_of_endpoints hX hX2
     (k2ChartCrossCert_xZero_pos htd hte hed hee htz hT hty hbudget)
     (h ed ee td te tz htd hte htz hed hee hty hbudget)
+
+/-- The residue of the half-angle endpoint above its tight-ray lower bound,
+with the halving cleared.  It vanishes to first order in the plane weight at
+the tight ray, and it is the last unsigned object of the low-angle corner. -/
+def k2ChartCrossHalfResidue (ed ee td te tz : ℝ) : ℝ :=
+    ed^4*td^4*te + 2*ed^4*td^4*tz - 2*ed^4*td^4 + ed^3*ee*td^4*te +
+    3*ed^3*ee*td^3*te^2 + 8*ed^3*ee*td^3*te*tz - 8*ed^3*ee*td^3*te +
+    5*ed^3*td^4*te + 4*ed^3*td^4*tz - 2*ed^3*td^4 + 4*ed^3*td^3*te^2 +
+    6*ed^3*td^3*te*tz - 8*ed^3*td^3*te - 2*ed^3*td^3*tz^2 + 2*ed^3*td^3 +
+    3*ed^2*ee^2*td^3*te^2 + 3*ed^2*ee^2*td^2*te^3 + 12*ed^2*ee^2*td^2*te^2*tz
+    - 12*ed^2*ee^2*td^2*te^2 + 4*ed^2*ee*td^4*te + 15*ed^2*ee*td^3*te^2 +
+    14*ed^2*ee*td^3*te*tz - 12*ed^2*ee*td^3*te + 8*ed^2*ee*td^2*te^3 +
+    16*ed^2*ee*td^2*te^2*tz - 18*ed^2*ee*td^2*te^2 - 6*ed^2*ee*td^2*te*tz^2 +
+    6*ed^2*ee*td^2*te + 7*ed^2*td^4*te + 2*ed^2*td^4*tz + 10*ed^2*td^3*te^2 +
+    8*ed^2*td^3*te*tz - 12*ed^2*td^3*te - 4*ed^2*td^3*tz^2 - 2*ed^2*td^3*tz +
+    2*ed^2*td^3 + 3*ed^2*td^2*te^3 + 2*ed^2*td^2*te^2*tz - 4*ed^2*td^2*te^2 -
+    6*ed^2*td^2*te*tz^2 + 2*ed^2*td^2*te*tz + 4*ed^2*td^2*te +
+    3*ed*ee^3*td^2*te^3 + ed*ee^3*td*te^4 + 8*ed*ee^3*td*te^3*tz -
+    8*ed*ee^3*td*te^3 + 8*ed*ee^2*td^3*te^2 + 15*ed*ee^2*td^2*te^3 +
+    16*ed*ee^2*td^2*te^2*tz - 18*ed*ee^2*td^2*te^2 + 4*ed*ee^2*td*te^4 +
+    14*ed*ee^2*td*te^3*tz - 12*ed*ee^2*td*te^3 - 6*ed*ee^2*td*te^2*tz^2 +
+    6*ed*ee^2*td*te^2 + 3*ed*ee*td^4*te + 17*ed*ee*td^3*te^2 +
+    4*ed*ee*td^3*te*tz - 4*ed*ee*td^3*te + 17*ed*ee*td^2*te^3 +
+    16*ed*ee*td^2*te^2*tz - 24*ed*ee*td^2*te^2 - 10*ed*ee*td^2*te*tz^2 +
+    6*ed*ee*td^2*te + 3*ed*ee*td*te^4 + 4*ed*ee*td*te^3*tz - 4*ed*ee*td*te^3 -
+    10*ed*ee*td*te^2*tz^2 + 6*ed*ee*td*te^2 + 3*ed*td^4*te + 6*ed*td^3*te^2 -
+    4*ed*td^3*te - 2*ed*td^3*tz^2 - 2*ed*td^3*tz + 3*ed*td^2*te^3 -
+    2*ed*td^2*te^2*tz - 4*ed*td^2*te^2 - 10*ed*td^2*te*tz^2 + 2*ed*td^2*te*tz
+    + 4*ed*td^2*te - 2*ed*td*te^3*tz - 4*ed*td*te^2*tz^2 + ee^4*td*te^4 +
+    2*ee^4*te^4*tz - 2*ee^4*te^4 + 4*ee^3*td^2*te^3 + 5*ee^3*td*te^4 +
+    6*ee^3*td*te^3*tz - 8*ee^3*td*te^3 + 4*ee^3*te^4*tz - 2*ee^3*te^4 -
+    2*ee^3*te^3*tz^2 + 2*ee^3*te^3 + 3*ee^2*td^3*te^2 + 10*ee^2*td^2*te^3 +
+    2*ee^2*td^2*te^2*tz - 4*ee^2*td^2*te^2 + 7*ee^2*td*te^4 +
+    8*ee^2*td*te^3*tz - 12*ee^2*td*te^3 - 6*ee^2*td*te^2*tz^2 +
+    2*ee^2*td*te^2*tz + 4*ee^2*td*te^2 + 2*ee^2*te^4*tz - 4*ee^2*te^3*tz^2 -
+    2*ee^2*te^3*tz + 2*ee^2*te^3 + 3*ee*td^3*te^2 - 2*ee*td^3*te*tz +
+    6*ee*td^2*te^3 - 2*ee*td^2*te^2*tz - 4*ee*td^2*te^2 - 4*ee*td^2*te*tz^2 +
+    3*ee*td*te^4 - 4*ee*td*te^3 - 10*ee*td*te^2*tz^2 + 2*ee*td*te^2*tz +
+    4*ee*td*te^2 - 2*ee*te^3*tz^2 - 2*ee*te^3*tz - 2*td^3*te*tz -
+    4*td^2*te^2*tz - 4*td^2*te*tz^2 - 2*td*te^3*tz - 4*td*te^2*tz^2
+
+/-- **THE HALF-ANGLE ENDPOINT, SPLIT AT ITS TIGHT-RAY VALUE.**  Twice the
+endpoint is the outside data times twice the tight-ray product, plus the plane
+weight times the residue.  The tight-ray product carries the SAME factors that
+close the zero-angle branch -- the excess sum and the weight budget -- and the
+residue vanishes when the plane weight does.
+
+[MEASURED by adversarial descent, 250 restarts of 200000 steps: the residue,
+normalised by the tight-ray product, has infimum 0.7097 -- BOUNDED AWAY FROM
+ZERO.  This is the first quantity of this corner whose normalised margin does
+not vanish, so a bounded-below certificate is possible here where it was
+provably impossible for the remainder itself.
+`scratchpad/corank1/f26sym/f44remtest.jl`.] -/
+theorem k2ChartCrossCert_half_split (ed ee td te tz : ℝ) :
+    2 * k2ChartCrossCert ed ee td te (td*ed + te*ee - tz) tz (1/2)
+      = te*(1+ee) * (1-tz)
+        * ( 2 * (td*te*(td*ed + te*ee)*(td*(1+ed) + te*(1+ee))
+                  * (1 + ed + ee) * (1 - td - te - tz))
+            + tz * k2ChartCrossHalfResidue ed ee td te tz ) := by
+  unfold k2ChartCrossCert k2ChartCrossHalfResidue k2ChartQuotientSlope
+    k2ChartQuotientBase
+  ring
+
+/-- **THE HALF-ANGLE ENDPOINT FROM A SINGLE NONNEGATIVITY.**  The tight-ray
+product is a product of chart positives, so the endpoint is positive as soon as
+the residue is nonnegative.  This is the whole low-angle corner reduced to one
+sign, on a quantity whose normalised margin does NOT vanish. -/
+theorem k2ChartCrossCert_half_pos_of_residue {ed ee td te tz : ℝ}
+    (htd : 0 < td) (hte : 0 < te) (hed : -1 < ed) (hee : -1 < ee)
+    (htz : 0 < tz)
+    (hT : 0 < td*ed + te*ee)
+    (hty : tz < td*ed + te*ee)
+    (hbudget : td + te + (td*ed + te*ee) < 1)
+    (hres : 0 ≤ k2ChartCrossHalfResidue ed ee td te tz) :
+    0 < k2ChartCrossCert ed ee td te (td*ed + te*ee - tz) tz (1/2) := by
+  have hG : 0 < td*(1+ed) + te*(1+ee) := by nlinarith
+  have hsum := k2Chart_excessSum_pos htd hte hed hee hT
+  have hee1 : 0 < 1 + ee := by linarith
+  have hq : 0 < te*(1+ee) := mul_pos hte hee1
+  have hbud : 0 < 1 - td - te - tz := by linarith
+  have htz1 : 0 < 1 - tz := by nlinarith
+  have hbase : 0 < td*te*(td*ed + te*ee)*(td*(1+ed) + te*(1+ee))
+      * (1 + ed + ee) * (1 - td - te - tz) :=
+    mul_pos (mul_pos (mul_pos (mul_pos (mul_pos htd hte) hT) hG) hsum) hbud
+  have hkey := k2ChartCrossCert_half_split ed ee td te tz
+  have hrt : 0 ≤ tz * k2ChartCrossHalfResidue ed ee td te tz :=
+    mul_nonneg htz.le hres
+  nlinarith [hkey, mul_pos hq htz1, mul_pos (mul_pos hq htz1) hbase,
+    mul_nonneg (mul_pos hq htz1).le hrt]
 
 /-! ## 9. The scale-free residual -/
 

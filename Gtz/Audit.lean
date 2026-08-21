@@ -36724,6 +36724,8 @@ run_cmd do
 #print axioms Gtz.k2ChartCrossCert_delta_split
 #print axioms Gtz.k2ChartCrossDelta_xZero
 #print axioms Gtz.k2ChartCrossCert_pos_of_halfAngle
+#print axioms Gtz.k2ChartCrossCert_half_split
+#print axioms Gtz.k2ChartCrossCert_half_pos_of_residue
 #print axioms Gtz.k2ChartQuotientWomBoundary_xZero
 
 

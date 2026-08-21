@@ -1372,3 +1372,34 @@ half-angle case needs the analogous substitution for the X-dependent part of
 alpha. Note dDelta/dX < 0 ALWAYS (0.0% nonneg), and its tz-coefficient is
     -2*( ed*td^3*(1+ed) + ee*te^3*(1+ee) + td*te*(td+te)*(1+ed)*(1+ee) )
 which is a verified closed form and a good starting handle.
+
+F44-18. **THE HALF-ANGLE ENDPOINT SPLIT, AND THE FIRST NON-VANISHING MARGIN**
+-----------------------------------------------------------------------
+Psi(1/2) is CUBIC in tz (not quadratic like the zero-angle case), with
+    [tz^0] = td*te*T*(1+ed+ee)*(1-td-te)*G          POSITIVE
+    [tz^3] = -G*( T*G + td*te*(2+ed+ee) )           NEGATIVE
+so it genuinely needs the domain bound tz < T. It is NOT the same shape.
+DESCENT LADDER (each step found the next vanishing factor; f44desc*.jl,
+250 restarts x 200000 steps):
+    normaliser td*te*T*G                     -> inf 1.26e-9   (creeping)
+    normaliser + (1+ed+ee)                   -> inf 0.0209 at 40k iters,
+                                                **REFUTED at 200k: 0.00135**
+                                                (4th thin-tail death this
+                                                campaign — DO NOT quote 0.0209)
+    normaliser + (1+ed+ee)*(1-td-te-tz)      -> inf 0.99973, minimiser tz->0
+The last minimiser sat at tz = 4e-13, so 0.99973 is FLOAT CANCELLATION, not a
+deficit: the exact statement is
+    Psi(1/2) - td*te*T*G*(1+ed+ee)*(1-td-te-tz)  ==  tz * RQ    (EXACT, sympy)
+i.e. the base term is EXACTLY the tz=0 value. Testing RQ directly and stably:
+    DESCENT on RQ / [td*te*T*G*(1+ed+ee)*(1-td-te-tz)]  ->  inf 0.7097 > 0
+**THIS IS THE FIRST QUANTITY OF THIS CORNER WHOSE NORMALISED MARGIN DOES NOT
+VANISH.** Everywhere else the infimum was 0 on a degenerate ray, which forbade
+bounded-below certificates. Here one is possible.
+LANDED: k2ChartCrossHalfResidue (125 terms, degree 9, integer coefficients,
+needs set_option maxRecDepth 16000), k2ChartCrossCert_half_split,
+k2ChartCrossCert_half_pos_of_residue.
+
+**THE RESIDUAL OF THE WHOLE LOW-ANGLE CORNER IS NOW ONE SIGN:**
+    0 <= k2ChartCrossHalfResidue ed ee td te tz
+on {td,te,tz>0, ed,ee>-1, tz<T, td+te+T<1}. FIVE scalars, no erased scale, no
+quotient, no plane angle, and a normalised margin of 0.71 rather than 0.
