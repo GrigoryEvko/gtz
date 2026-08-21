@@ -1362,6 +1362,7 @@ import Gtz.Wave.CornerSizeLaw
 import Gtz.Wave.PairStarSizeLaw
 import Gtz.Wave.PairMinorBudget
 import Gtz.Wave.PairNormalParseval
+import Gtz.Wave.CornerAdmissibleGateway
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -37397,3 +37398,13 @@ run_cmd do
 #print axioms Gtz.probe_pairNormal_mass
 #print axioms Gtz.atom_pairNormal_mass
 #print axioms Gtz.unitProbe_pairNormal_mass
+
+-- Gtz/Wave/CornerAdmissibleGateway.lean -- the pairing cap from the positive
+-- semidefinite complement, and the admissible outside pair of a corner
+#print axioms Gtz.parseval_pair_reading_le
+#print axioms Gtz.complement_pair_posSemidef
+#print axioms Gtz.pairing_cap
+#print axioms Gtz.total_weighted_excess
+#print axioms Gtz.pairGapMinor_pos_of_normalizedExcess
+#print axioms Gtz.gateway_of_excess_sum_gt_one
+#print axioms Gtz.gateway_of_min_excess
