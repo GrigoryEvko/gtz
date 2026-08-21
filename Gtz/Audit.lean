@@ -1378,6 +1378,7 @@ import Gtz.Wave.PairNormalParseval
 import Gtz.Wave.UnitAtomFunnel
 import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.AdmissibleRowLeverageFloor
+import Gtz.Wave.BranchBStrongPair
 import Gtz.Wave.CornerGatewayBudget
 import Gtz.Wave.BranchTwoDeterminantSum
 import Gtz.Wave.CornerDescentRank
@@ -38226,3 +38227,12 @@ run_cmd do
 #print axioms Gtz.secondInvariant_pairCapForm
 #print axioms Gtz.det_pairCapForm
 #print axioms Gtz.pairCap_scalar_of_isTie
+
+-- Gtz/Wave/BranchBStrongPair.lean -- a refused triple of heavy atoms carries a
+-- pair whose squared pairing clears a quarter of the product of its excesses;
+-- the constant is sharp at the regular tetrahedron, where all four gap
+-- determinants vanish
+#print axioms Gtz.exists_strongPair_of_tripleGapDet_nonpos
+#print axioms Gtz.exists_pairGapMinor_le_three_quarters
+#print axioms Gtz.exists_strongPair_of_isTie_of_allHeavy
+#print axioms Gtz.branchB_exists_strongPair
