@@ -1,0 +1,156 @@
+NOTES-q74-oneblind.txt
+Question 7.4 of the brief: the rank-two case of a (6,3) boundary system with
+EXACTLY ONE blind member.  Everything below is reproducible from the normal
+form in section 1; the scripts themselves are gitignored, so the numbers are
+transcribed verbatim.
+
+CALIBRATION (run first, per the standing rule).  The (5,3) diamond reproduces
+exactly: Parseval residual 6.66e-16, leverages (2, 3.25, 3.25, 3.25, 3.25),
+distinct pair minors {0.75, 2.0, 4.5}, 8 of 10 dominating triples.
+
+
+================================================================================
+1. THE NORMAL FORM.  The case is SOLVED, not merely constrained.
+================================================================================
+
+Setup: C = {a,b,c} dominates, rank(S_C - I) = 2, unit kernel w, and
+<g_a,w> = 0 while be := <g_b,w> and ga := <g_c,w> are nonzero.
+
+Choose coordinates with w = e_3 and rotate the plane so that the shared plane
+direction is e_1.  Then the whole case is
+
+    g_a = (a1, a2, 0)
+    g_b = (ga*n, 0, be)
+    g_c = (-be*n, 0, ga)        with be^2 + ga^2 = 1.
+
+FOUR parameters (a1, a2, n, theta) for the inside triple, and every condition of
+the case holds IDENTICALLY -- none is imposed:
+
+    S_C w = w                     max deviation 2.22e-16 over 4000 draws
+    <g_a,w> = 0                   exactly 0
+    pairGapMinor(g_b,g_c) = 0     max deviation 5.33e-15
+    S_C = diag(M M^T, 1),  M = [[a1, n],[a2, 0]]      max deviation 7.11e-15
+    e2 = (a2^2 - 1)(n^2 - 1) - a1^2                   max deviation 4.80e-14
+
+The last line is worth stating twice: the second invariant of the triple is a
+SINGLE PAIR MINOR of the two plane vectors g_a and n.  That is the content
+landed as Gtz.blind_pairMinorTotal_eq_pairGapMinor (commit fef482a), together
+with the antiparallel law and the two decompositions
+
+    g_b = be*w + ga*n ,   g_c = ga*w - be*n .
+
+Domination is equivalent to M M^T > I_2 in the plane, i.e. BOTH singular values
+of M exceed one; equivalently a2^2 > 1, n^2 > 1, (a2^2-1)(n^2-1) > a1^2.  So
+leverageOf g_a > 1 and |n|^2 > 1 are automatic, never hypotheses.
+
+PARAMETER COUNT, confirmed by construction, not by a Jacobian estimate:
+  4  inside triple (a1, a2, n, theta)
+  3  weights t_a, t_b, t_c
+  3  the orthogonal matrix Q completing the outside atoms
+  2  the two free outside weight ratios
+ -1  the residual rotation gauge of the plane, already fixed by n = (n,0)
+ == 11 + 1 (the total-weight normalisation is already spent) = 12.
+This is the twelve the brief reports.  Outside atoms are recovered from
+R = I - sum_inside t g g^T by g_x = R^{1/2} q_x / sqrt(t_x), which is exact:
+Parseval residual 1e-15 on every completed design.
+
+FOUR OF THE TWENTY TRIPLES ARE REFUSED FOR FREE, with no computation: pairGapMinor(g_b,g_c) = 0,
+so by the Sylvester chain no triple containing both b and c is positive definite.
+Those are {a,b,c} and {b,c,x} for the three outside x.  SIXTEEN triples remain,
+matching the brief's "five of sixteen refusals".
+
+
+================================================================================
+2. THE SHARP CONSTANT DOES NOT EXIST.  Every reported value was the region's
+   diameter, not a property of the geometry.
+================================================================================
+
+Objective: Psi := max over the 16 live triples of lambda_min(S_T - I).  A tie of
+this case needs Psi <= 0; the case is empty iff min Psi > 0.
+
+(a) Nelder-Mead directly on Psi, 60 starts, floor tau = 0.05:  min Psi = 0.0501.
+(b) The same across floors (26 starts each) -- note the ratio wanders, which is
+    itself the signature of under-convergence:
+
+      tau     min Psi     min Psi / tau
+      0.12    0.10024     0.835
+      0.10    0.08937     0.894
+      0.05    0.05704     1.141
+      0.02    0.02439     1.220
+      0.01    0.02124     2.124        <- visibly unconverged (margins not tied)
+
+(c) Reformulated as the ZERO SET of sum over live triples of max(lambda_min,0)^2
+    -- the recommended technique -- the same floors give margins
+    0.00191 (tau=0.05), 0.00204 (tau=0.01), 0.00111 (tau=0.001):
+    already 25x below (b).
+
+(d) Least squares on the hinge residual vector, tau = 0.001, 48 s:
+      cost 1.324e-09, max live margin +0.0000361984.
+
+So the margin fell 0.42 -> ... -> 0.0281 (three earlier lanes) -> 0.0501 -> 0.0011
+-> 0.000036 as the method improved, with no sign of a floor.  CONCLUSION: the
+sequence of "sharp constants" in the record measures optimizer effort, not the
+problem.  There is no constant to report and none should be quoted again.
+
+THE MINIMISING SEQUENCE RUNS TO THE BOUNDARY.  At the best point of (d):
+  weights   [0.08034943, 0.001, 0.001, 0.91355572, 0.00309485, 0.001]
+  leverages [8.58924, 1.29214, 2.67703, 1.06203, 215.80064, 667.79952]
+Three weights sit exactly ON the floor and two leverages have blown up, with the
+products t*l bounded (0.667, 0.668, 0.970, 0.690) as the weight cap requires.
+An earlier deep polish at the same floor gave the same shape:
+  weights   [0.001, 0.1410228, 0.001, 0.001, 0.001, 0.8549772]
+  leverages [1.14533, 4.12081, 2.84102, 519.49607, 966.17875, 1.08682]
+This is the dust ray: weights to zero, leverages to infinity, t*l finite.
+
+
+================================================================================
+3. THE ESCAPE IS THE JOINT DEGENERATION, NOT EITHER HALF ALONE.
+================================================================================
+
+Capping the leverages alone does NOT restore a margin (tau = 0.001, 11 s each):
+
+      leverage cap    best max live margin    max leverage   min weight
+        8              0.000369                8.0            at floor
+       20              0.000168               20.0            at floor
+       60              0.000942               56.4            at floor
+       none            0.000385              678.9            at floor
+
+In every row the minimiser pins weights at the floor.  But capping BOTH -- a
+compact region -- gives a clearly positive margin that tracks the region:
+
+      tau     leverage cap    best max live margin
+      0.02        6            +0.02437992
+      0.01       10            +0.00205957
+      0.002      40            +0.00028239
+
+CONCLUSION.  On every compact sub-region the case is numerically empty with a
+strictly positive margin, and the margin goes to zero only as the region opens
+up in BOTH directions at once -- weights to zero and leverages to infinity
+together.  Consequences for anyone who works this case next:
+
+  * The case is empty, but the infimum of the margin over the open region is 0.
+    A proof therefore CANNOT be a strict inequality with a positive constant,
+    and must consume positivity of the weights in an essential way.  This is the
+    same shape the cells lane and the E1 lane reached independently.
+  * Do not run another descent to "improve the constant".  There is no constant.
+  * The obstruction to feasibility is NOT the two closed conditions of the case
+    (they are solved exactly by the normal form of section 1); it is the joint
+    refusal of the sixteen live triples.
+
+NOT ESTABLISHED, and stated as such: I did not prove emptiness.  The evidence is
+numerical and the minimising sequence leaves every compact set, which is exactly
+the situation in which numerics cannot decide.  A proof needs the weight cap
+t*l <= 1 fed against the sixteen refusals in the normal-form coordinates.
+
+LANDED THIS ROUND: Gtz/Wave/BlindMemberNormalForm.lean (commit fef482a), 20
+theorems, all pins [propext, Classical.choice, Quot.sound], built per-module and
+audited from the repository root.  The module is the abstract normal form plus
+its production from the blind reading; it needs no design, no size and no
+positivity.
+
+PROCESS INCIDENT.  A sibling lane's commit 860aee7 swept my in-flight umbrella
+edits into itself while my module file was still untracked, so HEAD briefly
+imported a file git did not have.  Repaired by committing the module (fef482a);
+every umbrella import now resolves to a tracked file.  This is the second
+occurrence of the same hazard and it is worth a standing rule: commit the module
+file BEFORE editing either umbrella.
