@@ -1373,6 +1373,7 @@ import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoFrameKill
 import Gtz.Wave.KTwoFrameChart
+import Gtz.Wave.KTwoDesignKill
 import Gtz.Wave.KTwoBridgeNormalForm
 import Gtz.Wave.KTwoBridgeRefusalY
 import Gtz.Wave.KTwoBridgeSlacks
@@ -37672,3 +37673,7 @@ run_cmd do
 #print axioms Gtz.dotProduct_eq_frame_coords
 #print axioms Gtz.tripleGram_eq_frame_coords
 #print axioms Gtz.tripleGapDet_eq_frame_coords
+
+-- Gtz/Wave/KTwoDesignKill.lean -- the two-zero stratum of a (5,3) design is
+-- empty, read in any orthonormal frame of the axis complement
+#print axioms Gtz.k2Five_kill
