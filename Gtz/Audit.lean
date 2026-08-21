@@ -39076,7 +39076,7 @@ run_cmd do
 #print axioms Gtz.pairBracket_trans
 #print axioms Gtz.pairBracket_self
 #print axioms Gtz.pairBracket_eq_zero_comm
-#print axioms Gtz.parallelClass
+#print axioms Gtz.rankTwoParallelClass
 #print axioms Gtz.parallelClasses
 #print axioms Gtz.mem_parallelClass_iff
 #print axioms Gtz.self_mem_parallelClass
@@ -39092,7 +39092,7 @@ run_cmd do
 #print axioms Gtz.classMass
 #print axioms Gtz.classDefect
 #print axioms Gtz.classGapForm
-#print axioms Gtz.classWeight_pos
+#print axioms Gtz.rankTwoClassWeight_pos
 #print axioms Gtz.sum_classGapForm_eq_neg_classWeight
 #print axioms Gtz.classGapForm_self
 #print axioms Gtz.sum_erase_classGapForm_eq

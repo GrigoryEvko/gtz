@@ -192,35 +192,35 @@ theorem pairBracket_eq_zero_comm {atoms : ℕ} (D : WeightedDesign atoms 2)
 open scoped Classical in
 /-- The **parallel class** of an atom: the atoms whose bracket against it
 vanishes. -/
-noncomputable def parallelClass (D : WeightedDesign size 2) (pivot : Fin size) :
+noncomputable def rankTwoParallelClass (D : WeightedDesign size 2) (pivot : Fin size) :
     Finset (Fin size) :=
   Finset.univ.filter fun other => pairBracket D pivot other = 0
 
 open scoped Classical in
 /-- The family of parallel classes of a rank-two design. -/
 noncomputable def parallelClasses (D : WeightedDesign size 2) : Finset (Finset (Fin size)) :=
-  Finset.image (parallelClass D) Finset.univ
+  Finset.image (rankTwoParallelClass D) Finset.univ
 
 open scoped Classical in
 theorem mem_parallelClass_iff (D : WeightedDesign size 2) (pivot other : Fin size) :
-    other ∈ parallelClass D pivot ↔ pairBracket D pivot other = 0 := by
-  rw [parallelClass, Finset.mem_filter]
+    other ∈ rankTwoParallelClass D pivot ↔ pairBracket D pivot other = 0 := by
+  rw [rankTwoParallelClass, Finset.mem_filter]
   exact ⟨fun hmember => hmember.2, fun hzero => ⟨Finset.mem_univ other, hzero⟩⟩
 
 theorem self_mem_parallelClass (D : WeightedDesign size 2) (pivot : Fin size) :
-    pivot ∈ parallelClass D pivot :=
+    pivot ∈ rankTwoParallelClass D pivot :=
   (mem_parallelClass_iff D pivot pivot).mpr (pairBracket_self D pivot)
 
 theorem parallelClass_mem_parallelClasses (D : WeightedDesign size 2) (pivot : Fin size) :
-    parallelClass D pivot ∈ parallelClasses D :=
+    rankTwoParallelClass D pivot ∈ parallelClasses D :=
   Finset.mem_image_of_mem _ (Finset.mem_univ pivot)
 
 /-- **Classes are classes.**  Membership and equality of parallel classes agree,
 once every atom has a live coordinate. -/
 theorem parallelClass_eq_of_mem (D : WeightedDesign size 2)
     (hlive : ∀ label : Fin size, D.atom label 0 ≠ 0 ∨ D.atom label 1 ≠ 0)
-    {pivot other : Fin size} (hmember : other ∈ parallelClass D pivot) :
-    parallelClass D other = parallelClass D pivot := by
+    {pivot other : Fin size} (hmember : other ∈ rankTwoParallelClass D pivot) :
+    rankTwoParallelClass D other = rankTwoParallelClass D pivot := by
   have hbracket : pairBracket D pivot other = 0 := (mem_parallelClass_iff D pivot other).mp hmember
   ext probe
   rw [mem_parallelClass_iff, mem_parallelClass_iff]
@@ -234,7 +234,7 @@ theorem parallelClass_eq_of_mem (D : WeightedDesign size 2)
 theorem pairBracket_eq_zero_of_mem_of_mem (D : WeightedDesign size 2)
     (hlive : ∀ label : Fin size, D.atom label 0 ≠ 0 ∨ D.atom label 1 ≠ 0)
     {pivot leftLabel rightLabel : Fin size}
-    (hleft : leftLabel ∈ parallelClass D pivot) (hright : rightLabel ∈ parallelClass D pivot) :
+    (hleft : leftLabel ∈ rankTwoParallelClass D pivot) (hright : rightLabel ∈ rankTwoParallelClass D pivot) :
     pairBracket D leftLabel rightLabel = 0 :=
   pairBracket_trans D (hlive pivot)
     (pairBracket_eq_zero_comm D ((mem_parallelClass_iff D pivot leftLabel).mp hleft))
@@ -245,7 +245,7 @@ open scoped Classical in
 theorem filter_parallelClass_eq (D : WeightedDesign size 2)
     (hlive : ∀ label : Fin size, D.atom label 0 ≠ 0 ∨ D.atom label 1 ≠ 0)
     {block : Finset (Fin size)} (hblock : block ∈ parallelClasses D) :
-    (Finset.univ.filter fun label => parallelClass D label = block) = block := by
+    (Finset.univ.filter fun label => rankTwoParallelClass D label = block) = block := by
   obtain ⟨pivot, -, hpivot⟩ := Finset.mem_image.mp hblock
   subst hpivot
   ext probe
@@ -265,7 +265,7 @@ theorem sum_over_parallelClasses {M : Type*} [AddCommMonoid M] (D : WeightedDesi
     (readout : Fin size → M) :
     ∑ block ∈ parallelClasses D, ∑ label ∈ block, readout label = ∑ label, readout label := by
   have hmaps : ∀ label ∈ (Finset.univ : Finset (Fin size)),
-      parallelClass D label ∈ parallelClasses D :=
+      rankTwoParallelClass D label ∈ parallelClasses D :=
     fun label _ => parallelClass_mem_parallelClasses D label
   have hfibre := Finset.sum_fiberwise_of_maps_to hmaps readout
   rw [← hfibre]
@@ -279,7 +279,7 @@ theorem parallelClass_eq_of_mem_class (D : WeightedDesign size 2)
     (hlive : ∀ label : Fin size, D.atom label 0 ≠ 0 ∨ D.atom label 1 ≠ 0)
     {block : Finset (Fin size)} (hblock : block ∈ parallelClasses D)
     {label : Fin size} (hmember : label ∈ block) :
-    parallelClass D label = block := by
+    rankTwoParallelClass D label = block := by
   obtain ⟨pivot, -, hpivot⟩ := Finset.mem_image.mp hblock
   subst hpivot
   exact parallelClass_eq_of_mem D hlive hmember
@@ -289,9 +289,9 @@ open scoped Classical in
 theorem ne_of_mem_parallelClass_of_class_ne (D : WeightedDesign size 2)
     (hlive : ∀ label : Fin size, D.atom label 0 ≠ 0 ∨ D.atom label 1 ≠ 0)
     {leftPivot rightPivot leftLabel rightLabel : Fin size}
-    (hleft : leftLabel ∈ parallelClass D leftPivot)
-    (hright : rightLabel ∈ parallelClass D rightPivot)
-    (hclass : parallelClass D leftPivot ≠ parallelClass D rightPivot) :
+    (hleft : leftLabel ∈ rankTwoParallelClass D leftPivot)
+    (hright : rightLabel ∈ rankTwoParallelClass D rightPivot)
+    (hclass : rankTwoParallelClass D leftPivot ≠ rankTwoParallelClass D rightPivot) :
     leftLabel ≠ rightLabel := by
   intro hequal
   subst hequal
@@ -330,7 +330,7 @@ noncomputable def classGapForm (D : WeightedDesign size 2)
   ∑ leftLabel ∈ leftBlock, ∑ rightLabel ∈ rightBlock,
     D.weight leftLabel * D.weight rightLabel * pairGapForm D leftLabel rightLabel
 
-theorem classWeight_pos (D : WeightedDesign size 2) {block : Finset (Fin size)}
+theorem rankTwoClassWeight_pos (D : WeightedDesign size 2) {block : Finset (Fin size)}
     (hnonempty : block.Nonempty) : 0 < classWeight D block :=
   Finset.sum_pos (fun label _ => D.weight_pos label) hnonempty
 
@@ -446,7 +446,7 @@ theorem classDefect_nonneg {atoms : ℕ} (D : WeightedDesign atoms 2) (hatoms : 
   have hnonpos : ∑ other ∈ (parallelClasses D).erase block, classGapForm D block other ≤ 0 :=
     Finset.sum_nonpos hcross
   rw [htotal] at hnonpos
-  have hweightPos := classWeight_pos D hnonempty
+  have hweightPos := rankTwoClassWeight_pos D hnonempty
   nlinarith [hnonpos, hweightPos]
 
 open scoped Classical in
@@ -491,20 +491,20 @@ theorem card_parallelClasses_le_three {atoms : ℕ} (D : WeightedDesign atoms 2)
       (∀ probe : Fin atoms, ∃ pivot ∈ chosen, pairBracket D pivot probe = 0) →
       (parallelClasses D).card ≤ chosen.length := by
     intro chosen hchosen
-    have hsubset : parallelClasses D ⊆ (chosen.map (parallelClass D)).toFinset := by
+    have hsubset : parallelClasses D ⊆ (chosen.map (rankTwoParallelClass D)).toFinset := by
       intro block hblock
       obtain ⟨probe, -, hprobe⟩ := Finset.mem_image.mp hblock
       obtain ⟨pivot, hpivotMem, hpivotZero⟩ := hchosen probe
-      have hequal : parallelClass D probe = parallelClass D pivot :=
+      have hequal : rankTwoParallelClass D probe = rankTwoParallelClass D pivot :=
         parallelClass_eq_of_mem D
           (fun label => atom_coordinate_ne_zero_of_one_le_leverage D
             (one_le_leverage_of_isTie_rankTwo D hatoms htie label))
           ((mem_parallelClass_iff D pivot probe).mpr hpivotZero)
       rw [← hprobe, hequal, List.mem_toFinset]
       exact List.mem_map_of_mem hpivotMem
-    calc (parallelClasses D).card ≤ (chosen.map (parallelClass D)).toFinset.card :=
+    calc (parallelClasses D).card ≤ (chosen.map (rankTwoParallelClass D)).toFinset.card :=
           Finset.card_le_card hsubset
-      _ ≤ (chosen.map (parallelClass D)).length := List.toFinset_card_le _
+      _ ≤ (chosen.map (rankTwoParallelClass D)).length := List.toFinset_card_le _
       _ = chosen.length := by rw [List.length_map]
   have hone : ∃ secondLabel, pairBracket D firstLabel secondLabel ≠ 0 := by
     by_contra hall
@@ -595,25 +595,25 @@ off-diagonal class block to vanish, and every summand of such a block is at most
 zero, so each pair gap form across two classes is exactly zero. -/
 theorem pairGapForm_eq_zero_of_parallelClass_ne {atoms : ℕ} (D : WeightedDesign atoms 2)
     (hatoms : 2 ≤ atoms) (htie : IsTie D) {leftLabel rightLabel : Fin atoms}
-    (hclass : parallelClass D leftLabel ≠ parallelClass D rightLabel) :
+    (hclass : rankTwoParallelClass D leftLabel ≠ rankTwoParallelClass D rightLabel) :
     pairGapForm D leftLabel rightLabel = 0 := by
   have hlive : ∀ label : Fin atoms, D.atom label 0 ≠ 0 ∨ D.atom label 1 ≠ 0 :=
     fun label => atom_coordinate_ne_zero_of_one_le_leverage D
       (one_le_leverage_of_isTie_rankTwo D hatoms htie label)
   obtain ⟨-, hdefect⟩ := card_parallelClasses_eq_three_and_classDefect_eq_zero D hatoms htie
-  have hleftMem : parallelClass D leftLabel ∈ parallelClasses D :=
+  have hleftMem : rankTwoParallelClass D leftLabel ∈ parallelClasses D :=
     parallelClass_mem_parallelClasses D leftLabel
-  have hrightMem : parallelClass D rightLabel ∈ parallelClasses D :=
+  have hrightMem : rankTwoParallelClass D rightLabel ∈ parallelClasses D :=
     parallelClass_mem_parallelClasses D rightLabel
   have htotal := sum_erase_classGapForm_eq D hlive hleftMem
   rw [hdefect _ hleftMem] at htotal
-  have hsumZero : ∑ other ∈ (parallelClasses D).erase (parallelClass D leftLabel),
-      classGapForm D (parallelClass D leftLabel) other = 0 := by
+  have hsumZero : ∑ other ∈ (parallelClasses D).erase (rankTwoParallelClass D leftLabel),
+      classGapForm D (rankTwoParallelClass D leftLabel) other = 0 := by
     rw [htotal]; ring
-  have hcross : ∀ other ∈ (parallelClasses D).erase (parallelClass D leftLabel),
-      classGapForm D (parallelClass D leftLabel) other ≤ 0 := by
+  have hcross : ∀ other ∈ (parallelClasses D).erase (rankTwoParallelClass D leftLabel),
+      classGapForm D (rankTwoParallelClass D leftLabel) other ≤ 0 := by
     intro other hother
-    have hne : other ≠ parallelClass D leftLabel := (Finset.mem_erase.mp hother).1
+    have hne : other ≠ rankTwoParallelClass D leftLabel := (Finset.mem_erase.mp hother).1
     have hotherMem : other ∈ parallelClasses D := (Finset.mem_erase.mp hother).2
     refine Finset.sum_nonpos fun probeLeft hprobeLeft =>
       Finset.sum_nonpos fun probeRight hprobeRight => ?_
@@ -625,13 +625,13 @@ theorem pairGapForm_eq_zero_of_parallelClass_ne {atoms : ℕ} (D : WeightedDesig
     exact mul_nonpos_of_nonneg_of_nonpos
       (mul_pos (D.weight_pos probeLeft) (D.weight_pos probeRight)).le
       (pairGapForm_nonpos_of_isTie_rankTwo D hatoms htie hdistinct)
-  have hmemErase : parallelClass D rightLabel
-      ∈ (parallelClasses D).erase (parallelClass D leftLabel) :=
+  have hmemErase : rankTwoParallelClass D rightLabel
+      ∈ (parallelClasses D).erase (rankTwoParallelClass D leftLabel) :=
     Finset.mem_erase.mpr ⟨fun hcontra => hclass hcontra.symm, hrightMem⟩
   have hblockZero := eq_zero_of_sum_eq_zero_of_nonpos _ _ hcross hsumZero hmemErase
   simp only [classGapForm] at hblockZero
-  have hrowNonpos : ∀ probeLeft ∈ parallelClass D leftLabel,
-      (∑ probeRight ∈ parallelClass D rightLabel,
+  have hrowNonpos : ∀ probeLeft ∈ rankTwoParallelClass D leftLabel,
+      (∑ probeRight ∈ rankTwoParallelClass D rightLabel,
         D.weight probeLeft * D.weight probeRight * pairGapForm D probeLeft probeRight) ≤ 0 := by
     intro probeLeft hprobeLeft
     refine Finset.sum_nonpos fun probeRight hprobeRight => ?_
@@ -641,7 +641,7 @@ theorem pairGapForm_eq_zero_of_parallelClass_ne {atoms : ℕ} (D : WeightedDesig
         (ne_of_mem_parallelClass_of_class_ne D hlive hprobeLeft hprobeRight hclass))
   have hrowZero := eq_zero_of_sum_eq_zero_of_nonpos _ _ hrowNonpos hblockZero
     (self_mem_parallelClass D leftLabel)
-  have hentryNonpos : ∀ probeRight ∈ parallelClass D rightLabel,
+  have hentryNonpos : ∀ probeRight ∈ rankTwoParallelClass D rightLabel,
       D.weight leftLabel * D.weight probeRight * pairGapForm D leftLabel probeRight ≤ 0 := by
     intro probeRight hprobeRight
     exact mul_nonpos_of_nonneg_of_nonpos
@@ -660,7 +660,7 @@ open scoped Classical in
 parallel classes dominate as a pair. -/
 theorem dominates_pair_of_parallelClass_ne {atoms : ℕ} (D : WeightedDesign atoms 2)
     (hatoms : 2 ≤ atoms) (htie : IsTie D) {leftLabel rightLabel : Fin atoms}
-    (hclass : parallelClass D leftLabel ≠ parallelClass D rightLabel) :
+    (hclass : rankTwoParallelClass D leftLabel ≠ rankTwoParallelClass D rightLabel) :
     Dominates D {leftLabel, rightLabel} := by
   have hdistinct : leftLabel ≠ rightLabel := fun hequal => hclass (by rw [hequal])
   exact dominates_pair_of_pairGapForm_eq_zero D hatoms htie hdistinct
@@ -706,7 +706,7 @@ all carry two atoms, so one of them is a singleton, and that atom sits in a
 different class from each of the other four. -/
 theorem exists_isolated_atom_of_isTie_fiveTwo (D : WeightedDesign 5 2) (htie : IsTie D) :
     ∃ pivot : Fin 5, ∀ other : Fin 5, other ≠ pivot →
-      parallelClass D other ≠ parallelClass D pivot := by
+      rankTwoParallelClass D other ≠ rankTwoParallelClass D pivot := by
   have hlive : ∀ label : Fin 5, D.atom label 0 ≠ 0 ∨ D.atom label 1 ≠ 0 :=
     fun label => atom_coordinate_ne_zero_of_one_le_leverage D
       (one_le_leverage_of_isTie_rankTwo D (by norm_num) htie label)
@@ -863,12 +863,12 @@ theorem nonDominating_pairs_subset_biUnion (D : WeightedDesign 5 2) (htie : IsTi
   rw [Finset.mem_filter, Finset.mem_powersetCard] at hselected
   obtain ⟨⟨-, hcard⟩, hrefuses⟩ := hselected
   obtain ⟨leftLabel, rightLabel, hdistinct, hpair⟩ := Finset.card_eq_two.mp hcard
-  have hsame : parallelClass D leftLabel = parallelClass D rightLabel := by
+  have hsame : rankTwoParallelClass D leftLabel = rankTwoParallelClass D rightLabel := by
     by_contra hne
     refine hrefuses ?_
     rw [hpair]
     exact dominates_pair_of_parallelClass_ne D (by norm_num) htie hne
-  refine Finset.mem_biUnion.mpr ⟨parallelClass D leftLabel,
+  refine Finset.mem_biUnion.mpr ⟨rankTwoParallelClass D leftLabel,
     parallelClass_mem_parallelClasses D leftLabel, ?_⟩
   rw [Finset.mem_powersetCard]
   refine ⟨?_, hcard⟩
