@@ -1324,6 +1324,7 @@ import Gtz.Wave.BracketPluckerSyzygy
 import Gtz.Wave.ParallelPairFactorization
 import Gtz.Wave.KTwoXSplit
 import Gtz.Wave.DominatorLeverageCap
+import Gtz.Wave.KTwoLeverageExcess
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
@@ -36636,6 +36637,14 @@ run_cmd do
 #print axioms Gtz.isTie_dominator_leverage_cap
 #print axioms Gtz.isTie_dominator_leverage_total_cap
 #print axioms Gtz.isTie_dominator_weightProduct_le
+
+-- Gtz/Wave/KTwoLeverageExcess.lean -- in the two-zero stratum the bracket of
+-- the dominator collapses to the opposite wedge, and the sharpened floor then
+-- caps the partners' pairing by their leverage excesses
+#print axioms Gtz.axisTriple_bracket_sq
+#print axioms Gtz.axisTriple_pairing_sq_le
+#print axioms Gtz.axisTriple_orthogonal_of_leverage_one
+#print axioms Gtz.axisTriple_leverage_gt_one_of_pairing
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
