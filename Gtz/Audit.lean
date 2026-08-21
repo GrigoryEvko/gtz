@@ -1369,6 +1369,7 @@ import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoBridgeNormalForm
 import Gtz.Wave.KTwoBridgeRefusalY
 import Gtz.Wave.KTwoBridgeSlacks
+import Gtz.Wave.KTwoBridgePositives
 import Gtz.Wave.CoherentHornRepayScope
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -37504,3 +37505,12 @@ run_cmd do
 #print axioms Gtz.tripleGram_posDef_iff_gapDet_pos_of_admissible
 #print axioms Gtz.corner_column_exists_posDef
 #print axioms Gtz.corner_column_exists_posDef_closed
+
+-- Gtz/Wave/KTwoBridgePositives.lean -- the chart positives are the plane gap:
+-- the cross law, the corner slack, and the two diagonal readings
+#print axioms Gtz.k2Plane_cross_law
+#print axioms Gtz.k2Plane_om_eq
+#print axioms Gtz.k2Plane_Wom_eq
+#print axioms Gtz.k2Plane_Vn_eq
+#print axioms Gtz.k2Plane_Un_eq
+#print axioms Gtz.k2Plane_chart_positives
