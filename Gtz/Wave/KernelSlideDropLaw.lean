@@ -65,6 +65,8 @@ system outright.]
 -/
 import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Reduction.MassGapDescent
+import Gtz.Wave.FourSetProducer
+import Gtz.Reduction.PolarGapDeterminant
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -443,5 +445,97 @@ theorem reading_cap_of_refusals (hsymm : gapᵀ = gap)
     _ = 1 + atom ⬝ᵥ ((kernelShift gap kern)⁻¹ *ᵥ atom) := by field_simp
 
 end Triple
+
+/-! ## 7. At a boundary design -/
+
+section Design
+
+variable {m : ℕ}
+
+/-- A triple's atom sum, written out. -/
+theorem subsetSum_triple_expand (D : WeightedDesign m 3) {x y z : Fin m}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) :
+    subsetSum D ({x, y, z} : Finset (Fin m))
+      = atomMatrix (D.atom x) + atomMatrix (D.atom y) + atomMatrix (D.atom z) := by
+  rw [subsetSum, Finset.sum_insert (by simp [hxy, hxz]), Finset.sum_insert (by simp [hyz]),
+    Finset.sum_singleton]
+  abel
+
+/-- **THE READING CAP AT A BOUNDARY DESIGN.**  Every atom of a boundary design is
+capped against every corank-one weak dominator, in terms of that dominator alone.
+
+The dominator supplies a unit null probe `kern` and a nonzero second invariant.
+Any atom `d` outside it that reads the probe makes the four-set strictly
+dominating, so all three of its drops refuse, and the three refusals sum to this
+one inequality by `Gtz.triple_fourSet_inverseForm_sum`.
+
+The left coefficient is `3 - trace (gap + kern kernᵀ)⁻¹` once the summed shifted
+form is written as `2 + trace`, so the cap has content exactly when the dominator
+dominates strongly transverse to its own kernel. -/
+theorem reading_cap_of_isTie (D : WeightedDesign m 3) (htie : IsTie D)
+    {x y z d : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hdx : d ≠ x) (hdy : d ≠ y) (hdz : d ≠ z)
+    (hdom : Dominates D ({x, y, z} : Finset (Fin m)))
+    {kern : Fin 3 → ℝ}
+    (hgap : (subsetSum D ({x, y, z} : Finset (Fin m)) - 1) *ᵥ kern = 0)
+    (hunit : kern ⬝ᵥ kern = 1)
+    (he : secondInvariantOfThree (subsetSum D ({x, y, z} : Finset (Fin m)) - 1) ≠ 0)
+    (hread : D.atom d ⬝ᵥ kern ≠ 0) :
+    (5 - (D.atom x ⬝ᵥ
+            ((kernelShift (subsetSum D ({x, y, z} : Finset (Fin m)) - 1) kern)⁻¹ *ᵥ D.atom x)
+        + D.atom y ⬝ᵥ
+            ((kernelShift (subsetSum D ({x, y, z} : Finset (Fin m)) - 1) kern)⁻¹ *ᵥ D.atom y)
+        + D.atom z ⬝ᵥ
+            ((kernelShift (subsetSum D ({x, y, z} : Finset (Fin m)) - 1) kern)⁻¹ *ᵥ D.atom z)))
+        * (D.atom d ⬝ᵥ kern) ^ 2
+      ≤ 1 + D.atom d ⬝ᵥ
+          ((kernelShift (subsetSum D ({x, y, z} : Finset (Fin m)) - 1) kern)⁻¹ *ᵥ D.atom d) := by
+  classical
+  set gap := subsetSum D ({x, y, z} : Finset (Fin m)) - 1 with hgapset
+  have hexpand := subsetSum_triple_expand D hxy hxz hyz
+  have hgapdef : gap = atomMatrix (D.atom x) + atomMatrix (D.atom y) + atomMatrix (D.atom z) - 1 := by
+    rw [hgapset, hexpand]
+  have hS : atomMatrix (D.atom x) + atomMatrix (D.atom y) + atomMatrix (D.atom z) = gap + 1 := by
+    rw [hgapdef]; abel
+  have hpsd : gap.PosSemidef := hdom
+  have hsymm : gapᵀ = gap := (by simpa using hpsd.isHermitian : gap.IsSymm)
+  -- both rank-one updates are positive definite, by the landed four-set producer
+  have hkernRead : kern ⬝ᵥ kern ≠ 0 := by rw [hunit]; exact one_ne_zero
+  have hshiftPD : (kernelShift gap kern).PosDef :=
+    posDef_add_atomMatrix_of_reading_ne_zero hpsd hgap hunit he hkernRead
+  have hfourPD : (gap + atomMatrix (D.atom d)).PosDef :=
+    posDef_add_atomMatrix_of_reading_ne_zero hpsd hgap hunit he hread
+  have hshiftDet : IsUnit (kernelShift gap kern).det :=
+    isUnit_iff_ne_zero.mpr (ne_of_gt hshiftPD.det_pos)
+  have hfourDet : IsUnit (gap + atomMatrix (D.atom d)).det :=
+    isUnit_iff_ne_zero.mpr (ne_of_gt hfourPD.det_pos)
+  -- no triple of the design dominates strictly
+  have hno : ∀ p q r : Fin m, p ≠ q → p ≠ r → q ≠ r →
+      ¬ (atomMatrix (D.atom p) + atomMatrix (D.atom q) + atomMatrix (D.atom r) - 1).PosDef := by
+    intro p q r hpq hpr hqr
+    have hrefuse := htie.2 ({p, q, r} : Finset (Fin m)) (card_triple_eq hpq hpr hqr)
+    rwa [subsetSum_triple_expand D hpq hpr hqr] at hrefuse
+  -- the three drops of the four-set, each refused
+  have hrefa : 1 ≤ D.atom x ⬝ᵥ ((gap + atomMatrix (D.atom d))⁻¹ *ᵥ D.atom x) := by
+    refine one_le_inverseForm_of_not_posDef hfourPD ?_
+    have heq : gap + atomMatrix (D.atom d) - atomMatrix (D.atom x)
+        = atomMatrix (D.atom d) + atomMatrix (D.atom y) + atomMatrix (D.atom z) - 1 := by
+      rw [hgapdef]; abel
+    rw [heq]; exact hno d y z hdy hdz hyz
+  have hrefb : 1 ≤ D.atom y ⬝ᵥ ((gap + atomMatrix (D.atom d))⁻¹ *ᵥ D.atom y) := by
+    refine one_le_inverseForm_of_not_posDef hfourPD ?_
+    have heq : gap + atomMatrix (D.atom d) - atomMatrix (D.atom y)
+        = atomMatrix (D.atom x) + atomMatrix (D.atom d) + atomMatrix (D.atom z) - 1 := by
+      rw [hgapdef]; abel
+    rw [heq]; exact hno x d z (Ne.symm hdx) hxz hdz
+  have hrefc : 1 ≤ D.atom z ⬝ᵥ ((gap + atomMatrix (D.atom d))⁻¹ *ᵥ D.atom z) := by
+    refine one_le_inverseForm_of_not_posDef hfourPD ?_
+    have heq : gap + atomMatrix (D.atom d) - atomMatrix (D.atom z)
+        = atomMatrix (D.atom x) + atomMatrix (D.atom y) + atomMatrix (D.atom d) - 1 := by
+      rw [hgapdef]; abel
+    rw [heq]; exact hno x y d hxy (Ne.symm hdx) (Ne.symm hdy)
+  exact reading_cap_of_refusals hsymm hshiftDet hfourDet hgap hunit hread hS hrefa hrefb hrefc
+
+end Design
 
 end Gtz
