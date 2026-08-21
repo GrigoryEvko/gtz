@@ -75,7 +75,7 @@ variable {m : ℕ}
 
 /-- The arithmetic-geometric mean inequality at three nonnegative reals, in its
 polynomial form. -/
-theorem twentySeven_mul_prod_le_cube (first second third : ℝ) (hfirst : 0 ≤ first)
+theorem twentySeven_mul_tripleWeight_prod_le_cube (first second third : ℝ) (hfirst : 0 ≤ first)
     (hsecond : 0 ≤ second) (hthird : 0 ≤ third) :
     27 * (first * second * third) ≤ (first + second + third) ^ 3 := by
   nlinarith [sq_nonneg (first - second), sq_nonneg (second - third), sq_nonneg (first - third),
@@ -107,7 +107,7 @@ theorem weight_prod_le_one_div_twentySeven (D : WeightedDesign m 3)
     (hst : second ≠ third) :
     D.weight first * D.weight second * D.weight third ≤ 1 / 27 := by
   have hsum := three_weight_sum_le_one D hfs hft hst
-  have hamgm := twentySeven_mul_prod_le_cube (D.weight first) (D.weight second)
+  have hamgm := twentySeven_mul_tripleWeight_prod_le_cube (D.weight first) (D.weight second)
     (D.weight third) (D.weight_pos first).le (D.weight_pos second).le (D.weight_pos third).le
   have hcube : (D.weight first + D.weight second + D.weight third) ^ 3 ≤ 1 := by
     have hnonneg : 0 ≤ D.weight first + D.weight second + D.weight third := by
