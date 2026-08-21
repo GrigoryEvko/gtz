@@ -1,0 +1,124 @@
+NOTES — fork 74, the abstract reformulation lane
+=================================================
+Scope: state and land the resolvent criterion; attack IsometrySelects 6 3;
+report on restricted invertibility.  paper/brief/ untouched throughout.
+
+HARNESS CALIBRATION (run first, every script)
+--------------------------------------------
+(5,3) diamond, K4-e, conductances (2,3,3,3,3), uniform weight 1/5:
+  Parseval residual                 6.661e-16
+  leverages                         (2, 3.25, 3.25, 3.25, 3.25)
+  pair minors                       {0.75 x4, 2.0 x2, 4.5 x4}
+  dominating triples                8 of 10
+  dominating triples via P[C,C] >= diag(t_C)   8 of 10, agree exactly
+  co-Parseval pivots rho            (0.5, 0.8125, 0.8125, 0.8125, 0.8125)
+  sum (1-t) rho                     3.0 exactly  (= k)
+  #{rho <= 1}                       5   (bound m-k = 2)
+
+F74-1.  THE RESOLVENT CRITERION, VERIFIED THEN PROVED.        LANDED 639c340
+  Dominates C  <=>  Pi[C^c,C^c] <= I,  Pi(a,b) = g_a . W^-1 g_b,
+  W = sum_c (1-t_c) g_c g_c^T.   NO WEIGHT APPEARS INSIDE THE BLOCK.
+  Measured, zero mismatches, 15960 subsets:
+     (6,3) 0/4000   (5,3) 0/1500   (7,3) 0/3500   (6,4) 0/1500
+     (5,2) 0/1500   (4,3) 0/600    (8,3) 0/3360
+     |Pi - Pi^T| <= 2.9e-15 ,  |Pi diag(1-t) Pi - Pi| <= 1.8e-14
+  Proof: one Cauchy-Schwarz across a positive definite form and its inverse,
+  (a.b)^2 <= (a.Wa)(b.W^-1 b), used once in each direction.  No square root,
+  no submatrix.  General form posSemidef_sub_atomSum_iff_resolventForm holds
+  for any positive definite W and any family of rank-one atoms.
+  Gtz/Wave/ResolventBlockCriterion.lean, 11 theorems, all pins standard.
+
+F74-2.  THE FIRST SYLVESTER SIGN IS A COUNT.                  LANDED 377bd15
+  At most k labels have rho_c > 1.  Each label spends (1-t_c) rho_c + t_c >= 0,
+  the total is k+1 (descent identity + weight sum), and rho_c > 1 is exactly
+  "spends more than one".  Hence >= m-k labels clear sign 1, and a selection of
+  k of them exists exactly when m >= 2k -- THE CAMPAIGN'S WINDOW FLOOR,
+  recovered from the first Sylvester sign.
+  SHARP: minimum observed #{rho <= 1} equals m-k exactly at
+     (6,3) 3,  (5,3) 2,  (7,3) 4,  (6,4) 2,  (5,2) 3.
+  Two new budgets in the same module:
+     sum_{a,b} (1-t_a)(1-t_b) Pi_ab^2 = k          (projection law, contracted)
+     sum_{a,b} (1-t_a)(1-t_b) sigma_ab = (m-1-k)^2 - k    ; = 1 at (6,3)
+  where sigma_ab = (1-rho_a)(1-rho_b) - Pi_ab^2 is the resolvent pair minor.
+
+F74-3.  THE SECOND SYLVESTER SIGN IS ALSO A BUDGET.           LANDED c206363
+  (1-t_a) rho_a <= 1     -- one term of the projection law against the whole.
+  hence  sum_a (1-t_a)^2 rho_a >= k-1,  and subtracting the diagonal:
+     sum_{a != b} (1-t_a)(1-t_b) sigma_ab  >=  (m-1-k)^2 + k - m - sum_c t_c^2
+  At (6,3) the constant is (5-3)^2 + 3 - 6 = 1, so the mass is >= 1 - sum t^2 > 0
+  on the open simplex.  SOME PAIR OF DISTINCT LABELS HAS sigma_ab > 0, with no
+  hypothesis at all.
+  THE SAME NUMBER IS -1 AT (5,3) AND AT (6,4): the argument declines to fire
+  exactly where the collinear-pair statement is itself false.  Third independent
+  place where six is the first size that works (the others: the conic count, and
+  the Ramsey count of a sibling lane).
+  Measured slack of the bound (min over sampled designs):
+     (6,3) +0.474   (7,3) +0.495   (5,3) +0.147   (6,4) +0.184   (10,4) +0.922
+  and the budget identity itself verified to 1e-7 at every design of every size.
+
+F74-4.  *** THE CAMPAIGN'S NON-STRICTNESS, IN CLOSED FORM ***
+  The second sign's whole surplus at (6,3) is  1 - sum_c t_c^2 .  That is
+  positive on the open simplex and vanishes EXACTLY AT A VERTEX.  Four lanes
+  (E1, cell H, the two-plane configuration, the one-blind case) independently
+  reported margins proportional to the smallest weight with no absolute
+  constant.  This is that obstruction named: any argument riding on the second
+  sign degenerates precisely as t collapses to a vertex.
+
+F74-5.  THE COVERING QUESTION: PER-ISOMETRY THE MARGIN IS STRICTLY POSITIVE
+  min_{t in simplex} max_C lambda_min(P[C,C] - diag(t_C)) for FIXED random
+  6x3 isometries (Nelder-Mead, 8 restarts, softmax parametrisation):
+     +0.0402 +0.0184 +0.0061 +0.0076 +0.0080 +0.0070 +0.0085 +0.0295
+     +0.0157 +0.0246                        min +0.0061  median +0.0126
+  So the joint margin going to zero needs V to degenerate TOO; for fixed generic
+  V the covering has room.  This is what the uncoupling of (V, t) buys: the
+  covering question can be asked one isometry at a time.
+
+F74-6.  *** A SINGLE DEGENERATE TRIPLE DOES NOT HURT.  REFUTES A NATURAL GUESS ***
+  I conjectured  min_t max_C margin  =  min_T lambda_min(P[T,T]).  FALSE.
+  Ratios (covering margin) / (worst block eigenvalue) over 14 isometries:
+     143.7  9.30  14.50  75.5  31.3  9.44  10.1  20.2  6202.9  223.1
+     67.7  51.9  90.2  42.1                        min 9.30  max 6202.9
+  Extreme case: min_T lambda_min(P[T,T]) = 3e-6 (an essentially degenerate
+  triple) yet the covering margin is still +0.0157.  The other 19 triples cover.
+  So driving the margin to zero needs a COORDINATED degeneration of many blocks,
+  not one bad triple.
+
+F74-7.  THE CRITERION'S FALSIFIABLE PREDICTION, TESTED AND PASSED
+  Since Dominates C <=> Pi[C^c,C^c] <= I, and sign 1 is necessary for that,
+  every dominating triple C must have C^c inside {c : rho_c <= 1}.
+  Over 20000 designs (weight floor 0.01), 20 triples each:
+     dominating triples that are NOT candidates:  0        (as predicted)
+     distribution of #{c : rho_c <= 1}:  3 -> 69,  4 -> 1812,
+                                         5 -> 9261, 6 -> 8858
+     FORCED CASES (exactly 3 clear sign 1, so the dominating triple is unique
+     and determined): 69 of 69 the forced triple DOES dominate, and the worst
+     margin lambda_min(I - Pi[S,S]) among them is +4.035e-01 -- NOT tight.
+  So the forced case is EASY.  The difficulty lives where many candidates exist.
+
+F74-8.  PRIOR ART: ALREADY ON RECORD, AND THE MECHANISM CONFIRMED
+  Skeleton/Obligations.lean already records: "restricted invertibility
+  (Bourgain-Tzafriri, Vershynin, BSS, MSS) is VACUOUS at k = d, which is exactly
+  this cell; nothing published discharges it."  I did not redo the search.  The
+  precise mechanism: in the Spielman-Srivastava normalisation with
+  sum_i v_i v_i^T = I_k one has ||V||_F^2 = k and ||V||^2 = 1, so the theorem
+  needs l < k and its factor (1 - sqrt(l/k))^2 is exactly 0 at l = k.
+  TWO FURTHER DISTINCTIONS worth recording:
+   (a) restricted invertibility wants a UNIFORM lower bound on lambda_min;
+       our target is a WEIGHT-MATCHED Loewner bound P[T,T] >= diag(t_T), which
+       is a different question even at l < k;
+   (b) at l = k the quantity with a budget is the DETERMINANT, not lambda_min:
+       Cauchy-Binet gives sum_T det(V_T)^2 = 1 (= the landed bracket budget
+       sum t_a t_b t_c [abc]^2 = 1), and lambda_min(P[T,T]) >= det(P[T,T])
+       because the other two eigenvalues of a projection block are <= 1.
+       Pigeonhole then gives some triple with lambda_min >= 1/20.  That is a
+       genuine unconditional producer but it is STRICTLY WEAKER than the landed
+       scalar floor (96.45%), so I did not land it.
+
+F74-9.  WHAT I DID NOT DO
+  No proof of IsometrySelects 6 3.  The third Sylvester sign is untouched, and
+  signs 1 and 2 holding SEPARATELY (at some label, at some pair) does not give
+  one triple clearing all three -- that gap is the remaining content.
+  Not landed: the elementary symmetric ladder e_j(P) = C(k,j) for j >= 3, which
+  would need the "sum of principal minors = char poly coefficient" theorem;
+  e_1 and e_2 are landed here as the two budgets, since both reduce to
+  tr(P) = tr(P^2) = k and need no characteristic polynomial.
