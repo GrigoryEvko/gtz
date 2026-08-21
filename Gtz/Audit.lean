@@ -37753,3 +37753,11 @@ run_cmd do
 #print axioms Gtz.centerPoint_excess_gt_one
 #print axioms Gtz.centerPoint_detOutside_eq
 #print axioms Gtz.centerPoint_detOutside_neg
+
+-- Gtz/Wave/CornerDescentRank.lean -- a corner resolves the identity on its own
+-- kernel, so it must block a three dimensional descent where corank one blocks one
+#print axioms Gtz.corner_kernel_probe_form
+#print axioms Gtz.corner_projectedAtoms_resolve
+#print axioms Gtz.corner_projectedAtom_ne_zero_of_probe
+#print axioms Gtz.corner_kernel_reading_total
+#print axioms Gtz.corner_kernel_reading_cross
