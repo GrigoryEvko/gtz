@@ -39120,3 +39120,22 @@ run_cmd do
 #print axioms Gtz.naimark_rank_lt_of_size_lt_two_mul
 #print axioms Gtz.naimark_rank_gt_of_two_mul_lt
 #print axioms Gtz.exists_naimarkDual_isTie_iff_of_uniform
+
+-- Gtz/Wave/PlaneShadowPairBridge.lean, parts 10 thru 12
+#print axioms Gtz.sum_weight_mul_atomPairing_pair
+#print axioms Gtz.sum_weight_mul_tripleGapDet
+#print axioms Gtz.tripleGapDet_repeat_left
+#print axioms Gtz.tripleGapDet_repeat_right
+#print axioms Gtz.tripleGapDet_nonpos_of_isTie
+#print axioms Gtz.crossNormSq_le_of_isTie
+#print axioms Gtz.crossNormSq_window_of_isTie
+#print axioms Gtz.exists_pair_window_of_isTie_sixThree
+#print axioms Gtz.pairGapForm_eq_pairGapMinor
+#print axioms Gtz.sum_erase_weight_mul_pairGapMinor
+#print axioms Gtz.exists_admissiblePair_of_secondMoment
+#print axioms Gtz.exists_three_le_leverage
+#print axioms Gtz.exists_admissiblePair_rank_three
+#print axioms Gtz.exists_pair_window_of_isTie
+#print axioms Gtz.exists_pair_window_of_isTie_sixThree_unconditional
+#print axioms Gtz.tripleGapDet_eq_zero_of_crossNormSq_eq_ceiling
+#print axioms Gtz.tetraDesign_crossNormSq_eq_ceiling
