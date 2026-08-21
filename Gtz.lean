@@ -6535,3 +6535,18 @@ import Gtz.Wave.FourAtomRigidity
 import Gtz.Wave.BranchBPairCap
 import Gtz.Wave.PairBudgetAggregate
 import Gtz.Wave.PairMinorSumBudget
+-- The funnel gap is a SINGULAR plane form.  Its adjugate is the second invariant
+-- times the kernel atom, so `G * G = tau * G - e2 * (1 - w wT)`: two-by-two
+-- Cayley-Hamilton on the kernel's orthogonal plane, carried on a three-by-three
+-- matrix with no eigenvalue named.  The kernel shift then inverts in CLOSED
+-- FORM, `(G + w wT)^-1 = (tau * 1 - G + (e2 - tau) * w wT) / e2`, which removes
+-- the invertibility hypothesis from the whole kernel slide layer and makes the
+-- reading cap polynomial.  Cap and payment are then ONE inequality, and the
+-- reading cap's own generality carries the payment law to every corank-one weak
+-- dominator of every boundary system.  Cauchy-Schwarz against the plane
+-- Cayley-Hamilton law pinches the gap reading between the two nonzero
+-- eigenvalues, `s^2 - tau * n * s + e2 * n^2 <= 0`, and eliminating `s` leaves a
+-- polynomial law in the second invariant, the trace, the leverage and the
+-- squared reading alone.  The producer's window forces `tau < e2` and a squared
+-- reading above one.
+import Gtz.Wave.FunnelSpectralPinch

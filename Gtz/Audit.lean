@@ -38557,3 +38557,48 @@ run_cmd do
 #print axioms Gtz.not_isTie_of_pairBudget_pos_of_heavy
 #print axioms Gtz.exists_pairMinorSum_pos_of_budget_pos
 #print axioms Gtz.exists_tripleGapDet_nonpos_of_pairMinorSum_budget_pos
+
+-- Gtz/Wave/FunnelSpectralPinch.lean -- the singular funnel gap: its plane
+-- Cayley-Hamilton law, the closed-form inverse of its kernel shift, the identity
+-- of the reading cap with the payment, and the spectral pinch that eliminates
+-- the gap reading and leaves a four-scalar polynomial law
+#print axioms Gtz.eq_of_quadForm_eq
+#print axioms Gtz.adjugate_eq_sq_sub_trace_smul
+#print axioms Gtz.adjugate_transpose_eq
+#print axioms Gtz.adjugate_eq_smul_atomMatrix_of_unit_null
+#print axioms Gtz.mul_self_of_unit_null
+#print axioms Gtz.mulVec_mulVec_of_unit_null
+#print axioms Gtz.quadForm_mul_self_of_unit_null
+#print axioms Gtz.mul_atomMatrix_eq
+#print axioms Gtz.atomMatrix_mul_eq
+#print axioms Gtz.atomMatrix_mul_self_of_unit
+#print axioms Gtz.kernelShift_mul_kernelShiftInverse
+#print axioms Gtz.isUnit_det_kernelShift
+#print axioms Gtz.inv_kernelShift_eq
+#print axioms Gtz.inverseForm_kernelShift
+#print axioms Gtz.trace_inv_kernelShift
+#print axioms Gtz.readingCap_sub_eq_payment_sub
+#print axioms Gtz.readingCap_iff_payment
+#print axioms Gtz.normSq_mulVec_of_kernelOrth
+#print axioms Gtz.pinch_of_kernelOrth
+#print axioms Gtz.kernelPart_dotProduct_kernel
+#print axioms Gtz.kernelPart_normSq
+#print axioms Gtz.kernelPart_gap_reading
+#print axioms Gtz.atom_pinch
+#print axioms Gtz.planeNormSq_nonneg
+#print axioms Gtz.lt_of_pinch_of_window
+#print axioms Gtz.payment_lt_of_window
+#print axioms Gtz.exists_star_posDef_of_window
+#print axioms Gtz.funnel_exists_strict_of_window
+#print axioms Gtz.isTie_funnel_pinch_law
+#print axioms Gtz.isTie_funnel_ceiling_nonneg
+#print axioms Gtz.kernelShiftInverse_mul_self
+#print axioms Gtz.triple_inverseForm_sum_of_unit_null
+#print axioms Gtz.payment_law_of_isTie
+#print axioms Gtz.isTie_pinch_law
+#print axioms Gtz.trace_lt_secondInvariant_of_window
+#print axioms Gtz.one_lt_reading_of_window
+#print axioms Gtz.trace_lt_secondInvariant_of_window_gap
+#print axioms Gtz.exists_coord_sq_lt_one
+#print axioms Gtz.four_mul_secondInvariant_le_trace_sq_of_unit_null
+#print axioms Gtz.isTie_sixThree_funnel_pinch_law
