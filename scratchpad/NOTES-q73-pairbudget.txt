@@ -178,3 +178,65 @@ AND A CAUTION FOR THE SUCCESSOR: the 3-cycle sign of those strict dominators is
 so a selector keyed to the chirotope SIGN alone does not pick them out.  The
 sign form was already killed at F49-18; this confirms it in the residual of the
 budget as well.  The MAGNITUDE form (F68-7) is what remains.
+
+F75-10.  THE SECOND INVARIANT HAS A PAIR BUDGET TOO
+-----------------------------------------------------
+The new sibling Gtz/Wave/SymmetricTripleCriterion.lean decides a triple by its
+three symmetric invariants instead of Sylvester's ordered chain, and gives
+    isTie_triple_pairMinorSum_or_det_nonpos:  at a boundary system every triple
+    has  e2 = q_ab+q_ac+q_bc <= 0  OR  e3 = tripleGapDet <= 0.
+So BOTH invariants matter, and both now have closed-form pair budgets.  Mine is
+e3; for e2, use the LANDED row law Gtz.sum_weight_mul_pairGapMinor
+(sum_c t_c q_ac = l_a - 2, which I rediscovered and then found already landed --
+do not build it again) twice plus the carried minor:
+
+  sum_{c not in {a,b}} t_c (q_ab + q_ac + q_bc)
+      = q_ab (1 - 2t_a - 2t_b) + l_a(1+2t_a) + l_b(1+2t_b) - 4 - t_a - t_b
+
+VERIFIED max relative residual 4.492e-13 over sizes 4,5,6,7,9.
+Diamond row sums [0, 1.25, 1.25, 1.25, 1.25] = l_a - 2 exactly.
+WHAT IT BUYS: a positive second budget names a triple with e2 > 0, which the
+criterion then forces flat.  WHAT IT DOES NOT BUY: a producer.  At each atom off
+the pair at most one of e2, e3 is positive, so e2 + e3 <= max(e2,e3) and no
+weighted total of the two is bounded.  The disjunction resists summation -- the
+arm's "select or multiply, never add" rule, met again in the one place where
+both invariants are simultaneously in closed form.
+
+F75-11.  THE PRODUCER LOSES ITS SIDE CONDITION
+------------------------------------------------
+not_isTie_of_pairBudget_pos asked for an admissible pair.  It does not need one:
+at heavy atoms the two subtracted terms of the budget are nonnegative, so
+    2 q_ab (t_a+t_b) = budget + (l_a-1)(1-t_b) + (l_b-1)(1-t_a) > 0
+forces q_ab > 0, and a positive minor at heavy atoms forces STRICT heaviness.
+So Gtz.not_isTie_of_pairBudget_pos_of_heavy needs only 1 <= l at the two atoms,
+and at a tie that is free by the landed leverage_one_le_of_isTie.  THE CRITERION
+IS NOW: a positive budget at ANY pair refutes the tie, with nothing to check.
+
+F75-12.  *** A REFUTATION I CAUGHT MYSELF: THE REWEIGHTING FAMILY IS UNSOUND ***
+---------------------------------------------------------------------------------
+The identity holds at EVERY design, so it is tempting to apply it to the
+reweighted atoms h_c = sqrt(t_c/s_c) g_c with weights s.  Those satisfy Parseval
+for every positive s summing to one (sum s_c h_c h_c' = sum t_c g_c g_c' = I),
+so (h,s) IS a design, and optimising s gives a whole family of certificates.
+MEASURED: the family fires at 100.000% on (6,3) where the plain budget fires at
+98.667%.
+IT IS UNSOUND.  DOMINATION SUMS THE ATOMS UNWEIGHTED -- Dominates D T is
+sum_{c in T} g_c g_c' >= I, not sum_{c in T} t_c g_c g_c' >= I -- so the
+reweighted design has DIFFERENT dominators and a certificate for (h,s) says
+nothing about (g,t).  THE MANDATORY CALIBRATION CAUGHT IT: the (5,3) diamond, a
+genuine tie, returns sup over s = +infinity.  Tenth thin-tail event of the
+campaign.  RULE RESTATED: run the diamond before believing any 100%.
+LANDED (F75-10, F75-11): Gtz/Wave/PairMinorSumBudget.lean, commit d98edb4,
+7 pins, all [propext, Classical.choice, Quot.sound], my own scratch-file audit.
+
+F75-13.  A SIBLING HAS ALREADY BUILT ON THE PAIR BUDGET
+--------------------------------------------------------
+Gtz/Wave/BranchBPairCap.lean (commit 3c1fc31) is "the pair budget read on the
+admissible case" and produces branchB_pairGapMinor_cap, the campaign's first
+upper bound on a NAMED pair minor.  Gtz/Wave/FourAtomRigidity.lean (92ac536)
+classifies branch B at size four and records
+    t_a t_b t_c p_ab p_ac p_bc = - u_a u_b u_c ,   u_c = 1 - t_c l_c
+which it calls the real shadow of the Bargmann invariant at four points.  That
+is the SIGN of the 3-cycle pinned by the weights -- the first place in the
+campaign where the realness carrier of F68-7 appears as an equation on a design
+rather than as an inequality.  A successor to this lane should read it at six.
