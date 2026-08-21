@@ -1,0 +1,114 @@
+NOTES — the corner stratum of (6,3), and the corner axis law
+============================================================
+
+Module: Gtz/Wave/CornerAxisPairAdjugateLaw.lean   (committed 97fa1d2, wired 5a1a863)
+
+
+1. THE EXACT CORNER CHART
+-------------------------
+A (6,3) design with a corank-two dominator at C has an exact eleven-parameter
+chart. Write the design in the basis of the inside triple. Then:
+
+  Gram of C = 1 + lam v vT,   |v| = 1,   K := (1 + lam v vT)^-1 = 1 - mu v vT,
+  mu = lam / (1 + lam),
+  inside atom a  ->  coordinate vector e_a,
+  outside atom d ->  coordinate vector x_d,
+  Parseval       <=>  sum over d of t_d x_d x_dT = K - diag(t_1, t_2, t_3) =: X,
+  a subset S dominates (strictly) <=> sum over S of xi xiT - K is PSD (PD).
+
+The chart is (mu, v, t, Q) with Q an orthogonal matrix: put Y := X^(1/2) Q
+T_out^(-1/2). Parseval and the corank-two condition then hold BY CONSTRUCTION.
+Measured residuals: Parseval 1e-15, corank two 1e-16. The nine two-inside
+triples and C itself refuse with no computation, exactly as the landed corner
+census says. The chart is complete for X positive definite. It misses only the
+boundary at which the three outside atoms are coplanar.
+
+Source: scratchpad/cornerempty/{lin.h,chart.h,corner.c,ceil.c,law.jl,diag.py}.
+
+
+2. THE CORNER AXIS IDENTITY  (new, and now in Lean)
+---------------------------------------------------
+For a corner C and ANY pair of labels d, e:
+
+  sum over a in C of tripleGapDet g_d g_e g_a
+     = (lam - 2) * pairGapMinor g_d g_e - (l_d + l_e - 2)
+       + lam * tripleGapDet g_d g_e u.
+
+The corner is an unweighted tight frame stretched along the axis. So the axis
+enters as ONE MORE third atom, of unit leverage. Verified in C and again in an
+independent Julia implementation, on the near-optimal configurations of three
+weight floors, at all three outside pairs. Relative error 0 to 7e-12.
+
+The law that follows at a tie is Gtz.corner_axisPair_law_of_isTie. The axis
+minor is nonpositive at a heavy admissible pair, so the law bites only when
+lam is more than two.
+
+
+3. WHAT THE SEARCH SAYS
+-----------------------
+Minimise F = sum over the twenty triples of max(lambda_min(gap), 0)^2 over the
+corner chart, with a hard weight floor tau and a hard leverage floor 1 + 1e-3.
+F = 0 is exactly a tie, because the corner triple always reads lambda_min = 0.
+
+  tau       0.05      0.02      0.005     0.0012
+  margin    2.6e-3    3.7e-4    3.0e-5    5.3e-6
+
+The margin is the largest strictly positive lambda_min over the nineteen
+non-corner triples. It goes to zero with the floor. There is NO uniform
+constant, and the degeneration is always the same. Two OUTSIDE atoms run to
+weight tau and to leverage 0.66/tau. Their shares stay near two thirds and the
+design leaves the open simplex. At every near-optimum the corner eigenvalue
+sits between 2.1 and 2.8, against the threshold lam = 2 at which the law of
+part 2 starts to bite.
+
+So: the corner stratum of (6,3) carries no all-heavy tie, and a certificate for
+that must consume weight positivity. Do not look for a uniform bound.
+
+
+4. TWO ROUTES THAT DO NOT CLOSE THE CORNER
+------------------------------------------
+a) THE AREA CEILING ALONE DOES NOT. Minimising over the corner chart the
+   maximum over the fifteen pairs of the ceiling violation gives -3.97. Every
+   pair ceiling holds at that configuration. Recorded in scratchpad/cornerempty/ceil.c.
+
+b) A SECOND DERIVATION OF THE CEILING, WHICH CONFIRMS BOTH. Read the pair gap
+   in the frame V + R n0, with V the span of the pair and n0 the unit normal.
+   Then the triple {d,e,c} dominates strictly exactly when
+
+        (g_c . n0)^2  >  1 + g_c^T W g_c ,     W := G_V^-1 on V, 0 on n0,
+
+   and Parseval at n0 and at W gives, with theta_d = 1 + (l_e - 1)/q_de,
+
+        2 q (t_d + t_e) + t_d (l_e - 1) + t_e (l_d - 1)  <=  l_d + l_e - 2.
+
+   That is ALGEBRAICALLY THE SAME as the landed Gtz.crossNormSq_le_of_isTie,
+   reached from the Schur criterion instead of the third Sylvester moment. It
+   is an EQUALITY at the (4,3) tetrahedron. Two independent derivations agree,
+   so the ceiling is correct and it is sharp. It is not new.
+
+The corner aggregate of part 2 is the UNWEIGHTED inside total. The ceiling is
+the WEIGHTED total over all atoms. The two are independent.
+
+
+5. THE K1 MINOR RATIO  (new, and now in Lean)
+---------------------------------------------
+At a corank-one dominator with q_ab = 0 the Sylvester chain gives the pivot row
+(l_a - 1)(b.c) = (a.b)(a.c). With q_ab = 0 that is the WHOLE content: the
+determinant then vanishes by itself, and the third relation at the pivot b is
+implied. Two equations describe K1 completely. They force
+
+        (l_a - 1) * q_bc = (l_b - 1) * q_ac .
+
+So the two surviving minors are proportional, they share a sign, and one of
+them vanishes only when both do. That is the trichotomy, read through a ratio.
+The kernel of the gap Gram is spanned by (a.b, -(l_a - 1), 0), which is why the
+third atom reads the null direction at zero.
+
+
+6. WHAT IS STILL OPEN
+---------------------
+Whether the corner axis law of part 2, the area ceiling, all-heaviness and
+Parseval are TOGETHER infeasible on the corner chart. The search says yes for
+every positive weight floor. No certificate is written. The right shape is a
+bound B(tau) that goes to zero with tau, and the dictionary of the certificate
+must contain the weights.
