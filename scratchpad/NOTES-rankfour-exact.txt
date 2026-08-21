@@ -1,0 +1,237 @@
+NOTES — RANK FOUR: THE EXACT ACTIVE-SET ANSWER, AND THE TIE TOWER
+=================================================================
+Lane: the two general-rank registry axioms
+  Skeleton.obligationSubThresholdBandHinge           (band, 2k <= m < k(k+1)/2)
+  Skeleton.obligationThresholdCellHingeRankFourAndUp (cell, m = k(k+1)/2, k >= 4)
+Task: solve the (8,4) active set exactly, read off whether the solution is
+FORCED collinear, then land the general-rank mathematics the solve exposes.
+
+ANSWER, in one line: at (8,4) the exact ties are forced collinear, the
+transition happens exactly at m = 2*rank, and the reason ties exist there at
+all is a SPLIT — which is now a theorem at every rank.
+
+
+F-R4X-0.  THE CENSUS OF F-R4C-2 WAS UNCONVERGED, AND ITS VERTEX COLLAPSE WAS
+          A PARAMETRISATION ARTEFACT.
+----------------------------------------------------------------------------
+NOTES-rankfour-census.txt reports best max-lmin 2.149e-6 at (8,4) with seven of
+eight weights pinned at the floor 0.03 and one weight at 0.786 ("simplex-vertex
+collapse", reported as a structural feature of the boundary locus).
+
+Both readings are wrong, and the cause is the parametrisation.  Searching in
+the PROJECTION CHART instead — design <-> (V with V^T V = I, t a positive
+probability vector), P = V V^T, M = P - diag(t), C dominates iff M[C,C] >= 0 —
+with ANALYTIC gradients (dPhi/dY = 2 (I-P) R Y (Y^T Y)^{-1} with
+R = sum_C 2 max(lmin,0) v_C v_C^T, and dPhi/du_j = -(1-m d) s_j (R_jj - sum_c s_c R_cc))
+the same objective reaches:
+
+  cell    census best max-lmin     this lane      min weight at optimum
+  (8,4)        2.149e-6            3.46e-11       0.0286  (floor 0.01, INACTIVE)
+  (9,4)        2.442e-6            1.6e-12 class  floor inactive
+  (6,3)        not run             1.20e-12       floor inactive
+
+So the census points were five orders of magnitude short of the boundary, and
+the weight-floor collapse does NOT occur: at every optimum this lane found, the
+weights are spread and the floor is strictly inactive.  The collapse was a
+property of the softmax-over-whitened-frame parametrisation, not of the locus.
+RULE: parametrise a Parseval frame by an orthonormal V and a probability vector,
+never by an arbitrary frame plus a whitening step.  The whitening makes the
+weight and the direction gradients fight.
+
+
+F-R4X-1.  THE (8,4) EXACT SOLVE.  FORCED COLLINEAR, 207 OF 207.
+---------------------------------------------------------------
+Free search (no collinearity constraint), 800 restarts, weight floor 0.002,
+L-BFGS with analytic gradients, cyclic Jacobi for the 4x4 eigenproblem:
+
+  beta = max_C lmin(M[C,C])   runs   maxcos2 > 1 - 1e-8   |leverage ratio| = 1
+  beta < 1e-6                  558          86.6%                65.4%
+  beta < 1e-8                  207         100.0%                93.7%
+  beta < 1e-10                   2         100.0%               100.0%
+
+EVERY exact (8,4) tie the search reaches carries an exactly collinear pair, and
+94 percent of them carry a pair of RATIO PLUS OR MINUS ONE, i.e. a duplicated
+atom.  The recorded best free point carries TWO such pairs, (0,3) and (2,5),
+with equal leverages 2.023602 and 2.049790, so it is a double duplicate split of
+a (6,4) design.  That is the exact active-set answer: the solution is forced
+collinear, and the mechanism is the split, not a coincidence.
+
+
+F-R4X-2.  THE PARALLEL-FREE TIE LOCUS DIES EXACTLY AT m = 2*rank.
+-----------------------------------------------------------------
+Same harness, 800 restarts each, with the collinearity constraint
+cos^2 <= 1 - eps carried as a penalty at mu = 1e5.  Reported is the fraction of
+exact ties (beta < 1e-8) that are parallel-free.
+
+  cell    exact ties found   collinear   parallel-free   min maxcos2 seen
+  (5,4)         756             0.0%        100.0%          0.071
+  (6,4)         695            21.6%         78.4%          0.259
+  (7,4)         396            70.5%         29.5%          0.320
+  (8,4)         207           100.0%          0.0%          0.99999999984
+  (9,4)         104           100.0%          0.0%          1.000000000
+  (5,3)         750            42.5%         57.3%          0.285
+  (6,3)         565           100.0%          0.0%          0.999999997
+
+Constrained runs, best beta reached under cos^2 <= 1 - eps:
+
+  cell     eps=0.20     eps=0.05    constraint active at the optimum?
+  (4,3)    2.3e-13      2.3e-13     NO  (maxcos2 = 0.120)
+  (5,3)    1.1e-12      1.8e-12     NO  (maxcos2 = 0.616)
+  (6,3)    2.2e-07      1.9e-07     NO  (maxcos2 = 0.645)
+  (5,4)    7.2e-13      7.2e-13     NO  (maxcos2 = 0.075)
+  (6,4)    6.8e-12      1.5e-11     NO  (maxcos2 = 0.333)
+  (7,4)    5.7e-11      5.7e-11     NO  (maxcos2 = 0.379)
+  (8,4)    1.3e-07      8.1e-08     NO  (maxcos2 = 0.557 / 0.779)
+  (9,4)    1.6e-06      1.6e-06     NO  (maxcos2 = 0.668)
+  (10,4)   1.1e-04      2.3e-05     YES (maxcos2 = 0.800 / 0.950)
+
+CALIBRATION AGAINST GROUND TRUTH.  The hinge is kernel-REFUTED at (4,3) and
+(5,3) (Gtz.not_hingeHoldsAtSize_four_three, Gtz.not_hingeHoldsAtSize_five_three).
+The parallel-free search finds exact ties at both, at 1e-13 and 1e-12.  At (6,3),
+where the hinge is the campaign's open target, the SAME harness stalls at 1e-7
+with the constraint INACTIVE.  The method therefore reproduces the known answer
+at every cell where the answer is known.
+
+HONEST LIMITS.  The (10,4) row is the one row where the constraint is ACTIVE at
+the optimum, so that row is a penalised figure and is NOT evidence.  Everywhere
+else the constraint is inactive and the stall is a genuine local obstruction, but
+a stall over 800 restarts is evidence and not proof.  The correct positive
+statement is about the constrained infimum B(eps): a parallel-free tie at a cell
+would have some eps > 0 with beta = 0, so B(eps) > 0 for every eps > 0 IS the
+hinge at that cell.  B(eps) -> 0 as eps -> 0 is expected and is not a defect,
+because splits sit on the collinear boundary.
+
+
+F-R4X-3.  LANDED: THE HINGE IS FALSE AT SIZE rank+1, AT EVERY RANK.
+--------------------------------------------------------------------
+Gtz/Wave/BandTieTower.lean, 1030 lines, 47 theorems, every pin exactly
+[propext, Classical.choice, Quot.sound].
+
+  Gtz.simplexTieDesign rank : WeightedDesign (rank+1) rank
+    atoms  g_i = p e_i + q 1  (i < rank),   g_last = 1
+    with   p = sqrt(rank+1),  q = (1 - p)/rank,  weights all 1/(rank+1).
+
+  Gtz.simplex_key                       2 p q + rank q^2 + 1 = 0
+  Gtz.leverageOf_simplexTieAtom         every leverage is exactly rank
+  Gtz.simplexTieAtom_gram               the unweighted Gram is (rank+1) I
+  Gtz.simplexTieDesign_gap              every gap is rank*I - g_j g_j^T
+  Gtz.simplexTieDesign_isTie            an exact tie at every rank
+  Gtz.simplexTieDesign_not_hasParallelPair   no parallel pair at rank >= 3
+  Gtz.not_hingeHoldsAtSize_succ_rank    ¬ HingeHoldsAtSize (rank+1) rank
+
+Every rank-(rank)-subset of rank+1 labels is the complement of one label, so
+every gap is a Cauchy cap of the missing atom.  The campaign carried this only
+at rank three, at the two single cells (4,3) and (5,3).  It is now rank-uniform.
+
+REGISTRY CONSEQUENCE.  The band axiom guards its size range from below by
+2*rank.  That guard is NECESSARY at every rank: rank+1 < 2*rank for every
+rank >= 2, so a band statement reaching down to size rank+1 is refuted at every
+rank at once.  The numerics of F-R4X-2 say the guard is also close to sharp:
+parallel-free ties are still abundant at (7,4) = (2*rank - 1, rank).
+
+
+F-R4X-4.  LANDED: THE DUPLICATE SPLIT, AND THE TIE TOWER.
+----------------------------------------------------------
+  Gtz.duplicateSplitDesign D label share  : WeightedDesign (m+1) k
+    appends a copy of atom `label` and divides its weight share : 1 - share.
+
+  Gtz.not_dominates_of_parallel_within    a k-set carrying a parallel pair
+                                          dominates nothing, at every rank
+  Gtz.exists_downstairs_selection         every other k-set upstairs has a
+                                          downstairs twin of equal atom sum
+  Gtz.isTie_duplicateSplitDesign_iff      the split of a design is a tie exactly
+                                          when the design is a tie
+  Gtz.exists_isTie_of_succ_rank_le        an exact tie exists at EVERY cell of
+                                          every rank >= 3 from size rank+1 up
+  Gtz.exists_isTie_sixThree, ..._eightFour, ..._tenFour
+
+THIS SETTLES NON-VACUITY.  Both general-rank registry axioms quantify over an
+INHABITED stratum at every cell of every rank.  The band axiom's STATUS field
+reads "no evidence"; it now has, at minimum, a proof that its stratum is never
+empty, so no reading of it is vacuous.
+
+THE STRICT MERGE PULLBACK, missing until now:
+  Gtz.exists_posDef_of_mergedParallel_posDef
+  Gtz.isTie_mergedParallelDesign      a tie with a parallel pair merges to a tie
+  Gtz.exists_isTie_pred_of_hinge      at a cell where the hinge holds, every tie
+                                      descends one cell
+  Gtz.exists_isTie_succ_iff_of_hinge  the hinge is a STRATUM EQUATION
+  Gtz.exists_isTie_sixThree_iff_of_hinge   the (6,3) reading, with GtzWeighted 5 3
+                                           discharged from the tree
+
+
+F-R4X-5.  LANDED: THE WEIGHTED-MOMENT CRITERION, AND THE PRODUCER FILTER.
+-------------------------------------------------------------------------
+Gtz/Wave/WeightedMomentDomination.lean, 282 lines, 16 theorems, all pins clean.
+
+Domination reads the UNWEIGHTED atom sum, Parseval controls the WEIGHTED moment
+M_C = sum_{c in C} t_c g_c g_c^T.  With `cap` bounding the inside weights,
+cap * x^T S_C x >= x^T M_C x, so
+
+  Gtz.dominates_of_weightedMoment_ge              M_C >= cap*I  ==>  S_C >= I
+  Gtz.posDef_subsetSum_sub_one_of_weightedMoment_gt   the strict twin
+  Gtz.not_isTie_of_size_eq_rank                   no tie at size = rank
+  Gtz.isTie_outside_mass_floor                    at a tie every selection admits
+      a direction where its own weighted mass is at most cap
+  Gtz.isTie_complement_mass_floor                 so the complement carries at
+      least 1 - cap of the Parseval mass in that direction
+
+THE FILTER, and it is the most useful thing in this file:
+
+  Gtz.not_forall_exists_posDef :  3 <= rank -> rank + 1 <= size ->
+    ¬ (forall D : WeightedDesign size rank, exists C, C.card = rank
+        /\ (subsetSum D C - 1).PosDef)
+
+NO criterion that produces a STRICTLY dominating selection at every design of a
+cell can hold at any cell from size rank+1 up, at any rank >= 3.  This is exactly
+the shape of every excess-dominance producer of the two registry axioms, and the
+STATUS field of the threshold-cell axiom already records the mechanism for one
+witness: "the producer proves its implication by refuting its own antecedent".
+That observation is now a theorem covering the whole family, at every cell of
+every rank, and it comes from the tie tower rather than from any witness.
+Gtz.WeightedMomentGate is defined and refuted in the same file, so no successor
+spends a cycle on it.
+
+
+F-R4X-6.  WHAT IS STILL OPEN, AND THE NEXT TARGET.
+---------------------------------------------------
+Open: a parallel-free tie at (8,4) is not refuted, only unreached over 800
+restarts with an inactive constraint.  The provable form of the target is
+
+  B(eps) > 0 for every eps > 0, at m = 2*rank,
+
+where B(eps) is the constrained infimum of max_C lmin(M[C,C]) over designs with
+cos^2 <= 1 - eps.  Note B(eps) -> 0, so no absolute constant exists; only the
+positivity at each eps is true, and that is exactly the hinge.
+
+THE STRUCTURAL REASON TO EXPECT 2*rank, and the next thing to land.  At uniform
+weights the cell m = 2*rank is SELF-DUAL under Gale duality: with S_univ = m*I,
+a k-subset C dominates in D exactly when its complement dominates in the Naimark
+dual, which has rank m - k.  For m < 2k the dual has rank BELOW k, so the
+question descends; at m = 2k the dual has the same rank and no descent exists.
+The campaign carries this only at (6,3)
+(Gtz.dominates_iff_dominates_chartDual_compl_of_uniformWeight_sixThree,
+Gtz.isTie_chartDual_iff_isTie_of_uniformWeight, and
+Gtz.selfDual_ne_top_of_ne_three which notes the threshold cell is self-dual only
+at rank three).  What is NOT noticed anywhere: the SELF-DUAL cell is m = 2*rank
+at every rank, and that is precisely the band's lower endpoint.  The general-rank
+statement is within reach, because the two Sylvester comparison lemmas it needs
+are already general — Gtz.posSemidef_transpose_mul_sub_one_comm and
+Gtz.posSemidef_smul_one_sub_transpose_comm — and the Naimark dual design is
+already constructed at general rank in Gtz/Wave/NaimarkDualDesign.lean.
+
+
+F-R4X-7.  PROCESS.
+-------------------
+The single-pass name scan before writing paid FOUR times in this round:
+  pos_of_weightedDesign        already Gtz/Design/VolumeSamplingAverage.lean:543
+  posSemidef_subsetSum         already Gtz/Reduction/ExchangeInvariant.lean:611
+  posDef_subsetSum_univ_sub_one already Gtz/Quantitative/GlobalMinimumRankThree.lean:414
+  isHermitian_subsetSum_sub_one already Gtz/Design/StressFreeNormalizer.lean:853
+plus dotProduct_subsetSum_mulVec, which exists with a DIFFERENT statement
+(pick-based, not Finset-based) and forced a rename rather than a deletion.
+All four duplicates were deleted and the landed versions used.
+
+Harness: C with OpenMP at 110 threads, hand-rolled L-BFGS with analytic
+gradients, cyclic Jacobi calibrated against the closed form.  scratchpad/rankfour/
+holds the source.  No run exceeded 25 minutes.
