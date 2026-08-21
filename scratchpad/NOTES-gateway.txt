@@ -506,3 +506,38 @@ F58-12. HANDELMAN ATTEMPTS THIS ROUND, ALL INFEASIBLE — recorded so nobody rep
      target KEY*(b1+b2+b3)    D=2 and D=3 -- INFEASIBLE
   The degeneracy-multiplied form does NOT help, which is itself informative: the
   obstruction is the BRANCH MIXTURE of F58-11, not the vanishing at b=0 alone.
+
+F58-13. THE BRANCH-SEPARATED CERTIFICATE ALSO FAILS — MY OWN F58-11 READING IS
+  REFUTED, and this is the round's most useful negative.
+  Following F58-11 I certified the CORE branch alone: generators as in F58-12
+  plus  negE := 4 b1b2b3 - b2 t2 - b3 t3  (>= 0 defines the core),
+  plus the ordering generators b1-b2 >= 0, b1-b3 >= 0 (b1 the max).
+     D=2:  190 products -- INFEASIBLE
+     D=3: 1330 products -- INFEASIBLE
+  So separating the degenerate branch does NOT rescue the Handelman route, even
+  though the core has a strictly positive margin (min KEY = 5.34e-4, F58-11).
+  A target with a positive margin whose Handelman LP is infeasible at the
+  natural degrees means the certificate needs either much higher degree or a
+  generator the set does not contain.  DO NOT spend another round on Handelman
+  with this generator set at low degree.
+  WHAT THIS LEAVES, in order: (i) the Cayley rational corner chart (F58-10c,
+  untested) which may change the generator set entirely; (ii) a genuine
+  Positivstellensatz with products of dM against itself (dM^2 terms), which
+  Handelman's linear-in-generators form cannot express; (iii) a hand proof of
+  KEY on the core using dM as an EQUATION near its boundary rather than as an
+  inequality generator.
+
+F58-14. ROUND SUMMARY (fork 58).  E1 IS NOT CLOSED and I did not state it.
+  LANDED, 14 theorems across two modules, all pins standard, per-module builds
+  exit 0, both umbrellas insertions-only:
+    Gtz/Wave/BranchTwoDeterminantSum.lean  (commit 4f05761, 9 theorems)
+      the determinant sum identity, the linear consequence, and the centre
+    Gtz/Wave/CornerDescentRank.lean        (commit 5f8c59c, 5 theorems)
+      the kernel resolution and the 3-vs-1 asymmetry, exact
+  REFUTED WITH WITNESSES: the linear relaxation (1.0671), every single weighted
+  combination (best 1.024 at lam~2), the all-three-pair-tight reading of the
+  maximiser (it is the centre, where dM fails), the sufficient condition
+  4 b_j b_k <= t_i (fails at a third of the hard branch), and the
+  branch-separated Handelman certificate (infeasible at D=2,3).
+  THE GAP: KEY of F58-5, one scalar inequality in six variables, measured true
+  with the degeneracy and the core both located.
