@@ -6421,6 +6421,7 @@ import Gtz.Wave.OppositeHornCycleNoGo
 import Gtz.Wave.KOneNormalForm
 import Gtz.Wave.KOneTransverse
 import Gtz.Wave.KOneWedgeCeiling
+import Gtz.Wave.KOneWedgeGram
 import Gtz.Wave.OppositeHornWedgeCap
 import Gtz.Wave.BracketPhaseRigidity
 import Gtz.Wave.BracketPluckerSyzygy
@@ -6434,6 +6435,7 @@ import Gtz.Wave.ContractionTaxSharp
 import Gtz.Wave.KTwoTargetFactored
 import Gtz.Wave.KTwoQuotientCertificate
 import Gtz.Wave.DiamondNeighborhoodFourSet
+import Gtz.Wave.TripleSumSizeLaw
 import Gtz.Wave.CoherentHornSumLaw
 import Gtz.Wave.OppositeHornRefusalBudget
 import Gtz.Wave.CoherentHornBlockCriterion
@@ -6441,3 +6443,6 @@ import Gtz.Wave.CornerPairAdjugate
 import Gtz.Wave.CornerGramWeightLaw
 import Gtz.Wave.CornerAxisCalculus
 import Gtz.Wave.CornerAdjugateWeightCap
+import Gtz.Wave.BracketMassRefusal
+import Gtz.Wave.CornerAxisElimination
+import Gtz.Wave.CornerAxisBridges
