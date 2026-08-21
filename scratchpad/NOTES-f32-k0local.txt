@@ -1256,3 +1256,71 @@ inadmissible + heavy only gives  w_ab <= l_a + l_b - 1, which is far from 0.
 SO CLOSING BRANCH B DOES NOT CLOSE THE HINGE.  The real target for the arm is
 "a primitive (6,3) tie is impossible"; branch B is one sub-case of it, and the
 inadmissible-but-not-parallel sub-case is still owned by nobody.
+
+================================================================================
+F52-7. THE CORRECTED TARGET, AND THE KILL FREED FROM BRANCH B
+     (Gtz/Wave/InadmissibleParallelJoint.lean, commit 94a0939, 12 theorems,
+      all pins standard, my audit)
+================================================================================
+
+THE STRUCTURAL POINT OF THE ROUND: BRANCH B WAS NEVER NEEDED.
+branchB_posDef_iff_gapDet_pos was proved through liveTriple_posDef_iff_gapDet_pos,
+whose hypothesis is LIVENESS OF THE ONE TRIPLE -- three heavy atoms, three
+admissible pairs -- not branch B.  Branch B only supplied liveness everywhere at
+once.  So the entire selection-free machinery transports:
+    liveFamily_not_isTie_of_prod_nonpos :  any finite family of LIVE triples,
+        any t > 0,  prod (t - gapDet) <= 0  ==>  NOT IsTie
+    liveFamily_isTie_prod_ge            :  still lossless (>= t^card)
+THAT IS EXACTLY THE TOOL THE INADMISSIBLE-NON-PARALLEL CASE NEEDS.  There the
+admissibility graph is missing edges so branch B is unavailable, but its
+TRIANGLES are live triples and the family may be taken among them.  The kill
+runs verbatim on the live subgraph, however sparse.
+
+THE DECOMPOSITION IS THREE CASES, NOT FOUR (sixThree_isTie_trichotomy).
+leverage_one_le_of_isTie_sixThree is UNCONDITIONAL (input gtzWeighted_of_le_five,
+no open instance), so every atom of a (6,3) tie has l >= 1 and the light-atom
+case survives ONLY at the boundary l = 1.  There
+    q_ab = (l_a - 1)(l_b - 1) - p_ab^2 = -p_ab^2 <= 0    for EVERY partner b
+(pairGapMinor_nonpos_of_leverage_eq_one).  So A BOUNDARY ATOM LIES IN NO
+ADMISSIBLE PAIR EXCEPT AN ORTHOGONAL ONE, AND IN NO LIVE TRIPLE AT ALL -- an
+isolated vertex of the admissibility graph up to orthogonality, which is far
+more rigid than "a light atom".  The three cases are therefore
+    (i) branch B, (ii) all strictly heavy with some inadmissible pair,
+    (iii) some atom of leverage exactly one.
+
+THE DOMINATOR'S EXACT EQUATION (isTie_dominator_bracket_sq_eq).  A weak dominator
+has gap determinant exactly zero (landed), so via the currency bridge
+    [xyz]^2  =  (q_xy + q_xz + q_yz) + (x_x + x_y + x_z) + 1     EXACTLY,
+no inequality anywhere.  The bracket -- the quantity a parallel pair kills -- is
+pinned to the dominating triple's own admissibility and heaviness data.
+VERIFIED at every weak dominator of all three fixtures, |diff| <= 3.6e-15:
+the (5,3) diamond (8 dominators, [T]^2 = 18.75), the (6,3) split diamond
+(12 dominators, [T]^2 = 12.5 on the eight one-copy triples and 18.75 on the four
+both-copy ones), the tetrahedral foil (4 dominators, [T]^2 = 16).  f52joint.jl.
+
+F52-8. A THIRD LOOSE AGGREGATE -- DERIVED, VERIFIED, NOT LANDED
+--------------------------------------------------------------------------------
+Weighting my landed isTie_pairAreaSum_ge_bracket_sq by t_a t_b t_c and summing
+against the bracket budget (=1) and the wedge budget (=3) gives, at ANY tie,
+    1 <= sum_{a<b} t_a t_b w_ab (1 - t_a - t_b) ,  equivalently
+    sum_a t_a W_a <= 2 ,   W_a := sum_{b/=a} t_a t_b w_ab ,   sum_a W_a = 6 .
+TRUE at all three fixtures but LOOSE: sum_a t_a W_a = 1.20 / 1.12 / 1.50 against
+the permitted 2, slack 0.80 / 0.88 / 0.50.  The underlying per-triple law is
+looser still, min slack +7.5.  NOT LANDED.  This is the THIRD aggregate this
+round that is true and too loose to close anything (after det S <= (m-2) e2(S)
+and the branch-B currency sum that re-derived the landed size law).  The pattern
+is now unmistakable and matches weighted_aggregate_design_blind: AGGREGATION IN
+THIS ARM PRODUCES TRUE, LOOSE, ALREADY-KNOWN STATEMENTS.  Stop aggregating.
+
+F52-9. WHAT THE JOINT STILL NEEDS -- honest
+--------------------------------------------------------------------------------
+The product device supplies the FORM of the contradiction (an existential with
+no selector) but NOT the contradiction.  At a tie every live triple has
+gapDet <= 0 BY the tie hypothesis, so nothing in the graph combinatorics alone
+forces a positive determinant; Mantel produces live triples, and live triples at
+a tie are exactly the ones the tie constrains.  The missing ingredient is
+analytic: a reason why the system {Parseval, all heavy, primitive, all live
+determinants <= 0} is inconsistent.  That is the same core branch B needs, and
+it is NOT supplied by any budget I could find this round.
+The bridge itself remains open in the strong sense: inadmissible + heavy gives
+only w_ab <= l_a + l_b - 1, and NOTHING landed forces w_ab to 0.
