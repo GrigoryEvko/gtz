@@ -1330,6 +1330,7 @@ import Gtz.Wave.ContractionTaxSharp
 import Gtz.Wave.KTwoTargetFactored
 import Gtz.Wave.KTwoQuotientCertificate
 import Gtz.Wave.CornerGramWeightLaw
+import Gtz.Wave.CornerGramWeightLaw
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
@@ -1340,12 +1341,13 @@ import Gtz.Wave.OppositeHornTwoPoint
 import Gtz.Wave.OppositeHornCycleNoGo
 import Gtz.Wave.KOneNormalForm
 import Gtz.Wave.KOneTransverse
+import Gtz.Wave.KOneWedgeCeiling
 import Gtz.Wave.OppositeHornFailureDirection
 import Gtz.Wave.DiamondNeighborhoodBudget
 import Gtz.Wave.DiamondNeighborhoodFourSet
 import Gtz.Wave.CoherentHornSumLaw
 import Gtz.Wave.OppositeHornRefusalBudget
-import Gtz.Wave.CornerGramWeightLaw
+import Gtz.Wave.CornerAdjugateWeightCap
 import Gtz.Wave.CoherentHornBlockCriterion
 import Gtz.Wave.CornerPairAdjugate
 import Gtz.Wave.CornerAxisCalculus
@@ -36694,6 +36696,8 @@ run_cmd do
 #print axioms Gtz.k2ChartQuotient_affine
 #print axioms Gtz.k2ChartQuotientSlope_xZero
 #print axioms Gtz.k2ChartQuotientSlope_neg_of_xZero
+#print axioms Gtz.k2ChartQuotientWomBoundary_xZero
+#print axioms Gtz.k2ChartQuotientSlope_neg_of_womBoundary
 #print axioms Gtz.k2Chart_quotient_certificate
 #print axioms Gtz.k2ChartTarget_pos_of_crossCert
 #print axioms Gtz.k2ChartCrossCert_ray
@@ -37023,6 +37027,22 @@ run_cmd do
 #print axioms Gtz.atomBracket_smul_left
 #print axioms Gtz.parallel_mirror_bracket_constraint
 #print axioms Gtz.pairAnchor_bracket_difference
+
+-- Gtz/Wave/KOneWedgeCeiling.lean -- the ceiling that matches the landed floor:
+-- a dominating triple caps every pair wedge by its squared bracket, so one pair
+-- wedge above the squared bracket refuses the triple with no tie hypothesis
+#print axioms Gtz.bracketNormal_gap_form
+#print axioms Gtz.crossNormSq_le_tripleBracket_sq_of_posSemidef
+#print axioms Gtz.crossNormSq_le_tripleBracket_sq_of_posSemidef_mid
+#print axioms Gtz.crossNormSq_le_tripleBracket_sq_of_posSemidef_outer
+#print axioms Gtz.triplePairAreaSum_le_three_mul_tripleBracket_sq
+#print axioms Gtz.not_posSemidef_of_tripleBracket_sq_lt_crossNormSq
+#print axioms Gtz.crossNormSq_le_tripleBracket_sq_of_dominates
+#print axioms Gtz.not_dominates_of_tripleBracket_sq_lt_crossNormSq
+#print axioms Gtz.crossNormSq_kOneLive
+#print axioms Gtz.tripleBracket_sq_kOne
+#print axioms Gtz.kOne_wedge_ceiling_is_corank_condition
+
 #print axioms Gtz.cofactorColumn_zero
 #print axioms Gtz.mulVec_cofactorColumn
 #print axioms Gtz.quadForm_cofactorColumn
@@ -37153,3 +37173,20 @@ run_cmd do
 #print axioms Gtz.cornerForm_ten_refusals_free
 #print axioms Gtz.cornerForm_exists_inadmissible_mixed
 #print axioms Gtz.cornerForm_exists_admissible_mixed
+
+-- Gtz/Wave/CornerAdjugateWeightCap.lean -- the corner's inside pair areas as
+-- leverages, and the diagonal and off-diagonal weight caps they carry
+#print axioms Gtz.corner_inside_pairArea_eq
+#print axioms Gtz.corner_inside_pairArea_eq_third
+#print axioms Gtz.corner_leverage_weight_cap
+#print axioms Gtz.corner_crossPair_collapse
+#print axioms Gtz.corner_offDiagonal_weight_cap
+
+-- Gtz/Wave/CornerPairAdjugate.lean section 7 -- the leverage-excess producer,
+-- adjugate-free and bracket-free, and the corner's leverage-excess budget
+#print axioms Gtz.pairAxisForm_ge_neg_trace_mul
+#print axioms Gtz.tripleGapDet_pos_of_leverageExcess
+#print axioms Gtz.subsetSum_posDef_of_leverageExcess
+#print axioms Gtz.corner_leverageExcess_sum
+#print axioms Gtz.corner_exists_leverageExcess_ge_third
+#print axioms Gtz.corner_exists_tripleGapDet_pos_of_readings_cheap
