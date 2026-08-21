@@ -1369,6 +1369,7 @@ import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.CornerGatewayBudget
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.KTwoChartCapstone
+import Gtz.Wave.KTwoFrameKill
 import Gtz.Wave.KTwoBridgeNormalForm
 import Gtz.Wave.KTwoBridgeRefusalY
 import Gtz.Wave.KTwoBridgeSlacks
@@ -37635,3 +37636,10 @@ run_cmd do
 #print axioms Gtz.exists_inadmissible_of_leverage_small
 #print axioms Gtz.exactly_one_pos_of_sum_nonpos_of_prod_pos
 #print axioms Gtz.corner_column_unique_posDef_of_sum_nonpos_of_prod_pos
+
+-- Gtz/Wave/KTwoFrameKill.lean -- the two-zero stratum in the normal frame:
+-- the two missing frame determinants and the assembly onto the chart kill
+#print axioms Gtz.tripleGapDet_frame_yzd
+#print axioms Gtz.tripleGapDet_frame_yze
+#print axioms Gtz.sq_pos_of_ne
+#print axioms Gtz.k2Frame_kill
