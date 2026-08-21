@@ -104,3 +104,61 @@ F-R4-6. WHAT DOES WORK: THE WHOLE ROW. Landed as Gtz/Wave/RowCoveredRefutation.l
   ExcessDominatesBlock refutes IsTie outright, so a producer built on it discharges the
   hinge by refuting its own antecedent. Killing the instrument is a graveyard result. The
   axiom still needs a route that assumes a tie and produces a parallel pair.
+
+
+================================================================================
+F-R4-7. THE STRONG TRIANGLE AT (6,3). This is the round's main positive result and it
+        is on the MAIN target, not on rank four.
+
+  Landed: Gtz/Wave/StrongTriangleRamsey.lean, 10 theorems, all pins standard.
+
+  THE COMPOSITION. Two things landed the same day:
+    (a) Gtz.branchB_exists_strongPair (sibling lane) turns the SIGN of a triple's gap
+        determinant into a PAIR inequality: at a branch-B tie every triple has a pair with
+        x_i * x_j <= 4 * <g_i,g_j>^2. Call such a pair STRONG. Constant sharp at the
+        regular tetrahedron.
+    (b) Gtz.exists_monochromaticTriple_of_pairPredicate (landed long ago in
+        Gtz/Design/DominationGates.lean) is R(3,3) = 6 in consumable form.
+  Together: strongness is a symmetric relation on six atoms, (a) says no triple is
+  entirely weak, so the monochromatic triple (b) forces cannot be weak.
+
+  **Gtz.branchB_exists_strong_triangle : a branch-B (6,3) tie carries three atoms that
+  are PAIRWISE strong.**
+
+  WHY THIS MATTERS. The campaign's standing verdict is "the graph delivers the family and
+  never the sign, because at a tie every live triple has det <= 0 BY HYPOTHESIS". The
+  strong-pair theorem is exactly the missing conversion of that hypothesis into a
+  pair-local statement, and a pair-local statement is what a graph can count. This is the
+  first time the graph programme produces a conclusion rather than a family.
+
+  WHY SIX. R(3,3) = 6 is sharp: at five atoms the pentagon splits the ten pairs into two
+  triangle-free halves (Gtz.exists_cliqueFree_three_and_compl_cliqueFree_three_five, in
+  the tree), so no monochromatic triangle is forced and the argument fails at exactly the
+  size where the hinge itself is FALSE (Gtz.not_hingeHoldsAtSize_five_three, the diamond).
+  This is a second, combinatorial, reason for the five-six gap, independent of the conic
+  count of Gtz.sizeGap_at_rank_three. Worth putting in the survey.
+
+  THE PRICE IN WEIGHTS. Strongness is about directions and Parseval is about weights; the
+  landed pairing cap Gtz.pairing_cap joins them. With a_c = t_c * (l_c - 1) the weighted
+  excess and s_c = t_c * l_c the share:
+      Gtz.strongPair_weight_cap        a_i * a_j <= 4 * (1 - s_i) * (1 - s_j)
+      Gtz.strongTriangle_weight_product_cap   (a_i a_j a_k)^2 <= (8 (1-s_i)(1-s_j)(1-s_k))^2
+  Both right sides are positive because Gtz.share_lt_one_of_isTie gives s_c < 1 at a tie.
+  These are the first inequalities tying the strong-pair geometry to the budgets
+  Sum a = 2, Sum s = 3, Sum t = 1.
+
+  HONEST LIMIT, CHECKED BY HAND: these caps do NOT close branch B. At the uniform point
+  t = 1/6, a = 1/3, s = 1/2 the cap reads 1/9 <= 1 and the admissible-row leverage floor
+  Gtz.leverageExcess_floor_of_admissibleRow reads 1/3 > 5/48 -- both satisfied with a wide
+  margin. The strong triangle is a structural restriction, not a contradiction. What is
+  missing is a LOWER bound on the triangle's excesses strong enough to meet the cap.
+
+  A FREE BY-PRODUCT, no branch hypothesis:
+      Gtz.exists_admissible_or_inadmissible_triangle -- every six-atom rank-three design
+      has an all-admissible or an all-inadmissible triangle (pure Ramsey on admissibility).
+      Gtz.isTie_allHeavy_inadmissible_triangle_or_strongPair -- at an all-heavy (6,3) tie,
+      either some triple is entirely inadmissible, or some triple is entirely admissible
+      and carries a strong pair.
+  The second is a case split for the WHOLE all-heavy branch, not just branch B, and the
+  inadmissible-triangle alternative hands Question 7.5(b) three inadmissible pairs at once
+  rather than one.

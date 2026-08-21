@@ -1133,6 +1133,7 @@ import Gtz.Wave.ThresholdCellDominance
 import Gtz.Wave.MeetingDegreeCrowdedness
 import Gtz.Wave.RowCoveredRefutation
 import Gtz.Wave.GeneralRankBudgets
+import Gtz.Wave.StrongTriangleRamsey
 import Gtz.Wave.ThresholdEnergyClosure
 import Gtz.Wave.ThresholdSpread
 import Gtz.Wave.TightGramSixLaws
@@ -38334,3 +38335,17 @@ run_cmd do
 #print axioms Gtz.transpose_contracts_of_contracts
 #print axioms Gtz.posSemidef_one_sub_mul_transpose_comm
 #print axioms Gtz.posSemidef_smul_one_sub_mul_transpose_comm
+
+-- Gtz/Wave/StrongTriangleRamsey.lean -- the strong-pair theorem makes the weak graph
+-- triangle free, so R(3,3) = 6 forces three pairwise strong atoms at a branch-B tie;
+-- the size six is load bearing, and the pairing cap prices the triangle in weights
+#print axioms Gtz.strongPair_comm
+#print axioms Gtz.branchB_exists_strongPair'
+#print axioms Gtz.strongPair_weight_cap
+#print axioms Gtz.branchB_exists_strong_triangle
+#print axioms Gtz.branchB_strong_triangle_weight_caps
+#print axioms Gtz.strongTriangle_weight_product_cap
+#print axioms Gtz.branchB_strong_triangle_product_cap
+#print axioms Gtz.exists_admissible_or_inadmissible_triangle
+#print axioms Gtz.isTie_allHeavy_inadmissible_triangle_or_strongPair
+#print axioms Gtz.branchB_exists_two_strong_partners
