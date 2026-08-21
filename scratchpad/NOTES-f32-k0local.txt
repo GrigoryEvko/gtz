@@ -1094,3 +1094,50 @@ So the weights are exactly what destroys the information. Any future
 aggregation in this arm must be UNWEIGHTED (or weighted by something other than
 the product of the atom weights), and the unweighted law is the one with a size
 marker in it. That is the round's structural lesson and it is provable.
+
+F46-10. THE BRACKET-MASS FARKAS LAW: HOLDS AT ALL THREE TIE FIXTURES, WITH A
+         MECHANISM THAT LIMITS THE CLAIM
+=============================================================================
+QUESTION (coordinator): does  sum_T bracketMass_T * grad(tripleGapDet_T) = 0
+hold at the (6,3) split diamond, i.e. is it a general tie law?
+
+MEASURED (f46genlaw.jl, f46tetra.jl; complex step with transpose(), never
+adjoint; ratio = |sum| / largest single term):
+    (5,3) primitive diamond      2.21e-15      ZERO
+    (6,3) split diamond          1.43e-15      ZERO
+    tetrahedron m=4 (the foil)   1.16e-15      ZERO
+    perturbed tetrahedron        9.90e-01      NOT zero  (non-tie control)
+    200 random designs m=5       2.70e+00      NOT zero
+    200 random designs m=6       3.72e+00      NOT zero
+So it is NOT an identity, and it holds at three INDEPENDENT ties including the
+tetrahedral foil. Bracket masses sum to 1.000000000000 at all three.
+
+THE MECHANISM, and it is the caveat. At all three fixtures
+    support(bracketMass) = the active set   (checked TRUE at each)
+i.e. a triple has positive bracket mass exactly when its gap determinant
+vanishes. Given that, Phi := sum_T bm_T d_T is zero TERM BY TERM, so
+    grad Phi = sum_T (grad bm_T) d_T + sum_T bm_T grad d_T = sum_T bm_T grad d_T
+because d = 0 on supp(bm). The measured law is therefore exactly the statement
+that these ties are CRITICAL POINTS of Phi.
+
+WHY THIS IS NOT YET A GENERAL TIE LAW. "support(bm) = active set" says EVERY
+SPANNING TRIPLE WEAKLY DOMINATES. That is a saturation property, and it is
+false at a generic tie: a design with one weak dominator and every other triple
+strictly below domination is still a tie, and there supp(bm) strictly contains
+the active set, Phi < 0 strictly, and nothing forces grad Phi = 0. All three
+fixtures tested are highly symmetric and saturated.
+HONEST STATUS: the law is established at the SATURATED ties. Whether it extends
+to a general tie is UNDECIDED, and the mechanism suggests it does not.
+DO NOT BANK IT AS "every tie". Bank it as: at a tie whose spanning triples all
+weakly dominate, the bracket masses annihilate the gap-determinant gradients.
+
+THE SUCCESSOR'S TEST, cheap and decisive: build a NON-SATURATED tie (one weak
+dominator, the rest strictly below) and evaluate the ratio there. If it is
+still ~1e-15 the law is general and worth a kernel route; if it is O(1) the law
+is a property of saturation and the arm should target saturation instead --
+which would itself be progress, since the (6,3) split diamond is saturated and
+saturation is a polynomial condition.
+KERNEL NOTE: this is a GRADIENT statement, so by the banked rule it is EVIDENCE,
+not a proof step. Its kernel-native shadow is the saturation predicate
+"bm_T > 0 <-> d_T = 0", which is polynomial in the design and needs no tangent
+space. That is the object to formalise, not the gradient identity.

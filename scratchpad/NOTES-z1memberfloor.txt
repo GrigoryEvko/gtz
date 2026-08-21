@@ -1,0 +1,165 @@
+NOTES — Z1 erased deflation, member det floors, and the survivor diagnosis (fork 22)
+====================================================================================
+Round of 2026-08-20.  Predecessor: NOTES-z1downdate.txt (fork 21).
+
+0. HEADLINE
+-----------
+NEITHER RESIDUAL PROP DISCHARGED; THE MEASURED CELL-H RESIDUAL IS NOW ZERO.
+One module (Gtz/Wave/ErasedDeflationFloor.lean, ~700 lines, gate green):
+  (i)   THE DIAGNOSIS (the brief's step 1, decisive): at EVERY stored
+        survivor the violated raw pair clauses are the (z,d) pairs — the
+        floors r_d(A_y) < 1 — and ONLY at outside atoms with a SMALL erased
+        component xi_d = q_d.g_x.  The atom that carries the erased mass has
+        its floor FORCED by Cauchy-Schwarz alone: r_d >= xi_d^2/kxx (nearly
+        tight: 1.03575 vs 1.03448 at resid21).  P1 of the brief is WRONG
+        (the failing atom is a plane atom, not the lightest).
+  (ii)  THE ERASED DEFLATION LAWS (kernel, new):
+        psd_inv_deflation           A^-1 >= (v'Av)^-1 vv'   (PSD, any probe)
+        psd_inv_deflation_mulVec    the deflated form kills A*v (rank drop)
+        deflation_reading_sq_le     (q.v)^2 <= (q'A^-1 q)(v'Av)
+        deflated_gram_det_eq_zero   det[q_i' Dm q_j] = 0  (3 vectors, Dm sing.)
+        corner_oneAxisZero_fourSet_erased_energy(_pos)  g_x'A_y g_x
+            = g_x'M_o g_x - 1 = sum xi^2 - 1 > 0  (no cap hypotheses)
+        corner_oneAxisZero_erased_reading_floor  the CS floor at A_y
+        corner_oneAxisZero_erased_floor_free     xi_d^2 >= kxx  =>  floor d
+            holds with NO TIE (one of the three cell-H clauses dies free)
+        corner_oneAxisZero_erased_two_heavy_bound  kxx > 1 => at most one
+            heavy-erased atom (the measured single-heavy geometry, kernel)
+  (iii) THE MEMBER DET FLOORS (kernel, new):
+        tie_fourSet_member_det_nonpos   at a tie, EVERY member of a PD
+            four-set has det(S_{F\a} - 1) <= 0 (the raw pair clause of the
+            tie in determinant coordinates, per pair)
+        subset_removal_det_ledger       sum_S det(N - G_a) = |S| det N
+            - tr(adj N * S_S)           (polynomial)
+        fourSet_member_det_total        sum_F det(A_F - G_a) = det A_F
+            - tr adj A_F                (polynomial; trace floor = its shadow)
+        tie_fourSet_pivot_det_floor     det A_F <= tr adj A_F + det(S_{F\e}-1)
+            (THE PIVOT FLOOR; at e = y on cell H the last term is det K <= 0,
+            so it strictly sharpens the landed trace floor)
+        corner_oneAxisZero_heavyInside_member_det_floor / _isTie_iff_memberDet
+        corner_oneAxisZero_bothLight_member_det_floor / _isTie_iff_memberDet
+            (the member family at BOTH four-sets; the a=y member IS
+            det K <= 0 — the kernel form of the K-PD split of cell B,
+            NO caps and NO ms needed: P2's mechanism was wrong)
+  (iv)  WITNESS: oneAxisZeroWitness_complement_det (= 27),
+        oneAxisZeroWitness_not_isTie_by_memberDet (third refutation route),
+        oneAxisZeroWitness_memberDet_three/four/five (the outside member
+        clauses HOLD at the witness in exact rationals:
+        -2856/625, -5076/625, -1284/125).
+
+1. MEASURED (fresh seeds; scripts in scratchpad/z1/)
+----------------------------------------------------
+CELL H (cellH22.jl, 402,608 cell-H samples): S<0 99.64954%, +oddsDet
+0.34550%, +downdate 0.00373%, +mixedOdds 0.00075%, +PIVOT(new) 0.00050%,
+RESIDUAL 0 (0.00000%).  The pivot (sum_d r_d(A_y) >= 3, det form
+g_y'adj A_y g_y <= tr adj A_y) fires unconditionally at 98.25% of the cell
+and kills exactly the fork-21-style survivors.  resid22.csv is EMPTY.
+CELL B (cellB22.jl, 15,722,636 both-light samples): detK>0 97.89107%
+(kernel-backed now), +S 1.89664%, +odds 0.12983%, +downdate 0.07109%,
++mixed 0.00911%, +pivots(new) 0.00179%, RESIDUAL 72 (0.00046%) — fork 21
+had 0.0018%.  The 72 rows: scratchpad/z1/residB22.csv (col 16 = min pivot
+sum, col 17 = det K).
+DEGENERATE CORNER (corner22.jl, 331,892 cell-H samples, forced tiny weight,
+tiny ahat half the time): residual 1, and at 512 bits that one point is a
+MISCLASSIFIED CELL-B point (t5 = 8.5e-10 makes Float64 eig of A_z spuriously
+negative); its det K = 1.4e9 > 0 — killed by the detK clause.  residC22.csv.
+FOILS (foilverdict22.jl, exact rationals): the three identities hold at all
+four rational fixtures; csFloor holds everywhere (tie-free); the member
+family FIRES at every non-tie fixture (witness: at the inside member of A_y
+and one outside member of A_z; residualFoil: inside + two outside at A_z);
+the pivot holds at the fixtures (its kill lives in the sliver).
+
+2. THE SUP EXPERIMENTS (the honest state of the discharge)
+----------------------------------------------------------
+maxfloor22*.jl, verify22/profile22/polish22.jl (scratchpad tmp dir):
+  sup over cell H of min_d r_d(A_y)  =  1, NOT attained; the ascent
+  crossings above 1 are Float64 phantoms (all die at 1024 bits).  The
+  approach channels: (a) A_z -> singular with 1 - min r ~ (1..3)*t_min
+  (LINEAR in the smallest weight), t_y -> 1; (b) lam -> 0 with weight
+  collapse.  At every near-roof point S < 0 (S ~ -3*(1 - min r)): the
+  landed o=0 clause kills the roof approach.
+  sup over cell H ∧ S >= 0 of min_d r_d(A_y)  ~  0.99687, attained at an
+  INTERIOR point: lam ~ 351, ahat ~ 0.9993, t = (2.4e-3, 2.1e-3, 3.7e-4,
+  5.0e-3, 2.5e-2, 0.965), S = 0 active, A_z singular active, two floors
+  equal at the max, r_y(A_y) = 1.00008 (near-saturated), TWO outside atoms
+  with xi ~ +-1.  BigFloat uncapped polish is stationary there.
+  So the region {cell H, S >= 0, floors} is measured EMPTY with a uniform
+  gap ~3e-3 whose maximizer is the lam ~ 351 corner.  THE DISCHARGE
+  TARGET: prove  cell H ∧ S >= 0  =>  min_d r_d(A_y) < 1.  Any proof must
+  handle the S = 0 ∧ det A_z = 0 double-active corner.
+  WARNING for the successor: aggregates cannot finish this — points at the
+  S>=0 roof satisfy EVERY landed aggregate AND the new pivot (their floor
+  sum is 3.17); only the per-pair floors separate them.  The brief's
+  aggregate-death verdict stands; the member/pivot laws close the MEASURED
+  map but the Prop needs the sup certificate.
+
+3. THE CELL-B SEESAW (diagnosis of the 72)
+------------------------------------------
+diagany22.jl at 512 bits: the 72 survivors have det K < 0 (small),
+r_y(A_y) barely above 1, and the floors fail in a SEESAW: each outside atom
+reads ONE of the two four-sets below 1 and the other above (e.g. row 4:
+floorsY = (0.985, 1.146, 0.897), floorsZ = (1.325, 0.624, 1.112)).  The tie
+needs BOTH.  The law to hunt: a per-atom COUPLING of r_d(A_y) and r_d(A_z)
+(A_z = A_y - G_y + G_z, a rank-two swap; the exchange law with base
+K_d = S_{K\d} - 1 and the cross pin relates the two triple dets:
+det(K_d+G_y-G_z) + det(K_d+G_z) = det(K_d+G_y) + det K_d - (1+lam) g_x'K_d g_x).
+No landed law couples the two four-sets at the SAME outside atom.
+
+4. BRIEF ERRORS FOUND (fork 22)
+--------------------------------
+(a) "the cell-B survivor CSV (find it — 28 rows from fork 21's 1.57M
+    sweep)": NO such CSV exists on disk; fork 21 counted 28 but never
+    dumped them.  Regenerated fresh: residB22.csv (72 rows of a 15.7M
+    sweep).
+(b) P1 is wrong: the violated pair is always (z, d) but at atoms with a
+    SMALL erased component; at resid21 the LIGHTEST atom (t5 = 0.037,
+    xi^2/kxx = 1.035) has its floor HOLD via the free-floor law, and the
+    two heavy plane atoms fail.
+(c) P2 is wrong in mechanism: the K-PD split needs NO caps and NO sharper
+    ms — the member det floor at the inside pivot (a = y) IS det K <= 0,
+    tie-necessary, cap-free; kernel-landed this round.
+(d) P3 is wrong in detail: the degenerate-corner residual dies to
+    odds/downdate/mixed + the NEW pivot (1 sample), and the last "survivor"
+    is a Float64 cell-misclassification (a cell-B point killed by detK).
+(e) The brief's "binding pair: downdate at the LIGHTEST outside atom +
+    odds-det" for the heavy residual: at 512 bits the binding failure is
+    the floors at the PLANE atoms; the downdate margins at resid21 are all
+    positive and not extremal at the lightest atom.
+
+5. REFUTATIONS/GRAVEYARD ADDITIONS
+-----------------------------------
+  - "min_d r_d(A_y) has a sup < 1 over the open cell": FALSE — the sup is
+    exactly 1 along t_min -> 0 with A_z -> singular (but S < 0 there).
+    Any closing inequality must carry the weight guards (as the brief
+    warned) OR consume S >= 0, where the sup drops to ~0.99687.
+  - The member/pivot family cannot discharge the Prop alone: the S>=0-roof
+    points satisfy it (floor sum 3.17 >= 3).  It is a measured-map closer
+    and a foil-killer, not the finishing certificate.
+
+6. THE EXACT NEXT BRICK
+------------------------
+ (i) CELL H FINISH: prove  cell H ∧ S >= 0 => min_d r_d(A_y) < 1.  Work in
+     the deflated frame: D_y = A_y^-1 - g_x g_x'/kxx (PSD, rank 2, kernel
+     vector A_y g_x — all landed).  The floors become n_d >= 1 - xi_d^2/kxx
+     with sum_d xi_d^2 = kxx + 1 (landed identity), the deflated Gram of
+     the three outside atoms is singular (landed), and S >= 0 pins
+     r_x = n_x + 1/kxx, r_z = n_z (both pure plane).  The maximizer
+     structure to beat: S = 0, det A_z = 0, two deflated floors equal,
+     r_y(A_y) -> 1, lam huge.  The 2x2 whitened picture: three plane
+     vectors with prescribed weighted (N_2 = I_2 - t_y p_y p_y' - t_z p_z p_z')
+     and unweighted moments, all reading Sc_y^{-1} >= ~1 — the moment
+     bound vs the floor demand is the fight.
+ (ii) CELL B: the seesaw coupling (section 3).  Also: wire the residB22
+     survivors through the same erased-deflation lens at A_y AND A_z
+     (the free-floor law applies at both four-sets separately).
+ (iii) The B-level pair-sum law (unused): at a tie,
+     (1-r_z)(lam*U - X) <= r_z(1-r_z) - rho_yz^2 + Q_z with Q_z = g_z'B^-2 g_z
+     (new instrument class: squared-inverse readings; identity
+     sum_d rho_zd^2 = r_z - r_z^2 - rho_yz^2 + Q_z is exact).  Untested as
+     a kill clause.
+Fixtures: resid21.csv, miss20.csv, icviol.csv, stragglers.csv, sliver.csv
+intact; new residB22.csv (72), residC22.csv (1, misclassified), resid22.csv
+(empty).  Scripts: cellH22/cellB22/corner22.jl (ladders), foilverdict22.jl
+(exact foils), diagany22.jl (512-bit pair/floor diagnosis of any residual
+csv).  The ascent/verify/polish scripts live in the session scratchpad and
+are disposable; their findings are all in section 2.

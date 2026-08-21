@@ -1,0 +1,157 @@
+NOTES -- realness at the corank-two corner, round of 2026-08-19
+================================================================
+
+0. THE HEADLINE
+---------------
+The campaign owns TWO realness carriers that reach the corner. One of them is
+DEAD at the corner and the other is LIVE. Both facts are now in the kernel.
+
+  DEAD  the triangle parity bit (Gtz.tripleParity, the two-graph axiom).
+        The rank-one gap forces the bit on the dominator and on all nine
+        two-inside triples, so the two-graph axiom on a four-set that meets the
+        complement once is an identity in the axis readings.
+        Landed as Gtz.corner_fourSet_parity_forced.
+
+  LIVE  the Grassmann-Pluecker Heron degeneracy
+        (Gtz.squaredBracketProducts_heronDegenerate).
+        Its Heron determinant at the complex corner-tie witness is nonzero on the
+        five-sets that carry the whole dominator, up to 29 percent of the leading
+        term. Landed at the corner as Gtz.corner_heron and, in the sharper
+        bracket form, Gtz.corner_bracket_bridge and Gtz.corner_bracket_extremal.
+
+1. THE BRIEF WAS WRONG IN THREE PLACES
+--------------------------------------
+(a) "Exactly two realness carriers." There are TEN families. The list is in the
+    inventory of this round: rank two, the stress/conic dimension count 6 vs 9,
+    the triangle parity, the obtuse cardinality bound (d+1 vs 2d+1), the circular
+    order of a pole plane, the fourth moment floor 9/5 vs 3/2, Grassmann-Pluecker
+    Heron, the cross product, the Cayley sign atlas, and the cubic invariant at
+    rank two.
+(b) "Sym^3 has dimension six." The relevant space is the SYMMETRIC 3x3 matrices,
+    of dimension six. Sym^3 of R^3 has dimension ten. The Lean names are correct
+    (Gtz.two_mul_finrank_symmetricSubmodule gives k(k+1)/2).
+(c) "The plane-pair engine at the gap axis is the natural realness route."
+    REFUTED by the complex witness. Restrict its atoms to the plane of the gap
+    axis: three of the fifteen pairs dominate that plane, with margins 0.585,
+    0.285 and 0.204. So the conclusion of Gtz.exists_inPlane_dominating_pair is
+    SATISFIED over C at the corner, and a chain that only uses that conclusion
+    cannot close. Script: scratchpad/planecheck.py.
+
+2. WHERE THE FIELD ACTS, EXACTLY
+--------------------------------
+For a triple the first two symmetric functions of S_T - 1 read only leverages and
+squared pairings. Only the determinant carries the field:
+
+  det(S_T - 1) = excessGap + 2*tau ,  tau = (g_a.g_b)(g_b.g_c)(g_c.g_a) .
+
+Over C the same expansion gives excessGap + 2*Re tau with the SAME excessGap.
+This is already landed as Gtz.discriminantTie_eq_excessGap_add_tripleProduct and
+Gtz.discriminantTie_eq_excessGap_add_parity. Do not rebuild it.
+
+MEASURED at the complex corner-tie witness (scratchpad/bargmann.py, parity.py):
+  * sign(Re tau) obeys the two-graph axiom on ALL FIFTEEN four-sets.
+    The SIGN form does not separate.
+  * |Re tau| falls short of the forced real value sqrt(Q_ab Q_ac Q_bc) by up to
+    85 percent on the informative triples.
+    The MAGNITUDE form separates.
+  * At the dominator triple {0,1,2} the deficit is 0.0 percent. The rank-one
+    inside Gram forces the dominator invariant to be real over both fields.
+  * If Re tau took its real-positive branch, SEVEN of the ten informative triples
+    would be positive definite. The witness survives only inside the interval.
+
+3. WHAT LANDED (kernel, gate clean)
+-----------------------------------
+Gtz/Wave/CornerParityLedger.lean
+  corner_heavyExcess_axis         (1+lam)*heavyExcess e = lam*(g_e.u)^2
+  corner_atomPairing_axis         (1+lam)*P_ef = lam*(g_e.u)(g_f.u)
+  corner_inside_pairMinor_eq_zero heavyExcess e * heavyExcess f = P_ef^2
+  corner_inside_tripleProduct     the oriented product in axis readings
+  corner_inside_tripleProduct_nonneg   the dominator triangle is coherent
+  corner_inside_tripleParity_eq_one    its bit is +1
+  corner_twoInside_excessGap      (1+lam)*excessGap = -lam*(b^2 P_xd^2 + a^2 P_yd^2)
+  corner_twoInside_tripleProduct  the oriented part in axis readings
+  corner_twoInside_det_square     (1+lam)*det = -lam*(b*P_xd - a*P_yd)^2
+  corner_twoInside_det_nonpos
+  corner_twoInside_tripleParity_forced
+  corner_fourSet_parity_forced    THE NO-GO
+
+Gtz/Wave/CornerBracketPlucker.lean
+  corner_axis_mass                sum over C of (g_e.u)^2 = 1 + lam
+  corner_heavyExcess_sum          sum over C of heavyExcess = lam
+  corner_pairMinor_eq_zero
+  corner_atomBracket_sq           [x y z]^2 = 1 + lam
+  corner_bracket_bridge           (1+lam)[x p q]^2 = ([xyp][xzq] - [xyq][xzp])^2
+  corner_heron                    the Heron instance at the corner
+  corner_bracket_extremal         the polynomial extremality form
+  corner_bracket_le               the cap
+
+4. DO NOT REBUILD -- these are already in the tree
+--------------------------------------------------
+  discriminantTie_eq_excessGap_add_tripleProduct   GoodTripleGraph.lean:992
+  discriminantTie_eq_excessGap_add_parity          SwitchingTwoGraph.lean:517
+  tripleParity_fourSet_product                     SwitchingTwoGraph.lean:838
+  det_subsetSum_sub_one_eq_discriminantTie         RhoNormalForm.lean:372
+  atomBracket_sq_eq_discriminantTie_add            SixThreeCruxSigns.lean:284
+  atomBracket_sq_eq_excessGap_add_parity           SixThreeCruxSigns.lean:302
+  squaredBracketProducts_heronDegenerate           PlueckerRealness.lean:115
+  threeTermAtomBracketRelation                     PlueckerRealness.lean:99
+  realTriangle_bargmann_extremal                   RealnessEngine.lean:517
+  insideGram_self_of_rankOneGap                    CorankTwoNonplanarSystem.lean:119
+  insideGram_offDiag_of_rankOneGap                 CorankTwoNonplanarSystem.lean:132
+  det_smul_atomMatrix_three, det_atomSingle_eq_zero  CornerRefusalCensus.lean
+  subspaceRestriction                              ThresholdCellHingeMap.lean:1317
+  exists_deflation_coisometry                      LiftingLemma.lean:73
+I built and then DELETED a module that duplicated the first seven of these. The
+split of the excess determinant into a modulus budget plus twice the Bargmann
+invariant, the four-set product law and the extremality square are all corollaries
+of what the tree already has.
+
+5. THE HARD NEGATIVES TO RESPECT
+--------------------------------
+  phaseFree_certificates_cannot_prove_rank_three   PhaseFreeNoGo.lean:658
+    No certificate blind to the phase defect can close rank three. Fourteen of
+    the fifteen admissible relations are field-blind and exactly one is weakened.
+  torsion_invisible_to_linear_functionals          HypersimplexTorsion.lean:176
+    No LINEAR or convex argument on the triangle vector separates the fields.
+    A closing argument must be at least quadratic in the triangle coordinates.
+    The Heron form is quartic, so it escapes this.
+  corner_fourSet_parity_forced                     this round
+    The parity bit is spent at the corner. Do not build on it there.
+
+6. WHAT IS LEFT, AND WHERE TO SPEND THE REALNESS
+------------------------------------------------
+The realness budget of a corank-two corner sits on the three four-sets {e} + C^c
+and on the five-sets that carry the whole dominator. Concretely, and measured at
+the complex witness (scratchpad/heroncorner.py):
+
+  (1+lam)*|[x p q]|^2 = |A - B|^2 ,  A = [xyp][xzq] ,  B = [xyq][xzp] .
+
+That equality holds over BOTH fields, because the three-term relation is
+field-blind. Over R the right side is (|A| - |B|)^2 or (|A| + |B|)^2, a TWO-POINT
+set. Over C it is any value in the closed interval between them. At the complex
+witness every one of the nine instances sits STRICTLY INSIDE:
+
+  x=2, {3,4}:   20.16   inside [0.85, 53.23]
+  x=2, {3,5}:    2.53   inside [0.60,  8.77]
+  x=0, {3,4}:   50.69   inside [16.26, 52.54]
+
+So the informative bracket of a real corner is pinned to two values by corner
+data, and the corner has nine such instances plus the outside triple. THAT is the
+system a closing certificate must contradict. It is quartic, it consumes the
+field at a named step, and no landed law reaches it.
+
+7. SCRIPTS
+----------
+scratchpad/planecheck.py    reconstructs the complex witness in design
+                            coordinates from complextie.pkl and refutes the
+                            plane-pair route
+scratchpad/bargmann.py      the split into budget and phase, per triple
+scratchpad/fourset.py       the four-set product law, real versus complex
+scratchpad/quartic.py       the split form of the same law
+scratchpad/parity.py        the two-graph axiom on sign(Re tau): SATISFIED over C
+scratchpad/heron.py         the Heron five-set relation, real versus complex
+scratchpad/heroncorner.py   the Heron relation at corner five-sets: LIVE
+scratchpad/ctie_g.npy       the witness in design coordinates, 6 x 3 complex
+scratchpad/ctie_t.npy       its weights
+The reconstruction is g_a = W^{1/2} z_a with W = (sum z_a z_a^* - 1)^{-1}. It
+reproduces complextie.txt to fifteen digits.

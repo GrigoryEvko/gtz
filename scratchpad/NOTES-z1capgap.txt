@@ -1,0 +1,147 @@
+NOTES — Z1 heavy-inside: the paid caps, the cap gap, and the det pins (fork 20)
+================================================================================
+Round of 2026-08-20.  Predecessor: NOTES-z1anchorcaps.txt (fork 19).
+
+0. HEADLINE
+-----------
+CELL H DID NOT FULLY CLOSE; ITS LARGEST KERNEL BITE LANDED.  One module
+(Gtz/Wave/HeavyInsideCapGap.lean, ~960 lines, gate green): in cell H the PAID
+four-set matrix C_y = N_out/ms + G_y - 1 is PD (the dichotomy strengthened to
+the paid form), every A_y^-1 reading is capped by the C_y^-1 reading, the
+erased cap is EXACT (r_x <= ms/(1-t_x-ms), eigenvector evaluation), and the
+cap gap
+    t_x*ms/(1-t_x-ms) + t_z*(g_z' C_y^-1 g_z) < t_x + t_z
+contradicts the tie's excluded floor: the heavy-inside cell is EMPTY on the
+cap-gap region — 79.5% of the cell measured (161k fresh samples), verified in
+512-bit arithmetic at all 96 icviol adversaries and all 27 fresh misses.
+Plus the determinant instruments for the residual: the rank-two det exchange
+law, the cross pin (g_y x g_z)(g_y x g_z)' = (1+lam) g_x g_x', the excluded
+det exchange, the excluded-pair det ledger, the tie's det floor, and the
+erased over-read (exactly saturated at the witness AND at ledgerFoil).
+
+1. KERNEL (all pins [propext, Classical.choice, Quot.sound])
+------------------------------------------------------------
+Gtz/Wave/HeavyInsideCapGap.lean:
+  capMatrix_quadForm             quadratic form of the paid four-set matrix
+  corner_fourSet_capMatrix_floor A_y >= C_y pointwise (payment; no corner)
+  sylvester_quad_nonneg/_pos     2x2 Sylvester positivity instruments
+  corner_oneAxisZero_heavyInside_cap_posDef   CELL H => C_y PD.  Route:
+      not A_z PD => DZ >= 0 (contrapositive of the landed branch) => scalar
+      core => DY < 0 => -DY/(1+lam) IS the plane Sylvester det of ms*C_y.
+  corner_oneAxisZero_heavyInside_reading_cap  every A_y^-1 reading <= C_y^-1
+  corner_oneAxisZero_outside_xEigen  N_out g_x = (1-t_x) g_x (matrix xResolve)
+  corner_oneAxisZero_heavyInside_erased_cap   g_x' C_y^-1 g_x = ms/(1-t_x-ms)
+  corner_oneAxisZero_heavyInside_excluded_floor  tie => t_x+t_z <= t_x r_x+t_z r_z
+  corner_oneAxisZero_heavyInside_capGap_absurd(')  THE CLOSER + y-z mirror
+  corner_oneAxisZero_heavyInside_isTie_iff_capGap  lossless iff sharpening:
+      tie <-> (three floors AND capGap >= 0)
+  det_add_atomMatrix_sub_atomMatrix_cross  det(M+pp'-qq') + det(M+qq')
+      = det(M+pp') + det M - (pxq)'M(pxq)   (3x3, no hypotheses)
+  corner_oneAxisZero_cross_pin   atomMatrix(g_y x g_z) = (1+lam) atomMatrix g_x
+  corner_oneAxisZero_excluded_det_exchange  det(A_y-G_z) + det A_z
+      = det A_y + det K - (1+lam) g_x' K g_x,  K = S_Ccomp - 1
+  excluded_pair_det_ledger       (a(r_p-1)+b(r_q-1)) det M
+      = -(a det(M-pp') + b det(M-qq'))  (any k, IsUnit det)
+  corner_oneAxisZero_heavyInside_tie_det_floor  tie =>
+      t_x det(A_y-G_x) + t_z det(A_y-G_z) <= 0   (det shadow of the floor)
+  corner_oneAxisZero_erased_overRead(_strict)  1-t_x <= ms*(g_x' M_o g_x); > 1
+
+2. THE STRUCTURAL DISCOVERY (use it): CELL H IS 2x2
+----------------------------------------------------
+In frame coordinates (u, w | g_x), N = diag(N_2, 1-t_x) and everything at the
+S-level collapses to the plane Schur complement Sc := K_p - kk'/kxx of
+K = M_o - 1 (kxx := g_x' K g_x > 0 by the over-read, ALWAYS):
+  A_y PD  <=>  Sc + g_y g_y' PD (2x2!);   A_z not PD <=> Sc + g_z g_z' not PD;
+  det A_e = kxx * det_2(Sc + g_e g_e');   det K = kxx * det_2(Sc);
+  Sc has exactly one nonpositive eigenvalue in cell H.
+The S-ledger is EXACT (verified 1e-10, then in kernel via the pins):
+  S*det A_y = -(t_x+t_z)(det A_y + det K) + t_x det A_x + t_z det A_z
+              + t_x v'Kv + t_z(1+lam)kxx,   v = g_y x g_x,  A_x = K + G_x.
+Spectral shape (kernel-adjacent, from det(P-I) = (|g|^2-1)/det Gamma > 0):
+A_y has EXACTLY one eigenvalue of its whitened form above 1; P_z has the full
+sign pattern mu1 <= 0 < mu2 < 1 < mu3.
+
+3. MEASURED CELL-H MAP (fresh sweeps, new seeds)
+-------------------------------------------------
+537788 cell-H samples (cellH_map20.jl): S<0 99.669%, sliver 0.331%, odds
+endpoint kills sliver minus 27, mixed kill 26, x-set 1, NOTHING 0.
+The 27 misses: ALL have t_x <= 0.01 AND A_x = G_x + M_o - 1 deeply not PD
+(min eig ~ -0.9); small positive S (1e-3..0.14) and odds margins.
+Sliver balance (cellH_balance20.jl): positive mass is B6 = t_z(1+lam)kxx
+(51%) and -det K (38%); kxx median 18, max 2558; sliver needs lam > ~1.2.
+LAM SLAB (cellH_lam20.jl, cellH_sep20.jl): on cell H with lam <= 1.2 no
+S >= 0 found (ascent tops at -1e-9); at lam <= 1: max r_x = 0.55, max r_z =
+0.73 — the excluded readings are SEPARATELY below one there.  At lam <= 1.22
+with more samples S >= 0 exists: the threshold is not a clean constant.
+CAPS COVERAGE (cellH_caps20.jl, 161k cell H): C_y PD at 100.0000% (now a
+theorem); capGap < 0 at 79.46%; odds-with-trace-lower-bounds adds ~0.1%.
+The residual (capGap >= 0): 20.5% of the cell, of which 98.5% still has the
+TRUE S < 0 — the ms-payment is what loses, exactly where outside weights
+spread (ms >> t_min).
+
+4. BRIEF ERRORS FOUND (fork 20)
+--------------------------------
+(a) The brief's central "CLAIM to prove: this joint state forces S < 0" is
+    FALSE as a floor-free implication — fork 19's own sliver.csv rows are
+    genuine cell-H points with S >= 0 (0.33% of the cell) — and with the
+    floors included it is mis-aimed: the floors IMPLY S >= 0 identically
+    (ledger: S = sum (1-t_d)(p_d-1) + (1-t_y)(r_y-1), all terms >= 0).
+    The honest fight is two-sided: geometry caps S down, the tie floors S up.
+(b) The brief calls 19/537k "the remaining sliver": the S>=0 sliver is
+    ~1900/537k; 19 is what survives the odds endpoint on top.
+(c) Prediction P1 (exact weight-comparison case boundary) is dead: sliver
+    points exist with max member weight 0.149 while S<0 bulk points reach
+    0.94 — no weight comparison separates the branches.
+(d) P2 half-right: the det pins matter, but the landed 79.5% bite came from
+    Loewner payment + the scalar core, not from the triad det law.
+
+5. REFUTATIONS THIS FORK (do not retry)
+----------------------------------------
+  - "P_z not PD forces S < 0" (floor-free): sliver.csv/fresh sliver rows are
+    exact counterexamples; S >= 0 needs lam > ~1.2 but has no clean predicate.
+  - Weight-only case predicates for the S-branch: dead (see 4c).
+  - The odds branch with CLOSED-FORM trace lower bounds (tr >= tr(D_up^-1),
+    D_up = N/t_min + G_y - 1; tr >= 9/(sum 1/t_d - 3 + |g_y|^2)): 6.3% of the
+    cell, almost all inside the capGap region — not a second branch.
+  - Fork 19's H1-is-dead verdict was about the SCALAR REGION (DZ>=0 shadow);
+    on the actual cell the same composition covers 79.5% and is now kernel.
+
+6. THE EXACT NEXT BRICK
+------------------------
+The residual is now: cell H AND capGap >= 0 AND three floors (the iff).  Two
+routes, in order of expected yield:
+ (i) SHARPEN THE PAYMENT: C_y pays every outside atom at ms.  The exact
+     next object is the two-parameter cap C_y(s) = s*N_out + G_y - 1 for
+     1/ms <= s (still PD by the same core when s = 1/ms; larger s can lose
+     PD).  Better: pay atom-wise using the landed triad det pins — the
+     residual's 98.5% true-S<0 says the right inequality is det-level:
+     combine corner_oneAxisZero_heavyInside_tie_det_floor with the exchange
+     law and the pin to turn the tie into
+       t_x[det A_y - det A_x + det K - v'Kv]
+         + t_z[det A_y - det A_z + det K - (1+lam)(g_x' M_o g_x - 1)] <= 0,
+     then bound det A_x, v'Kv in the 2x2 frame (Sc-language, section 2) where
+     ALL quantities are explicit in 6 scalars + weights.  The 2x2 collapse is
+     the honest arena for the residual; the rotation freedom is only in the
+     coupling k and Sc's frame angle.
+ (ii) THE MISSES (t_x -> 0, A_x deeply not PD, mixed kills): the mixed
+     four-set {y,z,d_j,d_k} = B - q_d q_d' is an ANCHOR downdate — the pair
+     system/anchor caps apply to it directly; hunt the anchor-side law there
+     before adding new machinery.
+Files: cellH_map20.jl (fresh firing map + miss dump), cellH_caps20.jl
+(caps coverage), cellH_balance20.jl (sliver balance), cellH_detid20.jl
+(det identity check), cellH_lam20/sep20/env20.jl (lam slab + envelopes),
+capverify20.jl (512-bit cap verification at icviol+misses),
+foilverdict20.jl (exact-rational verdict table), miss20.csv (27 misses).
+icviol.csv and stragglers.csv intact.
+
+7. DOUBLE-FOIL VERDICTS (exact rationals, foilverdict20.jl)
+------------------------------------------------------------
+  law                    signCoherent  ledgerFoil       residualFoil  witness        complextie
+  det exchange (id)      holds         holds            holds         holds          polynomial id, holds
+  excl det ledger (id)   holds         holds            holds         holds          polynomial id, holds
+  cross pin (Z1)         vacuous       holds EXACT      holds EXACT   holds EXACT    vacuous (non-planar)
+  erased over-read (Z1)  vacuous       holds SATURATED  holds         holds SATURATED vacuous
+  cap floor (payment)    vacuous       holds            holds         holds          vacuous
+  capGap closer (tie+H)  vacuous       vacuous          vacuous       vacuous (A_z PD) vacuous (not Z1)
+  cap_posDef antecedent calibrated on cell H: 100.0000% of 161k samples (and
+  it is now a theorem); capGap fires at 79.5%.

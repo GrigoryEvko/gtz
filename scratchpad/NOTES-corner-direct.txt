@@ -1,0 +1,144 @@
+NOTES — the corank-two corner, direct attack, 2026-08-19
+=========================================================
+
+0. WHAT LANDED (two commits, gate green)
+-----------------------------------------
+Gtz/Wave/CornerRefusalCensus.lean
+  det_atomPair_eq_zero, det_atomSingle_eq_zero, exists_kernel_of_det_eq_zero
+  not_posDef_of_nonpos_reading, subsetSum_swap
+  corner_self_not_posDef, corner_swap_not_posDef
+  eq_swap_of_card_inter_two, corner_census_not_posDef
+  strictDominator_inter_card_le_one, isTie_iff_corner_refusals
+  exists_third_outside, outside_pivot_minor_nonpos
+Gtz/Wave/CornerGapWindow.lean
+  sum_weight_read_sq, corner_gapScale_le_of_weightFloor
+  outside_cover_quantitative, corner_gapScale_floor_of_isTie
+  corner_gapScale_window, corner_gapScale_floor_concrete
+  refusal_direction_axis_floor, swapTriple_quadForm
+  swapRefusal_axis_bound, exists_swapRefusal_bound
+
+1. WHAT ALREADY EXISTED AND WAS NEARLY REBUILT
+-----------------------------------------------
+`Gtz.outside_plane_cover_of_rankOneGap` (CorankTwoNonplanarSystem.lean) already
+proves `w·w < Σ_{d∉C}(g_d·w)²` for `w ⊥ u`, and `Gtz.refusal_reads_axis`
+(RefusalConeGeometry.lean) already draws the corollary that a refusal direction
+of the complement triple reads the axis.  I re-derived both from Parseval with
+max weights before finding them.  What survived the check is the CONSTANT: my
+derivation keeps `(1−ceilIn)|w|² ≤ ceilOut·Σ_d(g_d·w)²`, which the landed proof
+throws away, and that constant is what prices the gap scale.
+Also already present: `Gtz.weight_pair_lt_one`, `Gtz.det_smul_atomMatrix_three`,
+`Gtz.subsetSum_quadForm_eq_sum_sq`, `Gtz.inside_quadForm_of_rankOneGap`,
+`Gtz.exists_refusal_direction`, `Gtz.quadForm_atomMatrix`,
+`Gtz.dotProduct_sq_le_mul`.  All four were reused, none duplicated.
+
+2. THE Z-PICTURE (the coordinate that made the census visible)
+---------------------------------------------------------------
+W := S_univ − 1 ≻ 0.  Put z_a := W^{-1/2} g_a.  Then P_ab = z_a·z_b, the
+Parseval identity becomes Σ_a (1−t_a) z_a z_aᵀ = I, and Σ_a (1−t_a) = 5.  For
+every subset S,  S dominates strictly ⟺ Σ_{a∈S} z_a z_aᵀ ≻ W^{-1}, and for a
+triple R,  Rᶜ dominates strictly ⟺ Σ_{r∈R} z_r z_rᵀ ≺ I.  A corank-two corner
+reads Σ_{d∉C} z_d z_dᵀ = I − π p pᵀ with π = cornerPivot ∈ (0,1] and
+1 − P_dd = π(p·z_d)²/(1−π).  Not mechanized: it is a change of coordinates, not
+new mathematics.
+
+3. THE CENSUS (landed)
+-----------------------
+(S_T − 1) + g_e g_eᵀ = lam·u uᵀ + g_d g_dᵀ for T = (C \ {e}) ∪ {d}.  The right
+side is a sum of two rank-one atoms in three dimensions, hence singular, and its
+kernel direction reads S_T − 1 at −(g_e·z)² ≤ 0.  So every triple sharing at
+least two atoms with C fails to dominate strictly, with NO tie hypothesis: ten
+of the twenty.  A strict dominator therefore shares at most one atom with C, and
+the tie condition at a corner is exactly the ten remaining refusals — the
+complement Cᶜ and the nine one-inside triples {e,d',d''}.
+
+4. THE FOUR SLACKS OF A PAIR, AND THE SCHUR-HORN CAP
+------------------------------------------------------
+For an admissible inside pair {f,h}, N := z_f z_fᵀ + z_h z_hᵀ ≺ I and
+R := (I−N)^{-1}.  The four landed slacks are ONE statement:
+  triple {f,h,a} refuses  ⟺  z_aᵀ R z_a ≥ 1 .
+Aggregating with the co-weights gives `pairRefusalLedger`; aggregating over the
+complement gives `corner_pairRefusal_bound`, i.e. tr(R(I − π p pᵀ)) ≥ 3, i.e.
+  (*)  a + b ≥ (2+π)Δ + π(b α² + 2c αβ + a β²) ,  α = p·z_f, β = p·z_h .
+
+MEASURED (416 + 522 exactly-Parseval corners, float, sampler in corner_probe.py):
+* every corner carries a strict dominator (0 exceptions), so the corner is empty
+* every strict dominator shares at most one atom with C (0 exceptions)
+* (*) fires at only 116 of 522 corners, while the INDIVIDUAL refusals
+  z_dᵀRz_d < 1 fire at all 468 corners where a one-inside triple dominates.
+So the individual slacks do carry more than their sum, as the brief says.
+
+BUT the extra content is NOT in one pair.  Writing w_d := (P_fd, P_hd, γ_d) the
+three outside refusals read w_dᵀ J w_d ≥ 0 with J = diag(adj K₂, −πΔ/(1−π)), and
+Σ_d w_d w_dᵀ is a FIXED matrix G₃ determined by (a,b,c,α,β,π).  So the three
+refusals are o_dᵀ H o_d ≥ 0 over an orthonormal basis {o_d}, H := G₃^{1/2} J
+G₃^{1/2}, and by Schur–Horn such a basis exists exactly when tr H ≥ 0, which is
+(*).  For one pair with the outside frame free, the individual refusals and
+their sum are EQUIVALENT.  The gain is entirely in the coupling: the same outside
+frame serves all three inside pairs.  Any programme that works pair by pair is
+capped at (*).
+
+5. THE SYMMETRIC SLICE — WHERE THE WEIGHTS ENTER
+-------------------------------------------------
+π = 1, p = e₃, outside = Mercedes frame in p^⊥ with weight σ each, inside =
+Mercedes cone (r,w) with weight ς each.  Parseval gives w² = 1/(3ς),
+r² = 2(1−σ)/(3ς); Σ(1−t) = 5 gives σ + ς = 5/3.  Then the violation of (*) is
+
+    2(3ς − 2)(1 − ς) / (9ς²)  >  0   for ς ∈ (2/3, 1) ,
+
+vanishing exactly at ς → 1 (inside weight → 0) and ς → 2/3 (outside weight → 0).
+Without Σ t = 1 the violation goes negative (1/ς = 3, small r gives −0.99).  So
+the certificate needs BOTH t_a > 0 and Σ t_a = 1, and the second is where the
+size six enters.  `corner_gapScale_floor_of_isTie` has exactly that shape.
+
+6. THE GAP SCALE WINDOW (landed)
+---------------------------------
+Ceiling, tie-free:  weightFloor·(1 + lam) ≤ 1.
+Floor, at a tie:    1 ≤ ceilIn·(1 + lam) + ceilOut,
+so 1 − t_e − t_d ≤ t_e·lam for a heaviest inside e and a heaviest outside d, and
+`weight_pair_lt_one` makes the left side strictly positive.  The floor consumes
+`htie.2 Cᶜ` with Cᶜ.card = 3, so it is VACUOUS at (5,3), where the complement of
+a triple is a pair.  That is the (5,3) break.
+
+CALIBRATION, exact rationals (calibrate.py):
+  corankTwoNonplanarDesign  C={0,1,2}, lam=3, u=e₃
+    census violations 0 ; strict dominators (0,3,5),(0,4,5),(1,3,5),(1,4,5),
+      each sharing exactly one atom with C
+    weightFloor(1+lam) = 97/105 ≤ 1                     [ceiling holds]
+    ceilIn(1+lam)+ceilOut = 68/45 ≥ 1                   [floor holds]
+    outside minors (3,4),(3,5),(4,5) all exactly 0      [minor law tight]
+  residualFoil              C={0,1,2}, lam=3, u=e₁
+    census violations 0 ; strict dominators (2,3,5),(2,4,5),(3,4,5)=Cᶜ
+    weightFloor(1+lam) = 692/3133 ≤ 1                   [ceiling holds]
+    ceilIn(1+lam)+ceilOut = 3088/3133 < 1  by 45/3133   [floor FAILS]
+  The foil is not a tie, and the tie-only floor is exactly what separates it.
+  Had the foil been a tie, `corner_gapScale_floor_of_isTie` alone would refute it.
+
+7. WHAT IS LEFT, AND THE ONE HARD STEP
+----------------------------------------
+Write A := 1 − Z_C in the z-picture (equivalently Λ := S_{Cᶜ} − 1 in design
+coordinates).  A tie at a corner says
+  (i)  Λ ⊁ 0 ,
+  (ii) Λ + g_e g_eᵀ − g_d g_dᵀ ⊁ 0  for every e ∈ C and d ∈ Cᶜ .
+The plane cover makes Λ ≻ 0 on u^⊥, so Λ fails in exactly one direction, and the
+quantitative cover pins that direction to the axis.  MEASURED on 253 corners with
+λ_max(Z_C) ≥ 1 (the branch a tie must live in, corner_probe3.py):
+  * an admissible inside pair always exists (0 exceptions)
+  * e := argmax_e (z_e·φ)², φ the top eigenvector of Z_C, is always admissible
+    AND always completes to a strict dominator (253/253)
+  * no single rule for d works: argmin_d ‖z_d‖² succeeds 236/253.
+So the missing step is: prove that the argmax-φ inside atom yields an admissible
+pair, and that some outside atom then completes.  The second half is where the
+count nine-versus-three separates (6,3) from (5,3).
+
+8. KILLED CANDIDATES RE-CHECKED (NOTES-corank2.txt section 5)
+--------------------------------------------------------------
+None of the nine reappears here.  Re-checked against the new work:
+  inside pair deficient / mixed pair deficient / any of fifteen deficient — all
+  are statements about GhostDeficitShort, which the ledger already forbids;
+  the complement always dominates strictly — refuted, and the census explains
+  why it cannot be forced: Cᶜ is only ONE of the ten live candidates;
+  Δ ≤ 1/2 violated, Σ_C P_ee < 1, triple pivot total below one, pivot law
+  violated — all single-scalar pivot laws, none used here;
+  the two branch tests — about π and the inside light count, not used here.
+The census is a NEGATIVE statement about which refusals exist, and the gap window
+prices a scalar (lam) that no landed law touched.

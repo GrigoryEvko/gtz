@@ -1,0 +1,714 @@
+THE K1 STRATUM — fork 31 notes (2026-08-20)
+============================================
+
+F31-1. THE STRUCTURE THEOREM (derived here, then landed)
+--------------------------------------------------------
+C = {x,y,z} a weak dominator, gap corank one, unit null w, beta_c = g_c.w,
+Sum beta_c^2 = 1.  K1 := exactly one zero, say beta_x = 0.  Then:
+
+  w = beta_y g_y + beta_z g_z          (resolve identity, beta_x = 0)
+  => beta_y u_y + beta_z u_z = 0       (u = component orthogonal to w)
+  => u_y ANTI-PARALLEL u_z
+  => g_y, g_z lie in ONE PLANE Pi CONTAINING w, and g_x _|_ w.
+
+  (S1) S_{yz} w = w                    -- THE PAIR ALONE FIXES w
+  (S2) (l_y-1)(l_z-1) = <g_y,g_z>^2    -- singular pair gap
+  (S3) wedge_{yz} = l_y + l_z - 1
+  (S4) u_y = 0 <=> g_y || g_z || w <=> rank(S_C) <= 2: NOT a dominator.
+       So in a genuine K1 dominator g_y and g_z are never parallel.
+
+NORMAL FORM: S_{yz} = w w' + A v v' with A = l_y+l_z-1 > 1, v _|_ w in Pi,
+and g_x = alpha v + gamma n (n = w x v), with corank exactly one <=>
+  (A-1)(gamma^2-1) > alpha^2   and   gamma^2 > 1.
+Invariant form of the same:  (A-1)(l_x-1) > <g_x,g_y>^2 + <g_x,g_z>^2 ,
+which is exactly e2(S_C - 1) > 0.
+
+DIMENSION: with w = e1 and v = e2 fixed by rotation, K1 has 4 parameters
+against 5 for the corank-one locus.  K1 IS CODIMENSION ONE.  A generic
+corank-one sampler NEVER hits it -- K1 must be built, not found.  (K2 is
+codimension two, K0 is generic.)
+
+F31-2. THE CHART IN THE MEGAJOB PARAMETRIZATION (the cheap way in)
+-------------------------------------------------------------------
+mega2.jl builds S_C = S12^2 with S12 = [[1,0,0],[0,B]] and g_i = col_i(S12*O).
+Then beta_i = (S12*O)[1,i] = O[1,i]: THE READING VECTOR IS THE FIRST ROW OF
+THE ROTATION.  So K2 <=> first row is +-e_j (their k2 branch), and
+  K1 <=> first row has exactly one zero.
+Take row1 = (0, cos p, sin p), row2 = (cos q) e1 + (sin q) m with
+m = (0,-sin p, cos p), row3 = row1 x row2 = (sin q, sin p cos q, -cos p cos q).
+Two angles (p,q) replace the three of a free rotation -- the codimension.
+Implemented in scratchpad/corank1/f31k1.jl (k1rot).
+
+F31-3. THE CENSUS (f31k1.jl, 32 threads; f31verify.jl 512-bit adjudication)
+----------------------------------------------------------------------------
+obstruction := max over the 19 non-C triples of lmin(S_T) - 1.  A tie needs
+obstruction <= 0.  Descent, 140 starts/thread, budget 14000.
+
+  K0 CONTROL tf=0.05   +2.66e-2    K1 TARGET tf=0.05   +2.82e-2
+  K0 CONTROL tf=0      +4.47e-5    K1 TARGET tf=0      +2.50e-5
+  ties found: 0 everywhere.  hinge alarms: 0.
+
+The unguarded infima approach zero FROM ABOVE, matching fork 24's banked
+"(5,3)-diamond escape t_6 -> 0" channel (they measured 6e-8).  Nothing
+crosses zero.  K1 behaves exactly like K0 under descent.
+
+*** A FLOAT PHANTOM, CAUGHT AND KILLED ***
+The FIRST unguarded run reported obstruction -2.56e-2 with 135 "ties", ALL
+with mincross > 1e-6, i.e. 135 hinge counterexamples.  512-bit rebuild of
+the reported optimum: obstruction +1.597e-1 at triple (3,4,6).  A PHANTOM.
+Cause: weights collapsed to 2e-9 and one atom norm reached 1.06e4, so the
+matrix entries reached 1e8; the trigonometric (Viete) eigenvalue formula
+then loses BOTH small eigenvalues, because after normalization they collide
+at the acos branch point where the derivative is infinite.  This is the
+banked "signal versus noise floor" law in a new disguise.
+FIX (now in f31k1.jl): a NOISE-FLOOR GUARD capping max |g|^2 at 1e4 -- caps
+the dynamic range instead of the weights, so t may still fall to ~1e-4
+while lmin stays accurate to ~1e-12.  With the guard: zero ties anywhere.
+RULE FOR SUCCESSORS: never read an obstruction from eigmin3 without
+bounding the atom norms first.
+
+F31-4. THE POSITIVE CONTROL AND DIAMOND SAFETY (f31diamond.jl, exact)
+-----------------------------------------------------------------------
+(5,3) diamond, graphic design, conductances (2,3,3,3,3), uniform weights:
+  Parseval residual 1.5e-154, max over ALL triples of lmin-1 = +1.6e-154
+  => a genuine TIE.  8 weak dominators, EVERY ONE corank 1, EVERY ONE K0
+  (beta^2 = (0.75,0.125,0.125) at the four spine trees, (0.409,0.182,0.409)
+  and its permutations at the other four).  min cross 0.710 => PRIMITIVE.
+So DIAMOND SAFETY OF ANY K1 LAW IS A FACT, not a hope, and it now has an
+independent exact witness beside the kernel proof.
+NOTE: uniform weights with the spine halved is NOT the sixSplitDiamond --
+that construction gives obstruction +0.2, no weak dominators.  The real
+fixture has non-uniform weights.  Do not reuse my V6/c6 as the split
+diamond.
+
+F31-5. WHAT LANDED (commit 4431729, Gtz/Wave/KOneAnchor.lean, 520 lines,
+       22 theorems, ALL on [propext, Classical.choice, Quot.sound])
+-------------------------------------------------------------------------
+GENERAL (no design, no tie, no corank -- reusable by every arm):
+  det_pairSum_add_atom_sub_one   det(g_yg_y'+g_zg_z'+gg'-1) expanded in the
+    six scalars; the coefficient of leverageOf g is the pair discriminant
+    D = (l_y-1)(l_z-1) - p^2, and the constant term is -D.
+  pairAnchor_resolve / _relation_left / _relation_right / _readings_sq_sum
+    the four scalar consequences of (g_yg_y'+g_zg_z')w = w and w.w = 1.
+  pairAnchor_wedge_eq            D = 0: AN ANCHORED PAIR IS SINGULAR.
+  pairAnchor_wedge_value         wedge = l_y + l_z - 1.
+  *** pairAnchor_det_update ***  THE ANCHORED DETERMINANT LAW:
+        det(g_yg_y' + g_zg_z' + gg' - 1) = -(l_y + l_z - 2)(g.w)^2
+    for EVERY probe atom g.  Pure square in the new atom's reading, scaled
+    by the pair's leverage excess.  Inverse-free and spectrum-free.
+  not_posDef_of_pairAnchor_add_atom   the sign law: leverage two on the pair
+    => no atom completes it to a strict dominator.
+  e2_tripleSum_sub_one / pairAnchor_e2_price
+        e2(S_C - 1) = (l_y+l_z-2)(l_x-1) - (<g_x,g_y>^2 + <g_x,g_z>^2)
+  two_le_leverageSum_of_pairAnchor    PSD + l_x > 1 => 2 <= l_y + l_z.
+  parseval_probe_form            sum_c t_c (g_c.p)^2 = p.p, any probe.
+  pairAnchor_transverse_energy   strip w off g_y: the pair reads the
+    surviving probe with energy exactly (l_y+l_z-1) times its own square.
+
+K1 AT A DOMINATOR:
+  kOne_pairAnchor                beta_x = 0 => S_{yz} w = w.
+  kOne_leverage_gt_one           l_x > 1 (leverage one would make g_x = +-w,
+    whose reading is +-1, not 0).
+  kOne_two_le_leverageSum        2 <= l_y + l_z.
+  kOne_one_le_pairWedge          1 <= wedge_{yz}: the live pair spends a
+    definite share of the design's wedge budget (sibling's
+    Gtz.wedge_mass_budget fixes the total over all fifteen pairs).
+  kOne_pairTriple_det            det(S_{yzd} - 1) = -(l_y+l_z-2)(g_d.w)^2.
+  *** kOne_not_posDef_pairTriple ***  THE FREE REFUSAL: every triple through
+    the live pair fails to dominate strictly.  NO TIE HYPOTHESIS.
+  *** kOne_isTie_iff_avoidingRefusals ***  THE BUDGET: at a K1 dominator
+        IsTie D  <->  every triple MISSING the live pair is refused.
+    At (6,3) four of the twenty triples are discharged for free, so sixteen
+    conditions carry the whole stratum.  Lossless (the reverse direction is
+    the definition), so no equivalence trap.
+  kOne_pair_weight_cap           min(t_y,t_z)(l_y+l_z-1) <= 1, given the
+    live pair is not parallel to w.  THE WEIGHT-CARRYING LAW of the stratum:
+    the leverage floor pushes up, the Parseval cap pushes down.
+
+F31-5b. ROUND 2 (commit 88bb993, Gtz/Wave/KOneBracketLedger.lean, 545 lines,
+        16 theorems, ALL standard axioms)
+--------------------------------------------------------------------------
+GENERAL (any design, any triple):
+  det_shift_one              det(G+1) = 1 + tr G + e2(G) + det G.
+  det_tripleSum_eq_bracket_sq   det(S_T) = [T]^2, no compound matrices.
+  posSemidef_trace_nonneg
+  *** dominator_bracket_floor ***  EVERY weak dominator has [C]^2 >= 1.  The
+    shift expansion reads the bracket as one plus the three gap invariants,
+    and PosSemidef signs all three.  Against the sibling's bracket_budget
+    (the twenty weighted squared brackets total ONE) a single dominator
+    consumes the share t_x t_y t_z of the entire design budget.
+  dominator_bracket_floor_add_trace   the floor with the gap trace kept.
+  corankOne_bracket_sq_eq    at a singular gap the floor is EXACT.
+
+K1:
+  *** pairAnchor_transverse_split ***  l_y - beta_y^2 = (l_y+l_z-1) beta_z^2.
+    The transverse mass of each live atom is the OPPOSITE reading squared
+    times the wedge.  Certificate: beta_y h1 - beta_z h2 - l_y h3.
+  pairAnchor_bracket_mirror  beta_z^2 [g,y,z]^2 = l_g(l_y-beta_y^2) - <g,g_y>^2.
+  *** pairAnchor_bracket_master ***  [g,y,z]^2 = (l_y+l_z-1) l_g - <g,g_y>^2
+    - <g,g_z>^2, for ANY g orthogonal to w.  NO division, NO transverse
+    factor: the stratum computes its own bracket exactly in the two tax
+    currencies.  STRONGER than the coordinator's queued F31-6 item (2),
+    which asked only for the multiplied form
+    (l_y-beta_y^2)[xyz]^2 = (l_y+l_z-1)(l_x(l_y-beta_y^2) - <g_x,g_y>^2);
+    that form is the mirror times l_g, and the master form supersedes it.
+    Route: the two mirrors (y-side and z-side) added, then h3 once.
+  *** kOne_two_lt_leverageSum ***  a GENUINE K1 dominator has l_y+l_z > 2
+    STRICTLY.  At equality the live pair is orthonormal, the erased pairings
+    vanish by e2 >= 0, the live pairing vanishes by the wedge value, and the
+    transverse part of g_y becomes a SECOND null direction off the null line
+    -- contradicting corank one.  This is the sharp form of the F31-6 floor.
+  kOne_transverse_pos        0 < l_y - beta_y^2, DISCHARGING the hypothesis
+    of kOne_pair_weight_cap.  This closes the coordinator's queued item (1)
+    by a SHORTER route than proposed: not exists_commonOrthogonal_of_pair,
+    but the transverse split against the wedge floor -- the split law prices
+    the transverse mass as wedge times the live opposite reading, both of
+    which are already positive on the stratum.
+  kOne_pair_weight_cap_of_null   min(t_y,t_z)(l_y+l_z-1) <= 1 UNCONDITIONALLY.
+  *** kOne_bracket_weight_cap ***  min(t_y,t_z) [xyz]^2 <= l_x.  The master
+    bracket law meets the Parseval cap.
+  kOne_outside_null_mass     sum_{d notin C} t_d (q_d.w)^2
+                               = 1 - t_y beta_y^2 - t_z beta_z^2 EXACTLY.
+  *** kOne_exists_strict_refusal ***  a genuine K1 dominator FORCES an
+    outside atom reading w, and its live-pair triple has STRICTLY NEGATIVE
+    gap determinant.  No tie hypothesis.
+  kOne_lightest_live_pair_weight_bound   CROSS-ARM: if the live pair is the
+    design's lightest pair, the sibling's isTie_lightest_pair_bracket_mass_cap
+    (t_a t_b w_ab <= 1 - t_a - t_b) collides with the strict wedge floor and
+    yields the pure weight statement  t_y t_z + t_y + t_z < 1.
+    ANSWER to the coordinator's question: the global wedge budget of 3 does
+    NOT by itself bind the live pair (w_yz > 1 is far under 3), but the
+    LIGHTEST-PAIR cap does bind it, and only in that configuration.
+
+F31-5c. ROUND 3 — THE (5,3) ON-STRATUM CENSUS.  VERDICT: K1 IS EMPTY.
+--------------------------------------------------------------------------
+f31k1five.jl.  At (5,3) the outside is TWO atoms, so N = I - sum_in t_i G_i
+must have RANK <= 2.  That is solved EXACTLY, not penalised: write the
+inside weights as s*(a,b,c) with a+b+c = 1, so N = I - s*M0 and
+    det N = 0  <=>  s = 1/lmax(M0),
+the only root keeping N positive semidefinite.  The inside total weight is
+therefore DETERMINED by the inside data, N is rank two by construction, and
+the outside pair follows from a 2x2 Cholesky of N compressed onto any
+orthonormal frame of the kernel's complement (NO eigenvector of N is needed,
+so degenerate positive eigenvalues are harmless).  Parseval is exact at
+1e-15 on every accepted sample; any sample with residual > 1e-9 is refused
+outright rather than scored.
+
+THE TWO ESCAPES, and why one guard is never enough:
+  s -> 0 : lmax(M0) -> inf, the inside atoms GROW without bound (the
+           non-compact channel).  Guard: SFLOOR (lower bound on s).
+  s -> 1 : the outside pair STARVES, t4,t5 -> 0 and |q| -> inf; the design
+           degenerates to its three inside atoms.  Guard: SCAP (upper bound).
+  Flooring only the inside mass PUSHES THE SEARCH INTO THE MIRROR ESCAPE:
+  at SFLOOR = 0.2 the optimum ran to s = 0.9998 with t4 = t5 = 1e-4, and the
+  three triples holding BOTH outside atoms tied at +9.79e-05 together.  The
+  margin profile is what exposed it -- always print it.
+
+MEASURED, both escapes closed (RFLOOR 0.05 on the inside ratios, FFLOOR 0.10
+on the outside split, s confined to a box):
+    s in [0.20,0.80]   obstruction +1.502e-03   (optimum ON the lower wall)
+    s in [0.30,0.70]   obstruction +3.326e-03   (optimum ON the lower wall)
+    s in [0.40,0.60]   obstruction +6.736e-03   (optimum INTERIOR, s=0.554)
+  zero ties, zero alarms, mincross 0.24-0.35 throughout (primitive), Parseval
+  2e-16.  The obstruction GROWS MONOTONICALLY as the box tightens and the
+  optimum sits on the wall until the box is small enough to hold it -- the
+  signature of an infimum that is zero ONLY on the degenerate boundary.
+
+*** VERDICT: K1 IS EMPTY AT (5,3), interior margin ~1e-3, and the infimum is
+    reached only through the two smaller-size degenerations.  With the (6,3)
+    guarded margin of +2.8e-02 this makes K1 EMPTY AT BOTH SIZES, exactly
+    like K2.  THE K1 KILL IS THEREFORE NOT SIZE-BOUND: it need not consume
+    m = 6, and it is automatically diamond-safe because both diamonds are
+    K0.  The arm's target for K1 stays EMPTINESS WITH A CERTIFICATE, not
+    rigidity. ***
+
+F31-5d. THREE VERIFIER-VERSUS-OPTIMIZER MISMATCHES (all mine, all caught)
+--------------------------------------------------------------------------
+Every one produced a WRONG headline number before it was caught, and none of
+them was a precision problem.  A 512-bit verifier is worthless unless it
+reproduces the optimizer BIT FOR BIT in its construction choices.
+ (1) The K1 rotation was TRANSPOSED in the verifier (two entries swapped);
+     caught because the Cholesky went complex.
+ (2) The kernel direction was taken by JACOBI eigenvectors in the verifier
+     and by ROW CROSS PRODUCTS in the optimizer.  Both are valid kernel
+     directions, but their SIGNS differ, and the sign flips bv = kv x av,
+     hence l21, hence the whole outside pair: a DIFFERENT (still Parseval-
+     exact) design.  Verified +2.13e-01 against a true +1.21e-04.
+ (3) The optimizer CLAMPS mu at exp(4) and the verifier did not; x[2]=4.31
+     exceeded it.  Same symptom again.
+Only after mirroring all three did verifier and optimizer agree to every
+printed digit (+1.2098772890e-04 both).  RULE: mirror the construction
+first, then verify the number.
+
+F31-5e. ROUND 4 (commit 7ebb35f, Gtz/Wave/KOneNormalForm.lean, 208 lines,
+        5 theorems, ALL standard axioms).  THE CERTIFICATE ARENA, at GENERAL m.
+--------------------------------------------------------------------------
+Since the kill is NOT size-bound, everything here is stated at general size.
+
+*** THE NORMAL FORM CLOSES.***  pairAnchor_pairing_value:
+      <g_y, g_z> = (2 - l_y - l_z)*beta_y*beta_z = (1 - A)*beta_y*beta_z ,
+  certificate  bz*h1 + by*h2 - p*h3  (three terms).  With the transverse
+  split l_y = beta_y^2 + A*beta_z^2 (and its mirror), AN ANCHORED PAIR IS
+  DETERMINED BY TWO NUMBERS: the wedge A and the reading split
+  beta_y^2 + beta_z^2 = 1.  Every Gram entry of the live pair is a polynomial
+  in (A, beta).  Cross-check: l_y l_z - p^2 = A(beta_y^2+beta_z^2)^2 = A, so
+  the normal form reproduces the wedge identity exactly.
+  CONSEQUENCE FOR THE CERTIFICATE: the sixteen avoiding refusals can be
+  written in TWO live coordinates plus the outside data -- the live pair
+  contributes no further freedom.
+
+*** THE GENERAL BRACKET LAW.***  pairAnchor_bracket_general: for EVERY g,
+      [g,g_y,g_z]^2 = A*l_g - <g,g_y>^2 - <g,g_z>^2 - (A-1)*(g.w)^2 .
+  NO orthogonality hypothesis; pairAnchor_bracket_master is the case g.w = 0.
+  Route: the e2 price pairAnchor_e2_price holds for an ARBITRARY third
+  vector, so the shift expansion det(G+1) = 1 + tr + e2 + det, plus the
+  landed det update det(S_{yzg}-1) = -(A-1)(g.w)^2, gives the bracket with no
+  new geometry.  THE SAME FACTOR (A-1)(g.w)^2 carries BOTH the gap
+  determinant and the bracket, so they degenerate together, on one factor, at
+  one locus -- exactly the coordinator's requirement that a closing law carry
+  a factor vanishing at the degeneration.
+
+*** THE SHARP WEIGHT CAP.***  kOne_sharp_weight_cap (general m):
+      A*(t_y*beta_z^2 + t_z*beta_y^2) <= 1 .
+  Parseval at the transverse probe g_y - beta_y*w, whose three readings are
+  now EXACT via the normal form: g_y.probe = probe.probe = A*beta_z^2 and
+  g_z.probe = -A*beta_y*beta_z.  Since beta_y^2 + beta_z^2 = 1 the left side
+  dominates min(t_y,t_z)*A, so this STRICTLY SHARPENS
+  kOne_pair_weight_cap_of_null.  Its stratum form is
+  kOne_sharp_weight_cap_of_null.
+
+THE COLLISION, in its sharpest landed form:
+      A > 1                              (kOne_two_lt_leverageSum, strict)
+      A*(t_y*beta_z^2 + t_z*beta_y^2) <= 1   (kOne_sharp_weight_cap)
+  and the sixteen avoiding refusals of kOne_isTie_iff_avoidingRefusals.
+  The coordinator's hope that the simplex constraints alone are infeasible is
+  REFUTED: A = 1.1 with t_y = t_z = 0.1 satisfies every weight law
+  (min*A = 0.11 <= 1, t_y t_z + t_y + t_z = 0.21 < 1).  The cap only bites
+  once A exceeds 1/min(t_y,t_z), so it is SLACK across the whole
+  moderate-wedge region.  THE REFUSALS MUST DO THE WORK.
+
+F31-5f. ROUND 5 (commit 93dd0ef, Gtz/Wave/KOneTransverse.lean, 307 lines,
+        15 theorems, ALL standard axioms).  THE TRANSVERSE AXIS.
+--------------------------------------------------------------------------
+The normal form gave the live pair two coordinates.  This is the THIRD axis,
+frame-free: NO orthonormal basis is ever constructed.  Take nu = g_y x g_z.
+
+  |nu|^2 = l_y + l_z - 1 = A        (Lagrange + the anchored wedge value)
+  nu . w = 0                        (w lies in the pair's own plane)
+  g_x . nu = [x y z]                (cross-dot = bracket)
+
+So THE AXIS IS SCALED BY THE VERY QUANTITY THE COLLISION IS FOUGHT ON, and
+the stratum's bracket is literally its transverse reading.
+
+*** THE STRICT BRACKET FLOOR.***  kOne_bracket_gt_wedge:
+      [x y z]^2 > l_y + l_z - 1 ,  STRICTLY.
+  The gap form is strictly positive off the null line (landed
+  gapForm_pos_of_gapNullLine), nu is off it (orthogonal to w and nonzero
+  since |nu|^2 = A > 1), and the gap form AT nu is exactly [xyz]^2 - A
+  because the live pair is orthogonal to its own cross product.  Three lines
+  of geometry, no chart.
+
+*** THE TRANSVERSE LEDGER.***  kOne_transverse_parseval:
+      t_x*[xyz]^2 + sum_{d notin C} t_d*(q_d . nu)^2 = l_y + l_z - 1 .
+  Parseval read on the axis.  The live pair contributes NOTHING (orthogonal
+  to nu), so the erased atom's bracket and the outside readings split the
+  wedge EXACTLY.  This is the stratum's third exact ledger.
+
+*** THE ERASED WEIGHT CAP.***  kOne_erased_weight_cap:
+      t_x*[xyz]^2 <= l_y + l_z - 1 ,
+  the FIRST cap on the erased weight -- every earlier law of the stratum left
+  t_x completely free.  With the strict floor it gives t_x < 1
+  (kOne_erased_weight_lt_one) and sharply t_x <= A/[xyz]^2.
+
+*** THE ASSEMBLED COLLISION.***  kOne_three_weight_collision packages the
+four facts that now bind EVERY weight of the stratum against the same A:
+      A > 1                                        (strict floor)
+      A*(t_y*beta_z^2 + t_z*beta_y^2) <= 1         (live pair)
+      t_x*[xyz]^2 <= A                             (erased atom)
+      [xyz]^2 > A                                  (strict bracket floor)
+  and the outside is bound through the ledger's remainder
+      sum_{d notin C} t_d (q_d . nu)^2 = A - t_x [xyz]^2 .
+
+MEASURED CHECK OF THE COLLISION: still FEASIBLE, so this is not yet the kill.
+A = 1.1, [xyz]^2 = 1.2, t_x = 0.5, t_y = t_z = 0.1 satisfies all four.  The
+kill needs the sixteen avoiding refusals, exactly as banked.
+
+NAME COLLISION, caught at the gate: my `tripleGap_form` clashed with
+`Gtz.Design.StressFreeClosureFailure`.  Renamed `kOne_tripleGap_form`.
+CHECK EVERY NEW THEOREM NAME AGAINST THE WHOLE TREE BEFORE COMMITTING --
+this is the second such clash this session (fork 28 hit `tripleGram`).
+
+F31-5g. ROUND 6 — THE CERTIFICATE'S SHAPE, MEASURED; FOUR ROUTES REFUTED.
+--------------------------------------------------------------------------
+Tool: scratchpad/corank1/f31arena.jl, built directly in the LANDED NORMAL
+FORM (so it also tests it):  g_y = (b_y, sqrt(A) b_z, 0),
+g_z = (b_z, -sqrt(A) b_y, 0), g_x = (0, alpha, gamma), then three outside
+atoms by Cholesky completion.  [xyz]^2 = A*gamma^2 by construction.
+MEMORY: pure StaticArrays, zero heap in the hot loop, measured to finish in
+under 25 s at 16 threads -- NOT the OOM culprit.  Runs capped at
+--heap-size-hint=8G, JULIA_NUM_THREADS <= 16 per the new campaign law.
+
+*** THE SHAPE OF THE KILL, MEASURED. ***  The right scale-free objective is
+    obstruction / t_min ,   obstruction := max over the 16 avoiding triples
+                            of (lmin(S_T) - 1) .
+Minimising it over the whole stratum (no weight floor, escapes handled
+automatically because both sides vanish together) gives a POSITIVE,
+INTERIOR infimum.  Eight independent descents:
+    0.4166  0.4265  0.2533  0.1787  0.2414  0.2276  0.1836  0.2443
+The optima have min weight 0.022-0.10, always ABOVE the floor, so this is a
+genuine constant and not a boundary artifact.  Designs verified genuine at
+the optima: Parseval residual 2.8e-17, max |g|^2 = 7.69, and the sibling's
+BRACKET BUDGET reproduces as 1.0000000000 exactly at a K1 near-tie.
+    => THE K1 KILL IS:  some avoiding triple STRICTLY dominates, with
+       margin >= (something vanishing with the weights).
+    *** RETRACTION, SAME ROUND: THE CONSTANT c IS NOT ESTABLISHED. ***
+    Deeper search drives obst/t_min DOWN without settling:
+        0.4166  0.4265  0.2533  0.2443  0.2414  0.2276  0.1836  0.1787
+        then 0.1350 at 500 starts x 55000 evaluations.
+    The optima drift to ONE DOMINANT WEIGHT (0.86, 0.95) with the light
+    atoms carrying large norms (|g|^2 up to 139), i.e. toward the
+    smaller-size degeneration.  Two scale-balanced normalisers were tried
+    and BOTH also ran to the weight floor:
+        obst / min_c (t_c * l_c)   ->  9.2e-4, 7.2e-4   (two weights AT floor)
+        obst / (prod t_c)^(1/6)    ->  4.4e-2, 3.2e-2   (weights AT floor)
+    HONEST STATE: K1 is empty at EVERY FIXED POSITIVE WEIGHT FLOOR (measured
+    at both sizes, many floors), the infimum is zero ONLY at the
+    smaller-size boundary, and NO SIMPLE SCALE-FREE CONSTANT of the forms
+    tried captures the rate.  Do not quote 0.18; it was a shallow basin.
+    The certificate is weight-carrying, but its correct normaliser is OPEN.
+    The rate is LINEAR IN THE SMALLEST WEIGHT -- confirmed independently by
+    a floor sweep: obstruction/TFLOOR = 0.47, 0.27, 0.37, 0.34, 0.32 at
+    TFLOOR = 0.02, 0.05, 0.08, 0.12, 0.16.
+
+*** FOUR ROUTES REFUTED THIS ROUND (do not retry). ***
+(a) THE CONTRACTION TAX CANNOT KILL K1 ALONE.  Instrumented per triple at
+    the constrained optimum: the tax needs weighted bracket > max member
+    weight, and the BEST ratio over all twenty triples is 0.473 (then 0.438,
+    0.403).  A factor of about two short, everywhere.
+(b) NO SELECTION RULE NAMES THE DOMINATING TRIPLE.  Four rules tested
+    adversarially, each scored at the triple IT picks: max weighted squared
+    bracket -3384.8, max squared bracket -3231.0, weighted bracket over max
+    member weight -3190.3, max total weight -5000.0.  All catastrophically
+    negative.  The kill is irreducibly an EXISTS over the sixteen, not a
+    formula -- the same graveyard entry the corner lane carries.
+(c) NO PROPER SUBFAMILY CARRIES THE BOUND.  Six subfamilies tested:
+    {x,d,d'} -5000, {d,d',d''} -5000, their union -5000, {y|z,d,d'} -5000,
+    {x,y|z,d} -4731, the triple union -5000.  ALL SIXTEEN AVOIDING REFUSALS
+    ARE NEEDED JOINTLY.  This is the exact analogue of the banked K2 result
+    at (5,3) ("every 3-subset of the four refusals is deeply feasible; the
+    kill is exactly the joint system, no shortcut exists").
+(d) The four-fact weight system remains feasible on its own (banked last
+    round); (a)-(c) now say no cheap combinatorial route replaces it either.
+
+*** THE ACTIVE SET.***  At the floor-constrained optimum the binding triples
+were (1,3,6), (3,4,6), (3,5,6), (4,5,6) -- ALL containing the light atom,
+whose weight sits at the floor, and EXACTLY TWO atoms sit at the floor,
+saturating my own card_light_le_two_of_isTie.  So the certificate must be
+weight-carrying in precisely the way the campaign demands: the binding
+refusals are the ones through the lightest atoms.
+
+F31-5h. A CORRECTION TO THE COORDINATOR'S FRAMING (round 6).
+--------------------------------------------------------------------------
+"Two live coordinates, so QE is feasible" is NOT right for the refusal hunt.
+The normal form collapses THE LIVE PAIR to two coordinates (A and the
+reading split) -- that part is real and landed.  But the sixteen avoiding
+refusals all mention the OUTSIDE atoms, and those are not reduced by the
+normal form.  The honest parameter count of the arena at (6,3) is
+    A, theta, alpha, gamma           4   (the inside, fully reduced)
+    weights                          5
+    outside completion rotation      3
+                                  = 12 essential parameters,
+which is exactly what f31arena.jl carries.  QE at twelve variables is not
+feasible, and the subfamily tests (F31-5g(c)) show the system does not
+shrink: all sixteen refusals are needed jointly.  So degree escalation is
+cheap ONLY on the inside scalars; the arena as a whole is not a small QE
+problem, and any future attempt should be told this before it starts.
+
+F31-6. THE RESIDUAL, EXACTLY
+-----------------------------
+K1 is NOT decided.  The measurement cannot decide it: K1 is codimension one,
+so descent finding no tie is weak evidence (the same descent finds no K0 tie
+either, and K0 is inhabited by the split diamond).  What is now true:
+  * the stratum has a complete exact theory in kernel;
+  * the fight is sixteen refusals, not twenty;
+  * two opposing quantitative laws are landed on the SAME quantity
+    A = l_y + l_z - 1:  A >= 1 (leverage floor) and min(t_y,t_z) A <= 1
+    (Parseval cap).
+NEXT BRICKS, in order:
+ (1) Discharge the hypothesis of kOne_pair_weight_cap: l_y > beta_y^2 always
+     holds at a K1 dominator.  Proof sketch, verified by hand: if l_y =
+     beta_y^2 then g_y || w, and h2 with beta_z != 0 forces l_z = beta_z^2,
+     so g_z || w too, so rank(S_C) <= 2, so a common orthogonal probe of
+     {w, g_x} has negative gap form -- contradicting Dominates.  Use the
+     landed exists_commonOrthogonal_of_pair, exactly as the leverage ladder
+     does.
+ (2) THE BRACKET BRIDGE (derived, verified numerically and by Groebner
+     membership, NOT yet landed -- direct division fails, so it needs a
+     staged proof or an undetermined-coefficient certificate over a larger
+     generator set):
+        (l_y - beta_y^2) [xyz]^2 = (l_y+l_z-1)(l_x(l_y-beta_y^2) - <g_x,g_y>^2)
+     with the extra relation beta_y<g_x,g_y> + beta_z<g_x,g_z> = 0 coming
+     from g_x . w = 0.  This puts K1 into the sibling's bracket_budget
+     currency, whose total over the twenty triples is exactly one.
+     Pipeline: sympy reduced/groebner, see F31-7.
+ (3) The (5,3) K1 census: two outside atoms, nine other triples, the third
+     Cholesky column penalised to zero exactly as k2five.jl does.  If K1 is
+     empty at (5,3) too, the kill needs no size consumption, as with K2.
+ (4) The kill itself, if K1 is empty: the two-sided fight is A >= 1 against
+     min(t_y,t_z) A <= 1, so the certificate must consume the weights.  The
+     free refusal budget removes the four pair-triples from the system
+     first.
+
+F31-7. FILES
+-------------
+scratchpad/corank1/f31k1.jl        the K1 chart, census and descent, with
+                                  the noise-floor guard.  ENV STARTS/BUDGET.
+scratchpad/corank1/f31verify.jl    512-bit Jacobi adjudication of a reported
+                                  optimum.  RUN THIS BEFORE BELIEVING ANY
+                                  NEGATIVE OBSTRUCTION.
+scratchpad/corank1/f31diamond.jl   exact positive control: the (5,3) diamond
+                                  is a tie, all eight dominators are K0.
+scratchpad/corank1/f31k1five.jl   THE (5,3) ON-STRATUM CENSUS.  Exact rank-two
+                                  completion, Double64 obstruction, both
+                                  escape guards (SFLOOR/SCAP), margin profile
+                                  at the optimum.  ENV: RFLOOR FFLOOR SFLOOR
+                                  SCAP STARTS BUDGET NORUN.
+scratchpad/corank1/f31v5.jl       512-bit adjudicator for (5,3), MIRRORED to
+                                  the optimizer (clamp, cross-product kernel).
+scratchpad/corank1/f31dbg2.jl     standalone design dump for one parameter
+                                  vector: the tool that localised mismatch (3).
+
+F31-8. COORDINATION
+--------------------
+The shared git INDEX is shared between agents: at my commit time it already
+held a sibling's staged files (DiamondNeighborhoodMirror, PairBracketMass,
+their Gtz.lean/Audit.lean edits, their notes).  I committed with a PATHSPEC
+(`git commit <my file> -m ...`), which commits only that path and leaves the
+index untouched.  DO THIS -- a plain `git commit` would have swept their
+in-flight work into my commit.
+The working-tree Gtz.lean imports Gtz.Wave.PairBracketMass, which was
+UNTRACKED at my commit time: committing the umbrella then would have left
+HEAD referencing a missing module, the exact break fork 26 had to rescue.
+So my umbrella import and my 22 audit pins are in the WORKING TREE ONLY,
+unstaged, ready for whoever commits the shared files next.  My module is
+already in HEAD, so sweeping those lines in is safe.
+GATE, round 4: GREEN at 10004 jobs -- but the FIRST pass failed on a missing
+`.lake` olean (CoherentHornDualFrame) and the re-run passed with no source
+change.  Under six agents the shared `.lake` races: A FULL-GATE FAILURE MUST
+BE RE-RUN BEFORE IT IS BELIEVED.  Per-module remains the authority.
+FULL GATE, round 2: GREEN.  `lake build Gtz Skeleton` = 9999 jobs, exit 0.
+It was red on a SIBLING's omission, not on any module: Gtz/Audit.lean pins
+ten constants of Gtz/Wave/DiamondNeighborhoodLock.lean (tracked, committed)
+without importing it.  Adding that one import line to the WORKING TREE
+turned the gate green.  Both my modules are also verified standalone
+(9267 and 9362 jobs), zero sorries, and all 38 theorems audit to the
+standard three axioms.  Registry untouched at 7.
+My umbrella imports and my 38 audit pins are in the WORKING TREE ONLY,
+unstaged, beside two siblings' pending edits -- I committed both modules by
+PATHSPEC so nothing of theirs was swept.  NOTE for whoever commits the
+shared files: Gtz/Audit.lean keeps its OWN import list and does NOT import
+the Gtz umbrella, so a new module needs BOTH a Gtz.lean line and a
+Gtz/Audit.lean line.  That asymmetry is what produced the red gate.
+
+================================================================================
+FORK 45 -- ROUND 1.  THE RAY EXPANDED, THE NORMALIZER QUESTION ANSWERED, AND
+A NEW CEILING THAT CHARACTERIZES DOMINATION IN WEDGE/BRACKET CURRENCY.
+================================================================================
+
+F45-0. THE COORDINATOR'S FRAMING WAS INCONSISTENT AND IS NOW CORRECTED.
+"K1 is EMPTY at both sizes (+2.8e-2)" and "the correct normalizer is OPEN" are
+not compatible as stated.  Fork 31's own wording was CONDITIONAL and is the
+right one: K1 is empty at every FIXED POSITIVE WEIGHT FLOOR, the infimum is zero
+only at the smaller-size boundary, and the normalizer is open.  +2.8e-2 is the
+infimum of a scale-sensitive quotient from the SAME FAMILY as the retracted
+0.18 and must not be quoted as unconditional.
+
+F45-1. THE RAY, DERIVED ANALYTICALLY (not sampled).
+Rescale g -> ghat = sqrt(t) * g, so Parseval becomes sum ghat ghat' = 1.  On the
+degenerating ray one weight tends to 1 and the other five to zero with norms
+growing like 1/eps.  Then |ghat_heavy|^2 -> 1, so 1 - ghat ghat' has rank two
+and ALL FIVE LIGHT ATOMS FALL INTO THE HEAVY ATOM'S ORTHOGONAL PLANE P.
+Writing each light g in (n, P) components, the P block of S_T is order 1/eps and
+the Schur complement makes eps CANCEL EXACTLY:
+
+    lam_min(S_T)  ->  det(S_T) / det(S_T restricted to P)  =  [abc]^2 / det(S_T|P)
+
+An O(1), eps-free limit.  Triples through the heavy atom have limit exactly
+l_heavy, so they are satisfied for free once l_heavy <= 1; only the light
+triples carry content.
+
+CONFIRMED NUMERICALLY (f45/ray2.jl, continuation over a 500x range of the floor):
+    |ghat_heavy|^2 = 0.837, 0.918, 0.919, 0.985, 0.990, 0.992, 0.994, 0.996,
+                     0.99948          -> 1 exactly as derived
+    lmax * tau     = 0.617 .. 0.628   -> CONSTANT, the 1/eps norm scaling
+    heavy index    = 6 in every run   -> the heavy atom is OUTSIDE C, so C is
+                                         three light atoms
+Tooling: f45/common.jl (normal-form build, Double64 margins), f45/ray2.jl.
+
+F45-2. THE THREE-WAY DECISION: obstruction does NOT vanish faster than t_min.
+F(tau) := min obstruction subject to tmin >= tau.  F is non-increasing in tau by
+inclusion, so any non-monotonicity is DESCENT FAILURE and is reported as such.
+    tau     5e-2    2e-2    1e-2    5e-3    2e-3    1e-3    5e-4    2e-4   1e-4
+    F      4.30e-3 2.96e-3 6.02e-4 1.68e-3 2.69e-4 1.37e-4 4.36e-5 4.53e-5 2.98e-5
+    F/tau   0.082   0.122   0.050   0.331   0.132   0.134   0.086   0.220  0.288
+    (two NONMONO entries flagged by the run itself)
+F/tau shows NO DOWNWARD TREND across 500x.  Crude exponent fits on the clean
+tail give p = 0.66 .. 0.77, i.e. p < 1, so obstruction/t_min TENDS TO INFINITY
+along the ray.
+    => THE DEGENERATING RAY IS NOT AN ESCAPE FOR obstruction/t_min.
+    => The retracted non-settling (0.42 -> 0.135) is a GLOBAL-OPTIMIZATION
+       artifact, not a degeneration signature.  Low ratios occur at MODERATE
+       tau (I measured 0.0498 at tau = 1e-2, below every previously reported
+       value), so the infimum is INTERIOR and is still not pinned.
+HONEST LIMIT OF THIS RESULT: p is fit from a descent that is demonstrably
+imperfect.  I claim the QUALITATIVE branch (no evidence of p > 1; strong
+evidence the linear normalizer is safe/conservative on the ray), NOT the number
+0.7.  Do not quote an exponent.
+
+F45-3. ITEM 3 SETTLED EXACTLY -- THE CHAIN IS ALGEBRAIC, NOT NUMERICAL.
+In the normal form l_y = beta_y^2 + A beta_z^2 and l_z = beta_z^2 + A beta_y^2,
+so l_y + l_z = A + 1 IDENTICALLY, and the live pair wedge is EXACTLY A (not
+merely >= 1).  Verified in exact rationals at A up to 10^6 and beta^2 within
+2e-6 of the K2 edge: ZERO mismatches.  The chain e2 >= 0 -> 2 <= l_y + l_z ->
+wedge >= 1 is just "A > 1", which the corank-one condition (A-1)(gamma^2-1) >
+alpha^2 with gamma^2 > 1 already forces.  No floating point enters, so the
+norm^2 ~ 139 cancellation worry DOES NOT TOUCH this chain.
+
+F45-4. NEW MATHEMATICS: THE WEDGE CEILING (landed, e542425).
+Probe the gap of a triple at the normal of one of its pairs.  That normal kills
+the two atoms that make it, so the whole form collapses onto the third atom,
+where it reads the bracket, while the identity contributes the pair wedge:
+    bracketNormal a b . (S_{abc} - 1) . bracketNormal a b
+        = tripleBracket a b c ^2 - crossNormSq a b
+Hence  S_T >= 1  =>  crossNormSq a b <= tripleBracket a b c ^2  for EVERY pair.
+TWO LINES.  No adjugate, no eigenvalue, NO TIE HYPOTHESIS.
+Contrapositive = a FREE REFUSAL PRODUCER available in every lane.
+Also landed: pair area sum <= 3 * squared bracket, which closes a sandwich with
+the landed teeth floor (e2 <= det => dominates), the two differing by exactly 3.
+
+F45-5. NEW MATHEMATICS: DOMINATION IS A LOEWNER CAP ON THE WEDGE GRAM
+(landed, second commit).  Probe at a COMBINATION of all three pair normals,
+wedgeProbe a b c u = u0 (b^c) + u1 (c^a) + u2 (a^b).  Each atom reads exactly
+one coefficient at the bracket, so
+    gap form = [abc]^2 * (u.u) - |wedgeProbe|^2 ,  and |wedgeProbe|^2 = u' Gamma u
+with Gamma the GRAM MATRIX OF THE THREE PAIR NORMALS.  Therefore
+    S_T >= 1   =>   Gamma <= [abc]^2 * 1   (Loewner)
+and, since the three normals are a BASIS when the bracket is nonzero, every
+probe direction is a wedgeProbe, so THE CAP IS EQUIVALENT TO DOMINATION.
+MEASURED (f45/gram.jl, 399,948 random triples, unconstrained scale):
+    predicates "lam_min(S_T) >= 1" and "lam_max(Gamma) <= [abc]^2":
+        ZERO DISAGREEMENTS.
+    of 371,739 refusals: diagonal corner detects 99.1742 percent,
+                         full Loewner condition detects 100 percent.
+The off-diagonal of Gamma is worth the last 0.83 percent and no more.
+
+F45-6. WHAT THE CEILING DOES AND DOES NOT DO FOR K1.
+DOES NOT: on the K1 normal form the live pair carries crossNormSq = s^2 and the
+triple carries bracket^2 = gamma^2 s^2, so the ceiling there reads exactly
+(gamma^2 - 1) s^2 >= 0 -- THE CORANK-ONE CONDITION ITSELF.  Landed in kernel as
+kOne_wedge_ceiling_is_corank_condition.  The ceiling cannot kill K1 alone and
+the next attempt must not spend a round rediscovering that.
+DOES: it discharges much of the joint system for free.  Measured at K1 optima
+(f45/cover.jl), the diagonal ceiling refuses 6, 11, 8 and 10 of the SIXTEEN
+avoiding triples at floors 5e-2, 2e-2, 1e-2, 5e-3, and SOUNDNESS held in every
+run (it fired on 0 dominating triples).  The survivors are exactly the TIGHT
+ones -- their margins equal the obstruction to three digits -- so the ceiling
+removes the slack constraints and isolates the active set.  At the 5e-3 optimum
+the survivors are {x,y,d5}, {x,z,d4}, {x,d4,d5}, {x,d4,d6}, {x,d5,d6},
+{d4,d5,d6}: TRIPLES THROUGH THE ERASED ATOM, PLUS THE ALL-OUTSIDE TRIPLE.
+
+F45-7. OPEN, FOR THE SUCCESSOR.
+(a) The interior infimum of obstruction/t_min is still not pinned; I saw 0.0498,
+    lower than any previously reported value.  It is an interior global
+    optimization problem, NOT a degeneration -- attack it as such.
+(b) The active set after the ceiling is ~5-8 refusals, concentrated on the
+    erased-atom triples and the all-outside triple.  That is the system to
+    attack, not all sixteen.
+(c) The limit problem of F45-1 (five light atoms in a plane, weights sigma,
+    moment diag(M2,1,1), limit margin [abc]^2/det(S_T|P) - 1) is an exact
+    finite problem in its own right and has not been solved.
+(d) UMBRELLA WIRING IS OWED.  I did NOT commit Gtz.lean or Gtz/Audit.lean: at
+    the time of writing a sibling had them mid-rename, with the removed import
+    naming a TRACKED module and the added one naming an UNTRACKED file, so any
+    commit of those files would have been broken for everyone else.  My import
+    lines and pin block ARE in the working tree, insertions only, and reference
+    modules that are already committed, so they are safe for the next committer.
+
+--------------------------------------------------------------------------------
+FORK 45 -- ROUND 2.  THE CHARACTERIZATION CLOSED, THE COMPOSITION REFUTED, AND
+THE RATIO RE-MEASURED WITH MATCHED EFFORT.
+--------------------------------------------------------------------------------
+
+F45-8. THE CONVERSE, AND THE CHARACTERIZATION (landed).
+Dual-basis expansion, one ring per coordinate:
+    [abc] * xi  =  wedgeProbe a b c ![a.xi, b.xi, c.xi]
+The bracket times ANY vector is the wedge probe at that vector's own three atom
+readings.  Feeding it into the cap and cancelling [abc]^2 > 0 gives
+    Gamma <= [abc]^2 * 1   =>   S_T >= 1
+so with the forward direction landed in round 1:
+    *** S_T >= 1  <=>  Gamma <= [abc]^2 * 1   (bracket nonzero) ***
+Domination is a statement about the Gram of the three pair normals and the
+bracket and about NOTHING ELSE.  This is the PRODUCER direction, which the
+campaign did not previously have -- every earlier instrument only REFUSES.
+
+F45-9. THE CHECKABLE CORNER, AND THE FACTOR-THREE SANDWICH (landed).
+The cap quantifies over every coefficient vector, which no lane can check.  The
+trace of Gamma bounds all of it, and that trace is the PAIR AREA SUM.  Via
+Lagrange (difference = sum of nine squared minors):
+    pair area sum <= [abc]^2   =>   DOMINATES
+Together with round 1's ceiling:
+    pair area sum <= B^2  =>  dominates  =>  pair area sum <= 3 B^2
+THE FACTOR BETWEEN THE HALVES IS EXACTLY THREE.  Sharpness check: at three
+orthogonal atoms of common length s, domination holds for s^2 >= 1 while the
+producer fires at s^2 >= 3 -- the factor three is real, not slack in the proof.
+
+F45-10. THE zeta-PROBE COMPOSITION IS NOT INDEPENDENT (refutation).
+The coordinator routed a composition of the ceiling with the Parseval-at-zeta
+law.  Chaining gives
+    sum_{d notin T} t_d (g_d.zeta)^2 <= [abc]^2 sum_i (1-t_i) w_i^2
+which LOOKS new.  At w = e_0 it reads sum_{d notin C} t_d [bcd]^2 <= [abc]^2
+(1-t_a), and the landed pair bracket mass sum_e t_e [bce]^2 = w_bc collapses it
+to w_bc <= [abc]^2 -- THE CEILING ITSELF.
+MEASURED: over 200,000 valid random designs x 3 triples, the composed law's
+slack and the ceiling's slack are IDENTICAL to 1.710e-11, and the pair bracket
+mass reproduces to the same precision.  DO NOT BUILD A CERTIFICATE ON IT.
+This is the banked doctrine firing: an identity sharpens SHAPE and supplies NO
+separating power.
+
+F45-11. SLACK PRUNING -- ALL FOUR STANDING K1 SCALAR LAWS ARE INACTIVE.
+At the ratio optimum (obstruction/t_min = 0.019393):
+    leverage floor  A - 1                    slack 4.6569      NEVER BINDS
+    weight cap      1 - min(t_y,t_z) A       slack 0.8528      NEVER BINDS
+    ceiling at C    [xyz]^2 - w_yz           slack 51.896      NEVER BINDS
+    contraction tax best ratio 0.5272, needs > 1                2x SHORT
+The last independently reproduces fork 31's 0.473 from a different optimum.
+DROP ALL FOUR.  The active set is 5-6 of the 16 avoiding triples.
+
+F45-12. THE RATIO, RE-MEASURED WITH MATCHED EFFORT -- AND A PARTIAL REVERSAL.
+Every previously reported F(tau) in this campaign is UNDER-CONVERGED, mine and
+fork 31's alike.  At tau = 0.02 fork 31 reported obstruction/TFLOOR ~ 0.3
+(obstruction ~ 6e-3); with 512 starts and a two-pass polish I reach
+    tau = 0.02    obstruction 5.638e-4   F/tau = 0.0281   (10x lower)
+    tau = 0.005   obstruction 5.936e-4   F/tau = 0.1186
+F is FLAT across a 4x drop in tau.  F is non-increasing in tau by inclusion, so
+F(0.005) <= 5.638e-4 and the second run merely missed the better configuration.
+THE RATIO RISES AS tau SHRINKS, IT DOES NOT FALL.
+Global ratio search (no floor) reaches 0.019393 at t_min = 0.0241 -- a MODERATE
+weight, not a degenerate one.
+    => TWO READINGS, AND I ASSERT NEITHER.
+    (a) obstruction/t_min has a POSITIVE INTERIOR infimum near 0.02, attained at
+        moderate weights; fork 31's original claim was right in SHAPE and wrong
+        in VALUE by an order of magnitude.
+    (b) the quantity has been retracted twice and every improvement in the
+        optimizer has lowered it, so convergence is not established.
+DO NOT QUOTE A CONSTANT.  What IS established: the previously reported values
+0.42, 0.18, 0.135 and 0.3*floor are all wrong by roughly an order of magnitude.
+At the fixed-floor optimum FIVE of six weights sit exactly AT the floor with one
+dominant at 0.899, and 6 of 16 triples are simultaneously active -- a Chebyshev
+point, which is why plain descent converges so poorly here.  The next attempt
+should solve the CRITICAL-POINT SYSTEM of the active set, not descend.
+
+F45-13. OPERATIONAL.
+NEW STANDING RULE ADOPTED: never run a whole-repository build.  Six lanes share
+one .lake directory and every full build races the others on .olean artifacts.
+Per-module builds only; axiom audits via a scratch file and lake env lean.

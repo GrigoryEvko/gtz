@@ -1,0 +1,140 @@
+FORK 49 -- C2-7, THE COHERENT HORN.  Self-contained notes.
+==========================================================
+Scripts: scratchpad/f49/sel1.jl .. sel6.jl  (all StaticArrays, 32 threads,
+--heap-size-hint=8G, peak RSS well under 1 GB).  Generator mirrored bit for bit
+from scratchpad/f30/coh24.jl.
+
+F49-0.  WHAT THE HORN NEEDS (unchanged framing, restated)
+--------------------------------------------------------
+92% branch CLOSED in kernel (dual-frame certificate).  The remainder needs TWO
+existence facts at a corner:
+  (E1)  some outside pair {a,b} is ADMISSIBLE (pairGapMinor a b > 0);
+  (E2)  some inside atom e REPAYS it: tripleGapDet a b g_e > 0.
+E1 is the sibling's gateway.  E2 is mine.
+
+F49-1.  THE COORDINATOR'S IDENTITY IS CORRECT -- BUT ALREADY LANDED
+-------------------------------------------------------------------
+Claim relayed:  sum_e r_e r_e' = M + I + lam*gam gam',  hence
+  sum_e [D(l_e-1) - r_e' adj(M) r_e] = (lam-2)D - T - lam*gam'adj(M)gam.
+VERIFIED (sel1.jl):  matrix identity max rel err 2.468e-15, slack sum
+3.229e-12, over 3.0e6 (admissible pair, inside atom) cases.  The derivation is
+right: it is quadForm_sum_of_corner read at the three matrices atomMatrix a,
+atomMatrix b, vecMulVec a b.
+
+BUT there is NOTHING NEW TO LAND.  Two facts the brief did not have:
+  (a) R_e := D(l_e-1) - r_e' adj(M) r_e  IS  tripleGapDet a b g_e, identically
+      and with no hypothesis -- it is the cofactor expansion of the 3x3 gap
+      determinant along the last row.  (Landed as tripleGapDet_eq_pairAxisForm,
+      with pairAxisForm a b al be = -(al,be)' adj(M) (al,be).)
+  (b) Therefore the slack-sum law IS the landed Gtz.corner_pairSum_currency
+      (CornerPairAdjugate.lean:350), itself a specialization of the landed
+      general Gtz.corner_sum_det_pairBase (CoherentHornSumLaw.lean:101):
+        sum_e det(base + atomMatrix g_e) = 3 det base + e2(base) + lam u'adj(base)u.
+      And the blindness consequence is landed TWICE:
+        corner_pairSum_pos_lam_threshold : sum > 0 -> T < (lam-2)*D
+        corner_pairSum_nonpos_of_lam_le  : the contrapositive.
+NUMERICAL CONFIRMATION of the landed threshold (sel3.jl): of the admissible
+pairs with sum_e R_e > 0, ALL 339123 of 339123 satisfy lam > 2 + T/D, and the
+minimum lam over sum-positive pairs is 2.06756.  The instrument's blindness is
+exact, as fork 43 said.
+
+F49-2.  THE EXACT CHART FOR ONE CORNER AND ONE PAIR
+---------------------------------------------------
+Vc := [gx gy gz].  S_C = Vc Vc' = I + lam uu'  forces  K := Vc'Vc = I + lam vv'
+with |v| = 1, so
+      l_e - 1 = lam * v_e^2 ,   sum_e v_e^2 = 1
+(this is the landed axis law cornerForm_insideAtom_axisMass in other clothes).
+Put al := Vc'a, be := Vc'b, so r_e = (al_e, be_e).  Then
+      l_a = |al|^2 - c(al.v)^2,  l_b = |be|^2 - c(be.v)^2,
+      p   = al.be - c(al.v)(be.v),      c := lam/(1+lam)
+are DETERMINED.  So (lam, v, al, be) is a faithful chart: 1 + 2 + 3 + 3 = 9
+parameters, no Parseval, no coherence, no branch.
+
+F49-3.  *** E2 IS FALSE IN THAT CHART -- REFUTED, WITH A KERNEL WITNESS ***
+--------------------------------------------------------------------------
+sel2.jl, 3.7e6 admissible pairs (moderate scales) and 1.0e7 (wide scale sweep):
+      max_e R_e > 0  at only  54.6253%  and  69.8212%.
+Restricting to both outside atoms heavy makes it WORSE (42.99% / 41.68%).
+So E2 does NOT follow from the corner equation + admissibility + heaviness.
+
+LANDED as Gtz/Wave/CoherentHornRepayScope.lean (commit 1c462ed, 11 pins, all
+[propext, Classical.choice, Quot.sound], my audit):
+    gx=(1,0,0)  gy=(0,1,0)  gz=(0,0,2)  u=(0,0,1)  lam=3
+    a=(3/2,0,3/2)  b=(0,3/2,3/2)
+    l_a = l_b = 9/2 (both heavy),  p = 9/4,  pairGapMinor a b = 115/16 > 0
+    tripleGapDet a b gx = -63/8,  gy = -63/8,  gz = -15/16     ALL < 0
+  Gtz.repayScope_not_forced states exactly this.
+NOT AN EDGE CASE.  Family: gz=(0,0,m), a=(x,0,z), b=(0,x,z), m^2 = 1+lam, x>1.
+Then tgd(gx)=tgd(gy) = -(x^2+z^2-1)x^2 < 0 and
+     tgd(gz) = (x^2-1)[(x^2+2z^2-1)(m^2-1) - 2m^2 z^2],
+so all three are negative as soon as  2z^2 >= (x^2-1)*lam.  A witness exists at
+EVERY corner scale; lam = 5/4, 3, 8 all checked in exact rationals.  The chosen
+witness has lam = 3 > 2, i.e. ABOVE the landed sum-law threshold, so the failure
+is not the regime where the sum law is already known blind.
+CONSISTENCY: the witness provably does NOT complete to a (6,3) Parseval design.
+With inside diag(t1,t2,4t3), the outside must supply diag(1-t1,1-t2,1-4t3);
+t4 aa' + t5 bb' has (1,3) and (2,3) entries nonzero and (1,2) entry zero, so the
+third outside atom c needs c1c3<0, c2c3<0 AND c1c2=0 -- impossible.  Exactly as
+it should be: the witness lives outside the design locus, which is the point.
+
+F49-4.  *** E2 IS BRANCH-INDEPENDENT: IT IS A CORNER+PARSEVAL STATEMENT ***
+--------------------------------------------------------------------------
+sel5.jl, 6256909 corners of genuine (6,3) designs:
+    dual-frame FAILS 501026, PASSES 5755883
+    E1 (some outside pair admissible)  100.0000% on both
+    E2 holds at ALL corners            100.0000%
+       on the FAILING branch           100.0000%
+       on the PASSING branch           100.0000%
+CONSEQUENCE FOR THE CAMPAIGN.  Neither E1 nor E2 needs coherence, and neither
+needs the failing branch.  They are properties of a corank-two CORNER OF A
+DESIGN.  So E1+E2 proved once discharges the (P) stratum for BOTH horns, not
+just the coherent one.  The sibling's gateway work and mine are two halves of a
+single corner-level theorem.  (Margins are sampled, so no constant is quoted;
+note only that the passing branch is the harder side, worst sampled best-R
+0.129 against 2.99 on the failing branch.)
+
+F49-5.  REFUTED: THE WHOLE AGGREGATE FAMILY
+--------------------------------------------
+sel4.jl, per failing-branch corner, target 100%:
+    9-slot total over all three pairs > 0          32.3827%
+    total over admissible pairs only > 0           44.5892%
+    sum_p (1/D_p) * sum_e R_e^{(p)} > 0            29.1162%
+    lam > 2                                        80.4478%
+No aggregation over pairs beats the landed per-pair threshold.  Do not build
+one.  (Supporting exact identity, verified to 4.101e-11 and NOT landed because
+it buys nothing:  sum over the three pairs of gam'adj(M)gam
+   = (S+1)*sum_d (g_d.u)^2 - |sum_d (g_d.u) g_d|^2 ,  S := sum_d (l_d - 1).)
+
+F49-6.  NO SELECTION RULE IS TOTAL
+-----------------------------------
+sel6.jl, 5212619 corners (ALL corners, both branches), target 100%:
+    argmax-D pair                    98.5129%
+    argmax-T pair                    98.3113%
+    argmax-(D/T) pair                98.5343%
+    pair omitting HEAVIEST outside   87.0869%
+    pair omitting LIGHTEST outside   98.1722%
+    argmax-D pair + argmax-lev e     41.9040%
+    argmax-D pair + argmin-cost e    96.1991%
+    EVERY admissible pair works      80.4562%
+sel3.jl, failing branch, GIVEN some e works on that pair:
+    argmax (l_e-1)  80.4783% ;  argmax N_e  87.6511% ;  argmin cost  89.8912%
+So E2 is a genuine EXISTS-EXISTS over 3 pairs x 3 slots with no total scalar
+rule -- the campaign's selection problem, now confirmed at corner level.
+
+WHY HANDELMAN DOES NOT APPLY AS POSED.  Handelman certifies ONE polynomial
+positive on a polytope.  E2 is a DISJUNCTION over nine slots, and no rule above
+splits it totally, so there is no single target polynomial to certify.  A
+Handelman attack needs a total case split first; producing one is the open work,
+not the certificate.
+
+F49-7.  WHAT THE SUCCESSOR SHOULD DO
+-------------------------------------
+1. E2 is a corner+Parseval statement (F49-4).  Attack it there, not on the
+   coherent horn, and it pays for both horns.
+2. The missing ingredient is Parseval: F49-3 proves corner+admissibility is not
+   enough, with a kernel witness.  Any candidate proof that never uses the
+   weights or the sixth atom is refuted before it starts -- test it against
+   Gtz.repayScope_not_forced.
+3. The chart of F49-2 is exact and cheap; add the design constraints to it
+   rather than working in raw vectors.
+4. Do not: sum over slots (F49-1, F49-5), or hunt a scalar selector (F49-6).

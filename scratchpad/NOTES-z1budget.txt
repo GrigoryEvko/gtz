@@ -1,0 +1,132 @@
+NOTES — Z1 assembly, the refusal budget, and the coverage geography (fork 18)
+==============================================================================
+Round of 2026-08-20.  Predecessor: NOTES-z1horns.txt (fork 17).
+
+0. HEADLINE
+-----------
+THE Z1 ASSEMBLY IS KERNEL.  Three modules, 1201 lines, gates green:
+  a2d785e  Gtz/Wave/OneAxisZeroRefusalBudget.lean  (512)
+  843d747  Gtz/Wave/OneAxisZeroAnchorLaws.lean     (370)
+  4dbe46a  Gtz/Wave/OneAxisZeroWitness.lean        (319)
+The tie of a Z1 corner IS the pair system of the erase-x anchor (an iff, not
+a floor), the coverage residual is ONE named Prop, and the residual is exact:
+OneAxisZeroPairCoverage <-> no (6,3) tie carries a Z1 proper corner.
+
+1. THE KERNEL LAYER (all pins on [propext, Classical.choice, Quot.sound])
+--------------------------------------------------------------------------
+OneAxisZeroRefusalBudget:
+  not_posDef_sub_vecMulVec_of_not_posDef   refusal survives a downdate
+  corner_oneAxisZero_unit                  x is unit on Z1 (standalone)
+  corner_oneAxisZero_xTriple_not_posDef    EVERY triple through x refused, tie-free
+  corner_oneAxisZero_isTie_iff_xAvoiding   tie <-> the 10 x-avoiding refusals
+  xAvoiding_pair_surgery                   each such triple = anchor minus one pair
+  corner_oneAxisZero_isTie_iff_pairSystem  TIE <-> PAIR SYSTEM AT B (iff!)
+  oneInside_triple_form, corner_xAvoiding_trichotomy   the Finset dispatch
+  corner_oneAxisZero_heavyInside_isTie_iff tie <-> THREE floors when A_z fails
+  corner_oneAxisZero_bothLight_isTie_iff   tie <-> SEVEN floors when both hold
+  OneAxisZeroPairCoverage (def)            THE residual
+  corner_oneAxisZero_absurd                the assembly (tie + Z1 + residual -> False)
+  oneAxisZeroPairCoverage_iff              the residual is exactly Z1-emptiness
+OneAxisZeroAnchorLaws:
+  corner_oneAxisZero_xOrthogonal           x ⊥ g_y, g_z (standalone)
+  corner_oneAxisZero_outside_xResolve      Σ_d t_d(q_d·x)q_d = (1−t_x)x  (eigenvector law)
+  corner_oneAxisZero_outside_xMass         Σ_d t_d(q_d·x)² = 1−t_x
+  corner_oneAxisZero_coweight_reading_cap  Σ_{a≠x}(1−t_a−t_x)r_a ≤ 3(1−t_x), tie-free, ANY m
+  corner_oneAxisZero_tie_reading_floor     PER-ATOM: t_a ≤ 2 r_a (1−t_x+t_a) at a Z1 tie
+  corner_oneAxisZero_heavyInside_isTie_iff'  the y-z mirror
+  corner_oneAxisZero_tie_cell_dispatch     tie -> one of the three cell floor systems
+OneAxisZeroWitness:
+  corner_fourSet_exchange_reading          A_f fails + A_e holds -> e reads A_e⁻¹ ≥ 1 (tie-free)
+  oneAxisZeroWitness                       FIRST exact rational Z1 fixture:
+      atoms (0,1,0); (21/25,0,4/5); (28/25,0,−3/5); (2,0,0); (0,6/5,8/5); (0,−8/5,6/5)
+      weights (25,25,25,38,44,44)/201, gap 24/25·uuᵀ at u=(1,0,0), M_o = 4I
+  oneAxisZeroWitness_pairSystem_fails      the Prop's antecedent refutable in kernel
+  oneAxisZeroWitness_bothLight_floors_fail the both-light system refutable in kernel
+  oneAxisZeroWitness_xMass                 the x-mass law calibrated: 176/201 exactly
+
+2. THE COVERAGE GEOGRAPHY (measured, NOT kernel)
+-------------------------------------------------
+Fresh direct sweep (pairsweep.jl): 4.19e9 Z1 samples, sampler = fullbattery2
+shape, NEW seeds.  ZERO escapes of the un-aggregated 7-triple system.  Kill
+histogram: complement 95.3%, y-triples 2.6%, z-triples 2.1%.  Both-heavy
+escapes 0 (matches the kernel dichotomy).
+K2 CONFIRMED at 256-bit: all 71 stragglers die un-aggregated, NEVER at the
+complement, always at a one-inside triple, worst margin 0.0787.
+In-cell structure (cellselector.jl, 25M+ samples, also under the all-heavy
+filter that a tie forces):
+  heavy-inside cell: an A_y-outside floor fails at 100.0%; the min-leverage
+  outside atom is a breach in 94-96%, max-t 77-78%; NO single selector is 100%.
+  both-light cell: some floor fails at 100.0%; the COMP floor (g_y at A_y⁻¹,
+  equivalently λmin(M_o) > 1) fails alone at 97-98%.
+BOUNDARY: 251M-sample scan found NO sample with best margin < 1e-3; NelderMead
+from all 71 stragglers cannot push below 0.077.  An 800-start global multistart
+found a Float64 point at −0.11 in the DOUBLY-degenerate corner (ahat 4.5e-4,
+t_min 1.1e-11) — 256-bit recomputation REFUTES it: true best margin +5.4e-5
+(the complement dominates).  Both samplers (fork 17's and mine) exclude
+ahat < 0.03 and t < 1e-6; the doubly-degenerate corner is the only region
+where margins reach 1e-5 scale.  The infimum of the best margin is approached
+only along ahat -> 0 (the Z2 boundary) with weight collapse; Float64 breaks
+there, use BigFloat.
+
+3. NEW LAWS vs THE TAIL
+------------------------
+The per-atom reading floor and the coweighted cap HOLD at all 71 stragglers
+(min floor slack 1.01, cap violations 0): the new laws are instruments, they
+do not add tail coverage.  P3-probe (max-leverage atom reads B⁻¹ < 1): FAILS
+at 2/71 stragglers — the brief's P3 is dead as stated.  Comp payment
+(λmin(M/ms) > 1): 0/71.  Paid Sylvester at one-inside triples (pay the two
+kept outside atoms by their max weight): 62/71, leaks 9.
+
+4. REFUTATIONS THIS FORK (do not retry)
+----------------------------------------
+  - P3 (huge-leverage atom always reads B below one): counterexamples at
+    stragglers 22 and 37 (rows with lam 16.0 and 7.15).
+  - The uniform-margin conjecture (inf best-margin ≈ 0.077 over Z1): FALSE,
+    margins reach 5.4e-5 in the ahat->0, t_min->0 corner.
+  - Single-selector kills in the heavy-inside cell (max-t / min-t / max-lev /
+    min-lev / max|q·x| / min|q·x|): all leak, best is min-leverage at ~95%.
+  - The per-atom floor and the cap as tail-closers: hold at all stragglers.
+  - Directional refusal laws at the corner ALREADY EXIST: refusal_reads_axis
+    (RefusalConeGeometry:74), refusal_direction_axis_floor and
+    swapRefusal_axis_bound (CornerGapWindow).  Do not reland.
+
+5. THE EXACT NEXT BRICK
+------------------------
+Prove OneAxisZeroPairCoverage by cells through the dispatch:
+ (i) heavy-inside: Z1 + A_z fails + A_y PD + THREE outside floors at A_y⁻¹
+     -> False.  All four member floors then hold (the fourth is
+     corner_fourSet_exchange_reading, tie-free).  The breach is spread over
+     the drop choice; the proof must be disjunctive.  The dichotomy's own
+     syzygy pattern (linear-in-ms failures + endpoint syzygy) is the model:
+     the failure of EACH one-inside triple is det(A_y − q_i q_iᵀ) ≤ 0, i.e.
+     detA_y·(1 − p_i) ≤ 0 — hunt an exact identity tying the three
+     dets to the Parseval data as the ms-linear family was tied.
+ (ii) both-light: comp refusal (λmin(M_o) ≤ 1) is the 97% pressure point;
+     its refusal direction READS THE AXIS (refusal_reads_axis).  Combine the
+     axial witness with outside_uMass_of_rankOneGap (weighted axis mass is
+     NEGATIVE-sourced: (1+lam)Σt_d(q_d·u)² = −Σ s_e a_e²) — the unweighted
+     axis over-coverage vs weighted under-coverage mismatch is unexploited.
+SOS: a one-fiber Putinar probe (sosfiber.jl, weights+frame frozen at a
+straggler, 9 outside coordinates on the Parseval variety, refusals in det
+form) is set up.  The degree-6 run did NOT return within 590 s (killed): the
+fiber SDP with six cubic equalities and seven sextic inequalities is already
+heavy at this degree.  A successor needs either a smaller certificate basis
+(exploit the Parseval variety parametrization q = LN·R directly) or a
+dedicated long session.  The parametric version has 20 vars — larger still.
+Fixture: oneAxisZeroWitness is the calibration point for every candidate
+law — check new laws there in exact rationals first, then at the 71
+stragglers (scratchpad/z1/stragglers.csv intact), then sweep.
+
+6. FILES
+---------
+scratchpad/z1/pairsweep.jl      direct 7-triple sweep (the cheap test)
+scratchpad/z1/k2check.jl        BigFloat kill check at the stragglers
+scratchpad/z1/cellselector*.jl  in-cell failure/selector maps
+scratchpad/z1/boundary.jl       boundary dump scan
+scratchpad/z1/advdescent.jl     NelderMead descent from straggler seeds
+scratchpad/z1/globalfloor.jl    global multistart + t_x continuation
+scratchpad/z1/escverify.jl      BigFloat refutation of the Float64 escape
+scratchpad/z1/stragfeatures.jl  payment/feature panel at the stragglers
+scratchpad/z1/newlawtest.jl     new-law bite test at the stragglers
+scratchpad/z1/foiltable.jl      the double-foil verdict table
+scratchpad/z1/sosfiber.jl       the one-fiber SOS probe

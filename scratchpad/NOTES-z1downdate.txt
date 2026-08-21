@@ -1,0 +1,148 @@
+NOTES — Z1 downdate floor, odds-det floor, and the cell factorization (fork 21)
+================================================================================
+Round of 2026-08-20.  Predecessor: NOTES-z1capgap.txt (fork 20).
+
+0. HEADLINE
+-----------
+CELL H DID NOT FULLY CLOSE; ITS MEASURED RESIDUAL FELL 20.5% -> 0.0005%.
+One module (Gtz/Wave/OneAxisZeroDowndateOdds.lean, ~880 lines, gate green):
+  (i)  THE DOWNDATE FLOOR (new law, stratum-wide, tie-necessary):
+         t_x + t_d <= rho_d*(t_x + 2 t_d) + t_x*X   for EVERY outside d,
+       rho_d = q_d' B^-1 q_d, X = g_x' B^-1 g_x.  Route: the four-set
+       B - q_d q_d' excludes {x, d}; its excluded floor + Sherman-Morrison
+       readings + Cauchy-Schwarz at B^-1.  At t_x -> 0 it forces EVERY
+       outside anchor reading >= 1/2.  Closed form via X <= ms/(1-t_x-ms).
+       Kills 16.6% of cell H beyond the capGap closer; kills ALL 5 stored
+       fork-20 miss points (margins 1.8e-4 .. 0.18).
+  (ii) THE ODDS-DET FLOOR (new law, cell-blind given A_y PD):
+         (1+o)(t_x det(A_y-G_x) + t_z det(A_y-G_z)) + o(tr adj A_y - det A_y) <= 0
+       for every admissible odds level o (o <= member odds of {y} u Ccomp).
+       o = 0 is fork 20's tie det floor.  Engine: the landed excluded-trace
+       floor x the excluded-pair det ledger x the trace-adjugate bridge.
+  (iii) det A_z <= 0 and det K <= 0 in cell H, TIE-FREE, eigen-free
+       (one-atom completion PD + not PD => det <= 0).
+  (iv) the sharpened lossless iff (floors AND odds-det AND downdate AND
+       mixed-odds) and the exact factorization
+         OneAxisZeroPairCoverage <-> HeavyInsideResidual AND BothLightResidual.
+
+1. KERNEL (all pins [propext, Classical.choice, Quot.sound])
+------------------------------------------------------------
+Gtz/Wave/OneAxisZeroDowndateOdds.lean:
+  trace_inv_mul_det_eq_trace_adjugate     tr(A^-1) det A = tr adj A
+  trace_adjugate_add_atomMatrix           tr adj(M+pp') = tr adjM + trM|p|^2 - p'Mp
+  det_nonpos_of_not_posDef_of_add_atomMatrix_posDef   B+pp' PD, B not PD => detB <= 0
+  corner_oneAxisZero_heavyInside_failedSet_det_nonpos   cell H => det A_z <= 0
+  corner_oneAxisZero_heavyInside_outsideGap_det_nonpos  cell H => det K <= 0
+  corner_oneAxisZero_tie_downdate_floor       THE NEW PER-ATOM LAW (X form)
+  corner_oneAxisZero_tie_downdate_floor_cap   closed form (kappa = ms/(1-t_x-ms))
+  corner_oneAxisZero_heavyInside_odds_det_floor   THE ODDS-DET LAW
+  corner_oneAxisZero_heavyInside_isTie_iff_downdateOdds   the sharpened iff:
+      tie <-> floors AND (all o: odds-det) AND (all d: downdate)
+                 AND (all d, o: mixed excluded-trace at B - q_d q_d')
+  OneAxisZeroHeavyInsideResidual / OneAxisZeroBothLightResidual (defs)
+  oneAxisZeroPairCoverage_iff_cellResiduals   coverage <-> the two cell Props
+  oneAxisZeroWitness_oddsDet_fails        kernel foil: clause value 303489/27500 > 0
+      at o = 157/44 (E_x = 16296/625, E_z = 11688/625, det A_y = 24444/625,
+      tr adj A_y = 21921/625 — all exact rationals at the witness)
+  oneAxisZeroWitness_not_isTie_by_oddsDet second, det-route non-tie proof
+
+2. MEASURED CELL-H MAP (fresh seeds; cellH_full21.jl, 201k cell-H samples)
+---------------------------------------------------------------------------
+Exclusive kill ladder of the SHARPENED clause set:
+  S < 0 (det floor, o=0):        99.651%
+  + odds-det (o = min odds):     +0.342%   (cum 99.994%)
+  + downdate floor:              +0.004%
+  + mixed odds (exact, at B-G_d):+0.001%
+  RESIDUAL:                      1 sample / 201k  (0.0005%)
+The one survivor is GENUINE at 512 bits (residcheck21.jl): tx 2.3e-3,
+ty 0.121, tz 0.146, lam 6.44, ahat 0.94; margins: S +1.3e-4, oddsDet +0.10,
+capS +0.015, downdate min +9.5e-4, mixedOdds min +9.9e-3 (row in resid21.csv).
+Degenerate corner (forced t_min ~ 1e-4 x rand, ahat <= 1e-3 half the time;
+corner21.jl, 199k cell-H samples): residual 4 (0.002%) — no corner blowup.
+CLOSED-FORM-ONLY ladder (cellH_marg21.jl, no true-S clauses): capGap 79.4%,
++oddsCap 1.6%, +downdate(X) 16.6%, +SMW-exact 0.07%, +mixed odds 2.1%,
+x-set caps +0.0% => residual 0.15%.  The downdate floor is the second
+largest single law of the cell after the capGap.
+
+3. FOIL VERDICTS (exact rationals, foilverdict21.jl)
+------------------------------------------------------
+  law/identity        witness        signCoherent  ledgerFoil  residualFoil  complextie
+  trAdj bridge (id)   holds          holds         holds       holds         poly id
+  e2 update (id)      holds          holds         holds       holds         poly id
+  SMW readings (id)   holds          vacuous(Z1)   holds       holds         vacuous
+  downdate floor      holds          vacuous       holds       holds         vacuous
+  det floor (o=0)     FIRES (both!)  vacuous       Az FIRES    both FIRE     vacuous
+  odds-det (o=o*)     FIRES (both)   vacuous       Az FIRES    both FIRE     vacuous
+The witness lives in the BOTH-LIGHT cell (both four-sets PD, M_o = 4I) and
+the o-family clause refutes it at BOTH four-sets in exact rationals.
+
+4. BRIEF ERRORS FOUND (fork 21)
+--------------------------------
+(a) "the 27 hardest misses at t_x <= 0.01": the shipped miss20.csv has FIVE
+    rows, and two of them have t_x = 0.021 and 0.038 > 0.01.  The count and
+    the t_x cutoff both fail against the data on disk.  ("A_x deeply not PD"
+    does hold at all five: mAx -0.61 .. -0.97.)
+(b) P1's mechanism is wrong: the exact pencil det(M_o - s N_out) plays no
+    role in what closes; the S<0 share is covered by the LANDED tie det
+    floor as an iff-clause (the ms-payment loss disappears when the clause
+    is stated at the true dets), and no kernel region-emptiness for the
+    98.5% share landed this round — the sharpened system's region is what
+    shrank (to 0.0005%), and it is genuinely nonempty (the 512-bit point).
+(c) The capGap clause of fork 20's iff is SUBSUMED: on cell H the caps give
+    S >= 0 => capGap >= 0 pointwise, so the o=0 odds-det clause implies it.
+(d) P3's premise is quantified: N_out/ms - 1 is PD at 92.7% of the
+    both-light cell (corner21.jl, 6.2M cell-B samples), not always.
+(e) P2 was right in substance: the anchor-downdate weapon closes the miss
+    family, and the exact predicate is the per-atom downdate floor.
+
+5. REFUTATIONS THIS FORK (do not retry)
+----------------------------------------
+  - The x-set capped closer (C_x = N/ms + G_x - 1, closed-form 2x2 caps at
+    the plane block): PD region exists but adds 0.0% marginal coverage after
+    capGap+odds+downdate+mixed.  Dead as a branch.
+  - The SMW-exact per-atom mixed floor beyond the CS form: +0.07% only; the
+    CS loss is negligible.  Keep the CS form (cleaner statement).
+  - "Close cell H entirely this round": the sharpened system is genuinely
+    inhabited (resid21.csv row 1, 512-bit); no clause of the current family
+    kills it.  The cell needs a NEW inequality, not a tighter composition.
+
+6. THE EXACT NEXT BRICK
+------------------------
+The residual region of cell H is now ONE measured point per 2e5 with profile
+t_x small (med 1.7e-2), lam in the slab (>= 1.67), ms large (med 0.40),
+ahat unconstrained.  Two routes:
+ (i) The survivor's shape: S > 0 tiny, all clauses barely positive.  The
+     binding pair is (downdate at the lightest outside atom, odds-det).  A
+     candidate second-order law: combine the downdate floors ACROSS the
+     three outside atoms (the current law is per-atom; the pair system at B
+     couples them — the sum Sum_d rho_d <= 3 + X is landed as the outside
+     window; the floors give Sum_d floor_d <= Sum rho_d; the gap between
+     the two is ~1.4 at the survivor — a coupled two-atom downdate law
+     (B - q_d q_d' - q_e q_e' is a THREE-set = one-inside triple!) may
+     close it: its refusal at a tie is det(triple - 1) <= 0, already in the
+     refusal budget; hunt the exact two-downdate SMW composition.
+ (ii) Cell B (both-light): the downdate floor + odds-det at BOTH four-sets
+     now live there too (the residual Prop carries them).  The comp floor
+     (seventh) vs the paid complement C_compl = N/ms - 1 is PD only at
+     92.7% — split cell B on that PD predicate first, THEN map.
+Fixtures: resid21.csv (the survivor), miss20.csv, icviol.csv, stragglers.csv,
+sliver.csv all intact.  Scripts: cellH_odds21.jl (closer shares),
+cellH_marg21.jl (closed-form ladder), cellH_full21.jl (sharpened ladder +
+survivor dump), residcheck21.jl (512-bit verdicts), corner21.jl (degenerate
+corner + cell-B P3), foilverdict21.jl (exact-rational fixture table).
+
+7. CELL-B MAP AND ADVERSARY VERDICTS (post-commit measurements)
+----------------------------------------------------------------
+CELL B (both-light; cellB_map21.jl, 1.57M samples), exclusive kill ladder of
+the tie-necessary clause shadows:
+  K = Mo - 1 PD (comp refusal impossible):  97.905%
+  + S_y < 0 (excluded {x,z} at Ay):          +0.807%
+  + S_z < 0 (excluded {x,y} at Az):          +1.077%
+  + odds at Ay or Az:                        +0.131%
+  + r_y < 1 (seventh floor shadow):          +0.000%  (subsumed by K PD)
+  + downdate/mixed:                          +0.078%
+  RESIDUAL:                                  28 / 1.57M  (0.0018%)
+Both cells now sit below 0.002% measured under kernel-backed clauses.
+ICVIOL (96 exact IC adversaries, 512-bit, icviol21.jl): ALL 96 killed by the
+odds-det clause alone (S<0 0, oddsDet 96, downdate 0, mixed 0, survivors 0).
+Identity residuals at the adversaries (SMW readings, trace-adjugate): 3.5e-153.

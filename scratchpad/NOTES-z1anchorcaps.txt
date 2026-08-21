@@ -1,0 +1,111 @@
+NOTES — Z1 anchor caps, the outside triad determinant, and the cell-H map (fork 19)
+====================================================================================
+Round of 2026-08-20.  Predecessor: NOTES-z1budget.txt (fork 18).
+
+0. HEADLINE
+-----------
+THE CELLS DID NOT CLOSE.  Three kernel modules landed (all pins clean, gate
+exit 0): the anchor CAPS + exact reading identities + the tie trace pinch
+(OneAxisZeroAnchorCaps, 08a47db), the outside-triad determinant laws
+(OutsideTriadDeterminant, ce53df6), and inverse domination with the
+every-reading cap (AnchorInverseDomination, 933a18e).  These are the missing
+UPPER side of the stratum: every earlier law pushed anchor readings up; the
+caps hold them down, tie-free, with witness-exact saturation.
+
+1. KERNEL (all pins [propext, Classical.choice, Quot.sound])
+------------------------------------------------------------
+Gtz/Wave/OneAxisZeroAnchorCaps.lean (911 lines):
+  psd_pair_gram_cap            B ≻ 0, B − qqᵀ − rrᵀ ⪰ 0 ⟹ inverse Gram ⪯ I₂
+                               (exact factorization V(C,1−Q) = T·((1−Q)R + C²))
+  corner_oneAxisZero_outside_overCoverage   (1−t_x)(g_x·v)² ≤ ms·Σ_d(q_d·v)²
+  corner_oneAxisZero_anchor_split           S_{univ∖x} = G_y + G_z + S_{Cᶜ}
+  corner_oneAxisZero_anchor_loewner         ms·B ⪰ ms·lam·uuᵀ + (1−t_x−ms)·G_x
+  corner_oneAxisZero_anchor_axis_cap        lam·U ≤ 1, (1−t_x−ms)X ≤ ms, joint Gram
+  corner_oneAxisZero_anchor_outside_total   Σ_d R_dd = 3 + X − lam·U  (IDENTITY)
+  corner_oneAxisZero_anchor_trace_identity  tr B⁻¹ = R_yy + R_zz + X − lam·U
+  corner_oneAxisZero_anchor_outside_window  2 + X ≤ Σ_d R_dd ≤ 3 + X
+  tie_fiveSet_trace_pinch      any m, any five-set: (Σ_{d≠e}t_d)(1−R_e) + t_eR_e
+                               + Σ_{b∉F}t_bR_b ≤ tr B⁻¹ at a tie
+  corner_oneAxisZero_anchor_pinch / outside_pinch   the Z1 forms; outside_pinch
+                               keeps t_yR_yy + t_zR_zz explicit (sharper)
+  corner_oneAxisZero_heavyInside_anchor_reading(')  ¬A_z PD ⟹ R_yy ≥ 1, tie-free
+  corner_oneAxisZero_anchor_tension  τ(1−R_zz)+t_xX+t_yR_yy+t_zR_zz+lamU ≤ R_yy+R_zz+X
+Gtz/Wave/OutsideTriadDeterminant.lean:
+  det_triad_recombination      det(Σc_i q_iq_iᵀ) = c₁c₂c₃·det(Σq_iq_iᵀ)  (3 atoms!)
+  outside_triad_char_identity  det(M_o − s·N_out) = Π(1−s·t_d)·det M_o
+                               ⟹ gen. eigenvalues of (N_out, M_o) ARE the weights
+  outside_payment_det_sharp    det(t_d·M_o − N_out) = 0 at every member d
+  corner_outside_det_pinned    Πt_d·det S_{Cᶜ} = det(1 − Σ_C t_c G_c)  (m=6)
+Gtz/Wave/AnchorInverseDomination.lean:
+  quadForm_inv_le_of_loewner   C ⪯ A, C ≻ 0 ⟹ every A⁻¹-reading ≤ C⁻¹-reading
+  corner_oneAxisZero_anchor_capMatrix_floor  B ⪰ lam·uuᵀ + N_out/ms − G_x
+  corner_oneAxisZero_anchor_reading_cap      capM ≻ 0 ⟹ every B⁻¹-reading capped
+
+2. THE KEY STRUCTURAL DISCOVERY (use it)
+-----------------------------------------
+With exactly three outside atoms, √t_d·q_d = N^{1/2}f_d for an ORTHONORMAL
+basis {f_d}: the weighted outside Gram is orthogonally conjugate to N, and
+M_o = N^{1/2}R N^{1/2} with spec R = {1/t_d}.  Det-level shadow is kernel
+(the triad module).  The floors have the exact form p_i = (P⁻¹)_ii with
+P = I − G + ηηᵀ, G = D^{1/2}Γ⁻¹D^{1/2}; on the EQUAL-weight slice Schur–Horn
+collapses rotation freedom: floors-feasible ⟺ tr P⁻¹ ≥ 3 ⟺ Σp_i ≥ 3, and
+measured Σp_i < 3 holds at 100% there (142.8k samples).  The unequal-weight
+correction is the open combinatorial heart.
+
+3. MEASURED CELL-H MAP (fresh sweeps, seeds new; 0.5–6.5M cell-H samples)
+--------------------------------------------------------------------------
+Some A_y-outside floor fails at 100.0% (fresh 537k cellH samples, 0 escapes;
+two Float64 "min-floor ≥ 1" adversarial points REFUTED at 256/512 bits — both
+were fake cell membership, A_z actually PD; the deep corners lie to Float64).
+Kill structure of the o-law family at A_y: S<0 endpoint 99.64%, + odds
+endpoint 100.0% − 19/537k; the 19 covered by mixed(17)/x-set(2) o-laws.
+Sliver (S ≥ 0): one heavy member (t ≈ 0.5), odds endpoint fires with margin.
+Landed outside_pinch alone (exact readings) kills 76.1–76.5% of cell H.
+Closed-form composition of the caps (replace readings by cap readings):
+kills 0% — the caps are individually tight (saturate at 0.9999998, witness
+κX = 1 exact) but their naive composition is lossy.  The closure needs the
+JOINT structure of the readings, not the boxes.
+
+4. REFUTATIONS THIS FORK (do not retry)
+----------------------------------------
+  - Fixed nonneg-weighted outside aggregates at A_y in cell H: ALL leak.
+    UA = Σp_i<3: 1.7% genuine violations; WA = Σt_ip_i<τ: 8.6%;
+    IC = Σ(1−t_i)(p_i−1)<0: 0.03% BUT 96/96 violators GENUINE at 256 bits
+    (scratchpad/z1/icviol.csv); HA = Σ(p_i−1)/t_i<0: 21%.
+  - tr(paid_y⁻¹N) ≥ τ from the floors: violated at 98% — dead.
+  - H1 (paid S<0 on the DZ≥0 scalar region): fails 33% of the region — dead.
+    (Trap: the scalar region MUST carry the N₂-PSD constraints nu,nw,detN₂ ≥ 0
+    or the scalar core "breaches" — fake points.)
+  - Anchor target "geometry forces R_zz < t_z/(2−τ−2t_x+t_z)": REFUTED, 82%
+    of cell-H samples sit above.
+  - The trace pinch family does NOT separate ties at the fixtures: 0 pinch
+    violations at signCoherentFoil/ledgerFoil/residualFoil/witness — it is an
+    instrument, not a battery member.
+  - Brief P1 (cell H falls by one endpoint syzygy carrying ay²az², kernel this
+    round): WRONG — no single formula exists (the IC violators are genuine),
+    the measured kill is a three-family union.
+
+5. THE EXACT NEXT BRICK
+------------------------
+Cell H ⟺ (in P-space) P_y = I − G + ηηᵀ ≻ 0 with diag(P_y⁻¹) ≥ 1 and
+P_z = I − G + ζζᵀ ⊁ 0, same G.  The 99.64% branch says: P_z ⊁ 0 forces
+S = t_x(r_x−1) + t_z(r_z−1) < 0 at A_y — an ms-free proof of that is the
+prize; the sliver then dies by the odds endpoint (S ≥ 0 needs a heavy member,
+where (1+o*)S < o*(trA_y⁻¹−1) with o* = min member odds).  Attack with the
+triad det laws: the floors are det(A_y − q_iq_iᵀ) ≤ 0 and every recombination
+det is now exact.  Straggler bench intact (scratchpad/z1/stragglers.csv);
+new evidence files: icviol.csv (genuine IC violators), sliver.csv.
+
+6. FILES (scratchpad/z1/)
+--------------------------
+cellH_fire.jl      the o-law firing map (S<0 / odds / mixed / x-set)
+cellH_agg{,2}.jl   the aggregate zoo and its violation rates
+cellH_icviol.jl + icviol_verify.jl   IC violators + 256-bit verification
+cellH_sliver.jl    the S≥0 sliver dump (sliver.csv)
+cellH_adv{,2}.jl   adversarial max of min-floor + BigFloat refutation
+cellH_chain.jl     the anchor-chain (outside pinch) kill rate
+cellH_closedform.jl  the caps-composition coverage (0%)
+anchorcaps_check.jl  6.45M-sample verification of all landed cap laws
+pinchfoil.jl       the foil/witness/straggler verdict table for the pinch
+cellB_strag.jl     cell-B profile of the 71 stragglers (BigFloat)
+dettriad.jl        witness check of the triad determinant laws

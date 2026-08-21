@@ -1,0 +1,214 @@
+NOTES -- the corank-two corner, round ten, 2026-08-19
+======================================================
+
+0. ORIENTATION DONE
+-------------------
+Read whole: CornerRefusalCensus, CornerGapWindow, PairRefusalLedger (statements
+plus the corner section), TiePivotCensus (statements), CornerPivotRigidity,
+SixSetCorner, SixSetProjection, CorankTwoArm, CorankTwoDeficitArm,
+NOTES-corner-direct, NOTES-corank2.
+Scanned: SixSetDowndate, SixSetRefusal, SixSetGapUniversal, LightSetFloor,
+GhostBlockCore, RefusalDirectionSelector, RefusalConeGeometry,
+CorankTwoNonplanar{System,Descent,Fixture}, NonplanarResidualFoil,
+DeficitResidualFoil, CorankDecomposition, CorankTwoPlanarClosure.
+Re-ran corner_probe3.py: reproduces (253 corners, argmax-phi e works 253/253,
+argmin_norm d works 236/253) -- no single outside rule, as the brief warns.
+
+1. THE PICTURE (z-coordinates, W := S_univ - 1 > 0)
+----------------------------------------------------
+z_a := W^{-1/2} g_a, P_ab = z_a . z_b.  Inside v_1..v_3, outside w_1..w_3.
+  V := sum_j v_j v_j^T = W^{-1} + pi p p^T,  A := I - V = I - W^{-1} - pi p p^T
+  N := sum_d w_d w_d^T = I - pi p p^T,  pi = cornerPivot, p ~ W^{-1/2} u
+  co-weight Parseval: sum_a c_a z_a z_a^T = I, c_a = 1 - t_a in (0,1), sum c = 5
+Triple T dominates strictly  <=>  I - sum_{r in T^c} z_r z_r^T > 0.
+The ten informative refusals:
+  (i)  A not> 0                       [T = C^c]
+  (ii) B_j - w_d w_d^T not> 0  (9)    [T = {e_j} u C^c \ {d}],  B_j := A + v_j v_j^T.
+Plane cover: A > 0 on p^perp, so A has EXACTLY one nonpositive eigenvalue.
+
+2. WHAT LANDED THIS ROUND
+--------------------------
+Gtz/Wave/OutsideFrameLaws.lean
+  sum_compl_of_support_pair, outside_gram_le, outside_gram_pair_le,
+  outside_pivot_minor_nonneg, outside_pivot_minor_eq_zero,
+  square_frame_adj, square_frame_adj_column, outsideFrame,
+  outsideFrame_diagonal, outsideFrame_transpose, sum_compl_eq_enum,
+  enum_injective, outside_weighted_adj_square, outside_leverage_adj
+Gtz/Wave/CornerSecondMoment.lean
+  cornerResidual, coweight_outside_atomSum, coweight_outside_transpose,
+  coweight_outside_mulVec, outside_secondMoment_adj, outside_secondMoment_pivot,
+  outside_secondMoment_gapCross, ghostDeficitForm_ge_coweight_slack,
+  corner_secondMoment_refusal
+Gtz/Wave/LedgerAggregateFoil.lean
+  ledgerFoil and its closed forms, ledgerFoil_aggregate_nonneg,
+  ledgerFoil_coweight_neg, ledgerFoil_not_isTie, exists_coweight_beats_aggregate
+
+3. THE MATHEMATICS
+------------------
+(a) THE OUTSIDE PIVOT BLOCK IS CAPPED BY THE IDENTITY.  outside_pivot_compose
+    gives S^2 = S - lam eta eta^T on the complement, so Cauchy-Schwarz on
+    sum_d x_d (S x)_d gives (x^T S x)^2 <= |x|^2 (x^T S x - lam (eta.x)^2)
+    <= |x|^2 (x^T S x), hence x^T S x <= |x|^2.  So 1 - P_DD is PSD and its
+    2x2 minors are >= 0.  With the landed outside_pivot_minor_nonpos they
+    VANISH, with no cross-mass proviso -- this repairs
+    outsidePivot_minor_vanishes', whose conclusion is void at E = 0 (pi = 1).
+(b) THE COMPLEMENT TRIPLE IS A BASIS.  adj(G G^T) = adj(G^T) adj(G) collapses
+    every sandwich:  (sum_d f_d g_d g_d^T) adj(S_out) (sum_d f_d g_d g_d^T)
+    = det(S_out) sum_d f_d^2 g_d g_d^T,  and the leverage law
+    g_d^T adj(S_out) g_d' = det(S_out) [d = d'].  Both are EQUALITIES that hold
+    at 6 = 3 + 3 and at NO other size: at (5,3) the complement of a triple is a
+    pair, at (7,3) it is four atoms.  This is the sharpest size marker the
+    campaign has.
+(c) THE SECOND MOMENT.  Reading (b) at two probes through W^{-1} gives
+      det(S_out) sum_d (1-t_d)^2 (g_d . W^{-1} y)(g_d . W^{-1} z)
+        = res(y)^T adj(S_out) res(z),
+    res(y) := y - sum_{e in C} (1-t_e)(g_e . W^{-1} y) g_e.  Weighting the
+    three outside refusal slacks by (1-t_d)^2 and using the landed diagonal
+    rigidity for the co-pivot term gives corner_secondMoment_refusal.
+(d) THE SHARPENED LEDGER.  Dropping only three of the four slacks from
+    sum_coweight_pairRefusalSlack leaves (1-t_x) slack_x <= ghostDeficitForm.
+    At x = the third INSIDE atom this is exactly "the co-weighted sum of the
+    three OUTSIDE slacks is nonnegative".
+
+4. THE BRIEF'S ERROR -- SECTION 4.2 IS FALSE
+---------------------------------------------
+4.2 claims a Schur-Horn cap: for one inside pair with the corner scalars fixed
+the three outside refusals are equivalent to their SUM, so no pair-by-pair
+programme beats corner_pairRefusal_bound.
+Schur-Horn frees the outside frame.  The frame is NOT free.  Beside
+sum_d w_d w_d^T = N the design also pins sum_d c_d w_d w_d^T = Theta (the
+co-weighted Parseval split), so the frame is the eigenframe of N^{-1/2} Theta
+N^{-1/2} and the c_d are its eigenvalues.  Three moments, not one, are
+therefore computable, and each is a separate refusal law.
+EXACT WITNESS (landed as Gtz.ledgerFoil):
+  atoms  (0,1,0), (0,0,1), (2,0,0), (1/8,6/5,-6/5), (1/8,-6/5,-6/5), (-7/4,0,-2)
+  weights 1221/10181, 463/30543, 20851/91629, 28000/91629, 28000/91629, 800/30543
+  S_C - 1 = 3 e1 e1^T at C = {0,1,2}, non-planar (g_3 . e1 = 1/8), primitive
+  pair {0,1}: Delta = 962231/1825056 > 0, P_00 = 25/72 < 1
+  slacks 288575/3650112, 288575/3650112, -210889/1825056
+  unweighted sum  =  38843/912528 > 0        (aggregate blind)
+  co-weighted sum = -227837953/83614028112 < 0  (co-weighted law fires)
+MEASURED on 4000 tie-branch corners (direct.py): the aggregate closes 3521, the
+co-weighted law closes 3911, and 398 corners fall to the co-weighted law with
+the aggregate nonnegative at every admissible inside pair.
+
+5. THE STATE OF THE CLOSURE
+----------------------------
+Direct sampler (scratchpad/corner-ten/direct.py) covers the whole corner
+manifold with 39 percent acceptance: pick pi, p, the outside rotation, the
+inside frame and the six weights; Psi := I - sum_d c_d w_d w_d^T is automatically
+positive definite and v_j := Psi^{1/2} o_j / sqrt(c_{e_j}) closes Parseval and
+sum c = 5 by construction.  On 4000 corners of the tie branch (lam_max(Z_C) >= 1
+and the C^c refusal holding):
+  aggregate m0 >= 0 fails at        3521
+  co-weighted m1 >= 0 fails at      3911
+  second moment m2 >= 0 fails at    3930
+  Cauchy-Schwarz m0 m2 >= m1^2 fails 3000
+  the fifteen-pair ghost deficit form fails at 3878
+  closed by NONE of them            0
+So the six laws together are empirically infeasible on the corner, but that is
+a MEASUREMENT, not a proof: what is missing is the joint refutation.
+The extremal corners are exactly the ones the brief predicts: one OUTSIDE atom
+carries almost all the weight (t_d -> 1), pi -> 1, and lam_max(Z_C) -> 1, so
+the obstruction degenerates linearly at the weight boundary.
+The second-moment law is VOID at pi = 1, because there the complement triple is
+coplanar and stops being a basis.  That is where the residual now sits.
+
+6. KILLED LISTS RE-CHECKED
+---------------------------
+NOTES-corank2 section 5 (nine) and NOTES-corner-direct section 8: none reopened.
+Nothing here is a deficient pair, a short ghost block, a single derived pivot
+scalar, or a determinantal/Plucker quantity.
+Nearly rebuilt and then reused instead: outsidePivot_diag_rankOne',
+outside_pivot_compose, coweight_atomSum_eq_sixSetGap, pivot_coweight_projection,
+sum_coweight_pairRefusalSlack, pairRefusalSlack_nonneg_of_isTie,
+outside_pivot_le_one, sixSetPivot_self_nonneg, dot_mulVec_comm_of_symm.
+
+7. THE EXTREMAL CORNER (extremal.py, Nelder-Mead over the 12 parameters)
+------------------------------------------------------------------------
+Minimise  margin := max over the ten informative triples of 1 - lam_max(Z_{T^c})
+under a floor on every weight:
+  floor 0.05  -> 1.84e-2   lam_max(Z_C) = 0.98320   heaviest weight 0.459
+  floor 0.02  -> 8.73e-3   lam_max(Z_C) = 0.99127   heaviest weight 0.572
+  floor 0.01  -> 3.10e-3   lam_max(Z_C) = 0.99690   heaviest weight 0.529
+  floor 0.004 -> 2.10e-3   lam_max(Z_C) = 0.99790   heaviest weight 0.927
+  floor 0.001 -> 3.87e-4   lam_max(Z_C) = 0.99961   heaviest weight 0.991
+At the minimiser the margin EQUALS 1 - lam_max(Z_C) to every digit, so the
+binding triple is the COMPLEMENT C^c itself, and the minimiser sits just OUTSIDE
+the tie branch.  One atom carries almost all the weight, and the margin scales
+with the floor.  That is the boundary the brief describes: at weight zero the
+design degenerates to a (5,3) design plus one weightless atom, and the (5,3)
+diamond is a tie.
+extremal2.py repeats it restricted to the tie branch (lam_max(Z_C) >= 1, margin
+over the nine one-inside triples only):
+  floor 0.05  -> 2.02e-2   lam_max(Z_C) = 1.00000045
+  floor 0.02  -> 1.97e-2   lam_max(Z_C) = 1.00000367
+  floor 0.01  -> 7.87e-3   lam_max(Z_C) = 1.00000000
+  floor 0.004 -> 2.65e-3   lam_max(Z_C) = 1.02396974  (one weight 0.827)
+  floor 0.001 -> 1.58e-3   lam_max(Z_C) = 1.00000000  (one weight 0.9866)
+THE HARDEST TIE-BRANCH CORNER HAS lam_max(Z_C) = 1 EXACTLY.  The constraint is
+active at the boundary, so at the extremum the DOMINATOR C has a corank-two gap
+AND the complement C^c has a singular gap too -- both triples are tied.  Three
+or four of the nine margins coincide at the minimiser, so the extremum is a
+genuine minimax with three or four active refusals.
+COMPLEX CHECK (complexcorner.py, complexmin.py): the same construction over C
+with Hermitian atoms and unitary frames.  No complex tie was found at a
+corank-two corner in 20000 random complex corners, smallest best-margin 4.5e-4
+at the same degenerate weight configuration.  A failed search is NOT evidence,
+but it is worth settling: if a complex corank-two corner CAN tie, then no
+field-blind law -- and every law of this round is field-blind -- can ever close
+the real corner, and the moment programme is capped before it starts.
+
+8. THE FIELD RESULT -- THE PRIMARY TARGET IS FALSE OVER C
+----------------------------------------------------------
+complexmin.py minimises the corner margin over the COMPLEX corank-two corner
+manifold (Hermitian atoms, unitary frames, the same construction as direct.py).
+At a weight floor of 0.005 the minimum is NEGATIVE, and deepverify.py confirms
+every axiom of the minimiser to 1e-15:
+  weights   0.06818 0.29157 0.00516 0.32347 0.22556 0.08606,  sum exactly 1
+  Parseval error 2.0e-15 in the z picture and 1.6e-15 in design coordinates
+  lam_min(W^{-1}) = 0.10276, so the design exists
+  S_C - 1 eigenvalues = (0, 0, 3.76406891): a corank-two gap with lam > 0
+  |g_d^* u| = 0.502, 0.506, 1.390 for the three outside atoms: NON-PLANAR
+  primitivity margin 0.0667: no two atoms are parallel
+  max over ALL twenty triples of lam_min(S_T - 1) = 0, attained only at T = C
+  max over the TEN informative triples = -4.76e-3, a robust strict margin
+So a PRIMITIVE complex (6,3) design with a NON-PLANAR corank-two corner and
+lam > 0 REFUSES every triple.  Exhibiting a tie is a construction, and this one
+satisfies every hypothesis of the primary target.
+CONTROL.  The SAME code restricted to the REAL slice (imaginary mass exactly 0)
+minimises to +1.485e-3 at the same weight floor 0.005, while the full complex
+problem minimises to -4.764e-3.  Same objective, same construction, same floor:
+the only difference is the field.
+THE COMPLEX TIE ITSELF is written out to fifteen digits in
+scratchpad/corner-ten/complextie.txt (atoms, weights, all twenty triple margins)
+and pickled in complextie.pkl.  Every lam_min(S_T - 1) is strictly negative
+except at T = C, where it is zero.
+EVERY LANDED LAW IS SATISFIED BY IT (complexlaws.py):
+  outside co-pivot minors     0, 0, 0        (outside_pivot_minor_eq_zero)
+  ceilIn(1+lam)+ceilOut       1.7125 >= 1    (corner_gapScale_floor_of_isTie)
+  weightFloor(1+lam)          0.0246 <= 1    (corner_gapScale_le_of_weightFloor)
+  eleven admissible pairs, every slack >= 0 and every ghostDeficitForm > 0
+  the three inside pairs: m0, m1, m2 all strictly positive
+CONSEQUENCE.  Every law the campaign has for the corner -- the census, the gap
+window, the pair ledger, the corner pivot rigidity, and everything landed this
+round -- is FIELD-BLIND: each statement and each proof transports verbatim to
+Hermitian atoms.  A field-blind chain therefore cannot close
+corankTwoNonplanar_absurd.  The moment programme is capped, not by Schur-Horn,
+but by the field.
+
+9. NEXT
+-------
+Make the complex corner tie EXACT (Gaussian rationals or a small algebraic
+extension) and land it against the complex design framework in
+Gtz/Complex/ComplexWitness.lean.  That turns the field result into a kernel
+theorem and tells the campaign exactly which corner statements can never be
+closed by the present machinery.
+Then find the realness ingredient: the corank-two corner closure has to consume
+the reality of the atoms, and no landed corner law does.  The one place realness
+is already known to bite is the determinant of the Gram of three real vectors
+against its complex analogue -- the cross product exists only over R.
+Only after that is it worth returning to the pi = 1 boundary and to the joint
+refutation of the six laws of item 5.  The quantitative shape a real certificate
+must have is  margin >= (min weight) times a positive corner quantity, because
+the obstruction vanishes exactly at a zero weight.

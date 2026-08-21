@@ -1,0 +1,1404 @@
+NOTES — Z1 cell H: the member trace pinch, the S-floor, and the sup-certificate refutation (fork 23)
+====================================================================================================
+Round of 2026-08-20.  Predecessor: NOTES-z1memberfloor.txt (fork 22).
+
+0. HEADLINE
+-----------
+THE BRIEF'S SUP TARGET WAS FALSE; THE RESIDUAL PROP IS NOT DISCHARGED; THE
+UNIFORM-GAP ROUTE IS DEAD.  TWO modules landed in ONE commit (7b5e598, 995
+lines, gate 9950 exit 0, 18/18 pins standard):
+Gtz/Wave/HeavyInsideTracePinch.lean and Gtz/Wave/SeesawExchangeFloor.lean.
+The pinch + the seesaw floor refute ALL 72 stored both-light survivors
+(pinch 71, seesaw floor the last one at its atom 1, margin -1.93).
+Module 1 (HeavyInsideTracePinch):
+  (i)   REFUTATION (512 bits, strict feasibility): the claimed sup 0.99687
+        over {cell H, S >= 0} is FALSE.  A certified point (Parseval error
+        1e-49, det A_z = -3.2e-4 < 0, S = +4.8e-19, A_y PD by minors) has
+        min_d r_d = 0.9995797.  The maximizer geometry of fork 22 (lam 351)
+        is not the top; the honest object climbs through lam ~ 567 and is
+        blocked only by S = 0.  Margin <= 4.2e-4 there, NOT 3.1e-3.
+  (ii)  STRUCTURE: on the floors region EVERY landed clause (odds family,
+        downdate, mixed) is IMPLIED — floors <-> IsTie on cell H, and all
+        clauses are tie-necessary.  Explicitly: the ledger
+        S = sum_d (1-t_d)(r_d - 1) + (1-t_y)(r_y - 1), floors, and
+        r_y >= 1 give S >= (1-t*)(tr A_y^-1 - 1) with t* = max member
+        weight, which IS the odds clause at every admissible o.  So the
+        Prop is EXACTLY {cell H ∧ three floors} = ∅, and the sup over cell
+        H alone is 1, unattained.  NO finite clause battery gives a uniform
+        gap: R2 = {cellH, S>=0, odds(o_max)} sups at >= 0.9981,
+        R5 = R2 + S-floor sups at >= 0.99925 (new channel: r_z > 1, S > 0
+        strict, lam ~ 94).  Every roof approach degenerates a weight.
+  (iii) THE NEW LAWS (kernel, tie-necessary or tie-free, all measured):
+        det_sub_add_atomMatrix_readings   det(M - pp' + qq') = det M *
+            ((1 - p'M^-1p)(1 + q'M^-1q) + (p'M^-1q)^2)   (identity, PD M)
+        subset_reading_total              sum_{a in F} r_a = 3 + tr(S_F-1)^-1
+        tie_fourSet_member_trace_pinch    at a tie, EVERY member of a PD
+            four-set has r_e <= tr (S_F-1)^-1  (per-member; the landed pivot
+            floor is its SUM shadow)
+        corner_oneAxisZero_heavyInside_selfRead(_ge_one)  cell H, tie-free:
+            (r_y - 1)(1 + r_z) >= rho^2, rho = g_y'A_y^-1 g_z; hence r_y >= 1
+        corner_oneAxisZero_heavyInside_member_trace_pinch  cell-H tie form
+        corner_oneAxisZero_heavyInside_trace_pinch_sharp  (trAyi-1)(1+rz) >= rho^2
+        corner_oneAxisZero_heavyInside_odds_reading_floor  tie:
+            o(tr A_y^-1 - 1) <= (1+o) S   (reading form of the odds-det law)
+        corner_oneAxisZero_heavyInside_sFloor   tie + cell H:
+            o * rho^2 <= (1+o) * S * (1 + r_z)   for all admissible o
+            (o = 0 is the landed S >= 0; o > 0 charges S a POSITIVE floor)
+        corner_oneAxisZero_heavyInside_erased_cap_auto   cell H, tie-free,
+            NO cap hypotheses: r_x <= (1-t_x-t_y-t_z)/(t_y+t_z)
+            (the outside-TOTAL cap discharges hsum/hmx automatically)
+        corner_oneAxisZero_heavyInside_sWindow   tie + cell H: the S-floor
+            against the capped S — o=0 case IS the landed capGap clause;
+            o > 0 extends its kill region by o*rho^2
+        corner_oneAxisZero_bothLight_member_trace_pinch  the pinch at BOTH
+            four-sets on cell B
+        oneAxisZeroWitness_fourSet_inv / _not_isTie_by_tracePinch
+            (A_y^-1 exact; r_3 = 2275/2037 > tr = 7307/8148: the FOURTH
+            kernel refutation route of the witness)
+        Module 2 (SeesawExchangeFloor) — fork 22's P3 target landed:
+        inv_reading_symm                  t'M^-1 u = u'M^-1 t  (PD M)
+        update_cross_reading              two-sided Sherman-Morrison:
+            (1+s'M^-1s) t'(M+ss')^-1 u = (1+s'M^-1s) t'M^-1u - (t'M^-1s)(s'M^-1u)
+        seesaw_exchange_reading           EXACT: any reading of M - pp' + qq'
+            is a polynomial in five M-readings; with M = A_y, p = g_y,
+            q = g_z every A_z-side seesaw quantity moves into A_y coordinates
+            (division-free through Delta = (1-r_p)(1+r_q) + rho^2,
+             Delta * det M = det A_z by the two-update determinant)
+        corner_oneAxisZero_bothLight_seesaw_floor   at a cell-B tie, for
+            every outside atom: (1+r_z) Delta <= (r_d(1+r_z) - c_dz^2) Delta
+            + (c_dy(1+r_z) - rho c_dz)^2 — THE PER-ATOM COUPLING of the
+            seesaw, both floors of one atom at the SAME positive matrix
+
+0b. MEGAJOB (200 threads, fresh seeds; mega ladder = the NEW clause set)
+------------------------------------------------------------------------
+640M draws: CELL H 13,447,900 samples: S<0 99.65668% | +odds(o_max)
+0.33824% | +S-floor 0.00506% | +pinch 0.00001% | RESIDUAL 1 (7e-6%%, the
+row is GENUINE at 512 bits: t_x 2.2e-4, lam 11.38, S +0.0856, all clause
+slacks positive, min floor 0.9528 — resid23.csv).  CELL B 524,087,630
+samples: K-PD 97.88486% | +S_y 0.82460% | +S_z 1.07896% | +odds 0.12910%
+| +pinch 0.08230% | +seesaw 0.00017% | RESIDUAL 0 (0.000000%%) — the
+both-light map is CLOSED at half a billion samples.  THE 100x RUN (64e9 draws, 81.2s wall at 7.9e8/s on 200 threads,
+near-miss capture at 1e-8, cell-boundary bands, in-job 256-bit
+re-verification of every captured row):
+  CELL B: 52,409,079,879 samples, RESIDUAL 0 — the pinch+seesaw ladder is
+  TOTAL on the both-light cell at 52.4 BILLION samples.
+  CELL H: 1,344,244,752 samples, RESIDUAL 80 (5.95e-6%), all 80 verified
+  genuine at 256 bits (35 near-miss captures killed at 256 bits — Float64
+  hides nothing).  The 80 offenders: resid23mega.csv (col 17 = 1.0).
+  Profile: t_x q10/50/90 = 0.0014/0.0062/0.018 (min 8.2e-5), lam
+  3.1/4.2/8.8 (max 22), ahat 0.32/0.58/0.89, S 0.075/0.23/0.70 — healthy
+  weights, moderate lam, STRICTLY positive S: the honest inhabitants of
+  {cell H, S>=0, odds, S-floor, pinch}.  The successor's cell-H fight is
+  exactly these: per-floor mathematics (their floors DO fail — no tie was
+  ever found — but no landed clause sees it).
+  Script: scratchpad/z1 has no copy; the generator is mega23b.jl in the
+  session scratchpad, and its ladder is documented above (same sampler as
+  cellH22.jl/cellB22.jl, same seeds family, StaticArrays task-per-thread).
+
+1. MEASURED KILLS (512 bits, scripts in session scratchpad, fixtures intact)
+----------------------------------------------------------------------------
+  - residB22.csv (72 both-light survivors): member trace pinch kills 58 at
+    A_y, 57 at A_z, 71/72 jointly.  The odds reading floors kill 0 there.
+    P3's seesaw law is (effectively) the pinch: 98.6%.
+  - resid21.csv (the fork-21 cell-H survivor): killed FOUR ways — pinch at
+    A_y, pinch at A_z, odds reading floor at A_z, and the S-floor.
+  - The R2/R3/R4 sup maximizers (min r_d = 0.9981/0.9951/0.9974): all have
+    tr A_y^-1 < 1 < r_y, so the trace pinch kills all three; the S-floor
+    kills them independently (slacks -2.0e-4, -2.7e-3, -1.3e-4).
+  - Exact-rational foils: readTotal and twoUpdate identities hold at all
+    four fixtures; the pinch fires at ledgerFoil's {2,3,4,5} four-set
+    (non-tie detected) and holds at signCoherent/residualFoil; cell-H laws
+    correctly vacuous at all four (witness is both-light; ledger/residual
+    foils are Z2-shaped at the corner labeling).
+
+2. BRIEF ERRORS FOUND (fork 23; the streak holds)
+--------------------------------------------------
+(a) THE CENTRAL CLAIM: "sup ~ 0.99687 attained, margin 0.00313, prove
+    sup <= 1 - 1/320".  FALSE at 512 bits: strictly feasible points reach
+    0.99958 (see 0.i).  The stationary point of fork 22 is a local top of a
+    weaker search, not the sup.
+(b) "cell H is DZ >= 0 (equivalently det A_z <= 0)": DZ >= 0 is the paid
+    scalar SHADOW (necessary), not equivalent; det A_z <= 0 is exactly
+    A_z not PD given A_y PD, but DZ >= 0 is strictly weaker.
+(c) "S >= 0 pins r_x = n_x + 1/kxx, r_z = n_z": those are deflation
+    identities, independent of S.
+(d) P1 (sup algebraic of degree <= 8, zero-dimensional stationarity) is
+    unfalsifiable-as-stated but the premise (isolated interior maximizer
+    with margin 3e-3) is dead with (a).
+(e) P2's shape (case split closable by one nlinarith per case) did not
+    survive contact: no finite clause region has a uniform gap (0.ii), so
+    the certificate cannot be a sup bound at all.
+(f) The mapped route's step 4 ("SAY IT IN THE HEADLINE") presumed (a).
+
+3. WHY THE SUP ROUTE IS STRUCTURALLY DEAD (verify before retrying)
+-------------------------------------------------------------------
+The Prop = {cell H ∧ floors} = ∅.  All other antecedents are implied on the
+floors region (0.ii), so a sup certificate must bound min_d r_d over a
+region CONTAINING the floors region.  But the floors region's closure meets
+min r_d = 1 exactly at the degenerate boundaries (t_z -> 0 at lam ~ 567 with
+S -> 0+; t_x -> 0; ahat -> 0 mirrored; A_z-singular channels), and every
+clause battery tested leaves a channel with sup -> 1:
+  {S>=0}: 0.9996+.  +odds(o_max): >= 0.9981.  +S-floor: >= 0.99925.
+  +downdate+mixed: >= 0.9974 (underconverged; same channels).
+A discharge must be an inequality chain that DEGENERATES with the weights
+(as the coordinator's corank-one arm already demands: certificates carry
+weights).  Candidate shape for the successor: work at the EQUALITY case —
+floors force sum_d r_d >= 3 with the reading total = 3 + trAyi - r_y, the
+pinch, and the S-floor; the roof needs r_d -> 1 for at least two atoms
+SIMULTANEOUSLY with S -> 0 and det A_z -> 0; quantify the incompatibility
+of those three limits at POSITIVE weights via the deflated 2x2 arena
+(all rails landed in ErasedDeflationFloor).
+
+4. GRAVEYARD ADDITIONS
+-----------------------
+  - "sup over {cell H, S >= 0} < 1 - gamma for a usable gamma": DEAD (0.i).
+  - The weight-free OR-relaxation (S >= 0 -> r_x >= 1 ∨ r_z >= 1): DEAD —
+    its sup is >= 0.9998 via ahat -> 0 / t_y -> 1 weight collapse.
+  - Any discharge by ADDING implied clauses to the sup region: each new
+    clause moved the measured sup but a fresh channel toward 1 appeared
+    every time (S-floor round: the r_z > 1, S > 0 strict channel).
+  - Penalty-method ascent on this cell: the S-violation scales with
+    t_x + t_z and the penalty vanishes exactly in the interesting corner.
+    Feasible-path or exact-constraint methods only.
+
+5. WHAT THE NEW LAWS BUY THE RESIDUAL MAP
+------------------------------------------
+The measured map (fork 22's ladder) had residuals: cell H 0/402k with the
+pivot family, cell B 72/15.7M.  The pinch closes 71 of the 72; the one
+survivor of the 72 needs a fresh look (row: the only one where neither
+four-set's max member reading exceeds its trace).  For cell H every stored
+survivor and every sup maximizer dies to pinch + S-floor: the next
+measured ladder should carry (S-floor at o_max) and (member pinch at both
+sets) as clauses 5 and 6 — expect the cell-B residual at ~1e-7 and the
+cell-H clause region to shrink by the R5 factor.
+
+6. THE EXACT NEXT BRICK
+------------------------
+ (i)  CELL B: one survivor of 72 left after the pinch.  Diagnose it at 1024
+      bits, then hunt the law for its pattern (it is the seesaw's true
+      core).  The pinch + the odds reading floors at BOTH sets are now
+      kernel; wire them into the next cellB ladder.
+ (ii) CELL H: abandon uniform-gap sups.  The fight is the equality corner
+      r_d -> 1, S -> 0, det A_z -> 0 at positive weights.  Two concrete
+      levers now kernel: the S-floor makes S >= o*rho^2/(1+r_z) — so at the
+      roof rho -> 0 too (the survivor's cross reading vanishes); combined
+      with selfRead, r_y -> 1 forces det A_z -> 0 AND rho -> 0 — the
+      degeneracy is CO-DIMENSION >= 2 inside cell H while the floors region
+      is closed: quantify with the deflated Gram singularity (landed) and
+      the weighted rails.  If that resists, the honest alternative is the
+      both-light-style split of cell H by the sign of (tr A_y^-1 - 1).
+ (iii) The (5,3) check for any candidate: at t -> 0 boundaries the cell-H
+      laws all degenerate correctly (sWindow and sFloor carry weights
+      explicitly); keep them out of any weight-free reformulation.
+Fixtures: resid21.csv, residB22.csv, miss20.csv, icviol.csv, stragglers.csv,
+sliver.csv, escapes.csv intact and untouched.  New: best_R2/R3/R4/R5.txt,
+best_strict512.txt (the 0.99958 refuter, th-vector format of m3_core) in
+the session scratchpad; the durable scripts are COPIED into scratchpad/z1/: hcore23.jl (zero-alloc
+Float64 cell evaluator + hillclimb), evalbig23.jl (512-bit evaluator),
+supladder23.jl (R1-R4 sup ladder), supR5_23.jl (R5 with the S-floor),
+pinchverdict23.jl (the 72-survivor kill table), foilverdict23.jl (exact
+rational foils), seesaw64check23.jl (row-64 seesaw verdict), and the
+best_R2/R3/R4/R5/full/strict512.txt maximizer vectors (th-format of
+hcore23's unpack).
+
+7. POST-COMMIT ROUND (coordinator targets: bothLight discharge + the 80)
+------------------------------------------------------------------------
+(a) THE 80 CELL-H OFFENDERS (256 bits, offenderdiag23.jl): NOT near the
+    codimension-2 locus — codim distance sqrt((ry-1)^2+(detAz/detAy)^2)
+    q10/50/90 = 0.107/0.312/0.728; ry up to 1.73; detAz/detAy ~ -0.02;
+    min floor DEEP: q10/50/90 = 0.709/0.809/0.926; 45 fail one floor, 35
+    fail two, never three; ry >= 1 at ALL 80; heavy-erased at 30/80.
+    Fingerprints (fail pattern x heavy x ry): 9 classes, largest hFFly (16),
+    FFhly (12), hFhHy (11), hhFHy (10).  The cell-H closing law must work
+    at MODERATE slack, not at the degenerate locus.
+(b) CELL-B GROUNDWORK for the discharge of OneAxisZeroBothLightResidual:
+    - The 7-floor sup over cell B is 1, UNATTAINED: a certified 512-bit
+      near-roof point (best_cellB7.txt evaluated by evalbig-style exact
+      construction) has min floor = 1 - 4.3e-9 at five weights ~1e-10..1e-14,
+      with FIVE floors at 1+3e-10 and the SEVENTH floor (ry(Ay) >= 1, i.e.
+      det K <= 0) the assassin: the roof is the det K = 0 boundary under
+      total weight collapse onto one outside atom.
+    - THE WEIGHT-FREE PD-PATTERN IS FEASIBLE (margin 0.64, patternfree23.jl):
+      corner Gram + {K+Gy PD, K+Gz PD, det K <= 0, K+Ge-Gd not PD for all
+      six} has solutions with free atoms.  Parseval with positive weights is
+      THE obstruction — no weight-free discharge exists.
+    - THE RATE IS LINEAR (cellBrate23.jl, 512 bits, Givens frames): pinning
+      the five collapsing weights at total ts and re-ascending,
+      deficit(1 - sup min floor) / ts stays in [0.10, 0.43] over ts from
+      7.8e-4 down to 5.1e-13.  THE CERTIFICATE TARGET IS EXACT:
+        tie-free on cell B:  sum_i alpha_i (1 - r_i)  >=  c (1 - t_max)
+      with alpha_i >= 0 and c > 0 explicit; under the seven floors the left
+      side is <= 0 while 1 - t_max > 0 strictly (six positive weights):
+      False.  Extract the alpha_i as the dual multipliers at the roof
+      (the five active floors + det K = 0), then SOS/Nemo/nlinarith.
+(c) INCIDENT + FIX: BigFloat evaluators that build the outside frame by a
+    TRUNCATED exp series produce off-orthogonal frames (err ~ |K|^n/n!) and
+    at collapsed weights the atom scale AMPLIFIES that into phantom floor
+    excesses (a fake min floor = 1 + 1e-30 at weights 1e-27; the 1024-bit
+    80-term audit showed det K = +7.7e29 and the outside triple dominating).
+    Protocol held (1024-bit + all-20-triples audit caught it).  RULE: use
+    Givens rotations (rot3b in cellBrate23.jl) in every high-precision
+    evaluator; never the exp series.  The m22 near-roof point is SOLID
+    (its noise floor 1e-19 vs deficit 4.3e-9).
+
+
+8. THE WEIGHT-GAP DETERMINANT LAW (fork 23, round 3; commit cac252e)
+---------------------------------------------------------------------
+THE SOURCE OF THE (1 - t_max) RATE IS AN EXACT DETERMINANT IDENTITY.
+Module: Gtz/Wave/WeightGapDeterminant.lean (11 theorems, pins standard,
+own-modules+Skeleton gate 9953 exit 0).
+  det_add_three_atomMatrix_fin_three   det(M + sum t_i v_i v_i') = det M
+      + sum t_i v_i'(adj M)v_i + sum_{i<j} t_i t_j (v_i x v_j)'M(v_i x v_j)
+      + t1t2t3 ((v1 x v2).v3)^2        (polynomial identity, any 3x3 M)
+  corner_oneAxisZero_weightGap_reshape  Parseval: M_o - N_out
+      = K + t_x G_x + t_y G_y + t_z G_z,  K = S_Ccomp - 1
+  corner_oneAxisZero_weightGap_det_law  THE LAW (tie-free, corner only):
+      Prod_d (1 - t_d) * det M_o = det K + t_x g_x'(adjK)g_x
+        + t_y g_y'(adjK)g_y + t_z g_z'(adjK)g_z + t_x t_y (g_x x g_y)'K(...)
+        + t_x t_z (g_x x g_z)'K(...) + t_y t_z (1+lam) kxx
+        + t_x t_y t_z (1+lam)
+      (route: landed outside_triad_char_identity at s = 1, the reshape, the
+       expansion, the landed cross pin, and |g_x| = 1)
+  corner_oneAxisZero_bothLight_weightGap_floor   at a cell-B tie det K <= 0,
+      so Prod_d(1-t_d) det M_o <= (the seven weighted terms)
+  corner_outside_det_eq_triple_sq   det S_Ccomp = ((q1 x q2).q3)^2  (a square)
+  prod_three_one_sub_ge / corner_oneAxisZero_outside_slack_floor
+      Prod_d(1-t_d) >= t_x + t_y + t_z   (Weierstrass at three factors)
+  corner_oneAxisZero_bothLight_weightGap_positive_floor  THE CAPSTONE:
+      (t_x+t_y+t_z) * ((q1 x q2).q3)^2 <= (the seven weighted terms)
+      — tie-necessary, both sides weight-carrying, degenerating exactly at
+      the (5,3) boundary.
+  weighted_reading_total_eq_trace   sum_c t_c g_c'A^-1 g_c = tr A^-1 (any PD A)
+  tie_fourSet_trace_ge_one          tr (S_F - 1)^-1 >= 1 at a tie
+  oneAxisZeroWitness_outside_det = 64 (the witness outside triple is
+      nondegenerate, so its positive floor is a real constraint)
+MEASURED (weightgapverify23.jl, 256 bits): the LAW is exact at every stored
+fixture (max relative residual 1e-74 across residB22, resid23mega, resid21).
+The tie floors hold at all 72 + 80 + 1 stored survivors (they are near-ties,
+so tie-necessary clauses MUST hold — calibration passed).  THE POSITIVE
+FLOOR FIRES AT 97.0% OF A FRESH BOTH-LIGHT SWEEP (321/331): it is a strong
+new cell-B kill clause on its own, and it is correctly SILENT at the 72
+stored survivors.
+BUILD LESSON (banked): `simp only [...] ; ring` with a hand-rolled cons/mulVec
+lemma list FAILS on adjugate goals — even the one-atom case.  The landed
+recipe is full `simp [Matrix.det_fin_three, Matrix.adjugate_fin_three,
+atomMatrix, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct,
+Fin.sum_univ_three, cross_apply]` then `ring`.  Diagnosed by probing the
+1-atom and 2-atom cases separately after sympy confirmed the identity true
+for general non-symmetric M.
+NEXT: the capstone is the (1-t_max)-carrying constraint the discharge needs.
+The remaining step is the OTHER direction — an upper bound on the seven
+weighted terms under the seven floors — after which the two collide.  The
+73%-firing gap (97% fire, the survivors do not) is exactly the residual to
+attack with the SOS route over the reading ideal.
+
+9. THE EDGE SCANNER AND THE 37.5e9-DRAW EDGE FILE (fork 23, round 4)
+---------------------------------------------------------------------
+Tools (permanent, scratchpad/z1/): edgescan23.jl (1139 lines: Double64
+128-bit scan + BigFloat-1024 verify, task-per-thread, futex-free, reservoir
+sampling per kind, Cauchy-Binet invariants and Cholesky readings only —
+NEVER cofactor det/adj on collapsed-weight designs), edgeanalyze23.jl,
+edgedeep23.jl.  Data: edges23.csv (36,088 rows, 38 cols, both-precision
+verdicts, 15 rebuild parameters per row).
+THE RUN (300 threads, 900.0s, 4.17e7 draws/s, 37,549,252,608 draws):
+  CELL H 804,480,983: S<0 99.54249% | +odds 0.44679% | +sFloor 0.01070%
+    | +pinch 0.00001% | RESIDUAL 88 (1.09e-5%).
+  CELL B 30,684,278,272: detK 97.87792% | +S 1.89982% | +odds 0.13041%
+    | +pinch 0.09159% | +seesaw 0.00025% | +weightGap 0.00000%
+    | RESIDUAL 0 — with the earlier 64e9 run the both-light ladder now
+    stands at 0 residuals in 83e9 both-light samples.
+  PRECISION SPLITS: 0 of 36,088 at 1024 bits; 113 headline cases re-verified
+  independently, 113 agree; worst law residual at 1024 bits 9.7e-291.
+THE 88 (all captured, all 1024-bit genuine): minFloor q10/50/90 =
+0.729/0.846/0.927 (deep failures, NEVER near-ties); the CLOSEST missing
+kill is the ODDS clause at 70/88 (margin q10/50/90 = 4.6e-3/2.0e-2/5.9e-2),
+pinch at 18/88; degenerate weight (<1e-11) at 21/88; heavy-erased 30/88;
+kxx spread 41..7.7e10.  NEXT KILL LAW: sharpen the odds family — the o_max
+level used is min over the four-set members; the residuals' margins suggest
+the per-atom odds levels (o admissible per REMOVED member) or the mixed
+downdate-odds levels close most of the 88.  The lawStress kind is pure
+arithmetic (worst 1.15e-14 at t_min ~ 9e-21, exact at 1024 bits): the
+weight-gap law itself never fails.
+NUMERIC LAWS BANKED THIS ROUND: (i) cofactor det3/adj3 on a collapsed-weight
+design loses 25+ digits (det K read 2.2e-8 relative at Double64) — compute
+det(Mo), det(K) and all minors via Cauchy-Binet sums of squares, and every
+inverse reading via Cholesky forward substitution (margins then agree with
+1024-bit EXACTLY); (ii) reservoir sampling per kind keeps a 15-minute
+300-thread capture uniform over the run at bounded memory; (iii) the
+substantive precision-split test is cell + killing clause, not the kind
+label.
+
+10. THE ANCHOR TRANSPORT AND THE SINGULAR PATTERN (fork 23, round 5;
+    commit 8d41429)
+---------------------------------------------------------------------
+KERNEL (Gtz/Wave/AnchorTransportPairs.lean, 9 theorems, pins standard,
+own-modules+Skeleton gate 9954 exit 0):
+  corner_anchor_insert_eq / corner_anchor_eq_fourSet_add_atom
+      {z} u ({y} u Ccomp) = univ∖x, so B = A_y + g_z g_z' EXACTLY
+  corner_anchor_reading_transport      (1+r_z) g_a'B^-1 g_b
+      = (1+r_z) c_ab - c_az c_bz   (all at A_y; two-sided SM aimed at the cell)
+  corner_anchor_heavy_branch_iff / corner_anchor_minor_branch_iff
+      both branch shapes of the landed pair system transport losslessly
+      (positive factor 1+r_z; the minor through (1+r_z)^2)
+  corner_oneAxisZero_heavyInside_isTie_iff_transportedPairs
+      THE TIE OF CELL H IS ONE POLYNOMIAL CLAUSE SYSTEM AT A_y^-1 — the
+      cell-H mirror of the seesaw unification
+  fourSet_inverse_moment_identity      sum_F A^-1 G_a - sum_c t_c A^-1 G_c = 1
+      (the two reading rails as ONE matrix equation; trace/probe forms give
+       every moment relation of the whitened frame)
+  corner_anchor_zHeavy_false           r_z(B) < 1 always (transported:
+      r_z^2 <= r_z^2 - 1 impossible)
+  corner_anchor_zPair_iff_floor        THE z-PAIR COLLAPSE: an anchor pair
+      clause through z IS the four-set floor of the other member —
+      (1+r_z)(1-r_z) + r_z^2 = 1 and the transported cross square is c_bz^2.
+MEASURED (pairtable23.jl, 256 bits, all 168 stored survivors = the 80 + 88):
+  THE BRANCH PATTERN IS SINGULAR: at every survivor the failing transported
+  pairs are EXACTLY the (z,d)/(d,z) pairs and nothing else (240 pair
+  failures, all z-type; all (y,.), (d,d'), (y,z) pairs HOLD).  With the
+  z-pair collapse this is now a THEOREM-level explanation: those pairs ARE
+  the raw floors, so the survivors are precisely "all clauses except some
+  floors" — the case tree has ONE live pattern, and the discharge is ONE
+  conjunctive SOS problem:
+    {cell H, Delta <= 0, floors r_d >= 1, moment identity, weighted
+     Parseval, corner Gram} = empty,
+  with the certificate slack a weight polynomial (sup -> 1 channels).
+CELL-H FACTOR (open, next round): at the two honest {cell H, S>=0} roof
+points the deficit/(t_x+t_z) ratio is 0.36 and 0.39 (strict512, R2); the
+pinned-scale BigFloat rerun today was too weak to confirm (cellHrate23.jl
+needs the Float64 hcore pipeline + 512-bit verify, as m27 did for cell B —
+its 6-start 512-bit ascent underconverges by orders).  Candidate law:
+  1 - min_d r_d >= c (t_x + t_z)   tie-free on cell H,
+which with the floors gives the discharge; test against the strict512
+channel FIRST (its deficit 4.2e-4 at t_x+t_z = 1.17e-3 -> c <= 0.36).
+
+11. THE FACTOR REFUTATION AND THE PROBE RELATIONS (fork 23, round 6;
+    commit 20f1a93)
+---------------------------------------------------------------------
+(a) THE (t_x + t_z) FACTOR IS REFUTED, c = 0.36 WITH IT (512 bits,
+    verifyratio23.jl).  The candidate law 1 - min_d r_d >= c (t_x + t_z)
+    fails: a GENUINE cell-H point with S >= 0 has
+      t_x + t_z = 6.45302016e-02  (healthy, not collapsed)
+      min_d r_d = 0.997007238685937,  deficit = 2.99276e-03
+      ratio = 0.04637768  <<  0.36
+      parseval residual 1.5e-154, S/(t_x+t_z) = +4.63e-14 >= 0, cell H.
+    The ratio search was still DRIFTING DOWN when it stopped
+    (0.0520 -> 0.0509 -> 0.0492 -> 0.0478 -> 0.0464), so the infimum is at
+    most 0.046 and plausibly 0: the factor is wrong, not merely the constant.
+    THE DEGENERATION IS NOT WEIGHT COLLAPSE.  At that point the weights are
+    healthy and instead ahat = 0.00324, i.e. (g_y.u)^2 = 1.9e-4: the point
+    sits near the Z2 boundary, where the Prop's own antecedent clause
+    (D.atom y . u /= 0) degenerates.  ANY cell-H certificate must carry a
+    factor that vanishes at Z2 -- a (g_y.u)^2-type factor -- and NOT the
+    excluded weight total.  The two earlier ratios (0.357, 0.39) were
+    coincidences of two particular maximizers, not a rate.
+(b) METHOD WARNING (cost me one search): the ratio hunt run on the
+    adjugate-over-determinant evaluator reported min_d r_d = 3.16e8 inside
+    cell H -- which would be a TIE and hence a counterexample to the
+    conjecture.  It is a Float64 phantom of the unstable inverse.  Every
+    cell-H search must run on the edgescan23 primitives (Cauchy-Binet
+    invariants + Cholesky readings).  Rule already banked in section 9;
+    this is its second confirmation, now with a spectacular false positive.
+(c) KERNEL (Gtz/Wave/MomentProbeRelations.lean, gate 9955 exit 0, 3/3 pins
+    standard):
+      inv_mul_atomMatrix_probe        v'(A^-1 G_g)w = (v'A^-1 g)(g.w)
+      fourSet_inverse_moment_probe    THE AMBIENT GENERATOR:
+        sum_{a in F} (v'A^-1 g_a)(g_a.w) - sum_c t_c (v'A^-1 g_c)(g_c.w) = v.w
+        (every ambient equality of the transported arena is a specialization:
+         reading total = trace form, Parseval rail = weighted form, corner
+         relations = corner probes)
+      corner_oneAxisZero_erased_probe  THE ERASED CORNER RELATION:
+        sum_{d in Ccomp} (1 - t_d) c_xd xi_d = 1 + t_x r_x
+        (verified at all 80 stored cell-H survivors, 256 bits, worst
+         relative residual 8.1e-76)
+(d) NEXT: the factor must be found before the SOS, exactly as the
+    coordinator ordered.  Hunt inf(deficit / F) with F ranging over
+    (g_y.u)^2 = (1+lam) ahat^2 and its products with weights, using the
+    TWO-PHASE feasibility-then-ascent pipeline (naive ascent reaches the
+    roof at 1 start in 4096; the two-phase reaches it at ~5%).  Then the
+    one-pattern SOS over {cell H, Delta <= 0, three floors} with the
+    ambient generators of (c) and the Z2-vanishing factor carried.
+
+12. THE FACTOR TABLE AND THE SHARPENED S-FLOOR (fork 23, round 7;
+    commit 8b7f108)
+---------------------------------------------------------------------
+(a) THE FACTOR TABLE (factorhunt23.jl; two-phase ascent, 300 feasible of
+    6144 starts, 60 near-roof points with min_d r_d > 0.95, best 0.99854;
+    deficits 1.46e-3 .. 4.95e-2).  Ratio spread = max/min of deficit/F:
+      F = t_x + t_z          inf 4.51e-2   med 3.98e-1   spread 1.8e2  <-- BEST
+      F = P_yz               inf 7.34e-4   med 1.10e-2   spread 3.2e2
+      F = min(a_y^2,a_z^2)   inf 1.12e-2                 spread 5.3e3
+      F = P_yz^2/(1+lam)     inf 1.26e-2                 spread 4.9e3
+      F = a_y^2 a_z^2        inf 1.29e-4                 spread 1.2e4
+      F = P_yz^2             inf 1.31e-4                 spread 1.2e4
+      F = a_y^2              inf 2.91e-4                 spread 2.0e5
+      F = lam a_y^2, a_y^2 kxx, a_y^2 t_y, ...           spread 2.4e5..1.3e8
+    VERDICT: the EXCLUDED WEIGHT TOTAL (t_x + t_z) is the right factor after
+    all -- it has the tightest spread by 2x over the next candidate and by
+    three orders over every axis-share factor.  The coordinator's FORM was
+    right; only the CONSTANT was wrong: c is about 0.045, not 0.36 (round 6
+    refuted 0.36 at 512 bits and this table confirms the infimum near
+    0.045).  A safe kernel target is c = 1/32 = 0.03125.
+(b) BRIEF ERROR (the 24th): the suggested Z2 coordinate P_xy = <g_x,g_y> is
+    IDENTICALLY ZERO on Z1 -- `corner_oneAxisZero_xOrthogonal` proves
+    g_x . g_y = 0 whenever a_x = 0.  The intrinsic Z2 coordinate on Z1 is
+    P_yz = <g_y,g_z> = lam a_y a_z/(1+lam), which vanishes exactly as
+    a_y -> 0 (a_z is bounded away since a_y^2 + a_z^2 = 1 + lam).  With
+    P_xy = P_xz = 0 automatic on Z1, P_yz -> 0 is precisely the hypothesis
+    that fires `corner_zeroPairings_absurd` -- so the Z2 boundary is indeed
+    covered by that landed theorem, as the coordinator said, but through
+    P_yz and not through P_xy.
+(c) KERNEL (Gtz/Wave/LedgerSharpSFloor.lean, gate 9956 exit 0, 2/2 pins
+    standard):
+      corner_oneAxisZero_heavyInside_ledger_identity   THE EXACT LEDGER:
+        t_x(r_x-1) + t_z(r_z-1) = (1-t_y)(r_y-1) + sum_d (1-t_d)(r_d-1)
+        (identity; no tie, no cell -- the landed reading ledger with the
+         complement {x,z} evaluated at the corner)
+      corner_oneAxisZero_heavyInside_sFloor_sharp      THE SHARPENED FLOOR:
+        (1 - t_y) rho^2 <= S (1 + r_z)     at a heavy-inside tie
+        (route: ledger + the three outside floors give S >= (1-t_y)(r_y-1);
+         the landed selfRead turns r_y - 1 into rho^2/(1+r_z))
+      STRICTLY SHARPER than my landed corner_oneAxisZero_heavyInside_sFloor,
+      whose coefficient is (1 - t*) with t* the LARGEST member weight.
+      Measured at the 80 stored cell-H survivors: the new coefficient is
+      strictly larger at 79 of 80, gain (1-t_y)/(1-t*) median 1.56, max 3.71.
+(d) NEXT: the SOS for 1 - min_d r_d >= (1/32)(t_x + t_z) on
+    {cell H, S >= 0}, with the ambient generators of section 11 and the
+    sharpened floor of (c).  The Z2 boundary needs no separate work: it is
+    corner_zeroPairings_absurd through P_yz.
+
+13. THE QUANTITATIVE-GAP ARCHITECTURE IS THE WRONG SHAPE (fork 23, round 8;
+    commit d2f3abd)
+---------------------------------------------------------------------
+(a) SHAPE TEST (shapetest23.jl, 256 bits, the 80 stored cell-H survivors):
+      SUM form  sum_d (1 - r_d) >= (3/32)(t_x+t_z):  holds at 0 of 80,
+        worst margin -1.98.  DEAD ON ARRIVAL -- at a survivor the readings
+        straddle one (e.g. 1.118, 0.994, 0.953), so the sum of deficits is
+        NEGATIVE.  Never commit to this shape.
+      MIN form  1 - min_d r_d >= (1/32)(t_x+t_z):  holds at 80 of 80,
+        worst margin +1.74e-2.  The min form is the only viable shape.
+(b) 1/32 IS BROKEN (ratiofloor23.jl, 8192 starts, 398 feasible, 10 polishes):
+      inf (1 - min_d r_d)/(t_x+t_z) descends 0.02380 -> 0.02181 and is STILL
+      falling monotonically at the last polish.  1/32 = 0.03125 fails.
+      The minimizer: lam = 159.3, ahat = 0.0358, t_x = 7.70e-2, t_y = 5.4e-4,
+      min r_d = 0.99822, t_x+t_z = 8.15e-2.
+      Together with round 6 (0.36 refuted at 512 bits) and round 7
+      (inf 0.045 over a 60-point sample), the pattern across three
+      independent searches is a monotone descent with NO plateau.
+(c) MY OWN ROUND-7 CRITERION WAS WRONG, AND I CORRECT IT.  I ranked factors
+    by SPREAD (max/min of deficit/F).  Validity of a certificate needs only
+    inf(deficit/F) > 0; spread measures TIGHTNESS, not validity.  Re-ranked
+    by hard-minimized infimum over the Z2-vanishing candidates
+    (factorfloor23.jl, 300 feasible seeds, 6 polishes each):
+      a_y^2 (t_x+t_z)/(1+lam)   inf 4.08e-2   traj 4.51e-2 -> 4.08e-2
+      min(a_y^2, t_x+t_z)       inf 3.61e-2   traj 4.18e-2 -> 3.61e-2
+      a_y^2 (t_x+t_z)           inf 9.23e-4   traj 1.09e-3 -> 9.23e-4
+      a_y^2                     inf 1.58e-5   traj 1.91e-5 -> 1.58e-5
+    EVERY ONE STILL DESCENDS, and at the minimizers a_y^2 is now LARGE
+    (98, 7.4, 115, 5.9): neutralising the Z2 channel merely moves the search
+    to another one.  No simple weight/axis monomial captures the rate.
+(d) THE ARCHITECTURAL CONCLUSION.  This is the round-1 graveyard law again,
+    in quantitative dress: the sup of min_d r_d over {cell H, S >= 0} is 1,
+    approached along channels that no monomial factor bounds.  A UNIFORM
+    QUANTITATIVE GAP  1 - min_d r_d >= c F  IS THE WRONG SHAPE for the
+    discharge, for every monomial F tested over three rounds.  What remains:
+      (i) an exact Positivstellensatz whose slack is a positive combination
+          vanishing exactly on the boundary (no uniform c), or
+      (ii) the kxx <= 1 / kxx > 1 split, where the heavy-erased reduction
+          leaves the kxx > 1 side only TWO floors to refute, or
+      (iii) a proof that consumes the transported pair system directly
+          rather than any aggregate of it.
+(e) KERNEL (Gtz/Wave/FloorsForceExcess.lean, gate 9957 exit 0, 1/1 pin
+    standard):
+      corner_oneAxisZero_heavyInside_floors_force_excess
+        cell H + the three outside floors  =>  S >= 0,  TIE-FREE.
+      (ledger identity + tie-free selfRead + positive coweights).  This is
+      the coordinator's observation, verified and landed: the discharge may
+      be stated as pure geometry on the cell, with no tie hypothesis and no
+      disjunction inside the certificate.
+
+14. THE PRODUCT FACTOR WORKS; THE kxx SPLIT DOES NOT (fork 23, round 9;
+    commit 1c0d64b)
+---------------------------------------------------------------------
+(a) A METHOD NOTE ON "COMPACTIFY AND RE-MEASURE": inf(deficit/F) is a
+    property of the POINT SET, not of the chart -- reparametrizing by
+    mu = lam/(1+lam) cannot change a measured infimum.  What the
+    non-compactness argument legitimately buys is (i) the warning that
+    Putinar needs Archimedean, and (ii) the suggestion to admit NEGATIVE
+    POWERS of (1+lam) into the factor family.  Both were used below.
+(b) THE PRODUCT FACTOR IS THE FIRST ONE THAT BEHAVES (productfactor23.jl,
+    productconfirm23.jl; 12288 starts, 400 feasible seeds, 14 polishes):
+      F* = a_y^2 t_y t_x t_z      inf 9.2458   (traj 11.97 -> 9.25)
+      F* /(1+lam)                 inf 42.6     (traj 47.7 -> 42.6)
+      F* /(1+lam)^2               inf 107.7    (traj 122 -> 108)
+    THE DECISIVE DIFFERENCE IS NOT THE NUMBER BUT THE MINIMIZER.  Every
+    single-channel factor drove the search to a BOUNDARY (ahat -> 0, or
+    t_y -> 0, or lam -> infinity).  The product factor's minimizer is a
+    HEALTHY INTERIOR POINT: lam = 22.81, ahat = 0.978, a_y^2 = 22.78,
+    t = (0.3950, 0.0428, 0.0243 | 0.0221, 0.0169, 0.4989), deficit 0.0863,
+    min_d r_d = 0.9137.  That is what a genuine positive infimum looks
+    like: the multi-channel factor closes every escape at once, so the
+    search has nowhere to run and merely refines an interior minimum.
+    THE CANDIDATE LAW (tie-free, on {cell H, S >= 0}):
+        1 - min_d r_d  >=  a_y^2 t_y t_x t_z            (c = 1)
+    measured margin about 9x against the global infimum, and at the 80
+    stored cell-H survivors it holds 80 of 80 with worst margin +2.51e-2
+    and ratio deficit/F* in [34.8, 2.6e4] (productcheck23.jl, 256 bits).
+    After clearing denominators this is ONE polynomial inequality, and the
+    factor vanishes in EVERY known channel, so it is the first target whose
+    shape is not refuted in advance.
+(c) THE kxx SPLIT GIVES NO GAP -- measure before certifying, as planned:
+      sup min_d r_d on {cell H, S>=0, kxx > 1}  = 0.9986546  (kxx = 2.05)
+      sup min_d r_d on {cell H, S>=0, kxx <= 1} = 0.9980443  (kxx = 0.973)
+    Both halves creep to 1, so the two-floor reduction on the kxx > 1 side
+    does NOT buy a uniform gap.  The split is not the way in.  (It remains
+    available as a variable-count reduction inside a certificate, but it
+    solves nothing by itself.)
+(d) KERNEL (Gtz/Wave/CappedSharpFloor.lean, gate 9958 exit 0, 1/1 pin
+    standard):
+      corner_oneAxisZero_heavyInside_sFloor_capped
+        (1-t_y) rho^2 <= (t_x((1-t_x-t_y-t_z)/(t_y+t_z) - 1)
+                          + t_z(r_z-1))(1+r_z)
+      -- the sharpened S-floor with the erased reading r_x ELIMINATED by
+      the hypothesis-free paid cap.  One variable fewer in the certificate
+      system, and the eliminated one carried the cell's largest dynamic
+      range.
+(e) NEXT: the SOS for  1 - min_d r_d >= a_y^2 t_y t_x t_z  on
+    {cell H, S >= 0}, in the transported coordinates, with the ambient
+    generators of section 11, the ledger identity and capped floor of
+    sections 12/13, and the min handled by an exact selector or by the
+    three-fold conjunction (one certificate per d).  The interior
+    minimizer of (b) is the point the certificate must be tight at.
+
+15. THE GRAM PUSH-THROUGH, THE MASS VERIFICATION, AND A DECISIVE NEGATIVE
+    (fork 23, round 10; commits a46e9e5, 9c54ab9)
+---------------------------------------------------------------------
+(a) MASS VERIFICATION OF THE CANDIDATE LAW (lawsweep23.jl, 200 threads,
+    8.0e9 draws, 249.6s): 171,403,301 cell-H samples, 784,626 of them with
+    S >= 0.  VIOLATIONS of  1 - min_d r_d >= t_x t_y t_z : ZERO.
+    Minimum observed ratio deficit/(t_x t_y t_z) = 13.97.
+    With the 80 stored survivors (min ratio 71.3) and the ascent infimum
+    26.6, the law is the best-supported target the arm has had.
+(b) THE SIMPLEST FACTOR WINS.  Dropping a_y^2 entirely is SAFE:
+      t_x t_y t_z            inf 26.60  (interior minimizer lam 1.85,
+                                         ahat 0.581, t_y 0.403, def 0.131)
+      t_x t_y t_z/(1+lam)    inf 59.25
+      a_y^2 t_x t_y t_z      inf 18.35
+      a_y^2 t_x t_z          inf  1.23
+      a_y^2 t_y              inf  0.011
+    The weight product alone closes the Z2 channel -- a_y^2 is not needed,
+    and the certificate factor is degree 3 in the WEIGHTS ONLY, with no
+    readings and no lam.
+(c) A DECISIVE NEGATIVE: THE GENERAL FOUR-SET STATEMENT IS FALSE.
+    Question: in a (6,3) design, can a 4-subset dominate STRICTLY while all
+    four of its 3-subsets fail?  A 23-parameter ascent on
+      psi = max over strictly dominating 4-sets of min_{a in F} r_a
+    drives psi to 4.9e17: as A = S_F - I approaches singular from inside,
+    ALL FOUR readings blow up together and every triple fails.  So the
+    answer is YES and the four-set structure alone proves nothing.
+    WHAT THIS MEANS: cell H's discharge MUST consume the corner, and the
+    specific ingredient that kills the degenerate channel is |g_x| = 1
+    (landed: corner_oneAxisZero_unit).  A near-singular A forces the
+    excluded pair to carry almost all of Parseval, which a UNIT excluded
+    atom cannot do.  Any future attempt to prove cell H from four-set
+    combinatorics alone is refuted in advance.
+(d) KERNEL, and it is general mathematics rather than campaign plumbing
+    (Gtz/Wave/MemberGramPushThrough.lean, gate 9960, 2/2 standard axioms):
+      matrix_pushThrough_inv      V^T (V V^T - 1)^-1 V = 1 + (V^T V - 1)^-1
+        for ANY rectangular V over a commutative ring, whenever both shifted
+        products are invertible.  No positivity, no square shape.
+      member_reading_eq_gram_inv  r_a = 1 + ((B - 1)^-1)_{aa},  B = V^T V
+        so the four floors of a four-set are exactly
+            diag((B - 1)^-1) >= 0
+        on the 4x4 MEMBER GRAM.  The four member atoms of a rank-three gap
+        are linearly dependent, and in the Gram coordinates that dependency
+        is explicit (B is singular on it, B - 1 has eigenvalue -1 there, so
+        B - 1 has signature (3,1) exactly when the four-set dominates).
+        A certificate written on the Gram carries the dependency for free;
+        the 3x3 reading picture hides it.
+    Also landed this round: oneAxisZeroHeavyInsideResidual_of_geometry
+    (a46e9e5) -- the residual reduces to ONE conjunctive emptiness
+    {cell H, S >= 0, the three floors}, with S >= 0 free from the floors,
+    no tie hypothesis and no disjunction.  SOUNDNESS NOTE: the min in
+    "min_d r_d <= 1 - F" is EXISTENTIAL and must never be split into one
+    statement per outside atom -- at every survivor the readings straddle
+    one, so the per-atom form is false while the conjunction is empty.
+(e) NEXT: the conjunctive emptiness in the Gram coordinates of (d), with the
+    corner entering through |g_x| = 1 in the form  xi^T B^+ xi = 1  (xi the
+    erased components, zero in the y slot), which is exactly the ingredient
+    (c) proves to be indispensable.
+
+16. THE READING MATRIX RELATION, THE DETERMINANT FORM, AND THE HIGHER
+    LEDGERS (fork 25, round 1; commits 9a65406, ce9ce6f, dc6acf7)
+---------------------------------------------------------------------
+THE RESIDUAL IS NOT DISCHARGED.  Three modules landed, gate 9964 exit 0,
+20/20 pins standard, zero sorries.  What follows is what is now kernel,
+what is measured, and where the fight stands.
+
+(a) KERNEL 1 -- Gtz/Wave/ReadingMatrixRelation.lean (9a65406, 8 pins)
+    atomsMatrix / weightDefect / readingMatrix  (V, Dm, P)
+    atoms_weightDefect_eq_gap       V Dm V' = S_F - 1   (Parseval)
+    readingMatrix_symm              P_ab = P_ba
+    reading_matrix_generalized_inverse   P Dm P = P
+    reading_relation_split   sum_{b in F}(1-t_b)P_ab P_bc
+                               - sum_{b notin F} t_b P_ab P_bc = P_ac
+    reading_relation_diag / _member_diag / reading_member_diag_floor
+        r_d(1 - (1-t_d)r_d) = sum_{b in F, b/=d}(1-t_b)P_db^2
+                                - sum_{b notin F} t_b P_db^2
+    corner_fourSet_member_diag_floor  the cell-H form with F^c = {x,z}
+    The identity is EXACTLY Parseval in reading coordinates, so a
+    certificate written against it consumes Parseval for free.  Verified at
+    512 bits on all 1601 stored cell-H designs, worst rel residual 8.9e-138.
+
+(b) KERNEL 2 -- Gtz/Wave/HeavyInsideDeterminantForm.lean (ce9ce6f, 3 pins)
+    gapDet_erase        det(S_{F\d} - 1) = det(S_F - 1)*(1 - r_d)
+    member_floor_iff_gapDet_erase_nonpos   at a PD gap,
+        r_d >= 1  <->  det(S_{F\d} - 1) <= 0
+    oneAxisZeroHeavyInsideResidual_of_determinants
+        THE RESIDUAL WITH EVERY INVERSE REMOVED.  It is enough to refute
+        {corner, A_y PD, det A_z <= 0, S >= 0, det(S_{F\d} - 1) <= 0 for the
+         three outside d}.  Every clause is a POLYNOMIAL in the atoms and
+        weights (Cauchy-Binet: each determinant is a signed sum of squares).
+        THIS IS THE ARENA THE CERTIFICATE HUNT SHOULD RUN IN -- no inverse,
+        no adjugate, no quotient.
+    Consequence worth stating: {cell H, three floors} says ALL FOUR triples
+    of F = {y} u C^c fail while S_F - 1 is PD (r_y >= 1 is cell H's own
+    selfRead).  Round 10's negative already refuted that from four-set data
+    alone, so the corner must enter -- and it now enters as polynomials.
+
+(c) KERNEL 3 -- Gtz/Wave/CoweightedMemberLedger.lean (dc6acf7, 9 pins)
+    reading_defect_atoms      THE MASTER IDENTITY  P Dm V' = V'
+        (strictly stronger than P Dm P = P, which is its square)
+    reading_defect_probe      sum_b (delta_b - t_b) P_ab (g_b . w) = g_a . w
+        for every atom a and EVERY probe w
+    coweighted_reading_fixed_point   if w annihilates every excluded atom,
+        sum_{b in F}(1-t_b) P_ab (g_b . w) = g_a . w
+    corner_tripleProduct_fixed_point  at two excluded atoms {x,z} the probe
+        g_x x g_z annihilates both, so the vector of TRIPLE PRODUCTS
+        [g_b, g_x, g_z] is a +1 eigenvector of the coweighted reading
+        operator.  Weight-carrying, linear, and with no counterpart in the
+        campaign: the trace ledger sees only the diagonal.
+    det_sum_four_atomMatrix   CAUCHY-BINET AT FOUR ATOMS
+        det(sum_a w_a v_a v_a') = sum_{a<b<c} w_a w_b w_c ((v_a x v_b).v_c)^2
+    coweighted_member_sum_eq  sum_{a in F}(1-t_a)G_a = (S_F - 1) + sum_{c
+        notin F} t_c G_c   (Parseval)
+    coweighted_member_det_law THE DETERMINANT LEDGER, two excluded atoms:
+        det(sum_{a in F}(1-t_a)G_a) = det A + t_x g_x'(adj A)g_x
+            + t_z g_z'(adj A)g_z + t_x t_z (g_x x g_z)'A(g_x x g_z)
+    det_mul_cross_quadForm    the adjugate compound (general 3x3):
+        det M ((u x v)'M(u x v)) = (u'(adj M)u)(v'(adj M)v)
+                                     - (u'(adj M)v)(v'(adj M)u)
+    coweighted_member_det_ge_gapDet   the overshoot, at a PD gap
+
+(d) THE HIGHER LEDGERS, MEASURED (ledger25.jl, 512 bits, all 1601 cell-H
+    designs).  The coweighted member sum has THREE invariants and the
+    campaign has used only the first.  With tau = t_x r_x + t_z r_z and
+    pi = t_x t_z (r_x r_z - P_xz^2):
+      e1: sum_{a in F}(1-t_a) r_a                          = 3 + tau
+      e2: sum_{a<b}(1-t_a)(1-t_b)(r_a r_b - P_ab^2)        = 3 + 2 tau + pi
+      e3: sum_{|T|=3} prod(1-t_a) det P_TT                 = 1 + tau + pi
+      e4: det of the coweighted reading matrix              = 0
+    Worst relative residuals 2.0e-138 / 3.9e-138 / 5.8e-138 / 1.5e-154.
+    e1 is the landed ledger; e2, e3, e4 are new.  REASON: the coweighted
+    whitened members have second moment 1 + t_x ghat_x ghat_x' +
+    t_z ghat_z ghat_z', a rank-two update of the identity, whose invariants
+    are exactly the right sides.
+
+(e) THE READING DEFICIT IS A DETERMINANT RATIO (verified 8.9e-138):
+        1 - r_d = det(S_{F\d} - 1) / det(S_F - 1)
+    so 1 - min_d r_d = max_d det(S_{T_d} - 1)/det A and the candidate law
+    is the polynomial statement  max_d det(S_{T_d} - 1) >= F * det A.
+
+(f) THE PLANE DEPENDENCY (verified 2.7e-137, kernel route via the probe):
+        sum_d (1 - t_x - t_d) xi_d P_{d'd} = (1 - t_x) xi_{d'}
+    with xi_d = g_d . g_x -- the three plane vectors v_d = p_d - xi_d kappa
+    are dependent with the EXPLICIT weight-carrying coefficients
+    (1 - t_x - t_d) xi_d.
+
+(g) THE ASCENT, AND A CORRECTION TO THE BRIEF AND TO SECTION 15
+    (ratiohunt25.jl, 64 threads, 1125 feasible starts, three descent stages
+    each, stable primitives).  inf(deficit/F) over {cell H, S >= 0}:
+      tx*ty*tz                16.93   INTERIOR minimizer, healthy weights
+          (t = (0.0687,0.661,0.211 | 0.00495,0.0326,0.0225), lam 1.495,
+           ah^2 0.236, kxx 60.1, deficit 0.162, S 0.0123)
+      tx*ty*tz*min t_d       382.3    interior
+      (tx*ty*tz)*(t4*t5*t6) 24577     interior
+      t4*t5*t6                 3.33   escapes via t_x -> 2.7e-4
+      tx*tz                    6.29   escapes via ah^2 -> 0.998
+      min t_d                  0.307  escapes via t_z -> 1.1e-4
+      tx                       0.0364 escapes via ah^2 -> 7e-6 (Z2)
+      1/(1+kxx)                0.0112 escapes via ah^2 -> 2e-4 (Z2)
+    ONLY t_x t_y t_z and its refinements have an interior minimizer.  The
+    brief's F* = a_y^2 t_y t_x t_z (inf 9.246) is round 9 and superseded by
+    round 10; section 15(b) reported inf 26.60 for t_x t_y t_z and THAT IS
+    TOO HIGH -- three-stage descent reaches 16.93, second best 17.34.  The
+    kernel target c = 1 still has a 17x margin.
+
+(h) THE 88 EDGE RESIDUALS, READ (edges23.csv).  t_x q10/50/90 =
+    2.8e-12/1.7e-3/1.7e-2, max 3.5e-2: t_x is by far the smallest corner
+    weight at every one.  lam 2.2..15.6, ah^2 0.21..0.98, kxx 20..1.3e14,
+    tr A_y^-1 1.035..6.23 (median 1.34), min floor 0.197..0.971.
+    THE SIGN CENSUS on {cell H, S >= 0} (108 rows): the number of outside
+    readings >= 1 is NEVER 0 and NEVER 3 -- it is 1 (49 rows) or 2 (59).
+    "Never 3" is the conjecture.  "Never 0" is equivalent to
+    r_y <= tr A_y^-1, the trace pinch, tie-free on this cell.
+    cellMarginY/Z are SCALE-NORMALIZED leading minors (min(m1/s, m2/s^2,
+    m3/s^3), s = max atom leverage), so their tiny magnitudes are a
+    normalization artifact and NOT near-singularity -- only their signs
+    carry information, and they encode which four-set is PD.  The scanner
+    RELABELS y and z when the y four-set fails (61 of 88 are relabelled).
+
+(i) A NEGATIVE, HONESTLY: THE DETERMINANT LEDGER DOES NOT CLOSE THE CELL
+    (ledgertight25.jl).  Combining e3 with the four floors gives
+      det A (1 + tau + pi) <= sum_T prod(1-t_a)(X(T) - L(T) + 1),
+    which holds at all 108 rows and TIGHTENS toward the roof (relative
+    slack 0.0225 at min r_d = 0.9705, median 0.174).  But the slack is
+    exactly  det A * sum_{a in F} (prod_{b in F, b/=a}(1-t_b)) (r_a - 1),
+    i.e. a restatement of the floors themselves -- a tautology, not a new
+    constraint.  The graveyard law holds: every AGGREGATE of the new
+    relations degenerates at the roof exactly as the old ones did.  The
+    higher ledgers are worth landing as GENERATORS of the ideal, not as
+    standalone clauses.
+
+(j) THE EXACT NEXT BRICK.  Run the Positivstellensatz in the DETERMINANT
+    arena of (b), not in the reading arena: variables are the six atom
+    coordinate triples and the six weights, generators are the corner
+    equations, Parseval, the five determinant signs, and the new e2/e3
+    ledgers, and the target is emptiness with the margin t_x t_y t_z.  Seed
+    at the interior minimizer of (g).  The structural facts to exploit,
+    all now kernel: (i) the +1 eigenvector of the coweighted reading
+    operator is the triple-product vector against the excluded pair, so the
+    coweighted reading matrix R = W P_FF W has eigenvalues 0, 1, mu2, mu3
+    with mu >= 1; (ii) R - (1 - nn') has the SAME nonzero eigenvalues as
+    the 2x2 excluded block, which is why e2 and e3 close in tau and pi;
+    (iii) the kernel of R is the member dependency divided by the root
+    coweights.  Those three pin the characteristic polynomial of R
+    completely in terms of tau and pi -- the first complete description of
+    the member arena the campaign has had.
+
+17. THE COMPLETE SPECTRUM OF THE COWEIGHTED MEMBER READING MATRIX
+    (fork 25, round 1 addendum; commit 5fb6b3b)
+---------------------------------------------------------------------
+Write W = diag(sqrt(1-t_a) on F, sqrt(t_c) on F^c), Q = W P W with P the
+reading matrix at A = S_F - 1 (PD).  Then Q is PSD of rank 3 and Q J Q = Q
+with J = diag(1_F, -1_{F^c}).  In blocks R = Q_FF, M = Q_FE, N = Q_EE:
+    R^2 - R = M M' ,   M'M - N^2 = N ,   R M - M N = M .
+CONSEQUENCES, all exact and all verified at 512 bits on 1601 cell-H designs:
+  (i)   R is PSD with R^2 >= R, so every nonzero eigenvalue is >= 1.
+  (ii)  rank R = 3 while rank(MM') <= 2, so ONE eigenvalue is exactly 1.
+  (iii) THE +1 EIGENVECTOR IS EXPLICIT.  psi_a = sqrt(1-t_a) [g_a, g_x, g_z]
+        (the triple product against the excluded pair).  Landed as
+        corner_tripleProduct_fixed_point.  Route: the master identity
+        P Dm V' = V' probed with w = g_x x g_z, which annihilates both
+        excluded atoms.
+  (iv)  THE KERNEL IS EXPLICIT.  n_a proportional to kappa_a/sqrt(1-t_a),
+        kappa the linear dependency of the four member atoms.  It is
+        orthogonal to psi because [sum kappa_a g_a, g_x, g_z] = 0.
+  (v)   E := R - (1 - n n') is PSD of rank <= 2, supported on the
+        orthocomplement of span{n, psi}, and MM' = E^2 + E while M'M =
+        N + N^2, so E AND N HAVE THE SAME NONZERO EIGENVALUES.
+  (vi)  THEREFORE the spectrum of R is  {0, 1, 1+nu1, 1+nu2}  with nu the
+        eigenvalues of the 2x2 excluded block N, i.e.
+            nu1 + nu2 = tau = t_x r_x + t_z r_z
+            nu1 nu2   = pi  = t_x t_z (r_x r_z - P_xz^2) .
+        The whole characteristic polynomial of the member arena is a
+        function of tau and pi alone:
+            e1(R) = 3 + tau,  e2(R) = 3 + 2 tau + pi,
+            e3(R) = 1 + tau + pi,  e4(R) = 0 .
+        e1 is the landed coweight ledger.  e3 is landed this round as
+        coweighted_member_det_reading_ledger.  e2 and e4 are derived and
+        verified but not yet in kernel.
+  (vii) THE PER-MEMBER FLOOR FOR FREE.  R >= 1 - n n' gives
+            (1 - t_a) r_a >= 1 - n_a^2   for every member,
+        whose SUM is exactly the coweight ledger (slack t_x r_x + t_z r_z).
+        Derived, verified, not in kernel: it needs the eigen-decomposition.
+WHAT THIS DOES NOT DO.  Schur-Horn majorization of the diagonal by
+{0,1,1+nu1,1+nu2} gives only max_a (1-t_a) r_a <= 1 + nu1 (a sharpened trace
+pinch) and a second partial-sum condition that is vacuous at the roof.  The
+spectrum is a complete description of the member arena but it is still an
+AGGREGATE, and section 16(i)'s verdict stands: aggregates degenerate at the
+roof.  The closure must come from the joint system in the determinant arena.
+
+18. ROUND 2 OF FORK 25 (commits 027a835, 72a57d8, 61e9566): THE FOIL, THE
+    DOWNDATE TRANSPORTS, THE COMPOUND PROBES, AND THE DUALITY VERDICT
+---------------------------------------------------------------------
+MANDATE: fork 25 is the corank-2 arm agent (no-stop): (A) cell H, (B) cell
+B, (C) Z1 wiring, (D) horns, (E) assemblies.  Sibling fork 26 = corank 1.
+(a) KERNEL 1 -- Gtz/Wave/FourSetTetrahedralFoil.lean (027a835, 3 pins):
+    tetraFoil (9/10-scaled even sign patterns): gap (56/25)*1 PD, ALL
+    readings 243/224 > 1.  fourSet_posDef_gap_all_floors_realizable: no
+    member-only law can close a cell.  The coordinator's tetrahedron
+    verified exactly; unnormalized +-1 gives readings exactly 1.
+(b) KERNEL 2 -- Gtz/Wave/AdjugateDowndateReadings.lean (72a57d8, 7 pins):
+    adj_sub_atomMatrix_self_reading   g'adj(A-gg')g = g'(adjA)g
+    det_mul_adj_sub_atomMatrix_reading  detA*(v'adj(A-gg')v) =
+        (detA - g'adjAg)(v'adjAv) + (v'adjAg)(g'adjAv)
+    cross_quadForm_sub_atomMatrix    (x*g-cross)'(A-gg')(x*g-cross) = ..A..
+    cross_dotProduct_self (Lagrange), outside_gap_eq_fourSet_downdate,
+    corner_oneAxisZero_heavyInside_KRy_eq   g_y'adj(K)g_y = detAy*r_y
+    corner_oneAxisZero_heavyInside_KRz_eq   = detAy((1-ry)rz + rho^2)
+    corner_oneAxisZero_heavyInside_crossY_pos  (gx x gy)'K(...) > 0 cell-wide
+    SIGN CENSUS (8M cell-H samples): detK<0, KRy>0, CRy>0, kxx>0 at
+    100.0000%; KRx/KRz/CRz mixed; S<0 at 99.2% of the raw cell.
+    kxx = g_x'A_y g_x > 0 is PD + landed xOrthogonal (one-liner).
+    THE WEIGHT-GAP LAW ON CELL H is now pure A_y-readings.
+(c) KERNEL 3 -- Gtz/Wave/CompoundProbeRelations.lean (61e9566, 6 pins):
+    adj_add_atomMatrix_probe    w'adj(M+vv')w = w'adjM w + (w x v)'M(w x v)
+    adj_sum_four_atomMatrix     ADJUGATE CAUCHY-BINET:
+        adj(sum w_a G_a) = sum_{a<b} w_a w_b (v_a x v_b)(v_a x v_b)'
+    adj_probe_two_excluded      gz'adjA gz = gz'adjC gz - tx (gz x gx)'C(..)
+        with C = A + txGx + tzGz  (sympy-verified I4-I7)
+    coweighted_member_sum_posSemidef
+    corner_excluded_reading_wedge_dominated(_x)   detA*r_z <= gz'adj(C)gz
+    -- THE e2-LEVEL COUPLING of excluded readings to member pair-wedges;
+    with (b) these are the corner-coupled generators the foil demands.
+(d) THE COMPACT MODEL (coordinator, verified): h_c = sqrt(t_c) g_c makes
+    Parseval polynomial (sum hh' = 1), |h_c| <= 1, sum|h|^2 = 3, domain
+    compact => ARCHIMEDEAN BY CONSTRUCTION: Putinar existence restored.
+    P-tilde = T^1/2 H T^1/2 is the Gr(3,6) projection; H T H = H is its
+    Gram form (landed reading-matrix relation at F = design level).
+    Corner without lam/u: 2x2 minors of (t-cleared S_C - 1) vanish + trace
+    >= 0 + (S_C-1)g_x = 0.  Practical caveat measured: t-clearing inflates
+    the floor dets to ~degree 18 in 24 vars -- certificate EXISTS but dense
+    SOS cannot FIND it; the search still needs the reduced subsystems.
+(e) THE DUALITY EXPERIMENT (dualtest25.jl, dualP25.jl): the hypothesis
+    "duality exchanges cell H and cell B" is REFUTED.  Measured: the
+    weighted Naimark dual (co-whitening construction of
+    Gtz/Reduction/Naimark.lean, flip verified 158/159 and 89/89) maps a Z1
+    corner to a corner AT THE COMPLEMENT with a rank-1 gap ALWAYS
+    (congruence preserves inertia -- kernel-grade, extractable from the
+    Naimark proof), but the dual axis readings are ALL NONZERO: dual(Z1)
+    lands in the (P) STRATUM (159/159, min |axis| q10 3.2e-2), and
+    dual(generic P) stays in (P) (600/600).  CONSEQUENCES: no cell
+    exchange; the horns cannot be avoided by duality; asymmetric value --
+    horn emptiness would kill the dual images of Z1 ties, not conversely.
+    Z1's cells must be fought on their own terms, as we are doing.
+(f) THE SHADOW NEGATIVES (shadow25.jl, conefit25.jl/b): the scalar reading
+    shadow {P Dm P = P diag+pairs, floors, pinch, Delta<=0, CAP, S>=0,
+    sFloor, 2x2 psd minors} is FEASIBLE (violation 1e-27, interior point
+    rx=.08 ry=1.97 rz=3.21 r_d=(1.27,1.11,1.30)) -- the discharge needs
+    rank-3 + the corner beyond the scalar shadow.  Cone fits: v1 (35 cols)
+    residual 0.52; v2 (77 cols with law terms) 0.12 with q99 4e-5 --
+    interpolation, not identity.  Constant-coefficient cone fitting over
+    aggregate dictionaries does NOT find the certificate.
+(g) TOOLING: TSSOS v1.5.2 installed (needs Mosek -- unusable; use
+    SumOfSquares+Clarabel/Hypatia manually), SymbolicWedderburn, CSDP,
+    SemialgebraicSets, MultivariatePolynomials installed.  Julia 1.11
+    download blocked (S3 timeout).  ALL numeric hunts at -t 200 now (user
+    mandate): task-per-thread, StaticArrays, zero-alloc, Cauchy-Binet +
+    Cholesky primitives only.
+(h) WHERE CELL H STANDS: the discharge target is inverse-free
+    (determinant form, ce9ce6f), the floors region is the tie set, S >= 0
+    free, kxx > 0 free, the excluded readings are wedge-dominated (c), the
+    weight-gap law is A_y-native (b), no member-only route exists (a), no
+    scalar-shadow route exists (f), no constant cone-fit route exists (f),
+    Archimedean obstruction removed in the h-model (d).  NEXT: small-basis
+    certificates on the REDUCED subsystems seeded at the interior
+    minimizer, with the new wedge generators in the dictionary; then cell
+    B via the same instruments (its skeleton = the weight-gap collision).
+
+19. THE CELL-B PIVOT: THE ROOF BALANCE, THE CORE BOUND, AND THE PENCIL
+    FRAME (fork 25 continued; commits 5a78481 + measured)
+---------------------------------------------------------------------
+(a) DUALITY EXPERIMENT (dualtest25.jl, dualP25.jl): hypothesis "duality
+    exchanges cell H and cell B" REFUTED.  The weighted Naimark dual maps a
+    Z1 corner to a corner AT THE COMPLEMENT (rank-1 dual gap 159/159 --
+    congruence preserves inertia; kernel-extractable from Naimark.lean) but
+    dual(Z1) lands in (P) (axis zero-count 0 at 159/159, min |axis| ~3e-2)
+    and dual(generic P) stays in (P) (600/600).  No stratum collapse; horn
+    emptiness would imply Z1 emptiness on the dual image, not conversely.
+(b) THE ROOF BALANCE (lawbalance25.jl, 512 bits, pinned scales L=6/12/18):
+    at the cell-B roof the weight-gap law is carried by ty*KRy (97.5-98%)
+    plus detK (2-3%); ALL six other terms < 1e-4 share.  detMo/detAy -> 1
+    and the collision tightens to (tx+ty+tz) vs ty exactly at the roof.
+    Chain candidates REFUTED at near-floor points (collision25.jl, 200
+    threads): y-grouping fails 14% (worst +202), symmetric alpha-split
+    fails 15% (worst +1.9); the failing channel has D_y >> detMo (lam
+    100-500, tiny corner weights).  Simple det-comparisons cannot close.
+(c) KERNEL (Gtz/Wave/BothLightCoreBound.lean, 5a78481, 2 pins):
+    corner_outside_det_eq_fourSet_scale   detK = detAy*(1 - r_y)
+    corner_bothLight_core_bound   ON CELL B with detK <= 0:
+      detK + ty*KRy + tz*KRz <= ty*detAy + tz*detAz
+    (route: ty*Dy = ty*detK + ty*KRy exactly, same at z, coefficient
+     1-ty-tz >= 0 on detK <= 0.)  The heavy core of the seven terms is
+    bounded; REST = tx*KRx + txty*CRy + txtz*CRz + tytz(1+lam)kxx
+    + txtytz(1+lam) remains.
+(d) THE INVARIANT SHADOW IS FEASIBLE (invshadow25.jl, 200 threads): the
+    13-var (Mo, lam, ah, t) system with pencil equalities (the landed
+    triad laws: detN = detMo t4t5t6, tr(adjN Mo) = detMo e2(t_out),
+    tr(adjMo N) = detMo e1(t_out)) + all aggregate floor consequences has
+    interior solutions; realizing one (the pencil RIGIDITY: q_d = Mo v_d,
+    v_d the Mo-orthonormal generalized eigenvectors, UNIQUE at distinct
+    t_d) shows per-atom floors fail (readings 2.15, 1.53, 0.08 straddle).
+    The frame data is irreducible -- same lesson as every aggregate.
+(e) THE PENCIL FRAME -- THE CANONICAL CHART OF CELL B (pencilframe25.jl
+    validates all six identities at 1e-13 on 500 designs):
+    T := matched Mo-orthonormal eigenvectors of the pencil (N, Mo):
+      T'MoT = 1,  T'NT = diag(t4,t5,t6).
+    eta_c := T'g_c (c = x,y,z),  W := T'T.  Then EXACTLY:
+      MASTER:  W = diag(t4,t5,t6) + tx*Xx + ty*Yy + tz*Zz   (X = eta eta')
+      GAPS:    Abar_y = T'A_yT = diag(1-t4,1-t5,1-t6) - txX + (1-ty)Y - tzZ
+               Abar_z = same with (1-tz)Z - tyY;   Kbar = I - W = D - txX
+               - tyY - tzZ,  D := diag(1-t_d)
+      FLOORS:  r_d(A_y) = (Abar_y^-1)_dd  -- THE FLOORS ARE THE DIAGONAL
+               OF ONE INVERSE in this frame; z-side likewise; 7th floor =
+               det Kbar <= 0
+      CORNER:  eta' W^-1 eta pins the corner Gram: eta_x'W^-1eta_x = 1,
+               eta_x'W^-1eta_y = eta_x'W^-1eta_z = 0,
+               eta_y'W^-1eta_y = P, eta_z'W^-1eta_z = Q, eta_y'W^-1eta_z = R
+               with (P,Q,R) := (|g_y|^2, |g_z|^2, g_y.g_z) and the SINGLE
+               relation PQ - R^2 = P + Q - 1 (P+Q = 2+lam, R != 0 is
+               Z1-proper via R = lam ay az/(1+lam)).
+    THE SYSTEM: 9 (eta) + 5 (t) + 2 (P,Q,R mod relation) = 16 vars, 6
+    corner links -> dim 10 = the chart.  All polynomial (adjW-cleared).
+(f) THE LORENTZ STRUCTURE: on cell B, Kbar + Y > 0, Kbar + Z > 0 and
+    det Kbar <= 0 force Kbar signature (2,1) (or singular): the arena is
+    LORENTZIAN.  The floors at Kbar via the landed adj_add_atomMatrix_probe:
+      y-floors:  (adj Kbar)_dd + (e_d x eta_y)'Kbar(e_d x eta_y)
+                   >= det Kbar + eta_y'(adj Kbar)eta_y      (d = 1,2,3)
+      z-floors:  same with eta_z;   det Kbar <= 0
+    and eta'adjKbar eta = det Abar - det Kbar > 0: both eta_y, eta_z lie in
+    the adjKbar-POSITIVE cone (adjKbar has signature (1,2): a genuine
+    light-cone containment).  Probe-sum identity for aggregates:
+      sum_d (e_d x eta)(e_d x eta)' = |eta|^2 I - eta eta'.
+    NEXT: hunt the contradiction in the Lorentz frame (numerically first,
+    300 threads), land the probe-sum identity + floor forms in kernel, and
+    build the low-order SOS on THIS 16-var system if hand-closing resists.
+    Certificates must degenerate at t->0 (the (5,3) shell) -- the margin
+    factor stays weight-carried.
+
+20. THE SHELL MECHANISM AND THE SOLVER FARM (fork 25; commit 52af4b1)
+---------------------------------------------------------------------
+(a) KERNEL (Gtz/Wave/SecondInvariantLedger.lean, 52af4b1, 2 pins,
+    gate 9973 exit 0):
+      trace_adj_mul_two_excluded    tr(adj(A + aG_u + bG_v) A) = 3detA
+        + 2a u'(adjA)u + 2b v'(adjA)v + ab (u x v)'A(u x v)
+      corner_second_invariant_ledger   tr(adj C * A) = detA (3 + 2tau + pi)
+    THE LEDGER TRIPLE IS COMPLETE: e1 (coweight ledger, landed long ago),
+    e2 (this), e3 (round 1).  The spectrum {0,1,1+nu1,1+nu2} of the
+    coweighted member reading matrix is fully pinned in kernel-adjacent
+    form; only e4 (det = 0, rank three) remains unlanded (Mathlib lacks a
+    direct rectangular-factor det lemma; deferred as low value).
+(b) THE SDP FARM (TSSOS v1.5.2 patched: Mosek -> switchable
+    Clarabel/Hypatia via TSSOS.TSSOS_OPTIMIZER[]; dev copy at
+    ~/.julia/dev/TSSOS).  The pencil-frame probe model: 48 vars (cell B) /
+    51ish (cell H), all constraints deg <= 4, floors LINEAR in probes,
+    hand cliques (corner 27 | y-floors 24 | z-floors 24 | 7th 18) -> max
+    block 28, 6972 affine constraints.  CLARABEL DIES at iteration 1
+    (numerical, model degeneracy) -- twice, pre- and post-cliques.
+    HYPATIA GRINDS HONESTLY (iter 15: gap 3.8e1, x_feas 0.14 and closing).
+    Running: cellB mu=.2 o2, cellH mu=.2 o2, cellB mu=.05 o2, cellH
+    mu=.05 o2 (logs sos*.log in scratchpad/z1).  ORDER 3 IS A TRAP: the
+    27-var clique at order 3 = 4060-dim moment basis = 200+ GB RSS;
+    killed before OOM.  Objective in all: maximize rbar_y (the 7th-floor
+    reading); certified bound < 1 = emptiness of the mu-margin bulk.
+(c) THE SHELL EXPANSION (sympy, exact limits): parametrize t4 = 1-eps,
+    (tx,ty,tz,t5,t6) = eps*(wx,wy,wz,w5,w6) on the w-simplex,
+    eta_y = (a, seps p2, seps p3), eta_z = (b, ...), eta_x = (h, ...),
+    seps = sqrt(eps).  LEADING ORDERS, exact:
+      detK/eps  -> 1 - (wx h^2 + wy a^2 + wz b^2)   [7th floor needs <= 0]
+      floor Y1  -> 1/a^2 - 1                        [needs a^2 <= 1]
+      floor Z1  -> 1/b^2 - 1                        [needs b^2 <= 1]
+      floors Y2,Y3 (Z2,Z3) -> 0 with O(eps) slack w5, w6 [slack unless
+        the sub-shell w5, w6 -> 0]
+      corner    -> h^2 <= 1
+    THE LEADING CONTRADICTION: the 7th floor needs a sub-convex
+    combination of capped-by-1 quantities to be >= 1 -- equality
+    throughout, i.e. total degeneracy, pushed to the next stratum.
+(d) THE DEEP-SHELL KILL, EXACT (the collinear slice): with all eta's
+    along e1 (the collapse direction), the system is EXACTLY empty by the
+    corner links alone:
+      x-orthogonality:  eta_x' W^-1 eta_y = h a / W11 = 0
+      Z1-proper (R != 0): a b != 0  =>  h = 0
+      x-normalization:  h^2 = W11 = t4 + tx h^2 + ty a^2 + tz b^2 > 0
+      -- CONTRADICTION (0 = positive).
+    The corner forbids exact collinearity; the quantitative shell law is
+    the transverse-margin version (near-collinear => near-contradiction),
+    which is where |g_x| = 1 and R != 0 are spent -- EXACTLY the
+    ingredients the tetrahedral foil proved indispensable.  THE CELL-B
+    DISCHARGE ARCHITECTURE: bulk by SDP certificate (farm running), shell
+    by the corner-transversality law (finite case analysis over the
+    w-simplex faces).  Cell H maps into the same arena (one extra probe;
+    Delta <= 0 quartic; S >= 0 quadratic) -- cellH SDPs already running.
+
+21. THE SHELL ANCHOR AND THE FARM VERDICT (fork 25; commit d66d797)
+---------------------------------------------------------------------
+(a) KERNEL (Gtz/Wave/ShellAnchor.lean, d66d797, 3 pins, gate 9975 exit 0):
+      shell_equality_forcing    the arithmetic core of the collapse shell:
+        w subprobability five-vector, h^2 <= 1-s (s >= 0), a^2 <= 1,
+        b^2 <= 1, wx h^2 + wy a^2 + wz b^2 >= 1  ==>  EVERY slack vanishes
+        (wx s = wy(1-a^2) = wz(1-b^2) = w5 = w6 = 0).
+      corner_oneAxisZero_not_parallel(_z)   on the corner an inside atom is
+        never a multiple of the erased atom (orthogonality + unit norm +
+        the axis-reading cell hypothesis).
+    These are the two ends of the shell argument; the quantitative
+    interpolation (near-caps => near-parallel => contradiction margins) is
+    the remaining shell work.
+(b) LEVEL-1/2 CONFIRMATION (level1shell25b.jl, ZERO-ALLOC rewrite --
+    0 bytes/call verified, no futex pressure; the first version allocated
+    via closures + NamedTuples and stalled 300 threads in GC): level-1
+    violation floor 1.5e-6 with the escape exactly as derived (w5,w6 ->
+    6e-4, a^2,b^2 -> 1+3e-4); pin mode (w5=w6 ~ 1e-6) floors q10 at
+    1.4e-1 with best 2.6e-6 still via cap violations ~1e-4.  EVERY level
+    is empty; the approach is always through the caps; the recursion
+    descends in dimension (3 -> 2 -> 1) and terminates.
+(c) THE FARM VERDICT (8 runs, Hypatia, order 2): ALL CONVERGING TO USELESS
+    BOUNDS -- sup rbar_y over the order-2 relaxation ~ 16..57 >> 1 for
+    every (cell, mu).  The order-2 Lasserre on the probe model does NOT
+    see the emptiness; order 3 on the 27-var corner clique is a 200 GB
+    trap.  Two RLT-strengthened order-2 runs queued (pairwise floor-slack
+    products + slack-weight products; sos_*_rlt_o2_hypatia.log).  If RLT
+    stalls too, the SDP lane closes and the discharge is fully analytic:
+    bulk by hand-certificates in the pencil frame, shell by the anchor
+    pair + transverse margins.
+
+22. THE TRANSVERSE FLOOR -- THE FIRST QUANTITATIVE ANTI-COLLAPSE LAW
+    (fork 25; derivation complete, verification exact; kernel next)
+---------------------------------------------------------------------
+(a) THE PER-SLOT LEDGER (pencil frame; slotledger25.jl verifies the
+    identity at 7.2e-15 over 400 designs and gamma_d >= 0 with the most
+    negative value EXACTLY 0.0):
+      S_d (1 - tau_c) = tau_c t_d - t_x gamma_d
+          + t_y (T^y_d + Schur^y_d - 1) + t_z (T^z_d + Schur^z_d - 1)
+    where S_d := sum_c t_c eta_{c,d}^2 (corner energy at pencil slot d),
+    tau_c := tx+ty+tz, gamma_d := t_d + S_d - eta_{x,d}^2 >= 0 (CS at the
+    W^-1-unit eta_x), Schur^s_d := det Abar_s / adj(Abar_s)_dd (the floor
+    quantity: floor_d at side s <=> Schur^s_d <= 1), and T^s_d :=
+    Abar_s[d,d] - Schur^s_d >= 0 (the transverse Schur energy).
+(b) THE LAW (exact on {cell B, seven floors}):
+      t_y T^y_tot + t_z T^z_tot
+        >= (t4+t5+t6) (t4+t5+t6 - max_d t_d) + t_x sum_d gamma_d
+    Route: sum the ledger over d; floors give Schur <= 1; gamma >= 0; the
+    7th floor det(1-W) <= 0 gives some unit phi with phi'W phi >= 1, and
+    phi'W phi <= max t_d + sum_d S_d (CS), so sum_d S_d >= 1 - max t_d.
+    Every step is elementary: CS + Schur + "PD => det > 0" contrapositive.
+    NO spectral theory.  The transverse energies are FORCED positive by
+    the two smaller outside weights -- the exact anti-collapse rail.
+(c) METHODOLOGY LESSON (cost one wrong check): the T/Schur quantities are
+    BASIS-DEPENDENT; the law lives in the pencil frame where the floors
+    are the diagonal readings.  An ambient-frame check gave 2/782 false
+    violations; the pencil-frame naive check gave 714/782 false violations
+    because near-misses at floor-deficit 5e-3 swamp a law of scale
+    (t_p+t_q) ~ 1e-4.  The correct verification of a floors-conditioned
+    law at near-misses is the EXACT LEDGER with all slack terms kept.
+(d) NEXT KERNEL (the module is fully specified): L1 the CS gamma-lemma at
+    a W^-1-unit vector; L2 the Schur-positivity T_d >= 0 (3x3 identity +
+    PD); L3 the slot ledger (division form under PD nonvanishing); L4 the
+    not-PD step (det <= 0 => exists unit phi with phi'W phi >= 1) and its
+    CS aggregate; L5 the assembly = THE TRANSVERSE FLOOR.  After landing,
+    the collision partner is the T-UPPER bound from the corner links
+    (P,Q,R-controlled), which closes the shell against (b); the bulk
+    remains with the (stalling) SDP lane or its own analytic route.
+(e) FARM (untouched, per user directive): main cellB o2 converging to a
+    USELESS bound (~54.8 >> 1); all eight order-2 runs similar (16..57).
+    RLT-strengthened pair launched (assembling, 13-16G).  The SDP lane is
+    secondary to the analytic route above.
+
+23. THE TRANSVERSE FLOOR IS KERNEL (fork 25; commits d66d797, 809f1dd)
+---------------------------------------------------------------------
+(a) KERNEL (Gtz/Wave/TransverseFloor.lean, 809f1dd, 6 pins, gate 9977):
+      posSemidef_bilinear_sq_le    (u'Wv)^2 <= (u'Wu)(v'Wv), PSD W
+      posDef_diag_mul_inv_diag     1 <= A_dd (A^-1)_dd, PD A
+      posDef_schur_diag_nonneg     1/(A^-1)_dd <= A_dd  (T_d >= 0)
+      posDef_frame_reading_le      W - t G_eta psd, t > 0 => t eta'W^-1eta <= 1
+        -- THE FRAME BOUND: caps P <= 1/t_y, Q <= 1/t_z, hence
+           lam = P + Q - 2 <= 1/t_y + 1/t_z - 2: the lam-compactification
+           of the pencil arena WITHOUT the h-model.
+      seventh_floor_energy         det(1-W) <= 0 => 1 <= tcap + sum t_c|eta_c|^2
+      transverse_floor             THE LAW (six floors + 7th + x-link):
+        (t4+t5+t6)(t4+t5+t6 - tcap)
+          <= t_y sum_d(Ay_dd - 1/(Ay^-1)_dd) + t_z sum_d(Az_dd - 1/(Az^-1)_dd)
+    All abstract 3x3 statements: the corner application plugs the pencil
+    congruence (T'MoT = 1, T'NT = diag t) in a later wiring module.
+(b) CROSS-ARM LEVERAGE (from fork 26's K2 + the coordinator's master plan):
+    the K2 corner has the SAME two-sided shape: cross price
+    (ty+tz)detM <= sum t_d cross_d (their landed k2_isTie_crossPrice) vs
+    corner constraints down, with the certificate factor = the quantity
+    vanishing at the parallel/collinear limit.  My transverse energies are
+    that factor for cell B.  Their det formula det(S_yzd - 1) =
+    ((g_d.w)^2-1)detM - cross is the frame-matrix twin of my downdate
+    family.  The interpolation lesson: at level 0 the corner links make CS
+    trivial (exact zero); the quantitative content only appears after the
+    axis/transverse split along the 7th-floor witness phi.
+(c) FARM (coordinator's harvest-and-kill executed): all eight plain o2
+    runs converged to 54.77 IDENTICALLY across cells and mu -- the floors
+    and quartic content carry ZERO dual weight at order 2 (structural
+    invisibility, not underconvergence).  Eight polishers killed; the two
+    RLT runs (iter ~11, p_obj 9.9e3 and descending) are the decision gate:
+    below 54.77 => reduced-frame order 3 (pencil ~16 vars, C(19,3) = 969);
+    plateau => SDP lane dead, analytic only.  Gram harvest rerun launched
+    with Hypatia (first attempt silently used Clarabel and died; the
+    stripped-header include pattern must SET the optimizer explicitly).
+(d) NEXT BRICKS: (i) the o2 dual-weight map from the harvest (what any
+    hand certificate must supply); (ii) the pencil wiring module (corner
+    congruence => transverse_floor in ambient corner terms); (iii) the
+    collision partner: the T-upper bound from the corner links via the
+    phi-split -- the remaining half of the cell-B shell; (iv) cell H in
+    the same arena (its Delta <= 0 replaces the z-floors).
+
+
+24. FORK 27 ROUND 1: THE WIRING, THE EIGENVECTOR, THE RLT VERDICT
+    (fork 27; commits f84be0d, 4fb65ad; gates 9980/9982 exit 0)
+---------------------------------------------------------------------
+(a) KERNEL (Gtz/Wave/PencilWiring.lean, f84be0d, 8 pins):
+      congr_atomMatrix / congr_entry / quad_transpose_mul /
+      posDef_congruence / inv_congr_inv   -- the congruence kit
+      parseval_weight_leverage_le_one     t_c |g_c|^2 <= 1  (ambient)
+      corner_trace_identity               sum inside leverages = 3 + lam
+      corner_scale_cap                    lam <= 1/t_y + 1/t_z - 2
+      corner_bothLight_transverse_floor(_of_corner)  THE AMBIENT
+        TRANSVERSE FLOOR: sigma(sigma - tcap) <= t_y sum_j T^y_j
+        + t_z sum_j T^z_j with T^s_j = (Mo^-1 g_dj)' A_s (Mo^-1 g_dj)
+        - 1/r^s_dj -- the pencil law in residual-Prop vocabulary.
+    THE CHART DICTIONARY (proved inside): V = outside column matrix,
+    VV' = Mo, eta_c = V^-1 g_c, W = V^-1 V^-T, master = Parseval
+    congruated, floors = (VAV)^-1 diagonal = ambient readings, x-link =
+    |g_x|^2 = 1, 7th floor = y-floor via gapDet_erase.  SHARED-BLOB
+    PROTOCOL USED: index surgery (git hash-object + update-index) to
+    stage my-only variants of Gtz.lean/Audit.lean while fork 26 held
+    uncommitted lines (InvariantBudgets) in the worktree.
+(b) KERNEL (Gtz/Wave/ErasedAtomSpectrum.lean, 4fb65ad, 11 pins):
+      corner_subsetSum_mulVec_erased      S_C g_x = g_x
+      corner_gap_mulVec_erased            (S_C - 1) g_x = 0
+      corner_weightedComplement_eigen     N g_x = (1 - t_x) g_x  --
+        THE EIGENVECTOR LAW (general m; Parseval + orth + unit only)
+      corner_weightedInside_eigen         K g_x = t_x g_x
+      weightedComplement_det_eigen        det(N - (1-t_x) 1) = 0
+      weightedComplement_adjugate_eigen   (1-t_x)(adjN g_x) = detN g_x
+      corner_outsideDual_reading          (1-t_x)(g_d' Mo^-1 g_x)
+        = t_d (g_d . g_x)  -- THE DUAL RIGIDITY at (6,3)
+      corner_erasedDual_quota             (1-t_x)^2 q_x
+        = sum_d t_d^2 (g_d . g_x)^2
+      bothLight_y_floor_iff_z_floor       THE z-FLOOR IS FREE on cell B
+      + two corner-facing wrappers.
+(c) THE RLT VERDICT (decision gate FIRED): sos_H_rlt converged ~54.9/54.6
+    = the SAME 54.77 plateau; sos_B_rlt climbing to ~55.  RLT products
+    buy NOTHING.  THE SDP LANE IS CLOSED.  No order 3 anywhere.  The
+    discharge is fully analytic.
+(d) SIBLING CONSUMABLES (fork 26, committed): InvariantTaxTeeth.lean --
+    adjugate_eq_fin_three_cayley, e2_mul_form_ge_det_mul_normSq (the
+    spectral-free block floor), form_le_trace_mul_normSq_of_posSemidef,
+    e2_nonneg_of_posSemidef.  WedgeBracketTax.lean + (uncommitted)
+    InvariantBudgets.lean: parseval_pairing_sq_total, wedge_budget,
+    bracket_budget -- horn currency conservation.
+(e) NEXT (derived, unlanded): THE DUAL-FRAME BUDGET.  For the outside
+    dual frame w_d = Mo^-1 g_d:  sum_d w_d' B w_d = tr(B Mo^-1) for ANY
+    B (dual trace law);  sum_d (v . w_d)^2 = v' Mo^-1 v (dual Parseval);
+    sum_d P_dd = 3.  With B = A_s = G_s + Mo - 1:  sum of transverse
+    energies = q_s + 3 - tr Mo^-1.  ==> THE DUAL-COLLAPSED CELL-B FLOOR:
+    sigma(sigma - tcap) <= t_y(q_y + 3 - trMo^-1 - sum 1/r^y)
+    + t_z(q_z + 3 - trMo^-1 - sum 1/r^z) -- five dual scalars + weights.
+    Cell H consumes the same calculus (shared corner + Mo).
+
+
+25. FORK 27 ROUND 2: THE INVERSE-FREE GRAM CHART, AND THE CELL-B
+    FLOOR HUNT VERDICT (commits d773893, df1d90e, 156880e, 2b30c75)
+---------------------------------------------------------------------
+(a) THE MEASUREMENT THAT REFRAMES CELL B (cellB27.jl, 64 threads,
+    zero-alloc): 20,965,004 cell-B chart inhabitants sampled with the
+    INDIVIDUAL floors installed as the FIRST filter (y-floor + six
+    outside readings at BOTH four-sets).  RESULT: 20,965,004 / 20,965,004
+    FAIL some floor.  Zero reach the S / odds / downdate clauses.
+    SMALLEST FLOOR DEFICIT SEEN 1.180e-2 -- a HEALTHY margin, not a
+    near-miss.  The predecessor ladder (cellB22) never tested the
+    individual floors; its 72 "residual" rows are rows that no AGGREGATE
+    law killed, and every one of them violates a floor by >= 1.2e-2.
+    ==> the cell-B interior is not a thin fight: the seven floors are
+    massively overdetermined there.  The whole fight is the BOUNDARY
+    (collapse rays), which is exactly where transverse_floor and
+    shell_equality_forcing operate.  CAVEAT: random sampling, not a
+    descent -- an adversarial descent on floordef is the next probe.
+(b) DUAL-CAP CHECK (dualcap27.jl on the 72 residB22 rows): worst gap
+    -6.46e-3, i.e. the dual-collapsed floor is VIOLATED on those rows --
+    correctly, since they do not satisfy the floors the theorem assumes.
+    Consistency check passed, no law harmed.
+(c) KERNEL, ErasedEnergyLedger.lean (d773893, 8 pins):
+      corner_erased_outside_energy_pin  sum_d t_d omega_d^2 = 1 - t_x
+      corner_erased_energy_eq           kxx = sum_d omega_d^2 - 1
+      corner_erased_energy_cap/_floor   t_min(kxx+1) <= 1-t_x <= t_max(kxx+1)
+      corner_bothLight_kxx_pos          kxx > 0 on cell B
+      corner_lambda_weight_cap          t_y t_z (1+lam) <= t_y+t_z-t_y t_z
+      corner_bothLight_lambda_terms_cap the two lambda terms of the roof
+        are weight-polynomial against kxx
+      corner_erased_adjugate_cayley     KRx = |K g_x|^2 - trK*kxx + e2(K)
+(d) KERNEL, ErasedWitnessGram.lean (df1d90e, 5 pins):
+      corner_cross_normSq            |g_x x g_y|^2 = |g_y|^2 at the corner
+      posSemidef_energy_le_trace     form <= trace * |v|^2
+      corner_cross_energy_le_trace   cross energy <= (trS-1)|g_y|^2
+      corner_inside_leverage_sum     |g_y|^2 + |g_z|^2 = 2 + lam
+      corner_bothLight_cross_terms_cap  the two CROSS terms of the roof
+        <= t_x * tin * (2+lam) * (tr Mo - 1)
+    ==> WITH (c) AND (d) EVERY TERM OF THE WEIGHT-GAP ROOF IS NOW PRICED
+    by weights, lam, tr Mo, kxx and the four-set determinants.
+(e) KERNEL, TripleGramChart.lean (156880e, 21 pins) -- THE NEW CHART.
+    CONSUMES the landed Gtz/Design/TripleGramSylvester.lean (tripleGram,
+    columnMatrix, subsetSum_posDef_iff_tripleGram = THE GRAM CRITERION,
+    tripleGram_posDef_iff_pairVocabulary, tripleGapDet, pairGapMinor).
+      tripleWitness a b c v := (a.v, b.v, c.v)
+      tripleWitness_dotProduct    omega(v).omega(w) = v'(S)w
+      tripleGram_mulVec_witness   P omega(v) = omega(S v)
+      tripleGram_adjugate_polarization   THE MASTER IDENTITY
+        omega(v)' adj(P) omega(w) = det P * (v.w)     [ring, 12 vars]
+      columnGram_adjugate_sandwich  V adj(P) V' = det P * 1
+      gapDet_triple_eq_tripleGapDet  det(aa'+bb'+cc'-1) = tripleGapDet
+        [via det_add_three_atomMatrix_fin_three at base -1: adj(-1)=1,
+         det(-1)=-1, cross terms = -|axb|^2 by Lagrange, triple = bracket^2]
+      subsetSum_gapDet_eq_tripleGapDet
+      fourSet_member_floor_iff_tripleGapDet_nonpos  THE FLOOR DICTIONARY
+      parseval_tripleGram_identity   THE PAYLOAD:
+        t_x om om' + t_y omy omy' + t_z omz omz' + P T P = P
+      corner_witness_normalization / _orthogonality / _inside_witness_gram
+      corner_chart_witness_pin   det P (om' P T om) = det P (1-t_x)|om|^2
+    ==> THE WHOLE CORNER CELL IS NOW POLYNOMIAL IN 15 AMBIENT SCALARS
+    (six outside dot products + three witness triples) WITH NO INVERSE
+    AND NO CHART.  The seven floors are seven tripleGapDet signs.  The
+    horn currency det P = bracket^2 is the same scalar.
+    GOTCHA BANKED: `ring` FAILS on det(VV'-1) = det(V'V-1) (Sylvester at
+    3x3, ~thousands of monomials) -- go through the landed three-atom
+    expansion instead.  Also: fin_cases + `![a,b,c] i` indexing does not
+    reduce under simp only; restructure through columnMatrix instead.
+(f) SHARED-TREE HAZARD, TWICE THIS ROUND: (i) `git commit <paths>` commits
+    the WORKING TREE, NOT the surgically-staged index -- it silently
+    dropped two sibling imports (OppositeHornCount/Budget), restored in
+    the next commit.  After index surgery, verify with `git show --stat`
+    IMMEDIATELY and restore anything deleted.  (ii) A sibling committed
+    my working-tree Gtz.lean import line for me.
+(g) NEXT: (i) adversarial descent on the cell-B floor deficit (the 1.2e-2
+    margin must be tested against a descent, not sampling); (ii) the
+    seven floors as seven tripleGapDet inequalities + the chart Parseval
+    identity = a fully polynomial emptiness problem for cell B -- feed
+    THAT to the certificate search, not the pencil model; (iii) cell H in
+    the same chart.
+
+
+26. FORK 27 ROUND 3: THE DESCENT VERDICT, THE FREE INSTRUMENTS, AND THE
+    TIE-AS-A-GRAPH LAW (commits b272344, and the tie graph module)
+---------------------------------------------------------------------
+(a) THE DESCENT VERDICT -- THE REFRAMING IS NOW A FACT, NOT A SAMPLE.
+    descentB27.jl: 64 threads x 60 restarts x 4000 shrinking-radius
+    coordinate steps = 240,000 adversarial trajectories, minimizing
+      viol := max over the SEVEN floors of tripleGapDet(triple)
+    (the floor dictionary: {d4,d5,d6}, {y,d5,d6}, {y,d4,d6}, {y,d4,d5},
+     {z,d5,d6}, {z,d4,d6}, {z,d4,d5}).  A tie needs viol <= 0.
+    BEST REACHED: +5.376536e-03.  THE DESCENT CANNOT REACH THE TIE LOCUS.
+    The minimizer drives TWO INSIDE weights to ~1e-4 (t_x = 2.4e-4,
+    t_z = 1.2e-4) -- so the infimum is approached at the INSIDE-weight
+    collapse, i.e. the (5,3) boundary, NOT the outside collapse.  That is
+    a refinement of the coordinator's framing and it says where the
+    certificate must stay tight.
+(b) CELL H, SAME VOCABULARY (descentH27.jl).  Cell H keeps FOUR floors
+    ({d4,d5,d6} and the three at A_y) plus the marker "A_z NOT PD".
+    BEST REACHED: +8.377175e-02 -- an ORDER OF MAGNITUDE more infeasible
+    than cell B.  Cell H is the easier cell in this vocabulary.
+(c) THE TWO FREE INSTRUMENTS, MEASURED (instr27.jl, 200000 cell-B
+    inhabitants):
+      CONTRACTION TAX fires on 185887 = 92.9435%.  Best margin +6.16e-1,
+        worst -1.44e-1.  A LANDED THEOREM KILLS 93% OF CELL B outright:
+        some triple has t_a t_b t_c [abc]^2 > max member weight, hence is
+        a strict dominator, hence no tie.
+      M-MATRIX fires on 31908 = 15.954% (obtuse triples are abundant --
+        799893 seen -- the binding clause is row-positivity).
+(d) KERNEL, ChartBracketTax.lean (b272344, 7 pins, gate 10004 exit 0):
+      chartDet_eq_bracket_sq / subsetSum_det_eq_chartDet
+      isTie_chartDet_tax                t_a t_b t_c det P <= t_member
+      corner_bothLight_outside_chartDet_cap   t4 t5 t6 det P <= tcap
+      chart_parseval_det_identity  (det P)^2 t4t5t6 = det(P - inside)
+      posDef_subsetSum_of_obtuse_rowPositive / isTie_not_obtuse_rowPositive
+(e) KERNEL, TieGraphTrichotomy.lean (11 pins, module builds 9370 exit 0):
+    THE SYLVESTER MINORS ARE LOCAL -- first is ATOM-local, second is
+    PAIR-local (pairGapMinor names no third atom), third sees the triple.
+      HeavyAtom / LiveTriple definitions
+      posDef_subsetSum_iff_live_and_gapDet   THE SYMMETRIC CRITERION
+      isTie_triple_trichotomy   light atom OR inadmissible pair OR
+        nonpositive gap determinant, for EVERY triple of a tie
+      isTie_live_gapDet_nonpos
+      isTie_heavyFour_admissible_gapDet_nonpos  FOUR heavy pairwise
+        admissible atoms force FOUR gap determinants nonpositive at once
+      posDef_of_posSemidef_of_det_pos  (general n, eigenvalue product)
+      dominating_triple_gapDet_eq_zero  THE EXACT ZERO -- the tie lives on
+        the hypersurface tripleGapDet = 0
+      dominating_triple_bracket_identity  [C]^2 = e1(lev) - 2 + (pair
+        minor sum), an IDENTITY, no inequality spent
+      dominating_triple_pairMinor_sum_nonneg / _bracket_sharp_iff  -- the
+        landed sharp bracket floor IS the nonnegativity of the pair minor
+        sum at the dominating triple; it spends no slack there
+      corner_triple_gapDet_eq_zero / corner_bracket_identity
+(f) OPERATIONAL: fork 26 broke Gtz/Wave/CoherentHornDualFrame.lean in the
+    WORKING TREE after my green gate (HEAD version is fine, the file shows
+    ` M `).  My ChartBracketTax imports it, so I DECOUPLED the new module:
+    TieGraphTrichotomy imports TripleGramChart + DominatorWedgeFloor +
+    KOneBracketLedger only, and takes the bracket determinant from the
+    landed det_tripleSum_eq_bracket_sq.  LAW: never let a new module sit
+    downstream of a file a sibling is actively editing.
+    Also: `git commit <paths>` takes the WORKING TREE -- with a sibling
+    mid-edit the shared blobs carry THEIR deletions.  Use index surgery
+    (git hash-object -w + git update-index --cacheinfo) from CURRENT HEAD,
+    verify `git diff --cached` has no `-` lines, then commit.
+(g) NEXT: (i) the four-vertex saturation + the light-atom cap (at most two
+    light atoms) is a Turan/Mantel argument waiting to be closed: four
+    heavy atoms, six pairs; a triangle-free graph on four vertices has at
+    most four edges, so five admissible pairs force a live triangle.
+    (ii) feed the SEVEN tripleGapDet inequalities + the chart Parseval
+    identity to the certificate search (NOT the pencil model).
+    (iii) the tax kills 93% of cell B -- the kernel path is tax first,
+    floors on the 7% residue.
+
+
+27. FORK 27 ROUND 4: MANTEL, THE FLAT CORNER, AND A CORRECTION TO THE
+    INSIDE-COLLAPSE READING (commit 7726df2)
+---------------------------------------------------------------------
+(a) THE BLINDNESS TEST (coordinator's caution) -- ANSWERED, AND THE
+    ANSWER IS "NOT BLIND".  blind27.jl evaluates the identity's content
+    (pairMinorSum >= 0) at the campaign's tie configurations:
+      tetrahedral triple   +9.000000   (very SLACK -- blind there)
+      orthonormal triple    0.000000   (exactly tight)
+      Z1 corner lam=0.00    0.000000
+      Z1 corner lam=0.50    0.000000
+      Z1 corner lam=2.00    0.000000
+      Z1 corner lam=8.00    0.000000   (EXACTLY TIGHT AT EVERY SCALE)
+      near-parallel        -1.035199   (violated -- not a weak dominator)
+    THE REASON, and it is a theorem not an accident: pairMinorSum is the
+    SECOND INVARIANT of the triple gap, and a Z1 corner gap is lam*u u',
+    RANK ONE, whose second invariant vanishes identically.  So the law is
+    an EQUALITY on the whole corner family and SLACK at the tetrahedral
+    tie -- it SEPARATES the two rather than holding vacuously across both.
+    The caution was right to demand the test and wrong about this case.
+(b) KERNEL, TieMantelBound.lean (7726df2, 8 pins, builds 9371 exit 0):
+      secondInvariant_gap_eq_pairMinor_sum   e2(S_T - 1) = sum of the
+        three pair-local Sylvester minors
+      secondInvariant_smul_atomMatrix        e2(lam * u u') = 0
+      corner_pairMinor_sum_eq_zero           THE FLAT CORNER
+      corner_bracket_eq_leverageSum_sub_two  [C]^2 = e1(lev) - 2 EXACTLY
+        at a corner (cross-checks the landed htriple: [C]^2 = 1 + lam,
+        since lev_x = 1 and lev_y + lev_z = 2 + lam)
+      triangleEdges / mantel_four   MANTEL AT FOUR VERTICES BY DECISION
+        PROCEDURE: an edge set of K4 with no triangle has <= 4 of the 6
+        edges; `decide` over all 64 edge sets, 3 seconds.  EXTREMAL GRAPH
+        THEORY IS NOW AN INSTRUMENT OF THIS CAMPAIGN.
+      admissibleEdges / mem_admissibleEdges
+      isTie_heavyFour_admissible_card_le_four   at a tie, four heavy atoms
+        with no flat triple admit at most FOUR of their six pairs
+      isTie_heavyFour_two_inadmissible          hence >= 2 inadmissible
+(c) A CORRECTION TO MY OWN ROUND-3 READING, AND TO THE BANKED FRAMING.
+    certB27.jl walks the descent's own minimizer deeper into the inside
+    collapse, scaling t_x and t_z down by 2^-k through 256x:
+      scale 1.000  max-floor +5.376536e-03   detP 15.6894
+      scale 0.500            +5.636258e-03        15.6759
+      scale 0.250            +5.765978e-03        15.6691
+      scale 0.125            +5.830803e-03        15.6657
+      ...
+      scale 0.0039           +5.893579e-03        15.6625
+    THE MARGIN DOES NOT DEGENERATE AT THE (5,3) BOUNDARY.  It converges
+    UPWARD to a finite positive limit ~5.894e-3.  So the descent's
+    minimizer is an INTERIOR point of that ray, and the inside collapse is
+    not where the certificate has to be tight -- it is where the system is
+    SAFEST.  CONSEQUENCE: for THIS system (the seven tripleGapDet floors
+    against the chart Parseval identity) a WEIGHT-FREE certificate is
+    admissible at the inside boundary.  The banked doctrine "certificates
+    must degenerate at t -> 0, the margin factor stays weight-carried"
+    was measured on the PENCIL model and does NOT transfer to the chart
+    formulation.  Do not import it here.
+(d) NEXT: (i) cell H is the cheaper target (+8.377e-2 vs +5.377e-3) and
+    now has Mantel available; (ii) the certificate search takes the seven
+    tripleGapDet inequalities + the chart Parseval identity, with NO
+    weight-carried degeneration factor required; (iii) the tax-first
+    kernel path for cell B (93% by contraction tax, floors on the 7%).
