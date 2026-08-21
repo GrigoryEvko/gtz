@@ -611,3 +611,64 @@ F65-5. DETERMINANT NECESSITY, RECONFIRMED FROM A NEW DIRECTION.
   Independent confirmation of F58-2/F58-3: BOTH determinants are needed.
   (Random sampling under detM+pair gave min KEY = +3.06e-04 over 12877 points --
    another thin tail; the descent found the negative region sampling missed.)
+
+F65-6. KEY IS NOT REFUTED — EXACT-ARITHMETIC STATUS AFTER THIS ROUND.
+  Every apparent violation this round dissolved under exact arithmetic:
+   (a) SLSQP on the full system: min KEY = -1.95e-08, slacks ~-1.5e-15
+       -> at 40 digits detM = -3.14e-10 < 0.  INFEASIBLE.  (F65-2)
+   (b) SLSQP on the homogenised KEY/(sum b): min = -1.67e-08 at
+       b = (0.50000005, 0.49999995, 0.49999995), t = (1e-9, 0.5868, 0.4132),
+       detM = -2.2e-15, detIM = -5.3e-15 -> BOTH negative.  INFEASIBLE, and the
+       point is the SAME ray of F65-3 approached from a different restart.
+   (c) Exact rational grid around the ray (b offsets {-2,-1,0,1}*step for step
+       in 1e-2..1e-5, q in {0,1,2}, r = 2/5): NO feasible point with KEY < 0.
+   (d) Exact rational sweep, 120000 draws, 4132 STRICTLY feasible (feasibility
+       decided in exact arithmetic, never in floating point):
+          min KEY = +3.909010e-04.
+  STATUS UNCHANGED FROM F58-5: KEY IS MEASURED TRUE, NOT PROVED.  What is NEW is
+  that it now survives exact-arithmetic testing and a first-order analysis on its
+  degeneracy, so the earlier "supremum exactly 0" is explained by the ray rather
+  than by a hidden violation.
+
+F65-7. TWO ROUTES REFUTED THIS ROUND, WITH WITNESSES.
+  (a) detM + pair WITHOUT detIM does NOT imply KEY (F65-5): witness above with
+      KEY = -3.04e-02, excluded only by detIM.  So no certificate may drop detIM.
+  (b) THE DIVIDED FORM of detM does not close it either.  detM >= 0 divided by
+      A1A2A3 > 0 reads  4 b1b2b3 <= t1t2t3/(A1A2A3) + sum_i b_i t_jt_k/(A_jA_k),
+      so KEY would follow from the sufficient condition
+         G := t1t2t3 + sum_i b_i t_j t_k A_i^2 - (sum_i b_i t_i) A1A2A3  <=  0 .
+      MEASURED: G FAILS on the feasible set, max G = +1.484464e-01 at
+         b = (0.08558506, 0.70900491, 0.0963671),
+         t = (0.48634728, 0.00712414, 0.50211166).
+      Recorded so nobody re-derives it.
+
+F65-8. WHAT THE SUCCESSOR SHOULD DO, sharpened by the ray.
+  The obstruction is now precisely located: KEY is tight on the ENTIRE RAY
+  b = (1/2,1/2,1/2), t = (r, 1-r, 0), r free, where detIM = detM = KEY = 0.
+  A Positivstellensatz certificate must therefore be tight along a
+  one-parameter family, which is exactly what a certificate with only isolated
+  tightness cannot do -- the structural reason for every Handelman failure in
+  F58-6 and F58-12, now UNDERSTOOD rather than merely observed.
+  THE THREE ROUTES, re-ordered by what the ray implies:
+   (i)  QUOTIENT THE RAY, not just the b=0 point.  Certify KEY on a transversal
+        slice to the ray (e.g. add the normalisation t3 = c > 0, or work in
+        coordinates where the ray is a coordinate axis) and handle the ray
+        itself by the exact vanishing of F65-3.  This is the natural successor
+        to F58-10(a) now that the degeneracy is known to be one-dimensional.
+   (ii) The Cayley rational corner chart (F58-10c) -- STILL UNTESTED by me or
+        by fork 58.  It may present the ray as a coordinate locus.
+   (iii) A genuine Positivstellensatz with dM^2 terms (F58-10 route ii).
+  DO NOT re-run: the low-degree Handelman LPs (F58-6, F58-12), the
+  branch-separated variant (F58-13), the divided form (F65-7b), or detM+pair
+  without detIM (F65-7a).
+
+F65-9. ROUND SUMMARY (fork 65).  E1 IS NOT CLOSED and I do not state it.
+  NO NEW LEAN THIS ROUND -- nothing survived that was not already landed, and I
+  will not land a measured statement as a theorem.
+  ADVANCES: the (b,t) form of detM (F65-1); the exact degenerate RAY and the
+  proof that no first-order descent leaves it (F65-3, F65-4); KEY re-established
+  under exact arithmetic after a false alarm (F65-2, F65-6); two more routes
+  refuted with witnesses (F65-7).
+  METHOD RULE ADDED: a constrained optimiser reporting a violation with
+  constraint slacks at machine epsilon has proved nothing.  Recheck in extended
+  precision before believing it -- feasibility tolerance is not feasibility.
