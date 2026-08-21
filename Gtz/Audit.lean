@@ -1378,6 +1378,7 @@ import Gtz.Wave.KTwoFrameChart
 import Gtz.Wave.KTwoDesignKill
 import Gtz.Wave.KTwoProbePair
 import Gtz.Wave.KTwoProbeNormalise
+import Gtz.Wave.KTwoParallelSlice
 import Gtz.Wave.KTwoBridgeNormalForm
 import Gtz.Wave.KTwoBridgeRefusalY
 import Gtz.Wave.KTwoBridgeSlacks
@@ -37726,3 +37727,10 @@ run_cmd do
 #print axioms Gtz.eq_smul_of_planePart_eq_zero
 #print axioms Gtz.k2Probe_planePart_spec
 #print axioms Gtz.k2FiveTwoZero_kill
+
+-- Gtz/Wave/KTwoParallelSlice.lean -- the slice where the outside atom is
+-- parallel to the axis is a dichotomy, and both of its branches are dead
+#print axioms Gtz.dotProduct_eq_zero_of_planePart_eq_zero
+#print axioms Gtz.planePart_eq_zero_of_forall_dotProduct_eq_zero
+#print axioms Gtz.k2FiveAxis_parallel_dichotomy
+#print axioms Gtz.k2FiveAxis_parallel_both
