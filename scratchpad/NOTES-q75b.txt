@@ -1,0 +1,112 @@
+# Question 7.5(b): a pair with nonpositive pair minor in a (6,3) boundary system is collinear
+
+Lane record. Statement: at a (6,3) tie, q_ab <= 0 implies w_ab = 0.
+Equivalently: a primitive (6,3) tie has all fifteen pair minors positive.
+
+## Q75B-1. Harness calibration (mandatory, passed)
+
+The (5,3) diamond reproduces exactly:
+  leverages          (2, 3.25, 3.25, 3.25, 3.25)
+  pair minors        0.75 (x4), 2.0 (x2), 4.5 (x4)
+  dominating triples 8 of 10: (012)(014)(023)(034)(123)(124)(134)(234)
+  adjugate law at (0,1,2): readings^2 = (0.75, 0.125, 0.125), q = (4.5, 0.75, 0.75), e2 = 6
+  law residual 6.2e-15
+
+## Q75B-2. Sound (6,3) tie census -- 26 ties
+
+Ties built as the ZERO SET of sum_T max(lmin(S_T - I), 0)^2 subject to Parseval,
+with a hard weight floor t >= 0.05 enforced through a softmax parametrisation
+(t = 0.05 + 0.7*softmax(u)).  Plain minimisation of Phi = max_T lmin was NOT used.
+Accepted only when Parseval residual < 1e-11, max lmin > -1e-9, and every weight
+strictly above the floor.  26 ties from 500 random starts (seeds 7, 11, 12, 13).
+
+Results, all 26 ties:
+  dominating-triple counts   10:1, 12:14, 13:11     (the split diamond has 13)
+  inadmissible-pair counts   one:14, two:11, three:1
+  MAX |wedge| over every inadmissible pair found = 3.55e-15
+      -> every inadmissible pair is collinear to machine precision. Q7.5(b) holds
+         at all 26, and each tie therefore also carries a collinear pair.
+  uncovered pairs == inadmissible pairs, 26 of 26
+      -> "every pair with q > 0 lies inside some dominating triple" holds at all 26.
+         This is the useful reformulation: the pairs no dominating triple covers
+         are exactly the collinear ones.
+  kernel-sharing swaps       4:4, 5:10, 9:1, 10:11
+      -> unlike the (5,3) diamond (8 dominators, 18 swap-related pairs, ZERO
+         kernel-sharing), (6,3) ties do carry kernel-sharing swaps.  Consistent:
+         all 26 have a collinear pair, and the mirror fires there.
+
+CAUTION recorded for successors: every tie found has a collinear pair, so the
+census cannot say anything about PRIMITIVE ties -- assuming the hinge there are
+none.  The statement is being proved about a set that cannot be sampled.
+
+## Q75B-3. REFUTED -- the swap producer is not a four-vector fact
+
+Claim tested: let C dominate with singular gap G = S_C - I, kernel w, and let d
+be outside with (g_d . w) != 0.  Then some swap C\{p} u {d} dominates.
+
+At the 26 ties this holds 960 / 960 -- a clean 100%.
+
+It is NOT a local fact.  Sampled directly over four-vector configurations
+satisfying only the hypotheses (G psd rank two with kernel w, C any factorisation
+of G + I, g_d arbitrary with nonzero reading):
+  no extra hypothesis      175296 failures / 200000, worst best-lmin -0.99992
+  g_d heavy (l_d >= 1)     110723 failures / 136498, worst -0.886627
+  reading^2 > 1            49379 failures / 70421,  worst -0.774840
+  heavy AND reading^2 > 1  49055 failures / 70181,  worst -0.780476
+      witness: l_d = 1.3777609252817942, (g_d . w)^2 = 1.0883058069128215
+
+So the 100% at ties comes entirely from Parseval on all six atoms plus the tie
+hypothesis.  Any proof of the swap producer must be global; a local argument
+about the four vectors of C u {d} cannot work.  Route "produce the second
+dominating triple locally" is closed.
+
+## Q75B-4. The two-update determinant law (landed, commit 860aee7)
+
+For every 3x3 matrix F and all u, v -- no hypothesis at all:
+
+  det(F + u u^T + v v^T)
+      = det F + u^T (adj F) u + v^T (adj F) v + (u x v)^T F (u x v).
+
+Verified before proving: max relative error 1.7e-13 over 200000 random general
+matrices, 2.6e-13 over 200000 symmetric ones.
+
+At a symmetric F with unit null probe w (five-set law), verified to 6.9e-14 over
+50000 psd singular gaps:
+
+  det(F + u u^T + v v^T) = e2(F) * ((u.w)^2 + (v.w)^2) + (u x v)^T F (u x v).
+
+Significance: the last term is the FIRST appearance of the hunted pair's own
+wedge in the corank-one arm.  ||u x v||^2 IS crossNormSq u v = w_uv, the quantity
+the joint must drive to zero, and until now only the sharp elementary bound
+crossNormSq_le_of_pairGapMinor_nonpos mentioned it.
+
+Consequences landed in the same module:
+  kernel_eq_smul_bracketNormal_of_wedgeForm_eq_zero -- a psd gap of corank one
+    kills only its kernel line, so a vanishing wedge form pins the kernel to the
+    pair's normal;
+  blind_of_wedgeForm_eq_zero -- hence both members are blind to the kernel;
+  bracketNormal_eq_zero_of_wedgeForm_eq_zero_two -- two weak dominators with
+    NON-PARALLEL kernels cannot both admit that, so the pair is collinear;
+  hasParallelPair_of_wedgeForm_eq_zero_two -- the same at a design.
+
+That last one is a sufficient condition for Q7.5(b) stated in gap forms, with no
+eigenvector in the hypothesis.  Honest caveat, written in the module docstring:
+the corollary also has a three-line direct proof (blindness to two kernels puts
+both atoms on the line w1 x w2), so the law is the substantial half, not the
+corollary.
+
+## Q75B-5. What the joint still needs
+
+The gap between what is landed and Q7.5(b) is now exactly:
+
+  show that the wedge form (a x b)^T (S_C - 1) (a x b) VANISHES at two weak
+  dominators with non-parallel kernels.
+
+Nothing above forces that.  Note the two hypotheses pull in opposite directions:
+the wedge form vanishes only when both members are blind to the kernel, while
+OutsideReadingFloor forces some outside atom to read the kernel ABOVE one.  A
+successor should look at whether the inadmissible pair is forced to be the blind
+one -- at the 26 ties the inadmissible pair is exactly the pair no dominating
+triple covers, which is the same separation the landed
+inadmissible_pair_not_inside_dominates gives, so the two facts are consistent but
+neither implies blindness.
