@@ -6515,6 +6515,7 @@ import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
 import Gtz.Wave.FourSetFloorPackage
+import Gtz.Wave.FunnelFourSetPayment
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.PairNormalWedgeLaw
 import Gtz.Wave.ErasedPairCap

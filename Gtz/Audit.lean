@@ -1397,6 +1397,7 @@ import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
 import Gtz.Wave.FourSetFloorPackage
+import Gtz.Wave.FunnelFourSetPayment
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.PairNormalWedgeLaw
 import Gtz.Wave.ErasedPairCap
@@ -38384,3 +38385,16 @@ run_cmd do
 #print axioms Gtz.resolventPairMinor_nonneg_of_dominates_compl
 #print axioms Gtz.exists_triple_pivot_le_one_six_three
 #print axioms Gtz.gtzWeighted_six_three_iff_pivotSmall_resolventBlock
+
+-- Gtz/Wave/FunnelFourSetPayment.lean -- the four-set law read against the four
+-- member floors of a funnel dominator: a four-set whose determinant beats its
+-- own second invariant produces a strictly dominating triple in the star of the
+-- added atom, so a funnel boundary system pays the reversed inequality at every
+-- atom
+#print axioms Gtz.reading_sq_sum_gt_of_posDef
+#print axioms Gtz.unitAtom_notMem_posDef_triple
+#print axioms Gtz.subsetSum_triple_atoms
+#print axioms Gtz.exists_star_posDef_of_payment_lt
+#print axioms Gtz.funnel_exists_strict_of_payment_lt
+#print axioms Gtz.isTie_funnel_payment
+#print axioms Gtz.isTie_sixThree_funnel_payment
