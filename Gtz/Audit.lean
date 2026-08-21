@@ -36965,3 +36965,17 @@ run_cmd do
 #print axioms Gtz.exists_pos_principalMinor_of_e2_pos
 #print axioms Gtz.exists_refusal_direction_of_e2_pos_of_det_neg
 #print axioms Gtz.exists_ambient_refusal_of_dualFrame_branch
+#print axioms Gtz.nullProbe_form_eq
+#print axioms Gtz.nullProbe_inside_total
+#print axioms Gtz.nullProbe_parseval_split
+#print axioms Gtz.nullProbe_outside_reading_floor
+#print axioms Gtz.sum_compl_weight_le_one
+#print axioms Gtz.swap_refusal_budget
+#print axioms Gtz.gap_mulVec_eq_neg_of_orthogonal
+#print axioms Gtz.coercivity_le_neg_one_of_degenerate
+#print axioms Gtz.not_pos_coercivity_of_degenerate
+#print axioms Gtz.parallel_triple_degenerate_direction
+#print axioms Gtz.swap_reading_cap_of_pinch
+#print axioms Gtz.isTie_swap_coupling_floor
+#print axioms Gtz.parallel_swap_subsetSum_eq
+#print axioms Gtz.parallel_swap_dominates_iff
