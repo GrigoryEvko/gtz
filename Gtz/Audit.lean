@@ -1372,6 +1372,7 @@ import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoFrameKill
+import Gtz.Wave.KTwoFrameChart
 import Gtz.Wave.KTwoBridgeNormalForm
 import Gtz.Wave.KTwoBridgeRefusalY
 import Gtz.Wave.KTwoBridgeSlacks
@@ -37662,3 +37663,12 @@ run_cmd do
 #print axioms Gtz.outsideTriple_not_branchOne
 #print axioms Gtz.outsideTriple_leverage_bound_of_excess
 #print axioms Gtz.exists_pairMinor_pos_of_excess
+
+-- Gtz/Wave/KTwoFrameChart.lean -- an orthonormal triple resolves the identity,
+-- so every Gram quantity may be read in frame coordinates
+#print axioms Gtz.orthonormal_three_resolution
+#print axioms Gtz.orthonormal_three_entry
+#print axioms Gtz.dotProduct_vecMulVec_mulVec_pair
+#print axioms Gtz.dotProduct_eq_frame_coords
+#print axioms Gtz.tripleGram_eq_frame_coords
+#print axioms Gtz.tripleGapDet_eq_frame_coords
