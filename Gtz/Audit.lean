@@ -1483,6 +1483,7 @@ import Gtz.Wave.ChartSharpDesignGap
 import Gtz.Wave.ChartFrobeniusLaw
 import Gtz.Wave.DependencyDominationCriterion
 import Gtz.Wave.ChartGaleSpectralLaw
+import Gtz.Complex.ComplexHingeRefutation
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39814,3 +39815,53 @@ run_cmd do
 #print axioms Gtz.det_shifted_chartGapBlock_eq
 #print axioms Gtz.chartCore_det_shifted_gapBlock_eq
 #print axioms Gtz.sixThree_shifted_complementary_block_law
+
+-- Gtz.Complex.ComplexHingeRefutation
+--   THE HINGE IS FALSE OVER THE COMPLEX NUMBERS, at rank two and at the target cell.
+--   `complexHingeDesign` is a four-atom complex design of rank two, weights
+--   `(5/22, 5/22, 3/11, 3/11)` and atoms `(3e,e), (e,3e), (1,omega), (1,omega^2)` with
+--   `e = 1/sqrt 5`.  Every squared length is `2`, the six overlap products are `36/25`,
+--   `7/5` four times and `1`, so the pair excess determinant `1 - overlap` vanishes at
+--   `{2,3}` and is strictly negative elsewhere: an exact tie with no parallel pair.
+--   `complexHingeSixDesign` lifts four of those atoms into `C^2 x {0}`, adds a fifth
+--   planar atom of squared length `5/2` and one spike of squared length `25`, with
+--   rational weights `(3/88, 81/440, 16/55, 16/55, 4/25, 1/25)`.  A triple that misses
+--   the spike carries `-1` on the third diagonal entry; a triple that contains it has
+--   determinant `24` times a nonpositive planar excess; the triple `{2,3,5}` has gap
+--   `[[1,-1,0],[-1,1,0],[0,0,24]]`, a sum of two rank-one atoms.  The largest overlap
+--   ratio is `49/50 < 1`.  Over R the same sentence is a THEOREM at rank two
+--   (`hingeHoldsAtSize_rank_two`) and OPEN at `(6,3)`.  The separating fact is the
+--   dimension of the traceless self-adjoint space, `2` over R against `3` over C
+--   (`finrank_symmetricTracelessSubmodule_atRankTwo` against
+--   `finrank_hermitianTracelessSubmodule_atRankTwo`).
+#print axioms Gtz.ComplexIsTie
+#print axioms Gtz.ComplexHasParallelPair
+#print axioms Gtz.ComplexHingeHoldsAtSize
+#print axioms Gtz.not_posDef_of_diag_eq_neg_one
+#print axioms Gtz.not_posDef_of_det_eq_ofReal_nonpos
+#print axioms Gtz.overlap_eq_of_parallel
+#print axioms Gtz.not_parallel_of_overlap_ne
+#print axioms Gtz.complexHingeParseval
+#print axioms Gtz.complexHingeNorm
+#print axioms Gtz.complexHingeGapDet_of_overlap
+#print axioms Gtz.complexHingeNoStrictPair
+#print axioms Gtz.complexHingeOverlap_ne_four
+#print axioms Gtz.complexHingeDominates_two_three
+#print axioms Gtz.complexHingeDesign_isTie
+#print axioms Gtz.not_complexHingeDesign_hasParallelPair
+#print axioms Gtz.not_complexHingeHoldsAtSize_four_two
+#print axioms Gtz.starDot_liftPlane
+#print axioms Gtz.complexAtom_liftPlane
+#print axioms Gtz.spreadAtom_norm
+#print axioms Gtz.complexHingeSixWeight_sum_one
+#print axioms Gtz.complexHingeSixParseval
+#print axioms Gtz.complexHingePlaneExcess_nonpos
+#print axioms Gtz.det_spikeTriple
+#print axioms Gtz.complexHingeSixNoStrict
+#print axioms Gtz.complexHingeSixGap_dominating
+#print axioms Gtz.complexHingeSixDominates
+#print axioms Gtz.complexHingeSixDesign_isTie
+#print axioms Gtz.complexHingeSixOverlap_ne
+#print axioms Gtz.not_complexHingeSixDesign_hasParallelPair
+#print axioms Gtz.not_complexHingeHoldsAtSize_six_three
+#print axioms Gtz.not_complexHingeHoldsAtSize_four_two_and_six_three

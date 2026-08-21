@@ -6831,3 +6831,4 @@ import Gtz.Wave.ChartSharpDesignGap
 import Gtz.Wave.ChartFrobeniusLaw
 import Gtz.Wave.DependencyDominationCriterion
 import Gtz.Wave.ChartGaleSpectralLaw
+import Gtz.Complex.ComplexHingeRefutation

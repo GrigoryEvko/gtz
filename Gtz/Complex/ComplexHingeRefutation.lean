@@ -655,7 +655,7 @@ diagonal; a triple `{a, b, spike}` has a block-diagonal gap whose determinant is
 noncomputable def spreadAtom : Fin 2 → ℂ := ![rootTwoAmp, rootTwoAmp / 2]
 
 /-- The spike, of squared length `25`. -/
-noncomputable def spikeAtom : Fin 3 → ℂ := ![0, 0, 5]
+noncomputable def hingeSpikeAtom : Fin 3 → ℂ := ![0, 0, 5]
 
 /-- A planar vector, read in `ℂ³`. -/
 noncomputable def liftPlane (planeVec : Fin 2 → ℂ) : Fin 3 → ℂ :=
@@ -670,15 +670,15 @@ theorem starDot_liftPlane (leftVec rightVec : Fin 2 → ℂ) :
   simp [liftPlane, dotProduct, Fin.sum_univ_two, Fin.sum_univ_three]
 
 theorem starDot_liftPlane_spike (planeVec : Fin 2 → ℂ) :
-    star (liftPlane planeVec) ⬝ᵥ spikeAtom = 0 := by
-  simp [liftPlane, spikeAtom, dotProduct, Fin.sum_univ_three]
+    star (liftPlane planeVec) ⬝ᵥ hingeSpikeAtom = 0 := by
+  simp [liftPlane, hingeSpikeAtom, dotProduct, Fin.sum_univ_three]
 
 theorem starDot_spike_liftPlane (planeVec : Fin 2 → ℂ) :
-    star spikeAtom ⬝ᵥ liftPlane planeVec = 0 := by
-  simp [liftPlane, spikeAtom, dotProduct, Fin.sum_univ_three]
+    star hingeSpikeAtom ⬝ᵥ liftPlane planeVec = 0 := by
+  simp [liftPlane, hingeSpikeAtom, dotProduct, Fin.sum_univ_three]
 
-theorem starDot_spike : star spikeAtom ⬝ᵥ spikeAtom = 25 := by
-  simp [spikeAtom, dotProduct, Fin.sum_univ_three, Complex.conj_ofNat]
+theorem starDot_spike : star hingeSpikeAtom ⬝ᵥ hingeSpikeAtom = 25 := by
+  simp [hingeSpikeAtom, dotProduct, Fin.sum_univ_three, Complex.conj_ofNat]
   norm_num
 
 /-- The lifted rank-one atom, entry by entry. -/
@@ -693,10 +693,10 @@ theorem complexAtom_liftPlane (planeVec : Fin 2 → ℂ) :
   fin_cases rowIndex <;> fin_cases colIndex <;>
     simp [complexAtom, liftPlane, Matrix.vecMulVec_apply]
 
-theorem complexAtom_spike : complexAtom spikeAtom = !![0, 0, 0; 0, 0, 0; 0, 0, 25] := by
+theorem complexAtom_spike : complexAtom hingeSpikeAtom = !![0, 0, 0; 0, 0, 0; 0, 0, 25] := by
   ext rowIndex colIndex
   fin_cases rowIndex <;> fin_cases colIndex <;>
-    simp [complexAtom, spikeAtom, Matrix.vecMulVec_apply] <;> norm_num
+    simp [complexAtom, hingeSpikeAtom, Matrix.vecMulVec_apply] <;> norm_num
 
 /-- The squared length of the fifth planar atom. -/
 theorem spreadAtom_norm : star spreadAtom ⬝ᵥ spreadAtom = 5 / 2 := by
@@ -709,7 +709,7 @@ theorem spreadAtom_norm : star spreadAtom ⬝ᵥ spreadAtom = 5 / 2 := by
 noncomputable def complexHingeSixAtom : Fin 6 → Fin 3 → ℂ :=
   ![liftPlane (complexHingeAtom 0), liftPlane (complexHingeAtom 1),
     liftPlane (complexHingeAtom 2), liftPlane (complexHingeAtom 3),
-    liftPlane spreadAtom, spikeAtom]
+    liftPlane spreadAtom, hingeSpikeAtom]
 
 /-- The planar shadow of an atom.  The sixth entry is a placeholder never read. -/
 noncomputable def complexHingePlaneAtom : Fin 6 → (Fin 2 → ℂ) :=
@@ -721,7 +721,7 @@ theorem complexHingeSixAtom_one : complexHingeSixAtom 1 = liftPlane (complexHing
 theorem complexHingeSixAtom_two : complexHingeSixAtom 2 = liftPlane (complexHingeAtom 2) := rfl
 theorem complexHingeSixAtom_three : complexHingeSixAtom 3 = liftPlane (complexHingeAtom 3) := rfl
 theorem complexHingeSixAtom_four : complexHingeSixAtom 4 = liftPlane spreadAtom := rfl
-theorem complexHingeSixAtom_five : complexHingeSixAtom 5 = spikeAtom := rfl
+theorem complexHingeSixAtom_five : complexHingeSixAtom 5 = hingeSpikeAtom := rfl
 
 /-- Away from the spike every atom is a lift. -/
 theorem complexHingeSixAtom_eq_liftPlane (atomLabel : Fin 6) (hlabel : atomLabel ≠ 5) :
@@ -1047,7 +1047,7 @@ the `2×2` planar block and the scalar `25 - 1 = 24`.  So its determinant is `24
 times the planar pair excess. -/
 theorem det_spikeTriple (leftVec rightVec : Fin 2 → ℂ) :
     (complexAtom (liftPlane leftVec)
-        + (complexAtom (liftPlane rightVec) + complexAtom spikeAtom) - 1).det
+        + (complexAtom (liftPlane rightVec) + complexAtom hingeSpikeAtom) - 1).det
       = 24 * ((star leftVec ⬝ᵥ leftVec - 1) * (star rightVec ⬝ᵥ rightVec - 1)
           - (star leftVec ⬝ᵥ rightVec) * (star rightVec ⬝ᵥ leftVec)) := by
   rw [complexAtom_spike, complexAtom_liftPlane, complexAtom_liftPlane, Matrix.det_fin_three]
