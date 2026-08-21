@@ -1627,3 +1627,84 @@ F53-7.  THE ONLY REMAINING DEBT OF THE (5,3) K2 BRIDGE.
   the stratum's parallel laws) and one `Real.sqrt`.  Everything else is done:
   feed `vh` and `nh = bracketNormal x vh` into `k2Five_kill` and the (5,3)
   two-zero stratum is unconditionally empty.
+
+======================================================================
+F62.  THE (5,3) TWO-ZERO KILL IS FRAME-FREE AND SLICE-COMPLETE
+======================================================================
+
+F62-1.  THE PROBE DEBT IS PAID (commit a1e1ae1, Gtz/Wave/KTwoProbeNormalise.lean)
+--------------------------------------------------------------------------------
+Predecessor left one debt: the FIRST probe of the adapted frame. Landed, 5
+theorems, all pins [propext, Classical.choice, Quot.sound] (my scratch audit),
+per-module build exit 0, both umbrellas insertions-only.
+
+  planePart x a := a - (a.x) x                  (new def)
+  dotProduct_planePart          : x . planePart x a = 0
+  planePart_dotProduct_self     : |planePart|^2 = a.a - (a.x)^2
+  eq_smul_of_planePart_eq_zero  : planePart = 0 -> a = (a.x) x   (sub_eq_zero)
+  k2Probe_planePart_spec        : with s := sqrt(|planePart|^2), vh := s^-1 . planePart,
+        vh.vh = 1  AND  x.vh = 0  AND  a = (a.x) x + s . vh  AND  a.vh = s
+
+THE READING HYPOTHESIS IS FREE. k2Five_kill's `hp : D.atom 3 . vh /= 0` is
+discharged by `a.vh = s > 0`; no separate hypothesis. That was not obvious from
+the predecessor's framing and it is why the assembly has ONE new hypothesis, not
+two.
+
+  k2FiveTwoZero_kill : the (5,3) two-zero stratum is empty with NO probe
+    hypothesis. Only new design-level hypothesis: planePart (atom 0) (atom 3) /= 0,
+    i.e. the outside atom is not parallel to the axis.
+
+GOTCHA (cost one build): k2Five_kill wants `vh . D.atom 0 = 0` and
+`bracketNormal .. . vh = 0` -- the SECOND slot is the frame vector. The specs
+give the opposite orientation; do NOT `rw [dotProduct_comm]`, the terms are
+already in the right shape after `k2Probe_cross_spec`. Just `exact`.
+
+F62-2.  THE PARALLEL SLICE IS TWO DEAD BRANCHES (commit 82ac4f9,
+        Gtz/Wave/KTwoParallelSlice.lean)
+--------------------------------------------------------------------------------
+The ch2 boundary channel of F26-3 REACHES the slice planePart (atom 0) (atom 3) = 0.
+Settled with no limit argument, 4 theorems, all pins standard:
+
+  k2FiveAxis_parallel_dichotomy : planePart(x, g_3) = 0  =>
+        atomPairing D 4 0 = 0   OR   planePart(x, g_4) = 0
+  k2FiveAxis_parallel_both      : with hax (atomPairing D 4 0 /= 0), the second.
+
+MECHANISM: k2FiveAxis_collinear (landed) says t_d.alpha.(g_d.u) + t_e.beta.(g_e.u) = 0
+for every u perp x. A parallel g_3 kills its own term at every such u; positive
+weights then force beta = 0 or (g_4.u) = 0 at each u; and an atom whose plane
+readings ALL vanish has no plane part (planePart_eq_zero_of_forall_dotProduct_eq_zero,
+proved by reading planePart against ITSELF). Second branch = all-parallel outside
+= dead by the landed k2_not_isTie_of_outside_parallel_all.
+
+So the ch1/ch2 boundary lemmas are DONE in the sense that matters: ch1 was
+already covered by the landed level-two kill (r_w < 1, margin 0.17, F26-3), and
+ch2's slice is now a kernel dichotomy rather than a limit estimate.
+
+F62-3.  CORRECTION TO THE BRIEF: THE (6,3) K2 RERUN IS NOT AN ASSEMBLY
+--------------------------------------------------------------------------------
+The brief said "expect master identity -> free floors -> one named corner ->
+certificate". CHECKED: the two landed (6,3) K2 halves do NOT contradict alone.
+
+  k2_outside_excess_total   : sum_{d not in C} t_d ((g_d.w)^2 - 1) = t_y + t_z
+  k2_planeWitness_of_isTie  : the {y,z,d} refusal as one scalar inequality
+
+Both are stated at GENERAL m, so they already apply at (6,3) -- nothing to
+re-derive. But the excess law is ONE SCALAR EQUATION: measured residual over
+20000 random configs reaches 1.5e-4, i.e. it is generically satisfiable and
+carries no contradiction by itself. The rerun therefore needs the FULL ten-
+refusal syzygy machine, which is a fresh multi-round certificate hunt, not an
+assembly step. Budget it as such.
+
+AND NOTE THE STATUS OF "K2 IS EMPTY AT (6,3)" (line 872 of this file): that is a
+MEASUREMENT (mega2.jl, P2, min obstruction 1.22e-2), not a theorem. The same
+block records the (5,3) figure as "min obstruction 0.359" -- the campaign has
+since learned to distrust exactly that kind of sampled floor. Do not treat the
+(6,3) K2 emptiness as established.
+
+F62-4.  NOT REACHED
+--------------------------------------------------------------------------------
+The (6,3) K2 rerun (see F62-3 for why it is a full hunt) and K1's active set.
+K1 correction carried forward: the active set is a KKT structure ONLY -- prune
+generators from a multiplier dictionary if you like, but NEVER delete a
+hypothesis from the Prop (witness: all ten constraints give +0.0050, a fixed
+four gives -0.9999).
