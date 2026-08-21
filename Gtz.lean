@@ -6492,3 +6492,4 @@ import Gtz.Wave.NullProbeAdjugateLaw
 import Gtz.Wave.MirrorPairMinorTrigger
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.KTwoSixThreeFunnel
+import Gtz.Wave.FunnelPairMinorHinge

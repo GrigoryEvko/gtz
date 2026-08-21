@@ -1378,6 +1378,7 @@ import Gtz.Wave.NullProbeAdjugateLaw
 import Gtz.Wave.MirrorPairMinorTrigger
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.KTwoSixThreeFunnel
+import Gtz.Wave.FunnelPairMinorHinge
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.CornerEmptinessSlack
@@ -37871,3 +37872,19 @@ run_cmd do
 #print axioms Gtz.pairGapMinor_lt_pairAdjForm_of_not_hasParallelPair
 #print axioms Gtz.pairGapMinor_shared_transfer
 #print axioms Gtz.pairAdjForm_shared_transfer
+
+-- Gtz/Wave/FunnelPairMinorHinge.lean -- the unit atom's pair-minor row is minus
+-- its weight, the funnel hands back the deflated bound it was built from, and
+-- some atom outside the funnel dominator reads the unit atom above one
+#print axioms Gtz.pairGapMinor_of_leverage_eq_one
+#print axioms Gtz.pairGapMinor_eq_zero_iff_of_leverage_eq_one
+#print axioms Gtz.pairMinor_row_of_unitAtom
+#print axioms Gtz.pairMinor_offRow_total_of_unitAtom
+#print axioms Gtz.dominates_and_fixes_of_deflatedGapBound
+#print axioms Gtz.isTie_sixThree_unitAtom_funnel_bounded
+#print axioms Gtz.funnel_reading_sq_eq_pairMinor_div
+#print axioms Gtz.funnel_parallel_of_two_pairMinors_zero
+#print axioms Gtz.exists_outside_reading_sq_gt_one
+#print axioms Gtz.one_lt_leverage_of_reading_sq_gt_one
+#print axioms Gtz.pairGapMinor_lt_neg_one_of_reading_sq_gt_one
+#print axioms Gtz.isTie_sixThree_funnel_structure
