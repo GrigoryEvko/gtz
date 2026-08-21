@@ -6478,5 +6478,6 @@ import Gtz.Wave.KTwoFrameChart
 import Gtz.Wave.KTwoDesignKill
 import Gtz.Wave.CellHDowndatePromotion
 import Gtz.Wave.KTwoProbePair
+import Gtz.Wave.KTwoProbeNormalise
 import Gtz.Wave.EtwoRealnessGauge
 import Gtz.Wave.UnitAtomFunnel

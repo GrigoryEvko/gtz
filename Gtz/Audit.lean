@@ -1377,6 +1377,7 @@ import Gtz.Wave.KTwoFrameKill
 import Gtz.Wave.KTwoFrameChart
 import Gtz.Wave.KTwoDesignKill
 import Gtz.Wave.KTwoProbePair
+import Gtz.Wave.KTwoProbeNormalise
 import Gtz.Wave.KTwoBridgeNormalForm
 import Gtz.Wave.KTwoBridgeRefusalY
 import Gtz.Wave.KTwoBridgeSlacks
@@ -37717,3 +37718,11 @@ run_cmd do
 #print axioms Gtz.unitAtom_parallel_of_two_readings_zero
 #print axioms Gtz.isTie_sixThree_unitAtom_funnel
 #print axioms Gtz.isTie_sixThree_allHeavy_or_funnel
+
+-- Gtz/Wave/KTwoProbeNormalise.lean -- the first probe of the adapted frame is
+-- the normalised plane part, and the two-zero stratum needs no probe hypothesis
+#print axioms Gtz.dotProduct_planePart
+#print axioms Gtz.planePart_dotProduct_self
+#print axioms Gtz.eq_smul_of_planePart_eq_zero
+#print axioms Gtz.k2Probe_planePart_spec
+#print axioms Gtz.k2FiveTwoZero_kill
