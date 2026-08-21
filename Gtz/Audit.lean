@@ -38644,6 +38644,9 @@ run_cmd do
 #print axioms Gtz.isTie_insider_pinch_law
 #print axioms Gtz.isTie_corankOne_budget
 #print axioms Gtz.isTie_sixThree_corankOne_budget
+#print axioms Gtz.pivot_of_corankOne
+#print axioms Gtz.trace_inv_subsetSum_insert
+#print axioms Gtz.pivot_self_of_corankOne
 
 -- Gtz/Wave/ComplementPairDeterminantLaw.lean -- RESTORED WIRING, not this
 -- lane's work: the pair complement, its determinant in closed form, the share
