@@ -75,6 +75,7 @@ simplex.  At every such near-optimum the corner eigenvalue sits in `2.1 ≤ lam 
 import Gtz.Wave.PlaneShadowPairBridge
 import Gtz.Wave.CellHDowndateLaws
 import Gtz.Design.PlaneBranchComplementSelector
+import Gtz.Wave.CorankTwoNonplanarSystem
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -494,5 +495,71 @@ theorem corner_insidePair_minor_le_of_isTie (D : WeightedDesign m 3) (htie : IsT
   have hlaw := corner_insidePair_law_of_isTie D htie hcard hgap ha0 hd hheavy hadmissible
   rw [le_div_iff₀ hlam]
   linarith
+
+/-! ## Part 8 — the two readings the inside-pair law admits
+
+Divided by the corner eigenvalue the inside-pair law is a statement about the
+AXIS READING of the inside atom, and summed over the corner it is a statement
+with no corner data left in it at all. -/
+
+/-- **THE CORNER LEVERAGE TOTAL.**  The three inside atoms carry `3 + lam`.  One
+reading of `Gtz.corner_form_reading_total` at the identity form. -/
+theorem corner_inside_leverage_total_eq (D : WeightedDesign m 3) {C : Finset (Fin m)}
+    {lam : ℝ} {u : Fin 3 → ℝ} (hunit : u ⬝ᵥ u = 1)
+    (hgap : subsetSum D C - 1 = lam • atomMatrix u) :
+    ∑ a ∈ C, leverageOf (D.atom a) = 3 + lam := by
+  have hread := corner_form_reading_total D hgap (1 : Matrix (Fin 3) (Fin 3) ℝ)
+  simp only [Matrix.one_mulVec, Matrix.trace_one, Fintype.card_fin] at hread
+  rw [hunit] at hread
+  rw [Finset.sum_congr rfl (fun a _ => leverageOf_eq_dotProduct (D.atom a)), hread]
+  norm_num
+
+/-- **THE INSIDE-PAIR LAW IN AXIS-READING FORM.**  The corner Gram law turns the
+leverage excess of the inside atom into its squared axis reading, so the law caps
+the pair minor by that reading alone. -/
+theorem corner_insidePair_minor_le_axisReading (D : WeightedDesign m 3) (htie : IsTie D)
+    {C : Finset (Fin m)} (hcard : C.card = 3) {lam : ℝ} (hlam : 0 < lam) {u : Fin 3 → ℝ}
+    (hunit : u ⬝ᵥ u = 1) (hgap : subsetSum D C - 1 = lam • atomMatrix u)
+    {a0 d : Fin m} (ha0 : a0 ∈ C) (hd : d ∉ C)
+    (hheavy : 1 < leverageOf (D.atom a0))
+    (hadmissible : AdmissiblePair (D.atom a0) (D.atom d)) :
+    (1 + lam) * (pairGapMinor (D.atom a0) (D.atom d)
+        + tripleGapDet (D.atom a0) (D.atom d) u)
+      ≤ (D.atom a0 ⬝ᵥ u) ^ 2 := by
+  have hlaw := corner_insidePair_law_of_isTie D htie hcard hgap ha0 hd hheavy hadmissible
+  have hgram := insideGram_self_of_rankOneGap D C hcard hlam.le hunit hgap ha0
+  rw [← leverageOf_eq_dotProduct] at hgram
+  nlinarith [hlaw, hgram, hlam]
+
+/-- **THE CORNER-SUMMED INSIDE-PAIR LAW.**  Summed over the three inside atoms
+the corner eigenvalue cancels outright, because the inside leverage excesses
+total exactly `lam`.  What is left mentions no corner datum except the axis:
+
+  `∑_{a ∈ C} (pairGapMinor g_a g_d + tripleGapDet g_a g_d u)  ≤  1` . -/
+theorem corner_insidePair_sum_law_of_isTie (D : WeightedDesign m 3) (htie : IsTie D)
+    {C : Finset (Fin m)} (hcard : C.card = 3) {lam : ℝ} (hlam : 0 < lam) {u : Fin 3 → ℝ}
+    (hunit : u ⬝ᵥ u = 1) (hgap : subsetSum D C - 1 = lam • atomMatrix u)
+    {d : Fin m} (hd : d ∉ C)
+    (hheavy : ∀ a ∈ C, 1 < leverageOf (D.atom a))
+    (hadmissible : ∀ a ∈ C, AdmissiblePair (D.atom a) (D.atom d)) :
+    ∑ a ∈ C, (pairGapMinor (D.atom a) (D.atom d)
+        + tripleGapDet (D.atom a) (D.atom d) u) ≤ 1 := by
+  have hterm : ∀ a ∈ C, lam * (pairGapMinor (D.atom a) (D.atom d)
+      + tripleGapDet (D.atom a) (D.atom d) u) ≤ leverageOf (D.atom a) - 1 := by
+    intro a ha
+    have h := corner_insidePair_law_of_isTie D htie hcard hgap ha hd (hheavy a ha)
+      (hadmissible a ha)
+    linarith
+  have hsum := Finset.sum_le_sum hterm
+  rw [← Finset.mul_sum] at hsum
+  have htotal : ∑ a ∈ C, (leverageOf (D.atom a) - 1) = lam := by
+    rw [Finset.sum_sub_distrib, corner_inside_leverage_total_eq D hunit hgap,
+      Finset.sum_const, hcard]
+    norm_num
+  rw [htotal] at hsum
+  have hscaled : lam * (∑ a ∈ C, (pairGapMinor (D.atom a) (D.atom d)
+      + tripleGapDet (D.atom a) (D.atom d) u)) ≤ lam * 1 := by
+    rw [mul_one]; exact hsum
+  exact le_of_mul_le_mul_left hscaled hlam
 
 end Gtz
