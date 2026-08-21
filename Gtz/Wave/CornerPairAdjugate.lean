@@ -514,4 +514,82 @@ theorem corner_exists_tripleGapDet_pos_of_readings_cheap {a b : Fin 3 → ℝ}
   · exact Or.inr (Or.inr (tripleGapDet_pos_of_leverageExcess ha hmin
       (lt_of_lt_of_le (hcheap gz) (by nlinarith [hmin, h]))))
 
+/-! ## 8. Where a tie forbids an atom to sit
+
+The split prices the third atom by two things only, so setting one of them to
+zero decides the triple outright.  An atom ORTHOGONAL to both members of an
+admissible pair reads the pair at `(0,0)`, where the axis form vanishes -- and
+then the leverage excess stands alone against a positive pair minor.  That gives
+a producer with no inequality to check beyond heaviness, and a sharp geometric
+constraint on every tie. -/
+
+/-- **AN ORTHOGONAL HEAVY ATOM STRICTLY DOMINATES WITH AN ADMISSIBLE PAIR.**  The
+axis form vanishes at zero readings, so the whole gap determinant is the leverage
+excess priced at the pair minor.  Nothing else is needed. -/
+theorem tripleGapDet_pos_of_orthogonal_heavy {a b c : Fin 3 → ℝ}
+    (hmin : 0 < pairGapMinor a b) (hc : 1 < leverageOf c)
+    (hac : a  ⬝ᵥ  c = 0) (hbc : b  ⬝ᵥ  c = 0) :
+    0 < tripleGapDet a b c := by
+  rw [tripleGapDet_eq_pairAxisForm, hac, hbc]
+  have hzero : pairAxisForm a b 0 0 = 0 := by simp [pairAxisForm]
+  rw [hzero]
+  have : 0 < leverageOf c - 1 := by linarith
+  positivity
+
+/-- **THE PRODUCER AT A DESIGN.**  An admissible pair and any heavy atom
+orthogonal to both of its members give a strictly dominating triple. -/
+theorem subsetSum_posDef_of_orthogonal_heavy (D : WeightedDesign m 3)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (ha : 1 < leverageOf (D.atom x))
+    (hmin : 0 < pairGapMinor (D.atom x) (D.atom y))
+    (hc : 1 < leverageOf (D.atom z))
+    (hac : (D.atom x)  ⬝ᵥ  (D.atom z) = 0)
+    (hbc : (D.atom y)  ⬝ᵥ  (D.atom z) = 0) :
+    (subsetSum D ({x, y, z} : Finset (Fin m)) - 1).PosDef := by
+  rw [subsetSum_posDef_iff_pairVocabulary D x y z hxy hxz hyz]
+  exact ⟨by linarith, hmin,
+    tripleGapDet_pos_of_orthogonal_heavy hmin hc hac hbc⟩
+
+/-- **A TIE PUTS NO HEAVY ATOM ON THE NORMAL OF AN ADMISSIBLE PAIR.**  Where no
+strict dominator exists, every atom orthogonal to both members of an admissible
+pair has leverage at most one.  A sharp geometric constraint on tie
+configurations, with no bracket and no adjugate. -/
+theorem leverage_le_one_of_orthogonal_of_not_posDef (D : WeightedDesign m 3)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (ha : 1 < leverageOf (D.atom x))
+    (hmin : 0 < pairGapMinor (D.atom x) (D.atom y))
+    (hac : (D.atom x)  ⬝ᵥ  (D.atom z) = 0)
+    (hbc : (D.atom y)  ⬝ᵥ  (D.atom z) = 0)
+    (hno : ¬ (subsetSum D ({x, y, z} : Finset (Fin m)) - 1).PosDef) :
+    leverageOf (D.atom z) ≤ 1 := by
+  by_contra hcon
+  push Not at hcon
+  exact hno (subsetSum_posDef_of_orthogonal_heavy D hxy hxz hyz ha hmin hcon hac hbc)
+
+/-- **THE EXACT PER-TRIPLE TIE LAW.**  Rearranging the split: a triple over a pair
+base fails to dominate exactly when the third atom's leverage excess, priced at
+the pair minor, does not beat the cost of its two readings.  Hypothesis-free. -/
+theorem tripleGapDet_nonpos_iff_excess_le_cost (a b c : Fin 3 → ℝ) :
+    tripleGapDet a b c ≤ 0
+      ↔ (leverageOf c - 1) * pairGapMinor a b
+        ≤ -(pairAxisForm a b (a  ⬝ᵥ  c) (b  ⬝ᵥ  c)) := by
+  rw [tripleGapDet_eq_pairAxisForm]
+  constructor <;> intro h <;> linarith
+
+/-- **THE TIE LAW IN LEVERAGES AND READINGS.**  Where no strict dominator exists,
+every atom's leverage excess priced at an admissible pair's minor is capped by the
+pair's trace against its two squared readings.  No bracket, no adjugate, no
+matrix. -/
+theorem leverageExcess_le_readingCost_of_not_posDef (D : WeightedDesign m 3)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (ha : 1 < leverageOf (D.atom x))
+    (hmin : 0 < pairGapMinor (D.atom x) (D.atom y))
+    (hno : ¬ (subsetSum D ({x, y, z} : Finset (Fin m)) - 1).PosDef) :
+    (leverageOf (D.atom z) - 1) * pairGapMinor (D.atom x) (D.atom y)
+      ≤ (leverageOf (D.atom x) + leverageOf (D.atom y) - 2)
+        * (((D.atom x)  ⬝ᵥ  (D.atom z)) ^ 2 + ((D.atom y)  ⬝ᵥ  (D.atom z)) ^ 2) := by
+  by_contra hcon
+  push Not at hcon
+  exact hno (subsetSum_posDef_of_leverageExcess D hxy hxz hyz ha hmin hcon)
+
 end Gtz

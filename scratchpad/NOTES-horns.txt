@@ -349,3 +349,53 @@ time, no aggregation anywhere.
 
 Gate at the end of this batch: 10030 jobs, exit 0, zero errors, zero sorryAx,
 registry 7, every new pin [propext, Classical.choice, Quot.sound] (my run).
+
+F43-7.  SECTION 7 -- A PRODUCER WITH NO ADJUGATE AND NO BRACKET.
+On an admissible pair the axis form's negative is itself a positive form whose
+discriminant is the pair minor again, so it is capped by the pair trace:
+
+  pairAxisForm_ge_neg_trace_mul :
+    -( (l_a + l_b - 2) * (al^2 + be^2) )  <=  pairAxisForm a b al be
+  proof: (l_a - 1)*( (l_a+l_b-2)(al^2+be^2) + paf ) = ((l_a-1)al + (a.b)be)^2
+         + pairGapMinor a b * be^2      -- one `ring`
+
+  tripleGapDet_pos_of_leverageExcess :
+    admissible  /\  (l_a+l_b-2)*((a.c)^2 + (b.c)^2) < (l_c - 1)*pairGapMinor a b
+      ==>  0 < tripleGapDet a b c
+  subsetSum_posDef_of_leverageExcess  -- the design reading
+
+THREE LEVERAGES AND TWO READINGS.  No adjugate, no bracket, no matrix.
+
+THE CORNER'S LEVERAGE-EXCESS BUDGET (corner_leverageExcess_sum): the corner
+equation read at the IDENTITY form gives
+
+    (l_gx - 1) + (l_gy - 1) + (l_gz - 1)  =  lam .
+
+The corner spends exactly its scale, no more and no less.  Pigeonhole
+(corner_exists_leverageExcess_ge_third): some inside atom carries at least
+lam/3, and corner_exists_tripleGapDet_pos_of_readings_cheap turns that into a
+dominator as soon as the readings stay cheap.
+
+F43-8.  SECTION 8 -- WHERE A TIE FORBIDS AN ATOM TO SIT.
+Setting the readings to zero kills the axis form outright, so the leverage
+excess stands alone against a positive pair minor:
+
+  tripleGapDet_pos_of_orthogonal_heavy :
+    0 < pairGapMinor a b  /\  1 < l_c  /\  a.c = 0  /\  b.c = 0
+      ==>  0 < tripleGapDet a b c
+
+  leverage_le_one_of_orthogonal_of_not_posDef  -- the tie contrapositive:
+    *** AT A TIE, NO HEAVY ATOM SITS ON THE NORMAL OF AN ADMISSIBLE PAIR. ***
+
+A sharp geometric constraint on tie configurations, with no bracket and no
+adjugate anywhere.  Also landed: tripleGapDet_nonpos_iff_excess_le_cost (the
+exact per-triple tie law, hypothesis-free) and
+leverageExcess_le_readingCost_of_not_posDef (its usable leverage/reading form).
+
+F43-9.  OPEN, FOR THE SUCCESSOR.  The horn still needs the EXISTENCE half:
+at a coherent corner, SOME outside pair is admissible (fork 39 measured 100.0000%
+per branch point) and SOME inside atom repays it (measured 100.0000%).  The
+producers above discharge the second half the moment the readings are bounded.
+What is missing is a bound on the two axis readings (a.g_e), (b.g_e) of an inside
+atom against an admissible outside pair.  DO NOT go back to the sum law for it:
+corner_pairSum_pos_lam_threshold proves that route cannot close.
