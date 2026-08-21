@@ -1403,6 +1403,7 @@ import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.CorankOneAdjugateGeneralRank
 import Gtz.Wave.BandTieTower
 import Gtz.Wave.WeightedMomentDomination
+import Gtz.Wave.CorankOneRigidity
 import Gtz.Wave.GaleSelfDualCell
 import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
@@ -39096,6 +39097,54 @@ run_cmd do
 #print axioms Gtz.not_forall_exists_posDef_sixThree
 #print axioms Gtz.not_forall_exists_posDef_eightFour
 #print axioms Gtz.not_forall_exists_posDef_tenFour
+
+-- Gtz/Wave/CorankOneRigidity.lean -- the corank one tie stratum classified at every
+-- rank: the leverage law, every k-subset dominating, and parallel-freeness
+#print axioms Gtz.trace_transpose_mul_self
+#print axioms Gtz.matrix_eq_zero_of_symm_idem_trace_zero
+#print axioms Gtz.exists_vecMulVec_of_symm_idem_trace_one
+#print axioms Gtz.designIsometry_apply
+#print axioms Gtz.sqrtWeight_mul_self
+#print axioms Gtz.designIsometry_transpose_mul
+#print axioms Gtz.designCoShare_apply
+#print axioms Gtz.coProjection_transpose
+#print axioms Gtz.coProjection_mul_self
+#print axioms Gtz.coProjection_diag
+#print axioms Gtz.coProjection_offDiag
+#print axioms Gtz.trace_coProjection
+#print axioms Gtz.coProjection_mul_designIsometry
+#print axioms Gtz.sum_designCoShare
+#print axioms Gtz.trace_coProjection_succ
+#print axioms Gtz.exists_coAxis
+#print axioms Gtz.exists_dependency
+#print axioms Gtz.weight_mul_sq_dotProduct_eq_coShare_mul
+#print axioms Gtz.one_sub_weight_pos_of_size
+#print axioms Gtz.designCoShare_eq_mul
+#print axioms Gtz.gap_isHermitian
+#print axioms Gtz.sum_weight_mul_sq_reading_eq_normSq
+#print axioms Gtz.dotProduct_erase_gap_mulVec
+#print axioms Gtz.sq_le_of_constrained_cauchySchwarz
+#print axioms Gtz.sum_dep_mul_reading_eq_zero
+#print axioms Gtz.dep_mass_eq_coMean
+#print axioms Gtz.designCoShare_nonneg
+#print axioms Gtz.coMean_pos
+#print axioms Gtz.sq_reading_mul_le
+#print axioms Gtz.dominates_erase_of_coMean_le
+#print axioms Gtz.posDef_erase_of_coMean_lt
+#print axioms Gtz.noStrictSelection_of_isTie
+#print axioms Gtz.card_univ_erase
+#print axioms Gtz.coRatio_le_coMean_of_noStrict
+#print axioms Gtz.coRatio_eq_coMean_of_noStrict
+#print axioms Gtz.coMean_mul_rank
+#print axioms Gtz.rank_mul_share_eq_of_noStrict
+#print axioms Gtz.dominates_of_noStrict
+#print axioms Gtz.coRatio_eq_coMean_of_law
+#print axioms Gtz.exists_probe_of_reading
+#print axioms Gtz.exists_null_probe_of_law
+#print axioms Gtz.isTie_iff_leverage_law
+#print axioms Gtz.not_hasParallelPair_of_isTie_succ_rank
+#print axioms Gtz.not_hingeHoldsAtSize_succ_rank'
+#print axioms Gtz.corankOne_tie_classification
 
 -- Gtz/Wave/PivotFourDominatingTriples.lean -- the three-class law for rank-two
 -- ties, and seven dominating triples at every (5,3) tie

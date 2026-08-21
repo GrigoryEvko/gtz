@@ -6521,6 +6521,7 @@ import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.CorankOneAdjugateGeneralRank
 import Gtz.Wave.BandTieTower
 import Gtz.Wave.WeightedMomentDomination
+import Gtz.Wave.CorankOneRigidity
 import Gtz.Wave.GaleSelfDualCell
 import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
