@@ -1371,7 +1371,9 @@ import Gtz.Wave.KTwoBridgeNormalForm
 import Gtz.Wave.KTwoBridgeRefusalY
 import Gtz.Wave.KTwoBridgeSlacks
 import Gtz.Wave.KTwoBridgePositives
+import Gtz.Wave.KTwoBridgeDominates
 import Gtz.Wave.CoherentHornRepayScope
+import Gtz.Wave.BranchBProductKill
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -37529,3 +37531,23 @@ run_cmd do
 #print axioms Gtz.exists_pos_of_symmetric_trio
 #print axioms Gtz.exists_tripleGap_pos_of_adjugate_reading_gt
 #print axioms Gtz.cellH_exists_tripleGap_pos
+
+-- Gtz/Wave/BranchBProductKill.lean -- inside branch B domination is one
+-- determinant, so the existential kill needs no selection rule
+#print axioms Gtz.liveTriple_posDef_iff_gapDet_pos
+#print axioms Gtz.branchB_posDef_iff_gapDet_pos
+#print axioms Gtz.card_triple
+#print axioms Gtz.branchB_not_isTie_of_gapDet_pos
+#print axioms Gtz.branchB_isTie_gapDet_nonpos
+#print axioms Gtz.branchB_not_isTie_of_prod_nonpos
+#print axioms Gtz.branchB_isTie_prod_ge
+#print axioms Gtz.branchB_not_isTie_of_two_prod_nonpos
+#print axioms Gtz.posDef_of_pairAreaSum_lt_bracket_sq
+#print axioms Gtz.isTie_pairAreaSum_ge_bracket_sq
+
+-- Gtz/Wave/KTwoBridgeDominates.lean -- a negative chart slack exhibits a
+-- strictly dominating triple, through the ordered Sylvester chain
+#print axioms Gtz.tripleGapDet_frame_yde
+#print axioms Gtz.tripleGapDet_frame_zde
+#print axioms Gtz.k2ChartRefusalY_neg_dominates
+#print axioms Gtz.k2ChartRefusalZ_neg_dominates

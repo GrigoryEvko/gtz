@@ -6463,3 +6463,5 @@ import Gtz.Wave.KTwoBridgeRefusalY
 import Gtz.Wave.KTwoBridgeSlacks
 import Gtz.Wave.CornerGatewayBudget
 import Gtz.Wave.KTwoBridgePositives
+import Gtz.Wave.BranchBProductKill
+import Gtz.Wave.KTwoBridgeDominates
