@@ -165,4 +165,92 @@ theorem dominates_iff_wedgeGram_cap (design : WeightedDesign m 3)
   rw [Dominates, subsetSum_triple_eq_add design hxy hxz hyz]
   exact posSemidef_iff_wedgeGram_cap _ _ _ hbracket
 
+/-! ## 5. The checkable corner: the pair area sum alone
+
+The cap quantifies over every coefficient vector, which no lane can check.  The
+trace of the wedge Gram bounds all of it, and that trace is the PAIR AREA SUM.
+So a triple whose three pair wedges TOGETHER undercut its squared bracket
+dominates, and that is checkable from wedges and brackets alone.
+-/
+
+/-- The pair wedge does not depend on the order of the pair. -/
+theorem crossNormSq_comm (leftVec rightVec : Fin 3 → ℝ) :
+    crossNormSq leftVec rightVec = crossNormSq rightVec leftVec := by
+  simp only [crossNormSq, bracketNormal, dotProduct, Fin.sum_univ_three,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- **THE COMBINATION BOUND.**  The squared norm of a combination of three
+vectors is at most the squared coefficient vector times the total squared norm.
+This is Lagrange's identity: the difference is the sum of the nine squared
+two-by-two coefficient minors. -/
+theorem normSq_combination_le (firstVec secondVec thirdVec coeff : Fin 3 → ℝ) :
+    (coeff 0 • firstVec + coeff 1 • secondVec + coeff 2 • thirdVec)
+        ⬝ᵥ (coeff 0 • firstVec + coeff 1 • secondVec + coeff 2 • thirdVec)
+      ≤ (coeff ⬝ᵥ coeff)
+        * (firstVec ⬝ᵥ firstVec + secondVec ⬝ᵥ secondVec + thirdVec ⬝ᵥ thirdVec) := by
+  simp only [dotProduct, Fin.sum_univ_three, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+  nlinarith [sq_nonneg (coeff 0 * secondVec 0 - coeff 1 * firstVec 0),
+    sq_nonneg (coeff 0 * secondVec 1 - coeff 1 * firstVec 1),
+    sq_nonneg (coeff 0 * secondVec 2 - coeff 1 * firstVec 2),
+    sq_nonneg (coeff 0 * thirdVec 0 - coeff 2 * firstVec 0),
+    sq_nonneg (coeff 0 * thirdVec 1 - coeff 2 * firstVec 1),
+    sq_nonneg (coeff 0 * thirdVec 2 - coeff 2 * firstVec 2),
+    sq_nonneg (coeff 1 * thirdVec 0 - coeff 2 * secondVec 0),
+    sq_nonneg (coeff 1 * thirdVec 1 - coeff 2 * secondVec 1),
+    sq_nonneg (coeff 1 * thirdVec 2 - coeff 2 * secondVec 2)]
+
+/-- The wedge probe is capped by the pair area sum, which is the trace of the
+wedge Gram. -/
+theorem wedgeProbe_normSq_le_pairAreaSum_mul (leftVec midVec thirdVec coeff : Fin 3 → ℝ) :
+    wedgeProbe leftVec midVec thirdVec coeff ⬝ᵥ wedgeProbe leftVec midVec thirdVec coeff
+      ≤ triplePairAreaSum leftVec midVec thirdVec * (coeff ⬝ᵥ coeff) := by
+  have hbound := normSq_combination_le (bracketNormal midVec thirdVec)
+    (bracketNormal thirdVec leftVec) (bracketNormal leftVec midVec) coeff
+  rw [wedgeProbe]
+  have hsum : (bracketNormal midVec thirdVec ⬝ᵥ bracketNormal midVec thirdVec
+      + bracketNormal thirdVec leftVec ⬝ᵥ bracketNormal thirdVec leftVec
+      + bracketNormal leftVec midVec ⬝ᵥ bracketNormal leftVec midVec)
+      = triplePairAreaSum leftVec midVec thirdVec := by
+    simp only [triplePairAreaSum, crossNormSq, bracketNormal, dotProduct, Fin.sum_univ_three,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.cons_val_two, Matrix.tail_cons]
+    ring
+  rw [hsum] at hbound
+  linarith [hbound]
+
+/-- **THE DOMINATION PRODUCER, CHECKABLE.**  A triple whose three pair wedges
+together undercut its squared bracket DOMINATES.  Only wedges and brackets
+appear, and nothing is quantified over.
+
+Together with the landed `Gtz.triplePairAreaSum_le_three_mul_tripleBracket_sq`
+this brackets domination between two multiples of the squared bracket:
+
+  `pair area sum ≤ B²` ⟹ dominates ⟹ `pair area sum ≤ 3 B²`
+
+and the factor between the two halves is exactly three. -/
+theorem posSemidef_of_pairAreaSum_le_bracket_sq (leftVec midVec thirdVec : Fin 3 → ℝ)
+    (hbracket : tripleBracket leftVec midVec thirdVec ≠ 0)
+    (harea : triplePairAreaSum leftVec midVec thirdVec
+      ≤ tripleBracket leftVec midVec thirdVec ^ 2) :
+    (atomMatrix leftVec + atomMatrix midVec + atomMatrix thirdVec - 1).PosSemidef := by
+  refine posSemidef_of_wedgeGram_cap leftVec midVec thirdVec hbracket (fun coeff => ?_)
+  have hprobe := wedgeProbe_normSq_le_pairAreaSum_mul leftVec midVec thirdVec coeff
+  have hcc : 0 ≤ coeff ⬝ᵥ coeff := by
+    simp only [dotProduct, Fin.sum_univ_three]
+    nlinarith [sq_nonneg (coeff 0), sq_nonneg (coeff 1), sq_nonneg (coeff 2)]
+  nlinarith [hprobe, harea, hcc]
+
+/-- **THE CHECKABLE PRODUCER AT A DESIGN.**  This is the witness a kill needs:
+three pair wedges and one bracket decide domination outright. -/
+theorem dominates_of_pairAreaSum_le_bracket_sq (design : WeightedDesign m 3)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hbracket : tripleBracket (design.atom x) (design.atom y) (design.atom z) ≠ 0)
+    (harea : triplePairAreaSum (design.atom x) (design.atom y) (design.atom z)
+      ≤ tripleBracket (design.atom x) (design.atom y) (design.atom z) ^ 2) :
+    Dominates design ({x, y, z} : Finset (Fin m)) := by
+  rw [Dominates, subsetSum_triple_eq_add design hxy hxz hyz]
+  exact posSemidef_of_pairAreaSum_le_bracket_sq _ _ _ hbracket harea
+
 end Gtz
