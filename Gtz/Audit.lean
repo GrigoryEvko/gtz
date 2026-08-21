@@ -1336,6 +1336,8 @@ import Gtz.Wave.OppositeHornTwoPoint
 import Gtz.Wave.OppositeHornCycleNoGo
 import Gtz.Wave.KOneNormalForm
 import Gtz.Wave.KOneTransverse
+import Gtz.Wave.OppositeHornFailureDirection
+import Gtz.Wave.DiamondNeighborhoodBudget
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
