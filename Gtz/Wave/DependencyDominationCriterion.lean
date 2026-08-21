@@ -417,4 +417,50 @@ theorem dominates_iff_dependencyBound (D : WeightedDesign m k) (hm : 2 ≤ m)
           rw [mul_pow, hsq, mul_comm, mul_div_assoc, div_self (D.weight_pos index).ne',
             mul_one]
 
+/-- **THE CRITERION WITH THE SELECTION AND ITS COMPLEMENT ON OPPOSITE SIDES.**  Moving the
+selected part of the right sum across turns `1 / (t_c * (1 - t_c)) - 1 / t_c` into
+`1 / (1 - t_c)`, and the criterion reads as one inequality between the selected labels,
+weighted by the CO-weights, and the unselected labels, weighted by the weights. -/
+theorem dominates_iff_dependencyBound_compl (D : WeightedDesign m k) (hm : 2 ≤ m)
+    (pick : Fin k → Fin m) (hinj : Function.Injective pick) :
+    Dominates D (Finset.image pick Finset.univ)
+      ↔ ∀ dep : Fin m → ℝ, (∑ index, dep index • D.atom index) = 0 →
+          ∑ index ∈ Finset.image pick Finset.univ, dep index ^ 2 / (1 - D.weight index)
+            ≤ ∑ index ∈ (Finset.image pick Finset.univ)ᶜ, dep index ^ 2 / D.weight index := by
+  classical
+  rw [dominates_iff_dependencyBound D hm pick hinj]
+  refine forall_congr' fun dep => forall_congr' fun _ => ?_
+  set selection : Finset (Fin m) := Finset.image pick Finset.univ with hselection
+  have himage : ∀ f : Fin m → ℝ, ∑ index ∈ selection, f index = ∑ slot, f (pick slot) := by
+    intro f
+    rw [hselection, Finset.sum_image fun left _ right _ hpick => hinj hpick]
+  have hsplit : ∑ index, dep index ^ 2 / D.weight index
+      = (∑ index ∈ selection, dep index ^ 2 / D.weight index)
+        + ∑ index ∈ selectionᶜ, dep index ^ 2 / D.weight index :=
+    (Finset.sum_add_sum_compl selection _).symm
+  have hgap : ∀ slot : Fin k,
+      dep (pick slot) ^ 2 / (D.weight (pick slot) * (1 - D.weight (pick slot)))
+          - dep (pick slot) ^ 2 / D.weight (pick slot)
+        = dep (pick slot) ^ 2 / (1 - D.weight (pick slot)) := by
+    intro slot
+    have hw : D.weight (pick slot) ≠ 0 := (D.weight_pos (pick slot)).ne'
+    have hco : (1 : ℝ) - D.weight (pick slot) ≠ 0 := by
+      have := weight_lt_one D hm (pick slot); intro hzero; linarith [hzero]
+    field_simp
+    ring
+  have hleft : (∑ slot, dep (pick slot) ^ 2
+          / (D.weight (pick slot) * (1 - D.weight (pick slot))))
+        - ∑ index ∈ selection, dep index ^ 2 / D.weight index
+      = ∑ index ∈ selection, dep index ^ 2 / (1 - D.weight index) := by
+    rw [himage (fun index => dep index ^ 2 / D.weight index),
+      himage (fun index => dep index ^ 2 / (1 - D.weight index)), ← Finset.sum_sub_distrib]
+    exact Finset.sum_congr rfl fun slot _ => hgap slot
+  constructor
+  · intro hbound
+    rw [hsplit] at hbound
+    linarith [hleft]
+  · intro hbound
+    rw [hsplit]
+    linarith [hleft]
+
 end Gtz
