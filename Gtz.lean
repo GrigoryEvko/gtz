@@ -6551,3 +6551,21 @@ import Gtz.Wave.PairMinorSumBudget
 -- squared reading alone.  The producer's window forces `tau < e2` and a squared
 -- reading above one.
 import Gtz.Wave.FunnelSpectralPinch
+-- The corank-one payment package, carried off the funnel.  The reader that
+-- reads a weak dominator's kernel above one needs no unit atom and no size;
+-- the window producer and the plane Parseval budget turn it into a cap on that
+-- reader's own WEIGHT at every boundary system.  Parseval caps the reader from
+-- the other side too, and the two caps fight: the weight route can fire only
+-- when three times the squared trace falls below the second invariant times the
+-- trace plus two, which forces a trace above ten.  The pigeonhole trace of a
+-- four-set is evaluated outright, so the four-set determinant route, the
+-- three-drop route and the pigeonhole route are ONE inequality -- and that
+-- inequality is the SUM of three insider conditions, each of which the kernel
+-- slide puts in closed polynomial form with a producer of its own.
+import Gtz.Wave.CorankOneWeightCap
+-- RESTORED WIRING, not this lane's work.  A fork overwrote the in-flight
+-- umbrella lines of the lane that landed Gtz/Wave/ComplementPairDeterminantLaw
+-- in commit 733e7c8, and re-applies them here.  The complement of a pair, read
+-- off its determinant: the three closed-form determinant laws, the complement
+-- share caps, and the volume laws at sizes four, five and six.
+import Gtz.Wave.ComplementPairDeterminantLaw

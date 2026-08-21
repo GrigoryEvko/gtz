@@ -38619,3 +38619,66 @@ run_cmd do
 #print axioms Gtz.det_add_atomMatrix_of_kernelIsLine
 #print axioms Gtz.det_add_atomMatrix_eq_zero_of_blind
 #print axioms Gtz.add_atomMatrix_mulVec_eq_zero_of_blind
+
+-- Gtz/Wave/CorankOneWeightCap.lean -- the payment package with no funnel: the
+-- outside reader at any size, the weight cap of a boundary system, the trace
+-- bound that prices the weight route, the closed-form pigeonhole trace that
+-- identifies three campaign routes, and the three insider producers whose sum
+-- is the single payment law
+#print axioms Gtz.dominator_kernel_reproduction
+#print axioms Gtz.dominator_readings_sq
+#print axioms Gtz.exists_outside_reading_sq_gt_one_of_dominator
+#print axioms Gtz.one_lt_leverage_of_outside_reader
+#print axioms Gtz.exists_strict_of_window_dominator
+#print axioms Gtz.trace_pos_of_dominator
+#print axioms Gtz.exists_strict_of_weight_dominator
+#print axioms Gtz.isTie_weight_cap
+#print axioms Gtz.weight_mul_reading_sq_le
+#print axioms Gtz.weight_producer_needs_trace_bound
+#print axioms Gtz.weight_producer_needs_trace_gt_ten
+#print axioms Gtz.trace_inv_add_atomMatrix_of_unit_null
+#print axioms Gtz.one_le_trace_inv_iff_payment
+#print axioms Gtz.fourSet_pivot_of_unit_null
+#print axioms Gtz.exists_posDef_sub_of_insider_window
+#print axioms Gtz.exists_strict_of_insider_window
+#print axioms Gtz.isTie_insider_pinch_law
+#print axioms Gtz.isTie_corankOne_budget
+#print axioms Gtz.isTie_sixThree_corankOne_budget
+
+-- Gtz/Wave/ComplementPairDeterminantLaw.lean -- RESTORED WIRING, not this
+-- lane's work: the pair complement, its determinant in closed form, the share
+-- caps and the volume laws at three sizes
+#print axioms Gtz.scaledAtom_reading
+#print axioms Gtz.sum_weight_mul_sq_reading
+#print axioms Gtz.dotProduct_weightedSubsum_mulVec
+#print axioms Gtz.posSemidef_weightedSubsum
+#print axioms Gtz.isHermitian_subsetSum_sub_one
+#print axioms Gtz.det_pairAtomCombo
+#print axioms Gtz.det_tripleAtomCombo
+#print axioms Gtz.det_fourAtomCombo
+#print axioms Gtz.det_one_sub_pairAtomCombo
+#print axioms Gtz.weightedComplement_pair_eq
+#print axioms Gtz.det_weightedComplement_pair
+#print axioms Gtz.share_add_share_le_one_add_weight_mul_crossNormSq
+#print axioms Gtz.share_add_share_le_one_of_crossNormSq_eq_zero
+#print axioms Gtz.inadmissible_share_cap
+#print axioms Gtz.sum_weight_mul_crossNormSq
+#print axioms Gtz.crossNormSq_nonneg
+#print axioms Gtz.crossNormSq_self
+#print axioms Gtz.exists_inadmissible_nonparallel_of_leverage_le_one
+#print axioms Gtz.posDef_subsetSum_sub_one_of_complement_share_lt
+#print axioms Gtz.one_sub_weight_cap_le_complement_share
+#print axioms Gtz.selection_share_cap_of_no_strict_dominator
+#print axioms Gtz.triple_share_cap_of_no_strict_dominator
+#print axioms Gtz.one_sub_weight_cap_le_pair_share
+#print axioms Gtz.subsetSum_ne_one_of_corank_two
+#print axioms Gtz.pair_share_sum_eq_of_size_four
+#print axioms Gtz.complement_triple_volume_law
+#print axioms Gtz.parallel_pair_share_deficit_eq_complement_volume
+#print axioms Gtz.complement_fourSet_volume_law
+#print axioms Gtz.dominates_triple_iff_tripleGram_posSemidef
+#print axioms Gtz.pairGapMinor_nonneg_of_dominates_triple
+#print axioms Gtz.crossNormSq_pos_of_pairGapMinor_eq_zero_of_heavy
+#print axioms Gtz.pairGapMinor_pos_inside_dominator_of_q75b
+#print axioms Gtz.pair_dominator_trichotomy
+#print axioms Gtz.not_inadmissible_of_complement_volume_ge_one
