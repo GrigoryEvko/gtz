@@ -1,0 +1,155 @@
+NOTES: the plane shadow, the Nesterenko cap without genericity, and the axis Schur calculus
+lane module: Gtz/Wave/PlaneShadowPairBridge.lean
+probes:      scratchpad/planeshadow/{ident.jl,diamond.jl,diamond_common.jl,cap.jl}
+
+1. WHAT THE TREE ALREADY HAD (do not rebuild)
+---------------------------------------------
+Gtz/Design/TightAxisPairBudget.lean
+  planarCompressionDesign         the rank-two shadow design, weights untouched
+  planarCompression_pairBracket   the Binet-Cauchy dictionary
+                                  bracket(shadow a, shadow b) = <pOne x pTwo, g_a x g_b>
+  exists_planeStrictPair_of_fourTransversal / _of_transversalAxis
+                                  four atoms transversal to the axis force a plane-strict pair
+  det_gap_nonpos_of_isTie_of_pairPlaneStrict
+                                  at a tie every triple through a plane-strict pair has det <= 0
+  ldl_clearing_identity, quadForm_frameCoordinates, det_eq_framePairing_det   the frame kit
+Gtz/Design/SphereExistence.lean   a unit axis off all pair-normal planes exists (moment curve)
+Gtz/Design/RankTwoTieCriterion.lean
+  exists_posDef_pair_of_nesterenkoExcess   1 + t_c < 2 t_c l_c forces a strict rank-two pair
+  weightedLeverage_le_nesterenkoBound_of_isTie   2 t l <= 1 + t at every rank-two tie
+
+So the rank-two cap I derived by hand IS the tree's Nesterenko bound in another
+form: t(2l - 1) <= 1 is exactly 2tl <= 1 + t.  My hand proof (Parseval at g_d
+plus the pairwise defect inequality) is a second proof, not a new theorem.  The
+NEW content is the SHADOW TRANSPORT of it, and the Schur calculus below.
+
+2. THE EXACT IDENTITIES (checked in exact rationals, 400 random draws each)
+--------------------------------------------------------------------------
+Write a symmetric 3x3 gap in an orthonormal frame (pOne, pTwo, axis):
+   M = [aa bb dd; bb cc ee; dd ee ff],  D := aa cc - bb^2.
+
+(a) closed-form Schur expansion
+       det M = D * ff - (aa ee^2 - 2 bb dd ee + cc dd^2)
+
+(b) matrix-determinant lemma at 2x2, for a third atom with frame coordinates (x,y,z)
+       D_new = D + alpha,   alpha := cc x^2 - 2 bb x y + aa y^2
+
+(c) THE RANK-ONE SCHUR UPDATE, cleared of denominators
+       D * det(M + atom) = det M * D_new + (z D - beta)^2
+       beta := x (cc dd - bb ee) + y (aa ee - bb dd)
+
+(c) is the lane's centre.  It says the third atom's contribution to the Schur
+complement is an EXACT SQUARE.  In quotient form:
+       Schur(a,b,c) = Schur(a,b) + (z - beta/D)^2 / (1 + alpha/D)
+which is the Sherman-Morrison collapse:  1 - alpha + alpha^2/(1+alpha) = 1/(1+alpha).
+
+3. THE TIE CONSTRAINT
+---------------------
+At a tie with a plane-strict pair {a,b}:  D > 0 (plane block PD), det M < 0
+(the pair never weakly dominates at rank three), det(M + atom) <= 0 (tree gate).
+Feed (c):
+       (z_c D - beta_c)^2  <=  (- det M) * (D + alpha_c)      for EVERY third atom c
+                                                              and EVERY plane-strict axis.
+A two-parameter family of scalar inequalities on the sphere of normals.
+
+4. THE PARSEVAL AGGREGATE
+-------------------------
+Put w := D * axis - (cc dd - bb ee) * pOne - (aa ee - bb dd) * pTwo.  Then
+       g_c . w = z_c D - beta_c        (an identity, no hypotheses)
+       w . w   = D^2 + (cc dd - bb ee)^2 + (aa ee - bb dd)^2
+       sum_c t_c alpha_c = aa + cc     (polarized Parseval on the plane)
+       sum_c t_c (g_c . w)^2 = w . w   (Parseval at the probe w)
+Summing the tie constraint over the complement of the pair:
+       w . w  <=  (- det M)(D + aa + cc) + t_a (g_a.w)^2 + t_b (g_b.w)^2.
+
+5. THE GENERICITY-FREE PLANE-STRICT PAIR
+----------------------------------------
+Shadow leverage:  l^Pi_c = l_c - (g_c . axis)^2.
+Feed the tree's Nesterenko engine to the shadow design:
+       1 + t_d < 2 t_d (l_d - (g_d . axis)^2)   =>   a plane-strict pair through d.
+No transversality, no four labels, no moment curve.  Taking the axis orthogonal
+to g_d gives the clean corollary
+       1 + t_d < 2 t_d l_d   =>   some plane carries a plane-strict pair through d,
+and the hypothesis is an OPEN BAND of normals, not one circle:
+       (g_d . axis)^2 < l_d - 1/2 - 1/(2 t_d).
+
+6. MEASURED AT THE (5,3) DIAMOND  (scratchpad/planeshadow/diamond.jl, cap.jl)
+-----------------------------------------------------------------------------
+graphic design of K4 - e, rows (1,-1,0),(1,0,-1),(1,0,0),(0,1,-1),(0,1,0),
+conductances (2,3,3,3,3), uniform weight 1/5, g_e = sqrt(5 gam_e) L^{-1/2} b_e.
+   Parseval error            1.36e-15
+   leverages                 2, 3.25, 3.25, 3.25, 3.25
+   shares t*l                0.40, 0.65, 0.65, 0.65, 0.65
+   cap value t(2l-1)         0.60, 1.10, 1.10, 1.10, 1.10      -> fires at the four rim atoms
+   max_T lambda_min(S_T - I) +3.19e-16                          -> an exact tie
+   max cos^2 over pairs      0.289941                           -> no parallel pair
+4000 random normals: all 10 shadow brackets nonzero at every one of them.
+20000 random normals: NOT ONE lacks a plane-strict pair.
+5000 normals orthogonal to each rim atom: the best pair reads lambda_min >= +0.3773,
+5000 normals orthogonal to the spine atom: >= +0.5000.  Zero failures.
+13007 plane-strict pairs sampled:
+   min plane block det D        +2.26e-04   (positive, as the theory says)
+   max pair gap det             -7.50e-01   (strictly negative, as the theory says)
+   min alpha                    +8.90e-06   (nonnegative, as the theory says)
+   worst violation of the tie constraint  +9.1e-15   -> holds, and it is TIGHT
+                                 (equality wherever the completed triple is one of
+                                  the diamond's eight weakly dominating triples)
+   the pair-mass floor of 4 holds at all 13007, with at least 16.7 percent slack.
+The rank-one Schur update (c) and the two Parseval aggregates were re-checked
+inside the sweep against the true triple determinants, to 1e-6 relative.
+
+7. SHARPNESS
+------------
+The cap 2 t l <= 1 + t is an EQUALITY at every rank-two corank-one tie
+(Gtz.exists_isTie_rankTwoCorankOne_attaining_bound), so the plane bridge cannot
+be sharpened by a constant.  The tie constraint of 3 is attained at the diamond.
+
+8. THE FRAME LEAVES: THE PAIR-NORMAL FACTORIZATION  (added after the first build)
+---------------------------------------------------------------------------------
+Put the axis along the pair's OWN normal.  Then g_a . v = g_b . v = 0, so
+   plane block determinant D0 = pairGapMinor(a,b) = P
+   Schur probe w = adjugate(S_ab - 1) . v = P v
+   det(S_ab - 1) = -P                    (a 3x3 determinant identity, checked exactly)
+   det(S_abc - 1) = tripleGapDet(a,b,c)  (a 3x3 determinant identity, checked exactly)
+and the rank-one Schur update of 2(c) collapses to a POLYNOMIAL IDENTITY in the six
+pair readings of the triple:
+
+   crossNormSq(a,b) * tripleGapDet(a,b,c)
+      = pairGapMinor(a,b) * (tripleBracket(a,b,c)^2 - crossNormSq(a,b))
+        - pairNormalDefect(a,b,c)
+
+   pairNormalDefect(a,b,c)
+      := (l_a + l_b - 1)(crossNormSq(a,b) l_c - tripleBracket^2)
+         - crossNormSq(a,b)((a.c)^2 + (b.c)^2)
+       = (l_a s_bc - s_ab s_ac)^2 + (s_ab s_bc - l_b s_ac)^2 + tripleBracket^2
+         - crossNormSq(a,b) l_c
+
+Expanded, the squared volume enters LINEARLY with coefficient P - 1:
+
+   N * tripleGapDet = (P - 1) B^2 - N P + N l_c - (l_a s_bc - s_ab s_ac)^2
+                                             - (s_ab s_bc - l_b s_ac)^2
+
+The defect is the plane adjugate form of the pair read at the third atom, cleared
+by N.  As a binary quadratic in (s_ac, s_bc) its outer coefficients are
+l_b(l_b - 1) + s_ab^2 and l_a(l_a - 1) + s_ab^2, and its discriminant is exactly
+- N * P.  So the defect is NONNEGATIVE whenever both leverages are at least one
+and the pair minor is nonnegative.  All four facts were checked in exact
+rationals over 400 random draws (scratchpad/planeshadow/{sylvester.jl,defect.jl}).
+
+9. WHAT THIS BUYS THE (6,3) PROGRAMME
+--------------------------------------
+* PLANE STRICTNESS IS ADMISSIBILITY.  det(S_ab - 1) < 0 at a plane-strict pair,
+  and det(S_ab - 1) = - pairGapMinor, so a plane-strict pair is an edge of the
+  admissible-pair graph of Gtz/Wave/AdmissiblePairGraph.lean.  It also forces both
+  its atoms strictly heavy, from the plane block's positive trace.
+* AN ADMISSIBLE HEAVY PAIR EXISTS AT EVERY SIMPLE DESIGN with four labels, by the
+  tree's moment-curve axis.  It also exists through any atom of Nesterenko excess,
+  with no simplicity hypothesis at all.
+* THE VOLUME WINDOW.  At a tie the gate tripleGapDet <= 0 becomes a LINEAR
+  inequality in the squared volume whose direction is decided by pairGapMinor
+  against ONE: a ceiling above one, a floor below one, and at exactly one the
+  volume leaves the statement.  That threshold is new.
+* THE PAIR-NORMAL CEILING crossNormSq * tripleGapDet <= pairGapMinor *
+  (tripleBracket^2 - crossNormSq) recovers the tree's height law
+  crossNormSq < tripleBracket^2 at every strict dominator, from the factorization
+  rather than from the normal probe.
