@@ -1311,6 +1311,7 @@ import Gtz.Wave.TieGraphTrichotomy
 import Gtz.Wave.TieMantelBound
 import Gtz.Wave.CellHChartFloors
 import Gtz.Wave.CellHDowndateLaws
+import Gtz.Wave.InsertionDowndateLedger
 import Gtz.Wave.CellBTiePackage
 import Gtz.Wave.BothLightChartReduction
 import Gtz.Wave.DiamondNeighborhoodMirror
@@ -37553,3 +37554,18 @@ run_cmd do
 #print axioms Gtz.tripleGapDet_frame_zde
 #print axioms Gtz.k2ChartRefusalY_neg_dominates
 #print axioms Gtz.k2ChartRefusalZ_neg_dominates
+
+-- Gtz/Wave/InsertionDowndateLedger.lean -- the insertion ledger, its duality
+-- with the downdate ledger, and the per-vertex and per-pair producers
+#print axioms Gtz.sum_weighted_insertion_det
+#print axioms Gtz.sum_weighted_downdate_det_general
+#print axioms Gtz.sum_weighted_insertion_add_downdate
+#print axioms Gtz.sum_weighted_insertion_sub_downdate
+#print axioms Gtz.det_pairGap_eq_neg_pairGapMinor
+#print axioms Gtz.singleGap_det_add_secondInvariant
+#print axioms Gtz.pairGap_det_add_secondInvariant
+#print axioms Gtz.sum_weight_mul_pairGapMinor
+#print axioms Gtz.pairGapMinor_self
+#print axioms Gtz.exists_pairGapMinor_pos_of_leverage
+#print axioms Gtz.sum_weight_mul_tripleGapDet_through_pair
+#print axioms Gtz.exists_tripleGapDet_pos_through_pair
