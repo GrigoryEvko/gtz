@@ -1320,6 +1320,7 @@ import Gtz.Wave.PairBracketMass
 import Gtz.Wave.PairMassRowLaw
 import Gtz.Wave.DominatorWedgeFloor
 import Gtz.Wave.OppositeHornWedgeCap
+import Gtz.Wave.OppositeHornSelect
 import Gtz.Wave.BracketPhaseRigidity
 import Gtz.Wave.BracketPluckerSyzygy
 import Gtz.Wave.ParallelPairFactorization
@@ -37451,3 +37452,13 @@ run_cmd do
 #print axioms Gtz.repayScope_det_z
 #print axioms Gtz.repayScope_all_neg
 #print axioms Gtz.repayScope_not_forced
+
+-- Gtz/Wave/OppositeHornSelect.lean -- the column criterion of a corner: the
+-- polarized corner form, the closed column total, and the existential over the
+-- inside atoms turned into three scalar sign conditions with no selector
+#print axioms Gtz.cornerForm_polarized
+#print axioms Gtz.cornerForm_tripleGapDet_column_total
+#print axioms Gtz.esymm_signs_of_nonpos
+#print axioms Gtz.exists_pos_iff_esymm_signs
+#print axioms Gtz.corner_column_exists_tripleGapDet_pos
+#print axioms Gtz.corner_column_exists_tripleGapDet_pos_closed
