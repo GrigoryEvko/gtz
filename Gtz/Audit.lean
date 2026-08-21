@@ -1478,6 +1478,7 @@ import Gtz.Wave.SharpDesignInvolution
 import Gtz.Wave.ChartGapSharpDuality
 import Gtz.Wave.CornerAxisPairAdjugateLaw
 import Gtz.Wave.ChartPairDualityExchange
+import Gtz.Wave.ChartComplementBlockLaw
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39704,3 +39705,22 @@ run_cmd do
 #print axioms Gtz.chartParallelPair_iff_sharpCoPairDeterminant
 #print axioms Gtz.hasParallelPair_iff_exists_sharpCoPairDeterminant
 #print axioms Gtz.sixThree_sharp_pair_exchange
+
+-- Gtz/Wave/ChartComplementBlockLaw.lean -- the two diagonal shifts of a chart gap are the
+--   same law on complementary blocks.  For a rank projection `P = V Vᵀ` and a partition of
+--   the index set into a `rank`-selection and its complement,
+--   `det P[C,C] = det (1 - P)[Cᶜ,Cᶜ]`, both sides being `det(V_C)²`.  The only non-trivial
+--   step is the Weinstein-Aronszajn flip; no Jacobi complementary minor identity and no
+--   Cauchy-Binet.  Read in the gap it says `det(M[C,C] + T_C) = det(1 - M[Cᶜ,Cᶜ] - T_Cᶜ)`,
+--   design-free in `Gtz.chartCore_det_gapBlock_shift_eq`.  At `(6,3)` that pairs the twenty
+--   `3 × 3` blocks into ten complementary couples.  It is an equality of DETERMINANTS and
+--   not of definiteness, so it constrains a tie without deciding one.
+#print axioms Gtz.submatrix_mul_transpose_gen
+#print axioms Gtz.det_one_sub_mul_transpose_comm
+#print axioms Gtz.transpose_mul_submatrix_eq_sum
+#print axioms Gtz.transpose_mul_self_submatrix_add
+#print axioms Gtz.det_projectionBlock_eq_det_one_sub_complementBlock
+#print axioms Gtz.det_chartGapBlock_shift_eq
+#print axioms Gtz.chartCore_det_gapBlock_shift_eq
+#print axioms Gtz.sixThree_complementary_block_law
+#print axioms Gtz.sixThree_complementary_block_law'
