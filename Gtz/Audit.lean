@@ -1403,6 +1403,7 @@ import Gtz.Wave.KernelSlideDropLaw
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.PairNormalWedgeLaw
 import Gtz.Wave.ErasedPairCap
+import Gtz.Wave.SymmetricTripleCriterion
 import Gtz.Wave.ErasedSetCap
 import Gtz.Wave.ProbeFreeParsevalBudget
 import Gtz.Wave.KTwoSixThreeFunnel
@@ -38472,3 +38473,24 @@ run_cmd do
 #print axioms Gtz.one_le_inverseForm_of_not_posDef
 #print axioms Gtz.reading_cap_of_refusals
 #print axioms Gtz.reading_cap_of_isTie
+
+-- Gtz/Wave/SymmetricTripleCriterion.lean -- a triple decided by the elementary
+-- symmetric functions of its gap, with no atom and no pair singled out; the
+-- erasure ladder's pair rung solved into two clauses, the second an upper bound
+-- on the pair's wedge; and the triple rung sharpened from the triple's mass to
+-- its largest weight
+#print axioms Gtz.trace_tripleGap
+#print axioms Gtz.secondInvariant_tripleGap_eq_pairMinorSum
+#print axioms Gtz.det_tripleGap_eq_tripleGapDet
+#print axioms Gtz.tripleGram_posDef_of_esymm_pos
+#print axioms Gtz.subsetSum_posDef_of_esymm_pos
+#print axioms Gtz.isTie_triple_esymm_trichotomy
+#print axioms Gtz.isTie_triple_pairMinorSum_or_det_nonpos
+#print axioms Gtz.pairCap_solved_of_isTie
+#print axioms Gtz.crossNormSq_le_of_isTie_of_share_lt
+#print axioms Gtz.pairCap_vacuous_of_collinear
+#print axioms Gtz.exists_pos_excess_of_crossNormSq_pos
+#print axioms Gtz.exists_strictly_heavy_of_crossNormSq_pos
+#print axioms Gtz.posSemidef_smul_subsetSum_sub_weightedTriple
+#print axioms Gtz.subsetSum_posDef_of_weightedTriple_posDef
+#print axioms Gtz.isTie_not_posDef_weightedTriple

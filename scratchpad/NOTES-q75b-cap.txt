@@ -1,0 +1,159 @@
+=====================================================================
+Q7.5(b): at a boundary (6,3) system, a pair with q_ab <= 0 is collinear
+Round notes.  Every number below was produced by a harness calibrated
+first against the (5,3) diamond (leverages (2, 13/4 x4), pair minors
+{0.75, 2.0, 4.5}, 8 of 10 dominating triples, max_T lmin = 1.3e-15).
+=====================================================================
+
+F75B-1.  THE STATEMENT REDUCES TO SIZE FIVE.  *** STRUCTURAL ***
+  Splitting one atom of a boundary system into two collinear copies with
+  half its weight each gives a boundary system one size larger:
+    - Parseval is preserved (same vectors, weights t_a/2 + t_a/2 = t_a);
+    - a triple holding BOTH copies has rank <= 2, so it cannot dominate;
+    - a triple holding one copy has exactly the smaller system's S_C,
+      so it dominates iff that one did, weakly and never strictly.
+  All leverages, pairings, pair minors and wedges of the original are
+  unchanged.  Hence an inadmissible NON-collinear pair at (5,3) lifts to
+  one at (6,3):
+      *** 7.5(b) at (6,3)  =>  7.5(b) at (5,3). ***
+  So the size-five case is a PREREQUISITE, not a corollary, and it is the
+  cheaper place to attack or refute: 20 parameters, 10 triples, and
+  m = k+2 puts it inside the corank floor where rank two is available.
+  VERIFIED exactly: split diamond, Parseval residual 6.7e-16,
+  max_T lmin = 1.3e-15, 12 of 20 triples dominate, the only inadmissible
+  pair is the collinear one (q = -3.0, w = 0.0).
+  Gtz.splitDesign (Gtz/Reduction/SplitTransfer.lean:417) is this
+  construction, already landed; the IsTie transfer is not.
+
+F75B-2.  THE PAIR RUNG IS AN EIGENVALUE STATEMENT, AND IT SOLVES.
+  Gtz.not_posDef_pairCap_of_isTie says (t_a+t_b)*1 - P_ab is not PosDef,
+  i.e.  lmax(P_ab) >= t_a + t_b,  where P_ab = t_a g_a g_a^T + t_b g_b g_b^T.
+  P_ab has the same nonzero spectrum as the 2x2 Gram [[s_a,p],[p,s_b]] with
+  s_c = t_c l_c and p = sqrt(t_a t_b) <g_a,g_b>, so
+      tr = S = s_a + s_b,     det = X = t_a t_b w_ab
+  (the WEDGE is the determinant of the 2x2 Gram), and
+      lmax = (S + sqrt(S^2 - 4X))/2 .
+  Hence exactly:      *** lmax >= T  <=>  S >= 2T  or  X <= T(S-T) ***
+  with T = t_a + t_b, and S - T = alpha_a + alpha_b the weighted excess.
+  VERIFIED: 0 mismatches / 200,000 random pairs.
+  The landed three-clause form Gtz.pairCap_scalar_of_isTie is equivalent
+  (Descartes: for symmetric 3x3, PosDef <=> e1,e2,e3 > 0; verified 0
+  mismatches / 100,000).  LANDED as Gtz.pairCap_solved_of_isTie.
+
+F75B-3.  WHY THE CAP CANNOT REACH THE TARGET, IN ONE LINE.
+  The second clause reads  w_ab <= T(alpha_a + alpha_b)/(t_a t_b).
+  Its right side vanishes only when BOTH leverages are exactly one, so the
+  cap can force w_ab = 0 only in that degenerate case.  This is exact, not
+  a failure of effort: the cap is the sharp consequence of the rung.
+  Two true readings survive and are landed:
+    - at a collinear pair the bound holds with nothing spent (w = 0 and
+      heaviness makes the right side >= 0) -- the rung is an identity
+      there because P_ab has rank one and lmax = tr
+      (Gtz.pairCap_vacuous_of_collinear);
+    - at a non-collinear pair in the regime S < 2T the bound FORCES
+      alpha_a + alpha_b > 0, so one member is strictly heavy
+      (Gtz.exists_strictly_heavy_of_crossNormSq_pos).
+  MEASURED: over six exact boundary systems (split diamond, split
+  tetrahedron, four found as zeros of sum_T max(lmin,0)^2 under a weight
+  floor 0.05) the rung has worst slack +9.5e-2 over 90 pairs, and the
+  wedge bound worst slack +5.9e-2 over the 7 pairs in its regime.  The cap
+  never binds on any of them.
+
+F75B-4.  THE WEIGHT-RESCALED RUNG.  *** SHARPER THAN THE LADDER ***
+  For any triple T and any tau >= max_{x in T} t_x,
+      tau * S_T - P_T = sum_{x in T} (tau - t_x) g_x g_x^T  >=  0 ,
+  so tau * S_T >= P_T.  Hence  lmin(P_T) > max_{x in T} t_x  =>  S_T > I.
+  Contrapositive at a boundary system:
+      *** lmin(P_T) <= max_{x in T} t_x  at every triple ***
+  which is strictly sharper than the ladder's lmin(P_T) <= t_x+t_y+t_z, and
+  needs NO erasure, NO corank floor and NO smaller instance of GTZ.
+  Dual form via P_T + P_{T^c} = I:  lmax(P_T) >= 1 - max_{x notin T} t_x.
+  VERIFIED: producer 0 failures on 80,000 triples, fires on 5,564 of them
+  and on 85.47% of 3,000 random designs; necessary form 0 violations over
+  100 triples of 5 boundary systems, worst slack +2.3e-3 (TIGHT -- compare
+  the mass form, worst slack +1.3e-1).  LANDED.
+  Scalar consequence, verified 0 violations, worst slack +3.6e-2:
+      4 t_a t_b t_c [abc]^2  <=  max(t_a,t_b,t_c) * (s_a+s_b+s_c)^2 .
+
+F75B-5.  THE SYMMETRIC CRITERION.
+  For the gap N = K_C - 1 of a triple, in campaign currency,
+      e1(N) = l_a+l_b+l_c-3 ,  e2(N) = q_ab+q_ac+q_bc ,  e3(N) = tripleGapDet
+  and positivity of all three gives strict domination.  So a boundary
+  system pays, at EVERY triple,
+      l_a+l_b+l_c <= 3   or   q_ab+q_ac+q_bc <= 0   or   tripleGapDet <= 0 ,
+  and heaviness collapses the first clause to the all-unit case.  Unlike
+  Sylvester's ordered chain this names no atom and no pair.
+  VERIFIED against the eigenvalue test: 0 mismatches / 60,000 triples.
+  It reproduces the survey's own case split: e2(N) <= 0 forces some pair
+  minor in the triple to be <= 0, so a triple is either "contains an
+  inadmissible pair" (Question 7.5(b)) or has tripleGapDet <= 0; when all
+  fifteen pairs are admissible every triple takes the second branch, which
+  is Question 7.5(a).  LANDED.
+
+F75B-6.  A PRODUCER THAT IS SHARP GIVEN (trace, determinant), AND ITS LIMIT.
+  If nu_min <= 1 then 4 det K <= nu_min (tr K - nu_min)^2 <= (tr K - 1)^2,
+  using that x(tau-x)^2 increases on [0, tau/3] and nu_min <= tr K/3.  So
+      tr K >= 3  and  4 [abc]^2 > (l_a+l_b+l_c-1)^2   =>   the triple dominates
+  and the condition is SHARP given only the trace and the determinant: for
+  any (tau, delta) with 4 delta <= (tau-1)^2 there is a PSD matrix with those
+  invariants and nu_min < 1.  MEASURED: 0 failures on 60,000 triples, and it
+  fires on some triple of 97.83% of 3,000 random designs.
+  *** IT CANNOT BE PUSHED TO 100%. ***  Two independent reasons.
+  (a) No producer of strict domination can cover all designs, because
+      boundary systems exist (split diamond, split tetrahedron): they have
+      NO strictly dominating triple, so every such instrument is silent
+      there by construction.  Coverage of designs is the wrong target.
+  (b) Against the bracket budget sum_{a<b<c} t_a t_b t_c [abc]^2 = 1, the
+      contrapositive gives 1 < sum_C t_a t_b t_c (sum l_C - 1)^2/4, and at
+      the uniform point t = 1/6, l = 3 the right side is 320/216 = 1.481.
+      No contradiction, and the gap is not small enough to be closed by
+      sharpening the trace/determinant step, which is already sharp.
+      Closing it needs e2 as well, and with all three invariants the
+      criterion IS domination -- the statement itself, not an instrument.
+  NOT LANDED: the proof runs through eigenvalues (the ordering nu_min <=
+  tr/3 and monotonicity of x(tau-x)^2), which the symmetric-function route
+  cannot express -- given (tau, delta) alone, e2 is free.
+
+F75B-7.  NO COUNTEREXAMPLE FOUND, AND WHAT WAS SEARCHED.
+  Census: 6 exact boundary systems, 8 inadmissible pairs, ALL collinear,
+  max |wedge| over them 3.6e-15.  Consistent with the predecessor's 26.
+  Caveat, unchanged and important: every boundary system anyone has built
+  HAS a collinear pair, so the census says nothing about primitive ones.
+  Directed searches for a violation, all negative:
+    - (5,3), minimise max_T lmin subject to q_01 <= -delta and w_01 >= 0.05:
+      floors at +5.8e-4 (delta=1e-3) and +5.5e-4 (delta=1e-4) with SIX
+      triples active at once -- a Chebyshev point, and the value drifts
+      down with optimiser effort (2.4e-4 under least squares), so these
+      numbers measure the optimiser, NOT a geometric floor.  Do not quote
+      them as a margin.
+    - (6,3), maximise the wedge of an inadmissible pair over boundary
+      systems, 8 restarts: no feasible point reached.
+    - Opening a collinear pair of the split tetrahedron while staying on
+      the boundary locus: the optimiser cannot move at all.  Reason found:
+      that point has TWELVE simultaneously tight triples (4 tetrahedron
+      triples x 2^(number of split atoms they contain)), so it is a highly
+      singular point of the locus and a bad start.  Use a generic boundary
+      system with a collinear pair instead.
+  Generation note: descent on Phi^2 = (max_T lmin)^2 does NOT converge
+  (0 systems from many starts).  What works is least squares on the 20
+  residuals r_T = max(lmin(S_T - I), 0) with method='trf' -- 'lm' is
+  refused, 20 residuals < 24 variables.  Yield about 4 in 129 starts.
+
+F75B-8.  QUEUE STATE.
+  DONE: the pair rung solved (F75B-2, landed) and its two readings
+  (F75B-3, landed); the weight-rescaled rung (F75B-4, landed); the
+  symmetric criterion and trichotomy (F75B-5, landed); the reduction to
+  size five (F75B-1, verified, NOT formalised).
+  NOT DONE: 7.5(b) itself.  The cap cannot reach it (F75B-3) and neither
+  can the wedge law alone.
+  FOR A SUCCESSOR, in order of promise:
+   (i) formalise F75B-1 and attack (5,3), where m = k+2 and the Naimark
+       dual has rank two -- but use the CO-Parseval whitening, not the
+       Parseval one (a sibling's correction: the naive dual gives 161
+       mismatches in 400);
+   (ii) the all-inadmissible triangle of a sibling's
+       Gtz.exists_admissible_or_inadmissible_triangle gives three
+       inadmissible pairs at once instead of one, a better entry point;
+   (iii) Gtz.weighted_tripleGapDet_pairCompl is automatically <= 0 at an
+       inadmissible pair with heaviness, so the pair budget carries no
+       information there -- do not spend a round on it.

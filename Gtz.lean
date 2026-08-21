@@ -6521,6 +6521,7 @@ import Gtz.Wave.KernelSlideDropLaw
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.PairNormalWedgeLaw
 import Gtz.Wave.ErasedPairCap
+import Gtz.Wave.SymmetricTripleCriterion
 import Gtz.Wave.ErasedSetCap
 import Gtz.Wave.ProbeFreeParsevalBudget
 import Gtz.Wave.KTwoSixThreeFunnel
