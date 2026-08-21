@@ -319,3 +319,93 @@ F54-7. THE sigma < 0 BRANCH, REDUCED TO AN EXACT SCALAR SYSTEM.
   USEFUL SUB-FACT (proved by hand, one line): branch two forces min_i x_i <= 1.
     If every x_i > 1 write x_i = 1 + e_i ; then 4 prod x - (1 + sum x) =
     3 sum e + 4 sum e_i e_j + 4 prod e > 0, contradiction.  So some a_k <= t_k.
+
+============ ROUND 5 (fork 58) — THE TWO DETERMINANTS ADD, AND THE REAL GAP ============
+
+F58-1. THE SUM OF THE TWO DETERMINANT CONDITIONS IS LINEAR (LANDED, one ring,
+  Gtz.branchTwo_determinant_sum in Gtz/Wave/BranchTwoDeterminantSum.lean).
+  With A_i = 1-t_i and a_i the weighted excess:
+     detIM = A1A2A3 - sum a_i A_j A_k + 4 a1a2a3          (= det(I-M))
+     detM  = t1t2t3 + sum a_i t_j t_k   - 4 a1a2a3        (= det M)
+     detIM + detM = (A1A2A3 + t1t2t3) - sum_i a_i (1 - t_j - t_k) .
+  The excess product CANCELS EXACTLY and the coefficient of a_i collapses:
+     A_j A_k - t_j t_k = 1 - t_j - t_k   (Gtz.branchTwo_coefficient_eq).
+  Hence both conditions together give ONE LINEAR inequality in the excesses
+  (Gtz.branchTwo_excess_linear_bound), with NO case on the Bargmann sign.
+
+F58-2. THE LINEAR BOUND IS TOO WEAK — REFUTED WITH A WITNESS (scratchpad/f58/lin.py).
+  Maximising sum a against ONLY the linear bound + pair constraints is an LP.
+  Its optimum is 1.0671454587686742 at
+     t = (0.343434507, 0.377245643, 1.01772868e-4),
+     a = (0.15801287, 0.14987568, 0.75925691).
+  Dropping the cancelled cubic loses exactly the part that makes the bound tight.
+  THE TWO DETERMINANT CONDITIONS MUST BE SPENT SEPARATELY.  Do not sum them.
+
+F58-3. NO SINGLE WEIGHTED COMBINATION WORKS EITHER (scratchpad/f58/lam.py).
+  Maximising sum a subject to detIM + lam*detM >= 0 (plus pair, domain):
+     lam    = 0.25   0.5    1.0    2.0    4.0
+     max    = 1.1698 1.0741 1.0354 1.0240 1.0360
+  ALL exceed 1; the best (lam ~ 2) is still 1.024.  The one-parameter family of
+  combinations is dead.  Both conditions are needed AT FULL STRENGTH.
+
+F58-4. CORRECTION TO F54-4/F54-7: THE MAXIMISER DOES **NOT** HAVE ALL THREE PAIR
+  CONSTRAINTS TIGHT.  All three tight means b_i+b_j = 1 for every pair, which
+  forces b = (1/2,1/2,1/2) exactly (Gtz.pairTight_forces_center) -- the centre.
+  At the centre:
+     detIM = 0 exactly                  (Gtz.centerPoint_detComplement_zero)
+     sum a = (3 - sum t)/2 > 1          (Gtz.centerPoint_excess_gt_one)
+  so the TARGET FAILS there on the pair constraints and detIM alone.  What rules
+  the centre out is detM, whose value there is exactly
+     detM|center = (t1+t2+t3-1)/2       (Gtz.centerPoint_detOutside_eq)
+  which is NEGATIVE on the stratum (Gtz.centerPoint_detOutside_neg).
+  So detM is not decoration: it is THE ONLY THING standing at the centre, and it
+  is what fork 47's "exact double root at b=(1/2,1/2,1/2)" was detecting.
+  MEASURED (scratchpad/f58/desc.py, adversarial descent, and at.py, random):
+     descent max sum a = 0.9999976465  at b = (0.0317, ~0, 0.9683), NO pair tight
+     random  max sum a = 0.9971413705  at b = (0.362, 0.172, 0.619), NO pair tight
+  Supremum is 1, never exceeded, approached with t -> 0 and one b_i -> 0.
+
+F58-5. THE WHOLE OF F54-7 REDUCES TO ONE LEMMA.  Since
+     sum a = sum b_i (1-t_i) = sum b - sum b_i t_i      (exact identity)
+  and detIM >= 0 IS  sum b <= 1 + 4 b1b2b3, the target sum a <= 1 follows from
+     KEY:   4 b1 b2 b3  <=  b1 t1 + b2 t2 + b3 t3
+  because then  sum a <= 1 + 4 prod b - sum b_i t_i <= 1.  One line.
+  KEY IS MEASURED TRUE AND TIGHT ONLY AT b=0:
+     adversarial descent (600 restarts x 15000 steps, scratchpad/f58/key_test.py):
+         MAX of [4 prod b - sum b_i t_i] = 0.0 EXACTLY, attained only at b = 0.
+     nontrivial points b_i >= 0.05 (76037 feasible, scratchpad/f58/key2.py):
+         MAX = -0.0014057727567717733  -- strictly negative throughout.
+  STATUS: MEASURED ONLY.  Do not quote KEY as a theorem.
+
+F58-6. WHY KEY HAS NO HANDELMAN CERTIFICATE YET, AND WHAT IS MISSING.
+  Handelman LP over {b_i, t_i, A_i, S=1-sum t, pair, detIM, detM}:
+     degree 2: 136 products, 201 monomials -- INFEASIBLE
+     degree 3: 816 products, 1075 monomials -- INFEASIBLE
+  (For the ORIGINAL target sum a <= 1 the same LP is infeasible at degree 3 and
+   degree 4 exceeds the time budget.)  The obstruction is structural, not degree:
+  KEY is TIGHT AT b = 0 where BOTH SIDES VANISH, so no certificate with a
+  strictly positive constant term can exist -- exactly the "cannot be strict"
+  warning of F54-7, now located precisely.
+  WHAT THE PAIR CONSTRAINTS GIVE ALONE (proved by hand, one line):
+     b_i + b_j <= 1 forces b2*b3 <= ((b2+b3)/2)^2 <= 1/4, so 4 b1b2b3 <= b1,
+     hence KEY >= b1(t1 - 1) + b2 t2 + b3 t3, which is NOT sign-definite.
+  So the pair constraints alone are provably insufficient and detM must supply
+  the remainder.  A successor should either (a) find the Positivstellensatz
+  certificate for KEY with the b=0 degeneracy factored out -- e.g. certify
+  KEY/(b1+b2+b3) or KEY on the slice sum b = 1 -- or (b) prove KEY by a direct
+  case split on which b_i is largest, using detM only in the branch where the
+  pair bound fails.
+
+F58-7. WHAT IS LANDED THIS ROUND (Gtz/Wave/BranchTwoDeterminantSum.lean, commit
+  4f05761, 9 theorems, all pins [propext, Classical.choice, Quot.sound]):
+     branchTwo_determinant_sum        the cancellation identity
+     branchTwo_excess_linear_bound    the linear consequence
+     branchTwo_coefficient_eq         A_jA_k - t_jt_k = 1 - t_j - t_k
+     pairTight_forces_center          all three pair tight => b = (1/2,1/2,1/2)
+     centerPoint_detComplement_zero   detIM = 0 at the centre
+     centerPoint_excess_sum           sum a = (3 - sum t)/2 at the centre
+     centerPoint_excess_gt_one        so the target fails there
+     centerPoint_detOutside_eq        detM|center = (sum t - 1)/2
+     centerPoint_detOutside_neg       hence detM < 0 on the stratum
+  E1 IS NOT CLOSED.  The remaining gap is KEY of F58-5, and it is one scalar
+  inequality in six variables with the degeneracy located.
