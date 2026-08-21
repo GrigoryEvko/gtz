@@ -1,7 +1,7 @@
 NOTES: the complete classification of rank-two ties
 ====================================================
 
-Module: Gtz/Wave/RankTwoTieClassification.lean  (2182 lines, 103 declarations)
+Module: Gtz/Wave/RankTwoTieClassification.lean  (2414 lines, 110 declarations)
 Audit:  every declaration pins exactly [propext, Classical.choice, Quot.sound].
         No sorry, no admit, no native_decide, no new axiom.
 
