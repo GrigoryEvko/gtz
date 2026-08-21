@@ -104,3 +104,97 @@ RESIDUALS OF THIS LANE, UNCHANGED
     sixteen refusals active, six co-active at the Chebyshev optimum).  DO NOT
     DESCEND — three forks each "improved" the constant by an order of magnitude
     because the optimum is a Chebyshev point.
+
+
+K2-6. K2-4 VERIFIED, FORMALIZED, AND THE REFUSAL MEASURED (two-plane lane)
+==========================================================================
+Commit 7f2addd  Gtz/Wave/TwoPlaneCollapse.lean  (8 theorems, all pins standard,
+own audit, per-module build only, both umbrellas insertions-only)
+  parseval_at_unitAtom_four_labels, unitAtom_plane_collapse_relation,
+  twoPlane_bracket_eq_zero, unitAtom_plane_bracket_eq_zero, twoPlane_collapse,
+  six_labels_cover, blindReading_cover, k2SixThree_parallel_or_two_plane
+
+VERDICT ON K2-4: THE RECORDED DERIVATION IS CORRECT.  Every step checks, and two
+of its stated consequences are not extra assumptions but automatic.
+
+  * The collapse relation IS Parseval.  Rows (1,1) and (1,2) of Parseval, read in
+    the plane, reproduce the relation exactly -- it carries no information beyond
+    Parseval plus the plane relation.  So the derivation is one substitution.
+  * q(g_d,g_d') = 0 is AUTOMATIC from the plane relation with |g_a| = 1.  In the
+    parametrisation below it comes out identically, not as a constraint.
+  * bracket(g_d,g_d',g_e) = 0 likewise.
+
+EXACT PARAMETRISATION OF THE COLLAPSED FAMILY (basis e1,e2,e3; g_a = e1)
+  g_d  = (cos th, -s sin th, 0)        g_d' = (sin th,  s cos th, 0)
+      -- these give g_a = cos th * g_d + sin th * g_d' and q(g_d,g_d') = 0 identically
+  g_e  = (p,q,0),  t_e p^2 = Lam := 1 - t_a - t_d cos^2 th - t_d' sin^2 th,
+                   t_e p q = -s sin th cos th (t_d' - t_d)        [K2-3 needs p^2 > 1]
+  g_y  = (0, gy, al),  g_z = (0, gz, be)
+                   t_y al^2 + t_z be^2 = 1,   t_y gy al + t_z gz be = 0,
+                   tau^2 = R t_y al^2 / t_z  with  R = 1 - (t_d s^2 sin^2 th
+                            + t_d' s^2 cos^2 th + t_e q^2),  gz = tau,
+                   gy = -t_z tau be/(t_y al)
+  Eight free parameters plus three signs.  Parseval residual 1.0e-15 over 23522
+  members; hypotheses reproduced: l_a-1 = 0, <g_y,g_a> = <g_z,g_a> = 0 exactly,
+  q(g_d,g_d') = 7.6e-17, plane relation 1.4e-17, bracket(d,d',e) = 0.0,
+  (g_e.g_a)^2 = 3.466 > 1, q(g_a,g_e) = -3.466 < -1.
+
+THE REFUSAL IS TRUE BUT HAS NO UNIFORM MARGIN
+  min over the family of  max_T lambda_min(S_T - 1):
+      +0.256856  over 30351 samples (floor 0.05)
+      +0.081073  under adversarial descent (floor 0.05)  -- sampling overstates by 3x
+  ON THE ACTUAL BRANCH (adding S_{y,d,d'} >= M', which 4377 of 20268 members meet;
+  note lambda_min(S_T - M') <= 0 ALWAYS because g_a is in its kernel, so the
+  condition is an equality constraint, not an inequality -- a naive "max slack"
+  test reads 0.000000 and proves nothing):
+      floor 0.050 -> +0.132564      floor 0.020 -> +0.041245
+      floor 0.010 -> +0.021109      (superset family: 0.105, 0.041, 0.020, 0.008
+                                     at floors 0.05, 0.02, 0.01, 0.004)
+  THE MARGIN IS ABOUT TWICE THE SMALLEST WEIGHT, on the branch and off it.  So no
+  certificate with a positive constant can exist and any proof must consume
+  weight positivity -- the same shape the cells lane reports for cell H.
+
+THE DISJUNCTION IS IRREDUCIBLE -- FIVE TRIPLES, ALL THROUGH THE READER e
+  Every maximiser contains e.  Per-triple adversarial infimum of
+  lambda_min(S_T - 1) at floor 0.05, each of the five reaches -1.000000 alone.
+  On the branch, floor 0.05, penalised infimum of the max over the set:
+      all five {y,z,e},{y,d,e},{y,d',e},{z,d,e},{z,d',e}   +0.095595
+      {y,z,e} alone                                        -1.000000
+      {y,z,e},{y,d,e},{y,d',e}                             -0.209697
+      {y,z,e},{z,d,e},{z,d',e}                             -1.000000
+      the four without {y,z,e}                             -0.511017
+  y and z are NOT interchangeable on the branch (y is the member inside the
+  funnel dominator), which the third and fourth rows show.
+
+TWO ROUTES TRIED AND CLOSED, DO NOT REDO
+  * "No (5,3) tie has three coplanar atoms" is FALSE.  The diamond has two
+    degenerate triples: incidence rows b0,b1,b3 and b0,b2,b4 each have zero
+    determinant, and they are exactly its two non-dominating triples.  So
+    coplanarity alone refuses nothing.
+  * "The collapsed configuration forces |T| >= 4 dominating triples of the erased
+    (5,3) design, contradicting the landed cap of 3."  Measured distribution of
+    |T| over the family: 1:10830, 2:2365, 3:6156, 4:1531, 5:1269, 6:213, 7:13.
+    Minimum 1, so no contradiction.  (The measurement is also weak evidence since
+    family members are not ties.)
+
+SCHUR REDUCTION THAT A SUCCESSOR SHOULD USE
+  With P = span(e1,e2) and a Q-atom w = (0,w2,w3), for c1,c2 in P:
+      {c1,c2,w} dominates  <=>  w3^2 > 1  and  M_{c1c2} >= diag(1, 1 + w2^2/(w3^2-1))
+  as 2x2 matrices on P, where M_{c1c2} is the P-restriction of the two outer
+  products.  For the funnel dominator this reads M_{d,d'} = diag(1, d2^2+d2'^2),
+  so its e1 direction is EXACTLY tight -- that is the kernel ray ell g_a -- and
+  the condition is d2^2+d2'^2 >= 1+kappa with kappa = gy^2/(al^2-1).  For the two
+  candidates through e the (1,1) entry is d1^2+p^2 > 1 resp. d1'^2+p^2 > 1,
+  strictly, because d1^2+d1'^2 = 1 and p^2 > 1.  The landed floor
+  e2(T) >= (t_a/(1-t_a))^2 forces al^2 > 1 strictly.
+
+RESIDUAL HYPOTHESES OF k2FiveTwoZero_kill (unchanged, checked)
+  hunit, hy, hz            the stratum's own signature -- legitimate
+  hRyzd, hRyze, hRyde, hRzde   the four refusals -- the tie's own content
+  hne, hal, hax            outside atoms not parallel to the axis / live readings
+  hB11, hdet               the plane gap positive definite (its corank condition)
+  The last five are the chart-to-design residue at size five.  The new
+  k2SixThree_parallel_or_two_plane carries NONE of them: it is unconditional at
+  (6,3) and strictly stronger than k2SixThree_parallel_or_boundary_plane, which
+  it supersedes (it adds the two brackets, the pair minor, the label
+  distinctness and the reading bound 1 < (g_e.g_a)^2).
