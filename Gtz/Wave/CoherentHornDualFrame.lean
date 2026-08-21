@@ -60,6 +60,7 @@ so no tie — a corner-free kill in the bracket currency
 -/
 import Gtz.Wave.InvariantTaxTeeth
 import Gtz.Wave.CornerSignMatching
+import Gtz.Wave.CrossLedgerRigidity
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -1499,5 +1500,84 @@ theorem exists_ambient_refusal_of_dualFrame_branch (D : WeightedDesign m 3)
     dualCombination_ne_zero D x y z hbracket hne, ?_⟩
   rw [refusal_transfer]
   exact hneg
+
+/-! ## 19. The exchange balance: repay against cost, at determinant level -/
+
+/-- **THE EXCHANGE BALANCE.**  Two rank-one updates of one base compare through
+their adjugate readings:
+
+  `det(M + ppᵀ) = det(M + qqᵀ) + pᵀ(adj M)p − qᵀ(adj M)q` .
+
+A polynomial identity with no hypotheses and no inverse — two applications of
+the landed rank-one expansion. -/
+theorem det_exchange_balance (base : Matrix (Fin 3) (Fin 3) ℝ) (enterVec dropVec : Fin 3 → ℝ) :
+    (base + atomMatrix enterVec).det
+      = (base + atomMatrix dropVec).det
+        + enterVec ⬝ᵥ (base.adjugate *ᵥ enterVec)
+        - dropVec ⬝ᵥ (base.adjugate *ᵥ dropVec) := by
+  rw [det_add_atomMatrix_adjugate, det_add_atomMatrix_adjugate]
+  ring
+
+/-- A triple gap splits off any one of its atoms over the remaining pair. -/
+theorem gap_triple_eq_pair_add_atom (D : WeightedDesign m 3)
+    {head keptOne keptTwo : Fin m}
+    (hk1 : head ≠ keptOne) (hk2 : head ≠ keptTwo) :
+    subsetSum D ({head, keptOne, keptTwo} : Finset (Fin m)) - 1
+      = (subsetSum D ({keptOne, keptTwo} : Finset (Fin m)) - 1)
+        + atomMatrix (D.atom head) := by
+  classical
+  rw [subsetSum, subsetSum, Finset.sum_insert (by simp [hk1, hk2])]
+  abel
+
+/-- **THE REPAIR BALANCE OF A TRIPLE EXCHANGE.**  Swapping one atom of a triple
+for another moves the gap determinant by exactly the difference of the two
+atoms' readings in the adjugate of the RETAINED PAIR:
+
+  `det(S_{e,k,k'} − 1) = det(S_{d,k,k'} − 1) + ⟨g_e, adj(P) g_e⟩ − ⟨g_d, adj(P) g_d⟩` ,
+
+`P` the gap of the retained pair.  The entering atom REPAYS its adjugate
+reading and the dropped atom COSTS its own: the repair accounting of the
+failing branch, exact, at determinant level rather than along one direction,
+and with no inverse anywhere. -/
+theorem gapDet_exchange_pair (D : WeightedDesign m 3)
+    {enter dropped keptOne keptTwo : Fin m}
+    (hek1 : enter ≠ keptOne) (hek2 : enter ≠ keptTwo)
+    (hdk1 : dropped ≠ keptOne) (hdk2 : dropped ≠ keptTwo) :
+    (subsetSum D ({enter, keptOne, keptTwo} : Finset (Fin m)) - 1).det
+      = (subsetSum D ({dropped, keptOne, keptTwo} : Finset (Fin m)) - 1).det
+        + D.atom enter ⬝ᵥ
+            ((subsetSum D ({keptOne, keptTwo} : Finset (Fin m)) - 1).adjugate
+              *ᵥ D.atom enter)
+        - D.atom dropped ⬝ᵥ
+            ((subsetSum D ({keptOne, keptTwo} : Finset (Fin m)) - 1).adjugate
+              *ᵥ D.atom dropped) := by
+  rw [gap_triple_eq_pair_add_atom D hek1 hek2,
+    gap_triple_eq_pair_add_atom D hdk1 hdk2]
+  exact det_exchange_balance _ _ _
+
+/-- **THE REPAY THRESHOLD AT DETERMINANT LEVEL.**  On the failing branch the
+complement's gap determinant is negative, so a repaired triple has POSITIVE gap
+determinant exactly when the entering atom out-reads the dropped one in the
+retained pair's adjugate metric by more than the complement's deficit:
+
+  `⟨g_e, adj(P) g_e⟩ − ⟨g_d, adj(P) g_d⟩ > −det(S_{Cᶜ} − 1)` .
+
+This is the branch's open step in its sharpest form: one scalar comparison per
+candidate triple, polynomial, inverse-free, and with the bar set by the very
+determinant whose sign defines the branch. -/
+theorem gapDet_pos_iff_repay_exceeds_deficit (D : WeightedDesign m 3)
+    {enter dropped keptOne keptTwo : Fin m}
+    (hek1 : enter ≠ keptOne) (hek2 : enter ≠ keptTwo)
+    (hdk1 : dropped ≠ keptOne) (hdk2 : dropped ≠ keptTwo) :
+    0 < (subsetSum D ({enter, keptOne, keptTwo} : Finset (Fin m)) - 1).det
+      ↔ -(subsetSum D ({dropped, keptOne, keptTwo} : Finset (Fin m)) - 1).det
+        < D.atom enter ⬝ᵥ
+            ((subsetSum D ({keptOne, keptTwo} : Finset (Fin m)) - 1).adjugate
+              *ᵥ D.atom enter)
+          - D.atom dropped ⬝ᵥ
+            ((subsetSum D ({keptOne, keptTwo} : Finset (Fin m)) - 1).adjugate
+              *ᵥ D.atom dropped) := by
+  rw [gapDet_exchange_pair D hek1 hek2 hdk1 hdk2]
+  constructor <;> intro h <;> linarith
 
 end Gtz

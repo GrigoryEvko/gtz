@@ -36992,3 +36992,7 @@ run_cmd do
 #print axioms Gtz.nullProbe_exists_inside_reading_le
 #print axioms Gtz.nullProbe_swap_excess_floor
 #print axioms Gtz.isTie_swap_coupling_floor_quantitative
+#print axioms Gtz.det_exchange_balance
+#print axioms Gtz.gap_triple_eq_pair_add_atom
+#print axioms Gtz.gapDet_exchange_pair
+#print axioms Gtz.gapDet_pos_iff_repay_exceeds_deficit
