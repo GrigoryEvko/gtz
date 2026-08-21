@@ -37360,3 +37360,10 @@ run_cmd do
 #print axioms Gtz.complement_not_parallel_of_lt_budget
 #print axioms Gtz.complement_not_parallel_snd_of_lt_budget
 #print axioms Gtz.complement_not_parallel_thd_of_lt_budget
+
+-- Gtz/Wave/CornerAxisElimination.lean sections 5-6 -- the square-root-free sharp
+-- cost bound, its producer, and admissibility as two scalars
+#print axioms Gtz.pairAxisForm_ge_neg_sharp
+#print axioms Gtz.tripleGapDet_pos_of_leverageExcess_sharp
+#print axioms Gtz.subsetSum_posDef_of_leverageExcess_sharp
+#print axioms Gtz.one_lt_leverage_of_pairGapMinor_pos_of_trace

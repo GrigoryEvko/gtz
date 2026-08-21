@@ -234,4 +234,92 @@ theorem corner_inside_crossNormSq_le (D : WeightedDesign m 3)
   crossNormSq_le_tripleBracket_sq_of_dominates D hxy hxz hyz
     (corner_dominates D _ hlam hgap)
 
+/-! ## 5. The sharp reading bound, without a square root
+
+`Gtz.pairAxisForm_ge_neg_trace_mul` bounds the cost of the readings by the pair
+TRACE, which is the crude eigenvalue bound `lam_max ≤ T`.  On an admissible pair
+the two eigenvalues of the cost form multiply to the pair minor, so
+`lam_min >= D/T` and therefore `lam_max ≤ T - D/T`.  Clearing the denominator
+keeps the statement polynomial:
+
+  **`T * (-pairAxisForm) ≤ (T^2 - D) * (al^2 + be^2)`** .
+
+The residue is a binary form with leading coefficient `(l_a-1)^2 + (a.b)^2` and
+discriminant EXACTLY `D^2`, so one square identity closes it.  Strictly sharper
+than the trace bound by the factor `T^2/(T^2 - D)`. -/
+
+/-- **THE SHARP COST BOUND.**  One square identity, discriminant exactly the
+squared pair minor.  No square root, no eigenvalue. -/
+theorem pairAxisForm_ge_neg_sharp {a b : Fin 3 → ℝ} (ha : 1 < leverageOf a)
+    (hmin : 0 < pairGapMinor a b) (al be : ℝ) :
+    -(((leverageOf a + leverageOf b - 2) ^ 2 - pairGapMinor a b)
+        * (al ^ 2 + be ^ 2))
+      ≤ (leverageOf a + leverageOf b - 2) * pairAxisForm a b al be := by
+  have hb : 1 < leverageOf b := one_lt_leverage_of_pairGapMinor_pos ha hmin
+  have hA : 0 < leverageOf a - 1 := by linarith
+  have hlead : 0 < (leverageOf a - 1) ^ 2 + (a  ⬝ᵥ  b) ^ 2 := by positivity
+  have key : ((leverageOf a - 1) ^ 2 + (a  ⬝ᵥ  b) ^ 2)
+      * (((leverageOf a + leverageOf b - 2) ^ 2 - pairGapMinor a b)
+            * (al ^ 2 + be ^ 2)
+          + (leverageOf a + leverageOf b - 2) * pairAxisForm a b al be)
+      = (((leverageOf a - 1) ^ 2 + (a  ⬝ᵥ  b) ^ 2) * al
+          + (leverageOf a + leverageOf b - 2) * (a  ⬝ᵥ  b) * be) ^ 2
+        + pairGapMinor a b ^ 2 * be ^ 2 := by
+    simp only [pairAxisForm, pairGapMinor]; ring
+  nlinarith [key, hlead, sq_nonneg ((((leverageOf a - 1) ^ 2 + (a  ⬝ᵥ  b) ^ 2) * al
+      + (leverageOf a + leverageOf b - 2) * (a  ⬝ᵥ  b) * be)),
+    mul_nonneg (sq_nonneg (pairGapMinor a b)) (sq_nonneg be)]
+
+/-- **THE SHARP PRODUCER.**  Same shape as the trace producer, with the pair
+minor subtracted from the squared trace.  Strictly weaker hypothesis, so it fires
+strictly more often. -/
+theorem tripleGapDet_pos_of_leverageExcess_sharp {a b c : Fin 3 → ℝ}
+    (ha : 1 < leverageOf a) (hmin : 0 < pairGapMinor a b)
+    (hbeat : ((leverageOf a + leverageOf b - 2) ^ 2 - pairGapMinor a b)
+        * ((a  ⬝ᵥ  c) ^ 2 + (b  ⬝ᵥ  c) ^ 2)
+      < (leverageOf a + leverageOf b - 2)
+        * ((leverageOf c - 1) * pairGapMinor a b)) :
+    0 < tripleGapDet a b c := by
+  have hb : 1 < leverageOf b := one_lt_leverage_of_pairGapMinor_pos ha hmin
+  have hT : 0 < leverageOf a + leverageOf b - 2 := by linarith
+  have hcost := pairAxisForm_ge_neg_sharp ha hmin (a  ⬝ᵥ  c) (b  ⬝ᵥ  c)
+  rw [tripleGapDet_eq_pairAxisForm]
+  nlinarith [hcost, hbeat, hT]
+
+/-- **THE SHARP PRODUCER AT A DESIGN.** -/
+theorem subsetSum_posDef_of_leverageExcess_sharp (D : WeightedDesign m 3)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (ha : 1 < leverageOf (D.atom x))
+    (hmin : 0 < pairGapMinor (D.atom x) (D.atom y))
+    (hbeat : ((leverageOf (D.atom x) + leverageOf (D.atom y) - 2) ^ 2
+          - pairGapMinor (D.atom x) (D.atom y))
+        * (((D.atom x)  ⬝ᵥ  (D.atom z)) ^ 2 + ((D.atom y)  ⬝ᵥ  (D.atom z)) ^ 2)
+      < (leverageOf (D.atom x) + leverageOf (D.atom y) - 2)
+        * ((leverageOf (D.atom z) - 1) * pairGapMinor (D.atom x) (D.atom y))) :
+    (subsetSum D ({x, y, z} : Finset (Fin m)) - 1).PosDef := by
+  rw [subsetSum_posDef_iff_pairVocabulary D x y z hxy hxz hyz]
+  exact ⟨by linarith, hmin,
+    tripleGapDet_pos_of_leverageExcess_sharp ha hmin hbeat⟩
+
+/-! ## 6. Admissibility is two scalars
+
+The gateway the horn still needs -- that SOME outside pair of a corner is
+admissible -- is a statement about two scalars per pair, because a `2x2` block is
+positive definite exactly when its determinant and its trace are positive. -/
+
+/-- **ADMISSIBILITY IS A POSITIVE MINOR AND A POSITIVE TRACE.**  A positive pair
+minor forces the two leverage excesses to share a sign, so their sum decides
+which.  This reduces the admissibility gateway to two scalars per pair. -/
+theorem one_lt_leverage_of_pairGapMinor_pos_of_trace {a b : Fin 3 → ℝ}
+    (hmin : 0 < pairGapMinor a b) (htr : 2 < leverageOf a + leverageOf b) :
+    1 < leverageOf a ∧ 1 < leverageOf b := by
+  have hprod : 0 < (leverageOf a - 1) * (leverageOf b - 1) := by
+    rw [pairGapMinor] at hmin; nlinarith [sq_nonneg (a  ⬝ᵥ  b)]
+  rcases lt_or_gt_of_ne (sub_ne_zero.mpr (fun h : leverageOf a = 1 => by
+    rw [h] at hprod; simp at hprod)) with hneg | hpos
+  · exfalso
+    have hbneg : leverageOf b - 1 < 0 := by nlinarith [hprod, hneg]
+    linarith
+  · exact ⟨by linarith, by nlinarith [hprod, hpos]⟩
+
 end Gtz

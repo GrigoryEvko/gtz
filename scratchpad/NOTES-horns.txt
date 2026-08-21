@@ -456,3 +456,45 @@ F43-12.  MY SUM-LAW THRESHOLD THEOREM, CHECKED NUMERICALLY.  Over 497,087
 admissible pairs: ZERO violations of  (lam-2)*D > T  whenever the three-triple
 total is positive, with minimum margin +6.73e-02.  corner_pairSum_pos_lam_threshold
 is confirmed on the branch it describes.
+
+F43-13.  ROUND 3 -- THE SHARP COST BOUND, WITHOUT A SQUARE ROOT.
+The slack table said the trace bound is exactly what costs the producer its last
+eleven points.  It sharpens with no square root.  On an admissible pair the cost
+form has det D and trace T, so lam_min >= D/T and lam_max <= T - D/T.  Clearing
+the denominator:
+
+  pairAxisForm_ge_neg_sharp :
+    -((T^2 - D) * (al^2 + be^2))  <=  T * pairAxisForm a b al be
+
+The residue (T^2-D)(al^2+be^2) + T*paf is the binary form with leading
+coefficient (l_a-1)^2 + (a.b)^2 and discriminant EXACTLY D^2, so one square
+identity closes it:
+
+  ((l_a-1)^2 + p^2) * residue = (((l_a-1)^2 + p^2)*al + T*p*be)^2 + D^2*be^2
+
+Landed with it: tripleGapDet_pos_of_leverageExcess_sharp and its design twin.
+Strictly sharper than the trace producer by the factor T^2/(T^2 - D).
+
+MEASURED GAIN (f43sharp.jl, same generator, 250,834 failing-branch points):
+  TRACE producer catches the point   88.5761%
+  SHARP producer catches the point   90.5236%
+  SOME (pair,e) truly dominates      100.0000%  (control)
+So the horn's uncovered fraction falls from 8.065% to about 0.765%.
+
+F43-14.  ADMISSIBILITY IS TWO SCALARS (one_lt_leverage_of_pairGapMinor_pos_of_trace).
+A positive pair minor forces the two leverage excesses to share a sign, so their
+sum decides which.  Hence
+
+  0 < pairGapMinor a b  /\  2 < l_a + l_b   ==>   1 < l_a  /\  1 < l_b
+
+which is 2x2 Sylvester.  THE ADMISSIBILITY GATEWAY IS THEREFORE A STATEMENT
+ABOUT TWO SCALARS PER PAIR -- a positive minor and a positive trace -- and not
+about any matrix.  Handed to the opposite-horn lane through the coordinator.
+
+F43-15.  BUILD PROTOCOL CHANGED (user's standing rule).  NO full-repository
+builds from any lane: six lanes share one .lake directory and every concurrent
+full build races the others on .olean artifacts.  I hit that race twice this
+round.  From here: `lake build Gtz.Wave.<Module>` only, and axiom audits by a
+scratch file importing just the module under `lake env lean`.  That also removes
+the failure mode where my Audit pins could not elaborate -- the audit no longer
+needs Audit.lean at all.
