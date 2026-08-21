@@ -6634,3 +6634,15 @@ import Gtz.Wave.VolumeFloorSizeSix
 -- readings, the sharp design that carries the same weights, and the (6,3) cell
 -- read as a domination of the COMPLEMENTARY triple
 import Gtz.Wave.NaimarkSharpDesign
+-- The Sylvester chain is ORDERED: heaviness, then the pair minor, then the gap
+-- determinant.  A tie refuses the conclusion, so at a strictly heavy tie a
+-- triple with a POSITIVE gap determinant must break the middle link -- and the
+-- chain reads through any of the three pairs, so ALL THREE pair minors of that
+-- triple are nonpositive.  Granting Question 7.5(b) of the survey, one such
+-- triple is a parallel pair, which is the hinge for that design.  The
+-- contrapositive is the branch-B ceiling: at a strictly heavy tie with every
+-- pair admissible, EVERY gap determinant is nonpositive, hence every squared
+-- volume is capped by the squared-area sum less the leverage sum plus one.
+-- Against the volume floor the two meet, and branch B at (6,3) must carry a
+-- triple whose squared-area sum exceeds its leverage sum by 7/20 = 27/20 - 1.
+import Gtz.Wave.GapDetPositiveInadmissible

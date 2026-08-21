@@ -1445,6 +1445,8 @@ import Gtz.Wave.FourAtomRigidity
 import Gtz.Wave.BranchBPairCap
 import Gtz.Wave.PairBudgetAggregate
 import Gtz.Wave.PairMinorSumBudget
+import Gtz.Wave.CorankOneWeightCap
+import Gtz.Wave.GapDetPositiveInadmissible
 import Gtz.Wave.FunnelSpectralPinch
 import Gtz.Wave.ComplementPairDeterminantLaw
 import Gtz.Wave.TripleVolumeRowLaw
@@ -38838,3 +38840,17 @@ run_cmd do
 #print axioms Gtz.gtzWeighted_six_three_iff_dominating_compl
 #print axioms Gtz.sixThree_dominating_squeeze
 #print axioms Gtz.sixThree_forced_triple
+
+-- Gtz/Wave/GapDetPositiveInadmissible.lean -- the second Sylvester link at a
+-- tie, the parallel pair that Question 7.5(b) produces from one positive gap
+-- determinant, the branch-B ceiling and its size-six numeric consequence
+#print axioms Gtz.tripleGapDet_swap
+#print axioms Gtz.tripleGapDet_rotate
+#print axioms Gtz.pairGapMinor_nonpos_of_gapDet_pos
+#print axioms Gtz.forall_pairGapMinor_nonpos_of_gapDet_pos
+#print axioms Gtz.exists_parallel_pair_of_q75b_of_gapDet_pos
+#print axioms Gtz.tripleGapDet_nonpos_of_admissible_of_heavy
+#print axioms Gtz.sq_tripleBracket_le_of_admissible_of_heavy
+#print axioms Gtz.exists_areaSum_ge_leverageSum_add_of_admissible_sixThree
+#print axioms Gtz.exists_areaSum_ge_leverageSum_add_of_admissible_fiveThree
+#print axioms Gtz.exists_pairMinorSum_ge_of_admissible_sixThree
