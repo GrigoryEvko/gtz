@@ -1,0 +1,130 @@
+================================================================================
+Q7.1 IN THE COMPLEMENT FRAME CHART -- the row law, the floor, and the one gap
+================================================================================
+Lane: Question 7.1 of paper/brief/brief.tex (every boundary (5,3) system has at
+least four dominating triples).  Continues NOTES-q71.txt (F71-1 .. F71-7).
+
+--------------------------------------------------------------------------------
+F74-0  THE CHART.  Gtz.dominates_compl_iff_resolventForm_le decides a selection
+       by a principal block of the COMPLEMENT projection Q = I - P.  At (5,3),
+       Q has rank two, so Q = B B^T for a 5x2 matrix B with rows b_c in R^2, and
+--------------------------------------------------------------------------------
+    sum_c b_c b_c^T = I_2        (the frame law; trace gives sum_c m_c = 2)
+    m_c = |b_c|^2 = Q_cc ,       x_c = m_c - t_c ,      sum_c x_c = 2 - 1 = 1
+    triple {a,c}^c dominates  <=>  x_a >= 0, x_c >= 0, x_a x_c >= <b_a,b_c>^2 .
+
+So EVERYTHING at (5,3) is carried by
+    C_ac := <b_a,b_c>^2 - x_a x_c        (Gtz.pairCross)
+    C_ac <= 0  <=>  the complementary triple dominates
+    C_ac >= 0  <=>  it does not dominate strictly   (the refusal at a boundary
+                                                     system, all ten pairs)
+Because GtzWeighted 5 3 is a theorem, some triple dominates, so at a boundary
+system every C_ac >= 0 and some C_ac = 0.  The tie locus is therefore
+    { all off-diagonal C_ac >= 0 } ,
+and Q7.1 counts the zeros: #dominating triples = #{pairs with C_ac = 0}.
+
+--------------------------------------------------------------------------------
+F74-1  THE ROW LAW  (Gtz.sum_pairCross) -- one line, and it replaces the whole
+       pivot-chart derivation of the half floor.
+--------------------------------------------------------------------------------
+    sum_c <b_a,b_c>^2 = b_a^T (sum_c b_c b_c^T) b_a = |b_a|^2 = m_a
+so, with sum_c x_c = 1,
+    ***  sum_c C_ac = m_a - x_a = t_a  ***
+Off the diagonal, using C_aa = m_a^2 - x_a^2 (Gtz.pairCross_offDiag_sum):
+    ***  sum_{c != a} C_ac = (m_a - x_a) (1 - m_a - x_a) = t_a (1 - m_a - x_a) ***
+Refusal + t_a > 0 gives THE FLOOR (Gtz.leverage_add_cross_le_one):
+    ***  m_a + x_a <= 1  ***
+which is exactly Gtz.pivot_half_floor (rho_a >= 1/2) transported: with
+rho_a = (1 - m_a)/(1 - t_a), rho_a >= 1/2 <=> m_a + x_a <= 1.  Here it is two
+lines instead of a module.  TARGET (Q7.1's strong form, = PivotHalfAttained):
+    ***  m_a + x_a = 1  for some a  ***   <=>  row a of C vanishes off-diagonal
+    <=>  all four triples avoiding a dominate.
+
+--------------------------------------------------------------------------------
+F74-2  THE TOTAL AND THE COUNT.  Trace of the frame law gives sum_c m_c = 2, so
+--------------------------------------------------------------------------------
+    ***  sum_a (m_a + x_a) = 2 + 1 = 3  ***     (Gtz.sum_leverage_add_cross)
+Five numbers at most one totalling three: at least three of them are needed, so
+a frame carrying this data has AT LEAST THREE vectors
+(Gtz.three_le_card_of_frame).  THREE numbers at most one totalling three are ALL
+ONE, so a frame of exactly three vectors has every floor attained
+(Gtz.threeFrame_leverage_add_cross_eq_one) and hence EVERY off-diagonal cross
+zero (Gtz.threeFrame_all_tight) -- all three complementary selections dominate,
+with nothing assumed beyond the refusal.
+
+--------------------------------------------------------------------------------
+F74-3  MERGING A DIRECTION.  Parallel vectors merge: if u_a = u_c then replacing
+       the two by one vector with m = m_a + m_c, x = x_a + x_c preserves the
+       frame law, sum x, and C_{merged,d} = C_ad + C_cd for every third d
+       (because <b_a,b_d>^2 = m_a m_d cos^2, additive in m_a).  Refusal is
+       preserved (a sum of nonnegatives).  ALSO: within a direction class
+       C_ac = m_a m_c (1 - y_a y_c) > 0, so a direction class is always inside
+       one component of the positivity graph.
+--------------------------------------------------------------------------------
+Consequence: let r = number of DISTINCT directions.  The merged family is a
+frame of r vectors of the same kind, so by F74-2:
+    ***  r >= 3  ***
+and if r = 3 then every merged floor is attained and every cross between
+distinct directions is ZERO.  Five vectors in three directions leave a direction
+with a single vector (Gtz.exists_singleton_class: three classes of two or more
+need six vectors), and that vector's whole row consists of crosses between
+distinct directions, hence vanishes (Gtz.exists_vanishing_row).  THAT IS Q7.1.
+
+--------------------------------------------------------------------------------
+F74-4  *** THE ONE REMAINING GAP:  r <= 3.  ***
+--------------------------------------------------------------------------------
+Named as Gtz.AtMostThreeDirections.  It is EQUIVALENT to the target, not weaker:
+writing y_c = x_c/m_c and (when the cross matrix has rank three) x_c = b_c^T A
+b_c for a density matrix A, one gets C_ij = (m_i m_j/4) <nu_i, nu_j>_N with
+nu_i = (1, cos phi_i, sin phi_i) on a circle and N = [[1,-g,0],[-g,2-g^2,0],
+[0,0,2]] PSD.  A line meets a circle in at most two points, so "some nu_i is
+N-orthogonal to all the others" already forces r <= 3.  Any proof of r <= 3 must
+therefore carry the same content as the target itself.
+WHAT IS PROVED ABOUT IT: r >= 3 (F74-2/3, in kernel).  WHAT IS NOT: r <= 3.
+
+--------------------------------------------------------------------------------
+F74-5  MEASUREMENTS.  Harness calibrated against the (5,3) diamond FIRST and
+       reproducing it exactly: L = [[8,-2,-3],[-2,8,-3],[-3,-3,6]], det L = 180,
+       leverages (2, 13/4 x4), 8 of 10 dominating triples, none strict,
+       rho = (1/2, 13/16 x4).  In the frame chart the diamond is
+           m = (0.6, 0.35, 0.35, 0.35, 0.35),  x = (0.4, 0.15, 0.15, 0.15, 0.15),
+           y = (2/3, 3/7 x4),  floor slacks 1 - m - x = (0, .5, .5, .5, .5),
+           three directions, two of them doubled, 8 tight pairs.
+--------------------------------------------------------------------------------
+(a) THE TARGET HOLDS AND CARRIES NO WEIGHT MARGIN.  Maximising min_a (1 - m_a -
+    x_a) over the feasible set, with an explicit weight floor t_c >= tau:
+        tau = 0.1    -> 1.27e-13
+        tau = 0.05   -> 2.25e-14
+        tau = 0.02   -> 6.09e-14
+        tau = 0.005  -> 1.80e-13
+    The maximum is 0 at every floor, with NO tau dependence.  This is the first
+    open cell of the survey whose statement is NOT of the shape "margin
+    proportional to the smallest weight" -- E1, cell H, the two-plane
+    configuration and the one-blind case all are.  It is an exact structural
+    identity, not an inequality with a vanishing constant.
+(b) Without a weight floor the maximum is POSITIVE (0.33 .. 0.40), and every
+    maximiser has y_a = 1, i.e. t_a = 0, for some a -- not a design.  Weight
+    positivity is used, but only to exclude t = 0, not quantitatively.
+(c) STRUCTURE, 409 feasible points: the cross matrix C has inertia (3,0,2)
+    EVERY time -- C is PSD of rank exactly three, so the five vectors
+    G_c = (b_c b_c^T, x_c) in R^{3,1} span a 3-dimensional SPACELIKE subspace,
+    equivalently x_c = b_c^T A b_c for a density matrix A.  The positivity graph
+    of the off-diagonal crosses had degree sequence (0,0,2,2,2) [148 points] or
+    (0,1,1,1,1) [261 points] -- always at least one isolated vertex, and the
+    components are exactly the direction classes.
+(d) Dominating-triple counts are 7 or 8, never fewer (F71-1), so Q7.1's own
+    bound of four has room to spare; the sharp statement is the row of zeros.
+
+--------------------------------------------------------------------------------
+F74-6  LANDED.  Gtz/Wave/CrossFrameRowLaw.lean, commit e1a2201, 15 theorems,
+       every pin [propext, Classical.choice, Quot.sound], per-module build only,
+       both umbrellas wired insertions-only, no name collisions.
+       Gtz.IsFrame, Gtz.pairCross, Gtz.sum_pairCross, Gtz.pairCross_offDiag_sum,
+       Gtz.leverage_add_cross_le_one, Gtz.sum_leverage_add_cross,
+       Gtz.three_le_card_of_frame, Gtz.threeFrame_leverage_add_cross_eq_one,
+       Gtz.threeFrame_all_tight, Gtz.exists_singleton_class,
+       Gtz.exists_vanishing_row, Gtz.AtMostThreeDirections.
+       NOT landed: the design-to-frame bridge (Gtz.dominates_compl_iff_
+       resolventForm_le supplies it, but transporting the five-vector data
+       through it is unwritten), and r <= 3.
+--------------------------------------------------------------------------------

@@ -6353,6 +6353,7 @@ import Gtz.Wave.SignCoherentFoil
 import Gtz.Wave.FourSetCoweightCap
 import Gtz.Wave.FiveSetPairFloor
 import Gtz.Wave.CoParsevalPivotHalfFloor
+import Gtz.Wave.CrossFrameRowLaw
 import Gtz.Wave.ResolventProjectionLaw
 import Gtz.Wave.ResolventBlockCriterion
 import Gtz.Wave.ResolventBudgetLadder

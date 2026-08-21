@@ -1264,6 +1264,7 @@ import Gtz.Wave.SignCoherentFoil
 import Gtz.Wave.FourSetCoweightCap
 import Gtz.Wave.FiveSetPairFloor
 import Gtz.Wave.CoParsevalPivotHalfFloor
+import Gtz.Wave.CrossFrameRowLaw
 import Gtz.Wave.ResolventProjectionLaw
 import Gtz.Wave.ResolventBlockCriterion
 import Gtz.Wave.ResolventBudgetLadder
@@ -38494,3 +38495,23 @@ run_cmd do
 #print axioms Gtz.posSemidef_smul_subsetSum_sub_weightedTriple
 #print axioms Gtz.subsetSum_posDef_of_weightedTriple_posDef
 #print axioms Gtz.isTie_not_posDef_weightedTriple
+
+-- Gtz/Wave/CrossFrameRowLaw.lean -- the boundary five point system read off its
+-- complement frame: the cross quantity has a row sum, the row sum factors, the
+-- half floor follows in two lines, and a frame of three vectors has every cross
+-- vanishing, so five vectors in three directions leave a row of zeros
+#print axioms Gtz.frameDotSelf
+#print axioms Gtz.frameAtomMulVec
+#print axioms Gtz.sum_sq_pairing_of_frame
+#print axioms Gtz.sum_leverage_of_frame
+#print axioms Gtz.pairCross_comm
+#print axioms Gtz.pairCross_self
+#print axioms Gtz.sum_pairCross
+#print axioms Gtz.pairCross_offDiag_sum
+#print axioms Gtz.leverage_add_cross_le_one
+#print axioms Gtz.sum_leverage_add_cross
+#print axioms Gtz.three_le_card_of_frame
+#print axioms Gtz.threeFrame_leverage_add_cross_eq_one
+#print axioms Gtz.threeFrame_all_tight
+#print axioms Gtz.exists_singleton_class
+#print axioms Gtz.exists_vanishing_row
