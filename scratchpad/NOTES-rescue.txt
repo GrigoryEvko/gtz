@@ -1,0 +1,95 @@
+RESCUE OF TWO ORPHANED LANES
+============================
+
+ORPHAN 1 -- Gtz/Wave/CorankStratumCollapse.lean
+-----------------------------------------------
+221 uncommitted lines, two failing `linarith` goals.
+
+Line 713, `Gtz.sum_inside_leverage_sub_one_eq_lam`.  THE STATEMENT WAS FALSE.  It
+omitted `C.card = 3`.  The trace of `S_C - 1` is `sum_{a in C} l_a - 3` and the sum
+`sum_{a in C} (l_a - 1)` is `sum_{a in C} l_a - #C`, so the two agree only at card
+three.  A counterexample at card two: three orthonormal atoms in `u`-perp make
+`S_C - 1 = -1 . u u^T`, so `lam = -1` while the left side is zero.  The proof carried
+`have hcard : ∀ x : ℝ, x = x` where the real hypothesis belonged.  Corrected by adding
+`hcard : C.card = 3` and replacing the `rw ... at *` by a named split.
+
+Line 732, `Gtz.sum_inside_weight_mul_leverage_sub_one_le`.  The statement is true.
+`field_simp` had already cleared the denominator and the remaining step was the
+product of the inside Gram law with the weight -- nonlinear, so `nlinarith` without a
+product hint could not see it.  Replaced by `div_mul_eq_mul_div`, `eq_div_iff` and
+`linear_combination D.weight a * hself`.
+
+Nine new theorems, all pinned, all standard axioms.
+
+ORPHAN 2 -- Gtz/Wave/SharpDesignInvolution.lean
+-----------------------------------------------
+364 lines, never compiled.  Five real name collisions, all of which would have broken
+the umbrella, because Gtz.lean imports both collision partners.
+
+  Gtz.sharpAtom, Gtz.sharpDesign, Gtz.sharpDesign_atom
+      -- Gtz/Ties/NonTetrahedralTie.lean, a CONCRETE (4,3) tie.  Different objects.
+      -- RENAMED to Gtz.naimarkSharpAtom, Gtz.naimarkSharpDesign,
+      -- Gtz.naimarkSharpDesign_atom, with the dependent names carried along.
+  Gtz.totalGap, Gtz.posDef_totalGap
+      -- Gtz/Wave/SharpFiveSetCriterion.lean, IDENTICAL definitions.  IMPORTED.
+  Gtz.sum_one_sub_weight_smul_atomMatrix
+      -- not a name collision but a CONTENT duplicate of Gtz.totalGap_eq_sum in
+      -- Gtz/Wave/SharpShareCoAtom.lean.  Deleted and the landed one used.
+
+Measured, for a successor: Lean tolerates the same fully-qualified name arriving from
+two imported modules WHEN the two declarations are definitionally identical.  Verified
+on Gtz.crossNormSq_comm, declared at Gtz/Wave/A1NeedleCramerFloor.lean:82 and
+Gtz/Wave/KOneWedgeProducer.lean:177, both reachable from Gtz.lean.  So a collision
+scan that reports only names is too coarse: 37 fully-qualified names repeat in the
+tree and most are harmless twins.  The five above were not twins.
+
+THE NO-FIXED-POINT THEOREM
+--------------------------
+The brief asked for the projection-chart argument: `M_E = -N M^{-1} N` with
+`M = P - diag(t)` and `N = diag(sqrt(t(1-t)))`, where a fixed point wants
+`(N^{-1/2} M N^{-1/2})^2 = -1` for a real symmetric matrix.
+
+A shorter proof is available inside the Naimark vocabulary and that is what is landed.
+A fixed point makes the sharp atoms `R g_c` for an invertible `R`.  Pair the dependency
+law of the dual against the whitener and DO NOT invert anything:
+
+    sum_j W j p . (dependency at (i,j))  =  0
+      gives  sum_c t_c g_c i . (W^T co_c) p = 0
+      and the fixed point makes  W^T co_c = sqrt((1-t_c)/t_c) . R g_c ,
+      so   sum_c sqrt(t_c (1 - t_c)) . g_c i (R g_c) p = 0 .
+
+Undo `R` by pairing with `R^{-1}`, set the two indices equal, and the coefficient
+`sqrt(t_c (1 - t_c))` is strictly positive, so every atom vanishes at that coordinate
+and Parseval reads one as zero.  No chart, no inverse of `M`, no spectral theorem, and
+it holds at every design, every dual and every whitening frame.
+
+`Gtz.not_naimarkSharpAtom_eq_mulVec` is the congruence form and
+`Gtz.not_naimarkSharpAtom_eq` the plain one.
+
+WHAT PART 2.4 OF THE BRIEF DOES NOT GIVE
+----------------------------------------
+The coordinator's caveat is correct and the module records it.  The flip preserves
+Gtz.IsTie and DOES NOT preserve Gtz.HasParallelPair --
+Gtz.hinge_not_preserved_by_duality (Gtz/Wave/CorankOneRigidity.lean:1295) exchanges
+(k+1,1) and (k+1,k).
+
+Checked, as the coordinator asked: NO theorem anywhere in Gtz/ or Skeleton/ relates
+Gtz.HasParallelPair to Gtz.FourCoplanar.  The equivalence
+
+    for a (6,3) tie:  has a parallel pair  <->  has four coplanar atoms
+
+is NOT landed.  So the counterexample-pair reduction is NOT stated as a theorem.  What
+is landed is the pointwise dictionary in both directions, which is unconditional:
+
+    Gtz.fourCoplanar_iff_crossNormSq_naimarkSharpAtom
+        four coplanar atoms of D  <->  parallel pair of E at the complementary pair
+    Gtz.fourCoplanar_naimarkSharpDesign_iff_crossNormSq
+        parallel pair of D  <->  four coplanar atoms of E at the complementary four-set
+
+A successor who wants the counterexample pair must land the tie equivalence first.
+
+NO NUMERICS WERE RUN
+--------------------
+Nothing in this rotation rests on a measurement.  Every claim above is a Lean proof or
+a fact read off the tree.  The numbers in the two module docstrings are inherited from
+the two dead lanes and are labelled MEASURED, not proved.

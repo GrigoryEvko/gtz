@@ -1473,6 +1473,7 @@ import Gtz.Wave.RankTwoTieClassification
 import Gtz.Wave.SharpFiveSetCriterion
 import Gtz.Wave.SharpShareCoAtom
 import Gtz.Wave.ChartQuadraticCore
+import Gtz.Wave.SharpDesignInvolution
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39535,3 +39536,33 @@ run_cmd do
 #print axioms Gtz.hingeHoldsAtSize_six_three_iff_chartCore
 #print axioms Gtz.chartCoPairDeterminant_eq_pairCapSlack
 #print axioms Gtz.sixThree_pair_dictionary_in_chartGap
+
+-- Gtz/Wave/SharpDesignInvolution.lean -- the sharp design as a DEFINITION, the round trip
+-- that returns the original atoms on the nose, and the proof that the round trip has no
+-- fixed point at any design.  The names carry the `naimark` prefix because Gtz.sharpDesign
+-- and Gtz.sharpAtom are a concrete (4,3) tie of Gtz/Ties/NonTetrahedralTie.lean.
+#print axioms Gtz.exists_sharpFrame
+#print axioms Gtz.sharpScale_nonneg
+#print axioms Gtz.coSharpScale_nonneg
+#print axioms Gtz.sharpScale_mul_coSharpScale
+#print axioms Gtz.atomMatrix_naimarkSharpAtom
+#print axioms Gtz.naimarkSharpDesign_atom
+#print axioms Gtz.naimarkSharpDesign_weight
+#print axioms Gtz.dominates_naimarkSharpDesign_iff_reading
+#print axioms Gtz.dominates_iff_dominates_naimarkSharpDesign_compl
+#print axioms Gtz.naimarkSharpTarget_sharpNaimarkDual
+#print axioms Gtz.naimarkSharpAtom_secondSharpFrame
+#print axioms Gtz.naimarkSharpDesign_secondSharpFrame
+#print axioms Gtz.exists_naimarkSharpDesign_involution
+#print axioms Gtz.sharpScale_pos
+#print axioms Gtz.coSharpScale_pos
+#print axioms Gtz.sum_pos_smul_atom_sq_ne_zero
+#print axioms Gtz.not_naimarkSharpAtom_eq_mulVec
+#print axioms Gtz.not_naimarkSharpAtom_eq
+#print axioms Gtz.naimarkSharpDesign_ne_self
+#print axioms Gtz.crossNormSq_eq_zero_iff_dependent
+#print axioms Gtz.crossNormSq_naimarkSharpAtom_eq_zero_iff
+#print axioms Gtz.pairCapSlack_eq_zero_iff_crossNormSq_naimarkSharpAtom
+#print axioms Gtz.fourCoplanar_iff_crossNormSq_naimarkSharpAtom
+#print axioms Gtz.hasParallelPair_naimarkSharpDesign_of_fourCoplanar
+#print axioms Gtz.fourCoplanar_naimarkSharpDesign_iff_crossNormSq

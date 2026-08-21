@@ -6785,3 +6785,19 @@ import Gtz.Wave.RankTwoTieClassification
 import Gtz.Wave.SharpFiveSetCriterion
 import Gtz.Wave.SharpShareCoAtom
 import Gtz.Wave.ChartQuadraticCore
+
+-- THE SHARP DESIGN, NAMED, AND ITS FREE INVOLUTION.
+--   Gtz.naimarkSharpDesign turns the existential of Gtz.exists_naimark_sharp_design into a
+--     definition, so the sharp design can be ITERATED.
+--   Gtz.naimarkSharpAtom_secondSharpFrame: sharpening twice returns the original atoms on
+--     the nose, because the two per-atom scalars are reciprocal and the two whiteners are
+--     inverse congruences.
+--   Gtz.not_naimarkSharpAtom_eq_mulVec: at m = 2k the sharp design is never a congruence
+--     of the design, so the involution is FREE and every orbit has exactly two members.
+--     Pairing the dependency law against the whitener leaves a positive combination of the
+--     atom matrices at zero, and Parseval then reads one as zero.
+--   Gtz.fourCoplanar_iff_crossNormSq_naimarkSharpAtom: four coplanar atoms of a (6,3)
+--     design are a parallel pair of the sharp design at the complementary pair.
+--   THE FLIP PRESERVES Gtz.IsTie AND IT DOES NOT PRESERVE Gtz.HasParallelPair.  Refer to
+--     Gtz.hinge_not_preserved_by_duality.
+import Gtz.Wave.SharpDesignInvolution
