@@ -6665,3 +6665,22 @@ import Gtz.Wave.GapDetPositiveInadmissible
 -- reads as a LINEAR inequality in the squared volume, whose direction the pair
 -- minor decides against ONE.
 import Gtz.Wave.PlaneShadowPairBridge
+
+-- Gtz/Wave/PivotFourDominatingTriples.lean -- Question 7.1, answered, through the
+-- THREE-CLASS LAW for rank-two ties.  Summing the rank-two master identity over a
+-- parallel class against the weights gives sum_Y Q_XY = -T_X, where Q_XY is the
+-- doubly weighted pair gap total between two classes; inside a class the bracket
+-- vanishes, so Q_XX = -T_X(2 M_X - T_X), and the difference is minus the class
+-- weight times the CLASS DEFECT 1 + T_X - 2 M_X.  The sign law makes every cross
+-- term nonpositive, so every class defect is nonnegative; Parseval makes them add
+-- to p - 3; the four-direction hinge caps p at three.  So a rank-two tie has
+-- EXACTLY three parallel classes, every class defect vanishes, and a pair
+-- dominates exactly when its two atoms lie in different classes.  At five atoms
+-- the class sizes are (3,1,1) or (2,2,1), so at most three of the ten pairs are
+-- internal and at least SEVEN dominate.  The two-sided Loewner dual carries a
+-- (5,3) tie to a (5,2) tie and the count back through complementation, so every
+-- (5,3) tie carries at least seven weakly dominating triples -- against the
+-- swap-degree cap of three (Gtz.swapDegree_le_one_card_le_three) that leaves no
+-- room at all.  The module also lands Gtz.dominatingFamily, the finset of
+-- dominating subsets of a design at a fixed size, which the tree lacked.
+import Gtz.Wave.PivotFourDominatingTriples
