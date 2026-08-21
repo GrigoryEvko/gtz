@@ -777,4 +777,597 @@ noncomputable def complexHingeSixDesign : ComplexWeightedDesign 6 3 where
   weight_sum_one := complexHingeSixWeight_sum_one
   isParseval := complexHingeSixParseval
 
+/-! ### The four overlaps against the fifth planar atom -/
+
+theorem complexHingeOv_zero_four :
+    (star (complexHingeAtom 0) ⬝ᵥ spreadAtom) * (star spreadAtom ⬝ᵥ complexHingeAtom 0)
+      = 49 / 10 := by
+  have hfifth := fifthAmp_sq
+  have hTwo := rootTwoAmp_sq
+  rw [complexHingeAtom_zero, spreadAtom, starDot_pair, starDot_pair]
+  simp only [map_mul, map_div₀, Complex.conj_ofNat, fifthAmp_conj, rootTwoAmp_conj]
+  linear_combination (49 / 4 * rootTwoAmp * rootTwoAmp : ℂ) * hfifth
+    + (49 / 20 : ℂ) * hTwo
+
+theorem complexHingeOv_one_four :
+    (star (complexHingeAtom 1) ⬝ᵥ spreadAtom) * (star spreadAtom ⬝ᵥ complexHingeAtom 1)
+      = 5 / 2 := by
+  have hfifth := fifthAmp_sq
+  have hTwo := rootTwoAmp_sq
+  rw [complexHingeAtom_one, spreadAtom, starDot_pair, starDot_pair]
+  simp only [map_mul, map_div₀, Complex.conj_ofNat, fifthAmp_conj, rootTwoAmp_conj]
+  linear_combination (25 / 4 * rootTwoAmp * rootTwoAmp : ℂ) * hfifth + (5 / 4 : ℂ) * hTwo
+
+theorem complexHingeOv_two_four :
+    (star (complexHingeAtom 2) ⬝ᵥ spreadAtom) * (star spreadAtom ⬝ᵥ complexHingeAtom 2)
+      = 3 / 2 := by
+  have hTwo := rootTwoAmp_sq
+  have hpair := omegaRoot_pair
+  have hcube := omegaRoot_cube
+  rw [complexHingeAtom_two, spreadAtom, starDot_pair, starDot_pair]
+  simp only [map_mul, map_div₀, map_one, Complex.conj_ofNat, rootTwoAmp_conj,
+    omegaRoot_conj_eq]
+  linear_combination (1 / 2 * rootTwoAmp * rootTwoAmp : ℂ) * hpair
+    + (1 / 4 * rootTwoAmp * rootTwoAmp : ℂ) * hcube + (3 / 4 : ℂ) * hTwo
+
+theorem complexHingeOv_three_four :
+    (star (complexHingeAtom 3) ⬝ᵥ spreadAtom) * (star spreadAtom ⬝ᵥ complexHingeAtom 3)
+      = 3 / 2 := by
+  have hTwo := rootTwoAmp_sq
+  have hpair := omegaRoot_pair
+  have hcube := omegaRoot_cube
+  rw [complexHingeAtom_three, spreadAtom, starDot_pair, starDot_pair]
+  simp only [map_mul, map_div₀, map_one, Complex.conj_ofNat, rootTwoAmp_conj,
+    omegaRoot_sq_conj]
+  linear_combination (1 / 2 * rootTwoAmp * rootTwoAmp : ℂ) * hpair
+    + (1 / 4 * rootTwoAmp * rootTwoAmp : ℂ) * hcube + (3 / 4 : ℂ) * hTwo
+
+/-! ### The planar shadows and their fifteen pair excesses -/
+
+theorem complexHingePlaneAtom_zero : complexHingePlaneAtom 0 = complexHingeAtom 0 := rfl
+theorem complexHingePlaneAtom_one : complexHingePlaneAtom 1 = complexHingeAtom 1 := rfl
+theorem complexHingePlaneAtom_two : complexHingePlaneAtom 2 = complexHingeAtom 2 := rfl
+theorem complexHingePlaneAtom_three : complexHingePlaneAtom 3 = complexHingeAtom 3 := rfl
+theorem complexHingePlaneAtom_four : complexHingePlaneAtom 4 = spreadAtom := rfl
+
+theorem complexHingeOv_four_zero :
+    (star spreadAtom ⬝ᵥ complexHingeAtom 0) * (star (complexHingeAtom 0) ⬝ᵥ spreadAtom)
+      = 49 / 10 := by
+  rw [mul_comm]; exact complexHingeOv_zero_four
+
+theorem complexHingeOv_four_one :
+    (star spreadAtom ⬝ᵥ complexHingeAtom 1) * (star (complexHingeAtom 1) ⬝ᵥ spreadAtom)
+      = 5 / 2 := by
+  rw [mul_comm]; exact complexHingeOv_one_four
+
+theorem complexHingeOv_four_two :
+    (star spreadAtom ⬝ᵥ complexHingeAtom 2) * (star (complexHingeAtom 2) ⬝ᵥ spreadAtom)
+      = 3 / 2 := by
+  rw [mul_comm]; exact complexHingeOv_two_four
+
+theorem complexHingeOv_four_three :
+    (star spreadAtom ⬝ᵥ complexHingeAtom 3) * (star (complexHingeAtom 3) ⬝ᵥ spreadAtom)
+      = 3 / 2 := by
+  rw [mul_comm]; exact complexHingeOv_three_four
+
+/-- **Every planar pair excess is at most zero.**  The five squared lengths are
+`2, 2, 2, 2, 5/2`, and the fifteen overlap products give the excesses `-3` four
+times and `-4` once on the diagonal, then `-11/25`, `-2/5` four times, `-17/5`,
+`-1`, and `0` three times. -/
+theorem complexHingePlaneExcess_nonpos (first second : Fin 6) (hfirst : first ≠ 5)
+    (hsecond : second ≠ 5) :
+    ∃ value : ℝ, value ≤ 0 ∧
+      (star (complexHingePlaneAtom first) ⬝ᵥ complexHingePlaneAtom first - 1)
+          * (star (complexHingePlaneAtom second) ⬝ᵥ complexHingePlaneAtom second - 1)
+        - (star (complexHingePlaneAtom first) ⬝ᵥ complexHingePlaneAtom second)
+          * (star (complexHingePlaneAtom second) ⬝ᵥ complexHingePlaneAtom first)
+        = ((value : ℝ) : ℂ) := by
+  fin_cases first <;> fin_cases second
+  · refine ⟨-3, by norm_num, ?_⟩
+    rw [show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      complexHingePlaneAtom_zero, complexHingeNorm 0]
+    push_cast
+    norm_num
+  · refine ⟨-11 / 25, by norm_num, ?_⟩
+    rw [show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      complexHingePlaneAtom_zero, complexHingePlaneAtom_one,
+      complexHingeNorm 0, complexHingeNorm 1, complexHingeOv_zero_one]
+    push_cast
+    norm_num
+  · refine ⟨-2 / 5, by norm_num, ?_⟩
+    rw [show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      complexHingePlaneAtom_zero, complexHingePlaneAtom_two,
+      complexHingeNorm 0, complexHingeNorm 2, complexHingeOv_zero_two]
+    push_cast
+    norm_num
+  · refine ⟨-2 / 5, by norm_num, ?_⟩
+    rw [show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      complexHingePlaneAtom_zero, complexHingePlaneAtom_three,
+      complexHingeNorm 0, complexHingeNorm 3, complexHingeOv_zero_three]
+    push_cast
+    norm_num
+  · refine ⟨-17 / 5, by norm_num, ?_⟩
+    rw [show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      complexHingePlaneAtom_zero, complexHingePlaneAtom_four,
+      complexHingeNorm 0, spreadAtom_norm, complexHingeOv_zero_four]
+    push_cast
+    norm_num
+  · exact absurd rfl hsecond
+  · refine ⟨-11 / 25, by norm_num, ?_⟩
+    rw [show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      complexHingePlaneAtom_one, complexHingePlaneAtom_zero,
+      complexHingeNorm 1, complexHingeNorm 0, complexHingeOv_one_zero]
+    push_cast
+    norm_num
+  · refine ⟨-3, by norm_num, ?_⟩
+    rw [show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      complexHingePlaneAtom_one, complexHingeNorm 1]
+    push_cast
+    norm_num
+  · refine ⟨-2 / 5, by norm_num, ?_⟩
+    rw [show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      complexHingePlaneAtom_one, complexHingePlaneAtom_two,
+      complexHingeNorm 1, complexHingeNorm 2, complexHingeOv_one_two]
+    push_cast
+    norm_num
+  · refine ⟨-2 / 5, by norm_num, ?_⟩
+    rw [show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      complexHingePlaneAtom_one, complexHingePlaneAtom_three,
+      complexHingeNorm 1, complexHingeNorm 3, complexHingeOv_one_three]
+    push_cast
+    norm_num
+  · refine ⟨-1, by norm_num, ?_⟩
+    rw [show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      complexHingePlaneAtom_one, complexHingePlaneAtom_four,
+      complexHingeNorm 1, spreadAtom_norm, complexHingeOv_one_four]
+    push_cast
+    norm_num
+  · exact absurd rfl hsecond
+  · refine ⟨-2 / 5, by norm_num, ?_⟩
+    rw [show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      complexHingePlaneAtom_two, complexHingePlaneAtom_zero,
+      complexHingeNorm 2, complexHingeNorm 0, complexHingeOv_two_zero]
+    push_cast
+    norm_num
+  · refine ⟨-2 / 5, by norm_num, ?_⟩
+    rw [show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      complexHingePlaneAtom_two, complexHingePlaneAtom_one,
+      complexHingeNorm 2, complexHingeNorm 1, complexHingeOv_two_one]
+    push_cast
+    norm_num
+  · refine ⟨-3, by norm_num, ?_⟩
+    rw [show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      complexHingePlaneAtom_two, complexHingeNorm 2]
+    push_cast
+    norm_num
+  · refine ⟨0, by norm_num, ?_⟩
+    rw [show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      complexHingePlaneAtom_two, complexHingePlaneAtom_three,
+      complexHingeNorm 2, complexHingeNorm 3, complexHingeOv_two_three]
+    push_cast
+    norm_num
+  · refine ⟨0, by norm_num, ?_⟩
+    rw [show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      complexHingePlaneAtom_two, complexHingePlaneAtom_four,
+      complexHingeNorm 2, spreadAtom_norm, complexHingeOv_two_four]
+    push_cast
+    norm_num
+  · exact absurd rfl hsecond
+  · refine ⟨-2 / 5, by norm_num, ?_⟩
+    rw [show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      complexHingePlaneAtom_three, complexHingePlaneAtom_zero,
+      complexHingeNorm 3, complexHingeNorm 0, complexHingeOv_three_zero]
+    push_cast
+    norm_num
+  · refine ⟨-2 / 5, by norm_num, ?_⟩
+    rw [show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      complexHingePlaneAtom_three, complexHingePlaneAtom_one,
+      complexHingeNorm 3, complexHingeNorm 1, complexHingeOv_three_one]
+    push_cast
+    norm_num
+  · refine ⟨0, by norm_num, ?_⟩
+    rw [show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      complexHingePlaneAtom_three, complexHingePlaneAtom_two,
+      complexHingeNorm 3, complexHingeNorm 2, complexHingeOv_three_two]
+    push_cast
+    norm_num
+  · refine ⟨-3, by norm_num, ?_⟩
+    rw [show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      complexHingePlaneAtom_three, complexHingeNorm 3]
+    push_cast
+    norm_num
+  · refine ⟨0, by norm_num, ?_⟩
+    rw [show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      complexHingePlaneAtom_three, complexHingePlaneAtom_four,
+      complexHingeNorm 3, spreadAtom_norm, complexHingeOv_three_four]
+    push_cast
+    norm_num
+  · exact absurd rfl hsecond
+  · refine ⟨-17 / 5, by norm_num, ?_⟩
+    rw [show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      complexHingePlaneAtom_four, complexHingePlaneAtom_zero,
+      spreadAtom_norm, complexHingeNorm 0, complexHingeOv_four_zero]
+    push_cast
+    norm_num
+  · refine ⟨-1, by norm_num, ?_⟩
+    rw [show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      complexHingePlaneAtom_four, complexHingePlaneAtom_one,
+      spreadAtom_norm, complexHingeNorm 1, complexHingeOv_four_one]
+    push_cast
+    norm_num
+  · refine ⟨0, by norm_num, ?_⟩
+    rw [show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      complexHingePlaneAtom_four, complexHingePlaneAtom_two,
+      spreadAtom_norm, complexHingeNorm 2, complexHingeOv_four_two]
+    push_cast
+    norm_num
+  · refine ⟨0, by norm_num, ?_⟩
+    rw [show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      complexHingePlaneAtom_four, complexHingePlaneAtom_three,
+      spreadAtom_norm, complexHingeNorm 3, complexHingeOv_four_three]
+    push_cast
+    norm_num
+  · refine ⟨-4, by norm_num, ?_⟩
+    rw [show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      complexHingePlaneAtom_four, spreadAtom_norm]
+    push_cast
+    norm_num
+  · exact absurd rfl hsecond
+  · exact absurd rfl hfirst
+  · exact absurd rfl hfirst
+  · exact absurd rfl hfirst
+  · exact absurd rfl hfirst
+  · exact absurd rfl hfirst
+  · exact absurd rfl hfirst
+
+/-! ### The determinant of a triple that contains the spike -/
+
+/-- **The block determinant.**  A triple `{a, b, spike}` has a block-diagonal gap:
+the `2×2` planar block and the scalar `25 - 1 = 24`.  So its determinant is `24`
+times the planar pair excess. -/
+theorem det_spikeTriple (leftVec rightVec : Fin 2 → ℂ) :
+    (complexAtom (liftPlane leftVec)
+        + (complexAtom (liftPlane rightVec) + complexAtom spikeAtom) - 1).det
+      = 24 * ((star leftVec ⬝ᵥ leftVec - 1) * (star rightVec ⬝ᵥ rightVec - 1)
+          - (star leftVec ⬝ᵥ rightVec) * (star rightVec ⬝ᵥ leftVec)) := by
+  rw [complexAtom_spike, complexAtom_liftPlane, complexAtom_liftPlane, Matrix.det_fin_three]
+  simp [dotProduct, Fin.sum_univ_two, Matrix.one_apply]
+  ring
+
+/-- Away from the spike an atom has a vanishing third coordinate, so its rank-one
+matrix has a zero third diagonal entry. -/
+theorem complexAtomSix_diag_two (atomLabel : Fin 6) (hlabel : atomLabel ≠ 5) :
+    complexAtom (complexHingeSixAtom atomLabel) 2 2 = 0 := by
+  rw [complexHingeSixAtom_eq_liftPlane atomLabel hlabel]
+  simp [complexAtom, Matrix.vecMulVec_apply]
+
+/-- **No triple dominates strictly.**  A triple that misses the spike carries `-1`
+on the third diagonal entry; a triple that contains it has determinant `24` times
+a nonpositive planar excess. -/
+theorem complexHingeSixNoStrict (selected : Finset (Fin 6)) (hcard : selected.card = 3) :
+    ¬ ((∑ atomLabel ∈ selected, complexAtom (complexHingeSixAtom atomLabel)) - 1).PosDef := by
+  classical
+  by_cases hspike : (5 : Fin 6) ∈ selected
+  · have hcardTwo : (selected.erase 5).card = 2 := by
+      rw [Finset.card_erase_of_mem hspike, hcard]
+    obtain ⟨firstLabel, secondLabel, hne, herase⟩ := Finset.card_eq_two.mp hcardTwo
+    have hfirstMem : firstLabel ∈ selected.erase 5 := by rw [herase]; simp
+    have hsecondMem : secondLabel ∈ selected.erase 5 := by rw [herase]; simp
+    have hfirst : firstLabel ≠ 5 := (Finset.mem_erase.mp hfirstMem).1
+    have hsecond : secondLabel ≠ 5 := (Finset.mem_erase.mp hsecondMem).1
+    have hsel : selected = insert firstLabel (insert secondLabel {(5 : Fin 6)}) := by
+      have hpair : selected.erase 5 = {firstLabel, secondLabel} := herase
+      rw [← Finset.insert_erase hspike, hpair]
+      ext probe
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      tauto
+    obtain ⟨value, hle, hexcess⟩ :=
+      complexHingePlaneExcess_nonpos firstLabel secondLabel hfirst hsecond
+    rw [hsel, Finset.sum_insert (by simp [hne, hfirst]),
+      Finset.sum_insert (by simp [hsecond]), Finset.sum_singleton]
+    refine not_posDef_of_det_eq_ofReal_nonpos (value := 24 * value) ?_ (by nlinarith)
+    rw [complexHingeSixAtom_five, complexHingeSixAtom_eq_liftPlane firstLabel hfirst,
+      complexHingeSixAtom_eq_liftPlane secondLabel hsecond, det_spikeTriple, hexcess]
+    push_cast
+    ring
+  · refine not_posDef_of_diag_eq_neg_one (index := 2) ?_
+    rw [Matrix.sub_apply, Matrix.sum_apply, Matrix.one_apply_eq,
+      Finset.sum_eq_zero fun probe hprobe =>
+        complexAtomSix_diag_two probe (by rintro rfl; exact hspike hprobe)]
+    ring
+
+/-! ### The dominating triple -/
+
+/-- `√24`, the length of the spike part of the dominating gap. -/
+noncomputable def rootTwentyFourAmp : ℂ := ((Real.sqrt 24 : ℝ) : ℂ)
+
+theorem rootTwentyFourAmp_conj : (starRingEnd ℂ) rootTwentyFourAmp = rootTwentyFourAmp :=
+  Complex.conj_ofReal _
+
+theorem rootTwentyFourAmp_sq : rootTwentyFourAmp * rootTwentyFourAmp = 24 := by
+  rw [rootTwentyFourAmp, ← Complex.ofReal_mul,
+    Real.mul_self_sqrt (by norm_num : (0:ℝ) ≤ 24)]
+  norm_num
+
+/-- The gap of `{2, 3, 5}` is a sum of two rank-one atoms:
+`[[1,-1,0],[-1,1,0],[0,0,24]]`. -/
+theorem complexHingeSixGap_dominating :
+    complexAtom (complexHingeSixAtom 2)
+        + (complexAtom (complexHingeSixAtom 3) + complexAtom (complexHingeSixAtom 5)) - 1
+      = complexAtom (liftPlane ![1, -1]) + complexAtom ![0, 0, rootTwentyFourAmp] := by
+  rw [complexHingeSixAtom_two, complexHingeSixAtom_three, complexHingeSixAtom_five,
+    complexAtom_liftPlane, complexAtom_liftPlane, complexAtom_liftPlane, complexAtom_spike]
+  ext rowIndex colIndex
+  fin_cases rowIndex <;> fin_cases colIndex <;>
+    simp [complexAtom, complexHingeAtom_two, complexHingeAtom_three, Matrix.vecMulVec_apply,
+      omegaRoot_conj_eq, omegaRoot_sq_conj, rootTwentyFourAmp_conj]
+  · linear_combination omegaRoot_pair
+  · linear_combination omegaRoot_pair
+  · linear_combination (2 : ℂ) * omegaRoot_cube
+  · linear_combination -rootTwentyFourAmp_sq
+
+theorem complexHingeSixDominates : ComplexDominates complexHingeSixDesign {2, 3, 5} := by
+  show ((∑ atomLabel ∈ ({2, 3, 5} : Finset (Fin 6)),
+    complexAtom (complexHingeSixAtom atomLabel)) - 1).PosSemidef
+  rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton,
+    complexHingeSixGap_dominating]
+  exact (complexAtom_posSemidef _).add (complexAtom_posSemidef _)
+
+/-- **The `(6,3)` design is an exact tie.** -/
+theorem complexHingeSixDesign_isTie : ComplexIsTie complexHingeSixDesign := by
+  refine ⟨⟨{2, 3, 5}, by decide, complexHingeSixDominates⟩, ?_⟩
+  intro selected hcard
+  exact complexHingeSixNoStrict selected hcard
+
+/-! ### No parallel pair -/
+
+theorem complexHingeSixOrth (atomLabel : Fin 6) (hlabel : atomLabel ≠ 5) :
+    star (complexHingeSixAtom atomLabel) ⬝ᵥ complexHingeSixAtom 5 = 0 := by
+  rw [complexHingeSixAtom_eq_liftPlane atomLabel hlabel, complexHingeSixAtom_five]
+  exact starDot_liftPlane_spike _
+
+theorem complexHingeSixOrth' (atomLabel : Fin 6) (hlabel : atomLabel ≠ 5) :
+    star (complexHingeSixAtom 5) ⬝ᵥ complexHingeSixAtom atomLabel = 0 := by
+  rw [complexHingeSixAtom_eq_liftPlane atomLabel hlabel, complexHingeSixAtom_five]
+  exact starDot_spike_liftPlane _
+
+/-- **No two atoms saturate Cauchy-Schwarz.**  The largest overlap ratio is
+`49/50`, at the pair `{0,4}`; the spike is orthogonal to everything. -/
+theorem complexHingeSixOverlap_ne (first second : Fin 6) (hne : first ≠ second) :
+    (star (complexHingeSixAtom first) ⬝ᵥ complexHingeSixAtom second)
+        * (star (complexHingeSixAtom second) ⬝ᵥ complexHingeSixAtom first)
+      ≠ (star (complexHingeSixAtom first) ⬝ᵥ complexHingeSixAtom first)
+        * (star (complexHingeSixAtom second) ⬝ᵥ complexHingeSixAtom second) := by
+  fin_cases first <;> fin_cases second
+  · exact absurd rfl hne
+  · rw [show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      complexHingeSixAtom_zero, complexHingeSixAtom_one,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 0, complexHingeNorm 1, complexHingeOv_zero_one]
+    norm_num
+  · rw [show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      complexHingeSixAtom_zero, complexHingeSixAtom_two,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 0, complexHingeNorm 2, complexHingeOv_zero_two]
+    norm_num
+  · rw [show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      complexHingeSixAtom_zero, complexHingeSixAtom_three,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 0, complexHingeNorm 3, complexHingeOv_zero_three]
+    norm_num
+  · rw [show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      complexHingeSixAtom_zero, complexHingeSixAtom_four,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 0, spreadAtom_norm, complexHingeOv_zero_four]
+    norm_num
+  · rw [show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      show ((⟨5, by omega⟩ : Fin 6)) = 5 from rfl]
+    rw [complexHingeSixOrth 0 (by decide), complexHingeSixOrth' 0 (by decide),
+      complexHingeSixAtom_zero, starDot_liftPlane, complexHingeNorm 0,
+      complexHingeSixAtom_five, starDot_spike]
+    norm_num
+  · rw [show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      complexHingeSixAtom_one, complexHingeSixAtom_zero,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 1, complexHingeNorm 0, complexHingeOv_one_zero]
+    norm_num
+  · exact absurd rfl hne
+  · rw [show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      complexHingeSixAtom_one, complexHingeSixAtom_two,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 1, complexHingeNorm 2, complexHingeOv_one_two]
+    norm_num
+  · rw [show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      complexHingeSixAtom_one, complexHingeSixAtom_three,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 1, complexHingeNorm 3, complexHingeOv_one_three]
+    norm_num
+  · rw [show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      complexHingeSixAtom_one, complexHingeSixAtom_four,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 1, spreadAtom_norm, complexHingeOv_one_four]
+    norm_num
+  · rw [show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      show ((⟨5, by omega⟩ : Fin 6)) = 5 from rfl]
+    rw [complexHingeSixOrth 1 (by decide), complexHingeSixOrth' 1 (by decide),
+      complexHingeSixAtom_one, starDot_liftPlane, complexHingeNorm 1,
+      complexHingeSixAtom_five, starDot_spike]
+    norm_num
+  · rw [show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      complexHingeSixAtom_two, complexHingeSixAtom_zero,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 2, complexHingeNorm 0, complexHingeOv_two_zero]
+    norm_num
+  · rw [show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      complexHingeSixAtom_two, complexHingeSixAtom_one,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 2, complexHingeNorm 1, complexHingeOv_two_one]
+    norm_num
+  · exact absurd rfl hne
+  · rw [show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      complexHingeSixAtom_two, complexHingeSixAtom_three,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 2, complexHingeNorm 3, complexHingeOv_two_three]
+    norm_num
+  · rw [show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      complexHingeSixAtom_two, complexHingeSixAtom_four,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 2, spreadAtom_norm, complexHingeOv_two_four]
+    norm_num
+  · rw [show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      show ((⟨5, by omega⟩ : Fin 6)) = 5 from rfl]
+    rw [complexHingeSixOrth 2 (by decide), complexHingeSixOrth' 2 (by decide),
+      complexHingeSixAtom_two, starDot_liftPlane, complexHingeNorm 2,
+      complexHingeSixAtom_five, starDot_spike]
+    norm_num
+  · rw [show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      complexHingeSixAtom_three, complexHingeSixAtom_zero,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 3, complexHingeNorm 0, complexHingeOv_three_zero]
+    norm_num
+  · rw [show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      complexHingeSixAtom_three, complexHingeSixAtom_one,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 3, complexHingeNorm 1, complexHingeOv_three_one]
+    norm_num
+  · rw [show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      complexHingeSixAtom_three, complexHingeSixAtom_two,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 3, complexHingeNorm 2, complexHingeOv_three_two]
+    norm_num
+  · exact absurd rfl hne
+  · rw [show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      complexHingeSixAtom_three, complexHingeSixAtom_four,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      complexHingeNorm 3, spreadAtom_norm, complexHingeOv_three_four]
+    norm_num
+  · rw [show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      show ((⟨5, by omega⟩ : Fin 6)) = 5 from rfl]
+    rw [complexHingeSixOrth 3 (by decide), complexHingeSixOrth' 3 (by decide),
+      complexHingeSixAtom_three, starDot_liftPlane, complexHingeNorm 3,
+      complexHingeSixAtom_five, starDot_spike]
+    norm_num
+  · rw [show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl,
+      complexHingeSixAtom_four, complexHingeSixAtom_zero,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      spreadAtom_norm, complexHingeNorm 0, complexHingeOv_four_zero]
+    norm_num
+  · rw [show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl,
+      complexHingeSixAtom_four, complexHingeSixAtom_one,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      spreadAtom_norm, complexHingeNorm 1, complexHingeOv_four_one]
+    norm_num
+  · rw [show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl,
+      complexHingeSixAtom_four, complexHingeSixAtom_two,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      spreadAtom_norm, complexHingeNorm 2, complexHingeOv_four_two]
+    norm_num
+  · rw [show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl,
+      complexHingeSixAtom_four, complexHingeSixAtom_three,
+      starDot_liftPlane, starDot_liftPlane, starDot_liftPlane, starDot_liftPlane,
+      spreadAtom_norm, complexHingeNorm 3, complexHingeOv_four_three]
+    norm_num
+  · exact absurd rfl hne
+  · rw [show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl,
+      show ((⟨5, by omega⟩ : Fin 6)) = 5 from rfl]
+    rw [complexHingeSixOrth 4 (by decide), complexHingeSixOrth' 4 (by decide),
+      complexHingeSixAtom_four, starDot_liftPlane, spreadAtom_norm,
+      complexHingeSixAtom_five, starDot_spike]
+    norm_num
+  · rw [show ((⟨5, by omega⟩ : Fin 6)) = 5 from rfl,
+      show ((⟨0, by omega⟩ : Fin 6)) = 0 from rfl]
+    rw [complexHingeSixOrth 0 (by decide), complexHingeSixOrth' 0 (by decide),
+      complexHingeSixAtom_zero, starDot_liftPlane, complexHingeNorm 0,
+      complexHingeSixAtom_five, starDot_spike]
+    norm_num
+  · rw [show ((⟨5, by omega⟩ : Fin 6)) = 5 from rfl,
+      show ((⟨1, by omega⟩ : Fin 6)) = 1 from rfl]
+    rw [complexHingeSixOrth 1 (by decide), complexHingeSixOrth' 1 (by decide),
+      complexHingeSixAtom_one, starDot_liftPlane, complexHingeNorm 1,
+      complexHingeSixAtom_five, starDot_spike]
+    norm_num
+  · rw [show ((⟨5, by omega⟩ : Fin 6)) = 5 from rfl,
+      show ((⟨2, by omega⟩ : Fin 6)) = 2 from rfl]
+    rw [complexHingeSixOrth 2 (by decide), complexHingeSixOrth' 2 (by decide),
+      complexHingeSixAtom_two, starDot_liftPlane, complexHingeNorm 2,
+      complexHingeSixAtom_five, starDot_spike]
+    norm_num
+  · rw [show ((⟨5, by omega⟩ : Fin 6)) = 5 from rfl,
+      show ((⟨3, by omega⟩ : Fin 6)) = 3 from rfl]
+    rw [complexHingeSixOrth 3 (by decide), complexHingeSixOrth' 3 (by decide),
+      complexHingeSixAtom_three, starDot_liftPlane, complexHingeNorm 3,
+      complexHingeSixAtom_five, starDot_spike]
+    norm_num
+  · rw [show ((⟨5, by omega⟩ : Fin 6)) = 5 from rfl,
+      show ((⟨4, by omega⟩ : Fin 6)) = 4 from rfl]
+    rw [complexHingeSixOrth 4 (by decide), complexHingeSixOrth' 4 (by decide),
+      complexHingeSixAtom_four, starDot_liftPlane, spreadAtom_norm,
+      complexHingeSixAtom_five, starDot_spike]
+    norm_num
+  · exact absurd rfl hne
+
+theorem not_complexHingeSixDesign_hasParallelPair :
+    ¬ ComplexHasParallelPair complexHingeSixDesign := by
+  rintro ⟨keptLabel, dropLabel, ratio, hne, hparallel⟩
+  exact complexHingeSixOverlap_ne keptLabel dropLabel hne
+    (overlap_eq_of_parallel (leftVec := complexHingeSixAtom keptLabel)
+      (rightVec := complexHingeSixAtom dropLabel) hparallel)
+
+/-! ## 7. The headline at the target cell -/
+
+/-- **THE COMPLEX HINGE IS FALSE AT `(6,3)`.**  `Gtz.complexHingeSixDesign` is an
+exact complex tie with no parallel pair, at the cell that decides rank three over
+`ℝ` (`Skeleton.closesThresholdCell_three_iff_sixThree`).  Every instrument whose
+ingredients all survive the passage to `ℂ` admits it as a feasible point, so no
+such instrument can prove `Gtz.HingeHoldsAtSize 6 3`. -/
+theorem not_complexHingeHoldsAtSize_six_three : ¬ ComplexHingeHoldsAtSize 6 3 :=
+  fun hhinge => not_complexHingeSixDesign_hasParallelPair
+    (hhinge complexHingeSixDesign complexHingeSixDesign_isTie)
+
+/-- **The two refutations together.**  The complex hinge fails at rank two and at
+the target cell of rank three. -/
+theorem not_complexHingeHoldsAtSize_four_two_and_six_three :
+    ¬ ComplexHingeHoldsAtSize 4 2 ∧ ¬ ComplexHingeHoldsAtSize 6 3 :=
+  ⟨not_complexHingeHoldsAtSize_four_two, not_complexHingeHoldsAtSize_six_three⟩
+
 end Gtz
