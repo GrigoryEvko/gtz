@@ -36988,3 +36988,7 @@ run_cmd do
 #print axioms Gtz.isTie_swap_coupling_floor
 #print axioms Gtz.parallel_swap_subsetSum_eq
 #print axioms Gtz.parallel_swap_dominates_iff
+#print axioms Gtz.nullProbe_exists_outside_reading_ge
+#print axioms Gtz.nullProbe_exists_inside_reading_le
+#print axioms Gtz.nullProbe_swap_excess_floor
+#print axioms Gtz.isTie_swap_coupling_floor_quantitative

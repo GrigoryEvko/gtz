@@ -291,7 +291,109 @@ theorem isTie_swap_coupling_floor {m : ℕ} (D : WeightedDesign m 3) (htie : IsT
   rw [hw, mul_one] at hbud
   exact hbud
 
-/-! ## 5. The swap symmetry of an exact doubling -/
+/-! ## 5. The outside excess, and a quantitative coupling floor -/
+
+/-- **SOME OUTSIDE ATOM CARRIES THE FLOOR.**  The weighted outside readings
+clear `(1 − t_cap)|w|²` and the outside weights total at most one, so a
+single outside atom already reads the probe that much. -/
+theorem nullProbe_exists_outside_reading_ge {m : ℕ} (D : WeightedDesign m 3)
+    (C : Finset (Fin m)) {w : Fin 3 → ℝ}
+    (hnull : w ⬝ᵥ ((subsetSum D C - 1) *ᵥ w) = 0)
+    {tcap : ℝ} (hcap : ∀ c ∈ C, D.weight c ≤ tcap) (hne : (Cᶜ : Finset (Fin m)).Nonempty) :
+    ∃ d ∈ (Cᶜ : Finset (Fin m)), (1 - tcap) * (w ⬝ᵥ w) ≤ (D.atom d ⬝ᵥ w) ^ 2 := by
+  classical
+  by_contra hcon
+  push Not at hcon
+  obtain ⟨d0, hd0⟩ := hne
+  have hpos : 0 < (1 - tcap) * (w ⬝ᵥ w) :=
+    lt_of_le_of_lt (sq_nonneg (D.atom d0 ⬝ᵥ w)) (hcon d0 hd0)
+  have hlt : ∑ d ∈ (Cᶜ : Finset (Fin m)), D.weight d * (D.atom d ⬝ᵥ w) ^ 2
+      < ∑ d ∈ (Cᶜ : Finset (Fin m)), D.weight d * ((1 - tcap) * (w ⬝ᵥ w)) := by
+    refine Finset.sum_lt_sum_of_nonempty ⟨d0, hd0⟩ fun d hd => ?_
+    exact mul_lt_mul_of_pos_left (hcon d hd) (D.weight_pos d)
+  rw [← Finset.sum_mul] at hlt
+  have hfloor := nullProbe_outside_reading_floor D C hnull hcap
+  have hw := sum_compl_weight_le_one D C
+  nlinarith [hfloor, hlt, hpos, hw]
+
+/-- **SOME INSIDE ATOM IS BELOW THE AVERAGE.**  The three inside squared
+readings total the probe's square, so the least is at most a third of it. -/
+theorem nullProbe_exists_inside_reading_le {m : ℕ} (D : WeightedDesign m 3)
+    (C : Finset (Fin m)) (hcard : C.card = 3) {w : Fin 3 → ℝ}
+    (hnull : w ⬝ᵥ ((subsetSum D C - 1) *ᵥ w) = 0) :
+    ∃ c ∈ C, 3 * (D.atom c ⬝ᵥ w) ^ 2 ≤ w ⬝ᵥ w := by
+  classical
+  by_contra hcon
+  push Not at hcon
+  have hne : C.Nonempty := Finset.card_pos.mp (by rw [hcard]; norm_num)
+  have hlt : ∑ _c ∈ C, (w ⬝ᵥ w) < ∑ c ∈ C, 3 * (D.atom c ⬝ᵥ w) ^ 2 :=
+    Finset.sum_lt_sum_of_nonempty hne fun c hc => hcon c hc
+  rw [Finset.sum_const, hcard] at hlt
+  have hsum : ∑ c ∈ C, 3 * (D.atom c ⬝ᵥ w) ^ 2
+      = 3 * ∑ c ∈ C, (D.atom c ⬝ᵥ w) ^ 2 := by rw [Finset.mul_sum]
+  rw [hsum, nullProbe_inside_total D C hnull] at hlt
+  simp only [nsmul_eq_mul, Nat.cast_ofNat] at hlt
+  linarith
+
+/-- **THE SWAP EXCESS FLOOR.**  At a weak dominator with a unit null probe,
+some swap opens the probe by a definite amount:
+
+  `(1 − t_cap) − 1/3 ≤ (g_d·w)² − (g_c·w)²` .
+
+The outside floor pushes some outside reading up, the inside average pushes
+some inside reading down, and the difference is the null form of the swapped
+triple.  At `(6,3)` with inside weights at most a half this is at least
+`1/6`, so the swapped gap is STRICTLY POSITIVE at the original probe while
+the tie still refuses it — the refusal must therefore happen transverse to
+the probe. -/
+theorem nullProbe_swap_excess_floor {m : ℕ} (D : WeightedDesign m 3)
+    (C : Finset (Fin m)) (hcard : C.card = 3) {w : Fin 3 → ℝ} (hw : w ⬝ᵥ w = 1)
+    (hnull : w ⬝ᵥ ((subsetSum D C - 1) *ᵥ w) = 0)
+    {tcap : ℝ} (hcap : ∀ c ∈ C, D.weight c ≤ tcap)
+    (hne : (Cᶜ : Finset (Fin m)).Nonempty) :
+    ∃ c ∈ C, ∃ d ∈ (Cᶜ : Finset (Fin m)),
+      (1 - tcap) - 1 / 3 ≤ (D.atom d ⬝ᵥ w) ^ 2 - (D.atom c ⬝ᵥ w) ^ 2 := by
+  obtain ⟨d, hd, hdge⟩ := nullProbe_exists_outside_reading_ge D C hnull hcap hne
+  obtain ⟨c, hc, hcle⟩ := nullProbe_exists_inside_reading_le D C hcard hnull
+  refine ⟨c, hc, d, hd, ?_⟩
+  rw [hw, mul_one] at hdge
+  rw [hw] at hcle
+  linarith
+
+/-- **THE QUANTITATIVE COUPLING FLOOR OF A TIE.**  Feeding the swap excess
+into the probe pinch, at a tie the swap coupling clears a definite multiple
+of the coercivity:
+
+  `((1 − t_cap) − 1/3)·μ ≤ |swapCoupling|²` .
+
+This is the arm's missing ingredient in numerical form — a LOWER bound on
+the coupling, obtained from Parseval rather than from any second-order
+estimate, and hence not homogeneous with the quantities it must beat.
+[MEASURED at the split diamond: the forced excess is `1.267` against an
+actual `1.875` at every mirror contact, all twelve exact.] -/
+theorem isTie_swap_coupling_floor_quantitative {m : ℕ} (D : WeightedDesign m 3)
+    (htie : IsTie D) (C : Finset (Fin m)) (hcard : C.card = 3)
+    {w : Fin 3 → ℝ} (hw : w ⬝ᵥ w = 1)
+    (hnullvec : (subsetSum D C - 1) *ᵥ w = 0)
+    {tcap : ℝ} (hcap : ∀ c ∈ C, D.weight c ≤ tcap)
+    (hne : (Cᶜ : Finset (Fin m)).Nonempty)
+    {mu : ℝ} (hmu : 0 < mu)
+    (hcoer : ∀ c ∈ C, ∀ d ∈ (Cᶜ : Finset (Fin m)), ∀ v : Fin 3 → ℝ, v ⬝ᵥ w = 0 →
+      mu * (v ⬝ᵥ v) ≤ v ⬝ᵥ ((subsetSum D (insert d (C.erase c)) - 1) *ᵥ v)) :
+    ∃ c ∈ C, ∃ d ∈ (Cᶜ : Finset (Fin m)),
+      ((1 - tcap) - 1 / 3) * mu ≤ swapCoupling D c d w ⬝ᵥ swapCoupling D c d w := by
+  classical
+  have hform : w ⬝ᵥ ((subsetSum D C - 1) *ᵥ w) = 0 := by
+    rw [hnullvec, dotProduct_zero]
+  obtain ⟨c, hc, d, hd, hexc⟩ :=
+    nullProbe_swap_excess_floor D C hcard hw hform hcap hne
+  refine ⟨c, hc, d, hd, ?_⟩
+  have hdC : d ∉ C := by simpa using (Finset.mem_compl.mp hd)
+  have hpin := swap_pinch_of_isTie D htie hcard hc hdC hw hnullvec hmu
+    (hcoer c hc d hd)
+  nlinarith [hpin, hexc, hmu]
+
+/-! ## 6. The swap symmetry of an exact doubling -/
 
 /-- **AN EXACT DOUBLING MAKES THE SWAP AN IDENTITY OF GAPS.**  If `g_q = ±g_p`
 then exchanging `p` for `q` does not move the subset sum at all:
