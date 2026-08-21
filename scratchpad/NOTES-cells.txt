@@ -418,3 +418,35 @@ Gtz.sum_three_downdate_det; the union needs the MAX, not the SUM.)
 NOT DONE: the Handelman run itself (the domain is not a polytope in the Cayley
 chart because the OUTSIDE atoms still need a matrix square root -- the chart is
 rational for the inside atoms only); cell B.
+
+F67-7.  *** THE PRODUCER THE CELLS HAD BEEN ASSUMING *** -- landed
+---------------------------------------------------------------------
+Every cell producer opens with "the four-set gap is POSITIVE DEFINITE":
+Gtz.star_exists_posDef_of_posDef_of_det_pos assumes it, the two-star producer
+assumes it twice, and the Z1 cells are NAMED by which four-set carries it.
+Nobody produced it.  The four-set law produces it in one line:
+    G + a_d a_d'  is PSD for free (G >= 0 at a weak dominator),
+    its determinant is e2(G)*(a_d.w)^2,
+    PSD + nonzero det = PosDef.
+So  Gtz.fourSet_posDef_of_reading_ne_zero :  a corank-one weak dominator plus
+ANY label that reads its null probe is a strictly dominating FOUR-SET, and
+Gtz.exists_reading_ne_zero_of_unit_probe says a reading label always exists
+(Parseval forbids the design from being blind to a unit probe).
+The same law REFUSES the corner: e2 = 0 makes every four-set determinant vanish,
+so no four-set through a corner is PosDef.  The four-set is therefore a LOEWNER
+separator of the two arms, not merely a polynomial one.
+Landed as Gtz/Wave/FourSetProducer.lean (11 pins, standard axioms).
+
+F67-8.  WHAT A TIE PAYS AT EVERY FOUR-SET (new tie-necessary law)
+---------------------------------------------------------------------
+The landed Gtz.sum_fourSet_gapDet_eq_det_sub_e2 totals the four triple gap
+determinants of a four-set at det - e2 of its gap.  The dominator's own triple
+contributes ZERO.  A tie refuses the other three, so
+    det A <= e2(A)   at every four-set A built on a corank-one weak dominator.
+In the dominator's own currency, through the new second-invariant update
+    e2(M + v v') = e2(M) + lev(v)*tr(M) - v.(M v)     (hypothesis-free),
+this reads
+    e2(G)*(a_d.w)^2  <=  e2(G) + lev(a_d)*tr(G) - a_d.(G a_d) .
+CAUTION, recorded honestly: the bound is FREE whenever (a_d.w)^2 <= 1, because
+G >= 0 gives a_d.(G a_d) <= tr(G)*lev(a_d).  It binds only at a HEAVY reading
+(a_d.w)^2 > 1.  Do not quote it as a kill.

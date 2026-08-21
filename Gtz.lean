@@ -6495,6 +6495,7 @@ import Gtz.Wave.MirrorPairMinorTrigger
 import Gtz.Wave.FunnelSecondInvariantFloor
 import Gtz.Wave.FunnelSwapClosure
 import Gtz.Wave.NullProbeFourSetLaw
+import Gtz.Wave.FourSetProducer
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge

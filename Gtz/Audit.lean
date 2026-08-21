@@ -1380,6 +1380,7 @@ import Gtz.Wave.MirrorPairMinorTrigger
 import Gtz.Wave.FunnelSecondInvariantFloor
 import Gtz.Wave.FunnelSwapClosure
 import Gtz.Wave.NullProbeFourSetLaw
+import Gtz.Wave.FourSetProducer
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
@@ -38002,3 +38003,19 @@ run_cmd do
 #print axioms Gtz.nullProbe_in_plane_of_blind_member
 #print axioms Gtz.funnel_blind_member_plane_and_pairMinor
 #print axioms Gtz.k2SixThree_parallel_or_boundary_plane
+
+-- Gtz/Wave/FourSetProducer.lean -- a corank-one weak dominator plus any label
+-- that reads its null probe is a POSITIVE DEFINITE four-set, so the hypothesis
+-- every cell producer assumed is now produced; a corner extends to nothing
+-- strict, and a tie pays det <= e2 at every four-set it carries
+#print axioms Gtz.posSemidef_gap_add_atomMatrix
+#print axioms Gtz.posDef_add_atomMatrix_of_reading_ne_zero
+#print axioms Gtz.not_posDef_add_atomMatrix_of_secondInvariant_eq_zero
+#print axioms Gtz.fourSet_posDef_of_reading_ne_zero
+#print axioms Gtz.exists_fourSet_posDef_of_secondInvariant_ne_zero
+#print axioms Gtz.fourSet_not_posDef_of_secondInvariant_eq_zero
+#print axioms Gtz.secondInvariantOfThree_add_atomMatrix
+#print axioms Gtz.secondInvariantOfThree_eq_trace_form
+#print axioms Gtz.det_le_secondInvariant_of_swaps_nonpos
+#print axioms Gtz.tie_fourSet_reading_bound
+#print axioms Gtz.tie_fourSet_reading_bound_free
