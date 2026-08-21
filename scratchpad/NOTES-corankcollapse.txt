@@ -1,0 +1,106 @@
+CORANK STRATUM COLLAPSE -- what landed, and what the corner probe says
+=====================================================================
+
+MODULE  Gtz/Wave/CorankStratumCollapse.lean   524 lines, 22 theorems,
+        all pins [propext, Classical.choice, Quot.sound], no sorry.
+COMMITS 80bf332 (module), 58e5676 (both umbrellas).
+
+STEP 1 -- THE COLLAPSE.  LANDED.
+--------------------------------
+Fact 1 was ALREADY IN THE TREE as Gtz.leverage_eq_one_of_nullReadings_zero
+(Gtz/Wave/CorankOneGramMirror.lean).  Fact 2 likewise, as the dot-product form
+Gtz.zeroAxis_leverage_eq_one.  Neither is new.  What is new is that
+Gtz.hasParallelPair_of_isTie_sixThree_of_unitAtom landed this session, so both
+compose:
+
+  Gtz.hasParallelPair_of_isTie_sixThree_of_twoZeroReadings   -- K2 collapses
+  Gtz.hasParallelPair_of_isTie_sixThree_of_zeroAxisReading   -- Z1 collapses
+
+Cells H and B and both horns live at a Z1 corner, so all four are discharged as
+hinge residuals without proving any of them.
+
+THE ENGINE is one hypothesis-free polynomial identity,
+Gtz.leverageSub_mul_tripleGapDet_add_sq:
+
+  (l_a - 1) * tripleGapDet a b c + ((l_a-1)(b.c) - (a.b)(a.c))^2
+      = pairGapMinor a b * pairGapMinor a c
+
+the Sylvester-Jacobi relation of the 3x3 gap read at the atom a.  Three readings:
+ * q_ab = 0 and l_a > 1  =>  tripleGapDet a b c <= 0 for EVERY c, no design needed
+ * two vanishing minors at a dominator force the third
+ * a corank-two corner vanishes all three, since (1+lam)^2 q_ef
+   = (lam w_e^2)(lam w_f^2) - (lam w_e w_f)^2 = 0
+
+TRICHOTOMY (Gtz.tripleStratum_trichotomy): a dominating triple of an all-heavy
+design has 0, 1 or 3 vanishing inside pair minors, NEVER exactly 2.
+
+CORRECTION TO THE BRIEF.  The brief expected the residual to be "corner-Z0 or K0".
+It is corner, K1 AND K0.  K1 does NOT collapse: one vanishing pair minor gives no
+unit atom.  The dictionary is Gtz.pairGapMinor_eq_zero_of_one_nullReading_zero --
+one zero null reading forces the OPPOSITE pair minor to vanish, because the
+dominator relation gives <g_x,w>(l_x-1) = -<g_y,w> p_xy and its mirror, and
+multiplying cancels the two nonzero readings.  So K2 is the ONLY stratum removed.
+
+STEP 2 -- THE CORNER.  DOES NOT FALL.  Reported as a near miss, not a kill.
+--------------------------------------------------------------------------
+NUMERICS (calibrated: split diamond F = 1.4e-15, Parseval 6.7e-16, all-heavy).
+
+(a) CENSUS.  Every dominating triple of every rank-three tie the campaign owns has
+    corank exactly ONE.  (5,3) diamond: 8 dominating triples, 0 of corank 2.  All
+    five (6,3) splits of it: 12 or 13 dominating triples each, 0 of corank 2.
+    (4,3) tetrahedron: 4 triples, 0 of corank 2.  Not one corner anywhere.
+
+(b) EXACT 15-PARAMETER CORNER SEARCH.  Parametrise the corner exactly, so that
+    S_C - 1 = lam u u^T AND Parseval both hold to 4e-16 by construction:
+      inside triple  = (1 + (sqrt(1+lam)-1) u u^T) O,  O orthogonal
+      outside triple = R^{1/2} Q / sqrt(t_d),  R = 1 - sum_{c in C} t_c g_c g_c^T
+    Minimising F = max_T lambda_min(S_T - 1) over the 15 parameters stalls at
+      F = +4.34e-3  with parallel pairs allowed
+      F = +1.00e-2  with cos^2 <= 0.98 enforced
+    three orders above a tie, and it drives the inside leverages toward ONE, which
+    is the funnel boundary this module collapses.  So the corner stratum LOOKS
+    empty at (6,3).  It is NOT proved empty.
+
+TWO NO-GOS, both proved, both worth banking so no lane repeats them.
+--------------------------------------------------------------------
+NO-GO 1, THE MOMENT ROUTE IS VACUOUS AT A CORNER.  Landed as
+Gtz.sum_outside_weight_mul_tripleGapDet_corner.  Read the third Sylvester moment
+sum_c t_c tripleGapDet(a,b,c) = 2 - l_a - l_b at an inside pair of a corner.  The
+pair minor vanishes, so crossNormSq = l_e + l_f - 1, the diagonal terms are
+1 - l_f and 1 - l_e, and the third inside atom contributes 0.  What is left is
+
+  sum_{d outside} t_d tripleGapDet(g_e,g_f,g_d) = -(l_e-1)(1-t_f) - (l_f-1)(1-t_e)
+
+The right side is strictly negative and every summand on the left is nonpositive by
+the cap, so the two sides agree in sign and the relation carries NO information.  It
+is worse than vacuous: by hand it is an IDENTITY.  Put y_ef := <g_e,u> g_f -
+<g_f,u> g_e.  Then y_ef is orthogonal to u, and
+  <g_e,y_ef> = -<g_f,u>,  <g_f,y_ef> = <g_e,u>,  <g_g,y_ef> = 0,
+  |y_ef|^2 = <g_e,u>^2 + <g_f,u>^2,
+and -tripleGapDet(g_e,g_f,g_d) = (lam/(1+lam)) <g_d,y_ef>^2.  Parseval on y_ef then
+reproduces the right side exactly.  DO NOT spend a cycle on a moment argument at a
+corner.
+
+NO-GO 2, THE AREA WINDOW NEVER CLOSES.  The landed ceiling
+Gtz.crossNormSq_le_of_isTie against the admissibility floor reduces, with
+X = l_p - 1, Y = l_q - 1, to  t_p Y + t_q X < X + Y, i.e. X(1-t_q) + Y(1-t_p) > 0,
+which two weights below one always satisfy.  Confirms the parent's reading.
+
+WHAT A SUCCESSOR SHOULD USE
+---------------------------
+The corner is completely pinned, and two theorems say so:
+  Gtz.corner_planeProbe_tight  -- for every y orthogonal to u,
+      sum_{c in C} <g_c,y>^2 = |y|^2 -- an UNWEIGHTED tight frame on the plane
+  Gtz.corner_axisProbe_total   -- sum_{c in C} <g_c,u>^2 = 1 + lam
+Together: the inside triple is an orthonormal basis stretched along the axis by
+sqrt(1+lam).  Its plane Gram is I_3 - v v^T with |v| = 1 and v_c = <g_c,u>/sqrt(1+lam),
+and all-heavy is exactly every v_c nonzero (Gtz.corner_axisReading_ne_zero_of_allHeavy).
+
+The refusal count at a corner drops to TEN of twenty for free: the corner itself is
+corank two, and all nine two-inside-one-outside triples fail because their inside
+pair minor vanishes.  Only the complement triple and the nine one-inside-two-outside
+triples carry the tie.
+
+One necessary condition I derived by hand but did NOT land, because it degenerates at
+a simplex vertex and so cannot be strict:  1 <= (max outside weight) +
+(1+lam)(max inside weight).  It is the universal obstruction 1 - sum t_c^2 again.
