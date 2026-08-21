@@ -1361,6 +1361,7 @@ import Gtz.Wave.BracketMassRefusal
 import Gtz.Wave.ComplementBracketLaw
 import Gtz.Wave.CoherentHornBlockCriterion
 import Gtz.Wave.CornerPairAdjugate
+import Gtz.Wave.CornerRepaymentMatrix
 import Gtz.Wave.CornerAxisElimination
 import Gtz.Wave.CornerAxisCalculus
 import Gtz.Wave.CornerAxisBridges
@@ -37888,3 +37889,23 @@ run_cmd do
 #print axioms Gtz.one_lt_leverage_of_reading_sq_gt_one
 #print axioms Gtz.pairGapMinor_lt_neg_one_of_reading_sq_gt_one
 #print axioms Gtz.isTie_sixThree_funnel_structure
+
+-- Gtz/Wave/CornerRepaymentMatrix.lean -- the three one-inside gap determinants
+-- of an outside pair are the DIAGONAL of one symmetric matrix, whose
+-- determinant is a perfect square in the ambient brackets and whose form is
+-- capped by the corner axis; every strictly positive weighting is a producer
+#print axioms Gtz.readingBracket_eq_bracket_mul
+#print axioms Gtz.readingBracket_smul_first
+#print axioms Gtz.pairAxisPolar_diag
+#print axioms Gtz.pairAxisPolar_comm
+#print axioms Gtz.repayEntry_comm
+#print axioms Gtz.repayEntry_diag_eq_tripleGapDet
+#print axioms Gtz.repayEntry_det
+#print axioms Gtz.pairAxisPolar_neg_nonneg
+#print axioms Gtz.repayEntry_form_le
+#print axioms Gtz.exists_pos_of_weighted_sum_pos
+#print axioms Gtz.exists_repay_of_weighted_sum_pos
+#print axioms Gtz.tripleGram_posDef_of_weighted_repay
+#print axioms Gtz.subsetSum_posDef_of_weighted_repay
+#print axioms Gtz.weighted_sum_nonpos_of_no_repay
+#print axioms Gtz.repayEntry_det_bracket
