@@ -104,3 +104,142 @@ five-vector configuration is unconstrained, and PARSEVAL WITH SIX POSITIVE
 WEIGHTS is not optional decoration but the only remaining input.  (It is also
 why F49-13's "the corner and its pair determine e1 and nothing else" was the
 right diagnosis of the wrong object.)
+
+
+F73-2.  *** THE PROBLEM HAS NO DESIGNS IN IT: GTZ(m,k) IS A STATEMENT ABOUT
+        ONE ISOMETRY AND ONE POINT OF A SIMPLEX ***
+--------------------------------------------------------------------------------
+Gtz.dominates_iff_posSemidef_projectionBlock (LANDED, ProjectionForm.lean:275)
+reads domination off the design's own projection form P = V V' with
+V = scaledAtomRows D:   Dominates D T  <->  P[T,T] >= diag(t_T).
+That is one half of a dictionary.  THE OTHER HALF WAS MISSING, and it is what
+turns the criterion into a change of subject:
+
+  EVERY m x k matrix V with V'V = 1 and EVERY point t of the open simplex IS a
+  design:  put  g_c = t_c^{-1/2} * V_c .  Parseval is exactly V'V = 1, because
+  the weight cancels the scaling.  (Gtz.designOfIsometry.)
+
+Hence  GtzWeighted m k  <->  IsometrySelects m k:
+  for every V with V'V = 1 and every positive t summing to one there is an
+  injection pick : Fin k -> Fin m with  (V V')[pick,pick] >= diag(t o pick).
+THE TWO INPUTS ARE UNCOUPLED -- V ranges over the whole Stiefel manifold and t
+over the whole open simplex, independently.  Every constraint the design carried
+is absorbed into "V is an isometry" and "t is a probability vector".
+
+VERIFIED (scratchpad/f73/proj.py): the dictionary against genuine designs at
+9.510e-13 with ZERO sign mismatches over 4000 designs x all 20 triples; and the
+abstract statement holds with no failures at (4,3),(5,3),(6,3),(7,3),(6,4),
+(7,4),(8,4),(10,4), minimum best margin +0.0286.
+LANDED: Gtz/Wave/IsometrySelection.lean, commits 52b3a97 and 49d6fa6, 13 pins,
+all [propext, Classical.choice, Quot.sound], my own scratch-file audit.
+
+*** ACCEPTANCE TEST PASSED (scratchpad/f73/cplx.py). *** The complex corank-two
+corner tie of NOTES-f68-etwo F68-0, read through the same construction, gives a
+HERMITIAN isometry: |V*V - I| = 3.109e-15, P = VV* Hermitian to 6.206e-17 with
+trace exactly 3.000000000000, and ZERO of the 20 blocks satisfy
+P[T,T] >= diag(t_T) (best margin +1.285e-16, which is the tie's own corner block
+sitting at zero).  So the complex analogue of IsometrySelects 6 3 is FALSE.  The
+reformulation separates the fields correctly and is therefore a faithful
+restatement of the open cell, not a weakening.
+
+F73-3.  THE ABSTRACT MARGIN IS EXACTLY NON-STRICT, AND WHY
+-----------------------------------------------------------
+Adversarial descent on the abstract statement (17 parameters: V through QR of a
+6x3 matrix, t through a softmax) drives
+    inf  max_T lmin( P[T,T] - diag t_T )  =  1.0165612978e-05
+and it is still falling.  THE MECHANISM IS VISIBLE AND CLEAN: t collapses to a
+VERTEX of the simplex,
+    t = (9.992459e-01, 7.521716e-04, 1.805642e-06, 7.269018e-08,
+         1.143519e-09, 4.790786e-11)
+and V is chosen so that every 3x3 block avoiding the heavy index is nearly
+singular.  At the limit point the statement is still TRUE but only with >= : the
+blocks avoiding the heavy index are PSD and singular.  SO THE INFIMUM IS ZERO AND
+NO PROOF CAN PRODUCE A POSITIVE CONSTANT.  This is the abstract explanation of
+the design-side scaling measured in F73-4 below, and of every "the margin is not
+bounded below" report in this campaign.
+
+F73-4.  THE DESIGN-SIDE SCALING: THE MARGIN IS PROPORTIONAL TO THE SMALLEST WEIGHT
+-----------------------------------------------------------------------------------
+Descent over the exact corner chart (lam, Q, inside weights, R, outside weights;
+12 parameters) with a hard weight floor tau, minimising
+max over the ten candidate triples of lmin(S_T - I):
+    tau = 0.05   ->  6.34527109e-02        (120 restarts)
+    tau = 0.01   ->  2.81342921e-02        ( 45 restarts)
+    tau = 0.002  ->  5.95643064e-03        ( 45 restarts)
+so the infimum is about 3*tau for small tau: THE CERTIFICATE MUST CONSUME WEIGHT
+POSITIVITY and cannot be a strict inequality with an absolute constant.  The
+minimising configurations are the dust ray (one weight near one, leverages to
+400-500).  The cells lane reached the same shape independently (margin about
+2*tau at cell H), so this is now measured in two places.
+
+F73-5.  SELECTORS: NO MARGINAL RULE IS TOTAL
+----------------------------------------------
+At a corner, over 21000 sampled corners of the exact chart, SOME triple always
+strictly dominates (0 failures, min best margin 1.03e-02); the one-inside route
+wins 96.06% and the complement 17.23%.  Fire rates of candidate selectors:
+    e = argmax <u_e,nu>^2 lies in a winning pair      99.9943%   (1 miss)
+    e = argmax ||u_e||^2  lies in a winning pair      99.9148%
+    d = argmin ||u_d||^2  lies in a winning pair      99.8581%
+    whitened norms (argmax e, argmin d) or complement 99.5436%
+    heaviest inside + lightest outside, or complement 90.1102%
+    nu-selector (both coordinates from nu)            50.7150%   <-- WORSE, see below
+(nu = top eigenvector of the whitened inside sum; u_c = R'g_c with R'WR = I,
+so ||u_c||^2 = g_c' W^{-1} g_c, the W-leverage score, W = sum (1-t_c) A_c.)
+THE DEFICIENCY-DIRECTION SELECTOR IS A TRAP: the necessary test at nu is
+<u_e,nu>^2 - <u_d,nu>^2 > rho - 1 with sum_e <u_e,nu>^2 = rho and
+sum_d <u_d,nu>^2 <= 1, so the argmax/argmin choice gives only (rho-1)/3 against a
+requirement of rho-1.  The swap barely helps in the direction that is failing;
+it works through the other two directions.
+In the ABSTRACT form: max WEIGHTED volume (T maximising det(V_T)^2 / prod_{c in T} t_c)
+fires at 99.8292%, plain max volume at 92.2708%, max gap determinant at 99.9917%,
+best diagonal slack at 90.1583%.  None is total.
+
+F73-6.  FREE FACTS IN THE ABSTRACT FORM
+----------------------------------------
+(a) CAUCHY-BINET, verified to 1.000000000 on 24000 samples:
+    sum over the 20 triples of det(V_T)^2 = 1.  In design language this is the
+    landed bracket budget sum t_a t_b t_c [abc]^2 = 1.
+    PIGEONHOLE: since sum_T prod_{c in T} t_c = e3(t) <= (sum t)^3/6 = 1/6,
+    some triple has [T]^2 >= 1/e3(t) >= 6; with Maclaurin, >= 54/5 = 10.8.
+    MEASURED min over samples of max_T det(V_T)^2/prod t = 23.0159.
+    This is a determinant surplus and does NOT give the matrix inequality.
+(b) CS COMPLEMENTARITY, verified to 1.665e-15: the spectra of P[T,T] and
+    P[T^c,T^c] pair to one.  Algebraically it is V_T' V_T + V_{T^c}' V_{T^c} = I.
+(c) THE BUDGET: sum_c (P_cc - t_c) = k - 1  (landed, sum_projectionDiag_sub_weight).
+(d) SCALAR FLOOR (landed, posSemidef_projectionBlock_of_scalarFloor): T works if
+    lmin(P[T,T]) >= max_{c in T} t_c.  This elementary route already covers
+    96.4542% of samples; choosing T as the three SMALLEST weights covers only
+    33.4542%, so the choice of T matters more than the floor.
+(e) MONOTONICITY (landed, posSemidef_projectionBlock_mono): lowering the weights
+    of a selected block only helps.  FALSE as a statement about designs -- the
+    weights cannot move without breaking Parseval -- and available only because
+    the abstract form uncouples V from t.
+
+F73-7.  *** A TEMPTING CONJECTURE, REFUTED: THE BLOCK CONDITION IS NOT SELF-DUAL ***
+-------------------------------------------------------------------------------------
+At m = 2k the complement of a k-set is a k-set, and the CELL is self-dual
+(Naimark).  It does NOT follow that the block condition is.  Over 480000
+(block, complement) pairs the two conditions DISAGREE 200772 times, with margins
+as large as lmin(T) = +8.457e-01 against lmin(T^c) = -9.549e-01.
+COROLLARY, and it matters: the complement-form criterion
+"Dominates T <-> Q[T^c,T^c] >= diag(t_{T^c})" that whitening produces uses a
+DIFFERENT projection Q -- built from the coweights 1-t in the W metric -- and Q
+is NOT I - P for the design's own P.  Do not conflate the two projections.
+
+F73-8.  QUEUE STATE AT HANDOFF
+-------------------------------
+DONE: the per-pair form of condition (B) refuted with a verified design (F73-0);
+the corner-plus-pair configuration shown to be a free parameter, so that whole
+approach class is dead (F73-1); the isometry reformulation landed with its
+acceptance test (F73-2); the non-strictness explained structurally (F73-3) and
+measured on the design side (F73-4); selectors measured to exhaustion (F73-5);
+the free facts collected (F73-6); self-duality refuted (F73-7).
+NOT DONE: no proof of IsometrySelects 6 3.  The two openings I would take next
+are (i) the residual 3.5% of the scalar-floor route, which is where the
+off-diagonal structure is forced to act, and (ii) the fact that each
+G_T = {t : P[T,T] >= diag t_T} is a CONVEX DOWN-SET depending only on t_T -- a
+cylinder over a spectrahedron in three of the six coordinates -- so the statement
+is that 20 convex cylinders cover the simplex, each containing the opposite face
+conv{e_c : c not in T}.  Convexity plus containing the opposite face is NOT
+sufficient on its own (the 20 faces themselves do not cover), so the coupling
+among the P[T,T] must enter; that coupling is exactly (a) and (b) above.
