@@ -37536,6 +37536,8 @@ run_cmd do
 -- determinant, so the existential kill needs no selection rule
 #print axioms Gtz.liveTriple_posDef_iff_gapDet_pos
 #print axioms Gtz.branchB_posDef_iff_gapDet_pos
+#print axioms Gtz.branchB_posDef_iff_bracket_sq_gt
+#print axioms Gtz.branchB_isTie_bracket_sq_le
 #print axioms Gtz.card_triple
 #print axioms Gtz.branchB_not_isTie_of_gapDet_pos
 #print axioms Gtz.branchB_isTie_gapDet_nonpos
