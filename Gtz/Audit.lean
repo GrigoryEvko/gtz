@@ -1399,6 +1399,7 @@ import Gtz.Wave.FunnelSwapClosure
 import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.CorankOneAdjugateGeneralRank
 import Gtz.Wave.BandTieTower
+import Gtz.Wave.WeightedMomentDomination
 import Gtz.Wave.FourSetProducer
 import Gtz.Wave.OutsideReadingFloor
 import Gtz.Wave.FourSetFloorPackage
@@ -39005,3 +39006,24 @@ run_cmd do
 #print axioms Gtz.exists_isTie_succ_iff_of_hinge
 #print axioms Gtz.exists_isTie_sixThree_iff_of_hinge
 #print axioms Gtz.exists_isTie_eightFour_iff_of_hinge
+
+-- Gtz/Wave/WeightedMomentDomination.lean -- the weighted-moment domination
+-- criterion at every rank and size, the floor of the tie tower at size = rank,
+-- the outside-mass floor of a tie, and the universal filter that refutes every
+-- strict-domination producer at every cell from size rank + 1 up
+#print axioms Gtz.weightedMoment_univ
+#print axioms Gtz.dotProduct_subsetSum_finset_mulVec
+#print axioms Gtz.dotProduct_weightedMoment_mulVec
+#print axioms Gtz.posSemidef_weightedMoment
+#print axioms Gtz.isHermitian_weightedMoment_sub_smul_one
+#print axioms Gtz.weightedMoment_le_smul_subsetSum
+#print axioms Gtz.dominates_of_weightedMoment_ge
+#print axioms Gtz.posDef_subsetSum_sub_one_of_weightedMoment_gt
+#print axioms Gtz.not_isTie_of_size_eq_rank
+#print axioms Gtz.isTie_outside_mass_floor
+#print axioms Gtz.isTie_complement_mass_floor
+#print axioms Gtz.not_forall_exists_posDef
+#print axioms Gtz.not_weightedMomentGate
+#print axioms Gtz.not_forall_exists_posDef_sixThree
+#print axioms Gtz.not_forall_exists_posDef_eightFour
+#print axioms Gtz.not_forall_exists_posDef_tenFour
