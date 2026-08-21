@@ -57,10 +57,11 @@ With `N := diag(√(t_c(1 - t_c)))`,
 where `Π = Gtz.totalGapHat` is the hat matrix of the co-weighted frame.  The proof
 is the inverse formula and two diagonal identities: `N T⁻¹ N = 1 - T` and
 `N W = Gtz.totalGapFrame`.  By the landed `Gtz.totalGapHat_add_sharpHat` the right
-side is `Gtz.sharpHat - diag t`, that is the chart gap of the SHARP design of
-`Gtz/Wave/NaimarkSharpDesign.lean`.  So the sharp duality — the one that DOES
-transport domination — is a conjugation by a positive diagonal composed with matrix
-inversion and a sign.
+side is `Gtz.sharpHat - diag t`.  That `Gtz.sharpHat` is the CHART of the sharp
+design is a separate statement, proved against the named `Gtz.naimarkSharpDesign`
+in `Gtz/Wave/ChartSharpDesignGap.lean` and NOT claimed here.  So the sharp
+duality — the one that DOES transport domination — is a conjugation by a positive
+diagonal composed with matrix inversion and a sign.
 
 Two properties are then free and abstract, stated for any invertible symmetric form
 and any positive diagonal:
@@ -568,10 +569,15 @@ theorem sharpChartGap_add_weightDiagonal (D : WeightedDesign m k) :
   rw [sharpChartGap]
   abel
 
-/-- **THE SHARP CHART IS THE SHARP HAT.**  For every Naimark dual of the design the
-chart of the sharp design — the complement of the co-weighted hat — is
-`Gtz.sharpHat`, so `Gtz.sharpChartGap` really is the gap of the design of
-`Gtz.exists_naimark_sharp_design` and not merely a matrix with its formula. -/
+/-- **THE SHARP CHART GAP IS THE SHARP HAT, SHIFTED.**  For every Naimark dual of
+the design, `Gtz.sharpChartGap` plus the weight diagonal is `Gtz.sharpHat`.
+
+This does NOT by itself say that `Gtz.sharpHat` is the CHART of the sharp design —
+that identification is a separate statement, and the campaign carried it as
+measured only (`Gtz/Wave/SharpFiveSetCriterion.lean`, `2.4e-14`) because
+`Gtz.exists_naimark_sharp_design` exports existence.  It is proved in
+`Gtz/Wave/ChartSharpDesignGap.lean` against the named
+`Gtz.naimarkSharpDesign`. -/
 theorem sharpChartGap_add_weightDiagonal_eq_sharpHat {r : ℕ} (D : WeightedDesign m k)
     (N : NaimarkDual D r) (hm : 2 ≤ m) :
     sharpChartGap D + Matrix.diagonal D.weight = sharpHat D N := by
