@@ -1,0 +1,186 @@
+NOTES -- cell H of the corank-two Z1 corner.  Self-contained.
+
+=======================================================================
+H-0.  THE CHART.  A closed-form Z1 corner, no Cayley, no square root
+=======================================================================
+Solve the corner equation by hand instead of parametrising O(3).  Put u = e3.
+A corank-two corner S_C - 1 = lam u u^T with |u|=1 and g_x . u = 0 forces,
+after choosing the plane basis, EXACTLY
+
+    g_x = (1, 0, 0)
+    g_y = (0,  c, mu*sn)
+    g_z = (0,-sn, mu*c )        c^2 + sn^2 = 1,  mu > 1,  lam = mu^2 - 1
+
+and then S_C = diag(1,1,mu^2) IDENTICALLY -- corner residual 0, not 1e-13.
+Derivation: h_x = 0 and sum_C h_e p_e = 0 make p_y, p_z ANTI-PARALLEL, so
+p_x p_x^T + (1+r^2) p_y p_y^T = I_2 forces p_x unit and p_y perpendicular to it.
+Z1 is sn != 0 (g_y reads the axis) and c != 0 (g_z reads it).
+
+SAMPLER, 100 percent acceptance, Parseval exact by construction:
+  pick mu, theta, and the six weights;
+  N := I - sum_C t_c g_c g_c^T  is BLOCK DIAGONAL in this frame (1) (+) (2x2),
+    so its square root is closed form;
+  A_K := N^{1/2} R for R in SO(3) via Cayley;  g_d := A_K[:,d]/sqrt(t_d).
+Ten parameters, which is the exact dimension of the cell-H manifold.
+Verified in quad: Parseval 2.9e-34, sum t - 1 = 0, corner residual 0,
+g_x.g_y = g_x.g_z = 0 exactly, |g_x|^2 = 1 exactly, g_y.g_z = lam*sn*c to
+25 digits (the landed insideGram law).
+Code: scratchpad/cellh/{probe2.c,core.h,evalq.c,verify.c}.
+
+=======================================================================
+H-1.  *** TWO RECORDED COUNTEREXAMPLES ARE NUMERICAL ARTIFACTS ***
+=======================================================================
+The note F59-2 records that {corner, A_y>0, A_z NOT>0, T4,T5,T6 <= 0} is NOT
+empty, with a witness.  My own descent reproduced that shape TWICE and both
+times the point was NOT in cell H.  Adjudicated in __float128:
+
+  (a) long double, leverage 6.1e11:  `posdef3` by leading minors said A_x is
+      positive definite while the analytic eigen-formula said its smallest
+      eigenvalue is -18.9.  Both were noise.
+  (b) __float128 with the analytic 3x3 eigen-formula, leverage 1.55e19:
+      reported mineig(A_z) = -12.8 and mineig(W) = -2.0, so "cell H".
+      Cholesky on the same matrices says A_x, A_y, A_z and W are ALL positive
+      definite.  A direct determinant is noise there too: det(W) is formed from
+      terms of size 3.4e57 and quad carries 34 digits, so anything below 1e23
+      is invented.
+
+WHAT IS ACTUALLY RELIABLE at spread spectra: CYCLIC JACOBI.  It is backward
+stable, and at scale 1.55e19 it resolves an eigenvalue of -0.62 to 15 digits
+(self-test in scratchpad/cellh/selftest.c).  Leading-principal-minor tests,
+direct 3x3 determinants and the closed-form trigonometric eigen-formula are ALL
+unusable past leverage ~1e10, and every one of them manufactures cell-H points
+that do not exist.  scratchpad/cellh/core.h is the Jacobi core, with an explicit
+noise floor: a decision is refused unless |lambda_min| clears 1e8 ulps of the
+matrix scale AND the construction noise 64*eps*maxleverage.
+
+CONSEQUENCE.  I found NO counterexample to the ONE-star statement on Z1 cell H.
+Over 44628 + 59368 + 265446 exact cell-H inhabitants the y-star fires at
+100.000000 percent.  The F59-4 two-star repair may still be needed, but the
+evidence that it is needed is an artifact, and it should be re-run on a stable
+core before anyone builds on it.
+
+=======================================================================
+H-2.  THE INFIMUM IS ZERO, AND IT SITS AT A VERTEX OF THE SIMPLEX
+=======================================================================
+Objective: ymargin := max_{d in K} (1 - g_d^T A_y^{-1} g_d), positive exactly
+when the y-star carries a strictly dominating triple.
+  quad Nelder-Mead, 900 starts x 8 rounds x 700 iterations, weight floor 0:
+      inf ymargin = 4.1e-16
+      at lam = 1.8e-15, t_y = 0.99999999999999952, the other five at 1e-16
+      or below, pair mass 1 - sum t^2 = 9.6e-15.
+  under a weight floor tau:  inf ymargin = 0.51*tau at tau = 1e-4,
+      0.50*tau at 1e-3, 0.51*tau at 1e-2, 0.68*tau at 1e-8.
+So the margin is LINEAR in the floor and the infimum over the open cell is
+ZERO, attained only as the weight vector runs to a simplex vertex.  No strict
+certificate exists.  This is the campaign's universal wall, measured here.
+
+NORMALISERS TESTED BY DESCENT (all quad, penalised on the cell):
+  ymargin / pairmass        -> 4.3e-11   (escape is lam -> 0, not the mass)
+  ymargin / (1 - t_y)       -> 3.5e-10   (same escape)
+  ymargin / min_{d in K} t_d-> 0.851     (below one: the law is FALSE)
+  ymargin / t_x             -> 0.116     (below one: FALSE)
+  ymargin / min_c t_c       -> 4.256     (never approached one)
+So `ymargin >= min over ALL SIX weights` survived every descent and every
+sample (100.000000 percent, min gap 9.3e-05), while both sharper forms are
+false.  It is not proved and I do not recommend anchoring on it: it is a
+disjunction wearing a scalar's clothes.
+
+=======================================================================
+H-3.  THE AGGREGATE FAMILY IS CAPPED, AND THE CAP IS NOT 100 PERCENT
+=======================================================================
+Write r_d := 1 - g_d^T A_y^{-1} g_d.  For ANY nonnegative w, max_d r_d is at
+least the w-average, so any computable total with a positive sign is a producer.
+Measured on 44628 exact cell-H inhabitants:
+
+  sum (1-t_d) r_d      99.9395 %   min -1.49e-01   <-- best of the family
+  sum r_d              98.9827 %   min -7.50e+00
+  sum t_d r_d          96.7532 %   min -7.44e+00
+  sum t_d^2 r_d        95.5297 %   min -6.61e+00
+  sum l_d r_d          31.7558 %   (leverage weighting is useless)
+  sum r_d / t_d        48.4270 %
+  sum r_d / t_d^2      26.1742 %
+  sum (1-t_d)^2 r_d    85.2469 %
+  -e2 of the trio      78.6883 %
+   e3 of the trio      75.3540 %
+
+NO aggregate reaches 100 percent, and that is FORCED: by Descartes, three reals
+are all nonpositive exactly when e1 <= 0, e2 >= 0, e3 <= 0, so the symmetric
+trio criterion is an EQUIVALENCE, not a weakening, and the disjunction is
+irreducible.  Do not spend another round hunting a single-scalar aggregate.
+
+=======================================================================
+H-4.  *** THE MOMENT LADDER *** (new, landed)
+=======================================================================
+At (6,3) the complement of a triple is a triple, so the three outside atoms are
+the COLUMNS OF A SQUARE MATRIX.  With M := sum_d g_d g_d^T and
+N := sum_d w_d g_d g_d^T, for ANY weights and with NO hypothesis:
+
+    N * adj(M) * N  =  det(M) * sum_d w_d^2 g_d g_d^T
+    M * adj(N) * M  =  det(M) * sum_d (prod_{e != d} w_e) g_d g_d^T
+
+Carrier: adj(A*B) = adj(B)*adj(A) and A*adj(A) = det(A)*1 applied to M = G G^T,
+N = G T G^T.  Iterating gives EVERY weight moment of the outside frame from the
+two the design supplies.
+
+SIZE MARKER, measured (scratchpad/cellh/sizemark.c, 4000 draws per size):
+    2 outside atoms   both sides vanish identically   -- vacuous at (5,3)
+    3 outside atoms   max relative failure 1.2e-08    -- holds, this is (6,3)
+    4 outside atoms   max relative failure 3.2e-01    -- FAILS
+    5 outside atoms   max relative failure 3.4e-01    -- FAILS
+This is the sharpest "the complement triple is a basis" the campaign has and the
+first version that carries the weights.
+
+=======================================================================
+H-5.  WHAT LANDED
+=======================================================================
+Gtz/Wave/ZeroAxisStarLedger.lean  (37 theorems)
+  star_ledger_weighted        sum_K t_d (1 - g_d.A^-1 g_d)
+                                = 1 - tr A^-1 + sum_{K^c} t_c (g_c.A^-1 g_c - 1)
+  star_reading_total          sum_K g_d.A^-1 g_d = 3 + tr A^-1 - g_y.A^-1 g_y
+  star_ledger_unweighted      at |K| = 3: the total is g_y.A^-1 g_y - tr A^-1
+  star_posDef_of_reading_lt_one            the producer
+  exists_star_posDef_of_weighted_ledger    the weighted kill
+  exists_star_posDef_of_unweighted_ledger  the unweighted kill
+  zeroAxis_leverage_eq_one    |g_x|^2 = 1 at a Z1 corner
+  zeroAxis_orthogonal         g_x . g_e = 0 for the other two inside atoms
+  zeroAxis_parseval_transfer  sum_{K} t_d (g_d.g_x)(g_d.v) = (1-t_x)(g_x.v)
+  zeroAxis_outside_mass       sum_{K} t_d (g_d.g_x)^2 = 1 - t_x
+  star_not_posDef_of_fourSet_not_posDef    a refusal poisons its whole star
+  core_not_posDef_of_fourSet_not_posDef    and its own core
+  cellH_adjugate_separation   g_z.adj(W)g_z <= -det W < g_y.adj(W)g_y
+  corner_superset_gap_posSemidef           every superset of a corner dominates
+  corner_fiveSet_gapDet_nonneg             and its five-set determinant is >= 0
+  star_aggregate_corner_form  the star total = lam*(u.A^-1 u) - the two others
+  exists_star_posDef_of_axis_reading_gt    the axis producer
+  oneAxisZeroHeavyInsideResidual_of_starRefusals
+Gtz/Wave/OutsideFrameMomentLadder.lean  (14 theorems)
+  outside_second_moment_ladder, outside_inverse_moment_ladder
+  outside_second_moment_probe, outside_second_moment_probe_nonneg
+  OneAxisZeroStarRefusalSystem                       (ten refusals)
+  oneAxisZeroPairCoverage_of_starRefusalSystem
+  oneAxisZeroHeavyInsideResidual_of_starRefusalSystem
+  oneAxisZeroBothLightResidual_of_starRefusalSystem  (the reduction that
+      BothLightChartReduction.lean advertises in its docstring and never lands)
+All 51 pins are [propext, Classical.choice, Quot.sound].
+
+=======================================================================
+H-6.  WHAT IS OPEN, AND THE ONE HONEST NEXT STEP
+=======================================================================
+The ten refusals are now the WHOLE Z1 residual.  Four of the ten are free at
+cell H.  What is not proved is that the six that remain are contradictory.
+
+Do NOT attempt a Handelman run in this chart.  The chart is rational in the
+inside atoms and in the rotation, but the outside atoms carry N^{1/2}, and the
+domain in the ten parameters is cut by the positive definiteness of N and by two
+eigenvalue signs -- not by linear forms.  Handelman needs a polytope and there
+is none here.  The K2 route worked because the plane masses linearised its
+domain; the corank-two corner has no such pair of masses, because the corner
+equation is quadratic in the atoms and the weights enter through the inverse.
+
+The one route I would take next: the corner ladder.  A corner gap is positive
+semidefinite, so every superset dominates weakly; the four-set determinants
+vanish; the five-set determinants are lam times a bracket squared and are
+nonnegative.  At (6,3) a five-set is the universe less ONE label.  That gives
+three free nonnegative determinants that no cell system uses, and they are
+polynomial in the atoms with no inverse anywhere.  Price the six star refusals
+against those three, not against a chart.
