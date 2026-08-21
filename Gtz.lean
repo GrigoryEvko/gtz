@@ -6665,7 +6665,15 @@ import Gtz.Wave.GapDetPositiveInadmissible
 -- squared volume less the squared area, minus a pair-normal defect that is a
 -- binary quadratic in the third atom's two pair readings.  At a tie the gate
 -- reads as a LINEAR inequality in the squared volume, whose direction the pair
--- minor decides against ONE.
+-- minor decides against ONE.  The module also completes the SYLVESTER MOMENT
+-- LADDER: the weighted average of the THIRD minor through a fixed pair is `2`
+-- less the pair's two leverages, at every size, so a tie caps that pair's squared
+-- area by an explicit bound in its own two leverages and two weights.  The cap is
+-- attained at the (4,3) tetrahedron at all six pairs and at four of the ten pairs
+-- of the (5,3) diamond, and its equality locus kills every third minor through the
+-- pair.  The SECOND moment then removes the geometry: every rank-three design
+-- carries a heavy admissible pair with no simplicity hypothesis, so the window
+-- holds at EVERY rank-three tie.
 import Gtz.Wave.PlaneShadowPairBridge
 
 -- Gtz/Wave/PivotFourDominatingTriples.lean -- Question 7.1, answered, through the
