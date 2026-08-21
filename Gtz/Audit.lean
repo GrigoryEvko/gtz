@@ -39610,7 +39610,7 @@ run_cmd do
 #print axioms Gtz.one_le_sum_twenty_shareOf_prod_sixThree
 #print axioms Gtz.weightProd_mul_tripleGapDet_eq_marginal
 #print axioms Gtz.tripleGapDet_eq_det_tripleGram_sub_one
-#print axioms Gtz.tripleGapDet_nonneg_of_dominates
+#print axioms Gtz.tripleGapDet_nonneg_of_dominates_triple
 #print axioms Gtz.tripleGapDet_eq_zero_of_dominates_of_not_posDef
 #print axioms Gtz.marginal_relation_of_dominates
 #print axioms Gtz.marginal_tie_equality_of_isTie_sixThree

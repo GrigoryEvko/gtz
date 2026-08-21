@@ -590,7 +590,7 @@ theorem tripleGapDet_eq_det_tripleGram_sub_one (firstVec secondVec thirdVec : Fi
   ring
 
 /-- **A WEAK DOMINATOR HAS A NONNEGATIVE GAP DETERMINANT.** -/
-theorem tripleGapDet_nonneg_of_dominates (D : WeightedDesign m 3) (x y z : Fin m)
+theorem tripleGapDet_nonneg_of_dominates_triple (D : WeightedDesign m 3) (x y z : Fin m)
     (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
     (hdom : Dominates D ({x, y, z} : Finset (Fin m))) :
     0 ≤ tripleGapDet (D.atom x) (D.atom y) (D.atom z) := by
@@ -626,7 +626,7 @@ theorem marginal_relation_of_dominates (D : WeightedDesign m 3) (x y z : Fin m)
         + (D.weight y * D.weight z * shareOf D x + D.weight x * D.weight z * shareOf D y
           + D.weight x * D.weight y * shareOf D z) := by
   have hlaw := weightProd_mul_tripleGapDet_eq_marginal D x y z
-  have hdet := tripleGapDet_nonneg_of_dominates D x y z hxy hxz hyz hdom
+  have hdet := tripleGapDet_nonneg_of_dominates_triple D x y z hxy hxz hyz hdom
   have hprod : 0 < D.weight x * D.weight y * D.weight z :=
     mul_pos (mul_pos (D.weight_pos x) (D.weight_pos y)) (D.weight_pos z)
   nlinarith [hlaw, hdet, hprod]

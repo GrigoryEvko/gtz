@@ -1,0 +1,188 @@
+LANE: the twenty volumes as a determinantal measure
+Module: Gtz/Wave/TwentyVolumeMarginals.lean  (46 theorems, 3 definitions, ~700 lines)
+All 46 pins: [propext, Classical.choice, Quot.sound].
+
+================================================================================
+WHAT IS PROVED
+
+  shareOf D c        = t_c l_c                     the point mass   (= P_cc)
+  pairVolume D p q   = t_p t_q crossNormSq(p,q)    the pair mass    (= det P[{p,q}])
+  selectionVolume    = t_a t_b t_c [abc]^2         the triple mass  (= det P[T,T])
+
+  V1  sum_selectionVolume_eq_pairVolume       sum_r nu_{pqr} = delta_pq   [row law, restated]
+  V2  sum_pairVolume_eq_two_mul_shareOf       sum_q delta_pq = 2 s_p
+      sum_sum_selectionVolume_eq_two_mul_shareOf   THE ONE-POINT MARGINAL, new.
+      At (6,3): the ten triples through a label total that label's share.
+      Two landed row laws deep: sum_weight_mul_sq_tripleBracket_crossNormSq then
+      sum_weight_mul_crossNormSq.
+
+  V3  sum_sum_pairVolume : sum_p sum_q delta_pq = 2k at EVERY (m,3) design.
+      sum_fifteen_pairVolume_sixThree   : the fifteen pair masses total 3.
+      sum_fifteen_pairCapSlack_sixThree : the fifteen cap slacks total 3.
+      exists_pairVolume_le_one_fifth_sixThree   : some pair has delta <= 1/5.
+      exists_pairCapSlack_le_one_fifth_sixThree : some pair has delta' <= 1/5.
+      SHARP, both at once.  See the witness below.
+      The pair total is the design-side reading of tr(P^2) = tr(P).
+
+  V4  pairCapSlack_nonneg_of_ne : the pairing cap at EVERY size, with NO dual
+      design and no size restriction.  The landed pairCapSlack_nonneg' is (6,3)
+      only and goes through the Naimark dual and four complementary volumes.
+      Proof: the cap slack IS det of the pair's weighted complement, which is PSD.
+
+  V5  THE LIGHT-AND-HEAVY DICHOTOMY.
+      pairVolume_pos_of_one_lt_shareOf_sum   s_p + s_q > 1  =>  not parallel
+      pairCapSlack_pos_of_shareOf_sum_lt_one s_p + s_q < 1  =>  complement not coplanar
+      The fifteen share sums average exactly one, so every (6,3) design has a pair
+      of each kind (exists_shareOf_sum_le_one_sixThree and its mirror).  The
+      hinge's target is confined to the light half of the pair list and its dual
+      target to the heavy half.
+
+  V6  hadamard_sq_tripleBracket : [abc]^2 <= l_a l_b l_c with NO hypothesis.
+      The landed sq_tripleBracket_le_leverage_prod needs two positive pair minors
+      and three strict leverages; negative association needs the free form.
+      selectionVolume_le_pairVolume_mul_shareOf : nu_T <= delta_pq s_r
+      selectionVolume_le_shareOf_prod           : nu_T <= s_a s_b s_c
+      (the prior lane MEASURED this 800/800 and did not prove it)
+      one_le_sum_twenty_shareOf_prod_sixThree   : e_3(s) >= 1.
+
+  V7  weightProd_mul_tripleGapDet_eq_marginal   THE TIE IN VOLUME CURRENCY.
+        t_a t_b t_c D_abc = nu_abc - (t_c d_ab + t_b d_ac + t_a d_bc)
+                          + (t_b t_c s_a + t_a t_c s_b + t_a t_b s_c) - t_a t_b t_c
+      With V1 and V2 the whole right side is a polynomial in the twenty volumes
+      and the six weights.
+      marginal_tie_equality_of_isTie_sixThree : at a tie the relation CLOSES.
+
+  V8  sixThree_volume_generating : det(sum_c z_c t_c g_c g_c^T) = sum_T z^T nu_T,
+      one line from the landed det_sixAtomCombo.  In the chart the left side is
+      det(1 - P + P diag z), so this IS the generating polynomial of the DPP.
+      posDef_scaledAtomSum + sixThree_volume_generating_pos give its positivity
+      on the positive orthant, from Parseval alone.
+
+================================================================================
+THE 1/5 WITNESS, EXACT
+
+Let C be the symmetric Paley conference matrix of order six, C = C^T, zero
+diagonal, entries +-1 off it, C^2 = 5I.  Put P = (I + C/sqrt 5)/2.  Then P^2 = P
+to 5.6e-17, trace P = 3, every diagonal entry is 1/2 and every squared
+off-diagonal entry is 1/20.  Hence all fifteen delta and all fifteen delta' equal
+1/5 EXACTLY and both totals are 3.  This is the icosahedron frame: six equiangular
+lines in R^3 with cos^2 = 1/5.  It is NOT a tie -- at uniform weight
+max_T lambda_min(P[T,T] - diag t_T) = +0.10973, and in atom coordinates
+lambda_min(S_T - 1) = +0.658 at the triples with positive three-cycle.
+
+So 1/5 is attained and cannot be improved, and the pair carrying it is as far
+from parallel as a (6,3) design allows.
+
+================================================================================
+JOB C -- THE MEASUREMENT, AND ITS NEGATIVE ANSWER
+
+CHART.  Do the search in M = P - diag(t), NOT in atom coordinates.  A triple T
+dominates exactly when M[T,T] is PSD, because S_T >= I iff W W^T >= I with
+W = diag(1/sqrt t_T) V_T iff P[T,T] >= diag(t_T).  Every entry of M is O(1) and
+no weight is ever inverted.  A sibling lane found that computing
+lambda_min(S_T - 1) directly MANUFACTURES ties: at weights near 1e-11 the
+roundoff is 4e-6, larger than the reported gap.  The M chart is immune.
+
+    mu := min over the fifteen pairs of det P[{p,q}]   -- a function of P ALONE
+    F  := max over the twenty triples of lambda_min(M[T,T])
+    design is an exact TIE  <=>  F = 0
+    THE HINGE AT (6,3) IS EXACTLY:  F = 0  implies  mu = 0.
+
+MEASURED (scratchpad/tv-search/curve.c, C + OpenMP, 190 threads, Nelder-Mead on
+the 18 frame entries plus 6 weight logits, rising penalty, 512-768 starts per
+target, weight floor tau).  For each target the table gives the smallest |F|
+reachable subject to mu >= target.
+
+  tau = 0.02        tau = 0.002       tau = 0.0002
+  target   |F|      target   |F|      target   |F|
+  0        3.0e-16  0        2.7e-16  0        6.4e-16
+  1e-10    1.7e-07  1e-10    7.7e-08  1e-10    1.7e-07
+  1e-8     1.6e-06  1e-8     1.1e-06  1e-8     1.3e-06
+  1e-6     1.3e-05  1e-6     5.5e-06  1e-6     3.8e-06
+  1e-4     1.4e-04  1e-4     2.4e-05  1e-4     3.9e-06
+  1e-3     2.5e-04  1e-3     3.6e-05  1e-3     3.5e-06
+  1e-2     1.0e-04  1e-2     5.4e-05  1e-2     7.0e-06
+  1e-1     3.9e-04  1e-1     5.2e-05  1e-1     5.3e-06
+  1.7e-1   2.3e-04  1.7e-1   7.3e-06  1.7e-1   2.3e-06
+
+At mu = 0 the search lands on an exact tie at machine precision at every floor,
+with THIRTEEN tight triples -- the split-diamond signature.  For mu > 0 it never
+does.  At tau = 0.02 the numbers over four decades look like |F| = 0.015 sqrt(mu),
+constant to 30 percent.
+
+THAT LAW IS AN ARTEFACT.  Drop the weight floor by 100x and the whole large-mu
+end of the curve drops by 20x to 50x with it, and every optimum sits with one or
+two weights pinned EXACTLY at the floor.  Example at tau = 2e-4, target 0.17,
+|F| = 8.4e-7, mu = 0.179:
+
+  t = 0.2355 0.2527 0.00022 0.00021 0.2573 0.2542
+  s = 0.4806 0.4972 0.5021  0.5042  0.5084 0.5075
+  l = 2.04   1.97   2320    2370    1.98   2.00
+
+Two weights at the floor with leverage 1/tau, all six shares near 1/2.  The
+degeneration is t_c -> 0 with t_c l_c -> 1/2: the atom does NOT drop out, it
+becomes an infinitely heavy direction of vanishing weight.
+
+WHICH CONSTRAINT DOES THE WORK.  Neither of the two the brief named.
+  * NOT realisability.  The sibling lane built the matroid pattern -- four
+    coplanar plus two generic, simple, rank three, delta'_{56} = 0, mu = 0.054 --
+    and it IS a design for every positive t on the simplex.  Realisability is free.
+  * NOT the tie condition on its own.  It is satisfiable in the limit.
+  * IT IS THE STRICT POSITIVITY OF THE WEIGHTS.  Every near-counterexample lives
+    on the boundary of the weight simplex and the achievable |F| tracks the floor.
+
+CONSEQUENCE, and it is a NO-GO.  No certificate for the hinge with an ABSOLUTE
+constant can exist.  The margin must be proportional to the smallest weight,
+which is the campaign's named universal obstruction measured once more, this time
+from the hinge side.  In particular exists_pairVolume_le_one_fifth_sixThree is
+the best absolute-constant statement of its kind -- SHARP at 1/5 -- and it can
+never reach 0, so it cannot close the hinge by itself.  Do not spend a cycle
+trying to push the constant 1/5 down by a global argument.
+
+WHY the boundary is where the counterexample lives: the hinge is FALSE at (5,3),
+and a (6,3) design with a degenerating weight approaches the (5,3) cell.  The
+diamond is sitting on that boundary.
+
+================================================================================
+IDENTITY CHECKS (scratchpad/tv-search/tie63.c mode 3, 20000 random charts)
+
+  max |sum over the fifteen pairs of delta  - 3| = 2.2e-15
+  max |sum over the fifteen pairs of delta' - 3| = 3.1e-15
+  max |sum over the twenty triples of nu    - 1| = 1.3e-15
+
+================================================================================
+CORRECTIONS TO THE CAMPAIGN RECORD
+
+  * "twelve of the twenty triples are simultaneously tight at a split" is true for
+    ONE of the five splits only.  The count is 8 + n_e with n_e the number of the
+    diamond's eight tight triples containing the split atom: n_1 = 4 and
+    n_2 = n_3 = n_4 = n_5 = 5, so the counts are 12, 13, 13, 13, 13.  Exact
+    rational arithmetic.  My own optimiser lands on 13 tight triples.
+
+  * Gtz.sum_pairs_crossNormSq_eq_three, named in the header of
+    Gtz/Wave/ComplementVolumeRowLaw.lean as NOT claimed, is now landed as
+    Gtz.sum_fifteen_pairVolume_sixThree, in weighted form and at every size.
+
+================================================================================
+COLLISION FOUND AND CLEARED
+
+  Gtz.tripleGapDet_nonneg_of_dominates already exists at
+  Gtz/Wave/CorankStratumCollapse.lean:142 and is PINNED at Gtz/Audit.lean:39444,
+  both committed on master before this lane started.  My duplicate would have made
+  that pin ambiguous.  Renamed mine to tripleGapDet_nonneg_of_dominates_triple.
+  Scan of the final tree: 37807 declarations in 1451 files, 24 duplicate names in
+  total, exactly one touching this module, now cleared.
+
+================================================================================
+DO NOT REVISIT
+
+  * Linear inequalities on the twenty volumes.  A prior lane ran the LP: feasible,
+    max min-slack 0.2000 -- which is exactly the 1/5 this module now proves, and
+    the LP optimum is the icosahedron chart.  The two results agree and neither
+    can obstruct the hinge.
+  * Any invariant factoring through the spectrum of N = sum_c g_c g_c^T.  The
+    subset-determinant layer profile is a function of those eigenvalues alone and
+    cannot separate the two open-stratum hypotheses.  The twenty volumes do NOT
+    factor through that spectrum -- they are individual principal minors of P --
+    which is why this chart is the live one.
+  * Chasing an absolute constant for the hinge.  See the no-go above.
