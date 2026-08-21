@@ -1371,6 +1371,8 @@ import Gtz.Wave.PairNormalParseval
 import Gtz.Wave.UnitAtomFunnel
 import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.CornerGatewayBudget
+import Gtz.Wave.BranchTwoDeterminantSum
+import Gtz.Wave.CornerDescentRank
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.CornerEmptinessSlack

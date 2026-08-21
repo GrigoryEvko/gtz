@@ -233,7 +233,7 @@ theorem branchOne_refinedBudget_nonneg (D : WeightedDesign m 3)
               + (leverageOf (D.atom d3) - 1)) := by
   have hkey := weightedTriple_pairMinor_gapForm (D.weight d1) (D.weight d2)
     (D.weight d3) (D.atom d1) (D.atom d2) (D.atom d3)
-  have hdet := det_complementTriple_nonneg D h12 h13 h23
+  have hdet := det_oneSubWeightedTriple_nonneg D h12 h13 h23
   have hw1 := D.weight_pos d1
   have hw2 := D.weight_pos d2
   have hw3 := D.weight_pos d3

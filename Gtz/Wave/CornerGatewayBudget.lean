@@ -29,7 +29,7 @@ At a design the four right-hand terms acquire meaning.  Parseval makes `1 - T`
 the weight of the complementary atoms and `S - 1` one less the complement's
 excess share, and it makes the last term the determinant of the complementary
 moment, which is positive semidefinite and so contributes nothing negative
-(`Gtz.det_complementTriple_nonneg`).  The bracket term is a square.
+(`Gtz.det_oneSubWeightedTriple_nonneg`).  The bracket term is a square.
 
 ## 2. The producers
 
@@ -235,7 +235,7 @@ theorem complement_triple_posSemidef (D : WeightedDesign m 3) {d1 d2 d3 : Fin m}
     linarith
 
 /-- The determinant of the complementary moment of a triple is not negative. -/
-theorem det_complementTriple_nonneg (D : WeightedDesign m 3) {d1 d2 d3 : Fin m}
+theorem det_oneSubWeightedTriple_nonneg (D : WeightedDesign m 3) {d1 d2 d3 : Fin m}
     (h12 : d1 ≠ d2) (h13 : d1 ≠ d3) (h23 : d2 ≠ d3) :
     (0 : ℝ) ≤ ((1 : Matrix (Fin 3) (Fin 3) ℝ)
         - D.weight d1 • atomMatrix (D.atom d1)
@@ -277,7 +277,7 @@ theorem exists_pairMinor_pos_of_bracketBudget (D : WeightedDesign m 3)
   have hw3 := D.weight_pos d3
   have hkey := weightedTriple_pairMinor_identity (D.weight d1) (D.weight d2)
     (D.weight d3) (D.atom d1) (D.atom d2) (D.atom d3)
-  have hdet := det_complementTriple_nonneg D h12 h13 h23
+  have hdet := det_oneSubWeightedTriple_nonneg D h12 h13 h23
   have c12 : D.weight d1 * D.weight d2 * (1 + pairGapMinor (D.atom d1) (D.atom d2))
       ≤ D.weight d1 * D.weight d2 := by nlinarith [mul_pos hw1 hw2]
   have c13 : D.weight d1 * D.weight d3 * (1 + pairGapMinor (D.atom d1) (D.atom d3))
