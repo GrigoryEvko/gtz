@@ -6603,3 +6603,28 @@ import Gtz.Wave.NaimarkDualExistence
 -- gap determinant sum, the bracket law removes it from the primal determinant at
 -- six points, and the heavy atom count rises from rank minus one to rank
 import Gtz.Wave.NaimarkCycleFree
+-- The three elementary symmetric functions of a triple's weighted atom sum are
+-- the triple's three shares, its three weighted squared areas and its weighted
+-- squared volume -- Cauchy-Binet at the three compounds, written out.  Parseval
+-- makes `1 - W_C` the outside atoms' weighted sum, hence positive semidefinite,
+-- so the determinant expansion is a FLOOR: `A_C + V_C <= 1 + B_C` at every
+-- (m,3) design, the triple sibling of the pair floor one dimension up.  At (6,3)
+-- the complement of a triple is a TRIPLE, so the expansion becomes the
+-- COMPLEMENTARY VOLUME LAW `V_C + V_{Ccompl} = 1 - A_C + B_C`: ten identities,
+-- one for each complementary pair.  Two triples of a (6,3) design are degenerate
+-- TOGETHER exactly when `A_C = 1 + B_C`, and a weak dominator's weight product
+-- is capped by its own deficit.  At (5,3) the complement is a pair and singular,
+-- so the law loses its second volume and determines every one of the ten volumes
+-- from pair data with the two outside atoms cancelled.
+import Gtz.Wave.TripleInvariantChart
+-- The twenty weighted squared volumes of a (6,3) design total one, so one of
+-- them is at least a twentieth, while three weights never multiply to more than
+-- a twenty-seventh.  Dividing gives a triple with squared volume at least 27/20,
+-- and 27/20 exceeds one exactly because C(6,3) = 20 is less than 27.  The same
+-- reading gives 27/10 at (5,3) and 27/35 at (7,3), where it falls below one and
+-- goes silent -- the first instrument of the campaign whose size threshold is
+-- m <= 6 on the nose.  A weak dominator has all three gap invariants
+-- nonnegative, so the floor says every (6,3) design carries a triple whose three
+-- gap invariants have strictly positive SUM: the obstruction is their split, not
+-- their total.
+import Gtz.Wave.VolumeFloorSizeSix

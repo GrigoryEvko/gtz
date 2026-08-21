@@ -1445,6 +1445,11 @@ import Gtz.Wave.FourAtomRigidity
 import Gtz.Wave.BranchBPairCap
 import Gtz.Wave.PairBudgetAggregate
 import Gtz.Wave.PairMinorSumBudget
+import Gtz.Wave.FunnelSpectralPinch
+import Gtz.Wave.ComplementPairDeterminantLaw
+import Gtz.Wave.TripleVolumeRowLaw
+import Gtz.Wave.TripleInvariantChart
+import Gtz.Wave.VolumeFloorSizeSix
 import Gtz.Wave.NaimarkDualDesign
 import Gtz.Wave.NaimarkDualExistence
 import Gtz.Wave.NaimarkCycleFree
@@ -38655,10 +38660,8 @@ run_cmd do
 -- lane's work: the pair complement, its determinant in closed form, the share
 -- caps and the volume laws at three sizes
 #print axioms Gtz.scaledAtom_reading
-#print axioms Gtz.sum_weight_mul_sq_reading
 #print axioms Gtz.dotProduct_weightedSubsum_mulVec
 #print axioms Gtz.posSemidef_weightedSubsum
-#print axioms Gtz.isHermitian_subsetSum_sub_one
 #print axioms Gtz.det_pairAtomCombo
 #print axioms Gtz.det_tripleAtomCombo
 #print axioms Gtz.det_fourAtomCombo
@@ -38693,7 +38696,8 @@ run_cmd do
 -- volume vocabulary, Cauchy-Binet at five and six atoms, the volume budget at
 -- (5,3) and (6,3), the volume floor of a weak dominator and the wedge ceiling
 #print axioms Gtz.bracketNormal_dotProduct_self
-#print axioms Gtz.sum_weight_mul_sq_tripleBracket
+#print axioms Gtz.crossNormSq_eq_pairBracketSq
+#print axioms Gtz.sum_weight_mul_sq_tripleBracket_crossNormSq
 #print axioms Gtz.crossNormSq_eq_zero_iff_forall_sq_tripleBracket_eq_zero
 #print axioms Gtz.sq_tripleBracket_eq_zero_of_crossNormSq_eq_zero
 #print axioms Gtz.det_fiveAtomCombo
@@ -38795,3 +38799,24 @@ run_cmd do
 #print axioms Gtz.sixThree_candidate_counts
 #print axioms Gtz.dominates_subset_heavyLeverage
 #print axioms Gtz.cappedTriple_subset_cappedLeverage
+
+-- Gtz/Wave/TripleInvariantChart.lean -- the three invariants of a triple's
+-- weighted atom sum, the triple floor, the complementary volume law at (6,3) and
+-- the volume determination at (5,3)
+#print axioms Gtz.trace_tripleAtomCombo
+#print axioms Gtz.secondMinorSum_tripleAtomCombo
+#print axioms Gtz.det_one_sub_eq
+#print axioms Gtz.det_one_sub_tripleAtomCombo
+#print axioms Gtz.weightedComplement_triple_eq
+#print axioms Gtz.det_weightedComplement_triple
+#print axioms Gtz.triple_share_add_volume_le_one_add_areaSum
+#print axioms Gtz.triple_deficit_mem_unit_interval
+#print axioms Gtz.weighted_sq_tripleBracket_le_one
+#print axioms Gtz.complementary_triple_volume_law_sixThree
+#print axioms Gtz.both_degenerate_iff_share_eq_one_add_areaSum_sixThree
+#print axioms Gtz.weight_prod_le_one_sub_share_add_areaSum_of_dominates
+#print axioms Gtz.triple_volume_eq_of_size_five
+#print axioms Gtz.degenerate_iff_share_eq_one_add_areaSum_fiveThree
+#print axioms Gtz.weight_prod_le_deficit_of_dominates_fiveThree
+#print axioms Gtz.share_eq_one_add_areaSum_of_parallel_fiveThree
+#print axioms Gtz.complement_volume_eq_deficit_of_parallel_sixThree
