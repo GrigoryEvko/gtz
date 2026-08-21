@@ -1383,6 +1383,7 @@ import Gtz.Wave.FunnelPairMinorHinge
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.CornerEmptinessSlack
+import Gtz.Wave.GatewayCertificateObstruction
 import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoFrameKill
 import Gtz.Wave.KTwoFrameChart
@@ -37909,3 +37910,30 @@ run_cmd do
 #print axioms Gtz.subsetSum_posDef_of_weighted_repay
 #print axioms Gtz.weighted_sum_nonpos_of_no_repay
 #print axioms Gtz.repayEntry_det_bracket
+
+-- Gtz/Wave/GatewayCertificateObstruction.lean -- the gateway target admits no
+-- certificate of Handelman type at any degree: a two-parameter family holds the
+-- target at equality with a strictly positive weight slack, and a second
+-- witness kills every monomial that family permits
+#print axioms Gtz.certTerm_nonneg
+#print axioms Gtz.certValue_eq_zero_of_obstruction
+#print axioms Gtz.gatewayFamily_detComplement_zero
+#print axioms Gtz.gatewayFamily_detOutside_zero
+#print axioms Gtz.gatewayFamily_excess_sum
+#print axioms Gtz.gatewayFamily_slack
+#print axioms Gtz.gatewayFamily_pairSlack_first
+#print axioms Gtz.gatewayFamily_pairSlack_second
+#print axioms Gtz.gatewayFamily_pairSlack_third
+#print axioms Gtz.gatewayFamily_pairSlack_pos
+#print axioms Gtz.gatewayFamily_no_slack_bound
+#print axioms Gtz.gatewayW1_detComplement
+#print axioms Gtz.gatewayW1_detOutside
+#print axioms Gtz.gatewayW2_detComplement
+#print axioms Gtz.gatewayW2_detOutside
+#print axioms Gtz.gatewayW1_target
+#print axioms Gtz.gatewayW2_target
+#print axioms Gtz.gatewayGenW1_nonneg
+#print axioms Gtz.gatewayGenW2_nonneg
+#print axioms Gtz.gatewayGenW1_pos_of_not_mem
+#print axioms Gtz.gatewayGenW2_zero_of_mem
+#print axioms Gtz.gateway_no_handelman_certificate
