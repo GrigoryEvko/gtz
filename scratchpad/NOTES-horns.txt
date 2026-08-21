@@ -399,3 +399,60 @@ producers above discharge the second half the moment the readings are bounded.
 What is missing is a bound on the two axis readings (a.g_e), (b.g_e) of an inside
 atom against an admissible outside pair.  DO NOT go back to the sum law for it:
 corner_pairSum_pos_lam_threshold proves that route cannot close.
+
+F43-10.  ROUND 2 -- THE AXIS ELIMINATION AND THE SLACK TABLE.
+
+NEW MODULE Gtz/Wave/CornerAxisElimination.lean.  The coordinator's relayed
+identity from the opposite-horn lane is CORRECT and I re-derived it from my own
+landed budget rather than importing it:
+
+  corner_reading_sq_sum      : sum_e (d.g_e)^2 = l_d + lam*(d.u)^2
+  corner_mixedPairMinor_sum  : sum_e pairGapMinor g_e d
+                                 = (lam-1)*l_d - lam*(d.u)^2 - lam
+  corner_axis_reading_sq_eq  : solve the second for lam*(d.u)^2
+  *** corner_reading_sq_sum_axisFree :
+        sum_e (d.g_e)^2 = lam*(l_d - 1) - sum_e pairGapMinor g_e d ***
+
+THE AXIS IS GONE.  Composed with my bracket-free split, a corner statement about
+a one-inside triple now carries NEITHER the axis NOR the bracket.  Also landed:
+corner_bracketNormal_sq_sum (the same law read at the pair normal, which is the
+other lane's bracket axis elimination in my currency),
+corner_exists_tripleGapDet_pos_axisFree (the producer in that alphabet), and
+corner_inside_crossNormSq_le (the landed K1 wedge ceiling spent at a corner --
+free, no tie).
+
+F43-11.  *** THE SLACK TABLE (f43slack.jl, construction mirrored bit for bit
+from coh24.jl; 250,834 failing-branch points, 940,909 non-dominating cases,
+16 threads, under 1 GB). ***  The coordinator asked me to drop any generator
+carrying a full unit of slack.  ANSWER: I HAVE NONE TO DROP.  Every one binds.
+
+  my leverage-excess producer  (l_e-1)D - T(r1^2+r2^2)   max = -1.60e-04
+  the exact split              tripleGapDet              max = -5.80e-06
+  the axis form                paf                       max = -5.32e-05
+  trace-bound tightness  (-paf)/(T(r1^2+r2^2))  in [0.000000, 0.999998]
+  wedge ceiling fires as a free refusal                  79.8916% of cases
+
+All three of my quantities approach zero from BELOW on the non-dominating side,
+which is exactly correctness plus tightness: they never fire wrongly and they
+come arbitrarily close to firing.  Contrast the cells lane's dead generator at
+0.985 slack.
+
+  *** MY PRODUCER CATCHES 88.5761% OF THE FAILING BRANCH ***
+  SOME (admissible pair, inside atom) truly dominates    100.0000%  (control)
+
+The failing branch is the 8.065% residue the dual-frame certificate misses, so
+the leverage-excess producer alone takes the horn's uncovered fraction from
+8.065% down to about 0.92%.  AND THE REMAINING GAP IS EXACTLY THE TRACE BOUND:
+tightness reaches 0.999998 but also falls to 0, and the exact split's max is
+-5.8e-06, so replacing the trace bound by the exact axis form closes the rest.
+My landed subsetSum_posDef_of_admissible_of_repay ALREADY uses the exact form.
+
+  CONCLUSION.  The horn now reduces to exactly two existence facts, both
+  measured at 100%: (i) some outside pair of a corner is admissible, and
+  (ii) some inside atom repays it.  The exact producer discharges the branch
+  the moment both are theorems.  Nothing else is missing.
+
+F43-12.  MY SUM-LAW THRESHOLD THEOREM, CHECKED NUMERICALLY.  Over 497,087
+admissible pairs: ZERO violations of  (lam-2)*D > T  whenever the three-triple
+total is positive, with minimum margin +6.73e-02.  corner_pairSum_pos_lam_threshold
+is confirmed on the branch it describes.

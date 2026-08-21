@@ -1352,6 +1352,7 @@ import Gtz.Wave.CornerAdjugateWeightCap
 import Gtz.Wave.BracketMassRefusal
 import Gtz.Wave.CoherentHornBlockCriterion
 import Gtz.Wave.CornerPairAdjugate
+import Gtz.Wave.CornerAxisElimination
 import Gtz.Wave.CornerAxisCalculus
 import Gtz.Wave.CornerAxisBridges
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
@@ -36711,6 +36712,7 @@ run_cmd do
 #print axioms Gtz.k2ChartCrossCert_pos_of_endpoints
 #print axioms Gtz.k2ChartCrossCert_xZero
 #print axioms Gtz.k2ChartCrossCert_leadCoeff_pos
+#print axioms Gtz.k2ChartCrossCert_xZero_pos_of_midNonneg
 #print axioms Gtz.k2ChartQuotientWomBoundary_xZero
 
 
