@@ -1405,3 +1405,24 @@ F61-7. WHAT I DID NOT DO.
   branch (F61-5), so the hypothesis could not be instantiated numerically.
   The joint itself remains open: F61-2 says WHERE the pair is, not that its
   wedge vanishes.
+
+F61-8. ITEM 2 (second base design) ATTEMPTED AND **NOT** DELIVERED -- HARNESS BUG.
+  frozen2.jl reported "all 15 wedges frozen, smallest |d wedge| = 0.0" on all
+  four base designs.  THAT IS A TOOL ARTIFACT, NOT A RESULT.  Two bugs found:
+    (a) the first version re-whitened after every perturbation, which projects
+        the displacement out, so every numeric gradient is identically zero;
+    (b) after fixing (a) the output was UNCHANGED at exactly 0.0, which is the
+        tell -- a genuine measurement does not survive a real change to the
+        differentiation scheme untouched.
+  DIRECT DIAGNOSTIC (diag.jl) settles it: at the split diamond the raw central
+  difference of wedge(2,3) is nonzero componentwise (6.85, 1.77, 6.85, 8.94)
+  with full gradient norm 16.1245.  So the wedges are NOT all frozen and the
+  grad closure in frozen2.jl is reading a stale G.
+  CONFIRMED SOUND from the same run, and worth keeping:
+    wedge(1,6) = 0.0 exactly at the split diamond (the parallel pair),
+    wedge(2,3) = 10.0.
+  STATUS: the coordinator's "exactly one frozen wedge, always the parallel
+  pair" is NEITHER confirmed NOR refuted by me.  Do not cite frozen2.jl.
+  Rule reapplied: when a numerical result implies something the substrate
+  forbids -- here, that a generic wedge has zero differential -- suspect the
+  tool.  Third harness bug caught in this lane by that rule.
