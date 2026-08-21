@@ -1326,6 +1326,7 @@ import Gtz.Wave.CellHDowndatePromotion
 import Gtz.Wave.CellHTwoStarProducer
 import Gtz.Wave.ZeroAxisStarLedger
 import Gtz.Wave.OutsideFrameMomentLadder
+import Gtz.Wave.CornerEraseDowndate
 import Gtz.Wave.InsertionDowndateLedger
 import Gtz.Wave.CellBTiePackage
 import Gtz.Wave.BothLightChartReduction
@@ -37868,6 +37869,22 @@ run_cmd do
 #print axioms Gtz.oneAxisZeroHeavyInsideResidual_of_starRefusalSystem
 #print axioms Gtz.oneAxisZeroBothLightResidual_of_starRefusalSystem
 #print axioms Gtz.cellH_starRefusalSystem_budget
+
+-- Gtz/Wave/CornerEraseDowndate.lean -- the nine one-inside refusals of a corner
+-- as three erased gaps downdated by two inside atoms
+#print axioms Gtz.corner_erase_partition
+#print axioms Gtz.corner_erase_disjoint
+#print axioms Gtz.corner_oneInside_gap_eq_erase_downdate
+#print axioms Gtz.corner_erase_gap_posSemidef
+#print axioms Gtz.corner_erase_gap_posDef_of_det_ne_zero
+#print axioms Gtz.corner_erase_gapDet_nonneg
+#print axioms Gtz.cornerTriple_erase_eq_pair
+#print axioms Gtz.corner_yTriple_gap_eq_depthTwo
+#print axioms Gtz.corner_yTriple_not_posDef_iff_readings
+#print axioms Gtz.corner_yTriple_posDef_of_readings
+#print axioms Gtz.corner_yTriple_second_reading_lt_one
+#print axioms Gtz.zeroAxis_downdated_pair_gram
+#print axioms Gtz.isTie_erase_downdate_not_posDef
 
 -- Gtz/Wave/BranchTwoDeterminantSum.lean -- the two determinant conditions of E1
 -- add to a linear bound; the centre is ruled out by the second alone
