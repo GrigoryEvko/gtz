@@ -395,4 +395,123 @@ theorem corner_pairSum_nonpos_of_lam_le {a b : Fin 3 → ℝ}
   exact absurd hthr (not_le.mpr
     (corner_pairSum_pos_lam_threshold gx gy gz u hlam hcorner hu ha hmin hcon))
 
+
+/-! ## 7. A producer with no adjugate and no bracket
+
+The split of `Gtz.tripleGapDet_eq_pairAxisForm` prices the third atom by exactly
+two things: its LEVERAGE EXCESS `l_c - 1`, paid at the pair minor, against the
+COST of its two readings, paid at the axis form.  On an admissible pair the
+second invariant of the axis form's negative is the pair minor again, so the cost
+is bounded by the pair's trace times the squared readings.  That turns the whole
+criterion into leverages and readings, with no adjugate, no bracket and no
+matrix. -/
+
+/-- **THE COST OF THE READINGS IS BOUNDED BY THE PAIR TRACE.**  On an admissible
+pair the axis form never falls below the pair's trace against the squared
+readings.  The proof is one square identity, since the residue's own
+discriminant is the pair minor. -/
+theorem pairAxisForm_ge_neg_trace_mul {a b : Fin 3 → ℝ} (ha : 1 < leverageOf a)
+    (hmin : 0 < pairGapMinor a b) (al be : ℝ) :
+    -((leverageOf a + leverageOf b - 2) * (al ^ 2 + be ^ 2))
+      ≤ pairAxisForm a b al be := by
+  have hapos : 0 < leverageOf a - 1 := by linarith
+  have key : (leverageOf a - 1)
+      * ((leverageOf a + leverageOf b - 2) * (al ^ 2 + be ^ 2)
+          + pairAxisForm a b al be)
+      = ((leverageOf a - 1) * al + (a ⬝ᵥ b) * be) ^ 2
+        + pairGapMinor a b * be ^ 2 := by
+    simp only [pairAxisForm, pairGapMinor]; ring
+  have hrhs : 0 ≤ ((leverageOf a - 1) * al + (a ⬝ᵥ b) * be) ^ 2
+      + pairGapMinor a b * be ^ 2 := by
+    have := mul_nonneg (le_of_lt hmin) (sq_nonneg be)
+    nlinarith [sq_nonneg ((leverageOf a - 1) * al + (a ⬝ᵥ b) * be)]
+  nlinarith [key, hrhs, hapos]
+
+/-- **THE LEVERAGE-EXCESS PRODUCER.**  An admissible outside pair and one atom
+whose leverage excess, priced at the pair minor, beats the pair trace against its
+two squared readings, force a positive triple gap determinant.  Leverages and
+readings only. -/
+theorem tripleGapDet_pos_of_leverageExcess {a b c : Fin 3 → ℝ}
+    (ha : 1 < leverageOf a) (hmin : 0 < pairGapMinor a b)
+    (hbeat : (leverageOf a + leverageOf b - 2) * ((a ⬝ᵥ c) ^ 2 + (b ⬝ᵥ c) ^ 2)
+      < (leverageOf c - 1) * pairGapMinor a b) :
+    0 < tripleGapDet a b c := by
+  rw [tripleGapDet_eq_pairAxisForm]
+  have hcost := pairAxisForm_ge_neg_trace_mul ha hmin (a ⬝ᵥ c) (b ⬝ᵥ c)
+  linarith
+
+/-- **THE PRODUCER AT A DESIGN, ADJUGATE-FREE AND BRACKET-FREE.**  Three
+leverages, three readings, one strict inequality, and the triple strictly
+dominates. -/
+theorem subsetSum_posDef_of_leverageExcess (D : WeightedDesign m 3)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (ha : 1 < leverageOf (D.atom x))
+    (hmin : 0 < pairGapMinor (D.atom x) (D.atom y))
+    (hbeat : (leverageOf (D.atom x) + leverageOf (D.atom y) - 2)
+        * (((D.atom x) ⬝ᵥ (D.atom z)) ^ 2 + ((D.atom y) ⬝ᵥ (D.atom z)) ^ 2)
+      < (leverageOf (D.atom z) - 1) * pairGapMinor (D.atom x) (D.atom y)) :
+    (subsetSum D ({x, y, z} : Finset (Fin m)) - 1).PosDef := by
+  rw [subsetSum_posDef_iff_pairVocabulary D x y z hxy hxz hyz]
+  exact ⟨by linarith, hmin, tripleGapDet_pos_of_leverageExcess ha hmin hbeat⟩
+
+/-! ### The corner's leverage-excess budget -/
+
+/-- **THE CORNER SPENDS EXACTLY ITS SCALE.**  The three inside atoms' leverage
+excesses total the corner scale, no more and no less.  This is the corner
+equation read at the identity form. -/
+theorem corner_leverageExcess_sum (gx gy gz u : Fin 3 → ℝ) {lam : ℝ}
+    (hcorner : atomMatrix gx + atomMatrix gy + atomMatrix gz
+      = 1 + lam • atomMatrix u)
+    (hu : leverageOf u = 1) :
+    (leverageOf gx - 1) + (leverageOf gy - 1) + (leverageOf gz - 1) = lam := by
+  have hsum := quadForm_sum_of_corner (1 : Matrix (Fin 3) (Fin 3) ℝ) gx gy gz u hcorner
+  have hlev : ∀ g : Fin 3 → ℝ, g ⬝ᵥ ((1 : Matrix (Fin 3) (Fin 3) ℝ) *ᵥ g)
+      = leverageOf g := by
+    intro g
+    rw [Matrix.one_mulVec]
+    simp only [leverageOf, dotProduct, Fin.sum_univ_three]
+    ring
+  rw [hlev, hlev, hlev, hlev] at hsum
+  rw [hu] at hsum
+  simp only [Matrix.trace_one, Fintype.card_fin] at hsum
+  push_cast at hsum
+  linarith [hsum]
+
+/-- **SOME INSIDE ATOM CARRIES A THIRD OF THE SCALE.**  Pigeonhole on the corner's
+leverage-excess budget: the largest excess is at least `lam/3`. -/
+theorem corner_exists_leverageExcess_ge_third (gx gy gz u : Fin 3 → ℝ) {lam : ℝ}
+    (hcorner : atomMatrix gx + atomMatrix gy + atomMatrix gz
+      = 1 + lam • atomMatrix u)
+    (hu : leverageOf u = 1) :
+    lam / 3 ≤ leverageOf gx - 1 ∨ lam / 3 ≤ leverageOf gy - 1
+      ∨ lam / 3 ≤ leverageOf gz - 1 := by
+  by_contra hcon
+  push Not at hcon
+  obtain ⟨h1, h2, h3⟩ := hcon
+  have hbudget := corner_leverageExcess_sum gx gy gz u hcorner hu
+  linarith
+
+/-- **THE CORNER PRODUCER.**  At a corner over an admissible outside pair, the
+atom carrying a third of the scale strictly dominates as soon as its readings
+cost less than that share.  The selection is by leverage excess alone, which the
+corner equation makes explicit. -/
+theorem corner_exists_tripleGapDet_pos_of_readings_cheap {a b : Fin 3 → ℝ}
+    (gx gy gz u : Fin 3 → ℝ) {lam : ℝ}
+    (hcorner : atomMatrix gx + atomMatrix gy + atomMatrix gz
+      = 1 + lam • atomMatrix u)
+    (hu : leverageOf u = 1) (ha : 1 < leverageOf a)
+    (hmin : 0 < pairGapMinor a b)
+    (hcheap : ∀ g : Fin 3 → ℝ,
+      (leverageOf a + leverageOf b - 2) * ((a ⬝ᵥ g) ^ 2 + (b ⬝ᵥ g) ^ 2)
+        < lam / 3 * pairGapMinor a b) :
+    0 < tripleGapDet a b gx ∨ 0 < tripleGapDet a b gy
+      ∨ 0 < tripleGapDet a b gz := by
+  rcases corner_exists_leverageExcess_ge_third gx gy gz u hcorner hu with h | h | h
+  · exact Or.inl (tripleGapDet_pos_of_leverageExcess ha hmin
+      (lt_of_lt_of_le (hcheap gx) (by nlinarith [hmin, h])))
+  · exact Or.inr (Or.inl (tripleGapDet_pos_of_leverageExcess ha hmin
+      (lt_of_lt_of_le (hcheap gy) (by nlinarith [hmin, h]))))
+  · exact Or.inr (Or.inr (tripleGapDet_pos_of_leverageExcess ha hmin
+      (lt_of_lt_of_le (hcheap gz) (by nlinarith [hmin, h]))))
+
 end Gtz

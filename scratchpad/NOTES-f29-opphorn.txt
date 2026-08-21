@@ -787,3 +787,143 @@ caps supplying shape only.  Since the complex witness satisfies all ten refusals
   f38word.jl    descent on the tie margin binned by word (the section-35 table)
   f38diag.jl    where a corner's dominating triple lives (section 33)
 All run at 32 threads with --heap-size-hint=20G; peak RSS well under 1 GB.
+
+======================================================================
+ROUND 10 (FORK 42).  THE CORNER'S AXIS CALCULUS.  Commit d1f4c99,
+Gtz/Wave/CornerAxisCalculus.lean (573 lines, 22 pins standard).
+======================================================================
+
+38. THE CORNER IS ONE EQUATION IN ONE FREE PROBE
+--------------------------------------------------
+S_C - 1 = lam*u u' read as a quadratic form is ONE equation with one free
+probe v:
+    <gx,v>^2 + <gy,v>^2 + <gz,v>^2 = <v,v> + lam*<u,v>^2      (Gtz.CornerForm)
+Spent at FOUR probes it closes the corner's whole scalar calculus, with no
+chart, no frame, no eigenvector, no inverse.  All laws verified on the exact
+13-parameter corner parametrisation (f38build.jl reused verbatim).
+
+  v = g_d          cornerForm_atom_reading       sum_e <g_e,g_d>^2
+                                                   = l_d + lam*<u,g_d>^2
+  coordinate axes  cornerForm_leverage_total     sum_e l_e = 3 + lam
+  v = g_a x g_b    cornerForm_bracket_total      THE AXIS ELIMINATION
+                     sum_e [e a b]^2 = w_ab + lam*[u a b]^2      (1.8e-12)
+  v = u x g_d      cornerForm_axisCross_total    sum_e [u g_d e]^2
+                                                   = l_d - <u,g_d>^2
+
+THE AXIS ELIMINATION IS THE LOAD-BEARING ONE.  Every axis bracket is a bracket
+total minus a wedge, so u leaves any corner statement written in brackets.  It
+also reproves the landed corner wedge law: at the inside pair (y,z) it reads
+[xyz]^2 = w_yz + lam*[u y z]^2, i.e. w_yz = 1 + e_y + e_z.
+
+39. THE THREE TOTALS AT AN OUTSIDE ATOM (all verified <= 1.4e-13)
+------------------------------------------------------------------
+  cornerForm_mixed_wedge_total        sum_e w_ed  = (2+lam) l_d - lam<u,g_d>^2
+  cornerForm_mixed_pairMinor_total    sum_e q_ed  = (lam-1) l_d - lam<u,g_d>^2
+                                                      - lam
+  cornerForm_insidePair_bracket_total sum_{i<j in C} [i j d]^2
+                                                  = (1+lam) l_d - lam<u,g_d>^2
+q = Gtz.pairGapMinor.  The middle law is the corner's cheapest admissibility
+test: ONE sign decides whether the outside atom d has an admissible partner
+inside C at all (cornerForm_exists_inadmissible_mixed / _admissible_).
+
+40. THE TWO-INSIDE DETERMINANT, EXACTLY
+-----------------------------------------
+The general ledger (a ring identity at EVERY triple of EVERY design, landed as
+tripleGapDet_eq_bracketSq_sub_wedgeSum)
+    det(gap_abc) = [abc]^2 + l_a + l_b + l_c - w_ab - w_ac - w_bc - 1
+collides with the three totals and everything cancels:
+
+    **det(gap_{x y d}) = - lam*[g_z g_d u]^2 - q_xy**      (2.1e-12)
+
+Two corollaries with no further work.
+(a) Take the outside slot to be the third inside atom.  The bracket degenerates,
+    so det(gap_C) = -q_xy, and by symmetry ALSO -q_xz and -q_yz.  THE THREE
+    INSIDE PAIR MINORS ARE EQUAL, with no positivity input at all
+    (cornerForm_insidePair_pairGapMinor_eq).
+(b) Weak domination makes det(gap_C) >= 0 and q_xy >= 0, and they are negatives
+    of each other, so ALL FOUR VANISH (measured 4.1e-14).  Then the two-inside
+    determinant is a bare -lam[g_z g_d u]^2: nonpositive with an EXPLICIT
+    equality locus -- the two-inside triple sits on the refusal boundary exactly
+    when the ERASED inside atom, the axis and the outside atom are coplanar
+    (cornerForm_twoInside_gapDet_eq_zero_iff).  This strictly sharpens the
+    landed corner_twoInside_det_nonpos, which gave the sign only.
+
+41. THE TEN FREE REFUSALS, THROUGH THE GRAPH INSTEAD OF THE DETERMINANT
+------------------------------------------------------------------------
+A zero pair minor is NOT admissible (admissibility is STRICT positivity), so at
+a corner the three inside edges leave the admissibility graph BEFORE any tie
+hypothesis is used.  Admissibility is an EDGE property and the tie trichotomy is
+about TRIANGLES, so every triple carrying two inside atoms dies by pair locality
+alone: the dominator itself and the nine two-inside triples
+(cornerForm_ten_refusals_free).  That is round 9's corner_posDef_triple_inter_le_one
+again, reached through Sylvester locality, and it SAYS WHY the count is ten:
+K6 less the inside triangle leaves exactly the ten triples a corner tie must
+still kill.  The corner's real gift to the Mantel instrument is that it deletes
+a whole triangle for free.
+
+42. WHAT I REFUTED THIS ROUND, WITH WITNESSES
+-----------------------------------------------
+(a) THE SUMMED-DETERMINANT ROUTE IS DEAD.  sum_{x in C} det(gap_{x d d'}) has a
+    closed form (verified 4.6e-12)
+      = <n, S_C n> - 3 w_dd' + lam + (1-lam)(l_d + l_d') + a_d + a_d',
+      n = g_d x g_d',  a = lam<u,g>^2
+    and it is NEGATIVE at 48722 of 49845 admissible outside pairs (min value
+    -53396, min value/scale -159).  Worse, 35868 of those 49845 pairs carry NO
+    x at all with a positive determinant.  So an admissible outside pair does
+    NOT hand you an informative dominator, and no positivity of the sum can be
+    hoped for.  close.jl.
+(b) THE e2 SELECTOR IS NOT TOTAL.  Ranking the nine informative slots by
+    e2(gap) = q_xd + q_xd' + q_dd' and taking the argmax dominates at 94.65%;
+    top two 99.40%; top three 99.9337% (4527 case-B corners).  A residual of
+    ~7e-4 at top THREE is a real stratum, not rounding.  DO NOT BUILD A
+    CERTIFICATE ON IT.  sel.jl.
+
+43. WHAT SURVIVED, AND WHERE REALNESS ACTUALLY ACTS
+-----------------------------------------------------
+(a) AT LEAST ONE OUTSIDE PAIR IS ALWAYS ADMISSIBLE.  Histogram of the number of
+    admissible outside pairs over 16920 corners: [0, 265, 289, 16366] -- the
+    zero bin is EMPTY.  Two independent adversarial descents (24 seeds x 4
+    starts x 1500 iters) put
+        min over corners of max_{d<d'} q_dd'  =  0.21395 / 0.21378 .
+    Not proved.  This is the structural gateway: if all three outside pairs were
+    inadmissible then the complement AND all nine informative triples would die
+    by pair locality, and the corner would BE a tie.
+(b) CASE B IS EXHAUSTIVE.  In 6763 case-B corners over two seeds (complement
+    fails to dominate strictly), SOME informative triple dominates every single
+    time -- 0 exceptions.  Min best-informative margin 0.0483.
+(c) A SELECTOR THAT BEATS CHANCE, ON A DIFFERENT QUESTION.  Per admissible
+    outside pair, argmax_x (q_xd + q_xd') dominates at 91.62% against a 30.64%
+    chance baseline (3008/3283).  NOTE CAREFULLY: this does NOT contradict the
+    banked "no scalar selector beats chance" of section 16 -- that negative is
+    about which slot carries the largest REALNESS MARGIN (36.1%/32.7% vs 33.3%)
+    and about fork 36's <g_e,v>^2 ordering.  This is a different functional
+    (pair minors) answering a different question (which slot DOMINATES).  It is
+    still not total: 961 of 4244 admissible outside pairs in case B carry no
+    dominating x at all.
+(d) **WHERE REALNESS ACTS, MEASURED FOR THE FIRST TIME.**  At each of 7793
+    dominating informative slots in 4449 case-B corners, push the bracket from
+    its true value to the SMALL branch -- the least the complex freedom allows --
+    and ask whether domination survives.  Control first: the two-point pinning
+    reproduces the true bracket at every slot to 6.5e-15, so the construction
+    mirrors.  Then:
+        on the SUM branch                     6480 / 7793  =  83.15 %
+        domination DESTROYED by small branch  4531 / 7793  =  58.14 %
+        domination SURVIVES small branch      3262 / 7793  =  41.86 %
+        min realness dividend 4|ab|/(1+lam)   4.70e-4
+    SO THE HORN SPLITS IN TWO.  At 58 percent of its dominating slots the kill
+    is REAL-ONLY and dies over C.  At 42 percent the kill is FIELD-BLIND and
+    survives the worst the complex freedom can do.  A closing certificate does
+    not have to spend realness everywhere -- it has to spend it on the slots
+    that need it, and this is the first measurement telling a successor which
+    those are.  realness.jl.
+
+44. SCRIPTS (scratchpad/f42, all 8 threads, --heap-size-hint=8G, RSS < 1 GB)
+-----------------------------------------------------------------------------
+  probe.jl     the four probe laws, the two-inside determinant, the inside
+               minors, the admissible-outside-pair histogram, dominator census
+  laws.jl      the three outside-atom totals, adj(S_C), and the descent on
+               max_{d<d'} q_dd'
+  close.jl     the summed-determinant closed form and its refutation
+  caseb.jl     case-B exhaustiveness and the pair-minor selector
+  sel.jl       the e2 selector and its tie-breaks
+  realness.jl  the small-branch push: where realness is load-bearing
