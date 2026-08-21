@@ -39401,6 +39401,15 @@ run_cmd do
 #print axioms Gtz.dotProduct_subsetSum_mulVec_sq
 #print axioms Gtz.corner_planeProbe_tight
 #print axioms Gtz.corner_axisProbe_total
+#print axioms Gtz.pivotRow_of_pairGapMinor_eq_zero
+#print axioms Gtz.tripleGapDet_rotate_left
+#print axioms Gtz.k1Bracket_ne_zero
+#print axioms Gtz.nullReading_eq_zero_of_pairGapMinor_eq_zero
+#print axioms Gtz.corner_inside_planeLeverage
+#print axioms Gtz.corner_inside_planeLeverage_lt_one
+#print axioms Gtz.not_planePair_dominates_of_short
+#print axioms Gtz.sum_inside_leverage_sub_one_eq_lam
+#print axioms Gtz.sum_inside_weight_mul_leverage_sub_one_le
 
 -- Gtz/Wave/SharpShareCoAtom.lean -- the sharp share computed without its
 -- whitener, identified with the co-atom reading through two orthogonal hats,
