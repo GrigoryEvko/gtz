@@ -104,19 +104,31 @@ because splits sit on the collinear boundary.
 
 F-R4X-3.  LANDED: THE HINGE IS FALSE AT SIZE rank+1, AT EVERY RANK.
 --------------------------------------------------------------------
-Gtz/Wave/BandTieTower.lean, 1030 lines, 47 theorems, every pin exactly
+Gtz/Wave/BandTieTower.lean, 1045 lines, 47 theorems, every pin exactly
 [propext, Classical.choice, Quot.sound].
 
-  Gtz.simplexTieDesign rank : WeightedDesign (rank+1) rank
+WHAT WAS ALREADY THERE.  Gtz.simplexTieDesign (Gtz/Ties/CorankOneTieExistence.lean)
+already inhabits this cell, and at EVERY weight vector rather than only the
+uniform one (Gtz.exists_isTie_of_weights, Gtz.corank_one_tie_stratum).  That
+construction runs through a Householder reflection, and NOTHING in the tree
+records whether its atoms are pairwise non-parallel.  The parallel-free half is
+what refutes the hinge, and it is the new content.  The explicit uniform member
+below carries the prefix flatSimplex, because the explicit coordinates are what
+make the parallel-free check one line per case.  The collision was caught only
+at an import depth that carries the two files together, which is why the name
+scan must be run against the WHOLE tree and not against the imports of the file
+being written.
+
+  Gtz.flatSimplexDesign rank : WeightedDesign (rank+1) rank
     atoms  g_i = p e_i + q 1  (i < rank),   g_last = 1
     with   p = sqrt(rank+1),  q = (1 - p)/rank,  weights all 1/(rank+1).
 
-  Gtz.simplex_key                       2 p q + rank q^2 + 1 = 0
-  Gtz.leverageOf_simplexTieAtom         every leverage is exactly rank
-  Gtz.simplexTieAtom_gram               the unweighted Gram is (rank+1) I
-  Gtz.simplexTieDesign_gap              every gap is rank*I - g_j g_j^T
-  Gtz.simplexTieDesign_isTie            an exact tie at every rank
-  Gtz.simplexTieDesign_not_hasParallelPair   no parallel pair at rank >= 3
+  Gtz.flatSimplex_key                   2 p q + rank q^2 + 1 = 0
+  Gtz.leverageOf_flatSimplexAtom        every leverage is exactly rank
+  Gtz.flatSimplexAtom_gram              the unweighted Gram is (rank+1) I
+  Gtz.flatSimplexDesign_gap             every gap is rank*I - g_j g_j^T
+  Gtz.flatSimplexDesign_isTie           an exact tie at every rank
+  Gtz.flatSimplexDesign_not_hasParallelPair  no parallel pair at rank >= 3
   Gtz.not_hingeHoldsAtSize_succ_rank    ¬ HingeHoldsAtSize (rank+1) rank
 
 Every rank-(rank)-subset of rank+1 labels is the complement of one label, so
@@ -221,6 +233,38 @@ Gtz.posSemidef_smul_one_sub_transpose_comm — and the Naimark dual design is
 already constructed at general rank in Gtz/Wave/NaimarkDualDesign.lean.
 
 
+F-R4X-6b.  LANDED: THE SELF-DUAL CELL IS size = 2*rank, AT EVERY RANK.
+-----------------------------------------------------------------------
+Gtz/Wave/GaleSelfDualCell.lean, 325 lines, 18 theorems, all pins clean.
+The route named under F-R4X-6 was landed in the same round.
+
+  Gtz.dominates_iff_dominates_naimarkDual_compl_of_uniform
+      at a uniform weight a rank-selection dominates the design exactly when its
+      COMPLEMENT dominates the Naimark dual, which has rank size - rank on the
+      same labels and the same weights
+  Gtz.posDef_gap_iff_posDef_gap_naimarkDual_compl_of_uniform   the strict twin
+  Gtz.isTie_naimarkDual_iff_of_uniform    the tie involution
+  Gtz.naimark_rank_eq_iff_size_eq_two_mul r = k  <->  m = 2k
+  Gtz.naimark_rank_lt_of_size_lt_two_mul  below the cell the dual rank is lower
+  Gtz.isTie_iff_isTie_naimarkDual_selfDualCell   the involution of ONE cell
+  Gtz.exists_naimarkDual_isTie_iff_of_uniform    it exists at every cell
+
+READING.  Below size 2*rank the Naimark dual has rank STRICTLY BELOW rank, so
+every uniform-weight tie question at the cell is a tie question at a lower rank.
+At size 2*rank the dual sits at the SAME cell and the descent stops.  That is
+the lower endpoint of the band axiom, at every rank.  The campaign carried the
+involution only at (6,3), where the self-dual cell and the threshold cell
+coincide because 2*3 = 3*4/2, and that coincidence is why the pattern stayed
+invisible.  Self-duality does NOT prove the hinge; it explains where the change
+of behaviour must sit, and the measurement of F-R4X-2 puts it exactly there.
+
+The proof spends four landed general-rank lemmas and adds no new analysis:
+Gtz.naimark_gram_add_coGram, Gtz.dominates_iff_naimarkGram,
+Gtz.posSemidef_smul_one_sub_transpose_comm and
+Gtz.posDef_smul_one_sub_transpose_comm.  The only new work is the uniform-weight
+readings and the complement bookkeeping.
+
+
 F-R4X-7.  PROCESS.
 -------------------
 The single-pass name scan before writing paid FOUR times in this round:
@@ -231,6 +275,14 @@ The single-pass name scan before writing paid FOUR times in this round:
 plus dotProduct_subsetSum_mulVec, which exists with a DIFFERENT statement
 (pick-based, not Finset-based) and forced a rename rather than a deletion.
 All four duplicates were deleted and the landed versions used.
+
+A FIFTH collision, simplexTieDesign / simplexTieAtom / simplexTieDesign_isTie,
+was NOT caught by the first scan, because the landed file
+Gtz/Ties/CorankOneTieExistence.lean is not in the import closure of the module
+that was being written.  It surfaced only when a later module imported both.
+RULE: run the name scan against the WHOLE tree, never against the import
+closure of the file being written.  A shadowed definition type-checks in
+isolation and breaks the umbrella.
 
 Harness: C with OpenMP at 110 threads, hand-rolled L-BFGS with analytic
 gradients, cyclic Jacobi calibrated against the closed form.  scratchpad/rankfour/
