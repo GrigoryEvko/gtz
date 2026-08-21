@@ -6628,3 +6628,9 @@ import Gtz.Wave.TripleInvariantChart
 -- gap invariants have strictly positive SUM: the obstruction is their split, not
 -- their total.
 import Gtz.Wave.VolumeFloorSizeSix
+
+-- Gtz/Wave/NaimarkSharpDesign.lean -- domination as a contraction of the dual
+-- reading, its complementation against the weighted average of the same
+-- readings, the sharp design that carries the same weights, and the (6,3) cell
+-- read as a domination of the COMPLEMENTARY triple
+import Gtz.Wave.NaimarkSharpDesign

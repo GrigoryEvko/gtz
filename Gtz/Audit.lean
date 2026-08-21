@@ -1453,6 +1453,7 @@ import Gtz.Wave.VolumeFloorSizeSix
 import Gtz.Wave.NaimarkDualDesign
 import Gtz.Wave.NaimarkDualExistence
 import Gtz.Wave.NaimarkCycleFree
+import Gtz.Wave.NaimarkSharpDesign
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -38820,3 +38821,18 @@ run_cmd do
 #print axioms Gtz.weight_prod_le_deficit_of_dominates_fiveThree
 #print axioms Gtz.share_eq_one_add_areaSum_of_parallel_fiveThree
 #print axioms Gtz.complement_volume_eq_deficit_of_parallel_sixThree
+
+-- Gtz/Wave/NaimarkSharpDesign.lean -- the dual reading criterion, the positive
+-- definite sharp target, the complementation of domination, the sharp design on
+-- the same weights and the complemented form of the (6,3) cell
+#print axioms Gtz.naimarkOmega_eq_reading
+#print axioms Gtz.naimarkCap_diag_pos
+#print axioms Gtz.naimarkCap_inv_eq
+#print axioms Gtz.naimark_dominates_iff_reading_le
+#print axioms Gtz.naimarkSharpCoeff_pos
+#print axioms Gtz.naimarkSharpTarget_eq
+#print axioms Gtz.naimarkSharpTarget_posDef
+#print axioms Gtz.naimark_dominates_iff_compl_reading
+#print axioms Gtz.exists_naimark_sharp_design
+#print axioms Gtz.sumElim_orderEmb_bijective
+#print axioms Gtz.gtzWeighted_six_three_iff_dominating_compl
