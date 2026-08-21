@@ -1,0 +1,110 @@
+COMPLEX HINGE LANE -- does the hinge hold over C?
+ANSWER: NO.  The hinge is FALSE over C, and it is false already at rank two.
+
+The hinge over C: every (6,3) complex tie has a pair with g_q = z g_p, z in C.
+A tie: some k-subset C has S_C - 1 PSD, none has S_C - 1 PD, where
+S_C = sum_{c in C} g_c g_c^*.
+
+----------------------------------------------------------------------------
+1. THE RANK-TWO PICTURE (why the field enters, exactly)
+
+Write a rank-two atom as  g g^* = (u/2)(I + n . sigma),  u = |g|^2,  n in S^2.
+Then n is the Bloch vector of the atom and
+  - Parseval  <=>  sum_c w_c = 1 and sum_c w_c n_c = 0,  w_c := t_c u_c / 2
+  - |<g_a,g_b>|^2 = u_a u_b (1 + n_a . n_b)/2
+  - det(S_ab - 1) = (u_a - 1)(u_b - 1) - |<g_a,g_b>|^2
+  - g_a parallel g_b  <=>  n_a = n_b.
+A rank-two design is unitarily equivalent to a REAL one exactly when all its
+Bloch vectors lie on one great circle (a plane through 0).  Reason: g g^* is
+real symmetric iff n_y = 0, and SU(2) conjugation is SO(3) rotation of n.
+
+THIS IS THE REAL INGREDIENT.  Over R the Bloch vectors are confined to a
+2-plane; over C they get the third dimension.  With all u_c = 2 a pair
+dominates iff n_a . n_b <= -1/2, so a tie is  min_{a<b} n_a . n_b = -1/2.
+Over R (a circle) three points pairwise at 120 degrees are forced to be the
+Mercedes frame, hence two of any four atoms coincide -- the parallel pair.
+Over C (a sphere) the same minimum is reachable with FOUR distinct directions.
+
+----------------------------------------------------------------------------
+2. EXACT (4,2) WITNESS -- the complex hinge fails at rank two
+omega = e^{2 pi i/3}
+  g1 = (sqrt(3/2), sqrt(1/2))      t1 = (sqrt3 - 1)/4
+  g2 = (sqrt(1/2), sqrt(3/2))      t2 = (sqrt3 - 1)/4
+  g3 = (1, omega)                  t3 = (3 - sqrt3)/4
+  g4 = (1, omega^2)                t4 = (3 - sqrt3)/4
+all u_c = 2.  Parseval off-diagonal is  sqrt3 t1 + (omega + omega^2) t3 = 0.
+Overlap products |<g_a,g_b>|^2:  {3,4} -> 1 ; {1,2} -> 3 ;
+the other four -> 2 - sqrt3/2.
+det(S_C - 1) = 1 - |<>|^2 :  0 at {3,4} ; -2 at {1,2} ; sqrt3/2 - 1 elsewhere.
+So {3,4} dominates, nothing dominates strictly -> TIE.
+No parallel pair: max |cos|^2 = 3/4 < 1.  Bloch matrix has RANK 3, so this is
+not unitarily equivalent to any real design.
+VERIFIED: Parseval residual 3.3e-16, max_C lambda_min(S_C - 1) = -1.1e-16.
+
+----------------------------------------------------------------------------
+3. EXACT (6,3) WITNESS -- the complex hinge fails at the target cell
+Block padding.  Put five atoms in C^2 x {0} and one spike on the third axis.
+Parseval:  sum_{c<=5} t_c g_c g_c^* = I_2  and  t_6 gamma^2 = 1, sum t = 1.
+Then for a triple {a,b,6}:  S - 1 = (S_ab - I_2) (+) (gamma^2 - 1), so it
+dominates iff S_ab >= I_2 and dominates STRICTLY iff S_ab > I_2 (gamma>1).
+Triples inside {1..5} have a zero third coordinate, so they never dominate.
+Hence the (6,3) design is a tie iff the five rank-two atoms are a tie in the
+rank-two sense, with weights summing to tau < 1.
+  h1 = (sqrt6/2, sqrt2/2, 0)                     t1 = (2 sqrt3 - 3)/16
+  h2 = (sqrt2/2, sqrt6/2, 0)                     t2 = (4 sqrt3 - 3)/16
+  h3 = (1, omega, 0)                             t3 = (10 - 3 sqrt3)/16
+  h4 = (1, omega^2, 0)                           t4 = (10 - 3 sqrt3)/16
+  h5 = ((sqrt6+sqrt2)/2, (sqrt6-sqrt2)/2, 0)     t5 = 1/16
+  h6 = (0, 0, 4)                                 t6 = 1/16
+leverages u = (2,2,2,2,4,16), weights sum to 1 exactly.
+Dominating triples: {3,4,6}, {3,5,6}, {4,5,6}; none strict.  TIE.
+max |cos|^2 = (2 + sqrt3)/4 = 0.9330 < 1, so NO PARALLEL PAIR.
+Rank-two block Bloch rank 3 -> genuinely complex.
+VERIFIED: Parseval residual 2.7e-16, max_C lambda_min = -1.1e-16.
+Construction: h5 has Bloch vector (1/2, 0, sqrt3/2) and u_5 = 4; its
+barycentric coordinates against the four (4,2) Bloch vectors are
+((2 sqrt3 - 1)/2, -1/2, (2-sqrt3)/2, (2-sqrt3)/2), so t'_c = t_c - t_5 * 2 beta_c.
+
+----------------------------------------------------------------------------
+4. NUMERICS (Julia, 32 threads; true max over the 20 triples, never a smoothed
+   surrogate at the reported point; exact Parseval by whitening; hard weight
+   floor and hard collinearity bound |cos|^2 <= 1 - eps; annealed L-BFGS)
+
+CALIBRATION
+  real (5,3) min G over parallel-free : 5.8e-05  (bound inactive)  -- diamond
+  real (6,3) min G, eps 0.71/0.5/0.1/0.01 : 5.2e-2 / 5.4e-5 / 2.4e-3 / 3.1e-4
+  the diamond fixture reproduces: shares (0.4,0.65,0.65,0.65,0.65),
+  max cos^2 0.29, 8 dominating triples, max_C lambda_min = +7.1e-16.
+
+THE (6,3) TIE LOCUS, min (max_T lambda_min)^2, vs the WEIGHT FLOOR wf
+  wf     real G            cplx G        cplx maxcos2   cplx tmin
+  0.02   +8.79e-05         +0.00e+00     0.450          0.0625
+  0.05   +4.25e-04         +0.00e+00     0.455          0.0922
+  0.08   +2.61e-03         +0.00e+00     0.383          0.0970
+  0.12   +1.28e-02         +0.00e+00     0.420          0.1257
+The real minimum has the WEIGHT FLOOR ACTIVE at every floor (tmin = wf), i.e.
+the real search reaches zero only by killing a weight and degenerating to the
+(5,3) diamond one cell down.  That is the real hinge, numerically.
+The complex minimum is EXACTLY ZERO with the weight floor INACTIVE, the
+collinearity bound INACTIVE, and min |cos|^2 = 0.062 > 0 -- so the
+non-orthogonality graph is complete and the tie is NOT block-decomposable.
+IRREDUCIBLE complex (6,3) parallel-free ties exist; the block witness of
+section 3 is not the only kind.
+
+INFIMUM OF G OVER COMPLEX (6,3) DESIGNS
+  G_inf = -0.236067977 = 2 - sqrt5, at uniform weights 1/6, all u_c = 3,
+  pairwise cos^2 in {1/9, 1/3}, every constraint inactive.
+  So max_C lambda_min(S_C) = 3 - sqrt5 = 0.76393 at (6,3) over C.
+  Consistent with the ledger's alpha_3 <= 3(1 - cos 2pi/9) = 0.70187 at m=9.
+
+----------------------------------------------------------------------------
+5. CONSEQUENCE FOR THE CAMPAIGN
+The field-blindness ceiling STANDS, and is now anchored by an explicit object
+at the target cell, not only by an identity count.  Any instrument whose every
+ingredient holds verbatim over C admits the (6,3) witness of section 3 as a
+feasible point and therefore cannot prove the hinge.  Every proof of the hinge
+must consume a fact that is FALSE over C.
+The cheapest such fact, isolated here: a rank-two real design has coplanar
+Bloch vectors.  Equivalently, over R the 2x2 Gram of two atoms has a REAL
+off-diagonal, so <g_a,g_b>^2 = |<g_a,g_b>|^2 -- which is precisely the shape
+that degrades to an inequality in sixThree_bargmann_realness.
