@@ -1130,6 +1130,7 @@ import Gtz.Wave.ThreeLinesStarBracketCover
 import Gtz.Wave.ThreeRowAmbientWrapper
 import Gtz.Wave.ThreeRowCapturedDichotomy
 import Gtz.Wave.ThresholdCellDominance
+import Gtz.Wave.MeetingDegreeCrowdedness
 import Gtz.Wave.ThresholdEnergyClosure
 import Gtz.Wave.ThresholdSpread
 import Gtz.Wave.TightGramSixLaws
@@ -38073,3 +38074,21 @@ run_cmd do
 #print axioms Gtz.exists_repay_of_weighted_trace_pos
 #print axioms Gtz.exists_repay_of_parseval_floor_pos
 #print axioms Gtz.axisMoment_compl_ge_of_no_repay
+
+-- Gtz/Wave/MeetingDegreeCrowdedness.lean -- a family of edges in which none meets two
+-- others spans at least three halves its size in vertices, so `rank` edges on `rank + 1`
+-- vertices are crowded from rank three; the excess-dominance lane is closed at every rank
+#print axioms Gtz.card_inter_le_one_of_card_two
+#print axioms Gtz.card_union_eq_three
+#print axioms Gtz.three_mul_card_le_two_mul_card_biUnion
+#print axioms Gtz.exists_meets_two_of_three_le_rank
+#print axioms Gtz.completeGraphProfile_crowded_of_edgeLabelling
+#print axioms Gtz.not_exists_excessDominates_of_edgeLabelling
+#print axioms Gtz.not_forall_excessDominates_of_edgeLabelling
+#print axioms Gtz.not_forall_primitiveExcessDominates_of_edgeLabelling
+#print axioms Gtz.kFourEdgeSet_card
+#print axioms Gtz.kFourEdgeSet_injective
+#print axioms Gtz.kFourEdgeSet_inter_nonempty_iff
+#print axioms Gtz.kFiveEdgeSet_card
+#print axioms Gtz.kFiveEdgeSet_injective
+#print axioms Gtz.not_exists_excessDominates_kFive
