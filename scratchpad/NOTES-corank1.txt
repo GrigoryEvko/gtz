@@ -1481,3 +1481,51 @@ STILL OPEN ON THE BRIDGE
   (c) the frame construction itself: producing the coordinates from an abstract
       design (choose w = g_x, vhat along the shared outside line, nhat = w x vhat).
       This is the only remaining piece that is not pure algebra.
+
+F51-2. THE FOUR CHART POSITIVES ARE THE PLANE GAP, READ FOUR WAYS
+==================================================================
+B := g_y g_y' + g_z g_z'  (UNWEIGHTED plane pair moment).  The axis atom carries
+a unit null direction of the dominator's gap, so THE GAP OF C IS B - 1, a 2x2
+symmetric matrix.  In the frame (shared outside line first):
+   B11 = y1^2+z1^2 , B22 = y2^2+z2^2 , B12 = y1y2+z1z2
+ALL FOUR CHART POSITIVES ARE THAT GAP (verified exactly as ideal memberships):
+   Wom = te*be^2 * (ty*y1^2 + tz*z1^2)          the plane pair's mass on the
+                                                shared outside line
+   Un  = te*be^2 * ty*tz * (B11 - 1)            first diagonal of the gap
+   Vn  =           ty*tz * (B22 - 1)            second diagonal of the gap
+   Dn  = te*be^2 * ty*tz * det(B - 1)           determinant of the gap
+So THREE OF THE FOUR ARE EXACTLY THE SYLVESTER DATA OF B - 1, and a positive
+definite plane gap (= the dominator's gap has corank exactly one) makes them
+all strict.  THE CHART'S FOUR STRICT HYPOTHESES COST NOTHING BEYOND THE
+STRATUM'S OWN DEFINITION.
+
+MECHANISM (both elementary):
+  (i) squaring the collinearity te*be*v = -td*al*p turns te^2be^2v^2 into
+      td^2al^2p^2, so te*be^2*(td*p^2+te*v^2) = p^2*td*(td*al^2+te*be^2):
+      THE ERASED CROSS MASS IS THE OUTSIDE PLANE MASS.  With r1 this gives Wom.
+  (ii) THE CROSS LAW (new, design-free, reusable):
+         c + d = 1  and  a*c = b*d   ==>   (a+b)*(ty*c + tz*d) = ty*b + tz*a
+      at a = ty*y1^2, b = tz*z1^2, c = ty*y2^2, d = tz*z2^2 its two hypotheses
+      are exactly r3 and r2-squared.  Cofactors: (ty-tz)*hac + (a*tz+b*ty)*hcd.
+
+LANDED 72a636f Gtz/Wave/KTwoBridgePositives.lean (6 thms, all standard):
+  k2Plane_cross_law, k2Plane_om_eq, k2Plane_Wom_eq, k2Plane_Vn_eq,
+  k2Plane_Un_eq, k2Plane_chart_positives
+NOT TRANSCRIBED: the Dn (determinant) reading.  It IS verified -- the goal
+  ty*tz*(Dn/q) = (ty*tz)^2*det(B-1) lies in the ideal <r2, r3> (Groebner, exact)
+  -- but no division order tried produced cofactors, and the staged elimination
+  (by r3 in z2, then r2 in z1) leaves a nonzero remainder.  A LINEAR-ANSATZ
+  COFACTOR SOLVE is the way in; the reduced-variable form is
+     ty*tz*Dq - [(a*tz+b*ty-ty*tz)(c*tz+d*ty-ty*tz) - a*c*(tz-ty)^2]
+       = A*(c+d-1) + B*(a*c-b*d),
+     A = -ty*tz*(a*tz + b*ty - ty - tz + 1),  B = -ty*(ty-tz)*(tz-1)
+  in the variables a,b,c,d,ty,tz -- THOSE cofactors are exact and tiny, so the
+  cheapest route is to state the Dn reading in (a,b,c,d) form first and then
+  substitute, rather than to attack the original twelve variables directly.
+
+CAVEAT RECORDED (from the coordinator, and it bites the bridge): det > 0 is NOT
+domination -- Sylvester needs all three minors.  The four slack identities of
+F51-1 relate each slack's SIGN to its triple's DETERMINANT sign only.  To turn
+"some slack < 0" into "some triple strictly dominates" the bridge must also
+supply the first two Sylvester minors of that triple (heavy atom, admissible
+pair).  THIS IS AN OPEN GAP IN THE BRIDGE, not covered by anything landed.
