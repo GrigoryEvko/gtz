@@ -628,4 +628,164 @@ theorem sixThree_bargmann_realness (D : WeightedDesign 6 3) (N : NaimarkDual D 3
   rw [← hcyc]
   ring
 
+/-! ## 8. The complement form in the campaign's own vocabulary -/
+
+/-- The gap determinant of a rank-three selection is the landed `tripleGapDet`. -/
+theorem naimarkGram_gap_det_eq_tripleGapDet (D : WeightedDesign m 3) (pick : Fin 3 → Fin m) :
+    (naimarkGram D pick - 1).det
+      = tripleGapDet (D.atom (pick 0)) (D.atom (pick 1)) (D.atom (pick 2)) := by
+  have hd : ∀ i j : Fin 3, i ≠ j → (naimarkGram D pick - 1) i j
+      = D.atom (pick i) ⬝ᵥ D.atom (pick j) := by
+    intro i j hij
+    simp only [Matrix.sub_apply, naimarkGram, Matrix.of_apply, Matrix.one_apply_ne hij, sub_zero]
+  have he : ∀ i : Fin 3, (naimarkGram D pick - 1) i i
+      = D.atom (pick i) ⬝ᵥ D.atom (pick i) - 1 := by
+    intro i
+    simp only [Matrix.sub_apply, naimarkGram, Matrix.of_apply, Matrix.one_apply_eq]
+  rw [Matrix.det_fin_three, he 0, he 1, he 2,
+    hd 0 1 (by decide), hd 0 2 (by decide), hd 1 0 (by decide), hd 1 2 (by decide),
+    hd 2 0 (by decide), hd 2 1 (by decide), tripleGapDet,
+    leverageOf_eq_dotProduct, leverageOf_eq_dotProduct, leverageOf_eq_dotProduct,
+    dotProduct_comm (D.atom (pick 1)) (D.atom (pick 0)),
+    dotProduct_comm (D.atom (pick 2)) (D.atom (pick 0)),
+    dotProduct_comm (D.atom (pick 2)) (D.atom (pick 1))]
+  ring
+
+/-- **THE COMPLEMENT FORM, AT RANK THREE.**  The gap determinant of a triple is a
+strictly positive scalar times a determinant of size `m - 3` built from the dual
+atoms of the SAME triple.  This is Naimark duality written out: the second factor
+is a gap determinant of a dual design that carries the same weights. -/
+theorem tripleGapDet_naimark_law (D : WeightedDesign m 3) (N : NaimarkDual D r) (hm : 2 ≤ m)
+    {pick : Fin 3 → Fin m} (hpick : Function.Injective pick) :
+    tripleGapDet (D.atom (pick 0)) (D.atom (pick 1)) (D.atom (pick 2))
+      = (∏ a, ((D.weight (pick a))⁻¹ - 1))
+        * (1 - ∑ a, (D.weight (pick a) / (1 - D.weight (pick a)))
+              • atomMatrix (N.co (pick a))).det := by
+  rw [← naimarkGram_gap_det_eq_tripleGapDet D pick, naimark_gapDet_law N hm hpick]
+
+/-- The scalar factor of the complement form is strictly positive. -/
+theorem naimark_gapDet_prefactor_pos (D : WeightedDesign m k) (hm : 2 ≤ m)
+    (pick : Fin k → Fin m) :
+    0 < ∏ a, ((D.weight (pick a))⁻¹ - 1) := by
+  refine Finset.prod_pos fun a _ => ?_
+  have hpos := D.weight_pos (pick a)
+  have hlt := weight_lt_one D hm (pick a)
+  have h1 : 1 < (D.weight (pick a))⁻¹ := by
+    rw [lt_inv_comm₀ one_pos hpos]
+    simpa using hlt
+  linarith
+
+/-- **THE SIGN OF A TRIPLE IS THE SIGN OF ITS COMPLEMENT DETERMINANT.**  A triple
+of a rank-three design refuses to dominate at determinant level exactly when the
+dual reading of that triple has nonpositive determinant.  At `m = 4` the dual
+reading is a scalar and the condition is an order relation.  At `m = 6` it is a
+`3 × 3` determinant and the condition fixes only the parity of the number of
+negative eigenvalues, which is why four is rigid and six is not. -/
+theorem tripleGapDet_nonpos_iff_naimark (D : WeightedDesign m 3) (N : NaimarkDual D r)
+    (hm : 2 ≤ m) {pick : Fin 3 → Fin m} (hpick : Function.Injective pick) :
+    tripleGapDet (D.atom (pick 0)) (D.atom (pick 1)) (D.atom (pick 2)) ≤ 0
+      ↔ (1 - ∑ a, (D.weight (pick a) / (1 - D.weight (pick a)))
+            • atomMatrix (N.co (pick a))).det ≤ 0 := by
+  rw [tripleGapDet_naimark_law D N hm hpick]
+  have hp := naimark_gapDet_prefactor_pos D hm pick
+  constructor <;> intro h <;> nlinarith [hp, h]
+
+/-- The full dual reading of a design: the campaign's `Omegabar`. -/
+noncomputable def naimarkOmega (N : NaimarkDual D r) : Matrix (Fin r) (Fin r) ℝ :=
+  ∑ c, (D.weight c / (1 - D.weight c)) • atomMatrix (N.co c)
+
+/-- **THE COMPLEMENT FORM READ ON THE COMPLEMENT.**  The dual reading of a
+selection is the full dual reading minus the dual reading of the complementary
+selection, so the second factor of the determinant law is
+`det(1 + Omega_{Cᶜ} - Omegabar)`.  The identity does NOT drop out of the
+expression: at `m = 2k` both `Omegabar` and `Omega_{Cᶜ}` are `k × k` and the
+shift by the identity is the whole content. -/
+theorem naimark_reading_eq_omega_compl (N : NaimarkDual D r) (sel : Fin k → Fin m)
+    (cosel : Fin r → Fin m) (hpart : Function.Bijective (Sum.elim sel cosel)) :
+    (1 : Matrix (Fin r) (Fin r) ℝ)
+      - ∑ a, (D.weight (sel a) / (1 - D.weight (sel a))) • atomMatrix (N.co (sel a))
+      = 1 + (∑ j, (D.weight (cosel j) / (1 - D.weight (cosel j)))
+            • atomMatrix (N.co (cosel j))) - naimarkOmega N := by
+  have hall : ∑ s : Fin k ⊕ Fin r,
+      (D.weight (Sum.elim sel cosel s) / (1 - D.weight (Sum.elim sel cosel s)))
+        • atomMatrix (N.co (Sum.elim sel cosel s)) = naimarkOmega N := by
+    rw [naimarkOmega]
+    exact Fintype.sum_equiv (Equiv.ofBijective _ hpart) _ _ fun _ => rfl
+  rw [Fintype.sum_sum_type] at hall
+  simp only [Sum.elim_inl, Sum.elim_inr] at hall
+  rw [← hall]
+  abel
+
+/-- **THE COMPLEMENT FORM, `Omega` VERSION.**  For every triple of a rank-three
+design the gap determinant is a positive multiple of `det(1 + Omega_{Cᶜ} -
+Omegabar)`. -/
+theorem tripleGapDet_omega_law (D : WeightedDesign m 3) (N : NaimarkDual D r) (hm : 2 ≤ m)
+    (sel : Fin 3 → Fin m) (cosel : Fin r → Fin m)
+    (hpart : Function.Bijective (Sum.elim sel cosel)) :
+    tripleGapDet (D.atom (sel 0)) (D.atom (sel 1)) (D.atom (sel 2))
+      = (∏ a, ((D.weight (sel a))⁻¹ - 1))
+        * (1 + (∑ j, (D.weight (cosel j) / (1 - D.weight (cosel j)))
+              • atomMatrix (N.co (cosel j))) - naimarkOmega N).det := by
+  have hselinj : Function.Injective sel := by
+    intro a b hab
+    have h : Sum.elim sel cosel (Sum.inl a) = Sum.elim sel cosel (Sum.inl b) := hab
+    exact Sum.inl.inj (hpart.1 h)
+  rw [tripleGapDet_naimark_law D N hm hselinj,
+    naimark_reading_eq_omega_compl N sel cosel hpart]
+
+/-! ## 9. Corank one: the dual collapses to a scalar -/
+
+/-- At corank one every dual atom is a single number whose square is the dual
+leverage. -/
+theorem corankOne_co_sq (N : NaimarkDual D 1) (c : Fin m) :
+    N.co c 0 ^ 2 = coLeverageDual D c := by
+  rw [coLeverageDual_eq N, leverageOf]
+  simp
+
+/-- At corank one the dual pairing is the product of the two dual numbers. -/
+theorem corankOne_dot (N : NaimarkDual D 1) (c d : Fin m) :
+    N.co c ⬝ᵥ N.co d = N.co c 0 * N.co d 0 := by
+  simp [dotProduct]
+
+/-- **THE CORANK-ONE 3-CYCLE LAW, AT EVERY RANK.**  When the design has one atom
+more than its rank, the Bargmann product around any triangle is the NEGATED
+product of the three co-shares, divided by the three weights.  The dual is
+one-dimensional, so the cycle collapses to a square and its sign is forced.
+At `m = 4, k = 3` this is the landed four-atom identity. -/
+theorem corankOne_threeCycle (N : NaimarkDual D 1) {a b c : Fin m}
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    (D.weight a * D.weight b * D.weight c)
+        * ((D.atom a ⬝ᵥ D.atom b) * (D.atom a ⬝ᵥ D.atom c) * (D.atom b ⬝ᵥ D.atom c))
+      = -((1 - D.weight a * leverageOf (D.atom a)) * (1 - D.weight b * leverageOf (D.atom b))
+          * (1 - D.weight c * leverageOf (D.atom c))) := by
+  have hshare : ∀ u : Fin m, D.weight u * N.co u 0 ^ 2
+      = 1 - D.weight u * leverageOf (D.atom u) := by
+    intro u
+    rw [corankOne_co_sq N u, coLeverageDual_eq N]
+    exact naimark_coShare N u
+  have hab' : D.atom a ⬝ᵥ D.atom b = -(N.co a 0 * N.co b 0) := by
+    rw [← corankOne_dot N a b, naimark_dot_eq_neg N hab]; ring
+  have hac' : D.atom a ⬝ᵥ D.atom c = -(N.co a 0 * N.co c 0) := by
+    rw [← corankOne_dot N a c, naimark_dot_eq_neg N hac]; ring
+  have hbc' : D.atom b ⬝ᵥ D.atom c = -(N.co b 0 * N.co c 0) := by
+    rw [← corankOne_dot N b c, naimark_dot_eq_neg N hbc]; ring
+  rw [hab', hac', hbc', ← hshare a, ← hshare b, ← hshare c]
+  ring
+
+/-- **THE CORANK-ONE BRACKET LAW.**  When the design has one atom more than its
+rank, the weighted Gram determinant of a `k`-selection is the co-share of the one
+atom left out.  At `m = 4, k = 3` this reads
+`t_a t_b t_c · [a b c]² = 1 - t_d ℓ_d`. -/
+theorem corankOne_bracket (N : NaimarkDual D 1) (sel : Fin k → Fin m) (out : Fin m)
+    (hpart : Function.Bijective (Sum.elim sel (fun _ : Fin 1 => out))) :
+    (∏ a, D.weight (sel a)) * (naimarkGram D sel).det
+      = 1 - D.weight out * leverageOf (D.atom out) := by
+  have hbr := naimark_bracket_law N sel (fun _ : Fin 1 => out) hpart
+  have hdet : (naimarkCoGram N (fun _ : Fin 1 => out)).det = leverageOf (N.co out) := by
+    rw [Matrix.det_fin_one]
+    simp only [naimarkCoGram, Matrix.of_apply, leverageOf_eq_dotProduct]
+  rw [hbr, hdet]
+  simp only [Finset.prod_const, Finset.card_univ, Fintype.card_fin, pow_one]
+  exact naimark_coShare N out
+
 end Gtz
