@@ -1,0 +1,201 @@
+NAIMARK DUALITY AT (6,3) -- what landed, what it corrects, what is next
+=======================================================================
+
+Modules, all pins [propext, Classical.choice, Quot.sound], all wired:
+  Gtz/Wave/NaimarkDualDesign.lean     791 lines, 38 theorems, commits 08cb241 010862d
+  Gtz/Wave/NaimarkDualExistence.lean  250 lines, 11 theorems, commit  dc3c68e
+  Gtz/Wave/NaimarkCycleFree.lean      352 lines, 13 theorems, commit  643e896
+  Gtz/Wave/NaimarkSharpDesign.lean    417 lines, 15 theorems, commits 4c1c9d3 3fa8501
+Umbrellas: 7b326b5, 7bf5be3, 5eaa900.  Insertions only, zero deletions.
+
+
+N-1  THE CORRECTION TO Q75A-8.
+-----------------------------
+Q75A-8 records  tripleGapDet_C <= 0  <==>  det(Omega_{C'} - Omegabar) <= 0.
+THAT STATEMENT IS WRONG AS WRITTEN.  The identity is missing the identity:
+
+  tripleGapDet_C = (prod_{c in C} (1/t_c - 1)) * det(1 + Omega_{C'} - Omegabar)
+
+with Omega_c = Lambdatilde_c Lambdatilde_c^T/(1 - t_c), Omegabar = sum_c t_c Omega_c.
+Without the 1 the right side is (-1)^{m-k} det(sum_{c in C} t_c Omega_c), which is
+sign-forced and carries no information.  Verified to 2.3e-13 at (6,3), (5,3),
+(4,3), (7,3), (6,4), (8,3), (7,4).  LANDED as Gtz.tripleGapDet_omega_law and
+Gtz.tripleGapDet_naimark_law.  The prefactor is strictly positive
+(Gtz.naimark_gapDet_prefactor_pos), so the sign statement of Q75A-8 is correct
+once the identity is put back: Gtz.tripleGapDet_nonpos_iff_naimark.
+
+
+N-2  THE MASTER IDENTITY, AND WHY NO SQUARE ROOT IS NEEDED.
+-----------------------------------------------------------
+A Naimark dual frame is m vectors co_c in R^r, r = m - k, with
+   sum_c t_c co_c g_c^T = 0        (dependency)
+   sum_c t_c co_c co_c^T = 1       (dual Parseval)
+Put Phi = [G | co] of shape m x (k + r) and Psi = Phi^T diag(t).  The three
+design laws say exactly Psi Phi = 1 block by block, so Phi Psi = 1, which is
+
+   Gtz.naimark_gram_identity :   t_d (g_c . g_d + co_c . co_d) = delta_cd .
+
+Everything else in the four modules is a reading of that one line.  No square
+root, no rank argument, no spectral theorem.  Consequences, all landed:
+  * co_c . co_d = -(g_c . g_d) for c != d.  Cross norms are duality invariants;
+    every Bargmann 3-cycle is NEGATED.
+  * t_c(l_c + ltilde_c) = 1, so ltilde_c = 1/t_c - l_c and t_c ltilde_c = u_c.
+  * (co, t) is a weighted design of size m and rank m - k with the SAME weights,
+    and the construction is an involution up to the Gram.
+  * sum_c t_c ltilde_c = m - k.
+
+
+N-3  DOMINATION HAS THREE EQUIVALENT FORMS.
+--------------------------------------------
+For an injective pick of k atoms, all landed and all checked with ZERO
+mismatches against domination on 2975 selections over 105 designs:
+
+  (a) Gram_C >= 1                                  (primal, k x k)
+  (b) coGram_C <= diag((1 - t_c)/t_c)              (dual cap, k x k)
+  (c) Reading(C) := sum_{c in C} (t_c/(1-t_c)) co_c co_c^T <= 1     (r x r)
+  (d) Reading(C^c) >= Omegabar - 1 = sum_c t_c M_c (complement, r x r)
+
+(b) is Gtz.naimark_dominates_iff_coGram_le, (c) is
+Gtz.naimark_dominates_iff_reading_le, (d) is
+Gtz.naimark_dominates_iff_compl_reading.  (c) uses only a DIAGONAL square root
+plus the landed rectangular transfer of Gtz/LinAlg/PsdKit.lean.
+
+
+N-4  THE SHARP DESIGN: DOMINATION COMPLEMENTS ITSELF AT ARBITRARY WEIGHTS.
+--------------------------------------------------------------------------
+Omegabar - 1 = sum_c t_c M_c is POSITIVE DEFINITE (Gtz.naimarkSharpTarget_posDef;
+smallest eigenvalue 0.0173 over the measured run).  Whitening it gives
+
+  Gtz.exists_naimark_sharp_design :  every (m,k) design D carries an (m, m-k)
+  design E with the SAME weights such that a k-selection dominates in D exactly
+  when its complementary (m-k)-selection dominates in E.
+
+At (6,3) both are (6,3) designs.  The landed
+Gtz.dominates_iff_dominates_chartDual_compl_of_uniformWeight_sixThree is the
+UNIFORM WEIGHT case of this.  The weights are now arbitrary and carried
+unchanged.  Consequence Gtz.gtzWeighted_six_three_iff_dominating_compl reads the
+open cell as "every (6,3) design has a triple whose COMPLEMENT dominates the
+sharp design".
+
+
+N-5  THE HEAVY COUNT IS SHARPER THAN THE LANDED ONE, BY EXACTLY ONE ATOM.
+--------------------------------------------------------------------------
+Gtz.rank_sub_one_sub_threshold_le_card_heavySet gives k - 1 heavy atoms.  The
+correct count is k:
+
+  Gtz.rank_le_card_heavyLeverage :  k <= card {c : 1 <= l_c} .
+
+Proof: k = sum_c t_c l_c splits over the light set L = {l_c < 1} and its
+complement.  On L each term is STRICTLY below t_c, and sum_L t_c <= 1, while off
+L each term is at most 1.  The strictness turns k <= 1 + card into k < 1 + card,
+and both sides are integers.  The landed proof used <= and lost the atom.
+
+At rank three this is the difference between "at least two heavy atoms" and "a
+whole triple".  Reading it in the dual gives Gtz.corank_le_card_cappedLeverage:
+at least m - k atoms have t_c(l_c + 1) <= 1, the diagonal condition a capped
+selection needs.  At (6,3) both counts are exactly three
+(Gtz.sixThree_candidate_counts).
+
+THE SQUEEZE.  A dominating triple T of D satisfies T inside heavyLeverageSet D
+(Gtz.dominates_subset_heavyLeverage) and T^c inside heavyLeverageSet E for the
+sharp design E (Gtz.sixThree_dominating_squeeze).  So every dominating triple
+sits between two explicit sets.  If D has exactly three heavy atoms the triple is
+FORCED to be them (Gtz.sixThree_forced_triple), and (6,3) at that design is a
+single yes-or-no question.
+
+
+N-6  THE REALNESS EQUATION AT SIX POINTS -- IT IS REAL-ONLY.
+-------------------------------------------------------------
+The bracket law (Gtz.naimark_bracket_law), proved from dual Parseval and NOT
+from Jacobi's complementary minor identity, reads
+
+   (prod_{c in C} t_c) det Gram_C = (prod_{c not in C} t_c) det coGram_{C^c} .
+
+At (6,3) both sides are 3 x 3.  Expanding the dual determinant and using
+co_c . co_d = -(g_c . g_d) pins the Bargmann 3-cycle -- Gtz.sixThree_bargmann_cycle:
+
+   2 p_ab p_ac p_bc . (t_a t_b t_c)
+     = (t_a t_b t_c)(ltilde_a ltilde_b ltilde_c - ltilde_a q_bc - ltilde_b q_ac
+                     - ltilde_c q_ab)  -  (t_x t_y t_z) [x y z]^2
+
+for the complementary triples {a,b,c} and {x,y,z}.  Squaring gives
+Gtz.sixThree_bargmann_realness, whose right side is 4 q_ab q_ac q_bc.
+
+FIELD CHECK, PASSED.  Over C the master identity and the cycle equation STILL
+HOLD (residuals 4.9e-14 and 2.6e-10 over 400 complex (6,3) designs), because the
+left side becomes 2 Re(cycle).  But the SQUARED form fails: the slack
+4 q_ab q_ac q_bc - (...)^2 ranged over [1.4e-9, 1.2e4] on 8000 complex triples
+and is exactly 0 over R.  The squared form is the first realness-consuming
+EQUATION on a (6,3) design.  A proof of it must fail over C, and it does.
+
+At m = 4 the same machinery collapses: the dual is one-dimensional, the cycle
+becomes a square, and Gtz.corankOne_threeCycle reproduces the landed four-atom
+identity t_a t_b t_c p_ab p_ac p_bc = -(u_a u_b u_c) AT EVERY RANK, not only at
+rank three.  Gtz.corankOne_bracket gives t_a t_b t_c [a b c]^2 = 1 - t_d l_d.
+
+
+N-7  DUALITY REMOVES THE CYCLE FROM THE DETERMINANT.
+------------------------------------------------------
+The 3 x 3 gap determinant has exactly one term odd in the off-diagonal entries.
+Duality negates exactly those, so the primal and dual gap determinants of the
+same triple ADD to a cycle-free polynomial -- Gtz.naimark_gapSum_cycleFree:
+
+   det(Gram_T - 1) + det(coGram_T - 1)
+     = prod (l_c - 1) + prod (ltilde_c - 1) - sum (1/t_c - 2) q .
+
+No relation between size and rank is needed and the dual need not be a design.
+Residual 6.1e-11 over 125 designs at (6,3), (5,3), (7,3), (4,3), (8,3).
+
+At (6,3) the bracket law removes the cycle from the PRIMAL determinant alone --
+Gtz.sixThree_tripleGapDet_cycleFree, residual 9.5e-11.
+
+The pair minors go the same way: Gtz.naimark_pairGapMinor_sub says the DIFFERENCE
+of the primal and dual pair minors is free of the cross reading altogether,
+q_ab - q*_ab = (l_a-1)(l_b-1) - (ltilde_a-1)(ltilde_b-1).
+
+
+N-8  WHAT A SUCCESSOR MUST BOUND.
+----------------------------------
+The route stops where every other lane stops, at the same wall and for the same
+reason, and the wall now has a name in this vocabulary.
+
+The complementation (d) turns domination into
+   Reading(C^c) >= sum_c t_c M_c ,
+a strictly positive convex combination of the very family being selected from.
+At corank one the M_c are SCALARS, the argmax of M_c beats the convex
+combination, and a dominating selection exists.  At corank three the M_c are
+rank-one 3 x 3 matrices and the argmax argument has no analogue: three
+rank-one matrices summing above a positive definite average is not implied by
+any single maximum.  THAT is the exact quantity a successor must bound:
+
+   min over triples C of  lambda_min( Reading(C^c) - (Omegabar - 1) ) ,
+
+and it must be bounded below by zero over all (6,3) designs.  It is scale-free
+in the weights only through Omegabar.  The margin of every certificate built so
+far is proportional to the smallest weight because Omegabar blows up as t_c -> 1,
+which is the closed form of the universal obstruction in these coordinates:
+t_c/(1 - t_c) is the coefficient of M_c and it is unbounded on the open simplex.
+
+Three concrete openings, in order of cheapness:
+
+  (i)  The squeeze of N-5 leaves at most C(card heavyLeverageSet D, 3) candidate
+       triples and forces one when the count is three.  MEASURE the distribution
+       of card heavyLeverageSet over a directed exact hunt.  If it is three on
+       the hard locus the cell reduces to one determinant question.
+  (ii) The cycle-free reading of N-7 makes tripleGapDet a polynomial in
+       leverages, weights, SQUARED pair readings and one squared bracket.  Every
+       term except the leverage products has a forced sign.  A positivity
+       certificate in that basis does not have to reason about the 3-cycle sign
+       at all, which is what killed the earlier attempts.
+  (iii) The realness equation of N-6 is the only landed statement that is FALSE
+       over C.  Any total instrument must consume it.  It expresses one squared
+       bracket in terms of leverages, weights and pair squares of the
+       COMPLEMENTARY triple, which is a relation the elimination fronts never
+       had.
+
+NOT TRIED, AND WORTH ONE ROUND: is the sharp map an involution on the (6,3) cell
+up to the Gram?  If D and its double sharp have the same Gram, the counterexample
+class is closed under an involution that complements triples, and a parity or
+fixed-point count may bite.  The Naimark involution itself is FIXED-POINT FREE on
+(6,3): a self-dual design would need Gram = diag(1/(2t)), which is diagonal of
+rank six while the Gram has rank three.
