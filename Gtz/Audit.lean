@@ -1375,6 +1375,7 @@ import Gtz.Wave.BranchTwoDeterminantSum
 import Gtz.Wave.CornerDescentRank
 import Gtz.Wave.BranchTwoTrueDeterminants
 import Gtz.Wave.NullProbeAdjugateLaw
+import Gtz.Wave.MirrorPairMinorTrigger
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.CornerEmptinessSlack
@@ -37823,3 +37824,13 @@ run_cmd do
 #print axioms Gtz.nullProbe_reproduction_triple
 #print axioms Gtz.pairGapMinor_eq_pairMinorTotal_mul_reading_design
 #print axioms Gtz.unitAtom_parallel_of_two_pairMinors_zero
+
+-- Gtz/Wave/MirrorPairMinorTrigger.lean -- the mirror's blind reading is a
+-- vanishing pair minor of the shared pair, so a design with no parallel pair
+-- pays one polynomial equation for every null-sharing swap, and a unit atom's
+-- dominator carries at most one such swap
+#print axioms Gtz.mulVec_eq_of_gap_mulVec_eq_zero
+#print axioms Gtz.mirror_shared_pairGapMinor_eq_zero
+#print axioms Gtz.mirror_probe_in_shared_plane
+#print axioms Gtz.two_zero_readings_probe_smul
+#print axioms Gtz.unitAtom_two_mirror_swaps_absurd
