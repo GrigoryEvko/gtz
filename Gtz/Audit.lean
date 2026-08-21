@@ -1267,6 +1267,7 @@ import Gtz.Wave.CoParsevalPivotHalfFloor
 import Gtz.Wave.ResolventProjectionLaw
 import Gtz.Wave.ResolventBlockCriterion
 import Gtz.Wave.ResolventBudgetLadder
+import Gtz.Wave.ResolventSecondSign
 import Gtz.Wave.CornerFramePair
 import Gtz.Wave.ExcludedAtomLedger
 import Gtz.Wave.OneAxisZeroFourSets
@@ -38432,3 +38433,14 @@ run_cmd do
 #print axioms Gtz.pairBudget_ordered_sum_closed
 #print axioms Gtz.tripleGapDet_nonpos_of_allAdmissible
 #print axioms Gtz.allAdmissible_tie_aggregate_nonpos
+
+-- Gtz/Wave/ResolventSecondSign.lean -- the second Sylvester sign of the
+-- resolvent chart is cleared by a budget: at six labels and rank three some
+-- pair of distinct labels has strictly positive resolvent pair minor
+#print axioms Gtz.coWeight_mul_pivot_le_one
+#print axioms Gtz.sum_coWeightSq_pivot_ge
+#print axioms Gtz.resolventPairMinor_self
+#print axioms Gtz.sum_sq_coWeight
+#print axioms Gtz.offDiag_resolventPairMinor_ge
+#print axioms Gtz.offDiag_resolventPairMinor_pos_six_three
+#print axioms Gtz.exists_offDiag_resolventPairMinor_pos_six_three
