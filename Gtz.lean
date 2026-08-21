@@ -6716,3 +6716,52 @@ import Gtz.Wave.PivotFourDominatingTriples
 -- (Gtz.gtzWeightedAll_three_of_allHeavy_hinge).
 import Gtz.Wave.UnitAtomFunnelClosure
 
+
+-- Gtz/Wave/RankTwoTieClassification.lean -- THE COMPLETE CLASSIFICATION OF RANK-TWO TIES,
+-- with the class count PROVED rather than assumed.  Every exact rank-two tie splits into
+-- exactly three nonempty classes (Gtz.card_image_tieClass_eq_three); two atoms share a
+-- class exactly when they are parallel (Gtz.mem_tieClass_iff_planeWedge_eq_zero); on a
+-- class the leverage is CONSTANT and the class weight fixes it,
+-- Gtz.two_leverage_sub_one_mul_classWeight reading (2 l_c - 1) T_A = 1; every cross-class
+-- pair weakly dominates (Gtz.dominates_of_planeWedge_ne_zero) and every within-class pair
+-- has gap determinant -1/T_A (Gtz.det_pairGap_mul_classWeight_of_mem_tieClass).
+-- Gtz.rankTwoTieClassification bundles the five fields.
+--   THE ENGINE IS ONE MATRIX, F_cd = t_c t_d (l_c + l_d - 1 - J_cd^2), whose off-diagonal
+--     is minus the weighted gap determinant of the pair, because at rank two
+--     det(S_{c,d} - 1) = J^2 - (l_c + l_d - 1) exactly (Gtz.det_pairGap_eq).  Its row law
+--     Gtz.sum_tieCoupling is two Parseval readings and holds at EVERY rank-two design.
+--   AND THE SPECTRAL STEP IS A TRACE SANDWICH, not an eigenvalue count.
+--     Gtz.eq_of_trace_sandwich: a symmetric matrix with a nonnegative quadratic form, the
+--     trace of a symmetric idempotent, and domination of the identity on that idempotent's
+--     range, IS that idempotent.  Fed the Laplacian identity and the Veronese
+--     factorisation N = R R^T - s s^T with R of three columns, it pins the normalised
+--     coupling to the orthogonal projection onto the column space of R
+--     (Gtz.normalizedCoupling_eq_couplingProjection).  One Perron step then makes each
+--     block rank one, Gtz.tieCoupling_mul_classWeight reading F_cd T_A = t_c t_d, whose
+--     diagonal is the leverage law and whose off-diagonal is parallelism.
+--   THE HINGE FALLS OUT.  Gtz.hingeHoldsAtSize_rank_two proves HingeHoldsAtSize m 2 for
+--     every m >= 4 WITHOUT the Bloch-chart four-direction hinge, so it is a second and
+--     independent proof of the rank-two hinge, not a consumer of
+--     Gtz.not_isTie_of_fourNonParallel.  The sibling three-class law in
+--     Gtz.Wave.PivotFourDominatingTriples consumes that hinge and carries only the
+--     AGGREGATE class law 2 M_X = 1 + T_X; the per-atom law here is strictly finer and
+--     neither file supersedes the other.
+--   A FREE COROLLARY, Gtz.weight_mul_two_leverage_sub_one_le_one: the per-atom leverage
+--     cap t_d (2 l_d - 1) <= 1, from the row law and entrywise nonnegativity ONLY, so it
+--     holds with no tie hypothesis at every rank-two design with no strictly dominating
+--     pair.
+--   THE PAIR COUNT, Gtz.four_mul_size_le_sum_card_dominatingPartners: at least 2 m - 3
+--     unordered pairs weakly dominate, which is SEVEN at five atoms
+--     (Gtz.fourteen_le_sum_card_dominatingPartners_five).
+--   THE RANK-THREE PAYLOAD.  Every plane shadow of a rank-three design is a rank-two
+--     design (Gtz.inPlaneRestriction), so the classification reads on the whole sphere of
+--     normals: Gtz.planeShadow_three_classes gives three classes cut by the FRAME BRACKET,
+--     which the tree reads as the triple bracket against the normal, and
+--     Gtz.planeShadow_exists_frameBracket_eq_zero produces two atoms with parallel shadows
+--     at four or more atoms.
+--   NOTHING LIFTS TO RANK THREE, and the obstruction is measured.  At rank k the matrix
+--     with row sums t is P o P - (1/(k-1)) d d^T, and at the (5,3) diamond its diagonal
+--     already exceeds its row sum, so the Laplacian step dies.  Three ingredients are
+--     rank-two only: pairs ARE the selections, rank(P o P) <= dim Sym^2 R^k = 3 only at
+--     k = 2, and tr S = 2k - 1 = 3 only at k = 2.
+import Gtz.Wave.RankTwoTieClassification
