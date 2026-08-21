@@ -1,3 +1,8 @@
 .lake/
-scratchpad/
 .claude/
+
+# The scratchpad holds probe scripts and measurement data, not source.
+# The lab notebook is the exception: it carries the campaign's measurements,
+# refutations and graveyard entries, and every brief cites it.
+scratchpad/*
+!scratchpad/NOTES-*.txt
