@@ -1,5 +1,6 @@
 NOTES: the funnel spectral pinch, and where the funnel branch stops
-Module: Gtz/Wave/FunnelSpectralPinch.lean   Commits: 0197598, 9285e26
+Modules: Gtz/Wave/FunnelSpectralPinch.lean, Gtz/Wave/CorankOneWeightCap.lean
+Commits: 0197598, 9285e26, 0cd24a4, 7d4bacd, 7d86557, a8896ce, 28ea824, 6370848
 
 1. WHAT IS NEW
 
@@ -141,3 +142,63 @@ leverage_a = 1, S_T g_a = g_a, gap PSD.
   eigen window implies the producer      16197 firings, 0 failures, 300000 draws
   root-free window = eigen window        0 disagreements, 300000 draws
   4 e2 <= tau^2                          0 violations, 40000 draws
+
+
+9. THE SECOND MODULE: Gtz/Wave/CorankOneWeightCap.lean
+
+The funnel is not used anywhere in the payment argument.  Everything carries to
+a weak dominator whose gap has corank one, with ANY unit kernel, at ANY size, in
+either branch of Gtz.isTie_sixThree_allHeavy_or_funnel.
+
+  * exists_outside_reading_sq_gt_one_of_dominator -- the reader with no funnel
+    and no size.  The landed (6,3)+funnel version is the special case.
+  * exists_strict_of_weight_dominator / isTie_weight_cap -- the weight cap of a
+    boundary system, at any size, in either branch.
+  * weight_producer_needs_trace_bound -- Parseval caps the reader BOTH ways:
+    weight * plane norm <= 2 and weight * reading^2 <= 1.  The two caps fight,
+    and the weight producer can fire only when 3*tau^2 < e2*(tau+2), which with
+    4*e2 <= tau^2 forces tau > 10.  The campaign's universal obstruction as a
+    THEOREM rather than a measurement.  Antecedent NOT empty: measured met at
+    2412 of 335246 atoms.
+
+10. THREE ROUTES ARE ONE INEQUALITY, AND THEN THREE
+
+  trace_inv_add_atomMatrix_of_unit_null:
+    trace (G + v vT)^-1 = (e2 + lev*tau - s) / (e2 * R)
+  because at 3x3 the inverse is the adjugate over the determinant, the trace of
+  the adjugate is e2 (landed) and both e2(G+vvT) and det(G+vvT) are landed.
+
+  one_le_trace_inv_iff_payment: the pigeonhole bound 1 <= trace (S_Q-1)^-1, the
+  reading cap of KernelSlideDropLaw and the funnel payment of
+  FunnelFourSetPayment are the SAME inequality.  THREE campaign routes, one law.
+
+  That law is the SUM of four drop conditions; the adjoined atom contributes
+  exactly one, so it is the sum of THREE insider conditions.  Each insider
+  condition alone is strictly stronger.  fourSet_pivot_of_unit_null puts each in
+  closed polynomial form (the kernel slide plus the closed-form inverse), and
+  exists_posDef_sub_of_insider_window / isTie_insider_pinch_law turn each into a
+  producer and a law.
+
+  MEASURED: over 125576 exact funnel (6,3) designs the three insider windows
+  open 64442 times against the single payment window's 45481 -- a gain of 42
+  percent.  Closing them raises the constrained residual from 0.0090 to 0.0151
+  at smallest-weight floor 0.0025, and from 0.0158 to 0.0187 at floor 0.005.
+  The residual is still linear in the smallest weight.
+
+11. THE WHOLE TieBasisWindow LAYER IS NOW POLYNOMIAL AT A CORANK-ONE DOMINATOR
+
+  pivot_of_corankOne evaluates Gtz.pivot D (insert d T) c outright, and
+  trace_inv_subsetSum_insert evaluates the one number the trace criterion turns
+  on.  pivot_self_of_corankOne gives the adjoined atom's pivot as exactly one.
+  Every erasure criterion, the trace criterion, the excess balance and the
+  circuit theorem of Gtz/Ties/TieBasisWindow now read as polynomials in the
+  Gram data of a corank-one weak dominator.
+
+12. INCIDENT
+
+  This lane overwrote the in-flight (uncommitted) umbrella lines of the lane
+  that landed Gtz/Wave/ComplementPairDeterminantLaw in commit 733e7c8, while
+  composing its own umbrella blobs from `git show HEAD:`.  The import and all
+  thirty-four pins of that module were re-applied in commit a8896ce, and every
+  pin was verified clean before the commit.  If that lane wired anything else
+  that is not visible from the tree, it must re-apply it.
