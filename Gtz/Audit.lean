@@ -1392,6 +1392,7 @@ import Gtz.Wave.OutsideReadingFloor
 import Gtz.Wave.FourSetFloorPackage
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.PairNormalWedgeLaw
+import Gtz.Wave.ErasedPairCap
 import Gtz.Wave.ProbeFreeParsevalBudget
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
@@ -38211,3 +38212,17 @@ run_cmd do
 #print axioms Gtz.wedge_budget_rank
 #print axioms Gtz.pairMinor_budget_rank
 #print axioms Gtz.pairMinor_constant_pos_iff
+
+-- Gtz/Wave/ErasedPairCap.lean -- the second rung of the erasure ladder: erasing
+-- a PAIR from a six-point boundary system leaves four atoms, a size the corank
+-- floor closes, so the pair matrix is never strictly below (t_a + t_b) times the
+-- identity; in scalars this bounds the pair's wedge from above
+#print axioms Gtz.posSemidef_of_congruence
+#print axioms Gtz.exists_triple_ge_frameOperator
+#print axioms Gtz.image_pick_eq_compl
+#print axioms Gtz.not_posDef_pairCap_of_isTie
+#print axioms Gtz.pairCapForm_transpose
+#print axioms Gtz.trace_pairCapForm
+#print axioms Gtz.secondInvariant_pairCapForm
+#print axioms Gtz.det_pairCapForm
+#print axioms Gtz.pairCap_scalar_of_isTie
