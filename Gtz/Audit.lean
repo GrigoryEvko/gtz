@@ -1445,6 +1445,9 @@ import Gtz.Wave.FourAtomRigidity
 import Gtz.Wave.BranchBPairCap
 import Gtz.Wave.PairBudgetAggregate
 import Gtz.Wave.PairMinorSumBudget
+import Gtz.Wave.NaimarkDualDesign
+import Gtz.Wave.NaimarkDualExistence
+import Gtz.Wave.NaimarkCycleFree
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -38712,3 +38715,83 @@ run_cmd do
 #print axioms Gtz.three_dominator_weight_budget_sixThree
 #print axioms Gtz.exists_sq_tripleBracket_pos_of_crossNormSq_pos
 #print axioms Gtz.exists_sq_tripleBracket_ge_crossNormSq
+
+-- Gtz/Wave/NaimarkDualDesign.lean -- the Naimark dual frame and design, the master
+-- Gram identity, the leverage and off-diagonal laws, the involution, domination as
+-- a cap on the dual Gram, the complement determinant law, the bracket law, the
+-- realness equation at six points and the corank-one collapse
+#print axioms Gtz.naimark_parseval_block
+#print axioms Gtz.naimark_coParseval_block
+#print axioms Gtz.naimark_dependency_block
+#print axioms Gtz.naimark_dependency_block'
+#print axioms Gtz.naimark_coframe_mul_frame
+#print axioms Gtz.naimark_frame_mul_coframe
+#print axioms Gtz.naimark_gram_identity
+#print axioms Gtz.naimark_dot_eq_neg
+#print axioms Gtz.naimark_leverage_add
+#print axioms Gtz.naimark_coLeverage
+#print axioms Gtz.naimark_coShare
+#print axioms Gtz.NaimarkDual.dual_atom
+#print axioms Gtz.NaimarkDual.dual_weight
+#print axioms Gtz.NaimarkDual.flip_co
+#print axioms Gtz.naimark_dual_dual_gram
+#print axioms Gtz.naimarkCoGram_eq_mul
+#print axioms Gtz.naimark_gram_add_coGram
+#print axioms Gtz.naimark_gap_eq_cap_sub
+#print axioms Gtz.dominates_iff_naimarkGram
+#print axioms Gtz.naimark_dominates_iff_coGram_le
+#print axioms Gtz.det_diagonal_sub_mul_transpose
+#print axioms Gtz.naimark_coRows_reading
+#print axioms Gtz.naimark_gapDet_law
+#print axioms Gtz.naimark_bracket_law
+#print axioms Gtz.coLeverageDual_eq
+#print axioms Gtz.naimark_sum_weight_coLeverage
+#print axioms Gtz.naimark_crossNormSq_invariant
+#print axioms Gtz.naimark_threeCycle_neg
+#print axioms Gtz.naimark_coGram_det_triple
+#print axioms Gtz.sixThree_bargmann_cycle
+#print axioms Gtz.sixThree_bargmann_realness
+#print axioms Gtz.naimarkGram_gap_det_eq_tripleGapDet
+#print axioms Gtz.tripleGapDet_naimark_law
+#print axioms Gtz.naimark_gapDet_prefactor_pos
+#print axioms Gtz.tripleGapDet_nonpos_iff_naimark
+#print axioms Gtz.naimark_reading_eq_omega_compl
+#print axioms Gtz.tripleGapDet_omega_law
+#print axioms Gtz.corankOne_co_sq
+#print axioms Gtz.corankOne_dot
+#print axioms Gtz.corankOne_threeCycle
+#print axioms Gtz.corankOne_bracket
+
+-- Gtz/Wave/NaimarkDualExistence.lean -- Parseval as orthonormality, the design
+-- plane and its complement, existence of a Naimark dual at every design, the
+-- six-point dual dictionary and the dual form of the (6,3) conjecture
+#print axioms Gtz.weight_mul_div_sqrt
+#print axioms Gtz.weight_mul_div_sqrt_two
+#print axioms Gtz.rootDesignVector_apply
+#print axioms Gtz.rootDesignVector_orthonormal
+#print axioms Gtz.rootDesignVector_mem
+#print axioms Gtz.finrank_designPlane
+#print axioms Gtz.finrank_designPlane_orthogonal
+#print axioms Gtz.exists_naimarkDual
+#print axioms Gtz.sixThree_dual_design
+#print axioms Gtz.gtzWeighted_six_three_iff_gram_cap
+#print axioms Gtz.cappedTriple_dual_iff_dominates
+#print axioms Gtz.sixThree_dual_surjective
+
+-- Gtz/Wave/NaimarkCycleFree.lean -- the three-by-three gap determinant in any
+-- ambient dimension, the cycle-free gap sum, the cross-free pair minor
+-- difference, the cycle-free reading at six points and the sharp heavy and
+-- capped atom counts
+#print axioms Gtz.gapThree_det_expand
+#print axioms Gtz.naimarkGram_gap_expand
+#print axioms Gtz.naimarkCoGram_gap_expand
+#print axioms Gtz.naimark_gapSum_cycleFree
+#print axioms Gtz.naimark_pairGapMinor_dual
+#print axioms Gtz.naimark_pairGapMinor_sub
+#print axioms Gtz.sixThree_tripleGapDet_cycleFree
+#print axioms Gtz.rank_le_card_heavyLeverage
+#print axioms Gtz.mem_cappedLeverageSet_iff
+#print axioms Gtz.corank_le_card_cappedLeverage
+#print axioms Gtz.sixThree_candidate_counts
+#print axioms Gtz.dominates_subset_heavyLeverage
+#print axioms Gtz.cappedTriple_subset_cappedLeverage

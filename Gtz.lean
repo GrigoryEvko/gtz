@@ -6585,3 +6585,21 @@ import Gtz.Wave.ComplementPairDeterminantLaw
 -- above, `2 t_p t_q w_pq <= t_p l_p + t_q l_q`, which closes the band whose
 -- floor the complement determinant law supplies.
 import Gtz.Wave.TripleVolumeRowLaw
+
+-- Gtz/Wave/NaimarkDualDesign.lean -- the Naimark dual of a weighted design.  The
+-- master identity `t_d (g_c . g_d + co_c . co_d) = delta_cd` follows from one
+-- two-sided inverse and carries everything: the dual design on the same weights,
+-- the leverage law `t(l + l*) = 1`, the negated off-diagonal Gram, the cap form
+-- of domination, the complement determinant law at general size and the bracket
+-- law that pins the Bargmann 3-cycle of a triple at six points
+import Gtz.Wave.NaimarkDualDesign
+
+-- Gtz/Wave/NaimarkDualExistence.lean -- every design carries a Naimark dual, and
+-- at six points and rank three the dual is again a design, so the conjecture
+-- turns into an upper Loewner bound on a triple Gram
+import Gtz.Wave.NaimarkDualExistence
+
+-- Gtz/Wave/NaimarkCycleFree.lean -- duality cancels the Bargmann cycle out of the
+-- gap determinant sum, the bracket law removes it from the primal determinant at
+-- six points, and the heavy atom count rises from rank minus one to rank
+import Gtz.Wave.NaimarkCycleFree
