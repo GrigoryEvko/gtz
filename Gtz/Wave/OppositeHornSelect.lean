@@ -193,4 +193,48 @@ theorem corner_column_exists_tripleGapDet_pos_closed (h : CornerForm gx gy gz u 
   rw [cornerForm_tripleGapDet_column_total h hu a b]
   exact hclosed
 
+
+/-! ## 4. The product form, at any positive probe -/
+
+/-- **THE PRODUCT CERTIFICATE.**  If the product of `t − f i` over a finite
+family is nonpositive at even one positive `t`, some member of the family is
+positive.  Three nonpositive members would make every factor positive at every
+positive `t`.
+
+This is the campaign's "select or multiply, never add" doctrine in its shortest
+form, and it needs no symmetric functions: ONE scalar, evaluated at ONE probe,
+exhibits a positive member without naming it. -/
+theorem exists_pos_of_prod_sub_nonpos {I : Type*} {s : Finset I} {f : I → ℝ}
+    {t : ℝ} (ht : 0 < t) (hprod : ∏ i ∈ s, (t - f i) ≤ 0) :
+    ∃ i ∈ s, 0 < f i := by
+  by_contra hcon
+  push_neg at hcon
+  have hpos : 0 < ∏ i ∈ s, (t - f i) :=
+    Finset.prod_pos fun i hi => by have := hcon i hi; linarith
+  linarith
+
+/-- The converse: a positive member is itself a probe at which the product
+vanishes.  So the product criterion is LOSSLESS over the positive probes. -/
+theorem exists_prod_sub_nonpos_of_exists_pos {I : Type*} [DecidableEq I]
+    {s : Finset I} {f : I → ℝ} (h : ∃ i ∈ s, 0 < f i) :
+    ∃ t : ℝ, 0 < t ∧ ∏ i ∈ s, (t - f i) ≤ 0 := by
+  obtain ⟨i, hi, hpos⟩ := h
+  refine ⟨f i, hpos, le_of_eq ?_⟩
+  exact Finset.prod_eq_zero hi (by ring)
+
+/-- **THE COLUMN PRODUCER AT A PROBE.**  The three informative gap determinants
+over a pair base, read as one product at any positive probe. -/
+theorem corner_column_exists_tripleGapDet_pos_prod (a b : Fin 3 → ℝ) {t : ℝ}
+    (ht : 0 < t)
+    (hprod : (t - tripleGapDet a b gx) * (t - tripleGapDet a b gy)
+        * (t - tripleGapDet a b gz) ≤ 0) :
+    0 < tripleGapDet a b gx ∨ 0 < tripleGapDet a b gy ∨ 0 < tripleGapDet a b gz := by
+  by_contra hcon
+  push_neg at hcon
+  obtain ⟨hx, hy, hz⟩ := hcon
+  have h1 : 0 < t - tripleGapDet a b gx := by linarith
+  have h2 : 0 < t - tripleGapDet a b gy := by linarith
+  have h3 : 0 < t - tripleGapDet a b gz := by linarith
+  nlinarith [mul_pos (mul_pos h1 h2) h3]
+
 end Gtz

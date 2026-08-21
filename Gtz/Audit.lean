@@ -37462,3 +37462,6 @@ run_cmd do
 #print axioms Gtz.exists_pos_iff_esymm_signs
 #print axioms Gtz.corner_column_exists_tripleGapDet_pos
 #print axioms Gtz.corner_column_exists_tripleGapDet_pos_closed
+#print axioms Gtz.exists_pos_of_prod_sub_nonpos
+#print axioms Gtz.exists_prod_sub_nonpos_of_exists_pos
+#print axioms Gtz.corner_column_exists_tripleGapDet_pos_prod
