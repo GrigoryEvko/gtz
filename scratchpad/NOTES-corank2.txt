@@ -192,3 +192,75 @@ CONSEQUENCE FOR THE CERTIFICATE. Put F41-3 and F41-6 together:
   * the new corner caps are tight there (4e-7) and can.
 So the cell-H certificate to hunt is: THREE OUTSIDE FLOORS against the NEW
 corner caps, with `corner_scale_cap` dropped from the dictionary entirely.
+
+================================================================================
+FORK 41, SECOND HALF -- the composition round
+================================================================================
+
+F41-7. THE CELL B SLACK TABLE (the coordinator's item 2)
+--------------------------------------------------------
+5,128,992 cell-B-shaped points (BOTH four-set gaps positive definite).
+MIN SLACK:
+  landed `corner_scale_cap`      5.8135e-01   <-- never binds, DEAD WEIGHT
+  NEW Z1 joint weight law        6.4618e-06   <-- TIGHT
+  NEW simplex law                6.4618e-06   <-- TIGHT
+  NEW diagonal cap               2.6534e-03   <-- nearly tight
+Same verdict as cell H. **DROP `corner_scale_cap` FROM BOTH CELL DICTIONARIES.**
+
+F41-8. THE TWO CELLS HAVE DIFFERENT KILLERS -- do not build one certificate
+----------------------------------------------------------------------------
+  CELL H: the three OUTSIDE floors kill it.  0 of 33,570 pass them.
+  CELL B: the outside floors leave 1,610,892 of 5,128,720 ALIVE (best margin
+          +2.49).  Adding the MEMBER floor at y drops it to 121,552.  All eight
+          floors together: 0 of 5,128,720, best joint margin -7.8578e-03.
+**CELL H's certificate must be built on the outside floors, CELL B's on the
+MEMBER floors.** Anyone hunting one certificate for both cells is wasting a
+round.
+
+F41-9. THE BRACKET MASS REFUSAL (`bdef2a7`) -- my floor against the K1 ceiling
+------------------------------------------------------------------------------
+The landed `pair_bracket_mass` is EXACT: `Sum_f t_f [a b f]^2 = w_ab`. The landed
+`crossNormSq_le_tripleBracket_sq_of_posSemidef` caps `w_ab <= [a b c]^2` when the
+gap of {a,b,c} is positive semidefinite. Composed, a weakly dominating triple
+caps the WHOLE bracket mass of one of its pairs, and after subtracting its own
+term:
+  **`t_e * [a b e]^2  <=  (1 - t_c) * [a b c]^2`**   for every other atom e.
+Contrapositive `not_posSemidef_of_bracket_mass_excess` manufactures refusals from
+two atoms, one weight and two brackets, with NO tie hypothesis.
+
+F41-10. THE COMPLEMENTARY BRACKET LAW AND THE SIZE MARKER (`dc57ef9`)
+----------------------------------------------------------------------
+Parseval reads `1 - (weighted inside atoms) = (weighted outside atoms)`. Take
+determinants of both sides.
+  LEFT  expands into terminal currency ONLY -- the three elementary symmetric
+        functions of the weighted Gram are the weighted leverages, the weighted
+        pair WEDGES, and the weighted squared BRACKET.
+  RIGHT is `t_d t_e t_f [d e f]^2` at three outside atoms, and ZERO at two.
+Hence at size six
+  **`t_a t_b t_c [a b c]^2 + t_d t_e t_f [d e f]^2
+       = 1 - Sum weighted leverages + Sum weighted pair wedges`**
+and at size five the SAME right side is paid by the inside triple ALONE.
+**THE RIGHT-HAND SIDE IS COMPUTED FROM ONE TRIPLE AND NEVER SEES THE SIZE. THE
+SIZE IS ENTIRELY THE SLACK IT MAY LEAVE, AND THAT SLACK IS A BRACKET MASS.**
+This is a size-six consumption in the hinge's own currency.
+Also landed: the budget is SYMMETRIC under complementation (either triple
+computes it), the wedge mass split `W_C - W_Cc = 2 L_C - 3`, the design-level
+(6,3) instance with no hypothesis, and the HINGE READING -- a parallel pair in
+the complement kills its bracket and saturates the budget, so a triple strictly
+under budget REFUTES every parallel pair in its complement, from one scalar
+comparison and nothing computed about those atoms.
+
+MEASURED: identity 8.9e-14 / law 1.2e-13 / size-five determinant 6.1e-14 /
+budget symmetry 7.4e-14 / wedge split 1.4e-13, each over 40,000 random Parseval
+designs with atoms whitened so Parseval is exact.
+
+F41-11. WHAT I CHECKED AND DID NOT RE-LAND
+-------------------------------------------
+Already landed, found by grepping before building: `mantel_four` and the three
+`isTie_heavyFour_*`; `insideGram_of_rankOneGap` (the corner normal form);
+`tripleGram_posDef_iff_pairVocabulary`; `KOneWedgeCeiling`; `AdmissiblePairGraph`;
+`cornerForm_insidePair_not_admissible`; `tripleGapDet_eq_pairAxisForm`;
+`trace_atomMatrix`. My `design_adjugate_probe_law` is equivalent to the
+projection block contraction `Pi[C] <= 1` restated in bracket and wedge currency
+-- the NOVELTY is the corner consequences, not the probe law itself, and the
+slack table is what shows those consequences are the binding ones.
