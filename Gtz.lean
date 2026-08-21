@@ -6431,6 +6431,11 @@ import Gtz.Wave.KTwoLeverageExcess
 import Gtz.Wave.OppositeHornFailureDirection
 import Gtz.Wave.ContractionTaxSharp
 import Gtz.Wave.KTwoTargetFactored
+import Gtz.Wave.KTwoQuotientCertificate
 import Gtz.Wave.DiamondNeighborhoodFourSet
 import Gtz.Wave.CoherentHornSumLaw
 import Gtz.Wave.OppositeHornRefusalBudget
+import Gtz.Wave.CoherentHornBlockCriterion
+import Gtz.Wave.CornerPairAdjugate
+import Gtz.Wave.CornerGramWeightLaw
+import Gtz.Wave.CornerAxisCalculus

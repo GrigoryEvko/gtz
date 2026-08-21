@@ -1328,6 +1328,8 @@ import Gtz.Wave.DominatorLeverageCap
 import Gtz.Wave.KTwoLeverageExcess
 import Gtz.Wave.ContractionTaxSharp
 import Gtz.Wave.KTwoTargetFactored
+import Gtz.Wave.KTwoQuotientCertificate
+import Gtz.Wave.CornerGramWeightLaw
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
@@ -1343,6 +1345,10 @@ import Gtz.Wave.DiamondNeighborhoodBudget
 import Gtz.Wave.DiamondNeighborhoodFourSet
 import Gtz.Wave.CoherentHornSumLaw
 import Gtz.Wave.OppositeHornRefusalBudget
+import Gtz.Wave.CornerGramWeightLaw
+import Gtz.Wave.CoherentHornBlockCriterion
+import Gtz.Wave.CornerPairAdjugate
+import Gtz.Wave.CornerAxisCalculus
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36674,6 +36680,27 @@ run_cmd do
 #print axioms Gtz.k2ChartTarget_pos_of_ratio
 #print axioms Gtz.k2ChartTarget_pos_iff_crossMass
 
+-- Gtz/Wave/KTwoQuotientCertificate.lean -- the plane split collapses to two
+-- scalars, the corner threshold has an angle-free floor, and the quotient
+-- floor is affine in the erased scale, which eliminates that scale from the
+-- corner entirely and exhibits the multiplier every monomial dictionary missed
+#print axioms Gtz.k2_planeSplit_defect
+#print axioms Gtz.k2_planeForm_eq
+#print axioms Gtz.k2_erasedReading_eq
+#print axioms Gtz.k2_thresholdFloor_identity
+#print axioms Gtz.k2ChartPlaneGap_pos
+#print axioms Gtz.k2ChartTarget_margin_identity
+#print axioms Gtz.k2ChartTarget_pos_of_crossMass_half
+#print axioms Gtz.k2ChartQuotient_affine
+#print axioms Gtz.k2ChartQuotientSlope_xZero
+#print axioms Gtz.k2ChartQuotientSlope_neg_of_xZero
+#print axioms Gtz.k2Chart_quotient_certificate
+#print axioms Gtz.k2ChartTarget_pos_of_crossCert
+#print axioms Gtz.k2ChartCrossCert_ray
+#print axioms Gtz.k2Chart_excessSum_pos
+#print axioms Gtz.k2ChartCrossCert_ray_pos
+#print axioms Gtz.k2ChartTargetPositivityXHalf_of_crossCert
+
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
 -- transferred avoiding-refusal budget
@@ -37058,3 +37085,71 @@ run_cmd do
 #print axioms Gtz.corner_self_not_posDef
 #print axioms Gtz.corner_twoInside_not_posDef
 #print axioms Gtz.corner_posDef_triple_inter_le_one
+
+-- Gtz/Wave/CoherentHornBlockCriterion.lean -- a positive trailing block and a
+-- positive determinant force positive definiteness, by one Schur identity
+#print axioms Gtz.quadForm_lastBlock_identity
+#print axioms Gtz.posDef_of_lastBlock_posDef_of_det_pos
+#print axioms Gtz.invariants_pos_of_lastBlock_posDef_of_det_pos
+
+-- Gtz/Wave/CornerPairAdjugate.lean -- the outside pair as a base: its three
+-- invariants, its adjugate reading, the negative-definite axis form, the
+-- per-triple selector, and the exact reason the corner sum law is lossy
+#print axioms Gtz.pairGap_det
+#print axioms Gtz.pairGap_secondInvariant
+#print axioms Gtz.pairGap_add_atom_det
+#print axioms Gtz.pairGap_adjugate_reading
+#print axioms Gtz.pairGap_adjugate_reading_currency
+#print axioms Gtz.tripleGapDet_eq_pairAxisForm
+#print axioms Gtz.pairAxisForm_sos
+#print axioms Gtz.one_lt_leverage_of_pairGapMinor_pos
+#print axioms Gtz.pairAxisForm_nonpos
+#print axioms Gtz.pairAxisForm_neg
+#print axioms Gtz.tripleGapDet_unit_eq_pairAxisForm
+#print axioms Gtz.tripleGapDet_axis_neg
+#print axioms Gtz.tripleGapDet_axis_nonpos
+#print axioms Gtz.tripleGram_posDef_of_admissible_of_repay
+#print axioms Gtz.tripleGram_posDef_of_admissible_of_repay_currency
+#print axioms Gtz.subsetSum_posDef_of_admissible_of_repay
+#print axioms Gtz.repayment_le_pairGapMinor_of_not_posDef
+#print axioms Gtz.corner_pairSum_currency
+#print axioms Gtz.corner_pairSum_pos_lam_threshold
+#print axioms Gtz.corner_pairSum_nonpos_of_lam_le
+
+-- Gtz/Wave/CornerGramWeightLaw.lean -- Parseval read at the adjugate probe of a
+-- triple, and the sharp joint weight law it gives at a one-axis-zero corner
+#print axioms Gtz.bracketNormal_dotProduct_bracketNormal
+#print axioms Gtz.design_adjugate_probe_law
+#print axioms Gtz.design_pairArea_ge_weight_mul_bracket_sq
+#print axioms Gtz.discriminant_nonneg_of_binaryForm_nonneg
+#print axioms Gtz.corner_oneAxisZero_quadratic_form
+#print axioms Gtz.corner_oneAxisZero_weight_law
+
+-- Gtz/Wave/CornerAxisCalculus.lean -- the corner as ONE quadratic-form equation
+-- in one free probe, spent at four probes: the atom reading, the coordinate
+-- axes, the cross product (THE AXIS ELIMINATION) and the axis cross.  Out of it
+-- come the three totals at an outside atom, the exact two-inside gap
+-- determinant, the equality of the three inside pair minors, and the deletion
+-- of the inside triangle from the admissibility graph before any tie hypothesis.
+#print axioms Gtz.tripleGapDet_eq_bracketSq_sub_wedgeSum
+#print axioms Gtz.cornerForm_atom_reading
+#print axioms Gtz.cornerForm_axis_reading
+#print axioms Gtz.cornerForm_leverage_total
+#print axioms Gtz.cornerForm_bracket_total
+#print axioms Gtz.cornerForm_axisBracket_eq
+#print axioms Gtz.cornerForm_axisCross_total
+#print axioms Gtz.cornerForm_mixed_wedge_total
+#print axioms Gtz.cornerForm_mixed_pairMinor_total
+#print axioms Gtz.cornerForm_insidePair_bracket_total
+#print axioms Gtz.cornerForm_twoInside_gapDet
+#print axioms Gtz.cornerForm_corner_gapDet_eq_neg_pairGapMinor
+#print axioms Gtz.cornerForm_insidePair_pairGapMinor_eq
+#print axioms Gtz.cornerForm_insidePair_pairGapMinor_eq_zero
+#print axioms Gtz.cornerForm_twoInside_gapDet_pure
+#print axioms Gtz.cornerForm_twoInside_gapDet_nonpos
+#print axioms Gtz.cornerForm_twoInside_gapDet_eq_zero_iff
+#print axioms Gtz.cornerForm_insidePair_not_admissible
+#print axioms Gtz.cornerForm_twoInside_not_live
+#print axioms Gtz.cornerForm_ten_refusals_free
+#print axioms Gtz.cornerForm_exists_inadmissible_mixed
+#print axioms Gtz.cornerForm_exists_admissible_mixed
