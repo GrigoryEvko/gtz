@@ -431,4 +431,59 @@ theorem corner_column_posDef_iff_esymm_signs (a b : Fin 3 → ℝ)
     · exact Or.inr (Or.inl ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h))
     · exact Or.inr (Or.inr ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h))
 
+
+/-! ## 10. The residual configuration, named -/
+
+/-- **A NONPOSITIVE SUM WITH A POSITIVE PRODUCT MEANS EXACTLY ONE POSITIVE.**
+Three reals with `e₃ > 0` are either all positive or exactly one positive, and a
+nonpositive sum excludes the first.  So this is precisely the configuration the
+linear producers cannot see: ONE SMALL POSITIVE HIDING BEHIND TWO LARGE
+NEGATIVES.
+
+[MEASURED: over the corners whose complement refuses, the weighted column total
+misses 1.426 percent, and on exactly that residual `e₃ > 0` fires at 91.8
+percent and `e₂ < 0` at 95.9 percent — the two together closing it, as the
+equivalence `Gtz.exists_pos_iff_esymm_signs` requires.] -/
+theorem exactly_one_pos_of_sum_nonpos_of_prod_pos {x y z : ℝ}
+    (hsum : x + y + z ≤ 0) (hprod : 0 < x * y * z) :
+    (0 < x ∧ y ≤ 0 ∧ z ≤ 0) ∨ (x ≤ 0 ∧ 0 < y ∧ z ≤ 0)
+      ∨ (x ≤ 0 ∧ y ≤ 0 ∧ 0 < z) := by
+  have hx0 : x ≠ 0 := by rintro rfl; simp at hprod
+  have hy0 : y ≠ 0 := by rintro rfl; simp at hprod
+  have hz0 : z ≠ 0 := by rintro rfl; simp at hprod
+  rcases lt_or_gt_of_ne hx0 with hx | hx <;> rcases lt_or_gt_of_ne hy0 with hy | hy <;>
+    rcases lt_or_gt_of_ne hz0 with hz | hz
+  · exact absurd hprod (not_lt.mpr
+      (mul_neg_of_pos_of_neg (mul_pos_of_neg_of_neg hx hy) hz).le)
+  · exact Or.inr (Or.inr ⟨hx.le, hy.le, hz⟩)
+  · exact Or.inr (Or.inl ⟨hx.le, hy, hz.le⟩)
+  · exact absurd hprod (not_lt.mpr
+      (mul_neg_of_neg_of_pos (mul_neg_of_neg_of_pos hx hy) hz).le)
+  · exact Or.inl ⟨hx, hy.le, hz.le⟩
+  · exact absurd hprod (not_lt.mpr
+      (mul_neg_of_neg_of_pos (mul_neg_of_pos_of_neg hx hy) hz).le)
+  · exact absurd hprod (not_lt.mpr
+      (mul_neg_of_pos_of_neg (mul_pos hx hy) hz).le)
+  · exact absurd hsum (by linarith)
+
+/-- **THE RESIDUAL IS A SINGLE SLOT.**  Over an admissible outside pair, if the
+column total is nonpositive but the product of the three gap determinants is
+positive, then EXACTLY ONE inside atom repays the pair — and its triple strictly
+dominates.
+
+This is the shape no nonnegative weighting can detect
+(`Gtz.linear_producer_incomplete`), so the third symmetric function is not an
+optimisation of the sum but the only instrument that sees this case. -/
+theorem corner_column_unique_posDef_of_sum_nonpos_of_prod_pos (a b : Fin 3 → ℝ)
+    (hmin : 0 < pairGapMinor a b) (htr : 2 < leverageOf a + leverageOf b)
+    (hsum : tripleGapDet a b gx + tripleGapDet a b gy + tripleGapDet a b gz ≤ 0)
+    (hprod : 0 < tripleGapDet a b gx * tripleGapDet a b gy * tripleGapDet a b gz) :
+    (tripleGram a b gx - 1).PosDef ∨ (tripleGram a b gy - 1).PosDef
+      ∨ (tripleGram a b gz - 1).PosDef := by
+  rcases exactly_one_pos_of_sum_nonpos_of_prod_pos hsum hprod with
+    ⟨h, -, -⟩ | ⟨-, h, -⟩ | ⟨-, -, h⟩
+  · exact Or.inl ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h)
+  · exact Or.inr (Or.inl ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h))
+  · exact Or.inr (Or.inr ((tripleGram_posDef_iff_gapDet_pos_of_admissible hmin htr).mpr h))
+
 end Gtz

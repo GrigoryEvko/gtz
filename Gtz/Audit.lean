@@ -37633,3 +37633,5 @@ run_cmd do
 #print axioms Gtz.pairGapMinor_self_eq
 #print axioms Gtz.atomPairMinor_offDiag_mass
 #print axioms Gtz.exists_inadmissible_of_leverage_small
+#print axioms Gtz.exactly_one_pos_of_sum_nonpos_of_prod_pos
+#print axioms Gtz.corner_column_unique_posDef_of_sum_nonpos_of_prod_pos
