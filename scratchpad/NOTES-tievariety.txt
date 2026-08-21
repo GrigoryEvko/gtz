@@ -89,6 +89,14 @@ types by the w-parallel-class partition, all of dimension 5:
   (1,1,1,1,2) with 13 tight triples ; (1,1,1,1,2) with 12 ; (1,1,2,2) with 12 ;
   (1,1,1,3) with 10.
 
+  THE PARALLEL PAIR IS A DUPLICATE.  Over 12000 further ties, at three seeds and with
+  weight floors 0 and 0.03, the worst max cos^2 between two atoms is 1.00000000000000 and
+  the length ratio |g_p|/|g_q| of that pair is 1.0000000000 at min, median and max.  So the
+  parallel pair is not merely parallel: THE TWO ATOMS ARE EQUAL, which is exactly
+  Gtz.duplicateSplitDesign, whose tie transfer Gtz.isTie_duplicateSplitDesign_iff is an iff
+  already landed.  Merging that pair returned an exact (5,3) tie in 400 of 400 tests, worst
+  |value - 1| = 8.8e-16.
+
   WHY 5 IS THE NUMBER THE HINGE PREDICTS.  A (6,3) tie with a parallel pair
   merges to a (5,3) tie (landed).  The (5,3) tie locus has dim 4 and its weights
   are free; a split re-divides one weight, adding exactly ONE parameter.  So the
@@ -96,3 +104,57 @@ types by the w-parallel-class partition, all of dimension 5:
   covered by parallel pairs.  Dimensions AGREE, which is the outcome the hinge
   predicts and the outcome a counterexample would have to violate.
 
+
+5. WHY THE SPLIT LOCUS IS FIVE-DIMENSIONAL AND NOT SIX
+-------------------------------------------------------
+A parallel split of one atom of a (5,3) tie has TWO free parameters: the weight share and
+the length ratio r (the constraints are tau_p + tau_q = t_c and tau_p |g_p|^2 + tau_q
+|g_q|^2 = t_c |g_c|^2).  Scanning that whole plane at the diamond, the split is an exact
+tie ONLY at r = +-1, at every share, and the value rises smoothly away from it:
+
+    tau/t1 = 0.3 :  r = +-1.00 -> value 3.2e-16 ;  +-1.25 -> 0.227 ;  +-1.50 -> 0.391
+                    +-0.75 -> 0.108 ;  +-0.50 -> 0.199 ;  +-0.25 -> 0.260
+
+18 ties out of a 72-point (tau, r) grid, and every one of them at r = +-1.  So the ratio is
+PINNED and only the share survives: the split locus is 4 + 1 = 5.  This is the same fact as
+section 4's measurement that the parallel pair of a (6,3) tie always has length ratio one.
+
+6. THE CONTRAST BETWEEN THE TWO CELLS, IN ONE LINE
+---------------------------------------------------
+Same code, same objective, same chart, same weight floor:
+
+    (5,3):  935 ties, 531 of them PARALLEL-FREE (worst max cos^2 = 0.2667)
+    (6,3): 12000+ ties, ZERO parallel-free (worst max cos^2 = 1.00000000000000)
+
+The (5,3) hinge is false and the search sees that immediately.  At (6,3) the same search
+never once leaves the parallel locus.
+
+7. THE ADVERSARIAL SEARCH FOR A PARALLEL-FREE (6,3) TIE
+--------------------------------------------------------
+Residual = the ten (twenty) tie defects TOGETHER with a barrier max(cos^2_pq - (1-eps), 0),
+cos^2_pq = P_pq^2/(P_pp P_qq), under a hard weight floor 0.02, 2500 restarts at each of
+eps = 0.30, 0.10, 0.03, 0.01.  Best total loss 2.2e-11 at every eps, and at the optimum:
+
+  * the BARRIER IS INACTIVE (max cos^2 reaches only 0.458 of the 0.70 to 0.99 allowed),
+  * TEN triples have f_C > 0, max f_C = 2.7e-6, so the point is NOT a tie but a design with
+    ten strictly dominating triples of tiny margin,
+  * four of the six weights sit exactly ON the floor.
+
+So the infimum is approached by degenerating the weights, not by finding a parallel-free
+tie, and the barrier never binds.  Without the floor the same search runs the weights to
+1e-6 and reports 6e-13 -- that is the failure mode the brief warns about, and the floor is
+what exposes it.
+
+8. WHAT IS PROVED, WHAT IS COMPUTED
+------------------------------------
+PROVED (in Lean, Gtz/Wave/DependencyDominationCriterion.lean, standard axioms):
+  the block-versus-kernel criterion at a symmetric idempotent, and its design corollaries
+  Gtz.dominates_iff_kernelBound, Gtz.dominates_iff_dependencyBound and
+  Gtz.dominates_iff_dependencyBound_compl.
+PROVED on paper, not yet in Lean: the w-chart criterion of section 1 and its corank-one
+  specialisation (section 2), and the sharp duality ghat = N^{-1/2} w.
+COMPUTED, in double precision, NOT proved: everything in sections 3 to 7 -- the (5,3)
+  classification, the dimensions 4 and 5, the class law x_c = (1+T_j)/(2T_j), and the
+  statement that every (6,3) tie carries a parallel pair.  A search that finds no
+  counterexample is not a proof that none exists, and a component of the (6,3) tie variety
+  of dimension 4 or less would be invisible to random restarts.
