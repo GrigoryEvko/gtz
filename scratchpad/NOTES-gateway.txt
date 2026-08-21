@@ -1,0 +1,108 @@
+FORK 47 — G2, the corner's admissible outside pair (E1).  Self-contained.
+
+STATUS: E1 NOT CLOSED.  Ten unconditional theorems landed (242c05a, 0dec1ab),
+all [propext, Classical.choice, Quot.sound], module Gtz/Wave/CornerGatewayBudget.lean.
+
+F47-1. THE COORDINATOR'S TWO CONJECTURES ARE BOTH TRUE — I DERIVED BOTH BY HAND.
+  (a) adj(A) - adj(1-A) = (tr A - 1)I - A.  This is NOT a design law: it is a
+      pure Cayley-Hamilton identity for EVERY real 3x3 matrix.  Proof: with
+      adj(M) = M^2 - (tr M)M + e2(M)I and e2(I-A) = 3 - 2tr A + e2(A), the A^2
+      terms cancel.  Verified 4.0e-15 on 2000 random (non-symmetric) matrices.
+      LANDED as adjugate_sub_adjugate_one_sub.
+  (b) tr(P_perp N_O P_perp) = 2 - tauC + s/lam.  Proof: tr N_O = 3 - (s+tauC),
+      and the axis law gives u'N_C u = s(1+lam)/lam, so u'N_O u = 1 - s - s/lam.
+      Verified 1.1e-14 on 2160 exact corners.  LANDED in scalar form as
+      corner_planeTrace_surplus.
+
+F47-2. THE NEW CENTRAL LAW — THE PAIR MINOR BUDGET OF A WEIGHTED TRIPLE.
+  sum_{i<j} t_i t_j (1+q_ij) = (1-T)(S-1) + sum t_i^2 x_i
+                               + t1t2t3 [g1g2g3]^2 + det(1 - sum t_i A_i)
+  with x_i = l_i - 1, T = sum t_i, S = sum t_i x_i.  HYPOTHESIS-FREE: three
+  vectors, three scalars, no Parseval, no design, no corner.  It is the landed
+  det_one_sub_weighted_triple read in the pair minor instead of the wedge
+  (w_ij = q_ij + l_i + l_j - 1); that shift is what turns a determinant formula
+  into a budget.  Verified 3.1e-15 at the outside triple of 2160 corners AND at
+  arbitrary triples of arbitrary designs (complement of any size).
+  At a design: 1-T is the complement weight tauC, S-1 = 1-s, and the last term
+  is det N_C >= 0 because the complement of a triple is a weighted sum of
+  rank-one atoms (LANDED: complement_triple_posSemidef, det_complementTriple_nonneg,
+  via parseval_triple_reading_le).
+
+F47-3. THE CURRENCY BRIDGE (new, hypothesis-free, LANDED).
+  [abc]^2 = tripleGapDet + (q12+q13+q23) + (x1+x2+x3) + 1.
+  The characteristic polynomial of the Gram read at 1, every coefficient a
+  campaign currency.  Refusals are written in tripleGapDet, admissibility in
+  pairGapMinor, the hinge in the bracket; this converts between all three.
+
+F47-4. THE REFINED BUDGET IN GAP CURRENCY (LANDED, exact).
+  (weight slack) = sum (-q_ij) t_i t_j (1-t_k) + t1t2t3 tripleGapDet + det N_C
+  where (weight slack) = e2(t) - (1-T)(S-1) - sum t_i^2 x_i - t1t2t3 (1 + sum x_i).
+  The coefficient t_i t_j (1-t_k) is exactly what the crude budget discards.
+
+F47-5. THE PRODUCERS AND THEIR MEASURED COVERAGE (each an unconditional theorem;
+  the COVERAGE is a measurement, the DISJUNCTION IS NOT PROVED EXHAUSTIVE).
+  On 181,249 exact random corners with all three outside atoms heavy:
+    [F<0]   weight producer  (no bracket)      99.6546%
+    [Fbr<0] bracket producer                   99.9691%
+    [max(b_i+b_j)>1]  (parent's landed law)    99.9978%
+    UNION of either producer with the b-law   100.0000%, zero misses
+  Soundness: neither producer ever fired where all three q_ij <= 0.
+  No corner sampled violated the gateway; min over corners of max outside q was
+  +0.3687 (adversarial descent, 32 threads, 12-parameter exact corner chart).
+
+F47-6. THE EXTREMAL, LOCATED EXACTLY.  Adversarial descent on the true 12-param
+  corner manifold puts the minimiser at b_d -> 1/2 for ALL THREE outside atoms
+  (measured b = (0.5087, 0.4997, 0.5013), sum 1.5097), tauC -> 0, lam -> 500+,
+  s -> 1.  At the symmetric vertex b = (1/2,1/2,1/2) the weight slack is EXACTLY
+  -tauC/2 (hand computation, confirmed): so the crude budget is negative there
+  and the producer fires.  The residual sliver is tauC = 2(1-s) exactly, which
+  is the same boundary the parent's case analysis reached from the other side.
+
+F47-7. WHY THE SCALAR RELAXATION CANNOT PROVE EXHAUSTIVENESS — WITNESS.
+  All three pairs inadmissible implies (i) b_i + b_j <= 1 (pairing cap) and
+  (ii) F >= 0 (the budget).  That system is FEASIBLE: at
+      t = (0.00035, 0.473, 0.497),  b = (0.96, 0.04, 0.04)
+  every weight-level consequence holds and F = +0.215.  The point is killed only
+  by the bracket term, worth 0.2245 there.  So any proof must carry the bracket.
+
+F47-8. THE SIGN DICHOTOMY — the structure a successor should attack.
+  Let sigma = sign(p12 p13 p23) (INVARIANT under atom sign flips, so genuine).
+  Write q_ij = -r_ij, r >= 0.  Then exactly
+      det(K_D - I) = -2 prod x + 2 sigma sqrt(prod (x_i x_j + r_ij)) - sum x_i r_jk .
+  * sigma = +1:  sqrt >= prod x, hence det(K_D - I) >= -sum x_i r_jk, and
+    substituting into F47-4 gives, using the member weight cap t_k l_k <= 1,
+        F_plus := (weight slack of F47-4)  >=  sum r_ij t_i t_j (1 - t_k l_k) + det N_C  >= 0 .
+    So [all q <= 0 AND sigma = +1] ==> F_plus >= 0.  CONTRAPOSITIVE IS A PRODUCER,
+    and it KILLS the F47-7 witness (F_plus = 0.215 - 0.2256 = -0.0106 < 0).
+  * sigma = -1:  the probe w = (s_i/sqrt(x_i)) with signs chosen so every cross
+    term is negative gives 0 <= w'K_D w <= sum l_i/x_i - 6, i.e. sum 1/x_i >= 3;
+    and det(K_D) >= 0 gives  sum_{i<j} r_ij l_k + 4 prod x_i <= 1 + sum x_i.
+    NEITHER kills the F47-7 witness (sum 1/x = 47.4; 4 prod x = 19.6 << 2741).
+  ON THE BOUNDARY r = 0 the Gram determinant is PINNED:
+      det K_D = 1 + sum x_i + (2 sigma - 2) prod x_i ,
+  i.e. 1 + sum x for sigma = +1 and 1 + sum x - 4 prod x for sigma = -1.
+  At the witness BOTH values are ~2721-2741, and t1t2t3 times that is ~0.224 > F,
+  forcing det N_C < 0 — so the witness dies in both branches once the bracket is
+  carried exactly.  THE OBSTRUCTION IS PURELY THAT sigma = -1 HAS NO CLEAN
+  LOWER BOUND ON det K_D AWAY FROM r = 0.  That is the one missing lemma.
+
+F47-9. FIELD-BLINDNESS.  Per the coordinator, E1 holds at the complex corner tie
+  (scratchpad/corner-ten/complextie.txt, q = +2.013/+6.116/+9.884).  Everything
+  in F47-2..F47-8 is PSD/Parseval/ordering only — no chirotope, no bracket
+  pinning, no realness — so the route is compatible.  The Hermitian Lagrange
+  identity carries all the budgets to C verbatim.
+
+F47-10. REFUTED, WITH WITNESSES.
+  * "the pairing cap alone closes the deep regime" — FALSE.  Adversarial max of
+    F over {t>0, sum t<1, b in fractional stable set polytope, sum a>1} is
+    +0.2153, attained at the F47-7 witness.
+  * "b_i + b_j <= 1 for all pairs forces sum b_d <= 3/2 hence a contradiction"
+    — the implication is right but NOT a contradiction: the polytope max of
+    sum A_d b_d is max(A_max, (sum A_d)/2), and since A_d < 1 the binding branch
+    gives only tau_O <= 2s-1, i.e. tauC >= 2(1-s), which is the residual, not empty.
+  * DO NOT quote a margin from sampling here: the gateway margin decays like
+    (tauC + s/lam)/tau_O and tends to 0 along the extremal ray.  It is positive
+    everywhere sampled but NOT bounded below.
+
+TOOLING: scratchpad/f47/gw.jl (12-param exact corner chart, 32-thread descent).
+Memory: all runs under 1 GB.
