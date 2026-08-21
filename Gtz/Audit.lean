@@ -1456,6 +1456,7 @@ import Gtz.Wave.GapDetPositiveInadmissible
 import Gtz.Wave.FunnelSpectralPinch
 import Gtz.Wave.ComplementPairDeterminantLaw
 import Gtz.Wave.TripleVolumeRowLaw
+import Gtz.Wave.ComplementVolumeRowLaw
 import Gtz.Wave.TripleInvariantChart
 import Gtz.Wave.VolumeFloorSizeSix
 import Gtz.Wave.NaimarkDualDesign
@@ -1465,6 +1466,7 @@ import Gtz.Wave.NaimarkSharpDesign
 import Gtz.Wave.PlaneShadowPairBridge
 import Gtz.Wave.PivotFourDominatingTriples
 import Gtz.Wave.UnitAtomFunnelClosure
+import Gtz.Wave.CorankStratumCollapse
 import Gtz.Wave.RankTwoTieClassification
 import Gtz.Wave.SharpFiveSetCriterion
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
@@ -39330,3 +39332,45 @@ run_cmd do
 #print axioms Gtz.gap_erase_trichotomy
 #print axioms Gtz.forall_posDef_gap_erase_iff
 #print axioms Gtz.exists_null_of_gap_erase_reading_eq_one
+
+-- Gtz/Wave/ComplementVolumeRowLaw.lean -- the four volumes that MISS a pair total
+-- that pair's pairing-cap slack, so the cap is a sum of four squares and is attained
+-- exactly at four coplanar atoms.  The mirror of the landed triple volume row law.
+#print axioms Gtz.det_naimarkGram_triple
+#print axioms Gtz.det_naimarkCoGram_triple
+#print axioms Gtz.pairCapSlack_eq_weight_mul_coCrossNormSq
+#print axioms Gtz.bijective_sumElim_six
+#print axioms Gtz.bijective_six
+#print axioms Gtz.pairCapSlack_eq_sum_complement_volumes
+#print axioms Gtz.pairCapSlack_nonneg
+#print axioms Gtz.pairCapSlack_eq_zero_iff_fourCoplanar
+#print axioms Gtz.crossNormSq_and_pairCapSlack_dictionary
+#print axioms Gtz.pairCapSlack_eq_sum_complement_volumes'
+#print axioms Gtz.pairCapSlack_nonneg'
+#print axioms Gtz.pairCapSlack_eq_zero_iff_fourCoplanar'
+
+-- Gtz/Wave/CorankStratumCollapse.lean -- the corank two wing of the (6,3) hinge
+-- collapsed onto the funnel, and the Sylvester-Jacobi trichotomy of a dominating
+-- triple: zero, one or three vanishing inside pair minors, never exactly two
+#print axioms Gtz.leverageSub_mul_tripleGapDet_add_sq
+#print axioms Gtz.tripleGapDet_nonpos_of_pairGapMinor_eq_zero
+#print axioms Gtz.tripleGapDet_nonneg_of_dominates
+#print axioms Gtz.tripleGapDet_eq_zero_of_pairGapMinor_eq_zero
+#print axioms Gtz.pairGapMinor_eq_zero_of_two_eq_zero
+#print axioms Gtz.pairGapMinor_eq_zero_of_rankOneGap
+#print axioms Gtz.leverageOf_eq_one_of_zeroAxisReading
+#print axioms Gtz.hasParallelPair_of_isTie_sixThree_of_twoZeroReadings
+#print axioms Gtz.hasParallelPair_of_isTie_sixThree_of_zeroAxisReading
+#print axioms Gtz.corner_axisReading_ne_zero_of_allHeavy
+#print axioms Gtz.pairGapMinor_eq_zero_of_one_nullReading_zero
+#print axioms Gtz.tripleSet_swap_left
+#print axioms Gtz.tripleSet_rotate
+#print axioms Gtz.pairGapMinor_eq_zero_of_two_eq_zero_middle
+#print axioms Gtz.pairGapMinor_eq_zero_of_two_eq_zero_last
+#print axioms Gtz.pairGapMinor_nonneg_triple
+#print axioms Gtz.tripleStratum_trichotomy
+#print axioms Gtz.hingeHoldsAtSize_six_three_of_allHeavy_of_strata
+#print axioms Gtz.sum_outside_weight_mul_tripleGapDet_corner
+#print axioms Gtz.dotProduct_subsetSum_mulVec_sq
+#print axioms Gtz.corner_planeProbe_tight
+#print axioms Gtz.corner_axisProbe_total

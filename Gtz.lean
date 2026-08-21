@@ -6591,6 +6591,7 @@ import Gtz.Wave.ComplementPairDeterminantLaw
 -- above, `2 t_p t_q w_pq <= t_p l_p + t_q l_q`, which closes the band whose
 -- floor the complement determinant law supplies.
 import Gtz.Wave.TripleVolumeRowLaw
+import Gtz.Wave.ComplementVolumeRowLaw
 
 -- Gtz/Wave/NaimarkDualDesign.lean -- the Naimark dual of a weighted design.  The
 -- master identity `t_d (g_c . g_d + co_c . co_d) = delta_cd` follows from one
@@ -6715,6 +6716,7 @@ import Gtz.Wave.PivotFourDominatingTriples
 -- and hence of weighted GTZ at rank three: the all-heavy one
 -- (Gtz.gtzWeightedAll_three_of_allHeavy_hinge).
 import Gtz.Wave.UnitAtomFunnelClosure
+import Gtz.Wave.CorankStratumCollapse
 
 
 -- Gtz/Wave/RankTwoTieClassification.lean -- THE COMPLETE CLASSIFICATION OF RANK-TWO TIES,
