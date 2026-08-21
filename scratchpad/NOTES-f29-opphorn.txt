@@ -1254,3 +1254,96 @@ for a general Finset and is REUSABLE BY EVERY LANE with a selection problem
   resid.jl   fire rates restricted to the complement-fails region
   colid.jl   the polarized form and the column total, verified
   nine.jl    the nine total, verified
+
+======================================================================
+ROUND 13b (FORK 50).  THE COORDINATOR'S QUEUE.  E2's 100 PERCENT IS
+CONDITIONAL; THE PROBE IS IRREDUCIBLY DATA-DEPENDENT; THE LIVENESS
+CAVEAT IS GONE.   (9b2c34a)
+======================================================================
+
+62. **CORRECTION: E2 AT 100 PERCENT IS CONDITIONAL ON THE COMPLEMENT REFUSING**
+--------------------------------------------------------------------------------
+Read unconditionally, "some inside atom repays some admissible outside pair" is
+NOT 100 percent.  Measured over 132637 corners (e2.jl):
+
+    every corner has at least one admissible outside pair    100.0000 %  (E1)
+    of all admissible outside pairs, some inside atom repays  28.737  %
+    E2  (SOME admissible pair repays)                         61.0606 %
+    E2' (EVERY admissible pair repays)                         5.8739 %
+
+Restricted to the complement-fails region (16469 corners, e2cond.jl):
+
+    E2  | complement fails                                    100.0000 %
+    E2' | complement fails                                     64.9827 %
+    of admissible pairs there, some inside atom repays         79.3048 %
+
+So the sibling's 100.0000 percent is E2 CONDITIONED ON THE COMPLEMENT REFUSING,
+and that is the only form in which it is true.  The unconditional reading is
+61 percent, and the remaining 39 percent is carried by the complement, which
+dominates at 95.3 percent of all corners.  **State E2 with its condition.**
+
+63. **THE SECOND SELECTION SURVIVES E1**
+------------------------------------------
+E1 hands the horn AN admissible outside pair.  That is not enough: only 28.7
+percent of admissible pairs repay (79.3 percent on the complement-fails region),
+and E2' -- every admissible pair repays -- is 5.9 percent globally and 65.0
+percent on the residual.  **So the pair E1 produces is usually the wrong pair.**
+The horn cannot chain E1 into E2 slot-wise; it needs the RIGHT pair, and that is
+the second selection.  Do not brief a successor that E1 discharges the pair
+choice.
+
+64. **REFUTED: THE PRODUCT FORM IS NOT A HANDELMAN TARGET**
+------------------------------------------------------------
+The coordinator routed the product form as converting a disjunction into a
+single polynomial inequality "hence into a Handelman target".  That is true only
+once the probe t is FIXED, and NO FIXED PROBE EXISTS.
+
+prod_{nine}(t - phi) <= 0 holds exactly when t lies in (2nd largest phi, largest
+phi] with t > 0.  Over the complement-fails region (16615 corners, probe.jl) the
+required windows are DISJOINT:
+
+    lower ends reach   t > 3685.5451
+    upper ends reach   t < 2.9914
+
+a gap of three orders of magnitude.  Scaled probes t = c*S fail too, for every
+natural corner scalar S tried (probe2.jl, 16480 corners) -- the feasible c
+interval is empty in all seven cases:
+
+    S = 1               need c in (12608.15, 1.2706)
+    S = lam             need c in (947.71, 0.3945)
+    S = lam^2           need c in (1427.90, 0.0359)
+    S = 1+lam           need c in (881.46, 0.3358)
+    S = sum outside lev need c in (97.38, 0.1076)
+    S = sum outside pgm need c in (36.98, 0.0465)
+    S = max outside pgm need c in (9.84, 0.0791)     <- closest, still 124x apart
+
+**THE PROBE IS IRREDUCIBLY DATA-DEPENDENT.**  The product form converts a
+disjunction over MEMBERS into an existential over PROBES -- a one-parameter
+family, not a single inequality.  It remains an excellent PRODUCER (supply any
+convenient t, get a dominator) and it is lossless, but it is not a route to a
+single closing polynomial, and no lane should spend a round hunting one.
+
+65. **THE LIVENESS CAVEAT IS GONE ON AN ADMISSIBLE PAIR**  (item 4, LANDED)
+----------------------------------------------------------------------------
+The landed Gtz.tripleGram_posDef_iff_pairVocabulary is ORDERED: with the pair
+first, the three leading principal minors are lev a - 1, pairGapMinor a b, and
+tripleGapDet a b c.  Hence
+
+  **0 < pairGapMinor a b  and  2 < lev a + lev b
+      ==>  ( (tripleGram a b c - 1).PosDef  <->  0 < tripleGapDet a b c )**
+
+(tripleGram_posDef_iff_gapDet_pos_of_admissible), the heaviness coming from the
+landed one_lt_leverage_of_pairGapMinor_pos_of_trace.  So over an admissible
+outside pair the column producer exhibits a STRICT DOMINATOR outright
+(corner_column_exists_posDef, and _closed from the column total).  The measured
+caveat of section 60(b) -- 2790 individual det>0 on dead triples -- is exactly
+the case of an INADMISSIBLE pair, and it cannot arise here.  Every lane carrying
+"a positive gap determinant is not yet domination" can drop it once its pair is
+admissible.
+
+66. SCRIPTS ADDED (scratchpad/f50)
+-----------------------------------
+  e2.jl      E1, E2, E2' unconditionally
+  e2cond.jl  the same conditioned on the complement refusing
+  probe.jl   the fixed-probe windows, and their disjointness
+  probe2.jl  seven scaled probes, all infeasible
