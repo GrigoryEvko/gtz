@@ -6445,6 +6445,7 @@ import Gtz.Wave.OppositeHornRefusalBudget
 import Gtz.Wave.CoherentHornBlockCriterion
 import Gtz.Wave.CornerPairAdjugate
 import Gtz.Wave.CornerRepaymentMatrix
+import Gtz.Wave.WeightedRepaymentTrace
 import Gtz.Wave.CornerGramWeightLaw
 import Gtz.Wave.CornerAxisCalculus
 import Gtz.Wave.CornerAdjugateWeightCap

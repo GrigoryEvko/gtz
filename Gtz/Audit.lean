@@ -1362,6 +1362,7 @@ import Gtz.Wave.ComplementBracketLaw
 import Gtz.Wave.CoherentHornBlockCriterion
 import Gtz.Wave.CornerPairAdjugate
 import Gtz.Wave.CornerRepaymentMatrix
+import Gtz.Wave.WeightedRepaymentTrace
 import Gtz.Wave.CornerAxisElimination
 import Gtz.Wave.CornerAxisCalculus
 import Gtz.Wave.CornerAxisBridges
@@ -38057,3 +38058,18 @@ run_cmd do
 #print axioms Gtz.corner_fourSet_gapDet_eq_zero
 #print axioms Gtz.corner_fourSet_not_posDef
 #print axioms Gtz.bothLight_det_le_secondInvariant
+
+-- Gtz/Wave/WeightedRepaymentTrace.lean -- the design-weighted total of the
+-- three one-inside gap determinants is corner-pair data less the complement's
+-- own axis moment, so the sixth atom enters at exactly one term; the floor that
+-- drops that term is a true theorem and a dead instrument
+#print axioms Gtz.parseval_probe_polar
+#print axioms Gtz.axisMoment_add_compl
+#print axioms Gtz.axisMoment_univ
+#print axioms Gtz.weighted_tripleGapDet_sum
+#print axioms Gtz.weighted_tripleGapDet_sum_compl
+#print axioms Gtz.axisMoment_nonpos
+#print axioms Gtz.weighted_tripleGapDet_sum_ge
+#print axioms Gtz.exists_repay_of_weighted_trace_pos
+#print axioms Gtz.exists_repay_of_parseval_floor_pos
+#print axioms Gtz.axisMoment_compl_ge_of_no_repay
