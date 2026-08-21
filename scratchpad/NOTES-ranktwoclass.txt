@@ -133,3 +133,55 @@ Class splits found: (1,2,1) at m = 4, (2,2,1) at m = 5, (2,3,1) at m = 6.
 * No claim that the weights of a rank-two tie are uniform.  At three atoms
   Gtz.rankTwoTie_three_atoms gives t_c (2 l_c - 1) = 1 for every atom, which the tie
   at t = (0.0102, 0.9785, 0.0113) satisfies.  There is no Mercedes rigidity.
+
+8. ADDED AFTER THE FIRST COMMIT
+--------------------------------
+
+THE CLASS WEIGHT LAW.  The three class weights sum to one
+(Gtz.sum_classWeight_eq_one) and each is the reciprocal of the class excess
+(Gtz.classWeight_eq_inv), so the three class leverages of a rank-two tie satisfy ONE
+equation:
+
+    1/(2 l_1 - 1) + 1/(2 l_2 - 1) + 1/(2 l_3 - 1) = 1.
+
+Its symmetric solution is l = 2 at every class, which is the Mercedes tie.  The
+immediate consequence, Gtz.exists_two_le_leverage_of_isTie: one class weighs at most a
+third, so SOME atom of a rank-two tie carries leverage at least two.  This needs no tie
+hypothesis in the working form -- heaviness and no strictly dominating pair suffice.
+
+THE (6,3) PACKAGING, Gtz.sixThree_planeShadow_trichotomy.  At six atoms and ANY plane:
+
+  (i)   the shadow is light at some atom, OR
+  (ii)  the plane carries a strictly dominating shadow pair -- a PLANE-STRICT PAIR, the
+        object Gtz.Wave.PlaneShadowPairBridge hunts -- OR
+  (iii) the six atoms are rigid: exactly three frame-bracket classes, a pair of atoms
+        with a vanishing frame bracket, and an atom of shadow leverage at least two.
+
+Alternative (iii) needs an atom of shadow leverage two, and a shadow leverage never
+exceeds the leverage.  So
+Gtz.sixThree_planeShadow_light_or_strictPair_of_leverage_lt_two: a rank-three design
+whose leverages all stay strictly below two admits NO rigid plane -- every plane is
+light somewhere or carries a plane-strict pair.
+
+9. RELATION TO THE SIBLING THREE-CLASS LAW
+-------------------------------------------
+
+Gtz/Wave/PivotFourDominatingTriples.lean landed a three-class law for rank-two ties
+before this file.  The two are NOT the same statement and neither supersedes the other.
+
+  * That file CAPS the class count with the Bloch-chart four-direction hinge
+    Gtz.not_isTie_of_fourNonParallel.  This file PROVES the count from the Veronese
+    projection, so Gtz.hingeHoldsAtSize_rank_two is a second, independent proof of the
+    rank-two hinge rather than a consumer of it.
+  * That file's class law is the AGGREGATE 2 M_X = 1 + T_X with
+    M_X = sum_{c in X} t_c l_c.  This file's is PER ATOM, (2 l_c - 1) T_A = 1, so the
+    leverage is CONSTANT on a class and the class weight fixes its value.  The aggregate
+    is the sum of the per-atom law over the class.
+  * The whole block is pinned here, F_cd T_A = t_c t_d, which the aggregate cannot see,
+    and the within-class gap determinant -1/T_A follows from the per-atom law.
+
+The reusable pieces this file adds to the tree, independent of ties:
+Gtz.FormNonneg with its three lemmas, Gtz.eq_of_trace_sandwich (a symmetric matrix with
+a nonnegative form, the trace of a symmetric idempotent, and domination of the identity
+on that idempotent's range, IS that idempotent), and
+Gtz.posSemidef_two_of_det_nonneg_of_trace_nonneg.
