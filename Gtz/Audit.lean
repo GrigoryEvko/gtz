@@ -1381,6 +1381,7 @@ import Gtz.Wave.UnitAtomFunnel
 import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.AdmissibleRowLeverageFloor
 import Gtz.Wave.BranchBStrongPair
+import Gtz.Wave.TetrahedronBranchB
 import Gtz.Wave.CornerGatewayBudget
 import Gtz.Wave.BranchTwoDeterminantSum
 import Gtz.Wave.CornerDescentRank
@@ -38301,3 +38302,13 @@ run_cmd do
 #print axioms Gtz.blind_plane_parseval
 #print axioms Gtz.blind_outside_plane_cap
 #print axioms Gtz.blind_reading_sq_ge_of_perp_plane
+
+-- Gtz/Wave/TetrahedronBranchB.lean -- the landed tetrahedron tie has every pair
+-- minor three, so branch B is nonempty at size four and no size-blind argument
+-- can empty it at size six; the strong-pair quarter is attained there
+#print axioms Gtz.tetraDesign_pairGapMinor
+#print axioms Gtz.tetraDesign_admissiblePair
+#print axioms Gtz.tetraDesign_one_lt_leverage
+#print axioms Gtz.branchB_nonempty_at_four
+#print axioms Gtz.tetraDesign_strongPair_sharp
+#print axioms Gtz.tetraDesign_forall_strongPair
