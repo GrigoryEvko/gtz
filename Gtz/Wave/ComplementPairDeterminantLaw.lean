@@ -106,6 +106,10 @@ determine a determinant of the rest of the design exactly.
   gap of a weak dominator of a `(5,3)` tie has rank one or two, never zero, and
   the survey's rank split of the tie is exhaustive.
 
+* **The complement case, priced** (`Gtz.inadmissible_complement_volume_bound`).
+  Any lower bound on the complement triple's determinant caps the inadmissible
+  pair's two shares.
+
 * **THE PRICE OF QUESTION 7.5(b)** (`Gtz.pairGapMinor_pos_inside_dominator_of_q75b`).
   A pair inside a weak dominator is admissible non-strictly
   (`Gtz.pairGapMinor_nonneg_of_dominates_triple`, proved here from the Gram
@@ -820,34 +824,30 @@ theorem pair_dominator_trichotomy {C : Finset (Fin 5)} (hcard : C.card = 3)
         simp
       exact Finset.eq_of_subset_of_card_le hsub (le_of_eq hcards.symm)
 
-/-- **THE COMPLEMENT CASE AT `(5,3)`, WITH A UNIT-VOLUME DOMINATOR.**  When the
-inadmissible pair is the complement of a triple whose weighted volume reaches
-one, the complement volume law and the inadmissible cap collide: the left side is
-positive once both atoms are heavy and both weights are less than one, and the
-right side is negative. -/
-theorem not_inadmissible_of_complement_volume_ge_one (D : WeightedDesign 5 3)
+/-- **THE COMPLEMENT CASE AT `(5,3)`, PRICED BY THE COMPLEMENT'S VOLUME.**  When
+the inadmissible pair is the complement of a triple, the complement volume law
+and the inadmissible cap combine: any lower bound on the complement's
+determinant is a cap on the two shares.  The landed
+`Gtz.one_le_sq_tripleBracket_of_dominates` supplies the bound
+`volume = t_c·t_d·t_e` whenever that complement triple weakly dominates. -/
+theorem inadmissible_complement_volume_bound (D : WeightedDesign 5 3)
     {first second : Fin 5} (hne : first ≠ second)
-    (hheavyFirst : 1 < leverageOf (D.atom first))
-    (hheavySecond : 1 < leverageOf (D.atom second))
-    (hfirstLt : D.weight first < 1) (hsecondLt : D.weight second < 1)
-    (hvolume : 1 ≤ (∑ c ∈ ({first, second} : Finset (Fin 5))ᶜ,
+    (hinadm : pairGapMinor (D.atom first) (D.atom second) ≤ 0)
+    {volume : ℝ}
+    (hvolume : volume ≤ (∑ c ∈ ({first, second} : Finset (Fin 5))ᶜ,
       D.weight c • atomMatrix (D.atom c)).det) :
-    ¬ pairGapMinor (D.atom first) (D.atom second) ≤ 0 := by
-  intro hinadm
+    volume + D.weight first * D.weight second
+      ≤ 1 - D.weight first * leverageOf (D.atom first) * (1 - D.weight second)
+        - D.weight second * leverageOf (D.atom second) * (1 - D.weight first) := by
   rw [det_weightedComplement_pair D hne] at hvolume
   have hcap := crossNormSq_le_of_pairGapMinor_nonpos (D.atom first) (D.atom second) hinadm
-  have hfirstPos := D.weight_pos first
-  have hsecondPos := D.weight_pos second
-  have hproductPos : 0 < D.weight first * D.weight second := mul_pos hfirstPos hsecondPos
+  have hproductPos : 0 < D.weight first * D.weight second :=
+    mul_pos (D.weight_pos first) (D.weight_pos second)
   have hcapScaled : D.weight first * D.weight second
         * crossNormSq (D.atom first) (D.atom second)
       ≤ D.weight first * D.weight second
         * (leverageOf (D.atom first) + leverageOf (D.atom second) - 1) :=
     mul_le_mul_of_nonneg_left hcap hproductPos.le
-  have hposFirst : 0 < D.weight first * leverageOf (D.atom first) * (1 - D.weight second) :=
-    mul_pos (mul_pos hfirstPos (by linarith)) (by linarith)
-  have hposSecond : 0 < D.weight second * leverageOf (D.atom second) * (1 - D.weight first) :=
-    mul_pos (mul_pos hsecondPos (by linarith)) (by linarith)
-  linarith [hvolume, hcapScaled, hposFirst, hposSecond, hproductPos]
+  linarith [hvolume, hcapScaled]
 
 end Gtz
