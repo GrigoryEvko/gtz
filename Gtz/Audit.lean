@@ -1374,6 +1374,7 @@ import Gtz.Wave.PairMinorBudget
 import Gtz.Wave.PairNormalParseval
 import Gtz.Wave.UnitAtomFunnel
 import Gtz.Wave.CornerAdmissibleGateway
+import Gtz.Wave.AdmissibleRowLeverageFloor
 import Gtz.Wave.CornerGatewayBudget
 import Gtz.Wave.BranchTwoDeterminantSum
 import Gtz.Wave.CornerDescentRank
@@ -38116,3 +38117,16 @@ run_cmd do
 #print axioms Gtz.six_labels_cover
 #print axioms Gtz.blindReading_cover
 #print axioms Gtz.k2SixThree_parallel_or_two_plane
+
+-- Gtz/Wave/AdmissibleRowLeverageFloor.lean -- an admissible row forces a
+-- leverage floor with no heavy seed: Parseval at the atom against the pair
+-- minors gives (1 - t_a) < (1 + 2 t_a)(l_a - 1), so branch B is one hypothesis
+#print axioms Gtz.parseval_atom_row
+#print axioms Gtz.atomRow_sum_erase
+#print axioms Gtz.weightedExcess_sum_erase
+#print axioms Gtz.leverageExcess_floor_of_admissibleRow
+#print axioms Gtz.leverage_floor_of_admissibleRow
+#print axioms Gtz.one_lt_leverage_of_admissibleRow
+#print axioms Gtz.branchB_of_forall_admissible
+#print axioms Gtz.branchB_leverage_floor
+#print axioms Gtz.exists_leverage_gt_thirteen_eighths_of_forall_admissible
