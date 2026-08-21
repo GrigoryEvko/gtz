@@ -6432,3 +6432,4 @@ import Gtz.Wave.ContractionTaxSharp
 import Gtz.Wave.KTwoTargetFactored
 import Gtz.Wave.DiamondNeighborhoodFourSet
 import Gtz.Wave.CoherentHornSumLaw
+import Gtz.Wave.OppositeHornRefusalBudget
