@@ -237,4 +237,32 @@ theorem corner_column_exists_tripleGapDet_pos_prod (a b : Fin 3 → ℝ) {t : �
   have h3 : 0 < t - tripleGapDet a b gz := by linarith
   nlinarith [mul_pos (mul_pos h1 h2) h3]
 
+
+/-! ## 5. The nine-sum sees only the outside triple -/
+
+/-- **THE TOTAL OF ALL NINE INFORMATIVE GAP DETERMINANTS IS OUTSIDE DATA AND
+THE SCALE.**  Summing the column total over the three outside pairs, the inside
+triple disappears completely: what is left mentions only the three outside
+atoms, their pair minors, their axis readings, and `λ`.
+
+So the first elementary symmetric function of the nine cannot separate two
+corners that share an outside triple and a scale, however their inside atoms
+differ.  That is a structural reason the nine-sum is a weak instrument, and it
+is the companion of the column total: the inside atoms enter the nine
+determinants ONLY through `λ`. -/
+theorem cornerForm_tripleGapDet_nine_total (h : CornerForm gx gy gz u lam)
+    (hu : leverageOf u = 1) (a b c : Fin 3 → ℝ) :
+    (tripleGapDet a b gx + tripleGapDet a b gy + tripleGapDet a b gz)
+      + (tripleGapDet a c gx + tripleGapDet a c gy + tripleGapDet a c gz)
+      + (tripleGapDet b c gx + tripleGapDet b c gy + tripleGapDet b c gz)
+      = (lam - 2) * (pairGapMinor a b + pairGapMinor a c + pairGapMinor b c)
+        - 2 * (leverageOf a + leverageOf b + leverageOf c - 3)
+        + lam * (pairAxisForm a b (u ⬝ᵥ a) (u ⬝ᵥ b)
+            + pairAxisForm a c (u ⬝ᵥ a) (u ⬝ᵥ c)
+            + pairAxisForm b c (u ⬝ᵥ b) (u ⬝ᵥ c)) := by
+  rw [cornerForm_tripleGapDet_column_total h hu a b,
+    cornerForm_tripleGapDet_column_total h hu a c,
+    cornerForm_tripleGapDet_column_total h hu b c]
+  ring
+
 end Gtz

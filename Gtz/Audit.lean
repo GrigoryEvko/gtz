@@ -37472,3 +37472,4 @@ run_cmd do
 #print axioms Gtz.k2Plane_star_eq_zero
 #print axioms Gtz.k2ChartRefusalY_eq_gapDet
 #print axioms Gtz.k2ChartRefusalY_nonneg_iff_gapDet_nonpos
+#print axioms Gtz.cornerForm_tripleGapDet_nine_total
