@@ -6400,6 +6400,7 @@ import Gtz.Wave.TieGraphTrichotomy
 import Gtz.Wave.TieMantelBound
 import Gtz.Wave.CellHChartFloors
 import Gtz.Wave.CellBTiePackage
+import Gtz.Wave.BothLightChartReduction
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
 import Gtz.Wave.BracketContractionTax

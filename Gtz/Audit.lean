@@ -1311,6 +1311,7 @@ import Gtz.Wave.TieGraphTrichotomy
 import Gtz.Wave.TieMantelBound
 import Gtz.Wave.CellHChartFloors
 import Gtz.Wave.CellBTiePackage
+import Gtz.Wave.BothLightChartReduction
 import Gtz.Wave.DiamondNeighborhoodMirror
 import Gtz.Wave.InvariantBudgets
 import Gtz.Wave.KTwoCapSum
@@ -36527,6 +36528,11 @@ run_cmd do
 #print axioms Gtz.isTie_tax_package
 #print axioms Gtz.isTie_tax_package_bracket
 #print axioms Gtz.cellB_tie_package
+
+-- Gtz/Wave/BothLightChartReduction.lean -- the eight member floors of the
+-- both-light cell as seven gap determinant signs, one side at a time
+#print axioms Gtz.corner_bothLight_ySide_gapDets
+#print axioms Gtz.corner_bothLight_zSide_gapDets
 
 -- Gtz/Wave/InvariantBudgets.lean -- the conservation laws of the tax
 -- currencies: the Parseval moments, the wedge budget, the bracket budget
