@@ -2060,6 +2060,7 @@ import Gtz.Reduction.RankThreeFromStressFreeResidual
 -- supporting the hinge and balanced-stratum frontiers.
 import Gtz.Certificates.KillInequalityD7
 import Gtz.Quantitative.CauchyBinetLayerSum
+import Gtz.Wave.SubsetDeterminantLayerProfile
 import Gtz.Quantitative.WindowCofactorBridge
 import Gtz.Quantitative.WindowGramSignature
 import Gtz.Quantitative.GeneralPositionWindow

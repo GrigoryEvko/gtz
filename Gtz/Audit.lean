@@ -402,6 +402,7 @@ import Gtz.Design.StressFreeNormalizer
 import Gtz.Design.StressFreeClosureFailure
 import Gtz.Certificates.KillInequalityD7
 import Gtz.Quantitative.CauchyBinetLayerSum
+import Gtz.Wave.SubsetDeterminantLayerProfile
 import Gtz.Quantitative.WindowCofactorBridge
 import Gtz.Quantitative.WindowGramSignature
 import Gtz.Quantitative.GeneralPositionWindow
@@ -17099,6 +17100,31 @@ closure failure that shows `weight_pos` is load-bearing at every label -/
 #print axioms Gtz.sum_det_subsetSum_sub_one_splitTetra
 #print axioms Gtz.layerWindow_eq_zero_of_isTie_of_forall_dominates
 #print axioms Gtz.not_forall_dominates_of_isTie_splitTetra
+
+-- Gtz/Wave/SubsetDeterminantLayerProfile.lean -- the layer law at EVERY subset
+-- size, the five set and pair aggregates, and the two moment spectrum bounds
+#print axioms Gtz.sum_principalMinorTotal_subsetSum_layer
+#print axioms Gtz.sum_principalMinorTotal_subsetSum_layer_of_lt
+#print axioms Gtz.sum_det_subsetSum_sub_one_layer
+#print axioms Gtz.principalMinorTotal_subsetSum_univ_eq_gram
+#print axioms Gtz.trace_subsetSum_univ_eq_sum_leverage
+#print axioms Gtz.sum_det_gap_topLayer
+#print axioms Gtz.principalMinorTotal_three_univ_sixThree
+#print axioms Gtz.sum_det_gap_fiveSets_sixThree
+#print axioms Gtz.sum_det_gap_fourSets_sixThree
+#print axioms Gtz.sum_det_gap_sixSets_sixThree
+#print axioms Gtz.sum_det_gap_pairs_sixThree
+#print axioms Gtz.sum_det_gap_triples_fiveThree
+#print axioms Gtz.sum_det_gap_fourSets_fiveThree
+#print axioms Gtz.sum_det_gap_triples_sevenThree
+#print axioms Gtz.sum_det_gap_sixSets_sevenThree
+#print axioms Gtz.tripleGapDet_nonpos_of_not_posDef
+#print axioms Gtz.moment_spectral_bound_of_forall_det_nonpos
+#print axioms Gtz.moment_spectral_bound_of_forall_fiveSet_posDef
+#print axioms Gtz.spectral_window_of_isTie_sixThree
+#print axioms Gtz.e_two_cancels_in_the_window
+#print axioms Gtz.forall_det_gap_eq_zero_of_moment_spectral_bound_eq
+#print axioms Gtz.moment_spectral_bound_strict_of_exists_neg
 
 -- Gtz/Quantitative/GeneralPositionWindow.lean
 #print axioms Gtz.dotProduct_sum_smul_atomMatrix_mulVec
