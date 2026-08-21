@@ -324,4 +324,86 @@ theorem not_dominates_of_sq_tripleBracket_lt_one (D : WeightedDesign m 3) (x y z
   exact absurd (one_le_sq_tripleBracket_of_dominates D x y z hxy hxz hyz hdom)
     (not_le.mpr hsmall)
 
+/-! ## 7. The exact floor
+
+The constant `27/C(m,3)` throws away the weights.  Keeping them gives the exact
+statement: a ceiling on every squared volume is a ceiling on the whole budget,
+so `1 ≤ bound · e₃(t)` with `e₃(t)` the third elementary symmetric function of
+the weights.  At uniform weight and `m = 5` that reads `bound ≥ 12.5`, which the
+diamond ATTAINS at four of its ten triples, so this form is sharp where the
+crude constant is not. -/
+
+/-- **THE EXACT VOLUME FLOOR AT `(6,3)`.**  A common ceiling on the twenty squared
+volumes forces `1 ≤ bound · e₃(t)`, where `e₃(t)` is the third elementary
+symmetric function of the six weights. -/
+theorem one_le_bound_mul_weightTripleSum_sixThree (D : WeightedDesign 6 3) {bound : ℝ}
+    (hall : ∀ a b c : Fin 6, a ≠ b → a ≠ c → b ≠ c →
+      tripleBracket (D.atom a) (D.atom b) (D.atom c) ^ 2 ≤ bound) :
+    1 ≤ bound * (D.weight 0 * D.weight 1 * D.weight 2 + D.weight 0 * D.weight 1 * D.weight 3
+      + D.weight 0 * D.weight 1 * D.weight 4 + D.weight 0 * D.weight 1 * D.weight 5
+      + D.weight 0 * D.weight 2 * D.weight 3 + D.weight 0 * D.weight 2 * D.weight 4
+      + D.weight 0 * D.weight 2 * D.weight 5 + D.weight 0 * D.weight 3 * D.weight 4
+      + D.weight 0 * D.weight 3 * D.weight 5 + D.weight 0 * D.weight 4 * D.weight 5
+      + D.weight 1 * D.weight 2 * D.weight 3 + D.weight 1 * D.weight 2 * D.weight 4
+      + D.weight 1 * D.weight 2 * D.weight 5 + D.weight 1 * D.weight 3 * D.weight 4
+      + D.weight 1 * D.weight 3 * D.weight 5 + D.weight 1 * D.weight 4 * D.weight 5
+      + D.weight 2 * D.weight 3 * D.weight 4 + D.weight 2 * D.weight 3 * D.weight 5
+      + D.weight 2 * D.weight 4 * D.weight 5 + D.weight 3 * D.weight 4 * D.weight 5) := by
+  have hstep : ∀ a b c : Fin 6, a ≠ b → a ≠ c → b ≠ c →
+      D.weight a * D.weight b * D.weight c
+        * tripleBracket (D.atom a) (D.atom b) (D.atom c) ^ 2
+      ≤ D.weight a * D.weight b * D.weight c * bound := by
+    intro a b c hab hac hbc
+    exact mul_le_mul_of_nonneg_left (hall a b c hab hac hbc)
+      (mul_pos (mul_pos (D.weight_pos a) (D.weight_pos b)) (D.weight_pos c)).le
+  have hbudget := volume_budget_sixThree D
+  linarith [hstep 0 1 2 (by decide) (by decide) (by decide),
+    hstep 0 1 3 (by decide) (by decide) (by decide),
+    hstep 0 1 4 (by decide) (by decide) (by decide),
+    hstep 0 1 5 (by decide) (by decide) (by decide),
+    hstep 0 2 3 (by decide) (by decide) (by decide),
+    hstep 0 2 4 (by decide) (by decide) (by decide),
+    hstep 0 2 5 (by decide) (by decide) (by decide),
+    hstep 0 3 4 (by decide) (by decide) (by decide),
+    hstep 0 3 5 (by decide) (by decide) (by decide),
+    hstep 0 4 5 (by decide) (by decide) (by decide),
+    hstep 1 2 3 (by decide) (by decide) (by decide),
+    hstep 1 2 4 (by decide) (by decide) (by decide),
+    hstep 1 2 5 (by decide) (by decide) (by decide),
+    hstep 1 3 4 (by decide) (by decide) (by decide),
+    hstep 1 3 5 (by decide) (by decide) (by decide),
+    hstep 1 4 5 (by decide) (by decide) (by decide),
+    hstep 2 3 4 (by decide) (by decide) (by decide),
+    hstep 2 3 5 (by decide) (by decide) (by decide),
+    hstep 2 4 5 (by decide) (by decide) (by decide),
+    hstep 3 4 5 (by decide) (by decide) (by decide)]
+
+/-- **THE EXACT VOLUME FLOOR AT `(5,3)`.** -/
+theorem one_le_bound_mul_weightTripleSum_fiveThree (D : WeightedDesign 5 3) {bound : ℝ}
+    (hall : ∀ a b c : Fin 5, a ≠ b → a ≠ c → b ≠ c →
+      tripleBracket (D.atom a) (D.atom b) (D.atom c) ^ 2 ≤ bound) :
+    1 ≤ bound * (D.weight 0 * D.weight 1 * D.weight 2 + D.weight 0 * D.weight 1 * D.weight 3
+      + D.weight 0 * D.weight 1 * D.weight 4 + D.weight 0 * D.weight 2 * D.weight 3
+      + D.weight 0 * D.weight 2 * D.weight 4 + D.weight 0 * D.weight 3 * D.weight 4
+      + D.weight 1 * D.weight 2 * D.weight 3 + D.weight 1 * D.weight 2 * D.weight 4
+      + D.weight 1 * D.weight 3 * D.weight 4 + D.weight 2 * D.weight 3 * D.weight 4) := by
+  have hstep : ∀ a b c : Fin 5, a ≠ b → a ≠ c → b ≠ c →
+      D.weight a * D.weight b * D.weight c
+        * tripleBracket (D.atom a) (D.atom b) (D.atom c) ^ 2
+      ≤ D.weight a * D.weight b * D.weight c * bound := by
+    intro a b c hab hac hbc
+    exact mul_le_mul_of_nonneg_left (hall a b c hab hac hbc)
+      (mul_pos (mul_pos (D.weight_pos a) (D.weight_pos b)) (D.weight_pos c)).le
+  have hbudget := volume_budget_fiveThree D
+  linarith [hstep 0 1 2 (by decide) (by decide) (by decide),
+    hstep 0 1 3 (by decide) (by decide) (by decide),
+    hstep 0 1 4 (by decide) (by decide) (by decide),
+    hstep 0 2 3 (by decide) (by decide) (by decide),
+    hstep 0 2 4 (by decide) (by decide) (by decide),
+    hstep 0 3 4 (by decide) (by decide) (by decide),
+    hstep 1 2 3 (by decide) (by decide) (by decide),
+    hstep 1 2 4 (by decide) (by decide) (by decide),
+    hstep 1 3 4 (by decide) (by decide) (by decide),
+    hstep 2 3 4 (by decide) (by decide) (by decide)]
+
 end Gtz

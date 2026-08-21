@@ -60,7 +60,7 @@ ten pair minors is positive (minimum `3/4`) and every one of its ten atoms is
 strictly heavy, so it sits in branch B, and every one of its ten gap
 determinants is `0` or `−10` — nonpositive, as the theorem requires.  Its
 squared-area sums and leverage sums are `W = 20, L = 17/2` at `{0,1,2}` and
-`W = 55/2, L = 39/4` at `{1,2,3}`, so `W − L = 23/2` and `W − L = 137/8`, both
+`W = 55/2, L = 39/4` at `{1,2,3}`, so `W − L = 23/2` and `W − L = 71/4`, both
 far above the `17/10` the size-five reading demands.  The bound is therefore
 correct and not tight at the diamond.]
 -/
