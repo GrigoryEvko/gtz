@@ -450,3 +450,18 @@ this reads
 CAUTION, recorded honestly: the bound is FREE whenever (a_d.w)^2 <= 1, because
 G >= 0 gives a_d.(G a_d) <= tr(G)*lev(a_d).  It binds only at a HEAVY reading
 (a_d.w)^2 > 1.  Do not quote it as a kill.
+
+F67-9.  THE OUTSIDE READING FLOOR, POINTWISE -- the producer made unconditional
+---------------------------------------------------------------------
+Landed Gtz.exists_outside_reading_sq_one_le: at a weak dominator T with unit
+null probe w and nonempty complement, SOME d outside T has (a_d.w)^2 >= 1.
+Proof: the landed Gtz.nullProbe_inside_total gives the UNWEIGHTED inside total
+sum_{c in T} (a_c.w)^2 = |w|^2 = 1, so every INSIDE squared reading is <= 1;
+Parseval gives the WEIGHTED total over the whole design = 1; the weights split
+the same way; if every outside reading were < 1 the two splits would separate.
+CORRECTION recorded: my first attempt routed this through
+Gtz.nullProbe_parseval_split and the algebra was WRONG (it needs |T| = 1).
+The correct route is Parseval plus the inside cap, not the split.
+Chained: Gtz.exists_outside_fourSet_posDef -- every corank-one weak dominator of
+a design on more than three labels extends, BY AN ATOM OUTSIDE IT, to a four-set
+with positive definite gap.  No selector, no chart, no probe constant.

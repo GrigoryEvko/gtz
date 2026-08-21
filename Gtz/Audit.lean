@@ -1381,6 +1381,7 @@ import Gtz.Wave.FunnelSecondInvariantFloor
 import Gtz.Wave.FunnelSwapClosure
 import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.FourSetProducer
+import Gtz.Wave.OutsideReadingFloor
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
@@ -38019,3 +38020,12 @@ run_cmd do
 #print axioms Gtz.det_le_secondInvariant_of_swaps_nonpos
 #print axioms Gtz.tie_fourSet_reading_bound
 #print axioms Gtz.tie_fourSet_reading_bound_free
+
+-- Gtz/Wave/OutsideReadingFloor.lean -- Parseval caps every inside reading of a
+-- weak dominator at one and forces an OUTSIDE atom to clear it, so a
+-- corank-one weak dominator extends outward to a positive definite four-set
+-- with no selector and no chart
+#print axioms Gtz.inside_reading_sq_le_of_unit_null
+#print axioms Gtz.exists_outside_reading_sq_one_le
+#print axioms Gtz.exists_outside_fourSet_posDef
+#print axioms Gtz.secondInvariant_le_reading_term
