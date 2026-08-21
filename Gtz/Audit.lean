@@ -1361,6 +1361,7 @@ import Gtz.Wave.CornerAxisBridges
 import Gtz.Wave.CornerSizeLaw
 import Gtz.Wave.PairStarSizeLaw
 import Gtz.Wave.PairMinorBudget
+import Gtz.Wave.PairNormalParseval
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -37387,3 +37388,12 @@ run_cmd do
 #print axioms Gtz.tripleGapDet_pos_iff_exactCost
 #print axioms Gtz.corner_necessaryPart_sum
 #print axioms Gtz.corner_exists_necessaryPart_pos
+
+-- Gtz/Wave/PairNormalParseval.lean -- the weighted pair normals of a design
+-- are a Parseval frame: the polarized law, the free probe, the unit mass two
+#print axioms Gtz.parseval_bilinear
+#print axioms Gtz.bracketNormal_dot_bracketNormal
+#print axioms Gtz.pairNormal_parseval_polar
+#print axioms Gtz.probe_pairNormal_mass
+#print axioms Gtz.atom_pairNormal_mass
+#print axioms Gtz.unitProbe_pairNormal_mass

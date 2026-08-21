@@ -6452,3 +6452,4 @@ import Gtz.Wave.ComplementBracketLaw
 import Gtz.Wave.CornerSizeLaw
 import Gtz.Wave.PairMinorBudget
 import Gtz.Wave.PairStarSizeLaw
+import Gtz.Wave.PairNormalParseval
