@@ -1435,6 +1435,8 @@ import Gtz.Wave.BranchBProductKill
 import Gtz.Wave.InadmissibleParallelJoint
 import Gtz.Wave.InadmissiblePairSeparation
 import Gtz.Wave.EtwoRealnessGauge
+import Gtz.Wave.PairComplementBudget
+import Gtz.Wave.PairBudgetAggregate
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -38398,3 +38400,35 @@ run_cmd do
 #print axioms Gtz.funnel_exists_strict_of_payment_lt
 #print axioms Gtz.isTie_funnel_payment
 #print axioms Gtz.isTie_sixThree_funnel_payment
+
+-- Gtz/Wave/PairComplementBudget.lean -- the weighted total of the gap
+-- determinants of every triple through a pair is a closed form in that pair's
+-- own leverages, pairing and weights, so a positive budget names a strict
+-- dominator and every pair of a tie obeys the bound in pair data alone
+#print axioms Gtz.pairAxisForm_self_left
+#print axioms Gtz.pairAxisForm_self_right
+#print axioms Gtz.axisMoment_pair
+#print axioms Gtz.weightedExcess_pairCompl
+#print axioms Gtz.weighted_tripleGapDet_pairCompl
+#print axioms Gtz.exists_tripleGapDet_pos_of_pairBudget_pos
+#print axioms Gtz.exists_posDef_of_pairBudget_pos
+#print axioms Gtz.not_isTie_of_pairBudget_pos
+#print axioms Gtz.pairComplBudget_nonpos_of_isTie
+#print axioms Gtz.tripleBudget_sum
+
+-- Gtz/Wave/PairBudgetAggregate.lean -- summing the pair budget weights each
+-- triple by the SUM of its three weights, and unlike the landed product
+-- weighting that aggregate keeps the design; a corner's inside pairs carry no
+-- repayment, and an all-admissible tie pays its whole aggregate
+#print axioms Gtz.weighted_tripleGapDet_pairCompl'
+#print axioms Gtz.pairBudget_comm
+#print axioms Gtz.pairBudget_of_pairGapMinor_eq_zero
+#print axioms Gtz.pairBudget_nonpos_of_pairGapMinor_eq_zero
+#print axioms Gtz.weighted_tripleGapDet_offPair_of_vanishing
+#print axioms Gtz.pairBudget_ordered_sum
+#print axioms Gtz.sum_offDiag_eq_sum_sub_diag
+#print axioms Gtz.sum_coweight
+#print axioms Gtz.sum_offDiag_excess_mul_coweight
+#print axioms Gtz.pairBudget_ordered_sum_closed
+#print axioms Gtz.tripleGapDet_nonpos_of_allAdmissible
+#print axioms Gtz.allAdmissible_tie_aggregate_nonpos

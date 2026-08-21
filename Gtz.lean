@@ -6526,3 +6526,5 @@ import Gtz.Wave.FunnelPairMinorHinge
 import Gtz.Wave.BlindMemberPlane
 import Gtz.Wave.BlindMemberNormalForm
 import Gtz.Wave.TwoPlaneCollapse
+import Gtz.Wave.PairComplementBudget
+import Gtz.Wave.PairBudgetAggregate

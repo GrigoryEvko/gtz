@@ -1,0 +1,168 @@
+FORK 75 -- QUESTION 7.3, THIRD ROUND.  The pair budget.
+========================================================
+Scripts: scratchpad/f75/*.py (numpy/scipy, single process, RSS < 300 MB).
+Scratch scripts are NOT version controlled, so every load-bearing number is
+transcribed here verbatim.
+
+HARNESS CALIBRATION (mandatory, done first, scratchpad/f75/calib.py).
+The (5,3) diamond reproduces exactly:
+    Parseval residual   6.661e-16
+    leverages           [2, 3.25, 3.25, 3.25, 3.25]
+    pair minors         {0.75, 2.0, 4.5}
+    dominating triples  8 of 10
+    adjugate law at {0,1,2}: readings^2 = q/e2 = [0.75, 0.125, 0.125], e2 = 6
+The repayment matrix of F68-1 also reproduces, after ONE correction:
+
+F75-0.  A CORRECTION TO THE AXIS VECTOR USED IN F68-1's MATRIX X
+-----------------------------------------------------------------
+X_ef = D*c_e*c_f - Phi(r_e,r_f) needs c with c_e^2 = l_e - 1, i.e. the rank-one
+factor of the GRAM gap K_C - I, NOT the ambient axis readings <g_e,u>.  The two
+differ by sqrt(lam/(1+lam)) (the landed axis law lam*<u,g_e>^2 = (1+lam)(l_e-1)).
+With the ambient readings the diagonal claim fails outright.  With the Gram
+factor, over 9000 corners:
+    max RELATIVE |diag(X)_e - tripleGapDet|      2.431e-12
+    max rel |det X - lam*D^2*[u,a,b]^2|          5.135e-11   (F68's form CONFIRMED)
+    max rel |det X - (1+lam)*D^2*[u,a,b]^2|      5.000e+00   (the other form is WRONG)
+    max number of positive eigenvalues of X      1           (F68-1 confirmed)
+
+F75-1.  *** THE PAIR BUDGET -- A NEW EXACT IDENTITY, EVERY SIZE, EVERY PAIR ***
+--------------------------------------------------------------------------------
+For EVERY weighted design of rank three and EVERY pair a != b:
+
+  sum_{c not in {a,b}} t_c * tripleGapDet(g_a, g_b, g_c)
+      = 2*q_ab*(t_a + t_b) - (l_a - 1)*(1 - t_b) - (l_b - 1)*(1 - t_a)
+
+The LEFT side carries the whole design; the RIGHT names only the pair.
+DERIVATION: instantiate the landed Gtz.weighted_tripleGapDet_sum_compl at the
+subset C = {a,b}^c, so the leftover subset is {a,b} ITSELF.  Its axis moment
+evaluates because a pair reads itself at (l_a, p) and (p, l_b):
+    pairAxisForm a b (l_a) (p) = -(D*(l_a-1) + 2D + (l_b-1))     [sympy: 0]
+    pairAxisForm a b (p) (l_b) = -(D*(l_b-1) + 2D + (l_a-1))     [sympy: 0]
+and weightedExcess({a,b}^c) = 2 - t_a(l_a-1) - t_b(l_b-1) by the landed total.
+The whole assembly is one ring step [sympy residual 0].
+The landed complement identity leaves the axis moment of the COMPLEMENT, which
+F68-4 records as the term nobody could bound; taking the subset to be the
+pair's own complement leaves the PAIR instead, which evaluates.
+
+VERIFIED (scratchpad/f75/budget.py): max relative residual over 35200 pairs
+    (4,3) 1.971e-12   (5,3) 2.568e-13   (6,3) 1.599e-13
+    (7,3) 1.636e-13   (9,3) 2.061e-13
+    diamond, absolute: 3.109e-15
+LANDED: Gtz/Wave/PairComplementBudget.lean, commit 6e536ec, 10 pins, all
+[propext, Classical.choice, Quot.sound], my own scratch-file audit.
+
+F75-2.  THE PRODUCER, AND ITS HONEST RATE
+------------------------------------------
+A positive budget names an atom c off the pair with tripleGapDet > 0; with the
+pair admissible and heavy, Sylvester makes {a,b,c} a STRICT dominator.  So
+
+  NOT-A-TIE:  some pair with l_a,l_b > 1, q_ab > 0 and positive budget.
+
+SAMPLED fire rate at corners (4000 corners of the corrected chart):
+    some OUTSIDE admissible pair positive     98.4500%
+    some pair at all positive                 99.6250%
+    best outside budget: min -391.14, median +9.10
+SAMPLED on general designs: (5,3) 99.667%, (6,3) 97.267%, (7,3) 94.000%.
+*** ADVERSARIAL DESCENT (150 restarts, Nelder-Mead), the honest number: ***
+    (6,3), weight floor 0.05 : inf of best pair budget = -4.488678
+    (6,3), weight floor 0.01 : inf of best pair budget = -19.187460
+So the producer is NOT total and the sampled rates overstate it, exactly the
+F68-3 / F60-3 disease.  Real (6,3) designs exist where EVERY pair has negative
+budget; they still carry a strict dominator, found some other way.
+
+F75-3.  *** WHY NO INSTRUMENT OF THIS KIND CAN BE TOTAL ***
+------------------------------------------------------------
+The identity uses only Parseval and the Sylvester split, so it holds VERBATIM
+over C in the Hermitian reading.  ACCEPTANCE TEST (scratchpad/f75/cplx.py) at
+the complex corank-two corner tie of NOTES-f68-etwo F68-0:
+    Hermitian Parseval residual              3.331e-15
+    corner gap eigenvalues                   [0, 0, 6.69118419]
+    CONTROL max lmin over 20 triples         3.924e-16   -> genuine tie
+    identity max relative residual over C    7.663e-15   -> FIELD-BLIND
+    admissible heavy pairs 15 ; max budget   -1.145015   -> producer does NOT fire
+The producer correctly refuses at the complex tie -- but the same field-blindness
+means the whole family of consequences is satisfied by a complex tie, so a
+field-blind instrument can never be total.  THE RESIDUAL OF THIS PRODUCER IS
+EXACTLY WHERE REALNESS MUST ACT, and F68-7 already names the ingredient
+(Bargmann extremality: over R the 3-cycle term is at one of two extremes, over
+C it lies between them).
+
+F75-4.  *** SHARPNESS: THE BOUND IS ATTAINED AT A REAL TIE, WITH EVERY TERM ZERO ***
+-------------------------------------------------------------------------------------
+At the (5,3) diamond the ten budgets are
+    pairs 01,02,03,04  q=0.75  budget -2.000000
+    pairs 13,24        q=2.00  budget -2.000000
+    pairs 12,14,23,34  q=4.50  budget  0.000000   <-- EQUALITY
+and at each of the four equality pairs ALL THREE gap determinants in the sum are
+exactly 0.0.  So a real tie attains the bound with every summand vanishing: no
+certificate built on the budget can carry a positive constant.  This is the
+campaign's non-strictness (four lanes last rotation) in a new and exact place.
+
+F75-5.  THE AGGREGATE KEEPS THE DESIGN -- AN EXCEPTION TO THE BANKED RULE
+--------------------------------------------------------------------------
+Summing the pair identity over ordered pairs weights each unordered triple by
+(t_a + t_b + t_c), because the triple appears once per pair with the third
+atom's weight.  Closed form:
+
+  sum_a sum_{b != a} sum_{c not in {a,b}} t_c * tripleGapDet
+      = 2 * sum_a sum_{b != a} q_ab (t_a+t_b) - 2*(m-2)*sum_a (l_a - 1) - 4
+
+VERIFIED (scratchpad/f75/global.py): max relative residual
+    m=4 4.661e-12  m=5 7.378e-14  m=6 2.138e-14  m=7 9.593e-15  m=9 2.786e-15
+    diamond: both sides exactly -12.000000000
+*** NOT DESIGN-BLIND: on five random (6,3) designs the aggregate takes the
+values -56.67, -51.20, -44.41, -82.33, -29.50, against the CONSTANT -4 of the
+landed product weighting Gtz.weighted_aggregate_design_blind. ***
+So "aggregation destroys the design" is a fact about the weighting t_a t_b t_c,
+not about aggregation.  The sum weighting retains what the product destroys.
+CONSEQUENCE, landed: on a tie with every atom strictly heavy and every pair
+admissible (the branch with no witness), every triple is flat, so
+    sum_a sum_{b != a} q_ab (t_a + t_b)  <=  (m-2) * sum_a (l_a - 1) + 2 .
+No determinant appears.  [Handed to whoever owns Question 7.5(a); I did not
+work that branch.]
+
+F75-6.  THE CORNER'S OWN PAIRS CARRY NOTHING
+----------------------------------------------
+At a corner the inside gap is rank one, so (verified, 2500 corners)
+    |det(K_C - I)| and the three inside pair minors   < 9.859e-14 .
+At a pair with q = 0 the budget is exactly -(x_a(1-t_b) + x_b(1-t_a)) <= 0 at
+heavy atoms, and the corner's own triple drops out of the sum, leaving
+    sum_{d outside} t_d * tripleGapDet(g_e, g_e', g_d)
+        = -[ (l_e - 1)(1 - t_e') + (l_e' - 1)(1 - t_e) ]
+VERIFIED to 8.244e-15 over 2500 corners.  So a corner's three inside pairs
+carry no repayment at all, which is why the arm's question sits entirely on the
+outside pairs.
+LANDED: Gtz/Wave/PairBudgetAggregate.lean, commit f0fcde4, 12 pins, standard.
+
+F75-7.  TWO ROUTES CLOSED WITH WITNESSES
+------------------------------------------
+(a) THE GEOMETRY-FREE SYSTEM IS FEASIBLE.  Combining the tie bound with the
+landed pairing cap t_a t_b p^2 <= (1-s_a)(1-s_b) eliminates the pairings and
+leaves, for every pair,
+    alpha_a alpha_b - [t_b alpha_a (1-t_b) + t_a alpha_b (1-t_a)]/(2(t_a+t_b))
+        <= (1-s_a)(1-s_b),      s_c = alpha_c + t_c .
+Calibration: diamond max violation -0.100000000 (satisfied, as a real tie must);
+complex tie max violation -0.087328913 (satisfied, as field-blindness requires).
+Since the complex tie's (t, alpha) data is a feasible point, the system is
+satisfiable and CANNOT close (6,3).  Do not spend a round on it.
+(b) THE ALL-PAIRS TIE CONDITION IS SATISFIABLE AT SIX ATOMS.  Minimising the
+max pair budget over real designs, 220 restarts:
+    m=5 tau=0.05 -> -3.371676     m=5 tau=0.02 -> -3.854973
+    m=6 tau=0.05 -> -4.265698     m=6 tau=0.02 -> -7.415584
+so requiring every pair to obey the bound is far from infeasible at m=6.
+CALIBRATION: the diamond returns exactly +0.000000, as F75-4 requires.
+
+F75-8.  QUEUE STATE AT HANDOFF
+-------------------------------
+DONE: the pair budget identity landed (F75-1); the producer landed with its
+honest descent number (F75-2); field-blindness proved and the acceptance test
+passed (F75-3); sharpness at the diamond (F75-4); the aggregate identity landed
+and the banked blindness rule corrected (F75-5); the corner's inside pairs
+settled (F75-6); two routes closed with witnesses (F75-7).
+NOT DONE: no total instrument for condition (B), and by F75-3 none of this shape
+can exist.  The successor should compose the EXACT identity of F75-1 with the
+two-point structure F68-7 names: over R each tripleGapDet in the sum equals
+V +- 2|P| with V = x_a x_b x_c - sum x_i p_jk^2 and P = |p_ab p_ac p_bc|, the
+sign being the triple's chirotope.  The budget then becomes a finite sign system
+on the chirotope with an EXACT total, rather than an inequality to estimate --
+which is the first setting in which realness enters this question as an equation.
