@@ -1369,6 +1369,7 @@ import Gtz.Wave.PairNormalParseval
 import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.CornerGatewayBudget
 import Gtz.Wave.CornerRefusalDichotomy
+import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoFrameKill
 import Gtz.Wave.KTwoBridgeNormalForm
@@ -37653,3 +37654,11 @@ run_cmd do
 #print axioms Gtz.star_exists_posDef_of_exists_gapDet_pos
 #print axioms Gtz.star_exists_posDef_of_admissibleStar
 #print axioms Gtz.cellH_exists_dominating_triple
+
+-- Gtz/Wave/BranchTwoReduction.lean -- the refined budget factors as the slack
+-- product against the normalized excess, so branch one is universally impossible
+#print axioms Gtz.refinedBudget_factor
+#print axioms Gtz.refinedBudget_neg_of_excess
+#print axioms Gtz.outsideTriple_not_branchOne
+#print axioms Gtz.outsideTriple_leverage_bound_of_excess
+#print axioms Gtz.exists_pairMinor_pos_of_excess
