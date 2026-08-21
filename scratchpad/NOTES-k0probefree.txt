@@ -84,3 +84,20 @@ weights the unique solution of the 6x6 Parseval system, positive solutions with
 a genuinely singular inside gap kept): budget error <= 8.5e-14, split <= 3.4e-14.
 The sample COUNT is reported because the first version of the measurement
 filtered every draw away and printed a vacuous 0.000e+00.
+
+## Fixture validation of the probe-free trigger
+Split diamond (diamond tie with atom 1 split into copies 1 and 5, weights
+0.1/0.1, min weight 0.100, Phi 1.3e-15): 13 weak dominators, 76 dominating
+swaps. The probe-free trigger  pairAdjForm a b c g_q = pairGapMinor b c  is
+TIGHT at exactly 10 of the 76, and those ten are the mirror swaps that carry
+the parallel pair (1,5).  The trigger fires where it should and nowhere else.
+
+## A measurement that did NOT work, recorded so nobody repeats it
+Attempt at a quantitative hinge: minimize Phi subject to a primitivity floor
+min normalized wedge >= eps, to see whether min Phi grows with eps.  Result at
+eps = 0.00 / 0.05 / 0.15 / 0.30 was Phi = 5.79e-2 / 7.65e-2 / 5.52e-2 / 1.30e-1.
+NON-MONOTONE, and at eps = 0 it is five orders of magnitude worse than the same
+optimizer without the penalty (6.3e-07).  The penalty destroys convergence, so
+these numbers measure the optimizer, not the geometry.  No trend may be read
+from them.  A usable version needs a hard constraint (SLSQP with the wedge floor
+as an explicit inequality), not a penalty.
