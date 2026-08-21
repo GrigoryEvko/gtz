@@ -311,4 +311,36 @@ theorem exists_pairMinor_pos_of_weightBudget (D : WeightedDesign m 3)
       (D.weight_pos d3).le) (sq_nonneg _)
   linarith
 
+/-- **THE REFINED BUDGET, IN GAP CURRENCY.**  Substituting the currency bridge
+into the budget replaces the squared bracket by the gap determinant and moves
+the whole pair minor contribution onto one side, where every coefficient is a
+positive weight product:
+
+  `weight slack of the triple = sum (-q_ij) * t_i t_j (1 - t_k)
+      + t1 t2 t3 * tripleGapDet + det(complement)` .
+
+Hypothesis-free, one `ring` over the two landed identities.  The coefficient
+`t_i t_j (1 - t_k)` is what the crude budget throws away, and it is exactly the
+term that removes the extremal ray: there one atom carries almost all the excess
+on almost no weight, the squared bracket is enormous, and only the
+`1 + sum x_i` correction inside the left side sees it. -/
+theorem weightedTriple_pairMinor_gapForm (t1 t2 t3 : ℝ) (g1 g2 g3 : Fin 3 → ℝ) :
+    (t1*t2 + t1*t3 + t2*t3)
+        - (1 - (t1 + t2 + t3))
+            * ((t1*(leverageOf g1 - 1) + t2*(leverageOf g2 - 1)
+                + t3*(leverageOf g3 - 1)) - 1)
+        - (t1^2*(leverageOf g1 - 1) + t2^2*(leverageOf g2 - 1)
+            + t3^2*(leverageOf g3 - 1))
+        - t1*t2*t3 * (1 + (leverageOf g1 - 1) + (leverageOf g2 - 1)
+            + (leverageOf g3 - 1))
+      = (-(pairGapMinor g1 g2)) * (t1*t2*(1 - t3))
+        + (-(pairGapMinor g1 g3)) * (t1*t3*(1 - t2))
+        + (-(pairGapMinor g2 g3)) * (t2*t3*(1 - t1))
+        + t1*t2*t3 * tripleGapDet g1 g2 g3
+        + (1 - t1 • atomMatrix g1 - t2 • atomMatrix g2 - t3 • atomMatrix g3).det := by
+  have hid := weightedTriple_pairMinor_identity t1 t2 t3 g1 g2 g3
+  have hbr := sq_tripleBracket_eq_gapDet_add_pairMinors g1 g2 g3
+  rw [hbr] at hid
+  linarith [hid]
+
 end Gtz

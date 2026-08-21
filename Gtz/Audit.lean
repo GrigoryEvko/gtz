@@ -37503,6 +37503,7 @@ run_cmd do
 #print axioms Gtz.det_complementTriple_nonneg
 #print axioms Gtz.exists_pairMinor_pos_of_bracketBudget
 #print axioms Gtz.exists_pairMinor_pos_of_weightBudget
+#print axioms Gtz.weightedTriple_pairMinor_gapForm
 #print axioms Gtz.tripleGram_posDef_iff_gapDet_pos_of_admissible
 #print axioms Gtz.corner_column_exists_posDef
 #print axioms Gtz.corner_column_exists_posDef_closed
