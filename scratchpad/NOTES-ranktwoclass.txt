@@ -1,0 +1,135 @@
+NOTES: the complete classification of rank-two ties
+====================================================
+
+Module: Gtz/Wave/RankTwoTieClassification.lean  (2182 lines, 103 declarations)
+Audit:  every declaration pins exactly [propext, Classical.choice, Quot.sound].
+        No sorry, no admit, no native_decide, no new axiom.
+
+1. THE THEOREM
+--------------
+
+Let D : WeightedDesign m 2 be an exact tie.  Then:
+
+  * the atoms fall into exactly THREE nonempty classes
+    (Gtz.card_image_tieClass_eq_three);
+  * two atoms share a class if and only if they are PARALLEL
+    (Gtz.mem_tieClass_iff_planeWedge_eq_zero);
+  * on a class the leverage is constant and the class weight dictates it,
+    (2 l_c - 1) T_A = 1, that is l_c = (1 + 1/T_A)/2
+    (Gtz.two_leverage_sub_one_mul_classWeight);
+  * every cross-class pair weakly dominates
+    (Gtz.dominates_of_planeWedge_ne_zero);
+  * every within-class pair has gap determinant -1/T_A
+    (Gtz.det_pairGap_mul_classWeight_of_mem_tieClass).
+
+The capstone that bundles the five fields is Gtz.rankTwoTieClassification.
+
+2. THE MECHANISM, AND THE ONE IDENTITY THAT MAKES IT CHEAP
+----------------------------------------------------------
+
+The pair gap determinant at rank two is
+
+    det(S_{c,d} - 1) = J_cd^2 - (l_c + l_d - 1),      J_cd = the wedge,
+
+so the whole domination question for a pair is the sign of one scalar.  Define
+
+    F_cd := t_c t_d (l_c + l_d - 1 - J_cd^2).
+
+Three facts drive the file.
+
+  (a) THE ROW LAW  sum_d F_cd = t_c, at EVERY rank-two design, no hypothesis.
+      It is the wedge row law sum_d t_d J_cd^2 = l_c, which is Lagrange fed by the
+      tree's two Parseval readings (sum_weight_mul_sq_atomPairing and
+      sum_weighted_leverage).
+  (b) THE LAPLACIAN  x.(diag t - F)x = (1/2) sum F_cd (x_c - x_d)^2.  Entrywise
+      nonnegativity plus the row law give a nonnegative form with no spectral theorem.
+  (c) THE VERONESE FACTORISATION  N = R R^T - s s^T with R of THREE columns, because
+      Sym^2(R^2) is three-dimensional.  The trace of N is 2k - 1 = 3.
+
+The projection theorem (Gtz.normalizedCoupling_eq_couplingProjection) is a TRACE
+SANDWICH, not an eigenvalue count: 1 - N has a nonnegative form and trace m - 3, the
+projection Pi onto ker R^T has trace m - 3, and 1 - N dominates the identity on the
+range of Pi, so tr(Pi (1-N) Pi - Pi) and tr((1-Pi)(1-N)(1-Pi)) are two nonnegative
+traces summing to zero.  A nonnegative form of zero trace is zero, and the two
+equations compose to 1 - N = Pi.  This is Gtz.eq_of_trace_sandwich and it is reusable.
+
+Then N is an orthogonal projection with nonnegative entries and a positive diagonal,
+so the class relation is an equivalence whose classes are cliques, and ONE Perron step
+(Gtz.tieCoupling_mul_classWeight) pins each block to F_cd T_A = t_c t_d.  The Perron
+step is short because the column of a projection is ALREADY nonnegative: subtract the
+smallest multiple of the square-root weight vector, and the row of the fixed-point
+equation at the minimiser kills the residue.
+
+The DIAGONAL of the block formula reads 2 l_c - 1 = 1/T_A; its OFF-DIAGONAL then reads
+J_cd = 0.  Same class, parallel, equal leverage: one line each.  The class count is the
+trace, 3 = sum_c t_c/T_c.
+
+3. THE FREE COROLLARY
+---------------------
+
+Gtz.weight_mul_two_leverage_sub_one_le_one:  t_d (2 l_d - 1) <= 1, equivalently
+l_d <= (1 + t_d)/(2 t_d).  Three lines from (a) and entrywise nonnegativity ONLY.  It
+needs no tie, no dominating pair, only heaviness and no strictly dominating pair.  The
+tree did not carry it in this form.
+
+4. WHAT DOES NOT LIFT TO RANK THREE, MEASURED
+---------------------------------------------
+
+At rank k the matrix with row sums t is P o P - (1/(k-1)) d d^T.  At the (5,3) diamond
+(t = 1/5, share 0.65) its DIAGONAL already exceeds its row sum, so it is not entrywise
+nonnegative and the Laplacian step (b) dies.  Three ingredients are rank-two only:
+pairs ARE the selections, rank(P o P) <= dim Sym^2 R^k = 3 only at k = 2, and
+tr S = 2k - 1 = 3 only at k = 2.  No attempt was made to lift.
+
+5. THE RANK-THREE PAYLOAD
+--------------------------
+
+Every two-dimensional subspace of R^3 carries a rank-two shadow of a rank-three design
+(Gtz.inPlaneRestriction), so the classification reads on the whole sphere of normals.
+
+  Gtz.planeShadow_three_classes -- the shadow of a rank-three design whose shadow is
+  heavy and carries no strictly dominating pair has exactly three classes, and the
+  classes are the classes of the FRAME BRACKET
+  (g_c . p1)(g_d . p2) - (g_c . p2)(g_d . p1), which the tree reads as the triple
+  bracket against the normal
+  (Gtz.pairBracket_inPlaneRestriction_eq_frameOrientation_mul_tripleBracket).
+
+  Gtz.planeShadow_exists_frameBracket_eq_zero -- at four or more atoms such a plane
+  carries two atoms whose shadows are parallel.
+
+6. NUMERICS
+-----------
+
+C with OpenMP, 64 threads, direct minimisation of the TRUE maximum
+Phi = max over pairs of lambda_min (no smoothed surrogate), random multistart with
+projection onto the Parseval constraints.
+
+  m = 4:  min Phi = 1.000000000454
+  m = 5:  min Phi = 1.000000001692
+  m = 6:  min Phi = 1.000000113260
+
+At every minimiser found:
+  max |rowsum(F) - t|   = 5.6e-17 .. 1.9e-16
+  min entry of F        = -1.4e-08 .. -9.5e-11  (zero, to optimiser slack)
+  tr(diag(t)^-1 F)      = 3.000000000000  (exactly, at all three sizes)
+  number of classes     = 3               (at all three sizes)
+  classes               = the parallel classes (equal theta within each class)
+  S_A vs (1 + T_A)/2    = agree to 7 .. 9 digits, every class
+  l_c vs (1 + 1/T_A)/2  = agree to 6 .. 9 digits, every atom
+
+Class splits found: (1,2,1) at m = 4, (2,2,1) at m = 5, (2,3,1) at m = 6.
+
+7. OPEN, AND DELIBERATELY NOT CLAIMED
+--------------------------------------
+
+* Nothing about rank three beyond the plane-shadow reading.  The shadow hypotheses
+  (shadow heaviness, no plane-strict pair) are REAL hypotheses and are not discharged
+  here.
+* The relation to Gtz.not_isTie_of_fourNonParallel: that theorem already reaches the
+  rank-two hinge by the Bloch-chart equality stratum.  Gtz.hingeHoldsAtSize_rank_two
+  is NOT a reproof of it -- it is a two-line consequence of the classification, which
+  is strictly more information.  Neither file is deleted and neither supersedes the
+  other.
+* No claim that the weights of a rank-two tie are uniform.  At three atoms
+  Gtz.rankTwoTie_three_atoms gives t_c (2 l_c - 1) = 1 for every atom, which the tie
+  at t = (0.0102, 0.9785, 0.0113) satisfies.  There is no Mercedes rigidity.
