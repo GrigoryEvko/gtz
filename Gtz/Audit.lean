@@ -1376,6 +1376,7 @@ import Gtz.Wave.CornerDescentRank
 import Gtz.Wave.BranchTwoTrueDeterminants
 import Gtz.Wave.NullProbeAdjugateLaw
 import Gtz.Wave.MirrorPairMinorTrigger
+import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.CornerEmptinessSlack
@@ -37834,3 +37835,10 @@ run_cmd do
 #print axioms Gtz.mirror_probe_in_shared_plane
 #print axioms Gtz.two_zero_readings_probe_smul
 #print axioms Gtz.unitAtom_two_mirror_swaps_absurd
+
+-- Gtz/Wave/KTwoSixThreeFunnel.lean -- at (6,3) the funnel dominator cannot
+-- avoid both atoms orthogonal to the unit atom, and meeting them costs either
+-- a parallel pair or a vanishing pair minor
+#print axioms Gtz.funnel_dominator_meets_orthogonal_pair
+#print axioms Gtz.funnel_one_blind_pairMinor_zero
+#print axioms Gtz.k2SixThree_parallel_or_pairMinor_zero
