@@ -283,4 +283,49 @@ theorem blind_form_on_perp
 
 end Blind
 
+/-! ## 6. The case at a design: two plane vectors carry the probe's plane -/
+
+section Design
+
+variable {m : ℕ}
+
+/-- **THE GAP FORM OFF THE PROBE.**  Read at any vector orthogonal to the null
+probe, a triple's gap form sees only the blind member and the plane vector. -/
+theorem blind_gap_form_on_perp (D : WeightedDesign m 3) {x y z : Fin m}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) {w : Fin 3 → ℝ}
+    (hfix : subsetSum D ({x, y, z} : Finset (Fin m)) *ᵥ w = w) (hnorm : w ⬝ᵥ w = 1)
+    (hblind : D.atom x ⬝ᵥ w = 0) (hgamma : D.atom z ⬝ᵥ w ≠ 0)
+    {v : Fin 3 → ℝ} (hv : w ⬝ᵥ v = 0) :
+    v ⬝ᵥ ((subsetSum D ({x, y, z} : Finset (Fin m)) - 1) *ᵥ v)
+      = (D.atom x ⬝ᵥ v) ^ 2
+        + (blindPlaneVector (D.atom y) (D.atom z) w ⬝ᵥ v) ^ 2 - v ⬝ᵥ v := by
+  have hrep := nullProbe_reproduction_triple D hxy hxz hyz hfix
+  have hsum := gap_reading_diag D ({x, y, z} : Finset (Fin m)) v
+  rw [Finset.sum_insert (by simp [hxy, hxz]), Finset.sum_insert (by simp [hyz]),
+    Finset.sum_singleton] at hsum
+  have hform := blind_form_on_perp hrep hnorm hblind hgamma hv
+  rw [hsum]
+  linarith [hform]
+
+/-- **THE TWO PLANE VECTORS DOMINATE THE PROBE'S PLANE.**  At a weak dominator
+with a blind member, the blind member and the plane vector of the other two form
+a frame that covers the identity of the probe's orthogonal complement.  This is
+the geometric content of the case: three atoms in space have become two vectors
+in a plane, and they still dominate. -/
+theorem blind_plane_domination (D : WeightedDesign m 3) {x y z : Fin m}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hdom : Dominates D ({x, y, z} : Finset (Fin m))) {w : Fin 3 → ℝ}
+    (hfix : subsetSum D ({x, y, z} : Finset (Fin m)) *ᵥ w = w) (hnorm : w ⬝ᵥ w = 1)
+    (hblind : D.atom x ⬝ᵥ w = 0) (hgamma : D.atom z ⬝ᵥ w ≠ 0)
+    {v : Fin 3 → ℝ} (hv : w ⬝ᵥ v = 0) :
+    v ⬝ᵥ v ≤ (D.atom x ⬝ᵥ v) ^ 2
+      + (blindPlaneVector (D.atom y) (D.atom z) w ⬝ᵥ v) ^ 2 := by
+  have hpsd : 0 ≤ v ⬝ᵥ ((subsetSum D ({x, y, z} : Finset (Fin m)) - 1) *ᵥ v) := by
+    have h := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdom).2 v
+    rwa [star_trivial] at h
+  rw [blind_gap_form_on_perp D hxy hxz hyz hfix hnorm hblind hgamma hv] at hpsd
+  linarith
+
+end Design
+
 end Gtz
