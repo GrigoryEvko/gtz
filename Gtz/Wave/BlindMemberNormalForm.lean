@@ -326,6 +326,73 @@ theorem blind_plane_domination (D : WeightedDesign m 3) {x y z : Fin m}
   rw [blind_gap_form_on_perp D hxy hxz hyz hfix hnorm hblind hgamma hv] at hpsd
   linarith
 
+/-! ### The plane's own Parseval identity
+
+Conjugating `Gtz.parseval_probe_form` by the projection off the probe turns the
+design into a weighted rank-two design on the plane.  At a blind member the
+inside triple contributes only TWO rank-one terms to it, because the two live
+members have collapsed onto the plane vector. -/
+
+/-- **THE PLANE PARSEVAL AT A BLIND MEMBER.**  Read at any vector orthogonal to
+the null probe, the design's Parseval identity splits into the blind member, ONE
+term carrying both live members through the plane vector, and the outside. -/
+theorem blind_plane_parseval (D : WeightedDesign m 3) {x y z : Fin m}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) {w : Fin 3 → ℝ}
+    (hfix : subsetSum D ({x, y, z} : Finset (Fin m)) *ᵥ w = w) (hnorm : w ⬝ᵥ w = 1)
+    (hblind : D.atom x ⬝ᵥ w = 0) (hgamma : D.atom z ⬝ᵥ w ≠ 0)
+    {v : Fin 3 → ℝ} (hv : w ⬝ᵥ v = 0) :
+    D.weight x * (D.atom x ⬝ᵥ v) ^ 2
+        + (D.weight y * (D.atom z ⬝ᵥ w) ^ 2 + D.weight z * (D.atom y ⬝ᵥ w) ^ 2)
+          * (blindPlaneVector (D.atom y) (D.atom z) w ⬝ᵥ v) ^ 2
+        + ∑ c ∈ ({x, y, z} : Finset (Fin m))ᶜ, D.weight c * (D.atom c ⬝ᵥ v) ^ 2
+      = v ⬝ᵥ v := by
+  classical
+  have hrep := nullProbe_reproduction_triple D hxy hxz hyz hfix
+  have hyv := nf_perp_left hv (blind_decomposition_left (b := D.atom y)
+    (c := D.atom z) (w := w) hgamma)
+  have hzv := nf_perp_right hv
+    (blind_decomposition_right hrep hnorm hblind hgamma)
+  have hsplit := Finset.sum_add_sum_compl ({x, y, z} : Finset (Fin m))
+    (fun c => D.weight c * (D.atom c ⬝ᵥ v) ^ 2)
+  rw [parseval_probe_form D v] at hsplit
+  rw [Finset.sum_insert (by simp [hxy, hxz]), Finset.sum_insert (by simp [hyz]),
+    Finset.sum_singleton] at hsplit
+  rw [hyv, hzv] at hsplit
+  linear_combination hsplit
+
+/-- **THE OUTSIDE CANNOT READ THE PLANE VECTOR'S NORMAL FREELY.**  Against a
+vector orthogonal both to the probe and to the plane vector, the whole plane
+Parseval mass is carried by the blind member and the complement, so the blind
+member's weighted square is capped by the probe's own square. -/
+theorem blind_outside_plane_cap (D : WeightedDesign m 3) {x y z : Fin m}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) {w : Fin 3 → ℝ}
+    (hfix : subsetSum D ({x, y, z} : Finset (Fin m)) *ᵥ w = w) (hnorm : w ⬝ᵥ w = 1)
+    (hblind : D.atom x ⬝ᵥ w = 0) (hgamma : D.atom z ⬝ᵥ w ≠ 0)
+    {v : Fin 3 → ℝ} (hv : w ⬝ᵥ v = 0)
+    (hvn : blindPlaneVector (D.atom y) (D.atom z) w ⬝ᵥ v = 0) :
+    D.weight x * (D.atom x ⬝ᵥ v) ^ 2
+        + ∑ c ∈ ({x, y, z} : Finset (Fin m))ᶜ, D.weight c * (D.atom c ⬝ᵥ v) ^ 2
+      = v ⬝ᵥ v := by
+  have h := blind_plane_parseval D hxy hxz hyz hfix hnorm hblind hgamma hv
+  rw [hvn] at h
+  linarith [h]
+
+/-- **THE BLIND MEMBER CARRIES THE PLANE VECTOR'S NORMAL BY ITSELF.**  Against a
+vector orthogonal to the probe and to the plane vector, domination forces the
+blind member's own squared reading above the probe's square, so the two plane
+vectors are not merely a frame: each covers the direction the other misses. -/
+theorem blind_reading_sq_ge_of_perp_plane (D : WeightedDesign m 3) {x y z : Fin m}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hdom : Dominates D ({x, y, z} : Finset (Fin m))) {w : Fin 3 → ℝ}
+    (hfix : subsetSum D ({x, y, z} : Finset (Fin m)) *ᵥ w = w) (hnorm : w ⬝ᵥ w = 1)
+    (hblind : D.atom x ⬝ᵥ w = 0) (hgamma : D.atom z ⬝ᵥ w ≠ 0)
+    {v : Fin 3 → ℝ} (hv : w ⬝ᵥ v = 0)
+    (hvn : blindPlaneVector (D.atom y) (D.atom z) w ⬝ᵥ v = 0) :
+    v ⬝ᵥ v ≤ (D.atom x ⬝ᵥ v) ^ 2 := by
+  have h := blind_plane_domination D hxy hxz hyz hdom hfix hnorm hblind hgamma hv
+  rw [hvn] at h
+  linarith [h]
+
 end Design
 
 end Gtz
