@@ -762,15 +762,14 @@ theorem four_le_card_dominatingFamily_of_isTie_fiveTwo (D : WeightedDesign 5 2)
     _ ≤ (dominatingFamily D 2).card := Finset.card_le_card_of_injOn _ hmaps hinjective
 
 open scoped Classical in
-/-- **QUESTION 7.1, ANSWERED.**  Every `(5,3)` tie carries at least four weakly
-dominating triples.
-
-Naimark duality in its two-sided Loewner form carries the tie to a `(5,2)` tie —
-the strict verdict crosses, so the absence of a strict dominator crosses — and
-complementation carries the four dominating pairs of the dual back to four
-dominating triples here. -/
-theorem four_le_card_dominatingFamily_of_isTie_fiveThree (D : WeightedDesign 5 3)
-    (htie : IsTie D) : 4 ≤ (dominatingFamily D 3).card := by
+/-- **THE COMPLEMENT CARRIES THE COUNT.**  Naimark duality in its two-sided
+Loewner form turns a `(5,3)` tie into a `(5,2)` tie: the strict verdict crosses,
+so the absence of a strict dominator crosses, and complementation is an injection
+from the dual's dominating pairs into the primal's dominating triples. -/
+theorem exists_dual_isTie_card_dominatingFamily_le_fiveThree (D : WeightedDesign 5 3)
+    (htie : IsTie D) :
+    ∃ dual : WeightedDesign 5 2, IsTie dual
+      ∧ (dominatingFamily dual 2).card ≤ (dominatingFamily D 3).card := by
   obtain ⟨dual, -, -, hequiv⟩ :=
     exists_naimarkDual_loewnerEquiv (k := 3) (m := 5) (by norm_num) (by norm_num) D
   have hcomplTriple : ∀ selected : Finset (Fin 5), selected.card = 3 → selectedᶜ.card = 2 := by
@@ -787,7 +786,7 @@ theorem four_le_card_dominatingFamily_of_isTie_fiveThree (D : WeightedDesign 5 3
       refine htie.2 selectedᶜ (hcomplPair selected hcard) ?_
       refine (hequiv selectedᶜ (hcomplPair selected hcard)).2.mpr ?_
       rwa [compl_compl]
-  have hcount := four_le_card_dominatingFamily_of_isTie_fiveTwo dual hdualTie
+  refine ⟨dual, hdualTie, ?_⟩
   have hmaps : ∀ selected ∈ dominatingFamily dual 2, selectedᶜ ∈ dominatingFamily D 3 := by
     intro selected hselected
     obtain ⟨hcard, hdominates⟩ := (mem_dominatingFamily_iff dual 2 selected).mp hselected
@@ -799,8 +798,16 @@ theorem four_le_card_dominatingFamily_of_isTie_fiveThree (D : WeightedDesign 5 3
     intro leftSet _ rightSet _ hequal
     have hback := congrArg (fun candidate : Finset (Fin 5) => candidateᶜ) hequal
     simpa using hback
-  calc (4 : ℕ) ≤ (dominatingFamily dual 2).card := hcount
-    _ ≤ (dominatingFamily D 3).card := Finset.card_le_card_of_injOn _ hmaps hinjective
+  exact Finset.card_le_card_of_injOn _ hmaps hinjective
+
+open scoped Classical in
+/-- **QUESTION 7.1, ANSWERED.**  Every `(5,3)` tie carries at least four weakly
+dominating triples. -/
+theorem four_le_card_dominatingFamily_of_isTie_fiveThree (D : WeightedDesign 5 3)
+    (htie : IsTie D) : 4 ≤ (dominatingFamily D 3).card := by
+  obtain ⟨dual, hdualTie, hcount⟩ :=
+    exists_dual_isTie_card_dominatingFamily_le_fiveThree D htie
+  exact le_trans (four_le_card_dominatingFamily_of_isTie_fiveTwo dual hdualTie) hcount
 
 open scoped Classical in
 /-- **Question 7.1 in the campaign's own words.**  At least four `3`-subsets of a
@@ -816,5 +823,145 @@ theorem four_le_card_dominatingTriples_of_isTie_fiveThree (D : WeightedDesign 5 
     exact ⟨fun hmember => hmember.2, fun hmember => ⟨Finset.mem_univ selected, hmember⟩⟩
   rw [hrewrite]
   exact four_le_card_dominatingFamily_of_isTie_fiveThree D htie
+
+
+/-! ## 7. The sharp count: seven -/
+
+open scoped Classical in
+/-- No parallel class of a five-atom rank-two tie carries more than three atoms:
+the other two classes carry an atom each. -/
+theorem card_parallelClass_le_three_fiveTwo (D : WeightedDesign 5 2) (htie : IsTie D)
+    {block : Finset (Fin 5)} (hblock : block ∈ parallelClasses D) : block.card ≤ 3 := by
+  have hlive : ∀ label : Fin 5, D.atom label 0 ≠ 0 ∨ D.atom label 1 ≠ 0 :=
+    fun label => atom_coordinate_ne_zero_of_one_le_leverage D
+      (one_le_leverage_of_isTie_rankTwo D (by norm_num) htie label)
+  obtain ⟨hcardClasses, -⟩ :=
+    card_parallelClasses_eq_three_and_classDefect_eq_zero D (by norm_num) htie
+  have hnonempty : ∀ other ∈ parallelClasses D, 1 ≤ other.card := by
+    intro other hother
+    obtain ⟨pivot, -, hpivot⟩ := Finset.mem_image.mp hother
+    refine Finset.card_pos.mpr ⟨pivot, ?_⟩
+    rw [← hpivot]
+    exact self_mem_parallelClass D pivot
+  have htotal := sum_card_parallelClasses D hlive
+  rw [← Finset.add_sum_erase _ _ hblock] at htotal
+  have hrest : ((parallelClasses D).erase block).card • 1
+      ≤ ∑ other ∈ (parallelClasses D).erase block, other.card :=
+    Finset.card_nsmul_le_sum _ _ 1
+      fun other hother => hnonempty other (Finset.mem_of_mem_erase hother)
+  rw [Finset.card_erase_of_mem hblock, hcardClasses, smul_eq_mul, mul_one] at hrest
+  omega
+
+open scoped Classical in
+/-- **THE NON-DOMINATING PAIRS LIVE INSIDE THE CLASSES.**  Every cross-class pair
+dominates, so a pair that fails to dominate has both atoms in one class. -/
+theorem nonDominating_pairs_subset_biUnion (D : WeightedDesign 5 2) (htie : IsTie D) :
+    ((Finset.univ.powersetCard 2 : Finset (Finset (Fin 5))).filter
+        fun selected => ¬ Dominates D selected)
+      ⊆ (parallelClasses D).biUnion fun block => block.powersetCard 2 := by
+  intro selected hselected
+  rw [Finset.mem_filter, Finset.mem_powersetCard] at hselected
+  obtain ⟨⟨-, hcard⟩, hrefuses⟩ := hselected
+  obtain ⟨leftLabel, rightLabel, hdistinct, hpair⟩ := Finset.card_eq_two.mp hcard
+  have hsame : parallelClass D leftLabel = parallelClass D rightLabel := by
+    by_contra hne
+    refine hrefuses ?_
+    rw [hpair]
+    exact dominates_pair_of_parallelClass_ne D (by norm_num) htie hne
+  refine Finset.mem_biUnion.mpr ⟨parallelClass D leftLabel,
+    parallelClass_mem_parallelClasses D leftLabel, ?_⟩
+  rw [Finset.mem_powersetCard]
+  refine ⟨?_, hcard⟩
+  rw [hpair]
+  intro probe hprobe
+  rcases Finset.mem_insert.mp hprobe with hleft | hright
+  · rw [hleft]
+    exact self_mem_parallelClass D leftLabel
+  · rw [Finset.mem_singleton.mp hright, hsame]
+    exact self_mem_parallelClass D rightLabel
+
+open scoped Classical in
+/-- **AT MOST THREE PAIRS REFUSE.**  Three classes of sizes at least one and at
+most three, adding to five, carry at most three internal pairs: the sizes are
+`(3,1,1)` or `(2,2,1)`. -/
+theorem card_nonDominating_pairs_le_three (D : WeightedDesign 5 2) (htie : IsTie D) :
+    (((Finset.univ.powersetCard 2 : Finset (Finset (Fin 5))).filter
+        fun selected => ¬ Dominates D selected)).card ≤ 3 := by
+  have hlive : ∀ label : Fin 5, D.atom label 0 ≠ 0 ∨ D.atom label 1 ≠ 0 :=
+    fun label => atom_coordinate_ne_zero_of_one_le_leverage D
+      (one_le_leverage_of_isTie_rankTwo D (by norm_num) htie label)
+  obtain ⟨hcardClasses, -⟩ :=
+    card_parallelClasses_eq_three_and_classDefect_eq_zero D (by norm_num) htie
+  have hnonempty : ∀ other ∈ parallelClasses D, 1 ≤ other.card := by
+    intro other hother
+    obtain ⟨pivot, -, hpivot⟩ := Finset.mem_image.mp hother
+    refine Finset.card_pos.mpr ⟨pivot, ?_⟩
+    rw [← hpivot]
+    exact self_mem_parallelClass D pivot
+  have hbound : (((Finset.univ.powersetCard 2 : Finset (Finset (Fin 5))).filter
+        fun selected => ¬ Dominates D selected)).card
+      ≤ ∑ block ∈ parallelClasses D, (block.powersetCard 2).card :=
+    le_trans (Finset.card_le_card (nonDominating_pairs_subset_biUnion D htie))
+      (Finset.card_biUnion_le)
+  have hchoose : ∀ block ∈ parallelClasses D,
+      2 * (block.powersetCard 2).card + 3 ≤ 3 * block.card := by
+    intro block hblock
+    rw [Finset.card_powersetCard]
+    have hlow : 1 ≤ block.card := hnonempty block hblock
+    have hhigh : block.card ≤ 3 := card_parallelClass_le_three_fiveTwo D htie hblock
+    obtain ⟨blockSize, hblockSize⟩ : ∃ blockSize, block.card = blockSize := ⟨_, rfl⟩
+    rw [hblockSize] at hlow hhigh ⊢
+    interval_cases blockSize <;> decide
+  have hsum : ∑ block ∈ parallelClasses D, (2 * (block.powersetCard 2).card + 3)
+      ≤ ∑ block ∈ parallelClasses D, 3 * block.card := Finset.sum_le_sum hchoose
+  rw [Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, Finset.sum_const,
+    smul_eq_mul, hcardClasses, sum_card_parallelClasses D hlive] at hsum
+  omega
+
+open scoped Classical in
+/-- **SEVEN DOMINATING PAIRS AT `(5,2)`.**  Ten pairs, at most three of them
+internal to a class, and every other pair dominates.  The bound is attained: the
+sharp `(5,2)` partner of the diamond has class sizes `(1,2,2)` and eight
+dominating pairs, while class sizes `(3,1,1)` give exactly seven. -/
+theorem seven_le_card_dominatingFamily_of_isTie_fiveTwo (D : WeightedDesign 5 2)
+    (htie : IsTie D) : 7 ≤ (dominatingFamily D 2).card := by
+  have hsplit : ((Finset.univ.powersetCard 2 : Finset (Finset (Fin 5))).filter
+        fun selected => Dominates D selected).card
+      + (((Finset.univ.powersetCard 2 : Finset (Finset (Fin 5))).filter
+        fun selected => ¬ Dominates D selected)).card
+      = (Finset.univ.powersetCard 2 : Finset (Finset (Fin 5))).card :=
+    Finset.card_filter_add_card_filter_not _
+  rw [Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin] at hsplit
+  have hbad := card_nonDominating_pairs_le_three D htie
+  have hfamily : dominatingFamily D 2 = (Finset.univ.powersetCard 2).filter
+      fun selected => Dominates D selected := rfl
+  rw [hfamily]
+  have hchoose : Nat.choose 5 2 = 10 := by decide
+  rw [hchoose] at hsplit
+  omega
+
+open scoped Classical in
+/-- **SEVEN DOMINATING TRIPLES AT `(5,3)`.**  The sharp form of Question 7.1: the
+count is never four, five or six.  Against the swap-degree cap of three
+(`Gtz.swapDegree_le_one_card_le_three`) this leaves no room at all. -/
+theorem seven_le_card_dominatingFamily_of_isTie_fiveThree (D : WeightedDesign 5 3)
+    (htie : IsTie D) : 7 ≤ (dominatingFamily D 3).card := by
+  obtain ⟨dual, hdualTie, hcount⟩ :=
+    exists_dual_isTie_card_dominatingFamily_le_fiveThree D htie
+  exact le_trans (seven_le_card_dominatingFamily_of_isTie_fiveTwo dual hdualTie) hcount
+
+open scoped Classical in
+/-- Question 7.1 in the campaign's own words, sharply. -/
+theorem seven_le_card_dominatingTriples_of_isTie_fiveThree (D : WeightedDesign 5 3)
+    (htie : IsTie D) :
+    7 ≤ (Finset.univ.filter fun selected : Finset (Fin 5) =>
+      selected.card = 3 ∧ (subsetSum D selected - 1).PosSemidef).card := by
+  have hrewrite : (Finset.univ.filter fun selected : Finset (Fin 5) =>
+      selected.card = 3 ∧ (subsetSum D selected - 1).PosSemidef) = dominatingFamily D 3 := by
+    ext selected
+    rw [Finset.mem_filter, mem_dominatingFamily_iff]
+    exact ⟨fun hmember => hmember.2, fun hmember => ⟨Finset.mem_univ selected, hmember⟩⟩
+  rw [hrewrite]
+  exact seven_le_card_dominatingFamily_of_isTie_fiveThree D htie
 
 end Gtz
