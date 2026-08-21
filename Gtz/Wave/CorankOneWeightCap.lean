@@ -630,7 +630,85 @@ theorem isTie_insider_pinch_law (D : WeightedDesign m 3) (htie : IsTie D)
   refine htie.2 ({d, y, z} : Finset (Fin m)) (card_triple_eq hdy hdz hyz) ?_
   rwa [subsetSum_triple_atoms D hdy hdz hyz]
 
-/-! ## 8. The budget of a corank-one boundary system -/
+/-! ## 8. The pigeonhole pivot of the campaign, evaluated
+
+`Gtz.pivot` is the campaign's official per-atom quantity, and the whole
+`Gtz.Ties.TieBasisWindow` layer is stated in it: the erasure criteria, the trace
+criterion, the excess balance and the circuit theorem all read `pivot` against a
+matrix inverse.  At a corank-one weak dominator every one of those readings is
+now POLYNOMIAL. -/
+
+/-- **THE CAMPAIGN'S PIVOT, IN CLOSED FORM.**  At a corank-one weak dominator the
+pigeonhole pivot of any atom against the four-set `T ∪ {d}` is the dominator's
+own trace and reading at the SLID atom, over the second invariant, plus the
+squared ratio of the two kernel readings.  No matrix inverse remains, so every
+statement of `Gtz.Ties.TieBasisWindow` becomes polynomial here. -/
+theorem pivot_of_corankOne (D : WeightedDesign m 3)
+    {T : Finset (Fin m)} {d c : Fin m} (hd : d ∉ T)
+    (hdom : Dominates D T)
+    {kern : Fin 3 → ℝ} (hgap : (subsetSum D T - 1) *ᵥ kern = 0)
+    (hunit : kern ⬝ᵥ kern = 1)
+    (he : secondInvariantOfThree (subsetSum D T - 1) ≠ 0)
+    (hread : D.atom d ⬝ᵥ kern ≠ 0) :
+    pivot D (insert d T) c
+      = (Matrix.trace (subsetSum D T - 1)
+            * (kernelSlide (D.atom c) (D.atom d) kern
+              ⬝ᵥ kernelSlide (D.atom c) (D.atom d) kern)
+          - kernelSlide (D.atom c) (D.atom d) kern
+            ⬝ᵥ ((subsetSum D T - 1) *ᵥ kernelSlide (D.atom c) (D.atom d) kern))
+          / secondInvariantOfThree (subsetSum D T - 1)
+        + ((D.atom c ⬝ᵥ kern) / (D.atom d ⬝ᵥ kern)) ^ 2 := by
+  have hpsd : (subsetSum D T - 1).PosSemidef := hdom
+  have hsym : (subsetSum D T - 1)ᵀ = subsetSum D T - 1 :=
+    (by simpa using hpsd.isHermitian : (subsetSum D T - 1).IsSymm)
+  rw [pivot, subsetSum_insert_sub_one D hd, trace_mul_atomMatrix]
+  exact fourSet_pivot_of_unit_null hsym hgap hunit he hread (D.atom c)
+
+/-- **THE PIGEONHOLE TRACE OF THE FOUR-SET, AT A DESIGN.**  The single number the
+trace criterion of `Gtz.Ties.TieBasisWindow` turns on, in closed form. -/
+theorem trace_inv_subsetSum_insert (D : WeightedDesign m 3)
+    {T : Finset (Fin m)} {d : Fin m} (hd : d ∉ T)
+    (hdom : Dominates D T)
+    {kern : Fin 3 → ℝ} (hgap : (subsetSum D T - 1) *ᵥ kern = 0)
+    (hunit : kern ⬝ᵥ kern = 1)
+    (he : secondInvariantOfThree (subsetSum D T - 1) ≠ 0)
+    (hread : D.atom d ⬝ᵥ kern ≠ 0) :
+    Matrix.trace ((subsetSum D (insert d T) - 1)⁻¹)
+      = (secondInvariantOfThree (subsetSum D T - 1)
+          + leverageOf (D.atom d) * Matrix.trace (subsetSum D T - 1)
+          - D.atom d ⬝ᵥ ((subsetSum D T - 1) *ᵥ D.atom d))
+        / (secondInvariantOfThree (subsetSum D T - 1) * (D.atom d ⬝ᵥ kern) ^ 2) := by
+  have hpsd : (subsetSum D T - 1).PosSemidef := hdom
+  have hsym : (subsetSum D T - 1)ᵀ = subsetSum D T - 1 :=
+    (by simpa using hpsd.isHermitian : (subsetSum D T - 1).IsSymm)
+  rw [subsetSum_insert_sub_one D hd]
+  exact trace_inv_add_atomMatrix_of_unit_null hsym hgap hunit he hread
+
+/-- **THE PIVOT OF THE ADJOINED ATOM IS EXACTLY ONE.**  Dropping the atom that
+built the four-set returns the singular gap it came from, so that erasure never
+dominates strictly and the payment law is the sum of the THREE insider
+conditions and nothing else. -/
+theorem pivot_self_of_corankOne (D : WeightedDesign m 3)
+    {T : Finset (Fin m)} {d : Fin m} (hd : d ∉ T)
+    (hdom : Dominates D T)
+    {kern : Fin 3 → ℝ} (hgap : (subsetSum D T - 1) *ᵥ kern = 0)
+    (he : secondInvariantOfThree (subsetSum D T - 1) ≠ 0)
+    (hunit : kern ⬝ᵥ kern = 1)
+    (hread : D.atom d ⬝ᵥ kern ≠ 0) :
+    pivot D (insert d T) d = 1 := by
+  have hpsd : (subsetSum D T - 1).PosSemidef := hdom
+  have hsym : (subsetSum D T - 1)ᵀ = subsetSum D T - 1 :=
+    (by simpa using hpsd.isHermitian : (subsetSum D T - 1).IsSymm)
+  have hdet : ((subsetSum D T - 1) + atomMatrix (D.atom d)).det
+      = secondInvariantOfThree (subsetSum D T - 1) * (D.atom d ⬝ᵥ kern) ^ 2 :=
+    det_add_atomMatrix_of_unit_null hsym hgap hunit (D.atom d)
+  have hfourDet : IsUnit ((subsetSum D T - 1) + atomMatrix (D.atom d)).det := by
+    rw [hdet]
+    exact isUnit_iff_ne_zero.mpr (mul_ne_zero he (pow_ne_zero 2 hread))
+  rw [pivot, subsetSum_insert_sub_one D hd, trace_mul_atomMatrix]
+  exact fourSet_inverseForm_self hfourDet hgap hread
+
+/-! ## 9. The budget of a corank-one boundary system -/
 
 /-- **THE FULL BUDGET OF A CORANK-ONE BOUNDARY SYSTEM.**  Everything this route
 extracts from one corank-one weak dominator of a boundary system, at any size and
