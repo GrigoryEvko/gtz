@@ -1367,6 +1367,7 @@ import Gtz.Wave.PairMinorBudget
 import Gtz.Wave.PairNormalParseval
 import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.CornerGatewayBudget
+import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoBridgeNormalForm
 import Gtz.Wave.KTwoBridgeRefusalY
@@ -37594,3 +37595,14 @@ run_cmd do
 #print axioms Gtz.exists_axisWedge_pos
 #print axioms Gtz.axisWedge_outside_budget
 #print axioms Gtz.k2Plane_cross_law_homog
+
+-- Gtz/Wave/CornerRefusalDichotomy.lean -- the Bargmann isolation, its square,
+-- the sign-free refusal dichotomy, and what each branch costs the triple
+#print axioms Gtz.det_add_det_one_sub
+#print axioms Gtz.tripleGapDet_eq_bargmann
+#print axioms Gtz.tripleGapDet_bargmann_sq
+#print axioms Gtz.tripleGapDet_refusal_dichotomy
+#print axioms Gtz.branchOne_refinedBudget_nonneg
+#print axioms Gtz.branchTwo_leverage_bound
+#print axioms Gtz.branchTwo_leverage_bound_pure
+#print axioms Gtz.exists_pairMinor_pos_of_refinedBudget_of_leverage
