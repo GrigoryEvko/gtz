@@ -216,3 +216,80 @@ F47-20. WHAT IS LEFT, EXACTLY.  With branch 1 dead, all q <= 0 forces
   so it never conflicts with det N_C = t_x t_y t_z (1+lam) > 0.
   THE REMAINING GAP IS THEREFORE: exclude branch 2 on the region where
   4 prod x <= 1 + sum x.  Everything else in E1 is closed.
+
+============ ROUND 4 (fork 54) — E1 REDUCES TO A MATRIX STATEMENT ============
+
+F54-1. THE REFINED BUDGET IS A PRODUCT (landed, Gtz.refinedBudget_factor).
+  With A_i = 1 - t_i the weight slack and a_i = t_i x_i the weighted excess,
+      F  =  A1 A2 A3  -  a1 A2 A3  -  a2 A1 A3  -  a3 A1 A2
+         =  A1 A2 A3 * (1 - b1 - b2 - b3) ,     b_i = a_i / A_i .
+  ONE ring.  Every earlier estimate of F was an estimate of a PRODUCT, which is
+  why none were sharp, and why the "sup F = -0.00118587" of F47-19 is wrong as a
+  supremum: the true sup is 0, approached as sum b -> 1+.  The scan simply could
+  not reach a boundary it does not contain.  No Handelman was needed.
+
+F54-2. BRANCH ONE IS UNIVERSALLY IMPOSSIBLE — PROVED, ONE LINE
+  (Gtz.refinedBudget_neg_of_excess, Gtz.outsideTriple_not_branchOne).
+  A slack is < 1, so b_i > a_i, so sum b > sum a.  A corner gives its outside
+  triple sum a > 1 (total excess 2, inside share < 1), hence sum b > 1, hence
+  F < 0.  Branch one forces F >= 0.  Done.  F47-19's measured claim is now a
+  theorem, and the producer loses its budget hypothesis
+  (Gtz.exists_pairMinor_pos_of_excess).
+
+F54-3. THE WHOLE DICHOTOMY IS TWO DETERMINANTS OF ONE MATRIX.
+  Let M be the WEIGHTED outside Gram, M = V_O^T V_O with V_O V_O^T = N_O.  M has
+  the same spectrum as N_O = I - N_C, so
+      0 <= M <= I        (M >= 0 since N_O >= 0 ; M <= I since N_C >= 0).
+  Put D = diag(t), K = M - D.  Then K = D^{1/2}(G_O - I)D^{1/2}, so
+      K_ii = a_i ,   K_ij = sqrt(t_i t_j) p_ij ,   det K = t1t2t3 * tripleGapDet.
+  INADMISSIBILITY q_ij <= 0  IS EXACTLY  a_i a_j <= K_ij^2 , i.e. every 2x2
+  PRINCIPAL MINOR OF K IS <= 0.  And with sigma = sign(M12 M13 M23):
+    * det(I - M) >= 0 , sigma >= 0  ==>  A1A2A3 * (1 - sum b) >= 0  ==>  sum b <= 1
+      -- because  Prod(1-b) - Sum(1-b_k) b_i b_j - 2 b1b2b3  =  1 - sum b  EXACTLY
+         (all quadratic and cubic terms cancel; sympy-verified).  THIS IS F54-1.
+    * det M >= 0 , sigma < 0     ==>  4 a1a2a3 <= t1t2t3 + Sum a_i t_j t_k ,
+      i.e. 4 prod x <= 1 + sum x  -- EXACTLY branch two (sympy-verified).
+  So branch one IS the sigma >= 0 half read through det(I-M), branch two IS the
+  sigma < 0 half read through det M, and the Bargmann term of F47-11 is
+  M12 M13 M23.  The squaring trick and this reading agree.
+
+F54-4. E1 REDUCES TO A PURE MATRIX STATEMENT — NO CORNER GEOMETRY.
+  CONJECTURE (measured, sup attained at 1):
+     M symmetric 3x3 with 0 <= M <= I ;  t_i > 0 ;  a_i = M_ii - t_i > 0 ;
+     every 2x2 principal minor of K = M - diag(t) is <= 0
+       ==>   a1 + a2 + a3  <=  1 .
+  A corner's outside triple has sum a > 1, so E1 follows immediately.
+  MEASURED: maximising sum a over the all-inadmissible set (the maximiser has all
+  three pair constraints TIGHT, so a_i = |P|/M_jk^2 with P = M12M13M23):
+      global, 400 restarts    sup sum a = 0.999999999009    (never exceeds 1)
+      sigma > 0 branch        sup sum a = 0.99985613
+      sigma < 0 branch        sup sum a = 0.99466060
+  The supremum is 1, approached as spec(M) -> [0, eps, 1] with sum t -> 0.
+  ALSO: 1.5M random draws, 267831 heavy-with-excess, EACH pair inadmissible about
+  3.1 percent of the time, ALL THREE never (0 of 267831).
+  STATUS: the sigma >= 0 half IS PROVED (F54-2).  The sigma < 0 half is MEASURED
+  ONLY.  Do not quote it as a theorem.
+
+F54-5. WHY THE EARLIER SCALAR RELAXATIONS FAILED — REFUTED WITH WITNESSES.
+  (a) {b_i + b_j <= 1, sum a > 1, sum t < 1, branch 2} IS FEASIBLE:
+      min of 4 prod x - 1 - sum x reaches -6.10e3 at
+      t = (0.2973, 1.62e-4, 0.5470), b = (0.0081, 0.9900, 0.0099).
+      So the pairing cap alone can never exclude branch two.
+  (b) Adding only M <= I (i.e. Kcheck <= I) still leaves branch two feasible:
+      36 points found, min G = -943.6.
+  (c) Adding M >= 0 as well kills it: 0 points in 150423 draws.
+      THE MISSING CONSTRAINT WAS N_O >= 0, NOT MORE CORNER GEOMETRY.
+  Consequence: any future relaxation of E1 must carry BOTH determinant
+  conditions of M.  Pairwise data is provably insufficient.
+
+F54-6. WHAT IS LEFT.  Prove F54-4 in the sigma < 0 branch.  Structure known:
+    * sigma < 0 itself forces  t1t2t3 + Sum t_i t_j a_k  >  2 a1a2a3  (from
+      det M >= 0 with |P| >= prod a), and branch two sharpens 2 to 4.
+    * M <= I gives the diagonal bound a_i <= A_i (b_i <= 1) and pairwise
+      b_i + b_j <= 1, hence with b1 <= b2 <= b3 : b1 <= b2 <= 1/2.
+    * Those alone give only sum a <= 1 + b1 <= 3/2.  The remaining content is
+      that b1 (the SMALLEST normalized excess) is forced to zero as sum a -> 1,
+      which is what the two determinant conditions do jointly.
+  It is a scalar polynomial system in (a, t, M12, M13, M23) on a semialgebraic
+  domain -- a Positivstellensatz target, and the right one, unlike the earlier
+  bilinear (t,a) target of F47-19 which is now a proved theorem instead.
