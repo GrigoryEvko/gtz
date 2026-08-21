@@ -1323,6 +1323,7 @@ import Gtz.Wave.BracketPhaseRigidity
 import Gtz.Wave.BracketPluckerSyzygy
 import Gtz.Wave.ParallelPairFactorization
 import Gtz.Wave.KTwoXSplit
+import Gtz.Wave.DominatorLeverageCap
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
@@ -36627,6 +36628,14 @@ run_cmd do
 -- the swap transports the other
 #print axioms Gtz.k2ChartDoubleQuotientCorner_of_xHalf
 #print axioms Gtz.k2Chart_kill_of_xHalf
+
+-- Gtz/Wave/DominatorLeverageCap.lean -- the sharpened bracket floor and the
+-- contraction tax meet on one triple: at a tie a weak dominator cannot carry
+-- large total leverage unless its weights are very unequal
+#print axioms Gtz.dominator_bracketMass_floor
+#print axioms Gtz.isTie_dominator_leverage_cap
+#print axioms Gtz.isTie_dominator_leverage_total_cap
+#print axioms Gtz.isTie_dominator_weightProduct_le
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
