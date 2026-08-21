@@ -1482,6 +1482,7 @@ import Gtz.Wave.ChartComplementBlockLaw
 import Gtz.Wave.ChartSharpDesignGap
 import Gtz.Wave.ChartFrobeniusLaw
 import Gtz.Wave.DependencyDominationCriterion
+import Gtz.Wave.ChartGaleSpectralLaw
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39796,3 +39797,20 @@ run_cmd do
 #print axioms Gtz.corner_inside_leverage_total_eq
 #print axioms Gtz.corner_insidePair_minor_le_axisReading
 #print axioms Gtz.corner_insidePair_sum_law_of_isTie
+
+-- Gtz/Wave/ChartGaleSpectralLaw.lean -- at `size = 2 * rank` the complementary blocks of a
+--   chart gap share a CHARACTERISTIC POLYNOMIAL, not merely a determinant.  Every shifted
+--   determinant of the first shift on a block equals the corresponding shifted determinant
+--   of the second shift on the complementary block.  The step that spends the self-dual
+--   cell is the second Weinstein-Aronszajn flip, because the complementary row block is
+--   square only there; off the cell the law FAILS, measured at 0.97 at `(7,3)`.  At `(6,3)`
+--   the twenty `3 × 3` blocks carry ten spectra between them.  This does NOT say a triple
+--   dominates exactly when its complement does -- measured, those disagree on 2992 of 8000
+--   subsets, and the honest transport of domination is the sharp duality.
+#print axioms Gtz.det_smul_one_sub_eq
+#print axioms Gtz.det_smul_one_sub_mul_comm
+#print axioms Gtz.neg_one_pow_mul_self
+#print axioms Gtz.det_shifted_projectionBlock_eq
+#print axioms Gtz.det_shifted_chartGapBlock_eq
+#print axioms Gtz.chartCore_det_shifted_gapBlock_eq
+#print axioms Gtz.sixThree_shifted_complementary_block_law
