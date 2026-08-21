@@ -293,3 +293,29 @@ F54-6. WHAT IS LEFT.  Prove F54-4 in the sigma < 0 branch.  Structure known:
   It is a scalar polynomial system in (a, t, M12, M13, M23) on a semialgebraic
   domain -- a Positivstellensatz target, and the right one, unlike the earlier
   bilinear (t,a) target of F47-19 which is now a proved theorem instead.
+
+F54-7. THE sigma < 0 BRANCH, REDUCED TO AN EXACT SCALAR SYSTEM.
+  At the maximiser all three pair constraints are tight, so K = W E W with
+  W = diag(sqrt a) and E the sign matrix.  Up to the diagonal congruence
+  w_i -> -w_i (which leaves sigma invariant) there are exactly two patterns:
+    sigma = +1 :  E = all-ones, RANK ONE, K = v v^T.  Then M <= I is the
+      rank-one condition sum a_i / A_i <= 1, i.e. SUM b <= 1 -- F54-1 again,
+      and PROVED.
+    sigma = -1 :  E = [[1,1,1],[1,1,-1],[1,-1,1]], eigenvalues {-1, 2, 2}.
+      Sympy-exact:  det(I - U E U) = 1 - sum b + 4 b1 b2 b3 , so
+         det(I - M) >= 0   <=>   SUM b <= 1 + 4 b1 b2 b3 .
+  So the whole sigma < 0 branch is the scalar implication
+      b_i in [0,1],  b_i + b_j <= 1,
+      sum b <= 1 + 4 b1 b2 b3,                     [det(I-M) >= 0]
+      4 prod x <= 1 + sum x ,  x_i = b_i (1-t_i)/t_i,   [det M >= 0]
+      t_i > 0,  sum t < 1
+        ==>   sum a = sum b_i (1 - t_i)  <=  1 .
+  MEASURED on this reduced system: max sum a = 0.999999999, never exceeding 1,
+  the supremum approached at b -> (0,0,1) with sum t -> 0.
+  SIX variables, all constraints polynomial, domain semialgebraic and the bound
+  TIGHT (margin 0) -- so a Positivstellensatz certificate exists but cannot be
+  strict.  THIS is the target, and it is far smaller than anything the lane has
+  attacked before.
+  USEFUL SUB-FACT (proved by hand, one line): branch two forces min_i x_i <= 1.
+    If every x_i > 1 write x_i = 1 + e_i ; then 4 prod x - (1 + sum x) =
+    3 sum e + 4 sum e_i e_j + 4 prod e > 0, contradiction.  So some a_k <= t_k.
