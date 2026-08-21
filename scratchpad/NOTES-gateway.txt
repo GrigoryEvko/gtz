@@ -171,3 +171,48 @@ F47-16. WHY BRANCH 2 STILL DOES NOT CLOSE, EXACTLY.  Chaining branch 2 with the
   which is strictly positive.  THE MISSING STEP IS A LOWER BOUND ON
   t_x t_y t_z (1+lam) IN TERMS OF THE OUTSIDE SCALARS.  That single inequality
   closes branch 2 and therefore E1.  It is the whole remaining gap.
+
+============ ROUND 3 (fork 47) — BRANCH 1 IS UNIVERSALLY DEAD ============
+
+F47-17. THE COORDINATOR'S "NEW" IDENTITY IS MY LANDED ONE, REARRANGED.
+  det N_C = (tauC + s - 2) + e2(N_O) - det N_O   is TRUE (char poly of N_O at 1
+  plus tr N_O = 3 - tauC - s), but expanding e2(N_O) = sum t_i t_j w_ij and
+  w_ij = q_ij + x_i + x_j + 1 turns it into
+     det N_C = (1-T)(1-S) + sum t_i t_j q_ij - sum t_i^2 x_i + e2(t) - det N_O ,
+  which is weightedTriple_pairMinor_identity verbatim.  I verified the algebra.
+  So it adds NO information beyond what round 2 already used, and it does not
+  replace the AM-GM step: the AM-GM was an *upper* bound on det N_C layered ON
+  TOP of the identity, and branch 2 produces a *lower* bound on det N_C, so the
+  two never meet.  Direction, not sharpness, is why branch 2 survived.
+
+F47-18. THE EXACT CANCELLATION AT THE EXTREMAL (sympy, exact).
+  At b = (1/2,1/2,1/2) and ANY weights:
+     F  = -tauC/2 ,        F_plus - PiA*S(1/2) = 0   IDENTICALLY,
+     4*prod x - (1 + sum x) = tauC / (2*prod t)  > 0  STRICTLY.
+  So at the relaxation's extremal BOTH branches die: branch 2 needs
+  4 prod x <= 1 + sum x, which fails by exactly tauC/(2 prod t); and branch 1
+  needs F_plus >= 0, which fails by exactly PiA/2.  The landed producer
+  exists_pairMinor_pos_of_refinedBudget_of_leverage fires there.
+  This is why every descent kept landing on b = 1/2 with margin ~1e-4: that
+  point is an EXACT double root of the relaxation, not a numerical artifact.
+
+F47-19. BRANCH 1 IS UNIVERSALLY IMPOSSIBLE — the round's main advance.
+  Adversarial scan (800k random + 40x40k polish) over the whole domain
+  {t_i>0, T<1, b_i>0, b_i+b_j<=1, sum b_i A_i > 1}:
+      sup F_plus = -0.00118587  < 0
+  attained at the degenerate edge t = (0.948, 3.1e-4, 1.97e-3), b sum 1.0229.
+  Since branchOne_refinedBudget_nonneg (LANDED) says branch 1 ==> F_plus >= 0,
+  this says: A REFUSING HEAVY TRIPLE AT A CORNER IS ALWAYS IN BRANCH 2.
+  [MEASURED, not proved.  It is a scalar polynomial inequality on a bilinear
+  domain, so it is a Handelman/Positivstellensatz target in the (t,a) variables
+  — that is the single cheapest remaining brick.]
+
+F47-20. WHAT IS LEFT, EXACTLY.  With branch 1 dead, all q <= 0 forces
+     4 x_1 x_2 x_3  <=  1 + x_1 + x_2 + x_3        (branchTwo_leverage_bound_pure)
+  and that is NOT contradictory by itself: sup over the domain of
+  [1 + sum x - 4 prod x] is +3.46e5, so branch 2 is available on a large region.
+  Chaining branch 2 with the pairing cap and AM-GM gives only
+  F_plus - PiA*S(b) <= det N_C, a LOWER bound (max of LHS = -8.8e-5 <= 0),
+  so it never conflicts with det N_C = t_x t_y t_z (1+lam) > 0.
+  THE REMAINING GAP IS THEREFORE: exclude branch 2 on the region where
+  4 prod x <= 1 + sum x.  Everything else in E1 is closed.
