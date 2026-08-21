@@ -39145,6 +39145,11 @@ run_cmd do
 #print axioms Gtz.not_hasParallelPair_of_isTie_succ_rank
 #print axioms Gtz.not_hingeHoldsAtSize_succ_rank'
 #print axioms Gtz.corankOne_tie_classification
+#print axioms Gtz.hasParallelPair_of_rank_one
+#print axioms Gtz.hingeHoldsAtSize_rank_one
+#print axioms Gtz.dotProduct_singleton_gap_mulVec
+#print axioms Gtz.leverageOf_eq_one_of_isTie_rank_one
+#print axioms Gtz.hinge_not_preserved_by_duality
 
 -- Gtz/Wave/PivotFourDominatingTriples.lean -- the three-class law for rank-two
 -- ties, and seven dominating triples at every (5,3) tie
