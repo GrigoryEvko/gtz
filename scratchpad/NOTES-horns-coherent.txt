@@ -349,3 +349,129 @@ routine to find two genuine (6,3) DESIGNS sharing lam, u and an outside pair,
 one satisfying E2* and one not.  That would show the undetermination survives
 Parseval, which is what actually matters, and it is the cheapest decisive
 experiment left in this lane.
+
+======================================================================
+F60-1.  ITEM 1 WAS ALREADY LANDED -- AND STRONGER THAN THE BRIEF SAID
+======================================================================
+The brief asked me to "verify the equal-inside-weight residual gauge
+(unverified)".  It is NOT unverified: it is a committed kernel theorem,
+Gtz/Wave/EtwoRealnessGauge.lean, commit c952e1e (fork 49).  Grepping first
+saved the round, exactly as the predecessor's grep saved a duplicate of
+corner_column_exists_posDef_closed.
+
+AND THE LANDED FORM IS STRONGER THAN THE BRIEF'S STATEMENT.  The brief said
+the gauge needs TWO EQUAL inside weights.  The theorem needs only that the
+rotation COMMUTES with the inside weight matrix:
+    gaugeFrame_corner_eq   : (V R)(V R)' = V V'          for R orthogonal
+    gaugeFrame_moment_eq   : (V R) D (V R)' = V D V'     whenever R D = D R
+Equal weights are merely the case where the commutant is positive-dimensional
+(planarGauge).  Nothing about eigenplanes, nothing about three dimensions.
+
+======================================================================
+F60-2.  E2 IS GAUGE-VARIANT; E2* IS GAUGE-INVARIANT (measured, mine)
+======================================================================
+SETUP.  General corner-design chart (F49-16), EQUAL inside weights so the
+commutant is the full rotation circle.  Sweep Vc -> Vc*rotz(th) at 181 points
+per orbit.  The corner, all six weights, the whole outside moment, hence every
+outside atom / outside pair minor / the complement triple are CONSTANT along
+the orbit; only the inside atoms move.  Parseval verified at every point.
+E2* evaluated DIRECTLY (strict domination of {e,d,d'} by eigenvalue), never
+through a closed form -- the campaign has had three conjugation incidents from
+transcribed closed forms.
+
+    orbits sampled                       6000    (Parseval max 3.11e-15)
+    orbits where E2* VARIES along orbit  2814    (46.900%)
+    orbits with >=1 complement-refusing pt   7   (0.1167%)
+    orbits refusing at EVERY gauge point     7
+    refusing gauge points, total          1267 of 1086000
+    orbits SPLITTING E2* among refusing pts  0
+
+THE DICHOTOMY.  Along one gauge orbit -- same corner, same weights, same
+entire outside -- E2* flips at 46.9% of orbits.  So the undetermination
+SURVIVES PARSEVAL: this closes F49-20, which asked exactly for two genuine
+(6,3) DESIGNS sharing lam, u and the outside with E2* differing.  They exist
+in abundance; F49-20's "cheapest decisive experiment" is done and the answer
+is that Parseval does NOT pin repayment.
+
+BUT: of 7 complement-refusing orbits, ZERO split.  Refusal itself was also
+gauge-invariant on all 7 (all-or-nothing at every point), which is forced --
+the complement is outside data and the gauge fixes the outside.  So the
+measured picture is
+    E2  (unconditional)          GAUGE-VARIANT   (46.9% of orbits flip)
+    E2* (complement refuses)     GAUGE-INVARIANT (0 of 7 orbits flip)
+consistent with F49-13's twelve corners, and it explains the 59.65% vs
+100.0000% gap structurally rather than statistically.
+
+CAVEAT, STATED PLAINLY: 7 refusing orbits is a SMALL sample.  The invariance
+of E2* on the refusing locus is a LEAD, not a result.  A larger targeted run
+is in flight; do not quote the invariance as established.
+
+CONSEQUENCE FOR CERTIFICATE DESIGN.  A certificate for E2 (unconditional)
+cannot exist in ANY variables the gauge fixes -- that is now measured, not
+argued, and it rules out the outside moment, the outside pair minors, the
+complement, and all six weights TOGETHER, since the orbit holds every one of
+them constant while flipping the conclusion.  The complement-refusing
+hypothesis is therefore not a convenience: it is what restores the possibility
+of a certificate at all.
+
+======================================================================
+F60-3.  *** THE REFUSING REGION WAS STRUCTURALLY UNREACHABLE ***
+======================================================================
+Every sampler in this lane, mine included, drew the inside mass as
+    sc = rand * 0.9/(1+lam)   [TOTAL],   then split it three ways.
+With EQUAL inside weights t that gives t(1+lam) <= 0.3.  But with equal
+weights the inside moment is EXACT:
+    N_C = t * (I + lam u u'),   N_O = (1-t) I - t*lam*u u'
+    eigenvalues of N_O:  (1-t), (1-t), 1 - t(1+lam)
+so N_O's smallest eigenvalue was pinned >= 0.7 in EVERY sample.  Complement
+refusal needs N_O nearly singular, i.e. t(1+lam) -> 1.  THE SAMPLERS COULD NOT
+REACH THE REGION THE WHOLE LANE CARES ABOUT.  That is why refusal measured at
+0.12-0.30% and why F49-13 had only twelve refusing corners.
+THE FIX: draw rho := t(1+lam) in [0.80, 1.00) and set t = rho/(1+lam).
+Refusing orbits per unit effort go from ~0.12% to ~15%.
+
+F60-4.  E2* IS GAUGE-INVARIANT ON THE REFUSING LOCUS (4639 orbits, 0 splits)
+----------------------------------------------------------------------------
+Re-run with the corrected draw, 181 gauge points per orbit, E2* evaluated
+DIRECTLY by lambda_min of the triple gap (no closed form):
+    complement-REFUSING orbits        4639
+      E2* true at EVERY gauge point   4639
+      E2* false at EVERY gauge point     0
+      E2* SPLIT along the orbit          0
+      min fraction of orbit with E2*  1.000000
+663x the previous refusing sample, and the invariance is total.  Combined with
+F60-2 (E2 unconditional flips at 46.9% of orbits) the dichotomy is now on firm
+numerical ground:
+    E2  (unconditional)        GAUGE-VARIANT    46.9% of orbits flip
+    E2* (complement refuses)   GAUGE-INVARIANT  0 of 4639 orbits flip
+STILL A MEASUREMENT, NOT A THEOREM.  But it is the RIGHT measurement now, and
+it says the complement-refusing hypothesis is not a convenience -- it is
+exactly what makes a certificate possible, because the gauge holds the corner,
+all six weights and the ENTIRE outside constant while flipping unconditional
+E2.  No certificate for unconditional E2 can exist in any of those variables.
+
+F60-5.  ACCEPTANCE TEST AT THE COMPLEX CORNER TIE -- PASSED
+-----------------------------------------------------------
+scratchpad/corner-ten/complextie.txt (.txt only), Hermitian reading, DIRECT
+evaluation plus the domination control:
+    Hermitian Parseval residual   2.887e-15
+    corner gap eigenvalues        [-0.0, 0.0, 3.764068912]
+    CONTROL max lmin(S_T - I)     -2.781581e-15      (0 = genuine tie)
+    pair (4,5) q = +2.013178   e=1,2,3 lmin -0.087049 / -0.045657 / -0.504711
+    pair (4,6) q = +6.115514   e=1,2,3 lmin -0.315408 / -0.039408 / -0.969965
+    pair (5,6) q = +9.884291   e=1,2,3 lmin -0.424638 / -0.016854 / -0.989785
+    E1  = true      E2* = FALSE at all nine slots
+So E1 is field-blind and E2* is real-only, confirmed on the corrected reading.
+Any candidate E2* law that HOLDS here is not the law.
+
+F60-6.  MISROUTED BRIEF (operational)
+--------------------------------------
+The coordinator's "size-six ingredient / active gradients' common kernel /
+leverage-one branch / inadmissible-non-parallel joint" message was addressed to
+the K0 lane and was delivered to this lane instead.  It was not acted on here
+beyond the parts that transfer.  THE K0 LANE MAY NEVER HAVE RECEIVED IT.
+What transfers to E2: the frame correction.  A tie is a point of the MINIMUM
+locus of Phi := max_T lmin(S_T - I), and GtzWeighted asserts Phi >= 0.  E2*
+says exactly Phi > 0 at complement-refusing corners, so "E2* at every corner"
+IS corner emptiness for (P) -- which is F49-14, now with the variational
+reading attached.
