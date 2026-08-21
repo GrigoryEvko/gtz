@@ -1,0 +1,151 @@
+NOTES-mchart -- the chart of the whole problem, as one symmetric matrix
+
+WHAT LANDED
+
+  Gtz/Wave/ChartQuadraticCore.lean       (31 theorems, 1 structure)
+  Gtz/Wave/ChartGapSharpDuality.lean     (36 theorems)
+  Gtz/Wave/ChartPairDualityExchange.lean (9 theorems)
+
+All 76 theorems pin to [propext, Classical.choice, Quot.sound]. Both umbrellas
+carry the imports and the pins. Three collision scans over Gtz/ and Skeleton/,
+namespace-aware, after each module: zero collisions.
+
+JOB A WAS ALREADY SHIPPED. DO NOT RE-DERIVE IT.
+
+  Gtz.dominates_iff_posSemidef_projectionBlock        (Gtz/LinAlg/ProjectionForm.lean)
+  Gtz.dominates_iff_posSemidef_projectionBlock_finset (same)
+  Gtz.posDef_gap_iff_posDef_projectionBlock  (Gtz/Wave/TieParallelPairWeightRegular.lean)
+  Gtz.chartGap, Gtz.chartGapRayleigh_pos_of_fixed, Gtz.chartGapRayleigh_neg_of_killed
+                                             (Gtz/Design/ProjectionChart.lean, RCLike)
+  Gtz.chartPointHasDesign                    (Gtz/Reduction/ChartPointFactorisation.lean)
+
+The brief asked for the block criterion and its strict twin. Both were in the
+tree. The brief also asked for the converse of the realizability equation as if
+it were open; the projection half of it is `chartPointHasDesign`, unconditional
+at every size, and it has been in the tree since the compactness ladder landed.
+
+THE QUADRATIC PRESENTATION -- what is actually new
+
+  M M + M T + T M + T T = M + T      (T = diag t)
+
+is EXACTLY idempotence of M + T, by the distributive law and nothing else
+(`Gtz.chartQuadratic_iff_mul_self`). So a design is a pair (M, t) with
+
+  M symmetric, t > 0, sum t = 1, the equation above, and tr M = rank - 1.
+
+`Gtz.ChartCore` is those five items and `Gtz.exists_design_of_chartCore` sends
+one back to a design with the SAME weights and the SAME gap. Hence
+
+  Gtz.gtzWeighted_iff_chartCore          -- at EVERY (m,k), not only (6,3)
+  Gtz.hingeHoldsAtSize_iff_chartCore     -- at EVERY (m,k)
+
+The trace normalisation is worth naming on its own: tr M = k - 1 at every design
+of rank k, with no weight in it (`Gtz.trace_chartGapOfDesign`).
+
+INVERTIBILITY, AND WHERE THE PAIR MASS SITS
+
+  x . M x = |P x|^2 - sum_c t_c x_c^2        (Gtz.quadForm_chartGapOfDesign)
+
+M x = 0 forces P x = T x, so the identity collapses to
+
+  sum_c t_c (1 - t_c) x_c^2 = 0
+
+and every coefficient is the campaign's universal pair mass. That is the whole
+reason M is invertible, and it is also the whole reason the duality below has
+nothing to stand on at a vertex of the simplex. No eigenvalue is used anywhere.
+
+I did NOT land the inertia as an eigenvalue COUNT (k, 0, m-k). The two Rayleigh
+statements that carry its content are already in Gtz/Design/ProjectionChart.lean
+and a count would need Mathlib inertia machinery the tree does not have. Nothing
+below needs the count -- invertibility is what the duality consumes.
+
+THE INVERSE IS WOODBURY
+
+With V the scaled frame (rows sqrt(t_c) g_c), W the inverse-scaled frame (rows
+g_c / sqrt(t_c)) and G = S_all - 1 the total gap,
+
+  M^{-1} = W G^{-1} W^T - diag(1/t)          (Gtz.chartGapOfDesign_inv_eq)
+
+Three substitutions carry it: V^T W = G + 1, T W = V, V^T T^{-1} = W^T.
+
+THE DIAGONAL OF M^{-1} IS THE CO-ATOM READING
+
+  t_c * (M^{-1})_cc = rho_c - 1              (Gtz.weight_mul_chartGapInverse_diag)
+
+Three strata become sign conditions on TWO diagonals:
+
+  all-heavy                          <=>  diag M > 0
+  every co-atom set dominates strictly <=> diag M^{-1} < 0
+  corank-one exact tie, at (k+1,k)   <=>  diag M^{-1} = 0
+
+The third is `Gtz.isTie_iff_chartGapInverse_diag_eq_zero`, and its proof is ONE
+line of the landed reading budget sum_c (1 - t_c) rho_c = k against
+sum_c (1 - t_c) = m - 1. It is NOT a second derivation of the sibling lane's
+leverage law k (t_c l_c) = (k-1) + t_c; it places that classified stratum exactly
+on the EQUALITY BOUNDARY of the second condition. The coordinator's reading was
+correct.
+
+At (6,3) the residual open stratum is therefore: diag M > 0 and diag M^{-1} < 0,
+plus the tie condition on the twenty 3x3 blocks. Weight-free in the sense that
+matters: the two sign conditions mention no leverage and no Parseval.
+
+THE DUALITY IS A DIAGONAL CONJUGATION
+
+  -(N M^{-1} N) = 1 - diag t - Pi = Gtz.sharpChartGap D,   N = diag sqrt(t(1-t))
+
+with Pi = Gtz.totalGapHat. Proof: the inverse formula plus N T^{-1} N = 1 - T and
+N W = Gtz.totalGapFrame. By the landed Gtz.totalGapHat_add_sharpHat the right side
+is Gtz.sharpHat less the weight diagonal, so this really is the sharp design's own
+chart gap (`Gtz.sharpChartGap_add_weightDiagonal_eq_sharpHat`).
+
+NO FIXED POINT, and the argument is three lines with NO matrix square root.
+A fixed point forces M N^{-1} M = -N. The left side reads every probe as
+sum_c (M x)_c^2 / n_c >= 0, the right side reads a coordinate probe as -n_c < 0.
+Stated abstractly for any invertible symmetric form and any positive diagonal
+(`Gtz.negConjInv_ne_self_of_diagonal_pos`), and at a design as
+`Gtz.sharpChartGap_ne_chartGapOfDesign`. So every orbit has size exactly two.
+
+THE PAIR DICTIONARY LIVES IN ONE 2x2 BLOCK
+
+  (M_pp + t_p)(M_qq + t_q) - M_pq^2          vanishes at a PARALLEL PAIR
+  (1 - t_p - M_pp)(1 - t_q - M_qq) - M_pq^2  vanishes at FOUR COPLANAR atoms
+                                              on the complementary set, at (6,3)
+
+Same block of M, two diagonal shifts, and the two shifts multiply to the pair
+mass -(t_c(1 - t_c)) -- the square of the very diagonal that conjugates the
+duality. The first is t_p t_q times Gtz.pairGramMinor; the second is
+Gtz.pairCapSlack.
+
+The duality EXCHANGES them (`Gtz.chartParallelPair_iff_sharpCoPairDeterminant`),
+at every size and rank, because both are Gram defects of the same two atoms --
+one Euclidean, one in the metric of the total gap -- and the landed metric
+transfer identifies them.
+
+SCOPE WARNING, HEEDED
+
+The hinge does NOT transport across the duality: the sibling lane's
+`Gtz.hinge_not_preserved_by_duality` refutes it at (k+1, k) against (k+1, 1).
+Every statement here is scoped: the EXCHANGE is general, the READING of its right
+side as four coplanar atoms is (6,3) only, and no statement claims transport of
+HasParallelPair at any cell.
+
+THREE DIFFERENT DUALS ARE IN THE TREE. DO NOT CONFUSE THEM.
+
+  Gtz.dualDesign          (Gtz/Reduction/SplitTransfer.lean) -- has the Loewner flip
+  Gtz.IsChartDual         (Gtz/Quantitative/ChartDuality.lean) -- the complement chart
+                          1 - P; has negated pairings; does NOT transport domination
+                          (Gtz.not_forall_dominates_chartDual_compl)
+  the SHARP dual          -- the one this module computes; DOES transport domination
+
+The sibling lane's Gtz.coProjection is 1 - P, the second one. My M is P - diag t.
+Different objects, no name collision.
+
+WHAT I DID NOT DO
+
+  * The inertia eigenvalue count. Not needed; see above.
+  * det P[C,C] = det (I-P)[C^c,C^c] for a rank-k projection at |C| = k. This is
+    Jacobi's complementary minor identity and Mathlib does not carry it. It would
+    relate the twenty (6,3) blocks in complementary pairs and is the most obvious
+    next brick for anyone attacking Job D as a matrix statement.
+  * Any attack on the twenty blocks themselves. The chart is now design-free;
+    the question is not.
