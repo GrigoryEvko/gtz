@@ -6477,3 +6477,4 @@ import Gtz.Wave.CellHStarPromotion
 import Gtz.Wave.KTwoFrameChart
 import Gtz.Wave.KTwoDesignKill
 import Gtz.Wave.CellHDowndatePromotion
+import Gtz.Wave.KTwoProbePair

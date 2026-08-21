@@ -1375,6 +1375,7 @@ import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoFrameKill
 import Gtz.Wave.KTwoFrameChart
 import Gtz.Wave.KTwoDesignKill
+import Gtz.Wave.KTwoProbePair
 import Gtz.Wave.KTwoBridgeNormalForm
 import Gtz.Wave.KTwoBridgeRefusalY
 import Gtz.Wave.KTwoBridgeSlacks
@@ -37686,3 +37687,8 @@ run_cmd do
 #print axioms Gtz.posDef_sub_vecMulVec_of_det_pos
 #print axioms Gtz.posDef_sub_atomMatrix_of_det_pos
 #print axioms Gtz.cellH_exists_dominating_triple_of_posDef
+
+-- Gtz/Wave/KTwoProbePair.lean -- the second probe of the adapted frame is the
+-- cross product of the axis with the first, and it annihilates their span
+#print axioms Gtz.dotProduct_bracketNormal_combo
+#print axioms Gtz.k2Probe_cross_spec
