@@ -264,3 +264,88 @@ F49-15.  REVISED GUIDANCE FOR THE SUCCESSOR
    the three squared pairings; over C only Re(...) enters det(K-I), and at this
    fixture the off-diagonal Gram has |Im| up to 2.8641.  That is where the
    field enters the determinant, and any real-only law must consume it.
+
+================== ROUND 3: A RETRACTION OF MY OWN, AND THE CHART ============
+
+F49-16.  *** RETRACTION: MY "E2 = 100% UNCONDITIONALLY" WAS A SAMPLING ARTIFACT ***
+-----------------------------------------------------------------------------------
+F49-4 reported E2 at 100.0000% over 6256909 corners, on BOTH dual-frame branches,
+and I broadcast that.  IT IS WRONG, and my OWN gauge theorem (F49-13) is what
+invalidates it.
+CAUSE.  The coh24-lineage generator builds the inside atoms as Vc = V*e_i with
+V = I + (s-1)aa' -- ONE point of the inside-frame gauge orbit Vc -> Vc*Q.  F49-13
+proves E2 varies along that orbit.  So the old sampler explored a slice, not the
+corner space.
+THE FIX -- A COMPLETE CORNER-DESIGN CHART (scratchpad/f49/gen1.jl).  Every (6,3)
+design with a corank-two corner at {1,2,3} is exactly:
+    lam > 0, unit u, Q in O(3):   M = I + lam uu',  Vc = M^{1/2} Q,
+                                  inside atoms = columns of Vc
+    inside weights D_in > 0 with  N_O := I - M^{1/2} Q D_in Q' M^{1/2}  > 0
+    outside weights D_t > 0 with  tr D_in + tr D_t = 1
+    R in O(3):                    outside atoms  g_d = (N_O^{1/2} R e_d)/sqrt(t_d)
+Parseval then holds by construction (verified, max residual 5.0e-15 over 3.84e6
+samples).  My old generator had Q and R effectively frozen.
+THE CORRECTED NUMBERS (3840000 valid corner designs, general chart):
+    SOME outside pair admissible (E1)              100.0000%
+    complement {4,5,6} DOMINATES                    99.6966%
+    complement REFUSES                               0.3034%   (11649 corners)
+    E2 unconditional                                59.6505%   <- NOT 100
+    E2 GIVEN the complement refuses                100.0000%   <- the true statement
+    E2' (every admissible pair repays) uncond        2.4312%
+    E2' GIVEN the complement refuses                69.1218%
+    admissible pairs that repay, unconditional      26.0493%
+    admissible pairs that repay, complement-ref     72.1402%
+These independently reproduce the coordinator's 61.06 / 28.737 / 5.87 / 100.0000
+to sampler tolerance.  THE COORDINATOR IS RIGHT AND I WAS WRONG.
+CONSEQUENCE.  F49-5 and F49-6 rates were measured on the same restricted slice
+and must be re-measured on the general chart before being quoted again.  Their
+QUALITATIVE conclusions (no aggregate works, no selection rule is total) survive,
+because the general chart only makes the target harder -- E2 is rarer there.
+
+F49-17.  THE STATEMENT, IN ITS CORRECT FORM
+--------------------------------------------
+  E2*:  at a corner WHOSE COMPLEMENT TRIPLE REFUSES, some admissible outside
+        pair has an inside atom that repays it.
+100.0000% over 11649 complement-refusing corners in the general chart.  The
+hypothesis is free at a tie, since a tie refuses every triple, so E2* still
+implies corner emptiness for (P) -- F49-14 is unaffected.  The 39% of corners
+where unconditional E2 fails are carried by the complement, which dominates at
+99.6966%.  MEASURE EVERY CANDIDATE LAW AGAINST E2*, NOT AGAINST E2.
+
+F49-18.  REFUTED: REALNESS DOES NOT ENTER THROUGH THE 3-CYCLE SIGN
+-------------------------------------------------------------------
+The natural real-only ingredient is cycle extremality: over R the 3-cycle
+p_ab*p_bc*p_ca is real, so (cycle)^2 = p_ab^2 p_bc^2 p_ca^2 and the cross term
+of det(K_T - I) is +-2|p||al|<be|, extremal; over C only Re(cycle) enters and it
+ranges strictly inside.  Two measurements kill the route as a producer:
+    sign graph BALANCED (all cycles positive in some gauge)     0.0000%
+        -- unconditional AND on complement-refusing corners.  So "coherent =
+           balanced signed graph" is NOT what the horn's dichotomy means, and no
+           gauge makes all pairings nonnegative.
+    SOME triple with cycle >= 0 REPAYS, complement-refusing     27.6762%
+        -- against E2* at 100%.  Most repaying triples carry a NEGATIVE cycle,
+           i.e. the cross term ADDS to the cost and the triple repays anyway.
+So the favourable-branch idea is dead: realness is not buying the repayment
+through the sign of the cross term.  Note also det_+ := (det with the cycle
+replaced by +2|p||al||be|) satisfies det_+ >= det always, so det_+ > 0 is
+IMPLIED by repayment -- necessary, never sufficient, and useless as a producer.
+WHERE REALNESS MUST THEN LIVE: not in a single triple's cross term, but in the
+global obstruction -- the non-existence of a real corner tie.  That is consistent
+with F49-14 (E2* IS the emptiness statement) and with F49-11 (the complex tie is
+a feasible point of every field-blind system).
+
+F49-19.  THE COORDINATOR'S POINT 3 IS ALREADY A LANDED THEOREM OF MINE
+-----------------------------------------------------------------------
+"E1 does not hand you the right pair; admissibility does not imply repayment"
+is exactly Gtz.repayScope_not_forced (commit 1c462ed): an admissible pair, both
+atoms heavy, at a corner, with all three inside determinants strictly negative.
+The measured 26.0% / 72.1% quantifies it; the kernel theorem already states it.
+
+F49-20.  OPEN, AND THE SHARPEST NEXT STEP
+------------------------------------------
+The gauge theorem F49-13 uses two corners of which only one lies in a design.
+STRENGTHEN IT INSIDE THE DESIGN LOCUS: the general chart of F49-16 makes it
+routine to find two genuine (6,3) DESIGNS sharing lam, u and an outside pair,
+one satisfying E2* and one not.  That would show the undetermination survives
+Parseval, which is what actually matters, and it is the cheapest decisive
+experiment left in this lane.
