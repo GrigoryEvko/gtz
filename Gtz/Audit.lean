@@ -1359,6 +1359,7 @@ import Gtz.Wave.CornerAxisElimination
 import Gtz.Wave.CornerAxisCalculus
 import Gtz.Wave.CornerAxisBridges
 import Gtz.Wave.CornerSizeLaw
+import Gtz.Wave.PairStarSizeLaw
 import Gtz.Wave.PairMinorBudget
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -37333,3 +37334,29 @@ run_cmd do
 #print axioms Gtz.exists_offDiag_pairMinor_gt_one
 #print axioms Gtz.exists_pairMinor_pos_not_both_mem
 #print axioms Gtz.exists_pairMinor_gt_one_not_both_mem
+#print axioms Gtz.leverage_split_six
+#print axioms Gtz.complement_budget_symm
+#print axioms Gtz.wedge_mass_split
+#print axioms Gtz.complement_bracket_law_design
+#print axioms Gtz.tripleBracket_mass_le_budget_design
+
+-- Gtz/Wave/PairStarSizeLaw.lean -- the star of a pair is a SECOND size law,
+-- independent of the triple-sum law and written in the pair alphabet.  Its
+-- closed form spends the size in three coefficients (m-3, m-4, m-2), so it
+-- cannot be stated at two sizes without changing.  With the four-set and
+-- six-set laws it gives three tie-free refusal producers.
+#print axioms Gtz.tripleBracket_repeat_outer
+#print axioms Gtz.tripleBracket_repeat_right
+#print axioms Gtz.pairWedge_self
+#print axioms Gtz.pairStar_gapDet_total_six
+#print axioms Gtz.pairStar_gapDet_closed_six
+#print axioms Gtz.pairStar_gapDet_closed_five
+#print axioms Gtz.exists_posGapDet_of_fourSet_pos
+#print axioms Gtz.exists_posGapDet_of_pairStar_pos
+#print axioms Gtz.exists_posGapDet_of_sixSet_pos
+#print axioms Gtz.exists_posDef_of_pairStar_pos_of_live
+#print axioms Gtz.tripleBracket_eq_zero_of_parallel_any
+#print axioms Gtz.budget_saturated_of_complement_parallel
+#print axioms Gtz.complement_not_parallel_of_lt_budget
+#print axioms Gtz.complement_not_parallel_snd_of_lt_budget
+#print axioms Gtz.complement_not_parallel_thd_of_lt_budget

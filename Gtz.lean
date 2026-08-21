@@ -6451,3 +6451,4 @@ import Gtz.Wave.CornerAxisBridges
 import Gtz.Wave.ComplementBracketLaw
 import Gtz.Wave.CornerSizeLaw
 import Gtz.Wave.PairMinorBudget
+import Gtz.Wave.PairStarSizeLaw
