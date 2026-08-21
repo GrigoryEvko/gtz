@@ -77,6 +77,54 @@ pair gives the pair-mass floor
 13007 sampled plane-strict pairs, with at least 16.7 percent of slack, so it is a
 true law there and not a boundary artifact.
 
+## 4. The Sylvester moment ladder, and an exact area ceiling at a tie
+
+The first two Sylvester minors already have exact weighted averages in the tree:
+Parseval's trace gives `sum c, t_c (l_c - 1) = k - 1`, and
+`Gtz.sum_weight_mul_pairGapForm` gives `sum c, t_c pairGapMinor(a, c) = l_a - 2` at
+rank three.  The THIRD is `Gtz.sum_weight_mul_tripleGapDet`:
+
+    sum over c of  t_c * tripleGapDet(a, b, c)  =  2 - l_a - l_b,
+
+for every pair of atoms of every rank-three design, at every size.  Five Parseval
+readings spend the design and no atom survives on the right.
+
+At a tie no triple dominates strictly, so through a heavy admissible pair every
+third minor is nonpositive.  The two terms the pair keeps are polynomials in its
+own readings, and the moment law turns the tie into an exact CEILING on the pair's
+squared area (`Gtz.crossNormSq_le_of_isTie`):
+
+    2 (t_a + t_b) crossNormSq(a, b)
+        <=  l_a + l_b - 2 + t_a (2 l_a + l_b - 1) + t_b (l_a + 2 l_b - 1).
+
+Admissibility is the matching FLOOR `l_a + l_b - 1 < crossNormSq(a, b)`, so a heavy
+admissible pair of a tie is confined to an explicit window
+(`Gtz.crossNormSq_window_of_isTie`).
+
+The ceiling is ATTAINED at both shipped rank-three ties.  At the `(4,3)`
+tetrahedron every leverage is `3` and every pairing is `-1`, so every pair reads
+squared area `8` against a ceiling of `8`.  At the `(5,3)` diamond, measured in
+floating point, all ten pairs are heavy and admissible and FOUR of them sit exactly
+on the ceiling, at squared area `10` against a ceiling of `10`.  No constant can
+sharpen it.  Equality is a rigidity locus: it forces every third minor through the
+pair to VANISH (`Gtz.tripleGapDet_eq_zero_of_crossNormSq_eq_ceiling`).
+
+## 5. The simplicity hypothesis leaves
+
+Part 7 buys its admissible pair with geometry and pays a simplicity hypothesis.
+The second Sylvester moment buys one with arithmetic and pays nothing.  Peeling the
+diagonal term off `sum c, t_c pairGapMinor(a, c) = l_a - 2` leaves an average over
+the other atoms that is positive exactly when `2 + t_a < l_a (1 + 2 t_a)`, and that
+hands over an admissible partner.  At rank three the weighted leverages average to
+THREE, so some atom reaches `l >= 3`, while the threshold `(2 + t) / (1 + 2 t)`
+never passes `2`.
+
+So every rank-three design carries a heavy admissible pair, unconditionally, at
+every size (`Gtz.exists_admissiblePair_rank_three`), and the window holds at EVERY
+rank-three tie (`Gtz.exists_pair_window_of_isTie`).  Checked over 60000 random
+rank-three designs of sizes four to nine: the heaviest atom beats its threshold by
+at least `1.356`, and a heavy admissible partner exists every time.
+
 ## What is measured and what is proved
 
 Every number above comes from `scratchpad/planeshadow`, in floating point for the
@@ -86,6 +134,7 @@ enters a proof.  The Lean content is unconditional at every size.
 import Mathlib
 import Gtz.Design.SphereExistence
 import Gtz.Design.TripleGramSylvester
+import Gtz.Quantitative.ChartHadamard
 import Gtz.LinAlg.SchurRankOne
 
 set_option autoImplicit false
@@ -1332,5 +1381,515 @@ theorem schurProbe_energy_le_of_isTie (design : WeightedDesign size 3) (htie : I
     rw [hpairDef, Finset.sum_pair hne]
   rw [hpairShare] at hsplitTotal
   linarith
+
+/-! ## Part 10 — the Sylvester moment ladder, and the area ceiling at a tie
+
+The first two Sylvester minors already have exact weighted averages in the tree.
+The first is Parseval's trace, `sum c, t_c (l_c - 1) = k - 1`.  The second is
+`Gtz.sum_weight_mul_pairGapForm`, which at rank three reads
+`sum c, t_c pairGapMinor(a, c) = l_a - 2`.  The THIRD is landed here:
+
+    sum over c of  t_c * tripleGapDet(a, b, c)  =  2 - l_a - l_b,
+
+for every pair of atoms of every rank-three design, at every size.  Five Parseval
+readings spend the whole design and no atom survives.
+
+The consequence is an exact CEILING on a pair's squared area at a tie.  At a tie no
+triple dominates strictly, so through a heavy admissible pair every third minor is
+nonpositive.  The two terms the pair keeps for itself are polynomials in the pair's
+own readings (`Gtz.tripleGapDet_repeat_left`), so the moment law turns the tie into
+
+    2 (t_a + t_b) crossNormSq(a, b)
+        <=  l_a + l_b - 2 + t_a (2 l_a + l_b - 1) + t_b (l_a + 2 l_b - 1).
+
+Measured at the `(5,3)` diamond in floating point: all ten pairs are heavy and
+admissible, and FOUR of them sit EXACTLY on this ceiling, at squared area `10`
+against a ceiling of `10`.  The ceiling is attained at a kernel-checked tie, so no
+constant can sharpen it.  Against the admissibility floor
+`l_a + l_b - 1 < crossNormSq(a, b)` it cuts a window, and at the diamond the four
+extremal pairs sit at the window's top end. -/
+
+/-- Parseval at two atoms: the weighted total of the mixed readings is the two
+atoms' own pairing. -/
+theorem sum_weight_mul_atomPairing_pair (design : WeightedDesign size 3)
+    (leftLabel rightLabel : Fin size) :
+    ∑ label, design.weight label
+        * ((design.atom leftLabel ⬝ᵥ design.atom label)
+          * (design.atom rightLabel ⬝ᵥ design.atom label))
+      = design.atom leftLabel ⬝ᵥ design.atom rightLabel := by
+  have hpair := sum_weighted_atomPairing design (design.atom leftLabel)
+    (design.atom rightLabel)
+  have hterm : ∀ label : Fin size,
+      design.weight label * ((design.atom leftLabel ⬝ᵥ design.atom label)
+          * (design.atom rightLabel ⬝ᵥ design.atom label))
+        = design.weight label * ((design.atom label ⬝ᵥ design.atom leftLabel)
+            * (design.atom label ⬝ᵥ design.atom rightLabel)) := by
+    intro label
+    rw [dotProduct_comm (design.atom leftLabel) (design.atom label),
+      dotProduct_comm (design.atom rightLabel) (design.atom label)]
+  rw [Finset.sum_congr rfl fun label _ => hterm label, hpair]
+
+/-- **THE THIRD SYLVESTER MOMENT.**  The weighted average of the third minor
+through a fixed pair is `2` less the pair's two leverages.  Five Parseval readings
+spend the design: the trace, the two squared readings against the pair, the mixed
+reading, and the weight total.  No atom survives on the right. -/
+theorem sum_weight_mul_tripleGapDet (design : WeightedDesign size 3)
+    (leftLabel rightLabel : Fin size) :
+    ∑ label, design.weight label
+        * tripleGapDet (design.atom leftLabel) (design.atom rightLabel) (design.atom label)
+      = 2 - leverageOf (design.atom leftLabel) - leverageOf (design.atom rightLabel) := by
+  set leftLev := leverageOf (design.atom leftLabel) with hleftLev
+  set rightLev := leverageOf (design.atom rightLabel) with hrightLev
+  set pairing := design.atom leftLabel ⬝ᵥ design.atom rightLabel with hpairing
+  have hterm : ∀ label : Fin size,
+      design.weight label
+          * tripleGapDet (design.atom leftLabel) (design.atom rightLabel) (design.atom label)
+        = ((leftLev - 1) * (rightLev - 1) - pairing ^ 2)
+              * (design.weight label * leverageOf (design.atom label))
+          - ((leftLev - 1) * (rightLev - 1) - pairing ^ 2) * design.weight label
+          - (leftLev - 1)
+              * (design.weight label
+                * (design.atom rightLabel ⬝ᵥ design.atom label) ^ 2)
+          - (rightLev - 1)
+              * (design.weight label
+                * (design.atom leftLabel ⬝ᵥ design.atom label) ^ 2)
+          + 2 * pairing
+              * (design.weight label
+                * ((design.atom leftLabel ⬝ᵥ design.atom label)
+                  * (design.atom rightLabel ⬝ᵥ design.atom label))) := by
+    intro label
+    rw [tripleGapDet, hleftLev, hrightLev, hpairing]
+    ring
+  rw [Finset.sum_congr rfl fun label _ => hterm label, Finset.sum_add_distrib,
+    Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_sub_distrib,
+    ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum,
+    sum_weighted_leverage design, design.weight_sum_one,
+    sum_weight_mul_sq_atomPairing design rightLabel,
+    sum_weight_mul_sq_atomPairing design leftLabel,
+    sum_weight_mul_atomPairing_pair design leftLabel rightLabel, ← hpairing, ← hleftLev,
+    ← hrightLev]
+  push_cast
+  ring
+
+/-- The third minor with the first atom repeated, in pair vocabulary. -/
+theorem tripleGapDet_repeat_left (a b : Fin 3 → ℝ) :
+    tripleGapDet a b a = -2 * crossNormSq a b + 2 * leverageOf a + leverageOf b - 1 := by
+  simp only [tripleGapDet, crossNormSq_eq_leverage_mul_sub_sq, leverageOf, dotProduct,
+    Fin.sum_univ_three]
+  ring
+
+/-- The third minor with the second atom repeated, in pair vocabulary. -/
+theorem tripleGapDet_repeat_right (a b : Fin 3 → ℝ) :
+    tripleGapDet a b b = -2 * crossNormSq a b + leverageOf a + 2 * leverageOf b - 1 := by
+  simp only [tripleGapDet, crossNormSq_eq_leverage_mul_sub_sq, leverageOf, dotProduct,
+    Fin.sum_univ_three]
+  ring
+
+/-- At a tie every third minor through a heavy admissible pair is nonpositive.  The
+pair-vocabulary criterion decides strict domination by three inequalities, and the
+first two are the hypotheses. -/
+theorem tripleGapDet_nonpos_of_isTie (design : WeightedDesign size 3) (htie : IsTie design)
+    {leftLabel rightLabel thirdLabel : Fin size} (hne : leftLabel ≠ rightLabel)
+    (hneLeftThird : leftLabel ≠ thirdLabel) (hneRightThird : rightLabel ≠ thirdLabel)
+    (hheavy : 1 < leverageOf (design.atom leftLabel))
+    (hadmissible : AdmissiblePair (design.atom leftLabel) (design.atom rightLabel)) :
+    tripleGapDet (design.atom leftLabel) (design.atom rightLabel)
+        (design.atom thirdLabel) ≤ 0 := by
+  classical
+  by_contra hpositive
+  push Not at hpositive
+  have hcard : ({leftLabel, rightLabel, thirdLabel} : Finset (Fin size)).card = 3 := by
+    rw [Finset.card_insert_of_notMem (by
+        simp only [Finset.mem_insert, Finset.mem_singleton]
+        push Not
+        exact ⟨hne, hneLeftThird⟩),
+      Finset.card_insert_of_notMem (by simpa using hneRightThird), Finset.card_singleton]
+  refine htie.2 {leftLabel, rightLabel, thirdLabel} hcard ?_
+  refine (subsetSum_posDef_iff_pairVocabulary design leftLabel rightLabel thirdLabel hne
+    hneLeftThird hneRightThird).mpr ⟨by linarith, hadmissible, hpositive⟩
+
+/-- **THE AREA CEILING AT A TIE.**  At a tie a heavy admissible pair cannot spread
+its squared area past an explicit bound in its own two leverages and two weights.
+The moment law spends the whole design, the tie kills every term outside the pair,
+and the two terms the pair keeps are polynomials in its own readings.
+
+Measured at the `(5,3)` diamond: four of its ten pairs attain this ceiling exactly,
+at squared area `10` against a ceiling of `10`. -/
+theorem crossNormSq_le_of_isTie (design : WeightedDesign size 3) (htie : IsTie design)
+    {leftLabel rightLabel : Fin size} (hne : leftLabel ≠ rightLabel)
+    (hheavy : 1 < leverageOf (design.atom leftLabel))
+    (hadmissible : AdmissiblePair (design.atom leftLabel) (design.atom rightLabel)) :
+    2 * (design.weight leftLabel + design.weight rightLabel)
+        * crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+      ≤ leverageOf (design.atom leftLabel) + leverageOf (design.atom rightLabel) - 2
+        + design.weight leftLabel
+            * (2 * leverageOf (design.atom leftLabel)
+              + leverageOf (design.atom rightLabel) - 1)
+        + design.weight rightLabel
+            * (leverageOf (design.atom leftLabel)
+              + 2 * leverageOf (design.atom rightLabel) - 1) := by
+  classical
+  set pairSet : Finset (Fin size) := {leftLabel, rightLabel} with hpairDef
+  have houtside : ∑ label ∈ pairSetᶜ, design.weight label
+      * tripleGapDet (design.atom leftLabel) (design.atom rightLabel)
+          (design.atom label) ≤ 0 := by
+    refine Finset.sum_nonpos fun label hlabel => ?_
+    have hnotMem : label ∉ pairSet := Finset.mem_compl.mp hlabel
+    have hlabelNe : leftLabel ≠ label ∧ rightLabel ≠ label := by
+      simp only [hpairDef, Finset.mem_insert, Finset.mem_singleton] at hnotMem
+      push Not at hnotMem
+      exact ⟨Ne.symm hnotMem.1, Ne.symm hnotMem.2⟩
+    exact mul_nonpos_of_nonneg_of_nonpos (design.weight_pos label).le
+      (tripleGapDet_nonpos_of_isTie design htie hne hlabelNe.1 hlabelNe.2 hheavy hadmissible)
+  have htotal : ∑ label ∈ pairSet, design.weight label
+        * tripleGapDet (design.atom leftLabel) (design.atom rightLabel) (design.atom label)
+      + ∑ label ∈ pairSetᶜ, design.weight label
+        * tripleGapDet (design.atom leftLabel) (design.atom rightLabel) (design.atom label)
+      = 2 - leverageOf (design.atom leftLabel) - leverageOf (design.atom rightLabel) := by
+    rw [Finset.sum_add_sum_compl]
+    exact sum_weight_mul_tripleGapDet design leftLabel rightLabel
+  have hinside : ∑ label ∈ pairSet, design.weight label
+        * tripleGapDet (design.atom leftLabel) (design.atom rightLabel) (design.atom label)
+      = design.weight leftLabel
+          * (-2 * crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+            + 2 * leverageOf (design.atom leftLabel)
+            + leverageOf (design.atom rightLabel) - 1)
+        + design.weight rightLabel
+          * (-2 * crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+            + leverageOf (design.atom leftLabel)
+            + 2 * leverageOf (design.atom rightLabel) - 1) := by
+    rw [hpairDef, Finset.sum_pair hne, tripleGapDet_repeat_left, tripleGapDet_repeat_right]
+  rw [hinside] at htotal
+  nlinarith [htotal, houtside]
+
+/-- **THE PAIR WINDOW AT A TIE.**  Admissibility is a floor on the squared area and
+the moment law is a ceiling.  Both are stated in the same four numbers, so a heavy
+admissible pair of a tie is confined to an explicit interval. -/
+theorem crossNormSq_window_of_isTie (design : WeightedDesign size 3) (htie : IsTie design)
+    {leftLabel rightLabel : Fin size} (hne : leftLabel ≠ rightLabel)
+    (hheavy : 1 < leverageOf (design.atom leftLabel))
+    (hadmissible : AdmissiblePair (design.atom leftLabel) (design.atom rightLabel)) :
+    leverageOf (design.atom leftLabel) + leverageOf (design.atom rightLabel) - 1
+        < crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+      ∧ 2 * (design.weight leftLabel + design.weight rightLabel)
+          * crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+        ≤ leverageOf (design.atom leftLabel) + leverageOf (design.atom rightLabel) - 2
+          + design.weight leftLabel
+              * (2 * leverageOf (design.atom leftLabel)
+                + leverageOf (design.atom rightLabel) - 1)
+          + design.weight rightLabel
+              * (leverageOf (design.atom leftLabel)
+                + 2 * leverageOf (design.atom rightLabel) - 1) := by
+  refine ⟨?_, crossNormSq_le_of_isTie design htie hne hheavy hadmissible⟩
+  have hminor := hadmissible
+  rw [AdmissiblePair, pairGapMinor_eq_crossNormSq] at hminor
+  linarith
+
+/-- **THE `(6,3)` TEST.**  Every simple tie at six points and rank three carries a
+pair that is heavy, admissible, and confined to the window.  The pair is produced
+by the shadow route of Part 7, so nothing is assumed beyond simplicity. -/
+theorem exists_pair_window_of_isTie_sixThree (design : WeightedDesign 6 3)
+    (hsimple : ¬ HasParallelPair design) (htie : IsTie design) :
+    ∃ leftLabel rightLabel : Fin 6, leftLabel ≠ rightLabel
+      ∧ 1 < leverageOf (design.atom leftLabel)
+      ∧ 1 < leverageOf (design.atom rightLabel)
+      ∧ leverageOf (design.atom leftLabel) + leverageOf (design.atom rightLabel) - 1
+          < crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+      ∧ 2 * (design.weight leftLabel + design.weight rightLabel)
+            * crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+          ≤ leverageOf (design.atom leftLabel) + leverageOf (design.atom rightLabel) - 2
+            + design.weight leftLabel
+                * (2 * leverageOf (design.atom leftLabel)
+                  + leverageOf (design.atom rightLabel) - 1)
+            + design.weight rightLabel
+                * (leverageOf (design.atom leftLabel)
+                  + 2 * leverageOf (design.atom rightLabel) - 1) := by
+  obtain ⟨leftLabel, rightLabel, hne, hadmissible, hheavyLeft, hheavyRight⟩ :=
+    exists_admissiblePair_of_not_hasParallelPair design hsimple
+      (labelOne := 0) (labelTwo := 1) (labelThree := 2) (labelFour := 3)
+      (by decide) (by decide) (by decide) (by decide) (by decide) (by decide)
+  obtain ⟨hfloor, hceiling⟩ :=
+    crossNormSq_window_of_isTie design htie hne hheavyLeft hadmissible
+  exact ⟨leftLabel, rightLabel, hne, hheavyLeft, hheavyRight, hfloor, hceiling⟩
+
+/-! ## Part 11 — the simplicity hypothesis leaves
+
+Part 7 produced an admissible heavy pair from geometry: a plane, a shadow, a
+strictly dominating shadow pair.  It cost a simplicity hypothesis and four labels.
+The SECOND Sylvester moment produces one from arithmetic alone.
+
+`Gtz.sum_weight_mul_pairGapForm` says the weighted average of the second minor
+through an atom is `l_a - 2` at rank three.  Peel the diagonal term and the
+weighted average over the OTHER atoms is `l_a - 2 - t_a + 2 t_a l_a`.  Positivity
+of that average is `2 + t_a < l_a (1 + 2 t_a)`, and it hands over an atom whose
+pair with `a` is admissible.
+
+At rank three the weighted leverages average to THREE, so some atom carries
+`l_a >= 3`.  The threshold `(2 + t_a) / (1 + 2 t_a)` never passes `2`.  So every
+rank-three design, at every size, carries a heavy admissible pair, with no
+simplicity, no genericity, no four labels and no plane.  Measured over 60000
+random rank-three designs of sizes four to nine: the heaviest atom beats its
+threshold by at least `1.356`, and a heavy admissible partner exists every time.
+
+The window of Part 10 therefore holds at EVERY rank-three tie. -/
+
+/-- The tree's pair gap form of a design is the pair minor of its two atoms. -/
+theorem pairGapForm_eq_pairGapMinor (design : WeightedDesign size 3)
+    (leftLabel rightLabel : Fin size) :
+    pairGapForm design leftLabel rightLabel
+      = pairGapMinor (design.atom leftLabel) (design.atom rightLabel) := rfl
+
+/-- **THE SECOND MOMENT, OFF THE DIAGONAL.**  Peeling the atom's own term off the
+second Sylvester moment leaves an average over the other atoms that is positive
+exactly when the atom passes the threshold `(2 + t) / (1 + 2 t)`. -/
+theorem sum_erase_weight_mul_pairGapMinor (design : WeightedDesign size 3)
+    (pivotLabel : Fin size) :
+    ∑ label ∈ Finset.univ.erase pivotLabel,
+        design.weight label * pairGapMinor (design.atom pivotLabel) (design.atom label)
+      = leverageOf (design.atom pivotLabel) - 2 - design.weight pivotLabel
+        + 2 * design.weight pivotLabel * leverageOf (design.atom pivotLabel) := by
+  have hfull := sum_weight_mul_pairGapForm design pivotLabel
+  rw [← Finset.add_sum_erase _ _ (Finset.mem_univ pivotLabel), pairGapForm_self] at hfull
+  have hterms : ∑ label ∈ Finset.univ.erase pivotLabel,
+      design.weight label * pairGapForm design pivotLabel label
+      = ∑ label ∈ Finset.univ.erase pivotLabel,
+        design.weight label * pairGapMinor (design.atom pivotLabel) (design.atom label) :=
+    Finset.sum_congr rfl fun label _ => by rw [pairGapForm_eq_pairGapMinor]
+  rw [hterms] at hfull
+  push_cast at hfull
+  linarith
+
+/-- **AN ADMISSIBLE HEAVY PAIR FROM THE SECOND MOMENT.**  An atom past the
+threshold `2 + t_a < l_a (1 + 2 t_a)` sits in an admissible pair, and the partner
+inherits strict heaviness from the pair minor.  No geometry enters. -/
+theorem exists_admissiblePair_of_secondMoment (design : WeightedDesign size 3)
+    (pivotLabel : Fin size) (hheavy : 1 < leverageOf (design.atom pivotLabel))
+    (hbudget : 2 + design.weight pivotLabel
+      < leverageOf (design.atom pivotLabel) * (1 + 2 * design.weight pivotLabel)) :
+    ∃ partnerLabel : Fin size, partnerLabel ≠ pivotLabel
+      ∧ AdmissiblePair (design.atom pivotLabel) (design.atom partnerLabel)
+      ∧ 1 < leverageOf (design.atom partnerLabel) := by
+  classical
+  have hmoment := sum_erase_weight_mul_pairGapMinor design pivotLabel
+  have hsumPos : ∑ label ∈ Finset.univ.erase pivotLabel, (0 : ℝ)
+      < ∑ label ∈ Finset.univ.erase pivotLabel,
+        design.weight label * pairGapMinor (design.atom pivotLabel) (design.atom label) := by
+    rw [Finset.sum_const_zero, hmoment]
+    nlinarith [hbudget]
+  obtain ⟨partnerLabel, hmem, hterm⟩ := Finset.exists_lt_of_sum_lt hsumPos
+  have hweightPos := design.weight_pos partnerLabel
+  have hminorPos : 0 < pairGapMinor (design.atom pivotLabel) (design.atom partnerLabel) := by
+    nlinarith [hterm, hweightPos]
+  exact ⟨partnerLabel, (Finset.mem_erase.mp hmem).1, hminorPos,
+    one_lt_leverage_of_admissiblePair _ _ hminorPos hheavy⟩
+
+/-- **SOME ATOM CARRIES THE WHOLE RANK.**  The weighted leverages of a rank-three
+design average to three, so one atom reaches three. -/
+theorem exists_three_le_leverage (design : WeightedDesign size 3) :
+    ∃ heavyLabel : Fin size, 3 ≤ leverageOf (design.atom heavyLabel) := by
+  classical
+  by_contra hall
+  push Not at hall
+  have hnonempty : (Finset.univ : Finset (Fin size)).Nonempty := by
+    have hpos : 0 < size := size_pos_of_design design
+    exact Finset.univ_nonempty_iff.mpr (Fin.pos_iff_nonempty.mp hpos)
+  have hstrict : ∑ label, design.weight label * leverageOf (design.atom label)
+      < ∑ label, design.weight label * 3 :=
+    Finset.sum_lt_sum_of_nonempty hnonempty fun label _ =>
+      mul_lt_mul_of_pos_left (hall label) (design.weight_pos label)
+  rw [sum_weighted_leverage design, ← Finset.sum_mul, design.weight_sum_one] at hstrict
+  norm_num at hstrict
+
+/-- **EVERY RANK-THREE DESIGN CARRIES AN ADMISSIBLE HEAVY PAIR.**  Unconditional, at
+every size.  The heaviest atom reaches leverage three, the threshold
+`(2 + t) / (1 + 2 t)` never passes two, and the second Sylvester moment hands over
+the partner.  Nothing geometric is assumed: no simplicity, no genericity, no four
+labels, and no plane. -/
+theorem exists_admissiblePair_rank_three (design : WeightedDesign size 3) :
+    ∃ leftLabel rightLabel : Fin size, leftLabel ≠ rightLabel
+      ∧ AdmissiblePair (design.atom leftLabel) (design.atom rightLabel)
+      ∧ 1 < leverageOf (design.atom leftLabel)
+      ∧ 1 < leverageOf (design.atom rightLabel) := by
+  obtain ⟨heavyLabel, hheavyValue⟩ := exists_three_le_leverage design
+  have hweightPos := design.weight_pos heavyLabel
+  have hweightLe : design.weight heavyLabel ≤ 1 := by
+    rw [← design.weight_sum_one]
+    exact Finset.single_le_sum (fun label _ => (design.weight_pos label).le)
+      (Finset.mem_univ heavyLabel)
+  have hheavy : 1 < leverageOf (design.atom heavyLabel) := by linarith
+  have hbudget : 2 + design.weight heavyLabel
+      < leverageOf (design.atom heavyLabel) * (1 + 2 * design.weight heavyLabel) := by
+    nlinarith [hheavyValue, hweightPos]
+  obtain ⟨partnerLabel, hpartnerNe, hadmissible, hpartnerHeavy⟩ :=
+    exists_admissiblePair_of_secondMoment design heavyLabel hheavy hbudget
+  exact ⟨heavyLabel, partnerLabel, Ne.symm hpartnerNe, hadmissible, hheavy, hpartnerHeavy⟩
+
+/-- **THE WINDOW HOLDS AT EVERY RANK-THREE TIE.**  Composing the unconditional
+admissible heavy pair with the area window of Part 10.  No simplicity hypothesis
+survives, and the size is arbitrary.
+
+Measured at the `(5,3)` diamond, the kernel-checked tie that stops every hinge one
+size down: all ten of its pairs are heavy and admissible, and FOUR of them sit
+exactly on the ceiling, at squared area `10` against a ceiling of `10`. -/
+theorem exists_pair_window_of_isTie (design : WeightedDesign size 3) (htie : IsTie design) :
+    ∃ leftLabel rightLabel : Fin size, leftLabel ≠ rightLabel
+      ∧ 1 < leverageOf (design.atom leftLabel)
+      ∧ 1 < leverageOf (design.atom rightLabel)
+      ∧ leverageOf (design.atom leftLabel) + leverageOf (design.atom rightLabel) - 1
+          < crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+      ∧ 2 * (design.weight leftLabel + design.weight rightLabel)
+            * crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+          ≤ leverageOf (design.atom leftLabel) + leverageOf (design.atom rightLabel) - 2
+            + design.weight leftLabel
+                * (2 * leverageOf (design.atom leftLabel)
+                  + leverageOf (design.atom rightLabel) - 1)
+            + design.weight rightLabel
+                * (leverageOf (design.atom leftLabel)
+                  + 2 * leverageOf (design.atom rightLabel) - 1) := by
+  obtain ⟨leftLabel, rightLabel, hne, hadmissible, hheavyLeft, hheavyRight⟩ :=
+    exists_admissiblePair_rank_three design
+  obtain ⟨hfloor, hceiling⟩ :=
+    crossNormSq_window_of_isTie design htie hne hheavyLeft hadmissible
+  exact ⟨leftLabel, rightLabel, hne, hheavyLeft, hheavyRight, hfloor, hceiling⟩
+
+/-- **THE `(6,3)` TEST, UNCONDITIONAL.**  Every tie at six points and rank three
+carries a pair inside the window.  This supersedes the simple-design form above,
+which keeps its own value: that route also delivers a PLANE-STRICTNESS certificate
+for the pair, and this one does not. -/
+theorem exists_pair_window_of_isTie_sixThree_unconditional (design : WeightedDesign 6 3)
+    (htie : IsTie design) :
+    ∃ leftLabel rightLabel : Fin 6, leftLabel ≠ rightLabel
+      ∧ 1 < leverageOf (design.atom leftLabel)
+      ∧ 1 < leverageOf (design.atom rightLabel)
+      ∧ leverageOf (design.atom leftLabel) + leverageOf (design.atom rightLabel) - 1
+          < crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+      ∧ 2 * (design.weight leftLabel + design.weight rightLabel)
+            * crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+          ≤ leverageOf (design.atom leftLabel) + leverageOf (design.atom rightLabel) - 2
+            + design.weight leftLabel
+                * (2 * leverageOf (design.atom leftLabel)
+                  + leverageOf (design.atom rightLabel) - 1)
+            + design.weight rightLabel
+                * (leverageOf (design.atom leftLabel)
+                  + 2 * leverageOf (design.atom rightLabel) - 1) :=
+  exists_pair_window_of_isTie design htie
+
+/-! ## Part 12 — the ceiling's equality locus is a rigidity statement
+
+The ceiling was read off a sum of nonpositive terms, so equality forces every term
+to vanish.  A heavy admissible pair of a tie that attains the ceiling therefore has
+a VANISHING third minor at every third atom: every triple through it sits exactly on
+the boundary of strict domination.
+
+Both shipped rank-three ties calibrate this.  At the `(4,3)` tetrahedron every
+leverage is `3` and every pairing is `-1`, so every pair has squared area `8`
+against a ceiling of `8` — equality at all six pairs, and indeed every one of its
+triples is tight.  At the `(5,3)` diamond four of the ten pairs attain the ceiling
+and six do not, so the equality is a locus and not a law. -/
+
+/-- **THE EQUALITY LOCUS.**  A heavy admissible pair of a tie that attains the area
+ceiling kills the third minor at every third atom.  Strict weight positivity is
+what collapses the aggregate onto its terms. -/
+theorem tripleGapDet_eq_zero_of_crossNormSq_eq_ceiling (design : WeightedDesign size 3)
+    (htie : IsTie design) {leftLabel rightLabel : Fin size} (hne : leftLabel ≠ rightLabel)
+    (hheavy : 1 < leverageOf (design.atom leftLabel))
+    (hadmissible : AdmissiblePair (design.atom leftLabel) (design.atom rightLabel))
+    (hequality : 2 * (design.weight leftLabel + design.weight rightLabel)
+        * crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+      = leverageOf (design.atom leftLabel) + leverageOf (design.atom rightLabel) - 2
+        + design.weight leftLabel
+            * (2 * leverageOf (design.atom leftLabel)
+              + leverageOf (design.atom rightLabel) - 1)
+        + design.weight rightLabel
+            * (leverageOf (design.atom leftLabel)
+              + 2 * leverageOf (design.atom rightLabel) - 1))
+    {thirdLabel : Fin size} (hneLeftThird : leftLabel ≠ thirdLabel)
+    (hneRightThird : rightLabel ≠ thirdLabel) :
+    tripleGapDet (design.atom leftLabel) (design.atom rightLabel)
+        (design.atom thirdLabel) = 0 := by
+  classical
+  set pairSet : Finset (Fin size) := {leftLabel, rightLabel} with hpairDef
+  have hthirdMem : thirdLabel ∈ pairSetᶜ := by
+    simp only [hpairDef, Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton]
+    push Not
+    exact ⟨Ne.symm hneLeftThird, Ne.symm hneRightThird⟩
+  have hnonneg : ∀ label ∈ pairSetᶜ,
+      0 ≤ - (design.weight label
+        * tripleGapDet (design.atom leftLabel) (design.atom rightLabel)
+            (design.atom label)) := by
+    intro label hlabel
+    have hnotMem : label ∉ pairSet := Finset.mem_compl.mp hlabel
+    have hlabelNe : leftLabel ≠ label ∧ rightLabel ≠ label := by
+      simp only [hpairDef, Finset.mem_insert, Finset.mem_singleton] at hnotMem
+      push Not at hnotMem
+      exact ⟨Ne.symm hnotMem.1, Ne.symm hnotMem.2⟩
+    have hterm := tripleGapDet_nonpos_of_isTie design htie hne hlabelNe.1 hlabelNe.2 hheavy
+      hadmissible
+    have := mul_nonpos_of_nonneg_of_nonpos (design.weight_pos label).le hterm
+    linarith
+  have htotal : ∑ label ∈ pairSet, design.weight label
+        * tripleGapDet (design.atom leftLabel) (design.atom rightLabel) (design.atom label)
+      + ∑ label ∈ pairSetᶜ, design.weight label
+        * tripleGapDet (design.atom leftLabel) (design.atom rightLabel) (design.atom label)
+      = 2 - leverageOf (design.atom leftLabel) - leverageOf (design.atom rightLabel) := by
+    rw [Finset.sum_add_sum_compl]
+    exact sum_weight_mul_tripleGapDet design leftLabel rightLabel
+  have hinside : ∑ label ∈ pairSet, design.weight label
+        * tripleGapDet (design.atom leftLabel) (design.atom rightLabel) (design.atom label)
+      = design.weight leftLabel
+          * (-2 * crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+            + 2 * leverageOf (design.atom leftLabel)
+            + leverageOf (design.atom rightLabel) - 1)
+        + design.weight rightLabel
+          * (-2 * crossNormSq (design.atom leftLabel) (design.atom rightLabel)
+            + leverageOf (design.atom leftLabel)
+            + 2 * leverageOf (design.atom rightLabel) - 1) := by
+    rw [hpairDef, Finset.sum_pair hne, tripleGapDet_repeat_left, tripleGapDet_repeat_right]
+  rw [hinside] at htotal
+  have hcomplZero : ∑ label ∈ pairSetᶜ, design.weight label
+      * tripleGapDet (design.atom leftLabel) (design.atom rightLabel)
+          (design.atom label) = 0 := by
+    nlinarith [htotal, hequality]
+  have houtsideZero : ∑ label ∈ pairSetᶜ, - (design.weight label
+      * tripleGapDet (design.atom leftLabel) (design.atom rightLabel)
+          (design.atom label)) = 0 := by
+    rw [Finset.sum_neg_distrib, hcomplZero, neg_zero]
+  have hzero := (Finset.sum_eq_zero_iff_of_nonneg hnonneg).mp houtsideZero thirdLabel hthirdMem
+  have hweightPos := design.weight_pos thirdLabel
+  have hproduct : design.weight thirdLabel
+      * tripleGapDet (design.atom leftLabel) (design.atom rightLabel)
+          (design.atom thirdLabel) = 0 := by linarith
+  rcases mul_eq_zero.mp hproduct with hbad | hgood
+  · exact absurd hbad hweightPos.ne'
+  · exact hgood
+
+/-- **THE CEILING IS ATTAINED AT THE TETRAHEDRON.**  Every leverage of
+`Gtz.tetraDesign` is `3` and every pairing is `-1`, so every pair reads squared area
+`8` against a ceiling of `8`.  The `(4,3)` tetrahedron is a certified tie, so no
+constant sharpens the ceiling, and by the equality locus every triple through every
+one of its pairs has a vanishing third minor. -/
+theorem tetraDesign_crossNormSq_eq_ceiling {leftLabel rightLabel : Fin 4}
+    (hne : leftLabel ≠ rightLabel) :
+    2 * (tetraDesign.weight leftLabel + tetraDesign.weight rightLabel)
+        * crossNormSq (tetraDesign.atom leftLabel) (tetraDesign.atom rightLabel)
+      = leverageOf (tetraDesign.atom leftLabel)
+          + leverageOf (tetraDesign.atom rightLabel) - 2
+        + tetraDesign.weight leftLabel
+            * (2 * leverageOf (tetraDesign.atom leftLabel)
+              + leverageOf (tetraDesign.atom rightLabel) - 1)
+        + tetraDesign.weight rightLabel
+            * (leverageOf (tetraDesign.atom leftLabel)
+              + 2 * leverageOf (tetraDesign.atom rightLabel) - 1) := by
+  have hlev : ∀ vertex : Fin 4, leverageOf (tetraDesign.atom vertex) = 3 := by
+    intro vertex
+    rw [leverageOf_eq_dotProduct]
+    exact tetraAtom_dot_self vertex
+  have hpair : tetraDesign.atom leftLabel ⬝ᵥ tetraDesign.atom rightLabel = -1 := by
+    show tetraAtom leftLabel ⬝ᵥ tetraAtom rightLabel = -1
+    fin_cases leftLabel <;> fin_cases rightLabel <;>
+      simp_all [tetraAtom, dotProduct, Fin.sum_univ_three]
+  have hweight : ∀ vertex : Fin 4, tetraDesign.weight vertex = 1 / 4 := fun _ => rfl
+  rw [crossNormSq_eq_leverage_mul_sub_sq, hlev, hlev, hpair, hweight, hweight]
+  norm_num
 
 end Gtz

@@ -153,3 +153,63 @@ rationals over 400 random draws (scratchpad/planeshadow/{sylvester.jl,defect.jl}
   (tripleBracket^2 - crossNormSq) recovers the tree's height law
   crossNormSq < tripleBracket^2 at every strict dominator, from the factorization
   rather than from the normal probe.
+
+10. THE SYLVESTER MOMENT LADDER  (the lane's largest result)
+------------------------------------------------------------
+The first two Sylvester minors already have exact weighted averages in the tree:
+   1st:  sum_c t_c (l_c - 1) = k - 1                        (Parseval's trace)
+   2nd:  sum_c t_c pairGapMinor(a, c) = l_a - 2              (Gtz.sum_weight_mul_pairGapForm, k = 3)
+The THIRD is new:
+   3rd:  sum_c t_c tripleGapDet(a, b, c) = 2 - l_a - l_b
+Five Parseval readings spend the design: the trace, the two squared readings
+against the pair, the mixed reading, and the weight total.  Checked exactly at the
+diamond (5.3e-15) and on random rank-three designs of sizes 4 to 9 (3.3e-11).
+
+The two terms the pair keeps are pure ring identities:
+   tripleGapDet(a, b, a) = -2 N + 2 l_a + l_b - 1
+   tripleGapDet(a, b, b) = -2 N +   l_a + 2 l_b - 1,   N := crossNormSq(a, b)
+
+11. THE AREA CEILING AT A TIE, AND ITS TWO ATTAINING FIXTURES
+--------------------------------------------------------------
+At a tie no triple dominates strictly, so through a HEAVY ADMISSIBLE pair every
+third minor is nonpositive (pair-vocabulary criterion, no plane needed).  The
+moment law then gives, at every size:
+
+   2 (t_a + t_b) N  <=  l_a + l_b - 2 + t_a(2 l_a + l_b - 1) + t_b(l_a + 2 l_b - 1)
+
+against the admissibility floor  N > l_a + l_b - 1.  A window in four numbers.
+
+ATTAINED, twice:
+ * (4,3) tetrahedron: l = 3 everywhere, pairings -1, so N = 8 against a ceiling
+   of 8 at ALL SIX pairs.  Landed in Lean as tetraDesign_crossNormSq_eq_ceiling.
+ * (5,3) diamond: all ten pairs heavy and admissible, FOUR of them at N = 10
+   against a ceiling of 10, six with slack 2.5.  Measured, floating point.
+Equality is a rigidity locus: it forces EVERY third minor through the pair to
+vanish (tripleGapDet_eq_zero_of_crossNormSq_eq_ceiling).
+
+Floor and ceiling never contradict each other on their own: the combination
+reduces to t_a(l_b - 1) + t_b(l_a - 1) < (l_a - 1) + (l_b - 1), which two weights
+below one always satisfy.  So the window is a constraint, not an emptiness proof.
+
+12. THE SIMPLICITY HYPOTHESIS LEAVES
+-------------------------------------
+Peel the diagonal off the SECOND moment:
+   sum_{c != a} t_c pairGapMinor(a, c) = l_a - 2 - t_a + 2 t_a l_a
+which is positive exactly when 2 + t_a < l_a (1 + 2 t_a), i.e. l_a > (2+t_a)/(1+2t_a).
+That hands over an admissible partner, and heaviness transports to it.
+At rank three sum_c t_c l_c = 3, so some atom has l >= 3, while the threshold never
+passes 2.  So EVERY rank-three design carries a heavy admissible pair, at every
+size, with no simplicity, no genericity, no four labels and no plane.
+Checked over 60000 random rank-three designs of sizes 4 to 9: zero failures, and
+the heaviest atom beats its threshold by at least 1.356.
+
+Consequence: the window of 11 holds at EVERY rank-three tie, unconditionally, and
+in particular at every (6,3) tie.
+
+13. WHAT DID NOT CLOSE
+-----------------------
+The cap of 5 gets HARDER as the size grows: sum_c (2 s_c - t_c) = 5 always, so the
+average of the Nesterenko excess is 5/m, exactly 1 at m = 5 and 5/6 at m = 6.  A
+(6,3) tie can have every atom below the threshold, and a balanced one does.  The
+shadow cap is a sub-case trigger, not a closer.  The window of 11 is a genuine
+constraint on a (6,3) tie but is not self-contradictory.
