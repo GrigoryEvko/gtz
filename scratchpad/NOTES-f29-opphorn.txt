@@ -927,3 +927,110 @@ a whole triangle for free.
   caseb.jl     case-B exhaustiveness and the pair-minor selector
   sel.jl       the e2 selector and its tie-breaks
   realness.jl  the small-branch push: where realness is load-bearing
+
+======================================================================
+ROUND 11 (FORK 42).  THE BRIDGES, AND THE SLACK TABLE THAT CUTS THE
+CERTIFICATE FROM TEN CONSTRAINTS TO FOUR.
+Gtz/Wave/CornerAxisBridges.lean (12 pins standard, one axiom-free).
+======================================================================
+
+45. BRIDGE 1 -- THE INSIDE AXIS READING IS DETERMINED, NOT BOUNDED
+--------------------------------------------------------------------
+The coherent-horn lane asked for a BOUND on the axis reading of an inside atom.
+It is not merely bounded, it is solved.  The vanishing inside pair minor turns
+every inside pairing into a product of excesses, and the atom reading then gives
+
+  **lam*<u,g_e>^2 = (1+lam)*(l_e - 1)**            (2.0e-14, 10175 corners)
+
+for each inside atom (cornerForm_insideAtom_axisMass).  The reading is a
+FUNCTION of that atom's own leverage.  Since the excesses are nonnegative and
+total lam, the cage 0 <= <u,g_e>^2 <= 1+lam and 1 <= l_e <= 1+lam follows, and it
+is SHARP: measured max <u,g_e>^2/(1+lam) = 0.9999999785.
+The outside reading is solved by my mixed pair minor total:
+  **lam*<u,g_d>^2 = (lam-1) l_d - lam - sum_e q_ed**   (7.8e-13)
+(cornerForm_outsideAtom_axisMass).  Both axis readings are now eliminable.
+
+46. BRIDGE 2 -- THE TWO ELIMINATIONS COMPOSE, AND THE COMPOSITION IS A SQUARE
+------------------------------------------------------------------------------
+tripleGapDet_eq_pairAxisForm splits a gap determinant over a pair base into the
+base's axis form plus the third leverage times the base's PAIR MINOR.  At a
+corner the inside base's pair minor is zero, so the second term vanishes:
+  tripleGapDet gx gy c = pairAxisForm gx gy <gx,c> <gy,c>     for EVERY c.
+A vanishing pair minor is a vanishing DISCRIMINANT of that binary quadratic, so
+over an inside base the axis form is a NEGATIVE PERFECT SQUARE.  Hence
+  **tripleGapDet gx gy c <= 0 for every third vector c whatsoever**
+(cornerForm_twoInside_gapDet_nonpos_general) -- the two-inside refusal extends
+OFF the design's own atoms.  And composing with round 10's exact law names the
+square:
+  **pairAxisForm gx gy <gx,g_d> <gy,g_d> = - lam*[g_z g_d u]^2** .
+Pair currency and bracket currency are the same object at a corner.
+
+47. BRIDGE 3 -- THE TIE-FREE WEDGE CEILING IS VACUOUS AT A CORNER
+------------------------------------------------------------------
+crossNormSq_le_tripleBracket_sq_of_posSemidef (S_T >= 1 => w_ab <= [abc]^2) is
+tie-free, hence a free refusal producer.  At a corner it applies ONLY to the
+corner triple, since a tie has no other weakly dominating triple.  There the
+axis calculus evaluates both sides and the ceiling's SLACK is exactly
+  **[xyz]^2 - w_xy = lam*[g_x g_y u]^2 = l_z - 1**
+(cornerForm_wedgeCeiling_slack).  A tie makes every atom heavy, so the ceiling
+holds automatically and carries NO information here.  ITS POWER IS AT THE
+SIZE-FIVE STRATA, NOT ON THIS HORN.  Do not spend a round on it.
+
+48. THE GATEWAY IS A PIGEONHOLE, AND IT IS THE HORN'S EXACT RESIDUAL
+---------------------------------------------------------------------
+Three labels out of a three-plus-three split always share a side
+(three_of_six_share_a_side, decide over 216 ordered triples, AXIOM-FREE).
+Admissibility is an EDGE property, so if every inside pair and every outside
+pair is inadmissible then no triple is live and NOTHING strictly dominates
+(allSameSideInadmissible_no_posDef).  At a corner the inside pairs are
+inadmissible for free, so the hypothesis collapses to the three OUTSIDE pairs:
+  A CORNER WHOSE THREE OUTSIDE PAIRS ARE ALL INADMISSIBLE IS A TIE.
+That is not a hypothesis the horn may discharge -- it is the exact residual
+configuration the horn must exclude.  Still descent-only (round 10 section 43a).
+
+49. **THE SLACK TABLE: THE CERTIFICATE NEEDS FOUR CONSTRAINTS, NOT TEN**
+-------------------------------------------------------------------------
+Descend on the tie margin (max lmin over the nineteen non-dominator triples),
+then table every instrument at the minimiser.  FIVE independent descents
+(seeds 2718, 11, 101, 1009, 7919; 30-40 starts x 1800-2200 iters), margins
+0.0190 to 0.0246.  EVERY TIME:
+
+  EXACTLY FOUR of the ten live refusals bind, and the other six sit 30x to 50x
+  further away (lmin -0.59 to -1.00 against a margin of +0.019).
+
+And the binding set is always THE COMPLEMENT PLUS A LINE OF THREE INFORMATIVE
+TRIPLES.  Two shapes occur:
+  shape A  {(e,d,d') : the three outside pairs} + complement, one fixed INSIDE
+           atom e            (seeds 2718, 7919)
+  shape B  {(x,d,d') : x in C} + complement, one fixed OUTSIDE pair {d,d'}
+                               (seeds 11, 101, 1009)
+In shape A the fixed inside atom is the heaviest one.
+
+THE CAPS, at the same points, as multiples of the margin:
+  axis weight cap slack   50x, 117x, 132x, 160x  (and 15.8x at seed 2718)
+      -> **DEAD WEIGHT.  A certificate that uses it burns an inactive
+         generator.  DROP IT.**  This reproduces, in this lane, the cells lane's
+         0.985-versus-4.3e-07 finding.
+  wedge cap min slack     1.5x, 2.3x, 2.6x, 17.1x  -> BORDERLINE.  Near-binding
+         in three of four, far in one.  Weakly informative, not load-bearing.
+  outside pair minors     5.1 to 209 -> hugely admissible on the tie branch, so
+         the section-48 residual is FAR from where the horn is hard.  Good news:
+         the gateway and the hard region are different places.
+  mixed pair-minor totals at least one NEGATIVE at every minimiser
+         (-2.95, -3.08, -3.05, -0.29, and -1.66/-1.43/-0.77 at seed 2718), so by
+         cornerForm_exists_inadmissible_mixed SOME outside atom always has an
+         inadmissible inside partner on the tie branch.
+  inside pair minors      0 to 1e-12 at every point -- the round-10 law holding
+         numerically at the hardest configurations.
+
+CONSEQUENCE FOR THE SUCCESSOR.  Build the certificate on FOUR constraints -- the
+complement refusal plus one line of three informative refusals -- with the axis
+cap dropped entirely and the wedge cap optional.  That is a four-constraint
+system in place of a twelve-constraint one, which is very likely why the LP read
+infeasible and the SOS blew up.
+
+50. SCRIPTS ADDED  (scratchpad/f42)
+------------------------------------
+  bridge.jl   the two solved axis readings and the sharpness of the cage
+  slack.jl    the full slack table at one tie-branch minimiser
+  slack2.jl   the five-seed robustness of the binding set and the caps
