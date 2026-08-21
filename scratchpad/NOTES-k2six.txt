@@ -198,3 +198,61 @@ RESIDUAL HYPOTHESES OF k2FiveTwoZero_kill (unchanged, checked)
   (6,3) and strictly stronger than k2SixThree_parallel_or_boundary_plane, which
   it supersedes (it adds the two brackets, the pair minor, the label
   distinctness and the reading bound 1 < (g_e.g_a)^2).
+
+
+K2-7. CORRECTION TO K2-6 -- THE PENALISED BRANCH DESCENT IS UNRELIABLE
+======================================================================
+Caught by a direct check, and it would have entered the record as a structural
+claim.  A penalised descent (objective = Phi + 200*max(0,-funnel_slack)) reported
+
+    min over the branch of lambda_min(S_{z,d,d'} - I) = +0.000000
+
+which reads as "the swap of the funnel dominator ALWAYS weakly dominates" -- a
+second member of T, one swap from the first, sharing the null vector g_a.  It is
+FALSE.  Direct sampling of 4366 branch members gives minimum -9.996e-01, with
+1792 of them (41%) strictly negative.  The optimiser was trapped by the penalty
+term and returned a boundary value.
+
+WHAT IS STILL TRUE from that run, and worth keeping: S_{z,d,d'} DOES fix the unit
+atom exactly (max |S g_a - g_a| = 2.2e-16 over all branch members), because
+g_z is orthogonal to g_a and the plane relation supplies the rest.  So whenever
+it does dominate it is a second element of T sharing the null vector -- but the
+mirror is VACUOUS there, since both swapped readings (g_y.g_a) and (g_z.g_a) are
+already zero, so mirror_readings_eq_zero_of_not_hasParallelPair gives nothing and
+mirror_shared_pairGapMinor_eq_zero only re-derives q(g_d,g_d') = 0.
+
+WHICH NUMBERS IN K2-6 SURVIVE
+  RELIABLE (unpenalised, over the superset family; since branch is a subset of
+  family, these bound the branch too):
+      inf max_T lambda_min(S_T - 1) = +0.081073 at floor 0.05
+      floor scaling 0.104507 / 0.040777 / 0.020301 / 0.008048
+                    at floors 0.05 / 0.02 / 0.01 / 0.004      -- about 2*floor
+      each of the five triples through e reaches -1.000000 on its own
+  RELIABLE (sampling, an upper bound on the true minimum):
+      4377 of 20268 members lie on the branch; min max_T there = +0.249097
+  UNRELIABLE, DISREGARD: every figure in K2-6 produced with the penalty, namely
+      the branch descent 0.132564 / 0.041245 / 0.021109 and the branch
+      irreducibility table.  The family-level irreducibility test is unpenalised
+      and stands.
+  The refusal itself is unaffected: the family bound is unpenalised and positive.
+
+A ROUTE TRIED AND CLOSED
+  Whiten the three coplanar atoms.  Parseval gives their P-restricted weighted
+  sum exactly diag(1-t_a, 1-rho) with rho = t_y gy^2 + t_z gz^2, so they form a
+  weighted (3,2) design and GtzWeighted 3 2 (corank floor) hands back a
+  dominating PAIR: M_{c1c2} >= diag((1-t_a)/tau, (1-rho)/tau), tau = t_d+t_d'+t_e.
+  The first coordinate is free and STRICT, since tau = 1-t_a-t_y-t_z < 1-t_a.
+  The second is not: the triple {c1,c2,w} needs M_{c1c2} >= diag(1, 1+kappa_w)
+  with kappa_w = (g_w.e2)^2/((g_w.n)^2-1), and
+      (1-rho)/tau - 1 >= min(kappa_y, kappa_z)
+  FAILS at 1528 of 3319 branch members, worst slack -1.968245.  GtzWeighted 3 2
+  gives the weakest pair, and the loss is entirely in the second coordinate.
+
+THE SCHUR CRITERION IS THE RIGHT TOOL AND IS EXACT (unchanged from K2-6)
+  For c1,c2 in the plane P = span(e1,e2) and w orthogonal to g_a,
+      {c1,c2,w} dominates  <=>  (g_w.n)^2 > 1  and  M_{c1c2} >= diag(1,1+kappa_w).
+  For the funnel dominator M_{d,d'} = diag(1, d2^2+d2'^2) exactly, so its e1
+  direction is tight -- that is the kernel ray -- and domination reads
+  d2^2+d2'^2 >= 1+kappa_y.  For the two candidates through the reader the (1,1)
+  entry is d1^2+p^2 resp. d1'^2+p^2, STRICTLY above one, since d1^2+d1'^2 = 1
+  and p^2 > 1.  A successor should work in these 2x2 terms.
