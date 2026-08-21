@@ -1363,6 +1363,7 @@ import Gtz.Wave.PairStarSizeLaw
 import Gtz.Wave.PairMinorBudget
 import Gtz.Wave.PairNormalParseval
 import Gtz.Wave.CornerAdmissibleGateway
+import Gtz.Wave.KTwoChartCapstone
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -37408,3 +37409,19 @@ run_cmd do
 #print axioms Gtz.pairGapMinor_pos_of_normalizedExcess
 #print axioms Gtz.gateway_of_excess_sum_gt_one
 #print axioms Gtz.gateway_of_min_excess
+
+-- Gtz/Wave/KTwoChartCapstone.lean -- the two-zero chart corner closed: both
+-- Handelman certificates, the named statements discharged, the chart kill
+#print axioms Gtz.k2ChartCrossHalf_certificate
+#print axioms Gtz.k2ChartCrossHalf_cert_pos
+#print axioms Gtz.k2Chart_composites_pos
+#print axioms Gtz.k2ChartCrossHalf_bracket_pos
+#print axioms Gtz.k2ChartCrossCertHalfAngle_holds
+#print axioms Gtz.k2ChartCrossCert_pos_lowAngle
+#print axioms Gtz.k2ChartWomBoundary_certificate
+#print axioms Gtz.k2ChartWomBoundary_cert_pos
+#print axioms Gtz.k2ChartQuotientWomBoundary_neg
+#print axioms Gtz.k2ChartCrossCertPositivity_holds
+#print axioms Gtz.k2ChartTargetPositivityXHalf_holds
+#print axioms Gtz.k2ChartDoubleQuotientCorner_holds
+#print axioms Gtz.k2Chart_kill

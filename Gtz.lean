@@ -6454,3 +6454,4 @@ import Gtz.Wave.PairMinorBudget
 import Gtz.Wave.PairStarSizeLaw
 import Gtz.Wave.PairNormalParseval
 import Gtz.Wave.CornerAdmissibleGateway
+import Gtz.Wave.KTwoChartCapstone
