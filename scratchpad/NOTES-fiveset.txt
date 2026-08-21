@@ -1,0 +1,62 @@
+LANE: the total gap, the co-atom reading, and the five-set criterion
+Module: Gtz/Wave/SharpFiveSetCriterion.lean
+
+WHAT IS PROVED (37 declarations, 33 theorem pins, all [propext, Classical.choice, Quot.sound])
+
+  totalGap D := subsetSum D univ - 1 ;  rho_c := g_c . (totalGap)^-1 g_c
+
+  F1  quadForm_totalGap :  x . G x = Sum_c (1 - t_c) (g_c . x)^2      [Parseval, one line]
+  F2  gap_erase_eq_totalGap_sub :  S_{univ.erase c} - 1 = G - g_c g_c^T
+  F3  det_gap_erase_eq :  det = det G * (1 - rho_c)
+  F4  posDef_gap_erase_iff  /  posSemidef_gap_erase_iff  /  gap_erase_corankOne_iff
+        co-atom set strict  <=> rho_c < 1 ;  weak <=> rho_c <= 1 ;  corank one <=> rho_c = 1
+  F5  sum_weight_mul_reading_eq_trace_gen  (GENERAL RANK; the tree had rank three only)
+      sum_reading_eq_trace_mul_total
+  F6  sum_one_sub_weight_mul_totalGapReading :  Sum_c (1 - t_c) rho_c = k
+  F7  card_le_of_forall_one_le_totalGapReading :  at most k+1 labels can fail
+      exists_posDef_gap_erase :  m > k+1  =>  SOME co-atom set dominates strictly.
+      At (6,3): two of the six five-sets, unconditionally.
+  F8  gramDefect_eq_zero_iff  (Cauchy-Schwarz equality in ANY positive definite metric)
+      totalGapDefect_eq_zero_iff_leverageDefect_eq_zero   (the metric transfer)
+      hasParallelPair_of_totalGapDefect_eq_zero  /  totalGapDefect_eq_zero_of_parallel
+  F9  coShareOf, coSharePairForm, coSharePairForm_eq_det, sum_coShareOf
+
+DEAD END, PROVED DEAD -- DO NOT SPEND A CYCLE HERE
+  F6 says the co-weighted reading total is k at EVERY design.  Any descent or
+  certificate that aggregates the co-atom readings linearly is therefore vacuous:
+  it cannot separate two designs.  Measured at 2.7e-15 over sixty designs before
+  it was proved.  The trace attack on the co-atom stratum is closed.
+  F6 IS useful as a COUNT (F7), which is the only way to spend it.
+
+MEASURED, NOT LANDED (scratchpad/fiveset/, python under timeout 60)
+  M1  1 - shat_c = (1 - t_c) * rho_c        err 1.9e-14 at ten cells
+      (6,3)(5,3)(7,3)(5,2)(4,2)(7,4)(8,4)(6,4)(4,3)(9,5).
+      PROOF IN HAND, needs the EXPLICIT sharp design (the tree exports existence only):
+        shat is the leverage-score vector of B = diag(sqrt(t/(1-t))) U ;
+        col(B)^perp = col(A) with A = diag(sqrt(1-t)) V ;
+        A^T A = S_all - 1 = G   and   A_c = sqrt(1-t_c) g_c .
+      Corollaries: E has a unit atom at c <=> the five-set omitting c is singular ;
+                   E is all-heavy <=> every five-set of D dominates strictly.
+  M2  Phat = 1 - R,  R = proj col(A)        err 2.4e-14
+      Hence  D parallel pair at {p,q}  <=>  E four coplanar at {p,q}^c ,
+      because BOTH say g_p || g_q -- by F8, which IS landed.
+  M3  At a (6,3) TIE all four coincide: D parallel, D four coplanar, E parallel,
+      E four coplanar.  Split diamond: parallel pair {0,5}, coplanar four-sets
+      {0,2,4,5} and {0,1,3,5} -- exactly the two triangles of K4-e through the
+      split edge, lifted by the parallel pair.  Mechanism confirmed on the nose.
+  M4  det P[T] = det(1-P)[T^c] for |T| = rank  (2e-15).  The chart of a design IS
+      a determinantal point process: nu_T = det P[T] >= 0, Sum_T nu_T = 1,
+      delta_pq = Sum_{T >= pq} nu_T, delta'_pq = Sum_{T <= pq^c} nu_T,
+      delta - delta' = s_p + s_q - 1.  All at 1e-15.  In that language the hinge
+      reads: some pair NEVER co-occurs <=> some four-set never contains the sample.
+
+WHAT DID NOT WORK
+  My own tie search (Nelder-Mead, true max over the twenty triples, 38 s) found
+  ZERO exact (6,3) ties, so it is underpowered against the campaign's projection
+  chart with analytic gradients.  I draw NOTHING from it.  The campaign's earlier
+  figure stands: 876 exact (6,3) ties, none parallel-free.
+
+  The split diamond IS in the both-all-heavy stratum (max rho = 0.75, all five-set
+  gaps positive definite) -- so that stratum is INHABITED.  It carries a parallel
+  pair, so it does not refute the hinge.  The open question is whether its
+  PARALLEL-FREE part is empty, and I did not settle it.
