@@ -6,10 +6,12 @@ WHAT LANDED
   Gtz/Wave/ChartGapSharpDuality.lean     (36 theorems)
   Gtz/Wave/ChartPairDualityExchange.lean (9 theorems)
   Gtz/Wave/ChartComplementBlockLaw.lean   (9 theorems)
+  Gtz/Wave/ChartSharpDesignGap.lean       (8 theorems)
 
-All 85 theorems pin to [propext, Classical.choice, Quot.sound]. Both umbrellas
-carry the imports and the pins. Three collision scans over Gtz/ and Skeleton/,
-namespace-aware, after each module: zero collisions.
+All 93 theorems pin to [propext, Classical.choice, Quot.sound], all 93 are pinned
+in Gtz/Audit.lean, and all five imports are in BOTH umbrellas. Five collision
+scans over Gtz/ and Skeleton/, namespace-aware, one after each module: zero
+collisions.
 
 JOB A WAS ALREADY SHIPPED. DO NOT RE-DERIVE IT.
 
@@ -129,6 +131,30 @@ The hinge does NOT transport across the duality: the sibling lane's
 Every statement here is scoped: the EXCHANGE is general, the READING of its right
 side as four coplanar atoms is (6,3) only, and no statement claims transport of
 HasParallelPair at any cell.
+
+A MEASURED ITEM OF THE CAMPAIGN, NOW PROVED
+
+Gtz/Wave/SharpFiveSetCriterion.lean lists under "What is measured and NOT proved
+here":  Phat = 1 - Pi, the chart of the sharp design is the complementary hat,
+verified to 2.4e-14, blocked because Gtz.exists_naimark_sharp_design exports
+existence only. The sibling lane has since NAMED that design
+(Gtz.naimarkSharpDesign, Gtz/Wave/SharpDesignInvolution.lean), carrying the
+whitener as data. Spending that closes the item in two steps:
+
+  * scaledAtomRows (naimarkSharpDesign F hm) = sharpFrame D N * F.whiten
+    -- the only scalar identity is sqrt(t) * sqrt(t/(1-t)) = t / sqrt(1-t)
+  * F.whiten * F.whiten^T = (naimarkSharpTarget N)^{-1}
+    -- conjugate whiten^T Theta whiten = 1 by the whitener and cancel
+
+Hence Gtz.projectionOfDesign_naimarkSharpDesign, and hence
+
+  Gtz.chartGapOfDesign_sharpDual_eq_sharpDesign :
+    negConjInv (pairRootDiagonal D) (chartGapOfDesign D)
+      = chartGapOfDesign (naimarkSharpDesign F hm)
+
+So -(N M^{-1} N) is not a formula resembling the sharp design. It IS that
+design's own matrix, and the involution and the absent fixed point are statements
+about designs.
 
 THREE DIFFERENT DUALS ARE IN THE TREE. DO NOT CONFUSE THEM.
 
