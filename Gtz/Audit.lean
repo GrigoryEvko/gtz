@@ -1266,6 +1266,7 @@ import Gtz.Wave.FiveSetPairFloor
 import Gtz.Wave.CoParsevalPivotHalfFloor
 import Gtz.Wave.ResolventProjectionLaw
 import Gtz.Wave.ResolventBlockCriterion
+import Gtz.Wave.ResolventBudgetLadder
 import Gtz.Wave.CornerFramePair
 import Gtz.Wave.ExcludedAtomLedger
 import Gtz.Wave.OneAxisZeroFourSets
@@ -38365,3 +38366,21 @@ run_cmd do
 #print axioms Gtz.dominates_iff_resolventForm_le
 #print axioms Gtz.dominates_compl_iff_resolventForm_le
 #print axioms Gtz.gtzWeighted_six_three_iff_resolventBlock
+
+-- Gtz/Wave/ResolventBudgetLadder.lean -- the resolvent chart's Sylvester chain:
+-- two new budgets, and the first sign proved by counting, which recovers the
+-- window floor two times the rank
+#print axioms Gtz.sum_coWeight_sq_resolventReading
+#print axioms Gtz.resolventPairMinor_comm
+#print axioms Gtz.sum_coWeight_resolventPairMinor
+#print axioms Gtz.sum_pivotContribution
+#print axioms Gtz.one_lt_pivotContribution_iff
+#print axioms Gtz.card_pivot_gt_one_le_rank
+#print axioms Gtz.rank_le_card_pivot_le_one
+#print axioms Gtz.exists_card_pivot_le_one
+#print axioms Gtz.pivot_le_one_of_dominates_compl
+#print axioms Gtz.sum_two_point_probe
+#print axioms Gtz.block_binary_form_le
+#print axioms Gtz.resolventPairMinor_nonneg_of_dominates_compl
+#print axioms Gtz.exists_triple_pivot_le_one_six_three
+#print axioms Gtz.gtzWeighted_six_three_iff_pivotSmall_resolventBlock
