@@ -1312,6 +1312,7 @@ import Gtz.Wave.TieMantelBound
 import Gtz.Wave.CellHChartFloors
 import Gtz.Wave.CellHDowndateLaws
 import Gtz.Wave.CellHStarPromotion
+import Gtz.Wave.CellHDowndatePromotion
 import Gtz.Wave.InsertionDowndateLedger
 import Gtz.Wave.CellBTiePackage
 import Gtz.Wave.BothLightChartReduction
@@ -37677,3 +37678,11 @@ run_cmd do
 -- Gtz/Wave/KTwoDesignKill.lean -- the two-zero stratum of a (5,3) design is
 -- empty, read in any orthonormal frame of the axis complement
 #print axioms Gtz.k2Five_kill
+
+-- Gtz/Wave/CellHDowndatePromotion.lean -- a rank-one downdate of a positive
+-- definite matrix is decided by its determinant, so cell H needs no admissibility
+#print axioms Gtz.vecMulVec_eq_replicate
+#print axioms Gtz.det_sub_vecMulVec
+#print axioms Gtz.posDef_sub_vecMulVec_of_det_pos
+#print axioms Gtz.posDef_sub_atomMatrix_of_det_pos
+#print axioms Gtz.cellH_exists_dominating_triple_of_posDef
