@@ -6498,3 +6498,4 @@ import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
+import Gtz.Wave.BlindMemberPlane

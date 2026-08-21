@@ -1383,6 +1383,7 @@ import Gtz.Wave.NullProbeFourSetLaw
 import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.FunnelPairMinorHinge
+import Gtz.Wave.BlindMemberPlane
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.CornerEmptinessSlack
@@ -37995,3 +37996,9 @@ run_cmd do
 #print axioms Gtz.unitAtom_parallel_of_swap_to_atom
 #print axioms Gtz.swapDegree_le_one_card_le_three
 #print axioms Gtz.unitAtom_second_swap_absurd
+
+-- Gtz/Wave/BlindMemberPlane.lean -- one blind member of a funnel dominator puts
+-- the unit atom in the plane of the other two, whose pair minor vanishes
+#print axioms Gtz.nullProbe_in_plane_of_blind_member
+#print axioms Gtz.funnel_blind_member_plane_and_pairMinor
+#print axioms Gtz.k2SixThree_parallel_or_boundary_plane
