@@ -1479,6 +1479,7 @@ import Gtz.Wave.ChartGapSharpDuality
 import Gtz.Wave.CornerAxisPairAdjugateLaw
 import Gtz.Wave.ChartPairDualityExchange
 import Gtz.Wave.ChartComplementBlockLaw
+import Gtz.Wave.ChartSharpDesignGap
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39733,3 +39734,23 @@ run_cmd do
 #print axioms Gtz.chartCore_det_gapBlock_shift_eq
 #print axioms Gtz.sixThree_complementary_block_law
 #print axioms Gtz.sixThree_complementary_block_law'
+
+-- Gtz/Wave/ChartSharpDesignGap.lean -- `-(N M⁻¹ N)` IS the chart gap of the sharp design.
+--   `Gtz/Wave/SharpFiveSetCriterion.lean` recorded `Phat = 1 - Π` as MEASURED and not
+--   proved, at `2.4e-14`, because `Gtz.exists_naimark_sharp_design` exports existence
+--   only.  `Gtz.naimarkSharpDesign` names the design, so the identification costs two
+--   steps: the scaled frame of the sharp design is `Gtz.sharpFrame` times the whitener,
+--   and the whitener's own square is the inverse of the sharp target.  Hence
+--   `Gtz.projectionOfDesign_naimarkSharpDesign` and
+--   `Gtz.chartGapOfDesign_sharpDual_eq_sharpDesign`, which turn the involution and the
+--   absent fixed point of `Gtz/Wave/ChartGapSharpDuality.lean` into statements about
+--   designs.  Nothing here transports the hinge; refer to
+--   `Gtz.hinge_not_preserved_by_duality`.
+#print axioms Gtz.sqrtWeight_mul_sharpScale
+#print axioms Gtz.scaledAtomRows_naimarkSharpDesign
+#print axioms Gtz.whiten_mul_transpose_eq_inv
+#print axioms Gtz.projectionOfDesign_naimarkSharpDesign
+#print axioms Gtz.sharpHat_eq_one_sub_totalGapHat
+#print axioms Gtz.chartGapOfDesign_naimarkSharpDesign
+#print axioms Gtz.chartGapOfDesign_sharpDual_eq_sharpDesign
+#print axioms Gtz.exists_design_chartGap_eq_sharpDual

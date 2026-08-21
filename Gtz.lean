@@ -6827,3 +6827,4 @@ import Gtz.Wave.ChartGapSharpDuality
 import Gtz.Wave.CornerAxisPairAdjugateLaw
 import Gtz.Wave.ChartPairDualityExchange
 import Gtz.Wave.ChartComplementBlockLaw
+import Gtz.Wave.ChartSharpDesignGap
