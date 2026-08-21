@@ -46,6 +46,28 @@ projection (`Gtz.tieCoupling_mul_classWeight`) forces each block to be the rank-
 `2 l_c - 1 = 1/T_A` while its OFF-DIAGONAL reads `J_cd = 0`.  Same class, parallel,
 equal leverage: one line each.  The class count is the trace, `3 = sum_c t_c / T_c`.
 
+## Where this stands against the sibling three-class law
+
+`Gtz/Wave/PivotFourDominatingTriples.lean` already lands a three-class law for
+rank-two ties and reads cross-class pairs as dominating.  That file caps the number
+of classes by CONSUMING the Bloch-chart four-direction hinge
+(`Gtz.not_isTie_of_fourNonParallel`), and its class law is an AGGREGATE one: its
+class defect `1 + T_X - 2 M_X` vanishes, where `M_X = sum_{c in X} t_c l_c`.
+
+This file is independent of that hinge and finer than that aggregate.
+
+* The class count `3` is PROVED here, from the Veronese projection, so
+  `Gtz.hingeHoldsAtSize_rank_two` is a second and independent proof of the rank-two
+  hinge rather than a consumer of it.  Neither file supersedes the other.
+* The leverage law here is PER ATOM: `(2 l_c - 1) T_A = 1` for every member of a
+  class (`Gtz.two_leverage_sub_one_mul_classWeight`), so the leverage is CONSTANT on
+  a class and the class weight fixes its value.  The aggregate `2 M_X = 1 + T_X` is
+  the sum of that over the class.
+* The whole block is pinned: `F_cd T_A = t_c t_d`
+  (`Gtz.tieCoupling_mul_classWeight`), which the aggregate cannot see.
+* The within-class gap determinant `-1/T_A` follows
+  (`Gtz.det_pairGap_mul_classWeight_of_mem_tieClass`), and needs the per-atom law.
+
 ## What is landed here
 
 * `Gtz.rankTwoTieClassification` — the classification, all fields.
@@ -97,6 +119,7 @@ import Gtz.Quantitative.ChartHadamard
 import Gtz.Reduction.CompactnessReduction
 import Gtz.Reduction.Reductions
 import Gtz.Reduction.SplitTransfer
+import Gtz.Wave.PlaneCapTripleClosure
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -122,10 +145,8 @@ private theorem funext_two {leftVec rightVec : Fin 2 → ℝ}
   · exact hzero
   · exact hone
 
-/-- The wedge `u_0 v_1 - u_1 v_0` of two planar vectors: the determinant of the two
-by two matrix with those columns. -/
-def planeWedge (leftVec rightVec : Fin 2 → ℝ) : ℝ :=
-  leftVec 0 * rightVec 1 - leftVec 1 * rightVec 0
+/-! The wedge `Gtz.planeWedge` is the tree's, from `Gtz.Wave.PlaneCapTripleClosure`:
+`u_0 v_1 - u_1 v_0`, the determinant of the two by two matrix with those columns. -/
 
 @[simp] theorem planeWedge_self (vec : Fin 2 → ℝ) : planeWedge vec vec = 0 := by
   simp only [planeWedge]; ring
