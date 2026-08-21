@@ -255,4 +255,166 @@ theorem posSemidef_diagonal_sub_block_iff_kernelBound {ambient size : ℕ}
     · rw [← hzero]; linarith
     · nlinarith [hCS, hbound, hpos, hscaleSum]
 
+/-! ## 3. The criterion at a design -/
+
+/-- The co-projection `1 - P` is symmetric. -/
+theorem coProjectionForm_transpose (D : WeightedDesign m k) :
+    ((1 : Matrix (Fin m) (Fin m) ℝ) - projectionOfDesign D)ᵀ
+      = 1 - projectionOfDesign D := by
+  rw [Matrix.transpose_sub, Matrix.transpose_one, projectionOfDesign_transpose]
+
+/-- The co-projection `1 - P` is idempotent. -/
+theorem coProjectionForm_mul_self (D : WeightedDesign m k) :
+    ((1 : Matrix (Fin m) (Fin m) ℝ) - projectionOfDesign D)
+        * (1 - projectionOfDesign D)
+      = 1 - projectionOfDesign D := by
+  have hidem := projectionOfDesign_mul_self D
+  rw [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one,
+    Matrix.one_mul, hidem]
+  abel
+
+/-- **THE FIXED VECTORS OF THE CO-PROJECTION ARE THE DEPENDENCIES.**  A vector is fixed by
+`1 - P` exactly when the scaled frame annihilates it, which says that the atoms, weighted
+by the vector and by the square roots of the weights, cancel. -/
+theorem mulVec_coProjection_self_iff (D : WeightedDesign m k) (probe : Fin m → ℝ) :
+    ((1 : Matrix (Fin m) (Fin m) ℝ) - projectionOfDesign D) *ᵥ probe = probe
+      ↔ (scaledAtomRows D)ᵀ *ᵥ probe = 0 := by
+  have hadjoint : ∀ w : Fin k → ℝ,
+      probe ⬝ᵥ (scaledAtomRows D *ᵥ w) = ((scaledAtomRows D)ᵀ *ᵥ probe) ⬝ᵥ w := by
+    intro w
+    simp only [dotProduct, Matrix.mulVec, Matrix.transpose_apply, Finset.mul_sum,
+      Finset.sum_mul]
+    rw [Finset.sum_comm]
+    exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
+  have hfixIff : ((1 : Matrix (Fin m) (Fin m) ℝ) - projectionOfDesign D) *ᵥ probe = probe
+      ↔ projectionOfDesign D *ᵥ probe = 0 := by
+    rw [Matrix.sub_mulVec, Matrix.one_mulVec]
+    constructor
+    · intro h; have := sub_eq_self.mp h; exact this
+    · intro h; rw [h, sub_zero]
+  rw [hfixIff]
+  constructor
+  · intro h
+    have hquad : ((scaledAtomRows D)ᵀ *ᵥ probe) ⬝ᵥ ((scaledAtomRows D)ᵀ *ᵥ probe) = 0 := by
+      rw [← hadjoint, Matrix.mulVec_mulVec, ← projectionOfDesign, h, dotProduct_zero]
+    exact dotProduct_self_eq_zero.mp hquad
+  · intro h
+    rw [projectionOfDesign, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_zero]
+
+/-- The gap block of the primal chart is the co-projection block of the dual chart. -/
+theorem projectionBlock_gap_eq_coProjection_gap (D : WeightedDesign m k)
+    (pick : Fin k → Fin m) (hinj : Function.Injective pick) :
+    (projectionOfDesign D).submatrix pick pick
+        - Matrix.diagonal (fun slot => D.weight (pick slot))
+      = Matrix.diagonal (fun slot => 1 - D.weight (pick slot))
+        - ((1 : Matrix (Fin m) (Fin m) ℝ) - projectionOfDesign D).submatrix pick pick := by
+  have hsub : ((1 : Matrix (Fin m) (Fin m) ℝ) - projectionOfDesign D).submatrix pick pick
+      = 1 - (projectionOfDesign D).submatrix pick pick := by
+    ext rowSlot colSlot
+    rw [Matrix.submatrix_apply, Matrix.sub_apply, Matrix.sub_apply, Matrix.submatrix_apply]
+    congr 1
+    rw [Matrix.one_apply, Matrix.one_apply]
+    by_cases hslot : rowSlot = colSlot
+    · rw [if_pos hslot, if_pos (by rw [hslot])]
+    · rw [if_neg hslot, if_neg fun hpick => hslot (hinj hpick)]
+  have hdiagSplit : Matrix.diagonal (fun slot : Fin k => 1 - D.weight (pick slot))
+      = 1 - Matrix.diagonal (fun slot : Fin k => D.weight (pick slot)) := by
+    ext rowSlot colSlot
+    by_cases hslot : rowSlot = colSlot
+    · subst hslot
+      rw [Matrix.diagonal_apply_eq, Matrix.sub_apply, Matrix.one_apply_eq,
+        Matrix.diagonal_apply_eq]
+    · rw [Matrix.diagonal_apply_ne _ hslot, Matrix.sub_apply, Matrix.one_apply_ne hslot,
+        Matrix.diagonal_apply_ne _ hslot, sub_zero]
+  rw [hdiagSplit, hsub]
+  abel
+
+/-- **DOMINATION IS A BOUND ON THE KERNEL OF THE SCALED FRAME.**  A `k`-subset dominates
+exactly when every vector annihilated by the scaled frame spends, on the selected labels
+and measured against the co-weights `1 - t_c`, at most its own total square mass. -/
+theorem dominates_iff_kernelBound (D : WeightedDesign m k) (hm : 2 ≤ m)
+    (pick : Fin k → Fin m) (hinj : Function.Injective pick) :
+    Dominates D (Finset.image pick Finset.univ)
+      ↔ ∀ probe : Fin m → ℝ, (scaledAtomRows D)ᵀ *ᵥ probe = 0 →
+          ∑ slot, probe (pick slot) ^ 2 / (1 - D.weight (pick slot))
+            ≤ ∑ index, probe index ^ 2 := by
+  have hscale : ∀ slot : Fin k, 0 < 1 - D.weight (pick slot) := fun slot => by
+    linarith [weight_lt_one D hm (pick slot)]
+  rw [dominates_iff_posSemidef_projectionBlock D pick hinj,
+    projectionBlock_gap_eq_coProjection_gap D pick hinj,
+    posSemidef_diagonal_sub_block_iff_kernelBound (coProjectionForm_transpose D)
+      (coProjectionForm_mul_self D) pick hscale]
+  exact forall_congr' fun probe => by rw [mulVec_coProjection_self_iff]
+
+/-- The kernel of the scaled frame is the set of linear dependencies, rescaled. -/
+theorem transpose_scaledAtomRows_mulVec_eq_zero_iff (D : WeightedDesign m k)
+    (probe : Fin m → ℝ) :
+    (scaledAtomRows D)ᵀ *ᵥ probe = 0
+      ↔ (∑ index, (Real.sqrt (D.weight index) * probe index) • D.atom index) = 0 := by
+  have hpoint : ∀ coord : Fin k,
+      ((scaledAtomRows D)ᵀ *ᵥ probe) coord
+        = (∑ index, (Real.sqrt (D.weight index) * probe index) • D.atom index) coord := by
+    intro coord
+    rw [Matrix.mulVec, dotProduct, Finset.sum_apply]
+    refine Finset.sum_congr rfl fun index _ => ?_
+    rw [Matrix.transpose_apply, scaledAtomRows, Matrix.of_apply, Pi.smul_apply, smul_eq_mul]
+    ring
+  constructor
+  · intro hzero
+    funext coord
+    rw [← hpoint coord, hzero]
+  · intro hzero
+    funext coord
+    rw [hpoint coord, hzero]
+
+/-- **DOMINATION IS A BOUND ON THE DEPENDENCIES.**  A `k`-subset dominates exactly when
+every linear dependency of the atoms obeys one weighted inequality, in which the atoms
+themselves no longer appear. -/
+theorem dominates_iff_dependencyBound (D : WeightedDesign m k) (hm : 2 ≤ m)
+    (pick : Fin k → Fin m) (hinj : Function.Injective pick) :
+    Dominates D (Finset.image pick Finset.univ)
+      ↔ ∀ dep : Fin m → ℝ, (∑ index, dep index • D.atom index) = 0 →
+          ∑ slot, dep (pick slot) ^ 2
+              / (D.weight (pick slot) * (1 - D.weight (pick slot)))
+            ≤ ∑ index, dep index ^ 2 / D.weight index := by
+  have hsqrtPos : ∀ index : Fin m, 0 < Real.sqrt (D.weight index) := fun index =>
+    Real.sqrt_pos.mpr (D.weight_pos index)
+  have hsq : ∀ index : Fin m, Real.sqrt (D.weight index) ^ 2 = D.weight index := fun index =>
+    Real.sq_sqrt (D.weight_pos index).le
+  rw [dominates_iff_kernelBound D hm pick hinj]
+  constructor
+  · intro hkernel dep hdep
+    have hzero : (scaledAtomRows D)ᵀ *ᵥ (fun index => dep index / Real.sqrt (D.weight index))
+        = 0 := by
+      rw [transpose_scaledAtomRows_mulVec_eq_zero_iff, ← hdep]
+      refine Finset.sum_congr rfl fun index _ => ?_
+      have hne : Real.sqrt (D.weight index) ≠ 0 := (hsqrtPos index).ne'
+      congr 1
+      field_simp
+    have hstep := hkernel _ hzero
+    calc ∑ slot, dep (pick slot) ^ 2
+            / (D.weight (pick slot) * (1 - D.weight (pick slot)))
+        = ∑ slot, (dep (pick slot) / Real.sqrt (D.weight (pick slot))) ^ 2
+            / (1 - D.weight (pick slot)) := by
+          refine Finset.sum_congr rfl fun slot _ => ?_
+          rw [div_pow, hsq, div_div]
+      _ ≤ ∑ index, (dep index / Real.sqrt (D.weight index)) ^ 2 := hstep
+      _ = ∑ index, dep index ^ 2 / D.weight index := by
+          refine Finset.sum_congr rfl fun index _ => ?_
+          rw [div_pow, hsq]
+  · intro hdepBound probe hprobe
+    have hdep : (∑ index, (Real.sqrt (D.weight index) * probe index) • D.atom index) = 0 :=
+      (transpose_scaledAtomRows_mulVec_eq_zero_iff D probe).mp hprobe
+    have hstep := hdepBound _ hdep
+    calc ∑ slot, probe (pick slot) ^ 2 / (1 - D.weight (pick slot))
+        = ∑ slot, (Real.sqrt (D.weight (pick slot)) * probe (pick slot)) ^ 2
+            / (D.weight (pick slot) * (1 - D.weight (pick slot))) := by
+          refine Finset.sum_congr rfl fun slot _ => ?_
+          rw [mul_pow, hsq, mul_div_mul_left _ _ (D.weight_pos (pick slot)).ne']
+      _ ≤ ∑ index, (Real.sqrt (D.weight index) * probe index) ^ 2 / D.weight index := hstep
+      _ = ∑ index, probe index ^ 2 := by
+          refine Finset.sum_congr rfl fun index _ => ?_
+          rw [mul_pow, hsq, mul_comm, mul_div_assoc, div_self (D.weight_pos index).ne',
+            mul_one]
+
 end Gtz
