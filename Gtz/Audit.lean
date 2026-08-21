@@ -1376,6 +1376,7 @@ import Gtz.Wave.CornerDescentRank
 import Gtz.Wave.BranchTwoTrueDeterminants
 import Gtz.Wave.NullProbeAdjugateLaw
 import Gtz.Wave.MirrorPairMinorTrigger
+import Gtz.Wave.ProbeFreeHingeTrigger
 import Gtz.Wave.KTwoSixThreeFunnel
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
@@ -37842,3 +37843,31 @@ run_cmd do
 #print axioms Gtz.funnel_dominator_meets_orthogonal_pair
 #print axioms Gtz.funnel_one_blind_pairMinor_zero
 #print axioms Gtz.k2SixThree_parallel_or_pairMinor_zero
+
+-- Gtz/Wave/ProbeFreeHingeTrigger.lean -- the null probe is eliminated: the
+-- adjugate law off the diagonal turns every reading of the probe into a
+-- pair-currency quadratic form, so the swap census and the mirror trigger
+-- become polynomial conditions on leverages and inner products alone
+#print axioms Gtz.adjugate_col_first
+#print axioms Gtz.adjugate_col_second
+#print axioms Gtz.adjugate_col_third
+#print axioms Gtz.adjugate_col_fourth
+#print axioms Gtz.adjugate_offDiag_core
+#print axioms Gtz.pairAdjOff_swap_last
+#print axioms Gtz.pairAdjOff_last_pair
+#print axioms Gtz.pairMinorTotal_swap_last
+#print axioms Gtz.pairMinorTotal_rotate
+#print axioms Gtz.nullProbe_reproduction_swap_last
+#print axioms Gtz.nullProbe_reproduction_rotate
+#print axioms Gtz.pairMinorTotal_mul_readings_first
+#print axioms Gtz.pairMinorTotal_mul_readings_second
+#print axioms Gtz.pairMinorTotal_mul_readings_third
+#print axioms Gtz.dotProduct_probe_eq_readings
+#print axioms Gtz.pairMinorTotal_mul_reading_sq
+#print axioms Gtz.pairAdjForm_self
+#print axioms Gtz.pairMinorTotal_mul_swap_nullForm
+#print axioms Gtz.pairGapMinor_le_pairAdjForm_of_dominates
+#print axioms Gtz.hasParallelPair_of_pairAdjForm_eq
+#print axioms Gtz.pairGapMinor_lt_pairAdjForm_of_not_hasParallelPair
+#print axioms Gtz.pairGapMinor_shared_transfer
+#print axioms Gtz.pairAdjForm_shared_transfer

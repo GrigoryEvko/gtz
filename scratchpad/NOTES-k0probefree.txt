@@ -1,0 +1,72 @@
+# K0 lane, round of 2026-08-21 : the probe elimination
+
+## What landed
+Gtz/Wave/ProbeFreeHingeTrigger.lean (25 pins, all standard axioms).
+
+The corank-one arm's whole swap/mirror machine mentioned the null probe w, an
+eigenvector, which is not a design quantity.  The probe is now eliminated.
+
+1. Adjugate law OFF the diagonal:
+      pairMinorTotal a b c * ((a.w)(b.w)) = pairAdjOff a b c
+   with  pairAdjOff a b c := (a.c)(b.c) - (a.b)(l_c - 1).
+   Together with the landed diagonal law this is  adj N = e2 * s s^T  entrywise.
+   Proof: four TWO-TERM column identities plus the normalization.  No rank
+   hypothesis, no case split, no positivity.
+      a11*s2 - a12*s1 = C*h2 - R*h3
+      a22*s1 - a12*s2 = C*h1 - Q*h3
+      a13*s2 - a12*s3 = P*h3 - Q*h2
+      a13*s3 - a33*s1 = P*h2 - B*h1
+   assembly: a12 - e2 s1 s2 = -[a12*hn + s1*c1 + s2*c2 + (s3*c3 - s2*c4)].
+
+2. THE PROBE ELIMINATION.  For ANY vector v,
+      pairMinorTotal a b c * (v.w)^2 = pairAdjForm a b c v
+   where pairAdjForm is the adjugate quadratic form at the readings
+   (v.a, v.b, v.c).  No eigenvector on the right.
+
+3. The swap defect in pair currency:
+      e2 * w^T (S_{C'} - 1) w = pairAdjForm a b c g_q - pairGapMinor b c .
+
+4. THE PROBE-FREE HINGE TRIGGER.  If the shared pair is admissible, the swap
+   weakly dominates, and pairAdjForm a b c g_q = pairGapMinor b c, then the
+   design HAS A PARALLEL PAIR.  Contrapositive: at a primitive design every
+   dominating swap over an admissible pair pays a STRICT polynomial inequality
+   in leverages and inner products alone.
+
+5. Shared-pair transfer: two dominators over a common pair compute that pair's
+   minor from their own probes, so the shared pair minor is the exchange rate.
+
+## MEASURED (verified before any Lean was written)
+- adj N = e2 s s^T entrywise : max error 1.421e-13 over 20,000 random corank-one
+  weak dominators.
+- e2*(v.w)^2 = a^T adj(N) a for an ARBITRARY probed vector v : 4.832e-13.
+- Lean-shaped pairAdjForm identity : 5.205e-13 over 30,000 draws.
+- consistency pairAdjForm(a,b,c,a) = pairGapMinor b c : 9.468e-13.
+- every certificate checked symbolically in sympy, residual exactly 0.
+
+## MEASUREMENT ARTIFACT FOUND AND KILLED (report this)
+Minimizing Phi = max_T lambda_min(S_T - I) over (6,3) designs from 14 random
+starts converged to Phi ~ 1e-12 in 13 of 14 cases -- but EVERY one of those
+"ties" had leverages of order 1e8 to 1e12 and one atom at leverage exactly
+1.0000.  Those are dust-weight designs on the degenerate ray, not (6,3) ties:
+weights collapse to ~1e-12 so the design is really a smaller one.  The census
+taken there reported inadmissible pairs with NORMALIZED WEDGE EXACTLY 1.0 --
+i.e. as far from parallel as possible -- which would have looked like a
+refutation of "inadmissible implies parallel".  IT IS NOT.  It is the
+degenerate ray.
+With an honest weight floor tau = 0.05 the same optimizer floors at 6.3e-07 and
+never reaches a tie from a random start; the split diamond (min weight 0.100,
+Phi = 1.3e-15) shows the floored tie locus is non-empty but is codimension nine
+and not reachable by random multistart.
+RULE CONFIRMED: never census a tie found by descent without a weight floor.
+
+## Fixture reproduction (graveyard law)
+(5,3) diamond tie, K4-e, conductance (2,3,3,3,3), uniform weight 1/5:
+  leverages (2, 3.25, 3.25, 3.25, 3.25); Parseval residual 6.7e-16; Phi 1.3e-15.
+  pair minors 0.75 (four of them), 2.0 (two), 4.5 (four).  NO inadmissible pair.
+Split diamond at each of the five atoms: exactly ONE inadmissible pair, and it
+IS the parallel pair, in all five cases.  Consistent with the joint.
+
+## Still open in this lane
+The joint itself: inadmissible (q <= 0) implies parallel (wedge = 0).  The new
+trigger does not close it -- it converts the MIRROR's hypothesis to pair
+currency, which is what a (6,3) constraint system needs.
