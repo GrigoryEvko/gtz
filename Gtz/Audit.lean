@@ -1310,6 +1310,7 @@ import Gtz.Wave.ChartBracketTax
 import Gtz.Wave.TieGraphTrichotomy
 import Gtz.Wave.TieMantelBound
 import Gtz.Wave.CellHChartFloors
+import Gtz.Wave.CellHDowndateLaws
 import Gtz.Wave.CellBTiePackage
 import Gtz.Wave.BothLightChartReduction
 import Gtz.Wave.DiamondNeighborhoodMirror
@@ -37514,3 +37515,16 @@ run_cmd do
 #print axioms Gtz.k2Plane_Vn_eq
 #print axioms Gtz.k2Plane_Un_eq
 #print axioms Gtz.k2Plane_chart_positives
+
+-- Gtz/Wave/CellHDowndateLaws.lean -- the weighted downdate law, the four-set
+-- coincidence, the corner contraction, and the selector-free cell-H producers
+#print axioms Gtz.dotProduct_mulVec_eq_trace_mul_atomMatrix
+#print axioms Gtz.sum_weight_mul_reading_eq_trace
+#print axioms Gtz.sum_weighted_downdate_det
+#print axioms Gtz.exists_downdate_det_pos_of_secondInvariant_lt
+#print axioms Gtz.fourSet_downdate_totals_agree
+#print axioms Gtz.sum_three_downdate_det
+#print axioms Gtz.corner_adjugate_contraction
+#print axioms Gtz.exists_pos_of_symmetric_trio
+#print axioms Gtz.exists_tripleGap_pos_of_adjugate_reading_gt
+#print axioms Gtz.cellH_exists_tripleGap_pos

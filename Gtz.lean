@@ -6399,6 +6399,7 @@ import Gtz.Wave.ChartBracketTax
 import Gtz.Wave.TieGraphTrichotomy
 import Gtz.Wave.TieMantelBound
 import Gtz.Wave.CellHChartFloors
+import Gtz.Wave.CellHDowndateLaws
 import Gtz.Wave.CellBTiePackage
 import Gtz.Wave.BothLightChartReduction
 import Gtz.Wave.InvariantBudgets
