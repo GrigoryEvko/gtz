@@ -1367,6 +1367,7 @@ import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoBridgeNormalForm
 import Gtz.Wave.KTwoBridgeRefusalY
+import Gtz.Wave.KTwoBridgeSlacks
 import Gtz.Wave.CoherentHornRepayScope
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -37473,3 +37474,9 @@ run_cmd do
 #print axioms Gtz.k2ChartRefusalY_eq_gapDet
 #print axioms Gtz.k2ChartRefusalY_nonneg_iff_gapDet_nonpos
 #print axioms Gtz.cornerForm_tripleGapDet_nine_total
+
+-- Gtz/Wave/KTwoBridgeSlacks.lean -- the other three chart slacks are the gap
+-- determinants of their triples, times positive clearing factors
+#print axioms Gtz.k2ChartCapD_eq_gapDet
+#print axioms Gtz.k2ChartCapE_eq_gapDet
+#print axioms Gtz.k2ChartRefusalZ_eq_gapDet
