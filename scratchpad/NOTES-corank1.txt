@@ -1529,3 +1529,101 @@ F51-1 relate each slack's SIGN to its triple's DETERMINANT sign only.  To turn
 "some slack < 0" into "some triple strictly dominates" the bridge must also
 supply the first two Sylvester minors of that triple (heavy atom, admissible
 pair).  THIS IS AN OPEN GAP IN THE BRIDGE, not covered by anything landed.
+
+======================================================================
+F53.  THE BRIDGE IS CLOSED TO THE DESIGN LEVEL.  (fork 53)
+======================================================================
+
+F53-0.  CORRECTION TO THE BRIEF.  Two of the three items handed to me were
+already landed by fork 51 and the coordinator's brief was out of date:
+  * `Dn` IS transcribed -- `k2Plane_Dn_clear` (KTwoBridgePlaneReadings).
+  * the domination chaining IS done -- `k2ChartRefusalY_neg_dominates` and
+    `k2ChartRefusalZ_neg_dominates` (KTwoBridgeDominates), both already using
+    the sibling's `tripleGram_posDef_iff_gapDet_pos_of_admissible`.
+  * `k2Plane_chart_positives` (KTwoBridgePositives) already gives three of the
+    four chart positives from a positive definite plane gap.
+Nothing was missing except the ASSEMBLY.  Grep before commissioning.
+
+F53-1.  LANDED: `Gtz/Wave/KTwoFrameKill.lean` (5a438c6), 4 theorems.
+  * `tripleGapDet_frame_yzd`, `tripleGapDet_frame_yze` -- the two MISSING
+    frame determinants.  KTwoBridgeDominates' docstring promises "three
+    siblings" but only the two `de` ones existed; the two CAP triples had none.
+  * `k2Frame_kill` -- the two-zero stratum is empty in the normal frame.
+    Hypotheses: weights positive, `al,be,p` nonzero, the four Parseval
+    relations `h1 h2 h3 hcol`, the axis reading `td*al^2+te*be^2 =
+    ty+tz+td+te`, the budget, and the plane gap Sylvester data `hB11`,`hdet`,
+    plus the four refusals as gap determinants of explicit frame vectors.
+    Chains onto the coordinator's closed `k2Chart_kill`.
+  NOTE the chart map, for the record:
+    ed = al^2-1,  ee = be^2-1,  P = p^2,  X = ty*y2^2.
+  `0 <= X <= 1` is FREE from `h3`.
+
+F53-2.  LANDED: `Gtz/Wave/KTwoFrameChart.lean` (2bb9cbf), 6 theorems.
+  THE TRANSPORT THE CAMPAIGN WAS MISSING.
+  * `orthonormal_three_resolution` -- three orthonormal vectors of R^3 resolve
+    the identity.  PROOF IS NOT A RANK ARGUMENT: stack them as rows of M, the
+    six conditions say M*M^T = 1, and `mul_eq_one_comm` (root level, NOT
+    `Matrix.mul_eq_one_comm`) gives M^T*M = 1, which IS the resolution.
+  * `dotProduct_eq_frame_coords` -- every pairing is the coordinate pairing.
+    Proved by probing the resolution, NOT by a nine-term linear_combination
+    (that route failed on sign bookkeeping; the probe route is three rewrites).
+  * `tripleGram_eq_frame_coords`, `tripleGapDet_eq_frame_coords`.
+  GOTCHA: `tripleGapDet` is NOT defined as `(tripleGram - 1).det`.  It unfolds
+  to an explicit polynomial in leverages and pairings, so the Gram transport
+  does NOT rewrite it -- you must rewrite the six pairings and `ring`.
+  GOTCHA: `dotProduct_vecMulVec_mulVec` ALREADY EXISTS (specialised to a single
+  probe on both sides).  My pair version is `dotProduct_vecMulVec_mulVec_pair`.
+
+F53-3.  LANDED: `Gtz/Wave/KTwoDesignKill.lean` (23dc43b), `k2Five_kill`.
+  THE FRAME IS GONE FROM THE STATEMENT.  A (5,3) design with a unit axis atom
+  orthogonal to the two plane atoms, read against ANY orthonormal pair of
+  probes `vh,nh` of the axis complement with `D.atom 3 . nh = 0`, and refusing
+  the four triples avoiding the axis, does not exist.
+  Everything is discharged from design-level facts: `k2FivePlane_relations`
+  (the four relations), `k2FiveAxis_excess_eq`, `k2FiveAxis_budget`,
+  `k2FivePlane_outside_nhat_zero` (atom 4's second coordinate vanishes), and
+  the coordinate transport for the four refusals.
+
+F53-4.  THE ONE REMAINING DEBT, WITH ITS RECIPE.
+  `k2Five_kill` quantifies over the probes.  PRODUCING them from a design is a
+  Gram-Schmidt step, not a chart:
+    x  := D.atom 0            (unit by hypothesis)
+    q  := D.atom 3 - (D.atom 3 . x) x        (the outside plane part)
+    vh := q / |q|                             (needs q /= 0, i.e. atom 3 not
+                                               parallel to the axis)
+    nh := the completion of (x,vh) to a 3-frame
+  USE `Gtz.exists_orthonormal_completion` (Gtz/LinAlg/Completion.lean:37) with
+  m=3, k=2, A the matrix with columns (x,vh).  It returns B : Matrix (Fin 3)
+  (Fin 1) with B^T B = 1, A^T B = 0 and A A^T + B B^T = 1.  Take nh = the
+  single column of B.  Then:
+    - `nh . nh = 1` from B^T B = 1
+    - `vh . nh = 0` and `x . nh = 0` from A^T B = 0
+    - `D.atom 3 . nh = 0` because atom 3 lies in span(x,vh) = column space of A
+  SUPERSEDED BY F53-6: the matrix completion is NOT needed.  See below.
+
+F53-5.  NOT REACHED: the ch1/ch2 boundary lemmas, the (6,3) K2 rerun, K1's
+  active set.  All three untouched by me.
+  For K1 the standing correction applies: the active set is a KKT structure
+  ONLY.  Prune generators from a certificate's multiplier dictionary if you
+  like, but NEVER delete a hypothesis from the Prop.
+
+F53-6.  LANDED: `Gtz/Wave/KTwoProbePair.lean` (ecfaa7d), 2 theorems.
+  THE SECOND PROBE IS FORCED AND COSTS NOTHING.  Take `nh = bracketNormal x vh`
+  (the cross product).  `k2Probe_cross_spec` proves all four properties the
+  design kill wants:
+    nh . nh = 1        -- Lagrange, via `crossNormSq_eq_leverage_mul_sub_sq`,
+                          because x, vh are orthogonal unit vectors
+    x . nh = 0         -- landed `dotProduct_bracketNormal_left`
+    vh . nh = 0        -- landed `dotProduct_bracketNormal_right`
+    a . nh = 0  for a = c1 * x + c2 * vh   -- new `dotProduct_bracketNormal_combo`
+  So `exists_orthonormal_completion` is NOT needed for this frame.
+  GOTCHA: `dotProduct_bracketNormal_left` and `_right` ALREADY EXIST in
+  `Gtz/Wave/KOneWedgeCeiling.lean`.  I wrote duplicates and had to delete them.
+  That is the SECOND time this round grep-first would have saved a build.
+
+F53-7.  THE ONLY REMAINING DEBT OF THE (5,3) K2 BRIDGE.
+  The FIRST probe `vh`, i.e. the normalisation of `q = a3 - (a3 . x) x`.
+  It needs `q /= 0` (the outside atom not parallel to the axis -- excluded by
+  the stratum's parallel laws) and one `Real.sqrt`.  Everything else is done:
+  feed `vh` and `nh = bracketNormal x vh` into `k2Five_kill` and the (5,3)
+  two-zero stratum is unconditionally empty.
