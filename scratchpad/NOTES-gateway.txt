@@ -106,3 +106,68 @@ F47-10. REFUTED, WITH WITNESSES.
 
 TOOLING: scratchpad/f47/gw.jl (12-param exact corner chart, 32-thread descent).
 Memory: all runs under 1 GB.
+
+================== ROUND 2 (fork 47) — THE SIGN IS GONE ==================
+
+F47-11. THE COORDINATOR'S sigma CASE SPLIT IS NOT NEEDED.  Landed 6e062dd,
+Gtz/Wave/CornerRefusalDichotomy.lean, 8 theorems, all standard axioms.
+  ISOLATION (hypothesis-free, one ring):
+    tripleGapDet a b c = -2 x_a x_b x_c + (x_a q_bc + x_b q_ac + x_c q_ab)
+                         + 2 (a.b)(a.c)(b.c)
+  SQUARE (hypothesis-free, one ring) — THE POLYNOMIALISATION (angle 2):
+    (tripleGapDet + 2 x_a x_b x_c - (x_a q_bc + x_b q_ac + x_c q_ab))^2
+      = 4 (x_a x_b - q_ab)(x_a x_c - q_ac)(x_b x_c - q_bc)
+  The Bargmann term is a ROOT OF A QUADRATIC, not an extra sign to case on.
+  With all q <= 0 each factor is >= the product of its two excesses, so the
+  square passes (2 prod x)^2 and the root lies outside the interval:
+  DICHOTOMY (tripleGapDet_refusal_dichotomy) — NO SIGN ANYWHERE:
+    (1)  x_a q_bc + x_b q_ac + x_c q_ab  <=  tripleGapDet        , or
+    (2)  tripleGapDet <= -4 x_a x_b x_c + (x_a q_bc + x_b q_ac + x_c q_ab).
+  This is field-blind: over C the same holds with Re(Delta3) in place of the
+  product, whose square obeys the same bound.
+
+F47-12. WHAT EACH BRANCH COSTS (both landed).
+  BRANCH 1 PAYS THE BUDGET: fed into weightedTriple_pairMinor_gapForm, the
+    coefficient against each pair minor is exactly the member weight slack
+    1 - t_k l_k, so every term is nonnegative: branch 1 ==> refined budget >= 0.
+    (branchOne_refinedBudget_nonneg)
+  BRANCH 2 PAYS THE LEVERAGE: fed into the currency bridge with [abc]^2 >= 0,
+    4 x_a x_b x_c <= 1 + sum x_i + (q_ab l_c + q_ac l_b + q_bc l_a), and with
+    no admissible pair the last group is <= 0, giving the pure form
+    4 x_a x_b x_c <= 1 + sum x_i.  (branchTwo_leverage_bound{,_pure})
+  PRODUCER WITH A DISJOINT TRIGGER (exists_pairMinor_pos_of_refinedBudget_of_leverage):
+    heavy triple + refined budget < 0 + 4 prod x > 1 + sum x  ==>  admissible pair.
+
+F47-13. sigma AT THE COMPLEX TIE — angle 1, answered.  My Hermitian reading of
+  scratchpad/corner-ten/complextie.pkl does NOT reproduce Parseval (residual
+  0.77 in every convention I tried; the .txt says 1.55e-15, so the pkl stores a
+  different normalisation).  DO NOT QUOTE MY COMPLEX NUMBERS.  What IS solid:
+  the Bargmann invariant Delta3 = p12 p23 p31 is the field-blind object, its
+  argument is the Pancharatnam phase, and sigma = +-1 only when that phase is
+  0 or pi.  So sigma is a REAL-ONLY invariant — but F47-11 shows the proof does
+  not need it, which is why the route stays field-blind.
+
+F47-14. sigma = -1 IS THE COMMON BRANCH, NOT AN EDGE CASE.  Measured on 108523
+  exact corners: sign(p12 p13 p23) = -1 at 80.04 percent.  The old framing would
+  have closed only a fifth of the space.
+
+F47-15. A WHOLE PRODUCER CLASS IS DEAD — REFUTED WITH A WITNESS.
+  sum_{i<j} t_i t_j q_ij is NEGATIVE at 0.0405 percent of corners, minimum
+  -0.176.  By the landed identity that quantity equals det N_O + det N_C - F
+  exactly (checked to 7 digits).  CONSEQUENCE: no producer of the form "a fixed
+  weighted sum of the three pair minors is positive" can EVER be total, for any
+  choice of weights.  The gateway is irreducibly about the MAX, not a sum —
+  the campaign's "select, never add" doctrine, now with a witness for E1.
+
+F47-16. WHY BRANCH 2 STILL DOES NOT CLOSE, EXACTLY.  Chaining branch 2 with the
+  pairing cap and AM-GM on det N_C (det <= (tr/3)^3) gives the necessary
+  condition  F_plus <= PiA * S(b) + ((s+tauC)/3)^3  with
+  S(b) = sum (1-b_i-b_j)(1-b_k) - 4 b1 b2 b3 and PiA = prod(1-t_i).
+  Adversarial max of [F_plus - (PiA S + AMGM)] over the domain is -0.0373,
+  attained at b = (1/2,1/2,1/2), s = 0.99918, tauC = 0.00205 — the same extremal
+  as round 1.  WITHOUT the AM-GM term the margin is -8.8e-5, i.e. ESSENTIALLY
+  ZERO: branch 2 forces det N_C to be nearly zero.  But at a corner
+  det N_C = t_x t_y t_z (1 + lam) EXACTLY (Cauchy-Binet plus det S_C = 1+lam),
+  which is strictly positive.  THE MISSING STEP IS A LOWER BOUND ON
+  t_x t_y t_z (1+lam) IN TERMS OF THE OUTSIDE SCALARS.  That single inequality
+  closes branch 2 and therefore E1.  It is the whole remaining gap.
