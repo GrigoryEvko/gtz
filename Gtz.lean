@@ -6479,3 +6479,4 @@ import Gtz.Wave.KTwoDesignKill
 import Gtz.Wave.CellHDowndatePromotion
 import Gtz.Wave.KTwoProbePair
 import Gtz.Wave.EtwoRealnessGauge
+import Gtz.Wave.UnitAtomFunnel

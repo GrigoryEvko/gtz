@@ -1367,6 +1367,7 @@ import Gtz.Wave.CornerSizeLaw
 import Gtz.Wave.PairStarSizeLaw
 import Gtz.Wave.PairMinorBudget
 import Gtz.Wave.PairNormalParseval
+import Gtz.Wave.UnitAtomFunnel
 import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.CornerGatewayBudget
 import Gtz.Wave.CornerRefusalDichotomy
@@ -37705,3 +37706,14 @@ run_cmd do
 #print axioms Gtz.planarGauge_outside_moment_eq
 #print axioms Gtz.planarGauge_corner_eq
 #print axioms Gtz.planarGauge_quarterTurn_frame
+
+-- Gtz/Wave/UnitAtomFunnel.lean -- the boundary of the leverage floor: a tie
+-- with a unit atom has a dominator avoiding it that reproduces it exactly
+#print axioms Gtz.posSemidef_one_sub_atomMatrix_of_unit
+#print axioms Gtz.eq_smul_of_unit_complement_form_zero
+#print axioms Gtz.unitAtom_exists_dominator_fixing
+#print axioms Gtz.unitAtom_reproduction
+#print axioms Gtz.unitAtom_readings_resolve
+#print axioms Gtz.unitAtom_parallel_of_two_readings_zero
+#print axioms Gtz.isTie_sixThree_unitAtom_funnel
+#print axioms Gtz.isTie_sixThree_allHeavy_or_funnel
