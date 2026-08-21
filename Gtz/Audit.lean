@@ -1378,6 +1378,7 @@ import Gtz.Wave.KTwoBridgePlaneReadings
 import Gtz.Wave.KTwoAxisWedgeBudget
 import Gtz.Wave.CoherentHornRepayScope
 import Gtz.Wave.BranchBProductKill
+import Gtz.Wave.InadmissibleParallelJoint
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -37606,3 +37607,18 @@ run_cmd do
 #print axioms Gtz.branchTwo_leverage_bound
 #print axioms Gtz.branchTwo_leverage_bound_pure
 #print axioms Gtz.exists_pairMinor_pos_of_refinedBudget_of_leverage
+
+-- Gtz/Wave/InadmissibleParallelJoint.lean -- the primitive tie decomposition and
+-- the selection-free kill on any family of live triples, branch B not needed
+#print axioms Gtz.liveTriple_not_isTie_of_gapDet_pos
+#print axioms Gtz.liveFamily_not_isTie_of_prod_nonpos
+#print axioms Gtz.isTie_liveTriple_gapDet_nonpos
+#print axioms Gtz.liveFamily_isTie_prod_ge
+#print axioms Gtz.liveTriple_posDef_iff_bracket_sq_gt
+#print axioms Gtz.isTie_live_bracket_sq_le
+#print axioms Gtz.isTie_dominator_bracket_sq_eq
+#print axioms Gtz.pairGapMinor_nonpos_of_leverage_eq_one
+#print axioms Gtz.not_admissiblePair_of_leverage_eq_one
+#print axioms Gtz.not_liveTriple_of_leverage_eq_one
+#print axioms Gtz.sixThree_isTie_heavy_or_boundary
+#print axioms Gtz.sixThree_isTie_trichotomy

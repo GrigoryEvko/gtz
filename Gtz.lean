@@ -6469,3 +6469,4 @@ import Gtz.Wave.KTwoBridgeDominates
 import Gtz.Wave.KTwoBridgePlaneReadings
 import Gtz.Wave.KTwoAxisWedgeBudget
 import Gtz.Wave.CornerRefusalDichotomy
+import Gtz.Wave.InadmissibleParallelJoint
