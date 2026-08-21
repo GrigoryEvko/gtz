@@ -2533,10 +2533,10 @@ import Gtz.Wave.UnitAtomFunnelClosure
 #print axioms Gtz.tieHouseholder_head
 #print axioms Gtz.tieHouseholder_column_pairing
 #print axioms Gtz.tieHouseholder_tail_pairing
-#print axioms Gtz.flatSimplexDesign_weight
+#print axioms Gtz.simplexTieDesign_weight
 #print axioms Gtz.weight_mul_leverage_simplexTieAtom
-#print axioms Gtz.flatSimplexDesign_leverage_identity
-#print axioms Gtz.flatSimplexDesign_isTie
+#print axioms Gtz.simplexTieDesign_leverage_identity
+#print axioms Gtz.simplexTieDesign_isTie
 #print axioms Gtz.exists_isTie_of_weights
 #print axioms Gtz.leverage_of_isTie
 #print axioms Gtz.corank_one_tie_stratum
@@ -4765,7 +4765,7 @@ import Gtz.Wave.UnitAtomFunnelClosure
 #print axioms Gtz.splitSevenClassTotalWeight_eq_quarter
 #print axioms Gtz.tieDefect_uniformQuarter
 #print axioms Gtz.tieReflector_uniformQuarter
-#print axioms Gtz.flatSimplexAtom_uniformQuarter_eq_tetraAtom
+#print axioms Gtz.simplexTieAtom_uniformQuarter_eq_tetraAtom
 #print axioms Gtz.splitSevenClassDesign_eq_splitSevenDesign
 #print axioms Gtz.bundledCycle_exists_dominatingSubset
 #print axioms Gtz.tetraAtom_abs_eq_one
@@ -7939,9 +7939,9 @@ import Gtz.Wave.UnitAtomFunnelClosure
 -- whose deficit is tau, and tau is free in (0,1] INDEPENDENTLY of the leverage -- a large cap
 -- does not make the residue close to a design.  The DEFLATION route is circular at (7,3): its
 -- heavy branch consumes Gtz.GtzWeighted 6 3, which is open.
-#print axioms Gtz.flatSimplexAtom_leverage_identity
+#print axioms Gtz.simplexTieAtom_leverage_identity
 #print axioms Gtz.one_lt_leverage_simplexTieAtom
-#print axioms Gtz.leverage_flatSimplexAtom_eq
+#print axioms Gtz.leverage_simplexTieAtom_eq
 #print axioms Gtz.spikeClassWeight
 #print axioms Gtz.spikeClassWeight_zero
 #print axioms Gtz.spikeClassWeight_apply
@@ -39004,10 +39004,10 @@ run_cmd do
 #print axioms Gtz.flatSimplexAtom_castSucc
 #print axioms Gtz.flatSimplexAtom_last
 #print axioms Gtz.flatSimplexScale_sq
-#print axioms Gtz.one_lt_simplexScale
+#print axioms Gtz.one_lt_flatSimplexScale
 #print axioms Gtz.flatSimplexShift_neg
 #print axioms Gtz.flatSimplexShift_ne_zero
-#print axioms Gtz.simplex_key
+#print axioms Gtz.flatSimplex_key
 #print axioms Gtz.flatSimplexAtom_gram
 #print axioms Gtz.flatSimplexDesign_atom
 #print axioms Gtz.leverageOf_flatSimplexAtom
