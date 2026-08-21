@@ -151,6 +151,47 @@ the identity and Gtz.dominating_of_light_atom the weak direction; the strict
 direction at l_a = 1 is NOT the strictly-light lemma and needs its own step.
 
 --------------------------------------------------------------------------------
+P71-5b  THE FUNNEL BRANCH OF (6,3) IS NOW CLOSED.  Module
+        Gtz/Wave/UnitAtomFunnelClosure.lean, commit b66e604, 338 lines.
+--------------------------------------------------------------------------------
+The seam of P71-5 is filled.  Gtz.isTie_deflatedDesign says light-atom deflation
+preserves ties AT EVERY SIZE AND RANK: weighted GTZ one size down supplies the
+deflated design's own weak dominator, and the strict lift carries every strict
+dominator of the deflated design back to the primal, which a tie refuses.  The
+deflation congruence is now stated PER SELECTION
+(Gtz.deflatedGap_congruence), so both Loewner verdicts cross in both
+directions at a fixed whitener -- the tree only ever had the existential form.
+
+    Gtz.hasParallelPair_of_isTie_sixThree_of_unitAtom
+      (D : WeightedDesign 6 3) (htie : IsTie D) (unitLabel : Fin 6)
+      (hunit : leverageOf (D.atom unitLabel) = 1) : HasParallelPair D
+
+Chain: deflate the unit atom -> a (5,3) TIE -> seven dominating triples -> each
+lifts through Gtz.deflatedGapBoundAt_image_of_dominates_deflatedDesign into the
+deflated gap bound -> the landed Gtz.dominates_and_fixes_of_deflatedGapBound
+reads that as domination AND fixing -> fixing is null sharing -> a parallel-free
+funnel refuses two null-sharing swaps at one dominator
+(Gtz.unitAtom_second_swap_absurd at the same member,
+Gtz.unitAtom_two_mirror_swaps_absurd at different members) -> swap-degree at
+most one -> Gtz.swapDegree_le_one_card_le_three caps the family at THREE.
+Seven against three, a margin of four.
+
+Three bricks the swap language needed and did not have, all landed here:
+  Gtz.exists_swap_normalForm  -- two triples meeting in a pair are one swap apart
+  Gtz.exists_triple_through   -- a triple through a named label is {p,x,y}
+  Gtz.tripleIndex_injective, Gtz.exists_tripleIndex_eq, Gtz.card_tripleIndex
+Before these, Gtz.swapDegree_le_one_card_le_three had ZERO proof-level consumers
+and could not be applied to any real family.
+
+CONSEQUENCE, landed:
+    Gtz.hingeHoldsAtSize_six_three_of_allHeavy
+    Gtz.gtzWeightedAll_three_of_allHeavy_hinge
+Weighted GTZ at rank three now rests on ONE statement: every ALL-HEAVY (6,3) tie
+has a parallel pair.  The unit-atom stratum is gone.  Note that the all-heavy
+branch is NOT a subproblem -- Gtz.gtzWeightedHeavy_six_three_iff_gtzWeighted_six_three
+makes it equivalent to the whole cell -- so this closes a stratum, not the cell.
+
+--------------------------------------------------------------------------------
 P71-6  DEAD ENDS, so nobody repeats them
 --------------------------------------------------------------------------------
 * The spectral route to the class structure -- F = P.P - delta delta^T, S =
