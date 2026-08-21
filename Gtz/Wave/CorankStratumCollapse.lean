@@ -521,4 +521,226 @@ theorem corner_axisProbe_total (D : WeightedDesign m 3) {C : Finset (Fin m)}
     dotProduct_subsetSum_mulVec_sq D C u, hunit] at hquad
   linarith [hquad]
 
+/-! ## Part 6 — the two splits are the same split
+
+`Gtz.pairGapMinor_eq_zero_of_one_nullReading_zero` says a vanishing null reading
+vanishes the OPPOSITE pair minor.  The converse also holds, so the campaign's split
+by null readings and the split by pair minors are the SAME split, and `K1` may be
+named in either vocabulary.
+
+The proof is two rows of the kernel relation.  Write `r_x = <g_x,w>` for the null
+readings, so `H r = 0` for the Gram gap `H`.  Rows `a` and `c` combine with
+coefficients `p_bc` and `p_ab`: the `r_a` coefficient is
+`(l_a-1) p_bc - p_ac p_ab`, which the pivot identity kills, the `r_b` coefficient
+cancels outright, and what is left is `((l_c-1) p_ab - p_ac p_bc) r_c = 0`.  The
+bracket is nonzero because the identity read at `c` gives its square as
+`q_ac * q_bc`, and in `K1` both of those are positive. -/
+
+/-- **THE PIVOT ROW OF A `K1` DOMINATOR.**  A vanishing pair minor at a dominating
+triple reads the third row of the gap off the first two.  This is the equation the
+converse consumes. -/
+theorem pivotRow_of_pairGapMinor_eq_zero (D : WeightedDesign m 3)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hdom : Dominates D ({x, y, z} : Finset (Fin m)))
+    (hheavy : 1 < leverageOf (D.atom x))
+    (hpair : pairGapMinor (D.atom x) (D.atom y) = 0) :
+    (leverageOf (D.atom x) - 1) * (D.atom y ⬝ᵥ D.atom z)
+      = (D.atom x ⬝ᵥ D.atom y) * (D.atom x ⬝ᵥ D.atom z) :=
+  (tripleGapDet_eq_zero_of_pairGapMinor_eq_zero D hxy hxz hyz hdom hheavy hpair).2
+
+/-- The triple determinant is the determinant of a symmetric Gram gap, so it is
+invariant under rotating its three arguments. -/
+theorem tripleGapDet_rotate_left (a b c : Fin 3 → ℝ) :
+    tripleGapDet c a b = tripleGapDet a b c := by
+  simp only [tripleGapDet, dotProduct_comm c a, dotProduct_comm c b]
+  ring
+
+/-- **THE `K1` BRACKET IS NONZERO.**  At a dominating triple whose determinant
+vanishes, the bracket `(l_z-1) p_xy - p_xz p_yz` squares to `q_xz * q_yz`, so two
+positive minors make it nonzero.  This is the identity read at the pivot `z`. -/
+theorem k1Bracket_ne_zero (D : WeightedDesign m 3) {x y z : Fin m}
+    (hdet : tripleGapDet (D.atom x) (D.atom y) (D.atom z) = 0)
+    (hxz : 0 < pairGapMinor (D.atom x) (D.atom z))
+    (hyz : 0 < pairGapMinor (D.atom y) (D.atom z)) :
+    (leverageOf (D.atom z) - 1) * (D.atom x ⬝ᵥ D.atom y)
+      - (D.atom x ⬝ᵥ D.atom z) * (D.atom y ⬝ᵥ D.atom z) ≠ 0 := by
+  intro hzero
+  have hkey := leverageSub_mul_tripleGapDet_add_sq (D.atom z) (D.atom x) (D.atom y)
+  rw [tripleGapDet_rotate_left, hdet, mul_zero, zero_add,
+    pairGapMinor_comm (D.atom z) (D.atom x), pairGapMinor_comm (D.atom z) (D.atom y),
+    dotProduct_comm (D.atom z) (D.atom x), dotProduct_comm (D.atom z) (D.atom y),
+    hzero] at hkey
+  have hprod : 0 < pairGapMinor (D.atom x) (D.atom z) * pairGapMinor (D.atom y) (D.atom z) :=
+    mul_pos hxz hyz
+  rw [← hkey] at hprod
+  norm_num at hprod
+
+/-- **THE CONVERSE: A VANISHING PAIR MINOR VANISHES THE OPPOSITE NULL READING.**
+So at a `K1` dominator — all-heavy, corank one, exactly one vanishing inside pair
+minor — the split by pair minors and the split by null readings COINCIDE.  Together
+with `Gtz.pairGapMinor_eq_zero_of_one_nullReading_zero` this settles the dictionary
+in both directions, and `K1` may be named in either vocabulary. -/
+theorem nullReading_eq_zero_of_pairGapMinor_eq_zero (D : WeightedDesign m 3)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hdom : Dominates D ({x, y, z} : Finset (Fin m)))
+    (hheavy : 1 < leverageOf (D.atom x))
+    (hpair : pairGapMinor (D.atom x) (D.atom y) = 0)
+    (hXZ : 0 < pairGapMinor (D.atom x) (D.atom z))
+    (hYZ : 0 < pairGapMinor (D.atom y) (D.atom z))
+    {nullDir : Fin 3 → ℝ}
+    (hnull : nullDir ⬝ᵥ ((subsetSum D ({x, y, z} : Finset (Fin m)) - 1) *ᵥ nullDir) = 0) :
+    D.atom z ⬝ᵥ nullDir = 0 := by
+  have hres := dominator_resolves_nullDir D hdom hnull
+  rw [sum_over_triple (fun c => (D.atom c ⬝ᵥ nullDir) • D.atom c) hxy hxz hyz] at hres
+  -- the rows of the kernel relation at `x` and at `z`
+  have hrowX : (D.atom x ⬝ᵥ nullDir) * (leverageOf (D.atom x) - 1)
+      + (D.atom y ⬝ᵥ nullDir) * (D.atom x ⬝ᵥ D.atom y)
+      + (D.atom z ⬝ᵥ nullDir) * (D.atom x ⬝ᵥ D.atom z) = 0 := by
+    have h := congrArg (fun v => v ⬝ᵥ D.atom x) hres
+    simp only [add_dotProduct, smul_dotProduct, smul_eq_mul] at h
+    rw [← leverageOf_eq_dotProduct] at h
+    have hyx : D.atom y ⬝ᵥ D.atom x = D.atom x ⬝ᵥ D.atom y := dotProduct_comm _ _
+    have hzx : D.atom z ⬝ᵥ D.atom x = D.atom x ⬝ᵥ D.atom z := dotProduct_comm _ _
+    rw [hyx, hzx, dotProduct_comm nullDir (D.atom x)] at h
+    linarith
+  have hrowZ : (D.atom x ⬝ᵥ nullDir) * (D.atom x ⬝ᵥ D.atom z)
+      + (D.atom y ⬝ᵥ nullDir) * (D.atom y ⬝ᵥ D.atom z)
+      + (D.atom z ⬝ᵥ nullDir) * (leverageOf (D.atom z) - 1) = 0 := by
+    have h := congrArg (fun v => v ⬝ᵥ D.atom z) hres
+    simp only [add_dotProduct, smul_dotProduct, smul_eq_mul] at h
+    rw [← leverageOf_eq_dotProduct] at h
+    rw [dotProduct_comm nullDir (D.atom z)] at h
+    linarith
+  have hpivot := pivotRow_of_pairGapMinor_eq_zero D hxy hxz hyz hdom hheavy hpair
+  have hdet := (tripleGapDet_eq_zero_of_pairGapMinor_eq_zero D hxy hxz hyz hdom hheavy hpair).1
+  have hbracket := k1Bracket_ne_zero D hdet hXZ hYZ
+  -- combine row `x` scaled by `p_yz` with row `z` scaled by `p_xy`
+  have hcombine : ((leverageOf (D.atom z) - 1) * (D.atom x ⬝ᵥ D.atom y)
+      - (D.atom x ⬝ᵥ D.atom z) * (D.atom y ⬝ᵥ D.atom z)) * (D.atom z ⬝ᵥ nullDir) = 0 := by
+    linear_combination (D.atom x ⬝ᵥ nullDir) * hpivot - (D.atom y ⬝ᵥ D.atom z) * hrowX
+      + (D.atom x ⬝ᵥ D.atom y) * hrowZ
+  exact (mul_eq_zero.mp hcombine).resolve_left hbracket
+
+/-! ## Part 7 — the corner's plane leverage, and why no inside atom joins a plane pair
+
+At a corner the plane part of an inside atom is SHORT.  Splitting
+`l_a = <g_a,u>^2 + |plane part|^2` and feeding the inside Gram law
+`(1+lam)(l_a - 1) = lam <g_a,u>^2` gives, with no square roots,
+
+  `lam * (l_a - <g_a,u>^2) = lam + 1 - l_a`,
+
+so the plane leverage is `1 - (l_a - 1)/lam`, strictly BELOW one exactly when the
+atom is strictly heavy.  A rank-two pair whose first atom has leverage below one can
+never dominate: its gap has negative determinant unless the partner is also short,
+and then the trace is negative.  So at an all-heavy corner NO plane-dominating pair
+contains an inside atom, and at `(6,3)` the rank-two GTZ theorem applied to the plane
+shadow must select one of the three OUTSIDE pairs. -/
+
+/-- **THE CORNER'S INSIDE PLANE LEVERAGE.**  Cleared of denominators. -/
+theorem corner_inside_planeLeverage (D : WeightedDesign m 3) (C : Finset (Fin m))
+    (hcard : C.card = 3) {lam : ℝ} (hlam : 0 ≤ lam) {u : Fin 3 → ℝ}
+    (hunit : u ⬝ᵥ u = 1) (hgap : subsetSum D C - 1 = lam • atomMatrix u)
+    {a : Fin m} (ha : a ∈ C) :
+    lam * (leverageOf (D.atom a) - (D.atom a ⬝ᵥ u) ^ 2)
+      = lam + 1 - leverageOf (D.atom a) := by
+  have hself := insideGram_self_of_rankOneGap D C hcard hlam hunit hgap ha
+  rw [← leverageOf_eq_dotProduct] at hself
+  linarith
+
+/-- **THE INSIDE PLANE LEVERAGE IS BELOW ONE.**  Strict heaviness and a genuine
+corner (`0 < lam`) put every inside plane part strictly inside the unit circle. -/
+theorem corner_inside_planeLeverage_lt_one (D : WeightedDesign m 3) (C : Finset (Fin m))
+    (hcard : C.card = 3) {lam : ℝ} (hlam : 0 < lam) {u : Fin 3 → ℝ}
+    (hunit : u ⬝ᵥ u = 1) (hgap : subsetSum D C - 1 = lam • atomMatrix u)
+    {a : Fin m} (ha : a ∈ C) (hheavy : 1 < leverageOf (D.atom a)) :
+    leverageOf (D.atom a) - (D.atom a ⬝ᵥ u) ^ 2 < 1 := by
+  have hlaw := corner_inside_planeLeverage D C hcard hlam.le hunit hgap ha
+  nlinarith [hlaw, hlam, hheavy]
+
+/-- **A SHORT ATOM JOINS NO DOMINATING PLANE PAIR.**  Purely two-dimensional: a
+`2 x 2` gap with a strictly negative first diagonal entry is positive semidefinite
+only if its determinant is nonpositive, and then its trace is strictly negative.  So
+the pair refuses, whatever its partner.
+
+Applied to a corner through `Gtz.corner_inside_planeLeverage_lt_one` this says: at an
+all-heavy corner NO plane-dominating pair contains an inside atom.  At `(6,3)` only
+three outside atoms remain, so rank-two GTZ on the plane shadow must select one of
+exactly THREE pairs. -/
+theorem not_planePair_dominates_of_short (shortLev partnerLev crossRead : ℝ)
+    (hshort : shortLev < 1) :
+    ¬ (0 ≤ (shortLev - 1) * (partnerLev - 1) - crossRead ^ 2
+        ∧ 0 ≤ (shortLev - 1) + (partnerLev - 1)) := by
+  rintro ⟨hdet, htrace⟩
+  have hshortNeg : shortLev - 1 < 0 := by linarith
+  have hpartner : partnerLev - 1 ≤ 0 := by nlinarith [sq_nonneg crossRead, hdet, hshortNeg]
+  linarith
+
+/-! ## Part 8 — the corner's two moment laws, and why no certificate can be strict
+
+Two exact readings pin the corner against the weights.  The first is the trace and
+needs nothing: the unweighted leverage excess of the inside triple IS the corner
+scale.  The second is Parseval read at the axis, and it caps the WEIGHTED excess.
+
+[MEASURED.  Minimising `max_{T != C} lambda_min(S_T - 1)` over the exact corner chart
+— the corner triple itself always contributes exactly zero, so a corner tie exists
+precisely when this reaches zero — gives `2.6e-2`, `9.7e-3`, `3.9e-3`, `1.0e-3` at
+weight floors `5e-2`, `1e-2`, `2e-3`, `5e-4`.  The margin is PROPORTIONAL TO THE
+SMALLEST WEIGHT.  So the corner stratum is empty at every strictly positive weight
+vector, but its infimum over the open simplex is zero, and no certificate with an
+absolute constant can exist.  Any proof must consume weight positivity.  At the
+extremal point the plane-dominating pair is a pair of OUTSIDE atoms, exactly as Part 7
+requires, with inside plane leverages `0.76, 0.54, 0.70`.] -/
+
+/-- **THE CORNER TRACE LAW.**  The unweighted leverage excess of the inside triple is
+exactly the corner scale.  This is the trace of `S_C - 1 = lam u u^T`, nothing more. -/
+theorem sum_inside_leverage_sub_one_eq_lam (D : WeightedDesign m 3) (C : Finset (Fin m))
+    (hcard : C.card = 3) {lam : ℝ} {u : Fin 3 → ℝ} (hunit : u ⬝ᵥ u = 1)
+    (hgap : subsetSum D C - 1 = lam • atomMatrix u) :
+    ∑ a ∈ C, (leverageOf (D.atom a) - 1) = lam := by
+  have htrace : Matrix.trace (subsetSum D C - 1) = lam := by
+    rw [hgap, Matrix.trace_smul, atomMatrix, Matrix.trace_vecMulVec, hunit, smul_eq_mul, mul_one]
+  have hleft : Matrix.trace (subsetSum D C - 1)
+      = (∑ a ∈ C, leverageOf (D.atom a)) - 3 := by
+    rw [Matrix.trace_sub, subsetSum, Matrix.trace_sum]
+    have hone : Matrix.trace (1 : Matrix (Fin 3) (Fin 3) ℝ) = 3 := by simp
+    have hatom : ∀ a : Fin m, Matrix.trace (atomMatrix (D.atom a)) = leverageOf (D.atom a) := by
+      intro a
+      rw [atomMatrix, Matrix.trace_vecMulVec, leverageOf_eq_dotProduct]
+    rw [Finset.sum_congr rfl fun a _ => hatom a, hone]
+  have hsplit : ∑ a ∈ C, (leverageOf (D.atom a) - 1)
+      = (∑ a ∈ C, leverageOf (D.atom a)) - 3 := by
+    rw [Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul, mul_one, hcard]
+    norm_num
+  rw [hsplit, ← hleft, htrace]
+
+/-- **THE CORNER AXIS CAP.**  Parseval read at the axis caps the WEIGHTED leverage
+excess of the inside triple by `lam / (1 + lam)`, which is below one however large the
+corner scale.  With the trace law this is the whole moment content of a corner: the
+unweighted excess is `lam`, the weighted excess is at most `lam/(1+lam)`. -/
+theorem sum_inside_weight_mul_leverage_sub_one_le (D : WeightedDesign m 3)
+    (C : Finset (Fin m)) (hcard : C.card = 3) {lam : ℝ} (hlam : 0 < lam) {u : Fin 3 → ℝ}
+    (hunit : u ⬝ᵥ u = 1) (hgap : subsetSum D C - 1 = lam • atomMatrix u) :
+    ∑ a ∈ C, D.weight a * (leverageOf (D.atom a) - 1) ≤ lam / (1 + lam) := by
+  have hpos : (0 : ℝ) < 1 + lam := by linarith
+  have hparseval : ∑ c, D.weight c * ((D.atom c ⬝ᵥ u) * (D.atom c ⬝ᵥ u)) = 1 := by
+    rw [sum_weighted_atomPairing D u u]; exact hunit
+  have hterm : ∀ a ∈ C, D.weight a * (leverageOf (D.atom a) - 1)
+      = (lam / (1 + lam)) * (D.weight a * ((D.atom a ⬝ᵥ u) * (D.atom a ⬝ᵥ u))) := by
+    intro a ha
+    have hself := insideGram_self_of_rankOneGap D C hcard hlam.le hunit hgap ha
+    rw [← leverageOf_eq_dotProduct] at hself
+    rw [div_mul_eq_mul_div, eq_div_iff (ne_of_gt hpos)]
+    linear_combination D.weight a * hself
+  have hinside : ∑ a ∈ C, D.weight a * (leverageOf (D.atom a) - 1)
+      = (lam / (1 + lam)) * ∑ a ∈ C, D.weight a * ((D.atom a ⬝ᵥ u) * (D.atom a ⬝ᵥ u)) := by
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl hterm
+  have hsub : ∑ a ∈ C, D.weight a * ((D.atom a ⬝ᵥ u) * (D.atom a ⬝ᵥ u)) ≤ 1 := by
+    rw [← hparseval]
+    exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ C) fun c _ _ =>
+      mul_nonneg (D.weight_pos c).le (mul_self_nonneg _)
+  rw [hinside]
+  have hscale : (0 : ℝ) ≤ lam / (1 + lam) := by positivity
+  nlinarith [hsub, hscale]
+
 end Gtz
