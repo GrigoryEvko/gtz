@@ -1,0 +1,158 @@
+FORK 48 -- the corank-2 Z1 cells (cell H, cell B).  Self-contained notes.
+
+=======================================================================
+F48-0.  WHAT THE CELLS ACTUALLY ARE (read this first)
+=======================================================================
+Both cell Props live in Gtz/Wave/OneAxisZeroDowndateOdds.lean:
+  OneAxisZeroHeavyInsideResidual  (line 541)   = CELL H
+  OneAxisZeroBothLightResidual    (line 592)   = CELL B
+and OneAxisZeroPairCoverage  <->  (cell H) /\ (cell B)  (line 660).
+
+Common geometry: corner {x,y,z} with  S_{xyz} - 1 = lam * u u^T,  |u|=1,
+lam>0,  g_x . u = 0,  g_z . u /= 0.
+  CELL H  =  A_z NOT PosDef  (the four-set through z fails; A_y survives)
+  CELL B  =  A_y and A_z BOTH PosDef,  and additionally g_y . u /= 0
+where A_c := subsetSum D (insert c K) - 1,  K = complement of {x,y,z}.
+
+TWO CONDITIONAL REDUCTIONS ARE ALREADY LANDED -- they are NOT proofs:
+  HeavyInsideResidualBridge.lean:54  oneAxisZeroHeavyInsideResidual_of_geometry
+  HeavyInsideDeterminantForm.lean:112 oneAxisZeroHeavyInsideResidual_of_determinants
+Both take the hard content as a hypothesis.  Cell H reduces to the emptiness of
+  { cell H,  excess S >= 0,  three outside floors }         (excess is FREE)
+CellHChartFloors.lean already renders all four floors as gap-determinant signs:
+  y-floor        <->  tripleGapDet(g_d4,g_d5,g_d6) <= 0     (outside triple)
+  d-floor for d  <->  tripleGapDet(g_y, other two outside)  <= 0
+
+=======================================================================
+F48-1.  CORRECTION TO THE BRIEF: THE CELL-H KILL NEEDS  A_z NOT PosDef
+=======================================================================
+The brief said "the three outside floors kill cell H".  Measured, that is only
+true WITH the cell-H hypothesis.  Exact construction (Parseval residual 4e-15,
+1.55M feasible samples):
+   A_y > 0 alone            : all three outside floors hold at 1,005,671
+                              of 1,549,540 samples  (65 percent!)
+   A_y > 0 AND A_z not PD   : all three floors hold at 0 of 19,847
+So `A_z not PosDef' is load-bearing, not decoration.  Mechanism, proved by hand:
+   W := sum_{d in K} g_d g_d^T - 1  satisfies  W <= A_z, so A_z not PD => W not PD.
+   A_y = W + g_y g_y^T > 0 and W not PD  =>  W has EXACTLY ONE nonpositive
+   eigenvalue (a rank-one update fixes at most one), and
+        W not PD  <->  det W <= 0  <->  g_y^T A_y^{-1} g_y >= 1  (the y-floor).
+So cell H carries all FOUR floors, and the y-floor is free from A_z.
+
+ALSO: the pure four-set question "A > 0 with all four triples failing" has
+abundant solutions -- take a tight frame with sum g_c g_c^T = (1+eps) I, then
+A = eps*I > 0 and each triple det = eps^2 (eps - |g|^2) < 0.  So the corner is
+genuinely needed; no 4-set-only argument can work.
+
+=======================================================================
+F48-2.  NEW MATH LANDED (two modules, 22 theorems, all pins standard)
+=======================================================================
+commit e29a964  Gtz/Wave/CellHDowndateLaws.lean       (10 theorems)
+commit ec6bd31  Gtz/Wave/InsertionDowndateLedger.lean (12 theorems)
+
+(a) THE WEIGHTED DOWNDATE LAW -- general, hypothesis-free beyond Parseval:
+      sum_c t_c * det(A - g_c g_c^T)  =  det A - e2(A)      for EVERY 3x3 A.
+    Proof: rank-one determinant update, then Parseval collapses the weighted
+    adjugate readings to trace(adj A) = e2(A).  Two lines.
+(b) ITS MIRROR, the insertion ledger (the landed unconditional insertion
+    ledger, re-proved at arbitrary A):
+      sum_c t_c * det(A + g_c g_c^T)  =  det A + e2(A).
+    DUALITY:  sum+downdate = 2 det A ;  sum-downdate = 2 e2(A).
+    The determinant is the EVEN part of the ledger, e2 the ODD part.
+(c) THE FOUR-SET COINCIDENCE: for a 4-set, the UNWEIGHTED total over the four
+    members (landed sum_fourSet_gapDet_eq_det_sub_e2) and the WEIGHTED total
+    over the WHOLE design are the same number, det - e2.  Disjoint index sets.
+(d) THREE-OF-FOUR:  sum_{c != y} det(A - g_c g_c^T) = g_y . adj(A) g_y - e2(A).
+(e) THE CORNER CONTRACTION (any matrix A, no positivity):
+      g_y adj(A) g_y - e2(A) = lam * u adj(A) u - g_x adj(A) g_x - g_z adj(A) g_z.
+(f) PER-VERTEX LAW (refines the landed pair-minor budget):
+      sum_c t_c * pairGapMinor(g_a, g_c)  =  l_a - 2.
+    Weight by t_a and sum: 3 - 2 = 1, the budget.  ADMISSIBILITY IS A FUNCTION
+    OF LEVERAGE.  Self term is exactly pairGapMinor(a,a) = 1 - 2 l_a, so
+      l_a - 2 + t_a (2 l_a - 1) > 0  =>  some c != a has q_ac > 0.
+    MEASURED: fired 168,198 times over m=4..7, ZERO failures.
+(g) PER-PAIR LAW:
+      sum_c t_c * det(S_{ab} - 1 + g_c g_c^T)  =  2 - l_a - l_b.
+    The weighted triple-determinant mass through a pair depends on NOTHING but
+    the two leverages -- not the angle, not the other atoms.
+    Producer: subtract the two doubled-atom terms exactly.
+All four identities verified numerically at rel err <= 6.2e-09 over 6000 random
+designs, sizes 3..9 (scratchpad/cells/ledger.jl, law2.jl).
+
+=======================================================================
+F48-3.  THE PAIR CONSTRAINT AT A NON-DOMINATING DESIGN  (derived, exact)
+=======================================================================
+det(S_{ab} - 1 + g_a g_a^T) = -(2 q_ab + x_b),  x_c := l_c - 1  (rank-2 formula),
+so the per-pair law plus "every triple through {a,b} fails" gives, at every
+ADMISSIBLE HEAVY pair,
+      2 * q_ab * (t_a + t_b)  <=  x_a (1 - t_b) + x_b (1 - t_a).
+MEASURED: this slack is NEGATIVE (i.e. the producer FIRES) at 118,487 of 120,000
+random m=6 designs, and descent drives it to -1.7e13.  Correct behaviour: almost
+every design dominates.  TIES are exactly where the constraint holds.
+=> The constraint alone CANNOT prove the theorem, because ties satisfy it.
+   Recorded so nobody re-derives it hoping otherwise.
+
+=======================================================================
+F48-4.  REFUTATIONS, WITH WITNESSES
+=======================================================================
+(i) THE SUMMED PRODUCER DOES NOT COVER CELL H.  With
+      Q := g_y adj(A_y) g_y - e2(A_y)  ( = sum of the three outside floors ),
+    Q <= 0 at 342 of 19,883 exact cell-H samples (1.7 percent) while
+    max_d T_d > 0 at every one.  The averaging loses the disjunction -- the
+    campaign's aggregation doctrine, reproduced independently here.
+(ii) THE BRIEF'S CELL-H MARGIN +8.377e-2 IS NOT REPRODUCIBLE.  Adversarial
+    descent on the true margin  1 - min_d g_d^T A_y^{-1} g_d  reaches
+    3.69e-07, with t_min -> 8.9e-09.  The escape is the WEIGHT COLLAPSE
+    (t -> 0), not lam: fixing lam over 1 .. 1e-3 leaves inf marg ~ 1e-5..3e-5
+    at every lam while t_min runs to ~1e-7 in every case.  SIXTH thin-tail
+    event.  Do not anchor a certificate on +8.377e-2.
+(iii) CELL B IS NOT KILLED BY THE FOUR-SET FLOORS.  Over 6,371,720 exact
+    cell-B samples, "some triple through y dominates in det" fires at 34.3313
+    percent, through z at 34.3151, EITHER at 56.2969.  43.7 percent survive.
+    Confirms the brief: cell B needs the MEMBER floors, not these.
+
+=======================================================================
+F48-5.  WHAT DOES COVER CELL H: THE SYMMETRIC-FUNCTION TRIO
+=======================================================================
+Three reals cannot all be <= 0 if e1 > 0 OR e2 < 0 OR e3 > 0.  Landed as
+Gtz.exists_pos_of_symmetric_trio, and specialised to the cell-H determinants
+as Gtz.cellH_exists_tripleGap_pos, whose FIRST disjunct is the corner
+contraction (e).  No selector names which triple fires.
+MEASURED on 82,517 exact cell-H inhabitants:
+      e1>0  98.4234%    e2<0  79.1704%    e3>0  72.5693%
+      DISJUNCTION 100.0000%,  zero misses.
+ADVERSARIAL DESCENT (not sampling) on the scale-free
+      max( e1/s, -e2/s^2, e3/s^3 ),  s = max|T_d| :
+      inf = +0.0011157884 > 0,  at lam=2079, t_min=1.3e-4.
+So the trio SURVIVES descent, but its margin is small and NOT obviously bounded
+away from zero.  That is the honest state of cell H.
+
+=======================================================================
+F48-6.  OPEN, AND WHAT I WOULD DO NEXT
+=======================================================================
+* Cell H: the residual is now ONE polynomial system --
+    { corner, A_y > 0, A_z not PD, e1 <= 0, e2 >= 0, e3 <= 0 } = empty.
+  Handelman needs a POLYTOPE chart for cell H; I did not find one (the corner
+  equation is quadratic in the atoms and the parametrisation I used is
+  trigonometric).  Finding a linear chart for the corner is the gating step.
+* Do NOT expect the product form to give a single closing polynomial: the
+  coordinator relayed that its probe window is data-dependent by three orders
+  of magnitude.  Use it as a producer only.
+* Cell B: untouched by my instruments.  Its killer is the member floors on the
+  7 percent that survives the contraction tax; BothLightChartReduction already
+  renders those as seven gap-determinant signs.  The per-pair law (g) applies
+  to every one of those and is the natural next instrument.
+* The per-vertex producer (f) is the cheapest new tool for the Mantel argument:
+  it gives DEGREE information in the admissibility graph, which is exactly what
+  an extremal-graph bound consumes, and it is proved with zero hypotheses.
+
+Scripts (all StaticArrays, <=32 threads, peak RSS well under 1 GB):
+  scratchpad/cells/cellh.jl      cell-H sampler + floor census
+  scratchpad/cells/cellh2.jl     the Q identity and its 1.7% failure
+  scratchpad/cells/cellh3.jl     margin descent (refutes +8.377e-2)
+  scratchpad/cells/cellh4.jl     margin vs lam (isolates the t->0 escape)
+  scratchpad/cells/law2.jl       general law + trio coverage on cell H
+  scratchpad/cells/cellb.jl      cell-B census
+  scratchpad/cells/trio_desc.jl  adversarial descent on the trio
+  scratchpad/cells/ledger.jl     the four ledger identities + per-vertex producer
+  scratchpad/cells/paircon.jl    the pair constraint at m=4..7
