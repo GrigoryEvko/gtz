@@ -1034,3 +1034,98 @@ infeasible and the SOS blew up.
   bridge.jl   the two solved axis readings and the sharpness of the cage
   slack.jl    the full slack table at one tie-branch minimiser
   slack2.jl   the five-seed robustness of the binding set and the caps
+
+======================================================================
+ROUND 12 (FORK 42).  TWO MORE SIZE LAWS, AND WHY SUM-BASED PRODUCERS
+CANNOT REACH ONE HUNDRED PERCENT.
+Gtz/Wave/CornerSizeLaw.lean, Gtz/Wave/PairStarSizeLaw.lean.
+======================================================================
+
+51. THE SIZE LAW AT A CORNER (CornerSizeLaw, 8 pins standard)
+--------------------------------------------------------------
+sum_sixSet_gapDet_eq totals all twenty gap determinants with the size in the
+coefficients.  Its only tie consequence needs BRANCH B, and
+  **A CORANK-TWO CORNER IS NEVER IN BRANCH B** (cornerForm_not_branchB):
+its inside pair minors are exactly zero, so its inside pairs are inadmissible.
+Measured 0 of 6771.  So the size law arrives at the horn unusable, and this
+module repairs it by evaluating the corner's own share EXACTLY:
+  **sum over the three inside pairs at a fixed outside atom d of the two-inside
+    gap determinants = - lam * (l_d - <u,g_d>^2)**        (2.0e-13)
+(cornerForm_twoInside_gapDet_atom_total).  Stripping the whole share leaves
+  Sum(informative) + det(gap_Cc) = detG - 3 e2(G) + 3 trG - 1
+                                   + lam * sum_d (l_d - <u,g_d>^2)   (6.1e-13)
+(cornerForm_sixSet_liveTotal).  The correction is the corner's own price and it
+is NONNEGATIVE, so a corner tie absorbs strictly more than the branch-B reading
+demands (cornerForm_isTie_sixSet_bound).
+
+52. A SECOND SIZE LAW: THE STAR OF A PAIR (PairStarSizeLaw, 10 pins standard)
+------------------------------------------------------------------------------
+Fix a pair.  Exactly m-2 triples contain it.  Summing the triple ledger over
+them and extending every sum to the whole design (the degenerate slots vanish)
+gives a CLOSED form in leverages, pairings and wedges -- no matrix invariants:
+  sum_{c not in {a,b}} det(gap_abc)
+    = sum_i [a b g_i]^2 + (m-3)(l_a+l_b) + sum_i l_i - (m-4) w_ab
+      - (l_a+l_b) sum_i l_i + sum_i <a,g_i>^2 + sum_i <b,g_i>^2 - (m-2)
+**THE SIZE SITS IN THREE COEFFICIENTS: m-3, m-4, m-2.**  At five atoms 2,1,3;
+at six 3,2,4.  The law cannot be stated at both sizes without changing, which is
+the arm's own test for a size-consuming law.  BOTH SIZES ARE LANDED SIDE BY SIDE.
+VERIFIED at m = 4,5,6,7,8 to 1.7e-13 on random vectors with NO design condition
+(starsize.jl), and at all fifteen pairs of a corner to 2.1e-12 (pairstar.jl).
+
+53. THE PRODUCERS, AND THEIR MEASURED CEILING
+-----------------------------------------------
+A positive total names a positive gap determinant, with no tie hypothesis.  Three
+producers landed (four-set, pair-star, six-set).  COVERAGE at corners:
+  outside-pair star alone        95.4 %   (12013 / 12594)
+  four-sets {e} u Cc alone       85 %
+  six-set law alone              12 %
+  union of 31 (15 four-sets, 15 pair stars, six-set)   99.83 %
+  union of 43 (adding 6 five-sets and 6 atom stars)    99.88 %  (12 / 10161)
+AND AT 100 PERCENT, whenever a producer fires the triple it names is LIVE, so it
+always converts into an actual strict dominator.  But adversarial descent drives
+the best of all 43 to **-7.95**, so THE FAMILY DOES NOT CLOSE THE HORN.
+
+54. **WHY SUM-BASED PRODUCERS ARE STRUCTURALLY CAPPED -- THE ESCAPER DIAGNOSIS**
+---------------------------------------------------------------------------------
+Printing the escapers settles it.  At a typical escaper the COMPLEMENT dominates
+with gap determinant +10.97, +13.87, +11.64 -- a large, healthy dominator -- and
+yet every one of the 43 sums is nonpositive, because each sum also contains
+triples that are deeply refused.  At the descent minimum SEVEN live triples
+dominate, with determinants 2.6 to 5.2, and the best producer is still -7.95.
+**THE PRODUCERS DO NOT FAIL FOR LACK OF A DOMINATOR.  THEY FAIL BY AVERAGING ONE
+POSITIVE TERM AGAINST SEVERAL LARGE NEGATIVE ONES.**  This is the same fact the
+slack table of round 11 reported from the other side: only four of the ten live
+refusals ever bind, and the other six sit 30x to 50x further away, so any sum
+that includes them is dominated by dead weight.
+CONSEQUENCE, and it is a hard one: no unweighted sum over a symmetric family can
+reach one hundred percent.  A closing certificate must SELECT a small family --
+the four binding constraints -- and selection is exactly what the arm has no
+scalar rule for.  Weighting by the design's own weights does not rescue it: the
+Parseval-weighted total sum_T t_a t_b t_c det(gap_T) has a closed form (verified
+9.4e-15) built from the landed bracket and wedge budgets, and it too is negative
+at 91 percent of corners, descending to -1.68.
+
+55. A ROUTE CLOSED WITH A REASON: THE TRACE CRITERION IS VACUOUS
+-----------------------------------------------------------------
+In the outside chart the complement gap is congruent to 1 - Z with
+Z = Q'MQ + diag(t_out), M the weighted inside moment, so
+  **the complement dominates strictly iff lam_max(Z) < 1** ,
+and lam_max(Z) <= tr(Z) suggested the criterion sum_d t_d (l_d - 1) > 2.
+IT NEVER FIRES: 0 of 16878.  The reason is an identity -- Parseval's trace gives
+sum_c t_c l_c = 3 and sum_c t_c = 1, so **sum_c t_c (l_c - 1) = 2 EXACTLY**, and
+the outside part is 2 - sum_e t_e e_e <= 2 always.  Equivalently
+  tr(Z) = 1 + sum_e t_e e_e ,
+which is >= 1 identically and < 2 by the landed corner_axis_weight_cap.  So the
+trace bound can never deliver lam_max(Z) < 1.  DO NOT RETRY IT.
+
+56. SCRIPTS ADDED  (scratchpad/f42)
+------------------------------------
+  sizelaw.jl   the corner share and the stripped six-set law
+  sign.jl      the sign of the stripped law (negative at 88 percent)
+  fourset.jl   the four-set producer and its 85 percent
+  pairstar.jl  the pair-star law at all fifteen pairs, and its 95.4 percent
+  starsize.jl  the pair-star law at m = 4,5,6,7,8
+  union.jl     the 31-producer union
+  wide.jl      the 43-producer union and the escaper printout
+  weighted.jl  the Parseval-weighted total and its closed form
+  trace.jl     the vacuous trace criterion
