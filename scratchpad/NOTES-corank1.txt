@@ -1242,3 +1242,37 @@ F44-9. OPEN, for the successor
     scalars.
 (3) The mirror branch X>=1/2 is the swap image; the landed
     k2ChartDoubleQuotientCorner_of_xHalf should carry it once (2) lands.
+
+F44-10. **SELF-AUDIT CAUGHT MY OWN RESIDUAL OVERCLAIMED — AND THE FIX IS BETTER**
+-----------------------------------------------------------------------
+I first wrote K2ChartCrossCertPositivity as "alpha < 0 AND CERT > 0" on the
+plain domain. MEASURED (f44weak.jl, f44fix.jl, 12.6M points, X<=1/2):
+    CERT > 0   : 100.0000%   <-- fine
+    alpha < 0  :  99.80145%  <-- **THE PROP AS WRITTEN WAS FALSE**
+0.19748% of plain-domain points have alpha >= 0. They all have beta < 0, and
+"+beta>=0" restores alpha<0 at 100% (0 of 1982489). But beta>=0 is not
+derivable from the chart positives without circularity.
+**THE RIGHT FIX, and it needs NO measurement to justify:**
+    Omega := q*alpha + td*G*beta  =  td*G * Q1 evaluated at P = q/(td*G),
+i.e. the floor read at the scale where the corner slack Wom vanishes (om~=1).
+Q1 is AFFINE in P. If Q1 >= 0 at our P and Q1 < 0 at the LARGER boundary
+scale, the slope is negative. Affine mean value read backwards. Landed as
+k2ChartQuotientSlope_neg_of_womBoundary — pure logic, no polynomial positivity.
+MEASURED (f44om.jl, 12640325 plain-domain points, X<=1/2):
+    Omega < 0            : 100.0000%     <-- strictly better than alpha<0
+    Omega<0 AND CERT>0   : 100.0000%
+Omega|X=0 = (1-tz)*G*q*( td*te*Xi - tz*G - 2*td*te ),
+    Xi := ed(te+tz-1)+ee(td+tz-1)+td+te+2tz;  at tz=0 this is -td*te*Psi < 0.
+LESSON, general: when a sign condition is needed on a coefficient of an affine
+family, do not hypothesise the coefficient. Hypothesise the VALUE at a boundary
+point of the parameter that the domain already controls, and derive the
+coefficient. The value is a domain fact; the coefficient need not be.
+
+F44-11. INFIMUM IS ZERO, SO ANY PROOF MUST BE A PRODUCT ARGUMENT
+-----------------------------------------------------------------------
+Plain-domain min CERT = 5.7e-11 at (ed,ee,td,te,tz,X) = (0.036, 1.224, 3.05e-3,
+9.29e-4, 8.07e-4, 0.4998), where alpha = -1.8e-8 simultaneously. Both vanish
+together on a degenerate ray (td,te,tz -> 0, X -> 1/2). So CERT is positive with
+INFIMUM ZERO. A bounded-below certificate cannot exist; the proof must be a
+product of factors each of which is separately a chart positive, exactly as the
+ray formula CERT|ray = 2*T*td*te^2*(1+ee)*G*(1-td-te)*(1+ed+ee) already is.

@@ -66,10 +66,22 @@ polynomial that no monomial dictionary contains.  The infeasibility at every
 rung was a statement about the multiplier space, not about the target.
 
 With the identity in hand the corner needs only two sign conditions, both free
-of `P`: `α < 0` and `CERT > 0`.  [MEASURED on the low-angle half that the landed
-`Gtz.K2ChartTargetPositivityXHalf` reduces the whole corner to: `CERT > 0` at
-100.0000% of 272541 feasible corner points, and `CERT > 0` implies `α < 0` at
-every one of 461751 points where it holds.  `f44test.jl`.]
+of `P`.  The second is `CERT > 0`.  The first is NOT `α < 0`: that is not a
+domain fact, and hypothesising it would make the residual false.  It is the
+floor read at the scale where the corner slack vanishes,
+
+  `Ω := q·α + td·G·β < 0` ,
+
+from which `α < 0` FOLLOWS by the affine mean value read backwards
+(`Gtz.k2ChartQuotientSlope_neg_of_womBoundary`): the floor is nonnegative at the
+scale in hand and negative at the larger boundary scale, so its slope is
+negative.
+
+[MEASURED, and the distinction is the point.  On the plain domain with the
+angle at most one half, `Ω < 0` holds at 100.0000% of 12640325 points while
+`α < 0` holds at only 99.80145% of the same points.  `CERT > 0` holds at
+100.0000% of those 12640325 points, and at 100.0000% of 272541 points of the
+full corner region.  `f44om.jl`, `f44fix.jl`, `f44weak.jl`, `f44test.jl`.]
 
 ## 4. The tight ray, expanded rather than sampled
 
@@ -253,6 +265,49 @@ theorem k2ChartQuotientSlope_neg_of_xZero {ed ee td te tz : ℝ}
   have h2 : 0 < tz*(td*(1+ed) + te*(1+ee)) + 2*td*te := by nlinarith
   nlinarith [mul_pos (mul_pos h1 hG) h2]
 
+/-- The quotient floor read at the scale where the erased cross mass exhausts
+the second outside energy.  This is `td·G` times the floor evaluated at
+`P = q/(td·G)`, the scale at which the corner slack `Wom` vanishes, and it
+carries no erased scale. -/
+def k2ChartQuotientWomBoundary (ed ee td te tz X : ℝ) : ℝ :=
+  te*(1+ee) * k2ChartQuotientSlope ed ee td te tz X
+    + td*(td*(1+ed) + te*(1+ee)) * k2ChartQuotientBase ed ee td te tz
+
+/-- The boundary reading at zero plane angle, factored into the outside data
+and one bracket. -/
+theorem k2ChartQuotientWomBoundary_xZero (ed ee td te tz : ℝ) :
+    k2ChartQuotientWomBoundary ed ee td te tz 0
+      = (1-tz) * (td*(1+ed) + te*(1+ee)) * (te*(1+ee))
+        * ( td*te*(ed*(te + tz - 1) + ee*(td + tz - 1) + td + te + 2*tz)
+            - tz*(td*(1+ed) + te*(1+ee)) - 2*td*te ) := by
+  unfold k2ChartQuotientWomBoundary k2ChartQuotientSlope k2ChartQuotientBase
+  ring
+
+/-- **THE SLOPE SIGN IS FORCED BY THE BOUNDARY READING, WITH NO MEASUREMENT.**
+The floor is affine in the erased scale.  If it is nonnegative at the scale in
+hand, and negative at the larger scale where the second outside energy is
+exhausted, then its slope is negative.  This is the affine mean value read
+backwards, and it replaces a hypothesis on the slope by one on a quantity that
+carries no erased scale.
+
+[This distinction is not cosmetic.  The boundary reading is negative at
+100.0000% of 12640325 sampled points of the plain domain, while the slope
+itself is negative at only 99.80145% of the same points — so the slope sign is
+NOT a domain fact, and hypothesising it directly would have made the residual
+false.  `scratchpad/corank1/f26sym/f44om.jl`, `f44fix.jl`.] -/
+theorem k2ChartQuotientSlope_neg_of_womBoundary {ed ee P td te tz X : ℝ}
+    (hP : 0 < P)
+    (hc : 0 < td*(td*(1+ed) + te*(1+ee)))
+    (hWom : 0 < te*(1+ee) - P*td*(td*(1+ed) + te*(1+ee)))
+    (hQ1 : 0 ≤ k2ChartQuotient ed ee P td te tz X)
+    (hOm : k2ChartQuotientWomBoundary ed ee td te tz X < 0) :
+    k2ChartQuotientSlope ed ee td te tz X < 0 := by
+  rw [k2ChartQuotient_affine] at hQ1
+  unfold k2ChartQuotientWomBoundary at hOm
+  by_contra hcon
+  have hcon' : 0 ≤ k2ChartQuotientSlope ed ee td te tz X := not_lt.mp hcon
+  nlinarith [mul_nonneg (le_of_lt hc) hQ1, mul_nonneg hcon' (le_of_lt hWom)]
+
 /-! ## 5. The certificate: the erased scale is eliminated -/
 
 /-- The certificate remainder: the second outside energy against the negated
@@ -379,7 +434,7 @@ def K2ChartCrossCertPositivity : Prop :=
     td + te + ty + tz < 1 →
     0 < td*ed + te*ee →
     td*ed + te*ee = ty + tz →
-    k2ChartQuotientSlope ed ee td te tz X < 0
+    k2ChartQuotientWomBoundary ed ee td te tz X < 0
       ∧ 0 < k2ChartCrossCert ed ee td te ty tz X
 
 /-- **THE LOW-ANGLE CORNER FOLLOWS FROM THE SCALE-FREE RESIDUAL.**  Everything
@@ -392,13 +447,17 @@ theorem k2ChartTargetPositivityXHalf_of_crossCert
       td*ed + te*ee = ty + tz →
       td + te + ty + tz < 1 →
       0 < X*tz + (1-X)*ty - ty*tz →
+      0 < te*(1+ee) - P*td*(td*(1+ed) + te*(1+ee)) →
       0 ≤ k2ChartQuotient ed ee P td te tz X →
       0 < k2ChartTarget ed ee P td te ty tz X := by
-  intro ed ee P td te ty tz X hty htz htd hte _hP hX hX2 hed hee hE hbudget hVn hQ1
+  intro ed ee P td te ty tz X hty htz htd hte hP hX hX2 hed hee hE hbudget hVn
+    hWom hQ1
   have hT : 0 < td*ed + te*ee := by rw [hE]; linarith
-  obtain ⟨hslope, hcert⟩ := h ed ee td te ty tz X hty htz htd hte hX hX2 hed hee
+  obtain ⟨hOm, hcert⟩ := h ed ee td te ty tz X hty htz htd hte hX hX2 hed hee
     hbudget hT hE
   have hG : 0 < td*(1+ed) + te*(1+ee) := by nlinarith
+  have hc : 0 < td*(td*(1+ed) + te*(1+ee)) := mul_pos htd hG
+  have hslope := k2ChartQuotientSlope_neg_of_womBoundary hP hc hWom hQ1 hOm
   have hty1 : ty < 1 := by linarith
   have htz1 : tz < 1 := by linarith
   have hp1 : 0 < ty + tz := by linarith
