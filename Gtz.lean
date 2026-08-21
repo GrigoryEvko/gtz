@@ -6825,3 +6825,4 @@ import Gtz.Wave.SharpDesignInvolution
 import Gtz.Wave.TwentyVolumeMarginals
 import Gtz.Wave.ChartGapSharpDuality
 import Gtz.Wave.CornerAxisPairAdjugateLaw
+import Gtz.Wave.ChartPairDualityExchange

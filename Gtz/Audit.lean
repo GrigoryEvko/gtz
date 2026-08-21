@@ -1477,6 +1477,7 @@ import Gtz.Wave.ChartQuadraticCore
 import Gtz.Wave.SharpDesignInvolution
 import Gtz.Wave.ChartGapSharpDuality
 import Gtz.Wave.CornerAxisPairAdjugateLaw
+import Gtz.Wave.ChartPairDualityExchange
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39684,3 +39685,22 @@ run_cmd do
 #print axioms Gtz.pairGapMinor_ratio_of_pivotRow
 #print axioms Gtz.pairGapMinor_pos_of_pairGapMinor_pos_of_pivotRow
 #print axioms Gtz.pairGapMinor_eq_zero_of_pairGapMinor_eq_zero_of_pivotRow
+
+-- Gtz/Wave/ChartPairDualityExchange.lean -- the sharp duality exchanges the two pair
+--   conditions of a chart gap.  The FIRST diagonal shift of `M` vanishes at a pair
+--   exactly when the SECOND diagonal shift of `Gtz.sharpChartGap` vanishes at that pair.
+--   Both sides are Gram defects of the same two atoms, the first in the Euclidean metric
+--   and the second in the metric of the total gap, and the landed
+--   `Gtz.totalGapDefect_eq_zero_iff_leverageDefect_eq_zero` identifies them.  The exchange
+--   holds at every size and rank; only the reading of the right side as coplanarity of
+--   four atoms is special to `(6,3)`, where the complement of a pair is a four-set.  This
+--   does NOT transport the hinge -- refer to `Gtz.hinge_not_preserved_by_duality`.
+#print axioms Gtz.hat_entry_eq
+#print axioms Gtz.reading_smul_pair
+#print axioms Gtz.totalGapHat_apply
+#print axioms Gtz.sharpChartGap_apply_of_ne
+#print axioms Gtz.one_sub_weight_sub_sharpChartGap_diagonal
+#print axioms Gtz.sharpChartPairDeterminant_eq
+#print axioms Gtz.chartParallelPair_iff_sharpCoPairDeterminant
+#print axioms Gtz.hasParallelPair_iff_exists_sharpCoPairDeterminant
+#print axioms Gtz.sixThree_sharp_pair_exchange
