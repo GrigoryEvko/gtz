@@ -1,0 +1,106 @@
+K2 AT (6,3) — THE FUNNEL ROUTE (fork: K2 -> design -> K1 lane, 2026-08-21)
+==========================================================================
+
+WHAT LANDED THIS ROUND (all pins standard, own audits, own gate-free per-module
+builds; both umbrellas wired insertions-only)
+
+  2397615  Gtz/Wave/KTwoSixThreeFunnel.lean
+    funnel_dominator_meets_orthogonal_pair
+    funnel_one_blind_pairMinor_zero
+    k2SixThree_parallel_or_pairMinor_zero
+  43d8b5e  Gtz/Wave/FunnelPairMinorHinge.lean   (12 theorems)
+    pairGapMinor_of_leverage_eq_one, pairMinor_row_of_unitAtom,
+    pairMinor_offRow_total_of_unitAtom, dominates_and_fixes_of_deflatedGapBound,
+    isTie_sixThree_unitAtom_funnel_bounded, funnel_reading_sq_eq_pairMinor_div,
+    funnel_parallel_of_two_pairMinors_zero, exists_outside_reading_sq_gt_one,
+    one_lt_leverage_of_reading_sq_gt_one,
+    pairGapMinor_lt_neg_one_of_reading_sq_gt_one, isTie_sixThree_funnel_structure
+  19855d2  Gtz/Wave/BlindMemberPlane.lean
+    nullProbe_in_plane_of_blind_member, funnel_blind_member_plane_and_pairMinor,
+    k2SixThree_parallel_or_boundary_plane
+
+K2-1. THE WEIGHT COUNT THAT KILLS THE AVOIDING CASE (kernel)
+------------------------------------------------------------
+At (6,3) with l_a = 1 and g_a orthogonal to g_y, g_z, a funnel dominator T
+(avoids a, fixes g_a) CANNOT avoid both y and z.  If it did, T would be the
+complement of {a,y,z}, and Parseval at g_a reads
+
+    sum_{c in T} t_c m_c = 1 - t_a = t_y + t_z + sum_{c in T} t_c ,   m_c=(g_c.g_a)^2
+
+while the funnel budget sum_{c in T} m_c = 1 plus t_c <= sum_T t_d caps the left
+side at sum_T t_c.  Two positive weights have nowhere to go.  SIZE-BOUND ON
+PURPOSE: it works because the complement of {a,y,z} at (6,3) is a triple.
+
+K2-2. THE UNIT ATOM'S ROW OF THE PAIR-MINOR BUDGET (kernel, new law)
+--------------------------------------------------------------------
+l_a = 1  =>  pairGapMinor(g_a, g_b) = -(g_a.g_b)^2 for every b, hence
+
+    sum_b t_a t_b pairGapMinor(g_a,g_b) = -t_a   (exact, every design, every size)
+
+because Parseval at g_a totals the squared readings at l_a = 1.  Against the
+landed pairMinor_budget (all rows total 1) the OTHER rows carry 1 + t_a.
+A unit atom is a pure debtor and its debt is exactly its weight.
+
+K2-3. SOME ATOM OUTSIDE THE FUNNEL DOMINATOR READS ABOVE ONE (kernel)
+----------------------------------------------------------------------
+The cap in K2-1 is STRICT (no single weight of a triple exhausts the triple's
+weight sum, and some reading is positive), so the two atoms outside T carry
+strictly more than their own weight, and one of them has (g_u.g_a)^2 > 1.
+Consequences, both landed: l_u > 1 by Cauchy-Schwarz against the unit atom, and
+pairGapMinor(g_a,g_u) < -1.  The landed predecessor of this needed the two-zero
+stratum; this one needs only the funnel.
+
+K2-4. HAND DERIVATION, NOT YET FORMALIZED — THE TWO-PLANE COLLAPSE
+------------------------------------------------------------------
+Configuration: (6,3) tie, no parallel pair, l_a = 1, g_a orthogonal to g_y,g_z,
+funnel T = {y,d,d'} (by K2-1 exactly one of y,z is inside; take y).  Then
+
+  (i)  m_y = 0, so m_d + m_{d'} = 1 and pairGapMinor(g_d,g_{d'}) = 0   [landed]
+  (ii) g_a = m'_d g_d + m'_{d'} g_{d'}  with m'_c = g_c.g_a            [landed]
+  (iii) by K2-3 the outside reader is e (NOT z, since m_z = 0), so m'_e =/= 0.
+
+  Parseval as an operator at g_a (parseval_reproduces):
+      t_a g_a + t_d m'_d g_d + t_{d'} m'_{d'} g_{d'} + t_e m'_e g_e = g_a
+  substitute (ii) and collect:
+
+      m'_d (t_a + t_d - 1) g_d + m'_{d'} (t_a + t_{d'} - 1) g_{d'}
+        + t_e m'_e g_e = 0 .
+
+  The last coefficient is nonzero, so {g_d, g_{d'}, g_e} IS LINEARLY DEPENDENT:
+      tripleBracket(g_d, g_{d'}, g_e) = 0 .
+  Hence FOUR atoms a, d, d', e lie in one plane P, and the whole component of
+  Parseval orthogonal to P is carried by y and z alone:
+      t_y (g_y.n)^2 + t_z (g_z.n)^2 = 1  for the unit normal n of P,
+  with g_y, g_z in span(e2, n) because both are orthogonal to g_a in P.
+  THE K2 (6,3) STRATUM COLLAPSES TO A TWO-PLANE CONFIGURATION.
+
+  NOT YET A CONTRADICTION.  What is missing is a refusal argument against the
+  two-plane configuration.  Handles available: EndpointSpike.
+  tripleBracket_eq_zero_of_dependence turns the relation into the bracket
+  statement in one call; the landed exists_basisTriple_avoiding_of_isTie_sixThree
+  says every label of a (6,3) tie has a NON-degenerate triple avoiding it, which
+  the two-plane configuration must still satisfy; and the campaign's measurement
+  says K2 is empty at (6,3) with minimum obstruction 1.22e-2 over the ten
+  avoiding triples.  Formalizing K2-4 needs the six labels enumerated, which is
+  bookkeeping, not mathematics.
+
+K2-5. WHAT THE FIXTURES SAY (guard against the graveyard law)
+--------------------------------------------------------------
+The (5,3) diamond tie has leverages (2, 13/4, 13/4, 13/4, 13/4) — NO unit atom,
+so it does not inhabit the funnel branch and contradicts nothing above.  Its
+eight weak dominators have PAIRWISE DISTINCT null directions (checked: the eight
+unit null vectors are all different up to sign), which is exactly why the landed
+mirror never fires there and why the diamond is a tie with no parallel pair.  A
+funnel is the opposite regime: every weak dominator of the erased design fixes
+the same unit atom, so all of them share one null.
+
+RESIDUALS OF THIS LANE, UNCHANGED
+----------------------------------
+  * k2FiveTwoZero_kill still carries hB11 and hdet (the plane gap positive
+    definite, written out in the produced probes).  Those are the stratum's own
+    corank condition; discharging them from corank-one-ness is the remaining
+    chart-to-design work.
+  * K1 untouched this round: solve the active-set critical system (five of
+    sixteen refusals active, six co-active at the Chebyshev optimum).  DO NOT
+    DESCEND — three forks each "improved" the constant by an order of magnitude
+    because the optimum is a Chebyshev point.
