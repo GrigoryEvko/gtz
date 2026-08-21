@@ -38296,3 +38296,8 @@ run_cmd do
 #print axioms Gtz.branchDetComplement_cycle
 #print axioms Gtz.branchDetOutside_cycle
 #print axioms Gtz.gateway_excess_le_one
+#print axioms Gtz.blind_gap_form_on_perp
+#print axioms Gtz.blind_plane_domination
+#print axioms Gtz.blind_plane_parseval
+#print axioms Gtz.blind_outside_plane_cap
+#print axioms Gtz.blind_reading_sq_ge_of_perp_plane
