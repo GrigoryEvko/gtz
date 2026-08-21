@@ -1182,4 +1182,118 @@ theorem corankOne_tie_classification (D : WeightedDesign (k + 1) k) (hrank : 2 �
   · intro hpack
     exact (isTie_iff_leverage_law D hrankOne).mpr hpack.1
 
+
+/-! ## 7. The hinge is NOT a duality invariant
+
+The sharp Naimark duality exchanges the cells `(m, k)` and `(m, m - k)` and
+preserves `Gtz.IsTie`.  It is therefore tempting to descend the hinge along it:
+below the Gale self-dual cell `m = 2 * k` the dual rank `m - k` is strictly
+smaller, and at rank two the tie stratum is completely classified.
+
+**That route cannot work, and the corank-one stratum is the witness.**  The cells
+`(k+1, k)` and `(k+1, 1)` are exchanged by the duality.  At `(k+1, 1)` EVERY
+design has a parallel pair, because a rank-one design has all its atoms on one
+line, so the hinge holds there for free.  At `(k+1, k)` the hinge is FALSE at
+every rank `k ≥ 2`, by the classification above.
+
+So `IsTie` transports and `HasParallelPair` does NOT.  What the duality actually
+carries is `parallel pair` to `m - 2 atoms in a hyperplane`, a different
+predicate, and at `(k+1, 1)` the hyperplane of `R^1` is the origin while a
+rank-one tie has no zero atom.  Any proof of the hinge that factors through the
+sharp duality has to survive this, and none can. -/
+
+/-- **A RANK-ONE DESIGN IS A PENCIL.**  All its atoms lie on one line, so any two
+distinct labels are a parallel pair. -/
+theorem hasParallelPair_of_rank_one (D : WeightedDesign m 1) (hsize : 2 ≤ m) :
+    HasParallelPair D := by
+  classical
+  set first : Fin m := ⟨0, by omega⟩ with hfirst
+  set second : Fin m := ⟨1, by omega⟩ with hsecond
+  have hzero : first ≠ second := by
+    intro hcontra
+    have hval := congrArg Fin.val hcontra
+    simp [hfirst, hsecond] at hval
+  by_cases hlive : D.atom first 0 = 0
+  · refine ⟨second, first, 0, Ne.symm hzero, ?_⟩
+    funext coordIndex
+    have hcoord : coordIndex = (0 : Fin 1) := Subsingleton.elim _ _
+    rw [hcoord, hlive]
+    simp
+  · refine ⟨first, second, D.atom second 0 / D.atom first 0, hzero, ?_⟩
+    funext coordIndex
+    have hcoord : coordIndex = (0 : Fin 1) := Subsingleton.elim _ _
+    rw [hcoord]
+    simp only [Pi.smul_apply, smul_eq_mul]
+    field_simp
+
+/-- **THE HINGE HOLDS AT RANK ONE, FOR FREE.** -/
+theorem hingeHoldsAtSize_rank_one (size : ℕ) (hsize : 2 ≤ size) :
+    HingeHoldsAtSize size 1 :=
+  fun D _ => hasParallelPair_of_rank_one D hsize
+
+/-- The quadratic form of a one-by-one gap. -/
+theorem dotProduct_singleton_gap_mulVec (D : WeightedDesign m 1) (atomIndex : Fin m)
+    (probe : Fin 1 → ℝ) :
+    probe ⬝ᵥ ((subsetSum D {atomIndex} - 1) *ᵥ probe)
+      = (leverageOf (D.atom atomIndex) - 1) * probe 0 ^ 2 := by
+  have hgap := dotProduct_subsetSum_finset_mulVec D {atomIndex} probe
+  rw [Matrix.sub_mulVec, dotProduct_sub, Matrix.one_mulVec, hgap, Finset.sum_singleton]
+  have hread : D.atom atomIndex ⬝ᵥ probe = D.atom atomIndex 0 * probe 0 := by
+    simp [dotProduct, Fin.sum_univ_one]
+  have hself : probe ⬝ᵥ probe = probe 0 ^ 2 := by
+    simp [dotProduct, Fin.sum_univ_one, pow_two]
+  have hlev : leverageOf (D.atom atomIndex) = D.atom atomIndex 0 ^ 2 := by
+    simp [leverageOf, Fin.sum_univ_one]
+  rw [hread, hself, hlev]
+  ring
+
+/-- **THE RANK-ONE TIE IS TOTALLY TIGHT.**  Every atom of a rank-one tie has
+leverage exactly one.  This is the mirror, across the sharp duality, of the
+leverage law of part 5: at `(k+1, 1)` the classification is one line of Parseval,
+and at `(k+1, k)` it is the whole of this file. -/
+theorem leverageOf_eq_one_of_isTie_rank_one (D : WeightedDesign m 1) (hsize : 2 ≤ m)
+    (htie : IsTie D) (atomIndex : Fin m) : leverageOf (D.atom atomIndex) = 1 := by
+  classical
+  -- no singleton dominates strictly, so every leverage is capped by one
+  have hcap : ∀ other : Fin m, leverageOf (D.atom other) ≤ 1 := by
+    intro other
+    by_contra hcontra
+    push_neg at hcontra
+    refine htie.2 {other} (Finset.card_singleton other) ?_
+    refine Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨gap_isHermitian D _, fun probe hprobe => ?_⟩
+    rw [star_trivial, dotProduct_singleton_gap_mulVec D other]
+    have hne : probe 0 ≠ 0 := by
+      intro hzero
+      exact hprobe (funext fun coordIndex => by
+        rw [Subsingleton.elim coordIndex (0 : Fin 1)]; simpa using hzero)
+    have hsq : 0 < probe 0 ^ 2 := by positivity
+    nlinarith [hcontra, hsq]
+  -- Parseval forces every cap to be attained
+  have htotal : ∑ other, D.weight other * leverageOf (D.atom other) = 1 := by
+    rw [sum_weighted_leverage D]
+    norm_num
+  by_contra hcontra
+  have hstrict : ∑ other, D.weight other * leverageOf (D.atom other)
+      < ∑ other, D.weight other * 1 := by
+    refine Finset.sum_lt_sum (fun other _ =>
+      mul_le_mul_of_nonneg_left (hcap other) (D.weight_pos other).le)
+      ⟨atomIndex, Finset.mem_univ _, ?_⟩
+    exact mul_lt_mul_of_pos_left (lt_of_le_of_ne (hcap atomIndex) hcontra)
+      (D.weight_pos atomIndex)
+  rw [htotal, ← Finset.sum_mul, D.weight_sum_one, one_mul] at hstrict
+  exact absurd hstrict (lt_irrefl 1)
+
+/-- **THE HINGE IS NOT PRESERVED BY THE SHARP DUALITY.**  The cells `(k+1, 1)` and
+`(k+1, k)` are exchanged by it and `Gtz.IsTie` transports across it, yet the hinge
+holds at the first and fails at the second, at every rank `k ≥ 2`.
+
+CONSEQUENCE FOR THE ROUTE.  No proof of `Gtz.HingeHoldsAtSize` can descend the
+rank along the sharp duality.  The obstruction is not the lower guard
+`size = 2 * rank`, which is where the dual RANK stops descending — it is one level
+up, at the predicate: `Gtz.HasParallelPair` is not a dual invariant, and its dual
+is the existence of `size - 2` atoms in a hyperplane. -/
+theorem hinge_not_preserved_by_duality {rank : ℕ} (hrank : 2 ≤ rank) :
+    HingeHoldsAtSize (rank + 1) 1 ∧ ¬ HingeHoldsAtSize (rank + 1) rank :=
+  ⟨hingeHoldsAtSize_rank_one (rank + 1) (by omega), not_hingeHoldsAtSize_succ_rank' hrank⟩
+
 end Gtz
