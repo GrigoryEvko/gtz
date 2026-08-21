@@ -214,3 +214,111 @@ WHAT I DID NOT DO
     the quadratic equation, tr M = k - 1, diag M > 0, diag M^{-1} < 0, the ten
     complementary block determinants, and the layer totals of
     Gtz.sum_det_subsetSum_sub_one_layer.
+
+
+================================================================================
+NUMERICS LANE RESULTS (Julia, 32 threads). Sources in scratchpad/mchart/.
+================================================================================
+
+THE GATE PASSED. The (5,3) diamond reproduces at Parseval 1.11e-15, an exact tie
+at +6.22e-15, shares (0.4, 0.65, 0.65, 0.65, 0.65), max cos^2 0.28994, eight
+dominating triples every one of corank one, leverages (2, 13/4, 13/4, 13/4, 13/4),
+pair minor set {0.75, 2.0, 4.5}. Every number below therefore stands.
+
+THE ONE FINDING THAT CHANGES THE PROBLEM
+
+  The (6,3) hinge margin is NOT uniformly bounded below.
+
+Under a hard collinearity bound the bias-free objective stalls at 6.8e-07 for
+eps = 0.30 down to 1.7e-06 for eps = 0.01 -- seven orders above the same code
+unconstrained at (6,3) (1.8e-13) and eight to nine orders above the (5,3) control
+(4.4e-16 at every eps). The brief predicted four to five orders. So the signal is
+STRONGER than expected.
+
+BUT the collinearity bound is INACTIVE at every eps. What stops the search is the
+WEIGHT FLOOR, and min t sits on it every time. The floor sweep at eps = 0.30:
+
+  floor 0.05  -> 5.12e-04        floor 0.01  -> 6.80e-07
+  floor 0.02  -> 1.15e-05        floor 0.005 -> 1.90e-07
+  floor 1e-9  -> 5.00e-09, and min t COLLAPSES TO ZERO
+
+The residual falls as roughly the FOURTH POWER of the floor. So:
+
+  1. No non-collinear (6,3) tie exists with weights bounded away from zero.
+  2. The infimum over the OPEN cell is zero and is NOT ATTAINED. It is approached
+     only as a weight collapses, where the design leaves the cell.
+  3. A proof of the hinge at (6,3) CANNOT rest on a uniform quantitative gap.
+     Weight positivity must enter NON-UNIFORMLY.
+
+That is the campaign's wall, seen from this chart: the universal obstruction is
+the pair mass t_c(1 - t_c), and it is exactly what my invertibility proof spends
+(Gtz.chartGapOfDesign_mulVec_eq_zero). The same quantity gates the duality, which
+has nothing to stand on at a vertex of the simplex.
+
+THE CENSUS SUPPORTS THE HINGE
+
+64 independent bias-free descents at (6,3), unconstrained. 39 reached a genuine
+tie. ALL 39 of 39 carry a parallel pair at cos^2 = 1.0000000000 to ten digits.
+ZERO have max cos^2 below 0.999. No descent produced a design with no dominator,
+so no counterexample to the (6,3) cell appeared either.
+
+Tight block counts across the 39: 9, 10, 11, 12, 13 with multiplicities
+1, 3, 1, 14, 20. EVERY ONE of the 478 tight blocks has corank exactly ONE.
+Corank two never appeared.
+
+THREE CORRECTIONS TO THE BRIEF I WAS GIVEN
+
+  * "Twelve of twenty triples tight" at a split diamond holds ONLY for j = 0, the
+    atom of leverage 2. For j = 1..4 the count is THIRTEEN. The count is
+    2*(dominators through j) + (dominators missing j). The split fraction is
+    irrelevant. The RESCALED split (unequal scale factors) BREAKS the tie and
+    produces 4 or 5 strict dominators -- the naive split is the right one.
+  * The involution residual is NOT 2.5e-13 on Gram matrices. It is 1.94e-07 at
+    (6,3), and that is conditioning, not error: g_c = row_c(V)/sqrt(t_c) amplifies
+    by 1/t. On the CHART it is 4.48e-12, and 6.44e-15 with all t_c > 0.05. Quote
+    the chart figure.
+  * The duality residual is 5.11e-14, not 2.2e-14, once the cell passes (8,4).
+
+WHAT THE NUMERICS CONFIRMED THAT I ALSO PROVED
+
+  * The block criterion, 36335 subset tests, ZERO mismatches, weak and strict.
+  * The quadratic equation, residual 1.22e-15, and its converse is EMPTY --
+    M^2 + MT + TM + T^2 and (M+T)^2 agree at 4.44e-16 because they are the same
+    expression. Confirms Gtz.chartQuadratic_iff_mul_self.
+  * The Woodbury inverse M^{-1} = W G^{-1} W^T - diag(1/t): maximum RELATIVE
+    residual 9.86e-10 over 2100 designs at seven cells, 1.60e-15 with t_c > 0.05.
+    No disagreement.
+  * The duality M_E = -N M^{-1} N at 5.11e-14, and domination of C against
+    domination of C^c in E: 0 mismatches in 35520 subset tests.
+  * Both diagonal readings, 2200 tests each, ZERO mismatches, and the duality
+    swaps them through (M_E)_cc = -t_c(1-t_c)(M^{-1})_cc.
+
+A STRONGER LAW THAN THE ONE I LANDED, AND IT IS (6,3) ONLY
+
+I landed det(M[C,C] + T_C) = det(1 - M[C^c,C^c] - T_{C^c}) at every cell. At
+m = 2k the FULL SPECTRA agree, not only the determinants:
+
+  spec( M[C,C] + diag(t_C) ) = spec( diag(1 - t_{C^c}) - M[C^c,C^c] )
+
+residual 4.00e-15 at (6,3), (8,4), (10,5), (4,2). It FAILS off m = 2k: the top-p
+spectral difference is 0.97 at (7,3) and 0.998 at (8,3). The reason is visible in
+my own proof: both sides are det(V_C)^2 through V_{C^c}, and V_{C^c} is square
+ONLY at m = 2k, so spec(V_{C^c} V_{C^c}^T) and spec(V_{C^c}^T V_{C^c}) coincide
+only there.
+
+WARNING, measured. This does NOT say C dominates exactly when C^c dominates in
+the SAME design. Those two disagree on 2992 of 8000 subsets.
+
+STEP 7, THE EXCHANGE, EMPIRICALLY
+
+Both dictionary conditions are single 2x2 determinants in M and t alone, which is
+what I landed. The duality exchanges them because with R = diag(sqrt(t/(1-t))),
+
+  range(P_E) = R * range(I - P)      range(I - P_E) = R^{-1} * range(P)
+
+and R is DIAGONAL, so it preserves support. Measured over 3000 pairs the two
+determinant ratios are strictly positive on all 3000, zero non-positive, so the
+zero sets coincide exactly. The ratio is NOT a pure weight factor -- it carries a
+Rayleigh quotient, and five fitting guesses all failed by five orders. The sharp
+statement is the ZERO-SET equality, which is what
+Gtz.chartParallelPair_iff_sharpCoPairDeterminant says.
