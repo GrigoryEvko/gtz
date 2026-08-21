@@ -39282,3 +39282,11 @@ run_cmd do
 #print axioms Gtz.sum_card_tieClass_le
 #print axioms Gtz.four_mul_size_le_sum_card_dominatingPartners
 #print axioms Gtz.fourteen_le_sum_card_dominatingPartners_five
+#print axioms Gtz.classWeight_eq_inv
+#print axioms Gtz.exists_two_le_leverage_of_isTie
+#print axioms Gtz.exists_two_le_leverage_of_noStrictPair
+#print axioms Gtz.planeShadow_exists_two_le_leverage
+#print axioms Gtz.planeShadow_light_or_strictPair
+#print axioms Gtz.sixThree_planeShadow_light_or_strictPair_of_leverage_lt_two
+#print axioms Gtz.sixThree_planeShadow_trichotomy
+#print axioms Gtz.sum_classWeight_eq_one

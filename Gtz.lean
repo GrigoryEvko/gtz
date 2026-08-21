@@ -6753,12 +6753,25 @@ import Gtz.Wave.UnitAtomFunnelClosure
 --   THE PAIR COUNT, Gtz.four_mul_size_le_sum_card_dominatingPartners: at least 2 m - 3
 --     unordered pairs weakly dominate, which is SEVEN at five atoms
 --     (Gtz.fourteen_le_sum_card_dominatingPartners_five).
+--   THE THREE CLASS WEIGHTS SUM TO ONE and each is the reciprocal of 2 l_A - 1
+--     (Gtz.sum_classWeight_eq_one, Gtz.classWeight_eq_inv), so the three class leverages
+--     of a rank-two tie satisfy ONE equation, sum_A 1/(2 l_A - 1) = 1, whose symmetric
+--     solution is l = 2.  One class therefore weighs at most a third, and
+--     Gtz.exists_two_le_leverage_of_isTie forces an atom of leverage at least two.
 --   THE RANK-THREE PAYLOAD.  Every plane shadow of a rank-three design is a rank-two
 --     design (Gtz.inPlaneRestriction), so the classification reads on the whole sphere of
 --     normals: Gtz.planeShadow_three_classes gives three classes cut by the FRAME BRACKET,
 --     which the tree reads as the triple bracket against the normal, and
 --     Gtz.planeShadow_exists_frameBracket_eq_zero produces two atoms with parallel shadows
 --     at four or more atoms.
+--   AND THE (6,3) PACKAGING, Gtz.sixThree_planeShadow_trichotomy: at six atoms and ANY
+--     plane, the shadow is light somewhere, OR the plane carries a strictly dominating
+--     shadow pair -- a plane-strict pair -- OR the six atoms are rigid: exactly three
+--     frame-bracket classes, a pair with a vanishing frame bracket, and an atom of shadow
+--     leverage at least two.  The third alternative needs an atom of leverage two, so
+--     Gtz.sixThree_planeShadow_light_or_strictPair_of_leverage_lt_two removes it from
+--     every design whose leverages stay below two: there, EVERY plane is light somewhere
+--     or carries a plane-strict pair.
 --   NOTHING LIFTS TO RANK THREE, and the obstruction is measured.  At rank k the matrix
 --     with row sums t is P o P - (1/(k-1)) d d^T, and at the (5,3) diamond its diagonal
 --     already exceeds its row sum, so the Laplacian step dies.  Three ingredients are
