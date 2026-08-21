@@ -541,3 +541,73 @@ F58-14. ROUND SUMMARY (fork 58).  E1 IS NOT CLOSED and I did not state it.
   branch-separated Handelman certificate (infeasible at D=2,3).
   THE GAP: KEY of F58-5, one scalar inequality in six variables, measured true
   with the degeneracy and the core both located.
+
+============ ROUND 6 (fork 65) — KEY SURVIVES A FALSE ALARM; detM IN (b,t) ============
+
+F65-1. THE detM CONDITION, WRITTEN IN (b,t) — the form the hand proof needs.
+  Substituting x_i = b_i (1-t_i)/t_i into 4 prod x <= 1 + sum x and clearing the
+  positive denominator t1t2t3 gives, EXACTLY (sympy-verified both directions):
+     detM >= 0   <=>   4 b1b2b3 A1A2A3  <=  t1t2t3 + b1 t2t3 A1 + b2 t1t3 A2
+                                             + b3 t1t2 A3        (A_i = 1-t_i)
+  This is the (b,t) twin of F58-1's detM = t1t2t3 + sum a_i t_j t_k - 4a1a2a3,
+  and it is the form to use when KEY is attacked in (b,t) rather than in x.
+
+F65-2. A FALSE COUNTEREXAMPLE TO KEY, AND WHY IT WAS FALSE — the NINTH thin-tail
+  event of this campaign, and the first where the ARTIFACT WAS THE OPTIMISER
+  LEAVING THE DOMAIN rather than a sampler failing to reach it.
+  SLSQP adversarial descent (6000 restarts) on the FULL system reported
+     min KEY = -1.952063e-08  at  b = (0.49999996, 0.49999996, 0.50000004),
+                                  t = (0.399132631, 0.600867330, 1.027e-13)
+  with both determinant slacks reported at ~-1.5e-15, i.e. "numerically feasible".
+  RECHECKED AT 40 DECIMAL DIGITS (mpmath):
+     detM  = -3.13885634898e-10     <-- STRICTLY NEGATIVE, INFEASIBLE
+     detIM = -3.199999744e-15
+     KEY   = -1.94999438667e-08
+  The point is OUTSIDE the domain; the "violation" is the optimiser sitting a
+  hair beyond the boundary where KEY has already gone negative.  KEY IS NOT
+  REFUTED.  Strictly feasible high-precision sampling (5055 accepted points)
+  gives min KEY = +5.74976883032e-05.
+  RULE FOR THE CAMPAIGN: a constrained optimiser reporting a violation with
+  constraint slacks at machine epsilon has proved NOTHING -- recheck the witness
+  in extended precision BEFORE believing it.  Feasibility tolerance is not
+  feasibility.  (Distinct from the sampler-reachability artifact of fork 60 and
+  the chart-coverage artifact of fork 59: here the point was reachable and the
+  chart was fine, but the point was not in the set.)
+
+F65-3. THE DEGENERATE RAY, EXACTLY — a whole line of triple zeros.
+  At  b = (1/2,1/2,1/2),  t = (r, 1-r, 0)  for ANY r in (0,1):
+     detIM = 0,    detM = 0,    KEY = 0     -- all three vanish IDENTICALLY in r.
+  (sympy-exact, symbolic in r.)  This is the true structure the numerics were
+  hovering around, and it explains F58-4's "supremum 1 approached with t -> 0"
+  and fork 47's "exact double root at the centre" as the SAME object seen twice.
+  It also explains why every Handelman LP failed: a certificate would have to be
+  tight along an entire ray, not at an isolated point.
+
+F65-4. NO FIRST-ORDER DESCENT EXISTS ON THE RAY — the local obstruction, mapped.
+  Perturb b_i = 1/2 + p_i e, t = (r - u e, 1-r - v e, q e).  Then EXACTLY:
+     detIM_1 = 0                       (vanishes to first order in EVERY direction)
+     detIM_2 = 2 (p1p2 + p1p3 + p2p3)  (so the SECOND order gates feasibility)
+     detM_1  = [ -2r(1-r)(p1+p2) + (q-u-v) ] / 2
+     KEY_1   = [ -2(1-r)p1 - 2r p2 - 2p3 + (q-u-v) ] / 2
+  Constraints at first order: p_i + p_j <= 0 (pair), q >= 0 (t3 >= 0),
+  q - u - v <= 0 (sum t <= 1), detM_1 >= 0, detIM_2 >= 0.
+  EXHAUSTIVE SEARCH over the integer grid p in [-2,2]^3, q in [0,2],
+  u,v in [-2,2] at r = 1/2: NO direction satisfies detM_1 >= 0 and KEY_1 < 0.
+  So KEY holds to first order along the whole ray, and any counterexample would
+  have to be second-order -- consistent with detIM_2 being the active gate.
+  Two explicit directions, exact, both with KEY > 0:
+     p=(-1,-1,-1), q=u=v=0:  detIM = e^2(6-4e),  detM = e(2e^2-3e+1)/2,
+                             KEY = 2e(2e^2-3e+1)      -- all positive at small e
+     p=(-1,-1, 1), q=u=v=0:  detIM = e^2(4e-2) < 0    -- INFEASIBLE, correctly
+  CAUTION BANKED: my first LP for this direction had a SIGN ERROR in the
+  objective and reported a spurious descent at p=(-1,-1,-1); evaluating the
+  direction exactly is what caught it.  Evaluate, do not trust the LP sign.
+
+F65-5. DETERMINANT NECESSITY, RECONFIRMED FROM A NEW DIRECTION.
+  detM + pair ALONE do NOT imply KEY: adversarial descent finds
+     KEY = -3.038081e-02 at b = (0.36037961, 0.36037961, 0.63962039),
+                              t = (0.418861, 0.418861, ~0)
+  and that witness is EXCLUDED by detIM (= -0.0281 < 0), verified exactly.
+  Independent confirmation of F58-2/F58-3: BOTH determinants are needed.
+  (Random sampling under detM+pair gave min KEY = +3.06e-04 over 12877 points --
+   another thin tail; the descent found the negative region sampling missed.)
