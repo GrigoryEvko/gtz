@@ -416,7 +416,69 @@ theorem k2ChartCrossCert_ray_pos {ed ee td te : ℝ}
   have h2 : 0 < te^2 * (1+ee) := by positivity
   nlinarith [mul_pos (mul_pos h1 h2) (mul_pos (mul_pos hG hb) hsum)]
 
-/-! ## 7. The residual -/
+/-! ## 7. The remainder is affine in the angle and quadratic in the plane weight -/
+
+/-- **THE REMAINDER IS AFFINE IN THE PLANE ANGLE.**  The slope is affine in the
+angle, the base carries none, the weighted gap carries none, and the weighted
+total is affine, so the remainder interpolates linearly between its two
+endpoints on the low-angle half. -/
+theorem k2ChartCrossCert_xInterp (ed ee td te ty tz X : ℝ) :
+    k2ChartCrossCert ed ee td te ty tz X
+      = (1 - 2*X) * k2ChartCrossCert ed ee td te ty tz 0
+        + 2*X * k2ChartCrossCert ed ee td te ty tz (1/2) := by
+  unfold k2ChartCrossCert k2ChartQuotientSlope k2ChartQuotientBase
+  ring
+
+/-- **THE LOW-ANGLE HALF NEEDS ONLY ITS TWO ENDPOINTS.**  Affine on an interval,
+positive at both ends, positive throughout. -/
+theorem k2ChartCrossCert_pos_of_endpoints {ed ee td te ty tz X : ℝ}
+    (hX : 0 ≤ X) (hX2 : X ≤ 1/2)
+    (h0 : 0 < k2ChartCrossCert ed ee td te ty tz 0)
+    (h1 : 0 < k2ChartCrossCert ed ee td te ty tz (1/2)) :
+    0 < k2ChartCrossCert ed ee td te ty tz X := by
+  rw [k2ChartCrossCert_xInterp]
+  have hA : (0:ℝ) ≤ 1 - 2*X := by linarith
+  nlinarith [mul_nonneg hA h0.le, mul_nonneg hX h1.le]
+
+/-- The middle coefficient of the zero-angle remainder in the plane weight.
+It is the one quantity of the whole corner whose sign is not read off the
+chart. -/
+def k2ChartCrossCertMid (ed ee td te : ℝ) : ℝ :=
+  -ed^3*td^3 - 3*ed^2*ee*td^2*te - ed^2*td^3 - 3*ed^2*td^2*te + ed^2*td^2
+    - 3*ed*ee^2*td*te^2 - 4*ed*ee*td^2*te - 4*ed*ee*td*te^2 + 2*ed*ee*td*te
+    - 2*ed*td^2*te + ed*td^2 + ed*td*te^2 - ee^3*te^3 - 3*ee^2*td*te^2
+    - ee^2*te^3 + ee^2*te^2 + ee*td^2*te - 2*ee*td*te^2 + ee*te^2
+    + td^2*te + td*te^2
+
+/-- **THE ZERO-ANGLE REMAINDER, IN FULL.**  On the excess surface the remainder
+at zero plane angle is the outside data times a QUADRATIC in the plane weight
+`tz`, whose constant term is the tight-ray value and whose leading term is a
+sum of two chart positives.  Only the middle coefficient is unsigned, so the
+zero-angle branch of the corner is a single discriminant question in the four
+outside scalars. -/
+theorem k2ChartCrossCert_xZero (ed ee td te tz : ℝ) :
+    k2ChartCrossCert ed ee td te (td*ed + te*ee - tz) tz 0
+      = te*(1+ee) * (1-tz)^2 * (td*(1+ed) + te*(1+ee))
+        * ( 2*td*te*(td*ed + te*ee)*(1 + ed + ee)*(1 - td - te)
+            + tz * k2ChartCrossCertMid ed ee td te
+            + tz^2 * ( (td*ed + te*ee)*(td*(1+ed) + te*(1+ee))
+                        + td*te*(2 + ed + ee) ) ) := by
+  unfold k2ChartCrossCert k2ChartQuotientSlope k2ChartQuotientBase
+    k2ChartCrossCertMid
+  ring
+
+/-- The leading coefficient of the zero-angle remainder is a sum of two chart
+positives. -/
+theorem k2ChartCrossCert_leadCoeff_pos {ed ee td te : ℝ}
+    (htd : 0 < td) (hte : 0 < te) (hed : -1 < ed) (hee : -1 < ee)
+    (hT : 0 < td*ed + te*ee) (hG : 0 < td*(1+ed) + te*(1+ee)) :
+    0 < (td*ed + te*ee)*(td*(1+ed) + te*(1+ee)) + td*te*(2 + ed + ee) := by
+  have h1 : 0 < (td*ed + te*ee)*(td*(1+ed) + te*(1+ee)) := mul_pos hT hG
+  have h2 : 0 < td*te*(2 + ed + ee) := by
+    apply mul_pos (mul_pos htd hte); linarith
+  linarith
+
+/-! ## 8. The residual -/
 
 /-- **THE TWO-ZERO CORNER, REDUCED TO TWO SCALE-FREE SIGNS.**  On the low-angle
 half the corner needs only that the quotient slope is negative and the

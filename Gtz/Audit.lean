@@ -1345,12 +1345,15 @@ import Gtz.Wave.KOneWedgeGram
 import Gtz.Wave.OppositeHornFailureDirection
 import Gtz.Wave.DiamondNeighborhoodBudget
 import Gtz.Wave.DiamondNeighborhoodFourSet
+import Gtz.Wave.TripleSumSizeLaw
 import Gtz.Wave.CoherentHornSumLaw
 import Gtz.Wave.OppositeHornRefusalBudget
 import Gtz.Wave.CornerAdjugateWeightCap
+import Gtz.Wave.BracketMassRefusal
 import Gtz.Wave.CoherentHornBlockCriterion
 import Gtz.Wave.CornerPairAdjugate
 import Gtz.Wave.CornerAxisCalculus
+import Gtz.Wave.CornerAxisBridges
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -36704,6 +36707,12 @@ run_cmd do
 #print axioms Gtz.k2Chart_excessSum_pos
 #print axioms Gtz.k2ChartCrossCert_ray_pos
 #print axioms Gtz.k2ChartTargetPositivityXHalf_of_crossCert
+#print axioms Gtz.k2ChartCrossCert_xInterp
+#print axioms Gtz.k2ChartCrossCert_pos_of_endpoints
+#print axioms Gtz.k2ChartCrossCert_xZero
+#print axioms Gtz.k2ChartCrossCert_leadCoeff_pos
+#print axioms Gtz.k2ChartQuotientWomBoundary_xZero
+
 
 -- Gtz/Wave/CorankOneGramMirror.lean -- the reading calculus, the inside
 -- leverage ladder with the two-zero detector, the null census, and the
@@ -37106,6 +37115,15 @@ run_cmd do
 #print axioms Gtz.not_admissiblePair_of_parallel_of_heavy
 #print axioms Gtz.not_liveTriple_of_parallel
 #print axioms Gtz.heavyAdmissible_omits_parallel_member
+
+-- Gtz/Wave/TripleSumSizeLaw.lean -- the triple-sum law at every size, whose
+-- coefficients are binomials in the size, and its branch-B tie consequence
+#print axioms Gtz.sum_fourSet_gapDet_eq_det_sub_secondInvariant
+#print axioms Gtz.sum_fiveSet_gapDet_eq
+#print axioms Gtz.sum_sixSet_gapDet_eq
+#print axioms Gtz.liveTriple_of_branchB
+#print axioms Gtz.isTie_branchB_sixSet_bound
+
 #print axioms Gtz.quadForm_sum_of_corner
 #print axioms Gtz.trace_adjugate_fin_three
 #print axioms Gtz.corner_sum_det_pairBase
@@ -37211,3 +37229,41 @@ run_cmd do
 #print axioms Gtz.leverage_le_one_of_orthogonal_of_not_posDef
 #print axioms Gtz.tripleGapDet_nonpos_iff_excess_le_cost
 #print axioms Gtz.leverageExcess_le_readingCost_of_not_posDef
+
+-- Gtz/Wave/BracketMassRefusal.lean -- the exact pair mass identity against the
+-- landed wedge ceiling: a dominator caps the whole bracket mass of its pair
+#print axioms Gtz.bracket_mass_le_dominator_bracket_sq
+#print axioms Gtz.bracket_mass_refusal
+#print axioms Gtz.not_posSemidef_of_bracket_mass_excess
+
+-- Gtz/Wave/CornerAxisElimination.lean -- the corner reading totals, the mixed
+-- pair minor total, and the elimination of the axis from both
+#print axioms Gtz.atomMatrix_quadForm
+#print axioms Gtz.trace_atomMatrix_eq_leverage
+#print axioms Gtz.corner_reading_sq_sum
+#print axioms Gtz.corner_bracketNormal_sq_sum
+#print axioms Gtz.corner_mixedPairMinor_sum
+#print axioms Gtz.corner_axis_reading_sq_eq
+#print axioms Gtz.corner_reading_sq_sum_axisFree
+#print axioms Gtz.corner_exists_tripleGapDet_pos_axisFree
+#print axioms Gtz.corner_det_eq_one_add_scale
+#print axioms Gtz.corner_inside_crossNormSq_le
+
+-- Gtz/Wave/CornerAxisBridges.lean -- what the axis calculus hands the other
+-- corner lanes: the inside atom's axis reading is DETERMINED by its own
+-- leverage, the outside atom's is solved by the mixed pair minor total, the two
+-- corner eliminations compose over an inside base whose pair minor vanishes,
+-- the tie-free wedge ceiling has slack exactly the third excess, and the
+-- admissibility gateway is a pigeonhole on a three-plus-three split.
+#print axioms Gtz.pairing_sq_of_pairGapMinor_zero
+#print axioms Gtz.cornerForm_insideAtom_axisMass
+#print axioms Gtz.cornerForm_insideAtom_axisReading_le
+#print axioms Gtz.cornerForm_insideAtom_leverage_le
+#print axioms Gtz.cornerForm_outsideAtom_axisMass
+#print axioms Gtz.cornerForm_pairAxisForm_insideBase
+#print axioms Gtz.cornerForm_pairAxisForm_eq_neg_axisBracket
+#print axioms Gtz.cornerForm_twoInside_gapDet_nonpos_general
+#print axioms Gtz.pairWedge_of_pairGapMinor_zero
+#print axioms Gtz.cornerForm_wedgeCeiling_slack
+#print axioms Gtz.three_of_six_share_a_side
+#print axioms Gtz.allSameSideInadmissible_no_posDef

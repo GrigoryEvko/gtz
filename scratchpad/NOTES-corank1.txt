@@ -1276,3 +1276,32 @@ together on a degenerate ray (td,te,tz -> 0, X -> 1/2). So CERT is positive with
 INFIMUM ZERO. A bounded-below certificate cannot exist; the proof must be a
 product of factors each of which is separately a chart positive, exactly as the
 ray formula CERT|ray = 2*T*td*te^2*(1+ee)*G*(1-td-te)*(1+ed+ee) already is.
+
+F44-12. **THE REMAINDER IS AFFINE IN X AND QUADRATIC IN tz**  (f44lin.py, f44phi.py, f44phi2.py)
+-----------------------------------------------------------------------
+alpha is affine in X, beta is X-FREE, A is X-free, B is affine in X.
+    => CERT IS AFFINE IN X.  Landed as k2ChartCrossCert_xInterp:
+       CERT(X) = (1-2X)*CERT(0) + 2X*CERT(1/2)
+So "for all X in [0,1/2]" reduces to TWO ENDPOINTS (k2ChartCrossCert_pos_of_endpoints).
+MEASURED (f44end.jl, 12637451 plain-domain points):
+    CERT(X=0)   > 0 : 100.0%   (min 3.40e-11)
+    CERT(X=1/2) > 0 : 100.0%   (min 1.70e-11)
+AT X=0, ON THE EXCESS SURFACE ty = T - tz, the remainder factors completely:
+    CERT|X=0 = q*(1-tz)^2*G*( p0 + p1*tz + p2*tz^2 )
+    p0 = 2*td*te*T*(1+ed+ee)*(1-td-te)          <-- THE TIGHT-RAY VALUE, POSITIVE
+    p2 = T*G + td*te*(2+ed+ee)                  <-- POSITIVE (sum of two positives)
+    p1 = 21 terms, unsigned; = -T^3 + (18 terms)
+Landed as k2ChartCrossCert_xZero and k2ChartCrossCert_leadCoeff_pos.
+**SO THE ZERO-ANGLE BRANCH OF THE WHOLE CORNER IS ONE DISCRIMINANT QUESTION IN
+FOUR SCALARS (ed,ee,td,te): 4*p0*p2 - p1^2 versus zero, when the vertex
+-p1/(2p2) lies in the domain range of tz.** DISC has 122 terms, no factorization
+found. Not yet decided — this is the sharpest form of the open item.
+
+F44-13. WHERE THE SUCCESSOR SHOULD START
+-----------------------------------------------------------------------
+(1) The zero-angle branch: decide 4*p0*p2 >= p1^2 on {td,te>0, ed,ee>-1, T>0,
+    td+te<1}, OR show the vertex -p1/(2p2) always lies outside (0, T). Four
+    variables, no tz, no X, no P — the smallest arena this corner has ever had.
+(2) The X=1/2 endpoint: same treatment. CERT(1/2) should factor similarly.
+(3) Both infima are 0 on a degenerate ray (td,te,tz -> 0), so the proof must be
+    a PRODUCT of chart positives, never a bounded-below estimate.
