@@ -681,3 +681,236 @@ refutation), f32/bench53.jl and f32/bench63.jl (the two mandatory benches:
 REALNESS. wedge_nonneg, and nothing else, in the whole arm. Every theorem in
 both of my modules is field-blind and conditional, so complextie_c1 cannot
 threaten them.
+
+F37-1. ROUND 10: THE COUPLING FLOOR — THE MISSING INGREDIENT, SUPPLIED
+=======================================================================
+Gtz/Wave/DiamondNeighborhoodBudget.lean, 18 theorems, 2 commits, all pins
+standard, zero warnings in the file, builds 9373 exit 0.
+
+F32-14 named the gap exactly: "a contradiction needs a LOWER BOUND on delta
+or on K". F32-15 explained why nothing held could supply it: every
+instrument of this arm is SECOND ORDER in the opening and homogeneous with
+the quantity it must beat. This round supplies a lower bound on K that does
+NOT come from a second-order estimate. It comes from Parseval.
+
+THE NULL-PROBE PARSEVAL SPLIT (nullProbe_parseval_split). At a weak
+dominator C with null probe w, the null condition gives sum_{c in C} B_c^2
+= |w|^2 while Parseval gives sum_all t_c (g_c.w)^2 = |w|^2. Subtracting:
+
+    sum_{d notin C} t_d A_d^2  =  sum_{c in C} (1 - t_c) B_c^2      EXACT
+
+Every size, no tie, no positivity. The inside atoms carry the probe; the
+OUTSIDE atoms must carry the coweighted remainder. Consequences:
+  nullProbe_outside_reading_floor  (1 - tcap)|w|^2 <= sum_d t_d A_d^2
+    - the complement is NEVER blind to a dominator's null direction;
+  nullProbe_exists_outside_reading_ge  some single outside atom already
+    reads (1 - tcap)|w|^2, since the outside weights total at most one;
+  nullProbe_exists_inside_reading_le   some inside atom reads at most
+    |w|^2/3, since the three inside readings total |w|^2;
+  nullProbe_swap_excess_floor   hence SOME SWAP HAS STRICTLY POSITIVE NULL
+    FORM:  a' = A_d^2 - B_c^2 >= (1 - tcap) - 1/3 .
+  isTie_swap_coupling_floor_quantitative   feeding that to the probe pinch,
+        ((1 - tcap) - 1/3) * mu  <=  |swapCoupling|^2 .
+THE LOWER BOUND ON K, QUANTITATIVE AND FIRST ORDER IN ORIGIN.
+
+STRUCTURAL READING. At every tie, every weak dominator admits a swap whose
+gap is STRICTLY POSITIVE at the original null probe, yet the tie still
+refuses that swap. So the refusal must happen TRANSVERSE to the probe. That
+is a real constraint on the geometry of a tie, and it is where the coupling
+lower bound comes from.
+
+MEASURED (f37/budget.jl, f37/excess.jl, EXACT rationals at the split
+diamond): the Parseval split holds exactly at all 12 contacts; the budget
+holds with zero violations over 36 swaps; the forced excess is 1.2667
+against an actual 1.875 at the four mirror contacts and 1.6667 against
+2.7273 at the four complement-family contacts.
+
+F37-2. A CORRECTION TO CASE B'S HYPOTHESIS (not to its theorem)
+================================================================
+F32-11 closed Case B "with the calibrated coercivity floor - e2 > 0 with
+e3 = 0 at ALL TWELVE contacts". That e2 > 0 is the coercivity of the
+CONTACT'S OWN gap. The swap pinch needs the coercivity of the SWAPPED gap
+transverse to the contact's probe, which is a DIFFERENT NUMBER, and it is
+not always positive.
+
+MEASURED (f37/coerc.jl, f37/vacuous.jl): of the 108 (c,d) swap instances at
+the fixture, the pinch is VACUOUS (mu' <= 0, as low as -0.375) at exactly
+16 - and the separation is PERFECT:
+    pinch vacuous: both-copy swaps 16, other swaps  0
+    pinch usable : both-copy swaps  0, other swaps 92
+The 16 are exactly the swaps that create a triple carrying BOTH spine
+copies. LANDED AS THE MECHANISM:
+  gap_mulVec_eq_neg_of_orthogonal      a direction orthogonal to every atom
+    of a triple is an eigenvector of its gap at -1;
+  coercivity_le_neg_one_of_degenerate  if that direction is transverse to
+    the probe, EVERY transverse coercivity is at most -1, so no positive mu
+    exists and the pinch says nothing;
+  parallel_triple_degenerate_direction a triple carrying both members of a
+    parallel pair always has one - its atoms span a plane.
+SO THE PINCH IS STRUCTURALLY BLIND TO EXACTLY THE TRIPLES THAT CARRY THE
+PAIR THE HINGE HUNTS. This is the SAME failure mode as the inside-wedge
+floor of F32-14 (its domain cannot contain a parallel pair). Two of this
+arm's instruments now share it; check any new instrument for it FIRST.
+
+F37-3. THE SWAP SYMMETRY OF A DOUBLING (why the fixture looks the way it does)
+==============================================================================
+parallel_swap_subsetSum_eq: g_q = rho g_p with rho^2 = 1 implies
+S_{C-p+q} = S_C EXACTLY - the swap does not move the subset sum at all.
+parallel_swap_dominates_iff: hence C dominates iff its mirror does.
+So at an exact doubling the mirror pairs are a SYMMETRY, not a coincidence:
+sigma is an isometry of the design, mirror partners carry the SAME gap and
+therefore the same null line. This is the crudest and strongest form of the
+converse direction of mirror_null_iff_ratio_sq_one.
+
+F37-4. THE BOUNDARY TEST, AND THE HONEST NEGATIVE IT DELIVERS
+==============================================================
+My laws are size-free, so the (5,3) primitive diamond test is mandatory.
+RUN (f37/bench53.jl, exact): all 8 weak dominators of the (5,3) diamond
+satisfy the Parseval split EXACTLY, the outside floor, and the excess floor.
+Nothing false is asserted there. But the sharp finding is this:
+
+  THE EXCESS VALUES ARE IDENTICAL AT THE TWO FIXTURES.
+     (5,3):  1.875 at four dominators, 2.7273 at four
+     (6,3):  1.875 at four contacts,   2.7273 at four
+
+MY NEW LAWS TAKE THE SAME VALUES AT BOTH FIXTURES, SO THEY ARE PROVABLY
+INCAPABLE OF SEPARATING THEM. They are a genuine missing INGREDIENT - the
+first lower bound on K this arm has had - but they cannot be the closure,
+because the hinge is FALSE at (5,3) and true at (6,3) while these laws
+cannot tell the two apart. Any closing argument must add something that
+FAILS at (5,3); by F32-4 that is the complement family, the four triples
+avoiding the pair entirely, which has no (5,3) analogue.
+
+F37-5. RESIDUAL AND HANDOFF
+============================
+STATE OF C1-7. Case A closed exactly and characterized as an equivalence;
+Case B closed quantitatively BUT with the hypothesis correction of F37-2 -
+its coercivity hypothesis is unsatisfiable at precisely the both-copy
+triples; the polynomial probe system built and kernel-native; the coupling
+now bounded BELOW (F37-1) as well as above. NOT decided: whether a tie can
+hold the two null lines apart.
+WHAT THE NEXT ROUND SHOULD DO. The missing ingredient is no longer a lower
+bound on K - that is landed. It is a SIZE-SIX INGREDIENT. Everything this
+arm holds is size-blind (F37-4 proves it for the newest laws, and the same
+is true of the mirror rigidity, the lock, and the misalignment calculus:
+all carry no size hypothesis). The complement family is the only object the
+calibration identifies as load-bearing and (5,3)-free. Attack it directly:
+what polynomial statement about the four triples avoiding a parallel pair is
+true at (6,3) and has no analogue at (5,3)? The tie-graph vocabulary
+(LiveTriple, HeavyAtom, AdmissiblePair, isTie_heavyFour_admissible_gapDet_
+nonpos) is the right language - four heavy pairwise-admissible atoms carry
+four live triples, and the complement family IS a four-atom set.
+DEAD ROUTES, unchanged, do not retry: the tangent Farkas replay; the
+design-independent syzygy; the inside-wedge floor chain; the trace budget;
+the Parseval transverse cap. ADD: any instrument that takes equal values at
+the two fixtures cannot close - test that FIRST, it is one cheap evaluation.
+REALNESS: still wedge_nonneg alone. Every theorem added this round is
+field-blind (Parseval, Cauchy-Schwarz, and linear algebra).
+FILES: f37/budget.jl (the split and budget, exact), f37/coerc.jl and
+f37/vacuous.jl (the pinch-vacuity separation, 16 vs 92), f37/excess.jl (the
+excess floor at (6,3)), f37/bench53.jl (the boundary test and the
+identical-values finding).
+
+F40-1. ROUND 11: THE FOUR-SET LAW, AND THE TIE GRAPH IS BLIND TO DOUBLINGS
+===========================================================================
+Gtz/Wave/DiamondNeighborhoodFourSet.jl -> .lean, 7 theorems, all pins standard,
+builds 9371 exit 0 first try, zero warnings. Commit: insertions-only (298 +/0 -).
+
+THE FOUR-SET DETERMINANT LAW (the identity F37 died deriving), now landed:
+    sum_{i=1}^{4} det(S_{T_i} - 1)  =  det M - e2(M),     M = S_{abcd} - 1
+polynomial in twelve variables, NO hypothesis. Route: det(M - g_i g_i') =
+det M (1 - r_i), sum_i r_i = 3 + tr M^-1, det M tr M^-1 = e2(M) - but the
+landed statement is INVERSE-FREE and needs none of it.
+Verified EXACTLY at every heavy-admissible 4-set of BOTH fixtures, and at
+4000 random 4-sets (worst rel err 3.2e-14, f37/fourset.jl).
+CONSEQUENCE (isTie_heavyFour_det_le_e2): the four-vertex saturation gives four
+sign conditions; the identity FUSES THEM INTO ONE, det M <= e2(M).
+
+F40-2. THE FOUR-SET LAW FAILS THE FIXTURE FILTER - AND WHY, STRUCTURALLY
+========================================================================
+Fork 37's filter, applied first as instructed. The heavy pairwise-admissible
+4-sets take the IDENTICAL VALUE SET at both fixtures (f37/f40four.jl, exact):
+    (5,3): 5 such 4-sets - (det,e2,tr) = (12,22,11/6) x4 , (32,32,1) x1
+    (6,3): 9 such 4-sets - (det,e2,tr) = (12,22,11/6) x8 , (32,32,1) x1
+So the four-set law CANNOT separate the fixtures. It is a genuine new tool,
+not the closure.
+THE STRUCTURAL REASON, and it is the round's main negative:
+  parallel_pairGapMinor_eq :  pairGapMinor(g, rho g) = 1 - l_p - l_q   EXACT
+  (the squared pairing cancels the leverage product; NO ANGLE SURVIVES)
+so A PARALLEL PAIR CARRYING A HEAVY ATOM IS NEVER ADMISSIBLE, no live triple
+holds both members, and EVERY heavy pairwise-admissible configuration OMITS
+ONE MEMBER OF THE PAIR (heavyAdmissible_omits_parallel_member).
+=> AT A DOUBLING THE ADMISSIBLE TIE GRAPH SEES ONLY THE REDUCED DESIGN.
+=> NO INSTRUMENT PHRASED IN THE TIE-GRAPH VOCABULARY (heavy atoms, admissible
+   pairs, live triples) CAN SEPARATE A DOUBLING FROM ITS REDUCTION.
+This is the THIRD instrument family with the doubling blindness, joining the
+swap pinch (F37-2) and the inside-wedge floor (F32-14). It REFUTES the
+suggested direction "the tie-graph vocabulary is the right language".
+Count check: 15 - 9 = 6 = C(4,2) 4-sets containing both copies, exactly the
+ones killed by the inadmissible pair.
+
+F40-3. THE FIRST INSTRUMENT IN THIS ARM THAT PASSES THE FILTER
+==============================================================
+Pair admissibility census (exact, f37/f40four.jl):
+    (5,3) primitive diamond [hinge FALSE] : 10 of 10 pairs ADMISSIBLE
+    (6,3) split diamond     [hinge TRUE]  : 14 of 15 - the ONE failure is the
+                                            parallel pair, minor -3
+So the predicate "THE DESIGN HAS AN INADMISSIBLE PAIR" is FALSE where the
+hinge is false and TRUE where the hinge is true. IT SEPARATES THE FIXTURES -
+the first instrument in this arm to do so.
+It is a STRICT RELAXATION of the hinge: parallel => inadmissible (landed this
+round), but inadmissible only says (l_p-1)(l_q-1) <= (g_p.g_q)^2.
+THE DICHOTOMY AT A (6,3) TIE:
+  A) some pair INADMISSIBLE  - the hinge-relaxed conclusion;
+  B) all pairs admissible and all atoms heavy => ALL 20 TRIPLES ARE LIVE, so
+     at a tie ALL 20 gap determinants are <= 0, and all 15 four-sets obey
+     det M <= e2(M).
+NEW TARGET, equivalent and size-six: EVERY (6,3) TIE HAS AN INADMISSIBLE PAIR
+  <=>  BRANCH B CONTAINS NO (6,3) TIE.
+The (5,3) diamond IS a branch-B tie, so any proof must use m = 6 - the filter
+is passed by construction, unlike everything else this arm has held.
+
+F40-4. A METHODOLOGICAL NEGATIVE: THE DESCENT IS UNCALIBRATED
+==============================================================
+Branch B was attacked by adversarial descent (f37/f40branch.jl): minimise
+max_T tripleGapDet over Parseval designs inside branch B. It floored at
++0.003451 with comfortable margins (min lev-1 = 1.34, min pair minor = 0.115),
+which LOOKS like "no tie in branch B".
+THE MANDATORY CONTROL KILLED IT. The (5,3) diamond IS a branch-B tie, so the
+same descent at m=5 must reach <= 0. It floored at +0.003588 - essentially the
+same number. TWO NEARLY IDENTICAL FLOORS IS THE SIGNATURE OF THE DESCENT'S OWN
+LIMIT, NOT THE PROBLEM'S.
+The OBJECTIVE is correct - validated by mirroring the construction at the
+fixtures (f37/f40valid.jl): the (5,3) diamond scores max_T gapDet = 0.0
+EXACTLY with 8 of 10 triples at zero, Parseval residual 1.1e-15, min pair
+minor 0.75, all heavy; the (6,3) split diamond scores 0.0 with 12 of 20 at
+zero and min pair minor -3.0. Both reproduce the banked contact counts.
+So the formula is right and THE SEARCH is what fails: it cannot reach a known
+attainable zero, overshooting by ~0.0035.
+The targeted local run (f37/f40local.jl), seeded AT the exact fixture (which
+scores 0.0), opens the pair and minimises: floors 0.0008-0.002 across openings
+0.0 to 2.0 - FLAT, not growing, and BELOW the m=5 artifact floor. No local
+rigidity can be claimed from it.
+=> BRANCH B IS UNDECIDED. Any successor must first build a descent that
+   reaches 0 at the (5,3) diamond; until it does, absolute floors from this
+   family of searches mean nothing.
+
+F40-5. RESIDUAL AND HANDOFF
+============================
+LANDED: the four-set determinant law; its tie consequence; the parallel-pair
+minor identity; the three blindness corollaries.
+THE TARGET, and it is the first one that passes the filter:
+    EVERY (6,3) TIE HAS AN INADMISSIBLE PAIR   (<=> branch B holds no tie)
+strictly weaker than the hinge, polynomial, size-six by construction.
+DEAD/BLIND, do not retry: the tie-graph vocabulary (this round - blind to
+doublings); the swap pinch (F37-2); the inside-wedge floor (F32-14); plus the
+five routes of F32-18. ANY new instrument must be tested for doubling
+blindness FIRST - one evaluation at the two fixtures.
+TOOL DEBT: the descent must be recalibrated against the (5,3) diamond before
+any numerical claim about branch B is believed.
+REALNESS: unchanged, wedge_nonneg alone. Everything added this round is
+field-blind (polynomial identities and sign counting).
+FILES: f37/f40four.jl (the exact filter + identity at both fixtures),
+f37/f40branch.jl (branch-B descent, artifact), f37/f40ctrl.jl (the m=5 control
+that killed it), f37/f40valid.jl (the objective validation), f37/f40local.jl
+(the seeded local opening).
