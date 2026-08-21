@@ -1,0 +1,194 @@
+NOTES — corank-two arm, round of 2026-08-19
+===========================================
+
+1. THE HEADLINE
+---------------
+The residual `Gtz.NonplanarDeficitResidual` has NO PRODUCER. At a (6,3) tie no
+pair of atoms is ghost deficient, so the residual holds exactly when the corner
+is empty. Its tie hypothesis also cannot be dropped: the landed fixture refutes
+the tie-free version. The residual is the corner closure, not a weakening of it.
+
+2. THE LEDGER IDENTITY (the new mathematics)
+--------------------------------------------
+Fix a pair f != h. For each x outside the pair, the refusal slack is
+
+  slack_x = (1-P_hh) P_fx^2 + 2 P_fh P_fx P_hx + (1-P_ff) P_hx^2
+            - (1-P_xx) * Delta ,      Delta = (1-P_ff)(1-P_hh) - P_fh^2 .
+
+The refusal of the triple {f,h,x} complement says `0 <= slack_x` when the pair is
+admissible. The four slacks, weighted by the co-weights, sum EXACTLY to the
+weighted ghost deficit:
+
+  sum over x not in {f,h} of (1 - t_x) * slack_x = ghostDeficitForm D f h .
+
+At general size the two sides differ by `(m - 6) * Delta`, so the identity is
+exact at six atoms and at no other size. At five atoms the slack budget is one
+Delta larger, which is the room the diamond needs.
+
+Ingredients: three instances of `pivot_coweight_projection` and one instance of
+`coweight_pivot_deficit`. Nothing else.
+
+3. WHAT THE LEDGER GIVES
+------------------------
+  not_ghostDeficitShort_of_isTie      no pair of a tie is deficient
+  not_ghostBlockShort_of_isTie        no pair of a tie has a short block
+                                      (strengthens not_ghostBlockShort_two_selectors)
+  pairRefusalLedger                   2(t_f+t_h) Delta <= t_h(1-P_ff) + t_f(1-P_hh)
+  pairPivotMinor_le_half_of_isTie     Delta <= 1/2 at every admissible pair
+  tie_pair_pivot_law                  1 <= 2 P_ff + P_hh  or  1 <= 2 P_hh + P_ff
+  tie_triple_pivot_sum_ge_one         every triple carries a unit of pivot
+  four_le_card_lightSet_of_isTie      the light set of a tie has four atoms
+  two_le_card_light_inside            two inside atoms of a corner are light
+  half_lt_cornerPivot_of_two_light_inside   exactly two forces pi_u > 1/2
+
+4. THE MEASUREMENTS (Julia, 32 threads, zero allocation, seconds per run)
+------------------------------------------------------------------------
+Scripts live in scratchpad/f200. `gtz63.jl` searches the whole (6,3) design
+space, `corner63.jl` the corank-two corner, `battery.jl` the closure candidates.
+
+(a) The chart objective `max over triples of lambda_min(S_T - I)` reaches 9e-8
+    over the whole design space, so GTZ (6,3) is TIGHT and ties are approached.
+(b) EVERY near-tie found at healthy weights carries a PARALLEL PAIR, to ten
+    digits, and the gap corank at its weak dominator is exactly ONE. That is the
+    hinge and milestone M1, measured.
+(c) The corank-two corner margin is strictly positive at every weight floor:
+    2.5e-3 at floor 0.01, 3.2e-3 at 0.03, 9.4e-3 at 0.05, and it degenerates to
+    zero only as a weight goes to zero, where the limit is the (5,3) diamond.
+    So M1 is true and its certificate MUST carry the weights.
+(d) At the extremal corner the binding triples are exactly the complement and
+    three one-shared triples, which are exactly the four refusals the ledger of
+    one inside pair consumes.
+
+5. CANDIDATES KILLED BY CONSTRUCTION (do not reopen)
+----------------------------------------------------
+  - some INSIDE pair is deficient at every corner            (margin -0.37)
+  - some MIXED pair is deficient at every corner             (margin -0.24)
+  - some pair AMONG ALL FIFTEEN is deficient at every corner (margin -0.07)
+  - the complement always dominates strictly                 (det -8.6)
+  - `Delta <= 1/2` is violated at every corner               (max admissible
+    Delta can be 0.117)
+  - `sum over C of P_ee < 1` at every corner                 (reaches 19)
+  - some triple has pivot total below one at every corner    (min reaches 1.79)
+  - some pair violates the pivot law at every corner         (max reaches -0.79)
+  - the two branch tests: a corner can carry a heavy inside atom with pi_u = 1,
+    and a corner with three light inside atoms can reach inside total 1.96.
+
+6. WHAT IS LEFT
+---------------
+The corner is empty, and no single derived scalar law of the ones above closes
+it. The certificate has to combine the ten informative refusals directly with
+the corner identities AND the strict positivity of the weights, because the
+obstruction vanishes linearly in the weight floor. The ledger is the right
+instrument because it is the only landed law that carries the weights and
+consumes all ten refusals; what it loses is that it sums the four slacks of a
+pair, while each of the four is separately nonnegative.
+
+Next: work with the four slacks of a pair SEPARATELY rather than their weighted
+sum, and add the corner identity `sum_pairRefusalSlack_compl`, which prices the
+three outside slacks against the corner pivot and the outside cross readings.
+
+================================================================================
+FORK 41 (successor to fork 27) -- the adjugate probe law and the corner weight caps
+================================================================================
+
+F41-0. WHAT I FOUND ALREADY LANDED (corrections to the coordinator's brief)
+--------------------------------------------------------------------------
+* THE MANTEL SATURATION IS ALREADY LANDED, not open. `mantel_four` (a `decide`
+  over all 64 edge sets of K4), `isTie_heavyFour_admissible_card_le_four`,
+  `isTie_heavyFour_two_inadmissible` and `isTie_heavyFour_mantel_dichotomy` are
+  all in `TieMantelBound.lean` / `CellHChartFloors.lean`. Queue item 1 was done
+  by my predecessor before it was stopped. I did not re-land it.
+* THE CORNER NORMAL FORM IS ALREADY LANDED. I derived
+  `(1+lam)*(g_b.g_c - delta_bc) = lam*beta_b*beta_c` from scratch (apply S_C to
+  an inside atom, substitute S_C u = (1+lam) u, use linear independence). It
+  exists as `insideGram_of_rankOneGap` / `_self_` / `_offDiag_` in
+  `CorankTwoNonplanarSystem.lean`. I did NOT re-land it. My derivation was
+  correct but the mathematics was already there.
+* THE SWEEP FIRED AGAIN, IN `Gtz.lean` THIS TIME. The working tree was deleting
+  `import Gtz.Wave.BothLightChartReduction` (my predecessor's own module, landed
+  in `a537781`). The coordinator repaired `Gtz/Audit.lean` but not `Gtz.lean`.
+  I restored it. RUN `git diff --stat Gtz.lean Gtz/Audit.lean` ON BOTH FILES.
+
+F41-1. THE NEW INSTRUMENT: PARSEVAL AT THE ADJUGATE PROBE (`b75e5aa`)
+---------------------------------------------------------------------
+For a triple (a,b,c) and coefficients w, set
+
+  zeta(w) = w0*(b x c) + w1*(c x a) + w2*(a x b) .
+
+Each atom of the triple reads it back DIAGONALLY: a.zeta = w0*[abc], and
+likewise for b, c. So the three inside terms of Parseval decouple and the
+remaining atoms only help. Dropping them:
+
+  **[abc]^2 * (t_a w0^2 + t_b w1^2 + t_c w2^2)  <=  zeta(w).zeta(w)**
+
+`Gtz.design_adjugate_probe_law`. NO tie, NO corner, NO domination hypothesis --
+it holds at every weighted design and every triple. Its w = e_a instance is the
+landed pair-mass floor `t_a [abc]^2 <= w_bc`; its OFF-DIAGONAL content is new.
+
+F41-2. THE CORNER CAPS (`ca694c8`, `0a59579`)
+----------------------------------------------
+At a corner the landed rank-one Gram collapses every cross-product pairing:
+  pair area   w_ef = l_e + l_f - 1 = 2 + lam - l_g   (`corner_inside_pairArea_eq`)
+  mixed cross (g_z x g_x).(g_x x g_y) = -(g_y.g_z)   (`corner_crossPair_collapse`)
+Feeding these into the probe law gives, AT EVERY CORNER (no Z1, both horns too):
+  DIAGONAL   l_x + (1+lam)*t_x <= 2 + lam            (`corner_leverage_weight_cap`)
+  OFF-DIAG   (g_y.g_z)^2 <= (2+lam-l_y-(1+lam)t_y)(2+lam-l_z-(1+lam)t_z)
+  SIMPLEX    e_y(1-t_z) + e_z(1-t_y) <= (1+lam)(1-t_y)(1-t_z),  e = l - 1
+and on Z1 the sharp scalar form
+  t_y*l_y + t_z*l_z <= 1 + (1+lam)*t_y*t_z           (`corner_oneAxisZero_weight_law`).
+
+F41-3. THE DECISIVE MEASUREMENT -- THE LANDED CAP IS SLACK ON CELL H
+--------------------------------------------------------------------
+3,504,605 samples in the lane's own cell-H parametrisation (eps = 1, the genuine
+corner), 22,433 with `Az` not PD and `Ay` PD. MINIMUM SLACK over those:
+
+  landed `corner_scale_cap`        9.8485e-01   <-- NEVER within 1.0 of active
+  NEW Z1 joint weight law          4.3499e-07   <-- TIGHT
+  NEW simplex law                  4.3499e-07   <-- TIGHT (equals the above on Z1,
+                                                   exactly as the docstring claims)
+  NEW diagonal cap                 1.8360e-03   <-- nearly tight
+
+**THE LANDED CAP CANNOT BE A BINDING CONSTRAINT OF CELL H. IT CARRIES A FULL
+UNIT OF SLACK THERE.** Any cell-H certificate built on it is spending a
+constraint that is structurally inactive. The new laws are tight on the cell and
+are the correct replacements. Caveat, stated plainly: my filter used the two
+four-set conditions only, NOT the outside floors, so these 22,433 points are
+cell-H-SHAPED, not certified full cell-H inhabitants.
+
+F41-4. SHARPNESS, MEASURED
+---------------------------
+* Normal form verified at 5.0e-12 over 200,000 random corners.
+* The matrix law `G + (1+lam)diag(t) <= (2+lam) I` is TIGHT: over 60,000 genuine
+  Parseval designs carrying a corner (construction mirrored bit-for-bit in the
+  verifier), its minimum eigenvalue reaches 3.4e-05.
+* Against the landed cap on 200,000 Z1 data: NEVER weaker (0 exceptions),
+  median ratio 1.9971, mean 3.19, max 43.33, at least 1.5x sharper on 71.81%.
+* Pair-area identity max error 2.1e-14; diagonal cap min slack 1.08e-02;
+  off-diagonal cap min slack 2.54e-03; simplex law min slack 7.17e-04.
+
+F41-5. WHAT I DID NOT DO
+-------------------------
+I did not close cell H or cell B. The new laws are certificate INGREDIENTS, and
+F41-3 shows they are the right ones, but the cell fight itself is open. The
+corner + simplex + diagonal system alone is NOT infeasible: at small weights the
+three pairwise simplex laws sum to 2*lam <= 3(1+lam), always true. The tie
+refusals still have to do the work.
+
+Scripts: scratchpad/f41/{normalform,scalelaw,design,design2,general,simplex,cellH_bite}.jl
+Memory: every run under 1 GB, 8 threads, --heap-size-hint 8-16G. No OOM risk.
+
+F41-6. WHICH CONSTRAINT KILLS CELL H (independent reproduction)
+----------------------------------------------------------------
+6,000,000 samples -> 33,570 cell-H-shaped points (Az not PD, Ay PD).
+**ZERO of them pass the three outside floors** (`g_d . Ay^-1 g_d >= 1`), best
+margin -2.0681e-02. So the four-set conditions alone do NOT kill cell H -- they
+leave a positive-measure region -- and THE OUTSIDE FLOORS ARE THE KILLER.
+Independent reproduction of the lane's "cell H is empty" verdict by a different
+route and a different parametrisation.
+
+CONSEQUENCE FOR THE CERTIFICATE. Put F41-3 and F41-6 together:
+  * the outside floors do the killing,
+  * the landed `corner_scale_cap` carries ~1.0 of slack there and cannot help,
+  * the new corner caps are tight there (4e-7) and can.
+So the cell-H certificate to hunt is: THREE OUTSIDE FLOORS against the NEW
+corner caps, with `corner_scale_cap` dropped from the dictionary entirely.
