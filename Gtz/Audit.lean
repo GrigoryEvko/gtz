@@ -37741,3 +37741,15 @@ run_cmd do
 #print axioms Gtz.star_exists_posDef_of_posDef_of_det_pos
 #print axioms Gtz.twoStar_exists_dominating_triple
 #print axioms Gtz.exists_posDef_of_twoStar
+
+-- Gtz/Wave/BranchTwoDeterminantSum.lean -- the two determinant conditions of E1
+-- add to a linear bound; the centre is ruled out by the second alone
+#print axioms Gtz.branchTwo_determinant_sum
+#print axioms Gtz.branchTwo_excess_linear_bound
+#print axioms Gtz.branchTwo_coefficient_eq
+#print axioms Gtz.pairTight_forces_center
+#print axioms Gtz.centerPoint_detComplement_zero
+#print axioms Gtz.centerPoint_excess_sum
+#print axioms Gtz.centerPoint_excess_gt_one
+#print axioms Gtz.centerPoint_detOutside_eq
+#print axioms Gtz.centerPoint_detOutside_neg
