@@ -1364,6 +1364,7 @@ import Gtz.Wave.PairMinorBudget
 import Gtz.Wave.PairNormalParseval
 import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.KTwoChartCapstone
+import Gtz.Wave.KTwoBridgeNormalForm
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -37425,3 +37426,13 @@ run_cmd do
 #print axioms Gtz.k2ChartTargetPositivityXHalf_holds
 #print axioms Gtz.k2ChartDoubleQuotientCorner_holds
 #print axioms Gtz.k2Chart_kill
+
+-- Gtz/Wave/KTwoBridgeNormalForm.lean -- the frame normal form of the two-zero
+-- stratum: the two axis readings, the excess equation, the collinearity
+#print axioms Gtz.k2Axis_reading_total
+#print axioms Gtz.k2Axis_mixed_total_zero
+#print axioms Gtz.k2FiveAxis_reading
+#print axioms Gtz.k2FiveAxis_excess_eq
+#print axioms Gtz.k2FiveAxis_budget
+#print axioms Gtz.k2FiveAxis_collinear
+#print axioms Gtz.k2FiveAxis_planePair_reading
