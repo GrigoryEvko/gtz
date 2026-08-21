@@ -1364,6 +1364,7 @@ import Gtz.Wave.PairStarSizeLaw
 import Gtz.Wave.PairMinorBudget
 import Gtz.Wave.PairNormalParseval
 import Gtz.Wave.CornerAdmissibleGateway
+import Gtz.Wave.CornerGatewayBudget
 import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoBridgeNormalForm
 import Gtz.Wave.KTwoBridgeRefusalY
@@ -37488,3 +37489,15 @@ run_cmd do
 #print axioms Gtz.k2ChartCapD_eq_gapDet
 #print axioms Gtz.k2ChartCapE_eq_gapDet
 #print axioms Gtz.k2ChartRefusalZ_eq_gapDet
+
+-- Gtz/Wave/CornerGatewayBudget.lean -- the pair minor budget of a weighted
+-- triple, the currency bridge, the complementary adjugate law, the producers
+#print axioms Gtz.adjugate_sub_adjugate_one_sub
+#print axioms Gtz.corner_planeTrace_surplus
+#print axioms Gtz.sq_tripleBracket_eq_gapDet_add_pairMinors
+#print axioms Gtz.weightedTriple_pairMinor_identity
+#print axioms Gtz.parseval_triple_reading_le
+#print axioms Gtz.complement_triple_posSemidef
+#print axioms Gtz.det_complementTriple_nonneg
+#print axioms Gtz.exists_pairMinor_pos_of_bracketBudget
+#print axioms Gtz.exists_pairMinor_pos_of_weightBudget

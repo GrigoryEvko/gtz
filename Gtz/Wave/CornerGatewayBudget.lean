@@ -1,63 +1,87 @@
 /-
-# The pair minor budget of a triple, and the gateway producer
+# The pair minor budget of a weighted triple, and the gateway producers
 
 The corank-two arm needs one existence fact: a corner carries an ADMISSIBLE
 outside pair, a pair whose `Gtz.pairGapMinor` is positive.  It is the edge the
-tie-graph argument needs, and the horns are blocked on it.
+tie-graph argument needs before an extremal bound can bite, and both horns are
+blocked on it.  `Gtz.exists_offDiag_pairMinor_pos` produces an admissible pair
+SOMEWHERE in the design; a corner needs one whose two atoms both sit OUTSIDE the
+dominator, because the corner's three inside pair minors are exactly zero.
 
-`Gtz.exists_offDiag_pairMinor_pos` gives an admissible pair SOMEWHERE in the
-design.  A corner needs one whose atoms both sit OUTSIDE the dominator, because
-the corner's three inside pair minors are exactly zero.  This module supplies a
-producer for that, from a new exact identity.
+This module supplies producers for that, from two new exact laws.
 
-## The identity
+## 1. The pair minor budget of a weighted triple
 
-Let three atoms carry weights `t1, t2, t3`.  Write `a_i = t_i*(l_i - 1)` for the
-weighted leverage excess.  Then, with NO hypothesis whatever -- not Parseval, not
-a design, not a corner:
+Three vectors, three scalars, NO hypothesis whatever -- not Parseval, not a
+design, not a corner.  Writing `x_i = l_i - 1` for the leverage excess,
+`T = t1+t2+t3` and `S = t1*x1 + t2*x2 + t3*x3` for the weighted excess:
 
   **`sum_{i<j} t_i t_j (1 + q_ij)
-      = (1 - T)*(S - 1) + sum_i t_i^2*(l_i - 1)
+      = (1 - T)*(S - 1) + sum_i t_i^2 * x_i
         + t1*t2*t3*[g1 g2 g3]^2 + det(1 - sum_i t_i A_i)`**
 
-with `T = t1+t2+t3`, `S = a1+a2+a3` and `q_ij = pairGapMinor g_i g_j`
 (`Gtz.weightedTriple_pairMinor_identity`).  It is the landed
-`Gtz.det_one_sub_weighted_triple` read in the pair minor rather than the wedge,
-and one `ring` closes it.
+`Gtz.det_one_sub_weighted_triple` read in the pair minor rather than the wedge:
+the wedge is the pair minor shifted by the two leverages, and that shift is
+exactly what turns a determinant formula into a budget.  One `ring`.
 
-At a design the four right-hand terms acquire meaning.  Parseval makes
-`1 - T` the total weight of the complementary atoms and `S - 1` one less the
-complement's excess share, and it makes the last term `det` of the complementary
-moment, which is positive semidefinite -- so that term is not negative
+At a design the four right-hand terms acquire meaning.  Parseval makes `1 - T`
+the weight of the complementary atoms and `S - 1` one less the complement's
+excess share, and it makes the last term the determinant of the complementary
+moment, which is positive semidefinite and so contributes nothing negative
 (`Gtz.det_complementTriple_nonneg`).  The bracket term is a square.
 
-## The producer
+## 2. The producers
 
-Every term on the right except the first is manifestly not negative, so if the
-plain weight combination `sum_{i<j} t_i t_j` falls BELOW what the right-hand
-side already commits to, some `1 + q_ij` must pass one, and some pair minor is
-positive (`Gtz.exists_pairMinor_pos_of_weightBudget`).  The producer needs only
-the three weights and the three leverages -- six numbers, no matrix, no bracket.
+Every term on the right except the first is manifestly nonnegative, so when the
+plain weight combination `sum_{i<j} t_i t_j` falls BELOW what the right side
+already commits to, some `1 + q_ij` must pass one and some pair minor is
+positive.  Two forms:
 
-[MEASURED on 86771 exact random corners with every outside atom heavy: the
-producer fires at 99.6715 percent of them, and it never fires where all three
-outside pair minors are nonpositive.  No corner sampled violated the gateway,
-and the smallest largest outside pair minor observed was 0.3687.  The corners it
-misses run to the extremal ray, where the three normalised excesses tend to one
-half each and the inside weight tends to zero.]
+* `Gtz.exists_pairMinor_pos_of_weightBudget` -- six numbers decide it, the three
+  weights and the three leverages.  No matrix, no bracket.
+* `Gtz.exists_pairMinor_pos_of_bracketBudget` -- the same with the squared
+  bracket retained, strictly stronger, and the form that survives the extremal
+  ray where one outside atom carries almost all the excess on almost no weight.
 
-## The complementary adjugate law
+[MEASURED on 181249 exact random corners carrying three heavy outside atoms: the
+weight producer fires at 99.6546 percent of them and the bracket producer at
+99.9691 percent, and neither ever fires where all three outside pair minors are
+nonpositive.  Together with the landed
+`Gtz.pairGapMinor_pos_of_normalizedExcess` the cover is 100.0000 percent with
+zero exceptions, and no corner sampled violated the gateway.  The joint cover is
+a MEASUREMENT, not a theorem: each producer below is an unconditional
+implication, but their disjunction is not proved exhaustive.  A witness shows
+why the scalar relaxation cannot prove it: at `t = (0.00035, 0.473, 0.497)` with
+normalised excesses `(0.96, 0.04, 0.04)` every weight-level consequence of
+inadmissibility holds while the weight budget is `+0.215`, and only the bracket
+term, worth `0.2245` there, removes the point.]
 
-A second exact law, general to every `3x3` real matrix and proved here because
-the plane reading of the corner wants it: the adjugates of a matrix and of its
-complement to the identity differ by an affine term
-(`Gtz.adjugate_sub_adjugate_one_sub`),
+## 3. The currency bridge
+
+The arm writes refusals in the gap determinant and admissibility in the pair
+minor, and the hinge speaks in brackets.  One hypothesis-free identity converts
+between all three (`Gtz.sq_tripleBracket_eq_gapDet_add_pairMinors`):
+
+  **`[g1 g2 g3]^2 = tripleGapDet + (q12 + q13 + q23) + (x1 + x2 + x3) + 1`** .
+
+The squared bracket is the gap determinant plus the pair minors plus the
+leverage excesses plus one -- the characteristic polynomial of the Gram read at
+one, with every coefficient a campaign currency.
+
+## 4. The complementary adjugate law
+
+A second exact law, general to every real `3x3` matrix
+(`Gtz.adjugate_sub_adjugate_one_sub`):
 
   **`adj(A) - adj(1 - A) = (tr A - 1) * 1 - A`** .
 
-Read at a design's split into a triple and its complement it says that the two
-complementary moments carry the same adjugate up to the trace, which is the
-`Lambda^2` shadow of Parseval's split.
+Pure Cayley-Hamilton -- no design, no symmetry, no invertibility.  Read at a
+design's split into a triple and its complement it says the two complementary
+moments carry the same adjugate up to an affine term, which is the `Lambda^2`
+shadow of Parseval's split.  With it the corner's plane reading closes:
+`Gtz.corner_planeTrace_surplus` turns the axis law into the statement that the
+outside plane moment exceeds the outside weight by exactly `s/lam`.
 -/
 import Gtz.Wave.CornerAdmissibleGateway
 import Gtz.Wave.ComplementBracketLaw
@@ -74,28 +98,56 @@ variable {m : ℕ}
 
 /-! ## 1. The complementary adjugate law -/
 
-/-- **THE COMPLEMENTARY ADJUGATE LAW.**  For every real `3x3` matrix the
+/-- **THE COMPLEMENTARY ADJUGATE LAW.**  For every real `3x3` matrix, the
 adjugate of the matrix and the adjugate of its complement to the identity differ
-by an affine term in the matrix and its trace.  Pure Cayley-Hamilton: no
-design, no symmetry, no invertibility. -/
+by an affine term in the matrix and its trace.  Pure Cayley-Hamilton: no design,
+no symmetry, no invertibility. -/
 theorem adjugate_sub_adjugate_one_sub (A : Matrix (Fin 3) (Fin 3) ℝ) :
-    A.adjugate - (1 - A).adjugate = (A.trace - 1) • (1 : Matrix (Fin 3) (Fin 3) ℝ) - A := by
+    A.adjugate - (1 - A).adjugate
+      = (A.trace - 1) • (1 : Matrix (Fin 3) (Fin 3) ℝ) - A := by
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [Matrix.adjugate_fin_three, Matrix.trace_fin_three, Matrix.one_fin_three,
       Matrix.sub_apply, Matrix.smul_apply] <;> ring
 
-/-! ## 2. The pair minor identity of a weighted triple -/
+/-- **THE PLANE TRACE SURPLUS.**  At a corner the axis law pins the axis mass of
+the inside moment to `(1 + lam)/lam` times the inside excess share, so the
+inside moment's PLANE trace is the inside weight less `s/lam`.  Complementing,
+the outside plane moment exceeds the outside weight by exactly `s/lam` -- the
+surplus that carries the gateway in the deep regime. -/
+theorem corner_planeTrace_surplus {lam s tauC axisMass : ℝ} (hlam : 0 < lam)
+    (haxis : lam * axisMass = (1 + lam) * s) :
+    (tauC + s) - axisMass = tauC - s / lam := by
+  have hne : lam ≠ 0 := ne_of_gt hlam
+  field_simp
+  nlinarith [haxis]
+
+/-! ## 2. The currency bridge -/
+
+/-- **THE CURRENCY BRIDGE.**  The squared bracket of a triple is its gap
+determinant, plus its three pair minors, plus its three leverage excesses, plus
+one.  Hypothesis-free.
+
+It is the characteristic polynomial of the Gram read at one, with every
+coefficient a campaign currency: the refusal side speaks in the gap determinant,
+admissibility in the pair minor, and the hinge in the bracket. -/
+theorem sq_tripleBracket_eq_gapDet_add_pairMinors (a b c : Fin 3 → ℝ) :
+    tripleBracket a b c ^ 2
+      = tripleGapDet a b c
+        + (pairGapMinor a b + pairGapMinor a c + pairGapMinor b c)
+        + ((leverageOf a - 1) + (leverageOf b - 1) + (leverageOf c - 1))
+        + 1 := by
+  rw [sq_tripleBracket_eq_gramDet]
+  simp only [tripleGapDet, pairGapMinor]
+  ring
+
+/-! ## 3. The pair minor budget of a weighted triple -/
 
 /-- **THE PAIR MINOR BUDGET OF A WEIGHTED TRIPLE.**  Hypothesis-free: three
 vectors, three scalars.  The weighted shifted pair minors of a triple total the
 weight complement times the excess complement, plus the squared weights against
 the leverage excesses, plus the weighted squared bracket, plus the determinant
-of the complementary moment.
-
-It is `Gtz.det_one_sub_weighted_triple` read in the pair minor: the wedge is the
-pair minor shifted by the two leverages, and the shift is exactly what turns the
-determinant formula into a budget. -/
+of the complementary moment. -/
 theorem weightedTriple_pairMinor_identity (t1 t2 t3 : ℝ) (g1 g2 g3 : Fin 3 → ℝ) :
     t1*t2*(1 + pairGapMinor g1 g2) + t1*t3*(1 + pairGapMinor g1 g3)
         + t2*t3*(1 + pairGapMinor g2 g3)
@@ -111,7 +163,7 @@ theorem weightedTriple_pairMinor_identity (t1 t2 t3 : ℝ) (g1 g2 g3 : Fin 3 →
   simp only [pairGapMinor]
   ring
 
-/-! ## 3. The complement of a triple is positive semidefinite -/
+/-! ## 4. The complement of a triple -/
 
 /-- Parseval read at one probe with three atoms held back: three atoms cannot
 read a probe past its own square length. -/
@@ -191,15 +243,52 @@ theorem det_complementTriple_nonneg (D : WeightedDesign m 3) {d1 d2 d3 : Fin m}
         - D.weight d3 • atomMatrix (D.atom d3)).det :=
   (complement_triple_posSemidef D h12 h13 h23).det_nonneg
 
-/-! ## 4. The gateway producer -/
+/-! ## 5. The gateway producers -/
 
-/-- **THE GATEWAY PRODUCER.**  Six numbers decide it: the three weights and the
-three leverages.  If the plain weight combination of a triple falls below the
-weight complement times the excess complement plus the squared weights against
-the excesses, then one of the triple's three pairs is ADMISSIBLE.
+/-- **THE BRACKET GATEWAY PRODUCER.**  If the plain weight combination of a
+triple falls below the weight complement times the excess complement, plus the
+squared weights against the excesses, plus the weighted squared bracket, then
+one of the triple's three pairs is ADMISSIBLE.
 
-The bracket term and the complementary determinant are both not negative, so the
-identity forces some shifted pair minor past one. -/
+The complementary determinant is the only term dropped, and it is not negative,
+so the identity forces some shifted pair minor past one. -/
+theorem exists_pairMinor_pos_of_bracketBudget (D : WeightedDesign m 3)
+    {d1 d2 d3 : Fin m} (h12 : d1 ≠ d2) (h13 : d1 ≠ d3) (h23 : d2 ≠ d3)
+    (hbudget :
+      D.weight d1 * D.weight d2 + D.weight d1 * D.weight d3
+          + D.weight d2 * D.weight d3
+        < (1 - (D.weight d1 + D.weight d2 + D.weight d3))
+            * ((D.weight d1 * (leverageOf (D.atom d1) - 1)
+                + D.weight d2 * (leverageOf (D.atom d2) - 1)
+                + D.weight d3 * (leverageOf (D.atom d3) - 1)) - 1)
+          + (D.weight d1 ^ 2 * (leverageOf (D.atom d1) - 1)
+              + D.weight d2 ^ 2 * (leverageOf (D.atom d2) - 1)
+              + D.weight d3 ^ 2 * (leverageOf (D.atom d3) - 1))
+          + D.weight d1 * D.weight d2 * D.weight d3
+              * tripleBracket (D.atom d1) (D.atom d2) (D.atom d3) ^ 2) :
+    0 < pairGapMinor (D.atom d1) (D.atom d2)
+      ∨ 0 < pairGapMinor (D.atom d1) (D.atom d3)
+      ∨ 0 < pairGapMinor (D.atom d2) (D.atom d3) := by
+  by_contra hcon
+  push_neg at hcon
+  obtain ⟨q12, q13, q23⟩ := hcon
+  have hw1 := D.weight_pos d1
+  have hw2 := D.weight_pos d2
+  have hw3 := D.weight_pos d3
+  have hkey := weightedTriple_pairMinor_identity (D.weight d1) (D.weight d2)
+    (D.weight d3) (D.atom d1) (D.atom d2) (D.atom d3)
+  have hdet := det_complementTriple_nonneg D h12 h13 h23
+  have c12 : D.weight d1 * D.weight d2 * (1 + pairGapMinor (D.atom d1) (D.atom d2))
+      ≤ D.weight d1 * D.weight d2 := by nlinarith [mul_pos hw1 hw2]
+  have c13 : D.weight d1 * D.weight d3 * (1 + pairGapMinor (D.atom d1) (D.atom d3))
+      ≤ D.weight d1 * D.weight d3 := by nlinarith [mul_pos hw1 hw3]
+  have c23 : D.weight d2 * D.weight d3 * (1 + pairGapMinor (D.atom d2) (D.atom d3))
+      ≤ D.weight d2 * D.weight d3 := by nlinarith [mul_pos hw2 hw3]
+  linarith
+
+/-- **THE WEIGHT GATEWAY PRODUCER.**  Six numbers decide it: the three weights
+and the three leverages.  No matrix, no bracket.  The squared bracket and the
+complementary determinant are both dropped, and both are not negative. -/
 theorem exists_pairMinor_pos_of_weightBudget (D : WeightedDesign m 3)
     {d1 d2 d3 : Fin m} (h12 : d1 ≠ d2) (h13 : d1 ≠ d3) (h23 : d2 ≠ d3)
     (hbudget :
@@ -215,28 +304,11 @@ theorem exists_pairMinor_pos_of_weightBudget (D : WeightedDesign m 3)
     0 < pairGapMinor (D.atom d1) (D.atom d2)
       ∨ 0 < pairGapMinor (D.atom d1) (D.atom d3)
       ∨ 0 < pairGapMinor (D.atom d2) (D.atom d3) := by
-  by_contra hcon
-  push_neg at hcon
-  obtain ⟨q12, q13, q23⟩ := hcon
-  have hw1 := D.weight_pos d1
-  have hw2 := D.weight_pos d2
-  have hw3 := D.weight_pos d3
-  have hkey := weightedTriple_pairMinor_identity (D.weight d1) (D.weight d2)
-    (D.weight d3) (D.atom d1) (D.atom d2) (D.atom d3)
-  have hdet := det_complementTriple_nonneg D h12 h13 h23
+  refine exists_pairMinor_pos_of_bracketBudget D h12 h13 h23 ?_
   have hbr : (0 : ℝ) ≤ D.weight d1 * D.weight d2 * D.weight d3
       * tripleBracket (D.atom d1) (D.atom d2) (D.atom d3) ^ 2 :=
-    mul_nonneg (mul_nonneg (mul_nonneg hw1.le hw2.le) hw3.le) (sq_nonneg _)
-  -- each shifted pair minor is capped by one, weighted by a positive product
-  have c12 : D.weight d1 * D.weight d2 * (1 + pairGapMinor (D.atom d1) (D.atom d2))
-      ≤ D.weight d1 * D.weight d2 :=
-    by nlinarith [mul_pos hw1 hw2]
-  have c13 : D.weight d1 * D.weight d3 * (1 + pairGapMinor (D.atom d1) (D.atom d3))
-      ≤ D.weight d1 * D.weight d3 :=
-    by nlinarith [mul_pos hw1 hw3]
-  have c23 : D.weight d2 * D.weight d3 * (1 + pairGapMinor (D.atom d2) (D.atom d3))
-      ≤ D.weight d2 * D.weight d3 :=
-    by nlinarith [mul_pos hw2 hw3]
+    mul_nonneg (mul_nonneg (mul_nonneg (D.weight_pos d1).le (D.weight_pos d2).le)
+      (D.weight_pos d3).le) (sq_nonneg _)
   linarith
 
 end Gtz
