@@ -38684,4 +38684,31 @@ run_cmd do
 #print axioms Gtz.crossNormSq_pos_of_pairGapMinor_eq_zero_of_heavy
 #print axioms Gtz.pairGapMinor_pos_inside_dominator_of_q75b
 #print axioms Gtz.pair_dominator_trichotomy
-#print axioms Gtz.not_inadmissible_of_complement_volume_ge_one
+#print axioms Gtz.inadmissible_complement_volume_bound
+
+-- Gtz/Wave/TripleVolumeRowLaw.lean -- the triple volume row law, the hinge in
+-- volume vocabulary, Cauchy-Binet at five and six atoms, the volume budget at
+-- (5,3) and (6,3), the volume floor of a weak dominator and the wedge ceiling
+#print axioms Gtz.bracketNormal_dotProduct_self
+#print axioms Gtz.sum_weight_mul_sq_tripleBracket
+#print axioms Gtz.crossNormSq_eq_zero_iff_forall_sq_tripleBracket_eq_zero
+#print axioms Gtz.sq_tripleBracket_eq_zero_of_crossNormSq_eq_zero
+#print axioms Gtz.det_fiveAtomCombo
+#print axioms Gtz.det_sixAtomCombo
+#print axioms Gtz.parseval_fiveThree
+#print axioms Gtz.parseval_sixThree
+#print axioms Gtz.volume_budget_fiveThree
+#print axioms Gtz.volume_budget_sixThree
+#print axioms Gtz.det_one_add_eq
+#print axioms Gtz.posSemidef_diag_nonneg
+#print axioms Gtz.secondMinorSum_nonneg
+#print axioms Gtz.one_le_det_one_add_posSemidef
+#print axioms Gtz.one_le_det_subsetSum_of_dominates
+#print axioms Gtz.one_le_sq_tripleBracket_of_dominates
+#print axioms Gtz.weight_mul_leverage_le_one_of_design
+#print axioms Gtz.four_mul_weight_mul_crossNormSq_le_share_sum_sq
+#print axioms Gtz.two_mul_weight_mul_crossNormSq_le_share_sum
+#print axioms Gtz.weighted_crossNormSq_band
+#print axioms Gtz.three_dominator_weight_budget_sixThree
+#print axioms Gtz.exists_sq_tripleBracket_pos_of_crossNormSq_pos
+#print axioms Gtz.exists_sq_tripleBracket_ge_crossNormSq

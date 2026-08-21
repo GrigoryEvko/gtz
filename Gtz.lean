@@ -6569,3 +6569,19 @@ import Gtz.Wave.CorankOneWeightCap
 -- off its determinant: the three closed-form determinant laws, the complement
 -- share caps, and the volume laws at sizes four, five and six.
 import Gtz.Wave.ComplementPairDeterminantLaw
+-- The bracket is the inner product against the normal of its first two slots,
+-- and that normal's own squared length IS the pair's squared area.  Parseval
+-- read at the normal is therefore a budget for the VOLUMES through one pair:
+-- `sum_r t_r [g_p,g_q,g_r]^2 = w_pq`, two lines, every size, no hypothesis.
+-- The hinge follows in volume vocabulary with no eigenvector, no dominator and
+-- no pair minor -- a pair is PARALLEL exactly when every triple through it is
+-- degenerate.  Cauchy-Binet at rank three, written out at five and at six
+-- atoms, evaluates the determinant of Parseval and gives the VOLUME BUDGET:
+-- the ten (twenty) weighted squared volumes of a (5,3) ((6,3)) design total
+-- one.  A weak dominator shifts the identity by a positive semidefinite matrix,
+-- whose three elementary symmetric functions are nonnegative, so its squared
+-- volume is at least one -- and against the budget that caps the weight
+-- products of the dominators.  The row law also caps the squared area from
+-- above, `2 t_p t_q w_pq <= t_p l_p + t_q l_q`, which closes the band whose
+-- floor the complement determinant law supplies.
+import Gtz.Wave.TripleVolumeRowLaw
