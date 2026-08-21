@@ -198,4 +198,42 @@ theorem corner_offDiagonal_weight_cap (D : WeightedDesign m 3)
   have hdisc := discriminant_nonneg_of_binaryForm_nonneg hQ
   linarith [hdisc]
 
+/-! ## 5. The simplex form -/
+
+/-- **THE CORNER SIMPLEX LAW.**  The landed vanishing pair minor turns the
+squared pairing on the left of the off-diagonal cap into the product of the two
+leverage excesses.  That product cancels, and one factor of the corner scale
+divides out, leaving a law that is LINEAR in the two excesses:
+
+  **`e_y*(1 - t_z) + e_z*(1 - t_y)  <=  (1 + lam)*(1 - t_y)*(1 - t_z)`** ,
+
+with `e = l - 1` the leverage excess.  Reading it against the two positive
+slacks puts the corner on a simplex: each excess, measured against its own
+weight complement at the corner scale, uses up a share of one budget, and the
+two shares together never exceed the whole.
+
+This holds at every pair of inside atoms of every corner.  On the `Z1` cell,
+where the third excess vanishes and the other two total `lam`, it is exactly
+`Gtz.corner_oneAxisZero_weight_law`. -/
+theorem corner_excess_simplex (D : WeightedDesign m 3)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    {lam : ℝ} (hlam : 0 ≤ lam) {u : Fin 3 → ℝ} (hunit : u ⬝ᵥ u = 1)
+    (hgap : subsetSum D ({x, y, z} : Finset (Fin m)) - 1 = lam • atomMatrix u) :
+    (D.atom y ⬝ᵥ D.atom y - 1) * (1 - D.weight z)
+        + (D.atom z ⬝ᵥ D.atom z - 1) * (1 - D.weight y)
+      ≤ (1 + lam) * ((1 - D.weight y) * (1 - D.weight z)) := by
+  have hoff := corner_offDiagonal_weight_cap D hxy hxz hyz hlam hunit hgap
+  have hminor := corner_pairMinor_eq_zero D _ (card_triple_eq hxy hxz hyz) hlam hunit hgap
+    (by simp : y ∈ ({x, y, z} : Finset (Fin m)))
+    (by simp : z ∈ ({x, y, z} : Finset (Fin m))) hyz
+  rw [pairMinor, heavyExcess, heavyExcess, atomPairing, leverageOf_eq_dotProduct,
+    leverageOf_eq_dotProduct] at hminor
+  have hpos : (0 : ℝ) < 1 + lam := by linarith
+  -- the squared pairing cancels and one corner scale divides out
+  have hscaled : (1 + lam) * ((D.atom y ⬝ᵥ D.atom y - 1) * (1 - D.weight z)
+        + (D.atom z ⬝ᵥ D.atom z - 1) * (1 - D.weight y))
+      ≤ (1 + lam) * ((1 + lam) * ((1 - D.weight y) * (1 - D.weight z))) := by
+    nlinarith [hoff, hminor]
+  exact le_of_mul_le_mul_left hscaled hpos
+
 end Gtz

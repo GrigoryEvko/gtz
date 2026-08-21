@@ -1330,7 +1330,6 @@ import Gtz.Wave.ContractionTaxSharp
 import Gtz.Wave.KTwoTargetFactored
 import Gtz.Wave.KTwoQuotientCertificate
 import Gtz.Wave.CornerGramWeightLaw
-import Gtz.Wave.CornerGramWeightLaw
 import Gtz.Wave.OppositeHornSplit
 import Gtz.Wave.OppositeHornCount
 import Gtz.Wave.OppositeHornBudget
@@ -1342,6 +1341,7 @@ import Gtz.Wave.OppositeHornCycleNoGo
 import Gtz.Wave.KOneNormalForm
 import Gtz.Wave.KOneTransverse
 import Gtz.Wave.KOneWedgeCeiling
+import Gtz.Wave.KOneWedgeGram
 import Gtz.Wave.OppositeHornFailureDirection
 import Gtz.Wave.DiamondNeighborhoodBudget
 import Gtz.Wave.DiamondNeighborhoodFourSet
@@ -37043,6 +37043,18 @@ run_cmd do
 #print axioms Gtz.tripleBracket_sq_kOne
 #print axioms Gtz.kOne_wedge_ceiling_is_corank_condition
 
+-- Gtz/Wave/KOneWedgeGram.lean -- domination read as a Loewner cap on the Gram
+-- of the three pair normals by the squared bracket, of which the pair ceiling
+-- is the corner at a coordinate axis
+#print axioms Gtz.dotProduct_wedgeProbe_left
+#print axioms Gtz.dotProduct_wedgeProbe_mid
+#print axioms Gtz.dotProduct_wedgeProbe_third
+#print axioms Gtz.wedgeProbe_gap_form
+#print axioms Gtz.wedgeProbe_normSq_le_bracket_sq_mul_of_posSemidef
+#print axioms Gtz.not_posSemidef_of_bracket_sq_mul_lt_wedgeProbe_normSq
+#print axioms Gtz.wedgeProbe_normSq_le_bracket_sq_mul_of_dominates
+#print axioms Gtz.not_dominates_of_bracket_sq_mul_lt_wedgeProbe_normSq
+
 #print axioms Gtz.cofactorColumn_zero
 #print axioms Gtz.mulVec_cofactorColumn
 #print axioms Gtz.quadForm_cofactorColumn
@@ -37190,3 +37202,12 @@ run_cmd do
 #print axioms Gtz.corner_leverageExcess_sum
 #print axioms Gtz.corner_exists_leverageExcess_ge_third
 #print axioms Gtz.corner_exists_tripleGapDet_pos_of_readings_cheap
+#print axioms Gtz.corner_excess_simplex
+
+-- Gtz/Wave/CornerPairAdjugate.lean section 8 -- where a tie forbids an atom to
+-- sit: the orthogonal heavy producer and the per-triple tie law in currency
+#print axioms Gtz.tripleGapDet_pos_of_orthogonal_heavy
+#print axioms Gtz.subsetSum_posDef_of_orthogonal_heavy
+#print axioms Gtz.leverage_le_one_of_orthogonal_of_not_posDef
+#print axioms Gtz.tripleGapDet_nonpos_iff_excess_le_cost
+#print axioms Gtz.leverageExcess_le_readingCost_of_not_posDef
