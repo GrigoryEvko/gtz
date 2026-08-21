@@ -1391,6 +1391,7 @@ import Gtz.Wave.AtomWedgeMass
 import Gtz.Wave.CoherentHornRepayScope
 import Gtz.Wave.BranchBProductKill
 import Gtz.Wave.InadmissibleParallelJoint
+import Gtz.Wave.InadmissiblePairSeparation
 import Gtz.Wave.EtwoRealnessGauge
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
@@ -37761,3 +37762,12 @@ run_cmd do
 #print axioms Gtz.corner_projectedAtom_ne_zero_of_probe
 #print axioms Gtz.corner_kernel_reading_total
 #print axioms Gtz.corner_kernel_reading_cross
+
+-- Gtz/Wave/InadmissiblePairSeparation.lean -- an inadmissible pair never sits
+-- inside a weak dominator, so the hinge's pair crosses every dominator boundary
+#print axioms Gtz.subsetSum_gap_form_at_pair
+#print axioms Gtz.gap_offDiag_sq_le_of_dominates
+#print axioms Gtz.gap_reading_diag
+#print axioms Gtz.pairGapMinor_nonneg_of_dominates
+#print axioms Gtz.inadmissible_pair_not_inside_dominates
+#print axioms Gtz.crossNormSq_le_of_pairGapMinor_nonpos

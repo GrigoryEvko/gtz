@@ -6471,6 +6471,7 @@ import Gtz.Wave.KTwoAxisWedgeBudget
 import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.InadmissibleParallelJoint
+import Gtz.Wave.InadmissiblePairSeparation
 import Gtz.Wave.AtomWedgeMass
 import Gtz.Wave.KTwoFrameKill
 import Gtz.Wave.CellHStarPromotion
