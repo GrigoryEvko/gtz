@@ -322,4 +322,129 @@ theorem one_lt_leverage_of_pairGapMinor_pos_of_trace {a b : Fin 3 → ℝ}
     linarith
   · exact ⟨by linarith, by nlinarith [hprod, hpos]⟩
 
+/-! ## 7. The exact cost, and the criterion as an iff
+
+The producers of sections 3 and 5 replace the cost of the readings by an
+eigenvalue bound, and every such bound loses points -- measured, the sharp one
+still misses about a tenth of the failing branch.  The loss is unnecessary.  The
+trace-multiple of the cost form decomposes EXACTLY:
+
+  **`T * (-paf) = ((l_b-1)al - p*be)^2 + ((l_a-1)be - p*al)^2 + D*(al^2+be^2)`**
+
+(`Gtz.trace_mul_neg_pairAxisForm`, hypothesis-free, one `ring`), because for a
+`2x2` form `M` with trace `T` and determinant `D` the identity
+`T*q(r) = |M r|^2 + D*|r|^2` is polynomial.  Multiplying the split by `T` then
+turns the third Sylvester minor into an EXACT balance
+(`Gtz.trace_mul_tripleGapDet`), and on an admissible pair the criterion becomes
+an IFF (`Gtz.tripleGapDet_pos_iff_exactCost`): the triple strictly beats the pair
+exactly when
+
+  `|M r|^2  <  D * ( T*(l_c - 1) - |r|^2 )` .
+
+There is no coverage number here and no residual: this IS the domination
+criterion, in leverages and readings.
+
+## The open problem, stated exactly
+
+Since `D > 0`, a slot can only fire when its NECESSARY PART
+`N_e := T*(l_e - 1) - |r_e|^2` is positive -- and at a corner the three
+necessary parts total EXACTLY the mixed pair-minor sum
+(`Gtz.corner_necessaryPart_sum`):
+
+  `N_gx + N_gy + N_gz = sum_e ( pairGapMinor g_e a + pairGapMinor g_e b )` .
+
+So `Q > 0` hands a candidate slot with no selection rule
+(`Gtz.corner_exists_necessaryPart_pos`).  What remains open for the horn is
+exactly this: at a coherent corner, produce an admissible pair and a slot with
+`|M r|^2 < D * N_e`.  Nothing here proves it; the measured 100 percent of the
+failing branch is the CONJECTURE, not an input. -/
+
+/-- **THE EXACT COST.**  The trace-multiple of the cost of the readings is two
+squares plus the pair minor against the squared length.  Hypothesis-free. -/
+theorem trace_mul_neg_pairAxisForm (a b : Fin 3 → ℝ) (al be : ℝ) :
+    (leverageOf a + leverageOf b - 2) * (-(pairAxisForm a b al be))
+      = ((leverageOf b - 1) * al - (a ⬝ᵥ b) * be) ^ 2
+        + ((leverageOf a - 1) * be - (a ⬝ᵥ b) * al) ^ 2
+        + pairGapMinor a b * (al ^ 2 + be ^ 2) := by
+  simp only [pairAxisForm, pairGapMinor]
+  ring
+
+/-- **THE EXACT BALANCE.**  The trace-multiple of the third Sylvester minor is
+the pair minor against the necessary part, less the two squares of the exact
+cost.  Hypothesis-free. -/
+theorem trace_mul_tripleGapDet (a b c : Fin 3 → ℝ) :
+    (leverageOf a + leverageOf b - 2) * tripleGapDet a b c
+      = pairGapMinor a b
+          * ((leverageOf a + leverageOf b - 2) * (leverageOf c - 1)
+            - ((a ⬝ᵥ c) ^ 2 + (b ⬝ᵥ c) ^ 2))
+        - (((leverageOf b - 1) * (a ⬝ᵥ c) - (a ⬝ᵥ b) * (b ⬝ᵥ c)) ^ 2
+          + ((leverageOf a - 1) * (b ⬝ᵥ c) - (a ⬝ᵥ b) * (a ⬝ᵥ c)) ^ 2) := by
+  have hsplit := tripleGapDet_eq_pairAxisForm a b c
+  have hcost := trace_mul_neg_pairAxisForm a b (a ⬝ᵥ c) (b ⬝ᵥ c)
+  linear_combination (leverageOf a + leverageOf b - 2) * hsplit - hcost
+
+/-- **THE CRITERION AS AN IFF.**  On an admissible pair the triple strictly beats
+it exactly when the exact cost falls below the pair minor against the necessary
+part.  No bound anywhere: this is the domination criterion itself, in leverages
+and readings. -/
+theorem tripleGapDet_pos_iff_exactCost {a b : Fin 3 → ℝ}
+    (ha : 1 < leverageOf a) (hmin : 0 < pairGapMinor a b) (c : Fin 3 → ℝ) :
+    0 < tripleGapDet a b c
+      ↔ ((leverageOf b - 1) * (a ⬝ᵥ c) - (a ⬝ᵥ b) * (b ⬝ᵥ c)) ^ 2
+          + ((leverageOf a - 1) * (b ⬝ᵥ c) - (a ⬝ᵥ b) * (a ⬝ᵥ c)) ^ 2
+        < pairGapMinor a b
+          * ((leverageOf a + leverageOf b - 2) * (leverageOf c - 1)
+            - ((a ⬝ᵥ c) ^ 2 + (b ⬝ᵥ c) ^ 2)) := by
+  have hb : 1 < leverageOf b := one_lt_leverage_of_pairGapMinor_pos ha hmin
+  have hT : 0 < leverageOf a + leverageOf b - 2 := by linarith
+  have hbal := trace_mul_tripleGapDet a b c
+  constructor
+  · intro hpos
+    nlinarith [hbal, mul_pos hT hpos]
+  · intro hlt
+    nlinarith [hbal, hT, hlt]
+
+/-- **THE NECESSARY PARTS TOTAL THE MIXED MINORS.**  At a corner the three
+necessary parts of an outside pair sum EXACTLY to the six mixed pair minors of
+the pair against the inside triple.  The axis is already gone. -/
+theorem corner_necessaryPart_sum (a b gx gy gz u : Fin 3 → ℝ) {lam : ℝ}
+    (hcorner : atomMatrix gx + atomMatrix gy + atomMatrix gz
+      = 1 + lam • atomMatrix u)
+    (hu : leverageOf u = 1) :
+    ((leverageOf a + leverageOf b - 2) * (leverageOf gx - 1)
+        - ((a ⬝ᵥ gx) ^ 2 + (b ⬝ᵥ gx) ^ 2))
+      + ((leverageOf a + leverageOf b - 2) * (leverageOf gy - 1)
+        - ((a ⬝ᵥ gy) ^ 2 + (b ⬝ᵥ gy) ^ 2))
+      + ((leverageOf a + leverageOf b - 2) * (leverageOf gz - 1)
+        - ((a ⬝ᵥ gz) ^ 2 + (b ⬝ᵥ gz) ^ 2))
+      = (pairGapMinor gx a + pairGapMinor gy a + pairGapMinor gz a)
+        + (pairGapMinor gx b + pairGapMinor gy b + pairGapMinor gz b) := by
+  have hA := corner_reading_sq_sum_axisFree a gx gy gz u hcorner hu
+  have hB := corner_reading_sq_sum_axisFree b gx gy gz u hcorner hu
+  have hbudget := corner_leverageExcess_sum gx gy gz u hcorner hu
+  linear_combination (leverageOf a + leverageOf b - 2) * hbudget - hA - hB
+
+/-- **A POSITIVE MIXED-MINOR TOTAL HANDS A CANDIDATE SLOT.**  Pigeonhole on the
+necessary parts: if the six mixed minors of a pair total positive, some inside
+atom has a positive necessary part -- the precondition of the iff, with no
+selection rule. -/
+theorem corner_exists_necessaryPart_pos {a b : Fin 3 → ℝ}
+    (gx gy gz u : Fin 3 → ℝ) {lam : ℝ}
+    (hcorner : atomMatrix gx + atomMatrix gy + atomMatrix gz
+      = 1 + lam • atomMatrix u)
+    (hu : leverageOf u = 1)
+    (hQ : 0 < (pairGapMinor gx a + pairGapMinor gy a + pairGapMinor gz a)
+        + (pairGapMinor gx b + pairGapMinor gy b + pairGapMinor gz b)) :
+    0 < (leverageOf a + leverageOf b - 2) * (leverageOf gx - 1)
+        - ((a ⬝ᵥ gx) ^ 2 + (b ⬝ᵥ gx) ^ 2)
+      ∨ 0 < (leverageOf a + leverageOf b - 2) * (leverageOf gy - 1)
+        - ((a ⬝ᵥ gy) ^ 2 + (b ⬝ᵥ gy) ^ 2)
+      ∨ 0 < (leverageOf a + leverageOf b - 2) * (leverageOf gz - 1)
+        - ((a ⬝ᵥ gz) ^ 2 + (b ⬝ᵥ gz) ^ 2) := by
+  by_contra hcon
+  push Not at hcon
+  obtain ⟨h1, h2, h3⟩ := hcon
+  have hsum := corner_necessaryPart_sum a b gx gy gz u hcorner hu
+  linarith
+
 end Gtz

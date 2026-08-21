@@ -37377,3 +37377,11 @@ run_cmd do
 #print axioms Gtz.tripleGapDet_pos_of_leverageExcess_sharp
 #print axioms Gtz.subsetSum_posDef_of_leverageExcess_sharp
 #print axioms Gtz.one_lt_leverage_of_pairGapMinor_pos_of_trace
+
+-- Gtz/Wave/CornerAxisElimination.lean section 7 -- the exact cost, the
+-- criterion as an iff, and the necessary parts totalling the mixed minors
+#print axioms Gtz.trace_mul_neg_pairAxisForm
+#print axioms Gtz.trace_mul_tripleGapDet
+#print axioms Gtz.tripleGapDet_pos_iff_exactCost
+#print axioms Gtz.corner_necessaryPart_sum
+#print axioms Gtz.corner_exists_necessaryPart_pos

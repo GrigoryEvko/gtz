@@ -498,3 +498,58 @@ round.  From here: `lake build Gtz.Wave.<Module>` only, and axiom audits by a
 scratch file importing just the module under `lake env lean`.  That also removes
 the failure mode where my Audit pins could not elaborate -- the audit no longer
 needs Audit.lean at all.
+
+F43-16.  *** CORRECTION, ON THE USER'S CALL-OUT: MY COVERAGE FRAMING WAS
+OVERSTATED. ***  Three retractions of my own earlier sections:
+  (1) The "100.0000%" lines in F43-9/F43-11 are MEASURED CONTROLS -- the
+      conjecture itself evaluated at sampled points -- not theorems and not
+      "one message away".  Strike the phrase "nothing else is missing".
+  (2) Producer coverage percentages (88.58% trace, 90.52% sharp) DO NOT COMPOSE
+      into a certificate.  A proof needs the whole branch; the un-caught ~9.5%
+      is where the difficulty lives.
+  (3) The arithmetic "8.065% -> 0.92% -> 0.765%" multiplied measured coverages
+      of different sufficient conditions.  That is illegitimate accounting.
+      Strike it.
+HONEST STATE: the horn is OPEN.  What is kernel is: producers (sufficient
+conditions with real slack), the exact split, the axis elimination, the
+negative definiteness, the threshold theorem, and now the EXACT criterion.
+
+F43-17.  THE FIX IS MATHEMATICAL: THE CRITERION IS NOW AN IFF, LANDED.
+For a 2x2 form with trace T and determinant D the identity
+T*q(r) = |Mr|^2 + D*|r|^2 is polynomial.  Applied to the cost form:
+
+  trace_mul_neg_pairAxisForm  (hypothesis-free, one ring):
+    T*(-paf) = ((l_b-1)al - p*be)^2 + ((l_a-1)be - p*al)^2 + D*(al^2+be^2)
+
+  trace_mul_tripleGapDet  (hypothesis-free):
+    T*tripleGapDet = D*( T*(l_c-1) - |r|^2 ) - |Mr|^2
+
+  tripleGapDet_pos_iff_exactCost  (admissible pair):
+    dominates  <=>  |Mr|^2 < D*( T*(l_c-1) - |r|^2 )
+
+NO bound, NO coverage number, NO residual: this is the criterion itself.  The
+sections 3/5 producers are strictly weaker corollaries and are now instruments
+only.  THE OPEN PROBLEM, STATED EXACTLY: at a coherent corner produce an
+admissible pair and a slot with |Mr|^2 < D*N_e, where N_e := T*(l_e-1) - |r_e|^2.
+
+STRUCTURE FOR THE EXISTENCE FIGHT: the three necessary parts total EXACTLY the
+six mixed pair minors (corner_necessaryPart_sum):
+
+    N_gx + N_gy + N_gz = Q := sum_e ( D_{g_e,a} + D_{g_e,b} )
+
+so Q > 0 hands a candidate slot with no selection rule
+(corner_exists_necessaryPart_pos).  Q is corner data through the landed mixed
+total: Q = (lam-1)(l_a+l_b) - lam*((a.u)^2+(b.u)^2) - 2*lam.
+
+F43-18.  MEASURED (f43q.jl, same generator, 250,834 failing-branch points,
+497,087 admissible pairs; 16 threads, under 1 GB):
+  EXACT-IFF MISMATCHES: 0    (the landed iff reproduces true domination exactly)
+  adm pairs with Q>0:              92.6703%
+  branch points with SOME Q>0 pair 93.8469%
+  sharp-missed points with a Q>0 pair: 23,340 of 23,770
+  max necessary part over NON-dominating cases: +3.41e+06
+HONEST READING, same discipline as F43-16: Q>0 is NOT universal either -- it is
+an instrument, not a gateway (6.15% of branch points have no Q>0 pair), and a
+large N_e is nowhere near sufficient (the |Mr|^2 term carries real weight).  No
+composition of these percentages is a proof.  The open problem stands exactly as
+stated in F43-17.
