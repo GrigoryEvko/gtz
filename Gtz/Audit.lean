@@ -1407,6 +1407,7 @@ import Gtz.Wave.CornerRefusalDichotomy
 import Gtz.Wave.BranchTwoReduction
 import Gtz.Wave.CornerEmptinessSlack
 import Gtz.Wave.GatewayCertificateObstruction
+import Gtz.Wave.GatewayExcessBound
 import Gtz.Wave.KTwoChartCapstone
 import Gtz.Wave.KTwoFrameKill
 import Gtz.Wave.KTwoFrameChart
@@ -38277,3 +38278,19 @@ run_cmd do
 #print axioms Gtz.not_posDef_erasedCap_of_isTie
 #print axioms Gtz.exists_reading_ge_of_isTie
 #print axioms Gtz.one_le_leverage_of_erasedCap
+
+-- Gtz/Wave/GatewayExcessBound.lean -- the gateway target is a theorem on the
+-- box: at most one atom carries more excess than cap slack, the light case is
+-- the second determinant itself, and the heavy case is one scalar lemma
+#print axioms Gtz.excess_pair_le_one
+#print axioms Gtz.branchDetOutside_eq_excessForm
+#print axioms Gtz.gateway_excess_le_one_of_light
+#print axioms Gtz.gateway_le_of_sq_le_sq
+#print axioms Gtz.gatewayHeavy_core
+#print axioms Gtz.gatewayHeavy_translate
+#print axioms Gtz.gateway_excess_le_one_of_heavy
+#print axioms Gtz.branchDetComplement_swap
+#print axioms Gtz.branchDetOutside_swap
+#print axioms Gtz.branchDetComplement_cycle
+#print axioms Gtz.branchDetOutside_cycle
+#print axioms Gtz.gateway_excess_le_one
