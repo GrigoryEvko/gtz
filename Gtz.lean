@@ -5020,6 +5020,7 @@ import Gtz.Wave.KFourTreeLaplacian
 -- it gives the shipped root layer its first consumer outside its own file.  The
 -- margin ceiling is the matching upper bound to every landed cell's lower bound.
 import Gtz.Wave.ElliptopeGapBridge
+import Gtz.Wave.ElliptopeTrichotomy
 
 -- The second-moment theory of the objective, closed onto the mass energy.  The
 -- block determinant vanishes whenever two slots agree, so every determinant-

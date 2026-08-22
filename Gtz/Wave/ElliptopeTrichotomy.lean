@@ -417,7 +417,7 @@ theorem exists_strongPair_of_allHeavy_of_not_posDef (D : WeightedDesign m 3)
   · refine exists_strongPair_of_tripleGapDet_nonpos
       (by linarith [hheavy x]) (by linarith [hheavy y]) (by linarith [hheavy z]) ?_
     by_contra hpos
-    push_neg at hpos
+    push Not at hpos
     exact hfail ((subsetSum_posDef_iff_pairVocabulary D x y z hxy hxz hyz).mpr
       ⟨by linarith [hheavy x], hadm, hpos⟩)
   · exact Or.inl (strongPair_of_pairGapMinor_nonpos (not_lt.mp hadm))
@@ -599,7 +599,7 @@ theorem six_le_card_strongPairs_of_isTie (D : WeightedDesign 6 3)
     (htie : IsTie D) (hheavy : AllHeavy D) :
     6 ≤ (weakPairGraph D)ᶜ.edgeFinset.card :=
   six_le_card_strongPairs_of_allHeavy D hheavy
-    fun x y z hxy hxz hyz => htie.2 _ (card_triple_eq hxy hxz hyz)
+    fun _ _ _ hxy hxz hyz => htie.2 _ (card_triple_eq hxy hxz hyz)
 
 /-! ## Part 7 — the strong triangle, unconditionally
 
@@ -637,7 +637,7 @@ theorem exists_strong_triangle_of_isTie_of_allHeavy (D : WeightedDesign 6 3)
       StrongPair (D.atom a) (D.atom b) ∧ StrongPair (D.atom a) (D.atom c)
         ∧ StrongPair (D.atom b) (D.atom c) :=
   exists_strong_triangle_of_allHeavy_of_no_posDef D hheavy
-    fun x y z hxy hxz hyz => htie.2 _ (card_triple_eq hxy hxz hyz)
+    fun _ _ _ hxy hxz hyz => htie.2 _ (card_triple_eq hxy hxz hyz)
 
 /-! ## Part 8 — the weight currency of the triangle, and the reduction
 
@@ -686,10 +686,83 @@ theorem gtzWeighted_sixThree_of_strongGraph
     ∃ triple : Finset (Fin 6), triple.card = 3 ∧ Dominates D triple := by
   classical
   by_contra hnone
-  push_neg at hnone
+  push Not at hnone
   refine hrefute D hheavy (exists_strong_triangle_of_allHeavy_of_no_posDef D hheavy ?_)
   intro x y z hxy hxz hyz hposDef
   exact hnone _ (card_triple_eq hxy hxz hyz) hposDef.posSemidef
+
+/-! ## Part 9 — triangle-freeness without the graph, and the tetrahedron detector
+
+The graph of part 6 is only a bookkeeping device.  Its content is one three-line
+statement about three labels, and that statement detects the regular tetrahedron. -/
+
+/-- **TWO WEAK PAIRS THROUGH A COMMON ATOM FORCE A STRONG PAIR.**  The
+triangle-freeness of the weak graph, with no graph API: if a pivot is weak to two
+labels, those two labels are strong to each other.
+
+This is the whole combinatorial content of parts 6 and 7, and it is the form a
+successor should consume. -/
+theorem strongPair_of_weakPair_of_weakPair (D : WeightedDesign m 3) (hheavy : AllHeavy D)
+    {pivot first second : Fin m} (hpf : pivot ≠ first) (hps : pivot ≠ second)
+    (hfs : first ≠ second)
+    (hfail : ¬ (subsetSum D ({pivot, first, second} : Finset (Fin m)) - 1).PosDef)
+    (hweakFirst : ¬ StrongPair (D.atom pivot) (D.atom first))
+    (hweakSecond : ¬ StrongPair (D.atom pivot) (D.atom second)) :
+    StrongPair (D.atom first) (D.atom second) := by
+  rcases exists_strongPair_of_allHeavy_of_not_posDef D hheavy hpf hps hfs hfail with
+    hstrong | hstrong | hstrong
+  · exact absurd hstrong hweakFirst
+  · exact absurd hstrong hweakSecond
+  · exact hstrong
+
+/-- **THE TETRAHEDRON DETECTOR.**  An atom weak to four others leaves those four
+PAIRWISE STRONG — a strong `K_4`, which is exactly the configuration the regular
+tetrahedron realises with equality in all six caps.
+
+So the strong graph of a counterexample is either sparse at every vertex, or it
+contains the tetrahedral clique.  Each of the six conclusions is one application
+of `Gtz.strongPair_of_weakPair_of_weakPair` at the same pivot. -/
+theorem strong_fourClique_of_weak_to_four (D : WeightedDesign m 3) (hheavy : AllHeavy D)
+    (hnone : ∀ (x y z : Fin m), x ≠ y → x ≠ z → y ≠ z →
+      ¬ (subsetSum D ({x, y, z} : Finset (Fin m)) - 1).PosDef)
+    {pivot a b c d : Fin m} (hpa : pivot ≠ a) (hpb : pivot ≠ b) (hpc : pivot ≠ c)
+    (hpd : pivot ≠ d) (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hbc : b ≠ c)
+    (hbd : b ≠ d) (hcd : c ≠ d)
+    (hwa : ¬ StrongPair (D.atom pivot) (D.atom a))
+    (hwb : ¬ StrongPair (D.atom pivot) (D.atom b))
+    (hwc : ¬ StrongPair (D.atom pivot) (D.atom c))
+    (hwd : ¬ StrongPair (D.atom pivot) (D.atom d)) :
+    StrongPair (D.atom a) (D.atom b) ∧ StrongPair (D.atom a) (D.atom c)
+      ∧ StrongPair (D.atom a) (D.atom d) ∧ StrongPair (D.atom b) (D.atom c)
+      ∧ StrongPair (D.atom b) (D.atom d) ∧ StrongPair (D.atom c) (D.atom d) :=
+  ⟨strongPair_of_weakPair_of_weakPair D hheavy hpa hpb hab (hnone _ _ _ hpa hpb hab) hwa hwb,
+    strongPair_of_weakPair_of_weakPair D hheavy hpa hpc hac (hnone _ _ _ hpa hpc hac) hwa hwc,
+    strongPair_of_weakPair_of_weakPair D hheavy hpa hpd had (hnone _ _ _ hpa hpd had) hwa hwd,
+    strongPair_of_weakPair_of_weakPair D hheavy hpb hpc hbc (hnone _ _ _ hpb hpc hbc) hwb hwc,
+    strongPair_of_weakPair_of_weakPair D hheavy hpb hpd hbd (hnone _ _ _ hpb hpd hbd) hwb hwd,
+    strongPair_of_weakPair_of_weakPair D hheavy hpc hpd hcd (hnone _ _ _ hpc hpd hcd) hwc hwd⟩
+
+/-! ## Part 10 — the capstone
+
+`Gtz.gtzWeightedHeavy_six_three_iff_gtzWeighted_six_three` says heaviness is not a
+restriction at `(6,3)`, so the all-heavy reduction of part 8 upgrades to the main
+statement with no hypothesis left over. -/
+
+/-- **`Gtz.GtzWeighted 6 3` FOLLOWS FROM REFUTING THE STRONG TRIANGLE.**  Every
+all-heavy `(6,3)` design carrying three pairwise strong atoms must instead carry a
+dominating triple, and heaviness is free at this cell.
+
+This is the whole main statement reduced to one finite geometric configuration:
+three atoms of `ℝ^3`, each pair with squared pairing at least a quarter of the
+product of its two leverage excesses. -/
+theorem gtzWeighted_sixThree_of_no_strong_triangle
+    (hrefute : ∀ D : WeightedDesign 6 3, AllHeavy D →
+      ¬ (∃ a b c : Fin 6, a ≠ b ∧ a ≠ c ∧ b ≠ c ∧
+        StrongPair (D.atom a) (D.atom b) ∧ StrongPair (D.atom a) (D.atom c)
+          ∧ StrongPair (D.atom b) (D.atom c))) :
+    GtzWeighted 6 3 :=
+  gtzWeightedHeavy_six_three_iff_gtzWeighted_six_three.mp
+    fun D hheavy => gtzWeighted_sixThree_of_strongGraph hrefute D hheavy
 
 /-- **THE HINGE READING.**  A `(6,3)` tie whose strong graph carries no triangle
 has a parallel pair.  The funnel closure discharges the non-all-heavy case, so the
