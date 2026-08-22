@@ -65,7 +65,13 @@ complementary selections cannot fail at the same dependency —
 `Gtz.not_dominates_and_compl_of_budget_neg`, its weight-aware converse, and
 `Gtz.dependencyDefect_compl_pos_of_null`, which reads a TIE: the null dependency
 of a weak dominator is a strict success of the complementary selection, so the
-two members of a complementary pair are never tight together.
+two members of a complementary pair are never tight together.  And
+`Gtz.straddle_of_noStrict`: at the self-dual cell every selection of a tie reads
+its own defect nonpositively at one dependency and at least the WHOLE budget at
+another.  Normalise the budget to the identity — the weights permit it as soon as
+none reaches one half — and each complementary pair becomes one symmetric form
+whose spectrum straddles the unit interval.  At `(8,4)` that is thirty-five
+four-by-four forms, not seventy.
 
 **5.  THE CORANK-ONE CRITERION, COMPLETED.**  `Gtz.dominates_erase_of_coMean_le`
 supplies one arrow of the corank-one weak criterion and the tree carries no
@@ -797,6 +803,76 @@ theorem eightFour_dependencyDefect_compl_pos_of_isTie (D : WeightedDesign 8 4)
       (hnostrict C hcard)
   exact ⟨C, dep, hcard, hdepNe, hdep, hzero,
     dependencyDefect_compl_pos_of_null D (by norm_num) hhalf C hdepNe hzero⟩
+
+/-- **A SELECTION THAT IS NOT STRICT FAILS AT SOME DEPENDENCY.**  The strict
+criterion, contraposed. -/
+theorem exists_defect_nonpos_of_not_posDef (D : WeightedDesign m k) (hm : 2 ≤ m)
+    {C : Finset (Fin m)} (hcard : C.card = k)
+    (hnostrict : ¬ (subsetSum D C - 1).PosDef) :
+    ∃ dep : Fin m → ℝ, dep ≠ 0 ∧ (∑ index, dep index • D.atom index) = 0
+      ∧ dependencyDefect D C dep ≤ 0 := by
+  classical
+  by_contra hcontra
+  push_neg at hcontra
+  refine hnostrict ((posDef_gap_iff_dependencyDominatesStrictly D hm hcard).mpr ?_)
+  intro dep hdepNe hdep
+  have hstep := hcontra dep hdepNe hdep
+  rw [dependencyDefect] at hstep
+  linarith
+
+/-- **AND ITS COMPLEMENT'S FAILURE IS ITS OWN SURPLUS.**  A dependency at which
+the complementary selection fails is a dependency at which this selection reads
+at least the whole budget. -/
+theorem exists_defect_ge_budget_of_not_posDef_compl (D : WeightedDesign m k) (hm : 2 ≤ m)
+    {C : Finset (Fin m)} (hcompl : Cᶜ.card = k)
+    (hnostrict : ¬ (subsetSum D Cᶜ - 1).PosDef) :
+    ∃ dep : Fin m → ℝ, dep ≠ 0 ∧ (∑ index, dep index • D.atom index) = 0
+      ∧ (∑ index, dep index ^ 2 * (1 - 2 * D.weight index)
+            / (D.weight index * (1 - D.weight index)))
+          ≤ dependencyDefect D C dep := by
+  obtain ⟨dep, hdepNe, hdep, hnonpos⟩ :=
+    exists_defect_nonpos_of_not_posDef D hm hcompl hnostrict
+  refine ⟨dep, hdepNe, hdep, ?_⟩
+  have hsum := dependencyDefect_add_compl D hm C dep
+  linarith
+
+/-- **THE STRADDLE AT THE SELF-DUAL CELL.**  When the complement of a selection is
+again a selection, a design with no strictly dominating selection reads EVERY
+selection twice: at one dependency its defect is nonpositive, and at another its
+defect is at least the whole budget.
+
+Normalise the budget to the identity, which the weights permit as soon as none of
+them reaches one half.  Then every complementary pair contributes ONE symmetric
+form `Φ` with the other reading `1 - Φ`, and the straddle says the spectrum of
+every `Φ` meets both `(-∞, 0]` and `[1, ∞)`.  At `(8,4)` that is thirty-five
+four-by-four forms, each straddling the unit interval. -/
+theorem straddle_of_noStrict (D : WeightedDesign m k) (hm : 2 ≤ m)
+    {C : Finset (Fin m)} (hcard : C.card = k) (hcompl : Cᶜ.card = k)
+    (hnostrict : ∀ other : Finset (Fin m), other.card = k →
+      ¬ (subsetSum D other - 1).PosDef) :
+    (∃ dep : Fin m → ℝ, dep ≠ 0 ∧ (∑ index, dep index • D.atom index) = 0
+        ∧ dependencyDefect D C dep ≤ 0)
+      ∧ (∃ dep : Fin m → ℝ, dep ≠ 0 ∧ (∑ index, dep index • D.atom index) = 0
+        ∧ (∑ index, dep index ^ 2 * (1 - 2 * D.weight index)
+              / (D.weight index * (1 - D.weight index)))
+            ≤ dependencyDefect D C dep) :=
+  ⟨exists_defect_nonpos_of_not_posDef D hm hcard (hnostrict C hcard),
+    exists_defect_ge_budget_of_not_posDef_compl D hm hcompl (hnostrict Cᶜ hcompl)⟩
+
+/-- **THE `(8,4)` STRADDLE.**  At the first band cell of rank four every one of the
+seventy four-subsets of a tie reads its own defect nonpositively at one dependency
+and at least the whole budget at another. -/
+theorem eightFour_straddle_of_isTie (D : WeightedDesign 8 4) (htie : IsTie D)
+    {C : Finset (Fin 8)} (hcard : C.card = 4) :
+    (∃ dep : Fin 8 → ℝ, dep ≠ 0 ∧ (∑ index, dep index • D.atom index) = 0
+        ∧ dependencyDefect D C dep ≤ 0)
+      ∧ (∃ dep : Fin 8 → ℝ, dep ≠ 0 ∧ (∑ index, dep index • D.atom index) = 0
+        ∧ (∑ index, dep index ^ 2 * (1 - 2 * D.weight index)
+              / (D.weight index * (1 - D.weight index)))
+            ≤ dependencyDefect D C dep) := by
+  have hcompl : Cᶜ.card = 4 := by
+    rw [Finset.card_compl, hcard, Fintype.card_fin]
+  exact straddle_of_noStrict D (by norm_num) hcard hcompl htie.2
 
 /-- At size twice the rank the complement of a `rank`-subset is a `rank`-subset. -/
 theorem card_compl_eq_rank_of_two_mul {rank : ℕ} {C : Finset (Fin (2 * rank))}
