@@ -1,0 +1,310 @@
+NOTES - RANK FOUR: THE TWO REGISTRY HINGES ON THE DEPENDENCY SPACE
+==================================================================
+Lane: the two registry axioms that live at rank four and up.
+  Skeleton.obligationSubThresholdBandHinge            band, 2k <= m < k(k+1)/2
+  Skeleton.obligationThresholdCellHingeRankFourAndUp  cell, m = k(k+1)/2, k >= 4
+At rank four the band is the two sizes eight and nine. The threshold cell is
+size ten. Nothing below proves either axiom. Both stay open.
+
+
+F-R4D-0.  THE ANSWER IN ONE LINE
+---------------------------------
+The hinge at every cell is a statement about ONE subspace of R^size and one
+positive weight vector. The dependency space carries the hypothesis and the
+conclusion at the same time: a tie is a pair of quadratic-form comparisons on
+that subspace, and a parallel pair is a nonzero vector of that subspace carried
+by two coordinates.
+
+
+F-R4D-1.  A PARALLEL PAIR IS A SPARSE DEPENDENCY
+-------------------------------------------------
+  Gtz.hasParallelPair_iff_hasSparseDependency
+
+    HasParallelPair D  <->  some nonzero z with sum_c z_c g_c = 0 has support 2.
+
+Both directions, at every size and every rank. A parallel pair g_q = r g_p gives
+the dependency e_q - r e_p. A dependency on {p,q} gives the pair, and a zero atom
+gives the zero ratio the campaign's predicate already allows.
+
+THIS IS THE CHART FORM OF THE HINGE'S CONCLUSION that the brief asked for. The
+determinant reading Gtz.ChartCore.HasParallelPairCore names one 2x2 minor at a
+time. This names the object: the dependency space meets a coordinate 2-plane.
+
+
+F-R4D-2.  THE THREE CRITERIA, AND WHO OWNS THEM
+------------------------------------------------
+Weak, landed before this lane, Gtz/Wave/DependencyDominationCriterion.lean:
+  Gtz.dominates_iff_dependencyBound_compl
+
+Strict, landed CONCURRENTLY by another lane, Gtz/Wave/CircuitSwapLaw.lean:
+  Gtz.posDef_diagonal_sub_block_iff_kernelBound
+  Gtz.posDef_gap_iff_kernelBound
+  Gtz.posDef_gap_iff_dependencyBound
+  Gtz.posDef_gap_iff_dependencyBound_compl
+
+This lane derived those four independently, with identical statements, and
+DELETED them on the tree-wide name scan. The scan ran twice, before writing and
+after building, and the second run is the one that caught it, because the other
+lane committed in between. RULE, confirmed a second time: run the scan again
+immediately before you commit, not only before you write.
+
+New here, the PAIR-MASS reading:
+  Gtz.dominates_iff_dependencyBound_pairMass
+  Gtz.posDef_gap_iff_dependencyBound_pairMass
+  Gtz.dominates_iff_dependencyPairMass          (subset-indexed)
+
+    Dominates D C  <->  for every dependency z ,
+        sum_c z_c^2/(1 - t_c)  <=  sum_{c not in C} z_c^2/(t_c (1 - t_c)) .
+
+The left side does NOT mention C. So a rank-subset is decided by ONE fixed
+positive form on the dependency space, tested against the sum of the rank-one
+forms of the CORANK labels it omits. At corank one that sum has one term. At
+corank two it has two.
+
+AND THE LEFT SIDE IS THE WEIGHT-AVERAGE OF THE RIGHT-HAND FAMILY:
+  Gtz.sum_weight_mul_pairMass     sum_c t_c K_c = N ,  K_c(z) = z_c^2/(t_c(1-t_c)) ,
+                                  N(z) = sum_c z_c^2/(1-t_c) .
+That identity IS the engine of the corank-one rigidity, in dependency currency: a
+family that never passes its own weighted mean is constant. At corank two the
+right side has two terms and the averaging stops. That is exactly why corank one
+is rigid and corank two is not.
+
+
+F-R4D-3.  THE TIE AND THE HINGE, DESIGN-FREE
+----------------------------------------------
+  Gtz.isTie_iff_dependency
+  Gtz.hingeHoldsAtSize_iff_dependency
+
+At (8,4) the right side of the hinge mentions a four-dimensional subspace of R^8,
+eight positive weights, and the seventy 4-subsets. No atom, no Parseval, no
+projection, no matrix inverse and no bracket.
+
+Registry statements, both types carried verbatim inside Gtz:
+  Gtz.SubThresholdBandHingeStatement
+  Gtz.ThresholdCellHingeRankFourAndUpStatement
+  Gtz.subThresholdBandHingeStatement_iff_chartCore
+  Gtz.thresholdCellHingeRankFourAndUpStatement_iff_chartCore
+  Gtz.subThresholdBandHingeStatement_iff_dependency
+  Gtz.bandCell_rank_four            2*4 <= m < 10  <->  m = 8 or m = 9
+  Gtz.thresholdCell_rank_four       4*5/2 = 10
+  Gtz.subThresholdBandHinge_rank_four_iff
+and the six per-cell readings at sizes 8, 9 and 10, in the chart and on the
+dependency space. Non-vacuity carried across:
+  Gtz.exists_dependencyTie_eight_four, Gtz.exists_dependencyTie_ten_four.
+
+
+F-R4D-4.  THE SELF-DUAL CELL: SEVENTY TESTS, THIRTY-FIVE BUDGETS
+------------------------------------------------------------------
+  Gtz.dependencyDefect D C z  :=  sum_{c not in C} z_c^2/t_c - sum_{c in C} z_c^2/(1-t_c)
+  Gtz.dependencyDefect_add_compl
+
+    defect(C, z) + defect(C^c, z) = sum_c z_c^2 (1 - 2 t_c)/(t_c (1 - t_c)) .
+
+The right side does not know which pair it came from. At size = 2*rank -- the
+band's LOWER ENDPOINT, and the first rank-four band cell (8,4) -- the complement
+of a rank-subset is a rank-subset, so the C(2k,k) tests pair up. At (8,4) the
+seventy tests carry thirty-five budgets.
+
+Two consequences, both landed:
+  Gtz.dependencyDefect_pos_of_compl_neg
+      with no weight past one half, two COMPLEMENTARY selections cannot fail at
+      the same dependency
+  Gtz.not_dominates_and_compl_of_budget_neg
+      a dependency that reads the budget negatively forbids a complementary
+      dominating pair outright.
+
+The weight enters only through the pair mass t_c(1-t_c) and the sign 1 - 2 t_c.
+A negative budget needs a label of weight past one half, and at most one label of
+a design can carry that.
+
+MEASURED at (8,4): 60 random designs, all seventy subsets, residual 8.9e-15.
+
+
+F-R4D-5.  THE CORANK-ONE CRITERION IS NOW AN EQUIVALENCE
+----------------------------------------------------------
+The tree carried one arrow, Gtz.dominates_erase_of_coMean_le. The converse was
+missing. The pair-mass reading supplies it in four lines, because the canonical
+dependency of Gtz.exists_dependency has dep_c^2 = t_c u_c, so the criterion's
+left side IS Gtz.coMean and its single right-hand term IS Gtz.coRatio.
+
+  Gtz.coMean_le_coRatio_of_dominates_erase
+  Gtz.dominates_erase_iff_coMean_le
+      Dominates D (univ.erase d)  <->  coMean D <= coRatio D d .
+
+
+F-R4D-6.  JOB D: CORANK TWO IN NORMAL FORM
+--------------------------------------------
+Landed, frame-free:
+  Gtz.corankTwo_dominates_iff, Gtz.corankTwo_posDef_gap_iff
+      at size rank+2 a rank-subset omits a pair {d,e} and the criterion tests N
+      against the two pair-mass forms K_d and K_e
+  Gtz.exists_pair_compl_of_card_eq_corankTwo
+  Gtz.corankTwo_not_dominates_of_sparse
+  Gtz.not_dominates_of_dependency_inside
+      a nonzero dependency INSIDE a selection refutes domination outright. One
+      line from the criterion, and it recovers Gtz.not_dominates_of_exists_null
+      and Gtz.not_dominates_of_parallel_within with no null probe and no
+      determinant.
+
+DERIVED AND MEASURED, NOT PROVED IN LEAN. Normalise the criterion by N. Put
+K'_c = N^{-1/2} K_c N^{-1/2} = lambda_c u_c u_c^T with |u_c| = 1. Then
+
+  sum_c t_c lambda_c u_c u_c^T = I_2 ,   hence   sum_c t_c lambda_c = 2 ,
+
+and, with th_de the angle between u_d and u_e,
+
+  univ \ {d,e} DOMINATES  <->  lambda_d lambda_e sin^2(th_de) - lambda_d - lambda_e + 1 >= 0
+                               AND  lambda_d + lambda_e >= 2 ,
+  STRICTLY                <->  the two inequalities are strict.
+
+So a corank-two design is m unit directions on a circle, m scalars lambda_c >= 0,
+and m weights, under ONE planar tight-frame constraint. A parallel pair is a line
+through the origin that holds all but at most two of the live directions.
+
+At corank ONE the same normalisation gives sum_c t_c lambda_c = 1 and the
+criterion lambda_d >= 1, so no strict dominator forces every lambda_c = 1. That
+is the landed corank-one rigidity, recovered.
+
+At corank TWO the trace budget is 2 and the pair test is lambda_d + lambda_e >= 2
+PLUS the angle term. A pair with lambda_d + lambda_e above 2 still fails when its
+two directions are near-parallel. THAT is the escape that breaks the averaging
+argument, and it is why corank two carries parallel-free ties while corank one
+does not.
+
+MEASURED: 9600 pairs over the cells (4,2), (5,3), (6,4), (7,5) and (8,6). Zero
+weak mismatches, zero strict mismatches. Frame residual 1.7e-15, trace residual
+2.2e-15.
+
+
+F-R4D-7.  JOB C: THE (8,4) CRITERION, WRITTEN DOWN
+----------------------------------------------------
+A design at (8,4) IS a pair (Dep, t): a four-dimensional subspace of R^8 and a
+positive weight vector on the simplex. Every such pair is a design and every
+design is such a pair, because the atoms are recovered from Dep^perp by the
+Parseval whitening, which is always solvable at a positive t.
+
+Take a basis Z of Dep. For a 4-subset S put
+
+  X_S := Z^T diag(e_S) Z ,   e_S,c = 1/t_c for c in S ,  -1/(1-t_c) otherwise.
+
+Then the 4-subset  univ \ S  dominates iff X_S >= 0 and dominates strictly iff
+X_S > 0. Seventy 4x4 forms on one 4-space, and three laws relate them:
+
+ (a) X_S + X_{S^c} = Z^T diag((1-2t_c)/(t_c(1-t_c))) Z ,  the SAME for all S.
+     Measured residual 8.9e-15.
+ (b) det X_S = sum_T (prod_{c in T} e_S,c) det(Z_T)^2  by Cauchy-Binet, the sum
+     over all seventy 4-subsets T. Measured residual 1.8e-12.
+ (c) sum_c t_c K_c = N , the weight-average identity. Measured residual 4.5e-16.
+
+The Pluecker coordinates det(Z_T) are, up to sign, the atom brackets of the
+COMPLEMENTARY 4-subset, so (b) prices every selection determinant by the
+seventy squared brackets of the design.
+
+CENSUS, 400 random (8,4) designs, exact statement of what was counted:
+  dominating 4-subsets      min 1, median 8, max 19  of 70
+  strictly dominating       min 1, median 8, max 19  of 70
+  designs with none         0
+  ordered complementary pairs both dominating   min 0, median 0, max 10
+
+At a random design domination and strict domination always agreed, so the tie
+locus has measure zero, as expected.
+
+
+F-R4D-8.  JOB B: WHAT WAS ACTUALLY DONE, AND WHAT WAS NOT
+-----------------------------------------------------------
+NOT DONE: an exact rational active-set solve at (8,4). A tie is the vanishing of
+one selection determinant, and in every one-parameter rational family of designs
+that determinant is a QUADRATIC, so a rational root needs a square discriminant.
+No construction in this lane produced one. The honest position is that the exact
+solve is still open and that its cost is a square-discriminant search, not a
+Groebner basis.
+
+DONE: an independent reproduction of the collinearity answer in a DIFFERENT
+parametrisation. The earlier lane searched the projection chart (V, t). This lane
+searched the dependency chart (Z, t), which is unconstrained apart from a Stiefel
+normalisation, with analytic gradients for lambda_min of X_S and Adam.
+
+  cell   ties found (|max lmin| < 1e-9)   parallel-free among them
+  (5,3)        85 / 120                        46   (38 percent)
+  (6,4)        43 / 120                        34   (79 percent)
+  (7,4)         9 / 120                         4   (44 percent)
+  (6,3)        43 / 120                         0   (0 percent)
+  (8,4)         0 / 120                         -   (search stalled)
+
+CALIBRATION. The hinge is kernel-refuted at (5,3), and the search finds
+parallel-free ties there. At (6,3), the campaign's open rank-three target, the
+same harness finds forty-three ties and NOT ONE is parallel-free. The method
+reproduces the known answer at both calibration cells, in a parametrisation that
+shares nothing with the earlier lane's.
+
+The (6,4) figure agrees with the earlier lane's 78 percent to within the noise of
+two different searches. The (7,4) figure is lower than the earlier lane's 29.5
+percent read the other way round, and the two are not directly comparable because
+the restart counts differ by a factor of seven.
+
+HONEST LIMIT. A stall over 120 restarts is not a proof of anything, and the
+(8,4) row is a stall of the SEARCH, not a statement about the cell. Read the
+earlier lane's 800-restart figures for that cell, not this one.
+
+WITNESS RECORDED, floating point only, for a successor who wants to rationalise
+it. A (7,4) tie with |max lmin| = 4.7e-10 and a parallel-free score of 0.433,
+weights (0.0837, 0.2008, 0.1066, 0.1185, 0.1490, 0.1759, 0.1656) and dependency
+basis in scratchpad/rankfourchart/hunt.log. A (6,4) tie at 5.0e-16 with a
+parallel-free score of 0.576 is in the same file.
+
+
+F-R4D-9.  WHAT THE FIELD DOES, AND WHAT IT DOES NOT
+------------------------------------------------------
+Every criterion in this lane is FIELD-BLIND. The strict criterion divides by
+sqrt(scale) and reads probe^2. Over C the same three lines run with Complex.normSq
+and nothing changes. So the realness obstruction of
+Gtz/Complex/ComplexHingeRefutation.lean does NOT enter the criteria, and it does
+not enter the sparse-dependency reading either: a complex parallel pair is a
+complex dependency of support two, by the same two lines.
+
+CONSEQUENCE, and a successor must not miss it: the dependency reading ALONE can
+never close either registry axiom. The hinge is false over C at (4,2) and (6,3),
+and every statement this lane landed survives complexification. Whatever closes
+the axioms has to spend the real-only fact somewhere the dependency chart cannot
+see it.
+
+
+F-R4D-10.  ROUTES CLOSED, AND ROUTES OPEN
+--------------------------------------------
+CLOSED here: nothing. This lane closed no route and refuted no statement.
+
+OPEN, and the two worth a successor:
+
+ 1. THE BUDGET AT THE SELF-DUAL CELL. Gtz.dependencyDefect_add_compl pairs the
+    seventy (8,4) tests into thirty-five. What is NOT known is whether a tie can
+    put both members of a pair on the boundary at once. If it cannot, the tie
+    locus at (8,4) is cut by thirty-five conditions and not seventy, and the
+    band's first cell becomes a smaller object than anyone has treated it as.
+
+ 2. THE CORANK-TWO NORMAL FORM. F-R4D-6 turns corank two into m circle
+    directions, m scalars and one tight-frame constraint. Mechanising the
+    N-normalisation costs a square root of a 2x2 form, which Mathlib supplies
+    through the continuous functional calculus. With it, the corank-two tie
+    stratum becomes a finite explicit system, and the question "does a
+    parallel-free corank-two tie exist at rank four" becomes a question about
+    six directions on a circle.
+
+DO NOT SPEND A CYCLE ON: an averaging proof of corank-two rigidity. F-R4D-6
+names the exact escape, the near-parallel direction pair, and the numerics of
+F-R4D-8 confirm that corank two carries parallel-free ties in abundance while
+corank one carries none.
+
+
+F-R4D-11.  PROCESS
+--------------------
+The name scan caught four collisions with a lane that committed WHILE this
+module was being written. All four were deleted and the landed versions imported.
+The first scan, run before writing, was clean; the second, run after building,
+was not. Run it twice.
+
+A concurrent lane's commit swept this lane's edits to Gtz.lean and Gtz/Audit.lean
+into its own commit. No content was lost and the audit builds clean, but the
+wiring commit of this lane does not exist as a separate commit. Record kept here.
+
+Harness: Julia at eight threads, small dense linear algebra, no BLAS threading
+issue at these sizes. Sources in scratchpad/rankfourchart/.

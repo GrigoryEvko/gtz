@@ -40007,3 +40007,12 @@ run_cmd do
 #print axioms Gtz.card_compl_eq_rank_of_two_mul
 #print axioms Gtz.sum_weight_mul_pairMass
 #print axioms Gtz.eightFour_dependencyDefect_add_compl
+
+-- THE CORANK-ONE WEAK CRITERION, COMPLETED TO AN EQUIVALENCE.
+--   The tree carried one arrow only.  The pair-mass reading of the canonical dependency
+--   supplies the converse, because its squared coefficients are the weighted co-shares.
+#print axioms Gtz.dominates_iff_dependencyPairMass
+#print axioms Gtz.compl_univ_erase
+#print axioms Gtz.sum_smul_atom_eq_zero_of_coord
+#print axioms Gtz.coMean_le_coRatio_of_dominates_erase
+#print axioms Gtz.dominates_erase_iff_coMean_le
