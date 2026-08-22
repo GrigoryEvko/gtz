@@ -146,3 +146,40 @@ time of writing) proves the same five-coplanar kill by the planar weight floor
 route.  Gtz/Wave/PlaneWeightFloor.lean (also untracked) is building the general
 weight floor sigma >= 1.  This lane depends on NEITHER: its engine is the
 rescaling above, proved here.
+
+=====================================================================
+THIRD PASS — the coordinator correction, and the field question
+=====================================================================
+
+SUBSUMED, AND REMOVED.  Gtz.card_coplanar_le_three_of_isPrimitiveDesign_of_isTie
+(TieStratumClassification.lean:310) with Gtz.isPrimitiveDesign_iff_not_hasParallelPair
+(StratumEmptinessLedger.lean:994) IS the coplanar bridge at six points.  So the
+shadow-class pigeonhole and the light-shadow collapse both carry a hypothesis no
+primitive six-point tie can meet.  Both are deleted from the module.  What
+survives owes nothing to coplanarity.
+
+THE SEVENTH CLAUSE (landed).  Gtz.sixThree_tie_pivotLeverage_le_pairGapMinor.
+At every (6,3) tie and every atom c there are two OTHER atoms a, b with
+
+    l_c * (t_c / (1 - t_c))^2  <=  (l_a - 1)(l_b - 1) - <g_a,g_b>^2 .
+
+Chain: the pivot's own plane is over-covered by 1/(1 - t_c) (the deficit margin);
+the margin reaches the plane block determinant, D >= (t_c/(1-t_c))^2; the pivot's
+shadow vanishes so inserting it moves the gap determinant by exactly l_c * D; the
+tie gate caps the triple at zero; the pair's own determinant is minus its Gram
+minor.  Shape: a PER-ATOM EXISTENTIAL over pairs, which none of the six clauses of
+Gtz.sixThree_primitiveTie_normalForm has.  INDEPENDENCE IS NOT PROVED and no
+separating design is exhibited.
+
+THE FIELD QUESTION — SETTLED.  Every step of the chain is Hermitian-safe except
+ONE: the appeal to Gtz.gtz_rank_two inside the deficit law.  And that step is
+FALSE over the complex field.  MEASURED (scratchpad/twoplane/cplx2b.jl): whitened
+complex (m,2) designs, descent on max over pairs of lambda_min.
+  CONTROL, atoms forced real, m = 4 : minimum +0.000000  (real rank-two GTZ, the
+    minimum sits on the boundary, which is the three-class tie)
+  COMPLEX m = 4 : minimum -0.153715, witness with Parseval residual 1.3e-15,
+    weights (0.27363, 0.25454, 0.26012, 0.21170), max |Im| 1.3723, and ALL SIX
+    pairs failing at about -0.1537
+  COMPLEX m = 5 : -0.152137 ; m = 6 : -0.139312
+So complex rank-two GTZ fails already at four atoms.  The instrument is therefore
+NOT field-blind, and Gtz.complexHingeSixDesign does not disqualify it.
