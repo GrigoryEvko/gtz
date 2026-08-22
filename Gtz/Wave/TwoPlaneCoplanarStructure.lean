@@ -1703,4 +1703,138 @@ theorem sixThree_exists_planeStrictPair_of_zeroShadow (design : WeightedDesign 6
       ∧ PlaneStrictPair design frame.axis first second :=
   exists_planeStrictPair_of_zeroShadow (atoms := 4) design frame spikeLabel hspikeOne hspikeTwo
 
+/-! ## Part 8 — EVERY atom's own orthogonal plane carries a strict pair
+
+Part 7 asks for an atom whose SHADOW vanishes.  Every nonzero atom has one: put
+the axis along the atom itself.  So the deficit law fires at every atom of every
+rank-three design, and the plane-strict pair it returns costs NOTHING.
+
+The tree's two routes to a plane-strict pair each pay.
+`Gtz.exists_planeStrictPair_of_transversalAxis` pays four atoms pairwise
+transversal to the axis.  `Gtz.exists_unitAxis_planeStrictPair_of_nesterenkoExcess`
+pays the threshold `1 + t_d < 2 t_d l_d`.  This route pays nothing at all, and it
+NAMES the axis: the pivot atom's own direction.
+
+The consequence at `(6,3)` is that the landed pair budget — the pair-det gate
+summed over the four completions, together with its equality locus — fires at
+EVERY atom of EVERY tie, with no genericity hypothesis anywhere. -/
+
+/-- **THE PIVOT'S OWN PLANE CARRIES A STRICT PAIR.**  For every nonzero atom of a
+rank-three design there is a frame whose axis is that atom's direction and a pair
+of OTHER atoms that strictly over-covers its plane.  No tie, no heaviness, no
+transversality, no threshold. -/
+theorem exists_frame_planeStrictPair_orthogonal_to_atom {atoms : ℕ}
+    (design : WeightedDesign (atoms + 2) 3) {pivotLabel : Fin (atoms + 2)}
+    (hnonzero : design.atom pivotLabel ≠ 0) :
+    ∃ (frame : AxisFrame) (first second : Fin (atoms + 2)),
+      design.atom pivotLabel ⬝ᵥ frame.axis ≠ 0
+        ∧ first ≠ second ∧ first ≠ pivotLabel ∧ second ≠ pivotLabel
+        ∧ PlaneStrictPair design frame.axis first second := by
+  classical
+  have hpos : 0 < design.atom pivotLabel ⬝ᵥ design.atom pivotLabel :=
+    dotProduct_self_pos hnonzero
+  set root := Real.sqrt (design.atom pivotLabel ⬝ᵥ design.atom pivotLabel) with hrootDef
+  have hrootPos : 0 < root := Real.sqrt_pos.mpr hpos
+  set unitAxis : Fin 3 → ℝ := root⁻¹ • design.atom pivotLabel with haxisDef
+  have hunit : unitAxis ⬝ᵥ unitAxis = 1 := by
+    rw [haxisDef, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc,
+      ← mul_inv, hrootDef, Real.mul_self_sqrt hpos.le]
+    exact inv_mul_cancel₀ hpos.ne'
+  obtain ⟨pOne, pTwo, hOneOne, hTwoTwo, hOneTwo, hOneAxis, hTwoAxis⟩ :=
+    exists_orthonormal_planarFrame hunit
+  set frame : AxisFrame :=
+    { pOne := pOne, pTwo := pTwo, axis := unitAxis, oneOne := hOneOne, twoTwo := hTwoTwo,
+      axisAxis := hunit, oneTwo := hOneTwo, oneAxis := hOneAxis, twoAxis := hTwoAxis }
+    with hframeDef
+  have hscaled : design.atom pivotLabel = root • unitAxis := by
+    rw [haxisDef, smul_smul, mul_inv_cancel₀ hrootPos.ne', one_smul]
+  have hpivotOne : design.atom pivotLabel ⬝ᵥ frame.pOne = 0 := by
+    show design.atom pivotLabel ⬝ᵥ pOne = 0
+    have hcomm : unitAxis ⬝ᵥ pOne = 0 := by rw [dotProduct_comm]; exact hOneAxis
+    rw [hscaled, smul_dotProduct, smul_eq_mul, hcomm, mul_zero]
+  have hpivotTwo : design.atom pivotLabel ⬝ᵥ frame.pTwo = 0 := by
+    show design.atom pivotLabel ⬝ᵥ pTwo = 0
+    have hcomm : unitAxis ⬝ᵥ pTwo = 0 := by rw [dotProduct_comm]; exact hTwoAxis
+    rw [hscaled, smul_dotProduct, smul_eq_mul, hcomm, mul_zero]
+  have haxisReading : design.atom pivotLabel ⬝ᵥ frame.axis ≠ 0 := by
+    show design.atom pivotLabel ⬝ᵥ unitAxis ≠ 0
+    rw [haxisDef, dotProduct_smul, smul_eq_mul]
+    exact mul_ne_zero (inv_ne_zero hrootPos.ne') hpos.ne'
+  obtain ⟨first, second, hne, hfirstNe, hsecondNe, hstrict⟩ :=
+    exists_planeStrictPair_of_zeroShadow design frame pivotLabel hpivotOne hpivotTwo
+  exact ⟨frame, first, second, haxisReading, hne, hfirstNe, hsecondNe, hstrict⟩
+
+/-- Every atom of a `(6,3)` tie is nonzero, because a tie is heavy everywhere. -/
+theorem sixThree_atom_ne_zero_of_isTie (design : WeightedDesign 6 3) (htie : IsTie design)
+    (label : Fin 6) : design.atom label ≠ 0 := by
+  intro hzero
+  have hheavy := leverage_one_le_of_isTie_sixThree design htie label
+  rw [hzero] at hheavy
+  simp only [leverageOf, Pi.zero_apply] at hheavy
+  norm_num at hheavy
+
+/-- **THE PAIR BUDGET FIRES AT EVERY ATOM OF EVERY `(6,3)` TIE.**  Unconditional.
+Every atom of a tie is nonzero, its own plane carries a strict pair of two OTHER
+atoms by Part 8, and the landed pair-det gate then caps the weighted total of the
+gap determinants over the four completions of that pair.  Budget equality forces
+ALL FOUR completions to be weakly dominating with singular gap.
+
+The landed `Gtz.sixThree_tie_pairBudget_of_transversalAxis` reaches the same
+conclusion from four atoms pairwise transversal to a given axis.  Here nothing is
+assumed: the axis is produced from the pivot atom and the transversality census
+never enters. -/
+theorem sixThree_tie_pairBudget_at_every_atom (design : WeightedDesign 6 3)
+    (htie : IsTie design) (pivotLabel : Fin 6) :
+    ∃ strongLabel otherLabel : Fin 6, strongLabel ≠ otherLabel
+      ∧ strongLabel ≠ pivotLabel ∧ otherLabel ≠ pivotLabel
+      ∧ AdmissiblePair (design.atom strongLabel) (design.atom otherLabel)
+      ∧ 1 < leverageOf (design.atom strongLabel)
+      ∧ 1 < leverageOf (design.atom otherLabel)
+      ∧ (∑ thirdLabel ∈ ({strongLabel, otherLabel} : Finset (Fin 6))ᶜ,
+            design.weight thirdLabel
+              * (subsetSum design {strongLabel, otherLabel, thirdLabel} - 1).det ≤ 0)
+      ∧ ((∑ thirdLabel ∈ ({strongLabel, otherLabel} : Finset (Fin 6))ᶜ,
+            design.weight thirdLabel
+              * (subsetSum design {strongLabel, otherLabel, thirdLabel} - 1).det = 0) →
+          ∀ thirdLabel : Fin 6, thirdLabel ≠ strongLabel → thirdLabel ≠ otherLabel →
+            (subsetSum design {strongLabel, otherLabel, thirdLabel} - 1).det = 0
+              ∧ Dominates design {strongLabel, otherLabel, thirdLabel}) := by
+  obtain ⟨frame, strongLabel, otherLabel, -, hne, hstrongNe, hotherNe, hstrict⟩ :=
+    exists_frame_planeStrictPair_orthogonal_to_atom (atoms := 4) design
+      (sixThree_atom_ne_zero_of_isTie design htie pivotLabel)
+  obtain ⟨hheavyStrong, hheavyOther⟩ :=
+    one_lt_leverage_of_planeStrictPair design frame hne hstrict
+  exact ⟨strongLabel, otherLabel, hne, hstrongNe, hotherNe,
+    admissiblePair_of_planeStrictPair design frame hne hstrict, hheavyStrong, hheavyOther,
+    pairBudget_nonpos_of_isTie design htie frame.oneOne frame.twoTwo frame.axisAxis
+      frame.oneTwo frame.oneAxis frame.twoAxis hne hstrict,
+    fun hbudgetZero => forall_completion_dominates_of_pairBudget_eq_zero design htie
+      frame.oneOne frame.twoTwo frame.axisAxis frame.oneTwo frame.oneAxis frame.twoAxis
+      hne hstrict hbudgetZero⟩
+
+/-- **THE AREA WINDOW FIRES AT EVERY ATOM OF EVERY `(6,3)` TIE.**  The pair the
+pivot's own plane hands over is heavy and admissible, so the landed area window
+confines its squared area between the admissibility floor and the moment
+ceiling — at every atom, with no genericity. -/
+theorem sixThree_tie_crossNormSq_window_at_every_atom (design : WeightedDesign 6 3)
+    (htie : IsTie design) (pivotLabel : Fin 6) :
+    ∃ strongLabel otherLabel : Fin 6, strongLabel ≠ otherLabel
+      ∧ strongLabel ≠ pivotLabel ∧ otherLabel ≠ pivotLabel
+      ∧ leverageOf (design.atom strongLabel) + leverageOf (design.atom otherLabel) - 1
+          < crossNormSq (design.atom strongLabel) (design.atom otherLabel)
+      ∧ 2 * (design.weight strongLabel + design.weight otherLabel)
+            * crossNormSq (design.atom strongLabel) (design.atom otherLabel)
+          ≤ leverageOf (design.atom strongLabel) + leverageOf (design.atom otherLabel) - 2
+            + design.weight strongLabel
+                * (2 * leverageOf (design.atom strongLabel)
+                  + leverageOf (design.atom otherLabel) - 1)
+            + design.weight otherLabel
+                * (leverageOf (design.atom strongLabel)
+                  + 2 * leverageOf (design.atom otherLabel) - 1) := by
+  obtain ⟨strongLabel, otherLabel, hne, hstrongNe, hotherNe, hadmissible, hheavyStrong, -, -, -⟩ :=
+    sixThree_tie_pairBudget_at_every_atom design htie pivotLabel
+  obtain ⟨hfloor, hceiling⟩ :=
+    crossNormSq_window_of_isTie design htie hne hheavyStrong hadmissible
+  exact ⟨strongLabel, otherLabel, hne, hstrongNe, hotherNe, hfloor, hceiling⟩
+
 end Gtz
