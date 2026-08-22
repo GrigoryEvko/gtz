@@ -146,6 +146,11 @@ theorem sq_dotProduct_le_leverage_mul (v w : Fin 2 → ℝ) :
   simp only [dotProduct_two, leverageOf_two]
   nlinarith [sq_nonneg (v 0 * w 1 - v 1 * w 0)]
 
+/-- Scaling both sides of a plane pairing. -/
+theorem smul_dotProduct_smul (c d : ℝ) (v w : Fin 2 → ℝ) :
+    (c • v) ⬝ᵥ (d • w) = c * d * (v ⬝ᵥ w) := by
+  simp only [dotProduct_two, Pi.smul_apply, smul_eq_mul]; ring
+
 /-- Two unit plane vectors pair in `[-1, 1]`. -/
 theorem neg_one_le_dotProduct_of_unit {v w : Fin 2 → ℝ}
     (hv : leverageOf v = 1) (hw : leverageOf w = 1) : -1 ≤ v ⬝ᵥ w := by
@@ -462,5 +467,232 @@ theorem chartWeightFloor {ι : Type*} [DecidableEq ι] (T : Finset ι)
     (hcap : ∀ a ∈ T, ∀ b ∈ T, a ≠ b → 2 * (x a * x b) ≤ 1 + u a ⬝ᵥ u b) :
     ∑ a ∈ T, s a * x a ≤ 1 :=
   chartWeightFloor_aux T.card T s x u le_rfl hspos hunit hsum hbal hx0 hx1 hcap
+
+
+/-! ## Part C — the planar weight floor in design coordinates
+
+A PLANE PARSEVAL FAMILY is a finite family of plane vectors with positive weights
+whose weighted atoms resolve `I_2`.  It is NOT a design: nothing forces the
+weights to total one.  The in-plane restriction of a rank-three design is exactly
+such a family, and its total weight is one minus the weight the design spends off
+the plane. -/
+
+theorem leverageOf_smul (scale : ℝ) (v : Fin 2 → ℝ) :
+    leverageOf (scale • v) = scale ^ 2 * leverageOf v := by
+  simp only [leverageOf_two, Pi.smul_apply, smul_eq_mul]
+  ring
+
+theorem leverageOf_nonneg (v : Fin 2 → ℝ) : 0 ≤ leverageOf v := by
+  rw [leverageOf_two]; positivity
+
+/-- A plane vector of zero leverage has a zero atom. -/
+theorem atomMatrix_eq_zero_of_leverage_eq_zero {v : Fin 2 → ℝ} (h : leverageOf v = 0) :
+    atomMatrix v = 0 := by
+  rw [leverageOf_two] at h
+  have h0 : v 0 = 0 := by nlinarith [sq_nonneg (v 0), sq_nonneg (v 1)]
+  have h1 : v 1 = 0 := by nlinarith [sq_nonneg (v 0), sq_nonneg (v 1)]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [atomMatrix, Matrix.vecMulVec_apply, h0, h1]
+
+/-- **THE PLANAR WEIGHT FLOOR.**  A plane Parseval family in which no pair
+dominates strictly carries total weight at least one.
+
+The no-strict hypothesis is stated as `(l_a - 1)(l_b - 1) <= <g_a,g_b>^2`, which
+is `det (S_{a,b} - 1) <= 0` read through Lagrange at rank two
+(`Gtz.sq_dotProduct_add_sq_planeWedge`, `Gtz.det_pairGap_eq`).
+
+Sharp: total weight exactly one is attained on a two-parameter family, which is
+the landed rank-two tie classification `Gtz.rankTwoTieClassification` read at
+singleton classes. -/
+theorem planarParseval_one_le_weightSum {ι : Type*} [DecidableEq ι] (T : Finset ι)
+    (g : ι → Fin 2 → ℝ) (t : ι → ℝ)
+    (htpos : ∀ a ∈ T, 0 < t a)
+    (hpars : ∑ a ∈ T, t a • atomMatrix (g a) = 1)
+    (hnostrict : ∀ a ∈ T, ∀ b ∈ T, a ≠ b →
+        (leverageOf (g a) - 1) * (leverageOf (g b) - 1) ≤ (g a ⬝ᵥ g b) ^ 2) :
+    1 ≤ ∑ a ∈ T, t a := by
+  classical
+  -- entrywise Parseval
+  have hent : ∀ i j : Fin 2, ∑ a ∈ T, t a * (g a i * g a j) = if i = j then 1 else 0 := by
+    intro i j
+    have h := congrFun (congrFun hpars i) j
+    simpa [Matrix.sum_apply, Matrix.smul_apply, atomMatrix, Matrix.vecMulVec_apply,
+      Matrix.one_apply, smul_eq_mul] using h
+  -- discard the zero atoms: they only add weight
+  set T₀ : Finset ι := T.filter (fun a => 0 < leverageOf (g a)) with hT₀def
+  have hT₀sub : T₀ ⊆ T := Finset.filter_subset _ _
+  have hlevpos : ∀ a ∈ T₀, 0 < leverageOf (g a) := fun a ha => (Finset.mem_filter.mp ha).2
+  have hzeroAtom : ∀ a ∈ T, a ∉ T₀ → g a 0 = 0 ∧ g a 1 = 0 := by
+    intro a ha hnot
+    simp only [hT₀def, Finset.mem_filter, not_and, not_lt] at hnot
+    have hle := hnot ha
+    have hz : leverageOf (g a) = 0 := le_antisymm hle (leverageOf_nonneg _)
+    rw [leverageOf_two] at hz
+    exact ⟨by nlinarith [sq_nonneg (g a 0), sq_nonneg (g a 1)],
+      by nlinarith [sq_nonneg (g a 0), sq_nonneg (g a 1)]⟩
+  have hent₀ : ∀ i j : Fin 2, ∑ a ∈ T₀, t a * (g a i * g a j) = if i = j then 1 else 0 := by
+    intro i j
+    rw [← hent i j]
+    refine Finset.sum_subset hT₀sub ?_
+    intro a ha hnot
+    obtain ⟨h0, h1⟩ := hzeroAtom a ha hnot
+    fin_cases i <;> fin_cases j <;> simp [h0, h1]
+  -- the chart data
+  set s : ι → ℝ := fun a => t a * leverageOf (g a) with hsdef
+  set x : ι → ℝ :=
+    fun a => if leverageOf (g a) ≤ 1 then 0 else 1 - (leverageOf (g a))⁻¹ with hxdef
+  set u : ι → Fin 2 → ℝ :=
+    fun a => (leverageOf (g a))⁻¹ • chartVector (g a) with hudef
+  have hspos : ∀ a ∈ T₀, 0 < s a := by
+    intro a ha
+    simp only [hsdef]
+    exact mul_pos (htpos a (hT₀sub ha)) (hlevpos a ha)
+  have hunit : ∀ a ∈ T₀, leverageOf (u a) = 1 := by
+    intro a ha
+    have hl : leverageOf (g a) ≠ 0 := (hlevpos a ha).ne'
+    simp only [hudef]
+    rw [leverageOf_smul, leverageOf_chartVector]
+    field_simp
+  have hsum : ∑ a ∈ T₀, s a = 2 := by
+    have hterm : ∀ a, s a = t a * (g a 0 * g a 0) + t a * (g a 1 * g a 1) := by
+      intro a; simp only [hsdef, leverageOf_two]; ring
+    rw [Finset.sum_congr rfl fun a _ => hterm a, Finset.sum_add_distrib,
+      hent₀ 0 0, hent₀ 1 1]
+    norm_num
+  have hval : ∀ a ∈ T₀, ∀ i, s a * u a i = t a * chartVector (g a) i := by
+    intro a ha i
+    have hl : leverageOf (g a) ≠ 0 := (hlevpos a ha).ne'
+    simp only [hsdef, hudef, Pi.smul_apply, smul_eq_mul]
+    field_simp
+  have hbal0 : ∑ a ∈ T₀, t a * chartVector (g a) 0 = 0 := by
+    have hterm : ∀ a, t a * chartVector (g a) 0
+        = t a * (g a 0 * g a 0) - t a * (g a 1 * g a 1) := by
+      intro a; rw [chartVector_zero]; ring
+    rw [Finset.sum_congr rfl fun a _ => hterm a, Finset.sum_sub_distrib,
+      hent₀ 0 0, hent₀ 1 1]
+    norm_num
+  have hbal1 : ∑ a ∈ T₀, t a * chartVector (g a) 1 = 0 := by
+    have hterm : ∀ a, t a * chartVector (g a) 1 = 2 * (t a * (g a 0 * g a 1)) := by
+      intro a; rw [chartVector_one]; ring
+    rw [Finset.sum_congr rfl fun a _ => hterm a, ← Finset.mul_sum, hent₀ 0 1]
+    norm_num
+  have hbal : ∀ i, ∑ a ∈ T₀, s a * u a i = 0 := by
+    intro i
+    rw [Finset.sum_congr rfl fun a ha => hval a ha i]
+    fin_cases i
+    · exact hbal0
+    · exact hbal1
+  have hx0 : ∀ a ∈ T₀, 0 ≤ x a := by
+    intro a ha
+    have hl := hlevpos a ha
+    simp only [hxdef]
+    split
+    · exact le_rfl
+    · rename_i hgt
+      push_neg at hgt
+      have hinv : (leverageOf (g a))⁻¹ ≤ 1 := by
+        rw [inv_le_one_iff₀]; right; linarith
+      linarith
+  have hx1 : ∀ a ∈ T₀, x a ≤ 1 := by
+    intro a ha
+    have hl := hlevpos a ha
+    simp only [hxdef]
+    split
+    · norm_num
+    · have hinv : 0 < (leverageOf (g a))⁻¹ := by positivity
+      linarith
+  have hcap : ∀ a ∈ T₀, ∀ b ∈ T₀, a ≠ b → 2 * (x a * x b) ≤ 1 + u a ⬝ᵥ u b := by
+    intro a ha b hb hab
+    have hla := hlevpos a ha
+    have hlb := hlevpos b hb
+    have hdot : u a ⬝ᵥ u b
+        = (leverageOf (g a))⁻¹ * (leverageOf (g b))⁻¹ *
+            (2 * (g a ⬝ᵥ g b) ^ 2 - leverageOf (g a) * leverageOf (g b)) := by
+      simp only [hudef]
+      rw [smul_dotProduct_smul, dotProduct_chartVector]
+    have hgoal : x a * x b * (leverageOf (g a) * leverageOf (g b)) ≤ (g a ⬝ᵥ g b) ^ 2 := by
+      by_cases hA : leverageOf (g a) ≤ 1
+      · have hxa : x a = 0 := by simp only [hxdef]; rw [if_pos hA]
+        rw [hxa]
+        simp only [zero_mul]
+        positivity
+      by_cases hB : leverageOf (g b) ≤ 1
+      · have hxb : x b = 0 := by simp only [hxdef]; rw [if_pos hB]
+        rw [hxb]
+        simp only [mul_zero, zero_mul]
+        positivity
+      push_neg at hA hB
+      have hxa : x a * leverageOf (g a) = leverageOf (g a) - 1 := by
+        simp only [hxdef]; rw [if_neg (not_le.mpr hA)]; field_simp
+      have hxb : x b * leverageOf (g b) = leverageOf (g b) - 1 := by
+        simp only [hxdef]; rw [if_neg (not_le.mpr hB)]; field_simp
+      have hns := hnostrict a (hT₀sub ha) b (hT₀sub hb) hab
+      nlinarith [hns, hxa, hxb]
+    have hcancel : (leverageOf (g a))⁻¹ * (leverageOf (g b))⁻¹ *
+        (leverageOf (g a) * leverageOf (g b)) = 1 := by field_simp
+    have hinvpos : 0 < (leverageOf (g a))⁻¹ * (leverageOf (g b))⁻¹ := by positivity
+    have hstep : x a * x b
+        ≤ ((leverageOf (g a))⁻¹ * (leverageOf (g b))⁻¹) * (g a ⬝ᵥ g b) ^ 2 := by
+      have h1 := mul_le_mul_of_nonneg_left hgoal hinvpos.le
+      have h2 : ((leverageOf (g a))⁻¹ * (leverageOf (g b))⁻¹) *
+          (x a * x b * (leverageOf (g a) * leverageOf (g b))) = x a * x b := by
+        calc ((leverageOf (g a))⁻¹ * (leverageOf (g b))⁻¹) *
+              (x a * x b * (leverageOf (g a) * leverageOf (g b)))
+            = (x a * x b) * (((leverageOf (g a))⁻¹ * (leverageOf (g b))⁻¹) *
+              (leverageOf (g a) * leverageOf (g b))) := by ring
+          _ = x a * x b := by rw [hcancel, mul_one]
+      linarith [h1, h2]
+    have hexp : ((leverageOf (g a))⁻¹ * (leverageOf (g b))⁻¹) *
+        (2 * (g a ⬝ᵥ g b) ^ 2 - leverageOf (g a) * leverageOf (g b))
+        = 2 * (((leverageOf (g a))⁻¹ * (leverageOf (g b))⁻¹) * (g a ⬝ᵥ g b) ^ 2) - 1 := by
+      linear_combination (-1 : ℝ) * hcancel
+    rw [hdot, hexp]
+    linarith [hstep]
+  -- the abstract floor
+  have hfloor := chartWeightFloor T₀ s x u hspos hunit hsum hbal hx0 hx1 hcap
+  -- read it back: `s_a x_a >= t_a (l_a - 1)` at every atom
+  have hread : ∀ a ∈ T₀, t a * (leverageOf (g a) - 1) ≤ s a * x a := by
+    intro a ha
+    have hla := hlevpos a ha
+    have hta := htpos a (hT₀sub ha)
+    by_cases hA : leverageOf (g a) ≤ 1
+    · have hxa : x a = 0 := by simp only [hxdef]; rw [if_pos hA]
+      rw [hxa, mul_zero]
+      nlinarith [hta, hA]
+    · push_neg at hA
+      have heq : s a * x a = t a * (leverageOf (g a) - 1) := by
+        simp only [hsdef, hxdef]
+        rw [if_neg (not_le.mpr hA)]
+        field_simp
+      linarith [heq]
+  have hlin : ∑ a ∈ T₀, t a * (leverageOf (g a) - 1) ≤ 1 :=
+    le_trans (Finset.sum_le_sum hread) hfloor
+  have hsplit : ∑ a ∈ T₀, t a * (leverageOf (g a) - 1)
+      = (∑ a ∈ T₀, s a) - ∑ a ∈ T₀, t a := by
+    have hterm : ∀ a, t a * (leverageOf (g a) - 1) = s a - t a := by
+      intro a; simp only [hsdef]; ring
+    rw [Finset.sum_congr rfl fun a _ => hterm a, Finset.sum_sub_distrib]
+  rw [hsplit, hsum] at hlin
+  have hT₀le : ∑ a ∈ T₀, t a ≤ ∑ a ∈ T, t a := by
+    refine Finset.sum_le_sum_of_subset_of_nonneg hT₀sub ?_
+    intro a ha _
+    exact (htpos a ha).le
+  linarith [hlin, hT₀le]
+
+/-- **No spike over a plane.**  If a plane Parseval family with no strictly
+dominating pair is the in-plane part of a design, the design has nothing left to
+spend off the plane.  This is the five-coplanar stratum, in one line. -/
+theorem no_planarSpike_of_noStrictPair {ι : Type*} [DecidableEq ι] (T : Finset ι)
+    (g : ι → Fin 2 → ℝ) (t : ι → ℝ) (spikeWeight : ℝ)
+    (htpos : ∀ a ∈ T, 0 < t a)
+    (hspike : 0 < spikeWeight)
+    (htotal : (∑ a ∈ T, t a) + spikeWeight ≤ 1)
+    (hpars : ∑ a ∈ T, t a • atomMatrix (g a) = 1)
+    (hnostrict : ∀ a ∈ T, ∀ b ∈ T, a ≠ b →
+        (leverageOf (g a) - 1) * (leverageOf (g b) - 1) ≤ (g a ⬝ᵥ g b) ^ 2) :
+    False := by
+  have := planarParseval_one_le_weightSum T g t htpos hpars hnostrict
+  linarith
 
 end Gtz
