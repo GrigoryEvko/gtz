@@ -79,3 +79,70 @@ WHAT THE LANE LANDS
   4. The pigeonhole closure: four flat atoms in three shadow classes.
   5. The coplanar wall.
   6. CoplanarBridgeSixThree and the two named residues.
+
+=====================================================================
+SECOND PASS — the plane weight deficit, and what it kills
+=====================================================================
+
+THE ENGINE.  A plane Parseval family (sum over a finite support of t_a g_a g_a^T
+= I_2, with the total weight sigma FREE) whose total weight is BELOW ONE carries
+a pair that beats every nonzero plane probe.  Proof: rescale the atoms by
+sqrt(sigma) and the weights by 1/sigma, which is a genuine rank-two design; spend
+the landed Gtz.gtz_rank_two; read the weak domination back through the stretch.
+The deficit is exactly what turns <= into <.  At sigma = 1 the conclusion is
+false, and that boundary is the landed rank-two tie classification.
+  Gtz.exists_planeStrict_of_weightSum_lt_one, every size.
+
+KILL 1 (unconditional).  All but one atom of a rank-three design coplanar.  The
+exceptional atom is a spike, its shadow vanishes, the rest carry the whole plane
+on weight 1 - t, the engine gives a STRICT plane pair, and the gap of that pair
+with the spike is block diagonal with both blocks positive.  So the triple
+dominates strictly and the design is NOT a tie.  Frame-free readings: no atom of
+a rank-three tie is orthogonal to every other atom, and no plane holds five atoms
+of a (6,3) tie.
+  Gtz.not_isTie_of_spike, Gtz.not_isTie_of_atom_orthogonal_to_all.
+  MEASURED: 27028 designs at m = 4,5,6,7 with m-1 coplanar atoms, EVERY one has a
+  strictly dominating triple, no exceptions.
+
+KILL 2 (unconditional).  Only the vanishing SHADOW is needed, not the flatness of
+the others: an atom parallel to the axis contributes nothing to the in-plane
+identity whatever the rest do.  Gtz.exists_planeStrictPair_of_zeroShadow.
+
+THE LAW (unconditional, and the strongest thing here).  Every nonzero atom is
+parallel to ONE axis: its own.  So for EVERY atom of EVERY rank-three design,
+two OTHER atoms strictly over-cover that atom's orthogonal plane.  The tree's two
+existing routes to a plane-strict pair each pay — four pairwise transversal atoms,
+or the Nesterenko threshold 1 + t < 2 t l.  This one pays nothing.
+  Gtz.exists_frame_planeStrictPair_orthogonal_to_atom.
+  MEASURED: 20000 whitened designs at m = 4..8, 120000 atom-planes, ZERO
+  failures, worst margin +0.0215 (at m = 4).
+  CONSEQUENCE at (6,3): the landed pair budget and the landed area window fire at
+  EVERY atom of EVERY tie, with the transversality census removed.
+  Gtz.sixThree_tie_pairBudget_at_every_atom,
+  Gtz.sixThree_tie_crossNormSq_window_at_every_atom.
+
+THE FOUR-COPLANAR COLLAPSE (conditional).  The two off-plane shadows are parallel
+(the two-plane structure), so their two rank-one terms add to ONE rank-one term
+along a unit direction carrying their total shadow mass.  Replacing them by one
+fictitious unit atom of that mass leaves a FIVE-member plane family of weight
+(coplanar weight) + t_1 lambda_1 + t_2 lambda_2, below one exactly when the two
+off-plane shadows are LIGHT on weighted average.  Cauchy-Schwarz keeps the
+fictitious unit atom out of the returned pair, so both members are COPLANAR.
+  Gtz.exists_coplanar_planeStrictPair_of_lightOffPlane.
+  So residue (i) of the coplanar bridge implies residue (ii), in weighted-average
+  form.  The gap left is: some shadow light, but the weighted average not light.
+
+DOES A FOUR-COPLANAR (6,3) TIE EXIST?  NOT SETTLED.  Constrained descent over the
+four-coplanar stratum (whitening parametrisation, so Parseval and coplanarity are
+exact; penalties keeping pairwise non-parallelism >= 0.25, every weight >= 0.04
+and |g| <= 6) drives max_C lambda_min down to 2.5e-3 at a genuinely non-degenerate
+point (non-parallelism 0.46, min weight 0.032, coplanarity residual 4.6e-16,
+leverages 16.7, 9.5, 1.86, 1.11, 1.42, 17.1).  That is close to zero and still
+positive.  No four-coplanar tie was found and none was excluded.  Do NOT claim the
+coplanar bridge is vacuous.
+
+CONCURRENCY.  Gtz/Wave/CoplanarCircleGap.lean (a sibling lane, untracked at the
+time of writing) proves the same five-coplanar kill by the planar weight floor
+route.  Gtz/Wave/PlaneWeightFloor.lean (also untracked) is building the general
+weight floor sigma >= 1.  This lane depends on NEITHER: its engine is the
+rescaling above, proved here.

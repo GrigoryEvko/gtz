@@ -40220,3 +40220,14 @@ run_cmd do
 #print axioms Gtz.nonStrictCapAngle_lightTrine
 #print axioms Gtz.pi_div_three_lt_arccos_inv_eleven
 #print axioms Gtz.two_pi_lt_sum_nonStrictCapAngle_lightTrine
+-- TwoPlaneCoplanarStructure, the pivot plane law.
+--   Gtz.exists_frame_planeStrictPair_orthogonal_to_atom: every nonzero atom of a
+--     rank-three design has a pair of OTHER atoms that strictly over-covers its own
+--     orthogonal plane.  No transversality, no threshold, no tie.
+--   Gtz.sixThree_tie_pairBudget_at_every_atom and
+--     Gtz.sixThree_tie_crossNormSq_window_at_every_atom drop the transversality census
+--     from the landed pair budget and area window at six points.
+#print axioms Gtz.exists_frame_planeStrictPair_orthogonal_to_atom
+#print axioms Gtz.sixThree_atom_ne_zero_of_isTie
+#print axioms Gtz.sixThree_tie_pairBudget_at_every_atom
+#print axioms Gtz.sixThree_tie_crossNormSq_window_at_every_atom
