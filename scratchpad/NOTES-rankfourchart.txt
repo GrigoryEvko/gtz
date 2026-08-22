@@ -255,10 +255,21 @@ same way: 200 Adam restarts at (9,4) reached zero ties at 1e-9. So both band
 cells stall this lane's smooth descent while every cell below the band does not,
 which is the same boundary the drift measurement shows.
 
-THE (9,4) DRIFT ROW IS MISSING. Two attempts to run the analytic-gradient drift
-measurement at (9,4) ended without output. The cause was not diagnosed. A
-successor who wants that row should rerun scratchpad/rankfourchart/drift.jl with
-the cell list changed to (9,4) alone.
+THE (9,4) DRIFT ROW, landed on the third attempt (50 restarts, 3000 iterations;
+the first two attempts died on Julia startup contention, not on the mathematics):
+
+  (9,4)   ten best restarts, |max lmin| against parallel-free score
+     3.892e-04   3.340e-07
+     4.268e-03   5.482e-05
+     5.039e-03   1.447e-05
+     ...
+     median parallel-free of the 20 BEST  = 1.983e-04
+     median parallel-free of the 20 WORST = 1.033e-02
+
+Same signature as (8,4): the descent never gets near machine precision, and the
+parallel-free score falls with the distance to a tie -- the closer a restart
+gets, the more collinear it is. Both band cells carry the coupled signature, and
+every cell below the band carries the separated one.
 
 THE COLLINEAR-STRATUM TEST WAS INCONCLUSIVE, and it is recorded so no successor
 repeats it in the same shape. In the dependency chart a parallel pair is a rank
