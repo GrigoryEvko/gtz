@@ -6842,3 +6842,4 @@ import Gtz.Wave.CoplanarCircleGap
 import Gtz.Wave.CoDependencyPairCap
 import Gtz.Wave.CircuitGramTrace
 import Gtz.Wave.PlaneWeightFloor
+import Gtz.Wave.CoShareBudget

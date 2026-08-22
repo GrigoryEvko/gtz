@@ -1494,6 +1494,7 @@ import Gtz.Complex.ComplexTransportLedger
 import Gtz.Wave.TwoPlaneCoplanarStructure
 import Gtz.Wave.CoplanarCircleGap
 import Gtz.Wave.PlaneWeightFloor
+import Gtz.Wave.CoShareBudget
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -40231,3 +40232,28 @@ run_cmd do
 #print axioms Gtz.sixThree_atom_ne_zero_of_isTie
 #print axioms Gtz.sixThree_tie_pairBudget_at_every_atom
 #print axioms Gtz.sixThree_tie_crossNormSq_window_at_every_atom
+
+-- Gtz/Wave/CoShareBudget.lean -- the co-share pair law and its exact corank budget.
+--   At EVERY weighted design, every rank, every size and every pair of distinct atoms
+--   t_c t_d <g_c,g_d>^2 <= u_c u_d with u_c = 1 - t_c l_c, and the total slack over the
+--   ordered distinct pairs is (m-k)(m-k-1), a function of the corank alone.  Corank one
+--   is the equality case, which is a second proof of
+--   Gtz.weight_mul_sq_dotProduct_eq_coShare_mul with no outer square; at (6,3) the
+--   budget is six, so some pair of every design of the open cell carries slack 1/5.
+--   Unconditional: no heaviness, no domination, no tie, no stationarity.
+#print axioms Gtz.sq_le_mul_of_quadraticForm_nonneg
+#print axioms Gtz.coProjection_comm
+#print axioms Gtz.sum_sq_coProjection_row
+#print axioms Gtz.designCoShare_nonneg_ofAnyRank
+#print axioms Gtz.sum_mul_coProjection_row
+#print axioms Gtz.sq_coProjection_le_coShare_mul
+#print axioms Gtz.sq_coProjection_offDiag
+#print axioms Gtz.weight_mul_sq_dotProduct_le_coShare_mul
+#print axioms Gtz.coShareSlack_nonneg
+#print axioms Gtz.sum_sq_coProjection_eq_corank
+#print axioms Gtz.sum_coShare_mul_coShare
+#print axioms Gtz.sum_coShareSlack_full
+#print axioms Gtz.sum_offDiag_coShareSlack_eq_corank_mul
+#print axioms Gtz.coShareSlack_eq_zero_of_corankOne
+#print axioms Gtz.sum_offDiag_coShareSlack_sixThree
+#print axioms Gtz.exists_coShareSlack_sixThree
