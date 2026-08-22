@@ -1487,6 +1487,7 @@ import Gtz.Wave.RankFourDependencyChart
 import Gtz.Wave.DependencyAtomCap
 import Gtz.Wave.CoDependencyPairCap
 import Gtz.Wave.CircuitGramTrace
+import Gtz.Wave.PencilTraceLaw
 import Gtz.Wave.ChartGaleSpectralLaw
 import Gtz.Complex.ComplexHingeRefutation
 import Gtz.Wave.CouplingRankBudget
@@ -40246,3 +40247,24 @@ run_cmd do
 #print axioms Gtz.coShareSlack_eq_zero_of_corankOne
 #print axioms Gtz.sum_offDiag_coShareSlack_sixThree
 #print axioms Gtz.exists_coShareSlack_sixThree
+-- TwoPlaneCoplanarStructure, the seventh clause.
+--   Gtz.frameBlockDet_ge_of_planeMargin turns the deficit margin into a lower bound on
+--     the plane block determinant.
+--   Gtz.det_gap_zeroShadow_triple moves the gap determinant by the pivot's leverage
+--     against that block.
+--   Gtz.sixThree_tie_pivotLeverage_le_pairGapMinor prices every atom's leverage and
+--     weight ratio against another pair's Gram minor.
+#print axioms Gtz.frameDet_axisInsert
+#print axioms Gtz.det_gap_zeroShadow_triple
+#print axioms Gtz.det_nonneg_of_binary_form_nonneg
+#print axioms Gtz.exists_planeMargin_of_weightSum
+#print axioms Gtz.exists_frame_planeMargin_orthogonal_to_atom
+#print axioms Gtz.planeCombination_dotProduct_self
+#print axioms Gtz.frameBlockDet_ge_of_planeMargin
+#print axioms Gtz.sixThree_tie_pivotLeverage_le_pairGapMinor
+
+-- Gtz/Wave/PencilTraceLaw.lean
+#print axioms Gtz.dominates_iff_complementSplit
+#print axioms Gtz.det_sub_smul_one_pairMinorSum
+#print axioms Gtz.posSemidef_of_invariants_nonneg
+#print axioms Gtz.posSemidef_one_sub_of_det_nonneg_of_trace_le_two
