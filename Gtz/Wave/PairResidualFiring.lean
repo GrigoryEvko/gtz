@@ -74,6 +74,25 @@ a single triple is not, and that is where the cell is still open.
 with `|<g_a,g_b>| = 3/4` carry `E = 0` EXACTLY, the two rim pairs with
 `|<g_a,g_b>| = 7/4` carry `E = -2`, and the four pairs meeting the diagonal edge
 carry `E = -2`.  Total `-12`, against the formula `-L + 3 = -15 + 3` at `m = 5`.
+CONFIRMED BY A SECOND, INDEPENDENT ROUTE, at the coordinator's instruction.  The
+landed doubled criterion `Gtz.dominates_of_sum_coLeverageRatio_le_two` reads
+domination off one determinant sign once a triple's co-leverage ratios total at
+most two.  At the `(6,3)` split the ratios are `8/9` at the two halves and `7/16`
+at the four rim atoms, totalling `127/36 < 4`, and SIXTEEN of the twenty triples
+qualify by mass.  Of those, twelve carry `det(S_T - 1) = 0` and four carry `-10`;
+the four that fail the mass test carry `-15/4`.  **No triple has a positive
+determinant, so there is no strict dominator and the two routes agree.**  The same
+computation at the `(5,3)` primitive returns eight zeros and two values `-10` at
+exactly the two circuits `{ab,ac,bc}` and `{ab,ad,bd}`, reproducing
+`Gtz.diamondTieDesign_no_strictDominator`.
+
+The agreement is term by term, not merely in sign.  The aggregate identity
+`sum_{e not in {c,d}} t_e det(S_{cde} - 1) = E(c,d)` reproduces every firing value
+above from those determinants: a rim pair with `|<g,g>| = 3/4` sees four zeros and
+gives `0`, a rim pair with `7/4` sees `(-10, -10, 0, 0)` against weights
+`(1/10, 1/10, 1/5, 1/5)` and gives `-2`, and a half-to-rim pair sees
+`(-15/4, 0, -10, 0)` and gives `-19/8`.
+
 So the producer is not merely silent at the diamond: it is EXACTLY TIGHT at four
 of its pairs, which is what a boundary system must do, and it therefore admits no
 strengthening that keeps the diamond a tie.  Splitting the diagonal edge changes
