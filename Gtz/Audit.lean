@@ -1163,6 +1163,7 @@ import Gtz.Wave.WedgeSumRuleLayerLaw
 import Gtz.Wave.AllHeavyHingeSchur
 import Gtz.Wave.TriangleStallClosureDeflation
 import Gtz.Wave.DeflatedCellTotal
+import Gtz.Wave.DeflationConeCensus
 import Gtz.Wave.MixedTripleBalance
 import Gtz.Wave.GapDeterminantSignComplement
 import Gtz.Wave.DustBoundaryFloor
@@ -40421,3 +40422,22 @@ and the primitive tie package. -/
 #print axioms Gtz.forall_posDef_gap_erase_of_isPrimitiveDesign_of_isTie
 #print axioms Gtz.sixThree_primitiveTie_selfDualPackage
 #print axioms Gtz.exists_sixThree_primitiveTie_selfDualPackage
+
+-- Gtz/Wave/DeflationConeCensus.lean
+#print axioms Gtz.quadForm_subsetSum_gap
+#print axioms Gtz.deflatedBound_quadForm
+#print axioms Gtz.deflatedBound_cone
+#print axioms Gtz.deflatedBound_reads_above
+#print axioms Gtz.deflatedBound_leverage_floor
+#print axioms Gtz.exists_deflatedSelector_sixThree
+#print axioms Gtz.exists_triple_reads_above_of_isTie_sixThree
+#print axioms Gtz.not_isTie_sixThree_of_uniformlyTight
+#print axioms Gtz.sq_dotProduct_le_planeLeverage
+#print axioms Gtz.corner_inside_planeLeverage_pos
+#print axioms Gtz.corner_inside_bracketNormal_ne_zero
+#print axioms Gtz.exists_axisPerp_probe
+#print axioms Gtz.corner_deflatedSelector_not_twoInside
+#print axioms Gtz.corner_deflatedSelector_ne_corner
+#print axioms Gtz.corner_deflatedSelector_inter_card_le_one
+#print axioms Gtz.corner_sixThree_selector_census
+#print axioms Gtz.corner_sixThree_not_selected

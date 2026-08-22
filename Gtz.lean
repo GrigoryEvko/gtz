@@ -5254,6 +5254,14 @@ import Gtz.Wave.TriangleStallClosureDeflation
 -- determinant sign.
 import Gtz.Wave.DeflatedCellTotal
 
+-- The deflated gap bound, read at a PROBE rather than at an invariant.  Every
+-- failure direction of the selected triple lies inside the double cone of the
+-- DELETED atom, so at (6,3) every nonzero probe is read strictly above its own
+-- square by some triple.  Spent at a corank-two corner, the reading excludes
+-- two selectors outright: the selector of an inside atom keeps at most one
+-- inside atom, and the selector of an outside atom is never the corner.
+import Gtz.Wave.DeflationConeCensus
+
 -- The sharp balance of the flat split, read as ONE wedge total of a SIGNED
 -- measure, and refuted at every mixed triple.  Give the sharp labels the split
 -- measure: the weight deficit inside the selection, minus the weight outside it.
