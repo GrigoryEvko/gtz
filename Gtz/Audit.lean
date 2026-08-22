@@ -40032,11 +40032,8 @@ run_cmd do
 #print axioms Gtz.straddle_of_noStrict
 #print axioms Gtz.eightFour_straddle_of_isTie
 #print axioms Gtz.thresholdCellHingeRankFourAndUpStatement_iff_dependency
--- TwoPlaneCoplanarStructure: coplanar atoms, the shadow-class pigeonhole, and the
---   spike kill.
---   Gtz.hasParallelPair_of_fourFlat_of_shadowClasses forces a parallel pair from four
---     coplanar atoms distributed among the three classes of the plane shadow.
---   Gtz.det_gap_flatPair_triple reads a coplanar pair's triple gap as the plane block
+-- TwoPlaneCoplanarStructure: the plane weight deficit and its kills.
+--   Gtz.det_gap_flatPair_triple reads a flat pair's triple gap as the plane block
 --     determinant against the third height, less the plane adjugate form.
 --   Gtz.not_isTie_of_atom_orthogonal_to_all empties the stratum in which one atom of a
 --     rank-three tie is orthogonal to every other atom.
@@ -40058,10 +40055,6 @@ run_cmd do
 #print axioms Gtz.det_gap_flatPair_triple
 #print axioms Gtz.flatPair_gate_of_isTie
 #print axioms Gtz.det_gap_spike_triple
-#print axioms Gtz.hasParallelPair_of_fourFlat_of_shadowClasses
-#print axioms Gtz.shadow_heavy_of_isTie_sixThree_of_flat
-#print axioms Gtz.hasParallelPair_of_isTie_sixThree_of_fourCoplanar
-#print axioms Gtz.fourCoplanar_trichotomy_sixThree
 #print axioms Gtz.coplanar_wall_of_isTie
 #print axioms Gtz.planeStrict_of_dominates_spikeComplementDesign
 #print axioms Gtz.exists_posDef_triple_of_spike
@@ -40173,12 +40166,8 @@ run_cmd do
 --     total below one carries a pair that beats every nonzero plane probe.
 --   Gtz.exists_planeStrictPair_of_zeroShadow: one atom parallel to the axis already
 --     forces that strict plane pair, with no flatness of the other atoms.
---   Gtz.exists_coplanar_planeStrictPair_of_lightOffPlane: the light-shadow residue of
 --     the four-coplanar stratum implies the strict-pair residue, with a coplanar pair.
 #print axioms Gtz.exists_planeStrict_of_weightSum_lt_one
-#print axioms Gtz.exists_planeStrict_of_fiveFrame
-#print axioms Gtz.not_planeStrict_of_unit
-#print axioms Gtz.exists_coplanar_planeStrictPair_of_lightOffPlane
 #print axioms Gtz.dotProduct_eq_shadow_reading
 #print axioms Gtz.planeProbe_ne_zero
 #print axioms Gtz.planeProbe_dotProduct_self
