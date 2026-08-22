@@ -998,6 +998,30 @@ theorem subThresholdBandHingeStatement_iff_dependency :
     exact (hingeHoldsAtSize_iff_dependency size rank hsize).mpr
       (hdep rank hrank size hlow hhigh hpred)
 
+/-- **THE THRESHOLD-CELL STATEMENT ON THE DEPENDENCY SPACE.**  The cell size
+`rank (rank + 1) / 2` is at least ten at every rank from four, so it supplies the
+two atoms the criteria need. -/
+theorem thresholdCellHingeRankFourAndUpStatement_iff_dependency :
+    ThresholdCellHingeRankFourAndUpStatement
+      ↔ ∀ rank : ℕ, 4 ≤ rank →
+          GtzWeighted (rank * (rank + 1) / 2 - 1) rank →
+            ∀ D : WeightedDesign (rank * (rank + 1) / 2) rank,
+              ((∃ C : Finset (Fin (rank * (rank + 1) / 2)),
+                  C.card = rank ∧ DependencyDominates D C)
+                ∧ ∀ C : Finset (Fin (rank * (rank + 1) / 2)), C.card = rank →
+                    ¬ DependencyDominatesStrictly D C) → HasSparseDependency D := by
+  have hsize : ∀ rank : ℕ, 4 ≤ rank → 2 ≤ rank * (rank + 1) / 2 := by
+    intro rank hrank
+    have hbig : 20 ≤ rank * (rank + 1) := by nlinarith
+    omega
+  constructor
+  · intro hcell rank hrank hpred
+    exact (hingeHoldsAtSize_iff_dependency (rank * (rank + 1) / 2) rank (hsize rank hrank)).mp
+      (hcell rank hrank hpred)
+  · intro hdep rank hrank hpred
+    exact (hingeHoldsAtSize_iff_dependency (rank * (rank + 1) / 2) rank (hsize rank hrank)).mpr
+      (hdep rank hrank hpred)
+
 /-! ## 9. Rank four, cell by cell
 
 The band at rank four is exactly the two sizes eight and nine, and the threshold
