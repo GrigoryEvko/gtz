@@ -1482,6 +1482,7 @@ import Gtz.Wave.ChartComplementBlockLaw
 import Gtz.Wave.ChartSharpDesignGap
 import Gtz.Wave.ChartFrobeniusLaw
 import Gtz.Wave.DependencyDominationCriterion
+import Gtz.Wave.CircuitSwapLaw
 import Gtz.Wave.ChartGaleSpectralLaw
 import Gtz.Complex.ComplexHingeRefutation
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
@@ -39865,3 +39866,30 @@ run_cmd do
 #print axioms Gtz.not_complexHingeSixDesign_hasParallelPair
 #print axioms Gtz.not_complexHingeHoldsAtSize_six_three
 #print axioms Gtz.not_complexHingeHoldsAtSize_four_two_and_six_three
+
+-- Gtz/Wave/CircuitSwapLaw.lean
+#print axioms Gtz.posDef_iff_quadForm_pos
+#print axioms Gtz.posDef_diagonal_sub_block_iff_kernelBound
+#print axioms Gtz.posDef_gap_iff_kernelBound
+#print axioms Gtz.posDef_gap_iff_dependencyBound
+#print axioms Gtz.dependencyBound_split
+#print axioms Gtz.posDef_gap_iff_dependencyBound_compl
+#print axioms Gtz.exists_dependency_reversal_of_isTie
+#print axioms Gtz.sum_piSingle_smul_atom
+#print axioms Gtz.sum_circuitDep_smul_atom
+#print axioms Gtz.circuitDep_apply_of_notMem
+#print axioms Gtz.circuitDep_apply_first
+#print axioms Gtz.circuitDep_apply_second
+#print axioms Gtz.circuitDep_apply_third
+#print axioms Gtz.circuitDep_apply_fourth
+#print axioms Gtz.image_tripleVec_eq
+#print axioms Gtz.injective_tripleVec
+#print axioms Gtz.swapLaw_of_dominates
+#print axioms Gtz.swapLaw_single_of_dominates
+#print axioms Gtz.swapLaw_plain_of_dominates
+#print axioms Gtz.not_dominates_of_swapLaw_violation
+#print axioms Gtz.weightOdds_pos
+#print axioms Gtz.swapLaw_volume_of_dominates
+#print axioms Gtz.sum_outside_selectionVolume_sixThree
+#print axioms Gtz.selectionVolume_rotate
+#print axioms Gtz.aggregate_swapLaw_of_dominates_sixThree
