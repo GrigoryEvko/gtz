@@ -1,0 +1,120 @@
+# R1.c(i) dominator-count floor and cap  -- lane notes
+
+## 0. The chart I will work in (DERIVED, to be verified numerically)
+
+Primal: atoms g_c in R^3, weights t_c>0 sum 1, sum_c t_c g_c g_c^T = I.
+Write A = 3x6 matrix with columns A_c = sqrt(t_c) g_c.  Then A A^T = I.
+So the design manifold IS  { A in V_3(R^6) } x { t in interior Delta_5 },
+with g_c = A_c / sqrt(t_c).  dim = (18-6) - 3 + 5 = 14.   <-- matches the
+measured codimension bookkeeping in the brief.
+
+Let B be 3x6 with [A;B] orthogonal (B B^T = I, A B^T = 0); B_c is column c.
+Then  ||A_c||^2 = t_c l_c = s_c  and  ||B_c||^2 = 1 - s_c.
+
+DOMINATION IN THE DUAL CHART.  From the landed dependency criterion
+(Gtz.dominates_iff_dependencyBound_compl) with z_c = sqrt(t_c) y_c and
+y ranging over ker A = row space of B:
+
+    Dominates D C   <->   sum_{c in C} B_c B_c^T / (1 - t_c)  <=  I_3 .
+
+Write  f_c := B_c / sqrt(1 - t_c)  and  F_C := sum_{c in C} f_c f_c^T .
+Then
+
+    Dominates C  <->  lambda_max(F_C) <= 1 ,
+    strictly     <->  lambda_max(F_C) <  1 ,
+    IsTie        <->  min over the 20 triples of lambda_max(F_C)  =  1 .
+
+So THE DOMINATING TRIPLES OF A TIE ARE EXACTLY THE ARGMIN SET of
+   Phi(A,t) := min over C of lambda_max(F_C).
+"How many dominating triples" = "how big is the argmin set".
+
+Parseval in the dual chart: sum_c (1 - t_c) f_c f_c^T = I,
+i.e. sum_c u_c f_c f_c^T = I with u_c = 1-t_c in (0,1), sum u_c = 5.
+
+GtzWeighted 6 3  <->  Phi <= 1 everywhere.
+A COUNTEREXAMPLE is a point with Phi > 1.
+
+## 1. Why the brief's "maximiser argument" is CIRCULAR as stated
+
+A tie is a local maximum of Phi ONLY IF GtzWeighted 6 3 is true (then
+Phi <= 1 = Phi(tie) globally).  We may not assume that.  So the
+first-order/active-set count at a tie is NOT available for free.
+An escape direction at a primitive tie would DISPROVE GtzWeighted 6 3,
+not contradict anything.  Report this to the coordinator.
+
+## 2. What the swap law gives, and why it does NOT cap
+
+Landed: Gtz.swapLaw_volume_of_dominates.  With nu_C = t_a t_b t_c [abc]^2
+and th_x = t_x/(1-t_x):   C={a,b,c} dominating, d outside =>
+    th_a nu_bcd + th_b nu_acd + th_c nu_abd <= nu_abc .
+Gtz.volumeParseval gives sum over the 20 unordered triples of nu_C = 1.
+
+Summing the law over ALL C in the dominating family D and all outside d:
+    sum_T nu_T * ( sum_{C in D, |C cap T| = 2} th_{C\T} )  <=  3 sum_{C in D} nu_C .
+If every triple dominated, the left coefficient of nu_T is 3(th_p+th_q+th_r)
+and the constraint is just  E_nu[th_p+th_q+th_r] <= 1 .  At the uniform point
+th = (1/6)/(5/6) = 1/5, so th_p+th_q+th_r = 3/5 < 1: NO CONTRADICTION even
+with all 20 triples dominating.  The swap law is too weak to cap by itself.
+[DERIVED 2026-08-22, arithmetic above.]
+
+## 3. THE GRAM-SUBMATRIX CRITERION  (derived 2026-08-22)
+
+For a weighted design of rank k and a k-subset C, let X be the k x k matrix whose
+columns are the atoms of C.  Then S_C = X X^T and Gram[C] = X^T X are SIMILAR,
+so they have the same spectrum, and
+
+    Dominates D C   <->   Gram(D)[C]  >=  I_k
+                    <->   (Gram(D) - 1)[C]  is positive semidefinite,
+
+the PRINCIPAL C-SUBMATRIX of the m x m matrix Gram - 1.  Strictly, > .
+This is exact at |C| = k and needs no invariant computation.
+
+Consequences.  With T = diag(t) and P := T^{1/2} Gram T^{1/2} we have
+P^2 = P (Parseval), rank P = k, and
+
+    Dominates D C   <->   P[C]  >=  T[C] .
+
+So GtzWeighted m k is EXACTLY:
+
+    for every rank-k orthogonal projection P on R^m and every positive
+    diagonal T with trace one, some k-subset C has  P[C] >= T[C] .
+
+Naimark: Q = 1 - P is a rank-(m-k) projection and P[C] >= T[C] iff
+Q[C] <= (1-T)[C].  At (6,3) both P and Q have rank 3 -- the self-dual cell.
+
+Cauchy-Binet: det P[C] = nu_C = t_a t_b t_c [abc]^2 and sum over the 20 triples
+of det P[C] = 1 (Gtz.volumeParseval).
+
+## 4. MEASURED (all with C+OpenMP, scratchpad/domcount)
+
+* The dual/projection criterion agrees with the primal Loewner test at
+  4 000 000 triples of 200 000 random (6,3) designs: ZERO sign mismatches.
+* max over designs of Phi := min_C lambda_max(F_C) equals 1 to 1e-11, over
+  6000 adversarial restarts of a min-norm-in-convex-hull steepest ascent for a
+  max-min.  So GtzWeighted 6 3 holds numerically, sharply.
+* 1267 well-converged (6,3) TIES fall into EXACTLY FOUR classes up to
+  relabelling, with dominating-triple counts 13, 12, 12 and 10.
+  EVERY ONE of them has max |cos| = 1.000000000: a parallel pair.
+  So the hinge holds numerically, and THE MEASURED FLOOR IS TEN, NOT TWELVE.
+* The four classes are the splittings the campaign cites:
+  card 13 = diamond with a rim edge doubled (8 spanning trees + n_e = 5),
+  card 12 = diamond with the ab diagonal doubled (8 + 4) and the bundled cycle
+            C_4 with multiplicities (2,2,1,1) (12 spanning trees),
+  card 10 = bundled cycle C_4 with multiplicities (3,1,1,1) (10 spanning trees).
+
+## 5. THE CAP DOES NOT EXIST  (kernel witnesses, K4)
+
+K4 is the unique simple graph with six edges and rank three, so its graphic
+design is PRIMITIVE: no two edges are parallel.  With ground vertex 3 and drops
+d01=(1,-1,0), d02=(1,0,-1), d03=(1,0,0), d12=(0,1,-1), d13=(0,1,0), d23=(0,0,1):
+
+* uniform conductance and uniform weight 1/6: EXACTLY FOUR triples dominate,
+  and all four dominate STRICTLY -- the four STARS of K4.  Leverages all 3,
+  max |cos| = 1/2.
+* conductance (3,3,3,1,1,1) on (01,02,03,12,13,23), weight proportional:
+  TEN triples dominate, all strictly.  max |cos| = 0.6124.
+
+So a primitive (6,3) design reaches at least ten dominating triples, which is
+the measured FLOOR over ties.  A cap below the floor is therefore impossible:
+R1.c(i) as posed is DEAD.  Adversarial search with a primitivity margin
+reaches FOURTEEN.
