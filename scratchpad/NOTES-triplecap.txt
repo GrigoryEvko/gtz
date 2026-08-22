@@ -1,0 +1,91 @@
+NOTES-triplecap  --  the triple cap inequality, and what replaces it
+====================================================================
+
+VERDICT
+-------
+The conjecture  kappa_ab + kappa_bc + kappa_ca <= 2 pi  is FALSE, and it is false
+on REALISABLE plane configurations, not only off the constraint set.
+
+Counterexample (exact, Parseval to machine zero):
+  three plane atoms, doubled angles 0, 2pi/3, 4pi/3, every l = 1.1,
+  s_a = 2/3, t_a = (2/3)/1.1 = 0.606061, sigma = 1.818182.
+  cap kappa = 2 arccos(1 - 1/l) = 2 arccos(0.0909) = 2.959523 for every pair,
+  every pair distance d = 2pi/3 = 2.094395 <= kappa, so NO pair dominates strictly.
+  sum of the three caps = 8.878569  >  2 pi = 6.283185.
+The unconstrained version fails even faster: rho -> pi/2 sends every hypotenuse
+to pi/2 and the sum to 3 pi/2 > pi.
+
+The equality claim is also false.  Equality  sum kappa = 2 pi  holds on a whole
+TWO-parameter family (every three-class rank-two tie), not only at the Mercedes.
+
+WHAT IS TRUE, AND IT CLOSES THE STRATUM OUTRIGHT
+------------------------------------------------
+THEOREM (plane sub-design exclusion).  Let g_a in R^2, t_a > 0, a = 1..m, with
+    sum_a t_a g_a g_a^T = I_2,   l_a := |g_a|^2 > 1,
+and let NO pair dominate strictly.  Then   sigma := sum_a t_a  >=  1.
+
+The five-coplanar (6,3) stratum asks for sigma < 1.  So the stratum is EMPTY,
+for every m, not only m = 5.  This is strictly stronger than "has a parallel pair".
+
+THE DICTIONARY (all verified to 1e-14, and all exact algebra)
+------------------------------------------------------------
+s_a = t_a l_a,  phi_a = 2 theta_a,  x_a = 1 - 1/l_a = sin^2 beta_a = cos^2 rho_a.
+  (i)   sum s_a = 2   and   sum s_a exp(i phi_a) = 0        [Parseval, both parts]
+  (ii)  sigma = 2 - sum s_a sin^2 beta_a
+  (iii) det(S_{ab} - 1) = (l_a - 1)(l_b - 1) - (g_a . g_b)^2
+        = l_a l_b [ x_a x_b - cos^2(d_ab/2) ]
+  So the pair is non-strict  <=>  (l_a-1)(l_b-1) <= (g_a.g_b)^2
+                              <=>  x_a x_b <= (1 + cos(phi_a - phi_b))/2.
+  The arcs of the empty-intersection lemma have half-width R_a = 2 rho_a exactly,
+  and kappa_ab = 2 hyp(rho_a, rho_b) < R_a + R_b, so the caps are STRICTLY
+  stronger than "the arcs overlap".  The Mercedes shows plain overlap is not enough.
+
+THE PROOF
+---------
+1.  sigma >= 1  <=>  sum_a A_a <= 1  with  A_a := t_a (l_a - 1) > 0,
+    because sum_a t_a l_a = 2 (trace of Parseval).
+2.  It is enough to find a SYMMETRIC W with tr W = 1 and g_a^T W g_a >= l_a - 1,
+    since then sum_a A_a <= tr(W . sum t_a g_a g_a^T) = tr W = 1.
+    In the doubled-angle chart that reads: y in R^2 with y . n_a >= 2 x_a - 1.
+    W need NOT be positive semidefinite; the rank-one PSD choice W = z z^T is the
+    common-point condition, which the Mercedes already defeats.
+3.  The half-planes { y : y . n_a >= 2 x_a - 1 } are convex sets in the PLANE, so
+    by Helly it is enough that every THREE of them meet.  Equivalently: the LP cone
+    { mu >= 0 : sum mu_a n_a = 0 } has extreme rays of support 2 or 3, support 2 is
+    an antipodal pair which the cap x_a x_b <= 0 forbids, so only triples matter.
+4.  THE TRIPLE.  Three atoms with sum_a m_a g_a g_a^T = I_2 make
+    P := diag(m)^{1/2} Gram diag(m)^{1/2}  a rank-two orthogonal projection in R^3,
+    so P = 1 - q q^T with |q| = 1, and
+        m_a l_a = 1 - q_a^2,      m_a m_b (g_a . g_b)^2 = q_a^2 q_b^2.
+    Writing A_a = m_a(l_a - 1) = 1 - q_a^2 - m_a > 0 the cap is A_a A_b <= q_a^2 q_b^2
+    and the target is A_1 + A_2 + A_3 <= 1 = sum q_a^2.  Proof:
+      * if A_a <= q_a^2 for every a, add them.
+      * else A_1 > q_1^2 for one a, and then A_2 <= q_1^2 q_2^2 / A_1 and
+        A_3 <= q_1^2 q_3^2 / A_1, so
+            sum A <= A_1 + q_1^2 (1 - q_1^2) / A_1 =: f(A_1),
+        f is convex on the interval [q_1^2, 1 - q_1^2] that carries A_1
+        (A_1 <= 1 - q_1^2 because m_1 > 0), and f = 1 at BOTH endpoints.
+    Equality: A_a = q_a^2 for all a, i.e. m_a = 1 - 2 q_a^2, sigma = 1.  Mercedes is
+    q^2 = (1/3,1/3,1/3).  A two-parameter family, as the numerics say.
+
+NUMERICS (scratchpad/triplecap/probe.c, 384 threads)
+----------------------------------------------------
+Part A  200000 random whitened plane configurations, m = 3..6:
+        Parseval residual 3.8e-12, |sum s - 2| 2.5e-12, |sum s exp(i phi)| 3.1e-12,
+        |sigma - (2 - sum s sin^2 beta)| 2.5e-12, cap identities 2.8e-14.
+Part C  the tight family, 24441 samples: |sum A - 1| + |sigma - 1| + slack 1.5e-15.
+Part C2 4e6 random draws of the arithmetic core, 306352 feasible: max sum A = 0.99777.
+Part B  minimise sigma over cap-feasible configurations, 20000 restarts each:
+        m = 3  1.000071      m = 4  1.000954     m = 5  1.004262
+        m = 6  1.007370      m = 7  1.013740
+        Every minimiser drifts to the tight three-class family.  The infimum is 1
+        and it is ATTAINED (Mercedes), so this is not a quantitative-margin route.
+
+WHY IT SURVIVES THE FOUR CAMPAIGN CONSTRAINTS
+---------------------------------------------
+* Realness: the count sum_a q_a^2 = 1 is the REAL rank-two projection trace.  Over C
+  the Veronese space is 4-dimensional and the projection has rank 2 in C^m, so the
+  triple identity m_a l_a = 1 - |q_a|^2 loses the phase and the cap decouples.
+* No quantitative gap: the infimum 1 is attained on a two-parameter family.
+* Not spectral: nothing above uses an eigenvalue of sum_c g_c g_c^T.
+* Not matroid: the caps read the metric x_a x_b <= cos^2(d/2), not a rank function.
