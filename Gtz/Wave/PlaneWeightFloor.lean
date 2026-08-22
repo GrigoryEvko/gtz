@@ -829,3 +829,334 @@ theorem exists_smaller_planeFrame {index : Type*} [LinearOrder index]
           = -(dep label * (leverageOf (atomOf label) - 1)) := fun _ _ => by ring
       rw [Finset.sum_congr rfl hneg, Finset.sum_neg_distrib]
       linarith [hgamma]
+
+/-! ## Part 6: the floor
+
+The exchange cuts the support until three atoms remain, and there the corank-one
+core caps the excess total.  Supports of one and two atoms cannot occur. -/
+
+private theorem sum_excess_le_one_aux {index : Type*} [LinearOrder index]
+    (atomOf : index → Fin 2 → ℝ) :
+    ∀ (bound : ℕ) (weightOf : index → ℝ) (support : Finset index), support.card ≤ bound →
+      (∀ label ∈ support, 0 < weightOf label) →
+      (∀ label ∈ support, 1 < leverageOf (atomOf label)) →
+      (∑ label ∈ support, weightOf label • atomMatrix (atomOf label)
+        = (1 : Matrix (Fin 2) (Fin 2) ℝ)) →
+      (∀ label ∈ support, ∀ other ∈ support, label ≠ other →
+        (leverageOf (atomOf label) - 1) * (leverageOf (atomOf other) - 1)
+          ≤ (atomOf label ⬝ᵥ atomOf other) ^ 2) →
+      ∑ label ∈ support, weightOf label * (leverageOf (atomOf label) - 1) ≤ 1 := by
+  intro bound
+  induction bound with
+  | zero =>
+    intro weightOf support hcard hpos hheavy hframe hcap
+    have hempty : support = ∅ := Finset.card_eq_zero.mp (Nat.le_zero.mp hcard)
+    subst hempty
+    rw [Finset.sum_empty] at hframe
+    have hbad := congrFun (congrFun hframe 0) 0
+    simp [Matrix.one_apply] at hbad
+  | succ shorter ih =>
+    intro weightOf support hcard hpos hheavy hframe hcap
+    by_cases hbig : 4 ≤ support.card
+    · obtain ⟨newWeight, newSupport, hproper, hnewPos, hnewFrame, hmono⟩ :=
+        exists_smaller_planeFrame atomOf weightOf support hbig hpos
+          (fun label hlabel => lt_trans one_pos (hheavy label hlabel)) hframe
+      have hsubset : newSupport ⊆ support := hproper.subset
+      have hshrink : newSupport.card ≤ shorter := by
+        have hlt := Finset.card_lt_card hproper
+        omega
+      exact le_trans hmono (ih newWeight newSupport hshrink hnewPos
+        (fun label hlabel => hheavy label (hsubset hlabel)) hnewFrame
+        (fun label hlabel other hother hne =>
+          hcap label (hsubset hlabel) other (hsubset hother) hne))
+    · push_neg at hbig
+      have hsplit : support.card = 0 ∨ support.card = 1 ∨ support.card = 2
+          ∨ support.card = 3 := by omega
+      rcases hsplit with hnum | hnum | hnum | hnum
+      · have hempty : support = ∅ := Finset.card_eq_zero.mp hnum
+        subst hempty
+        rw [Finset.sum_empty] at hframe
+        have hbad := congrFun (congrFun hframe 0) 0
+        simp [Matrix.one_apply] at hbad
+      · obtain ⟨only, hsingle⟩ := Finset.card_eq_one.mp hnum
+        subst hsingle
+        exact (not_planeFrame_singleton atomOf weightOf only hframe).elim
+      · obtain ⟨left, right, hne, hpairEq⟩ := Finset.card_eq_two.mp hnum
+        subst hpairEq
+        have hmemLeft : left ∈ ({left, right} : Finset index) := by simp
+        have hmemRight : right ∈ ({left, right} : Finset index) := by simp
+        exact (not_planeFrame_pair atomOf weightOf hne (hpos left hmemLeft)
+          (hpos right hmemRight) hframe (hheavy left hmemLeft) (hheavy right hmemRight)
+          (hcap left hmemLeft right hmemRight hne)).elim
+      · obtain ⟨one, two, three, hab, hac, hbc, htripleEq⟩ := Finset.card_eq_three.mp hnum
+        subst htripleEq
+        exact sum_excess_le_one_of_planeTriple atomOf weightOf hab hac hbc hpos hframe hcap
+
+/-- **THE EXCESS CAP OF A PLANE SUB-FRAME.**  At every size, with the total weight
+unnormalised: `sum_a t_a (l_a - 1) <= 1`. -/
+theorem sum_excess_le_one_of_planeFrame {index : Type*} [LinearOrder index]
+    (atomOf : index → Fin 2 → ℝ) (weightOf : index → ℝ) (support : Finset index)
+    (hpos : ∀ label ∈ support, 0 < weightOf label)
+    (hheavy : ∀ label ∈ support, 1 < leverageOf (atomOf label))
+    (hframe : ∑ label ∈ support, weightOf label • atomMatrix (atomOf label)
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ))
+    (hcap : ∀ label ∈ support, ∀ other ∈ support, label ≠ other →
+      (leverageOf (atomOf label) - 1) * (leverageOf (atomOf other) - 1)
+        ≤ (atomOf label ⬝ᵥ atomOf other) ^ 2) :
+    ∑ label ∈ support, weightOf label * (leverageOf (atomOf label) - 1) ≤ 1 :=
+  sum_excess_le_one_aux atomOf support.card weightOf support le_rfl hpos hheavy hframe hcap
+
+/-- **THE PLANE WEIGHT FLOOR.**  A plane sub-frame whose leverages exceed one and
+none of whose pairs strictly dominates the identity on the plane it spans has total
+weight at least ONE.
+
+The floor is attained, on the two-parameter family of three-class rank-two ties,
+so there is no margin here and none is claimed. -/
+theorem one_le_sum_weight_of_planeFrame {index : Type*} [LinearOrder index]
+    (atomOf : index → Fin 2 → ℝ) (weightOf : index → ℝ) (support : Finset index)
+    (hpos : ∀ label ∈ support, 0 < weightOf label)
+    (hheavy : ∀ label ∈ support, 1 < leverageOf (atomOf label))
+    (hframe : ∑ label ∈ support, weightOf label • atomMatrix (atomOf label)
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ))
+    (hcap : ∀ label ∈ support, ∀ other ∈ support, label ≠ other →
+      (leverageOf (atomOf label) - 1) * (leverageOf (atomOf other) - 1)
+        ≤ (atomOf label ⬝ᵥ atomOf other) ^ 2) :
+    1 ≤ ∑ label ∈ support, weightOf label := by
+  have htrace := planeFrame_trace atomOf weightOf support hframe
+  have hexcess := sum_excess_le_one_of_planeFrame atomOf weightOf support hpos hheavy hframe hcap
+  have hsplit : ∑ label ∈ support, weightOf label * (leverageOf (atomOf label) - 1)
+      = (∑ label ∈ support, weightOf label * leverageOf (atomOf label))
+        - ∑ label ∈ support, weightOf label := by
+    rw [← Finset.sum_sub_distrib]
+    exact Finset.sum_congr rfl fun _ _ => by ring
+  rw [hsplit, htrace] at hexcess
+  linarith
+
+/-- **THE MEAN LEVERAGE OF A PLANE SUB-FRAME IS AT MOST TWO.**  The same statement,
+read as an average: `sum_a t_a l_a = 2` always, so the floor says the weighted mean
+leverage `2 / sigma` never exceeds two.  The Mercedes trine attains it. -/
+theorem weighted_mean_leverage_le_two {index : Type*} [LinearOrder index]
+    (atomOf : index → Fin 2 → ℝ) (weightOf : index → ℝ) (support : Finset index)
+    (hpos : ∀ label ∈ support, 0 < weightOf label)
+    (hheavy : ∀ label ∈ support, 1 < leverageOf (atomOf label))
+    (hframe : ∑ label ∈ support, weightOf label • atomMatrix (atomOf label)
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ))
+    (hcap : ∀ label ∈ support, ∀ other ∈ support, label ≠ other →
+      (leverageOf (atomOf label) - 1) * (leverageOf (atomOf other) - 1)
+        ≤ (atomOf label ⬝ᵥ atomOf other) ^ 2) :
+    ∑ label ∈ support, weightOf label * leverageOf (atomOf label)
+      ≤ 2 * ∑ label ∈ support, weightOf label := by
+  have htrace := planeFrame_trace atomOf weightOf support hframe
+  have hfloor := one_le_sum_weight_of_planeFrame atomOf weightOf support hpos hheavy hframe hcap
+  rw [htrace]
+  linarith
+
+/-- **A LIGHT PLANE SUB-FRAME CARRIES A STRICTLY DOMINATING PAIR.**  The
+contrapositive of the floor, and the form the campaign spends: total weight below
+one buys a pair `{a,b}` with `det(g_a g_a^T + g_b g_b^T - 1) > 0`. -/
+theorem exists_planeStrictPair_of_sum_weight_lt_one {index : Type*} [LinearOrder index]
+    (atomOf : index → Fin 2 → ℝ) (weightOf : index → ℝ) (support : Finset index)
+    (hpos : ∀ label ∈ support, 0 < weightOf label)
+    (hheavy : ∀ label ∈ support, 1 < leverageOf (atomOf label))
+    (hframe : ∑ label ∈ support, weightOf label • atomMatrix (atomOf label)
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ))
+    (hlight : ∑ label ∈ support, weightOf label < 1) :
+    ∃ label ∈ support, ∃ other ∈ support, label ≠ other ∧
+      (atomOf label ⬝ᵥ atomOf other) ^ 2
+        < (leverageOf (atomOf label) - 1) * (leverageOf (atomOf other) - 1) := by
+  by_contra hcontra
+  push_neg at hcontra
+  have hcap : ∀ label ∈ support, ∀ other ∈ support, label ≠ other →
+      (leverageOf (atomOf label) - 1) * (leverageOf (atomOf other) - 1)
+        ≤ (atomOf label ⬝ᵥ atomOf other) ^ 2 := by
+    intro label hlabel other hother hne
+    exact hcontra label hlabel other hother hne
+  have := one_le_sum_weight_of_planeFrame atomOf weightOf support hpos hheavy hframe hcap
+  linarith
+
+/-! ## Part 7: the triple cap conjecture is FALSE
+
+The campaign brief conjectures `kappa_ab + kappa_bc + kappa_ca <= 2 pi` for the caps
+of a coplanar stratum, with equality only at the Mercedes.  Three plane atoms of
+leverage `11/10` at sixty degrees refute it: they form a plane sub-frame, no pair
+of them strictly dominates, and their three caps total `6 arccos(1/11)`, which
+exceeds `2 pi`.  What is true is the floor of Part 6, and the floor is what empties
+the stratum, because the stratum asks for total weight below one. -/
+
+/-- The non-strict cap of a pair, as the brief defines it:
+`cos(kappa/2) = sin(beta_a) sin(beta_b)` with `sin^2 beta_a = 1 - 1/l_a`. -/
+noncomputable def nonStrictCapAngle (leverageFirst leverageSecond : ℝ) : ℝ :=
+  2 * Real.arccos (Real.sqrt ((1 - 1 / leverageFirst) * (1 - 1 / leverageSecond)))
+
+/-- The LIGHT TRINE: three plane atoms of leverage `11/10` at sixty degrees. -/
+noncomputable def lightTrineAtom : Fin 3 → Fin 2 → ℝ :=
+  ![![Real.sqrt (11 / 10), 0],
+    ![Real.sqrt (11 / 10) / 2, Real.sqrt (11 / 10) * Real.sqrt 3 / 2],
+    ![-(Real.sqrt (11 / 10) / 2), Real.sqrt (11 / 10) * Real.sqrt 3 / 2]]
+
+/-- The uniform weight that makes the light trine resolve the plane identity. -/
+noncomputable def lightTrineWeight : Fin 3 → ℝ := fun _ => 20 / 33
+
+private theorem lightTrine_rootSq :
+    Real.sqrt (11 / 10) * Real.sqrt (11 / 10) = 11 / 10 := Real.mul_self_sqrt (by norm_num)
+
+private theorem lightTrine_threeSq : Real.sqrt 3 * Real.sqrt 3 = 3 :=
+  Real.mul_self_sqrt (by norm_num)
+
+private theorem lightTrine_crossSq :
+    (Real.sqrt (11 / 10) * Real.sqrt 3) * (Real.sqrt (11 / 10) * Real.sqrt 3) = 33 / 10 := by
+  calc (Real.sqrt (11 / 10) * Real.sqrt 3) * (Real.sqrt (11 / 10) * Real.sqrt 3)
+      = (Real.sqrt (11 / 10) * Real.sqrt (11 / 10)) * (Real.sqrt 3 * Real.sqrt 3) := by ring
+    _ = (11 / 10) * 3 := by rw [lightTrine_rootSq, lightTrine_threeSq]
+    _ = 33 / 10 := by norm_num
+
+theorem lightTrineAtom_leverage (label : Fin 3) :
+    leverageOf (lightTrineAtom label) = 11 / 10 := by
+  have hzero : leverageOf (lightTrineAtom 0) = 11 / 10 := by
+    rw [leverageOf_planeMul]
+    simp only [lightTrineAtom, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    nlinarith [lightTrine_rootSq, lightTrine_threeSq, lightTrine_crossSq]
+  have hone : leverageOf (lightTrineAtom 1) = 11 / 10 := by
+    rw [leverageOf_planeMul]
+    simp only [lightTrineAtom, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    nlinarith [lightTrine_rootSq, lightTrine_threeSq, lightTrine_crossSq]
+  have htwo : leverageOf (lightTrineAtom 2) = 11 / 10 := by
+    rw [leverageOf_planeMul]
+    simp only [lightTrineAtom, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+      Matrix.head_cons, Matrix.tail_cons]
+    nlinarith [lightTrine_rootSq, lightTrine_threeSq, lightTrine_crossSq]
+  fin_cases label
+  · exact hzero
+  · exact hone
+  · exact htwo
+
+/-- **THE LIGHT TRINE IS A PLANE SUB-FRAME.** -/
+theorem lightTrineFrame :
+    ∑ label : Fin 3, lightTrineWeight label • atomMatrix (lightTrineAtom label)
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ) := by
+  have hentry : ∀ row col : Fin 2,
+      (∑ label : Fin 3, lightTrineWeight label • atomMatrix (lightTrineAtom label)) row col
+        = lightTrineWeight 0 * (lightTrineAtom 0 row * lightTrineAtom 0 col)
+          + lightTrineWeight 1 * (lightTrineAtom 1 row * lightTrineAtom 1 col)
+          + lightTrineWeight 2 * (lightTrineAtom 2 row * lightTrineAtom 2 col) := by
+    intro row col
+    rw [Matrix.sum_apply, Fin.sum_univ_three]
+    simp [atomMatrix, Matrix.vecMulVec_apply]
+  have hdiagZero : (∑ label : Fin 3, lightTrineWeight label • atomMatrix (lightTrineAtom label))
+      0 0 = 1 := by
+    rw [hentry]
+    simp only [lightTrineWeight, lightTrineAtom, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
+    nlinarith [lightTrine_rootSq, lightTrine_threeSq, lightTrine_crossSq]
+  have hdiagOne : (∑ label : Fin 3, lightTrineWeight label • atomMatrix (lightTrineAtom label))
+      1 1 = 1 := by
+    rw [hentry]
+    simp only [lightTrineWeight, lightTrineAtom, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
+    nlinarith [lightTrine_rootSq, lightTrine_threeSq, lightTrine_crossSq]
+  have hoffOne : (∑ label : Fin 3, lightTrineWeight label • atomMatrix (lightTrineAtom label))
+      0 1 = 0 := by
+    rw [hentry]
+    simp only [lightTrineWeight, lightTrineAtom, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
+    nlinarith [lightTrine_rootSq, lightTrine_threeSq, lightTrine_crossSq]
+  have hoffTwo : (∑ label : Fin 3, lightTrineWeight label • atomMatrix (lightTrineAtom label))
+      1 0 = 0 := by
+    rw [hentry]
+    simp only [lightTrineWeight, lightTrineAtom, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
+    nlinarith [lightTrine_rootSq, lightTrine_threeSq, lightTrine_crossSq]
+  ext row col
+  fin_cases row <;> fin_cases col
+  · exact hdiagZero.trans (Matrix.one_apply_eq (0 : Fin 2)).symm
+  · exact hoffOne.trans (Matrix.one_apply_ne (by decide : (0 : Fin 2) ≠ 1)).symm
+  · exact hoffTwo.trans (Matrix.one_apply_ne (by decide : (1 : Fin 2) ≠ 0)).symm
+  · exact hdiagOne.trans (Matrix.one_apply_eq (1 : Fin 2)).symm
+
+/-- The total weight of the light trine is `20/11`, comfortably above the floor. -/
+theorem lightTrine_sum_weight : ∑ label : Fin 3, lightTrineWeight label = 20 / 11 := by
+  simp only [lightTrineWeight, Fin.sum_univ_three]
+  norm_num
+
+/-- **NO PAIR OF THE LIGHT TRINE STRICTLY DOMINATES.**  Every squared pairing is
+`121/400`, and the excess product is `1/100`. -/
+theorem lightTrine_noStrictPair {labelFirst labelSecond : Fin 3}
+    (hne : labelFirst ≠ labelSecond) :
+    (leverageOf (lightTrineAtom labelFirst) - 1) * (leverageOf (lightTrineAtom labelSecond) - 1)
+      ≤ (lightTrineAtom labelFirst ⬝ᵥ lightTrineAtom labelSecond) ^ 2 := by
+  have hdot : ∀ leftIndex rightIndex : Fin 3,
+      lightTrineAtom leftIndex ⬝ᵥ lightTrineAtom rightIndex
+        = lightTrineAtom leftIndex 0 * lightTrineAtom rightIndex 0
+          + lightTrineAtom leftIndex 1 * lightTrineAtom rightIndex 1 := by
+    intro leftIndex rightIndex
+    rw [dotProduct_planeMul]
+  rw [lightTrineAtom_leverage, lightTrineAtom_leverage]
+  have entry01 : (lightTrineAtom 0 0 * lightTrineAtom 1 0
+      + lightTrineAtom 0 1 * lightTrineAtom 1 1) ^ 2 = 121 / 400 := by
+    simp only [lightTrineAtom, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+      Matrix.head_cons, Matrix.tail_cons]
+    nlinarith [lightTrine_rootSq, lightTrine_threeSq, lightTrine_crossSq]
+  have entry02 : (lightTrineAtom 0 0 * lightTrineAtom 2 0
+      + lightTrineAtom 0 1 * lightTrineAtom 2 1) ^ 2 = 121 / 400 := by
+    simp only [lightTrineAtom, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+      Matrix.head_cons, Matrix.tail_cons]
+    nlinarith [lightTrine_rootSq, lightTrine_threeSq, lightTrine_crossSq]
+  have entry10 : (lightTrineAtom 1 0 * lightTrineAtom 0 0
+      + lightTrineAtom 1 1 * lightTrineAtom 0 1) ^ 2 = 121 / 400 := by
+    simp only [lightTrineAtom, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+      Matrix.head_cons, Matrix.tail_cons]
+    nlinarith [lightTrine_rootSq, lightTrine_threeSq, lightTrine_crossSq]
+  have entry12 : (lightTrineAtom 1 0 * lightTrineAtom 2 0
+      + lightTrineAtom 1 1 * lightTrineAtom 2 1) ^ 2 = 121 / 400 := by
+    simp only [lightTrineAtom, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+      Matrix.head_cons, Matrix.tail_cons]
+    nlinarith [lightTrine_rootSq, lightTrine_threeSq, lightTrine_crossSq]
+  have entry20 : (lightTrineAtom 2 0 * lightTrineAtom 0 0
+      + lightTrineAtom 2 1 * lightTrineAtom 0 1) ^ 2 = 121 / 400 := by
+    simp only [lightTrineAtom, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+      Matrix.head_cons, Matrix.tail_cons]
+    nlinarith [lightTrine_rootSq, lightTrine_threeSq, lightTrine_crossSq]
+  have entry21 : (lightTrineAtom 2 0 * lightTrineAtom 1 0
+      + lightTrineAtom 2 1 * lightTrineAtom 1 1) ^ 2 = 121 / 400 := by
+    simp only [lightTrineAtom, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+      Matrix.head_cons, Matrix.tail_cons]
+    nlinarith [lightTrine_rootSq, lightTrine_threeSq, lightTrine_crossSq]
+  have hpairing : (lightTrineAtom labelFirst ⬝ᵥ lightTrineAtom labelSecond) ^ 2 = 121 / 400 := by
+    rw [hdot]
+    fin_cases labelFirst <;> fin_cases labelSecond <;>
+      first
+        | exact absurd rfl hne
+        | exact entry01
+        | exact entry02
+        | exact entry10
+        | exact entry12
+        | exact entry20
+        | exact entry21
+  rw [hpairing]
+  norm_num
+
+theorem nonStrictCapAngle_lightTrine :
+    nonStrictCapAngle (11 / 10) (11 / 10) = 2 * Real.arccos (1 / 11) := by
+  have hval : ((1 : ℝ) - 1 / (11 / 10)) * (1 - 1 / (11 / 10)) = (1 / 11) ^ 2 := by norm_num
+  rw [nonStrictCapAngle, hval, Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 1 / 11)]
+
+theorem pi_div_three_lt_arccos_inv_eleven : Real.pi / 3 < Real.arccos (1 / 11) := by
+  have hhalf : Real.arccos (1 / 2) = Real.pi / 3 := by
+    rw [show (1 : ℝ) / 2 = Real.cos (Real.pi / 3) by rw [Real.cos_pi_div_three]]
+    exact Real.arccos_cos (by positivity) (by linarith [Real.pi_pos])
+  rw [← hhalf]
+  by_contra hcontra
+  push_neg at hcontra
+  have hmono := Real.cos_le_cos_of_nonneg_of_le_pi (Real.arccos_nonneg _)
+    (Real.arccos_le_pi _) hcontra
+  rw [Real.cos_arccos (by norm_num) (by norm_num),
+    Real.cos_arccos (by norm_num) (by norm_num)] at hmono
+  norm_num at hmono
+
+/-- **THE TRIPLE CAP CONJECTURE IS FALSE.**  The three caps of the light trine total
+more than `2 pi`, on a genuine plane sub-frame with no strictly dominating pair. -/
+theorem two_pi_lt_sum_nonStrictCapAngle_lightTrine :
+    2 * Real.pi < nonStrictCapAngle (11 / 10) (11 / 10)
+      + nonStrictCapAngle (11 / 10) (11 / 10) + nonStrictCapAngle (11 / 10) (11 / 10) := by
+  rw [nonStrictCapAngle_lightTrine]
+  linarith [pi_div_three_lt_arccos_inv_eleven]
