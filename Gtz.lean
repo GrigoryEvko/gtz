@@ -6836,3 +6836,5 @@ import Gtz.Wave.CircuitSwapLaw
 import Gtz.Wave.RankFourDependencyChart
 import Gtz.Wave.CouplingRankBudget
 import Gtz.Complex.ComplexTransportLedger
+import Gtz.Wave.DependencyAtomCap
+import Gtz.Wave.TwoPlaneCoplanarStructure

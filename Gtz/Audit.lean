@@ -1484,6 +1484,7 @@ import Gtz.Wave.ChartFrobeniusLaw
 import Gtz.Wave.DependencyDominationCriterion
 import Gtz.Wave.CircuitSwapLaw
 import Gtz.Wave.RankFourDependencyChart
+import Gtz.Wave.DependencyAtomCap
 import Gtz.Wave.ChartGaleSpectralLaw
 import Gtz.Complex.ComplexHingeRefutation
 import Gtz.Wave.CouplingRankBudget
@@ -40025,3 +40026,88 @@ run_cmd do
 #print axioms Gtz.straddle_of_noStrict
 #print axioms Gtz.eightFour_straddle_of_isTie
 #print axioms Gtz.thresholdCellHingeRankFourAndUpStatement_iff_dependency
+-- TwoPlaneCoplanarStructure: coplanar atoms, the shadow-class pigeonhole, and the
+--   spike kill.
+--   Gtz.hasParallelPair_of_fourFlat_of_shadowClasses forces a parallel pair from four
+--     coplanar atoms distributed among the three classes of the plane shadow.
+--   Gtz.det_gap_flatPair_triple reads a coplanar pair's triple gap as the plane block
+--     determinant against the third height, less the plane adjugate form.
+--   Gtz.not_isTie_of_atom_orthogonal_to_all empties the stratum in which one atom of a
+--     rank-three tie is orthogonal to every other atom.
+#print axioms Gtz.frameShadow_atom
+#print axioms Gtz.frameShadow_weight
+#print axioms Gtz.leverageOf_frameShadow_atom
+#print axioms Gtz.leverageOf_frameShadow_atom_of_flat
+#print axioms Gtz.planeWedge_frameShadow
+#print axioms Gtz.sq_planeWedge_frameShadow
+#print axioms Gtz.exists_smul_of_flat_of_planeWedge_eq_zero
+#print axioms Gtz.twoOffPlane_axisMass_eq_one
+#print axioms Gtz.twoOffPlane_crossReading_eq_zero
+#print axioms Gtz.planeWedge_frameShadow_offPlane_eq_zero
+#print axioms Gtz.tripleBracket_offPlane_axis_eq_zero
+#print axioms Gtz.parallel_or_flat_of_offPlane_shadow_eq_zero
+#print axioms Gtz.spike_of_fiveFlat
+#print axioms Gtz.frameDet_flatPair_insert
+#print axioms Gtz.gapReading_flatPair_axis
+#print axioms Gtz.det_gap_flatPair_triple
+#print axioms Gtz.flatPair_gate_of_isTie
+#print axioms Gtz.det_gap_spike_triple
+#print axioms Gtz.hasParallelPair_of_fourFlat_of_shadowClasses
+#print axioms Gtz.shadow_heavy_of_isTie_sixThree_of_flat
+#print axioms Gtz.hasParallelPair_of_isTie_sixThree_of_fourCoplanar
+#print axioms Gtz.fourCoplanar_trichotomy_sixThree
+#print axioms Gtz.coplanar_wall_of_isTie
+#print axioms Gtz.planeStrict_of_dominates_spikeComplementDesign
+#print axioms Gtz.exists_posDef_triple_of_spike
+#print axioms Gtz.not_isTie_of_spike
+#print axioms Gtz.not_isTie_sixThree_of_fiveCoplanar
+#print axioms Gtz.not_isTie_of_unitNormal_kills_all_but_one
+#print axioms Gtz.not_isTie_of_atom_orthogonal_to_all
+#print axioms Gtz.sixThree_isTie_no_orthogonal_atom
+#print axioms Gtz.sixThree_isTie_no_unitNormal_kills_five
+#print axioms Gtz.exists_not_flat
+
+-- Gtz/Wave/DependencyAtomCap.lean
+#print axioms Gtz.depCross_self
+#print axioms Gtz.depSlack_smul_add
+#print axioms Gtz.depSlack_sum_three
+#print axioms Gtz.dominates_iff_depSlack_nonneg
+#print axioms Gtz.posDef_gap_iff_depSlack_pos
+#print axioms Gtz.sum_smul_add_smul_atom_eq_zero
+#print axioms Gtz.sum_smul_three_atom_eq_zero
+#print axioms Gtz.depCross_add_depCross_compl
+#print axioms Gtz.depSlack_add_depSlack_compl
+#print axioms Gtz.depSlack_compl_eq_sub
+#print axioms Gtz.depBudget_self_nonneg_of_dominates_both
+#print axioms Gtz.depBudget_self_nonneg_of_weight_le_half
+#print axioms Gtz.sum_weight_mul_pairing_smul_atom
+#print axioms Gtz.sum_coDependency_smul_atom
+#print axioms Gtz.sum_coDependency_mul_div_weight
+#print axioms Gtz.dualNormSq_coDependency
+#print axioms Gtz.sq_le_weight_mul_coShare_mul_dualNormSq
+#print axioms Gtz.atomCap_eq_at_coDependency
+#print axioms Gtz.dualRatio_lt_one_iff_one_lt_leverage
+#print axioms Gtz.sum_one_sub_weight_mul_dualRatio
+#print axioms Gtz.depSlack_eq_dualNormSq_sub
+#print axioms Gtz.sum_dualReading_le_of_dependency
+#print axioms Gtz.dominates_of_sum_dualRatio_le_one
+#print axioms Gtz.posDef_gap_of_sum_dualRatio_lt_one
+#print axioms Gtz.one_le_sum_dualRatio_of_isTie
+#print axioms Gtz.gtzWeighted_sixThree_of_light_triple
+#print axioms Gtz.one_le_dualRatio_triple_of_isTie_sixThree
+#print axioms Gtz.allHeavy_isTie_sixThree_dualRatio_window
+#print axioms Gtz.depCross_sq_le_depSlack_mul_of_dominates
+#print axioms Gtz.depSlack_circuitDep
+#print axioms Gtz.depCross_circuitDep
+#print axioms Gtz.twoCircuitMinor_of_dominates
+#print axioms Gtz.not_dominates_of_twoCircuitMinor_violation
+#print axioms Gtz.dotProduct_circuitGram_mulVec
+#print axioms Gtz.posSemidef_circuitGram_of_dominates
+#print axioms Gtz.circuitCoeffs_eq_zero_of_tripleBracket_ne_zero
+#print axioms Gtz.tripleBracket_ne_zero_of_dominates
+#print axioms Gtz.sum_over_six
+#print axioms Gtz.dependency_eq_circuit_combination_sixThree
+#print axioms Gtz.dominates_iff_posSemidef_circuitGram_sixThree
+#print axioms Gtz.posDef_gap_iff_posDef_circuitGram_sixThree
+#print axioms Gtz.det_circuitGram_eq_zero_of_isTie_sixThree
+#print axioms Gtz.circuitGram_determinant_relation_of_isTie_sixThree
