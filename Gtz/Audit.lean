@@ -40024,3 +40024,4 @@ run_cmd do
 #print axioms Gtz.exists_defect_ge_budget_of_not_posDef_compl
 #print axioms Gtz.straddle_of_noStrict
 #print axioms Gtz.eightFour_straddle_of_isTie
+#print axioms Gtz.thresholdCellHingeRankFourAndUpStatement_iff_dependency
