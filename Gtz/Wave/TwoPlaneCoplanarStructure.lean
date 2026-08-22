@@ -1391,4 +1391,356 @@ theorem sixThree_tie_crossNormSq_window_at_every_atom (design : WeightedDesign 6
     crossNormSq_window_of_isTie design htie hne hheavyStrong hadmissible
   exact ⟨strongLabel, otherLabel, hne, hstrongNe, hotherNe, hfloor, hceiling⟩
 
+/-! ## Part 9 — a seventh clause for the `(6,3)` normal form
+
+`Gtz.sixThree_primitiveTie_normalForm` pins every primitive `(6,3)` tie by six
+unconditional clauses.  Part 9 adds a SEVENTH, of a shape none of the six has: a
+PER-ATOM EXISTENTIAL that prices the pivot's weight and leverage against another
+pair's Gram minor.
+
+The chain is Part 8 made quantitative.  The deficit law does not merely return a
+strict pair, it returns the MARGIN `1/(1 - t) - 1`: the pivot's own plane is
+over-covered by that much.  A margin on the plane form is a margin on the plane
+block determinant, `D >= (t/(1-t))^2`.  The pivot's shadow vanishes, so inserting
+it into the pair moves the gap determinant by exactly `(g . axis)^2 * D`, and
+`(g . axis)^2` is the pivot's own leverage.  The tie's gate caps the triple at
+zero and the pair's own determinant is minus its Gram minor, so
+
+    l_c * (t_c / (1 - t_c))^2  <=  (l_a - 1)(l_b - 1) - <g_a, g_b>^2
+
+for two atoms `a`, `b` other than `c`.  Every quantity is a Gram entry or a
+weight.  Whether the clause is INDEPENDENT of the six is not proved here; it is a
+different shape, but no separating design is exhibited. -/
+
+/-- The axis insertion of `Gtz.frameDet`: a third atom whose two plane readings
+vanish moves the determinant by its squared height against the plane block. -/
+theorem frameDet_axisInsert (aa bb cc dd ee ff height : ℝ) :
+    frameDet aa bb cc dd ee (ff + height ^ 2)
+      = frameDet aa bb cc dd ee ff + height ^ 2 * frameBlockDet aa bb cc := by
+  simp only [frameDet, frameBlockDet]
+  ring
+
+/-- **INSERTING A ZERO-SHADOW ATOM MOVES THE GAP DETERMINANT BY ITS LEVERAGE
+AGAINST THE PLANE BLOCK.**  Exact, with no hypothesis on the pair. -/
+theorem det_gap_zeroShadow_triple (design : WeightedDesign size 3) (frame : AxisFrame)
+    {pairFirst pairSecond pivotLabel : Fin size} (hne : pairFirst ≠ pairSecond)
+    (hneFirstPivot : pairFirst ≠ pivotLabel) (hneSecondPivot : pairSecond ≠ pivotLabel)
+    (hpivotOne : design.atom pivotLabel ⬝ᵥ frame.pOne = 0)
+    (hpivotTwo : design.atom pivotLabel ⬝ᵥ frame.pTwo = 0) :
+    (subsetSum design {pairFirst, pairSecond, pivotLabel} - 1).det
+      = (subsetSum design {pairFirst, pairSecond} - 1).det
+        + (design.atom pivotLabel ⬝ᵥ frame.axis) ^ 2
+          * frameBlockDet (gapReading design {pairFirst, pairSecond} frame.pOne frame.pOne)
+              (gapReading design {pairFirst, pairSecond} frame.pOne frame.pTwo)
+              (gapReading design {pairFirst, pairSecond} frame.pTwo frame.pTwo) := by
+  classical
+  set pairSet : Finset (Fin size) := {pairFirst, pairSecond} with hpairDef
+  have hpivotNotMem : pivotLabel ∉ pairSet := by
+    simp only [hpairDef, Finset.mem_insert, Finset.mem_singleton]
+    push_neg
+    exact ⟨Ne.symm hneFirstPivot, Ne.symm hneSecondPivot⟩
+  have hentry : ∀ probeLeft probeRight : Fin 3 → ℝ,
+      gapReading design (insert pivotLabel pairSet) probeLeft probeRight
+        = gapReading design pairSet probeLeft probeRight
+          + (design.atom pivotLabel ⬝ᵥ probeLeft) * (design.atom pivotLabel ⬝ᵥ probeRight) :=
+    fun probeLeft probeRight => gapReading_insert design hpivotNotMem probeLeft probeRight
+  have htriple : ({pairFirst, pairSecond, pivotLabel} : Finset (Fin size))
+      = insert pivotLabel pairSet := tripleSet_eq_insert
+  rw [htriple, det_gap_eq_frameDet design (insert pivotLabel pairSet) frame, hentry, hentry,
+    hentry, hentry, hentry, hentry, hpivotOne, hpivotTwo,
+    det_gap_eq_frameDet design pairSet frame]
+  have hsq : (design.atom pivotLabel ⬝ᵥ frame.axis) * (design.atom pivotLabel ⬝ᵥ frame.axis)
+      = (design.atom pivotLabel ⬝ᵥ frame.axis) ^ 2 := (sq _).symm
+  simp only [zero_mul, mul_zero, add_zero, hsq]
+  exact frameDet_axisInsert _ _ _ _ _ _ _
+
+/-- A two by two symmetric matrix with a nonnegative form has a nonnegative
+determinant, read on the three scalars. -/
+theorem det_nonneg_of_binary_form_nonneg {cornerFirst cross cornerSecond : ℝ}
+    (hform : ∀ x y : ℝ, 0 ≤ cornerFirst * x ^ 2 + 2 * cross * (x * y)
+      + cornerSecond * y ^ 2) :
+    0 ≤ cornerFirst * cornerSecond - cross ^ 2 := by
+  have hfirst : 0 ≤ cornerFirst := by simpa using hform 1 0
+  rcases hfirst.lt_or_eq with hpos | hzero
+  · have hschur := hform (-cross) cornerFirst
+    nlinarith [hschur, hpos]
+  · have hcrossZero : cross = 0 := by
+      by_contra hne
+      have hvalue := hform (-(cornerSecond + 1) / (2 * cross)) 1
+      rw [← hzero] at hvalue
+      have hclear : (0 : ℝ) * (-(cornerSecond + 1) / (2 * cross)) ^ 2
+          + 2 * cross * ((-(cornerSecond + 1) / (2 * cross)) * 1) + cornerSecond * 1 ^ 2
+          = -1 := by
+        field_simp
+        ring
+      rw [hclear] at hvalue
+      norm_num at hvalue
+    rw [← hzero, hcrossZero]
+    norm_num
+  
+/-- **THE DEFICIT LAW WITH ITS MARGIN.**  The pair the deficit law returns does not
+merely beat the plane, it beats it by the factor `1 / (total weight)`. -/
+theorem exists_planeMargin_of_weightSum {members : ℕ}
+    (atomOf : Fin (members + 1) → (Fin 2 → ℝ)) (weightOf : Fin (members + 1) → ℝ)
+    (hpos : ∀ index : Fin (members + 1), 0 < weightOf index)
+    (hframe : ∑ index, weightOf index • atomMatrix (atomOf index)
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ)) :
+    ∃ first second : Fin (members + 1), first ≠ second
+      ∧ ∀ probe : Fin 2 → ℝ,
+          probe ⬝ᵥ probe
+            ≤ (∑ other, weightOf other)
+              * ((atomOf first ⬝ᵥ probe) ^ 2 + (atomOf second ⬝ᵥ probe) ^ 2) := by
+  classical
+  have hmass : 0 < ∑ other, weightOf other :=
+    Finset.sum_pos (fun other _ => hpos other) ⟨0, Finset.mem_univ 0⟩
+  have hsq : Real.sqrt (∑ other, weightOf other) ^ 2 = ∑ other, weightOf other :=
+    Real.sq_sqrt hmass.le
+  obtain ⟨pairSet, hcard, hdominates⟩ :=
+    gtz_rank_two (members + 1) (scaledPlaneFrame atomOf weightOf hpos hframe)
+  obtain ⟨first, second, hne, hpairEq⟩ := Finset.card_eq_two.mp hcard
+  refine ⟨first, second, hne, fun probe => ?_⟩
+  have hform := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdominates).2 probe
+  rw [star_trivial, dominationGap_form, hpairEq, Finset.sum_pair hne] at hform
+  have hreading : ∀ index : Fin (members + 1),
+      (scaledPlaneFrame atomOf weightOf hpos hframe).atom index ⬝ᵥ probe
+        = Real.sqrt (∑ other, weightOf other) * (atomOf index ⬝ᵥ probe) := by
+    intro index
+    show (Real.sqrt (∑ other, weightOf other) • atomOf index) ⬝ᵥ probe = _
+    rw [smul_dotProduct, smul_eq_mul]
+  rw [hreading first, hreading second] at hform
+  have hexpand : (Real.sqrt (∑ other, weightOf other) * (atomOf first ⬝ᵥ probe)) ^ 2
+        + (Real.sqrt (∑ other, weightOf other) * (atomOf second ⬝ᵥ probe)) ^ 2
+      = (∑ other, weightOf other)
+        * ((atomOf first ⬝ᵥ probe) ^ 2 + (atomOf second ⬝ᵥ probe) ^ 2) := by
+    rw [mul_pow, mul_pow, hsq]
+    ring
+  rw [hexpand] at hform
+  linarith [hform]
+
+/-- **THE PIVOT'S OWN PLANE, WITH ITS MARGIN.**  Part 8 again, keeping the factor
+the deficit buys: the pair over-covers the pivot's plane by `1 / (1 - t)`. -/
+theorem exists_frame_planeMargin_orthogonal_to_atom {atoms : ℕ}
+    (design : WeightedDesign (atoms + 2) 3) {pivotLabel : Fin (atoms + 2)}
+    (hnonzero : design.atom pivotLabel ≠ 0) :
+    ∃ (frame : AxisFrame) (first second : Fin (atoms + 2)),
+      (design.atom pivotLabel ⬝ᵥ frame.axis) ^ 2 = leverageOf (design.atom pivotLabel)
+        ∧ design.atom pivotLabel ⬝ᵥ frame.pOne = 0
+        ∧ design.atom pivotLabel ⬝ᵥ frame.pTwo = 0
+        ∧ first ≠ second ∧ first ≠ pivotLabel ∧ second ≠ pivotLabel
+        ∧ ∀ planar : Fin 3 → ℝ, planar ⬝ᵥ frame.axis = 0 →
+            planar ⬝ᵥ planar
+              ≤ (1 - design.weight pivotLabel)
+                * ((design.atom first ⬝ᵥ planar) ^ 2
+                  + (design.atom second ⬝ᵥ planar) ^ 2) := by
+  classical
+  have hpos : 0 < design.atom pivotLabel ⬝ᵥ design.atom pivotLabel :=
+    dotProduct_self_pos hnonzero
+  set root := Real.sqrt (design.atom pivotLabel ⬝ᵥ design.atom pivotLabel) with hrootDef
+  have hrootPos : 0 < root := Real.sqrt_pos.mpr hpos
+  set unitAxis : Fin 3 → ℝ := root⁻¹ • design.atom pivotLabel with haxisDef
+  have hunit : unitAxis ⬝ᵥ unitAxis = 1 := by
+    rw [haxisDef, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc,
+      ← mul_inv, hrootDef, Real.mul_self_sqrt hpos.le]
+    exact inv_mul_cancel₀ hpos.ne'
+  obtain ⟨pOne, pTwo, hOneOne, hTwoTwo, hOneTwo, hOneAxis, hTwoAxis⟩ :=
+    exists_orthonormal_planarFrame hunit
+  set frame : AxisFrame :=
+    { pOne := pOne, pTwo := pTwo, axis := unitAxis, oneOne := hOneOne, twoTwo := hTwoTwo,
+      axisAxis := hunit, oneTwo := hOneTwo, oneAxis := hOneAxis, twoAxis := hTwoAxis }
+    with hframeDef
+  have hscaled : design.atom pivotLabel = root • unitAxis := by
+    rw [haxisDef, smul_smul, mul_inv_cancel₀ hrootPos.ne', one_smul]
+  have hpivotOne : design.atom pivotLabel ⬝ᵥ frame.pOne = 0 := by
+    show design.atom pivotLabel ⬝ᵥ pOne = 0
+    have hcomm : unitAxis ⬝ᵥ pOne = 0 := by rw [dotProduct_comm]; exact hOneAxis
+    rw [hscaled, smul_dotProduct, smul_eq_mul, hcomm, mul_zero]
+  have hpivotTwo : design.atom pivotLabel ⬝ᵥ frame.pTwo = 0 := by
+    show design.atom pivotLabel ⬝ᵥ pTwo = 0
+    have hcomm : unitAxis ⬝ᵥ pTwo = 0 := by rw [dotProduct_comm]; exact hTwoAxis
+    rw [hscaled, smul_dotProduct, smul_eq_mul, hcomm, mul_zero]
+  have hheight : (design.atom pivotLabel ⬝ᵥ frame.axis) ^ 2
+      = leverageOf (design.atom pivotLabel) := by
+    have hrootSq : root * root = design.atom pivotLabel ⬝ᵥ design.atom pivotLabel := by
+      rw [hrootDef]; exact Real.mul_self_sqrt hpos.le
+    have hvalue : design.atom pivotLabel ⬝ᵥ frame.axis = root := by
+      show design.atom pivotLabel ⬝ᵥ unitAxis = root
+      rw [haxisDef, dotProduct_smul, smul_eq_mul, ← hrootSq]
+      field_simp
+    rw [hvalue, leverageOf_eq_dotProduct, ← hrootSq]
+    ring
+  -- the plane family of the atoms other than the pivot
+  set shadow := frameShadow design frame with hshadowDef
+  have hspikeZero : shadow.atom pivotLabel = 0 := by
+    funext coord
+    fin_cases coord
+    · simpa [hshadowDef, frameShadow_atom] using hpivotOne
+    · simpa [hshadowDef, frameShadow_atom] using hpivotTwo
+  set atomOf : Fin (atoms + 1) → (Fin 2 → ℝ) :=
+    fun index => shadow.atom (pivotLabel.succAbove index) with hatomDef
+  set weightOf : Fin (atoms + 1) → ℝ :=
+    fun index => design.weight (pivotLabel.succAbove index) with hweightDef
+  have hposWeight : ∀ index : Fin (atoms + 1), 0 < weightOf index :=
+    fun index => design.weight_pos _
+  have hplaneFrame : ∑ index, weightOf index • atomMatrix (atomOf index)
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ) := by
+    have hparseval : ∑ label : Fin (atoms + 2),
+        design.weight label • atomMatrix (shadow.atom label)
+        = (1 : Matrix (Fin 2) (Fin 2) ℝ) := shadow.isParseval
+    have hsplit := Fin.sum_univ_succAbove
+      (fun label => design.weight label • atomMatrix (shadow.atom label)) pivotLabel
+    have hzeroMatrix : atomMatrix (0 : Fin 2 → ℝ) = 0 := by
+      ext rowIndex colIndex
+      simp [atomMatrix, Matrix.vecMulVec_apply]
+    rw [hparseval, hspikeZero, hzeroMatrix, smul_zero, zero_add] at hsplit
+    rw [hatomDef, hweightDef]
+    exact hsplit.symm
+  have hweightTotal : ∑ other, weightOf other = 1 - design.weight pivotLabel := by
+    have hsplit := Fin.sum_univ_succAbove design.weight pivotLabel
+    rw [design.weight_sum_one] at hsplit
+    rw [hweightDef]
+    linarith [hsplit]
+  obtain ⟨firstIndex, secondIndex, hindexNe, hmargin⟩ :=
+    exists_planeMargin_of_weightSum atomOf weightOf hposWeight hplaneFrame
+  refine ⟨frame, pivotLabel.succAbove firstIndex, pivotLabel.succAbove secondIndex, hheight,
+    hpivotOne, hpivotTwo, fun hcontra => hindexNe (Fin.succAbove_right_injective hcontra),
+    Fin.succAbove_ne pivotLabel firstIndex, Fin.succAbove_ne pivotLabel secondIndex,
+    fun planar hperp => ?_⟩
+  have hvalue := hmargin ![planar ⬝ᵥ frame.pOne, planar ⬝ᵥ frame.pTwo]
+  rw [planeProbe_dotProduct_self frame hperp, hweightTotal] at hvalue
+  rw [dotProduct_eq_shadow_reading design frame (pivotLabel.succAbove firstIndex) hperp,
+    dotProduct_eq_shadow_reading design frame (pivotLabel.succAbove secondIndex) hperp]
+  exact hvalue
+
+/-- The squared length of a plane combination in an orthonormal frame. -/
+theorem planeCombination_dotProduct_self (frame : AxisFrame) (x y : ℝ) :
+    (x • frame.pOne + y • frame.pTwo + (0 : ℝ) • frame.axis)
+        ⬝ᵥ (x • frame.pOne + y • frame.pTwo + (0 : ℝ) • frame.axis)
+      = x ^ 2 + y ^ 2 := by
+  have hTwoOne : frame.pTwo ⬝ᵥ frame.pOne = 0 := by rw [dotProduct_comm]; exact frame.oneTwo
+  have hAxisOne : frame.axis ⬝ᵥ frame.pOne = 0 := by rw [dotProduct_comm]; exact frame.oneAxis
+  have hAxisTwo : frame.axis ⬝ᵥ frame.pTwo = 0 := by rw [dotProduct_comm]; exact frame.twoAxis
+  simp only [add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul, smul_eq_mul,
+    frame.oneOne, frame.twoTwo, frame.axisAxis, frame.oneTwo, frame.oneAxis, frame.twoAxis,
+    hTwoOne, hAxisOne, hAxisTwo]
+  ring
+
+/-- **THE MARGIN REACHES THE PLANE BLOCK DETERMINANT.**  A pair that over-covers a
+plane by the factor `1/sigma` has plane block determinant at least
+`(1/sigma - 1)^2`.  Two corner readings and one nonnegative binary form. -/
+theorem frameBlockDet_ge_of_planeMargin (design : WeightedDesign size 3) (frame : AxisFrame)
+    {pairFirst pairSecond : Fin size} (hne : pairFirst ≠ pairSecond) {sigma : ℝ}
+    (hsigmaPos : 0 < sigma) (hsigmaLe : sigma ≤ 1)
+    (hmargin : ∀ planar : Fin 3 → ℝ, planar ⬝ᵥ frame.axis = 0 →
+      planar ⬝ᵥ planar
+        ≤ sigma * ((design.atom pairFirst ⬝ᵥ planar) ^ 2
+          + (design.atom pairSecond ⬝ᵥ planar) ^ 2)) :
+    (1 / sigma - 1) ^ 2
+      ≤ frameBlockDet (gapReading design {pairFirst, pairSecond} frame.pOne frame.pOne)
+          (gapReading design {pairFirst, pairSecond} frame.pOne frame.pTwo)
+          (gapReading design {pairFirst, pairSecond} frame.pTwo frame.pTwo) := by
+  classical
+  set lam := 1 / sigma - 1 with hlamDef
+  have hlamNonneg : 0 ≤ lam := by
+    rw [hlamDef, le_sub_iff_add_le, zero_add, le_div_iff₀ hsigmaPos, one_mul]
+    exact hsigmaLe
+  set aa := gapReading design {pairFirst, pairSecond} frame.pOne frame.pOne with haaDef
+  set bb := gapReading design {pairFirst, pairSecond} frame.pOne frame.pTwo with hbbDef
+  set cc := gapReading design {pairFirst, pairSecond} frame.pTwo frame.pTwo with hccDef
+  -- the gap form on the plane is at least `lam` times the squared length
+  have hgapForm : ∀ planar : Fin 3 → ℝ, planar ⬝ᵥ frame.axis = 0 →
+      lam * (planar ⬝ᵥ planar) ≤ gapReading design {pairFirst, pairSecond} planar planar := by
+    intro planar hperp
+    have hvalue := hmargin planar hperp
+    have hsum : gapReading design {pairFirst, pairSecond} planar planar
+        = (design.atom pairFirst ⬝ᵥ planar) ^ 2
+          + (design.atom pairSecond ⬝ᵥ planar) ^ 2 - planar ⬝ᵥ planar := by
+      rw [gapReading_eq_sum, Finset.sum_pair hne]
+      ring
+    rw [hsum, hlamDef]
+    have hkey : planar ⬝ᵥ planar / sigma
+        ≤ (design.atom pairFirst ⬝ᵥ planar) ^ 2 + (design.atom pairSecond ⬝ᵥ planar) ^ 2 := by
+      rw [div_le_iff₀ hsigmaPos]
+      linarith [hvalue]
+    have hdiv : (1 / sigma - 1) * (planar ⬝ᵥ planar)
+        = planar ⬝ᵥ planar / sigma - planar ⬝ᵥ planar := by
+      field_simp
+    rw [hdiv]
+    linarith [hkey]
+  have hcornerFirst : lam ≤ aa := by
+    have hvalue := hgapForm frame.pOne frame.oneAxis
+    rw [frame.oneOne, mul_one, ← haaDef] at hvalue
+    exact hvalue
+  have hcornerSecond : lam ≤ cc := by
+    have hvalue := hgapForm frame.pTwo frame.twoAxis
+    rw [frame.twoTwo, mul_one, ← hccDef] at hvalue
+    exact hvalue
+  have hshifted : ∀ x y : ℝ,
+      0 ≤ (aa - lam) * x ^ 2 + 2 * bb * (x * y) + (cc - lam) * y ^ 2 := by
+    intro x y
+    have hvalue := hgapForm (x • frame.pOne + y • frame.pTwo + (0 : ℝ) • frame.axis)
+      (frame.planeCombination_dotProduct_axis x y)
+    rw [planeCombination_dotProduct_self frame x y,
+      gapReading_frameCoordinates design {pairFirst, pairSecond} frame x y 0,
+      ← haaDef, ← hbbDef, ← hccDef] at hvalue
+    nlinarith [hvalue]
+  have hdetShifted := det_nonneg_of_binary_form_nonneg hshifted
+  rw [frameBlockDet]
+  nlinarith [hdetShifted, hcornerFirst, hcornerSecond, hlamNonneg]
+
+/-- **THE SEVENTH CLAUSE.**  At every `(6,3)` tie and every atom, two OTHER atoms
+carry a Gram minor at least the pivot's leverage times the square of its weight
+ratio:
+
+    l_c * (t_c / (1 - t_c))^2  <=  (l_a - 1)(l_b - 1) - <g_a, g_b>^2 .
+
+Unconditional.  The pivot's own plane is over-covered by the factor `1/(1 - t_c)`,
+that margin reaches the plane block determinant, the pivot's vanishing shadow
+turns the determinant into the pivot's leverage times that block, and the tie's
+gate caps the resulting triple at zero.
+
+This clause has a shape none of the six in `Gtz.sixThree_primitiveTie_normalForm`
+has: it is a PER-ATOM EXISTENTIAL over pairs.  Whether it is INDEPENDENT of those
+six is not settled here, and no separating design is exhibited. -/
+theorem sixThree_tie_pivotLeverage_le_pairGapMinor (design : WeightedDesign 6 3)
+    (htie : IsTie design) (pivotLabel : Fin 6) :
+    ∃ first second : Fin 6, first ≠ second ∧ first ≠ pivotLabel ∧ second ≠ pivotLabel
+      ∧ leverageOf (design.atom pivotLabel)
+            * (design.weight pivotLabel / (1 - design.weight pivotLabel)) ^ 2
+          ≤ pairGapMinor (design.atom first) (design.atom second) := by
+  classical
+  obtain ⟨frame, first, second, hheight, hpivotOne, hpivotTwo, hne, hfirstNe, hsecondNe,
+    hmargin⟩ := exists_frame_planeMargin_orthogonal_to_atom (atoms := 4) design
+      (sixThree_atom_ne_zero_of_isTie design htie pivotLabel)
+  have hweightPos := design.weight_pos pivotLabel
+  have hweightLt := weight_lt_one design (by norm_num) pivotLabel
+  have hsigmaPos : 0 < 1 - design.weight pivotLabel := by linarith
+  have hsigmaLe : 1 - design.weight pivotLabel ≤ 1 := by linarith
+  -- the margin makes the pair plane-strict
+  have hstrict : PlaneStrictPair design frame.axis first second := by
+    intro planar hperp hplanarNe
+    have hvalue := hmargin planar hperp
+    have hplanarPos : 0 < planar ⬝ᵥ planar := dotProduct_self_pos hplanarNe
+    nlinarith [hvalue, hplanarPos, hweightPos]
+  have hblock := frameBlockDet_ge_of_planeMargin design frame hne hsigmaPos hsigmaLe hmargin
+  have hgate : (subsetSum design {first, second, pivotLabel} - 1).det ≤ 0 :=
+    det_gap_nonpos_of_isTie_of_pairPlaneStrict design htie frame.oneOne frame.twoTwo
+      frame.axisAxis frame.oneTwo frame.oneAxis frame.twoAxis hne hfirstNe hsecondNe hstrict
+  have hinsert := det_gap_zeroShadow_triple design frame hne hfirstNe hsecondNe hpivotOne
+    hpivotTwo
+  have hpairDet : (subsetSum design {first, second} - 1).det
+      = - pairGapMinor (design.atom first) (design.atom second) :=
+    det_subsetSum_pairGap_eq_neg_pairGapMinor design hne
+  rw [hpairDet, hheight] at hinsert
+  have hlevNonneg : 0 ≤ leverageOf (design.atom pivotLabel) := by
+    rw [leverageOf_eq_dotProduct]
+    exact dotProduct_self_nonneg _
+  have hsigmaNe : (1 : ℝ) - design.weight pivotLabel ≠ 0 := hsigmaPos.ne'
+  have hratio : design.weight pivotLabel / (1 - design.weight pivotLabel)
+      = 1 / (1 - design.weight pivotLabel) - 1 := by
+    field_simp
+    ring
+  refine ⟨first, second, hne, hfirstNe, hsecondNe, ?_⟩
+  rw [hratio]
+  nlinarith [hgate, hinsert, hblock, hlevNonneg]
+
 end Gtz
