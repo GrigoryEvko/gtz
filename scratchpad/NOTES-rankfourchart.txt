@@ -305,6 +305,20 @@ iterations, weight floor 0.005.
      median parallel-free of the 20 BEST  = 5.238e-01
      median parallel-free of the 20 WORST = 4.260e-01
 
+  (7,4)   ten best restarts -- the LAST cell below the band, 2*rank - 1
+     8.882e-15   4.071e-01          parallel-free
+     9.770e-15   8.857e-16          collinear
+     1.243e-14   1.431e-15          collinear
+     1.332e-14   1.412e-15          collinear
+     1.510e-14   3.917e-01          parallel-free
+     1.510e-14   1.938e-16          collinear
+     1.776e-14   2.984e-16          collinear
+     1.954e-14   6.657e-16          collinear
+     2.220e-14   9.747e-16          collinear
+     2.487e-14   4.391e-01          parallel-free
+     median parallel-free of the 20 BEST  = 3.869e-15
+     median parallel-free of the 20 WORST = 3.592e-01
+
   (6,3)   ten best restarts -- the campaign's OPEN rank-three target
      5.329e-15   6.666e-16          every one of the ten is an exact tie
      7.105e-15   1.334e-16          and every one carries an EXACT collinear pair
@@ -333,6 +347,13 @@ every one of the ten best is an exact tie and every one is exactly collinear,
 with five orders of magnitude between the best and the worst restarts. So the
 signature at (8,4) is the SAME as at (6,3), and the signature at (6,4) is the
 same as at (5,3).
+
+(7,4), the last cell BELOW the band, is mixed too: three of its ten best exact
+ties are parallel-free at 0.39 to 0.44 and seven are collinear at 1e-15. So at
+rank four the parallel-free ties are present at sizes five, six and seven and
+absent at size eight. THAT IS THE BAND'S LOWER GUARD, measured. The guard
+2*rank <= size is where the parallel-free ties stop, not merely where the Naimark
+dual stops descending.
 
 That is the band's lower endpoint, seen directly. The earlier lane reported the
 same conclusion from 800 L-BFGS restarts in the projection chart. This is an
