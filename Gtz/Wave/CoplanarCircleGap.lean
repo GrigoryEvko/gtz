@@ -121,7 +121,7 @@ def chartVector (g : Fin 2 → ℝ) : Fin 2 → ℝ :=
 @[simp] theorem chartVector_one (g : Fin 2 → ℝ) :
     chartVector g 1 = 2 * (g 0 * g 1) := rfl
 
-theorem leverageOf_two (v : Fin 2 → ℝ) : leverageOf v = v 0 ^ 2 + v 1 ^ 2 := by
+theorem leverageOf_plane (v : Fin 2 → ℝ) : leverageOf v = v 0 ^ 2 + v 1 ^ 2 := by
   simp [leverageOf, Fin.sum_univ_two]
 
 theorem dotProduct_two (v w : Fin 2 → ℝ) : v ⬝ᵥ w = v 0 * w 0 + v 1 * w 1 := by
@@ -131,19 +131,19 @@ theorem dotProduct_two (v w : Fin 2 → ℝ) : v ⬝ᵥ w = v 0 * w 0 + v 1 * w 
 linear one. -/
 theorem dotProduct_chartVector (g h : Fin 2 → ℝ) :
     chartVector g ⬝ᵥ chartVector h = 2 * (g ⬝ᵥ h) ^ 2 - leverageOf g * leverageOf h := by
-  simp only [dotProduct_two, leverageOf_two, chartVector_zero, chartVector_one]
+  simp only [dotProduct_two, leverageOf_plane, chartVector_zero, chartVector_one]
   ring
 
 /-- The chart squares the leverage. -/
 theorem leverageOf_chartVector (g : Fin 2 → ℝ) :
     leverageOf (chartVector g) = leverageOf g ^ 2 := by
-  simp only [leverageOf_two, chartVector_zero, chartVector_one]
+  simp only [leverageOf_plane, chartVector_zero, chartVector_one]
   ring
 
 /-- Lagrange at rank two, in the form this module needs. -/
-theorem sq_dotProduct_le_leverage_mul (v w : Fin 2 → ℝ) :
+theorem sq_dotProduct_plane_le_leverage_mul (v w : Fin 2 → ℝ) :
     (v ⬝ᵥ w) ^ 2 ≤ leverageOf v * leverageOf w := by
-  simp only [dotProduct_two, leverageOf_two]
+  simp only [dotProduct_two, leverageOf_plane]
   nlinarith [sq_nonneg (v 0 * w 1 - v 1 * w 0)]
 
 /-- Scaling both sides of a plane pairing. -/
@@ -154,7 +154,7 @@ theorem smul_dotProduct_smul (c d : ℝ) (v w : Fin 2 → ℝ) :
 /-- Two unit plane vectors pair in `[-1, 1]`. -/
 theorem neg_one_le_dotProduct_of_unit {v w : Fin 2 → ℝ}
     (hv : leverageOf v = 1) (hw : leverageOf w = 1) : -1 ≤ v ⬝ᵥ w := by
-  have h := sq_dotProduct_le_leverage_mul v w
+  have h := sq_dotProduct_plane_le_leverage_mul v w
   rw [hv, hw, one_mul] at h
   nlinarith [h]
 
@@ -190,7 +190,7 @@ theorem chartRowLaw {ι : Type*} [DecidableEq ι] (T : Finset ι)
       _ = 0 := by rw [hbal 0, hbal 1]; ring
   have hdiag : u b ⬝ᵥ u b = 1 := by
     have h := hunit b hb
-    simpa [leverageOf_two, dotProduct_two, sq] using h
+    simpa [leverageOf_plane, dotProduct_two, sq] using h
   have hpeel : s b + ∑ a ∈ T.erase b, s a * (u a ⬝ᵥ u b) = 0 := by
     have := Finset.add_sum_erase T (fun a => s a * (u a ⬝ᵥ u b)) hb
     rw [hdiag, mul_one] at this
@@ -477,18 +477,18 @@ weights to total one.  The in-plane restriction of a rank-three design is exactl
 such a family, and its total weight is one minus the weight the design spends off
 the plane. -/
 
-theorem leverageOf_smul (scale : ℝ) (v : Fin 2 → ℝ) :
+theorem leverageOf_plane_smul (scale : ℝ) (v : Fin 2 → ℝ) :
     leverageOf (scale • v) = scale ^ 2 * leverageOf v := by
-  simp only [leverageOf_two, Pi.smul_apply, smul_eq_mul]
+  simp only [leverageOf_plane, Pi.smul_apply, smul_eq_mul]
   ring
 
-theorem leverageOf_nonneg (v : Fin 2 → ℝ) : 0 ≤ leverageOf v := by
-  rw [leverageOf_two]; positivity
+theorem leverageOf_plane_nonneg (v : Fin 2 → ℝ) : 0 ≤ leverageOf v := by
+  rw [leverageOf_plane]; positivity
 
 /-- A plane vector of zero leverage has a zero atom. -/
 theorem atomMatrix_eq_zero_of_leverage_eq_zero {v : Fin 2 → ℝ} (h : leverageOf v = 0) :
     atomMatrix v = 0 := by
-  rw [leverageOf_two] at h
+  rw [leverageOf_plane] at h
   have h0 : v 0 = 0 := by nlinarith [sq_nonneg (v 0), sq_nonneg (v 1)]
   have h1 : v 1 = 0 := by nlinarith [sq_nonneg (v 0), sq_nonneg (v 1)]
   ext i j
@@ -527,8 +527,8 @@ theorem planarParseval_one_le_weightSum {ι : Type*} [DecidableEq ι] (T : Finse
     intro a ha hnot
     simp only [hT₀def, Finset.mem_filter, not_and, not_lt] at hnot
     have hle := hnot ha
-    have hz : leverageOf (g a) = 0 := le_antisymm hle (leverageOf_nonneg _)
-    rw [leverageOf_two] at hz
+    have hz : leverageOf (g a) = 0 := le_antisymm hle (leverageOf_plane_nonneg _)
+    rw [leverageOf_plane] at hz
     exact ⟨by nlinarith [sq_nonneg (g a 0), sq_nonneg (g a 1)],
       by nlinarith [sq_nonneg (g a 0), sq_nonneg (g a 1)]⟩
   have hent₀ : ∀ i j : Fin 2, ∑ a ∈ T₀, t a * (g a i * g a j) = if i = j then 1 else 0 := by
@@ -552,11 +552,11 @@ theorem planarParseval_one_le_weightSum {ι : Type*} [DecidableEq ι] (T : Finse
     intro a ha
     have hl : leverageOf (g a) ≠ 0 := (hlevpos a ha).ne'
     simp only [hudef]
-    rw [leverageOf_smul, leverageOf_chartVector]
+    rw [leverageOf_plane_smul, leverageOf_chartVector]
     field_simp
   have hsum : ∑ a ∈ T₀, s a = 2 := by
     have hterm : ∀ a, s a = t a * (g a 0 * g a 0) + t a * (g a 1 * g a 1) := by
-      intro a; simp only [hsdef, leverageOf_two]; ring
+      intro a; simp only [hsdef, leverageOf_plane]; ring
     rw [Finset.sum_congr rfl fun a _ => hterm a, Finset.sum_add_distrib,
       hent₀ 0 0, hent₀ 1 1]
     norm_num
@@ -703,11 +703,11 @@ atom off it, has no room: the plane already spends the whole weight budget.  The
 so it cannot be a tie. -/
 
 /-- The in-plane coordinates of an atom against an orthonormal plane frame. -/
-def planeShadow (frame : Fin 2 → (Fin 3 → ℝ)) (g : Fin 3 → ℝ) : Fin 2 → ℝ :=
+def coplanarShadow (frame : Fin 2 → (Fin 3 → ℝ)) (g : Fin 3 → ℝ) : Fin 2 → ℝ :=
   fun i => g ⬝ᵥ frame i
 
-@[simp] theorem planeShadow_apply (frame : Fin 2 → (Fin 3 → ℝ)) (g : Fin 3 → ℝ)
-    (i : Fin 2) : planeShadow frame g i = g ⬝ᵥ frame i := rfl
+@[simp] theorem coplanarShadow_apply (frame : Fin 2 → (Fin 3 → ℝ)) (g : Fin 3 → ℝ)
+    (i : Fin 2) : coplanarShadow frame g i = g ⬝ᵥ frame i := rfl
 
 /-- **No rank-three design is a plane plus a spike.**  If every atom of `T` lies in
 the plane of an orthonormal frame, every atom outside `T` is orthogonal to that
@@ -790,11 +790,11 @@ theorem not_coplanarSpike_design {m : ℕ} (D : WeightedDesign m 3)
       rw [hspike a hnot i, zero_mul, mul_zero]
     rw [h1, hread i j, horth i j]
   -- the plane family is a plane Parseval family
-  have hparsP : ∑ a ∈ T, D.weight a • atomMatrix (planeShadow frame (D.atom a))
+  have hparsP : ∑ a ∈ T, D.weight a • atomMatrix (coplanarShadow frame (D.atom a))
       = (1 : Matrix (Fin 2) (Fin 2) ℝ) := by
     ext i j
     simp only [Matrix.sum_apply, Matrix.smul_apply, atomMatrix, Matrix.vecMulVec_apply,
-      Matrix.one_apply, smul_eq_mul, planeShadow_apply]
+      Matrix.one_apply, smul_eq_mul, coplanarShadow_apply]
     exact hreadT i j
   -- the plane frame is isometric on the plane
   have hdotT : ∀ a ∈ T, ∀ b ∈ T,
@@ -808,30 +808,30 @@ theorem not_coplanarSpike_design {m : ℕ} (D : WeightedDesign m 3)
     norm_num
     ring
   have hshadowDot : ∀ a ∈ T, ∀ b ∈ T,
-      planeShadow frame (D.atom a) ⬝ᵥ planeShadow frame (D.atom b)
+      coplanarShadow frame (D.atom a) ⬝ᵥ coplanarShadow frame (D.atom b)
         = D.atom a ⬝ᵥ D.atom b := by
     intro a ha b hb
     rw [dotProduct_two, hdotT a ha b hb]
-    simp only [planeShadow_apply]
+    simp only [coplanarShadow_apply]
   have hself : ∀ v : Fin 3 → ℝ, leverageOf v = v ⬝ᵥ v := by
     intro v
     simp [leverageOf, dotProduct, sq]
-  have hlevT : ∀ a ∈ T, leverageOf (planeShadow frame (D.atom a)) = leverageOf (D.atom a) := by
+  have hlevT : ∀ a ∈ T, leverageOf (coplanarShadow frame (D.atom a)) = leverageOf (D.atom a) := by
     intro a ha
-    rw [leverageOf_two, hself, hdotT a ha a ha]
-    simp only [planeShadow_apply]
+    rw [leverageOf_plane, hself, hdotT a ha a ha]
+    simp only [coplanarShadow_apply]
     ring
   -- the no-strict hypothesis, transported into the plane
   have hnostrictP : ∀ a ∈ T, ∀ b ∈ T, a ≠ b →
-      (leverageOf (planeShadow frame (D.atom a)) - 1) *
-        (leverageOf (planeShadow frame (D.atom b)) - 1)
-        ≤ (planeShadow frame (D.atom a) ⬝ᵥ planeShadow frame (D.atom b)) ^ 2 := by
+      (leverageOf (coplanarShadow frame (D.atom a)) - 1) *
+        (leverageOf (coplanarShadow frame (D.atom b)) - 1)
+        ≤ (coplanarShadow frame (D.atom a) ⬝ᵥ coplanarShadow frame (D.atom b)) ^ 2 := by
     intro a ha b hb hab
     rw [hlevT a ha, hlevT b hb, hshadowDot a ha b hb]
     exact hnostrict a ha b hb hab
   -- the floor, against the design's own weight budget
   have hfloor := planarParseval_one_le_weightSum T
-    (fun a => planeShadow frame (D.atom a)) D.weight
+    (fun a => coplanarShadow frame (D.atom a)) D.weight
     (fun a _ => D.weight_pos a) hparsP hnostrictP
   obtain ⟨a₀, ha₀⟩ := hproper
   have hins : ∑ a ∈ insert a₀ T, D.weight a ≤ ∑ c, D.weight c :=
