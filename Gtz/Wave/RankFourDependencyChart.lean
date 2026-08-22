@@ -61,8 +61,11 @@ At `size = 2 * rank` the complement of a `rank`-subset is a `rank`-subset, so th
 the first band cell and the band's LOWER ENDPOINT, seventy tests carry thirty-five
 budgets.  Two consequences follow with no further work:
 `Gtz.dependencyDefect_pos_of_compl_neg` — with no weight past one half two
-complementary selections cannot fail at the same dependency — and
-`Gtz.not_dominates_and_compl_of_budget_neg`, its weight-aware converse.
+complementary selections cannot fail at the same dependency —
+`Gtz.not_dominates_and_compl_of_budget_neg`, its weight-aware converse, and
+`Gtz.dependencyDefect_compl_pos_of_null`, which reads a TIE: the null dependency
+of a weak dominator is a strict success of the complementary selection, so the
+two members of a complementary pair are never tight together.
 
 **5.  THE CORANK-ONE CRITERION, COMPLETED.**  `Gtz.dominates_erase_of_coMean_le`
 supplies one arrow of the corank-one weak criterion and the tree carries no
@@ -724,6 +727,76 @@ theorem not_dominates_and_compl_of_budget_neg (D : WeightedDesign m k) (hm : 2 �
     ((dominates_iff_dependencyDominates D hm hcompl).mp hdomCompl) dep hdep
   have hsum := dependencyDefect_add_compl D hm C dep
   linarith
+
+/-- The budget is STRICTLY positive at every nonzero dependency once no weight
+reaches one half. -/
+theorem dependencyBudget_pos_of_weight_lt_half (D : WeightedDesign m k) (hm : 2 ≤ m)
+    (hhalf : ∀ index : Fin m, D.weight index < 1 / 2) {dep : Fin m → ℝ} (hne : dep ≠ 0) :
+    0 < ∑ index, dep index ^ 2 * (1 - 2 * D.weight index)
+        / (D.weight index * (1 - D.weight index)) := by
+  classical
+  obtain ⟨live, hlive⟩ := Function.ne_iff.mp hne
+  have hliveNe : dep live ≠ 0 := by simpa using hlive
+  refine Finset.sum_pos' (fun index _ => ?_) ⟨live, Finset.mem_univ _, ?_⟩
+  · have hpos := D.weight_pos index
+    have hco : (0 : ℝ) < 1 - D.weight index := by linarith [weight_lt_one D hm index]
+    have hnum : (0 : ℝ) ≤ 1 - 2 * D.weight index := by linarith [hhalf index]
+    exact div_nonneg (mul_nonneg (sq_nonneg _) hnum) (mul_pos hpos hco).le
+  · have hpos := D.weight_pos live
+    have hco : (0 : ℝ) < 1 - D.weight live := by linarith [weight_lt_one D hm live]
+    have hnum : (0 : ℝ) < 1 - 2 * D.weight live := by linarith [hhalf live]
+    have hsq : (0 : ℝ) < dep live ^ 2 := by positivity
+    exact div_pos (mul_pos hsq hnum) (mul_pos hpos hco)
+
+/-- **A TIE'S WEAK DOMINATOR HAS A NULL DEPENDENCY.**  A selection that dominates
+and does not dominate strictly reads some nonzero dependency at defect exactly
+zero.  This is the campaign's tight direction, in dependency currency. -/
+theorem exists_null_dependency_of_dominates_not_posDef (D : WeightedDesign m k) (hm : 2 ≤ m)
+    {C : Finset (Fin m)} (hcard : C.card = k) (hdom : Dominates D C)
+    (hnostrict : ¬ (subsetSum D C - 1).PosDef) :
+    ∃ dep : Fin m → ℝ, dep ≠ 0 ∧ (∑ index, dep index • D.atom index) = 0
+      ∧ dependencyDefect D C dep = 0 := by
+  classical
+  by_contra hcontra
+  push_neg at hcontra
+  refine hnostrict ((posDef_gap_iff_dependencyDominatesStrictly D hm hcard).mpr ?_)
+  intro dep hdepNe hdep
+  have hge := (dominates_iff_dependencyDominates D hm hcard).mp hdom dep hdep
+  have hnull : dependencyDefect D C dep ≠ 0 := hcontra dep hdepNe hdep
+  rcases lt_or_eq_of_le hge with hlt | heq
+  · exact hlt
+  · refine absurd ?_ hnull
+    rw [dependencyDefect, ← heq, sub_self]
+
+/-- **AT THE SELF-DUAL CELL A TIE SEPARATES ITS COMPLEMENTARY PAIR.**  The null
+dependency of a weak dominator is a STRICT success of the complementary
+selection, as soon as no weight reaches one half.
+
+So at `size = 2 * rank` the two members of a complementary pair can never be
+tight at the same dependency, and the thirty-five `(8,4)` budgets are spent one
+side at a time. -/
+theorem dependencyDefect_compl_pos_of_null (D : WeightedDesign m k) (hm : 2 ≤ m)
+    (hhalf : ∀ index : Fin m, D.weight index < 1 / 2) (C : Finset (Fin m))
+    {dep : Fin m → ℝ} (hne : dep ≠ 0) (hzero : dependencyDefect D C dep = 0) :
+    0 < dependencyDefect D Cᶜ dep := by
+  have hsum := dependencyDefect_add_compl D hm C dep
+  have hbudget := dependencyBudget_pos_of_weight_lt_half D hm hhalf hne
+  linarith
+
+/-- **THE `(8,4)` READING.**  At the first band cell of rank four, a tie whose
+weights all stay below one half has, at the null dependency of any weak
+dominator, a strictly positive reading of the complementary four-subset. -/
+theorem eightFour_dependencyDefect_compl_pos_of_isTie (D : WeightedDesign 8 4)
+    (hhalf : ∀ index : Fin 8, D.weight index < 1 / 2) (htie : IsTie D) :
+    ∃ (C : Finset (Fin 8)) (dep : Fin 8 → ℝ), C.card = 4 ∧ dep ≠ 0
+      ∧ (∑ index, dep index • D.atom index) = 0
+      ∧ dependencyDefect D C dep = 0 ∧ 0 < dependencyDefect D Cᶜ dep := by
+  obtain ⟨⟨C, hcard, hdom⟩, hnostrict⟩ := htie
+  obtain ⟨dep, hdepNe, hdep, hzero⟩ :=
+    exists_null_dependency_of_dominates_not_posDef D (by norm_num) hcard hdom
+      (hnostrict C hcard)
+  exact ⟨C, dep, hcard, hdepNe, hdep, hzero,
+    dependencyDefect_compl_pos_of_null D (by norm_num) hhalf C hdepNe hzero⟩
 
 /-- At size twice the rank the complement of a `rank`-subset is a `rank`-subset. -/
 theorem card_compl_eq_rank_of_two_mul {rank : ℕ} {C : Finset (Fin (2 * rank))}
