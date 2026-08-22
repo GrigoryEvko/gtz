@@ -83,6 +83,38 @@ is ALL-HEAVY.  Two landed facts meet: the tie dichotomy
 all-heaviness as a HYPOTHESIS on the residual; against primitivity it is a
 theorem, and the residual's hypothesis pile shrinks by one.
 
+## The field verdict
+
+Parts 1 to 4 are FIELD-BLIND.  The trace-and-determinant law is a statement about
+the three real eigenvalues of a Hermitian matrix and survives verbatim over the
+complex field; so do the co-leverage budget, the heaviness criterion and the
+collapse.  So `Gtz.complexHingeSixDesign` is a feasible point for all of them, and
+none of them can prove `Gtz.HingeHoldsAtSize 6 3`.  They are DOMINATION tools --
+their conclusion is `Gtz.Dominates`, not a parallel pair -- and that is the right
+thing for them to be, because `Gtz.GtzWeighted 6 3` itself is not refuted over the
+complex field.
+
+Part 5 is NOT field-blind.  `Gtz.allHeavy_of_isPrimitiveDesign_of_isTie_sixThree`
+consumes the funnel closure, which consumes the rank-two three-class law, and
+complex GTZ at four atoms and rank two is FALSE.  So no complex witness
+disqualifies it.
+
+Against the four hard constraints: the criterion is not quantitative (it claims no
+absolute constant and its threshold is a budget, not a margin), it does not factor
+through the spectrum of the whole atom sum, and it is not matroid-combinatorial --
+the weights are load-bearing in every statement.
+
+## Measured, and NOT proved
+
+Non-vacuity, over 31500 random all-heavy `(6,3)` designs.  The budget
+`sum_c s_c < 4` was never violated, and the determinant sign agreed with
+domination at all 464409 triples under the doubled threshold, with zero
+mismatches -- both of which are the theorems above, checked.  What is measured is
+the RANGE: the minimising triple has ratio total at most one in 35.2 percent of
+those designs, and strictly between one and two in the other 64.8 percent.  So on
+roughly two designs in three the landed criterion cannot fire and this one can, and
+464409 triples clear the doubled threshold against 12744 clearing the landed one.
+
 ## What this module does NOT claim
 
 * It does not claim that a primitive `(6,3)` tie has only `K0` dominators.  A
