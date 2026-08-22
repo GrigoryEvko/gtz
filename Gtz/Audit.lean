@@ -39893,3 +39893,9 @@ run_cmd do
 #print axioms Gtz.sum_outside_selectionVolume_sixThree
 #print axioms Gtz.selectionVolume_rotate
 #print axioms Gtz.aggregate_swapLaw_of_dominates_sixThree
+#print axioms Gtz.pairSwapLaw_of_dominates
+#print axioms Gtz.pairSwapLaw_volume_of_dominates
+#print axioms Gtz.weight_le_weightOdds
+#print axioms Gtz.pairSwapLaw_weight_of_dominates
+#print axioms Gtz.pairSwapLaw_single_of_dominates
+#print axioms Gtz.not_dominates_of_pairSwapLaw_violation
