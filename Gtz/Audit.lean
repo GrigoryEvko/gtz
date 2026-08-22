@@ -1485,6 +1485,7 @@ import Gtz.Wave.DependencyDominationCriterion
 import Gtz.Wave.CircuitSwapLaw
 import Gtz.Wave.ChartGaleSpectralLaw
 import Gtz.Complex.ComplexHingeRefutation
+import Gtz.Wave.CouplingRankBudget
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39899,3 +39900,37 @@ run_cmd do
 #print axioms Gtz.pairSwapLaw_weight_of_dominates
 #print axioms Gtz.pairSwapLaw_single_of_dominates
 #print axioms Gtz.not_dominates_of_pairSwapLaw_violation
+
+
+-- Gtz/Wave/CouplingRankBudget.lean : the rank-k coupling budget
+#print axioms Gtz.leverageOf_eq_self_dotProduct
+#print axioms Gtz.sum_familyCoupling
+#print axioms Gtz.couplingDiagFactor_two
+#print axioms Gtz.veroneseCoupling_comm
+#print axioms Gtz.veroneseCoupling_self
+#print axioms Gtz.sum_veroneseCoupling
+#print axioms Gtz.sum_weight_mul_couplingDiagFactor
+#print axioms Gtz.veroneseCoupling_eq_tieCoupling
+#print axioms Gtz.veroneseCoupling_self_le_weight
+#print axioms Gtz.weight_mul_couplingDiagFactor_le_one
+#print axioms Gtz.rankPolynomial_le_size
+#print axioms Gtz.couplingMatrix_transpose
+#print axioms Gtz.laplacian_identity_veroneseCoupling
+#print axioms Gtz.dotProduct_couplingMatrix_mulVec
+#print axioms Gtz.dotProduct_diagonal_mulVec
+#print axioms Gtz.formNonneg_diagonal_sub_couplingMatrix
+#print axioms Gtz.transpose_diagonal_sub_couplingMatrix
+#print axioms Gtz.sq_dotProduct_eq_dotProduct_atomMatrix_mulVec
+#print axioms Gtz.sum_stress_mul_leverageOf_eq_zero
+#print axioms Gtz.sum_stress_mul_sq_atomPairing_eq_zero
+#print axioms Gtz.dotProduct_couplingMatrix_mulVec_nonpos_of_stress
+#print axioms Gtz.FormNonneg.sq_dotProduct_mulVec_le
+#print axioms Gtz.one_le_sum_diag_div_of_formNonneg
+#print axioms Gtz.sum_diag_diagonal_sub_couplingMatrix_div
+#print axioms Gtz.rankPolynomial_add_one_le_size_of_stress
+#print axioms Gtz.rankPolynomial_le_symmetricDimension_iff
+#print axioms Gtz.exists_veroneseCoupling_neg_sixThree
+#print axioms Gtz.exists_veroneseCoupling_neg_sevenThree
+#print axioms Gtz.exists_veroneseCoupling_neg_rankThree_sixOrSeven
+#print axioms Gtz.sum_weight_mul_couplingDiagFactor_rankTwo
+#print axioms Gtz.three_le_size_of_noStrictPair

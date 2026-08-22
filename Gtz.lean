@@ -6833,3 +6833,4 @@ import Gtz.Wave.DependencyDominationCriterion
 import Gtz.Wave.ChartGaleSpectralLaw
 import Gtz.Complex.ComplexHingeRefutation
 import Gtz.Wave.CircuitSwapLaw
+import Gtz.Wave.CouplingRankBudget
