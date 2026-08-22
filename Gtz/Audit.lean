@@ -40384,3 +40384,9 @@ and the primitive tie package. -/
 #print axioms Gtz.window_of_strong_pair
 #print axioms Gtz.pairFiringValue_nonpos_of_uniformFrame
 #print axioms Gtz.card_strongAtoms_le_four
+#print axioms Gtz.dependencyBound_of_ratio
+#print axioms Gtz.posSemidef_tripleGram
+#print axioms Gtz.trace_tripleGram
+#print axioms Gtz.det_tripleGram_eq_sq_tripleBracket
+#print axioms Gtz.posSemidef_tripleGram_sub_one_of_sq_trace_le
+#print axioms Gtz.dominates_of_sq_sum_leverage_le_four_mul_sq_tripleBracket

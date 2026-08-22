@@ -73,6 +73,10 @@ import Mathlib
 import Gtz.Core.Basic
 import Gtz.Core.Sanity
 import Gtz.Quantitative.ChartHadamard
+import Gtz.Quantitative.SubsetDeterminantBound
+import Gtz.Design.RigidityBridge
+import Gtz.Design.TripleGramSylvester
+import Gtz.Wave.ComplementPairDeterminantLaw
 import Gtz.Wave.DependencyDominationCriterion
 
 set_option autoImplicit false
@@ -290,6 +294,63 @@ theorem exists_isLowerFor {size : ℕ} (value : Fin size → ℝ) :
         exact hleastMin outside (Finset.mem_compl.mpr houtSel)
       · exact hlower inside hMem outside houtSel
 
+/-- **THE RATIO LAW.**  The sharp form of the directional theorem, and the one that does
+NOT need the selection to be lowest.  Fix a dependency and a `k`-subset.  If the selected
+readings are capped by `upper`, the unselected readings are floored by `lower`, and
+
+    `upper · ∑_{c ∈ C} t_c  ≤  lower · ((m - k - 1) + ∑_{c ∈ C} t_c)` ,
+
+then `C` satisfies the domination inequality at that dependency.  Unconditional at every
+size and rank.
+
+Read as a ratio: writing `w := ∑_{c ∈ C} t_c ∈ (0,1)`, the selection may read up to
+`(m - k - 1 + w)/w` TIMES the least outside reading and still pass.  At `(6,3)` that factor
+is `(2 + w)/w > 3`, so a triple passes at a dependency whenever its largest reading is at
+most three times the smallest outside one -- the lowest-`k` case is only `1`.  A selection
+carrying little weight is allowed proportionally more. -/
+theorem dependencyBound_of_ratio (D : WeightedDesign m k) (hsize : 2 ≤ m) (hlt : k < m)
+    (dep : Fin m → ℝ) {selection : Finset (Fin m)} (hcard : selection.card = k)
+    {upper lower : ℝ}
+    (hup : ∀ inside ∈ selection, dependencyReading D dep inside ≤ upper)
+    (hlo : ∀ outside ∈ selectionᶜ, lower ≤ dependencyReading D dep outside)
+    (hratio : upper * (∑ atomIndex ∈ selection, D.weight atomIndex)
+      ≤ lower * (((m : ℝ) - (k : ℝ) - 1) + ∑ atomIndex ∈ selection, D.weight atomIndex)) :
+    (∑ atomIndex ∈ selection, dep atomIndex ^ 2 / (1 - D.weight atomIndex))
+      ≤ ∑ atomIndex ∈ selectionᶜ, dep atomIndex ^ 2 / D.weight atomIndex := by
+  classical
+  have hleft : ∑ atomIndex ∈ selection, dep atomIndex ^ 2 / (1 - D.weight atomIndex)
+      ≤ upper * ∑ atomIndex ∈ selection, D.weight atomIndex := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_le_sum fun inside hinside => ?_
+    rw [selected_eq_weight_mul_reading D hsize dep inside]
+    have hcap := hup inside hinside
+    nlinarith [D.weight_pos inside]
+  have hright : lower * ∑ atomIndex ∈ selectionᶜ, (1 - D.weight atomIndex)
+      ≤ ∑ atomIndex ∈ selectionᶜ, dep atomIndex ^ 2 / D.weight atomIndex := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_le_sum fun outside houtside => ?_
+    rw [unselected_eq_coWeight_mul_reading D hsize dep outside]
+    have hfloor := hlo outside houtside
+    have hone := weight_lt_one D hsize outside
+    nlinarith
+  have hcompl : ∑ atomIndex ∈ selectionᶜ, (1 - D.weight atomIndex)
+      = ((m : ℝ) - (k : ℝ) - 1) + ∑ atomIndex ∈ selection, D.weight atomIndex := by
+    have hsplit : (∑ atomIndex ∈ selection, D.weight atomIndex)
+        + ∑ atomIndex ∈ selectionᶜ, D.weight atomIndex = 1 := by
+      rw [Finset.sum_add_sum_compl]
+      exact D.weight_sum_one
+    have hcardCompl : (selectionᶜ.card : ℝ) = (m : ℝ) - (k : ℝ) := by
+      have hnat : selectionᶜ.card = m - k := by
+        rw [Finset.card_compl, hcard, Fintype.card_fin]
+      rw [hnat, Nat.cast_sub hlt.le]
+    have hco : ∑ atomIndex ∈ selectionᶜ, (1 - D.weight atomIndex)
+        = (selectionᶜ.card : ℝ) - ∑ atomIndex ∈ selectionᶜ, D.weight atomIndex := by
+      rw [Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul, mul_one]
+    rw [hco, hcardCompl]
+    linarith
+  rw [hcompl] at hright
+  linarith
+
 /-- **THE DIRECTIONAL THEOREM, WITH ITS MARGIN.**  At any single dependency, a lower
 `k`-subset satisfies the domination inequality, and it beats it by `(m - k - 1)` times the
 least outside reading.  No hypothesis on the design: only `k < m`.
@@ -415,5 +476,90 @@ theorem exists_swap_of_not_dominates (D : WeightedDesign m k) (hsize : 2 ≤ m) 
   have hslack : (0 : ℝ) ≤ ((m : ℝ) - (k : ℝ) - 1) * dependencyReading D dep least :=
     mul_nonneg hnn (dependencyReading_nonneg D hsize dep least)
   linarith
+
+/-! ## Part 6 — the trace–volume criterion
+
+A triple dominates exactly when every eigenvalue of its Gram is at least one.  The landed
+`Gtz.pow_pred_mul_det_le_eigenvalue_mul_trace_pow` floors EVERY eigenvalue of a positive
+semidefinite `3 × 3` matrix by `4 · det / (trace)²`, so a triple whose squared leverage
+total is at most four times its squared volume has every eigenvalue at least one.
+
+The criterion mentions no chart, no dependency and no weight — only the three leverages and
+the bracket, both of which the campaign already reads.  It is a genuine test rather than a
+restatement: it is a comparison of the FIRST and THIRD elementary symmetric functions of
+the Gram, and it never touches the second.
+
+[MEASURED, `scratchpad/kchart/primal.py`: `80000` triples of `4000` random `(6,3)` designs.
+The criterion fires at `7801` triples and every one of them dominates -- `0` false firings.
+Some triple fires at `3769` of `4000` designs (`94.2%`), and at `1991` of `2154` all-heavy
+designs (`92.4%`).] -/
+
+/-- The Gram of a triple is positive semidefinite: it is a transpose times itself. -/
+theorem posSemidef_tripleGram (leftVec midVec rightVec : Fin 3 → ℝ) :
+    (tripleGram leftVec midVec rightVec).PosSemidef := by
+  rw [tripleGram]
+  simpa using Matrix.posSemidef_conjTranspose_mul_self (columnMatrix leftVec midVec rightVec)
+
+/-- The trace of a triple's Gram totals the three leverages. -/
+theorem trace_tripleGram (leftVec midVec rightVec : Fin 3 → ℝ) :
+    Matrix.trace (tripleGram leftVec midVec rightVec)
+      = leverageOf leftVec + leverageOf midVec + leverageOf rightVec := by
+  have hself : ∀ vecArg : Fin 3 → ℝ, vecArg ⬝ᵥ vecArg = leverageOf vecArg := by
+    intro vecArg
+    rw [leverageOf, dotProduct]
+    exact Finset.sum_congr rfl fun _ _ => (pow_two _).symm
+  rw [Matrix.trace, Fin.sum_univ_three]
+  simp only [Matrix.diag_apply, tripleGram_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+  rw [hself, hself, hself]
+
+/-- The determinant of a triple's Gram is the squared bracket. -/
+theorem det_tripleGram_eq_sq_tripleBracket (leftVec midVec rightVec : Fin 3 → ℝ) :
+    (tripleGram leftVec midVec rightVec).det = tripleBracket leftVec midVec rightVec ^ 2 := by
+  rw [tripleGram, Matrix.det_mul, Matrix.det_transpose, det_columnMatrix]
+  ring
+
+/-- **THE TRACE–VOLUME CRITERION, ON THE GRAM.**  If the squared total of the three
+leverages is at most four times the squared bracket, every eigenvalue of the Gram is at
+least one, so the gap is positive semidefinite. -/
+theorem posSemidef_tripleGram_sub_one_of_sq_trace_le (leftVec midVec rightVec : Fin 3 → ℝ)
+    (htrace : 0 < leverageOf leftVec + leverageOf midVec + leverageOf rightVec)
+    (hcrit : (leverageOf leftVec + leverageOf midVec + leverageOf rightVec) ^ 2
+      ≤ 4 * tripleBracket leftVec midVec rightVec ^ 2) :
+    (tripleGram leftVec midVec rightVec - 1).PosSemidef := by
+  have hpsd := posSemidef_tripleGram leftVec midVec rightVec
+  have htr := trace_tripleGram leftVec midVec rightVec
+  have hdet := det_tripleGram_eq_sq_tripleBracket leftVec midVec rightVec
+  have hfloorGe : (1 : ℝ)
+      ≤ detTraceFloor 3 (tripleGram leftVec midVec rightVec).det
+          (Matrix.trace (tripleGram leftVec midVec rightVec)) := by
+    rw [detTraceFloor, htr, hdet]
+    norm_num
+    rw [le_div_iff₀ (by positivity)]
+    linarith
+  have hshift := posSemidef_sub_detTraceFloor_smul_one hpsd
+  have hsplit : tripleGram leftVec midVec rightVec - 1
+      = (tripleGram leftVec midVec rightVec
+            - detTraceFloor 3 (tripleGram leftVec midVec rightVec).det
+                (Matrix.trace (tripleGram leftVec midVec rightVec))
+              • (1 : Matrix (Fin 3) (Fin 3) ℝ))
+        + (detTraceFloor 3 (tripleGram leftVec midVec rightVec).det
+              (Matrix.trace (tripleGram leftVec midVec rightVec)) - 1)
+            • (1 : Matrix (Fin 3) (Fin 3) ℝ) := by
+    rw [sub_smul, one_smul]
+    abel
+  rw [hsplit]
+  exact hshift.add (Matrix.PosSemidef.smul Matrix.PosDef.one.posSemidef (by linarith))
+
+/-- **THE TRACE–VOLUME CRITERION, AT A DESIGN.**  A triple of atoms whose leverages total
+at most twice the absolute bracket DOMINATES.  No chart, no dependency, no weight. -/
+theorem dominates_of_sq_sum_leverage_le_four_mul_sq_tripleBracket (D : WeightedDesign m 3)
+    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (htrace : 0 < leverageOf (D.atom x) + leverageOf (D.atom y) + leverageOf (D.atom z))
+    (hcrit : (leverageOf (D.atom x) + leverageOf (D.atom y) + leverageOf (D.atom z)) ^ 2
+      ≤ 4 * tripleBracket (D.atom x) (D.atom y) (D.atom z) ^ 2) :
+    Dominates D ({x, y, z} : Finset (Fin m)) :=
+  (dominates_triple_iff_tripleGram_posSemidef D x y z hxy hxz hyz).mpr
+    (posSemidef_tripleGram_sub_one_of_sq_trace_le _ _ _ htrace hcrit)
 
 end Gtz
