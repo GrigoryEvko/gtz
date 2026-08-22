@@ -54,15 +54,20 @@ and the right side is `2/3`: the producer is SILENT at every pair of it
 dominator.  A per-atom half of the window is `2 s_c - t_c > 1`, and at most FOUR
 of the six atoms can meet it (`Gtz.card_strongAtoms_le_four`).
 
-## 4. What the file leaves standing
+## 4. What the file leaves standing, and what it does NOT reach
 
-The half-overlap reading of the landed quarter-slack cell
-(`Gtz.subsetSum_posDef_of_quarterSlack`) is untouched by any of this:
-`Gtz.exists_halfOverlap_pair_of_isTie` says every triple of an all-heavy tie
-carries a pair with `(l_x - 1)(l_y - 1) <= 4 <g_x,g_y>^2`, and
-`Gtz.gtzWeighted_triple_of_quarterSlack` says a single quarter-slack triple
-settles `GtzWeighted` for its design.  Those are per-triple statements, and the
-no-go above is about integrated ones -- it does not reach them.
+The budget above integrates the producer against the PAIRS.  Every per-TRIPLE
+route survives it untouched, and the tree already carries the sharpest of them:
+`Gtz.exists_strong_triangle_of_isTie_of_allHeavy` and
+`Gtz.gtzWeighted_sixThree_of_strongGraph` in `Gtz/Wave/ElliptopeTrichotomy.lean`
+turn the quarter-slack cell `Gtz.subsetSum_posDef_of_quarterSlack` into a
+triangle-free graph and spend Mantel and Ramsey on it.  Nothing here weakens or
+duplicates that: a weaker per-triple restatement was written for this file and
+DELETED once the sibling landed, because the sibling's is strictly stronger.
+
+The distinction is the point.  An INTEGRATED producer at the pairs is dead by the
+budget, at every design of the open cell and by a fixed margin.  A SELECTED one at
+a single triple is not, and that is where the cell is still open.
 
 [MEASURED, exact rational arithmetic, at the landed `(5,3)` diamond
 `Gtz.diamondTieDesign` and at its `(6,3)` duplicate splits.  The four rim pairs
@@ -386,51 +391,5 @@ theorem card_strongAtoms_le_four (D : WeightedDesign 6 3) (hheavy : AllHeavy D) 
   have hfive : (5 : ℝ) ≤ ∑ c ∈ strong, spend c := by
     rw [h5] at hstrongLow; exact_mod_cast hstrongLow
   linarith
-
-/-! ## 7. What the no-go does NOT reach
-
-The budget above integrates the producer against the pairs.  The quarter-slack
-cell is a per-TRIPLE statement and survives it untouched.  These two readings are
-recorded here so that the file cannot be misread as closing them. -/
-
-/-- **A QUARTER-SLACK TRIPLE SETTLES `GtzWeighted` FOR ITS DESIGN.**  Three heavy
-atoms whose three overlaps are each below a quarter of the product of the two
-leverage excesses span a strictly dominating triple, and a strict dominator is a
-dominator. -/
-theorem gtzWeighted_triple_of_quarterSlack (D : WeightedDesign m 3)
-    {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
-    (hx : 1 < leverageOf (D.atom x)) (hy : 1 < leverageOf (D.atom y))
-    (hz : 1 < leverageOf (D.atom z))
-    (hxyS : 4 * (D.atom x ⬝ᵥ D.atom y) ^ 2
-      < (leverageOf (D.atom x) - 1) * (leverageOf (D.atom y) - 1))
-    (hxzS : 4 * (D.atom x ⬝ᵥ D.atom z) ^ 2
-      < (leverageOf (D.atom x) - 1) * (leverageOf (D.atom z) - 1))
-    (hyzS : 4 * (D.atom y ⬝ᵥ D.atom z) ^ 2
-      < (leverageOf (D.atom y) - 1) * (leverageOf (D.atom z) - 1)) :
-    ∃ C : Finset (Fin m), C.card = 3 ∧ Dominates D C := by
-  exact ⟨{x, y, z}, card_triple_eq hxy hxz hyz,
-    (subsetSum_posDef_of_quarterSlack D x y z hxy hxz hyz hx hy hz
-      hxyS hxzS hyzS).posSemidef⟩
-
-/-- **EVERY TRIPLE OF AN ALL-HEAVY TIE CARRIES A HALF-OVERLAP PAIR.**  The
-contrapositive of the quarter-slack cell against the no-strict-dominator half of a
-tie.  So the graph of quarter-slack pairs of a tie is TRIANGLE-FREE, and by the
-Ramsey number `R(3,3) = 6` its complement carries a triangle at `(6,3)` -- that
-last step is combinatorics and is NOT formalized here. -/
-theorem exists_halfOverlap_pair_of_isTie (D : WeightedDesign m 3) (htie : IsTie D)
-    (hheavy : AllHeavy D) {x y z : Fin m} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) :
-    (leverageOf (D.atom x) - 1) * (leverageOf (D.atom y) - 1)
-        ≤ 4 * (D.atom x ⬝ᵥ D.atom y) ^ 2
-      ∨ (leverageOf (D.atom x) - 1) * (leverageOf (D.atom z) - 1)
-        ≤ 4 * (D.atom x ⬝ᵥ D.atom z) ^ 2
-      ∨ (leverageOf (D.atom y) - 1) * (leverageOf (D.atom z) - 1)
-        ≤ 4 * (D.atom y ⬝ᵥ D.atom z) ^ 2 := by
-  classical
-  by_contra hcontra
-  push_neg at hcontra
-  obtain ⟨hxyS, hxzS, hyzS⟩ := hcontra
-  exact htie.2 _ (card_triple_eq hxy hxz hyz)
-    (subsetSum_posDef_of_quarterSlack D x y z hxy hxz hyz (hheavy x) (hheavy y) (hheavy z)
-      hxyS hxzS hyzS)
 
 end Gtz

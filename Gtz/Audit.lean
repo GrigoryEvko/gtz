@@ -1499,6 +1499,7 @@ import Gtz.Wave.CoplanarCircleGap
 import Gtz.Wave.PlaneWeightFloor
 import Gtz.Wave.PrimitiveTiePackage
 import Gtz.Wave.CoShareBudget
+import Gtz.Wave.PairResidualFiring
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -40358,3 +40359,28 @@ and the primitive tie package. -/
 #print axioms Gtz.weakPairGraph_le_halfBoxGoodGraph
 #print axioms Gtz.gtzWeighted_sixThree_of_no_strong_triangle
 #print axioms Gtz.hasParallelPair_of_isTie_sixThree_of_no_strong_triangle
+
+-- Gtz/Wave/PairResidualFiring.lean : the firing budget of the pair producer.
+-- The landed producer `Gtz.not_isTie_of_pairBudget_pos_of_heavy` fires at a pair
+-- when its value is positive.  That value has a closed total over the ordered
+-- pairs of distinct atoms, and at `(6,3)` the total is `16 - 4L` for `L` the
+-- leverage total, hence at most `-20` by the landed leverage floor.  So the
+-- producer is empty at EVERY design of the open cell, by a fixed margin, and no
+-- selection rule over pairs can reach it.  The window it can fire in carries no
+-- angle, and at most four of the six atoms meet its per-atom half.
+#print axioms Gtz.pairFiringValue_comm
+#print axioms Gtz.not_isTie_of_pairFiringValue_pos
+#print axioms Gtz.sum_sum_weight_right_mul_pairGapMinor
+#print axioms Gtz.sum_sum_weight_left_mul_pairGapMinor
+#print axioms Gtz.sum_sum_leverageSub_mul_coWeight
+#print axioms Gtz.sum_sum_coWeight_mul_leverageSub
+#print axioms Gtz.sum_sum_pairFiringValue
+#print axioms Gtz.sum_diag_pairFiringValue
+#print axioms Gtz.sum_offDiag_pairFiringValue
+#print axioms Gtz.sum_offDiag_pairFiringValue_sixThree
+#print axioms Gtz.sum_offDiag_pairFiringValue_le
+#print axioms Gtz.exists_pairFiringValue_le
+#print axioms Gtz.window_of_pairFiringValue_pos
+#print axioms Gtz.window_of_strong_pair
+#print axioms Gtz.pairFiringValue_nonpos_of_uniformFrame
+#print axioms Gtz.card_strongAtoms_le_four
