@@ -155,3 +155,175 @@ scratchpad/ctie_g.npy       the witness in design coordinates, 6 x 3 complex
 scratchpad/ctie_t.npy       its weights
 The reconstruction is g_a = W^{1/2} z_a with W = (sum z_a z_a^* - 1)^{-1}. It
 reproduces complextie.txt to fifteen digits.
+
+
+================================================================================
+NOTES -- the coupling budget and the complexification test, round of 2026-08-22
+(APPENDED. The text above belongs to earlier rounds and is unchanged.)
+================================================================================
+
+0. THE HEADLINE
+---------------
+Two things landed and one measured finding contradicts a hope of the brief.
+
+  LANDED  Gtz/Wave/CouplingRankBudget.lean -- the rank-two Laplacian route is
+          dead at BOTH deciding cells, (6,3) and (7,3), for a counting reason.
+  LANDED  Gtz/Complex/ComplexTransportLedger.lean -- the complexification test,
+          with the field-blind half PROVED over C and the failing step witnessed.
+  MEASURED  Irreducible, non-real complex (6,3) ties with no parallel pair are
+          ABUNDANT. The shipped (6,3) witness is reducible, but that is a
+          property of the witness and not of the problem.
+
+1. JOB B ANSWERED: THE RANK-TWO COINCIDENCE IS SPECIAL TO RANK TWO
+------------------------------------------------------------------
+The rank-k coupling is pinned by three normalizations, not chosen:
+
+  F_cd = t_c t_d (1 - k(k-1) + (k-1)(l_c + l_d) - l_c l_d + P_cd^2)
+
+Parseval supplies only three sums (Sum t_d = 1, Sum t_d l_d = k,
+Sum t_d P_cd^2 = l_c), so a row sum exists only for the four-parameter family
+a + b(l_c+l_d) + e l_c l_d + c P_cd^2. The row law forces a + bk = 1 and
+b + ek + c = 0. A design-independent trace forces e + c = 0. The Veronese scale
+c = 1 closes it. At k = 2 the result IS the shipped Gtz.tieCoupling, proved as
+Gtz.veroneseCoupling_eq_tieCoupling.
+
+  ROW LAW    Sum_d F_cd = t_c            at every rank, no hypothesis
+  TRACE LAW  Sum_c F_cc / t_c = k^2-k+1  at every rank, no hypothesis
+
+The trace constant is 3 at rank two (the shipped 2k-1) and SEVEN at rank three.
+Nonnegative entries cap each term of the trace law at one, so k^2-k+1 <= m.
+
+  (6,3)  7 <= 6 is false.  Gtz.exists_veroneseCoupling_neg_sixThree
+  (7,3)  a Parseval dependency is a null direction of the coupling, and one null
+         direction buys one unit of trace, so 7 <= 7-1 is false.
+         Gtz.exists_veroneseCoupling_neg_sevenThree
+
+So entrywise nonnegativity -- the direct transport of the tie hypothesis through
+the Laplacian -- is not merely unproved at rank three. It is FALSE at both cells.
+
+The arithmetic that explains it: the Veronese image lives in Sym_k(R), of
+dimension k(k+1)/2, and the trace law asks for k^2-k+1. The two agree exactly
+when k^2 + 2 <= 3k, that is when k <= 2.
+Gtz.rankPolynomial_le_symmetricDimension_iff.
+
+  rank   trace law   dim Sym_k    verdict
+   2         3           3        EQUALITY, nothing to spare
+   3         7           6        deficit one, and one is enough
+
+NOT LANDED: sizes eight or more at rank three. One null direction buys one unit
+of trace; m-6 ORTHONORMAL null directions would buy m-6 and close every size.
+That family is not built.
+
+2. THE VERONESE CORRECTION, MEASURED (not landed)
+--------------------------------------------------
+Write N for the coupling conjugated by the square roots of the weights and V for
+the Veronese rows sqrt(t_c) vec(A_c). Then N = V V^T + C exactly, with
+
+  C the form [[-1, k-1],[k-1, 1-k^2+k]] on span{V vec(I), sqrt(t)} ,
+  det C = k - 2 ,  trace C = k - k^2 .
+
+So C is negative semidefinite for every k >= 2, of rank ONE at k = 2 (which is
+the shipped single rank-one shift couplingShift) and rank TWO at k >= 3.
+Measured at random designs: max eig(C) = 0 to 1e-16, rank(C) = 1 at k=2 and 2 at
+k=3,4; tr(N) = k^2-k+1 to nine digits; rank(V) = k(k+1)/2.
+
+3. JOB C ANSWERED: THE TRANSPORT LIST, WITH PROOFS
+---------------------------------------------------
+TRANSPORTS (proved over C in ComplexTransportLedger, every rank):
+  Sum_c t_c l_c = k                     sum_complexWeight_mul_complexLeverage
+  Sum_d t_d |<g_c,g_d>|^2 = l_c         sum_complexWeight_mul_complexOverlap
+  the ROW LAW  Sum_d F_cd = t_c         sum_complexVeroneseCoupling
+  the TRACE LAW  = k^2-k+1              sum_complexWeight_mul_complexCouplingDiagFactor
+  Lagrange at rank two                  complexLagrange
+
+So ALL of CouplingRankBudget is field-blind. A no-go needs no realness, and that
+one consumes none. Constraint 1 of the brief cuts only against PROOFS.
+
+DOES NOT TRANSPORT -- one step, witnessed:
+  transitivity of  c ~ d :<-> F_cd > 0  (shipped Gtz.tieCoupling_pos_trans).
+  At Gtz.complexHingeDesign: F_20 = 3/121 > 0, F_03 = 3/121 > 0, F_23 = 0.
+  Gtz.not_complexCouplingPos_trans.
+The count itself survives at that witness: 3 = k^2-k+1 <= 4 = m.
+Measured: the normalised coupling there has eigenvalues 0.5818, 0.6, 0.8182, 1.0
+-- four positive, summing to 3. Over R they would be 1,1,1,0. The fourth
+eigenvalue IS the one dimension of slack, and the witness has FOUR parallel
+classes where the real classification proves exactly three.
+
+4. JOB A: THE SHIPPED (6,3) WITNESS SPENDS ONLY THE RANK-TWO DIMENSION
+-----------------------------------------------------------------------
+LANDED. Gtz.complexHingeSix_isCoordinateSplit: the first five atoms have a
+vanishing third coordinate and the sixth has vanishing first and second. The
+atoms lie in the *-subalgebra with one 2x2 block and one 1x1 block.
+Gtz.complexHingeSixBargmann_eq_zero_of_spike: every Bargmann triple that meets
+the spike VANISHES, so all the phase defect sits inside five PLANAR atoms.
+
+MEASURED at the shipped witness:
+  complex commutant dimension                    2   (reducible, two blocks)
+  real dim of span{A_c} inside Herm_3 (max 9)    5
+  real dim of the traceless span (max 8)         4
+  triples with a nonzero phase defect            9 of 20, all inside the plane
+The real block counterpart Sym_2 + R has dimension 3+1 = 4 against 4+1 = 5. So
+the witness spends exactly ONE extra dimension, and it is the RANK-TWO one.
+Rank three offers THREE (6 against 9, or 5 against 8 traceless).
+
+5. BUT THE HOPE THAT FOLLOWED IS DEAD -- MEASURED
+--------------------------------------------------
+The natural hope was: if every complex (6,3) counterexample is a padded rank-two
+one, then an instrument consuming the RANK-THREE count is not refuted, and there
+is a live route. That hope is FALSE.
+
+Search: minimise  Sum_T max(lambda_min(S_T - 1), 0)^2 + max(0, -max_T lambda_min)^2
+over complex (6,3) designs, under a hard weight floor of 0.02 and a penalty that
+pushes max|cos|^2 below 0.95. Random restarts, Nelder-Mead.
+
+  converged tie points (objective < 1e-16)              72
+    of which IRREDUCIBLE (commutant dimension 1)        72
+    irreducible AND non-real AND no parallel pair       63
+    weight floor ACTIVE at the optimum                   0
+    parallel penalty ACTIVE at the optimum               2
+  over the 63:  max|cos|^2 in [0.329, 0.889]
+                max |Im tau| in [2.09, 17.43]
+
+One point examined in full:
+  objective 1.1e-37, Parseval residual 1.3e-15
+  weights  (0.1166, 0.1394, 0.1863, 0.2393, 0.1010, 0.2173), min 0.101
+  leverages (1.5428, 4.3454, 3.7305, 2.7806, 2.9868, 2.5399)
+  max lambda_min = -3.3e-19, next triple at -0.00143 (a clean single boundary)
+  strict dominators: ZERO
+  max|cos|^2 = 0.5474  -- no parallel pair, with a large margin
+  commutant singular values: the smallest nonzero is 3.46, the kernel is 1
+  ALL TWENTY Bargmann invariants have a nonzero imaginary part, max 5.64
+
+NEITHER BARRIER IS ACTIVE, so the numbers are not artifacts. This is numerics and
+not a certificate: the shipped witness is exact and rational, this one is a
+floating-point point converged to 3e-19.
+
+CONCLUSION. The field-blindness ceiling is NOT confined to the rank-two slack.
+Irreducible, genuinely rank-three, non-real complex (6,3) ties without parallel
+pairs are abundant. An instrument that consumes only the rank-three dimension
+count is refuted just as the shipped witness refutes a field-blind one. What a
+proof must consume is the PHASE DEFECT itself -- the vanishing of Im tau -- which
+is what Gtz/Quantitative/PhaseFreeNoGo.lean already names as the single candidate
+on its list of fifteen relations.
+
+RECOMMENDED NEXT STEP. Certify one of these irreducible points exactly, as
+ComplexHingeRefutation certifies the padded one. An exact irreducible witness
+would let the campaign state the ceiling at full rank-three strength instead of
+citing a reducible example.
+
+6. DO NOT REBUILD -- landed this round
+---------------------------------------
+  veroneseCoupling, couplingDiagFactor, couplingMatrix     CouplingRankBudget
+  sum_veroneseCoupling, sum_weight_mul_couplingDiagFactor  CouplingRankBudget
+  sum_familyCoupling (the four-parameter row sum)          CouplingRankBudget
+  veroneseCoupling_eq_tieCoupling (the k=2 bridge)         CouplingRankBudget
+  rankPolynomial_le_size, rankPolynomial_add_one_le_size_of_stress
+  exists_veroneseCoupling_neg_sixThree / _sevenThree       CouplingRankBudget
+  FormNonneg.sq_dotProduct_mulVec_le                       CouplingRankBudget
+  one_le_sum_diag_div_of_formNonneg                        CouplingRankBudget
+  rankPolynomial_le_symmetricDimension_iff                 CouplingRankBudget
+  complexLeverage, complexOverlap, complexVeroneseCoupling ComplexTransportLedger
+  sum_complexVeroneseCoupling, complexLagrange             ComplexTransportLedger
+  not_complexCouplingPos_trans                             ComplexTransportLedger
+  complexHingeSix_isCoordinateSplit                        ComplexTransportLedger
+  complexHingeSixBargmann_eq_zero_of_spike                 ComplexTransportLedger
