@@ -40303,3 +40303,20 @@ and the primitive tie package. -/
 #print axioms Gtz.exists_complementary_four
 #print axioms Gtz.isPrimitiveDesign_naimarkSharpDesign_of_isPrimitiveDesign_of_isTie
 #print axioms Gtz.sixThree_primitiveTie_sharpNormalForm
+
+/-! ### Gtz/Wave/KernelChartLaws.lean -- the row law and the directional theorem -/
+#print axioms Gtz.excessPairMinor_comm
+#print axioms Gtz.excessPairMinor_self
+#print axioms Gtz.sum_weight_mul_excess
+#print axioms Gtz.sum_weight_mul_excessPairMinor
+#print axioms Gtz.sum_weight_mul_excessPairMinor_erase
+#print axioms Gtz.sum_sum_weight_mul_excessPairMinor
+#print axioms Gtz.dependencyReading_nonneg
+#print axioms Gtz.selected_eq_weight_mul_reading
+#print axioms Gtz.unselected_eq_coWeight_mul_reading
+#print axioms Gtz.sum_weight_add_le_sum_coWeight_compl
+#print axioms Gtz.exists_isLowerFor
+#print axioms Gtz.exists_dependencyBound_margin
+#print axioms Gtz.exists_dependencyBound_lower
+#print axioms Gtz.dominates_of_uniformly_lower
+#print axioms Gtz.exists_swap_of_not_dominates
