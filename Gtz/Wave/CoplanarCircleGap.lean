@@ -695,4 +695,178 @@ theorem no_planarSpike_of_noStrictPair {ι : Type*} [DecidableEq ι] (T : Finset
   have := planarParseval_one_le_weightSum T g t htpos hpars hnostrict
   linarith
 
+/-! ## Part D — the five-coplanar stratum of `(6,3)`
+
+A rank-three design that keeps all but one atom inside a plane, and the remaining
+atom off it, has no room: the plane already spends the whole weight budget.  The
+`(6,3)` five-coplanar configuration of the Structure Lemma is exactly this shape,
+so it cannot be a tie. -/
+
+/-- The in-plane coordinates of an atom against an orthonormal plane frame. -/
+def planeShadow (frame : Fin 2 → (Fin 3 → ℝ)) (g : Fin 3 → ℝ) : Fin 2 → ℝ :=
+  fun i => g ⬝ᵥ frame i
+
+@[simp] theorem planeShadow_apply (frame : Fin 2 → (Fin 3 → ℝ)) (g : Fin 3 → ℝ)
+    (i : Fin 2) : planeShadow frame g i = g ⬝ᵥ frame i := rfl
+
+/-- **No rank-three design is a plane plus a spike.**  If every atom of `T` lies in
+the plane of an orthonormal frame, every atom outside `T` is orthogonal to that
+plane, `T` is not everything, and no pair inside `T` dominates strictly, then the
+configuration does not exist.
+
+This is the five-coplanar stratum of the `(6,3)` hinge.  The Structure Lemma puts
+that stratum in exactly this shape: five atoms in a plane and a sixth that is a
+pure spike along the normal. -/
+theorem not_coplanarSpike_design {m : ℕ} (D : WeightedDesign m 3)
+    (frame : Fin 2 → (Fin 3 → ℝ))
+    (horth : ∀ i j, frame i ⬝ᵥ frame j = if i = j then 1 else 0)
+    (T : Finset (Fin m))
+    (hplane : ∀ a ∈ T, D.atom a
+        = (D.atom a ⬝ᵥ frame 0) • frame 0 + (D.atom a ⬝ᵥ frame 1) • frame 1)
+    (hspike : ∀ a, a ∉ T → ∀ i, D.atom a ⬝ᵥ frame i = 0)
+    (hproper : ∃ a, a ∉ T)
+    (hnostrict : ∀ a ∈ T, ∀ b ∈ T, a ≠ b →
+        (leverageOf (D.atom a) - 1) * (leverageOf (D.atom b) - 1)
+          ≤ (D.atom a ⬝ᵥ D.atom b) ^ 2) :
+    False := by
+  classical
+  -- Parseval, entrywise in the ambient coordinates
+  have hent3 : ∀ k l : Fin 3, ∑ c, D.weight c * (D.atom c k * D.atom c l)
+      = if k = l then 1 else 0 := by
+    intro k l
+    have h := congrFun (congrFun D.isParseval k) l
+    simpa [Matrix.sum_apply, Matrix.smul_apply, atomMatrix, Matrix.vecMulVec_apply,
+      Matrix.one_apply, smul_eq_mul] using h
+  -- Parseval, read against the frame
+  have hread : ∀ i j : Fin 2,
+      ∑ c, D.weight c * ((D.atom c ⬝ᵥ frame i) * (D.atom c ⬝ᵥ frame j))
+        = frame i ⬝ᵥ frame j := by
+    intro i j
+    have hexp : ∀ c, D.weight c * ((D.atom c ⬝ᵥ frame i) * (D.atom c ⬝ᵥ frame j))
+        = (frame i 0 * frame j 0) * (D.weight c * (D.atom c 0 * D.atom c 0))
+        + (frame i 0 * frame j 1) * (D.weight c * (D.atom c 0 * D.atom c 1))
+        + (frame i 0 * frame j 2) * (D.weight c * (D.atom c 0 * D.atom c 2))
+        + (frame i 1 * frame j 0) * (D.weight c * (D.atom c 1 * D.atom c 0))
+        + (frame i 1 * frame j 1) * (D.weight c * (D.atom c 1 * D.atom c 1))
+        + (frame i 1 * frame j 2) * (D.weight c * (D.atom c 1 * D.atom c 2))
+        + (frame i 2 * frame j 0) * (D.weight c * (D.atom c 2 * D.atom c 0))
+        + (frame i 2 * frame j 1) * (D.weight c * (D.atom c 2 * D.atom c 1))
+        + (frame i 2 * frame j 2) * (D.weight c * (D.atom c 2 * D.atom c 2)) := by
+      intro c
+      simp only [dotProduct, Fin.sum_univ_three]
+      ring
+    have h00 : ∑ c, D.weight c * (D.atom c 0 * D.atom c 0) = 1 := by
+      simpa using hent3 0 0
+    have h11 : ∑ c, D.weight c * (D.atom c 1 * D.atom c 1) = 1 := by
+      simpa using hent3 1 1
+    have h22 : ∑ c, D.weight c * (D.atom c 2 * D.atom c 2) = 1 := by
+      simpa using hent3 2 2
+    have h01 : ∑ c, D.weight c * (D.atom c 0 * D.atom c 1) = 0 := by
+      simpa using hent3 0 1
+    have h02 : ∑ c, D.weight c * (D.atom c 0 * D.atom c 2) = 0 := by
+      simpa using hent3 0 2
+    have h10 : ∑ c, D.weight c * (D.atom c 1 * D.atom c 0) = 0 := by
+      simpa using hent3 1 0
+    have h12 : ∑ c, D.weight c * (D.atom c 1 * D.atom c 2) = 0 := by
+      simpa using hent3 1 2
+    have h20 : ∑ c, D.weight c * (D.atom c 2 * D.atom c 0) = 0 := by
+      simpa using hent3 2 0
+    have h21 : ∑ c, D.weight c * (D.atom c 2 * D.atom c 1) = 0 := by
+      simpa using hent3 2 1
+    rw [Finset.sum_congr rfl fun c _ => hexp c]
+    simp only [Finset.sum_add_distrib, ← Finset.mul_sum]
+    rw [h00, h11, h22, h01, h02, h10, h12, h20, h21]
+    simp only [dotProduct, Fin.sum_univ_three]
+    ring
+  -- the atoms outside the plane contribute nothing to that reading
+  have hreadT : ∀ i j : Fin 2,
+      ∑ a ∈ T, D.weight a * ((D.atom a ⬝ᵥ frame i) * (D.atom a ⬝ᵥ frame j))
+        = if i = j then 1 else 0 := by
+    intro i j
+    have h1 : ∑ a ∈ T, D.weight a * ((D.atom a ⬝ᵥ frame i) * (D.atom a ⬝ᵥ frame j))
+        = ∑ c, D.weight c * ((D.atom c ⬝ᵥ frame i) * (D.atom c ⬝ᵥ frame j)) := by
+      refine Finset.sum_subset (Finset.subset_univ T) ?_
+      intro a _ hnot
+      rw [hspike a hnot i, zero_mul, mul_zero]
+    rw [h1, hread i j, horth i j]
+  -- the plane family is a plane Parseval family
+  have hparsP : ∑ a ∈ T, D.weight a • atomMatrix (planeShadow frame (D.atom a))
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ) := by
+    ext i j
+    simp only [Matrix.sum_apply, Matrix.smul_apply, atomMatrix, Matrix.vecMulVec_apply,
+      Matrix.one_apply, smul_eq_mul, planeShadow_apply]
+    exact hreadT i j
+  -- the plane frame is isometric on the plane
+  have hdotT : ∀ a ∈ T, ∀ b ∈ T,
+      D.atom a ⬝ᵥ D.atom b
+        = (D.atom a ⬝ᵥ frame 0) * (D.atom b ⬝ᵥ frame 0)
+          + (D.atom a ⬝ᵥ frame 1) * (D.atom b ⬝ᵥ frame 1) := by
+    intro a ha b hb
+    conv_lhs => rw [hplane a ha, hplane b hb]
+    simp only [add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul,
+      smul_eq_mul, horth]
+    norm_num
+    ring
+  have hshadowDot : ∀ a ∈ T, ∀ b ∈ T,
+      planeShadow frame (D.atom a) ⬝ᵥ planeShadow frame (D.atom b)
+        = D.atom a ⬝ᵥ D.atom b := by
+    intro a ha b hb
+    rw [dotProduct_two, hdotT a ha b hb]
+    simp only [planeShadow_apply]
+  have hself : ∀ v : Fin 3 → ℝ, leverageOf v = v ⬝ᵥ v := by
+    intro v
+    simp [leverageOf, dotProduct, sq]
+  have hlevT : ∀ a ∈ T, leverageOf (planeShadow frame (D.atom a)) = leverageOf (D.atom a) := by
+    intro a ha
+    rw [leverageOf_two, hself, hdotT a ha a ha]
+    simp only [planeShadow_apply]
+    ring
+  -- the no-strict hypothesis, transported into the plane
+  have hnostrictP : ∀ a ∈ T, ∀ b ∈ T, a ≠ b →
+      (leverageOf (planeShadow frame (D.atom a)) - 1) *
+        (leverageOf (planeShadow frame (D.atom b)) - 1)
+        ≤ (planeShadow frame (D.atom a) ⬝ᵥ planeShadow frame (D.atom b)) ^ 2 := by
+    intro a ha b hb hab
+    rw [hlevT a ha, hlevT b hb, hshadowDot a ha b hb]
+    exact hnostrict a ha b hb hab
+  -- the floor, against the design's own weight budget
+  have hfloor := planarParseval_one_le_weightSum T
+    (fun a => planeShadow frame (D.atom a)) D.weight
+    (fun a _ => D.weight_pos a) hparsP hnostrictP
+  obtain ⟨a₀, ha₀⟩ := hproper
+  have hins : ∑ a ∈ insert a₀ T, D.weight a ≤ ∑ c, D.weight c :=
+    Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
+      (fun a _ _ => (D.weight_pos a).le)
+  rw [Finset.sum_insert ha₀, D.weight_sum_one] at hins
+  linarith [D.weight_pos a₀, hfloor, hins]
+
+/-- **The five-coplanar stratum of `(6,3)` is empty.**  A six-atom rank-three design
+with five atoms in a plane and the sixth off it has a strictly dominating pair
+inside the plane, so it is not a tie.
+
+Together with the Structure Lemma this removes the whole five-coplanar branch of
+the `(6,3)` hinge: the reduction produces a spike, and a spike over a plane
+Parseval family with no strict pair does not exist. -/
+theorem exists_strictPair_of_fiveCoplanar_sixThree (D : WeightedDesign 6 3)
+    (frame : Fin 2 → (Fin 3 → ℝ))
+    (horth : ∀ i j, frame i ⬝ᵥ frame j = if i = j then 1 else 0)
+    (T : Finset (Fin 6)) (hcard : T.card = 5)
+    (hplane : ∀ a ∈ T, D.atom a
+        = (D.atom a ⬝ᵥ frame 0) • frame 0 + (D.atom a ⬝ᵥ frame 1) • frame 1)
+    (hspike : ∀ a, a ∉ T → ∀ i, D.atom a ⬝ᵥ frame i = 0) :
+    ∃ a ∈ T, ∃ b ∈ T, a ≠ b ∧
+      (D.atom a ⬝ᵥ D.atom b) ^ 2
+        < (leverageOf (D.atom a) - 1) * (leverageOf (D.atom b) - 1) := by
+  classical
+  by_contra hcon
+  push_neg at hcon
+  refine not_coplanarSpike_design D frame horth T hplane hspike ?_ ?_
+  · by_contra hall
+    push_neg at hall
+    have : T = Finset.univ := Finset.eq_univ_iff_forall.mpr hall
+    rw [this, Finset.card_univ, Fintype.card_fin] at hcard
+    omega
+  · intro a ha b hb hab
+    exact hcon a ha b hb hab
+
 end Gtz
