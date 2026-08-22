@@ -120,6 +120,7 @@ with ZERO violations.]
 import Gtz.Wave.StrongTriangleRamsey
 import Gtz.Wave.CorankStratumCollapse
 import Gtz.Design.RhoNormalForm
+import Gtz.Design.SignSelectedAggregate
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -742,7 +743,47 @@ theorem strong_fourClique_of_weak_to_four (D : WeightedDesign m 3) (hheavy : All
     strongPair_of_weakPair_of_weakPair D hheavy hpb hpd hbd (hnone _ _ _ hpb hpd hbd) hwb hwd,
     strongPair_of_weakPair_of_weakPair D hheavy hpc hpd hcd (hnone _ _ _ hpc hpd hcd) hwc hwd⟩
 
-/-! ## Part 10 — the capstone
+/-! ## Part 10 — the two graph programmes are nested
+
+`Gtz/Design/SignSelectedAggregate.lean` runs a second graph on the same labels:
+`Gtz.IsHalfBoxGoodPair` is `2 p ^ 2 <= x_c x_d`, that is `rho ^ 2 <= 1/2`, and its
+graph is `K_5`-FREE with a Turan bound of thirteen at six labels.  The strong graph
+of this module is `rho ^ 2 >= 1/4`, so the two are NESTED, and nobody had said so.
+
+The nesting is one line in each direction, and it shows which count is binding:
+the half-box bound gives at least two strong pairs at six labels, and
+`Gtz.six_le_card_strongPairs_of_allHeavy` gives six. -/
+
+/-- **A WEAK PAIR IS HALF-BOX GOOD.**  `4 p ^ 2 < x_c x_d` implies `2 p ^ 2 <= x_c x_d`
+because `2 p ^ 2 <= 4 p ^ 2`.  No hypothesis at all: the weak graph is a SUBGRAPH of
+the landed half-box graph. -/
+theorem isHalfBoxGoodPair_of_not_strongPair (D : WeightedDesign m 3) {first second : Fin m}
+    (hweak : ¬ StrongPair (D.atom first) (D.atom second)) :
+    IsHalfBoxGoodPair D first second := by
+  rw [StrongPair] at hweak
+  push Not at hweak
+  rw [IsHalfBoxGoodPair, atomPairing, heavyExcess, heavyExcess]
+  nlinarith [sq_nonneg (D.atom first ⬝ᵥ D.atom second)]
+
+/-- **A HALF-BOX BAD PAIR IS STRONG.**  The contrapositive, and the direction that
+transfers information: every pair the landed half-box count certifies as bad is a
+strong pair of this module. -/
+theorem strongPair_of_not_isHalfBoxGoodPair (D : WeightedDesign m 3) {first second : Fin m}
+    (hbad : ¬ IsHalfBoxGoodPair D first second) :
+    StrongPair (D.atom first) (D.atom second) := by
+  by_contra hweak
+  exact hbad (isHalfBoxGoodPair_of_not_strongPair D hweak)
+
+/-- **THE STRONG GRAPH CONTAINS THE COMPLEMENT OF THE HALF-BOX GRAPH.**  Stated on
+the graphs, so a successor may quote either Turan bound. -/
+theorem weakPairGraph_le_halfBoxGoodGraph (D : WeightedDesign m 3) :
+    weakPairGraph D ≤ halfBoxGoodGraph D := by
+  intro first second hadj
+  obtain ⟨hne, hweak⟩ := (weakPairGraph_adj D first second).mp hadj
+  exact (halfBoxGoodGraph_adj D first second).mpr
+    ⟨hne, isHalfBoxGoodPair_of_not_strongPair D hweak⟩
+
+/-! ## Part 11 — the capstone
 
 `Gtz.gtzWeightedHeavy_six_three_iff_gtzWeighted_six_three` says heaviness is not a
 restriction at `(6,3)`, so the all-heavy reduction of part 8 upgrades to the main
