@@ -1,0 +1,116 @@
+NOTES -- the planar weight floor, lane of 2026-08-22
+====================================================
+
+0. HEADLINE, AND THE CORRECTION
+-------------------------------
+The brief asked for a CIRCLE GAP theorem: five coplanar atoms, all pairwise caps
+below 2pi/3, impossible. That theorem is TRUE (verified) but it is a corollary of
+a much stronger and much cheaper law:
+
+  PLANAR WEIGHT FLOOR. A plane Parseval family (sum_a t_a g_a g_a^T = I_2, no
+  constraint tying sum_a t_a to one) in which no pair dominates strictly has
+  sum_a t_a >= 1.
+
+Landed as Gtz.planarParseval_one_le_weightSum, Gtz/Wave/CoplanarCircleGap.lean.
+
+BUT: this is NOT new. Two other lanes reached the same law the same day, and the
+(6,3) consequence was already landed and more general. The module is a second,
+independent, self-contained proof. Do not cite it as a new result.
+
+  * Gtz.exists_planeStrict_of_weightSum_lt_one, TwoPlaneCoplanarStructure.lean:1209
+    -- the contrapositive, general size, ~20 lines: rescale by sqrt(sigma) into a
+    genuine rank-two design and spend Gtz.gtz_rank_two. PREFER THIS ONE.
+  * Gtz.not_isTie_of_soleOffPlane, NearPencilStrictDomination.lean:608 -- the
+    (6,3) consequence, older, every size, needs only a nonzero normal.
+  * Gtz.card_coplanar_le_three_of_isPrimitiveDesign_of_isTie,
+    TieStratumClassification.lean:310 -- caps a primitive (6,3) tie at THREE
+    coplanar atoms. Strictly stronger than the five-coplanar statement.
+  * Gtz.blochPoint, RankTwoBand.lean:337, and Gtz.coneForm_blochPoint :353 --
+    the chart of Part A, normalised.
+
+What this module adds is proof economy only: it imports Core.Basic and
+Core.Sanity and nothing else, and it never spends gtz_rank_two.
+
+1. THE BRIEF WAS WRONG IN THREE PLACES
+--------------------------------------
+(a) "The corollary: the uniform-leverage sub-stratum is EMPTY, and every
+    five-coplanar tie has a planar pair with (1-1/l_a)(1-1/l_b) <= 1/4."
+    TRUE but vacuous. The whole stratum is empty, uniform or not. The deficit
+    sigma < 1 is unsatisfiable, so no five-coplanar tie exists to have a pair.
+    Also the brief's own corollary is a ONE-LINER in the chart, not a gap
+    argument: if every l_a <= 2 then x_a <= 1/2 and Sigma = sum s_a x_a <= 1
+    immediately, since sum s_a = 2. No circle combinatorics needed.
+(b) "The Mercedes: three plane directions at 120 degrees with equal leverages 2
+    is the boundary case." The boundary is a TWO-PARAMETER family, not a point.
+    All-tight three-direction configurations have Sigma == 1 identically, for
+    every arc triple (A,B,C) with A+B+C = 2pi and each arc <= pi. Mercedes is one
+    point of it. Verified: max |Sigma - 1| = 8.9e-16 over 27205 samples.
+    On that family t_a (2 l_a - 1) = 1 at every atom -- exactly the landed
+    rank-two class law 2l-1 = 1/T_A at singleton classes.
+(c) "Lemma B yields the STRICT bound t_b (2 l_b - 1) < 1." The general form is
+    t_b (2 l_b - 1) <= l_b (sigma - 1) + (2 - sigma). Strictness needs sigma < 1,
+    which never happens, so the sharp reading is the EQUALITY at sigma = 1.
+
+2. WHAT IS EXACTLY TRUE IN THE BRIEF (all verified numerically to 1e-14)
+-----------------------------------------------------------------------
+(i)   doubled-angle Parseval: sum_a s_a = 2 and sum_a s_a exp(i phi_a) = 0.
+(ii)  deficit: sigma < 1 <=> sum_a s_a sin^2(beta_a) > 1.
+(iii) cap: pair {a,b} fails to dominate strictly <=> dist(phi_a,phi_b) <= kappa_ab
+      with cos(kappa_ab/2) = sin(beta_a) sin(beta_b).
+Lemma A and Lemma B are both correct as stated, under the deficit.
+The circle gap theorem is correct. Its crux, verified over 4e6 gap vectors:
+  m' <= 5 distinct directions, all cyclic gaps <= pi
+     ==> max pairwise circular distance >= 2pi/3, with equality at the Mercedes.
+The same bound in fact holds up to m' = 6 by the skip count, and numerically at
+7 and 8 as well.
+
+3. THE PROOF THAT LANDED, IN FOUR LINES
+---------------------------------------
+Chart: chartVector g = (g0^2 - g1^2, 2 g0 g1), leverage l^2, and the exact Gram
+law <chartVector g, chartVector h> = 2<g,h>^2 - l_g l_h. Normalise to unit u_a.
+Parseval becomes sum s_a = 2, sum s_a u_a = 0. Cap becomes 2 x_a x_b <= 1 + <u_a,u_b>
+with x_a = 1 - 1/l_a. Goal Sigma = sum s_a x_a <= 1.
+  ROW LAW   pair the balance against u_b:  s_b(1 - x_b^2) + x_b Sigma <= 1.
+  PIVOT     if some s_b(1 + x_b) >= 1 the row law gives x_b Sigma <= x_b. Done.
+  COUNT     else sum_a s_a(1 + x_a) = 2 + Sigma < card, so card <= 3 gives Sigma < 1.
+  EXCHANGE  card >= 4: (1, u_a) are dependent in R^3. Move weight along the
+            relation in the direction that does not decrease Sigma until an atom
+            empties. Induct.
+
+4. WHY IT IS REAL-ONLY, MEASURED
+--------------------------------
+The only load-bearing dimension is finrank R (R x R^2) = 3 in exists_chartRelation.
+Over C the chart target is the Bloch SPHERE, finrank 4, the exchange needs FIVE
+atoms, and the count 2 + Sigma < 4 gives only Sigma < 2.
+MEASURED (scratchpad/circlegap/verify.jl, Julia):
+  REAL    m=3..6: max Sigma = 0.99999997, 0.99999234, 0.99992844, 0.99986374.
+  COMPLEX m=5,6,7: max Sigma = 1.00061583, 1.00029336, 1.00043588  -- DEFICIT
+          EXISTS over C, spike weights 6.2e-4, 2.9e-4, 4.4e-4.
+This is consistent with Gtz.complexHingeSix_isCoordinateSplit: the complex (6,3)
+counterexample IS five planar atoms plus a spike.
+
+5. DEAD ENDS, RECORDED SO NOBODY REPEATS THEM
+---------------------------------------------
+Sigma^2 + D <= 2 with D = sum_a t_a^2 (2 l_a - 1) is EXACT and sharp (it is the
+fourth-moment identity sum_{a,b} t_a t_b <g_a,g_b>^2 = 2 plus the caps). It gives
+sigma >= 2 - sqrt 2 = 0.5858 and NOTHING BETTER on its own. Both repairs fail:
+  D >= 1        FALSE. Mercedes directions with x = (0.2525, 0.99, 0.2525) give
+                D = 0.841, Sigma = 0.9967.
+  D >= Sigma^2  FALSE at the same point (0.841 < 0.993).
+Measured minima over sampled no-strict families: min D = 0.509, min (D - Sigma^2)
+= -0.332. The aggregate route is closed; the dimension count is not optional.
+
+Also dead: the signing trick. Put zeta = sum_a s_a sqrt(x_a) eps_a n_a with signs
+eps. If eps_a eps_b <n_a,n_b> >= sqrt(x_a x_b) for all pairs then |zeta|^2 >= Sigma^2
+and the frame Cauchy-Schwarz gives |zeta|^2 <= Sigma, hence Sigma <= 1 in two
+lines. But NO consistent signing exists at the Mercedes: the three pairwise
+products are frustrated, and the best signing loses exactly the gap
+(|zeta|^2 = 8/9 against Sigma^2 = 1). Frustration is not a technicality here.
+
+6. PROBES
+---------
+scratchpad/circlegap/chart.py      identities (i),(ii),(iii), 1e-14
+scratchpad/circlegap/crux.py       the gap-vector crux, 4e6 samples
+scratchpad/circlegap/deficit.py    max Sigma = 1 exactly, all-tight family
+scratchpad/circlegap/algebra.py    the D >= 1 and D >= Sigma^2 refutations
+scratchpad/circlegap/verify.jl     real versus complex, the realness separation

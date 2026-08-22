@@ -1,48 +1,47 @@
 /-
-# The planar weight floor: the five-coplanar stratum of `(6,3)` is EMPTY
+# The planar weight floor, proved from the doubled-angle chart alone
 
-This module closes a whole stratum of the `(6,3)` hinge, with an argument that has
-no complex analogue.  The statement it lands is strictly stronger than the
-circle-gap statement it was commissioned to prove.
-
-## The stratum
-
-The `(6,3)` hinge reduces to configurations with four or five coplanar atoms.
-Read Parseval at the unit normal `u` of the plane `Pi` that carries five of the
-six atoms.  Write `alpha_c` for the axis coordinate and `p_c` for the in-plane
-part of an atom.  The two readings at `(u,u)` and at `(u,Pi)` are
-
-    sum_c t_c alpha_c^2 = 1 ,        sum_c t_c alpha_c p_c = 0 .
-
-Five coplanar atoms make every `alpha` vanish but one, so the second reading
-forces `p = 0` at the sixth atom: the sixth atom is a pure SPIKE `beta u` with
-`t beta^2 = 1`.  Every triple that contains the spike is block diagonal for
-`R^3 = Pi + R u`, and its axis block `beta^2 - 1 = 1/t - 1` is positive.  So the
-design is a tie exactly when the five planar atoms admit a pair that dominates
-weakly in the plane and none that dominates strictly.
-
-The planar family is NOT a design.  It satisfies `sum_a t_a g_a g_a^T = I_2`, but
-its total weight is `sigma = 1 - t < 1`, because the spike carries `t > 0`.  That
-weight deficit is the whole content of the stratum.
-
-## What this module proves
+A PLANE PARSEVAL FAMILY is a finite family of plane vectors with positive weights
+whose weighted atoms resolve `I_2`.  It is NOT a design: nothing forces the
+weights to total one.  The in-plane restriction of a rank-three design is such a
+family, and its total weight is one minus the weight the design spends off the
+plane.
 
 **THE PLANAR WEIGHT FLOOR** (`Gtz.planarParseval_one_le_weightSum`).  A plane
-Parseval family with no strictly dominating pair has total weight at least one.
+Parseval family in which no pair dominates strictly carries total weight at least
+one.  The floor is sharp.
 
-There is no room left.  The floor is attained, on a two-parameter family, and
-that family is exactly the landed rank-two tie classification: at total weight
-one the per-atom bound `t_a (2 l_a - 1) <= 1` of
-`Gtz.weight_mul_two_leverage_sub_one_le_one` becomes an equality at every atom,
-which is the class law `2 l - 1 = 1/T_A` of `Gtz.rankTwoTieClassification` read
-at singleton classes.  So this module is the open-stratum extension of that
-classification, and it agrees with it on the boundary.
+## STATUS: this is a SECOND, INDEPENDENT proof of landed results
 
-The stratum dies immediately: `Gtz.no_planarSpike_of_noStrictPair` and
-`Gtz.not_coplanarSpike_design`.  A spike needs positive weight, and the plane has
-already used all of it.
+Read this before citing anything here.  Three lanes reached this law on the same
+day and this module is the last of them.  Nothing in it is new mathematics.
 
-## The mechanism, in three steps
+* The law itself is landed, in contrapositive form and at general size, as
+  `Gtz.exists_planeStrict_of_weightSum_lt_one`
+  (`Gtz/Wave/TwoPlaneCoplanarStructure.lean:1209`), with the five-atom form
+  `Gtz.exists_planeStrict_of_fiveFrame` (:1248).  That proof is about twenty
+  lines: rescale the family by `sqrt sigma` into a genuine rank-two design and
+  spend `Gtz.gtz_rank_two`.  Prefer it.
+* The `(6,3)` consequence is landed, older and more general, as
+  `Gtz.not_isTie_of_soleOffPlane`
+  (`Gtz/Design/NearPencilStrictDomination.lean:608`), which needs only a nonzero
+  normal, no frame and no cap hypothesis, and holds at every size.  The stratum
+  is closed more tightly still by
+  `Gtz.card_coplanar_le_three_of_isPrimitiveDesign_of_isTie`
+  (`Gtz/Wave/TieStratumClassification.lean:310`), which caps a primitive `(6,3)`
+  tie at THREE coplanar atoms.
+* The chart of Part A is the unnormalised form of the landed `Gtz.blochPoint`
+  (`Gtz/Ties/RankTwoBand.lean:337`), and `Gtz.dotProduct_chartVector` is
+  `Gtz.coneForm_blochPoint` (:353) before dividing by the leverages.
+
+What this module adds is proof economy, not reach.  It is self-contained: it
+imports only `Gtz.Core.Basic` and `Gtz.Core.Sanity`, and it does NOT spend
+`Gtz.gtz_rank_two` or any other rank-two input.  Every step is elementary.  Use
+it if you want the floor without pulling the rank-two theorem into a dependency
+chain, or if you want the per-atom row law in weight-deficient form, which the
+rescale route does not expose.
+
+## The mechanism
 
 Send each atom to its DOUBLED angle.  For a plane vector `g` put
 
@@ -60,11 +59,12 @@ strictly exactly when `2 x_a x_b <= 1 + <u_a,u_b>`.  Then:
 * **The row law.**  Pair the balance `sum_a s_a u_a = 0` against `u_b` and spend
   the caps.  This gives `s_b (1 - x_b^2) + x_b Sigma <= 1` at every atom, where
   `Sigma = sum_a s_a x_a` (`Gtz.chartRowLaw`).  It is the weight-deficient form
-  of the landed per-atom leverage cap.
+  of the landed per-atom leverage cap
+  `Gtz.weight_mul_two_leverage_sub_one_le_one`, which is the case `Sigma = 1`.
 * **The pivot.**  If ONE atom has `s_b (1 + x_b) >= 1` the row law collapses to
   `x_b Sigma <= x_b`, and `Sigma <= 1` follows (`Gtz.chartPivot`).  In design
   terms `s_b (1 + x_b) = t_b (2 l_b - 1)`, so a single atom at the landed cap
-  already closes the stratum.
+  already closes the family.
 * **The count and the exchange.**  Otherwise every atom has `s_a (1 + x_a) < 1`,
   and those quantities total `2 + Sigma`, so at most three atoms give `Sigma < 1`
   outright.  With four or more atoms the vectors `(1, u_a)` are linearly
@@ -72,16 +72,25 @@ strictly exactly when `2 x_a x_b <= 1 + <u_a,u_b>`.  Then:
   dependence moves weight along a line that keeps Parseval, keeps the caps, and
   does not decrease `Sigma`, until one atom empties.  Induct.
 
-## Why this is real-only, and what breaks over C
+## Sharpness, and the boundary against the rank-two classification
+
+Total weight exactly one is attained on a two-parameter family, and there the
+row law is an equality at every atom: `t_a (2 l_a - 1) = 1`.  That is the class
+law `2 l - 1 = 1/T_A` of `Gtz.rankTwoTieClassification` read at singleton
+classes.  So the floor is the open-stratum extension of that classification and
+agrees with it on the boundary.
+
+## Why this proof is real-only, and what breaks over C
 
 The load-bearing count is `finrank R (R x R^2) = 3` in `Gtz.exists_chartRelation`.
 Over C the doubled-angle image of a plane atom is not a circle but the Bloch
 SPHERE: the chart target gains one dimension, the exchange step needs FIVE atoms
 rather than four, and the count `2 + Sigma < 4` gives only `Sigma < 2`.  The
-argument does not survive complexification, and it must not: the hinge is FALSE
-over C (`Gtz.not_complexHingeHoldsAtSize_six_three`), and the complex
-counterexample of `Gtz/Complex/ComplexHingeRefutation.lean` puts its five planar
-atoms on that sphere.
+argument does not survive complexification, and it must not.  The hinge is FALSE
+over C (`Gtz.not_complexHingeHoldsAtSize_six_three`), and its counterexample is
+exactly the shape this floor forbids over R: `Gtz.complexHingeSix_isCoordinateSplit`
+(`Gtz/Complex/ComplexTransportLedger.lean:394`) proves that design is five planar
+atoms plus a spike.
 
 MEASURED (Julia, `scratchpad/circlegap/verify.jl`, 2026-08-22): over R the maximum
 of `Sigma` on the cap region is `1` to ten digits at every size from three to six
@@ -91,9 +100,7 @@ at sizes five, six and seven, giving spike weights `6.2e-4`, `2.9e-4` and
 
 ## Scope
 
-Nothing here decides `GtzWeighted 6 3`.  What it removes is the five-coplanar
-stratum of the hinge at that size, together with every weight-deficient plane
-configuration at rank two.
+Nothing here decides `GtzWeighted 6 3`.
 -/
 import Mathlib
 import Gtz.Core.Basic
@@ -695,12 +702,19 @@ theorem no_planarSpike_of_noStrictPair {ι : Type*} [DecidableEq ι] (T : Finset
   have := planarParseval_one_le_weightSum T g t htpos hpars hnostrict
   linarith
 
-/-! ## Part D — the five-coplanar stratum of `(6,3)`
+/-! ## Part D — the plane-plus-spike configuration, from the floor
 
 A rank-three design that keeps all but one atom inside a plane, and the remaining
-atom off it, has no room: the plane already spends the whole weight budget.  The
-`(6,3)` five-coplanar configuration of the Structure Lemma is exactly this shape,
-so it cannot be a tie. -/
+atom off it, has no room: the plane already spends the whole weight budget.
+
+LANDED ELSEWHERE, MORE GENERALLY.  `Gtz.not_isTie_of_soleOffPlane`
+(`Gtz/Design/NearPencilStrictDomination.lean:608`) proves the same exclusion from
+a nonzero normal alone, at every size, with no frame and no cap hypothesis, and
+`Gtz.card_coplanar_le_three_of_isPrimitiveDesign_of_isTie`
+(`Gtz/Wave/TieStratumClassification.lean:310`) caps a primitive `(6,3)` tie at
+three coplanar atoms.  What follows is the reading of the floor of Part C in
+design coordinates, kept because it is the only consumer that exercises the
+chart end to end. -/
 
 /-- The in-plane coordinates of an atom against an orthonormal plane frame. -/
 def coplanarShadow (frame : Fin 2 → (Fin 3 → ℝ)) (g : Fin 3 → ℝ) : Fin 2 → ℝ :=
@@ -840,13 +854,13 @@ theorem not_coplanarSpike_design {m : ℕ} (D : WeightedDesign m 3)
   rw [Finset.sum_insert ha₀, D.weight_sum_one] at hins
   linarith [D.weight_pos a₀, hfloor, hins]
 
-/-- **The five-coplanar stratum of `(6,3)` is empty.**  A six-atom rank-three design
-with five atoms in a plane and the sixth off it has a strictly dominating pair
-inside the plane, so it is not a tie.
+/-- A six-atom rank-three design with five atoms in a plane and the sixth off it
+has a strictly dominating pair INSIDE the plane.
 
-Together with the Structure Lemma this removes the whole five-coplanar branch of
-the `(6,3)` hinge: the reduction produces a spike, and a spike over a plane
-Parseval family with no strict pair does not exist. -/
+This is the five-coplanar reading of the floor.  The weaker statement that such a
+design is not a tie is landed more generally as `Gtz.not_isTie_of_soleOffPlane`,
+and the stratum is capped at three coplanar atoms by
+`Gtz.card_coplanar_le_three_of_isPrimitiveDesign_of_isTie`. -/
 theorem exists_strictPair_of_fiveCoplanar_sixThree (D : WeightedDesign 6 3)
     (frame : Fin 2 → (Fin 3 → ℝ))
     (horth : ∀ i j, frame i ⬝ᵥ frame j = if i = j then 1 else 0)
