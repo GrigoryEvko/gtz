@@ -246,7 +246,29 @@ the restart counts differ by a factor of seven.
 
 HONEST LIMIT. A stall over 120 restarts is not a proof of anything, and the
 (8,4) row is a stall of the SEARCH, not a statement about the cell. Read the
-earlier lane's 800-restart figures for that cell, not this one.
+earlier lane's 800-restart figures for that cell, not this one. A second (8,4)
+run with Adam at 300 restarts and 9000 iterations also reached zero ties, so the
+stall is a property of this lane's optimiser and not of the restart count. The
+earlier lane's hand-rolled L-BFGS reached 207 ties in 800 restarts at the same
+cell, and nothing in this lane contradicts that.
+
+THE COLLINEAR-STRATUM TEST WAS INCONCLUSIVE, and it is recorded so no successor
+repeats it in the same shape. In the dependency chart a parallel pair is a rank
+drop of Z after two rows are deleted, which a gradient flow on a generic Z never
+reaches. If the (8,4) tie locus sat INSIDE that stratum, forcing the stratum --
+by building the dependency space to contain a fixed vector supported on two
+labels -- should have made ties easy. It did not:
+
+  (8,4) free              best |max lmin| = 2.110e-03   min pairfree = 5.01e-05
+  (8,4) collinear stratum best |max lmin| = 1.755e-03   min pairfree = 0
+
+Both arms stalled three orders of magnitude short, so the comparison says nothing
+about the cell. The cause is the optimiser: this arm used finite-difference
+gradients on twenty-five parameters, which is far weaker than the analytic
+gradients the other runs used. REDO IT with analytic gradients before drawing any
+conclusion. The one weak signal worth recording is that the FREE arm drifted to a
+pairfree score of 5e-5 while still far from a tie, which is what a tie locus
+inside the collinear stratum would look like.
 
 WITNESS RECORDED, floating point only, for a successor who wants to rationalise
 it. A (7,4) tie with |max lmin| = 4.7e-10 and a parallel-free score of 0.433,
