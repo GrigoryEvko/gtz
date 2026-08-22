@@ -1489,6 +1489,8 @@ import Gtz.Wave.ChartGaleSpectralLaw
 import Gtz.Complex.ComplexHingeRefutation
 import Gtz.Wave.CouplingRankBudget
 import Gtz.Complex.ComplexTransportLedger
+import Gtz.Wave.TwoPlaneCoplanarStructure
+import Gtz.Wave.CoplanarCircleGap
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -40111,3 +40113,25 @@ run_cmd do
 #print axioms Gtz.posDef_gap_iff_posDef_circuitGram_sixThree
 #print axioms Gtz.det_circuitGram_eq_zero_of_isTie_sixThree
 #print axioms Gtz.circuitGram_determinant_relation_of_isTie_sixThree
+
+-- CoplanarCircleGap: the planar weight floor.  A plane Parseval family whose
+-- weights are NOT assumed to total one, and in which no pair dominates strictly,
+-- carries total weight at least one.  The floor is sharp, and it empties the
+-- five-coplanar stratum of the six-atom rank-three cell: a design cannot be a
+-- plane plus a spike, because the plane has already spent the whole budget.
+-- The load-bearing step is the three-dimensional count in exists_chartRelation,
+-- which has no complex analogue -- over C the chart target is the Bloch sphere
+-- and the same count gives only Sigma < 2.
+#print axioms Gtz.dotProduct_chartVector
+#print axioms Gtz.leverageOf_chartVector
+#print axioms Gtz.sq_dotProduct_plane_le_leverage_mul
+#print axioms Gtz.neg_one_le_dotProduct_of_unit
+#print axioms Gtz.chartRowLaw
+#print axioms Gtz.chartPivot
+#print axioms Gtz.exists_chartRelation
+#print axioms Gtz.chartWeightFloor
+#print axioms Gtz.atomMatrix_eq_zero_of_leverage_eq_zero
+#print axioms Gtz.planarParseval_one_le_weightSum
+#print axioms Gtz.no_planarSpike_of_noStrictPair
+#print axioms Gtz.not_coplanarSpike_design
+#print axioms Gtz.exists_strictPair_of_fiveCoplanar_sixThree

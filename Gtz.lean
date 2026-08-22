@@ -6838,3 +6838,4 @@ import Gtz.Wave.CouplingRankBudget
 import Gtz.Complex.ComplexTransportLedger
 import Gtz.Wave.DependencyAtomCap
 import Gtz.Wave.TwoPlaneCoplanarStructure
+import Gtz.Wave.CoplanarCircleGap
