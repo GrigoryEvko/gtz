@@ -1,0 +1,150 @@
+# The all-heavy residual at (6,3): the circuit laws of the dependency criterion
+
+Lane: JOB A (dependency criterion on the residual), with readings for JOB B and JOB D.
+Landed module: Gtz/Wave/CircuitSwapLaw.lean, 1032 lines, 31 pinned theorems, all
+[propext, Classical.choice, Quot.sound].
+
+## 1. What is new
+
+The landed criterion Gtz.dominates_iff_dependencyBound_compl reads domination on the
+dependency space. At (6,3) that space has dimension three, and the twenty triples give
+twenty comparisons of quadratic forms on it. This lane writes those comparisons down at
+the dependencies that Cramer supplies for free, the CIRCUITS of the four-subsets.
+
+A circuit of a four-set S is supported on four labels. Two cases occur.
+
+  * S contains the triple C. Then exactly one label of the support lies outside C, so
+    the right side of the criterion is a SINGLE term. This gives the ONE-ATOM SWAP LAW.
+  * S meets C in a pair. Then two labels lie on each side. This gives the PAIR SWAP LAW.
+
+In the volume currency of Gtz/Wave/TwentyVolumeMarginals.lean, with th_x = t_x/(1 - t_x):
+
+  ONE-ATOM SWAP LAW   (Gtz.swapLaw_volume_of_dominates)
+      Dominates {a,b,c}  =>   th_a nu_bcd + th_b nu_acd + th_c nu_abd  <=  nu_abc .
+
+  PAIR SWAP LAW       (Gtz.pairSwapLaw_volume_of_dominates)
+      Dominates {a,b,c}  =>   th_a nu_bde + th_b nu_ade  <=  nu_abd + nu_abe .
+
+The first says a dominating triple's own mass dominates the three masses got by swapping
+one member out for d, each discounted by the odds of the member that leaves. The second
+carries NO weight on the right, and the third member c enters only through the
+hypothesis. Both are new.
+
+The module also lands the STRICT twin of the criterion, which the campaign did not have
+(Gtz.posDef_gap_iff_dependencyBound_compl), and its contrapositive
+Gtz.exists_dependency_reversal_of_isTie: at a tie EVERY k-subset admits a nonzero
+dependency at which the criterion reverses.
+
+The aggregate over the three outside labels of a (6,3) design collapses the nine swapped
+masses onto the three pair masses inside the dominator
+(Gtz.aggregate_swapLaw_of_dominates_sixThree):
+
+      th_a delta_bc + th_b delta_ac + th_c delta_ab  <=  (3 + th_a + th_b + th_c) nu_abc .
+
+This is the TRACE reading of the criterion at the dominator. It couples the pair layer of
+the determinantal measure to the triple layer through DOMINATION, and not through
+Hadamard.
+
+## 2. Measurements, in double precision, scratchpad/circuit
+
+Criterion against direct domination: 200000 random (6,3) designs, all 4000000 triples,
+ZERO mismatches, weakly and strictly. This reproduces the predecessor's 0 of 10800 and
+extends it, and it validates the strict form before it was proved.
+
+One-atom swap law: 829894 dominating triples times three outside labels, ZERO violations.
+Sharp: over a second run of 1663068 dominating triples the largest ratio of the two sides
+is 0.999088.
+
+Pair swap law: 3739563 instances, ZERO violations, largest ratio 0.998715.
+
+The law is strictly WEAKER than domination. 267296 of 1097190 triples that pass all three
+one-atom swap conditions do not dominate. This is expected: the swap law is the DIAGONAL
+of the matrix criterion K^T diag(1/(1-t_C)) K <= diag(1/t_{C'}), where K holds the
+coordinates of the outside atoms in the basis C, and a matrix inequality is not implied by
+its diagonal.
+
+Determinant reading, MEASURED and NOT proved: nu_{C'} th_a th_b th_c <= nu_C at every
+dominating triple, largest ratio 0.441, zero violations in 1663068 instances. It is the
+determinant of the same matrix inequality. A proof needs 0 <= A <= B => det A <= det B,
+which the tree does not carry.
+
+## 3. Calibration
+
+(5,3) diamond. Parseval residual 2.2e-16. Maximum over triples of lambda_min(S_T - 1) is
+-8.3e-17, so an exact tie. Shares (0.4, 0.65, 0.65, 0.65, 0.65). Maximum cos^2 over pairs
+0.29, so no parallel pair. EIGHT dominating triples, every one of corank exactly one.
+The one-atom swap law there has maximum ratio exactly 0.750000.
+
+The five (6,3) splits. Parseval 2.2e-16, all exact ties, all all-heavy, maximum cos^2
+equal to 1 because the split pair is EQUAL. The split of label 0 has 12 dominators and the
+other four have 13, which confirms the count 8 + n_e and the correction that "twelve for
+all five" is wrong. Every dominator of every split is of corank ONE.
+
+NEW AND IMPORTANT. Classified by the number of vanishing inside pair minors, EVERY
+dominator of EVERY split is K0 - zero vanishing minors. Not one K1 and not one corner,
+at any of the five splits, over 64 dominators in total. So the only exact (6,3) ties the
+campaign owns live entirely in the K0 stratum, and a lane that attacks K1 or the corner is
+attacking a stratum with no known inhabitant at the target cell.
+
+Maximum ratios of the two laws at the splits: one-atom 0.750000 at the split of label 0
+and 0.728833 at the other four; pair swap 0.593249 and 0.625000. Neither law is TIGHT at a
+tie, so neither is a rigidity instrument on its own.
+
+The pair swap law DEGENERATES to 0 <= 0 exactly when the outside pair is the parallel
+pair, because two equal atoms give a vanishing bracket on both sides.
+
+## 4. JOB B: the four pairs of 2.2 and 2.3 do NOT collide
+
+Measured over 400000 random (6,3) designs, of which 142136 (35.5 percent) are all-heavy.
+
+  max over designs of min_pair delta      = 0.146803   against the sharp ceiling 1/5
+  max over designs of min_pair delta'     = 0.153813   against the sharp ceiling 1/5
+  max over designs of min_pair (s_p+s_q)  = 0.978309   against the ceiling 1
+  min over designs of max_pair (s_p+s_q)  = 1.028844   against the floor   1
+
+The pair of least mass and the pair of least cap slack are the SAME pair in only 7746 of
+400000 designs, that is 1.9 percent. The share sum at the least-mass pair ranges over
+[0.0048, 1.0820] and exceeds one in 4084 designs, so that pair can be light or heavy.
+
+Conclusion. The four distinguished pairs are four DIFFERENT pairs and nothing forces them
+together. The 1/5 ceilings are attained only at the icosahedron chart, which random
+sampling does not reach, so the pigeonhole has slack of about 25 percent at a typical
+design. This branch is a NEGATIVE and no successor should spend a cycle on it.
+
+## 5. Why the aggregates cannot close the stratum
+
+Every aggregate of the swap law carries a factor that DEGRADES with the weight floor. The
+one-atom law read at a corner, where all three inside minors vanish and the inside Gram is
+an orthonormal basis stretched by sqrt(1+lam) along the axis, gives
+
+      (l_b+l_c-1)/(1-t_a) + (l_a+l_c-1)/(1-t_b) + (l_a+l_b-1)/(1-t_c)
+        <=  (3 + th_a + th_b + th_c)(1 + lam) .
+
+With the corner trace law sum_C (l - 1) = lam the left side is at least 3 + 2 lam and the
+right side is at least 3 + 3 lam, so the relation is VACUOUS at every corner. This agrees
+with the standing warning that no certificate with an absolute constant can exist, and it
+says the same for this instrument.
+
+The negative-association readings are equally weak. From the aggregate and the landed
+nu_C <= delta_{pq} s_r one gets only s_a >= t_a/(3 - 2 t_a), which is weaker than
+all-heaviness.
+
+## 6. What is left, and where the instrument still has room
+
+The swap law is the DIAGONAL of the criterion at a dominating triple. Two readings of the
+same matrix inequality are NOT landed and are the obvious next step.
+
+  * The DETERMINANT reading nu_{C'} th_a th_b th_c <= nu_C, measured at 0.441 with zero
+    violations. It couples a dominating triple to its COMPLEMENT, so it speaks to both
+    halves of the hinge dictionary at once. It needs the monotonicity of the determinant
+    on the positive semidefinite order, which is not in the tree.
+  * The OFF-DIAGONAL readings, which come from dependencies that are combinations of two
+    circuits. A combination that kills one coefficient of the dominator gives a two
+    against two comparison in bracket vocabulary. These are the entries the diagonal
+    misses, and the measurement that 24 percent of swap-law-passing triples do not
+    dominate is exactly the size of that gap.
+
+Complexification. The criterion, the Cramer law and both swap laws survive passage to C
+with Hermitian squares in place of squares. So this instrument alone CANNOT prove the
+hinge, by the standing rule. It is a domination instrument, not a hinge instrument, and it
+should be spent on emptying strata rather than on producing a parallel pair.
