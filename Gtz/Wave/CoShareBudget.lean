@@ -65,11 +65,12 @@ does supply is a conserved quantity: any argument that forces slack to be small 
 many pairs must account for `(m-k)(m-k-1)` somewhere, and at `(6,3)` that quantity
 is six and cannot be spent twice.
 
-[MEASURED before proving, in exact rational arithmetic outside Lean: the pair law
-and the budget at the `(6,3)` octahedron, the `(6,3)` icosahedron, the `(5,3)`
-diamond and the `(4,3)` regular tetrahedron, and at random designs of rank two
-through five and size four through ten.  Corank-one saturation reproduced to
-`1e-15` at `(3,2)`, `(4,3)`, `(5,4)` and `(6,5)`.]
+[MEASURED before proving, outside Lean, 384 threads, double precision
+(`scratchpad/triplecap/budget.c`): 400000 random designs of rank two through five
+and size `rank+1` through ten, each whitened to exact Parseval and rejected above a
+`1e-9` residual.  Worst violation of the pair law `7.9e-12`; worst error of the
+budget against `(m-k)(m-k-1)`, `1.0e-10`.  No exact-rational or named-polytope run
+was made, and none is claimed.]
 -/
 import Mathlib
 import Gtz.Core.Basic

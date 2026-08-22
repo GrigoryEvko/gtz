@@ -76,19 +76,31 @@ No compactness, no eigenvalue, no spectral theorem.
   in EVERY rank: a `(k+1, k)` design with `k >= 3` always carries a pair that
   strictly dominates the identity on the plane that pair spans.  At `k = 2` it does
   not, and the three-atom rank-two ties are exactly the equality case.
-* `Gtz.exists_planeStrictPair_of_shadowFlat` -- the rank-three reading.  Fix an
-  orthonormal plane frame of a rank-three design and a set `A` carrying every atom
-  whose shadow is nonzero.  If the shadows in `A` are heavy and `A` misses weight,
-  some pair of `A` strictly dominates the identity ON THAT PLANE.  The
-  five-coplanar `(6,3)` configuration is the instance where `A` is the five planar
-  atoms and the sixth atom is the spike.
-* `Gtz.lightTrineFrame` -- the explicit witness that REFUTES the campaign brief's
-  triple cap conjecture `kappa_ab + kappa_bc + kappa_ca <= 2 pi`.  Three plane
-  atoms of leverage `11/10` at sixty degrees form a plane sub-frame with no
-  strictly dominating pair whose three caps total `6 arccos(1/11) > 2 pi`
-  (`Gtz.two_pi_lt_sum_planeCap_lightTrine`).  The conjecture is false on realisable
-  data.  What is true is the floor above, and the floor is what empties the
-  stratum, because the stratum asks for `sigma < 1`.
+* `Gtz.lightTrineFrame` and `Gtz.two_pi_lt_sum_nonStrictCapAngle_lightTrine` -- the
+  explicit witness that REFUTES the campaign brief's triple cap conjecture
+  `kappa_ab + kappa_bc + kappa_ca <= 2 pi`.  Three plane atoms of leverage `11/10`
+  at sixty degrees form a plane sub-frame with no strictly dominating pair whose
+  three caps total `6 arccos(1/11) > 2 pi`.  The conjecture is false on realisable
+  data, and the floor above is what is true in its place.
+
+## SCOPE.  This is a RANK-TWO theorem and it carries no `(6,3)` claim
+
+The circle chart the brief attaches this to lives on a COPLANAR family of a `(6,3)`
+tie, and `Gtz.card_coplanar_le_three_of_isPrimitiveDesign_of_isTie`
+(`Gtz/Wave/TieStratumClassification.lean`) caps such a family at THREE members once
+there is no parallel pair.  So a `(6,3)` corollary of the floor would quantify over
+a stratum that is already empty, and none is stated here.  Rank two at every size is
+where the floor has content, and that is all it claims.
+
+Two neighbours own overlapping ground and are NOT duplicated:
+`Gtz.planarParseval_one_le_weightSum` (`Gtz/Wave/CoplanarCircleGap.lean`) proves the
+same floor through the DOUBLED-ANGLE chart, and
+`Gtz.exists_planeStrict_of_weightSum_lt_one`
+(`Gtz/Wave/TwoPlaneCoplanarStructure.lean`) lands the strict-pair contrapositive at
+`Fin (members+1)` with NO heaviness hypothesis, which is strictly stronger than
+`Gtz.exists_planeStrictPair_of_sum_weight_lt_one` below.  What is new here is the
+raw ATOM-side statement over an arbitrary linearly ordered index with the total
+weight unnormalised, the corank-one reading at every rank, and the refutation.
 
 [MEASURED before proving, outside Lean, 384 threads.  The chart dictionary at
 200000 random whitened plane sub-frames of three to six atoms: Parseval residual
