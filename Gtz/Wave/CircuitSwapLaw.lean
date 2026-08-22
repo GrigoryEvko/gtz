@@ -57,7 +57,27 @@ statement the campaign has that couples the pair layer of
 `Gtz/Wave/TwentyVolumeMarginals.lean` to the triple layer through DOMINATION
 rather than through Hadamard.
 
-## 4. The strict criterion, and the tie
+## 4. The second circuit family: the pair swap
+
+The circuit of a four-set that meets the dominator in a PAIR leaves TWO terms on
+each side, and no third member of the dominator survives at all:
+
+  **`Gtz.pairSwapLaw_of_dominates`.**  If `{a,b,c}` dominates and `d`, `e` are
+  two further labels, then
+
+      `[bde]^2/(1 - t_a) + [ade]^2/(1 - t_b) <= [abe]^2/t_d + [abd]^2/t_e` ,
+
+which in volume currency (`Gtz.pairSwapLaw_volume_of_dominates`) is
+
+      `th_a nu_bde + th_b nu_ade  <=  nu_abd + nu_abe` ,
+
+with NO weight on the right.  The two triples that keep one member of `{a,b}` and
+take both outside labels are dominated by the two that keep the pair `{a,b}` and
+take one outside label.  The third member `c` enters only through the domination
+hypothesis.  Dropping the odds to the weights themselves gives the one-sided
+`Gtz.pairSwapLaw_weight_of_dominates`.
+
+## 5. The strict criterion, and the tie
 
 The landed criterion is stated weakly only.  Part 1 lands the strict twin at a
 symmetric idempotent (`Gtz.posDef_diagonal_sub_block_iff_kernelBound`) and at a
@@ -79,7 +99,10 @@ worst relative excess `0`.  It is SHARP: over a second run of 400000 designs and
 1097190 triples passing all three swap conditions do not dominate, so the law is
 the DIAGONAL of the criterion and not the criterion.  The aggregate of part 3
 reaches `0.867` and the determinant reading `nu_{C'} th_a th_b th_c <= nu_C`
-reaches `0.441`, both with zero violations.
+reaches `0.441`, both with zero violations.  The pair-swap law of part 4 was
+tested at 3739563 instances of a dominating triple against an inside pair and an
+outside pair, again with ZERO violations, and it is sharp too: the largest ratio
+is `0.998715`.
 
 Calibration on the `(5,3)` diamond: Parseval residual `2.2e-16`, maximum over
 triples of `lambda_min(S_T - 1)` equal to `-8.3e-17` so an exact tie, shares
@@ -841,5 +864,169 @@ theorem aggregate_swapLaw_of_dominates_sixThree (D : WeightedDesign 6 3) {a b c 
     ring
   rw [hcollapse] at hsum3
   linarith [hsum3]
+
+/-! ## Part 7 — the second circuit family: the pair swap
+
+The circuit of a four-set that meets the dominator in a PAIR rather than in the
+whole triple leaves two terms on each side of the criterion.  The third member of
+the dominator drops out of the conclusion entirely: it survives only inside the
+domination hypothesis. -/
+
+/-- **THE PAIR SWAP LAW.**  A dominating triple `{a,b,c}` prices the two triples
+that keep ONE of `a`, `b` and take both of two further labels `d`, `e`, against
+the two that keep the PAIR `{a,b}` and take one of `d`, `e`.
+
+The circuit is the one of the four-set `{a,b,d,e}`, whose support meets the
+dominator in `{a,b}` and its complement in `{d,e}`. -/
+theorem pairSwapLaw_of_dominates (D : WeightedDesign m 3) (hm : 2 ≤ m) {a b c d e : Fin m}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hae : a ≠ e)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hbe : b ≠ e)
+    (hcd : c ≠ d) (hce : c ≠ e) (hde : d ≠ e)
+    (hdom : Dominates D ({a, b, c} : Finset (Fin m))) :
+    tripleBracket (D.atom b) (D.atom d) (D.atom e) ^ 2 / (1 - D.weight a)
+        + tripleBracket (D.atom a) (D.atom d) (D.atom e) ^ 2 / (1 - D.weight b)
+      ≤ tripleBracket (D.atom a) (D.atom b) (D.atom e) ^ 2 / D.weight d
+        + tripleBracket (D.atom a) (D.atom b) (D.atom d) ^ 2 / D.weight e := by
+  classical
+  set pick : Fin 3 → Fin m := ![a, b, c] with hpick
+  have hinj : Function.Injective pick := injective_tripleVec hab hac hbc
+  have himage : Finset.image pick Finset.univ = ({a, b, c} : Finset (Fin m)) :=
+    image_tripleVec_eq
+  have hdom' : Dominates D (Finset.image pick Finset.univ) := by rw [himage]; exact hdom
+  have hcrit := (dominates_iff_dependencyBound_compl D hm pick hinj).mp hdom'
+    (circuitDep D a b d e) (sum_circuitDep_smul_atom D a b d e)
+  rw [himage] at hcrit
+  -- the third member of the dominator misses the circuit's support
+  have hthird : circuitDep D a b d e c = 0 :=
+    circuitDep_apply_of_notMem D (Ne.symm hac) (Ne.symm hbc) hcd hce
+  have hleft : ∑ index ∈ ({a, b, c} : Finset (Fin m)),
+        circuitDep D a b d e index ^ 2 / (1 - D.weight index)
+      = tripleBracket (D.atom b) (D.atom d) (D.atom e) ^ 2 / (1 - D.weight a)
+        + tripleBracket (D.atom a) (D.atom d) (D.atom e) ^ 2 / (1 - D.weight b) := by
+    rw [Finset.sum_insert (by simp [hab, hac]), Finset.sum_insert (by simp [hbc]),
+      Finset.sum_singleton, circuitDep_apply_first D hab had hae,
+      circuitDep_apply_second D hab hbd hbe, hthird]
+    rw [neg_pow]
+    simp
+    try ring
+  -- the outside side has exactly two live labels
+  have hpairSub : ({d, e} : Finset (Fin m)) ⊆ (({a, b, c} : Finset (Fin m))ᶜ) := by
+    intro probe hprobe
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hprobe
+    simp only [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or]
+    rcases hprobe with rfl | rfl
+    · exact ⟨Ne.symm had, Ne.symm hbd, Ne.symm hcd⟩
+    · exact ⟨Ne.symm hae, Ne.symm hbe, Ne.symm hce⟩
+  have hright : ∑ index ∈ (({a, b, c} : Finset (Fin m))ᶜ),
+        circuitDep D a b d e index ^ 2 / D.weight index
+      = tripleBracket (D.atom a) (D.atom b) (D.atom e) ^ 2 / D.weight d
+        + tripleBracket (D.atom a) (D.atom b) (D.atom d) ^ 2 / D.weight e := by
+    rw [← Finset.sum_subset hpairSub ?_]
+    · rw [Finset.sum_insert (by simp [hde]), Finset.sum_singleton,
+        circuitDep_apply_third D had hbd hde, circuitDep_apply_fourth D hae hbe hde]
+      rw [neg_pow]
+      simp
+      try ring
+    · intro other hother hnot
+      simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hnot
+      simp only [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or] at hother
+      rw [circuitDep_apply_of_notMem D hother.1 hother.2.1 hnot.1 hnot.2]
+      simp
+  rw [hleft, hright] at hcrit
+  exact hcrit
+
+/-- **THE PAIR SWAP LAW IN VOLUME CURRENCY.**  No weight survives on the right.
+The two triples that keep one member of the inside pair and take both outside
+labels are dominated, at the odds of the member they keep out, by the two triples
+that keep the whole inside pair. -/
+theorem pairSwapLaw_volume_of_dominates (D : WeightedDesign m 3) (hm : 2 ≤ m)
+    {a b c d e : Fin m}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hae : a ≠ e)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hbe : b ≠ e)
+    (hcd : c ≠ d) (hce : c ≠ e) (hde : d ≠ e)
+    (hdom : Dominates D ({a, b, c} : Finset (Fin m))) :
+    weightOdds D a * selectionVolume D b d e + weightOdds D b * selectionVolume D a d e
+      ≤ selectionVolume D a b e + selectionVolume D a b d := by
+  have hlaw := pairSwapLaw_of_dominates D hm hab hac had hae hbc hbd hbe hcd hce hde hdom
+  have hwa : (0 : ℝ) < 1 - D.weight a := by linarith [weight_lt_one D hm a]
+  have hwb : (0 : ℝ) < 1 - D.weight b := by linarith [weight_lt_one D hm b]
+  have hta := D.weight_pos a
+  have htb := D.weight_pos b
+  have htd := D.weight_pos d
+  have hte := D.weight_pos e
+  have hscale : (0 : ℝ) < D.weight a * D.weight b * D.weight d * D.weight e := by positivity
+  have hstep := mul_le_mul_of_nonneg_left hlaw hscale.le
+  have hleftEq : D.weight a * D.weight b * D.weight d * D.weight e
+        * (tripleBracket (D.atom b) (D.atom d) (D.atom e) ^ 2 / (1 - D.weight a)
+          + tripleBracket (D.atom a) (D.atom d) (D.atom e) ^ 2 / (1 - D.weight b))
+      = weightOdds D a * selectionVolume D b d e
+        + weightOdds D b * selectionVolume D a d e := by
+    rw [weightOdds, weightOdds, selectionVolume, selectionVolume]
+    field_simp
+    try ring
+  have hrightEq : D.weight a * D.weight b * D.weight d * D.weight e
+        * (tripleBracket (D.atom a) (D.atom b) (D.atom e) ^ 2 / D.weight d
+          + tripleBracket (D.atom a) (D.atom b) (D.atom d) ^ 2 / D.weight e)
+      = selectionVolume D a b e + selectionVolume D a b d := by
+    rw [selectionVolume, selectionVolume]
+    field_simp
+    try ring
+  rw [hleftEq, hrightEq] at hstep
+  exact hstep
+
+/-- The odds of a label are at least its weight, because the co-weight is at most
+one. -/
+theorem weight_le_weightOdds (D : WeightedDesign m k) (hm : 2 ≤ m) (label : Fin m) :
+    D.weight label ≤ weightOdds D label := by
+  have hco : (0 : ℝ) < 1 - D.weight label := by linarith [weight_lt_one D hm label]
+  rw [weightOdds, le_div_iff₀ hco]
+  nlinarith [D.weight_pos label, hco]
+
+/-- **THE PAIR SWAP LAW, WITH THE ODDS DROPPED TO THE WEIGHTS.**  The weakest and
+cleanest reading: the two outside-heavy masses, weighted by the two inside
+weights, are capped by the two inside-heavy masses with no weight at all. -/
+theorem pairSwapLaw_weight_of_dominates (D : WeightedDesign m 3) (hm : 2 ≤ m)
+    {a b c d e : Fin m}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hae : a ≠ e)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hbe : b ≠ e)
+    (hcd : c ≠ d) (hce : c ≠ e) (hde : d ≠ e)
+    (hdom : Dominates D ({a, b, c} : Finset (Fin m))) :
+    D.weight a * selectionVolume D b d e + D.weight b * selectionVolume D a d e
+      ≤ selectionVolume D a b e + selectionVolume D a b d := by
+  have hlaw := pairSwapLaw_volume_of_dominates D hm hab hac had hae hbc hbd hbe hcd hce hde hdom
+  have hoddsA := weight_le_weightOdds D hm a
+  have hoddsB := weight_le_weightOdds D hm b
+  have hvolA := selectionVolume_nonneg D b d e
+  have hvolB := selectionVolume_nonneg D a d e
+  nlinarith [hlaw, hoddsA, hoddsB, hvolA, hvolB]
+
+/-- **THE PAIR SWAP LAW, ONE TERM AT A TIME.** -/
+theorem pairSwapLaw_single_of_dominates (D : WeightedDesign m 3) (hm : 2 ≤ m)
+    {a b c d e : Fin m}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hae : a ≠ e)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hbe : b ≠ e)
+    (hcd : c ≠ d) (hce : c ≠ e) (hde : d ≠ e)
+    (hdom : Dominates D ({a, b, c} : Finset (Fin m))) :
+    weightOdds D a * selectionVolume D b d e
+      ≤ selectionVolume D a b e + selectionVolume D a b d := by
+  have hlaw := pairSwapLaw_volume_of_dominates D hm hab hac had hae hbc hbd hbe hcd hce hde hdom
+  have hodds := (weightOdds_pos D hm b).le
+  have hvol := selectionVolume_nonneg D a d e
+  nlinarith [hlaw, hodds, hvol]
+
+/-- **THE CONTRAPOSITIVE OF THE PAIR SWAP LAW.** -/
+theorem not_dominates_of_pairSwapLaw_violation (D : WeightedDesign m 3) (hm : 2 ≤ m)
+    {a b c d e : Fin m}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hae : a ≠ e)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hbe : b ≠ e)
+    (hcd : c ≠ d) (hce : c ≠ e) (hde : d ≠ e)
+    (hviolate : selectionVolume D a b e + selectionVolume D a b d
+      < weightOdds D a * selectionVolume D b d e
+        + weightOdds D b * selectionVolume D a d e) :
+    ¬ Dominates D ({a, b, c} : Finset (Fin m)) := by
+  intro hdom
+  exact absurd
+    (pairSwapLaw_volume_of_dominates D hm hab hac had hae hbc hbd hbe hcd hce hde hdom)
+    (not_le.mpr hviolate)
 
 end Gtz
