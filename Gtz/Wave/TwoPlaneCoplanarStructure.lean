@@ -546,4 +546,188 @@ theorem det_gap_spike_triple (design : WeightedDesign size 3) (frame : AxisFrame
   simp only [frameAlpha]
   ring
 
+/-! ## Part 3 — the shadow-class pigeonhole
+
+A rank-two design that is heavy and carries no strictly dominating pair has
+exactly THREE parallel classes (`Gtz.card_image_tieClass_eq_three`, whose
+hypotheses are heaviness and no-strict-pair, NOT `Gtz.IsTie`).  A FLAT atom is
+its own shadow.  Four flat atoms therefore repeat a class, and the repeat is a
+parallel pair of the design itself. -/
+
+/-- **THE PIGEONHOLE CLOSURE.**  Four atoms flat against the axis of a frame
+whose shadow is heavy and carries no strictly dominating pair force a PARALLEL
+PAIR of the design.  Three classes cannot separate four flat atoms, and a flat
+atom is rebuilt from its shadow by frame completeness. -/
+theorem hasParallelPair_of_fourFlat_of_shadowClasses (design : WeightedDesign size 3)
+    (frame : AxisFrame) {flatOne flatTwo flatThree flatFour : Fin size}
+    (hneOneTwo : flatOne ≠ flatTwo) (hneOneThree : flatOne ≠ flatThree)
+    (hneOneFour : flatOne ≠ flatFour) (hneTwoThree : flatTwo ≠ flatThree)
+    (hneTwoFour : flatTwo ≠ flatFour) (hneThreeFour : flatThree ≠ flatFour)
+    (hflat : ∀ label ∈ ({flatOne, flatTwo, flatThree, flatFour} : Finset (Fin size)),
+      design.atom label ⬝ᵥ frame.axis = 0)
+    (hheavy : ∀ label : Fin size, 1 ≤ leverageOf ((frameShadow design frame).atom label))
+    (hnostrict : NoStrictPair (frameShadow design frame)) :
+    HasParallelPair design := by
+  classical
+  set shadow := frameShadow design frame with hshadowDef
+  set flatFour' : Finset (Fin size) := {flatOne, flatTwo, flatThree, flatFour}
+    with hflatFourDef
+  have hcard : flatFour'.card = 4 := by
+    rw [hflatFourDef,
+      Finset.card_insert_of_notMem (by simp [hneOneTwo, hneOneThree, hneOneFour]),
+      Finset.card_insert_of_notMem (by simp [hneTwoThree, hneTwoFour]),
+      Finset.card_insert_of_notMem (by simp [hneThreeFour]), Finset.card_singleton]
+  have hclassCount : (Finset.univ.image (tieClass shadow)).card = 3 :=
+    card_image_tieClass_eq_three shadow hheavy hnostrict
+  have hlt : (Finset.univ.image (tieClass shadow)).card < flatFour'.card := by
+    rw [hclassCount, hcard]
+    norm_num
+  obtain ⟨firstLabel, hfirstMem, secondLabel, hsecondMem, hlabelNe, hclassEq⟩ :=
+    Finset.exists_ne_map_eq_of_card_lt_of_maps_to hlt
+      (f := tieClass shadow)
+      (fun label _ => Finset.mem_image_of_mem _ (Finset.mem_univ label))
+  have hsecondInFirst : secondLabel ∈ tieClass shadow firstLabel := by
+    rw [hclassEq]
+    exact self_mem_tieClass shadow hheavy secondLabel
+  have hwedge : planeWedge (shadow.atom firstLabel) (shadow.atom secondLabel) = 0 :=
+    (mem_tieClass_iff_planeWedge_eq_zero shadow hheavy hnostrict firstLabel secondLabel).mp
+      hsecondInFirst
+  have hfirstFlat : design.atom firstLabel ⬝ᵥ frame.axis = 0 := hflat firstLabel hfirstMem
+  have hsecondFlat : design.atom secondLabel ⬝ᵥ frame.axis = 0 := hflat secondLabel hsecondMem
+  have hfirstHeavy : 1 ≤ leverageOf (design.atom firstLabel) := by
+    have hshadowHeavy := hheavy firstLabel
+    rwa [hshadowDef, leverageOf_frameShadow_atom_of_flat design frame hfirstFlat] at hshadowHeavy
+  obtain ⟨ratio, hratio⟩ := exists_smul_of_flat_of_planeWedge_eq_zero design frame
+    hfirstHeavy hfirstFlat hsecondFlat (by rw [← hshadowDef]; exact hwedge)
+  exact ⟨firstLabel, secondLabel, ratio, hlabelNe, hratio⟩
+
+/-- Every atom of a `(6,3)` tie is heavy, so a FLAT atom of a `(6,3)` tie is
+heavy in the shadow too and needs no hypothesis. -/
+theorem shadow_heavy_of_isTie_sixThree_of_flat (design : WeightedDesign 6 3)
+    (htie : IsTie design) (frame : AxisFrame) {label : Fin 6}
+    (hflat : design.atom label ⬝ᵥ frame.axis = 0) :
+    1 ≤ leverageOf ((frameShadow design frame).atom label) := by
+  rw [leverageOf_frameShadow_atom_of_flat design frame hflat]
+  exact leverage_one_le_of_isTie_sixThree design htie label
+
+/-- **THE COPLANAR BRIDGE, MODULO THE TWO RESIDUES.**  A `(6,3)` tie with four
+coplanar atoms has a PARALLEL PAIR, provided the two off-plane shadows stay heavy
+and the plane carries no strictly dominating shadow pair.  The four coplanar
+atoms need no heaviness hypothesis: a tie supplies it. -/
+theorem hasParallelPair_of_isTie_sixThree_of_fourCoplanar (design : WeightedDesign 6 3)
+    (htie : IsTie design) (frame : AxisFrame)
+    {flatOne flatTwo flatThree flatFour : Fin 6}
+    (hneOneTwo : flatOne ≠ flatTwo) (hneOneThree : flatOne ≠ flatThree)
+    (hneOneFour : flatOne ≠ flatFour) (hneTwoThree : flatTwo ≠ flatThree)
+    (hneTwoFour : flatTwo ≠ flatFour) (hneThreeFour : flatThree ≠ flatFour)
+    (hflat : ∀ label ∈ ({flatOne, flatTwo, flatThree, flatFour} : Finset (Fin 6)),
+      design.atom label ⬝ᵥ frame.axis = 0)
+    (hoffHeavy : ∀ label : Fin 6, design.atom label ⬝ᵥ frame.axis ≠ 0 →
+      1 ≤ leverageOf ((frameShadow design frame).atom label))
+    (hnostrict : NoStrictPair (frameShadow design frame)) :
+    HasParallelPair design := by
+  refine hasParallelPair_of_fourFlat_of_shadowClasses design frame hneOneTwo hneOneThree
+    hneOneFour hneTwoThree hneTwoFour hneThreeFour hflat (fun label => ?_) hnostrict
+  by_cases hlabelFlat : design.atom label ⬝ᵥ frame.axis = 0
+  · exact shadow_heavy_of_isTie_sixThree_of_flat design htie frame hlabelFlat
+  · exact hoffHeavy label hlabelFlat
+
+/-- **THE FOUR-COPLANAR TRICHOTOMY AT `(6,3)`.**  Every tie with four coplanar
+atoms is light in the shadow at some atom, or carries a strictly dominating
+shadow pair on that plane, or has a parallel pair.  The first alternative can
+only occur at one of the two OFF-PLANE atoms. -/
+theorem fourCoplanar_trichotomy_sixThree (design : WeightedDesign 6 3) (htie : IsTie design)
+    (frame : AxisFrame) {flatOne flatTwo flatThree flatFour : Fin 6}
+    (hneOneTwo : flatOne ≠ flatTwo) (hneOneThree : flatOne ≠ flatThree)
+    (hneOneFour : flatOne ≠ flatFour) (hneTwoThree : flatTwo ≠ flatThree)
+    (hneTwoFour : flatTwo ≠ flatFour) (hneThreeFour : flatThree ≠ flatFour)
+    (hflat : ∀ label ∈ ({flatOne, flatTwo, flatThree, flatFour} : Finset (Fin 6)),
+      design.atom label ⬝ᵥ frame.axis = 0) :
+    (∃ label : Fin 6, design.atom label ⬝ᵥ frame.axis ≠ 0
+        ∧ leverageOf ((frameShadow design frame).atom label) < 1)
+      ∨ (∃ pairFirst pairSecond : Fin 6, pairFirst ≠ pairSecond
+          ∧ (subsetSum (frameShadow design frame) {pairFirst, pairSecond} - 1).PosDef)
+      ∨ HasParallelPair design := by
+  classical
+  by_cases hoffHeavy : ∀ label : Fin 6, design.atom label ⬝ᵥ frame.axis ≠ 0 →
+      1 ≤ leverageOf ((frameShadow design frame).atom label)
+  · by_cases hstrict : ∃ pairFirst pairSecond : Fin 6, pairFirst ≠ pairSecond
+        ∧ (subsetSum (frameShadow design frame) {pairFirst, pairSecond} - 1).PosDef
+    · exact Or.inr (Or.inl hstrict)
+    · push_neg at hstrict
+      exact Or.inr (Or.inr (hasParallelPair_of_isTie_sixThree_of_fourCoplanar design htie
+        frame hneOneTwo hneOneThree hneOneFour hneTwoThree hneTwoFour hneThreeFour hflat
+        hoffHeavy (fun pairFirst pairSecond hne => hstrict pairFirst pairSecond hne)))
+  · push_neg at hoffHeavy
+    obtain ⟨label, hnotFlat, hlight⟩ := hoffHeavy
+    exact Or.inl ⟨label, hnotFlat, hlight⟩
+
+/-! ## Part 4 — the coplanar wall
+
+Summing the coplanar gate over the WHOLE complement of a flat pair reproduces the
+landed area ceiling `Gtz.crossNormSq_le_of_isTie` exactly.  Summing it over the
+TWO OFF-PLANE atoms only is strictly stronger, because the coplanar atoms outside
+the pair have vanishing height and so contribute a nonpositive term to the left
+and a nonnegative term to the right of the general law.  That improvement is
+available only under coplanarity. -/
+
+/-- **THE COPLANAR WALL.**  At a tie whose plane carries a strict flat pair, the
+pair minor times the TOTAL COPLANAR WEIGHT is at most the weighted plane-adjugate
+energy of the two off-plane shadows.  Divided by the pair minor it reads
+`1 - t_1 - t_2 <= t_1 s_1 + t_2 s_2` with `s_i = q_i^T A^{-1} q_i`. -/
+theorem coplanar_wall_of_isTie (design : WeightedDesign size 3) (htie : IsTie design)
+    (frame : AxisFrame) (flatSet : Finset (Fin size)) {offFirst offSecond : Fin size}
+    (hne : offFirst ≠ offSecond) (hcompl : flatSetᶜ = {offFirst, offSecond})
+    (hflat : ∀ label ∈ flatSet, design.atom label ⬝ᵥ frame.axis = 0)
+    {pairFirst pairSecond : Fin size} (hpairNe : pairFirst ≠ pairSecond)
+    (hpairFirstMem : pairFirst ∈ flatSet) (hpairSecondMem : pairSecond ∈ flatSet)
+    (hstrict : PlaneStrictPair design frame.axis pairFirst pairSecond)
+    {aa bb cc : ℝ}
+    (haa : aa = gapReading design {pairFirst, pairSecond} frame.pOne frame.pOne)
+    (hbb : bb = gapReading design {pairFirst, pairSecond} frame.pOne frame.pTwo)
+    (hcc : cc = gapReading design {pairFirst, pairSecond} frame.pTwo frame.pTwo) :
+    frameBlockDet aa bb cc * (1 - design.weight offFirst - design.weight offSecond)
+      ≤ design.weight offFirst
+          * frameAlpha aa bb cc (design.atom offFirst ⬝ᵥ frame.pOne)
+              (design.atom offFirst ⬝ᵥ frame.pTwo)
+        + design.weight offSecond
+          * frameAlpha aa bb cc (design.atom offSecond ⬝ᵥ frame.pOne)
+              (design.atom offSecond ⬝ᵥ frame.pTwo) := by
+  classical
+  have hoffFirstNotFlat : offFirst ∉ flatSet := by
+    have hmem : offFirst ∈ flatSetᶜ := by rw [hcompl]; simp
+    exact Finset.mem_compl.mp hmem
+  have hoffSecondNotFlat : offSecond ∉ flatSet := by
+    have hmem : offSecond ∈ flatSetᶜ := by rw [hcompl]; simp
+    exact Finset.mem_compl.mp hmem
+  have hpairFirstOffFirst : pairFirst ≠ offFirst := fun heq =>
+    hoffFirstNotFlat (heq ▸ hpairFirstMem)
+  have hpairSecondOffFirst : pairSecond ≠ offFirst := fun heq =>
+    hoffFirstNotFlat (heq ▸ hpairSecondMem)
+  have hpairFirstOffSecond : pairFirst ≠ offSecond := fun heq =>
+    hoffSecondNotFlat (heq ▸ hpairFirstMem)
+  have hpairSecondOffSecond : pairSecond ≠ offSecond := fun heq =>
+    hoffSecondNotFlat (heq ▸ hpairSecondMem)
+  have hpairFirstFlat : design.atom pairFirst ⬝ᵥ frame.axis = 0 := hflat pairFirst hpairFirstMem
+  have hpairSecondFlat : design.atom pairSecond ⬝ᵥ frame.axis = 0 :=
+    hflat pairSecond hpairSecondMem
+  have hgateFirst := flatPair_gate_of_isTie design htie frame hpairNe hpairFirstOffFirst
+    hpairSecondOffFirst hpairFirstFlat hpairSecondFlat hstrict
+  have hgateSecond := flatPair_gate_of_isTie design htie frame hpairNe hpairFirstOffSecond
+    hpairSecondOffSecond hpairFirstFlat hpairSecondFlat hstrict
+  rw [← haa, ← hbb, ← hcc] at hgateFirst hgateSecond
+  have hmass := twoOffPlane_axisMass_eq_one design frame flatSet hne hcompl hflat
+  have hweightFirst := design.weight_pos offFirst
+  have hweightSecond := design.weight_pos offSecond
+  have hstepFirst := mul_le_mul_of_nonneg_left hgateFirst hweightFirst.le
+  have hstepSecond := mul_le_mul_of_nonneg_left hgateSecond hweightSecond.le
+  have hexpand : design.weight offFirst
+        * (frameBlockDet aa bb cc * ((design.atom offFirst ⬝ᵥ frame.axis) ^ 2 - 1))
+      + design.weight offSecond
+        * (frameBlockDet aa bb cc * ((design.atom offSecond ⬝ᵥ frame.axis) ^ 2 - 1))
+      = frameBlockDet aa bb cc
+        * (1 - design.weight offFirst - design.weight offSecond) := by
+    linear_combination frameBlockDet aa bb cc * hmass
+  linarith [hstepFirst, hstepSecond, hexpand]
+
 end Gtz
