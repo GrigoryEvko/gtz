@@ -38,8 +38,8 @@ What this module adds is proof economy, not reach.  It is self-contained: it
 imports only `Gtz.Core.Basic` and `Gtz.Core.Sanity`, and it does NOT spend
 `Gtz.gtz_rank_two` or any other rank-two input.  Every step is elementary.  Use
 it if you want the floor without pulling the rank-two theorem into a dependency
-chain, or if you want the per-atom row law in weight-deficient form, which the
-rescale route does not expose.
+chain, or if you want `Gtz.chartRowLaw`, the per-atom row law in weight-deficient
+chart coordinates, which the rescale route does not expose.
 
 ## The mechanism
 
