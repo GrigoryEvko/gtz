@@ -1483,9 +1483,11 @@ import Gtz.Wave.ChartSharpDesignGap
 import Gtz.Wave.ChartFrobeniusLaw
 import Gtz.Wave.DependencyDominationCriterion
 import Gtz.Wave.CircuitSwapLaw
+import Gtz.Wave.RankFourDependencyChart
 import Gtz.Wave.ChartGaleSpectralLaw
 import Gtz.Complex.ComplexHingeRefutation
 import Gtz.Wave.CouplingRankBudget
+import Gtz.Complex.ComplexTransportLedger
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -39934,3 +39936,65 @@ run_cmd do
 #print axioms Gtz.exists_veroneseCoupling_neg_rankThree_sixOrSeven
 #print axioms Gtz.sum_weight_mul_couplingDiagFactor_rankTwo
 #print axioms Gtz.three_le_size_of_noStrictPair
+-- THE TWO RANK-FOUR REGISTRY HINGES, READ ON THE DEPENDENCY SPACE.
+--   A parallel pair is a nonzero dependency carried by two labels, so the hinge is a
+--   statement about a subspace of the index space and the weights and nothing else.  The
+--   pair-mass reading tests one fixed positive form on that subspace against the rank-one
+--   forms of the labels a selection omits; at corank one that sum has one term and at
+--   corank two it has two.  Both registry statements are restated in the chart of
+--   Gtz.ChartCore and on the dependency space, at each of the three rank-four cells.
+#print axioms Gtz.dominates_iff_dependencyBound_pairMass
+#print axioms Gtz.posDef_gap_iff_dependencyBound_pairMass
+#print axioms Gtz.image_orderEmb_univ_eq
+#print axioms Gtz.dominates_iff_dependencyDominates
+#print axioms Gtz.posDef_gap_iff_dependencyDominatesStrictly
+#print axioms Gtz.not_dominates_of_dependency_inside
+#print axioms Gtz.sum_smul_of_supported
+#print axioms Gtz.sum_smul_eq_pair
+#print axioms Gtz.hasParallelPair_iff_hasSparseDependency
+#print axioms Gtz.isTie_iff_dependency
+#print axioms Gtz.hingeHoldsAtSize_iff_dependency
+#print axioms Gtz.exists_pair_compl_of_card_eq_corankTwo
+#print axioms Gtz.corankTwo_dominates_iff
+#print axioms Gtz.corankTwo_posDef_gap_iff
+#print axioms Gtz.corankTwo_not_dominates_of_sparse
+#print axioms Gtz.subThresholdBandHingeStatement_iff_hinge
+#print axioms Gtz.thresholdCellHingeRankFourAndUpStatement_iff_hinge
+#print axioms Gtz.subThresholdBandHingeStatement_iff_chartCore
+#print axioms Gtz.thresholdCellHingeRankFourAndUpStatement_iff_chartCore
+#print axioms Gtz.subThresholdBandHingeStatement_iff_dependency
+#print axioms Gtz.bandCell_rank_four
+#print axioms Gtz.thresholdCell_rank_four
+#print axioms Gtz.subThresholdBandHinge_rank_four_iff
+#print axioms Gtz.hingeHoldsAtSize_eight_four_iff_chartCore
+#print axioms Gtz.hingeHoldsAtSize_nine_four_iff_chartCore
+#print axioms Gtz.hingeHoldsAtSize_ten_four_iff_chartCore
+#print axioms Gtz.hingeHoldsAtSize_eight_four_iff_dependency
+#print axioms Gtz.hingeHoldsAtSize_nine_four_iff_dependency
+#print axioms Gtz.hingeHoldsAtSize_ten_four_iff_dependency
+#print axioms Gtz.exists_dependencyTie_eight_four
+#print axioms Gtz.exists_dependencyTie_ten_four
+
+
+-- Gtz/Complex/ComplexTransportLedger.lean : the complexification test
+#print axioms Gtz.complexOverlap_comm
+#print axioms Gtz.complexOverlap_self
+#print axioms Gtz.trace_complexAtom
+#print axioms Gtz.sum_complexWeight_mul_complexLeverage
+#print axioms Gtz.complexOverlap_eq_dotProduct_complexAtom_mulVec
+#print axioms Gtz.sum_complexWeight_mul_complexOverlap
+#print axioms Gtz.complexVeroneseCoupling_comm
+#print axioms Gtz.complexVeroneseCoupling_self
+#print axioms Gtz.sum_complexVeroneseCoupling
+#print axioms Gtz.sum_complexWeight_mul_complexCouplingDiagFactor
+#print axioms Gtz.complexLagrange
+#print axioms Gtz.complexVeroneseCoupling_rankTwo
+#print axioms Gtz.complexHingeDesign_leverage
+#print axioms Gtz.complexHingeCoupling_two_zero
+#print axioms Gtz.complexHingeCoupling_zero_three
+#print axioms Gtz.complexHingeCoupling_two_three
+#print axioms Gtz.not_complexCouplingPos_trans
+#print axioms Gtz.complexHingeDesign_traceLaw
+#print axioms Gtz.complexHingeSix_isCoordinateSplit
+#print axioms Gtz.complexHingeSixBargmann_eq_zero_of_spike
+#print axioms Gtz.complexTransportLedger
