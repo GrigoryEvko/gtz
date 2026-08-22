@@ -305,12 +305,34 @@ iterations, weight floor 0.005.
      median parallel-free of the 20 BEST  = 5.238e-01
      median parallel-free of the 20 WORST = 4.260e-01
 
+  (6,3)   ten best restarts -- the campaign's OPEN rank-three target
+     5.329e-15   6.666e-16          every one of the ten is an exact tie
+     7.105e-15   1.334e-16          and every one carries an EXACT collinear pair
+     ...                            median of the 20 BEST  = 3.230e-16
+                                    median of the 20 WORST = 3.356e-01
+
+  (5,3)   ten best restarts -- the cell where the hinge is KERNEL-REFUTED
+     2.776e-16   5.277e-01          parallel-free
+     3.331e-16   5.171e-01          parallel-free
+     4.441e-16   3.347e-16          collinear
+     ...                            median of the 20 BEST  = 5.901e-16
+                                    the ten best are MIXED, both kinds present
+
 READ IT. At (6,4) the descent reaches machine precision and the parallel-free
 score does not move: the tie locus and the collinear stratum are SEPARATE, and
 nine of the ten best ties are parallel-free. At (8,4) the descent never reaches
 machine precision, it stalls at 5.7e-10, and the parallel-free score falls with
 it, five orders of magnitude between the best and the worst restarts: the tie
 locus and the collinear stratum COINCIDE.
+
+The two calibration cells settle the reading. At (5,3), where the hinge is
+kernel-refuted, the ten best ties are MIXED: some parallel-free at 0.52 and some
+collinear at 1e-16, which is what an overlap of two loci looks like and matches
+the earlier lane's 57 percent. At (6,3), the campaign's open rank-three target,
+every one of the ten best is an exact tie and every one is exactly collinear,
+with five orders of magnitude between the best and the worst restarts. So the
+signature at (8,4) is the SAME as at (6,3), and the signature at (6,4) is the
+same as at (5,3).
 
 That is the band's lower endpoint, seen directly. The earlier lane reported the
 same conclusion from 800 L-BFGS restarts in the projection chart. This is an
