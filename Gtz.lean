@@ -6848,3 +6848,4 @@ import Gtz.Wave.CoShareBudget
 import Gtz.Wave.PencilTraceLaw
 import Gtz.Wave.PrimitiveTiePackage
 import Gtz.Wave.PairResidualFiring
+import Gtz.Wave.PrimitiveTieSharpTransport

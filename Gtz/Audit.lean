@@ -1500,6 +1500,7 @@ import Gtz.Wave.PlaneWeightFloor
 import Gtz.Wave.PrimitiveTiePackage
 import Gtz.Wave.CoShareBudget
 import Gtz.Wave.PairResidualFiring
+import Gtz.Wave.PrimitiveTieSharpTransport
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -40390,3 +40391,33 @@ and the primitive tie package. -/
 #print axioms Gtz.det_tripleGram_eq_sq_tripleBracket
 #print axioms Gtz.posSemidef_tripleGram_sub_one_of_sq_trace_le
 #print axioms Gtz.dominates_of_sq_sum_leverage_le_four_mul_sq_tripleBracket
+-- Gtz/Wave/PrimitiveTieSharpTransport.lean : the tie transports across the sharp
+-- duality, and every five-set of a primitive `(6,3)` tie dominates strictly.
+-- The weak flip carries a dominating selection to the complementary selection of
+-- the sharp design.  `Gtz.IsTie` also quantifies a `PosDef`, and that half was
+-- absent.  Part A repeats the weak chain one Loewner notch up, with the definite
+-- twins of the invertible congruence and of the rectangular transpose flip.  Part
+-- B moves both clauses of `Gtz.IsTie` across at every weight, every rank and
+-- every size, where the landed `Gtz.isTie_naimarkDual_iff_of_uniform` needs a
+-- uniform weight.  Part C ties the whitener-free sharp share to the NAMED sharp
+-- design and reads all-heaviness of the dual as strictness of every five-set.
+-- The tree owned two of the six five-sets with no hypothesis; primitivity buys
+-- the other four.  Parts A and B are field-blind.  Part C consumes the funnel
+-- closure, hence the rank-two three-class law, which is real-only.
+#print axioms Gtz.posDef_gap_iff_reading_lt
+#print axioms Gtz.posDef_gap_iff_compl_reading_lt
+#print axioms Gtz.posDef_gap_naimarkSharpDesign_iff_reading
+#print axioms Gtz.posDef_gap_iff_posDef_gap_naimarkSharpDesign_compl
+#print axioms Gtz.sumElim_orderEmbOfFin_bijective
+#print axioms Gtz.dominates_iff_dominates_naimarkSharpDesign_compl_finset
+#print axioms Gtz.posDef_gap_iff_posDef_gap_naimarkSharpDesign_compl_finset
+#print axioms Gtz.card_compl_of_naimark'
+#print axioms Gtz.isTie_naimarkSharpDesign_of_isTie
+#print axioms Gtz.isTie_naimarkSharpDesign_iff_sixThree
+#print axioms Gtz.naimarkSharpShare_eq_weight_mul_leverage
+#print axioms Gtz.allHeavy_naimarkSharpDesign_iff
+#print axioms Gtz.forall_posDef_gap_erase_of_isPrimitiveDesign_of_isTie_sixThree
+#print axioms Gtz.totalGapReading_lt_one_of_isPrimitiveDesign_of_isTie_sixThree
+#print axioms Gtz.forall_posDef_gap_erase_of_isPrimitiveDesign_of_isTie
+#print axioms Gtz.sixThree_primitiveTie_selfDualPackage
+#print axioms Gtz.exists_sixThree_primitiveTie_selfDualPackage
