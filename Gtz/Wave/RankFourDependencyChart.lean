@@ -12,7 +12,7 @@ removes them a second time, into the LINEAR DEPENDENCIES of the atoms, where the
 hinge becomes a statement about a subspace of `ℝ^size` and a positive weight
 vector, and nothing else.
 
-## The three new readings
+## The five readings
 
 **1.  A parallel pair is a SPARSE DEPENDENCY.**
 
@@ -59,7 +59,7 @@ dependency that mentions no selection:
 At `size = 2 * rank` the complement of a `rank`-subset is a `rank`-subset, so the
 `C(2 rank, rank)` tests pair up and carry only half as many budgets.  At `(8,4)`,
 the first band cell and the band's LOWER ENDPOINT, seventy tests carry thirty-five
-budgets.  Two consequences follow with no further work:
+budgets.  Four consequences follow with no further work:
 `Gtz.dependencyDefect_pos_of_compl_neg` — with no weight past one half two
 complementary selections cannot fail at the same dependency —
 `Gtz.not_dominates_and_compl_of_budget_neg`, its weight-aware converse, and
@@ -85,7 +85,7 @@ left side IS `Gtz.coMean` and its single right-hand term IS `Gtz.coRatio`:
 ## What the tie and the hinge become
 
 `Gtz.isTie_iff_dependency` and `Gtz.hingeHoldsAtSize_iff_dependency` package the
-three readings.  At `(8,4)` the right side of the hinge mentions a
+readings.  At `(8,4)` the right side of the hinge mentions a
 four-dimensional subspace of `ℝ^8`, eight positive weights, and the seventy
 `4`-subsets — no atom, no Parseval, no projection and no matrix inverse.
 
