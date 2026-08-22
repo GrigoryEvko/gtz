@@ -1546,4 +1546,139 @@ theorem exists_coplanar_planeStrictPair_of_lightOffPlane (design : WeightedDesig
     hnormProbe] at hvalue
   exact hvalue
 
+/-! ## Part 7 — a single vanishing shadow forces a strict plane pair
+
+Part 5 dropped ONE atom from the in-plane Parseval identity and needed every other
+atom to be flat.  Neither restriction is real.  The in-plane identity is carried
+by the shadows alone, so an atom whose SHADOW VANISHES — an atom parallel to the
+normal — can be dropped from it whatever the other atoms do, and what is left is a
+plane family of total weight `1 - t`.  The deficit law then returns a pair that
+beats the plane STRICTLY.
+
+This is a law of the whole rank-three cell: no tie hypothesis, no heaviness, no
+flatness, no coplanarity. -/
+
+/-- A probe of the plane reads an atom through its SHADOW, flat or not: the atom's
+axis component is invisible to a probe orthogonal to the axis. -/
+theorem dotProduct_eq_shadow_reading (design : WeightedDesign size 3) (frame : AxisFrame)
+    (label : Fin size) {planar : Fin 3 → ℝ} (hperp : planar ⬝ᵥ frame.axis = 0) :
+    design.atom label ⬝ᵥ planar
+      = (frameShadow design frame).atom label ⬝ᵥ ![planar ⬝ᵥ frame.pOne, planar ⬝ᵥ frame.pTwo] := by
+  have hresolve := orthonormalFrame_resolution frame.oneOne frame.twoTwo frame.axisAxis
+    frame.oneTwo frame.oneAxis frame.twoAxis (design.atom label)
+  have hright : (frameShadow design frame).atom label
+        ⬝ᵥ ![planar ⬝ᵥ frame.pOne, planar ⬝ᵥ frame.pTwo]
+      = (design.atom label ⬝ᵥ frame.pOne) * (planar ⬝ᵥ frame.pOne)
+        + (design.atom label ⬝ᵥ frame.pTwo) * (planar ⬝ᵥ frame.pTwo) := by
+    rw [frameShadow_atom, dot_fin_two]
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+  rw [hright]
+  conv_lhs => rw [hresolve]
+  rw [add_dotProduct, add_dotProduct, smul_dotProduct, smul_dotProduct, smul_dotProduct,
+    smul_eq_mul, smul_eq_mul, smul_eq_mul, dotProduct_comm frame.axis planar, hperp,
+    mul_zero, add_zero, dotProduct_comm frame.pOne planar, dotProduct_comm frame.pTwo planar]
+
+/-- The plane probe attached to a planar direction is nonzero. -/
+theorem planeProbe_ne_zero (frame : AxisFrame) {planar : Fin 3 → ℝ}
+    (hperp : planar ⬝ᵥ frame.axis = 0) (hne : planar ≠ 0) :
+    (![planar ⬝ᵥ frame.pOne, planar ⬝ᵥ frame.pTwo] : Fin 2 → ℝ) ≠ 0 := by
+  intro hcontra
+  have hresolve := orthonormalFrame_resolution frame.oneOne frame.twoTwo frame.axisAxis
+    frame.oneTwo frame.oneAxis frame.twoAxis planar
+  rw [hperp, zero_smul, add_zero] at hresolve
+  have hfirst : planar ⬝ᵥ frame.pOne = 0 := by
+    have hentry := congrFun hcontra 0
+    simpa using hentry
+  have hsecond : planar ⬝ᵥ frame.pTwo = 0 := by
+    have hentry := congrFun hcontra 1
+    simpa using hentry
+  rw [hfirst, hsecond, zero_smul, zero_smul, zero_add] at hresolve
+  exact hne hresolve
+
+/-- The plane probe has the planar direction's own squared length. -/
+theorem planeProbe_dotProduct_self (frame : AxisFrame) {planar : Fin 3 → ℝ}
+    (hperp : planar ⬝ᵥ frame.axis = 0) :
+    (![planar ⬝ᵥ frame.pOne, planar ⬝ᵥ frame.pTwo] : Fin 2 → ℝ)
+        ⬝ᵥ ![planar ⬝ᵥ frame.pOne, planar ⬝ᵥ frame.pTwo]
+      = planar ⬝ᵥ planar := by
+  have hsplit := frame.dotProduct_self_split planar
+  rw [hperp] at hsplit
+  rw [dot_fin_two]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+  rw [hsplit]
+  ring
+
+/-- **A VANISHING SHADOW FORCES A STRICT PLANE PAIR.**  If one atom of a
+rank-three design is parallel to the axis of a frame — equivalently its two plane
+readings vanish — then TWO OTHER atoms strictly over-cover every nonzero probe of
+that plane.
+
+The in-plane Parseval identity is carried by the shadows, and the parallel atom
+contributes nothing to it, so the remaining atoms carry the whole plane on a total
+weight of `1 - t`.  `Gtz.exists_planeStrict_of_weightSum_lt_one` converts that
+deficit into strictness.  No tie, no heaviness, no flatness of the other atoms. -/
+theorem exists_planeStrictPair_of_zeroShadow {atoms : ℕ}
+    (design : WeightedDesign (atoms + 2) 3) (frame : AxisFrame)
+    (spikeLabel : Fin (atoms + 2))
+    (hspikeOne : design.atom spikeLabel ⬝ᵥ frame.pOne = 0)
+    (hspikeTwo : design.atom spikeLabel ⬝ᵥ frame.pTwo = 0) :
+    ∃ first second : Fin (atoms + 2), first ≠ second ∧ first ≠ spikeLabel
+      ∧ second ≠ spikeLabel ∧ PlaneStrictPair design frame.axis first second := by
+  classical
+  set shadow := frameShadow design frame with hshadowDef
+  have hspikeZero : shadow.atom spikeLabel = 0 := by
+    funext coord
+    fin_cases coord
+    · simpa [hshadowDef, frameShadow_atom] using hspikeOne
+    · simpa [hshadowDef, frameShadow_atom] using hspikeTwo
+  set atomOf : Fin (atoms + 1) → (Fin 2 → ℝ) :=
+    fun index => shadow.atom (spikeLabel.succAbove index) with hatomDef
+  set weightOf : Fin (atoms + 1) → ℝ :=
+    fun index => design.weight (spikeLabel.succAbove index) with hweightDef
+  have hpos : ∀ index : Fin (atoms + 1), 0 < weightOf index :=
+    fun index => design.weight_pos _
+  have hframe : ∑ index, weightOf index • atomMatrix (atomOf index)
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ) := by
+    have hparseval : ∑ label : Fin (atoms + 2),
+        design.weight label • atomMatrix (shadow.atom label)
+        = (1 : Matrix (Fin 2) (Fin 2) ℝ) := shadow.isParseval
+    have hsplit := Fin.sum_univ_succAbove
+      (fun label => design.weight label • atomMatrix (shadow.atom label)) spikeLabel
+    have hzeroMatrix : atomMatrix (0 : Fin 2 → ℝ) = 0 := by
+      ext rowIndex colIndex
+      simp [atomMatrix, Matrix.vecMulVec_apply]
+    rw [hparseval, hspikeZero, hzeroMatrix, smul_zero, zero_add] at hsplit
+    rw [hatomDef, hweightDef]
+    exact hsplit.symm
+  have hdeficit : ∑ other, weightOf other < 1 := by
+    have hsplit := Fin.sum_univ_succAbove design.weight spikeLabel
+    rw [design.weight_sum_one] at hsplit
+    have hweightPos := design.weight_pos spikeLabel
+    rw [hweightDef]
+    linarith [hsplit]
+  obtain ⟨firstIndex, secondIndex, hindexNe, hstrict⟩ :=
+    exists_planeStrict_of_weightSum_lt_one atomOf weightOf hpos hframe hdeficit
+  refine ⟨spikeLabel.succAbove firstIndex, spikeLabel.succAbove secondIndex,
+    fun hcontra => hindexNe (Fin.succAbove_right_injective hcontra),
+    Fin.succAbove_ne spikeLabel firstIndex, Fin.succAbove_ne spikeLabel secondIndex,
+    fun planar hperp hplanarNe => ?_⟩
+  have hvalue := hstrict ![planar ⬝ᵥ frame.pOne, planar ⬝ᵥ frame.pTwo]
+    (planeProbe_ne_zero frame hperp hplanarNe)
+  rw [planeProbe_dotProduct_self frame hperp] at hvalue
+  rw [dotProduct_eq_shadow_reading design frame (spikeLabel.succAbove firstIndex) hperp,
+    dotProduct_eq_shadow_reading design frame (spikeLabel.succAbove secondIndex) hperp]
+  exact hvalue
+
+/-- **NO ATOM OF A RANK-THREE TIE IS PARALLEL TO A NORMAL WHOSE PLANE IT ALSO
+GOVERNS.**  Read at `(6,3)`: for every frame and every atom whose two plane
+readings vanish, the design carries a pair strictly beating that plane.  Combined
+with the pair-det gate this caps every triple through that pair. -/
+theorem sixThree_exists_planeStrictPair_of_zeroShadow (design : WeightedDesign 6 3)
+    (frame : AxisFrame) (spikeLabel : Fin 6)
+    (hspikeOne : design.atom spikeLabel ⬝ᵥ frame.pOne = 0)
+    (hspikeTwo : design.atom spikeLabel ⬝ᵥ frame.pTwo = 0) :
+    ∃ first second : Fin 6, first ≠ second ∧ first ≠ spikeLabel ∧ second ≠ spikeLabel
+      ∧ PlaneStrictPair design frame.axis first second :=
+  exists_planeStrictPair_of_zeroShadow (atoms := 4) design frame spikeLabel hspikeOne hspikeTwo
+
 end Gtz
