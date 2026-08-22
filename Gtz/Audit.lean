@@ -1485,6 +1485,8 @@ import Gtz.Wave.DependencyDominationCriterion
 import Gtz.Wave.CircuitSwapLaw
 import Gtz.Wave.RankFourDependencyChart
 import Gtz.Wave.DependencyAtomCap
+import Gtz.Wave.CoDependencyPairCap
+import Gtz.Wave.CircuitGramTrace
 import Gtz.Wave.ChartGaleSpectralLaw
 import Gtz.Complex.ComplexHingeRefutation
 import Gtz.Wave.CouplingRankBudget
@@ -40135,3 +40137,48 @@ run_cmd do
 #print axioms Gtz.no_planarSpike_of_noStrictPair
 #print axioms Gtz.not_coplanarSpike_design
 #print axioms Gtz.exists_strictPair_of_fiveCoplanar_sixThree
+
+-- Gtz/Wave/CoDependencyPairCap.lean
+#print axioms Gtz.dualCross_self
+#print axioms Gtz.dualNormSq_smul_add
+#print axioms Gtz.dualCross_smul_add
+#print axioms Gtz.sq_dualCross_le
+#print axioms Gtz.sum_smul_pair_atom_eq_zero
+#print axioms Gtz.dualCross_coDependency
+#print axioms Gtz.dualCross_coDependency_pair
+#print axioms Gtz.pairCapSlack_eq_weight_mul_coDependency_gramDet
+#print axioms Gtz.sq_pairReading_le
+#print axioms Gtz.coordinate_relation_of_pairCapSlack_eq_zero
+#print axioms Gtz.dualRatio_mul_dualRatio_sub_odds_mul_sq
+#print axioms Gtz.odds_mul_sq_le_dualRatio_mul
+#print axioms Gtz.sum_two_dualReading_le
+#print axioms Gtz.dominates_of_pairTest_triple
+#print axioms Gtz.posDef_gap_of_pairTest_triple
+#print axioms Gtz.dominates_of_pairTest_canonical
+#print axioms Gtz.pairTest_of_sum_dualRatio_le_one
+#print axioms Gtz.pairTest_fails_of_isTie_sixThree
+#print axioms Gtz.gtzWeighted_sixThree_of_pairTest
+
+-- Gtz/Wave/CircuitGramTrace.lean
+#print axioms Gtz.weightProd_mul_depSlack_circuitDep
+#print axioms Gtz.sum_weighted_depSlack_circuitDep_sixThree
+#print axioms Gtz.aggregate_of_dominates_from_trace_sixThree
+#print axioms Gtz.dominator_circuitGram_ladder_sixThree
+#print axioms Gtz.tie_circuitGram_ladder_sixThree
+#print axioms Gtz.no_strictTest_at_isTie
+-- TwoPlaneCoplanarStructure, the plane weight deficit and its two kills.
+--   Gtz.exists_planeStrict_of_weightSum_lt_one: a plane Parseval family whose weights
+--     total below one carries a pair that beats every nonzero plane probe.
+--   Gtz.exists_planeStrictPair_of_zeroShadow: one atom parallel to the axis already
+--     forces that strict plane pair, with no flatness of the other atoms.
+--   Gtz.exists_coplanar_planeStrictPair_of_lightOffPlane: the light-shadow residue of
+--     the four-coplanar stratum implies the strict-pair residue, with a coplanar pair.
+#print axioms Gtz.exists_planeStrict_of_weightSum_lt_one
+#print axioms Gtz.exists_planeStrict_of_fiveFrame
+#print axioms Gtz.not_planeStrict_of_unit
+#print axioms Gtz.exists_coplanar_planeStrictPair_of_lightOffPlane
+#print axioms Gtz.dotProduct_eq_shadow_reading
+#print axioms Gtz.planeProbe_ne_zero
+#print axioms Gtz.planeProbe_dotProduct_self
+#print axioms Gtz.exists_planeStrictPair_of_zeroShadow
+#print axioms Gtz.sixThree_exists_planeStrictPair_of_zeroShadow

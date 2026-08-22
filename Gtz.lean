@@ -6839,3 +6839,5 @@ import Gtz.Complex.ComplexTransportLedger
 import Gtz.Wave.DependencyAtomCap
 import Gtz.Wave.TwoPlaneCoplanarStructure
 import Gtz.Wave.CoplanarCircleGap
+import Gtz.Wave.CoDependencyPairCap
+import Gtz.Wave.CircuitGramTrace
