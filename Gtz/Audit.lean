@@ -39998,3 +39998,12 @@ run_cmd do
 #print axioms Gtz.complexHingeSix_isCoordinateSplit
 #print axioms Gtz.complexHingeSixBargmann_eq_zero_of_spike
 #print axioms Gtz.complexTransportLedger
+#print axioms Gtz.dependencyDominates_iff_defect_nonneg
+#print axioms Gtz.dependencyDefect_add_compl
+#print axioms Gtz.dependencyDefect_add_compl_eq
+#print axioms Gtz.dependencyBudget_nonneg_of_weight_le_half
+#print axioms Gtz.dependencyDefect_pos_of_compl_neg
+#print axioms Gtz.not_dominates_and_compl_of_budget_neg
+#print axioms Gtz.card_compl_eq_rank_of_two_mul
+#print axioms Gtz.sum_weight_mul_pairMass
+#print axioms Gtz.eightFour_dependencyDefect_add_compl
