@@ -730,4 +730,319 @@ theorem coplanar_wall_of_isTie (design : WeightedDesign size 3) (htie : IsTie de
     linear_combination frameBlockDet aa bb cc * hmass
   linarith [hstepFirst, hstepSecond, hexpand]
 
+/-! ## Part 5 — the five-coplanar stratum is EMPTY
+
+Everything above is conditional.  This part is not.
+
+If all but ONE atom of a rank-three design lie in a plane, the exceptional atom
+is a SPIKE along the normal and its shadow VANISHES.  The remaining atoms then
+carry the whole in-plane Parseval identity on a total weight of `1 - t` with
+`t` the spike's weight, so rescaling them by `sqrt (1 - t)` gives a genuine
+rank-two design one label shorter.  Rank-two GTZ is a THEOREM
+(`Gtz.gtz_rank_two`), so that design has a weakly dominating pair — and the
+rescaling turns weak domination downstairs into STRICT domination of the plane
+upstairs, by exactly the weight deficit `t / (1 - t)`.
+
+The gap of the pair together with the spike is BLOCK DIAGONAL, its plane block
+strictly positive and its axis entry `1/t - 1 > 0`.  So the triple dominates
+STRICTLY, and no such design is a tie.
+
+Nothing here is special to six atoms: at every size and every rank-three design,
+`m - 1` coplanar atoms forbid a tie. -/
+
+/-- The planar companion of a design whose atoms all lie in a plane except the
+one at `spikeLabel`: the shadows of the surviving atoms, rescaled by the square
+root of their total weight, with the weights renormalised.  Parseval holds
+because the spike's shadow vanishes. -/
+noncomputable def spikeComplementDesign {atoms : ℕ} (design : WeightedDesign (atoms + 1) 3)
+    (frame : AxisFrame) (spikeLabel : Fin (atoms + 1))
+    (hspikeOne : design.atom spikeLabel ⬝ᵥ frame.pOne = 0)
+    (hspikeTwo : design.atom spikeLabel ⬝ᵥ frame.pTwo = 0)
+    (hslack : 0 < 1 - design.weight spikeLabel) : WeightedDesign atoms 2 where
+  atom label := Real.sqrt (1 - design.weight spikeLabel)
+    • ![design.atom (spikeLabel.succAbove label) ⬝ᵥ frame.pOne,
+        design.atom (spikeLabel.succAbove label) ⬝ᵥ frame.pTwo]
+  weight label := design.weight (spikeLabel.succAbove label) / (1 - design.weight spikeLabel)
+  weight_pos label := div_pos (design.weight_pos _) hslack
+  weight_sum_one := by
+    have hsplit := Fin.sum_univ_succAbove design.weight spikeLabel
+    rw [design.weight_sum_one] at hsplit
+    rw [← Finset.sum_div]
+    rw [show ∑ label : Fin atoms, design.weight (spikeLabel.succAbove label)
+        = 1 - design.weight spikeLabel by linarith [hsplit]]
+    exact div_self hslack.ne'
+  isParseval := by
+    have hnonzero : (1 : ℝ) - design.weight spikeLabel ≠ 0 := ne_of_gt hslack
+    have hroot : Real.sqrt (1 - design.weight spikeLabel)
+        * Real.sqrt (1 - design.weight spikeLabel) = 1 - design.weight spikeLabel :=
+      Real.mul_self_sqrt hslack.le
+    have hterm : ∀ (label : Fin atoms) (probeLeft probeRight : Fin 3 → ℝ),
+        design.weight (spikeLabel.succAbove label) / (1 - design.weight spikeLabel)
+            * (Real.sqrt (1 - design.weight spikeLabel)
+                  * (design.atom (spikeLabel.succAbove label) ⬝ᵥ probeLeft)
+                * (Real.sqrt (1 - design.weight spikeLabel)
+                  * (design.atom (spikeLabel.succAbove label) ⬝ᵥ probeRight)))
+          = design.weight (spikeLabel.succAbove label)
+            * ((design.atom (spikeLabel.succAbove label) ⬝ᵥ probeLeft)
+              * (design.atom (spikeLabel.succAbove label) ⬝ᵥ probeRight)) := by
+      intro label probeLeft probeRight
+      rw [show Real.sqrt (1 - design.weight spikeLabel)
+              * (design.atom (spikeLabel.succAbove label) ⬝ᵥ probeLeft)
+            * (Real.sqrt (1 - design.weight spikeLabel)
+              * (design.atom (spikeLabel.succAbove label) ⬝ᵥ probeRight))
+          = Real.sqrt (1 - design.weight spikeLabel)
+              * Real.sqrt (1 - design.weight spikeLabel)
+            * ((design.atom (spikeLabel.succAbove label) ⬝ᵥ probeLeft)
+              * (design.atom (spikeLabel.succAbove label) ⬝ᵥ probeRight)) from by ring,
+        hroot]
+      field_simp
+    have hentry : ∀ probeLeft probeRight : Fin 3 → ℝ,
+        design.atom spikeLabel ⬝ᵥ probeLeft = 0 →
+        ∑ label : Fin atoms, design.weight (spikeLabel.succAbove label)
+            * ((design.atom (spikeLabel.succAbove label) ⬝ᵥ probeLeft)
+              * (design.atom (spikeLabel.succAbove label) ⬝ᵥ probeRight))
+          = probeLeft ⬝ᵥ probeRight := by
+      intro probeLeft probeRight hspikeFlat
+      have hfull := sum_weighted_atomPairing design probeLeft probeRight
+      have hsplit := Fin.sum_univ_succAbove
+        (fun label => design.weight label
+          * ((design.atom label ⬝ᵥ probeLeft) * (design.atom label ⬝ᵥ probeRight)))
+        spikeLabel
+      rw [hfull, hspikeFlat] at hsplit
+      simp only [zero_mul, mul_zero, zero_add] at hsplit
+      exact hsplit.symm
+    ext rowIndex colIndex
+    fin_cases rowIndex <;> fin_cases colIndex <;>
+      simp only [Matrix.sum_apply, Matrix.smul_apply, atomMatrix, Matrix.vecMulVec_apply,
+        smul_eq_mul, Pi.smul_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.one_apply_eq, Matrix.one_apply_ne, ne_eq, Fin.zero_eta,
+        Fin.mk_one, Fin.reduceEq, not_false_eq_true]
+    · rw [Finset.sum_congr rfl (fun label (_ : label ∈ Finset.univ) =>
+        hterm label frame.pOne frame.pOne), hentry frame.pOne frame.pOne hspikeOne,
+        frame.oneOne]
+    · rw [Finset.sum_congr rfl (fun label (_ : label ∈ Finset.univ) =>
+        hterm label frame.pOne frame.pTwo), hentry frame.pOne frame.pTwo hspikeOne,
+        frame.oneTwo]
+    · rw [Finset.sum_congr rfl (fun label (_ : label ∈ Finset.univ) =>
+        hterm label frame.pTwo frame.pOne), hentry frame.pTwo frame.pOne hspikeTwo,
+        dotProduct_comm, frame.oneTwo]
+    · rw [Finset.sum_congr rfl (fun label (_ : label ∈ Finset.univ) =>
+        hterm label frame.pTwo frame.pTwo), hentry frame.pTwo frame.pTwo hspikeTwo,
+        frame.twoTwo]
+
+/-- **THE WEIGHT DEFICIT BUYS STRICTNESS.**  A weakly dominating pair of the
+planar companion reads on the plane of the original design with a strict margin:
+the total weight of the surviving atoms is `1 - t`, so the companion's atoms are
+longer than the shadows by exactly the factor that turns `>=` into `>`. -/
+theorem planeStrict_of_dominates_spikeComplementDesign {atoms : ℕ}
+    (design : WeightedDesign (atoms + 1) 3) (frame : AxisFrame)
+    (spikeLabel : Fin (atoms + 1))
+    (hspikeOne : design.atom spikeLabel ⬝ᵥ frame.pOne = 0)
+    (hspikeTwo : design.atom spikeLabel ⬝ᵥ frame.pTwo = 0)
+    (hslack : 0 < 1 - design.weight spikeLabel)
+    {pairFirst pairSecond : Fin atoms} (hne : pairFirst ≠ pairSecond)
+    (hdominates : Dominates
+      (spikeComplementDesign design frame spikeLabel hspikeOne hspikeTwo hslack)
+      {pairFirst, pairSecond})
+    (xcoord ycoord : ℝ) :
+    (xcoord ^ 2 + ycoord ^ 2)
+      ≤ (1 - design.weight spikeLabel)
+        * ((design.atom (spikeLabel.succAbove pairFirst) ⬝ᵥ frame.pOne * xcoord
+              + design.atom (spikeLabel.succAbove pairFirst) ⬝ᵥ frame.pTwo * ycoord) ^ 2
+          + (design.atom (spikeLabel.succAbove pairSecond) ⬝ᵥ frame.pOne * xcoord
+              + design.atom (spikeLabel.succAbove pairSecond) ⬝ᵥ frame.pTwo * ycoord) ^ 2) := by
+  classical
+  set companion := spikeComplementDesign design frame spikeLabel hspikeOne hspikeTwo hslack
+    with hcompanionDef
+  have hform := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdominates).2 ![xcoord, ycoord]
+  rw [star_trivial, dominationGap_form, Finset.sum_pair hne] at hform
+  have hroot : Real.sqrt (1 - design.weight spikeLabel)
+      * Real.sqrt (1 - design.weight spikeLabel) = 1 - design.weight spikeLabel :=
+    Real.mul_self_sqrt hslack.le
+  have hreading : ∀ label : Fin atoms,
+      companion.atom label ⬝ᵥ ![xcoord, ycoord]
+        = Real.sqrt (1 - design.weight spikeLabel)
+          * (design.atom (spikeLabel.succAbove label) ⬝ᵥ frame.pOne * xcoord
+            + design.atom (spikeLabel.succAbove label) ⬝ᵥ frame.pTwo * ycoord) := by
+    intro label
+    simp only [hcompanionDef, spikeComplementDesign, dotProduct, Fin.sum_univ_two,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Pi.smul_apply,
+      smul_eq_mul]
+    ring
+  have hnorm : (![xcoord, ycoord] : Fin 2 → ℝ) ⬝ᵥ ![xcoord, ycoord]
+      = xcoord ^ 2 + ycoord ^ 2 := by
+    simp only [dotProduct, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.head_cons]
+    ring
+  rw [hreading pairFirst, hreading pairSecond, hnorm] at hform
+  nlinarith [hform, hroot]
+
+/-- **THE FIVE-COPLANAR KILL.**  A rank-three design whose atoms all lie in one
+plane except a single one is NEVER a tie: it carries a STRICTLY dominating
+triple, namely the exceptional atom together with the pair that rank-two GTZ
+returns for the planar companion.
+
+The exceptional atom is a spike of squared height `1/t`, the pair beats the plane
+with margin `t / (1 - t)`, and the gap is block diagonal, so the two margins do
+not interfere. -/
+theorem exists_posDef_triple_of_spike {atoms : ℕ} (design : WeightedDesign (atoms + 1) 3)
+    (frame : AxisFrame) (flatSet : Finset (Fin (atoms + 1)))
+    {offFirst spikeLabel : Fin (atoms + 1)} (hne : offFirst ≠ spikeLabel)
+    (hcompl : flatSetᶜ = {offFirst, spikeLabel})
+    (hflat : ∀ label ∈ flatSet, design.atom label ⬝ᵥ frame.axis = 0)
+    (hfirstFlat : design.atom offFirst ⬝ᵥ frame.axis = 0) (hsize : 2 ≤ atoms + 1) :
+    ∃ selected : Finset (Fin (atoms + 1)), selected.card = 3
+      ∧ (subsetSum design selected - 1).PosDef := by
+  classical
+  obtain ⟨hmass, hspikeOne, hspikeTwo, hspikeAxis⟩ :=
+    spike_of_fiveFlat design frame flatSet hne hcompl hflat hfirstFlat
+  have hweightPos := design.weight_pos spikeLabel
+  have hslack : 0 < 1 - design.weight spikeLabel := by
+    linarith [weight_lt_one design hsize spikeLabel]
+  set companion := spikeComplementDesign design frame spikeLabel hspikeOne hspikeTwo hslack
+    with hcompanionDef
+  obtain ⟨pairSet, hpairCard, hpairDominates⟩ := gtz_rank_two atoms companion
+  obtain ⟨pairFirst, pairSecond, hpairNe, hpairEq⟩ := Finset.card_eq_two.mp hpairCard
+  rw [hpairEq] at hpairDominates
+  set firstLabel : Fin (atoms + 1) := spikeLabel.succAbove pairFirst with hfirstDef
+  set secondLabel : Fin (atoms + 1) := spikeLabel.succAbove pairSecond with hsecondDef
+  have hfirstNeSpike : firstLabel ≠ spikeLabel := Fin.succAbove_ne spikeLabel pairFirst
+  have hsecondNeSpike : secondLabel ≠ spikeLabel := Fin.succAbove_ne spikeLabel pairSecond
+  have hfirstNeSecond : firstLabel ≠ secondLabel := fun heq =>
+    hpairNe (Fin.succAbove_right_injective heq)
+  -- the spike's squared height
+  have hheightSq : (design.atom spikeLabel ⬝ᵥ frame.axis) ^ 2
+      = 1 / design.weight spikeLabel := by
+    field_simp
+    linarith [hmass]
+  -- the two pair members are flat, because the spike is the only off-plane atom
+  have hflatAll : ∀ label : Fin (atoms + 1), label ≠ spikeLabel →
+      design.atom label ⬝ᵥ frame.axis = 0 := by
+    intro label hlabelNe
+    by_cases hmem : label ∈ flatSet
+    · exact hflat label hmem
+    · have hcomplMem : label ∈ flatSetᶜ := Finset.mem_compl.mpr hmem
+      rw [hcompl] at hcomplMem
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hcomplMem
+      rcases hcomplMem with heq | heq
+      · rw [heq]; exact hfirstFlat
+      · exact absurd heq hlabelNe
+  have hfirstFlatAtom : design.atom firstLabel ⬝ᵥ frame.axis = 0 := hflatAll _ hfirstNeSpike
+  have hsecondFlatAtom : design.atom secondLabel ⬝ᵥ frame.axis = 0 := hflatAll _ hsecondNeSpike
+  refine ⟨{firstLabel, secondLabel, spikeLabel}, ?_, ?_⟩
+  · rw [Finset.card_insert_of_notMem (by
+        simp only [Finset.mem_insert, Finset.mem_singleton]
+        push_neg
+        exact ⟨hfirstNeSecond, hfirstNeSpike⟩),
+      Finset.card_insert_of_notMem (by
+        simp only [Finset.mem_singleton]
+        exact hsecondNeSpike), Finset.card_singleton]
+  refine Matrix.posDef_iff_dotProduct_mulVec.mpr
+    ⟨isHermitian_subsetSum_sub_one design _, fun probe hprobeNe => ?_⟩
+  rw [star_trivial, dominationGap_form,
+    Finset.sum_insert (by
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      push_neg
+      exact ⟨hfirstNeSecond, hfirstNeSpike⟩),
+    Finset.sum_insert (by simp only [Finset.mem_singleton]; exact hsecondNeSpike),
+    Finset.sum_singleton]
+  set xcoord := probe ⬝ᵥ frame.pOne with hxDef
+  set ycoord := probe ⬝ᵥ frame.pTwo with hyDef
+  set zcoord := probe ⬝ᵥ frame.axis with hzDef
+  have hsplitProbe : probe ⬝ᵥ probe = xcoord ^ 2 + ycoord ^ 2 + zcoord ^ 2 :=
+    frame.dotProduct_self_split probe
+  have hflatReading : ∀ label : Fin (atoms + 1), design.atom label ⬝ᵥ frame.axis = 0 →
+      design.atom label ⬝ᵥ probe
+        = (design.atom label ⬝ᵥ frame.pOne) * xcoord
+          + (design.atom label ⬝ᵥ frame.pTwo) * ycoord := by
+    intro label hlabelFlat
+    have hresolve := orthonormalFrame_resolution frame.oneOne frame.twoTwo frame.axisAxis
+      frame.oneTwo frame.oneAxis frame.twoAxis probe
+    conv_lhs => rw [hresolve]
+    rw [dotProduct_add, dotProduct_add, dotProduct_smul, dotProduct_smul, dotProduct_smul,
+      hlabelFlat, smul_eq_mul, smul_eq_mul, smul_eq_mul, mul_zero, add_zero, hxDef, hyDef]
+    ring
+  have hspikeReading : design.atom spikeLabel ⬝ᵥ probe
+      = (design.atom spikeLabel ⬝ᵥ frame.axis) * zcoord := by
+    conv_lhs => rw [hspikeAxis]
+    rw [smul_dotProduct, smul_eq_mul, dotProduct_comm frame.axis probe, ← hzDef]
+  rw [hflatReading firstLabel hfirstFlatAtom, hflatReading secondLabel hsecondFlatAtom,
+    hspikeReading, hsplitProbe]
+  have hplane := planeStrict_of_dominates_spikeComplementDesign design frame spikeLabel
+    hspikeOne hspikeTwo hslack hpairNe hpairDominates xcoord ycoord
+  rw [← hfirstDef, ← hsecondDef] at hplane
+  have hcoordsNe : ¬ (xcoord = 0 ∧ ycoord = 0 ∧ zcoord = 0) := by
+    rintro ⟨hx, hy, hz⟩
+    refine hprobeNe (dotProduct_self_eq_zero.mp ?_)
+    rw [hsplitProbe, hx, hy, hz]
+    ring
+  have hspikeMargin : (design.atom spikeLabel ⬝ᵥ frame.axis) ^ 2 * zcoord ^ 2 - zcoord ^ 2
+      = (1 / design.weight spikeLabel - 1) * zcoord ^ 2 := by
+    rw [hheightSq]; ring
+  have hspikeGain : 0 < 1 / design.weight spikeLabel - 1 := by
+    have hlt := weight_lt_one design hsize spikeLabel
+    have hone : (1 : ℝ) < 1 / design.weight spikeLabel := by
+      rw [lt_div_iff₀ hweightPos]
+      linarith
+    linarith
+  have hplaneGain : 0 < 1 / (1 - design.weight spikeLabel) - 1 := by
+    have hone : (1 : ℝ) < 1 / (1 - design.weight spikeLabel) := by
+      rw [lt_div_iff₀ hslack]
+      linarith
+    linarith
+  have hplaneStrict : (xcoord ^ 2 + ycoord ^ 2)
+      ≤ (1 - design.weight spikeLabel)
+        * (((design.atom firstLabel ⬝ᵥ frame.pOne) * xcoord
+              + (design.atom firstLabel ⬝ᵥ frame.pTwo) * ycoord) ^ 2
+          + ((design.atom secondLabel ⬝ᵥ frame.pOne) * xcoord
+              + (design.atom secondLabel ⬝ᵥ frame.pTwo) * ycoord) ^ 2) := hplane
+  rcases eq_or_ne (xcoord ^ 2 + ycoord ^ 2) 0 with hplaneZero | hplaneNe
+  · have hx : xcoord = 0 := by nlinarith [sq_nonneg xcoord, sq_nonneg ycoord]
+    have hy : ycoord = 0 := by nlinarith [sq_nonneg xcoord, sq_nonneg ycoord]
+    have hz : zcoord ≠ 0 := by
+      intro hzero
+      exact hcoordsNe ⟨hx, hy, hzero⟩
+    have hzsq : 0 < zcoord ^ 2 := by positivity
+    have hplaneNonneg : 0 ≤ ((design.atom firstLabel ⬝ᵥ frame.pOne) * xcoord
+          + (design.atom firstLabel ⬝ᵥ frame.pTwo) * ycoord) ^ 2
+        + ((design.atom secondLabel ⬝ᵥ frame.pOne) * xcoord
+          + (design.atom secondLabel ⬝ᵥ frame.pTwo) * ycoord) ^ 2 := by positivity
+    nlinarith [hspikeMargin, hspikeGain, hzsq, hplaneNonneg, hx, hy]
+  · have hplanePos : 0 < xcoord ^ 2 + ycoord ^ 2 :=
+      lt_of_le_of_ne (by positivity) (Ne.symm hplaneNe)
+    have hsumBig : (1 / (1 - design.weight spikeLabel)) * (xcoord ^ 2 + ycoord ^ 2)
+        ≤ ((design.atom firstLabel ⬝ᵥ frame.pOne) * xcoord
+              + (design.atom firstLabel ⬝ᵥ frame.pTwo) * ycoord) ^ 2
+          + ((design.atom secondLabel ⬝ᵥ frame.pOne) * xcoord
+              + (design.atom secondLabel ⬝ᵥ frame.pTwo) * ycoord) ^ 2 := by
+      rw [div_mul_eq_mul_div, div_le_iff₀ hslack]
+      nlinarith [hplaneStrict]
+    nlinarith [hsumBig, hplanePos, hplaneGain, hspikeMargin, hspikeGain, sq_nonneg zcoord]
+
+/-- **NO TIE HAS ALL BUT ONE ATOM COPLANAR.**  The strictly dominating triple of
+`Gtz.exists_posDef_triple_of_spike` refutes the second clause of `Gtz.IsTie`. -/
+theorem not_isTie_of_spike {atoms : ℕ} (design : WeightedDesign (atoms + 1) 3)
+    (frame : AxisFrame) (flatSet : Finset (Fin (atoms + 1)))
+    {offFirst spikeLabel : Fin (atoms + 1)} (hne : offFirst ≠ spikeLabel)
+    (hcompl : flatSetᶜ = {offFirst, spikeLabel})
+    (hflat : ∀ label ∈ flatSet, design.atom label ⬝ᵥ frame.axis = 0)
+    (hfirstFlat : design.atom offFirst ⬝ᵥ frame.axis = 0) (hsize : 2 ≤ atoms + 1) :
+    ¬ IsTie design := by
+  intro htie
+  obtain ⟨selected, hcard, hposDef⟩ := exists_posDef_triple_of_spike design frame flatSet
+    hne hcompl hflat hfirstFlat hsize
+  exact htie.2 selected hcard hposDef
+
+/-- **THE FIVE-COPLANAR STRATUM OF `(6,3)` IS EMPTY.**  No `(6,3)` tie has five
+coplanar atoms.  Unconditional: no heaviness, no genericity, no residue. -/
+theorem not_isTie_sixThree_of_fiveCoplanar (design : WeightedDesign 6 3)
+    (frame : AxisFrame) (flatSet : Finset (Fin 6))
+    {offFirst spikeLabel : Fin 6} (hne : offFirst ≠ spikeLabel)
+    (hcompl : flatSetᶜ = {offFirst, spikeLabel})
+    (hflat : ∀ label ∈ flatSet, design.atom label ⬝ᵥ frame.axis = 0)
+    (hfirstFlat : design.atom offFirst ⬝ᵥ frame.axis = 0) :
+    ¬ IsTie design :=
+  not_isTie_of_spike (atoms := 5) design frame flatSet hne hcompl hflat hfirstFlat
+    (by norm_num)
+
 end Gtz
