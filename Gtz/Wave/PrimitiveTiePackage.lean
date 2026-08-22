@@ -111,6 +111,7 @@ import Gtz.Wave.UnitAtomFunnelClosure
 import Gtz.Wave.TieStratumClassification
 import Gtz.Wave.SharpDesignInvolution
 import Gtz.Wave.TieParallelPairWeightRegular
+import Gtz.Wave.ChartComplementBlockLaw
 
 set_option autoImplicit false
 set_option relaxedAutoImplicit false
@@ -432,13 +433,6 @@ theorem exists_compl_sum_coLeverageRatio_lt_two (D : WeightedDesign 6 3)
   have htotal := sum_coLeverageRatio_lt_four_of_allHeavy_sixThree D hheavy
   linarith [hsplit, htotal, hleft, hright]
 
-/-- A triple of a six-element ground set has a complementary triple. -/
-theorem card_compl_eq_three {selected : Finset (Fin 6)} (hcard : selected.card = 3) :
-    selectedᶜ.card = 3 := by
-  have := Finset.card_add_card_compl selected
-  simp only [Finset.card_univ, Fintype.card_fin] at this
-  omega
-
 /-- **THE COLLAPSE.**  Every all-heavy `(6,3)` design carries a triple at which
 domination is EXACTLY the sign of one determinant.
 
@@ -457,22 +451,47 @@ theorem exists_triple_dominates_iff_tripleChartGapDet_nonneg (D : WeightedDesign
   · exact ⟨base, hstart, hleft,
       dominates_iff_det_nonneg_of_sum_coLeverageRatio_le_two D (by norm_num) base hstart
         (le_of_lt hleft)⟩
-  · exact ⟨baseᶜ, card_compl_eq_three hstart, hright,
+  · exact ⟨baseᶜ, card_compl_eq_three_of_card_eq_three base hstart, hright,
       dominates_iff_det_nonneg_of_sum_coLeverageRatio_le_two D (by norm_num) baseᶜ
-        (card_compl_eq_three hstart) (le_of_lt hright)⟩
+        (card_compl_eq_three_of_card_eq_three base hstart) (le_of_lt hright)⟩
+
+/-- **THE CRITERION FORM.**  Weighted GTZ on the all-heavy `(6,3)` designs
+follows from ONE polynomial sign: the chart gap determinant at any triple whose
+co-leverage ratios total below two.
+
+`Gtz.hingeHoldsAtSize_six_three_of_allHeavy` says the all-heavy designs carry the
+whole open cell, so this is the residual restated, not a stratum of it. -/
+theorem gtzWeightedHeavy_six_three_of_tripleChartGapDet_nonneg
+    (hdet : ∀ D : WeightedDesign 6 3, AllHeavy D →
+      ∀ (selected : Finset (Fin 6)) (hcard : selected.card = 3),
+        (∑ atomIndex ∈ selected, coLeverageRatio D atomIndex) < 2 →
+        0 ≤ (tripleChartGap D selected hcard).det) :
+    GtzWeightedHeavy 6 3 := by
+  intro D hheavy
+  obtain ⟨selected, hcard, hmass, hiff⟩ :=
+    exists_triple_dominates_iff_tripleChartGapDet_nonneg D hheavy
+  exact ⟨selected, hcard, hiff.mpr (hdet D hheavy selected hcard hmass)⟩
+
+/-- **THE CHART GAP BLOCK IS THE BLOCK OF THE CHART GAP.**  `Gtz.tripleChartGap`
+is `Gtz.chartGapOfDesign` restricted to the triple, so every law the tree states
+about `M = P - diag t` reads directly on the collapsed determinant.
+
+The complementary block law `Gtz.sixThree_complementary_block_law'` does NOT price
+this determinant: it prices `det (M_C + diag t_C) = det P_C` against the
+complementary block, which is a DIFFERENT number.  Recorded because the shapes are
+one `diag t` apart and the confusion is easy to make. -/
+theorem tripleChartGap_eq_chartGapOfDesign_submatrix (D : WeightedDesign m 3)
+    (selected : Finset (Fin m)) (hcard : selected.card = 3) :
+    tripleChartGap D selected hcard
+      = (chartGapOfDesign D).submatrix (selected.orderEmbOfFin hcard)
+          (selected.orderEmbOfFin hcard) := by
+  rw [tripleChartGap, chartGapOfDesign_submatrix D (selected.orderEmbOfFin hcard).injective]
 
 /-! ## Part 4 — the seventh clause of a `(6,3)` counterexample
 
 A tie refuses every STRICT dominator, so the collapsed determinant of Part 3
 cannot be positive.  That is a clause on the residual whose shape is new: an
 existential over triples carrying a polynomial sign. -/
-
-/-- The order embedding of a subset has that subset as its image. -/
-theorem image_orderEmbOfFin_eq {selectionSize : ℕ} (selected : Finset (Fin m))
-    (hcard : selected.card = selectionSize) :
-    Finset.image (selected.orderEmbOfFin hcard) Finset.univ = selected := by
-  apply Finset.coe_injective
-  rw [Finset.coe_image, Finset.coe_univ, Set.image_univ, Finset.range_orderEmbOfFin]
 
 /-- **STRICT DOMINATION IS THE DEFINITE CHART GAP BLOCK.**  The Finset reading of
 `Gtz.posDef_gap_iff_posDef_projectionBlock`. -/
@@ -481,7 +500,10 @@ theorem posDef_gap_iff_posDef_tripleChartGap (D : WeightedDesign m 3)
     (subsetSum D selected - 1).PosDef ↔ (tripleChartGap D selected hcard).PosDef := by
   have hbridge := posDef_gap_iff_posDef_projectionBlock D (selected.orderEmbOfFin hcard)
     (selected.orderEmbOfFin hcard).injective
-  rwa [image_orderEmbOfFin_eq selected hcard] at hbridge
+  have himage : Finset.image (selected.orderEmbOfFin hcard) Finset.univ = selected := by
+    apply Finset.coe_injective
+    rw [Finset.coe_image, Finset.coe_univ, Set.image_univ, Finset.range_orderEmbOfFin]
+  rwa [himage] at hbridge
 
 /-- **A TIE FORCES THE COLLAPSED DETERMINANT NONPOSITIVE.**  Under the doubled
 threshold, a positive determinant would be a strict dominator, which a tie

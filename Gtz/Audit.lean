@@ -402,6 +402,7 @@ import Gtz.Design.StressFreeNormalizer
 import Gtz.Design.StressFreeClosureFailure
 import Gtz.Certificates.KillInequalityD7
 import Gtz.Quantitative.CauchyBinetLayerSum
+import Gtz.Wave.KernelChartLaws
 import Gtz.Wave.SubsetDeterminantLayerProfile
 import Gtz.Quantitative.WindowCofactorBridge
 import Gtz.Quantitative.WindowGramSignature
@@ -40291,9 +40292,9 @@ and the primitive tie package. -/
 #print axioms Gtz.sum_coLeverageRatio_lt_of_allHeavy
 #print axioms Gtz.sum_coLeverageRatio_lt_four_of_allHeavy_sixThree
 #print axioms Gtz.exists_compl_sum_coLeverageRatio_lt_two
-#print axioms Gtz.card_compl_eq_three
 #print axioms Gtz.exists_triple_dominates_iff_tripleChartGapDet_nonneg
-#print axioms Gtz.image_orderEmbOfFin_eq
+#print axioms Gtz.gtzWeightedHeavy_six_three_of_tripleChartGapDet_nonneg
+#print axioms Gtz.tripleChartGap_eq_chartGapOfDesign_submatrix
 #print axioms Gtz.posDef_gap_iff_posDef_tripleChartGap
 #print axioms Gtz.tripleChartGapDet_nonpos_of_isTie_of_sum_le_two
 #print axioms Gtz.exists_triple_tripleChartGapDet_nonpos_of_isTie_allHeavy
@@ -40302,38 +40303,3 @@ and the primitive tie package. -/
 #print axioms Gtz.exists_complementary_four
 #print axioms Gtz.isPrimitiveDesign_naimarkSharpDesign_of_isPrimitiveDesign_of_isTie
 #print axioms Gtz.sixThree_primitiveTie_sharpNormalForm
-
--- Gtz/Wave/ElliptopeTrichotomy.lean
-#print axioms Gtz.sq_normalizedPairing_eq
-#print axioms Gtz.pairGapMinor_eq_excess_mul_sub
-#print axioms Gtz.pairGapMinor_eq_zero_iff_sq_normalizedPairing_eq_one
-#print axioms Gtz.admissiblePair_iff_sq_normalizedPairing_lt_one
-#print axioms Gtz.strongPair_iff_one_le_four_mul_sq_normalizedPairing
-#print axioms Gtz.excess_mul_pairGapMinor_sub
-#print axioms Gtz.excess_mul_pairGapMinor_sub_eq_sq_normalizedPairing_sub
-#print axioms Gtz.pairGapMinor_ratio_iff_sq_normalizedPairing_eq
-#print axioms Gtz.pairing_product_eq_excess_product_of_three_pairGapMinor_eq_zero
-#print axioms Gtz.pairGapMinor_eq_zero_of_two_eq_zero_raw
-#print axioms Gtz.tripleStratum_trichotomy_of_excess_pos
-#print axioms Gtz.strongPair_of_pairGapMinor_nonpos
-#print axioms Gtz.exists_strongPair_of_allHeavy_of_not_posDef
-#print axioms Gtz.exists_strongPair_of_allHeavy_of_forall_not_dominates
-#print axioms Gtz.exists_strongPair_of_isTie_of_allHeavy_unconditional
-#print axioms Gtz.WeakPair
-#print axioms Gtz.weakPair_comm
-#print axioms Gtz.weakPairGraph
-#print axioms Gtz.cliqueFree_three_weakPairGraph
-#print axioms Gtz.card_edgeFinset_weakPairGraph_le
-#print axioms Gtz.card_edgeFinset_weakPairGraph_le_nine
-#print axioms Gtz.compl_weakPairGraph_adj
-#print axioms Gtz.card_edgeFinset_compl_weakPairGraph_ge
-#print axioms Gtz.six_le_card_strongPairs_of_allHeavy
-#print axioms Gtz.six_le_card_strongPairs_of_isTie
-#print axioms Gtz.exists_strong_triangle_of_allHeavy_of_no_posDef
-#print axioms Gtz.exists_strong_triangle_of_isTie_of_allHeavy
-#print axioms Gtz.exists_strong_triangle_weight_caps_of_allHeavy
-#print axioms Gtz.gtzWeighted_sixThree_of_strongGraph
-#print axioms Gtz.strongPair_of_weakPair_of_weakPair
-#print axioms Gtz.strong_fourClique_of_weak_to_four
-#print axioms Gtz.gtzWeighted_sixThree_of_no_strong_triangle
-#print axioms Gtz.hasParallelPair_of_isTie_sixThree_of_no_strong_triangle
