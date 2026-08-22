@@ -197,8 +197,10 @@ X_S > 0. Seventy 4x4 forms on one 4-space, and three laws relate them:
  (c) sum_c t_c K_c = N , the weight-average identity. Measured residual 4.5e-16.
 
 The Pluecker coordinates det(Z_T) are, up to sign, the atom brackets of the
-COMPLEMENTARY 4-subset, so (b) prices every selection determinant by the
-seventy squared brackets of the design.
+COMPLEMENTARY 4-subset, so (b) prices every selection determinant by the seventy
+squared brackets of the design. MEASURED, and it is an EQUALITY and not merely a
+proportion once both bases are orthonormal: |det(Z_T)| = |det(G_Tc)| at every one
+of the seventy subsets, residual 8.9e-16 over the cells (8,4), (7,3) and (6,4).
 
 CENSUS, 400 random (8,4) designs, exact statement of what was counted:
   dominating 4-subsets      min 1, median 8, max 19  of 70
