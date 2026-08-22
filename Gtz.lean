@@ -6857,3 +6857,4 @@ import Gtz.Wave.PencilTraceLaw
 import Gtz.Wave.PrimitiveTiePackage
 import Gtz.Wave.PairResidualFiring
 import Gtz.Wave.PrimitiveTieSharpTransport
+import Gtz.Wave.TotalGapSpectralFloor

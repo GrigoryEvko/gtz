@@ -1502,6 +1502,7 @@ import Gtz.Wave.PrimitiveTiePackage
 import Gtz.Wave.CoShareBudget
 import Gtz.Wave.PairResidualFiring
 import Gtz.Wave.PrimitiveTieSharpTransport
+import Gtz.Wave.TotalGapSpectralFloor
 -- The on-path registry collapse: the five class statements, the stress-free hinge, the
 -- design selector and the chart selector are ONE Prop, and it is `Gtz.HingeHoldsAtSize 6 3`.
 #print axioms Gtz.elim_primitive_isTie_of_hinge
@@ -40441,3 +40442,31 @@ and the primitive tie package. -/
 #print axioms Gtz.corner_deflatedSelector_inter_card_le_one
 #print axioms Gtz.corner_sixThree_selector_census
 #print axioms Gtz.corner_sixThree_not_selected
+-- Gtz/Wave/TotalGapSpectralFloor.lean : the total gap of a primitive `(6,3)` tie
+-- is LARGE.  The five-set clause says every co-atom reading `rho_c` is below one.
+-- The landed moment law, read at the form `(S_all - 1)^{-1}`, collapses the six
+-- readings onto ONE number, `tr((S_all-1)^{-1}) = sum_c t_c rho_c < 1`.  Three
+-- consequences follow at every rank and every size: the metric floor
+-- `x.x <= tr(G^{-1}) (x.Gx)`, hence `S_all > 2`, where the tree owned only
+-- `S_all > 1`; and, against the trace product floor `tr A tr A^{-1} >= k^2`, the
+-- leverage floor `k^2 + k < sum_c l_c`, where the landed floor is `k^2`.  At
+-- `(6,3)` that reads `12` against the landed `9`.  MEASURED on the six-clause
+-- stratum: the inverse trace reaches `1.4e8` and the smallest eigenvalue of the
+-- total gap reaches `6.5e-4`, so the two spectral clauses SEPARATE from the six
+-- clauses of `Gtz.sixThree_primitiveTie_normalForm`.  The leverage clause is
+-- nearly vacuous there, measured infimum `12.09`.
+#print axioms Gtz.one_le_diag_mul_diag_inv
+#print axioms Gtz.sq_rank_le_trace_mul_trace_inv
+#print axioms Gtz.sum_weight_mul_totalGapReading
+#print axioms Gtz.trace_totalGap_inv_lt_one
+#print axioms Gtz.trace_totalGap_inv_pos
+#print axioms Gtz.trace_totalGap_pos
+#print axioms Gtz.dotProduct_self_le_trace_totalGap_inv_mul_quadForm
+#print axioms Gtz.posDef_totalGap_sub_one
+#print axioms Gtz.posDef_subsetSum_univ_sub_two
+#print axioms Gtz.trace_totalGap
+#print axioms Gtz.sq_rank_add_rank_lt_sum_leverage
+#print axioms Gtz.trace_totalGap_inv_lt_one_of_isPrimitiveDesign_of_isTie
+#print axioms Gtz.posDef_subsetSum_univ_sub_two_of_isPrimitiveDesign_of_isTie
+#print axioms Gtz.twelve_lt_sum_leverage_of_isPrimitiveDesign_of_isTie
+#print axioms Gtz.sixThree_primitiveTie_gapFloor
