@@ -1,0 +1,51 @@
+=====================================================================
+K0 lane, 2026-08-22.  Probes in scratchpad/kzero (C + OpenMP, 384 threads).
+=====================================================================
+
+CALIBRATION.  The (5,3) diamond and its five (6,3) splits reproduce:
+Parseval residual 5.6e-16, largest triple eigenvalue -1.4e-17 (exact tie),
+12 dominators for split e=0 and 13 for the other four, ALL of type K0.
+
+VERIFIED IDENTITIES AND CRITERIA (all zero mismatches).
+  atom cap  z_c^2 <= t_c (1-s_c) sum_i z_i^2/t_i : 7200000 instances,
+      0 violations, worst ratio 1.000000, attained at the co-dependency.
+  circuit Gram psd <-> dominates : 6000000 triples, 0 mismatches, weak
+      and strict.
+  exchange criterion ||A_T diag(sqrt th)||_op <= 1 <-> dominates :
+      2000000 triples, 0 mismatches.
+  inside pencil  diag([abc]^2 (1-t_c)) - sum_x t_x gamma_x gamma_x^T  psd
+      <-> dominates : 4000000 triples, 0 mismatches.
+  ||M_T||_F^2 = (th_a d_bc + th_b d_ac + th_c d_ab)/nu_abc - sum th :
+      0 deviations, worst relative 4.1e-15.
+
+TWO-CONDITION LAW (proved, Gtz/Wave/PencilTraceLaw.lean).
+  det(I - N) >= 0 and trace N <= 2  =>  N <= I.  In design currency:
+  tripleGapDet >= 0 and th_a d_bc + th_b d_ac + th_c d_ab <= (2+sum th) nu
+  imply domination.  Fired 831415 times, 0 failures.
+  The landed aggregate is the SAME expression with 3 in place of 2, and it
+  is necessary.  The residual of GtzWeighted 6 3 lies between 2 and 3.
+
+EXISTENCE HALF, measured only.  Admissible = triples of nonnegative gap
+determinant.  Over 3000000 random designs the admissible set was never
+empty and the least admissible ||M||_F^2 never exceeded 1.022507.  At the
+five split ties it is 1.083333 to 1.170213.  Adversarial descent, 150000
+restarts of 6000 steps on 18 frame parameters and 6 weight logits, two CPU
+hours: 1.309748.  Never near two.
+
+DEAD ROUTES, all refuted by the SAME descent after random sampling had
+reported zero failures at 200000 designs.  Report the descent, not the
+sampling.
+  argmax detP[T,T] dominates            : FALSE  (7.17 percent of designs)
+  argmax bracket^2 dominates            : FALSE  (0.28 percent)
+  argmin total weight / total dualRatio / max dualRatio / min pairGapMinor
+                                        : FALSE (8 to 56 percent)
+  "some triple has ||M||_F^2 <= 1"      : FALSE.  At a tie the dominator
+      has sigma_max = 1, so the trace is at least one at EVERY triple; at
+      the splits the least is exactly 13/12.  The same argument kills EVERY
+      relaxation that dominates sigma_max^2.
+  argmin ||M||_F^2 dominates            : FALSE, descent reaches 1.0669.
+  argmin ||M||_F^2 over {middle invariant >= 0} : FALSE, reaches 1.0654.
+  ONLY SURVIVOR: argmin ||M||_F^2 over {gap determinant >= 0}, best -3.3e-10.
+
+NEGATIVE ON THE PAIR TEST.  Some triple passes the strengthened
+share-and-weight pair test at 91.6 percent of designs, not all.
