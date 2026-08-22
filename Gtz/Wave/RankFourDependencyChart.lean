@@ -49,6 +49,21 @@ rank-one forms of the CORANK labels it omits.  At corank one that sum is a singl
 rank-one form and the criterion collapses to the landed
 `Gtz.dominates_erase_of_coMean_le`; at corank two it is a sum of two.
 
+**4.  THE COMPLEMENTARY BUDGET AT THE SELF-DUAL CELL.**  The defect of a
+selection and the defect of its COMPLEMENT total one fixed reading of the
+dependency that mentions no selection:
+
+    `Gtz.dependencyDefect_add_compl` :
+      `defect(C, z) + defect(Cᶜ, z)  =  Σ_c z_c² (1 - 2 t_c) / (t_c (1 - t_c))` .
+
+At `size = 2 * rank` the complement of a `rank`-subset is a `rank`-subset, so the
+`C(2 rank, rank)` tests pair up and carry only half as many budgets.  At `(8,4)`,
+the first band cell and the band's LOWER ENDPOINT, seventy tests carry thirty-five
+budgets.  Two consequences follow with no further work:
+`Gtz.dependencyDefect_pos_of_compl_neg` — with no weight past one half two
+complementary selections cannot fail at the same dependency — and
+`Gtz.not_dominates_and_compl_of_budget_neg`, its weight-aware converse.
+
 ## What the tie and the hinge become
 
 `Gtz.isTie_iff_dependency` and `Gtz.hingeHoldsAtSize_iff_dependency` package the
@@ -85,7 +100,9 @@ dependency reading alone to close either axiom.
 `(7,3)`, `(5,4)`, `(6,4)`, `(7,4)`, `(8,4)`, `(9,4)`, `(6,2)` and `(7,5)`: the
 weak dependency criterion, the STRICT dependency criterion, the pair-mass
 reading, and the co-frame reading agreed with domination and with strict
-domination on all 14080 subsets tested, with no mismatch of any kind.]
+domination on all 14080 subsets tested, with no mismatch of any kind.  The
+complementary budget was measured at `(8,4)` over 60 designs and all seventy
+subsets, residual `8.9e-15`, and the weight-average identity at `4.5e-16`.]
 -/
 import Mathlib
 import Gtz.Core.Basic
@@ -502,7 +519,163 @@ theorem corankTwo_not_dominates_of_sparse (D : WeightedDesign (k + 2) k)
   refine hsupport index (fun hcontra => hout (hcontra ▸ hfirst))
     (fun hcontra => hout (hcontra ▸ hsecond))
 
-/-! ## 7. The two rank-four registry statements
+/-! ## 7. The self-dual cell: complementary selections share one budget
+
+At `size = 2 * rank` — the band's LOWER ENDPOINT, and the first rank-four band
+cell `(8,4)` — the complement of a `rank`-subset is again a `rank`-subset, so the
+`C(2 rank, rank)` selection tests pair up.  The pairing law below is one line of
+arithmetic, and it holds at every size, but it only SAYS anything where the
+complement is itself a selection.
+
+The defect of a pair of complementary selections at a given dependency is a fixed
+number that does not know which pair it came from.  So the seventy tests of an
+`(8,4)` design carry only thirty-five budgets between them. -/
+
+/-- **THE DEPENDENCY DEFECT** of a selection at a dependency: the right side of the
+criterion less the left.  `Gtz.DependencyDominates` is its nonnegativity. -/
+noncomputable def dependencyDefect (D : WeightedDesign m k) (C : Finset (Fin m))
+    (dep : Fin m → ℝ) : ℝ :=
+  (∑ index ∈ Cᶜ, dep index ^ 2 / D.weight index)
+    - ∑ index ∈ C, dep index ^ 2 / (1 - D.weight index)
+
+theorem dependencyDominates_iff_defect_nonneg (D : WeightedDesign m k)
+    (C : Finset (Fin m)) :
+    DependencyDominates D C
+      ↔ ∀ dep : Fin m → ℝ, (∑ index, dep index • D.atom index) = 0 →
+          0 ≤ dependencyDefect D C dep := by
+  refine forall_congr' fun dep => forall_congr' fun _ => ?_
+  rw [dependencyDefect]
+  constructor
+  · intro h; linarith
+  · intro h; linarith
+
+/-- **THE COMPLEMENTARY BUDGET.**  The defects of a selection and of its complement
+total a fixed reading of the dependency that mentions no selection at all:
+
+    `Σ_c z_c² (1 - 2 t_c) / (t_c (1 - t_c))` .
+
+The weight enters exactly through the campaign's pair mass `t_c(1 - t_c)`, and the
+sign of each term is the sign of `1 - 2 t_c`. -/
+theorem dependencyDefect_add_compl (D : WeightedDesign m k) (hm : 2 ≤ m)
+    (C : Finset (Fin m)) (dep : Fin m → ℝ) :
+    dependencyDefect D C dep + dependencyDefect D Cᶜ dep
+      = ∑ index, dep index ^ 2 * (1 - 2 * D.weight index)
+          / (D.weight index * (1 - D.weight index)) := by
+  classical
+  have hweightSplit : (∑ index ∈ Cᶜ, dep index ^ 2 / D.weight index)
+      + ∑ index ∈ C, dep index ^ 2 / D.weight index
+      = ∑ index, dep index ^ 2 / D.weight index := by
+    rw [add_comm]
+    exact Finset.sum_add_sum_compl C _
+  have hcoSplit : (∑ index ∈ C, dep index ^ 2 / (1 - D.weight index))
+      + ∑ index ∈ Cᶜ, dep index ^ 2 / (1 - D.weight index)
+      = ∑ index, dep index ^ 2 / (1 - D.weight index) :=
+    Finset.sum_add_sum_compl C _
+  have hmerge : ∑ index, dep index ^ 2 * (1 - 2 * D.weight index)
+        / (D.weight index * (1 - D.weight index))
+      = (∑ index, dep index ^ 2 / D.weight index)
+        - ∑ index, dep index ^ 2 / (1 - D.weight index) := by
+    rw [← Finset.sum_sub_distrib]
+    refine Finset.sum_congr rfl fun index _ => ?_
+    have hw : D.weight index ≠ 0 := (D.weight_pos index).ne'
+    have hco : (1 : ℝ) - D.weight index ≠ 0 := by
+      have := weight_lt_one D hm index; intro hzero; linarith [hzero]
+    field_simp
+    ring
+  rw [dependencyDefect, dependencyDefect, compl_compl, hmerge]
+  linarith [hweightSplit, hcoSplit]
+
+/-- **THE BUDGET DOES NOT KNOW WHICH PAIR IT CAME FROM.**  Every complementary pair
+of selections shares the same total defect at every dependency. -/
+theorem dependencyDefect_add_compl_eq (D : WeightedDesign m k) (hm : 2 ≤ m)
+    (firstSelection secondSelection : Finset (Fin m)) (dep : Fin m → ℝ) :
+    dependencyDefect D firstSelection dep + dependencyDefect D firstSelectionᶜ dep
+      = dependencyDefect D secondSelection dep + dependencyDefect D secondSelectionᶜ dep := by
+  rw [dependencyDefect_add_compl D hm firstSelection dep,
+    dependencyDefect_add_compl D hm secondSelection dep]
+
+/-- The budget is nonnegative at every dependency once no weight passes one half. -/
+theorem dependencyBudget_nonneg_of_weight_le_half (D : WeightedDesign m k) (hm : 2 ≤ m)
+    (hhalf : ∀ index : Fin m, D.weight index ≤ 1 / 2) (dep : Fin m → ℝ) :
+    0 ≤ ∑ index, dep index ^ 2 * (1 - 2 * D.weight index)
+        / (D.weight index * (1 - D.weight index)) := by
+  refine Finset.sum_nonneg fun index _ => ?_
+  have hpos := D.weight_pos index
+  have hco : (0 : ℝ) < 1 - D.weight index := by linarith [weight_lt_one D hm index]
+  have hnum : (0 : ℝ) ≤ 1 - 2 * D.weight index := by linarith [hhalf index]
+  have hden : (0 : ℝ) < D.weight index * (1 - D.weight index) := mul_pos hpos hco
+  exact div_nonneg (mul_nonneg (sq_nonneg _) hnum) hden.le
+
+/-- **TWO COMPLEMENTARY SELECTIONS CANNOT FAIL AT ONE DEPENDENCY.**  If no weight
+passes one half, a dependency at which a selection fails is a dependency at which
+its complement succeeds STRICTLY.
+
+At `size = 2 * rank` both are `rank`-subsets, so this is a dichotomy between two
+genuine selections of the design.  At `(8,4)` it pairs the seventy tests into
+thirty-five. -/
+theorem dependencyDefect_pos_of_compl_neg (D : WeightedDesign m k) (hm : 2 ≤ m)
+    (hhalf : ∀ index : Fin m, D.weight index ≤ 1 / 2) (C : Finset (Fin m))
+    (dep : Fin m → ℝ) (hneg : dependencyDefect D C dep < 0) :
+    0 < dependencyDefect D Cᶜ dep := by
+  have hsum := dependencyDefect_add_compl D hm C dep
+  have hbudget := dependencyBudget_nonneg_of_weight_le_half D hm hhalf dep
+  linarith
+
+/-- **A NEGATIVE BUDGET FORBIDS A COMPLEMENTARY DOMINATING PAIR.**  If some
+dependency reads the budget negatively — which needs a label of weight past one
+half — then no selection and its complement can both dominate.  Weight-aware, and
+it decides thirty-five of the seventy `(8,4)` tests at once. -/
+theorem not_dominates_and_compl_of_budget_neg (D : WeightedDesign m k) (hm : 2 ≤ m)
+    {C : Finset (Fin m)} (hcard : C.card = k) (hcompl : Cᶜ.card = k)
+    {dep : Fin m → ℝ} (hdep : (∑ index, dep index • D.atom index) = 0)
+    (hbudget : ∑ index, dep index ^ 2 * (1 - 2 * D.weight index)
+        / (D.weight index * (1 - D.weight index)) < 0) :
+    ¬ (Dominates D C ∧ Dominates D Cᶜ) := by
+  rintro ⟨hdom, hdomCompl⟩
+  have hfirst := (dependencyDominates_iff_defect_nonneg D C).mp
+    ((dominates_iff_dependencyDominates D hm hcard).mp hdom) dep hdep
+  have hsecond := (dependencyDominates_iff_defect_nonneg D Cᶜ).mp
+    ((dominates_iff_dependencyDominates D hm hcompl).mp hdomCompl) dep hdep
+  have hsum := dependencyDefect_add_compl D hm C dep
+  linarith
+
+/-- At size twice the rank the complement of a `rank`-subset is a `rank`-subset. -/
+theorem card_compl_eq_rank_of_two_mul {rank : ℕ} {C : Finset (Fin (2 * rank))}
+    (hcard : C.card = rank) : Cᶜ.card = rank := by
+  rw [Finset.card_compl, hcard, Fintype.card_fin]
+  omega
+
+/-- **THE PAIR-MASS FORM IS THE WEIGHT-AVERAGE OF THE LABELS' OWN FORMS.**  The left
+side of `Gtz.dominates_iff_dependencyBound_pairMass` is the `t`-weighted MEAN of
+the rank-one forms on its right.
+
+This is the whole engine of the corank-one rigidity, in dependency currency: at
+corank one the right side has a single term, no strict dominator caps each term by
+the mean, and a family that never passes its own weighted mean is constant.  At
+corank two the right side has two terms and the averaging argument stops. -/
+theorem sum_weight_mul_pairMass (D : WeightedDesign m k) (hm : 2 ≤ m)
+    (dep : Fin m → ℝ) :
+    ∑ index, D.weight index
+        * (dep index ^ 2 / (D.weight index * (1 - D.weight index)))
+      = ∑ index, dep index ^ 2 / (1 - D.weight index) := by
+  refine Finset.sum_congr rfl fun index _ => ?_
+  have hw : D.weight index ≠ 0 := (D.weight_pos index).ne'
+  have hco : (1 : ℝ) - D.weight index ≠ 0 := by
+    have := weight_lt_one D hm index; intro hzero; linarith [hzero]
+  field_simp
+  try ring
+
+/-- **THE `(8,4)` READING OF THE COMPLEMENTARY BUDGET.**  At the first band cell of
+rank four the seventy four-subsets carry thirty-five budgets between them, and the
+budget of a complementary pair is one fixed reading of the dependency. -/
+theorem eightFour_dependencyDefect_add_compl (D : WeightedDesign 8 4)
+    (C : Finset (Fin 8)) (dep : Fin 8 → ℝ) :
+    dependencyDefect D C dep + dependencyDefect D Cᶜ dep
+      = ∑ index, dep index ^ 2 * (1 - 2 * D.weight index)
+          / (D.weight index * (1 - D.weight index)) :=
+  dependencyDefect_add_compl D (by norm_num) C dep
+
+/-! ## 8. The two rank-four registry statements
 
 The exact types of `Skeleton.obligationSubThresholdBandHinge` and
 `Skeleton.obligationThresholdCellHingeRankFourAndUp`, carried inside `Gtz` so the
@@ -590,7 +763,7 @@ theorem subThresholdBandHingeStatement_iff_dependency :
     exact (hingeHoldsAtSize_iff_dependency size rank hsize).mpr
       (hdep rank hrank size hlow hhigh hpred)
 
-/-! ## 8. Rank four, cell by cell
+/-! ## 9. Rank four, cell by cell
 
 The band at rank four is exactly the two sizes eight and nine, and the threshold
 cell is size ten.  Each is restated in both charts. -/
