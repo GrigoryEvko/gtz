@@ -1,0 +1,81 @@
+NOTES — two-plane structure of a (6,3) design with four coplanar atoms
+lane: TwoPlaneCoplanarStructure          date: 2026-08-22
+
+SETUP.  Frame (pOne, pTwo, axis).  An atom is FLAT when g . axis = 0.  A (6,3)
+design with four flat atoms; write 1, 2 for the two off-plane labels,
+alpha_i = g_i . axis, q_i = (g_i . pOne, g_i . pTwo).
+
+WHAT WAS ALREADY IN THE TREE (do not re-derive)
+  (A) Gtz.oneLine_normalIdentity   InPlaneRestriction.lean:145
+      sum over the complement of t_c (g_c . u)^2 = 1 at a unit normal killed by
+      the named set.  This IS identity (A) of the brief, in general form.
+  (B) Gtz.oneLine_crossIdentity    InPlaneRestriction.lean:161
+      the weighted height-times-shadow readings cancel.  This IS identity (B).
+  Gtz.inPlaneRestriction_eq_planarCompressionDesign   SphereDichotomy.lean:101
+      the two shadow constructions are ONE object, proved by rfl.  The brief
+      asked which to pick.  There is nothing to pick.
+  Gtz.sixThree_planeShadow_trichotomy  RankTwoTieClassification.lean:2361
+      light shadow / strict shadow pair / three rigid classes.  My residues (i)
+      and (ii) are the first two alternatives of this landed trichotomy.
+  Gtz.crossNormSq_le_of_isTie   PlaneShadowPairBridge.lean:1518
+      the area ceiling.  The GENERAL pair wall summed over the complement of a
+      pair is EXACTLY this theorem.  See the wall entry below.
+
+NUMERICS (scratchpad/twoplane, julia, float unless stated)
+  fixture.jl   exact (6,3) Parseval design, four coplanar atoms, no parallel pair
+     atoms (1,0,r2) (-1,0,r2) (1,1,0) (1,-1,0) (-1,2,0) (-1,-2,0), r2 = sqrt 2
+     weights (1/4, 1/4, 1/6, 1/6, 1/12, 1/12)
+     Parseval residual 2.2e-16, (A) residual 2.2e-16, (B) residual 0.0
+     leverages 3,3,2,2,5,5 ; shadow leverages 1,1,2,2,5,5 (all heavy)
+     STRICT dominators {1,2,5} and {1,2,6}, min eigenvalue 0.4384
+     WEAK dominators {1,3,4} {1,5,6} {2,3,4} {2,5,6}, min eigenvalue 2.2e-16
+     so NOT a tie.  It sits in residue (ii): shadow pair {5,6} is strict.
+  verify.jl    Sherman-Morrison criterion, 300000 samples, 60014 with A positive
+     definite: 0 mismatches.  Schur identity max error 2.8e-13.
+  detform.jl   det M = det(A)(alpha^2 - 1) - q^T adj(A) q : max error 1.6e-13
+               det(A + q q^T) = det A + q^T adj(A) q  : max error 4.8e-14
+  framedet.jl  the SAME identity as a bare polynomial identity in six scalars,
+     500000 unconstrained samples, max error 3.9e-12.  This is the Lean form:
+       frameDet (aa+x^2) (bb+xy) (cc+y^2) (xz) (yz) (z^2-1)
+         = frameBlockDet aa bb cc * (z^2-1) - frameAlpha aa bb cc x y
+  search.jl    400000 random two-plane ansatz designs, 3802 Parseval-solvable,
+     1252 all-heavy.  NONE had max_C lambda_min(gap_C) < 0.  Over the
+     non-parallel ones the minimum sampled value was 0.185 at pairwise
+     non-parallelism 0.06.  No counterexample to the coplanar bridge.
+
+CORRECTIONS TO THE BRIEF
+  Part 2 (a).  "If p_1 = 0 then g_1 parallel g_2" is FALSE as stated.  (B) gives
+     t_2 alpha_2 p_2 = 0, and the branch alpha_2 = 0 puts g_2 in the plane, so
+     FIVE atoms are coplanar and the two off-plane atoms need not be parallel.
+     The correct statement is a disjunction: p_1 = 0 forces g_1 parallel g_2 OR
+     g_2 flat.  The brief's own prose says the same thing after the claim.
+  Part 4 wall.  The brief's "t_2 alpha_2^2 (t_3+t_4+t_5+t_6) <= t_1 p_1^T A^-1 p_1"
+     is CORRECT, but only in case (b), and it is the collapse of a two-term law.
+     The general law is
+        (t_3+t_4+t_5+t_6) <= t_1 s_1 + t_2 s_2,     s_i = q_i^T A^-1 q_i,
+     equivalently, cleared of the inverse,
+        frameBlockDet aa bb cc * (t_3+t_4+t_5+t_6)
+            <= t_1 frameAlpha(q_1) + t_2 frameAlpha(q_2).
+     In case (b), q_2 = -mu q_1 with mu = t_1 alpha_1 / (t_2 alpha_2), so
+     s_2 = mu^2 s_1 and t_1 s_1 + t_2 s_2 = t_1 s_1 / (t_2 alpha_2^2) by (A),
+     which is the brief's form.
+  The wall is STRICTLY STRONGER than the landed area ceiling here, and that is
+     the point of coplanarity.  Summing the gate over the whole complement of
+     the pair reproduces Gtz.crossNormSq_le_of_isTie exactly.  Summing it over
+     the TWO OFF-PLANE atoms only drops four nonpositive terms from the left and
+     four nonnegative terms from the right, because the other two flat atoms
+     have alpha = 0.  Larger left side, smaller right side.
+  Part 4 criterion.  Sherman-Morrison is right but the matrix inverse is not
+     needed.  det(gap of {i,a,b}) = det(A) (alpha_i^2 - 1) - q_i^T adj(A) q_i,
+     a polynomial identity, and adj(A) form IS Gtz.frameAlpha.  So the criterion
+     is exactly  frameBlockDet * (alpha_i^2 - 1)  vs  frameAlpha, no division.
+
+WHAT THE LANE LANDS
+  1. (A) and (B) at two off-plane atoms, as corollaries of the landed C1, C2.
+  2. Consequence (a) as a correct disjunction, (b) as a frame-free coplanarity
+     statement (tripleBracket g_1 g_2 axis = 0), (c) as the spike plus the
+     block-diagonal decoupling of every triple through the spike.
+  3. The coplanar-pair determinant law and the strict-domination IFF.
+  4. The pigeonhole closure: four flat atoms in three shadow classes.
+  5. The coplanar wall.
+  6. CoplanarBridgeSixThree and the two named residues.
