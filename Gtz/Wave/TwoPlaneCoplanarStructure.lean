@@ -1145,4 +1145,383 @@ theorem exists_not_flat {rank : ℕ} (design : WeightedDesign size rank)
   rw [Finset.compl_univ, Finset.sum_empty] at hidentity
   norm_num at hidentity
 
+/-! ## Part 6 — a light off-plane pair hands the plane a strict COPLANAR pair
+
+The four-coplanar configuration has two residues: a light off-plane shadow, and a
+strictly dominating shadow pair.  This part shows that the FIRST implies the
+SECOND, and that the strict pair can be taken among the four COPLANAR atoms —
+which is exactly the shape the coplanar wall of Part 4 consumes.
+
+The mechanism is the weight deficit again.  By Part 1 the two off-plane shadows
+are PARALLEL, so their two rank-one contributions to the in-plane Parseval
+identity add up to a SINGLE rank-one term along one unit direction, carrying their
+total shadow mass.  Replacing the two of them by that one fictitious unit atom
+leaves a plane Parseval family of FIVE members whose total weight is
+
+    (coplanar weight) + t_1 lambda_1 + t_2 lambda_2 ,
+
+and that is below one exactly when the two off-plane shadows are light on
+weighted average.  A plane family of total weight below one carries a pair that
+beats the plane STRICTLY, by the same rescaling that emptied the five-coplanar
+stratum.  The fictitious atom is a UNIT vector, so Cauchy-Schwarz forbids it from
+sitting in that pair: both members are coplanar atoms of the design. -/
+
+/-- The rescaling of a plane Parseval family of five members to a genuine rank-two
+design.  The atoms are stretched by the square root of the total weight and the
+weights are renormalised, so Parseval is preserved and the weights total one. -/
+noncomputable def scaledPlaneFive (atomOf : Fin 5 → (Fin 2 → ℝ)) (weightOf : Fin 5 → ℝ)
+    (hpos : ∀ index : Fin 5, 0 < weightOf index)
+    (hframe : ∑ index, weightOf index • atomMatrix (atomOf index)
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ)) : WeightedDesign 5 2 where
+  atom index := Real.sqrt (∑ other, weightOf other) • atomOf index
+  weight index := weightOf index / ∑ other, weightOf other
+  weight_pos index :=
+    div_pos (hpos index)
+      (Finset.sum_pos (fun other _ => hpos other) ⟨0, Finset.mem_univ 0⟩)
+  weight_sum_one := by
+    have hmass : 0 < ∑ other, weightOf other :=
+      Finset.sum_pos (fun other _ => hpos other) ⟨0, Finset.mem_univ 0⟩
+    rw [← Finset.sum_div]
+    exact div_self hmass.ne'
+  isParseval := by
+    have hmass : 0 < ∑ other, weightOf other :=
+      Finset.sum_pos (fun other _ => hpos other) ⟨0, Finset.mem_univ 0⟩
+    have hsq : Real.sqrt (∑ other, weightOf other) ^ 2 = ∑ other, weightOf other :=
+      Real.sq_sqrt hmass.le
+    rw [← hframe]
+    refine Finset.sum_congr rfl fun index _ => ?_
+    rw [atomMatrix_smul, hsq, smul_smul]
+    congr 1
+    field_simp
+
+/-- **A PLANE FAMILY OF TOTAL WEIGHT BELOW ONE HAS A STRICT PAIR.**  Rescale it to
+a rank-two design, spend the landed rank-two GTZ, and read the weak domination
+back through the stretch: the deficit turns `<=` into `<`. -/
+theorem exists_planeStrict_of_fiveFrame (atomOf : Fin 5 → (Fin 2 → ℝ))
+    (weightOf : Fin 5 → ℝ) (hpos : ∀ index : Fin 5, 0 < weightOf index)
+    (hframe : ∑ index, weightOf index • atomMatrix (atomOf index)
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ))
+    (hdeficit : ∑ other, weightOf other < 1) :
+    ∃ first second : Fin 5, first ≠ second
+      ∧ ∀ probe : Fin 2 → ℝ, probe ≠ 0 →
+          probe ⬝ᵥ probe
+            < (atomOf first ⬝ᵥ probe) ^ 2 + (atomOf second ⬝ᵥ probe) ^ 2 := by
+  classical
+  have hmass : 0 < ∑ other, weightOf other :=
+    Finset.sum_pos (fun other _ => hpos other) ⟨0, Finset.mem_univ 0⟩
+  have hsq : Real.sqrt (∑ other, weightOf other) ^ 2 = ∑ other, weightOf other :=
+    Real.sq_sqrt hmass.le
+  obtain ⟨pairSet, hcard, hdominates⟩ :=
+    gtz_rank_two 5 (scaledPlaneFive atomOf weightOf hpos hframe)
+  obtain ⟨first, second, hne, hpairEq⟩ := Finset.card_eq_two.mp hcard
+  refine ⟨first, second, hne, fun probe hprobeNe => ?_⟩
+  have hform := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdominates).2 probe
+  rw [star_trivial, dominationGap_form, hpairEq, Finset.sum_pair hne] at hform
+  have hreading : ∀ index : Fin 5,
+      (scaledPlaneFive atomOf weightOf hpos hframe).atom index ⬝ᵥ probe
+        = Real.sqrt (∑ other, weightOf other) * (atomOf index ⬝ᵥ probe) := by
+    intro index
+    show (Real.sqrt (∑ other, weightOf other) • atomOf index) ⬝ᵥ probe = _
+    rw [smul_dotProduct, smul_eq_mul]
+  rw [hreading first, hreading second] at hform
+  have hprobePos : 0 < probe ⬝ᵥ probe := dotProduct_self_pos hprobeNe
+  have hexpand : (Real.sqrt (∑ other, weightOf other) * (atomOf first ⬝ᵥ probe)) ^ 2
+        + (Real.sqrt (∑ other, weightOf other) * (atomOf second ⬝ᵥ probe)) ^ 2
+      = (∑ other, weightOf other)
+        * ((atomOf first ⬝ᵥ probe) ^ 2 + (atomOf second ⬝ᵥ probe) ^ 2) := by
+    rw [mul_pow, mul_pow, hsq]
+    ring
+  rw [hexpand] at hform
+  nlinarith [hform, hprobePos, hmass, hdeficit]
+
+/-- A unit plane vector cannot join a strictly dominating plane pair: the probe
+orthogonal to its partner leaves the unit vector alone against the whole probe,
+and Cauchy-Schwarz forbids that. -/
+theorem not_planeStrict_of_unit (partnerVec unitVec : Fin 2 → ℝ)
+    (hunit : unitVec ⬝ᵥ unitVec = 1)
+    (hstrict : ∀ probe : Fin 2 → ℝ, probe ≠ 0 →
+      probe ⬝ᵥ probe < (partnerVec ⬝ᵥ probe) ^ 2 + (unitVec ⬝ᵥ probe) ^ 2) : False := by
+  classical
+  set probe : Fin 2 → ℝ := ![-(partnerVec 1), partnerVec 0] with hprobeDef
+  by_cases hzero : partnerVec = 0
+  · have hvalue := hstrict ![1, 0] (by
+      intro hcontra
+      have hentry := congrFun hcontra 0
+      simp at hentry)
+    rw [hzero] at hvalue
+    simp only [zero_dotProduct] at hvalue
+    have hschwarz : (unitVec ⬝ᵥ (![1, 0] : Fin 2 → ℝ)) ^ 2
+        ≤ (![1, 0] : Fin 2 → ℝ) ⬝ᵥ ![1, 0] := by
+      simp only [dotProduct, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons] at hunit ⊢
+      nlinarith [sq_nonneg (unitVec 0 * 0 - unitVec 1 * 1), hunit]
+    nlinarith [hvalue, hschwarz]
+  · have hprobeNe : probe ≠ 0 := by
+      intro hcontra
+      refine hzero (funext fun coord => ?_)
+      have hfirst := congrFun hcontra 0
+      have hsecond := congrFun hcontra 1
+      simp only [hprobeDef, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+        Pi.zero_apply, neg_eq_zero] at hfirst hsecond
+      fin_cases coord
+      · simpa using hsecond
+      · simpa using hfirst
+    have hperp : partnerVec ⬝ᵥ probe = 0 := by
+      simp only [hprobeDef, dotProduct, Fin.sum_univ_two, Matrix.cons_val_zero,
+        Matrix.cons_val_one, Matrix.head_cons]
+      ring
+    have hvalue := hstrict probe hprobeNe
+    rw [hperp] at hvalue
+    have hschwarz : (unitVec ⬝ᵥ probe) ^ 2 ≤ probe ⬝ᵥ probe := by
+      simp only [dotProduct, Fin.sum_univ_two] at hunit ⊢
+      nlinarith [sq_nonneg (unitVec 0 * probe 1 - unitVec 1 * probe 0), hunit]
+    nlinarith [hvalue, hschwarz]
+
+/-- **A LIGHT OFF-PLANE PAIR HANDS THE PLANE A STRICT COPLANAR PAIR.**  At a
+rank-three design with four coplanar atoms whose two off-plane shadows are
+PARALLEL and light on weighted average, two of the FOUR COPLANAR atoms beat the
+plane strictly.
+
+The two parallel off-plane shadows contribute a single rank-one term to the
+in-plane Parseval identity, carrying their total shadow mass.  Replacing them by
+one fictitious UNIT atom of that mass leaves a five-member plane family of total
+weight below one, and `Gtz.exists_planeStrict_of_fiveFrame` returns a strict pair.
+`Gtz.not_planeStrict_of_unit` keeps the fictitious atom out of it. -/
+theorem exists_coplanar_planeStrictPair_of_lightOffPlane (design : WeightedDesign 6 3)
+    (frame : AxisFrame) {flatOne flatTwo flatThree flatFour offFirst offSecond : Fin 6}
+    (hneOneTwo : flatOne ≠ flatTwo) (hneOneThree : flatOne ≠ flatThree)
+    (hneOneFour : flatOne ≠ flatFour) (hneTwoThree : flatTwo ≠ flatThree)
+    (hneTwoFour : flatTwo ≠ flatFour) (hneThreeFour : flatThree ≠ flatFour)
+    (hoffNe : offFirst ≠ offSecond)
+    (hcompl : ({flatOne, flatTwo, flatThree, flatFour} : Finset (Fin 6))ᶜ
+      = {offFirst, offSecond})
+    (hflat : ∀ label ∈ ({flatOne, flatTwo, flatThree, flatFour} : Finset (Fin 6)),
+      design.atom label ⬝ᵥ frame.axis = 0)
+    (hshadowNe : (frameShadow design frame).atom offFirst ≠ 0)
+    (hwedge : planeWedge ((frameShadow design frame).atom offFirst)
+      ((frameShadow design frame).atom offSecond) = 0)
+    (hlight : design.weight offFirst
+          * leverageOf ((frameShadow design frame).atom offFirst)
+        + design.weight offSecond
+          * leverageOf ((frameShadow design frame).atom offSecond)
+      < design.weight offFirst + design.weight offSecond) :
+    ∃ pairFirst pairSecond : Fin 6,
+      pairFirst ∈ ({flatOne, flatTwo, flatThree, flatFour} : Finset (Fin 6))
+        ∧ pairSecond ∈ ({flatOne, flatTwo, flatThree, flatFour} : Finset (Fin 6))
+        ∧ pairFirst ≠ pairSecond
+        ∧ PlaneStrictPair design frame.axis pairFirst pairSecond := by
+  classical
+  set shadow := frameShadow design frame with hshadowDef
+  set flatSet : Finset (Fin 6) := {flatOne, flatTwo, flatThree, flatFour} with hflatSetDef
+  -- the shared direction of the two off-plane shadows
+  obtain ⟨ratio, hratio⟩ := exists_smul_of_planeWedge_eq_zero hshadowNe hwedge
+  set normSq := shadow.atom offFirst ⬝ᵥ shadow.atom offFirst with hnormSqDef
+  have hnormPos : 0 < normSq := dotProduct_self_pos hshadowNe
+  have hsqrtPos : 0 < Real.sqrt normSq := Real.sqrt_pos.mpr hnormPos
+  set unitVec : Fin 2 → ℝ := (Real.sqrt normSq)⁻¹ • shadow.atom offFirst with hunitDef
+  have hunit : unitVec ⬝ᵥ unitVec = 1 := by
+    rw [hunitDef, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc,
+      ← mul_inv, Real.mul_self_sqrt hnormPos.le, ← hnormSqDef]
+    exact inv_mul_cancel₀ hnormPos.ne'
+  set shadowMass := design.weight offFirst * leverageOf (shadow.atom offFirst)
+    + design.weight offSecond * leverageOf (shadow.atom offSecond) with hmassDef
+  have hlevFirst : leverageOf (shadow.atom offFirst) = normSq := leverageOf_eq_dotProduct _
+  have hlevSecond : leverageOf (shadow.atom offSecond) = ratio ^ 2 * normSq := by
+    rw [leverageOf_eq_dotProduct, hratio, smul_dotProduct, dotProduct_smul, smul_eq_mul,
+      smul_eq_mul, ← hnormSqDef]
+    ring
+  have hmassValue : shadowMass
+      = (design.weight offFirst + design.weight offSecond * ratio ^ 2) * normSq := by
+    rw [hmassDef, hlevFirst, hlevSecond]
+    ring
+  have hcoeffPos : 0 < design.weight offFirst + design.weight offSecond * ratio ^ 2 := by
+    have := design.weight_pos offFirst
+    nlinarith [(design.weight_pos offSecond).le, sq_nonneg ratio]
+  have hmassPos : 0 < shadowMass := by
+    rw [hmassValue]
+    exact mul_pos hcoeffPos hnormPos
+  -- the five-member plane family
+  set atomOf : Fin 5 → (Fin 2 → ℝ) :=
+    ![shadow.atom flatOne, shadow.atom flatTwo, shadow.atom flatThree,
+      shadow.atom flatFour, unitVec] with hatomDef
+  set weightOf : Fin 5 → ℝ :=
+    ![design.weight flatOne, design.weight flatTwo, design.weight flatThree,
+      design.weight flatFour, shadowMass] with hweightDef
+  have hpos : ∀ index : Fin 5, 0 < weightOf index := by
+    intro index
+    fin_cases index <;>
+      simp only [hweightDef, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+        Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four, Matrix.tail_cons]
+    · exact design.weight_pos flatOne
+    · exact design.weight_pos flatTwo
+    · exact design.weight_pos flatThree
+    · exact design.weight_pos flatFour
+    · exact hmassPos
+  -- the two off-plane rank-one terms collapse to the fictitious unit atom
+  have hcollapse : shadowMass • atomMatrix unitVec
+      = design.weight offFirst • atomMatrix (shadow.atom offFirst)
+        + design.weight offSecond • atomMatrix (shadow.atom offSecond) := by
+    have hunitMatrix : atomMatrix unitVec = normSq⁻¹ • atomMatrix (shadow.atom offFirst) := by
+      rw [hunitDef, atomMatrix_smul, inv_pow, Real.sq_sqrt hnormPos.le]
+    have hsecondMatrix : atomMatrix (shadow.atom offSecond)
+        = ratio ^ 2 • atomMatrix (shadow.atom offFirst) := by
+      rw [hratio, atomMatrix_smul]
+    rw [hunitMatrix, hsecondMatrix, smul_smul, hmassValue, smul_smul, ← add_smul]
+    congr 1
+    field_simp
+  -- the flat part of Parseval, unrolled
+  have hflatSum : ∑ label ∈ flatSet, design.weight label • atomMatrix (shadow.atom label)
+      = design.weight flatOne • atomMatrix (shadow.atom flatOne)
+        + design.weight flatTwo • atomMatrix (shadow.atom flatTwo)
+        + design.weight flatThree • atomMatrix (shadow.atom flatThree)
+        + design.weight flatFour • atomMatrix (shadow.atom flatFour) := by
+    rw [hflatSetDef, Finset.sum_insert (by simp [hneOneTwo, hneOneThree, hneOneFour]),
+      Finset.sum_insert (by simp [hneTwoThree, hneTwoFour]),
+      Finset.sum_insert (by simp [hneThreeFour]), Finset.sum_singleton]
+    abel
+  have hframe : ∑ index, weightOf index • atomMatrix (atomOf index)
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ) := by
+    have hparseval : ∑ label : Fin 6, shadow.weight label • atomMatrix (shadow.atom label)
+        = (1 : Matrix (Fin 2) (Fin 2) ℝ) := shadow.isParseval
+    have hweightEq : ∀ label : Fin 6, shadow.weight label = design.weight label :=
+      fun label => rfl
+    rw [Finset.sum_congr rfl fun label (_ : label ∈ Finset.univ) => by
+      rw [hweightEq label]] at hparseval
+    have hsplit := Finset.sum_add_sum_compl flatSet
+      (fun label => design.weight label • atomMatrix (shadow.atom label))
+    rw [hparseval] at hsplit
+    rw [hcompl, Finset.sum_pair hoffNe, hflatSum] at hsplit
+    rw [Fin.sum_univ_five]
+    simp only [hatomDef, hweightDef, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four,
+      Matrix.tail_cons]
+    rw [hcollapse]
+    rw [← hsplit]
+  -- the weight deficit
+  have hweightSplit : ∑ label ∈ flatSet, design.weight label
+      = 1 - design.weight offFirst - design.weight offSecond := by
+    have hsplit := Finset.sum_add_sum_compl flatSet design.weight
+    rw [design.weight_sum_one, hcompl, Finset.sum_pair hoffNe] at hsplit
+    linarith [hsplit]
+  have hflatWeightSum : ∑ label ∈ flatSet, design.weight label
+      = design.weight flatOne + design.weight flatTwo + design.weight flatThree
+        + design.weight flatFour := by
+    rw [hflatSetDef, Finset.sum_insert (by simp [hneOneTwo, hneOneThree, hneOneFour]),
+      Finset.sum_insert (by simp [hneTwoThree, hneTwoFour]),
+      Finset.sum_insert (by simp [hneThreeFour]), Finset.sum_singleton]
+    ring
+  have hdeficit : ∑ index, weightOf index < 1 := by
+    rw [Fin.sum_univ_five]
+    simp only [hweightDef, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four, Matrix.tail_cons]
+    have hchain := hflatWeightSum.symm.trans hweightSplit
+    linarith [hchain, hlight]
+  obtain ⟨firstIndex, secondIndex, hindexNe, hstrict⟩ :=
+    exists_planeStrict_of_fiveFrame atomOf weightOf hpos hframe hdeficit
+  -- the fictitious unit atom cannot join the pair
+  set labelOf : Fin 5 → Fin 6 := ![flatOne, flatTwo, flatThree, flatFour, flatOne]
+    with hlabelOfDef
+  have hatomAt : ∀ index : Fin 5, index ≠ 4 →
+      atomOf index = shadow.atom (labelOf index) := by
+    intro index hindex
+    fin_cases index
+    · simp [hatomDef, hlabelOfDef]
+    · simp [hatomDef, hlabelOfDef]
+    · simp [hatomDef, hlabelOfDef]
+    · simp [hatomDef, hlabelOfDef]
+    · exact absurd rfl hindex
+  have hmemAt : ∀ index : Fin 5, index ≠ 4 → labelOf index ∈ flatSet := by
+    intro index hindex
+    fin_cases index
+    · simp [hlabelOfDef, hflatSetDef]
+    · simp [hlabelOfDef, hflatSetDef]
+    · simp [hlabelOfDef, hflatSetDef]
+    · simp [hlabelOfDef, hflatSetDef]
+    · exact absurd rfl hindex
+  have hinjAt : ∀ indexFirst indexSecond : Fin 5, indexFirst ≠ 4 → indexSecond ≠ 4 →
+      indexFirst ≠ indexSecond → labelOf indexFirst ≠ labelOf indexSecond := by
+    have hswapOneTwo := hneOneTwo.symm
+    have hswapOneThree := hneOneThree.symm
+    have hswapOneFour := hneOneFour.symm
+    have hswapTwoThree := hneTwoThree.symm
+    have hswapTwoFour := hneTwoFour.symm
+    have hswapThreeFour := hneThreeFour.symm
+    intro indexFirst indexSecond hfirst hsecond hdistinct
+    fin_cases indexFirst <;> fin_cases indexSecond <;>
+      simp only [hlabelOfDef, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+        Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four, Matrix.tail_cons,
+        Fin.zero_eta, Fin.mk_one, Fin.isValue] <;>
+      first
+        | exact absurd rfl hdistinct
+        | exact absurd rfl hfirst
+        | exact absurd rfl hsecond
+        | assumption
+        | (exfalso; exact hdistinct rfl)
+        | (exfalso; exact hfirst rfl)
+        | (exfalso; exact hsecond rfl)
+  have hunitAt : atomOf 4 = unitVec := by
+    simp only [hatomDef, Matrix.cons_val_four, Matrix.tail_cons, Matrix.head_cons]
+  have hfirstNe : firstIndex ≠ 4 := by
+    intro hcontra
+    refine not_planeStrict_of_unit (atomOf secondIndex) unitVec hunit (fun probe hprobe => ?_)
+    have hvalue := hstrict probe hprobe
+    rw [hcontra, hunitAt] at hvalue
+    linarith [hvalue]
+  have hsecondNe : secondIndex ≠ 4 := by
+    intro hcontra
+    refine not_planeStrict_of_unit (atomOf firstIndex) unitVec hunit (fun probe hprobe => ?_)
+    have hvalue := hstrict probe hprobe
+    rw [hcontra, hunitAt] at hvalue
+    linarith [hvalue]
+  refine ⟨labelOf firstIndex, labelOf secondIndex, hmemAt firstIndex hfirstNe,
+    hmemAt secondIndex hsecondNe, hinjAt firstIndex secondIndex hfirstNe hsecondNe hindexNe,
+    fun planar hperp hplanarNe => ?_⟩
+  set probe : Fin 2 → ℝ := ![planar ⬝ᵥ frame.pOne, planar ⬝ᵥ frame.pTwo] with hprobeDef
+  have hresolve := orthonormalFrame_resolution frame.oneOne frame.twoTwo frame.axisAxis
+    frame.oneTwo frame.oneAxis frame.twoAxis planar
+  rw [hperp, zero_smul, add_zero] at hresolve
+  have hprobeNe : probe ≠ 0 := by
+    intro hcontra
+    have hfirstCoord : planar ⬝ᵥ frame.pOne = 0 := by
+      have hentry := congrFun hcontra 0
+      simpa [hprobeDef] using hentry
+    have hsecondCoord : planar ⬝ᵥ frame.pTwo = 0 := by
+      have hentry := congrFun hcontra 1
+      simpa [hprobeDef] using hentry
+    rw [hfirstCoord, hsecondCoord, zero_smul, zero_smul, zero_add] at hresolve
+    exact hplanarNe hresolve
+  have hsplitPlanar := frame.dotProduct_self_split planar
+  rw [hperp] at hsplitPlanar
+  have hnormProbe : probe ⬝ᵥ probe = planar ⬝ᵥ planar := by
+    have hval : probe ⬝ᵥ probe
+        = (planar ⬝ᵥ frame.pOne) ^ 2 + (planar ⬝ᵥ frame.pTwo) ^ 2 := by
+      rw [hprobeDef, dot_fin_two]
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+      ring
+    rw [hval, hsplitPlanar]
+    ring
+  have hflatReading : ∀ label : Fin 6, label ∈ flatSet →
+      shadow.atom label ⬝ᵥ probe = design.atom label ⬝ᵥ planar := by
+    intro label hlabel
+    have hlabelFlat := hflat label hlabel
+    have hleft : shadow.atom label ⬝ᵥ probe
+        = (design.atom label ⬝ᵥ frame.pOne) * (planar ⬝ᵥ frame.pOne)
+          + (design.atom label ⬝ᵥ frame.pTwo) * (planar ⬝ᵥ frame.pTwo) := by
+      rw [hshadowDef, frameShadow_atom, hprobeDef, dot_fin_two]
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    have hlabelResolve := orthonormalFrame_resolution frame.oneOne frame.twoTwo
+      frame.axisAxis frame.oneTwo frame.oneAxis frame.twoAxis (design.atom label)
+    rw [hlabelFlat, zero_smul, add_zero] at hlabelResolve
+    have hright : design.atom label ⬝ᵥ planar
+        = (design.atom label ⬝ᵥ frame.pOne) * (frame.pOne ⬝ᵥ planar)
+          + (design.atom label ⬝ᵥ frame.pTwo) * (frame.pTwo ⬝ᵥ planar) := by
+      conv_lhs => rw [hlabelResolve]
+      rw [add_dotProduct, smul_dotProduct, smul_dotProduct, smul_eq_mul, smul_eq_mul]
+    rw [hleft, hright, dotProduct_comm frame.pOne planar, dotProduct_comm frame.pTwo planar]
+  have hvalue := hstrict probe hprobeNe
+  rw [hatomAt firstIndex hfirstNe, hatomAt secondIndex hsecondNe,
+    hflatReading _ (hmemAt firstIndex hfirstNe), hflatReading _ (hmemAt secondIndex hsecondNe),
+    hnormProbe] at hvalue
+  exact hvalue
+
 end Gtz
