@@ -270,6 +270,54 @@ conclusion. The one weak signal worth recording is that the FREE arm drifted to 
 pairfree score of 5e-5 while still far from a tie, which is what a tie locus
 inside the collinear stratum would look like.
 
+THE DECISIVE MEASUREMENT, and it is the sharpest thing in this lane. Run the
+analytic-gradient descent to convergence and record, for each restart, BOTH the
+distance to a tie and the parallel-free score. In the dependency chart the
+parallel-free score is the worst conditioning of Z after two rows are deleted, so
+a score at machine zero IS an exactly collinear pair. 150 restarts, 6000
+iterations, weight floor 0.005.
+
+  (8,4)   ten best restarts, |max lmin| against parallel-free score
+     5.671e-10   9.565e-12          <- an exact tie, and an EXACT collinear pair
+     6.095e-09   1.419e-10
+     2.701e-08   6.902e-10
+     4.582e-07   3.864e-09
+     6.877e-07   1.739e-08
+     3.501e-05   5.927e-07
+     5.270e-05   7.953e-05
+     6.570e-05   4.148e-06
+     8.607e-05   1.351e-07
+     2.771e-04   4.174e-06
+     median parallel-free of the 20 BEST  = 1.926e-06
+     median parallel-free of the 20 WORST = 1.302e-01
+
+  (6,4)   ten best restarts
+     1.110e-16   5.315e-01          <- an exact tie, and NO collinear pair
+     3.331e-16   5.663e-01
+     3.331e-16   5.238e-01
+     5.551e-16   5.208e-01
+     6.106e-16   5.724e-01
+     6.661e-16   5.608e-01
+     7.494e-16   5.119e-01
+     8.639e-16   3.633e-16
+     8.882e-16   5.394e-01
+     9.992e-16   5.676e-01
+     median parallel-free of the 20 BEST  = 5.238e-01
+     median parallel-free of the 20 WORST = 4.260e-01
+
+READ IT. At (6,4) the descent reaches machine precision and the parallel-free
+score does not move: the tie locus and the collinear stratum are SEPARATE, and
+nine of the ten best ties are parallel-free. At (8,4) the descent never reaches
+machine precision, it stalls at 5.7e-10, and the parallel-free score falls with
+it, five orders of magnitude between the best and the worst restarts: the tie
+locus and the collinear stratum COINCIDE.
+
+That is the band's lower endpoint, seen directly. The earlier lane reported the
+same conclusion from 800 L-BFGS restarts in the projection chart. This is an
+independent reproduction in a parametrisation that shares nothing with it, and it
+adds the MECHANISM: at (8,4) the descent toward a tie IS a descent toward
+collinearity, and the two limits are one point.
+
 WITNESS RECORDED, floating point only, for a successor who wants to rationalise
 it. A (7,4) tie with |max lmin| = 4.7e-10 and a parallel-free score of 0.433,
 weights (0.0837, 0.2008, 0.1066, 0.1185, 0.1490, 0.1759, 0.1656) and dependency
