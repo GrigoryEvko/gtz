@@ -1169,10 +1169,10 @@ sitting in that pair: both members are coplanar atoms of the design. -/
 /-- The rescaling of a plane Parseval family of five members to a genuine rank-two
 design.  The atoms are stretched by the square root of the total weight and the
 weights are renormalised, so Parseval is preserved and the weights total one. -/
-noncomputable def scaledPlaneFive (atomOf : Fin 5 → (Fin 2 → ℝ)) (weightOf : Fin 5 → ℝ)
-    (hpos : ∀ index : Fin 5, 0 < weightOf index)
+noncomputable def scaledPlaneFrame {members : ℕ} (atomOf : Fin (members + 1) → (Fin 2 → ℝ))
+    (weightOf : Fin (members + 1) → ℝ) (hpos : ∀ index : Fin (members + 1), 0 < weightOf index)
     (hframe : ∑ index, weightOf index • atomMatrix (atomOf index)
-      = (1 : Matrix (Fin 2) (Fin 2) ℝ)) : WeightedDesign 5 2 where
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ)) : WeightedDesign (members + 1) 2 where
   atom index := Real.sqrt (∑ other, weightOf other) • atomOf index
   weight index := weightOf index / ∑ other, weightOf other
   weight_pos index :=
@@ -1194,15 +1194,25 @@ noncomputable def scaledPlaneFive (atomOf : Fin 5 → (Fin 2 → ℝ)) (weightOf
     congr 1
     field_simp
 
-/-- **A PLANE FAMILY OF TOTAL WEIGHT BELOW ONE HAS A STRICT PAIR.**  Rescale it to
-a rank-two design, spend the landed rank-two GTZ, and read the weak domination
-back through the stretch: the deficit turns `<=` into `<`. -/
-theorem exists_planeStrict_of_fiveFrame (atomOf : Fin 5 → (Fin 2 → ℝ))
-    (weightOf : Fin 5 → ℝ) (hpos : ∀ index : Fin 5, 0 < weightOf index)
+/-- **THE PLANE WEIGHT DEFICIT LAW.**  A plane Parseval family whose weights total
+STRICTLY LESS THAN ONE carries a pair that beats every nonzero plane probe.
+
+Unconditional, at every size.  Rescale the family to a rank-two design — the atoms
+stretch by the square root of the total weight and the weights renormalise — spend
+the landed rank-two GTZ `Gtz.gtz_rank_two`, and read the weak domination back
+through the stretch.  The deficit is exactly what turns `<=` into `<`.
+
+A rank-two design is the case of total weight one, where the conclusion is false:
+its dominating pairs need not be strict.  Every plane sub-frame of a higher-rank
+design that drops the atoms reading the normal is of this shape, and the weight it
+drops is the whole content of the law. -/
+theorem exists_planeStrict_of_weightSum_lt_one {members : ℕ}
+    (atomOf : Fin (members + 1) → (Fin 2 → ℝ)) (weightOf : Fin (members + 1) → ℝ)
+    (hpos : ∀ index : Fin (members + 1), 0 < weightOf index)
     (hframe : ∑ index, weightOf index • atomMatrix (atomOf index)
       = (1 : Matrix (Fin 2) (Fin 2) ℝ))
     (hdeficit : ∑ other, weightOf other < 1) :
-    ∃ first second : Fin 5, first ≠ second
+    ∃ first second : Fin (members + 1), first ≠ second
       ∧ ∀ probe : Fin 2 → ℝ, probe ≠ 0 →
           probe ⬝ᵥ probe
             < (atomOf first ⬝ᵥ probe) ^ 2 + (atomOf second ⬝ᵥ probe) ^ 2 := by
@@ -1212,13 +1222,13 @@ theorem exists_planeStrict_of_fiveFrame (atomOf : Fin 5 → (Fin 2 → ℝ))
   have hsq : Real.sqrt (∑ other, weightOf other) ^ 2 = ∑ other, weightOf other :=
     Real.sq_sqrt hmass.le
   obtain ⟨pairSet, hcard, hdominates⟩ :=
-    gtz_rank_two 5 (scaledPlaneFive atomOf weightOf hpos hframe)
+    gtz_rank_two (members + 1) (scaledPlaneFrame atomOf weightOf hpos hframe)
   obtain ⟨first, second, hne, hpairEq⟩ := Finset.card_eq_two.mp hcard
   refine ⟨first, second, hne, fun probe hprobeNe => ?_⟩
   have hform := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hdominates).2 probe
   rw [star_trivial, dominationGap_form, hpairEq, Finset.sum_pair hne] at hform
-  have hreading : ∀ index : Fin 5,
-      (scaledPlaneFive atomOf weightOf hpos hframe).atom index ⬝ᵥ probe
+  have hreading : ∀ index : Fin (members + 1),
+      (scaledPlaneFrame atomOf weightOf hpos hframe).atom index ⬝ᵥ probe
         = Real.sqrt (∑ other, weightOf other) * (atomOf index ⬝ᵥ probe) := by
     intro index
     show (Real.sqrt (∑ other, weightOf other) • atomOf index) ⬝ᵥ probe = _
@@ -1233,6 +1243,18 @@ theorem exists_planeStrict_of_fiveFrame (atomOf : Fin 5 → (Fin 2 → ℝ))
     ring
   rw [hexpand] at hform
   nlinarith [hform, hprobePos, hmass, hdeficit]
+
+/-- The five-member reading of the deficit law, the shape Part 6 consumes. -/
+theorem exists_planeStrict_of_fiveFrame (atomOf : Fin 5 → (Fin 2 → ℝ))
+    (weightOf : Fin 5 → ℝ) (hpos : ∀ index : Fin 5, 0 < weightOf index)
+    (hframe : ∑ index, weightOf index • atomMatrix (atomOf index)
+      = (1 : Matrix (Fin 2) (Fin 2) ℝ))
+    (hdeficit : ∑ other, weightOf other < 1) :
+    ∃ first second : Fin 5, first ≠ second
+      ∧ ∀ probe : Fin 2 → ℝ, probe ≠ 0 →
+          probe ⬝ᵥ probe
+            < (atomOf first ⬝ᵥ probe) ^ 2 + (atomOf second ⬝ᵥ probe) ^ 2 :=
+  exists_planeStrict_of_weightSum_lt_one (members := 4) atomOf weightOf hpos hframe hdeficit
 
 /-- A unit plane vector cannot join a strictly dominating plane pair: the probe
 orthogonal to its partner leaves the unit vector alone against the whole probe,
