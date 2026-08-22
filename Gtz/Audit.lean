@@ -40016,3 +40016,11 @@ run_cmd do
 #print axioms Gtz.sum_smul_atom_eq_zero_of_coord
 #print axioms Gtz.coMean_le_coRatio_of_dominates_erase
 #print axioms Gtz.dominates_erase_iff_coMean_le
+#print axioms Gtz.dependencyBudget_pos_of_weight_lt_half
+#print axioms Gtz.exists_null_dependency_of_dominates_not_posDef
+#print axioms Gtz.dependencyDefect_compl_pos_of_null
+#print axioms Gtz.eightFour_dependencyDefect_compl_pos_of_isTie
+#print axioms Gtz.exists_defect_nonpos_of_not_posDef
+#print axioms Gtz.exists_defect_ge_budget_of_not_posDef_compl
+#print axioms Gtz.straddle_of_noStrict
+#print axioms Gtz.eightFour_straddle_of_isTie
