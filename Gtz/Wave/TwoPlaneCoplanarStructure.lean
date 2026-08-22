@@ -1045,4 +1045,104 @@ theorem not_isTie_sixThree_of_fiveCoplanar (design : WeightedDesign 6 3)
   not_isTie_of_spike (atoms := 5) design frame flatSet hne hcompl hflat hfirstFlat
     (by norm_num)
 
+/-! ### The frame-free readings of the kill
+
+The hypothesis "all but one atom lie in a plane" has two shorter names.  One is a
+unit normal that every atom but one kills.  The other mentions no direction at
+all: an atom ORTHOGONAL TO EVERY OTHER ATOM.  The second is the memorable form,
+and it is the one a Gram-matrix consumer can test by inspection. -/
+
+/-- A design whose atoms are all killed by one unit normal except at a single
+label is not a tie.  The frame is built on the normal and the two-element
+complement is any partner of the exceptional label. -/
+theorem not_isTie_of_unitNormal_kills_all_but_one {atoms : ℕ}
+    (design : WeightedDesign (atoms + 1) 3) (hsize : 2 ≤ atoms + 1)
+    {normalVec : Fin 3 → ℝ} (hunit : normalVec ⬝ᵥ normalVec = 1)
+    {spikeLabel : Fin (atoms + 1)}
+    (hflat : ∀ label : Fin (atoms + 1), label ≠ spikeLabel →
+      design.atom label ⬝ᵥ normalVec = 0) :
+    ¬ IsTie design := by
+  classical
+  obtain ⟨pOne, pTwo, hOneOne, hTwoTwo, hOneTwo, hOneAxis, hTwoAxis⟩ :=
+    exists_orthonormal_planarFrame hunit
+  set frame : AxisFrame :=
+    { pOne := pOne, pTwo := pTwo, axis := normalVec, oneOne := hOneOne, twoTwo := hTwoTwo,
+      axisAxis := hunit, oneTwo := hOneTwo, oneAxis := hOneAxis, twoAxis := hTwoAxis }
+    with hframeDef
+  obtain ⟨partnerLabel, hpartnerNe⟩ := Fintype.exists_ne_of_one_lt_card
+    (by simp only [Fintype.card_fin]; omega) spikeLabel
+  refine not_isTie_of_spike design frame ({partnerLabel, spikeLabel} : Finset (Fin (atoms + 1)))ᶜ
+    hpartnerNe (by rw [compl_compl]) (fun label hmem => ?_) (hflat partnerLabel hpartnerNe) hsize
+  have hnotMem : label ∉ ({partnerLabel, spikeLabel} : Finset (Fin (atoms + 1))) :=
+    Finset.mem_compl.mp hmem
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hnotMem
+  push_neg at hnotMem
+  exact hflat label hnotMem.2
+
+/-- **NO ATOM OF A RANK-THREE TIE IS ORTHOGONAL TO EVERY OTHER ATOM.**  The
+orthogonal atom would be a spike of the plane the others span, and
+`Gtz.exists_posDef_triple_of_spike` then produces a strictly dominating triple.
+
+This is the kill in its shortest form: it names no plane, no frame and no normal,
+and it is a condition on the GRAM MATRIX alone — a row whose off-diagonal entries
+all vanish. -/
+theorem not_isTie_of_atom_orthogonal_to_all {atoms : ℕ}
+    (design : WeightedDesign (atoms + 1) 3) (hsize : 2 ≤ atoms + 1)
+    {spikeLabel : Fin (atoms + 1)} (hnonzero : design.atom spikeLabel ≠ 0)
+    (horth : ∀ label : Fin (atoms + 1), label ≠ spikeLabel →
+      design.atom label ⬝ᵥ design.atom spikeLabel = 0) :
+    ¬ IsTie design := by
+  have hpos : 0 < design.atom spikeLabel ⬝ᵥ design.atom spikeLabel :=
+    dotProduct_self_pos hnonzero
+  have hsqrtPos : 0 < Real.sqrt (design.atom spikeLabel ⬝ᵥ design.atom spikeLabel) :=
+    Real.sqrt_pos.mpr hpos
+  set normalVec : Fin 3 → ℝ :=
+    (Real.sqrt (design.atom spikeLabel ⬝ᵥ design.atom spikeLabel))⁻¹ • design.atom spikeLabel
+    with hnormalDef
+  have hunit : normalVec ⬝ᵥ normalVec = 1 := by
+    rw [hnormalDef, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc,
+      ← mul_inv, Real.mul_self_sqrt hpos.le]
+    exact inv_mul_cancel₀ hpos.ne'
+  refine not_isTie_of_unitNormal_kills_all_but_one design hsize hunit
+    (spikeLabel := spikeLabel) (fun label hlabelNe => ?_)
+  rw [hnormalDef, dotProduct_smul, smul_eq_mul, horth label hlabelNe, mul_zero]
+
+/-- **THE `(6,3)` READING.**  No atom of a `(6,3)` tie is orthogonal to the other
+five, and no plane holds five of its atoms. -/
+theorem sixThree_isTie_no_orthogonal_atom (design : WeightedDesign 6 3) (htie : IsTie design)
+    (spikeLabel : Fin 6) (hnonzero : design.atom spikeLabel ≠ 0) :
+    ∃ otherLabel : Fin 6, otherLabel ≠ spikeLabel
+      ∧ design.atom otherLabel ⬝ᵥ design.atom spikeLabel ≠ 0 := by
+  classical
+  by_contra hcontra
+  push_neg at hcontra
+  exact not_isTie_of_atom_orthogonal_to_all (atoms := 5) design (by norm_num)
+    (spikeLabel := spikeLabel) hnonzero (fun label hlabelNe => hcontra label hlabelNe) htie
+
+/-- **NO PLANE HOLDS FIVE ATOMS OF A `(6,3)` TIE.** -/
+theorem sixThree_isTie_no_unitNormal_kills_five (design : WeightedDesign 6 3)
+    (htie : IsTie design) {normalVec : Fin 3 → ℝ} (hunit : normalVec ⬝ᵥ normalVec = 1)
+    (spikeLabel : Fin 6) :
+    ∃ otherLabel : Fin 6, otherLabel ≠ spikeLabel
+      ∧ design.atom otherLabel ⬝ᵥ normalVec ≠ 0 := by
+  classical
+  by_contra hcontra
+  push_neg at hcontra
+  exact not_isTie_of_unitNormal_kills_all_but_one (atoms := 5) design (by norm_num) hunit
+    (spikeLabel := spikeLabel) (fun label hlabelNe => hcontra label hlabelNe) htie
+
+/-- **NO PLANE HOLDS ALL THE ATOMS.**  Parseval along the normal totals one, and a
+plane that killed every atom would total zero.  The rank-three cell has no flat
+design at all. -/
+theorem exists_not_flat {rank : ℕ} (design : WeightedDesign size rank)
+    {normalVec : Fin rank → ℝ} (hunit : normalVec ⬝ᵥ normalVec = 1) :
+    ∃ label : Fin size, design.atom label ⬝ᵥ normalVec ≠ 0 := by
+  classical
+  by_contra hcontra
+  push_neg at hcontra
+  have hidentity := oneLine_normalIdentity design Finset.univ normalVec hunit
+    (fun label _ => hcontra label)
+  rw [Finset.compl_univ, Finset.sum_empty] at hidentity
+  norm_num at hidentity
+
 end Gtz
